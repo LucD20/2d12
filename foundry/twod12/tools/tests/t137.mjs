@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t137.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // v0.0.166: (1) a Leaning creature's cover is counted from the point it looks from (just past its corner, as vision), not from inside its square:
 // a wall that ends at that corner no longer blocks every line (Lucas's screenshot). (2) The Cover height calculation (side view): blocks, lines, cover.
@@ -8,8 +8,8 @@ globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class
 globalThis.Hooks = { on() {} }; globalThis.game = { settings: { get: () => true } };
 const S = 40;
 globalThis.canvas = { grid: { size: S, isSquare: true }, tokens: { placeables: [] } };
-const cv = await import(ROOT + "module/cover.mjs");
-const H = await import(ROOT + "module/heightcover.mjs");
+const cv = await import(ROOTURL + "module/cover.mjs");
+const H = await import(ROOTURL + "module/heightcover.mjs");
 console.log("--- (1) Leaning past a wall that ends at your corner");
 // your square: x 80..120, y 80..120; a wall along x = 120 from y = 0 down to y = 120 (it ends at your bottom-right corner); the target in the open to the right
 const wall = (a, b) => { const X = 120; if ((a.x - X) * (b.x - X) >= 0) return false; const t = (X - a.x) / (b.x - a.x); const y = a.y + t * (b.y - a.y); return y >= 0 && y <= 120; };

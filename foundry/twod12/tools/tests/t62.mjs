@@ -1,11 +1,11 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t62.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 globalThis.Combat = class {}; globalThis.CONFIG = {};
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: {} } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
 globalThis.Hooks = { on() {} }; globalThis.game = { settings: { get: () => true } };
-const cf = await import(ROOT + "module/config.mjs");
-const fx = await import(ROOT + "module/fists.mjs");
-const mv = await import(ROOT + "module/move.mjs");
+const cf = await import(ROOTURL + "module/config.mjs");
+const fx = await import(ROOTURL + "module/fists.mjs");
+const mv = await import(ROOTURL + "module/move.mjs");
 const T = (...t) => new Set(t);
 const W = (name, traits, o = {}) => ({ name, type: "weapon", system: { traits: T(...traits), wielded: true, hands: 1, ...o }, getFlag: (s, k) => o.flags?.[k] });
 const actor = (weapons, extra = {}) => ({ system: { size: 3, speed: 5, ...extra }, itemTypes: { weapon: weapons, talent: extra.talents ?? [], feature: [] } });

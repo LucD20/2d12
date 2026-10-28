@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t92.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 // Cut Through's Setup: an Evade that may cross creatures (never end in one) and ignores Difficult Terrain (Darkness, doubled costs).
 const GS = 100, handlers = {}, warns = [], chat = [], settings = { lightDimBelow: 0.7, lightDarkBelow: 0.4, moveOutsideCombat: false };
 globalThis.Combat = class {}; globalThis.CONFIG = { time: {}, TextEditor: { enrichers: [] }, Canvas: { polygonBackends: { sight: { testCollision: () => false }, move: { testCollision: () => false } } } };
@@ -22,7 +22,7 @@ const kai = { id: "a1", name: "Kai", isOwner: true, statuses: new Set(), system:
 const mk = (id, name, col, row, disposition, actor) => { const doc = { id, x: col * GS, y: row * GS, width: 1, height: 1, disposition, hidden: false }; const t = { id, name, document: doc, actor, center: { x: col * GS + 50, y: row * GS + 50 } }; doc.actor = actor; tokens.push(t); return t; };
 const me = mk("t1", "Kai", 0, 0, 1, kai); kai.token = { object: me }; kai.getActiveTokens = () => [me];
 const orc = mk("t2", "Orc", 1, 0, -1, { name: "Orc", system: {}, statuses: new Set() });
-const M = await import(ROOT + "module/move.mjs");
+const M = await import(ROOTURL + "module/move.mjs");
 M.registerMovement();
 const move = (to, pending = { distance: 2, cost: 2 }) => ({ origin: { x: 0, y: 0 }, destination: { x: to * GS, y: 0 }, pending: { waypoints: [], ...pending } });
 const go = async (label, to, { ignore = false, evade = 2, ap = 5, pending, dark = false } = {}) => {
@@ -57,7 +57,7 @@ console.log("a step into the Orc's square:", stepInto(1, false), "| for Cut Thro
 canvas.environment.darknessLevel = 1; console.log("a step into a dark square:", stepInto(3, false), "| for Cut Through's Evade:", stepInto(3, true)); canvas.environment.darknessLevel = 0;
 // the flag lives as long as the movement
 console.log("--- the flag");
-const inline = await import(ROOT + "module/inline.mjs");
+const inline = await import(ROOTURL + "module/inline.mjs");
 const P = t => inline.parseInline("Move", t);
 console.log("the tag:", P("evade|distance:2|terrain:ignore").ignoreTerrain, "| without:", P("evade|distance:2").ignoreTerrain, "| terrain:no:", P("evade|distance:2|terrain:no").ignoreTerrain, "| the distance still read:", P("evade|distance:floor(speed/2)|terrain:ignore").distanceExpr);
 for (const k of Object.keys(flags)) delete flags[k]; chat.length = 0; warns.length = 0; tokens.splice(1, 1);

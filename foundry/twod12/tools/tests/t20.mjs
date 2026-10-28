@@ -1,12 +1,12 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t20.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 class FakeCombat { setupTurns() { this.turns = this._c.slice().sort((a, b) => b.initiative - a.initiative); this.current = {}; return this.turns; } }
 globalThis.Combat = FakeCombat;
 globalThis.CONST = { TOKEN_DISPOSITIONS: { FRIENDLY: 1 } };
 globalThis.foundry = { applications: { api: { DialogV2: {} } } };
 globalThis.Hooks = { on() {} };
 globalThis.game = { combat: null, user: {} };
-const { zipper, TwoD12Combat } = await import(ROOT + "module/combat.mjs");
+const { zipper, TwoD12Combat } = await import(ROOTURL + "module/combat.mjs");
 const mk = (name, init, disp) => ({ id: name, name, initiative: init, token: { disposition: disp }, actor: { type: disp === 1 ? "character" : "npc" } });
 const pcs = [mk("PC1", 14, 1), mk("PC2", 13, 1), mk("PC3", 10, 1)], npcs = [mk("NPC1", 12, -1), mk("NPC2", 10, -1)];
 const sorted = a => a.slice().sort((x, y) => y.initiative - x.initiative);

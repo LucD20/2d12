@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t98.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 // The movement cap: when you move with an Action you can't move more than your current Speed, unless an ability says otherwise. Forced Movement isn't capped.
 globalThis.document = { createElement: () => ({ classList: { add() {} }, dataset: {}, append() {}, set innerHTML(v) { this.html = v; } }) };
 globalThis.Combat = class {}; globalThis.CONFIG = { TextEditor: { enrichers: [] }, statusEffects: [{ id: "prone" }, { id: "hindered" }, { id: "immobilized" }] };
@@ -9,8 +9,8 @@ globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class
 globalThis.Hooks = { on() {}, once() {} };
 globalThis.game = { settings: { get: (s, k) => ({ moveOutsideCombat: true }[k]) }, combat: null, user: { id: "u", targets: new Set() }, socket: { emit() {} } };
 globalThis.canvas = { grid: { size: 100, distance: 1 }, tokens: { placeables: [], controlled: [] }, scene: {} };
-const M = await import(ROOT + "module/move.mjs");
-const I = await import(ROOT + "module/inline.mjs");
+const M = await import(ROOTURL + "module/move.mjs");
+const I = await import(ROOTURL + "module/inline.mjs");
 const mk = (name, speed, items = []) => ({ name, statuses: new Set(), system: { moveSpeed: speed, speed }, items, itemTypes: { talent: items, feature: [], action: [], weapon: [] }, effects: [] });
 const cfgOf = (tag) => I.parseInline("Move", tag);
 const d = (label, tag, actor) => { const c = cfgOf(tag); console.log(label.padEnd(64), "->", M.moveDistance(c, actor)); };

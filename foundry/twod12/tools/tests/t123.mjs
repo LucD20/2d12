@@ -1,12 +1,12 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t123.mjs)
 // v0.0.143 (Pass A of the core rules update): Favored keeps the best Tier, Doomed has no Doubles; [Mod]; Save DCs; Vs. entries; Rimebrand on every Tier.
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 globalThis.foundry ??= { utils: {}, data: { fields: {} } };
-const R = await import(ROOT + "module/roll.mjs");
-const C = await import(ROOT + "module/calc.mjs");
-const S = await import(ROOT + "module/rollsource.mjs");
-const G = await import(ROOT + "module/config.mjs");
+const R = await import(ROOTURL + "module/roll.mjs");
+const C = await import(ROOTURL + "module/calc.mjs");
+const S = await import(ROOTURL + "module/rollsource.mjs");
+const G = await import(ROOTURL + "module/config.mjs");
 const d = (first, total = first) => ({ first, total });
 const show = k => `keep ${k.i.join("+")} total ${k.total} tier ${k.tier}${k.doubles ? " doubles" : ""}${k.crit ? " crit" : ""}`;
 console.log("Favored 1,1,5 (+0 vs 13):", show(R.keepDice([d(1), d(1), d(5)], "favored", 0, 13)), "| the two highest would be 6, Tier 1");

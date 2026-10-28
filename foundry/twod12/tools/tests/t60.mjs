@@ -1,12 +1,12 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t60.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 globalThis.Combat = class {}; globalThis.CONFIG = {};
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
 globalThis.Hooks = { on() {} }; globalThis.game = { settings: { get: () => false } };
 const T = (...t) => new Set(t);
 const items = { "u:oa-act": { name: "Opportunity Attack", type: "action", system: { versions: [{ ap: 1 }], reaction: true } }, "u:rime": { name: "Rimebrand (Cold)", type: "action", system: { versions: [{ ap: 1 }] } } };
 globalThis.fromUuid = async u => items[u] ?? null;
-const pv = await import(ROOT + "module/preview.mjs");
+const pv = await import(ROOTURL + "module/preview.mjs");
 const strip = h => h.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 const oa = await pv.buildInfoCard({ name: "Opportunity Attack", system: { category: "Talent", level: 1, frequency: "", traits: T(), requirements: "", description: "<p>You punish those who move near you.</p>", actions: ["u:oa-act"], choiceOptions: [], modifiers: [{ spec: "category:Weapon Technique", when: "outOfTurn", critical: "You disrupt the triggering Action before it happens.", effects: "" }] } });
 console.log("OA:", strip(oa)); console.log("   plain title (no card color):", !oa.includes("--card-color"), "| divider:", oa.includes("cdiv"));

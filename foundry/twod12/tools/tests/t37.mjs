@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t37.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 globalThis.Combat = class {}; globalThis.CONFIG = {};
 globalThis.Roll = class { constructor(f) { this.f = f; this.dice = []; } async evaluate() { this.total = Function(`return (${this.f})`)(); return this; } };
 globalThis.foundry = { applications: { api: { DialogV2: {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)), getRoute: p => "/" + p } };
@@ -11,7 +11,7 @@ const actor = { isOwner: true, items: { get: () => item } };
 globalThis.fromUuid = async () => actor;
 const flags = { action: { tier: 1, actorUuid: "a", itemId: "i", ap: 1, attrVal: 2, isWeapon: true, attrLabel: "Body", targets: [{ uuid: "t", name: "Orc" }] } };
 const msg = { getFlag: (s, k) => flags[k] };
-const { rollDamage } = await import(ROOT + "module/actions.mjs");
+const { rollDamage } = await import(ROOTURL + "module/actions.mjs");
 await rollDamage(msg);
 const d = posted[0]; console.log("comps stored:", JSON.stringify(d.flags.twod12.dmgCard.comps), "| targets:", d.flags.twod12.dmgCard.targets.length);
 console.log("card has Damage button:", /applyDamage/.test(d.content), "| total shown:", (d.content.match(/ctotal">(\d+)/) || [])[1]);

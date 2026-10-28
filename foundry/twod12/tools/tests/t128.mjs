@@ -1,13 +1,13 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t128.mjs)
 // v0.0.150: Leaning automation: the corners of the space, the nudge, cover from the chosen corner, and a nudged token counts as in its own square.
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 globalThis.Combat = class {}; globalThis.CONFIG = { Canvas: { polygonBackends: {} } };
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: {} } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)), getRoute: p => "/" + p } };
 globalThis.Hooks = { on() {} }; globalThis.game = { settings: { get: () => true } };
 globalThis.canvas = { grid: { size: 40, isSquare: true, getOffset: p => ({ i: Math.floor(p.y / 40), j: Math.floor(p.x / 40) }) }, tokens: { placeables: [] } };
-const L = await import(ROOT + "module/lean.mjs");
-const cv = await import(ROOT + "module/cover.mjs");
+const L = await import(ROOTURL + "module/lean.mjs");
+const cv = await import(ROOTURL + "module/cover.mjs");
 const sq = { x: 80, y: 120, w: 40, h: 40 };
 console.log("corners of a square:", Object.keys(L.CORNERS).map(k => { const p = L.cornerPoint(sq, k); return `${k} (${p.x},${p.y})`; }).join(" | "));
 console.log("nudge from home (80,120), 40 px squares:", Object.keys(L.CORNERS).map(k => { const p = L.nudgeTarget({ x: 80, y: 120 }, k, 40); return `${k} -> (${p.x},${p.y})`; }).join(" | "));

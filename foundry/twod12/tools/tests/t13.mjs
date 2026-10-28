@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t13.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 globalThis.Combat = class {};
 globalThis.foundry = { applications: { api: { DialogV2: {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
 globalThis.Hooks = { on() {} };
@@ -7,14 +7,14 @@ globalThis.game = { socket: { emit() {}, on() {} }, user: {} };
 globalThis.document = { createElement: () => { const el = { classList: { add() {} }, dataset: {}, append() {}, set innerHTML(v) { this.html = v; } }; return el; } };
 const cfgList = [];
 globalThis.CONFIG = { TextEditor: { enrichers: [] } };
-const { parseInline, registerInline } = await import(ROOT + "module/inline.mjs");
+const { parseInline, registerInline } = await import(ROOTURL + "module/inline.mjs");
 registerInline();
 const enr = CONFIG.TextEditor.enrichers[0];
 const run = async text => { const out = []; for (const m of text.matchAll(enr.pattern)) { const el = await enr.enricher(m); out.push(el?.html ?? (el && "group")); } return out; };
 console.log(await run("@Check[body|dc:14|label: Paladin's Attack] @Check[body|dc:14] @Check[mind] @Damage[1d6[mind]|label:Hit] @Template[emanation|distance:2] @Template[burst|distance:3|label:Boom]"));
 console.log(JSON.stringify(parseInline("Template", "emanation|distance:2|rounds:1|difficult:walk,fly|difficultFor:enemies|places:yes")));
 console.log(JSON.stringify(parseInline("Template", "burst|distance:1|round:2|difficult:yes")));
-const { buildCommand } = await import(ROOT + "module/builder.mjs");
+const { buildCommand } = await import(ROOTURL + "module/builder.mjs");
 console.log(buildCommand({ type: "template", shape: "emanation", distance: "2", targets: "enemies", rounds: "1", difficult: "on", dtypes: ["walk", "fly"], dfor: "enemies", label: "Aura" }));
 console.log(buildCommand({ type: "save", attr: "appeal", dc: "14", t1: "1d6[mind,holy]", label: "Paladin's Attack" }));
 console.log(buildCommand({ type: "damage", f1: "1d4", p1: "body", label: "Hit" }));

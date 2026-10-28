@@ -1,9 +1,9 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t105.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // v0.0.117 (Round 10 of the rules): the Modifiers from the higher Attribute, Power and Signature, the roll kinds, 0 AP and 0R, the Turn Frequency.
 globalThis.foundry = { utils: { deepClone: o => JSON.parse(JSON.stringify(o)), getRoute: p => "/" + p, escapeHTML: s => s } };
-const { classModifiers, modOf } = await import(ROOT + "module/modifiers.mjs");
+const { classModifiers, modOf } = await import(ROOTURL + "module/modifiers.mjs");
 console.log("--- Modifier = Attribute ÷ 2 + 1, rounded up:", [-1, 0, 1, 2, 3, 4, 5].map(v => `${v}→${modOf(v)}`).join(" "));
 const show = r => `Weapon ${r.weapon.key || "-"} ${r.weapon.mod} | Power ${r.power.key || "-"} ${r.power.mod} | Signature ${r.signature.key || "-"} ${r.signature.mod} (${r.signature.from})${r.conflict ? " | both wanted the same" : ""}`;
 const PAL = [["body", "appeal"], ["mind", "appeal"]], ARC = [["instinct", "body"], ["mind", "appeal"]];
@@ -17,7 +17,7 @@ console.log("both lists only Appeal (must share):               ", show(classMod
 console.log("no class:                                          ", show(classModifiers({ body: 2 }, [], [])));
 
 console.log("--- what an Action rolls (rollsource.mjs)");
-const { rollSource, rollTraits, attrFromTier } = await import(ROOT + "module/rollsource.mjs");
+const { rollSource, rollTraits, attrFromTier } = await import(ROOTURL + "module/rollsource.mjs");
 const S = a => new Set(a);
 const sys = { attributes: { body: 2, mind: 1, appeal: 3, instinct: 0 }, weaponAttribute: "body", weaponMod: 2, powerAttribute: "appeal", powerMod: 3, signatureAttribute: "appeal", signatureMod: 3 };
 for (const [name, it] of [["Smite", { traits: S(["divine", "strike", "weapon"]) }], ["Judgment", { traits: S(["divine", "magic"]) }], ["a Signature Action", { traits: S(["signature", "strike"]) }], ["Trip", { traits: S(["body", "instinct", "strike"]) }], ["Interact", { traits: S(["handle"]) }]]) {
@@ -26,18 +26,18 @@ for (const [name, it] of [["Smite", { traits: S(["divine", "strike", "weapon"]) 
 }
 console.log("an old card (isWeapon only): from Tier", attrFromTier({ isWeapon: true }), "| an old Power card:", attrFromTier({ isWeapon: false }));
 console.log("--- damage previews (calc.tierAvg): a 1d8 Action with Attribute 3");
-const { tierAvg } = await import(ROOT + "module/calc.mjs");
+const { tierAvg } = await import(ROOTURL + "module/calc.mjs");
 const inst = [{ dice: "1d8" }];
 for (const m of ["t2", "all", "none"]) console.log(m.padEnd(5), [1, 2, 3].map(t => tierAvg(inst, t, { attrVal: 3, attrMode: m })).join(" / "));
 console.log("old isWeapon:", [1, 2, 3].map(t => tierAvg(inst, t, { attrVal: 3, isWeapon: true })).join(" / "), "| no damage on a tier adds nothing:", tierAvg([], 1, { attrVal: 3, attrMode: "all" }));
 
 console.log("--- costs and the Turn Frequency");
-const C = await import(ROOT + "module/config.mjs");
+const C = await import(ROOTURL + "module/config.mjs");
 const strip = h => h.replace(/<[^>]+>/g, "");
 console.log("0 AP:", strip(C.apLabel([0])), "| 0R:", strip(C.apLabel([0], true)), "| 1/2R:", strip(C.apLabel([1, 2], true)), "| Turn:", C.TWOD12.frequencies.turn, C.FREQ_COLORS.turn, "| Power is the label of the magic key:", C.TWOD12.traits.magic, "| Signature:", C.TWOD12.traits.signature);
 console.log("roll kinds:", JSON.stringify(C.TWOD12.rollKinds));
 globalThis.game = { combat: { started: true, id: "c1", round: 2, turn: 1 } };
-const U = await import(ROOT + "module/usage.mjs");
+const U = await import(ROOTURL + "module/usage.mjs");
 const flags = {}; const actor = { type: "character", isOwner: true, getFlag: (s, k) => flags[k], setFlag: async (s, k, v) => { flags[k] = v; } };
 const rebuke = { id: "rb", type: "action", system: { frequency: "turn", traits: S(["divine", "magic"]) } };
 console.log("before:", JSON.stringify(U.isFaded(actor, rebuke)));

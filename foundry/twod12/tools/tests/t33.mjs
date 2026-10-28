@@ -1,8 +1,8 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t33.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 globalThis.Combat = class {}; globalThis.CONST = { TOKEN_DISPOSITIONS: { FRIENDLY: 1, NEUTRAL: 0, HOSTILE: -1, SECRET: -2 } };
 globalThis.foundry = { applications: { api: { DialogV2: {} } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } }; globalThis.Hooks = { on() {} };
-const { zipper } = await import(ROOT + "module/combat.mjs");
+const { zipper } = await import(ROOTURL + "module/combat.mjs");
 const mk = (n, i, d) => ({ name: n, initiative: i, token: { disposition: d }, actor: {} });
 const s = a => a.slice().sort((x, y) => y.initiative - x.initiative);
 console.log("two groups:", zipper(s([mk("PC1", 14, 1), mk("PC2", 13, 1), mk("PC3", 10, 1), mk("N1", 12, -1), mk("N2", 10, -1)])).map(c => c.name).join(", "), "(PC1, N1, PC2, N2, PC3)");

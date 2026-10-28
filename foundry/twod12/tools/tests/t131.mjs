@@ -1,10 +1,10 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t131.mjs)
 // v0.0.156 (the Archer, pass 1): Projectile and Shot, the class and its cards from the book, Bow Mastery, the Techniques option in the Mastery tab.
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 globalThis.foundry ??= { utils: {} };
-const G = await import(ROOT + "module/config.mjs");
-const C = await import(ROOT + "tools/content.mjs");
+const G = await import(ROOTURL + "module/config.mjs");
+const C = await import(ROOTURL + "tools/content.mjs");
 const get = n => C.docs.find(d => d.name === n);
 console.log("Projectile is a weapon property:", G.TWOD12.weaponTraits.projectile, "| Shot and Save are Action traits:", G.TWOD12.traits.shot, G.TWOD12.traits.save, "| Crossbow:", [...get("Crossbow").system.traits].sort().join(", "));
 const cls = get("Archer").system;

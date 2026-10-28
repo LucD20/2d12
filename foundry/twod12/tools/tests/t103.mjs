@@ -1,9 +1,9 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t103.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // The Details tab of an Effect as sentences (v0.0.112): the sentence of each setting, the "In short" line, the chip rows, and the template hooks.
 globalThis.foundry = { utils: { deepClone: o => JSON.parse(JSON.stringify(o)), getRoute: p => "/" + p, escapeHTML: s => s } };
-const F = await import(ROOT + "module/fxdetails.mjs");
+const F = await import(ROOTURL + "module/fxdetails.mjs");
 const S = a => new Set(a), blank = { attrs: S(), all: S(), any: S(), none: S(), from: S(), tiers: S() };
 const plain = h => h.replace(/<[^>]+>/g, "");
 console.log("--- sentences");
@@ -52,7 +52,7 @@ const er = F.predRows(ev); console.log("the chip:", JSON.stringify(er[0].every),
 console.log("template shows it:", t.includes("{{#if every}}"), "| no boons, no damage:", F.settingShort({ ...blank, type: "boonbane" }));
 
 console.log("--- v0.0.126: Empowered and Enfeebled are their own setting; migration of old settings");
-const M = await import(ROOT + "module/settingsmigrate.mjs");
+const M = await import(ROOTURL + "module/settingsmigrate.mjs");
 const old = { settings: [
   { type: "boonbane", boons: 1, banes: 0, empowered: 1, enfeebled: 0, all: ["melee", "weapon"], any: [], none: [] },
   { type: "boonbane", boons: 0, banes: 0, empowered: 0, enfeebled: 2, all: [], any: [], none: [] },
@@ -62,7 +62,7 @@ const old = { settings: [
 const mig = M.migrateSettings(JSON.parse(JSON.stringify(old)));
 console.log(mig.settings.map(x => `${x.type}${x.type === "boonbane" ? ` ${x.boons}b/${x.banes}n E${x.empowered}${x.against ? " against" : ""}` : x.type === "damagestep" ? ` E${x.empowered}/F${x.enfeebled} all=${x.all}` : ""} min=${x.minEscalation}`).join(" | "));
 console.log("running it again changes nothing:", JSON.stringify(M.migrateSettings(JSON.parse(JSON.stringify(mig)))) === JSON.stringify(mig), "| a setting already saved \"always\" keeps it:", M.migrateSettings({ settings: [{ type: "note", minEscalation: 0 }], passiveEscalation: 2 }).settings[0].minEscalation);
-const AF = await import(ROOT + "module/appliedflags.mjs");
+const AF = await import(ROOTURL + "module/appliedflags.mjs");
 const fl = AF.appliedFlags({ settings: mig.settings.slice(0, 2).map(x => ({ ...blank, ...x, all: S(x.all), any: S(x.any), none: S(x.none) })), description: "", expireOn: S([]), expireAll: false }, {});
 console.log("applied (the same flags the rolls read):", JSON.stringify(fl.modifiers.map(m => [m.boons, m.banes, m.empowered, m.enfeebled, m.all.join("+")])));
 const sheet = fs.readFileSync(ROOT + "module/item-sheet.mjs", "utf8");

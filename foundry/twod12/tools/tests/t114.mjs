@@ -1,13 +1,13 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t114.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // v0.0.131 (new sheet, step 2): the Actions table's logic and the new Action card.
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
 globalThis.Combat = class {}; globalThis.CONFIG = { statusEffects: [], time: {} }; globalThis.Hooks = { on() {}, once() {} };
 globalThis.ui = { notifications: { info() {}, warn() {}, error() {} } };
 globalThis.game = { settings: { get: () => false }, combat: null, user: { getFlag: () => undefined } };
-const R = await import(ROOT + "module/actionrows.mjs");
-const { buildActionCard } = await import(ROOT + "module/actioncard.mjs");
+const R = await import(ROOTURL + "module/actionrows.mjs");
+const { buildActionCard } = await import(ROOTURL + "module/actioncard.mjs");
 const T = (...t) => new Set(t);
 const blank = { attrs: [], all: [], any: [], none: [], from: [], tiers: [] };
 const inst = o => ({ pool: "B", useW: false, wCount: 1, dice: "", useAt: false, subtype: "", ...o });

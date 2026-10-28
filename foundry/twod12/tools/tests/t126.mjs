@@ -1,11 +1,11 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t126.mjs)
 // v0.0.147 (Pass C of the core rules update): Hazardous Terrain [HT] patterns and the turn-cycle limit; Leaning out of Total cover.
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 globalThis.foundry = { applications: { api: { DialogV2: {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
 globalThis.Hooks = { on() {} }; globalThis.game = { settings: { get: () => true }, user: { id: "u" }, combat: null };
-const H = await import(ROOT + "module/hazard.mjs");
-const U = await import(ROOT + "module/usage.mjs");
+const H = await import(ROOTURL + "module/hazard.mjs");
+const U = await import(ROOTURL + "module/usage.mjs");
 console.log("patterns:", ["entering+turn", "Movement", "yes", "", "turn", "no", "Entering, Turn, Movement"].map(v => `${JSON.stringify(v)} -> ${H.parsePatterns(v).join("+") || "(none)"}`).join(" | "));
 console.log("pattern text:", H.patternText([]), "|", H.patternText(["movement"]));
 // The turn-cycle limit: the creature is 3rd in the order (turn index 2), hit at [round, turn].

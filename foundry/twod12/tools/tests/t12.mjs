@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t12.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 globalThis.Combat = class {};
 globalThis.foundry = { applications: { api: { DialogV2: { prompt: async () => ({ dc: "30", mod: "0", boons: "0", banes: "0", fx: [] }) } }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
 globalThis.ui = { notifications: { warn: console.log, info: console.log } };
@@ -13,8 +13,8 @@ globalThis.fromUuid = async u => ({ actor, name: "x" });
 let stored = null;
 const msg = { id: "m1", isAuthor: true, getFlag: () => stored, update: async d => { stored = d["flags.twod12.saveCard"]; console.log("msg updated; has result:", !!stored.rows[0].result); } };
 globalThis.game = { socket: { emit() {}, on() {} }, user: { isGM: true, targets: new Set() }, messages: { get: () => msg } };
-const { buildCommand } = await import(ROOT + "module/builder.mjs");
-const { parseInline, saveRoll, postSaveCard } = await import(ROOT + "module/inline.mjs");
+const { buildCommand } = await import(ROOTURL + "module/builder.mjs");
+const { parseInline, saveRoll, postSaveCard } = await import(ROOTURL + "module/inline.mjs");
 const cmds = [
   buildCommand({ type: "check", attr: "body", dc: "14", adj: "2", boon: "1", bane: "2", traits: ["divine"] }),
   buildCommand({ type: "damage", f1: "1d4+1", p1: "body", s1: "slash", f2: "1d6", p2: "mind", s2: "holy", n2: "on" }),
@@ -33,7 +33,7 @@ await saveRoll(msg, 0);
 console.log(msgs.slice(1).map(m => m.content.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ")));
 console.log("FINAL CARD:", stored.rows[0].result);
 console.log("messages posted after card:", msgs.length);
-const { retargetSave } = await import(ROOT + "module/inline.mjs");
+const { retargetSave } = await import(ROOTURL + "module/inline.mjs");
 globalThis.game.user.targets = new Set([{ document: { uuid: "Token.orc" }, name: "Orc" }, { document: { uuid: "Token.gob" }, name: "Goblin" }]);
 await retargetSave(msg);
 console.log(stored.rows.map(r => r.name + ":" + (r.result ? "done" : "open")).join(", "));

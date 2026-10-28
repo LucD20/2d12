@@ -1,9 +1,9 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t132.mjs)
 // v0.0.157 (card layout): three meta-lines in fixed places, the Frequency in the title bar, no Check field, [HT] in the effect text.
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 globalThis.foundry ??= { utils: {} };
-const G = await import(ROOT + "module/config.mjs");
+const G = await import(ROOTURL + "module/config.mjs");
 const lines = h => [...h.matchAll(/<div class="trow"><span>(.*?)<\/span><\/div>/g)].map(m => m[1].replace(/<i class="fa-solid fa-sparkle sep"><\/i>/g, "✦").replace(/<[^>]+>/g, "").trim());
 const show = (label, o) => console.log(`${label}:`, JSON.stringify(lines(G.metaRowHtml(o))));
 show("Weapon Attack", { frequency: "atwill", targetText: "One creature", distance: "Weapon", vs: "AD" });

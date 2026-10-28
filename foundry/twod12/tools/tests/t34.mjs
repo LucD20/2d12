@@ -1,9 +1,9 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t34.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 globalThis.Combat = class {}; globalThis.CONFIG = {};
 globalThis.foundry = { applications: { api: { DialogV2: {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)), getRoute: p => "/" + p } };
 globalThis.Hooks = { on() {} }; globalThis.game = { settings: { get: () => true } };
-const g = await import(ROOT + "module/gen.mjs");
+const g = await import(ROOTURL + "module/gen.mjs");
 const parseTier = text => g.parseTierFull(text).insts;   // (the module keeps parseTierFull only)
 const t = x => console.log(JSON.stringify(x).padEnd(60), "->", g.convertEffects(x));
 t("Appeal Save"); t("Body Check"); t("DC 14 Body Check"); t("DC 15 Mind Save");
@@ -15,6 +15,6 @@ const p = parseTier; const L = x => p(x).map(i => `${i.pool}${i.useAt ? " At" : 
 console.log("tier tokens:", L("Attribute"), "||", L("AttributeB"), "||", L("At M H"), "||", L("1WB,1d4BC,1d6MH"));
 // inline parse of what the generator produces
 globalThis.CONFIG.TextEditor = { enrichers: [] };
-const inl = await import(ROOT + "module/inline.mjs");
+const inl = await import(ROOTURL + "module/inline.mjs");
 console.log(JSON.stringify(inl.parseInline("Save", "appeal|t1:1d6[mind,holy]|t2:1d4[mind,holy]|t3:0")).slice(0, 220));
 console.log(JSON.stringify(inl.parseInline("Template", "emanation|distance:2|rounds:1")));

@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t30.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 globalThis.Combat = class {}; globalThis.CONFIG = {}; globalThis.canvas = {};
 const handlers = {}; globalThis.Hooks = { on: (n, f) => (handlers[n] = f) };
 const warns = [], msgs = [];
@@ -12,7 +12,7 @@ globalThis.game = { user: { id: "u1", isActiveGM: true }, socket: { on() {}, emi
   messages: { get: () => null } };
 globalThis.canvas = { grid: { distance: 1, size: 100, getOffset: ({ x, y }) => ({ i: Math.floor(y / 100), j: Math.floor(x / 100) }), getCenterPoint: ({ i, j }) => ({ x: j * 100 + 50, y: i * 100 + 50 }), measurePath: ([a, b]) => ({ cost: Math.hypot(b.x - a.x, b.y - a.y) / 100 }) }, scene: { grid: { distance: 1 } }, tokens: { controlled: [{ actor: c.actor }] } };
 globalThis.game.user.character = c.actor;
-const mv = await import(ROOT + "module/move.mjs"); mv.registerMovement();
+const mv = await import(ROOTURL + "module/move.mjs"); mv.registerMovement();
 const doc = { id: "t1", x: 0, y: 0 };
 // Evade half the Walk (5/2 rounds up to 3)
 await mv.handleMove({ kind: "evade", distance: 0, distanceExpr: "walk/2" }, {});
@@ -31,8 +31,8 @@ flags.ap = 5; flags.moveLeft = 0; flags.freeMove = 0;
 await mv.handleMove({ kind: "walk", distance: 0, distanceExpr: "walk" }, {}); console.log("Traverse grant:", JSON.stringify(flags), "|", msgs.splice(0).join(""));
 await mv.handleMove({ kind: "walk", distance: 0, distanceExpr: "banana" }, {}); console.log("bad expression:", warns.splice(0).join(""));
 // basic actions
-const { BASIC_ACTIONS } = await import(ROOT + "module/basic.mjs");
+const { BASIC_ACTIONS } = await import(ROOTURL + "module/basic.mjs");
 console.log(Object.values(BASIC_ACTIONS).map(a => `${a.name} [${a.traits.join("/")}] AP ${a.versions.map(v => v.ap).join("/")}`).join(" | "));
 console.log(BASIC_ACTIONS.safeMovement.versions.map(v => v.effects).join(" || "));
-const { categoryText } = await import(ROOT + "module/config.mjs");
+const { categoryText } = await import(ROOTURL + "module/config.mjs");
 console.log([categoryText({ category: "Paladin Feature", level: 1 }), categoryText({ category: "Basic Action", level: 0 }), categoryText({ category: "", level: 3 }), categoryText({})].map(x => JSON.stringify(x)).join(" "));

@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t88.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 // Movement buttons: the area goes away when combat ends, outside combat they work only if the system setting allows it; and two GM tools.
 const hooks = {}, chat = [], notes = [], settings = { moveOutsideCombat: false };
 globalThis.Combat = class {}; globalThis.CONFIG = { time: {}, Canvas: { polygonBackends: { sight: { testCollision: () => false }, move: { testCollision: () => false } } } };
@@ -17,7 +17,7 @@ globalThis.fromUuidSync = () => null;
 const kai = { id: "a1", name: "Kai", uuid: "Actor.kai", type: "character", isOwner: true, statuses: new Set(), system: { moveSpeed: 5, speed: 5, walk: 5 }, items: [], effects: [] };
 const kaiTok = { id: "t1", name: "Kai", actor: kai, document: { id: "t1", x: 0, y: 0, width: 1, height: 1 }, center: { x: 50, y: 50 } }; kai.token = { object: kaiTok }; kai.getActiveTokens = () => [kaiTok];
 tokens.controlled = [kaiTok]; tokens.placeables = [kaiTok];
-const M = await import(ROOT + "module/move.mjs");
+const M = await import(ROOTURL + "module/move.mjs");
 M.registerMovement();
 const run = async (label, cfg, expectWhat = "") => { chat.length = 0; notes.length = 0; const granted = await M.handleMove(cfg, { actor: kai }); console.log(label.padEnd(58), "| granted:", granted, "| areas on the map:", live.size, "|", chat.join(" / ") || notes.join(" / ") || "(nothing)"); };
 console.log("--- outside combat, setting off");
@@ -49,13 +49,13 @@ fire("deleteCombat", {}); console.log("ending a combat with no area drawn is har
 settings.moveOutsideCombat = true; await run("Advance outside combat", { kind: "walk", distance: 3 }); fire("canvasReady"); console.log("a new scene: area gone:", live.size === 0);
 // ------------------------------------------------------------------ the GM tools
 console.log("--- tools");
-const { addBasicActions, refreshAllBasics } = await import(ROOT + "module/basic.mjs");
+const { addBasicActions, refreshAllBasics } = await import(ROOTURL + "module/basic.mjs");
 const made2 = []; const mkA = (name, type, owner) => { const a = { name, type, isOwner: owner, items: Object.assign([], { filter(f) { return Array.prototype.filter.call(this, f); } }), async deleteEmbeddedDocuments(t, ids) { a.deleted = ids.length; }, async createEmbeddedDocuments(t, docs) { made2.push(`${name}: ${docs.map(d => d.name).join(",")}`); a.items.push(...docs.map(d => ({ ...d, type: d.type, getFlag: (s, k) => d.flags?.twod12?.[k], id: d.name }))); return docs; } }; return a; };
 game.actors = [mkA("Kai", "character", true), mkA("Orc", "npc", true), mkA("Other's", "character", false), mkA("Table", "vehicle", true)];
 game.actors[0].items.push({ type: "action", id: "old", getFlag: (s, k) => (k === "basic" ? "advance" : undefined) });
 notes.length = 0; const n = await refreshAllBasics();
 console.log("refreshed on", n, "creatures (not the one it doesn't own, not a vehicle) | Crawl added to the character:", /Kai:.*Crawl/.test(made2.join(" ")), "| to the NPC:", /Orc:.*Crawl/.test(made2.join(" ")), "|", notes.join(" "));
-const { shadowedEffects } = await import(ROOT + "module/effects.mjs");
+const { shadowedEffects } = await import(ROOTURL + "module/effects.mjs");
 const mkE = (name, system) => ({ name, type: "effect", uuid: "Item." + name, system });
 const comp = { Prone: mkE("Prone", { linked: "", description: "<p>new</p>", duration: { type: "" }, settings: [1, 2], selfApplied: false, expireOn: [] }), Hindered: mkE("Hindered", { linked: "", description: "<p>h</p>", duration: { type: "" }, settings: [3], selfApplied: false, expireOn: [] }) };
 game.packs.set("twod12.effects", { getIndex: async () => Object.values(comp).map(c => ({ _id: c.name, name: c.name })), getDocument: async id => comp[id] });

@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t83.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 // The Token HUD switching a condition ON applies the system's Effect (Prone's Hindered, Hindered's Speed), instead of a bare status.
 const log = [];
 globalThis.Combat = class {}; globalThis.CONFIG = { time: {} };
@@ -9,7 +9,7 @@ globalThis.ui = { notifications: { info() {}, error() {} } };
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async h => h } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
 globalThis.game = { settings: { get: () => true, register() {}, set: async () => {} }, time: { worldTime: 0 }, user: { isActiveGM: true, isGM: true, id: "u1" }, items: [], packs: new Map(), socket: { emit() {} }, keyboard: { downKeys: new Set() } };
 globalThis.canvas = {};
-const E = await import(ROOT + "module/effects.mjs");
+const E = await import(ROOTURL + "module/effects.mjs");
 class FakeActor {
   constructor() { this.uuid = "Actor.kai"; this.type = "character"; this.isOwner = true; this.effects = []; this.statuses = new Set(); }
   async toggleStatusEffect(id, o = {}) { log.push(`Foundry's own toggle: ${id}${o.active === undefined ? "" : " active " + o.active}`); const on = o.active ?? !this.statuses.has(id); if (on) this.statuses.add(id); else this.statuses.delete(id); return on; }

@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t74.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 // Sleep, Exhausted and Daily, driven by the world clock (1 round = 10 seconds; a day = 86400 seconds).
 const hooks = {}, chat = [];
 let confirmAnswer = true;
@@ -20,8 +20,8 @@ const makeActor = name => {
 };
 const kai = makeActor("Kai");
 game.actors = [kai];
-const S = await import(ROOT + "module/sleep.mjs");
-const U = await import(ROOT + "module/usage.mjs");
+const S = await import(ROOTURL + "module/sleep.mjs");
+const U = await import(ROOTURL + "module/usage.mjs");
 S.registerSleep();
 const tick = async h => { game.time.worldTime += h * 3600; hooks.updateWorldTime(game.time.worldTime); await S.clockTick(game.time.worldTime); };
 const state = () => `Exhausted ${kai.system.exhausted}, threshold ${kai.system.mdt}, condition "${kai.effects.map(e => e.name).join(", ") || "none"}"`;

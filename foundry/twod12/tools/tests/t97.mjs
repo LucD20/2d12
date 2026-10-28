@@ -1,10 +1,10 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t97.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 // Empowered N and Enfeebled N: +N or -N on every damage die (each die at least 1), one value of each (the highest), netted.
 globalThis.Combat = class {}; globalThis.CONFIG = { time: {}, TextEditor: { enrichers: [] } }; globalThis.Hooks = { on() {}, once() {} }; globalThis.ui = { notifications: { info() {}, warn() {}, error() {} } };
 globalThis.game = { settings: { get: () => true }, user: { id: "u", targets: new Set() }, socket: { emit() {} }, combat: null };
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async h => h } } } }, dice: { terms: { OperatorTerm: class {} } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)), hasProperty: () => false } };
-const C = await import(ROOT + "module/calc.mjs");
+const C = await import(ROOTURL + "module/calc.mjs");
 console.log("--- how much a step adds to a roll (the dice that came up -> the change)");
 const table = (results, steps) => console.log(`dice ${JSON.stringify(results).padEnd(14)}`, steps.map(n => `${n > 0 ? "Empowered " + n : "Enfeebled " + -n}: ${C.perDieDelta(results, n) >= 0 ? "+" : ""}${C.perDieDelta(results, n)}`).join(" | "));
 table([3], [1, 2, 3, -1, -2, -3]);
@@ -24,7 +24,7 @@ let queue = [];
 globalThis.Roll = class { constructor(f) { this.formula = f; } async evaluate() {
   const dice = []; let expr = this.formula.replace(/(\d*)d(\d+)/g, (m, n, f) => { const c = Number(n || 1), results = []; for (let i = 0; i < c; i++) results.push({ result: queue.shift() ?? 1 }); dice.push({ faces: Number(f), results }); return `(${results.reduce((a, r) => a + r.result, 0)})`; });
   this.dice = dice; this.total = Function(`return (${expr})`)(); return this; } };
-const A = await import(ROOT + "module/actions.mjs");
+const A = await import(ROOTURL + "module/actions.mjs");
 const run = async (label, inst, ctx, results) => { queue = [...results]; const r = await A.resolveInstance(inst, { rolls: [], attrVal: 3, tier: 2, ...ctx }); const c = r.comps.map(x => `${x.kind} "${x.formula}" = ${x.total} (dice ${JSON.stringify(x.dice.map(d => d.results))})`).join(" ; "); console.log(label.padEnd(46), c); };
 await run("2d6, dice 3 and 5, no step", { dice: "2d6" }, { empowered: 0 }, [3, 5]);
 await run("... Empowered 1", { dice: "2d6" }, { empowered: 1 }, [3, 5]);

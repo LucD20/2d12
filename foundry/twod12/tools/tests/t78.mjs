@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t78.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 // Recognizing the Exhausted condition however it was made, and the effect window's 2d12 tab (settings JSON and the value).
 const notes = [];
 globalThis.Combat = class {}; globalThis.CONFIG = { time: {} };
@@ -8,8 +8,8 @@ globalThis.ChatMessage = { create: async () => {}, getSpeaker: () => ({}) };
 globalThis.ui = { notifications: { info: m => notes.push(m), error: m => notes.push("error: " + m) } };
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async h => h } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
 globalThis.game = { settings: { get: () => true, register() {}, set: async () => {} }, time: { worldTime: 0 }, user: { isActiveGM: true, isGM: true, id: "u1" } };
-const S = await import(ROOT + "module/sleep.mjs");
-const E = await import(ROOT + "module/fxeditor.mjs");
+const S = await import(ROOTURL + "module/sleep.mjs");
+const E = await import(ROOTURL + "module/fxeditor.mjs");
 const fx = (over = {}) => ({ name: "Exhausted 2", statuses: new Set(), flags: {}, getFlag(s, k) { return this.flags[s]?.[k]; }, ...over });
 console.log("by status:", S.isExhaustedFx(fx({ name: "Tired", statuses: new Set(["exhausted"]) })), "| by flag:", S.isExhaustedFx(fx({ name: "Tired", flags: { twod12: { counter: "exhausted" } } })), "| by name:", S.isExhaustedFx(fx()), S.isExhaustedFx(fx({ name: "Exhausted" })), "| not Exhausted:", S.isExhaustedFx(fx({ name: "Hindered" })), S.isExhaustedFx(fx({ name: "Exhausted foe" })), S.isExhaustedFx(null));
 // the effect created by setExhausted carries all three

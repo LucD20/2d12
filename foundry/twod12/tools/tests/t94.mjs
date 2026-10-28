@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t94.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // Token vision follows the Senses, and a scene starts without Global Illumination.
 const notes = [], updates = [];
@@ -11,7 +11,7 @@ const mkActor = (id, name, type, senses, protoSight) => {
   return a;
 };
 const mkScene = (name, tokens, gl) => { const sc = { name, tokens, environment: { globalLight: { enabled: gl } }, async updateEmbeddedDocuments(kind, ups) { updates.push(`${name} scene tokens: ${ups.map(u => `${u._id} ${u["sight.range"]}/${u["sight.visionMode"]}`).join(", ")}`); for (const u of ups) { const t = tokens.find(x => x.id === u._id); t.sight = { ...t.sight, range: u["sight.range"], visionMode: u["sight.visionMode"] }; } }, async update(d) { updates.push(`${name}: ${JSON.stringify(d)}`); sc.environment.globalLight.enabled = d["environment.globalLight.enabled"]; } }; return sc; };
-const V = await import(ROOT + "module/vision.mjs");
+const V = await import(ROOTURL + "module/vision.mjs");
 console.log("--- what the vision should be");
 console.log("no Dark Sight:", JSON.stringify(V.visionFor({})), "| undefined:", JSON.stringify(V.visionFor(undefined)), "| Dim-light Sight only:", JSON.stringify(V.visionFor({ dimlight: true })), "| Dark Sight:", JSON.stringify(V.visionFor({ darksight: true })));
 console.log("--- a new character");

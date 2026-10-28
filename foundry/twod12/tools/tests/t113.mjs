@@ -1,11 +1,11 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t113.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // v0.0.130 (new sheet, step 1): the Donut and Classic health views, the base vs. temporary split for green and red, the header band.
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
 globalThis.Combat = class {}; globalThis.CONFIG = { statusEffects: [], time: {} }; globalThis.Hooks = { on() {}, once() {} };
 globalThis.ui = { notifications: { info() {}, warn() {}, error() {} } };
-const H = await import(ROOT + "module/healthview.mjs");
+const H = await import(ROOTURL + "module/healthview.mjs");
 const dmg = (bL, bN, mL, mN) => ({ bodyLethal: bL, bodyNonlethal: bN, mindLethal: mL, mindNonlethal: mN });
 const show = (label, sys) => {
   const v = H.healthView(sys);
@@ -23,9 +23,9 @@ console.log("--- a click on the donut (Body slice ends at 216 deg)");
 for (const [name, dx, dy] of [["top right", 10, -10], ["right", 10, 0], ["bottom", 0, 10], ["bottom left", -10, 10], ["left", -10, 0], ["top left", -10, -10]]) console.log(name.padEnd(12), H.donutPoolAt(dx, dy, 216));
 
 console.log("--- base vs. temporary: only temporary effects and Escalation passives color a number");
-const { isBaseSource } = await import(ROOT + "module/passives.mjs");
-const D = await import(ROOT + "module/defense.mjs");
-const { applySpeedMods } = await import(ROOT + "module/speedmods.mjs");
+const { isBaseSource } = await import(ROOTURL + "module/passives.mjs");
+const D = await import(ROOTURL + "module/defense.mjs");
+const { applySpeedMods } = await import(ROOTURL + "module/speedmods.mjs");
 const feature = (name, settings, defenses = []) => ({ id: name, name, system: { settings, defenses, description: "" } });
 const blank = { attrs: new Set(), all: new Set(), any: new Set(), none: new Set(), from: new Set(), tiers: new Set() };
 const fx = (name, flags) => ({ name, disabled: false, flags: { twod12: flags }, getFlag: (s, k) => flags[k] });

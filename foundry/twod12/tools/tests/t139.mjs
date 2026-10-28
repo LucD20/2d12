@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t139.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // v0.0.169 (F1): the Foundry system follows the book: [Ranged] Engaged banes, Fists as an ordinary weapon (Non-threatening; Brawler removes it), the Basic
 // Actions (Shove with 3 versions, Relocate, the Fists card as a Weapon Action), Collision counted from the destination the origin chose, Steadiness.
@@ -7,8 +7,8 @@ class F { constructor(o) { this.o = o; } }
 globalThis.Combat = class {}; globalThis.CONFIG = {}; globalThis.Hooks = { on() {} }; globalThis.game = { settings: { get: () => true } };
 globalThis.foundry = { abstract: { TypeDataModel: class { static migrateData(s) { return s; } } }, data: { fields: { SchemaField: F, NumberField: F, StringField: F, BooleanField: F, ArrayField: F, SetField: F, HTMLField: F } },
   applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)), getRoute: p => "/" + p } };
-const mv = await import(ROOT + "module/move.mjs"), fx = await import(ROOT + "module/fists.mjs"), b = await import(ROOT + "module/basic.mjs"), cf = await import(ROOT + "module/config.mjs");
-const { NpcData } = await import(ROOT + "module/data.mjs"), { npcBuilderContext } = await import(ROOT + "module/npcbuilder.mjs");
+const mv = await import(ROOTURL + "module/move.mjs"), fx = await import(ROOTURL + "module/fists.mjs"), b = await import(ROOTURL + "module/basic.mjs"), cf = await import(ROOTURL + "module/config.mjs");
+const { NpcData } = await import(ROOTURL + "module/data.mjs"), { npcBuilderContext } = await import(ROOTURL + "module/npcbuilder.mjs");
 const src = f => fs.readFileSync(ROOT + f, "utf8");
 console.log("--- Collision counts the squares to the destination the origin chose");
 const line = n => Array.from({ length: n + 1 }, (_, k) => ({ di: k, dj: 0 }));

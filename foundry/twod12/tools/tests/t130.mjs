@@ -1,10 +1,10 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t130.mjs)
 // v0.0.154: Mastery. A Tier 3 on a Weapon Action with a weapon: +1 with that kind of weapon. 3 unlocks its Weapon Technique (locked before).
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 globalThis.ChatMessage = { create: async d => posted.push(d.content.replace(/<[^>]+>/g, "")), getSpeaker: () => ({}) };
 const posted = [];
-const M = await import(ROOT + "module/mastery.mjs");
+const M = await import(ROOTURL + "module/mastery.mjs");
 // a character with flags in memory
 const flags = {};
 const actor = (items = []) => ({

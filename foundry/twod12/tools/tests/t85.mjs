@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t85.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 // One roll for several targets: shared dice, each target calculated on its own (DC, boons, banes, Favored, Doomed).
 let script = [];   // the faces the next dice show, in order (d12 faces, then d3 faces)
 class FakeRoll {
@@ -14,7 +14,7 @@ class FakeRoll {
   }
 }
 globalThis.Roll = FakeRoll; globalThis.CONFIG = {}; globalThis.foundry = { dice: { terms: {} }, utils: {} }; globalThis.game = { settings: { get: () => true } };
-const R = await import(ROOT + "module/roll.mjs");
+const R = await import(ROOTURL + "module/roll.mjs");
 const sp = (over = {}) => ({ key: "x", mod: 2, adj: 0, dc: 13, boons: 0, banes: 0, favored: false, doomed: false, sources: [], ...over });
 const show = (label, out) => console.log(label.padEnd(54), out.results.map(r => `${r.key}: ${r.chk.d1.join("+")}|${r.chk.d2.join("+")}${r.chk.state ? ` (${r.chk.state}, dropped ${r.chk.dropped})` : ""} boons ${r.chk.boonFaces.join("")} banes ${r.chk.baneFaces.join("")} → ${r.chk.total} vs DC ${r.chk.dc}: tier ${r.chk.tier}${r.chk.doubles ? " doubles" : ""}${r.chk.crit ? " CRIT" : ""}`).join(" || "));
 // the rule's example: a boon against Lonny but not Nari; 2d12 and 1 boon rolled

@@ -1,10 +1,10 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t23.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 globalThis.Combat = class {}; globalThis.foundry = { applications: { api: { DialogV2: {} } } }; globalThis.Hooks = { on() {} };
 globalThis.CONFIG = {}; globalThis.ui = { notifications: { warn: console.log } }; globalThis.canvas = {};
-const { TWOD12 } = await import(ROOT + "module/config.mjs");
+const { TWOD12 } = await import(ROOTURL + "module/config.mjs");
 // move.mjs imports template/damage (need foundry); test the pure parts by re-importing with stubs
-const m = await import(ROOT + "module/move.mjs").catch(e => (console.log("import failed:", e.message.slice(0, 120)), null));
+const m = await import(ROOTURL + "module/move.mjs").catch(e => (console.log("import failed:", e.message.slice(0, 120)), null));
 if (m) {
   const cells = [{ i: 3, j: 2 }];                    // target at row 3, col 2
   const origin = [{ i: 2, j: 2 }];                    // pusher directly above (row 2, col 2)

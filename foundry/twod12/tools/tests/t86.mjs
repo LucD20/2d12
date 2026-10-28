@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t86.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 // A whole Action used against several creatures: Whirlwind around Kai with Nari, Lonny and Goblin in the area. One roll, each calculated on its own.
 let script = [];
 class FakeRoll {
@@ -57,7 +57,7 @@ globalThis.PIXI = { Graphics: class { constructor() { return gfx(); } } };
 canvas.interface = { addChild() {}, sortableChildren: false };
 for (const t of sceneTokens) t.setTarget = on => { on ? game.user.targets.add(t) : game.user.targets.delete(t); };
 whirl.system.areaCfg.size = 5; whirl.system.area = "5 Emanation";
-const A = await import(ROOT + "module/actions.mjs");
+const A = await import(ROOTURL + "module/actions.mjs");
 const strip = h => String(h).replace(/data-tooltip="[^"]*"/g, "").replace(/<[^>]+>/g, " ").replace(/&[a-z]+;/g, " ").replace(/\s+/g, " ").trim();
 // the dice: d12 d12 for all; Lonny has cover (a bane), Nari a boon from an effect on her (Prone: Melee against her gains a boon)
 const coll = arr => Object.assign(arr, { get: id => arr.find(e => e.id === id) });
@@ -120,7 +120,7 @@ console.log("rows:", flags.rows.map(r => `${r.name} tier ${r.tier} total ${r.com
 // pressing the buttons
 let current = { content: dc.content, flags: JSON.parse(JSON.stringify(dc.flags)) };
 const live = { getFlag: (s, k) => current.flags[s][k], setFlag: async () => {}, update: async d => { if (d.content) current.content = d.content; for (const [k, v] of Object.entries(d)) if (k.startsWith("flags.twod12.dmgMulti.")) current.flags.twod12.dmgMulti[k.split(".").pop()] = v; } };
-const D = await import(ROOT + "module/damage.mjs");
+const D = await import(ROOTURL + "module/damage.mjs");
 const btn = (kind, row, factor, kindSel = "lethal") => ({ dataset: { row: String(row), factor: String(factor) }, closest: () => ({ querySelector: () => ({ value: kindSel }) }) });
 const hp = a => a.system.damage.bodyLethal + a.system.damage.mindLethal;
 console.log("before: Nari", hp(nari), "Lonny", hp(lonny), "Goblin", hp(goblin));

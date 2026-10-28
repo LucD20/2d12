@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t95.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 // The canvas follows the rules of Light: Darkness regions (Adjust Darkness Level), the gate on Foundry's sight, the refresh and the ripple, with Global Illumination on.
 const GS = 100, settings = { lightDimBelow: 0.7, lightDarkBelow: 0.4 }, notes = [], hooks = {}, combatants = [];
 globalThis.ui = { notifications: { info: m => notes.push(m), warn: m => notes.push("warn: " + m) } };
@@ -12,9 +12,9 @@ globalThis.CONFIG = { specialStatusEffects: { BLIND: "blind" }, Canvas: { detect
 globalThis.foundry = { canvas: { perception: { DetectionMode: FakeMode }, rendering: { filters: { OutlineOverlayFilter: { create: () => ({}) } } } } };
 const regions = [], torches = [], updates = [];
 globalThis.canvas = { grid: { size: GS }, environment: { darknessLevel: 0.2 }, scene: { environment: { globalLight: { enabled: true } } }, effects: { lightSources: torches, darknessSources: [] }, regions: { placeables: regions }, tokens: { controlled: [], placeables: [] }, perception: { update: o => updates.push(JSON.stringify(o)) } };
-const L = await import(ROOT + "module/light.mjs");
-const G = await import(ROOT + "module/sightgate.mjs");
-const S = await import(ROOT + "module/senses.mjs");
+const L = await import(ROOTURL + "module/light.mjs");
+const G = await import(ROOTURL + "module/sightgate.mjs");
+const S = await import(ROOTURL + "module/senses.mjs");
 const inCols = (a, b) => p => p.x >= a * GS && p.x < (b + 1) * GS;   // a region over columns a..b
 const region = (name, test, ...behaviors) => { const r = { document: { name, testPoint: p => test(p), behaviors } }; regions.push(r); return r; };
 const adj = (mode, modifier, disabled = false) => ({ type: "adjustDarknessLevel", disabled, system: { mode, modifier } });
@@ -121,7 +121,7 @@ console.log = (...a) => logs.push(a.join(" ")); const info2 = G.lightInfo(); con
 console.log("a controlled token is listed whoever it is:", info2.tokens.map(t => `${t.name} darkness ${t.darkness} via ${t.via} adjusted by ${JSON.stringify(t.adjustedBy)}`).join(" | "));
 // ------------------------------------------------------------------ detection modes of a token, in whatever shape this Foundry gives them
 console.log("--- the detection modes of a token (lightInfo failed on a shape that is not an array)");
-const { modeList } = await import(ROOT + "module/modes.mjs");
+const { modeList } = await import(ROOTURL + "module/modes.mjs");
 const show2 = (label, raw) => console.log(label.padEnd(34), JSON.stringify(modeList(raw)));
 show2("an array", [{ id: "basicSight", range: 0 }, { id: "hearing", range: null }]);
 show2("a record keyed by id", { basicSight: { range: 0 }, hearing: { id: "hearing", range: null } });
@@ -133,6 +133,6 @@ for (const [label, raw] of [["a record", { basicSight: { range: 0 }, hearing: { 
   let outcome; try { const i = G.lightInfo(); outcome = i.tokens.map(t => `${t.name} detection [${t.detection.join(", ")}]`).join("; "); } catch (e) { outcome = "ERROR " + e.message; } console.log = lg2;
   console.log("lightInfo with detectionModes as", label.padEnd(13), "→", outcome);
 }
-const V2 = await import(ROOT + "module/vision.mjs");
+const V2 = await import(ROOTURL + "module/vision.mjs");
 globalThis.canvas.scene = { name: "S", environment: { globalLight: { enabled: false } } }; hero.document.sight = { enabled: true, range: 0, visionMode: "basic" }; hero.document.detectionModes = { basicSight: { range: 0 } };
 { const logs3 = []; const lg3 = console.log; console.log = (...a) => logs3.push(a.join(" ")); let out; try { out = V2.visionInfo().tokens.map(t => t.detection.join(",")).join(";"); } catch (e) { out = "ERROR " + e.message; } console.log = lg3; console.log("visionInfo with a record:", out); }

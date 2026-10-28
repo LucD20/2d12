@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t80.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 // Floating text on tokens: damage (red Body, blue Mind, green healing) and effects (+ Exhausted 2, - Exhausted).
 const hooks = {}, shown = [], settings = { floatText: true, floatStyle: "plain" };
 globalThis.Hooks = { on: (h, f) => (hooks[h] = f), once() {} };
@@ -8,7 +8,7 @@ globalThis.CONFIG = {};
 globalThis.foundry = { utils: { deepClone: o => JSON.parse(JSON.stringify(o)), hasProperty: (o, path) => path.split(".").reduce((x, k) => (x && k in x ? x[k] : undefined), o) !== undefined } };
 globalThis.game = { settings: { get: (s, k) => settings[k], register() {} }, user: { isGM: false } };
 globalThis.canvas = { interface: { createScrollingText: (origin, text, opts) => shown.push({ at: origin.x + "," + origin.y, text, fill: opts.fill, anchor: opts.anchor, direction: opts.direction }) } };
-const F = await import(ROOT + "module/floattext.mjs");
+const F = await import(ROOTURL + "module/floattext.mjs");
 F.timing.stagger = 0;
 F.registerFloatText();
 const token = (visible = true) => ({ center: { x: 100, y: 200 }, visible, document: { hidden: false } });

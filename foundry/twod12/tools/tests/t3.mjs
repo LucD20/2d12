@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t3.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 globalThis.Combat ??= class {}; globalThis.Hooks ??= { on() {}, once() {} }; globalThis.CONFIG ??= {}; globalThis.foundry ??= {}; globalThis.foundry.utils ??= { deepClone: o => JSON.parse(JSON.stringify(o)), debounce: f => f, setProperty() {} }; globalThis.foundry.applications ??= { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: {} } } }; globalThis.game ??= { settings: { get: () => true } };
 globalThis.foundry = { applications: { api: { DialogV2: {} } } };
 globalThis.ui = { notifications: { warn: console.log, info: console.log, error: console.log } };
@@ -13,7 +13,7 @@ const version = { ap: 1, t1: [inst({ useW: true })], t2: [inst({ useW: true, dic
 const item = { id: "a1", name: "Paladin's Attack", system: { versions: [version] } };
 const actor = { isOwner: true, items: { get: id => (id === "a1" ? item : weapon) } };
 globalThis.fromUuid = async () => actor;
-const { rollDamage, instanceText, versionRow } = await import(ROOT + "module/actions.mjs");
+const { rollDamage, instanceText, versionRow } = await import(ROOTURL + "module/actions.mjs");
 const msg = { getFlag: () => ({ actorUuid: "x", itemId: "a1", ap: 1, tier: 2, weaponId: "w1", attrVal: 2, isWeapon: true }), content: '<div class="dmgbtn"><button></button></div>', update: async () => {} };
 await rollDamage(msg);
 console.log(created[0].content.replace(/<[^>]+>/g, " ").replace(/\s+/g, " "));

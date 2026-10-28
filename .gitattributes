@@ -1,0 +1,2 @@
+# Store text with LF line endings: python's build on Windows writes CRLF, which would otherwise show every rebuilt HTML file as changed.
+* text=auto eol=lf

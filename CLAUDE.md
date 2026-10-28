@@ -31,3 +31,4 @@ Read first, in this order: **HANDOFF.md** (state), **MASTER-PLAN.md** (the order
 ## Gotchas
 - Foundry CSS is in the order it grew (version-tagged blocks): don't regroup without a visual check. The Builder tab and the cover-height window use light backgrounds with fixed dark text.
 - Known gaps and unverified items: `foundry/foundry-backlog.md`.
+- Foundry reads foundry/twod12 through a junction: rebuild the compendium packs only with Foundry closed.

@@ -1,14 +1,14 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t125.mjs)
 // v0.0.146 (Pass B of the core rules update): Slowed and Quickened, the AP cap, Round = once per turn-cycle, no Round default for Weapon,
 // no swapping while Down, Reload as a Weapon Action against DC 13, Imperiled and Immobilized texts.
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 globalThis.Combat = class {}; globalThis.CONFIG = {};
 globalThis.foundry = { applications: { api: { DialogV2: {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
 globalThis.Hooks = { on() {} }; globalThis.CONST = { TOKEN_DISPOSITIONS: { FRIENDLY: 1, HOSTILE: -1 } };
 globalThis.ui = { notifications: { warn() {}, info() {} } };
 globalThis.game = { settings: { get: () => true }, user: { id: "u" }, combat: null };
-const cb = await import(ROOT + "module/combat.mjs");
+const cb = await import(ROOTURL + "module/combat.mjs");
 const fx = (id, value) => ({ statuses: new Set([id]), getFlag: (s, k) => (k === "value" ? value : undefined) });
 const actor = (effects = [], statuses = []) => ({ effects, statuses: new Set(statuses), system: {} });
 const c = a => ({ actor: a });
@@ -19,11 +19,11 @@ console.log([
   row("Dying + Slowed 3", actor([fx("slowed", 3)], ["dying"])), row("Dying + Slowed 1", actor([fx("slowed", 1)], ["dying"])),
   row("Imperiled", actor([], ["imperiled"])), row("Slowed 9", actor([fx("slowed", 9)]))
 ].join(" | "));
-const G = await import(ROOT + "module/config.mjs");
+const G = await import(ROOTURL + "module/config.mjs");
 console.log("Frequency: Weapon with none", JSON.stringify(G.effectiveFrequency({ frequency: "", traits: new Set(["weapon"]) })), "| Round", G.effectiveFrequency({ frequency: "round", traits: new Set() }));
 console.log("Vs.: Reload", G.vsText({ traits: new Set(["handle", "weapon"]), versions: [{ noTiers: false }] }), "| Weapon Attack", G.vsText({ traits: new Set(["strike", "weapon"]), versions: [{ noTiers: false }] }));
 // Round: once per turn-cycle. The creature is 3rd in the order (turn index 2).
-const us = await import(ROOT + "module/usage.mjs");
+const us = await import(ROOTURL + "module/usage.mjs");
 const me = { type: "character", id: "A", getFlag: (s, k) => (k === "usage" ? store : undefined), effects: [] };
 const item = { id: "R", type: "action", system: { frequency: "round", traits: new Set() } };
 let store = {};

@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t79.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 // Exhausted: the token icon, Shift/Ctrl clicks (no message per change), and Rally Points that don't shrink with it.
 const notes = [], opened = [];
 globalThis.Combat = class {}; globalThis.CONFIG = { time: {} };
@@ -8,7 +8,7 @@ globalThis.ChatMessage = { create: async () => {}, getSpeaker: () => ({}) };
 globalThis.ui = { notifications: { info: m => notes.push(m), error: m => notes.push("error: " + m) } };
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async h => h } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
 globalThis.game = { settings: { get: () => true, register() {}, set: async () => {} }, time: { worldTime: 0 }, user: { isActiveGM: true, isGM: true, id: "u1" } };
-const S = await import(ROOT + "module/sleep.mjs");
+const S = await import(ROOTURL + "module/sleep.mjs");
 const actor = { name: "Kai", type: "character", isOwner: true, flags: { twod12: {} }, system: { exhausted: 0, mdt: 8 }, effects: [], getFlag() {}, setFlag: async () => {}, unsetFlag: async () => {},
   update: async u => { if ("system.exhausted" in u) actor.system.exhausted = u["system.exhausted"]; },
   createEmbeddedDocuments: async (t, docs) => { for (const d of docs) { const e = { ...d, statuses: new Set(d.statuses), parent: actor, sheet: { render: () => opened.push(e.name) }, update: async u => Object.assign(e, u), delete: async () => { actor.effects = actor.effects.filter(x => x !== e); }, getFlag: (s, k) => d.flags?.[s]?.[k] }; actor.effects.push(e); } } };
@@ -24,7 +24,7 @@ const old = { name: "Exhausted 1", statuses: new Set(["exhausted"]), showIcon: 1
 actor.effects = [old]; await S.setExhausted(actor, 2); console.log("an old effect now shows on the token:", old.showIcon === 2, "|", old.name);
 // Rally Points: the real character data, with and without Exhausted
 globalThis.foundry.data = { fields: new Proxy({}, { get: () => class { constructor() {} } }) }; globalThis.foundry.abstract = { TypeDataModel: class {} };
-const { CharacterData } = await import(ROOT + "module/data.mjs");
+const { CharacterData } = await import(ROOTURL + "module/data.mjs");
 const mk = (type, system, name = "x") => ({ type, system, name });
 const make = ex => { const c = Object.create(CharacterData.prototype); c.level = 4; c.exhausted = ex; c.damage = { bodyLethal: 0, bodyNonlethal: 0, mindLethal: 0, mindNonlethal: 0 }; c.bodyWounds = 0; c.mindWounds = 0; c.rallyUsed = 0;
   c.parent = { items: [mk("species", { attributes: { body: 0, mind: 0, appeal: 0, instinct: 0 }, pickTwo: true, chosen: ["body", "instinct"], walk: 5, speed: 5, bodyMod: 3, mindMod: 4 }, "Human"), mk("class", { chosenA: "body", chosenB: "mind", bodyMult: 4, mindMult: 3, rallyMod: 4, chosenWeapon: "body" }, "Paladin")] };

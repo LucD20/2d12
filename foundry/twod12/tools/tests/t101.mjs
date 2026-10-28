@@ -1,12 +1,12 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t101.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 // Conditions with a value: the text that floats over the token (like Exhausted's), and Vulnerable as one condition with a value (boons by value, the highest counts).
 globalThis.Combat = class {}; globalThis.CONFIG = { time: {}, TextEditor: { enrichers: [] }, statusEffects: [{ id: "vulnerable" }, { id: "empowered" }] };
 globalThis.Hooks = { on() {}, once() {} }; globalThis.ui = { notifications: { info() {}, warn() {} } };
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
 globalThis.game = { settings: { get: () => true }, time: { worldTime: 0 }, user: { id: "u" }, combat: null, items: [], packs: new Map(), actors: [], socket: { emit() {} } };
-const FT = await import(ROOT + "module/floattext.mjs");
-const E = await import(ROOT + "module/effects.mjs");
+const FT = await import(ROOTURL + "module/floattext.mjs");
+const E = await import(ROOTURL + "module/effects.mjs");
 console.log("--- the text on the token when the value of a condition changes (the effect is renamed with its value)");
 const show = (a, b) => { const t = FT.renameText(a, b); console.log(`${JSON.stringify(a)} -> ${JSON.stringify(b)}`.padEnd(44), t ? `${JSON.stringify(t.text)} ${t.down ? "slides down" : "floats up"}` : "(nothing)"); };
 show("Enfeebled 1", "Enfeebled 2"); show("Enfeebled 2", "Enfeebled 1"); show("Empowered 1", "Empowered 3"); show("Vulnerable 3", "Vulnerable 2"); show("Vulnerable 2", "Vulnerable 2"); show("Prone", "Prone (changed)");

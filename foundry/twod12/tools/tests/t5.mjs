@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t5.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 globalThis.Combat ??= class {}; globalThis.Hooks ??= { on() {}, once() {} }; globalThis.CONFIG ??= {}; globalThis.foundry ??= {}; globalThis.foundry.utils ??= { deepClone: o => JSON.parse(JSON.stringify(o)), debounce: f => f, setProperty() {} }; globalThis.foundry.applications ??= { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: {} } } }; globalThis.game ??= { settings: { get: () => true } };
 globalThis.foundry = { applications: { api: { DialogV2: {} } } };
 const handlers = {};
@@ -12,7 +12,7 @@ const mkEff = (name, f) => ({ name, deleted: false, flags: f, getFlag(s, k) { re
 const e1 = mkEff("light", flags), e2 = mkEff("hindered", eot);
 const zack = { effects: [e1, e2] }, drak = { effects: [] };
 const combat = { combatants: { get: id => ({ drak: { id: "drak", actor: drak }, zack: { id: "zack", actor: zack } })[id], [Symbol.iterator]: function* () { yield { id: "drak", actor: drak }; yield { id: "zack", actor: zack }; } } };
-const { registerEffectHooks } = await import(ROOT + "module/effects.mjs");
+const { registerEffectHooks } = await import(ROOTURL + "module/effects.mjs");
 registerEffectHooks();
 const h = handlers.combatTurnChange;
 await h(combat, { combatantId: "drak", round: 1, turn: 0 });   // applied this turn: skipped

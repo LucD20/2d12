@@ -1,11 +1,11 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t109.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // v0.0.124 (Round 10, part 4a): Escalation. Gained each round after the first (not Unconscious, up to 3), spent on Escalation Actions,
 // reset after the encounter with the effects it created; passives off below their minimum.
 globalThis.Hooks = { on() {} };
 globalThis.game = { user: { isActiveGM: true } };
-const E = await import(ROOT + "module/escalation.mjs");
+const E = await import(ROOTURL + "module/escalation.mjs");
 const S = a => new Set(a);
 const pc = (name, esc, statuses = []) => { const a = { name, type: "character", system: { escalation: esc }, statuses: S(statuses), effects: [], update: async u => { a.system.escalation = u["system.escalation"]; }, deleteEmbeddedDocuments: async (t, ids) => { a.deleted = ids; } }; return a; };
 const npc = { name: "Goblin", type: "npc", system: {}, statuses: S([]), effects: [] };

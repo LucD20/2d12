@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t102.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 // Areas: "within N sq." from the user, Line of Effect and cover from the Point of Origin; and the scene's light level label.
 const GS = 100, settings = { lightDimBelow: 0.7, lightDarkBelow: 0.4 };
 globalThis.Combat = class {}; globalThis.CONFIG = { TextEditor: { enrichers: [] } }; globalThis.Hooks = { on: (h, f) => (hooks[h] ??= []).push(f), once() {} };
@@ -11,7 +11,7 @@ const tokens = [];
 globalThis.canvas = { ready: true, grid: { size: GS, isSquare: true, getOffset: ({ x, y }) => ({ i: Math.floor(y / GS), j: Math.floor(x / GS) }), getTopLeftPoint: ({ i, j }) => ({ x: j * GS, y: i * GS }), getCenterPoint: ({ i, j }) => ({ x: j * GS + GS / 2, y: i * GS + GS / 2 }) }, tokens: { placeables: tokens, controlled: [] }, environment: { darknessLevel: 0.2 }, lighting: { active: false }, scene: {} };
 let n = 0;
 const tok = (name, col, row, w = 1) => { const t = { id: "t" + ++n, name, document: { id: "t" + n, x: col * GS, y: row * GS, width: w, height: w, hidden: false }, actor: { statuses: new Set() } }; tokens.push(t); return t; };
-const T = await import(ROOT + "module/template.mjs"), CV = await import(ROOT + "module/cover.mjs");
+const T = await import(ROOTURL + "module/template.mjs"), CV = await import(ROOTURL + "module/cover.mjs");
 const spaceCenter = t => ({ x: t.document.x + t.document.width * GS / 2, y: t.document.y + t.document.height * GS / 2 });
 console.log("--- how far the Point of Origin is from the creature using the Action");
 const user = tok("Kai", 0, 5), far = tok("Far", 12, 5), near = tok("Near", 1, 5), diag = tok("Diag", 4, 9), big = tok("Big", 3, 4, 2);
@@ -55,7 +55,7 @@ const c = CV.coverFromPoint({ x: 250, y: 550 }, a1, { blockedFn: () => false, ex
 console.log("the result of coverFromPoint:", JSON.stringify({ blocked: c.blocked, level: c.level, banes: c.banes, noLoE: c.noLoE, label: c.label }), "| null without a target:", CV.coverFromPoint({ x: 0, y: 0 }, null));
 // ------------------------------------------------------------------ the light level under the Darkness slider
 console.log("--- the scene's light level, under the Darkness slider");
-const L = await import(ROOT + "module/lightlabel.mjs");
+const L = await import(ROOTURL + "module/lightlabel.mjs");
 for (const d of [0, 0.3, 0.31, 0.5, 0.6, 0.61, 1]) console.log(`Darkness ${d}:`.padEnd(16), L.lightLabelText(d));
 canvas.environment.darknessLevel = 0.75; console.log("the scene's own level:", L.lightLabelText());
 const band = (a, b) => L.lightBands(a, b).map(x => `${x.level} ${x.from.toFixed(2)}-${x.to.toFixed(2)}`).join(" | ");

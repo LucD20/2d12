@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t77.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 // The quick time bar (inserted first in the chat tab, clicks move the clock, errors are shown) and the token HUD's Exhausted clicks.
 const hooks = {}, notes = [], settings = { trackExhaustion: true, timeBar: true };
 globalThis.Combat = class {}; globalThis.CONFIG = { time: {} };
@@ -11,8 +11,8 @@ globalThis.game = { settings: { get: (s, k) => settings[k], register() {}, set: 
 // a tiny stand-in for the page
 const made = [];
 globalThis.document = { createElement: () => { const el = { className: "", innerHTML: "", listeners: {}, addEventListener(t, f) { this.listeners[t] = f; }, remove() {} }; made.push(el); return el; }, querySelectorAll: () => [] };
-const C = await import(ROOT + "module/clock.mjs");
-const S = await import(ROOT + "module/sleep.mjs");
+const C = await import(ROOTURL + "module/clock.mjs");
+const S = await import(ROOTURL + "module/sleep.mjs");
 const { date, time } = C.clockParts(); console.log("parts:", date, "|", time);
 const html = C.barHtml();
 console.log("bar has 6 movement buttons:", (html.match(/data-s="/g) || []).length, "| steps:", [...html.matchAll(/data-s="(-?\d+)"/g)].map(m => m[1]).join(" "), "| opens the clock from the time:", (html.match(/data-open="1"/g) || []).length, "| one line, no date row:", !html.includes("tb-date") && !html.includes("tb-row"));

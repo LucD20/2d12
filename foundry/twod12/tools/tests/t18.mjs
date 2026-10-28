@@ -1,6 +1,6 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t18.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
-const c = await import(ROOT + "module/calc.mjs");
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
+const c = await import(ROOTURL + "module/calc.mjs");
 console.log("avg", c.avgFormula("1d4+2"), c.avgFormula("2d6+1d4"), c.avgFormula("3"), c.avgFormula("1d12+1"), c.avgFormula("abc"), c.avgFormula(""));
 const p = c.tierProbs(2); console.log("probs +2", p.map(x => x.toFixed(4)), (p[0] + p[1] + p[2]).toFixed(6));
 console.log("probs +2, 1 bane", c.tierProbs(2, 13, 1).map(x => x.toFixed(3)), "1 boon", c.tierProbs(2, 13, -1).map(x => x.toFixed(3)));

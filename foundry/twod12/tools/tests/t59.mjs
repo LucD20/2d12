@@ -1,10 +1,10 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t59.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 globalThis.Combat = class {}; globalThis.CONFIG = { TextEditor: { enrichers: [] }, statusEffects: [] };
 const Base = class {};
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: Base, HandlebarsApplicationMixin: B => class extends B {} }, sheets: { ActorSheetV2: Base, ItemSheetV2: Base }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)), escapeHTML: s => s }, data: { fields: Object.fromEntries(["SchemaField","NumberField","StringField","BooleanField","ArrayField","SetField","HTMLField"].map(n => [n, class {}])) }, abstract: { TypeDataModel: class {} } };
 globalThis.Hooks = { on() {}, once() {} }; globalThis.game = { settings: { get: () => true }, user: { getFlag: () => undefined } };
-const { CharacterSheet } = await import(ROOT + "module/sheets.mjs");
+const { CharacterSheet } = await import(ROOTURL + "module/sheets.mjs");
 const sheet = Object.create(CharacterSheet.prototype);
 sheet._talentSlots = () => ({ talentSlots: [{ key: "dc:0", talent: { id: "oa" } }, { key: "dc:1", talent: null }] });
 const zone = slot => ({ target: { closest: sel => (sel === "[data-slot]" && slot !== undefined ? { dataset: { slot } } : null) } });

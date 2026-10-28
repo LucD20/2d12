@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t135.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // v0.0.162: Ward Defense = 11 + Power Modifier + Ward value (no species Ward); an NPC's Armor and Ward Defenses are typed (the Bestiary), its armor items are loot;
 // elevation counts in distances; Killer's Focus in the roll dialog; the Marked Quarry mark.
@@ -7,9 +7,9 @@ class F { constructor(o) { this.o = o; } }
 globalThis.foundry = { abstract: { TypeDataModel: class { static migrateData(s) { return s; } } }, data: { fields: { SchemaField: F, NumberField: F, StringField: F, BooleanField: F, ArrayField: F, SetField: F, HTMLField: F } },
   applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
 globalThis.Combat = class {}; globalThis.CONFIG = { statusEffects: [], time: {} }; globalThis.Hooks = { on() {}, once() {} }; globalThis.ui = { notifications: { info() {}, warn() {}, error() {} } };
-const { deriveDefenses } = await import(ROOT + "module/data.mjs");
-const D = await import(ROOT + "module/defense.mjs");
-const { verticalSquares, withHeight, tokenDistance } = await import(ROOT + "module/light.mjs");
+const { deriveDefenses } = await import(ROOTURL + "module/data.mjs");
+const D = await import(ROOTURL + "module/defense.mjs");
+const { verticalSquares, withHeight, tokenDistance } = await import(ROOTURL + "module/light.mjs");
 const S = a => new Set(a);
 const armorItem = (category, ward = 0) => ({ id: "ar", name: `${category} armor`, system: { category, bonus: 0, ward, worn: true } });
 const pc = (powerMod, ward = 0, armor = null, species = { system: { ward: 2 } }) => ({ powerMod, ward, weaponMod: 2, signatureMod: 2, attributes: {}, parent: { type: "character", itemTypes: { armor: armor ? [armor] : [], species: [species] } } });

@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t87.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 // Engaged and Ranged Combat, Prone (no Evade; only Crawl and Stand), Crawl, and Evade rounded down.
 let script = [];
 class FakeRoll {
@@ -57,9 +57,9 @@ globalThis.PIXI = { Graphics: class { constructor() { return gfx(); } } };
 canvas.interface = { addChild() {}, sortableChildren: false };
 for (const t of sceneTokens) t.setTarget = on => { on ? game.user.targets.add(t) : game.user.targets.delete(t); };
 whirl.system.areaCfg.size = 5; whirl.system.area = "5 Emanation";
-const A = await import(ROOT + "module/actions.mjs");
+const A = await import(ROOTURL + "module/actions.mjs");
 
-const E = await import(ROOT + "module/engaged.mjs");
+const E = await import(ROOTURL + "module/engaged.mjs");
 const strip = h => String(h).replace(/data-tooltip="[^"]*"/g, "").replace(/<[^>]+>/g, " ").replace(/&[a-z]+;/g, " ").replace(/\s+/g, " ").trim();
 // ------------------------------------------------------------------------------------------------ the world: who stands where
 // Kai (friendly) at (0,0); Goblin (hostile) diagonally next to Kai (on the other side from the targets, so it gives no cover); Nari (hostile) 4 squares down with an Ally (friendly) next to her; Lonny (hostile) alone further down.
@@ -74,7 +74,7 @@ const who = () => sceneTokens.map(t => `${t.name}${E.isEngaged(t) ? " ENGAGED wi
 console.log("start:", who());
 goblin.statuses = new Set(["unsensed"]); console.log("the Goblin is Unsensed (still Engaged: what you perceive does not matter): ", who());
 goblin.statuses = new Set(); kai.statuses = new Set(["unconscious"]); console.log("Kai is Unconscious (every creature is Unsensed to him): ", who());
-{ const { perceive } = await import(ROOT + "module/senses.mjs"); console.log("an Unconscious creature perceives:", perceive(kaiTok, goblinTok).level, "|", perceive(kaiTok, nariTok).level, "| the others perceive Kai:", perceive(goblinTok, kaiTok).level, "(Favored for them: Unsensed to Kai)"); }
+{ const { perceive } = await import(ROOTURL + "module/senses.mjs"); console.log("an Unconscious creature perceives:", perceive(kaiTok, goblinTok).level, "|", perceive(kaiTok, nariTok).level, "| the others perceive Kai:", perceive(goblinTok, kaiTok).level, "(Favored for them: Unsensed to Kai)"); }
 kai.statuses = new Set();
 goblin.statuses = new Set(["unconscious"]); console.log("the Goblin is Unconscious:", who());
 goblin.statuses = new Set(); ally.statuses = new Set(["dead"]); console.log("the Ally is dead:", who());
@@ -218,7 +218,7 @@ dialogContent = ""; await A.askRoll(kai, { title: "Whirl", attrKey: "body", targ
 console.log("a compact tab keeps the creature's name and DC for the caption:", /data-name="Skeleton 10" data-dc="13"|data-name="Goblin"/.test(dialogContent), "| the tooltip:", /data-tooltip="Skeleton 2: DC 14"/.test(dialogContent));
 // ------------------------------------------------------------------------------------------------ Prone
 console.log("\n--- Prone");
-const { BASIC_ACTIONS, basicItemData } = await import(ROOT + "module/basic.mjs");
+const { BASIC_ACTIONS, basicItemData } = await import(ROOTURL + "module/basic.mjs");
 const mkBasic = key => { const d = basicItemData(key); return { id: "b_" + key, name: d.name, type: "action", img: "", getFlag: (s, k) => (s === "twod12" && k === "basic" ? key : undefined), system: { ...d.system, traits: new Set(d.system.traits), areaCfg: { size: 0 }, area: "", modifiers: d.system.modifiers ?? [] } }; };
 const basics = ["advance", "safeMovement", "charge", "crawl", "stand", "basicWeaponAttack"].map(mkBasic);
 kai.items = { get: id => [...allItems, ...basics].find(i => i.id === id), find: f => [...allItems, ...basics].find(f), filter: f => [...allItems, ...basics].filter(f), [Symbol.iterator]: function* () { yield* allItems; yield* basics; } };
@@ -238,7 +238,7 @@ await A.useAction(kai, crawl).catch(() => {}); console.log("Speed 5, 2 AP versio
 dialogExtra = {};
 // ------------------------------------------------------------------------------------------------ Evade rounded down
 console.log("\n--- Evade");
-const { evalExpr } = await import(ROOT + "module/refs.mjs"); const { moveDistance } = await import(ROOT + "module/move.mjs");
+const { evalExpr } = await import(ROOTURL + "module/refs.mjs"); const { moveDistance } = await import(ROOTURL + "module/move.mjs");
 const sp = n => ({ system: { moveSpeed: n, speed: n, walk: n }, items: [], effects: [] });
 const ev = (expr, n = 5) => evalExpr(expr, sp(n));
 console.log("floor(speed/2): Speed 5 →", ev("floor(speed/2)"), "| 6 →", ev("floor(speed/2)", 6), "| 1 →", ev("floor(speed/2)", 1), "| 7 →", ev("floor(Speed/2)", 7), "(capitals and spaces are fine: ", ev("floor( Speed / 2 )", 7), ")");

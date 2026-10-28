@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t82.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 // Foundry's status toggle (what the Token HUD calls) as the one path for Exhausted: click +1, right-click (overlay) -1, and no second change.
 const log = [];
 globalThis.Combat = class {}; globalThis.CONFIG = { time: {} };
@@ -9,7 +9,7 @@ globalThis.ui = { notifications: { info() {}, error() {} } };
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async h => h } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
 globalThis.game = { settings: { get: () => true, register() {}, set: async () => {} }, time: { worldTime: 0 }, user: { isActiveGM: true, isGM: true, id: "u1" }, keyboard: { downKeys: new Set() } };
 let hudRenders = 0; globalThis.canvas = { hud: { token: { render: () => hudRenders++ } } };
-const S = await import(ROOT + "module/sleep.mjs");
+const S = await import(ROOTURL + "module/sleep.mjs");
 // a stand-in for Foundry's Actor: its own toggle makes or deletes an effect (with no value), which must never run for Exhausted
 class FakeActor {
   constructor() { this.type = "character"; this.isOwner = true; this.name = "Kai"; this.flags = { twod12: {} }; this.system = { exhausted: 0, mdt: 8 }; this.effects = []; this.opened = []; }

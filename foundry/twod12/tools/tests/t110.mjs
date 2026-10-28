@@ -1,14 +1,14 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t110.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // v0.0.125: passives on Features and Talents (not effects): settings that work by themselves, always or from an Escalation.
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)), getRoute: p => "/" + p, escapeHTML: s => s } };
 globalThis.Combat = class {}; globalThis.CONFIG = { statusEffects: [], time: {} }; globalThis.Hooks = { on() {}, once() {} };
 globalThis.ui = { notifications: { info() {}, warn() {}, error() {} } }; globalThis.game = { settings: { get: () => true }, user: { id: "u" }, socket: { on() {}, emit() {} } };
 const S = a => new Set(a), blank = { attrs: S([]), all: S([]), any: S([]), none: S([]), from: S([]), tiers: S([]) };
-const P = await import(ROOT + "module/passives.mjs");
-const E = await import(ROOT + "module/effects.mjs");
-const D = await import(ROOT + "module/defense.mjs");
+const P = await import(ROOTURL + "module/passives.mjs");
+const E = await import(ROOTURL + "module/effects.mjs");
+const D = await import(ROOTURL + "module/defense.mjs");
 const feat = (name, settings, min = 0, type = "feature") => ({ id: name.toLowerCase().replace(/\W+/g, ""), name, type, system: { settings: settings.map(x => ({ ...blank, minEscalation: x.minEscalation ?? min, ...x })) } });
 const aegis = feat("Aegis", [{ type: "boonbane", boons: 1, from: S([]), all: S(["__save"]) }]);
 const vigil = feat("Divine Vigil", [{ type: "boonbane", boons: 1, all: S(["__save"]) }], 2);

@@ -1,9 +1,9 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t107.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // v0.0.119: Armor items (one worn at a time; the worn one gives the Armor and adds its Ward), the sidebar numbers in three rows.
 globalThis.Hooks = { on() {} };
-const { setWorn } = await import(ROOT + "module/armor.mjs");
+const { setWorn } = await import(ROOTURL + "module/armor.mjs");
 const mk = (id, worn) => ({ id, system: { worn } });
 const items = [mk("leather", true), mk("plate", false), mk("mail", false)];
 let sent = null;

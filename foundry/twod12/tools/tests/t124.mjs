@@ -1,7 +1,7 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t124.mjs)
 // v0.0.144: fixes after Pass A: real weapon dice on chat cards, Weapon Attack 0 on Tier 1, "DC N Attribute Save" labels and @weapon.dc,
 // no Defense calculation row on chat cards, automatic effects applied when the Action is used.
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 const src = n => fs.readFileSync(ROOT + n, "utf8");
 const actions = src("module/actions.mjs"), inline = src("module/inline.mjs"), basic = src("module/basic.mjs"), data = src("module/data.mjs"), sheets = src("module/actor-sheets.mjs");

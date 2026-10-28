@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t91.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // Distances by the 1-2-1-2 rule, the edge of a light, an Action's Setup before the roll, and the kept Emanation.
 const GS = 100, settings = { lightDimBelow: 0.7, lightDarkBelow: 0.4 };
@@ -8,7 +8,7 @@ globalThis.ui = { notifications: { info() {}, warn() {}, error() {} } };
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async h => h } } } }, utils: {} };
 globalThis.game = { settings: { get: (s, k) => settings[k] }, time: { worldTime: 0 }, user: { isGM: true, id: "u1" } };
 globalThis.canvas = { grid: { size: GS }, effects: { lightSources: [], darknessSources: [] }, environment: { darknessLevel: 1 } };
-const L = await import(ROOT + "module/light.mjs");
+const L = await import(ROOTURL + "module/light.mjs");
 const tok = (col, row, w = 1, h = 1) => ({ document: { x: col * GS, y: row * GS, width: w, height: h } });
 console.log("--- the distance between two tokens (adjacent is 1, every second diagonal counts 2)");
 const here = tok(5, 5);
@@ -30,7 +30,7 @@ for (let i = -6; i <= 6; i++) for (let j = -6; j <= 6; j++) { const l = at(j, i)
 console.log("squares lit by the rules: Bright", bright, "(13) | Dim", dim, "(36 more)");
 // ---------------------------------------------------------------- Setup
 console.log("--- Setup");
-const S = await import(ROOT + "module/setup.mjs");
+const S = await import(ROOTURL + "module/setup.mjs");
 const cut = "Evade up to 2 (@Move[evade|distance:2]). During this Evade you can move through the space of any creature.";
 console.log("the card after the movement was made:", JSON.stringify(S.setupFor(cut, true)));
 console.log("the card when it was not:", JSON.stringify(S.setupFor(cut, false) === cut));

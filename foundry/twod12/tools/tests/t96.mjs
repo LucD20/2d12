@@ -1,10 +1,10 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t96.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // Flanking (the SWADE-style rule): 1 boon for each OTHER creature that threatens the enemy (up to 3), minus 1 for each ally of the enemy that threatens you, never below 0.
 const GS = 100;
 globalThis.canvas = { grid: { size: GS }, tokens: { placeables: [] } };
-const F = await import(ROOT + "module/flanking.mjs");
+const F = await import(ROOTURL + "module/flanking.mjs");
 const tokens = canvas.tokens.placeables; let n = 0;
 const weapon = (extra = 0, props = ["melee"], wielded = true) => ({ system: { wielded, traits: new Set(props), reach: extra }, getFlag: () => false });
 const action = (traits, damage, distance = "reach") => ({ system: { traits: new Set(traits), distance, versions: [{ t1: [], t2: damage ? [{}] : [], t3: damage ? [{}] : [] }] } });

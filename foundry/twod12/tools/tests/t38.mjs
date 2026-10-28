@@ -1,7 +1,7 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t38.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 globalThis.Combat = class {}; globalThis.foundry = { applications: { api: { DialogV2: {} }, ux: {} } }; globalThis.Hooks = { on() {} };
-const g = await import(ROOT + "module/gen.mjs");
+const g = await import(ROOTURL + "module/gen.mjs");
 const show = t => { const w = g.parseWeaponText(t); console.log(JSON.stringify(t)); console.log("  ->", w.name, "|", [...w.traits].join(","), "|", w.subtype, "|", w.range, "|", w.damage ? [1, 2, 3].map(n => JSON.stringify(w.damage["t" + n])).join(" ") : "-", "|", w.problems.join("; ")); };
 show("greatsword: two-handed, slash, 0/1d8/2d6");
 show("crossbow, reload, two-handed pierce, ranges 10/20/40, 0/1d4+2/1d10+2");

@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t55.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 globalThis.Combat = class {}; globalThis.CONFIG = { TextEditor: { enrichers: [] }, statusEffects: [] };
 const Base = class {};
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: Base, HandlebarsApplicationMixin: B => class extends B {} }, sheets: { ActorSheetV2: Base, ItemSheetV2: Base }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)), escapeHTML: s => s }, data: { fields: { SchemaField: class {}, NumberField: class {}, StringField: class {}, BooleanField: class {}, ArrayField: class {}, SetField: class {}, HTMLField: class {} } }, abstract: { TypeDataModel: class {} } };
@@ -23,7 +23,7 @@ const effects = [{ id: "e1", name: "Double Shot (2 Attacks)", img: "d", getFlag:
 const actor = { type: "character", items: { get: id => items.find(i => i.id === id) }, itemTypes: { action: items, weapon: [weapon], feature: [], talent: [] }, effects, statuses: new Set(["dying", "unconscious"]),
   getFlag: (s, k) => ({ favorites: ["rs"], order: ["rs", "smite"] })[k],
   system: { damage: { bodyLethal: 8, bodyNonlethal: 2, mindLethal: 3, mindNonlethal: 1 }, bdt: 21, mdt: 15, bodyDamage: 10, mindDamage: 4, bloodied: false, strained: false, atZero: true, moveSpeed: 5, reach: 1, weaponAttribute: "body", weaponMod: 2, magicAttribute: "appeal", magicMod: 2, rallyMax: 13, rallyLeft: 11 } };
-const { CharacterSheet } = await import(ROOT + "module/sheets.mjs");
+const { CharacterSheet } = await import(ROOTURL + "module/sheets.mjs");
 const sheet = Object.create(CharacterSheet.prototype);
 sheet._filter = "all"; sheet._groupLabels = ["Class", "Talents", "Items", "Other", "Basic"];
 Object.defineProperty(sheet, "actor", { value: actor });

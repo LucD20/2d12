@@ -1,13 +1,13 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t118.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // v0.0.136 (new sheet, step 6): the NPC stat block, the NPC toolbar and Features tab, Generate Action (written like the card) and Generate Weapon.
 const Base = class {};
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: Base, HandlebarsApplicationMixin: B => class extends B {} }, sheets: { ActorSheetV2: Base, ItemSheetV2: Base }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)), escapeHTML: s => s }, data: { fields: { SchemaField: class {}, NumberField: class {}, StringField: class {}, BooleanField: class {}, ArrayField: class {}, SetField: class {}, HTMLField: class {} } }, abstract: { TypeDataModel: class {} } };
 globalThis.Combat = class {}; globalThis.CONFIG = { TextEditor: { enrichers: [] }, statusEffects: [] }; globalThis.Hooks = { on() {}, once() {} };
 globalThis.game = { settings: { get: () => true }, user: { getFlag: () => undefined }, combat: null }; globalThis.ui = { notifications: {} };
-const G = await import(ROOT + "module/genaction.mjs");
-const W = await import(ROOT + "module/gen.mjs");
+const G = await import(ROOTURL + "module/genaction.mjs");
+const W = await import(ROOTURL + "module/gen.mjs");
 const show = t => { const r = G.parseCardTier(t); return `${JSON.stringify(t)} -> ${r.insts.map(i => `${i.useW ? `${i.wCount}[W]` : i.useAt ? "[At]" : i.dice}${i.subtype ? ` ${i.subtype}` : ""} to ${i.pool}`).join(" + ") || "no damage"}${r.text ? ` | text: ${r.text}` : ""}`; };
 console.log("--- tiers written like the card (and the old short codes)");
 for (const t of ["[B] 1d8 Co", "[B] 2d8 Co; Hindered (EoT)", "1[W]", "[B] 2[W] Sl + [M] 1d6 Ho", "[At]", "[M] 2d6 Ho; Prone", "1WB, 1d8MCo", "1d4+2", "Pushed 2", "[B] 1d8 Cold; Appeal Save", "nonsense words", ""]) console.log(show(t));

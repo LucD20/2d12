@@ -1,6 +1,6 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t61.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
-const { evalExpr, hasNamed } = await import(ROOT + "module/refs.mjs");
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
+const { evalExpr, hasNamed } = await import(ROOTURL + "module/refs.mjs");
 const mk = (names, speed = 5) => ({ system: { speed, attributes: {}, level: 1 }, items: names.map(name => ({ name })), effects: [{ name: "Rimebrand (1d6)" }] });
 const plain = mk([]), talented = mk(["Battering Charge"]);
 const e = "speed+2*has(Battering Charge)";

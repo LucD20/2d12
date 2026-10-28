@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t22.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 class FakeCombat { setupTurns() { this.turns = this._c.slice().sort((a, b) => b.initiative - a.initiative); this.current = {}; return this.turns; } }
 globalThis.Combat = FakeCombat;
 globalThis.CONST = { TOKEN_DISPOSITIONS: { FRIENDLY: 1 } };
@@ -9,7 +9,7 @@ const handlers = {}; globalThis.Hooks = { on: (n, f) => (handlers[n] = f) };
 const msgs = []; globalThis.ChatMessage = { create: async d => msgs.push(d.content.replace(/<[^>]+>/g, "").replace(/&rarr;/g, "→")) };
 globalThis.ui = { notifications: { warn: m => msgs.push("WARN: " + m) } };
 globalThis.game = { user: { isActiveGM: true, isGM: true }, users: { get: () => ({}) }, socket: { on() {}, emit() {} }, combats: { get: () => combat } };
-const { TwoD12Combat, performSwap, swapCandidates, spendAP, getAP, registerCombatHooks } = await import(ROOT + "module/combat.mjs");
+const { TwoD12Combat, performSwap, swapCandidates, spendAP, getAP, registerCombatHooks } = await import(ROOTURL + "module/combat.mjs");
 const mk = (name, init, disp) => {
   const flags = {};
   const c = { id: name, name, initiative: init, flags: {},  token: { disposition: disp }, actor: { id: name, type: disp === 1 ? "character" : "npc" }, actorId: name, isDefeated: false, flags, testUserPermission: () => true,

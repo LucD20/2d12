@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t138.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // v0.0.168: the polish pass. Item sheets and Edit Versions in the sheet's look; the Action Details in Lucas's order (Reaction's Kind and the
 // Interrupt/Trigger greyed out until Reaction is on); a numeric Range on the Actions tab reads "5 sq."; the Tiers in their colored boxes.

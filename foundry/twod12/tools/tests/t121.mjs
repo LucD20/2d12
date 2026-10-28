@@ -1,8 +1,8 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t121.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // v0.0.139: the Items tab's loadout: where weapons and armor are (Dropped / Worn / One hand / Both hands; Dropped / Carried / Worn), the slots, the moves.
-const L = await import(ROOT + "module/loadout.mjs");
+const L = await import(ROOTURL + "module/loadout.mjs");
 const T = (...t) => new Set(t);
 const w = (id, name, sys, traits = []) => ({ id, name, system: { wielded: false, hands: 1, dropped: false, traits: T(...traits), damage: { t1: { count: 0, die: "", mod: 0 }, t2: { count: 1, die: "d8", mod: 0 }, t3: { count: 2, die: "d6", mod: 0 } }, ...sys } });
 const gs = w("gs", "Greatsword", { wielded: true, hands: 2 }, ["melee", "twohanded"]), dg = w("dg", "Dagger", {}, ["melee", "thrown"]), xb = w("xb", "Crossbow", { dropped: true }, ["ranged", "reload", "twohanded"]), fi = w("fi", "Fists", {}, ["barehanded"]);

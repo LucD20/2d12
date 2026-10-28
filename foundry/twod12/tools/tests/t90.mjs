@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t90.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 // Darkness as Difficult Terrain on a path, Release, and the editable date of the World Clock.
 const GS = 100, settings = { lightDimBelow: 0.7, lightDarkBelow: 0.4 }, notes = [], dialogs = [];
 globalThis.Combat = class {}; globalThis.CONFIG = { time: {} }; globalThis.Hooks = { on() {}, once() {} };
@@ -9,7 +9,7 @@ globalThis.foundry = { applications: { api: { DialogV2: { wait: async o => { dia
 globalThis.game = { settings: { get: (s, k) => settings[k] }, time: { worldTime: 0 }, user: { isGM: true, isActiveGM: true, id: "u1", targets: new Set() }, i18n: { localize: s => s } };
 const tokens = [];
 globalThis.canvas = { grid: { size: GS, getOffset: ({ x, y }) => ({ i: Math.floor(y / GS), j: Math.floor(x / GS) }), getCenterPoint: ({ i, j }) => ({ x: j * GS + GS / 2, y: i * GS + GS / 2 }) }, tokens: { placeables: tokens, controlled: [] }, environment: { darknessLevel: 0 }, effects: { darknessSources: [], lightSources: [] } };
-const M = await import(ROOT + "module/move.mjs");
+const M = await import(ROOTURL + "module/move.mjs");
 const mk = (id, col, row, disp, senses = {}, w = 1) => { const actor = { name: id, system: { senses } }; const t = { name: id, actor, document: { id, x: col * GS, y: row * GS, width: w, height: w, disposition: disp, hidden: false, actor } }; tokens.push(t); return t; };
 const me = mk("Kai", 0, 0, 1);
 const show = (label, pts, doc = me.document) => { const r = M.creaturesOnPath(doc, pts); console.log(label.padEnd(66), `dark ${r.dark}, extra ${r.extra}${r.through.length ? ", through " + r.through.join("+") : ""}`); };
@@ -107,9 +107,9 @@ console.log("\n--- the cost function (the ruler)");
 }
 // ------------------------------------------------------------------ Release
 console.log("\n--- Release");
-const { handleInline } = await import(ROOT + "module/inline.mjs");
-const { BASIC_ACTIONS } = await import(ROOT + "module/basic.mjs");
-const { apLabel } = await import(ROOT + "module/config.mjs");
+const { handleInline } = await import(ROOTURL + "module/inline.mjs");
+const { BASIC_ACTIONS } = await import(ROOTURL + "module/basic.mjs");
+const { apLabel } = await import(ROOTURL + "module/config.mjs");
 const r = BASIC_ACTIONS.release;
 console.log("the Basic Action:", r.name, "| traits", r.traits.join("/"), "| cost label:", apLabel([r.versions[0].ap]).replace(/<[^>]+>/g, ""), "| text:", r.versions[0].effects.replace(/@Release\[weapon\]/, "[button]").slice(0, 80) + "...", "| other costs:", apLabel([1]).replace(/<[^>]+>/g, ""), apLabel([1, 2, 3]).replace(/<[^>]+>/g, ""));
 const mkW = (id, name, wielded, hands) => { const w = { id, name, system: { wielded, hands }, async update(u) { for (const [k, v] of Object.entries(u)) w.system[k.replace("system.", "")] = v; } }; return w; };
@@ -126,7 +126,7 @@ sword.system.wielded = false; dagger.system.wielded = false; notes.length = 0; a
 canvas.tokens.controlled = []; game.user.character = null; notes.length = 0; await handleInline("Release", {}, {}); console.log("no token:", notes.pop());
 // ------------------------------------------------------------------ the date of the clock
 console.log("\n--- Set the date");
-const C = await import(ROOT + "module/clock.mjs");
+const C = await import(ROOTURL + "module/clock.mjs");
 const names = ["Deepwinter", "Claw", "Alturiak", "Ches", "Tarsakh", "Mirtul", "Kythorn", "Flamerule", "Eleasis", "Eleint", "Marpenoth", "Uktar"];
 game.time.calendar = { years: { yearZero: 1490 }, months: { values: names.map(n => ({ name: n, days: 30 })) }, days: { values: [{ name: "Day" }] },
   timeToComponents: t => { const s = Math.floor(t), d = Math.floor(s / 86400), tod = s % 86400; return { year: Math.floor(d / 360), month: Math.floor((d % 360) / 30), dayOfMonth: d % 30, dayOfWeek: 0, hour: Math.floor(tod / 3600), minute: Math.floor((tod % 3600) / 60), second: tod % 60 }; },

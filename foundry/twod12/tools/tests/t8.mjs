@@ -1,10 +1,10 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t8.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 globalThis.Combat ??= class {}; globalThis.Hooks ??= { on() {}, once() {} }; globalThis.CONFIG ??= {}; globalThis.foundry ??= {}; globalThis.foundry.utils ??= { deepClone: o => JSON.parse(JSON.stringify(o)), debounce: f => f, setProperty() {} }; globalThis.foundry.applications ??= { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: {} } } }; globalThis.game ??= { settings: { get: () => true } };
 globalThis.foundry = { applications: { api: { DialogV2: {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } } };
 globalThis.Hooks = { on() {} };
 globalThis.game = { socket: { emit() {} }, user: {} };
-const { splitTop, parseParts, parseInline } = await import(ROOT + "module/inline.mjs");
+const { splitTop, parseParts, parseInline } = await import(ROOTURL + "module/inline.mjs");
 console.log(JSON.stringify(parseParts("(1d4+1)[body,slash],1d6[mind,holy]")));
 console.log(JSON.stringify(parseParts('1d4[body,blunt],1d4[mind,nonlethal,holy],"The target is Prone",@UUID[Item.abc],0')));
 const c = parseInline("Check", "body|dc:14|adj:2|boon:1|bane:2|traits:divine,attack");

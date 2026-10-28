@@ -1,15 +1,15 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t133.mjs)
 // v0.0.159 (Archer pass 2): Save Actions. You don't roll; each target rolls the Save on the Vs. line against 11 + your Modifier, Tier 1 the worst for them,
 // [Mod] on Tier 1 and 2; Vulnerable banes and Cover boons; the area remembers the Save for [HT]; the Hazardous Terrain Region behavior.
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 globalThis.Combat = class {}; globalThis.CONFIG = { Canvas: { polygonBackends: {} } }; globalThis.CONST = { TOKEN_DISPOSITIONS: {} }; globalThis.ui = { notifications: { warn() {}, info() {} } };
 globalThis.foundry = { applications: { api: { DialogV2: {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
 globalThis.Hooks = { on() {} }; globalThis.game = { settings: { get: () => true }, user: { id: "u" }, combat: null };
-const I = await import(ROOT + "module/inline.mjs");
-const G = await import(ROOT + "module/config.mjs");
-const S = await import(ROOT + "module/rollsource.mjs");
-const C = await import(ROOT + "tools/content.mjs");
+const I = await import(ROOTURL + "module/inline.mjs");
+const G = await import(ROOTURL + "module/config.mjs");
+const S = await import(ROOTURL + "module/rollsource.mjs");
+const C = await import(ROOTURL + "tools/content.mjs");
 const get = n => C.docs.find(d => d.name === n);
 const sys = { attributes: { body: 1, mind: 0, appeal: 0, instinct: 3 }, weaponAttribute: "instinct", weaponMod: 3, powerAttribute: "mind", powerMod: 1 };
 for (const n of ["Volley", "Rain of Arrows"]) {

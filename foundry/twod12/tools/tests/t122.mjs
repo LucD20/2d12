@@ -1,8 +1,8 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t122.mjs)
 // v0.0.140-141: loadout warnings as an icon; the "where" buttons; Fists not listed; right-click menus not clipped; Foundry's own window and title bar.
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
-const L = await import(ROOT + "module/loadout.mjs");
+const L = await import(ROOTURL + "module/loadout.mjs");
 const show = bs => bs.map(b => (b.on ? `[${b.l}]` : b.l)).join(" / ");
 for (const w of ["dropped", "worn", "1h", "2h"]) console.log("weapon", w.padEnd(7), show(L.whereButtons("weapon", w)));
 for (const a of ["dropped", "carried", "worn"]) console.log("armor ", a.padEnd(7), show(L.whereButtons("armor", a)));

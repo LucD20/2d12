@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t76.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 // The World Clock window and bar, the Exhaustion toggle, and clicking the Exhausted condition.
 const hooks = {}, chat = [], settings = { trackExhaustion: true };
 globalThis.Combat = class {}; globalThis.CONFIG = { time: {} };
@@ -7,8 +7,8 @@ globalThis.Hooks = { on: (h, f) => (hooks[h] = f), once() {} };
 globalThis.ChatMessage = { create: async m => chat.push(m.content.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim()), getSpeaker: () => ({}) };
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async h => h } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
 globalThis.game = { settings: { get: (s, k) => settings[k] ?? true, register() {}, set: async (s, k, v) => { settings[k] = v; } }, time: { worldTime: 0, async advance(s) { this.worldTime += s; hooks.updateWorldTime?.(this.worldTime); } }, user: { isActiveGM: true, isGM: true, id: "u1" }, i18n: { localize: s => s } };
-const { clockTitle, secondsUntil, UNITS, moveClock } = await import(ROOT + "module/clock.mjs");
-const S = await import(ROOT + "module/sleep.mjs");
+const { clockTitle, secondsUntil, UNITS, moveClock } = await import(ROOTURL + "module/clock.mjs");
+const S = await import(ROOTURL + "module/sleep.mjs");
 // the header, like PF2e's
 console.log("no calendar:", clockTitle(86400 + 3 * 3600 + 43 * 60 + 54));
 game.time.calendar = { timeToComponents: () => ({ year: 3236, day: 40, month: 4, dayOfMonth: 1, dayOfWeek: 5, hour: 3, minute: 43, second: 54 }), months: { values: [0, 0, 0, 0, { name: "Lamashan" }] }, days: { values: [0, 0, 0, 0, 0, { name: "Fireday" }] }, years: { yearZero: 1490 } };

@@ -1,12 +1,12 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t106.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // v0.0.118 (Rounds 11 and 12): Defenses (Armor and Ward = 11 + value, Vs. = 13 + half), Armor Training, the highest-bonus rule, Defense effects, the Release fix.
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)), getRoute: p => "/" + p, escapeHTML: s => s } };
 globalThis.Combat = class {}; globalThis.CONFIG = { statusEffects: [], time: {} }; globalThis.Hooks = { on() {}, once() {} };
 globalThis.ui = { notifications: { info() {}, warn() {}, error() {} } };
-const D = await import(ROOT + "module/defense.mjs");
-const { TWOD12 } = await import(ROOT + "module/config.mjs");
+const D = await import(ROOTURL + "module/defense.mjs");
+const { TWOD12 } = await import(ROOTURL + "module/config.mjs");
 const S = a => new Set(a);
 const action = (traits, extra = {}) => ({ name: "A", system: { traits: S(traits), vs: "", versions: [], ...extra }, getFlag: () => undefined });
 const fists = { name: "Fists", system: { traits: S(["strike", "weapon"]), vs: "", versions: [] }, getFlag: (s, k) => (k === "basic" ? "fists" : undefined) };   // v0.0.169: a Weapon Action
@@ -32,17 +32,17 @@ console.log("a Feature's tag still counts (+1 vs Push):", D.defenseBonus(mkTarge
 console.log("--- Armor Training");
 for (const [armor, training] of [["heavy", "light"], ["medium", "medium"], ["light", "light"], ["unarmored", "light"], ["heavy", "heavy"]]) { const t = mkTarget(derive(armor, 0, training)); const r = D.computeDC(action(["weapon"]), t, "", SRC.weapon); console.log(`${armor} with ${training} training:`, r.untrained ? "untrained (Actions against it Favored, its Rolls Doomed)" : "trained", "| Vs. Body is not affected:", !D.computeDC(action(["body"], { vs: "body" }), t, "", SRC.attr).untrained); }
 console.log("--- the Defense setting of an effect");
-const E = await import(ROOT + "module/effects.mjs");
+const E = await import(ROOTURL + "module/effects.mjs");
 const blank = { attrs: S([]), all: S([]), any: S([]), none: S([]), from: S([]), tiers: S([]) };
 const sys = { description: "", settings: [{ ...blank, type: "defense", defKind: "all", defValue: 2 }, { ...blank, type: "defense", defKind: "ward", defValue: -1 }, { ...blank, type: "defense", defKind: "armor", defValue: 0 }], expireOn: S([]), expireAll: false };
 console.log("applied:", JSON.stringify(E.appliedFlags(sys, {}).defenses));
-const F = await import(ROOT + "module/fxdetails.mjs");
+const F = await import(ROOTURL + "module/fxdetails.mjs");
 console.log(sys.settings.slice(0, 2).map(x => F.settingSentence(x).replace(/<[^>]+>/g, "")).join(" | "), "| In short:", F.effectSummary(sys));
-const { sourceFromFlags } = await import(ROOT + "module/fxsync.mjs");
+const { sourceFromFlags } = await import(ROOTURL + "module/fxsync.mjs");
 console.log("rebuilt from an applied effect:", JSON.stringify(sourceFromFlags({ flags: { twod12: { defenses: [{ kind: "armor", bonus: 1 }] } }, statuses: S([]), getFlag: () => undefined }).settings.map(x => [x.type, x.defKind, x.defValue])));
 console.log("--- the Release fix");
 globalThis.game = { settings: { get: () => true }, user: { isActiveGM: true } };
-const B = await import(ROOT + "module/basic.mjs");
+const B = await import(ROOTURL + "module/basic.mjs");
 const upd = []; const rel = ap => ({ type: "action", system: { versions: [{ ap, effects: "x" }] }, getFlag: (s, k) => (k === "basic" ? "release" : undefined), update: async u => upd.push(u["system.versions"].map(v => v.ap)) });
 console.log("fixed:", await B.fixReleaseCost([{ name: "Kai", items: [rel(1)] }, { name: "Nari", items: [rel(0)] }]), JSON.stringify(upd));
 const src = n => fs.readFileSync(ROOT + n, "utf8");

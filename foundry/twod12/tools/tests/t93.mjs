@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t93.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 // Hearing: you perceive creatures that make noise within 10 squares as Hidden, even through walls. Creatures in combat make noise, unless they hide (the GM puts the Unsensed status on them).
 const GS = 100, settings = { lightDimBelow: 0.7, lightDarkBelow: 0.4 };
 const combatants = [];
@@ -8,7 +8,7 @@ globalThis.CONFIG = { specialStatusEffects: { BLIND: "blind" }, Canvas: { detect
 class FakeMode { constructor(o) { Object.assign(this, o); } static DETECTION_TYPES = { SOUND: 1 }; }
 globalThis.foundry = { canvas: { perception: { DetectionMode: FakeMode }, rendering: { filters: { OutlineOverlayFilter: { create: () => ({}) } } } } };
 globalThis.canvas = { grid: { size: GS }, environment: { darknessLevel: 1 }, effects: { lightSources: [], darknessSources: [] } };
-const S = await import(ROOT + "module/senses.mjs");
+const S = await import(ROOTURL + "module/senses.mjs");
 let id = 0;
 const tok = (col, row, { statuses = [], senses = {}, fight = true, defeated = false } = {}) => {
   const tid = "t" + ++id; if (fight) combatants.push({ tokenId: tid, isDefeated: defeated });

@@ -1,11 +1,11 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t35.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 globalThis.Combat = class {}; globalThis.CONFIG = {};
 globalThis.foundry = { applications: { api: { DialogV2: {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)), getRoute: p => "/" + p } };
 globalThis.Hooks = { on() {} }; globalThis.game = { settings: { get: () => true } };
 const msgs = []; globalThis.ChatMessage = { getSpeaker: () => ({}), create: async d => msgs.push(d.content) };
 globalThis.fromUuid = async u => ({ name: u === "Item.a" ? "Reaping Sweep" : "Other" });
-const pv = await import(ROOT + "module/preview.mjs");
+const pv = await import(ROOTURL + "module/preview.mjs");
 const I = o => ({ pool: "B", useW: false, wCount: 1, dice: "", useAt: false, subtype: "", effect: "", ...o });
 const V = (ap, t1, t2, t3, effects = "", ex = {}) => ({ ap, noTiers: false, t1, t2, t3, effects, ...ex });
 const smite = { name: "Smite", system: { category: "Divine Power", level: 1, frequency: "round", traits: new Set(["strike", "divine", "melee", "weapon"]), targets: "One creature", check: "", vs: "body", versions: [
@@ -23,7 +23,7 @@ const ic = await pv.buildInfoCard(feat); console.log("info card:", /Paladin Feat
 const tal = { name: "Lesser Blessing", type: "talent", system: { category: "Talent", level: 1, frequency: "round", requirements: "Divine trait", traits: new Set(["divine", "magic"]), description: "<p>Pick one type of damage.</p>" } };
 const tc = await pv.buildInfoCard(tal); console.log("talent card:", /Round/.test(tc), /Prerequisites:<\/b> Divine trait/.test(tc), /chev/.test(tc));
 await pv.sendItemToChat({ ...smite, type: "action" }); await pv.sendItemToChat({ ...weapon, type: "weapon" }); console.log("sent:", msgs.length, "messages");
-const eff = await import(ROOT + "module/effects.mjs");
+const eff = await import(ROOTURL + "module/effects.mjs");
 console.log("shortName:", JSON.stringify(eff.shortName("Effect: Smite (3)")), JSON.stringify(eff.shortName("effect:Bless")), JSON.stringify(eff.shortName("Smite")));
 const fl = { modifiers: [{ boons: 1, banes: 0, all: [], any: [], none: [] }] };
 const list = [{ id: "e1", name: "Effect: Smite (3)", getFlag: (s, k) => fl[k] }]; list.get = id => list.find(e => e.id === id); const actor = { effects: list };

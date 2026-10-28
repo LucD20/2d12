@@ -1,10 +1,10 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t46.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 globalThis.Combat = class { setupTurns() { return this._t; } }; globalThis.CONFIG = {};
 globalThis.foundry = { applications: { api: { DialogV2: {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
 globalThis.Hooks = { on() {} }; globalThis.CONST = { TOKEN_DISPOSITIONS: { FRIENDLY: 1, HOSTILE: -1 } };
 const warns = []; globalThis.ui = { notifications: { warn: m => warns.push(m), info() {} } };
-const cb = await import(ROOT + "module/combat.mjs");
+const cb = await import(ROOTURL + "module/combat.mjs");
 const c = sys => ({ actor: { system: sys } });
 console.log("AP: healthy", cb.apPerTurn(c({})), "| Down + Bloodied", cb.apPerTurn(c({ atZero: true, bloodied: true })), "| Down + both", cb.apPerTurn(c({ atZero: true, bloodied: true, strained: true })), "| Bloodied not Down", cb.apPerTurn(c({ bloodied: true })));
 const mk = (name, init, attr, disp) => ({ name, initiative: init, token: { disposition: disp }, getFlag: (s, k) => (k === "initAttr" ? attr : undefined), actor: {} });

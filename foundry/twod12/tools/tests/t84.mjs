@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t84.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 // Linked conditions: Prone brings Hindered, and Hindered goes when Prone goes (but never one that came from somewhere else).
 const hooks = {};
 globalThis.Combat = class {}; globalThis.CONFIG = { time: {}, statusEffects: [{ id: "prone" }, { id: "hindered" }, { id: "immobilized" }, { id: "empowered" }, { id: "enfeebled" }] };
@@ -20,7 +20,7 @@ const mkActor = () => { const a = { uuid: "Actor.kai", documentName: "Actor", ty
   async createEmbeddedDocuments(t, docs) { const out = []; for (const d of docs) { const e = { ...d, id: "fx" + nextId++, parent: a, statuses: new Set(d.statuses), getFlag: (s, k) => d.flags?.[s]?.[k], setFlag: async (s, k, v) => { (d.flags[s] ??= {})[k] = v; }, update: async u => { for (const [k, v] of Object.entries(u)) { if (k === "name") e.name = v; else if (k.startsWith("flags.twod12.")) (d.flags.twod12 ??= {})[k.slice(13)] = v; } } }; a.effects.push(e); out.push(e); } return out; },
   async deleteEmbeddedDocuments(t, ids) { for (const id of ids) { const e = a.effects.find(x => x.id === id); if (!e) continue; a.effects = a.effects.filter(x => x !== e); fire("deleteActiveEffect", e, {}, "u1"); } } }; return a; };
 let kai = mkActor();
-const E = await import(ROOT + "module/effects.mjs");
+const E = await import(ROOTURL + "module/effects.mjs");
 E.registerEffectHooks();
 const origin = { actorUuid: "Actor.kai" };
 const list = () => kai.effects.map(e => e.name + (e.getFlag("twod12", "linkedTo") ? ` (linked to ${kai.effects.find(x => x.id === e.getFlag("twod12", "linkedTo"))?.name})` : "")).join(", ") || "none";
@@ -150,7 +150,7 @@ globalThis.game.packs = new Map([["twod12.effects", effPack]]); console.table = 
 globalThis.game.packs = new Map(); console.log("no compendiums:", JSON.stringify(await E.shadowedEffects())); globalThis.game.items = keepItems;
 // ---------------------------------------------------------------- the effect editor window: the value
 console.log("\n--- the effect editor window");
-const X = await import(ROOT + "module/fxeditor.mjs");
+const X = await import(ROOTURL + "module/fxeditor.mjs");
 const mkFx = (name, flags) => { const f = { name, flags: { twod12: { ...flags } }, parent: { type: "character", system: { exhausted: 0 } }, getFlag: (s, k) => f.flags.twod12[k], async update(u) { for (const [k, v] of Object.entries(u)) { if (k === "name") f.name = v; else if (k.startsWith("flags.twod12.-=")) delete f.flags.twod12[k.slice(15)]; else if (k.startsWith("flags.twod12.")) f.flags.twod12[k.slice(13)] = v; } } }; return f; };
 const valuedFx = mkFx("Empowered 2", { value: 2, baseName: "Empowered", duration: { type: "", rounds: 1 } }), plainFx = mkFx("Prone", { duration: { type: "", rounds: 1 } });
 const html = fx => X.fxTabHtml(fx); const field = fx => /name="twod12Value"[^>]*value="(\d+)"/.exec(html(fx))?.[1] ?? "(no field)";

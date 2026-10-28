@@ -1,12 +1,12 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t17.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 // v0.0163 (was: archetype and weight Health): the Bestiary NPC model. A role and a rating for each number (npcBuild), Custom values,
 // the derived NPC (AP a turn, Weapon and Power Modifiers), the Builder tab's rows, attack reference and check, and the dice that come close.
 class F { constructor(o) { this.o = o; } }
 globalThis.foundry = { abstract: { TypeDataModel: class { static migrateData(s) { return s; } } }, data: { fields: { SchemaField: F, NumberField: F, StringField: F, BooleanField: F, ArrayField: F, SetField: F, HTMLField: F } } };
-const { NpcData, npcBuild } = await import(ROOT + "module/data.mjs");
-const { TWOD12 } = await import(ROOT + "module/config.mjs");
-const { npcBuilderContext, diceFor, ratingUpdate } = await import(ROOT + "module/npcbuilder.mjs");
+const { NpcData, npcBuild } = await import(ROOTURL + "module/data.mjs");
+const { TWOD12 } = await import(ROOTURL + "module/config.mjs");
+const { npcBuilderContext, diceFor, ratingUpdate } = await import(ROOTURL + "module/npcbuilder.mjs");
 const all = r => ({ body: r, mind: r, appeal: r, instinct: r, bodyHm: r, mindHm: r, ad: r, wd: r });
 console.log("--- every rating Medium, level 1 (the Bestiary: 6 / 26 / 50 / 108 Health)");
 for (const role of Object.keys(TWOD12.npcRoles)) { const b = npcBuild({ role, ratings: all("medium") }); console.log(role.padEnd(9), `Health ${b.bdt + b.mdt} (${b.bdt} + ${b.mdt})  Attributes ${Object.values(b.attributes).join("/")}  AD ${b.armorDef} WD ${b.wardDef}  AP ${b.role.ap}`); }

@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t136.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // v0.0.165: the Line of Effect button (the lines cover is counted with: origin, the four corners, blocked or not, and the label at the target),
 // the shield's Defense in two letters for a Vs. Attribute (Bo, Mi, Ap, In), the Strike row's red line, the sheet keeping its scroll position.
@@ -9,8 +9,8 @@ globalThis.Hooks = { on() {} }; globalThis.game = { settings: { get: () => true 
 const S = 40;
 globalThis.canvas = { grid: { size: S, isSquare: true }, tokens: { placeables: [] } };
 const tok = (id, x, y, w = 1, h = 1) => ({ id, document: { x: x * S, y: y * S, width: w, height: h, hidden: false } });
-const cv = await import(ROOT + "module/cover.mjs");
-const { loeLabel } = await import(ROOT + "module/loe.mjs");
+const cv = await import(ROOTURL + "module/cover.mjs");
+const { loeLabel } = await import(ROOTURL + "module/loe.mjs");
 // a wall along x = 140 px from y = 0 to y = 100: it blocks lines that cross it there
 const wall = (a, b) => { const X = 140; if ((a.x - X) * (b.x - X) >= 0) return false; const t = (X - a.x) / (b.x - a.x); const y = a.y + t * (b.y - a.y); return y >= 0 && y <= 100; };
 const A = tok("A", 0, 2);

@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t120.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // v0.0.138: an Action that needs a free hand offers Release when both hands are full ("Enforce hand requirement"); the 8px around the sheet.
 let setting = true, lastDialog = null, answer = "one:xb";
@@ -8,7 +8,7 @@ globalThis.foundry = { applications: { api: { DialogV2: { wait: async o => { las
 globalThis.game = { settings: { register() {}, get: (s, k) => (k === "enforceHands" ? setting : true) } };
 globalThis.ui = { notifications: { warn: m => said.push(`warn: ${m}`), info: m => said.push(`info: ${m}`) } };
 globalThis.ChatMessage = { create: async d => said.push(`chat: ${d.content.replace(/<[^>]+>/g, "").trim()}`), getSpeaker: () => ({}) };
-const H = await import(ROOT + "module/hands.mjs");
+const H = await import(ROOTURL + "module/hands.mjs");
 H.registerHandSetting();
 const T = (...t) => new Set(t);
 const weapon = (id, name, hands, traits = []) => { const w = { id, name, type: "weapon", system: { wielded: true, hands, traits: T(...traits) } }; w.update = async u => { if ("system.hands" in u) w.system.hands = u["system.hands"]; if ("system.wielded" in u) w.system.wielded = u["system.wielded"]; }; return w; };

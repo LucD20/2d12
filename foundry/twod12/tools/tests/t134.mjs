@@ -1,9 +1,9 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t134.mjs)
 // v0.0.161 (Archer pass 3): Marked Quarry, Hunter's Focus, Long Draw, Steady Nerves, Killer's Focus; no odds for Save Actions; Empowered on Save damage.
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 globalThis.Hooks = { on() {} }; globalThis.game = { combat: null };
-const A = await import(ROOT + "module/archer.mjs");
+const A = await import(ROOTURL + "module/archer.mjs");
 const flags = {};
 const archer = (features, extra = {}) => ({ itemTypes: { feature: features.map(name => ({ name })) }, effects: [], system: { escalation: 0 }, getFlag: (s, k) => flags[k], setFlag: async (s, k, v) => { flags[k] = v; }, unsetFlag: async (s, k) => { delete flags[k]; }, ...extra });
 const orc = { name: "Orc", document: { uuid: "Scene.s.Token.orc" } }, gob = { name: "Goblin", document: { uuid: "Scene.s.Token.gob" } };

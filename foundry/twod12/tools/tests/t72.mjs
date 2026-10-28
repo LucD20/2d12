@@ -1,11 +1,11 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t72.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 const GS = 100;
 globalThis.Combat = class {}; globalThis.CONFIG = {}; globalThis.Hooks = { on() {} }; globalThis.game = { settings: { get: () => true } };
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: {} } } }, utils: { debounce: f => f, deepClone: o => JSON.parse(JSON.stringify(o)) } };
 const tokens = [];
 globalThis.canvas = { grid: { size: GS, getOffset: ({ x, y }) => ({ i: Math.floor(y / GS), j: Math.floor(x / GS) }), getCenterPoint: ({ i, j }) => ({ x: j * GS + GS / 2, y: i * GS + GS / 2 }) }, tokens: { placeables: tokens } };
-const { creaturesOnPath } = await import(ROOT + "module/move.mjs");
+const { creaturesOnPath } = await import(ROOTURL + "module/move.mjs");
 const tok = (id, name, i, j, disp, w = 1) => ({ name, actor: {}, document: { id, x: j * GS, y: i * GS, width: w, height: w, disposition: disp, hidden: false } });
 const me = { id: "me", x: 0, y: 0, width: 1, height: 1, disposition: 1 };
 const P = (i, j) => ({ x: j * GS, y: i * GS });

@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t115.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // v0.0.132 (new sheet, step 3): the Features tab, the Light/Dark look, Escalation cost and chips on the Actions rows.
 const Base = class {};
@@ -30,7 +30,7 @@ const byType = t => items.filter(i => i.type === t);
 const flags = { featureOrder: ["pj", "dp"] };
 const actor = { type: "character", items: Object.assign([...items], { get: id => items.find(i => i.id === id) }), itemTypes: { feature: byType("feature"), action: byType("action"), talent: byType("talent"), species: byType("species"), class: [{ id: "pal", name: "Paladin" }], weapon: [] },
   effects: [], statuses: T(), getFlag: (s, k) => flags[k], system: { level: 1, attributes: { body: 2, mind: 1, appeal: 1, instinct: 0 } } };
-const { CharacterSheet } = await import(ROOT + "module/sheets.mjs");
+const { CharacterSheet } = await import(ROOTURL + "module/sheets.mjs");
 const sheet = Object.create(CharacterSheet.prototype);
 Object.defineProperty(sheet, "actor", { value: actor });
 sheet._groupLabels = ["Class", "Talents", "Items", "Other", "Basic"];

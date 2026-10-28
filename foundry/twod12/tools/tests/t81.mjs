@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t81.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 // JRPG numbers: the motion (jump, fall, bounce, fade; healing floats up), the glyphs and layout, the choice of style, and
 // switching Foundry's own "+(Name)" text off while ours is on.
 const hooks = {}, settings = { floatText: true, floatStyle: "jrpg" };
@@ -13,7 +13,7 @@ globalThis.game = { settings: { get: (s, k) => settings[k], register() {} }, use
 const log = [];
 globalThis.canvas = { interface: { createScrollingText: (o, text, opts) => log.push(`plain ${text} ${opts.direction === 0 ? "down" : "up"}`) }, app: { ticker: {} }, grid: { size: 100 } };
 globalThis.PIXI = {};
-const F = await import(ROOT + "module/floattext.mjs");
+const F = await import(ROOTURL + "module/floattext.mjs");
 F.timing.stagger = 0; F.timing.jrpgStagger = 0;
 // how a number is thrown: up, a change of direction at the top, falling to a side, fading before the ground
 let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;

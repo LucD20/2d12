@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t67.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 const GS = 100;
 const inCombat = new Set();   // the book's examples are fights: every creature here is in the combat, so it makes noise
 globalThis.game = { settings: { get: (s, k) => ({ lightDimBelow: 0.7, lightDarkBelow: 0.4 }[k]) }, combat: { started: true, combatants: { find: f => [...inCombat].map(tokenId => ({ tokenId })).find(f) } } };
@@ -7,8 +7,8 @@ globalThis.CONFIG = { specialStatusEffects: { BLIND: "blind" } };
 globalThis.foundry = {};
 const torch = { active: true, data: { x: 150, y: 150, bright: 400, dim: 800 }, shape: { contains: () => true } };   // centered on square (1,1): Bright 4, Dim 8
 globalThis.canvas = { grid: { size: GS }, environment: { darknessLevel: 1 }, effects: { lightSources: [torch], darknessSources: [] } };
-const L = await import(ROOT + "module/light.mjs");
-const { perceive } = await import(ROOT + "module/senses.mjs");
+const L = await import(ROOTURL + "module/light.mjs");
+const { perceive } = await import(ROOTURL + "module/senses.mjs");
 const tok = (name, i, j, { w = 1, senses = {}, statuses = [], elev = 0 } = {}) => (inCombat.add(name), { name, document: { id: name, x: i * GS, y: j * GS, width: w, height: w, elevation: elev }, actor: { name, statuses: new Set(statuses), system: { senses } } });
 const show = (label, o, t, opt) => { const p = perceive(o, t, opt); console.log(label.padEnd(58), `${p.name} (${p.why})`); };
 console.log("scene light by Darkness level: 0 →", L.levelFromDarkness(0), "| 0.3 →", L.levelFromDarkness(0.3), "| 0.45 →", L.levelFromDarkness(0.45), "| 0.6 →", L.levelFromDarkness(0.6), "| 1 →", L.levelFromDarkness(1));

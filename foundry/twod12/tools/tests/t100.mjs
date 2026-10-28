@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t100.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // Tags (a selection from a world setting), and who moves when a movement button is clicked.
 globalThis.document = { createElement: () => ({ classList: { add() {} }, dataset: {}, append() {}, set innerHTML(v) { this.html = v; } }) };
@@ -8,7 +8,7 @@ globalThis.ui = { notifications: { warn() {}, info() {} } }; globalThis.Hooks = 
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)), getRoute: p => "/" + p, escapeHTML: s => s } };
 let tagSetting = undefined;
 globalThis.game = { settings: { get: (s, k) => { if (k === "tagList" && tagSetting === null) throw new Error("not registered"); return k === "tagList" ? tagSetting : true; } }, combat: null, user: { id: "u", targets: new Set() }, socket: { emit() {} } };
-const C = await import(ROOT + "module/config.mjs");
+const C = await import(ROOTURL + "module/config.mjs");
 console.log("--- Tags");
 console.log("slugs:", JSON.stringify([C.tagSlug("Undead"), C.tagSlug("  Big  Dragon "), C.tagSlug(undefined)]));
 console.log("an older creature stored text:", JSON.stringify(C.migrateTags("Undead, Beast, big Dragon, undead,  , ")), "| nothing:", JSON.stringify(C.migrateTags("")), JSON.stringify(C.migrateTags(undefined)), "| a list:", JSON.stringify(C.migrateTags(["Unholy", "Holy Light"])));
@@ -23,7 +23,7 @@ const sheet = fs.readFileSync(ROOT + "templates/actor-sheet.hbs", "utf8");
 console.log("the NPC sheet: a multi-select of the tags:", sheet.includes('{{#each npcTags.have}}<span class="tchip">') && sheet.includes('<select class="tagadd"'));
 // ---------------------------------------------------------------- who moves
 console.log("--- who moves when a movement button on a card is clicked");
-const M = await import(ROOT + "module/move.mjs");
+const M = await import(ROOTURL + "module/move.mjs");
 const toks = {}, byUuid = {};
 const tok = (id, disposition, name = id) => { const t = { id, name, document: { id, disposition, actor: null }, actor: { name, isOwner: true, getActiveTokens: () => [t] } }; t.actor.token = { object: t }; toks[id] = t; byUuid["Token." + id] = { object: t }; return t; };
 const user = tok("user", 1, "Kai"), friend = tok("friend", 1, "Nari"), enemy = tok("enemy", -1, "Goblin"), enemy2 = tok("enemy2", -1, "Orc"), neutral = tok("neutral", 0, "Bystander");

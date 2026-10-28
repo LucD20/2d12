@@ -1,9 +1,9 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t99.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // The Interrupt/Trigger line of a Reaction, the Fear trait, and the new fields (Tags, the reaction kind, Empowered and Enfeebled on effects).
 globalThis.foundry = { utils: { deepClone: o => o, getRoute: p => "/" + p, escapeHTML: s => s } };
-const C = await import(ROOT + "module/config.mjs");
+const C = await import(ROOTURL + "module/config.mjs");
 console.log("--- the line on a Reaction's card");
 const row = (kind) => C.metaRowHtml({ trigger: "A creature within 3 squares leaves a square during a Move Action", reactionKind: kind }).match(/<b>([^<]*)<\/b> ([^<]*)</);
 for (const kind of ["interrupt", "trigger", "", undefined]) console.log(`kind ${JSON.stringify(kind)}`.padEnd(20), "->", row(kind)?.slice(1).join(" "));

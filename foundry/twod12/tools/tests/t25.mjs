@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t25.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 globalThis.Combat = globalThis.Combat ?? class {};
 globalThis.Combat = class {}; globalThis.CONFIG = {};
 const confirmed = true;
@@ -26,7 +26,7 @@ const comb = { id: "c1", name: "Paladin", initiative: 14, actor, flags: { twod12
 const combatFlags = {};
 const combat = { round: 1, turn: 0, combatant: comb, combatants: [comb], getFlag: (s, k) => combatFlags[k], setFlag: async (s, k, v) => { combatFlags[k] = JSON.parse(JSON.stringify(v)); },
   async updateEmbeddedDocuments(n, ups) { for (const u of ups) { comb.initiative = u.initiative; comb.flags = { twod12: u.flags.twod12 }; } }, async update(d) { Object.assign(combat, d); } };
-const { takeSnapshot, resetTurn } = await import(ROOT + "module/combat.mjs");
+const { takeSnapshot, resetTurn } = await import(ROOTURL + "module/combat.mjs");
 await takeSnapshot(combat);
 console.log("snapshot saved:", Object.keys(combatFlags.snapshot).join(","), "| effects:", combatFlags.snapshot.actors[0].effects.length);
 // the player messes up: takes damage, loses the effect, moves, spends AP, creates an area, swaps initiative

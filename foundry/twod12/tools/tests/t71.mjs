@@ -1,10 +1,10 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t71.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 globalThis.Combat = class {}; globalThis.CONFIG = {};
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: {} } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
 globalThis.Hooks = { on() {} }; globalThis.game = { settings: { get: () => true } };
-const { checkHtml } = await import(ROOT + "module/roll.mjs");
-const { prettyDamage, poolIcon, dtypeHtml } = await import(ROOT + "module/config.mjs");
+const { checkHtml } = await import(ROOTURL + "module/roll.mjs");
+const { prettyDamage, poolIcon, dtypeHtml } = await import(ROOTURL + "module/config.mjs");
 const strip = h => h.replace(/data-tooltip="[^"]*"/g, "").replace(/<i class="fa-solid fa-link dlink"><\/i>/g, " ⛓ ").replace(/<span class="die d12([^"]*)"\s*>(\d+)<\/span>/g, (m, c, f) => `[${f}${c.trim() ? ":" + c.trim().replace(/ /g, ",") : ""}]`).replace(/<span class="die d3 (boon|bane)">(\d+)<\/span>/g, (m, k, f) => `{${k} ${f}}`).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 const ex = { d1: [12, 8], d2: [4], doubles: false, base: 3, tier: 3, crit: false, total: 26, dc: 13, mod: 2, adj: 0, boonFaces: [1], baneFaces: [], sources: [{ name: "Aim", boons: 1 }], state: "", dropped: null };
 console.log("explosion:", strip(checkHtml("Weapon Modifier · Body", ex, [], { status: false })));

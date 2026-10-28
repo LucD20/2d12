@@ -1,9 +1,9 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t129.mjs)
 // v0.0.153 (the Paladin against the book): reworded Versions, Hallowed Stance's Power Modifier, and every card's Vs. entry as the book writes it.
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 globalThis.foundry ??= { utils: {} };
-const G = await import(ROOT + "module/config.mjs");
-const C = await import(ROOT + "tools/content.mjs");
+const G = await import(ROOTURL + "module/config.mjs");
+const C = await import(ROOTURL + "tools/content.mjs");
 const get = n => C.docs.find(d => d.name === n);
 const tiers = (n, ap) => { const v = get(n).system.versions.find(x => x.ap === ap); return [1, 2, 3].map(k => (v["x" + k] ?? "").replace(/<[^>]+>/g, "")).join(" / "); };
 console.log("Vow of Enmity 2 AP:", tiers("Vow of Enmity", 2), "|| 3 AP:", tiers("Vow of Enmity", 3));

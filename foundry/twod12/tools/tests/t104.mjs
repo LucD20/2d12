@@ -1,5 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t104.mjs)
-const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // Editing an applied effect (v0.0.113): what an edit writes back to it, and where a click on it goes.
 globalThis.Combat = class {}; globalThis.CONFIG = { statusEffects: [] };
@@ -7,7 +7,7 @@ globalThis.Hooks = { on() {}, once() {} };
 globalThis.ui = { notifications: { info() {}, warn() {}, error() {} } };
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async h => h } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)), getRoute: p => "/" + p, escapeHTML: s => s } };
 globalThis.game = { settings: { get: () => true, register() {} }, user: { id: "u" }, socket: { on() {}, emit() {} } };
-const { appliedUpdate } = await import(ROOT + "module/fxsync.mjs");
+const { appliedUpdate } = await import(ROOTURL + "module/fxsync.mjs");
 const S = a => new Set(a), blank = { attrs: S(), all: S(), any: S(), none: S(), from: S(), tiers: S() };
 const mkFx = flags => ({ name: "Battle Fervor", flags: { twod12: flags }, getFlag: (s, k) => flags[k] });
 const sys = (settings, extra = {}) => ({ description: "", settings: settings.map(x => ({ ...blank, ...x })), expireOn: S(["magic"]), expireAll: false, duration: { type: "rounds", rounds: 2 }, conditions: [], ...extra });
@@ -40,7 +40,7 @@ s = sys([], { duration: { type: "", rounds: 1 }, conditions: [{ uuid: "C.emp", n
 r = appliedUpdate(fx, s, plainSrc(s), "X", "i");
 console.log("added:", r.added.map(c => c.name).join(","), "| removed:", r.removed.map(c => c.name).join(","));
 console.log("--- where a click goes");
-const { openEffectSheet, setEffectOpener } = await import(ROOT + "module/fxopen.mjs");
+const { openEffectSheet, setEffectOpener } = await import(ROOTURL + "module/fxopen.mjs");
 const log = []; const f = { name: "A", sheet: { render: () => log.push("foundry window") } };
 openEffectSheet(f); setEffectOpener(() => (log.push("2d12 editor"), true)); openEffectSheet(f);
 setEffectOpener(() => false); openEffectSheet(f); setEffectOpener(() => { throw new Error("x"); });
@@ -59,7 +59,7 @@ s = sys([], { duration: { type: "eot", rounds: 1 } });
 fx = mkFx({ duration: { type: "rounds", rounds: 2 }, remaining: 2, source: { conditions: [] } });
 r = appliedUpdate(fx, s, plainSrc(s), "X", "i"); console.log("Lasts changed from 2 rounds to EoT:", JSON.stringify(r.update["flags.twod12.duration"]));
 console.log("--- v0.0.115: an applied effect with no copy of its settings");
-const { sourceFromFlags } = await import(ROOT + "module/fxsync.mjs");
+const { sourceFromFlags } = await import(ROOTURL + "module/fxsync.mjs");
 const old = { name: "Old Blessing", description: "", statuses: new Set(), flags: { twod12: {
   duration: { type: "rounds", rounds: 3 }, expireOn: ["magic", "bogus"], expireAll: true,
   modifiers: [{ boons: 1, banes: 0, empowered: 1, all: ["melee", "flanking"], any: [], none: ["ranged"], from: [], against: false }],
