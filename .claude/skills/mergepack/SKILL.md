@@ -10,7 +10,7 @@ disable-model-invocation: true
 Merge the branch `$ARGUMENTS` into `main`. Run from the repository root. If no branch was given, ask for it and stop.
 
 
-**Where this runs:** these steps change the checkout of the session that runs them. In a cloud session that is the cloud copy, not Lucas's PC: say so in the report. On his PC, `tools/sync-pack.ps1` (Task Scheduler, every 10 minutes) does the same on its own: it syncs the newest unmerged pack branch, goes back to main after a merge, and rebuilds the packs when Foundry is closed.
+**Where this runs:** these steps change the checkout of the session that runs them. In a cloud session that is the cloud copy, not Lucas's PC: say so in the report. On his PC, he double-clicks `Update Foundry.cmd` in the project folder (it runs `tools/sync-pack.ps1 -Interactive`), which does the same: it syncs the newest unmerged pack branch, goes back to main after a merge, and rebuilds the packs when Foundry is closed.
 
 1. **Merge.** Run `git status --porcelain`: if the working tree isn't clean, show what is there and stop. Then `git checkout main`, `git pull`, `git merge $ARGUMENTS`. If the merge has conflicts, show the conflicted files (`git diff --name-only --diff-filter=U`) and the conflict hunks, and stop: don't resolve them and don't push.
 2. **Push and knowledge.** `git push origin main`. Then run `python tools/knowledge.py` and tell Lucas to re-upload `knowledge/` to the Project. (In a cloud session, skip knowledge.py and say so: Lucas runs it locally.)

@@ -1,0 +1,1 @@
+@echo off & title Update Foundry (2d12) & copy /y "%~dp0tools\sync-pack.ps1" "%TEMP%\2d12-sync-pack.ps1" >nul & powershell -NoProfile -ExecutionPolicy Bypass -File "%TEMP%\2d12-sync-pack.ps1" -Interactive & echo. & pause

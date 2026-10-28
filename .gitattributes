@@ -1,2 +1,4 @@
 # Store text with LF line endings: python's build on Windows writes CRLF, which would otherwise show every rebuilt HTML file as changed.
 * text=auto eol=lf
+# Windows batch files keep CRLF (cmd.exe reads them line by line)
+*.cmd text eol=crlf

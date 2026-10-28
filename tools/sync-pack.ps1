@@ -1,10 +1,12 @@
 # Pulls the newest unmerged origin/pack-* branch, tests it, rebuilds the compendium when needed and notifies.
 # When the pack branch it is on has been merged (and no newer pack waits), it goes back to main the same way.
 # When changed files stop it, it says so once with a notification (until the list changes).
-# Runs from Task Scheduler (see tools/register-sync-task.ps1). No Claude involved.
-#   powershell -File tools\sync-pack.ps1 -DryRun      show what it would do now, change nothing (no log, no state)
-#   powershell -File tools\sync-pack.ps1 -TestNotify  only show a test notification
-param([switch]$DryRun, [switch]$TestNotify)
+# Run it by double-clicking "Update Foundry.cmd" in the project folder (-Interactive: a window shows each step and waits for Foundry
+# to be closed), or from Task Scheduler (tools/register-sync-task.ps1, optional). No Claude involved.
+#   powershell -File tools\sync-pack.ps1 -Interactive  what the .cmd runs
+#   powershell -File tools\sync-pack.ps1 -DryRun       show what it would do now, change nothing (no log, no state)
+#   powershell -File tools\sync-pack.ps1 -TestNotify   only show a test notification
+param([switch]$DryRun, [switch]$TestNotify, [switch]$Interactive)
 
 $ErrorActionPreference = "Continue"
 $Repo = "D:\Minha Pasta\RPG\2d12-project"
@@ -16,10 +18,21 @@ $SummaryFile = Join-Path $Repo "pack-sync\latest.md"
 function Log($msg) {
     $line = "{0}  {1}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), $msg
     if ($DryRun) { Write-Host $line } else { Add-Content -Path $LogFile -Value $line -Encoding UTF8 }
+    if ($Interactive) { Write-Host $msg }
+}
+
+# In the window (-Interactive): Foundry must be closed before anything changes; wait for Lucas to close it.
+function WaitForFoundryClosed {
+    while (Get-Process -Name $FoundryProcess -ErrorAction SilentlyContinue) {
+        Write-Host ""
+        Write-Host "Foundry is running. Close it (the packs can't be rebuilt while it is open), then press Enter." -ForegroundColor Yellow
+        [void](Read-Host)
+    }
 }
 
 function Notify($title, $message) {
     if ($DryRun) { Log "(dry run) would notify: $title - $message"; return }
+    if ($Interactive) { Write-Host ""; Write-Host "${title}: $message" -ForegroundColor Cyan; return }
     $t = [Security.SecurityElement]::Escape($title)
     $m = [Security.SecurityElement]::Escape($message)
     try {
@@ -82,7 +95,7 @@ function TestAndBuild([bool]$needBuild) {
 if ($TestNotify) { Notify "2d12 sync test" "If you see this, notifications work."; exit 0 }
 
 Set-Location $Repo
-if ($DryRun) { Log "DRY RUN: nothing will be checked out, built, written or notified (git fetch still updates remote refs)" } else { Log "run started" }
+if ($DryRun) { Log "DRY RUN: nothing will be checked out, built, written or notified (git fetch still updates remote refs)" } else { Log "run started$(if ($Interactive) { ' (Update Foundry.cmd)' })" }
 
 $state = if (Test-Path $StateFile) { Get-Content $StateFile -Raw | ConvertFrom-Json } else { $null }
 
@@ -91,7 +104,7 @@ $dirty = @(G status --porcelain | Where-Object { $_ -and $_.Substring(3).Trim('"
 if ($dirty.Count) {
     Log "uncommitted changes besides notes.txt, stopping: $($dirty -join '; ')"
     $list = ($dirty | ForEach-Object { $_.Substring(3).Trim('"') }) -join ", "
-    if (-not $state -or $state.dirtyNote -ne $list) {   # once per list of files, not every 10 minutes
+    if ($Interactive -or -not $state -or $state.dirtyNote -ne $list) {   # once per list of files (from Task Scheduler), always in the window
         Notify "2d12 sync stopped" "Changed files in the project folder: $list. Run 'git stash' there (or commit them) and the sync goes on."
         SaveState @{ branch = $(if ($state) { $state.branch } else { "" }); hash = $(if ($state) { $state.hash } else { "" }); waitingHash = $(if ($state) { $state.waitingHash } else { "" }); dirtyNote = $list }
     }
@@ -106,7 +119,7 @@ foreach ($line in (G for-each-ref --sort=-committerdate "--format=%(refname:shor
     $ref, $hash = $line -split " "
     [void](G merge-base --is-ancestor $ref origin/main)
     if ($GitExit -eq 0) { continue }                       # already merged into main
-    if ($state -and $state.hash -eq $hash) { continue }    # already synced
+    if (-not $Interactive -and $state -and $state.hash -eq $hash) { continue }    # already synced (the window always takes the newest pack)
     $pick = @{ ref = $ref; branch = $ref -replace "^origin/", ""; hash = $hash }
     break
 }
@@ -118,7 +131,12 @@ if (-not $pick) {
         [void](G rev-parse --verify --quiet "refs/remotes/origin/$cur")
         if ($GitExit -ne 0) { $merged = $true } else { [void](G merge-base --is-ancestor "origin/$cur" origin/main); $merged = ($GitExit -eq 0) }
     }
-    if (-not $merged) { if ($DryRun) { Log "nothing to sync (no new unmerged origin/pack-* branch; on $cur)" }; exit 0 }
+    if (-not $merged) {
+        if ($DryRun) { Log "nothing to sync (no new unmerged origin/pack-* branch; on $cur)" }
+        if ($Interactive) { Notify "Already up to date" "on $cur, v$((Get-Content (Join-Path $Repo 'foundry\twod12\system.json') -Raw | ConvertFrom-Json).version); no newer pack branch" }
+        exit 0
+    }
+    if ($Interactive) { WaitForFoundryClosed }
     $mainHash = @(G rev-parse origin/main)[0]
     if (Get-Process -Name $FoundryProcess -ErrorAction SilentlyContinue) {
         if (-not ($state -and $state.waitingHash -eq "main:$mainHash")) {
@@ -147,6 +165,11 @@ if (-not $pick) {
 }
 $branch = $pick.branch
 Log "candidate: $branch @ $($pick.hash.Substring(0, 7))"
+if ($Interactive -and (@(G rev-parse HEAD)[0] -eq $pick.hash) -and (Test-Path (Join-Path $Repo "foundry\twod12\packs\actions"))) {
+    Notify "Already up to date" "on $branch, v$((Get-Content (Join-Path $Repo 'foundry\twod12\system.json') -Raw | ConvertFrom-Json).version)"
+    exit 0
+}
+if ($Interactive) { WaitForFoundryClosed }
 
 # 4. Foundry running?
 if (Get-Process -Name $FoundryProcess -ErrorAction SilentlyContinue) {
@@ -211,6 +234,7 @@ $entry
 
 @{ branch = $branch; hash = $pick.hash; waitingHash = "" } | ConvertTo-Json | Set-Content $StateFile -Encoding UTF8
 Log "wrote pack-sync\latest.md and .sync-state"
+if ($Interactive) { Write-Host ""; Write-Host "What this version changed (test it with this):" -ForegroundColor Cyan; Write-Host $entry }
 $msg = "$branch v$version is ready: $(if ($needBuild) { 'start Foundry (the packs were rebuilt)' } else { 'reload Foundry (F5)' }) and test"
 if (-not $testsOk) { $msg += " (tests FAILED, see pack-sync\latest.md)" }
 Notify "2d12 sync" $msg
