@@ -114,7 +114,8 @@ function compute(shape, n, pos) {
     return { cells: emanationCells(baseCells, n), origin: tk, baseCells, point: tk ? spaceCenter(tk) : cellCenter(c.i, c.j) };
   }
   const o = cellAt(pos), tl = cTL(o.i, o.j), s = size();
-  const pts = [{ x: tl.x + s / 2, y: tl.y + s / 2 }, { x: tl.x, y: tl.y }, { x: tl.x + s, y: tl.y }, { x: tl.x, y: tl.y + s }, { x: tl.x + s, y: tl.y + s }];
+  // v0.0.176 (book, Burst): a Burst is centered on a corner, never on the center of a square: it snaps to the nearest grid corner.
+  const pts = [{ x: tl.x, y: tl.y }, { x: tl.x + s, y: tl.y }, { x: tl.x, y: tl.y + s }, { x: tl.x + s, y: tl.y + s }];
   const c = pts.reduce((a, b) => (Math.hypot(b.x - pos.x, b.y - pos.y) < Math.hypot(a.x - pos.x, a.y - pos.y) ? b : a));
   return { cells: burstCells(c, n), origin: null, point: c };
 }

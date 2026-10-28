@@ -10,9 +10,10 @@ import { TWOD12, expandAsText, areaButton, isTalentAction, targetsNeeded, areaCo
 import { weaponsFor, hasProp } from "./fists.mjs";
 import { isEngaged, engagedWithOther } from "./engaged.mjs";
 import { flankingMod } from "./flanking.mjs";
+import { offerWake } from "./down.mjs";
 import { performCheck, performMultiCheck, multiCheckHtml, collapseNames, uniqueLabels, checkHtml, esc, sgn } from "./roll.mjs";
 import { postDamageCard, postMultiDamageCard } from "./dmgcard.mjs";
-import { cardVars, cardHead, flavorHtml, apIcon, traitChevrons, categoryText, highlightText, metaRowHtml, effectiveFrequency, distanceText, cardColorFor, vsText, targetsRowHtml, requirementProblem, doomStatus } from "./config.mjs";
+import { cardVars, cardHead, flavorHtml, apIcon, traitChevrons, categoryText, highlightText, metaRowHtml, effectiveFrequency, distanceText, areaText, cardColorFor, vsText, targetsRowHtml, requirementProblem, doomStatus } from "./config.mjs";
 import { collectBonuses, expireOnUse } from "./bonus.mjs";
 import { notesFor, resolveModifiers, applyEffects, originInfo, damageSteps, modifierList } from "./effects.mjs";
 import { spendAP, combatantOf } from "./combat.mjs";
@@ -383,6 +384,7 @@ export async function useAction(actor, item, opts = {}) {
     if (it.traits.has("move") && !["crawl", "stand"].includes(basicKey)) return ui.notifications.warn(`${actor.name} is Prone: the only Move Actions it can use are Crawl and Stand.`);
   }
   if (basicKey === "rally" && (s.atZero || actor.statuses?.has?.("unconscious"))) return ui.notifications.warn(`${actor.name} can't use Steel Yourself while Down or Unconscious.`);
+  if (basicKey === "interact") await offerWake(actor, [...game.user.targets]);   // v0.0.176: waking an Unconscious creature (not one that is Down)
   // Setup: what happens before the dice are rolled. Its movement is made first, so the range, cover and Engaged of the roll come from where the creature ends.
   let setupDone = false;
   if (!opts.noSetup && String(it.setup ?? "").includes("@Move")) {
@@ -755,7 +757,7 @@ export async function useAction(actor, item, opts = {}) {
   const btn = (mres ? mres.some(r => dmgNeeded(r.chk.tier, r.bonuses)) : dmgNeeded(tier, bonuses))
     ? `<div class="dmgbtn"><button type="button" data-twod12="rollDamage"><i class="fa-solid fa-dice"></i> Roll Damage${mres ? " (per Tier)" : ""}</button></div>` : "";
   const color = cardColorFor(it);
-  const trow = metaRowHtml({ escalation: it.escalation ?? 0, frequency: effectiveFrequency(it), targetText: it.targets, distance: distanceText(it, weapon), vs: vsText(it, { src, fists: item.getFlag?.("twod12", "basic") === "fists", rolls: !version.noTiers }), requirements: it.requirements, trigger: it.trigger, reactionKind: it.reactionKind, self: isSelf });
+  const trow = metaRowHtml({ escalation: it.escalation ?? 0, frequency: effectiveFrequency(it), targetText: it.targets, distance: distanceText(it, weapon), area: areaText(it), vs: vsText(it, { src, fists: item.getFlag?.("twod12", "basic") === "fists", rolls: !version.noTiers }), requirements: it.requirements, trigger: it.trigger, reactionKind: it.reactionKind, self: isSelf });
   const areaRow = areaButton(it) && !areaPlaced ? `<div class="trow arearow">${await enrich(areaButton(it), item)}</div>` : "";
   const setupRow = it.setup ? `<div class="trow setuprow"><b>Setup:</b> ${await enrich(setupFor(it.setup, setupDone), item)}</div>` : "";
   const html = `<div class="twod12 chat action" style="${cardVars(color)}">

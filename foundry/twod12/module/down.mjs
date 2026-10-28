@@ -34,13 +34,29 @@ async function dyingKind(actor) {
   return ask(actor, "Body and Mind damage are tied: which do you become?", [["dying", "Dying (Body)"], ["shattered", "Shattered (Mind)"]]);
 }
 
+/**
+ * The Table marks of this encounter: { combat: id, kinds: ["dying", ...] } (v0.0.176). An older flag (only the combat's id) counted for both
+ * conditions; it is read as "Dying and Shattered both rolled" so nothing rolls twice. Pure: the tests use it.
+ */
+export function firstTimeThisEncounter(flag, cid, kind) {
+  if (!flag) return true;
+  if (typeof flag === "string") return flag !== cid;
+  return flag.combat !== cid || !(flag.kinds ?? []).includes(kind);
+}
+export function tableMark(flag, cid, kind) {
+  const kinds = flag && typeof flag === "object" && flag.combat === cid ? [...(flag.kinds ?? [])] : [];
+  return { combat: cid, kinds: [...new Set([...kinds, kind])] };
+}
+
 /** Become Dying or Shattered: the Table the first time in this encounter, then collapse or keep fighting. */
 async function becomeDying(actor) {
   const kind = await dyingKind(actor);
   await setStatus(actor, "desperate", false);
   await setStatus(actor, kind, true);
   const cid = game.combat?.id ?? "none";
-  if (actor.getFlag(F, "downTableCombat") !== cid) { await rollTable(actor, kind); await actor.setFlag(F, "downTableCombat", cid); }
+  // v0.0.176 (book, Dying and Shattered): the first time you become Dying in an encounter you roll on the Dying Table, and the first time you
+  // become Shattered on the Shattered Table; again in the same encounter, no roll. Each condition counts on its own.
+  if (firstTimeThisEncounter(actor.getFlag(F, "downTableCombat"), cid, kind)) { await rollTable(actor, kind); await actor.setFlag(F, "downTableCombat", tableMark(actor.getFlag(F, "downTableCombat"), cid, kind)); }
   await chooseFight(actor, kind);
 }
 
@@ -142,4 +158,29 @@ export function registerDownHooks() {
     const c = combat.combatants.get(prior?.combatantId);
     try { await endOfTurn(c?.actor); } catch (e) { console.warn("twod12 | Dying/Shattered at the end of the turn", e); }
   });
+}
+
+/**
+ * v0.0.176 (book, Unconscious): "Unless you are Down, a creature can wake you with the Interact Action (1A)". Down: damage at or above the
+ * Health Pool, or Desperate, Dying or Shattered. Returns "" (it can be woken) or why not. Pure: the tests use it.
+ */
+export function wakeProblem(actor) {
+  const st = actor?.statuses;
+  if (!st?.has?.("unconscious")) return "isn't Unconscious";
+  if (actor.system?.atZero || ["desperate", "dying", "shattered"].some(k => st.has(k))) return "is Down: Interact can't wake a creature that is Down";
+  return "";
+}
+
+/** Interact with an Unconscious creature targeted: offer to wake it (it stops being Unconscious), or say why it can't be woken. */
+export async function offerWake(user, tokens) {
+  for (const t of tokens ?? []) {
+    const a = t?.actor;
+    if (!a?.statuses?.has?.("unconscious")) continue;
+    const why = wakeProblem(a);
+    if (why) { ui.notifications.warn(`${t.name} ${why}.`); continue; }
+    const ok = await foundry.applications.api.DialogV2.confirm({ window: { title: "Interact" }, content: `<p>Wake <b>${t.name}</b>? It stops being Unconscious.</p>`, rejectClose: false });
+    if (!ok) continue;
+    if (a.isOwner) await a.toggleStatusEffect("unconscious", { active: false });
+    await ChatMessage.create({ content: `<div class="twod12 chat apmsg"><b>${user?.name ?? "Someone"}</b> wakes <b>${t.name}</b> (Interact)${a.isOwner ? "" : ": the GM removes Unconscious"}.</div>` });
+  }
 }

@@ -1,4 +1,3 @@
-import { tokenLight, seenLight } from "./light.mjs";
 // Inline rolls for chat, descriptions and card text:
 // @Check[body|dc:14|adj:2|boon:1|bane:2|traits:divine]   @Damage[(1d4+1)[body,slash],1d6[mind,holy]]
 // @Save[appeal|dc:13|t1:1d6[mind,holy]|t2:"text"|t3:0]   @Template[emanation|distance:2|targets:enemies|self:no|places:yes]
@@ -317,11 +316,10 @@ async function doCheck(kind, cfg, ctx = {}) {
   const key = cfg.attr;
   if (!(key in TWOD12.attributes)) return ui.notifications.warn(`Unknown attribute: ${key}`);
   const label = `${TWOD12.attributes[key]} ${kind === "Save" ? "Save" : "Check"}`;
-  for (const { actor, token } of rollers()) {
+  for (const { actor } of rollers()) {
     const mod = actor.system.attributes[key] ?? 0;
-    // A Check that requires sight uses the light where you are (after your Sight Senses): Dim 1 bane, Darkness Doomed.
-    const sightLight = kind === "Check" && cfg.sight && token ? seenLight(tokenLight(token), actor.system.senses ?? {}) : "bright";
-    const sightMods = sightLight === "dim" ? [{ id: "syn:dim", name: "Dim light (1 Bane)", full: true, boons: 0, banes: 1, match: true, predicate: "A Check that requires sight, in Dim light" }] : [];
+    // v0.0.176 (book 2026-10-25): only the light where the TARGET is matters, so the light where you stand no longer changes a Check
+    // (the "requires sight" penalties of Dim light and Darkness are gone; |sight:yes is still read and does nothing).
     const data = await askRoll(actor, {
       title: `${label}: ${actor.name}`,
       attrKey: key,
@@ -332,15 +330,10 @@ async function doCheck(kind, cfg, ctx = {}) {
         mod: cfg.adj,
         boons: cfg.boon,
         banes: cfg.bane,
-        doomed: unconsciousDoom(actor, key, kind) || sightLight === "dark",
-        doomedWhy:
-          sightLight === "dark" && !unconsciousDoom(actor, key, kind) ? "Darkness: a Check that requires sight" : `${doomStatus(actor) || "Unconscious"}: all your Rolls are Doomed`,
-        doomedLabel:
-          sightLight === "dark" && !unconsciousDoom(actor, key, kind)
-            ? "Darkness (Doomed)"
-            : `${doomStatus(actor) || "Unconscious"} (Doomed)`
-      },
-      extraMods: sightMods
+        doomed: unconsciousDoom(actor, key, kind),
+        doomedWhy: `${doomStatus(actor) || "Unconscious"}: all your Rolls are Doomed`,
+        doomedLabel: `${doomStatus(actor) || "Unconscious"} (Doomed)`
+      }
     });
     if (!data) continue;
     const fxm = resolveModifiers(actor, data.fx);

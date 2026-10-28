@@ -70,7 +70,7 @@ export const BASIC_ACTIONS = {
         [],
         [],
         [],
-        "You do one of the following: swap two objects (one you are holding with one on your person); grab an object within Reach; grip a weapon with two hands; help a Prone creature within Reach stand up; help an Imperiled creature within Reach get to safety; wake an Unconscious creature within Reach; open a door, chest or something similar. This Action is broader than most: it can be used for similar things in the world.",
+        "You do one of the following: swap two objects (one you are holding with one on your person); grab objects within Reach, as many as you have free hands; grip a weapon with two hands; help a Prone creature within Reach stand up; help an Imperiled creature within Reach get to safety; wake an Unconscious creature within Reach; open a door, chest or something similar. This Action is broader than most: it can be used for similar things in the world.",
         { noTiers: true }
       )
     ]
@@ -317,6 +317,14 @@ export function registerBasicHooks() {
     if (!game.user.isActiveGM) return;
     const fixed = await fixReleaseCost(game.actors ?? []);
     if (fixed) ui.notifications.info(`Release now costs 0 AP on ${fixed} creature${fixed === 1 ? "" : "s"}.`);
+    // v0.0.176, once per world: the new Rally values of the Paladin and the Archer (the Rally Points formula changed with them).
+    try {
+      if (!game.settings.get(F, "rallyV176")) {
+        const r = await fixClassRally(game.items ?? [], game.actors ?? []);
+        await game.settings.set(F, "rallyV176", true);
+        if (r) ui.notifications.info(`2d12: the Rally value of ${r} Paladin or Archer class item${r === 1 ? "" : "s"} follows the book now (Paladin 6, Archer 5).`);
+      }
+    } catch (e) { console.warn("twod12 | Rally values", e); }
     // v0.0.169 and v0.0.170, once per creature that needs it: the new Basic Actions (Relocate, the 3 AP Shove, Fists as a Weapon Action, Haul) and Fists as an ordinary weapon.
     let n = 0;
     for (const actor of game.actors ?? []) {
@@ -330,6 +338,23 @@ export function registerBasicHooks() {
     }
     if (n) ui.notifications.info(`2d12: the Basic Actions were updated on ${n} creature${n === 1 ? "" : "s"} (Relocate, Shove, Haul, Fists).`);
   });
+}
+
+/**
+ * v0.0.176: the class Rally values of the book (Paladin 6, Archer 5) with the new Rally Points formula. A Paladin or Archer class item that still has
+ * the old value (4 or 3, which went with ceil(Pool / 4) + Rally) gets the new one: world items and the ones on actors. Returns how many were changed.
+ */
+export const RALLY_VALUES = { paladin: [4, 6], archer: [3, 5] };
+export async function fixClassRally(worldItems, actors) {
+  let n = 0;
+  const fix = async it => {
+    const v = RALLY_VALUES[String(it?.name ?? "").trim().toLowerCase()];
+    if (it?.type !== "class" || !v || Number(it.system?.rallyMod) !== v[0]) return;
+    try { await it.update({ "system.rallyMod": v[1] }); n++; } catch (e) { console.warn("twod12 | could not update the Rally value of", it.name, e); }
+  };
+  for (const it of worldItems ?? []) await fix(it);
+  for (const a of actors ?? []) for (const it of a.items ?? []) await fix(it);
+  return n;
 }
 
 /** Set the Release Basic Action of these actors to 0 AP where it was saved at more. Returns how many were changed. */

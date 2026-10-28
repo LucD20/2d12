@@ -1,6 +1,6 @@
 // Roll dialog preview: what the action will roll, per Version, in the look of the chat card.
 import { attrFromTier } from "./rollsource.mjs";
-import { TWOD12, expandAsText, cardVars, cardHead, flavorHtml, apIcon, apLabel, traitChevrons, categoryText, highlightText, metaRowHtml, effectiveFrequency, distanceText, cardColorFor, vsText, areaButton, poolIcon, dtypeHtml, inkOf, prettyDamage } from "./config.mjs";
+import { TWOD12, expandAsText, cardVars, cardHead, flavorHtml, apIcon, apLabel, traitChevrons, categoryText, highlightText, metaRowHtml, effectiveFrequency, distanceText, areaText, cardColorFor, vsText, areaButton, poolIcon, dtypeHtml, inkOf, prettyDamage } from "./config.mjs";
 import { setupFor } from "./setup.mjs";
 import { esc } from "./roll.mjs";
 import { tierAvg, tierProbs, critProb, fmt } from "./calc.mjs";
@@ -62,7 +62,7 @@ export async function buildPreviews(ctx) {
     }
     // The Critical row sits under Tier 3, only for Actions that have one.
     if (!v.noTiers && v.critical) rows.push(`<tr class="critp"><th>Critical <small class="pv-c"></small></th><td>${await enrich(v.critical, item)}</td></tr>`);
-    const pvMeta = metaRowHtml({ escalation: it.escalation ?? 0, frequency: effectiveFrequency(it), targetText: it.targets, distance: distanceText(it, ctx.weapon), vs: vsText(it, { fists: item.getFlag?.("twod12", "basic") === "fists", rolls: !v.noTiers }), requirements: it.requirements, trigger: it.trigger, reactionKind: it.reactionKind, self: ctx.isSelf });
+    const pvMeta = metaRowHtml({ escalation: it.escalation ?? 0, frequency: effectiveFrequency(it), targetText: it.targets, distance: distanceText(it, ctx.weapon), area: areaText(it), vs: vsText(it, { fists: item.getFlag?.("twod12", "basic") === "fists", rolls: !v.noTiers }), requirements: it.requirements, trigger: it.trigger, reactionKind: it.reactionKind, self: ctx.isSelf });
     const pvArea = areaButton(it) ? `<div class="trow arearow">${await enrich(areaButton(it), item)}</div>` : "";
     const pvSetup = it.setup ? `<div class="trow setuprow"><b>Setup:</b> ${await enrich(setupFor(it.setup, ctx.setupDone), item)}</div>` : "";
     const check = ctx.mod === null || v.noTiers ? "" : `<div class="pv-check">${esc(ctx.checkLabel)}: 2d12 ${sgnN(ctx.mod)} vs DC <b class="pv-dc">${ctx.dc}</b> <span class="pv-odds"></span></div>`;
@@ -143,7 +143,7 @@ export async function buildRawCard(item) {
     ${cardHead(item.name, categoryText(it), apLabel(it.versions.map(v => v.ap), it.reaction), effectiveFrequency(it))}
     ${flavorHtml(it)}
     ${it.traits.size ? `<div class="traits">${traitChevrons(it.traits)}</div>` : ""}
-    ${metaRowHtml({ escalation: it.escalation ?? 0, frequency: effectiveFrequency(it), targetText: it.targets, distance: distanceText(it), vs: vsText(it, { fists: item.getFlag?.("twod12", "basic") === "fists" }), requirements: it.requirements, trigger: it.trigger, reactionKind: it.reactionKind, self: it.traits.has("self") })}${areaRow}${setupRow}
+    ${metaRowHtml({ escalation: it.escalation ?? 0, frequency: effectiveFrequency(it), targetText: it.targets, distance: distanceText(it), area: areaText(it), vs: vsText(it, { fists: item.getFlag?.("twod12", "basic") === "fists" }), requirements: it.requirements, trigger: it.trigger, reactionKind: it.reactionKind, self: it.traits.has("self") })}${areaRow}${setupRow}
     ${(it.traits.size || it.targets || it.requirements || it.trigger || effectiveFrequency(it)) ? `<hr class="cdiv">` : ""}
     ${it.prerequisites ? `<div class="trow"><b>Prerequisites:</b> ${esc(it.prerequisites)}</div>` : ""}
     ${tabs}

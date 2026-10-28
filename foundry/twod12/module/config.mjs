@@ -170,6 +170,11 @@ export const TWOD12 = {
     extreme: { label: "Extreme", off: 2, step: 1.4, hstep: 1.5, score: 2 }
   },
   npcMinionHm: { terrible: 0, low: 0.75, medium: 1, high: 1.25 },
+  // Levels (v0.0.176, the Bestiary's rows; spec: book/ruler/ratings.py). bump: the 5-15% a rating grows; measured: how the PCs grow
+  // (h: their sustained damage, so NPC Health keeps a fight as long; d: their Health, so NPC damage keeps a PC going Down after as many hits).
+  npcBump: { terrible: 0.05, low: 0.075, medium: 0.10, high: 0.125, extreme: 0.15 },
+  npcMeasured: { h: { 1: 1, 2: 1.14, 3: 1.14 }, d: { 1: 1, 2: 12 / 11, 3: 13 / 11 } },
+  npcMaxLevel: 3,   // the Bestiary has rows for levels 1 to 3; a higher level uses the level 3 numbers
   npcSpeeds: [3, 4, 5, 6, 7],   // the Builder's Speed choices (5 by default); any other Speed is Custom   // a Minion's Health Multipliers (no Extreme)
   npcSpecial: [{ key: "basic", label: "Basic attack", sub: "1 AP, At-will", x: 1 }, { key: "s1", label: "Special, 1 AP", sub: "Round", x: 1.4 }, { key: "s2", label: "Special, 2 AP", sub: "Round", x: 2.2 }, { key: "s3", label: "Special, 3 AP", sub: "Encounter (not Minions)", x: 3.5 }],
   // A level 1 PC's damage a turn against a Defense (ruler: book/ruler/defense.mjs, mean of the Paladin's and the Archer's turn), for the Builder's check.
@@ -193,6 +198,25 @@ export const TWOD12 = {
   // Pushed: the creature can only end in a cone (degrees either side of the line straight away from the origin).
   pushCone: 45
 };
+
+/* ------------------------------------------------------------------ the Bestiary's levels (v0.0.176; spec: book/ruler/ratings.py) */
+const r5 = x => Math.round(x * 2) / 2, r25 = x => Math.round(x * 4) / 4;
+/** The level the tables use: 1 to 3 (the Bestiary has no rows above 3 yet; level 0 counts as 1). */
+export const npcTableLevel = lv => Math.min(TWOD12.npcMaxLevel, Math.max(1, Math.trunc(Number(lv)) || 1));
+/** How a rating grows a level relative to Medium (shared by Health and damage). */
+const npcRel = k => Math.sqrt((1 + (TWOD12.npcBump[k] ?? 0.1)) / (1 + TWOD12.npcBump.medium));
+/** The damage factor of a rating at a level: level 1 is raised by half the rating's bump; then it grows like the PCs' Health. */
+export const npcDfac = (k, lv) => { const l = npcTableLevel(lv); return (1 + (TWOD12.npcBump[k] ?? 0.1) / 2) * TWOD12.npcMeasured.d[l] * npcRel(k) ** (l - 1); };
+/** The Health factor of a rating at a level: it grows like the PCs' sustained damage. */
+export const npcHfac = (k, lv) => { const l = npcTableLevel(lv); return TWOD12.npcMeasured.h[l] * npcRel(k) ** (l - 1); };
+/** The Health Multiplier of a rating at a level: level 1 exactly as the table writes it; later levels rounded to 0.5 (a Minion's to 0.25). */
+export function npcHm(roleKey, rating, lv) {
+  const role = TWOD12.npcRoles[roleKey] ?? TWOD12.npcRoles.standard, l = npcTableLevel(lv);
+  const v = (roleKey === "minion" ? (TWOD12.npcMinionHm[rating] ?? 1) : role.hm * (TWOD12.npcRatings[rating]?.hstep ?? 1)) * npcHfac(rating, l);
+  return l === 1 ? v : (roleKey === "minion" ? r25(v) : r5(v));
+}
+/** The average damage of an attack (Tier 2 or 3) for a rating at a level: the table's number x the rating's step x the level's factor, rounded to 0.5. */
+export const npcDamage = (base, rating, lv, x = 1) => r5(base * (TWOD12.npcRatings[rating]?.step ?? 1) * x * npcDfac(rating, lv));
 
 /** CSS variables for a card color (title color and a soft gradient). */
 export const cardVars = hex => {
@@ -288,14 +312,15 @@ export function highlightText(html) {
  * The line under the traits: the Frequency (only when it matters) and the Target text, separated by a sparkle.
  * Then, on its own line, the tokens that are targeted.
  */
-export function metaRowHtml({ frequency = "", targetText = "", distance = "", vs = "", requirements = "", trigger = "", reactionKind = "", self = false, escalation = 0 } = {}) {
+export function metaRowHtml({ frequency = "", targetText = "", distance = "", area: areaLine = "", vs = "", requirements = "", trigger = "", reactionKind = "", self = false, escalation = 0 } = {}) {
   const sep = ' <i class="fa-solid fa-sparkle sep"></i> ';
   // Three lines, always in the same place (v0.0.157): 1 Escalation; 2 Targets ✦ Area; 3 Distance ✦ Vs. (a Save: "Instinct Save").
   // The Frequency is in the title bar (cardHead). The Self trait already says it targets you, so Self is left out.
-  const area = /^Area: /.test(distance);
+  // v0.0.176: the Area (line 2, with the Targets) and the Distance (line 3) are separate; an older caller may still pass "Area: ..." as the distance.
+  if (!areaLine && /^Area: /.test(distance)) { areaLine = distance.slice(6); distance = ""; }
   const l1 = Number(escalation) > 0 ? [`<span class="esc">${Number(escalation)} Escalation</span>`] : [];
-  const l2 = [(!self || area) && targetText ? `<span class="tgt">${escAttr(targetText)}</span>` : "", area ? `<span class="dist"><b>Area:</b> ${escAttr(distance.slice(6))}</span>` : ""].filter(Boolean);
-  const l3 = [distance && !area && distance.toLowerCase() !== "self" ? `<span class="dist"><b>Distance:</b> ${escAttr(distance)}</span>` : "", vs ? `<span class="vs">${/save$/i.test(String(vs).trim()) ? "" : "Vs. "}${escAttr(vs)}</span>` : ""].filter(Boolean);
+  const l2 = [(!self || areaLine) && targetText ? `<span class="tgt">${escAttr(targetText)}</span>` : "", areaLine ? `<span class="dist"><b>Area:</b> ${escAttr(areaLine)}</span>` : ""].filter(Boolean);
+  const l3 = [distance && distance.toLowerCase() !== "self" ? `<span class="dist"><b>Distance:</b> ${escAttr(distance)}</span>` : "", vs ? `<span class="vs">${/save$/i.test(String(vs).trim()) ? "" : "Vs. "}${escAttr(vs)}</span>` : ""].filter(Boolean);
   const row = [l1, l2, l3].filter(l => l.length).map(l => `<div class="trow"><span>${l.join(sep)}</span></div>`).join("");
   const req = requirements ? `<div class="trow reqrow"><span><b>Requirements:</b> ${escAttr(requirements)}</span></div>` : "";
   const trg = trigger ? `<div class="trow trgrow"><span><b>${reactionKind === "interrupt" ? "Interrupt" : "Trigger"}:</b> ${escAttr(trigger)}</span></div>` : "";
@@ -408,10 +433,21 @@ export function vsText(d, { src = null, fists = false, rolls = null } = {}) {
 /** "Body Check", "Weapon Modifier", "Power Modifier" (+ " vs. Body" when there is a Defense). */
 
 /** Where an Action reaches: Reach, Self, the weapon's range, or any text such as "10/20/40". */
-export function distanceText(d, weapon = null) {
+/**
+ * An Action's Area line ("2 Emanation"), or "" (v0.0.176: the Area and the Distance are two lines). An older Area text written with its distance
+ * ("1 Emanation within 10 sq.") gives only its shape here; distanceText gives the rest.
+ */
+export function areaText(d) {
   const area = String(d?.area ?? "").trim();
-  if (area) return `Area: ${area}`;   // an Action has an Area or a Distance, shown in the same place
-  const v = String(d?.distance ?? "").trim();
+  return area.replace(/\s+within\s+.*$/i, "");
+}
+
+export function distanceText(d, weapon = null) {
+  // An Area Action's Distance (v0.0.176): how far its area can be placed (the Area settings, or an older "within" text: the limit that is enforced),
+  // else its own Distance field.
+  const area = String(d?.area ?? "").trim(), within = area.match(/\s+within\s+(.*)$/i)?.[1] ?? "";
+  const placed = area ? (String(d?.areaDistance ?? "").trim() || within.replace(/^your weapon's/i, "Your weapon's")) : "";
+  const v = placed || String(d?.distance ?? "").trim();
   if (!v) return "";
   // A Weapon Action shows the Range of the weapon it is made with (Distance: Weapon, or Reach on older cards): melee with Reach above 1 added,
   // ranged, or both for a Thrown weapon.

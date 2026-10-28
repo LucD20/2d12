@@ -1,0 +1,39 @@
+--- Rally Points: the class's Rally value + ceil((Body + Mind + level) / 2)
+the formula: true | Paladin 6: true | Archer 5: true
+Paladin, Body +2, Mind +1, level 1     8
+Archer, Body +1, Mind +1, level 1      7
+Paladin, Body +2, Mind +1, level 3     9
+old class items updated once: 2 Paladin 6, Archer 5, Paladin kept 7, Fighter kept 4
+--- the Bestiary's levels 1-3 (book/ruler/ratings.py, all 57 rows checked against it)
+standard  level 1: low x5.25 3.5/6 | medium x7 4.5/8 | high x8.75 5.5/9.5 | extreme x10.5 7/11.5
+standard  level 2: low x6 4/6.5 | medium x8 5/8.5 | high x10 6.5/10.5 | extreme x12 7.5/12.5
+standard  level 3: low x6 4.5/7 | medium x8 5.5/9.5 | high x10 7/11.5 | extreme x12.5 8.5/14
+standard  level 4: low x6 4.5/7 | medium x8 5.5/9.5 | high x10 7/11.5 | extreme x12.5 8.5/14
+grunt     level 1: low x3.75 2.5/3.5 | medium x5 3/4.5 | high x6.25 4/5.5 | extreme x7.5 4.5/7
+grunt     level 2: low x4 2.5/4 | medium x5.5 3.5/5 | high x7 4/6.5 | extreme x8.5 5/7.5
+grunt     level 3: low x4 3/4.5 | medium x5.5 3.5/5.5 | high x7.5 4.5/7 | extreme x9 5.5/8.5
+grunt     level 4: low x4 3/4.5 | medium x5.5 3.5/5.5 | high x7.5 4.5/7 | extreme x9 5.5/8.5
+minion    level 1: low x0.75 1.5/3.5 | medium x1 2/4 | high x1.25 2.5/5
+minion    level 2: low x0.75 2/3.5 | medium x1.25 2.5/4.5 | high x1.5 3/5.5
+minion    level 3: low x0.75 2/4 | medium x1.25 2.5/5 | high x1.5 3/6
+minion    level 4: low x0.75 2/4 | medium x1.25 2.5/5 | high x1.5 3/6
+the NPC's Health uses the level: true | the Builder too: true
+--- Light: only the target's light; a light of size N is an N Emanation
+a Check no longer reads the light where you stand: true
+radius from the token's center (squares): size 2, one square: 2.5 | size 2, a 2x2 token: 3 | size 0: 0
+--- Bursts snap to a corner only
+no square center among the points: true
+--- Area and Distance are two lines
+Word of Radiance (Area settings): Area "2 Emanation" | Distance "5 sq."
+Volley (weapon range):            Area "2 Emanation" | Distance "Your weapon's normal range"
+an older text with 'within':      Area "1 Emanation" | Distance "10 sq."
+an Action with no Area:           Area "" | Distance "Reach"
+the card: All enemies in the Area ✦ Area: 2 EmanationDistance: 5 sq.
+--- Dying and Shattered: the Table the first time each, in an encounter
+dying rolls | dying no roll | shattered rolls | shattered no roll | dying rolls | an older flag (the combat's id): no roll
+--- Waking with Interact (not a creature that is Down)
+Unconscious, not Down            ""
+Unconscious and Dying            "is Down: Interact can't wake a creature that is Down"
+Unconscious, damage at the Pool  "is Down: Interact can't wake a creature that is Down"
+awake                            "isn't Unconscious"
+Interact asks: true | its text follows the book: true

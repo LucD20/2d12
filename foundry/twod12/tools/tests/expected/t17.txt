@@ -27,16 +27,16 @@ Defenses: Armor Defense 13 [Medium] (Medium, Standard: 13) | Ward Defense 12 [Lo
 Speed: Speed 5 [5] (Every NPC has Speed 5 unless it says otherwise)
 Steadiness: Steadiness 0 [0] (Forced Movement and Reposition move it fully (a big or heavy creature can have 1 or more))
 chips of Body: Terrible −1, Low +0, Medium +1, High +2, Extreme +3
-Basic attack    Terrible 2.5 / 4.5 [[Mod] / 1d4 + [Mod]] | Low 3.5 / 6 [1 + [Mod] / 1d6 + [Mod]] | Medium 4.5 / 7.5 [1d4 + [Mod] / 1d10 + [Mod]] | High 5.5 / 9 [1d6 + [Mod] / 2d6 + [Mod]] | Extreme 6.5 / 10.5 [1d8 + [Mod] / 2d8 + [Mod]]
-Special, 1 AP   Terrible 4 / 6.5 [2 + [Mod] / 1d8 + [Mod]] | Low 5 / 8.5 [1d4 + [Mod] / 1d12 + [Mod]] | Medium 6.5 / 10.5 [1d8 + [Mod] / 2d8 + [Mod]] | High 7.5 / 12.5 [1d10 + [Mod] / 2d10 + [Mod]] | Extreme 9 / 14.5 [2d6 + [Mod] / 2d12 + [Mod]]
-Special, 2 AP   Terrible 6 / 10 [1d6 + [Mod] / 2d6 + [Mod]] | Low 8 / 13 [1d10 + [Mod] / 2d10 + [Mod]] | Medium 10 / 16.5 [2d6 + [Mod] / 3d8 + [Mod]] | High 12 / 20 [2d8 + [Mod] / 3d10 + [Mod]] | Extreme 14 / 23 [2d10 + [Mod] / 4d10 + [Mod]]
-Special, 3 AP   Terrible 9.5 / 16 [2d6 + [Mod] / 3d8 + [Mod]] | Low 12.5 / 21 [2d10 + [Mod] / 3d12 + [Mod]] | Medium 16 / 26.5 [3d8 + [Mod] / 4d12 + [Mod]] | High 19 / 31.5 [3d10 + [Mod] / 5d10 + [Mod]] | Extreme 22 / 37 [3d12 + [Mod] / 5d12 + [Mod]]
+Basic attack    Terrible 3 / 4.5 [1 + [Mod] / 1d4 + [Mod]] | Low 3.5 / 6 [1 + [Mod] / 1d6 + [Mod]] | Medium 4.5 / 8 [1d4 + [Mod] / 1d10 + [Mod]] | High 5.5 / 9.5 [1d6 + [Mod] / 2d6 + [Mod]] | Extreme 7 / 11.5 [1d8 + [Mod] / 2d8 + [Mod]]
+Special, 1 AP   Terrible 4 / 6.5 [2 + [Mod] / 1d8 + [Mod]] | Low 5 / 8.5 [1d4 + [Mod] / 1d12 + [Mod]] | Medium 6.5 / 11 [1d8 + [Mod] / 2d8 + [Mod]] | High 8 / 13.5 [1d10 + [Mod] / 2d10 + [Mod]] | Extreme 9.5 / 16 [2d6 + [Mod] / 3d8 + [Mod]]
+Special, 2 AP   Terrible 6 / 10 [1d6 + [Mod] / 2d6 + [Mod]] | Low 8 / 13.5 [1d10 + [Mod] / 2d10 + [Mod]] | Medium 10.5 / 17.5 [2d8 + [Mod] / 3d10 + [Mod]] | High 12.5 / 21 [2d10 + [Mod] / 3d12 + [Mod]] | Extreme 15 / 25 [2d12 + [Mod] / 4d10 + [Mod]]
+Special, 3 AP   Terrible 9.5 / 16 [2d6 + [Mod] / 3d8 + [Mod]] | Low 13 / 22 [2d10 + [Mod] / 3d12 + [Mod]] | Medium 16.5 / 27.5 [3d8 + [Mod] / 4d12 + [Mod]] | High 20 / 33.5 [3d10 + [Mod] / 5d12 + [Mod]] | Extreme 23.5 / 39.5 [4d10 + [Mod] / 6d12 + [Mod]]
 check: Health: 59 (Body 39 + Mind 20)
 check: Down in about: 2.4 PC turns (A level 1 PC deals about 24.25 a turn against AD 13 and WD 12. Target for a Standard: 2 PC turns)
 check: Should deal: about 7 to 8 (a turn to an average PC: the book's target, to check its Actions against)
 check: Ratings average: Medium (No Custom numbers)
 roles: Minion CV 0.25, Grunt CV 0.5, Standard CV 1 (on), Elite CV 2 | CV: 1 | level note: ""
-a Minion's tab: Basic attack, Special, 1 AP, Special, 2 AP | The Bestiary has tables for level 1 only: these are level 1 numbers (level 3).
+a Minion's tab: Basic attack, Special, 1 AP, Special, 2 AP | 
 --- v0.0.164: no Custom chip; clicking the selected chip clears it (Custom), any other chip selects it
 Body chips (label -> what a click writes): Terrible->terrible, Low->low, Medium->medium, High->custom, Extreme->extreme
 --- Custom numbers outside the tables: a warning, never prevented

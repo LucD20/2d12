@@ -189,11 +189,11 @@ sp("Human", { body: 0, mind: 0, appeal: 0, instinct: 0 }, true, 3, 4, 5);
 sp("Dwarf", { body: 1, mind: 1, appeal: -1, instinct: 1 }, false, 5, 3, 4, 1);
 sp("Elf", { body: -1, mind: 1, appeal: 1, instinct: 1 }, false, 1, 5, 6);
 add("classes", "class", "Paladin", "icons/svg/angel.svg", {
-  description: "<p>A holy warrior.</p>", choiceA: ["body", "appeal"], choiceB: ["mind", "instinct"], bodyMult: 4, mindMult: 3, rallyMod: 4, speedMod: 0,
+  description: "<p>A holy warrior.</p>", choiceA: ["body", "appeal"], choiceB: ["mind", "instinct"], bodyMult: 4, mindMult: 3, rallyMod: 6, speedMod: 0,
   weaponAttrs: ["body", "appeal"], magicAttrs: ["mind", "appeal"], armorTraining: "heavy", features: [...["Divine Power", "Profane Judgment", "Encounter Pick", "Daily Pick", "Free Picks", "Escalation Passive", "Escalation Actives"].map(n => ({ uuid: uuidOf("features", n), level: 1 }))]
 });
 add("classes", "class", "Archer", "icons/svg/target.svg", {
-  description: "<p>An Archer fights from a distance.</p>", choiceA: ["body", "instinct"], choiceB: ["mind", "appeal"], bodyMult: 3, mindMult: 2.5, rallyMod: 3,
+  description: "<p>An Archer fights from a distance.</p>", choiceA: ["body", "instinct"], choiceB: ["mind", "appeal"], bodyMult: 3, mindMult: 2.5, rallyMod: 5,
   weaponAttrs: ["instinct", "body"], magicAttrs: ["mind", "appeal"], armorTraining: "medium", speedMod: 1,
   features: ["Sharpshooter", "Marked Quarry", "Bow Mastery", "Archer Encounter Pick", "Archer Daily Pick", "Archer Free Picks", "Archer Escalation Passive", "Archer Escalation Actives"].map(n => ({ uuid: uuidOf("features", n), level: 1 }))
 });

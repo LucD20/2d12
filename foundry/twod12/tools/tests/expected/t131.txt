@@ -1,5 +1,5 @@
 Projectile is a weapon property: Projectile | Shot and Save are Action traits: Shot Save | Crossbow: projectile, ranged, reload, twohanded
-Archer: Body x3, Mind x2.5, Rally +3, Speed +1, medium armor | features: Sharpshooter, Marked Quarry, Bow Mastery, Archer Encounter Pick, Archer Daily Pick, Archer Free Picks, Archer Escalation Passive, Archer Escalation Actives
+Archer: Body x3, Mind x2.5, Rally +5, Speed +1, medium armor | features: Sharpshooter, Marked Quarry, Bow Mastery, Archer Encounter Pick, Archer Daily Pick, Archer Free Picks, Archer Escalation Passive, Archer Escalation Actives
 cards: all 18 | features: true | Field Training gone: true
   Wing Clip: round | ranged,shot,strike,weapon | AD
   Deadeye: daily | ranged,shot,strike,weapon | AD

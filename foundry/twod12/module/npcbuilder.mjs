@@ -2,12 +2,11 @@
 //   Every number is a row: its rating chips (each showing the table's value), the result, and how it was found. A row can be Custom (the typed number).
 //   The Basic attack and Special Actions are a reference only: the damage a rating gives, with dice that come close; the Actions are written by hand.
 //   The check at the bottom only informs (the ratings are guidance).
-import { TWOD12 } from "./config.mjs";
+import { TWOD12, npcHm, npcDamage, npcTableLevel } from "./config.mjs";
 import { npcBuild } from "./data.mjs";
 
 const sg = v => (v >= 0 ? `+${v}` : `\u2212${Math.abs(v)}`);
 const fmt = n => String(Math.round(n * 100) / 100);
-const r5 = x => Math.round(x * 2) / 2;
 
 /** Dice (and flat numbers) that come close to an average, the Modifier taken out: 2.5 -> "1d4". "" when the Modifier alone is enough. */
 const DICE = [["", 0], ["1", 1], ["2", 2], ["1d4", 2.5], ["1d6", 3.5], ["1d8", 4.5], ["1d10", 5.5], ["1d12", 6.5], ["2d6", 7], ["2d8", 9], ["2d10", 11], ["2d12", 13], ["3d8", 13.5], ["3d10", 16.5], ["3d12", 19.5], ["4d10", 22], ["4d12", 26], ["5d10", 27.5], ["5d12", 32.5], ["6d12", 39], ["7d12", 45.5]];
@@ -41,7 +40,7 @@ export function npcBuilderContext(actor) {
       [v, role.attr + R[lo].off, role.attr + R[hi].off, sg]);
   });
   // Health
-  const hmOf = x => (s.role === "minion" ? TWOD12.npcMinionHm[x] ?? 1 : role.hm * R[x].hstep);
+  const hmOf = x => npcHm(s.role, x, s.level);   // v0.0.176: the Bestiary's row for the NPC's level (1 to 3)
   const healthOf = (attr, x) => Math.ceil((attr + 2) * hmOf(x) + role.hb - 1e-9);
   const healthRow = (pool, attrKey, label) => {
     const key = `${pool}Hm`, r = nb.rating(key), attr = nb.attributes[attrKey], value = pool === "body" ? nb.bdt : nb.mdt;
@@ -85,7 +84,7 @@ export function npcBuilderContext(actor) {
   // Attacks: a reference (the Actions are written by hand). Dice use the Weapon Modifier; a Power attack uses the Power Modifier instead.
   const wm = Number(s.weaponMod) || 0;
   const attacks = TWOD12.npcSpecial.filter(x => !(s.role === "minion" && x.key === "s3")).map(x => ({ label: x.label, sub: x.sub, x: x.x,
-    cells: keys.map(r => { const t2 = r5(role.basic[0] * R[r].step * x.x), t3 = r5(role.basic[1] * R[r].step * x.x);
+    cells: keys.map(r => { const t2 = npcDamage(role.basic[0], r, s.level, x.x), t3 = npcDamage(role.basic[1], r, s.level, x.x);
       return { label: R[r].label, avg: `${fmt(t2)} / ${fmt(t3)}`, dice: `${withMod(diceFor(t2 - wm))} / ${withMod(diceFor(t3 - wm))}` }; }) }));
 
   // The check (informs only).
@@ -104,7 +103,7 @@ export function npcBuilderContext(actor) {
   return {
     roles: Object.entries(TWOD12.npcRoles).map(([k, v]) => ({ key: k, label: v.label, cv: fmt(v.cv), on: (s.role || "standard") === k })),
     role, cv: fmt(role.cv), groups, attacks, check, warnings, ratingHeads: keys.map(r => R[r].label),
-    levelNote: Number(s.level) !== 1 ? `The Bestiary has tables for level 1 only: these are level 1 numbers (level ${s.level}).` : "",
+    levelNote: Number(s.level) > TWOD12.npcMaxLevel ? `The Bestiary has rows for levels 1 to ${TWOD12.npcMaxLevel}: level ${s.level} uses the level ${npcTableLevel(s.level)} numbers.` : (Number(s.level) < 1 ? `Level ${s.level} uses the level 1 numbers.` : ""),
     minionNote: s.role === "minion" ? "Minions: 3 AP a turn, no Extreme, at most 2 AP Special Actions, no Dying (at 0 they die, or fall Unconscious if the GM prefers)." : ""
   };
 }

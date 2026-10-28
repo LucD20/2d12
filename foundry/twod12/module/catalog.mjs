@@ -10,7 +10,7 @@ const traits = i => [...(i.system.traits ?? [])].map(t => TWOD12.traits[t] ?? TW
 
 const CATEGORIES = [
   ["species", "Species", i => i.type === "species", i => `Speed ${i.system.speed}, Reach ${i.system.reach}`],
-  ["classes", "Classes", i => i.type === "class", i => `Body \u00d7${i.system.bodyMult}, Mind \u00d7${i.system.mindMult}, Rally +${i.system.rallyMod}`],
+  ["classes", "Classes", i => i.type === "class", i => `Body \u00d7${i.system.bodyMult}, Mind \u00d7${i.system.mindMult}, Rally ${i.system.rallyMod}`],
   ["features", "Features", i => i.type === "feature", i => [categoryText(i.system), i.system.talents ? `${i.system.talents} Talent${i.system.talents === 1 ? "" : "s"}` : ""].filter(Boolean).join(" \u00b7 ")],
   ["weapons", "Weapons", i => i.type === "weapon", i => [TWOD12.subtypes[i.system.subtype] ?? "", traits(i), `${dmg(i.system.damage.t1)} / ${dmg(i.system.damage.t2)} / ${dmg(i.system.damage.t3)}`, i.system.range ? `range ${i.system.range}` : ""].filter(Boolean).join(" \u00b7 ")],
   ["techniques", "Weapon Techniques", i => i.type === "action" && /weapon technique/i.test(i.system.category), i => [traits(i), i.system.versions.map(v => `${v.ap} AP`).join(" / ")].filter(Boolean).join(" \u00b7 ")],

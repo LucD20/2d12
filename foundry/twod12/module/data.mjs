@@ -1,4 +1,4 @@
-import { TWOD12, migrateTags } from "./config.mjs";
+import { TWOD12, migrateTags, npcHm } from "./config.mjs";
 import { migrateSettings } from "./settingsmigrate.mjs";
 import { classModifiers, modOf } from "./modifiers.mjs";
 
@@ -74,7 +74,8 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     deriveHealth(this);
 
     this.rallyHeal = Math.ceil((this.bdt + mdtFull) / 4);   // Rally Points use the Health Pool before Exhausted lowers the Mind Damage Threshold
-    this.rallyMax = this.rallyHeal + (cls?.system.rallyMod ?? 0);
+    // v0.0.176 (book, Rally Points): the class's Rally value + ceil((Body + Mind + level) / 2), Body and Mind being the Attributes.
+    this.rallyMax = Math.max(0, (cls?.system.rallyMod ?? 0) + Math.ceil(((a.body ?? 0) + (a.mind ?? 0) + (Number(lv) || 0)) / 2));
     this.rallyLeft = Math.max(0, this.rallyMax - this.rallyUsed);
 
     // Weapon and Power Modifiers: the higher of the class's two Attributes each, never the same one (modifiers.mjs).
@@ -167,7 +168,7 @@ export function npcBuild(sys) {
   const rating = k => { let r = sys.ratings?.[k] || "medium"; if (r !== "custom" && !R[r]) r = "medium"; if (r === "extreme" && !role.extreme) r = "high"; return r; };
   const attributes = {};
   for (const k of Object.keys(TWOD12.attributes)) attributes[k] = rating(k) === "custom" ? (Number(sys.custom?.[k]) || 0) : role.attr + R[rating(k)].off;
-  const hmOf = r => (sys.role === "minion" ? TWOD12.npcMinionHm[r] ?? 1 : role.hm * R[r].hstep);
+  const hmOf = r => npcHm(sys.role, r, sys.level);   // v0.0.176: the level's row (levels 1 to 3)
   const health = (key, attr) => { const r = rating(`${key}Hm`); if (r === "custom") return { hm: null, v: Number(sys.custom?.[`${key}Health`]) || 0 };
     const hm = hmOf(r); return { hm, v: Math.max(0, Math.ceil((attr + 2) * hm + role.hb - 1e-9)) }; };
   const b = health("body", attributes.body), m = health("mind", attributes.mind);
@@ -284,9 +285,13 @@ export class ActionData extends foundry.abstract.TypeDataModel {
   /** An Action with an Area always has the Area trait (see the Area trait). */
   prepareDerivedData() {
     super.prepareDerivedData?.();
-    // The Area settings write the Area text ("1 Emanation within 10 sq."); with size 0 the Action has no Area.
+    // The Area settings write the Area text ("1 Emanation"); with size 0 the Action has no Area. v0.0.176 (book: an Area Action has an Area line
+    // and can have a Distance line): how far the area can be placed is the Distance ("10 sq.", "Your weapon's normal range"), shown on its own line.
     const c = this.areaCfg;
-    if (c) this.area = c.size > 0 ? `${c.size} ${c.shape === "burst" ? "Burst" : "Emanation"}${c.withinRange ? ` within your weapon's ${c.withinRange} range` : (c.within > 0 ? ` within ${c.within} sq.` : "")}` : "";
+    if (c) {
+      this.area = c.size > 0 ? `${c.size} ${c.shape === "burst" ? "Burst" : "Emanation"}` : "";
+      this.areaDistance = c.size > 0 ? (c.withinRange ? `Your weapon's ${c.withinRange} range` : (c.within > 0 ? `${c.within} sq.` : "")) : "";
+    }
     if (String(this.area ?? "").trim() && this.traits instanceof Set && !this.traits.has("area")) this.traits.add("area");
   }
 

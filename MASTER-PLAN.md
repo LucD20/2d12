@@ -18,7 +18,7 @@ Sizes: S = under an hour of work, M = a normal session, L = a long session, XL =
 | Q | **DONE 2026-10-28 (v0.0.172).** Quick UI: Steadiness tile always visible (4 small squares), custom Steadiness in the Builder, the dark tier editor (`instanceDialog` and the weapon's), a Snapshot button on Cover height, the Talent Traits dropdown, a toggle to hide the help tips | S | nothing |
 | M1 | **DONE 2026-10-28 (v0.0.170 and v0.0.171, run before Q, merged).** Movement A: Pulled (strict cone, stops next to the origin), Haul, Corners (anything solid at the point), Squeezing, the straight-line tie (the player chooses) | L | the book (done) |
 | M2 | **DONE 2026-10-28 (v0.0.174).** Movement B: the path tool (Slid, Relocate / Reposition), Immobilized's DC, the Steadiness checkbox | L | M1 |
-| R | Rules sync: Rally Points (Paladin 6, Archer 5, the new formula), the NPC tables and the Builder's level scaling (levels 1 to 3), Light (only the target's light, N + 0.5 radius), Burst corner-only, Area and Distance as two fields, Dying and Shattered from the second time, Unconscious wake rule | M | the book (done) |
+| R | **DONE 2026-10-28 (v0.0.176).** Rules sync: Rally Points (Paladin 6, Archer 5, the new formula), the NPC tables and the Builder's level scaling (levels 1 to 3), Light (only the target's light, N + 0.5 radius), Burst corner-only, Area and Distance as two fields, Dying and Shattered from the second time, Unconscious wake rule | M | the book (done) |
 | F | FORMAT: trait groups (picker, chips, order), tinted chips, weapon properties without color, the text colors | L | the traits (done) |
 | C | Content: class items in the new structure (Level 1, Picks, Repertoire by Frequency), the level list and the level-up flow, the Archer card changes, the compendium text sync (explicit [B], "[Strike] Action", Rally numerals, Bane and Boon capitalized), the compendium PCs and NPCs rebuilt from a spec | XL | the Archer design (D1) |
 | X | After the design sessions: Mastery and Gear, Skills, Magic in the system | XL | D2, D3, D4 |
@@ -41,7 +41,7 @@ Sizes: S = under an hour of work, M = a normal session, L = a long session, XL =
 1. **Pack 1: Q** (DONE: v0.0.172, 2026-10-28). Small, visible, independent. You also send the results of testing v0.0.169 in notes.txt.
 2. **Pack 2: M1** (DONE: v0.0.170 and v0.0.171, merged 2026-10-28).
 3. **Pack 3: M2** (DONE: v0.0.174, 2026-10-28).
-4. **Pack 4: R** (the next version number).
+4. **Pack 4: R** (DONE: v0.0.176, 2026-10-28).
 5. **Pack 5: F** (the next version number). Last of the phase, because it touches every card and sheet once.
    Why first: these rules are final in the book (nothing in them is still being designed), you have been waiting for them since 2026-10-23, and the book work below does not change them.
 

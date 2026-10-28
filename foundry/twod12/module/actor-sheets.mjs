@@ -4,7 +4,7 @@ import { weaponRanges } from "./weaponrange.mjs";
 import { defenseBonus, steadinessOf } from "./defense.mjs";
 import { setWorn } from "./armor.mjs";
 import { bumpExhausted, isExhaustedFx, exhaustedClick } from "./sleep.mjs";
-import { TWOD12, apLabel, traitChevrons, categoryText, unconsciousDoom, doomStatus, cardColorFor, effectiveFrequency, distanceText, lineColorFor, KIND_LINE, SIZE_NAMES, isTalentAction, tagChoices } from "./config.mjs";
+import { TWOD12, apLabel, traitChevrons, categoryText, unconsciousDoom, doomStatus, cardColorFor, effectiveFrequency, distanceText, areaText, lineColorFor, KIND_LINE, SIZE_NAMES, isTalentAction, tagChoices } from "./config.mjs";
 import { rollCheck, rollTable, esc, sgn } from "./roll.mjs";
 import { useAction, askRoll, adjLabelOf } from "./actions.mjs";
 import { handleDrop } from "./grants.mjs";
@@ -496,7 +496,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     return {
       id: i.id, name: i.name, costLabel: costText(i), cost: costGroup(i), fq: cardColorFor(it), freq: effectiveFrequency(it), freqText: frequencyText(i, (a.getFlag("twod12", "dailyUsed") ?? []).includes(i.id)),
       // v0.0.168: a number reads as squares ("5 sq."); words (Weapon, Reach, Self) and bands (10/20/40) stay
-      range: ((r => (/^\d+$/.test(r) ? `${r} sq.` : r))((distanceText(it, weapon) || "\u2014").replace(/^Area: /, ""))),
+      range: ((r => (/^\d+$/.test(r) ? `${r} sq.` : r))((areaText(it) || distanceText(it, weapon) || "\u2014"))),
       escText: Number(it.escalation) > 0 ? `${Number(it.escalation)} Esc.` : "", chips,
       faded: f.faded || !!out, fadedWhy: out ? `Unloaded: ${out.name} must be reloaded first` : (f.faded ? f.why : ""), unloaded: !!out,
       open: !!this._open?.has(i.id), minAp: aps.length ? Math.min(...aps) : 0, source: this._groupOf(i),

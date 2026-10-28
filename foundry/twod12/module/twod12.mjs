@@ -150,6 +150,7 @@ Hooks.once("init", () => {
   game.settings.register("twod12", "diagonalsApplied", { scope: "world", config: false, type: Boolean, default: false });
   game.settings.register("twod12", "weaponRoundApplied", { scope: "world", config: false, type: Boolean, default: false });
   game.settings.register("twod12", "projectileApplied", { scope: "world", config: false, type: Boolean, default: false });
+  game.settings.register("twod12", "rallyV176", { scope: "world", config: false, type: Boolean, default: false });   // the Paladin's and Archer's Rally values updated once
 
   // Initiative is an Attribute Check rolled by TwoD12Combat#rollInitiative; this formula is only a fallback.
   CONFIG.Combat.initiative = { formula: "1d12 + @attributes.instinct", decimals: 0 };

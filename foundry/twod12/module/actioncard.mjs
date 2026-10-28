@@ -4,7 +4,7 @@
 //   Weapon mode / Power mode), shaded every other row; Critical; Effects with their cost badges.
 //   With actor: a "Changed by effects" line (green and red chips), and what effects add inside the cells in green or red.
 // The chat cards are unchanged (preview.mjs).
-import { TWOD12, flavorHtml, traitChevrons, categoryText, highlightText, metaRowHtml, effectiveFrequency, distanceText, cardColorFor, vsText, areaButton, prettyDamage } from "./config.mjs";
+import { TWOD12, flavorHtml, traitChevrons, categoryText, highlightText, metaRowHtml, effectiveFrequency, distanceText, areaText, cardColorFor, vsText, areaButton, prettyDamage } from "./config.mjs";
 import { rawTierLine, modifierBlocks } from "./preview.mjs";
 import { actionChanges, costText, unloadedWeapon } from "./actionrows.mjs";
 import { rollSource } from "./rollsource.mjs";
@@ -66,7 +66,7 @@ export async function buildActionCard(item, { actor = null } = {}) {
   const changed = chips.length ? `<div class="ac-changed"><b>Changed by effects</b>${chips.map(c => `<span class="eff ${c.cls}" data-tooltip="${esc(c.why)}">${esc(c.text)}</span>`).join("")}</div>` : "";
   const area = areaButton(it) ? `<div class="trow arearow">${await enrich(areaButton(it), item)}</div>` : "";
   const setup = it.setup ? `<div class="trow setuprow"><b>Setup:</b> ${await enrich(it.setup, item)}</div>` : "";
-  const meta = metaRowHtml({ escalation: it.escalation ?? 0, frequency: "", targetText: it.targets, distance: distanceText(it, weapon), vs: vsText(it, { src: actor?.system?.attributes ? rollSource(actor.system, it) : null, fists: item.getFlag?.("twod12", "basic") === "fists" }), requirements: it.requirements, trigger: it.trigger, reactionKind: it.reactionKind, self: it.traits?.has?.("self") });
+  const meta = metaRowHtml({ escalation: it.escalation ?? 0, frequency: "", targetText: it.targets, distance: distanceText(it, weapon), area: areaText(it), vs: vsText(it, { src: actor?.system?.attributes ? rollSource(actor.system, it) : null, fists: item.getFlag?.("twod12", "basic") === "fists" }), requirements: it.requirements, trigger: it.trigger, reactionKind: it.reactionKind, self: it.traits?.has?.("self") });
   const cat = categoryText(it);
   return `<div class="twod12 acard" style="--fqc:${color}">
     <div class="ac-head"><b>${esc(item.name)}</b><span class="ac-right">${cat ? `<span class="ac-cat">${esc(cat)}</span>` : ""}${f ? `<span class="ac-freq">${esc(TWOD12.frequencies[f])}</span>` : ""}<span class="ac-cost">${esc(costText(item))}</span></span></div>
