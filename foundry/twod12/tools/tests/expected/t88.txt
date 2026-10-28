@@ -1,0 +1,29 @@
+--- outside combat, setting off
+Advance button                                             | granted: false | areas on the map: 0 | warn: Kai is not in a combat that has started, so its free movement can't be tracked. (The GM can allow it outside combat in the system settings.)
+--- outside combat, setting on
+Advance 3                                                  | granted: true | areas on the map: 1 | Kai can Advance up to 3 squares. Outside combat the movement is not tracked. Clear [Clear button]
+a second button replaces the area                          | granted: true | areas on the map: 1 | Kai can Advance up to 2 squares. Outside combat the movement is not tracked. Clear [Clear button]
+Evade floor(speed/2) with Speed 5                          | granted: true | areas on the map: 1 | Kai can Evade up to 2 squares: no reactions, and not into or through Difficult Terrain. Outside combat the movement is not tracked. Clear [Clear button]
+Charge 6 (min 3)                                           | granted: true | areas on the map: 1 | Kai can Charge in a straight line, at least 3 and up to 5 squares, not through Difficult Terrain. Outside combat the movement is not tracked. Clear [Clear button]
+the Clear button: areas left 0
+Advance again                                              | granted: true | areas on the map: 1 | Kai can Advance up to 3 squares. Outside combat the movement is not tracked. Clear [Clear button]
+another token moves: area stays: true
+this token changes its name: area stays: true
+this token moves: area gone: true
+Prone Evade                                                | granted: false | areas on the map: 0 | warn: Kai is Prone and can't Evade.
+Immobilized Advance                                        | granted: false | areas on the map: 0 | warn: Kai is Immobilized and can't move.
+no token selected, no combat                               | granted: true | areas on the map: 1 | Kai can Advance up to 2 squares. Outside combat the movement is not tracked. Clear [Clear button]
+--- in combat
+Advance 3 in combat (setting off)                          | granted: true | areas on the map: 1 | can Advance up to 3 squares without spending AP. End movement [End movement button]
+free movement granted: 3 | the area is on the map: true
+the combat ends: area gone: true (an Evade started, not moved, then the combat ended)
+Evade 2 in combat                                          | granted: true | areas on the map: 1 | can Evade up to 2 squares in one move: no reactions are triggered, and it can't enter or pass through Difficult Terrain. End movement Advance instead [End movement button]
+the combat ends again: area gone: true
+ending a combat with no area drawn is harmless
+Advance outside combat                                     | granted: true | areas on the map: 1 | Kai can Advance up to 3 squares. Outside combat the movement is not tracked. Clear [Clear button]
+a new scene: area gone: true
+--- tools
+refreshed on 2 creatures (not the one it doesn't own, not a vehicle) | Crawl added to the character: true | to the NPC: true | info: Basic Actions refreshed on 2 creatures.
+shadowed: Prone differs in [linked, description] | Hindered differs in [] | info: 1 world Effect differs from the compendium and is used instead of it: Prone (linked, description). Delete them, or edit them, to use the system's.
+after deleting the old Prone: Hindered [same] | info: The world's Effects with a compendium name are the same as the compendium's.
+without the compendium: []

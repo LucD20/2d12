@@ -1,0 +1,16 @@
+wrapped: true | again is safe: true
+HUD click: Exhausted 1, conditions: Exhausted 1
+two more clicks: Exhausted 3, conditions: Exhausted 3
+HUD right-click (overlay): Exhausted 2, conditions: Exhausted 2
+two more right-clicks: Exhausted 0, conditions: none | effects made: 0
+right-click at none stays at none: Exhausted 0, conditions: none
+shift+click opens settings: Exhausted 2 | value unchanged: 2
+ctrl+click removes it: Exhausted 0, conditions: none
+active: true is a click (+1): Exhausted 1, conditions: Exhausted 1
+active: false is a click too (+1), it does not remove: Exhausted 2, conditions: Exhausted 2
+a right-click with active: false is -1: Exhausted 1, conditions: Exhausted 1
+ctrl+click removes it, whatever active says: Exhausted 0, conditions: none
+another condition still goes to Foundry: FOUNDRY toggled prone
+an NPC's Exhausted is Foundry's: FOUNDRY toggled exhausted
+someone who doesn't own it changes nothing: true
+the HUD was redrawn after changes: true

@@ -1,0 +1,5 @@
+example: PC1, NPC1, PC2, NPC2, PC3 (expected PC1, NPC1, PC2, NPC2, PC3)
+NPC highest: NPC1, PC1, NPC2, PC2, PC3
+one side only: NPC1, NPC2 | uneven: A, PC1, B, C
+tie goes to the party: PC1, N1
+setupTurns order: PC1,NPC1,PC2,NPC2,PC3 | current: NPC1

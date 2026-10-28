@@ -1,0 +1,13 @@
+attack,divine,melee Paladin's Attack:true | Fear:false
+attack,melee Paladin's Attack:false | Fear:true
+self Paladin's Attack:false | Fear:false
+Divine / any of Melee, Ranged; not Divine
+{
+  boons: 1,
+  banes: 1,
+  sources: [
+    { name: "Paladin's Attack", boons: 1, banes: 0 },
+    { name: 'Fear', boons: 0, banes: 1 }
+  ]
+}
+ Weapon Attack • Body 8 + 8 + Boons 2 20 DC 13 Weapon Attack +2 Paladin's Attack Boons +1 

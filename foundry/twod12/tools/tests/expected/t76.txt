@@ -1,0 +1,16 @@
+no calendar: Day 2 (03:43:54)
+with a calendar: Fireday, 2nd of Lamashan, 4726 (03:43:54) | ordinals: 1st 2nd 3rd 4th 11th 12th 13th 21st 22nd 23rd 30th
+from 03:00: dawn +3h, noon +9h, dusk +15h, midnight +21h
+from 14:30: dawn +15.5h, noon +21.5h, dusk +3.5h, midnight +9.5h
+exactly at noon, noon again is a full day: 24 | units: seconds=1 minutes=60 hours=3600 days=86400 weeks=604800
+back 10 minutes from 5000: 4400
+tracking: false
+10 days with tracking off → Exhausted 0 | chat messages about Sleep: 0
+tracking on again: true | time awake restarts at day 10
+one more day → Exhausted 1
+click: Exhausted 2 | condition: Exhausted 2
+two right-clicks: Exhausted 0 | condition: none
+right-click at none stays at 0
+an NPC has no value to change: null
+added by hand → value 1
+removed by hand → value 0

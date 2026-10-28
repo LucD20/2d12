@@ -1,0 +1,59 @@
+<div class="twod12 sheet versions sk">
+  <button type="button" data-action="addVersion">Add Version</button>
+  {{#each versions}}
+  <details class="version" data-v="{{vi}}" {{#unless collapsed}}open{{/unless}}>
+    <summary>
+      <b class="vap">{{#if mode}}{{modeLabel}}: {{/if}}{{ap}} AP</b>
+      <span class="vsumtext">{{summary}}</span>
+      <span class="vbtns">
+        <button type="button" data-action="moveVersion" data-v="{{vi}}" data-dir="-1" title="Move up">&uarr;</button>
+        <button type="button" data-action="moveVersion" data-v="{{vi}}" data-dir="1" title="Move down">&darr;</button>
+        <button type="button" data-action="dupVersion" data-v="{{vi}}">Duplicate</button>
+        <button type="button" data-action="delVersion" data-v="{{vi}}">Delete</button>
+      </span>
+    </summary>
+    <label>Action Points <input type="number" min="0" max="5" data-v="{{vi}}" data-field="ap" value="{{ap}}"></label>
+    <label>Mode <select data-v="{{vi}}" data-field="mode">{{selectOptions ../modeChoices selected=mode blank="(none: a normal version)"}}</select></label>
+    <div class="opts"><label class="inline"><input type="checkbox" data-v="{{vi}}" data-field="noTiers" {{#if noTiers}}checked{{/if}}> No Tiers</label></div>
+    {{#unless noTiers}}
+    {{#each tiers}}
+    <div class="tierbox tier-{{key}}">
+      <div class="tierhead"><b>{{label}}</b>
+      <button type="button" data-action="addInstance" data-v="{{../vi}}" data-t="{{key}}">Add Instance</button></div>
+      <ul class="items">
+        {{#each instances}}
+        <li><span class="iname">{{text}}</span>
+          <button type="button" data-action="editInstance" data-v="{{../../vi}}" data-t="{{../key}}" data-i="{{ii}}">Edit</button>
+          <button type="button" data-action="delInstance" data-v="{{../../vi}}" data-t="{{../key}}" data-i="{{ii}}">&times;</button></li>
+        {{/each}}
+      </ul>
+      <label class="tiereffect">Tier Effect <input type="text" data-v="{{../vi}}" data-field="{{xkey}}" value="{{text}}" placeholder="Prone. / Evade 1 / Pushed 2"></label>
+      <div class="fx-drop" data-v="{{../vi}}" data-t="{{key}}">Drop Effect here</div>
+      {{#each fx}}
+      <div class="fxline" draggable="true" data-uuid="{{uuid}}"><span class="iname">&#10022; {{name}}</span>
+        <select data-fx-mode data-v="{{../../vi}}" data-t="{{../key}}" data-i="{{i}}">
+          <option value="auto" {{#if auto}}selected{{/if}}>Automatically applied</option>
+          <option value="conditional" {{#unless auto}}selected{{/unless}}>Conditional</option>
+        </select>
+        <button type="button" data-action="delFx" data-v="{{../../vi}}" data-t="{{../key}}" data-i="{{i}}">&times;</button></div>
+      {{/each}}
+    </div>
+    {{/each}}
+    {{/unless}}
+    <div class="tierbox whole">
+      <div class="tierhead"><b>Whole Version</b></div>
+      <div class="fx-drop" data-v="{{vi}}" data-t="all">Drop Effect here (applies on any tier)</div>
+      {{#each allFx}}
+      <div class="fxline" draggable="true" data-uuid="{{uuid}}"><span class="iname">&#10022; {{name}}</span>
+        <select data-fx-mode data-v="{{../vi}}" data-t="all" data-i="{{i}}">
+          <option value="auto" {{#if auto}}selected{{/if}}>Automatically applied</option>
+          <option value="conditional" {{#unless auto}}selected{{/unless}}>Conditional</option>
+        </select>
+        <button type="button" data-action="delFx" data-v="{{../vi}}" data-t="all" data-i="{{i}}">&times;</button></div>
+      {{/each}}
+    </div>
+    <label>Critical <textarea data-v="{{vi}}" data-field="critical" placeholder="Only on Doubles with a Tier 3 result (leave empty if the Action has no Critical)">{{critical}}</textarea></label>
+    <label>Effects <textarea data-v="{{vi}}" data-field="effects">{{effects}}</textarea></label>
+  </details>
+  {{else}}<p class="hint">No versions yet. Add one for each AP cost.</p>{{/each}}
+</div>

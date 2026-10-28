@@ -1,0 +1,5 @@
+dropped on the empty Divine Connection slot: dc:1
+dropped on the extra zone: ""
+dropped elsewhere on the sheet (first empty slot): dc:1
+no event (fallback path without target): dc:1
+a weapon gets no slot: ""

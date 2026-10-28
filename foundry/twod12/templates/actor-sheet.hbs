@@ -1,0 +1,446 @@
+{{#*inline "subrow"}}
+<div class="ar sub{{#if faded}} faded{{/if}}{{#if open}} open{{/if}}" data-item-id="{{id}}" style="--fq:{{fq}}">
+  <div class="ar-line" data-action="toggleCard">
+    <i class="fa-solid fa-chevron-right ar-chev" aria-hidden="true"></i>
+    <span class="ar-name"><span class="ar-nm">{{name}}</span>{{#if escText}}<span class="ar-esc">{{escText}}</span>{{/if}}{{#each chips}}<span class="eff {{cls}}" data-tooltip="{{why}}">{{text}}</span>{{/each}}</span>
+    <span class="ar-cost"><span class="ar-ap">{{costLabel}}</span></span>
+    <span class="ar-range">{{range}}</span>
+    <span class="ar-freq" {{#if fadedWhy}}data-tooltip="{{fadedWhy}}"{{/if}}>{{freqText}}</span>
+  </div>
+  <div class="ar-card"></div>
+</div>
+{{/inline}}
+{{#*inline "fcard"}}
+<div class="fcard{{#if locked}} locked{{/if}}{{#if open}} open{{/if}}" {{#if id}}data-item-id="{{id}}"{{/if}} {{#if uuid}}data-item-uuid="{{uuid}}"{{/if}} data-fkey="{{key}}">
+  <div class="fc-head">
+    {{#if id}}<i class="fa-solid fa-grip-vertical grip" data-tooltip="Drag to reorder"></i>{{else}}<span></span>{{/if}}
+    <a class="fc-toggle" data-action="toggleFeat"><i class="fa-solid fa-chevron-right fc-chev" aria-hidden="true"></i><span class="fc-name" {{#if tip}}data-tooltip="{{tip}}"{{/if}}>{{name}}</span><span class="ktag k-{{kcls}}">{{kind}}</span><span class="fc-detail">{{detail}}</span></a>
+    <span class="fc-btns">{{#if id}}<a data-action="openItem" data-tooltip="Edit"><i class="fa-solid fa-pen-to-square"></i></a>{{/if}}{{#if canRemove}}<a data-action="confirmDelete" data-tooltip="Remove"><i class="fa-solid fa-xmark"></i></a>{{/if}}</span>
+  </div>
+  {{#if text}}<div class="fc-desc"><div class="fc-text">{{{text}}}</div></div>{{/if}}
+  {{#if rows.length}}<div class="fc-grants-wrap">
+    {{#each rows}}{{#if isLabel}}<div class="fc-sublabel" data-item-id="{{id}}"><a data-action="openItem" {{#if tip}}data-tooltip="{{tip}}"{{/if}}>{{name}}</a>{{#if empty}} <em>nothing chosen yet</em>{{/if}}</div>{{else}}<div class="fc-kid">{{> subrow}}</div>{{/if}}{{/each}}
+  </div>{{/if}}
+</div>
+{{/inline}}
+{{#*inline "actrow"}}
+<div class="ar{{#if faded}} faded{{/if}}{{#if open}} open{{/if}}{{#if strike}} strike{{/if}}" data-item-id="{{id}}" data-search="{{search}}" style="--fq:{{fq}}">
+  <div class="ar-line" data-action="toggleCard">
+    <i class="fa-solid fa-grip-vertical grip" data-tooltip="Drag to reorder"></i>
+    <i class="fa-solid fa-chevron-right ar-chev" aria-hidden="true"></i>
+    <span class="ar-name"><span class="ar-nm">{{name}}</span>{{#if escText}}<span class="ar-esc">{{escText}}</span>{{/if}}{{#each chips}}<span class="eff {{cls}}" data-tooltip="{{why}}">{{text}}</span>{{/each}}</span>
+    <span class="ar-cost"><span class="ar-ap">{{costLabel}}</span></span>
+    <span class="ar-range">{{range}}</span>
+    <span class="ar-freq" {{#if fadedWhy}}data-tooltip="{{fadedWhy}}"{{/if}}>{{freqText}}</span>
+    {{#if unloaded}}<a class="ar-use reload" data-action="reloadFor" data-tooltip="Unloaded: Reload (1 AP)" aria-label="Reload"><i class="fa-solid fa-rotate-left"></i></a>
+    {{else}}<a class="ar-use" data-action="useAction" data-tooltip="Use {{name}}" aria-label="Use {{name}}"><i class="fa-solid fa-dice"></i></a>{{/if}}
+  </div>
+  <div class="ar-card"></div>
+</div>
+{{/inline}}
+{{#*inline "tfrow"}}
+<details class="tfitem {{#if locked}}locked{{/if}} {{#if child}}child{{/if}}" style="--fq:{{fq}}" data-item-id="{{id}}" {{#if uuid}}data-item-uuid="{{uuid}}"{{/if}}>
+  <summary class="tfrow">
+    <img class="aic" src="{{img}}" alt="" data-action="sendItem" data-tooltip="Send to chat">
+    <span class="tfname">{{name}}</span>
+    <span class="tfcost">{{{apsHtml}}}</span>
+    <span class="tfsub">{{sub}}</span>
+    <span class="tfbtns">{{#if canOpen}}<a data-action="openItem" data-tooltip="Open"><i class="fa-solid fa-pen-to-square"></i></a>{{/if}}{{#if canRemove}}<a data-action="deleteItem" data-tooltip="Remove"><i class="fa-solid fa-xmark"></i></a>{{/if}}</span>
+    <i class="fa-solid fa-chevron-down tfexp" aria-hidden="true"></i>
+  </summary>
+  <div class="tfbody"></div>
+</details>
+{{/inline}}
+{{#*inline "arow"}}
+<div class="arow {{#if faded}}faded{{/if}}" data-item-id="{{id}}" style="--fq:{{fq}}" {{#if tip}}data-tooltip="{{tip}}" data-tooltip-direction="LEFT"{{/if}}>
+  <i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i>
+  <img class="aic" src="{{img}}" alt="" data-action="sendItem" data-tooltip="Send to chat">
+  <span class="anmwrap"><a class="anm" data-action="useAction">{{name}}</a>{{#if fav}}<i class="fa-solid fa-star favmark" data-tooltip="Favorite (right-click the row to change)"></i>{{/if}}</span>
+  <span class="acost">{{{apsHtml}}}</span>
+  <span class="atr" {{#if traitMore}}data-tooltip="{{traitFull}}"{{/if}}>{{#if fadedWhy}}{{fadedWhy}}{{else}}{{traitShort}}{{#if traitMore}}<span class="more">+{{traitMore}}</span>{{/if}}{{/if}}</span>
+  <a class="aexp" data-action="toggleDetails" data-tooltip="Show the card"><i class="fa-solid fa-chevron-down"></i></a>
+  <div class="adetail" hidden></div>
+</div>
+{{/inline}}
+<div class="twod12 sheet v44 ns">
+  <header class="hb">
+    <img class="hb-portrait" src="{{actor.img}}" data-edit="img" data-action="editImage" alt="">
+    <div class="hb-id">
+      <input class="hb-name" type="text" name="name" value="{{actor.name}}" placeholder="Name">
+      <div class="hb-sub">
+        {{#if isNpc}}<span>NPC</span><span class="dot">&middot;</span>{{/if}}
+        {{#if isPc}}<label class="lvl">Level <input type="number" min="0" name="system.level" value="{{system.level}}"></label>{{else}}<span>Level {{system.level}}</span>{{/if}}
+        {{#if isPc}}
+        <span class="dot">&middot;</span>{{#each species}}<span class="lnk" data-item-id="{{id}}"><a data-action="openItem">{{name}}</a><a class="rm" data-action="confirmDelete" data-tooltip="Remove">&times;</a></span>{{else}}<em>No species</em>{{/each}}
+        <span class="dot">&middot;</span>{{#each classes}}<span class="lnk" data-item-id="{{id}}"><a data-action="openItem">{{name}}</a><a class="rm" data-action="confirmDelete" data-tooltip="Remove">&times;</a></span>{{else}}<em>No class</em>{{/each}}
+        {{else}}
+        <span class="dot">&middot;</span><span>{{head.role}}</span><span class="dot">&middot;</span><span data-tooltip="Combat Value: what it counts for in an encounter (1 per PC is a normal fight)">CV {{head.cv}}</span>
+        {{#if head.tags}}<span class="dot">&middot;</span><span>{{head.tags}}</span>{{/if}}
+        {{/if}}
+        <span class="dot">&middot;</span><span>{{head.size}}</span>
+      </div>
+    </div>
+    <div class="hb-tools">
+      <a data-action="rollInitiative" data-tooltip="Roll Initiative"><i class="fa-solid fa-dice-d20"></i></a>
+      <a data-action="editSenses" data-tooltip="Senses: Sight, Hearing and special senses"><i class="fa-solid fa-eye"></i></a>
+      {{#if isPc}}<a data-action="rest" data-tooltip="Recovery: Take a Breather, Sleep or Rest"><i class="fa-solid fa-campground"></i></a>{{/if}}
+    </div>
+    <div class="hb-meters">
+      <div class="hb-meter {{#unless head.ap.inCombat}}off{{/unless}}" data-tooltip="{{head.ap.tip}}"><span>AP</span><span class="hpips">{{#each head.ap.pips}}<a class="hpip ap{{#if on}} on{{/if}}" data-action="setApPip" data-n="{{n}}"></a>{{/each}}</span></div>
+      {{#if npcEsc}}<div class="hb-meter" data-tooltip="{{#if npcEscOn}}This NPC has Escalation (click the word to switch it off){{else}}NPCs have no Escalation unless you switch it on (an elite foe){{/if}}"><a class="esc-tog" data-action="toggleEscalation">Escalation{{#unless npcEscOn}}: off{{/unless}}</a>{{#if npcEscOn}}<span class="hpips">{{#each escPips}}<a class="hpip esc{{#if on}} on{{/if}}" data-action="setEscalation" data-n="{{n}}"></a>{{/each}}</span>{{/if}}</div>{{/if}}
+      {{#if isPc}}<div class="hb-meter" data-tooltip="Escalation {{escNow}} / 3: +1 at the start of every round after the first (not while Unconscious), spent on Escalation Actions, back to 0 when the encounter ends. Click a pip to correct it."><span>Escalation</span><span class="hpips">{{#each escPips}}<a class="hpip esc{{#if on}} on{{/if}}" data-action="setEscalation" data-n="{{n}}"></a>{{/each}}</span></div>
+      {{else}}<div class="hb-meter npcpool" data-tooltip="The NPC's Health Pool, from its role and ratings (Builder tab)">Health Pool <b>{{health.pool}}</b> &middot; CV {{head.cv}}</div>{{/if}}
+    </div>
+  </header>
+
+  <aside class="np">
+    <section class="np-health">
+      <div class="np-hh"><h3>Health</h3>
+        <span class="np-seg" role="group" aria-label="Health view">{{#each health.views}}<a class="{{#if on}}on{{/if}}" data-action="setHealthView" data-k="{{k}}" aria-pressed="{{on}}">{{l}}</a>{{/each}}</span>
+      </div>
+      {{#if health.donut}}
+      <div class="np-donutrow">
+        <div class="np-donut" style="background:{{health.v.gradient}}" data-body-deg="{{health.v.bodyDeg}}" data-tooltip="{{health.tip}}" data-tooltip-direction="RIGHT">
+          <div class="np-hole"><b>{{health.v.left}}</b><span>to Down</span></div>
+        </div>
+        <div class="np-legend">
+          {{#each health.v.legend}}<span><i style="background:{{color}}"></i>{{#if pool}}{{label}} <a class="hpnum" data-action="hpEdit" data-pool="{{pool}}" data-tooltip="Type the {{label}} damage">{{value}}</a> / {{max}}{{else}}{{label}}: {{value}}{{/if}}</span>{{/each}}
+          {{#if health.v.states.length}}<span class="np-states">{{#each health.v.states}}{{this}}{{#unless @last}} &middot; {{/unless}}{{/each}}</span>{{/if}}
+        </div>
+      </div>
+      {{else}}
+      <div class="np-bars" data-tooltip="{{health.tip}}" data-tooltip-direction="RIGHT">
+        {{#each health.v.bars}}
+        <div class="np-bar">
+          <div class="np-barh"><span>{{label}}{{#if badge}} <em>{{badge}}</em>{{/if}}</span><b><a class="hpnum" data-action="hpEdit" data-pool="{{pool}}">{{value}}</a> / {{max}}</b></div>
+          <div class="np-track" data-pool="{{pool}}">{{#each segs}}<div class="np-s {{cls}}" style="width:{{w}}%;background-color:{{color}}"></div>{{/each}}</div>
+        </div>
+        {{/each}}
+      </div>
+      {{/if}}
+      <div class="np-dmgline"><span>{{health.v.dmg}} / {{health.v.pool}} damage</span><b>{{health.v.left}} to Down</b></div>
+      {{#if health.down}}
+      <div class="downbanner"><b>{{health.down.title}}</b><span>{{health.down.sub}}</span></div>
+      {{#if health.down.note}}<div class="np-note">{{health.down.note}}</div>{{/if}}
+      {{/if}}
+      {{#if isPc}}
+      <div class="np-rally" data-tooltip="Each Rally Point removes {{system.rallyHeal}} damage">Rally Points <b>{{system.rallyLeft}} / {{system.rallyMax}}</b> &middot; each heals {{system.rallyHeal}}</div>
+      <div class="np-wounds">
+        <div class="wrow"><span class="wl">Body Wounds</span><input type="number" min="0" name="system.bodyWounds" value="{{system.bodyWounds}}"><a class="wtab" data-action="rollTable" data-kind="dying" data-tooltip="Roll on the Dying Table"><i class="fa-solid fa-dice"></i> Dying</a></div>
+        <div class="wrow"><span class="wl">Mind Wounds</span><input type="number" min="0" name="system.mindWounds" value="{{system.mindWounds}}"><a class="wtab" data-action="rollTable" data-kind="shattered" data-tooltip="Roll on the Shattered Table"><i class="fa-solid fa-dice"></i> Shattered</a></div>
+      </div>
+      {{/if}}
+    </section>
+
+    {{#if isNpc}}
+    <section class="np-group statblock">
+      <h3>Stat block</h3>
+      <div class="sbk">
+        <label>Armor type <select name="system.armor">{{selectOptions armorTypeChoices selected=system.armor}}</select></label>
+        <div class="sbk-tags"><span>Tags</span><span class="tchips">{{#each npcTags.have}}<span class="tchip">{{label}}<a data-action="removeTag" data-tag="{{key}}" aria-label="Remove {{label}}">&times;</a></span>{{/each}}{{#if npcTags.add.length}}<select class="tagadd" aria-label="Add a tag"><option value="">+</option>{{#each npcTags.add}}<option value="{{key}}">{{label}}</option>{{/each}}</select>{{/if}}</span></div>
+      </div>
+    </section>
+    {{/if}}
+
+    {{#each panel}}
+    <section class="np-group {{key}}">
+      <h3>{{title}}{{#if note}} <span class="np-h3note">{{note}}</span>{{/if}}</h3>
+      <div class="np-grid n{{cols}}">
+        {{#each tiles}}<div class="np-tile{{#if edit}} editable{{/if}}{{#if roll}} roll{{/if}}" {{#if tip}}data-tooltip="{{tip}}"{{/if}} {{#if edit}}data-edit="{{edit}}" data-base="{{base}}"{{/if}} {{#if roll}}data-action="rollAttr" data-key="{{roll}}"{{/if}}>{{#if input}}<input type="number" name="{{input}}" value="{{value}}">{{else}}<b class="{{cls}}">{{value}}</b>{{/if}}<span>{{label}}</span></div>{{/each}}
+      </div>
+      {{#if warn}}<div class="np-warn" data-tooltip="{{warnTip}}"><i class="fa-solid fa-triangle-exclamation"></i> {{warn}}</div>{{/if}}
+    </section>
+    {{/each}}
+
+
+  </aside>
+
+  <section class="mn">
+    <nav class="tabs2">
+      <a class="tabbtn" data-action="switchTab" data-tab-target="favorites" data-tooltip="Favorites" aria-label="Favorites"><i class="fa-regular fa-star"></i></a>
+      <a class="tabbtn" data-action="switchTab" data-tab-target="actions">Actions</a>
+      <a class="tabbtn" data-action="switchTab" data-tab-target="class">Features</a>
+      <a class="tabbtn" data-action="switchTab" data-tab-target="items">Items</a>
+      {{#if showMastery}}<a class="tabbtn" data-action="switchTab" data-tab-target="mastery">Mastery</a>{{/if}}
+      <a class="tabbtn" data-action="switchTab" data-tab-target="effects">Effects{{#if conditions.length}} <span class="tabcount">{{conditions.length}}</span>{{/if}}</a>
+      <a class="tabbtn" data-action="switchTab" data-tab-target="notes">Notes</a>
+      {{#if isNpc}}<a class="tabbtn" data-action="switchTab" data-tab-target="builder">Builder</a>{{/if}}
+    </nav>
+
+    <div class="tab" data-tab="favorites">
+      {{#if favRows.length}}
+      <div class="at-head"><span></span><span></span><span>Favorite</span><span>Cost</span><span>Range</span><span>Frequency</span><span>Use</span></div>
+      <div class="atable" data-list="favorites">{{#each favRows}}{{> actrow}}{{/each}}</div>
+      {{else}}<div class="emptyhint fav-empty"><i class="fa-regular fa-star"></i> Right-click an Action on the Actions tab and choose Favorite to keep it here. Drag the rows to put them in your order.</div>{{/if}}
+    </div>
+
+    <div class="tab" data-tab="actions">
+      {{#if isNpc}}<div class="itools"><button type="button" data-action="generateAction"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Action</button><button type="button" data-action="browseCompendium"><i class="fa-solid fa-book-open"></i> Browse compendium</button></div>{{/if}}
+      <div class="at-tools">
+        <label>Group by <select class="at-groupsel">{{selectOptions groupByChoices selected=groupBy}}</select></label>
+        <label>Sort by <select class="at-sortsel">{{selectOptions sortByChoices selected=sortBy}}</select></label>
+        <label>Filter <input class="at-filter" type="search" placeholder="Search actions…" value="{{actSearch}}"></label>
+      </div>
+      {{#if granted.length}}
+      <div class="gh granted">Granted</div>
+      <div class="alist normal">
+        {{#each granted}}
+        <div class="arow granted" data-item-id="{{actionId}}" style="--fq:#1D9E75">
+          <span></span><span></span><img class="aic" src="{{img}}" alt="">
+          <a class="anm" data-action="useAction">{{name}} <span class="uses">{{#each boxes}}<span class="{{#if on}}f{{/if}}"></span>{{/each}}</span></a>
+          <span class="acost">{{{apsHtml}}}</span><span class="atr">{{traitShort}}</span><span></span>
+          <div class="asrc">From {{source}}{{#if dur}} &middot; {{dur}}{{/if}} &middot; {{left}} of {{count}} left</div>
+        </div>
+        {{/each}}
+      </div>
+      {{/if}}
+      <div class="at-head"><span></span><span></span><span>Action</span><span>Cost</span><span>Range</span><span>Frequency</span><span>Use</span></div>
+      {{#each actGroups}}
+      <div class="at-group">
+        {{#if label}}<div class="at-gh" data-action="toggleGroup" data-group="{{key}}"><i class="fa-solid {{#if collapsed}}fa-chevron-right{{else}}fa-chevron-down{{/if}}"></i> {{label}} <span class="at-count">{{rows.length}}</span></div>{{/if}}
+        {{#unless collapsed}}<div class="atable" data-list="actions">{{#each rows}}{{> actrow}}{{/each}}</div>{{/unless}}
+      </div>
+      {{else}}<div class="emptyhint">No Actions yet. Drag Actions, Features, Talents or Weapons onto this sheet.</div>{{/each}}
+      <div class="at-basic{{#if basicOpen}} open{{/if}}">
+        <div class="at-gh basic"><a data-action="toggleBasic"><i class="fa-solid {{#if basicOpen}}fa-chevron-down{{else}}fa-chevron-right{{/if}}"></i> Basic Actions <span class="at-count">{{basicRows.length}}{{#unless basicOpen}} &middot; collapsed{{/unless}}</span></a>
+          <span class="ghr">{{#if isNpc}}<a data-action="newAction"><i class="fa-solid fa-plus"></i> New Action</a> &middot; {{/if}}<a data-action="addBasic">{{#if missingBasic}}Add{{else}}Update{{/if}} Basic Actions</a></span></div>
+        {{#if basicOpen}}<div class="atable" data-list="basic">{{#each basicRows}}{{> actrow}}{{/each}}</div>{{/if}}
+      </div>
+    </div>
+
+    <div class="tab" data-tab="class">
+      <div class="ftools"><a data-action="foldAll" data-open="1"><i class="fa-solid fa-angles-down"></i> Expand all</a><a data-action="foldAll" data-open="0"><i class="fa-solid fa-angles-up"></i> Collapse all</a></div>
+      {{#if isNpc}}
+      <div class="fsec"><span>Features</span></div>
+      {{#if feat.others.length}}<div class="flist olist" data-list="features" data-order-flag="featureOrder">{{#each feat.others}}{{> fcard}}{{/each}}</div>{{else}}<div class="emptyhint">No Features. Drop one here.</div>{{/if}}
+      {{else}}
+      {{#if feat.species}}
+      <div class="fsec"><span>Species &middot; {{feat.species.name}}</span></div>
+      <div class="flist">{{#with feat.species}}{{> fcard}}{{/with}}</div>
+      {{else}}<div class="emptyhint">Drop a Species on this sheet.</div>{{/if}}
+      {{#if feat.classTitle}}
+      <div class="fsec"><span>{{feat.classTitle}}</span><span class="fsec-sub">Level {{feat.level}} &middot; drag <i class="fa-solid fa-grip-vertical"></i> to reorder</span></div>
+      <div class="flist olist" data-list="features" data-order-flag="featureOrder">{{#each feat.classCards}}{{> fcard}}{{/each}}</div>
+      {{else}}<div class="emptyhint">Drop a Class on this sheet.</div>{{/if}}
+      <div class="fsec"><span>Talents</span><span class="fsec-sub">{{feat.talentNote}}</span></div>
+      <div class="flist" data-list="talents">
+        {{#each feat.slots}}
+        {{#if card}}{{#with card}}{{> fcard}}{{/with}}
+        {{else}}<div class="tfslot talentslot" data-slot="{{key}}"><i class="fa-solid fa-plus"></i> Drop a Talent here <span class="tfslotsrc">from {{feature}}</span></div>{{/if}}
+        {{/each}}
+        {{#each feat.extras}}{{> fcard}}{{/each}}
+        <div class="tfslot talentslot extra" data-slot=""><i class="fa-solid fa-plus"></i> Drop an extra Talent here</div>
+      </div>
+      {{#if feat.others.length}}
+      <div class="fsec"><span>Other Features</span></div>
+      <div class="flist olist" data-list="features" data-order-flag="featureOrder">{{#each feat.others}}{{> fcard}}{{/each}}</div>
+      {{/if}}
+      {{/if}}
+    </div>
+
+    <div class="tab" data-tab="items">
+      <div class="itools"><button type="button" data-action="generateWeapon"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Weapon</button>{{#if isNpc}}<button type="button" data-action="newWeapon"><i class="fa-solid fa-plus"></i> New Weapon</button>{{/if}}<button type="button" data-action="newGear"><i class="fa-solid fa-plus"></i> New Item</button></div>
+      <div class="lo-title">Loadout</div>
+      <div class="lo-strip">
+        {{#each loadout.hands}}
+        {{#if free}}<div class="lo-slot free" data-slot="hand"><span class="lo-k">{{label}}</span><b>Free hand</b><span class="lo-sub">Drop a weapon here to draw it</span></div>
+        {{else}}<div class="lo-slot{{#if both}} both{{/if}}{{#if warn}} untrained{{/if}}" data-item-id="{{id}}">
+          <span class="lo-k"><span class="lo-kl">{{label}}{{#if warn}}<i class="lo-wi fa-solid fa-triangle-exclamation" data-tooltip="A two-handed weapon in one hand: 3 banes on Strike Weapon Actions"></i>{{/if}}</span>{{#if both}}<span class="lo-2h">2H</span>{{/if}}</span>
+          <a class="lo-name" data-action="openItem">{{name}}</a>{{#if unloaded}}<a class="eff down" data-action="reloadWeapon" data-tooltip="Unloaded: Reload (1 AP)">Unloaded</a>{{/if}}
+          <div class="tboxes dark">{{#each tiers}}<div><span>{{l}}</span><b>{{v}}</b></div>{{/each}}</div>
+          <span class="lo-sub">{{sub}}</span>
+        </div>{{/if}}
+        {{/each}}
+        {{#with loadout.armor}}
+        {{#if free}}<div class="lo-slot free"><span class="lo-k">Armor</span><b>{{text}}</b><span class="lo-sub">{{sub}}</span></div>
+        {{else}}<div class="lo-slot{{#if untrained}} untrained{{/if}}" data-item-id="{{id}}">
+          <span class="lo-k"><span class="lo-kl">Armor{{#if untrained}}<i class="lo-wi fa-solid fa-triangle-exclamation" data-tooltip="Untrained: beyond your Armor Training. All your Rolls are Doomed, and Actions against your Armor or Ward are Favored."></i>{{/if}}</span></span>
+          <a class="lo-name" data-action="openItem">{{name}}</a>
+          <div class="tboxes dark n2">{{#each boxes}}<div><span>{{l}}</span><b>{{v}}</b></div>{{/each}}</div>
+          <span class="lo-sub">{{sub}}</span>
+        </div>{{/if}}
+        {{/with}}
+      </div>
+
+      <div class="lo-sec">
+        <button type="button" class="lo-head" data-action="toggleItemFold" data-k="weapons" aria-expanded="{{#if fold.weapons}}false{{else}}true{{/if}}"><i class="fa-solid {{#if fold.weapons}}fa-chevron-right{{else}}fa-chevron-down{{/if}}"></i><span class="lo-h">Weapons</span><span class="lo-count">{{weaponRows.length}}{{#if fold.weapons}} &middot; {{weaponSummary}}{{/if}}</span></button>
+        {{#unless fold.weapons}}
+        <div class="lo-list olist" data-order-flag="itemOrder">
+          {{#each weaponRows}}
+          <div class="lrow{{#if dropped}} dropped{{/if}}{{#if warn}} untrained{{/if}}" data-item-id="{{id}}">
+            <i class="fa-solid fa-grip-vertical grip" data-tooltip="Drag to reorder"></i>
+            <div class="lr-main"><span class="lr-top"><a class="lr-name" data-action="openItem">{{name}}</a>{{#if unloaded}}<a class="eff down" data-action="reloadWeapon" data-tooltip="Unloaded: Reload (1 AP)">Unloaded</a>{{/if}}</span><span class="lr-sub">{{sub}}</span></div>
+            <div class="tboxes">{{#each tiers}}<div><span>{{l}}</span><b>{{v}}</b></div>{{/each}}</div>
+            <div class="lr-seg" role="group" aria-label="Where {{name}} is">{{#each seg}}<button type="button" class="{{#if on}}on{{/if}}{{#if drop}} drop{{/if}}" data-action="setWhere" data-where="{{v}}" data-tooltip="{{tip}}" {{#if on}}aria-pressed="true"{{/if}} {{#if off}}disabled{{/if}}>{{l}}</button>{{/each}}</div>
+          </div>
+          {{else}}<div class="emptyhint">No weapons. Drag one here, or generate one.</div>{{/each}}
+        </div>
+        {{/unless}}
+      </div>
+
+      <div class="lo-sec">
+        <button type="button" class="lo-head" data-action="toggleItemFold" data-k="armor" aria-expanded="{{#if fold.armor}}false{{else}}true{{/if}}"><i class="fa-solid {{#if fold.armor}}fa-chevron-right{{else}}fa-chevron-down{{/if}}"></i><span class="lo-h">Armor</span><span class="lo-count">{{armorRows.length}}{{#if fold.armor}} &middot; {{armorSummary}}{{/if}}</span></button>
+        {{#unless fold.armor}}
+        <div class="lo-list olist" data-order-flag="itemOrder">
+          {{#each armorRows}}
+          <div class="lrow{{#if dropped}} dropped{{/if}}{{#if untrained}} untrained{{/if}}" data-item-id="{{id}}">
+            <i class="fa-solid fa-grip-vertical grip" data-tooltip="Drag to reorder"></i>
+            <div class="lr-main"><span class="lr-top"><a class="lr-name" data-action="openItem">{{name}}</a>{{#if untrained}}<span class="eff down" data-tooltip="Beyond your Armor Training: all your Rolls are Doomed, and Actions against your Armor or Ward are Favored.">Untrained</span>{{/if}}</span><span class="lr-sub">{{sub}}</span></div>
+            <div class="tboxes n2">{{#each boxes}}<div><span>{{l}}</span><b>{{v}}</b></div>{{/each}}</div>
+            <div class="lr-seg" role="group" aria-label="Where {{name}} is">{{#each seg}}<button type="button" class="{{#if on}}on{{/if}}{{#if drop}} drop{{/if}}" data-action="setWhere" data-where="{{v}}" data-tooltip="{{tip}}" {{#if on}}aria-pressed="true"{{/if}} {{#if off}}disabled{{/if}}>{{l}}</button>{{/each}}</div>
+          </div>
+          {{else}}<div class="emptyhint">{{#if isPc}}No armor: you are Unarmored (Armor 11). Drag an armor here.{{else}}No armor items: its stat block's Armor is used. Drag one here.{{/if}}</div>{{/each}}
+        </div>
+        {{/unless}}
+      </div>
+
+      <div class="fsec"><span>{{#if isPc}}Gear and loot{{else}}Loot{{/if}}</span><span class="fsec-sub gcoins"><label>Coins <input type="number" min="0" name="system.coins" value="{{system.coins}}"></label> &middot; Weight {{gearWeight}}</span></div>
+      <div class="gtable">
+        <div class="ghead"><span></span><span>Item</span><span>Qty</span><span>Weight</span><span>Cost</span><span></span></div>
+        <div class="olist" data-order-flag="itemOrder">
+          {{#each gear}}
+          <div class="grow" data-item-id="{{id}}">
+            <i class="fa-solid fa-grip-vertical grip" data-tooltip="Drag to reorder"></i>
+            <span class="g-name"><img src="{{img}}" alt="" data-action="sendItem" data-tooltip="Send to chat"><a data-action="openItem" {{#if tip}}data-tooltip="{{tip}}"{{/if}}>{{name}}</a></span>
+            <input class="gq" type="number" min="0" value="{{qty}}" data-item-id="{{id}}" aria-label="Quantity of {{name}}">
+            <span data-tooltip="{{eachTip}}">{{weight}}</span><span data-tooltip="{{eachTip}}">{{cost}}</span>
+            <span class="g-btns"><a data-action="openItem" data-tooltip="Edit"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete" data-tooltip="Remove"><i class="fa-solid fa-trash"></i></a></span>
+          </div>
+          {{else}}<div class="emptyhint">Nothing yet. Drag gear here, or use New Item.</div>{{/each}}
+        </div>
+      </div>
+    </div>
+
+    {{#if showMastery}}
+    <div class="tab" data-tab="mastery">
+      <div class="fsec"><span>Weapon Mastery</span><span class="fsec-sub">A Tier 3 on a Weapon Action: +1 Mastery with that weapon. 3 unlocks its Weapon Technique.</span></div>
+      <label class="mst-opt" data-tooltip="Weapon Techniques whose weapon isn't in your hands are hidden instead of greyed (your choice, on every sheet)"><input class="at-hidetech" type="checkbox" {{#if hideTech}}checked{{/if}}> Only show usable Techniques in the Actions table</label>
+      {{#if bowMastery}}<div class="mst-bow"><i class="fa-solid fa-bullseye"></i> <b>Bow Mastery:</b> {{#if bowMastery.chosen}}{{bowMastery.chosen}} (3 Mastery from the start){{else}}<a data-action="chooseBowMastery">choose your Projectile weapon</a> to start with 3 Mastery with it{{/if}}</div>{{/if}}
+      {{#each mastery}}
+      {{#if collapsed}}
+      <div class="mst-row mini{{#if technique}} tech{{/if}}">
+        <a class="mst-name" data-action="masteryCollapse" data-key="{{key}}" data-tooltip="Show the whole row"><b>{{name}}</b></a>
+        <div class="mst-bar"><span style="width: {{pct}}%"></span></div>
+        <span class="mst-num">{{value}}</span>
+      </div>
+      {{else}}
+      <div class="mst-row{{#if technique}} tech{{/if}}">
+        <a class="mst-name" data-action="masteryOpen" data-key="{{key}}" data-tooltip="What each step grants"><b><i class="fa-solid fa-chevron-{{#if open}}down{{else}}right{{/if}} mst-chev"></i> {{name}}</b>{{#if owned.length}}<small>{{#each owned}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</small>{{else}}<small class="mst-gone">no weapon of this kind carried</small>{{/if}}</a>
+        <div class="mst-val">{{#if @root.isGMUser}}<a data-action="masteryStep" data-key="{{key}}" data-d="-1" data-tooltip="1 less (GM)"><i class="fa-solid fa-minus"></i></a>{{/if}}<span>{{value}}</span>{{#if @root.isGMUser}}<a data-action="masteryStep" data-key="{{key}}" data-d="1" data-tooltip="1 more (GM)"><i class="fa-solid fa-plus"></i></a>{{/if}}</div>
+        <div class="mst-bar" data-tooltip="{{#if next}}{{next}}: {{nextText}}{{else}}All steps reached{{/if}}"><span style="width: {{pct}}%"></span></div>
+        <div class="mst-steps">{{#each steps}}<span class="mst-step{{#if on}} on{{/if}}" data-tooltip="{{text}}">{{s}}</span>{{/each}}</div>
+        <a class="mst-hide" data-action="masteryCollapse" data-key="{{key}}" data-tooltip="Shrink to one line"><i class="fa-solid fa-compress"></i></a>
+      </div>
+      {{#if open}}
+      <div class="mst-detail">
+        {{#each steps}}<div class="mst-dl{{#if on}} on{{/if}}"><span class="mst-step{{#if on}} on{{/if}}">{{s}}</span> {{grants}}</div>{{/each}}
+      </div>
+      {{/if}}
+      {{/if}}
+      {{else}}
+      <div class="mst-empty">No Mastery yet: add a weapon to this character and it shows here.</div>
+      {{/each}}
+    </div>
+    {{/if}}
+
+    <div class="tab" data-tab="effects">
+      <div class="fsec"><span>Conditions</span></div>
+      <div class="cchips">
+        {{#each fx.conditions}}
+        <span class="cchip" {{#if id}}data-effect-id="{{id}}"{{/if}}{{#if counter}} data-counter="1"{{/if}} data-tooltip="{{#if counter}}Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove{{else}}{{tip}}{{/if}}">
+          <img src="{{img}}" alt=""><a class="cc-name" {{#if id}}data-action="openEffect"{{/if}}>{{name}}</a>{{#if dur}}<span class="cc-dur">{{dur}}</span>{{/if}}
+          {{#if counter}}<a class="cadj" data-action="exhaustedDown" aria-label="Exhausted −1">&minus;</a><a class="cadj" data-action="exhaustedUp" aria-label="Exhausted +1">+</a>{{/if}}
+          {{#if id}}<a class="rm" data-action="deleteEffect" aria-label="Remove {{name}}">&times;</a>{{/if}}
+        </span>
+        {{else}}<span class="np-none">None</span>{{/each}}
+      </div>
+      <div class="fsec"><span>Effects on you</span></div>
+      <div class="erows">
+        {{#each fx.effects}}
+        <div class="erow{{#if off}} off{{/if}}" data-effect-id="{{id}}">
+          <img src="{{img}}" alt="">
+          <div class="e-main"><a class="e-name" data-action="openEffect">{{name}}</a>{{#if text}}<span class="e-text">{{text}}</span>{{/if}}{{#if source}}<span class="e-src">{{source}}</span>{{/if}}</div>
+          <span class="e-dur">{{dur}}</span>
+          <span class="e-btns"><a data-action="openEffect" data-tooltip="Edit"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="deleteEffect" data-tooltip="Remove"><i class="fa-solid fa-xmark"></i></a></span>
+        </div>
+        {{else}}<div class="emptyhint">No effects.</div>{{/each}}
+      </div>
+      <div class="fsec"><span>Passives from Features</span></div>
+      <div class="erows">
+        {{#each fx.passives}}
+        <div class="erow{{#if off}} off{{/if}}" data-item-id="{{itemId}}">
+          <img src="{{img}}" alt="">
+          <div class="e-main"><a class="e-name" data-action="openItem">{{name}}</a>{{#if text}}<span class="e-text">{{text}}</span>{{/if}}<span class="e-src">{{source}}</span></div>
+          <span class="e-dur">{{#if off}}{{offText}}{{else}}on{{/if}}</span>
+          <span class="e-btns"><a data-action="openItem" data-tooltip="Edit"><i class="fa-solid fa-pen-to-square"></i></a></span>
+        </div>
+        {{else}}<div class="emptyhint">No passives.</div>{{/each}}
+      </div>
+      <div class="edrop"><i class="fa-solid fa-plus"></i> Drop an Effect or a condition here to apply it</div>
+    </div>
+
+    {{#if isNpc}}
+    <div class="tab" data-tab="builder">
+      <div class="nb">
+        <div class="nb-top">
+          <div class="nb-field"><span class="nb-lab">Role</span><div class="nb-roles">{{#each builder.roles}}<button type="button" class="nb-role{{#if on}} on{{/if}}" data-action="setRole" data-role="{{key}}" aria-pressed="{{#if on}}true{{else}}false{{/if}}" data-tooltip="Combat Value {{cv}}">{{label}}</button>{{/each}}</div></div>
+          <div class="nb-field"><span class="nb-lab">Level</span><div class="nb-step"><button type="button" data-action="levelStep" data-d="-1" aria-label="Level down">&minus;</button><input type="number" min="0" name="system.level" value="{{system.level}}" aria-label="Level"><button type="button" data-action="levelStep" data-d="1" aria-label="Level up">+</button></div></div>
+          <div class="nb-field nb-cv"><span class="nb-lab">Combat Value</span><b data-tooltip="What it counts for in an encounter (1 per PC is a normal fight)">CV {{builder.cv}}</b></div>
+          <label class="nb-field nb-check"><input type="checkbox" name="system.useEscalation" {{#if system.useEscalation}}checked{{/if}}> Escalation</label>
+        </div>
+        <div class="nb-top">
+          <label class="nb-field nb-inline"><span class="nb-lab">Weapon Attribute</span><select name="system.weaponAttribute">{{selectOptions weaponAttrChoices selected=system.weaponAttribute}}</select></label>
+          <label class="nb-field nb-inline"><span class="nb-lab">Power Attribute</span><select name="system.powerAttribute">{{selectOptions weaponAttrChoices selected=system.powerAttribute}}</select></label>
+        </div>
+        <p class="nb-hint">AP {{builder.role.ap}} a turn.{{#if builder.minionNote}} {{builder.minionNote}}{{/if}}</p>
+        {{#if builder.levelNote}}<p class="nb-warn"><i class="fa-solid fa-triangle-exclamation"></i> {{builder.levelNote}}</p>{{/if}}
+        {{#if builder.warnings.length}}<p class="nb-warn"><i class="fa-solid fa-triangle-exclamation"></i> Outside the Bestiary's tables: {{#each builder.warnings}}{{this}}{{#unless @last}}; {{/unless}}{{/each}}.</p>{{/if}}
+        {{#each builder.groups}}
+        <div class="nb-group">
+          <div class="nb-gh"><h3>{{title}}</h3><span>{{note}}</span></div>
+          {{#each rows}}
+          <div class="nb-row{{#if custom}} custom{{/if}}">
+            <div class="nb-name"><b>{{label}}</b>{{#if sub}}<span>{{sub}}</span>{{/if}}</div>
+            <div class="nb-chips">{{#each chips}}<button type="button" class="nb-chip{{#if on}} on{{/if}}" data-action="{{#if act}}{{act}}{{else}}setRating{{/if}}" data-key="{{key}}" data-rating="{{click}}" data-v="{{r}}" aria-pressed="{{#if on}}true{{else}}false{{/if}}"{{#if tip}} data-tooltip="{{tip}}"{{/if}}><b>{{label}}</b>{{#if value}}<span>{{value}}</span>{{/if}}</button>{{/each}}</div>
+            <div class="nb-val">{{#if input}}<input type="number" name="{{input.name}}" value="{{input.value}}" aria-label="{{label}}">{{else}}{{value}}{{/if}}</div>
+            <div class="nb-how">{{how}}</div>
+            {{#if warn}}<div class="nb-rwarn"><i class="fa-solid fa-triangle-exclamation"></i> {{warn}}</div>{{/if}}
+          </div>
+          {{/each}}
+        </div>
+        {{/each}}
+        <div class="nb-group">
+          <div class="nb-gh"><h3>Attacks (reference)</h3><span>Write the Actions by hand (Actions tab); these are the damage a rating gives, Tier 2 / Tier 3, with dice that come close (Weapon Modifier; a Power attack uses the Power Modifier)</span></div>
+          <div class="nb-atk">
+            <div class="nb-atkh"><span></span>{{#each builder.ratingHeads}}<b>{{this}}</b>{{/each}}</div>
+            {{#each builder.attacks}}
+            <div class="nb-atkr"><div class="nb-name"><b>{{label}}</b><span>{{sub}}{{#if x}} &middot; &times;{{x}}{{/if}}</span></div>{{#each cells}}<div class="nb-ref" data-tooltip="{{label}}: about {{avg}}"><b>{{avg}}</b><span>{{dice}}</span></div>{{/each}}</div>
+            {{/each}}
+          </div>
+          <ul class="nb-notes">
+            <li><b>Area Save Actions</b> (a Save the targets roll, DC 11 + the Modifier): about half the damage, to each creature in the area.</li>
+            <li><b>Conditions</b> lower the damage rating: Mild 1 step, Moderate 2, Severe 3 (a Low attack with a Moderate condition is as strong as a High one). Longer than EoT or no Save to shake it off: one step more; on Tier 3 only: one step less. No damage: one step below Terrible.</li>
+            <li><b>Reactions</b>: a Trigger (after the Action) is one rating stronger than an Action of the same AP; an Interrupt that can stop the Action is worth the same. Minions and Grunts normally have none.</li>
+          </ul>
+        </div>
+        <div class="nb-group">
+          <div class="nb-gh"><h3>Check</h3><span>Only informs: the ratings are guidance</span></div>
+          <div class="nb-check-strip">{{#each builder.check}}<div class="nb-stat"><span>{{k}}</span><b>{{v}}</b><small>{{s}}</small></div>{{/each}}</div>
+        </div>
+      </div>
+    </div>
+    {{/if}}
+    <div class="tab" data-tab="notes">
+      <div class="fsec"><span>Appearance</span></div>
+      <div class="nbox">{{formInput notesFields.appearance enriched=notesEnriched.appearance value=system.appearance name="system.appearance" toggled=true}}</div>
+      <div class="fsec"><span>Background</span></div>
+      <div class="nbox">{{formInput notesFields.background enriched=notesEnriched.background value=system.background name="system.background" toggled=true}}</div>
+      <div class="fsec"><span>Notes</span></div>
+      <div class="nbox">{{formInput notesFields.notes enriched=notesEnriched.notes value=system.notes name="system.notes" toggled=true}}</div>
+      {{#if isGM}}
+      <div class="fsec"><span>GM notes</span><span class="fsec-sub"><i class="fa-solid fa-eye-slash"></i> only the GM sees them</span></div>
+      <div class="nbox gm">{{formInput notesFields.gmNotes enriched=notesEnriched.gmNotes value=system.gmNotes name="system.gmNotes" toggled=true}}</div>
+      {{/if}}
+    </div>
+  </section>
+</div>

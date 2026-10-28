@@ -1,0 +1,300 @@
+<div class="twod12 sheet item{{#if styled}} sk{{/if}}">
+  <header class="head">
+    <img src="{{item.img}}" data-edit="img" data-action="editImage" width="48" height="48" alt="">
+    <input class="name" type="text" name="name" value="{{item.name}}" placeholder="Name">
+  </header>
+  <nav class="tabs">
+    <button type="button" class="tabbtn" data-action="switchTab" data-tab-target="description">Description</button>
+    <button type="button" class="tabbtn" data-action="switchTab" data-tab-target="details">Details</button>
+  </nav>
+
+  <section class="tab" data-tab="description">
+    {{#if rawCard}}<div class="rawwrap">{{{rawCard}}}</div>{{/if}}
+    {{formInput fields.description enriched=enriched value=system.description name="system.description" toggled=true}}
+  </section>
+
+  <section class="tab" data-tab="details">
+    {{#if isSpecies}}
+    <h3>Attribute Values</h3>
+    <div class="grid4">
+      {{#each attrValues}}<label>{{label}} <input type="number" name="system.attributes.{{key}}" value="{{value}}"></label>{{/each}}
+    </div>
+    <label class="inline"><input type="checkbox" name="system.pickTwo" {{#if system.pickTwo}}checked{{/if}}> Select 2 choices for +1</label>
+    <div class="grid3">
+      <label>Species Body Health <input type="number" name="system.bodyMod" value="{{system.bodyMod}}"></label>
+      <label>Species Mind Health <input type="number" name="system.mindMod" value="{{system.mindMod}}"></label>
+      <label>Speed <input type="number" min="0" name="system.speed" value="{{system.speed}}"></label>
+      <label>Reach <input type="number" min="0" name="system.reach" value="{{system.reach}}"></label>
+      <label>Size (SR) <input type="number" min="1" max="7" name="system.size" value="{{system.size}}"></label>
+    </div>
+    <div class="steadybtns" data-tooltip="Steadiness: reduces the value of Forced Movement and Reposition against this species. Normally 0.">
+      <span class="steady-lab">Steadiness</span>
+      {{#each steadinessChoices}}<button type="button" class="steady-btn{{#if on}} on{{/if}}" data-action="setSteadiness" data-v="{{v}}" aria-pressed="{{#if on}}true{{else}}false{{/if}}">{{v}}</button>{{/each}}
+    </div>
+    {{/if}}
+
+    {{#if isClass}}
+    <div class="setbox oneline"><b>Attribute Increase Choices</b>
+      <span class="grp"><i>first</i>{{#each attrChecks.choiceA}}<label class="inline"><input type="checkbox" data-set="choiceA" data-key="{{key}}" {{#if checked}}checked{{/if}}> {{label}}</label>{{/each}}</span>
+      <span class="grp"><i>second</i>{{#each attrChecks.choiceB}}<label class="inline"><input type="checkbox" data-set="choiceB" data-key="{{key}}" {{#if checked}}checked{{/if}}> {{label}}</label>{{/each}}</span></div>
+    <div class="grid4">
+      <label>Body Health Multiplier (&times;) <input type="number" min="0" step="0.5" name="system.bodyMult" value="{{system.bodyMult}}"></label>
+      <label>Mind Health Multiplier (&times;) <input type="number" min="0" step="0.5" name="system.mindMult" value="{{system.mindMult}}"></label>
+      <label>Rally Modifier <input type="number" name="system.rallyMod" value="{{system.rallyMod}}"></label>
+      <label>Speed Modifier <input type="number" name="system.speedMod" value="{{system.speedMod}}"></label>
+    </div>
+    <div class="setbox"><b>Weapon Modifier Attributes</b>
+      {{#each attrChecks.weaponAttrs}}<label class="inline"><input type="checkbox" data-set="weaponAttrs" data-key="{{key}}" {{#if checked}}checked{{/if}}> {{label}}</label>{{/each}}</div>
+    <div class="setbox"><b>Power Modifier Attributes</b>
+      {{#each attrChecks.magicAttrs}}<label class="inline"><input type="checkbox" data-set="magicAttrs" data-key="{{key}}" {{#if checked}}checked{{/if}}> {{label}}</label>{{/each}}</div>
+    <label>Armor Training <select name="system.armorTraining">{{selectOptions armorTrainingChoices selected=system.armorTraining}}</select></label>
+    <label>If one Attribute is the higher for both Modifiers <select name="system.modPriority">{{selectOptions modPriorityChoices selected=system.modPriority}}</select></label>
+    <p class="hint">Each Modifier uses the higher of its two Attributes (&divide; 2 + 1, rounded up), and the two never use the same one: when one Attribute is the higher for both, the Modifier chosen above keeps it and the other uses its other Attribute. Change it when you level up. When a character receives this class, they choose the two Attribute increases (different Attributes).</p>
+    <h3>Features</h3>
+    <div class="drop-zone" data-list="features" data-accept="feature">Drop Features here</div>
+    <ul class="items">
+      {{#each featuresList}}
+      <li draggable="true" data-uuid="{{uuid}}"><a data-action="openLinked" data-uuid="{{uuid}}">{{name}}</a>
+        <span class="spacer"></span> <span class="ihint">{{cat}}{{#unless cat}}Level {{level}}{{/unless}}</span>
+        <button type="button" data-action="removeLink" data-list="features" data-index="{{index}}">&times;</button></li>
+      {{/each}}
+    </ul>
+    {{/if}}
+
+
+    {{#if isTalent}}
+    <div class="grid3">
+      <label>Category <input type="text" name="system.category" value="{{system.category}}" placeholder="Talent"></label>
+      <label>Level <input type="number" min="0" name="system.level" value="{{system.level}}"></label>
+      <label>Frequency <select name="system.frequency">{{selectOptions freqChoices selected=system.frequency}}</select></label>
+    </div>
+    <label>Flavor <input type="text" name="system.flavor" value="{{system.flavor}}" placeholder="A small gift from the god you follow."></label>
+    <label>Prerequisites <input type="text" name="system.requirements" value="{{system.requirements}}" placeholder="e.g. Brawler, Appeal +1"></label>
+    <p class="hint">Level is the character level needed to choose the Talent. Shown as {{categoryShown}}.</p>
+    <div class="setbox"><b>Traits</b>
+      {{#each talentTraits}}<label class="inline"><input type="checkbox" data-set="traits" data-key="{{key}}" {{#if checked}}checked{{/if}}> {{label}}</label>{{/each}}</div>
+    {{/if}}
+
+    {{#if hasMods}}
+    <h3>Modifies other Actions</h3>
+    <p class="hint">Changes to other Actions while you have this Talent. <b>Action</b> is a name, <code>category:Weapon Technique</code> or <code>trait:strike</code>. Critical and Effects text are added to the Action's own.</p>
+    {{#each talentMods}}
+    <div class="setting">
+      <div class="grid3">
+        <label>Action <input type="text" name="system.modifiers.{{i}}.spec" value="{{spec}}" placeholder="category:Weapon Technique"></label>
+        <label>When <select name="system.modifiers.{{i}}.when"><option value="always" {{#if always}}selected{{/if}}>Always</option><option value="outOfTurn" {{#if outOfTurn}}selected{{/if}}>When used out of your turn</option></select></label>
+        <button type="button" data-action="removeTalentMod" data-index="{{i}}">&times; Remove</button>
+      </div>
+      <label>Critical <input type="text" name="system.modifiers.{{i}}.critical" value="{{critical}}" placeholder="You disrupt the triggering Action before it happens."></label>
+      <label>Effects <input type="text" name="system.modifiers.{{i}}.effects" value="{{effects}}"></label>
+    </div>
+    {{/each}}
+    <button type="button" data-action="addTalentMod"><i class="fa-solid fa-plus"></i> Add modifier</button>
+    {{/if}}
+
+    {{#if isTalent}}
+    <h3>Choice</h3>
+    <p class="hint">When this Talent is granted, a window asks which of these the character gets (Actions, Features or Talents). With no more options than the number to pick, they are all granted. They show under the Talent on the sheet.</p>
+    <div class="grid3">
+      <label>Label <input type="text" name="system.choiceLabel" value="{{system.choiceLabel}}" placeholder="Choose a blessing"></label>
+      <label>Pick <input type="number" min="1" name="system.choiceCount" value="{{system.choiceCount}}"></label>
+    </div>
+    <div class="drop-zone" data-list="choiceOptions" data-accept="action,feature,talent">Drop the options here</div>
+    <ul class="items">
+      {{#each choiceList}}
+      <li draggable="true" data-uuid="{{uuid}}"><a data-action="openLinked" data-uuid="{{uuid}}">{{name}}</a><span class="spacer"></span>
+        <button type="button" data-action="removeLink" data-list="choiceOptions" data-index="{{index}}">&times;</button></li>
+      {{/each}}
+    </ul>
+    <h3>Actions granted</h3>
+    <button type="button" data-action="createLinkedAction"><i class="fa-solid fa-plus"></i> Generate Action</button>
+    <div class="drop-zone" data-list="actions" data-accept="action">Drop Actions here</div>
+    <ul class="items">
+      {{#each actionsList}}
+      <li draggable="true" data-uuid="{{uuid}}"><a data-action="openLinked" data-uuid="{{uuid}}">{{name}}</a><span class="spacer"></span>
+        <button type="button" data-action="removeLink" data-list="actions" data-index="{{index}}">&times;</button></li>
+      {{/each}}
+    </ul>
+    {{/if}}
+
+
+    {{#if isFeature}}
+    <div class="grid3">
+      <label>Category <input type="text" name="system.category" value="{{system.category}}" placeholder="Paladin Feature"></label>
+      <label>Level <input type="number" min="0" name="system.level" value="{{system.level}}"></label>
+      <div class="ro"><span>Shown as</span><b>{{categoryShown}}</b></div>
+    </div>
+    <label>Flavor <input type="text" name="system.flavor" value="{{system.flavor}}" placeholder="Your bond with your god opens new paths."></label>
+    <label>Talents granted <input type="number" min="0" name="system.talents" value="{{system.talents}}"></label>
+    <p class="hint">Level is the class level at which the Feature is gained (0 counts as 1). Each Talent granted becomes a Talent slot on the character sheet ("Drop a Talent here (Feature name)").</p>
+    <h3>Defenses</h3>
+    <div class="opts"><button type="button" data-action="addDefense">Add defense</button><span class="ihint">+ to the DC of actions that roll Vs. an attribute against this creature</span></div>
+    {{#each defensesList}}
+    <div class="setting"><div class="grid3">
+      <label>Raises <select data-dfield="{{i}}" data-field="attr">{{selectOptions ../defenseKindChoices selected=attr}}</select></label>
+      <label>Bonus <input type="number" data-dfield="{{i}}" data-field="bonus" value="{{bonus}}"></label>
+      <label>Only actions tagged <input type="text" data-dfield="{{i}}" data-field="tags" value="{{tags}}" placeholder="pushed, melee"></label>
+    </div><button type="button" data-action="removeDefense" data-index="{{i}}" title="Remove">&times;</button></div>
+    {{/each}}
+    <h3>Actions granted</h3>
+    <button type="button" data-action="createLinkedAction"><i class="fa-solid fa-plus"></i> Generate Action</button>
+    <div class="drop-zone" data-list="actions" data-accept="action">Drop Actions here</div>
+    <ul class="items">
+      {{#each actionsList}}
+      <li draggable="true" data-uuid="{{uuid}}"><a data-action="openLinked" data-uuid="{{uuid}}">{{name}}</a><span class="spacer"></span>
+        <button type="button" data-action="removeLink" data-list="actions" data-index="{{index}}">&times;</button></li>
+      {{/each}}
+    </ul>
+    {{/if}}
+
+    {{#if isAction}}
+    <label>Traits {{formInput fields.traits value=system.traits name="system.traits"}}</label>
+    <label>Flavor <input type="text" name="system.flavor" value="{{system.flavor}}" placeholder="Your weapon blazes with holy light."></label>
+    <div class="grid3 rx">
+      <label class="inline"><input type="checkbox" name="system.reaction" {{#if system.reaction}}checked{{/if}}> Reaction</label>
+      <label>Kind <select name="system.reactionKind" {{#unless system.reaction}}disabled{{/unless}}>{{selectOptions reactionKinds selected=system.reactionKind}}</select></label>
+    </div>
+    <div class="grid4">
+      <label>Category <input type="text" name="system.category" value="{{system.category}}" placeholder="Paladin Feature"></label>
+      <label>Level <input type="number" min="0" name="system.level" value="{{system.level}}"></label>
+      <label>Frequency <select name="system.frequency">{{selectOptions freqChoices selected=system.frequency}}</select></label>
+      <label data-tooltip="An Escalation Action costs this much Escalation on top of its AP (PCs only; 0: none)">Escalation cost <input type="number" min="0" max="3" name="system.escalation" value="{{system.escalation}}"></label>
+    </div>
+    <p class="hint">Category and Level are shown at the far right of the title. Level 0 hides the number.</p>
+    <div class="grid3">
+      <label>Targets <input type="text" name="system.targets" value="{{system.targets}}"></label>
+      <label>Distance <input type="text" name="system.distance" value="{{system.distance}}" placeholder="reach, self, weapon, 10/20/40"></label>
+      <label>Vs. <select name="system.vs">{{selectOptions vsChoices selected=system.vs}}</select></label>
+    </div>
+    <p class="hint">Actions with the Weapon trait always roll the Weapon Modifier; for the others, pick the attribute rolled. With no Defense the DC is 13. With Defense Body, the DC is 13 + the target's Body (negatives included) + any defense bonuses it has against this action.</p>
+    <p class="hint">Actions with the Weapon trait use the class Weapon Modifier instead of the Check.</p>
+    <div class="areaedit"><b>Area</b>
+      <input type="number" min="0" name="system.areaCfg.size" value="{{system.areaCfg.size}}" style="width:4em" data-tooltip="Size in squares (0: no Area, the Action uses its Distance)">
+      <select name="system.areaCfg.shape"><option value="emanation" {{#if (eq system.areaCfg.shape "emanation")}}selected{{/if}}>Emanation</option><option value="burst" {{#if (eq system.areaCfg.shape "burst")}}selected{{/if}}>Burst</option></select>
+      within <input type="number" min="0" name="system.areaCfg.within" value="{{system.areaCfg.within}}" style="width:4em" data-tooltip="Placed up to this many squares away (0: around you; with the Self trait it is applied on you)"> sq.
+      <span class="aelabel">Targets</span> <select name="system.areaCfg.targets"><option value="all" {{#if (eq system.areaCfg.targets "all")}}selected{{/if}}>All</option><option value="allies" {{#if (eq system.areaCfg.targets "allies")}}selected{{/if}}>Allies</option><option value="enemies" {{#if (eq system.areaCfg.targets "enemies")}}selected{{/if}}>Enemies</option></select>
+      <span class="aebreak"></span>
+      <label class="inline"><input type="checkbox" name="system.areaCfg.center" {{checked system.areaCfg.center}}> Affect the creature it is around</label>
+      <label class="inline"><input type="checkbox" name="system.areaCfg.keep" {{checked system.areaCfg.keep}}> Keep on the map</label>
+      Rounds <input type="number" min="0" name="system.areaCfg.rounds" value="{{system.areaCfg.rounds}}" style="width:4em" data-tooltip="0: until removed (when kept)">
+    </div>
+    <label>Setup <input type="text" name="system.setup" value="{{system.setup}}" placeholder="What happens before the dice are rolled (buttons allowed)"></label>
+    <label>Requirements <input type="text" name="system.requirements" value="{{system.requirements}}" placeholder="You have at least Speed 3"></label>
+    <label>Prerequisites <input type="text" name="system.prerequisites" value="{{system.prerequisites}}" placeholder="Only for Talents: e.g. Brawler (what you need to choose it)"></label>
+    <label>Interrupt / Trigger <input type="text" name="system.trigger" {{#unless system.reaction}}disabled{{/unless}} value="{{system.trigger}}" placeholder="A creature within 3 squares leaves a square during a Move Action"></label>
+    <p class="hint">Requirements: you can't use the Action unless you meet them ("Speed 3" is checked automatically). Interrupt / Trigger: what a Reaction responds to; its Kind decides when it happens (an Interrupt before the Action that triggers it, a Trigger after it) and what the card calls the line. Frequency only appears on the card when it matters (Round, Encounter...). Distance: <code>reach</code>, <code>self</code>, <code>weapon</code> (the weapon's range) or any text. To make an Action roll Body, Mind, Appeal or Instinct, give it that trait.</p>
+    <div class="opts">
+      <button type="button" data-action="openVersions">Edit Versions ({{versionCount}})</button>
+      <button type="button" data-action="openGenerator">Generate Action</button>
+    </div>
+    <table class="vtable">
+      <thead><tr><th>AP</th><th>Tier 1</th><th>Tier 2</th><th>Tier 3</th><th>Effects</th><th>Version</th></tr></thead>
+      <tbody>{{#each versionRows}}<tr><td class="c">{{ap}}</td>{{#if noTiers}}<td colspan="3" class="c">No tiers</td>{{else}}{{#each tiers}}<td>{{text}}<div class="calc">Avg {{avg}}{{#if exp}} &middot; Exp {{exp}}{{/if}}</div></td>{{/each}}{{/if}}<td>{{effects}}</td>
+        <td class="calc">{{#if noTiers}}&mdash;{{else}}{{#if hasExp}}<b>Exp {{total}}</b><br>{{/if}}Avg {{meanAvg}}{{/if}}</td></tr>{{/each}}</tbody>
+    </table>
+    <p class="hint">Avg = damage when that tier happens (Version Avg is the mean of the three tiers). Exp = Avg &times; the chance of the tier at DC 13 with no boons or banes; the Version Exp is their sum. {{#unless onActor}}Open the action on an actor to count [W], [At] and the attack modifier.{{/unless}}</p>
+    {{/if}}
+
+    {{#if isArmor}}
+    <div class="grid3">
+      <label>Category <select name="system.category">{{selectOptions armorCategories selected=system.category}}</select></label>
+      <label>Extra Armor (rare) <input type="number" name="system.bonus" value="{{system.bonus}}"></label>
+      <label>Ward <input type="number" min="0" name="system.ward" value="{{system.ward}}"></label>
+    </div>
+    <label class="inline"><input type="checkbox" name="system.worn" {{#if system.worn}}checked{{/if}}> Worn</label>
+    <label>Properties <input type="text" name="system.properties" value="{{system.properties}}" placeholder="Resist Slash 1, Bulky (not automated yet)"></label>
+    <p class="hint">The wearer's Armor is 11 + the category's value (Light 1, Medium 2, Heavy 3) + the extra; Ward adds to the wearer's Ward. Only one armor is worn at a time. Wearing armor beyond your class's Armor Training makes your Rolls Doomed and Actions against your Armor or Ward Favored.</p>
+    {{/if}}
+
+    {{#if isGear}}
+    <div class="grid3">
+      <label>Quantity <input type="number" min="0" name="system.quantity" value="{{system.quantity}}"></label>
+      <label>Weight (each) <input type="number" min="0" step="any" name="system.weight" value="{{system.weight}}"></label>
+      <label>Cost (each, coins) <input type="number" min="0" step="any" name="system.cost" value="{{system.cost}}"></label>
+    </div>
+    <p class="hint">Gear and loot: anything carried that is not a weapon or armor. The Items tab lists it with its quantity and adds up the weight.</p>
+    {{/if}}
+
+    {{#if isWeapon}}
+    <div class="opts"><button type="button" data-action="generateWeapon"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Weapon</button><span class="ihint">one line, like <code>greatsword: two-handed, slash, 0/1d8/2d6</code></span></div>
+    <label>Properties {{formInput fields.traits value=system.traits name="system.traits"}}</label>
+    <div class="grid3">
+      <label>Range <input type="text" name="system.range" value="{{system.range}}" placeholder="1   or   1/2   or   10/20/40"></label>
+      {{#if weaponThrown}}<label>Thrown Range <input type="text" name="system.thrownRange" value="{{system.thrownRange}}" placeholder="4/8/12"></label>{{/if}}
+      <label data-tooltip="The kind of weapon its Mastery counts for. Empty: its name. A +1 Greatsword with 'Greatsword' here shares the Greatsword's Mastery.">Mastery group <input type="text" name="system.masteryGroup" value="{{system.masteryGroup}}" placeholder="{{item.name}}"></label>
+      {{#if system.reach}}<label>Old extra Reach <input type="number" min="0" name="system.reach" value="{{system.reach}}"></label>{{/if}}
+    </div>
+    <p class="hint">Every weapon has a Range, melee weapons included: normal / far (1 bane) / maximum (2 banes); one number has no far or maximum range (most melee weapons: 1). Reach above 1 adds to every number of a melee weapon's Range. Long: 1 bane against adjacent creatures, and it doesn't threaten them. Thrown: used in hand with its Range, thrown with its Thrown Range (a Ranged Action). A melee weapon without a Range uses 1 + its old extra Reach.</p>
+    <label>Damage Subtype <select name="system.subtype">{{selectOptions subtypeChoices selected=system.subtype}}</select></label>
+    {{#each weaponTiers}}
+    <h3>{{label}} Damage</h3>
+    <div class="grid4">
+      <label>Damage to <select name="system.damage.{{key}}.pool">{{selectOptions ../poolChoices selected=d.pool}}</select></label>
+      <label>Dice <input type="number" min="0" name="system.damage.{{key}}.count" value="{{d.count}}"></label>
+      <label>Die <select name="system.damage.{{key}}.die">{{selectOptions ../dieChoices selected=d.die}}</select></label>
+      <label>Modifier <input type="number" name="system.damage.{{key}}.mod" value="{{d.mod}}"></label>
+    </div>
+    {{/each}}
+    <p class="hint">Die "None" gives flat damage (modifier only); 0 modifier and no die is 0 damage.</p>
+    <h3>Weapon Techniques</h3>
+    <div class="opts"><button type="button" data-action="createTechnique"><i class="fa-solid fa-plus"></i> Create Weapon Technique</button><span class="ihint">or drop an Action here</span></div>
+    <div class="drop-zone" data-list="actions" data-accept="action">Drop Actions here</div>
+    <ul class="items">
+      {{#each actionsList}}
+      <li draggable="true" data-uuid="{{uuid}}"><a data-action="openLinked" data-uuid="{{uuid}}">{{name}}</a><span class="spacer"></span>
+        <button type="button" data-action="removeLink" data-list="actions" data-index="{{index}}">&times;</button></li>
+      {{/each}}
+    </ul>
+    {{/if}}
+
+    {{#if isPassiveHost}}
+    <div class="fxd{{#if fxHelp}} help-on{{/if}} passive">
+      <h3>Passive <select class="fxd-add" data-fxadd aria-label="Add a setting"><option value="">+ Add…</option>{{selectOptions settingChoices}}</select></h3>
+      <label class="fxd-hover" data-tooltip="Shown when the mouse is over this effect or ability in a roll. Empty: the start of its description.">Hover text <input type="text" name="system.hover" value="{{system.hover}}" placeholder="What it does, in a short line (optional)"></label>
+      <p class="hint">What the creature with this {{#if isFeature}}Feature{{else}}Talent{{/if}} has by itself (boons and banes, Empowered and Enfeebled, Defense, Speed, notes). Each setting has its own "It works...": always, or only while the Escalation is high enough (an Escalation Passive: "while your Escalation is 2 or more"), so one {{#if isFeature}}Feature{{else}}Talent{{/if}} can hold settings that work at different moments.</p>
+      {{> "systems/twod12/templates/parts/settings.hbs"}}
+    </div>
+    {{/if}}
+
+    {{#if isEffect}}
+    <div class="fxd{{#if fxHelp}} help-on{{/if}}">
+      <div class="fxd-top">
+        <div class="fxd-short"><b>In short:</b> {{fxSummary}}</div>
+        <label class="fxd-helptoggle"><input type="checkbox" data-fxhelp {{#if fxHelp}}checked{{/if}}> Show help</label>
+      </div>
+
+      <label class="fxd-hover" data-tooltip="Shown when the mouse is over this effect or ability in a roll. Empty: the start of its description.">Hover text <input type="text" name="system.hover" value="{{system.hover}}" placeholder="What it does, in a short line (optional)"></label>
+      {{#if applied}}
+      <h3>Applied</h3>
+      <div class="fxd-s">On <b>{{applied.actor}}</b>{{#if applied.valued}}, with a value of <input type="number" min="{{#if applied.exhausted}}0{{else}}1{{/if}}" class="fxd-f n" data-apvalue value="{{applied.value}}">{{/if}}{{#if applied.isRounds}}, with <input type="number" min="0" class="fxd-f n" data-apleft value="{{applied.left}}"> {{applied.leftWord}} left{{/if}}. <a class="fxd-raw" data-action="openRaw">Foundry's effect window</a></div>
+      <p class="fxd-help">Changes apply to this creature only: the Effect it came from isn't changed. Applying the Effect again replaces this copy.</p>
+      {{#if applied.exhausted}}<p class="fxd-help">Exhausted's own rules (Speed, the penalty on Rolls, the Mind Damage Threshold) come from its value; 0 removes it. Settings added here come on top of them.</p>{{/if}}
+      {{else}}
+      <h3>Identity</h3>
+      <div class="fxd-s">This is <select class="fxd-f" data-fxkind>{{selectOptions kindChoices selected=kindVal}}</select> placed on <select class="fxd-f" data-fxself>{{selectOptions selfChoices selected=selfVal}}</select>.
+        {{#if system.isCondition}}<label class="fxd-inl"><input type="checkbox" name="system.valued" {{#if system.valued}}checked{{/if}}> It has a value (like Empowered 2)</label>{{/if}}</div>
+      <p class="fxd-help">An effect is a bundle of the settings below. A condition is a named state from the book (Prone, Empowered); one with a value keeps it on the creature, and clicking its icon raises it. "The user" is the creature that used the Action.</p>
+      {{/if}}
+
+      <h3>What it does <select class="fxd-add" data-fxadd aria-label="Add a setting"><option value="">+ Add…</option>{{selectOptions settingChoices}}<option value="condition">Condition (drop one)</option></select></h3>
+      {{> "systems/twod12/templates/parts/settings.hbs"}}
+      {{#each condRows}}
+      <div class="fxd-cond"><span class="fxd-k">Condition</span><span class="fxd-s">Apply <b>{{name}}</b>{{#if valued}} at <input type="number" min="1" class="fxd-f n" data-cfield="{{i}}" value="{{value}}">; if it's already there, <select class="fxd-f" data-cmode="{{i}}">{{selectOptions ../riderModes selected=mode}}</select>{{/if}}.</span><button type="button" data-cdel="{{i}}" data-tooltip="Remove">&times;</button></div>
+      {{/each}}
+      <div class="drop-zone" data-list="conditions" data-accept="effect">Drop a condition here (from the Conditions compendium) to apply it with this effect</div>
+      <p class="fxd-help">A condition applied this way lasts as long as this effect and goes with it. A creature that already has it keeps the higher value, unless you choose to increase the value.</p>
+
+      <h3>Ends</h3>
+      <div class="fxd-s">Lasts <select class="fxd-f" name="system.duration.type">{{selectOptions durationWords selected=system.duration.type}}</select>{{#if isRounds}} <input type="number" min="1" class="fxd-f n" name="system.duration.rounds" value="{{system.duration.rounds}}"> {{roundsWord}}{{/if}}, or until the creature uses an action with <select class="fxd-f" data-expireall>{{selectOptions expireAllChoices selected=expireAllVal}}</select> of
+        {{#each expireChips}}<span class="fxd-chip"><span class="dot" style="background:{{color}}"></span>{{label}}<button type="button" data-erem="{{key}}" aria-label="Remove {{label}}">&#10005;</button></span>{{/each}}
+        <select class="fxd-plus" data-eadd aria-label="Add a trait"><option value="">+</option>{{#each expireOptions}}<option value="{{key}}">{{label}}</option>{{/each}}</select></div>
+      <p class="fxd-help">End of Turn ends at the end of the affected creature's turn. Rounds end at the end of the origin's turn after that many rounds. No traits = no action ends it early.</p>
+
+      <details class="fxd-adv" {{#if system.linked}}open{{/if}}><summary>Advanced</summary>
+        <label>Also applies (by name) <input type="text" name="system.linked" value="{{system.linked}}" placeholder="Hindered (names, separated by commas)"></label>
+        <p class="fxd-help">The older way to bring other conditions along: by their name. They end when this one ends. Dropping a condition above does the same and can give it a value.</p>
+      </details>
+    </div>
+    {{/if}}
+  </section>
+</div>

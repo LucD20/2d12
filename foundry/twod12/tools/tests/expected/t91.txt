@@ -1,0 +1,29 @@
+--- the distance between two tokens (adjacent is 1, every second diagonal counts 2)
+straight                           (1,0):1  (2,0):2  (5,0):5  (0,-3):3
+one diagonal                       (1,1):1  (-1,1):1
+knight steps                       (2,1):2  (3,1):3  (3,2):4  (4,1):4  (4,3):5
+two diagonals (1, then 2)          (2,2):3  (-2,2):3  (-2,-2):3
+three and four diagonals           (3,3):4  (4,4):6
+a 2x2 creature and a Medium one: next to each other 1 | a square apart 2 | diagonal corner 1 | two diagonals from its corner 3 | sharing a square 1
+a Huge 3x3 and a Medium creature: next to it 1 | 3 squares from its edge 3
+--- the edge of a light (Bright 2 and Dim 4 squares, the light in the middle of a square)
+2 straight out (the Bright edge): bright | 4 straight out (the Dim edge): dim dim dim dim | 5 out: dark | 2 out and 1 to the side: dim | 3 out and 3 to the side: dark | 4 and 1 to the side: dark
+squares lit by the rules: Bright 13 (13) | Dim 36 (36 more)
+--- Setup
+the card after the movement was made: "Evade up to 2. During this Evade you can move through the space of any creature."
+the card when it was not: true
+a button without parentheses: "Advance first." | no Move at all: "You shed light." | nothing: ""
+no Setup                                 {"ok":true,"done":false} | (nothing happened)
+a Setup that is only text                {"ok":true,"done":false} | (nothing happened)
+an Evade; Continue                       {"ok":true,"done":true} | move evade 2 self:true for Kai token t1 | dialog "Cut Through: Setup": Evade up to 2. During this Evade you can move through the space of any creature. Move your token, then press Continue to make the roll. | end the free movement
+an Evade; Cancel the Action              {"ok":false,"done":false} | move evade 2 self:true for Kai token t1 | dialog "Cut Through: Setup": Evade up to 2. During this Evade you can move through the space of any creature. Move your token, then press Continue to make the roll. | end the free movement
+an Evade; the window is closed           {"ok":false,"done":false} | move evade 2 self:true for Kai token t1 | dialog "Cut Through: Setup": Evade up to 2. During this Evade you can move through the space of any creature. Move your token, then press Continue to make the roll. | end the free movement
+the movement is refused (not in combat)  {"ok":true,"done":false} | move evade 2 self:true for Kai token t1
+an Advance                               {"ok":true,"done":true} | move advance 2 self:true for Kai token t1 | dialog "Cut Through: Setup": Advance up to 2. Move your token, then press Continue to make the roll. | end the free movement
+Charge and Pushed tags are not a Setup   {"ok":true,"done":false} | (nothing happened)
+two movements                            {"ok":true,"done":true} | move advance 1 self:true for Kai token t1 | dialog "Cut Through: Setup": Advance up to 1, then Evade up to 1. Move your token, then press Continue to make the roll. | end the free movement | move evade 1 self:true for Kai token t1 | dialog "Cut Through: Setup": Advance up to 1, then Evade up to 1. Move your token, then press Continue to make the roll. | end the free movement
+two movements; Cancel on the second      {"ok":false,"done":true} | move advance 1 self:true for Kai token t1 | dialog "Cut Through: Setup": Advance up to 1, then Evade up to 1. Move your token, then press Continue to make the roll. | end the free movement | move evade 1 self:true for Kai token t1 | dialog "Cut Through: Setup": Advance up to 1, then Evade up to 1. Move your token, then press Continue to make the roll. | end the free movement
+the first refused, the second granted    {"ok":true,"done":true} | move advance 1 self:true for Kai token t1 | move evade 1 self:true for Kai token t1 | dialog "Cut Through: Setup": Advance up to 1, then Evade up to 1. Move your token, then press Continue to make the roll. | end the free movement
+in useAction: Setup before the Area: true | before the modifiers (buildPreviews): true | after the checks of Prone and Immobilized: true | the card takes the movement button out: true
+--- a kept Emanation
+no native Emanation shape any more (it used a field that is called radius, and failed every time): true | the Region is made of the placed squares: true

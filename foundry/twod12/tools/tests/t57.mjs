@@ -1,0 +1,20 @@
+// Run with: node tools/tests/run.mjs (or node tools/tests/t57.mjs)
+const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+globalThis.Combat = class {}; globalThis.CONFIG = {};
+globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: {} } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
+globalThis.Hooks = { on() {} }; globalThis.game = { settings: { get: () => true } };
+const cf = await import(ROOT + "module/config.mjs");
+const h = cf.cardHead("Reaping Sweep", "Weapon Technique", cf.apIcon(1));
+console.log("head:", h.replace(/<[^>]+>/g, "|").replace(/\|+/g, "|"), "| category under the cost:", h.indexOf('class="aps"') < h.indexOf('class="acat"'), "| both inside .aright:", /aright"><span class="atop">.*<span class="aps">.*<\/span><\/span><span class="acat">/.test(h), "| Frequency next to the cost (v0.0.157):", /<span class="atop"><span class="afreq">Round<\/span><span class="aps">/.test(cf.cardHead("Smite", "Divine Power 1", "1AP", "round")));
+console.log("no cat:", cf.cardHead("Release", "", cf.apIcon(0)).includes("acat"));
+const rl = await import(ROOT + "module/roll.mjs");
+const r = { d1: [7], d2: [7], total: 16, dc: 13, mod: 2, doubles: true, base: 2, tier: 3, crit: false, boonFaces: [], baneFaces: [], sources: [], state: "" };
+console.log("roll line without status:", rl.checkHtml("Weapon Modifier", r, [], { status: false }).includes("Doubles"), "| with status (a Save):", rl.checkHtml("Body Save", r).includes("Doubles"));
+const dm = await import(ROOT + "module/dmgcard.mjs");
+let posted; globalThis.ChatMessage = { getSpeaker: () => ({}), create: async d => { posted = d; } };
+globalThis.ui = { notifications: {} };
+await dm.postDamageCard({ title: "Reaping Sweep", subtitle: "Damage \u2022 Tier 3", color: "#185FA5", comps: [{ pool: "B", sub: "Sl", kind: "D", formula: "2d6", total: 4, dice: [{ faces: 6, results: [3, 1] }] }], chip: '<div class="chips"><span>Body +2</span></div>', targets: [] });
+const c = posted.content;
+console.log("damage head:", c.match(/<div class="ahead">.*?<\/div><\/div>/)[0].replace(/<[^>]+>/g, "|").replace(/\|+/g, "|"), "| comp color var:", /--sc:#/.test(c), "| buttons kept:", ["applyDamage", "applyHalf", "block", "retarget"].every(k => c.includes(k)), "| lethal select:", c.includes('class="kind"'));
+await dm.postDamageCard({ title: "Cleave", subtitle: "Cleave 2", color: "#185FA5", comps: [{ pool: "B", sub: "Sl", kind: "A", formula: "2", total: 2, dice: [] }], targets: [] });
+console.log("cleave head:", posted.content.match(/<div class="ahead">.*?<\/div><\/div>/)[0].replace(/<[^>]+>/g, "|").replace(/\|+/g, "|"));

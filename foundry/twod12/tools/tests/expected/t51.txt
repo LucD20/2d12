@@ -1,0 +1,4 @@
+on its own turn: out of turn? false | mods for Reaping Sweep: 0
+on another creature's turn: out of turn? true | mods for Reaping Sweep: 1 | for Weapon Attack: 0
+version with the Talent: {"critical":"You disrupt the triggering Action before it happens.","effects":"Bright light."} | unchanged without: {"critical":"x"}
+no combat: out of turn? false

@@ -1,0 +1,919 @@
+import { triggerNotices } from "./triggers.mjs";
+import { techniqueLock, TECHNIQUE_AT, masteryAfterRoll } from "./mastery.mjs";
+import { archerMods, hunterEmpowered, longDraw, steadyNerves, killersFocusBonus, useKillersFocus, setQuarry } from "./archer.mjs";
+import { splitModes, splitView, SPLIT_LABEL } from "./split.mjs";
+import { canPayEscalation, spendEscalation } from "./escalation.mjs";
+import { weaponUse, weaponRanges } from "./weaponrange.mjs";
+import { rollSource, rollTraits, saveDcOf } from "./rollsource.mjs";
+import { perceptionOf, perceive } from "./senses.mjs";
+import { TWOD12, expandAsText, areaButton, isTalentAction, targetsNeeded, areaConfigOf } from "./config.mjs";
+import { weaponsFor, hasProp } from "./fists.mjs";
+import { isEngaged, engagedWithOther } from "./engaged.mjs";
+import { flankingMod } from "./flanking.mjs";
+import { performCheck, performMultiCheck, multiCheckHtml, collapseNames, uniqueLabels, checkHtml, esc, sgn } from "./roll.mjs";
+import { postDamageCard, postMultiDamageCard } from "./dmgcard.mjs";
+import { cardVars, cardHead, flavorHtml, apIcon, traitChevrons, categoryText, highlightText, metaRowHtml, effectiveFrequency, distanceText, cardColorFor, vsText, targetsRowHtml, requirementProblem } from "./config.mjs";
+import { collectBonuses, expireOnUse } from "./bonus.mjs";
+import { notesFor, resolveModifiers, applyEffects, originInfo, damageSteps, modifierList } from "./effects.mjs";
+import { spendAP, combatantOf } from "./combat.mjs";
+import { computeDC } from "./defense.mjs";
+import { markUsed, activeGrants, atWillUses, grantMatches } from "./usage.mjs";
+import { tierProbs, perDieDelta, topStep } from "./calc.mjs";
+import { squaresBetween, rangeBand } from "./move.mjs";
+import { setupFor } from "./setup.mjs";
+import { coverBetween, coverWhy } from "./cover.mjs";
+import { consumeGrant } from "./freeuse.mjs";
+import { buildPreviews, updateOdds, applyTalentMods, tierLines } from "./preview.mjs";
+const { DialogV2 } = foundry.applications.api;
+import { ensureFreeHand } from "./hands.mjs";
+
+/** Text form of a damage instance, e.g. "[B] 1[W] + 1d4 H". */
+export function instanceText(i) {
+  const parts = [];
+  if (i.useW) parts.push(`${i.wCount}[W]`);
+  const rest = [];
+  if (i.dice) rest.push(i.dice);
+  if (i.useAt) rest.push("[Mod]");
+  if (rest.length) parts.push(rest.join(" + ") + (i.subtype ? ` ${i.subtype}` : ""));
+  let t = parts.join(" + ");
+  if (t && i.pool) t = `[${i.pool}] ${t}`;
+  return t;
+}
+
+export const enrich = async (txt, doc = null) => highlightText(await foundry.applications.ux.TextEditor.implementation.enrichHTML(txt ?? "", doc ? { relativeTo: doc } : {}));
+
+export function versionRow(v) {
+  return { ap: v.ap, effects: v.effects, tiers: ["t1", "t2", "t3"].map((k, i) => [...v[k].map(instanceText), v[`x${i + 1}`]].filter(Boolean).join(" & ") || "-") };
+}
+export const targetLine = ts => `<div class="tline">${ts.length ? `<i class="fa-solid fa-crosshairs"></i> ${esc(ts.map(t => t.name).join(", "))}` : ""}</div>`;
+const traitsHtml = traitChevrons;
+
+function weaponFormula(d, n) {
+  const dice = d.die ? d.count * n : 0, mod = d.mod * n;
+  if (dice > 0) return `${dice}${d.die}` + (mod ? `${mod > 0 ? "+" : ""}${mod}` : "");
+  return mod ? String(mod) : null;
+}
+
+/** The step of a stored flag: Empowered N (positive) or Enfeebled N (negative). Older cards stored true for Empowered. */
+export const stepOf = v => (v === true ? 1 : Math.trunc(Number(v)) || 0);
+
+async function evalFormula(formula, rolls, step = 0) {
+  if (!formula) return { total: 0, dice: [], shown: "0" };
+  const r = await new Roll(formula).evaluate();
+  rolls.push(r);
+  const dice = r.dice.map(d => ({ faces: d.faces, results: d.results.map(x => x.result) }));
+  const delta = perDieDelta(dice.flatMap(d => d.results), step);   // Empowered N: N more on every die; Enfeebled N: N less on every die, at least 1 each
+  return { total: r.total + delta, dice, shown: delta ? `${formula} ${step > 0 ? "+" : "\u2212"}${Math.abs(step)} per die` : formula };
+}
+
+export async function resolveInstance(inst, ctx) {
+  const comps = [];
+  if (inst.useW && ctx.weapon) {
+    const d = ctx.weapon.system.damage[`t${ctx.tier}`];
+    const f = d ? weaponFormula(d, inst.wCount) : null;
+    const res = await evalFormula(f, ctx.rolls, ctx.empowered);
+    comps.push({ kind: "W", formula: f ? res.shown : "0", total: res.total, dice: res.dice, sub: ctx.weapon.system.subtype ?? "" });
+  }
+  if (inst.dice || inst.useAt) {
+    const f = [inst.dice, inst.useAt ? String(ctx.attrVal) : ""].filter(Boolean).join(" + ");
+    const res = await evalFormula(f, ctx.rolls, ctx.empowered);
+    comps.push({ kind: "D", formula: res.shown, total: res.total, dice: res.dice, sub: inst.subtype });
+  }
+  return { inst, comps };
+}
+
+/** Is it another creature's turn in a combat that has started? */
+export function isOutOfTurn(actor) {
+  const combat = game.combat;
+  if (!combat?.started) return false;
+  const me = combatantOf(actor);
+  return !!me && combat.combatant?.id !== me.id;
+}
+
+/** Talents that modify this Action right now (see "Modifies other Actions" on the Talent). */
+export function talentModsFor(actor, item) {
+  const out = isOutOfTurn(actor);
+  return [...(actor.itemTypes?.talent ?? []), ...(actor.itemTypes?.action ?? []).filter(isTalentAction)].flatMap(t => (t.system.modifiers ?? []).filter(m => m.spec && grantMatches(m.spec, item) && (m.when === "always" || out)).map(m => ({ ...m, talent: t.name })));
+}
+
+async function pickWeapon(actor, item, candidates = null) {
+  const linked = item.getFlag("twod12", "weaponId");
+  if (linked) return actor.items.get(linked) ?? null;
+  const wielded = candidates ?? weaponsFor(actor, item);
+  if (wielded.length === 1) return wielded[0];
+  if (!wielded.length) { ui.notifications.warn("No wielded weapon: [W] damage will be 0."); return null; }
+  const opts = wielded.map(w => `<option value="${w.id}">${esc(w.name)}</option>`).join("");
+  const id = await DialogV2.prompt({
+    window: { title: "Which weapon?" }, content: `<div class="form-group"><label>Weapon</label><select name="w">${opts}</select></div>`,
+    ok: { label: "Use", callback: (ev, btn) => new FormData(btn.form).get("w") }, rejectClose: false
+  });
+  return id ? actor.items.get(id) : null;
+}
+
+const showOdds = () => { try { return game.settings.get("twod12", "showOdds") !== false; } catch (e) { return true; } };
+/** For testing: the chances of each tier for the roll that was just made (with its boons, banes and Favored / Doomed). */
+const oddsText = chk => {
+  const p = tierProbs(chk.mod + chk.adj, chk.dc, (chk.manualBoons ?? 0) + (chk.sources ?? []).reduce((s, x) => s + (x.boons ?? 0), 0), (chk.manualBanes ?? 0) + (chk.sources ?? []).reduce((s, x) => s + (x.banes ?? 0), 0), chk.state ?? "");
+  const pct = x => `${Math.round(x * 100)}%`;
+  return { p, text: `T1 ${pct(p[0])} \u00b7 T2 ${pct(p[1])} \u00b7 T3 ${pct(p[2])}`, html: `T1 ${pct(p[0])} &middot; T2 ${pct(p[1])} &middot; <b>T3 ${pct(p[2])}</b>` };
+};
+const oddsRow = chk => `<div class="oddsrow" data-tooltip="Chance of each tier for this roll">Odds: ${oddsText(chk).html}</div>`;
+/** Does this tier need a Damage button? attrFrom: the lowest Tier on which the Attribute is added (0: never; true: Weapon, from Tier 2). */
+const needsDamage = (attrFrom, tier, insts, fx) => { const from = attrFrom === true ? 2 : Number(attrFrom) || 0; return tier > 0 && (insts.some(i => i.useW || i.dice || i.useAt) || (from > 0 && tier >= from) || fx.length > 0); };
+
+/** Roll dialog: optional AP buttons, DC, boons, banes (pre-filled from effects), and the Notes of matching effects on the right. */
+/**
+ * The dialog's modifier choices that apply to one target: everything that applies to all (your own effects), and that target's own
+ * ("<actor uuid>|<effect>:<index>" for effects on it, "syn:<kind>|<actor uuid>" for cover, perception and range against it).
+ */
+export const modifiersForTarget = (ids, actorUuid) => (ids ?? []).filter(id => {
+  const s = String(id);
+  const owner = s.startsWith("syn:") ? (s.split("|")[1] ?? null) : (s.includes("|") ? s.split("|")[0] : null);
+  return owner == null || owner === actorUuid;
+});
+
+/** The dots over a target tile: a green dot for each boon and a red dot for each bane (at most 5 of each). */
+export const tileDots = (boons, banes) => `${'<i class="dot g"></i>'.repeat(Math.min(5, Math.max(0, boons)))}${'<i class="dot r"></i>'.repeat(Math.min(5, Math.max(0, banes)))}`;
+/** The caption under the tiles for the selected creature: { name, detail }. */
+export const tileCaption = (name, dc, boons, banes) => ({ name, detail: [`DC ${dc}`, boons ? `${boons} boon${boons > 1 ? "s" : ""}` : "", banes ? `${banes} bane${banes > 1 ? "s" : ""}` : ""].filter(Boolean).join(" \u00b7 ") });
+/** The number a duplicate name ends with ("Skeleton Captain 2" → "2"). */
+export const tileNumber = name => (/(\d+)\s*$/.exec(String(name ?? "")) ?? [])[1] ?? "";
+
+/** The Modifier's name for the card: "Exhausted 2" when it still has the value Exhausted put there. */
+export const adjLabelOf = data => (data?.adjLabel && Number(data.mod) === Number(data.adjDefault) ? data.adjLabel : "");
+
+export async function askRoll(actor, { title, attrKey, traits = new Set(), from = null, versions = null, defaults = {}, preview = null, dcNote = "", targetActors = [], targetTiles = [], extraMods = [], withDamage = false, withReload = false, notices = [] }) {
+  // Armor beyond the creature's training: all its Rolls are Doomed (unless something else already made them Doomed, which keeps its label).
+  if (actor?.system?.armorUntrained && !defaults.doomed) defaults = { ...defaults, doomed: true, doomedLabel: "Untrained armor (Doomed)", doomedWhy: "Your armor is beyond your Armor Training: all your Rolls are Doomed" };
+  // Exhausted: its value as a penalty on all Rolls, in the Modifier, named on the card (unless the Modifier is changed).
+  const exh = Number(actor?.system?.exhausted ?? 0);
+  if (exh > 0) defaults = { ...defaults, mod: (Number(defaults.mod) || 0) - exh, adjLabel: `Exhausted ${exh}`, adjDefault: (Number(defaults.mod) || 0) - exh };
+  const notes = attrKey ? notesFor(actor, attrKey) : [];
+  // Notices for one creature (a trigger on that target) go in its tile when several are targeted; the others stay in the Use row.
+  const perCreature = targetTiles.length > 1;
+  const infoMods = notices.filter(n => n.for && perCreature).map((n, k) => ({ id: `syn:info|${n.for}|${k}`, info: true, ...n }));
+  const generalNotices = notices.filter(n => !(n.for && perCreature));
+  const mods = [...modifierList(actor, traits, targetActors, from), ...extraMods, ...infoMods];
+  const notesHtml = notes.length ? `<aside class="usenotes"><div class="unhead">Effects</div><ul>${notes.map(n => `<li><b>${esc(n.title)}</b>${n.title !== n.name ? ` <small>(${esc(n.name)})</small>` : ""}${n.text ? `<div>${esc(n.text)}</div>` : ""}</li>`).join("")}</ul></aside>` : "";
+  const ap = versions ? `<div class="apbtns">${versions.map((v, i) => `<label class="apbtn"><input type="radio" name="ap" value="${v.ap}" ${i === 0 ? "checked" : ""}><span>${apIcon(v.ap, defaults.reaction)}</span></label>`).join("")}</div>` : "";
+  const chipOf = m => m.info ? `<span class="rnotice" data-tooltip="${esc(m.why ?? "")}"><i class="fa-solid ${esc(m.icon ?? "fa-circle-info")}"></i> ${esc(m.text)}</span>` :
+    `<label class="fxchip ${m.banes && !m.boons ? "bane" : "boon"}" data-tooltip="${esc(m.predicate)}"><input type="checkbox" name="fx" value="${m.id}" data-b="${m.boons ?? 0}" data-n="${m.banes ?? 0}" ${m.match ? "checked" : ""}><i class="fa-solid fa-chevron-${m.banes && !m.boons ? "down" : "up"}"></i><span>${esc(m.name)}</span><small${m.full ? " hidden" : ""}>${m.boons ? `+${m.boons}` : ""}${m.boons && m.banes ? "/" : ""}${m.banes ? `\u2212${m.banes}` : ""}</small></label>`;
+  const chips = mods.map(chipOf).join("");
+  // Several targets: a tile for each creature; clicking one shows the modifiers that affect that creature (the first tile: yours, for all).
+  const ownerOf = id => { const t = String(id); return t.startsWith("syn:") ? (t.split("|")[1] ?? null) : (t.includes("|") ? t.split("|")[0] : null); };
+  let effectsRows;
+  if (targetTiles.length > 1) {
+    const shared = mods.filter(m => !ownerOf(m.id)), own = u => mods.filter(m => ownerOf(m.id) === u);
+    const first = shared.length ? "all" : (targetTiles.find(t => own(t.uuid).length)?.uuid ?? "all");
+    const group = (id, list) => `<div class="fxgroup${id === first ? "" : " off"}" data-for="${esc(id)}">${list.length ? list.map(chipOf).join("") : '<span class="hint">Nothing changes this roll for this creature.</span>'}</div>`;
+    effectsRows = `<div class="rf-row tilesrow"><span class="rf-label">Targets</span><div class="ttiles${targetTiles.length >= 10 ? " compact" : ""}"><button type="button" class="ttile${first === "all" ? " on" : ""}" data-tg="all" data-name="Yours" data-tooltip="Your own effects, for every target"><span class="tdots"></span><i class="fa-solid fa-user"></i></button>${targetTiles.map((t, k) => `<button type="button" class="ttile${first === t.uuid ? " on" : ""}" data-tg="${esc(t.uuid)}" data-name="${esc(t.name)}" data-dc="${t.dc}" data-tooltip="${esc(t.name)}: DC ${t.dc}"><span class="tdots"></span>${targetTiles.length >= 10 ? `<b class="tabnum">${k + 1}</b>` : `<img src="${esc(t.img)}" alt="">${tileNumber(t.name) ? `<span class="tnum">${tileNumber(t.name)}</span>` : ""}`}</button>`).join("")}</div></div><div class="tcap"></div><div class="fxgroups">${group("all", shared)}${targetTiles.map(t => group(t.uuid, own(t.uuid))).join("")}</div>`;
+  } else effectsRows = chips ? `<div class="rf-row"><span class="rf-label">Effects</span>${chips}</div>` : "";
+  // Notices: how the roll is made, shown as labels (a Thrown weapon thrown, for example).
+  if (generalNotices.length) effectsRows = `<div class="rf-row"><span class="rf-label">Use</span>${generalNotices.map(n => `<span class="rnotice" data-tooltip="${esc(n.why ?? "")}"><i class="fa-solid ${esc(n.icon ?? "fa-circle-info")}"></i> ${esc(n.text)}</span>`).join("")}</div>` + effectsRows;
+  const bb = (kind, label, icon, n) =>
+    `<button type="button" class="bbchip ${kind === "boons" ? "boon" : "bane"} ${n ? "on" : ""}" data-bb="${kind}" data-tooltip="Left-click: +1. Right-click: \u22121."><i class="fa-solid fa-chevron-${icon}"></i><span>${label}</span><b>${n}</b></button><input type="hidden" name="${kind}" value="${n}">`;
+  const state = (name, label, cls, icon) =>
+    `<label class="fxchip ${cls}" data-tooltip="${name === "favored" ? "Roll 3d12 and keep the two highest" : (defaults.doomedWhy ?? "Roll 3d12 and keep the two lowest")}"><input type="checkbox" name="${name}" ${(name === "doomed" && defaults.doomed) || (name === "favored" && defaults.favored) ? "checked" : ""}><i class="fa-solid fa-chevron-${icon}"></i><span>${label}</span></label>`;
+  const stepChip = (name, label, icon, cls, n) =>
+    `<button type="button" class="bbchip ${cls} ${n ? "on" : ""}" data-bb="${name}" data-tooltip="Left-click: +1. Right-click: \u22121. ${name === "empowered" ? "Empowered N adds N to every damage die." : "Enfeebled N subtracts N from every damage die (each die still deals at least 1)."}${defaults.empowerWhy ? ` \u2014 ${defaults.empowerWhy}` : ""}"><i class="fa-solid fa-chevron-${icon}"></i><span>${label}</span><b>${n}</b></button><input type="hidden" name="${name}" value="${n}">`;
+  const special = [
+    withReload
+      ? `<label class="fxchip boon" data-tooltip="A powerful shot: Favored and Empowered 2. Afterwards the weapon must be reloaded before it is used again."><input type="checkbox" name="reloadshot"><i class="fa-solid fa-bullseye"></i><span>Reload shot</span></label>`
+      : "",
+    withDamage
+      ? `<span class="bbgroup">${stepChip("empowered", "Empowered", "up", "boon", defaults.empowerN ?? 0)}${stepChip("enfeebled", "Enfeebled", "down", "bane", defaults.enfeebleN ?? 0)}</span>`
+      : ""
+  ]
+    .filter(Boolean)
+    .join("");
+  const chipRow =
+    `<div class="rf-row"><span class="rf-label">Roll</span>${state("favored", defaults.favored && defaults.favoredLabel ? defaults.favoredLabel : "Favored", "boon", "up")}${state("doomed", defaults.doomed && defaults.doomedLabel ? defaults.doomedLabel : "Doomed", "bane", "down")}<span class="bbgroup">${bb("boons", "Boons", "up", defaults.boons ?? 0)}${bb("banes", "Banes", "down", defaults.banes ?? 0)}</span></div>` +
+    effectsRows +
+    (special ? `<div class="rf-row special"><span class="rf-label">Damage</span>${special}</div>` : "") +
+    `<input type="hidden" name="forceTier" value="">${withDamage ? `<p class="hint forcehint">For testing: click a Tier in the preview to force that result.</p>` : ""}`;
+  return DialogV2.prompt({
+    window: { title },
+    position: { width: notes.length || preview ? 580 : 380 },
+    content: `<div class="twod12 usedlg">${ap}<div class="usepreview"></div><div class="usewrap"><div class="useleft">
+      <div class="rollfields"><div class="rf-row"><label class="mini">DC <input class="num" type="number" name="dc" value="${defaults.dc ?? 13}"></label><label class="mini"${defaults.adjLabel ? ` data-tooltip="${esc(defaults.adjLabel)}: −${exh} on all Rolls"` : ""}>Modifier <input class="num" type="number" name="mod" value="${defaults.mod ?? 0}">${defaults.adjLabel ? `<input type="hidden" name="adjLabel" value="${esc(defaults.adjLabel)}"><input type="hidden" name="adjDefault" value="${defaults.adjDefault}">` : ""}</label>${dcNote ? `<span class="dcnote">${esc(dcNote)}</span>` : ""}</div>
+      ${chipRow}</div></div>${notesHtml}</div></div>`,
+    render: (event, dialog) => {
+      const root = dialog.element,
+        pv = root.querySelector(".usepreview");
+      // The target tiles: click one to see (and change) the modifiers that affect that creature.
+      const boxesOf = u => [...(root.querySelector(`.fxgroup[data-for="${CSS.escape(u)}"]`)?.querySelectorAll("[name=fx]") ?? [])];
+      const sum = list => list.reduce((t, c) => (c.checked ? [t[0] + (Number(c.dataset.b) || 0), t[1] + (Number(c.dataset.n) || 0)] : t), [0, 0]);
+      const refreshTiles = () => {
+        const [sb, sn] = sum(boxesOf("all"));
+        root.querySelectorAll(".ttile").forEach(t => {
+          const own = t.dataset.tg === "all" ? [0, 0] : sum(boxesOf(t.dataset.tg));
+          t._eff = [sb + own[0], sn + own[1]];
+          const d = t.querySelector(".tdots");
+          if (d) d.innerHTML = tileDots(...t._eff);
+        });
+        const on = root.querySelector(".ttile.on"),
+          cap = root.querySelector(".tcap");
+        if (on && cap) {
+          const c =
+            on.dataset.tg === "all"
+              ? { name: "Yours", detail: "your effects, for every target" }
+              : tileCaption(on.dataset.name, on.dataset.dc, ...(on._eff ?? [0, 0]));
+          const b = document.createElement("b"),
+            sp = document.createElement("span");
+          b.textContent = c.name;
+          sp.textContent = ` \u00b7 ${c.detail}`;
+          cap.replaceChildren(b, sp);
+        }
+      };
+      root.querySelectorAll(".ttile").forEach(t =>
+        t.addEventListener("click", ev => {
+          ev.preventDefault();
+          root.querySelectorAll(".ttile").forEach(x => x.classList.toggle("on", x === t));
+          root.querySelectorAll(".fxgroup").forEach(g => g.classList.toggle("off", g.dataset.for !== t.dataset.tg));
+          refreshTiles();
+        })
+      );
+      root.addEventListener("change", refreshTiles);
+      refreshTiles();
+      const refresh = () => {
+        if (!preview || !pv) return;
+        const apNow = root.querySelector("[name=ap]:checked")?.value;
+        const html = preview.byAp?.[apNow] ?? preview.byAp?.[Object.keys(preview.byAp ?? {})[0]] ?? "";
+        if (pv.dataset.ap !== String(apNow)) {
+          pv.innerHTML = html;
+          pv.dataset.ap = String(apNow);
+        }
+        const rf = root.querySelector(".rollfields");
+        if (rf) rf.style.display = preview.noTiers?.[apNow] ? "none" : "";
+        let boons = Number(root.querySelector("[name=boons]").value) || 0,
+          banes = Number(root.querySelector("[name=banes]").value) || 0;
+        root.querySelectorAll("[name=fx]:checked").forEach(c => {
+          const m = (preview.mods ?? {})[c.value];
+          if (m) {
+            boons += m.boons;
+            banes += m.banes;
+          }
+        });
+        const forced = root.querySelector("[name=forceTier]")?.value ?? "";
+        pv.querySelectorAll("tr[data-t]").forEach(tr => tr.classList.toggle("forced", tr.dataset.t === forced));
+        const fav = root.querySelector("[name=favored]")?.checked || root.querySelector("[name=reloadshot]")?.checked,
+          doo = root.querySelector("[name=doomed]")?.checked;
+        if (!preview?.noOdds) updateOdds(
+          pv,
+          (preview.mod ?? 0) + (Number(root.querySelector("[name=mod]").value) || 0),
+          Number(root.querySelector("[name=dc]").value) || 13,
+          boons,
+          banes,
+          fav && doo ? "" : fav ? "favored" : doo ? "doomed" : ""
+        );
+      };
+      if (preview) {
+        preview.mods = Object.fromEntries(mods.map(m => [m.id, { boons: m.boons, banes: m.banes }]));
+        root.addEventListener("input", refresh);
+        root.addEventListener("click", () => setTimeout(refresh, 0));
+        root.addEventListener("contextmenu", () => setTimeout(refresh, 0));
+        refresh();
+      }
+      dialog.element.addEventListener("click", ev => {
+        const tr = ev.target.closest(".usepreview tr[data-t]");
+        const inp = dialog.element.querySelector("[name=forceTier]");
+        if (!tr || !inp) return;
+        inp.value = inp.value === tr.dataset.t ? "" : tr.dataset.t;
+        dialog.element.querySelectorAll(".usepreview tr[data-t]").forEach(r => r.classList.toggle("forced", r.dataset.t === inp.value));
+      });
+      dialog.element.querySelectorAll("[data-bb]").forEach(btn => {
+        const input = dialog.element.querySelector(`[name=${btn.dataset.bb}]`);
+        const set = n => {
+          input.value = Math.max(0, n);
+          btn.querySelector("b").textContent = input.value;
+          btn.classList.toggle("on", Number(input.value) > 0);
+        };
+        btn.addEventListener("click", ev => {
+          ev.preventDefault();
+          set(Number(input.value) + 1);
+        });
+        btn.addEventListener("contextmenu", ev => {
+          ev.preventDefault();
+          set(Number(input.value) - 1);
+        });
+      });
+    },
+    ok: {
+      label: "Roll",
+      callback: (ev, btn) => {
+        const fd = new FormData(btn.form);
+        return { ...Object.fromEntries(fd), fx: fd.getAll("fx") };
+      }
+    },
+    rejectClose: false
+  });
+}
+
+/** Ask for AP / DC / boons / banes, roll the check and post the action card (damage is rolled from a button). */
+export async function useAction(actor, item, opts = {}) {
+  // A Weapon Technique stays locked until 3 Mastery with its weapon (mastery.mjs).
+  const lock = techniqueLock(actor, item);
+  if (lock.locked) return ui.notifications.warn(`${item.name} is locked: ${TECHNIQUE_AT} ${lock.group} Mastery unlocks it (${actor.name} has ${lock.value}).`);
+  // A Split Action has two modes: choose one (Weapon needs a weapon, Power doesn't), then it is used as an Action of that mode (split.mjs).
+  if (item.system.traits?.has?.("split") && !opts.splitMode) {
+    const modes = splitModes(item);
+    if (modes.length) {
+      let mode = modes.includes(opts.mode) ? opts.mode : modes[0];
+      if (modes.length > 1 && !modes.includes(opts.mode)) {
+        const pick = await DialogV2.confirm({
+          window: { title: `${item.name}: choose a mode` },
+          content: `<p>${esc(item.name)} is a Split Action: choose how you use it this time.</p><p><b>Weapon mode</b> needs a weapon and rolls your Weapon Modifier. <b>Power mode</b> needs no weapon and rolls your Power Modifier.</p>`,
+          yes: { label: "Weapon mode", icon: "fa-solid fa-hand-fist" }, no: { label: "Power mode", icon: "fa-solid fa-hand-sparkles" }, rejectClose: false
+        });
+        if (pick !== true && pick !== false) return;
+        mode = pick ? "weapon" : "power";
+      }
+      return useAction(actor, splitView(item, mode), { ...opts, splitMode: mode });
+    }
+  }
+  const s = actor.system, it = item.system;
+  // Mark Quarry: it needs the creature to mark (targeted).
+  if (it.category === "Marked Quarry" && !game.user.targets.size) return ui.notifications.warn("Target the creature you want as your Marked Quarry first.");
+  // A Save Action (the Save trait): you don't roll; each target rolls the Save named on its Vs. line against 11 + your Modifier (Save Actions in the rules).
+  const saveAct = !!it.traits?.has?.("save");
+  // A Weapon Action needs its weapon before anything else happens (no area to place first, then refused). The same checks run again below.
+  if (it.traits?.has?.("weapon") && !item.getFlag("twod12", "weaponId")) {
+    const need = ["melee", "ranged"].find(p => it.traits.has(p));
+    const ws = weaponsFor(actor, item).filter(w => (!need || hasProp(w, need) || (need === "ranged" && hasProp(w, "thrown"))) && (!it.traits.has("shot") || hasProp(w, "projectile")));
+    if (need && !ws.length) return ui.notifications.warn(it.traits.has("shot") ? `${item.name} is a Shot: it needs a wielded Projectile weapon (a bow or a crossbow).` : `${item.name} needs a wielded ${need === "melee" ? "Melee" : "Ranged"} weapon.`);
+  }
+  const versions = [...it.versions].sort((a, b) => a.ap - b.ap);
+  if (!versions.length) return ui.notifications.warn(`${item.name} has no versions yet.`);
+  // What the Action rolls (Signature, Weapon, Power or an Attribute) and what its damage adds: rollsource.mjs.
+  const src = rollSource(s, it);
+  const preAttr = src.attrKey;
+  // A granted use (from an Effect such as Double Shot) is free and does not count: offer it first.
+  if (!opts.free && !opts.noGrant) {
+    const g = activeGrants(actor, item)[0];
+    if (g) {
+      const use = await DialogV2.confirm({
+        window: { title: item.name },
+        content: `<p><b>${esc(g.effect.name)}</b> lets you use ${esc(item.name)} (${g.grant.left} left)${g.grant.ap ? ` for ${g.grant.ap} AP` : " for free"}. It doesn't count toward its Frequency or the 3 Strikes.</p><p>Use the granted use?</p>`,
+        yes: { label: "Granted use" },
+        no: { label: "Normal use" },
+        rejectClose: false
+      });
+      if (use) opts = { ...opts, free: true, ap: g.grant.ap, boons: g.grant.boons, banes: g.grant.banes, label: g.effect.name, grant: g, excludeTargets: g.grant.distinct ? (g.grant.used ?? []) : [] };
+    }
+  }
+  // An Action that needs a free hand (Handle, "free hand" in its Requirements, such as Reload): with both hands full, offer Release first (v0.0.138).
+  if (!opts.noHandle && !(await ensureFreeHand(actor, item))) return;
+  const basicKey = item.getFlag?.("twod12", "basic");
+  if (!it.reaction && !opts.free && isOutOfTurn(actor)) {
+    const ok = await DialogV2.confirm({ window: { title: item.name }, content: `<p>It is not <b>${esc(actor.name)}</b>'s turn. Only Reactions can be used outside your turn.</p><p>Use ${esc(item.name)} anyway?</p>`, rejectClose: false });
+    if (!ok) return;
+  }
+  const reqProblem = requirementProblem(it, actor, [...game.user.targets][0]?.actor ?? null, { skipHands: true });   // hands: checked above
+  if (reqProblem) return ui.notifications.warn(`${actor.name} can't use ${item.name}: it ${reqProblem}.`);
+  // An Action that needs several different creatures (Double Shot: "Two creatures") can't be made against fewer: its Linked Actions would be disrupted.
+  const needed = targetsNeeded(it.targets);
+  if (needed > 1 && new Set([...game.user.targets].map(t => t.document?.uuid ?? t.id)).size < needed) return ui.notifications.warn(`${item.name} needs ${needed} different creatures as targets. Target them first.`);
+  if ((it.traits.has("move") || basicKey === "safeMovement") && actor.statuses?.has?.("immobilized")) return ui.notifications.warn(`${actor.name} is Immobilized and can't move.`);
+  // Prone: you can't Evade, and the only Move Actions you can use are Crawl and Stand.
+  if (actor.statuses?.has?.("prone")) {
+    if (basicKey === "safeMovement") return ui.notifications.warn(`${actor.name} is Prone and can't Evade.`);
+    if (it.traits.has("move") && !["crawl", "stand"].includes(basicKey)) return ui.notifications.warn(`${actor.name} is Prone: the only Move Actions it can use are Crawl and Stand.`);
+  }
+  if (basicKey === "rally" && (s.atZero || actor.statuses?.has?.("unconscious"))) return ui.notifications.warn(`${actor.name} can't use Steel Yourself while Down or Unconscious.`);
+  // Setup: what happens before the dice are rolled. Its movement is made first, so the range, cover and Engaged of the roll come from where the creature ends.
+  let setupDone = false;
+  if (!opts.noSetup && String(it.setup ?? "").includes("@Move")) {
+    const { runSetup } = await import("./setup.mjs");
+    const st = await runSetup(actor, item, actor.token?.object ?? actor.getActiveTokens?.()[0] ?? null);
+    if (!st.ok) return;
+    setupDone = st.done;
+  }
+  const isSelf = it.traits.has("self");
+  const selfToken = actor.token?.object ?? actor.getActiveTokens?.()[0] ?? null;
+  // An Action with an Area and a roll: the area is placed first, so the roll is made once for the creatures in it.
+  let areaPlaced = false, areaOutcome = null;
+  const areaSet = String(it.area ?? "").trim() ? areaConfigOf(it) : null;
+  if (areaSet && canvas.ready && canvas.grid?.isSquare && src.kind) {   // no square grid: no placing, rolled as before
+    const { startTemplate } = await import("./template.mjs");
+    const outcome = {}; areaOutcome = outcome;
+    // "within your weapon's maximum range": the range of the weapon it will be used with (v0.0.159).
+    let within = Number(areaSet.within ?? it.areaCfg?.within) || 0;
+    if (areaSet.withinRange) {
+      const w = weaponsFor(actor, item).find(x => hasProp(x, "ranged") && (!it.traits.has("shot") || hasProp(x, "projectile"))) ?? weaponsFor(actor, item)[0];
+      const nums = String(weaponRanges(w, s.reach ?? 1).ranged || "").split("/").map(Number).filter(n => n > 0);
+      within = (areaSet.withinRange === "normal" ? nums[0] : areaSet.withinRange === "far" ? nums[1] ?? nums.at(-1) : nums.at(-1)) || within;
+    }
+    await startTemplate({ ...areaSet, quick: true, within, htSave: saveAct }, { token: selfToken, outcome });
+    if (!outcome.ok) return;
+    areaPlaced = true;
+    if (!outcome.count) ui.notifications.info("No creature is in the area.");
+  }
+  const rollsAtOthers = !isSelf || !!String(it.area ?? "").trim();
+  const aimed = rollsAtOthers ? [...game.user.targets] : [];
+  const targetToken = rollsAtOthers ? (aimed[0] ?? null) : selfToken;
+  const dcInfo = computeDC(item, rollsAtOthers ? (targetToken?.actor ?? null) : actor, preAttr, src);
+  const previewMod = src.mod;
+  // Several targets: one roll for all of them, each calculated on its own (see "Several Targets" in the rules).
+  const multi = aimed.length > 1 && previewMod !== null;
+  const linkedW = item.getFlag("twod12", "weaponId");
+  // A Weapon Action with the Melee or Ranged trait needs a weapon with that property.
+  const needProp = it.traits.has("weapon") ? ["melee", "ranged"].find(p => it.traits.has(p)) : null;
+  const candidates = weaponsFor(actor, item).filter(w => !needProp || hasProp(w, needProp) || (needProp === "ranged" && hasProp(w, "thrown")));   // a Thrown weapon can be thrown for a [Ranged] Action
+  if (needProp && !linkedW && !candidates.length) return ui.notifications.warn(`${item.name} needs a wielded ${needProp === "melee" ? "Melee" : "Ranged"} weapon.`);
+  // A Shot Action needs a Projectile weapon (a bow, a crossbow).
+  if (it.traits.has("shot") && it.traits.has("weapon")) { const shooters = candidates.filter(w => hasProp(w, "projectile")); if (!linkedW && !shooters.length) return ui.notifications.warn(`${item.name} is a Shot: it needs a wielded Projectile weapon (a bow or a crossbow).`); candidates.splice(0, candidates.length, ...shooters); }
+  const previewWeapon = linkedW ? actor.items.get(linkedW) : (candidates[0] ?? null);
+  // A Weapon Action takes Melee or Ranged from its weapon and how it is used (a Thrown weapon thrown is Ranged), and the weapon's Range
+  // for that use, with Reach above 1 added to a melee Range (weaponrange.mjs). Prone, Precise Aim and other effects use the trait.
+  const wpnSquares = selfToken && targetToken && targetToken !== selfToken ? squaresBetween(selfToken, targetToken) : null;
+  const isAreaAction = !!(String(it.area ?? "").trim() || Number(it.areaCfg?.size) > 0);   // an Area decides who is affected: no weapon Range check
+  const wUse = it.traits.has("weapon") && previewWeapon ? weaponUse(previewWeapon, it.traits, s.reach ?? 1, wpnSquares) : null;
+  const useTraits = new Set([...it.traits, ...(wUse?.mode ? [wUse.mode] : []), ...(wUse?.mode === "ranged" && !wUse.thrown && hasProp(previewWeapon, "projectile") ? ["shot"] : [])]);   // a Weapon Action with a Projectile weapon is a Shot
+  const attrKeyForPreview = src.attrKey;
+  const preview = await buildPreviews({ setupDone, talentMods: talentModsFor(actor, item),
+    item, actor, isSelf, weapon: previewWeapon, isWeapon: src.kind === "weapon", attrMode: src.attrMode, mod: previewMod, dc: dcInfo.dc, dcNote: dcInfo.note,
+    attrVal: src.kind ? (Number(src.mod) || 0) : 0, attrLabel: src.kind === "attribute" ? (TWOD12.attributes[attrKeyForPreview] ?? "") : (src.chip ?? ""),   // [Mod]: the Modifier used on the roll
+    checkLabel: (src.kind === "attribute" || !src.kind ? `${TWOD12.attributes[src.attrKey] ?? ""} Check` : `${src.chip} (${TWOD12.attributes[src.attrKey] ?? "?"})`) + (it.vs ? ` vs. ${vsText(it)}` : "")
+  });
+  if (saveAct) preview.noOdds = true;   // a Save Action: you don't roll, so no odds in the dialog (its targets roll)
+  // A ranged weapon: the distance to the target decides the banes (far range 1, maximum range 2).
+  let extraMods = [];
+  const rw = previewWeapon?.system;
+  const usesReload = it.traits.has("weapon") && rw?.traits?.has?.("reload");
+  if (usesReload && rw.unloaded) return ui.notifications.warn(`${previewWeapon.name} is unloaded: Reload it before using it again.`);
+  // At-will: each use after the first in a turn has 1 more bane (uses from another Action don't count).
+  const atWill = opts.free ? 0 : atWillUses(actor, item);
+  if (atWill > 0) extraMods.push({ id: "syn:atwill", name: `At-will use ${atWill + 1}`, boons: 0, banes: atWill, match: true, predicate: "Each use of an At-will Action after the first in a turn adds 1 bane" });
+  // Several targets: for each creature, its DC, its cover, how you perceive it and it perceives you, and the range to it.
+  const perT = [];
+  if (multi) {
+    const skipped = [];
+    for (const tk of aimed) {
+      const a = tk.actor;
+      if (!a || tk.id === selfToken?.id && !areaSet?.self) continue;
+      const row = { token: tk, uuid: tk.document?.uuid ?? tk.uuid, name: tk.name, actor: a, actorUuid: a.uuid, dcInfo: computeDC(item, a, preAttr, src), favored: false, doomed: false, note: [] };
+      if (row.dcInfo.untrained) { row.favored = true; row.note.push({ text: "Untrained armor", cls: "boon" }); }   // its armor is beyond its training: Actions against its Armor or Ward are Favored
+      const cov = areaOutcome?.cover?.[tk.id] ?? (selfToken && String(it.targets ?? "").trim() ? coverBetween(selfToken, tk) : null);   // an area: cover from its Point of Origin
+      if (cov?.noLoE) { skipped.push(`${tk.name}: no Line of Effect`); continue; }
+      if (cov?.banes) extraMods.push({ id: `syn:cover|${a.uuid}`, name: `${cov.label} (${tk.name})`, boons: 0, banes: cov.banes, match: true, predicate: `Against ${tk.name}: ${coverWhy(cov)}` });
+      if (!it.area && selfToken) {
+        const pv = perceive(selfToken, tk, { loe: !cov?.noLoE }), seenT = pv.level === "clear" ? "" : pv.level;
+        if (seenT === "unsensed") { skipped.push(`${tk.name}: Unsensed`); continue; }
+        if (seenT === "obscured") extraMods.push({ id: `syn:obscured|${a.uuid}`, name: `Obscured (${tk.name})`, boons: 0, banes: 1, match: true, predicate: `You perceive ${tk.name} as Obscured: ${pv.why}` });
+        if (seenT === "hidden") { row.doomed = true; row.note.push({ text: "Hidden", cls: "bane" }); }
+        const pm = perceive(tk, selfToken, { loe: !coverBetween(tk, selfToken)?.noLoE }), mineT = pm.level === "clear" ? "" : pm.level;
+        if (mineT === "obscured") extraMods.push({ id: `syn:obscured-you|${a.uuid}`, name: `Obscured by ${tk.name} (1 Boon)`, boons: 1, banes: 0, match: true, predicate: `${tk.name} perceives you as Obscured: ${pm.why}` });
+        if (mineT === "hidden" || mineT === "unsensed") { row.favored = true; row.note.push({ text: `${mineT === "hidden" ? "Hidden" : "Unsensed"} to it`, cls: "boon" }); }
+      }
+      if (wUse?.range && selfToken && !isAreaAction) {
+        const band = rangeBand(squaresBetween(selfToken, tk), wUse.range);
+        if (band?.out) { skipped.push(`${tk.name}: out of range (${band.squares} squares, maximum ${band.max})`); continue; }
+        const rb = band?.banes ? Math.max(0, band.banes - (longDraw(actor, previewWeapon) ? 1 : 0)) : 0;   // Long Draw: far range 0, maximum range 1
+        if (rb) extraMods.push({ id: `syn:range|${a.uuid}`, name: `${band.label} (${tk.name})${rb < band.banes ? ", Long Draw" : ""}`, boons: 0, banes: rb, match: true, predicate: `${previewWeapon.name}: Range ${wUse.range}` });
+        if (wUse.long && band?.squares <= 1) extraMods.push({ id: `syn:long|${a.uuid}`, name: `Long weapon, adjacent (${tk.name})`, boons: 0, banes: 1, match: true, predicate: `${previewWeapon.name} is Long: 1 bane against adjacent creatures` });
+      }
+      if (useTraits.has("melee") && selfToken) { const fm = flankingMod(selfToken, tk, { tag: a.uuid }); if (fm) extraMods.push(fm); }
+      if (useTraits.has("weapon") && useTraits.has("ranged") && engagedWithOther(tk, selfToken))
+        extraMods.push({
+          id: `syn:engaged-target|${a.uuid}`,
+          name: `Engaged (${tk.name}, 1 Bane)`,
+          boons: 0,
+          banes: 1,
+          match: true,
+          predicate: `${tk.name} is Engaged with a creature other than you: shooting at it is harder`
+        });
+      perT.push(row);
+    }
+    const labels = uniqueLabels(perT.map(p => p.name));
+    perT.forEach((p, n) => { p.label = labels[n]; });
+    if (skipped.length) ui.notifications.warn(`Not affected: ${skipped.join("; ")}.`);
+    if (!perT.length) return ui.notifications.warn(`${item.name} has no creature it can affect.`);
+  }
+  // Line of Effect and Cover: lines from the center of your square to the four corners of the target's space.
+  let seen = "", seenWhy = "";   // how you perceive the target (the GM's Obscured / Hidden / Unsensed statuses); [Area] Actions ignore Senses
+  if (!multi && rollsAtOthers && targetToken && selfToken && String(it.targets ?? "").trim()) {
+    const cov = areaOutcome?.cover?.[targetToken?.id] ?? coverBetween(selfToken, targetToken);
+    if (cov?.noLoE) {
+      if (!game.user.isGM) return ui.notifications.warn(`No Line of Effect to ${targetToken.name}: all four corners are blocked.`);
+      const ok = await DialogV2.confirm({ window: { title: item.name }, content: `<p>No Line of Effect to <b>${esc(targetToken.name)}</b>: all four corners are blocked.</p><p>Use ${esc(item.name)} anyway?</p>`, rejectClose: false });
+      if (!ok) return;
+    } else if (cov?.banes) {
+      extraMods.push({ id: "syn:cover", name: cov.label, boons: 0, banes: cov.banes, match: true, predicate: coverWhy(cov) });
+    }
+    if (!it.area) { const pv = perceive(selfToken, targetToken, { loe: !cov?.noLoE }); seen = pv.level === "clear" ? "" : pv.level; seenWhy = pv.why; }
+    if (seen === "unsensed") {
+      if (!game.user.isGM) return ui.notifications.warn(`${targetToken.name} is Unsensed: you can't target it.`);
+      const ok = await DialogV2.confirm({ window: { title: item.name }, content: `<p><b>${esc(targetToken.name)}</b> is Unsensed: it can't be targeted.</p><p>Use ${esc(item.name)} anyway (the roll is Doomed)?</p>`, rejectClose: false });
+      if (!ok) return;
+    }
+    if (seen === "obscured") extraMods.push({ id: "syn:obscured", name: "Target is Obscured (1 Bane)", full: true, boons: 0, banes: 1, match: true, predicate: `You perceive the target as Obscured: ${seenWhy}` });
+  }
+  // How your target perceives you: Obscured gives 1 boon; Hidden or Unsensed make the Action Empowered.
+  let mine = "", mineWhy = "";
+  if (!multi && rollsAtOthers && !it.area && targetToken) {
+    if (selfToken) { const pv = perceive(targetToken, selfToken, { loe: !coverBetween(targetToken, selfToken)?.noLoE }); mine = pv.level === "clear" ? "" : pv.level; mineWhy = pv.why; }
+    else mine = perceptionOf(actor);
+  }
+  if (mine === "obscured" && seen !== "hidden") extraMods.push({ id: "syn:obscured-you", name: "Obscured (1 Boon)", full: true, boons: 1, banes: 0, match: true, predicate: `Your target perceives you as Obscured: ${mineWhy || "status"}` });
+  const unseenYou = (mine === "hidden" || mine === "unsensed") && seen !== "hidden";   // you gain no Favored or boon from its poor perception of you if you perceive it as Hidden (Doomed only)
+  const untrainedTarget = !multi && rollsAtOthers && !!dcInfo.untrained;   // the target wears armor beyond its training: Favored
+  if (wUse?.range && selfToken && targetToken && !multi && rollsAtOthers && !isAreaAction) {
+    const band = rangeBand(squaresBetween(selfToken, targetToken), wUse.range);
+    if (band?.out) ui.notifications.warn(`${targetToken.name} is out of range: ${band.squares} squares away, the maximum is ${band.max}${wUse.thrown ? " (thrown)" : ""}.`);
+    else if (band?.banes) extraMods.push({ id: "syn:range", name: band.label, boons: 0, banes: band.banes, match: true, predicate: `${previewWeapon.name}: Range ${wUse.range}` });
+    if (wUse.long && band && band.squares <= 1) extraMods.push({ id: "syn:long", name: "Long weapon, adjacent", boons: 0, banes: 1, match: true, predicate: `${previewWeapon.name} is Long: 1 bane against adjacent creatures` });
+  }
+  // Ranged Combat While Engaged: a [Ranged] Action (a ranged Weapon Action, or any Action with the Ranged trait) while you are Engaged has 2 banes; against an Engaged creature, 1 bane (v0.0.169).
+  const rangedWeapon = useTraits.has("ranged");
+  // The Archer: Marked Quarry and Hunter's Focus boons against the quarry (archer.mjs).
+  if (!multi && rollsAtOthers && targetToken) extraMods.push(...archerMods(actor, useTraits, targetToken));
+  // Flanking: [Melee] Actions gain a boon for each other ally that flanks the target (up to 3).
+  if (useTraits.has("melee") && !multi && rollsAtOthers && selfToken && targetToken) { const fm = flankingMod(selfToken, targetToken); if (fm) extraMods.push(fm); }
+  if (rangedWeapon && selfToken) {
+    if (isEngaged(selfToken) && !steadyNerves(actor)) extraMods.push({ id: "syn:engaged", name: "You are Engaged (2 Banes)", boons: 0, banes: 2, match: true, predicate: "Using a [Ranged] Action while you are Engaged is hard" });
+    if (!multi && rollsAtOthers && targetToken && engagedWithOther(targetToken, selfToken))
+      extraMods.push({
+        id: "syn:engaged-target",
+        name: "Target is Engaged (1 Bane)",
+        boons: 0,
+        banes: 1,
+        match: true,
+        predicate: `${targetToken.name} is Engaged with a creature other than you: shooting at it is harder`
+      });
+  }
+  if (opts.boons || opts.banes) extraMods.push({ id: "syn:granted", name: opts.label ?? "Granted use", boons: opts.boons ?? 0, banes: opts.banes ?? 0, match: true, predicate: "From the Action that allowed this use" });
+  if (opts.excludeTargets?.length && targetToken && opts.excludeTargets.includes(targetToken.document?.uuid)) return ui.notifications.warn(`${targetToken.name} was already a target: choose a different creature.`);
+  // What makes the roll Doomed or Empowered, shown on the option itself ("Target is Hidden (Doomed)").
+  const doomReason = actor.statuses?.has?.("imperiled") ? "Imperiled" : actor.statuses?.has?.("unconscious") ? "Unconscious" : seen === "hidden" ? "Target is Hidden" : seen === "unsensed" ? "Target is Unsensed" : "";
+  // Empowered and Enfeebled: what gives them, and the one value that counts (the highest of each; the Enfeebled value is taken from the Empowered one).
+  const steps = damageSteps(actor, rollTraits(useTraits, src, item.name));
+  if (opts.empowered) steps.empowered.push({ name: opts.label ?? "this Action", n: stepOf(opts.empowered) });
+  { const he = hunterEmpowered(actor, rollsAtOthers ? (aimed[0] ?? null) : null); if (he) steps.empowered.push(he); }   // Hunter's Focus
+  const stepSources = [...steps.empowered.map(x => `${x.name}: Empowered ${x.n}`), ...steps.enfeebled.map(x => `${x.name}: Enfeebled ${x.n}`)];
+  // What will add to this roll's damage or trigger when it lands, shown in the dialog so the player knows: effects with bonus damage ("Divine Surge: +1d8 Holy") and abilities that trigger ("Profane Judgment").
+  const dlgTraits = rollTraits(useTraits, src, item.name), bonusSeen = new Map();
+  for (const t of [1, 2, 3]) for (const b of collectBonuses(actor, dlgTraits, t)) { const bk = `${b.effect}|${b.dmg}|${b.sub}|${b.text}`; if (!bonusSeen.has(bk)) bonusSeen.set(bk, { b, tiers: [] }); bonusSeen.get(bk).tiers.push(t); }
+  { const kf = killersFocusBonus(actor, dlgTraits); if (kf) bonusSeen.set("killersFocus", { b: { ...kf, hover: "Killer's Focus: your first [Ranged, Shot, Strike, Weapon] Action this turn-cycle deals an extra [B] 1d6 Pierce, on every Tier (Escalation 2 or more)." }, tiers: [1, 2, 3] }); }   // v0.0.162
+  const dmgSubs = new Set();
+  for (const v of versions) for (const tk of ["t1", "t2", "t3"]) for (const inst of v[tk] ?? []) { if (inst.useW && previewWeapon?.system?.subtype) dmgSubs.add(previewWeapon.system.subtype); if (inst.subtype) dmgSubs.add(inst.subtype); }
+  for (const { b } of bonusSeen.values()) if (b.sub) dmgSubs.add(b.sub);
+  const extraNotices = [
+    ...[...bonusSeen.values()].map(({ b, tiers }) => ({ text: `${b.effect}: ${b.dmg ? `+${b.dmg} ${TWOD12.subtypes[b.sub] ?? ""}`.trim() : b.text}${tiers.length < 3 ? ` (Tier ${tiers.join(", ")})` : ""}`, icon: "fa-sparkles", why: b.hover || "This effect adds to the damage of this roll." })),
+    ...triggerNotices(actor, multi ? perT.map(p => p.actor) : rollsAtOthers && targetToken?.actor ? [targetToken.actor] : [], dmgSubs)
+  ];
+  const data = await askRoll(actor, {
+    title: item.name,
+    attrKey: preAttr,
+    traits: rollTraits(useTraits, src, item.name),
+    versions,
+    defaults: {
+      doomedLabel: doomReason ? `${doomReason} (Doomed)` : undefined,
+      empowerN: topStep(steps.empowered),
+      enfeebleN: topStep(steps.enfeebled),
+      dc: dcInfo.dc,
+      reaction: it.reaction,
+      favored: unseenYou || untrainedTarget,
+      favoredLabel: unseenYou ? `${mine === "hidden" ? "Hidden" : "Unsensed"} (Favored)` : (untrainedTarget ? "Target's untrained armor (Favored)" : undefined),
+      empowerWhy: stepSources.join(", "),
+      doomed: seen === "hidden" || seen === "unsensed" || !!actor.statuses?.has?.("imperiled") || !!actor.statuses?.has?.("unconscious"),
+      doomedWhy: actor.statuses?.has?.("imperiled")
+        ? "Imperiled: all your Rolls are Doomed"
+        : actor.statuses?.has?.("unconscious")
+          ? "Unconscious: all your Rolls are Doomed"
+          : seen === "hidden"
+            ? `Hidden: you only perceive the target by ${seenWhy}`
+            : seen === "unsensed"
+              ? "Unsensed: you don't perceive the target"
+              : undefined
+    },
+    preview,
+    dcNote: multi ? perT.map(p => `${p.name} DC ${p.dcInfo.dc}`).join(" \u00b7 ") : dcInfo.note,
+    targetActors: multi ? perT.map(p => p.actor) : rollsAtOthers && targetToken?.actor ? [targetToken.actor] : [],
+    targetTiles: multi ? perT.map(p => ({ uuid: p.actorUuid, name: p.label, img: p.token.document?.texture?.src ?? p.actor.img ?? "", dc: p.dcInfo.dc })) : [],
+    extraMods,
+    notices: [...extraNotices, ...(opts.splitMode ? [{ text: `Split: ${SPLIT_LABEL[opts.splitMode]}`, icon: "fa-code-branch", why: "A Split Action is used as an Action of the mode you chose (Weapon or Power)." }] : []), ...(wUse?.thrown && wUse.mode === "ranged" ? [{ text: `Thrown: Ranged, Range ${wUse.range.split("/").join(" / ")}`, icon: "fa-person-rifle", why: `${previewWeapon?.name} is thrown: a Ranged Action with its Thrown Range (the target is beyond its melee Range, or the Action is Ranged). It leaves your hand.` }] : [])],
+    withDamage: true,
+    withReload: usesReload
+  });
+  if (!data) return;
+  // The step the damage uses: the two chips (Empowered and Enfeebled; the player can change them, they start at the highest value that effects and conditions give), and a Reload shot is Empowered 2 by itself.
+  const reloadShot = data.reloadshot === "on";
+  const damageStep = Math.max(Math.max(0, Math.trunc(Number(data.empowered)) || 0), reloadShot ? 2 : 0) - Math.max(0, Math.trunc(Number(data.enfeebled)) || 0);
+  const talentMods = talentModsFor(actor, item);
+  const version = applyTalentMods(versions.find(v => v.ap === Number(data.ap)), talentMods);
+  if (basicKey === "crawl" && version.ap >= 2 && Number(s.moveSpeed ?? s.speed ?? 0) < 5) return ui.notifications.warn(`${actor.name}'s Speed is under 5: Crawl moves 3 squares only with Speed 5 or higher (use the 1 AP version).`);
+  const apCost = opts.free ? (opts.ap ?? 0) : version.ap;
+  // An Escalation Action: its Escalation is checked before the AP is spent, and spent after it.
+  const escCost = opts.free ? 0 : Math.max(0, Number(it.escalation) || 0);
+  if (escCost) { const pay = canPayEscalation(actor, escCost); if (!pay.ok) return ui.notifications.warn(pay.why); }
+  if (apCost > 0 && !(await spendAP(actor, apCost, item.name))) return;
+  if (escCost) await spendEscalation(actor, escCost);
+  const isWeapon = it.traits.has("weapon");
+
+  let attrKey = null, mod = null, weapon = null, title = "", chip = "";
+  if (isWeapon) weapon = await pickWeapon(actor, item, candidates);
+  if (src.kind) {
+    attrKey = src.attrKey; mod = src.mod; title = src.label; chip = `${src.chip} ${sgn(mod)}`;
+    if (!attrKey && src.kind !== "attribute") ui.notifications.warn(`No ${src.chip} Attribute: add a Class to this character.`);
+  }
+
+  if (title && it.vs) title += ` vs. ${it.vs === "roll" ? (TWOD12.attributes[attrKey] ?? "") : TWOD12.attributes[it.vs]}`;
+  let chk = null;
+  const fxm = resolveModifiers(actor, data.fx, extraMods);
+  const manB = Number(data.boons) || 0, manN = Number(data.banes) || 0;
+  let multiRoll = null, mres = null;
+  if (mod !== null && !version.noTiers && !saveAct && multi) {
+    // One roll: the DC, boons, banes, Favored and Doomed are each target's own; the dice are shared.
+    const first = perT[0].dcInfo.dc,
+      dcOverride = Number(data.dc) !== Number(first) ? Number(data.dc) || 13 : null;
+    const globalFavored = data.favored === "on" || data.reloadshot === "on",
+      globalDoomed = data.doomed === "on";
+    const specs = perT.map(p => {
+      const fxm = resolveModifiers(actor, modifiersForTarget(data.fx, p.actorUuid), extraMods);
+      return {
+        key: p.uuid,
+        mod,
+        adj: Number(data.mod) || 0,
+        adjLabel: adjLabelOf(data),
+        dc: dcOverride ?? p.dcInfo.dc,
+        boons: fxm.boons + manB,
+        banes: fxm.banes + manN,
+        favored: globalFavored || p.favored,
+        doomed: globalDoomed || p.doomed,
+        sources: fxm.sources,
+        manualBoons: manB,
+        manualBanes: manN
+      };
+    });
+    multiRoll = await performMultiCheck(specs);
+    mres = multiRoll.results.map((r, i) => ({
+      ...perT[i],
+      chk: r.chk,
+      chips: [...perT[i].note, ...r.chk.sources.map(x => ({ text: x.name.replace(/\s*\([^)]*\)\s*$/, ""), cls: x.boons ? "boon" : "bane" }))]
+    }));
+  } else if (mod !== null && !version.noTiers && !saveAct)
+    chk = await performCheck({
+      mod,
+      boons: fxm.boons + manB,
+      banes: fxm.banes + manN,
+      dc: Number(data.dc) || 13,
+      adj: Number(data.mod) || 0,
+      adjLabel: adjLabelOf(data),
+      favored: data.favored === "on" || data.reloadshot === "on",
+      doomed: data.doomed === "on",
+      sources: fxm.sources,
+      manualBoons: manB,
+      manualBanes: manN
+    });
+  // For testing: a Tier picked in the dialog replaces the result of the roll.
+  const forcedTier = Number(data.forceTier) || 0;
+  if (chk && forcedTier >= 1 && forcedTier <= 3) { chk.base = forcedTier; chk.tier = forcedTier; chk.doubles = false; chk.crit = false; chk.forced = true; }
+  if (mres && forcedTier >= 1 && forcedTier <= 3) for (const r of mres) { r.chk.base = forcedTier; r.chk.tier = forcedTier; r.chk.doubles = false; r.chk.crit = false; r.chk.forced = true; }
+  // The shield shows the Defense it rolled against: "AD 13", "WD 12" (v0.0.164) or a Vs. Attribute in two letters, "Bo 14" (Bo, Mi, Ap, In; v0.0.165);
+  // "DC" when there is no target or the DC was typed in the dialog.
+  const VS2 = { body: "Bo", mind: "Mi", appeal: "Ap", instinct: "In" };
+  const dcWord = (info, typed) => (typed ? "DC" : info?.defense === "armor" ? "AD" : info?.defense === "ward" ? "WD" : info?.defense === "vs" && VS2[info.vs] ? VS2[info.vs] : "DC");
+  if (chk) chk.dcLabel = dcWord(dcInfo, Number(data.dc) !== Number(dcInfo?.dc) || !rollsAtOthers || !targetToken);
+  if (mres) for (const r of mres) r.chk.dcLabel = dcWord(r.dcInfo, Number(data.dc) !== Number(perT[0]?.dcInfo?.dc));
+  const tier = chk?.tier ?? (mres ? Math.max(...mres.map(r => r.chk.tier)) : 0);
+  // Effects waiting for this kind of action (bonus damage, added text); then the ones that end when it is used.
+  if (mres) for (const r of mres) r.bonuses = collectBonuses(actor, rollTraits(useTraits, src, item.name), r.chk.tier);
+  const bonuses = mres ? [...new Map(mres.flatMap(r => r.bonuses).map(b => [`${b.effect}|${b.dmg}|${b.text}`, b])).values()] : (tier && !version.noTiers ? collectBonuses(actor, rollTraits(useTraits, src, item.name), tier) : []);
+  // Killer's Focus: the first [Ranged, Shot, Strike, Weapon] Action of the turn-cycle deals an extra [B] 1d6 Pi, on every Tier (archer.mjs).
+  { const kf = killersFocusBonus(actor, rollTraits(useTraits, src, item.name)); if (kf && (chk || mres)) { bonuses.push(kf); if (mres) for (const r of mres) r.bonuses.push(kf); await useKillersFocus(actor); } }
+  await expireOnUse(actor, rollTraits(useTraits, src, item.name));
+  const targets = (multi ? perT.map(p => p.token) : (!rollsAtOthers ? (selfToken ? [selfToken] : []) : aimed)).map(t => ({ uuid: t.document?.uuid ?? t.uuid, name: t.name }));
+
+  const dcSet = mres ? new Set(mres.map(r => r.chk.dc)) : null;
+  const dc = mres ? (dcSet.size === 1 ? [...dcSet][0] : undefined) : chk?.dc;
+  const ranges = dc ? [`\u2264 ${dc - 1}`, `${dc}\u2013${dc + 6}`, `\u2265 ${dc + 7}`] : ["", "", ""];
+  // The tier rolled is green ("Rolled"); a better tier reached with Doubles is blue ("Doubles") and the rolled tier keeps its green.
+  const dbl = !!chk?.doubles && !chk?.crit;
+  const rolledTier = chk ? (chk.forced ? tier : chk.base) : 0;
+  const fxName = async k => Promise.all((version.fx?.[k] ?? []).map(async x => `${(await fromUuid(x.uuid))?.name ?? "?"}`));
+  const fxn = { all: await fxName("all"), t1: await fxName("t1"), t2: await fxName("t2"), t3: await fxName("t3") };
+  const cardCtx = { item, weapon: weapon ?? previewWeapon ?? null, isWeapon: src.kind === "weapon" && !saveAct, attrMode: saveAct ? "none" : src.attrMode, attrVal: src.kind ? (Number(src.mod) || 0) : 0,
+    attrLabel: src.kind === "attribute" ? (TWOD12.attributes[src.attrKey] ?? "") : (src.chip ?? "") };
+  const rowParts = [];
+  for (const [i, k] of (version.noTiers ? [] : ["t1", "t2", "t3"]).entries()) {
+    const n = i + 1;
+    const isUp = dbl && n === tier && tier !== rolledTier, isRolled = !!chk && n === rolledTier;
+    const movedUp = dbl && tier !== rolledTier;   // Doubles moved the result up: the rolled row keeps a dashed line and a small "Rolled"
+    let cls = (isUp ? "up" : (isRolled ? (movedUp ? "hit base" : (n === 1 ? "hit fail" : "hit")) : "")) + (chk?.forced && n === tier ? " forced" : "");
+    let tag =
+      chk?.forced && n === tier
+        ? `<span class="rtag forced">Forced</span>`
+        : isUp
+          ? `<span class="rtag dbl" data-tooltip="Doubles">Tier ${n}</span>`
+          : isRolled
+            ? movedUp
+              ? `<span class="rtag rolled small">Rolled</span>`
+              : `<span class="rtag rolled${n === 1 ? " fail" : ""}">Tier ${n}</span>`
+            : "";
+    if (mres) {
+      const landed = mres.filter(r => r.chk.tier === n);
+      cls = landed.length ? (n === 1 ? "hit fail" : "hit") : "";
+      tag = landed.length ? `<span class="rtag rolled${n === 1 ? " fail" : ""}" data-tooltip="${esc(landed.map(r => r.label).join(", "))}">${esc(collapseNames(landed.map(r => r.name)))}</span>` : "";
+    }
+    // The weapon's real dice and the Modifier, like the roll dialog's preview (the sheet keeps the book's 1[W]).
+    const lines = await tierLines(version[k], n, cardCtx, expandAsText(version[`x${n}`], item.system.versions, version, n));   // "As 1 AP" written out
+    const txt = lines.length ? lines.join("<br>") : "&mdash;";
+    rowParts.push(`<tr class="${cls}"><th data-tooltip="Tier ${n}">${ranges[i] || `Tier ${n}`}</th><td><div class="tcell"><div class="ttxt">${txt}${fxn[k].length ? `<div class="fxrow">&#10022; ${esc(fxn[k].join(", "))}</div>` : ""}</div>${tag}</div></td></tr>`);
+  }
+  // Critical: a row under Tier 3, gold when it happened (Doubles on a Tier 3, or 20 above the DC), dimmed otherwise.
+  if (!version.noTiers && version.critical) {
+    const critNames = mres ? mres.filter(r => r.chk.crit).map(r => r.name) : [];
+    const happened = mres ? critNames.length > 0 : !!chk?.crit;
+    const why = mres ? (critNames.length ? "Critical" : "") : (chk?.crit ? (chk.doubles && chk.base === 3 ? "Doubles" : "20 above") : "");
+    const tagText = mres ? esc(collapseNames(critNames)) : "Critical";
+    rowParts.push(
+      `<tr class="crit${happened ? " up" : ""}"><th>Critical</th><td><div class="tcell"><div class="ttxt">${await enrich(version.critical, item)}</div>${why ? `<span class="rtag critt" data-tooltip="${mres ? "Critical" : why === "Doubles" ? "Doubles on a Tier 3" : "20 or more above the DC"}">${tagText}</span>` : ""}</div></td></tr>`
+    );
+  }
+  const rows = rowParts.join("");
+  const critHtml = "";
+  // General Effects happen on a Tier 2 or 3 result (or always, for an Action with no roll).
+  const effectsOff = mres ? mres.every(r => r.chk.tier === 1) : tier === 1;
+  const effWho = mres && !effectsOff && mres.some(r => r.chk.tier === 1) ? ` \u2014 ${collapseNames(mres.filter(r => r.chk.tier >= 2).map(r => r.name))}` : "";
+  const effLabel = version.noTiers || saveAct ? "Effects" : `Effects (Tier 2+)${effWho}`;
+  const effectsHtml = version.effects ? `<div class="effects${effectsOff ? " off" : ""}${rowParts.length || bonuses.length ? " sep" : ""}"><div class="eh">${effLabel}</div><div class="et">${await enrich(version.effects, item)}</div></div>` : "";
+  const bonusRows = bonuses.map(b => `<div class="bonusrow"><i class="fa-solid fa-sparkle"></i> <b>${esc(b.effect)}</b>: ${b.dmg ? `+${esc(b.dmg)} ${esc(TWOD12.subtypes[b.sub] ?? "")}`.trim() : ""}${b.text ? ` ${esc(b.text)}` : ""}</div>`).join("");
+  const dmgNeeded = (t, bon) =>
+    needsDamage(
+      src.attrMode !== "none" ? (src.attrMode === "all" ? 1 : 2) : 0,
+      t,
+      [...(t ? version[`t${t}`] : []), ...bon.filter(b => b.dmg).map(b => ({ dice: b.dmg }))],
+      t
+        ? [
+            ...(t >= 2 ? (version.fx?.all ?? []) : []),
+            ...(version.fx?.[`t${t}`] ?? []),
+            ...bon.filter(b => b.fxUuid).map(b => ({ uuid: b.fxUuid, mode: "auto" }))
+          ].filter(x => x.mode !== "auto")   // automatic effects are applied when the Action is used (below)
+        : []
+    );
+  const btn = (mres ? mres.some(r => dmgNeeded(r.chk.tier, r.bonuses)) : dmgNeeded(tier, bonuses))
+    ? `<div class="dmgbtn"><button type="button" data-twod12="rollDamage"><i class="fa-solid fa-dice"></i> Roll Damage${mres ? " (per Tier)" : ""}</button></div>` : "";
+  const color = cardColorFor(it);
+  const trow = metaRowHtml({ escalation: it.escalation ?? 0, frequency: effectiveFrequency(it), targetText: it.targets, distance: distanceText(it, weapon), vs: vsText(it, { src, fists: item.getFlag?.("twod12", "basic") === "fists", rolls: !version.noTiers }), requirements: it.requirements, trigger: it.trigger, reactionKind: it.reactionKind, self: isSelf });
+  const areaRow = areaButton(it) && !areaPlaced ? `<div class="trow arearow">${await enrich(areaButton(it), item)}</div>` : "";
+  const setupRow = it.setup ? `<div class="trow setuprow"><b>Setup:</b> ${await enrich(setupFor(it.setup, setupDone), item)}</div>` : "";
+  const html = `<div class="twod12 chat action" style="${cardVars(color)}">
+    ${cardHead(item.name, categoryText(it), apIcon(version.ap, it.reaction), effectiveFrequency(it))}
+    ${flavorHtml(it)}
+    ${useTraits.size ? `<div class="traits">${traitsHtml(useTraits)}</div>` : ""}
+    ${trow}${areaRow}${setupRow}
+    ${(useTraits.size || trow) && (chk || mres || rows || effectsHtml || bonusRows) ? `<div class="orn">&#10022; &#10022; &#10022;</div>` : ""}
+    ${chk ? checkHtml(title, chk, [chip, chk.forced ? "Tier forced" : ""].filter(Boolean), { status: version.noTiers }) : ""}
+    ${mres ? multiCheckHtml(title, multiRoll.dice, mres.map(r => ({ name: r.name, label: r.label, chk: r.chk, chips: r.chips, odds: showOdds() ? oddsText(r.chk).text : "" })), [chip, forcedTier ? "Tier forced" : ""].filter(Boolean)) : ""}
+    ${(chk || mres) && rows ? `<div class="orn">&#10022;</div>` : ""}
+    ${rows ? `<table class="tiers">${rows}</table>` : ""}
+    ${rows && (chk || mres) ? `<div class="orn">&#10022;</div>` : ""}
+    ${chk && rows && showOdds() ? oddsRow(chk) : (chk && showOdds() && !rows ? oddsRow(chk) : "")}
+    ${bonusRows}
+    ${critHtml}${effectsHtml}
+    ${fxn.all.length && !effectsOff ? `<div class="fxrow">&#10022; ${esc(fxn.all.join(", "))}</div>` : ""}
+    ${btn}${isSelf && !String(it.area ?? "").trim() ? "" : targetsRowHtml([collapseNames(targets.map(t => t.name))].filter(Boolean), { retarget: true })}</div>`;
+  await ChatMessage.create({
+    speaker: ChatMessage.getSpeaker({ actor }),
+    content: html,
+    rolls: mres ? multiRoll.rolls : (chk?.rolls ?? []),
+    flags: {
+      twod12: {
+        action: {
+          self: isSelf,
+          traits: [...useTraits],
+          color,
+          bonuses,
+          weaponSub: weapon?.system?.subtype ?? "",
+          empowered: damageStep,
+          actorUuid: actor.uuid,
+          itemId: item.id,
+          ap: version.ap,
+          tier,
+          results: mres ? mres.map(r => ({ uuid: r.uuid, name: r.label, tier: r.chk.tier, crit: r.chk.crit, bonuses: r.bonuses })) : undefined,
+          weaponId: weapon?.id ?? "",
+          mode: opts.splitMode ?? "",
+          attrVal: src.kind ? (Number(src.mod) || 0) : 0,   // [Mod]: the Modifier used on the roll (also Cleave's damage)
+          isWeapon: src.kind === "weapon",
+          escalation: escCost > 0,   // the effects it applies end with the encounter (escalation.mjs)
+          fxOnUse: true,   // its automatic effects were applied on use: the damage card doesn't apply them again
+          attrMode: src.attrMode,
+          nl: it.traits.has("nonlethal"),
+          targets,
+          attrLabel: src.kind === "attribute" ? (TWOD12.attributes[attrKey] ?? "") : (src.chip ?? ""),
+          saveDc: saveDcOf(src, s.attributes)
+        }
+      }
+    }
+  });
+  // A version with no roll has no Damage button: its automatic effects are applied now (to the targets, or to you for Self Actions).
+  if (version.noTiers && (version.fx?.all ?? []).length) {
+    const auto = version.fx.all.filter(x => x.mode === "auto").map(x => x.uuid);
+    if (auto.length) await applyEffects(auto, isSelf ? [actor.uuid] : targets.map(t => t.uuid), { ...originInfo(actor.uuid), escalation: escCost > 0 });
+  }
+  // A Save Action: a Save card for the creatures in the area (each player rolls their own), and the area remembers it for [HT] (v0.0.159).
+  if (saveAct && !version.noTiers) {
+    try {
+      const { postSaveFor, saveActionCfg } = await import("./inline.mjs");
+      const cfg = saveActionCfg(actor, item, version, src);
+      const point = areaOutcome?.point ?? null;
+      await postSaveFor(cfg, targets, { point, source: item.name });
+      const region = areaOutcome?.region;
+      if (region?.getFlag?.("twod12", "ht")) {
+        const hits = Object.fromEntries(targets.map(t => [String(t.uuid).split(".").pop(), game.combat?.started ? [game.combat.round, game.combat.turn] : [0, 0]]));
+        await region.setFlag("twod12", "ht", { ...region.getFlag("twod12", "ht"), save: cfg, point, hits });
+      }
+    } catch (e) { console.warn("twod12 | Save Action", e); }
+  }
+  // Mark Quarry: the targeted creature becomes the Marked Quarry (archer.mjs).
+  if (it.category === "Marked Quarry") { try { await setQuarry(actor, [...game.user.targets][0] ?? null); } catch (e) { console.warn("twod12 | Marked Quarry", e); } }
+  // Mastery: a Tier 3 on a Weapon Action with a weapon gives +1 Mastery with that kind of weapon (once per Action; characters only).
+  if (!version.noTiers) {
+    try { await masteryAfterRoll(actor, weapon, src.kind === "weapon", mres ? mres.map(r => r.chk.tier) : [tier]); } catch (e) { console.warn("twod12 | Mastery", e); }
+  }
+  // A version that rolls applies its automatic effects on use too, for the Tier each creature got: the tier's effects, the Effects row
+  // on Tier 2 or 3, and the effects your bonuses add (Rimebrand's Hindered). Conditional ones stay on the damage card's Effects button.
+  if (!version.noTiers) {
+    const autoFor = (t, bon) => [...(t >= 2 ? (version.fx?.all ?? []) : []), ...(version.fx?.[`t${t}`] ?? []), ...(bon ?? []).filter(b => b.fxUuid).map(b => ({ uuid: b.fxUuid, mode: "auto" }))]
+      .filter(x => x.mode === "auto").map(x => x.uuid);
+    const how = { ...originInfo(actor.uuid), escalation: escCost > 0 };
+    if (mres) {
+      for (const r of mres) { const u = autoFor(r.chk.tier, r.bonuses); if (u.length && r.chk.tier >= 1) await applyEffects(u, [isSelf ? actor.uuid : r.uuid], how); }
+    } else if (tier >= 1) {
+      const u = autoFor(tier, bonuses);
+      if (u.length) await applyEffects(u, isSelf ? [actor.uuid] : targets.map(t => t.uuid), how);
+    }
+  }
+  // Actions used because of another Action do not count toward Frequency or the Strike limit.
+  if (!opts.free) await markUsed(actor, item);
+  // Stand: no longer Prone.
+  if (item.getFlag?.("twod12", "basic") === "stand") {
+    const prone = [...actor.effects].filter(e => e.statuses?.has?.("prone")).map(e => e.id);
+    if (prone.length) await actor.deleteEmbeddedDocuments("ActiveEffect", prone);
+  }
+  if (data.reloadshot === "on") { const w = weapon ?? previewWeapon; if (w) await w.update({ "system.unloaded": true }); }
+  if (opts.grant) await consumeGrant(actor, opts.grant, targets[0]?.uuid ?? "");
+  opts.onUsed?.({ targets });
+  return true;
+}
+
+/** Roll the damage for the tier rolled on an action card and post it as a new card. */
+export async function rollDamage(message) {
+  const f = message.getFlag("twod12", "action");
+  if (!f || !f.tier) return;
+  const actor = await fromUuid(f.actorUuid);
+  if (!actor?.isOwner) return ui.notifications.warn("Only the owner of this character can roll its damage.");
+  const item = actor.items.get(f.itemId);
+  const version = item?.system.versions.find(v => v.ap === f.ap && (!f.mode || v.mode === f.mode));
+  if (!version) return ui.notifications.warn("The action or version no longer exists.");
+  const weapon = f.weaponId ? actor.items.get(f.weaponId) : null;
+  // One creature's damage: its tier, its bonuses, and only that creature as the target of the damage and its effects.
+  const rollFor = async (tier, bonus, targets, who) => {
+    const insts = [...version[`t${tier}`], ...bonus.filter(b => b.dmg).map(b => ({ pool: b.pool, useW: false, wCount: 1, dice: b.dmg, useAt: false, subtype: b.sub }))];
+    const fx = [...(tier >= 2 ? (version.fx?.all ?? []) : []), ...(version.fx?.[`t${tier}`] ?? []), ...bonus.filter(b => b.fxUuid).map(b => ({ uuid: b.fxUuid, mode: "auto" }))]
+      .filter(x => !f.fxOnUse || x.mode !== "auto");   // cards from v0.0.144 on applied their automatic effects when the Action was used
+    const rolls = [];
+    const ctx = { weapon, tier: tier, attrVal: f.attrVal, rolls, empowered: stepOf(f.empowered) };
+    const resolved = [];
+    for (const inst of insts) resolved.push(await resolveInstance(inst, ctx));
+    const comps = [];
+    for (const r of resolved) for (const c of r.comps) comps.push({ pool: r.inst.pool || "B", sub: c.sub, kind: c.kind, formula: c.formula, total: c.total, dice: c.dice });
+    let chip = "";
+    const dmgRes = resolved;
+    // [Mod]: the Weapon Modifier on Tiers 2 and 3 (to the weapon's damage); nothing for Power, Signature and Attribute Actions. Old cards: isWeapon / attrMode "all".
+    const attrFrom = f.attrMode === "all" ? 1 : f.attrMode === "t2" ? 2 : f.attrMode === "none" ? Infinity : (f.isWeapon ? 2 : Infinity);
+    if (tier >= attrFrom && !insts.some(i => i.useAt) && dmgRes.length) {
+      const wInst = (f.attrMode === "all" ? null : dmgRes.find(r => r.inst.useW)) ?? dmgRes.find(r => r.comps.length) ?? dmgRes[0];
+      const pool = wInst.inst.pool || "B";
+      const sub = wInst.inst.useW ? (weapon?.system?.subtype ?? "") : (f.attrMode === "all" ? (wInst.inst.subtype ?? "") : "");
+      comps.push({ pool, sub, kind: "A", formula: "", total: f.attrVal, dice: [], hidden: true });
+      chip = `<div class="chips"><span class="chip">${esc(f.attrLabel || "Modifier")} +${f.attrVal}</span></div>`;
+    }
+    return { comps, fx, chip, rolls };
+  };
+  if (f.results?.length) {
+    // Several targets: the damage is rolled once per Tier and dealt to every creature on that Tier (Several Targets), posted in one card.
+    const rows = [], all = [], byTier = new Map();
+    for (const r of f.results) {
+      if (!(r.tier >= 1)) continue;
+      if (!byTier.has(r.tier)) { const d = await rollFor(r.tier, r.bonuses ?? [], [{ uuid: r.uuid, name: r.name }], r.name); byTier.set(r.tier, d); all.push(...d.rolls); }
+      const d = byTier.get(r.tier);
+      rows.push({ uuid: r.uuid, name: r.name, tier: r.tier, comps: d.comps.map(c => ({ ...c })), fx: d.fx });
+    }
+    if (rows.length) await postMultiDamageCard({ actor, title: item.name, rows, rolls: all, color: f.color, defaultNl: !!f.nl, originUuid: f.actorUuid });
+  } else {
+    const d = await rollFor(f.tier, f.bonuses ?? [], f.targets ?? [], "");
+    await postDamageCard({ actor, title: item.name, subtitle: `Damage \u2022 Tier ${f.tier}`, comps: d.comps, fx: d.fx, targets: f.targets ?? [], originUuid: f.actorUuid, chip: d.chip, rolls: d.rolls, color: f.color, defaultNl: !!f.nl });
+  }
+  try { await message.setFlag("twod12", "collapsed", true); } catch (e) { /* not the author */ }
+}
+
+/** The bullseye on an Action card: its targets become the tokens targeted now (or selected), for the damage, Saves and Cleave that follow. */
+export async function retargetAction(msg) {
+  const toks = game.user.targets.size ? [...game.user.targets] : (canvas.tokens?.controlled ?? []);
+  if (!toks.length) return ui.notifications.warn("Target or select a token first.");
+  const targets = toks.map(t => ({ uuid: t.document.uuid, name: t.name }));
+  const content = msg.content.replace(/<div class="tline cardtargets">[\s\S]*?<\/div>/, targetsRowHtml(targets.map(t => t.name), { retarget: true }));
+  try { await msg.update({ content, "flags.twod12.action.targets": targets }); }
+  catch (e) { ui.notifications.warn("Only the author of this card or the GM can change its targets."); }
+}

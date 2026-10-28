@@ -1,0 +1,32 @@
+--- Modifier = Attribute ÷ 2 + 1, rounded up: -1→1 0→1 1→2 2→2 3→3 4→3 5→4
+Paladin Body 2, Mind 1, Appeal 1: Weapon body 2 | Power mind 2 | Signature body 2 (weapon)
+Paladin Body 1, Mind 2, Appeal 3, Weapon keeps it: Weapon appeal 3 | Power mind 2 | Signature appeal 3 (weapon) | both wanted the same
+Paladin Body 1, Mind 2, Appeal 3, Power keeps it:  Weapon body 2 | Power appeal 3 | Signature appeal 3 (power) | both wanted the same
+Paladin Appeal 3 and Body 3 (no real conflict):     Weapon body 3 | Power appeal 3 | Signature body 3 (weapon)
+Archer Instinct 2, Body 0, Mind 1, Appeal 2:        Weapon instinct 2 | Power appeal 2 | Signature instinct 2 (weapon)
+a class from before (one Attribute each):           Weapon body 2 | Power appeal 3 | Signature appeal 3 (power)
+both lists only Appeal (must share):                Weapon appeal 3 | Power appeal 3 | Signature appeal 3 (weapon)
+no class:                                           Weapon - 1 | Power - 1 | Signature - 1 (weapon)
+--- what an Action rolls (rollsource.mjs)
+Smite                | weapon body 2 | Weapon Modifier • Body | Attribute on the damage from Tier 2 | effects see: __action, body
+Judgment             | power appeal 3 | Power Modifier • Appeal | Attribute on the damage from Tier Infinity | effects see: __action, appeal
+a Signature Action   | signature appeal 3 | Signature Modifier • Appeal | Attribute on the damage from Tier Infinity | effects see: __action, appeal
+Trip                 | attribute body 2 | Body Check | Attribute on the damage from Tier Infinity | effects see: __action, __attr
+Interact             | null  null |  | Attribute on the damage from Tier Infinity | effects see: __action
+an old card (isWeapon only): from Tier 2 | an old Power card: Infinity
+--- damage previews (calc.tierAvg): a 1d8 Action with Attribute 3
+t2    4.5 / 7.5 / 7.5
+all   7.5 / 7.5 / 7.5
+none  4.5 / 4.5 / 4.5
+old isWeapon: 4.5 / 7.5 / 7.5 | no damage on a tier adds nothing: 0
+--- costs and the Turn Frequency
+0 AP: 0AP | 0R: 0R | 1/2R: 1/2R | Turn: Turn #0F6E6E | Power is the label of the magic key: Power | Signature: Signature
+roll kinds: {"__check":"Check","__save":"Save","__attr":"Attribute Action"}
+before: {"faded":false,"why":""}
+used on turn 1: {"faded":true,"why":"Used this turn"}
+the next creature's turn: {"faded":false,"why":""}
+a new round, same turn number: {"faded":false,"why":""}
+--- the data and the sheets
+a Version can cost 0: true | the class has modPriority: true | effect settings accept roll kinds: true
+class dialog: different increases: true | no Weapon/Magic pick: true | sheet shows Power and Signature: true
+compendium Paladin Power: mind, appeal | Archer Weapon: instinct, body

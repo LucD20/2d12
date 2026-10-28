@@ -1,0 +1,8 @@
+isTalentAction: Aim=true Pummel=false Rimebrand=false Fists=false
+slot 1: Opportunity Attack | slot 2 empty: true | extras: Aim, Battering Charge
+group on the Actions tab: Talents Other Basic
+a Talent Action dropped anywhere goes to the first empty slot: dc:1 | a non-Talent Action gets none: ""
+dropped on slot dc:1: dc:1 | source kept: true
+dropped on the extra zone: slot flag null
+a non-Talent Action keeps the old behavior (no slot): null
+modifiers from a Talent Action: Opportunity Attack: You disrupt it.

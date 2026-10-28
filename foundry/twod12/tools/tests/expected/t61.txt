@@ -1,0 +1,4 @@
+without the Talent: 5 | with it: 7 | Speed 4 with it: 6
+spaces and case don't matter: true | a different Talent: false
+an effect by its base name: true | the old forms still work: 3 3 5
+unknown names are 0: 5

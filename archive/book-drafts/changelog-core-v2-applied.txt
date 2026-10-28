@@ -1,0 +1,513 @@
+# PROPOSED REWRITES for your CHANGELOG - Core Rules (v2)
+# STATUS: APPLIED to the book on 2026-10-23 (revision 2, with Lucas's approval: every default in section 7 was accepted).
+# Kept as the record of what changed. The book files are the truth now (book/rules-src, Chapter 3 and the others).
+#
+# Same legend as yours, plus:
+#   [REV]   my proposed rewrite of one of YOUR entries (your text is the base; what I changed is marked)
+#   [NEW]   an entry that was not in your changelog (found by the second pass)
+#   [Q]     open question, with what I would do if you say nothing
+#
+# Contents
+#   1. Decisions I recorded
+#   2. Rewrites by region (the text you can approve)
+#   3. Second pass: new findings (including one mistake of mine)
+#   4. Glossary and Rules Language changes
+#   5. Diagrams needed
+#   6. Foundry notes (not for the book)
+#   7. What is still open
+
+
+#region 1. Decisions I recorded
+
+ 1. Collision counts the UNUSED squares of the destination the origin chose. The origin can always move less than the value:
+    no damage, or aim into an obstacle to collide on purpose.
+ 2. Pulled: the origin can end the movement next to itself (no damage) or name its own square as the destination (Collision, both take damage).
+ 3. Slid and Pulled get diagrams.
+ 4. Slid and Reposition: the origin needs Line of Effect to the creature.
+ 5. Reposition: no Reach limit, no Size limit, needs Line of Effect. The Reposition Action is deprecated and will be rewritten.
+ 6. "Moving and Leaving Your Square": "Forced Movement (Pushed, Pulled and Slid)" and a new row "Reposition": No, No, Yes.
+ 7. Flanking: a weapon Property for Fists, "not allowed to flank".
+ 8. Minor enemies = Minions and Grunts, defined in the Bestiary.
+ 9. Collision, Deadly Hazards, Leaning, Corners and Squeezing stay as subsections inside their sections.
+10. Merge the Size "cube" paragraph and the Elevation bullet.
+11. Solid corner: the corner POINT where four squares meet is "occupied" by a wall or a solid object (your definition; my first wording was wrong).
+12. Fists have the Unarmed property and NEVER flank, Brawler included. "Unarmed" is used nowhere else in the book, Foundry or the compendium: kept.
+13. The Reposition Basic Action: use my draft for now (= the old card, unchanged; see the entry), marked "to be rewritten".
+14. Losing Line of Effect during a Slid or Reposition ends the movement with no damage.
+15. Forced Movement and Reposition never squeeze a creature.
+16. The "Forced Movement at a glance" table goes in the book.
+17. Areas moves: it goes after Cover (order below).
+
+#endregion
+
+
+#region 2. REWRITES BY REGION
+
+# ---------------------------------------------------------------- Ch.3 - Playing on the Grid
+
+[REV] your [ADD] "You move around the grid using Actions..." (changed: the exception now names Reposition; "Areas and ranges are
+      measured the same way" moved here from the old Diagonals bullet; the Evade Action sentence is shorter):
+   "You move around the grid using Actions. Some allow you to move up to your Speed (like Advance); others have special rules, like
+   the Evade Action, which lets you move without triggering Reactions.
+
+   When calculating distances and movement, each square counts as 1, but every second diagonal counts as 2 squares (1, 2, 1, 2...).
+   Areas and ranges are measured the same way. Exception: Forced Movement and Reposition count each diagonal square as 1 (see Forced
+   Movement and Reposition). If you are calculating your movement on your turn, the count continues through your whole turn, across
+   every Action that moves you. If you move when it isn't your turn, you calculate it from the start: you don't keep track of the
+   movement from your previous turn."
+   [LOC] Right below the first paragraph.
+
+[NEW] [DEL] the existing bullet (it would now say the same thing twice):
+   "- **Diagonals:** every second diagonal counts as 2 squares (1, 2, 1, 2...). The count continues through your whole turn, across
+   every Action that moves you. Areas and ranges are measured the same way."
+
+[REV] the Elevation bullet (merged with Size; see the Size entry, and the [FIX] below):
+   "- **Elevation:** count the squares up or down as you count the squares on the map, then add them together like a diagonal: the
+   larger count, plus half the smaller one (rounded down). A creature 4 squares away and 4 squares up is 6 squares away. How tall a
+   creature is: see Size."
+[FIX] My earlier Elevation text said "a Size 2 creature is 2 squares tall". That was WRONG: Size 2 is Small (1 x 1). Removed here.
+
+[CHG] (yours, unchanged) Difficult Terrain and Straight Line become two sections. Proposed text, taken from the current bullets:
+
+   "## Straight Line
+   When an Action moves you in a straight line (Charge), draw a line from the center of your square to the center of the destination
+   square. If that line is a legal move (for Charge, it can't cross Difficult Terrain or cut a solid corner), the movement counts as
+   straight, even if your token's path on the grid isn't exactly straight. A Charge that can't go all the way ends in the last empty
+   square where the line is legal."
+   [images: the three Charge images with your three captions]
+   [NEW] "or cut a solid corner" added: Charge is your own movement, so Corners apply to it.
+
+   "## Difficult Terrain
+   Each square of difficult terrain counts double the squares it would normally count. The GM decides where it is (rubble, deep
+   snow...). Darkness is Difficult Terrain for creatures that can't see in it. Passing through the squares of an unwilling creature is
+   Difficult Terrain too."
+   [image: "Advance 5 squares across 2 Difficult Terrain squares (brown): each of those counts double. The numbers are the squares
+   used so far"]
+
+[DEL] (yours) " such as Foundry"; the bullet "Moving your token is an Action..."; the bullet "Areas are drawn on the grid as squares..."
+[OK]  Everything else in your "Playing on the Grid" entries stands.
+
+
+# ---------------------------------------------------------------- Ch.3 - Whole chapter
+
+[CHG] (yours) Title "Chapter 3: Movement and the Environment"; "Advance and Evade" -> "Movement".
+
+[REV] The section order, written out in full so that nothing is lost (sections you listed, plus the subsections that travel with them):
+   Playing on the Grid
+   Size                      (subsection: Squeezing)
+   Movement                  (subsections: Advance, Evade, Moving and Leaving Your Square, Corners)
+   Straight Line
+   Forced Movement           (subsections: Pushed, Pulled, Slid, Collision)
+   Reposition                (a section of its own, below Forced Movement, as you said)
+   Difficult Terrain
+   Hazardous Terrain         (subsection: Deadly Hazards)
+   Reach                     (subsections: Weapon Range, Weapon Actions and Your Weapon)
+   Engaged                   (subsection: Ranged Combat While Engaged)
+   Flanking
+   Line of Effect
+   Cover                     (subsection: Leaning)
+   Areas                     (moved here: [DECIDED] it uses Line of Effect and Cover from its Point of Origin, so it reads best after them)
+   Light                     (subsections: Bright, Dim, Darkness)
+   Senses                    (subsections: Sight Senses, Other Senses)
+
+
+# ---------------------------------------------------------------- Ch.3 - Size
+
+[REV] your [ADD] "A creature that occupies more than one square..." merged with the Elevation bullet:
+   "A creature is as tall as it is wide: one that occupies more than one square also occupies more squares height-wise, so imagine it
+   as a cube. A Large creature (2 x 2) is 2 squares tall, and a Gargantuan one (4 x 4) is 4 squares tall. This might feel odd for some
+   creatures, such as a horse, but the simplification is necessary for the game to work."
+   [LOC] Below the first paragraph after the table.
+
+[REV] your [ADD] "Squeezing" (changed: one example added; Forced Movement and Reposition never squeeze; "[[...]]" links are mine):
+   "### Squeezing
+   Creatures can normally squeeze to reach places smaller than themselves, but not to the point that wouldn't make sense. A creature
+   can squeeze through a space one rank below theirs (a Large creature, 2 x 2, can squeeze through a gap 1 square wide), and each
+   square they move this way counts as Difficult Terrain. If a creature stops moving while squeezing to do another Action, meaning
+   they don't fit completely in the space they are in, all their Rolls are Doomed and they are Vulnerable equal to half their level
+   (rounded up) until they move to a space where they fit completely. Some creatures have features that change this, like a
+   Gargantuan (4 x 4) snake with "The snake can squeeze through 1 square", but this doesn't mean the creature can safely end its turn
+   while squeezing: unless otherwise noted, the Doomed penalty and the Vulnerable condition above still apply.
+
+   Forced Movement and Reposition never squeeze a creature: they stop in the last square where it fits completely (see Collision)."
+   [DECIDED] The last paragraph (Forced Movement and Reposition never squeeze) is kept.
+
+
+# ---------------------------------------------------------------- Ch.3 - Movement
+
+[REV] the Movement intro and the Advance subsection (Reposition added; one wording fix):
+   intro, last sentence: "Forced Movement doesn't use your Speed." -> "Forced Movement and Reposition don't use your Speed."
+   Advance, second sentence: "(Forced Movement moves you against your will)" -> "(someone else moving you, with Forced Movement or
+   Reposition, is not you moving)"
+
+[REV] your [CHG] split Advance (changed: "once for that Advance"):
+   "You can split an Advance: move part of it, use other Actions, then move the rest later in the same turn. Movement you don't use
+   is lost at the end of your turn. You can only split the movement of the Advance Action itself. If another Action moves you as part
+   of a sequence (such as Charge), you can't split that movement. For instance, when you Charge, you can't Advance 3, make your
+   Weapon Attack (1A) and then Advance the rest of your movement.
+
+   When you split an Advance, it is still one Action. A Reaction that triggers on your movement can fire only once for that Advance,
+   no matter how many segments you move in."
+
+[CHG] (yours, unchanged) Evade: "...the way you can split the Advance Action."
+
+[REV] "Moving and Leaving Your Square": the table and the two bullets that name Forced Movement:
+   | Movement                                   | A Move Action | You moved | You left your square |
+   |---|---|---|---|
+   | Advance, Charge, Crawl                     | Yes | Yes | Yes |
+   | Evade                                      | No  | Yes | Yes |
+   | Stand                                      | Yes | No  | No  |
+   | Forced Movement (Pushed, Pulled and Slid)  | No  | No  | Yes |
+   | Reposition                                 | No  | No  | Yes |
+   "You haven't moved" bullet: "Forced Movement is not you moving..." -> "Forced Movement and Reposition are not you moving..."
+   "You haven't left your square" bullet: "...Forced Movement included." -> "...Forced Movement and Reposition included."
+
+[CHG] (yours) Move "since your last turn / this turn" to Rules Language. Proposed place and wording (see section 4).
+
+[REV] your [ADD] "Corners". Changed: your definition of "solid corner" (the corner point), Charge and Evade named, large creatures,
+      and the Reposition exception:
+   "### Corners
+   You can't cut solid corners when you move. Moving diagonally takes you through the corner point where four squares meet. If a wall or
+   a solid object occupies that point, the corner is solid and you can't move diagonally past it: you must go around. A wall that ends
+   exactly at the corner counts, and so does a solid object in either of the two squares beside your path, because it touches the
+   point. This applies to every movement of yours (Advance, Evade, Charge) and to Forced Movement and Reposition. A creature that
+   occupies several squares follows the rule with each square it occupies.
+
+   Creatures aren't solid corners: you can move diagonally between two creatures, but this is Difficult Terrain, as if you were
+   passing through the squares of an unwilling creature. If a Forced Movement would move a creature diagonally between two creatures,
+   it doesn't pass through them: it stops in the last legal square and Collision applies as normal. Reposition passes through
+   creatures, so it can move between them."
+   [DECIDED] The point is what counts (my "either side / both" question was badly put: your definition answers it).
+   [CHECK] One reading to confirm in section 7: a solid OBJECT (a crate, a pillar) in a side square makes the corner solid, because its
+           edge touches the point, exactly like a wall that runs along that edge. If you want objects not to count, say so.
+   [IDEA] example images: a wall that ends at the corner (blocked diagonal), and two creatures touching at a corner (allowed, Difficult Terrain).
+
+
+# ---------------------------------------------------------------- Ch.3 - Reach
+
+[REV] your two Reach entries. The book ALREADY says "Reach above 1 adds to every number of the Range of your melee weapons" in the
+      Weapon Range bullets, so your [CHG] + [ADD] would say it three times. Proposed instead:
+   Reach intro, last sentence: "Weapons don't change your Reach: they have a Range of their own (see Weapon Range, where a Reach above
+   1 adds to the Range of your melee weapons)."
+   [DEL] your [ADD] "Reach above 1 can increase the Range of a Melee weapon." (the Weapon Range bullet already covers it).
+   Weapon Actions and Your Weapon: "With a Ranged weapon, or a weapon you throw," -> "With a Ranged weapon, or a weapon with the Thrown
+   property when thrown,"   (your [CHG], kept)
+
+
+# ---------------------------------------------------------------- Ch.3 - Engaged / Ranged Combat While Engaged
+
+[REV] Engaged, last sentence: "Other rules use the word, such as Ranged Combat While Engaged below."
+[REV] your [CHG] (a subsection of Engaged, "Weapon" deleted from [Ranged, Weapon], last sentence deleted):
+   "### Ranged Combat While Engaged
+   Using a [Ranged] Action while you are Engaged is hard: you suffer 2 banes.
+
+   When you use a [Ranged] Action against a creature that is Engaged with a creature other than yourself, you suffer 1 bane."
+[NEW] Other places that say "[Ranged, Weapon]" and the old name; they must change with this (my answer to your 10.4):
+   - Archer: "...the normal banes for using [Ranged, Weapon] Actions while Engaged" -> "[Ranged] Actions".
+   - Glossary: the entry "Ranged Combat" -> "Ranged Combat While Engaged" (text in section 4).
+   - Weapon Actions and Your Weapon (see Reach above) and the Ranged trait (see Traits below): the Thrown wording.
+   - Prone (Conditions): please let me check it when I apply; it says a bane applies to a Ranged Action, and a [Ranged] Power Action
+     now counts.
+   [Q] One consequence to decide with Magic: every [Ranged] Power Action now takes the Engaged banes (2 / 1) and far/maximum range
+       banes. That is probably what you want (casters pay for casting while Engaged), but it is a Magic design decision, so I note it.
+
+
+# ---------------------------------------------------------------- Ch.3 - Flanking
+
+[REV] your [CHG] of the first paragraph. Your new text lost its object ("threatens WHOM?"), and the Fists sentence was left over from the
+      old paragraph. Proposed:
+   "A creature **threatens** every enemy within the **normal range** of a Melee weapon, for as long as it qualifies to use that
+   weapon's Weapon Attack (1A). The 3-Strike limit doesn't remove the threat: it prevents using the Action, not qualifying for it.
+   Some conditions, such as Unconscious, cause a creature to threaten no one, and a weapon with the **Unarmed** property never
+   threatens. The far range of a Melee weapon doesn't count, and a Melee weapon with the Long property doesn't threaten adjacent
+   enemies."
+[ADD] (yours) The new paragraph "Like Engaged, threatening does not depend on what you perceive, but it uses range and not adjacency:..."
+[DEL] (yours) "If it can make more than one such Action, use the longest range. An Unconscious creature threatens no one."
+[DEL] the leftover sentence: "The Fists Basic Action is not a [Melee] Action, so a creature threatens with Fists only if a feature makes them a
+      Melee Weapon, as Brawler does."   (replaced by the Unarmed property)
+
+[NEW] The Unarmed property (Gear, in the weapon Properties; text for you to approve):
+   "#### Unarmed
+   A weapon with the **Unarmed** property doesn't threaten: you can't flank with it. Fists have it, so you can't flank with them
+   even if a feature, such as Brawler, makes them a Melee Weapon."
+   + add "Unarmed" to the property list in Gear ("Melee, Ranged, Long, Projectile, Thrown, Reload, Two-handed, Barehanded") and to the
+   glossary; add it to the Fists table row in Gear (Barehanded, Unarmed).
+   [DECIDED] Name: Unarmed (not used anywhere else). Brawler: Fists never flank, Brawler included; Brawler's text doesn't change.
+   Note for you: a Brawler therefore never flanks and never gains flanking boons (only creatures that threaten gain them).
+
+[REV] The legend and the six examples, with your structure. The six figures already exist in the diagram tool, with exactly your six
+      captions, so they only need to be split into three places:
+   (above the examples) "Blue tokens are allies and red-brown tokens are enemies. A badge is the boons that creature gets on [Melee]
+   Actions against the creature in the middle (G, Kai in the fifth picture) or against D in the last one."
+   Example 1: Two flankers. "Nari and Kai both threaten a goblin: each has 1 boon on [Melee] Actions against it."
+   Example 2: Three flankers. "A third ally threatens it too: 2 boons each."
+   Example 3: Four or more. "A fourth ally: 3 boons each, which is the limit. A fifth adds nothing."
+   [images 1, 2, 3]
+   Example 4: Range 2. "Nari holds a weapon with Range 2 and stands 2 squares from the goblin. She threatens it, so she flanks with Kai,
+   who is next to it: 1 boon each."
+   Example 5: Three goblins on Kai. "Three goblins threaten Kai, and Nari stands next to two of them. The goblin on the left has the
+   other two goblins flanking with it and no ally of Kai's next to it: 2 boons. The other two also have 2 goblins flanking with them,
+   but Nari threatens each of them and cancels 1: 1 boon each."
+   [images 4, 5]
+   Example 6: Two lines of fighters. "Two lines of fighters face each other, all of them against D, the second fighter on the left.
+   Each fighter has allies beside it that threaten the enemies in front of them, so almost every boon is cancelled: D's neighbors cancel
+   the boons, and only a fighter at the very end of a line can still gain 1, against the second fighter of the other line."
+   [image 6]
+
+
+# ---------------------------------------------------------------- Ch.3 - Forced Movement  (the big one)
+
+[DEL] (yours) "When you move against your will, it is a Forced Movement. Pushed and Reposition are Forced Movements..."
+
+[REV] your [ADD] intro. Changed: the shared rules now include "no Speed, each square counts 1" and "its value is a maximum".
+   "Forced Movement is movement you impose on another creature, choosing where it goes. There are three types: Pushed, Pulled and
+   Slid. Reposition also moves a creature of your choice, but it isn't Forced Movement (see Reposition). Every Forced Movement follows
+   these rules:
+   - It doesn't trigger reactions.
+   - It ignores Difficult Terrain.
+   - It can move a creature into Hazardous Terrain or a Deadly Hazard.
+   - It doesn't use the creature's Speed, and each square counts as 1, even when it is diagonal.
+   - Its value is a maximum: you can always move the creature less. It can never make a creature end its movement inside another
+     creature or an object: this is Collision, and it only happens when the destination you chose is blocked."
+
+[REV] Pushed (yours, with "farther" made measurable and Collision pointed at the destination):
+   "### Pushed
+   Being **Pushed** is a Forced Movement. Pushed has a value: up to that many squares you are moved. The origin chooses the destination.
+   Each square you are pushed into must be farther from the origin than the previous one (measured in a straight line between the
+   centers of the squares), and the path must stay within a cone spreading from the origin through you.
+
+   That cone is every step going in a direction within 45 degrees of the straight line from the origin to you. Each square counts as 1
+   toward the value, even when it is diagonal.
+
+   If something blocks the way to the destination the origin chose, Collision applies.
+
+   Example: A goblin stands directly below you and you use Pushed 3 on them. They can end in any square in the cone shown below: 1
+   square to the side after 1 step, 2 after 2 steps, and 3 after 3 steps. They can't be moved sideways or back toward you. If the goblin
+   were diagonal from you, the cone would point diagonally."
+   [Q] "farther ... measured in a straight line": the 45 degree cone already guarantees "away", so this only removes any doubt about
+       diagonals (the "1, 2, 1, 2" count would make some steps tie). If you say nothing: kept.
+
+[REV] Pulled (yours, with the two decisions: the origin may stop next to itself, or aim at its own square to collide):
+   "### Pulled
+   Being **Pulled** is a Forced Movement, the opposite of Pushed. Pulled has a value: up to that many squares you are moved. The
+   origin chooses the destination. Each square you are pulled into must be closer to the origin than the previous one (measured in a
+   straight line between the centers of the squares), and the path must stay within a cone pointing from you back to the origin.
+
+   That cone is every step going in a direction within 45 degrees of the straight line from you to the origin. Each square counts as 1
+   toward the value, even when it is diagonal.
+
+   You can't be pulled into the origin's square. The last legal square is the one next to the origin. The origin can end the movement
+   there, or choose its own square as the destination: then Collision applies, with the origin as the creature in the way, and both
+   take damage for the unused squares.
+
+   Example: A goblin stands directly above you, 3 squares away, and you use Pulled 3 on them. They can end in any square in the cone
+   shown below: after 1 step they are 2 squares away, after 2 steps they are next to you. You can stop there, with no damage, or choose
+   your own square as the destination: the 3rd square is then unused, Collision applies and you and the goblin take 1 damage each."
+
+[REV] Slid (yours, with: Collision at the point where the path is blocked; Line of Effect belongs to the ORIGIN; and a NEW example,
+      because the old one does not work under its own rules: the straight line from you to a goblin 2 squares to the right is already
+      blocked by the wall next to you, and the path 1 up + 2 left goes through the wall square above it):
+   "### Slid
+   Being **Slid** is a Forced Movement. Slid has a value: up to that many squares of path you are moved. The origin chooses the
+   destination and the exact path the creature takes: a Slid can curve, moving the creature closer to the origin, farther from it, or
+   sideways.
+
+   Each square of the path must be next to the previous one, and each counts as 1 toward the value, even when it is diagonal. The path
+   can't cross a wall or pass through an object, and it can't pass through another creature's square or the origin's: if the path the
+   origin chose does, Collision applies at that point. The origin must have Line of Effect to the creature at every square of the path;
+   if it would lose it, the movement ends there (that is not a Collision, so there is no damage).
+
+   Example: A goblin stands 2 squares east of you, with a brazier (Hazardous Terrain) in the square between you. You use Slid 3: the
+   goblin goes 1 square northwest, then 1 west, ending in the square directly north of you. It used 2 of its 3 squares, passed beside
+   the brazier without entering it, and you had Line of Effect to it all along. The path curved: the value counted squares of path, not
+   straight-line distance."
+   [DECIDED] If the origin would lose Line of Effect, the movement ends there, with no damage.
+
+[REV] Collision (yours; rewritten as a whole because it was written for a straight line and for Pushed only):
+   "### Collision
+   Collision happens when something is in the way of the destination the origin chose. For Pushed and Pulled, calculate it from the
+   center of the creature: draw a line from where the creature started to where the Forced Movement was meant to end. For Slid, follow
+   the path the origin chose. If something is in the way, the creature stops in the **last legal square** the line or the path passes
+   through: a square where the whole creature fits and that has no object or creature in it.
+
+   A creature that stops short takes Lethal Blunt Body damage for its **unused squares**: the squares between where it stopped and the
+   destination the origin chose.
+
+   - **An object** (a wall, a closed door, etc.): **2 damage** for each unused square.
+   - **Another creature, or the origin:** **1 damage** for each unused square, to each of the two creatures.
+
+   The origin decides how far to aim. If it chooses a destination the creature can reach, there is no Collision and no damage:
+   moving a creature less than the value never hurts it.
+
+   Example: Pushed 4 aimed at a destination 4 squares away, with a wall right behind you, deals 8 damage. Aimed through a creature
+   after 1 square, it deals 3 damage to each. Pushed 1 square, with nothing in the way, deals no damage.
+
+   A Reposition stops at an object without taking Collision damage, and it passes through creatures without Collision."
+   [LOC] The last paragraph is your text, verbatim.
+
+[REV] your [ADD] "Reposition" section (changed: it also says it never uses the target's Size, and cross-references Slid; Example added):
+   "## Reposition
+   Reposition moves a creature of your choice along a path, but it isn't Forced Movement. Reposition has a value: up to that many
+   squares of path. Your Reach and the creature's Size don't limit it. The path follows the rules of Slid (each square next to the
+   previous one, each counting as 1 even when it is diagonal, and the origin must have Line of Effect to the creature at every square),
+   with these rules:
+   - It doesn't trigger reactions.
+   - It ignores Difficult Terrain.
+   - It can't move a creature into Hazardous Terrain or a Deadly Hazard, though it can move the creature to a less advantageous
+     position, for example into a flanked square.
+   - It passes through creatures without Collision, but it can never make a creature end its movement inside another creature or an
+     object. It stops at an object without taking Collision damage.
+
+   Example: Kai stands between you and a goblin, in a line. Reposition 2 moves the goblin 2 squares along that line, through Kai's
+   square, to the empty square on Kai's other side. A Slid couldn't do this: it can't pass through Kai."
+   [Q] Can Reposition also pass through the ORIGIN's own square? I wrote "passes through creatures", so yes. If you say nothing: yes.
+   [ADD] [DECIDED] A "Forced Movement at a glance" table at the end of the Reposition section:
+      |                          | Pushed | Pulled | Slid | Reposition |
+      | Forced Movement          | Yes    | Yes    | Yes  | No         |
+      | Direction                | Away (cone) | Toward (cone) | Any path | Any path |
+      | Needs Line of Effect     | No     | No     | Yes  | Yes        |
+      | Into hazards             | Yes    | Yes    | Yes  | No         |
+      | Through creatures        | Collision | Collision | Collision | Passes through |
+      | Hits objects             | Collision damage | Collision damage | Collision damage | Stops, no damage |
+      | Diagonal squares count   | 1      | 1      | 1    | 1          |
+
+[NEW] THE REPOSITION BASIC ACTION. You said it is deprecated and needs a complete rewrite, so I did NOT rewrite it. What the old card
+   assumes that is no longer true:
+   - "within the origin's Reach" and "in a straight line": the movement is now a path, with no Reach limit.
+   - "Requirements: The target's Size is at most 1 higher than yours": you removed the Size limit from the MOVEMENT. I would keep a
+     Size limit inside the ACTION (as Shove has), otherwise a 2 AP Reposition 3 can relocate a Titanic creature with one Body roll.
+   Starting point if you want a draft from me (numbers copied from the old card, so nothing new to balance): Body - Handle -
+   Instinct - Strike; Round; One creature; Reach; Vs Body or Instinct (the one used to roll); Requirements: the target's Size is at
+   most 1 higher than yours. 1 AP: Tier 3 Reposition 1. 2 AP: Tier 2 Reposition 1, Tier 3 Reposition 3.
+   [DECIDED] Use my draft for now. The draft is the old card UNCHANGED (same traits, Requirements and tiers): what changes is the rule
+             it points to (the new Reposition section). In the book I add a box under the card: "To be decided: the Reposition Action
+             will be rewritten." (one more open item; the appendix goes 10 -> 11 after the Minor enemies box is removed).
+   Also check later: Pummel's Critical ("Reposition (1A) the target, ignoring the Handle trait") keeps working.
+
+
+# ---------------------------------------------------------------- Ch.3 - Deadly Hazards
+
+[REV] your [CHG]:
+   "A Forced Movement into one kills [[Minor enemies]]. A Reposition can't move a creature into a Deadly Hazard at all (see
+   Reposition). Any other creature, Player Characters included, isn't killed: ..."   (rest unchanged)
+[DEL] the box "Minor enemies are not defined yet." (one less open item: 11 -> 10)
+[ADD] in the Bestiary, in the roles part (the link above goes there):
+   "**Minor enemies** are Minions and Grunts: the roles with a CV Multiplier below 1."
+
+
+# ---------------------------------------------------------------- Ch.7 - Traits
+
+[REV] your [CHG] Ranged (the same text, with the repeated sentence merged and the Thrown wording matching Gear):
+   "These Actions target creatures from a distance. The Action's Distance can be written like a ranged weapon's Range: normal / far /
+   maximum, with 1 bane at far range and 2 at maximum. A single number is a normal range only. A [Ranged, Weapon] Action needs a ranged
+   weapon, or a weapon with the Thrown property used thrown, and uses that weapon's Range as its Distance. A Weapon Action without this
+   trait gets it when you use a ranged weapon or throw a Thrown weapon."
+
+#endregion
+
+
+#region 3. SECOND PASS: NEW FINDINGS (beyond my first message)
+
+ A. [FIX] My own mistake: the Elevation bullet I wrote in v0.0.162 says "a Size 2 creature is 2 squares tall". Size 2 is Small (1 x 1).
+    Corrected in the merged Size/Elevation text above. (The Foundry code is not affected: it uses the token's width.)
+ B. The old "Diagonals" bullet would have stayed next to your new paragraph: the same rule twice. Deleted above.
+ C. The diagonal exception named only Forced Movement. Reposition counts each diagonal as 1 too (same path rules as Slid): fixed.
+ D. Three more sentences still say "Forced Movement" where Reposition now has to be named: "Forced Movement doesn't use your Speed" (Movement
+    intro), "(Forced Movement moves you against your will)" (Advance), and in Turns "Evade and Forced Movement don't trigger Reactions"
+    (add "and Reposition"). Fixed above for the first two; the third I will do when applying.
+ E. Reach: your [CHG] + [ADD] would say "Reach above 1 adds to the Range of melee weapons" three times (it is already a bullet in Weapon
+    Range). Reduced to a cross-reference.
+ F. Fists: the book says Fists "aren't a Weapon for any purpose" and Brawler makes them count as a Melee Weapon. The Unarmed property
+    interacts with that (decided: Fists never flank, Brawler included).
+ G. Charge is movement of yours, so the Corners rule must apply to its straight line: added to Straight Line.
+ H. Squeezing had nothing about Forced Movement and Reposition. Added one sentence (it follows from Collision's "whole creature fits").
+ I. "Origin" is used by every Forced Movement and by Reposition's Line of Effect. It needs a definition (section 4). For an Area, the origin
+    is its Point of Origin, so "Pulled toward the origin" works with a point too.
+ J. The "farther / closer" test in Pushed and Pulled: the book counts distance as "1, 2, 1, 2" elsewhere, which would give ties on diagonal
+    steps. I defined it as a straight line between the centers of the squares.
+ K. Collision damage for "unused squares": with "up to" and a chosen destination it needed the destination as its reference. Defined above.
+ L. The Flanking paragraph lost the object of "threatens". Restored ("every enemy within the normal range").
+ M. Other documents that change with the rename and the new text: the Archer ("[Ranged, Weapon]"), Gear (Thrown, the new Unarmed
+    property, the Fists row), the Bestiary (Minor enemies), the notation row in Rules Language (links to "Advance and Evade").
+
+#endregion
+
+
+#region 4. GLOSSARY AND RULES LANGUAGE (ready to apply with your OK)
+
+[ADD] Rules Language, a new item after "Allies":
+   "**Origin.** The origin of an effect is the creature that uses the Action, or the Point of Origin of an Area. When a rule says "the
+   origin chooses", the origin decides, not the creature affected."
+[ADD] Rules Language, moved from Movement:
+   "**Since your last turn, this turn.** A feature that says "since your last turn" counts from the end of your last turn. One that says
+   "this turn" counts from the start of your turn."
+[CHG] Rules Language, the movement notation row: it lists "Evade 2, Pushed 2, Advance 2" (movement of up to that many squares).
+   -> "Evade 2, Advance 2, Pushed 2, Pulled 2, Slid 2, Reposition 2"; the links "Advance and Evade" -> "Movement" (Advance, Evade) and to
+   each new heading.
+
+Glossary rows (new or changed):
+   Forced Movement   | Movement you impose on another creature (Pushed, Pulled or Slid): no reactions, ignores Difficult Terrain, each square counts 1.
+   Pushed            | Forced Movement away from the origin, up to its value, inside a 45 degree cone.
+   Pulled            | Forced Movement toward the origin, up to its value, inside a 45 degree cone.
+   Slid              | Forced Movement along a path the origin chooses (it can curve); the origin needs Line of Effect.
+   Reposition        | Moving a creature along a path you choose, up to its value. Not Forced Movement: it passes through creatures, never enters hazards, needs Line of Effect.
+   Origin            | The creature that uses an Action, or the Point of Origin of an Area.
+   Collision         | Where a Forced Movement stops when something blocks the destination the origin chose; the unused squares hurt.
+   Corners           | You can't cut a solid corner: a wall or solid object touching the corner point where four squares meet.
+   Squeezing         | Moving through a gap one square narrower than you: Difficult Terrain, and Doomed and Vulnerable if you stop there.
+   Ranged Combat While Engaged | Using a [Ranged] Action while Engaged: 2 banes. Against a creature Engaged with someone else: 1 bane.   (renames "Ranged Combat")
+   Minor enemies     | Minions and Grunts (CV Multiplier below 1).
+   Unarmed           | A weapon property: the weapon doesn't threaten, so you can't flank with it. Fists have it.
+   Moved / Left your square | add "Reposition" to the existing texts.
+   Movement          | replaces the links to "Advance and Evade".
+
+#endregion
+
+
+#region 5. DIAGRAMS NEEDED
+
+ New:
+   1. Pulled: the cone toward the origin (a mirror of the Pushed cone), with the goblin 3 squares above you (your example).
+   2. Slid: the curved path around the brazier (my example), with the Line of Effect lines.
+   3. Reposition: passing through Kai's square (my example).
+   4. Corners: a solid wall corner (blocked diagonal) and two creatures touching at a corner (allowed, Difficult Terrain).
+   5. Squeezing: a Large creature (2 x 2) in a 1-square gap.
+   6. [IDEA] "Forced Movement at a glance" is a table, not a diagram.
+ Already drawn, only to be placed: the six flanking figures (split 1-3 / 4-5 / 6), Difficult Terrain (1), Charge (3), Pushed (1).
+
+#endregion
+
+
+#region 6. FOUNDRY NOTES (not for the book; for planning after you approve the text)
+
+ Today: Pushed uses a destination in a cone with exact distance (pushShifts, choosePush), Collision is a straight line (analyzePath), and
+ Reposition is a square inside an Emanation (repositionShifts). I would stage it, one version each:
+  F1 (small): [Ranged] instead of [Ranged, Weapon] for the Engaged banes; the Unarmed property on Fists (and flanking reads it);
+      Pushed "up to N" with Collision counted from the chosen destination; diagonal exception for Forced Movement and Reposition; a
+      Reaction fires once per split Advance.
+  F2: Pulled: the mirror of the Pushed cone, including aiming at the origin's square (Collision, both take damage).
+  F3: Slid and Reposition: a path tool (click the squares one by one), with the checks: next to the previous square, no wall or object,
+      creatures (Slid: Collision; Reposition: passes through), Line of Effect from the origin at each square (the Line of Effect code
+      exists), no hazards for Reposition (Hazardous Terrain regions exist), cost counted per square. New @Move kinds (pulled, slid);
+      "Reposition N" keeps its button. The new Reposition Action card (after your design).
+  F4: Corners in movement validation (Advance, Evade, Charge, Forced Movement): a diagonal step is refused when a wall touches the
+      corner point (an end point included) or a solid object is in a side square; Squeezing: first as a manual status the GM applies
+      (Doomed, Vulnerable), automatic detection later.
+  Also: Actions with a Distance written normal/far/maximum and the Ranged trait take the range banes (Weapons already do).
+
+#endregion
+
+
+#region 7. WHAT WAS OPEN (all accepted by Lucas on 2026-10-23: 1 yes, 2 yes, 3 kept, 4 yes, 5 ok)
+
+ 1. [CHECK] A solid OBJECT in a side square makes the corner solid (its edge touches the corner point). [default: yes]
+ 2. Reposition may pass through the origin's own square too. [default: yes]
+ 3. In Pushed and Pulled, "farther / closer" is measured in a straight line between the centers of the squares (a 45 degree cone
+    already guarantees "away"; this only removes ties on diagonals). [default: kept]
+ 4. Every [Ranged] Power Action now takes the Engaged banes and the range banes. A Magic design question; nothing to do now. [default: as written]
+ 5. Pummel's Critical and Prone's text will be checked while applying (no decision needed).
+
+ If nothing here needs changing, I apply everything in one book pass: Core (Chapter 3 and the others), Gear, Archer, Bestiary, Rules Language,
+ glossary, the new diagrams (Pulled, Slid, Reposition, Corners, Squeezing) and the flanking figures split in three. Foundry waits.
+
+#endregion

@@ -1,0 +1,91 @@
+// What the canvas shows follows the rules of Light, not Foundry's lighting (see Light and Senses in the rules): a token is visible to a creature by sight only if the light on it, after the
+// creature's Sight Senses, is not Darkness. So Global Illumination can stay on for the map, and a Darkness region (Adjust Darkness Level) or a Darkness source hides creatures from those
+// who can't see in it. A token that is not seen may still be heard (the Hearing ripple, see senses.mjs).
+import { tokenLight, seenLight, lightAt, darknessDetail, sceneDarkness, tokenSquares, LIGHT_NAMES } from "./light.mjs";
+import { modeList } from "./modes.mjs";
+
+/** Does the observer see this token by the rules? Its own token and tokens without a creature are not judged here. */
+export function canSeeByRules(observer, target) {
+  if (!observer?.actor || !target?.actor || observer === target || (observer.id && observer.id === target.id)) return true;
+  return seenLight(tokenLight(target), observer.actor.system?.senses ?? {}) !== "dark";
+}
+
+// The modes of Foundry's sight that can make a token visible: Basic Sight (what the creature's vision reaches), Light Perception (anything in a lit area: this is the one
+// Global Illumination feeds) and See Invisibility. All of them must also be allowed by the rules.
+const SIGHT_MODES = ["basicSight", "lightPerception", "seeInvisibility"];
+let installed = [];
+
+/** Each of Foundry's sight modes also asks the rules: what it shows as seen must be allowed by canSeeByRules. Returns the modes it was put on. */
+export function registerSightGate() {
+  installed = [];
+  try {
+    for (const id of SIGHT_MODES) {
+      const mode = CONFIG?.Canvas?.detectionModes?.[id];
+      if (!mode || typeof mode.testVisibility !== "function") continue;
+      if (mode.testVisibility.twod12Gate) { installed.push(id); continue; }
+      const orig = mode.testVisibility;
+      const gated = function (visionSource, m, config) {
+        const seen = orig.call(this, visionSource, m, config);
+        if (!seen) return seen;
+        try { const target = config?.object; return target?.actor ? canSeeByRules(visionSource?.object, target) : seen; } catch (e) { return seen; }
+      };
+      gated.twod12Gate = true;
+      mode.testVisibility = gated;
+      installed.push(id);
+    }
+  } catch (e) { console.warn("twod12 | could not put the rules of Light on Foundry's sight", e); }
+  return [...installed];
+}
+
+/** What changes the picture: a region, the combat (who makes noise), a status, a creature's Senses. Vision is refreshed (once, a moment later). */
+const CHANGES = {
+  createRegion: () => true, updateRegion: () => true, deleteRegion: () => true,
+  createRegionBehavior: () => true, updateRegionBehavior: () => true, deleteRegionBehavior: () => true,
+  createCombat: () => true, deleteCombat: () => true, updateCombat: (d, ch) => "round" in (ch ?? {}),
+  createCombatant: () => true, deleteCombatant: () => true, updateCombatant: (d, ch) => "defeated" in (ch ?? {}),
+  createActiveEffect: e => hasPerception(e), updateActiveEffect: e => hasPerception(e), deleteActiveEffect: e => hasPerception(e),
+  updateActor: (d, ch) => !!ch?.system?.senses
+};
+const hasPerception = e => ["unsensed", "hidden", "obscured", "unconscious"].some(s => e?.statuses?.has?.(s));
+export function registerSightRefresh() {
+  if (typeof Hooks === "undefined") return null;
+  let timer = null;
+  const refresh = () => { clearTimeout(timer); timer = setTimeout(() => { try { canvas?.perception?.update?.({ refreshVision: true }); } catch (e) { /* no canvas */ } }, 120); };
+  for (const [hook, wants] of Object.entries(CHANGES)) Hooks.on(hook, (doc, changes) => { try { if (wants(doc, changes)) refresh(); } catch (e) { /* ignore */ } });
+  return refresh;
+}
+
+/** game.twod12.lightInfo(): the light by the rules for the controlled tokens (or the characters), and the Darkness regions Foundry has: a line of text to copy. */
+export function lightInfo() {
+  const sel = canvas.tokens?.controlled ?? [];
+  const toks = sel.length ? sel : (canvas.tokens?.placeables ?? []).filter(t => t.actor?.type === "character");
+  const regions = (canvas.regions?.placeables ?? []).flatMap(r => (r.document.behaviors ?? []).filter(b => /darkness/i.test(b.type)).map(b => ({ region: r.document.name, type: b.type, disabled: !!b.disabled, system: b.system?.toObject?.() ?? b.system })));
+  const info = {
+    sightGate: installed,
+    detectionModes: Object.fromEntries(Object.entries(CONFIG.Canvas?.detectionModes ?? {}).map(([k, m]) => [k, m.type])),
+    sceneDarkness: sceneDarkness(),
+    globalLight: canvas.scene?.environment?.globalLight?.enabled ?? canvas.scene?.globalLight ?? null,
+    foundryHasDarknessAt: typeof canvas.effects?.getDarknessLevel === "function",
+    darknessRegions: regions,
+    tokens: toks.map(t => {
+      const sq = tokenSquares(t)[0],
+        d = sq ? darknessDetail(sq) : null;
+      return {
+        name: t.name,
+        light: LIGHT_NAMES[tokenLight(t)],
+        darkness: d?.value ?? null,
+        via: d?.via ?? null,
+        adjustedBy: d?.regions ?? [],
+        darkSight: !!t.actor?.system?.senses?.darksight,
+        squareLight: sq ? lightAt(sq) : null,
+        sight: { enabled: t.document.sight?.enabled ?? null, range: t.document.sight?.range ?? null, visionMode: t.document.sight?.visionMode ?? null },
+        detection: modeList(t.document.detectionModes).map(m => `${m.id}:${m.range ?? "-"}`)
+      };
+    })
+  };
+  console.log("twod12 | light " + JSON.stringify(info));
+  ui.notifications.info(
+    `${installed.length ? `Foundry's sight (${installed.join(", ")}) follows the rules of Light` : "The rules of Light are NOT on Foundry's sight (its modes were not found)"}; ${regions.length} region behavior${regions.length === 1 ? "" : "s"} about darkness. Copy the console line that starts with "twod12 | light" for the details.`
+  );
+  return info;
+}

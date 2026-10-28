@@ -1,0 +1,4 @@
+Whirlwind: Area #F5C4B3 | Melee #B5D4F4 | Self #F5C4B3 | Strike #F5C4B3 | Weapon #9FE1CB
+Smite:     Divine #B4B2A9 | Strike #F5C4B3 | Weapon #9FE1CB
+Trip:      Body #9FE1CB | Handle #B5D4F4 | Instinct #9FE1CB | Strike #F5C4B3
+Area help: These Actions target every creature in their area that they ... | Area is a trait: Area

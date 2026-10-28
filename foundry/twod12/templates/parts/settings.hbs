@@ -1,0 +1,59 @@
+{{!-- The settings of an Effect, or of a Feature's or Talent's passive: one per line, written as sentences (fxdetails.mjs). --}}
+      {{#each settingsList}}
+      <details class="setting fxd-set" data-i="{{i}}" {{#if open}}open{{/if}}>
+        <summary class="shead"><span class="fxd-k">{{label}}</span><span class="fxd-sum">{{{sentence}}}</span><button type="button" data-action="removeSetting" data-index="{{i}}" title="Remove setting">&times;</button></summary>
+        {{#if ../isPassiveHost}}<div class="fxd-s">It works <select class="fxd-f" data-sfield="{{i}}" data-field="minEscalation">{{selectOptions ../escChoices selected=minEscalation}}</select>.</div>{{/if}}
+        {{#if isBoonBane}}
+        <div class="fxd-s">Give <input type="number" min="0" class="fxd-f n" data-sfield="{{i}}" data-field="boons" value="{{boons}}"> {{boonWord}} and <input type="number" min="0" class="fxd-f n" data-sfield="{{i}}" data-field="banes" value="{{banes}}"> {{baneWord}} to rolls made <select class="fxd-f" data-sfield="{{i}}" data-field="against" data-bool>{{selectOptions ../whoChoices selected=againstVal}}</select></div>
+        {{> "systems/twod12/templates/parts/preds.hbs"}}
+        {{#if showByValue}}<label class="fxd-inl"><input type="checkbox" data-sfield="{{i}}" data-field="byValue" {{#if byValue}}checked{{/if}}> Multiply by the condition's value (Vulnerable 2: 2 boons)</label>{{/if}}
+        <p class="fxd-help">Only rolls whose traits match get it; no traits = every roll. "Against this creature" is for rolls others make against it (Prone). Empowered and Enfeebled are their own setting.</p>
+        {{/if}}
+        {{#if isAura}}
+        <div class="fxd-s">An Aura <input type="number" min="1" class="fxd-f n" data-sfield="{{i}}" data-field="auraSize" value="{{auraSize}}"> around the creature. It affects <select class="fxd-f" data-sfield="{{i}}" data-field="auraWho">{{selectOptions auraWhoChoices selected=auraWho}}</select> <label class="fxd-inl"><input type="checkbox" data-sfield="{{i}}" data-field="auraSelf" {{#if auraSelf}}checked{{/if}}> and the creature itself</label></div>
+        <div class="fxd-s">On the map: outline <input type="color" class="fxd-color" data-sfield="{{i}}" data-field="auraOutline" value="{{auraOutlineColor}}"> and squares <input type="color" class="fxd-color" data-sfield="{{i}}" data-field="auraFill" value="{{auraFillColor}}"></div>
+        <div class="fx-drop" data-sfx="{{i}}">{{#if fxName}}Whoever is inside gains <b>{{fxName}}</b> (drop another Effect to replace it){{else}}Drop the Effect that whoever is inside gains{{/if}}</div>
+        <p class="fxd-help">An Aura follows its creature: it reaches that many squares from every square the creature occupies. A creature gains the Effect as soon as it enters and loses it when it leaves, so the Effect should have no duration. The Aura itself ends when the Effect or passive that holds it does. On the map its outline shows during combat, and hovering the creature also tints the squares it covers; set the colors to tell several Auras apart.</p>
+        {{/if}}
+        {{#if isOnDamage}}
+        <div class="fxd-s">When this creature deals <select class="fxd-f" data-sfield="{{i}}" data-field="trigSub">{{selectOptions subOpts selected=trigSub blank="any"}}</select> damage to a creature with the Tag <select class="fxd-f" data-sfield="{{i}}" data-field="trigTag">{{selectOptions tagChoices selected=trigTag blank="(any creature)"}}</select>:</div>
+        <div class="fx-drop" data-sfx="{{i}}">{{#if fxName}}that creature gains <b>{{fxName}}</b> (drop another Effect to replace it){{else}}Drop the Effect that creature gains{{/if}}</div>
+        <p class="fxd-help">It runs when the damage is applied to the target ("Profane Judgment": Holy damage to a Profane creature makes it Enfeebled 1). Tags are listed on a creature's sheet.</p>
+        {{/if}}
+        {{#if isDamageStep}}
+        <div class="fxd-s">The damage of rolls made by this creature is Empowered <input type="number" min="0" class="fxd-f n" data-sfield="{{i}}" data-field="empowered" value="{{empowered}}"> and Enfeebled <input type="number" min="0" class="fxd-f n" data-sfield="{{i}}" data-field="enfeebled" value="{{enfeebled}}">.</div>
+        {{> "systems/twod12/templates/parts/preds.hbs"}}
+        <p class="fxd-help">Empowered N adds N to every damage die of the matching Actions, Enfeebled N takes N away (each die still deals at least 1). Only the highest of each counts (Stacking). Only rolls whose traits match; no traits = every roll.</p>
+        {{/if}}
+        {{#if isBonus}}
+        <div class="fxd-s">The next matching action deals <input type="text" class="fxd-f w" data-sfield="{{i}}" data-field="dmg" value="{{dmg}}" placeholder="1d4"> extra <select class="fxd-f" data-sfield="{{i}}" data-field="dmgSub">{{selectOptions subOpts selected=dmgSub}}</select> damage to <select class="fxd-f" data-sfield="{{i}}" data-field="dmgPool">{{selectOptions poolOpts selected=dmgPool}}</select> on
+          {{#each tierBoxes}}<label class="fxd-inl"><input type="checkbox" data-sset="{{../i}}" data-field="tiers" data-key="{{key}}" {{#if checked}}checked{{/if}}> {{label}}</label>{{/each}}</div>
+        {{> "systems/twod12/templates/parts/preds.hbs"}}
+        <div class="fxd-s">The card adds <input type="text" class="fxd-f wide" data-sfield="{{i}}" data-field="text" value="{{text}}" placeholder="Hindered (EoT)"></div>
+        <div class="fx-drop" data-sfx="{{i}}">{{#if fxName}}It also applies <b>{{fxName}}</b> (drop another Effect to replace it){{else}}Drop an Effect here to apply it to the target on these tiers (optional){{/if}}</div>
+        <p class="fxd-help">Used up by the next action whose traits match. The tiers are the tier that action rolls; the card shows them like "(T2/T3)".</p>
+        {{/if}}
+        {{#if isGrant}}
+        <div class="fxd-s">Can use <input type="text" class="fxd-f wide" data-sfield="{{i}}" data-field="grantAction" value="{{grantAction}}" placeholder="Weapon Attack / category:Weapon Technique / trait:strike"> <input type="number" min="1" class="fxd-f n" data-sfield="{{i}}" data-field="grantCount" value="{{grantCount}}"> {{timesWord}} for <input type="number" min="0" class="fxd-f n" data-sfield="{{i}}" data-field="grantAp" value="{{grantAp}}"> AP, with <input type="number" min="0" class="fxd-f n" data-sfield="{{i}}" data-field="boons" value="{{boons}}"> {{boonWord}}.</div>
+        <label class="fxd-inl"><input type="checkbox" data-sfield="{{i}}" data-field="grantDistinct" {{#if grantDistinct}}checked{{/if}}> Each use needs a different target</label>
+        <p class="fxd-help">0 AP = free. The uses don't count toward the Action's Frequency or the 3 Strikes, and the Action is not faded on the sheet. Using the Action offers the granted use first.</p>
+        {{/if}}
+        {{#if isDefense}}
+        <div class="fxd-s">Give <input type="number" class="fxd-f n" data-sfield="{{i}}" data-field="defValue" data-signed value="{{defValue}}"> to <select class="fxd-f" data-sfield="{{i}}" data-field="defKind">{{selectOptions defKinds selected=defKind}}</select>.</div>
+        <p class="fxd-help">"Every Defense" raises Armor, Ward and every Vs. Attribute. A negative number lowers it. Bonuses don't add up: the creature uses the highest bonus and the highest penalty for each Defense (from Features and effects). Armor and Ward are 11 + their value; Vs. an Attribute is 13 + half the Attribute.</p>
+        {{/if}}
+        {{#if isSpeed}}
+        <div class="fxd-s"><select class="fxd-f" data-sfield="{{i}}" data-field="speedMode">{{selectOptions speedModes selected=speedMode}}</select> <input type="text" class="fxd-f w" data-sfield="{{i}}" data-field="speedFormula" value="{{speedFormula}}" placeholder="2  or  floor(speed/2)"></div>
+        <p class="fxd-help">Replacements come first, then additions. <code>speed</code> is the creature's Speed; <code>floor( )</code>, <code>ceil( )</code>, <code>min( , )</code> and <code>max( , )</code> work. Hindered replaces it with <code>floor(speed/2)</code>. A Speed never goes below 0.</p>
+        {{/if}}
+        {{#if isLight}}
+        <div class="fxd-s">The token sheds bright light out to <input type="number" min="0" class="fxd-f n" data-sfield="{{i}}" data-field="bright" value="{{bright}}"> and dim light out to <input type="number" min="0" class="fxd-f n" data-sfield="{{i}}" data-field="dim" value="{{dim}}"> squares, color <input type="text" class="fxd-f w" data-sfield="{{i}}" data-field="color" value="{{color}}" placeholder="#ffd27a">.</div>
+        {{/if}}
+        {{#if isNote}}
+        <div class="fxd-s">Show the note <input type="text" class="fxd-f wide" data-sfield="{{i}}" data-field="title" value="{{title}}" placeholder="Title"> in rolls with
+          {{#each attrs}}<label class="fxd-inl"><input type="checkbox" data-sset="{{../i}}" data-key="{{key}}" {{#if checked}}checked{{/if}}> {{label}}</label>{{/each}}</div>
+        <textarea data-sfield="{{i}}" data-field="text" rows="3">{{text}}</textarea>
+        <p class="fxd-help">No attribute ticked = every roll.</p>
+        {{/if}}
+      </details>
+      {{/each}}

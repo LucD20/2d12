@@ -1,0 +1,92 @@
+--- how far the Point of Origin is from the creature using the Action
+an Emanation around a creature next to Kai                  1 squares | within 10
+around a creature 12 squares away                          12 squares | too far for within 10
+around a creature 4 across and 4 down (2 diagonals: 4 + 2)  6 squares | within 10
+around a Large creature (2x2) 2 squares away                3 squares | within 10
+an empty square 7 squares away                              7 squares | within 10
+an empty square exactly 10 away (allowed by within 10)     10 squares | within 10
+an empty square 11 away (too far)                          11 squares | too far for within 10
+a grid corner between the squares at 6 and 7                6 squares | within 10
+a corner touching Kai's own square                          1 squares | within 10
+no user or nothing placed: 0 0 0
+--- Line of Effect and cover from the Point of Origin
+no walls, around Nari                                  affected: Ally, At the wall, Behind the wall | no Line of Effect: - | cover: Ally No cover, At the wall Low cover, Behind the wall Low cover
+a wall between columns 4 and 5                         affected: Ally, At the wall | no Line of Effect: Behind the wall | cover: Ally No cover, At the wall Low cover, Behind the wall Total cover
+the wall right behind the Ally (between 3 and 4)       affected: Ally | no Line of Effect: At the wall, Behind the wall | cover: Ally No cover, At the wall Total cover, Behind the wall Total cover
+only the top corners blocked (a low wall)              affected: Ally | no Line of Effect: - | cover: Ally Medium cover
+only one corner blocked                                affected: Ally | no Line of Effect: - | cover: Ally Low cover
+a creature on the line gives Low cover                 affected: Behind it | no Line of Effect: - | cover: Behind it Low cover
+... Nari herself never stands in the way (she is the origin) affected: In the way | no Line of Effect: - | cover: In the way No cover
+an empty square as the origin: the creature there counts affected: Behind it | no Line of Effect: - | cover: Behind it Low cover
+a Burst at a corner                                    affected: Behind it, In the way | no Line of Effect: - | cover: Behind it No cover, In the way No cover
+the origin is inside the creature's own space          affected: On the origin | no Line of Effect: - | cover: On the origin Medium cover
+a creature behind another, then Leaning (exposed: cover reduced by 1): Low cover -> No cover | exposed: true
+on a grid that isn't square nobody is excluded and no cover is worked out: 1 affected, 0 covers
+without a Point of Origin everyone is affected: Ally, Behind the wall
+the result of coverFromPoint: {"blocked":0,"level":0,"banes":0,"noLoE":false,"label":"No cover"} | null without a target: null
+--- the scene's light level, under the Darkness slider
+Darkness 0:      Scene light: Bright (Darkness 0.00)
+Darkness 0.3:    Scene light: Bright (Darkness 0.30)
+Darkness 0.31:   Scene light: Dim (Darkness 0.31)
+Darkness 0.5:    Scene light: Dim (Darkness 0.50)
+Darkness 0.6:    Scene light: Dim (Darkness 0.60)
+Darkness 0.61:   Scene light: Darkness (Darkness 0.61)
+Darkness 1:      Scene light: Darkness (Darkness 1.00)
+the scene's own level: Scene light: Darkness (Darkness 0.75)
+the zones (default thresholds 0.7 / 0.4): bright 0.00-0.30 | dim 0.30-0.60 | dark 0.60-1.00
+the zones with your own thresholds (0.5 / 0.2): bright 0.00-0.50 | dim 0.50-0.80 | dark 0.80-1.00
+thresholds that cross each other or leave 0 to 1: bright 0.00-0.80 | dim 0.80-0.80 | dark 0.80-1.00 | bright 0.00-0.00 | dim 0.00-1.00 | dark 1.00-1.00
+the zones follow the world settings: bright 0.30 | dim 0.60 | dark 1.00 (settings 0.7 / 0.4)
+... changed to 0.5 / 0.1: bright 0.50 | dim 0.90 | dark 1.00
+the bar for Darkness 0.55: widths bright 30.0% "Bright" | dim 30.0% "Dim" | dark 40.0% "Darkness" | marker at 55.0% | text: Scene light: Dim (Darkness 0.55)
+the marker at the ends: 0.0 100.0 | beyond them: 0.0 100.0 | a narrow zone has no name: true
+a wide slider near the top                                   input  width 420
+one that names darkness comes first, even if narrower        input environment.darknessLevel width 300
+a slider by its class                                        div scene-darkness-slider width 380
+only narrow, low or hidden ones                              none
+nothing on the page                                          none
+no document: null
+under the slider: {"left":50,"top":39,"width":420} | no slider: no bar: null null
+--- on the screen
+the lighting layer is not active: 0 elements made
+active, slider found: {"display":"block","left":"56px","top":"35px","width":"400px"} | Scene light: Dim (Darkness 0.50)
+it listens to the slider: change, input
+the slider is dragged: Scene light: Darkness (Darkness 0.90) | marker 90.0%
+the slider is not found: no bar (the button has the same): none
+the hooks redraw a moment later (a slider drawn late is found): 35px
+another layer is active: none
+no canvas yet: none | hooks: activateCanvasLayer, canvasReady, lightingRefresh, renderSceneControls, updateScene
+sliderInfo, found: {"tag":"input","id":"","class":"","name":"darkness","rect":"56,14,400,18"} | ranges listed: 2 | the line to copy: twod12 | slider {"found":{... | The Darkness slider was found: the light level bar i...
+sliderInfo, nothing found: null | No Darkness slider was found: copy the c...
+--- the button in the lighting controls
+the icon: 0: fa-sun | 0.2: fa-sun | 0.3: fa-sun | 0.31: fa-cloud-sun | 0.5: fa-cloud-sun | 0.6: fa-cloud-sun | 0.61: fa-moon | 0.95: fa-moon
+the panel for the GM (Darkness 0.55): {"range":"0.55","disabled":false,"zones":3,"hint":"Drag to change the scene's Darkness."}
+for a player: {"disabled":true,"hint":"Only the GM can change the Darkness."} | a value out of range: 1 0
+where the panel goes: {"left":64,"top":140} | the button isn't there: {"left":64,"top":80}
+controls as an object: true | the tool: {"name":"twod12LightLevel","title":"Scene light level","icon":"fa-solid fa-sun","toggle":true,"active":false,"order":99} | the others stay: light, twod12LightLevel
+controls as a list: true | tools: light, twod12LightLevel | again (no duplicate): true 2
+no lighting controls: false false false false false false
+set 0.5473:      true {"environment.darknessLevel":0.55}
+set "0.72":      true {"environment.darknessLevel":0.72}
+set 1.7:         true {"environment.darknessLevel":1}
+set -2:          true {"environment.darknessLevel":0}
+set 0:           true {"environment.darknessLevel":0}
+set 1:           true {"environment.darknessLevel":1}
+set x:           false 0 updates
+set NaN:         false 0 updates
+set undefined:   false 0 updates
+set null:        false 0 updates
+a player: false 0 updates
+no scene: false
+--- the panel
+the hook adds the button: true | it has an onChange: function
+switched on: {"made":1,"display":"block","left":"64px","top":"80px"} | the text: Scene light: Dim (Darkness 0.50) | the slider at 0.5
+the slider is dragged to 0.72: marker 72.0% | text: Scene light: Darkness (Darkness 0.72) | the scene is not updated yet: 0
+after a moment, one update with the last value: {"environment.darknessLevel":0.85}
+something that isn't the slider is ignored: 0 updates
+the Darkness changes elsewhere: the panel shows Scene light: Darkness (Darkness 0.90)
+while the slider is held it is not redrawn: true
+another layer is active: the panel hides: none
+switched off: none
+on again: block
+a player sees the panel but the slider is disabled: true | Only the GM can change the Darkness.

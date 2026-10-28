@@ -1,0 +1,25 @@
+--- the text on the token when the value of a condition changes (the effect is renamed with its value)
+"Enfeebled 1" -> "Enfeebled 2"               "+ Enfeebled 2" floats up
+"Enfeebled 2" -> "Enfeebled 1"               "− Enfeebled 1" slides down
+"Empowered 1" -> "Empowered 3"               "+ Empowered 3" floats up
+"Vulnerable 3" -> "Vulnerable 2"             "− Vulnerable 2" slides down
+"Vulnerable 2" -> "Vulnerable 2"             (nothing)
+"Prone" -> "Prone (changed)"                 (nothing)
+--- the name an effect gets
+base names: "Enfeebled" "Enfeebled" "Vulnerable" "Hindered (until Move)" "Exhausted"
+renamed with the value: {"name":"Enfeebled 4","flags.twod12.value":4} | {"name":"Enfeebled 2","flags.twod12.value":2} | delete
+--- Vulnerable
+a Goblin with Vulnerable 2 (a condition with a value): Vulnerable 2 (Goblin): 2 boons
+Vulnerable 1: Vulnerable 1 (Goblin): 1 boon
+Vulnerable 3: Vulnerable 3 (Goblin): 3 boons
+two Vulnerable effects (2 and 3): only the highest counts: Vulnerable 3 (Goblin): 3 boons
+two with the same value count once: Vulnerable 2 (Goblin): 2 boons
+an older item named Vulnerable 1 (no value on it): Vulnerable 1 (Goblin): 1 boon
+an older Vulnerable 3 and a new Vulnerable 2: the 3 counts: Vulnerable 3 (Goblin): 3 boons
+Vulnerable 2 and Prone together (Prone is another condition): Vulnerable 2 (Goblin): 2 ; Prone (Goblin): 1
+two targets, each with its own value: Vulnerable 1 (Goblin): 1 ; Vulnerable 3 (Orc): 3
+the chosen modifier counts the value: {"boons":2,"banes":0,"sources":[{"name":"Vulnerable 2","boons":2,"banes":0}]}
+--- the compendium
+Conditions: empowered, enfeebled, hindered, immobilized, imperiled, leaning, prone, quickened, slowed, vulnerable
+Vulnerable: valued true | condition true | modifier: [{"against":true,"boons":1,"byValue":true}]
+Imperiled: its own modifiers [] | applies: [{"name":"Vulnerable","value":3,"valued":true,"uuidOfVulnerable":true}]

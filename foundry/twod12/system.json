@@ -1,0 +1,155 @@
+{
+  "id": "twod12",
+  "title": "2d12 System (Draft)",
+  "description": "Draft system for testing the 2d12 tier-based rules.",
+  "version": "0.0.169",
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14"
+  },
+  "authors": [
+    {
+      "name": "Lucas"
+    }
+  ],
+  "esmodules": [
+    "module/twod12.mjs"
+  ],
+  "styles": [
+    "styles/system.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "documentTypes": {
+    "Actor": {
+      "character": {},
+      "npc": {}
+    },
+    "Item": {
+      "species": {},
+      "class": {},
+      "feature": {},
+      "action": {},
+      "weapon": {},
+      "effect": {},
+      "talent": {},
+      "armor": {},
+      "gear": {}
+    },
+    "RegionBehavior": {
+      "difficultTerrain": {},
+      "hazard": {}
+    }
+  },
+  "socket": true,
+  "primaryTokenAttribute": "health",
+  "grid": {
+    "distance": 1,
+    "units": "sq"
+  },
+  "packs": [
+    {
+      "name": "classes",
+      "label": "Classes and Species",
+      "type": "Item",
+      "path": "packs/classes",
+      "system": "twod12",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "features",
+      "label": "Features and Talents",
+      "type": "Item",
+      "path": "packs/features",
+      "system": "twod12",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "actions",
+      "label": "Actions",
+      "type": "Item",
+      "path": "packs/actions",
+      "system": "twod12",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "weapons",
+      "label": "Weapons and Armor",
+      "type": "Item",
+      "path": "packs/weapons",
+      "system": "twod12",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "effects",
+      "label": "Effects",
+      "type": "Item",
+      "path": "packs/effects",
+      "system": "twod12",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "conditions",
+      "label": "Conditions",
+      "type": "Item",
+      "path": "packs/conditions",
+      "system": "twod12",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "npcs",
+      "label": "NPCs",
+      "type": "Actor",
+      "path": "packs/npcs",
+      "system": "twod12",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "pcs",
+      "label": "Player Characters",
+      "type": "Actor",
+      "path": "packs/pcs",
+      "system": "twod12",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    }
+  ],
+  "relationships": {
+    "recommends": [
+      {
+        "id": "quick-insert",
+        "type": "module",
+        "manifest": "https://gitlab.com/fvtt-modules-lab/quick-insert/-/releases/permalink/latest/downloads/module.json",
+        "reason": "The 2d12 system switches it on in each world (Ctrl + Space to find and insert anything)."
+      }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+[
+  `<i class="fa-solid fa-dice-d20"></i> DC 14 Paladin's Attack`,
+  '<i class="fa-solid fa-dice-d20"></i> DC 14 Body Check',
+  '<i class="fa-solid fa-dice-d20"></i> Mind Check',
+  '<i class="fa-solid fa-heart-crack"></i> Hit',
+  '<i class="fa-solid fa-vector-square"></i> 2',
+  '<i class="fa-solid fa-burst"></i> Boom'
+]
+{"dc":13,"adj":0,"boon":0,"bane":0,"traits":[],"tiers":{},"shape":"emanation","distance":2,"rounds":1,"difficult":["walk","fly"],"dfor":"enemies","places":true}
+{"dc":13,"adj":0,"boon":0,"bane":0,"traits":[],"tiers":{},"shape":"burst","distance":1,"rounds":2,"difficult":["walk"]}
+@Template[emanation|distance:2|targets:enemies|rounds:1|difficult:walk,fly|difficultFor:enemies|label:Aura]
+@Save[appeal|dc:14|t1:1d6[mind,holy]|label:Paladin's Attack]
+@Damage[1d4[body]|label:Hit]

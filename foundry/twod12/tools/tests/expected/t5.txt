@@ -1,0 +1,4 @@
+after r1 drak 2 false
+eot deleted true
+after r2 drak 1 false
+after r3 drak deleted true

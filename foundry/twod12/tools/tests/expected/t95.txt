@@ -1,0 +1,65 @@
+--- the Darkness level at a point
+no regions: 0.2 (scene)
+an Override region over columns 5-7: inside 1 (regions) | outside 0.2 (scene) | the edge column 7 1 (regions) and 8 0.2 (scene)
+Brighten 50% on a scene at 0.8: 0.4 (regions) | Darken 50% on a scene at 0.2: 0.6 (regions)
+two regions stack (Override 0.5, then Brighten 50% where they overlap): 0.5 (regions) 0.25 (regions) 0.1 (regions) (0.5, 0.25, 0.1)
+a disabled one and another kind of behavior change nothing: 0.2 (scene)
+Foundry's own answer, when it has one: 0.77 (foundry) | how it was asked: [{"x":350,"y":50,"elevation":0}] (one point with its elevation: Foundry 13)
+Foundry's answer is the first choice, a region of the stand-in does not change it: 0.77 (foundry) | and the regions are not read: 0.77 (foundry)
+--- whether a point is inside a region (both shapes of the call)
+Foundry 13: true false | older Foundry: true false | one that throws: false
+--- the light by the rules
+a bright scene with a Darkness region: outside bright | inside dark
+a torch (Bright 1, Dim 1 more) at column 6, inside a larger Darkness region: at the torch bright | 1 away bright bright | 2 away dim dim | 3 away dark dark (bright, bright, dim, dark)
+--- does the observer see the token, by the rules
+a creature in the open                                             true
+a creature inside the Darkness region                              false
+... for an observer with Dark Sight                                true
+... for an observer with Dim-light Sight (Darkness stays Darkness) false
+a Dim scene (light 0.4): the creature in the open, no region       true
+the observer's own token                                           true
+a token without a creature                                         true
+an observer without a creature                                     true
+--- the gate on Foundry's sight modes
+put on: ["basicSight","lightPerception","seeInvisibility"] | again: ["basicSight","lightPerception","seeInvisibility"] | the sound-type mode is not touched: true
+Basic Sight says seen, the rules say Darkness: false | in the open: true | with Dark Sight: true | Foundry's own call ran once per question: true
+Light Perception (Global Illumination) says seen, the rules say Darkness: false | in the open: true | for Dark Sight: true
+a token that no sight mode shows, then the ripple: false (not seen) | true (in the open: seen)
+a test of something that is not a token (no object): true | no vision source object: true
+when Foundry says not seen it stays not seen: false
+if the rules fail to answer, Foundry's answer stands: true
+with only Basic Sight present: ["basicSight"]
+with no sight modes: []
+--- the refresh
+hooks watched: createActiveEffect, createCombat, createCombatant, createRegion, createRegionBehavior, deleteActiveEffect, deleteCombat, deleteCombatant, deleteRegion, deleteRegionBehavior, updateActiveEffect, updateActor, updateCombat, updateCombatant, updateRegion, updateRegionBehavior
+five region changes in a row: refreshes 1 "{\"refreshVision\":true}"
+a new turn of the combat                               no refresh
+a new round                                            refresh
+a combatant defeated                                   refresh
+a combatant's initiative                               no refresh
+a creature's damage                                    no refresh
+a creature's Senses                                    refresh
+the Unsensed status put on                             refresh
+an ordinary effect                                     no refresh
+the combat is created / deleted                        refresh
+a Darkness region deleted                              refresh
+--- Global Illumination on, a bright scene, an ability puts a Darkness region over a goblin
+before the ability: the hero sees the goblin: true
+after it: Global Illumination is on | by any sight mode the hero sees the goblin: false | it shows as a ripple: true | a hero with Dark Sight sees it: true
+the goblin out of the combat: the ripple is gone too: false
+--- lightInfo
+the line to copy starts: twod12 | light {"sightGate":["basicSight","lightPerception",... | the notice: Foundry's sight (basicSight, lightPerception, seeInvisibility) follows the rules of Light; 1 region ...
+{"sightGate":["basicSight","lightPerception","seeInvisibility"],"detectionModes":{"basicSight":0,"lightPerception":0,"seeInvisibility":0,"feelTremor":1,"hearing":1},"sceneDarkness":0,"globalLight":true,"foundryHasDarknessAt":false,"darknessRegions":[{"region":"Darkness","type":"adjustDarknessLevel","disabled":false,"system":{"mode":0,"modifier":1}}]}
+the tokens listed (the characters when none is controlled): t23 Bright | sight {"enabled":true,"range":0,"visionMode":"basic"} | detection basicSight:0, hearing:-
+a controlled token is listed whoever it is: t25 darkness 0.5 via regions adjusted by [{"region":"Gloom","mode":2,"modifier":0.5}]
+--- the detection modes of a token (lightInfo failed on a shape that is not an array)
+an array                           [{"id":"basicSight","range":0},{"id":"hearing","range":null}]
+a record keyed by id               [{"id":"basicSight","range":0},{"id":"hearing","range":null}]
+a collection (contents)            [{"id":"basicSight","range":0}]
+nothing                            []
+null                               []
+a number                           []
+lightInfo with detectionModes as a record      → t23 detection [basicSight:0, hearing:-]
+lightInfo with detectionModes as a collection  → t23 detection [basicSight:0, hearing:-]
+lightInfo with detectionModes as nothing       → t23 detection []
+visionInfo with a record: basicSight:0

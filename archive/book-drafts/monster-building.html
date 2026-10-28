@@ -1,0 +1,407 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 11: Monster Building</title>
+<style>
+:root{--bg:#fbfaf7;--fg:#22201c;--mut:#6b655b;--line:#d9d3c7;--card:#fff;--acc:#7a3b2e;--accbg:#f1e4df;--pb:#f4ecdc;--pt:#2c2c2a;--pl:#c8b48a;--pn:#d6c9a8;--pf:#6b5a3a;--pg:#e3d8bf;--po:#BA7517}
+@media (prefers-color-scheme:dark){:root{--bg:#1b1a18;--fg:#ece8df;--mut:#a39c8f;--line:#3a3732;--card:#24221f;--acc:#e0a592;--accbg:#3a2a25;--pb:#262119;--pt:#e8e0cf;--pl:#5a4a2e;--pn:#4a3f2c;--pf:#b9a98a;--pg:#3a3224;--po:#EF9F27}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 Georgia,'Times New Roman',serif}
+.cbody{max-width:780px;margin:0 auto;padding:24px 16px 80px}
+h1{font-size:1.9rem;margin:1.4rem 0 .6rem;border-bottom:2px solid var(--line);padding-bottom:.3rem}
+h2{font-size:1.35rem;margin:1.8rem 0 .5rem;color:var(--acc)}
+h3{font-size:1.1rem;margin:1.4rem 0 .4rem}
+h4{margin:1.2rem 0 .3rem;font:600 .95rem system-ui,sans-serif;text-transform:uppercase;letter-spacing:.05em;color:var(--mut)}
+p{margin:.5rem 0}
+ul,ol{padding-left:1.4rem;margin:.5rem 0}
+li{margin:.3rem 0}
+.tablewrap{overflow-x:auto;max-width:100%;margin:.8rem 0}
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+th,td{border:1px solid var(--line);padding:.4rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--accbg);font-family:system-ui,sans-serif;font-size:.85rem;font-weight:600}
+code{font-family:ui-monospace,Menlo,monospace}
+.trhl{background:color-mix(in srgb,var(--tc,#777) 16%,transparent);border-radius:3px;padding:0 3px}
+.callout{margin:1rem 0;padding:.5rem .9rem .6rem;border-left:4px solid var(--cc,#888);background:color-mix(in srgb,var(--cc,#888) 12%,transparent);border-radius:0 6px 6px 0}
+.callout p{margin:.35rem 0}
+.callout .ctitle{font:600 .7rem system-ui,sans-serif;text-transform:uppercase;letter-spacing:.1em;color:var(--cc,#888)}
+.callout.example{--cc:#4b7aa6}
+.callout.note{--cc:#5b8a5a}
+.openitems li{margin:.4rem 0}
+.acard{--tc-line:rgba(128,128,128,.35);background:var(--pb);color:var(--pt);border:1px solid var(--pl);border-radius:8px;overflow:hidden;margin:1rem 0;font:15px/1.45 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
+.acard .ahead{display:flex;align-items:center;gap:8px;padding:6px 12px;background:#185FA5;color:#E6F1FB;font-weight:500}
+.acard .ahead>b{flex:1;min-width:0;font-weight:600;font-family:"Cinzel","Palatino Linotype",Georgia,serif}
+.acard .ahead .acat{margin:0;font-size:.78em;font-style:normal;opacity:.9;white-space:nowrap}
+.acard .aps{margin:0;display:inline-flex;gap:4px}
+.apmark{display:inline-block;padding:0 6px;border-radius:4px;background:rgba(255,255,255,.22);color:inherit;font:700 12px/18px system-ui,sans-serif;letter-spacing:.02em}
+.acard .abody{padding:8px 12px 10px}
+.acard .flavor{font-style:italic;color:var(--pf);margin-bottom:6px;opacity:.9}
+.acard .traits{display:block;margin-bottom:4px}
+.tchip{display:inline-block;font-size:12px;line-height:18px;padding:0 8px;margin:0 4px 4px 0;border-radius:4px;font-weight:500}
+.acard .meta{color:inherit;font-size:.9em;margin-bottom:6px}
+.acard .meta .sep{color:var(--po);margin:0 5px;font-size:.8em}
+.acard .freq{font-weight:500}
+.acard hr.cdiv{border:0;border-top:1px solid var(--pn);margin:8px 0}
+.acard table.tgrid{width:100%;border-collapse:collapse;table-layout:fixed;font-size:.95rem;margin-top:0}
+.acard table.tgrid th,.acard table.tgrid td{border:0;border-bottom:1px solid var(--pg);padding:4px 6px;text-align:left;vertical-align:top;background:none;color:var(--pt);font-family:inherit;font-weight:inherit}
+.acard table.tgrid th.lbl{width:80px;font-weight:600}
+.dcode{color:var(--dc,#888);font-weight:600}
+footer{max-width:780px;margin:40px auto 0;text-align:center;color:var(--mut);font:12px system-ui;padding:20px}
+</style></head><body>
+
+<section class="chapter"><details open><summary><h1 id="chapter-11-monster-building">Chapter 11: Monster Building</h1></summary><div class="cbody">
+
+<p>Monsters are built from <strong>roles</strong> and <strong>picks</strong>. The role sets the numbers. The picks decide how those numbers are distributed. Two monsters of the same role can play completely differently — a Standard brute and a Standard caster share a role but not a silhouette.</p>
+
+<p>Every monster in this chapter is built against one ruler: the <strong>Standard PC</strong>. A level-1 PC has about <strong>30 Health</strong>, deals about <strong>15 damage per round</strong>, rolls attacks at <strong>+2</strong>, and defends at <strong>DC 13</strong>.</p>
+
+<div class="callout note"><div class="ctitle">Scope</div><p>This chapter covers level 1, the only level currently written. When higher levels are added, revise every table here in the same pass as the PC benchmarks they depend on.</p></div>
+
+<h2 id="monster-roles">Roles</h2>
+<p>Every monster is one of four roles. <strong>Worth</strong> is what the monster contributes to an encounter budget: four Minions fill one Standard's slot, two Grunts fill one, one Elite fills one and a half.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Role</th><th>Worth</th><th>Health</th><th>DPR</th><th>Attack</th><th>Defense DC</th></tr></thead>
+<tbody>
+<tr><td><span class="trhl" style="--tc:#888780">Minion</span></td><td>0.25</td><td>~9</td><td>~5</td><td>+1</td><td>12</td></tr>
+<tr><td><span class="trhl" style="--tc:#4b7aa6">Grunt</span></td><td>0.5</td><td>~21</td><td>~7</td><td>+2</td><td>13</td></tr>
+<tr><td><span class="trhl" style="--tc:#7a3b2e">Standard</span></td><td>1.0</td><td>~38</td><td>~15</td><td>+2</td><td>13</td></tr>
+<tr><td><span class="trhl" style="--tc:#a8862c">Elite</span></td><td>1.5</td><td>~52</td><td>~22</td><td>+2</td><td>14</td></tr>
+</tbody></table></div>
+<p>A Standard matches a PC on paper, but a PC has Rally, Talents, and more options. A Standard loses a fair 1v1 against a PC. A Standard plus a Minion wins. An Elite beats a single PC and loses to two.</p>
+
+<h2 id="step-1-attributes">Step 1: Attributes</h2>
+<p>Each role has a fixed <strong>array</strong> of four values. Distribute them across <strong>Body</strong>, <strong>Mind</strong>, <strong>Instinct</strong>, and <strong>Appeal</strong>. The highest value usually goes to the attribute the monster attacks with, but nothing forces it.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Role</th><th>Array</th><th>Sum</th></tr></thead>
+<tbody>
+<tr><td><strong>Minion</strong></td><td>−1, 0, 0, 1</td><td>0</td></tr>
+<tr><td><strong>Grunt</strong></td><td>0, 0, 1, 1</td><td>2</td></tr>
+<tr><td><strong>Standard</strong></td><td>0, 1, 1, 2</td><td>4</td></tr>
+<tr><td><strong>Elite</strong></td><td>0, 1, 2, 2</td><td>5</td></tr>
+</tbody></table></div>
+<p>The Minion's −1 is the only negative value in the system at level 1. It can go on any attribute, but it hurts HP the most when it lands on Body or Mind — see the formula below.</p>
+
+<div class="callout example"><div class="ctitle">Example</div><p>A Standard Brute takes <strong>Body 2</strong>, <strong>Mind 0</strong>, <strong>Instinct 1</strong>, <strong>Appeal 1</strong>. Its attack attribute is Body. A Standard Caster takes <strong>Body 0</strong>, <strong>Mind 2</strong>, <strong>Instinct 1</strong>, <strong>Appeal 1</strong>. Same array, opposite silhouette.</p></div>
+
+<h2 id="step-2-thresholds">Step 2: Body and Mind thresholds</h2>
+<p>Monsters have two damage pools, exactly like PCs. Body damage and Mind damage are tracked separately, each with its own threshold. When Body damage reaches the Body Damage Threshold (BDT), the monster is <strong>Bloodied</strong>. When Mind damage reaches the Mind Damage Threshold (MDT), the monster is <strong>Strained</strong>.</p>
+
+<p>Each threshold is: <strong>Base + 2 × own attribute + 1 × other attribute</strong>.</p>
+
+<div class="callout"><div class="ctitle">Formula</div>
+<p><strong>BDT</strong> = BaseBody + 2 × Body + 1 × Mind<br>
+<strong>MDT</strong> = BaseMind + 2 × Mind + 1 × Body<br>
+<strong>Total HP</strong> = BaseBody + BaseMind + 3 × (Body + Mind)</p>
+</div>
+
+<p>Pick one Base value for each pool from the table below. The designer usually picks differently for Body and Mind — one higher than the other.</p>
+
+<div class="tablewrap"><table>
+<thead><tr><th>Role</th><th>Low</th><th>Med</th><th>High</th></tr></thead>
+<tbody>
+<tr><td><strong>Minion</strong></td><td>2</td><td>3</td><td>5</td></tr>
+<tr><td><strong>Grunt</strong></td><td>6</td><td>9</td><td>11</td></tr>
+<tr><td><strong>Standard</strong></td><td>13</td><td>16</td><td>19</td></tr>
+<tr><td><strong>Elite</strong></td><td>15</td><td>20</td><td>26</td></tr>
+</tbody></table></div>
+
+<h3 id="attribute-modifiers">Attribute modifiers</h3>
+<p>The combined Body and Mind values add to both thresholds and to the total pool.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Body</th><th>Mind</th><th>BDT mod</th><th>MDT mod</th><th>Total mod</th></tr></thead>
+<tbody>
+<tr><td>−1</td><td>0</td><td>−2</td><td>−1</td><td>−3</td></tr>
+<tr><td>−1</td><td>1</td><td>−1</td><td>+1</td><td>0</td></tr>
+<tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>+1</td><td>+2</td><td>+3</td></tr>
+<tr><td>0</td><td>2</td><td>+2</td><td>+4</td><td>+6</td></tr>
+<tr><td>1</td><td>0</td><td>+2</td><td>+1</td><td>+3</td></tr>
+<tr><td>1</td><td>1</td><td>+3</td><td>+3</td><td>+6</td></tr>
+<tr><td>1</td><td>2</td><td>+4</td><td>+5</td><td>+9</td></tr>
+<tr><td>2</td><td>0</td><td>+4</td><td>+2</td><td>+6</td></tr>
+<tr><td>2</td><td>1</td><td>+5</td><td>+4</td><td>+9</td></tr>
+<tr><td>2</td><td>2</td><td>+6</td><td>+6</td><td>+12</td></tr>
+</tbody></table></div>
+
+<h3 id="total-hp">Total HP by role</h3>
+<p>With Med/Med base picks (the most common starting point):</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Role</th><th>Body</th><th>Mind</th><th>Total HP</th></tr></thead>
+<tbody>
+<tr><td>Minion</td><td>1</td><td>0</td><td><strong>9</strong></td></tr>
+<tr><td>Grunt</td><td>1</td><td>0</td><td><strong>21</strong></td></tr>
+<tr><td>Grunt</td><td>1</td><td>1</td><td><strong>24</strong></td></tr>
+<tr><td>Standard</td><td>2</td><td>0</td><td><strong>38</strong></td></tr>
+<tr><td>Standard</td><td>1</td><td>1</td><td><strong>38</strong></td></tr>
+<tr><td>Standard</td><td>2</td><td>1</td><td><strong>41</strong></td></tr>
+<tr><td>Elite</td><td>2</td><td>1</td><td><strong>49</strong></td></tr>
+<tr><td>Elite</td><td>2</td><td>2</td><td><strong>52</strong></td></tr>
+</tbody></table></div>
+
+<div class="callout note"><div class="ctitle">Bloodied and Strained apply</div><p>Monsters use the same conditions as PCs. <strong>Bloodied</strong> gives −1 bane on [Strike] and [Weapon] Actions, and on Body and Instinct Saves. <strong>Strained</strong> gives −1 bane on [Magic] Actions, and on Mind and Appeal Saves. Both at once gives −1 bane on everything. This is the payoff of the two-pool system: a body-heavy monster has a tiny MDT but doesn't care about being Strained; a mind-heavy monster has a tiny BDT but doesn't care about being Bloodied. Attacks targeting the wrong pool still work — they just don't trigger anything useful.</p></div>
+
+<h2 id="step-3-speed">Step 3: Speed</h2>
+<p><strong>Base Speed is 5 for every role.</strong> Speed can be adjusted by spending or refunding points from the damage pool.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Speed</th><th>Cost</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>3</td><td>Refund 1</td><td>Takes 3 turns to close 8 squares. Real tactical loss.</td></tr>
+<tr><td>4</td><td>0</td><td>Comfortable.</td></tr>
+<tr><td>5</td><td>0</td><td>Default.</td></tr>
+<tr><td>6</td><td>Cost 1</td><td>Arrives at turn 2 with 4 squares to spare.</td></tr>
+<tr><td>7</td><td>Cost 2</td><td>Arrives at turn 2 with 6 to spare. Dangerous.</td></tr>
+</tbody></table></div>
+<p>Below Speed 3 is unplayable. Above Speed 7 warps the map. The refund from Speed 3 can only be spent on boons or Minor signature picks — never on damage.</p>
+
+<h2 id="step-4-damage">Step 4: Damage</h2>
+<p>Each action a monster makes has an <strong>AP tier</strong> — 1, 2, or 3. Tier damage is picked from the tables below. Add the monster's attack attribute to <strong>Tier 2 and Tier 3</strong> damage. Tier 1 stays as written.</p>
+
+<p>Not every monster needs all three tiers. A monster built around one big attack has 3 AP only. A monster built around pokes has 1 AP only. Unused tiers are just absent from the sheet.</p>
+
+<div class="callout"><div class="ctitle">Averages, not dice</div><p>Every value in these tables is an <strong>average</strong>. 1d6 is written as 3.5. The monster's damage roll at the table still uses dice — the tables exist so you can see the math. When building a monster, choose the nearest dice expression. A Tier 2 of 4 could be 1d6+1 (average 4.5) or 2d4-1 (average 4). Close enough.</p></div>
+
+<h3 id="damage-1ap">1 AP damage</h3>
+<div class="tablewrap"><table>
+<thead><tr><th>Role</th><th>Low (T2/T3)</th><th>Med (T2/T3)</th><th>High (T2/T3)</th></tr></thead>
+<tbody>
+<tr><td><strong>Minion</strong></td><td>0 / 1</td><td>1 / 2</td><td>2 / 3</td></tr>
+<tr><td><strong>Grunt</strong></td><td>1 / 2</td><td>2 / 4</td><td>3 / 5</td></tr>
+<tr><td><strong>Standard</strong></td><td>2 / 4</td><td>4 / 7</td><td>6 / 10</td></tr>
+<tr><td><strong>Elite</strong></td><td>4 / 7</td><td>8 / 12</td><td>10 / 15</td></tr>
+</tbody></table></div>
+
+<h3 id="damage-2ap">2 AP damage</h3>
+<div class="tablewrap"><table>
+<thead><tr><th>Role</th><th>Low (T2/T3)</th><th>Med (T2/T3)</th><th>High (T2/T3)</th></tr></thead>
+<tbody>
+<tr><td><strong>Minion</strong></td><td>1 / 3</td><td>3 / 5</td><td>4 / 7</td></tr>
+<tr><td><strong>Grunt</strong></td><td>3 / 5</td><td>5 / 9</td><td>7 / 12</td></tr>
+<tr><td><strong>Standard</strong></td><td>6 / 10</td><td>10 / 16</td><td>13 / 20</td></tr>
+<tr><td><strong>Elite</strong></td><td>12 / 18</td><td>18 / 26</td><td>23 / 32</td></tr>
+</tbody></table></div>
+
+<h3 id="damage-3ap">3 AP damage</h3>
+<div class="tablewrap"><table>
+<thead><tr><th>Role</th><th>Low (T2/T3)</th><th>Med (T2/T3)</th><th>High (T2/T3)</th></tr></thead>
+<tbody>
+<tr><td><strong>Minion</strong></td><td>2 / 5</td><td>4 / 7</td><td>5 / 10</td></tr>
+<tr><td><strong>Grunt</strong></td><td>5 / 8</td><td>7 / 13</td><td>10 / 17</td></tr>
+<tr><td><strong>Standard</strong></td><td>9 / 14</td><td>14 / 22</td><td>18 / 28</td></tr>
+<tr><td><strong>Elite</strong></td><td>18 / 26</td><td>26 / 36</td><td>32 / 44</td></tr>
+</tbody></table></div>
+
+<h3 id="damage-pool">The damage pool</h3>
+<p>Each role gets a budget of points to spend on damage. Low costs 0, Med costs 1, High costs 2. <strong>Unlocking a 2 AP tier costs 1 point. Unlocking a 3 AP tier costs 2.</strong> The 1 AP tier is free to exist.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Role</th><th>Damage points</th><th>Typical build</th></tr></thead>
+<tbody>
+<tr><td><strong>Minion</strong></td><td>1</td><td>Med 1 AP, or two Low tiers</td></tr>
+<tr><td><strong>Grunt</strong></td><td>2</td><td>Med 1 AP + Low 2 AP, or 2 Med tiers</td></tr>
+<tr><td><strong>Standard</strong></td><td>3</td><td>Med 1 AP + Med 2 AP, or Med across all tiers</td></tr>
+<tr><td><strong>Elite</strong></td><td>4</td><td>High 2 AP + Med 1 AP, or Med across all tiers</td></tr>
+</tbody></table></div>
+
+<p>Leftover points (from Speed 3 refund or unfinished budgets) buy <strong>+1 boon on the first attack each turn</strong> (capped at +1) or a <strong>Minor signature pick</strong>. They never buy damage picks.</p>
+
+<h3 id="expected-dpr">Expected DPR</h3>
+<p>These are the DPR targets per role, and what common builds actually produce.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Role</th><th>Target DPR</th><th>Common build</th><th>Actual DPR</th></tr></thead>
+<tbody>
+<tr><td>Minion</td><td>~5</td><td>Med 1 AP × 3</td><td>4.7</td></tr>
+<tr><td>Grunt</td><td>~7</td><td>Med 1 AP × 3</td><td>7.4</td></tr>
+<tr><td>Standard</td><td>~15</td><td>Med 1 AP × 3 (+ spare)</td><td>14.0</td></tr>
+<tr><td>Standard</td><td>~15</td><td>Med 1 AP + Med 2 AP</td><td>24.8</td></tr>
+<tr><td>Elite</td><td>~22</td><td>Med 1 AP × 3 (+ spare)</td><td>22.5</td></tr>
+<tr><td>Elite</td><td>~22</td><td>High 2 AP + Med 1 AP</td><td>40.0</td></tr>
+</tbody></table></div>
+
+<div class="callout note"><div class="ctitle">Baseline, not ceiling</div><p>The DPR target is a <strong>baseline</strong>. A monster with a 2 AP Med attack and a 1 AP Med attack will land around 165% of the target — that's an intentional optimized build. It trades signature picks and flexibility for raw output. The target exists so a GM knows when a monster is off by an order of magnitude, not to enforce uniformity.</p></div>
+
+<h2 id="step-5-signatures">Step 5: Signature picks</h2>
+<p>Signatures are optional traits that give a monster its flavor. Each role gets a specific number of slots. Each slot picks from a fixed menu. Picks are suggestions — skip any or all of them if the monster doesn't need them.</p>
+
+<div class="tablewrap"><table>
+<thead><tr><th>Role</th><th>Slots</th><th>Allowed categories</th></tr></thead>
+<tbody>
+<tr><td><strong>Minion</strong></td><td>1</td><td>Minor only</td></tr>
+<tr><td><strong>Grunt</strong></td><td>2</td><td>Minor, Reaction, Passive</td></tr>
+<tr><td><strong>Standard</strong></td><td>2</td><td>Minor, Reaction, Passive</td></tr>
+<tr><td><strong>Elite</strong></td><td>3</td><td>Minor, Reaction, Passive, Encounter, Aura. Max 1 Encounter or Aura.</td></tr>
+</tbody></table></div>
+
+<h3 id="signature-menu">Menu</h3>
+
+<h4>Minor (any role)</h4>
+<ul>
+<li><strong>Nighteyes</strong> — sees in Darkness as Bright.</li>
+<li><strong>Unshakable</strong> — cannot be knocked Prone.</li>
+<li><strong>Death Throes</strong> — collapses into a 1-square hazard (1d4 damage, one round).</li>
+<li><strong>Sure-Footed</strong> — ignores Difficult Terrain.</li>
+<li><strong>Hollow Endurance</strong> — at 0 HP, 25% chance to remain at 1 HP (once per encounter).</li>
+<li><strong>Tidal Born</strong> — swims at full Speed, breathes water.</li>
+</ul>
+
+<h4>Reaction (any role)</h4>
+<ul>
+<li><strong>Reaping Strike</strong> (1R) — attack a creature that leaves your Reach.</li>
+<li><strong>Bitter End</strong> (1R) — when hit by a melee attack, deal your Attribute back as damage.</li>
+<li><strong>Scatterstep</strong> (1R) — when a creature ends a move within 1, Evade 2.</li>
+<li><strong>Shelter</strong> (1R) — when an adjacent ally is hit, redirect the attack to yourself at half damage.</li>
+<li><strong>Warding Blow</strong> (1R) — impose 1 bane on an incoming attack.</li>
+</ul>
+
+<h4>Passive (any role)</h4>
+<ul>
+<li><strong>Bloodlust</strong> — while Bloodied, gain 1 boon on all attacks.</li>
+<li><strong>Fever Focus</strong> — while Strained, gain 1 boon on all saves.</li>
+<li><strong>Momentum</strong> — Charge grants 2 boons instead of 1.</li>
+<li><strong>Hardened</strong> — resist one damage subtype.</li>
+<li><strong>Toxic Blood</strong> — melee attackers take 1d4 Poison damage.</li>
+<li><strong>Pack Hunting</strong> — gain 1 boon when attacking a target adjacent to an ally.</li>
+</ul>
+
+<h4>Encounter (Elite recommended)</h4>
+<ul>
+<li><strong>Chieftain's Roar</strong> — allies within 3 squares each remove HP ÷ 4 damage.</li>
+<li><strong>Sundering Strike</strong> — one attack deals double damage and Prone on hit.</li>
+<li><strong>Terrifying Roar</strong> — enemies within 3 squares save vs. Fear.</li>
+<li><strong>Linebreaker</strong> — Advance 8 and attack all enemies in a line.</li>
+<li><strong>Gathering Horde</strong> — 2 Minions appear.</li>
+<li><strong>Fade Step</strong> — become Incorporeal for 1 round.</li>
+</ul>
+
+<h4>Aura (Elite recommended)</h4>
+<ul>
+<li><strong>Dread Aura</strong> — enemies within 2 squares take 1 bane on attacks.</li>
+<li><strong>Healing Radiance</strong> — allies within 2 squares heal 1 HP per round.</li>
+<li><strong>Miasma</strong> — enemies within 2 squares take 1 bane on saves.</li>
+<li><strong>Steady Presence</strong> — allies within 3 squares gain 1 boon on saves.</li>
+<li><strong>Grasping Ground</strong> — squares adjacent count as Difficult Terrain.</li>
+</ul>
+
+<h3 id="suggested-defaults">Suggested defaults</h3>
+<p>These are the loadouts to reach for when you just need a monster fast. Use them as a starting point, then customize.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Role</th><th>Default loadout</th></tr></thead>
+<tbody>
+<tr><td><strong>Minion</strong></td><td>Nighteyes</td></tr>
+<tr><td><strong>Grunt</strong></td><td>Reaping Strike · Hardened</td></tr>
+<tr><td><strong>Standard</strong></td><td>Reaping Strike · Bloodlust</td></tr>
+<tr><td><strong>Elite</strong></td><td>Chieftain's Roar · Reaping Strike · Bloodlust</td></tr>
+</tbody></table></div>
+
+<h2 id="minor-enemies">Minor Enemies</h2>
+<p><strong>Minions and Grunts are Minor Enemies.</strong> This is a free property — it doesn't consume a signature slot.</p>
+<div class="callout">
+<p>A Minor Enemy dies instantly when Forced Movement pushes it into a Deadly Hazard. Standards and Elites are Imperiled instead.</p>
+</div>
+
+<h2 id="complete-build">The complete build</h2>
+<ol>
+<li><strong>Pick a role.</strong> Minion, Grunt, Standard, or Elite.</li>
+<li><strong>Distribute attributes.</strong> Use the role's array. Highest usually goes to the attack attribute.</li>
+<li><strong>Pick thresholds.</strong> Choose Low, Med, or High for Body and for Mind.</li>
+<li><strong>Set Speed.</strong> Base 5. Buy up or refund for a low Speed.</li>
+<li><strong>Spend damage points.</strong> Pick Low / Med / High per AP tier, plus unlock costs.</li>
+<li><strong>Spend remaining points.</strong> Speed 3 refund and leftover damage points buy boons or Minor signatures.</li>
+<li><strong>Fill signature slots.</strong> Pick from the menu, or leave them empty.</li>
+<li><strong>Check DPR.</strong> Three 1 AP attacks should be within 10% of the role's target.</li>
+</ol>
+
+<h2 id="worked-examples">Worked examples</h2>
+
+<h3>Skeleton Swordsman — Minion</h3>
+<p><strong>Array:</strong> Body 1, Mind 0, Instinct 1, Appeal −1.<br>
+<strong>Thresholds:</strong> Low Body, Low Mind.<br>
+<strong>Speed:</strong> 5.<br>
+<strong>Damage:</strong> Med 1 AP (cost 1).</p>
+<ul>
+<li>BDT = 2 + 2 + 0 = <strong>4</strong></li>
+<li>MDT = 2 + 0 + 1 = <strong>3</strong></li>
+<li>Total HP = <strong>7</strong></li>
+<li>1 AP attack: Tier 2 base 1 + Body 1 = <strong>2</strong>, Tier 3 base 2 + Body 1 = <strong>3</strong></li>
+<li>Signatures: Nighteyes (Minor)</li>
+</ul>
+<div class="acard" style="--fq:#3B6D11;--fqt:#EAF3DE"><div class="ahead"><b>Rusty Blade</b><span class="acat">Minion Action</span><span class="aps"><span class="apmark">1AP</span></span></div><div class="abody"><div class="flavor">A quick, ugly jab with whatever's in reach.</div><div class="traits"><span class="tchip" style="--tb:#B5D4F4;--tt:#0C447C">Melee</span><span class="tchip" style="--tb:#F5C4B3;--tt:#712B13">Strike</span><span class="tchip" style="--tb:#9FE1CB;--tt:#085041">Weapon</span></div><div class="meta"><span class="freq">At-will</span> <i class='sep'>&#10022;</i> <span>One creature</span> <i class='sep'>&#10022;</i> <span class="dist">Reach</span></div><hr class="cdiv"><table class="tgrid"><tr><th class="lbl">Tier 1</th><td>No effect.</td></tr><tr><th class="lbl">Tier 2</th><td>[B] 2 <span class="dcode" style="--dc:#8a8a8a">Sl</span></td></tr><tr><th class="lbl">Tier 3</th><td>[B] 3 <span class="dcode" style="--dc:#8a8a8a">Sl</span></td></tr></table></div></div>
+<p>DPR over three attacks: ~4.7. Target ~5. Good.</p>
+
+<h3>Bandit — Grunt</h3>
+<p><strong>Array:</strong> Body 1, Mind 0, Instinct 1, Appeal 0.<br>
+<strong>Thresholds:</strong> Med Body, Low Mind.<br>
+<strong>Speed:</strong> 5.<br>
+<strong>Damage:</strong> Med 1 AP (cost 1), Low 2 AP (unlock 1, damage 0).</p>
+<ul>
+<li>BDT = 9 + 2 + 0 = <strong>11</strong></li>
+<li>MDT = 6 + 0 + 1 = <strong>7</strong></li>
+<li>Total HP = <strong>18</strong></li>
+<li>1 AP attack: T2 base 2 + 1 = <strong>3</strong>, T3 base 4 + 1 = <strong>5</strong></li>
+<li>2 AP attack: T2 base 3 + 1 = <strong>4</strong>, T3 base 5 + 1 = <strong>6</strong></li>
+<li>Signatures: Reaping Strike, Hardened</li>
+</ul>
+<div class="acard" style="--fq:#185FA5;--fqt:#E6F1FB"><div class="ahead"><b>Dagger</b><span class="acat">Basic Action</span><span class="aps"><span class="apmark">1AP</span></span></div><div class="abody"><div class="traits"><span class="tchip" style="--tb:#B5D4F4;--tt:#0C447C">Melee</span><span class="tchip" style="--tb:#F5C4B3;--tt:#712B13">Strike</span><span class="tchip" style="--tb:#9FE1CB;--tt:#085041">Weapon</span></div><div class="meta"><span class="freq">At-will</span> <i class='sep'>&#10022;</i> <span>One creature</span> <i class='sep'>&#10022;</i> <span class="dist">Reach</span></div><hr class="cdiv"><table class="tgrid"><tr><th class="lbl">Tier 1</th><td>No effect.</td></tr><tr><th class="lbl">Tier 2</th><td>[B] 3 <span class="dcode" style="--dc:#8a8a8a">Pi</span></td></tr><tr><th class="lbl">Tier 3</th><td>[B] 5 <span class="dcode" style="--dc:#8a8a8a">Pi</span></td></tr></table></div></div>
+<div class="acard" style="--fq:#185FA5;--fqt:#E6F1FB"><div class="ahead"><b>Hammer Blow</b><span class="acat">Grunt Action</span><span class="aps"><span class="apmark">2AP</span></span></div><div class="abody"><div class="traits"><span class="tchip" style="--tb:#B5D4F4;--tt:#0C447C">Melee</span><span class="tchip" style="--tb:#F5C4B3;--tt:#712B13">Strike</span><span class="tchip" style="--tb:#9FE1CB;--tt:#085041">Weapon</span></div><div class="meta"><span class="freq">Round</span> <i class='sep'>&#10022;</i> <span>One creature</span> <i class='sep'>&#10022;</i> <span class="dist">Reach</span></div><hr class="cdiv"><table class="tgrid"><tr><th class="lbl">Tier 1</th><td>No effect.</td></tr><tr><th class="lbl">Tier 2</th><td>[B] 4 <span class="dcode" style="--dc:#8a8a8a">Bl</span></td></tr><tr><th class="lbl">Tier 3</th><td>[B] 6 <span class="dcode" style="--dc:#8a8a8a">Bl</span>; Pushed 1</td></tr></table></div></div>
+<p>Two Daggers + one Hammer Blow: ~7.4 DPR. Target ~7. Good.</p>
+
+<h3>Orc Warrior — Standard</h3>
+<p><strong>Array:</strong> Body 2, Mind 0, Instinct 1, Appeal 1.<br>
+<strong>Thresholds:</strong> Med Body, Low Mind.<br>
+<strong>Speed:</strong> 5.<br>
+<strong>Damage:</strong> Med 1 AP (cost 1), Med 2 AP (unlock 1 + damage 1 = 2).</p>
+<ul>
+<li>BDT = 16 + 4 + 0 = <strong>20</strong></li>
+<li>MDT = 13 + 0 + 2 = <strong>15</strong></li>
+<li>Total HP = <strong>35</strong></li>
+<li>1 AP attack: T2 base 4 + 2 = <strong>6</strong>, T3 base 7 + 2 = <strong>9</strong></li>
+<li>2 AP attack: T2 base 10 + 2 = <strong>12</strong>, T3 base 16 + 2 = <strong>18</strong></li>
+<li>Signatures: Reaping Strike, Bloodlust</li>
+</ul>
+<div class="acard" style="--fq:#185FA5;--fqt:#E6F1FB"><div class="ahead"><b>Heavy Cleave</b><span class="acat">Standard Action</span><span class="aps"><span class="apmark">2AP</span></span></div><div class="abody"><div class="flavor">A wide, brutal arc.</div><div class="traits"><span class="tchip" style="--tb:#B5D4F4;--tt:#0C447C">Melee</span><span class="tchip" style="--tb:#F5C4B3;--tt:#712B13">Strike</span><span class="tchip" style="--tb:#9FE1CB;--tt:#085041">Weapon</span></div><div class="meta"><span class="freq">Round</span> <i class='sep'>&#10022;</i> <span>One creature</span> <i class='sep'>&#10022;</i> <span class="dist">Reach</span></div><hr class="cdiv"><table class="tgrid"><tr><th class="lbl">Tier 1</th><td>No effect.</td></tr><tr><th class="lbl">Tier 2</th><td>[B] 12 <span class="dcode" style="--dc:#8a8a8a">Sl</span></td></tr><tr><th class="lbl">Tier 3</th><td>[B] 18 <span class="dcode" style="--dc:#8a8a8a">Sl</span>; Prone</td></tr></table></div></div>
+<div class="acard" style="--fq:#3B6D11;--fqt:#EAF3DE"><div class="ahead"><b>Jab</b><span class="acat">Basic Action</span><span class="aps"><span class="apmark">1AP</span></span></div><div class="abody"><div class="traits"><span class="tchip" style="--tb:#B5D4F4;--tt:#0C447C">Melee</span><span class="tchip" style="--tb:#F5C4B3;--tt:#712B13">Strike</span><span class="tchip" style="--tb:#9FE1CB;--tt:#085041">Weapon</span></div><div class="meta"><span class="freq">At-will</span> <i class='sep'>&#10022;</i> <span>One creature</span> <i class='sep'>&#10022;</i> <span class="dist">Reach</span></div><hr class="cdiv"><table class="tgrid"><tr><th class="lbl">Tier 1</th><td>No effect.</td></tr><tr><th class="lbl">Tier 2</th><td>[B] 6 <span class="dcode" style="--dc:#8a8a8a">Sl</span></td></tr><tr><th class="lbl">Tier 3</th><td>[B] 9 <span class="dcode" style="--dc:#8a8a8a">Sl</span></td></tr></table></div></div>
+<p>Two Jabs + one Heavy Cleave: ~24.8 DPR. Target ~15. This is the "optimized" build — 165% of baseline. It works; just know it's chosen for output over utility.</p>
+
+<h3>Ogre Chieftain — Elite</h3>
+<p><strong>Array:</strong> Body 2, Mind 2, Instinct 1, Appeal 0.<br>
+<strong>Thresholds:</strong> Med Body, Med Mind.<br>
+<strong>Speed:</strong> 5.<br>
+<strong>Damage:</strong> High 2 AP (unlock 1 + damage 2 = 3), Med 1 AP (damage 1). Total 4 points spent.</p>
+<ul>
+<li>BDT = 20 + 6 = <strong>26</strong></li>
+<li>MDT = 20 + 6 = <strong>26</strong></li>
+<li>Total HP = <strong>52</strong></li>
+<li>1 AP attack: T2 base 8 + 2 = <strong>10</strong>, T3 base 12 + 2 = <strong>14</strong></li>
+<li>2 AP attack: T2 base 18 + 2 = <strong>20</strong>, T3 base 26 + 2 = <strong>28</strong></li>
+<li>Signatures: Chieftain's Roar (Encounter), Reaping Strike (Reaction), Bloodlust (Passive)</li>
+</ul>
+<div class="acard" style="--fq:#185FA5;--fqt:#E6F1FB"><div class="ahead"><b>Greatclub</b><span class="acat">Elite Action</span><span class="aps"><span class="apmark">2AP</span></span></div><div class="abody"><div class="flavor">Two-handed, overhead, slow enough to see coming.</div><div class="traits"><span class="tchip" style="--tb:#B5D4F4;--tt:#0C447C">Melee</span><span class="tchip" style="--tb:#F5C4B3;--tt:#712B13">Strike</span><span class="tchip" style="--tb:#9FE1CB;--tt:#085041">Weapon</span></div><div class="meta"><span class="freq">Round</span> <i class='sep'>&#10022;</i> <span>One creature</span> <i class='sep'>&#10022;</i> <span class="dist">Reach</span></div><hr class="cdiv"><table class="tgrid"><tr><th class="lbl">Tier 1</th><td>No effect.</td></tr><tr><th class="lbl">Tier 2</th><td>[B] 20 <span class="dcode" style="--dc:#8a8a8a">Bl</span></td></tr><tr><th class="lbl">Tier 3</th><td>[B] 28 <span class="dcode" style="--dc:#8a8a8a">Bl</span>; Prone</td></tr></table></div></div>
+<div class="acard" style="--fq:#3B6D11;--fqt:#EAF3DE"><div class="ahead"><b>Fist</b><span class="acat">Basic Action</span><span class="aps"><span class="apmark">1AP</span></span></div><div class="abody"><div class="traits"><span class="tchip" style="--tb:#B5D4F4;--tt:#0C447C">Melee</span><span class="tchip" style="--tb:#F5C4B3;--tt:#712B13">Strike</span><span class="tchip" style="--tb:#9FE1CB;--tt:#085041">Weapon</span></div><div class="meta"><span class="freq">At-will</span> <i class='sep'>&#10022;</i> <span>One creature</span> <i class='sep'>&#10022;</i> <span class="dist">Reach</span></div><hr class="cdiv"><table class="tgrid"><tr><th class="lbl">Tier 1</th><td>No effect.</td></tr><tr><th class="lbl">Tier 2</th><td>[B] 10 <span class="dcode" style="--dc:#8a8a8a">Bl</span></td></tr><tr><th class="lbl">Tier 3</th><td>[B] 14 <span class="dcode" style="--dc:#8a8a8a">Bl</span></td></tr></table></div></div>
+<p>One Greatclub + one Fist: ~40 DPR. Target ~22. Same "optimized" pattern as the Orc Warrior. This Ogre is a damage-dealer; if you want a control-flavored Elite, drop to Med 2 AP + Med 1 AP and spend the spare points on an Aura signature instead.</p>
+
+<h2 id="designers-notes">Designer's notes</h2>
+
+<h3>Baseline, not ceiling</h3>
+<p>A monster built to the role target is a <em>default</em>. Nothing stops a GM from building monsters above or below the line. What matters is that the GM knows which direction they're moving.</p>
+
+<h3>The Bloodied / Strained trigger</h3>
+<p>Body-heavy monsters are the ones a physical party Bloodies. Mind-heavy monsters are the ones a psychic party Straineds. A monster with two values the same has two thresholds at the same place — every attacker is the right attacker. Mixed attribute picks are strong defensively.</p>
+
+<h3>Deadly Hazard interaction</h3>
+<p>A Minion's −1 attribute gives it an obvious weak pool. That same Minion dies instantly in a Deadly Hazard, so terrain becomes a second front. A GM who places a chasm and a Push effect turns three Minions into one Standard's worth of work.</p>
+
+<h3>Why not more attribute range?</h3>
+<p>Flat DC 13 means the tier distribution only tolerates a two-step band of attribute values. A +3 attack would succeed 78% of the time; a +0 attack would succeed 58%. Both are playable, but the gap makes "+2 monsters" feel categorically different from "+1 monsters." Capping at +2 keeps the game's math flat across roles.</p>
+
+<h2 id="freeform">Appendix: Freeform building</h2>
+<p>The point-buy system is the recommended path. If a GM wants to eyeball a monster instead, use the same tables but skip the budget. Pick any array, any threshold value, any damage values. The DPR check at the table catches outliers.</p>
+<p>Every table in this chapter is a reference, not a constraint. A GM who wants a Standard with High thresholds and Low damage — a tanky grinder — can build it. The DPR target will show it's dealing about half the normal Standard output, and the GM can decide whether that's the intent.</p>
+
+<h2 id="open-items">Open items</h2>
+<ol class="openitems">
+<li><strong>Level 2+.</strong> This chapter covers level 1 only. When level scaling exists, revise the arrays, thresholds, damage tables, and signature menus in the same pass as the PC benchmarks.</li>
+<li><strong>Dice notation.</strong> Reference tables show averages. The builder still accepts dice expressions for Foundry export.</li>
+<li><strong>Point-buy tool.</strong> The builder supports point-buy mode as the default; freeform remains available.</li>
+<li><strong>Signature expansion.</strong> The menu is a starting set, not a fixed list. New signatures can be added without changing the slot structure.</li>
+</ol>
+
+</div></details>
+
+<footer>Chapter 11 · Monster Building · Level 1</footer>
+</body></html>

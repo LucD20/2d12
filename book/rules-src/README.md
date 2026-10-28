@@ -1,0 +1,108 @@
+# How the rules are written (rules-src)
+
+The rules are built from the numbered chapter files in this folder into **seven documents**: Core Rules (`core-rules.html`), Species (`species.html`), Gear (`gear.html`), Talents (`talents.html`), Paladin (`paladin.html`), Archer (`archer.html`) and Bestiary (`bestiary.html`). Only files named `NN-name.md` are chapters: `INDEX.md` (generated) and this file are not.
+
+## The documents
+A chapter file says which document it belongs to on its **first line**: `<!-- doc: species -->` (no tag means Core Rules).
+
+| Files | Document |
+|---|---|
+| `01-roll.md` to `09-glossary.md` | **Core Rules** (Chapters 1 to 9; the shared glossary is here) |
+| `11-species.md` | **Species** |
+| `12-paladin.md` | **Paladin** |
+| `13-archer.md` | **Archer** |
+| `14-bestiary.md` | **Bestiary** |
+| `15-gear.md` | **Gear** (weapons, properties, Mastery, armor) |
+| `16-talents.md` | **Talents** |
+
+- One build makes all of them. `[[Links]]` work across documents: a link to a heading in another document becomes a link to that file (`core-rules.html#...`). If a title exists in two documents (each class has its own Features by Level, Locked Actions...), a link goes to the one in **its own document**, else to the first.
+- Core keeps its chapter numbers ("Chapter 5" in the text). The other documents have no chapter numbers: their file starts with a plain `# Title`, and their sections are `##`.
+- To move a section to another document, move its text to that document's file (or a new `NN-name.md` with the `doc` tag) and change its heading levels so the document's title is the `#`. Rebuild: the checks list every link that broke.
+- **Document titles:** the builder shows a title block (the document's title and "Draft") only when the first chapter's heading is a different text (Core Rules, Bestiary); when the chapter heading already is the title (Species, Gear, Talents, Paladin, Archer) there is no title block and no "(Draft)" in the page title. The class documents have no tagline.
+- **Class documents:** `Level 1` (what you gain, then `Class Actions` and `1st Level Picks`), the `Repertoire` listed by Frequency (`Passive`, `Turn`, `Round`, `Encounter`, `Daily`) and the `Escalation` (`Passives`, `Actives`); no intro lines: Core defines Class Actions, Picks and the Repertoire (Characters, "Class Actions, Picks and the Repertoire"). A level-by-level explanation of each class is still to be written.
+- **Core structure (2026-10-25):** **Roll Effects** (Chapter 1, before Several Targets) holds how damage is written ([Mod], [W], the damage types and subtypes) and Cleave; Empowered and Enfeebled are in Conditions; an Action's Area and Distance are two lines (`**Area:** 2 Emanation`, `**Distance:** 10 sq.`); Light has the shape of an area (an Emanation around a creature or object, a Burst on a corner), and only the light where the TARGET is matters (Dim: Obscured, Darkness: Hidden or Unsensed): there is no penalty for standing in Dim light or Darkness yourself.
+- **Names in the examples (Lucas):** use only these names, he/him: Dave, Jared, Zack, Nari, Drak, Wes, John, Steven, Mark, Jacob, Chris, Lonny, Nick, Will, Philip, Peter, Paul, Victor; she/her: Krysta, Lana. Don't repeat a name until all have been used, and vary the combinations; the exception: examples (and figures) that explain the same or a very similar thing keep the same name. In diagrams, **"you" is Y** (never O or K); a token for a named creature carries the initial of its name (two names in one figure must not share an initial); extra allies are numbered tokens (3, 4, 5). The builder's check lists the names in use and the ones never used. **Used so far (2026-10-24):** Peter and Will (Several Targets); Victor, Paul and Wes (Initiative, Turns and Rounds); Mark and Nick (the three-way initiative); Dave (Reposition); Philip and John (Flanking); Krysta (the Senses examples, one name for all four); Lana and Jared (Immobilized). **Not used yet:** Zack, Nari, Drak, Steven, Jacob, Chris, Lonny.
+- **Colors (every document):** the builder (`build_rules.py`, `class_colors` and `CLASS_TOKEN`) colors, in the text of every chapter (not in headings, links, trait chips or card titles): a damage expression (a [B] or [M] tag with its dice and numbers, or a [W] / [Mod] expression for Body; the damage code keeps its own color; what follows, like "Pushed 1", is never colored), the four attribute words, the Weapon, Power and Signature Modifiers (not Weapon as gear or as a trait), Bane, Boon and Rally Point with their number, the states that tilt a roll or damage (**red**: Doomed, Enfeebled, Vulnerable, Down; **blue**: Favored, Empowered), costs (`1 AP`, `(1A)`, `1R`: the color of the cost chips), a movement with its value (`Evade 2`, `Pushed 1`), and `[HT: ...]` (the Bane red). The colors are CSS variables in `rules.css` (`--c-body`, `--c-mind`, `--c-instinct`, `--c-appeal`, `--c-wmod`, `--c-pmod`, `--c-smod`, `--c-bane`, `--c-boon`, `--c-rally`, `--c-ap`, `--c-mv`): very dark on the light page, lighter on the dark one. **Write the Body tag on Body damage ([B] 1[W] + [Mod]); there is no default pool. Write [Strike] Action, [Melee] Actions (a trait in brackets) when you mean the trait. Bane and Boon are capitalized.**
+- **Figures side by side** (`diagrams.py` `wrap`): the diagrams of a row share one height, so their captions start on the same line. Colors in the Straight Line figures: blue = squares passed, green = where the movement ends, red = not legal.
+- **Trait groups:** a card lists its traits by group, in this order: **Roll** (Appeal, Body, Instinct, Mind, Power, Save, Signature, Split, Weapon), **Requires** (Handle, Melee, Ranged, Shot), **Kind** (Area, Move, Self, Strike), **Damage** (Nonlethal), **Keywords** (Divine, Focus, Fear and any trait with no rule of its own), alphabetical inside a group; each group has a small label and a color (`--g-roll`, `--g-requires`, `--g-kind`, `--g-damage`, `--g-keywords`), the chips are tinted. A new trait goes in `GROUPS` in `build_rules.py`. **Weapon properties (Barehanded, Long, Reload, Two-handed...) are not traits and have no color.**
+- **The class style:** a chapter file whose first lines have `<!-- style: class -->` has the book page look (small-caps headings with an ornament, a drop cap, the stat box, the level list) and its Action cards **open and close** (closed at first; the Contents has "Open all cards" and "Close all cards"). Used by `12-paladin.md` and `13-archer.md`. The HTML pieces of the page (`.intro`, `.statblock`, `.levels`) are written in the Markdown: copy them from `12-paladin.md`.
+- Each document has its own Contents, a bar to jump between the documents, and an Open Items appendix when it has open (to be decided) boxes.
+
+## Build and look things up
+Run from the folder that holds `rules-src/` (it also needs `build_rules.py`, `rules_tools.py`, `rules.css`, `rules-assets/` and `diagrams/`).
+
+- `python3 build_rules.py` builds the seven documents, rewrites `INDEX.md` and prints the checks. `python3 build_rules.py /tmp/test/core-rules.html` builds them in another folder (Core at that path, the others beside it).
+- `python3 build_rules.py --where Engaged` lists every mention of a term (several terms may be given): its heading, where it is defined in bold, its glossary entry, and each line that uses it with the section it is in. **Run it before changing a rule**, to see every place that must change.
+- `INDEX.md` lists each chapter's sections with line numbers, its Action cards, its open (to be decided) boxes and the glossary entries. Use it to jump to a place without reading the file.
+- The checks never stop the build. They warn about: broken `[[links]]`, headings with the same title in different files, links that land on a repeated title, glossary entries no chapter mentions, rule headings without a glossary entry (many are fine), unknown callout kinds, Action cards with the same name or without a Frequency, and placeholders left in the built book.
+
+## A chapter file
+```
+<!-- part: Part I: Core Rules -->
+# Chapter 3: Movement and the Environment
+
+## A section
+### A subsection
+```
+The first line says which Part it belongs to. Headings (`##`, `###`) are the targets of cross-references and appear in the table of contents.
+
+## Cross-references
+- `[[Heading title]]` links to the heading with that title; `[[Heading title|label]]` shows another label. The match ignores case and punctuation, and a title that only starts the same also works.
+- If two headings have the same title, the link goes to the **first** one in the book. Use a different title for a heading you need to link to.
+- Inside a table, a pipe in a link must be written `\|`: `[[Areas\|**Area**]]`.
+
+## Boxes
+```
+> [!example]
+> A goblin stands directly below you and you Push them 3. ...
+```
+`[!example]` is an example, `[!note]` a designer note, and `[!tbd]` an open question: every `[!tbd]` box is collected in the appendix "Open Items" under the heading it is in, so write what is missing in one sentence.
+
+## Placeholders and automatic coloring
+- `{{dt:Holy}}` is a damage type with its icon and color: Acid, Blunt, Cold, Electricity, Fire, Force, Holy, Pierce, Psychic, Slash, Thunder, Unholy.
+- `{{dc:Ho}}` is a two-letter code in the type's color (Ac, Bl, Co, El, Fi, Fo, Ho, Pi, Ps, Sl, Th, Un). A code written after a number or a `]` ("1d6 Ho", "[Mod] Bl") is colored by itself.
+- `{{pool:B}}` and `{{pool:M}}` are the heart (Body) and the brain (Mind).
+- `@@SAMPLE_CARD@@` is drawn by the builder. `@@DIAGRAM:name@@` puts a diagram in the text: cover, leaning, flanking, engaged, reach, emanation, light, charge, difficult and push. They are drawn by `diagrams/diagrams.py` (the names are listed in `book_diagram` there); a new one needs a drawing function and a name. Every number in them is computed from the rule. `python3 diagrams/build_diagrams_draft.py` builds a page with all of them to look at. The builder needs the `diagrams/` folder beside it.
+- Trait words (Strike, Weapon, Melee, Ranged, Move...) and damage type names are colored by the builder wherever they appear: write them as plain words.
+- Notation in the text: `[B]` and `[M]` (Body and Mind damage), `[Mod]` (Modifier), `[W]` and `1[W]` (weapon damage).
+
+## An Action card
+```
+<div class="action" markdown="1">
+<div class="action-head"><span>Charge</span><span>2 AP</span><span class="cat">Basic Action</span></div>
+
+**Flavor:** You close the distance in one straight, reckless line.
+
+*Move • Self*
+
+**Frequency:** Round
+
+**Requirements:** You have at least Speed 3.
+
+| 2 AP |
+|---|
+| Advance at least 3 squares and up to your Speed in a straight line. ... |
+
+</div>
+```
+- The title bar takes its color from the Frequency: At-will green, Round blue, Encounter red, Daily purple, none grey.
+- The head has the name, the cost (`2 AP`, `1 / 2 AP`, `1R` for a Reaction) and the category (`Basic Action`, `Talent 1`, `Sharpshooter 1`...).
+- The traits are one italic line, separated by `•`.
+- Fields (each on its own line, in bold): Flavor, Target, Frequency, Distance, Area, Vs, Requirements, Prerequisites, Trigger, Interrupt, Escalation, Split and `Setup...`. A Save Action writes its Save on the Vs line ("Instinct Save"). The card prints three meta-lines: Escalation; Targets ✦ Area; Distance ✦ Vs.
+- The table has one column per cost. With tiers, the first header cell is empty and the rows are `**Tier 1**`, `**Tier 2**`, `**Tier 3**`, `**Critical**` and `**Effects**` (what happens on Tier 2 or 3):
+```
+| | 2 AP | 3 AP |
+|---|---|---|
+| **Tier 1** | [B] [Mod] | [B] [Mod] |
+| **Tier 2** | [B] 1[W] | [B] 1[W] + 2 |
+```
+- Any other line is a note shown under the card.
+
+## The glossary
+Each row is `| [[Heading\|**Term**]] | Meaning in one sentence. |` and its link goes to where the rule is written. **Every new term gets a glossary entry**, and a rule that changes updates its entry too (`--where Term` shows the entry).
+
+## For each change
+1. `--where Term` for every term the change touches.
+2. Edit the chapter files (small replacements, not rewrites).
+3. Rebuild and read the checks.
+4. Update the glossary and the notes of what is open (`rules-backlog.md`).

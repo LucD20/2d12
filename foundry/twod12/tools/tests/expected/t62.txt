@@ -1,0 +1,16 @@
+--- Requirements
+Large (4) target: "" | Huge (5): needs a target whose SR is at most 1 higher than yours | Tiny (1): ""
+free hand, empty hands: "" | greatsword in 2 hands: needs a free hand | a hidden blade (Barehanded) and a sword: ""
+Speed 3 uses the current Speed: needs a Speed of at least 3 | ""
+--- Area
+{"size":1,"shape":"emanation","within":0} {"size":2,"shape":"burst","within":10} null
+@Template[emanation|distance:1|targets:all|self:no|label:Place Area] | true | Area: 1 Emanation within 10 sq.
+--- Fists
+no Brawler: Sword,Fists | with Brawler: Sword,Fists | Fists are Melee: true | a sword is Ranged: false
+v0.0.169 Fists as a weapon: with a two-handed weapon (no free hand): Greatsword | an older Fists item still has the properties: true
+the Fists card uses only the Fists: Fists | a Weapon Attack can use: Sword,Fists | Fists card, no free hand: 0
+Fists threaten (flanking): without Brawler false | with Brawler true | the old Brawler flag true | a sword true
+--- Reposition
+Reposition 1 from the north: 0,-1 0,1 1,-1 1,1 (your own square is not offered)
+Reposition 3: 7 squares | the line to (3,0): 0,0 1,0 2,0 3,0 | a long diagonal: 0,0 1,-1 2,-2
+with Reach 2 more squares qualify: true

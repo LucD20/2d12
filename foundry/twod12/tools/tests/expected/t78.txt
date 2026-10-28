@@ -1,0 +1,9 @@
+by status: true | by flag: true | by name: true true | not Exhausted: false false false
+created: Exhausted 2 | status: exhausted | flag: exhausted
+tab has the Exhausted value: true | has the JSON: true | save button: true
+a plain effect has no value field: true
+saved keys: flags.twod12.-=old | flags.twod12.duration | flags.twod12.notes
+rejected "{ nope": The JSON isn't valid: Expected property name or '}
+rejected "[1,2]": The settings must be a JSON object, like { ... }
+rejected "5": The settings must be a JSON object, like { ... }
+Exhausted value set from the tab: 4 | condition: Exhausted 4

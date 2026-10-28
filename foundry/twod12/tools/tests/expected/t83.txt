@@ -1,0 +1,9 @@
+wrapped: true | again is safe: true
+HUD: Prone on → system Effect applied: Item.prone
+Prone again (already on) → Foundry's own toggle: prone active true
+HUD: Prone off → Foundry's own toggle: prone active false
+Hindered with no active flag (a toggle) → system Effect applied: Item.hindered
+a status with no Effect (Hidden) → Foundry's own toggle: hidden active true
+Exhausted is left to its own rule → Foundry's own toggle: exhausted active true
+a call marked raw goes straight to Foundry → Foundry's own toggle: prone active true
+applied from the system: Item.prone, Item.hindered

@@ -1,0 +1,24 @@
+--- Collision counts the squares to the destination the origin chose
+Pushed 4 aimed 4 squares, a wall right behind the creature moves 0, unused 4, damage {"self":8,"other":0}
+Pushed 4 aimed 4 squares, a creature in the 2nd square     moves 1, unused 3, damage {"self":3,"other":3}
+Pushed 4 aimed only 1 square, nothing in the way (no damage) moves 1, unused 0, damage {"self":0,"other":0}
+Pushed 2 aimed 2 squares, a wall behind                    moves 0, unused 2, damage {"self":4,"other":0}
+the push preview uses the chosen destination: true | the old value-based call is gone: true
+--- Steadiness reduces the value (never below 0)
+Pushed 3 vs Steadiness 1 = 2 | Pushed 1 vs Steadiness 1 = 0 | Pushed 2 vs Steadiness 4 = 0 | Pushed 5 vs Steadiness 0 = 5 | Pushed 3 vs Steadiness -2 = 3
+Pushed and Reposition ask whether to apply it: true
+an NPC's Steadiness: 0 -> 0, 1 -> 1, 3 -> 3, -1 -> 0
+the Builder tab's Steadiness row: 0 1 2* 3 4 | Forced Movement and Reposition against it are reduced by 2 | its buttons call setSteadiness: true
+species sheet buttons 0-4: true | Dwarf 1, the others 0: true
+--- Fists are an ordinary weapon
+the Fists item: {"traits":["barehanded","melee","nonthreatening"],"range":"1","damage":[0,1,"d4"]} | a weapon property list has Non-threatening: true
+the Fists card: strike/weapon | distance weapon | Tier 2 and 3 use [W]: true
+Pummel and Leg Sweep use only the Fists; Brawler removes Non-threatening: true
+--- the Basic Actions
+Shove   1AP: 0/1/2 | 2AP: 0/2/4 | 3AP: 1/3/5 | strike/handle/body
+Relocate 1AP: 0/1/2 | 2AP: 0/2/4 | 3AP: 1/3/5 | strike/handle/body/instinct | The target's SR is at most 1 higher than yours. The target must remain within your Reach throughout the whole movement.
+no old Reposition Basic Action: true | no Haul yet (F2): true | Trip says SR: The target's SR is at most 1 higher than yours.
+Cut Through's Critical uses Relocate: true
+--- the Engaged banes are for [Ranged] Actions
+const rangedWeapon = useTraits.has("ranged"): true | the Archer's passive says [Ranged]: true
+SR in requirements: "needs a target whose SR is at most 1 higher than yours" | the old wording still works: "needs a target whose SR is at most 1 higher than yours"

@@ -1,0 +1,260 @@
+# PROPOSED REWRITES - SR, the Handle Actions (Shove, Relocate, Haul), Steadiness, Immobilized, Fists
+# STATUS: APPLIED to the book on 2026-10-23, with Lucas's approval. NOTE: the weapon property called "Unarmed" below was RENAMED "Non-threatening"
+# before applying (it clashed with Barehanded): read every "Unarmed" in this record as "Non-threatening". Fists also got a Range column (1).
+# The book files are the truth now. Kept as the record of what changed.
+#
+# Same legend as before: [REV] my wording of your idea, [NEW] not in your notes (found while checking), [DECIDED] you decided it,
+# [Q] open question (the default in brackets applies if you say nothing), [FOUNDRY] note for the system, not for the book.
+#
+# Contents: 1. Decisions   2. Rewrites   3. Second pass (what else changes)   4. Foundry notes   5. Open questions
+
+#region 1. DECISIONS RECORDED
+
+ 1. SR = Size Rank. Used in Requirements lines; "Size" stays as the concept.
+ 2. The Handle Actions share one ladder, three versions each (1A, 2A, 3A):
+        1A: No effect / 1 / 2     2A: No effect / 2 / 4     3A: 1 / 3 / 5     (Tier 1 / Tier 2 / Tier 3)
+ 3. Shove: Pushed. 3A Tier 1 is Pushed 1 (your typo fixed). 2A Tier 1 becomes "No effect" (a nerf, intended).
+ 4. The Reposition Action is renamed Relocate (the movement keeps the name Reposition). Value stronger than before (intended).
+ 5. The new Action is Haul (Pulled). It needs Reach 2+. A weapon Property for Haul comes later (nothing written now).
+ 6. Strike on all three. Relocate and Haul: the target must remain within your Reach throughout the whole movement.
+ 7. Steadiness on every species: 0 by default, never negative. Foundry: buttons 0, 1, 2, 3, 4. A creature can choose not to apply it.
+ 8. Immobilized: an Action or effect that attempts to Force Move or Reposition you and doesn't roll is automatically disrupted.
+    An Action that rolls (and a Save Action, whose origin rolls with the Action's Modifier) must beat the Immobilized DC =
+    11 + the Modifier the origin of the condition used. The Immobilized DC replaces the "Opposed Check" (the book has none).
+ 9. Grab comes later: nothing about Grab is written here.
+10. Fists become an ordinary weapon (properties Barehanded, Melee, Unarmed; NAME OF THE LAST ONE PENDING, see section 5). While you have a free
+    hand, your Fists count as a weapon you are wielding (also next to a sword): the classes' Weapon Actions work with them. Brawler's "Your Fists count as a Melee Weapon" and the rules that say "Fists aren't a Weapon" go away.
+11. Flanking: Fists never flank, EXCEPT with Brawler (Pummel allows flanking). This replaces my earlier line "Brawler included" in the
+    Flanking region of the Core changelog: the Unarmed property says "unless a feature says otherwise", and Brawler says it.
+12. Steadiness: a stat on each species (Dwarf 1, the others 0); Features, Talents and armor can add to it.
+
+#endregion
+
+
+#region 2. REWRITES
+
+# ---------------------------------------------------------------- Ch.3 - Size  (SR)
+
+[REV] Size, first paragraph and the comparison sentence:
+   "Every creature has a **Size**: a rank from 1 to 7, its **SR** (Size Rank), written with its name first, such as Medium (3).
+   Size says how many squares a creature occupies, and it is used to compare creatures."
+   "An Action can compare SR: "The target's SR is at most 1 higher than yours" means the target's rank is no more than one above
+   yours. Any smaller creature qualifies."
+[REV] Basic Actions: the three Requirements lines (Shove, Relocate, Trip): "The target's Size is at most 1 higher than yours."
+   -> "The target's SR is at most 1 higher than yours."
+[ADD] Glossary: SR | Size Rank: a creature's Size as a number from 1 (Tiny) to 7 (Titanic). Medium is SR 3.
+
+
+# ---------------------------------------------------------------- Ch.6 - Basic Actions  (three cards)
+# Order in the chapter (alphabetical, as now): ..., Fists, **Haul**, Interact, ..., Reload, **Relocate**, **Shove**, Stand, ...
+
+[REV] Shove (the card gets a 3 AP version; 2 AP Tier 1 is now "No effect"):
+   Header: Shove | 1 / 2 / 3 AP | Basic Action
+   Flavor: You put your weight behind it and drive them back.      (unchanged)
+   *Body • Handle • Strike*   Frequency: Round   Target: One creature   Distance: Reach   Vs: Body
+   Requirements: The target's SR is at most 1 higher than yours.
+   | | 1 AP | 2 AP | 3 AP |
+   |---|---|---|---|
+   | **Tier 1** | No effect. | No effect. | Pushed 1. |
+   | **Tier 2** | Pushed 1. | Pushed 2. | Pushed 3. |
+   | **Tier 3** | Pushed 2. | Pushed 4. | Pushed 5. |
+
+[REV] Reposition -> **Relocate** (the old card and the "to be decided" box under it are removed; the box was the open item):
+   Header: Relocate | 1 / 2 / 3 AP | Basic Action
+   Flavor: You take them by the arm and put them where you want them.      (kept from the old card)
+   *Body • Handle • Instinct • Strike*   Frequency: Round   Target: One creature   Distance: Reach
+   Vs: Body or Instinct (the one used to roll)
+   Requirements: The target's SR is at most 1 higher than yours. The target must remain within your Reach throughout the whole movement.
+   | | 1 AP | 2 AP | 3 AP |
+   |---|---|---|---|
+   | **Tier 1** | No effect. | No effect. | Reposition 1. |
+   | **Tier 2** | Reposition 1. | Reposition 2. | Reposition 3. |
+   | **Tier 3** | Reposition 2. | Reposition 4. | Reposition 5. |
+
+[NEW] **Haul** (the pulling Action; "Tug" was a placeholder):
+   Header: Haul | 1 / 2 / 3 AP | Basic Action
+   Flavor: You snag them and drag them in.      [Q] my words; change them freely
+   *Appeal • Body • Handle • Strike*   Frequency: Round   Target: One creature   Distance: Reach
+   Vs: Appeal or Body (the one used to roll)
+   Requirements: Your Reach is 2 or more. The target's SR is at most 1 higher than yours and is at least 2 squares away. The target must
+   remain within your Reach throughout the whole movement.
+   | | 1 AP | 2 AP | 3 AP |
+   |---|---|---|---|
+   | **Tier 1** | No effect. | No effect. | Pulled 1. |
+   | **Tier 2** | Pulled 1. | Pulled 2. | Pulled 3. |
+   | **Tier 3** | Pulled 2. | Pulled 4. | Pulled 5. |
+   Note: with Reach 2 a target 2 squares away can only be pulled 1 square (it can't enter your square). Anything above that is only
+   useful to aim at your own square on purpose (Collision, both take damage), or with a bigger Reach.
+
+[REV] Brawler, Pummel's Critical (Talents): "Reposition (1A) the target, ignoring the Handle trait." -> "Relocate (1A) the target, ignoring the
+   Handle trait."   (it uses the Action, not the movement)
+[IDEA, later] Weapon Property **Hooked** (not written now): "You can use Haul with a Hooked weapon: its Range counts as your Reach for Haul,
+   and you don't need a free hand for it." The free-hand line is needed: Handle needs a hand free, and a two-handed pike leaves none.
+   Alternative name: Tethered (chains, ropes).
+
+
+# ---------------------------------------------------------------- Ch.3 - Steadiness (new, after Reposition)
+
+[NEW] A section "## Steadiness", after Reposition and before Difficult Terrain:
+   "Some creatures are harder to move than others. Every creature has a **Steadiness**: normally 0, and never negative. When you are
+   moved by Forced Movement or Reposition, reduce its value by your Steadiness: a Pushed 3 against Steadiness 1 is a Pushed 2, and a value
+   of 0 or less moves you nowhere. The value is reduced before the origin chooses the destination, so a creature with Steadiness also
+   takes less damage from Collision (the origin can aim less far). You can choose not to apply your Steadiness, for example when an ally
+   helps you."
+[ADD] one line in the shared rules of Forced Movement: "- Its value is reduced by the creature's [[Steadiness]]." and the same line in
+   Reposition's rules.
+[ADD] Species: "- **Steadiness:** 0" for the Human and the Elf, "- **Steadiness:** 1" for the Dwarf; the Species intro: "...a **Size**, a **Speed**, a **Reach** and a **Steadiness**."
+   Building a Character, step 2: "...your **Reach** (1), your **Steadiness** and your **Size** (...)".   [DECIDED] Human 0, Dwarf 1, Elf 0.
+[ADD] Bestiary, after Speed: "**Steadiness.** An NPC has Steadiness 0 unless it says otherwise. A big or heavy creature can have 1 or more."
+[ADD] Glossary: Steadiness | A creature's resistance to being moved: it reduces the value of Forced Movement and Reposition. Normally 0.
+
+
+# ---------------------------------------------------------------- Ch.8 - Conditions - Immobilized
+
+[REV] Immobilized (the first paragraph is today's, unchanged; the rest is new). Changed from your text: "you" and "the Action you use" mixed two
+      people, so it says the target and the origin; the Opposed Check is replaced by the Immobilized DC; Save Actions are covered:
+   "### Immobilized
+   You can't use Move Actions or Evade. Unless otherwise specified, you can remove Immobilized by using an Interact (1 AP) Action.
+
+   An Immobilized creature is also hard to move. An Action or effect that attempts to Force Move or Reposition you and doesn't roll is
+   automatically disrupted: you aren't moved.
+
+   > Example: Jared is Immobilized and his ally, John, has a feature that says "At the start of your turn, you can Reposition 3 an ally
+   > within Reach." If John attempts to use this on Jared, nothing happens and the effect is wasted.
+
+   If the Action rolls, the movement also needs the roll to beat the **Immobilized DC**: 11 + the Modifier the origin of the condition used
+   (the Power Modifier for a Power Action, the Weapon Modifier for a Weapon Action, and so on; 13 if the condition has no origin; the highest
+   if there are several). A Save Action doesn't roll, but it always has a Modifier: the origin rolls 2d12 + that Modifier against the Immobilized
+   DC. If the result is below the Immobilized DC, you aren't moved. The rest of the Action works as usual."
+   [DECIDED] your point: a Save Action always has a Modifier (its Weapon, Power or Attribute trait), and the one causing the Save rolls with it.
+   [Q] A Save Action that moves several Immobilized creatures: ONE roll, compared with each creature's Immobilized DC. [default: one roll]
+
+#endregion
+
+
+#region 2b. FISTS (new in revision 2)
+
+# ---------------------------------------------------------------- Gear
+
+[REV] Gear, "Fists" (rewritten; the first sentence is yours, the properties are new):
+   "### Fists
+   Every creature counts as having **Fists**. They are a weapon like any other, with the properties Barehanded, Melee and Unarmed. While you
+   have a free hand, your Fists count as a weapon you are wielding, alongside any other weapon you hold: a Weapon Action can use them."
+   Table row: | Fists | Barehanded, Melee, Unarmed | Blunt | [B] 0 / 1 / 1d4 |
+   Last paragraph: "Fists are used with the Fists Basic Action, or with any Weapon Action. It rolls against the target's **Armor Defense**,
+   although it is not a Weapon Action."   -> [DEL] the whole paragraph if the Fists card goes (see below); otherwise only its last sentence.
+
+[REV] Gear, Unarmed (changed: "unless a feature says otherwise"):
+   "A weapon with the **Unarmed** property doesn't threaten: you can't flank with it (see [[Flanking]]), unless a feature says otherwise.
+   Fists have it."
+[REV] Flanking: "a weapon with the **Unarmed** property never threatens" -> "a weapon with the **Unarmed** property doesn't threaten, unless a feature
+   says otherwise".
+[REV] Weapon Actions and Your Weapon (Chapter 3): add at the end: "While you have a free hand, you can use your [[Fists]] as your weapon."
+
+# ---------------------------------------------------------------- Brawler
+
+[REV] Brawler (Talents): "Your Fists count as a Melee Weapon. You gain the Pummel Action."
+   -> "You gain the Pummel Action. Your Fists don't have the Unarmed property: you can flank with them."
+   Why: Fists are already a Melee weapon; what Brawler adds is the flanking, plus Pummel. Any Fists attack of a Brawler threatens, not only Pummel
+   (threat comes from the weapon, not from the Action). [Q] OK? (If you want ONLY Pummel to threaten: "You threaten with your Fists while you
+   can use Pummel" instead of the Unarmed line; the effect is the same for a Brawler who has Pummel.) [default: the Unarmed line]
+   Pummel, Kickboxer and Leg Sweep don't change.
+
+# ---------------------------------------------------------------- Basic Actions
+
+[REV] Fists (Basic Action), with the Weapon trait as you asked:
+   Header: Fists | 1 AP | Basic Action        Flavor: When there is nothing else in your hands, there are always your hands.   (unchanged)
+   *Strike • Weapon*      (Melee comes from the Fists weapon; Body • Instinct • Mind are removed: a Weapon Action rolls the Weapon Modifier)
+   Frequency: At-will   Target: One creature   Distance: Weapon   Vs: AD   Requirements: You have a free hand.
+   | | 1 AP |
+   |---|---|
+   | **Tier 1** | 0 |
+   | **Tier 2** | 1[W] + [Mod] |
+   | **Tier 3** | 1[W] + [Mod] |
+   [DEL] the sentence "Fists roll against the target's Armor Defense, although they are not a Weapon Action."
+   [DECIDED] Keep the Fists card (with the Weapon trait). Note: it is a Weapon Attack with Fists word for word; it stays as the quick card.
+
+# ---------------------------------------------------------------- Rules Language and glossary
+
+[REV] Rules Language, "Specific beats general": "Fists, for example, roll against AD although they are not a Weapon Action." is no longer true.
+   New example (true in the book today): "The Evade Action, for example, doesn't trigger Reactions although movement normally does."
+[REV] Glossary:
+   Fists   | The Barehanded weapon every creature has (Melee, Unarmed). It is your weapon when you wield none.
+   Unarmed | A weapon property: the weapon doesn't threaten, so you can't flank with it, unless a feature says otherwise (Brawler). Fists have it.
+   Armor   | "...The Defense against Weapon Actions and Fists." -> "...The Defense against Weapon Actions."
+
+# ---------------------------------------------------------------- What changes in play
+
+ - Fists roll the Weapon Modifier and add it to damage: about +2 damage per hit at level 1 (before: the highest of Body, Instinct and Mind, and no
+   damage bonus). Fists T2 is 3 and T3 4.5 on average, like a weak weapon.
+ - Every class can use its Weapon Actions with bare Fists (Smite unarmed). Brawler was the only way before: your intent.
+ - Brawler is thinner: its gain is Pummel (1d6 at Tier 3 instead of 1d4, [Mod] at Tier 1 instead of 0) and flanking. [Q] Rebalance Pummel or give Brawler
+   something else later? (Not now: nothing changes in this pass.)
+ - Opportunity Attack and Charge (a Weapon Attack at the end) now work unarmed.
+
+
+ [NOTE on removing the Weapon trait from Pummel and the Fists card] If the trait went, Fists and Pummel would roll an Attribute again, use
+ flat damage instead of [W], lose "Distance: Weapon", and stop working with Leg Sweep (a Weapon Technique needs a Weapon Action). It would also bring
+ back "Fists roll against AD although they are not a Weapon Action" and the other rules this region deprecates. The reason I think you may want it
+ gone: with "if you wield no weapon" a swordsman with a free hand couldn't punch any more. That is fixed by the wording above ("while you have a
+ free hand"), so the trait can stay.
+
+#endregion
+
+
+#region 3. SECOND PASS: WHAT ELSE CHANGES
+
+ A. The word "Size" in comparisons becomes SR in three Basic Actions lines (Shove, Relocate, Trip) and in the Size section. Elsewhere "Size"
+    stays (the Size table, Squeezing, Elevation, Species). No rule changes.
+ B. Brawler's Pummel Critical uses the Reposition Action by name ("Reposition (1A)"): it must say Relocate. Found by searching the book.
+ C. Nobody has Reach 2+ today (species have Reach 1, a Large creature still has Reach 1), so Haul can't be used until a feature or the
+    Hooked property exists. That is expected; it is written down so it doesn't look like a bug.
+ D. Relocate at Reach 1 can only move the target around the 8 squares next to you (it must stay within Reach), passing through creatures;
+    Reposition 5 at 3 AP is a long walk around you. Fine, but it is not "5 squares anywhere".
+ E. Balance: a Shove into an adjacent wall (Pushed 5, 3 AP, Tier 3) is 10 damage, against 19 to 26 for a 3 AP Special at Tier 3: weaker, as it should be.
+ F. Shove 2 AP Tier 1 (was Pushed 1) is now "No effect". It matches Relocate and Haul (Tier 1: no effect at 1 and 2 AP).
+ G. Immobilized now interacts with Steadiness and Forced Movement: Steadiness applies after the Immobilized check.
+ H. The Reposition section already says "Your Reach and the creature's Size don't limit it"; the limits are now in the Action. Consistent.
+ I. The glossary gets SR and Steadiness (the Actions have no glossary rows today, like Shove and Trip).
+
+#endregion
+
+
+#region 4. FOUNDRY NOTES (not for the book)
+
+ - Fists (fists.mjs, flanking.mjs, defense.mjs, actions.mjs, actor-sheets.mjs): remove the special cases (isFists: "Fists aren't a Weapon", the
+   AD rule for Fists, melee only with Brawler). The Fists item gets the properties Melee and Unarmed; with no weapon wielded, the Fists item is
+   the weapon for Weapon Actions; the Fists Basic Action gets the Weapon trait (or is deleted). Flanking reads the Unarmed property, and Brawler
+   removes it (a flag, as today's Brawler check). Compendium: Brawler's text, the Fists card.
+
+ - Compendium Basic Actions (tools/content.mjs and basic.mjs): Shove with 3 versions and Strike, Reposition -> Relocate (same movement, new numbers,
+   the Reach limit), Haul new (Appeal/Body, Pulled); Brawler's Pummel Critical text.
+ - Steadiness: a field on species (buttons 0-4, default 0) and on NPCs (a row in the Builder tab, 0 by default); applied when a Forced Movement or
+   Reposition is started, with a checkbox "don't apply Steadiness" in the movement dialog (a willing creature). Part of F1-F3.
+ - The "target must remain within your Reach" check is a simple limit on the path squares in the F3 path tool.
+ - Immobilized: the Immobilized DC is a number stored in the condition when it is created (11 + the Modifier of the Action that applied it); the
+   movement code checks it (no roll: disrupted; roll: compare the result). One roll for a Save Action.
+ - The size field and its tooltips: label "SR" where it is a comparison.
+
+#endregion
+
+
+#region 5. OPEN QUESTIONS (small; the default applies if you say nothing)
+
+ 0. FISTS: (a) [DECIDED] Brawler removes the Unarmed property (the "Unarmed line").
+           (b) [DECIDED] Keep the Fists card, with the Weapon trait.
+           (c) Pummel / Brawler rebalance: later. [default: nothing now]
+           (d) THE NAME "Unarmed" clashes with "Barehanded" (both sound like fists). Options: Non-threatening (my pick: it says the effect,
+               and the book already has "Two-handed"), Soft, or no property at all (the rule written on Fists only: "Fists don't threaten, unless a
+               feature says otherwise"; no glossary entry, but a future weapon that shouldn't flank would need a new rule). [Q] Which? [default: Non-threatening]
+           (e) The Weapon trait stays on Pummel and the Fists card (see the note in region 2b). [Q] Does the free-hand wording solve what you wanted?
+
+ 1. [DECIDED] A Save Action that moves several Immobilized creatures: one roll, compared with each Immobilized DC.
+ 2. [DECIDED] Steadiness: a stat on each species, Dwarf 1, Human and Elf 0; Features, Talents and armor can add to it.
+ 3. [DECIDED] Haul's flavor text is mine ("You snag them and drag them in"); I write the Flavor of every new card.
+ 4. [DECIDED] Relocate is the final name of the old Reposition Action.
+
+ If nothing here needs changing, I apply all of it in one book pass (Chapter 3, Basic Actions, Conditions, Species, Bestiary, Talents, glossary,
+ Building a Character) and note the Foundry part in the backlog.
+
+#endregion

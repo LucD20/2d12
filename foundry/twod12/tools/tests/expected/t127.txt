@@ -1,0 +1,11 @@
+Save damage: 1d8 Fi -> 1d8 Fi | [B] 1d8 Fi -> 1d8 B Fi | [M] 2d6 Ho -> 2d6 M Ho | 1d4 Fire -> 1d4 Fi | 1d8[body,fire] -> 1d8 B Fi | 2d6 -> 2d6
+Quickened 1 + Slowed 2: regain 4 most 4 | Desperate rider Slowed 1: regain 4
+desperate + other Slowed none -> Slowed 1 (Desperate)
+dying + other Slowed 1 -> Slowed 2 (Dying)
+shattered + other Slowed 2 -> Slowed 3 (Shattered)
+dying + other Slowed 3 -> Slowed 3 (Dying)
+not Down + other Slowed 2 -> no rider
+going Down: >= 50% Nonlethal Unconscious true | some Nonlethal: ask true | none: Dying/Shattered, Table once per encounter, then ask true
+taking damage while fighting: Check, Tier 1-2 Table true | end of turn: Tier 1 Table, collapsed Tier 3 stabilizes true | asked to the player who owns it: true | registered true
+description cards: Versions by class true | Split Effects once true | Reload always listed true
+Slowed text: lowers the most AP, Desperate/Dying/Shattered true

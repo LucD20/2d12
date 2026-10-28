@@ -1,0 +1,26 @@
+--- what the vision should be
+no Dark Sight: {"range":0,"visionMode":"basic"} | undefined: {"range":0,"visionMode":"basic"} | Dim-light Sight only: {"range":0,"visionMode":"basic"} | Dark Sight: {"range":1000,"visionMode":"darkvision"}
+--- a new character
+a normal one: {"prototypeToken.sight.range":0,"prototypeToken.sight.visionMode":"basic"}
+with Dark Sight: {"prototypeToken.sight.range":1000,"prototypeToken.sight.visionMode":"darkvision"}
+--- syncing the characters of a world
+changed: 4 | Token vision updated for 2 characters (4 token settings: their prototype tokens and the tokens on the scenes).
+Kai: {"prototypeToken.sight.range":0,"prototypeToken.sight.visionMode":"basic"}
+Cave scene tokens: k1 0/basic
+Nari: {"prototypeToken.sight.range":1000,"prototypeToken.sight.visionMode":"darkvision"}
+Cave scene tokens: n1 1000/darkvision
+the NPC and the right one were left alone: true
+a second time: 0 | Every character's token vision already follows its Senses. | 0 updates
+--- the Senses dialog (one character)
+Dark Sight taken away from Nari: 2 | Nari: {"prototypeToken.sight.range":0,"prototypeToken.sight.visionMode":"basic"} ; Cave scene tokens: n1 0/basic
+--- Global Illumination
+this scene off: 1 | Global Illumination off in 1 scene. | Cave: {"environment.globalLight.enabled":false}
+every scene off: 1 | Global Illumination off in 1 scene. | Hall: {"environment.globalLight.enabled":false}
+on again, one scene: 1 | Global Illumination on in 1 scene.
+--- the diagnostic
+the line to copy: twod12 | vision {"scene":{"name":"Cave","darkness":0.9,"globalLight":t... | tokens listed: Kai, Nari (the NPC is left out unless controlled)
+the scene: {"name":"Cave","darkness":0.9,"globalLight":true,"globalLightDarkness":{"min":0,"max":1},"tokenVision":true}
+the notice with Global Illumination on: Global Illumination is ON in this scene (new scenes start with it, v0.0.164): the map is lit, a...
+twod12 | vision {"scene":{"name":"Cave","darkness":0.9,"globalLight":false,"globalLightDarkness":{"min":0,"max":1},"tokenVision":true},"tokens":[{"name":"Kai","controlled":true,"darkSight":false,"sight":{"enabled":true,"range":0,"visionMode":"basic"},"detection":["basicSight:0","hearing:-"]},{"name":"Nari","controlled":false,"darkSight":true,"sight":{"enabled":true,"range":1000,"visionMode":"darkvision"},"detection":[]}]}
+with it off: Global Illumination is off. Copy the console line that start...
+new scenes get Global Illumination again (v0.0.164; the sight gate of v0.0.101 still hides creatures in Darkness): true | a new character gets its vision: true

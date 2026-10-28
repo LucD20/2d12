@@ -1,0 +1,25 @@
+documents: 128
+references: 103 | broken: none
+Paladin features: Divine Power, Profane Judgment, Encounter Pick, Daily Pick, Free Picks, Escalation Passive, Escalation Actives | Divine Connection kept for testing (not in the class): true | its id is the old one: vaYnV1XM6HT1TpMP
+Encounter Pick: choose 1 of 3: Word of Radiance, Divine Retribution, Aura of Protection
+Daily Pick: choose 1 of 3: Miraculous Recovery, Consecrated Ground, Divine Intervention
+Free Picks: choose 2 of 13: Aegis, Mercy's Reward, Vow of Enmity, Shield of Faith, Rebuke, Sacred Weapon, Champion's Challenge, Word of Radiance, Divine Retribution, Aura of Protection, Miraculous Recovery, Consecrated Ground, Divine Intervention
+Escalation Passive: choose 1 of 3: Divine Vigil, Avenger's Oath, Hallowed Stance
+Escalation Actives: choose 3 of 5: Call to Arms, Divine Surge, Hand of Mercy, Judgment, Sanctified Ground
+--- the cards
+Call to Arms       Escalation 1 | AP 0 | round
+Divine Surge       Escalation 1 | AP 0 | round
+Hand of Mercy      Escalation 1 | AP 1 | round
+Judgment           Escalation 2 | AP 1 | round
+Sanctified Ground  Escalation 2 | AP 1 | round
+Divine Retribution: split: true | versions: 2R weapon, 2R power, 3R weapon, 3R power | reaction: true
+Rebuke: Turn: turn | 1R / 2R: 1/2 | trigger: An enemy within Reach damages an ally.
+Smite 2 AP Holy dice: 1d4 / 2d6 / 2d6 (1 / 2 / 3 AP, Tier 2)
+Judgment tiers: - / 2d6 / 2d8 | Vow of Enmity targets: One / one / two creatures | distance: 5
+--- the passives and effects
+Profane Judgment: ondamage Ho Profane -> Profane Judgment (Enfeebled) | that effect: damagestep Enfeebled 1 eot
+Divine Vigil: aura Aura 3 allies self true from Escalation 2 -> Divine Vigil (Boon against Fear) | boon on Saves against fear
+Divine Surge: bonusdamage 1d8 M Ho | by name: __name:smite | ends after: __name:smite
+auras: Shield of Faith 3 AP: Shield of Faith (Blessing) | Aura of Protection: 2: Aura of Protection (+1 Defense) | 3: Aura of Protection (+2 Defense) | 3: Aura of Protection (+2 Defense, boon)
+pregen Paladin items: Divine Power, Smite, Lay On Hands, Profane Judgment, Divine Retribution, Miraculous Recovery, Vow of Enmity, Shield of Faith, Divine Vigil, Call to Arms, Divine Surge, Judgment, Reaping Sweep, Charge
+pregen ids unique: true

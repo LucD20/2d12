@@ -1,0 +1,2 @@
+Clear: "" | Obscured: obscured | Hidden: hidden | Unsensed: unsensed
+the worst one wins: hidden+obscured → hidden | unsensed+hidden → unsensed | no actor → ""

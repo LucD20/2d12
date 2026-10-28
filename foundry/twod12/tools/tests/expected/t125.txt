@@ -1,0 +1,10 @@
+healthy: regain 5, most 5 | Slowed 2: regain 3, most 3 | Quickened 2: regain 7, most 7 | Quickened 2 + Slowed 2: regain 5, most 5 | Desperate: regain 5, most 5 | Dying + Slowed 3: regain 2, most 2 | Dying + Slowed 1: regain 4, most 4 | Imperiled: regain 4, most 4 | Slowed 9: regain 0, most 0
+Frequency: Weapon with none "" | Round round
+Vs.: Reload DC 13 | Weapon Attack AD
+Round, used on its own turn (round 1, turn 2): r1 t2 used, r2 t0 used, r2 t1 used, r2 t2 free
+Round, used as a Reaction before its turn (round 2, turn 0): r2 t1 used, r2 t2 free, r3 t0 free
+Round, used at the end of the order (round 1, turn 2), new round starts: r2 t0 used (the rules' example)
+no swap while Down: true | AP over the most only when edited: true | tracker shows the most: true
+Reload is [Handle, Weapon]: true | Slowed and Quickened conditions: true
+Imperiled: Slowed 1: true | Immobilized: Interact: true | old Weapon Actions set to Round once: true
+Smite, Reaping Sweep and Lock & Loose say Round: true

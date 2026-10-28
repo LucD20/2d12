@@ -1,0 +1,1445 @@
+.application.twod12 .window-content { overflow-y: auto; }
+.twod12.sheet { padding: 8px; font-size: 13px; }
+/* v0.0.138: that rule also matched the actor sheet's window itself (Foundry gives it the class "sheet"): the 8px border. Not on the window. */
+.application.twod12.sheet.twod12-actor { padding: 0; }
+.twod12 .head { display: flex; gap: 8px; align-items: center; }
+.twod12 .head .name { font-size: 1.4em; flex: 1; }
+.twod12 .tabs { display: flex; }
+.twod12 .tab { display: none; }
+.twod12 .tab.active { display: block; }
+.twod12 h3 { border-bottom: 1px solid var(--color-border-light-tertiary, #999); }
+.twod12 .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.twod12 .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.twod12 label { display: flex; flex-direction: column; gap: 2px; margin-bottom: 4px; }
+.twod12 label.inline { flex-direction: row; align-items: center; gap: 6px; }
+.twod12 .ro { display: flex; flex-direction: column; gap: 2px; }
+.twod12 .ro span { font-size: 11px; opacity: .7; }
+.twod12 .opts { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 4px 0; }
+.twod12 .opts input[type=number] { width: 52px; }
+.twod12 .hint, .twod12 .ihint { opacity: .65; font-size: 11px; }
+.twod12 .items { list-style: none; margin: 0; padding: 0; }
+.twod12 .items li { display: flex; gap: 6px; align-items: center; padding: 2px 0; }
+.twod12 .items .iname { flex: 1; font-weight: bold; }
+.twod12 .spacer { flex: 1; }
+.twod12 .items input[type=number] { width: 52px; }
+.twod12 .drop-zone { border: 2px dashed var(--color-border-light-tertiary, #999); border-radius: 6px; padding: 10px; text-align: center; opacity: .75; margin: 4px 0; }
+.twod12 textarea { min-height: 44px; }
+.twod12 .version { border: 1px solid var(--color-border-light-tertiary, #999); border-radius: 6px; padding: 6px; margin: 8px 0; }
+.twod12 .tierbox { margin: 4px 0; }
+.twod12.chat .tier { font-weight: bold; margin-top: 4px; }
+.twod12.chat .tier.t1 { color: #8a2b2b; }
+.twod12.chat .tier.t2 { color: #8a6a1a; }
+.twod12.chat .tier.t3 { color: #1f6b3a; }
+.twod12.chat .res { font-weight: normal; margin-top: 2px; }
+.twod12 .setbox { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; margin: 4px 0; padding: 4px; border: 1px solid var(--color-border-light-tertiary, #999); border-radius: 4px; }
+.twod12 .setbox label { margin: 0; }
+/* tables */
+.twod12 table.vtable { width: 100%; border-collapse: collapse; margin: 4px 0; }
+.twod12 .vtable th { text-align: left; font-size: 11px; text-transform: uppercase; opacity: .7; padding: 3px 6px; border-bottom: 2px solid var(--color-border-light-tertiary, #999); }
+.twod12 .vtable td { padding: 4px 6px; border-bottom: 1px solid rgba(128,128,128,.35); vertical-align: middle; }
+.twod12 .vtable tbody tr:nth-child(even) { background: rgba(128,128,128,.12); }
+.twod12 .vtable td { border-left: 1px solid rgba(128,128,128,.35); font-family: monospace; font-size: 11px; }
+.twod12 .vtable td.c, .twod12 .vtable th.c { text-align: center; font-weight: bold; }
+.twod12 details.version { border: 1px solid var(--color-border-light-tertiary, #999); border-radius: 6px; padding: 4px 8px; margin: 8px 0; }
+.twod12 details.version summary { display: flex; gap: 8px; align-items: center; cursor: pointer; }
+.twod12 .vap { min-width: 44px; }
+.twod12 .vsumtext { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: monospace; font-size: 11px; opacity: .75; }
+.twod12 .vbtns { display: flex; gap: 3px; }
+/* chat cards */
+.twod12.chat .chk-title { font-weight: bold; }
+.twod12.chat .dice { display: flex; align-items: center; gap: 6px; margin: 3px 0; }
+.twod12.chat .dgroup { display: inline-flex; gap: 2px; }
+.twod12.chat .die { display: inline-flex; align-items: center; justify-content: center; min-width: 22px; height: 22px; padding: 0 3px; border: 1px solid #666; border-radius: 4px; background: rgba(255,255,255,.55); color: #111; font-weight: bold; }
+.twod12.chat .chips { display: flex; flex-wrap: wrap; gap: 4px; margin: 3px 0; }
+.twod12.chat .chip { border-radius: 10px; padding: 0 7px; font-size: 11px; }
+
+.twod12.chat .dmgbtn { margin-top: 6px; }
+.twod12.chat .dmgbtn button { width: 100%; }
+.twod12.chat .poolbox { border: 1px solid #777; border-radius: 4px; margin: 5px 0; }
+.twod12.chat .poolhead { display: flex; justify-content: space-between; background: rgba(80,80,80,.2); padding: 2px 6px; }
+.twod12.chat .comp { display: grid; grid-template-columns: 1.2fr 1fr 1fr 28px; gap: 6px; align-items: center; padding: 2px 6px; border-top: 1px solid rgba(128,128,128,.35); }
+.twod12.chat .ctotal { text-align: right; font-weight: bold; }
+.twod12.chat .cdice { display: flex; gap: 2px; }
+/* use dialog: AP as side-by-side buttons */
+.twod12 .apbtns { display: flex; margin-bottom: 8px; }
+.twod12 .apbtn { flex: 1; margin: 0; position: relative; }
+.twod12 .apbtn input { position: absolute; opacity: 0; pointer-events: none; }
+.twod12 .apbtn span { display: block; text-align: center; padding: 6px 0; border: 1px solid #777; cursor: pointer; margin-left: -1px; }
+.twod12 .apbtn:first-child span { margin-left: 0; }
+
+/* chat card layout and lines */
+.twod12.chat .ahead { justify-content: space-between; border-bottom: 1px solid #888; margin-bottom: 4px; padding-bottom: 2px; }
+.twod12.chat .dtotal { font-size: 1.25em; margin-top: 6px; padding-top: 4px; border-top: 1px solid #888; }
+.twod12.chat .die.d3 { font-size: 11px; }
+
+/* damage colors */
+.twod12.chat .poolbox { border-color: rgba(128,128,128,.6); }
+.twod12.chat .pool-B { border-color: rgba(200,90,50,.6); }
+.twod12.chat .pool-B .poolhead { background: rgba(200,90,50,.28); }
+.twod12.chat .pool-M { border-color: rgba(100,90,210,.6); }
+.twod12.chat .pool-M .poolhead { background: rgba(100,90,210,.26); }
+.twod12.chat .pool-C { border-color: rgba(60,150,150,.6); }
+.twod12.chat .pool-C .poolhead { background: rgba(60,150,150,.26); }
+/* v0.0.6 */
+.twod12.chat .tline { margin: 3px 0; font-weight: bold; }
+.twod12.chat .tline:empty { display: none; }
+.twod12.chat .dbtns { display: flex; margin-top: 6px; align-items: center; }
+/* v0.0.7 */
+.twod12.chat .dice .grow { flex: 1; }
+.twod12.chat .dbtns button, .twod12.chat .dbtns select { min-height: 0; line-height: 1; }
+.twod12.chat .dbtns button.active { background: rgba(70,120,230,.55); color: #fff; box-shadow: inset 0 0 0 1px #2a4fb0; }
+.twod12.chat .fxrow { font-weight: normal; font-style: italic; opacity: .85; font-size: 11px; }
+.twod12 .usewrap { display: flex; gap: 12px; }
+.twod12 .useleft { flex: 1; }
+.twod12 .usenotes { border-left: 1px solid #888; padding-left: 10px; }
+.twod12 .usenotes h4 { margin: 0 0 4px; }
+.twod12 .fx-drop { border: 1px dashed var(--color-border-light-tertiary, #999); border-radius: 4px; padding: 3px; text-align: center; font-size: 11px; opacity: .7; margin: 3px 0; }
+.twod12 .fxline { display: flex; gap: 6px; align-items: center; margin: 2px 0; }
+#twod12-effects { position: fixed; top: 14px; right: 64px; z-index: 60; display: flex; flex-direction: column; gap: 4px; align-items: flex-end; pointer-events: auto; }
+#twod12-effects .fx-icon { width: 36px; height: 36px; border: 1px solid #555; border-radius: 4px; background: rgba(0,0,0,.55); cursor: pointer; overflow: hidden; }
+#twod12-effects .fx-icon img { width: 100%; height: 100%; object-fit: cover; border: none; }
+/* v0.0.8 */
+.usewrap { display: flex; gap: 12px; align-items: flex-start; }
+.usewrap .useleft { flex: 1; min-width: 0; }
+.twod12 .usenotes { flex: 0 0 190px; border: 1px solid #6a5a45; border-radius: 4px; padding: 0; font-size: 12px; background: rgba(128,128,128,.08); }
+.twod12 .usenotes .unhead { background: rgba(128,128,128,.3); text-align: center; font-weight: bold; padding: 2px 4px; }
+.twod12 .usenotes ul { margin: 0; padding: 4px 8px 6px 20px; }
+.twod12 .usenotes li { margin: 2px 0 4px; }
+/* tables: pictures, icon buttons, links */
+.twod12 .setting { border: 1px solid var(--color-border-light-tertiary, #999); border-radius: 6px; padding: 4px 8px; margin: 6px 0; }
+.twod12 .shead { display: flex; justify-content: space-between; align-items: center; }
+/* v0.0.11: damage card layout */
+.twod12.chat .dtotal { position: relative; display: flex; justify-content: center; align-items: center; min-height: 24px; text-align: center; }
+.twod12.chat .dtotal .tgt { position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 28px; height: 22px; min-height: 0; padding: 0; line-height: 1; font-size: 12px; }
+.twod12.chat .dbtns button:first-child { flex: 1; padding: 0 5px; font-size: 10px; }
+/* v0.0.12: inline rolls and damage card extras */
+a.twod12-inline { display: inline-block; padding: 0 6px; border: 1px solid #777; background: rgba(128,128,128,.18); font-weight: bold; cursor: pointer; text-decoration: none; }
+a.twod12-inline:hover { background: rgba(80,130,240,.3); }
+.twod12.chat .nlb { font-size: 9px; background: #e0915a; color: #111; border-radius: 3px; padding: 0 3px; }
+.twod12.chat .dtexts { margin: 4px 0; padding: 3px 6px; border-top: 1px dotted rgba(128,128,128,.6); }
+/* v0.0.13 */
+.twod12.chat .dtotal { border-bottom: 3px solid rgba(128,128,128,.75); padding-bottom: 4px; margin-bottom: 4px; }
+.twod12.chat .applied { margin-top: 2px; font-style: italic; }
+a.twod12-inline.chatbtn { margin-left: 2px; padding: 0 5px; }
+.twod12.chat .srow { justify-content: space-between; padding: 2px 0; }
+.twod12.chat hr.sep { margin: 3px 0; border: 0; border-top: 1px solid rgba(128,128,128,.6); }
+
+.twod12.chat .stargets { margin-top: 6px; border-top: 2px solid rgba(128,128,128,.7); padding-top: 4px; }
+.twod12.builder .bsec { margin: 8px 0; }
+.twod12.builder .brow { display: grid; grid-template-columns: 1.2fr 1fr 1fr auto; gap: 4px; margin-bottom: 3px; align-items: center; }
+.twod12.builder label { margin-bottom: 4px; }
+/* v0.0.14 */
+:root { --twod12-radius: 1px; }
+.twod12 button, .twod12.chat button, a.twod12-inline, .twod12 .apbtn span { border-radius: var(--twod12-radius); }
+.twod12 .apbtn:first-child span, .twod12 .apbtn:last-child span, .twod12 .apbtn:only-child span { border-radius: var(--twod12-radius); }
+.twod12-inline-group { display: inline-flex; white-space: nowrap; vertical-align: baseline; }
+.twod12-inline-group a.twod12-inline { margin: 0; }
+.twod12-inline-group a.twod12-inline:first-child { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.twod12-inline-group a.twod12-inline.chatbtn { margin-left: -1px; padding: 0 4px; border-top-left-radius: 0; border-bottom-left-radius: 0; background: rgba(128,128,128,.32); }
+/* save card: name | check result | damage taken */
+.twod12.chat .srow { display: grid; grid-template-columns: 1fr auto minmax(60px, auto); gap: 8px; align-items: center; }
+
+.twod12.chat .sdmg { text-align: right; font-weight: bold; }
+.twod12.chat .sdmg.t1 { color: #b94646; }
+.twod12.chat .sdmg.t2 { color: #2f7d4c; }
+.twod12.chat .sdmg.t3 { color: #4a78e0; }
+.twod12.chat .ahead .tgt { height: 18px; width: 24px; min-height: 0; padding: 0; line-height: 1; margin-left: 4px; }
+/* v0.0.15: card colors, target row, save card retarget, small balloon */
+.twod12.chat { --card-color: #9c9c9c; --card-grad: rgba(156,156,156,.30); --card-head: rgba(156,156,156,.50); }
+.twod12.chat .sthead .tgt { width: 28px; height: 22px; min-height: 0; padding: 0; line-height: 1; }
+a.twod12-inline.chatbtn i { font-size: 9px; }
+/* v0.0.15b: AP icons, round damage buttons that fit */
+.twod12 .apbtn span { line-height: 1; }
+.twod12.chat .dbtns { gap: 3px; flex-wrap: nowrap; }
+.twod12.chat .dbtns button, .twod12.chat .dbtns select, .twod12.chat .dtotal .tgt { border-radius: 6px; }
+.twod12.chat .dbtns button, .twod12.chat .dbtns select { height: 24px; padding: 0 2px; font-size: 10px; font-weight: 600; text-transform: none; letter-spacing: 0; white-space: nowrap; overflow: hidden; text-overflow: clip; }
+.twod12.chat .dbtns button { flex: 1 1 0; min-width: 0; }
+.twod12.chat .dbtns select { flex: 0 0 66px; width: 66px; padding: 0 1px; font-weight: normal; }
+/* v0.0.17: chevron traits, lighter titles, save header, healing */
+.twod12.chat .sthead { display: grid; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: #444; border-bottom: 1px solid rgba(128,128,128,.6); padding-bottom: 2px; margin-bottom: 3px; }
+.twod12.chat .sthead .sname { display: flex; align-items: center; gap: 6px; }
+.twod12.chat .sthead .scol { text-align: center; }
+.twod12.chat .sthead .scol.r { text-align: right; }
+/* v0.0.18: dice on the save card */
+.twod12.chat .sdice { margin: 1px 0 3px 18px; flex-wrap: wrap; gap: 4px; }
+.twod12.chat .sdice .die { min-width: 20px; height: 20px; font-size: 12px; }
+.twod12.chat .sdice .die.d3 { min-width: 16px; height: 16px; font-size: 10px; }
+.twod12.chat .sdice .sdicon { opacity: .6; font-size: 11px; }
+.twod12.chat .sdice .dmgdice .die { background: rgba(255,255,255,.4); border-style: dashed; }
+/* v0.0.20: condensed roll dialog chips, tracker AP, generator, calc */
+.twod12 .bbchip, .twod12 .fxchip { display: inline-flex; gap: 5px; height: 24px; padding: 0 9px; border: 1px solid #4a4a4a; border-radius: 4px; background: #1d1d1d; color: #e6e6e6; font-size: 13px; cursor: pointer; user-select: none; width: auto; }
+.twod12 .bbchip i, .twod12 .fxchip i { font-size: 10px; display: none; }
+.twod12 .bbchip b { font-weight: 600; min-width: 8px; text-align: center; }
+.twod12 .bbchip:hover, .twod12 .fxchip:hover { border-color: #888; }
+.twod12 .bbchip.on i, .twod12 .fxchip:has(input:checked) i { display: inline; }
+.twod12 .bbchip.boon.on, .twod12 .fxchip.boon:has(input:checked) { border-color: #3f9a62; }
+.twod12 .bbchip.boon.on i, .twod12 .fxchip.boon:has(input:checked) i { color: #4cc27c; }
+.twod12 .bbchip.bane.on, .twod12 .fxchip.bane:has(input:checked) { border-color: #b24a4a; }
+.twod12 .bbchip.bane.on i, .twod12 .fxchip.bane:has(input:checked) i { color: #e06a6a; }
+.twod12 .fxchip input { position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0; }
+.twod12 .fxchip small { opacity: .65; font-size: 11px; }
+.twod12-ap { display: inline-flex; align-items: center; gap: 3px; margin: 0 4px; font-size: 11px; flex: none; }
+.twod12-ap input { width: 34px; height: 20px; text-align: center; padding: 0 2px; }
+.twod12-init { margin: 4px 0; width: 100%; }
+.twod12.chat .apmsg { font-size: 12px; }
+.twod12.chat .irow { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items: center; padding: 1px 0; }
+.twod12.chat .irow .dice { margin: 0; }
+.twod12 .gen .genprev { margin: 6px 0; padding: 6px 8px; border: 1px solid rgba(128,128,128,.5); border-radius: 4px; font-size: 12px; background: rgba(128,128,128,.12); }
+.twod12 .gen input[type=text] { width: 100%; }
+.twod12 .calc { font-size: 11px; opacity: .8; white-space: nowrap; }
+.twod12-ap .twod12-swap { width: 22px; height: 20px; min-height: 0; padding: 0; line-height: 1; font-size: 10px; }
+.twod12-ap.frozen input { background: rgba(80,130,240,.35); }
+/* v0.0.22: roll dialog preview, vs notes, push tip */
+.twod12 .usepreview { margin-bottom: 8px; }
+.twod12 .usepreview .chat.action { border: 1px solid rgba(128,128,128,.5); border-radius: 4px; padding: 4px 6px; font-size: 12px; }
+.twod12 .usepreview .pv-check { margin: 3px 0; font-size: 12px; }
+.twod12 .usepreview .pv-odds { opacity: .8; margin-left: 6px; }
+.twod12 .usepreview .pv-p { opacity: .7; font-weight: normal; }
+
+.twod12 .dcnote, .twod12.chat .vsrow { font-size: 11px; opacity: .85; margin: -2px 0 4px; }
+.twod12-pushtip { position: fixed; z-index: 10000; pointer-events: none; padding: 3px 8px; border-radius: 4px; background: rgba(0,0,0,.85); color: #fff; font-size: 13px; }
+.twod12-reset { margin: 4px 0; width: 100%; }
+/* v0.0.24: sheets in the look of the chat cards */
+.twod12.sheet { --sh-accent: #d6b53f; --sh-head: rgba(214,181,63,.42); --sh-grad: rgba(214,181,63,.2); --sh-line: rgba(128,128,128,.5); }
+.twod12 .tabs { gap: 2px; margin: 8px 0 4px; border-bottom: 1px solid var(--sh-line); }
+.twod12 .tabbtn { flex: none; width: auto; background: none; border: none; border-radius: 0; box-shadow: none; padding: 4px 12px; }
+.twod12 .tabbtn.active { box-shadow: inset 0 -3px 0 var(--sh-accent); font-weight: 600; }
+.twod12 h3 { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin: 12px 0 6px; padding: 3px 8px; border: none; border-left: 4px solid #444; background: linear-gradient(90deg, var(--sh-head), transparent 95%); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+.twod12 .rawwrap { margin-bottom: 10px; }
+.twod12 .rawcard { border: 1px solid var(--sh-line); border-radius: 6px; padding: 4px 8px 8px; }
+.twod12 .rawcard .rawv { margin-top: 8px; padding-top: 4px; border-top: 1px solid rgba(128,128,128,.45); }
+.twod12 .vsmark { align-self: center; text-align: center; font-weight: 600; opacity: .7; }
+.twod12.chat .endmove { margin-left: 6px; height: 22px; padding: 0 8px; font-size: 11px; line-height: 1; width: auto; }
+/* v0.0.25: category at the far right of an Action title */
+.twod12.chat .ahead .aps { align-items: center; margin-left: 8px; }
+.twod12.chat .ahead .acat { margin-left: 12px; font-weight: normal; font-style: italic; align-self: center; }
+/* v0.0.26: trait highlights, damage words, Cold, meta row */
+.twod12 .trhl { background: color-mix(in srgb, var(--tc, #777) 16%, transparent); border-radius: 3px; padding: 0 3px; }
+.twod12 .dmgword { color: var(--dc); font-weight: 600; }
+.twod12.chat .bonusrow { margin: 3px 0; padding: 1px 6px; border-left: 3px solid #4fc3e8; font-size: 12px; background: rgba(79,195,232,.12); }
+/* v0.0.28 */
+.twod12 .bbchip, .twod12 .fxchip { flex-direction: row !important; flex-wrap: nowrap; white-space: nowrap; margin: 0; line-height: 1; align-items: center; }
+.twod12 .fxchip > i, .twod12 .fxchip > span, .twod12 .fxchip > small { display: inline; position: static; }
+.twod12 .fxchip:not(:has(input:checked)) > i { display: none; }
+.twod12 .fxchip small { margin-left: 4px; }
+.twod12 .usedlg > .apbtns { margin-bottom: 8px; }
+.twod12 .setbox.oneline { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; padding: 4px 8px; }
+.twod12 .setbox.oneline > b { white-space: nowrap; }
+.twod12 .setbox.oneline .grp { display: inline-flex; flex-wrap: nowrap; align-items: center; gap: 8px; }
+.twod12 .setbox.oneline .grp > i { font-size: 11px; opacity: .65; font-style: normal; text-transform: uppercase; letter-spacing: .04em; }
+.twod12 .setbox.oneline label.inline { margin: 0; white-space: nowrap; }
+.twod12.chat.weaponcard .tiers th { width: 62px; }
+/* v0.0.30 */
+.twod12 tr.faded { opacity: .42; }
+.twod12 .tiereffect { display: block; margin: 4px 0; }
+.twod12 .tiereffect input { width: 100%; }
+.twod12 .warnline { color: #b85c20; font-size: 12px; }
+.twod12 [draggable="true"] { cursor: grab; }
+/* combat strip */
+#twod12-carousel { position: fixed; top: 6px; left: 50%; transform: translateX(-50%); z-index: 25; max-width: min(92vw, 1100px); display: flex; flex-direction: column; align-items: center; gap: 2px; pointer-events: none; font-family: var(--font-primary, sans-serif); }
+#twod12-carousel .tc-head { pointer-events: auto; display: flex; align-items: center; border-radius: 10px; background: rgba(15,15,20,.8); color: #eee; font-size: 12px; }
+#twod12-carousel .tc-head button { width: 22px; height: 18px; padding: 0; line-height: 1; font-size: 10px; background: #333; color: #eee; border: 1px solid #555; border-radius: 4px; cursor: pointer; }
+#twod12-carousel .tc-list { pointer-events: auto; display: flex; gap: 6px; padding: 6px 8px; overflow-x: auto; max-width: 100%; border-radius: 10px; background: rgba(15,15,20,.72); }
+#twod12-carousel .tc-card { flex: none; width: 66px; text-align: center; cursor: pointer; opacity: .85; transition: transform .12s, opacity .12s; }
+#twod12-carousel .tc-card.current { opacity: 1; transform: scale(1.14); margin: 0 6px; }
+#twod12-carousel .tc-portrait { position: relative; width: 56px; height: 56px; margin: 0 auto; border: 3px solid var(--tcc, #888); border-radius: 8px; overflow: hidden; background: #222; }
+#twod12-carousel .tc-portrait img { width: 100%; height: 100%; object-fit: cover; border: none; }
+#twod12-carousel .tc-card.friendly { --tcc: #4b9ad8; }
+#twod12-carousel .tc-card.hostile { --tcc: #c8503f; }
+#twod12-carousel .tc-card.neutral { --tcc: #b7b7b7; }
+#twod12-carousel .tc-card.current .tc-portrait { box-shadow: 0 0 10px 2px var(--tcc); border-color: #f0d060; }
+#twod12-carousel .tc-card.defeated { opacity: .35; filter: grayscale(1); }
+#twod12-carousel .tc-init { position: absolute; right: 0; bottom: 0; min-width: 16px; padding: 0 3px; background: rgba(0,0,0,.75); color: #fff; font-size: 11px; line-height: 15px; border-top-left-radius: 5px; }
+#twod12-carousel .tc-name { margin-top: 2px; font-size: 10px; line-height: 12px; color: #eee; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#twod12-carousel .tc-ap { display: flex; justify-content: center; gap: 3px; margin-top: 2px; }
+#twod12-carousel .dot { width: 8px; height: 8px; border-radius: 50%; border: 1px solid #aaa; background: transparent; }
+#twod12-carousel .dot.on { background: #f0d060; border-color: #f0d060; }
+/* v0.0.31: short cards, effect settings, combat strip buttons */
+.twod12.chat .ahead.clickable { cursor: pointer; }
+.twod12.chat.collapsed .ahead.clickable::after { content: "\25be"; margin-left: 8px; opacity: .6; font-size: .8em; }
+.twod12.chat:not(.collapsed) .ahead.clickable::after { content: "\25b4"; margin-left: 8px; opacity: .6; font-size: .8em; }
+.twod12.chat.action.collapsed > .traits, .twod12.chat.action.collapsed > .trow, .twod12.chat.action.collapsed > .vsrow, .twod12.chat.action.collapsed > .chk, .twod12.chat.action.collapsed > .fxrow, .twod12.chat.action.collapsed > .bonusrow, .twod12.chat.action.collapsed > table.tiers tr:not(.hit):not(.up), .twod12.chat.action.collapsed > .tline, .twod12.chat.action.collapsed > button { display: none; }
+.twod12.chat.dmg.collapsed > *:not(.ahead):not(.dtotal) { display: none; }
+.twod12.chat.dmg.collapsed > .dtotal .tgt { display: none; }
+.twod12 details.setting { border: 1px solid var(--sh-line, rgba(128,128,128,.5)); border-radius: 4px; margin: 6px 0; padding: 2px 8px 6px; }
+.twod12 details.setting > summary.shead { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 3px 0; list-style: none; }
+.twod12 details.setting > summary.shead > button { margin-left: auto; width: 22px; height: 22px; padding: 0; }
+.twod12 details.setting > summary.shead::-webkit-details-marker { display: none; }
+.twod12 details.setting > summary.shead::before { content: "\25b8"; opacity: .6; }
+.twod12 details.setting[open] > summary.shead::before { content: "\25be"; }
+#twod12-carousel .tc-head .tc-btn { width: auto; padding: 0 8px; height: 18px; font-size: 11px; }
+#twod12-carousel .tc-prep { opacity: .85; font-style: italic; }
+/* v0.0.32 */
+#twod12-carousel .tc-head { width: 100%; box-sizing: border-box; justify-content: space-between; gap: 10px; padding: 2px 8px; }
+#twod12-carousel .tc-head .tc-side { display: flex; gap: 4px; min-width: 90px; }
+#twod12-carousel .tc-head .tc-side.right { justify-content: flex-end; }
+#twod12-apfloat { position: fixed; z-index: 26; display: none; gap: 4px; padding: 3px 5px; border-radius: 8px; background: rgba(15,15,20,.92); box-shadow: 0 2px 8px rgba(0,0,0,.5); }
+#twod12-apfloat button { width: 24px; height: 20px; padding: 0; line-height: 1; font-size: 13px; background: #333; color: #eee; border: 1px solid #666; border-radius: 4px; cursor: pointer; }
+#twod12-apfloat button:hover { background: #555; }
+
+.twod12 .talentslot { margin: 4px 0; }
+#twod12-carousel .tc-card { --tcc: #888; }
+.combat-tracker li.combatant.tc-group, #combat-tracker li.combatant.tc-group { border-left: 5px solid var(--tcc); }
+/* forced tier (testing) */
+.twod12 .usepreview tr[data-t] { cursor: pointer; }
+.twod12 .usepreview tr.forced, .twod12.chat .tiers tr.forced { outline: 2px solid #9b59d0; background: rgba(155,89,208,.2); }
+.twod12.chat .tiers tr.forced th { color: #7b3fb0; }
+.twod12 .forcehint { margin: 2px 0 0; }
+.twod12 a.twod12-inline.spent { opacity: .4; text-decoration: line-through; pointer-events: none; }
+/* v0.0.38: AP outside your turn (reactions) are teal; the roll dialog layout; class choices */
+#twod12-carousel .tc-card:not(.current) .dot.on { background: #43b3a8; border-color: #43b3a8; }
+#twod12-carousel .tc-card.frozen .dot.on { background: #6fa8ff; border-color: #6fa8ff; }
+.twod12.usedlg .rollfields { display: flex; flex-direction: column; gap: 6px; }
+.twod12.usedlg .rf-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
+.twod12.usedlg .rf-label { min-width: 54px; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; opacity: .7; }
+.twod12.usedlg label.mini { display: inline-flex; flex-direction: row; align-items: center; gap: 4px; margin: 0; font-size: 12px; }
+.twod12.usedlg input.num { width: 52px; height: 24px; text-align: center; }
+.twod12.usedlg .bbgroup { display: inline-flex; gap: 6px; margin-left: auto; }
+.twod12.usedlg .rf-row.special { border-top: 1px dashed rgba(128,128,128,.4); padding-top: 6px; }
+.twod12.classchoices .choicegroup .form-fields { display: flex; flex-wrap: wrap; gap: 4px 12px; }
+.twod12.classchoices .decided { margin: 6px 0 0; padding-left: 18px; font-size: 12px; opacity: .8; }
+.twod12.chat .rmark, .twod12 .rmark { display: inline-block; margin-left: 4px; padding: 0 5px; border-radius: 4px; background: #43b3a8; color: #fff; font: 700 11px/16px system-ui, sans-serif; }
+.twod12.chat .cardtargets { margin: 6px 12px 0; opacity: .85; }
+.twod12 .dmgreport table { width: 100%; border-collapse: collapse; }
+.twod12 .dmgreport th, .twod12 .dmgreport td { padding: 3px 6px; border-bottom: 1px solid rgba(128,128,128,.3); }
+.twod12 .dmgreport td.c, .twod12 .dmgreport th { text-align: center; }
+.twod12 .dmgreport td:first-child { text-align: left; }
+/* two-letter damage subtypes */
+.twod12.chat .comp.sub-Bl, .twod12.chat .comp.sub-Pi, .twod12.chat .comp.sub-Sl { background: rgba(128,128,128,.18); }
+.twod12.chat .comp.sub-Ho { background: rgba(235,205,70,.18); }
+.twod12.chat .comp.sub-Ps { background: rgba(130,95,205,.15); }
+.twod12.chat .comp.sub-Co { background: rgba(79,195,232,.2); }
+.twod12.chat .comp.sub-Ac { background: rgba(124,179,66,.18); }
+.twod12.chat .comp.sub-El { background: rgba(61,139,253,.16); }
+.twod12.chat .comp.sub-Fi { background: rgba(232,98,42,.18); }
+.twod12.chat .comp.sub-Fo { background: rgba(176,106,216,.16); }
+.twod12.chat .comp.sub-Th { background: rgba(92,127,163,.18); }
+.twod12.chat .comp.sub-Un { background: rgba(122,59,82,.2); }
+/* v0.0.42: costs are text badges */
+.twod12 .apmark, .twod12.chat .apmark { display: inline-block; margin-right: 3px; padding: 0 6px; border-radius: 4px; background: #5b6fd0; color: #fff; font: 700 11px/17px system-ui, sans-serif; letter-spacing: .02em; }
+.twod12 .rmark { margin-right: 3px; }
+/* What a Talent granted by a choice: a dotted line from the Talent, always visible, each one expandable */
+/* ===================== v0.0.44: character and NPC sheet (sidebar layout) ===================== */
+.twod12.sheet.v44 { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 0; height: 100%; font-size: 13px; }
+.twod12.sheet.v44 a { cursor: pointer; }
+.twod12.sheet.v44 .sb { border-right: 1px solid rgba(128,128,128,.3); padding: 8px 10px 10px 4px; overflow-y: auto; }
+
+.twod12.sheet.v44 .hpnum { border-bottom: 1px dotted rgba(128,128,128,.8); font-weight: 600; }
+.twod12.hptip { font-size: 12px; line-height: 1.5; text-align: left; }
+.twod12.hptip .hint { opacity: .75; border-top: 1px solid rgba(128,128,128,.4); margin-top: 3px; padding-top: 3px; font-size: 11px; }
+.twod12.sheet.v44 .downbanner { display: flex; justify-content: space-between; margin-top: 6px; padding: 4px 8px; border-radius: 6px; background: #FCEBEB; color: #791F1F; }
+
+.twod12.sheet.v44 .pips span { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #1D9E75; margin: 0 2px 2px 0; box-sizing: border-box; }
+.twod12.sheet.v44 .pips span.u { background: transparent; border: 1px solid rgba(128,128,128,.7); }
+
+.twod12.sheet.v44 .cond2 { display: flex; align-items: center; gap: 6px; padding: 3px 6px; margin-bottom: 3px; border: 1px solid rgba(128,128,128,.35); border-radius: 6px; font-size: 12px; }
+.twod12.sheet.v44 .cond2 img { width: 16px; height: 16px; border: none; flex: none; }
+
+.twod12.sheet.v44 .cond2 .rm { opacity: 0; }
+.twod12.sheet.v44 .cond2:hover .rm { opacity: .7; }
+.twod12.sheet.v44 .mn { display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
+.twod12.sheet.v44 .tabs2 { display: flex; gap: 14px; border-bottom: 1px solid rgba(128,128,128,.35); padding: 0 10px; flex: none; }
+.twod12.sheet.v44 .tabs2 .tabbtn { padding: 7px 0 6px; border-bottom: 2px solid transparent; }
+.twod12.sheet.v44 .tabs2 .tabbtn.active { opacity: 1; border-bottom-color: currentColor; }
+.twod12.sheet.v44 .mn > .tab { overflow-y: auto; padding: 0 8px 10px; flex: 1; }
+.twod12.sheet.v44 .tool { display: flex; align-items: center; gap: 6px; padding: 8px 0 6px; flex-wrap: wrap; }
+.twod12.sheet.v44 .seg { display: inline-flex; border: 1px solid rgba(128,128,128,.55); border-radius: 4px; overflow: hidden; }
+.twod12.sheet.v44 .seg a { font-size: 11px; padding: 2px 8px; border-right: 1px solid rgba(128,128,128,.35); }
+.twod12.sheet.v44 .seg a:last-child { border-right: none; }
+.twod12.sheet.v44 .seg a.on { background: rgba(128,128,128,.85); color: #fff; opacity: 1; }
+.twod12.sheet.v44 .seg.right { margin-left: auto; }
+.twod12.sheet.v44 .sortsel { width: auto; height: 22px; font-size: 11px; padding: 0 4px; }
+.twod12.sheet.v44 .gh { display: flex; align-items: center; gap: 6px; font-size: 11px; padding: 8px 0 3px; cursor: default; }
+.twod12.sheet.v44 .gh[data-action] { cursor: pointer; }
+.twod12.sheet.v44 .gh::after { content: ""; flex: 1; height: 1px; background: rgba(128,128,128,.3); }
+.twod12.sheet.v44 .gh .ghr { order: 2; margin-left: 6px; font-size: 11px; }
+.twod12.sheet.v44 .gh.granted { color: #0F6E56; opacity: 1; }
+.twod12.sheet.v44 .arow { display: grid; grid-template-columns: 12px 22px minmax(0, 1fr) 66px minmax(0, 150px) 14px; align-items: center; column-gap: 6px; padding: 4px 6px; border-bottom: 1px solid rgba(128,128,128,.2); box-shadow: inset 3px 0 0 var(--fq, #888); }
+.twod12.sheet.v44 .arow:hover { background: rgba(128,128,128,.08); }
+
+.twod12.sheet.v44 .arow .grip { cursor: grab; }
+
+.twod12.sheet.v44 .arow .aic { width: 22px; height: 22px; border: none; border-radius: 3px; cursor: pointer; }
+.twod12.sheet.v44 .arow .anm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
+.twod12.sheet.v44 .arow .acost, .twod12.sheet.v44 .bbtn .acost { justify-self: center; white-space: nowrap; }
+.twod12.sheet.v44 .arow .atr { font-size: 10px; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.twod12.sheet.v44 .arow .atr .more { margin-left: 4px; padding: 0 4px; border: 1px solid rgba(128,128,128,.6); border-radius: 3px; }
+.twod12.sheet.v44 .arow .aexp { font-size: 11px; }
+.twod12.sheet.v44 .arow.open .aexp i { transform: rotate(180deg); }
+.twod12.sheet.v44 .arow .adetail { grid-column: 1 / -1; margin: 4px 0 2px; }
+.twod12.sheet.v44 .arow.faded .anm, .twod12.sheet.v44 .arow.faded .aic, .twod12.sheet.v44 .arow.faded .acost { opacity: .45; }
+.twod12.sheet.v44 .arow.granted { box-shadow: inset 3px 0 0 #1D9E75; }
+.twod12.sheet.v44 .arow .asrc { grid-column: 4 / 7; font-size: 10px; opacity: .75; }
+.twod12.sheet.v44 .uses span { display: inline-block; box-sizing: border-box; width: 9px; height: 9px; border-radius: 2px; border: 1px solid #1D9E75; margin-left: 3px; vertical-align: -1px; }
+.twod12.sheet.v44 .uses span.f { background: #1D9E75; }
+.twod12.sheet.v44 .alist.condensed { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 10px; }
+.twod12.sheet.v44 .alist.condensed .arow { grid-template-columns: 22px minmax(0, 1fr) 66px; row-gap: 0; }
+
+.twod12.sheet.v44 .alist.condensed .arow .atr { grid-column: 2 / 4; text-align: left; }
+
+.twod12.sheet.v44 .bbtn { display: grid; grid-template-columns: minmax(0, 1fr) 62px; align-items: center; padding: 4px 6px; border: 1px solid rgba(128,128,128,.4); border-radius: 4px; }
+.twod12.sheet.v44 .bbtn:hover { background: rgba(128,128,128,.08); }
+
+.twod12.sheet.v44 .bbtn.faded .acost { opacity: .45; }
+.twod12.sheet.v44 .emptyhint { font-size: 12px; padding: 10px 4px; border: 1px dashed rgba(128,128,128,.5); border-radius: 6px; text-align: center; margin-top: 6px; }
+
+.twod12.sheet.v44 .wcard { position: relative; border: 1px solid rgba(128,128,128,.4); border-radius: 6px; padding: 7px 8px; }
+
+.twod12.sheet.v44 textarea.notes { width: 100%; min-height: 420px; margin-top: 8px; font-size: 13px; }
+.twod12.sheet.v44 .apmark { font-size: 10px; line-height: 16px; }
+.twod12 .apmark.free { background: #5F5E5A; }
+/* sheet: no faded text; hierarchy by size and weight */
+.twod12.sheet.v44 .tabs2 .tabbtn, .twod12.sheet.v44 .seg a, .twod12.sheet.v44 .gh, .twod12.sheet.v44 .arow .atr, .twod12.sheet.v44 .emptyhint, .twod12.sheet.v44 .asrc, .twod12.sheet.v44 .arow .aexp { opacity: 1; }
+
+.twod12.sheet.v44 .gh { font-weight: 600; }
+.twod12.sheet.v44 .tabs2 .tabbtn { font-weight: 500; }
+.twod12.sheet.v44 .tabs2 .tabbtn.active { font-weight: 700; }
+
+/* the extra fields in the same style as the rest of the sidebar */
+
+/* ===================== v0.0.47: chat cards, one consolidated block ===================== */
+.twod12.chat.action, .twod12.chat.dmg { border-radius: 6px; overflow: hidden; padding: 0 0 6px; }
+.twod12.chat.action > *, .twod12.chat.dmg > * { margin-left: 8px; margin-right: 8px; }
+/* title bar: the name has the room; the cost on top of the category, small, on the right */
+.twod12.chat .ahead { display: flex; align-items: flex-start; gap: 8px; margin: 0 0 6px; padding: 5px 8px; border: none; font-size: 1.05em; }
+.twod12.chat.action > .ahead, .twod12.chat.dmg > .ahead { margin: 0 0 6px; }
+.twod12.chat .ahead > b { flex: 1; min-width: 0; line-height: 1.25; }
+.twod12.chat .ahead .aright { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; flex: none; max-width: 40%; }
+.twod12.chat .ahead .aps { display: inline-flex; gap: 3px; }
+.twod12.chat .ahead .acat { font-size: .72em; line-height: 1.1; text-align: right; opacity: 1; white-space: normal; }
+.twod12.chat .ahead .apmark { background: rgba(255,255,255,.22); color: inherit; margin: 0; }
+.twod12.chat .ahead .rmark { margin: 0; }
+.twod12.chat .flavor { font-style: italic; opacity: .75; margin-bottom: 4px; }
+.twod12.chat.action .traits { display: block; font-style: normal; opacity: 1; margin: 0 0 3px; }
+/* the Frequency line, Requirements, Trigger: all the same size, no fading */
+.twod12.chat .trow { display: block; background: none; padding: 1px 0; opacity: 1; font-size: 1em; }
+.twod12.chat .trow .sep { color: #BA7517; opacity: 1; margin: 0 5px; font-size: .75em; vertical-align: .1em; }
+.twod12.chat .trow .freq { font-weight: 600; }
+.twod12.chat hr.cdiv { border: 0; border-top: 1px solid rgba(128,128,128,.45); margin: 6px 8px; }
+/* the roll: one line, with room on both sides */
+.twod12.chat .chk { margin-top: 2px; margin-bottom: 2px; padding: 0 2px; }
+.twod12.chat .chkline { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; }
+.twod12.chat .chkline .chk-title { font-weight: 600; background: none; padding: 0; }
+.twod12.chat .chkline .dice { display: inline-flex; align-items: center; gap: 3px; margin: 0; }
+.twod12.chat .chkline .modv { font-weight: 600; }
+
+.twod12.chat .chk .chips { margin: 3px 0 0; }
+/* the tiers: always aligned. The rolled tier is green, a better tier from Doubles is blue, both with a faint background */
+.twod12.chat table.tiers { width: 100%; border-collapse: collapse; margin: 0; table-layout: fixed; border: none; }
+.twod12.chat table.tiers tr, .twod12.chat table.tiers tr:nth-child(even), .twod12.chat table.tiers tr:nth-child(odd) { background: transparent; border: none; border-top: 1px solid rgba(128,128,128,.3); }
+.twod12.chat table.tiers tr:first-child { border-top: none; }
+.twod12.chat table.tiers th { width: 64px; text-align: left; vertical-align: top; font-weight: 600; opacity: 1; padding: 3px 4px 3px 8px; white-space: nowrap; box-shadow: inset 3px 0 0 transparent; }
+.twod12.chat table.tiers td { padding: 3px 8px 3px 4px; vertical-align: top; }
+
+.twod12.chat table.tiers tr.forced { background: rgba(155,89,208,.12); }
+.twod12.chat table.tiers tr.forced > th { box-shadow: inset 3px 0 0 #9B59D0; }
+.twod12.chat table.tiers tr.hit td, .twod12.chat table.tiers tr.up td, .twod12.chat table.tiers tr.forced td { font-weight: 600; }
+.twod12.chat table.tiers tr.crit:not(.up) th, .twod12.chat table.tiers tr.crit:not(.up) td { opacity: .55; }
+.twod12.chat .tcell { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.twod12.chat .tcell .ttxt { flex: 1; min-width: 0; }
+.twod12.chat .rtag { flex: none; margin: 1px 0 0 6px; padding: 0 6px; border-radius: 4px; font-size: 10px; font-weight: 500; line-height: 16px; float: none; }
+
+.twod12.chat .rtag.forced { background: rgba(155,89,208,.22); color: #5B2A91; }
+/* odds: centered under the tiers, above the Effects */
+.twod12.chat .oddsrow { text-align: center; margin: 4px 8px 2px; font-size: .9em; }
+/* effects: a bold label and slightly faded text, no box */
+.twod12.chat .effects, .twod12.chat.action .effects { border: none; margin-top: 6px; }
+.twod12.chat .effects.sep, .twod12.chat.action .effects.sep { border-top: none; margin-top: 6px; padding-top: 4px; }
+.twod12.chat .effects .eh { font-size: 1em; font-weight: 600; opacity: 1; margin-bottom: 1px; }
+.twod12.chat .vtabs { display: flex; gap: 4px; margin: 4px 0 2px 8px; }
+.twod12.chat .vtab { cursor: pointer; opacity: .45; }
+.twod12.chat .vtab.on { opacity: 1; }
+.twod12.chat .rawv[hidden] { display: none; }
+/* ===================== the damage card, same look ===================== */
+.twod12.chat.dmg .chip, .twod12.chat.dmg .chips span { display: inline-block; font-size: 11px; padding: 0 8px; border-radius: 10px; border: 1px solid rgba(128,128,128,.5); background: transparent; }
+.twod12.chat.dmg .poolbox { border-radius: 4px; margin: 6px 8px; overflow: hidden; }
+.twod12.chat.dmg .poolhead { display: flex; justify-content: space-between; padding: 3px 8px; font-weight: 600; border-left: 3px solid var(--pc, #888780); background: color-mix(in srgb, var(--pc, #888780) 18%, transparent); }
+.twod12.chat.dmg .pool-B { --pc: #E24B4A; }
+.twod12.chat.dmg .pool-M { --pc: #7F77DD; }
+.twod12.chat.dmg .pool-C { --pc: #1D9E75; }
+.twod12.chat.dmg .pool-N { --pc: #888780; }
+.twod12.chat.dmg .comp { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto 34px; column-gap: 8px; align-items: center; padding: 3px 8px 3px 5px; border-left: 3px solid var(--sc, #888780); border-top: 1px solid rgba(128,128,128,.25); background: color-mix(in srgb, var(--sc, #888780) 9%, transparent); }
+.twod12.chat.dmg .comp .ctotal { text-align: right; font-weight: 600; }
+.twod12.chat.dmg .dtotal { position: relative; display: flex; justify-content: center; align-items: center; margin: 6px 8px 2px; padding: 5px 0 2px; font-size: 1.2em; font-weight: 600; min-height: 24px; }
+.twod12.chat.dmg .dtotal .tgt { position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 28px; height: 22px; padding: 0; border-radius: 4px; }
+.twod12.chat.dmg .dbtns { display: flex; gap: 4px; margin: 6px 8px 0; align-items: center; flex-wrap: nowrap; }
+.twod12.chat.dmg .dbtns button, .twod12.chat.dmg .dbtns select { flex: 1 1 0; min-width: 0; height: 26px; line-height: 1; padding: 0 6px; font-size: 11px; font-weight: 600; letter-spacing: 0; text-transform: none; border-radius: 4px; white-space: nowrap; }
+.twod12.chat.dmg .dbtns button:first-child { flex: 1 1 0; padding: 0 6px; font-size: 11px; }
+.twod12.chat.dmg .dbtns select { font-weight: 500; }
+.twod12.chat.dmg .oddsrow { text-align: center; }
+.twod12.chat.dmg .tline { margin: 4px 8px 0; text-align: center; }
+/* v0.0.49: trait chips (their rule was lost in the consolidation), collapsed cards, targets line, Save card */
+.twod12 .tchip { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tt) 35%, transparent); display: inline-block; font-size: 11px; line-height: 16px; padding: 0 7px; margin: 0 3px 3px 0; border-radius: 4px; background: var(--tb); color: var(--tt); font-weight: 500; font-style: normal; text-decoration: none; }
+.twod12.chat.action.collapsed > hr.cdiv, .twod12.chat.action.collapsed > .oddsrow { display: none; }
+.twod12.chat .cardtargets { display: flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 12px; font-weight: 600; }
+.twod12.chat .cardtargets .tgt { flex: none; width: 26px; height: 22px; min-height: 0; padding: 0; line-height: 1; border-radius: 4px; }
+.twod12.chat.savecard .srow button { width: auto; height: 22px; min-height: 0; padding: 0 10px; font-size: 11px; line-height: 1; justify-self: center; }
+.twod12.chat.savecard .srow { grid-template-columns: minmax(0, 1fr) auto minmax(60px, auto); }
+/* v0.0.51: cards with no Action color (inline damage, Initiative, Rest...) get a light title bar with normal text */
+.twod12.chat .ahead { background: var(--card-color, rgba(128,128,128,.16)); color: var(--card-text, inherit); }
+.twod12.chat:not([style*="--card-color"]) .ahead .apmark { background: #5b6fd0; color: #fff; }
+/* damage card: a line under the total too */
+/* Save card: each tier row tinted like the result it gives (red, green, blue), faint, with a side bar */
+.twod12.chat.savecard table.tiers tr.t1 { background: rgba(200,60,60,.12); }
+.twod12.chat.savecard table.tiers tr.t1 > th { box-shadow: inset 3px 0 0 #C84B4B; }
+.twod12.chat.savecard table.tiers tr.t2 { background: rgba(60,140,90,.12); }
+.twod12.chat.savecard table.tiers tr.t2 > th { box-shadow: inset 3px 0 0 #3C8C5A; }
+.twod12.chat.savecard table.tiers tr.t3 { background: rgba(70,120,230,.12); }
+.twod12.chat.savecard table.tiers tr.t3 > th { box-shadow: inset 3px 0 0 #4678E6; }
+/* v0.0.53: Wounds as two rows, each with its table; the health bar parts have square ends */
+
+/* ===== v0.0.54: Talents and Features tab (rows like the Actions tab) and clickable Attribute boxes ===== */
+
+.twod12.sheet.v44 details.tfitem { border-bottom: 1px solid rgba(128,128,128,.2); }
+.twod12.sheet.v44 details.tfitem > summary { list-style: none; }
+.twod12.sheet.v44 details.tfitem > summary::-webkit-details-marker { display: none; }
+.twod12.sheet.v44 .tfrow { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto auto 44px 14px; align-items: center; column-gap: 8px; padding: 4px 6px; cursor: pointer; }
+.twod12.sheet.v44 .tfrow:hover { background: rgba(128,128,128,.08); }
+.twod12.sheet.v44 .tfrow .aic { width: 22px; height: 22px; border: none; border-radius: 3px; cursor: pointer; }
+.twod12.sheet.v44 .tfname { font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.twod12.sheet.v44 .tfcost { white-space: nowrap; }
+.twod12.sheet.v44 .tfsub { font-size: 11px; text-align: right; white-space: nowrap; }
+.twod12.sheet.v44 .tfbtns { display: flex; justify-content: flex-end; align-items: center; gap: 10px; opacity: 0; }
+.twod12.sheet.v44 .tfrow:hover .tfbtns { opacity: 1; }
+.twod12.sheet.v44 .tfbtns a { font-size: 12px; line-height: 1; }
+.twod12.sheet.v44 .tfexp { font-size: 11px; justify-self: end; transition: transform .15s; }
+.twod12.sheet.v44 details[open] > .tfrow .tfexp { transform: rotate(180deg); }
+.twod12.sheet.v44 .tfbody { font-size: 12px; }
+.twod12.sheet.v44 .tfbody .traits { margin-bottom: 3px; }
+
+.twod12.sheet.v44 .tfitem.locked .tfname, .twod12.sheet.v44 .tfitem.locked .aic, .twod12.sheet.v44 .tfitem.locked .tfsub { opacity: .5; }
+.twod12.sheet.v44 .tfslot { display: flex; align-items: center; gap: 6px; margin: 4px 0; padding: 6px 10px; border: 1px dashed rgba(128,128,128,.6); border-radius: 6px; font-size: 12px; }
+.twod12.sheet.v44 .tfslot:hover { background: rgba(128,128,128,.08); }
+.twod12.sheet.v44 .tfslot .tfslotsrc { margin-left: auto; font-size: 11px; }
+
+/* v0.0.55: Talent and Feature cards (plain title bar) and the cards inside expanded rows */
+.twod12.chat.infocard .anote { margin-top: 4px; }
+.twod12.chat.infocard .iblock { margin-top: 6px; }
+.twod12.chat.infocard .iblock .eh { font-weight: 600; }
+.twod12.chat.infocard .ikid { display: flex; align-items: center; gap: 6px; margin: 2px 0 0 4px; padding: 2px 0 2px 10px; border-left: 2px dotted rgba(128,128,128,.6); }
+.twod12.sheet.v44 .tfbody { padding: 4px 4px 8px 30px; }
+.twod12.sheet.v44 .tfbody:empty { display: none; }
+
+/* v0.0.56: trait chips keep the card's side margin (a card rule had reset it to 0) */
+.twod12.chat.action > .traits, .twod12.chat.dmg > .traits { margin-left: 8px; margin-right: 8px; }
+.twod12.sheet.v44 .tfbody .tferr { font-size: 12px; color: #A32D2D; }
+
+/* v0.0.57: Size box, Barehanded note, Area row */
+
+.twod12.chat .arearow { margin-top: 3px; }
+
+/* ===== Parchment chat cards (v0.0.69) ===== */
+@font-face { font-family: "Cinzel"; src: url("../fonts/cinzel-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "Lilita One"; src: url("../fonts/lilita-one.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Cinzel"; src: url("../fonts/cinzel-700.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+.twod12.chat.action, .twod12.chat.dmg { background: #f4ecdc; border: 1px solid #c8b48a; color: #2c2c2a; }
+.twod12.chat.action > .ahead, .twod12.chat.dmg > .ahead { border-bottom: 2px solid #EF9F27; }
+.twod12.chat .ahead > b { font-family: "Cinzel", "Palatino Linotype", "Book Antiqua", Georgia, serif; font-weight: 700; letter-spacing: .3px; }
+.twod12.chat.action .flavor { color: #6b5a3a; opacity: 1; }
+.twod12.chat hr.cdiv { border-top-color: #d6c9a8; }
+.twod12.chat .orn { display: flex; align-items: center; gap: 6px; color: #BA7517; font-size: 11px; line-height: 1; margin: 7px 8px; }
+.twod12.chat .orn::before, .twod12.chat .orn::after { content: ""; flex: 1; border-top: 1px solid #d6c9a8; }
+.twod12.chat.action .chk-title { flex-basis: 100%; font-family: "Cinzel", Georgia, serif; font-weight: 700; }
+/* d12 faces as diamonds; a 12 and the dice it adds in gold; Doubles in blue; a dropped die faded and struck */
+.twod12.chat .die.d12 { position: relative; isolation: isolate; min-width: 26px; height: 26px; padding: 0; border: none; background: transparent; color: #2c2c2a; font-weight: 600; font-size: 11px; }
+.twod12.chat .die.d12::before { content: ""; position: absolute; inset: 4px; transform: rotate(45deg); background: #fff; border: 1.5px solid #5f5e5a; border-radius: 4px; z-index: -1; }
+.twod12.chat .die.d12.boom, .twod12.chat .die.d12.chain { background: transparent; }
+.twod12.chat .die.d12.boom::before, .twod12.chat .die.d12.chain::before { border-color: #BA7517; background: #FAEEDA; }
+.twod12.chat .die.d12.chain { min-width: 20px; height: 20px; font-size: 10px; }
+.twod12.chat .die.d12.chain::before { inset: 3px; }
+.twod12.chat .die.d12.dbl { background: transparent; color: #2c2c2a; }
+.twod12.chat .die.d12.dbl::before { border-color: #185FA5; background: #E6F1FB; }
+.twod12.chat .dlink { color: #BA7517; font-size: 10px; align-self: center; margin: 0 -1px; }
+.twod12.chat .dgroup.dropped { opacity: .45; }
+.twod12.chat .dgroup.dropped .die { text-decoration: line-through; }
+/* boon and bane dice: small squares, green and red */
+.twod12.chat .dgroup.boon, .twod12.chat .dgroup.bane { background: transparent; padding: 0; }
+.twod12.chat .dgroup.boon small, .twod12.chat .dgroup.bane small { display: none; }
+.twod12.chat .die.d3 { width: 18px; min-width: 18px; height: 18px; padding: 0; border-radius: 3px; font-weight: 600; }
+.twod12.chat .die.d3.boon { background: #C0DD97; color: #27500A; border: 1px solid #639922; }
+.twod12.chat .die.d3.bane { background: #F7C1C1; color: #791F1F; border: 1px solid #E24B4A; }
+/* the total and the DC in a shield: green when beaten, red when not */
+.twod12.chat .chkline .shield { margin-left: auto; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; min-width: 44px; height: 50px; padding: 0 4px; border: 1.5px solid #8a7650; background: #fbf7ee; color: #2c2c2a; border-radius: 4px 4px 16px 16px; line-height: 1.05; }
+.twod12.chat .shield .rtotal { font-size: 16px; font-weight: 600; }
+.twod12.chat .shield .vsdc { font-size: 10px; border-top: 1px solid #c8b48a; padding-top: 1px; margin-top: 1px; }
+.twod12.chat .shield.win { border-color: #3B6D11; background: #EAF3DE; color: #173404; }
+.twod12.chat .shield.win .vsdc { border-top-color: #97C459; color: #27500A; }
+.twod12.chat .shield.lose { border-color: #A32D2D; background: #FCEBEB; color: #501313; }
+.twod12.chat .shield.lose .vsdc { border-top-color: #F09595; color: #791F1F; }
+/* chips under the roll: room under the dice; helping green, hurting red, Doubles blue, Critical gold */
+.twod12.chat .chk .chips { margin-top: 6px; }
+.twod12.chat .chip { background: transparent; border: 1px solid #c8b48a; color: #6b5a3a; }
+.twod12.chat .chip.boon { background: #EAF3DE; border-color: #97C459; color: #27500A; }
+.twod12.chat .chip.bane { background: #FCEBEB; border-color: #F09595; color: #791F1F; }
+.twod12.chat .chip.dbl { background: #E6F1FB; border-color: #85B7EB; color: #0C447C; }
+.twod12.chat .chip.crit { background: #FAEEDA; border-color: #EF9F27; color: #633806; }
+/* tier rows: ribbons */
+.twod12.chat table.tiers tr.hit { background: #EAF3DE; }
+.twod12.chat table.tiers tr.hit > th { box-shadow: inset 3px 0 0 #3B6D11; }
+.twod12.chat table.tiers tr.hit.fail { background: #FCEBEB; }
+.twod12.chat table.tiers tr.hit.fail > th { box-shadow: inset 3px 0 0 #A32D2D; }
+.twod12.chat table.tiers tr.hit.base { background: transparent; }
+.twod12.chat table.tiers tr.hit.base > th { box-shadow: none; border-left: 3px dashed #97C459; }
+.twod12.chat table.tiers tr.hit.base td { font-weight: normal; }
+.twod12.chat table.tiers tr.up { background: #E6F1FB; }
+.twod12.chat table.tiers tr.up > th { box-shadow: inset 3px 0 0 #185FA5; }
+.twod12.chat table.tiers tr.crit.up { background: #FAEEDA; }
+.twod12.chat table.tiers tr.crit.up > th { box-shadow: inset 3px 0 0 #BA7517; }
+.twod12.chat table.tiers th { color: #6b5a3a; }
+.twod12.chat .rtag.rolled { background: #3B6D11; color: #EAF3DE; }
+.twod12.chat .rtag.rolled.fail { background: #A32D2D; color: #FCEBEB; }
+.twod12.chat .rtag.rolled.small { background: transparent; color: #3B6D11; }
+.twod12.chat .rtag.dbl { background: #185FA5; color: #E6F1FB; }
+.twod12.chat .rtag.critt { background: #BA7517; color: #FAEEDA; }
+.twod12.chat .oddsrow { color: #6b5a3a; opacity: 1; margin-top: 0; }
+/* Effects: a gold line on the side, grey when they don't apply */
+.twod12.chat .effects, .twod12.chat.action .effects { background: none; border-radius: 0; border-left: 3px solid #BA7517; padding: 2px 0 2px 8px; color: #412402; }
+.twod12.chat .effects.off, .twod12.chat.action .effects.off { border-left-color: #d6c9a8; color: #888780; opacity: 1; }
+.twod12.chat.action .dmgbtn button, .twod12.chat.dmg .dmgbtn button { background: #fbf7ee; border: 1px solid #8a7650; color: #2c2c2a; }
+/* damage: heart for Body, brain for Mind, each type in its color */
+.twod12 .dt-body { color: #A32D2D; }
+.twod12 .dt-mind { color: #534AB7; }
+.twod12 .dt-choose i { font-size: .85em; }
+.twod12 .dtype { font-weight: 600; white-space: nowrap; }
+   /* Electricity: a yellow bolt, the word in mustard */
+.twod12 img.dt-img { display: inline-block !important; width: 12px !important; height: 12px !important; max-width: none; margin: 0 2px 0 0 !important; border: none !important; vertical-align: -1px; filter: brightness(0) opacity(.6); }
+
+/* Sheet: Recovery as a wide button under Initiative and Senses */
+
+/* Item sheet: Area settings on two compact lines */
+.twod12 .areaedit { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin: 4px 0; }
+.twod12 .areaedit select, .twod12 .areaedit input[type="number"] { width: auto !important; flex: 0 0 auto !important; }
+.twod12 .areaedit input[type="number"] { width: 4em !important; }
+.twod12 .areaedit label.inline { display: inline-flex !important; align-items: center; gap: 4px; width: auto !important; margin: 0; }
+.twod12 .areaedit .aebreak { flex-basis: 100%; height: 0; }
+
+/* ===== v0.0.70 fixes ===== */
+/* Collapsed cards: no dividers */
+.twod12.chat.action.collapsed > .orn, .twod12.chat.dmg.collapsed > .orn { display: none; }
+/* The roll dialog's preview: the tier table on parchment, with full-strength text (not the dialog's dark rows) */
+.twod12.chat.pv table.tiers, .twod12.chat.pv table.tiers tbody, .twod12.chat.pv table.tiers tr, .twod12.chat.pv table.tiers th, .twod12.chat.pv table.tiers td { background: transparent; color: #2c2c2a; opacity: 1; }
+.twod12.chat.pv table.tiers th { color: #6b5a3a; }
+.twod12.chat.pv table.tiers tr { border-top: 1px solid #e3d8bf; }
+.twod12.chat.pv table.tiers tr:first-child { border-top: none; }
+.twod12.chat.pv .pv-check { color: #2c2c2a; }
+.twod12.chat.pv .pv-p, .twod12.chat.pv .pv-odds, .twod12 .usepreview .tiers th small, .twod12 .usepreview td small { color: #6b5a3a; opacity: 1; }
+.twod12 .usepreview tr.forced { background: #EEEDFE; outline: 2px solid #7F77DD; }
+/* The AP version buttons (roll dialog, Action Builder): parchment tabs, the chosen one in brown */
+.twod12 .apbtn span { background: #f4ecdc; border-color: #c8b48a; color: #6b5a3a; font-family: "Cinzel", Georgia, serif; font-weight: 700; }
+.twod12 .apbtn input:checked + span { background: #8a7650; border-color: #6b5a3a; color: #fbf7ee; }
+.twod12 .apbtn span:hover { background: #fbf7ee; color: #2c2c2a; }
+/* Buttons inside the parchment cards (areas, Saves, Move, Use...) */
+.twod12.chat a.twod12-inline { background: #fbf7ee; border-color: #8a7650; color: #2c2c2a; font-weight: 600; }
+.twod12.chat a.twod12-inline:hover { background: #FAEEDA; border-color: #BA7517; }
+.twod12.chat a.twod12-inline i { color: #854F0B; }
+
+/* ===== v0.0.76: World Clock window and quick time bar ===== */
+.twod12.clockwin .window-content { padding: 8px 10px; background: #f4ecdc; color: #2c2c2a; }
+.twod12 .clockbody { display: flex; flex-direction: column; gap: 8px; }
+.twod12 .clock-date { text-align: center; font-family: "Cinzel", Georgia, serif; font-weight: 700; font-size: 1.05em; padding: 2px 0 6px; border-bottom: 2px solid #EF9F27; }
+.twod12 .clock-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.twod12 .clock-grid.four { grid-template-columns: repeat(4, 1fr); }
+.twod12 .clock-wide { width: 100%; white-space: normal; padding: 6px 8px; background: #fbf7ee; border: 1px solid #8a7650; color: #2c2c2a; border-radius: 4px; cursor: pointer; }
+.twod12 .clock-wide:hover { background: #FAEEDA; border-color: #BA7517; }
+.twod12 .clock-grid button, .twod12 .clock-custom button { background: #fbf7ee; border: 1px solid #8a7650; color: #2c2c2a; border-radius: 4px; padding: 4px 6px; line-height: 1.2; cursor: pointer; }
+.twod12 .clock-grid button:hover, .twod12 .clock-custom button:hover { background: #FAEEDA; border-color: #BA7517; }
+.twod12 .clock-custom { display: grid; grid-template-columns: 1fr 1fr auto auto; gap: 6px; }
+.twod12 .clock-custom input, .twod12 .clock-custom select { background: #fbf7ee; border: 1px solid #c8b48a; color: #2c2c2a; border-radius: 4px; min-width: 0; }
+.twod12 .clock-track { display: flex; align-items: center; gap: 6px; justify-content: center; text-align: center; font-size: .95em; cursor: pointer; }
+.twod12-timebar { flex: 0 0 auto; align-self: center; width: fit-content; max-width: calc(100% - 20px); box-sizing: border-box; position: relative; z-index: 10; pointer-events: auto !important; display: flex; align-items: center; justify-content: center; gap: 3px; margin: 6px auto 4px; padding: 3px 6px; background: #f4ecdc; border: 1px solid #c8b48a; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.35); color: #2c2c2a; font-size: 11px; line-height: 1; }
+.twod12-timebar button, .twod12-timebar .tb-time { pointer-events: auto !important; }
+.twod12-timebar button { flex: 0 0 24px; min-width: 0; height: 18px; padding: 0; font-size: 9px; background: #fbf7ee; border: 1px solid #8a7650; color: #2c2c2a; border-radius: 3px; cursor: pointer; line-height: 1; min-height: 0; }
+.twod12-timebar button:hover { background: #FAEEDA; border-color: #BA7517; }
+.twod12-timebar .tb-time { flex: 0 0 auto; padding: 0 8px; text-align: center; font-weight: 600; cursor: pointer; font-variant-numeric: tabular-nums; }
+/* Conditions with a value (Exhausted): the number on the icon in the token's condition panel */
+#twod12-effects .fx-icon { position: relative; }
+#twod12-effects .fx-val { position: absolute; right: 1px; bottom: 1px; min-width: 14px; padding: 0 3px; border-radius: 8px; background: #8a7650; color: #fff; font-size: 11px; font-weight: 600; line-height: 14px; text-align: center; }
+
+/* the + and - on the Exhausted condition of the sheet; the 2d12 tab of an effect's window */
+.twod12 .cond2 .cadj { cursor: pointer; padding: 0 5px; margin-left: 2px; border: 1px solid #8a7650; border-radius: 3px; background: #fbf7ee; color: #2c2c2a; text-decoration: none; font-weight: 700; line-height: 14px; }
+.twod12 .cond2 .cadj:hover { background: #FAEEDA; }
+.twod12-fxtab { padding: 6px 4px; display: flex; flex-direction: column; gap: 6px; }
+
+/* ===== v0.0.86: one roll for several targets (a row per creature) ===== */
+.twod12.chat .chk.multi .mtable { display: flex; flex-direction: column; gap: 3px; margin-top: 6px; }
+.twod12.chat .mrow { display: grid; align-items: center; gap: 2px 8px; border-left: 3px solid #c8b48a; background: rgba(255,255,255,.4); }
+.twod12.chat .mrow.t1 { border-left-color: #A32D2D; background: #FCEBEB; }
+.twod12.chat .mrow.t2 { border-left-color: #3B6D11; background: #EAF3DE; }
+.twod12.chat .mrow.t3 { border-left-color: #3B6D11; background: #DDEFC9; }
+.twod12.chat .mname { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.twod12.chat .mrow .shield { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; min-width: 38px; height: 36px; padding: 0 3px; border: 1.5px solid #8a7650; background: #fbf7ee; color: #2c2c2a; border-radius: 4px 4px 14px 14px; line-height: 1.05; }
+.twod12.chat .mrow .shield .rtotal { font-size: 14px; font-weight: 600; }
+.twod12.chat .mrow .shield .vsdc { font-size: 9px; }
+.twod12.chat .mrow .mchips { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 3px; }
+.twod12.chat .mrow .mchips .chip { font-size: 10px; padding: 0 5px; }
+.twod12.chat table.tiers .rtag.rolled { max-width: 55%; white-space: normal; text-align: right; }
+.twod12.chat .dgroup.third { opacity: .8; }
+
+/* ===== v0.0.87: compact several-target cards, target tiles, one damage card for everyone ===== */
+.twod12.chat .mrow { grid-template-columns: minmax(0, 1fr) auto auto; padding: 2px 6px; }
+.twod12.chat .mrow .modds { grid-column: 1 / -1; font-size: 10px; color: #6b5a3a; margin-top: -1px; }
+.twod12.chat.dmg.multi .mdall { display: flex; align-items: center; gap: 8px; padding: 4px 8px; border-bottom: 1px solid #d6c9a8; }
+.twod12.chat.dmg.multi .mdl { font-family: "Cinzel", Georgia, serif; font-weight: 700; font-size: 12px; }
+.twod12.chat.dmg.multi .mdrow { padding: 4px 8px; border-bottom: 1px solid #e3d8bf; }
+.twod12.chat.dmg.multi .mdrow.blocked { opacity: .55; text-decoration: line-through; }
+.twod12.chat.dmg.multi .mdrow.done { background: rgba(60,140,90,.10); }
+.twod12.chat.dmg.multi .mdtop { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.twod12.chat.dmg.multi .mdname { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.twod12.chat.dmg.multi .mdsum { flex: 0 0 auto; display: inline-flex; gap: 8px; align-items: center; }
+.twod12.chat.dmg.multi .dbtns { display: flex; gap: 3px; flex-wrap: wrap; margin-top: 3px; }
+.twod12.chat.dmg.multi .dbtns button { flex: 1 1 0; min-width: 0; padding: 1px 4px; font-size: 11px; line-height: 16px; }
+.twod12.chat.dmg.multi .applied { font-size: 11px; margin-top: 2px; }
+/* the roll dialog: a tile per target (a portrait and a number, dots on top for its boons and banes) and one caption */
+.twod12 .ttiles { display: flex; flex-wrap: wrap; gap: 8px 5px; padding-top: 6px; }
+.twod12 .ttile { position: relative; width: 46px; height: 46px; padding: 0; display: flex; align-items: center; justify-content: center; border: 1px solid #8a7650; border-radius: 6px; background: #fbf7ee; color: #2c2c2a; cursor: pointer; }
+.twod12 .ttile img { width: 34px; height: 34px; object-fit: cover; border: none; border-radius: 4px; }
+.twod12 .ttile i.fa-user { font-size: 22px; }
+.twod12 .ttile.on { outline: 2px solid #BA7517; background: #FAEEDA; }
+.twod12 .ttile .tnum { position: absolute; left: -4px; bottom: -4px; min-width: 15px; height: 15px; padding: 0 3px; box-sizing: border-box; border-radius: 8px; background: #2c2c2a; color: #f4ecdc; font-size: 10px; font-weight: 600; line-height: 15px; text-align: center; }
+.twod12 .ttile .tdots { position: absolute; left: 0; right: 0; top: -6px; display: flex; justify-content: center; gap: 2px; pointer-events: none; }
+.twod12 .ttile .tdots:empty { display: none; }
+.twod12 .ttile .dot { width: 7px; height: 7px; border-radius: 50%; box-shadow: 0 0 0 1px #fbf7ee; }
+.twod12 .ttile .dot.g { background: #3B6D11; }
+.twod12 .ttile .dot.r { background: #A32D2D; }
+.twod12 .tcap { margin: 6px 0 2px; font-size: 12px; }
+.twod12 .tcap span { color: #6b5a3a; }
+.twod12 .fxgroups { margin: 4px 0; }
+.twod12 .fxgroup.off { display: none; }
+
+/* v0.0.91: a star only on favorites (right-click a row to change it); the colored line on Talents and Features */
+.twod12.sheet.v44 .arow .anmwrap { display: flex; align-items: center; gap: 5px; min-width: 0; }
+.twod12.sheet.v44 .arow .anmwrap .anm { flex: 0 1 auto; }
+.twod12.sheet.v44 .arow .favmark { flex: none; font-size: 10px; color: #BA7517; }
+.twod12.sheet.v44 details.tfitem { box-shadow: inset 3px 0 0 var(--fq, #8a7650); }
+/* a button that shows a calculated number */
+a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
+
+/* the World Clock: set the date */
+.twod12 .clock-set { border: 1px solid #c8b48a; border-radius: 4px; padding: 4px 8px; background: rgba(255,255,255,.35); }
+.twod12 .clock-set summary { cursor: pointer; font-weight: 600; }
+.twod12 .clock-setrow { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px; }
+.twod12 .clock-setrow label { display: flex; flex-direction: column; gap: 2px; font-size: 11px; }
+.twod12 .clock-setrow input, .twod12 .clock-setrow select { background: #fbf7ee; border: 1px solid #c8b48a; color: #2c2c2a; border-radius: 4px; min-width: 0; }
+.twod12 .clock-setrow button { grid-column: 1 / -1; background: #fbf7ee; border: 1px solid #8a7650; color: #2c2c2a; border-radius: 4px; padding: 3px 6px; cursor: pointer; }
+.twod12 .clock-set .hint { margin: 6px 0 0; font-size: 11px; color: #6b5a3a; }
+
+/* ===== v0.0.95: the Save card and the damage cards in the parchment style (dividers, shields, plain rows) ===== */
+/* the little shield (a total or a result over its DC or label) */
+.twod12.chat .srow .shield { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; min-width: 38px; height: 36px; padding: 0 3px; border: 1.5px solid #8a7650; background: #fbf7ee; color: #2c2c2a; border-radius: 4px 4px 14px 14px; line-height: 1.05; }
+.twod12.chat .srow .shield .rtotal { font-size: 15px; font-weight: 600; }
+.twod12.chat .srow .shield .vsdc { font-size: 9px; border-top: 1px solid #c8b48a; padding-top: 1px; margin-top: 1px; }
+/* the Save card */
+.twod12.chat.savecard table.tiers tr.t1, .twod12.chat.savecard table.tiers tr.t2, .twod12.chat.savecard table.tiers tr.t3 { background: none; }
+.twod12.chat.savecard table.tiers th, .twod12.chat.savecard table.tiers td { border-bottom: 1px solid #e3d8bf; }
+.twod12.chat.savecard hr.sep { border-top: 1px solid #d6c9a8; margin: 4px 0; }
+.twod12.chat.savecard .stargets { margin-top: 0; padding-top: 0; border-top: 0; }
+.twod12.chat.savecard .sthead { color: #6b5a3a; border-bottom: 1px solid #d6c9a8; }
+.twod12.chat.savecard .sdice { align-items: center; }
+.twod12.chat.savecard .sdice .rtag { margin-right: 2px; }
+/* the damage cards */
+.twod12.chat.dmg .poolbox { border: 1px solid #c8b48a; background: rgba(255,255,255,.35); }
+.twod12.chat.dmg .poolhead { align-items: center; }
+.twod12.chat.dmg .poolhead .fa-heart, .twod12.chat.dmg .poolhead .fa-brain { margin-right: 4px; }
+.twod12.chat.dmg .dtotal { border-top: 0; border-bottom: 0; margin-top: 2px; padding-bottom: 2px; }
+
+/* pass and fail on the Save card's shields; room for the damage card's buttons */
+.twod12.chat .srow .shield.win { border-color: #3B6D11; background: #EAF3DE; color: #173404; }
+.twod12.chat .srow .shield.win .vsdc { border-top-color: #97C459; color: #27500A; }
+.twod12.chat .srow .shield.lose { border-color: #A32D2D; background: #FCEBEB; color: #501313; }
+.twod12.chat .srow .shield.lose .vsdc { border-top-color: #F09595; color: #791F1F; }
+.twod12.chat.dmg.multi .mdall { flex-wrap: wrap; }
+.twod12.chat.dmg.multi .mdall .dbtns button { flex: 1 1 auto; padding: 1px 8px; }
+
+/* the damage card's buttons: four equal columns (Damage, Half, Double, Block), the rest on rows of their own: nothing can squeeze one */
+.twod12.chat.dmg:not(.multi) .dbtns { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; margin: 6px 8px 0; align-items: stretch; }
+.twod12.chat.dmg:not(.multi) .dbtns > button { flex: none; min-width: 0; width: auto; height: 26px; padding: 0 2px; font-size: 11px; font-weight: 600; line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.twod12.chat.dmg:not(.multi) .dbtns > button[data-twod12="applyFx"], .twod12.chat.dmg:not(.multi) .dbtns > select.kind { grid-column: 1 / -1; width: auto; flex: none; }
+.twod12.chat.dmg:not(.multi) .dbtns > select.kind { height: 26px; padding: 0 4px; font-size: 11px; }
+
+/* the Save card: the damage taken as a number, with the symbols of the damage in front of its dice */
+.twod12.chat.savecard .sdmg .samt { font-size: 17px; font-weight: 700; line-height: 1.1; }
+.twod12.chat.savecard .sdmg .sextra { display: block; font-size: 10px; font-weight: 400; color: #6b5a3a; line-height: 1.2; }
+.twod12.chat.savecard .sdice .dsym { display: inline-flex; align-items: center; gap: 3px; margin-left: 6px; font-size: 12px; }
+.twod12.chat.savecard .sdice .dsym .dt-img { margin: 0 !important; }
+
+/* the conditions an effect applies (drag them from the Conditions compendium) */
+
+/* very large groups (10 or more targets): numbered tabs, the creature's name and DC are in the caption under them */
+.twod12 .ttiles.compact { gap: 8px 3px; }
+.twod12 .ttiles.compact .ttile { width: 30px; height: 24px; border-radius: 5px; }
+.twod12 .ttiles.compact .ttile .tabnum { font-size: 12px; font-weight: 700; line-height: 1; }
+.twod12 .ttiles.compact .ttile i.fa-user { font-size: 13px; }
+.twod12 .ttiles.compact .ttile .tdots { top: -7px; }
+
+/* the scene's light level, near the lighting controls */
+#twod12-lightlevel { position: fixed; z-index: 70; display: none; pointer-events: none; font-size: 11px; color: #f4ecdc; text-shadow: 0 1px 2px #000; box-sizing: border-box; }
+:is(#twod12-lightlevel, #twod12-lightpop) .lb-track { position: relative; display: flex; height: 14px; border-radius: 4px; overflow: hidden; box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6); }
+:is(#twod12-lightlevel, #twod12-lightpop) .lb-track span { display: block; text-align: center; line-height: 14px; font-size: 10px; overflow: hidden; white-space: nowrap; }
+:is(#twod12-lightlevel, #twod12-lightpop) .lb-bright { background: #eadc8e; color: #4a4328; text-shadow: none; }
+:is(#twod12-lightlevel, #twod12-lightpop) .lb-dim { background: #d3a7a3; color: #4a2c2a; text-shadow: none; }
+:is(#twod12-lightlevel, #twod12-lightpop) .lb-dark { background: #3d4163; color: #e8e8f5; }
+:is(#twod12-lightlevel, #twod12-lightpop) .lb-mark { position: absolute; top: -2px; bottom: -2px; width: 2px; margin-left: -1px; background: #fff; box-shadow: 0 0 3px #000; }
+:is(#twod12-lightlevel, #twod12-lightpop) .lb-text { margin-top: 2px; text-align: center; padding: 1px 6px; background: rgba(30, 30, 30, 0.85); border-radius: 4px; display: inline-block; }
+
+/* the panel of the light level button: the zones and a slider for the Darkness */
+#twod12-lightpop { position: fixed; z-index: 70; display: none; width: 260px; box-sizing: border-box; padding: 8px 10px; border-radius: 8px; background: rgba(30, 30, 30, 0.93); color: #f4ecdc; font-size: 12px; box-shadow: 0 2px 10px #000; text-shadow: 0 1px 2px #000; }
+#twod12-lightpop .lb-range { width: 100%; margin: 8px 0 2px; }
+#twod12-lightpop .lb-hint { opacity: 0.7; font-size: 10px; text-align: center; }
+
+/* v0.0.112: the Details tab of an Effect, written as sentences (fxdetails.mjs) */
+.twod12 .fxd { display: flex; flex-direction: column; gap: 4px; }
+.twod12 .fxd-top { display: flex; align-items: flex-start; gap: 10px; }
+.twod12 .fxd-short { flex: 1; padding: 6px 10px; border: 1px solid var(--sh-accent, #d6b53f); border-radius: 6px; background: var(--sh-grad, rgba(214,181,63,.2)); font-size: 12px; line-height: 1.45; }
+.twod12 .fxd-helptoggle { display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 11px; opacity: .8; margin: 4px 0 0; }
+.twod12 .fxd-s { line-height: 2; margin: 2px 0; }
+.twod12 .fxd-help { display: none; font-size: 11px; opacity: .7; line-height: 1.4; margin: 0 0 6px; }
+.twod12 .fxd.help-on .fxd-help { display: block; }
+.twod12 .fxd .fxd-f { display: inline-block; width: auto; min-width: 0; height: 24px; padding: 0 4px; margin: 0 2px; border: none; border-bottom: 2px solid var(--sh-accent, #d6b53f); border-radius: 3px 3px 0 0; background: rgba(128,128,128,.15); font-weight: 600; vertical-align: middle; }
+.twod12 .fxd .fxd-f.n { width: 3.2em; text-align: center; }
+.twod12 .fxd .fxd-f.w { width: 9em; }
+.twod12 .fxd .fxd-f.wide { width: 15em; }
+.twod12 .fxd-inl { display: inline-flex; align-items: center; gap: 3px; margin: 0 8px 0 0; white-space: nowrap; }
+.twod12 .fxd h3 .fxd-add { width: auto; height: 22px; font-size: 12px; text-transform: none; letter-spacing: 0; font-weight: 600; }
+.twod12 details.fxd-set > summary.shead { align-items: baseline; }
+.twod12 .fxd-k { flex: 0 0 auto; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; opacity: .7; }
+.twod12 .fxd-sum { flex: 1; font-size: 13px; line-height: 1.4; }
+.twod12 details.fxd-set[open] > summary .fxd-sum { display: none; }
+.twod12 .fxd-pred { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin: 2px 0 2px 12px; }
+.twod12 .fxd-lead { font-size: 12px; opacity: .75; margin-right: 2px; }
+.twod12 .fxd-chip { display: inline-flex; align-items: center; gap: 5px; height: 22px; padding: 0 4px 0 8px; border: 1px solid rgba(128,128,128,.55); border-radius: 11px; background: rgba(128,128,128,.15); font-size: 12px; vertical-align: middle; }
+.twod12 .fxd-chip .dot { width: 8px; height: 8px; border-radius: 4px; }
+.twod12 .fxd-chip button { width: 16px; height: 16px; min-height: 0; padding: 0; line-height: 1; border: none; background: none; font-size: 10px; opacity: .7; }
+.twod12 .fxd .fxd-plus { width: 34px; height: 22px; padding: 0 2px; border: 1px dashed rgba(128,128,128,.8); border-radius: 11px; background: none; font-size: 12px; vertical-align: middle; }
+.twod12 .fxd-links { display: flex; gap: 12px; margin: 2px 0 2px 12px; font-size: 12px; }
+.twod12 .fxd-links a { color: var(--sh-accent, #b8922a); cursor: pointer; }
+.twod12 .fxd-cond { display: flex; align-items: baseline; gap: 8px; padding: 2px 8px; margin: 6px 0; border: 1px solid var(--sh-line, rgba(128,128,128,.5)); border-radius: 4px; }
+.twod12 .fxd-cond .fxd-s { flex: 1; }
+.twod12 .fxd-cond > button { flex: 0 0 auto; width: 22px; height: 22px; padding: 0; }
+.twod12 .fxd textarea { width: 100%; }
+.twod12 .fxd-adv { margin-top: 8px; border-top: 1px solid var(--sh-line, rgba(128,128,128,.5)); padding-top: 6px; }
+.twod12 .fxd-adv > summary { cursor: pointer; opacity: .8; }
+/* v0.0.113: the dropdown lists of the sentences were unreadable (light text on a light list): the options get their own colors */
+.twod12 .fxd select.fxd-f option, .twod12 .fxd select.fxd-plus option { color: #1b1b1f; background: #f3f1ea; font-weight: 400; }
+.twod12 .fxd-raw { margin-left: 8px; font-size: 12px; color: var(--sh-accent, #b8922a); cursor: pointer; }
+/* v0.0.115: the greyed "every roll" chip of a setting with no traits */
+.twod12 .fxd-chip.fxd-every { padding: 0 8px; border-style: dashed; opacity: .7; font-style: italic; }
+
+/* v0.0.118: Armor and Ward on the sheet */
+
+/* v0.0.119: the sidebar numbers in three rows (movement, Modifiers, Defenses); the worn armor's name */
+
+/* v0.0.120: editable sidebar numbers (current value colored when it differs from the base), the armor type badge */
+
+/* v0.0.121: the sidebar numbers in titled groups, bigger; the Defenses biggest */
+
+/* v0.0.123: a notice in the roll dialog (a Thrown weapon thrown) */
+.twod12 .rnotice { display: inline-flex; align-items: center; gap: 5px; padding: 2px 8px; margin: 2px 4px 2px 0; border-radius: 10px; background: rgba(176,106,18,.18); border: 1px solid rgba(176,106,18,.6); font-size: 12px; font-weight: 600; }
+/* v0.0.124: dropdown lists inside the system's sheets (the Tags picker, and any other) get readable colors, as in v0.0.113 for the effect sentences */
+.twod12 select option, .twod12 multi-select option, .twod12 multi-select select option { color: #1b1b1f; background: #f3f1ea; font-weight: 400; }
+/* v0.0.124: Escalation pips on a PC's sheet, and its cost on cards */
+
+.twod12 .trow .esc { font-weight: 700; color: #b06a12; }
+/* v0.0.126: a passive setting's own Escalation, in its collapsed sentence */
+.twod12 .fxd-esc { opacity: .75; font-size: 11px; white-space: nowrap; }
+/* v0.0.128: the hover text field of an effect or ability */
+.twod12 .fxd-hover { display: flex; flex-direction: column; gap: 2px; font-size: 12px; margin: 2px 0 6px; }
+.twod12 .fxd-hover input { width: 100%; }
+/* v0.0.129: the color pickers of an Aura */
+.twod12 .fxd input.fxd-color { width: 34px; height: 22px; padding: 0; border: 1px solid rgba(128,128,128,.6); border-radius: 4px; vertical-align: middle; background: none; }
+/* v0.0.133: the header band and side panel are always dark blue (the tabs follow Foundry's own light or dark look); the window title bar is Foundry's own. */
+.application.twod12.twod12-actor { --np-hb: #1e2a3a; --np-bg: #1e2a3a; --np-tile: #243246; --np-line: #3a4a62; --np-edge: #0f1622; --np-head: #b8c3d6; --np-dim: #c3cddc; --np-text: #ffffff;
+  --np-amber: #e09a3a; --np-on-amber: #1e2430; --np-gold: #f0b35e; --np-up: #7fdc95; --np-down: #ff8f86; --np-ap: #7fb3e6; --np-empty: #3a4a62; --np-tick: #ffffff; --np-downbg: #5a1d1d; --np-downfg: #ffd9d6; }
+.application.twod12.twod12-actor > .window-content, .application.twod12.twod12-actor .window-content { padding: 0 !important; }
+/* v0.0.130: the new sheet, step 1: the header band and the dark side panel (Donut / Classic health). The tabs keep the v44 rules above. */
+.twod12.sheet.v44.ns { grid-template-columns: 220px minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
+.twod12.sheet.ns .hb { grid-column: 1 / -1; display: flex; align-items: center; gap: 14px; padding: 12px 16px; min-height: 78px; box-sizing: border-box; background: var(--np-hb); color: var(--np-text); border-bottom: 1px solid var(--np-edge); }
+.twod12.sheet.ns .hb-portrait { width: 54px; height: 54px; border-radius: 50%; object-fit: cover; border: 2px solid var(--np-amber); background: var(--np-line); flex: none; cursor: pointer; }
+.twod12.sheet.ns .hb-id { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.twod12.sheet.ns .hb-name { width: 100%; height: auto; padding: 0; border: none; background: transparent; color: var(--np-text); font-size: 22px; font-weight: 700; }
+.twod12.sheet.ns .hb-name:focus { box-shadow: 0 1px 0 var(--np-amber); outline: none; }
+.twod12.sheet.ns .hb-sub { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 5px; font-size: 12px; color: var(--np-dim); }
+.twod12.sheet.ns .hb-sub a { color: var(--np-text); }
+.twod12.sheet.ns .hb-sub a:hover { color: var(--np-gold); text-shadow: none; }
+.twod12.sheet.ns .hb-sub em { opacity: .7; }
+.twod12.sheet.ns .hb-sub .lnk .rm { opacity: 0; margin-left: 2px; color: var(--np-dim); }
+.twod12.sheet.ns .hb-sub .lnk:hover .rm { opacity: .8; }
+.twod12.sheet.ns .hb-sub .lvl { display: inline-flex; flex-direction: row; align-items: center; gap: 3px; margin: 0; }
+.twod12.sheet.ns .hb-sub .lvl input { width: 30px; height: 18px; padding: 0; text-align: center; font-size: 12px; color: var(--np-text); background: var(--np-tile); border: 1px solid var(--np-line); border-radius: 3px; }
+.twod12.sheet.ns .hb-tools { display: flex; gap: 2px; }
+.twod12.sheet.ns .hb-tools a { width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border-radius: 6px; color: var(--np-dim); }
+.twod12.sheet.ns .hb-tools a:hover { background: var(--np-tile); color: var(--np-text); text-shadow: none; }
+.twod12.sheet.ns .hb-meters { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; font-size: 11px; color: var(--np-dim); }
+.twod12.sheet.ns .hb-meter { display: flex; align-items: center; gap: 6px; }
+.twod12.sheet.ns .hb-meter.off .hpips { opacity: .35; }
+.twod12.sheet.ns .hb-meter.npcpool b { color: var(--np-text); font-size: 13px; }
+.twod12.sheet.ns .hpips { display: flex; gap: 3px; }
+.twod12.sheet.ns .hpip { width: 10px; height: 10px; box-sizing: content-box; border-radius: 50%; border: 2px solid var(--np-amber); }
+.twod12.sheet.ns .hpip.on { background: var(--np-amber); }
+.twod12.sheet.ns .hpip.ap { border-color: var(--np-ap); }
+.twod12.sheet.ns .hpip.ap.on { background: var(--np-ap); }
+.twod12.sheet.ns .hb-meter.off .hpip { cursor: default; }
+
+.twod12.sheet.ns .np { display: flex; flex-direction: column; gap: 12px; padding: 12px; overflow-y: auto; background: var(--np-bg); color: var(--np-text); border-right: 1px solid var(--np-edge); }
+.twod12.sheet.ns .np h3 { display: block; margin: 0 0 6px; padding: 0; border: none; background: none; font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--np-head); }
+.twod12.sheet.ns .np .np-h3note { letter-spacing: 0; text-transform: none; font-weight: 400; color: var(--np-dim); margin-left: 4px; }
+.twod12.sheet.ns .np a { color: inherit; }
+.twod12.sheet.ns .np a:hover { text-shadow: none; }
+.twod12.sheet.ns .np-health { display: flex; flex-direction: column; gap: 6px; }
+.twod12.sheet.ns .np-hh { display: flex; align-items: center; justify-content: space-between; }
+.twod12.sheet.ns .np-hh h3 { margin: 0; }
+.twod12.sheet.ns .np-seg { display: inline-flex; border: 1px solid var(--np-line); border-radius: 6px; overflow: hidden; }
+.twod12.sheet.ns .np-seg a { height: 20px; line-height: 20px; padding: 0 8px; font-size: 11px; background: var(--np-tile); color: var(--np-dim); }
+.twod12.sheet.ns .np-seg a.on { background: var(--np-amber); color: var(--np-on-amber); font-weight: 700; }
+.twod12.sheet.ns .np-donutrow { display: flex; align-items: center; gap: 12px; }
+.twod12.sheet.ns .np-donut { position: relative; width: 96px; height: 96px; border-radius: 50%; flex: none; cursor: pointer; }
+.twod12.sheet.ns .np-hole { position: absolute; inset: 17px; border-radius: 50%; background: var(--np-bg); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: default; }
+.twod12.sheet.ns .np-hole b { font-size: 20px; line-height: 1; }
+.twod12.sheet.ns .np-hole span { font-size: 9px; color: var(--np-dim); }
+.twod12.sheet.ns .np-legend { display: flex; flex-direction: column; gap: 5px; min-width: 0; font-size: 11px; color: var(--np-text); }
+.twod12.sheet.ns .np-legend > span { display: flex; align-items: center; gap: 5px; }
+.twod12.sheet.ns .np-legend i { width: 10px; height: 10px; border-radius: 2px; flex: none; }
+.twod12.sheet.ns .np-states { font-weight: 700; color: var(--np-gold); }
+.twod12.sheet.ns .np .hpnum { font-weight: 700; border-bottom: 1px dotted var(--np-dim); }
+.twod12.sheet.ns .np-bars { display: flex; flex-direction: column; gap: 7px; }
+.twod12.sheet.ns .np-barh { display: flex; justify-content: space-between; align-items: center; font-size: 12px; margin-bottom: 3px; }
+.twod12.sheet.ns .np-barh em { font-style: normal; font-size: 10px; font-weight: 700; color: var(--np-gold); margin-left: 4px; }
+.twod12.sheet.ns .np-track { display: flex; height: 10px; border-radius: 5px; overflow: hidden; background: var(--np-line); cursor: pointer; }
+.twod12.sheet.ns .np-s { height: 100%; flex: none; }
+.twod12.sheet.ns .np-s.s { background-image: repeating-linear-gradient(135deg, rgba(255,255,255,.35) 0 3px, transparent 3px 6px); }
+.twod12.sheet.ns .np-dmgline { display: flex; justify-content: space-between; font-size: 12px; color: var(--np-dim); }
+.twod12.sheet.ns .np-dmgline b { color: var(--np-gold); }
+.twod12.sheet.ns .np-rally { font-size: 12px; color: var(--np-dim); }
+.twod12.sheet.ns .np-rally b { color: var(--np-text); }
+.twod12.sheet.ns .downbanner { margin-top: 2px; background: var(--np-downbg); color: var(--np-downfg); }
+.twod12.sheet.ns .np-note, .twod12.sheet.ns .np-none { font-size: 11px; color: var(--np-dim); }
+.twod12.sheet.ns .np-wounds { display: grid; gap: 3px; font-size: 11px; color: var(--np-dim); }
+.twod12.sheet.ns .np-wounds .wrow { display: grid; grid-template-columns: minmax(0, 1fr) 34px 74px; align-items: center; column-gap: 6px; }
+.twod12.sheet.ns .np-wounds input { width: 34px; height: 20px; padding: 0; text-align: center; font-size: 11px; color: var(--np-text); background: var(--np-tile); border: 1px solid var(--np-line); border-radius: 4px; }
+.twod12.sheet.ns .np-wounds .wtab { text-align: center; white-space: nowrap; padding: 1px 6px; border: 1px solid var(--np-line); border-radius: 4px; }
+.twod12.sheet.ns .np-wounds .wtab:hover { background: var(--np-tile); }
+.twod12.sheet.ns .np-grid { display: grid; gap: 6px; }
+.twod12.sheet.ns .np-grid.n2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.twod12.sheet.ns .np-grid.n3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.twod12.sheet.ns .np-tile { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; padding: 5px 0; border: 1px solid var(--np-line); border-radius: 6px; background: var(--np-tile); min-width: 0; }
+.twod12.sheet.ns .np-tile b { font-size: 17px; font-weight: 600; line-height: 1.2; color: var(--np-text); }
+.twod12.sheet.ns .np-tile b.up { color: var(--np-up); }
+.twod12.sheet.ns .np-tile b.down { color: var(--np-down); }
+.twod12.sheet.ns .np-tile span { font-size: 10px; color: var(--np-dim); white-space: nowrap; }
+.twod12.sheet.ns .np-tile.roll, .twod12.sheet.ns .np-tile.editable { cursor: pointer; }
+.twod12.sheet.ns .np-tile.roll:hover, .twod12.sheet.ns .np-tile.editable:hover { border-color: var(--np-amber); }
+.twod12.sheet.ns .np-tile input { width: 48px; height: 22px; padding: 0; text-align: center; font-size: 16px; font-weight: 600; color: var(--np-text); background: transparent; border: none; }
+.twod12.sheet.ns .np-tile input.sb-modedit { border: 1px solid var(--np-amber); border-radius: 3px; background: var(--np-bg); }
+.twod12.sheet.ns .np-group.defs .np-tile b { font-size: 26px; }
+.twod12.sheet.ns .np-warn { margin-top: 5px; font-size: 11px; color: var(--np-gold); }
+
+.twod12.sheet.ns .np .cond2 { border-color: var(--np-line); background: var(--np-tile); }
+
+/* v0.0.131: the new sheet, step 2: the Actions table (rows tinted by Frequency, a card opens in place) and the new Action card. */
+.twod12.sheet.ns .at-tools { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 8px 0 4px; }
+.twod12.sheet.ns .at-tools label { display: flex; flex-direction: column; gap: 3px; margin: 0; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; opacity: .8; }
+.twod12.sheet.ns .at-tools select, .twod12.sheet.ns .at-tools input { height: 26px; font-size: 12px; text-transform: none; letter-spacing: 0; font-weight: 400; }
+.twod12.sheet.ns .at-head, .twod12.sheet.ns .ar-line { display: grid; grid-template-columns: 12px 12px minmax(0, 1fr) 54px 84px 76px 28px; gap: 6px; align-items: center; }
+.twod12.sheet.ns .at-head { padding: 8px 6px 2px; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; opacity: .7; }
+.twod12.sheet.ns .at-head span:last-child { text-align: center; }
+.twod12.sheet.ns .at-gh { display: flex; align-items: center; gap: 6px; padding: 8px 4px 3px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #b06a12; cursor: pointer; }
+.twod12.sheet.ns .at-gh .at-count { margin-left: auto; font-weight: 400; letter-spacing: 0; text-transform: none; opacity: .75; color: var(--color-text-primary, inherit); }
+.twod12.sheet.ns .at-gh.basic { cursor: default; margin-top: 8px; padding: 7px 8px; border: 1px solid rgba(128,128,128,.3); border-radius: 8px; }
+.twod12.sheet.ns .at-basic.open .at-gh.basic { border-radius: 8px 8px 0 0; }
+.twod12.sheet.ns .at-gh.basic > a { display: flex; align-items: center; gap: 6px; flex: 1; }
+.twod12.sheet.ns .at-gh.basic .ghr { font-size: 11px; font-weight: 400; letter-spacing: 0; text-transform: none; }
+.twod12.sheet.ns .at-basic .atable { padding-top: 4px; }
+.twod12.sheet.ns .atable { display: flex; flex-direction: column; gap: 3px; }
+.twod12.sheet.ns .ar { border-radius: 6px; background: color-mix(in srgb, var(--fq, #888) 13%, transparent); }
+.twod12.sheet.ns .ar[hidden], .twod12.sheet.ns .at-group[hidden] { display: none; }
+.twod12.sheet.ns .ar-line { padding: 4px 0 4px 6px; cursor: pointer; min-height: 30px; }
+.twod12.sheet.ns .ar-line .grip { cursor: grab; opacity: .5; font-size: 11px; }
+.twod12.sheet.ns .ar-chev { font-size: 10px; opacity: .7; transition: transform .12s; }
+.twod12.sheet.ns .ar.open .ar-chev { transform: rotate(90deg); }
+.twod12.sheet.ns .ar-name { min-width: 0; font-size: 13px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.twod12.sheet.ns .ar-esc { display: inline-block; margin-left: 5px; padding: 0 6px; border-radius: 8px; font-size: 10px; font-weight: 700; line-height: 16px; vertical-align: 1px; background: #fbeedd; color: #6b3a05; border: 1px solid #e3b67a; }
+.twod12 .eff { display: inline-block; margin-left: 4px; padding: 0 6px; border-radius: 8px; font-size: 10px; font-weight: 700; vertical-align: 1px; line-height: 16px; }
+.twod12 .eff.up { background: #e3f3e6; color: #1f6b2e; }
+.twod12 .eff.down { background: #f8e1e1; color: #a12b2b; }
+.twod12.sheet.ns .ar-ap { display: inline-flex; align-items: center; justify-content: center; min-width: 40px; height: 20px; padding: 0 7px; border-radius: 10px; font-size: 11px; font-weight: 700; color: #fff; white-space: nowrap; background: var(--fq, #5b6270); }
+.twod12.sheet.ns .ar-range, .twod12.sheet.ns .ar-freq { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.twod12.sheet.ns .ar-use { width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border-radius: 6px; background: #1e2a3a; color: #fff; }
+.twod12.sheet.ns .ar-use:hover { background: #2d3e56; color: #fff; text-shadow: none; }
+.twod12.sheet.ns .ar-use.reload { background: #a12b2b; }
+.twod12.sheet.ns .ar.faded .ar-nm, .twod12.sheet.ns .ar.faded .ar-esc, .twod12.sheet.ns .ar.faded .eff.up, .twod12.sheet.ns .ar.faded .ar-cost, .twod12.sheet.ns .ar.faded .ar-range, .twod12.sheet.ns .ar.faded .ar-freq, .twod12.sheet.ns .ar.faded .ar-chev { opacity: .5; }
+.twod12.sheet.ns .ar-card { display: none; padding: 0 8px 8px 30px; }
+.twod12.sheet.ns .ar.open .ar-card { display: block; }
+
+/* The Action card (book format). */
+.twod12.acard { border: 1px solid #cfc6b4; border-radius: 8px; overflow: hidden; background: #fffdf8; color: #1e2430; font-size: 12px; }
+.twod12.acard .ac-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 10px; background: var(--fqc, #5f5e5a); color: #fff; }
+.twod12.acard .ac-head > b { font-size: 15px; }
+.twod12.acard .ac-right { display: flex; align-items: center; gap: 8px; font-size: 11px; }
+.twod12.acard .ac-cat { opacity: .9; }
+.twod12.acard .ac-freq { font-weight: 700; font-size: 12px; }
+.twod12.acard .ac-cost, .twod12.acard .ac-badge { display: inline-block; padding: 1px 7px; border-radius: 9px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+.twod12.acard .ac-cost { background: rgba(255,255,255,.92); color: var(--fqc, #333); }
+.twod12.acard .ac-badge { background: var(--fqc, #5f5e5a); color: #fff; }
+.twod12.acard .ac-mode { font-size: 10px; font-weight: 600; opacity: .8; }
+.twod12.acard .ac-body { display: flex; flex-direction: column; gap: 6px; padding: 8px 10px 10px; }
+.twod12.acard .flavor { font-style: italic; color: #5d6675; }
+.twod12.acard .ac-traits { display: flex; flex-wrap: wrap; gap: 4px; }
+.twod12.acard .trow { color: #2d3440; }
+.twod12.acard .trow .sep { font-size: 7px; margin: 0 4px; opacity: .6; vertical-align: 2px; }
+.twod12.acard table.ac-tiers { width: 100%; margin: 0; border-collapse: collapse; border: none; border-top: 1px dashed #cfc6b4; background: none; }
+.twod12.acard table.ac-tiers thead th { padding: 4px 4px 2px; text-align: left; background: none; border: none; }
+.twod12.acard table.ac-tiers tbody th { width: 64px; padding: 4px 6px; text-align: left; white-space: nowrap; font-weight: 700; border: none; background: none; }
+.twod12.acard table.ac-tiers td { padding: 4px 6px; vertical-align: top; border: none; }
+.twod12.acard table.ac-tiers tbody tr:nth-child(odd) { background: rgba(120,100,60,.07); }
+.twod12.acard table.ac-tiers tbody tr.crit th { color: #8a4f08; }
+.twod12.acard .chg { display: inline-block; padding: 0 4px; border-radius: 4px; font-weight: 700; }
+.twod12.acard .chg.up { background: #e3f3e6; color: #1f6b2e; }
+.twod12.acard .chg.down { background: #f8e1e1; color: #a12b2b; }
+.twod12.acard .ac-changed { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; font-size: 11px; }
+.twod12.acard .ac-changed > b { color: #4a5261; }
+.twod12.acard .ac-changed .eff { margin-left: 0; }
+.twod12.acard .ac-fx { display: flex; flex-direction: column; gap: 4px; padding-top: 5px; border-top: 1px dashed #cfc6b4; }
+.twod12.acard .ac-fxl { display: flex; gap: 6px; align-items: baseline; }
+.twod12.acard .iblock { border-top: 1px dashed #cfc6b4; padding-top: 5px; }
+/* v0.0.132: the new sheet, step 3: the Features tab (each Feature a card, what it gives indented under it). */
+.twod12.sheet.ns .fsec { display: flex; align-items: baseline; gap: 8px; margin: 12px 2px 4px; font-size: 15px; font-weight: 600; color: #7a2f22; }
+.twod12.sheet.ns .fsec-sub { font-size: 11px; font-weight: 400; opacity: .75; color: var(--color-text-primary, #1e2430); }
+
+.twod12.sheet.ns .flist { display: flex; flex-direction: column; gap: 5px; }
+.twod12.sheet.ns .fcard { padding: 6px 8px; border: 1px solid rgba(128,128,128,.3); border-radius: 8px; background: rgba(255,255,255,.55); }
+.twod12.sheet.ns .fcard.locked { opacity: .6; background: transparent; border-style: dashed; }
+.twod12.sheet.ns .fc-head { display: grid; grid-template-columns: 12px minmax(0, 1fr) auto; gap: 6px; align-items: center; }
+.twod12.sheet.ns .fc-head .grip { cursor: grab; opacity: .5; font-size: 11px; }
+.twod12.sheet.ns .fc-toggle { display: flex; align-items: center; gap: 7px; min-width: 0; }
+.twod12.sheet.ns .fc-chev { font-size: 10px; opacity: .7; transition: transform .12s; }
+.twod12.sheet.ns .fcard.open .fc-chev { transform: rotate(90deg); }
+.twod12.sheet.ns .fc-name { font-size: 13px; font-weight: 600; white-space: nowrap; }
+.twod12.sheet.ns .fc-detail { min-width: 0; font-size: 11px; opacity: .75; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.twod12.sheet.ns .fc-btns { display: flex; gap: 6px; font-size: 13px; opacity: .7; }
+.twod12.sheet.ns .ktag { flex: none; padding: 1px 6px; border-radius: 9px; font-size: 10px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; background: #e7e2d8; color: #3b372f; }
+.twod12.sheet.ns .ktag.k-choice { background: #efeafb; color: #4a3394; }
+.twod12.sheet.ns .ktag.k-passive { background: #eaf3de; color: #2f5a0e; }
+.twod12.sheet.ns .ktag.k-talent { background: #fbeedd; color: #7a4508; }
+.twod12.sheet.ns .ktag.k-species { background: #e6f1fb; color: #185fa5; }
+.twod12.sheet.ns .ktag.k-locked { background: transparent; border: 1px solid rgba(128,128,128,.5); color: inherit; }
+
+.twod12.sheet.ns .fc-kid { position: relative; margin-left: 24px; padding-left: 18px; }
+.twod12.sheet.ns .fc-kid::before { content: ""; position: absolute; left: 0; top: 0; width: 12px; height: 16px; border-left: 2px dotted #a89f8e; border-bottom: 2px dotted #a89f8e; }
+.twod12.sheet.ns .ar.sub .ar-line { grid-template-columns: 12px minmax(0, 1fr) 54px 84px 76px; padding: 3px 0 3px 6px; min-height: 26px; }
+.twod12.sheet.ns .ar.sub .ar-card { padding-left: 18px; }
+.twod12.sheet.ns .fc-text { margin-left: 24px; font-size: 12px; }
+.twod12.sheet.ns .fc-text p { margin: 2px 0; }
+.twod12.sheet.ns .flist .tfslot { margin: 0; }
+/* v0.0.133: Features start folded; Expand all / Collapse all; an opened card shows its description, then what it Grants. */
+.twod12.sheet.ns .ftools { display: flex; justify-content: flex-end; gap: 14px; padding: 8px 2px 0; font-size: 12px; }
+.twod12.sheet.ns .ftools a { opacity: .8; }
+.twod12.sheet.ns .ftools a:hover { opacity: 1; }
+.twod12.sheet.ns .ftools + .fsec { margin-top: 2px; }
+
+/* v0.0.133: the new sheet, step 4: the Items tab (weapon and armor cards, gear and loot list, coins). */
+.twod12.sheet.ns .itools { display: flex; justify-content: flex-end; gap: 8px; padding: 8px 0 0; }
+.twod12.sheet.ns .itools button { flex: none; width: auto; height: 26px; padding: 0 10px; font-size: 12px; }
+
+.twod12.sheet.ns .icard { position: relative; display: flex; flex-direction: column; gap: 6px; padding: 8px 10px; border: 1px solid rgba(128,128,128,.3); border-radius: 8px; background: rgba(255,255,255,.55); }
+
+.twod12.sheet.ns .grow .grip { cursor: grab; opacity: .5; font-size: 11px; }
+
+.twod12.sheet.ns .fsec .gcoins { display: inline-flex; align-items: center; gap: 6px; }
+.twod12.sheet.ns .fsec .gcoins label { display: inline-flex; flex-direction: row; align-items: center; gap: 4px; margin: 0; }
+.twod12.sheet.ns .fsec .gcoins input { width: 70px; height: 22px; min-height: 0; padding: 0 4px; font-size: 12px; text-align: right; }
+.twod12.sheet.ns .gtable { border: 1px solid rgba(128,128,128,.3); border-radius: 8px; background: rgba(255,255,255,.55); }
+.twod12.sheet.ns .ghead, .twod12.sheet.ns .grow { display: grid; grid-template-columns: 14px minmax(0, 1fr) 56px 60px 60px 46px; gap: 8px; align-items: center; padding: 5px 10px; }
+.twod12.sheet.ns .ghead { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; opacity: .7; border-bottom: 1px solid rgba(128,128,128,.25); }
+.twod12.sheet.ns .grow { font-size: 13px; border-bottom: 1px solid rgba(128,128,128,.15); }
+.twod12.sheet.ns .grow:last-child { border-bottom: none; }
+.twod12.sheet.ns .g-name { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.twod12.sheet.ns .g-name img { width: 22px; height: 22px; border: none; border-radius: 3px; cursor: pointer; flex: none; }
+.twod12.sheet.ns .g-name a { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.twod12.sheet.ns .gtable .grow input.gq { width: 50px; height: 22px; min-height: 0; padding: 0; text-align: center; font-size: 12px; }
+.twod12.sheet.ns .g-btns { display: flex; gap: 8px; justify-content: flex-end; opacity: .7; }
+.twod12.sheet.ns .gtable .emptyhint { padding: 8px 10px; }
+/* v0.0.134: the sheet has no padding of its own (the old 8px made a border under the title bar). */
+.twod12.sheet.v44.ns { padding: 0; }
+/* v0.0.134: Feature cards: what they grant always shows; the chevron opens the description. Class picks is a card. */
+.twod12.sheet.ns .fc-desc { display: none; margin-top: 5px; }
+.twod12.sheet.ns .fcard.open .fc-desc { display: block; }
+.twod12.sheet.ns .fc-grants-wrap { display: flex; flex-direction: column; gap: 3px; margin-top: 5px; }
+.twod12.sheet.ns .ktag.k-picks { background: #e6f1fb; color: #185fa5; }
+/* v0.0.134: the new sheet, step 5: the Effects tab (conditions as chips, effects and passives as rows) and the Notes tab. */
+.twod12.sheet.ns .tabcount { display: inline-block; min-width: 16px; padding: 0 4px; border-radius: 8px; font-size: 10px; font-weight: 700; line-height: 16px; text-align: center; background: #a12b2b; color: #fff; }
+.twod12.sheet.ns .cchips { display: flex; flex-wrap: wrap; gap: 6px; }
+.twod12.sheet.ns .cchip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px 3px 4px; border: 1px solid rgba(128,128,128,.35); border-radius: 14px; background: rgba(255,255,255,.6); font-size: 12px; }
+.twod12.sheet.ns .cchip img { width: 20px; height: 20px; border: none; border-radius: 50%; background: #1e2a3a; }
+.twod12.sheet.ns .cc-name { font-weight: 600; }
+.twod12.sheet.ns .cc-dur { font-size: 11px; opacity: .7; }
+.twod12.sheet.ns .cchip .cadj { width: 16px; text-align: center; border: 1px solid rgba(128,128,128,.4); border-radius: 4px; line-height: 14px; }
+.twod12.sheet.ns .cchip .rm { opacity: .6; }
+.twod12.sheet.ns .erows { display: flex; flex-direction: column; gap: 5px; }
+.twod12.sheet.ns .erow { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto auto; gap: 8px; align-items: center; padding: 6px 8px; border: 1px solid rgba(128,128,128,.3); border-radius: 8px; background: rgba(255,255,255,.55); }
+.twod12.sheet.ns .erow.off { opacity: .55; }
+.twod12.sheet.ns .erow img { width: 28px; height: 28px; border: none; border-radius: 4px; background: #1e2a3a; }
+.twod12.sheet.ns .e-main { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.twod12.sheet.ns .e-name { font-size: 13px; font-weight: 600; }
+.twod12.sheet.ns .e-text { font-size: 12px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.twod12.sheet.ns .e-src { font-size: 11px; opacity: .7; }
+.twod12.sheet.ns .e-dur { padding: 1px 8px; border-radius: 9px; font-size: 11px; font-weight: 600; white-space: nowrap; background: #e6f1fb; color: #185fa5; }
+.twod12.sheet.ns .erow.off .e-dur { background: #ebe7df; color: #5f5e5a; }
+.twod12.sheet.ns .e-btns { display: flex; gap: 8px; opacity: .7; }
+.twod12.sheet.ns .edrop { margin-top: 10px; padding: 10px; border: 1px dashed rgba(128,128,128,.6); border-radius: 8px; font-size: 12px; text-align: center; opacity: .8; }
+.twod12.sheet.ns .nbox { border: 1px solid rgba(128,128,128,.3); border-radius: 8px; background: rgba(255,255,255,.55); padding: 4px 8px; min-height: 60px; }
+.twod12.sheet.ns .nbox.gm { border-style: dashed; }
+
+/* v0.0.135: Class picks groups the pick Features; the window is dark blue behind Foundry's own (translucent) title bar, like other systems' sheets; the notes editors show what is written and can be made taller. */
+.twod12.sheet.ns .fc-sublabel { margin: 4px 0 0 24px; font-size: 11px; font-weight: 700; }
+.twod12.sheet.ns .fc-sublabel em { font-weight: 400; opacity: .7; }
+.twod12.sheet.ns .fc-sublabel a { text-decoration: underline dotted; }
+/* v0.0.141: the window keeps Foundry's own background and title bar; the dark blue is on the sheet itself (below). */
+.application.twod12.twod12-actor .window-content { background: transparent; }
+.twod12.sheet.v44.ns .mn { background: #ebe5d6 url("../../../ui/parchment.jpg") repeat; color: #1e2430; }
+.twod12.sheet.ns .nbox { padding: 0; min-height: 0; background: rgba(255,255,255,.65); overflow: hidden; }
+.twod12.sheet.ns .nbox prose-mirror { display: flex; flex-direction: column; height: auto; min-height: 110px; max-height: none; resize: vertical; overflow: auto; }
+.twod12.sheet.ns .nbox prose-mirror.active { min-height: 220px; }
+.twod12.sheet.ns .nbox prose-mirror > menu, .twod12.sheet.ns .nbox prose-mirror .editor-menu { flex: none; }
+.twod12.sheet.ns .nbox prose-mirror .editor-content { flex: 1 1 auto; height: auto; min-height: 80px; overflow-y: auto; padding: 6px 10px; }
+.twod12.sheet.ns .nbox .ProseMirror { min-height: 80px; outline: none; }
+/* v0.0.136: no "Grants" word; the rows sit right under the card's title. */
+.twod12.sheet.ns .fc-grants-wrap { margin-top: 4px; }
+/* v0.0.136: the new sheet, step 6: the NPC stat block (Tag chips) and the toolbar on its Actions tab. */
+.twod12.sheet.ns .sbk { display: grid; gap: 5px; font-size: 11px; color: var(--np-dim); }
+.twod12.sheet.ns .sbk > label { display: grid; grid-template-columns: 66px minmax(0, 1fr); align-items: center; gap: 6px; margin: 0; }
+.twod12.sheet.ns .sbk select, .twod12.sheet.ns .sbk input { width: 100%; height: 22px; min-height: 0; padding: 0 4px; font-size: 11px; color: var(--np-text); background: var(--np-tile); border: 1px solid var(--np-line); border-radius: 4px; }
+.twod12.sheet.ns .sbk option { color: #1e2430; background: #fff; }
+
+.twod12.sheet.ns .sbk-tags { display: grid; grid-template-columns: 66px minmax(0, 1fr); gap: 6px; align-items: start; }
+.twod12.sheet.ns .tchips { display: flex; flex-wrap: wrap; gap: 4px; }
+.twod12.sheet.ns .tchip { display: inline-flex; align-items: center; gap: 4px; padding: 1px 4px 1px 7px; border-radius: 9px; background: var(--np-tile); border: 1px solid var(--np-line); color: var(--np-text); }
+.twod12.sheet.ns .tchip a { opacity: .7; }
+.twod12.sheet.ns .sbk select.tagadd { width: 34px; height: 20px; padding: 0 2px; border-radius: 9px; text-align: center; }
+.twod12.sheet.ns .tab[data-tab="actions"] > .itools { padding-bottom: 0; }
+/* v0.0.136: the Generate Action and Generate Weapon dialogs. */
+.twod12.genact { display: flex; flex-direction: column; gap: 8px; }
+.twod12.genact label { display: flex; flex-direction: column; gap: 2px; margin: 0; font-size: 11px; font-weight: 600; }
+.twod12.genact input[type=text], .twod12.genact select { font-weight: 400; }
+.twod12.genact .ga-top { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 10px; }
+.twod12.genact .ga-top .wide { grid-column: 1 / -1; }
+.twod12.genact .ga-top .chk { flex-direction: row; align-items: center; gap: 6px; align-self: end; }
+.twod12.genact .ga-tabs { display: flex; align-items: center; gap: 6px; border-bottom: 1px solid rgba(128,128,128,.4); padding-bottom: 4px; }
+.twod12.genact .ga-vtabs { display: flex; gap: 4px; flex-wrap: wrap; }
+.twod12.genact .ga-vt { padding: 2px 8px; border-radius: 10px; font-size: 12px; border: 1px solid rgba(128,128,128,.4); }
+.twod12.genact .ga-vt.on { background: #1e2a3a; color: #fff; }
+.twod12.genact .ga-del { margin-left: 4px; opacity: .7; }
+.twod12.genact .ga-add { margin-left: auto; font-size: 12px; }
+.twod12.genact fieldset.ga-ver { display: grid; gap: 5px; margin: 0; padding: 0; border: none; }
+.twod12.genact fieldset.ga-ver[hidden] { display: none; }
+.twod12.genact .ga-ver label:first-child input { width: 80px; }
+.twod12.genact .hint { margin: 0; font-size: 11px; opacity: .8; }
+.twod12.genact .ga-ok, .twod12.genw .gw-ok { padding: 5px 8px; border-radius: 6px; background: #e3f3e6; color: #1f5b2a; font-size: 12px; }
+.twod12.genact .ga-ph, .twod12.genw .gw-ph { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; opacity: .7; }
+.twod12.genact .ga-card { max-height: 320px; overflow-y: auto; }
+.twod12.genw { display: flex; flex-direction: column; gap: 8px; }
+.twod12.genw .gw-line { display: flex; flex-direction: column; gap: 3px; margin: 0; font-size: 12px; font-weight: 600; }
+.twod12.genw .gw-chip { display: inline-block; margin: 2px 3px 0 0; padding: 0 7px; border-radius: 9px; background: #fff; border: 1px solid #9fd0a8; font-size: 11px; font-weight: 600; color: #1f5b2a; }
+.twod12.genw .gw-no { font-size: 12px; }
+.twod12.genw .gw-chip.bad { background: #f8e1e1; border-color: #e3a9a9; color: #a12b2b; }
+.twod12.genw .gw-wcard { display: flex; flex-direction: column; gap: 6px; padding: 8px 10px; border: 1px solid rgba(128,128,128,.4); border-radius: 8px; background: rgba(255,255,255,.6); }
+.twod12.genw .gw-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; }
+.twod12.genw .gw-seg { display: inline-flex; border: 1px solid rgba(128,128,128,.45); border-radius: 6px; overflow: hidden; font-size: 11px; }
+.twod12.genw .gw-seg span { padding: 1px 7px; }
+.twod12.genw .gw-seg span.on { background: #1e2a3a; color: #fff; }
+.twod12.genw .gw-kv { display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 3px 8px; font-size: 12px; }
+.twod12.genw .gw-kv > span:nth-child(odd) { opacity: .7; }
+.twod12.genw .gw-empty { font-size: 12px; opacity: .7; }
+.twod12.genw .hint { margin: 0; font-size: 11px; opacity: .8; }
+/* v0.0.137: the amount before a damage type takes the type's color ("1d8 Cold" all in Cold). */
+.twod12 .dtamt { font-weight: 600; }
+/* v0.0.137: the generators keep their buttons in view (the content scrolls), and their previews have their own light colors (readable in Foundry's dark theme). */
+.application.twod12-gen .window-content { display: flex; flex-direction: column; overflow: hidden; }
+.application.twod12-gen .dialog-content { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding-right: 4px; }
+.application.twod12-gen .form-footer { flex: none; }
+.twod12.genact .ga-card { max-height: none; }
+.twod12.genact .ga-no, .twod12.genw .gw-no { padding: 5px 8px; border-radius: 6px; background: #fbf3e4; color: #6b3a05; font-size: 12px; }
+.twod12.genw .gw-wcard { background: #fffdf8; color: #1e2430; border-color: #cfc6b4; }
+.twod12.genw .gw-wcard .gw-seg { border-color: #b9b1a1; }
+.twod12.genw .gw-wcard .gw-seg span.on { background: #1e2a3a; color: #fff; }
+.twod12.genw .gw-ok .gw-chip, .twod12.genact .gw-chip { color: #1f5b2a; background: #fff; }
+.twod12.genw .gw-no .gw-chip.bad, .twod12.genact .gw-chip.bad { background: #f8e1e1; border: 1px solid #e3a9a9; color: #a12b2b; }
+.twod12.genact .gw-chip { display: inline-block; margin: 2px 3px 0 0; padding: 0 7px; border-radius: 9px; font-size: 11px; font-weight: 600; }
+/* v0.0.137: the Favorites tab uses the Actions table's rows (a card opens in place; drag to reorder). */
+.twod12.sheet.ns .tab[data-tab="favorites"] .at-head { padding-top: 10px; }
+.twod12.sheet.ns .fav-empty { margin-top: 12px; }
+/* v0.0.139: the Items tab's loadout (hand and armor slots) and the Weapons and Armor lists; Foundry's title bar shows the window behind it. */
+.twod12.sheet.ns .lo-title { margin: 10px 2px 4px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #7a4a0c; }
+.twod12.sheet.ns .lo-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.twod12.sheet.ns .lo-slot { display: flex; flex-direction: column; gap: 4px; min-width: 0; padding: 8px 10px; border-radius: 8px; background: #1e2a3a; color: #fff; border: 2px solid transparent; }
+.twod12.sheet.ns .lo-slot.both { grid-column: span 2; }
+.twod12.sheet.ns .lo-slot.free { justify-content: center; align-items: center; text-align: center; background: transparent; color: #4a5261; border: 2px dashed #b9b1a1; }
+.twod12.sheet.ns .lo-slot.free b { font-size: 13px; }
+.twod12.sheet.ns .lo-slot.untrained { border-color: #d0544b; }
+.twod12.sheet.ns .lo-k { display: flex; justify-content: space-between; align-items: center; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #b8c3d6; }
+.twod12.sheet.ns .lo-slot.free .lo-k { color: #4a5261; }
+.twod12.sheet.ns .lo-2h { padding: 0 6px; border-radius: 8px; background: #e09a3a; color: #1e2430; letter-spacing: 0; }
+.twod12.sheet.ns .lo-name { font-size: 14px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.twod12.sheet.ns .lo-slot .eff { align-self: flex-start; margin-left: 0; }
+.twod12.sheet.ns .lo-sub { font-size: 11px; color: #c3cddc; }
+.twod12.sheet.ns .lo-slot.free .lo-sub { color: #4a5261; }
+.twod12.sheet.ns .tboxes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px; text-align: center; }
+.twod12.sheet.ns .tboxes.n2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.twod12.sheet.ns .tboxes > div { display: flex; flex-direction: column; padding: 1px 0; border-radius: 4px; background: #efe9dd; line-height: 1.15; }
+.twod12.sheet.ns .tboxes span { font-size: 8px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: #4a5261; }
+.twod12.sheet.ns .tboxes b { font-size: 11px; color: #3f3e3a; white-space: nowrap; }
+.twod12.sheet.ns .lo-slot .tboxes { max-width: 220px; }
+.twod12.sheet.ns .tboxes.dark > div { background: #2d3e56; }
+.twod12.sheet.ns .tboxes.dark span { color: #b8c3d6; }
+.twod12.sheet.ns .tboxes.dark b { color: #fff; }
+.twod12.sheet.ns .lo-sec { margin-top: 10px; display: flex; flex-direction: column; gap: 4px; }
+.twod12.sheet.ns .lo-head { display: flex; align-items: center; gap: 7px; width: 100%; height: auto; margin: 0; padding: 3px 2px; border: none; background: none; box-shadow: none; text-align: left; color: #7a2f22; font: inherit; }
+.twod12.sheet.ns .lo-head i { font-size: 11px; width: 12px; }
+.twod12.sheet.ns .lo-h { font-size: 15px; font-weight: 600; }
+.twod12.sheet.ns .lo-count { font-size: 11px; color: #4a5261; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.twod12.sheet.ns .lo-list { display: flex; flex-direction: column; border-radius: 8px; background: #fbf8f2; border: 1px solid #d8cfbd; overflow: hidden; }
+.twod12.sheet.ns .lrow { display: grid; grid-template-columns: 12px minmax(0, 1fr) 132px 92px 66px; gap: 8px; align-items: center; padding: 6px 10px; border-bottom: 1px solid #e3dccd; }
+.twod12.sheet.ns .lrow:last-child { border-bottom: none; }
+.twod12.sheet.ns .lrow .grip { cursor: grab; opacity: .5; font-size: 11px; }
+.twod12.sheet.ns .lr-main { display: flex; flex-direction: column; min-width: 0; }
+.twod12.sheet.ns .lr-top { display: flex; align-items: center; gap: 4px; min-width: 0; }
+.twod12.sheet.ns .lr-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.twod12.sheet.ns .lr-sub { font-size: 11px; color: #4a5261; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.twod12.sheet.ns .lrow.dropped { margin: 4px; padding: 5px 6px; border: 1px dashed #c98a8a; border-radius: 6px; background: #f6eae6; }
+.twod12.sheet.ns .lrow.dropped .lr-main, .twod12.sheet.ns .lrow.dropped .tboxes { opacity: .6; }
+.twod12.sheet.ns .lrow.untrained { margin: 4px; padding: 5px 6px; border: 1px solid #d0544b; border-radius: 6px; background: #fbeeec; }
+.twod12.sheet.ns .lo-list .emptyhint { padding: 8px 10px; }
+
+/* v0.0.140: loadout warnings condensed to an icon next to the slot label (reason on hover) */
+.twod12.sheet.ns .lo-kl { display: inline-flex; align-items: center; gap: 5px; }
+.twod12.sheet.ns .lo-wi { font-size: 11px; color: #ff8f86; cursor: help; }
+
+/* v0.0.141: the window and its title bar are Foundry's own (translucent); the sheet carries the dark blue. Right-click menus are not clipped (fixed menus).
+   Where a weapon or armor is: a row of buttons (Dropped / Worn / 1H / 2H; Dropped / Carried / Worn). */
+.twod12.sheet.ns { background: var(--np-bg); }
+.twod12.sheet.ns .lrow { grid-template-columns: 12px minmax(0, 1fr) 132px auto; }
+.twod12.sheet.ns .lr-seg { display: inline-flex; justify-self: end; border: 1px solid #b9b1a1; border-radius: 6px; overflow: hidden; background: #fff; }
+.twod12.sheet.ns .lr-seg button { width: auto; min-width: 30px; height: 24px; margin: 0; padding: 0 8px; border: none; border-left: 1px solid #d8cfbd; border-radius: 0; background: transparent; box-shadow: none; font-size: 11px; font-weight: 600; line-height: 1; color: #4a5261; }
+.twod12.sheet.ns .lr-seg button:first-child { border-left: none; }
+.twod12.sheet.ns .lr-seg button:hover { background: #efe9dc; color: #1e2430; }
+.twod12.sheet.ns .lr-seg button.on { background: #1e2a3a; color: #fff; cursor: default; }
+.twod12.sheet.ns .lr-seg button.on.drop { background: #a12b2b; }
+.twod12.sheet.ns .lr-seg button:disabled:not(.on) { opacity: .4; cursor: default; }
+
+/* v0.0.142: a see-through title bar. The sheet is light-themed, so Foundry gives the window a parchment background and an opaque grey header;
+   the window's own background is removed (the sheet below the header is opaque anyway) and the header is a translucent dark glass over the canvas.
+   Tweak live with --twod12-hdr / --twod12-hdr-blur on the window (see the changelog). */
+.application.twod12.twod12-actor { --twod12-hdr: rgba(20, 22, 30, 0.55); --twod12-hdr-blur: 4px; background: none !important; }
+.application.twod12.twod12-actor > .window-header { background: var(--twod12-hdr) !important; backdrop-filter: blur(var(--twod12-hdr-blur)); -webkit-backdrop-filter: blur(var(--twod12-hdr-blur)); }
+
+/* v0.0.143: a shorter title bar on actor sheets (about 28px instead of Foundry's 36px). */
+.application.twod12.twod12-actor { --header-height: 28px; }
+.application.twod12.twod12-actor > .window-header { height: var(--header-height); min-height: 0; flex: 0 0 var(--header-height); padding-block: 0; font-size: var(--font-size-13, 13px); }
+.application.twod12.twod12-actor > .window-header .header-control { --button-size: 22px; }
+
+/* v0.0.146: an NPC's Escalation switch */
+.twod12.sheet.ns .hb-meter .esc-tog { cursor: pointer; opacity: .85; }
+.twod12.sheet.ns .hb-meter .esc-tog:hover { opacity: 1; text-decoration: underline; }
+
+/* v0.0.148: one Version at a time on description cards, in the chat too (the chat drops the hidden attribute) */
+.rawcard .rawv.off, .twod12.rawcard .rawv.off { display: none !important; }   /* the chat card is .twod12.rawcard itself (v0.0.149) */
+
+/* v0.0.154: the Mastery tab */
+.twod12.sheet.ns .mst-row { display: grid; grid-template-columns: minmax(0, 1fr) auto 110px auto 18px; gap: 10px; align-items: center; padding: 7px 10px; margin: 4px 0; border: 1px solid #d8cfbd; border-radius: 8px; background: #fffaf0; }
+.twod12.sheet.ns .mst-row.tech { border-color: #b5a06a; }
+.twod12.sheet.ns .mst-name { display: flex; flex-direction: column; min-width: 0; }
+.twod12.sheet.ns .mst-name small { color: #6b6455; font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.twod12.sheet.ns .mst-name .mst-gone { font-style: italic; }
+.twod12.sheet.ns .mst-val { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; font-size: 15px; }
+.twod12.sheet.ns .mst-val a { color: #6b6455; font-size: 11px; cursor: pointer; }
+.twod12.sheet.ns .mst-bar { height: 6px; border-radius: 3px; background: #e6dcc8; overflow: hidden; }
+.twod12.sheet.ns .mst-bar span { display: block; height: 100%; background: #b08a2e; }
+.twod12.sheet.ns .mst-steps { display: inline-flex; gap: 4px; }
+.twod12.sheet.ns .mst-step { min-width: 22px; text-align: center; font-size: 11px; font-weight: 700; padding: 1px 4px; border-radius: 4px; background: #ece4d2; color: #8a8170; }
+.twod12.sheet.ns .mst-step.on { background: #b08a2e; color: #fff; }
+
+.twod12.sheet.ns .mst-empty { padding: 12px; color: #6b6455; font-style: italic; }
+/* v0.0.155: Mastery rows: one small line when shrunk, what each step grants when opened, the Techniques toggle */
+.twod12.sheet.ns .mst-row { grid-template-columns: minmax(0, 1fr) auto 110px auto 18px; }
+.twod12.sheet.ns .mst-row.mini { grid-template-columns: minmax(0, 1fr) 110px 28px; padding: 3px 10px; opacity: .85; }
+.twod12.sheet.ns .mst-row.mini .mst-name b { font-weight: 600; font-size: 12px; }
+.twod12.sheet.ns .mst-num { font-weight: 700; text-align: right; }
+.twod12.sheet.ns a.mst-name { cursor: pointer; color: inherit; }
+.twod12.sheet.ns .mst-chev { font-size: 10px; color: #8a8170; margin-right: 2px; }
+.twod12.sheet.ns .mst-hide { color: #8a8170; cursor: pointer; }
+.twod12.sheet.ns .mst-detail { margin: -2px 0 6px 28px; padding: 6px 10px; border-left: 2px solid #d8cfbd; }
+.twod12.sheet.ns .mst-dl { display: flex; align-items: center; gap: 8px; padding: 2px 0; color: #6b6455; font-size: 12px; }
+.twod12.sheet.ns .mst-dl.on { color: #1e2430; font-weight: 600; }
+
+/* v0.0.156: the Techniques option and Bow Mastery in the Mastery tab */
+.twod12.sheet.ns .mst-opt { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #6b6455; margin: 2px 0 8px; }
+.twod12.sheet.ns .mst-opt input { margin: 0; }
+.twod12.sheet.ns .mst-bow { font-size: 12px; margin: 0 0 8px; padding: 6px 10px; border: 1px dashed #b08a2e; border-radius: 8px; background: #fff7e0; }
+.twod12.sheet.ns .mst-bow a { text-decoration: underline; cursor: pointer; }
+
+/* v0.0.157: the Frequency in the title bar, next to the cost (as in the book); the meta-lines are three rows */
+.twod12.chat .ahead .aright .atop { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.twod12.chat .ahead .afreq { font-size: .78em; font-weight: 600; letter-spacing: .02em; opacity: .9; white-space: nowrap; }
+.twod12.chat .trow + .trow { margin-top: 1px; }
+
+/* ---- the NPC Builder tab (v0.0.163): the Bestiary's numbers, a row per number with its rating chips */
+.twod12.sheet.ns .nb { --nb-text: #1e2430; --nb-acc: #7a2f22; --nb-line: rgba(30,36,48,.28); --nb-dim: #474d59; --nb-cust: #7a4d00; --nb-warn: #9a2b14; --nb-chip: rgba(255,255,255,.7);
+  display: flex; flex-direction: column; gap: 4px; padding: 6px 2px 14px; color: var(--nb-text); font-size: 12px; }
+/* v0.0.164: the parchment pane needs dark text whatever Foundry's theme is (its text color is light in a dark theme) */
+.twod12.sheet.ns .nb input, .twod12.sheet.ns .nb select { color: var(--nb-text); background: #fff; border: 1px solid #b9b1a1; }
+.twod12.sheet.ns .nb select option { color: var(--nb-text); background: #fff; }
+.twod12.sheet.ns .nb-step { display: flex; align-items: center; gap: 2px; }
+.twod12.sheet.ns .nb-step button { flex: none; width: 26px; height: 26px; margin: 0; padding: 0; border: 1px solid #b9b1a1; border-radius: 5px; background: var(--nb-chip); color: var(--nb-text); font-size: 15px; font-weight: 700; line-height: 1; cursor: pointer; }
+.twod12.sheet.ns .nb-step input { width: 40px; height: 26px; text-align: center; }
+.twod12.sheet.ns .nb-cv b { height: 26px; line-height: 26px; font-size: 14px; }
+.twod12.sheet.ns .nb-inline { flex-direction: row; align-items: center; gap: 6px; }
+.twod12.sheet.ns .nb-rwarn { grid-column: 1 / -1; margin-top: -2px; font-size: 11px; font-weight: 600; color: var(--nb-warn); }
+.twod12.sheet.ns .nb-top { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: flex-end; }
+.twod12.sheet.ns .nb-field { display: flex; flex-direction: column; gap: 3px; margin: 0; }
+.twod12.sheet.ns .nb-field input[type="number"] { width: 56px; height: 26px; }
+.twod12.sheet.ns .nb-field select { height: 26px; width: auto; }
+.twod12.sheet.ns .nb-check { flex-direction: row; align-items: center; gap: 4px; height: 26px; }
+.twod12.sheet.ns .nb-lab { font-size: 11px; color: var(--nb-dim); }
+.twod12.sheet.ns .nb-roles { display: flex; gap: 4px; }
+.twod12.sheet.ns .nb-role, .twod12.sheet.ns .nb-chip { flex: none; width: auto; margin: 0; border: 1px solid #b9b1a1; background: var(--nb-chip); color: var(--nb-text); border-radius: 5px; cursor: pointer; line-height: 1.15; box-shadow: none; }
+.twod12.sheet.ns .nb-role:hover, .twod12.sheet.ns .nb-chip:hover { border-color: var(--nb-acc); color: var(--nb-text); }
+.twod12.sheet.ns .nb-role { height: 28px; padding: 0 10px; font-weight: 600; font-size: 12px; }
+.twod12.sheet.ns .nb-role span { font-weight: 400; opacity: .8; margin-left: 3px; }
+.twod12.sheet.ns .nb-role.on, .twod12.sheet.ns .nb-chip.on, .twod12.sheet.ns .nb-role.on:hover, .twod12.sheet.ns .nb-chip.on:hover { background: var(--nb-acc); border-color: var(--nb-acc); color: #fff; }
+.twod12.sheet.ns .nb-hint { margin: 6px 0 0; font-size: 11px; color: var(--nb-dim); }
+.twod12.sheet.ns .nb-warn { margin: 4px 0 0; font-size: 11px; font-weight: 600; color: var(--nb-warn); }
+.twod12.sheet.ns .nb-group { margin-top: 10px; }
+.twod12.sheet.ns .nb-gh { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin-bottom: 2px; }
+.twod12.sheet.ns .nb-gh h3 { margin: 0; border: 0; font-size: 15px; font-weight: 600; color: var(--nb-acc); }
+.twod12.sheet.ns .nb-gh span { font-size: 11px; color: var(--nb-dim); }
+.twod12.sheet.ns .nb-row { display: grid; grid-template-columns: 104px minmax(0, auto) 56px minmax(90px, 1fr); gap: 8px; align-items: center; padding: 5px 0; border-top: 1px solid var(--nb-line); }
+.twod12.sheet.ns .nb-name { display: flex; flex-direction: column; min-width: 0; }
+.twod12.sheet.ns .nb-name b { font-size: 12px; }
+.twod12.sheet.ns .nb-name span { font-size: 10px; color: var(--nb-dim); }
+.twod12.sheet.ns .nb-chips { display: flex; flex-wrap: wrap; gap: 3px; }
+.twod12.sheet.ns .nb-chip { min-width: 50px; height: 32px; padding: 1px 4px; font-size: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+.twod12.sheet.ns .nb-chip b { font-size: 10px; font-weight: 600; }
+.twod12.sheet.ns .nb-chip span { font-size: 11px; }
+.twod12.sheet.ns .nb-val { font-size: 16px; font-weight: 700; text-align: center; }
+.twod12.sheet.ns .nb-val input { width: 52px; height: 26px; text-align: center; font-weight: 700; border-color: var(--nb-cust); }
+.twod12.sheet.ns .nb-row.custom .nb-val { color: var(--nb-cust); }
+.twod12.sheet.ns .nb-how { font-size: 11px; color: var(--nb-dim); line-height: 1.3; }
+.twod12.sheet.ns .nb-atk { display: flex; flex-direction: column; gap: 3px; overflow-x: auto; }
+.twod12.sheet.ns .nb-atkh, .twod12.sheet.ns .nb-atkr { display: grid; grid-template-columns: 104px repeat(5, minmax(78px, 1fr)); gap: 4px; align-items: center; }
+.twod12.sheet.ns .nb-atkh b { font-size: 10px; font-weight: 600; text-align: center; color: var(--nb-dim); }
+.twod12.sheet.ns .nb-ref { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 36px; padding: 2px 4px; border: 1px solid #b9b1a1; border-radius: 5px; background: var(--nb-chip); color: var(--nb-text); text-align: center; }
+.twod12.sheet.ns .nb-ref b { font-size: 12px; }
+.twod12.sheet.ns .nb-ref span { font-size: 10px; color: var(--nb-dim); }
+.twod12.sheet.ns .nb-notes { margin: 6px 0 0; padding-left: 16px; font-size: 11px; color: var(--nb-dim); }
+.twod12.sheet.ns .nb-notes li { margin: 2px 0; }
+.twod12.sheet.ns .nb-check-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 6px; }
+.twod12.sheet.ns .nb-stat { display: flex; flex-direction: column; gap: 1px; padding: 6px 8px; border: 1px solid #b9b1a1; border-radius: 6px; background: var(--nb-chip); }
+.twod12.sheet.ns .nb-stat span { font-size: 10px; color: var(--nb-dim); }
+.twod12.sheet.ns .nb-stat b { font-size: 15px; }
+.twod12.sheet.ns .nb-stat small { font-size: 10px; color: var(--nb-dim); line-height: 1.3; }
+
+/* v0.0.165: Strike Actions get a red line at the start of the row, like the tier line on cards (sheets only, not chat cards) */
+.twod12.sheet.ns .ar.strike { box-shadow: inset 3px 0 0 #b3261e; }
+
+/* v0.0.166: Cover height calculation (heightcover.mjs): a light side view */
+.twod12-height .window-content { padding: 8px 10px; background: #f4ecdc; color: #1e2430; }
+.twod12-height .hc-row { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; margin-bottom: 6px; font-size: 12px; }
+.twod12-height .hc-row label { display: flex; align-items: center; gap: 4px; margin: 0; color: #1e2430; }
+.twod12-height .hc-row input { width: 56px; height: 24px; color: #1e2430; background: #fff; border: 1px solid #b9b1a1; }
+.twod12-height .hc-row button { width: auto; height: 26px; padding: 0 10px; font-size: 12px; }
+.twod12-height .hc-view { overflow: auto; max-height: 70vh; border: 1px solid #b9b1a1; background: #8f8f8f; }
+.twod12-height svg { display: block; }
+.twod12-height .hc-cell { fill: transparent; stroke: rgba(30,36,48,.25); stroke-width: 1; cursor: pointer; }
+.twod12-height .hc-cell:hover { fill: rgba(255,255,255,.18); }
+.twod12-height .hc-block.full { fill: rgba(192,57,43,.65); stroke: #e02020; stroke-width: 3; }
+.twod12-height .hc-block.half { fill: rgba(224,192,32,.55); stroke: #f0d000; stroke-width: 3; }
+.twod12-height .hc-ground { stroke: #1e2430; stroke-width: 3; }
+.twod12-height .hc-cre rect { fill: rgba(255,255,255,.15); stroke: #1e2430; stroke-width: 2; }
+.twod12-height .hc-cre.target rect { stroke: #b06a12; }
+.twod12-height .hc-line { stroke-width: 2.5; }
+.twod12-height .hc-line.green, .twod12-height .hc-dot.green { stroke: #2fa84f; fill: #2fa84f; }
+.twod12-height .hc-line.red, .twod12-height .hc-dot.red { stroke: #d23b2f; fill: #d23b2f; }
+.twod12-height .hc-corner { fill: #ffffff; stroke: #1e2430; stroke-width: 2; cursor: pointer; }
+.twod12-height .hc-corner.on { fill: #7a2f22; }
+.twod12-height .hc-result { margin: 8px 0 2px; font-size: 14px; }
+.twod12-height .hc-result.noloe { color: #9a2b14; } .twod12-height .hc-result.cover { color: #7a4d00; } .twod12-height .hc-result.clear { color: #1f6b3a; }
+.twod12-height .hc-hint { margin: 2px 0 0; font-size: 11px; color: #474d59; }
+
+/* ---- v0.0.168: Item sheets and the Edit Versions window in the sheet's look (parchment, dark text), whatever Foundry's theme is.
+   The item sheet adds .twod12-styled to its window (not Class and Species yet) and .sk to its root; the Versions window always. */
+.application.twod12-styled { --sk-ink: #1e2430; --sk-mut: #4b5160; --sk-line: #b9b1a1; --sk-acc: #7a2f22; --sk-navy: #1e2a3a; --sk-par: #ebe5d6; --sk-panel: #f6f1e4; --sk-amber: #e09a3a;
+  --color-text-primary: var(--sk-ink); --color-text-secondary: var(--sk-mut); --input-background-color: #fff; --input-text-color: var(--sk-ink); --input-border-color: var(--sk-line);
+  --button-background-color: #fff; --button-text-color: var(--sk-ink); --button-border-color: var(--sk-line); --color-border: var(--sk-line); }
+.application.twod12-styled .window-content { background: var(--sk-par); color: var(--sk-ink); color-scheme: light; padding: 0; }
+.application.twod12-styled .window-content .sk { padding: 0; color: var(--sk-ink); font-size: 13px; }
+.application.twod12-styled .sk a { color: var(--sk-acc); }
+.application.twod12-styled .sk label { color: var(--sk-mut); font-size: 12px; }
+.application.twod12-styled .sk label.inline { color: var(--sk-ink); font-size: 13px; }
+.application.twod12-styled .sk input[type="text"], .application.twod12-styled .sk input[type="number"], .application.twod12-styled .sk input:not([type]), .application.twod12-styled .sk select, .application.twod12-styled .sk textarea,
+.application.twod12-styled .sk string-tags input, .application.twod12-styled .sk multi-select select {
+  background: #fff; color: var(--sk-ink); border: 1px solid var(--sk-line); border-radius: 4px; box-shadow: none; }
+.application.twod12-styled .sk input[type="text"], .application.twod12-styled .sk input[type="number"], .application.twod12-styled .sk select { min-height: 30px; }
+.application.twod12-styled .sk select option { color: var(--sk-ink); background: #fff; }
+.application.twod12-styled .sk input:disabled, .application.twod12-styled .sk select:disabled { background: #e6e0d2; color: #6b6f78; cursor: not-allowed; }
+.application.twod12-styled .sk input[type="checkbox"] { accent-color: var(--sk-acc); }
+.application.twod12-styled .sk ::placeholder { color: #7a7f88; }
+.application.twod12-styled .sk button:not(.tabbtn) { background: #fff; color: var(--sk-ink); border: 1px solid var(--sk-line); border-radius: 4px; box-shadow: none; }
+.application.twod12-styled .sk button:not(.tabbtn):hover { border-color: var(--sk-acc); }
+.application.twod12-styled .sk string-tags .tag, .application.twod12-styled .sk .tags .tag { background: #fff; color: var(--sk-ink); border: 1px solid var(--sk-line); }
+.application.twod12-styled .sk .hint, .application.twod12-styled .sk .ihint, .application.twod12-styled .sk .fxd-help { color: var(--sk-mut); opacity: 1; }
+.application.twod12-styled .sk h3 { margin: 16px 0 6px; padding-bottom: 4px; border-bottom: 1px solid var(--sk-line); font: 700 15px Georgia, "Times New Roman", serif; color: var(--sk-acc); }
+.application.twod12-styled .sk code { color: var(--sk-ink); background: rgba(30,36,48,.07); }
+/* header band and tabs */
+.application.twod12-styled .sk .head { gap: 12px; padding: 10px 14px; background: var(--sk-navy); }
+.application.twod12-styled .sk .head img { border: 1px solid #34445c; border-radius: 6px; background: #2b3b52; }
+.application.twod12-styled .sk .head .name { background: transparent; border: none; border-bottom: 1px solid transparent; border-radius: 0; color: #fff; font: 700 20px Georgia, "Times New Roman", serif; }
+.application.twod12-styled .sk .head .name:focus { border-bottom-color: var(--sk-amber); outline: none; box-shadow: none; }
+.application.twod12-styled .sk .tabs { margin: 0; padding: 0 8px; gap: 2px; background: var(--sk-navy); border-top: 1px solid #34445c; border-bottom: none; }
+.application.twod12-styled .sk .tabbtn { padding: 9px 14px; color: #c3cddc; font-weight: 600; }
+.application.twod12-styled .sk .tabbtn:hover { color: #fff; }
+.application.twod12-styled .sk .tabbtn.active { color: #fff; box-shadow: inset 0 -3px 0 var(--sk-amber); }
+.application.twod12-styled .sk > .tab { padding: 10px 16px 18px; }
+/* grids and cards */
+.application.twod12-styled .sk .grid3 { gap: 8px 10px; }
+.application.twod12-styled .sk .grid4 { display: grid; grid-template-columns: 2fr 1fr 1.4fr 1fr; gap: 8px 10px; }
+.application.twod12-styled .sk .grid3.rx { grid-template-columns: auto 1fr; align-items: end; }
+.application.twod12-styled .sk .areaedit { margin: 8px 0; padding: 8px 10px; background: var(--sk-panel); border: 1px solid var(--sk-line); border-radius: 6px; color: var(--sk-ink); }
+.application.twod12-styled .sk .areaedit b { color: var(--sk-acc); }
+.application.twod12-styled .sk .fxd-short { background: var(--sk-panel); border: 1px solid var(--sk-line); color: var(--sk-ink); font-size: 13px; }
+.application.twod12-styled .sk .fxd .fxd-f { background: transparent; color: var(--sk-ink); border: none; border-bottom: 2px solid var(--sk-acc); border-radius: 0; min-height: 0; }
+.application.twod12-styled .sk details.setting, .application.twod12-styled .sk .fxd-cond, .application.twod12-styled .sk .setting { background: var(--sk-panel); border: 1px solid var(--sk-line); border-radius: 6px; }
+.application.twod12-styled .sk .fxd-k, .application.twod12-styled .sk .fxd-lead { color: var(--sk-acc); opacity: 1; }
+.application.twod12-styled .sk .fxd-chip { background: #fff; border-color: var(--sk-line); color: var(--sk-ink); }
+.application.twod12-styled .sk .fxd .fxd-plus { background: transparent; border-color: var(--sk-acc); color: var(--sk-acc); }
+.application.twod12-styled .sk .fxd-adv { border-top-color: var(--sk-line); }
+.application.twod12-styled .sk .drop-zone, .application.twod12-styled .sk .fx-drop { border: 1px dashed var(--sk-line); color: var(--sk-mut); opacity: 1; background: transparent; }
+.application.twod12-styled .sk .items li { padding: 4px 8px; margin: 3px 0; background: #fff; border: 1px solid var(--sk-line); border-radius: 4px; }
+.application.twod12-styled .sk table.vtable { background: var(--sk-panel); border: 1px solid var(--sk-line); }
+.application.twod12-styled .sk .vtable th { color: var(--sk-mut); opacity: 1; border-bottom-color: var(--sk-line); }
+.application.twod12-styled .sk .vtable td { color: var(--sk-ink); border-color: var(--sk-line); }
+.application.twod12-styled .sk .vtable tbody tr:nth-child(even) { background: rgba(30,36,48,.05); }
+.application.twod12-styled .sk .vtable .calc { color: var(--sk-mut); }
+/* the Description tab's editor and the raw card */
+.application.twod12-styled .sk prose-mirror, .application.twod12-styled .sk .editor, .application.twod12-styled .sk .editor-content, .application.twod12-styled .sk .ProseMirror { color: var(--sk-ink); }
+.application.twod12-styled .sk .editor-menu { background: var(--sk-panel); color: var(--sk-ink); border-color: var(--sk-line); }
+/* Edit Versions: each Tier a box with its color (as on the chat cards) */
+.application.twod12-styled .sk.versions { padding: 10px 14px 16px; }
+.application.twod12-styled .sk details.version { background: var(--sk-par); border: 1px solid var(--sk-line); border-radius: 6px; padding: 8px 12px; }
+.application.twod12-styled .sk details.version > summary { color: var(--sk-ink); }
+.application.twod12-styled .sk .vsumtext { color: var(--sk-mut); }
+.application.twod12-styled .sk .tierbox { margin: 10px 0; padding: 10px 12px; background: var(--sk-panel); border: 1px solid var(--sk-line); border-left: 5px solid var(--sk-navy); border-radius: 6px; }
+.application.twod12-styled .sk .tierbox.tier-t1 { border-left-color: #8a2b2b; }
+.application.twod12-styled .sk .tierbox.tier-t2 { border-left-color: #7a5a10; }
+.application.twod12-styled .sk .tierbox.tier-t3 { border-left-color: #1f6b3a; }
+.application.twod12-styled .sk .tierhead { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.application.twod12-styled .sk .tierhead b { font: 700 14px Georgia, "Times New Roman", serif; color: var(--sk-navy); }
+.application.twod12-styled .sk .tier-t1 .tierhead b { color: #8a2b2b; }
+.application.twod12-styled .sk .tier-t2 .tierhead b { color: #7a5a10; }
+.application.twod12-styled .sk .tier-t3 .tierhead b { color: #1f6b3a; }
+.application.twod12-styled .sk .tierbox .iname { flex: 1; font-family: ui-monospace, Menlo, monospace; color: var(--sk-ink); }
+.application.twod12-styled .sk .fxline { padding: 3px 8px; background: #fff; border: 1px solid var(--sk-line); border-radius: 4px; }
+
+/* v0.0.169: the Steadiness buttons (a species sheet): 0 to 4 */
+.twod12.sheet .steadybtns { display: flex; align-items: center; gap: 4px; margin: 6px 0; }
+.twod12.sheet .steady-lab { font-size: 12px; margin-right: 6px; }
+.twod12.sheet .steady-btn { flex: none; width: 30px; height: 28px; margin: 0; padding: 0; border: 1px solid #b9b1a1; border-radius: 5px; background: #fff; color: #1e2430; font-weight: 700; cursor: pointer; }
+.twod12.sheet .steady-btn.on { background: #7a2f22; border-color: #7a2f22; color: #fff; }

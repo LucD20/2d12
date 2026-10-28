@@ -1,0 +1,3 @@
+end of Drak's turn (placement turn): rounds1 false eot false
+end of Zack's turn (origin): rounds1 false eot true
+end of Drak's next turn: rounds1 true

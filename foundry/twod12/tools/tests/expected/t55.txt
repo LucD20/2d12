@@ -1,0 +1,20 @@
+groups: Class: Smite, Lay On Hands | Talents: Opportunity Attack | Items(collapsed): Reaping Sweep
+favorites: Reaping Sweep | granted: Weapon Attack 1/2 from Double Shot (EoT) boxes #o
+basics (Reload hidden, no Reload weapon): Weapon Attack, Steel Yourself, Charge, Reload
+Smite cost: 1/2/3AP | color: #185FA5 | OA: 1R true
+health: {"pool":36,"v":{"pool":36,"dmg":14,"left":22,"body":10,"mind":4,"bdt":21,"mdt":15,"bodyOver":0,"mindOver":0,"bodyDeg":210,"gradient":"conic-gradient(var(--np-tick, #ffffff) 0deg 1.5deg, #d0544b 1.5deg 80deg, #8e342d 80deg 100deg, var(--np-empty, #3a4a62) 100deg 210deg, var(--np-tick, #ffffff) 210deg 211.5deg, #4a86e0 211.5deg 240deg, #28589f 240deg 250deg, var(--np-empty, #3a4a62) 250deg 360deg)","legend":[{"pool":"body","color":"#d0544b","label":"Body","value":10,"max":21},{"pool":"mind","color":"#4a86e0","label":"Mind","value":4,"max":15}],"bars":[{"pool":"body","label":"Body","value":10,"max":21,"badge":"","segs":[{"cls":"l","w":38.1,"color":"#d0544b"},{"cls":"n","w":9.52,"color":"#8e342d"}]},{"pool":"mind","label":"Mind","value":4,"max":15,"badge":"","segs":[{"cls":"l","w":20,"color":"#4a86e0"},{"cls":"n","w":6.67,"color":"#28589f"}]}],"states":[]},"donut":true,"views":[{"k":"donut","l":"Donut","on":true},{"k":"classic","l":"Classic","on":false}],"tip":469,"down":{"title":"Dying","sub":"Collapsed","note":"End of turn: Body Check, the Dying Table on a Tier 1."}} 
+conditions: 
+weapon: {"id":"gs","name":"Greatsword","sub":"Slash · Melee 1 · Two-handed","tiers":[{"l":"T1","v":"0"},{"l":"T2","v":"1d8"},{"l":"T3","v":"2d6"}],"where":"1h","dropped":false,"seg":[{"v":"dropped","l":"Dropped","tip":"On the ground","on":false,"drop":true},{"v":"worn","l":"Worn","tip":"On you, ready to draw","on":false,"drop":false},{"v":"1h","l":"1H","tip":"In one hand","on":true,"drop":false},{"v":"2h","l":"2H","tip":"In 
+loadout: ["Main hand: Greatsword","Off hand: free"] | armor slot: Unarmored
+panel: Defenses: AD 11, WD 11 | Attributes: Body +0, Mind +0, Appeal +0, Instinct +0 | Modifiers: Weapon +2, Power +2, Signature — | Movement: Speed 5, Reach 1, Size 3
+Strikes filter: Smite, Reaping Sweep
+sorted by cost (flat): 1 true Lay On Hands, Opportunity Attack, Reaping Sweep, Smite
+table, group cost, sort custom: On your turn: Reaping Sweep [1AP | — | —], Smite [1/2/3 | — | Round], Lay On Hands [1/2 | — | —] || Reactions: Opportunity Attack [1R | — | At-will]
+table, group source, sort custom: Class: Smite [1/2/3 | — | Round], Lay On Hands [1/2 | — | —] || Talents: Opportunity Attack [1R | — | At-will] || Items (collapsed): Reaping Sweep [1AP | — | —]
+table, group frequency, sort name: At-will: Opportunity Attack [1R | — | At-will] || Round: Smite [1/2/3 | — | Round] || No limit: Lay On Hands [1/2 | — | —], Reaping Sweep [1AP | — | —]
+table, group none, sort cost: (one list): Lay On Hands [1/2 | — | —], Opportunity Attack [1R | — | At-will], Reaping Sweep [1AP | — | —], Smite [1/2/3 | — | Round]
+table, group cost, sort frequency: On your turn: Smite [1/2/3 | — | Round], Lay On Hands [1/2 | — | —], Reaping Sweep [1AP | — | —] || Reactions: Opportunity Attack [1R | — | At-will]
+Basic section: closed | Weapon Attack 1AP, Steel Yourself 2/3, Charge 2AP, Reload 1AP | choices: Cost/Source/Frequency/None · Custom (drag to reorder)/Usage/Name/Cost
+armor: Leather Armor 13 Ward +1 [Light · Quiet] carried -> [Dropped/*Carried*/Worn] | Chain Mail Armor 13 Ward +0 [Medium] worn -> [Dropped/Carried/*Worn*] | slot: Chain Mail
+gear: Gem x2 weight — cost 50 (Each: no weight, cost 25) | Torch x3 weight 1.5 cost 0.3 (Each: weight 0.5, cost 0.1) | Rope x1 weight 2 cost 1 (Each: weight 2, cost 1) "50 feet of hemp." | total weight 3.5
+Effects tab: conditions Prone | effects Double Shot [EoT], Hindered [until Move · 1 round] | passives Divine Vigil: Allies in the aura gain 1 boon on Will. (From the Feature · from Escalation 2) off now (Escalation 1)

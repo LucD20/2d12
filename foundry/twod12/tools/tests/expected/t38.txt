@@ -1,0 +1,20 @@
+"greatsword: two-handed, slash, 0/1d8/2d6"
+  -> Greatsword | twohanded | Sl |  | {"count":0,"die":"","mod":0} {"count":1,"die":"d8","mod":0} {"count":2,"die":"d6","mod":0} | 
+"crossbow, reload, two-handed pierce, ranges 10/20/40, 0/1d4+2/1d10+2"
+  -> Crossbow | reload,twohanded,ranged | Pi | 10/20/40 | {"count":0,"die":"","mod":0} {"count":1,"die":"d4","mod":2} {"count":1,"die":"d10","mod":2} | 
+"short sword, slash, 0/1d6/2d4"
+  -> Short Sword |  | Sl |  | {"count":0,"die":"","mod":0} {"count":1,"die":"d6","mod":0} {"count":2,"die":"d4","mod":0} | 
+"Tusks: pierce, 0 / 1d6 / 2d6"
+  -> Tusks |  | Pi |  | {"count":0,"die":"","mod":0} {"count":1,"die":"d6","mod":0} {"count":2,"die":"d6","mod":0} | 
+"club: blunt, melee, 0/2/1d6-1"
+  -> Club | melee | Bl |  | {"count":0,"die":"","mod":0} {"count":0,"die":"","mod":2} {"count":1,"die":"d6","mod":-1} | 
+"bow, ranged, pierce, range 6/12/24, 0/1d6/1d8+1"
+  -> Bow | ranged | Pi | 6/12/24 | {"count":0,"die":"","mod":0} {"count":1,"die":"d6","mod":0} {"count":1,"die":"d8","mod":1} | 
+"greatsword: two-handed slash"
+  -> Greatsword | twohanded | Sl |  | - | Damage looks like 0/1d8/2d6 (Tier 1 / 2 / 3)
+"spear: sharp, 0/1d6/1d10"
+  -> Spear |  |  |  | {"count":0,"die":"","mod":0} {"count":1,"die":"d6","mod":0} {"count":1,"die":"d10","mod":0} | "sharp" is not a weapon property or a damage type
+"flail: blunt, 0/1d7/2d6"
+  -> Flail |  | Bl |  | - | "0/1d7/2d6" is not a weapon property or a damage type; Damage looks like 0/1d8/2d6 (Tier 1 / 2 / 3)
+{"traits":["reload","twohanded","ranged"],"hands":2,"subtype":"Pi","range":"10/20/40","thrownRange":"","damage":{"t1":{"pool":"B","count":0,"die":"","mod":0},"t2":{"pool":"B","count":1,"die":"d4","mod":2},"t3":{"pool":"B","count":1,"die":"d10","mod":2}}}
+"@Condition[prone]. @Move[pushed|distance:2]" 2 | 1WB,1d4BHo,"@Condition[prone]. @Move[pushed|distance:2]"

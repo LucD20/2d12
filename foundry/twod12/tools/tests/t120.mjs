@@ -1,0 +1,35 @@
+// Run with: node tools/tests/run.mjs (or node tools/tests/t120.mjs)
+const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import fs from "node:fs";
+// v0.0.138: an Action that needs a free hand offers Release when both hands are full ("Enforce hand requirement"); the 8px around the sheet.
+let setting = true, lastDialog = null, answer = "one:xb";
+const said = [];
+globalThis.foundry = { applications: { api: { DialogV2: { wait: async o => { lastDialog = o; return answer; } } } } };
+globalThis.game = { settings: { register() {}, get: (s, k) => (k === "enforceHands" ? setting : true) } };
+globalThis.ui = { notifications: { warn: m => said.push(`warn: ${m}`), info: m => said.push(`info: ${m}`) } };
+globalThis.ChatMessage = { create: async d => said.push(`chat: ${d.content.replace(/<[^>]+>/g, "").trim()}`), getSpeaker: () => ({}) };
+const H = await import(ROOT + "module/hands.mjs");
+H.registerHandSetting();
+const T = (...t) => new Set(t);
+const weapon = (id, name, hands, traits = []) => { const w = { id, name, type: "weapon", system: { wielded: true, hands, traits: T(...traits) } }; w.update = async u => { if ("system.hands" in u) w.system.hands = u["system.hands"]; if ("system.wielded" in u) w.system.wielded = u["system.wielded"]; }; return w; };
+const mkActor = ws => ({ name: "Elf Archer", itemTypes: { weapon: ws }, items: { get: id => ws.find(w => w.id === id) } });
+const reload = { name: "Reload", system: { traits: T("body", "handle"), requirements: "" } };
+const fists = { name: "Fists", system: { traits: T(), requirements: "You have a free hand." } };
+const smite = { name: "Smite", system: { traits: T("strike", "weapon"), requirements: "" } };
+console.log("needs a free hand: Reload", H.needsFreeHand(reload), "| Fists", H.needsFreeHand(fists), "| Smite", H.needsFreeHand(smite));
+const xb = weapon("xb", "Crossbow", 2, ["reload"]), a = mkActor([xb]);
+console.log("Release choices:", H.releaseOptions(a).map(b => b.label).join(" | "));
+console.log("enforced, picks one hand ->", await H.ensureFreeHand(a, reload), "| asked:", lastDialog.content.replace(/<[^>]+>/g, "").trim(), "| buttons:", lastDialog.buttons.map(b => b.label).join(", "), "| crossbow hands now", xb.system.hands);
+console.log("one hand free now: no question ->", (lastDialog = null, await H.ensureFreeHand(a, reload)), lastDialog === null);
+xb.system.hands = 2; answer = "cancel";
+console.log("enforced, Cancel ->", await H.ensureFreeHand(a, reload));
+answer = "drop:xb";
+console.log("enforced, Drop ->", await H.ensureFreeHand(a, reload), "| wielded", xb.system.wielded);
+xb.system.wielded = true; setting = false; lastDialog = null;
+console.log("not enforced ->", await H.ensureFreeHand(a, reload), "| no dialog", lastDialog === null);
+console.log("Smite with both hands full ->", await H.ensureFreeHand(a, smite));
+console.log(said.join("\n"));
+const src = n => fs.readFileSync(ROOT + n, "utf8");
+const acts = src("module/actions.mjs"), cfg = src("module/config.mjs"), css = src("styles/system.css"), sh = src("module/actor-sheets.mjs"), main = src("module/twod12.mjs");
+console.log("useAction asks first:", acts.includes("if (!opts.noHandle && !(await ensureFreeHand(actor, item))) return;"), "| requirements don't block twice:", cfg.includes("if (!opts.skipHands && /free hand/i.test(req)") && acts.includes("{ skipHands: true }"), "| setting registered:", main.includes("registerHandSetting();"));
+console.log("the 8px: the window itself had it:", css.includes(".application.twod12.sheet.twod12-actor { padding: 0; }") && sh.includes('this.element.style.setProperty("padding", "0", "important");'));

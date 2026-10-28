@@ -1,0 +1,24 @@
+reachable squares for Pushed 5: 35 | straight line down (5,0): 5 | sideways (0,3) blocked: true | diagonal (3,3): 3 | (2,1): true | (1,1) not farther: false
+cannot move back toward origin (-1,0): true | (0,1) not farther: true
+path to (4,0): 0,0 -> 1,0 -> 2,0 -> 3,0 -> 4,0
+wall at step 3: 2 squares done, 3 unused, damage {"self":6,"other":0} final [2,0]
+creature at step 3: 2 done, 3 unused, damage {"self":3,"other":3} creature
+free: 5 {"self":0,"other":0} null
+aim short (2 squares) no obstacle on the way: 2 {"self":0,"other":0}
+wall right next to it, Pushed 5: 0 done, {"self":10,"other":0}
+Pushed 4, target directly below the origin, cone 45:
+. . . . . . . . .
+. . . . T . . . .
+. . . # # # . . .
+. . # # # # # . .
+. # # # # # # # .
+# # # # # # # # #
+Same, cone 0 (straight line only):
+. . . . . . . . .
+. . . . T . . . .
+. . . . # . . . .
+. . . . # . . . .
+. . . . # . . . .
+. . . . # . . . .
+target on a diagonal: reaches (4,4): true | (4,0) sideways: true | (0,4): true | path to (3,3): 0,0 -> 1,1 -> 2,2 -> 3,3
+off-axis target (2,1): dirs lean down-right; (3,0): true (3,1): true (3,3): true (0,3) side: false

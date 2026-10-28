@@ -1,0 +1,20 @@
+"Appeal Save"                                                -> @Save[appeal]
+"Body Check"                                                 -> @Check[body]
+"DC 14 Body Check"                                           -> @Check[body|dc:14]
+"DC 15 Mind Save"                                            -> @Save[mind|dc:15]
+"Appeal Save: 1d6 / 1d4 / 0 Holy"                            -> @Save[appeal|t1:1d6[holy]|t2:1d4[holy]|t3:0]
+"Appeal Save: 1d6 / 1d4 / 0 [M] Holy damage"                 -> @Save[appeal|t1:1d6[mind,holy]|t2:1d4[mind,holy]|t3:0]
+"DC 14 Body Save: 2d6 / 1d6 / 0 [B] Slash"                   -> @Save[body|dc:14|t1:2d6[body,slash]|t2:1d6[body,slash]|t3:0]
+"Instinct Save: 1d4 / 1d4 / 0"                               -> @Save[instinct|t1:1d4|t2:1d4|t3:0]
+"Bright light 2Emanation 1/round"                            -> Bright light @Template[emanation|distance:2|rounds:1]
+"Bright light [2Emanation 1/round]"                          -> Bright light @Template[emanation|distance:2|rounds:1]
+"3Burst EoT"                                                 -> @Template[burst|distance:3|expire:eot]
+"2Emanation"                                                 -> @Template[emanation|distance:2]
+"Bright light 2Emanation 1/round. 1 Bane on Hide."           -> Bright light @Template[emanation|distance:2|rounds:1]. 1 Bane on Hide.
+"As 2 AP. Enemies in the Bright Light must roll an Appeal Save: 1d6 / 1d4 / 0 [M] Holy damage." -> As 2 AP. Enemies in the Bright Light must roll an @Save[appeal|t1:1d6[mind,holy]|t2:1d4[mind,holy]|t3:0].
+"Target can use up to 2 Rally Points. Evade 2."              -> Target can use up to @Rally[2|upto:yes]. @Move[evade|distance:2].
+"Pushed 5 and Move Speed/2"                                  -> @Move[pushed|distance:5] and Move Speed/2
+"1d6MH holy and Strike 1d4BC"                                -> @Damage[1d6[mind,holy]] holy and Strike @Damage[1d4[body,cold]]
+tier tokens: B At || B At || M At /Ho || B W1 | B 1d4 /Co | M 1d6 /Ho
+{"dc":13,"adj":0,"boon":0,"bane":0,"traits":[],"tiers":{"t1":"1d6[mind,holy]","t2":"1d4[mind,holy]","t3":"0"},"attr":"appeal"}
+{"dc":13,"adj":0,"boon":0,"bane":0,"traits":[],"tiers":{},"shape":"emanation","distance":2,"rounds":1}

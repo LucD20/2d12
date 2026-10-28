@@ -1,0 +1,25 @@
+--- a boon becomes 2, Speed is added
+name: Battle Fervor | modifiers: [{"against":false,"boons":2,"empowered":0,"enfeebled":0,"byValue":false,"all":["melee"],"any":[],"none":[],"from":[]}] | speed: [{"mode":"add","formula":"2"}]
+same duration: the rounds left stay: true | source kept: true
+--- the duration changes: it starts again
+{"type":"rounds","rounds":3} remaining 3
+--- a condition with a value keeps its value in the name
+name: Empowered 2 | baseName: Empowered
+--- granted uses keep what was spent
+same Action, 2 -> 3 uses, 1 spent: [[3,2,["t1"]]]
+another Action: fresh: [["Shove",1,[]]]
+--- conditions it applies
+added: Hindered | removed: Prone
+--- where a click goes
+foundry window | 2d12 editor | foundry window | foundry window
+panel, sheet and Shift+click use it: 2 1 | registered: true | template has the Applied part: true
+--- v0.0.114: Exhausted and the form
+the form's own fields go to the temporary item: true | Exhausted opens it: true | Shift+click on Exhausted: true
+Exhausted keeps its name and picture: true | gets the bane: 1
+Lasts changed from 2 rounds to EoT: {"type":"eot","rounds":1}
+--- v0.0.115: an applied effect with no copy of its settings
+boonbane 1/0 E0 all=melee none=ranged predicate=flanking | damagestep | bonusdamage 1d6 M Ho t3 | grant Weapon Attack x2 0AP distinct=true | speed override floor(speed/2) | note Careful body
+ends: {"type":"rounds","rounds":3} magic true
+round trip: modifiers ["melee","flanking"] | grant left 1 | duration unchanged: true
+Exhausted with nothing stored: {"description":"","hover":"","isCondition":true,"valued":false,"selfApplied":false,"linked":"","conditions":[],"duration":{"type":"","rounds":1},"settings":[],"expireOn":[],"expireAll":false}
+an effect on an item keeps Foundry's window: true

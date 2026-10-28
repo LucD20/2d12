@@ -1,0 +1,82 @@
+apply Prone: Prone, Hindered (linked to Prone) | statuses: prone, hindered
+Prone removed: none
+Prone applied twice: Prone, Hindered (linked to Prone)
+only the linked Hindered removed by hand: Prone stays: Prone
+Hindered already there, then Prone: Hindered, Prone
+Prone removed: their own Hindered stays: Hindered
+a loop and an unknown name are harmless: Stand Up, Prone (linked to Stand Up), Hindered (linked to Prone)
+a 3-round Prone: the linked Hindered lasts the same: Prone rounds 3 | Hindered rounds 3
+
+--- the same effect applied again
+a 3-round Rage: rounds 3
+two rounds pass: rounds 1
+applied again for 2 rounds (longer than the 1 left): rounds 2 | effects: 1
+applied again for 1 round (shorter than the 2 left): rounds 2 | effects: 1
+applied again for 5 rounds: rounds 5 | effects: 1
+applied again until the end of the turn (another kind of duration): eot 1
+--- Empowered and Enfeebled values on an effect
+Rage (Empowered 2): empowered 2, enfeebled 0
+Dread (Enfeebled 3): empowered 0, enfeebled 3
+an older effect that stored true: empowered 1, enfeebled 0
+negative and garbage values are cleaned: empowered 0, enfeebled 0
+damageSteps for a [Melee] Action: {"empowered":[{"name":"Rage (4 rounds)","n":2}],"enfeebled":[{"name":"Dread","n":1}]} | for a [Ranged] one: {"empowered":[],"enfeebled":[]} | nobody: {"empowered":[],"enfeebled":[]}
+
+--- conditions with a value, and an effect that applies conditions
+Empowered applied without a value: Empowered 1 1 [empowered]
+applied again with 3 (higher): Empowered 3 3 [empowered] | effects: 1
+applied again with 2 (lower, no stacking): Empowered 3 3 [empowered] | effects: 1
+a value of 0 counts as 1: Enfeebled 1 1 [enfeebled]
+a negative value counts as 1: Enfeebled 1 1 [enfeebled]
+a condition without a value ignores it: Prone, Hindered
+an effect that applies Enfeebled 2: Dreadful Presence, Enfeebled 2 2 (rider) [enfeebled]
+the rider has the effect's duration: Dreadful Presence rounds 3 | Enfeebled 2 rounds 3
+the effect ends, the rider goes with it: none
+an effect with two riders (one valued, one not): Battle Fervor, Empowered 1 1 (rider) [empowered], Prone (rider) [prone], Hindered (rider) [hindered]
+Empowered 3 is already there: the rider (1) adds no copy: Empowered 3 3 [empowered], Battle Fervor, Prone (rider) [prone], Hindered (rider) [hindered]
+Empowered 1 is there, a rider of 1: stays 1: Empowered 1 1 [empowered], Dreadful Presence, Enfeebled 2 2 (rider) [enfeebled], Battle Fervor, Prone (rider) [prone], Hindered (rider) [hindered]
+Empowered 1 is there, a rider of 3: raised to 3: Empowered 3 3 [empowered], Great Fervor
+a rider that doesn't exist, itself, or empty is harmless: Broken Link
+--- the Token HUD
+the HUD applies a valued condition at 1: apply Item.Empowered with {"value":1} | apply Item.Enfeebled with {"value":1} | own prone
+valued helpers: true false false
+click +1: 3 | right-click twice: 1 | at 1, right-click: deleted
+
+--- the Token HUD: clicking a condition that is already on
+a click on Empowered 1 (the HUD says active: false): 2 (the effect is named "Empowered 2")
+another click: 3 (the effect is named "Empowered 3")
+a right-click: 2 (the effect is named "Empowered 2")
+two more right-clicks (at 1 it goes): removed
+Ctrl+click on Enfeebled 3: removed
+Shift+click opens the settings, the value stays: 3 (the effect is named "Enfeebled 3") | sheet opened: true
+someone who doesn't own the creature can't change it: 2 (the effect is named "Empowered 2")
+not on: a click applies it at 1: Item.Empowered {"value":1} | Foundry's own toggle: 0
+not on: a right-click does nothing: 0 applied, 0 own toggles
+a condition without a value: Foundry's own toggle: own prone
+the HUD tooltips: 1 set | Empowered 2 · Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove || (none) || (none)
+no HUD root or no creature: 0 0
+
+--- a rider that increases the value
+increase by 2, the creature has none: Empowered 2
+Empowered 1 and an increase of 2: Empowered 3
+then another effect that increases by 1: Empowered 4 | effects: 3
+then 'the highest counts' with 2 (lower): stays Empowered 4
+the same effect applied twice doesn't stack (it is replaced): Empowered 2
+increase on a condition without a value is ignored: Stoke Prone, Prone, Hindered
+the effect ends: a condition that was already there stays: Empowered 7
+
+--- world copies that shadow the compendium (Conditions and Effects)
+Prone: (same) | Empowered: valued | Rage: description
+only the Effects compendium there: Rage
+no compendiums: []
+
+--- the effect editor window
+a condition with a value shows a field: 2 | label: Empowered value | one without: (no field)
+save 5: Empowered 5 | flag: 5
+save 5 again (no change): Empowered 5
+save "0":      unchanged
+save "-3":     unchanged
+save "x":      unchanged
+save "":       unchanged
+save null:     unchanged
+save 2.9: Empowered 2
+a plain effect ignores a value: Prone | flags: duration

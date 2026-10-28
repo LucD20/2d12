@@ -1,0 +1,12 @@
+. Bright (clear), d Dim (yellow), X Darkness (red); light at the center: Bright 2, Dim 4
+ X X X X d X X X X
+ X X d d d d d X X
+ X d d d . d d d X
+ X d d . . . d d X
+ d d . . . . . d d
+ X d d . . . d d X
+ X d d d . d d d X
+ X X d d d d d X X
+ X X X X d X X X X
+Dim squares: 36 | Darkness squares: 32 | Bright (no tint): 13
+button added: V12 style true | V13+ style true | toggle: true

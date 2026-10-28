@@ -1,0 +1,185 @@
+import { runDamageTriggers } from "./triggers.mjs";
+import { logDamage } from "./damagelog.mjs";
+import { targetLine } from "./actions.mjs";
+import { esc } from "./roll.mjs";
+import { applyEffects, originInfo, applyCondition, applyBoonEffect } from "./effects.mjs";
+const { DialogV2 } = foundry.applications.api;
+const SOCKET = "system.twod12";
+
+/** Apply damage buckets { B: {l, n}, M: {l, n} } (lethal / nonlethal) to an actor (via the GM when needed). */
+export async function applyToActor(actor, a) {
+  if (!actor) return;
+  const d = actor.system.damage, upd = {};
+  const add = (k, amt) => { if (amt) upd[`system.damage.${k}`] = (upd[`system.damage.${k}`] ?? d[k]) + amt; };
+  add("bodyLethal", a.B.l); add("bodyNonlethal", a.B.n); add("mindLethal", a.M.l); add("mindNonlethal", a.M.n);
+  if (!Object.keys(upd).length) return;
+  if (actor.isOwner) await actor.update(upd);
+  else game.socket.emit(SOCKET, { type: "applyDamage", actorUuid: actor.uuid, upd });
+}
+
+export function registerSocket() {
+  game.socket.on(SOCKET, async data => {
+    if (!game.user.isActiveGM) return;
+    if (data?.type === "applyEffects") return applyEffects(data.effectUuids, data.targetUuids, data.origin, data.over);
+    if (data?.type === "applyBoon") { const a = await fromUuid(data.actorUuid); if (a) await applyBoonEffect(a, data.cfg, data.origin); return; }
+    if (data?.type === "applyCondition") { const a = await fromUuid(data.actorUuid); if (a) await applyCondition(data.cond, [a], data.dur, data.origin); return; }
+    if (data?.type !== "applyDamage") return;
+    const actor = await fromUuid(data.actorUuid);
+    const upd = Object.fromEntries(Object.entries(data.upd).filter(([k]) => k.startsWith("system.damage.")));
+    if (actor && Object.keys(upd).length) await actor.update(upd);
+  });
+}
+
+export const summaryText = a => [[a.B.l, "Body"], [a.B.n, "Body Nonlethal"], [a.M.l, "Mind"], [a.M.n, "Mind Nonlethal"]].filter(([n]) => n).map(([n, l]) => `${n} ${l}`).join(", ");
+
+/** Apply a list of damage components (pool, nl, total) to an actor right away; returns a text summary. */
+export async function dealDamage(actor, comps) {
+  const b = { B: { l: 0, n: 0 }, M: { l: 0, n: 0 }, C: { l: 0, n: 0 } };
+  for (const c of comps) { const k = b[c.pool] ? c.pool : "B"; b[k][c.nl ? "n" : "l"] += c.total; }
+  const a = { B: { ...b.B }, M: { ...b.M } };
+  const cTot = b.C.l + b.C.n;
+  if (cTot) { const p = (await chooseChoicePool(cTot)) ?? "B"; a[p].l += b.C.l; a[p].n += b.C.n; }
+  await applyToActor(actor, a);
+  return summaryText(a);
+}
+
+async function chooseChoicePool(amount) {
+  return DialogV2.prompt({
+    window: { title: "Choice damage" },
+    content: `<p>Apply ${amount} Choice [C] damage to:</p><label><input type="radio" name="p" value="B" checked> Body</label> <label><input type="radio" name="p" value="M"> Mind</label>`,
+    ok: { label: "Apply", callback: (ev, btn) => new FormData(btn.form).get("p") }, rejectClose: false
+  });
+}
+
+async function retarget(msg) {
+  const toks = game.user.targets.size ? [...game.user.targets] : (canvas.tokens?.controlled ?? []);
+  if (!toks.length) return ui.notifications.warn("Select or target a token first.");
+  const targets = toks.map(t => ({ uuid: t.document.uuid, name: t.name }));
+  const content = msg.content.replace(/<div class="tline">[\s\S]*?<\/div>/, targetLine(targets));
+  try { await msg.update({ content, "flags.twod12.dmgCard.targets": targets }); }
+  catch (e) { ui.notifications.warn("Only the author of this card or the GM can change its target."); }
+}
+
+async function apply(msg, button, factor) {
+  const f = msg.getFlag("twod12", "dmgCard");
+  if (!f) return;
+  const targets = f.targets ?? [];
+  const selNl = button.closest(".dmg")?.querySelector(".kind")?.value === "nonlethal";
+  const half = n => (factor === 1 ? n : Math.ceil(n * factor));
+  const b = { B: { l: 0, n: 0 }, M: { l: 0, n: 0 }, C: { l: 0, n: 0 } };
+  for (const c of f.comps ?? []) { const k = b[c.pool] ? c.pool : "B"; b[k][(c.nl ?? selNl) ? "n" : "l"] += c.total; }
+  const a = { B: { l: half(b.B.l), n: half(b.B.n) }, M: { l: half(b.M.l), n: half(b.M.n) } };
+  const cTotal = half(b.C.l) + half(b.C.n);
+  if (a.B.l + a.B.n + a.M.l + a.M.n + cTotal > 0) {
+    if (!targets.length) ui.notifications.warn("No target: use the target button first.");
+    else {
+      if (cTotal) {
+        const p = await chooseChoicePool(cTotal);
+        if (!p) return;
+        a[p].l += half(b.C.l); a[p].n += half(b.C.n);
+      }
+      const names = [];
+      for (const t of targets) {
+        const actor = (await fromUuid(t.uuid))?.actor;
+        if (!actor) continue;
+        await applyToActor(actor, a);
+        names.push(esc(t.name));
+        const dealt = a.B.l + a.B.n + a.M.l + a.M.n;
+        const src = f.originUuid ? await fromUuid(f.originUuid) : null;
+        await logDamage({ originUuid: f.originUuid ?? "", originName: src?.name ?? f.name ?? "", targetName: t.name, amount: dealt });
+        if (dealt > 0) await runDamageTriggers(src, actor, t.uuid, f.comps ?? []);   // "When you deal Holy damage to a Profane creature..." (triggers.mjs)
+      }
+      const parts = [[a.B.l, "Body"], [a.B.n, "Body Nonlethal"], [a.M.l, "Mind"], [a.M.n, "Mind Nonlethal"]].filter(([n]) => n).map(([n, l]) => `${n} ${l}`).join(", ");
+      await ChatMessage.create({ content: `<div class="twod12 chat">${names.join(", ")} takes <b>${parts}</b> damage${factor === 1 ? "" : (factor === 2 ? " (double)" : " (half)")} from ${esc(f.name)}.</div>` });
+    }
+  }
+  else ui.notifications.info("This card deals 0 damage.");
+  try { await msg.setFlag("twod12", "collapsed", true); } catch (e) { /* not the author */ }
+  const auto = (f.fx ?? []).filter(x => x.mode === "auto").map(x => x.uuid);
+  if (auto.length) await applyEffects(auto, targets.map(t => t.uuid), { ...originInfo(f.originUuid), escalation: !!f.escalation });
+}
+
+async function applyConditional(msg) {
+  const f = msg.getFlag("twod12", "dmgCard");
+  const uuids = (f?.fx ?? []).filter(x => x.mode === "conditional").map(x => x.uuid);
+  if (uuids.length) await applyEffects(uuids, (f.targets ?? []).map(t => t.uuid), { ...originInfo(f.originUuid), escalation: !!f.escalation });
+}
+
+async function toggleBlock(msg, button) {
+  button.classList.toggle("active");
+  const on = button.classList.contains("active");
+  try { await msg.update({ content: msg.content.replace(/class="blk( active)?"/, `class="blk${on ? " active" : ""}"`) }); } catch (e) { /* not the author */ }
+}
+
+/** One creature of a merged damage card takes its damage (x factor); returns what happened, or null when nothing was applied. */
+async function applyRow(f, row, factor, selNl) {
+  const b = { B: { l: 0, n: 0 }, M: { l: 0, n: 0 }, C: { l: 0, n: 0 } };
+  for (const c of row.comps ?? []) { const k = b[c.pool] ? c.pool : "B"; b[k][(c.nl ?? selNl) ? "n" : "l"] += c.total; }
+  const h = n => (factor === 1 ? n : Math.ceil(n * factor));
+  const a = { B: { l: h(b.B.l), n: h(b.B.n) }, M: { l: h(b.M.l), n: h(b.M.n) } };
+  const cTotal = h(b.C.l) + h(b.C.n);
+  if (cTotal) { const p = await chooseChoicePool(cTotal); if (!p) return null; a[p].l += h(b.C.l); a[p].n += h(b.C.n); }
+  const actor = (await fromUuid(row.uuid))?.actor;
+  if (!actor) return null;
+  const dealt = a.B.l + a.B.n + a.M.l + a.M.n;
+  if (dealt > 0) {
+    await applyToActor(actor, a);
+    const src = f.originUuid ? await fromUuid(f.originUuid) : null;
+    await logDamage({ originUuid: f.originUuid ?? "", originName: src?.name ?? f.name ?? "", targetName: row.name, amount: dealt });
+    await runDamageTriggers(src, actor, row.uuid, row.comps ?? []);   // "When you deal Holy damage to a Profane creature..." (triggers.mjs)
+  }
+  const auto = (row.fx ?? []).filter(x => x.mode === "auto").map(x => x.uuid);
+  if (auto.length) await applyEffects(auto, [row.uuid], { ...originInfo(f.originUuid), escalation: !!f.escalation });
+  const parts = [[a.B.l, "Body"], [a.B.n, "Body Nonlethal"], [a.M.l, "Mind"], [a.M.n, "Mind Nonlethal"]].filter(([n]) => n).map(([n, l]) => `${n} ${l}`).join(", ");
+  return { dealt, text: dealt > 0 ? `<b>${esc(parts)}</b>${factor === 0.5 ? " (half)" : factor === 2 ? " (double)" : ""}` : "No damage" };
+}
+
+/** Redraw a merged card after a change (only its author or the GM can). */
+async function updateMulti(msg, f, rows, kind) {
+  const { multiDamageHtml } = await import("./dmgcard.mjs");
+  try {
+    await msg.update({ content: multiDamageHtml({ title: f.name, rows, color: f.color, defaultNl: f.defaultNl, kind }), "flags.twod12.dmgMulti.rows": rows, "flags.twod12.dmgMulti.kind": kind });
+    if (rows.every(r => r.applied || r.blocked)) await msg.setFlag("twod12", "collapsed", true);
+  } catch (e) { ui.notifications.warn("Only the author of this card or the GM can change it."); }
+}
+
+const kindOf = button => (button.closest(".dmg")?.querySelector(".kind")?.value === "nonlethal" ? "nonlethal" : "lethal");
+
+async function multiApply(msg, button, factor, only = null) {
+  const f = msg.getFlag("twod12", "dmgMulti");
+  if (!f) return;
+  const kind = kindOf(button), rows = f.rows.map(r => ({ ...r }));
+  for (const [i, r] of rows.entries()) {
+    if (only != null && i !== only) continue;
+    if (r.applied || (only == null && r.blocked)) continue;
+    const res = await applyRow(f, r, factor, kind === "nonlethal");
+    if (res) r.applied = res.text;
+  }
+  await updateMulti(msg, f, rows, kind);
+}
+
+async function multiBlock(msg, button) {
+  const f = msg.getFlag("twod12", "dmgMulti"), i = Number(button.dataset.row);
+  if (!f?.rows?.[i]) return;
+  const rows = f.rows.map(r => ({ ...r })); rows[i].blocked = !rows[i].blocked;
+  await updateMulti(msg, f, rows, kindOf(button));
+}
+
+async function multiFx(msg, button) {
+  const f = msg.getFlag("twod12", "dmgMulti"), r = f?.rows?.[Number(button.dataset.row)];
+  const uuids = (r?.fx ?? []).filter(x => x.mode === "conditional").map(x => x.uuid);
+  if (uuids.length) await applyEffects(uuids, [r.uuid], { ...originInfo(f.originUuid), escalation: !!f.escalation });
+}
+
+export async function damageButton(kind, button, msg) {
+  if (kind === "rowApply") return multiApply(msg, button, Number(button.dataset.factor) || 1, Number(button.dataset.row));
+  if (kind === "allApply") return multiApply(msg, button, Number(button.dataset.factor) || 1);
+  if (kind === "rowBlock") return multiBlock(msg, button);
+  if (kind === "rowFx") return multiFx(msg, button);
+  if (kind === "applyDouble") return apply(msg, button, 2);
+  if (kind === "applyFx") return applyConditional(msg);
+  if (kind === "retarget") return retarget(msg);
+  if (kind === "applyDamage") return apply(msg, button, 1);
+  if (kind === "applyHalf") return apply(msg, button, 0.5);
+  if (kind === "block") return toggleBlock(msg, button);
+}

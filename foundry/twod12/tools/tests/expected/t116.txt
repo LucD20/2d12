@@ -1,0 +1,4 @@
+Gear type: true Gear | data: true | registered: true | coins on creatures: true
+item sheet fields: true | the same gear dropped again adds to its quantity: true
+Items tab: toolbar true | loadout and lists true | Where buttons true
+armor: Training gone from the title true | NPC note true | gear list: Coins and weight on the line true | quantity typed in place true | drag to reorder (itemOrder) true

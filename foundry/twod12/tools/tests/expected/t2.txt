@@ -1,0 +1,4 @@
+[B] 1[W] + 1d4 H
+[B] [Mod] S
+
+{ body: 2, mind: 1, appeal: 0, instinct: 1 } 46 16 2

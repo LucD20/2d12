@@ -1,0 +1,4 @@
+Whirlwind (Self, around you): @Template[emanation|distance:1|targets:all|self:no|at:self|quick:yes|label:Apply Area]
+Fire within 10 sq.:            @Template[emanation|distance:2|targets:enemies|self:yes|keep:yes|rounds:3|quick:yes|label:Place Area]
+old text only (no settings):   @Template[emanation|distance:1|targets:all|self:no|label:Place Area]
+meta row: All creatures in the Area  ·  <b>Area:</b> 1 Emanation

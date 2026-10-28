@@ -1,0 +1,19 @@
+Projectile is a weapon property: Projectile | Shot and Save are Action traits: Shot Save | Crossbow: projectile, ranged, reload, twohanded
+Archer: Body x3, Mind x2.5, Rally +3, Speed +1, medium armor | features: Sharpshooter, Marked Quarry, Bow Mastery, Archer Encounter Pick, Archer Daily Pick, Archer Free Picks, Archer Escalation Passive, Archer Escalation Actives
+cards: all 18 | features: true | Field Training gone: true
+  Wing Clip: round | ranged,shot,strike,weapon | AD
+  Deadeye: daily | ranged,shot,strike,weapon | AD
+  Quick Draw: turn | ranged,shot,strike,weapon | - | interrupt
+  Volley: encounter | area,ranged,save,shot,weapon | Instinct Save
+  Covering Fire: encounter | area,ranged,shot,weapon | -
+  Rain of Arrows: daily | area,ranged,save,shot,weapon | Instinct Save
+  Twin Shot: round | ranged,shot,strike,weapon | - | 2 Esc.
+  Wing Clip -> 1AP: 1[W] / 1[W]+1d4 Pi / 1[W]+1d6 Pi "@Condition[hindered|eot]"
+  Marksman's Shot -> 2AP: 1[W] / 1[W] "the target takes 1 bane on their next Save" / 1[W] "the target takes 1 bane on their next Save and is Vulnerable 2 (EoT)"
+  Deadeye -> 3AP: 1[W] / 1[W]+2d6 Pi / 1[W]+4d6 Pi "@Condition[prone]"
+  Rolling Shot -> 1AP: @Move[evade|distance:1], then make a @Use[Weapon Attack|label:Weapon Attack (1A)]. || 2AP: @Move[evade|distance:3], then make a @Use[Weapon Attack|label:Weapon Attack (1A)] with 1 b
+  Volley -> 3AP: 1d10 Pi+ "@Condition[hindered|eot]" / 1d8 Pi+ / 1d6 Pi
+areas: Covering Fire {"size":2,"shape":"emanation","within":0,"withinRange":"normal","targets":"all","center":false,"keep":true,"rounds":2,"ht":"entering"} | Rain of Arrows ht: entering+turn
+picks: Encounter Pick 1 of 3 | Daily Pick 1 of 3 | Free Picks 2 of 12 | Escalation Passive 1 of 3 | Escalation Actives 3 of 5
+Shot needs a Projectile weapon: true | a Weapon Action with one is a Shot: true | old ranged weapons get Projectile once: true
+Mastery tab: Techniques option true | Bow Mastery choice true | tab for every character true

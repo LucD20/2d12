@@ -1,0 +1,1158 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Bestiary (Draft)</title><style>:root{--c-body:#7a1626;--c-mind:#17327a;--c-instinct:#14532d;--c-appeal:#6b4e00;--c-bane:#b3261e;--c-boon:#0b5cad;--c-rally:#0a6b62;--g-roll:#1f7a73;--g-requires:#2c5f9e;--g-kind:#b4472a;--g-damage:#8a6a00;--g-keywords:#5c5a55;--c-wmod:#9a4a00;--c-pmod:#5b3a9e;--c-smod:#455566;--c-ap:#3b4cb8;--c-mv:#4d6b0a;--rule2:#8b7a5c;--box:#f6f1e4;--bg:#fbfaf7;--fg:#22201c;--mut:#6b655b;--line:#d9d3c7;--card:#fff;--acc:#7a3b2e;--accbg:#f1e4df;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--c-body:#ef8a96;--c-mind:#8db3ff;--c-instinct:#7fd49a;--c-appeal:#e6bd5a;--c-bane:#ff6a4d;--c-boon:#4cc3ff;--c-rally:#3fd8c4;--g-roll:#5fd3c8;--g-requires:#7db1f5;--g-kind:#f29272;--g-damage:#e8c25a;--g-keywords:#aeb0b5;--c-wmod:#f4a259;--c-pmod:#b794f6;--c-smod:#cfd8e3;--c-ap:#9aa7ff;--c-mv:#b9dc6a;--rule2:#6b5d45;--box:#211e1a;--bg:#1b1a18;--fg:#ece8df;--mut:#a39c8f;--line:#3a3732;--card:#24221f;--acc:#e0a592;--accbg:#3a2a25}}
+:root[data-theme="dark"]{--c-body:#ef8a96;--c-mind:#8db3ff;--c-instinct:#7fd49a;--c-appeal:#e6bd5a;--c-bane:#ff6a4d;--c-boon:#4cc3ff;--c-rally:#3fd8c4;--g-roll:#5fd3c8;--g-requires:#7db1f5;--g-kind:#f29272;--g-damage:#e8c25a;--g-keywords:#aeb0b5;--c-wmod:#f4a259;--c-pmod:#b794f6;--c-smod:#cfd8e3;--c-ap:#9aa7ff;--c-mv:#b9dc6a;--rule2:#6b5d45;--box:#211e1a;--bg:#1b1a18;--fg:#ece8df;--mut:#a39c8f;--line:#3a3732;--card:#24221f;--acc:#e0a592;--accbg:#3a2a25}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 Georgia,'Times New Roman',serif}
+.layout{max-width:1180px;margin:0 auto;padding:0 14px}
+main{max-width:780px;padding:18px 6px 72px;margin:0 auto}
+.doctitle{font-size:2.3rem;margin:.4rem 0 0;border:0}
+.draft{margin:0 0 1rem;color:var(--mut);font-style:italic}
+/* navigation */
+.toc{font:14px/1.4 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
+.toc summary{cursor:pointer;font-weight:600;padding:8px 2px}
+.tocbtns{display:flex;gap:6px;margin:4px 0 8px}
+.tocbtns button{font:12px system-ui;padding:2px 8px;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:4px;cursor:pointer}
+.tocpart{margin:12px 0 2px;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--mut)}
+.tocch>a{display:block;padding:2px 0;font-weight:600;color:var(--fg);text-decoration:none}
+.toch2{margin:0 0 4px 10px}
+.toch2 a{display:block;padding:1px 0;color:var(--mut);text-decoration:none;font-size:13px}
+.toc a:hover{color:var(--acc)}
+@media (min-width:1000px){.layout{display:flex;gap:28px;align-items:flex-start}.toc{position:sticky;top:0;flex:0 0 230px;max-height:100vh;overflow:auto;padding-top:14px}main{flex:1;margin:0}}
+@media (max-width:999px){.toc{border-bottom:1px solid var(--line);margin-bottom:6px}}
+/* parts and chapters */
+.part{margin:2.6rem 0 .2rem;padding:.35rem .8rem;background:var(--accbg);color:var(--acc);font:600 .8rem system-ui,sans-serif;text-transform:uppercase;letter-spacing:.12em;border-radius:4px}
+section.chapter>details>summary{list-style:none;cursor:pointer}
+section.chapter>details>summary::-webkit-details-marker{display:none}
+section.chapter>details>summary h1::before{content:"\25be";display:inline-block;width:1.1em;color:var(--mut);font-size:.8em}
+section.chapter>details:not([open])>summary h1::before{content:"\25b8"}
+h1{font-size:1.9rem;margin:1.4rem 0 .6rem;border-bottom:2px solid var(--line);padding-bottom:.3rem}
+h2{font-size:1.35rem;margin:1.8rem 0 .5rem;color:var(--acc)}
+h3{font-size:1.1rem;margin:1.4rem 0 .4rem;color:var(--acc)}
+h4{margin:1.2rem 0 .3rem;font:600 .95rem system-ui,sans-serif;text-transform:uppercase;letter-spacing:.05em;color:var(--mut)}
+.tablewrap{overflow-x:auto;max-width:100%;margin:.8rem 0}
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+th, td{border:1px solid var(--line);padding:.4rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--accbg)}
+code{font-family:ui-monospace,Menlo,monospace}
+a.xref{color:var(--acc)}
+.badref{color:#c00}
+.totop{margin-top:3rem;text-align:center;font-size:.9rem}
+/* callouts */
+.callout{margin:1rem 0;padding:.5rem .9rem .6rem;border-left:4px solid var(--cc,#888);background:color-mix(in srgb,var(--cc,#888) 12%,transparent);border-radius:0 6px 6px 0}
+.callout p{margin:.35rem 0}
+.callout .ctitle{font:600 .7rem system-ui,sans-serif;text-transform:uppercase;letter-spacing:.1em;color:var(--cc,#888)}
+.callout.example{--cc:#4b7aa6}
+.callout.tbd{--cc:#c28a1e}
+.callout.note{--cc:#5b8a5a}
+.callout.tip{--cc:#7a5aa6}
+.openitems li{margin:.4rem 0}
+/* highlights */
+.trhl{background:color-mix(in srgb,var(--tc,#777) 16%,transparent);border-radius:3px;padding:0 3px}
+.dmgword{color:var(--dc);font-weight:600}
+/* action cards (the Foundry chat card look) */
+.acard{--tc-line:rgba(128,128,128,.5);background:var(--card);margin:1.2rem 0;font:15px/1.45 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
+.acard .ahead .aps{align-items:center;margin-left:8px}
+.acard .ahead .acat{margin-left:12px;font-weight:400}
+.acard .traits{flex-wrap:wrap;gap:4px 6px}
+.acard .anote{margin:4px 12px}
+/* reading an action */
+.sample .legend{font:14px/1.45 system-ui,sans-serif;margin:.4rem 0 1rem;padding-left:1.6rem}
+sup.mk{align-self:center;display:inline-block;min-width:1.15em;height:1.15em;line-height:1.15em;margin-left:5px;border-radius:50%;background:var(--acc);color:var(--bg);font:700 .62em system-ui,sans-serif;text-align:center;vertical-align:middle}
+/* push diagram */
+.pushfig{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start;margin:1rem 0}
+.pushfig figure{margin:0}
+.pushfig svg{width:100%;max-width:290px;height:auto;display:block}
+.pushfig figcaption{font:13px system-ui,sans-serif;color:var(--mut);margin-top:4px}
+.figdesc{flex:1 0 100%;font:13px system-ui,sans-serif;color:var(--mut);margin:0}
+.gcell{fill:#ffffff;stroke:#d9d3c7}
+.greach{fill:#ecd98b;stroke:#d9d3c7}
+.gnum{font:600 11px system-ui,sans-serif;fill:#22201c}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .gcell{fill:#24221f;stroke:#3a3732}:root:not([data-theme="light"]) .greach{fill:#6d5e22;stroke:#3a3732}:root:not([data-theme="light"]) .gnum{fill:#ece8df}}
+:root[data-theme="dark"] .gcell{fill:#24221f;stroke:#3a3732}
+:root[data-theme="dark"] .greach{fill:#6d5e22;stroke:#3a3732}
+:root[data-theme="dark"] .gnum{fill:#ece8df}
+.gorigin{fill:#a2574a}
+.gtarget{fill:#4b7aa6}
+.gtok{font:700 12px system-ui,sans-serif;fill:#fff}
+.rmark{display:inline-block;padding:0 6px;border-radius:4px;background:#43b3a8;color:#fff;font:700 12px/18px system-ui,sans-serif}
+.apmark{display:inline-block;margin-right:3px;padding:0 6px;border-radius:4px;background:#5b6fd0;color:#fff;font:700 12px/18px system-ui,sans-serif;letter-spacing:.02em}
+/* ===== v44 cards: title bar by Frequency, grid of Versions, Effects by Version ===== */
+.acard{padding:0;border:0.5px solid var(--tc-line);border-radius:8px;overflow:hidden}
+.acard>*{margin-left:0;margin-right:0}
+.acard .ahead{display:flex;align-items:center;gap:8px;margin:0;padding:6px 12px;background:var(--fq);color:var(--fqt);font-size:1.05em;font-weight:500}
+.acard .ahead>b{flex:1;min-width:0;font-weight:600}
+.acard .ahead .acat{margin:0;font-size:.78em;font-style:normal;opacity:.9;white-space:nowrap}
+.acard .ahead .aps{margin:0;display:inline-flex;gap:4px}
+.acard .ahead .apmark{background:rgba(255,255,255,.22);color:inherit}
+.acard.passive .ahead{background:rgba(128,128,128,.10);color:inherit;border-bottom:0.5px solid var(--tc-line)}
+.acard .abody{padding:8px 12px 10px}
+.acard .flavor{margin-bottom:6px}
+.acard .meta{margin:4px 0}
+.acard .meta .sep{font-style:normal}
+.acard .arow{margin:3px 0}
+.acard table.tgrid{width:100%;border-collapse:collapse;table-layout:fixed;font-size:.95rem}
+.acard table.tgrid th, .acard table.tgrid td{border:0;border-bottom:0.5px solid var(--tc-line);padding:4px 6px;text-align:left;vertical-align:top;background:none}
+.acard table.tgrid th.lbl{width:80px}
+.acard table.tgrid thead th, .acard table.tgrid tr:first-child th:not(.lbl){font-weight:400}
+.acard .eff{margin-top:8px}
+.acard .eff .eh{margin-bottom:2px}
+.acard .eff .el{display:flex;gap:8px;padding:2px 0;align-items:baseline}
+.acard .eff .elb{flex:none;display:inline-flex;gap:3px}
+.apmark.free{background:#5F5E5A}
+/* ===== v45: approved look: chips, sparkle separators, dividers, no muted text ===== */
+/* trait groups: a block per group (a small label over its chips), tinted chips, a thin line between blocks */
+.tg{display:flex;flex-direction:column;gap:3px;padding:0 .8rem;border-left:1px solid var(--line)}
+.tg:first-child{padding-left:0;border-left:0}
+.tgl{font-size:.62rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--tg);line-height:1}
+.tgc{display:flex;flex-wrap:wrap;gap:5px}
+.tchip{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;height:22px;padding:0 10px;border-radius:11px;font-size:12.5px;font-weight:600;line-height:1;color:var(--tg);background:transparent;border:1px solid var(--tg);background:color-mix(in srgb,var(--tg) 16%,transparent);border-color:color-mix(in srgb,var(--tg) 50%,transparent)}
+.acard .traits{display:flex;flex-wrap:wrap;gap:6px 0;margin:6px 0 4px}
+.acard .meta{color:inherit}
+.acard .meta .sep{color:#BA7517;margin:0 5px;font-size:.8em}
+.acard hr.cdiv{border:0;border-top:1px solid var(--tc-line);margin:8px 0}
+.acard table.tgrid{margin-top:0}
+.acard table.tgrid th.lbl{color:inherit;font-weight:600}
+.acard .eff .eh{color:inherit;font-weight:600;font-size:.9em}
+.acard .eff .el > span:last-child{opacity:.85}
+.acard .eff.sep{border-top:1px solid var(--tc-line);margin-top:8px;padding-top:6px}
+.acard .flavor{font-style:italic;opacity:.75;color:inherit}
+.acard .anote{color:inherit}
+
+/* damage types (the Damage Subtypes table) and the heart and brain */
+.dtype{color:var(--dc);font-weight:600;white-space:nowrap}
+.dtype .ico,.pool .ico{width:1em;height:1em;vertical-align:-.14em;margin-right:.3em}
+.pool{display:inline-block;white-space:nowrap}
+.pool .ico{margin-right:0}
+.pool-b{color:var(--c-body)}.pool-m{color:var(--c-mind)}
+.credits{margin:2rem 0 0;font:12px system-ui,sans-serif;color:var(--mut)}
+/* the parchment card (Chapter 1's sample): parchment on the light page, a dark parchment on the dark page */
+.acard.parch{--pb:#f4ecdc;--pt:#2c2c2a;--pl:#c8b48a;--pn:#d6c9a8;--pf:#6b5a3a;--pg:#e3d8bf;--po:#BA7517;background:var(--pb);color:var(--pt);border:1px solid var(--pl);--tc-line:var(--pn)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .acard.parch{--pb:#262119;--pt:#e8e0cf;--pl:#5a4a2e;--pn:#4a3f2c;--pf:#b9a98a;--pg:#3a3224;--po:#EF9F27}}
+:root[data-theme="dark"] .acard.parch{--pb:#262119;--pt:#e8e0cf;--pl:#5a4a2e;--pn:#4a3f2c;--pf:#b9a98a;--pg:#3a3224;--po:#EF9F27}
+.acard.parch .ahead{border-bottom:2px solid #EF9F27}
+.acard.parch .ahead>b{font-family:"Cinzel","Palatino Linotype",Georgia,serif;font-weight:700;letter-spacing:.01em}
+.acard.parch .flavor{color:var(--pf);opacity:1}
+.acard.parch .meta .sep,.acard.parch .orn{color:var(--po)}
+.acard.parch .orn{display:flex;align-items:center;gap:8px;margin:7px 0;font-size:.7em;letter-spacing:.35em}
+.acard.parch .orn::before,.acard.parch .orn::after{content:"";flex:1;border-top:1px solid var(--pn)}
+.acard.parch table.tgrid th,.acard.parch table.tgrid td{border-bottom:1px solid var(--pg);color:var(--pt)}
+.acard.parch .eff.sep{border-top:0;border-left:3px solid #EF9F27;padding:2px 0 2px 10px;margin-top:8px}
+.acard.parch .eff .eh{color:var(--pt)}
+.dcode{color:var(--dc);font-weight:600}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .dtype{filter:brightness(1.12)}}
+
+/* Escalation cost on Escalation Actions */
+.acard .meta .esc{font-weight:700;color:#b06a12}
+
+/* the Frequency sits in the title bar, between the category and the cost */
+.acard .ahead .afreq{font-size:.9em;font-weight:600;white-space:nowrap}
+.acard .ahead .acat + .afreq::before,.acard .ahead .acat + .aps::before,.acard .ahead .afreq + .aps::before{content:"|";margin:0 8px 0 2px;font-weight:400;opacity:.55}
+
+/* ---- the class style (v0.0.170: the Paladin): attribute words, cards that open, a book page */
+.kw-bane,.kw-ht,.kw-neg{color:var(--c-bane);font-weight:600}.kw-ap{color:var(--c-ap);font-weight:600}.kw-mv{color:var(--c-mv);font-weight:600}
+.mod-weapon{color:var(--c-wmod);font-weight:600}.mod-power{color:var(--c-pmod);font-weight:600}.mod-signature{color:var(--c-smod);font-weight:600}
+.kw-boon,.kw-pos{color:var(--c-boon);font-weight:600}.kw-rally{color:var(--c-rally);font-weight:600}
+.at-body{color:var(--c-body);font-weight:600}.at-mind{color:var(--c-mind);font-weight:600}.at-instinct{color:var(--c-instinct);font-weight:600}.at-appeal{color:var(--c-appeal);font-weight:600}
+details.acard>summary.ahead{list-style:none;cursor:pointer}
+details.acard>summary.ahead::-webkit-details-marker{display:none}
+details.acard>summary.ahead::before{content:"";flex:none;width:7px;height:7px;margin:0 6px 2px 2px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);transition:transform .15s}
+details.acard[open]>summary.ahead::before{transform:rotate(45deg);margin-bottom:4px}
+details.acard{margin:.55rem 0}
+details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
+.classdoc h1{text-align:center;font-variant:small-caps;letter-spacing:.06em;font-size:2.6rem;border-bottom:0;margin-bottom:0}
+.classdoc h1::before,.classdoc h2::after{content:"";display:block;height:18px;margin:0 auto;background:var(--fleuron) center/contain no-repeat}
+.classdoc h2::after{margin-top:.35rem;height:14px}
+.classdoc h2{text-align:center;font-variant:small-caps;letter-spacing:.07em;font-size:1.6rem;margin-top:2.4rem}
+.classdoc h3{font-variant:small-caps;letter-spacing:.06em;font-size:1.25rem}
+.classdoc .tagline{text-align:center;font-style:italic;color:var(--mut);margin:.3rem 0 0}
+.classdoc p.intro{margin-top:1.4rem;text-align:justify;hyphens:auto;font-size:1.06rem}
+.classdoc p.intro::first-letter{float:left;font:700 4rem/3.1rem Georgia,serif;color:var(--acc);padding:.35rem .6rem 0 0}
+.classdoc .statblock{margin:1.5rem 0;padding:.7rem 1.3rem .5rem;border:4px double var(--rule2);background:var(--box)}
+.classdoc .statblock .sbt{font-variant:small-caps;letter-spacing:.07em;font-weight:700;color:var(--acc);font-size:1.05rem;margin-bottom:.4rem}
+.classdoc .statblock .sbr{display:flex;gap:.8rem;padding:.3rem 0;border-top:1px solid var(--line)}
+.classdoc .statblock .lbl,.classdoc .levels .lbl{flex:none;width:12rem;font-variant:small-caps;letter-spacing:.07em;font-weight:600;color:var(--mut);font-size:.88rem}
+.classdoc .levels{margin:.5rem 0}
+.classdoc .lvl{display:flex;gap:1.2rem;padding:.9rem 0;border-top:1px solid var(--line)}
+.classdoc .lvn{flex:none;width:3rem;text-align:center}
+.classdoc .lvn b{display:block;font-size:2.1rem;line-height:1;color:var(--acc)}
+.classdoc .lvn span{font-variant:small-caps;letter-spacing:.07em;font-size:.72rem;color:var(--mut)}
+.classdoc .lvb{flex:1}.classdoc .lvb>div{position:relative;display:flex;gap:.8rem;padding:.3rem 0 .5rem}
+.classdoc .lvb>div:not(:last-child)::after{content:"";position:absolute;left:0;bottom:0;width:72%;height:1px;background:linear-gradient(90deg,var(--rule2),transparent)}
+.classdoc .levels .lbl{width:7.5rem}
+.classdoc .lvmore{margin:0;padding-top:.7rem;border-top:1px solid var(--line);font-style:italic;color:var(--mut);text-align:center;font-size:.9rem}
+@media (max-width:640px){.classdoc .statblock .lbl{width:8.5rem}.classdoc .lvb>div{flex-direction:column;gap:0}}
+:root{--fleuron:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='18' viewBox='0 0 120 18'%3E%3Cpath d='M2 9h40M78 9h40' stroke='%238b7a5c' stroke-width='1'/%3E%3Cpath d='M60 3c3 3 3 9 0 12-3-3-3-9 0-12zM52 9c3-4 6-4 8 0-2 4-5 4-8 0zM68 9c-3-4-6-4-8 0 2 4 5 4 8 0z' fill='%238b7a5c'/%3E%3C/svg%3E")}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--fleuron:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='18' viewBox='0 0 120 18'%3E%3Cpath d='M2 9h40M78 9h40' stroke='%236b5d45' stroke-width='1'/%3E%3Cpath d='M60 3c3 3 3 9 0 12-3-3-3-9 0-12zM52 9c3-4 6-4 8 0-2 4-5 4-8 0zM68 9c-3-4-6-4-8 0 2 4 5 4 8 0z' fill='%236b5d45'/%3E%3C/svg%3E")}}
+:root[data-theme="dark"]{--fleuron:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='18' viewBox='0 0 120 18'%3E%3Cpath d='M2 9h40M78 9h40' stroke='%236b5d45' stroke-width='1'/%3E%3Cpath d='M60 3c3 3 3 9 0 12-3-3-3-9 0-12zM52 9c3-4 6-4 8 0-2 4-5 4-8 0zM68 9c-3-4-6-4-8 0 2 4 5 4 8 0z' fill='%236b5d45'/%3E%3C/svg%3E")}
+
+.pushsvg .gcell{fill:#fff;stroke:#d9d3c7}.pushsvg .greach{fill:#ecd98b;stroke:#d9d3c7}.pushsvg .gdt{fill:#d9c3a0;stroke:#b79e74}
+.pushsvg .gbright{fill:#f1d760;stroke:#d9d3c7}.pushsvg .gdim{fill:#f7ecbd;stroke:#d9d3c7}
+.pushsvg .gcoord{font:600 10px system-ui,sans-serif;fill:#8a7f6a;text-anchor:middle}.pushsvg .gcoordr{text-anchor:end}
+.pushsvg .gnum{font:600 11px system-ui,sans-serif;fill:#22201c;text-anchor:middle}.pushsvg .gfar{fill:#a39c8f;font-weight:400}.pushsvg .gbig{font-size:14px}
+.pushsvg .glabel{font:600 10px system-ui,sans-serif;fill:#6b5a3a}
+.pushsvg .gtok{font-family:system-ui,sans-serif;font-weight:700;fill:#fff;text-anchor:middle}
+.pushsvg .gout{fill:none;stroke:#8a7650;stroke-width:2.2}
+.pushsvg .gring{fill:none;stroke-width:2.4}
+.pushsvg .gthreat{stroke:#4b7aa6;stroke-width:1.4;opacity:.65}
+.pushsvg .gbadge{fill:#2f6f3d}.pushsvg .gbt{font:700 10px system-ui,sans-serif;fill:#fff;text-anchor:middle}
+.pushsvg .gwall{stroke:#3a3732;stroke-width:5;stroke-linecap:butt}
+.pushsvg .glok{stroke:#3a8f5b;stroke-width:1.6}.pushsvg .glno{stroke:#c0392b;stroke-width:1.6}.pushsvg .ghalf{opacity:.35;stroke-dasharray:3 3}
+.pushsvg .gx{stroke:#c0392b;stroke-width:2.2;fill:none}.pushsvg .gok{fill:#3a8f5b}
+.pushsvg .gcenter{stroke:#6b5a3a;stroke-width:1.6;stroke-dasharray:5 3}
+.pushsvg .glean{fill:#3a8f5b;stroke:#fff;stroke-width:1.5}
+.pushsvg .gend{fill:none;stroke:#3a8f5b;stroke-width:2.6}.pushsvg .gcirc{fill:none;stroke:#b8860b;stroke-width:1.6}.pushsvg .gcirc2{stroke-dasharray:5 3}.pushsvg .glight{fill:#b8860b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pushsvg .gcell{fill:#24221f;stroke:#3a3732}:root:not([data-theme="light"]) .pushsvg .greach{fill:#6d5e22;stroke:#3a3732}:root:not([data-theme="light"]) .pushsvg .gdt{fill:#5a4a33;stroke:#7a6648}:root:not([data-theme="light"]) .pushsvg .gbright{fill:#8a7524;stroke:#3a3732}:root:not([data-theme="light"]) .pushsvg .gdim{fill:#4a4228;stroke:#3a3732}:root:not([data-theme="light"]) .pushsvg .gnum{fill:#ece8df}:root:not([data-theme="light"]) .pushsvg .gcoord{fill:#a39c8f}:root:not([data-theme="light"]) .pushsvg .gfar{fill:#7d776b}:root:not([data-theme="light"]) .pushsvg .glabel{fill:#d6c9a8}:root:not([data-theme="light"]) .pushsvg .gwall{stroke:#cfc8bb}:root:not([data-theme="light"]) .pushsvg .gcenter{stroke:#d6c9a8}:root:not([data-theme="light"]) .pushsvg .gout{stroke:#c8b48a}:root:not([data-theme="light"]) .pushsvg .glok{stroke:#58c98a}:root:not([data-theme="light"]) .pushsvg .glno,:root:not([data-theme="light"]) .pushsvg .gx{stroke:#ff7d6e}:root:not([data-theme="light"]) .pushsvg .gok{fill:#58c98a}:root:not([data-theme="light"]) .pushsvg .gthreat{stroke:#8bb4dc}:root:not([data-theme="light"]) .pushsvg .gcirc,:root:not([data-theme="light"]) .pushsvg .glight{stroke:#f1c84b;fill:none}:root:not([data-theme="light"]) .pushsvg .glight{fill:#f1c84b}:root:not([data-theme="light"]) .pushsvg .gend{stroke:#58c98a}}
+:root[data-theme="dark"] .pushsvg .gcell{fill:#24221f;stroke:#3a3732}:root[data-theme="dark"] .pushsvg .greach{fill:#6d5e22;stroke:#3a3732}:root[data-theme="dark"] .pushsvg .gdt{fill:#5a4a33;stroke:#7a6648}:root[data-theme="dark"] .pushsvg .gbright{fill:#8a7524;stroke:#3a3732}:root[data-theme="dark"] .pushsvg .gdim{fill:#4a4228;stroke:#3a3732}:root[data-theme="dark"] .pushsvg .gnum{fill:#ece8df}:root[data-theme="dark"] .pushsvg .gcoord{fill:#a39c8f}:root[data-theme="dark"] .pushsvg .gfar{fill:#7d776b}:root[data-theme="dark"] .pushsvg .glabel{fill:#d6c9a8}:root[data-theme="dark"] .pushsvg .gwall{stroke:#cfc8bb}:root[data-theme="dark"] .pushsvg .gcenter{stroke:#d6c9a8}:root[data-theme="dark"] .pushsvg .gout{stroke:#c8b48a}:root[data-theme="dark"] .pushsvg .glok{stroke:#58c98a}:root[data-theme="dark"] .pushsvg .glno,:root[data-theme="dark"] .pushsvg .gx{stroke:#ff7d6e}:root[data-theme="dark"] .pushsvg .gok{fill:#58c98a}:root[data-theme="dark"] .pushsvg .gthreat{stroke:#8bb4dc}:root[data-theme="dark"] .pushsvg .gcirc{stroke:#f1c84b}:root[data-theme="dark"] .pushsvg .glight{fill:#f1c84b}:root[data-theme="dark"] .pushsvg .gend{stroke:#58c98a}
+.pushsvg .gobj{fill:#9a7b57;stroke:#5e4630;stroke-width:2}.pushsvg .ghaz{fill:#f0c4b8;stroke:#c0392b}.pushsvg .gpath{stroke:#6b5a3a;stroke-width:2.4}.pushsvg .gpathhead{fill:#6b5a3a}
+.pushsvg .gpass{fill:#6fa8dc;fill-opacity:.55}.pushsvg .gstop{fill:#5fbf86;fill-opacity:.7}.pushsvg .gblock{fill:#e07a6a;fill-opacity:.55}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pushsvg .gpass{fill:#4a7fb5;fill-opacity:.7}:root:not([data-theme="light"]) .pushsvg .gstop{fill:#3f9b66;fill-opacity:.8}:root:not([data-theme="light"]) .pushsvg .gblock{fill:#b8503f;fill-opacity:.7}}
+:root[data-theme="dark"] .pushsvg .gpass{fill:#4a7fb5;fill-opacity:.7}:root[data-theme="dark"] .pushsvg .gstop{fill:#3f9b66;fill-opacity:.8}:root[data-theme="dark"] .pushsvg .gblock{fill:#b8503f;fill-opacity:.7}
+.pushfig .figsvg{min-height:var(--hh,0)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pushsvg .gobj{fill:#7a6248;stroke:#b79e74}:root:not([data-theme="light"]) .pushsvg .ghaz{fill:#6a3a30;stroke:#ff7d6e}:root:not([data-theme="light"]) .pushsvg .gpath{stroke:#d6c9a8}:root:not([data-theme="light"]) .pushsvg .gpathhead{fill:#d6c9a8}}
+:root[data-theme="dark"] .pushsvg .gobj{fill:#7a6248;stroke:#b79e74}:root[data-theme="dark"] .pushsvg .ghaz{fill:#6a3a30;stroke:#ff7d6e}:root[data-theme="dark"] .pushsvg .gpath{stroke:#d6c9a8}:root[data-theme="dark"] .pushsvg .gpathhead{fill:#d6c9a8}
+.pushfig figure{max-width:var(--w,290px)}
+.docnav{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px;font:13px system-ui,sans-serif}.docnav a{padding:2px 11px;border:1px solid var(--line);border-radius:999px;color:var(--fg);text-decoration:none;background:var(--card)}.docnav a:hover{color:var(--acc)}.docnav a.cur{background:var(--accbg);color:var(--acc);border-color:var(--acc);font-weight:600}
+@font-face{font-family:"Cinzel";font-weight:700;font-style:normal;font-display:swap;src:url(data:font/woff2;base64,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) format("woff2")}
+</style></head>
+<body id="top"><div class="layout"><nav class="toc"><details class="tocwrap" open><summary>Contents</summary><div class="tocbtns"><button id="expandAll" type="button">Expand all</button><button id="collapseAll" type="button">Collapse all</button></div><div class="tocch"><a href="#bestiary-building-npcs">Bestiary: Building NPCs</a><div class="toch2"><a href="#the-targets">The targets</a><a href="#ratings">Ratings</a><a href="#defenses-2">Defenses</a><a href="#attributes-and-modifiers">Attributes and Modifiers</a><a href="#health">Health</a><a href="#speed">Speed</a><a href="#steadiness-2">Steadiness</a><a href="#actions-2">Actions</a><a href="#the-roles">The roles</a><a href="#building-an-encounter">Building an encounter</a><a href="#example-npcs-level-1">Example NPCs (level 1)</a></div></div><div class="tocch"><a href="#open-items">Appendix: Open Items</a><div class="toch2"></div></div></details></nav>
+<main><div class="docnav"><a href="core-rules.html">Core Rules</a><a href="species.html">Species</a><a href="gear.html">Gear</a><a href="talents.html">Talents</a><a href="paladin.html">Paladin</a><a href="archer.html">Archer</a><a href="bestiary.html" class=cur>Bestiary</a></div><div class="titleblock"><h1 class="doctitle">Bestiary</h1><p class="draft">Draft</p></div><section class="chapter"><details open><summary><h1 id="bestiary-building-npcs">Bestiary: Building NPCs</h1></summary><div class="cbody">
+<p>You build an NPC by picking a <strong>role</strong>, then a <strong>rating</strong> for each of its numbers. <strong>An NPC's items are flavor and loot</strong>: its Health, Defenses and damage never come from its weapons or armor.</p>
+<h2 id="the-targets">The targets</h2>
+<p>Each role has a <strong>CV Multiplier</strong>: at level 1, an NPC's <strong>Combat Value (CV)</strong> is its role's CV Multiplier (later levels are not written yet). A typical fight is <strong>4 PCs against enemies with a total CV of 4</strong> (CV 1 per PC). It lasts about <strong>3 rounds</strong> and costs the party about <strong>40% of its Health</strong>. A level 1 PC deals about 22 to 27 damage a turn to one creature, and has 19 to 36 Health (about 28).</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Role</th>
+<th>CV Multiplier</th>
+<th>AP a turn</th>
+<th>Takes about</th>
+<th>Deals about (per turn, to an average PC)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minion</strong></td>
+<td>¼</td>
+<td><strong>3</strong></td>
+<td>one PC hit</td>
+<td>3 to 4</td>
+</tr>
+<tr>
+<td><strong>Grunt</strong></td>
+<td>½</td>
+<td>5</td>
+<td>1 PC turn</td>
+<td>5</td>
+</tr>
+<tr>
+<td><strong>Standard</strong></td>
+<td>1</td>
+<td>5</td>
+<td>2 PC turns</td>
+<td>7 to 8</td>
+</tr>
+<tr>
+<td><strong>Elite</strong></td>
+<td>2</td>
+<td>5</td>
+<td>4 to 5 PC turns</td>
+<td>15</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Minions have <span class="kw-ap">3 AP</span> a turn</strong>, not 5: quick, simple creatures that move and strike, and die fast.</p>
+<h3 id="minor-enemies">Minor enemies</h3>
+<p><strong>Minor enemies</strong> are Minions and Grunts: the roles with a CV Multiplier below 1.</p>
+<h2 id="ratings">Ratings</h2>
+<p>Each role has tables (below) with five <strong>ratings</strong>: <strong>Terrible, Low, Medium, High, Extreme</strong>. Medium is the role's normal value; the others go down or up from it. Minions have no Extreme. The rows of a table are <strong>levels</strong>: levels 1 to 3 are filled; level 4 waits for the PC levels. NPCs grow with the party: from level 2 an NPC's Health follows the PCs' damage and its damage follows the PCs' Health. A Medium NPC keeps exact pace with the PCs, a Low or Terrible one falls a little behind each level and a High or Extreme one pulls a little ahead (about 2% to 5% a level in how hard the fight is), and a level 1 Basic attack is a little higher than a bare calculation would give. The tables already include all of it; Attributes and Defenses don't change.</p>
+<div class="callout tbd"><div class="ctitle">To be decided</div><p>Level 4 and up are empty until those PC levels are written.</p></div>
+<ul>
+<li><strong>Attributes</strong>: by default one <strong>High</strong>, two <strong>Medium</strong> and one <strong>Low</strong>.</li>
+<li><strong>Health</strong>: a rating for the <strong><span class="at-body">Body</span> Health Multiplier</strong> and one for the <strong><span class="at-mind">Mind</span> Health Multiplier</strong>, Medium by default. A brute might have High <span class="at-body">Body</span> and Low <span class="at-mind">Mind</span>; a ghost, Terrible <span class="at-body">Body</span> and High <span class="at-mind">Mind</span>.</li>
+<li><strong>Defenses</strong>: a rating for <strong>Armor Defense</strong> and one for <strong>Ward Defense</strong> (see Defenses below).</li>
+<li><strong>Basic attack</strong>: a rating for its damage (Medium by default).</li>
+</ul>
+<p><strong>The ratings are guidance, not a rule: choose any rating for any number.</strong> As a suggestion, if one number is High, a Low somewhere else usually makes sense (High Armor Defense and Low Health, for example). A creature whose ratings average out to Medium is balanced for its role.</p>
+<h2 id="defenses-2">Defenses</h2>
+<p>An NPC has an <strong>Armor Defense</strong> and a <strong>Ward Defense</strong>. Each one is a rating from its role's Defense table, picked <strong>independently</strong> of the other: a Standard is Medium in both by default (13 and 13); a knight could have a High Armor Defense (14) and a Low Ward Defense (12). A Defense is never below 11. An NPC's Defenses come from these ratings only.</p>
+<p><strong>A Defense rating is a small step.</strong> One rating is 1 point of Defense, which takes about 8 to 10% off what the PCs deal in a turn; a rating of Health or damage is 20 to 25%. A High Defense is worth about +10% Health against +25% for a High Health, so Defense is the mildest of the ratings.</p>
+<h2 id="attributes-and-modifiers">Attributes and Modifiers</h2>
+<p>Assign the Attributes to <strong><span class="at-body">Body</span>, <span class="at-mind">Mind</span>, <span class="at-appeal">Appeal</span> and <span class="at-instinct">Instinct</span></strong>. Choose a <strong><span class="mod-weapon">Weapon Attribute</span></strong> and a <strong><span class="mod-power">Power Attribute</span></strong>: each Modifier is <strong>⌈Attribute ÷ 2⌉ + 1</strong>, as for a PC (see <a class="xref" href="core-rules.html#weapon-power-and-signature-modifiers">Weapon, Power and <span class="mod-signature">Signature Modifiers</span></a>). Its Vs. Attributes are 13 + half, as for anyone.</p>
+<h2 id="health">Health</h2>
+<p>The same formula as a PC, with the role's numbers:</p>
+<ul>
+<li><strong><span class="at-body">Body</span> Damage Threshold</strong> = (<span class="at-body">Body</span> + 2) × <span class="at-body">Body</span> Health Multiplier + Health Base</li>
+<li><strong><span class="at-mind">Mind</span> Damage Threshold</strong> = (<span class="at-mind">Mind</span> + 2) × <span class="at-mind">Mind</span> Health Multiplier + Health Base</li>
+<li><strong>Health Pool</strong> = the two thresholds added together (round each threshold up).</li>
+</ul>
+<p>Bloodied, Strained and going <span class="kw-neg">Down</span> work as usual (see <a class="xref" href="core-rules.html#npcs-going-down">NPCs Going <span class="kw-neg">Down</span></a>). <strong>A Minion has no Dying: at 0 it dies, or falls Unconscious if the GM prefers.</strong></p>
+<h2 id="speed">Speed</h2>
+<p>Speed is <strong>free</strong>: every NPC has Speed 5 unless it says otherwise. But it is strong, so it should be balanced with the rest of the creature:</p>
+<ul>
+<li><strong>A fast creature</strong> (Speed 6 or more, or one that flies) chooses its fights: it reaches the back line, gets out of reach, and makes the PCs come to it. Give it a downside: Low Health, Low Armor Defense, or a Low Basic attack.</li>
+<li><strong>A slow creature</strong> (Speed 4 or less) is easy to avoid and to keep away. Give it an upside: High Health, a High Basic attack, or Reach.</li>
+</ul>
+<h2 id="steadiness-2">Steadiness</h2>
+<p>An NPC has Steadiness 0 unless it says otherwise. A big or heavy creature can have 1 or more (see <a class="xref" href="#steadiness-2">Steadiness</a> in Chapter 3).</p>
+<h2 id="actions-2">Actions</h2>
+<h3 id="the-basic-attack">The Basic attack</h3>
+<p>Every NPC has one <strong>Basic attack</strong>: its main attack, <span class="kw-ap">1 AP</span>, At-will, Vs. AD (a <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action) or WD (a <span class="trhl" style="--tc:var(--g-roll)">Power</span> Action). Its damage is the role's (the tables give the <strong>average damage</strong> on Tier 2 and Tier 3, [Mod] included; pick dice that come close). Tier 1 deals nothing, like a Weapon Attack. The weapon in its hands is only what the attack looks like.</p>
+<h3 id="special-actions">Special Actions</h3>
+<p>Special Actions make an NPC interesting. <strong>Every role has them, Minions included.</strong> A Special Action deals the <strong>Basic attack's average damage</strong>, at the rating you give it, <strong>times</strong>:</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>AP</th>
+<th>Frequency</th>
+<th>Damage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="kw-ap">1 AP</span></td>
+<td>Round</td>
+<td>× 1.4</td>
+</tr>
+<tr>
+<td><span class="kw-ap">2 AP</span></td>
+<td>Round</td>
+<td>× 2.2</td>
+</tr>
+<tr>
+<td><span class="kw-ap">3 AP</span></td>
+<td>Encounter</td>
+<td>× 3.5</td>
+</tr>
+</tbody>
+</table></div>
+<p>Minions have at most <span class="kw-ap">2 AP</span> Special Actions (<span class="kw-ap">3 AP</span> is their whole turn). For example, a level 1 Standard's Medium Basic attack averages 4.5 / 7.5: its Medium <span class="kw-ap">2 AP</span> Special averages about 10 / 16.5.</p>
+<ul>
+<li><strong>Area <span class="trhl" style="--tc:var(--g-roll)">Save</span> Actions</strong> (a Save the targets roll, DC 11 + the Modifier): about <strong>half</strong> the damage, to each creature in the area.</li>
+</ul>
+<h3 id="conditions">Conditions</h3>
+<p>A condition is worth <strong>steps of rating</strong>: <strong>Mild 1, Moderate 2, Severe 3</strong>. An Action with a condition lowers its damage rating by that many steps: a <strong>Low</strong> attack with a <strong>Moderate</strong> condition is as strong as a <strong>High</strong> attack. An Action with no damage counts as one step below Terrible.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Severity</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Mild</strong></td>
+<td>Hindered (EoT); <span class="kw-bane">1 Bane</span> on its next roll; Pushed or <span class="kw-mv">Pulled 1</span> or 2; Bright light on it (it can't hide)</td>
+</tr>
+<tr>
+<td><strong>Moderate</strong></td>
+<td>Prone; <span class="kw-neg">Vulnerable 1</span> (EoT); Immobilized (EoT); <span class="kw-neg">Enfeebled 1</span>; Slowed 1; <span class="kw-mv">Pushed 3</span> or more</td>
+</tr>
+<tr>
+<td><strong>Severe</strong></td>
+<td><span class="kw-neg">Vulnerable 2</span> (EoT); Immobilized until it escapes; Slowed 2; <span class="kw-neg">Doomed</span> on its next roll</td>
+</tr>
+</tbody>
+</table></div>
+<p>A condition that lasts longer than EoT, or that a Save can't shake off, is one step more severe. A condition on Tier 3 only costs one step less.</p>
+<h3 id="reactions-2">Reactions</h3>
+<ul>
+<li><strong>Minions and Grunts</strong> normally have none.</li>
+<li><strong>Standards and Elites</strong> may have one or more.</li>
+<li>A Reaction uses AP from the NPC's next turn, as for a PC.</li>
+<li><strong>A Reaction that doesn't disrupt the triggering Action</strong> (a Trigger, after it) should be <strong>one rating stronger</strong> than an Action of the same AP: it only happens when its trigger does.</li>
+<li><strong>A Reaction that disrupts it</strong> (an Interrupt that can stop the Action) is worth the same as an Action of the same AP: stopping the Action is its strength.</li>
+</ul>
+<h3 id="escalation-2">Escalation</h3>
+<p>An Elite can have Escalation (the NPC sheet's switch). Give it one or two Escalation Actions.</p>
+<h2 id="the-roles">The roles</h2>
+<h3 id="minions">Minions</h3>
+<p><strong>Attributes</strong></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Level</th>
+<th><strong>Terrible</strong></th>
+<th><strong>Low</strong></th>
+<th><strong>Medium</strong></th>
+<th><strong>High</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Level 1</strong></td>
+<td>-2</td>
+<td>-1</td>
+<td>+0</td>
+<td>+1</td>
+</tr>
+<tr>
+<td><strong>Level 2</strong></td>
+<td>-2</td>
+<td>-1</td>
+<td>+0</td>
+<td>+1</td>
+</tr>
+<tr>
+<td><strong>Level 3</strong></td>
+<td>-2</td>
+<td>-1</td>
+<td>+0</td>
+<td>+1</td>
+</tr>
+<tr>
+<td><strong>Level 4</strong></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Health Multiplier (Health Base +1)</strong></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Level</th>
+<th><strong>Terrible</strong></th>
+<th><strong>Low</strong></th>
+<th><strong>Medium</strong></th>
+<th><strong>High</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Level 1</strong></td>
+<td>×0</td>
+<td>×0.75</td>
+<td>×1</td>
+<td>×1.25</td>
+</tr>
+<tr>
+<td><strong>Level 2</strong></td>
+<td>×0</td>
+<td>×0.75</td>
+<td>×1.25</td>
+<td>×1.5</td>
+</tr>
+<tr>
+<td><strong>Level 3</strong></td>
+<td>×0</td>
+<td>×0.75</td>
+<td>×1.25</td>
+<td>×1.5</td>
+</tr>
+<tr>
+<td><strong>Level 4</strong></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Defense (Armor Defense or Ward Defense)</strong></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Level</th>
+<th><strong>Terrible</strong></th>
+<th><strong>Low</strong></th>
+<th><strong>Medium</strong></th>
+<th><strong>High</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Level 1</strong></td>
+<td>11</td>
+<td>11</td>
+<td>12</td>
+<td>13</td>
+</tr>
+<tr>
+<td><strong>Level 2</strong></td>
+<td>11</td>
+<td>11</td>
+<td>12</td>
+<td>13</td>
+</tr>
+<tr>
+<td><strong>Level 3</strong></td>
+<td>11</td>
+<td>11</td>
+<td>12</td>
+<td>13</td>
+</tr>
+<tr>
+<td><strong>Level 4</strong></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Basic attack, average damage: Tier 2 / Tier 3</strong></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Level</th>
+<th><strong>Terrible</strong></th>
+<th><strong>Low</strong></th>
+<th><strong>Medium</strong></th>
+<th><strong>High</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Level 1</strong></td>
+<td>1 / 2.5</td>
+<td>1.5 / 3.5</td>
+<td>2 / 4</td>
+<td>2.5 / 5</td>
+</tr>
+<tr>
+<td><strong>Level 2</strong></td>
+<td>1.5 / 2.5</td>
+<td>2 / 3.5</td>
+<td>2.5 / 4.5</td>
+<td>3 / 5.5</td>
+</tr>
+<tr>
+<td><strong>Level 3</strong></td>
+<td>1.5 / 3</td>
+<td>2 / 4</td>
+<td>2.5 / 5</td>
+<td>3 / 6</td>
+</tr>
+<tr>
+<td><strong>Level 4</strong></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p>With every rating Medium, a level 1 minion has <strong>6 Health</strong>.</p>
+<h3 id="grunts">Grunts</h3>
+<p><strong>Attributes</strong></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Level</th>
+<th><strong>Terrible</strong></th>
+<th><strong>Low</strong></th>
+<th><strong>Medium</strong></th>
+<th><strong>High</strong></th>
+<th><strong>Extreme</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Level 1</strong></td>
+<td>-2</td>
+<td>-1</td>
+<td>+0</td>
+<td>+1</td>
+<td>+2</td>
+</tr>
+<tr>
+<td><strong>Level 2</strong></td>
+<td>-2</td>
+<td>-1</td>
+<td>+0</td>
+<td>+1</td>
+<td>+2</td>
+</tr>
+<tr>
+<td><strong>Level 3</strong></td>
+<td>-2</td>
+<td>-1</td>
+<td>+0</td>
+<td>+1</td>
+<td>+2</td>
+</tr>
+<tr>
+<td><strong>Level 4</strong></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Health Multiplier (Health Base +3)</strong></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Level</th>
+<th><strong>Terrible</strong></th>
+<th><strong>Low</strong></th>
+<th><strong>Medium</strong></th>
+<th><strong>High</strong></th>
+<th><strong>Extreme</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Level 1</strong></td>
+<td>×2.5</td>
+<td>×3.75</td>
+<td>×5</td>
+<td>×6.25</td>
+<td>×7.5</td>
+</tr>
+<tr>
+<td><strong>Level 2</strong></td>
+<td>×3</td>
+<td>×4</td>
+<td>×5.5</td>
+<td>×7</td>
+<td>×8.5</td>
+</tr>
+<tr>
+<td><strong>Level 3</strong></td>
+<td>×2.5</td>
+<td>×4</td>
+<td>×5.5</td>
+<td>×7.5</td>
+<td>×9</td>
+</tr>
+<tr>
+<td><strong>Level 4</strong></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Defense (Armor Defense or Ward Defense)</strong></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Level</th>
+<th><strong>Terrible</strong></th>
+<th><strong>Low</strong></th>
+<th><strong>Medium</strong></th>
+<th><strong>High</strong></th>
+<th><strong>Extreme</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Level 1</strong></td>
+<td>11</td>
+<td>12</td>
+<td>13</td>
+<td>14</td>
+<td>15</td>
+</tr>
+<tr>
+<td><strong>Level 2</strong></td>
+<td>11</td>
+<td>12</td>
+<td>13</td>
+<td>14</td>
+<td>15</td>
+</tr>
+<tr>
+<td><strong>Level 3</strong></td>
+<td>11</td>
+<td>12</td>
+<td>13</td>
+<td>14</td>
+<td>15</td>
+</tr>
+<tr>
+<td><strong>Level 4</strong></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Basic attack, average damage: Tier 2 / Tier 3</strong></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Level</th>
+<th><strong>Terrible</strong></th>
+<th><strong>Low</strong></th>
+<th><strong>Medium</strong></th>
+<th><strong>High</strong></th>
+<th><strong>Extreme</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Level 1</strong></td>
+<td>2 / 3</td>
+<td>2.5 / 3.5</td>
+<td>3 / 4.5</td>
+<td>4 / 5.5</td>
+<td>4.5 / 7</td>
+</tr>
+<tr>
+<td><strong>Level 2</strong></td>
+<td>2 / 3</td>
+<td>2.5 / 4</td>
+<td>3.5 / 5</td>
+<td>4 / 6.5</td>
+<td>5 / 7.5</td>
+</tr>
+<tr>
+<td><strong>Level 3</strong></td>
+<td>2 / 3</td>
+<td>3 / 4.5</td>
+<td>3.5 / 5.5</td>
+<td>4.5 / 7</td>
+<td>5.5 / 8.5</td>
+</tr>
+<tr>
+<td><strong>Level 4</strong></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p>With every rating Medium, a level 1 grunt has <strong>26 Health</strong>.</p>
+<h3 id="standards">Standards</h3>
+<p><strong>Attributes</strong></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Level</th>
+<th><strong>Terrible</strong></th>
+<th><strong>Low</strong></th>
+<th><strong>Medium</strong></th>
+<th><strong>High</strong></th>
+<th><strong>Extreme</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Level 1</strong></td>
+<td>-1</td>
+<td>+0</td>
+<td>+1</td>
+<td>+2</td>
+<td>+3</td>
+</tr>
+<tr>
+<td><strong>Level 2</strong></td>
+<td>-1</td>
+<td>+0</td>
+<td>+1</td>
+<td>+2</td>
+<td>+3</td>
+</tr>
+<tr>
+<td><strong>Level 3</strong></td>
+<td>-1</td>
+<td>+0</td>
+<td>+1</td>
+<td>+2</td>
+<td>+3</td>
+</tr>
+<tr>
+<td><strong>Level 4</strong></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Health Multiplier (Health Base +4)</strong></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Level</th>
+<th><strong>Terrible</strong></th>
+<th><strong>Low</strong></th>
+<th><strong>Medium</strong></th>
+<th><strong>High</strong></th>
+<th><strong>Extreme</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Level 1</strong></td>
+<td>×3.5</td>
+<td>×5.25</td>
+<td>×7</td>
+<td>×8.75</td>
+<td>×10.5</td>
+</tr>
+<tr>
+<td><strong>Level 2</strong></td>
+<td>×4</td>
+<td>×6</td>
+<td>×8</td>
+<td>×10</td>
+<td>×12</td>
+</tr>
+<tr>
+<td><strong>Level 3</strong></td>
+<td>×4</td>
+<td>×6</td>
+<td>×8</td>
+<td>×10</td>
+<td>×12.5</td>
+</tr>
+<tr>
+<td><strong>Level 4</strong></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Defense (Armor Defense or Ward Defense)</strong></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Level</th>
+<th><strong>Terrible</strong></th>
+<th><strong>Low</strong></th>
+<th><strong>Medium</strong></th>
+<th><strong>High</strong></th>
+<th><strong>Extreme</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Level 1</strong></td>
+<td>11</td>
+<td>12</td>
+<td>13</td>
+<td>14</td>
+<td>15</td>
+</tr>
+<tr>
+<td><strong>Level 2</strong></td>
+<td>11</td>
+<td>12</td>
+<td>13</td>
+<td>14</td>
+<td>15</td>
+</tr>
+<tr>
+<td><strong>Level 3</strong></td>
+<td>11</td>
+<td>12</td>
+<td>13</td>
+<td>14</td>
+<td>15</td>
+</tr>
+<tr>
+<td><strong>Level 4</strong></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Basic attack, average damage: Tier 2 / Tier 3</strong></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Level</th>
+<th><strong>Terrible</strong></th>
+<th><strong>Low</strong></th>
+<th><strong>Medium</strong></th>
+<th><strong>High</strong></th>
+<th><strong>Extreme</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Level 1</strong></td>
+<td>3 / 4.5</td>
+<td>3.5 / 6</td>
+<td>4.5 / 8</td>
+<td>5.5 / 9.5</td>
+<td>7 / 11.5</td>
+</tr>
+<tr>
+<td><strong>Level 2</strong></td>
+<td>3 / 5</td>
+<td>4 / 6.5</td>
+<td>5 / 8.5</td>
+<td>6.5 / 10.5</td>
+<td>7.5 / 12.5</td>
+</tr>
+<tr>
+<td><strong>Level 3</strong></td>
+<td>3 / 5</td>
+<td>4.5 / 7</td>
+<td>5.5 / 9.5</td>
+<td>7 / 11.5</td>
+<td>8.5 / 14</td>
+</tr>
+<tr>
+<td><strong>Level 4</strong></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p>With every rating Medium, a level 1 standard has <strong>50 Health</strong>.</p>
+<h3 id="elites">Elites</h3>
+<p><strong>Attributes</strong></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Level</th>
+<th><strong>Terrible</strong></th>
+<th><strong>Low</strong></th>
+<th><strong>Medium</strong></th>
+<th><strong>High</strong></th>
+<th><strong>Extreme</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Level 1</strong></td>
+<td>+0</td>
+<td>+1</td>
+<td>+2</td>
+<td>+3</td>
+<td>+4</td>
+</tr>
+<tr>
+<td><strong>Level 2</strong></td>
+<td>+0</td>
+<td>+1</td>
+<td>+2</td>
+<td>+3</td>
+<td>+4</td>
+</tr>
+<tr>
+<td><strong>Level 3</strong></td>
+<td>+0</td>
+<td>+1</td>
+<td>+2</td>
+<td>+3</td>
+<td>+4</td>
+</tr>
+<tr>
+<td><strong>Level 4</strong></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Health Multiplier (Health Base +6)</strong></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Level</th>
+<th><strong>Terrible</strong></th>
+<th><strong>Low</strong></th>
+<th><strong>Medium</strong></th>
+<th><strong>High</strong></th>
+<th><strong>Extreme</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Level 1</strong></td>
+<td>×6</td>
+<td>×9</td>
+<td>×12</td>
+<td>×15</td>
+<td>×18</td>
+</tr>
+<tr>
+<td><strong>Level 2</strong></td>
+<td>×6.5</td>
+<td>×10</td>
+<td>×13.5</td>
+<td>×17.5</td>
+<td>×21</td>
+</tr>
+<tr>
+<td><strong>Level 3</strong></td>
+<td>×6.5</td>
+<td>×10</td>
+<td>×13.5</td>
+<td>×17.5</td>
+<td>×21.5</td>
+</tr>
+<tr>
+<td><strong>Level 4</strong></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Defense (Armor Defense or Ward Defense)</strong></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Level</th>
+<th><strong>Terrible</strong></th>
+<th><strong>Low</strong></th>
+<th><strong>Medium</strong></th>
+<th><strong>High</strong></th>
+<th><strong>Extreme</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Level 1</strong></td>
+<td>12</td>
+<td>13</td>
+<td>14</td>
+<td>15</td>
+<td>16</td>
+</tr>
+<tr>
+<td><strong>Level 2</strong></td>
+<td>12</td>
+<td>13</td>
+<td>14</td>
+<td>15</td>
+<td>16</td>
+</tr>
+<tr>
+<td><strong>Level 3</strong></td>
+<td>12</td>
+<td>13</td>
+<td>14</td>
+<td>15</td>
+<td>16</td>
+</tr>
+<tr>
+<td><strong>Level 4</strong></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Basic attack, average damage: Tier 2 / Tier 3</strong></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Level</th>
+<th><strong>Terrible</strong></th>
+<th><strong>Low</strong></th>
+<th><strong>Medium</strong></th>
+<th><strong>High</strong></th>
+<th><strong>Extreme</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Level 1</strong></td>
+<td>4 / 6</td>
+<td>5.5 / 8.5</td>
+<td>7 / 10.5</td>
+<td>8.5 / 13</td>
+<td>10 / 15</td>
+</tr>
+<tr>
+<td><strong>Level 2</strong></td>
+<td>4.5 / 6.5</td>
+<td>6 / 9</td>
+<td>7.5 / 11.5</td>
+<td>9 / 14</td>
+<td>11 / 17</td>
+</tr>
+<tr>
+<td><strong>Level 3</strong></td>
+<td>4.5 / 7</td>
+<td>6 / 9.5</td>
+<td>8 / 12.5</td>
+<td>10 / 15.5</td>
+<td>12 / 18.5</td>
+</tr>
+<tr>
+<td><strong>Level 4</strong></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p>With every rating Medium, a level 1 elite has <strong>108 Health</strong>.</p>
+<h2 id="building-an-encounter">Building an encounter</h2>
+<p>Add up the CV of the enemies. <strong>CV 1 per PC is a normal fight</strong>: ¾ is easy, 1½ is hard, 2 is deadly. Many Minions are cheap but act often: no more than 4 Minions per PC.</p>
+<p>What the fight model gives for 4 PCs (all ratings Medium):</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Enemies</th>
+<th>Rounds</th>
+<th>Party Health lost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4 Standards</td>
+<td>3</td>
+<td>about 40%</td>
+</tr>
+<tr>
+<td>1 Elite and 2 Standards</td>
+<td>3</td>
+<td>about 45%</td>
+</tr>
+<tr>
+<td>2 Elites</td>
+<td>3</td>
+<td>about 55%</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="example-npcs-level-1">Example NPCs (level 1)</h2>
+<p><strong>Goblin Sneak</strong> (Minion, CV ¼, <span class="kw-ap">3 AP</span>): <span class="at-instinct">Instinct</span> High (+1), <span class="at-body">Body</span> Medium (0), <span class="at-mind">Mind</span> Medium (0), <span class="at-appeal">Appeal</span> Low (−1). <span class="mod-weapon">Weapon Modifier</span> +2 (<span class="at-instinct">Instinct</span>). <span class="at-body">Body</span> and <span class="at-mind">Mind</span> Health Low (×0.75): Health 6 (3 + 3). Armor Defense Medium (12), Ward Defense Low (11). <strong>Speed 7</strong> (fast: its Health is Low).
+- <em>Rusty Knife</em> (Basic attack, Medium): about 2 / 4 ([Mod] / 1d4 + [Mod] <span class="dcode" style="--dc:#8a8a8a">Pi</span>).
+- <em>Dirty Trick</em> (Special, <span class="kw-ap">1 AP</span>, Round): Low damage + Mild condition = Medium: about 2 / 4, and Hindered (EoT).</p>
+<p><strong>Orc Warrior</strong> (Standard, CV 1): <span class="at-body">Body</span> High (+2), <span class="at-instinct">Instinct</span> Medium (+1), <span class="at-mind">Mind</span> Medium (+1), <span class="at-appeal">Appeal</span> Low (0). <span class="mod-weapon">Weapon Modifier</span> +2 (<span class="at-body">Body</span>). <span class="at-body">Body</span> Health High (×8.75), <span class="at-mind">Mind</span> Health Low (×5.25): Health 59 (<span class="at-body">Body</span> 39, <span class="at-mind">Mind</span> 20). Armor Defense Medium (13), Ward Defense Low (12).
+- <em>Cleaver</em> (Basic attack, Medium): about 4.5 / 7.5 (1d4 + [Mod] / 1d10 + [Mod] <span class="dcode" style="--dc:#8a8a8a">Sl</span>).
+- <em>Brutal Swing</em> (Special, <span class="kw-ap">2 AP</span>, Round): Low damage + Moderate condition = High: about 7.5 / 13, and Prone.
+- <em>Hold the Line</em> (Reaction, Trigger: an ally within 2 squares is hit; <span class="kw-ap">1 AP</span>): the attacker takes a Medium <span class="kw-ap">1 AP</span> Special one rating up: about 7.5 / 12.5 <span class="dcode" style="--dc:#8a8a8a">Sl</span>.</p>
+<p><strong>Ogre Chieftain</strong> (Elite, CV 2): <span class="at-body">Body</span> High (+3), <span class="at-instinct">Instinct</span> Medium (+2), <span class="at-mind">Mind</span> Medium (+2), <span class="at-appeal">Appeal</span> Low (+1). <span class="mod-weapon">Weapon Modifier</span> +3 (<span class="at-body">Body</span>). Health Medium: 120 (<span class="at-body">Body</span> 66, <span class="at-mind">Mind</span> 54). Armor Defense Medium (14), Ward Defense Low (13). Speed 4 (slow: High Basic attack). Escalation on.
+- <em>Club</em> (Basic attack, High): about 8 / 12 (1d8 + [Mod] / 2d8 + [Mod] <span class="dcode" style="--dc:#8a8a8a">Bl</span>).
+- <em>Ground Slam</em> (Special, <span class="kw-ap">3 AP</span>, Encounter, Area 1 Emanation, a <span class="trhl" style="--tc:var(--g-roll)">Save</span> Action: <span class="at-body">Body</span> Save, DC 14): half of a Medium <span class="kw-ap">3 AP</span>: about 17.5 / 11.5 / 0 (Tier 1 is the worst for them), and Prone on Tier 1.
+- <em>Rally the Tribe</em> (1 Escalation, <span class="kw-ap">1 AP</span>): allies within 5 squares gain <span class="kw-boon">1 Boon</span> on their next Basic attack.</p></div></details></section>
+<section class="chapter"><details open><summary><h1 id="open-items">Appendix: Open Items</h1></summary><div class="cbody"><p>Rules that are not decided or not written yet. They are collected from the "To be decided" boxes in the chapters.</p><ol class="openitems"><li><a href="#ratings">Ratings</a>: Level 4 and up are empty until those PC levels are written.</li></ol></div></details></section><p class="credits">Icons: Font Awesome Free (CC BY 4.0). Card title font: Cinzel (SIL Open Font License).</p><p class="totop"><a href="#top">Back to top</a></p></main></div><script>
+function openUp(el){let d=el&&el.closest('details');while(d){d.open=true;d=d.parentElement&&d.parentElement.closest('details');}}
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',()=>{const t=document.getElementById(a.getAttribute('href').slice(1));openUp(t);}));
+window.addEventListener('hashchange',()=>openUp(document.getElementById(location.hash.slice(1))));
+if(location.hash)openUp(document.getElementById(location.hash.slice(1)));
+document.getElementById('expandAll').onclick=()=>document.querySelectorAll('details.chapter-d,section.chapter>details').forEach(d=>d.open=true);
+document.getElementById('collapseAll').onclick=()=>document.querySelectorAll('section.chapter>details').forEach(d=>d.open=false);
+const oc=document.getElementById('openCards'),cc=document.getElementById('closeCards');if(oc)oc.onclick=()=>document.querySelectorAll('details.acard').forEach(d=>d.open=true);if(cc)cc.onclick=()=>document.querySelectorAll('details.acard').forEach(d=>d.open=false);
+const tw=document.querySelector('.tocwrap');if(tw&&window.innerWidth<1000)tw.open=false;
+</script></body></html>

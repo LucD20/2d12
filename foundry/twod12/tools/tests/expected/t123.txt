@@ -1,0 +1,18 @@
+Favored 1,1,5 (+0 vs 13): keep 0+1 total 2 tier 2 doubles | the two highest would be 6, Tier 1
+Favored 4,4,10 (+2 vs 13): keep 1+2 total 16 tier 2 | the 4s (10, Doubles) and 4+10 (16) are both Tier 2: the higher total
+Favored 7,7,9 (+2 vs 13): keep 0+1 total 16 tier 3 doubles | 16+2 = 18 Tier 2, 14+2 Doubles = Tier 3
+Favored 12-chain 23, 3, 2: keep 0+1 total 26 tier 3
+Doomed 5,5,7 (+2 vs 13): keep 0+1 total 12 tier 1 | no Doubles
+Doomed 10, 12->21, 12->16 (the rules' example): keep 0+2 total 26 tier 3 | 10 + 16 = 26
+normal 6,6 (+0 vs 13): keep 0+1 total 12 tier 2 doubles
+odds +2 vs 13 | normal 27.8% / 45.5% / 26.7% | Favored 6.9% / 44.5% / 48.6% | Doomed 56.7% / 36.7% / 6.6%
+Weapon      | weapon mod 3 | [Mod] added from Tier 2 | Save DC 14
+Power       | power mod 2 | [Mod] added from Tier Infinity | Save DC 13
+Signature   | signature mod 3 | [Mod] added from Tier Infinity | Save DC 14
+Body Action | attribute mod 3 | [Mod] added from Tier Infinity | Save DC 14
+no roll     | - mod - | [Mod] added from Tier Infinity | Save DC 13
+Vs.: weapon AD | magic WD | signature AD or WD | body DC 13 | split AD (Weapon mode) or WD (Power mode) | Fists AD | Trip Body or Instinct | no roll (none)
+Rimebrand damage on every Tier: true | its Hindered still Tier 2 or 3: true
+species have no Ward value (v0.0.162): true
+damage rolled once per Tier (actions, Save cards): true
+shorter title bar: true

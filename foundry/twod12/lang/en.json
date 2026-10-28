@@ -1,0 +1,7 @@
+{
+  "TYPES": {
+    "Actor": { "character": "Character", "npc": "NPC" },
+    "RegionBehavior": { "difficultTerrain": "Difficult Terrain", "hazard": "Hazardous Terrain" },
+    "Item": { "species": "Species", "class": "Class", "feature": "Feature", "action": "Action", "weapon": "Weapon", "armor": "Armor", "gear": "Gear", "effect": "Effect", "talent": "Talent" }
+  }
+}

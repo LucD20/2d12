@@ -1,0 +1,143 @@
+# PROPOSED REWRITES for your Core review (v3): names, Y, Corners, Straight Line, Pulled
+# STATUS: APPLIED to the book on 2026-10-24, with these changes made by Lucas after the proposal: the names were SHUFFLED and six were added (Nick, Will, Philip, Peter, Paul, Victor);
+# examples and figures that explain the same thing keep one name; a one-line note in Pushed ("The 45 degree edge counts for Pushed. It doesn't for Pulled, whose cone is narrower");
+# the captions of figures side by side start on the same line. The names table below is the PROPOSAL: the final ledger is in rules-src/README.md ("Names in the examples").
+# Same legend as before: [REV] my wording of your entry, [NEW] not in your notes, [DECIDED] you decided it, [FOUNDRY] a note for the system.
+#
+# Contents: 1. Decisions   2. Names   3. "Y" in the diagrams   4. Corners   5. Straight Line   6. Pulled   7. Foundry notes
+
+#region 1. DECISIONS RECORDED
+
+ 1. Corners: a corner is solid when ANYTHING solid reaches the corner point (a wall that ends there, a pillar that occupies just the corner, an
+    object that fills a square). A small object in the middle of a square doesn't reach the corner, so it doesn't block. (Same rule as before; the
+    diagram was wrong and the wording is clearer.)
+ 2. Straight Line: the tie rule is stated (when the line passes exactly between two squares, the moving creature chooses), and example 2 puts the
+    enemy on H4 so that it has no tie.
+ 3. Pulled gets the strict cone (the 45 degree edge doesn't count) and the stop next to the origin. Pushed stays as it is (the edge counts).
+ 4. One legend for the Straight Line figures: blue = squares passed, green = where the movement ends, red = not legal.
+ 5. Names: assigned by order of appearance; each name is used once before any repeats; different combinations. "You" is "Y" in diagrams.
+
+#endregion
+
+
+#region 2. NAMES (the table you asked to see first)
+
+ In the book today: Chris, Drak, Jared, John, Lonny, Nari, Zack (in your list) and Kai (not in it). Never used: Dave, Wes, Steven, Mark, Jacob, Krysta, Lana.
+ Eleven examples name someone. Order of appearance, 14 names, so the first repeat can only come at the 14th name: that is the last example.
+
+ | # | Where (file:line)                     | Now                  | New                   | What changes in the text                                   |
+ |---|---------------------------------------|----------------------|-----------------------|------------------------------------------------------------|
+ | 1 | Several Targets (Rules Language)      | Nari, Lonny          | **Dave, Wes**         | "You attack Dave and Wes... 1 Boon against Wes but not against Dave... Wes's DC" |
+ | 2 | Initiative, the first order; Turns and Rounds; Rounds (02:18, 37, 228; one scenario) | Drak, Nari, Zack | Drak, Nari, Zack (kept) | nothing |
+ | 3 | Initiative, three-way (02:20)         | Lonny, Chris         | Lonny, Chris (kept)   | nothing                                                    |
+ | 4 | Reposition example (03:169)           | Kai                  | **Steven**            | "Steven stands between you and a goblin... through Steven's square..."; the figure: token S |
+ | 5 | Flanking examples 1, 4, 5 and the legend (03:266-278) | Nari, Kai | **Mark, Jacob** (Nari -> Mark, Kai -> Jacob) | Example 4: "She threatens it, so she flanks" -> "He threatens it, so he flanks"; the figures: tokens M and J; the other allies (Mara, Rin, Tor in the figures, never in the text) become numbered tokens 3, 4, 5, as in "a third ally", "a fourth ally" |
+ | 6 | Senses, the Goblin with Dark Sight (03:406) and the Snake "in the same Darkness" (03:408): one scene | Nari | **Krysta** (she/her, as the text already says) | nothing but the name |
+ | 7 | Senses, the Cave Worm (03:410)        | Nari                 | **Lana** (she/her, as the text says) | nothing but the name                                      |
+ | 8 | Senses, the fight in Darkness (03:412)| Nari                 | **John**              | nothing but the name (no pronouns in the text)            |
+ | 9 | Immobilized (08:35)                   | Jared, John          | **Jared, Dave**       | John is used in #8; Jared is the last name never used; Dave is the first repeat. "Jared is Immobilized and his ally, Dave, has a feature... If Dave attempts to use this on Jared..." |
+
+ Combinations: Dave+Wes, Drak+Nari+Zack, Lonny+Chris, Mark+Jacob, Jared+Dave: none repeats. Names used once each: Dave, Wes, Drak, Nari, Zack, Lonny, Chris, Steven,
+ Mark, Jacob, Krysta, Lana, John, Jared (14), and then Dave once more (#9). Pronouns: all the men he/him, Krysta and Lana she/her; the only text that changes pronouns is Flanking example 4.
+ [Q] #6 and #7 are consecutive examples of one scene ("the same Darkness"): I gave the Goblin/Snake pair one name (Krysta). If you want a different name for each of the four Senses
+     examples, tell me; then the Snake example gets Lana and the Cave Worm gets John, and the last one gets Jared (and Immobilized gets Dave and Mark). [default: as in the table]
+
+[NEW] Keep it honest later: the README gets the list (names, pronouns, the order of use), and the builder gets a check that warns about any name that is not in the list.
+
+#endregion
+
+
+#region 3. "Y" FOR YOU IN THE DIAGRAMS
+
+[CHG] "O" (the origin, when it is you) -> "Y": Pushed (2 figures), Pulled (2), Slid, Reposition. "K" (you) -> "Y": Corners, Straight Line, Difficult Terrain (the Advance figure), the Engaged figure.
+   The Engaged figure's caption: "Kai is Engaged with the goblin next to him..." -> "You are Engaged with the goblin next to you, even diagonally; the goblin 2 squares away is not adjacent".
+   The captions that say "O": "(O pulls G)", "O slides G...", "the Line of Effect from O" -> "you" / "Y". A Point of Origin that is not a creature (the area figures) keeps its own mark.
+   One more figure uses "K" for you (the one after the Engaged figure): I'll check which and change it with the others.
+
+#endregion
+
+
+#region 4. CORNERS
+
+[REV] your note + the text (changed: "anything solid"; a pillar and a small object are named):
+   "### Corners
+   You can't cut solid corners when you move. Moving diagonally takes you through the corner point where four squares meet. If a wall or anything solid occupies that point,
+   the corner is solid and you can't move diagonally past it: you must go around. A wall that ends exactly at the corner counts, and so does a pillar that stands on the
+   corner or an object that fills a square beside your path, because each of them reaches the point. A small object in the middle of a square doesn't reach the corner, so
+   it doesn't block the diagonal. This applies to every movement of yours (Advance, Evade, Charge) and to Forced Movement and Reposition. A creature that occupies several
+   squares follows the rule with each square it occupies.
+   (the second paragraph, about creatures, is unchanged)"
+[REV] Glossary, Corners: "You can't cut a solid corner: anything solid, such as a wall, a pillar or an object that fills a square, that reaches the corner point where four squares meet."
+[CHG] The Corners figure: five panels (see the image): 1 a wall that ends at the corner (blocked), 2 an object that fills the whole square, with square corners (blocked), 3 a pillar on the corner
+   (blocked), 4 a small object in the middle of a square (allowed), 5 two creatures (allowed, Difficult Terrain). The round object is gone; "K" is "Y".
+
+#endregion
+
+
+#region 5. STRAIGHT LINE (your heading says Ch.2: it is Chapter 3)
+
+[REV] your [CHG] of the rule (changed: "the moving creature's square" so it works for any creature; one sentence for the tie; one sentence for where the movement stops, because the sentence you
+   deleted was the only place that rule lived; the Charge parenthetical now says what blocks):
+   "## Straight Line
+   When an Action, effect or rule moves a creature (yourself included) in a straight line, like the Charge Action, draw a line from the center of the creature's square to the
+   center of the destination square. The creature moves one square at a time along that line, even if the token's path on the grid isn't exactly straight. If the line passes
+   exactly between two squares, the creature that moves chooses which one it uses. If a square on the line isn't a legal move (for Charge: Difficult Terrain, a creature in the
+   way, or a solid corner), the movement stops in the last legal square before it."
+[REV] The text before the figures (replaces "The green ring is where the Charge ends..."):
+   "In the figures, Y is you. Blue squares are the squares the token passes, the green square is where it ends, and red squares are not legal. The line is what counts: the path of the
+   token on the grid does not have to be exactly straight, because a token moves from square to square."
+[REV] Figure 1 (a clear line; Y on A1; blue B2, C2, D3, E3, F4; green G4):
+   "A straight line from the center of your square (A1) to the center of another square (G4). The colored squares are the movement the token would make using an Action that
+   requires a straight line, such as Charge."
+[REV] Figure 2 (Y on A1, E on H4, X on E3; blue B1, C2; green D2; red E3, F3, G4, H4):
+   "A straight line stops on the last legal square. If you (Y, in A1) attempt to Charge toward the creature (E) in H4, and there is an obstacle (X, such as a creature or Difficult
+   Terrain) in the way, in square E3, you stop in square D2, since that was the last legal square on a straight line from A1 to H4."
+[CHG] Why H4 and not I4: your squares for A1 -> I4 are right (they are what Foundry draws), but in the I4 line the E column lies exactly between E2 and E3, and from the other side
+   (I4 toward A1) the line goes through E2, so the obstacle would not be on it. On A1 -> H4 no column is a tie: B1, C2, D2, E3, F3, G4, H4, the same stop square D2.
+   Figure 1 has three ties (B, D, F): that is what the tie sentence is for.
+[DEL] the third figure (Difficult Terrain stops it) and its caption, and the old green-ring sentence. (done as you said)
+[FIX] typos in your text: "creautre" (twice), "in area E3" -> "in square E3", "The colored squares is" -> "are", "would making" -> "would make".
+
+#endregion
+
+
+#region 6. PULLED
+
+[CHG] The two Pulled figures were wrong, as you said: C5 and E5 are next to you from C4 and E4 already, and the squares were not a cone. The cause: the cone counted its 45 degree edge,
+   and "closer" is measured in a straight line, so a square next to you looked closer than another square next to you. The fix is three things: a cone under 45 degrees with its apex on the
+   creature; each square closer than the last; and a creature next to the origin stops.
+[REV] Pulled (the paragraph "That cone is every step going in a direction within 45 degrees..." is replaced; "narrowing as it gets closer" was my mistake: a cone from the creature widens toward the origin):
+   "### Pulled
+   Being **Pulled** is a Forced Movement, the opposite of Pushed. Pulled has a value: up to that many squares you are moved. The origin chooses the destination. Each square you are
+   pulled into must be closer to the origin than the previous one (measured in a straight line between the centers of the squares), and the path must stay inside a cone that has its apex
+   on you and points toward the origin.
+
+   That cone is every direction less than 45 degrees from the straight line from you to the origin: the 45 degree edge is not part of it. Each square counts as 1 toward the value, even
+   when it is diagonal. A creature that is next to the origin can't be pulled any closer, so it stops there.
+
+   You can't be pulled into the origin's square. The origin can end the movement next to it, or choose its own square as the destination: then Collision applies, with the origin as the
+   creature in the way, and both take damage for the unused squares.
+
+   Example: A goblin stands directly above you, 3 squares away, and you use Pulled 3 on them. They can end in any square in the cone shown below: straight toward you after 1 step, or
+   any of the 3 squares next to you after 2 steps. Then they stop. You can leave them there, with no damage, or choose your own square as the destination: the 3rd square is then unused,
+   Collision applies and you and the goblin take 1 damage each."
+[CHG] The figures (see the image; "O" is "Y"):
+   Straight: the goblin on D2, you on D5: D3 (1 step), C4, D4, E4 (2 steps). That is your list.
+   Diagonal: the goblin on D2, you on A5: C3 (1), B3, B4, C4 (2), A3, A4, B5, C5 (3): a cone.
+[DECIDED] Pushed does not change: its cone still counts the 45 degree edge (3, 5, 7 squares wide). So the two differ at the edge; the "four movements side by side" table says "cone" for both, which stays true.
+   [Q] One line in the Pushed section to say it? e.g. "Pulled's cone is narrower: its 45 degree edge doesn't count." [default: no]
+
+#endregion
+
+
+#region 7. FOUNDRY NOTES (to the backlog)
+
+ - Pulled (F2): the region is the cone (< 45 degrees from the line to the origin, apex on the creature), each step closer in a straight line, stop when next to the origin; the result for the two
+   book figures is the test (straight: D3 / C4 D4 E4; diagonal: C3 / B3 B4 C4 / A3 A4 B5 C5). Pushed's code (inclusive 45 degrees, per step) stays.
+ - Straight line (Charge): Foundry's cellLine is a Bresenham walk, so a tie always falls the same way and the line is not the same in both directions. The book says the moving creature chooses at a
+   tie: let the player pick at a tie (or draw both choices) when it matters; the legal-square check is the same.
+ - Corners (F4): "anything solid reaches the corner point": a wall that ends or passes through the point, a pillar (a small solid Tile or Region on the corner), an object that fills a square (walls around
+   a square, or a Tile flagged solid); a small object in the middle of a square is ignored.
+ - The Charge preview could color the squares as the figures do (blue passed, green end, red not legal).
+
+#endregion

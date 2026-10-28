@@ -1,0 +1,13 @@
+needs a free hand: Reload true | Fists true | Smite false
+Release choices: Hold Crossbow with one hand | Drop Crossbow
+enforced, picks one hand -> true | asked: Elf Archer doesn't have a free hand for Reload.Use the Release Action first (0 AP)? Pick what to let go of: | buttons: Hold Crossbow with one hand, Drop Crossbow, Cancel | crossbow hands now 1
+one hand free now: no question -> true true
+enforced, Cancel -> false
+enforced, Drop -> true | wielded false
+not enforced -> true | no dialog true
+Smite with both hands full -> true
+chat: Release (0 AP): Elf Archer holds Crossbow with one hand.
+chat: Release (0 AP): Elf Archer drops Crossbow.
+warn: Elf Archer has no free hand for Reload (the hand requirement isn't enforced: it is used anyway).
+useAction asks first: true | requirements don't block twice: true | setting registered: true
+the 8px: the window itself had it: true

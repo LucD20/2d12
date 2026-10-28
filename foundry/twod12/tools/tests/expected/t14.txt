@@ -1,0 +1,2 @@
+same turn: false 1
+next round end of origin turn: deleted = false

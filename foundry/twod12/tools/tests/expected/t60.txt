@@ -1,0 +1,4 @@
+OA: Opportunity Attack Talent 1 You punish those who move near you. Grants 1R Opportunity Attack Modifies Weapon Technique (out of your turn) Critical: You disrupt the triggering Action before it happens.
+   plain title (no card color): true | divider: false
+Lesser Blessing: Lesser Blessing Talent 1 Divine Power Pick one blessing related to a god you follow. Choose 1 1AP Rimebrand (Cold)
+Divine Connection: Divine Connection Paladin Feature 1 Your bond with your god. Talent slots 2

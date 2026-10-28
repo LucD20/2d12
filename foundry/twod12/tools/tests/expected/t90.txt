@@ -1,0 +1,71 @@
+--- the scene's light
+(a move that goes nowhere enters nothing)                          dark 0, extra 0
+Bright scene, 3 squares                                            dark 0, extra 0
+Darkness scene, 3 squares (the 3 squares it enters)                dark 3, extra 3
+Darkness scene, 1 square                                           dark 1, extra 1
+Darkness scene, with Dark Sight                                    dark 0, extra 0
+Darkness scene, with only Dim-light Sight                          dark 3, extra 3
+Dim scene (light 0.5): Dim is not Darkness                         dark 0, extra 0
+--- light sources and magical darkness
+A torch at square 1: bright to 1.2 squares, dim to 2.6 (the dark scene) dark 2, extra 2
+Magical darkness over squares 1-2 in a bright scene (the path is 5 long) dark 2, extra 2
+... and Dark Sight sees through it                                 dark 0, extra 0
+--- with creatures
+Dark scene, an enemy on square 2 (its square is Difficult once, not twice) dark 4, extra 4, through Orc
+Dark scene, only friends on the way (willing)                      dark 4, extra 4
+--- a Large creature (2x2)
+Dark scene, a 2x2 creature moves 3 squares                         dark 3, extra 3
+Bright scene, the same move                                        dark 0, extra 0
+--- if the light lookup fails, the enemy squares still count
+the grid fails to give a square's center: no darkness, but the enemy still counts dark 0, extra 1, through Orc
+
+--- the cost function (the ruler)
+before: false
+installed: ["actions.walk.getCostFunction","actions.fly.getCostFunction","actions.crawl.getCostFunction","TokenDocument#getMovementCostFunction"] | counts Difficult Terrain: true | the teleport action is left alone: true
+bright scene, empty square: 1
+the other shape, (cost, from, to, distance): bright 1 | an action with no cost function of its own: 1
+... in the dark: 2 | the crawl action: 2 | a base cost of 3 over a distance of 1 stays 3: 3 | distance 5, base 5: 10
+dark scene: 2 | 5-foot squares: 10 | given the document instead of the token: 2 | with Dark Sight: 1 | no creature: 1
+--- unwilling creatures (the ruler counts them too)
+a square with an enemy: 2 (as an action: 2) | with a friend (willing): 1 | a hidden token: 1 | an empty square next to it: 1
+an enemy in the dark: counts double, not four times: 2
+a 2x2 creature whose new squares include the enemy's: 2 (its squares are at 0,1 and 0,2: the Orc is on 0,2) | one step away from it: 1
+installing again does not wrap twice: ["actions.walk.getCostFunction","actions.fly.getCostFunction","actions.crawl.getCostFunction","TokenDocument#getMovementCostFunction"] | an enemy square still costs 2
+a base cost that is already double stays double: 2
+through a TokenDocument method: ["TokenDocument#getMovementCostFunction"] | a dark step costs 2
+a method that doesn't return a function is left alone: 7 [Function (anonymous)]
+--- a setting that Foundry has locked (as in your Foundry: the property is read-only)
+the property is read-only but can be defined               → {"actions.walk.getCostFunction":"defined","actions.fly.getCostFunction":"assigned"} | a dark step costs 2 | counts: true 
+the action is frozen (the other action is not)             → {"actions.walk.getCostFunction":"replaced the action","actions.fly.getCostFunction":"assigned"} | a dark step costs 2 | counts: true 
+the action and the actions are frozen                      → {"actions.walk.getCostFunction":"replaced the actions"} | a dark step costs 2 | counts: true 
+the whole movement settings are frozen                     → {"actions.walk.getCostFunction":"replaced the movement settings"} | a dark step costs 2 | counts: true 
+everything frozen, even CONFIG.Token:                      → installed [] | counts: false | failed: {"actions.walk.getCostFunction":"the setting is locked in every way tried"} | hints: {"movementKeys":["actions"],"actionKeys":["label","getCostFunction"],"walkFrozen":true,"actionsFrozen":true,"movementFrozen":true,"TokenDocument":[],"Token":[],"TokenRuler":[],"rulerClass":null}
+one action locked in the way above, one fine: both attach: {"actions.walk.getCostFunction":"replaced the action","actions.crawl.getCostFunction":"assigned"}
+--- Foundry with nothing to attach to
+installed: ["actions.walk.getCostFunction"] | counts: true | what it reports for the developer: {}
+the console line is plain text to copy: undefined | notice: info: Difficult Terrain is part of Foundry's movement cost (actions.wa...
+squares added to the measured cost: {"the ruler counts them":0,"the ruler counts them, Foundry found terrain":0,"not counted, Foundry found terrain":0,"not counted, none found":5}
+
+--- Release
+the Basic Action: Release | traits self | cost label: 0AP | text: You drop an object in your square, or let go of an object you hold with one hand... | other costs: 1AP 1/2/3AP
+the choices offered: ["Hold Greatsword with one hand","Drop Greatsword","Drop Dagger"]
+hold the Greatsword with one hand → Greatsword: 1 hand(s), Dagger: held | info: Kai holds Greatsword with one hand.
+then the choices: ["Drop Greatsword","Drop Dagger"] (the Bow, which is not held, is never offered)
+drop the Dagger → Greatsword: 1 hand(s), Dagger: not held | info: Kai drops Dagger.
+closing the dialog changes nothing → Greatsword: 1 hand(s), Dagger: not held
+nothing held: info: Kai holds no weapon. (Dropping another object needs no roll.)
+no token: warn: Select your token first.
+
+--- Set the date
+the fields now: {"year":1493,"month":4,"monthName":"Tarsakh","day":7,"time":"14:05:09","months":12}
+the same date gives the same time back: true
+1 Flamerule 1493 at 08:30: true | a year later: true | a day earlier: true
+refused: {"year":1493,"month":1,"day":31,"time":"10:00"} → That month has only 30 days.
+refused: {"year":1493,"month":1,"day":0,"time":"10:00"} → The day must be 1 or more.
+refused: {"year":1493,"month":1,"day":5,"time":"25:00"} → That time doesn't exist (hours 0-23, minutes and seconds 0-59).
+refused: {"year":1493,"month":1,"day":5,"time":"soon"} → The time must look like 14:30 or 14:30:15.
+refused: {"year":"abc","month":1,"day":5,"time":"10:00"} → Choose a year and a month.
+refused: {"year":1493,"month":1,"day":"x","time":"10:00"} → The day must be 1 or more.
+with no calendar: {"year":null,"day":3,"time":"03:07:05"} | Day 5 at 06:00 → true
+a calendar that can't convert: falls back to days
+a calendar without componentsToTime: This calendar can't turn a date into a time. Use the buttons to move the clock.

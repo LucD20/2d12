@@ -1,0 +1,29 @@
+--- in the dark, what is heard
+in combat, 3 squares away                                      Hidden (Hearing)
+in combat, 10 squares away                                     Hidden (Hearing)
+in combat, 11 squares away                                     Unsensed (no sense reaches it)
+7 squares diagonally (counts 7 + 3 = 10)                       Hidden (Hearing)
+8 squares diagonally (counts 8 + 4 = 12)                       Unsensed (no sense reaches it)
+not in the combat                                              Unsensed (no sense reaches it)
+in the combat, defeated                                        Unsensed (no sense reaches it)
+in combat, Unsensed (a creature that hides)                    Unsensed (no sense reaches it)
+in combat, behind a wall (no Line of Effect)                   Hidden (Hearing)
+the combat has not started                                     Unsensed (no sense reaches it)
+--- the GM's statuses
+not in combat, the GM's Hidden status                          Hidden (the GM's Hidden status)
+not in combat, Unsensed status                                 Unsensed (no sense reaches it)
+--- the range of the listener
+a keen listener (20), a target 15 squares away                 Hidden (Hearing)
+a deaf listener (0), a target next to it                       Unsensed (no sense reaches it)
+a short listener (3), a target 4 squares away                  Unsensed (no sense reaches it)
+a listener with a bad value: 10 as before, 10 away             Hidden (Hearing)
+ranges read: 10, 10, 20, 0, 10, 10 (10, 10, 20, 0, 10, 10)
+--- sight still wins
+in daylight, 20 squares away and not in combat                 Clear (Sight, Bright light)
+--- the rule without two tokens
+no listener: true | an Unsensed target: false | makes noise: true false false false (an Unsensed creature makes none)
+an old `hiding` status does nothing any more: true
+--- the detection mode (the ripple on the canvas)
+in combat within 10: true | in combat, 11 away: false | not in combat: false | Unsensed: false | defeated: false
+the GM's Hidden status, out of combat, far away: true | the observer itself: false | a blind observer: false
+a keen observer, 15 away: true | a deaf one, next to it: false

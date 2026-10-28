@@ -1,0 +1,28 @@
+--- Tags
+slugs: ["undead","big-dragon",""]
+an older creature stored text: ["undead","beast","big-dragon"] | nothing: [] [] | a list: ["unholy","holy-light"]
+the starting list (nothing in the setting): Aberration, Beast, Celestial, Construct, Dragon, Elemental, Fey, Fiend, Giant, Holy, Humanoid, Ooze, Plant, Profane, Undead, Unholy
+the world's list: {"unholy":"Unholy","holy":"Holy","big-dragon":"Big Dragon"}
+the setting is not registered: the starting list has 16 tags
+hasTag: true true false | no tags: false false | a plain list: true
+the data model: a set of tags: true | migrates text: true | conditions on an effect: true | a valued condition: true
+the NPC sheet: a multi-select of the tags: true
+--- who moves when a movement button on a card is clicked
+Evade, the Action targets an enemy (the case that was refused)     -> Kai
+Advance, the Action targets an enemy, Kai is selected              -> Kai
+Charge, two enemy targets                                          -> Kai
+Evade, the Action targets an enemy, the enemy is selected          -> Kai
+Evade, the Action targets an ally (a buff)                         -> Nari
+Evade, an ally and an enemy are targets                            -> Nari
+Evade, two allies, one of them selected                            -> Nari
+Evade, a neutral target                                            -> Kai
+Evade on a Self Action                                             -> Kai
+Evade with |traits:self and an enemy target                        -> Kai
+Evade, no targets, nobody selected                                 -> Kai
+Evade, no targets, Nari selected                                   -> Kai
+Evade, from the Setup (the token is given)                         -> Kai
+--- forced movement still moves the target
+Pushed, an enemy target                                            -> Goblin
+Pushed, two targets, one selected                                  -> Orc
+Reposition, an ally target                                         -> Nari
+Pushed on a Self Action                                            -> Kai

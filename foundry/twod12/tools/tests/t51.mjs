@@ -1,0 +1,21 @@
+// Run with: node tools/tests/run.mjs (or node tools/tests/t51.mjs)
+const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+globalThis.Combat = class {}; globalThis.CONFIG = {};
+globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: {} } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
+globalThis.Hooks = { on() {} };
+const T = (...t) => new Set(t);
+const turn = { current: "c1" };
+globalThis.game = { settings: { get: () => true }, combat: { started: true, get combatant() { return { id: turn.current }; }, combatants: [{ id: "c1", actor: null, tokenId: "t1", actorId: "A" }, { id: "c2", tokenId: "t2", actorId: "B" }] } };
+const actors = {}; const mk = (id, cid, mods) => { const a = { id, type: "character", isToken: false, itemTypes: { talent: [{ name: "Opportunity Attack", system: { modifiers: mods } }] } }; game.combat.combatants.find(c => c.id === cid).actor = a; return a; };
+const mods = [{ spec: "category:Weapon Technique", when: "outOfTurn", critical: "You disrupt the triggering Action before it happens.", effects: "" }];
+const fighter = mk("A", "c1", mods), other = mk("B", "c2", []);
+const act = ac => import(ROOT + "module/actions.mjs");
+const A = await act();
+const sweep = { name: "Reaping Sweep", system: { category: "Weapon Technique", traits: T("strike", "melee", "weapon") } };
+const attack = { name: "Weapon Attack", system: { category: "Basic Action", traits: T("strike", "weapon") } };
+turn.current = "c1"; console.log("on its own turn: out of turn?", A.isOutOfTurn(fighter), "| mods for Reaping Sweep:", A.talentModsFor(fighter, sweep).length);
+turn.current = "c2"; console.log("on another creature's turn: out of turn?", A.isOutOfTurn(fighter), "| mods for Reaping Sweep:", A.talentModsFor(fighter, sweep).length, "| for Weapon Attack:", A.talentModsFor(fighter, attack).length);
+const pv = await import(ROOT + "module/preview.mjs");
+const v = pv.applyTalentMods({ ap: 1, critical: "", effects: "Bright light." }, A.talentModsFor(fighter, sweep));
+console.log("version with the Talent:", JSON.stringify({ critical: v.critical, effects: v.effects }), "| unchanged without:", JSON.stringify(pv.applyTalentMods({ critical: "x" }, [])));
+globalThis.game.combat.started = false; console.log("no combat: out of turn?", A.isOutOfTurn(fighter));

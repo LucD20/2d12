@@ -1,0 +1,22 @@
+// Run with: node tools/tests/run.mjs (or node tools/tests/t72.mjs)
+const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+const GS = 100;
+globalThis.Combat = class {}; globalThis.CONFIG = {}; globalThis.Hooks = { on() {} }; globalThis.game = { settings: { get: () => true } };
+globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: {} } } }, utils: { debounce: f => f, deepClone: o => JSON.parse(JSON.stringify(o)) } };
+const tokens = [];
+globalThis.canvas = { grid: { size: GS, getOffset: ({ x, y }) => ({ i: Math.floor(y / GS), j: Math.floor(x / GS) }), getCenterPoint: ({ i, j }) => ({ x: j * GS + GS / 2, y: i * GS + GS / 2 }) }, tokens: { placeables: tokens } };
+const { creaturesOnPath } = await import(ROOT + "module/move.mjs");
+const tok = (id, name, i, j, disp, w = 1) => ({ name, actor: {}, document: { id, x: j * GS, y: i * GS, width: w, height: w, disposition: disp, hidden: false } });
+const me = { id: "me", x: 0, y: 0, width: 1, height: 1, disposition: 1 };
+const P = (i, j) => ({ x: j * GS, y: i * GS });
+tokens.push(tok("g", "Goblin", 0, 2, -1), tok("a", "Ally", 0, 4, 1), tok("o", "Ogre", 2, 2, -1, 2));
+const show = (label, pts) => { const r = creaturesOnPath(me, pts); console.log(label.padEnd(52), JSON.stringify(r)); };
+show("straight through the Goblin (0,0 → 0,3)", [P(0, 0), P(0, 3)]);
+show("through the Ally only (0,3 → 0,5)", [P(0, 3), P(0, 5)]);
+show("ending on the Goblin (0,0 → 0,2)", [P(0, 0), P(0, 2)]);
+show("ending on the Ally (0,0 → 0,4), through the Goblin", [P(0, 0), P(0, 4)]);
+show("around the Goblin with waypoints", [P(0, 0), P(1, 1), P(1, 3), P(0, 3)]);
+show("diagonal past corners (1,0 → 3,... no)", [P(1, 0), P(1, 1)]);
+show("through the 2x2 Ogre (2,0 → 2,5)", [P(2, 0), P(2, 5)]);
+show("diagonal between Goblin(0,2) and nothing (1,1 → 0,2)? ends on Goblin", [P(1, 1), P(0, 2)]);
+show("diagonal squeeze: no corner clipping (1,1 → 3,3 not hitting ogre?)", [P(1, 4), P(4, 1)]);

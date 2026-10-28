@@ -1,0 +1,7 @@
+passives found: Aegis (from Escalation 0), Divine Vigil (from Escalation 2), Hallowed Stance (from Escalation 2), Sacred Oath (from Escalation 0), Sacred Oath (from Escalation 3)
+Escalation 0: boons on a Save from Aegis | Armor DC against a Weapon Action: 11
+Escalation 1: boons on a Save from Aegis | Armor DC against a Weapon Action: 11
+Escalation 2: boons on a Save from Aegis + Divine Vigil | Armor DC against a Weapon Action: 12
+Escalation 3: boons on a Save from Aegis + Divine Vigil | Armor DC against a Weapon Action: 12
+one Feature, two moments (Sacred Oath: a boon always, Ward +1 only at Escalation 3): E0: boon on a Check yes, Ward DC 11 | E2: boon on a Check yes, Ward DC 11 | E3: boon on a Check yes, Ward DC 12
+Features and Talents have a passive: true | each setting has its own It works: true | the settings are one shared part: true | the Effect no longer offers an Escalation minimum: true

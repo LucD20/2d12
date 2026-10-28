@@ -1,0 +1,11 @@
+Volley: Instinct Save DC 14 | T1 1d10[body,pierce], 3[body,pierce], "@Condition[hindered|eot]" | T2 1d8[body,pierce], 3[body,pierce] | T3 1d6[body,pierce]
+  parsed T1: {"damage":[{"formula":"1d10","pool":"B","sub":"Pi"},{"formula":"3","pool":"B","sub":"Pi"}],"texts":["@Condition[hindered|eot]"],"uuids":[]}
+Rain of Arrows: Instinct Save DC 14 | T1 1d8[body,pierce], 3[body,pierce] | T2 1d6[body,pierce], 3[body,pierce] | T3 0
+  parsed T1: {"damage":[{"formula":"1d8","pool":"B","sub":"Pi"},{"formula":"3","pool":"B","sub":"Pi"}],"texts":[],"uuids":[]}
+area text: Volley {"shape":"emanation","distance":2,"targets":"all","self":false,"keep":false,"rounds":0,"at":"","withinRange":"normal","ht":""} | Rain {"shape":"emanation","distance":3,"targets":"enemies","self":false,"keep":true,"rounds":2,"at":"","withinRange":"maximum","ht":"entering+turn"}
+you don't roll a Save Action: true | a Save card for the creatures in the area: true | no automatic [Mod] on Tier 2-3: true
+Save card: posted with nobody in the area true | Vulnerable banes and Cover boons per target true | start in the Save dialog true
+[HT] repeats the Save: true | no double Save when it appears: true | the area knows the Save: true
+Region behavior: registered true | declared {"difficultTerrain":{},"hazard":{}} | the area has it true | named after the Action true | triggers read it true
+within your weapon's range: true
+Tiers rolled when the card appears: true | shown on the card: true | a creature takes its Tier's roll: true

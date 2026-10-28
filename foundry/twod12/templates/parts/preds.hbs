@@ -1,0 +1,5 @@
+{{!-- The trait chips of a setting (which rolls it applies to): the rows with traits, and the links to open the others. --}}
+        {{#each preds}}
+        <div class="fxd-pred"><span class="fxd-lead">{{lead}}</span>{{#if every}}<span class="fxd-chip fxd-every" data-tooltip="No traits chosen: it applies to every roll. Add a trait to narrow it.">{{every}}</span>{{/if}}{{#each chips}}<span class="fxd-chip"><span class="dot" style="background:{{color}}"></span>{{label}}<button type="button" data-prem="{{../../i}}" data-field="{{../field}}" data-key="{{key}}" aria-label="Remove {{label}}">&#10005;</button></span>{{/each}}<select class="fxd-plus" data-padd="{{../i}}" data-field="{{field}}" aria-label="Add a trait"><option value="">+</option>{{#each options}}<option value="{{key}}">{{label}}</option>{{/each}}</select></div>
+        {{/each}}
+        {{#if hidden.length}}<div class="fxd-links">{{#each hidden}}<a data-pshow="{{../i}}" data-field="{{field}}">+ {{label}}…</a>{{/each}}</div>{{/if}}

@@ -1,0 +1,18 @@
+groups: Greatsword | Greatsword | keys: great-sword 1-long-bow
+entry on getting the weapon: {"greatsword":{"name":"Greatsword","value":0}} | Technique: {"locked":true,"group":"Greatsword","value":0}
+Tier 2, or not a Weapon roll: nothing: 0
+several targets with two Tier 3: +1 once: 1
+the +1 Greatsword counts for the Greatsword: 2
+at 3: {"locked":false,"group":"Greatsword","value":3} | posted:  Drak: Greatsword Mastery 3: Weapon Technique unlocked!
+rows: [{"name":"Greatsword","value":3,"owned":["Greatsword","+1 Greatsword"],"next":8,"nextText":"(to be decided)","pct":0,"steps":"*3 8 15"}]
+NPCs have no Mastery: {"locked":false} | other Actions are never locked: false
+locked Techniques: faded on the sheet true | refused when used true | gained after the roll true
+Mastery tab true | weapon's Mastery group field true
+old weapon shows: [["Crossbow",0]]
+after +1 by hand: {"crossbow":{"name":"Crossbow","value":1}}
+Mastery 2: locked
+Mastery 3, not in hand: unwielded
+Mastery 3, in hand: ok | an NPC: ok
+shrunk: true | what each step grants: 3: Reaping Sweep | 8: to be decided | 15: to be decided
+only the GM changes Mastery by hand: true | no trash: shrink instead true
+Actions tab: locked hidden, toggle hides the ones not in hand: true | greyed with why: true

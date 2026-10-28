@@ -1,0 +1,53 @@
+// Run with: node tools/tests/run.mjs (or node tools/tests/t93.mjs)
+const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+// Hearing: you perceive creatures that make noise within 10 squares as Hidden, even through walls. Creatures in combat make noise, unless they hide (the GM puts the Unsensed status on them).
+const GS = 100, settings = { lightDimBelow: 0.7, lightDarkBelow: 0.4 };
+const combatants = [];
+globalThis.game = { settings: { get: (s, k) => settings[k] }, combat: { started: true, combatants: { find: f => combatants.find(f) } } };
+globalThis.CONFIG = { specialStatusEffects: { BLIND: "blind" }, Canvas: { detectionModes: {} } };
+class FakeMode { constructor(o) { Object.assign(this, o); } static DETECTION_TYPES = { SOUND: 1 }; }
+globalThis.foundry = { canvas: { perception: { DetectionMode: FakeMode }, rendering: { filters: { OutlineOverlayFilter: { create: () => ({}) } } } } };
+globalThis.canvas = { grid: { size: GS }, environment: { darknessLevel: 1 }, effects: { lightSources: [], darknessSources: [] } };
+const S = await import(ROOT + "module/senses.mjs");
+let id = 0;
+const tok = (col, row, { statuses = [], senses = {}, fight = true, defeated = false } = {}) => {
+  const tid = "t" + ++id; if (fight) combatants.push({ tokenId: tid, isDefeated: defeated });
+  return { id: tid, name: tid, document: { id: tid, x: col * GS, y: row * GS, width: 1, height: 1, elevation: 0, hasStatusEffect: () => false }, actor: { name: tid, statuses: new Set(statuses), system: { senses } } };
+};
+const you = tok(0, 0);
+const show = (label, target, opts, observer = you) => { const p = S.perceive(observer, target, opts); console.log(label.padEnd(62), `${p.name} (${p.why})`); };
+console.log("--- in the dark, what is heard");
+show("in combat, 3 squares away", tok(3, 0));
+show("in combat, 10 squares away", tok(10, 0));
+show("in combat, 11 squares away", tok(11, 0));
+show("7 squares diagonally (counts 7 + 3 = 10)", tok(7, 7));
+show("8 squares diagonally (counts 8 + 4 = 12)", tok(8, 8));
+show("not in the combat", tok(2, 0, { fight: false }));
+show("in the combat, defeated", tok(2, 0, { defeated: true }));
+show("in combat, Unsensed (a creature that hides)", tok(2, 0, { statuses: ["unsensed"] }));
+show("in combat, behind a wall (no Line of Effect)", tok(4, 0), { loe: false });
+game.combat.started = false; show("the combat has not started", tok(2, 0)); game.combat.started = true;
+console.log("--- the GM's statuses");
+show("not in combat, the GM's Hidden status", tok(2, 0, { fight: false, statuses: ["hidden"] }));
+show("not in combat, Unsensed status", tok(2, 0, { fight: false, statuses: ["unsensed"] }));
+console.log("--- the range of the listener");
+const keen = tok(0, 1, { senses: { hearing: 20 } }), deaf = tok(0, 2, { senses: { hearing: 0 } }), odd = tok(0, 3, { senses: { hearing: "x" } }), short = tok(0, 4, { senses: { hearing: 3 } });
+show("a keen listener (20), a target 15 squares away", tok(15, 1), {}, keen);
+show("a deaf listener (0), a target next to it", tok(1, 2), {}, deaf);
+show("a short listener (3), a target 4 squares away", tok(4, 4), {}, short);
+show("a listener with a bad value: 10 as before, 10 away", tok(10, 3), {}, odd);
+console.log("ranges read:", [undefined, {}, { system: { senses: { hearing: 20 } } }, { system: { senses: { hearing: 0 } } }, { system: { senses: { hearing: -4 } } }, { system: { senses: { hearing: "x" } } }].map(a => S.hearingRange(a)).join(", "), "(10, 10, 20, 0, 10, 10)");
+console.log("--- sight still wins");
+settings.lightDimBelow = 0.7; canvas.environment.darknessLevel = 0;
+show("in daylight, 20 squares away and not in combat", tok(20, 0, { fight: false }));
+canvas.environment.darknessLevel = 1;
+console.log("--- the rule without two tokens");
+console.log("no listener:", S.hears(null, tok(3, 0)), "| an Unsensed target:", S.hears(null, tok(3, 0, { statuses: ["unsensed"] })), "| makes noise:", S.makesNoise(tok(3, 0)), S.makesNoise(tok(3, 0, { fight: false })), S.makesNoise(null), S.makesNoise(tok(3, 0, { statuses: ["unsensed"] })), "(an Unsensed creature makes none)");
+console.log("an old `hiding` status does nothing any more:", S.hears(you, tok(3, 0, { statuses: ["hiding"] })));
+console.log("--- the detection mode (the ripple on the canvas)");
+S.registerSenses();
+const mode = CONFIG.Canvas.detectionModes.hearing;
+const sees = t => mode._canDetect({ object: you }, t);
+console.log("in combat within 10:", sees(tok(5, 0)), "| in combat, 11 away:", sees(tok(11, 0)), "| not in combat:", sees(tok(5, 0, { fight: false })), "| Unsensed:", sees(tok(5, 0, { statuses: ["unsensed"] })), "| defeated:", sees(tok(5, 0, { defeated: true })));
+console.log("the GM's Hidden status, out of combat, far away:", sees(tok(30, 0, { fight: false, statuses: ["hidden"] })), "| the observer itself:", sees(you), "| a blind observer:", mode._canDetect({ object: { ...you, document: { ...you.document, hasStatusEffect: () => true } } }, tok(3, 0)));
+console.log("a keen observer, 15 away:", mode._canDetect({ object: keen }, tok(15, 1)), "| a deaf one, next to it:", mode._canDetect({ object: deaf }, tok(1, 2)));

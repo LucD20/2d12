@@ -1,0 +1,14 @@
+2d12 and 1 boon: the boon only for Lonny               Nari: 5|7 boons  banes  → 14 vs DC 13: tier 2 || Lonny: 5|7 boons 1 banes  → 15 vs DC 13: tier 2
+  dice rolled: 2 d12 and 1 boon dice | Nari's total uses no boon: true | Lonny's does: true
+same dice, three DCs (16 total)                        a: 6|8 boons  banes  → 16 vs DC 13: tier 2 || b: 6|8 boons  banes  → 16 vs DC 17: tier 1 || c: 6|8 boons  banes  → 16 vs DC 24: tier 1
+3d12 because two targets need it (3, 9, 11)            plain: 3|9 boons  banes  → 14 vs DC 13: tier 2 || favored: 9|11 (favored, dropped 3) boons  banes  → 22 vs DC 13: tier 3 || doomed: 3|9 (doomed, dropped 11) boons  banes  → 14 vs DC 13: tier 2 || both: 3|9 boons  banes  → 14 vs DC 13: tier 2
+  dice rolled: 3 | plain used the first two: true | favored kept 9+11: true | doomed kept 3+9: true | both cancel out: true
+nobody needs a third die: dice rolled 2
+boon and bane dice shared                              one boon: 6|7 boons 2 banes  → 17 vs DC 13: tier 2 || three boons, one bane: 6|7 boons 210 banes 2 → 16 vs DC 13: tier 2 || two banes: 6|7 boons  banes 21 → 12 vs DC 13: tier 1 || none: 6|7 boons  banes  → 15 vs DC 13: tier 2
+  rolled 3 boon dice and 2 bane dice: 2,1,0 | 2,1
+Doubles: 5 and 5 with a third die 9                    plain: 5|5 boons  banes  → 12 vs DC 13: tier 2 doubles || favored: 5|9 (favored, dropped 5) boons  banes  → 16 vs DC 13: tier 2
+an exploding 12 (12 → 4)                               a: 12+4|5 boons  banes  → 22 vs DC 13: tier 3 || b: 12+4|5 boons  banes  → 22 vs DC 33: tier 1
+card: one dice line, a row per target: 2 rows, 3 d12 faces shown | has the chain for the exploded 12: true | a target's chip: true | names escaped: true
+collapseNames: Skeleton Captain ×3, Nari ×2, Lonny | "" | A
+uniqueLabels: Orc 1, Nari, Orc 2, Orc 3, Lonny | A, B
+four creatures, three rows: 3 | the shared row says ×2: true | the third Orc is its own row with its number: true | odds shown: 1 | the calculation is in a tooltip: true

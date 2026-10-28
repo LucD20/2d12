@@ -1,0 +1,20 @@
+--- an ordinary Evade (the Orc is on the path)
+Evade 2 through the Orc                                    → REFUSED | Evade can't enter or pass through Difficult Terrain (Orc: an unwilling creature's space). 
+Evade 2 with nobody in the way                             → allowed | Evade left 0, AP 5
+--- Cut Through's Evade (terrain: ignore)
+through the Orc                                            → allowed | Evade left 0, AP 5
+ending in the Orc's square                                 → REFUSED | You can't end your movement in Orc's space.
+dark scene, without it                                     → REFUSED | Evade can't enter or pass through Difficult Terrain (Darkness: it can't see in it). Choose
+dark scene, with it                                        → allowed | Evade left 0, AP 5
+Difficult Terrain doubled by Foundry (cost 4), without it  → REFUSED | Evade can't enter or pass through Difficult Terrain. Choose another path, or use End movem
+Difficult Terrain doubled by Foundry (cost 4), with it     → allowed | Evade left 0, AP 5
+--- the ruler
+a step into the Orc's square: 2 | for Cut Through's Evade: 1
+a step into a dark square: 2 | for Cut Through's Evade: 1
+--- the flag
+the tag: true | without: undefined | terrain:no: false | the distance still read: floor(speed/2)
+the movement is granted: true | the flag: true | Evade squares: 2 | Kai can Evade up to 2 squares in one move: no reactions are triggered, and it can move through the space of any creature (it can't end in one) and ign
+End movement clears it: undefined {"evadeMove":0,"freeMove":0}
+an ordinary Evade: true | the flag: undefined | Kai can Evade up to 2 squares in one move: no reactions are triggered, and it can't enter or pass through Difficult Terr
+the Evade used as an Advance loses it: undefined | free squares: 2
+Cut Through's Setup in the compendium: Evade 2 (@Move[evade|distance:2|terrain:ignore]). During thi

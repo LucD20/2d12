@@ -1,0 +1,12 @@
+"Pushed 5"                         -> @Move[pushed|distance:5]
+"Walk 5"                           -> @Move[advance|distance:5]
+"Evade 1"                          -> @Move[evade|distance:1]
+"Evade Walk/2"                     -> @Move[evade|distance:walk/2]
+"Evade Move/2"                     -> @Move[evade|distance:move/2]
+"Evade half your Walk"             -> @Move[evade|distance:walk/2]
+"You move up to your Walk."        -> You move up to your Walk.
+"Next Move is Hindered (EoT)."     -> Next Move is @Condition[hindered|eot].
+"An ally uses 1 Rally Point"       -> An ally uses @Rally[1]
+"Pushed Body"                      -> @Move[pushed|distance:body]
+"Walk 5 then Pushed 2"             -> @Move[advance|distance:5] then @Move[pushed|distance:2]
+@Move[evade|distance:walk/2]

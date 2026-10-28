@@ -1,0 +1,28 @@
+@Check[body|dc:14|adj:2|boon:1|bane:2|traits:divine]
+@Damage[(1d4+1)[body,slash],1d6[mind,holy,nonlethal]]
+@Save[appeal|dc:30|traits:divine|t1:1d6[mind,holy]|t2:1d4[body,slash], "Prone"|t3:0]
+@Template[emanation|distance:2|targets:enemies|self:yes|places:yes]
+{"t1":"1d6[mind,holy]","t2":"1d4[body,slash], \"Prone\"","t3":"0"} [ 'divine' ]
+ Appeal Save DC 30 Divine &#10022; &#10022; &#10022; ≤ 29 5 Holy 30–36 3 Slash Prone ≥ 37 &mdash; &#10022; Name Save Damage Orc Appeal 
+update {"system.damage.bodyLethal":3}
+msg updated; has result: true
+[]
+FINAL CARD: {
+  total: 16,
+  tier: 2,
+  tip: 'Appeal +2: 2d12 7 + 7, doubles = 16 vs DC 30 (30–36). Damage: 1d4 [3] = 3',
+  dmg: '3 Body; Prone',
+  amount: 3,
+  extra: 'Prone',
+  dice: {
+    d1: [ 7 ],
+    d2: [ 7 ],
+    boon: [],
+    bane: [],
+    doubles: true,
+    dmg: [ [Object] ]
+  }
+}
+messages posted after card: 1
+msg updated; has result: true
+Orc:done, Goblin:open

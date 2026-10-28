@@ -1,0 +1,16 @@
+--- the line on a Reaction's card
+kind "interrupt"     -> Interrupt: A creature within 3 squares leaves a square during a Move Action
+kind "trigger"       -> Trigger: A creature within 3 squares leaves a square during a Move Action
+kind ""              -> Trigger: A creature within 3 squares leaves a square during a Move Action
+kind undefined       -> Trigger: A creature within 3 squares leaves a square during a Move Action
+no trigger, no line: false
+--- the Fear trait
+in the trait list: Fear | sorted among the others: Appeal, Area, Body, Divine, Fear, Focus, Handle | help: No rules of its own: other features refer to it.
+--- the fields and the sheets
+reaction kind (data): true | Tags (data): true | Empowered and Enfeebled as numbers (effect settings): true
+reaction kind select (item sheet): true | Empowered and Enfeebled inputs: true | no old checkbox: true
+Tags input (NPC sheet): true
+--- the compendium
+Opportunity Attack: interrupt | A creature within 3 squares would leave a square during a Move Action or uses the Stand Action | reaction: true
+Cut Through's Setup: Evade 2 (@Move[evade|distance:2|terrain:ignore])
+Bloodlust (effect): Empowered 1 | Enfeebled (none) | boons 1 | for ["melee","weapon"]

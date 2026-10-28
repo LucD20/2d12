@@ -1,0 +1,10 @@
+targets needed for "One creature": 1
+targets needed for "Two creatures": 2
+targets needed for "Three different creatures": 3
+targets needed for "4 creatures": 4
+targets needed for "All creatures in the Area": 1
+targets needed for "": 1
+targets needed for "Self": 1
+Reach 1 (ally adjacent, a hidden thief diagonal): nobody
+Reach 2 (the 2x2 Ogre's edge is 2 away): Ogre
+Reach 3 (the Goblin is 3 away): Goblin, Ogre

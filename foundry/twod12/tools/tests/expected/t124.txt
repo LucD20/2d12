@@ -1,0 +1,6 @@
+chat card tiers use tierLines (weapon dice + Modifier): true | no Defense calculation row: true
+Weapon Attack: 0 / 1[W] / 1[W] (+ Weapon Modifier on 2 and 3): true
+dc:@weapon.dc reads: @weapon.dc ref | @power ref | @body.dc ref | @Signature.DC ref | 14 number | @foo.dc number | parser in place: true
+Save label always has its DC: true | from the creature's saveDC: true
+creatures have saveDC (Weapon, Power, Signature, each Attribute): true | shown on the sheet's hover: true
+automatic effects on use: true | not again on the damage card: true | no Damage button for effects only: true

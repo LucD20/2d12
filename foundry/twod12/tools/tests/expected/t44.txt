@@ -1,0 +1,11 @@
+token 3 finds: c3 | token 2: c2 | linked actor, one combatant: cp | ambiguous base actor: null
+@Cleave[1] | @Cleave[2] and @Condition[prone]
+[ 'Weapon Attack ×2', 'Weapon Technique ×2', 'strike', 'Cleave 2' ]
+{"dc":13,"adj":0,"boon":1,"bane":0,"traits":[],"tiers":{},"target":"Weapon Attack","attr":"weapon attack","count":2,"distinct":true,"ap":1} {"dc":13,"adj":0,"boon":0,"bane":0,"traits":[],"tiers":{},"n":3,"attr":"3"}
+grants for Weapon Attack: 2/1 | for Reaping Sweep: 1 | trait spec: true false
+with a granted use, after 3 Strikes and Round used: faded = false | Reaping Sweep (grant 1): false
+no grants: faded = true Three Strikes this turn
+after 1 use: 1 ["Token.t1"] deleted: 0
+after 2 uses: deleted e1
+button after 1 of 2 used: Weapon Attack ×1 undefined
+squaresBetween exported: function

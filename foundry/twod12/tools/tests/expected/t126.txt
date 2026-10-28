@@ -1,0 +1,9 @@
+patterns: "entering+turn" -> entering+turn | "Movement" -> movement | "yes" -> entering+turn | "" -> entering+turn | "turn" -> turn | "no" -> (none) | "Entering, Turn, Movement" -> entering+turn+movement
+pattern text: Entering, Turn | Movement
+hit on entering at r1 t0 (before its turn): r1 t1 blocked | r1 t2 (its turn) again
+hit at the end of its own turn (r1 t2): r2 t0 blocked | r2 t2 again
+not in the turn order: same round blocked | next round again
+hooks: entering true | movement true | appears true | end of turn true | Movement has no limit true | registered true
+area: [HT] checkboxes and text true | Region flags true | @Area ht: key true
+Leaning: Total becomes High: true
+v0.0.149: movement through moveToken (origin and destination): true

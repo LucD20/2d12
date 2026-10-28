@@ -1,0 +1,109 @@
+--- who is Engaged
+start: Ally ENGAGED with Nari | Kai ENGAGED with Goblin | Goblin ENGAGED with Kai | Nari ENGAGED with Ally | Lonny
+the Goblin is Unsensed (still Engaged: what you perceive does not matter):  Ally ENGAGED with Nari | Kai ENGAGED with Goblin | Goblin ENGAGED with Kai | Nari ENGAGED with Ally | Lonny
+Kai is Unconscious (every creature is Unsensed to him):  Ally ENGAGED with Nari | Kai | Goblin | Nari ENGAGED with Ally | Lonny
+an Unconscious creature perceives: unsensed | unsensed | the others perceive Kai: clear (Favored for them: Unsensed to Kai)
+the Goblin is Unconscious: Ally ENGAGED with Nari | Kai | Goblin | Nari ENGAGED with Ally | Lonny
+the Ally is dead: Ally | Kai ENGAGED with Goblin | Goblin ENGAGED with Kai | Nari | Lonny
+the Ally is neutral: Ally | Kai ENGAGED with Goblin | Goblin ENGAGED with Kai | Nari | Lonny
+a hidden token doesn't count: Ally ENGAGED with Nari | Kai ENGAGED with Goblin | Goblin ENGAGED with Kai | Nari | Lonny
+the Ally is 2 squares from Nari: Ally | Kai ENGAGED with Goblin | Goblin ENGAGED with Kai | Nari | Lonny
+the Ally diagonal to Nari (row 3, col 1; Nari row 4, col 2): Ally ENGAGED with Nari | Kai ENGAGED with Goblin | Goblin ENGAGED with Kai | Nari ENGAGED with Ally | Lonny
+Nari is Unconscious (the Ally next to her is not Engaged either): Ally | Kai ENGAGED with Goblin | Goblin ENGAGED with Kai | Nari | Lonny
+a 2x2 Ogre at rows 2-3, cols 0-1 touches Kai? (Kai at row 0: one square gap) false
+the Ogre moved to rows 1-2, next to Kai: Goblin, Ogre
+friendly and friendly never engage: false | hostile and hostile: false | friendly and hostile: true | neutral: false
+
+--- Ranged Combat
+Shoot Nari: Kai and Nari both Engaged            card | chips: syn:engaged*(0b/2n) syn:engaged-target*(0b/1n) | bane dice 0,1,2 | total 12
+Shoot Nari: her Ally is Unsensed (to everyone)   card | chips: syn:engaged*(0b/2n) syn:engaged-target*(0b/1n) | bane dice 0,1,2 | total 12
+Shoot Nari: the Goblin next to us is Unsensed    card | chips: syn:engaged*(0b/2n) syn:engaged-target*(0b/1n) | bane dice 0,1,2 | total 12
+Shoot Nari: the Goblin is Unconscious            card | chips: syn:engaged-target*(0b/1n) | bane dice 1 | total 14
+Shoot Nari: nobody is Engaged                    card | chips: (none) | bane dice - | total 15
+Strike (melee) while Engaged: no banes           card | chips: (none) | bane dice - | total 15
+Shoot the Goblin: Engaged only with you          card | chips: syn:engaged*(0b/2n) | bane dice 0,1 | total 14
+Shoot the Goblin: an Ally is next to it too      card | chips: syn:engaged*(0b/2n) syn:engaged-target*(0b/1n) | bane dice 0,1,2 | total 12
+Shoot Lonny (alone) while Kai is Engaged         card | chips: syn:engaged*(0b/2n) | bane dice 0,1 | total 14
+
+--- Ranged Combat against several creatures
+Shoot Nari (Engaged) and Lonny (not)             card | chips: syn:engaged*(0b/2n) syn:engaged-target|Actor.Nari*(0b/1n) | bane dice 0,1,2 | rows Nari 12; Lonny 14
+
+--- Flanking: a Melee Action gains a boon for each other ally that flanks its target
+Strike the Goblin: the Ally and Kai both threaten it card | chips: syn:flanking*(1b/0n) | bane dice - | total 17
+... the Ally is Unconscious: nobody flanks       card | chips: (none) | bane dice - | total 15
+... the Ally holds a bow: it does not threaten   card | chips: (none) | bane dice - | total 15
+Shoot the Goblin: a Ranged Action gets no Flanking card | chips: syn:engaged*(0b/2n) syn:engaged-target*(0b/1n) | bane dice 0,1,2 | total 12
+Strike the Goblin: the Ally is far away          card | chips: (none) | bane dice - | total 15
+Strike the Goblin and Nari (several targets): the chip is the Goblin's card | chips: syn:flanking|Actor.Goblin*(1b/0n) | bane dice - | rows Goblin 17 | warn: Not affected: Nari: out of range (5 squares, maximum 1).
+
+--- Empowered and Enfeebled: the two chips in the dialog (the player can change them) and the step the damage will use
+no effects, the chips left alone                             chips: Empowered 0, Enfeebled 0 | the damage uses step 0
+no effects, the player raises Empowered to 1                 chips: Empowered 0, Enfeebled 0 | the damage uses step 1
+no effects, the player raises Enfeebled to 2                 chips: Empowered 0, Enfeebled 0 | the damage uses step -2
+Bloodlust (Empowered 1)                                      chips: Empowered 1, Enfeebled 0 | the damage uses step 1
+Bloodlust and Rage (Empowered 2): the highest, no stacking   chips: Empowered 2, Enfeebled 0 | the damage uses step 2
+Bloodlust and another Empowered 1: still 1                   chips: Empowered 1, Enfeebled 0 | the damage uses step 1
+Empowered 1 and Enfeebled 1 cancel                           chips: Empowered 1, Enfeebled 1 | the damage uses step 0
+Empowered 3 and Enfeebled 1: net 2                           chips: Empowered 3, Enfeebled 1 | the damage uses step 2
+Enfeebled 2 alone                                            chips: Empowered 0, Enfeebled 2 | the damage uses step -2
+two Enfeebled 1 from different effects: 1, not 2             chips: Empowered 0, Enfeebled 1 | the damage uses step -1
+Enfeebled 2, the player lowers it to 0                       chips: Empowered 0, Enfeebled 2 | the damage uses step 0
+Enfeebled 2, the player raises it to 3                       chips: Empowered 0, Enfeebled 2 | the damage uses step -3
+Bloodlust, the player lowers Empowered to 0                  chips: Empowered 1, Enfeebled 0 | the damage uses step 0
+an effect that only matches [Ranged] Actions                 chips: Empowered 0, Enfeebled 0 | the damage uses step 0
+a Reload shot by itself (Empowered 2)                        chips: Empowered 0, Enfeebled 0 | the damage uses step 2
+a Reload shot with Bloodlust: the highest, 2                 chips: Empowered 1, Enfeebled 0 | the damage uses step 2
+a Reload shot with Enfeebled 1: 2 - 1                        chips: Empowered 0, Enfeebled 1 | the damage uses step 1
+a Reload shot, the player lowers Enfeebled to 0              chips: Empowered 0, Enfeebled 1 | the damage uses step 2
+granted by an Action (@Use ...|empowered:1)                  chips: Empowered 1, Enfeebled 0 | the damage uses step 1
+granted Empowered 1 and Enfeebled 2                          chips: Empowered 1, Enfeebled 2 | the damage uses step -1
+an older effect that stored true                             chips: Empowered 1, Enfeebled 0 | the damage uses step 1
+--- the conditions Empowered N and Enfeebled N on the token
+the condition Empowered 2                                    chips: Empowered 2, Enfeebled 0 | the damage uses step 2
+the condition Enfeebled 3                                    chips: Empowered 0, Enfeebled 3 | the damage uses step -3
+Empowered 2 (condition) and Enfeebled 1 (an effect)          chips: Empowered 2, Enfeebled 1 | the damage uses step 1
+Empowered 1 (condition) and Rage (Empowered 2): the highest  chips: Empowered 2, Enfeebled 0 | the damage uses step 2
+a condition without a value counts as 1                      chips: Empowered 1, Enfeebled 0 | the damage uses step 1
+
+--- Fighting in the dark: you gain nothing from a creature's poor perception of you if you perceive it as Hidden
+Kai and the Goblin both see each other                       Doomed off, Favored off | no chips
+only the Goblin is Hidden to Kai (he hears it)               Doomed on, Favored off | no chips
+only Kai is Hidden to the Goblin                             Doomed off, Favored on | no chips
+each is Hidden to the other (both in the dark)               Doomed on, Favored off | no chips
+Kai Hidden to the Goblin, the Goblin Obscured to Kai         Doomed off, Favored on | obscured(0b/1n)
+Kai Obscured to the Goblin, the Goblin Hidden to Kai         Doomed on, Favored off | no chips
+each is Obscured to the other (dim light)                    Doomed off, Favored off | obscured(0b/1n) obscured-you(1b/0n)
+
+--- the target tiles of the roll dialog: numbered tabs from 10 creatures
+1 target:      no tiles
+2 targets:     with pictures | tiles 4 (one is yours) | numbered tabs none | pictures 2
+9 targets:     with pictures | tiles 11 (one is yours) | numbered tabs none | pictures 9
+10 targets:    compact | tiles 12 (one is yours) | numbered tabs 1..10 (10) | pictures 0
+12 targets:    compact | tiles 14 (one is yours) | numbered tabs 1..12 (12) | pictures 0
+20 targets:    compact | tiles 22 (one is yours) | numbered tabs 1..20 (20) | pictures 0
+a compact tab keeps the creature's name and DC for the caption: true | the tooltip: true
+
+--- Prone
+Prone uses Advance                               no card | chips: (none) | bane dice - | total null | warn: Kai is Prone: the only Move Actions it can use are Crawl and Stand.
+Prone uses Evade                                 no card | chips: (none) | bane dice - | total null | warn: Kai is Prone and can't Evade.
+Prone uses Charge                                no card | chips: (none) | bane dice - | total null | warn: Kai is Prone: the only Move Actions it can use are Crawl and Stand.
+Prone uses Crawl                                 card | chips: (none) | bane dice - | total undefined
+Prone uses Stand                                 card | chips: (none) | bane dice - | total undefined
+Prone uses Weapon Attack                         card | chips: (none) | bane dice - | total 15
+not Prone, Advance: no Prone warning: true
+not Prone, Evade: no Prone warning: true
+not Prone, Charge: no Prone warning: true
+
+--- Crawl
+the card: 1 AP: You move 1 square. @Move[advance|distance:1|label:Crawl 1] || 2 AP: Requirements: Your Speed is 5 or higher. You move 3 squares. @Move[advance|distance:3|label:Crawl 3] | traits: move/self
+Speed 3, 2 AP version: warn: Kai's Speed is under 5: Crawl moves 3 squares only with Speed 5 or higher (use the 1 AP version). | card posted: false
+Speed 5, 2 AP version: (allowed) | card posted: true
+
+--- Evade
+floor(speed/2): Speed 5 → 2 | 6 → 3 | 1 → 0 | 7 → 3 (capitals and spaces are fine:  3 )
+speed/2 still rounds up: Speed 5 → 3 | other functions: ceil 3 round 3 min 3 max 8 abs 4 | nested 2
+Charge's expression: 7 | the Evade button: 2
+things it must refuse: null null null null null null null
+Evade in the Basic Actions: @Move[evade|distance:1] || Evade half your Speed (rounded down): @Move[evade|distance:floor(speed/2)] | traits: self
+
+the Prone effect: Melee Actions against you gain 1 boon, and Ranged Actions against you suffer 1 bane. You can't Evade. The only [Move] Actions you can use are Crawl and Stand. | Hindered linked: "" | settings: boonbane 1b 0n, boonbane 0b 1n

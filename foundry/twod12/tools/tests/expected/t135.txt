@@ -1,0 +1,24 @@
+--- characters: WD = 11 + Power Modifier + Ward value (a species' old ward is ignored)
+Power Modifier +2, no ward               AD 11 [11 + 0 (Unarmored)]  WD 13 [11 + 2 (Power Modifier)]
+Power Modifier +3 (Attribute 4)          AD 11 [11 + 0 (Unarmored)]  WD 14 [11 + 3 (Power Modifier)]
+Power Modifier +1                        AD 11 [11 + 0 (Unarmored)]  WD 12 [11 + 1 (Power Modifier)]
++2, a charm (Ward value 1)               AD 11 [11 + 0 (Unarmored)]  WD 14 [11 + 2 (Power Modifier) + 1 (Ward value)]
++2, worn Warded medium armor (ward 1)    AD 13 [11 + 2 (medium armor)]  WD 14 [11 + 2 (Power Modifier) + 1 (Ward value)]
+--- NPCs: typed Defenses, armor items ignored, never below 11
+Standard default               AD 13  WD 13  armor item used: false  untrained: false
+knight 14 / 12                 AD 14  WD 12  armor item used: false  untrained: false
+typed 9 (floor 11)             AD 9  WD 0  armor item used: false  untrained: false
+wearing heavy armor (loot)     AD 12  WD 13  armor item used: false  untrained: false
+--- the DC text in the roll (computeDC uses the actor's Defense and its parts)
+WD (Paladin): 11 + 2 (Power Modifier) = 13 | AD (Paladin): 11 + 0 (Unarmored) = 11
+WD (Knight NPC): 12 | AD (Knight NPC): 14
+--- elevation (1 grid unit = 1 square here)
+next to each other, same height        vertical 0 | distance 1
+same square, 1 up (touching)           vertical 1 | distance 1
+same square, 3 up                      vertical 3 | distance 3
+4 away, 4 up                           vertical 4 | distance 6
+6 away, 2 up                           vertical 2 | distance 7
+size 2 creature, flyer 1 up over it    vertical 1 | distance 1
+withHeight(5, 0) = 5 | withHeight(4, 4) = 6 | withHeight(1, 1) = 1
+--- wiring
+squaresBetween adds the height: true | Killer's Focus in the roll dialog: true | quarry mark on refreshToken: true | species sheet has no Ward input: true | SpeciesData has no ward: true

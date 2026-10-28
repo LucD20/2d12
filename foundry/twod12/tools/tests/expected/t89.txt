@@ -1,0 +1,29 @@
+--- on a character (Speed 5)
+@Move[evade|distance:floor(speed/2)]                 → "Evade 2" + calculator (Calculated from your stats: floor(speed/2) = 2)
+@Move[advance|distance:speed]                        → "Advance 5" + calculator (Calculated from your stats: speed = 5)
+@Move[evade|distance:1]                              → "Evade 1"
+@Move[charge|distance:speed+2|min:3|label:Charge]    → "Charge"
+@Move[evade|distance:floor(speed/2)]{Slip away}      → "Slip away"
+--- on a chat card of that character
+@Move[evade|distance:floor(speed/2)]                 → "Evade 2" + calculator (Calculated from your stats: floor(speed/2) = 2)
+--- after the Speed changes to 8
+@Move[evade|distance:floor(speed/2)]                 → "Evade 4" + calculator (Calculated from your stats: floor(speed/2) = 4)
+@Move[advance|distance:speed]                        → "Advance 8" + calculator (Calculated from your stats: speed = 8)
+--- Hindered (base Speed 6, current Speed 3)
+@Move[advance|distance:speed]                        → "Advance 3" + calculator (Calculated from your stats: speed = 3)
+@Move[evade|distance:floor(speed/2)]                 → "Evade 1" + calculator (Calculated from your stats: floor(speed/2) = 1)
+--- with no character (a compendium item, a text without a document)
+@Move[evade|distance:floor(speed/2)]                 → "Evade Floor(Speed/2)" + calculator (Calculated: floor(speed/2))
+@Move[evade|distance:floor(speed/2)]                 → "Evade Floor(Speed/2)" + calculator (Calculated: floor(speed/2))
+actorOfDoc: Kai Kai null null null
+--- the line on the left of a row
+Action, At-will                                    #3B6D11
+Action, Round                                      #185FA5
+Action, Encounter                                  #A32D2D
+Talent that is an Action, Daily                    #5B3FA6
+Weapon Action with no Frequency (counts as Round)  #8a7650
+passive Talent                                     #BA7517
+passive Feature                                    #8a7650
+Feature with a Frequency (Encounter)               #A32D2D
+an unknown kind                                    #8a7650
+nothing at all                                     #8a7650

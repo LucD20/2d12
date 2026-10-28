@@ -1,0 +1,11 @@
+Weapon Attack: ["One creature","Distance: Weapon ✦ Vs. AD"]
+Call to Arms (Escalation): ["1 Escalation","One Down ally","Distance: 3 sq."]
+Volley (a Save): ["All creatures in the Area, you included ✦ Area: 2 Emanation within your weapon's normal range","Instinct Save"]
+Rimebrand (Self): ["Vs. DC 13"]
+nothing: []
+title bar: |Smite|Round|1AP|Divine Power 1| | no Frequency: true
+no Check field: true | checkAttr reads only the traits: body
+Action data has no check: true | the editor has no 'Other roll': true
+[HT] in the effect text: Rain of Arrows true | Covering Fire true
+Opportunity Attack makes a Weapon Attack: true | Vow of Enmity 3 AP Tier 3: true
+weapon checked before anything: true | windows minimized while placing, then back: true | Volley: true

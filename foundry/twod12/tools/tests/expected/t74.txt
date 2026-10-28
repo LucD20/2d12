@@ -1,0 +1,13 @@
+hoursText: 5 hours | 1 day 3 hours | 0 hours
+clock starts counting: true
+after 23 hours awake: Exhausted 0, threshold 8, condition "none"
+after 24 hours: Exhausted 1, threshold 4, condition "Exhausted 1"
+after 48 hours: Exhausted 2, threshold 0, condition "Exhausted 2" | Mind Save asked: true
+6 hours later, no new Save yet: true
+12 hours after the first, asked again: true
+Daily used: {"faded":true,"why":"Used today: renews after a Sleep or a Rest"}
+after a Sleep: Exhausted 0, threshold 8, condition "none" | Daily renewed: true | last chat: Kai completes a Sleep: Daily Actions are renewed, and Exhausted goes from 2 to 0.
+Sleep again 10 hours later, declined at the 16-hour warning: true | Exhausted 0, threshold 8, condition "none"
+24 hours after the first Sleep, Sleep again: Exhausted 0, threshold 8, condition "none"
+6 rounds in a row change nothing: true
+chat: Kai has gone 1 day without a Sleep: Exhausted 1. || Kai has gone 2 days without a Sleep: Exhausted 2. || Kai is Exhausted 2 and its Mind Damage Threshold is 0: it must make a Mind Save @Check[mind|label:Mind Save]. Tier 1: Unconscious, and a Sleep starts; it can't wake up while its Mind Damage Threshold is 0. Tier 2: Exhausted +1, and this Save again in 12 hours. Tier 3: this Save again in 12 hours.

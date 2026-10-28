@@ -1,0 +1,10 @@
+{"damage":[{"formula":"1d4+1","pool":"B","sub":"Sl"},{"formula":"1d6","pool":"M","sub":"Ho"}],"texts":[],"uuids":[]}
+{"damage":[{"formula":"1d4","pool":"B","sub":"Bl"},{"formula":"1d4","pool":"M","sub":"Ho","nl":true}],"texts":["The target is Prone"],"uuids":["Item.abc"]}
+{"dc":14,"adj":2,"boon":1,"bane":2,"traits":["divine","attack"],"tiers":{},"attr":"body","dcSet":true}
+{"t1":"1d6[mind,holy]","t2":"1d4[body,slash]","t3":"0"} {"damage":[{"formula":"1d6","pool":"M","sub":"Ho"}],"texts":[],"uuids":[]}
+{"dc":13,"adj":0,"boon":0,"bane":0,"traits":[],"tiers":{},"shape":"emanation","distance":2,"targets":"enemies","self":false,"places":true}
+[
+  'Check <body|dc:14> {Body test}',
+  'Damage <(1d4+1)[body,slash],1d6[mind,holy]> {undefined}',
+  'Save <appeal|t1:1d6[mind,holy]|t3:0> {undefined}'
+]

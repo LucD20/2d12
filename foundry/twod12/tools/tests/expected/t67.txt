@@ -1,0 +1,15 @@
+scene light by Darkness level: 0 → bright | 0.3 → bright | 0.45 → dim | 0.6 → dim | 1 → dark
+light at squares from the torch: 2 away bright | 6 away dim | 10 away dark
+1. Nari (torchlight) looks at the Goblin (Darkness)        Hidden (Hearing)
+   the Goblin (Dark Sight) looks at Nari                   Clear (Sight, Bright light)
+2. the Goblin steps into the torch's Dim light             Obscured (Sight, Dim light)
+3. as 2, Nari has Dim-light Sight                          Clear (Sight (Dim-light Sight), Dim light)
+5. Snake (Lesser Heatsight) attacks Nari in Darkness       Obscured (Lesser Heatsight (6 sq.))
+   ...a Skeleton that gives off no heat instead            Hidden (Hearing)
+6. Cave Worm (Tremorsense) and Nari on the same ground     Clear (Tremorsense (6 sq.))
+6b. Nari climbs a rope (elevation 1)                       Hidden (Hearing)
+    ...and she Hides (the GM puts Unsensed on her)         Unsensed (no sense reaches it)
+7. an invisible thief (GM status Hidden) in Bright light   Hidden (Hidden (status))
+   a wall between them (no Line of Effect)                 Hidden (Hearing)
+large creature half in the torch's Dim light, half beyond  Obscured (Sight, Dim light)
+distance: adjacent 1 | 5 squares apart 5 | a 2x2 creature 1 square away 2

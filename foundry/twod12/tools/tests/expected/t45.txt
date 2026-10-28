@@ -1,0 +1,15 @@
+Trip body 2 / instinct 1: body | body 0 / instinct 3: instinct | tie: body | no attrs: body | Shove: body
+vsText: Body or Instinct | Body | ""
+DC vs the rolled attribute: rolled body -> 14 | rolled instinct -> 15 | Vs. Instinct (Orc): 13 + 2 (half Instinct 3) = 15
+Shove vs Body: 14 | no target (roll): Vs. Body: no target, using DC 13
+meta line: |One creature|Distance:| Reach| * |Vs. Body or Instinct|
+banes for uses 1,2,3: 0,1,2 | faded after 3 (Strike limit): true Three Strikes this turn
+next turn resets: 0 | faded: false
+frequency label: At-will | effective: atwill | round for non-weapon default: ""
+greatsword in 1 hand: Two-handed weapon in one hand 3b all=strike,weapon | in 2 hands: 0 | not wielded: 0
+chip matches Strike Weapon: true | melee spell: false
+Weapon Attack: atwill | Trip: strike,handle,body,instinct vs roll check undefined | Shove: strike,handle,body vs body
+Trip 1AP: No effect. / No effect. / @Condition[prone] | 2AP: No effect. / @Condition[prone] / 1d8Bl + @Condition[prone]
+Interact: handle reach true | Reload buttons: 2
+@Reload button: Weapon reloaded
+hands: 2 1

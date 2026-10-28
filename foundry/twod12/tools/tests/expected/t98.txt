@@ -1,0 +1,26 @@
+--- the distance of a movement, with Speed 3, 2, 5
+Evade 3 with Speed 2 (the example in the book)                   -> 2
+Evade 2 with Speed 2                                             -> 2
+Evade 2 with Speed 5 (the Cut Through Setup)                     -> 2
+Evade 2 with Speed 1 (Exhausted)                                 -> 1
+Advance 5 with Speed 3                                           -> 3
+Advance 5 with Speed 5                                           -> 5
+Advance 2 with Speed 5 (less is always allowed)                  -> 2
+the Evade Action: half your Speed (Speed 5)                      -> 2
+the Advance Action: your Speed (Speed 3)                         -> 3
+--- an ability that says otherwise
+Charge: Speed + 2 with Battering Charge, |uncapped:yes           -> 6
+... the same without the Talent, |uncapped:yes                   -> 5
+... without |uncapped (it would be cut to Speed 4)               -> 4
+Charge 6 with Speed 5, not uncapped                              -> 5
+--- Forced Movement is not capped
+Pushed 5 with Speed 2                                            -> 5
+Pushed 3 with Speed 0                                            -> 3
+Reposition 2 with Speed 1                                        -> 2
+--- the parser
+uncapped: true, true, false,  (true, true, false, undefined)
+--- Speed 0
+Evade 2 with Speed 0                                             -> 0
+Advance 3 with Speed 0                                           -> 0
+the movement is refused: false | Statue has Speed 0 and can't move.
+a distance that can't be worked out keeps its own message: false | Could not work out the distance "floor(walk/2)".

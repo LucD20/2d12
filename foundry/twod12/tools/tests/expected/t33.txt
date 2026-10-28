@@ -1,0 +1,3 @@
+two groups: PC1, N1, PC2, N2, PC3 (PC1, N1, PC2, N2, PC3)
+three groups: PC1, T1, E1, PC2, T2, E2
+tie, Friendly first: P, E

@@ -1,0 +1,20 @@
+3 -> +1 | 2+5 -> +2 | 6+6+1 -> +3 | flat -> +0
+5:0b 10:0b 11:1b 20:1b 21:2b 40:2b 41:OUT | Range 3 | Far range (9 sq) | null
+[
+  '<i class="fa-solid fa-triangle-exclamation"></i> Immobilized (EoT)',
+  '<i class="fa-solid fa-triangle-exclamation"></i> Prone',
+  '<i class="fa-solid fa-triangle-exclamation"></i> Hindered (EoT)',
+  '<i class="fa-solid fa-triangle-exclamation"></i> Hindered (2 rounds)',
+  '<i class="fa-solid fa-triangle-exclamation"></i> Prone (2 rounds)'
+]
+{"dc":13,"adj":0,"boon":0,"bane":0,"traits":[],"tiers":{},"cond":"immobilized","dur":"eot"} {"dc":13,"adj":0,"boon":0,"bane":0,"traits":[],"tiers":{},"cond":"hindered","dur":"rounds","rounds":3}
+@Condition[prone]. @Condition[immobilized|eot]. @Condition[hindered|rounds:2]. Next Move is @Condition[hindered|eot]. @Move[advance|distance:2].
+found item: true | AE: Effect: Immobilized | statuses: ["immobilized"] | duration: {"type":"eot","rounds":1} | speedMods: [{"mode":"override","formula":"0"}]
+no Effect item named Prone: false [{"status":"prone","active":true}]
+Bloodied chip: Bloodied banes 1 match false,Bloodied banes 1 match false | mind action: false | resolved: {"boons":0,"banes":1,"sources":[{"name":"Bloodied","boons":0,"banes":1}]}
+Strained magic: false | body: false
+range extra resolves: {"boons":0,"banes":1,"sources":[{"name":"Far range (14 sq)","boons":0,"banes":1}]}
+group colors: #4caf50 #d9534f #4caf50 true true
+card colors: #5F5E5A #5F5E5A #5F5E5A
+distance with a ranged weapon: 10 / 20 / 40 | melee weapon: 1 | non weapon: Reach
+catalog:  Catalog 6 options Species (0) Nothing yet. Classes (1) @UUID[Item.c]{Archer} Body ×3, Mind ×2.5, Rally +3 Features (1) @UUID[Item.f]{Divine Connection} Paladin Feature 1 · 2 Talents Weapons (1) @UUID[Item.w]{Shortbow} Ranged · 0 / 1d6 / 1d10 · range 8/16/32 Weapon Techniques (1) @UUID[Item.r]{Reaping Sweep} Strike · 1 AP Talents (1) @UUID[Item.t]{Lesser Blessing} Talent 1 · Divine Other Actions (0) Nothing yet. Effects and Conditions (1) @UUID[Item.imm]{Effect: Immobilized} None · Speed 

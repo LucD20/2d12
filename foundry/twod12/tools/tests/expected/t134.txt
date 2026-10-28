@@ -1,0 +1,9 @@
+quarry boon: Orc [["Marked Quarry (Orc)",1]] | Goblin [] | a Power Action against the Orc []
+Hunter's Focus: boons ["Hunter's Focus (1 Boon)"] | Empowered vs Orc {"name":"Hunter's Focus","n":1} | vs Goblin null
+Long Draw: crossbow true | thrown dagger false
+Steady Nerves: Escalation 1 false | Escalation 2 true
+Killer's Focus: Escalation 2, a Shot {"effectId":"killersFocus","effect":"Killer's Focus","dmg":"1d6","pool":"B","sub":"Pi","text":"","fxUuid":""} | Escalation 1 null | not a Shot null
+used this turn-cycle: null | its next turn: true
+wired: boons true | Empowered true | Long Draw true | Steady Nerves true | Killer's Focus true | Mark Quarry true | hooks true
+content: Mark Quarry (0 or 1 AP, granted by Marked Quarry) true | Hunter's Focus applies its effect true
+Save Actions: no odds true | Empowered/Enfeebled per die on the Save's damage true

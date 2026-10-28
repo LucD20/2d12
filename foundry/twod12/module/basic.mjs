@@ -1,0 +1,329 @@
+// Basic Actions every creature has. They live on the actor as Action items flagged "basic" (the Actions tab groups them in "Basic").
+import { TWOD12 } from "./config.mjs";
+import { fistsItemData, fistsOf, FISTS_TRAITS } from "./fists.mjs";
+const F = "twod12";
+const I = (o = {}) => ({ pool: "B", useW: false, wCount: 1, dice: "", useAt: false, subtype: "", ...o });
+const fx = () => ({ all: [], t1: [], t2: [], t3: [] });
+const V = (ap, t1, t2, t3, effects = "", extra = {}) => ({ ap, noTiers: false, t1, t2, t3, x1: "", x2: "", x3: "", effects, fx: fx(), ...extra });
+
+export const BASIC_ACTIONS = {
+  basicWeaponAttack: {
+    frequency: "atwill",
+    name: "Weapon Attack",
+    img: "icons/svg/sword.svg",
+    traits: ["strike", "weapon"],
+    targets: "One creature",
+    vs: "",
+    distance: "weapon",
+    versions: [V(1, [], [I({ useW: true })], [I({ useW: true })], "")]   // 0 / 1[W] + [Mod] / 1[W] + [Mod]: the Weapon Modifier is added on Tiers 2 and 3
+  },
+  advance: {
+    name: "Advance",
+    frequency: "atwill",
+    img: "icons/svg/wing.svg",
+    traits: ["move", "self"],
+    targets: "",
+    vs: "",
+    distance: "self",
+    versions: [V(1, [], [], [], "When you use this Action, you move up to your Speed in squares. @Move[advance|distance:speed]", { noTiers: true })]
+  },
+  safeMovement: {
+    name: "Evade",
+    frequency: "atwill",
+    img: "icons/svg/shield.svg",
+    traits: ["self"],
+    targets: "",
+    vs: "",
+    distance: "self",
+    versions: [
+      V(1, [], [], [], "@Move[evade|distance:1]", { noTiers: true }),
+      V(2, [], [], [], "Evade half your Speed (rounded down): @Move[evade|distance:floor(speed/2)]", { noTiers: true })
+    ]
+  },
+  reload: {
+    name: "Reload",
+    frequency: "atwill",
+    img: "icons/svg/upgrade.svg",
+    traits: ["handle", "weapon"],   // a Weapon Action (the Weapon Modifier) against DC 13; reloading an ally's weapon isn't automated yet
+    targets: "",
+    vs: "",
+    distance: "self",
+    versions: [
+      V(1, [], [], [], "", {
+        x1: "Your next Reload attempt gains 2 boons.",
+        x2: "You Reload your weapon. @Reload[weapon] Then you can Interact to grip your weapon with two hands: @Use[Interact|label:Interact (grip)]",
+        x3: "You Reload your weapon and @Move[evade|distance:1]. @Reload[weapon] Then you can Interact to grip your weapon with two hands: @Use[Interact|label:Interact (grip)]"
+      })
+    ]
+  },
+  interact: {
+    name: "Interact",
+    frequency: "atwill",
+    img: "icons/svg/book.svg",
+    traits: ["handle"],
+    targets: "",
+    vs: "",
+    distance: "reach",
+    versions: [
+      V(
+        1,
+        [],
+        [],
+        [],
+        "You do one of the following: swap two objects (one you are holding with one on your person); grab an object within Reach; grip a weapon with two hands; help a Prone creature within Reach stand up; help an Imperiled creature within Reach get to safety; wake an Unconscious creature within Reach; open a door, chest or something similar. This Action is broader than most: it can be used for similar things in the world.",
+        { noTiers: true }
+      )
+    ]
+  },
+  rally: {
+    name: "Steel Yourself",
+    frequency: "round",
+    img: "icons/svg/regen.svg",
+    traits: ["self"],
+    targets: "",
+    vs: "",
+    distance: "self",
+    versions: [V(2, [], [], [], "You use @Rally[1].", { noTiers: true }), V(3, [], [], [], "You use @Rally[2].", { noTiers: true })]
+  },
+  crawl: {
+    name: "Crawl",
+    frequency: "atwill",
+    img: "icons/svg/falling.svg",
+    traits: ["move", "self"],
+    targets: "",
+    vs: "",
+    distance: "self",
+    versions: [
+      V(1, [], [], [], "You move 1 square. @Move[advance|distance:1|label:Crawl 1]", { noTiers: true }),
+      V(2, [], [], [], "Requirements: Your Speed is 5 or higher. You move 3 squares. @Move[advance|distance:3|label:Crawl 3]", { noTiers: true })
+    ]
+  },
+  release: {
+    name: "Release",
+    frequency: "atwill",
+    img: "icons/svg/downgrade.svg",
+    traits: ["self"],
+    targets: "",
+    vs: "",
+    distance: "self",
+    versions: [
+      V(
+        0,
+        [],
+        [],
+        [],
+        "You drop an object in your square, or let go of an object you hold with one hand (a two-handed weapon is then held with one hand). @Release[weapon]",
+        { noTiers: true }
+      )
+    ]
+  },
+  stand: {
+    name: "Stand",
+    frequency: "atwill",
+    img: "icons/svg/up.svg",
+    traits: ["move", "self"],
+    targets: "",
+    vs: "",
+    distance: "self",
+    versions: [V(1, [], [], [], "You stand up: you are no longer Prone.", { noTiers: true })]
+  },
+  charge: {
+    name: "Charge",
+    frequency: "round",
+    img: "icons/svg/thrust.svg",
+    traits: ["move", "self"],
+    targets: "",
+    vs: "",
+    distance: "",
+    requirements: "You have at least Speed 3",
+    versions: [
+      V(
+        2,
+        [],
+        [],
+        [],
+        "Advance at least 3 squares and up to your Speed in a straight line: @Move[charge|distance:speed+2*has(Battering Charge)|min:3|uncapped:yes|label:Charge]. You can't Charge through Difficult Terrain. At the end of your movement, make a Weapon Attack (1A) with 1 boon: @Use[Weapon Attack|boons:1|empowered:has(Battering Charge)|label:Weapon Attack (1A, 1 boon)]",
+        { noTiers: true }
+      )
+    ]
+  },
+  leaning: {
+    name: "Leaning",
+    frequency: "atwill",
+    img: "icons/svg/eye.svg",
+    traits: ["self"],
+    targets: "",
+    vs: "",
+    distance: "self",
+    versions: [
+      V(
+        1,
+        [],
+        [],
+        [],
+        "Until the end of your turn, you calculate cover from one of your corners instead of the center of your square, and your own cover against other creatures' Actions is reduced by 1 level. You can stop Leaning at any time on your turn, at no cost. Click a corner of your square on the map to choose which one you lean toward: your token peeks out a little past it (so you can see around a wall that ends there, and you are more exposed too), unless a wall is in the way. Click it again to go back to the center. @Condition[leaning|eot]",
+        { noTiers: true }
+      )
+    ]
+  },
+  fists: {
+    frequency: "atwill",
+    name: "Fists",
+    requirements: "You have a free hand.",
+    img: "icons/svg/combat.svg",
+    traits: ["strike", "weapon"],   // a Weapon Action that uses only the Fists (fists.mjs weaponsFor): 0 / 1[W] + [Mod] / 1[W] + [Mod], [W] being 0 / 1 / 1d4 Bl
+    targets: "One creature",
+    vs: "",
+    distance: "weapon",
+    versions: [V(1, [], [I({ useW: true })], [I({ useW: true })], "")]
+  },
+  relocate: {
+    frequency: "round",
+    name: "Relocate",
+    img: "icons/svg/up.svg",
+    traits: ["strike", "handle", "body", "instinct"],
+    targets: "One creature",
+    vs: "roll",
+    distance: "reach",
+    requirements: "The target's SR is at most 1 higher than yours. The target must remain within your Reach throughout the whole movement.",
+    versions: [
+      V(1, [], [], [], "", { x1: "No effect.", x2: "@Move[reposition|distance:1]", x3: "@Move[reposition|distance:2]" }),
+      V(2, [], [], [], "", { x1: "No effect.", x2: "@Move[reposition|distance:2]", x3: "@Move[reposition|distance:4]" }),
+      V(3, [], [], [], "", { x1: "@Move[reposition|distance:1]", x2: "@Move[reposition|distance:3]", x3: "@Move[reposition|distance:5]" })
+    ]
+  },
+  trip: {
+    frequency: "round",
+    name: "Trip",
+    img: "icons/svg/falling.svg",
+    traits: ["strike", "handle", "body", "instinct"],
+    targets: "One creature",
+    vs: "roll",
+    distance: "reach",
+    requirements: "The target's SR is at most 1 higher than yours.",
+    versions: [
+      V(1, [], [], [], "", { x1: "No effect.", x2: "No effect.", x3: "@Condition[prone]" }),
+      V(2, [], [], [I({ dice: "1d8", subtype: "Bl" })], "", { x1: "No effect.", x2: "@Condition[prone]", x3: "@Condition[prone]" })
+    ]
+  },
+  shove: {
+    frequency: "round",
+    name: "Shove",
+    img: "icons/svg/up.svg",
+    traits: ["strike", "handle", "body"],
+    targets: "One creature",
+    vs: "body",
+    distance: "reach",
+    requirements: "The target's SR is at most 1 higher than yours.",
+    versions: [
+      V(1, [], [], [], "", { x1: "No effect.", x2: "@Move[pushed|distance:1]", x3: "@Move[pushed|distance:2]" }),
+      V(2, [], [], [], "", { x1: "No effect.", x2: "@Move[pushed|distance:2]", x3: "@Move[pushed|distance:4]" }),
+      V(3, [], [], [], "", { x1: "@Move[pushed|distance:1]", x2: "@Move[pushed|distance:3]", x3: "@Move[pushed|distance:5]" })
+    ]
+  }
+};
+
+/** One flavor line per Basic Action, shown under the title of its cards. */
+const BASIC_FLAVOR = {
+ "Weapon Attack": "You strike with the weapon in your hands.",
+ "Fists": "When there is nothing else in your hands, there are always your hands.",
+ "Relocate": "You take them by the arm and put them where you want them.",
+ "Steel Yourself": "You grit your teeth and find a little more to give.",
+ "Charge": "You close the distance in one straight, reckless line.",
+ "Shove": "You put your weight behind it and drive them back.",
+ "Trip": "A hooked foot, a twist, and they hit the ground.",
+ "Advance": "You press forward, one deliberate step at a time.",
+ "Crawl": "You drag yourself along the ground.",
+ "Release": "You let it go.",
+ "Evade": "You slip through the fray without giving anyone an opening.",
+ "Stand": "You get your feet back under you.",
+ "Leaning": "You lean out from cover, just enough to see.",
+ "Interact": "You pull the lever, open the door, grab what you need.",
+ "Reload": "You work the mechanism and seat a fresh bolt."
+};
+
+const toItem = (key, d) => ({
+  name: d.name, type: "action", img: d.img,
+  system: { category: TWOD12.basicCategory, level: 0, flavor: BASIC_FLAVOR[d.name] ?? "", frequency: d.frequency ?? "", distance: d.distance ?? "", requirements: d.requirements ?? "", traits: d.traits, targets: d.targets, vs: d.vs, versions: foundry.utils.deepClone(d.versions) },
+  flags: { [F]: { basic: key } }
+});
+
+/** The data of a Basic Action as an embedded Item (used to build the NPC compendium). */
+export const basicItemData = key => toItem(key, BASIC_ACTIONS[key]);
+
+/** NPCs do not have Rally Points, so they do not get the Rally action. */
+const wanted = (actor, key) => !(actor.type === "npc" && key === "rally");
+
+/** Add (or replace) the Basic Actions on an actor. */
+export async function addBasicActions(actor, { replace = false } = {}) {
+  const have = actor.items.filter(i => i.type === "action" && i.getFlag(F, "basic"));
+  if (replace && have.length) await actor.deleteEmbeddedDocuments("Item", have.map(i => i.id));
+  const keep = new Set(replace ? [] : have.map(i => i.getFlag(F, "basic")));
+  const data = Object.entries(BASIC_ACTIONS).filter(([k]) => !keep.has(k) && wanted(actor, k)).map(([k, d]) => toItem(k, d));
+  if (data.length) await actor.createEmbeddedDocuments("Item", data);
+  await ensureFists(actor);
+  return data.length;
+}
+
+/** Every creature has Fists, an ordinary weapon (Barehanded, Melee, Non-threatening, Range 1): created, or an older Fists item brought up to date (v0.0.169). */
+export async function ensureFists(actor) {
+  const fi = fistsOf(actor);
+  if (!fi) { await actor.createEmbeddedDocuments("Item", [fistsItemData()]); return true; }
+  const have = [...(fi.system.traits ?? [])];
+  if (FISTS_TRAITS.every(t => have.includes(t)) && fi.system.range) return false;
+  await fi.update({ "system.traits": [...new Set([...have, ...FISTS_TRAITS])], "system.range": fi.system.range || "1" });
+  return true;
+}
+
+/** Refresh the Basic Actions of every character and NPC in the world (adds Crawl, new texts). Returns how many actors were refreshed. */
+export async function refreshAllBasics() {
+  let n = 0;
+  for (const actor of game.actors ?? []) {
+    if (!["character", "npc"].includes(actor.type) || !actor.isOwner) continue;
+    try { await addBasicActions(actor, { replace: true }); n++; } catch (e) { console.warn("twod12 | could not refresh the Basic Actions of", actor.name, e); }
+  }
+  ui.notifications.info(`Basic Actions refreshed on ${n} creature${n === 1 ? "" : "s"}.`);
+  return n;
+}
+
+export const missingBasic = actor => {
+  const have = new Set(actor.items.filter(i => i.type === "action").map(i => i.getFlag(F, "basic")).filter(Boolean));
+  return Object.keys(BASIC_ACTIONS).some(k => wanted(actor, k) && !have.has(k));
+};
+
+export function registerBasicHooks() {
+  Hooks.on("createActor", async (actor, options, userId) => {
+    if (userId !== game.user.id || !["character", "npc"].includes(actor.type)) return;
+    try { await addBasicActions(actor); } catch (e) { console.warn("twod12 | could not add the Basic Actions", e); }
+  });
+  // Once, for the GM: a Release made when a Version couldn't cost 0 was saved at 1 AP; it costs 0 AP (v0.0.118).
+  Hooks.once("ready", async () => {
+    if (!game.user.isActiveGM) return;
+    const fixed = await fixReleaseCost(game.actors ?? []);
+    if (fixed) ui.notifications.info(`Release now costs 0 AP on ${fixed} creature${fixed === 1 ? "" : "s"}.`);
+    // v0.0.169, once per creature that needs it: the new Basic Actions (Relocate, the 3 AP Shove, Fists as a Weapon Action) and Fists as an ordinary weapon.
+    let n = 0;
+    for (const actor of game.actors ?? []) {
+      if (!["character", "npc"].includes(actor.type) || !actor.isOwner) continue;
+      try {
+        const old = actor.items.some(i => i.type === "action" && i.getFlag(F, "basic") === "reposition") || missingBasic(actor);
+        if (old) { await addBasicActions(actor, { replace: true }); n++; } else await ensureFists(actor);
+      } catch (e) { console.warn("twod12 | could not update the Basic Actions of", actor.name, e); }
+    }
+    if (n) ui.notifications.info(`2d12: the Basic Actions were updated on ${n} creature${n === 1 ? "" : "s"} (Relocate, Shove, Fists).`);
+  });
+}
+
+/** Set the Release Basic Action of these actors to 0 AP where it was saved at more. Returns how many were changed. */
+export async function fixReleaseCost(actors) {
+  let n = 0;
+  for (const actor of actors) {
+    for (const it of actor.items ?? []) {
+      if (it.type !== "action" || it.getFlag?.(F, "basic") !== "release") continue;
+      const vs = it.system.versions ?? [];
+      if (!vs.length || vs.every(v => v.ap === 0)) continue;
+      try { await it.update({ "system.versions": vs.map(v => ({ ...(v.toObject?.() ?? v), ap: 0 })) }); n++; } catch (e) { console.warn("twod12 | could not fix Release on", actor.name, e); }
+    }
+  }
+  return n;
+}

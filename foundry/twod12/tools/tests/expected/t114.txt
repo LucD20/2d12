@@ -1,0 +1,32 @@
+--- what changes Smite right now (only temporary effects, Escalation passives and the creature's state)
+nothing                                [] | net 0 | bonus T1/T2/T3: 0/0/0
+Divine Surge, Enfeebled 1, Bless, Aim  ["Divine Surge up (+ [M] 1d8 Ho (Tier 2, 3))","Enfeebled 1 down (−1 per damage die)","Bless up (1 boon)"] | net -1 | bonus T1/T2/T3: 0/1/1
+always-on passive                      [] | net 0 | bonus T1/T2/T3: 0/0/0
+Escalation passive at 2                ["Hallowed Stance up (1 boon)"] | net 0 | bonus T1/T2/T3: 0/0/0
+Escalation passive at 1                [] | net 0 | bonus T1/T2/T3: 0/0/0
+Bloodied                               ["Bloodied down (1 bane)"] | net 0 | bonus T1/T2/T3: 0/0/0
+--- Unloaded
+Lock & Loose (its crossbow, unloaded): Crossbow | Weapon Attack (only the crossbow in hand): Crossbow | Smite: -
+loaded again: - -
+--- labels
+Smite                1/2 | On your turn | Round
+Lock & Loose         1AP | On your turn | Round
+Divine Retribution   2/3R | Reactions | Encounter
+Divine Surge         0AP | 0 AP | Round
+Miraculous Recovery  2/3 | On your turn | Daily 1/1
+Miraculous Recovery  2/3 | On your turn | Daily 0/1
+--- groups and orders (custom order: Divine Surge, Smite)
+cost/custom:       On your turn: Smite, Lock & Loose, Miraculous Recovery | Reactions: Divine Retribution | 0 AP: Divine Surge
+cost/name:         On your turn: Lock & Loose, Miraculous Recovery, Smite | Reactions: Divine Retribution | 0 AP: Divine Surge
+frequency/custom:  Round: Divine Surge, Smite, Lock & Loose | Encounter: Divine Retribution | Daily: Miraculous Recovery
+source/cost:       Class: Divine Surge, Smite, Divine Retribution, Miraculous Recovery | Items: Lock & Loose
+none/custom:       -: Divine Surge, Smite, Divine Retribution, Lock & Loose, Miraculous Recovery
+none/usage:        -: Divine Surge, Lock & Loose, Smite, Divine Retribution, Miraculous Recovery
+old saved sorts: usage, custom, name, custom
+--- the card
+Smite, no actor: Smite Round 1/2 Divine Melee Strike Weapon Distance: Weapon Vs. AD 1AP 2AP Tier 1 1[W] 1[W] Tier 2 1[W] + [Mod] + 1d6 Holy 1[W] + [Mod] + 2d6 Holy Tier 3 2[W] + [Mod] + 1d6 Holy 2[W] + [Mod] + 2d6 Holy Critical Dazed (EoT). &mdash; Effects (Tier 2+) 2AP You regain 1 Rally Point.
+Smite with Divine Surge and Enfeebled 1: Smite Round 1/2 Divine Melee Strike Weapon Distance: Weapon Vs. AD 1AP 2AP Tier 1 1[W] −1 per die 1[W] −1 per die Tier 2 1[W] + [Mod] + 1d6 Holy −1 per die + 1d8 Holy 1[W] + [Mod] + 2d6 Holy −1 per die + 1d8 Holy Tier 3 2[W] + [Mod] + 1d6 Holy −1 per die + 1d8 Holy 2[W] + [Mod] + 2d6 Holy −1 per die + 1d8 Holy Critical Dazed (EoT). &mdash; Changed by effects Divine Surge Enfeebled 1 Effects (Tier 2+) 2AP You regain 1 Rally Point.
+columns: 2 | green bonus in Tier 2 and 3 cells: 4 | red per-die: 6 | subtypes colored: true
+Split Reaction: Divine Retribution Encounter 2/3R Vs. DC 13 Trigger: An enemy hits an ally within 3 squares. 2R Weapon mode 3R Power mode Tier 1 1[W] 1d8 Holy Tier 2 1[W] + [Mod] 2d8 Holy Tier 3 2[W] + [Mod] 3d8 Holy
+Lock & Loose with the crossbow unloaded: Lock &amp; Loose Round 1AP Ranged Strike Weapon Distance: 10 / 20 / 40 Vs. AD Tiers 1–3 &mdash; Changed by effects Unloaded
+--- the sheet: table header: true | row opens its card: true | Use and Reload: true | per user: true | order on the creature: true | Basic collapsed by default: true | filter: true

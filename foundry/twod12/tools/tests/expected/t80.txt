@@ -1,0 +1,16 @@
+5 Body damage                                −5 #ff4d4d
+4 Mind damage                                −4 #4da6ff
+6 Body healed (a Rally)                      +6 #4cd964
+3 nonlethal Body damage                      −3 NL #ff4d4d
+a Rest: everything removed                   +3 #4cd964 | +4 NL #4cd964 | +6 #4cd964 | +2 NL #4cd964
+Body and Mind in one hit                     −5 #ff4d4d | −3 #4da6ff
+no previous values                           (nothing)
+effect added                                 + Exhausted 1 #ffffff
+raised: 2 → 3                                + Exhausted 3 #ffffff
+lowered: 3 → 2                               − Exhausted 2 #ffffff (slides down)
+removed                                      − Exhausted #ffffff (slides down)
+an effect from the compendium                + Aim (1 Boon) #ffffff
+a duration ticking down                      (nothing)
+a token the player can't see                 (nothing)
+the same token, as GM                        + Seen by the GM #ffffff
+with the setting off                         (nothing)

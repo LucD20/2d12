@@ -1,0 +1,12 @@
+shows on the token (showIcon always): true
+click: bumped → Exhausted 2 (Exhausted 2)
+click: bumped → Exhausted 3 (Exhausted 3)
+click: bumped → Exhausted 4 (Exhausted 4)
+click: bumped → Exhausted 5 (Exhausted 5)
+shift+click: opened | opened: Exhausted 5 | value unchanged: 5
+ctrl+click at 5: removed → Exhausted 0 | conditions left: 0
+a non-owner can't change it: denied | messages shown for all of that: 0
+an old effect now shows on the token: true | Exhausted 2
+Exhausted 0: Mind Damage Threshold 19 | Health Pool 46 | Rally heal 12 | Rally Points 16
+Exhausted 3: Mind Damage Threshold 7 | Health Pool 34 | Rally heal 12 | Rally Points 16
+the pool shrinks, Rally stays: true

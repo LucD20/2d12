@@ -1,0 +1,10 @@
+open ground (below the wall)   origin (20, 100) corners (202,162) green (238,162) green (238,198) green (202,198) green | No cover: 0 blocked
+half behind the wall           origin (20, 100) corners (202,82) red (238,82) red (238,118) green (202,118) green | Medium cover: 2 blocked
+behind the wall                origin (20, 100) corners (202,2) red (238,2) red (238,38) red (202,38) red | No Line of Effect: 4 of 4 blocked
+a creature in the way: Low cover: 0 blocked, a creature in the way
+no Line of Effect: No Line of Effect: 4 of 4 blocked | Leaning target: Low cover: 2 blocked, it is Leaning (-1)
+--- wiring
+button on the token HUD of your own token: true | registered: true | follows targets, moves and walls: true | only on square grids: true
+shield: Vs. Attributes in two letters: true | AD and WD kept: true
+Strike rows: a red line, no gradient: true
+scroll kept: saved before drawing, put back after the tab is shown: true

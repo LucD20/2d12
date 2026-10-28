@@ -1,0 +1,5 @@
+head: |Reaping Sweep|1AP|Weapon Technique| | category under the cost: true | both inside .aright: true | Frequency next to the cost (v0.0.157): true
+no cat: false
+roll line without status: true | with status (a Save): true
+damage head: |Reaping Sweep|Damage|Tier 3| | comp color var: true | buttons kept: true | lethal select: true
+cleave head: |Cleave|Damage|Cleave 2|

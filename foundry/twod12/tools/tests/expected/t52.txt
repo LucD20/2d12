@@ -1,0 +1,10 @@
+1x1 target (diagram left): 2 blocked -> Medium cover 2 banes | LoE: true
+2x2 target (diagram right): 2 blocked -> Medium cover 2 banes | center line blocked: true but still targetable: true
+everything blocked: 4 Total cover no LoE: true
+open ground: 0 No cover 0
+a creature in the way: Low cover 1 banes | in the way: true
+a creature off the line: No cover
+2 blocked corners + a creature in the way: Medium cover 2
+Large attacker (2x2) vs 1x1 target: 2 blocked (best of its 4 squares)
+hearing added: ["basicSight","hearing"]
+Unconscious: Fireball Save always Doomed (Dying Body Save): true | Shattered Mind Check exempt: true | Shattered Mind Save Doomed: true

@@ -1,0 +1,6 @@
+node_modules/
+foundry/package.json
+foundry/package-lock.json
+__pycache__/
+*.zip
+foundry/twod12/packs/

@@ -1,0 +1,82 @@
+// Run with: node tools/tests/run.mjs (or node tools/tests/t111.mjs)
+const ROOT = decodeURIComponent(new URL("../../", import.meta.url).pathname);
+import fs from "node:fs";
+// v0.0.126 (Round 10/11, part 4): Split Actions (two modes), Auras (an area that follows its creature), the On damage trigger (Tags: Profane Judgment).
+globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)), getRoute: p => "/" + p, escapeHTML: s => s } };
+globalThis.Combat = class {}; globalThis.CONFIG = { statusEffects: [], time: {} }; globalThis.Hooks = { on() {}, once() {} };
+globalThis.ui = { notifications: { info() {}, warn() {}, error() {} } }; globalThis.game = { settings: { get: () => { throw new Error("no setting"); } }, user: { id: "u" }, socket: { on() {}, emit() {} } };
+globalThis.canvas = { grid: { size: 100 }, tokens: { placeables: [] } };
+const S = a => new Set(a), blank = { attrs: S([]), all: S([]), any: S([]), none: S([]), from: S([]), tiers: S([]) };
+console.log("--- Split");
+const { splitModes, splitView } = await import(ROOT + "module/split.mjs");
+const { rollSource } = await import(ROOT + "module/rollsource.mjs");
+const ret = { id: "ret1", name: "Divine Retribution", uuid: "Item.ret1", getFlag: () => undefined, system: { traits: S(["divine", "strike", "split"]), distance: "weapon", versions: [{ ap: 2, mode: "weapon", label: "W" }, { ap: 2, mode: "power", label: "P" }, { ap: 3, mode: "", label: "3R" }] } };
+console.log("modes:", splitModes(ret).join(", "), "| none for a normal Action:", splitModes({ system: { versions: [{ ap: 1, mode: "" }] } }).length);
+const sys = { attributes: { body: 2, mind: 1, appeal: 2 }, weaponAttribute: "body", weaponMod: 2, powerAttribute: "appeal", powerMod: 2, signatureAttribute: "body", signatureMod: 2 };
+for (const m of ["weapon", "power"]) {
+  const v = splitView(ret, m);
+  console.log(`${m} mode: traits ${[...v.system.traits].join(",")} | versions ${v.system.versions.map(x => x.label).join(",")} | distance ${v.system.distance} | rolls ${rollSource(sys, v.system).kind} | same item: ${v.id} ${v.name} ${v.uuid} ${typeof v.getFlag} | splitMode ${v.splitMode}`);
+}
+console.log("the original is untouched:", [...ret.system.traits].join(","), ret.system.versions.length, ret.system.distance);
+const acts = fs.readFileSync(ROOT + "module/actions.mjs", "utf8");
+console.log("useAction asks the mode first, then uses the view:", acts.includes('if (item.system.traits?.has?.("split") && !opts.splitMode)') && acts.includes("return useAction(actor, splitView(item, mode), { ...opts, splitMode: mode });"), "| the damage card remembers the mode:", acts.includes('mode: opts.splitMode ?? ""') && acts.includes("(!f.mode || v.mode === f.mode)"), "| the versions editor has a Mode, and a version can cost 0:", fs.readFileSync(ROOT + "templates/versions-editor.hbs", "utf8").includes('data-field="mode"') && fs.readFileSync(ROOT + "templates/versions-editor.hbs", "utf8").includes('min="0" max="5"'));
+console.log("--- Auras");
+const A = await import(ROOT + "module/aura.mjs");
+const tk = (id, x, disposition) => ({ id, x, document: { disposition } });
+const [pal, friend, far, orc, mob] = [tk("pal", 0, 1), tk("friend", 2, 1), tk("far", 4, 1), tk("orc", 1, -1), tk("mob", 1, 0)];
+const toks = [pal, friend, far, orc, mob], dist = (a, b) => Math.abs(a.x - b.x), side = t => t.document.disposition;
+const plan = aura => [...A.auraPlan([{ key: "k", token: pal, aura }], toks, dist, side).keys()].sort().join(", ") || "nobody";
+console.log("Aura 3, allies, and the Paladin:", plan({ size: 3, who: "allies", self: true }), "| not the Paladin:", plan({ size: 3, who: "allies", self: false }), "| Aura 1:", plan({ size: 1, who: "allies", self: true }), "| enemies:", plan({ size: 3, who: "enemies", self: false }), "| everyone (the neutral too):", plan({ size: 3, who: "all", self: true }));
+console.log("the module wires hooks and keeps the effects it made:", fs.readFileSync(ROOT + "module/aura.mjs", "utf8").includes("auraFrom: key") && fs.readFileSync(ROOT + "module/twod12.mjs", "utf8").includes("registerAuraHooks();"));
+console.log("--- On damage (Tags)");
+const T = await import(ROOT + "module/triggers.mjs");
+const feature = (settings, min = 0) => ({ id: "pj", name: "Profane Judgment", type: "feature", system: { settings: settings.map(x => ({ ...blank, minEscalation: min, ...x })) } });
+const trig = { type: "ondamage", trigSub: "Ho", trigTag: "Profane", fxUuid: "Compendium.twod12.effects.Item.enf" };
+const paladin = (esc, min = 0) => ({ name: "Kai", type: "character", system: { escalation: esc }, effects: [], itemTypes: { feature: [feature([trig], min)], talent: [] } });
+const target = tags => ({ name: "Wight", system: { tags: S(tags) } });
+const hit = (src, tgt, comps) => T.matchingTriggers(src, tgt, comps).map(t => t.fxUuid.split(".").pop()).join(",") || "nothing";
+console.log("Holy damage to a Profane creature:", hit(paladin(0), target(["profane", "undead"]), [{ sub: "Ho", total: 4 }]), "| Fire damage:", hit(paladin(0), target(["profane"]), [{ sub: "Fi", total: 4 }]), "| not Profane:", hit(paladin(0), target(["beast"]), [{ sub: "Ho", total: 4 }]), "| no damage dealt:", hit(paladin(0), target(["profane"]), [{ sub: "Ho", total: 0 }]), "| mixed damage:", hit(paladin(0), target(["profane"]), [{ sub: "Sl", total: 5 }, { sub: "Ho", total: 3 }]));
+console.log("an Escalation passive trigger (from 2): at 1:", hit(paladin(1, 2), target(["profane"]), [{ sub: "Ho", total: 4 }]), "| at 2:", hit(paladin(2, 2), target(["profane"]), [{ sub: "Ho", total: 4 }]));
+const dmg = fs.readFileSync(ROOT + "module/damage.mjs", "utf8");
+console.log("applied when the damage is applied:", dmg.includes("await runDamageTriggers(src, actor, row.uuid, row.comps ?? []);"));
+const F = await import(ROOT + "module/fxdetails.mjs"), AF = await import(ROOT + "module/appliedflags.mjs");
+const st = [{ ...blank, type: "aura", auraSize: 3, auraWho: "allies", auraSelf: true, fxUuid: "Compendium.x.Item.vigil" }, { ...blank, type: "ondamage", trigSub: "Ho", trigTag: "Profane", fxUuid: "Compendium.x.Item.enf" }];
+console.log(st.map(x => F.settingSentence(x).replace(/<[^>]+>/g, "")).join(" | "));
+console.log("flags:", JSON.stringify(AF.appliedFlags({ settings: st, description: "", expireOn: S([]), expireAll: false }, {})).match(/"auras":\[[^\]]*\],"triggers":\[[^\]]*\]/)[0]);
+
+console.log("--- v0.0.127: the roll dialog and the chat say when a trigger or a damage effect is in play");
+const tn = (src, tgts, subs) => T.triggerNotices(src, tgts, S(subs)).map(n => n.text).join(" | ") || "nothing";
+console.log("Smite (Holy) against a Profane creature:", tn(paladin(0), [target(["profane"])], ["Ho"]), "| a Fire-only Action:", tn(paladin(0), [target(["profane"])], ["Fi"]), "| a creature that isn't Profane:", tn(paladin(0), [target(["beast"])], ["Ho"]), "| no target:", tn(paladin(0), [], ["Ho"]));
+console.log("the trigger knows the ability that fired:", T.matchingTriggers(paladin(0), target(["profane"]), [{ sub: "Ho", total: 3 }])[0]?.source);
+const dmg2 = fs.readFileSync(ROOT + "module/damage.mjs", "utf8"), acts2 = fs.readFileSync(ROOT + "module/actions.mjs", "utf8"), trg = fs.readFileSync(ROOT + "module/triggers.mjs", "utf8");
+console.log("the single-target Apply runs triggers:", dmg2.includes("if (dealt > 0) await runDamageTriggers(src, actor, t.uuid, f.comps ?? []);"), "| so does a merged card row:", dmg2.includes("await runDamageTriggers(src, actor, row.uuid, row.comps ?? []);"), "| a chat line says it fired:", trg.includes("triggers: ${esc(target.name)} gains"));
+console.log("the dialog lists bonus damage effects and triggers:", acts2.includes("const extraNotices = [") && acts2.includes('...triggerNotices(actor,') && acts2.includes("notices: [...extraNotices,"), "| bonus damage text, e.g.:", "Divine Surge: +1d8 Holy");
+
+console.log("--- v0.0.128: hover texts live on the items; chips are short; per creature; the Aura's squares");
+const { hoverOf } = await import(ROOT + "module/util.mjs");
+console.log("hover of an item:", JSON.stringify(hoverOf("", "<p>When you deal <b>Holy</b> damage&nbsp;to a Profane creature, it is <i>Enfeebled 1</i> (EoT).</p>")), "| its own hover text wins:", JSON.stringify(hoverOf("Holy hurts the profane", "<p>long text</p>")), "| long descriptions are cut at:", hoverOf("", "x ".repeat(500)).length);
+const featH = { id: "pj2", name: "Profane Judgment", type: "feature", system: { description: "<p>Holy damage makes the Profane Enfeebled 1 (EoT).</p>", hover: "", settings: [{ ...blank, type: "ondamage", trigSub: "Ho", trigTag: "Profane", fxUuid: "Compendium.x.Item.enf", minEscalation: 0 }] } };
+const palH = { name: "Kai", type: "character", system: { escalation: 0 }, effects: [], itemTypes: { feature: [featH], talent: [] } };
+const w1 = { uuid: "Actor.wight", name: "Wight", system: { tags: S(["profane"]) } }, w2 = { uuid: "Actor.ghoul", name: "Ghoul", system: { tags: S(["profane"]) } };
+const nn = T.triggerNotices(palH, [w1, w2], S(["Ho"]));
+console.log("the chip is just the name:", nn.map(n => `${n.text} (for ${n.for})`).join(" | "));
+console.log("what it does is on the hover:", nn[0].why);
+const docs2 = []; { const walk = d => { for (const f of fs.readdirSync(d, { withFileTypes: true })) { const q = d + "/" + f.name; if (f.isDirectory()) walk(q); else if (f.name.endsWith(".json") && !f.name.startsWith("_folder")) docs2.push(JSON.parse(fs.readFileSync(q, "utf8"))); } }; walk(ROOT + "packs/_source"); }
+const AU = await import(ROOT + "module/aura.mjs"), { tokenDistance } = await import(ROOT + "module/light.mjs");
+const draw = (token, size) => { const cells = new Set(AU.auraCells(token, size, 100, tokenDistance).map(c => `${c.x / 100},${c.y / 100}`)); let rows = []; for (let j = -3; j < 6; j++) { let r = ""; for (let i = -3; i < 6; i++) r += cells.has(`${i},${j}`) ? "#" : "."; rows.push(r); } return rows.join("\n"); };
+console.log("Aura 1 around one square:\n" + draw({ x: 0, y: 0, width: 1, height: 1 }, 1));
+console.log("Aura 2 around one square:\n" + draw({ x: 0, y: 0, width: 1, height: 1 }, 2));
+console.log("Aura 1 around a 2x2 creature:\n" + draw({ x: 0, y: 0, width: 2, height: 2 }, 1));
+const acts3 = fs.readFileSync(ROOT + "module/actions.mjs", "utf8"), tpl3 = fs.readFileSync(ROOT + "templates/item-sheet.hbs", "utf8"), aur = fs.readFileSync(ROOT + "module/aura.mjs", "utf8");
+console.log("several targets: a trigger chip in its creature's tile:", acts3.includes("const infoMods = notices.filter(n => n.for && perCreature)") && acts3.includes("const chipOf = m => m.info ?"), "| the sheet has a Hover text on effects and on passives:", (tpl3.match(/name="system.hover"/g) || []).length === 2, "| hovering a token shows its Aura:", aur.includes('Hooks.on("hoverToken"'));
+console.log("--- v0.0.129: the outline, and a color for each Aura");
+const edges = (cells) => AU.outlineSegments(cells, 100).length;
+const ring = (token, size) => AU.auraCells(token, size, 100, tokenDistance);
+console.log("edges of the limit: one square", edges([{ x: 0, y: 0 }]), "| Aura 1 around one square (a 3x3 block)", edges(ring({ x: 0, y: 0, width: 1, height: 1 }, 1)), "| Aura 2 (a rounded square)", edges(ring({ x: 0, y: 0, width: 1, height: 1 }, 2)), "| two squares apart (two limits)", edges([{ x: 0, y: 0 }, { x: 300, y: 0 }]), "| two squares side by side (shared edge not drawn)", edges([{ x: 0, y: 0 }, { x: 100, y: 0 }]));
+const c = a => { const k = AU.auraColors(a); return `outline ${k.outline.toString(16).padStart(6, "0")}, squares ${k.fill.toString(16).padStart(6, "0")}`; };
+console.log("colors: allies by default:", c({ who: "allies" }), "| enemies:", c({ who: "enemies" }), "| its own:", c({ who: "allies", outline: "#d4a62a", fill: "#3fb68b" }), "| a bad value falls back:", c({ who: "all", outline: "gold" }));
+const flagsC = AF.appliedFlags({ settings: [{ ...blank, type: "aura", auraSize: 3, auraWho: "allies", auraSelf: true, auraOutline: "#d4a62a", auraFill: "#d4a62a", fxUuid: "Compendium.x.Item.vigil" }], description: "", expireOn: S([]), expireAll: false }, {});
+console.log("the flags carry the colors:", JSON.stringify(flagsC.auras));
+const aur2 = fs.readFileSync(ROOT + "module/aura.mjs", "utf8"), stl2 = fs.readFileSync(ROOT + "templates/parts/settings.hbs", "utf8");
+console.log("drawn in combat, for every token with an Aura:", aur2.includes('const inCombat = !!game.combat?.started && outlinesOn()') && aur2.includes("if (!inCombat && t.id !== hoveredId) continue;"), "| the squares only on hover:", aur2.includes("if (t.id === hoveredId && grid?.highlightPosition)"), "| both PixiJS 7 and 8 drawing:", aur2.includes("typeof g.lineStyle === \"function\"") && aur2.includes("g.stroke({"), "| color pickers in the editor:", stl2.includes('data-field="auraOutline"') && stl2.includes('data-field="auraFill"'), "| a setting turns the combat outlines off:", fs.readFileSync(ROOT + "module/twod12.mjs", "utf8").includes('"auraOutlines"'));
+console.log("the Paladin's auras have their own colors:", ["Shield of Faith (Aura)", "Aura of Protection (1 AP)", "Divine Vigil"].map(n => { const d = docs2.find(x => x.name === n); return `${n}: ${d?.system.settings[0].auraOutline}`; }).join(" | "));

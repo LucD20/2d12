@@ -1,0 +1,160 @@
+// The Details tab of an Effect, in words: one sentence per setting (shown when it's collapsed), the "In short" line at the top,
+// and the trait chips (the traits a setting needs, with the color of their family). The sheet (sheets.mjs) builds its context from these.
+import { TWOD12 } from "./config.mjs";
+import { esc } from "./util.mjs";
+
+const keys = s => (s ? [...s] : []);
+/** The name of an Effect by its UUID (empty when it can't be looked up: tests, or an Effect that no longer exists). */
+const fxNameOf = uuid => { try { return uuid && typeof fromUuidSync === "function" ? (fromUuidSync(uuid)?.name ?? "") : ""; } catch (e) { return ""; } };
+const traitName = k => TWOD12.traits[k] ?? TWOD12.rollKinds?.[k] ?? (String(k).startsWith("__name:") ? `${String(k).slice(7).replace(/-/g, " ")} (by name)` : k);
+const plural = (n, w) => `${n} ${w}${n === 1 ? "" : "s"}`;
+/** "Melee", "Melee and Strike", "Body, Mind or Magic". */
+export function wordList(items, joiner = "and") {
+  if (items.length <= 1) return items.join("");
+  return `${items.slice(0, -1).join(", ")} ${joiner} ${items.at(-1)}`;
+}
+const traitList = (s, joiner) => wordList(keys(s).map(k => `<b>${esc(traitName(k))}</b>`), joiner);
+
+/** The color of a trait's family (the same colors as the book). */
+export function familyColor(key) { return String(key).startsWith("__") ? "#6b6b74" : (TWOD12.traitFamilies.find(f => f.traits.includes(key))?.color ?? "#888780"); }
+
+/** The four ways a setting can choose its rolls, in the order they read. */
+export const PRED_FIELDS = {
+  all: { lead: "with all of", label: "All of" },
+  any: { lead: "or any of", label: "Any of" },
+  none: { lead: "but none of", label: "None of" },
+  from: { lead: "saves against Actions with any of", label: "Saves against" }
+};
+
+/** " with Melee and Strike, but not Ranged" (empty when the setting matches every roll). */
+export function predicateText(x) {
+  const bits = [];
+  if (keys(x.all).length) bits.push(`with ${traitList(x.all, "and")}`);
+  if (keys(x.any).length) bits.push(`${keys(x.all).length ? "and " : "with "}any of ${traitList(x.any, "or")}`);
+  if (keys(x.none).length) bits.push(`but not ${traitList(x.none, "or")}`);
+  if (keys(x.from).length) bits.push(`(saves against ${traitList(x.from, "or")} Actions)`);
+  return bits.length ? " " + bits.join(", ") : "";
+}
+
+/** One sentence that says what a setting does. */
+export function settingSentence(x) {
+  switch (x.type) {
+    case "boonbane": {
+      const gains = [x.boons ? plural(x.boons, "boon") : "", x.banes ? plural(x.banes, "bane") : ""].filter(Boolean).join(" and ");
+      const pred = predicateText(x), every = !pred;   // no traits: every roll
+      const rolls = `${every ? "every roll" : "rolls"} made ${x.against ? "<b>against</b> this creature" : "by this creature"}${pred}`;
+      if (!gains) return `Nothing yet on ${rolls}.`;
+      return `<b>${gains}</b>${x.byValue ? " (times the condition's value)" : ""} on ${rolls}.`;
+    }
+    case "damagestep": {
+      const dmg = [x.empowered ? `Empowered ${x.empowered}` : "", x.enfeebled ? `Enfeebled ${x.enfeebled}` : ""].filter(Boolean).join(" and ");
+      const pred = predicateText(x), every = !pred;
+      const rolls = `${every ? "every roll" : "rolls"} made by this creature${pred}`;
+      if (!dmg) return `Nothing yet on ${rolls}.`;
+      return `${rolls.charAt(0).toUpperCase()}${rolls.slice(1)} ${every ? "deals" : "deal"} <b>${dmg}</b> damage.`;
+    }
+    case "bonusdamage": {
+      const tiers = keys(x.tiers);
+      const on = tiers.length && tiers.length < 3 ? ` on ${wordList(tiers.map(t => t.toUpperCase()), "and")}` : "";
+      const pool = x.dmgPool ? ` to ${esc((TWOD12.pools[x.dmgPool] ?? "").replace(/\s*\[.*\]/, ""))}` : "";
+      return `The next action${predicateText(x) || " of any kind"} deals <b>+${esc(x.dmg || "?")}${x.dmgSub ? " " + esc(TWOD12.subtypes[x.dmgSub]) : ""}</b> damage${pool}${on}.`;
+    }
+    case "grant":
+      return `Can use <b>${esc(x.grantAction || "?")}</b> ${x.grantCount === 1 ? "once" : `${x.grantCount} times`} for <b>${x.grantAp ? `${x.grantAp} AP` : "free"}</b>${x.boons ? `, with ${plural(x.boons, "boon")}` : ""}${x.grantDistinct ? ", a different target each time" : ""}.`;
+    case "aura": {
+      const fx = fxNameOf(x.fxUuid), who = { allies: "allies", enemies: "enemies", all: "creatures" }[x.auraWho] ?? "allies";
+      return `An <b>Aura ${Math.max(1, Number(x.auraSize) || 1)}</b> around the creature: ${who}${x.auraSelf ? " and the creature itself" : ""} inside gain <b>${esc(fx) || "(drop an Effect)"}</b>.`;
+    }
+    case "ondamage": {
+      const sub = TWOD12.subtypes[x.trigSub] ?? "any", fx = fxNameOf(x.fxUuid);
+      return `When it deals <b>${esc(sub)}</b> damage to a creature${x.trigTag ? ` with the <b>${esc(x.trigTag)}</b> Tag` : ""}, that creature gains <b>${esc(fx) || "(drop an Effect)"}</b>.`;
+    }
+    case "defense": {
+      const n = Math.trunc(Number(x.defValue)) || 0;
+      return `<b>${n >= 0 ? "+" : "\u2212"}${Math.abs(n)}</b> to ${esc(TWOD12.defenseKinds[x.defKind] ?? "every Defense")}${x.defKind === "all" ? " (Armor, Ward and every Vs. Attribute)" : ""}.`;
+    }
+    case "speed":
+      return x.speedMode === "override" ? `The creature's Speed becomes <b>${esc(x.speedFormula || "?")}</b>.` : `Add <b>${esc(x.speedFormula || "?")}</b> to the creature's Speed.`;
+    case "light":
+      return `The token sheds bright light out to <b>${x.bright}</b> and dim light out to <b>${x.dim}</b> squares.`;
+    case "note": {
+      const attrs = keys(x.attrs).map(k => TWOD12.attributes[k] ?? k);
+      return `Shows the note <b>${esc(x.title || "(no title)")}</b> in ${attrs.length ? `${wordList(attrs, "and")} rolls` : "every roll"}.`;
+    }
+    default: return "";
+  }
+}
+
+/** The short form of a setting for the "In short" line. */
+export function settingShort(x) {
+  const strip = s => s.replace(/<[^>]+>/g, "");
+  switch (x.type) {
+    case "boonbane": {
+      const gains = [x.boons ? plural(x.boons, "boon") : "", x.banes ? plural(x.banes, "bane") : ""].filter(Boolean).join(" and ");
+      const p = strip(predicateText(x)).trim();
+      if (!gains) return "no boons yet";
+      return `${gains}${p ? (p.startsWith("(") ? ` ${p}` : ` (${p})`) : (x.against ? " on every roll against it" : " on every roll")}`;
+    }
+    case "damagestep": {
+      const dmg = [x.empowered ? `Empowered ${x.empowered}` : "", x.enfeebled ? `Enfeebled ${x.enfeebled}` : ""].filter(Boolean).join(", ");
+      const p = strip(predicateText(x)).trim();
+      if (!dmg) return "no damage step yet";
+      return `${dmg}${p ? ` (${p})` : ""}`;
+    }
+    case "aura": return `Aura ${Math.max(1, Number(x.auraSize) || 1)}: ${fxNameOf(x.fxUuid) || "no Effect yet"}`;
+    case "ondamage": return `${fxNameOf(x.fxUuid) || "an Effect"} on ${TWOD12.subtypes[x.trigSub] ?? "any"} damage${x.trigTag ? ` to ${x.trigTag}` : ""}`;
+    case "defense": { const n = Math.trunc(Number(x.defValue)) || 0; return `${n >= 0 ? "+" : "\u2212"}${Math.abs(n)} ${x.defKind === "all" ? "Defense" : (TWOD12.defenseKinds[x.defKind] ?? "Defense")}`; }
+    case "speed": return x.speedMode === "override" ? `Speed becomes ${x.speedFormula || "?"}` : `Speed ${/^[-+]/.test(x.speedFormula ?? "") ? "" : "+"}${x.speedFormula || "?"}`;
+    case "light": return `light ${x.bright}/${x.dim}`;
+    case "note": return `note "${x.title || "(no title)"}"`;
+    default: return strip(settingSentence(x)).replace(/\.$/, "").replace(/^The next action/, "next action");
+  }
+}
+
+/** A condition this effect applies, in words. */
+export function conditionShort(c) {
+  return `applies ${c.name}${c.valued ? ` ${c.value}` : ""}`;
+}
+
+/** How the effect ends, in words (empty when it lasts until removed and no action ends it). */
+export function endsShort(s) {
+  const bits = [];
+  if (s.duration?.type === "eot") bits.push("lasts until the end of its turn");
+  else if (s.duration?.type === "rounds") bits.push(`lasts ${plural(s.duration.rounds || 1, "round")}`);
+  const ex = keys(s.expireOn).map(traitName);
+  if (ex.length) bits.push(`ends early after ${s.expireAll ? "an action that is " + wordList(ex, "and") : "a " + wordList(ex, "or") + " action"}`);
+  return bits.join(" · ");
+}
+
+/** The "In short" line: everything the effect does and how it ends, joined by middle dots. */
+export function effectSummary(s) {
+  const bits = [
+    ...(s.settings ?? []).map(settingShort),
+    ...(s.conditions ?? []).map(conditionShort)
+  ];
+  if (s.linked) bits.push(`also applies ${s.linked}`);
+  const ends = endsShort(s);
+  if (ends) bits.push(ends);
+  if (!(s.settings ?? []).length && !(s.conditions ?? []).length && !s.linked) bits.unshift("does nothing yet");
+  const out = bits.join(" · ");
+  return out.charAt(0).toUpperCase() + out.slice(1) + ".";
+}
+
+/** The chip rows of one setting: the fields that have traits, plus the ones the user opened (shown is a Set of field names). */
+export function predRows(x, shown = new Set(), fields = ["all", "any", "none", "from"], everyLabel = "every roll") {
+  // The roll kinds first (Check, Save, Attribute Action), then the traits in order.
+  const sorted = [...Object.entries(TWOD12.rollKinds ?? {}), ...Object.entries(TWOD12.traits).sort((a, b) => a[1].localeCompare(b[1]))];
+  const none = fields.every(f => !keys(x[f]).length);   // nothing chooses the rolls: it is every roll, and the chip says so
+  return fields.filter(f => f === "all" || keys(x[f]).length || shown.has(f)).map(f => {
+    const have = new Set(keys(x[f]));
+    return {
+      field: f, lead: PRED_FIELDS[f].lead, label: PRED_FIELDS[f].label, every: f === "all" && none ? everyLabel : "",
+      chips: keys(x[f]).map(k => ({ key: k, label: traitName(k), color: familyColor(k) })),
+      options: sorted.filter(([k]) => !have.has(k)).map(([key, label]) => ({ key, label }))
+    };
+  });
+}
+/** The fields of a setting that are hidden (offered as "+ Any of…" links). */
+export function hiddenPreds(x, shown = new Set(), fields = ["all", "any", "none", "from"]) {
+  return fields.filter(f => f !== "all" && !keys(x[f]).length && !shown.has(f)).map(f => ({ field: f, label: PRED_FIELDS[f].label }));
+}

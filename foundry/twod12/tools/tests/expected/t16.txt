@@ -1,0 +1,5 @@
+<span class="tchip" style="--tb:#D3D1C7;--tt:#444441">attack</span><span class="tchip" style="--tb:#B4B2A9;--tt:#2C2C2A">Divine</span><span class="tchip" style="--tb:#B5D4F4;--tt:#0C447C">Melee</span><span class="tchip" style="--tb:#C0DD97;--tt:#27500A">Two-handed</span><span class="tchip" style="--tb:#9FE1CB;--tt:#085041">Weapon</span>
+<span class="apmark" data-tooltip="3 Action Points">3AP</span>
+false false true false [{"pool":"B","sub":"H","total":5},{"pool":"M","sub":"","total":6}]
+heal-only: false false false
+a b + c + d
