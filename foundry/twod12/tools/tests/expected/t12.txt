@@ -3,7 +3,7 @@
 @Save[appeal|dc:30|traits:divine|t1:1d6[mind,holy]|t2:1d4[body,slash], "Prone"|t3:0]
 @Template[emanation|distance:2|targets:enemies|self:yes|places:yes]
 {"t1":"1d6[mind,holy]","t2":"1d4[body,slash], \"Prone\"","t3":"0"} [ 'divine' ]
- Appeal Save DC 30 Divine &#10022; &#10022; &#10022; ≤ 29 5 Holy 30–36 3 Slash Prone ≥ 37 &mdash; &#10022; Name Save Damage Orc Appeal 
+ Appeal Save DC 30 Keywords Divine &#10022; &#10022; &#10022; ≤ 29 5 Holy 30–36 3 Slash Prone ≥ 37 &mdash; &#10022; Name Save Damage Orc Appeal 
 update {"system.damage.bodyLethal":3}
 msg updated; has result: true
 []

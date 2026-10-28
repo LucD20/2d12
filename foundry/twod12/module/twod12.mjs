@@ -118,7 +118,7 @@ Hooks.once("init", () => {
   });
   game.settings.register("twod12", "regionSnapCorners", { name: "Regions snap to whole squares", hint: "A Region drawn by hand is put on whole squares when it is created: a circle becomes the 2d12 area of its size (an Emanation on a square, a Burst on a corner; draw 2 for a 2 Emanation), a rectangle or a polygon snaps its corners to the grid.", scope: "world", config: true, type: Boolean, default: true });
   game.settings.register("twod12", "showOdds", { name: "Show the odds on cards", hint: "For testing: action cards show the chance of each tier, and damage cards the average and the chance of that total.", scope: "client", config: true, type: Boolean, default: true });
-  game.settings.register("twod12", "highlightTraits", { name: "Highlight traits and damage types in rules text", hint: "A very light background behind trait names (Strike, Divine...) and colored damage types (Cold, Holy...) on cards.", scope: "client", config: true, type: Boolean, default: true });
+  game.settings.register("twod12", "highlightTraits", { name: "Highlight traits and damage types in rules text", hint: "The book's text colors on cards (Attributes, Modifiers, Banes and Boons, Rally Points, costs, movement, damage), a light background behind trait names (Strike, Divine...) and colored damage types (Cold, Holy...).", scope: "client", config: true, type: Boolean, default: true });
   CONFIG.Actor.dataModels = { character: CharacterData, npc: NpcData };
   CONFIG.Item.dataModels = { species: SpeciesData, class: ClassData, feature: FeatureData, action: ActionData, weapon: WeaponData, armor: ArmorData, gear: GearData, effect: EffectData, talent: TalentData };
 

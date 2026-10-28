@@ -143,14 +143,14 @@ export const TWOD12 = {
   },
   effectSettings: { boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", speed: "Speed", light: "Token Light", note: "Note" },
   durationTypes: { "": "None", eot: "End of Turn (EoT)", rounds: "Rounds" },
-  traitFamilies: [
-    // By rules role (the same colors as the book): what you roll, what you need, who it hits, what it deals, no rule of its own, weapon properties.
-    { key: "roll", color: "#3f8f8a", traits: ["appeal", "body", "instinct", "magic", "mind", "save", "signature", "split", "weapon"] },
-    { key: "need", color: "#4b7aa6", traits: ["handle", "melee", "move", "ranged", "shot"] },
-    { key: "hits", color: "#c0603f", traits: ["area", "self", "strike"] },
-    { key: "deals", color: "#a8862c", traits: ["nonlethal"] },
-    { key: "none", color: "#888780", traits: ["divine", "focus"] },
-    { key: "item", color: "#5b8a5a", traits: ["barehanded", "nonthreatening", "projectile", "reload", "twohanded"] }
+  // Trait groups (v0.0.179, the book's GROUPS in book/build_rules.py): listed in this order, a trait with no group of its own is a Keyword.
+  // Their colors are CSS variables (--g-roll...), light on parchment and dark on the dark sheets (system.css). Weapon properties have no group and no color.
+  traitGroups: [
+    { key: "roll", label: "Roll", traits: ["appeal", "body", "instinct", "magic", "mind", "save", "signature", "split", "weapon"] },
+    { key: "requires", label: "Requires", traits: ["handle", "melee", "ranged", "shot"] },
+    { key: "kind", label: "Kind", traits: ["area", "move", "self", "strike"] },
+    { key: "damage", label: "Damage", traits: ["nonlethal"] },
+    { key: "keywords", label: "Keywords", traits: ["divine", "focus", "fear"] }
   ],
   // The Bestiary (book: bestiary.html; v0.0.163): an NPC is a role plus a rating for each number. Level 1 tables only (later levels are not written yet).
   //   attr: the Medium Attribute; hm, hb: the Medium Health Multiplier and the Health Base; defense: the Medium Defense; basic: Medium Basic attack averages (Tier 2, Tier 3, [Mod] included);
@@ -239,7 +239,11 @@ export const dtypeHtml = code => {
 /** Turn "[B] 1[W] Sl" (already escaped) into the card's look: icons for [B]/[M]/[C], the damage type as a colored name. */
 /** The ink of a damage type ("Co" -> its color), for the amount written before it (v0.0.137: "1d8 Cold" is all in Cold's color). */
 export const inkOf = code => { const k = Object.keys(TWOD12.subtypeInk ?? {}).find(x => x.toLowerCase() === String(code ?? "").toLowerCase()); return k ? TWOD12.subtypeInk[k] : ""; };
+// v0.0.179 (the book's look): a damage expression after [B] or [M] ("[B] 1[W] + [Mod]", "[M] 1d4") is in its pool's color, the damage type in its own;
+// an amount with no pool before it ("+1d6 Ho" from a bonus) keeps the type's ink as before.
+const POOL_EXPR = /\[(B|M)\](\s*)((?:\d+d\d+|\d*\[W\]|\[Mod\]|\[At\]|\d+)(?:\s*[+\-\u2212]\s*(?:\d+d\d+|\d*\[W\]|\[Mod\]|\[At\]|\d+))*)/g;
 export const prettyDamage = html => String(html ?? "")
+  .replace(POOL_EXPR, (m, p, sp, expr) => `${poolIcon(p)}${sp}<span class="pool-${p.toLowerCase()}">${expr}</span>`)
   .replace(/(\d*\[W\]|\[At\]|\d+d\d+(?:[+-]\d+)?|\b\d+)(\s+)(Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un)\b/g, (m, amt, sp, code) => (inkOf(code) ? `<span class="dtamt" style="color:${inkOf(code)}">${amt}</span>${sp}${code}` : m))
   .replace(/\[(B|M|C)\]/g, (m, p) => poolIcon(p))
   .replace(/\b(Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un)\b/g, m => dtypeHtml(m));
@@ -258,18 +262,33 @@ export const apLabel = (aps, reaction = false) => {
 export const apIcon = (n, reaction = false) => apLabel([n], reaction);
 
 const escAttr = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-/** Traits as chevron tags, grouped by family: inside a group the back of each chevron is indented to nest with the previous one. */
-/** Trait chips: a flat tag per trait, tinted by its family (Strike red, Melee and Self blue, Divine and Weapon gold...). */
-const CHIP_COLORS = { roll: ["#9FE1CB", "#085041"], need: ["#B5D4F4", "#0C447C"], hits: ["#F5C4B3", "#712B13"], deals: ["#FAC775", "#633806"], none: ["#B4B2A9", "#2C2C2A"], item: ["#C0DD97", "#27500A"] };
-export function traitChevrons(traits) {
-  // Alphabetical, each chip tinted by its rules role.
-  const label = k => String(TWOD12.traits[k] ?? k);
-  const out = [...traits].sort((a, b) => label(a).localeCompare(label(b))).map(k => {
-    const f = TWOD12.traitFamilies.find(x => x.traits.includes(k));
-    const [bg, fg] = CHIP_COLORS[f?.key] ?? ["#D3D1C7", "#444441"];
-    return { k, bg, fg };
-  });
-  return out.map(({ k, bg, fg }) => `<span class="tchip" style="--tb:${bg};--tt:${fg}" data-tooltip="${escAttr(TWOD12.traitHelp[k] ?? "TBD")}">${escAttr(TWOD12.traits[k] ?? k)}</span>`).join("");
+/** The group of a trait (v0.0.179): roll, requires, kind, damage or keywords (a trait with no group of its own). */
+export const traitGroupOf = k => TWOD12.traitGroups.find(g => g.traits.includes(k))?.key ?? "keywords";
+/** Trait keys in the book's order: by group (Roll, Requires, Kind, Damage, Keywords), alphabetical inside a group. */
+export const orderTraits = keys => { const lab = k => String(TWOD12.traits[k] ?? k), gi = k => TWOD12.traitGroups.findIndex(g => g.key === traitGroupOf(k));
+  return [...(keys ?? [])].sort((a, b) => gi(a) - gi(b) || lab(a).localeCompare(lab(b))); };
+/** The trait picker's options, grouped (v0.0.179): { options: [{ value, label, group }], groups: ["Roll", ...] } for an Action's or Talent's Traits. */
+export const traitPicker = () => ({
+  options: orderTraits(Object.keys(TWOD12.actionTraits)).map(k => ({ value: k, label: TWOD12.actionTraits[k], group: TWOD12.traitGroups.find(g => g.key === traitGroupOf(k))?.label ?? "Keywords" })),
+  groups: TWOD12.traitGroups.map(g => g.label)
+});
+/** The color of a trait's group, as a CSS value (for inline styles inside the system's sheets and cards). */
+export const traitColor = k => `var(--g-${traitGroupOf(k)})`;
+
+/**
+ * Trait chips (v0.0.179, the book's look): a block per trait group, in the order Roll, Requires, Kind, Damage, Keywords, alphabetical inside a group,
+ * each with a small uppercase label over its chips and a thin line between blocks; the chips are tinted in the group's color.
+ * properties: a weapon's properties (Melee, Ranged, Thrown...): plain neutral chips, no groups and no color.
+ */
+export function traitChevrons(traits, { properties = false } = {}) {
+  const label = k => String(TWOD12.traits[k] ?? k), byLabel = (a, b) => label(a).localeCompare(label(b));
+  const chip = (k, cls = "") => `<span class="tchip${cls}" data-tooltip="${escAttr(TWOD12.traitHelp[k] ?? "TBD")}">${escAttr(label(k))}</span>`;
+  const list = [...(traits ?? [])];
+  if (properties) return list.length ? `<span class="tprops">${list.sort(byLabel).map(k => chip(k, " prop")).join("")}</span>` : "";
+  return TWOD12.traitGroups.map(g => {
+    const ks = list.filter(k => traitGroupOf(k) === g.key).sort(byLabel);
+    return ks.length ? `<span class="tg tg-${g.key}" style="--tg:var(--g-${g.key})"><span class="tgl">${g.label}</span><span class="tgc">${ks.map(k => chip(k)).join("")}</span></span>` : "";
+  }).join("");
 }
 
 /** The category shown at the far right of an Action title: "Paladin Feature 1" (the number is the level it is gained). */
@@ -285,26 +304,64 @@ export const cardColorFor = d => FREQ_COLORS[effectiveFrequency(d ?? {})] ?? FRE
 
 const TRAIT_WORDS = { Strike: "strike", Nonlethal: "nonlethal", Divine: "divine", Focus: "focus", Handle: "handle", Power: "magic", Signature: "signature", Melee: "melee", Ranged: "ranged", Self: "self", Weapon: "weapon", Reload: "reload", "Two-handed": "twohanded" };
 const DAMAGE_WORDS = { Acid: "Ac", Blunt: "Bl", Cold: "Co", Electricity: "El", Fire: "Fi", Force: "Fo", Holy: "Ho", Pierce: "Pi", Psychic: "Ps", Slash: "Sl", Thunder: "Th", Unholy: "Un" };
-const famColor = key => (TWOD12.traitFamilies.find(f => f.traits.includes(key)) ?? { color: "#888780" }).color;
+const famColor = key => traitColor(key);
+
+/* ------------------------------------------------------------------ text colors (v0.0.179: the book's CLASS_TOKEN, book/build_rules.py) */
+const ATOM = String.raw`(?:\d+d\d+|\d+\[W\]|\[Mod\]|\d+)`, EXPR = String.raw`${ATOM}(?:\s*[+\-\u2212/]\s*${ATOM})*`;
+const TOKEN_RE = new RegExp([
+  String.raw`(?<slash>${ATOM}(?:\s*/\s*${ATOM})+\s*\[(?<sp>[BM])\])`,      // "1d6 / 1d4 / 0 [M]": tier values with the pool after them
+  String.raw`(?<tag>\[(?<tp>[BM])\]\s*${EXPR})`,                             // "[B] 1[W] + [Mod]", "[M] 1d6+1"
+  String.raw`(?<ht>\[HT(?::[^\]]*)?\])`,                                      // "[HT: Entering, Turn]"
+  String.raw`(?<mod>\b(?:Weapon|Power|Signature)\s(?:Modifier|Attribute)s?\b)`,
+  String.raw`\((?<apa>\d(?:/\d)*A)\)|(?<ap>\b\d(?:\s*/\s*\d)*\s?AP\b)|(?<rx>\b\d(?:/\d)*R\b)`,
+  String.raw`(?<mv>\b(?:Advance|Evade|Pushed|Pulled|Slid|Reposition)\s\d+\b)`,
+  String.raw`(?<neg>\b(?:Doomed|Enfeebled|Vulnerable|Down)\b(?:\s\d+\b)?)|(?<pos>\b(?:Favored|Empowered)\b(?:\s\d+\b)?)`,
+  String.raw`(?<bane>\b(?:\d+\s+)?Banes?\b)|(?<boon>\b(?:\d+\s+)?Boons?\b)|(?<rally>\b(?:(?:up to )?\d+\s+)?Rally Points?\b)`,
+  String.raw`(?<attr>\b(?:Body|Mind|Instinct|Appeal)\b)`,
+  `(?<word>\\b(?:${[...Object.keys(TRAIT_WORDS), ...Object.keys(DAMAGE_WORDS)].sort((a, b) => b.length - a.length).join("|")})\\b)`
+].join("|"), "g");
+/** One colored token of text (the class names are the book's). */
+function colorToken(m, g) {
+  if (g.slash) return `<span class="pool-${g.sp.toLowerCase()}">${m}</span>`;
+  if (g.tag) return `<span class="pool-${g.tp.toLowerCase()}">${m}</span>`;
+  if (g.ht) return `<span class="kw-ht">${m}</span>`;
+  if (g.mod) return `<span class="mod-${m.split(/\s/)[0].toLowerCase()}">${m}</span>`;
+  if (g.apa) return `(<span class="kw-ap">${g.apa}</span>)`;
+  if (g.ap || g.rx) return `<span class="kw-ap">${m}</span>`;
+  if (g.mv) return `<span class="kw-mv">${m}</span>`;
+  if (g.neg) return `<span class="kw-neg">${m}</span>`;
+  if (g.pos) return `<span class="kw-pos">${m}</span>`;
+  if (g.bane) return `<span class="kw-bane">${m}</span>`;
+  if (g.boon) return `<span class="kw-boon">${m}</span>`;
+  if (g.rally) return `<span class="kw-rally">${m}</span>`;
+  if (g.attr) return `<span class="at-${m.toLowerCase()}">${m}</span>`;
+  return TRAIT_WORDS[m] ? `<span class="trhl" style="--tc:${famColor(TRAIT_WORDS[m])}">${m}</span>` : `<span class="dmgword" style="--dc:${TWOD12.subtypeColors[DAMAGE_WORDS[m]]}">${m}</span>`;
+}
+// Never inside: links, buttons, headings, scripts, SVG, and chips or marks that already have their own look.
+const SKIP_TAG = /^(a|button|h[1-6]|script|style|svg|summary|code)$/i;
+const SKIP_SPAN = /\bclass="[^"]*\b(tchip|tgl|apmark|rmark|dtype|dtamt|dmgword|trhl|pool-[bm]|at-\w+|kw-\w+|mod-\w+)\b/;
 
 /**
- * Low-contrast backgrounds behind trait names and colored damage types written in rules text ("Next Strike +1d6 Cold").
- * Only whole capitalized words outside of tags and buttons are touched. Can be turned off in the client settings.
+ * The book's text colors (v0.0.179) in rules text on cards and sheets: the four Attributes, the Weapon, Power and Signature Modifier, Bane, Boon and
+ * Rally Point with their number, the states (Doomed, Enfeebled, Vulnerable, Down in red; Favored, Empowered in blue), [HT], costs (1 AP, (1A), 1R),
+ * a movement with its value (Evade 2), damage expressions in their pool's color; trait names and damage types keep their light background.
+ * Only text outside tags is touched, never inside links, buttons, headings or chips. Can be turned off in the client settings.
  */
 export function highlightText(html) {
   try { if (game.settings.get("twod12", "highlightTraits") === false) return html; } catch (e) { /* setting not registered yet */ }
-  const re = new RegExp(`\\b(${[...Object.keys(TRAIT_WORDS), ...Object.keys(DAMAGE_WORDS)].sort((a, b) => b.length - a.length).join("|")})\\b`, "g");
-  let skip = 0;
+  const stack = [];   // open elements: true when their text must stay as it is
   return String(html).split(/(<[^>]+>)/).map(part => {
     if (part.startsWith("<")) {
-      if (/^<(a|button)\b/i.test(part)) skip++;
-      else if (/^<\/(a|button)>/i.test(part)) skip = Math.max(0, skip - 1);
+      const close = part.match(/^<\/(\w+)/), open = part.match(/^<(\w+)/);
+      if (close) { for (let n = stack.length - 1; n >= 0; n--) if (stack[n].tag === close[1].toLowerCase()) { stack.splice(n); break; } }
+      else if (open && !/\/>$/.test(part) && !/^(br|hr|img|input|meta|link|wbr)$/i.test(open[1])) {
+        const tag = open[1].toLowerCase();
+        stack.push({ tag, skip: SKIP_TAG.test(tag) || (tag === "span" && SKIP_SPAN.test(part)) });
+      }
       return part;
     }
-    if (skip) return part;
-    return part.replace(re, w => TRAIT_WORDS[w]
-      ? `<span class="trhl" style="--tc:${famColor(TRAIT_WORDS[w])}">${w}</span>`
-      : `<span class="dmgword" style="--dc:${TWOD12.subtypeColors[DAMAGE_WORDS[w]]}">${w}</span>`);
+    if (!part || stack.some(x => x.skip)) return part;
+    return part.replace(TOKEN_RE, (m, ...args) => colorToken(m, args[args.length - 1]));
   }).join("");
 }
 

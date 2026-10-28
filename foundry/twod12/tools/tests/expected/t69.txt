@@ -1,4 +1,5 @@
-Whirlwind: Area #F5C4B3 | Melee #B5D4F4 | Self #F5C4B3 | Strike #F5C4B3 | Weapon #9FE1CB
-Smite:     Divine #B4B2A9 | Strike #F5C4B3 | Weapon #9FE1CB
-Trip:      Body #9FE1CB | Handle #B5D4F4 | Instinct #9FE1CB | Strike #F5C4B3
+Whirlwind: roll: Weapon | requires: Melee | kind: Area, Self, Strike
+Smite:     roll: Weapon | kind: Strike | keywords: Divine
+Trip:      roll: Body, Instinct | requires: Handle | kind: Strike
 Area help: These Actions target every creature in their area that they ... | Area is a trait: Area
+weapon properties (no color, no groups): <span class="tprops"><span class="tchip prop">Melee</span><span class="tchip prop">Reload</span><span class="tchip prop">Two-handed</span></span>

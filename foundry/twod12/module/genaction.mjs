@@ -2,7 +2,7 @@
 // Critical and Effects. The tiers are written like the card ("[B] 1d8 Co; Hindered (EoT)", "1[W]", "[Mod]", "[M] 2d6 Ho"); the short
 // codes of the old generator still work ("1WB, 1d8MCo"). A live preview of the card and an "Understood" line.
 // From the NPC sheet it creates the Action on the NPC; with an Action (its sheet) it fills that Action; otherwise a world item.
-import { TWOD12, subtypeCode } from "./config.mjs";
+import { TWOD12, subtypeCode, orderTraits, traitGroupOf } from "./config.mjs";
 import { parseTierFull, convertEffects } from "./gen.mjs";
 import { rawTierLine } from "./preview.mjs";
 import { esc } from "./util.mjs";
@@ -130,7 +130,8 @@ export async function openActionGenerator({ actor = null, item = null } = {}) {
     versions: it?.versions?.length ? it.versions.map(v => ({ ap: v.ap, t1: tierCardText(v, 1), t2: tierCardText(v, 2), t3: tierCardText(v, 3), critical: humanize(v.critical ?? ""), effects: humanize(v.effects ?? "") }))
       : [{ ap: 1, t1: "", t2: "", t3: "", critical: "", effects: "" }]
   };
-  const traitOpts = Object.entries(TWOD12.actionTraits ?? TWOD12.traits).map(([k, l]) => `<option value="${k}" ${start.traits.includes(k) ? "selected" : ""}>${esc(l)}</option>`).join("");
+  // v0.0.179: grouped like the book (Roll, Requires, Kind, Damage, Keywords).
+  const traitOpts = TWOD12.traitGroups.map(g => `<optgroup label="${g.label}">${orderTraits(Object.keys(TWOD12.actionTraits)).filter(k => traitGroupOf(k) === g.key).map(k => `<option value="${k}" ${start.traits.includes(k) ? "selected" : ""}>${esc(TWOD12.actionTraits[k])}</option>`).join("")}</optgroup>`).join("");
   const freqOpts = Object.entries(TWOD12.frequencies).map(([k, l]) => `<option value="${k}" ${k === start.frequency ? "selected" : ""}>${esc(l)}</option>`).join("");
   const content = `<div class="twod12 genact">
     <div class="ga-top">

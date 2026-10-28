@@ -72,7 +72,7 @@
     <label>Flavor <input type="text" name="system.flavor" value="{{system.flavor}}" placeholder="A small gift from the god you follow."></label>
     <label>Prerequisites <input type="text" name="system.requirements" value="{{system.requirements}}" placeholder="e.g. Brawler, Appeal +1"></label>
     <p class="hint">Level is the character level needed to choose the Talent. Shown as {{categoryShown}}.</p>
-    <label>Traits {{formInput fields.traits value=system.traits name="system.traits"}}</label>
+    <label>Traits {{formInput fields.traits value=system.traits name="system.traits" options=traitPicker.options groups=traitPicker.groups}}</label>
     {{/if}}
 
     {{#if hasMods}}
@@ -148,7 +148,7 @@
     {{/if}}
 
     {{#if isAction}}
-    <label>Traits {{formInput fields.traits value=system.traits name="system.traits"}}</label>
+    <label>Traits {{formInput fields.traits value=system.traits name="system.traits" options=traitPicker.options groups=traitPicker.groups}}</label>
     <label>Flavor <input type="text" name="system.flavor" value="{{system.flavor}}" placeholder="Your weapon blazes with holy light."></label>
     <div class="grid3 rx">
       <label class="inline"><input type="checkbox" name="system.reaction" {{#if system.reaction}}checked{{/if}}> Reaction</label>

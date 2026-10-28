@@ -16,7 +16,7 @@ export function wordList(items, joiner = "and") {
 const traitList = (s, joiner) => wordList(keys(s).map(k => `<b>${esc(traitName(k))}</b>`), joiner);
 
 /** The color of a trait's family (the same colors as the book). */
-export function familyColor(key) { return String(key).startsWith("__") ? "#6b6b74" : (TWOD12.traitFamilies.find(f => f.traits.includes(key))?.color ?? "#888780"); }
+export function familyColor(key) { return String(key).startsWith("__") ? "#6b6b74" : `var(--g-${TWOD12.traitGroups.find(g => g.traits.includes(key))?.key ?? "keywords"})`; }   // v0.0.179: the trait group's color
 
 /** The four ways a setting can choose its rolls, in the order they read. */
 export const PRED_FIELDS = {

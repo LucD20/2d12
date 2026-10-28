@@ -1,5 +1,5 @@
 // "Create Button" dialog: builds an inline roll command (@Check / @Damage / @Save / @Template / @Move / @Rally) and posts it to chat.
-import { TWOD12 } from "./config.mjs";
+import { TWOD12, orderTraits, traitGroupOf } from "./config.mjs";
 const { DialogV2 } = foundry.applications.api;
 const sel = (obj, cur = "") => Object.entries(obj).map(([k, l]) => `<option value="${k}" ${k === cur ? "selected" : ""}>${l}</option>`).join("");
 
@@ -52,7 +52,8 @@ export async function openBuilder() {
 }
 
 async function openBuilderDialog() {
-  const traitBoxes = Object.entries(TWOD12.traits).sort((a, b) => a[1].localeCompare(b[1])).map(([k, l]) => `<label class="inline"><input type="checkbox" name="traits" value="${k}"> ${l}</label>`).join("");
+  // v0.0.179: grouped like the book (Roll, Requires, Kind, Damage, Keywords), each group labeled in its color.
+  const traitBoxes = TWOD12.traitGroups.map(g => `<div class="tpick-g" style="--tg:var(--g-${g.key})"><span class="tgl">${g.label}</span>${orderTraits(Object.keys(TWOD12.actionTraits)).filter(k => traitGroupOf(k) === g.key).map(k => `<label class="inline"><input type="checkbox" name="traits" value="${k}"> ${TWOD12.actionTraits[k]}</label>`).join("")}</div>`).join("");
   const rows = [1, 2, 3, 4]
     .map(
       i =>

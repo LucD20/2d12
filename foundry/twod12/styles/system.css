@@ -1482,3 +1482,45 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 /* v0.0.173: the Snapshot is a picture */
 .twod12-height.hc-snap .hc-view { background: none; border: none; }
 .twod12-height.hc-snap img.hc-snapimg { display: block; width: 100%; height: auto; border: 1px solid #b9b1a1; }
+
+/* ---- v0.0.179 (pack F): the book's look. Colors are the book's variables (book/rules.css): light values on parchment (cards, item sheets, chat),
+   dark values on the dark actor sheet; a card drawn inside the dark sheet keeps its light values. */
+:root {
+  --g-roll: #1f7a73; --g-requires: #2c5f9e; --g-kind: #b4472a; --g-damage: #8a6a00; --g-keywords: #5c5a55;
+  --c-body: #7a1626; --c-mind: #17327a; --c-instinct: #14532d; --c-appeal: #6b4e00; --c-wmod: #9a4a00; --c-pmod: #5b3a9e; --c-smod: #455566;
+  --c-bane: #b3261e; --c-boon: #0b5cad; --c-rally: #0a6b62; --c-ap: #3b4cb8; --c-mv: #4d6b0a; }
+.application.twod12.twod12-actor, .application.twod12.twod12-actor .twod12 {
+  --g-roll: #5fd3c8; --g-requires: #7db1f5; --g-kind: #f29272; --g-damage: #e8c25a; --g-keywords: #aeb0b5;
+  --c-body: #ef8a96; --c-mind: #8db3ff; --c-instinct: #7fd49a; --c-appeal: #e6bd5a; --c-wmod: #f4a259; --c-pmod: #b794f6; --c-smod: #cfd8e3;
+  --c-bane: #ff6a4d; --c-boon: #4cc3ff; --c-rally: #3fd8c4; --c-ap: #9aa7ff; --c-mv: #b9dc6a; }
+.application.twod12.twod12-actor .acard, .application.twod12.twod12-actor .twod12.chat, .application.twod12.twod12-actor .acard .twod12, .application.twod12.twod12-actor .twod12.chat .twod12,
+.application.twod12.twod12-actor .nb {
+  --g-roll: #1f7a73; --g-requires: #2c5f9e; --g-kind: #b4472a; --g-damage: #8a6a00; --g-keywords: #5c5a55;
+  --c-body: #7a1626; --c-mind: #17327a; --c-instinct: #14532d; --c-appeal: #6b4e00; --c-wmod: #9a4a00; --c-pmod: #5b3a9e; --c-smod: #455566;
+  --c-bane: #b3261e; --c-boon: #0b5cad; --c-rally: #0a6b62; --c-ap: #3b4cb8; --c-mv: #4d6b0a; }
+/* trait groups: a block per group, a small uppercase label over its chips, a thin line between blocks; tinted chips 22px high, text centered */
+.twod12 span.tg { display: inline-flex; flex-direction: column; gap: 3px; padding: 0 10px; border-left: 1px solid color-mix(in srgb, currentColor 22%, transparent); vertical-align: top; margin: 2px 0; }
+.twod12 span.tg:first-child { padding-left: 0; border-left: 0; }
+.twod12 span.tg .tgl, .twod12 .tpick-g .tgl { font-size: 9px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--tg); line-height: 1; }
+.twod12 span.tg .tgc { display: flex; flex-wrap: wrap; gap: 4px; }
+.twod12 span.tg .tgc .tchip { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; height: 22px; margin: 0; padding: 0 9px; border-radius: 11px;
+  font-size: 12px; font-weight: 600; line-height: 1; color: var(--tg); box-shadow: none;
+  background: color-mix(in srgb, var(--tg) 16%, transparent); border: 1px solid color-mix(in srgb, var(--tg) 50%, transparent); }
+/* weapon properties: no color (plain neutral chips) */
+.twod12 .tprops { display: inline-flex; flex-wrap: wrap; gap: 4px; }
+.twod12 .tprops .tchip.prop { display: inline-flex; align-items: center; height: 22px; margin: 0; padding: 0 9px; border-radius: 11px; font-size: 12px; font-weight: 500; line-height: 1;
+  color: inherit; background: transparent; box-shadow: none; border: 1px solid color-mix(in srgb, currentColor 35%, transparent); }
+/* the builder's trait boxes, grouped */
+.twod12 .tpick-g { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 10px; padding: 3px 0; border-top: 1px solid color-mix(in srgb, currentColor 15%, transparent); }
+.twod12 .tpick-g:first-of-type { border-top: 0; }
+.twod12 .tpick-g .tgl { flex: 0 0 70px; }
+/* the text colors (CLASS_TOKEN in book/build_rules.py) */
+.twod12 .at-body { color: var(--c-body); font-weight: 600; } .twod12 .at-mind { color: var(--c-mind); font-weight: 600; }
+.twod12 .at-instinct { color: var(--c-instinct); font-weight: 600; } .twod12 .at-appeal { color: var(--c-appeal); font-weight: 600; }
+.twod12 .mod-weapon { color: var(--c-wmod); font-weight: 600; } .twod12 .mod-power { color: var(--c-pmod); font-weight: 600; } .twod12 .mod-signature { color: var(--c-smod); font-weight: 600; }
+.twod12 .kw-bane, .twod12 .kw-neg, .twod12 .kw-ht { color: var(--c-bane); font-weight: 600; }
+.twod12 .kw-boon, .twod12 .kw-pos { color: var(--c-boon); font-weight: 600; }
+.twod12 .kw-rally { color: var(--c-rally); font-weight: 600; } .twod12 .kw-ap { color: var(--c-ap); font-weight: 600; } .twod12 .kw-mv { color: var(--c-mv); font-weight: 600; }
+.twod12 .pool-b { color: var(--c-body); } .twod12 .pool-m { color: var(--c-mind); }
+/* Body and Mind keep their heart and brain icons, in their colors */
+.twod12 i.dt-body { color: var(--c-body); } .twod12 i.dt-mind { color: var(--c-mind); }

@@ -1,9 +1,9 @@
-T1: <i class="fa-solid fa-heart dt-body" data-tooltip="Body damage"></i> 1[W]
-T2: <i class="fa-solid fa-heart dt-body" data-tooltip="Body damage"></i> 1[W] + [Mod] + 1d4 H
-T3: <i class="fa-solid fa-heart dt-body" data-tooltip="Body damage"></i> 1[W] + [Mod] + 1d8 H + <i class="fa-solid fa-brain dt-mind" data-tooltip="Mind damage"></i> 1d6 H
-T1: <i class="fa-solid fa-heart dt-body" data-tooltip="Body damage"></i> 1d10 B
+T1: <i class="fa-solid fa-heart dt-body" data-tooltip="Body damage"></i> <span class="pool-b">1[W]</span>
+T2: <i class="fa-solid fa-heart dt-body" data-tooltip="Body damage"></i> <span class="pool-b">1[W] + [Mod] + 1d4</span> H
+T3: <i class="fa-solid fa-heart dt-body" data-tooltip="Body damage"></i> <span class="pool-b">1[W] + [Mod] + 1d8</span> H + <i class="fa-solid fa-brain dt-mind" data-tooltip="Mind damage"></i> <span class="pool-m">1d6</span> H
+T1: <i class="fa-solid fa-heart dt-body" data-tooltip="Body damage"></i> <span class="pool-b">1d10</span> B
 T2: &mdash;
-T3: <i class="fa-solid fa-heart dt-body" data-tooltip="Body damage"></i> [Mod] S + 1[W]
+T3: <i class="fa-solid fa-heart dt-body" data-tooltip="Body damage"></i> <span class="pool-b">[Mod]</span> S + 1[W]
 category: true | freq+target: true | 'Target:' label gone: true
 weapon card: true false  Tier 1  0 | Tier 2  1d8 | Tier 3  2d6 | actions: true | wielded: true
 info card: true true

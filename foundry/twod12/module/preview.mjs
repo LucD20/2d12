@@ -168,7 +168,7 @@ export async function buildWeaponCard(item) {
   const acts = (await Promise.all((w.actions ?? []).map(async u => (await fromUuid(u))?.name))).filter(Boolean);
   return `<div class="twod12 chat action rawcard weaponcard" style="${cardVars(TWOD12.cardColors.weapon)}">
     <div class="ahead"><b>${esc(item.name)}</b><span class="acat">Weapon</span></div>
-    ${w.traits.size ? `<div class="traits">${traitChevrons(w.traits)}</div>` : ""}
+    ${w.traits.size ? `<div class="traits">${traitChevrons(w.traits, { properties: true })}</div>` : ""}
     <div class="trow"><span class="freq">${sub ? `<span class="dmgword" style="--dc:${TWOD12.subtypeColors[w.subtype] ?? "#888"}"><i class="${TWOD12.subtypeIcons[w.subtype] ?? ""}"></i> ${esc(sub)}</span> damage` : "No damage type"}</span></div>
     ${w.range ? `<div class="vsrow"><b>Range</b> ${esc(w.range.split("/").join(" / "))}</div>` : ""}
     <div class="vsrow"><b>Weapon damage [W]</b></div>

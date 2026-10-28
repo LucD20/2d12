@@ -4,7 +4,7 @@ import { weaponRanges } from "./weaponrange.mjs";
 import { defenseBonus, steadinessOf } from "./defense.mjs";
 import { setWorn } from "./armor.mjs";
 import { bumpExhausted, isExhaustedFx, exhaustedClick } from "./sleep.mjs";
-import { TWOD12, apLabel, traitChevrons, categoryText, unconsciousDoom, doomStatus, cardColorFor, effectiveFrequency, distanceText, areaText, lineColorFor, KIND_LINE, SIZE_NAMES, isTalentAction, tagChoices } from "./config.mjs";
+import { TWOD12, orderTraits, apLabel, traitChevrons, categoryText, unconsciousDoom, doomStatus, cardColorFor, effectiveFrequency, distanceText, areaText, lineColorFor, KIND_LINE, SIZE_NAMES, isTalentAction, tagChoices } from "./config.mjs";
 import { rollCheck, rollTable, esc, sgn } from "./roll.mjs";
 import { useAction, askRoll, adjLabelOf } from "./actions.mjs";
 import { handleDrop } from "./grants.mjs";
@@ -241,7 +241,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const condensed = view === "condensed";
     const rowOf = async i => {
       const aps = i.system.versions.map(v => v.ap).sort((x, y) => x - y);
-      const tr = [...(i.system.traits ?? [])].map(t => TWOD12.traits[t] ?? t);
+      const tr = orderTraits(i.system.traits ?? []).map(t => TWOD12.traits[t] ?? t);   // v0.0.179: the book's order (by group)
       const f = isFaded(a, i);
       return {
         id: i.id, name: i.name, img: i.img, apsHtml: apLabel(aps, i.system.reaction), minAp: aps[0] ?? 0,
@@ -287,7 +287,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         if (!(g.left > 0)) continue;
         const act = actions.find(i => grantMatches(g.spec, i));
         const count = Math.max(g.count ?? g.left, g.left);
-        const tr = act ? [...act.system.traits].map(t => TWOD12.traits[t] ?? t) : [];
+        const tr = act ? orderTraits(act.system.traits).map(t => TWOD12.traits[t] ?? t) : [];
         granted.push({
           actionId: act?.id ?? "", name: act?.name ?? g.spec.replace(/^(category|trait):/i, ""), img: act?.img ?? e.img,
           apsHtml: g.ap ? apLabel([g.ap]) : `<span class="apmark free" data-tooltip="A free use">Free</span>`, traitShort: tr.slice(0, 3).join(" \u00b7 "), source: e.name.replace(/\s*\(.*\)\s*$/, ""),
