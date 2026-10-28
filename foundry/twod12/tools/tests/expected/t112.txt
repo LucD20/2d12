@@ -1,5 +1,5 @@
-documents: 128
-references: 103 | broken: none
+documents: 129
+references: 104 | broken: none
 Paladin features: Divine Power, Profane Judgment, Encounter Pick, Daily Pick, Free Picks, Escalation Passive, Escalation Actives | Divine Connection kept for testing (not in the class): true | its id is the old one: vaYnV1XM6HT1TpMP
 Encounter Pick: choose 1 of 3: Word of Radiance, Divine Retribution, Aura of Protection
 Daily Pick: choose 1 of 3: Miraculous Recovery, Consecrated Ground, Divine Intervention
