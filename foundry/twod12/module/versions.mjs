@@ -8,14 +8,15 @@ const { HandlebarsApplicationMixin, ApplicationV2, DialogV2 } = foundry.applicat
 
 async function instanceDialog(inst = {}) {
   const sel = (obj, cur) => Object.entries(obj).map(([k, l]) => `<option value="${k}" ${k === cur ? "selected" : ""}>${l}</option>`).join("");
-  const content = `
+  // v0.0.172: in the item sheets' look (parchment, dark text), whatever Foundry's theme is.
+  const content = `<div class="sk tierdlg">
     <div class="form-group"><label>Damage to</label><select name="pool">${sel(TWOD12.pools, inst.pool ?? "B")}</select></div>
     <div class="form-group"><label>Weapon dice [W]</label><input type="checkbox" name="useW" ${inst.useW ? "checked" : ""}><input type="number" name="wCount" min="1" value="${inst.wCount ?? 1}"></div>
     <div class="form-group"><label>Dice expression</label><input type="text" name="dice" value="${esc(inst.dice ?? "")}" placeholder="1d4"></div>
     <div class="form-group"><label>Modifier [Mod]</label><input type="checkbox" name="useAt" ${inst.useAt ? "checked" : ""}></div>
-    <div class="form-group"><label>Subtype</label><select name="subtype">${sel(TWOD12.subtypes, inst.subtype ?? "")}</select></div>`;
+    <div class="form-group"><label>Subtype</label><select name="subtype">${sel(TWOD12.subtypes, inst.subtype ?? "")}</select></div></div>`;
   return DialogV2.prompt({
-    window: { title: "Damage Instance" }, content,
+    window: { title: "Damage Instance" }, content, classes: ["twod12-styled", "twod12-tierdlg"],
     render: (event, dialog) => {
       const el = dialog.element, cb = el.querySelector("[name=useW]"), n = el.querySelector("[name=wCount]");
       const upd = () => { n.disabled = !cb.checked; };

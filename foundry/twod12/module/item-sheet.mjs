@@ -50,6 +50,9 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       item: it,
       system: s,
       fields: s.schema.fields,
+      // v0.0.172: the help tips (the grey hints) of the Action and Talent sheets can be hidden, like the Effect's (one choice per user, for both sheets).
+      helpable: t === "action" || t === "talent",
+      sheetHelp: (() => { try { return game.settings.get("twod12", "sheetHelp") !== false; } catch (e) { return true; } })(),
       rawCard: t === "action" ? await buildRawCard(it) : t === "weapon" ? await buildWeaponCard(it) : "",
       categoryShown: categoryText(s),
       enriched: await TE.enrichHTML(s.description ?? "", { relativeTo: it }),
@@ -253,6 +256,10 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       })
     );
     this._effectListeners();
+    this.element.querySelectorAll("[data-sheethelp]").forEach(el => el.addEventListener("change", async () => {
+      el.closest("section.tab")?.classList.toggle("help-off", !el.checked);
+      try { await game.settings.set("twod12", "sheetHelp", el.checked); } catch (e) { /* not registered */ }
+    }));
     this.element.querySelectorAll("[data-set]").forEach(el =>
       el.addEventListener("change", async () => {
         const set = el.dataset.set;

@@ -453,12 +453,12 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             modTile("Power", pw, s.powerMod ?? s.magicMod, `Power Modifier, from ${TWOD12.attributes[pw]}. Save DC ${s.saveDC?.power ?? "\u2014"} (@power.dc)`),
             ...(npc ? [] : [modTile("Signature", s.signatureAttribute, s.signatureMod, `Signature Modifier: the ${s.signatureFrom === "power" ? "Power" : "Weapon"} Modifier (${TWOD12.attributes[s.signatureAttribute]}). Save DC ${s.saveDC?.signature ?? "\u2014"} (@signature.dc)`)])
           ] },
-          { key: "move", title: "Movement", cols: s.steadiness > 0 ? 4 : 3, tiles: [
+          { key: "move", title: "Movement", cols: 4, tiles: [
             tile("Speed", speedNow, speedRef, { base: s.speed ?? 0, tip: npc ? "From the Builder tab" : "From your species and class" }),
             tile("Reach", s.reach ?? 1, s.reach ?? 1, { edit: npc ? "reach" : "", base: npc ? (s.reachBase ?? s.reach ?? 1) : (s.reach ?? 1), tip: npc ? "" : "From your species" }),
             tile("Size", s.size ?? 3, s.size ?? 3, { edit: npc ? "size" : "", tip: `SR ${s.size ?? 3}: ${SIZE_NAMES[s.size ?? 3] ?? ""}` }),
-            // Steadiness (v0.0.169): shown when it is above 0; it reduces the value of Forced Movement and Reposition.
-            ...(s.steadiness > 0 ? [tile("Steady", s.steadiness, s.steadiness, { tip: "Steadiness: reduces the value of Forced Movement and Reposition against you (you can choose not to apply it)" })] : [])
+            // Steadiness (v0.0.169; always shown since v0.0.172, even at 0): it reduces the value of Forced Movement and Reposition.
+            tile("Steady", s.steadiness ?? 0, s.steadiness ?? 0, { tip: `Steadiness ${s.steadiness ?? 0}: reduces the value of Forced Movement and Reposition against you (you can choose not to apply it)${npc ? ". Set it in the Builder tab" : ". From your species"}` })
           ] }
         ];
       })(),
@@ -1134,7 +1134,11 @@ export class NpcSheet extends CharacterSheet {
   /** The Builder tab: the role buttons and the rating chips. A chip set to Custom keeps the number it showed. */
   static async setRole(event, target) { await this.actor.update({ "system.role": target.dataset.role }); }
   static async setRating(event, target) { await this.actor.update(ratingUpdate(this.actor, target.dataset.key, target.dataset.rating)); }
-  static async setSteadiness(event, target) { await this.actor.update({ "system.steadiness": Math.max(0, Number(target.dataset.v) || 0) }); }
+  /** A Steadiness button of the Builder tab: a number, or "custom" (clicking the button that is on): then the number is typed (v0.0.172). */
+  static async setSteadiness(event, target) {
+    if (target.dataset.rating === "custom") return this.actor.setFlag("twod12", "steadyCustom", true);
+    await this.actor.update({ "system.steadiness": Math.max(0, Number(target.dataset.v) || 0), "flags.twod12.steadyCustom": false });
+  }
   static async levelStep(event, target) { await this.actor.update({ "system.level": Math.max(0, (Number(this.actor.system.level) || 0) + (Number(target.dataset.d) || 0)) }); }
 }
 

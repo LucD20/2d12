@@ -6,7 +6,7 @@ health: {"pool":36,"v":{"pool":36,"dmg":14,"left":22,"body":10,"mind":4,"bdt":21
 conditions: 
 weapon: {"id":"gs","name":"Greatsword","sub":"Slash · Melee 1 · Two-handed","tiers":[{"l":"T1","v":"0"},{"l":"T2","v":"1d8"},{"l":"T3","v":"2d6"}],"where":"1h","dropped":false,"seg":[{"v":"dropped","l":"Dropped","tip":"On the ground","on":false,"drop":true},{"v":"worn","l":"Worn","tip":"On you, ready to draw","on":false,"drop":false},{"v":"1h","l":"1H","tip":"In one hand","on":true,"drop":false},{"v":"2h","l":"2H","tip":"In 
 loadout: ["Main hand: Greatsword","Off hand: free"] | armor slot: Unarmored
-panel: Defenses: AD 11, WD 11 | Attributes: Body +0, Mind +0, Appeal +0, Instinct +0 | Modifiers: Weapon +2, Power +2, Signature — | Movement: Speed 5, Reach 1, Size 3
+panel: Defenses: AD 11, WD 11 | Attributes: Body +0, Mind +0, Appeal +0, Instinct +0 | Modifiers: Weapon +2, Power +2, Signature — | Movement: Speed 5, Reach 1, Size 3, Steady 0
 Strikes filter: Smite, Reaping Sweep
 sorted by cost (flat): 1 true Lay On Hands, Opportunity Attack, Reaping Sweep, Smite
 table, group cost, sort custom: On your turn: Reaping Sweep [1AP | — | —], Smite [1/2/3 | — | Round], Lay On Hands [1/2 | — | —] || Reactions: Opportunity Attack [1R | — | At-will]

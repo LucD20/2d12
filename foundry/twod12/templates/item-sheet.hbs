@@ -13,7 +13,8 @@
     {{formInput fields.description enriched=enriched value=system.description name="system.description" toggled=true}}
   </section>
 
-  <section class="tab" data-tab="details">
+  <section class="tab{{#if helpable}}{{#unless sheetHelp}} help-off{{/unless}}{{/if}}" data-tab="details">
+    {{#if helpable}}<label class="sheet-helptoggle" data-tooltip="Show or hide the grey explanations on Action and Talent sheets"><input type="checkbox" data-sheethelp {{#if sheetHelp}}checked{{/if}}> Show help</label>{{/if}}
     {{#if isSpecies}}
     <h3>Attribute Values</h3>
     <div class="grid4">
@@ -71,8 +72,7 @@
     <label>Flavor <input type="text" name="system.flavor" value="{{system.flavor}}" placeholder="A small gift from the god you follow."></label>
     <label>Prerequisites <input type="text" name="system.requirements" value="{{system.requirements}}" placeholder="e.g. Brawler, Appeal +1"></label>
     <p class="hint">Level is the character level needed to choose the Talent. Shown as {{categoryShown}}.</p>
-    <div class="setbox"><b>Traits</b>
-      {{#each talentTraits}}<label class="inline"><input type="checkbox" data-set="traits" data-key="{{key}}" {{#if checked}}checked{{/if}}> {{label}}</label>{{/each}}</div>
+    <label>Traits {{formInput fields.traits value=system.traits name="system.traits"}}</label>
     {{/if}}
 
     {{#if hasMods}}

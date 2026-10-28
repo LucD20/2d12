@@ -56,6 +56,12 @@ export function flatSquares(a, b, gs) {
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" })[c]);
 const CELL = 34;
 
+/** v0.0.172: the chat message of a Snapshot: the title, the side view (the window's SVG) and the result, for everyone. */
+export function snapshotHtml(title, viewHtml, st) {
+  const cov = heightCover(st);
+  return `<div class="twod12 chat twod12-height hc-snap"><h4>${esc(title)}</h4><div class="hc-view">${viewHtml}</div><p class="hc-result ${cov.noLoE ? "noloe" : cov.level ? "cover" : "clear"}"><b>${esc(heightLabel(cov))}</b></p><p class="hc-hint">${esc(st.nameA)} height ${st.hA}, ${esc(st.nameT)} height ${st.hT}, ${st.dist} square${st.dist === 1 ? "" : "s"} apart.</p></div>`;
+}
+
 /** The window's HTML: the heights and distance, the side view (SVG) and the result. */
 export function heightHtml(st) {
   const L = sideLayout(st), cov = heightCover(st), rows = L.rMax - L.rMin;
@@ -75,7 +81,7 @@ export function heightHtml(st) {
   const ground = `<line class="hc-ground" x1="0" y1="${Y(0)}" x2="${W}" y2="${Y(0)}"></line>`;   // the ground (height 0)
   const num = (n, v, step, label) => `<label>${label} <input type="number" name="${n}" value="${v}" step="${step}"></label>`;
   return `<div class="hc">
-    <div class="hc-row">${num("hA", st.hA, 0.5, `${esc(st.nameA)} height`)}${num("hT", st.hT, 0.5, `${esc(st.nameT)} height`)}${num("dist", st.dist, 1, "Squares apart")}<button type="button" class="hc-clear">Clear blocks</button></div>
+    <div class="hc-row">${num("hA", st.hA, 0.5, `${esc(st.nameA)} height`)}${num("hT", st.hT, 0.5, `${esc(st.nameT)} height`)}${num("dist", st.dist, 1, "Squares apart")}<button type="button" class="hc-clear">Clear blocks</button><button type="button" class="hc-snapbtn" data-tooltip="Send this side view and its result to the chat, for everyone"><i class="fa-solid fa-camera"></i> Snapshot</button></div>
     <div class="hc-view"><svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Side view: ${esc(heightLabel(cov))}">${cells}${ground}${creature(L.A, st.imgA, st.nameA, "you")}${creature(L.T, st.imgT, st.nameT, "target")}${lines}${corners}</svg></div>
     <p class="hc-result ${cov.noLoE ? "noloe" : cov.level ? "cover" : "clear"}"><b>${esc(heightLabel(cov))}</b></p>
     <p class="hc-hint">Click a square: a half square, then a full square, then empty. Click the center or a corner of your space to start the lines there. Heights in squares (from the tokens' elevation); a creature is as tall as it is wide.</p>
@@ -108,5 +114,9 @@ export class HeightCover extends ApplicationV2 {
     });
     content.querySelectorAll("input[type=number]").forEach(i => i.addEventListener("change", () => { const v = Number(i.value); if (Number.isFinite(v)) st[i.name] = i.name === "dist" ? Math.max(1, Math.round(v)) : v; this.render(); }));
     content.querySelector(".hc-clear")?.addEventListener("click", () => { st.blocks = {}; this.render(); });
+    content.querySelector(".hc-snapbtn")?.addEventListener("click", async () => {
+      const view = content.querySelector(".hc-view")?.innerHTML ?? "";
+      await ChatMessage.create({ content: snapshotHtml(this.options.window?.title ?? "Cover height", view, st), speaker: ChatMessage.getSpeaker() });
+    });
   }
 }

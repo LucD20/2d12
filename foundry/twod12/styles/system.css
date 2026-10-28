@@ -1443,3 +1443,30 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 .twod12.sheet .steady-lab { font-size: 12px; margin-right: 6px; }
 .twod12.sheet .steady-btn { flex: none; width: 30px; height: 28px; margin: 0; padding: 0; border: 1px solid #b9b1a1; border-radius: 5px; background: #fff; color: #1e2430; font-weight: 700; cursor: pointer; }
 .twod12.sheet .steady-btn.on { background: #7a2f22; border-color: #7a2f22; color: #fff; }
+
+/* v0.0.172: the Movement group is always four small squares: Speed, Reach, Size (SR), Steadiness */
+.twod12.sheet.ns .np-grid.n4 { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
+.twod12.sheet.ns .np-group.move .np-tile { padding: 3px 0; aspect-ratio: 1 / 1; }
+.twod12.sheet.ns .np-group.move .np-tile b { font-size: 15px; }
+.twod12.sheet.ns .np-group.move .np-tile span { font-size: 9px; }
+
+/* v0.0.172: the Damage Instance dialog (a tier's damage, from Edit Versions) in the item sheets' look */
+.application.twod12-styled.twod12-tierdlg .window-content { padding: 12px 14px 10px; }
+.application.twod12-styled.twod12-tierdlg .tierdlg .form-group { display: flex; align-items: center; gap: 8px; margin: 0 0 8px; }
+.application.twod12-styled.twod12-tierdlg .tierdlg .form-group > label { flex: 0 0 130px; color: var(--sk-mut); font-size: 12px; }
+.application.twod12-styled.twod12-tierdlg .tierdlg input[type="number"] { width: 60px; }
+.application.twod12-styled.twod12-tierdlg .form-footer { padding-top: 8px; border-top: 1px solid var(--sk-line); }
+.application.twod12-styled.twod12-tierdlg .form-footer button { background: var(--sk-acc); color: #fff; border: 1px solid var(--sk-acc); border-radius: 4px; box-shadow: none; }
+.application.twod12-styled.twod12-tierdlg .form-footer button:hover { filter: brightness(1.1); }
+
+/* v0.0.172: a Cover height Snapshot in the chat (the side view scaled to the chat's width) */
+.twod12-height.hc-snap { padding: 6px; background: #f4ecdc; color: #1e2430; border-radius: 4px; }
+.twod12-height.hc-snap h4 { margin: 0 0 4px; font-size: 13px; color: #7a2f22; }
+.twod12-height.hc-snap .hc-view { max-height: none; overflow: hidden; }
+.twod12-height.hc-snap svg { width: 100%; height: auto; }
+.twod12-height.hc-snap .hc-cell, .twod12-height.hc-snap .hc-corner { cursor: default; pointer-events: none; }
+.twod12-height.hc-snap .hc-result { font-size: 12px; }
+
+/* v0.0.172: the Show help box of the Action and Talent sheets: unchecked hides the grey hints of the Details tab */
+.twod12 .sheet-helptoggle { display: flex; justify-content: flex-end; align-items: center; gap: 4px; margin: 0 0 4px; font-size: 11px; white-space: nowrap; }
+.twod12 section.tab.help-off .hint, .twod12 section.tab.help-off .ihint { display: none; }

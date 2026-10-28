@@ -1,0 +1,15 @@
+--- the Steadiness tile
+Movement is always 4 tiles: true | Steady even at 0: true | 4 columns of small squares: true
+--- a custom Steadiness in the Builder tab
+Steadiness 2                       0 1 2*(c) 3 4 | custom false | input null | - | Forced Movement and Reposition against it are reduced by 2
+Steadiness 2, Custom               0 1 2 3 4 | custom true | input {"name":"system.steadiness","value":2} | - | Your number. Click a button to use one of these again
+Steadiness 6 (typed)               0 1 2 3 4 | custom true | input {"name":"system.steadiness","value":6} | Above 4 | Your number. Click a button to use one of these again
+the button that is on switches to Custom: true | a number clears it: true
+--- the Damage Instance dialog
+in the item sheets' look: true | its buttons: true
+--- the Cover height Snapshot
+the window has the button: true | the chat message: <div class="twod12 chat twod12-height hc-snap"><h4>Cover height: Dave → Goblin</h4><div class="hc-view"><svg></svg></div><p class="hc-result noloe"><b>No Line of Effect: 4 of 4 blocked</b></p><p class="hc-hint">Dave height 0, Goblin height 1, 3 squares apart.</p></div>
+--- the Talent's Traits
+a drop-down like the Action's: true | the checkboxes are gone: true
+--- Show help on the Action and Talent sheets
+the box: true | for Actions and Talents: true | a user setting, on by default: true | hides the hints: true

@@ -66,11 +66,13 @@ export function npcBuilderContext(actor) {
     input: nb.speedCustom ? { name: "system.speed", value: nb.speed } : null,
     warn: nb.speedCustom && nb.speed < sp[0] ? `Slower than ${sp[0]}` : nb.speedCustom && nb.speed > sp[sp.length - 1] ? `Faster than ${sp[sp.length - 1]}` : "" };
 
-  // Steadiness (v0.0.169): 0 unless the NPC's description says otherwise; buttons 0 to 4.
-  const st = Math.max(0, Number(s.steadiness) || 0);
-  const steadyRow = { key: "steadiness", label: "Steadiness", sub: "Resistance to being moved", value: String(st), custom: false, input: null, warn: "",
-    chips: [0, 1, 2, 3, 4].map(v => ({ key: "steadiness", r: String(v), label: String(v), value: v === 0 ? "default" : "", on: st === v, click: String(v), act: "setSteadiness" })),
-    how: st ? `Forced Movement and Reposition against it are reduced by ${st}` : "Forced Movement and Reposition move it fully (a big or heavy creature can have 1 or more)" };
+  // Steadiness (v0.0.169): 0 unless the NPC's description says otherwise; buttons 0 to 4, or Custom (v0.0.172): click the button that is on, then type any number.
+  const st = Math.max(0, Number(s.steadiness) || 0), stCustom = !!actor?.getFlag?.("twod12", "steadyCustom") || st > 4;
+  const steadyRow = { key: "steadiness", label: "Steadiness", sub: "Resistance to being moved", value: String(st), custom: stCustom,
+    input: stCustom ? { name: "system.steadiness", value: st } : null, warn: stCustom && st > 4 ? "Above 4" : "",
+    chips: [0, 1, 2, 3, 4].map(v => { const on = !stCustom && st === v;
+      return { key: "steadiness", r: String(v), label: String(v), value: v === 0 ? "default" : "", on, click: on ? "custom" : String(v), act: "setSteadiness", tip: on ? "Click again to clear it and type your own Steadiness" : "" }; }),
+    how: stCustom ? "Your number. Click a button to use one of these again" : st ? `Forced Movement and Reposition against it are reduced by ${st}` : "Forced Movement and Reposition move it fully (a big or heavy creature can have 1 or more)" };
   const groups = [
     { title: "Attributes", note: `Default: one High, two Medium, one Low. Weapon Modifier ${sg(s.weaponMod ?? 0)}, Power Modifier ${sg(s.powerMod ?? 0)}`, rows: attrRows },
     { title: "Health", note: "(Attribute + 2) \u00d7 Multiplier + Base, each threshold rounded up", rows: [healthRow("body", "body", "Body Health"), healthRow("mind", "mind", "Mind Health")] },
