@@ -5,3 +5,6 @@ __pycache__/
 *.zip
 foundry/twod12/packs/
 knowledge/
+sync.log
+.sync-state
+pack-sync/
