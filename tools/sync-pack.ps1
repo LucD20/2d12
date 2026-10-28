@@ -1,4 +1,6 @@
 # Pulls the newest unmerged origin/pack-* branch, tests it, rebuilds the compendium when needed and notifies.
+# When the pack branch it is on has been merged (and no newer pack waits), it goes back to main the same way.
+# When changed files stop it, it says so once with a notification (until the list changes).
 # Runs from Task Scheduler (see tools/register-sync-task.ps1). No Claude involved.
 #   powershell -File tools\sync-pack.ps1 -DryRun      show what it would do now, change nothing (no log, no state)
 #   powershell -File tools\sync-pack.ps1 -TestNotify  only show a test notification
@@ -55,19 +57,50 @@ function Run($label, [scriptblock]$cmd) {
     $out
 }
 
+function SaveState($h) { if (-not $DryRun) { $h | ConvertTo-Json | Set-Content $StateFile -Encoding UTF8 } }
+
+# The tests and (when asked) the compendium packs; returns @{ ok; summary; build }.
+function TestAndBuild([bool]$needBuild) {
+    $sysDir = Join-Path $Repo "foundry\twod12"
+    Set-Location $sysDir
+    $tests = Run "tests" { node tools/tests/run.mjs }
+    $ok = ($script:RunExit -eq 0)
+    $lines = @($tests | Where-Object { $_ -match "^(FAIL|CHANGED)" -or $_ -match "^\d+ tests:" })
+    Log "tests: $(($tests | Select-Object -Last 1))"
+    $build = "not needed (content.mjs and system.json unchanged)"
+    if ($needBuild) {
+        Set-Location (Join-Path $Repo "foundry")
+        if (-not (Test-Path "node_modules\@foundryvtt\foundryvtt-cli")) { [void](Run "npm install" { npm install @foundryvtt/foundryvtt-cli }) }
+        [void](Run "build-packs" { node twod12/tools/build-packs.mjs })
+        $build = if ($script:RunExit -eq 0) { "rebuilt" } else { "FAILED (see sync.log)" }
+        Log "compendium packs: $build"
+    }
+    Set-Location $Repo
+    @{ ok = $ok; summary = $(if ($lines.Count) { $lines -join "`n" } else { "no test output" }); build = $build }
+}
+
 if ($TestNotify) { Notify "2d12 sync test" "If you see this, notifications work."; exit 0 }
 
 Set-Location $Repo
 if ($DryRun) { Log "DRY RUN: nothing will be checked out, built, written or notified (git fetch still updates remote refs)" } else { Log "run started" }
 
+$state = if (Test-Path $StateFile) { Get-Content $StateFile -Raw | ConvertFrom-Json } else { $null }
+
 # 2. uncommitted changes other than notes.txt (and the sync's own files, which a pack branch does not gitignore)
 $dirty = @(G status --porcelain | Where-Object { $_ -and $_.Substring(3).Trim('"') -notmatch '^(notes\.txt|sync\.log|\.sync-state|pack-sync/)$' })
-if ($dirty.Count) { Log "uncommitted changes besides notes.txt, stopping: $($dirty -join '; ')"; exit 0 }
+if ($dirty.Count) {
+    Log "uncommitted changes besides notes.txt, stopping: $($dirty -join '; ')"
+    $list = ($dirty | ForEach-Object { $_.Substring(3).Trim('"') }) -join ", "
+    if (-not $state -or $state.dirtyNote -ne $list) {   # once per list of files, not every 10 minutes
+        Notify "2d12 sync stopped" "Changed files in the project folder: $list. Run 'git stash' there (or commit them) and the sync goes on."
+        SaveState @{ branch = $(if ($state) { $state.branch } else { "" }); hash = $(if ($state) { $state.hash } else { "" }); waitingHash = $(if ($state) { $state.waitingHash } else { "" }); dirtyNote = $list }
+    }
+    exit 0
+}
 
 # 3. newest unmerged pack branch that differs from the saved one
 [void](G fetch origin --prune)
 if ($GitExit -ne 0) { Log "git fetch failed, stopping"; exit 1 }
-$state = if (Test-Path $StateFile) { Get-Content $StateFile -Raw | ConvertFrom-Json } else { $null }
 $pick = $null
 foreach ($line in (G for-each-ref --sort=-committerdate "--format=%(refname:short) %(objectname)" "refs/remotes/origin/pack-*")) {
     $ref, $hash = $line -split " "
@@ -77,7 +110,41 @@ foreach ($line in (G for-each-ref --sort=-committerdate "--format=%(refname:shor
     $pick = @{ ref = $ref; branch = $ref -replace "^origin/", ""; hash = $hash }
     break
 }
-if (-not $pick) { if ($DryRun) { Log "nothing to sync (no new unmerged origin/pack-* branch)" }; exit 0 }
+if (-not $pick) {
+    # 3b. back to main: the repo is on a pack branch that was merged (or deleted on GitHub), and no newer pack waits.
+    $cur = @(G branch --show-current)[0]
+    $merged = $false
+    if ($cur -like "pack-*") {
+        [void](G rev-parse --verify --quiet "refs/remotes/origin/$cur")
+        if ($GitExit -ne 0) { $merged = $true } else { [void](G merge-base --is-ancestor "origin/$cur" origin/main); $merged = ($GitExit -eq 0) }
+    }
+    if (-not $merged) { if ($DryRun) { Log "nothing to sync (no new unmerged origin/pack-* branch; on $cur)" }; exit 0 }
+    $mainHash = @(G rev-parse origin/main)[0]
+    if (Get-Process -Name $FoundryProcess -ErrorAction SilentlyContinue) {
+        if (-not ($state -and $state.waitingHash -eq "main:$mainHash")) {
+            Notify "2d12 sync" "$cur was merged: close Foundry to go back to main"
+            SaveState @{ branch = $(if ($state) { $state.branch } else { "" }); hash = $(if ($state) { $state.hash } else { "" }); waitingHash = "main:$mainHash" }
+        }
+        exit 0
+    }
+    $before = @(G rev-parse HEAD)[0]
+    $changedMain = @(G diff --name-only $before origin/main)
+    $needMain = ($changedMain -contains "foundry/twod12/tools/content.mjs") -or ($changedMain -contains "foundry/twod12/system.json") -or -not (Test-Path (Join-Path $Repo "foundry\twod12\packs\actions"))
+    if ($DryRun) { Log "would: go back to main ($cur was merged), git pull --ff-only, test, $(if ($needMain) { 'REBUILD' } else { 'NOT rebuild' }) the packs, notify"; exit 0 }
+    [void](G checkout main)
+    if ($GitExit -ne 0) { Log "checkout of main failed, stopping"; exit 1 }
+    [void](G pull --ff-only)
+    if ($GitExit -ne 0) { Log "git pull of main failed, stopping"; exit 1 }
+    Log "back on main @ $((G rev-parse --short HEAD)) ($cur was merged)"
+    $r = TestAndBuild $needMain
+    $v = (Get-Content (Join-Path $Repo "foundry\twod12\system.json") -Raw | ConvertFrom-Json).version
+    SaveState @{ branch = "main"; hash = $mainHash; waitingHash = "" }
+    $msg = "Back on main v$v (packs: $($r.build)): $(if ($needMain) { 'restart Foundry' } else { 'reload Foundry (F5)' })"
+    if (-not $r.ok) { $msg += " (tests FAILED, see sync.log)" }
+    Notify "2d12 sync" $msg
+    Log "done"
+    exit 0
+}
 $branch = $pick.branch
 Log "candidate: $branch @ $($pick.hash.Substring(0, 7))"
 
@@ -111,23 +178,9 @@ if ($GitExit -ne 0) { Log "checkout of $branch failed, stopping"; exit 1 }
 if ($GitExit -ne 0) { Log "git pull failed, stopping"; exit 1 }
 Log "on $branch @ $((G rev-parse --short HEAD))"
 
+$r = TestAndBuild $needBuild
+$testsOk = $r.ok; $testSummary = $r.summary; $buildNote = $r.build
 $sysDir = Join-Path $Repo "foundry\twod12"
-Set-Location $sysDir
-$tests = Run "tests" { node tools/tests/run.mjs }
-$testsOk = ($RunExit -eq 0)
-$testLines = @($tests | Where-Object { $_ -match "^(FAIL|CHANGED)" -or $_ -match "^\d+ tests:" })
-$testSummary = if ($testLines.Count) { $testLines -join "`n" } else { "no test output" }
-Log "tests: $(($tests | Select-Object -Last 1))"
-
-$buildNote = "not needed (content.mjs and system.json unchanged vs main)"
-if ($needBuild) {
-    Set-Location (Join-Path $Repo "foundry")
-    if (-not (Test-Path "node_modules\@foundryvtt\foundryvtt-cli")) { [void](Run "npm install" { npm install @foundryvtt/foundryvtt-cli }) }
-    [void](Run "build-packs" { node twod12/tools/build-packs.mjs })
-    $buildNote = if ($RunExit -eq 0) { "rebuilt" } else { "FAILED (see sync.log)" }
-    Log "compendium packs: $buildNote"
-}
-Set-Location $Repo
 
 # 6. summary, state, notification
 $sys = Get-Content (Join-Path $sysDir "system.json") -Raw | ConvertFrom-Json
@@ -158,7 +211,7 @@ $entry
 
 @{ branch = $branch; hash = $pick.hash; waitingHash = "" } | ConvertTo-Json | Set-Content $StateFile -Encoding UTF8
 Log "wrote pack-sync\latest.md and .sync-state"
-$msg = "$branch v$version is ready: reload Foundry and test"
+$msg = "$branch v$version is ready: $(if ($needBuild) { 'start Foundry (the packs were rebuilt)' } else { 'reload Foundry (F5)' }) and test"
 if (-not $testsOk) { $msg += " (tests FAILED, see pack-sync\latest.md)" }
 Notify "2d12 sync" $msg
 Log "done"

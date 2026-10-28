@@ -31,3 +31,6 @@ the button option reach:yes: true | older Relocate copies are replaced: true
 a square in Hazardous Terrain: true | outside it: false | a switched-off area: false
 --- @Move[slid]
 the generator reads 'Slid 2': @Move[slid|distance:2]. | the button: true | the flow: true | the builder: true
+--- v0.0.175: the path is one movement, and the reachable squares are shown
+waypoints of the book's Slid (1 NW, 1 W) from (500, 300), grid 100: [{"x":400,"y":200},{"x":300,"y":200}]
+one movement with waypoints (TokenDocument#move): true | a player's move goes to the GM in one message: true | the area is drawn: true

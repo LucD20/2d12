@@ -663,9 +663,22 @@ function choosePath(origin, target, N, mode = "slid", { withinReach = false } = 
       const what = r.block.type === "wall" ? (r.block.corner ? "A solid corner" : "A wall") : r.block.token.name;
       return repo ? `${what} is in the way: it stops after ${r.done} (no damage).` : `${what}: Collision after ${r.done}, ${r.unused} unused, ${r.damage.self} Body${r.block.type === "creature" ? " to each" : ""}.`;
     };
+    // v0.0.175: the squares the path can still reach (like the area Pushed and Pulled show): within the steps left from the last square,
+    // not into Hazardous Terrain (Reposition), and within the origin's Reach (Relocate).
+    const reachable = () => {
+      const last = path[path.length - 1], left = N - (path.length - 1), out = [];
+      for (let di = -left; di <= left; di++) for (let dj = -left; dj <= left; dj++) {
+        const sh = { di: last.di + di, dj: last.dj + dj };
+        if ((!di && !dj) || path.some(p => p.di === sh.di && p.dj === sh.dj)) continue;
+        if ((repo && hazardIn(foot(sh))) || (withinReach && !inReach(sh))) continue;
+        out.push(...foot(sh));
+      }
+      return [...new Map(out.map(c => [`${c.i},${c.j}`, c])).values()];
+    };
     const draw = () => {
       gfx.clear();
-      const r = analyze(path);
+      const r = analyze(path), area = reachable();
+      if (area.length) { fillCells(gfx, area, 0xffffff, 0.22); outlineCells(gfx, area, { color: 0xffffff, width: 3 }); }
       fillCells(gfx, path.slice(1).flatMap(foot), 0x66ccff, 0.25);
       const pts = path.map(pt);
       gfxLine(gfx, pts.slice(0, r.done + 1), 0x44cc77, 5, 0.95);
@@ -699,6 +712,32 @@ function choosePath(origin, target, N, mode = "slid", { withinReach = false } = 
     ui.notifications.info(`${MOVE_LABEL[mode]} ${N}: click the squares of ${target.name}'s path one by one, then click the last one again (or Enter). Right-click takes a square back; Esc cancels.`);
     draw();
   });
+}
+
+/**
+ * v0.0.175: move a token along a path in ONE movement, square after square (a path of shifts from where it stands; the first is { di: 0, dj: 0 }).
+ * v0.0.174 sent one update per square without waiting for the animation, so the steps ran over each other. Foundry 13+ has TokenDocument#move
+ * with waypoints (one animation along them); older Foundry gets the steps one at a time, each waiting for the last one's animation.
+ */
+export function pathWaypoints(home, path, size) {
+  return path.slice(1).map(s => ({ x: home.x + s.dj * size, y: home.y + s.di * size }));
+}
+async function moveAlong(doc, path) {
+  const size = canvas.grid.size, home = homePos(doc), points = pathWaypoints(home, path, size);
+  if (!points.length) return;
+  if (!doc.isOwner) { game.socket.emit(SOCKET, { type: "pushPath", tokenUuid: doc.uuid, points }); return; }
+  await moveThrough(doc, points);
+}
+async function moveThrough(doc, points) {
+  const opts = { twod12Forced: true, animate: true, animation: { movementSpeed: TWOD12.pushSpeed } };
+  if (typeof doc.move === "function") {
+    try { await doc.move(points.map(p => ({ ...p, snapped: true, explicit: true })), { ...opts, method: "api", constrainOptions: { ignoreWalls: true, ignoreCost: true } }); return; }
+    catch (e) { console.warn("twod12 | TokenDocument#move failed, moving square by square", e); }
+  }
+  for (const p of points) {
+    await doc.update({ x: p.x, y: p.y }, opts);
+    try { await doc.object?.movementAnimationPromise; } catch (e) { /* no animation to wait for */ }
+  }
 }
 
 async function moveToken(doc, dx, dy) {
@@ -737,9 +776,8 @@ async function pushOne(origin, target, N0, mode = "push", opts = {}) {
   const pick = pathTool ? await choosePath(origin, target, N, mode, opts) : await choosePush(origin, target, N, mode);
   if (!pick) return;
   const { result } = pick, f = result.final;
-  if (pathTool) {   // square by square, so the token follows the path (and Hazardous Terrain sees each square it enters)
-    for (let n = 1; n <= result.done; n++) { const a = pick.path[n - 1], b = pick.path[n]; await moveToken(target.document, b.dj - a.dj, b.di - a.di); }
-  } else if (f.di || f.dj) await moveToken(target.document, f.dj, f.di);
+  if (pathTool) await moveAlong(target.document, pick.path.slice(0, result.done + 1));   // one movement along the path (v0.0.175)
+  else if (f.di || f.dj) await moveToken(target.document, f.dj, f.di);
   const lines = [`<b>${esc(target.name)}</b> is ${mode === "reposition" ? "Repositioned" : label} ${N0}${st.applied ? ` (Steadiness ${st.steady}: ${N})` : ""} by <b>${esc(origin.name)}</b> and moves ${result.done} square${result.done === 1 ? "" : "s"}.`];
   if (result.block?.type === "loe") lines.push(`It stops: <b>${esc(origin.name)}</b> would lose Line of Effect to it (no damage).`);
   else if (result.block && mode === "reposition") lines.push(`It stops short: ${result.block.type === "wall" ? (result.block.corner ? "a solid corner" : "a wall") : `<b>${esc(result.block.token.name)}</b>`} is in the way.`);
@@ -1012,6 +1050,7 @@ export function registerMovement() {
     } catch (e) { console.error("twod12 | movement tracking failed", e); }
   });
   game.socket.on(SOCKET, async data => {
+    if (data?.type === "pushPath" && game.user.isActiveGM) { const d = await fromUuid(data.tokenUuid); if (d) await moveThrough(d, data.points ?? []); return; }
     if (data?.type !== "pushMove" || !game.user.isActiveGM) return;
     const doc = await fromUuid(data.tokenUuid);
     if (doc) await doc.update({ x: data.x, y: data.y }, { twod12Forced: true, animate: true, animation: { movementSpeed: TWOD12.pushSpeed, easing: "easeOutCubic" } });

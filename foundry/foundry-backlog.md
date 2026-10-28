@@ -1,6 +1,6 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.174**. Tests: `node tools/tests/run.mjs` (140 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.175**. Tests: `node tools/tests/run.mjs` (140 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
 
 ## Asked by Lucas, not built
 - [x] (v0.0.174) **The grey tiers table** (Lucas, test of v0.0.173): the element was `table.tiers` (the chat-style card the item sheet also shows), not `ac-tiers`; the theme painted the table and its cells. Fixed in v0.0.174, the v0.0.173 attempt removed.
@@ -50,6 +50,7 @@ Current version: **v0.0.174**. Tests: `node tools/tests/run.mjs` (140 tests, see
 - v0.0.164: Builder fixes (colors, click-to-clear, custom numbers with warnings, Speed row, CV, Level -/+); shield AD/WD; Global Illumination on new scenes; a Default Scene; Quick Insert switched on.
 - v0.0.165: the Line of Effect button; Strike rows' red line; the sheet keeps its scroll; shield Bo/Mi/Ap/In.
 - v0.0.166: Leaning cover from the vision peek point; the Cover height calculation side view.
+- v0.0.175: the path tool moves in one movement (waypoints) and shows the reachable squares; sync-pack.ps1 notifies when it stops and goes back to main after a merge.
 - v0.0.174: M2, movement B (the path tool for Slid and Reposition, Immobilized's DC, Steadiness bonuses, the grey tiers table).
 - v0.0.173: fixes from the test of v0.0.172 (the Action card's tiers table, the Snapshot as a picture), Reposition stops at creatures (book 2026-10-28), a diagonal between two creatures is Difficult Terrain only between two unwilling ones.
 - v0.0.172: pack Q, quick UI (Steadiness tile, custom Steadiness, Damage Instance dialog, Cover height Snapshot, Talent Traits drop-down, Show help on Action and Talent sheets).

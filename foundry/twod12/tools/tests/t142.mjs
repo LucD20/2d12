@@ -43,3 +43,7 @@ console.log("a square in Hazardous Terrain:", hz.hazardIn([{ i: 2, j: 3 }], { re
 console.log("--- @Move[slid]");
 const gen = await import(ROOTURL + "module/gen.mjs");
 console.log("the generator reads 'Slid 2':", gen.convertEffects("Slid 2."), "| the button:", src("module/inline.mjs").includes('slid: "Slid"'), "| the flow:", src("module/move.mjs").includes('if (cfg.kind === "slid") return pushFlow(cfg, ctx, "slid");'), "| the builder:", src("module/builder.mjs").includes('slid: "Slid (forced movement, a path)"'));
+console.log("--- v0.0.175: the path is one movement, and the reachable squares are shown");
+console.log("waypoints of the book's Slid (1 NW, 1 W) from (500, 300), grid 100:", JSON.stringify(mv.pathWaypoints({ x: 500, y: 300 }, [{ di: 0, dj: 0 }, { di: -1, dj: -1 }, { di: -1, dj: -2 }], 100)));
+const ms = src("module/move.mjs");
+console.log("one movement with waypoints (TokenDocument#move):", ms.includes('if (typeof doc.move === "function")') && ms.includes("await moveAlong(target.document, pick.path.slice(0, result.done + 1));"), "| a player's move goes to the GM in one message:", ms.includes('type: "pushPath"'), "| the area is drawn:", ms.includes("const r = analyze(path), area = reachable();"));

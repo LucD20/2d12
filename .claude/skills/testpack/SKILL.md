@@ -9,6 +9,9 @@ disable-model-invocation: true
 
 Get the branch `$ARGUMENTS` ready for Lucas to test in Foundry. Run from the repository root. If no branch was given, ask for it and stop.
 
+
+**Where this runs:** these steps change the checkout of the session that runs them. In a cloud session that is the cloud copy, not Lucas's PC: say so in the report. On his PC, `tools/sync-pack.ps1` (Task Scheduler, every 10 minutes) does the same on its own: it syncs the newest unmerged pack branch, goes back to main after a merge, and rebuilds the packs when Foundry is closed.
+
 1. **Clean tree.** Run `git status --porcelain`. If anything other than `notes.txt` is changed or untracked, stop: show Lucas the list (and `git diff --stat`) and do nothing else.
 2. **Switch.** `git fetch origin`, then `git checkout $ARGUMENTS`, then `git pull`. If any of them fails, show the error and stop.
 3. **Report and test.** Print the branch (`git branch --show-current`) and the `version` in `foundry/twod12/system.json`. Then run the tests: `cd foundry/twod12 && node tools/tests/run.mjs`. Report the summary line; for any FAIL or CHANGED test, show its name and what differs (`node tools/tests/<name>.mjs` against `tools/tests/expected/<name>.txt`). Never run `--update` here.
