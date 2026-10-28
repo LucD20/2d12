@@ -5,7 +5,7 @@ import { tokenLight, seenLight } from "./light.mjs";
 import { releaseOptions } from "./hands.mjs";
 import { rollSource, saveDcOf } from "./rollsource.mjs";
 import { coverFromPoint } from "./cover.mjs";
-import { TWOD12, unconsciousDoom, cardVars, cardHead, prettyDamage, poolIcon, dtypeIcon } from "./config.mjs";
+import { TWOD12, unconsciousDoom, doomStatus, cardVars, cardHead, prettyDamage, poolIcon, dtypeIcon } from "./config.mjs";
 import { performCheck, checkHtml, esc, sgn, showDice, combineRolls } from "./roll.mjs";
 import { traitChevrons } from "./config.mjs";
 import { askRoll, enrich, adjLabelOf } from "./actions.mjs";
@@ -222,7 +222,7 @@ export function registerInline() {
         const calc = !!cfg.distanceExpr && !cfg.label && !match[3];
         const who = calc ? actorOfDoc(options?.relativeTo) : null, value = who ? moveDistance(cfg, who) : null;
         const n = cfg.distanceExpr ? (value || cfg.distanceExpr.replace(/[a-z]+/g, w => w[0].toUpperCase() + w.slice(1))) : (cfg.distance || 1);
-        const name = { pushed: "Pushed", evade: "Evade", charge: "Charge", reposition: "Reposition" }[cfg.kind] ?? "Advance", icon = { pushed: "fa-hand", evade: "fa-wind", charge: "fa-person-running-fast", reposition: "fa-arrows-up-down-left-right" }[cfg.kind] ?? "fa-person-running";
+        const name = { pushed: "Pushed", pulled: "Pulled", evade: "Evade", charge: "Charge", reposition: "Reposition" }[cfg.kind] ?? "Advance", icon = { pushed: "fa-hand", pulled: "fa-hand-back-fist", evade: "fa-wind", charge: "fa-person-running-fast", reposition: "fa-arrows-up-down-left-right" }[cfg.kind] ?? "fa-person-running";
         const el = inlineEl("Move", cfg, cfg.label ?? match[3] ?? `${name} ${n}`, icon);
         if (calc) { const c = document.createElement("i"); c.className = "fa-solid fa-calculator calc"; c.dataset.tooltip = value ? `Calculated from your stats: ${cfg.distanceExpr} = ${value}` : `Calculated: ${cfg.distanceExpr}`; el.append(" ", c); }
         return el;
@@ -333,13 +333,11 @@ async function doCheck(kind, cfg, ctx = {}) {
         banes: cfg.bane,
         doomed: unconsciousDoom(actor, key, kind) || sightLight === "dark",
         doomedWhy:
-          sightLight === "dark" && !unconsciousDoom(actor, key, kind) ? "Darkness: a Check that requires sight" : "Unconscious: all your Rolls are Doomed",
+          sightLight === "dark" && !unconsciousDoom(actor, key, kind) ? "Darkness: a Check that requires sight" : `${doomStatus(actor) || "Unconscious"}: all your Rolls are Doomed`,
         doomedLabel:
           sightLight === "dark" && !unconsciousDoom(actor, key, kind)
             ? "Darkness (Doomed)"
-            : actor.statuses?.has?.("imperiled")
-              ? "Imperiled (Doomed)"
-              : "Unconscious (Doomed)"
+            : `${doomStatus(actor) || "Unconscious"} (Doomed)`
       },
       extraMods: sightMods
     });

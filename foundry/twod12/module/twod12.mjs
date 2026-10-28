@@ -5,6 +5,7 @@ import { registerLeanHooks } from "./lean.mjs";
 import { registerMasteryHooks } from "./mastery.mjs";
 import { registerArcherHooks } from "./archer.mjs";
 import { registerLoE } from "./loe.mjs";
+import { solidTiles, tileConfigSolid } from "./corners.mjs";
 import { registerEscalationHooks } from "./escalation.mjs";
 import { registerArmorHooks } from "./armor.mjs";
 import { registerFloatText } from "./floattext.mjs";
@@ -79,6 +80,7 @@ Hooks.once("init", () => {
     refreshBasics: refreshAllBasics,
     shadowedEffects,
     rulerInfo,
+    solidTiles: (on = true) => solidTiles(on),
     time: s => moveClock(Number(s) || 0),
     exhausted: (delta = 1, actor = canvas.tokens?.controlled[0]?.actor ?? game.user.character) => bumpExhausted(actor, Number(delta) || 0)
   };
@@ -162,6 +164,7 @@ Hooks.once("init", () => {
     ["enfeebled", "icons/svg/degen.svg"],
     ["exhausted", "icons/svg/sleep.svg"],
     ["imperiled", "icons/svg/hazard.svg"],
+    ["squeezing", "icons/svg/net.svg"],
     ["slowed", "icons/svg/stoned.svg"],
     ["quickened", "icons/svg/lightning.svg"],
     ["dead", "icons/svg/skull.svg"]
@@ -180,6 +183,8 @@ function collapsibleCards(msg, html) {
   head?.addEventListener("click", () => root.classList.toggle("collapsed"));
 }
 Hooks.on("renderChatMessageHTML", collapsibleCards);
+// Corners (v0.0.170): a "Solid" checkbox in the Tile settings (a solid Tile blocks the corners it covers).
+Hooks.on("renderTileConfig", (app, html) => { try { tileConfigSolid(app, html); } catch (e) { console.warn("twod12 | Tile settings", e); } });
 Hooks.on("renderChatMessageHTML", updateUseButtons);
 Hooks.once("ready", registerVersionTabs);
 Hooks.on("renderChatMessage", updateUseButtons);

@@ -3,6 +3,6 @@ hiding behind the wall (center): 4 blocked -> Total cover 0 banes
 Leaning (best corner): 0 blocked -> No cover 0 banes | why: You are Leaning (from the best corner). A creature is in the way
 target Leaning: Low cover exposed: true | (without leaning would be Medium cover)
 Leaning target with no Line of Effect stays total: High cover false
-Basic actions: Weapon Attack, Advance, Evade, Reload, Interact, Steel Yourself, Crawl, Release, Stand, Charge, Leaning, Fists, Relocate, Trip, Shove
+Basic actions: Weapon Attack, Advance, Evade, Reload, Interact, Steel Yourself, Crawl, Release, Stand, Charge, Leaning, Fists, Relocate, Trip, Shove, Haul
 Leaning: self | r. @Condition[leaning|eot]
 Lock & Loose T2: [{"dice":"1d4+2","pool":"B","sub":"Pi"}] | For 1 round, the creature is @Condition[hindered] until it uses a Move Action.

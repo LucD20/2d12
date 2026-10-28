@@ -12,7 +12,7 @@ not enough AP: {"ap":1,"freeMove":0,"moveLeft":0,"evadeMove":0} | Orc: Advance 6
   'Orc has no Speed.',
   'Orc has no Speed.'
 ]
-basic: Weapon Attack [strike/weapon] check=- AP 1 | Advance [move/self] check=- AP 1 | Evade [self] check=- AP 1/2 | Reload [handle/weapon] check=- AP 1 | Interact [handle] check=- AP 1 | Steel Yourself [self] check=- AP 2/3 | Crawl [move/self] check=- AP 1/2 | Release [self] check=- AP 0 | Stand [move/self] check=- AP 1 | Charge [move/self] check=- AP 2 | Leaning [self] check=- AP 1 | Fists [strike/weapon] check=- AP 1 | Relocate [strike/handle/body/instinct] check=- AP 1/2/3 | Trip [strike/handle/body/instinct] check=- AP 1/2 | Shove [strike/handle/body] check=- AP 1/2/3
+basic: Weapon Attack [strike/weapon] check=- AP 1 | Advance [move/self] check=- AP 1 | Evade [self] check=- AP 1/2 | Reload [handle/weapon] check=- AP 1 | Interact [handle] check=- AP 1 | Steel Yourself [self] check=- AP 2/3 | Crawl [move/self] check=- AP 1/2 | Release [self] check=- AP 0 | Stand [move/self] check=- AP 1 | Charge [move/self] check=- AP 2 | Leaning [self] check=- AP 1 | Fists [strike/weapon] check=- AP 1 | Relocate [strike/handle/body/instinct] check=- AP 1/2/3 | Trip [strike/handle/body/instinct] check=- AP 1/2 | Shove [strike/handle/body] check=- AP 1/2/3 | Haul [strike/handle/appeal/body] check=- AP 1/2/3
 Shove is a pushed action: true
 Basic Weapon Attack exp: 5.36 (5.36)
 Trip 2 AP exp: 1.20

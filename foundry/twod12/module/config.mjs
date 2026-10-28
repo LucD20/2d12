@@ -319,6 +319,11 @@ export function requirementProblem(d, actor, target = null, opts = {}) {
   if (m && (actor?.system?.moveSpeed ?? actor?.system?.speed ?? 0) < Number(m[1])) return `needs a Speed of at least ${m[1]}`;
   const sz = req.match(/(?:SR|Size) is at most (\d+) higher than yours/i);
   if (sz && target && (target.system?.size ?? 3) > (actor?.system?.size ?? 3) + Number(sz[1])) return `needs a target whose SR is at most ${sz[1]} higher than yours`;
+  // Haul (v0.0.170): "Your Reach is 2 or more", "is at least 2 squares away" (opts.distance: the squares between the two creatures, when both are on the map).
+  const rc = req.match(/Your Reach is (\d+) or more/i);
+  if (rc && Math.max(1, Number(actor?.system?.reach) || 1) < Number(rc[1])) return `needs a Reach of ${rc[1]} or more`;
+  const far = req.match(/at least (\d+) squares away/i);
+  if (far && target && Number.isFinite(opts.distance) && opts.distance < Number(far[1])) return `needs a target at least ${far[1]} squares away (it is ${opts.distance})`;
   if (!opts.skipHands && /free hand/i.test(req) && handsUsed(actor) >= 2) return "needs a free hand";
   return "";
 }
@@ -451,9 +456,16 @@ export function subtypeCode(x) {
   return byName ? byName[0] : "";
 }
 
+/** The condition that makes all of a creature's Rolls Doomed ("Imperiled", "Squeezing", "Unconscious"), or "". */
+export function doomStatus(actor) {
+  const st = k => !!actor?.statuses?.has?.(k);
+  return st("imperiled") ? "Imperiled" : st("squeezing") ? "Squeezing" : st("unconscious") ? "Unconscious" : "";
+}
+
 /** While Unconscious, Saves and Checks are Doomed, except the Body Check of a Dying creature and the Mind Check of a Shattered one. */
 export function unconsciousDoom(actor, attrKey, kind = "Check") {
   if (actor?.statuses?.has?.("imperiled")) return true;   // Imperiled: all your Checks and Saves are Doomed
+  if (actor?.statuses?.has?.("squeezing")) return true;   // Squeezing (v0.0.170): all your Rolls are Doomed
   if (!actor?.statuses?.has?.("unconscious")) return false;
   if (kind === "Check" && attrKey === "body" && actor.statuses.has("dying")) return false;
   if (kind === "Check" && attrKey === "mind" && actor.statuses.has("shattered")) return false;

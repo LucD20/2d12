@@ -1,5 +1,5 @@
-NPC basic actions: Weapon Attack, Advance, Evade, Reload, Interact, Crawl, Release, Stand, Charge, Leaning, Fists, Relocate, Trip, Shove, Fists
-Character basic actions: Weapon Attack, Advance, Evade, Reload, Interact, Steel Yourself, Crawl, Release, Stand, Charge, Leaning, Fists, Relocate, Trip, Shove, Fists
+NPC basic actions: Weapon Attack, Advance, Evade, Reload, Interact, Crawl, Release, Stand, Charge, Leaning, Fists, Relocate, Trip, Shove, Haul, Fists
+Character basic actions: Weapon Attack, Advance, Evade, Reload, Interact, Steel Yourself, Crawl, Release, Stand, Charge, Leaning, Fists, Relocate, Trip, Shove, Haul, Fists
 missing for NPC with all but Rally: false
 Shove 1AP tier text: No effect. | @Move[pushed|distance:1] | @Move[pushed|distance:2] | instances: 0
 Trip 2AP: No effect. | @Condition[prone] | ["1d8Bl"] @Condition[prone]

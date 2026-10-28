@@ -1,9 +1,9 @@
-straight through the Goblin (0,0 → 0,3)              {"through":["Goblin"],"endIn":"","extra":1,"dark":0}
-through the Ally only (0,3 → 0,5)                    {"through":[],"endIn":"","extra":0,"dark":0}
-ending on the Goblin (0,0 → 0,2)                     {"through":[],"endIn":"Goblin","extra":0,"dark":0}
-ending on the Ally (0,0 → 0,4), through the Goblin   {"through":["Goblin"],"endIn":"Ally","extra":1,"dark":0}
-around the Goblin with waypoints                     {"through":[],"endIn":"","extra":0,"dark":0}
-diagonal past corners (1,0 → 3,... no)               {"through":[],"endIn":"","extra":0,"dark":0}
-through the 2x2 Ogre (2,0 → 2,5)                     {"through":["Ogre"],"endIn":"","extra":2,"dark":0}
-diagonal between Goblin(0,2) and nothing (1,1 → 0,2)? ends on Goblin {"through":[],"endIn":"Goblin","extra":0,"dark":0}
-diagonal squeeze: no corner clipping (1,1 → 3,3 not hitting ogre?) {"through":["Ogre"],"endIn":"","extra":2,"dark":0}
+straight through the Goblin (0,0 → 0,3)              {"through":["Goblin"],"endIn":"","extra":1,"dark":0,"solidCorner":false,"cornerDT":0}
+through the Ally only (0,3 → 0,5)                    {"through":[],"endIn":"","extra":0,"dark":0,"solidCorner":false,"cornerDT":0}
+ending on the Goblin (0,0 → 0,2)                     {"through":[],"endIn":"Goblin","extra":0,"dark":0,"solidCorner":false,"cornerDT":0}
+ending on the Ally (0,0 → 0,4), through the Goblin   {"through":["Goblin"],"endIn":"Ally","extra":1,"dark":0,"solidCorner":false,"cornerDT":0}
+around the Goblin with waypoints                     {"through":[],"endIn":"","extra":0,"dark":0,"solidCorner":false,"cornerDT":0}
+diagonal past corners (1,0 → 3,... no)               {"through":[],"endIn":"","extra":0,"dark":0,"solidCorner":false,"cornerDT":0}
+through the 2x2 Ogre (2,0 → 2,5)                     {"through":["Ogre"],"endIn":"","extra":2,"dark":0,"solidCorner":false,"cornerDT":0}
+diagonal between Goblin(0,2) and nothing (1,1 → 0,2)? ends on Goblin {"through":[],"endIn":"Goblin","extra":0,"dark":0,"solidCorner":false,"cornerDT":0}
+diagonal squeeze: no corner clipping (1,1 → 3,3 not hitting ogre?) {"through":["Ogre"],"endIn":"","extra":2,"dark":0,"solidCorner":false,"cornerDT":0}

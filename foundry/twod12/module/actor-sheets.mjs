@@ -4,7 +4,7 @@ import { weaponRanges } from "./weaponrange.mjs";
 import { defenseBonus } from "./defense.mjs";
 import { setWorn } from "./armor.mjs";
 import { bumpExhausted, isExhaustedFx, exhaustedClick } from "./sleep.mjs";
-import { TWOD12, apLabel, traitChevrons, categoryText, unconsciousDoom, cardColorFor, effectiveFrequency, distanceText, lineColorFor, KIND_LINE, SIZE_NAMES, isTalentAction, tagChoices } from "./config.mjs";
+import { TWOD12, apLabel, traitChevrons, categoryText, unconsciousDoom, doomStatus, cardColorFor, effectiveFrequency, distanceText, lineColorFor, KIND_LINE, SIZE_NAMES, isTalentAction, tagChoices } from "./config.mjs";
 import { rollCheck, rollTable, esc, sgn } from "./roll.mjs";
 import { useAction, askRoll, adjLabelOf } from "./actions.mjs";
 import { handleDrop } from "./grants.mjs";
@@ -296,7 +296,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       }
     }
     // Basic Actions, in a fixed order (Reload only with a Reload weapon in hand): their own section at the bottom, collapsed by default.
-    const BASIC = ["basicWeaponAttack", "fists", "rally", "charge", "shove", "reposition", "trip", "advance", "safeMovement", "stand", "leaning", "interact", "reload"];
+    const BASIC = ["basicWeaponAttack", "fists", "rally", "charge", "shove", "haul", "relocate", "trip", "advance", "safeMovement", "stand", "leaning", "interact", "reload"];
     const basics = (await Promise.all(actions.filter(i => i.getFlag("twod12", "basic")).map(async i => ({ ...(await rowOf(i)), key: i.getFlag("twod12", "basic") }))))
       .sort((x, y) => { const p = k => { const n = BASIC.indexOf(k); return n < 0 ? 99 : n; }; return p(x.key) - p(y.key) || x.name.localeCompare(y.name); });
     // Health (v0.0.130): the Donut or the Classic bars, a choice of each user. The tooltip has the Lethal and Nonlethal numbers.
@@ -914,7 +914,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const key = target.dataset.key;
     const mod = this.actor.system.attributes[key];
     const doomed = unconsciousDoom(this.actor, key);
-    const data = await askRoll(this.actor, { title: `${TWOD12.attributes[key]} Check`, attrKey: key, defaults: { doomed, doomedWhy: "Unconscious: all your Rolls are Doomed", doomedLabel: this.actor.statuses?.has?.("imperiled") ? "Imperiled (Doomed)" : "Unconscious (Doomed)" } });
+    const data = await askRoll(this.actor, { title: `${TWOD12.attributes[key]} Check`, attrKey: key, defaults: { doomed, doomedWhy: `${doomStatus(this.actor) || "Unconscious"}: all your Rolls are Doomed`, doomedLabel: `${doomStatus(this.actor) || "Unconscious"} (Doomed)` } });
     if (!data) return;
     const fxm = resolveModifiers(this.actor, data.fx);
     const manB = Number(data.boons) || 0, manN = Number(data.banes) || 0;

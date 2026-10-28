@@ -40,7 +40,7 @@ console.log("--- the Basic Actions");
 const ladder = d => d.versions.map(v => `${v.ap}AP: ${[v.x1, v.x2, v.x3].map(x => (x.match(/distance:(\d)/)?.[1] ?? "0")).join("/")}`).join(" | ");
 console.log("Shove  ", ladder(b.BASIC_ACTIONS.shove), "|", b.BASIC_ACTIONS.shove.traits.join("/"));
 console.log("Relocate", ladder(b.BASIC_ACTIONS.relocate), "|", b.BASIC_ACTIONS.relocate.traits.join("/"), "|", b.BASIC_ACTIONS.relocate.requirements);
-console.log("no old Reposition Basic Action:", !b.BASIC_ACTIONS.reposition, "| no Haul yet (F2):", !b.BASIC_ACTIONS.haul, "| Trip says SR:", b.BASIC_ACTIONS.trip.requirements);
+console.log("no old Reposition Basic Action:", !b.BASIC_ACTIONS.reposition, "| Haul (v0.0.170):", !!b.BASIC_ACTIONS.haul, "| Trip says SR:", b.BASIC_ACTIONS.trip.requirements);
 console.log("Cut Through's Critical uses Relocate:", content.includes("@Use[Relocate|nohandle:yes|label:Relocate (1A)]"));
 console.log("--- the Engaged banes are for [Ranged] Actions");
 const act = src("module/actions.mjs");
