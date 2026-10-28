@@ -11,4 +11,4 @@ How to work:
 - **End every design session with a DECISIONS block** that Lucas can paste into notes.txt for Claude Code: one line per decision, with his legend ([ADD], [DEL], [CHG], [Q], [IDEA], [NOTE], [FOUNDRY]), the old text quoted for every [CHG] and [DEL], and the file or section it belongs to.
 - Keep conversations short: one topic per conversation.
 
-Knowledge files to upload (the documents, not the code): HANDOFF.md, MASTER-PLAN.md, book/rules-src/README.md, book/rules-backlog.md, foundry/foundry-backlog.md, book/ruler/README.md, and the built core-rules.html, paladin.html, archer.html, bestiary.html when the topic needs them. Refresh them after each pack (replace, don't add copies).
+Knowledge files to upload: the files in knowledge/ (made by python tools/knowledge.py). Refresh them after each pack (replace, don't add copies).

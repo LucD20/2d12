@@ -4,3 +4,4 @@ foundry/package-lock.json
 __pycache__/
 *.zip
 foundry/twod12/packs/
+knowledge/

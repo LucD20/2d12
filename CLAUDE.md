@@ -22,6 +22,7 @@ Read first, in this order: **HANDOFF.md** (state), **MASTER-PLAN.md** (the order
 - Ability and item text: concise and direct. **Lucas doesn't write Flavor: write the Flavor line of every new Action, Talent or Feature.**
 - You cannot run Foundry. Say plainly what could not be tried and give a diagnostic when possible (with the Chrome extension connected you may smoke-test in the browser, but Lucas's own test stays the source of truth).
 - Commit after each pack (clear message). Don't commit zips.
+- At the end of every pack, run python tools/knowledge.py and tell me to re-upload knowledge/ to the Project.
 
 ## Book conventions that bite (details: rules-src/README.md)
 - Names in examples: only the list in the README, each used once before any repeats; he/him except Krysta and Lana; **in diagrams "you" is Y** (never O or K). Bane and Boon capitalized. Damage always writes its pool: `[B] 1[W] + [Mod]`. Write `[Strike] Action` when you mean the trait.
