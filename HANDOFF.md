@@ -4,7 +4,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT implementation. This bundle has everything. Read this file first.
 
-## Where we are now (v0.0.176, 141 tests; READ THIS FIRST)
+## Where we are now (v0.0.177, 142 tests; READ THIS FIRST)
+- **2026-10-28: v0.0.177** (branch pack-4-rules-sync): lights reach an N Emanation wherever they come from (lightradius.mjs), Regions snap to whole squares.
 - **2026-10-28: Pack 4 (R, rules sync) DONE as v0.0.176, waiting for Lucas's test** (branch pack-4-rules-sync, its pull request): Rally Points (Paladin 6, Archer 5, the new formula), NPC levels 1-3 in the Builder, Light (the target's light only), Bursts corner-only, Area and Distance as two lines, Dying and Shattered once each per encounter, waking with Interact. Packs Q, M1, M2 are merged (v0.0.170-175). **Next: F** (the format), the last pack of Phase 1.
 - **2026-10-28: v0.0.175** (branch pack-3-movement-b): Lucas's test of v0.0.174 passed except the path tool's movement (now one movement with waypoints, and the reachable squares are shown). **Lucas's PC gets branches by double-clicking `Update Foundry.cmd`** (project root; it runs tools/sync-pack.ps1 -Interactive: newest unmerged pack branch, or back to main after a merge, tests, packs rebuilt when needed, waits for Foundry to be closed; Task Scheduler is optional and was never in use): /testpack and /mergepack in a cloud session only change the cloud copy. The compendium packs are not in git: the sync (or build-packs) makes them on his PC.
 - **2026-10-28: Pack 3 (M2, movement B) DONE as v0.0.174, waiting for Lucas's test** (branch pack-3-movement-b, its pull request): the path tool for Slid and Reposition (Relocate within Reach, no Hazardous Terrain, Line of Effect at every square), Immobilized's DC, Steadiness bonuses from effects, Features and Talents, and the grey tiers table fixed. Packs Q and M1 are merged into main (v0.0.170-173). **Next: R** (the rules sync), then F (the format).

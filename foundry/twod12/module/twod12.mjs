@@ -6,6 +6,7 @@ import { registerMasteryHooks } from "./mastery.mjs";
 import { registerArcherHooks } from "./archer.mjs";
 import { registerLoE } from "./loe.mjs";
 import { solidTiles, tileConfigSolid } from "./corners.mjs";
+import { registerLightRadius } from "./lightradius.mjs";
 import { registerEscalationHooks } from "./escalation.mjs";
 import { registerArmorHooks } from "./armor.mjs";
 import { registerFloatText } from "./floattext.mjs";
@@ -114,6 +115,7 @@ Hooks.once("init", () => {
     type: Boolean,
     default: false
   });
+  game.settings.register("twod12", "regionSnapCorners", { name: "Regions snap to whole squares", hint: "Drawing a Region snaps its points to grid corners, never to half squares (hold Shift to place freely).", scope: "world", config: true, type: Boolean, default: true });
   game.settings.register("twod12", "showOdds", { name: "Show the odds on cards", hint: "For testing: action cards show the chance of each tier, and damage cards the average and the chance of that total.", scope: "client", config: true, type: Boolean, default: true });
   game.settings.register("twod12", "highlightTraits", { name: "Highlight traits and damage types in rules text", hint: "A very light background behind trait names (Strike, Divine...) and colored damage types (Cold, Holy...) on cards.", scope: "client", config: true, type: Boolean, default: true });
   CONFIG.Actor.dataModels = { character: CharacterData, npc: NpcData };
@@ -193,6 +195,8 @@ function collapsibleCards(msg, html) {
   head?.addEventListener("click", () => root.classList.toggle("collapsed"));
 }
 Hooks.on("renderChatMessageHTML", collapsibleCards);
+// v0.0.177: a light of size N reaches an N Emanation (the half square Foundry leaves out is added), and Regions snap to whole squares.
+Hooks.once("setup", () => { try { registerLightRadius(); } catch (e) { console.warn("twod12 | light radius", e); } });
 // Corners (v0.0.170): a "Solid" checkbox in the Tile settings (a solid Tile blocks the corners it covers).
 Hooks.on("renderTileConfig", (app, html) => { try { tileConfigSolid(app, html); } catch (e) { console.warn("twod12 | Tile settings", e); } });
 Hooks.on("renderChatMessageHTML", updateUseButtons);

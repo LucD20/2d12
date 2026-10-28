@@ -1,0 +1,8 @@
+a scene light on a square's center (radius 1, 2, 3 typed; Foundry's own radius vs the system's):
+  1: Foundry 5 squares, the system 9 squares
+  2: Foundry 13 squares, the system 21 squares
+  3: Foundry 29 squares, the system 37 squares
+a scene light on a corner (a Burst): 1 -> 4 | 2 -> 12 | 3 -> 32
+no light stays no light: 0 | a 2x2 token's light 2 (squares from its center): 3
+installed at setup: true | scene lights and tokens: true | an effect's light writes N (not N + 0.5): true
+regions snap to corners: true | a world setting, on: true

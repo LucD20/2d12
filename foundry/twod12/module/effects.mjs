@@ -160,7 +160,7 @@ export function resolveModifiers(actor, ids, extra = []) {
   return { boons, banes, sources };
 }
 
-/** The radius (in squares, from the token's center) of a light of size N around a creature whose token is `half` squares wide from its center. */
+/** The radius (in squares, from the token's center) of a light of size N around a creature whose token is `half` squares wide from its center (lightradius.mjs draws it so). */
 export const lightRadius = (n, half = 0.5) => (Number(n) > 0 ? Number(n) + half : 0);
 
 async function applyLight(actor, light) {
@@ -168,10 +168,8 @@ async function applyLight(actor, light) {
   const backup = [];
   for (const td of actor.getActiveTokens(false, true)) {
     backup.push({ uuid: td.uuid, bright: td.light.bright, dim: td.light.dim, color: td.light.color ?? null });
-    // v0.0.176: a light of size N is an N Emanation (book, Light). Foundry measures from the token's center, so the radius is N + half the
-    // token's width: N + 0.5 for a one-square creature reaches the same squares. A size of 0 sheds no light.
-    const half = Math.max(1, Number(td.width) || 1) / 2;
-    await td.update({ "light.bright": lightRadius(light.bright, half) * dist, "light.dim": lightRadius(light.dim, half) * dist, "light.color": light.color || null });
+    // v0.0.177: the token's light gets the book's size (N); lightradius.mjs adds half the token's width when the light is drawn (v0.0.176 wrote N + 0.5 here).
+    await td.update({ "light.bright": light.bright * dist, "light.dim": light.dim * dist, "light.color": light.color || null });
   }
   return backup;
 }
