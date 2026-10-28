@@ -77,7 +77,7 @@ async function openBuilderDialog() {
       <div class="setbox"><b>Traits</b>${traitBoxes}</div></div>
     <div class="bsec" data-types="save"><label>Tier 1 (\u2264 DC-1) <input type="text" name="t1" placeholder='1d6[mind,holy], "text", Item.id'></label><label>Tier 2 <input type="text" name="t2"></label><label>Tier 3 <input type="text" name="t3" placeholder="0"></label></div>
     <div class="bsec" data-types="rally"><label>Rally Points <input type="number" name="rn" value="1" min="1"></label></div>
-    <div class="bsec" data-types="move"><div class="grid4"><label>Kind <select name="mkind">${sel({ pushed: "Pushed (forced movement)", pulled: "Pulled (forced movement)", advance: "Advance (up to N squares)", evade: "Evade (no reactions)" })}</select></label><label>Distance <input type="text" name="mdistance" value="2" placeholder="2 or walk/2"></label></div></div>
+    <div class="bsec" data-types="move"><div class="grid4"><label>Kind <select name="mkind">${sel({ pushed: "Pushed (forced movement)", pulled: "Pulled (forced movement)", slid: "Slid (forced movement, a path)", reposition: "Reposition (a path)", advance: "Advance (up to N squares)", evade: "Evade (no reactions)" })}</select></label><label>Distance <input type="text" name="mdistance" value="2" placeholder="2 or walk/2"></label></div></div>
     <div class="bsec" data-types="damage">${rows}<label class="inline"><input type="checkbox" name="nlAll"> All instances nonlethal</label></div>
     <div class="bsec" data-types="template">
       <div class="grid4"><label>Shape <select name="shape">${sel({ emanation: "Emanation", burst: "Burst" })}</select></label><label>Distance <input type="number" name="distance" value="2" min="1"></label>

@@ -18,6 +18,7 @@ export function actionTags(item) {
   }
   if (texts.some(t => /@Move\[\s*pushed/i.test(t))) tags.add("pushed");
   if (texts.some(t => /@Move\[\s*pulled/i.test(t))) tags.add("pulled");
+  if (texts.some(t => /@Move\[\s*slid/i.test(t))) tags.add("slid");
   return tags;
 }
 
@@ -50,6 +51,23 @@ export function defenseBonus(actor, kind, tags, opts = {}) {
   return { total: parts.reduce((s, p) => s + p.bonus, 0), parts };
 }
 
+
+/**
+ * A creature's Steadiness (v0.0.174): its own (species, NPC) plus the bonuses of Features, Talents and effects (a "Defense" setting or a Feature's
+ * Defense bonus of the kind Steadiness: the highest bonus and the worst penalty, as for Defenses; "every Defense" doesn't count). Never below 0.
+ * Returns { base, total, parts }.
+ */
+export function steadinessOf(actor) {
+  const base = Math.max(0, Number(actor?.system?.steadiness) || 0), found = [];
+  for (const f of actor?.itemTypes?.feature ?? []) for (const d of f.system.defenses ?? []) if (d.attr === "steadiness") found.push({ name: f.name, bonus: Number(d.bonus) || 0 });
+  for (const e of allEffects(actor)) {
+    if (effectOff(actor, e)) continue;
+    for (const d of e.getFlag?.("twod12", "defenses") ?? e.flags?.twod12?.defenses ?? []) if (d.kind === "steadiness") found.push({ name: String(e.name ?? "").replace(/\s*\(.*\)\s*$/, ""), bonus: Number(d.bonus) || 0 });
+  }
+  const best = found.filter(x => x.bonus > 0).sort((a, b) => b.bonus - a.bonus)[0], worst = found.filter(x => x.bonus < 0).sort((a, b) => a.bonus - b.bonus)[0];
+  const parts = [best, worst].filter(Boolean);
+  return { base, total: Math.max(0, base + parts.reduce((s, p) => s + p.bonus, 0)), parts };
+}
 
 /** Which Defense an Action faces: { type: "vs", key } | { type: "armor" } | { type: "ward" } | null. src: rollSource() of the user. */
 export function defenseOf(item, src = null, rolledAttr = "") {

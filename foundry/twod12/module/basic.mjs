@@ -187,9 +187,9 @@ export const BASIC_ACTIONS = {
     distance: "reach",
     requirements: "The target's SR is at most 1 higher than yours. The target must remain within your Reach throughout the whole movement.",
     versions: [
-      V(1, [], [], [], "", { x1: "No effect.", x2: "@Move[reposition|distance:1]", x3: "@Move[reposition|distance:2]" }),
-      V(2, [], [], [], "", { x1: "No effect.", x2: "@Move[reposition|distance:2]", x3: "@Move[reposition|distance:4]" }),
-      V(3, [], [], [], "", { x1: "@Move[reposition|distance:1]", x2: "@Move[reposition|distance:3]", x3: "@Move[reposition|distance:5]" })
+      V(1, [], [], [], "", { x1: "No effect.", x2: "@Move[reposition|distance:1|reach:yes]", x3: "@Move[reposition|distance:2|reach:yes]" }),
+      V(2, [], [], [], "", { x1: "No effect.", x2: "@Move[reposition|distance:2|reach:yes]", x3: "@Move[reposition|distance:4|reach:yes]" }),
+      V(3, [], [], [], "", { x1: "@Move[reposition|distance:1|reach:yes]", x2: "@Move[reposition|distance:3|reach:yes]", x3: "@Move[reposition|distance:5|reach:yes]" })
     ]
   },
   trip: {
@@ -322,7 +322,9 @@ export function registerBasicHooks() {
     for (const actor of game.actors ?? []) {
       if (!["character", "npc"].includes(actor.type) || !actor.isOwner) continue;
       try {
-        const old = actor.items.some(i => i.type === "action" && i.getFlag(F, "basic") === "reposition") || missingBasic(actor);
+        // v0.0.174: Relocate keeps the target within your Reach (its buttons say reach:yes): an older copy is replaced.
+        const oldRelocate = actor.items.some(i => i.type === "action" && i.getFlag(F, "basic") === "relocate" && !JSON.stringify(i.system.versions ?? []).includes("reach:yes"));
+        const old = actor.items.some(i => i.type === "action" && i.getFlag(F, "basic") === "reposition") || missingBasic(actor) || oldRelocate;
         if (old) { await addBasicActions(actor, { replace: true }); n++; } else await ensureFists(actor);
       } catch (e) { console.warn("twod12 | could not update the Basic Actions of", actor.name, e); }
     }

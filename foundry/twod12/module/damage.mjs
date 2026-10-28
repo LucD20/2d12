@@ -96,13 +96,13 @@ async function apply(msg, button, factor) {
   else ui.notifications.info("This card deals 0 damage.");
   try { await msg.setFlag("twod12", "collapsed", true); } catch (e) { /* not the author */ }
   const auto = (f.fx ?? []).filter(x => x.mode === "auto").map(x => x.uuid);
-  if (auto.length) await applyEffects(auto, targets.map(t => t.uuid), { ...originInfo(f.originUuid), escalation: !!f.escalation });
+  if (auto.length) await applyEffects(auto, targets.map(t => t.uuid), { ...originInfo(f.originUuid), escalation: !!f.escalation, ...(Number.isFinite(f.originMod) ? { mod: f.originMod } : {}) });
 }
 
 async function applyConditional(msg) {
   const f = msg.getFlag("twod12", "dmgCard");
   const uuids = (f?.fx ?? []).filter(x => x.mode === "conditional").map(x => x.uuid);
-  if (uuids.length) await applyEffects(uuids, (f.targets ?? []).map(t => t.uuid), { ...originInfo(f.originUuid), escalation: !!f.escalation });
+  if (uuids.length) await applyEffects(uuids, (f.targets ?? []).map(t => t.uuid), { ...originInfo(f.originUuid), escalation: !!f.escalation, ...(Number.isFinite(f.originMod) ? { mod: f.originMod } : {}) });
 }
 
 async function toggleBlock(msg, button) {
@@ -129,7 +129,7 @@ async function applyRow(f, row, factor, selNl) {
     await runDamageTriggers(src, actor, row.uuid, row.comps ?? []);   // "When you deal Holy damage to a Profane creature..." (triggers.mjs)
   }
   const auto = (row.fx ?? []).filter(x => x.mode === "auto").map(x => x.uuid);
-  if (auto.length) await applyEffects(auto, [row.uuid], { ...originInfo(f.originUuid), escalation: !!f.escalation });
+  if (auto.length) await applyEffects(auto, [row.uuid], { ...originInfo(f.originUuid), escalation: !!f.escalation, ...(Number.isFinite(f.originMod) ? { mod: f.originMod } : {}) });
   const parts = [[a.B.l, "Body"], [a.B.n, "Body Nonlethal"], [a.M.l, "Mind"], [a.M.n, "Mind Nonlethal"]].filter(([n]) => n).map(([n, l]) => `${n} ${l}`).join(", ");
   return { dealt, text: dealt > 0 ? `<b>${esc(parts)}</b>${factor === 0.5 ? " (half)" : factor === 2 ? " (double)" : ""}` : "No damage" };
 }
@@ -168,7 +168,7 @@ async function multiBlock(msg, button) {
 async function multiFx(msg, button) {
   const f = msg.getFlag("twod12", "dmgMulti"), r = f?.rows?.[Number(button.dataset.row)];
   const uuids = (r?.fx ?? []).filter(x => x.mode === "conditional").map(x => x.uuid);
-  if (uuids.length) await applyEffects(uuids, [r.uuid], { ...originInfo(f.originUuid), escalation: !!f.escalation });
+  if (uuids.length) await applyEffects(uuids, [r.uuid], { ...originInfo(f.originUuid), escalation: !!f.escalation, ...(Number.isFinite(f.originMod) ? { mod: f.originMod } : {}) });
 }
 
 export async function damageButton(kind, button, msg) {

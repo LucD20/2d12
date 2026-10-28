@@ -791,7 +791,8 @@ export async function useAction(actor, item, opts = {}) {
           itemId: item.id,
           ap: version.ap,
           tier,
-          results: mres ? mres.map(r => ({ uuid: r.uuid, name: r.label, tier: r.chk.tier, crit: r.chk.crit, bonuses: r.bonuses })) : undefined,
+          total: chk?.total ?? null,   // v0.0.174: the roll's result (Forced Movement against an Immobilized creature compares it with the Immobilized DC)
+          results: mres ? mres.map(r => ({ uuid: r.uuid, name: r.label, tier: r.chk.tier, crit: r.chk.crit, bonuses: r.bonuses, total: r.chk.total })) : undefined,
           weaponId: weapon?.id ?? "",
           mode: opts.splitMode ?? "",
           attrVal: src.kind ? (Number(src.mod) || 0) : 0,   // [Mod]: the Modifier used on the roll (also Cleave's damage)
@@ -810,7 +811,7 @@ export async function useAction(actor, item, opts = {}) {
   // A version with no roll has no Damage button: its automatic effects are applied now (to the targets, or to you for Self Actions).
   if (version.noTiers && (version.fx?.all ?? []).length) {
     const auto = version.fx.all.filter(x => x.mode === "auto").map(x => x.uuid);
-    if (auto.length) await applyEffects(auto, isSelf ? [actor.uuid] : targets.map(t => t.uuid), { ...originInfo(actor.uuid), escalation: escCost > 0 });
+    if (auto.length) await applyEffects(auto, isSelf ? [actor.uuid] : targets.map(t => t.uuid), { ...originInfo(actor.uuid), escalation: escCost > 0, ...(src.kind ? { mod: Number(src.mod) || 0 } : {}) });
   }
   // A Save Action: a Save card for the creatures in the area (each player rolls their own), and the area remembers it for [HT] (v0.0.159).
   if (saveAct && !version.noTiers) {
@@ -837,7 +838,7 @@ export async function useAction(actor, item, opts = {}) {
   if (!version.noTiers) {
     const autoFor = (t, bon) => [...(t >= 2 ? (version.fx?.all ?? []) : []), ...(version.fx?.[`t${t}`] ?? []), ...(bon ?? []).filter(b => b.fxUuid).map(b => ({ uuid: b.fxUuid, mode: "auto" }))]
       .filter(x => x.mode === "auto").map(x => x.uuid);
-    const how = { ...originInfo(actor.uuid), escalation: escCost > 0 };
+    const how = { ...originInfo(actor.uuid), escalation: escCost > 0, ...(src.kind ? { mod: Number(src.mod) || 0 } : {}) };   // mod: the Immobilized DC
     if (mres) {
       for (const r of mres) { const u = autoFor(r.chk.tier, r.bonuses); if (u.length && r.chk.tier >= 1) await applyEffects(u, [isSelf ? actor.uuid : r.uuid], how); }
     } else if (tier >= 1) {
@@ -901,10 +902,10 @@ export async function rollDamage(message) {
       const d = byTier.get(r.tier);
       rows.push({ uuid: r.uuid, name: r.name, tier: r.tier, comps: d.comps.map(c => ({ ...c })), fx: d.fx });
     }
-    if (rows.length) await postMultiDamageCard({ actor, title: item.name, rows, rolls: all, color: f.color, defaultNl: !!f.nl, originUuid: f.actorUuid });
+    if (rows.length) await postMultiDamageCard({ actor, title: item.name, rows, rolls: all, color: f.color, defaultNl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal });
   } else {
     const d = await rollFor(f.tier, f.bonuses ?? [], f.targets ?? [], "");
-    await postDamageCard({ actor, title: item.name, subtitle: `Damage \u2022 Tier ${f.tier}`, comps: d.comps, fx: d.fx, targets: f.targets ?? [], originUuid: f.actorUuid, chip: d.chip, rolls: d.rolls, color: f.color, defaultNl: !!f.nl });
+    await postDamageCard({ actor, title: item.name, subtitle: `Damage \u2022 Tier ${f.tier}`, comps: d.comps, fx: d.fx, targets: f.targets ?? [], originUuid: f.actorUuid, chip: d.chip, rolls: d.rolls, color: f.color, defaultNl: !!f.nl, originMod: f.attrVal });
   }
   try { await message.setFlag("twod12", "collapsed", true); } catch (e) { /* not the author */ }
 }

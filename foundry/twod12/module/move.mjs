@@ -10,6 +10,9 @@ import { getAP, setAP, combatantOf } from "./combat.mjs";
 import { expireOnUse } from "./bonus.mjs";
 import { evalExpr } from "./refs.mjs";
 import { stepCorners, solidCorner, creatureIn, straightCells, chooseLine } from "./corners.mjs";
+import { coverFromPoint } from "./cover.mjs";
+import { hazardIn } from "./hazard.mjs";
+import { steadinessOf } from "./defense.mjs";
 const F = "twod12", SOCKET = "system.twod12";
 const warn = m => ui.notifications.warn(m);
 const refuse = m => { warn(m); return false; };   // a refusal that says no
@@ -142,8 +145,10 @@ export function pathTo(map, key) {
  * cornerAt(a, b) (optional): { kind: "" | "solid" | "creatures", creatures } for a diagonal step; a solid corner is an object (a wall),
  * a diagonal between two creatures is a Collision with a creature (unless throughCreatures: kept for abilities that let a movement pass creatures;
  * since v0.0.173 Reposition doesn't, it stops there without damage).
+ * loeAt(shift) (optional, Slid and Reposition, v0.0.174): false when the origin would lose Line of Effect to the creature there: the movement ends
+ * before that square, and that is not a Collision (no damage). damageless: a Reposition never deals Collision damage.
  */
-export function analyzePath(path, N, { wallBetween, creatureAt, cornerAt = null, throughCreatures = false }) {
+export function analyzePath(path, N, { wallBetween, creatureAt, cornerAt = null, throughCreatures = false, loeAt = null, damageless = false }) {
   let done = 0, block = null;
   for (let n = 1; n < path.length; n++) {
     const a = path[n - 1], b = path[n];
@@ -153,12 +158,41 @@ export function analyzePath(path, N, { wallBetween, creatureAt, cornerAt = null,
     if (corner?.kind === "creatures" && !throughCreatures) { block = { type: "creature", token: corner.creatures[0], corner: true }; break; }
     const t = creatureAt(b);
     if (t) { block = { type: "creature", token: t }; break; }
+    if (loeAt && !loeAt(b)) { block = { type: "loe" }; break; }
     done = n;
   }
   const unused = block ? N - done : 0;
   const k = TWOD12.collision;
-  const damage = !block ? { self: 0, other: 0 } : (block.type === "wall" ? { self: unused * k.wall, other: 0 } : { self: unused * k.creature, other: unused * k.creature });
+  const damage = !block || damageless || block.type === "loe" ? { self: 0, other: 0 } : (block.type === "wall" ? { self: unused * k.wall, other: 0 } : { self: unused * k.creature, other: unused * k.creature });
   return { done, block, final: path[done], unused, damage };
+}
+
+/**
+ * The path tool (Slid and Reposition, v0.0.174): can the next square (a shift) be added to the path? It must be next to the last square
+ * (diagonals count 1), not a square the path already has, and within the value. Returns "" or why not.
+ */
+export function pathStepProblem(path, next, N) {
+  const last = path[path.length - 1];
+  if (Math.max(Math.abs(next.di - last.di), Math.abs(next.dj - last.dj)) !== 1) return "each square must be next to the previous one";
+  if (path.some(s => s.di === next.di && s.dj === next.dj)) return "the path already passes there";
+  if (path.length - 1 >= N) return `the value is ${N}: the path is full`;
+  return "";
+}
+
+/**
+ * Immobilized (book, Conditions): an Action that doesn't roll can't move an Immobilized creature; one that rolls needs a result of at least the
+ * Immobilized DC; a Save Action has the origin roll 2d12 + its Modifier once (saveTotal). Returns { moved, why }.
+ */
+export function immobilizedOutcome({ rolls = false, total = null, save = false, saveTotal = null, dc = 13 } = {}) {
+  if (save) return Number.isFinite(saveTotal) && saveTotal >= dc ? { moved: true, why: `the origin's roll ${saveTotal} beats the Immobilized DC ${dc}` } : { moved: false, why: `the origin's roll ${saveTotal ?? "?"} is below the Immobilized DC ${dc}` };
+  if (!rolls || !Number.isFinite(total)) return { moved: false, why: "it is Immobilized, and this movement doesn't come from a roll" };
+  return total >= dc ? { moved: true, why: `the roll ${total} beats the Immobilized DC ${dc}` } : { moved: false, why: `the roll ${total} is below the Immobilized DC ${dc}` };
+}
+
+/** The Immobilized DC of a creature: the highest stored on its Immobilized conditions (11 + the Modifier its origin used), 13 when none says. */
+export function immobilizedDc(actor) {
+  const dcs = (actor?.effects ?? []).filter(e => e.statuses?.has?.("immobilized")).map(e => Number(e.getFlag?.(F, "immobileDc") ?? e.flags?.[F]?.immobileDc)).filter(Number.isFinite);
+  return dcs.length ? Math.max(...dcs) : TWOD12.baseDC;
 }
 
 /* ------------------------------------------------------------------ */
@@ -484,7 +518,7 @@ function gfxLine(g, pts, color, width, alpha = 1) {
   else { g.moveTo(pts[0].x, pts[0].y); for (const p of pts.slice(1)) g.lineTo(p.x, p.y); g.stroke({ width, color, alpha }); }
 }
 
-const MOVE_LABEL = { push: "Pushed", pull: "Pulled", reposition: "Reposition" };
+const MOVE_LABEL = { push: "Pushed", pull: "Pulled", slid: "Slid", reposition: "Reposition" };
 
 /**
  * Drag the target to a square: only the squares the movement allows (Pushed: away from the origin; Pulled: toward it, or the origin's own square
@@ -575,6 +609,98 @@ function choosePush(origin, target, N, mode = "push") {
   });
 }
 
+/** Line of Effect from the origin (any square it occupies) to the target's space moved by a shift (book: any corner of the space, unblocked). */
+function loeTo(origin, target, sh) {
+  try {
+    const s = canvas.grid.size, d = target.document, h = homePos(d);
+    const ghost = { id: target.id, actor: null, document: { x: h.x + sh.dj * s, y: h.y + sh.di * s, width: d.width, height: d.height, flags: {} } };
+    const others = [];   // creatures don't block Line of Effect
+    return tokenCells(origin).some(c => !coverFromPoint(cellCenter(c.i, c.j), ghost, { others })?.noLoE);
+  } catch (e) { console.warn("twod12 | Line of Effect on the path", e); return true; }
+}
+
+/**
+ * The path tool (Slid and Reposition, v0.0.174): click the squares of the path one by one (each next to the previous one; diagonals count 1).
+ * Click the last square again, or press Enter, to move; right-click takes back the last square (or cancels with none); Esc cancels.
+ * Slid: a wall, a solid corner, a creature or the origin on the path is a Collision there. Reposition: it stops before them, with no damage,
+ * can't enter Hazardous Terrain, and (Relocate: withinReach) the target must stay within the origin's Reach. Both: if the origin would lose
+ * Line of Effect, the movement ends before that square (no damage). Resolves to { path, result } or null.
+ */
+function choosePath(origin, target, N, mode = "slid", { withinReach = false } = {}) {
+  const repo = mode === "reposition";
+  return new Promise(resolve => {
+    const cells = tokenCells(target), tl = { i: Math.min(...cells.map(c => c.i)), j: Math.min(...cells.map(c => c.j)) };
+    const oCells = tokenCells(origin), reach = Math.max(1, num(origin.actor?.system?.reach) || 1);
+    const w = Math.max(1, Math.round(target.document.width ?? 1)), h = Math.max(1, Math.round(target.document.height ?? 1));
+    const occupied = canvas.tokens.placeables.filter(t => t.id !== target.id && t.actor && !t.document?.hidden).map(t => ({ t, set: new Set(tokenCells(t).map(c => `${c.i},${c.j}`)) }));
+    const foot = sh => cells.map(c => ({ i: c.i + sh.di, j: c.j + sh.dj }));
+    const creatureAt = sh => occupied.find(o => foot(sh).some(c => o.set.has(`${c.i},${c.j}`)))?.t ?? null;
+    const wallsOn = (a, b) => cells.some(c => wallBetween(cellCenter(c.i + a.di, c.j + a.dj), cellCenter(c.i + b.di, c.j + b.dj)));
+    const cornerAt = (a, b) => stepCorners({ i: tl.i + a.di, j: tl.j + a.dj }, { i: tl.i + b.di, j: tl.j + b.dj }, { w, h, solidAt: solidCorner, creatureAt: c => creatureIn(c, [target]) });
+    const loeAt = sh => loeTo(origin, target, sh);
+    const inReach = sh => foot(sh).some(c => oCells.some(o => Math.max(Math.abs(c.i - o.i), Math.abs(c.j - o.j)) <= reach));
+    const path = [{ di: 0, dj: 0 }];
+    let hover = null;
+    const analyze = p => analyzePath(p, p.length - 1, { wallBetween: wallsOn, creatureAt, cornerAt, loeAt, damageless: repo });
+    const why = sh => {
+      const p = pathStepProblem(path, sh, N);
+      if (p) return p;
+      if (repo && hazardIn(foot(sh))) return "a Reposition can't move a creature into Hazardous Terrain";
+      if (withinReach && !inReach(sh)) return `the target must remain within ${origin.name}'s Reach (${reach})`;
+      return "";
+    };
+    const gfx = new PIXI.Graphics();
+    (canvas.interface ?? canvas.stage).addChild(gfx);
+    const tip = document.createElement("div");
+    tip.className = "twod12-pushtip"; tip.style.display = "none"; document.body.append(tip);
+    const prevInteractive = canvas.tokens.interactiveChildren;
+    canvas.tokens.interactiveChildren = false;
+    const pt = sh => { const ps = foot(sh).map(c => cellCenter(c.i, c.j)); return { x: ps.reduce((a, p) => a + p.x, 0) / ps.length, y: ps.reduce((a, p) => a + p.y, 0) / ps.length }; };
+    const text = r => {
+      const steps = `${path.length - 1} of ${N}`;
+      if (!r.block) return `${MOVE_LABEL[mode]} ${r.done} (path ${steps}). Click the last square again or press Enter to move; right-click takes a square back.`;
+      if (r.block.type === "loe") return `${origin.name} loses Line of Effect: it stops after ${r.done} (no damage).`;
+      const what = r.block.type === "wall" ? (r.block.corner ? "A solid corner" : "A wall") : r.block.token.name;
+      return repo ? `${what} is in the way: it stops after ${r.done} (no damage).` : `${what}: Collision after ${r.done}, ${r.unused} unused, ${r.damage.self} Body${r.block.type === "creature" ? " to each" : ""}.`;
+    };
+    const draw = () => {
+      gfx.clear();
+      const r = analyze(path);
+      fillCells(gfx, path.slice(1).flatMap(foot), 0x66ccff, 0.25);
+      const pts = path.map(pt);
+      gfxLine(gfx, pts.slice(0, r.done + 1), 0x44cc77, 5, 0.95);
+      if (r.block) gfxLine(gfx, pts.slice(r.done, r.done + 2), 0xdd3333, 5, 0.95);
+      if (hover) { const bad = why(hover); fillCells(gfx, foot(hover), bad ? 0xdd3333 : 0xffffff, bad ? 0.25 : 0.35); }
+      return r;
+    };
+    const posOf = ev => { const p = ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) : ev.data.getLocalPosition(canvas.stage); const o = canvas.grid.getOffset(p); return { di: o.i - tl.i, dj: o.j - tl.j }; };
+    const showTip = (ev, msg) => { tip.textContent = msg; tip.style.display = "block"; const n = ev?.nativeEvent ?? ev?.data?.originalEvent; if (n) { tip.style.left = `${n.clientX + 14}px`; tip.style.top = `${n.clientY + 14}px`; } };
+    const move = ev => { hover = posOf(ev); const r = draw(); const bad = why(hover), last = path[path.length - 1]; showTip(ev, hover.di === last.di && hover.dj === last.dj && path.length > 1 ? text(r) : (bad ? `Not here: ${bad}.` : text(analyze([...path, hover])))); };
+    const finish = v => {
+      canvas.stage.off("pointermove", move); canvas.stage.off("pointerdown", down);
+      window.removeEventListener("keydown", keys);
+      canvas.tokens.interactiveChildren = prevInteractive;
+      gfx.destroy(); tip.remove();
+      resolve(v);
+    };
+    const confirm = () => (path.length > 1 ? finish({ path: [...path], result: analyze(path) }) : finish(null));
+    const down = ev => {
+      if (ev.button === 2) { if (path.length > 1) { path.pop(); draw(); } else finish(null); return; }
+      if (ev.button !== 0) return;
+      const sh = posOf(ev), last = path[path.length - 1];
+      if (sh.di === last.di && sh.dj === last.dj) return confirm();
+      const bad = why(sh);
+      if (bad) return warn(`${MOVE_LABEL[mode]}: ${bad}.`);
+      path.push(sh); move(ev);
+    };
+    const keys = ev => { if (ev.key === "Escape") finish(null); else if (ev.key === "Enter") confirm(); };
+    canvas.stage.on("pointermove", move); canvas.stage.on("pointerdown", down);
+    window.addEventListener("keydown", keys);
+    ui.notifications.info(`${MOVE_LABEL[mode]} ${N}: click the squares of ${target.name}'s path one by one, then click the last one again (or Enter). Right-click takes a square back; Esc cancels.`);
+    draw();
+  });
+}
+
 async function moveToken(doc, dx, dy) {
   const size = canvas.grid.size, x = doc.x + dx * size, y = doc.y + dy * size;
   if (doc.isOwner) await doc.update({ x, y }, { twod12Forced: true, animate: true, animation: { movementSpeed: TWOD12.pushSpeed, easing: "easeOutCubic" } });
@@ -591,27 +717,32 @@ const bodyDamage = n => ({ B: { l: n, n: 0 }, M: { l: 0, n: 0 } });
 export const reducedValue = (N, steady) => Math.max(0, num(N) - Math.max(0, num(steady)));
 
 async function applySteadiness(target, N, label) {
-  const steady = Math.max(0, num(target.actor?.system?.steadiness));
+  const st = steadinessOf(target.actor), steady = st.total;   // v0.0.174: with the bonuses of Features, Talents and effects
   if (!steady) return { N, steady: 0, applied: false };
   const eff = reducedValue(N, steady);
+  const from = st.parts.length ? ` (${st.base} + ${st.parts.map(p => `${p.name} ${p.bonus >= 0 ? "+" : "\u2212"}${Math.abs(p.bonus)}`).join(", ")})` : "";
   const choice = await foundry.applications.api.DialogV2.wait({
     window: { title: "Steadiness" }, rejectClose: false,
-    content: `<p><b>${esc(target.name)}</b> has Steadiness ${steady}: ${label} ${N} becomes ${label} ${eff}.</p><p>A willing creature can choose not to apply its Steadiness.</p>`,
+    content: `<p><b>${esc(target.name)}</b> has Steadiness ${steady}${esc(from)}: ${label} ${N} becomes ${label} ${eff}.</p><p>A willing creature can choose not to apply its Steadiness.</p>`,
     buttons: [{ action: "apply", label: `Apply Steadiness (${label} ${eff})`, default: true }, { action: "ignore", label: `Don't apply it (${label} ${N})` }]
   });
   return choice === "ignore" ? { N, steady, applied: false } : { N: eff, steady, applied: true };
 }
 
-async function pushOne(origin, target, N0, mode = "push") {
+async function pushOne(origin, target, N0, mode = "push", opts = {}) {
   const label = MOVE_LABEL[mode];
   const st = await applySteadiness(target, N0, label), N = st.N;
   if (N <= 0) { await post(`<b>${esc(target.name)}</b> is not moved: its Steadiness ${st.steady} reduces ${label} ${N0} to 0.`); return; }
-  const pick = await choosePush(origin, target, N, mode);
+  const pathTool = mode === "slid" || mode === "reposition";
+  const pick = pathTool ? await choosePath(origin, target, N, mode, opts) : await choosePush(origin, target, N, mode);
   if (!pick) return;
   const { result } = pick, f = result.final;
-  if (f.di || f.dj) await moveToken(target.document, f.dj, f.di);
+  if (pathTool) {   // square by square, so the token follows the path (and Hazardous Terrain sees each square it enters)
+    for (let n = 1; n <= result.done; n++) { const a = pick.path[n - 1], b = pick.path[n]; await moveToken(target.document, b.dj - a.dj, b.di - a.di); }
+  } else if (f.di || f.dj) await moveToken(target.document, f.dj, f.di);
   const lines = [`<b>${esc(target.name)}</b> is ${mode === "reposition" ? "Repositioned" : label} ${N0}${st.applied ? ` (Steadiness ${st.steady}: ${N})` : ""} by <b>${esc(origin.name)}</b> and moves ${result.done} square${result.done === 1 ? "" : "s"}.`];
-  if (result.block && mode === "reposition") lines.push(`It stops short: ${result.block.type === "wall" ? (result.block.corner ? "a solid corner" : "a wall") : `<b>${esc(result.block.token.name)}</b>`} is in the way.`);
+  if (result.block?.type === "loe") lines.push(`It stops: <b>${esc(origin.name)}</b> would lose Line of Effect to it (no damage).`);
+  else if (result.block && mode === "reposition") lines.push(`It stops short: ${result.block.type === "wall" ? (result.block.corner ? "a solid corner" : "a wall") : `<b>${esc(result.block.token.name)}</b>`} is in the way.`);
   else if (result.block) {
     const d = result.damage;
     if (result.block.type === "wall") {
@@ -635,13 +766,32 @@ async function pushFlow(cfg, ctx, mode = "push") {
   if (!origin) return warn(`Select the token that is the origin of the ${MOVE_LABEL[mode]}.`);
   const targets = targetTokens(ctx).filter(t => t.id !== origin.id);
   if (!targets.length) return warn("Target the creature to move first.");
-  for (const t of targets) await pushOne(origin, t, N, mode);
+  // Immobilized (v0.0.174): checked before Steadiness. The card says whether the Action rolled (its result, per target) or is a Save Action
+  // (then the origin rolls 2d12 + its Modifier once, for every Immobilized creature it would move).
+  const f = ctx?.message?.getFlag?.(F, "action") ?? null;
+  let saveTotal = null;
+  for (const t of targets) {
+    if (t.actor?.statuses?.has?.("immobilized")) {
+      const dc = immobilizedDc(t.actor), save = !!f?.traits?.includes?.("save");
+      if (save && saveTotal === null) {
+        const roll = await new Roll(`2d12 + ${num(f.attrVal)}`).evaluate();
+        await roll.toMessage({ flavor: `${esc(origin.name)}: ${MOVE_LABEL[mode]} against an Immobilized creature (the Save Action's Modifier)` });
+        saveTotal = roll.total;
+      }
+      const res = f?.results?.find?.(r => r.uuid === (t.document?.uuid ?? t.uuid));
+      const out = immobilizedOutcome({ rolls: !!f && (Number.isFinite(f.total) || Number.isFinite(res?.total)), total: res?.total ?? f?.total, save, saveTotal, dc });
+      if (!out.moved) { await post(`<b>${esc(t.name)}</b> is Immobilized and isn't moved: ${out.why}.`); continue; }
+      await post(`<b>${esc(t.name)}</b> is Immobilized, but ${out.why}: it can be moved.`);
+    }
+    await pushOne(origin, t, N, mode, { withinReach: !!cfg.withinReach });
+  }
 }
 
 /** Entry point of the @Move button. */
 export async function handleMove(cfg, ctx = {}) {
   if (cfg.kind === "pushed") return pushFlow(cfg, ctx);
   if (cfg.kind === "pulled") return pushFlow(cfg, ctx, "pull");
+  if (cfg.kind === "slid") return pushFlow(cfg, ctx, "slid");
   if (cfg.kind === "reposition") return pushFlow(cfg, ctx, "reposition");
   return grantFreeMove(cfg, ctx, cfg.kind === "evade" ? "evade" : (cfg.kind === "charge" ? "charge" : "walk"));
 }

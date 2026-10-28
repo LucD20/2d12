@@ -73,7 +73,7 @@ const cap = w => w.charAt(0).toUpperCase() + w.slice(1);
 export function humanize(text) {
   return String(text ?? "")
     .replace(/@Condition\[(\w+)(?:\|(eot|rounds:(\d+)))?\]/g, (m, c, d, r) => `${cap(c)}${d ? ` (${r ? `${r} round${r === "1" ? "" : "s"}` : "EoT"})` : ""}`)
-    .replace(/@Move\[(pushed|pulled|advance|evade|reposition)\|distance:([^\]|]+)\]/g, (m, k, d) => `${cap(k)} ${d}`)
+    .replace(/@Move\[(pushed|pulled|slid|advance|evade|reposition)\|distance:([^\]|]+)\]/g, (m, k, d) => `${cap(k)} ${d}`)
     .replace(/@Save\[(\w+)\]/g, (m, a) => `${cap(a)} Save`)
     .replace(/@Check\[(\w+)\]/g, (m, a) => `${cap(a)} Check`);
 }

@@ -4,7 +4,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT implementation. This bundle has everything. Read this file first.
 
-## Where we are now (v0.0.173, 139 tests; READ THIS FIRST)
+## Where we are now (v0.0.174, 140 tests; READ THIS FIRST)
+- **2026-10-28: Pack 3 (M2, movement B) DONE as v0.0.174, waiting for Lucas's test** (branch pack-3-movement-b, its pull request): the path tool for Slid and Reposition (Relocate within Reach, no Hazardous Terrain, Line of Effect at every square), Immobilized's DC, Steadiness bonuses from effects, Features and Talents, and the grey tiers table fixed. Packs Q and M1 are merged into main (v0.0.170-173). **Next: R** (the rules sync), then F (the format).
 - **2026-10-28: v0.0.173** (branch pack-1-quick-ui, its pull request): Lucas's test of v0.0.172 passed except two fixes (the tiers table's grey rows, the Snapshot now a PNG); his rule answers are applied: **Reposition can't move through creatures** (book Chapter 3, the figure, the glossary; Foundry stops it there) and **a diagonal between two creatures is Difficult Terrain only between two unwilling ones**. Next: M2 (the path tool).
 - **2026-10-28: Pack 1 (Q, quick UI) DONE as v0.0.172, waiting for Lucas's test** (branch pack-1-quick-ui, its pull request): the Steadiness tile always shown, a custom Steadiness in the Builder, the Damage Instance dialog restyled, a Snapshot button on Cover height, the Talent's Traits drop-down, Show help on Action and Talent sheets. Pack 2 (M1) is merged into main (v0.0.170-171). **Next: M2** (the path tool); before it, Lucas answers the Reposition proposal in book/rules-backlog.md.
 - **2026-10-28: v0.0.171** (same branch, pack-2-movement-a): fixes from Lucas's test of v0.0.170: the solid-corner check for your own movement is a world setting (off by default), and the movement label counts a diagonal between two creatures. The book change "Reposition can't move through creatures" is PROPOSED in book/rules-backlog.md, not applied.
@@ -37,7 +38,7 @@ Python needs `markdown`. Node 22 is enough for the tests.
 
 ## Commands
 - Book: `cd book && python3 build_rules.py` (builds the seven documents; "unresolved refs: 0" is the goal). `python3 build_rules.py --where Flanking`.
-- System tests: `cd foundry/twod12 && node tools/tests/run.mjs` (138 tests; each has an expected output in tools/tests/expected; accept a meant change with `node tools/tests/run.mjs --update t84`). **Test numbers have gaps (t12b, t37b; t133 is old, new ones are t135-t141): check before creating a test file.** Lint: `npx eslint@8 --no-eslintrc -c tools/eslint.json --ext .mjs module`.
+- System tests: `cd foundry/twod12 && node tools/tests/run.mjs` (138 tests; each has an expected output in tools/tests/expected; accept a meant change with `node tools/tests/run.mjs --update t84`). **Test numbers have gaps (t12b, t37b; t133 is old, new ones are t135-t142): check before creating a test file.** Lint: `npx eslint@8 --no-eslintrc -c tools/eslint.json --ext .mjs module`.
 - Compendiums: the content is written in `tools/content.mjs` and compiled with the Foundry CLI: in foundry/ run `npm install @foundryvtt/foundryvtt-cli` (it creates node_modules and package files there: never ship them), then `node twod12/tools/build-packs.mjs`.
 - Package for the user: bump `version` in system.json, add the changelog entry to docs/reference.md (copy it to foundry/reference.md), zip the `twod12` folder (without node_modules) as `twod12.zip`, run the tests from a fresh unzip. The project zip leaves out node_modules, package files and __pycache__.
 

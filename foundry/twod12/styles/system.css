@@ -1471,15 +1471,14 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 .twod12 .sheet-helptoggle { display: flex; justify-content: flex-end; align-items: center; gap: 4px; margin: 0 0 4px; font-size: 11px; white-space: nowrap; }
 .twod12 section.tab.help-off .hint, .twod12 section.tab.help-off .ihint { display: none; }
 
-/* v0.0.173: the tiers table of an Action card (item sheet, chat) never takes Foundry's theme row colors (they were grey in a dark theme) */
-.twod12.acard { --table-row-color-odd: transparent; --table-row-color-even: transparent; --table-row-color-highlight: transparent; --table-header-bg-color: transparent; --table-header-text-color: inherit; }
-.application .twod12.acard table.ac-tiers, .application .twod12.acard table.ac-tiers > thead, .application .twod12.acard table.ac-tiers > tbody,
-.application .twod12.acard table.ac-tiers tr, .application .twod12.acard table.ac-tiers th, .application .twod12.acard table.ac-tiers td,
-.twod12.acard table.ac-tiers tr, .twod12.acard table.ac-tiers th, .twod12.acard table.ac-tiers td { background: transparent; text-shadow: none; }
-.application .twod12.acard table.ac-tiers > tbody > tr:nth-child(odd), .twod12.acard table.ac-tiers > tbody > tr:nth-child(odd) { background: rgba(120,100,60,.07); }
-.application .twod12.acard table.ac-tiers > tbody > tr > th { color: #6b5a3a; }
-.application .twod12.acard table.ac-tiers > tbody > tr > td { color: #1e2430; }
-.application .twod12.acard table.ac-tiers > tbody > tr.crit > th { color: #8a4f08; }
+/* v0.0.174: the tiers table of an Action card (class "tiers": the chat card, and the item sheet's Description tab, which shows the same card) never takes
+   Foundry's theme colors: the theme paints the table and its cells, not only the rows (they were grey in a dark theme). The rows keep their own colors (hit, forced, Save tiers). */
+.twod12.chat { --table-row-color-odd: transparent; --table-row-color-even: transparent; --table-row-color-highlight: transparent; --table-header-bg-color: transparent; --table-header-text-color: inherit; --table-background: transparent; }
+.application .twod12.chat table.tiers, .application .twod12.chat table.tiers > tbody, .application .twod12.chat table.tiers > thead,
+.application .twod12.chat table.tiers th, .application .twod12.chat table.tiers td,
+.twod12.chat table.tiers, .twod12.chat table.tiers > tbody, .twod12.chat table.tiers th, .twod12.chat table.tiers td { background: transparent; background-color: transparent; text-shadow: none; }
+.application.twod12-styled .twod12.chat table.tiers th, .application.twod12-styled .twod12.chat table.tiers td { color: var(--sk-ink); }
+
 /* v0.0.173: the Snapshot is a picture */
 .twod12-height.hc-snap .hc-view { background: none; border: none; }
 .twod12-height.hc-snap img.hc-snapimg { display: block; width: 100%; height: auto; border: 1px solid #b9b1a1; }

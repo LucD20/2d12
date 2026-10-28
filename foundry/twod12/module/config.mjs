@@ -187,7 +187,7 @@ export const TWOD12 = {
   armors: { unarmored: { label: "Unarmored", value: 0, rank: 0 }, light: { label: "Light", value: 1, rank: 1 }, medium: { label: "Medium", value: 2, rank: 2 }, heavy: { label: "Heavy", value: 3, rank: 3 } },
   armorTrainings: { light: "Light", medium: "Medium", heavy: "Heavy" },
   // What a Defense bonus (a Feature's or an effect's) raises: every Defense, Armor, Ward, or one Vs. Attribute.
-  defenseKinds: { all: "every Defense", armor: "Armor Defense (AD)", ward: "Ward Defense (WD)", body: "Vs. Body", mind: "Vs. Mind", appeal: "Vs. Appeal", instinct: "Vs. Instinct" },
+  defenseKinds: { all: "every Defense", armor: "Armor Defense (AD)", ward: "Ward Defense (WD)", body: "Vs. Body", mind: "Vs. Mind", appeal: "Vs. Appeal", instinct: "Vs. Instinct", steadiness: "Steadiness (being moved)" },   // steadiness (v0.0.174): not a Defense; "every Defense" never adds to it
   basicCategory: "Basic Action",
   pushSpeed: 20, // squares per second when a token is pushed (normal movement is slower)
   // Pushed: the creature can only end in a cone (degrees either side of the line straight away from the origin).

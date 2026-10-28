@@ -130,6 +130,7 @@ export function parseInline(kind, inner) {
     else if (key === "at") cfg.at = val.toLowerCase();
     else if (key === "source") cfg.source = val;
     else if (key === "quick") cfg.quick = yes(val);
+    else if (key === "reach") cfg.withinReach = yes(val);   // v0.0.174: a Reposition whose target must remain within your Reach (Relocate)
   }
   // A button always has the traits of what it is: Advance and Charge are Move. (Evade and Pushed have none.) A Save has its Attribute.
   if (kind === "Move") cfg.traits = [...new Set([...(cfg.kind === "advance" || cfg.kind === "charge" ? ["move"] : []), ...(cfg.traits ?? [])])];
@@ -222,7 +223,7 @@ export function registerInline() {
         const calc = !!cfg.distanceExpr && !cfg.label && !match[3];
         const who = calc ? actorOfDoc(options?.relativeTo) : null, value = who ? moveDistance(cfg, who) : null;
         const n = cfg.distanceExpr ? (value || cfg.distanceExpr.replace(/[a-z]+/g, w => w[0].toUpperCase() + w.slice(1))) : (cfg.distance || 1);
-        const name = { pushed: "Pushed", pulled: "Pulled", evade: "Evade", charge: "Charge", reposition: "Reposition" }[cfg.kind] ?? "Advance", icon = { pushed: "fa-hand", pulled: "fa-hand-back-fist", evade: "fa-wind", charge: "fa-person-running-fast", reposition: "fa-arrows-up-down-left-right" }[cfg.kind] ?? "fa-person-running";
+        const name = { pushed: "Pushed", pulled: "Pulled", slid: "Slid", evade: "Evade", charge: "Charge", reposition: "Reposition" }[cfg.kind] ?? "Advance", icon = { pushed: "fa-hand", pulled: "fa-hand-back-fist", slid: "fa-route", evade: "fa-wind", charge: "fa-person-running-fast", reposition: "fa-arrows-up-down-left-right" }[cfg.kind] ?? "fa-person-running";
         const el = inlineEl("Move", cfg, cfg.label ?? match[3] ?? `${name} ${n}`, icon);
         if (calc) { const c = document.createElement("i"); c.className = "fa-solid fa-calculator calc"; c.dataset.tooltip = value ? `Calculated from your stats: ${cfg.distanceExpr} = ${value}` : `Calculated: ${cfg.distanceExpr}`; el.append(" ", c); }
         return el;
@@ -463,7 +464,7 @@ async function handleCondition(cfg, ctx = {}) {
   if (!actors.length) return ui.notifications.warn("Target or select a token first.");
   const src = f?.actorUuid ? await fromUuid(f.actorUuid) : (game.combat?.combatant?.actor ?? null);
   const dur = cfg.dur === "eot" ? { type: "eot" } : (cfg.dur === "rounds" ? { type: "rounds", rounds: cfg.rounds } : null);
-  const found = await applyCondition(cfg.cond, actors, dur, originInfo(src?.uuid ?? ""));
+  const found = await applyCondition(cfg.cond, actors, dur, { ...originInfo(src?.uuid ?? ""), ...(Number.isFinite(f?.attrVal ?? f?.originMod) ? { mod: f.attrVal ?? f.originMod } : {}) });
   ui.notifications.info(`${cfg.cond.charAt(0).toUpperCase() + cfg.cond.slice(1)} applied to ${actors.map(a => a.name).join(", ")}${found ? "" : " (as a status: there is no Effect item with that name)"}.`);
 }
 

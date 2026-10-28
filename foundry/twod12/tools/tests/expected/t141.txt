@@ -14,7 +14,7 @@ a drop-down like the Action's: true | the checkboxes are gone: true
 --- Show help on the Action and Talent sheets
 the box: true | for Actions and Talents: true | a user setting, on by default: true | hides the hints: true
 --- v0.0.173: fixes from Lucas's test, and his rule answers
-the tiers table ignores Foundry's row colors: true
+the tiers table ignores Foundry's colors (v0.0.174: table.tiers, the table and its cells): true
 the Snapshot is a picture: true | with the window's colors: true
 a diagonal between two creatures counts only between unwilling ones: true | Reposition doesn't pass between them: true
 between two allies: 0

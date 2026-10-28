@@ -1,7 +1,7 @@
 // The character and NPC sheets.
 import { masteryRows, masteryOf, setMastery, setCollapsed, techniqueState, bowMasteryOf, chooseBowMastery } from "./mastery.mjs";
 import { weaponRanges } from "./weaponrange.mjs";
-import { defenseBonus } from "./defense.mjs";
+import { defenseBonus, steadinessOf } from "./defense.mjs";
 import { setWorn } from "./armor.mjs";
 import { bumpExhausted, isExhaustedFx, exhaustedClick } from "./sleep.mjs";
 import { TWOD12, apLabel, traitChevrons, categoryText, unconsciousDoom, doomStatus, cardColorFor, effectiveFrequency, distanceText, lineColorFor, KIND_LINE, SIZE_NAMES, isTalentAction, tagChoices } from "./config.mjs";
@@ -458,7 +458,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             tile("Reach", s.reach ?? 1, s.reach ?? 1, { edit: npc ? "reach" : "", base: npc ? (s.reachBase ?? s.reach ?? 1) : (s.reach ?? 1), tip: npc ? "" : "From your species" }),
             tile("Size", s.size ?? 3, s.size ?? 3, { edit: npc ? "size" : "", tip: `SR ${s.size ?? 3}: ${SIZE_NAMES[s.size ?? 3] ?? ""}` }),
             // Steadiness (v0.0.169; always shown since v0.0.172, even at 0): it reduces the value of Forced Movement and Reposition.
-            tile("Steady", s.steadiness ?? 0, s.steadiness ?? 0, { tip: `Steadiness ${s.steadiness ?? 0}: reduces the value of Forced Movement and Reposition against you (you can choose not to apply it)${npc ? ". Set it in the Builder tab" : ". From your species"}` })
+            tile("Steady", steadinessOf(a).total, s.steadiness ?? 0, { tip: `Steadiness ${s.steadiness ?? 0}: reduces the value of Forced Movement and Reposition against you (you can choose not to apply it)${npc ? ". Set it in the Builder tab" : ". From your species"}` })
           ] }
         ];
       })(),

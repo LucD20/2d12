@@ -196,7 +196,9 @@ export async function createEffect(actor, item, origin, over = null, extra = {})
       ...extra, effectUuid: item.uuid, duration: d, remaining: d.rounds, ...(value !== undefined ? { value, baseName: item.name } : {}),
       slotInit, originSlot: origin?.slot ?? null,
       originCombatantId: origin?.combatantId ?? "", appliedRound: origin?.round ?? null, appliedTurn: origin?.turn ?? null,
-      ...appliedFlags(s, item.toObject().system), lightBackup, fromEscalation: !!origin?.escalation
+      ...appliedFlags(s, item.toObject().system), lightBackup, fromEscalation: !!origin?.escalation,
+      // Immobilized (v0.0.174): its DC, 11 + the Modifier its origin used (13 without an origin or a Modifier). Forced Movement and Reposition read it.
+      ...(statuses.includes("immobilized") ? { immobileDc: origin?.actorUuid && Number.isFinite(origin?.mod) ? 11 + origin.mod : TWOD12.baseDC } : {})
     } }
   }]))?.[0];
   if (made) await createLinked(actor, item, made, origin, d);

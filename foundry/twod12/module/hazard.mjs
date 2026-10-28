@@ -31,6 +31,11 @@ function hazardData(region) {
 const inside = (region, cells) => { const set = new Set(region.getFlag(F, "ht")?.cells ?? []); return cells.some(c => set.has(key(c))); };
 const hazards = scene => (scene?.regions ?? []).filter(r => r.getFlag(F, "ht"));
 
+/** v0.0.174: is any of these squares inside a Hazardous Terrain area of the scene (one that is switched on)? A Reposition can't move a creature into one. */
+export function hazardIn(cells, scene = globalThis.canvas?.scene) {
+  try { return hazards(scene).some(r => hazardData(r) && inside(r, cells)); } catch (e) { return false; }
+}
+
 /** Post what the area does to this creature, with the creature targeted on the GM's screen. Entering and Turn check the turn-cycle limit. */
 async function trigger(region, tokenDoc, how) {
   const ht = hazardData(region);

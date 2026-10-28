@@ -22,7 +22,7 @@ const dmgHead = (title, subtitle) => {
   return `<div class="ahead"><b>${esc(title)}</b><div class="aright"><span class="aps"><span class="apmark dmgtag">${esc(badge)}</span></span>${cat && cat !== badge ? `<span class="acat">${esc(cat)}</span>` : ""}</div></div>`;
 };
 
-export async function postDamageCard({ actor = null, title, subtitle = "", comps: allComps, texts = [], fx = [], targets = [], originUuid = "", chip = "", rolls = [], applied = "", color = TWOD12.cardColors.default, defaultNl = false }) {
+export async function postDamageCard({ actor = null, title, subtitle = "", comps: allComps, texts = [], fx = [], targets = [], originUuid = "", chip = "", rolls = [], applied = "", color = TWOD12.cardColors.default, defaultNl = false, originMod = null }) {
   const comps = allComps;
   const pools = {};
   for (const c of comps) (pools[c.pool || ""] ??= []).push(c);
@@ -67,7 +67,7 @@ export async function postDamageCard({ actor = null, title, subtitle = "", comps
   const damage = comps.map(c => ({ pool: c.pool, subtype: c.sub, total: c.total, formula: c.formula, nonlethal: c.nl }));
   await ChatMessage.create({
     speaker: ChatMessage.getSpeaker(actor ? { actor } : {}), content, rolls,
-    flags: { twod12: { damage, dmgCard: { comps: comps.map(c => ({ pool: c.pool, sub: c.sub, nl: c.nl, total: c.total })), targets, name: title, fx, originUuid } } }
+    flags: { twod12: { damage, dmgCard: { comps: comps.map(c => ({ pool: c.pool, sub: c.sub, nl: c.nl, total: c.total })), targets, name: title, fx, originUuid, originMod } } }
   });
 }
 
@@ -97,10 +97,10 @@ export function multiDamageHtml({ title, rows, color = TWOD12.cardColors.default
     + `<div class="dtotal"><select class="kind"><option value="lethal" ${nl ? "" : "selected"}>Lethal</option><option value="nonlethal" ${nl ? "selected" : ""}>Nonlethal</option></select></div></div>`;
 }
 
-export async function postMultiDamageCard({ actor = null, title, rows, rolls = [], color = TWOD12.cardColors.default, defaultNl = false, originUuid = "" }) {
+export async function postMultiDamageCard({ actor = null, title, rows, rolls = [], color = TWOD12.cardColors.default, defaultNl = false, originUuid = "", originMod = null }) {
   const data = rows.map(r => ({ uuid: r.uuid, name: r.name, tier: r.tier, comps: (r.comps ?? []).map(c => ({ pool: c.pool, sub: c.sub, nl: c.nl, total: c.total, hidden: !!c.hidden })), fx: r.fx ?? [], applied: "", blocked: false }));
   await ChatMessage.create({
     speaker: ChatMessage.getSpeaker(actor ? { actor } : {}), content: multiDamageHtml({ title, rows: data, color, defaultNl }), rolls,
-    flags: { twod12: { dmgMulti: { name: title, originUuid, color, defaultNl, kind: "", rows: data } } }
+    flags: { twod12: { dmgMulti: { name: title, originUuid, originMod, color, defaultNl, kind: "", rows: data } } }
   });
 }

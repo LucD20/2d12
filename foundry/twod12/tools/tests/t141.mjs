@@ -13,7 +13,7 @@ const hc = await import(ROOTURL + "module/heightcover.mjs");
 
 console.log("--- the Steadiness tile");
 const sheets = src("module/actor-sheets.mjs");
-console.log("Movement is always 4 tiles:", sheets.includes('{ key: "move", title: "Movement", cols: 4, tiles: ['), "| Steady even at 0:", sheets.includes('tile("Steady", s.steadiness ?? 0, s.steadiness ?? 0,'), "| 4 columns of small squares:", src("styles/system.css").includes(".np-grid.n4 { grid-template-columns: repeat(4, minmax(0, 1fr));"));
+console.log("Movement is always 4 tiles:", sheets.includes('{ key: "move", title: "Movement", cols: 4, tiles: ['), "| Steady even at 0:", sheets.includes('tile("Steady", steadinessOf(a).total, s.steadiness ?? 0,'), "| 4 columns of small squares:", src("styles/system.css").includes(".np-grid.n4 { grid-template-columns: repeat(4, minmax(0, 1fr));"));
 
 console.log("--- a custom Steadiness in the Builder tab");
 const mk = (sys, flags = {}) => { const m = Object.create(NpcData.prototype); Object.assign(m, { level: 1, damage: { bodyLethal: 0, bodyNonlethal: 0, mindLethal: 0, mindNonlethal: 0 }, attributes: { body: 0, mind: 0, appeal: 0, instinct: 0 }, custom: { body: 0, mind: 0, appeal: 0, instinct: 0, bodyHealth: 10, mindHealth: 10 }, armorDef: 13, wardDef: 13,
@@ -44,7 +44,7 @@ console.log("the box:", tpl.includes("{{#if helpable}}<label class=\"sheet-helpt
 
 console.log("--- v0.0.173: fixes from Lucas's test, and his rule answers");
 const css = src("styles/system.css");
-console.log("the tiers table ignores Foundry's row colors:", css.includes(".twod12.acard { --table-row-color-odd: transparent;") && css.includes(".application .twod12.acard table.ac-tiers tr"));
+console.log("the tiers table ignores Foundry's colors (v0.0.174: table.tiers, the table and its cells):", css.includes(".twod12.chat { --table-row-color-odd: transparent;") && css.includes(".application .twod12.chat table.tiers th, .application .twod12.chat table.tiers td,"));
 const hcs = src("module/heightcover.mjs");
 console.log("the Snapshot is a picture:", hcs.includes("svgToPng(svg)") && hcs.includes('<img class="hc-snapimg"') && hcs.includes('FP.upload("data", "twod12-snapshots"'), "| with the window's colors:", hcs.includes("const SNAP_CSS"));
 const mvs = src("module/move.mjs");
