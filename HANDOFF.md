@@ -43,7 +43,7 @@ Python needs `markdown`. Node 22 is enough for the tests.
 
 ## Commands
 - Book: `cd book && python3 build_rules.py` (builds the seven documents; "unresolved refs: 0" is the goal). `python3 build_rules.py --where Flanking`.
-- System tests: `cd foundry/twod12 && node tools/tests/run.mjs` (138 tests; each has an expected output in tools/tests/expected; accept a meant change with `node tools/tests/run.mjs --update t84`). **Test numbers have gaps (t12b, t37b; t133 is old, new ones are t135-t143): check before creating a test file.** Lint: `npx eslint@8 --no-eslintrc -c tools/eslint.json --ext .mjs module`.
+- System tests: `cd foundry/twod12 && node tools/tests/run.mjs` (138 tests; each has an expected output in tools/tests/expected; accept a meant change with `node tools/tests/run.mjs --update t84`). **Test numbers have gaps (t12b, t37b; t133 is old, new ones are t135-t146): check before creating a test file.** Lint: `npx eslint@8 --no-eslintrc -c tools/eslint.json --ext .mjs module`.
 - Compendiums: the content is written in `tools/content.mjs` and compiled with the Foundry CLI: in foundry/ run `npm install @foundryvtt/foundryvtt-cli` (it creates node_modules and package files there: never ship them), then `node twod12/tools/build-packs.mjs`.
 - Package for the user: bump `version` in system.json, add the changelog entry to docs/reference.md (copy it to foundry/reference.md), zip the `twod12` folder (without node_modules) as `twod12.zip`, run the tests from a fresh unzip. The project zip leaves out node_modules, package files and __pycache__.
 
