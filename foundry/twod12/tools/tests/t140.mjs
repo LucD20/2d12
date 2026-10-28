@@ -66,9 +66,12 @@ tokens.push({ id: "a", name: "Goblin A", actor: {}, document: { id: "a", x: 0, y
   { id: "b", name: "Goblin B", actor: {}, document: { id: "b", x: 100, y: 100, width: 1, height: 1, disposition: -1, hidden: false } });
 const me = { id: "me", x: 0, y: 100, width: 1, height: 1, disposition: 1 };
 console.log("Advance diagonally between two goblins:", JSON.stringify(mv.creaturesOnPath(me, [{ x: 0, y: 100 }, { x: 100, y: 0 }])), "| Cut Through ignores it:", mv.creaturesOnPath(me, [{ x: 0, y: 100 }, { x: 100, y: 0 }], { ignoring: true }).cornerDT);
-console.log("it costs 1 more square even when Foundry's ruler counts the rest:", mv.extraCost({ extra: 0, cornerDT: 1 }, false, true), mv.extraCost({ extra: 1, cornerDT: 1 }, false, false));
+console.log("it costs 1 more square (v0.0.171: nothing added when our cost is in Foundry's ruler, which now counts it):", mv.extraCost({ extra: 0, cornerDT: 1 }, false, true), mv.extraCost({ extra: 1, cornerDT: 1 }, false, false), mv.extraCost({ extra: 1, cornerDT: 1 }, true, false));
 tokens.length = 0; walls.push(W(100, 0, 100, 100));
 console.log("Advance diagonally past the end of a wall:", mv.creaturesOnPath(me, [{ x: 0, y: 100 }, { x: 100, y: 0 }]).solidCorner);
+game.settings.get = () => false;   // v0.0.171: the setting "Solid corners for your own movement" is off (the default)
+console.log("the same with the setting off (Foundry refuses it itself):", mv.creaturesOnPath(me, [{ x: 0, y: 100 }, { x: 100, y: 0 }]).solidCorner, "| the setting:", src("module/twod12.mjs").includes('"ownMoveCorners", {') && /ownMoveCorners[\s\S]{0,600}default: false/.test(src("module/twod12.mjs")));
+game.settings.get = () => true;
 walls.length = 0;
 
 console.log("--- the straight line: the moving creature chooses at a tie");
@@ -102,3 +105,12 @@ const content = src("tools/content.mjs");
 console.log("a condition with Vulnerable = half the level:", /cond\("Squeezing"[^\n]*mode: "halfLevel"/.test(content), "| the effect sets it:", src("module/effects.mjs").includes('r.mode === "halfLevel" ? Math.max(1, Math.ceil((Number(actor.system?.level) || 1) / 2))'), "| a status:", src("module/twod12.mjs").includes('["squeezing", "icons/svg/net.svg"]'));
 const st = (...ids) => ({ statuses: new Set(ids) });
 console.log("Doomed:", cf.unconsciousDoom(st("squeezing"), "body"), cf.doomStatus(st("squeezing")), "| levels 1-5:", [1, 2, 3, 4, 5].map(l => Math.max(1, Math.ceil(l / 2))).join(" "), "| nothing:", JSON.stringify(cf.doomStatus(st())));
+console.log("--- v0.0.171: the movement label counts a diagonal between two creatures");
+CONFIG.Token = { movement: { actions: { walk: { getCostFunction: () => (from, to, d) => d } } } };
+console.log("installed:", mv.installDarknessCost().installed.join(", "));
+tokens.push({ id: "a", name: "Goblin A", actor: {}, document: { id: "a", x: 0, y: 0, width: 1, height: 1, disposition: -1, hidden: false } },
+  { id: "b", name: "Goblin B", actor: {}, document: { id: "b", x: 100, y: 100, width: 1, height: 1, disposition: -1, hidden: false } });
+const walker = { id: "me", x: 0, y: 100, width: 1, height: 1, disposition: 1, actor: { system: { senses: { darkSight: true } } } };
+const costFn = CONFIG.Token.movement.actions.walk.getCostFunction({ document: walker });
+console.log("diagonal B1 -> A2 between the goblins:", costFn({ i: 1, j: 0 }, { i: 0, j: 1 }, 1), "| a diagonal away from them:", costFn({ i: 1, j: 0 }, { i: 2, j: 1 }, 1));
+tokens.length = 0;

@@ -20,8 +20,9 @@ Pushed 2 diagonally into a solid corner: moves 0, unused 2, damage {"self":4,"ot
 Pushed 2 diagonally between two creatures: moves 0, collision with A, damage {"self":2,"other":2}
 Reposition passes between them: moves 2, block null
 Advance diagonally between two goblins: {"through":[],"endIn":"","extra":0,"dark":0,"solidCorner":false,"cornerDT":1} | Cut Through ignores it: 0
-it costs 1 more square even when Foundry's ruler counts the rest: 1 2
+it costs 1 more square (v0.0.171: nothing added when our cost is in Foundry's ruler, which now counts it): 0 2 1
 Advance diagonally past the end of a wall: true
+the same with the setting off (Foundry refuses it itself): false | the setting: true
 --- the straight line: the moving creature chooses at a tie
 A1 to G4: A1 B1|B2 C2 D2|D3 E3 F3|F4 G4
 A1 to H4: A1 B1 C2 D2 E3 F3 G4 H4
@@ -41,3 +42,6 @@ the builder offers Pulled: true | the button: true | a defense tag: true | the f
 --- Squeezing
 a condition with Vulnerable = half the level: true | the effect sets it: true | a status: true
 Doomed: true Squeezing | levels 1-5: 1 1 2 2 3 | nothing: ""
+--- v0.0.171: the movement label counts a diagonal between two creatures
+installed: actions.walk.getCostFunction
+diagonal B1 -> A2 between the goblins: 2 | a diagonal away from them: 1

@@ -105,6 +105,14 @@ Hooks.once("init", () => {
     type: Boolean,
     default: false
   });
+  game.settings.register("twod12", "ownMoveCorners", {
+    name: "Solid corners for your own movement",
+    hint: "Refuses an Advance, Evade or Charge that cuts a solid corner (a wall touching the corner point, or a Tile marked Solid). Foundry already refuses those diagonals; turn this on if you use Unrestricted movement. Forced Movement and Reposition always check corners.",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: false
+  });
   game.settings.register("twod12", "showOdds", { name: "Show the odds on cards", hint: "For testing: action cards show the chance of each tier, and damage cards the average and the chance of that total.", scope: "client", config: true, type: Boolean, default: true });
   game.settings.register("twod12", "highlightTraits", { name: "Highlight traits and damage types in rules text", hint: "A very light background behind trait names (Strike, Divine...) and colored damage types (Cold, Holy...) on cards.", scope: "client", config: true, type: Boolean, default: true });
   CONFIG.Actor.dataModels = { character: CharacterData, npc: NpcData };

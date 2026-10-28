@@ -230,7 +230,8 @@ export let rulerCountsDifficult = false;
 
 /** The squares to add to what Foundry measured. foundryCounted: its cost is more than the distance (regions of Difficult Terrain). If its cost function is ours, it has counted everything. */
 export function extraCost(way, foundryCounted, countsAll = rulerCountsDifficult) {
-  if (countsAll || foundryCounted) return way.cornerDT ?? 0;   // Foundry's cost never knows the diagonals between two creatures
+  if (countsAll) return 0;                                    // our cost function is in Foundry's: it counted everything (the diagonals between two creatures too, v0.0.171)
+  if (foundryCounted) return way.cornerDT ?? 0;               // Foundry's own regions were counted, not the diagonals between two creatures
   return (way.extra ?? 0) + (way.cornerDT ?? 0);
 }
 
@@ -240,7 +241,7 @@ const squareOf = o => ({ i: Math.round(o?.i ?? 0), j: Math.round(o?.j ?? 0) });
  * A step into a square that is Difficult Terrain for the token (Darkness its Sight can't see in, or an unwilling creature's square) costs double.
  * Difficult Terrain does not stack: a square that already costs double stays at double.
  */
-function hardStep(doc, to, step, cost) {
+function hardStep(doc, to, step, cost, from = null) {
   try {
     if (!doc?.actor || !to) return cost;
     if (ignoresTerrain(doc)) return Number.isFinite(step) && step > 0 ? step : cost;   // (Cut Through) the terrain costs nothing extra
@@ -252,6 +253,8 @@ function hardStep(doc, to, step, cost) {
       const others = (canvas.tokens?.placeables ?? []).filter(t => t.document?.id !== doc.id && t.actor && !t.document?.hidden && (t.document.disposition ?? 0) !== (doc.disposition ?? 0));
       hard = others.some(t => tokenCells(t).some(c => cells.some(m => m.i === c.i && m.j === c.j)));
     }
+    // v0.0.171: a diagonal between two creatures is Difficult Terrain too, so the movement label shows it while dragging.
+    if (!hard && from) hard = stepCorners(squareOf(from), at, { w, h, creatureAt: c => creatureIn(c, [doc.id]) }).kind === "creatures";
     if (!hard) return cost;
     return Number.isFinite(step) && step > 0 ? Math.max(cost, 2 * step) : cost * 2;
   } catch (e) { return cost; }
@@ -262,9 +265,9 @@ function hardStep(doc, to, step, cost) {
  * where baseCost is what the terrain already cost. Either way this adds this system's Difficult Terrain to what it returns.
  */
 const hardCost = (base, doc) => (...a) => {
-  const action = typeof a[0] === "number", to = a[action ? 2 : 1], step = a[action ? 3 : 2];
+  const action = typeof a[0] === "number", from = a[action ? 1 : 0], to = a[action ? 2 : 1], step = a[action ? 3 : 2];
   const cost = typeof base === "function" ? base(...a) : (action ? a[0] : step);
-  return hardStep(doc, to, step, cost);
+  return hardStep(doc, to, step, cost, from);
 };
 const wrapCost = (orig, docOf) => function (...args) {
   const base = orig.apply(this, args);
@@ -361,6 +364,13 @@ export function rulerInfo() {
 
 /** A creature whose free movement ignores terrain (Cut Through's Evade): it may move through creatures (not end in one) and Difficult Terrain costs nothing extra. */
 const ignoresTerrain = doc => { try { const c = game.combat?.started ? game.combat.combatants.find(x => x.tokenId === doc?.id) : null; return !!c?.getFlag(F, "ignoreTerrain"); } catch (e) { return false; } };
+
+/**
+ * Solid corners for a creature's own movement (Advance, Evade, Charge) are a world setting, off by default (v0.0.171): Foundry's own movement already
+ * refuses those diagonals, so the check only matters with Unrestricted movement. Forced Movement and Reposition always check them (Foundry doesn't).
+ */
+export const ownCorners = () => { try { return !!game.settings.get(F, "ownMoveCorners"); } catch (e) { return false; } };
+const ownSolid = () => (ownCorners() ? solidCorner : () => false);
 
 /** The system setting that lets the movement buttons work when there is no combat. */
 export const movesOutsideCombat = () => { try { return !!game.settings.get(F, "moveOutsideCombat"); } catch (e) { return false; } };
@@ -689,7 +699,7 @@ export function creaturesOnPath(doc, points, { ignoring = false } = {}) {
       const line = cellLine(cellOf(pts[k]), cellOf(pts[k + 1]));
       for (const c of line) for (const key of foot(c)) if (!start.has(key) && !end.has(key)) passed.add(key);
       for (let n = 1; n < line.length; n++) {
-        const st = stepCorners(line[n - 1], line[n], { w, h, solidAt: solidCorner, creatureAt: c => creatureIn(c, [doc.id]) });
+        const st = stepCorners(line[n - 1], line[n], { w, h, solidAt: ownSolid(), creatureAt: c => creatureIn(c, [doc.id]) });
         if (st.kind === "solid") out.solidCorner = true;
         else if (st.kind === "creatures" && !ignoring) out.cornerDT++;
       }
@@ -739,7 +749,7 @@ function chargeSquareProblem(doc, a, b, w = 1, h = 1) {
   const foot = []; for (let di = 0; di < h; di++) for (let dj = 0; dj < w; dj++) foot.push({ i: b.i + di, j: b.j + dj });
   const other = foot.map(c => creatureIn(c, [doc.id])).find(t => t && (t.document.disposition ?? 0) !== (doc.disposition ?? 0));
   if (other) return `the straight line passes through ${other.name} (an unwilling creature's space is Difficult Terrain)`;
-  const corner = a ? stepCorners(a, b, { w, h, solidAt: solidCorner, creatureAt: c => creatureIn(c, [doc.id]) }) : { kind: "" };
+  const corner = a ? stepCorners(a, b, { w, h, solidAt: ownSolid(), creatureAt: c => creatureIn(c, [doc.id]) }) : { kind: "" };
   if (corner.kind === "solid") return "the straight line cuts a solid corner";
   if (corner.kind === "creatures") return `the straight line passes diagonally between ${corner.creatures.map(t => t.name).join(" and ")} (Difficult Terrain)`;
   try { if (foot.some(c => seenLight(lightAt(cellCenter(c.i, c.j)), doc.actor?.system?.senses ?? {}) === "dark")) return "the straight line crosses Darkness, which is Difficult Terrain for a creature that can't see in it"; } catch (e) { /* no light to read */ }

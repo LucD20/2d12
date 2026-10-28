@@ -1,6 +1,6 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.170**. Tests: `node tools/tests/run.mjs` (138 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.171**. Tests: `node tools/tests/run.mjs` (138 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
 
 ## Asked by Lucas, not built
 Order agreed with Lucas (2026-10-23): **1. Foundry polish pass (mockup shown: claude.ai artifact "Item sheets and Versions (mockup)")**, 2. book: his change-log document (wording changes, Pushed/Pulled/Slid, Reposition), 3. book: levels for Paladin then Archer (ruler re-run, Bestiary Level 2+ rows), 4. book: per-weapon Mastery + Weapon Groups + Gear, 5. Foundry passes (Mastery, levels and level-up, Forced Movement, then Class/Species sheets), 6. Skills and Magic (Magic brainstorm early), 7. rebuild the compendium PCs and NPCs from a spec (NPCs through the Bestiary code).
@@ -50,6 +50,7 @@ Order agreed with Lucas (2026-10-23): **1. Foundry polish pass (mockup shown: cl
 - v0.0.164: Builder fixes (colors, click-to-clear, custom numbers with warnings, Speed row, CV, Level -/+); shield AD/WD; Global Illumination on new scenes; a Default Scene; Quick Insert switched on.
 - v0.0.165: the Line of Effect button; Strike rows' red line; the sheet keeps its scroll; shield Bo/Mi/Ap/In.
 - v0.0.166: Leaning cover from the vision peek point; the Cover height calculation side view.
+- v0.0.171: the own-movement corner check is a setting (off by default); the movement label counts a diagonal between two creatures.
 - v0.0.170: M1, movement A (Pulled, Haul, Corners, Squeezing, the straight-line tie).
 - v0.0.169: F1, the system follows the book again (see the changelog).
 - v0.0.168: polish pass (item sheets and Edit Versions in the sheet's look, Tier boxes, the Action Details order, "5 sq.").
