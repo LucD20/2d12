@@ -26,6 +26,7 @@ Sizes: S = under an hour of work, M = a normal session, L = a long session, XL =
 ### Book
 | ID | What | Size | Depends on |
 |---|---|---|---|
+| D0 | **Chat card traits (Lucas, 2026-10-28, after v0.0.179):** the trait groups on the chat card make the cards too long. Keep the grouped chips on the previews and the details (sheets, the roll dialog), but the chat card needs a condensed form that still gives the information (ideas for the prep: one line of small chips with no group labels, the group colors only; or the trait words as colored text on the meta line; or the groups on hover). Mockups first, then Lucas picks | S | nothing |
 | D1 | **Archer design:** Marked Quarry (worth about 7% of the Archer's damage), Sharpshooter, Hunter's Focus; then the final Level 1 text | M | nothing |
 | D2 | **Weapon Mastery, Weapon Groups and Gear** (per-weapon Mastery, groups with a 1/3 head start, 1 Mastery per group per combat; the open points of the Mastery note) | L | D1 not needed |
 | D3 | **Skills** (16 skills, 4 per Attribute; how a skill roll works; Talents) | M | nothing |
@@ -46,6 +47,7 @@ Sizes: S = under an hour of work, M = a normal session, L = a long session, XL =
    Why first: these rules are final in the book (nothing in them is still being designed), you have been waiting for them since 2026-10-23, and the book work below does not change them.
 
 **Phase 2: design sessions (the only place where back-and-forth is wanted; each is prepared).**
+6. **D0 Chat card traits** (small: mockups of a condensed chat card, Lucas picks one; built in the next Foundry version).
 6. **D1 Archer** first: it unblocks B1 and the Foundry content. Prep: three options (keep, remove with compensation, rework) with ruler numbers.
 7. **D2 Mastery, Groups and Gear**, then **D3 Skills**, then **D4 Magic and Momentum** (Skills before Magic: spells may use skills).
    Between sessions I run the autonomous book packs that are ready: B1 after D1, B2 and B3 at the end, B4 any time.
