@@ -376,14 +376,16 @@ def slid_diagram():
     g.arrow((2.5, 2.5), (1.5, 1.5)); g.arrow((1.5, 1.5), (0.62, 1.5))   # the path of G
     return g.figure(), dict(path=path)
 
-# ------------------------------------------------------------------ Reposition (a path that passes through creatures)
+# ------------------------------------------------------------------ Reposition (a path that goes around creatures: it can't pass through them)
 def reposition_diagram():
-    g = Svg(3, 5, 44, 'Reposition 2: G moves 2 squares along the line, through Dave\'s square, to the empty square on Dave\'s other side')
-    g.cell(1, 1, 'greach'); g.text(1, 1, 2, 'gnum gbig', dy=5)
+    g = Svg(3, 5, 44, 'Reposition 2: G can\'t pass through Dave\'s square, so the path goes around him, 2 squares, to the empty square next to you')
+    path = [(0, 2), (1, 1)]   # (row, column) of each square of the path, in order
+    for n, (i, j) in enumerate(path, 1): g.cell(i, j, 'greach'); g.text(i, j, n, 'gnum gbig', dy=5)
+    g.line((3.5, 1.5), (1.5, 1.5), 'glno ghalf')   # the straight way, through Dave: not allowed
     g.token(1, 0, 'Y', 'ally'); g.token(1, 2, 'D', 'ally'); g.token(1, 3, 'G', 'enemy')
-    g.badge(1, 2, 1)
-    g.arrow((3.5, 1.1), (1.6, 1.1))   # the path of G, above the tokens
-    return g.figure(), dict(steps=2)
+    g.mark(3.0, 1.5, 'x')   # on the edge G would cross into Dave's square
+    g.arrow((3.5, 1.5), (2.5, 0.5)); g.arrow((2.5, 0.5), (1.6, 1.4))   # the path of G, around Dave
+    return g.figure(), dict(path=path)
 
 # ------------------------------------------------------------------ Corners (anything solid that reaches the corner point makes it solid)
 def corners_diagram():
@@ -425,7 +427,7 @@ def book_diagram(name):
     if name == 'slid':
         fig, _ = slid_diagram(); return wrap([fig], 'The numbered squares are the path, in order. The thin green lines are the Line of Effect from you (Y): it must reach G at every square.')
     if name == 'reposition':
-        fig, _ = reposition_diagram(); return wrap([fig], 'Reposition passes through creatures: a Slid could not go through Dave.')
+        fig, _ = reposition_diagram(); return wrap([fig], 'The numbered squares are the path, in order. The red line is the straight way through Dave: a Reposition can\'t pass through a creature.')
     if name == 'corners':
         figs, _ = corners_diagram(); return wrap(figs, 'You (Y) move diagonally. A red X is a solid corner: you must go around. A green dot is an open corner.')
     if name == 'squeeze':

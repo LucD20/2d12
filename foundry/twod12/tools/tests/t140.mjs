@@ -61,7 +61,7 @@ const two = (a, b) => co.stepCorners({ i: a.di, j: a.dj }, { i: b.di, j: b.dj },
 const rk = mv.analyzePath(diag, 2, { wallBetween: () => false, creatureAt: () => null, cornerAt: two });
 console.log("Pushed 2 diagonally between two creatures:", `moves ${rk.done}, collision with ${rk.block?.token?.name}, damage ${JSON.stringify(rk.damage)}`);
 const rr = mv.analyzePath(diag, 2, { wallBetween: () => false, creatureAt: () => null, cornerAt: two, throughCreatures: true });
-console.log("Reposition passes between them:", `moves ${rr.done}, block ${rr.block}`);
+console.log("an ability that passes creatures (throughCreatures) goes between them:", `moves ${rr.done}, block ${rr.block}`);
 tokens.push({ id: "a", name: "Goblin A", actor: {}, document: { id: "a", x: 0, y: 0, width: 1, height: 1, disposition: -1, hidden: false } },
   { id: "b", name: "Goblin B", actor: {}, document: { id: "b", x: 100, y: 100, width: 1, height: 1, disposition: -1, hidden: false } });
 const me = { id: "me", x: 0, y: 100, width: 1, height: 1, disposition: 1 };

@@ -41,3 +41,23 @@ console.log("a drop-down like the Action's:", (tpl.match(/<label>Traits \{\{form
 
 console.log("--- Show help on the Action and Talent sheets");
 console.log("the box:", tpl.includes("{{#if helpable}}<label class=\"sheet-helptoggle\""), "| for Actions and Talents:", src("module/item-sheet.mjs").includes('helpable: t === "action" || t === "talent",'), "| a user setting, on by default:", /"sheetHelp", \{[^}]*default: true \}/.test(src("module/twod12.mjs")), "| hides the hints:", src("styles/system.css").includes(".twod12 section.tab.help-off .hint"));
+
+console.log("--- v0.0.173: fixes from Lucas's test, and his rule answers");
+const css = src("styles/system.css");
+console.log("the tiers table ignores Foundry's row colors:", css.includes(".twod12.acard { --table-row-color-odd: transparent;") && css.includes(".application .twod12.acard table.ac-tiers tr"));
+const hcs = src("module/heightcover.mjs");
+console.log("the Snapshot is a picture:", hcs.includes("svgToPng(svg)") && hcs.includes('<img class="hc-snapimg"') && hcs.includes('FP.upload("data", "twod12-snapshots"'), "| with the window's colors:", hcs.includes("const SNAP_CSS"));
+const mvs = src("module/move.mjs");
+console.log("a diagonal between two creatures counts only between unwilling ones:", (mvs.match(/creatureAt: c => unwillingIn\(c, doc\) \}/g) ?? []).length === 3, "| Reposition doesn't pass between them:", !mvs.includes("throughCreatures: repo"));
+// the ruler and the path: two allies at the corner are no Difficult Terrain; two enemies are
+const GS = 100, toks = [];
+globalThis.canvas = { grid: { size: GS, getOffset: ({ x, y }) => ({ i: Math.floor(y / GS), j: Math.floor(x / GS) }), getCenterPoint: ({ i, j }) => ({ x: j * GS + 50, y: i * GS + 50 }), getTopLeftPoint: ({ i, j }) => ({ x: j * GS, y: i * GS }) }, tokens: { placeables: toks }, walls: { placeables: [] }, tiles: { placeables: [] } };
+const mv = await import(ROOTURL + "module/move.mjs");
+const put = (id, i, j, disp) => toks.push({ id, name: id, actor: {}, document: { id, x: j * GS, y: i * GS, width: 1, height: 1, disposition: disp, hidden: false } });
+const me = { id: "me", x: 0, y: 100, width: 1, height: 1, disposition: 1 };
+put("Ally A", 0, 0, 1); put("Ally B", 1, 1, 1);
+console.log("between two allies:", mv.creaturesOnPath(me, [{ x: 0, y: 100 }, { x: 100, y: 0 }]).cornerDT);
+toks.length = 0; put("Ally A", 0, 0, 1); put("Goblin", 1, 1, -1);
+console.log("between an ally and a goblin:", mv.creaturesOnPath(me, [{ x: 0, y: 100 }, { x: 100, y: 0 }]).cornerDT);
+toks.length = 0; put("Goblin A", 0, 0, -1); put("Goblin B", 1, 1, -1);
+console.log("between two goblins:", mv.creaturesOnPath(me, [{ x: 0, y: 100 }, { x: 100, y: 0 }]).cornerDT);

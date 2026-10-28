@@ -18,7 +18,7 @@ a straight step: no corner                               {"kind":"","creatures":
 a Large creature: each square it occupies                {"kind":"solid","creatures":[]}
 Pushed 2 diagonally into a solid corner: moves 0, unused 2, damage {"self":4,"other":0}, corner true
 Pushed 2 diagonally between two creatures: moves 0, collision with A, damage {"self":2,"other":2}
-Reposition passes between them: moves 2, block null
+an ability that passes creatures (throughCreatures) goes between them: moves 2, block null
 Advance diagonally between two goblins: {"through":[],"endIn":"","extra":0,"dark":0,"solidCorner":false,"cornerDT":1} | Cut Through ignores it: 0
 it costs 1 more square (v0.0.171: nothing added when our cost is in Foundry's ruler, which now counts it): 0 2 1
 Advance diagonally past the end of a wall: true

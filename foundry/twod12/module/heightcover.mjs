@@ -88,6 +88,50 @@ export function heightHtml(st) {
   </div>`;
 }
 
+/* ------------------------------------------------------------------ the Snapshot as a picture (v0.0.173: the chat strips an SVG, so it is sent as a PNG) */
+// The window's colors, written into the picture (an SVG drawn as an image can't read the system's CSS).
+const SNAP_CSS = `.hc-cell{fill:transparent;stroke:rgba(30,36,48,.25);stroke-width:1}.hc-block.full{fill:rgba(192,57,43,.65);stroke:#e02020;stroke-width:3}
+.hc-block.half{fill:rgba(224,192,32,.55);stroke:#f0d000;stroke-width:3}.hc-ground{stroke:#1e2430;stroke-width:3}.hc-cre rect{fill:rgba(255,255,255,.15);stroke:#1e2430;stroke-width:2}
+.hc-cre.target rect{stroke:#b06a12}.hc-line{stroke-width:2.5}.hc-line.green,.hc-dot.green{stroke:#2fa84f;fill:#2fa84f}.hc-line.red,.hc-dot.red{stroke:#d23b2f;fill:#d23b2f}
+.hc-corner{fill:#fff;stroke:#1e2430;stroke-width:2}.hc-corner.on{fill:#7a2f22}`;
+
+/** A file (a token's picture) as a data: URL, or "" when it can't be read. */
+async function asDataUrl(src) {
+  try {
+    const blob = await (await fetch(src)).blob();
+    return await new Promise(res => { const fr = new FileReader(); fr.onload = () => res(String(fr.result)); fr.onerror = () => res(""); fr.readAsDataURL(blob); });
+  } catch (e) { return ""; }
+}
+
+/** The side view (the window's SVG element) as a PNG Blob, twice its size, on the window's grey. */
+export async function svgToPng(svg) {
+  const NS = "http://www.w3.org/2000/svg", W = Number(svg.getAttribute("width")) || 300, H = Number(svg.getAttribute("height")) || 200;
+  const clone = svg.cloneNode(true);
+  clone.setAttribute("xmlns", NS);
+  clone.querySelectorAll("title").forEach(t => t.remove());
+  for (const im of [...clone.querySelectorAll("image")]) { const d = await asDataUrl(im.getAttribute("href")); if (d) im.setAttribute("href", d); else im.remove(); }
+  const style = document.createElementNS(NS, "style"); style.textContent = SNAP_CSS; clone.prepend(style);
+  const img = new Image();
+  await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(new XMLSerializer().serializeToString(clone))}`; });
+  const k = 2, cv = document.createElement("canvas");
+  cv.width = W * k; cv.height = H * k;
+  const ctx = cv.getContext("2d");
+  ctx.fillStyle = "#8f8f8f"; ctx.fillRect(0, 0, cv.width, cv.height);
+  ctx.drawImage(img, 0, 0, cv.width, cv.height);
+  return await new Promise(res => cv.toBlob(res, "image/png"));
+}
+
+/** Where the picture lives: uploaded to twod12-snapshots/ in the Data folder; a user who can't upload files sends it inside the message instead. */
+async function storeSnapshot(blob) {
+  const FP = foundry.applications?.apps?.FilePicker?.implementation ?? globalThis.FilePicker;
+  try {
+    try { await FP.createDirectory("data", "twod12-snapshots", {}); } catch (e) { /* already there */ }
+    const res = await FP.upload("data", "twod12-snapshots", new File([blob], `cover-height-${Date.now()}.png`, { type: "image/png" }), {}, { notify: false });
+    if (res?.path) return res.path;
+  } catch (e) { console.warn("twod12 | the Snapshot could not be uploaded; it goes inside the message", e); }
+  return await new Promise(res => { const fr = new FileReader(); fr.onload = () => res(String(fr.result)); fr.onerror = () => res(""); fr.readAsDataURL(blob); });
+}
+
 const ApplicationV2 = foundry.applications?.api?.ApplicationV2 ?? class {};
 export class HeightCover extends ApplicationV2 {
   static DEFAULT_OPTIONS = { classes: ["twod12", "twod12-height"], tag: "div", window: { title: "Cover height calculation", icon: "fa-solid fa-mountain", resizable: true }, position: { width: 600, height: "auto" } };
@@ -114,9 +158,14 @@ export class HeightCover extends ApplicationV2 {
     });
     content.querySelectorAll("input[type=number]").forEach(i => i.addEventListener("change", () => { const v = Number(i.value); if (Number.isFinite(v)) st[i.name] = i.name === "dist" ? Math.max(1, Math.round(v)) : v; this.render(); }));
     content.querySelector(".hc-clear")?.addEventListener("click", () => { st.blocks = {}; this.render(); });
-    content.querySelector(".hc-snapbtn")?.addEventListener("click", async () => {
-      const view = content.querySelector(".hc-view")?.innerHTML ?? "";
-      await ChatMessage.create({ content: snapshotHtml(this.options.window?.title ?? "Cover height", view, st), speaker: ChatMessage.getSpeaker() });
+    content.querySelector(".hc-snapbtn")?.addEventListener("click", async ev => {
+      const btn = ev.currentTarget; btn.disabled = true;
+      try {
+        const svg = content.querySelector(".hc-view svg"), src = svg ? await storeSnapshot(await svgToPng(svg)) : "";
+        const pic = src ? `<img class="hc-snapimg" src="${esc(src)}" alt="Side view">` : "";
+        await ChatMessage.create({ content: snapshotHtml(this.options.window?.title ?? "Cover height", pic, st), speaker: ChatMessage.getSpeaker() });
+      } catch (e) { console.error("twod12 | Snapshot", e); ui.notifications.warn("The Snapshot could not be made (see the console)."); }
+      finally { btn.disabled = false; }
     });
   }
 }

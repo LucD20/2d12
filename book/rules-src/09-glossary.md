@@ -110,7 +110,7 @@
 | [[Chapter 6: Basic Actions\|**Release**]] | 0 AP: drop an object, or let go of it with one hand. |
 | [[Reload\|**Reload**]] | A weapon property: a Reload Shot needs a reload afterwards. |
 | [[Reload\|**Reload Shot**]] | A Favored and Empowered 2 shot with a Reload weapon. |
-| [[Reposition\|**Reposition**]] | Moving a creature along a path you choose, up to its value. Not Forced Movement: it passes through creatures, never enters hazards, and needs Line of Effect. |
+| [[Reposition\|**Reposition**]] | Moving a creature along a path you choose, up to its value. Not Forced Movement: it never passes through creatures, never enters hazards, and needs Line of Effect. |
 | [[Requirements\|**Requirements**]] | What you need to use an Action. |
 | [[Rest\|**Rest**]] | A day in a safe place. It includes a Sleep. |
 | [[The targets\|**Role**]] | What an NPC is for in a fight: Minion, Grunt, Standard or Elite. It sets the NPC's CV Multiplier, AP and the tables its ratings use. |

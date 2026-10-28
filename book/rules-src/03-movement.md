@@ -81,7 +81,7 @@ Rules ask three different questions about movement, and the answers are not the 
 
 You can't cut solid corners when you move. Moving diagonally takes you through the corner point where four squares meet. If a wall or anything solid occupies that point, the corner is solid and you can't move diagonally past it: you must go around. A wall that ends exactly at the corner counts, and so does a pillar that stands on the corner or an object that fills a square beside your path, because each of them reaches the point. A small object in the middle of a square doesn't reach the corner, so it doesn't block the diagonal. This applies to every movement of yours (Advance, Evade, Charge) and to Forced Movement and Reposition. A creature that occupies several squares follows the rule with each square it occupies.
 
-Creatures aren't solid corners: you can move diagonally between two creatures, but this is Difficult Terrain, as if you were passing through the squares of an unwilling creature. If a Forced Movement would move a creature diagonally between two creatures, it doesn't pass through them: it stops in the last legal square and [[Collision]] applies as normal. Reposition passes through creatures, so it can move between them.
+Creatures aren't solid corners: you can move diagonally between two creatures. If both are unwilling, this is Difficult Terrain, as if you were passing through the squares of an unwilling creature; a willing creature lets you pass. If a Forced Movement would move a creature diagonally between two creatures, it doesn't pass through them: it stops in the last legal square and [[Collision]] applies as normal. A Reposition can't pass between two creatures either: it stops in the last legal square, without Collision damage.
 
 @@DIAGRAM:corners@@
 
@@ -155,7 +155,7 @@ The origin decides how far to aim. If it chooses a destination the creature can 
 > [!example]
 > Pushed 4 aimed at a destination 4 squares away, with a wall right behind you, deals 8 damage. Aimed through a creature after 1 square, it deals 3 damage to each. Pushed 1 square, with nothing in the way, deals no damage.
 
-A Reposition stops at an object without taking Collision damage, and it passes through creatures without Collision.
+A Reposition stops at an object or a creature without taking Collision damage.
 
 ## Reposition
 
@@ -165,10 +165,10 @@ Reposition moves a creature of your choice along a path, but it isn't Forced Mov
 - It ignores Difficult Terrain.
 - Its value is reduced by the creature's [[Steadiness]].
 - It can't move a creature into Hazardous Terrain or a Deadly Hazard, though it can move the creature to a less advantageous position, for example into a flanked square.
-- It passes through creatures without Collision, but it can never make a creature end its movement inside another creature or an object. It stops at an object without taking Collision damage.
+- It can't pass through creatures or objects: it stops in the last legal square before one, without Collision damage. It can never make a creature end its movement inside another creature or an object.
 
 > [!example]
-> Dave stands between you and a goblin, in a line. Reposition 2 moves the goblin 2 squares along that line, through Dave's square, to the empty square on Dave's other side. A Slid couldn't do this: it can't pass through Dave.
+> Dave stands between you and a goblin, in a line, with an empty square between you and Dave. Reposition 2 can't move the goblin through Dave's square, but the path can go around him: 1 square diagonally over Dave, then 1 square diagonally down, into the empty square next to you.
 
 @@DIAGRAM:reposition@@
 
@@ -180,7 +180,7 @@ The four movements side by side:
 | Direction | Away (cone) | Toward (cone) | Any path | Any path |
 | The origin needs Line of Effect | No | No | Yes | Yes |
 | Into Hazardous Terrain or a Deadly Hazard | Yes | Yes | Yes | No |
-| Creatures in the way | Collision | Collision | Collision | Passes through |
+| Creatures in the way | Collision | Collision | Collision | Stops, no damage |
 | Objects in the way | Collision damage | Collision damage | Collision damage | Stops, no damage |
 | Each diagonal square counts | 1 | 1 | 1 | 1 |
 

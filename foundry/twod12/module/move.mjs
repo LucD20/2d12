@@ -140,7 +140,8 @@ export function pathTo(map, key) {
 /**
  * Walk the path: stops before the first wall, solid corner or creature. Returns { done, block, final, unused }.
  * cornerAt(a, b) (optional): { kind: "" | "solid" | "creatures", creatures } for a diagonal step; a solid corner is an object (a wall),
- * a diagonal between two creatures is a Collision with a creature (unless throughCreatures: Reposition passes between them).
+ * a diagonal between two creatures is a Collision with a creature (unless throughCreatures: kept for abilities that let a movement pass creatures;
+ * since v0.0.173 Reposition doesn't, it stops there without damage).
  */
 export function analyzePath(path, N, { wallBetween, creatureAt, cornerAt = null, throughCreatures = false }) {
   let done = 0, block = null;
@@ -254,7 +255,7 @@ function hardStep(doc, to, step, cost, from = null) {
       hard = others.some(t => tokenCells(t).some(c => cells.some(m => m.i === c.i && m.j === c.j)));
     }
     // v0.0.171: a diagonal between two creatures is Difficult Terrain too, so the movement label shows it while dragging.
-    if (!hard && from) hard = stepCorners(squareOf(from), at, { w, h, creatureAt: c => creatureIn(c, [doc.id]) }).kind === "creatures";
+    if (!hard && from) hard = stepCorners(squareOf(from), at, { w, h, creatureAt: c => unwillingIn(c, doc) }).kind === "creatures";
     if (!hard) return cost;
     return Number.isFinite(step) && step > 0 ? Math.max(cost, 2 * step) : cost * 2;
   } catch (e) { return cost; }
@@ -371,6 +372,12 @@ const ignoresTerrain = doc => { try { const c = game.combat?.started ? game.comb
  */
 export const ownCorners = () => { try { return !!game.settings.get(F, "ownMoveCorners"); } catch (e) { return false; } };
 const ownSolid = () => (ownCorners() ? solidCorner : () => false);
+
+/**
+ * The creature in a square that is unwilling for this mover (another disposition), or null (v0.0.173, Lucas: a diagonal between two creatures is
+ * Difficult Terrain only when both are unwilling; a willing creature letting you pass is left to the players).
+ */
+const unwillingIn = (cell, doc) => { const t = creatureIn(cell, [doc.id]); return t && (t.document?.disposition ?? 0) !== (doc.disposition ?? 0) ? t : null; };
 
 /** The system setting that lets the movement buttons work when there is no combat. */
 export const movesOutsideCombat = () => { try { return !!game.settings.get(F, "moveOutsideCombat"); } catch (e) { return false; } };
@@ -540,7 +547,7 @@ function choosePush(origin, target, N, mode = "push") {
       const node = map.get(key) ?? (pull ? pullIntoOrigin(cells, oCells, { i: o.i, j: o.j }, N) : null);
       if (!node || !node.steps) { current = null; tip.style.display = "none"; return draw(); }
       const path = repo || node.intoOrigin ? lineShifts(node) : pathTo(map, key);
-      const result = analyzePath(path, path.length - 1, { wallBetween: wallsOn, creatureAt, cornerAt, throughCreatures: repo });
+      const result = analyzePath(path, path.length - 1, { wallBetween: wallsOn, creatureAt, cornerAt });
       current = { path, result };
       tip.textContent = text(result); tip.style.display = "block";
       const n = ev.nativeEvent ?? ev.data?.originalEvent;
@@ -699,7 +706,7 @@ export function creaturesOnPath(doc, points, { ignoring = false } = {}) {
       const line = cellLine(cellOf(pts[k]), cellOf(pts[k + 1]));
       for (const c of line) for (const key of foot(c)) if (!start.has(key) && !end.has(key)) passed.add(key);
       for (let n = 1; n < line.length; n++) {
-        const st = stepCorners(line[n - 1], line[n], { w, h, solidAt: ownSolid(), creatureAt: c => creatureIn(c, [doc.id]) });
+        const st = stepCorners(line[n - 1], line[n], { w, h, solidAt: ownSolid(), creatureAt: c => unwillingIn(c, doc) });
         if (st.kind === "solid") out.solidCorner = true;
         else if (st.kind === "creatures" && !ignoring) out.cornerDT++;
       }
@@ -749,7 +756,7 @@ function chargeSquareProblem(doc, a, b, w = 1, h = 1) {
   const foot = []; for (let di = 0; di < h; di++) for (let dj = 0; dj < w; dj++) foot.push({ i: b.i + di, j: b.j + dj });
   const other = foot.map(c => creatureIn(c, [doc.id])).find(t => t && (t.document.disposition ?? 0) !== (doc.disposition ?? 0));
   if (other) return `the straight line passes through ${other.name} (an unwilling creature's space is Difficult Terrain)`;
-  const corner = a ? stepCorners(a, b, { w, h, solidAt: ownSolid(), creatureAt: c => creatureIn(c, [doc.id]) }) : { kind: "" };
+  const corner = a ? stepCorners(a, b, { w, h, solidAt: ownSolid(), creatureAt: c => unwillingIn(c, doc) }) : { kind: "" };
   if (corner.kind === "solid") return "the straight line cuts a solid corner";
   if (corner.kind === "creatures") return `the straight line passes diagonally between ${corner.creatures.map(t => t.name).join(" and ")} (Difficult Terrain)`;
   try { if (foot.some(c => seenLight(lightAt(cellCenter(c.i, c.j)), doc.actor?.system?.senses ?? {}) === "dark")) return "the straight line crosses Darkness, which is Difficult Terrain for a creature that can't see in it"; } catch (e) { /* no light to read */ }
