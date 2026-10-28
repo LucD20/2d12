@@ -12,11 +12,11 @@ Sizes: S = under an hour of work, M = a normal session, L = a long session, XL =
 
 ## 2. Everything open, by area
 
-### Foundry (the system is at v0.0.169; your test of it is still pending)
+### Foundry (the system is at v0.0.170; your tests of v0.0.169 and v0.0.170 are pending)
 | ID | What | Size | Depends on |
 |---|---|---|---|
 | Q | Quick UI: Steadiness tile always visible (4 small squares), custom Steadiness in the Builder, the dark tier editor (`instanceDialog` and the weapon's), a Snapshot button on Cover height, the Talent Traits dropdown, a toggle to hide the help tips | S | nothing |
-| M1 | Movement A: Pulled (strict cone, stops next to the origin), Haul, Corners (anything solid at the point), Squeezing, the straight-line tie (the player chooses) | L | the book (done) |
+| M1 | **DONE 2026-10-28 (v0.0.170 and v0.0.171, run before Q, merged).** Movement A: Pulled (strict cone, stops next to the origin), Haul, Corners (anything solid at the point), Squeezing, the straight-line tie (the player chooses) | L | the book (done) |
 | M2 | Movement B: the path tool (Slid, Relocate / Reposition), Immobilized's DC, the Steadiness checkbox | L | M1 |
 | R | Rules sync: Rally Points (Paladin 6, Archer 5, the new formula), the NPC tables and the Builder's level scaling (levels 1 to 3), Light (only the target's light, N + 0.5 radius), Burst corner-only, Area and Distance as two fields, Dying and Shattered from the second time, Unconscious wake rule | M | the book (done) |
 | F | FORMAT: trait groups (picker, chips, order), tinted chips, weapon properties without color, the text colors | L | the traits (done) |
@@ -39,7 +39,7 @@ Sizes: S = under an hour of work, M = a normal session, L = a long session, XL =
 
 **Phase 1: Foundry catches up with the book (no design needed; I run each pack alone, you test each version).**
 1. **Pack 1: Q** (the next version number). Small, visible, independent. You also send the results of testing v0.0.169 in notes.txt.
-2. **Pack 2: M1** (the next version number).
+2. **Pack 2: M1** (DONE: v0.0.170 and v0.0.171, merged 2026-10-28).
 3. **Pack 3: M2** (the next version number).
 4. **Pack 4: R** (the next version number).
 5. **Pack 5: F** (the next version number). Last of the phase, because it touches every card and sheet once.

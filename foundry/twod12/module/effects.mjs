@@ -208,7 +208,8 @@ export async function createRiders(actor, item, parent, origin, duration) {
   for (const r of item.system.conditions ?? []) {
     const cond = r.uuid ? await fromUuid(r.uuid).catch(() => null) : null;
     if (!cond || cond.uuid === item.uuid) continue;
-    const value = r.valued ? Math.max(1, Number(r.value) || 1) : undefined;
+    // halfLevel (Squeezing, v0.0.170): the value is half the creature's level, rounded up, when the condition is applied.
+    const value = r.valued ? (r.mode === "halfLevel" ? Math.max(1, Math.ceil((Number(actor.system?.level) || 1) / 2)) : Math.max(1, Number(r.value) || 1)) : undefined;
     const have = actor.effects.find(x => x.getFlag(F, "effectUuid") === cond.uuid);
     if (have) {
       const now = Number(have.getFlag(F, "value")) || 0;

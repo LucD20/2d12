@@ -12,7 +12,7 @@ import { isEngaged, engagedWithOther } from "./engaged.mjs";
 import { flankingMod } from "./flanking.mjs";
 import { performCheck, performMultiCheck, multiCheckHtml, collapseNames, uniqueLabels, checkHtml, esc, sgn } from "./roll.mjs";
 import { postDamageCard, postMultiDamageCard } from "./dmgcard.mjs";
-import { cardVars, cardHead, flavorHtml, apIcon, traitChevrons, categoryText, highlightText, metaRowHtml, effectiveFrequency, distanceText, cardColorFor, vsText, targetsRowHtml, requirementProblem } from "./config.mjs";
+import { cardVars, cardHead, flavorHtml, apIcon, traitChevrons, categoryText, highlightText, metaRowHtml, effectiveFrequency, distanceText, cardColorFor, vsText, targetsRowHtml, requirementProblem, doomStatus } from "./config.mjs";
 import { collectBonuses, expireOnUse } from "./bonus.mjs";
 import { notesFor, resolveModifiers, applyEffects, originInfo, damageSteps, modifierList } from "./effects.mjs";
 import { spendAP, combatantOf } from "./combat.mjs";
@@ -368,7 +368,10 @@ export async function useAction(actor, item, opts = {}) {
     const ok = await DialogV2.confirm({ window: { title: item.name }, content: `<p>It is not <b>${esc(actor.name)}</b>'s turn. Only Reactions can be used outside your turn.</p><p>Use ${esc(item.name)} anyway?</p>`, rejectClose: false });
     if (!ok) return;
   }
-  const reqProblem = requirementProblem(it, actor, [...game.user.targets][0]?.actor ?? null, { skipHands: true });   // hands: checked above
+  const reqTarget = [...game.user.targets][0] ?? null, reqUser = actor.token?.object ?? actor.getActiveTokens?.()[0] ?? null;
+  const reqOpts = { skipHands: true };   // hands: checked above
+  if (reqTarget && reqUser) reqOpts.distance = squaresBetween(reqUser, reqTarget);   // Haul: "at least 2 squares away"
+  const reqProblem = requirementProblem(it, actor, reqTarget?.actor ?? null, reqOpts);
   if (reqProblem) return ui.notifications.warn(`${actor.name} can't use ${item.name}: it ${reqProblem}.`);
   // An Action that needs several different creatures (Double Shot: "Two creatures") can't be made against fewer: its Linked Actions would be disrupted.
   const needed = targetsNeeded(it.targets);
@@ -544,7 +547,7 @@ export async function useAction(actor, item, opts = {}) {
   if (opts.boons || opts.banes) extraMods.push({ id: "syn:granted", name: opts.label ?? "Granted use", boons: opts.boons ?? 0, banes: opts.banes ?? 0, match: true, predicate: "From the Action that allowed this use" });
   if (opts.excludeTargets?.length && targetToken && opts.excludeTargets.includes(targetToken.document?.uuid)) return ui.notifications.warn(`${targetToken.name} was already a target: choose a different creature.`);
   // What makes the roll Doomed or Empowered, shown on the option itself ("Target is Hidden (Doomed)").
-  const doomReason = actor.statuses?.has?.("imperiled") ? "Imperiled" : actor.statuses?.has?.("unconscious") ? "Unconscious" : seen === "hidden" ? "Target is Hidden" : seen === "unsensed" ? "Target is Unsensed" : "";
+  const doomReason = doomStatus(actor) || (seen === "hidden" ? "Target is Hidden" : seen === "unsensed" ? "Target is Unsensed" : "");
   // Empowered and Enfeebled: what gives them, and the one value that counts (the highest of each; the Enfeebled value is taken from the Empowered one).
   const steps = damageSteps(actor, rollTraits(useTraits, src, item.name));
   if (opts.empowered) steps.empowered.push({ name: opts.label ?? "this Action", n: stepOf(opts.empowered) });
@@ -575,12 +578,10 @@ export async function useAction(actor, item, opts = {}) {
       favored: unseenYou || untrainedTarget,
       favoredLabel: unseenYou ? `${mine === "hidden" ? "Hidden" : "Unsensed"} (Favored)` : (untrainedTarget ? "Target's untrained armor (Favored)" : undefined),
       empowerWhy: stepSources.join(", "),
-      doomed: seen === "hidden" || seen === "unsensed" || !!actor.statuses?.has?.("imperiled") || !!actor.statuses?.has?.("unconscious"),
-      doomedWhy: actor.statuses?.has?.("imperiled")
-        ? "Imperiled: all your Rolls are Doomed"
-        : actor.statuses?.has?.("unconscious")
-          ? "Unconscious: all your Rolls are Doomed"
-          : seen === "hidden"
+      doomed: seen === "hidden" || seen === "unsensed" || !!doomStatus(actor),
+      doomedWhy: doomStatus(actor)
+        ? `${doomStatus(actor)}: all your Rolls are Doomed`
+        : seen === "hidden"
             ? `Hidden: you only perceive the target by ${seenWhy}`
             : seen === "unsensed"
               ? "Unsensed: you don't perceive the target"

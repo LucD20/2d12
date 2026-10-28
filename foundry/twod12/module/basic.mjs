@@ -220,6 +220,21 @@ export const BASIC_ACTIONS = {
       V(2, [], [], [], "", { x1: "No effect.", x2: "@Move[pushed|distance:2]", x3: "@Move[pushed|distance:4]" }),
       V(3, [], [], [], "", { x1: "@Move[pushed|distance:1]", x2: "@Move[pushed|distance:3]", x3: "@Move[pushed|distance:5]" })
     ]
+  },
+  haul: {
+    frequency: "round",
+    name: "Haul",
+    img: "icons/svg/down.svg",
+    traits: ["strike", "handle", "appeal", "body"],
+    targets: "One creature",
+    vs: "roll",
+    distance: "reach",
+    requirements: "Your Reach is 2 or more. The target's SR is at most 1 higher than yours and is at least 2 squares away. The target must remain within your Reach throughout the whole movement.",
+    versions: [
+      V(1, [], [], [], "", { x1: "No effect.", x2: "@Move[pulled|distance:1]", x3: "@Move[pulled|distance:2]" }),
+      V(2, [], [], [], "", { x1: "No effect.", x2: "@Move[pulled|distance:2]", x3: "@Move[pulled|distance:4]" }),
+      V(3, [], [], [], "", { x1: "@Move[pulled|distance:1]", x2: "@Move[pulled|distance:3]", x3: "@Move[pulled|distance:5]" })
+    ]
   }
 };
 
@@ -231,6 +246,7 @@ const BASIC_FLAVOR = {
  "Steel Yourself": "You grit your teeth and find a little more to give.",
  "Charge": "You close the distance in one straight, reckless line.",
  "Shove": "You put your weight behind it and drive them back.",
+ "Haul": "You snag them and drag them in.",
  "Trip": "A hooked foot, a twist, and they hit the ground.",
  "Advance": "You press forward, one deliberate step at a time.",
  "Crawl": "You drag yourself along the ground.",
@@ -301,7 +317,7 @@ export function registerBasicHooks() {
     if (!game.user.isActiveGM) return;
     const fixed = await fixReleaseCost(game.actors ?? []);
     if (fixed) ui.notifications.info(`Release now costs 0 AP on ${fixed} creature${fixed === 1 ? "" : "s"}.`);
-    // v0.0.169, once per creature that needs it: the new Basic Actions (Relocate, the 3 AP Shove, Fists as a Weapon Action) and Fists as an ordinary weapon.
+    // v0.0.169 and v0.0.170, once per creature that needs it: the new Basic Actions (Relocate, the 3 AP Shove, Fists as a Weapon Action, Haul) and Fists as an ordinary weapon.
     let n = 0;
     for (const actor of game.actors ?? []) {
       if (!["character", "npc"].includes(actor.type) || !actor.isOwner) continue;
@@ -310,7 +326,7 @@ export function registerBasicHooks() {
         if (old) { await addBasicActions(actor, { replace: true }); n++; } else await ensureFists(actor);
       } catch (e) { console.warn("twod12 | could not update the Basic Actions of", actor.name, e); }
     }
-    if (n) ui.notifications.info(`2d12: the Basic Actions were updated on ${n} creature${n === 1 ? "" : "s"} (Relocate, Shove, Fists).`);
+    if (n) ui.notifications.info(`2d12: the Basic Actions were updated on ${n} creature${n === 1 ? "" : "s"} (Relocate, Shove, Haul, Fists).`);
   });
 }
 

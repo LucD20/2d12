@@ -67,6 +67,7 @@ cond("Vulnerable", "icons/svg/hazard.svg", "<p>Actions against you gain as many 
 cond("Slowed", "icons/svg/stoned.svg", "<p>Slowed always has a value. You regain that many fewer AP at the start of your turn (Slowed 2: you regain 3), and your most AP is lowered by the value too. You don't lose AP when you become Slowed, only when you regain AP. Desperate, Dying and Shattered make you Slowed 1, or 1 more (to at most 3), while they last. Slowed and Quickened cancel out without changing each other's value.</p>", [], { valued: true });
 cond("Quickened", "icons/svg/lightning.svg", "<p>Quickened always has a value. Your most AP, and the AP you regain at the start of your turn, rise by that much (Quickened 2: you regain 7). You don't gain AP when you become Quickened, only when you regain AP. Slowed and Quickened cancel out without changing each other's value.</p>", [], { valued: true });
 cond("Imperiled", "icons/svg/hazard.svg", "<p>You barely avoided a Deadly Hazard (hanging from a ledge, at the lip of a lava pit...). All your Checks and Saves are Doomed, and you are Vulnerable 3. At the start of your turn you get back to safety, to a legal square next to the hazard, and stop being Imperiled; you are Slowed 1 for that turn. A creature can help you get to safety with the Interact Action (1 AP, Handle).</p>", [], { conditions: [{ uuid: uuidOf("conditions", "Vulnerable"), name: "Vulnerable", value: 3, valued: true }] });
+cond("Squeezing", "icons/svg/net.svg", "<p>You stopped moving while squeezing through a space one rank smaller than you: you don't fit completely in the space you are in. All your Rolls are Doomed and you are Vulnerable equal to half your level (rounded up) until you move to a space where you fit completely. Each square you move while squeezing counts as Difficult Terrain. The GM applies this condition (it is not detected on the map).</p>", [], { conditions: [{ uuid: uuidOf("conditions", "Vulnerable"), name: "Vulnerable", value: 1, valued: true, mode: "halfLevel" }] });
 add("effects", "effect", "Bloodlust", "icons/svg/blood.svg", { selfApplied: true, duration: { type: "rounds", rounds: 1 }, description: "<p>For 1 round, your [Melee, Weapon] Actions are Empowered 1 and gain 1 boon, and you take 1 bane on Saves.</p>", settings: [
   { type: "boonbane", boons: 1, banes: 0, all: ["melee", "weapon"], any: [], none: [] },
   { type: "damagestep", empowered: 1, all: ["melee", "weapon"], any: [], none: [] },
@@ -425,6 +426,7 @@ const FLAVOR = {
  "Steel Yourself": "You grit your teeth and find a little more to give.",
  "Charge": "You close the distance in one straight, reckless line.",
  "Shove": "You put your weight behind it and drive them back.",
+ "Haul": "You snag them and drag them in.",
  "Trip": "A hooked foot, a twist, and they hit the ground.",
  "Advance": "You press forward, one deliberate step at a time.",
  "Evade": "You slip through the fray without giving anyone an opening.",

@@ -1,0 +1,47 @@
+--- Pulled: the book's figures (Pulled 3)
+straight   D3 / C4 D4 E4 / -
+diagonal   C3 / B3 B4 C4 / A3 A4 B5 C5
+Pulled 5 from 3 squares away stops next to the origin: 2 steps at most | never the origin's square: true | the 45 degree edge is out (1,1): true
+already next to the origin: no square to go to: true
+aimed at the origin's square (the book's example): moves 2, unused 1, damage {"self":1,"other":1} | too far to aim at: null
+a Large creature pulled 4 toward a creature 4 rows below: 1,-1 1,0 2,-1 2,-2 2,0 2,1 3,-1 3,-2 3,0 3,1
+--- Corners
+a wall ends at the corner: blocked                       {"kind":"solid","creatures":[]}
+the same wall is an open door: open                      {"kind":"","creatures":[]}
+a solid pillar Tile on the corner: blocked               {"kind":"solid","creatures":[]}
+a small solid Tile in the middle of a square: open       {"kind":"","creatures":[]}
+a solid Tile that fills the square beside: blocked       {"kind":"solid","creatures":[]}
+the same Tile, not marked solid: open                    {"kind":"","creatures":[]}
+two creatures at the corner: Difficult Terrain           {"kind":"creatures","creatures":[{"name":"B"},{"name":"A"}]}
+one creature at the corner: open                         {"kind":"","creatures":[]}
+a straight step: no corner                               {"kind":"","creatures":[]}
+a Large creature: each square it occupies                {"kind":"solid","creatures":[]}
+Pushed 2 diagonally into a solid corner: moves 0, unused 2, damage {"self":4,"other":0}, corner true
+Pushed 2 diagonally between two creatures: moves 0, collision with A, damage {"self":2,"other":2}
+Reposition passes between them: moves 2, block null
+Advance diagonally between two goblins: {"through":[],"endIn":"","extra":0,"dark":0,"solidCorner":false,"cornerDT":1} | Cut Through ignores it: 0
+it costs 1 more square (v0.0.171: nothing added when our cost is in Foundry's ruler, which now counts it): 0 2 1
+Advance diagonally past the end of a wall: true
+the same with the setting off (Foundry refuses it itself): false | the setting: true
+--- the straight line: the moving creature chooses at a tie
+A1 to G4: A1 B1|B2 C2 D2|D3 E3 F3|F4 G4
+A1 to H4: A1 B1 C2 D2 E3 F3 G4 H4
+A1 to G4, ties taken as the book draws them: A1 B2 C2 D3 E3 F4 G4
+A1 to G4, a tie square that is not legal is avoided: A1 B2 C2 D2 E3 F3 G4
+Charge A1 to G4 with an Orc on B1: the line uses B2: A1 B2 C2 D3 E3 F4 G4 | ties: 3
+a drag through B1 (not legal) still takes the legal B2: A1 B2 C2
+with no Orc, a drag along row 1 is honored at every tie: A1 B1 C2 D2 E3 F3 G4
+Charge checks the chosen line square by square: true
+--- Haul
+Haul 1AP: 0/1/2 | 2AP: 0/2/4 | 3AP: 1/3/5 | strike/handle/appeal/body | vs roll | distance reach | round: true
+Reach 1: needs a Reach of 2 or more | Reach 2, target 2 away: ok | target next to you: needs a target at least 2 squares away (it is 1) | SR 5: needs a target whose SR is at most 1 higher than yours
+the Haul card's flavor: You snag them and drag them in.
+--- @Move[pulled]
+the generator reads 'Pulled 3': @Move[pulled|distance:3]. | words back: true
+the builder offers Pulled: true | the button: true | a defense tag: true | the flow: true
+--- Squeezing
+a condition with Vulnerable = half the level: true | the effect sets it: true | a status: true
+Doomed: true Squeezing | levels 1-5: 1 1 2 2 3 | nothing: ""
+--- v0.0.171: the movement label counts a diagonal between two creatures
+installed: actions.walk.getCostFunction
+diagonal B1 -> A2 between the goblins: 2 | a diagonal away from them: 1

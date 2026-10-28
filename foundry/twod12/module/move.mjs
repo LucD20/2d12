@@ -1,7 +1,7 @@
 import { homePos, leanOf } from "./lean.mjs";
 import { tokenDistance, lightAt, seenLight, regionHasPoint, verticalSquares, withHeight } from "./light.mjs";
 // Movement: AP tracking for the creature whose turn it is (split movement, free movement from @Move[walk]),
-// and Pushed with collision: @Move[pushed|distance:N] lets the clicking player drag the target away from the origin.
+// and Pushed and Pulled with collision: @Move[pushed|distance:N] (@Move[pulled|distance:N]) lets the clicking player drag the target away from (toward) the origin.
 import { esc } from "./roll.mjs";
 import { tokenCells, fillCells, outlineCells, cellCenter, cellAt } from "./template.mjs";
 import { TWOD12 } from "./config.mjs";
@@ -9,6 +9,7 @@ import { applyToActor } from "./damage.mjs";
 import { getAP, setAP, combatantOf } from "./combat.mjs";
 import { expireOnUse } from "./bonus.mjs";
 import { evalExpr } from "./refs.mjs";
+import { stepCorners, solidCorner, creatureIn, straightCells, chooseLine } from "./corners.mjs";
 const F = "twod12", SOCKET = "system.twod12";
 const warn = m => ui.notifications.warn(m);
 const refuse = m => { warn(m); return false; };   // a refusal that says no
@@ -63,6 +64,47 @@ export function pushShifts(cells, originCells, N, coneDeg = TWOD12.pushCone) {
   return out;
 }
 
+/**
+ * Pulled (v0.0.170, the book's figures): every shift the pulled creature can end on. The cone has its apex on the creature and points at the origin:
+ * a square is inside it when the direction from the creature's starting square to it is LESS than 45 degrees from the line to the origin (the edge is out).
+ * Each step (diagonals count 1) ends closer to the origin than the one before, never in the origin's space, and a creature next to the origin
+ * stops there (it is not pulled any closer). Returns Map key -> { di, dj, steps, parent }, like pushShifts.
+ */
+export function pullShifts(cells, originCells, N) {
+  const o = centerOfCells(originCells), t = centerOfCells(cells);
+  const dist = s => Math.hypot(t.x + s.dj - o.x, t.y + s.di - o.y);
+  const bearing = Math.atan2(o.y - t.y, o.x - t.x), lim = Math.PI / 4 - 1e-9;
+  const inCone = s => { let d = Math.atan2(s.di, s.dj) - bearing; while (d > Math.PI) d -= 2 * Math.PI; while (d < -Math.PI) d += 2 * Math.PI; return Math.abs(d) < lim; };
+  const oset = new Set(originCells.map(c => `${c.i},${c.j}`));
+  const intoOrigin = s => cells.some(c => oset.has(`${c.i + s.di},${c.j + s.dj}`));
+  const nextTo = s => cells.some(c => originCells.some(q => Math.max(Math.abs(c.i + s.di - q.i), Math.abs(c.j + s.dj - q.j)) <= 1));
+  const out = new Map([["0,0", { di: 0, dj: 0, steps: 0, parent: null }]]);
+  let layer = [out.get("0,0")];
+  for (let step = 1; step <= N; step++) {
+    const next = [];
+    for (const cur of layer) {
+      if (nextTo(cur)) continue;   // next to the origin: it can't be pulled any closer
+      for (const [a, b] of DIRS) {
+        const s = { di: cur.di + a, dj: cur.dj + b }, k = shiftKey(s);
+        if (out.has(k) || intoOrigin(s) || !inCone(s) || dist(s) >= dist(cur) - 1e-9) continue;
+        const node = { ...s, steps: step, parent: shiftKey(cur) };
+        out.set(k, node); next.push(node);
+      }
+    }
+    layer = next;
+  }
+  out.dist = s => -dist(s);   // pathTo checks that every step "goes on": for a pull, closer
+  return out;
+}
+
+/** Pulled aimed at the origin's own space (the book allows it: Collision with the origin). The shift that puts the creature's space on the hovered square of the origin, when it is within N steps. */
+export function pullIntoOrigin(cells, originCells, hovered, N) {
+  if (!originCells.some(c => c.i === hovered.i && c.j === hovered.j)) return null;
+  const tl = { i: Math.min(...cells.map(c => c.i)), j: Math.min(...cells.map(c => c.j)) };
+  const di = hovered.i - tl.i, dj = hovered.j - tl.j, steps = Math.max(Math.abs(di), Math.abs(dj));
+  return steps && steps <= N ? { di, dj, steps, parent: null, intoOrigin: true } : null;
+}
+
 /** Every shift a Reposition N can use: any square inside an N Emanation of the creature that is also within the origin's Reach (and not the origin's own square). */
 export function repositionShifts(cells, originCells, N, reach = 1) {
   const out = new Map([["0,0", { di: 0, dj: 0, steps: 0, parent: null }]]);
@@ -95,12 +137,19 @@ export function pathTo(map, key) {
   return path;
 }
 
-/** Walk the path: stops before the first wall or creature. Returns { done, block, final, unused }. */
-export function analyzePath(path, N, { wallBetween, creatureAt }) {
+/**
+ * Walk the path: stops before the first wall, solid corner or creature. Returns { done, block, final, unused }.
+ * cornerAt(a, b) (optional): { kind: "" | "solid" | "creatures", creatures } for a diagonal step; a solid corner is an object (a wall),
+ * a diagonal between two creatures is a Collision with a creature (unless throughCreatures: Reposition passes between them).
+ */
+export function analyzePath(path, N, { wallBetween, creatureAt, cornerAt = null, throughCreatures = false }) {
   let done = 0, block = null;
   for (let n = 1; n < path.length; n++) {
     const a = path[n - 1], b = path[n];
     if (wallBetween(a, b)) { block = { type: "wall" }; break; }
+    const corner = cornerAt ? cornerAt(a, b) : null;
+    if (corner?.kind === "solid") { block = { type: "wall", corner: true }; break; }
+    if (corner?.kind === "creatures" && !throughCreatures) { block = { type: "creature", token: corner.creatures[0], corner: true }; break; }
     const t = creatureAt(b);
     if (t) { block = { type: "creature", token: t }; break; }
     done = n;
@@ -181,8 +230,9 @@ export let rulerCountsDifficult = false;
 
 /** The squares to add to what Foundry measured. foundryCounted: its cost is more than the distance (regions of Difficult Terrain). If its cost function is ours, it has counted everything. */
 export function extraCost(way, foundryCounted, countsAll = rulerCountsDifficult) {
-  if (countsAll || foundryCounted) return 0;
-  return way.extra ?? 0;
+  if (countsAll) return 0;                                    // our cost function is in Foundry's: it counted everything (the diagonals between two creatures too, v0.0.171)
+  if (foundryCounted) return way.cornerDT ?? 0;               // Foundry's own regions were counted, not the diagonals between two creatures
+  return (way.extra ?? 0) + (way.cornerDT ?? 0);
 }
 
 const squareOf = o => ({ i: Math.round(o?.i ?? 0), j: Math.round(o?.j ?? 0) });
@@ -191,7 +241,7 @@ const squareOf = o => ({ i: Math.round(o?.i ?? 0), j: Math.round(o?.j ?? 0) });
  * A step into a square that is Difficult Terrain for the token (Darkness its Sight can't see in, or an unwilling creature's square) costs double.
  * Difficult Terrain does not stack: a square that already costs double stays at double.
  */
-function hardStep(doc, to, step, cost) {
+function hardStep(doc, to, step, cost, from = null) {
   try {
     if (!doc?.actor || !to) return cost;
     if (ignoresTerrain(doc)) return Number.isFinite(step) && step > 0 ? step : cost;   // (Cut Through) the terrain costs nothing extra
@@ -203,6 +253,8 @@ function hardStep(doc, to, step, cost) {
       const others = (canvas.tokens?.placeables ?? []).filter(t => t.document?.id !== doc.id && t.actor && !t.document?.hidden && (t.document.disposition ?? 0) !== (doc.disposition ?? 0));
       hard = others.some(t => tokenCells(t).some(c => cells.some(m => m.i === c.i && m.j === c.j)));
     }
+    // v0.0.171: a diagonal between two creatures is Difficult Terrain too, so the movement label shows it while dragging.
+    if (!hard && from) hard = stepCorners(squareOf(from), at, { w, h, creatureAt: c => creatureIn(c, [doc.id]) }).kind === "creatures";
     if (!hard) return cost;
     return Number.isFinite(step) && step > 0 ? Math.max(cost, 2 * step) : cost * 2;
   } catch (e) { return cost; }
@@ -213,9 +265,9 @@ function hardStep(doc, to, step, cost) {
  * where baseCost is what the terrain already cost. Either way this adds this system's Difficult Terrain to what it returns.
  */
 const hardCost = (base, doc) => (...a) => {
-  const action = typeof a[0] === "number", to = a[action ? 2 : 1], step = a[action ? 3 : 2];
+  const action = typeof a[0] === "number", from = a[action ? 1 : 0], to = a[action ? 2 : 1], step = a[action ? 3 : 2];
   const cost = typeof base === "function" ? base(...a) : (action ? a[0] : step);
-  return hardStep(doc, to, step, cost);
+  return hardStep(doc, to, step, cost, from);
 };
 const wrapCost = (orig, docOf) => function (...args) {
   const base = orig.apply(this, args);
@@ -312,6 +364,13 @@ export function rulerInfo() {
 
 /** A creature whose free movement ignores terrain (Cut Through's Evade): it may move through creatures (not end in one) and Difficult Terrain costs nothing extra. */
 const ignoresTerrain = doc => { try { const c = game.combat?.started ? game.combat.combatants.find(x => x.tokenId === doc?.id) : null; return !!c?.getFlag(F, "ignoreTerrain"); } catch (e) { return false; } };
+
+/**
+ * Solid corners for a creature's own movement (Advance, Evade, Charge) are a world setting, off by default (v0.0.171): Foundry's own movement already
+ * refuses those diagonals, so the check only matters with Unrestricted movement. Forced Movement and Reposition always check them (Foundry doesn't).
+ */
+export const ownCorners = () => { try { return !!game.settings.get(F, "ownMoveCorners"); } catch (e) { return false; } };
+const ownSolid = () => (ownCorners() ? solidCorner : () => false);
 
 /** The system setting that lets the movement buttons work when there is no combat. */
 export const movesOutsideCombat = () => { try { return !!game.settings.get(F, "moveOutsideCombat"); } catch (e) { return false; } };
@@ -418,13 +477,20 @@ function gfxLine(g, pts, color, width, alpha = 1) {
   else { g.moveTo(pts[0].x, pts[0].y); for (const p of pts.slice(1)) g.lineTo(p.x, p.y); g.stroke({ width, color, alpha }); }
 }
 
-/** Drag the target to a square: only squares away from the origin within N steps are allowed. Resolves to { path, result } or null. */
+const MOVE_LABEL = { push: "Pushed", pull: "Pulled", reposition: "Reposition" };
+
+/**
+ * Drag the target to a square: only the squares the movement allows (Pushed: away from the origin; Pulled: toward it, or the origin's own square
+ * for a Collision; Reposition: the old square in an Emanation) within N steps. Resolves to { path, result } or null.
+ */
 function choosePush(origin, target, N, mode = "push") {
-  const repo = mode === "reposition";
+  const repo = mode === "reposition", pull = mode === "pull";
   return new Promise(resolve => {
     const cells = tokenCells(target), tl = { i: Math.min(...cells.map(c => c.i)), j: Math.min(...cells.map(c => c.j)) };
-    const map = repo ? repositionShifts(cells, tokenCells(origin), N, origin.actor?.system?.reach ?? 1) : pushShifts(cells, tokenCells(origin), N);
-    const others = canvas.tokens.placeables.filter(t => t.id !== target.id && (repo || t.id !== origin.id));
+    const oCells = tokenCells(origin);
+    const map = repo ? repositionShifts(cells, oCells, N, origin.actor?.system?.reach ?? 1) : pull ? pullShifts(cells, oCells, N) : pushShifts(cells, oCells, N);
+    // The origin is a creature in the way of a Pulled aimed at its own square (both take damage); a Pushed moves away from it.
+    const others = canvas.tokens.placeables.filter(t => t.id !== target.id && (repo || pull || t.id !== origin.id));
     const occupied = others.map(t => ({ t, set: new Set(tokenCells(t).map(c => `${c.i},${c.j}`)) }));
     const pt = sh => {
       const pts = cells.map(c => cellCenter(c.i + sh.di, c.j + sh.dj));
@@ -432,6 +498,10 @@ function choosePush(origin, target, N, mode = "push") {
     };
     const covered = [...new Map([...map.values()].flatMap(n => cells.map(c => ({ i: c.i + n.di, j: c.j + n.dj }))).map(c => [`${c.i},${c.j}`, c])).values()];
     const creatureAt = sh => occupied.find(o => cells.some(c => o.set.has(`${c.i + sh.di},${c.j + sh.dj}`)))?.t ?? null;
+    // The whole creature must fit: every square it occupies is tested against walls (a Forced Movement never squeezes), and against the corners it cuts.
+    const wallsOn = (a, b) => cells.some(c => wallBetween(cellCenter(c.i + a.di, c.j + a.dj), cellCenter(c.i + b.di, c.j + b.dj)));
+    const w = Math.max(1, Math.round(target.document.width ?? 1)), h = Math.max(1, Math.round(target.document.height ?? 1));
+    const cornerAt = (a, b) => stepCorners({ i: tl.i + a.di, j: tl.j + a.dj }, { i: tl.i + b.di, j: tl.j + b.dj }, { w, h, solidAt: solidCorner, creatureAt: c => creatureIn(c, [target]) });
     const gfx = new PIXI.Graphics();
     (canvas.interface ?? canvas.stage).addChild(gfx);
     const tip = document.createElement("div");
@@ -443,6 +513,7 @@ function choosePush(origin, target, N, mode = "push") {
       gfx.clear();
       fillCells(gfx, covered, 0xffffff, 0.22);
       outlineCells(gfx, covered, { color: 0xffffff, width: 3 });
+      if (pull) fillCells(gfx, oCells, 0xdd3333, 0.18);   // aiming at the origin's own square: a Collision
       if (!current) return;
       const pts = current.path.map(s => pt(s)), good = pts.slice(0, current.result.done + 1);
       gfxLine(gfx, good, 0x44cc77, 5, 0.95);
@@ -455,21 +526,21 @@ function choosePush(origin, target, N, mode = "push") {
       }
     };
     const text = r => {
-      if (repo) return r.block ? `${r.block.type === "wall" ? "A wall" : r.block.token.name} is in the way: stops after ${r.done} square${r.done === 1 ? "" : "s"}` : `Reposition ${r.done} square${r.done === 1 ? "" : "s"}`;
+      if (repo) return r.block ? `${r.block.type === "wall" ? (r.block.corner ? "A solid corner" : "A wall") : r.block.token.name} is in the way: stops after ${r.done} square${r.done === 1 ? "" : "s"}` : `Reposition ${r.done} square${r.done === 1 ? "" : "s"}`;
       const steps = `${r.done} of ${r.done + r.unused} squares aimed (maximum ${N})`;
-      if (!r.block) return `Pushed ${r.done} (${steps})`;
+      if (!r.block) return `${MOVE_LABEL[mode]} ${r.done} (${steps})`;
       const d = r.damage;
       return r.block.type === "wall"
-        ? `Wall: ${r.unused} unused, ${d.self} Body damage (${steps})`
-        : `${r.block.token.name}: ${r.unused} unused, ${d.self} Body to each (${steps})`;
+        ? `${r.block.corner ? "Solid corner" : "Wall"}: ${r.unused} unused, ${d.self} Body damage (${steps})`
+        : `${r.block.token.name}${r.block.corner ? " (between two creatures)" : ""}: ${r.unused} unused, ${d.self} Body to each (${steps})`;
     };
     const hover = ev => {
       const p = ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) : ev.data.getLocalPosition(canvas.stage);
       const o = canvas.grid.getOffset(p), key = shiftKey({ di: o.i - tl.i, dj: o.j - tl.j });
-      const node = map.get(key);
+      const node = map.get(key) ?? (pull ? pullIntoOrigin(cells, oCells, { i: o.i, j: o.j }, N) : null);
       if (!node || !node.steps) { current = null; tip.style.display = "none"; return draw(); }
-      const path = repo ? lineShifts(node) : pathTo(map, key);
-      const result = analyzePath(path, path.length - 1, { wallBetween: (a, b) => wallBetween(pt(a), pt(b)), creatureAt });
+      const path = repo || node.intoOrigin ? lineShifts(node) : pathTo(map, key);
+      const result = analyzePath(path, path.length - 1, { wallBetween: wallsOn, creatureAt, cornerAt, throughCreatures: repo });
       current = { path, result };
       tip.textContent = text(result); tip.style.display = "block";
       const n = ev.nativeEvent ?? ev.data?.originalEvent;
@@ -492,7 +563,7 @@ function choosePush(origin, target, N, mode = "push") {
     const esc_ = ev => { if (ev.key === "Escape") done(null); };
     canvas.stage.on("pointermove", hover); canvas.stage.on("pointerdown", down);
     window.addEventListener("keydown", esc_);
-    ui.notifications.info(`${repo ? "Reposition" : "Pushed"} ${N}: move the pointer to choose where ${target.name} ends. Click to confirm, right-click or Esc to cancel.`);
+    ui.notifications.info(`${MOVE_LABEL[mode]} ${N}: move the pointer to choose where ${target.name} ends${pull ? ` (or ${origin.name}'s own square: Collision)` : ""}. Click to confirm, right-click or Esc to cancel.`);
     draw();
   });
 }
@@ -525,23 +596,23 @@ async function applySteadiness(target, N, label) {
 }
 
 async function pushOne(origin, target, N0, mode = "push") {
-  const label = mode === "reposition" ? "Reposition" : "Pushed";
+  const label = MOVE_LABEL[mode];
   const st = await applySteadiness(target, N0, label), N = st.N;
   if (N <= 0) { await post(`<b>${esc(target.name)}</b> is not moved: its Steadiness ${st.steady} reduces ${label} ${N0} to 0.`); return; }
   const pick = await choosePush(origin, target, N, mode);
   if (!pick) return;
   const { result } = pick, f = result.final;
   if (f.di || f.dj) await moveToken(target.document, f.dj, f.di);
-  const lines = [`<b>${esc(target.name)}</b> is ${mode === "reposition" ? "Repositioned" : "Pushed"} ${N0}${st.applied ? ` (Steadiness ${st.steady}: ${N})` : ""} by <b>${esc(origin.name)}</b> and moves ${result.done} square${result.done === 1 ? "" : "s"}.`];
-  if (result.block && mode === "reposition") lines.push(`It stops short: ${result.block.type === "wall" ? "a wall" : `<b>${esc(result.block.token.name)}</b>`} is in the way.`);
+  const lines = [`<b>${esc(target.name)}</b> is ${mode === "reposition" ? "Repositioned" : label} ${N0}${st.applied ? ` (Steadiness ${st.steady}: ${N})` : ""} by <b>${esc(origin.name)}</b> and moves ${result.done} square${result.done === 1 ? "" : "s"}.`];
+  if (result.block && mode === "reposition") lines.push(`It stops short: ${result.block.type === "wall" ? (result.block.corner ? "a solid corner" : "a wall") : `<b>${esc(result.block.token.name)}</b>`} is in the way.`);
   else if (result.block) {
     const d = result.damage;
     if (result.block.type === "wall") {
-      lines.push(`It hits a wall with ${result.unused} unused: <b>${d.self} Body</b> damage.`);
+      lines.push(`It hits ${result.block.corner ? "a solid corner" : "a wall"} with ${result.unused} unused: <b>${d.self} Body</b> damage.`);
       if (target.actor && d.self) await applyToActor(target.actor, bodyDamage(d.self));
     } else {
       const o = result.block.token;
-      lines.push(`It hits <b>${esc(o.name)}</b> with ${result.unused} unused: both take <b>${d.self} Body</b> damage.`);
+      lines.push(`It hits <b>${esc(o.name)}</b>${result.block.corner ? " (it can't pass diagonally between two creatures)" : ""} with ${result.unused} unused: both take <b>${d.self} Body</b> damage.`);
       if (target.actor && d.self) await applyToActor(target.actor, bodyDamage(d.self));
       if (o.actor && d.other) await applyToActor(o.actor, bodyDamage(d.other));
     }
@@ -550,11 +621,11 @@ async function pushOne(origin, target, N0, mode = "push") {
 }
 
 async function pushFlow(cfg, ctx, mode = "push") {
-  if (!canvas.ready || !canvas.grid?.isSquare) return warn(`${mode === "reposition" ? "Reposition" : "Pushed"} needs a scene with a square grid.`);
+  if (!canvas.ready || !canvas.grid?.isSquare) return warn(`${MOVE_LABEL[mode]} needs a scene with a square grid.`);
   const actor0 = contextActor(ctx);
   const N = Math.max(1, moveDistance(cfg, actor0) ?? 0);
   const actor = actor0, origin = tokenOf(actor) ?? canvas.tokens.controlled[0];
-  if (!origin) return warn("Select the token that is pushing or repositioning.");
+  if (!origin) return warn(`Select the token that is the origin of the ${MOVE_LABEL[mode]}.`);
   const targets = targetTokens(ctx).filter(t => t.id !== origin.id);
   if (!targets.length) return warn("Target the creature to move first.");
   for (const t of targets) await pushOne(origin, t, N, mode);
@@ -563,6 +634,7 @@ async function pushFlow(cfg, ctx, mode = "push") {
 /** Entry point of the @Move button. */
 export async function handleMove(cfg, ctx = {}) {
   if (cfg.kind === "pushed") return pushFlow(cfg, ctx);
+  if (cfg.kind === "pulled") return pushFlow(cfg, ctx, "pull");
   if (cfg.kind === "reposition") return pushFlow(cfg, ctx, "reposition");
   return grantFreeMove(cfg, ctx, cfg.kind === "evade" ? "evade" : (cfg.kind === "charge" ? "charge" : "walk"));
 }
@@ -590,7 +662,7 @@ function chargeFollowUp(c, doc, reach) {
   post(`<b>${esc(c.name)}</b>'s Charge is disrupted: no creature within Reach for its Weapon Attack (1A). The AP stays spent.`).catch(() => {});
 }
 
-/** Squares of a straight line between two cells (Bresenham: diagonal steps never clip a corner). */
+/** Squares of a path between two cells (Bresenham). The rules' straight line (Charge) is straightCells in corners.mjs, with its ties. */
 function cellLine(a, b) {
   const out = [];
   let x = a.j, y = a.i;
@@ -610,9 +682,11 @@ function cellLine(a, b) {
  * Creatures in the way of a move along token positions (top-left x, y), following the rules for movement:
  * squares of an unwilling creature (any creature on another side) are Difficult Terrain, and no move can end
  * inside another creature's space. Returns { through: [names], endIn: name, extra: squares of extra cost }.
+ * Corners (v0.0.170): solidCorner is true when a diagonal step cuts a solid corner (the move is refused), and cornerDT counts the diagonal steps
+ * between two creatures (Difficult Terrain: 1 extra square each).
  */
-export function creaturesOnPath(doc, points) {
-  const out = { through: [], endIn: "", extra: 0, dark: 0 };
+export function creaturesOnPath(doc, points, { ignoring = false } = {}) {
+  const out = { through: [], endIn: "", extra: 0, dark: 0, solidCorner: false, cornerDT: 0 };
   try {
     const pts = points.filter(p => p && Number.isFinite(p.x) && Number.isFinite(p.y));
     if (pts.length < 2) return out;
@@ -621,7 +695,15 @@ export function creaturesOnPath(doc, points) {
     const cellOf = p => cellAt({ x: p.x + 2, y: p.y + 2 });
     const start = new Set(foot(cellOf(pts[0]))), end = new Set(foot(cellOf(pts.at(-1))));
     const passed = new Set();
-    for (let k = 0; k < pts.length - 1; k++) for (const c of cellLine(cellOf(pts[k]), cellOf(pts[k + 1]))) for (const key of foot(c)) if (!start.has(key) && !end.has(key)) passed.add(key);
+    for (let k = 0; k < pts.length - 1; k++) {
+      const line = cellLine(cellOf(pts[k]), cellOf(pts[k + 1]));
+      for (const c of line) for (const key of foot(c)) if (!start.has(key) && !end.has(key)) passed.add(key);
+      for (let n = 1; n < line.length; n++) {
+        const st = stepCorners(line[n - 1], line[n], { w, h, solidAt: ownSolid(), creatureAt: c => creatureIn(c, [doc.id]) });
+        if (st.kind === "solid") out.solidCorner = true;
+        else if (st.kind === "creatures" && !ignoring) out.cornerDT++;
+      }
+    }
     const others = (canvas.tokens?.placeables ?? []).filter(t => t.document?.id !== doc.id && t.actor && !t.document?.hidden);
     const occ = others.map(t => ({ t, cells: new Set(tokenCells(t).map(c => `${c.i},${c.j}`)) }));
     const endT = occ.find(o => [...end].some(k => o.cells.has(k)));
@@ -647,16 +729,46 @@ export function creaturesOnPath(doc, points) {
   return out;
 }
 
-function chargeProblem(doc, from, to, ch) {
+/**
+ * The squares of a Charge's straight line (book: "Straight Line"): from the center of the start square to the center of the end square, one square a step.
+ * At a tie (the line passes exactly between two squares) the creature that moves chooses: the square its own drag passed through (via), else a legal one.
+ * Returns { cells, ties }.
+ */
+export function chargeLine(doc, from, to, via = []) {
+  const cellOf = p => cellAt({ x: p.x + 2, y: p.y + 2 });
+  const w = Math.max(1, Math.round(doc.width ?? 1)), h = Math.max(1, Math.round(doc.height ?? 1));
+  const raw = straightCells(cellOf(from), cellOf(to));
+  const prefer = new Set();
+  for (let k = 0; k < via.length + 1; k++) { const a = k ? via[k - 1] : from, b = via[k] ?? to; for (const c of cellLine(cellOf(a), cellOf(b))) prefer.add(`${c.i},${c.j}`); }
+  const legal = (prev, c) => !chargeSquareProblem(doc, prev, c, w, h);
+  return { cells: chooseLine(raw, { prefer, legal }), ties: raw.filter(c => c.alt).length };
+}
+
+/** Why the Charge can't go from square a into square b (the top-left squares of its space): "" when it can. */
+function chargeSquareProblem(doc, a, b, w = 1, h = 1) {
+  const foot = []; for (let di = 0; di < h; di++) for (let dj = 0; dj < w; dj++) foot.push({ i: b.i + di, j: b.j + dj });
+  const other = foot.map(c => creatureIn(c, [doc.id])).find(t => t && (t.document.disposition ?? 0) !== (doc.disposition ?? 0));
+  if (other) return `the straight line passes through ${other.name} (an unwilling creature's space is Difficult Terrain)`;
+  const corner = a ? stepCorners(a, b, { w, h, solidAt: ownSolid(), creatureAt: c => creatureIn(c, [doc.id]) }) : { kind: "" };
+  if (corner.kind === "solid") return "the straight line cuts a solid corner";
+  if (corner.kind === "creatures") return `the straight line passes diagonally between ${corner.creatures.map(t => t.name).join(" and ")} (Difficult Terrain)`;
+  try { if (foot.some(c => seenLight(lightAt(cellCenter(c.i, c.j)), doc.actor?.system?.senses ?? {}) === "dark")) return "the straight line crosses Darkness, which is Difficult Terrain for a creature that can't see in it"; } catch (e) { /* no light to read */ }
+  return "";
+}
+
+function chargeProblem(doc, from, to, ch, via = []) {
   const size = canvas.grid.size, half = { x: (doc.width * size) / 2, y: (doc.height * size) / 2 };
   const a = { x: from.x + half.x, y: from.y + half.y }, b = { x: to.x + half.x, y: to.y + half.y };
   const sq = measureSquares(from, to);
   if (sq + 1e-6 < ch.min) return `a Charge moves at least ${ch.min} squares in a straight line`;
   if (sq > ch.max + 1e-6) return `a Charge moves up to ${ch.max} squares`;
   if (wallBetween(a, b)) return "a wall is in the way of the straight line";
-  const way = creaturesOnPath(doc, [from, to]);
-  if (way.through.length) return `the straight line passes through ${way.through.join(", ")} (an unwilling creature's space is Difficult Terrain)`;
-  if (way.dark) return "the straight line crosses Darkness, which is Difficult Terrain for a creature that can't see in it";
+  const w = Math.max(1, Math.round(doc.width ?? 1)), h = Math.max(1, Math.round(doc.height ?? 1));
+  const { cells } = chargeLine(doc, from, to, via);
+  for (let n = 1; n < cells.length; n++) {
+    const problem = chargeSquareProblem(doc, cells[n - 1], cells[n], w, h);
+    if (problem) return problem;
+  }
   try {
     // Difficult Terrain anywhere along the line stops the Charge.
     const regions = (canvas.regions?.placeables ?? []).filter(r => r.document.behaviors?.some(x => x.type === "difficultTerrain" && !x.disabled));
@@ -696,19 +808,22 @@ export function registerMovement() {
       squares = squares ? squares / gridUnit() : measureSquares(origin, to);
       if (squares <= 0) return;
       // Creatures in the way: no move ends inside another creature's space, and an unwilling creature's squares are Difficult Terrain.
-      const way = creaturesOnPath(doc, [origin, ...(movement?.pending?.waypoints ?? []), to]);
+      const via = (movement?.pending?.waypoints ?? []).slice(0, -1);
+      const way = creaturesOnPath(doc, [origin, ...(movement?.pending?.waypoints ?? []), to], { ignoring });
       if (way.endIn) { warn(`You can't end your movement in ${way.endIn}'s space.`); return false; }
+      const ch = c.getFlag(F, "charge");
+      // Corners: no movement cuts a solid corner (a Charge is judged by its straight line, below).
+      if (!ch && way.solidCorner) { warn("You can't cut a solid corner (a wall, a pillar or an object reaches the corner point): go around it."); return false; }
       // Evade can't enter or pass through Difficult Terrain (the path costs more than its length, or crosses an unwilling creature).
       const dist = num(movement?.pending?.distance), cost = num(movement?.pending?.cost);
       const evading = num(c.getFlag(F, "evadeMove")) > 0;
-      if (evading && !ignoring && ((dist > 0 && cost > dist + 1e-6) || way.through.length || way.dark)) {
-        warn(`Evade can't enter or pass through Difficult Terrain${way.through.length ? ` (${way.through.join(", ")}: an unwilling creature's space)` : ""}${way.dark ? " (Darkness: it can't see in it)" : ""}. Choose another path, or use End movement to give up the Evade.`);
+      if (evading && !ignoring && ((dist > 0 && cost > dist + 1e-6) || way.through.length || way.dark || way.cornerDT)) {
+        warn(`Evade can't enter or pass through Difficult Terrain${way.through.length ? ` (${way.through.join(", ")}: an unwilling creature's space)` : ""}${way.dark ? " (Darkness: it can't see in it)" : ""}${way.cornerDT ? " (a diagonal between two creatures)" : ""}. Choose another path, or use End movement to give up the Evade.`);
         return false;
       }
-      const ch = c.getFlag(F, "charge");
       if (ch) {
         const from = origin;
-        const problem = chargeProblem(doc, from, to, ch);
+        const problem = chargeProblem(doc, from, to, ch, via);
         if (problem) { warn(`Charge: ${problem}. Move again, or use End movement to give up the Charge.`); return false; }
         squares = measureSquares(from, to);   // a Charge costs the length of its straight line, whatever path the token took
         c.unsetFlag(F, "charge").catch(() => {});

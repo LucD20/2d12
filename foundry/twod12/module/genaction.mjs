@@ -73,7 +73,7 @@ const cap = w => w.charAt(0).toUpperCase() + w.slice(1);
 export function humanize(text) {
   return String(text ?? "")
     .replace(/@Condition\[(\w+)(?:\|(eot|rounds:(\d+)))?\]/g, (m, c, d, r) => `${cap(c)}${d ? ` (${r ? `${r} round${r === "1" ? "" : "s"}` : "EoT"})` : ""}`)
-    .replace(/@Move\[(pushed|advance|evade|reposition)\|distance:([^\]|]+)\]/g, (m, k, d) => `${cap(k)} ${d}`)
+    .replace(/@Move\[(pushed|pulled|advance|evade|reposition)\|distance:([^\]|]+)\]/g, (m, k, d) => `${cap(k)} ${d}`)
     .replace(/@Save\[(\w+)\]/g, (m, a) => `${cap(a)} Save`)
     .replace(/@Check\[(\w+)\]/g, (m, a) => `${cap(a)} Check`);
 }
@@ -118,7 +118,7 @@ const versionHtml = (v, k) => `<fieldset class="ga-ver" data-v="${k}" ${k ? "hid
   <label>Cost (AP) <input type="number" name="ap" min="0" max="5" value="${esc(v.ap)}"></label>
   ${[1, 2, 3].map(n => `<label>Tier ${n} <input type="text" name="t${n}" value="${esc(v[`t${n}`])}" placeholder="${n === 1 ? "[B] 1d8 Co" : n === 2 ? "[B] 2d8 Co; Hindered (EoT)" : "[B] 3d8 Co; Hindered (EoT)"}"></label>`).join("")}
   <label>Critical <input type="text" name="critical" value="${esc(v.critical)}" placeholder="Immobilized (EoT)"></label>
-  <label>Effects (Tier 2+) <input type="text" name="effects" value="${esc(v.effects)}" placeholder="Appeal Save, Pushed 2, 2Emanation 1/round"></label>
+  <label>Effects (Tier 2+) <input type="text" name="effects" value="${esc(v.effects)}" placeholder="Appeal Save, Pushed 2, Pulled 1, 2Emanation 1/round"></label>
 </fieldset>`;
 
 /** The dialog. actor: create on it; item: fill that Action; neither: a world item. */

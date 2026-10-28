@@ -83,8 +83,8 @@ export function convertEffects(text) {
   s = s.replace(new RegExp(`\\b(${ATTRS})\\s+Check\\b(?![\\w\\[])`, "g"), (m, a) => `@Check[${a.toLowerCase()}]`);
   const REF = "(?:\\d+|speed|walk|move|body|mind|appeal|instinct|level|weapon|hp|rally)";
   const EXPR = `${REF}(?:\\s*[/*+\\-]\\s*${REF})*`;
-  s = s.replace(/\b(pushed|advance|walk|evade)\s+half\s+(?:your\s+)?(speed|walk)\b/gi, (m, k, r) => `${k} ${r}/2`);
-  s = s.replace(new RegExp(`\\b(pushed|advance|walk|evade)\\s+(${EXPR})(?![\\w/])`, "gi"), (m, k, e) => `@Move[${k.toLowerCase() === "walk" ? "advance" : k.toLowerCase()}|distance:${e.replace(/\s+/g, "").toLowerCase()}]`);
+  s = s.replace(/\b(pushed|pulled|advance|walk|evade)\s+half\s+(?:your\s+)?(speed|walk)\b/gi, (m, k, r) => `${k} ${r}/2`);
+  s = s.replace(new RegExp(`\\b(pushed|pulled|advance|walk|evade)\\s+(${EXPR})(?![\\w/])`, "gi"), (m, k, e) => `@Move[${k.toLowerCase() === "walk" ? "advance" : k.toLowerCase()}|distance:${e.replace(/\s+/g, "").toLowerCase()}]`);
   // "Reposition 3": a free-direction Forced Movement within an Emanation of that many squares
   s = s.replace(/\bReposition\s+(\d+)\b/g, "@Move[reposition|distance:$1]");
   // "Cleave 2": a button that deals Attribute damage to the creatures next to the target
@@ -112,7 +112,7 @@ export async function openGenerator(item) {
     ${[1, 2, 3].map(n => `<div class="form-group"><label>Tier ${n}</label><input type="text" name="t${n}" value="${esc(val(find(start), `t${n}`))}" placeholder="1WB,1d4BH,1d6MH"></div>`).join("")}
     <div class="form-group"><label>Effects</label><input type="text" name="effects" value="${esc(find(start)?.effects ?? "")}" placeholder="Bright light 2Emanation 1/round"></div>
     <div class="genprev"></div>
-    <p class="hint">Damage: <code>1WB</code> = 1 [W] to Body, <code>1d4BH</code> = 1d4 Body Holy, <code>1d6MH</code> = 1d6 Mind Holy, <code>BB</code> = Body Blunt, <code>ModB</code> or <code>Modifier</code> = [Mod], <code>"text"</code> = tier effect. Effects: <code>2Emanation 1/round</code> (or <code>EoT</code>), <code>2Burst</code>, <code>Appeal Save</code>, <code>DC 14 Body Check</code>, <code>Appeal Save: 1d6 / 1d4 / 0 [M] Holy</code>, <code>Prone</code>, <code>Immobilized (EoT)</code>, <code>1d6MH</code>, <code>Pushed 5</code>, <code>Advance 5</code>, <code>Evade 1</code>, <code>Evade Speed/2</code> (references: speed, body, mind, appeal, instinct, level, weapon, hp, rally; rounded up), <code>uses 1 Rally Point</code>, <code>use up to 2 Rally Points</code>.</p></div>`;
+    <p class="hint">Damage: <code>1WB</code> = 1 [W] to Body, <code>1d4BH</code> = 1d4 Body Holy, <code>1d6MH</code> = 1d6 Mind Holy, <code>BB</code> = Body Blunt, <code>ModB</code> or <code>Modifier</code> = [Mod], <code>"text"</code> = tier effect. Effects: <code>2Emanation 1/round</code> (or <code>EoT</code>), <code>2Burst</code>, <code>Appeal Save</code>, <code>DC 14 Body Check</code>, <code>Appeal Save: 1d6 / 1d4 / 0 [M] Holy</code>, <code>Prone</code>, <code>Immobilized (EoT)</code>, <code>1d6MH</code>, <code>Pushed 5</code>, <code>Pulled 3</code>, <code>Advance 5</code>, <code>Evade 1</code>, <code>Evade Speed/2</code> (references: speed, body, mind, appeal, instinct, level, weapon, hp, rally; rounded up), <code>uses 1 Rally Point</code>, <code>use up to 2 Rally Points</code>.</p></div>`;
   const preview = el => {
     const get = n => el.querySelector(`[name=${n}]`).value;
     const rows = [1, 2, 3].map(n => {

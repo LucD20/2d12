@@ -17,6 +17,7 @@ export function actionTags(item) {
     for (const k of ["x1", "x2", "x3"]) texts.push(v[k] ?? "");
   }
   if (texts.some(t => /@Move\[\s*pushed/i.test(t))) tags.add("pushed");
+  if (texts.some(t => /@Move\[\s*pulled/i.test(t))) tags.add("pulled");
   return tags;
 }
 

@@ -438,7 +438,7 @@ export class EffectData extends foundry.abstract.TypeDataModel {
       selfApplied: bool(),
       minEscalation: int(0, 0),   // a passive that works only while its owner's Escalation is at least this (0: always)
       linked: str(),   // other conditions this one brings with it, by name ("Hindered"); they end when this one does
-      conditions: new ArrayField(new SchemaField({ uuid: str(), name: str(), value: int(1, 0), valued: bool(), mode: choice({ set: "The highest counts", increase: "Increase the value" }, "set") })),   // conditions this effect applies, each with its value; they end when this one does
+      conditions: new ArrayField(new SchemaField({ uuid: str(), name: str(), value: int(1, 0), valued: bool(), mode: choice({ set: "The highest counts", increase: "Increase the value", halfLevel: "Half the creature's level, rounded up (Squeezing)" }, "set") })),   // conditions this effect applies, each with its value; they end when this one does
       duration: new SchemaField({ type: choice(TWOD12.durationTypes, ""), rounds: int(1, 1) }),
       settings: settingsField(),
       // The effect ends after an action with any of these traits is used.
