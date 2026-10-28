@@ -58,4 +58,4 @@ console.log("in useAction: Setup before the Area:", pos("runSetup(") < pos("star
 // ---------------------------------------------------------------- the kept Emanation
 console.log("--- a kept Emanation");
 const tpl = fs.readFileSync(ROOT + "module/template.mjs", "utf8");
-console.log("no native Emanation shape any more (it used a field that is called radius, and failed every time):", !/type:\s*"emanation"/.test(tpl) && !/distance:\s*dist/.test(tpl), "| the Region is made of the placed squares:", tpl.includes("tryCreate(shapesFromCells(placed.cells))"));
+console.log("no native Emanation shape any more (it used a field that is called radius, and failed every time):", !/type:\s*"emanation"/.test(tpl) && !/distance:\s*dist/.test(tpl), "| the Region is made of the placed squares:", tpl.includes("tryCreate(shapesForCells(placed.cells, cTL, size()))"));

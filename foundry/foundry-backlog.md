@@ -1,6 +1,6 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.177**. Tests: `node tools/tests/run.mjs` (142 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.178**. Tests: `node tools/tests/run.mjs` (143 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
 
 ## Asked by Lucas, not built
 - [x] (v0.0.174) **The grey tiers table** (Lucas, test of v0.0.173): the element was `table.tiers` (the chat-style card the item sheet also shows), not `ac-tiers`; the theme painted the table and its cells. Fixed in v0.0.174, the v0.0.173 attempt removed.
@@ -50,6 +50,7 @@ Current version: **v0.0.177**. Tests: `node tools/tests/run.mjs` (142 tests, see
 - v0.0.164: Builder fixes (colors, click-to-clear, custom numbers with warnings, Speed row, CV, Level -/+); shield AD/WD; Global Illumination on new scenes; a Default Scene; Quick Insert switched on.
 - v0.0.165: the Line of Effect button; Strike rows' red line; the sheet keeps its scroll; shield Bo/Mi/Ap/In.
 - v0.0.166: Leaning cover from the vision peek point; the Cover height calculation side view.
+- v0.0.178: an area kept on the map is one Region shape (an outline polygon); a Region drawn by hand is put on whole squares when created (a circle becomes the Emanation or Burst of its size).
 - v0.0.177: lights reach an N Emanation wherever they come from (scene lights, tokens; a light on a corner is a Burst); Regions snap to whole squares.
 - v0.0.176: R, the rules sync (Rally Points, NPC levels 1-3, Light, Bursts, Area and Distance, Dying and Shattered, waking).
 - v0.0.175: the path tool moves in one movement (waypoints) and shows the reachable squares; sync-pack.ps1 notifies when it stops and goes back to main after a merge.

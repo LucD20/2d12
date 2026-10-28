@@ -9,6 +9,7 @@ import { HT_PATTERNS, parsePatterns, patternText } from "./hazard.mjs";
 import { homePos } from "./lean.mjs";
 import { tokenDistance } from "./light.mjs";
 import { coverFromPoint } from "./cover.mjs";
+import { shapesForCells } from "./regionshape.mjs";
 
 /** The center of a token's whole space. */
 const spaceCenter = tk => { const s = canvas.grid.size, d = tk.document, h = homePos(d); return { x: h.x + (d.width ?? 1) * s / 2, y: h.y + (d.height ?? 1) * s / 2 }; };
@@ -172,20 +173,6 @@ function place(shape, n, { within = 0, user = null } = {}) {
   });
 }
 
-function shapesFromCells(cells) {
-  const rows = new Map();
-  for (const c of cells) { if (!rows.has(c.i)) rows.set(c.i, []); rows.get(c.i).push(c.j); }
-  const out = [], s = size();
-  for (const [i, js] of rows) {
-    js.sort((a, b) => a - b);
-    let start = js[0], prev = js[0];
-    const flush = (a, b) => { const tl = cTL(i, a); out.push({ type: "rectangle", x: tl.x, y: tl.y, width: (b - a + 1) * s, height: s, rotation: 0, hole: false }); };
-    for (let k = 1; k < js.length; k++) { if (js[k] === prev + 1) { prev = js[k]; continue; } flush(start, prev); start = prev = js[k]; }
-    flush(start, prev);
-  }
-  return out;
-}
-
 /** The token of the creature that used the Action on this card (or null). */
 function cardToken(ctx) {
   if (ctx?.token) return ctx.token;                       // placed by an Action before its roll
@@ -335,7 +322,7 @@ export async function startTemplate(cfg, ctx = {}) {
       let last;
       for (const [k, behaviors] of behaviorSets.entries()) {
         try {
-          const [r] = await canvas.scene.createEmbeddedDocuments("Region", [{ ...base, shapes, behaviors }]);
+          const [r] = await canvas.scene.createEmbeddedDocuments("Region", [{ ...base, shapes, behaviors }], { twod12Area: true });
           if (k > 0) ui.notifications.warn("The Allies/Enemies filter is not available: the terrain is difficult for everyone.");
           return r;
         } catch (e) { last = e; console.warn("twod12 | region creation failed", e); }
@@ -344,7 +331,7 @@ export async function startTemplate(cfg, ctx = {}) {
     };
     try {
       // The area is made of grid squares, as the rules say (areas are drawn on the grid as squares): the cells that were placed.
-      const made = await tryCreate(shapesFromCells(placed.cells));
+      const made = await tryCreate(shapesForCells(placed.cells, cTL, size()));   // v0.0.178: one outline (a polygon), not a rectangle per row
       if (ctx?.outcome) ctx.outcome.region = made;
     } catch (e) { console.warn("twod12 | could not create the region", e); ui.notifications.warn("Could not keep the area on the map (permissions?)."); }
   }

@@ -1,0 +1,15 @@
+--- the outline of an area (one polygon, its corners only)
+a 1 Emanation (3x3)          9 squares, 1 loop(s): B2 E2 E5 B5
+a 2 Emanation (21 squares)   21 squares, 1 loop(s): B1 E1 E2 F2 F5 E5 E6 B6 B5 A5 A2 B2
+one square                   1 squares, 1 loop(s): A1 B1 B2 A2
+two separate squares         2 squares, 2 loop(s): A1 B1 B2 A2 | C1 D1 D2 C2
+a 2 Emanation as region shapes: 1 shape, polygon 12 points | two separate squares: rectangle, rectangle
+--- a Region drawn by hand, on whole squares
+a circle of 2 on a square's center       polygon (12 corners) -> 21 squares
+a circle of 2.5 (the old way)            polygon (20 corners) -> 37 squares
+a circle of 1.8 near a square's center   polygon (12 corners) -> 21 squares
+a circle of 2 on a corner (a Burst)      polygon (12 corners) -> 12 squares
+a circle of 1 on a corner                polygon (4 corners) -> 4 squares
+a rectangle drawn at 130,140 290x170: rectangle 100,100 300x200
+a polygon: [0,0,300,0,200,300]
+the chat buttons make one shape: true | and aren't snapped again: true | drawn Regions are snapped when created: true

@@ -3,7 +3,7 @@
 // of 2 placed on a square's center reaches fewer squares than a 2 Emanation (2.5 did). The system adds the missing part itself, so the number
 // typed in a light's settings is the book's number: a scene light gets + half a square, a token's light + half the token's width (Foundry may already
 // add that for tokens: then nothing changes). The rules' light (light.mjs lightAt) reads the drawn source, so it follows the same radius.
-// Regions snap to grid corners (whole squares), never to half squares (a world setting, on by default).
+// Regions: see regionshape.mjs.
 /** A light's radius in pixels: its size (in the scene's units) plus `extra` squares (half a square, or half a token), when it sheds light. */
 export const radiusPx = (units, extra, pxPerUnit, gridPx, maxR = Infinity) => {
   const u = Math.abs(Number(units) || 0);
@@ -41,20 +41,7 @@ export function registerLightRadius() {
     const doc = obj.document, half = Math.max(Number(doc?.width) || 1, Number(doc?.height) || 1) / 2;
     fix(doc?.light, out, half);
   });
-  // Regions: snap to the grid's corners (whole squares). Shift while drawing still skips snapping (Foundry's own rule).
-  const RL = CONFIG.Canvas?.layers?.regions?.layerClass?.prototype;
-  if (RL && typeof RL.getSnappedPoint === "function" && !RL.getSnappedPoint.twod12corner) {
-    const orig = RL.getSnappedPoint;
-    const w = function (point, ...rest) {
-      try {
-        if (game.settings.get("twod12", "regionSnapCorners") && canvas.grid?.isSquare) return canvas.grid.getSnappedPoint(point, { mode: CONST.GRID_SNAPPING_MODES.VERTEX });
-      } catch (e) { /* the setting or the grid isn't ready */ }
-      return orig.call(this, point, ...rest);
-    };
-    w.twod12corner = true;
-    RL.getSnappedPoint = w;
-    found.regions = true;
-  }
+  // Regions: snapped when created (regionshape.mjs, v0.0.178); v0.0.177 wrapped the layer's getSnappedPoint, which Foundry 14's drawing tool doesn't use.
   if (!found.ambient || !found.token) console.warn("twod12 | light radius: Foundry's light methods were not found", found);
   return found;
 }
