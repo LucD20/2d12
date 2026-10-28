@@ -32,4 +32,4 @@ Read first, in this order: **HANDOFF.md** (state), **MASTER-PLAN.md** (the order
 ## Gotchas
 - Foundry CSS is in the order it grew (version-tagged blocks): don't regroup without a visual check. The Builder tab and the cover-height window use light backgrounds with fixed dark text.
 - Known gaps and unverified items: `foundry/foundry-backlog.md`.
-- Foundry reads foundry/twod12 through a junction: rebuild the compendium packs only with Foundry closed.
+- Foundry reads foundry/twod12 through a junction: `C:\Users\Lucas\AppData\Local\FoundryVTT\Data\systems\twod12` -> `D:\Minha Pasta\RPG\2d12-project\foundry\twod12` (the real Foundry data folder; not C:\data\Data). Rebuild the compendium packs only with Foundry closed.
