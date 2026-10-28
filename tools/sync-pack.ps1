@@ -60,8 +60,8 @@ if ($TestNotify) { Notify "2d12 sync test" "If you see this, notifications work.
 Set-Location $Repo
 if ($DryRun) { Log "DRY RUN: nothing will be checked out, built, written or notified (git fetch still updates remote refs)" } else { Log "run started" }
 
-# 2. uncommitted changes other than notes.txt
-$dirty = @(G status --porcelain | Where-Object { $_ -and $_.Substring(3).Trim('"') -ne "notes.txt" })
+# 2. uncommitted changes other than notes.txt (and the sync's own files, which a pack branch does not gitignore)
+$dirty = @(G status --porcelain | Where-Object { $_ -and $_.Substring(3).Trim('"') -notmatch '^(notes\.txt|sync\.log|\.sync-state|pack-sync/)$' })
 if ($dirty.Count) { Log "uncommitted changes besides notes.txt, stopping: $($dirty -join '; ')"; exit 0 }
 
 # 3. newest unmerged pack branch that differs from the saved one
