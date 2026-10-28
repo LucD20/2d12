@@ -38,11 +38,11 @@ Sizes: S = under an hour of work, M = a normal session, L = a long session, XL =
 ## 3. The order, and why
 
 **Phase 1: Foundry catches up with the book (no design needed; I run each pack alone, you test each version).**
-1. **Pack 1: Q** (v0.0.170). Small, visible, independent. You also send the results of testing v0.0.169 in notes.txt.
-2. **Pack 2: M1** (v0.0.171).
-3. **Pack 3: M2** (v0.0.172).
-4. **Pack 4: R** (v0.0.173).
-5. **Pack 5: F** (v0.0.174). Last of the phase, because it touches every card and sheet once.
+1. **Pack 1: Q** (the next version number). Small, visible, independent. You also send the results of testing v0.0.169 in notes.txt.
+2. **Pack 2: M1** (the next version number).
+3. **Pack 3: M2** (the next version number).
+4. **Pack 4: R** (the next version number).
+5. **Pack 5: F** (the next version number). Last of the phase, because it touches every card and sheet once.
    Why first: these rules are final in the book (nothing in them is still being designed), you have been waiting for them since 2026-10-23, and the book work below does not change them.
 
 **Phase 2: design sessions (the only place where back-and-forth is wanted; each is prepared).**
