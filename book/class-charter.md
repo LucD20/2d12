@@ -33,24 +33,24 @@ At level 1 a character chooses **one Signature Class Action** from two that are 
 - **Each Signature covers the whole role by itself** (a small rider from the other side), so the choice changes the shape of the build, not
   the role. Example: Smite (damage) with a support rider ("an ally near the target heals 1d4" or "+1 Defense for a round"); Lay On Hands
   (support) with a damage rider ("your next Strike deals +1d6"). The two are priced to the same budget.
-- **Open:** the Archer's two Signatures (the current Class Actions are Double Shot and Precise Aim; Precise Aim is priced at 0.11 of its band).
+- The Archer's two Signatures come with its rewrite (after the Paladin; today's Class Actions are Double Shot and Precise Aim, and Precise Aim is priced at 0.11 of its band).
 
 ## 3. Levels 1 to 3
 
-The playtest showed too many features at the start. Level 1 has three class buttons on the bar (the Signature, the Active Escalation and
-the Basic Actions); the rest works on its own.
+The playtest showed too many features at the start. The table is the **template**: a class can move a Pick to another level or trade one
+kind for another (Lucas: classes can have different Picks at different levels, as they have more or fewer Features), as long as each
+level keeps the same total budget. The Paladin, for example, can start with an Encounter Action at level 1 and have more Encounter Picks than Round ones.
 
 | Level | What you gain |
 |---|---|
 | **1** | 2 class Features · 1 Signature Class Action (a choice) · **1 Talent** · 1 Passive Escalation · 1 Active Escalation |
 | **2** | 1 Encounter Pick · 1 Talent |
-| **3** | 1 Daily Pick · 1 Escalation Pick (**Open:** Passive, Active, or either) |
+| **3** | 1 Daily Pick · 1 Passive Escalation |
 
 - **The growth curve (Proposed):** about **+10% sustained damage a level** (level 1: 100% of the baseline PC, level 2: 110%, level 3: 120%),
   from the Talents; the Encounter Pick (level 2) and the Daily Pick (level 3) grow the Nova. The Bestiary's levels follow the same curve (pack E3),
   which also fixes today's problem: the Bestiary grows NPC Health 14% at level 2 while the PCs' real damage grows 2 to 6%.
-- **Open:** with the Encounter Pick at level 2, a level 1 Paladin has no Encounter Action. Either its Nova budget starts at level 2, or its
-  level 1 Nova comes from the Signature (Smite at 3 AP) or its Active Escalation.
+- **The Nova at level 1:** a class whose role has Nova (the Paladin) takes its Encounter Pick at level 1 (the template's level 2 Pick moves).
 - The Health level factor (Level / 10 + 1) stays.
 
 ## 4. The role budgets (confirmed)
@@ -92,9 +92,8 @@ last several rounds, or carry a damage rider to be worth their AP.
 - **Escalation is spent** (the book, Escalation): an Active costs its Escalation; a passive works while you have at least its number, so
   spending turns it off. At level 1 a PC has exactly one Active and one passive, and they compete: spending 1 every round keeps you at 0 or 1,
   so a "2 or more" passive never turns on. **Proposed:** write each class's level 1 pair so the choice is real (spend now, or hold for the passive).
-- **Momentum (decided):** +1 after each fight harder than easy (**more than CV 3/4 per PC**: Lucas's "higher than CV 1/3 per PC" read as
-  "harder than the Bestiary's easy fight"; **Open:** confirm). While you have Momentum, you start a fight with **half your level in Escalation,
-  rounded up (by default), up to 2**: levels 1 and 2 start at 1, level 3 and up at 2. A Rest resets Momentum.
+- **Momentum (decided):** +1 after each fight **harder than easy** (more than CV 3/4 per PC). While you have Momentum (1 is enough), you start
+  a fight with **half your level in Escalation, rounded up (by default), up to 2**: levels 1 and 2 start at 1, level 3 and up at 2. A Rest resets Momentum.
 - **What it does** (the Standard day: easy, normal, normal, hard; 3.3 rounds a fight; half of the fights start with Momentum):
 
 | | Escalation 1 or more | 2 or more | 3 or more |
@@ -105,18 +104,17 @@ last several rounds, or carry a damage rider to be worth their AP.
 | Without Momentum | 2.3 | 1.0 | 0.28 |
 
   A cost-3 Active (Twin Shot, Perfect Shot) comes about once every two fights with Momentum, once every four without.
-- **A bigger Momentum (Proposed):** keep it to effects read **once, at the start of a fight**, so there is nothing to track during it. With a
-  reset at every Rest and 3 to 4 fights a day, Momentum reaches 2 or 3 at most, so a milestone at 5 would almost never happen. If you want
-  one more milestone, put it at **3** (for example "at 3 Momentum, before initiative, each PC can Advance or Evade 2"; pack E2 prices it).
-  More milestones than that is the granularity you're worried about.
+- **Momentum does only that (decided).** Abilities can read the Escalation you start with instead ("When you start combat with 2 Escalation,
+  you can Advance 5"). With the rule above, starting with 2 needs level 3 or more, so such an ability is a level 3+ one (or comes with a
+  feature that raises the starting Escalation). Pack E2 prices the Advance.
 
 ## 7. The order of work
 
-1. **This charter** (done; the Open points above are answered in one batch).
-2. **E2: positions in the ruler** (movement, Evade, Push, Cover, range, Hindered, Immobilized, Prone): the Archer's identity needs it.
-3. **The Paladin main build**: 2 Features, both Signatures, one default for every Pick, written to section 4 and checked in the simulated
-   days. The Paladin goes first because it relies less on positions.
-4. **The Archer main build**, the same way, with E2's prices.
+1. **This charter** (done; Lucas answered its open points on 2026-10-29).
+2. **P1: the Paladin main build**: 2 Features, both Signatures (Smite and Lay On Hands, already strong identities), one default for every
+   Pick, written to section 4 and checked in the simulated days. It goes first: it relies less on positions.
+3. **E2: positions in the ruler** (movement, Evade, Push, Cover, range, Hindered, Immobilized, Prone): the Archer's identity needs it.
+4. **A1: the Archer rewrite and main build**, with E2's prices.
 5. **E3: the Bestiary refit** to the new baseline and the growth curve of section 3.
 6. **Options**: every other Pick as a sidegrade priced against the default; then the Talents (Class Expertise included), checked for overlap.
 7. **The book** (the class documents, the Characters chapter's steps 7 and 8, the level lists), then Foundry.
