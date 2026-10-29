@@ -20,7 +20,7 @@
 
 <div class="levels">
 <div class="lvl"><div class="lvn"><b>1</b><span>Level</span></div><div class="lvb">
-<div><span class="lbl">Core Features</span> Divine Power</div>
+<div><span class="lbl">Core Features</span> Divine Power, Font of Mercy</div>
 <div><span class="lbl">Signature Class Action</span> Smite or Lay On Hands</div>
 <div><span class="lbl">Talents</span> 1 Talent</div>
 <div><span class="lbl">Picks</span> 1 Encounter Pick</div>
@@ -40,7 +40,7 @@
 
 ### Features
 
-As a holy warrior, you gain this Feature at level 1.
+As a holy warrior, you gain two Features at level 1. Font of Mercy is an Escalation Passive that every Paladin has: it doesn't use your Passive Escalation Pick.
 
 <div class="action" markdown="1">
 <div class="action-head"><span>Divine Power</span><span class="cat">Paladin Feature 1</span></div>
@@ -48,6 +48,15 @@ As a holy warrior, you gain this Feature at level 1.
 **Flavor:** Your god's strength flows through your weapon and your hands.
 
 When you deal Holy damage to a creature with the Profane [[Tags|Tag]], that creature is Enfeebled 1 (EoT).
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Font of Mercy</span><span class="cat">Paladin Feature 1</span></div>
+
+**Flavor:** Where you kneel, wounds remember how to close.
+
+While your Escalation is 1 or more, when you or an ally within 5 squares of you uses a Rally Point, they heal your Power Modifier + 2 more.
 
 </div>
 
@@ -172,7 +181,7 @@ Choose one of the following Signature Actions:
 
 | 1R | 2R |
 |---|---|
-| The target gains [[Guard]] equal to what one of their Rally Points heals, before the damage. | As 1R, and you can make a Shove (2A) against the triggering creature. |
+| The target gains [[Guard]] equal to what one of their Rally Points heals, before the damage. | As 1R, and the triggering creature is Slid 2. |
 
 </div>
 
@@ -218,15 +227,6 @@ While your Escalation is 2 or more, if you haven't left your square since your l
 **Flavor:** The longer the fight, the brighter you burn.
 
 While your Escalation is 1 or more, the first [Strike] Action you make each round that deals damage deals an extra [M] 1d6 Ho.
-
-</div>
-
-<div class="action" markdown="1">
-<div class="action-head"><span>Font of Mercy</span><span class="cat">Paladin Escalation (Passive)</span></div>
-
-**Flavor:** Where you kneel, wounds remember how to close.
-
-While your Escalation is 1 or more, when you or an ally within 5 squares of you uses a Rally Point, they heal 2 more.
 
 </div>
 

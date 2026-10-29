@@ -227,3 +227,48 @@ Surge as a 0 AP Escalation Action used on your turn), Escalation spent and the p
 (Smite's +1 Defense and Aura of Protection don't add up; Guard keeps the higher).
 
 **Next:** you approve the corrections (1-5) and answer 6-9, then the cards and Guard go into `book/rules-src`.
+
+## 8. Round 6 (Lucas 2026-10-29): Font of Mercy a Feature again, and how the Paladin holds up
+
+**Applied:** Font of Mercy is a Feature that is an Escalation Passive (every Paladin has it; it doesn't use the Passive Escalation Pick):
+"While your Escalation is 1 or more, when you or an ally within 5 squares of you uses a Rally Point, they heal your Power Modifier + 2 more."
+Bulwark of Faith 2R: "the triggering creature is Slid 2" (was a Shove). The ruler had a bug that let Font of Mercy work between fights; fixed
+(an Escalation Passive needs the Escalation, which is 0 between fights).
+
+**The numbers** (`node book/ruler/spec.mjs`, `node book/ruler/econ.mjs`, 2026-10-29):
+
+| Build | Sustained (85-90%) | Nova (150-180%) | All turns | Health (120-130%) |
+|---|---:|---:|---:|---:|
+| Smite L1 / L2 / L3 | 85% / 86% / 88% | 166% / 159% / 158% | 115% / 112% / 110% | 124% / 126% / 126% |
+| Lay On Hands L1 / L2 / L3 | 86% / 86% / 82% | 157% / **146%** / **147%** | 112% / 108% / 101% | 124% / 126% / 126% |
+
+(Levels 2 and 3 against the charter's +10% curve.)
+
+| Day cleared (Downs a day) | Standard day | Long day | Short hard day |
+|---|---:|---:|---:|
+| Today's Paladin before P1, L1 | 71% (1.84) | 37% (3.46) | 65% (2.23) |
+| Smite, spending Divine Surge, L1 | 84% (1.36) | 85% (1.60) | 82% (1.63) |
+| Smite, holding for Hallowed Stance, L1 | 94% (0.88) | 96% (1.06) | 95% (0.97) |
+| Lay On Hands, L1 | 94% (0.61) | 84% (1.29) | 93% (0.76) |
+| Smite / Lay On Hands, L2 | 70% / 86% | 79% / 85% | 67% / 85% |
+| Smite / Lay On Hands, L3 | 96% / 100% | 97% / 99% | 95% / 100% |
+
+Duels (a Medium Standard, 57 Health): the Paladin kills it in about 2.4 rounds and it needs 8.5 to 10 rounds to put the Paladin Down; an Elite
+takes 5.5 to 6 rounds and puts the Paladin Down in 3.4 to 4. Party fights (Smite + Lay On Hands + 2 Archers, CV 4): 3 rounds, 15 to 22% of the
+party's Health lost (the book's target is about 40%), a PC Down in 0 to 6% of the fights.
+
+**What it says:**
+1. **The budgets hold at level 1**, for both Signatures. At levels 2 and 3 the Lay On Hands Nova is 146-147% (the band starts at 150%), and the
+   Lay On Hands Paladin's sustained damage at level 3 is 82% (Radiant Zeal is worth less to it): small.
+2. **The Paladin is much sturdier than before** (the Long day: 37% → 84-96%), and a P1 party is too strong for the Bestiary as it is (15-22% of
+   its Health in a normal fight against a 40% target). That is pack E3 (the Bestiary refit to the new baseline), as planned.
+3. **Holding Escalation beats spending it** for the Smite Paladin: the same value in damage-equivalents, but Hallowed Stance prevents Downs
+   (0.88 against 1.36 a day). The choice is real but not even; a player who learns it will hold. Options: Divine Surge a bit stronger
+   (1d10, or 1d8 + [Mod]), or leave it (holding is the tank's play).
+4. **Level 2 is still the hard level** (Smite 70%): the Bestiary grows NPC Health 14% at level 2, the PCs +10% (E3).
+5. **Over a whole fight the Paladin deals 110-115% of the baseline**, the Archer today 106%: the Nova is a third of the turns. A1 (the Archer
+   rewrite) should take this into account, as section 6 said.
+6. **Font of Mercy** is worth about 3% of a turn in a Smite party (few Rally Points are used in fights) and about 15% in a Lay On Hands party
+   (it heals 13 a day there): it is the Lay On Hands Paladin's Feature in practice.
+7. Cards off their band: Smite 1 over (1.60, the book's), Smite 3 a little under (0.96), Lay On Hands over on the price list (it counts the
+   ally's own Rally Points), Bulwark of Faith 1R a little under (1.27) and 2R under until E2 prices Slid.

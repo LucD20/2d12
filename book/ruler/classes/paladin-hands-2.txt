@@ -1,5 +1,5 @@
 # Paladin, level 2, the P1 main build (pack P1, 2026-10-29; book/class-charter.md): Signature Lay On Hands.
-# Level 1: Divine Power; the Signature; Talent Opportunity Attack (a Reaction: not modeled); Encounter Pick Holy Wrath;
+# Level 1: Divine Power + Font of Mercy; the Signature; Talent Opportunity Attack (a Reaction: not modeled); Encounter Pick Holy Wrath;
 # Escalation Divine Surge (active) and Hallowed Stance (passive). Level 2: Talent Heavy Blows (a stand-in).
 # The format: book/ruler/README.md, "The spec files". Run: node book/ruler/spec.mjs
 class Paladin (Lay On Hands)
@@ -15,7 +15,8 @@ targeted 1.5          # the tank stands in front: NPCs choose it 1.5 times as of
 
 weapon Greatsword (melee, two-handed): 0 / 1d8 / 2d6
 
-# Feature: Divine Power (Profane Judgment, not modeled). Font of Mercy is a Passive Escalation option now (not in the default build).
+# Features: Divine Power (Profane Judgment, not modeled) and Font of Mercy (a Feature that is an Escalation Passive: Escalation 1, +Power Mod + 2 on every Rally Point).
+passive Font of Mercy: escalation 1: rally-bonus 4
 
 action Steel Yourself 2 | ap 2 | round | traits self | heal 1 self     # Basic Action: you use 1 Rally Point
 action Weapon Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod]

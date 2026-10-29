@@ -14,7 +14,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 5.1 | 78 |
 | 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 19.2 | 161 |
 | 11-species.md | Species | species |  | 0.8 | 35 |
-| 12-paladin.md | Paladin | paladin |  | 8.7 | 276 |
+| 12-paladin.md | Paladin | paladin |  | 8.8 | 276 |
 | 13-archer.md | Archer | archer |  | 13.4 | 497 |
 | 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 14.6 | 301 |
 | 15-gear.md | Gear | gear |  | 7.2 | 162 |
@@ -223,17 +223,17 @@ Glossary entries (line: term): 6: [Mod]; 7: [W]; 8: [Trait]; 9: 0 AP; 10: 0R; 11
 - 19: ## The Paladin by Level
 - 39: ## Level 1
 - 41:   ### Features
-- 54:   ### Signature Class Action Selection
-- 101:   ### Picks
-- 108: ## Paladin Repertoire
-- 110:   ### Turn
-- 133:   ### Encounter
-- 179:   ### Daily
-- 202: ## Paladin Escalation
-- 204:   ### Passives
+- 63:   ### Signature Class Action Selection
+- 110:   ### Picks
+- 117: ## Paladin Repertoire
+- 119:   ### Turn
+- 142:   ### Encounter
+- 188:   ### Daily
+- 211: ## Paladin Escalation
+- 213:   ### Passives
 - 233:   ### Actives
 
-Action cards: Divine Power (46, Paladin Feature 1); Smite (59, Divine Power 1, Round); Lay On Hands (83, Divine Power 1, Round); Shield of Faith (113, Paladin Feature 1, Turn); Holy Wrath (136, Paladin Feature 1, Encounter); Bulwark of Faith (159, Paladin Feature 1, Encounter); Consecrated Ground (182, Paladin Feature 1, Daily); Hallowed Stance (207, Paladin Escalation (Passive)); Radiant Zeal (216, Paladin Escalation (Passive)); Font of Mercy (225, Paladin Escalation (Passive)); Aura of Protection (236, Paladin Escalation, Encounter); Divine Surge (257, Paladin Escalation, Round)
+Action cards: Divine Power (46, Paladin Feature 1); Font of Mercy (55, Paladin Feature 1); Smite (68, Divine Power 1, Round); Lay On Hands (92, Divine Power 1, Round); Shield of Faith (122, Paladin Feature 1, Turn); Holy Wrath (145, Paladin Feature 1, Encounter); Bulwark of Faith (168, Paladin Feature 1, Encounter); Consecrated Ground (191, Paladin Feature 1, Daily); Hallowed Stance (216, Paladin Escalation (Passive)); Radiant Zeal (225, Paladin Escalation (Passive)); Aura of Protection (236, Paladin Escalation, Encounter); Divine Surge (257, Paladin Escalation, Round)
 
 ## 13-archer.md: Archer
 
