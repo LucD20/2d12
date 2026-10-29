@@ -21,7 +21,7 @@
 <div class="levels">
 <div class="lvl"><div class="lvn"><b>1</b><span>Level</span></div><div class="lvb">
 <div><span class="lbl">Core Features</span> Divine Power, Font of Mercy</div>
-<div><span class="lbl">Signature Class Action</span> Smite or Lay On Hands</div>
+<div><span class="lbl">Hallmark Action</span> Smite or Lay On Hands</div>
 <div><span class="lbl">Talents</span> 1 Talent</div>
 <div><span class="lbl">Picks</span> 1 Encounter Pick</div>
 <div><span class="lbl">Escalation</span> 1 Passive Escalation Pick, 1 Active Escalation Pick</div>
@@ -60,9 +60,9 @@ While your Escalation is 1 or more, when you or an ally within 5 squares of you 
 
 </div>
 
-### Signature Class Action Selection
+### Hallmark Action Selection
 
-Choose one of the following Signature Actions:
+Choose one of the following Hallmark Actions:
 
 <div class="action" markdown="1">
 <div class="action-head"><span>Smite</span><span>1 / 2 / 3 AP</span><span class="cat">Divine Power 1</span></div>

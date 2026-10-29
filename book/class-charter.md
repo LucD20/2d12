@@ -9,7 +9,7 @@ Decisions are Lucas's (2026-10-29) unless marked **Proposed** or **Open**.
 
 The system is **Talent-based**: the class is the identity, the Talents are the build.
 
-- **A class owns only what expresses its fantasy:** its two Features, its Signature Class Action, its role tools (the Paladin's healing
+- **A class owns only what expresses its fantasy:** its two Features, its Hallmark Action, its role tools (the Paladin's healing
   and Defense, the Archer's shooting on the move), its Escalation list, and its Encounter and Daily lists.
 - **Talents own everything generic:** weapon styles, mobility, tactics, magic, skills. The test: **if two different classes could want it,
   it is a Talent.**
@@ -25,9 +25,9 @@ The system is **Talent-based**: the class is the identity, the Talents are the b
   - **Opportunity Attack** (a Weapon Attack when a creature within 3 leaves a square) and the Archer's **Quick Draw** (a Weapon Attack when
     an enemy within 5 moves closer) are the same kind of Reaction.
 
-## 2. The Signature Class Action
+## 2. The Hallmark Action (named "Signature Class Action" until 2026-10-29)
 
-At level 1 a character chooses **one Signature Class Action** from two that are the class's fantasy. For the Paladin: **Smite** or
+At level 1 a character chooses **one Hallmark Action** from two that are the class's fantasy. For the Paladin: **Smite** or
 **Lay On Hands**.
 
 - **Each Signature covers the whole role by itself** (a small rider from the other side), so the choice changes the shape of the build, not
@@ -41,9 +41,11 @@ The playtest showed too many features at the start. The table is the **template*
 kind for another (Lucas: classes can have different Picks at different levels, as they have more or fewer Features), as long as each
 level keeps the same total budget. The Paladin, for example, can start with an Encounter Action at level 1 and have more Encounter Picks than Round ones.
 
+**Classes needn't be symmetrical (Lucas, 2026-10-29):** one class can offer three Signature choices or start with two Signatures, another can have more Escalation features (the planned Gladiator: "gathering the crowd"), as long as the role budget holds. The Paladin and the Archer stay symmetrical.
+
 | Level | What you gain |
 |---|---|
-| **1** | 2 class Features · 1 Signature Class Action (a choice) · **1 Talent** · 1 Passive Escalation · 1 Active Escalation |
+| **1** | 2 class Features · 1 Hallmark Action (a choice) · **1 Talent** · 1 Passive Escalation · 1 Active Escalation |
 | **2** | 1 Encounter Pick · 1 Talent |
 | **3** | 1 Daily Pick · 1 Passive Escalation |
 
@@ -118,7 +120,7 @@ last several rounds, or carry a damage rider to be worth their AP.
 2. **P1: the Paladin main build**: 2 Features, both Signatures (Smite and Lay On Hands, already strong identities), one default for every
    Pick, written to section 4 and checked in the simulated days. It goes first: it relies less on positions.
 3. **E2: positions in the ruler** (movement, Evade, Push, Cover, range, Hindered, Immobilized, Prone): the Archer's identity needs it. **Done 2026-10-29** (book/ruler/map.mjs, positions.mjs; prices.md section 5): on the map the Archer's real sustained damage is 96% of the baseline (121% without positions), the Paladin's 81%; the conditions have prices.
-4. **A1: the Archer rewrite and main build**, with E2's prices.
+4. **A1: the Archer rewrite and main build**, with E2's prices. **Proposed 2026-10-29** (book/archer-a1.md): Signatures Double Shot or Rolling Shot; sustained 102-104% at levels 1-2, Health 86%.
 5. **E3: the Bestiary refit** to the new baseline and the growth curve of section 3.
 6. **Options**: every other Pick as a sidegrade priced against the default; then the Talents (Class Expertise included), checked for overlap.
 7. **The book** (the class documents, the Characters chapter's steps 7 and 8, the level lists), then Foundry.

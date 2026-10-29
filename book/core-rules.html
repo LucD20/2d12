@@ -604,6 +604,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <li>Separate brackets joined by "and" mean <strong>either</strong>: "[<span class="trhl" style="--tc:var(--g-kind)">Strike</span>] and [<span class="trhl" style="--tc:var(--g-roll)">Weapon</span>] Actions" are Actions with the <span class="trhl" style="--tc:var(--g-kind)">Strike</span> trait, the <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> trait, or both. Alternatives can also be written with "or" inside the brackets: [<span class="trhl" style="--tc:var(--g-requires)">Melee</span> or <span class="trhl" style="--tc:var(--g-requires)">Ranged</span>].</li>
 <li>A <strong><span class="at-body">Body</span> Action</strong> is an Action with the <span class="at-body">Body</span> trait, and so on; an Action can be more than one (Trip is both a <span class="at-body">Body</span> and an <span class="at-instinct">Instinct</span> Action).</li>
 </ul>
+<p><strong>Weapons by property.</strong> When a rule names a weapon <a class="xref" href="gear.html#properties">property</a> before the word "weapon," it means a weapon with that property. A <strong>Two-handed weapon</strong> is a weapon with the Two-handed property, and a <strong>Projectile weapon</strong> is a weapon with the Projectile property, such as a bow or a crossbow.</p>
 <h2 id="summary">Summary</h2>
 <ol>
 <li>Roll <strong>2d12</strong> and add the relevant Modifier.</li>
@@ -1560,7 +1561,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <p>When you pick your class, you choose its Attribute increases when they say "or". These choices can't be changed later.</p>
 <p>Each class is written in its own document: <a class="xref" href="paladin.html#paladin">Paladin</a> and <a class="xref" href="archer.html#archer">Archer</a>.</p>
 <h3 id="class-actions-picks-and-the-repertoire">Class Actions, Picks and the Repertoire</h3>
-<p>A class's <strong>Class Actions</strong> are the Actions it gives you at level 1. A class can give a <strong>Signature Class Action</strong> instead: a choice of two Actions that are the class's fantasy (the Paladin: Smite or Lay On Hands); you take one, and the other is not yours. Its <strong>Repertoire</strong> is everything else it offers, listed by <a class="xref" href="#frequency">Frequency</a>: <strong>Passive</strong> (it works on its own), <strong>Turn</strong>, <strong>Round</strong>, <strong>Encounter</strong> and <strong>Daily</strong>. A <strong>Pick</strong> is one choice from the Repertoire: the level list says how many Picks you take at each level and from which list (an Encounter Pick comes from the Encounter list; a Pick "from any list" can come from any of them). Escalation abilities are chosen the same way, from the class's Escalation list.</p>
+<p>A class's <strong>Class Actions</strong> are the Actions it gives you at level 1. A class can give a <strong>Hallmark Action</strong> instead: a choice of two Actions that are the class's fantasy (the Paladin: Smite or Lay On Hands; the Archer: Double Shot or Rolling Shot); you take one, and the other is not yours. A Hallmark Action doesn't need the <a class="xref" href="#signature">Signature</a> trait: that trait only sets the Modifier an Action rolls (Smite has it, Double Shot makes no roll of its own). Its <strong>Repertoire</strong> is everything else it offers, listed by <a class="xref" href="#frequency">Frequency</a>: <strong>Passive</strong> (it works on its own), <strong>Turn</strong>, <strong>Round</strong>, <strong>Encounter</strong> and <strong>Daily</strong>. A <strong>Pick</strong> is one choice from the Repertoire: the level list says how many Picks you take at each level and from which list (an Encounter Pick comes from the Encounter list; a Pick "from any list" can come from any of them). Escalation abilities are chosen the same way, from the class's Escalation list.</p>
 <h3 id="leveling-up">Leveling Up</h3>
 <p>Each class has a <strong>level list</strong>: what you gain at each level (Features, Class Actions, Picks and Escalation abilities). When you reach a new level, you take what its entry gives you. Your Health thresholds grow with your level too (see Building a Character, step 5).</p>
 <h3 id="distinct-choices">Distinct Choices</h3>
@@ -1633,7 +1634,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <h3 id="shot">Shot</h3>
 <p><span class="trhl" style="--tc:var(--g-requires)">Shot</span> Actions need a weapon with the <a class="xref" href="gear.html#projectile">Projectile</a> property, such as a bow or a crossbow, and use its Range as their Distance. A <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action without this trait gets it when you use such a weapon (so a Weapon Attack with a crossbow is a Shot).</p>
 <h3 id="signature">Signature</h3>
-<p>These Actions roll your <strong><span class="mod-signature">Signature Modifier</span></strong>: the higher of your <span class="mod-weapon">Weapon Modifier</span> and your <span class="mod-power">Power Modifier</span>, even when they also have the <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> or <span class="trhl" style="--tc:var(--g-roll)">Power</span> trait. They keep their other traits: a [<span class="trhl" style="--tc:var(--g-roll)">Signature</span>, <span class="trhl" style="--tc:var(--g-roll)">Weapon</span>] Action still needs a weapon and gets every effect on [<span class="trhl" style="--tc:var(--g-roll)">Weapon</span>] Actions (see <a class="xref" href="#rolls">Rolls</a>). Signature is used for a class's own Actions, such as its Daily Actions and its Signature Class Action.</p>
+<p>These Actions roll your <strong><span class="mod-signature">Signature Modifier</span></strong>: the higher of your <span class="mod-weapon">Weapon Modifier</span> and your <span class="mod-power">Power Modifier</span>, even when they also have the <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> or <span class="trhl" style="--tc:var(--g-roll)">Power</span> trait. They keep their other traits: a [<span class="trhl" style="--tc:var(--g-roll)">Signature</span>, <span class="trhl" style="--tc:var(--g-roll)">Weapon</span>] Action still needs a weapon and gets every effect on [<span class="trhl" style="--tc:var(--g-roll)">Weapon</span>] Actions (see <a class="xref" href="#rolls">Rolls</a>). Signature is used for a class's own Actions, such as its Daily Actions and some Hallmark Actions (Smite).</p>
 <h3 id="split">Split</h3>
 <p>A <span class="trhl" style="--tc:var(--g-roll)">Split</span> Action has two modes, <strong>Weapon</strong> and <strong>Power</strong>, and you choose one each time you use it. In that use, the Action takes the chosen mode's trait and is an Action of that mode for every rule: a <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action in Weapon mode (it needs a weapon, takes Melee or Ranged from it, and uses its Range), and a <span class="trhl" style="--tc:var(--g-roll)">Power</span> Action in Power mode (no weapon). The card shows the two modes side by side; everything else (Frequency, target, trigger, Critical) is shared.</p>
 <h3 id="strike">Strike</h3>
@@ -1785,7 +1786,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#class-actions-picks-and-the-repertoire"><strong>Class Actions</strong></a></td>
-<td>The Actions your class gives you at level 1 (or a Signature Class Action: a choice of two).</td>
+<td>The Actions your class gives you at level 1 (or a Hallmark Action: a choice of two).</td>
 </tr>
 <tr>
 <td><a class="xref" href="#class-actions-picks-and-the-repertoire"><strong>Pick</strong></a></td>
@@ -1970,6 +1971,10 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <tr>
 <td><a class="xref" href="#guard"><strong>Guard</strong></a></td>
 <td>A buffer written Guard N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take.</td>
+</tr>
+<tr>
+<td><a class="xref" href="#class-actions-picks-and-the-repertoire"><strong>Hallmark Action</strong></a></td>
+<td>A choice of two class Actions at level 1 (the Paladin: Smite or Lay On Hands; the Archer: Double Shot or Rolling Shot); you take one.</td>
 </tr>
 <tr>
 <td><a class="xref" href="gear.html#hands"><strong>Hands</strong></a></td>
@@ -2202,10 +2207,6 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <tr>
 <td><a class="xref" href="#shot"><strong>Shot</strong></a></td>
 <td>A trait: the Action needs a Projectile weapon (a bow, a crossbow).</td>
-</tr>
-<tr>
-<td><a class="xref" href="#class-actions-picks-and-the-repertoire"><strong>Signature Class Action</strong></a></td>
-<td>A choice of two class Actions at level 1 (the Paladin: Smite or Lay On Hands); you take one.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#weapon-power-and-signature-modifiers"><strong><span class="mod-signature">Signature Modifier</span></strong></a></td>

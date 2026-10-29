@@ -180,6 +180,15 @@ condition is put on (rounds 1, 2 and 3 averaged). **Value = damage dealt more + 
   confirmed); econ.mjs now uses these for Hunter's Focus (0.16, was 0.3) and Champion's Challenge (0.66, was 0.75). Perfect Shot was priced at 0 (its "favored next..."
   was read as the Action's own Favored): fixed, 16% of a turn.
 
+## The Archer main build (pack A1, 2026-10-29): PROPOSED
+
+`classes/archer-double-1..3.txt` and `archer-rolling-1..3.txt` are the A1 main build with each Signature (`archer-1..3.txt` stay as today's
+Archer, the Paladin's partners in the price list); `catalogue/archer-a1.txt` prices the new cards; the cards, the budget table and the questions:
+**`book/archer-a1.md`**. Level 1: sustained 102-104% of the baseline (today's 96%), Health 86%; levels 2-3 against model A (flat at 23.3: prices.md's
+brackets now use it). New in the spec files: `floor [Mod] shot strike quarry` (a passive: damage on a Tier 1), `clear-shot` (no Bane for a [Ranged]
+Action against a creature Engaged with someone else), `elusive N` (the first NPC Strike against you each round takes N Banes), `boon 1 encounter ...`
+/ `empowered 1 encounter ...` (until the fight ends: Hunter's Focus), and `Pinning Shot (else Weapon Attack)` in a turn (when the Escalation isn't there).
+
 ## Progression models (pack LV, 2026-10-29): `progression.mjs`
 
 `node book/ruler/progression.mjs` (about 3½ minutes; `--quick` about 1) writes **`progression.md`**; the proposal that reads it is **`book/progression-lv.md`**.

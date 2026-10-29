@@ -48,25 +48,31 @@ An Active and a passive compete: a level 1 PC who spends 1 Escalation every roun
 
 ## 3. The role budgets (every build of `classes/`)
 
-Shares of the baseline PC: damage against the Bestiary's baseline turn of the level (23.3 / 26.6 / 26.6 at levels 1 / 2 / 3), and in brackets against the charter's growth curve (+10% a level: 23.3 / 25.6 / 28.0; pack E3 refits the Bestiary to it). Health against the baseline Pool (31.5 / 34.0 / 36.5).
+Shares of the baseline PC: damage against the Bestiary's baseline turn of the level (23.3 / 26.6 / 26.6 at levels 1 / 2 / 3), and in brackets against model A (pack LV: flat inside tier 1, +0% a level: 23.3 / 23.3 / 23.3; pack E3 refits the Bestiary to it). Health against the baseline Pool (31.5 / 34.0 / 36.5).
 
 **Sustained (best)**: the best turn with no Encounter or Daily Action and no Escalation (a Reload Shot turn and heal turns left out). **Nova**: the best turn with an Encounter or Daily Action, at the Escalation it spends or the Escalation Momentum starts a fight with (1 / 1 / 2), whichever is more. **Sustained (real)**: the damage a turn in the simulated Standard day on the turns without an Encounter or Daily Action (openings, Steel Yourself turns and Escalation as the plan spends it, Momentum on); **this is the column the sustained budget is checked on**. **All turns**: the same with the Nova turns in (a once-a-fight Nova is about a third of a PC's turns: fights last about 3 rounds). The real columns use the map model (pack E2: positions, movement, Banes from range, cover and shooting into melee, Flanking); **No positions** is the sustained real damage in the old fight with no map, to compare.
 
 | Build | Sustained (best) | Nova | Sustained (real) | No positions | All turns (real) | Health | Budget: sustained / Nova / Health | Verdict |
 |---|---:|---:|---:|---:|---:|---:|---|---|
 | Archer L1 `archer-1` | 24.7 (106%) | 19.2 (82%) | 22.4 (96%) | 28.1 (121%) | 20.8 (89%) | 27 (86%) | 100%-105% / 110%-130% / 80%-85% | sustained low; Nova low; Health ok (86%) |
-| Archer L2 `archer-2` | 26.8 (101%; 105%) | 19.2 (72%; 75%) | 24.3 (92%; 95%) | 30.0 (113%; 117%) | 22.4 (84%; 87%) | 29 (85%) | 100%-105% / 110%-130% / 80%-85% | sustained low; Nova low; Health ok (85%) |
-| Archer L3 `archer-3` | 26.8 (101%; 96%) | 22.0 (83%; 79%) | 24.3 (91%; 87%) | 30.5 (115%; 109%) | 22.7 (85%; 81%) | 31 (85%) | 100%-105% / 110%-130% / 80%-85% | sustained low; Nova low; Health ok (85%) |
+| Archer L2 `archer-2` | 26.8 (101%; 115%) | 19.2 (72%; 82%) | 24.3 (92%; 104%) | 30.0 (113%; 129%) | 22.4 (84%; 96%) | 29 (85%) | 100%-105% / 110%-130% / 80%-85% | sustained ok; Nova low; Health ok (85%) |
+| Archer L3 `archer-3` | 26.8 (101%; 115%) | 22.0 (83%; 94%) | 24.3 (91%; 104%) | 30.5 (115%; 131%) | 22.7 (85%; 97%) | 31 (85%) | 100%-105% / 110%-130% / 80%-85% | sustained ok; Nova low; Health ok (85%) |
+| Archer (Double Shot) L1 `archer-double-1` | 25.5 (109%) | - | 23.9 (102%) | 24.2 (104%) | 23.9 (102%) | 27 (86%) | 100%-105% / 110%-130% / 80%-85% | sustained ok; Nova none; Health ok (86%) |
+| Archer (Double Shot) L2 `archer-double-2` | 25.5 (96%; 109%) | 30.0 (113%; 129%) | 24.1 (91%; 104%) | 24.1 (91%; 103%) | 24.9 (94%; 107%) | 29 (85%) | 100%-105% / 110%-130% / 80%-85% | sustained ok; Nova ok; Health ok (85%) |
+| Archer (Double Shot) L3 `archer-double-3` | 25.5 (96%; 109%) | 33.4 (126%; 143%) | 25.5 (96%; 109%) | 26.1 (98%; 112%) | 26.7 (100%; 114%) | 31 (85%) | 100%-105% / 110%-130% / 80%-85% | sustained high; Nova high; Health ok (85%) |
+| Archer (Rolling Shot) L1 `archer-rolling-1` | 24.5 (105%) | - | 24.1 (104%) | 24.1 (104%) | 24.1 (104%) | 27 (86%) | 100%-105% / 110%-130% / 80%-85% | sustained ok; Nova none; Health ok (86%) |
+| Archer (Rolling Shot) L2 `archer-rolling-2` | 24.5 (92%; 105%) | 28.9 (109%; 124%) | 24.1 (91%; 103%) | 23.8 (90%; 102%) | 25.1 (94%; 108%) | 29 (85%) | 100%-105% / 110%-130% / 80%-85% | sustained ok; Nova ok; Health ok (85%) |
+| Archer (Rolling Shot) L3 `archer-rolling-3` | 24.5 (92%; 105%) | 32.4 (122%; 139%) | 25.7 (97%; 110%) | 26.0 (98%; 111%) | 27.2 (102%; 117%) | 31 (85%) | 100%-105% / 110%-130% / 80%-85% | sustained high; Nova high; Health ok (85%) |
 | Paladin (book) L1 `paladin-book-1` | 24.5 (105%) | 24.3 (104%) | 25.3 (108%) | 25.3 (109%) | 26.1 (112%) | 36 (114%) | 85%-90% / 150%-180% / 120%-130% | sustained high; Nova low; Health low (114%) |
 | Paladin (Lay On Hands) L1 `paladin-hands-1` | 20.7 (89%) | 36.5 (157%) | 18.5 (79%) | 20.1 (86%) | 22.1 (95%) | 39 (124%) | 85%-90% / 150%-180% / 120%-130% | sustained low; Nova ok; Health ok (124%) |
-| Paladin (Lay On Hands) L2 `paladin-hands-2` | 20.7 (78%; 81%) | 36.5 (137%; 142%) | 18.7 (70%; 73%) | 20.2 (76%; 79%) | 22.1 (83%; 86%) | 43 (126%) | 85%-90% / 150%-180% / 120%-130% | sustained low; Nova low; Health ok (126%) |
-| Paladin (Lay On Hands) L3 `paladin-hands-3` | 20.7 (78%; 74%) | 40.2 (151%; 144%) | 19.9 (75%; 71%) | 21.3 (80%; 76%) | 22.9 (86%; 82%) | 46 (126%) | 85%-90% / 150%-180% / 120%-130% | sustained low; Nova low; Health ok (126%) |
+| Paladin (Lay On Hands) L2 `paladin-hands-2` | 20.7 (78%; 89%) | 36.5 (137%; 157%) | 18.7 (70%; 80%) | 20.2 (76%; 87%) | 22.1 (83%; 95%) | 43 (126%) | 85%-90% / 150%-180% / 120%-130% | sustained low; Nova ok; Health ok (126%) |
+| Paladin (Lay On Hands) L3 `paladin-hands-3` | 20.7 (78%; 89%) | 40.2 (151%; 173%) | 19.9 (75%; 86%) | 21.3 (80%; 91%) | 22.9 (86%; 98%) | 46 (126%) | 85%-90% / 150%-180% / 120%-130% | sustained ok; Nova ok; Health ok (126%) |
 | Paladin (Smite, hold) L1 `paladin-smite-1-hold` | 21.1 (91%) | 38.8 (166%) | 19.0 (82%) | 20.1 (86%) | 24.1 (103%) | 39 (124%) | 85%-90% / 150%-180% / 120%-130% | sustained low; Nova ok; Health ok (124%) |
 | Paladin (Smite) L1 `paladin-smite-1` | 21.1 (91%) | 38.8 (166%) | 18.9 (81%) | 20.2 (87%) | 24.0 (103%) | 39 (124%) | 85%-90% / 150%-180% / 120%-130% | sustained low; Nova ok; Health ok (124%) |
-| Paladin (Smite) L2 `paladin-smite-2` | 21.1 (80%; 83%) | 38.8 (146%; 151%) | 19.0 (71%; 74%) | 20.1 (76%; 78%) | 23.9 (90%; 93%) | 43 (126%) | 85%-90% / 150%-180% / 120%-130% | sustained low; Nova ok; Health ok (126%) |
-| Paladin (Smite) L3 `paladin-smite-3` | 21.1 (80%; 76%) | 42.3 (159%; 151%) | 21.1 (79%; 75%) | 22.3 (84%; 80%) | 25.8 (97%; 92%) | 46 (126%) | 85%-90% / 150%-180% / 120%-130% | sustained low; Nova ok; Health ok (126%) |
+| Paladin (Smite) L2 `paladin-smite-2` | 21.1 (80%; 91%) | 38.8 (146%; 166%) | 19.0 (71%; 81%) | 20.1 (76%; 86%) | 23.9 (90%; 103%) | 43 (126%) | 85%-90% / 150%-180% / 120%-130% | sustained low; Nova ok; Health ok (126%) |
+| Paladin (Smite) L3 `paladin-smite-3` | 21.1 (80%; 91%) | 42.3 (159%; 181%) | 21.1 (79%; 90%) | 22.3 (84%; 96%) | 25.8 (97%; 111%) | 46 (126%) | 85%-90% / 150%-180% / 120%-130% | sustained ok; Nova ok; Health ok (126%) |
 
-Roles: Paladin: tank and support: more Health, heals and Defense for allies, Nova damage. Archer: mobile, fragile, constant ranged damage (a future melee class has the top damage: about 1.15). The verdict at level 2 and 3 uses the charter's curve (the Bestiary's level 3 baseline doesn't grow yet).
+Roles: Paladin: tank and support: more Health, heals and Defense for allies, Nova damage. Archer: mobile, fragile, constant ranged damage (a future melee class has the top damage: about 1.15). The verdict at level 2 and 3 uses model A (pack LV: the baseline stays at level 1's inside tier 1; the Bestiary's level 2-3 rows are refit in E3).
 
 ## 4. Paladin (P1): every Action of `catalogue/paladin-p1.txt` (level 1; efficiency also at levels 2 and 3)
 
@@ -100,6 +106,30 @@ Roles: Paladin: tank and support: more Health, heals and Defense for allies, Nov
 | Hallowed Stance | 2 | 7.2 | 4.5 | 19% | Body damage: you (chosen 1.5 times as often) and one adjacent ally; only while you don't leave your square |
 | Radiant Zeal | 1 | 2.5 | 2.2 | 9% | the first qualifying hit each round |
 | Heavy Blows |  | 2.4 | 2.4 | 10% | +1 on each damaging hit of the typical turn's matching Actions |
+
+## 4. Archer (A1): every Action of `catalogue/archer-a1.txt` (level 1; efficiency also at levels 2 and 3)
+
+**The A1 main build (pack A1, 2026-10-29; PROPOSED: book/archer-a1.md)**: both Signatures and the defaults of every level 1 to 3 Pick.
+
+| Action | AP | Frequency | Esc | Damage | Effects | Total DE | DE / AP | Efficiency L1 | L2 | L3 | Verdict (L1) | Notes (positions; what is not modeled) |
+|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---|---|
+| Weapon Attack | 1 | at-will |  | 5.5 | 0.0 | 5.5 | 5.50 | 1.18 | 1.03 | 1.03 | a little over |  |
+| Lock & Loose | 1 | round |  | 5.5 | 0.7 | 6.2 | 6.24 | 1.34 | 1.19 | 1.19 | a little over | Hindered (until it moves): 0.69 (positions); Immobilized: 1.52 (positions) |
+| Double Shot 2 | 2 | round |  | 11.0 | 0.0 | 11.0 | 5.50 | 1.18 | 1.03 | 1.03 | on target |  |
+| Double Shot 3 | 3 | round |  | 11.0 | 2.2 | 13.2 | 4.40 | 0.94 | 0.85 | 0.85 | a little under | Evade 1: saves the step away (1 AP) on the 47% of the turns it starts Engaged |
+| Rolling Shot 1 | 1 | round |  | 5.5 | 2.2 | 7.7 | 7.69 | 1.65 | 1.51 | 1.51 | **over** | Evade 1: saves the step away (1 AP) on the 47% of the turns it starts Engaged |
+| Rolling Shot 2 | 2 | round |  | 8.0 | 2.2 | 10.2 | 5.11 | 1.10 | 0.99 | 0.99 | on target | Evade 2: saves the step away (1 AP) on the 47% of the turns it starts Engaged |
+| Rolling Shot 3 | 3 | round |  | 10.6 | 2.2 | 12.7 | 4.25 | 0.91 | 0.82 | 0.82 | a little under | Evade 3: saves the step away (1 AP) on the 47% of the turns it starts Engaged |
+| Pinning Shot | 1 | round | 2 | 5.5 | 3.4 | 8.9 | 8.89 | 1.91 | 1.76 | 1.76 | **over** | Immobilized (EoT): 4.70 (positions); costs 2 Escalation: 1.50 uses a fight (1.29 without Momentum), 3.4 DE a turn |
+| Marksman's Shot | 2 | encounter |  | 15.3 | 0.7 | 16.0 | 7.98 | 1.71 | 1.50 | 1.50 | on target |  |
+| Hunter's Focus | 1 | daily |  | 0.0 | 13.0 | 13.0 | 13.00 | 2.79 | 2.45 | 2.45 | on target |  |
+
+**Archer (A1) passives** (DE a turn, weighted by the share of the rounds at its Escalation):
+
+| Passive | Esc | DE a turn (when on) | Weighted | Share of a baseline turn | How / not priced |
+|---|---:|---:|---:|---:|---|
+| Killer's Focus | 2 | 2.5 | 1.6 | 7% | the first qualifying hit each round |
+| Marked Quarry |  | 1.9 | 1.9 | 8% | the typical turn's Shot Strikes against the quarry, +1 Boon each |
 
 ## 4. Archer: every Action of `catalogue/archer.txt` (level 1; efficiency also at levels 2 and 3)
 
@@ -299,7 +329,7 @@ The Bestiary prices a condition on an NPC Action in steps of damage rating (Mild
 health body x4 +3, mind x3 +4,attributes body 1, mind 1
 health body x3 +3, mind x2.5 +4
 - `roles`: [object Object]
-- `growth`: 0.1
+- `growth`: 0
 - Areas: the catalogues write `area N` as the creatures reached (Emanation 1: 1.5, 2: 2, 3: 2.5 of a normal fight's 4 enemies) and `allies N` as the allies reached (Aura 1: 1.5, Aura 2: 2.5, Aura 3: 3, you included).
 - A "next ..." effect is priced on the Action it most likely lands on: a Weapon Attack if it fits, else the 2 AP Version of the Action it names (Smite 2).
 - Divine Retribution: Weapon mode 2R, Power mode 3R (the card has 2 / 3R and two columns).

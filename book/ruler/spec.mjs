@@ -84,7 +84,7 @@ function parseEffect(text) {
   const t = text.trim(), w = t.split(/\s+/), what = w[0].toLowerCase(), n = Number(w[1]);
   const rest = w.slice(2).join(" ");
   const filter = s => { const at = s.match(/@([^,;]+)/), ws = words(s.replace(/@[^,;]+/, "")); return { name: at ? at[1].trim().toLowerCase() : "", quarry: ws.includes("quarry"), traits: ws.filter(x => !["next", "turn", "first", "quarry", "on"].includes(x)) }; };
-  if (what === "boon" || what === "bane" || what === "empowered") return { kind: what, n, scope: /\bturn\b/.test(rest) ? "turn" : "next", ...filter(rest) };
+  if (what === "boon" || what === "bane" || what === "empowered") return { kind: what, n, scope: /\bturn\b/.test(rest) ? "turn" : /\bencounter\b/.test(rest) ? "encounter" : "next", ...filter(rest.replace(/\bencounter\b/, "")) };   // encounter: until the fight ends (Hunter's Focus)
   if (what === "favored") return { kind: "favored", scope: "next", ...filter(w.slice(1).join(" ")) };
   if (what === "extra") return { kind: "extra", dmg: parseDamage(w[1]), scope: /\bfirst\b/.test(rest) ? "first" : "next", anyTier: /\bany-tier\b/.test(rest), ...filter(rest.replace(/\bany-tier\b/, "")) };   // any-tier: a single-value Buff, which applies on Tier 1 too (the book, Buffs)
   if (what === "heal") return { kind: "heal", n, who: /\bself\b/.test(rest) ? "self" : "ally" };
@@ -99,13 +99,15 @@ function parseEffect(text) {
   if (what === "guard") return { kind: "guard", dmg: parseDamage(w[1]), who: /\bself\b/.test(rest) ? "self" : /\bany\b/.test(rest) ? "any" : "ally" };   // Guard (proposed): a buffer that takes damage first and ends with the encounter; the highest one counts
   if (what === "surge") return { kind: "surge", dmg: parseDamage(w[1]) };   // the next ally (not you) who deals damage to the target before your next turn deals this extra
   if (what === "bonus") return { kind: "bonus", n, ...filter(rest) };       // a passive: +n damage on matching Actions that deal damage
-  if (what === "rally-bonus") return { kind: "rallybonus", n };              // a passive: you and your allies heal n more for each Rally Point used
+  if (what === "rally-bonus") return { kind: "rallybonus", n };
+  if (what === "floor") return { kind: "floor", dmg: parseDamage(w[1]), ...filter(rest) };   // a passive (pack A1): matching Actions deal this on a Tier 1 (Marked Quarry: [Mod])
+  if (what === "elusive") return { kind: "elusive", n };                                     // a passive (pack A1): the first NPC Strike against you each round takes N Banes              // a passive: you and your allies heal n more for each Rally Point used
   if (what === "block") return { kind: "block", dmg: parseDamage(w[1]) };    // price list: a Reaction that reduces one hit on an ally by this
   // Effects the price list (econ.mjs) reads; the fight ignores them.
   if (what === "banes") return { kind: "banes", n, others: /\bothers\b/.test(rest), text: rest };   // the target's (or the area's) Strikes take N Banes
   if (what === "heal-dice") return { kind: "healdice", dmg: parseDamage(w[1]) };                     // each ally in it heals that at the start of its turns
   if (what === "reduce-from") return { kind: "reducefrom", n };                                        // damage you take from the target's Actions is reduced by N
-  if (["revive", "prevent-down", "evade", "push", "pull", "slide", "cover", "remove-effect", "save-boon", "range", "note", "steady-nerves", "long-draw"].includes(what)) return { kind: what, n: Number.isFinite(n) ? n : 0, text: w.slice(1).join(" ") };
+  if (["revive", "prevent-down", "evade", "push", "pull", "slide", "cover", "remove-effect", "save-boon", "range", "note", "steady-nerves", "long-draw", "clear-shot"].includes(what)) return { kind: what, n: Number.isFinite(n) ? n : 0, text: w.slice(1).join(" ") };
   throw new Error(`unknown effect "${t}"`);
 }
 /** "on 2+: boon 1 next divine; on 3: vulnerable 2" -> [{ min, max, effect }]. "always:" is every tier (and actions with no roll). */
@@ -210,7 +212,7 @@ export function parseSpec(text, file = "spec") {
   b.rallyPoints = b.rally + Math.ceil((at("body") + at("mind") + b.level) / 2);
   b.rallyHeal = Math.ceil(b.pool / 4);
   // Every turn and plan entry must name things that exist.
-  for (const t of Object.values(b.turns)) for (const s of t.steps) { const st = stepOf(s); if (st.kind === "action" && !b.actions[st.name]) throw new Error(`${file}: turn "${t.name}" uses "${s}", which is not an action of the file`); }
+  for (const t of Object.values(b.turns)) for (const s of t.steps) { const st = stepOf(s); if (st.kind === "action" && (!b.actions[st.name] || (st.alt && !b.actions[st.alt]))) throw new Error(`${file}: turn "${t.name}" uses "${s}", which is not an action of the file`); }
   for (const p of [...b.plan.flatMap(x => x.split("|").map(y => y.trim())), ...b.when.map(w => w.turn), ...(b.unloadedTurn ? [b.unloadedTurn] : []), ...(b.whenSelf ? [b.whenSelf.turn] : []), ...(b.whenEngaged ? [b.whenEngaged] : [])]) if (!b.turns[p]) throw new Error(`${file}: the plan names "${p}", which is not a turn of the file`);
   for (const a of Object.values(b.actions)) for (const d of [...a.does, ...a.then]) if (!b.actions[d.toLowerCase()]) throw new Error(`${file}: "${a.name}" does "${d}", which is not an action of the file`);
   return b;
@@ -223,7 +225,7 @@ function stepOf(s) {
   const ev = s.match(/^evade\s+([12])$/i);                                                        // the Evade Action: 1 AP Evade 1, 2 AP Evade half your Speed
   if (ev) return { kind: "move", ap: Number(ev[1]), how: "evade", sq: ev[1] === "1" ? 1 : "half" };
   const m = s.match(/^(.+?)\s*(?:\((.+)\))?$/), opts = (m[2] ?? "").toLowerCase();
-  return { kind: "action", name: m[1].trim().toLowerCase(), reloadShot: /reload shot/.test(opts), keep: Number(opts.match(/keep (\d+)/)?.[1] ?? 0), boons: Number(opts.match(/\+(\d+) boon/)?.[1] ?? 0), banes: Number(opts.match(/\+(\d+) bane/)?.[1] ?? 0) };
+  return { kind: "action", name: m[1].trim().toLowerCase(), alt: opts.match(/else ([^,)]+)/)?.[1]?.trim() ?? null, reloadShot: /reload shot/.test(opts), keep: Number(opts.match(/keep (\d+)/)?.[1] ?? 0), boons: Number(opts.match(/\+(\d+) boon/)?.[1] ?? 0), banes: Number(opts.match(/\+(\d+) bane/)?.[1] ?? 0) };
 }
 
 /** The encounters file: "party Paladin, Paladin, Archer, Archer", "encounter 4 Standards: 4 standard", "runs 2000", "level 1". */
@@ -302,7 +304,7 @@ export function runTurn(pc, turn, ctx) {
   const weaponGives = () => [...(b.weapon?.traits ?? []).filter(x => x === "ranged" || x === "melee"), ...((b.weapon?.traits ?? []).includes("projectile") ? ["shot"] : [])];
   const traitsOf = (a, extra = []) => [...new Set([...a.traits, ...extra, ...(a.traits.includes("weapon") ? weaponGives() : [])])];
   const apply = (e, target, a = null) => {
-    if (["boon", "bane", "empowered", "favored", "extra"].includes(e.kind)) (e.scope === "turn" ? st.turnFx : st.next).push(e);
+    if (["boon", "bane", "empowered", "favored", "extra"].includes(e.kind)) (e.scope === "turn" ? st.turnFx : e.scope === "encounter" ? (pc.encFx ??= []) : st.next).push(e);
     else if (e.kind === "heal") ctx.heal?.(pc, e.n, e.who);
     else if (e.kind === "mend") ctx.mend?.(pc, rollDamage(R, e.dmg, { mod: b.powerMod }).total, e.who);
     else if (e.kind === "guard") ctx.guard?.(pc, rollDamage(R, e.dmg, { mod: b.powerMod }).total, e.who);
@@ -333,7 +335,7 @@ export function runTurn(pc, turn, ctx) {
     const reloadShot = opts.reloadShot && traits.includes("weapon") && (b.weapon?.traits ?? []).includes("reload");
     if (opts.reloadShot && !reloadShot) res.problems.push(`${a.name}: a Reload Shot needs a Weapon Action with a Reload weapon`);
     let boons = opts.boons ?? 0, banes = opts.banes ?? 0, favored = reloadShot || !!a.favored, emp = (opts.empowered ?? 0) + (reloadShot ? 2 : 0), bonus = 0;
-    const extra = [...(opts.extra ?? [])], anyTier = [], dc = a.vs.match(/^dc\s+(\d+)/)?.[1];
+    const extra = [...(opts.extra ?? [])], anyTier = [], floors = [], dc = a.vs.match(/^dc\s+(\d+)/)?.[1];
     const target = dc ? null : (forced ?? ctx.target());
     if (!dc && !target) return;
     for (const p of passives()) {
@@ -342,8 +344,9 @@ export function runTurn(pc, turn, ctx) {
       if (p.effect.kind === "empowered") emp += p.effect.n;
       if (p.effect.kind === "bonus") bonus += p.effect.n;
       if (p.effect.kind === "extra" && p.effect.scope === "first" && !pc.firstThisRound.has(p.name)) { extra.push(p.effect.dmg); pc.firstThisRound.add(p.name); }
+      if (p.effect.kind === "floor") floors.push(p.effect.dmg);
     }
-    for (const x of st.turnFx) if (matches(x, a, traits, target, pc)) { if (x.kind === "empowered") emp += x.n; if (x.kind === "boon") boons += x.n; }
+    for (const x of [...st.turnFx, ...(pc.encFx ?? [])]) if (matches(x, a, traits, target, pc)) { if (x.kind === "empowered") emp += x.n; if (x.kind === "boon") boons += x.n; }
     st.next = st.next.filter(x => {
       if (!matches(x, a, traits, target, pc)) return true;
       if (x.kind === "boon") boons += x.n; else if (x.kind === "bane") banes += x.n; else if (x.kind === "empowered") emp += x.n; else if (x.kind === "favored") favored = true; else if (x.kind === "extra") (x.anyTier ? anyTier : extra).push(x.dmg);
@@ -376,6 +379,7 @@ export function runTurn(pc, turn, ctx) {
         }
       }
       const dmg = a.tiers?.[tier - 1];
+      if (t === target && tier === 1) for (const x of floors) { const v = rollDamage(R, x, { mod }).total * b.dmgScale; t.damage = (t.damage ?? 0) + v; res.damage += v; }   // a Tier 1 floor (Marked Quarry)
       if (t === target) for (const x of anyTier) { const v = rollDamage(R, x, { mod, empowered: emp }).total * b.dmgScale; t.damage = (t.damage ?? 0) + v; res.damage += v; }   // on every Tier, whatever the Action deals
       if (dmg && (dmg.dice.length || dmg.flat || dmg.mod || (dmg.w && hasDamage(weaponTier(b.weapon, tier))))) {   // 1[W] of a weapon that deals 0 on this tier is no damage (and no extra)
         const kb = b.keepBest && b.keepBest.traits.every(x => traits.includes(x)) ? b.keepBest.n : 0;
@@ -402,6 +406,7 @@ export function runTurn(pc, turn, ctx) {
       continue;
     }
     let a = b.actions[step.name];
+    if (step.alt && a.escalation > pc.esc && !(b.overcastFloor && !pc.floorUsed)) a = b.actions[step.alt];   // "(else Weapon Attack)": when the Escalation isn't there
     if (ctx.apLimit != null && res.ap + a.ap > ctx.apLimit) {   // the map model: AP spent moving; a lower Version that fits, else a Weapon Attack, else nothing
       const alt = Object.values(b.actions).filter(x => group(x.name) === group(a.name) && x.ap < a.ap && res.ap + x.ap <= ctx.apLimit).sort((x, y) => y.ap - x.ap)[0]
         ?? (a.traits.includes("strike") && b.actions["weapon attack"] && res.ap + 1 <= ctx.apLimit && res.strikes < 3 ? b.actions["weapon attack"] : null);
@@ -508,7 +513,7 @@ const rallyBonus = (pcs, t, inCombat = true) => { let n = 0, by = null; for (con
 export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal = false, inject = null, streams = false } = {}) {
   const M = map?.on ? map : null;
   const pcs = party.map(p => (p.build ? p : pcState(p)));
-  for (const p of pcs) { p.leftSquare = null; p.zoneHeal = null; p.guard = 0; p.guardBy = null; p.down = p.damage >= p.build.pool; p.defBonus = 0; p.defBy = null; p.spent = new Set([...(p.spent ?? [])].filter(g => p.build.actions[Object.keys(p.build.actions).find(k => group(k) === g)]?.freq === "daily")); p.quarry = null; p.unloaded = false; p.startDamage = p.damage; p.esc = p.startEsc ?? 0; p.floorUsed = false; }
+  for (const p of pcs) { p.leftSquare = null; p.zoneHeal = null; p.guard = 0; p.guardBy = null; p.down = p.damage >= p.build.pool; p.defBonus = 0; p.defBy = null; p.spent = new Set([...(p.spent ?? [])].filter(g => p.build.actions[Object.keys(p.build.actions).find(k => group(k) === g)]?.freq === "daily")); p.quarry = null; p.unloaded = false; p.startDamage = p.damage; p.esc = p.startEsc ?? 0; p.floorUsed = false; p.elusiveRound = null; p.encFx = []; }
   const foes = npcs.map(n => ({ ...n, damage: 0, dead: false, vulnerable: 0, surge: null, zone: null, ...(immortal ? { pool: 1e9 } : {}) }));
   // Adjacent allies (Hallowed Stance): the N allies most often in front (highest "targeted"), fixed for the fight (the map model: the allies really adjacent).
   for (const p of pcs) { const k = Math.max(0, ...p.build.passives.filter(x => x.effect.kind === "reduce").map(x => x.effect.adjacent)); p.adjacent = pcs.filter(x => x !== p).sort((x, y) => y.build.targeted - x.build.targeted).slice(0, k); p.reduceAdj = k; }
@@ -541,7 +546,9 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     const taunted = f.taunt && !f.taunt.by.down && t !== f.taunt.by ? f.taunt.n : 0;   // Champion's Challenge: Banes against anyone else
     if (M) for (const p of pcs) if (p.reduceAdj) p.adjacent = pcs.filter(x => x !== p && !x.down && MP.adj(p, x));   // Hallowed Stance: the allies adjacent now
     t.st.struck++;
-    t.damage += npcStrike(f.R ?? R, f, t, k + taunted + banes, t.esc, pcs, boons);   // At-will Banes on the 2nd and 3rd Strike
+    const el = t.elusiveRound !== round ? t.build.passives.filter(p => p.effect.kind === "elusive" && (t.esc ?? 0) >= p.escalation).reduce((m, p) => Math.max(m, p.effect.n), 0) : 0;
+    if (el) { t.elusiveRound = round; t.st.elusive = (t.st.elusive ?? 0) + 1; }   // the first Strike against it this round
+    t.damage += npcStrike(f.R ?? R, f, t, k + taunted + banes + el, t.esc, pcs, boons);   // At-will Banes on the 2nd and 3rd Strike
     if (t.damage >= t.build.pool && !t.down) { t.down = true; t.st.downs++; if (!firstDown) firstDown = round; }
   };
   /** A PC's turn context (the targets, heals, buffs, areas; and with the map model, its movement, Boons and Banes, conditions). */
@@ -568,7 +575,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
         if (!kind) return null;
         const ign = !!pc.ignoreCover && traits.includes("strike"); if (ign) pc.ignoreCover = false;
         const pas = pc.build.passives.filter(p => pc.esc >= p.escalation);
-        const m = MP.mapMods(pc, t, kind, W, { ignoreCover: ign, noEngagedBanes: pas.some(p => p.effect.kind === "steady-nerves"), longDraw: pas.some(p => p.effect.kind === "long-draw"), range: pc.range });
+        const m = MP.mapMods(pc, t, kind, W, { ignoreCover: ign, noEngagedBanes: pas.some(p => p.effect.kind === "steady-nerves"), noIntoMelee: pas.some(p => p.effect.kind === "clear-shot"), longDraw: pas.some(p => p.effect.kind === "long-draw"), range: pc.range });
         if (!m) { pc.st.outOfReach++; return { skip: true }; }
         if (kind === "ranged") { pc.st.shots++; pc.st.engagedShots += m.engagedBanes ? 1 : 0; pc.st.intoMelee += m.intoMelee; pc.st.covered += m.coverBanes ? 1 : 0; pc.st.coverBanes += m.coverBanes; pc.st.rangeBanes += m.rangeBanes; pc.st.mapBanes += m.banes; }
         else { pc.st.swings++; pc.st.flankBoons += m.boons; }

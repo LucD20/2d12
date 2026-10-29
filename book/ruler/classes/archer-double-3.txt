@@ -1,0 +1,50 @@
+# Archer, level 3, the A1 main build (pack A1, 2026-10-29; book/class-charter.md, book/progression-lv.md model A): Signature Double Shot.
+# Talents are left out (classes are compared with classes). Level 1: Sharpshooter (the Signature choice; Bow Mastery folded in: Lock & Loose;
+# no Bane for shooting into melee) + Marked Quarry (+1 Boon; [Mod] on a Tier 1, decided); Escalation Killer's Focus (passive) and Pinning Shot (active).
+# Level 2: Encounter Pick Marksman's Shot. Level 3: Daily Pick Hunter's Focus, Passive Escalation Elusive. The format: book/ruler/README.md.
+class Archer (Double Shot)
+role ranged damage
+level 3
+attributes body 1, mind 1, instinct 2, appeal 0
+health body x3 +3, mind x2.5 +4
+armor 2
+weapon-mod 2
+power-mod 2
+rally 5
+targeted 0.75
+weapon Crossbow (ranged, projectile, reload, two-handed, range 10/20/40): 0 / 1d4+2 / 1d10+2
+speed 6
+
+# Features
+passive Sharpshooter: clear-shot                         # your [Shot] Actions take no Bane for a target Engaged with your ally
+passive Marked Quarry: boon 1 shot strike quarry
+passive Marked Quarry floor: floor [Mod] shot strike quarry   # decided: your [Shot] Strikes against it deal [Mod] on a Tier 1
+
+action Steel Yourself 2 | ap 2 | round | traits self | heal 1 self
+action Weapon Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod]
+action Lock & Loose | ap 1 | round | traits ranged shot strike weapon | vs ad | tiers [Mod] / 1d4 + 2 + [Mod] / 1d10 + [Mod] | on 2: debuff Hindered (until it moves); on 3: debuff Immobilized
+
+# Signature: Double Shot (damage; 3 AP adds the step away: Evade 1)
+action Double Shot 2 | ap 2 | round | traits shot strike | does Weapon Attack x2 | different
+action Double Shot 3 | ap 3 | round | traits shot strike | does Weapon Attack x2 | different | evade 1
+
+# Escalation (level 1): Killer's Focus (passive) and Pinning Shot (active: spending it turns Killer's Focus off)
+passive Killer's Focus: escalation 2: extra 1d6 first shot strike weapon
+action Pinning Shot | ap 1 | round | escalation 2 | traits ranged shot strike weapon | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod] | on 2+: debuff Immobilized (EoT)
+
+# Encounter Pick (level 2): Marksman's Shot (reworked to the Nova band)
+action Marksman's Shot | ap 2 | encounter | traits ranged shot strike weapon | vs ad | tiers [B] 1[W] + 1d8 / [B] 1[W] + [Mod] + 3d6 / [B] 1[W] + [Mod] + 4d6 | on 3: vulnerable 2
+
+# Daily Pick (level 3): Hunter's Focus (the book's card). Passive Escalation (level 3): Elusive.
+action Hunter's Focus | ap 1 | daily | traits focus self | always: boon 1 encounter shot strike quarry; empowered 1 encounter shot strike quarry      # and their damage to you is reduced by your Signature Modifier (not modeled)
+passive Elusive: escalation 1: elusive 1                  # the first [Strike] Action against you each round takes 1 Bane
+
+turn Main: Double Shot 3, Lock & Loose, Weapon Attack
+turn Pin: Double Shot 3, Lock & Loose, Pinning Shot (else Weapon Attack)
+turn Nova: Marksman's Shot, Double Shot 3
+turn Focus: Hunter's Focus, Double Shot 3, Lock & Loose
+turn Kite: Double Shot 3, Lock & Loose, Pinning Shot (else Weapon Attack)
+turn Steel: Steel Yourself 2, Double Shot 3
+plan Focus | Nova | Pin, Nova | Pin
+when self below 35%: Steel
+when engaged: Kite
