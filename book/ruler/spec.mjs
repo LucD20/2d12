@@ -50,11 +50,19 @@ export function parseDamage(text) {
 /** The weapon's damage of a tier ("1d8", "1d10+2"), as parsed parts. */
 const weaponTier = (weapon, tier) => parseDamage(weapon?.tiers?.[tier - 1] ?? "0");
 /** Roll a damage expression: { total, dice: how many dice were rolled } (Empowered adds per die; a die never goes below 1 with Enfeebled). */
-export function rollDamage(R, dmg, { weapon = null, tier = 2, mod = 0, empowered = 0 } = {}) {
+export function rollDamage(R, dmg, { weapon = null, tier = 2, mod = 0, empowered = 0, keepBest = 0 } = {}) {
   let total = dmg.flat + dmg.mod * mod, n = 0;
-  const roll = (count, sides) => { for (let k = 0; k < count; k++) { total += Math.max(1, die(R, sides) + empowered); n++; } };
+  const rolled = [];   // [sides, value] of every die (keep the best)
+  const roll = (count, sides) => { for (let k = 0; k < count; k++) { const v = Math.max(1, die(R, sides) + empowered); total += v; n++; rolled.push([sides, v]); } };
   for (const [c, s] of dmg.dice) roll(c, s);
   for (let k = 0; k < dmg.w; k++) { const wt = weaponTier(weapon, tier); total += wt.flat; for (const [c, s] of wt.dice) roll(c, s); }
+  // Keep the best (pack LV, proposed): roll keepBest extra dice of the largest size rolled, then drop as many of the lowest dice of that size.
+  if (keepBest && rolled.length) {
+    const big = Math.max(...rolled.map(x => x[0])), pool = rolled.filter(x => x[0] === big).map(x => x[1]);
+    for (let k = 0; k < keepBest; k++) pool.push(Math.max(1, die(R, big) + empowered));
+    pool.sort((x, y) => x - y);
+    total += pool.slice(keepBest).reduce((s2, v) => s2 + v, 0) - rolled.filter(x => x[0] === big).reduce((s2, x) => s2 + x[1], 0);
+  }
   return { total, dice: n };
 }
 
@@ -115,7 +123,7 @@ function parseEffects(text) {
 /** A class build file -> the build. Errors say the line. */
 export function parseSpec(text, file = "spec") {
   const b = { file, name: "", role: "", level: 1, attributes: {}, weaponMod: 2, powerMod: 2, health: null, armor: 0, wdBonus: 0, rally: 0, targeted: 1,
-    weapon: null, actions: {}, passives: [], turns: {}, plan: [], when: [], speed: 5, reactions: [] };
+    weapon: null, actions: {}, passives: [], turns: {}, plan: [], when: [], speed: 5, reactions: [], dmgScale: 1, keepBest: null, overcastFloor: 0, healthFactor: null };
   text.split(/\r?\n/).forEach((rawLine, i) => {
     const line = clean(rawLine);
     if (!line) return;
@@ -142,6 +150,11 @@ export function parseSpec(text, file = "spec") {
         b.weapon.range = rg ? rg[1].split("/").map(Number) : b.weapon.traits.includes("ranged") ? [10, 20, 40] : [1];
       }
       else if (key === "speed") b.speed = Number(rest);
+      // Progression models (pack LV, progression.mjs): none of these is a rule of the book yet.
+      else if (key === "damage-scale") b.dmgScale = Number(rest);   // every damage it deals x this (the charter's "+10% a level", growth not on any card)
+      else if (key === "keep-best") { const m = rest.match(/^(\d+)\s+(.+)$/); if (!m) fail("write keep-best like: keep-best 1 power"); b.keepBest = { n: Number(m[1]), traits: words(m[2]) }; }   // its Actions with these traits roll N extra dice and drop the lowest
+      else if (key === "overcast-floor") b.overcastFloor = Number(rest);   // once a fight, an Action that costs up to N Escalation costs N less (the round-1 floor)
+      else if (key === "health-factor") b.healthFactor = Number(rest);   // the level factor of Health (the book: (level + 10) / 10)
       else if (key === "reaction") {   // reaction Opportunity Attack: opportunity  ·  reaction Quick Draw: quick-draw  (the map model uses them)
         const m = rest.match(/^(.+?):\s*(opportunity|quick-draw)$/i); if (!m) fail("write reaction like: Opportunity Attack: opportunity (or quick-draw)");
         b.reactions.push({ name: m[1].trim(), kind: m[2].toLowerCase() });
@@ -189,7 +202,7 @@ export function parseSpec(text, file = "spec") {
     } catch (e) { if (/line \d+:/.test(e.message)) throw e; fail(e.message); }
   });
   // The derived numbers (the book's formulas).
-  const lvf = (b.level + 10) / 10, at = k => Number(b.attributes[k] ?? 0);
+  const lvf = b.healthFactor ?? (b.level + 10) / 10, at = k => Number(b.attributes[k] ?? 0);
   const thr = (k, h) => Math.max(0, Math.ceil(((at(k) + 2) * h.mult + h.sp) * lvf));
   b.bodyHealth = b.health ? thr("body", b.health.body) : 0; b.mindHealth = b.health ? thr("mind", b.health.mind) : 0;
   b.pool = b.bodyHealth + b.mindHealth;
@@ -363,11 +376,12 @@ export function runTurn(pc, turn, ctx) {
         }
       }
       const dmg = a.tiers?.[tier - 1];
-      if (t === target) for (const x of anyTier) { const v = rollDamage(R, x, { mod, empowered: emp }).total; t.damage = (t.damage ?? 0) + v; res.damage += v; }   // on every Tier, whatever the Action deals
+      if (t === target) for (const x of anyTier) { const v = rollDamage(R, x, { mod, empowered: emp }).total * b.dmgScale; t.damage = (t.damage ?? 0) + v; res.damage += v; }   // on every Tier, whatever the Action deals
       if (dmg && (dmg.dice.length || dmg.flat || dmg.mod || (dmg.w && hasDamage(weaponTier(b.weapon, tier))))) {   // 1[W] of a weapon that deals 0 on this tier is no damage (and no extra)
-        let total = rollDamage(R, dmg, { weapon: b.weapon, tier, mod, empowered: emp }).total;
+        const kb = b.keepBest && b.keepBest.traits.every(x => traits.includes(x)) ? b.keepBest.n : 0;
+        let total = rollDamage(R, dmg, { weapon: b.weapon, tier, mod, empowered: emp, keepBest: kb }).total;
         for (const x of extra) total += rollDamage(R, x, { mod, empowered: emp }).total;
-        total += bonus;
+        total = (total + bonus) * b.dmgScale;
         t.damage = (t.damage ?? 0) + total; res.damage += total;
         if (t.surge && t.surge.by !== pc) {   // Divine Surge: an ally's extra damage, credited to the Paladin who gave it (not in anyone's own damage)
           const x = rollDamage(R, t.surge.dmg, { mod }).total; t.damage += x; if (t.surge.by.st) t.surge.by.st.surgeCredit += x; t.surge = null;
@@ -395,8 +409,15 @@ export function runTurn(pc, turn, ctx) {
       if (!alt) { res.missed.push(`${a.name}: no AP left after moving`); continue; }
       a = alt;
     }
+    // Overcast (pack LV): the round-1 floor pays up to its number once a fight; else a lower Version of the same Action that the Escalation left pays for.
+    let floor = 0;
+    if (a.escalation > pc.esc) {
+      const fl = b.overcastFloor && !pc.floorUsed ? b.overcastFloor : 0;
+      const low = Object.values(b.actions).filter(x => group(x.name) === group(a.name) && x.escalation <= pc.esc + fl && x.ap <= a.ap).sort((x, y) => y.escalation - x.escalation)[0];
+      if (low) { a = low; if (a.escalation > pc.esc) { floor = a.escalation - pc.esc; pc.floorUsed = true; } }
+    }
     const g = group(a.name);
-    if (a.escalation > pc.esc) { res.missed.push(`${a.name}: costs ${a.escalation} Escalation (you have ${pc.esc})`); continue; }   // not a rule problem: the plan tries it when it can
+    if (a.escalation - floor > pc.esc) { res.missed.push(`${a.name}: costs ${a.escalation} Escalation (you have ${pc.esc})`); continue; }   // not a rule problem: the plan tries it when it can
     if (step.keep && pc.esc - a.escalation < step.keep) { res.missed.push(`${a.name}: kept ${step.keep} Escalation for a passive`); continue; }   // "(keep 2)": spend only what is above 2
     if (a.freq === "daily" && pc.dailyOK === false) { res.missed.push(`${a.name}: the Daily is kept for a hard fight`); continue; }
     if ((a.freq === "encounter" || a.freq === "daily") && pc.spent?.has(g)) { res.problems.push(`${a.name}: already used this ${a.freq === "encounter" ? "encounter" : "day"}`); continue; }
@@ -404,7 +425,7 @@ export function runTurn(pc, turn, ctx) {
     if (a.freq === "encounter" || a.freq === "daily") { (pc.spent ??= new Set()).add(g); res.nova = true; }
     res.ap += a.ap;
     if (a.traits.includes("strike")) res.strikes++;
-    pc.esc -= a.escalation;
+    pc.esc -= a.escalation - floor;
     doAction(a, step);
   }
   if (res.ap > 5) res.problems.push(`${res.ap} AP (5 a turn)`);
@@ -487,7 +508,7 @@ const rallyBonus = (pcs, t, inCombat = true) => { let n = 0, by = null; for (con
 export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal = false, inject = null, streams = false } = {}) {
   const M = map?.on ? map : null;
   const pcs = party.map(p => (p.build ? p : pcState(p)));
-  for (const p of pcs) { p.leftSquare = null; p.zoneHeal = null; p.guard = 0; p.guardBy = null; p.down = p.damage >= p.build.pool; p.defBonus = 0; p.defBy = null; p.spent = new Set([...(p.spent ?? [])].filter(g => p.build.actions[Object.keys(p.build.actions).find(k => group(k) === g)]?.freq === "daily")); p.quarry = null; p.unloaded = false; p.startDamage = p.damage; p.esc = p.startEsc ?? 0; }
+  for (const p of pcs) { p.leftSquare = null; p.zoneHeal = null; p.guard = 0; p.guardBy = null; p.down = p.damage >= p.build.pool; p.defBonus = 0; p.defBy = null; p.spent = new Set([...(p.spent ?? [])].filter(g => p.build.actions[Object.keys(p.build.actions).find(k => group(k) === g)]?.freq === "daily")); p.quarry = null; p.unloaded = false; p.startDamage = p.damage; p.esc = p.startEsc ?? 0; p.floorUsed = false; }
   const foes = npcs.map(n => ({ ...n, damage: 0, dead: false, vulnerable: 0, surge: null, zone: null, ...(immortal ? { pool: 1e9 } : {}) }));
   // Adjacent allies (Hallowed Stance): the N allies most often in front (highest "targeted"), fixed for the fight (the map model: the allies really adjacent).
   for (const p of pcs) { const k = Math.max(0, ...p.build.passives.filter(x => x.effect.kind === "reduce").map(x => x.effect.adjacent)); p.adjacent = pcs.filter(x => x !== p).sort((x, y) => y.build.targeted - x.build.targeted).slice(0, k); p.reduceAdj = k; }

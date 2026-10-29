@@ -46,6 +46,13 @@ One thing per line; `#` starts a comment. A class file (`classes/paladin-1.txt` 
 | `turn` | `turn Main: Smite 2, Weapon Attack, Weapon Attack, move 1` | A turn: Actions in order; `move N` spends AP (the map model: only when it moves); `advance`, `evade 1`, `evade 2` (the Basic Actions: Speed, 1 square, half Speed); `(reload shot)` after a Weapon Action makes it a Reload Shot; `(keep 2)` after an Escalation Active spends it only if 2 are left after (holding for a passive) |
 | `plan` | `plan Opening, Main` · `plan Nova, Consecrate \| Main, Main` | The turn of round 1, round 2...; the last one repeats. `A \| B`: A while its Encounter and Daily Actions are unused (a Daily only in a hard fight), else B |
 | `when` | `when ally below 50%: Heal` · `when self below 35%: Steel` · `when unloaded: Reload turn` · `when engaged: Kite` | A turn that replaces the plan's (`engaged`: the map model, it starts its turn next to an enemy) |
+| `health-factor` | `health-factor 1.65` | Progression models (pack LV): the level factor of Health instead of the book's (level + 10) / 10 |
+| `damage-scale` | `damage-scale 1.4` | Pack LV: every damage it deals × this (growth that is on no card: model C's +10% a level) |
+| `keep-best` | `keep-best 1 power` | Pack LV: its Actions with these traits roll N extra dice of the largest size rolled and drop the lowest N of that size |
+| `overcast-floor` | `overcast-floor 1` | Pack LV: once a fight, an Action that costs Escalation costs up to N less (the round-1 floor) |
+
+**Escalation fallback (pack LV):** when a turn names an Action whose Escalation you don't have, a lower Version of it that you can pay for is used
+instead (`Bolt 3` → `Bolt 2`...; write Overcast as Versions with `escalation N`); with no such Version it is skipped, as before.
 
 An `action` line is fields separated by `|`: the name, then any of
 `ap N` · a Frequency (`at-will`, `turn`, `round`, `encounter`, `daily`) · `traits a b c` · `vs ad` / `vs wd` / `vs save instinct` / `vs dc 13` ·
@@ -173,6 +180,21 @@ condition is put on (rounds 1, 2 and 3 averaged). **Value = damage dealt more + 
   confirmed); econ.mjs now uses these for Hunter's Focus (0.16, was 0.3) and Champion's Challenge (0.66, was 0.75). Perfect Shot was priced at 0 (its "favored next..."
   was read as the Action's own Favored): fixed, 16% of a turn.
 
+## Progression models (pack LV, 2026-10-29): `progression.mjs`
+
+`node book/ruler/progression.mjs` (about 3½ minutes; `--quick` about 1) writes **`progression.md`**; the proposal that reads it is **`book/progression-lv.md`**.
+Three models of growth over levels 1-10 (A Bounded: Modifier +3 at 5, +4 at 8, Mastery 2[W] / keep the best at 8; B Escalation-heavy; C +10% a level),
+each with two stand-in PCs a level generated in the script (a weapon user and a caster with the same level 1 budget: the caster's spells are the
+weapon user's Actions with [W] written as Power dice, Overcast +1 die per Escalation up to the tier's limit). For each model: the NPC Health that
+keeps a standard fight (4 Standards) at 3.5 rounds, found by bisection (NPC damage × the PCs' Health growth; Defense and Modifier flat); fight
+length and Health lost by CV; the CV of a lower-level NPC (how many make the same fight); the weapon user against the caster by round; what
+matches 2[W] for a caster; the Standard day.
+
+- **Fight length holds** in every model once NPC Health follows the PCs' damage (easy 2.5, standard 3.5 rounds, 19% / 33% of the party's Health).
+- **Hard = CV 1.25 a PC, deadly = 1.5**: CV 1.5 lasts 5.4-6 rounds (61-74% Health), CV 2 is a wipe.
+- **The level gap** is √(Health × damage) of the lower NPC against one of the party's level (within 0.05 of the measured CV): about ×0.9 a level, by tier in model A (×1 / ×0.8 / ×0.65).
+- **Weapon user against caster:** the caster's round 1 is 94-112% of the weapon user's without any floor; 2[W] is +31% of a weapon user's fight, keep the best +10% of a caster's (Spell Mastery, +1 Power die, matches: 103%).
+
 ## The Paladin main build (pack P1, 2026-10-29): PROPOSED
 
 `classes/paladin-smite-1..3.txt` and `paladin-hands-1..3.txt` are the P1 main build with each Signature (`paladin-smite-1-hold.txt`: the same, holding
@@ -288,6 +310,7 @@ Health Pool: Human Paladin 36 / 39 / 42, Dwarf Paladin 41 / 44 / 48, Human Arche
 - `econ.mjs` with `catalogue/*.txt`: the price list of the core rules (pack E1); it writes `prices.md`.
 - `map.mjs`: the map model (pack E2): grid, movement, Banes and Boons of positions, conditions, Forced Movement; `spec.mjs` uses it (`map on`).
 - `positions.mjs`: the prices of positions (pack E2); it writes `positions.json` (econ.mjs reads it).
+- `progression.mjs`: the progression models over levels 1-10 (pack LV); it writes `progression.md`.
 
 They import the system's dice math (`foundry/twod12/module/calc.mjs`) by a relative path: run them from anywhere with `node book/ruler/<name>.mjs` or `python3 book/ruler/<name>.py`.
 - `ruler.mjs`: the PC ruler above (a level 1 PC's damage a turn against AD 12 to 14).
