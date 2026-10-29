@@ -1,0 +1,71 @@
+# Every Paladin Action, Reaction and passive (book/rules-src/12-paladin.md, 2026-10-29), for the price list: node book/ruler/econ.mjs
+# Same format as classes/*.txt. "area N" here is how many creatures it is expected to reach (Emanation 1: 1.5, 2: 2, 3: 2.5 of a normal
+# fight's 4 enemies); "allies N" how many allies a buff reaches (Aura 1: 1.5, Aura 2: 2.5, Aura 3: 3, you included); "rounds N" how long.
+class Paladin
+level 1
+attributes body 2, mind 1
+weapon-mod 2
+power-mod 2
+weapon Greatsword (melee, two-handed): 0 / 1d8 / 2d6
+
+# Basic Actions
+action Weapon Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod]
+action Steel Yourself 2 | ap 2 | round | traits self | heal 1 self
+action Steel Yourself 3 | ap 3 | round | traits self | heal 2 self
+
+# Class Actions
+action Smite 1 | ap 1 | round | traits divine strike weapon | vs ad | tiers [B] 1[W] / [B] 1[W] + [Mod] + [M] 1d4 / [B] 1[W] + [Mod] + [M] 1d6
+action Smite 2 | ap 2 | round | traits divine strike weapon | vs ad | tiers [B] 1[W] + [M] 2d4 / [B] 1[W] + [Mod] + [M] 2d6 / [B] 1[W] + [Mod] + [M] 2d8 | always: boon 1 next divine
+action Smite 3 | ap 3 | round | traits divine strike weapon | vs ad | tiers [B] 1[W] + [M] 2d4 / [B] 1[W] + [Mod] + [M] 2d6 / [B] 1[W] + [Mod] + [M] 2d8 | always: boon 1 next divine | then Smite Light
+action Smite Light | traits divine | vs save appeal | tiers [M] 1d6 / [M] 1d4 / 0 | area 2
+action Lay On Hands 1 | ap 1 | round | traits divine focus | heal 1
+action Lay On Hands 2 | ap 2 | round | traits divine focus | heal 2; evade 2
+
+# Round Picks
+action Rebuke 1 | ap 1 | turn | reaction | traits divine power | vs wd | tiers [M] 1d4+1 / [M] 1d6+1 / [M] 1d8+1
+action Rebuke 2 | ap 2 | turn | reaction | traits divine power | vs wd | tiers [M] 1d6+1 / [M] 1d8+1 / [M] 1d10+1 | on 1: push 1; on 2: push 2; on 3: push 3
+action Vow of Enmity 1 | ap 1 | round | traits divine power | vs wd | tiers 0 / 0 / [M] 1d8 | on 2+: boon 1 next strike; on 2+: empowered 1 next strike
+action Vow of Enmity 2 | ap 2 | round | traits divine power | vs wd | tiers 0 / [M] 1d6 / [M] 1d6 | on 2+: boon 1 next strike; on 2+: empowered 1 next strike; on 3: vulnerable 1
+action Vow of Enmity 3 | ap 3 | round | traits divine power | vs wd | tiers 0 / [M] 1d6 / [M] 1d6 | on 2+: boon 1 next strike; on 2+: empowered 1 next strike; on 3: vulnerable 1 | area 2
+action Shield of Faith 1 | ap 1 | round | traits divine focus | defense 1 ally
+action Shield of Faith 2 | ap 2 | round | traits divine focus | defense 2 ally
+action Shield of Faith 3 | ap 3 | round | traits divine focus | allies 1.5 | defense 1 allies; save-boon 1
+action Sacred Weapon 1 | ap 1 | round | traits divine focus | always: empowered 1 turn
+action Sacred Weapon 2 | ap 2 | round | traits divine focus | allies 2 | always: empowered 1 turn
+action Champion's Challenge 1 | ap 1 | round | traits divine power | vs wd | tiers 0 / 0 / 0 | on 2: taunt 1; on 3: taunt 2
+action Champion's Challenge 2 | ap 2 | round | traits divine power | vs wd | tiers 0 / 0 / 0 | on 2: taunt 1; on 3: taunt 2 | area 2
+
+# Encounter Picks
+action Word of Radiance 2 | ap 2 | encounter | traits area divine power | vs wd | tiers [M] 1d8 / [M] 2d6 / [M] 2d8 | area 2 | on 3: debuff Prone
+action Word of Radiance 3 | ap 3 | encounter | traits area divine power | vs wd | tiers [M] 2d6 / [M] 2d8 / [M] 2d10 | area 2.5 | on 3: debuff Prone
+action Divine Retribution Weapon | ap 2 | encounter | reaction | traits divine strike weapon | vs ad | tiers [B] 1[W] + [M] 1d10 / [B] 1[W] + [Mod] + [M] 1d12 / [B] 1[W] + [Mod] + [M] 2d8
+action Divine Retribution Power | ap 3 | encounter | reaction | traits divine power | vs wd | tiers [M] 2d8 / [M] 2d10 / [M] 2d12
+action Aura of Protection 1 | ap 1 | encounter | traits area divine | allies 2.5 | defense 1 allies
+action Aura of Protection 2 | ap 2 | encounter | traits area divine | allies 3 | defense 2 allies
+action Aura of Protection 3 | ap 3 | encounter | traits area divine | allies 3 | defense 2 allies; save-boon 1
+
+# Daily Picks
+action Miraculous Recovery 2 | ap 2 | daily | traits divine focus | heal 2; remove-effect 1     # new Health (not the ally's Rally Points)
+action Miraculous Recovery 3 | ap 3 | daily | traits divine focus | heal 3; remove-effect 1
+action Consecrated Ground 2 | ap 2 | daily | traits area divine | rounds 3 | area 2 | allies 2 | banes 1 strike power; heal-dice 1d4
+action Consecrated Ground 3 | ap 3 | daily | traits area divine | rounds 5 | area 2.5 | allies 2.5 | banes 1 strike power; heal-dice 1d4
+action Divine Intervention 1 | ap 1 | daily | reaction | traits divine | prevent-down
+action Divine Intervention 2 | ap 2 | daily | reaction | traits divine | prevent-down; heal 1
+
+# Active Escalations
+action Call to Arms | ap 0 | round | escalation 1 | traits divine | revive; heal 1
+action Divine Surge | ap 0 | round | escalation 1 | traits divine self | extra 1d8 next @Smite
+action Hand of Mercy | ap 1 | round | escalation 1 | traits divine focus | remove-effect 1
+action Judgment | ap 1 | round | escalation 2 | traits divine power | vs wd | tiers 0 / [M] 2d6 / [M] 2d8 | on 2+: debuff Hindered
+action Sanctified Ground | ap 1 | round | escalation 2 | traits area divine | rounds 2 | area 1.5 | banes 1 strike
+
+# The typical turn ("for the turn" buffs are priced on it)
+turn Typical: Smite 2, Weapon Attack, Weapon Attack
+
+# Passives (priced per turn by econ.mjs)
+passive Hallowed Stance: escalation 2: reduce 2
+passive Avenger's Oath: escalation 2: boon 1 next strike
+passive Aegis: save-boon 1
+passive Divine Vigil: escalation 2: note Boon on Saves against Fear
+passive Mercy's Reward: empowered 2 next @Smite
+passive Profane Judgment: note Enfeebled 1 on Profane creatures

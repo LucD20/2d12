@@ -1,0 +1,157 @@
+# The price list of the core rules (pack E1)
+
+Written by `node book/ruler/econ.mjs` from the class catalogues (`book/ruler/catalogue/*.txt`) and the system's dice math. Don't edit this file: edit those and run it again.
+
+Everything is priced in **damage-equivalents (DE)**: average damage against the level's Medium Standard (AD and WD 13, Saves +1, Body +2), with Weapon and Power Modifier +2 (no Attribute growth in levels 1 to 3 yet).
+
+## 1. The exchange rate
+
+| | Level 1 | Level 2 | Level 3 | Where it comes from |
+|---|---:|---:|---:|---|
+| A baseline PC's damage a turn (Defense 13) | 23.30 | 26.56 | 26.56 | the Bestiary's PC baseline (config pcDamageVsDefense, x the level's measured growth) |
+| **1 AP** (the baseline turn / 5) | 4.66 | 5.31 | 5.31 | the price of one Action Point |
+| A Paladin Weapon Attack (Greatsword) | 5.36 | 5.36 | 5.36 | exact |
+| An Archer Weapon Attack (Crossbow) | 5.50 | 5.50 | 5.50 | exact |
+| A Standard's turn against AD 13 | 7.93 | 8.62 | 9.55 | exact: 2 Strikes, the 2nd with 1 Bane; what a PC takes a round in a normal fight (CV 1 per PC) |
+| A Rally Point (Health it heals) | 8.00 | 9.00 | 10.00 | ceil(Pool / 4), the average Pool of the Paladin and the Archer |
+| 1 Health healed | 1.10 | 1.10 | 1.10 | Lucas: a little more than 1 damage |
+| A Down prevented or undone | 34.95 | 39.84 | 39.84 | 1.5 baseline turns (the turns it would lose), plus the Health |
+
+**Escalation timing** (the Standard day (easy, normal, normal, hard) of fights.txt, level 1 party, simulated): share of the rounds at Escalation 0 or more: 100%; 1 or more: 70%; 2 or more: 40%; **3 or more: 14%**. An Escalation 1 ability is there for about 70% of the turns, an Escalation 3 one for 14%. In the same day an ally goes Down in 20% of the fights and on 70% of the days; a Paladin uses Lay On Hands on 30% of its turns.
+
+## 2. The price list (level 1; DE, and as a share of what it modifies)
+
+| Effect | DE | Share | Notes |
+|---|---:|---:|---|
+| +1 Boon on a Weapon Attack (Paladin / Archer) | 0.50 | 9% | +1 Modifier and -1 target Defense are the same |
+| +2 Boons | 0.98 | 18% |  |
+| +1 Bane | -0.55 | -10% |  |
+| Favored | 1.95 | 35% | about 3.7 Boons |
+| Empowered 1 on a Greatsword / Crossbow Weapon Attack | 0.99 | 18% / 13% | Crossbow 0.72: +1 a die that lands, so more dice = more value |
+| Vulnerable 1 (until the target's turn ends) | 1.23 | - | 2.5 party attacks reach it |
+| +1 Defense for 1 round on one ally | 0.87 | 11% | of what it would take that round; +2: 1.74 |
+| 1 Bane on one enemy's Strikes for its turn | 0.87 | 11% | the same as +1 Defense for everyone it attacks |
+| A Rally Point used in a fight | 8.80 | - | Steel Yourself pays 2 AP for it: 4.40 DE per AP |
+| A Down prevented or undone | 34.95 | - |  |
+
+**Frequency bands** (DE per AP, divided by the price of 1 AP): At-will 0.9 to 1.1, Round and Turn 1 to 1.3, Encounter 1.4 to 2, Daily 2 to 3. An At-will Action takes a Bane on each use after the first, so its first use can sit at the top. A **0 AP** Action is priced per use as a share of a baseline turn. Verdict: **under** or **over** when more than 10% outside its band; **+ E2** when part of its value (movement, Evade, Push, Cover, range, Hindered, Immobilized, Prone, Saves) can't be priced before pack E2, so the verdict isn't final.
+
+## 3. The role budgets (level 1 and 2 builds of `classes/`)
+
+Baseline Health: the average Health Pool of the Paladin and the Archer builds at the level. Sustained (Esc 0): the best turn with no Encounter or Daily Action and no Escalation (a Reload Shot turn is left out: it needs a Reload turn after it); with Escalation: the best turn available at each Escalation, weighted by the share of the rounds at it; Nova: the best turn with an Encounter or Daily Action. Real: the damage a turn in the simulated day (openings, heals and Steel Yourself turns included; level 1).
+
+| Build | Sustained (Esc 0) | Sustained (with Escalation) | Nova | Real (the day) | Health | Budget: sustained / Nova / Health | Verdict |
+|---|---:|---:|---:|---:|---:|---|---|
+| Paladin L1 | 24.5 (105%) | 27.8 (119%) | 24.3 (104%) | 27.0 (116%) | 36 (114%) | 85%-90% / 150%-180% / 120%-130% | sustained high (119%); Nova low (104%); Health low (114%) |
+| Archer L1 | 24.7 (106%) | 30.4 (131%) | 19.2 (82%) | 24.8 (107%) | 27 (86%) | 100%-105% / 110%-130% / 80%-85% | sustained high (131%); Nova low (82%); Health ok (86%) |
+| Paladin L2 | 27.0 (102%) | 30.9 (116%) | 24.3 (91%) | - | 39 (115%) | 85%-90% / 150%-180% / 120%-130% | sustained high (116%); Nova low (91%); Health low (115%) |
+| Archer L2 | 26.8 (101%) | 32.7 (123%) | 19.2 (72%) | - | 29 (85%) | 100%-105% / 110%-130% / 80%-85% | sustained high (123%); Nova low (72%); Health ok (85%) |
+
+Roles: Paladin: tank and support: more Health, heals and Defense for allies, Nova damage. Archer: mobile, fragile, constant ranged damage (a future melee class has the top damage: about 1.15).
+
+## 4. Paladin: every Action (level 1; efficiency also at levels 2 and 3)
+
+| Action | AP | Frequency | Esc | Damage | Effects | Total DE | DE / AP | Efficiency L1 | L2 | L3 | Verdict (L1) | Not priced yet (E2) / notes |
+|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---|---|
+| Weapon Attack | 1 | at-will |  | 5.4 | 0.0 | 5.4 | 5.36 | 1.15 | 1.01 | 1.01 | a little over |  |
+| Steel Yourself 2 | 2 | round |  | 0.0 | 8.8 | 8.8 | 4.40 | 0.94 | 0.93 | 1.04 | a little under | uses the target's own Rally Points |
+| Steel Yourself 3 | 3 | round |  | 0.0 | 17.6 | 17.6 | 5.87 | 1.26 | 1.24 | 1.38 | on target | uses the target's own Rally Points |
+| Smite 1 | 1 | round |  | 7.4 | 0.0 | 7.4 | 7.44 | 1.60 | 1.40 | 1.40 | **over** |  |
+| Smite 2 | 2 | round |  | 12.3 | 0.7 | 13.0 | 6.52 | 1.40 | 1.23 | 1.23 | a little over |  |
+| Smite 3 | 3 | round |  | 16.9 | 0.7 | 17.6 | 5.86 | 1.26 | 1.10 | 1.10 | on target |  |
+| Lay On Hands 1 | 1 | round |  | 0.0 | 8.8 | 8.8 | 8.80 | 1.89 | 1.86 | 2.07 | **over** | uses the target's own Rally Points |
+| Lay On Hands 2 | 2 | round |  | 0.0 | 17.6 | 17.6 | 8.80 | 1.89 | 1.86 | 2.07 | **over** | E2: Evade 2; uses the target's own Rally Points |
+| Rebuke 1 (R) | 1 | turn |  | 4.5 | 0.0 | 4.5 | 4.49 | 0.96 | 0.85 | 0.85 | a little under | Reaction: needs AP kept after your turn |
+| Rebuke 2 (R) | 2 | turn |  | 5.5 | 0.0 | 5.5 | 2.74 | 0.59 | 0.52 | 0.52 | **under** + E2 | E2: Push 1; E2: Push 2; E2: Push 3; Reaction: needs AP kept after your turn |
+| Vow of Enmity 1 | 1 | round |  | 1.2 | 1.1 | 2.3 | 2.27 | 0.49 | 0.43 | 0.43 | **under** |  |
+| Vow of Enmity 2 | 2 | round |  | 2.5 | 1.4 | 3.9 | 1.96 | 0.42 | 0.37 | 0.37 | **under** |  |
+| Vow of Enmity 3 | 3 | round |  | 5.1 | 1.7 | 6.8 | 2.26 | 0.48 | 0.43 | 0.43 | **under** |  |
+| Shield of Faith 1 | 1 | round |  | 0.0 | 0.9 | 0.9 | 0.87 | 0.19 | 0.18 | 0.20 | **under** |  |
+| Shield of Faith 2 | 2 | round |  | 0.0 | 1.7 | 1.7 | 0.87 | 0.19 | 0.18 | 0.20 | **under** |  |
+| Shield of Faith 3 | 3 | round |  | 0.0 | 1.3 | 1.3 | 0.43 | 0.09 | 0.09 | 0.10 | **under** + E2 | E2: Boon on Saves (NPC Save Actions are not modeled) |
+| Sacred Weapon 1 | 1 | round |  | 0.0 | 5.0 | 5.0 | 4.97 | 1.07 | 0.94 | 0.94 | on target |  |
+| Sacred Weapon 2 | 2 | round |  | 0.0 | 9.9 | 9.9 | 4.97 | 1.07 | 0.94 | 0.94 | on target |  |
+| Champion's Challenge 1 | 1 | round |  | 0.0 | 0.6 | 0.6 | 0.63 | 0.14 | 0.13 | 0.14 | **under** |  |
+| Champion's Challenge 2 | 2 | round |  | 0.0 | 1.3 | 1.3 | 0.63 | 0.14 | 0.13 | 0.14 | **under** |  |
+| Word of Radiance 2 | 2 | encounter |  | 13.7 | 0.0 | 13.7 | 6.84 | 1.47 | 1.29 | 1.29 | on target + E2 | E2: Prone |
+| Word of Radiance 3 | 3 | encounter |  | 22.4 | 0.0 | 22.4 | 7.48 | 1.61 | 1.41 | 1.41 | on target + E2 | E2: Prone |
+| Divine Retribution Weapon (R) | 2 | encounter |  | 12.3 | 0.0 | 12.3 | 6.13 | 1.31 | 1.15 | 1.15 | a little under | Reaction: needs AP kept after your turn |
+| Divine Retribution Power (R) | 3 | encounter |  | 11.0 | 0.0 | 11.0 | 3.66 | 0.79 | 0.69 | 0.69 | **under** | Reaction: needs AP kept after your turn |
+| Aura of Protection 1 | 1 | encounter |  | 0.0 | 2.2 | 2.2 | 2.16 | 0.46 | 0.44 | 0.49 | **under** |  |
+| Aura of Protection 2 | 2 | encounter |  | 0.0 | 5.2 | 5.2 | 2.61 | 0.56 | 0.53 | 0.59 | **under** |  |
+| Aura of Protection 3 | 3 | encounter |  | 0.0 | 5.2 | 5.2 | 1.74 | 0.37 | 0.35 | 0.39 | **under** + E2 | E2: Boon on Saves (NPC Save Actions are not modeled) |
+| Miraculous Recovery 2 | 2 | daily |  | 0.0 | 17.6 | 17.6 | 8.80 | 1.89 | 1.86 | 2.07 | a little under + E2 | E2: ends an effect |
+| Miraculous Recovery 3 | 3 | daily |  | 0.0 | 26.4 | 26.4 | 8.80 | 1.89 | 1.86 | 2.07 | a little under + E2 | E2: ends an effect |
+| Consecrated Ground 2 | 2 | daily |  | 0.0 | 21.7 | 21.7 | 10.85 | 2.33 | 2.08 | 2.14 | on target |  |
+| Consecrated Ground 3 | 3 | daily |  | 0.0 | 45.2 | 45.2 | 15.08 | 3.24 | 2.89 | 2.97 | a little over |  |
+| Divine Intervention 1 (R) | 1 | daily |  | 0.0 | 24.5 | 24.5 | 24.51 | 5.26 | 5.26 | 5.26 | **over** | a Down undone or prevented: 35 DE a use, x 70% (how often an ally goes Down in a day); Reaction: needs AP kept after your turn |
+| Divine Intervention 2 (R) | 2 | daily |  | 0.0 | 33.3 | 33.3 | 16.65 | 3.57 | 3.56 | 3.67 | **over** | a Down undone or prevented: 35 DE a use, x 70% (how often an ally goes Down in a day); Reaction: needs AP kept after your turn |
+| Call to Arms | 0 | round | 1 | 0.0 | 15.7 | 15.7 | - | 67% of a turn | 67% | 71% | **over** (0 AP: >25% of a turn) | a Down undone or prevented: 35 DE a use, x 20% (how often an ally goes Down in a fight); there in 70% of the rounds |
+| Divine Surge | 0 | round | 1 | 0.0 | 4.5 | 4.5 | - | 19% of a turn | 17% | 17% | on target (0 AP) | there in 70% of the rounds |
+| Hand of Mercy | 1 | round | 1 | 0.0 | 0.0 | 0.0 | 0.00 | 0.00 | 0.00 | 0.00 | **under** + E2 | E2: ends an effect; there in 70% of the rounds |
+| Judgment | 1 | round | 2 | 5.6 | 0.0 | 5.6 | 5.59 | 1.20 | 1.05 | 1.05 | on target + E2 | E2: Hindered; there in 40% of the rounds |
+| Sanctified Ground | 1 | round | 2 | 0.0 | 2.6 | 2.6 | 2.60 | 0.56 | 0.53 | 0.59 | **under** | there in 40% of the rounds |
+
+**Paladin passives** (DE a turn, weighted by the share of the rounds at its Escalation):
+
+| Passive | Esc | DE a turn (when on) | Weighted | Share of a baseline turn | How / not priced |
+|---|---:|---:|---:|---:|---|
+| Hallowed Stance | 2 | 7.2 | 2.9 | 12% | Body damage: you (chosen 1.5 times as often) and one adjacent ally; only while you don't leave your square |
+| Avenger's Oath | 2 | 0.2 | 0.1 | 0% | about once a fight (a third of the turns) |
+| Aegis |  | 0.0 | 0.0 | 0% | E2 / not modeled: 1 |
+| Divine Vigil | 2 | 0.0 | 0.0 | 0% | E2 / not modeled: Boon on Saves against Fear |
+| Mercy's Reward |  | 1.8 | 1.8 | 8% | 6.0 a Smite after a Lay On Hands that heals; weighted by Lay On Hands on 30% of the turns |
+| Profane Judgment |  | 0.0 | 0.0 | 0% | E2 / not modeled: Enfeebled 1 on Profane creatures |
+
+## 4. Archer: every Action (level 1; efficiency also at levels 2 and 3)
+
+| Action | AP | Frequency | Esc | Damage | Effects | Total DE | DE / AP | Efficiency L1 | L2 | L3 | Verdict (L1) | Not priced yet (E2) / notes |
+|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---|---|
+| Weapon Attack | 1 | at-will |  | 5.5 | 0.0 | 5.5 | 5.50 | 1.18 | 1.03 | 1.03 | a little over |  |
+| Steel Yourself 2 | 2 | round |  | 0.0 | 8.8 | 8.8 | 4.40 | 0.94 | 0.93 | 1.04 | a little under | uses the target's own Rally Points |
+| Reload | 1 | at-will |  | 0.0 | 0.0 | 0.0 | 0.00 | 0.00 | 0.00 | 0.00 | a cost (of a Reload Shot) |  |
+| Double Shot 2 | 2 | round |  | 11.0 | 0.0 | 11.0 | 5.50 | 1.18 | 1.03 | 1.03 | on target |  |
+| Double Shot 3 | 3 | round |  | 12.0 | 0.0 | 12.0 | 4.01 | 0.86 | 0.75 | 0.75 | **under** |  |
+| Precise Aim 1 | 1 | round |  | 0.0 | 0.5 | 0.5 | 0.52 | 0.11 | 0.10 | 0.10 | **under** |  |
+| Precise Aim 2 | 2 | round |  | 0.0 | 1.0 | 1.0 | 0.50 | 0.11 | 0.09 | 0.09 | **under** |  |
+| Lock & Loose | 1 | round |  | 5.5 | 0.0 | 5.5 | 5.52 | 1.18 | 1.04 | 1.04 | on target + E2 | E2: Hindered (until it moves); E2: Immobilized |
+| Quick Draw (R) | 1 | turn |  | 5.5 | 0.0 | 5.5 | 5.50 | 1.18 | 1.03 | 1.03 | on target | Reaction: needs AP kept after your turn |
+| Rolling Shot 1 | 1 | round |  | 5.5 | 0.0 | 5.5 | 5.50 | 1.18 | 1.03 | 1.03 | on target + E2 | E2: Evade 1 |
+| Rolling Shot 2 | 2 | round |  | 6.0 | 0.0 | 6.0 | 3.01 | 0.65 | 0.57 | 0.57 | **under** + E2 | E2: Evade 3 |
+| Wing Clip | 1 | round |  | 7.6 | 0.0 | 7.6 | 7.57 | 1.62 | 1.42 | 1.42 | **over** | E2: Hindered |
+| True Shot | 1 | round |  | 0.0 | 0.0 | 0.0 | 0.00 | 0.00 | 0.00 | 0.00 | **under** + E2 | E2: ignores Cover |
+| Suppressing Fire | 1 | round |  | 0.0 | 0.4 | 0.4 | 0.39 | 0.08 | 0.08 | 0.09 | **under** |  |
+| Volley | 3 | encounter |  | 12.3 | 0.0 | 12.3 | 4.10 | 0.88 | 0.77 | 0.77 | **under** + E2 | E2: Hindered |
+| Marksman's Shot | 2 | encounter |  | 5.5 | 0.8 | 6.3 | 3.17 | 0.68 | 0.60 | 0.60 | **under** |  |
+| Covering Fire | 2 | encounter |  | 0.0 | 2.6 | 2.6 | 1.30 | 0.28 | 0.26 | 0.29 | **under** + E2 | E2: enemies entering take 1d4 |
+| Rain of Arrows | 3 | daily |  | 11.4 | 0.0 | 11.4 | 3.81 | 0.82 | 0.72 | 0.72 | **under** + E2 | E2: the area lasts 2 rounds (hazardous terrain) |
+| Hunter's Focus | 1 | daily |  | 0.0 | 14.2 | 14.2 | 14.16 | 3.04 | 2.66 | 2.66 | a little over |  |
+| Deadeye | 3 | daily |  | 12.4 | 0.0 | 12.4 | 4.14 | 0.89 | 0.78 | 0.78 | **under** + E2 | E2: Prone |
+| Steady Aim | 0 | round | 1 | 0.0 | 0.5 | 0.5 | - | 2% of a turn | 2% | 2% | under (0 AP: <8% of a turn) + E2 | E2: range; there in 70% of the rounds |
+| Vanish | 1 | round | 1 | 0.0 | 0.0 | 0.0 | 0.00 | 0.00 | 0.00 | 0.00 | **under** + E2 | E2: Evade 3; E2: the first Strike against you takes 1 Bane; there in 70% of the rounds |
+| Pinning Shot | 1 | round | 2 | 5.5 | 0.0 | 5.5 | 5.50 | 1.18 | 1.03 | 1.03 | on target + E2 | E2: Immobilized; there in 40% of the rounds |
+| Twin Shot | 1 | round | 3 | 16.0 | 0.0 | 16.0 | 16.05 | 3.44 | 3.02 | 3.02 | **over** | there in 14% of the rounds |
+| Perfect Shot | 0 | round | 3 | 0.0 | 3.5 | 3.5 | - | 15% of a turn | 13% | 13% | on target (0 AP) + E2 | E2: ignores Cover; there in 14% of the rounds |
+
+**Archer passives** (DE a turn, weighted by the share of the rounds at its Escalation):
+
+| Passive | Esc | DE a turn (when on) | Weighted | Share of a baseline turn | How / not priced |
+|---|---:|---:|---:|---:|---|
+| Marked Quarry |  | 1.8 | 1.8 | 8% | the typical turn's Shot Strikes against the quarry, +1 Boon each |
+| Killer's Focus | 2 | 2.5 | 1.0 | 4% | the first qualifying hit each round |
+| Patient Hunter | 2 | 1.8 | 0.7 | 3% | the typical turn's Shots; only while you don't leave your square: against the Archer's role (mobile) |
+| Long Draw |  | 0.0 | 0.0 | 0% | E2 / not modeled: 0 |
+| Steady Nerves | 2 | 0.0 | 0.0 | 0% | E2 / not modeled: no Banes for [Ranged] while Engaged |
+
+## Assumptions
+
+- `heal`: 1.1
+- `downTurns`: 1.5
+- `vulnAttacks`: 2.5
+- `quarryShare`: 0.3
+- `rangedShare`: 0.3
+- `othersShare`: 0.75
+- `roles`: [object Object]
+- Areas: the catalogues write `area N` as the creatures reached (Emanation 1: 1.5, 2: 2, 3: 2.5 of a normal fight's 4 enemies) and `allies N` as the allies reached (Aura 1: 1.5, Aura 2: 2.5, Aura 3: 3, you included).
+- A "next ..." effect is priced on the Action it most likely lands on: a Weapon Attack if it fits, else the 2 AP Version of the Action it names (Smite 2).
+- Divine Retribution: Weapon mode 2R, Power mode 3R (the card has 2 / 3R and two columns).

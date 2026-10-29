@@ -117,6 +117,34 @@ Rally Points carry over; Encounter Actions and Escalation start again each fight
   is lost in 27% (L1) to 45% (L2) of the days; alone, 6 Standards are lost 4% of the time. **Level 2 is harder than level 1** against the Bestiary's
   level 2 NPCs (Standard day cleared 55% against 73%): the Bestiary grows NPC Health by the best turn's growth (+14%), but in real fights the PCs' damage a turn grows 2 to 6%.
 
+## The price list of the core rules (pack E1, 2026-10-29): `econ.mjs`
+
+`node book/ruler/econ.mjs` writes **`prices.md`**: what everything an Action can do is worth in **damage-equivalents (DE)** at levels 1 to 3,
+then every Action, Reaction and passive of `catalogue/paladin.txt` and `catalogue/archer.txt` (every card of the class, in the spec format)
+priced against it, with a verdict for its Frequency. Exact dice math where it can; the simulated Standard day for timing (how many rounds reach
+each Escalation, how often an ally goes Down, how often Lay On Hands is used). Its assumptions are at the end of prices.md, and in `A` at the top of the script.
+
+**The exchange rate (level 1):** 1 AP = 4.66 DE (the Bestiary's baseline turn, 23.3, / 5); a Weapon Attack 5.4; a Standard's turn against AD 13
+7.9; a Rally Point heals 8 (1 Health = 1.1 DE); a Down prevented 35 DE. **The price list:** +1 Boon = +9% of the roll it helps (0.5 DE on a
+Weapon Attack; +1 Modifier and -1 Defense are the same), +1 Bane -10%, Favored +35% (3.7 Boons), Doomed -44%, Empowered 1 = +1 a die that
+lands (+18% on a Greatsword attack, +13% on a Crossbow attack), Vulnerable 1 until its turn ends 1.2 DE, **+1 Defense for a round on an ally 0.87 DE**
+(11% of what it takes), 1 Bane on an enemy's Strikes for its turn 0.87 DE. **Frequency bands** (DE per AP / 4.66): At-will 0.9-1.1, Round 1.0-1.3,
+Encounter 1.4-2.0, Daily 2.0-3.0. **Escalation timing** in a Standard day: Escalation 1 or more in 70% of the rounds, 2 or more 40%, 3 or more 14%.
+
+**What it finds (level 1):**
+- **Buffs and Defense are priced far below damage.** A point of Defense for a round is worth 0.87 DE against 4.66 for the AP that buys it, so
+  Shield of Faith (0.19 of its band), Aura of Protection (0.4-0.6 against an Encounter band of 1.4-2.0), Champion's Challenge (0.14), Vow of Enmity (0.4-0.5),
+  Precise Aim (0.11), Sanctified Ground (0.56) and Suppressing Fire (0.08) are all well under. The Paladin's support kit can't support yet:
+  its only strong support is Lay On Hands (1.89, over: it gives an ally a Steel Yourself for 1 AP) and the Down savers (Divine Intervention 5.3, Call to Arms 67% of a turn for 0 AP).
+- **Nova doesn't exist:** the Paladin's best Encounter turn (Word of Radiance + Smite 2 + an attack, 24.3) deals less than its Round turn (Smite 3 + two attacks with Divine Surge, 29.2).
+  The Archer's Encounter and Daily attacks are under their bands: Marksman's Shot 0.68, Volley 0.88, Deadeye 0.89 and Rain of Arrows 0.82 (Daily band 2.0-3.0).
+- **Over:** Smite 1 (1.60: 1 AP for +1d4 over a Weapon Attack), Wing Clip (1.62), Twin Shot (3.44, now in only 14% of the rounds at Escalation 3), Lay On Hands, Divine Intervention, Call to Arms; a little over: Smite 2, Consecrated Ground 3, Hunter's Focus.
+- **Double Shot 3 is under (0.86):** its 3rd AP buys only 1 DE (a Boon on each attack). Its real value is that its two attacks don't use Strikes or take At-will Banes (not priced).
+- **Role budgets** (sustained with Escalation, Nova, Health, as a share of the baseline): Paladin L1 119% / 104% / 114% against a budget of 85-90% / 150-180% / 120-130%; Archer L1 131% (117% with Twin Shot at Escalation 3) / 82% / 86% against 100-105% / 110-130% / 80-85%.
+  Both classes deal too much sustained damage and too little Nova; the Paladin needs more Health.
+- **Against the roles:** Hallowed Stance (the Paladin, fine: a tank stands) and **Patient Hunter** (the Archer: a Boon only while it doesn't move, against "very mobile").
+- **Not priced yet (pack E2, positions):** Evade, Push, Cover, range, Hindered, Immobilized, Prone, the Boon on Saves (NPC Save Actions), ending an effect: Rolling Shot, Vanish, True Shot, Lock & Loose's and Pinning Shot's riders, Hand of Mercy and Long Draw get "+ E2": their verdicts aren't final.
+
 ## The level 1 PC ruler (2026-10-24, the hand-written scripts)
 
 Computed by `book/ruler/ruler.mjs` with the system's own dice math (foundry/twod12/module/calc.mjs: exploding d12s, Doubles, boons and banes as 1d3-1),
@@ -185,6 +213,7 @@ Health Pool: Human Paladin 36 / 39 / 42, Dwarf Paladin 41 / 44 / 48, Human Arche
 
 ## The scripts in this folder
 - `spec.mjs` with `classes/*.txt` and `fights.txt`: the spec-driven ruler (top of this file); it writes `report.md`.
+- `econ.mjs` with `catalogue/*.txt`: the price list of the core rules (pack E1); it writes `prices.md`.
 
 They import the system's dice math (`foundry/twod12/module/calc.mjs`) by a relative path: run them from anywhere with `node book/ruler/<name>.mjs` or `python3 book/ruler/<name>.py`.
 - `ruler.mjs`: the PC ruler above (a level 1 PC's damage a turn against AD 12 to 14).

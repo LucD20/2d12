@@ -83,6 +83,11 @@ function parseEffect(text) {
   if (what === "area") return { kind: "area", n };
   if (what === "reload") return { kind: "reload" };
   if (what === "reduce") return { kind: "reduce", n };   // a passive: Body damage you take is reduced by n (each NPC Strike)
+  // Effects the price list (econ.mjs) reads; the fight ignores them.
+  if (what === "banes") return { kind: "banes", n, others: /\bothers\b/.test(rest), text: rest };   // the target's (or the area's) Strikes take N Banes
+  if (what === "heal-dice") return { kind: "healdice", dmg: parseDamage(w[1]) };                     // each ally in it heals that at the start of its turns
+  if (what === "reduce-from") return { kind: "reducefrom", n };                                        // damage you take from the target's Actions is reduced by N
+  if (["revive", "prevent-down", "evade", "push", "cover", "remove-effect", "save-boon", "range", "note"].includes(what)) return { kind: what, n: Number.isFinite(n) ? n : 0, text: w.slice(1).join(" ") };
   throw new Error(`unknown effect "${t}"`);
 }
 /** "on 2+: boon 1 next divine; on 3: vulnerable 2" -> [{ min, max, effect }]. "always:" is every tier (and actions with no roll). */
@@ -138,6 +143,9 @@ export function parseSpec(text, file = "spec") {
           else if (fk === "each") a.each = fv.split(",").map(s => parseEffect(s));
           else if (fk === "escalation") a.escalation = Number(fv);
           else if (fk === "different") a.different = true;
+          else if (fk === "allies") a.allies = Number(fv);   // price list: how many allies a buff or heal reaches (default 1)
+          else if (fk === "rounds") a.rounds = Number(fv);   // price list: how many rounds its effects last (default 1)
+          else if (fk === "reaction") a.reaction = true;     // price list: a Reaction (its AP come from the AP kept after your turn)
           else if (fk === "then") a.then = fv.split(",").map(s => s.trim()).filter(Boolean);   // Linked Actions made after its own roll (Smite 3's light)   // its Linked Actions each target a different creature
           else if (fk === "gives") a.gives = words(fv.replace(/^traits\s+/i, ""));   // its Linked Actions also count as having these traits (the book: they keep only their own)
           else a.effects.push(...parseEffects(field));
