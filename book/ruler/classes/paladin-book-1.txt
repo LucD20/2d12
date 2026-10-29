@@ -13,6 +13,7 @@ rally 6
 targeted 1.5          # the tank stands in front: NPCs choose it 1.5 times as often as another PC
 
 weapon Greatsword (melee, two-handed): 0 / 1d8 / 2d6
+speed 5               # Human 5, Paladin +0 (the map model)
 
 action Steel Yourself 2 | ap 2 | round | traits self | heal 1 self     # Basic Action: you use 1 Rally Point
 action Weapon Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod]

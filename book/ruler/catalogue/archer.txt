@@ -40,9 +40,9 @@ action Deadeye | ap 3 | daily | traits ranged shot strike weapon | vs ad | tiers
 # Active Escalations
 action Steady Aim | ap 0 | round | escalation 1 | traits focus self | boon 1 next shot strike; range 5
 action Vanish | ap 1 | round | escalation 1 | traits self | evade 3; note the first Strike against you takes 1 Bane
-action Pinning Shot | ap 1 | round | escalation 2 | traits ranged shot strike weapon | does Weapon Attack | debuff Immobilized
+action Pinning Shot | ap 1 | round | escalation 2 | traits ranged shot strike weapon | does Weapon Attack | debuff Immobilized (EoT)
 action Twin Shot | ap 1 | round | escalation 3 | traits ranged shot strike weapon | does Weapon Attack | each extra 1d6 | area 2     # one roll against two creatures (Escalation 3: Lucas, 2026-10-29)
-action Perfect Shot | ap 0 | round | escalation 3 | traits focus self | favored next ranged shot strike; empowered 2 next ranged shot strike; cover
+action Perfect Shot | ap 0 | round | escalation 3 | traits focus self | always: favored next ranged shot strike; empowered 2 next ranged shot strike; cover
 
 # The typical turn ("for the turn" buffs are priced on it)
 turn Typical: Double Shot 3, Lock & Loose, Weapon Attack

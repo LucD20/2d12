@@ -4,7 +4,8 @@
 // simulation (spec.mjs) for timing (how many turns reach each Escalation). Writes book/ruler/prices.md.
 //   node book/ruler/econ.mjs            writes prices.md and prints it
 //   node book/ruler/econ.mjs --quiet    writes prices.md only
-// What it can't price yet (it needs positions: pack E2) is listed per Action: movement, Evade, Push, Cover, range, Hindered, Immobilized, Prone.
+// Positions (pack E2, positions.mjs with the map model map.mjs) price movement, Evade, Forced Movement, Cover, range, Hindered, Immobilized and Prone;
+// what still has no price (NPC Saves, ending an effect, hazardous areas) is listed per Action.
 import fs from "node:fs";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -12,15 +13,16 @@ const S = await import(new URL("./spec.mjs", import.meta.url).href);
 const C = await import(new URL("../../foundry/twod12/module/calc.mjs", import.meta.url).href);
 const CF = await import(new URL("../../foundry/twod12/module/config.mjs", import.meta.url).href);
 const TW = CF.TWOD12, HERE = fileURLToPath(new URL(".", import.meta.url));
+const PO = await import(new URL("./positions.mjs", import.meta.url).href);   // pack E2: the prices of positions (map.mjs)
 
 /* ------------------------------------------------------------------ the assumptions (each one is in the report) */
 export const A = {
   heal: 1.1,              // 1 Health healed = 1.1 DE (Lucas: "a tiny bit higher" than damage)
   downTurns: 1.5,         // a Down prevented or undone = 1.5 turns of a baseline PC (the turns it would lose) + the Health
   vulnAttacks: 2.5,       // attacks the party makes against a Vulnerable target before its turn ends (the fight sim measures 2.6)
-  quarryShare: 0.3,       // share of an enemy's Strikes aimed at you (Hunter's Focus reduction)
+  quarryShare: 0.3,       // share of an enemy's Strikes aimed at you (Hunter's Focus reduction): an Archer's share, measured by positions (E2) in report()
   rangedShare: 0.3,       // share of NPCs that use [Ranged] Actions (Suppressing Fire)
-  othersShare: 0.75,      // share of an enemy's Strikes aimed at someone other than you (Champion's Challenge)
+  othersShare: 0.75,      // share of an enemy's Strikes aimed at someone other than you (Champion's Challenge): 1 - a Paladin's share, measured by positions (E2) in report()
   surgeLands: 0.9,        // Divine Surge: chance that an ally damages the target before your next turn
   hitBeforeTurn: 0.95,
   guardUsed: 0.3,         // Guard (proposed): share of it that a later hit uses before the encounter ends (the Standard day: 1.3 of 4.5 a turn on the Paladin itself)    // a ward Reaction (block): chance that an ally within reach is hit before your next turn
@@ -108,17 +110,27 @@ export function priceEffect(b, a, e, r) {
     case "reducefrom": return { v: e.n * r.hits * A.quarryShare * (a.rounds ?? 1) };
     case "revive": case "prevent-down": { const pDown = a.freq === "daily" ? r.pDownDay : r.pDownFight;
       return { v: r.down * pDown, note: `a Down undone or prevented: ${r.down.toFixed(0)} DE a use, x ${Math.round(pDown * 100)}% (how often an ally goes Down ${a.freq === "daily" ? "in a day" : "in a fight"})` }; }
-    case "debuff": return /next Save/.test(e.name) ? { v: 0.2 } : { v: 0, e2: e.name };
-    case "evade": case "push": return { v: 0, e2: `${e.kind === "evade" ? "Evade" : "Push"} ${e.n}` };
-    case "cover": return { v: 0, e2: "ignores Cover" };
-    case "range": return { v: 0, e2: "range" };
+    case "debuff": { if (/next Save/.test(e.name)) return { v: 0.2 };
+      const v = PO.priceOf("debuff", e.name); return v == null ? { v: 0, e2: e.name } : { v: v * lvScale(r), note: `${e.name}: ${f2(v * lvScale(r))} (positions)` }; }
+    case "push": case "pull": case "slide": { const v = PO.priceOf(e.kind, "", e.n) * lvScale(r); return { v, note: `${{ push: "Pushed", pull: "Pulled", slide: "Slid" }[e.kind]} ${e.n}: ${f2(v)} (positions)` }; }
+    case "evade": { const st = PO.prices(1).stats, v = st.turnsEngaged * r.perAP;   // the AP of the step away, on the turns the Archer starts Engaged
+      return { v, note: `Evade ${e.n}: saves the step away (1 AP) on the ${pc(st.turnsEngaged)} of the turns it starts Engaged` }; }
+    case "cover": { const st = PO.prices(1).stats, v = st.coverBanes * baneOnWA(b, r); return { v, note: `ignores Cover: ${f2(st.coverBanes)} Banes on an average shot` }; }
+    case "range": { const st = PO.prices(1).stats, v = Math.min(1, st.rangeBanes) * baneOnWA(b, r); return { v, note: `range: ${f2(st.rangeBanes)} range Banes on an average shot` }; }
     case "save-boon": return { v: 0, e2: "Boon on Saves (NPC Save Actions are not modeled)" };
-    case "remove-effect": return { v: 0, e2: "ends an effect" };
+    case "remove-effect": { const v = endEffect() * lvScale(r); return { v, note: `ends an effect: ${f2(v)} (the average Moderate condition on a PC, positions)` }; }
     case "note": return { v: 0, e2: e.text || "not modeled" };
     case "area": case "reload": return { v: 0 };
     default: return { v: 0, e2: e.kind };
   }
 }
+/** Positions are measured at level 1: a higher level scales them by its AP price. */
+const lvScale = r => r.perAP / rates1().perAP;
+let R1 = null; const rates1 = () => (R1 ??= rates(1));
+/** The value of 1 Bane on a Weapon Attack of this build (what removing one is worth). */
+const baneOnWA = (b, r) => { const wa = b.actions["weapon attack"]; return wa ? dmgOf(b, wa, r) - dmgOf(b, wa, r, { banes: 1 }) : 0.55; };
+/** Ending an effect on an ally: the average Moderate condition on a PC (positions.mjs). */
+const endEffect = () => { const m = PO.prices(1).pc.filter(x => x.sev === "Moderate"); return m.reduce((s2, x) => s2 + x.avg, 0) / m.length; };
 /** Damage + effects of an Action (each effect weighted by the chance of its tier; target effects times the creatures reached). */
 export function valueOf(b, a, r) {
   const dmg = dmgOf(b, a, r), e2 = [], notes = [];
@@ -141,12 +153,12 @@ const cls = name => S.parseSpec(fs.readFileSync(HERE + "classes/" + name, "utf8"
 /** The party of a Standard day for a build: two of it with two of the other class's main build at its level. */
 export const partyFor = file => { const b = cls(file), lv = b.level, pal = `paladin-smite-${lv}.txt`, arc = `archer-${lv}.txt`;
   return /^Archer/.test(b.name) ? [cls(pal), cls(pal), b, b] : [b, b, cls(arc), cls(arc)]; };
-const dayStats = (lv, file = `paladin-smite-${lv}.txt`, n = 800) => {
+const dayStats = (lv, file = `paladin-smite-${lv}.txt`, n = 800, map = S.MAP) => {
   const fights = S.parseFights(fs.readFileSync(HERE + "fights.txt", "utf8")), d = fights.days[0];
   const party = partyFor(file), R = S.rng(17), log = [];
   let fightsRun = 0, fightsDown = 0, daysDown = 0, loh = 0, turns = 0, mercy = 0, combatRp = 0; const real = {};
   for (let k = 0; k < n; k++) {
-    const res = S.day(party, d.fights.map(f => f.map(x => S.npcOf(x.role, x.rating, lv))), R);
+    const res = S.day(party, d.fights.map(f => f.map(x => S.npcOf(x.role, x.rating, lv, x))), R, { map });
     for (const f of res.fights) { fightsRun++; if (f.firstDown) fightsDown++; log.push({ rounds: f.rounds, start: f.startEsc ?? 0 }); }
     if (res.pcs.some(p => p.st.downs)) daysDown++;
     loh += res.pcs.reduce((s, p) => s + p.st.rpByAlly, 0); turns += res.pcs.filter(p => /^Paladin/.test(p.build.name)).reduce((s, p) => s + p.st.rounds, 0);
@@ -181,11 +193,13 @@ const CATALOGUE_NOTES = {
   "catalogue/paladin.txt": "**The Paladin before P1** (the book until 2026-10-29), kept to compare.",
 };
 export function report() {
+  // Measured by positions (pack E2) instead of assumed: who the NPCs strike on the map.
+  const ST = PO.prices(1).stats; A.quarryShare = +(ST.struckArcher / 2).toFixed(2); A.othersShare = +(1 - ST.struckPal / 2).toFixed(2);
   const L = [], R = [1, 2, 3].map(rates), esc = escalationShare();
   const load = f => S.parseSpec(fs.readFileSync(HERE + "catalogue/" + f, "utf8"), `catalogue/${f}`);
   const catFiles = fs.readdirSync(HERE + "catalogue").filter(f => f.endsWith(".txt")).sort((x, y) => (x.startsWith("paladin-p1") ? -1 : y.startsWith("paladin-p1") ? 1 : x.localeCompare(y)));
   const cats = catFiles.map(load), pal = cats.find(c => c.file === "catalogue/paladin.txt"), arc = cats.find(c => c.file === "catalogue/archer.txt");
-  L.push("# The price list of the core rules (pack E1)", "", "Written by `node book/ruler/econ.mjs` from the class catalogues (`book/ruler/catalogue/*.txt`) and the system's dice math. Don't edit this file: edit those and run it again.", "");
+  L.push("# The price list of the core rules (pack E1; positions: pack E2)", "", "Written by `node book/ruler/econ.mjs` from the class catalogues (`book/ruler/catalogue/*.txt`) and the system's dice math. Don't edit this file: edit those and run it again.", "");
   L.push("Everything is priced in **damage-equivalents (DE)**: average damage against the level's Medium Standard (AD and WD 13, Saves +1, Body +2), with Weapon and Power Modifier +2 (no Attribute growth in levels 1 to 3 yet).", "");
   // 1. The exchange rate.
   L.push("## 1. The exchange rate", "", "| | Level 1 | Level 2 | Level 3 | Where it comes from |", "|---|---:|---:|---:|---|");
@@ -221,12 +235,12 @@ export function report() {
   P("1 Bane on one enemy's Strikes for its turn", r1.banes(1), pc(r1.banes(1) / r1.incoming), "the same as +1 Defense for everyone it attacks");
   P("A Rally Point used in a fight", r1.rallyHeal * A.heal, "-", "Steel Yourself pays 2 AP for it: " + f2(r1.rallyHeal * A.heal / 2) + " DE per AP");
   P("A Down prevented or undone", r1.down, "-", "");
-  L.push("", `**Frequency bands** (DE per AP, divided by the price of 1 AP): At-will ${A.bands["at-will"].join(" to ")}, Round and Turn ${A.bands.round.join(" to ")}, Encounter ${A.bands.encounter.join(" to ")}, Daily ${A.bands.daily.join(" to ")}. An At-will Action takes a Bane on each use after the first, so its first use can sit at the top. A **0 AP** Action is priced per use as a share of a baseline turn. Verdict: **under** or **over** when more than 10% outside its band; **+ E2** when part of its value (movement, Evade, Push, Cover, range, Hindered, Immobilized, Prone, Saves) can't be priced before pack E2, so the verdict isn't final.`, "");
+  L.push("", `**Frequency bands** (DE per AP, divided by the price of 1 AP): At-will ${A.bands["at-will"].join(" to ")}, Round and Turn ${A.bands.round.join(" to ")}, Encounter ${A.bands.encounter.join(" to ")}, Daily ${A.bands.daily.join(" to ")}. An At-will Action takes a Bane on each use after the first, so its first use can sit at the top. A **0 AP** Action is priced per use as a share of a baseline turn. Verdict: **under** or **over** when more than 10% outside its band; **+ ?** when part of its value is still not modeled (NPC Saves, hazardous areas), so the verdict isn't final. Movement, Evade, Forced Movement, Cover, range, Hindered, Immobilized, Prone and ending an effect are priced by positions (pack E2, section 5).`, "");
   // Role budgets.
   L.push("## 3. The role budgets (every build of `classes/`)", "",
     "Shares of the baseline PC: damage against the Bestiary's baseline turn of the level (" + R.map(r => f1(r.B)).join(" / ") + " at levels 1 / 2 / 3), and in brackets against the charter's growth curve (+" + pc(A.growth) + " a level: " + [1, 2, 3].map(lv => f1(R[0].B * (1 + A.growth * (lv - 1)))).join(" / ") + "; pack E3 refits the Bestiary to it). Health against the baseline Pool (" + R.map(r => f1(r.avgPool)).join(" / ") + ").", "",
-    "**Sustained (best)**: the best turn with no Encounter or Daily Action and no Escalation (a Reload Shot turn and heal turns left out). **Nova**: the best turn with an Encounter or Daily Action, at the Escalation it spends or the Escalation Momentum starts a fight with (" + [1, 2, 3].map(lv => S.MOMENTUM.startEsc(lv)).join(" / ") + "), whichever is more. **Sustained (real)**: the damage a turn in the simulated Standard day on the turns without an Encounter or Daily Action (openings, Steel Yourself turns and Escalation as the plan spends it, Momentum on); **this is the column the sustained budget is checked on**. **All turns**: the same with the Nova turns in (a once-a-fight Nova is about a third of a PC's turns: fights last about 3 rounds).", "",
-    "| Build | Sustained (best) | Nova | Sustained (real) | All turns (real) | Health | Budget: sustained / Nova / Health | Verdict |", "|---|---:|---:|---:|---:|---:|---|---|");
+    "**Sustained (best)**: the best turn with no Encounter or Daily Action and no Escalation (a Reload Shot turn and heal turns left out). **Nova**: the best turn with an Encounter or Daily Action, at the Escalation it spends or the Escalation Momentum starts a fight with (" + [1, 2, 3].map(lv => S.MOMENTUM.startEsc(lv)).join(" / ") + "), whichever is more. **Sustained (real)**: the damage a turn in the simulated Standard day on the turns without an Encounter or Daily Action (openings, Steel Yourself turns and Escalation as the plan spends it, Momentum on); **this is the column the sustained budget is checked on**. **All turns**: the same with the Nova turns in (a once-a-fight Nova is about a third of a PC's turns: fights last about 3 rounds). The real columns use the map model (pack E2: positions, movement, Banes from range, cover and shooting into melee, Flanking); **No positions** is the sustained real damage in the old fight with no map, to compare.", "",
+    "| Build | Sustained (best) | Nova | Sustained (real) | No positions | All turns (real) | Health | Budget: sustained / Nova / Health | Verdict |", "|---|---:|---:|---:|---:|---:|---:|---|---|");
   const classFiles = fs.readdirSync(HERE + "classes").filter(f => f.endsWith(".txt")).sort();
   for (const file of classFiles) {
     const b = S.parseSpec(fs.readFileSync(HERE + `classes/${file}`, "utf8"), `classes/${file}`), r = R[b.level - 1], role = roleOf(b);
@@ -239,17 +253,18 @@ export function report() {
     const best = list => list.reduce((m, x) => Math.max(m, x.v.avg), 0);
     const s0 = best(rows.filter(x => !x.nova && x.esc === 0)), nv = best(rows.filter(x => x.nova));
     const real = (REAL[file] ??= dayStats(b.level, file, 500).real[`classes/${file}`]) ?? {};
+    const flat = dayStats(b.level, file, 500, { ...S.MAP, on: false }).real[`classes/${file}`] ?? {};
     const curve = R[0].B * (1 + A.growth * (b.level - 1));
     const both = x => (Number.isFinite(x) ? `${f1(x)} (${pc(x / r.B)}${b.level > 1 ? `; ${pc(x / curve)}` : ""})` : "-");
     const fit = (x, [lo, hi]) => (x < lo * 0.97 ? "low" : x > hi * 1.03 ? "high" : "ok");
     const share = x => x / (b.level > 1 ? curve : r.B);   // the verdict uses the charter's curve from level 2
     const v = [`sustained ${fit(share(real.sustained), role.sustained)}`, `Nova ${nv ? fit(share(nv), role.nova) : "none"}`, `Health ${fit(b.pool / r.avgPool, role.health)} (${pc(b.pool / r.avgPool)})`];
-    L.push(`| ${b.name} L${b.level} \`${file.replace(/\.txt$/, "")}\` | ${both(s0)} | ${nv ? both(nv) : "-"} | ${both(real.sustained)} | ${both(real.all)} | ${b.pool} (${pc(b.pool / r.avgPool)}) | ${pc(role.sustained[0])}-${pc(role.sustained[1])} / ${pc(role.nova[0])}-${pc(role.nova[1])} / ${pc(role.health[0])}-${pc(role.health[1])} | ${v.join("; ")} |`);
+    L.push(`| ${b.name} L${b.level} \`${file.replace(/\.txt$/, "")}\` | ${both(s0)} | ${nv ? both(nv) : "-"} | ${both(real.sustained)} | ${both(flat.sustained)} | ${both(real.all)} | ${b.pool} (${pc(b.pool / r.avgPool)}) | ${pc(role.sustained[0])}-${pc(role.sustained[1])} / ${pc(role.nova[0])}-${pc(role.nova[1])} / ${pc(role.health[0])}-${pc(role.health[1])} | ${v.join("; ")} |`);
   }
   L.push("", `Roles: Paladin: ${A.roles.Paladin.note}. Archer: ${A.roles.Archer.note}. The verdict at level 2 and 3 uses the charter's curve (the Bestiary's level 3 baseline doesn't grow yet).`, "");
   // 4. The audit.
   for (const b of cats) {
-    L.push(`## 4. ${b.name}: every Action of \`${b.file}\` (level 1; efficiency also at levels 2 and 3)`, "", ...(CATALOGUE_NOTES[b.file] ? [CATALOGUE_NOTES[b.file], ""] : []), "| Action | AP | Frequency | Esc | Damage | Effects | Total DE | DE / AP | Efficiency L1 | L2 | L3 | Verdict (L1) | Not priced yet (E2) / notes |", "|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---|---|");
+    L.push(`## 4. ${b.name}: every Action of \`${b.file}\` (level 1; efficiency also at levels 2 and 3)`, "", ...(CATALOGUE_NOTES[b.file] ? [CATALOGUE_NOTES[b.file], ""] : []), "| Action | AP | Frequency | Esc | Damage | Effects | Total DE | DE / AP | Efficiency L1 | L2 | L3 | Verdict (L1) | Notes (positions; what is not modeled) |", "|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---|---|");
     for (const a of Object.values(b.actions)) {
       if (!a.ap && !a.escalation && a.name !== "Smite Light") continue;
       if (a.name === "Smite Light") continue;   // counted inside Smite 3
@@ -257,8 +272,8 @@ export function report() {
       const eff = R.map((r, i) => (a.ap ? v[i].total / a.ap / r.perAP : v[i].total / r.B));
       let verd = a.ap ? verdict(eff[0], freq) : (eff[0] > 0.25 ? "**over** (0 AP: >25% of a turn)" : eff[0] < 0.08 ? "under (0 AP: <8% of a turn)" : "on target (0 AP)");
       if (a.name === "Reload") verd = "a cost (of a Reload Shot)";
-      else if (v[0].e2.length && !/over/.test(verd)) verd += " + E2";   // part of its value needs positions: not final
-      const extra = [...v[0].e2.map(x => `E2: ${x}`), ...v[0].notes, a.reaction ? "Reaction: needs AP kept after your turn" : "", a.escalation ? `costs ${a.escalation} Escalation: ${f2(DAY.uses(a.escalation))} uses a fight (${f2(DAY.uses(a.escalation, false))} without Momentum), ${f1(v[0].total * (a.effects.some(e => e.effect.kind === "revive") ? Math.min(1, DAY.uses(a.escalation)) : DAY.uses(a.escalation)) / DAY.roundsPerFight)} DE a turn` : ""].filter(Boolean).join("; ");
+      else if (v[0].e2.length && !/over/.test(verd)) verd += " + ?";   // part of its value is not modeled: not final
+      const extra = [...v[0].e2.map(x => `not modeled: ${x}`), ...v[0].notes, a.reaction ? "Reaction: needs AP kept after your turn" : "", a.escalation ? `costs ${a.escalation} Escalation: ${f2(DAY.uses(a.escalation))} uses a fight (${f2(DAY.uses(a.escalation, false))} without Momentum), ${f1(v[0].total * (a.effects.some(e => e.effect.kind === "revive") ? Math.min(1, DAY.uses(a.escalation)) : DAY.uses(a.escalation)) / DAY.roundsPerFight)} DE a turn` : ""].filter(Boolean).join("; ");
       L.push(`| ${a.name}${a.reaction ? " (R)" : ""} | ${a.ap} | ${freq} | ${a.escalation || ""} | ${f1(v[0].dmg)} | ${f1(v[0].fx)} | ${f1(v[0].total)} | ${a.ap ? f2(v[0].total / a.ap) : "-"} | ${a.ap ? f2(eff[0]) : pc(eff[0]) + " of a turn"} | ${a.ap ? f2(eff[1]) : pc(eff[1])} | ${a.ap ? f2(eff[2]) : pc(eff[2])} | ${verd} | ${extra} |`);
     }
     L.push("");
@@ -269,17 +284,20 @@ export function report() {
       let v = 0, how = "";
       if (e.kind === "boon" && e.quarry) { v = onTypical(b, e, r1, { boons: e.n }); how = `the typical turn's Shot Strikes against the quarry, +${e.n} Boon each`; }
       else if (e.kind === "boon" && e.scope === "next" && !e.quarry) { v = on(b, { boons: e.n }) / 3; how = "about once a fight (a third of the turns)"; }
-      else if (e.kind === "boon") { v = onTypical(b, e, r1, { boons: e.n }); how = "the typical turn's Shots; only while you don't leave your square: against the Archer's role (mobile)"; }
+      else if (e.kind === "boon") { const still = PO.prices(1).stats.stillTurns; v = onTypical(b, e, r1, { boons: e.n }) * still; how = `the typical turn's Shots, on the ${pc(still)} of the Archer's turns it hasn't left its square since its last one (positions): against the Archer's role (mobile)`; }
       else if (e.kind === "extra") { v = S.avgDamage(e.dmg, null, 2, 0) * pDeals(b, wa(b), r1); how = "the first qualifying hit each round"; }
       else if (e.kind === "reduce") { v = Math.min(e.n, r1.hitAvg) * r1.hits * (1.5 + 1); how = "Body damage: you (chosen 1.5 times as often) and one adjacent ally; only while you don't leave your square"; }
       else if (e.kind === "bonus") { const t = b.turns.typical; v = t ? t.steps.map(x => b.actions[x.toLowerCase()]).filter(a => a?.tiers && (e.traits ?? []).every(tr => traitsOf(b, a).includes(tr))).reduce((s2, a) => s2 + e.n * pDeals(b, a, r1), 0) : 0; how = `+${e.n} on each damaging hit of the typical turn's matching Actions`; }
       else if (e.kind === "rallybonus") { const rp = DAY.combatRpPerTurn; v = rp * e.n * A.heal; how = `+${e.n} on every Rally Point the party uses in a fight (Escalation is 0 between fights): ${f2(rp)} a Paladin turn in the Standard day (a Lay On Hands party uses more: ${f2(DAYH.combatRpPerTurn)}, ${f1(DAYH.combatRpPerTurn * e.n * A.heal)} DE)`; }
       else if (e.kind === "empowered") { const s2 = b.actions["smite 2"]; v = s2 ? (dmgOf(b, s2, r1, { empowered: e.n }) - dmgOf(b, s2, r1)) : 0; how = `${f1(v)} a Smite after a Lay On Hands that heals; weighted by Lay On Hands on ${pc(r1.lohPerTurn)} of the turns`; v *= r1.lohPerTurn; }
-      else { how = `E2 / not modeled: ${e.text || (e.kind === "save-boon" ? "Boon on Saves" : e.kind)}`; }
+      else if (e.kind === "steady-nerves" || (e.kind === "note" && /Engaged/.test(e.text))) { const st = PO.prices(1).stats, shots = st.shots / st.archerTurns; v = st.engagedShots * shots * 2 * baneOnWA(b, r1); how = `2 Banes off the ${pc(st.engagedShots)} of the shots made while Engaged (the Archer kites: positions); an Archer that doesn't kite: section 5`; }
+      else if (e.kind === "range" || e.kind === "long-draw") { const st = PO.prices(1).stats, shots = st.shots / st.archerTurns; v = Math.min(1, st.rangeBanes) * shots * baneOnWA(b, r1); how = `1 range Bane off (${f2(st.rangeBanes)} a shot on average: positions)`; }
+      else { how = `not modeled: ${e.text || (e.kind === "save-boon" ? "Boon on Saves" : e.kind)}`; }
       L.push(`| ${p.name} | ${p.escalation || ""} | ${f1(v)} | ${f1(v * w)} | ${pc((v * w) / r1.B)} | ${how} |`);
     }
     L.push("");
   }
+  L.push(PO.section(1));
   L.push("## Assumptions", "", ...Object.entries(A).filter(([k]) => k !== "bands").map(([k, v]) => `- \`${k}\`: ${v}`), "- Areas: the catalogues write `area N` as the creatures reached (Emanation 1: 1.5, 2: 2, 3: 2.5 of a normal fight's 4 enemies) and `allies N` as the allies reached (Aura 1: 1.5, Aura 2: 2.5, Aura 3: 3, you included).", "- A \"next ...\" effect is priced on the Action it most likely lands on: a Weapon Attack if it fits, else the 2 AP Version of the Action it names (Smite 2).", "- Divine Retribution: Weapon mode 2R, Power mode 3R (the card has 2 / 3R and two columns).", "");
   return L.join("\n");
 }

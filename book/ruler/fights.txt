@@ -1,6 +1,7 @@
 # The party fights (node book/ruler/spec.mjs). The party names class files (a file name, or a class name + the level below).
 # encounter <name>: <count> <role> [rating], ...  (rating Medium unless given; NPCs use the Bestiary at this level, Foundry's default ratings)
 level 1
+map on
 runs 2000
 defenses 12 13 14
 party paladin-smite-1, paladin-hands-1, archer-1, archer-1

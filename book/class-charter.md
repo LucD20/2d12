@@ -47,7 +47,7 @@ level keeps the same total budget. The Paladin, for example, can start with an E
 | **2** | 1 Encounter Pick · 1 Talent |
 | **3** | 1 Daily Pick · 1 Passive Escalation |
 
-- **The growth curve (Proposed):** about **+10% sustained damage a level** (level 1: 100% of the baseline PC, level 2: 110%, level 3: 120%),
+- **Replaced (brainstorm 2026-10-29; pack LV, decided by Lucas: model A, book/progression-lv.md: no sustained growth inside a tier, steps at levels 5 and 8).** **The growth curve (Proposed):** about **+10% sustained damage a level** (level 1: 100% of the baseline PC, level 2: 110%, level 3: 120%),
   from the Talents; the Encounter Pick (level 2) and the Daily Pick (level 3) grow the Nova. The Bestiary's levels follow the same curve (pack E3),
   which also fixes today's problem: the Bestiary grows NPC Health 14% at level 2 while the PCs' real damage grows 2 to 6%.
 - **The Nova at level 1:** a class whose role has Nova (the Paladin) takes its Encounter Pick at level 1 (the template's level 2 Pick moves).
@@ -82,7 +82,9 @@ From `prices.md` (level 1): **1 AP = 4.66 DE**; +1 Boon = +9% of the roll (0.5 D
 Favored +35%, Doomed -44%; Empowered 1 = +1 a die that lands; Vulnerable 1 until its turn ends 1.2 DE; +1 Defense for a round on an ally 0.87 DE;
 1 Bane on an enemy's Strikes for its turn 0.87 DE; a Rally Point 8.8 DE; a Down prevented 35 DE. **Frequency bands** (DE per AP / 4.66):
 At-will 0.9-1.1, Round 1.0-1.3, Encounter 1.4-2.0, Daily 2.0-3.0 (Proposed). A card is written to its band; pack E2 prices what needs
-positions (movement, Evade, Push, Cover, range, Hindered, Immobilized, Prone).
+positions (movement, Evade, Push, Cover, range, Hindered, Immobilized, Prone): **done** (prices.md section 5). On one Standard: Immobilized (EoT) 4.7 DE (an AP),
+Slowed 2 3.6, Hindered (EoT) 1.5, Slowed 1 1.4, Prone 1.2, a Push of any length about 1, Vulnerable 1 0.6; an Evade is worth the AP of the step away on the 47% of
+an Archer's turns that start Engaged; ±1 Speed nothing on an open field.
 
 **Design consequence:** a point of Defense or a Bane for one round is worth a fifth of an AP. Support Actions need to reach several allies,
 last several rounds, or carry a damage rider to be worth their AP.
@@ -115,7 +117,7 @@ last several rounds, or carry a damage rider to be worth their AP.
 1. **This charter** (done; Lucas answered its open points on 2026-10-29).
 2. **P1: the Paladin main build**: 2 Features, both Signatures (Smite and Lay On Hands, already strong identities), one default for every
    Pick, written to section 4 and checked in the simulated days. It goes first: it relies less on positions.
-3. **E2: positions in the ruler** (movement, Evade, Push, Cover, range, Hindered, Immobilized, Prone): the Archer's identity needs it.
+3. **E2: positions in the ruler** (movement, Evade, Push, Cover, range, Hindered, Immobilized, Prone): the Archer's identity needs it. **Done 2026-10-29** (book/ruler/map.mjs, positions.mjs; prices.md section 5): on the map the Archer's real sustained damage is 96% of the baseline (121% without positions), the Paladin's 81%; the conditions have prices.
 4. **A1: the Archer rewrite and main build**, with E2's prices.
 5. **E3: the Bestiary refit** to the new baseline and the growth curve of section 3.
 6. **Options**: every other Pick as a sidegrade priced against the default; then the Talents (Class Expertise included), checked for overlap.
