@@ -1,7 +1,7 @@
-# Paladin, level 1 (book/rules-src/12-paladin.md). A Human Paladin: Body 2, Mind 1, Heavy armor, a Greatsword.
+# Paladin, level 1, AS THE BOOK HAS IT TODAY (book/rules-src/12-paladin.md, before pack P1): kept to compare with the P1 main build (paladin-smite-*, paladin-hands-*).
 # Level 1: Smite and Lay On Hands; the Encounter Pick: Word of Radiance; Escalation: Hallowed Stance (passive) and Divine Surge (active).
 # The format: book/ruler/README.md, "The spec files". Run: node book/ruler/spec.mjs
-class Paladin
+class Paladin (book)
 role tank / support
 level 1
 attributes body 2, mind 1, instinct 0, appeal 0

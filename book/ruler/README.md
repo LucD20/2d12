@@ -41,26 +41,30 @@ One thing per line; `#` starts a comment. A class file (`classes/paladin-1.txt` 
 | `weapon` | `weapon Crossbow (ranged, projectile, reload): 0 / 1d4+2 / 1d10+2` | Its properties in brackets, then Tier 1 / 2 / 3. A [Weapon] Action takes Ranged or Melee from it, and Shot when it is Projectile |
 | `action` | see below | One Version of an Action (write Versions as `Smite 2`, `Smite 3`: they share Frequency) |
 | `passive` | `passive Marked Quarry: boon 1 shot strike quarry` · `passive Killer's Focus: escalation 2: extra 1d6 first shot strike weapon` | Always on (from an Escalation) |
-| `turn` | `turn Main: Smite 2, Weapon Attack, Weapon Attack, move 1` | A turn: Actions in order; `move N` spends AP; `(reload shot)` after a Weapon Action makes it a Reload Shot |
-| `plan` | `plan Opening, Main` | The turn of round 1, round 2...; the last one repeats |
+| `turn` | `turn Main: Smite 2, Weapon Attack, Weapon Attack, move 1` | A turn: Actions in order; `move N` spends AP; `(reload shot)` after a Weapon Action makes it a Reload Shot; `(keep 2)` after an Escalation Active spends it only if 2 are left after (holding for a passive) |
+| `plan` | `plan Opening, Main` · `plan Nova, Consecrate \| Main, Main` | The turn of round 1, round 2...; the last one repeats. `A \| B`: A while its Encounter and Daily Actions are unused (a Daily only in a hard fight), else B |
 | `when` | `when ally below 50%: Heal` · `when self below 35%: Steel` · `when unloaded: Reload turn` | A turn that replaces the plan's |
 
 An `action` line is fields separated by `|`: the name, then any of
 `ap N` · a Frequency (`at-will`, `turn`, `round`, `encounter`, `daily`) · `traits a b c` · `vs ad` / `vs wd` / `vs save instinct` / `vs dc 13` ·
 `tiers T1 / T2 / T3` (damage as the book writes it: `[B] 1[W] + [Mod] + [M] 2d6 Ho`; pools and damage types are read and ignored) ·
-`escalation N` · `area N` (how many creatures it hits) · `does Weapon Attack x2` (Linked Actions) with `each boon 1` / `each extra 1d6` and
+`escalation N` · `favored` (its own roll is Favored) · `area N` (how many creatures it hits) · `allies N` and `rounds N` (how many allies a buff, heal or area reaches, and for how long) · `does Weapon Attack x2` (Linked Actions) with `each boon 1` / `each extra 1d6` and
 `different` (each against a different creature) · `then Smite Light` (a Linked Action after its roll) · effects.
 
 Effects: `on 2+: ...`, `on 3: ...`, `on 1: ...` or `always: ...`, several separated by `;`:
 `boon N next <traits>` · `bane N next ...` · `empowered N next ...` / `empowered N turn` (every Action of the turn) · `favored next ...` ·
 `extra 1d8 next @Smite` (`@Name`: only that Action) · `vulnerable N` · `taunt N` (Banes on the target's attacks against others) ·
 `heal N` (the most hurt ally uses N of its Rally Points; `heal N self`: you do) · `debuff Prone` (counted in the day report only) · `defense N ally` / `defense N allies` / `defense N self` (until your next turn) · `reload` ·
-`reduce N` (a passive: each NPC hit deals N less). The traits after `next` must all be on the Action (the book's [Shot, Strike] rule);
+`reduce N` (a passive: each NPC hit deals N less; `reduce 2 adjacent 1`: also for 1 adjacent ally, the one most often in front) ·
+`mend 1d8 any` (new Health, not a Rally Point: `any` the most hurt of you and your allies, `ally`, `self`) · `surge 1d8` (the next ally who damages the target before your next turn deals that extra, credited to you) ·
+`banes N strike power` with `area`/`rounds` (the enemies in the area take N Banes on their Strikes while it lasts) · `heal-dice 1d4` with `allies`/`rounds` (they heal it at the start of their turns) ·
+`bonus N <traits>` (a passive: +N damage on matching Actions that deal damage) · `rally-bonus N` (a passive: you and your allies heal N more for each Rally Point; the best one in the party counts) ·
+`block 1d6+[Mod]` (price list only: a ward Reaction that takes that much off one hit on an ally). The traits after `next` must all be on the Action (the book's [Shot, Strike] rule);
 `quarry` limits it to your Marked Quarry.
 
 The fight (`fights.txt`): `level`, `runs`, `defenses`, `party Paladin, Paladin, Archer, Archer`, and `encounter <name>: 4 standard` or
 `1 elite, 2 standard high` (a rating after the role, Medium by default). Days: `day-runs 1000`, `day <name>: <fight> | <fight> | ...` and
-`day-party <name>: paladin-1, archer-1, ...` (class file names; the NPCs use the party's level). NPCs are the Bestiary's at that level with Foundry's default
+`day-party <name>: paladin-smite-1, archer-1, ...` (class file names; the NPCs use the party's level). A Daily Action is kept for a hard fight (CV 1.25 or more per PC) or the last fight of the day. `party` takes file names too. NPCs are the Bestiary's at that level with Foundry's default
 ratings (Body High, the rest Medium): a Standard has 57 Health, Defense 13, Modifier +2. What the fight leaves out: movement and
 positions, Reactions, Rally Points used by the PCs themselves, NPC special Actions, Body and Mind as two pools.
 
@@ -116,6 +120,16 @@ Rally Points carry over; Encounter Actions and Escalation start again each fight
 - **The day:** normal fights cost 20 to 35% of the party's Health each; Rally Points run out after about 4 fights (7 to 26% left). A hard fight at the end of the day (2 Elites + 2 Standards)
   is lost in 27% (L1) to 45% (L2) of the days; alone, 6 Standards are lost 4% of the time. **Level 2 is harder than level 1** against the Bestiary's
   level 2 NPCs (Standard day cleared 55% against 73%): the Bestiary grows NPC Health by the best turn's growth (+14%), but in real fights the PCs' damage a turn grows 2 to 6%.
+
+## The Paladin main build (pack P1, 2026-10-29): PROPOSED
+
+`classes/paladin-smite-1..3.txt` and `paladin-hands-1..3.txt` are the P1 main build with each Signature (`paladin-smite-1-hold.txt`: the same, holding
+Escalation for Hallowed Stance); `paladin-book-1.txt` is today's Paladin (the old level 2 files are in `classes/old/`, not read); `archer-3.txt` is a
+stand-in (the level 2 Archer at level 3) until A1. `catalogue/paladin-p1.txt` prices the new cards. The cards, the budget table and the
+questions: **`book/paladin-p1.md`**. Level 1: sustained 86-87% of the baseline (today's Paladin 109%), Nova 151-161% (104%), Health 124% (114%),
+support 18-27% of a turn; growth +10% a level. `econ.mjs` section 3 now lists every class file, with the sustained budget checked on the turns
+without an Encounter or Daily Action (a once-a-fight Nova is a third of the turns), the all-turns number beside it, Health against a frozen
+pre-P1 baseline and, at levels 2 and 3, the charter's +10% curve. Runtime: spec.mjs about 2 minutes, econ.mjs about 20 seconds.
 
 ## The price list of the core rules (pack E1, 2026-10-29): `econ.mjs`
 

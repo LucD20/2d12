@@ -1,0 +1,46 @@
+# The Paladin's P1 main build (pack P1, 2026-10-29; PROPOSED: Lucas approves the cards before they go into book/rules-src), for the price list: node book/ruler/econ.mjs
+# Every default of the level 1 to 3 Picks, in the spec format (book/ruler/README.md, "The spec files"); then two repriced support options.
+# "area N" = creatures it is expected to reach, "allies N" = allies (you included), "rounds N" = how long (see catalogue/paladin.txt).
+class Paladin (P1)
+level 1
+attributes body 2, mind 1
+weapon-mod 2
+power-mod 2
+weapon Greatsword (melee, two-handed): 0 / 1d8 / 2d6
+
+# Basic Actions
+action Weapon Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod]
+action Steel Yourself 2 | ap 2 | round | traits self | heal 1 self
+
+# Signature Class Action (a choice): Smite
+action Smite 1 | ap 1 | round | traits divine strike weapon | vs ad | tiers [B] 1[W] / [B] 1[W] + [Mod] + [M] 1d4 / [B] 1[W] + [Mod] + [M] 1d6
+action Smite 2 | ap 2 | round | traits divine strike weapon | vs ad | tiers [B] 1[W] + [M] 1d6 / [B] 1[W] + [Mod] + [M] 1d10 / [B] 1[W] + [Mod] + [M] 2d8 | always: defense 1 ally
+action Smite 3 | ap 3 | round | traits divine strike weapon | vs ad | tiers [B] 1[W] + [M] 1d6 / [B] 1[W] + [Mod] + [M] 1d10 / [B] 1[W] + [Mod] + [M] 2d8 | always: defense 1 ally; always: mend 1d8 any
+# Signature Class Action (a choice): Lay On Hands
+action Lay On Hands 1 | ap 1 | round | traits divine focus | heal 1
+action Lay On Hands 2 | ap 2 | round | traits divine focus | heal 1; always: extra 2d8 next strike
+action Lay On Hands 3 | ap 3 | round | traits divine focus | heal 2; always: extra 2d8 next strike
+
+# Encounter Pick (level 1): Holy Wrath
+action Holy Wrath 2 | ap 2 | encounter | traits divine strike weapon | vs ad | tiers [B] 1[W] + [M] 2d6 / [B] 1[W] + [Mod] + [M] 3d8 / [B] 1[W] + [Mod] + [M] 4d8
+action Holy Wrath 3 | ap 3 | encounter | traits divine strike weapon | vs ad | tiers [B] 1[W] + [M] 3d8 / [B] 1[W] + [Mod] + [M] 5d8 / [B] 1[W] + [Mod] + [M] 6d8
+
+# Daily Pick (level 3): Consecrated Ground (book)
+action Consecrated Ground 2 | ap 2 | daily | traits area divine | rounds 3 | area 2 | allies 2 | banes 1 strike power; heal-dice 1d4
+action Consecrated Ground 3 | ap 3 | daily | traits area divine | rounds 5 | area 2.5 | allies 2.5 | banes 1 strike power; heal-dice 1d4
+
+# Active Escalation (level 1): Divine Surge (the support version Lucas chose)
+action Divine Surge | ap 0 | round | escalation 1 | traits divine | surge 1d8
+
+# Options (PROPOSED reprices of two support cards that were far under their bands; not in the main build)
+action Shield of Faith | ap 1 | turn | reaction | traits divine focus | block 1d6+[Mod]
+action Aura of Protection | ap 1 | encounter | traits area divine | allies 2.5 | rounds 3 | defense 1 allies
+
+# The typical turn ("for the turn" buffs and passives are priced on it)
+turn Typical: Smite 3, Weapon Attack, Weapon Attack
+
+# Passives: Feature Font of Mercy; Passive Escalation Hallowed Stance (book; level 1) and Radiant Zeal (level 3); Talent Heavy Blows (level 2, a stand-in)
+passive Font of Mercy: rally-bonus 2
+passive Hallowed Stance: escalation 2: reduce 2 adjacent 1
+passive Radiant Zeal: escalation 1: extra 1d6 first strike
+passive Heavy Blows: bonus 1 melee weapon strike
