@@ -154,7 +154,7 @@ The same effect never stacks with itself, and bonuses from different effects don
 
 Three things do add up:
 
-- An effect that says it **increases** a value: "increase your Enfeebled value by 1" (as Vow of Enmity does with Empowered).
+- An effect that says it **increases** a value: "increase your Enfeebled value by 1" (an Action that says "increase your Empowered value by 1" adds to the Empowered you have).
 - **Boons and Banes.**
 - An effect that **increases** your [[Slowed]] value (being Desperate, Dying or Shattered).
 

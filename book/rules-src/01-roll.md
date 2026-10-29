@@ -254,6 +254,8 @@ A single creature is referred to as **they**: "the creature is Hindered until th
 
 **Since your last turn, this turn.** A feature that says "since your last turn" counts from the end of your last turn. One that says "this turn" counts from the start of your turn.
 
+**Up to.** A number of things you can use, gain or move is a maximum: you can use fewer, or none, unless the rule says you **must**. "The target can use 2 Rally Points" lets them use 0, 1 or 2.
+
 **Specific beats general.** When a card or a feature says something different from a general rule, the card or feature wins for that case. The Evade Action, for example, doesn't trigger Reactions although movement normally does.
 
 When a rule names a trait before the word "Action," it means an Action with that trait. For example, a **Divine Action** is an Action with the Divine trait. The same goes for a Weapon Action, a Power Action or a Nonlethal Action.

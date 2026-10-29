@@ -4,7 +4,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 
 | File | Chapter | Document | Part | KB | Lines |
 |---|---|---|---|---|---|
-| 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 18.9 | 273 |
+| 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 19.1 | 275 |
 | 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 22.4 | 252 |
 | 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 35.2 | 429 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 11.6 | 240 |
@@ -14,7 +14,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 5.1 | 78 |
 | 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 19.0 | 160 |
 | 11-species.md | Species | species |  | 0.8 | 35 |
-| 12-paladin.md | Paladin | paladin |  | 16.4 | 572 |
+| 12-paladin.md | Paladin | paladin |  | 8.1 | 255 |
 | 13-archer.md | Archer | archer |  | 13.4 | 497 |
 | 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 14.6 | 301 |
 | 15-gear.md | Gear | gear |  | 7.2 | 162 |
@@ -43,7 +43,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 - 188: ## Reading an Action
 - 224:   ### Notation
 - 247:   ### Rules Language
-- 265: ## Summary
+- 267: ## Summary
 
 Open (to be decided) boxes: 156: "Resist and Weak, which use damage subtypes, are not written yet."
 
@@ -221,19 +221,18 @@ Glossary entries (line: term): 6: [Mod]; 7: [W]; 8: [Trait]; 9: 0 AP; 10: 0R; 11
 
 - 19: ## The Paladin by Level
 - 39: ## Level 1
+- 41:   ### 1st Level Features
 - 65:   ### Signature Class Action
 - 112:   ### 1st Level Picks
 - 119: ## Paladin Repertoire
-- 121:   ### Passive
-- 143:   ### Turn
-- 193:   ### Round
-- 260:   ### Encounter
-- 359:   ### Daily
-- 422: ## Paladin Escalation
-- 424:   ### Passives
-- 462:   ### Actives
+- 121:   ### Turn
+- 144:   ### Encounter
+- 188:   ### Daily
+- 211: ## Paladin Escalation
+- 213:   ### Passives
+- 233:   ### Actives
 
-Action cards: Divine Power (46, Paladin Feature 1); Font of Mercy (57, Paladin Feature 1); Smite (70, Divine Power 1, Round); Lay On Hands (94, Divine Power 1, Round); Aegis (124, Paladin Feature 1); Mercy's Reward (134, Paladin Feature 1); Rebuke (146, Paladin Feature 1, Turn); Shield of Faith (173, Paladin Feature 1, Turn); Vow of Enmity (196, Paladin Feature 1, Round); Sacred Weapon (219, Paladin Feature 1, Round); Champion's Challenge (238, Paladin Feature 1, Round); Holy Wrath (263, Paladin Feature 1, Encounter); Word of Radiance (286, Paladin Feature 1, Encounter); Divine Retribution (311, Paladin Feature 1, Encounter); Aura of Protection (341, Paladin Feature 1, Encounter); Miraculous Recovery (362, Paladin Feature 1, Daily); Consecrated Ground (381, Paladin Feature 1, Daily); Divine Intervention (402, Paladin Feature 1, Daily); Divine Vigil (427, Paladin Escalation (Passive)); Avenger's Oath (436, Paladin Escalation (Passive)); Hallowed Stance (445, Paladin Escalation (Passive)); Radiant Zeal (454, Paladin Escalation (Passive)); Call to Arms (465, Paladin Escalation, Round); Divine Surge (486, Paladin Escalation, Round); Hand of Mercy (507, Paladin Escalation, Round); Judgment (528, Paladin Escalation, Round); Sanctified Ground (553, Paladin Escalation, Round)
+Action cards: Divine Power (46, Paladin Feature 1); Font of Mercy (57, Paladin Feature 1); Smite (70, Divine Power 1, Round); Lay On Hands (94, Divine Power 1, Round); Shield of Faith (124, Paladin Feature 1, Turn); Holy Wrath (147, Paladin Feature 1, Encounter); Aura of Protection (170, Paladin Feature 1, Encounter); Consecrated Ground (191, Paladin Feature 1, Daily); Hallowed Stance (216, Paladin Escalation (Passive)); Radiant Zeal (225, Paladin Escalation (Passive)); Divine Surge (236, Paladin Escalation, Round)
 
 ## 13-archer.md: Archer
 
