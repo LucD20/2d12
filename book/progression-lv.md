@@ -1,4 +1,6 @@
-# Progression prep (pack LV, 2026-10-29): PROPOSED, waiting for Lucas
+# Progression prep (pack LV, 2026-10-29): DECIDED
+
+> **Lucas decided (2026-10-29): all five defaults** (model A; hard CV 1¼ and deadly 1½ a PC; Spell Mastery at level 8 with 2[W], keep the best and the round-1 floor as Magic Talents; CV by level gap by tier ×1 / ×0.8 / ×0.65; Health factor (Level + 17) / 16). **Nothing is in `book/rules-src` yet.** Where each one lands: the CV scale, the level-gap rule and the NPC Health and damage by level go into the Bestiary with **E3** (the refit, measured with the real classes); the Health factor and the Modifier steps go into the Core Rules with the level 4-10 rows (with E3, so PCs and NPCs change together; Foundry follows); Mastery 2[W] and Spell Mastery with **D2**; keep the best, Wild Magic and the floor as Magic Talents with **D4**. **A1** is written to model A now: no sustained growth in levels 1-3.
 
 The brainstorm of 2026-10-29 decided the shape of levels 1 to 10 (rules-backlog top: level cap 10 in tiers 1-4 / 5-7 / 8-10, fight
 lengths by difficulty, no number bloat, CV by level gap, Health about ×1.5 at level 10, Mastery 2[W], spells with Overcast paid by
@@ -126,7 +128,7 @@ Encounter / Daily Picks (the Nova) and options. **For E3:** NPC Health ×1.22 at
 stand-ins; E3 measures it with the real classes), ×1.17 more at level 5, ×1.38 more at level 8; NPC damage × the PCs' Health factor; the
 CV scale of 4; Elites.
 
-## 5. Decision sheet (answer by exception: "all defaults except 3")
+## 5. Decision sheet (Lucas 2026-10-29: all defaults)
 
 1. **The model:** A (Bounded, steps at levels 5 and 8), B (Escalation-heavy) or C (+10% a level)? **[A]**
 2. **Difficulty by CV a PC:** easy 3/4, standard 1, **hard 1 1/4, deadly 1 1/2** (instead of 1 1/2 and 2)? **[yes]**

@@ -47,7 +47,7 @@ level keeps the same total budget. The Paladin, for example, can start with an E
 | **2** | 1 Encounter Pick · 1 Talent |
 | **3** | 1 Daily Pick · 1 Passive Escalation |
 
-- **Replaced (brainstorm 2026-10-29; pack LV proposes model A, book/progression-lv.md: no sustained growth inside a tier, steps at levels 5 and 8).** **The growth curve (Proposed):** about **+10% sustained damage a level** (level 1: 100% of the baseline PC, level 2: 110%, level 3: 120%),
+- **Replaced (brainstorm 2026-10-29; pack LV, decided by Lucas: model A, book/progression-lv.md: no sustained growth inside a tier, steps at levels 5 and 8).** **The growth curve (Proposed):** about **+10% sustained damage a level** (level 1: 100% of the baseline PC, level 2: 110%, level 3: 120%),
   from the Talents; the Encounter Pick (level 2) and the Daily Pick (level 3) grow the Nova. The Bestiary's levels follow the same curve (pack E3),
   which also fixes today's problem: the Bestiary grows NPC Health 14% at level 2 while the PCs' real damage grows 2 to 6%.
 - **The Nova at level 1:** a class whose role has Nova (the Paladin) takes its Encounter Pick at level 1 (the template's level 2 Pick moves).
