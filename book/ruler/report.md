@@ -10,11 +10,11 @@ Health 27 (Body 14 + Mind 13) · AD 13 · WD 13 · Weapon Modifier +2 · Power M
 
 | Turn | Esc | Def 12 | Def 13 | Def 14 | Def 13, Esc 3 | AP | Strikes | Steps | Problems |
 |---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| Double Shot + Lock & Loose + attack (plan) | 0 | 24.8 | 22.9 | 20.9 | 22.9 | 5 | 3 | Double Shot 3, Lock & Loose, Weapon Attack |  |
-| Aimed Marksman (plan) | 0 | 19.8 | 18.2 | 16.5 | 21.1 | 5 | 2 | Precise Aim 1, Marksman's Shot, Double Shot 2 |  |
-| Twin (plan, **best**) | 2 | 36.2 | 33.5 | 30.5 | 33.5 | 5 | 3 | Double Shot 3, Twin Shot, Lock & Loose |  |
-| Reload Shot | 0 | 27.7 | 26.0 | 24.1 | 26.0 | 5 | 3 | Double Shot 3, Weapon Attack, Lock & Loose (reload shot) |  |
-| Reload and shoot | 0 | 15.6 | 14.8 | 13.8 | 14.8 | 5 | 2 | Reload, Double Shot 3, Lock & Loose (reload shot) |  |
+| Double Shot + Lock & Loose + attack (plan) | 0 | 26.5 | 24.8 | 22.9 | 27.6 | 5 | 3 | Double Shot 3, Lock & Loose, Weapon Attack |  |
+| Aimed Marksman (plan) | 0 | 20.8 | 19.2 | 17.6 | 22.0 | 5 | 2 | Precise Aim 1, Marksman's Shot, Double Shot 2 |  |
+| Twin (plan, **best**) | 2 | 41.9 | 39.0 | 36.1 | 39.0 | 5 | 3 | Double Shot 3, Twin Shot, Lock & Loose |  |
+| Reload Shot | 0 | 29.3 | 27.7 | 25.9 | 30.6 | 5 | 3 | Double Shot 3, Weapon Attack, Lock & Loose (reload shot) |  |
+| Reload and shoot | 0 | 16.4 | 15.6 | 14.7 | 17.8 | 5 | 2 | Reload, Double Shot 3, Lock & Loose (reload shot) |  |
 
 Plan: round 1: Aimed Marksman · round 2: Double Shot + Lock & Loose + attack · round 3+: Twin
 
@@ -22,10 +22,10 @@ Plan: round 1: Aimed Marksman · round 2: Double Shot + Lock & Loose + attack ·
 
 | NPC | its Health | its Defense | its Modifier | its damage a turn to this PC | rounds to kill it (median / mean) | rounds for it to put this PC Down (median / mean) |
 |---|---:|---:|---:|---:|---:|---:|
-| Minion | 7 | 12 | 2 | 2.0 | 1 / 1.0 | 14 / 14.4 |
-| Grunt | 31 | 13 | 2 | 4.9 | 2 / 2.1 | 6 / 6.1 |
-| Standard | 57 | 13 | 2 | 7.7 | 3 / 3.0 | 4 / 4.1 |
-| Elite | 120 | 14 | 3 | 16.8 | 5 / 5.2 | 2 / 2.2 |
+| Minion | 7 | 12 | 2 | 2.0 | 1 / 1.0 | 14 / 14.5 |
+| Grunt | 31 | 13 | 2 | 4.9 | 2 / 2.0 | 6 / 6.1 |
+| Standard | 57 | 13 | 2 | 7.7 | 3 / 2.9 | 4 / 4.1 |
+| Elite | 120 | 14 | 3 | 16.8 | 5 / 4.7 | 2 / 2.2 |
 
 ## Archer (ranged damage), `classes/archer-2.txt`
 
@@ -35,9 +35,9 @@ Health 29 (Body 15 + Mind 14) · AD 13 · WD 13 · Weapon Modifier +2 · Power M
 
 | Turn | Esc | Def 12 | Def 13 | Def 14 | Def 13, Esc 3 | AP | Strikes | Steps | Problems |
 |---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| Double Shot + Wing Clip + Lock & Loose (plan) | 0 | 27.7 | 25.7 | 23.6 | 28.4 | 5 | 3 | Double Shot 3, Wing Clip, Lock & Loose |  |
-| Aimed Marksman (plan) | 0 | 19.8 | 18.2 | 16.5 | 21.1 | 5 | 2 | Precise Aim 1, Marksman's Shot, Double Shot 2 |  |
-| Twin (plan, **best**) | 2 | 42.3 | 39.0 | 35.4 | 39.0 | 5 | 3 | Double Shot 3, Twin Shot, Wing Clip |  |
+| Double Shot + Wing Clip + Lock & Loose (plan) | 0 | 28.9 | 27.0 | 24.9 | 29.9 | 5 | 3 | Double Shot 3, Wing Clip, Lock & Loose |  |
+| Aimed Marksman (plan) | 0 | 20.8 | 19.2 | 17.6 | 22.0 | 5 | 2 | Precise Aim 1, Marksman's Shot, Double Shot 2 |  |
+| Twin (plan, **best**) | 2 | 44.8 | 41.5 | 38.2 | 41.5 | 5 | 3 | Double Shot 3, Twin Shot, Wing Clip |  |
 
 Plan: round 1: Aimed Marksman · round 2: Double Shot + Wing Clip + Lock & Loose · round 3+: Twin
 
@@ -45,10 +45,10 @@ Plan: round 1: Aimed Marksman · round 2: Double Shot + Wing Clip + Lock & Loose
 
 | NPC | its Health | its Defense | its Modifier | its damage a turn to this PC | rounds to kill it (median / mean) | rounds for it to put this PC Down (median / mean) |
 |---|---:|---:|---:|---:|---:|---:|
-| Minion | 7 | 12 | 2 | 2.0 | 1 / 1.0 | 15 / 15.4 |
-| Grunt | 31 | 13 | 2 | 4.9 | 2 / 2.1 | 6 / 6.4 |
-| Standard | 57 | 13 | 2 | 7.7 | 3 / 2.9 | 4 / 4.4 |
-| Elite | 120 | 14 | 3 | 16.8 | 5 / 4.8 | 2 / 2.3 |
+| Minion | 7 | 12 | 2 | 2.0 | 1 / 1.0 | 15 / 15.5 |
+| Grunt | 31 | 13 | 2 | 4.9 | 2 / 2.0 | 6 / 6.5 |
+| Standard | 57 | 13 | 2 | 7.7 | 3 / 2.8 | 4 / 4.4 |
+| Elite | 120 | 14 | 3 | 16.8 | 4 / 4.5 | 2 / 2.3 |
 
 ## Paladin (tank / support), `classes/paladin-1.txt`
 
@@ -110,11 +110,11 @@ The book's target for a typical fight (CV 4 against 4 PCs): about **3 rounds** a
 
 | Encounter | CV | rounds (median / mean / 90%) | party won | Health lost | a PC goes Down | first Down (median round) | Paladin Down | Paladin Down | Archer Down | Archer Down |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 4 Standards | 4 | 3 / 3.0 / 3 | 100% | 28% | 2% | 2 | 1% | 1% | 1% | 1% |
-| 2 Elites | 4 | 3 / 3.2 / 4 | 100% | 38% | 16% | 2 | 5% | 5% | 5% | 5% |
-| Elite + 2 Standards | 4 | 3 / 3.1 / 3 | 100% | 33% | 9% | 2 | 3% | 3% | 2% | 2% |
-| 8 Grunts | 4 | 4 / 3.6 / 4 | 100% | 35% | 1% | 2 | 0% | 0% | 0% | 0% |
-| 2 Standards + 8 Minions | 4 | 3 / 3.1 / 4 | 100% | 30% | 2% | 2 | 0% | 1% | 0% | 0% |
-| 6 Standards (CV 6, hard) | 6 | 4 / 4.5 / 5 | 96% | 48% | 27% | 2 | 10% | 11% | 12% | 13% |
+| 4 Standards | 4 | 3 / 3.0 / 3 | 100% | 29% | 2% | 2 | 1% | 1% | 1% | 0% |
+| 2 Elites | 4 | 3 / 3.1 / 4 | 100% | 38% | 16% | 2 | 5% | 5% | 5% | 4% |
+| Elite + 2 Standards | 4 | 3 / 3.0 / 3 | 100% | 32% | 7% | 2 | 2% | 2% | 2% | 2% |
+| 8 Grunts | 4 | 3 / 3.5 / 4 | 100% | 34% | 1% | 2 | 0% | 0% | 0% | 0% |
+| 2 Standards + 8 Minions | 4 | 3 / 3.1 / 3 | 100% | 30% | 2% | 2 | 0% | 0% | 1% | 0% |
+| 6 Standards (CV 6, hard) | 6 | 4 / 4.3 / 5 | 96% | 47% | 26% | 2 | 10% | 11% | 11% | 12% |
 
 How the fight is simulated: initiative is shuffled once; every PC follows its plan (the round's turn; its `when` turn when it is unloaded or an ally is hurt) and attacks its Marked Quarry if it has one, else the enemy closest to dying (a new quarry when the old one dies); each NPC makes its Strikes a turn (Minion 1, Grunt and Standard 2, Elite 3; At-will Banes on the 2nd and 3rd), choosing a PC at random weighted by `targeted` (a taunted NPC takes the taunt's Banes against anyone else); Defense bonuses last until their giver's next turn; one Health Pool per creature (Body and Mind together); a PC at its Health Pool is Down and stops; nobody moves, uses Rally Points on their own or uses Reactions. Escalation is 0 in round 1, then +1 a round (up to 3).

@@ -222,10 +222,12 @@ const hasDamage = d => d.dice.length + d.w + d.flat + d.mod > 0;
  * others(n): other enemies (an area, a different target), heal(pc, n), defend(pc, n, who) }. Returns { damage, ap, strikes, problems }.
  */
 export function runTurn(pc, turn, ctx) {
-  const b = pc.build, R = ctx.R, st = { next: [], turnFx: [], atWill: {}, used: new Set() }, res = { damage: 0, ap: 0, strikes: 0, problems: [] };
+  const b = pc.build, R = ctx.R, st = { next: [], turnFx: [], atWill: {}, used: new Set() }, res = { damage: 0, ap: 0, strikes: 0, problems: [], missed: [] };
   const passives = b.passives.filter(p => (ctx.escalation ?? 3) >= p.escalation);
   pc.firstThisRound ??= new Set();
-  const traitsOf = (a, extra = []) => [...new Set([...a.traits, ...extra, ...(a.traits.includes("weapon") ? (b.weapon?.traits ?? []).filter(x => x === "ranged" || x === "melee") : [])])];
+  // A Weapon Action takes Ranged or Melee from the weapon, and Shot when the weapon is Projectile (the book, Traits: Shot).
+  const weaponGives = () => [...(b.weapon?.traits ?? []).filter(x => x === "ranged" || x === "melee"), ...((b.weapon?.traits ?? []).includes("projectile") ? ["shot"] : [])];
+  const traitsOf = (a, extra = []) => [...new Set([...a.traits, ...extra, ...(a.traits.includes("weapon") ? weaponGives() : [])])];
   const apply = (e, target) => {
     if (["boon", "bane", "empowered", "favored", "extra"].includes(e.kind)) (e.scope === "turn" ? st.turnFx : st.next).push(e);
     else if (e.kind === "heal") ctx.heal?.(pc, e.n);
@@ -236,7 +238,7 @@ export function runTurn(pc, turn, ctx) {
   };
   const doAction = (a, opts = {}, extraTraits = [], linked = false, forced = null) => {
     const traits = traitsOf(a, extraTraits);
-    if (traits.includes("weapon") && pc.unloaded && !a.effects.some(e => e.effect.kind === "reload")) { res.problems.push(`${a.name}: the weapon is unloaded`); return; }
+    if (traits.includes("weapon") && pc.unloaded && !a.effects.some(e => e.effect.kind === "reload")) { res.missed.push(`${a.name}: the weapon is unloaded`); return; }   // a failed Reload roll: bad luck, not a rule problem
     if (a.does.length) {   // Linked Actions (1A): no AP, no Frequency, no Strike, no At-will Bane
       const each = { boons: a.each.filter(e => e.kind === "boon").reduce((s, e) => s + e.n, 0), empowered: a.each.filter(e => e.kind === "empowered").reduce((s, e) => s + e.n, 0), extra: a.each.filter(e => e.kind === "extra").map(e => e.dmg) };
       const first = ctx.target(), others = a.different ? (ctx.others(a.does.length - 1) ?? []) : [];
@@ -449,12 +451,12 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === fs.realpathSync(proces
   const dir = HERE + "classes/";
   const builds = fs.readdirSync(dir).filter(f => f.endsWith(".txt")).sort().map(f => parseSpec(fs.readFileSync(dir + f, "utf8"), `classes/${f}`));
   const fights = parseFights(fs.readFileSync(HERE + "fights.txt", "utf8"));
-  if (process.argv.includes("--check")) {   // the Monte Carlo against the exact dice math (calc.mjs): one Weapon Attack of each build, every Defense
+  if (process.argv.includes("--check")) {   // the Monte Carlo against the exact dice math (calc.mjs): one Weapon Attack of each build (no passives), every Defense
     let bad = 0;
     for (const b of builds) for (const d of fights.defenses) {
       const p = C.tierProbs(b.weaponMod, d), w = [0, 1, 2].map(t => weaponTier(b.weapon, t + 1)), avg = x => x.flat + x.dice.reduce((s, [c, n]) => s + c * (n + 1) / 2, 0);
       const exact = p[1] * (avg(w[1]) + b.weaponMod) + p[2] * (avg(w[2]) + b.weaponMod);
-      const sim = turnDamage({ ...b, turns: { one: { name: "one", steps: ["Weapon Attack"] } } }, "one", d, { n: 200000 }).avg;
+      const sim = turnDamage({ ...b, passives: [], turns: { one: { name: "one", steps: ["Weapon Attack"] } } }, "one", d, { n: 200000 }).avg;
       const ok = Math.abs(sim - exact) < 0.1; if (!ok) bad++;
       console.log(`${ok ? "ok  " : "FAIL"} ${b.file} Weapon Attack vs ${d}: exact ${exact.toFixed(2)}, simulated ${sim.toFixed(2)}`);
     }

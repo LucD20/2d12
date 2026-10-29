@@ -58,7 +58,7 @@ Melee weapons have a [[Weapon Range|Range]] too: 1 for most of them.
 
 **Flavor:** A bolt to the knee, and they go nowhere.
 
-*Ranged • Strike • Weapon*
+*Ranged • Shot • Strike • Weapon*
 
 **Frequency:** Round
 

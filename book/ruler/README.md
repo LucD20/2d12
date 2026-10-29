@@ -35,7 +35,7 @@ One thing per line; `#` starts a comment. A class file (`classes/paladin-1.txt` 
 | `armor`, `ward` | `armor 3` | AD = 11 + armor; WD = 11 + Power Modifier + ward |
 | `weapon-mod`, `power-mod`, `rally` | `rally 6` | Modifiers; the class's Rally value (Rally Points = rally + ⌈(Body + Mind + level) / 2⌉) |
 | `targeted` | `targeted 1.5` | How often NPCs choose this PC (1 = as often as anyone; a tank in front more, an archer behind less) |
-| `weapon` | `weapon Crossbow (ranged, reload): 0 / 1d4+2 / 1d10+2` | Its properties in brackets, then Tier 1 / 2 / 3 |
+| `weapon` | `weapon Crossbow (ranged, projectile, reload): 0 / 1d4+2 / 1d10+2` | Its properties in brackets, then Tier 1 / 2 / 3. A [Weapon] Action takes Ranged or Melee from it, and Shot when it is Projectile |
 | `action` | see below | One Version of an Action (write Versions as `Smite 2`, `Smite 3`: they share Frequency) |
 | `passive` | `passive Marked Quarry: boon 1 shot strike quarry` · `passive Killer's Focus: escalation 2: extra 1d6 first shot strike weapon` | Always on (from an Escalation) |
 | `turn` | `turn Main: Smite 2, Weapon Attack, Weapon Attack, move 1` | A turn: Actions in order; `move N` spends AP; `(reload shot)` after a Weapon Action makes it a Reload Shot |
@@ -64,23 +64,23 @@ positions, Reactions, Rally Points used by the PCs themselves, NPC special Actio
 
 - **The spec matches the hand-written ruler** where the rules are the same: Paladin L1 Smite 2 + two Weapon Attacks 22.4 at Defense 13
   (ruler.mjs 22.5); Paladin L2 Sacred Weapon turn 27.3 (levels.mjs 27.4). `--check` agrees with the exact math within 0.02.
-- **Archer: the Linked Weapon Attacks of Double Shot have no Shot trait**, so Marked Quarry ([Shot, Strike]), Precise Aim
-  ([Ranged, Shot, Strike, Weapon]) and Killer's Focus ([Shot, Strike, Weapon]) don't apply to them (the book: a Linked Action keeps its own
-  traits). Lock & Loose and the Weapon Attack have no Shot either. The L1 Archer's main turn is **22.9** at Defense 13 (the old ruler gave
-  the Quarry's Boon to every attack: 24.8). If the Linked Actions counted as Shots: 26.8 (+17%); at L2 (with Wing Clip) 28.4 -> 29.6 at Escalation 3.
-  At level 1, Marked Quarry and Precise Aim help only Marksman's Shot (Encounter) and, from Escalation 2, Twin Shot's own roll. This is for D1.
+- **Archer and [Shot]** (fixed 2026-10-29): a Weapon Action with a Projectile weapon is a Shot (the book, Traits: Shot; Foundry does the same),
+  so Double Shot's Linked Weapon Attacks, the Weapon Attack and Lock & Loose (now also written with Shot on its card) all get Marked Quarry's Boon,
+  and the first of them each round gets Killer's Focus. The first spec run had missed that rule (22.9 for the main turn). The L1 Archer's main
+  turn is **24.8** at Defense 13, the same as the old ruler; 27.6 at Escalation 3. **Marked Quarry is worth 6 to 8% of every Archer turn.**
 - **Smite 3 is worth more than the old ruler counted:** its Bright light makes enemies in it (the target too) roll an Appeal Save
   (1d6 / 1d4 / 0): +2.3 on the target alone, so Smite 3 + two Weapon Attacks is 24.7 against Smite 2's 22.4 (ruler.mjs had them equal).
 - **Best turns:** Paladin L1 Divine Surge + Smite 3 + two Weapon Attacks 29.2 from Escalation 1; Paladin L2 Sacred Weapon + Divine Surge + Smite 2
   + two Weapon Attacks 32.8;
-  Archer L1 Double Shot 3 + Twin Shot + Lock & Loose 33.5 from Escalation 2 (Twin Shot counted as two attacks: a high estimate).
-  A Reload Shot as the last attack is worth +3.1 (26.0 against 22.9), but the next turn pays 1 AP and a roll for the Reload (14.8 that turn): not worth it on a plan.
+  Archer L1 Double Shot 3 + Twin Shot + Lock & Loose 39.0 from Escalation 2 (Twin Shot counted as two attacks: a high estimate); L2 with Wing Clip 41.5
+  (Double Shot 3 + Wing Clip + Lock & Loose: 27.0 at Escalation 0).
+  A Reload Shot as the last attack is worth +2.9 (27.7 against 24.8), but the next turn pays 1 AP and a roll for the Reload (15.6 that turn): not worth it on a plan.
 - **Duels** (Defense 13 Standard, 57 Health): one PC kills it in about 3 rounds; it puts an Archer Down in about 4 rounds and the Paladin
   in about 8 (AD 14 and Hallowed Stance). An Elite (120 Health) takes about 5 rounds and puts either Down in 2 to 3. NPC damage a turn
   against an AD 13 PC: Minion 2.0, Grunt 4.9, Standard 7.7, Elite 16.8 (the book's targets: 3 to 4, 5, 7 to 8, 15).
-- **Party fights** (2 Paladins + 2 Archers, CV 4): 3 rounds (8 Grunts: 4), 28 to 38% of the party's Health lost, a PC Down in 1 to 16%
+- **Party fights** (2 Paladins + 2 Archers, CV 4): 3 rounds, 29 to 38% of the party's Health lost, a PC Down in 1 to 16%
   of the fights (2 Elites the most: 16%). The book's target is about 3 rounds and 40%: the length is on target, the Health lost is a little low
-  (the sim ignores NPC special Actions, which are part of what makes a fight cost 40%). CV 6 (6 Standards): 4 to 5 rounds, 48%, a PC Down in 27%.
+  (the sim ignores NPC special Actions, which are part of what makes a fight cost 40%). CV 6 (6 Standards): 4 to 5 rounds, 47%, a PC Down in 26%.
 
 ## The level 1 PC ruler (2026-10-24, the hand-written scripts)
 
