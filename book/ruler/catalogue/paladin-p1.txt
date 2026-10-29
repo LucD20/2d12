@@ -13,9 +13,10 @@ action Weapon Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 /
 action Steel Yourself 2 | ap 2 | round | traits self | heal 1 self
 
 # Signature Class Action (a choice): Smite
-action Smite 1 | ap 1 | round | traits divine strike weapon | vs ad | tiers [B] 1[W] / [B] 1[W] + [Mod] + [M] 1d4 / [B] 1[W] + [Mod] + [M] 1d6
-action Smite 2 | ap 2 | round | traits divine strike weapon | vs ad | tiers [B] 1[W] + [M] 1d6 / [B] 1[W] + [Mod] + [M] 1d10 / [B] 1[W] + [Mod] + [M] 2d8 | always: defense 1 ally
-action Smite 3 | ap 3 | round | traits divine strike weapon | vs ad | tiers [B] 1[W] + [M] 1d6 / [B] 1[W] + [Mod] + [M] 1d10 / [B] 1[W] + [Mod] + [M] 2d8 | always: defense 1 ally; always: mend 1d8 any
+action Smite 1 | ap 1 | round | traits divine signature strike weapon | vs ad | tiers [B] 1[W] / [B] 1[W] + [Mod] + [M] 1d4 / [B] 1[W] + [Mod] + [M] 1d6
+action Smite 2 | ap 2 | round | traits divine signature strike weapon | vs ad | tiers [B] 1[W] + [M] 1d6 / [B] 1[W] + [Mod] + [M] 1d10 / [B] 1[W] + [Mod] + [M] 2d8 | always: defense 1 ally
+action Smite 3 | ap 3 | round | traits divine signature strike weapon | vs ad | tiers [B] 1[W] + [M] 1d6 / [B] 1[W] + [Mod] + [M] 1d10 / [B] 1[W] + [Mod] + [M] 2d8 | always: defense 1 ally; always: mend 1d8 any
+action Smite 3 (Guard) | ap 3 | round | traits divine signature strike weapon | vs ad | tiers [B] 1[W] + [M] 1d6 / [B] 1[W] + [Mod] + [M] 1d10 / [B] 1[W] + [Mod] + [M] 2d8 | always: defense 1 ally; always: guard 1d8+[Mod] any     # question 4.2: Guard instead of the heal
 # Signature Class Action (a choice): Lay On Hands
 action Lay On Hands 1 | ap 1 | round | traits divine focus | heal 1
 action Lay On Hands 2 | ap 2 | round | traits divine focus | heal 1; always: extra 2d8 next strike
@@ -23,7 +24,7 @@ action Lay On Hands 3 | ap 3 | round | traits divine focus | heal 2; always: ext
 
 # Encounter Pick (level 1): Holy Wrath
 action Holy Wrath 2 | ap 2 | encounter | traits divine strike weapon | vs ad | tiers [B] 1[W] + [M] 2d6 / [B] 1[W] + [Mod] + [M] 3d8 / [B] 1[W] + [Mod] + [M] 4d8
-action Holy Wrath 3 | ap 3 | encounter | traits divine strike weapon | vs ad | tiers [B] 1[W] + [M] 3d8 / [B] 1[W] + [Mod] + [M] 5d8 / [B] 1[W] + [Mod] + [M] 6d8
+action Holy Wrath 3 | ap 3 | encounter | traits divine strike weapon | vs ad | tiers [B] 1[W] + [M] 3d8 / [B] 1[W] + [Mod] + [M] 5d8 / [B] 1[W] + [Mod] + [M] 7d8
 
 # Daily Pick (level 3): Consecrated Ground (book)
 action Consecrated Ground 2 | ap 2 | daily | traits area divine | rounds 3 | area 2 | allies 2 | banes 1 strike power; heal-dice 1d4

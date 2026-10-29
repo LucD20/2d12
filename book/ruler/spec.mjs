@@ -84,6 +84,7 @@ function parseEffect(text) {
   if (what === "reload") return { kind: "reload" };
   if (what === "reduce") return { kind: "reduce", n, adjacent: Number(rest.match(/adjacent\s+(\d+)/)?.[1] ?? 0) };   // a passive: Body damage you (and N adjacent allies) take is reduced by n (each NPC Strike)
   if (what === "mend") return { kind: "mend", dmg: parseDamage(w[1]), who: /\bself\b/.test(rest) ? "self" : /\bany\b/.test(rest) ? "any" : "ally" };   // new Health (not a Rally Point): ally = the most hurt ally, any = you or an ally
+  if (what === "guard") return { kind: "guard", dmg: parseDamage(w[1]), who: /\bself\b/.test(rest) ? "self" : /\bany\b/.test(rest) ? "any" : "ally" };   // Guard (proposed): a buffer that takes damage first and ends with the encounter; the highest one counts
   if (what === "surge") return { kind: "surge", dmg: parseDamage(w[1]) };   // the next ally (not you) who deals damage to the target before your next turn deals this extra
   if (what === "bonus") return { kind: "bonus", n, ...filter(rest) };       // a passive: +n damage on matching Actions that deal damage
   if (what === "rally-bonus") return { kind: "rallybonus", n };              // a passive: you and your allies heal n more for each Rally Point used
@@ -263,6 +264,7 @@ export function runTurn(pc, turn, ctx) {
     if (["boon", "bane", "empowered", "favored", "extra"].includes(e.kind)) (e.scope === "turn" ? st.turnFx : st.next).push(e);
     else if (e.kind === "heal") ctx.heal?.(pc, e.n, e.who);
     else if (e.kind === "mend") ctx.mend?.(pc, rollDamage(R, e.dmg, { mod: b.powerMod }).total, e.who);
+    else if (e.kind === "guard") ctx.guard?.(pc, rollDamage(R, e.dmg, { mod: b.powerMod }).total, e.who);
     else if (e.kind === "surge" && target) target.surge = { dmg: e.dmg, by: pc };
     else if (e.kind === "banes") ctx.zone?.(pc, e, a, target);
     else if (e.kind === "healdice") ctx.zoneHeal?.(pc, e, a);
@@ -408,8 +410,10 @@ const npcStrike = (R, f, t, banes, escalation = 3, pcs = []) => {
   const u = R(), tier = pickU(u, C.tierProbs(f.mod, def, 0, banes + zb, ""));
   if (t.defBonus && t.defBy?.st) t.defBy.st.defCredit += npcAvg(f, pickU(u, C.tierProbs(f.mod, def - t.defBonus, 0, banes + zb, ""))) - npcAvg(f, tier);
   if (zb && f.zone.by?.st) f.zone.by.st.baneCredit += npcAvg(f, pickU(u, C.tierProbs(f.mod, def, 0, banes, ""))) - npcAvg(f, tier);
-  const d = npcDamage(R, f, tier), taken = d > 0 ? Math.max(0, d - reduce) : 0;
-  if (t.st) { t.st.incoming += d; t.st.reduced += d - taken; t.st.taken += taken; }
+  const d = npcDamage(R, f, tier), afterReduce = d > 0 ? Math.max(0, d - reduce) : 0;
+  const absorbed = Math.min(t.guard ?? 0, afterReduce), taken = afterReduce - absorbed;   // Guard takes the damage first
+  if (absorbed) { t.guard -= absorbed; if (t.guardBy?.st) t.guardBy.st.guardCredit += absorbed; }
+  if (t.st) { t.st.incoming += d; t.st.reduced += d - afterReduce; t.st.taken += taken; }
   if (reducer?.st) reducer.st.reducedGiven += d - taken;
   return taken;
 };
@@ -419,7 +423,7 @@ export function npcTurn(npc, build, n = 20000) { const R = rng(5), me = { build 
 
 /** A PC's state across a day: its damage, Rally Points, and what it did (st). */
 export const pcState = b => ({ build: b, damage: 0, down: false, rallyLeft: b.rallyPoints, defBonus: 0, defBy: null,
-  st: { dealt: 0, rounds: 0, novaDealt: 0, novaTurns: 0, incoming: 0, reduced: 0, reducedGiven: 0, taken: 0, defCredit: 0, vulnCredit: 0, surgeCredit: 0, baneCredit: 0, healGiven: 0, mendGiven: 0, mercyGiven: 0, rpSelf: 0, rpByAlly: 0, rpBetween: 0, downs: 0, debuffs: {} } });
+  st: { dealt: 0, rounds: 0, novaDealt: 0, novaTurns: 0, incoming: 0, reduced: 0, reducedGiven: 0, taken: 0, defCredit: 0, vulnCredit: 0, surgeCredit: 0, guardCredit: 0, baneCredit: 0, healGiven: 0, mendGiven: 0, mercyGiven: 0, rpSelf: 0, rpByAlly: 0, rpBetween: 0, downs: 0, debuffs: {} } });
 /** The most a PC heals more per Rally Point from a party member's passive (Font of Mercy; the best one, they don't stack), and who gives it. */
 const rallyBonus = (pcs, t) => { let n = 0, by = null; for (const g of pcs) if (!g.down || g === t) for (const p of g.build.passives) if (p.effect.kind === "rallybonus" && p.effect.n > n) { n = p.effect.n; by = g; } return { n, by }; };
 
@@ -429,7 +433,7 @@ const rallyBonus = (pcs, t) => { let n = 0, by = null; for (const g of pcs) if (
  */
 export function fight(party, npcs, R, { maxRounds = 12 } = {}) {
   const pcs = party.map(p => (p.build ? p : pcState(p)));
-  for (const p of pcs) { p.zoneHeal = null; p.down = p.damage >= p.build.pool; p.defBonus = 0; p.defBy = null; p.spent = new Set([...(p.spent ?? [])].filter(g => p.build.actions[Object.keys(p.build.actions).find(k => group(k) === g)]?.freq === "daily")); p.quarry = null; p.unloaded = false; p.startDamage = p.damage; p.esc = p.startEsc ?? 0; }
+  for (const p of pcs) { p.zoneHeal = null; p.guard = 0; p.guardBy = null; p.down = p.damage >= p.build.pool; p.defBonus = 0; p.defBy = null; p.spent = new Set([...(p.spent ?? [])].filter(g => p.build.actions[Object.keys(p.build.actions).find(k => group(k) === g)]?.freq === "daily")); p.quarry = null; p.unloaded = false; p.startDamage = p.damage; p.esc = p.startEsc ?? 0; }
   const foes = npcs.map(n => ({ ...n, damage: 0, dead: false, vulnerable: 0, surge: null, zone: null }));
   // Adjacent allies (Hallowed Stance): the N allies most often in front (highest "targeted"), fixed for the fight.
   for (const p of pcs) { const k = Math.max(0, ...p.build.passives.filter(x => x.effect.kind === "reduce").map(x => x.effect.adjacent)); p.adjacent = pcs.filter(x => x !== p).sort((x, y) => y.build.targeted - x.build.targeted).slice(0, k); }
@@ -468,6 +472,7 @@ export function fight(party, npcs, R, { maxRounds = 12 } = {}) {
           defend: (who, n, kind, a) => { const near = [who, ...up().filter(x => x !== who).sort((x, y) => y.build.targeted - x.build.targeted)].slice(0, Math.round(a?.allies ?? 99));
             const list = kind === "allies" ? near : kind === "self" ? [who] : [mostHurt(up().filter(x => x !== who)) ?? who]; for (const t of list) if (n >= t.defBonus) { t.defBonus = n; t.defBy = who; } },
           mend: (who, amount, kind) => mendOne(kind === "self" ? who : kind === "any" ? mostHurt(up().filter(x => x.damage > 0)) : mostHurt(up().filter(x => x !== who && x.damage > 0)), amount, who),
+          guard: (who, amount, kind) => { const t = kind === "self" ? who : kind === "any" ? mostHurt(up()) : mostHurt(up().filter(x => x !== who)) ?? who; if (t && amount > (t.guard ?? 0)) { t.guard = amount; t.guardBy = who; } },
           zone: (who, e, a, target) => { for (const f of [target, ...alive().filter(x => x !== target)].filter(Boolean).slice(0, Math.round(a?.area ?? 1))) f.zone = { n: e.n, left: a?.rounds ?? 1, by: who }; },
           zoneHeal: (who, e, a) => { for (const t of [who, ...up().filter(x => x !== who).sort((x, y) => y.build.targeted - x.build.targeted)].slice(0, Math.round(a?.allies ?? 1))) t.zoneHeal = { dmg: e.dmg, left: a?.rounds ?? 1, by: who }; }
         });
@@ -633,6 +638,7 @@ export function report({ builds, fights }) {
         row("Divine Surge given (extra damage dealt by allies)", p => p.st.surgeCredit);
         row("Banes given (damage its areas stopped)", p => p.st.baneCredit);
         row("Healed with new Health (Smite, Consecrated Ground)", p => p.st.mendGiven);
+        row("Guard given (damage it took instead of Health)", p => p.st.guardCredit);
         row("Extra healing on Rally Points (Font of Mercy)", p => p.st.mercyGiven);
         const names = [...new Set(days.flatMap(x => x.pcs.flatMap(p => Object.keys(p.st.debuffs))))].sort();
         for (const n of names) row(`**Debuff:** ${n} (times)`, p => p.st.debuffs[n] ?? 0, 2);

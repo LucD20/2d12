@@ -22,7 +22,8 @@ export const A = {
   rangedShare: 0.3,       // share of NPCs that use [Ranged] Actions (Suppressing Fire)
   othersShare: 0.75,      // share of an enemy's Strikes aimed at someone other than you (Champion's Challenge)
   surgeLands: 0.9,        // Divine Surge: chance that an ally damages the target before your next turn
-  hitBeforeTurn: 0.95,    // a ward Reaction (block): chance that an ally within reach is hit before your next turn
+  hitBeforeTurn: 0.95,
+  guardUsed: 0.3,         // Guard (proposed): share of it that a later hit uses before the encounter ends (the Standard day: 1.3 of 4.5 a turn on the Paladin itself)    // a ward Reaction (block): chance that an ally within reach is hit before your next turn
   // The baseline PC's Health (frozen, pack P1): the average of the Paladin and the Archer as they were before P1 (the Bestiary was built for them).
   baseHealthSpecs: ["attributes body 2, mind 1\nhealth body x4 +3, mind x3 +4", "attributes body 1, mind 1\nhealth body x3 +3, mind x2.5 +4"],
   // The roles (Lucas, 2026-10-29), as shares of the baseline PC: damage a turn, Health.
@@ -101,6 +102,7 @@ export function priceEffect(b, a, e, r) {
     case "heal": return { v: e.n * r.rallyHeal * A.heal, note: a.name.startsWith("Lay On Hands") || a.name.startsWith("Steel") ? "uses the target's own Rally Points" : "" };
     case "healdice": return { v: S.avgDamage(e.dmg, null, 2, 0) * (a.allies ?? 1) * (a.rounds ?? 1) * A.heal };
     case "mend": return { v: S.avgDamage(e.dmg, null, 2, b.powerMod) * A.heal, note: "new Health (no Rally Point)" };
+    case "guard": return { v: S.avgDamage(e.dmg, null, 2, b.powerMod) * A.heal * A.guardUsed, note: `Guard: only what a later hit uses (${Math.round(A.guardUsed * 100)}%)` };
     case "surge": return { v: S.avgDamage(e.dmg, null, 2, b.powerMod) * A.surgeLands, note: `an ally's damage (${Math.round(A.surgeLands * 100)}% that one hits the target in time)` };
     case "block": return { v: Math.min(S.avgDamage(e.dmg, null, 2, b.powerMod), r.hitAvg) * A.hitBeforeTurn, note: "damage an ally doesn't take (one hit)" };
     case "reducefrom": return { v: e.n * r.hits * A.quarryShare * (a.rounds ?? 1) };

@@ -23,11 +23,11 @@ Everything is priced in **damage-equivalents (DE)**: average damage against the 
 | | Escalation 1 or more | 2 or more | 3 or more |
 |---|---:|---:|---:|
 | Share of the rounds, nothing spent, with Momentum | 85% | 56% | 28% |
-| The same without Momentum | 71% | 42% | 13% |
-| Uses a fight of an Active that costs it (spent as soon as possible) | 2.92 | 1.28 | 0.55 |
-| The same without Momentum | 2.42 | 1.10 | 0.28 |
+| The same without Momentum | 71% | 42% | 14% |
+| Uses a fight of an Active that costs it (spent as soon as possible) | 2.94 | 1.28 | 0.56 |
+| The same without Momentum | 2.44 | 1.10 | 0.29 |
 
-An Active and a passive compete: a level 1 PC who spends 1 Escalation every round never reaches 2, so its Escalation 2 passive stays off. In the same day an ally goes Down in 16% of the fights and on 59% of the days; a Paladin uses Lay On Hands on 52% of its turns.
+An Active and a passive compete: a level 1 PC who spends 1 Escalation every round never reaches 2, so its Escalation 2 passive stays off. In the same day an ally goes Down in 17% of the fights and on 61% of the days; a Paladin uses Lay On Hands on 53% of its turns.
 
 ## 2. The price list (level 1; DE, and as a share of what it modifies)
 
@@ -54,17 +54,18 @@ Shares of the baseline PC: damage against the Bestiary's baseline turn of the le
 
 | Build | Sustained (best) | Nova | Sustained (real) | All turns (real) | Health | Budget: sustained / Nova / Health | Verdict |
 |---|---:|---:|---:|---:|---:|---|---|
-| Archer L1 `archer-1` | 24.7 (106%) | 19.2 (82%) | 28.8 (124%) | 25.2 (108%) | 27 (86%) | 100%-105% / 110%-130% / 80%-85% | sustained high; Nova low; Health ok (86%) |
-| Archer L2 `archer-2` | 26.8 (101%; 105%) | 19.2 (72%; 75%) | 30.3 (114%; 118%) | 26.4 (100%; 103%) | 29 (85%) | 100%-105% / 110%-130% / 80%-85% | sustained high; Nova low; Health ok (85%) |
-| Archer L3 `archer-3` | 26.8 (101%; 96%) | 22.0 (83%; 79%) | 31.0 (117%; 111%) | 27.2 (102%; 97%) | 31 (85%) | 100%-105% / 110%-130% / 80%-85% | sustained high; Nova low; Health ok (85%) |
+| Archer L1 `archer-1` | 24.7 (106%) | 19.2 (82%) | 28.4 (122%) | 25.0 (107%) | 27 (86%) | 100%-105% / 110%-130% / 80%-85% | sustained high; Nova low; Health ok (86%) |
+| Archer L2 `archer-2` | 26.8 (101%; 105%) | 19.2 (72%; 75%) | 30.3 (114%; 118%) | 26.4 (99%; 103%) | 29 (85%) | 100%-105% / 110%-130% / 80%-85% | sustained high; Nova low; Health ok (85%) |
+| Archer L3 `archer-3` | 26.8 (101%; 96%) | 22.0 (83%; 79%) | 30.9 (116%; 110%) | 27.1 (102%; 97%) | 31 (85%) | 100%-105% / 110%-130% / 80%-85% | sustained high; Nova low; Health ok (85%) |
 | Paladin (book) L1 `paladin-book-1` | 24.5 (105%) | 24.3 (104%) | 25.3 (109%) | 27.2 (117%) | 36 (114%) | 85%-90% / 150%-180% / 120%-130% | sustained high; Nova low; Health low (114%) |
-| Paladin (Lay On Hands) L1 `paladin-hands-1` | 20.7 (89%) | 35.3 (151%) | 20.2 (87%) | 25.8 (111%) | 39 (124%) | 85%-90% / 150%-180% / 120%-130% | sustained ok; Nova ok; Health ok (124%) |
-| Paladin (Lay On Hands) L2 `paladin-hands-2` | 22.7 (85%; 88%) | 36.3 (137%; 142%) | 22.0 (83%; 86%) | 27.0 (102%; 105%) | 43 (126%) | 85%-90% / 150%-180% / 120%-130% | sustained ok; Nova low; Health ok (126%) |
-| Paladin (Lay On Hands) L3 `paladin-hands-3` | 22.7 (85%; 81%) | 39.7 (150%; 142%) | 23.0 (87%; 82%) | 27.7 (104%; 99%) | 46 (126%) | 85%-90% / 150%-180% / 120%-130% | sustained low; Nova low; Health ok (126%) |
-| Paladin (Smite, hold) L1 `paladin-smite-1-hold` | 21.1 (91%) | 37.4 (161%) | 20.2 (87%) | 26.2 (113%) | 39 (124%) | 85%-90% / 150%-180% / 120%-130% | sustained ok; Nova ok; Health ok (124%) |
-| Paladin (Smite) L1 `paladin-smite-1` | 21.1 (91%) | 37.4 (161%) | 19.9 (86%) | 26.3 (113%) | 39 (124%) | 85%-90% / 150%-180% / 120%-130% | sustained ok; Nova ok; Health ok (124%) |
-| Paladin (Smite) L2 `paladin-smite-2` | 23.5 (89%; 92%) | 39.4 (148%; 154%) | 22.0 (83%; 86%) | 28.4 (107%; 111%) | 43 (126%) | 85%-90% / 150%-180% / 120%-130% | sustained ok; Nova ok; Health ok (126%) |
-| Paladin (Smite) L3 `paladin-smite-3` | 23.5 (89%; 84%) | 43.1 (162%; 154%) | 24.3 (91%; 87%) | 30.2 (114%; 108%) | 46 (126%) | 85%-90% / 150%-180% / 120%-130% | sustained ok; Nova ok; Health ok (126%) |
+| Paladin (Lay On Hands) L1 `paladin-hands-1` | 20.7 (89%) | 36.5 (157%) | 20.0 (86%) | 26.3 (113%) | 39 (124%) | 85%-90% / 150%-180% / 120%-130% | sustained ok; Nova ok; Health ok (124%) |
+| Paladin (Lay On Hands) L2 `paladin-hands-2` | 22.7 (85%; 88%) | 37.5 (141%; 146%) | 22.0 (83%; 86%) | 27.6 (104%; 108%) | 43 (126%) | 85%-90% / 150%-180% / 120%-130% | sustained ok; Nova ok; Health ok (126%) |
+| Paladin (Lay On Hands) L3 `paladin-hands-3` | 22.7 (85%; 81%) | 41.2 (155%; 147%) | 23.0 (86%; 82%) | 28.0 (106%; 100%) | 46 (126%) | 85%-90% / 150%-180% / 120%-130% | sustained low; Nova ok; Health ok (126%) |
+| Paladin (Smite, Guard) L1 `paladin-smite-1-guard` | 21.1 (91%) | 38.8 (166%) | 19.7 (85%) | 26.7 (115%) | 39 (124%) | 85%-90% / 150%-180% / 120%-130% | sustained ok; Nova ok; Health ok (124%) |
+| Paladin (Smite, hold) L1 `paladin-smite-1-hold` | 21.1 (91%) | 38.8 (166%) | 20.0 (86%) | 26.7 (115%) | 39 (124%) | 85%-90% / 150%-180% / 120%-130% | sustained ok; Nova ok; Health ok (124%) |
+| Paladin (Smite) L1 `paladin-smite-1` | 21.1 (91%) | 38.8 (166%) | 19.9 (85%) | 26.9 (116%) | 39 (124%) | 85%-90% / 150%-180% / 120%-130% | sustained ok; Nova ok; Health ok (124%) |
+| Paladin (Smite) L2 `paladin-smite-2` | 23.5 (89%; 92%) | 40.8 (153%; 159%) | 22.1 (83%; 86%) | 28.8 (108%; 112%) | 43 (126%) | 85%-90% / 150%-180% / 120%-130% | sustained ok; Nova ok; Health ok (126%) |
+| Paladin (Smite) L3 `paladin-smite-3` | 23.5 (89%; 84%) | 44.3 (167%; 158%) | 24.3 (91%; 87%) | 30.8 (116%; 110%) | 46 (126%) | 85%-90% / 150%-180% / 120%-130% | sustained ok; Nova ok; Health ok (126%) |
 
 Roles: Paladin: tank and support: more Health, heals and Defense for allies, Nova damage. Archer: mobile, fragile, constant ranged damage (a future melee class has the top damage: about 1.15). The verdict at level 2 and 3 uses the charter's curve (the Bestiary's level 3 baseline doesn't grow yet).
 
@@ -79,14 +80,15 @@ Roles: Paladin: tank and support: more Health, heals and Defense for allies, Nov
 | Smite 1 | 1 | round |  | 7.4 | 0.0 | 7.4 | 7.44 | 1.60 | 1.40 | 1.40 | **over** |  |
 | Smite 2 | 2 | round |  | 11.2 | 0.9 | 12.1 | 6.05 | 1.30 | 1.15 | 1.16 | on target |  |
 | Smite 3 | 3 | round |  | 11.2 | 5.8 | 17.1 | 5.69 | 1.22 | 1.07 | 1.08 | on target | new Health (no Rally Point) |
+| Smite 3 (Guard) | 3 | round |  | 11.2 | 3.0 | 14.3 | 4.75 | 1.02 | 0.90 | 0.91 | on target | Guard: only what a later hit uses (30%) |
 | Lay On Hands 1 | 1 | round |  | 0.0 | 8.8 | 8.8 | 8.80 | 1.89 | 1.86 | 2.07 | **over** | uses the target's own Rally Points |
 | Lay On Hands 2 | 2 | round |  | 0.0 | 15.3 | 15.3 | 7.65 | 1.64 | 1.54 | 1.65 | **over** | uses the target's own Rally Points |
 | Lay On Hands 3 | 3 | round |  | 0.0 | 24.1 | 24.1 | 8.03 | 1.72 | 1.65 | 1.79 | **over** | uses the target's own Rally Points |
 | Holy Wrath 2 | 2 | encounter |  | 18.3 | 0.0 | 18.3 | 9.13 | 1.96 | 1.72 | 1.72 | on target |  |
-| Holy Wrath 3 | 3 | encounter |  | 26.6 | 0.0 | 26.6 | 8.86 | 1.90 | 1.67 | 1.67 | on target |  |
+| Holy Wrath 3 | 3 | encounter |  | 27.8 | 0.0 | 27.8 | 9.26 | 1.99 | 1.74 | 1.74 | on target |  |
 | Consecrated Ground 2 | 2 | daily |  | 0.0 | 21.7 | 21.7 | 10.85 | 2.33 | 2.08 | 2.14 | on target |  |
 | Consecrated Ground 3 | 3 | daily |  | 0.0 | 45.2 | 45.2 | 15.08 | 3.24 | 2.89 | 2.97 | a little over |  |
-| Divine Surge | 0 | round | 1 | 0.0 | 4.0 | 4.0 | - | 17% of a turn | 15% | 15% | on target (0 AP) | an ally's damage (90% that one hits the target in time); costs 1 Escalation: 2.92 uses a fight (2.42 without Momentum), 3.5 DE a turn |
+| Divine Surge | 0 | round | 1 | 0.0 | 4.0 | 4.0 | - | 17% of a turn | 15% | 15% | on target (0 AP) | an ally's damage (90% that one hits the target in time); costs 1 Escalation: 2.94 uses a fight (2.44 without Momentum), 3.5 DE a turn |
 | Shield of Faith (R) | 1 | turn |  | 0.0 | 5.2 | 5.2 | 5.22 | 1.12 | 0.98 | 0.98 | on target | damage an ally doesn't take (one hit); Reaction: needs AP kept after your turn |
 | Aura of Protection | 1 | encounter |  | 0.0 | 6.5 | 6.5 | 6.49 | 1.39 | 1.32 | 1.47 | a little under |  |
 
@@ -123,11 +125,11 @@ Roles: Paladin: tank and support: more Health, heals and Defense for allies, Nov
 | Rain of Arrows | 3 | daily |  | 11.4 | 0.0 | 11.4 | 3.81 | 0.82 | 0.72 | 0.72 | **under** + E2 | E2: the area lasts 2 rounds (hazardous terrain) |
 | Hunter's Focus | 1 | daily |  | 0.0 | 14.2 | 14.2 | 14.16 | 3.04 | 2.66 | 2.66 | a little over |  |
 | Deadeye | 3 | daily |  | 12.4 | 0.0 | 12.4 | 4.14 | 0.89 | 0.78 | 0.78 | **under** + E2 | E2: Prone |
-| Steady Aim | 0 | round | 1 | 0.0 | 0.5 | 0.5 | - | 2% of a turn | 2% | 2% | under (0 AP: <8% of a turn) + E2 | E2: range; costs 1 Escalation: 2.92 uses a fight (2.42 without Momentum), 0.4 DE a turn |
-| Vanish | 1 | round | 1 | 0.0 | 0.0 | 0.0 | 0.00 | 0.00 | 0.00 | 0.00 | **under** + E2 | E2: Evade 3; E2: the first Strike against you takes 1 Bane; costs 1 Escalation: 2.92 uses a fight (2.42 without Momentum), 0.0 DE a turn |
-| Pinning Shot | 1 | round | 2 | 5.5 | 0.0 | 5.5 | 5.50 | 1.18 | 1.03 | 1.03 | on target + E2 | E2: Immobilized; costs 2 Escalation: 1.28 uses a fight (1.10 without Momentum), 2.1 DE a turn |
-| Twin Shot | 1 | round | 3 | 16.0 | 0.0 | 16.0 | 16.05 | 3.44 | 3.02 | 3.02 | **over** | costs 3 Escalation: 0.55 uses a fight (0.28 without Momentum), 2.6 DE a turn |
-| Perfect Shot | 0 | round | 3 | 0.0 | 0.0 | 0.0 | - | 0% of a turn | 0% | 0% | under (0 AP: <8% of a turn) | costs 3 Escalation: 0.55 uses a fight (0.28 without Momentum), 0.0 DE a turn |
+| Steady Aim | 0 | round | 1 | 0.0 | 0.5 | 0.5 | - | 2% of a turn | 2% | 2% | under (0 AP: <8% of a turn) + E2 | E2: range; costs 1 Escalation: 2.94 uses a fight (2.44 without Momentum), 0.4 DE a turn |
+| Vanish | 1 | round | 1 | 0.0 | 0.0 | 0.0 | 0.00 | 0.00 | 0.00 | 0.00 | **under** + E2 | E2: Evade 3; E2: the first Strike against you takes 1 Bane; costs 1 Escalation: 2.94 uses a fight (2.44 without Momentum), 0.0 DE a turn |
+| Pinning Shot | 1 | round | 2 | 5.5 | 0.0 | 5.5 | 5.50 | 1.18 | 1.03 | 1.03 | on target + E2 | E2: Immobilized; costs 2 Escalation: 1.28 uses a fight (1.10 without Momentum), 2.0 DE a turn |
+| Twin Shot | 1 | round | 3 | 16.0 | 0.0 | 16.0 | 16.05 | 3.44 | 3.02 | 3.02 | **over** | costs 3 Escalation: 0.56 uses a fight (0.29 without Momentum), 2.6 DE a turn |
+| Perfect Shot | 0 | round | 3 | 0.0 | 0.0 | 0.0 | - | 0% of a turn | 0% | 0% | under (0 AP: <8% of a turn) | costs 3 Escalation: 0.56 uses a fight (0.29 without Momentum), 0.0 DE a turn |
 
 **Archer passives** (DE a turn, weighted by the share of the rounds at its Escalation):
 
@@ -176,11 +178,11 @@ Roles: Paladin: tank and support: more Health, heals and Defense for allies, Nov
 | Miraculous Recovery 3 | 3 | daily |  | 0.0 | 26.4 | 26.4 | 8.80 | 1.89 | 1.86 | 2.07 | a little under + E2 | E2: ends an effect |
 | Consecrated Ground 2 | 2 | daily |  | 0.0 | 21.7 | 21.7 | 10.85 | 2.33 | 2.08 | 2.14 | on target |  |
 | Consecrated Ground 3 | 3 | daily |  | 0.0 | 45.2 | 45.2 | 15.08 | 3.24 | 2.89 | 2.97 | a little over |  |
-| Divine Intervention 1 (R) | 1 | daily |  | 0.0 | 20.7 | 20.7 | 20.71 | 4.44 | 4.44 | 4.44 | **over** | a Down undone or prevented: 35 DE a use, x 59% (how often an ally goes Down in a day); Reaction: needs AP kept after your turn |
-| Divine Intervention 2 (R) | 2 | daily |  | 0.0 | 29.5 | 29.5 | 14.75 | 3.17 | 3.15 | 3.26 | a little over | a Down undone or prevented: 35 DE a use, x 59% (how often an ally goes Down in a day); Reaction: needs AP kept after your turn |
-| Call to Arms | 0 | round | 1 | 0.0 | 14.5 | 14.5 | - | 62% of a turn | 62% | 66% | **over** (0 AP: >25% of a turn) | a Down undone or prevented: 35 DE a use, x 16% (how often an ally goes Down in a fight); costs 1 Escalation: 2.92 uses a fight (2.42 without Momentum), 4.2 DE a turn |
-| Divine Surge | 0 | round | 1 | 0.0 | 4.5 | 4.5 | - | 19% of a turn | 17% | 17% | on target (0 AP) | costs 1 Escalation: 2.92 uses a fight (2.42 without Momentum), 3.8 DE a turn |
-| Hand of Mercy | 1 | round | 1 | 0.0 | 0.0 | 0.0 | 0.00 | 0.00 | 0.00 | 0.00 | **under** + E2 | E2: ends an effect; costs 1 Escalation: 2.92 uses a fight (2.42 without Momentum), 0.0 DE a turn |
+| Divine Intervention 1 (R) | 1 | daily |  | 0.0 | 21.3 | 21.3 | 21.28 | 4.57 | 4.57 | 4.57 | **over** | a Down undone or prevented: 35 DE a use, x 61% (how often an ally goes Down in a day); Reaction: needs AP kept after your turn |
+| Divine Intervention 2 (R) | 2 | daily |  | 0.0 | 30.1 | 30.1 | 15.04 | 3.23 | 3.21 | 3.32 | a little over | a Down undone or prevented: 35 DE a use, x 61% (how often an ally goes Down in a day); Reaction: needs AP kept after your turn |
+| Call to Arms | 0 | round | 1 | 0.0 | 14.6 | 14.6 | - | 63% of a turn | 62% | 66% | **over** (0 AP: >25% of a turn) | a Down undone or prevented: 35 DE a use, x 17% (how often an ally goes Down in a fight); costs 1 Escalation: 2.94 uses a fight (2.44 without Momentum), 4.3 DE a turn |
+| Divine Surge | 0 | round | 1 | 0.0 | 4.5 | 4.5 | - | 19% of a turn | 17% | 17% | on target (0 AP) | costs 1 Escalation: 2.94 uses a fight (2.44 without Momentum), 3.8 DE a turn |
+| Hand of Mercy | 1 | round | 1 | 0.0 | 0.0 | 0.0 | 0.00 | 0.00 | 0.00 | 0.00 | **under** + E2 | E2: ends an effect; costs 1 Escalation: 2.94 uses a fight (2.44 without Momentum), 0.0 DE a turn |
 | Judgment | 1 | round | 2 | 5.6 | 0.0 | 5.6 | 5.59 | 1.20 | 1.05 | 1.05 | on target + E2 | E2: Hindered; costs 2 Escalation: 1.28 uses a fight (1.10 without Momentum), 2.1 DE a turn |
 | Sanctified Ground | 1 | round | 2 | 0.0 | 2.6 | 2.6 | 2.60 | 0.56 | 0.53 | 0.59 | **under** | costs 2 Escalation: 1.28 uses a fight (1.10 without Momentum), 1.0 DE a turn |
 
@@ -192,7 +194,7 @@ Roles: Paladin: tank and support: more Health, heals and Defense for allies, Nov
 | Avenger's Oath | 2 | 0.2 | 0.1 | 0% | about once a fight (a third of the turns) |
 | Aegis |  | 0.0 | 0.0 | 0% | E2 / not modeled: 1 |
 | Divine Vigil | 2 | 0.0 | 0.0 | 0% | E2 / not modeled: Boon on Saves against Fear |
-| Mercy's Reward |  | 3.1 | 3.1 | 13% | 6.0 a Smite after a Lay On Hands that heals; weighted by Lay On Hands on 52% of the turns |
+| Mercy's Reward |  | 3.1 | 3.1 | 14% | 6.0 a Smite after a Lay On Hands that heals; weighted by Lay On Hands on 53% of the turns |
 | Profane Judgment |  | 0.0 | 0.0 | 0% | E2 / not modeled: Enfeebled 1 on Profane creatures |
 
 ## Assumptions
@@ -205,6 +207,7 @@ Roles: Paladin: tank and support: more Health, heals and Defense for allies, Nov
 - `othersShare`: 0.75
 - `surgeLands`: 0.9
 - `hitBeforeTurn`: 0.95
+- `guardUsed`: 0.3
 - `baseHealthSpecs`: attributes body 2, mind 1
 health body x4 +3, mind x3 +4,attributes body 1, mind 1
 health body x3 +3, mind x2.5 +4
