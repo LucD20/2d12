@@ -73,7 +73,7 @@ export function mapMods(att, tgt, kind, W, opts = {}) {
     const off = W.M.off ?? {};
     if (!off.range) { out.banes += rb; out.rangeBanes = rb; }
     if (engaged(att, W) && !opts.noEngagedBanes && !off.engaged) { out.banes += 2; out.engagedBanes = 2; }
-    if (!off.intoMelee && enemiesOf(tgt, W).some(x => x !== att && adj(x, tgt))) { out.banes += 1; out.intoMelee = 1; }
+    if (!off.intoMelee && !opts.noIntoMelee && enemiesOf(tgt, W).some(x => x !== att && adj(x, tgt))) { out.banes += 1; out.intoMelee = 1; }
     if (!opts.ignoreCover && !off.cover) {
       let c = creatureInLine(att, tgt, W) ? 1 : 0;
       if (d > 1) { const u = (att.R ?? W.R)(); let acc = 0; for (const x of W.M.cover) { acc += x.p; if (u < acc) { c = Math.max(c, x.n); break; } } }

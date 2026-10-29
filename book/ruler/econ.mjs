@@ -31,7 +31,7 @@ export const A = {
   // The roles (Lucas, 2026-10-29), as shares of the baseline PC: damage a turn, Health.
   roles: { Paladin: { sustained: [0.85, 0.90], nova: [1.5, 1.8], health: [1.20, 1.30], note: "tank and support: more Health, heals and Defense for allies, Nova damage" },
            Archer: { sustained: [1.00, 1.05], nova: [1.1, 1.3], health: [0.80, 0.85], note: "mobile, fragile, constant ranged damage (a future melee class has the top damage: about 1.15)" } },
-  growth: 0.10,           // the charter's growth curve (Proposed): +10% sustained a level; the Bestiary refit (pack E3) adopts it
+  growth: 0,              // model A (pack LV, decided 2026-10-29): no sustained growth inside tier 1 (levels 1-4); was the charter's +10% a level
   bands: { "at-will": [0.9, 1.1], round: [1.0, 1.3], turn: [1.0, 1.3], encounter: [1.4, 2.0], daily: [2.0, 3.0], none: [0.9, 1.1] },
 };
 
@@ -191,6 +191,7 @@ const roleOf = b => A.roles[b.name.split(" (")[0]];
 const CATALOGUE_NOTES = {
   "catalogue/paladin-p1.txt": "**The P1 main build (pack P1, 2026-10-29; in the book since 2026-10-29)**: the defaults of every level 1 to 3 Pick, then the options in the Paladin document (Shield of Faith, Bulwark of Faith, Aura of Protection, Font of Mercy).",
   "catalogue/paladin.txt": "**The Paladin before P1** (the book until 2026-10-29), kept to compare.",
+  "catalogue/archer-a1.txt": "**The A1 main build (pack A1, 2026-10-29; PROPOSED: book/archer-a1.md)**: both Signatures and the defaults of every level 1 to 3 Pick.",
 };
 export function report() {
   // Measured by positions (pack E2) instead of assumed: who the NPCs strike on the map.
@@ -238,7 +239,7 @@ export function report() {
   L.push("", `**Frequency bands** (DE per AP, divided by the price of 1 AP): At-will ${A.bands["at-will"].join(" to ")}, Round and Turn ${A.bands.round.join(" to ")}, Encounter ${A.bands.encounter.join(" to ")}, Daily ${A.bands.daily.join(" to ")}. An At-will Action takes a Bane on each use after the first, so its first use can sit at the top. A **0 AP** Action is priced per use as a share of a baseline turn. Verdict: **under** or **over** when more than 10% outside its band; **+ ?** when part of its value is still not modeled (NPC Saves, hazardous areas), so the verdict isn't final. Movement, Evade, Forced Movement, Cover, range, Hindered, Immobilized, Prone and ending an effect are priced by positions (pack E2, section 5).`, "");
   // Role budgets.
   L.push("## 3. The role budgets (every build of `classes/`)", "",
-    "Shares of the baseline PC: damage against the Bestiary's baseline turn of the level (" + R.map(r => f1(r.B)).join(" / ") + " at levels 1 / 2 / 3), and in brackets against the charter's growth curve (+" + pc(A.growth) + " a level: " + [1, 2, 3].map(lv => f1(R[0].B * (1 + A.growth * (lv - 1)))).join(" / ") + "; pack E3 refits the Bestiary to it). Health against the baseline Pool (" + R.map(r => f1(r.avgPool)).join(" / ") + ").", "",
+    "Shares of the baseline PC: damage against the Bestiary's baseline turn of the level (" + R.map(r => f1(r.B)).join(" / ") + " at levels 1 / 2 / 3), and in brackets against model A (pack LV: flat inside tier 1, +" + pc(A.growth) + " a level: " + [1, 2, 3].map(lv => f1(R[0].B * (1 + A.growth * (lv - 1)))).join(" / ") + "; pack E3 refits the Bestiary to it). Health against the baseline Pool (" + R.map(r => f1(r.avgPool)).join(" / ") + ").", "",
     "**Sustained (best)**: the best turn with no Encounter or Daily Action and no Escalation (a Reload Shot turn and heal turns left out). **Nova**: the best turn with an Encounter or Daily Action, at the Escalation it spends or the Escalation Momentum starts a fight with (" + [1, 2, 3].map(lv => S.MOMENTUM.startEsc(lv)).join(" / ") + "), whichever is more. **Sustained (real)**: the damage a turn in the simulated Standard day on the turns without an Encounter or Daily Action (openings, Steel Yourself turns and Escalation as the plan spends it, Momentum on); **this is the column the sustained budget is checked on**. **All turns**: the same with the Nova turns in (a once-a-fight Nova is about a third of a PC's turns: fights last about 3 rounds). The real columns use the map model (pack E2: positions, movement, Banes from range, cover and shooting into melee, Flanking); **No positions** is the sustained real damage in the old fight with no map, to compare.", "",
     "| Build | Sustained (best) | Nova | Sustained (real) | No positions | All turns (real) | Health | Budget: sustained / Nova / Health | Verdict |", "|---|---:|---:|---:|---:|---:|---:|---|---|");
   const classFiles = fs.readdirSync(HERE + "classes").filter(f => f.endsWith(".txt")).sort();
@@ -257,11 +258,11 @@ export function report() {
     const curve = R[0].B * (1 + A.growth * (b.level - 1));
     const both = x => (Number.isFinite(x) ? `${f1(x)} (${pc(x / r.B)}${b.level > 1 ? `; ${pc(x / curve)}` : ""})` : "-");
     const fit = (x, [lo, hi]) => (x < lo * 0.97 ? "low" : x > hi * 1.03 ? "high" : "ok");
-    const share = x => x / (b.level > 1 ? curve : r.B);   // the verdict uses the charter's curve from level 2
+    const share = x => x / (b.level > 1 ? curve : r.B);   // the verdict uses model A's curve from level 2
     const v = [`sustained ${fit(share(real.sustained), role.sustained)}`, `Nova ${nv ? fit(share(nv), role.nova) : "none"}`, `Health ${fit(b.pool / r.avgPool, role.health)} (${pc(b.pool / r.avgPool)})`];
     L.push(`| ${b.name} L${b.level} \`${file.replace(/\.txt$/, "")}\` | ${both(s0)} | ${nv ? both(nv) : "-"} | ${both(real.sustained)} | ${both(flat.sustained)} | ${both(real.all)} | ${b.pool} (${pc(b.pool / r.avgPool)}) | ${pc(role.sustained[0])}-${pc(role.sustained[1])} / ${pc(role.nova[0])}-${pc(role.nova[1])} / ${pc(role.health[0])}-${pc(role.health[1])} | ${v.join("; ")} |`);
   }
-  L.push("", `Roles: Paladin: ${A.roles.Paladin.note}. Archer: ${A.roles.Archer.note}. The verdict at level 2 and 3 uses the charter's curve (the Bestiary's level 3 baseline doesn't grow yet).`, "");
+  L.push("", `Roles: Paladin: ${A.roles.Paladin.note}. Archer: ${A.roles.Archer.note}. The verdict at level 2 and 3 uses model A (pack LV: the baseline stays at level 1's inside tier 1; the Bestiary's level 2-3 rows are refit in E3).`, "");
   // 4. The audit.
   for (const b of cats) {
     L.push(`## 4. ${b.name}: every Action of \`${b.file}\` (level 1; efficiency also at levels 2 and 3)`, "", ...(CATALOGUE_NOTES[b.file] ? [CATALOGUE_NOTES[b.file], ""] : []), "| Action | AP | Frequency | Esc | Damage | Effects | Total DE | DE / AP | Efficiency L1 | L2 | L3 | Verdict (L1) | Notes (positions; what is not modeled) |", "|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---|---|");

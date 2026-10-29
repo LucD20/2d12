@@ -118,7 +118,7 @@ last several rounds, or carry a damage rider to be worth their AP.
 2. **P1: the Paladin main build**: 2 Features, both Signatures (Smite and Lay On Hands, already strong identities), one default for every
    Pick, written to section 4 and checked in the simulated days. It goes first: it relies less on positions.
 3. **E2: positions in the ruler** (movement, Evade, Push, Cover, range, Hindered, Immobilized, Prone): the Archer's identity needs it. **Done 2026-10-29** (book/ruler/map.mjs, positions.mjs; prices.md section 5): on the map the Archer's real sustained damage is 96% of the baseline (121% without positions), the Paladin's 81%; the conditions have prices.
-4. **A1: the Archer rewrite and main build**, with E2's prices.
+4. **A1: the Archer rewrite and main build**, with E2's prices. **Proposed 2026-10-29** (book/archer-a1.md): Signatures Double Shot or Rolling Shot; sustained 102-104% at levels 1-2, Health 86%.
 5. **E3: the Bestiary refit** to the new baseline and the growth curve of section 3.
 6. **Options**: every other Pick as a sidegrade priced against the default; then the Talents (Class Expertise included), checked for overlap.
 7. **The book** (the class documents, the Characters chapter's steps 7 and 8, the level lists), then Foundry.

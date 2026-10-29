@@ -28,3 +28,9 @@ day-party Level 2, P1 Smite: paladin-smite-2, paladin-smite-2, archer-2, archer-
 day-party Level 2, P1 Lay On Hands: paladin-hands-2, paladin-hands-2, archer-2, archer-2
 day-party Level 3, P1 Smite: paladin-smite-3, paladin-smite-3, archer-3, archer-3
 day-party Level 3, P1 Lay On Hands: paladin-hands-3, paladin-hands-3, archer-3, archer-3
+day-party Level 1, A1 Double Shot: paladin-smite-1, paladin-smite-1, archer-double-1, archer-double-1
+day-party Level 1, A1 Rolling Shot: paladin-smite-1, paladin-smite-1, archer-rolling-1, archer-rolling-1
+day-party Level 2, A1 Double Shot: paladin-smite-2, paladin-smite-2, archer-double-2, archer-double-2
+day-party Level 2, A1 Rolling Shot: paladin-smite-2, paladin-smite-2, archer-rolling-2, archer-rolling-2
+day-party Level 3, A1 Double Shot: paladin-smite-3, paladin-smite-3, archer-double-3, archer-double-3
+day-party Level 3, A1 Rolling Shot: paladin-smite-3, paladin-smite-3, archer-rolling-3, archer-rolling-3
