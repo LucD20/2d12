@@ -11,3 +11,13 @@ encounter Elite + 2 Standards: 1 elite, 2 standard
 encounter 8 Grunts: 8 grunt
 encounter 2 Standards + 8 Minions: 2 standard, 8 minion
 encounter 6 Standards (CV 6, hard): 6 standard
+
+# Adventuring days: the fights between two Rests (book, Bestiary: CV 1 per PC is a normal fight, 3/4 easy, 1 1/2 hard, 2 deadly).
+# day <name>: <fight 1> | <fight 2> | ...      day-party <name>: <class file>, ... (the NPCs use the party's level)
+day-runs 1000
+day Standard day (easy, normal, normal, hard): 2 standard, 4 minion | 4 standard | 1 elite, 2 standard | 2 elite, 2 standard
+day Long day (normal, hard, normal, hard): 8 grunt | 6 standard | 2 elite | 1 elite, 4 standard
+day Short hard day (normal, hard, hard): 4 standard | 2 elite, 2 standard | 6 standard
+day-party Level 1: paladin-1, paladin-1, archer-1, archer-1
+day-party Level 2: paladin-2, paladin-2, archer-2, archer-2
+day-party Level 2, one support Paladin: paladin-2-support, paladin-2, archer-2, archer-2

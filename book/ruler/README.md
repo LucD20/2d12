@@ -12,7 +12,10 @@ the turns it can take and its plan by round) and the fights in `fights.txt`; one
 - **duels** against one Medium NPC of each role (the Bestiary at the build's level): its damage a turn to this PC, **rounds to kill it**
   and **rounds for it to put this PC Down**;
 - a **Monte Carlo fight** of the party against each encounter of `fights.txt` (2,000 runs): rounds, the party's win rate, Health lost,
-  how often a PC goes Down and in which round, each PC's chance to go Down.
+  how often a PC goes Down and in which round, each PC's chance to go Down;
+- **adventuring days** (`day` and `day-party` in fights.txt): 3 to 4 fights with no Rest, Health and Rally Points carried over; per PC: damage,
+  damage a turn, Health, damage taken and reduced, Downs, Rally Points used and left, healing given, the damage its Defense bonuses stopped and its
+  Vulnerable added, and every debuff it applied.
 
 ```
 node book/ruler/spec.mjs            # writes report.md and prints it (about 10 seconds)
@@ -40,7 +43,7 @@ One thing per line; `#` starts a comment. A class file (`classes/paladin-1.txt` 
 | `passive` | `passive Marked Quarry: boon 1 shot strike quarry` · `passive Killer's Focus: escalation 2: extra 1d6 first shot strike weapon` | Always on (from an Escalation) |
 | `turn` | `turn Main: Smite 2, Weapon Attack, Weapon Attack, move 1` | A turn: Actions in order; `move N` spends AP; `(reload shot)` after a Weapon Action makes it a Reload Shot |
 | `plan` | `plan Opening, Main` | The turn of round 1, round 2...; the last one repeats |
-| `when` | `when ally below 50%: Heal` · `when unloaded: Reload turn` | A turn that replaces the plan's |
+| `when` | `when ally below 50%: Heal` · `when self below 35%: Steel` · `when unloaded: Reload turn` | A turn that replaces the plan's |
 
 An `action` line is fields separated by `|`: the name, then any of
 `ap N` · a Frequency (`at-will`, `turn`, `round`, `encounter`, `daily`) · `traits a b c` · `vs ad` / `vs wd` / `vs save instinct` / `vs dc 13` ·
@@ -51,12 +54,13 @@ An `action` line is fields separated by `|`: the name, then any of
 Effects: `on 2+: ...`, `on 3: ...`, `on 1: ...` or `always: ...`, several separated by `;`:
 `boon N next <traits>` · `bane N next ...` · `empowered N next ...` / `empowered N turn` (every Action of the turn) · `favored next ...` ·
 `extra 1d8 next @Smite` (`@Name`: only that Action) · `vulnerable N` · `taunt N` (Banes on the target's attacks against others) ·
-`heal N` (N Rally Points to the most hurt ally) · `defense N ally` / `defense N allies` / `defense N self` (until your next turn) · `reload` ·
+`heal N` (the most hurt ally uses N of its Rally Points; `heal N self`: you do) · `debuff Prone` (counted in the day report only) · `defense N ally` / `defense N allies` / `defense N self` (until your next turn) · `reload` ·
 `reduce N` (a passive: each NPC hit deals N less). The traits after `next` must all be on the Action (the book's [Shot, Strike] rule);
 `quarry` limits it to your Marked Quarry.
 
 The fight (`fights.txt`): `level`, `runs`, `defenses`, `party Paladin, Paladin, Archer, Archer`, and `encounter <name>: 4 standard` or
-`1 elite, 2 standard high` (a rating after the role, Medium by default). NPCs are the Bestiary's at that level with Foundry's default
+`1 elite, 2 standard high` (a rating after the role, Medium by default). Days: `day-runs 1000`, `day <name>: <fight> | <fight> | ...` and
+`day-party <name>: paladin-1, archer-1, ...` (class file names; the NPCs use the party's level). NPCs are the Bestiary's at that level with Foundry's default
 ratings (Body High, the rest Medium): a Standard has 57 Health, Defense 13, Modifier +2. What the fight leaves out: movement and
 positions, Reactions, Rally Points used by the PCs themselves, NPC special Actions, Body and Mind as two pools.
 
@@ -81,6 +85,37 @@ positions, Reactions, Rally Points used by the PCs themselves, NPC special Actio
 - **Party fights** (2 Paladins + 2 Archers, CV 4): 3 rounds, 29 to 38% of the party's Health lost, a PC Down in 1 to 16%
   of the fights (2 Elites the most: 16%). The book's target is about 3 rounds and 40%: the length is on target, the Health lost is a little low
   (the sim ignores NPC special Actions, which are part of what makes a fight cost 40%). CV 6 (6 Standards): 4 to 5 rounds, 47%, a PC Down in 26%.
+
+### Adventuring days: Archer and Paladin compared (2026-10-29)
+
+`fights.txt` has three days of 3 to 4 fights with no Rest (the Bestiary's CV: 1 per PC normal, 3/4 easy, 1 1/2 hard), run 1,000 times for
+three parties of 2 Paladins + 2 Archers (level 1; level 2; level 2 with one Paladin taking Shield of Faith instead of Sacred Weapon). Health and
+Rally Points carry over; Encounter Actions and Escalation start again each fight; Rally Points are used in a fight (Steel Yourself, when below
+35% Health; the Paladin's Lay On Hands on an ally below 50%) and between fights. Per PC, over the Standard day (easy, normal, normal, hard):
+
+| Per PC, Standard day | Paladin L1 | Archer L1 | Paladin L2 | Archer L2 |
+|---|---:|---:|---:|---:|
+| Damage a turn in real fights | 27.1 | 24.6 | 27.7 | 26.2 |
+| Share of the party's damage | 26% | 24% | 26% | 24% |
+| Health Pool / Rally Points | 36 / 8 | 27 / 7 | 39 / 9 | 29 / 7 |
+| Damage taken (the day) | 79 (+6 reduced) | 50 | 95 (+7 reduced) | 60 |
+| Times Down a day | 0.44 | 0.46 | 0.60 | 0.67 |
+| Healed allies (Lay On Hands) | 25 | 0 | 29 | 0 |
+| Vulnerable 2 given: extra party damage | 0 | 3.7 | 0 | 4.0 |
+| Debuffs a day | Prone 1 | Hindered 3, Immobilized 2, Bane on a Save 3, Vulnerable 1.6 | Prone 1 | Hindered 3.7, Immobilized 1.2, Bane on a Save 3, Vulnerable 1.6 |
+
+- **DPS: the Archer doesn't out-damage the Paladin.** In real fights (openings, heals and Steel Yourself turns included) the L1 Archer deals 9%
+  less than the L1 Paladin a turn, and the same at L2 (Wing Clip). Each class is a quarter of the party's damage. For a ranged-damage class, that is the main D1 question.
+- **Health:** the Paladin has 33% more Health and takes 1.6 times the damage (NPCs choose it 1.5 times as often: an assumption), and both go
+  Down equally often (0.4 to 0.9 a day). Hallowed Stance takes 6 to 13 damage off a day (the sim gives it only to the Paladin itself, not to adjacent allies).
+- **Buffs:** Lay On Hands brings back 25 to 39 Health a day, but from the allies' own Rally Points: it is action economy (a Down ally back up, a
+  heal mid-fight), not new Health. **Shield of Faith 1 AP stops only 1 to 2 damage a day** while it costs the support Paladin about 2 damage a turn
+  (26.5 against 27.8 with Sacred Weapon): as written it is a weak pick. Sacred Weapon is the Paladin's real buff (+5 damage a turn, on itself).
+- **Debuffs:** the Archer's control is where its value is: about 5 Hindered or Immobilized and 3 "Bane on the next Save" a day (none of them
+  measured in damage: the fight has no movement or Saves by the PCs), and Vulnerable 2 (Marksman's Shot, Tier 3) worth only about 4 damage a day (it ends with the target's turn).
+- **The day:** normal fights cost 20 to 35% of the party's Health each; Rally Points run out after about 4 fights (7 to 26% left). A hard fight at the end of the day (2 Elites + 2 Standards)
+  is lost in 27% (L1) to 45% (L2) of the days; alone, 6 Standards are lost 4% of the time. **Level 2 is harder than level 1** against the Bestiary's
+  level 2 NPCs (Standard day cleared 55% against 73%): the Bestiary grows NPC Health by the best turn's growth (+14%), but in real fights the PCs' damage a turn grows 2 to 6%.
 
 ## The level 1 PC ruler (2026-10-24, the hand-written scripts)
 

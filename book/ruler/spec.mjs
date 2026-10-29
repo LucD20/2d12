@@ -1,4 +1,4 @@
-// The spec-driven ruler (2026-10-29): describe a class build in a plain file (book/ruler/classes/*.txt) and the fights in book/ruler/fights.txt;
+// The spec-driven ruler (2026-10-29; adventuring days added the same day): describe a class build in a plain file (book/ruler/classes/*.txt) and the fights in book/ruler/fights.txt;
 // this script writes book/ruler/report.md: each turn's damage against Defense 12 to 14, the build's numbers, duels against each NPC role
 // (rounds to kill it, rounds to go Down) and a Monte Carlo fight of the party against each encounter (rounds, Health lost, who goes Down).
 // It uses the system's own dice math (foundry/twod12/module/calc.mjs: exploding d12s, Doubles, Boons and Banes) and the Bestiary's tables
@@ -19,7 +19,8 @@ const TW = CF.TWOD12;
 /* ------------------------------------------------------------------ random numbers (seeded) */
 export function rng(seed = 2026) { let a = seed >>> 0; return () => { a = (a + 0x6d2b79f5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
 const die = (R, s) => 1 + Math.floor(R() * s);
-const pick = (R, probs) => { const x = R(); return x < probs[0] ? 1 : x < probs[0] + probs[1] ? 2 : 3; };
+const pickU = (x, probs) => (x < probs[0] ? 1 : x < probs[0] + probs[1] ? 2 : 3);
+const pick = (R, probs) => pickU(R(), probs);
 
 /* ------------------------------------------------------------------ damage expressions */
 /**
@@ -53,6 +54,14 @@ export function rollDamage(R, dmg, { weapon = null, tier = 2, mod = 0, empowered
   return { total, dice: n };
 }
 
+/** The average of a damage expression on a tier (Empowered per die; the extras only when the tier deals damage). */
+export function avgDamage(dmg, weapon, tier, mod, emp = 0, extra = []) {
+  const wt = weaponTier(weapon, tier), dice = d => d.reduce((s, [c, n]) => s + c * ((n + 1) / 2 + emp), 0);
+  const deals = dmg.dice.length || dmg.flat || dmg.mod || (dmg.w && (wt.dice.length || wt.flat));
+  if (!deals) return 0;
+  return dmg.flat + dmg.mod * mod + dice(dmg.dice) + dmg.w * (wt.flat + dice(wt.dice)) + extra.reduce((s, x) => s + x.flat + x.mod * mod + dice(x.dice), 0);
+}
+
 /* ------------------------------------------------------------------ the spec files */
 const clean = l => l.replace(/#.*$/, "").trim();
 const words = s => String(s ?? "").toLowerCase().split(/[\s,+]+/).filter(Boolean);
@@ -66,7 +75,8 @@ function parseEffect(text) {
   if (what === "boon" || what === "bane" || what === "empowered") return { kind: what, n, scope: /\bturn\b/.test(rest) ? "turn" : "next", ...filter(rest) };
   if (what === "favored") return { kind: "favored", scope: "next", ...filter(w.slice(1).join(" ")) };
   if (what === "extra") return { kind: "extra", dmg: parseDamage(w[1]), scope: /\bfirst\b/.test(rest) ? "first" : "next", ...filter(rest) };
-  if (what === "heal") return { kind: "heal", n };
+  if (what === "heal") return { kind: "heal", n, who: /\bself\b/.test(rest) ? "self" : "ally" };
+  if (what === "debuff") return { kind: "debuff", name: w.slice(1).join(" ") };   // counted for the day's report (Prone, Hindered...); no effect in the fight
   if (what === "defense") return { kind: "defense", n, who: /allies/.test(rest) ? "allies" : /self/.test(rest) ? "self" : "ally" };
   if (what === "taunt") return { kind: "taunt", n };
   if (what === "vulnerable") return { kind: "vulnerable", n };
@@ -142,10 +152,11 @@ export function parseSpec(text, file = "spec") {
         b.turns[m[1].trim().toLowerCase()] = { name: m[1].trim(), steps: m[2].split(",").map(s => s.trim()).filter(Boolean) };
       } else if (key === "plan") b.plan = rest.replace(/^:\s*/, "").split(",").map(s => s.trim().toLowerCase()).filter(Boolean);
       else if (key === "when") {
-        const m = rest.match(/^ally below (\d+)%\s*:\s*(.+)$/i), u = rest.match(/^unloaded\s*:\s*(.+)$/i);
+        const m = rest.match(/^ally below (\d+)%\s*:\s*(.+)$/i), u = rest.match(/^unloaded\s*:\s*(.+)$/i), me = rest.match(/^self below (\d+)%\s*:\s*(.+)$/i);
         if (m) b.when.push({ below: Number(m[1]) / 100, turn: m[2].trim().toLowerCase() });
+        else if (me) b.whenSelf = { below: Number(me[1]) / 100, turn: me[2].trim().toLowerCase() };
         else if (u) b.unloadedTurn = u[1].trim().toLowerCase();
-        else fail("write when like: when ally below 50%: Heal, or when unloaded: Reload turn");
+        else fail("write when like: when ally below 50%: Heal, when self below 30%: Steel, or when unloaded: Reload turn");
       }
       else fail(`unknown line "${head}"`);
     } catch (e) { if (/line \d+:/.test(e.message)) throw e; fail(e.message); }
@@ -160,7 +171,7 @@ export function parseSpec(text, file = "spec") {
   b.rallyHeal = Math.ceil(b.pool / 4);
   // Every turn and plan entry must name things that exist.
   for (const t of Object.values(b.turns)) for (const s of t.steps) { const st = stepOf(s); if (st.kind === "action" && !b.actions[st.name]) throw new Error(`${file}: turn "${t.name}" uses "${s}", which is not an action of the file`); }
-  for (const p of [...b.plan, ...b.when.map(w => w.turn), ...(b.unloadedTurn ? [b.unloadedTurn] : [])]) if (!b.turns[p]) throw new Error(`${file}: the plan names "${p}", which is not a turn of the file`);
+  for (const p of [...b.plan, ...b.when.map(w => w.turn), ...(b.unloadedTurn ? [b.unloadedTurn] : []), ...(b.whenSelf ? [b.whenSelf.turn] : [])]) if (!b.turns[p]) throw new Error(`${file}: the plan names "${p}", which is not a turn of the file`);
   for (const a of Object.values(b.actions)) for (const d of [...a.does, ...a.then]) if (!b.actions[d.toLowerCase()]) throw new Error(`${file}: "${a.name}" does "${d}", which is not an action of the file`);
   return b;
 }
@@ -174,12 +185,16 @@ function stepOf(s) {
 
 /** The encounters file: "party Paladin, Paladin, Archer, Archer", "encounter 4 Standards: 4 standard", "runs 2000", "level 1". */
 export function parseFights(text) {
-  const f = { party: [], encounters: [], runs: 2000, level: 1, defenses: [12, 13, 14] };
+  const f = { party: [], encounters: [], days: [], dayParties: [], dayRuns: 1000, runs: 2000, level: 1, defenses: [12, 13, 14] };
+  const npcList = txt => txt.split(",").flatMap(s => { const mm = s.trim().match(/^(\d+)\s+(\w+)(?:\s+(\w+))?$/); if (!mm) throw new Error(`fights.txt: can't read "${s.trim()}" (write: 2 standard, 1 elite high)`); return Array(Number(mm[1])).fill({ role: mm[2].toLowerCase().replace(/s$/, ""), rating: (mm[3] ?? "medium").toLowerCase() }); });
   for (const raw of text.split(/\r?\n/)) {
     const line = clean(raw); if (!line) continue;
     const [head] = line.split(/\s+/), rest = line.slice(head.length).trim();
     if (head === "party") f.party = rest.split(",").map(s => s.trim()).filter(Boolean);
     else if (head === "runs") f.runs = Number(rest);
+    else if (head === "day-runs") f.dayRuns = Number(rest);
+    else if (head === "day") { const m = rest.match(/^(.+?):\s*(.+)$/); f.days.push({ name: m[1].trim(), fights: m[2].split("|").map(x => npcList(x)), text: m[2].split("|").map(x => x.trim()) }); }
+    else if (head === "day-party") { const m = rest.match(/^(.+?):\s*(.+)$/); f.dayParties.push({ name: m[1].trim(), files: m[2].split(",").map(x => x.trim()) }); }
     else if (head === "level") f.level = Number(rest);
     else if (head === "defenses") f.defenses = rest.split(/[\s,]+/).map(Number);
     else if (head === "encounter") {
@@ -230,10 +245,11 @@ export function runTurn(pc, turn, ctx) {
   const traitsOf = (a, extra = []) => [...new Set([...a.traits, ...extra, ...(a.traits.includes("weapon") ? weaponGives() : [])])];
   const apply = (e, target) => {
     if (["boon", "bane", "empowered", "favored", "extra"].includes(e.kind)) (e.scope === "turn" ? st.turnFx : st.next).push(e);
-    else if (e.kind === "heal") ctx.heal?.(pc, e.n);
+    else if (e.kind === "heal") ctx.heal?.(pc, e.n, e.who);
+    else if (e.kind === "debuff") { if (pc.st) pc.st.debuffs[e.name] = (pc.st.debuffs[e.name] ?? 0) + 1; }
     else if (e.kind === "defense") ctx.defend?.(pc, e.n, e.who);
     else if (e.kind === "taunt" && target) target.taunt = { by: pc, n: e.n };
-    else if (e.kind === "vulnerable" && target) target.vulnerable = Math.max(target.vulnerable ?? 0, e.n);
+    else if (e.kind === "vulnerable" && target) { if (e.n >= (target.vulnerable ?? 0)) target.vulnBy = pc; target.vulnerable = Math.max(target.vulnerable ?? 0, e.n); if (pc.st) pc.st.debuffs[`Vulnerable ${e.n}`] = (pc.st.debuffs[`Vulnerable ${e.n}`] ?? 0) + 1; }
     else if (e.kind === "reload") pc.unloaded = false;
   };
   const doAction = (a, opts = {}, extraTraits = [], linked = false, forced = null) => {
@@ -279,7 +295,15 @@ export function runTurn(pc, turn, ctx) {
       if (a.vs.startsWith("save")) {   // a Save Action: the target rolls against your DC (11 + Modifier); its Tier 1 is the worst for it
         const attr = a.vs.split(/\s+/)[1] ?? "instinct";
         tier = pick(R, C.tierProbs(t.save?.[attr] ?? 0, 11 + mod, 0, 0, ""));
-      } else tier = pick(R, C.tierProbs(mod, a.vs === "wd" ? t.wd : t.ad, boons + (t.vulnerable ?? 0), banes, favored ? "favored" : ""));
+      } else {
+        // One random number for the roll with and without the target's Vulnerable: the difference is credited to whoever made it Vulnerable.
+        const u = R(), def = a.vs === "wd" ? t.wd : t.ad, st = favored ? "favored" : "";
+        tier = pickU(u, C.tierProbs(mod, def, boons + (t.vulnerable ?? 0), banes, st));
+        if (t.vulnerable && t.vulnBy?.st && a.tiers) {
+          const without = pickU(u, C.tierProbs(mod, def, boons, banes, st)), av = k => avgDamage(a.tiers[k - 1], b.weapon, k, mod, emp, extra);
+          t.vulnBy.st.vulnCredit += av(tier) - av(without);
+        }
+      }
       const dmg = a.tiers?.[tier - 1];
       if (dmg && (dmg.dice.length || dmg.flat || dmg.mod || (dmg.w && hasDamage(weaponTier(b.weapon, tier))))) {   // 1[W] of a weapon that deals 0 on this tier is no damage (and no extra)
         let total = rollDamage(R, dmg, { weapon: b.weapon, tier, mod, empowered: emp }).total;
@@ -332,30 +356,52 @@ export function turnDamage(build, turnName, defense, { n = 20000, seed = 7, esca
 export function turnFor(pc, round, allies = []) {
   const b = pc.build;
   if (pc.unloaded && b.unloadedTurn) return b.unloadedTurn;
+  if (b.whenSelf && pc.rallyLeft > 0 && (pc.damage ?? 0) >= (1 - b.whenSelf.below) * b.pool) return b.whenSelf.turn;
   for (const w of b.when) if (allies.some(x => x !== pc && !x.down && x.damage >= (1 - w.below) * x.build.pool)) return w.turn;
   return b.plan[Math.min(round - 1, b.plan.length - 1)] ?? Object.keys(b.turns)[0];
 }
 
-/** One NPC Strike against a PC: the tier (its Modifier against the PC's AD, plus a Defense bonus) and the damage. */
+const npcAvg = (f, tier) => (tier < 2 ? 0 : tier === 2 ? f.t2 : f.t3);
+/**
+ * One NPC Strike against a PC. One random number decides the tier with and without the PC's Defense bonus (the difference, in average damage,
+ * is credited to the bonus's giver), then damage reduction (Hallowed Stance) is applied and credited to the PC. Returns the damage taken.
+ */
 const npcStrike = (R, f, t, banes, escalation = 3) => {
   const reduce = t.build.passives.filter(p => p.effect.kind === "reduce" && escalation >= p.escalation).reduce((s, p) => Math.max(s, p.effect.n), 0);
-  const d = npcDamage(R, f, pick(R, C.tierProbs(f.mod, t.build.ad + (t.defBonus ?? 0), 0, banes, "")));
-  return d > 0 ? Math.max(0, d - reduce) : 0;
+  const u = R(), tier = pickU(u, C.tierProbs(f.mod, t.build.ad + (t.defBonus ?? 0), 0, banes, ""));
+  if (t.defBonus && t.defBy?.st) t.defBy.st.defCredit += npcAvg(f, pickU(u, C.tierProbs(f.mod, t.build.ad, 0, banes, ""))) - npcAvg(f, tier);
+  const d = npcDamage(R, f, tier), taken = d > 0 ? Math.max(0, d - reduce) : 0;
+  if (t.st) { t.st.incoming += d; t.st.reduced += d - taken; t.st.taken += taken; }
+  return taken;
 };
 
-/** An NPC's average damage a turn to this PC (its Strikes, At-will Banes, the PC's AD and damage reduction at Escalation 3). */
+/** An NPC's average damage a turn to this PC (its Strikes, At-will Banes, the PC's AD; no damage reduction: Escalation 0). */
 export function npcTurn(npc, build, n = 20000) { const R = rng(5), me = { build }; let sum = 0; for (let k = 0; k < n; k++) for (let s = 0; s < npc.strikes; s++) sum += npcStrike(R, npc, me, s, 0); return sum / n; }
 
-/** A fight: the party (builds) against NPCs; returns { rounds, won, lost: share of the party's Health, downs, firstDown, wipe, downBy }. */
+/** A PC's state across a day: its damage, Rally Points, and what it did (st). */
+export const pcState = b => ({ build: b, damage: 0, down: false, rallyLeft: b.rallyPoints, defBonus: 0, defBy: null,
+  st: { dealt: 0, rounds: 0, incoming: 0, reduced: 0, taken: 0, defCredit: 0, vulnCredit: 0, healGiven: 0, rpSelf: 0, rpByAlly: 0, rpBetween: 0, downs: 0, debuffs: {} } });
+
+/**
+ * A fight: the party (builds, or PC states carried through a day) against NPCs. A PC already at its Health Pool starts Down and stays out.
+ * Returns { rounds, won, lost: share of the party's Health lost in this fight, downs, firstDown, wipe, downBy, pcs }.
+ */
 export function fight(party, npcs, R, { maxRounds = 12 } = {}) {
-  const pcs = party.map(b => ({ build: b, damage: 0, down: false, rallyLeft: b.rallyPoints, defBonus: 0, defBy: null }));
+  const pcs = party.map(p => (p.build ? p : pcState(p)));
+  for (const p of pcs) { p.down = p.damage >= p.build.pool; p.defBonus = 0; p.defBy = null; p.spent = new Set([...(p.spent ?? [])].filter(g => p.build.actions[Object.keys(p.build.actions).find(k => group(k) === g)]?.freq === "daily")); p.quarry = null; p.unloaded = false; p.startDamage = p.damage; }
   const foes = npcs.map(n => ({ ...n, damage: 0, dead: false, vulnerable: 0 }));
   const order = [...pcs.map(p => ({ pc: p })), ...foes.map(f => ({ npc: f }))];
   for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(R() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; }   // initiative
   let round = 0, firstDown = 0;
   const alive = () => foes.filter(f => !f.dead), up = () => pcs.filter(p => !p.down);
   const focus = () => alive().sort((x, y) => (x.pool - x.damage) - (y.pool - y.damage))[0];   // the enemy closest to dying
-  const mostHurt = (list) => list.sort((x, y) => y.damage / y.build.pool - x.damage / x.build.pool)[0];
+  const mostHurt = list => list.sort((x, y) => y.damage / y.build.pool - x.damage / x.build.pool)[0];
+  const useRally = (t, n, by) => {   // t uses n Rally Points (Steel Yourself, or an ally's Lay On Hands)
+    for (let k = 0; k < n && t && t.rallyLeft > 0 && t.damage > 0; k++) {
+      const h = Math.min(t.damage, t.build.rallyHeal); t.damage -= h; t.rallyLeft--;
+      if (by === t) t.st.rpSelf++; else { t.st.rpByAlly++; by.st.healGiven += h; }
+    }
+  };
   while (alive().length && up().length && round < maxRounds) {
     round++;
     for (const p of pcs) p.firstThisRound = new Set();
@@ -363,15 +409,17 @@ export function fight(party, npcs, R, { maxRounds = 12 } = {}) {
       if (!alive().length || !up().length) break;
       if (o.pc) {
         const pc = o.pc; if (pc.down) continue;
+        pc.st.rounds++;
         for (const x of pcs) if (x.defBy === pc) { x.defBonus = 0; x.defBy = null; }   // a Defense bonus lasts 1 round: until its giver's next turn
         if (!pc.quarry || pc.quarry.dead) pc.quarry = focus();   // Marked Quarry: the first target; a new one when it dies
-        runTurn(pc, pc.build.turns[turnFor(pc, round, pcs)], {
+        const r = runTurn(pc, pc.build.turns[turnFor(pc, round, pcs)], {
           R, escalation: Math.min(3, round - 1),
           target: () => (pc.quarry && !pc.quarry.dead && pc.build.passives.some(p => p.effect.quarry) ? pc.quarry : focus()),
           others: n => alive().filter(f => f !== pc.quarry && f !== focus()).concat(alive().filter(f => f !== pc.quarry)).filter((f, i, a) => a.indexOf(f) === i).slice(0, n),
-          heal: (who, n) => { const t = mostHurt(up().filter(x => x.damage > 0)); for (let k = 0; k < n && t && t.rallyLeft > 0; k++) { t.damage = Math.max(0, t.damage - t.build.rallyHeal); t.rallyLeft--; } },
+          heal: (who, n, kind) => useRally(kind === "self" ? who : mostHurt(up().filter(x => x.damage > 0 && x.rallyLeft > 0)), n, who),
           defend: (who, n, kind) => { const list = kind === "allies" ? up() : kind === "self" ? [who] : [mostHurt(up().filter(x => x !== who)) ?? who]; for (const t of list) if (n >= t.defBonus) { t.defBonus = n; t.defBy = who; } }
         });
+        pc.st.dealt += r.damage;
         for (const f of foes) if (!f.dead && f.damage >= f.pool) f.dead = true;
       } else {
         const f = o.npc; if (f.dead) continue;
@@ -381,14 +429,42 @@ export function fight(party, npcs, R, { maxRounds = 12 } = {}) {
           const t = targets.find((p, k) => (x -= w[k]) < 0) ?? targets[0];
           const taunted = f.taunt && !f.taunt.by.down && t !== f.taunt.by ? f.taunt.n : 0;   // Champion's Challenge: Banes against anyone else
           t.damage += npcStrike(R, f, t, s + taunted, Math.min(3, round - 1));   // At-will Banes on the 2nd and 3rd Strike
-          if (t.damage >= t.build.pool && !t.down) { t.down = true; if (!firstDown) firstDown = round; }
+          if (t.damage >= t.build.pool && !t.down) { t.down = true; t.st.downs++; if (!firstDown) firstDown = round; }
         }
         f.taunt = null; f.vulnerable = 0;   // EoT effects end with its turn
       }
     }
   }
-  const health = pcs.reduce((s, p) => s + p.build.pool, 0), lost = pcs.reduce((s, p) => s + Math.min(p.damage, p.build.pool), 0);
-  return { rounds: round, won: !alive().length, lost: lost / health, downs: pcs.filter(p => p.down).length, firstDown, wipe: !up().length, downBy: pcs.map(p => p.down) };
+  const health = pcs.reduce((s, p) => s + p.build.pool, 0), lost = pcs.reduce((s, p) => s + Math.max(0, Math.min(p.damage, p.build.pool) - p.startDamage), 0);
+  return { rounds: round, won: !alive().length, lost: lost / health, downs: pcs.filter(p => p.down).length, firstDown, wipe: !up().length, downBy: pcs.map(p => p.down), pcs };
+}
+
+/**
+ * Between two fights (minutes, not a Rest): a PC that is Down is brought back (it uses a Rally Point through an ally's Lay On Hands when an
+ * ally has it, or heals what one Rally Point heals after an hour Unconscious); then every PC uses Rally Points (Steel Yourself, no AP limit
+ * out of combat) while its damage is at least 3/4 of what one heals. Rally Points come back only with a Rest.
+ */
+export function between(pcs) {
+  const healer = pcs.some(p => p.damage < p.build.pool && Object.values(p.build.actions).some(a => a.effects.some(e => e.effect.kind === "heal" && e.effect.who !== "self")));
+  for (const p of pcs) {
+    if (p.damage >= p.build.pool) {
+      if (healer && p.rallyLeft > 0) { p.damage -= Math.min(p.damage, p.build.rallyHeal); p.rallyLeft--; p.st.rpBetween++; }
+      else p.damage -= Math.min(p.damage, p.build.rallyHeal);
+    }
+    while (p.rallyLeft > 0 && p.damage >= 0.75 * p.build.rallyHeal) { p.damage -= Math.min(p.damage, p.build.rallyHeal); p.rallyLeft--; p.st.rpBetween++; }
+  }
+}
+
+/** A day: the party (builds) through its fights, in order, with no Rest. Returns { fights: [fight results], pcs, survived, cleared }. */
+export function day(party, encounters, R) {
+  const pcs = party.map(pcState), out = [];
+  for (const e of encounters) {
+    if (!pcs.some(p => p.damage < p.build.pool)) break;
+    out.push(fight(pcs, e, R));
+    if (!out.at(-1).won) break;
+    between(pcs);
+  }
+  return { fights: out, pcs, cleared: out.length === encounters.length && out.every(f => f.won) };
 }
 
 /* ------------------------------------------------------------------ the report */
@@ -443,6 +519,52 @@ export function report({ builds, fights }) {
     L.push(`| ${e.name} | ${cv} | ${median(rounds)} / ${fmt(mean(rounds))} / ${sorted[Math.floor(sorted.length * 0.9)]} | ${pct(mean(res.map(r => (r.won ? 1 : 0))))} | ${pct(mean(res.map(r => r.lost)))} | ${pct(mean(res.map(r => (r.downs ? 1 : 0))))} | ${firsts.length ? median(firsts) : "-"} | ${party.map((b, i) => pct(mean(res.map(r => (r.downBy[i] ? 1 : 0))))).join(" | ")} |`);
   }
   L.push("", "How the fight is simulated: initiative is shuffled once; every PC follows its plan (the round's turn; its `when` turn when it is unloaded or an ally is hurt) and attacks its Marked Quarry if it has one, else the enemy closest to dying (a new quarry when the old one dies); each NPC makes its Strikes a turn (Minion 1, Grunt and Standard 2, Elite 3; At-will Banes on the 2nd and 3rd), choosing a PC at random weighted by `targeted` (a taunted NPC takes the taunt's Banes against anyone else); Defense bonuses last until their giver's next turn; one Health Pool per creature (Body and Mind together); a PC at its Health Pool is Down and stops; nobody moves, uses Rally Points on their own or uses Reactions. Escalation is 0 in round 1, then +1 a round (up to 3).", "");
+  // Adventuring days: the fights between two Rests, one after another.
+  if (fights.days.length && fights.dayParties.length) {
+    const byFile = n => builds.find(b => b.file.replace(/^classes\//, "").replace(/\.txt$/, "") === n) ?? (() => { throw new Error(`fights.txt: day-party names "${n}", which is not a file in classes/`); })();
+    L.push(`## Adventuring days (${fights.dayRuns} days each)`, "",
+      "The fights of a day in order, with no Rest: damage and Rally Points carry over, Encounter Actions and Escalation start again each fight. Between fights every PC uses Rally Points (Steel Yourself, no AP limit out of combat) while its damage is at least 3/4 of what one heals; a PC that is Down gets back up with one Rally Point through an ally's Lay On Hands (or one Rally Point's worth after an hour Unconscious). In a fight a PC uses Steel Yourself when its `when self below` turn says so. A lost fight ends the day.", "",
+      "Credits: **Defense given** and **Vulnerable given** are the average damage they changed (the same roll made with and without the bonus); **reduced** is what Hallowed Stance took off; **healed allies** is the Health its Lay On Hands gave back (from the allies' own Rally Points). Debuffs with no number in the fight (Prone, Hindered, Immobilized) are counted.", "");
+    for (const d of fights.days) {
+      const cv = d.fights.map(f => f.reduce((s, n) => s + (TW.npcRoles[n.role]?.cv ?? 1), 0));
+      L.push(`### ${d.name}`, "", d.text.map((t, i) => `Fight ${i + 1}: ${t} (CV ${cv[i]})`).join(" · "), "");
+      for (const dp of fights.dayParties) {
+        const party = dp.files.map(byFile), R = rng(41), days = [], encs = d.fights.map(f => f.map(n => npcOf(n.role, n.rating, party[0].level)));   // the NPCs of the party's level
+        for (let k = 0; k < fights.dayRuns; k++) days.push(day(party, encs, R));
+        const pool = party.reduce((s, b) => s + b.pool, 0), rp = party.reduce((s, b) => s + b.rallyPoints, 0);
+        L.push(`**${dp.name}** (${dp.files.join(", ")}; NPCs of level ${party[0].level}): the day cleared ${pct(mean(days.map(x => (x.cleared ? 1 : 0))))} · a PC Down during the day ${pct(mean(days.map(x => (x.pcs.some(p => p.st.downs) ? 1 : 0))))} · Downs a day ${fmt(mean(days.map(x => x.pcs.reduce((s, p) => s + p.st.downs, 0))), 2)} · Rally Points left at the end ${pct(mean(days.map(x => x.pcs.reduce((s, p) => s + p.rallyLeft, 0) / rp)))} · Health at the end ${pct(mean(days.map(x => 1 - x.pcs.reduce((s, p) => s + Math.min(p.damage, p.build.pool), 0) / pool)))}`, "");
+        L.push("| Fight | won (of the days that reach it) | rounds (mean) | party Health lost in it | a PC goes Down in it |", "|---|---:|---:|---:|---:|");
+        d.fights.forEach((f, i) => { const r = days.map(x => x.fights[i]).filter(Boolean); L.push(`| ${i + 1}: ${d.text[i]} | ${pct(mean(r.map(x => (x.won ? 1 : 0))))} | ${fmt(mean(r.map(x => x.rounds)))} | ${pct(mean(r.map(x => x.lost)))} | ${pct(mean(r.map(x => (x.firstDown ? 1 : 0))))} |`); });
+        L.push("");
+        // One row per build (the PCs of the same file averaged), each number for one PC over the whole day.
+        const files = [...new Set(dp.files)];
+        L.push(`| Per PC, over the day | ${files.map(f => `${byFile(f).name} \`${f}\``).join(" | ")} |`, `|---|${files.map(() => "---:").join("|")}|`);
+        const col = (fn, dg = 1) => files.map(f => { const idx = dp.files.map((x, i) => (x === f ? i : -1)).filter(i => i >= 0); return fmt(mean(days.flatMap(x => idx.map(i => fn(x.pcs[i], x)))), dg); });
+        const row = (label, fn, dg) => L.push(`| ${label} | ${col(fn, dg).join(" | ")} |`);
+        const partyDealt = x => x.pcs.reduce((s, p) => s + p.st.dealt, 0) || 1;
+        row("Damage dealt", p => p.st.dealt);
+        row("Damage a turn (its own turns)", p => p.st.dealt / Math.max(1, p.st.rounds));
+        row("Share of the party's damage (%)", (p, x) => (100 * p.st.dealt) / partyDealt(x), 0);
+        row("Turns taken", p => p.st.rounds);
+        row("Health Pool", p => p.build.pool, 0);
+        row("Damage aimed at it (before reduction)", p => p.st.incoming);
+        row("Reduced (Hallowed Stance)", p => p.st.reduced);
+        row("Damage taken", p => p.st.taken);
+        row("Damage taken a round of combat", (p, x) => p.st.taken / Math.max(1, x.fights.reduce((s, f) => s + f.rounds, 0)));
+        row("Times Down", p => p.st.downs, 2);
+        row(`Rally Points (of ${files.map(f => byFile(f).rallyPoints).join(" / ")}): used in combat (Steel Yourself)`, p => p.st.rpSelf, 2);
+        row("Rally Points used through an ally's Lay On Hands", p => p.st.rpByAlly, 2);
+        row("Rally Points used between fights", p => p.st.rpBetween, 2);
+        row("Rally Points left", p => p.rallyLeft, 2);
+        row("**Buffs:** healed allies (Lay On Hands)", p => p.st.healGiven);
+        row("Defense given (damage it stopped)", p => p.st.defCredit);
+        row("Vulnerable given (extra damage dealt by the party)", p => p.st.vulnCredit);
+        const names = [...new Set(days.flatMap(x => x.pcs.flatMap(p => Object.keys(p.st.debuffs))))].sort();
+        for (const n of names) row(`**Debuff:** ${n} (times)`, p => p.st.debuffs[n] ?? 0, 2);
+        L.push("");
+      }
+    }
+  }
   return L.join("\n");
 }
 

@@ -14,14 +14,15 @@ targeted 0.75         # at range, behind the tank: chosen less often
 
 weapon Crossbow (ranged, projectile, reload, two-handed): 0 / 1d4+2 / 1d10+2
 
+action Steel Yourself 2 | ap 2 | round | traits self | heal 1 self     # Basic Action: you use 1 Rally Point
 action Weapon Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod]
 action Reload | ap 1 | at-will | traits weapon handle | vs dc 13 | on 1: boon 2 next @Reload; on 2+: reload
 action Double Shot 2 | ap 2 | round | traits shot strike | does Weapon Attack x2 | different
 action Double Shot 3 | ap 3 | round | traits shot strike | does Weapon Attack x2 | each boon 1 | different
 action Precise Aim 1 | ap 1 | round | traits focus self | always: boon 1 next ranged shot strike weapon
 action Precise Aim 2 | ap 2 | round | traits focus self | always: boon 2 next ranged shot strike weapon
-action Lock & Loose | ap 1 | round | traits ranged shot strike weapon | vs ad | tiers [Mod] / 1d4 + 2 + [Mod] / 1d10 + [Mod]
-action Marksman's Shot | ap 2 | encounter | traits ranged shot strike weapon | vs ad | tiers 1[W] / 1[W] + [Mod] / 1[W] + [Mod] | on 3: vulnerable 2
+action Lock & Loose | ap 1 | round | traits ranged shot strike weapon | vs ad | tiers [Mod] / 1d4 + 2 + [Mod] / 1d10 + [Mod] | on 2: debuff Hindered (until it moves); on 3: debuff Immobilized
+action Marksman's Shot | ap 2 | encounter | traits ranged shot strike weapon | vs ad | tiers 1[W] / 1[W] + [Mod] / 1[W] + [Mod] | on 2+: debuff Bane on its next Save; on 3: vulnerable 2
 action Twin Shot | ap 1 | round | traits ranged shot strike weapon | escalation 2 | does Weapon Attack x2 | each extra 1d6 | different     # one roll against two creatures in the book; here two rolls
 
 passive Marked Quarry: boon 1 shot strike quarry
@@ -33,4 +34,7 @@ turn Twin: Double Shot 3, Twin Shot, Lock & Loose
 turn Reload Shot: Double Shot 3, Weapon Attack, Lock & Loose (reload shot)
 turn Reload and shoot: Reload, Double Shot 3, Lock & Loose (reload shot)
 
+turn Steel: Steel Yourself 2, Double Shot 3
+
 plan Aimed Marksman, Double Shot + Lock & Loose + attack, Twin
+when self below 35%: Steel

@@ -12,12 +12,13 @@ targeted 1.5
 
 weapon Greatsword (melee, two-handed): 0 / 1d8 / 2d6
 
+action Steel Yourself 2 | ap 2 | round | traits self | heal 1 self     # Basic Action: you use 1 Rally Point
 action Weapon Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod]
 action Smite 2 | ap 2 | round | traits divine strike weapon | vs ad | tiers [B] 1[W] + [M] 2d4 / [B] 1[W] + [Mod] + [M] 2d6 / [B] 1[W] + [Mod] + [M] 2d8 | always: boon 1 next divine
 action Smite 3 | ap 3 | round | traits divine strike weapon | vs ad | tiers [B] 1[W] + [M] 2d4 / [B] 1[W] + [Mod] + [M] 2d6 / [B] 1[W] + [Mod] + [M] 2d8 | always: boon 1 next divine | then Smite Light
 action Smite Light | traits divine | vs save appeal | tiers [M] 1d6 / [M] 1d4 / 0 | area 3     # Smite 3: enemies in the 2 Emanation of Bright light make an Appeal Save (the target and 2 more)
 action Lay On Hands 1 | ap 1 | round | traits divine focus | heal 1
-action Word of Radiance 2 | ap 2 | encounter | traits area divine power | vs wd | tiers [M] 1d8 / [M] 2d6 / [M] 2d8 | area 2
+action Word of Radiance 2 | ap 2 | encounter | traits area divine power | vs wd | tiers [M] 1d8 / [M] 2d6 / [M] 2d8 | area 2 | on 3: debuff Prone
 action Divine Surge | ap 0 | round | traits divine self | escalation 1 | always: extra 1d8 next @Smite
 action Sacred Weapon 1 | ap 1 | round | traits divine focus | always: empowered 1 turn     # Empowered 1 for 1 round, on yourself
 action Vow of Enmity 1 | ap 1 | round | traits divine power | vs wd | tiers 0 / 0 / [M] 1d8 | on 2+: boon 1 next strike; on 2+: empowered 1 next strike
@@ -32,5 +33,8 @@ turn Vow: Vow of Enmity 1, Smite 2, Weapon Attack, Weapon Attack
 turn Radiance opening: Word of Radiance 2, Smite 2, Weapon Attack
 turn Heal: Lay On Hands 1, Divine Surge, Smite 2, Weapon Attack
 
+turn Steel: Steel Yourself 2, Divine Surge, Smite 3
+
 plan Radiance opening, Sacred surge
 when ally below 50%: Heal
+when self below 35%: Steel
