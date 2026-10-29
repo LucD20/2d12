@@ -127,7 +127,7 @@ Mastery belongs to you, not to the weapon you hold: it is for a kind of weapon (
 | **15** | To be decided. |
 
 > [!tbd]
-> What 8 and 15 Mastery unlock (an Advanced Technique?), and how classes or Talents grant Mastery (the Archer's Bow Mastery starts at 3 with one weapon).
+> What 8 and 15 Mastery unlock (an Advanced Technique?), and how classes or Talents grant Mastery (the Archer's Sharpshooter starts at 3 with one weapon).
 
 ### Fists
 

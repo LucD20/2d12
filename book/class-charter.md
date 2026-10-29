@@ -9,7 +9,7 @@ Decisions are Lucas's (2026-10-29) unless marked **Proposed** or **Open**.
 
 The system is **Talent-based**: the class is the identity, the Talents are the build.
 
-- **A class owns only what expresses its fantasy:** its two Features, its Signature Class Action, its role tools (the Paladin's healing
+- **A class owns only what expresses its fantasy:** its two Features, its Hallmark Action, its role tools (the Paladin's healing
   and Defense, the Archer's shooting on the move), its Escalation list, and its Encounter and Daily lists.
 - **Talents own everything generic:** weapon styles, mobility, tactics, magic, skills. The test: **if two different classes could want it,
   it is a Talent.**
@@ -25,9 +25,9 @@ The system is **Talent-based**: the class is the identity, the Talents are the b
   - **Opportunity Attack** (a Weapon Attack when a creature within 3 leaves a square) and the Archer's **Quick Draw** (a Weapon Attack when
     an enemy within 5 moves closer) are the same kind of Reaction.
 
-## 2. The Signature Class Action
+## 2. The Hallmark Action (named "Signature Class Action" until 2026-10-29)
 
-At level 1 a character chooses **one Signature Class Action** from two that are the class's fantasy. For the Paladin: **Smite** or
+At level 1 a character chooses **one Hallmark Action** from two that are the class's fantasy. For the Paladin: **Smite** or
 **Lay On Hands**.
 
 - **Each Signature covers the whole role by itself** (a small rider from the other side), so the choice changes the shape of the build, not
@@ -45,7 +45,7 @@ level keeps the same total budget. The Paladin, for example, can start with an E
 
 | Level | What you gain |
 |---|---|
-| **1** | 2 class Features · 1 Signature Class Action (a choice) · **1 Talent** · 1 Passive Escalation · 1 Active Escalation |
+| **1** | 2 class Features · 1 Hallmark Action (a choice) · **1 Talent** · 1 Passive Escalation · 1 Active Escalation |
 | **2** | 1 Encounter Pick · 1 Talent |
 | **3** | 1 Daily Pick · 1 Passive Escalation |
 

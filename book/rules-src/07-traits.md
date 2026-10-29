@@ -63,7 +63,7 @@ Shot Actions need a weapon with the [[Projectile]] property, such as a bow or a 
 
 ### Signature
 
-These Actions roll your **Signature Modifier**: the higher of your Weapon Modifier and your Power Modifier, even when they also have the Weapon or Power trait. They keep their other traits: a [Signature, Weapon] Action still needs a weapon and gets every effect on [Weapon] Actions (see [[Rolls]]). Signature is used for a class's own Actions, such as its Daily Actions and its Signature Class Action.
+These Actions roll your **Signature Modifier**: the higher of your Weapon Modifier and your Power Modifier, even when they also have the Weapon or Power trait. They keep their other traits: a [Signature, Weapon] Action still needs a weapon and gets every effect on [Weapon] Actions (see [[Rolls]]). Signature is used for a class's own Actions, such as its Daily Actions and some Hallmark Actions (Smite).
 
 ### Split
 

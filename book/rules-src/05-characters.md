@@ -25,7 +25,7 @@ Each class is written in its own document: [[Paladin]] and [[Archer]].
 
 ### Class Actions, Picks and the Repertoire
 
-A class's **Class Actions** are the Actions it gives you at level 1. A class can give a **Signature Class Action** instead: a choice of two Actions that are the class's fantasy (the Paladin: Smite or Lay On Hands); you take one, and the other is not yours. Its **Repertoire** is everything else it offers, listed by [[Frequency]]: **Passive** (it works on its own), **Turn**, **Round**, **Encounter** and **Daily**. A **Pick** is one choice from the Repertoire: the level list says how many Picks you take at each level and from which list (an Encounter Pick comes from the Encounter list; a Pick "from any list" can come from any of them). Escalation abilities are chosen the same way, from the class's Escalation list.
+A class's **Class Actions** are the Actions it gives you at level 1. A class can give a **Hallmark Action** instead: a choice of two Actions that are the class's fantasy (the Paladin: Smite or Lay On Hands; the Archer: Double Shot or Rolling Shot); you take one, and the other is not yours. A Hallmark Action doesn't need the [[Signature]] trait: that trait only sets the Modifier an Action rolls (Smite has it, Double Shot makes no roll of its own). Its **Repertoire** is everything else it offers, listed by [[Frequency]]: **Passive** (it works on its own), **Turn**, **Round**, **Encounter** and **Daily**. A **Pick** is one choice from the Repertoire: the level list says how many Picks you take at each level and from which list (an Encounter Pick comes from the Encounter list; a Pick "from any list" can come from any of them). Escalation abilities are chosen the same way, from the class's Escalation list.
 
 ### Leveling Up
 

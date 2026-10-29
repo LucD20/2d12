@@ -19,7 +19,7 @@
 | [[Areas\|**Aura**]] | An area that follows its origin, written like Aura 2. You gain its effect when you enter it. |
 | [[Boons and Banes\|**Bane, Boon**]] | Subtract or add 1d3-1 to a roll. |
 | [[Barehanded\|**Barehanded**]] | A weapon property: it can't be disarmed and uses no hand, but needs a free hand. |
-| [[Class Actions, Picks and the Repertoire\|**Class Actions**]] | The Actions your class gives you at level 1 (or a Signature Class Action: a choice of two). |
+| [[Class Actions, Picks and the Repertoire\|**Class Actions**]] | The Actions your class gives you at level 1 (or a Hallmark Action: a choice of two). |
 | [[Class Actions, Picks and the Repertoire\|**Pick**]] | One choice from a class's Repertoire; the level list says how many you take and from which list. |
 | [[Class Actions, Picks and the Repertoire\|**Repertoire**]] | Everything a class offers beyond its Class Actions, listed by Frequency: Passive, Turn, Round, Encounter, Daily. |
 | [[The Basic attack\|**Basic attack**]] | An NPC's main attack: 1 AP, At-will, Vs. AD or WD, with the damage of its role and rating. |
@@ -66,6 +66,7 @@
 | [[Effect Timing\|**General Effects**]] | The Effects row of an Action. They happen on a Tier 2 or 3 result. |
 | [[Grunts\|**Grunt**]] | An NPC role with a CV Multiplier of ½: about 26 Health at level 1, dies to about 1 PC turn. |
 | [[Guard\|**Guard**]] | A buffer written Guard N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take. |
+| [[Class Actions, Picks and the Repertoire\|**Hallmark Action**]] | A choice of two class Actions at level 1 (the Paladin: Smite or Lay On Hands; the Archer: Double Shot or Rolling Shot); you take one. |
 | [[Hands\|**Hands**]] | How many hands hold a weapon. |
 | [[Hazardous Terrain\|**Hazardous Terrain [HT]**]] | Terrain that harms the creatures in it. Written [HT: Entering, Turn] in the text of the effect that creates it (notation, not a trait). |
 | [[Hazardous Terrain\|**Hazardous Terrain**]] | Terrain that deals damage or inflicts a condition, once per Movement. |
@@ -124,7 +125,6 @@
 | [[Actions\|**Setup**]] | What an Action does before its dice are rolled. |
 | [[Several Targets\|**Several Targets**]] | One roll for every target of an Action, each calculated separately. |
 | [[Shot\|**Shot**]] | A trait: the Action needs a Projectile weapon (a bow, a crossbow). |
-| [[Class Actions, Picks and the Repertoire\|**Signature Class Action**]] | A choice of two class Actions at level 1 (the Paladin: Smite or Lay On Hands); you take one. |
 | [[Weapon, Power and Signature Modifiers\|**Signature Modifier**]] | The higher of your Weapon Modifier and Power Modifier. Signature Actions roll it. |
 | [[Rolls\|**Signature roll**]] | An Action with the Signature trait. |
 | [[Size\|**Size**]] | A creature's rank from 1 to 7, and how many squares it occupies. |

@@ -1,8 +1,13 @@
-# The Archer main build (pack A1, 2026-10-29): PROPOSED, waiting for Lucas
+# The Archer main build (pack A1, 2026-10-29): APPROVED, in the book
+
+> **Applied 2026-10-29** (Lucas: "use the default answers, they all fit") to book/rules-src/13-archer.md, with the rename **Signature Class
+> Action → Hallmark Action** (Chapter 5 says a Hallmark Action needn't have the Signature trait). Section 7 (Radiant Zeal) is kept as it is for
+> playtesting. Firearms: their own property (Firearm), the trait for their Actions proposed as [Gun] (rules-backlog). The other Archer cards are
+> in `book/archer-old-cards.md`. This file keeps the prices, the budget table and the reasons.
 
 > **Round 2 (Lucas's notes, 2026-10-29), applied here:** Double Shot's Linked attacks are **[Ranged, Shot] Weapon Attacks (1A)** (Rolling Shot's
 > too, for the same reason); **Double Shot and Rolling Shot lose the Signature trait** (they make no roll themselves: the trait only sets the
-> Modifier an Action rolls, and a Signature Class Action doesn't need it); **Chapter 1, Rules Language: "Weapons by property"** (a Projectile
+> Modifier an Action rolls, and a Hallmark Action doesn't need it); **Chapter 1, Rules Language: "Weapons by property"** (a Projectile
 > weapon is a weapon with the Projectile property) is in the book. Firearms: section 8. The numbers don't change (the ruler never used the trait here).
 
 Written to `book/class-charter.md` and the progression model A (`book/progression-lv.md`: no sustained growth inside tier 1). **Nothing here is
@@ -16,7 +21,7 @@ Paladin's partners in the price list).
 
 | Level | What you gain (default in brackets) |
 |---|---|
-| **1** | 2 Features (Sharpshooter, Marked Quarry) · 1 Signature Class Action: **Double Shot or Rolling Shot** · 1 Talent · 1 Passive Escalation (Killer's Focus) · 1 Active Escalation (Pinning Shot) |
+| **1** | 2 Features (Sharpshooter, Marked Quarry) · 1 Hallmark Action: **Double Shot or Rolling Shot** · 1 Talent · 1 Passive Escalation (Killer's Focus) · 1 Active Escalation (Pinning Shot) |
 | **2** | 1 Encounter Pick (Marksman's Shot) · 1 Talent |
 | **3** | 1 Daily Pick (Hunter's Focus) · 1 Passive Escalation (Elusive) |
 
@@ -30,7 +35,7 @@ Passives are priced in the simulated Standard day (1,000 days, the same dice wit
 ### Sharpshooter (Archer Feature 1) · changed
 **Flavor:** You were made for the shot no one else would take.
 
-Choose your Signature Class Action: **Double Shot** or **Rolling Shot**. Choose one [[Projectile]] weapon, such as a bow or a crossbow: you start
+Choose your Hallmark Action: **Double Shot** or **Rolling Shot**. Choose one [[Projectile]] weapon, such as a bow or a crossbow: you start
 with **3 Mastery** with it. Your [Shot] Actions don't take the Bane for targeting a creature Engaged with a creature other than you.
 
 *Price:* the clear shot is worth +1.0 to 1.2 DE a turn (4-5%): E2 found the into-melee Bane on 72% of the Archer's shots, its biggest cost. Bow
@@ -45,7 +50,7 @@ Marked Quarry during an encounter by spending 1 AP [Focus].
 
 *Price:* the Boon +1.1 to 1.5 DE a turn (5-6%), the floor +1.6 (7%).
 
-### Double Shot (Sharpshooter 1) · 2 / 3 AP · Signature Class Action, changed
+### Double Shot (Sharpshooter 1) · 2 / 3 AP · Hallmark Action, changed
 **Flavor:** Two shots, so close together they sound like one.
 
 *Shot • Strike* · **Frequency:** Round · **Target:** Two creatures
@@ -57,7 +62,7 @@ Marked Quarry during an encounter by spending 1 AP [Focus].
 *Price:* 2 AP 11.0 (1.18, on target); 3 AP 13.2 (0.94, a little under; was 12.0, 0.86 with its two Boons). The 3 AP Version is now the step
 away: the damage Signature with a mobility rider.
 
-### Rolling Shot (Sharpshooter 1) · 1 / 2 / 3 AP · Signature Class Action, changed (was a Round Pick)
+### Rolling Shot (Sharpshooter 1) · 1 / 2 / 3 AP · Hallmark Action, changed (was a Round Pick)
 **Flavor:** You keep moving, and the shot rides along with the motion.
 
 *Ranged • Shot • Strike • Weapon* · **Frequency:** Round · **Target:** One creature · **Distance:** Weapon
@@ -129,7 +134,7 @@ Encounter or Daily at the Escalation Momentum starts with; **Nova (real)** = the
 ## 4. What changed from today's Archer
 
 - **Features:** Sharpshooter gives the Signature choice, carries Bow Mastery (no longer its own Feature) and removes the into-melee Bane; Marked Quarry gains the floor ([B] [Mod] on a Tier 1, decided).
-- **Signature Class Action** instead of two Class Actions: **Double Shot** (its 3 AP Version is now "Evade 1, then as 2 AP", was two Boons) or **Rolling Shot** (from the Repertoire, with a 3 AP Version and extra damage on 2 and 3 AP; was Evade 3 + 1 Boon at 2 AP).
+- **Hallmark Action** instead of two Class Actions: **Double Shot** (its 3 AP Version is now "Evade 1, then as 2 AP", was two Boons) or **Rolling Shot** (from the Repertoire, with a 3 AP Version and extra damage on 2 and 3 AP; was Evade 3 + 1 Boon at 2 AP).
 - **Precise Aim leaves the class**: the Talent Aim is the same Action, only better (the charter's overlap); it was priced at 0.11 of its band.
 - **Level list:** the charter's template (a Talent at levels 1 and 2; no "Pick from any list"; one Passive Escalation at level 3, not at 2 and 3).
 - **Marksman's Shot** reworked to the Encounter band; **Elusive** is new. Defaults kept from the book: Killer's Focus, Pinning Shot, Hunter's Focus.

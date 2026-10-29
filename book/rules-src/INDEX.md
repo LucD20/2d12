@@ -8,14 +8,14 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 22.4 | 252 |
 | 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 35.2 | 429 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 12.2 | 244 |
-| 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 5.5 | 62 |
+| 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 5.7 | 62 |
 | 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 8.4 | 321 |
 | 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 5.2 | 91 |
 | 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 5.1 | 78 |
 | 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 19.2 | 161 |
 | 11-species.md | Species | species |  | 0.8 | 35 |
 | 12-paladin.md | Paladin | paladin |  | 8.8 | 276 |
-| 13-archer.md | Archer | archer |  | 13.4 | 497 |
+| 13-archer.md | Archer | archer |  | 6.6 | 197 |
 | 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 14.6 | 301 |
 | 15-gear.md | Gear | gear |  | 7.2 | 162 |
 | 16-talents.md | Talents | talents |  | 7.0 | 246 |
@@ -210,7 +210,7 @@ Open (to be decided) boxes: 88: "The list of Tags (Profane, Beast, Undead...) an
 ## 09-glossary.md: Chapter 9: Glossary
 
 
-Glossary entries (line: term): 6: [Mod]; 7: [W]; 8: [Trait]; 9: 0 AP; 10: 0R; 11: Action Points (AP); 12: Advance; 13: Ally; 14: Area; 15: Armor; 16: Armor Training; 17: Attribute Action; 18: At-will; 19: Aura; 20: Bane, Boon; 21: Barehanded; 22: Class Actions; 23: Pick; 24: Repertoire; 25: Basic attack; 26: Body Action, Mind Action; 27: Breather; 28: Category; 29: Check; 30: Clear; 31: Cleave; 32: Collision; 33: Combat Value (CV); 34: Corners; 35: Cover; 36: Crawl; 37: Critical; 38: CV Multiplier; 39: Daily; 40: Dark Sight; 41: Deadly Hazard; 42: Defense; 43: Difficult Terrain; 44: Dim-light Sight; 45: Disrupted; 46: Distinct Choices; 47: Dominant Damage; 48: Doomed; 49: Doubles; 50: Down; 51: Elevation; 52: Elite; 53: Empowered; 54: Encounter; 55: Enfeebled; 56: Engaged; 57: EoT; 58: Escalation; 59: Evade; 60: Exhausted; 61: Favored; 62: Fists; 63: Flanking; 64: Forced Movement; 65: Frequency; 66: General Effects; 67: Grunt; 68: Guard; 69: Hands; 70: Hazardous Terrain [HT]; 71: Hazardous Terrain; 72: Heal; 73: Hearing; 74: Hidden; 75: Imperiled; 76: Initiative slot; 77: Instance of damage; 78: Interact; 79: Interrupt; 80: Leaning; 81: Left your square; 82: Lethal, Nonlethal; 83: Line of Effect; 84: Linked Action; 85: Long; 86: Mastery; 87: Minion; 88: Minor enemies; 89: Move; 90: Moved; 91: Moves closer; 92: Next Action; 93: Non-threatening; 94: Obscured; 95: Origin; 96: Point of Origin; 97: Power Modifier; 98: Power roll; 99: Prerequisites; 100: Projectile; 101: Properties; 102: Pulled; 103: Pushed; 104: Quickened; 105: Rally Point; 106: Range; 107: Ranged Combat While Engaged; 108: Rating; 109: Reach; 110: Reaction; 111: Recovery; 112: Release; 113: Reload; 114: Reload Shot; 115: Reposition; 116: Requirements; 117: Rest; 118: Role; 119: Roll; 120: Round; 121: Save; 122: Save Action; 123: Sense; 124: Setup; 125: Several Targets; 126: Shot; 127: Signature Class Action; 128: Signature Modifier; 129: Signature roll; 130: Size; 131: Slid; 132: Slowed; 133: Sleep; 134: Special Action; 135: Specific beats general; 136: Speed; 137: Split; 138: Squeezing; 139: SR; 140: Stacking; 141: Standard; 142: Steadiness; 143: Steel Yourself; 144: Strike; 145: Success; 146: Tag; 147: Threatens; 148: Thrown; 149: Tier; 150: Trigger; 151: Turn; 152: Turn; 153: Unsensed; 154: Vs.; 155: Vulnerable; 156: Ward; 157: Weapon Modifier; 158: Weapon roll; 159: Willing, Unwilling; 160: Wound
+Glossary entries (line: term): 6: [Mod]; 7: [W]; 8: [Trait]; 9: 0 AP; 10: 0R; 11: Action Points (AP); 12: Advance; 13: Ally; 14: Area; 15: Armor; 16: Armor Training; 17: Attribute Action; 18: At-will; 19: Aura; 20: Bane, Boon; 21: Barehanded; 22: Class Actions; 23: Pick; 24: Repertoire; 25: Basic attack; 26: Body Action, Mind Action; 27: Breather; 28: Category; 29: Check; 30: Clear; 31: Cleave; 32: Collision; 33: Combat Value (CV); 34: Corners; 35: Cover; 36: Crawl; 37: Critical; 38: CV Multiplier; 39: Daily; 40: Dark Sight; 41: Deadly Hazard; 42: Defense; 43: Difficult Terrain; 44: Dim-light Sight; 45: Disrupted; 46: Distinct Choices; 47: Dominant Damage; 48: Doomed; 49: Doubles; 50: Down; 51: Elevation; 52: Elite; 53: Empowered; 54: Encounter; 55: Enfeebled; 56: Engaged; 57: EoT; 58: Escalation; 59: Evade; 60: Exhausted; 61: Favored; 62: Fists; 63: Flanking; 64: Forced Movement; 65: Frequency; 66: General Effects; 67: Grunt; 68: Guard; 69: Hallmark Action; 70: Hands; 71: Hazardous Terrain [HT]; 72: Hazardous Terrain; 73: Heal; 74: Hearing; 75: Hidden; 76: Imperiled; 77: Initiative slot; 78: Instance of damage; 79: Interact; 80: Interrupt; 81: Leaning; 82: Left your square; 83: Lethal, Nonlethal; 84: Line of Effect; 85: Linked Action; 86: Long; 87: Mastery; 88: Minion; 89: Minor enemies; 90: Move; 91: Moved; 92: Moves closer; 93: Next Action; 94: Non-threatening; 95: Obscured; 96: Origin; 97: Point of Origin; 98: Power Modifier; 99: Power roll; 100: Prerequisites; 101: Projectile; 102: Properties; 103: Pulled; 104: Pushed; 105: Quickened; 106: Rally Point; 107: Range; 108: Ranged Combat While Engaged; 109: Rating; 110: Reach; 111: Reaction; 112: Recovery; 113: Release; 114: Reload; 115: Reload Shot; 116: Reposition; 117: Requirements; 118: Rest; 119: Role; 120: Roll; 121: Round; 122: Save; 123: Save Action; 124: Sense; 125: Setup; 126: Several Targets; 127: Shot; 128: Signature Modifier; 129: Signature roll; 130: Size; 131: Slid; 132: Slowed; 133: Sleep; 134: Special Action; 135: Specific beats general; 136: Speed; 137: Split; 138: Squeezing; 139: SR; 140: Stacking; 141: Standard; 142: Steadiness; 143: Steel Yourself; 144: Strike; 145: Success; 146: Tag; 147: Threatens; 148: Thrown; 149: Tier; 150: Trigger; 151: Turn; 152: Turn; 153: Unsensed; 154: Vs.; 155: Vulnerable; 156: Ward; 157: Weapon Modifier; 158: Weapon roll; 159: Willing, Unwilling; 160: Wound
 
 ## 11-species.md: Species
 
@@ -223,7 +223,7 @@ Glossary entries (line: term): 6: [Mod]; 7: [W]; 8: [Trait]; 9: 0 AP; 10: 0R; 11
 - 19: ## The Paladin by Level
 - 39: ## Level 1
 - 41:   ### Features
-- 63:   ### Signature Class Action Selection
+- 63:   ### Hallmark Action Selection
 - 110:   ### Picks
 - 117: ## Paladin Repertoire
 - 119:   ### Turn
@@ -239,19 +239,17 @@ Action cards: Divine Power (46, Paladin Feature 1); Font of Mercy (55, Paladin F
 
 - 19: ## The Archer by Level
 - 39: ## Level 1
-- 72:   ### Class Actions
-- 106:   ### 1st Level Picks
-- 112: ## Archer Repertoire
-- 114:   ### Passive
-- 126:   ### Turn
-- 150:   ### Round
-- 228:   ### Encounter
-- 299:   ### Daily
-- 366: ## Archer Escalation
-- 368:   ### Passives
-- 397:   ### Actives
+- 41:   ### Features
+- 63:   ### Hallmark Action Selection
+- 103:   ### Picks
+- 109: ## Archer Repertoire
+- 111:   ### Encounter
+- 136:   ### Daily
+- 153: ## Archer Escalation
+- 155:   ### Passives
+- 175:   ### Actives
 
-Action cards: Sharpshooter (46, Archer Feature 1); Marked Quarry (55, Archer Feature 1); Bow Mastery (64, Archer Feature 1); Double Shot (75, Sharpshooter 1, Round); Precise Aim (92, Sharpshooter 1, Round); Long Draw (117, Archer Feature 1); Quick Draw (129, Archer Feature 1, Turn); Rolling Shot (153, Archer Feature 1, Round); Wing Clip (172, Archer Feature 1, Round); True Shot (195, Archer Feature 1, Round); Suppressing Fire (210, Archer Feature 1, Round); Volley (231, Archer Feature 1, Encounter); Marksman's Shot (256, Archer Feature 1, Encounter); Covering Fire (279, Archer Feature 1, Encounter); Rain of Arrows (302, Archer Feature 1, Daily); Hunter's Focus (329, Archer Feature 1, Daily); Deadeye (344, Archer Feature 1, Daily); Patient Hunter (371, Archer Escalation (Passive)); Steady Nerves (380, Archer Escalation (Passive)); Killer's Focus (389, Archer Escalation (Passive)); Steady Aim (400, Archer Escalation, Round); Vanish (419, Archer Escalation, Round); Pinning Shot (438, Archer Escalation, Round); Twin Shot (459, Archer Escalation, Round); Perfect Shot (480, Archer Escalation, Round)
+Action cards: Sharpshooter (46, Archer Feature 1); Marked Quarry (55, Archer Feature 1); Double Shot (68, Sharpshooter 1, Round); Rolling Shot (85, Sharpshooter 1, Round); Marksman's Shot (114, Archer Feature 1, Encounter); Hunter's Focus (139, Archer Feature 1, Daily); Killer's Focus (158, Archer Escalation (Passive)); Elusive (167, Archer Escalation (Passive)); Pinning Shot (178, Archer Escalation, Round)
 
 ## 14-bestiary.md: Bestiary: Building NPCs
 
