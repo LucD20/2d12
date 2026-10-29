@@ -94,7 +94,7 @@ export function priceEffect(b, a, e, r) {
     case "bane": return { v: -on({ banes: e.n }) };
     case "empowered": return { v: e.scope === "turn" ? onTypical(b, e, r, { empowered: e.n }) * turnMul : on({ empowered: e.n }) };
     case "favored": return { v: on({ favored: true }) };
-    case "extra": { const x = ref(); return { v: x ? S.avgDamage(e.dmg, b.weapon, 2, b.weaponMod) * pDeals(b, x, r) : 0 }; }
+    case "extra": { const x = ref(); return { v: x ? S.avgDamage(e.dmg, b.weapon, 2, b.weaponMod) * (e.anyTier ? 1 : pDeals(b, x, r)) : 0 }; }   // any-tier: a single-value Buff lands on Tier 1 too
     case "vulnerable": return { v: e.n * (dmgOf(b, b.actions["weapon attack"], r, { boons: 1 }) - dmgOf(b, b.actions["weapon attack"], r)) * A.vulnAttacks };
     case "defense": return { v: r.def(e.n) * (e.who === "allies" ? (a.allies ?? 1) : 1) * (a.rounds ?? 1) };
     case "taunt": return { v: r.banes(e.n) * A.othersShare };

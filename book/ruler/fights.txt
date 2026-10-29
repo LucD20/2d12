@@ -21,7 +21,6 @@ day Short hard day (normal, hard, hard): 4 standard | 2 elite, 2 standard | 6 st
 day-party Level 1, the book's Paladin today: paladin-book-1, paladin-book-1, archer-1, archer-1
 day-party Level 1, P1 Smite: paladin-smite-1, paladin-smite-1, archer-1, archer-1
 day-party Level 1, P1 Smite holding Escalation: paladin-smite-1-hold, paladin-smite-1-hold, archer-1, archer-1
-day-party Level 1, P1 Smite with Guard (question 4.2): paladin-smite-1-guard, paladin-smite-1-guard, archer-1, archer-1
 day-party Level 1, P1 Lay On Hands: paladin-hands-1, paladin-hands-1, archer-1, archer-1
 day-party Level 1, P1 one of each: paladin-smite-1, paladin-hands-1, archer-1, archer-1
 day-party Level 2, P1 Smite: paladin-smite-2, paladin-smite-2, archer-2, archer-2

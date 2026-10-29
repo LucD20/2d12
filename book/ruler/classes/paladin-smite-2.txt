@@ -23,8 +23,8 @@ action Weapon Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 /
 
 # Signature: Smite (damage, with a support rider)
 action Smite 1 | ap 1 | round | traits divine signature strike weapon | vs ad | tiers [B] 1[W] / [B] 1[W] + [Mod] + [M] 1d4 / [B] 1[W] + [Mod] + [M] 1d6
-action Smite 2 | ap 2 | round | traits divine signature strike weapon | vs ad | tiers [B] 1[W] + [M] 1d6 / [B] 1[W] + [Mod] + [M] 1d10 / [B] 1[W] + [Mod] + [M] 2d8 | always: defense 1 ally
-action Smite 3 | ap 3 | round | traits divine signature strike weapon | vs ad | tiers [B] 1[W] + [M] 1d6 / [B] 1[W] + [Mod] + [M] 1d10 / [B] 1[W] + [Mod] + [M] 2d8 | always: defense 1 ally; always: mend 1d8 any
+action Smite 2 | ap 2 | round | traits divine signature strike weapon | vs ad | tiers [B] 1[W] + [M] 1d6 / [B] 1[W] + [Mod] + [M] 1d10 / [B] 1[W] + [Mod] + [M] 2d8 | on 2+: defense 1 ally
+action Smite 3 | ap 3 | round | traits divine signature strike weapon | vs ad | tiers [B] 1[W] + [M] 1d6 / [B] 1[W] + [Mod] + [M] 1d10 / [B] 1[W] + [Mod] + [M] 2d8 | on 2+: defense 1 ally; on 2+: guard 1d8+[Mod] self
 
 # Encounter Pick (level 1): Holy Wrath
 action Holy Wrath 2 | ap 2 | encounter | traits divine strike weapon | vs ad | tiers [B] 1[W] + [M] 2d6 / [B] 1[W] + [Mod] + [M] 3d8 / [B] 1[W] + [Mod] + [M] 4d8
