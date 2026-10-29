@@ -6,7 +6,7 @@ Written by `node book/ruler/spec.mjs` from `book/ruler/classes/*.txt` and `book/
 
 Health 27 (Body 14 + Mind 13) · AD 13 · WD 13 · Weapon Modifier +2 · Power Modifier +2 · Rally Points 7 (each heals 7) · targeted ×0.75
 
-**Damage a turn** (Monte Carlo, 20,000 turns each; measured at the lowest Escalation the turn needs ("Esc": its passives at that Escalation too), and once at Escalation 3; the target's Defense is both AD and WD; an Action against "a different creature" or an area counts only the target, but a Linked Action that needs a different creature still hits it; **best** = the most damage at Def 13 among the valid turns):
+**Damage a turn** (Monte Carlo, 20,000 turns each; measured with the Escalation the turn spends ("Esc"; its passives see what is left after spending), and once at Escalation 3; the target's Defense is both AD and WD; an Action against "a different creature" or an area counts only the target, but a Linked Action that needs a different creature still hits it; **best** = the most damage at Def 13 among the valid turns):
 
 | Turn | Esc | Def 12 | Def 13 | Def 14 | Def 13, Esc 3 | AP | Strikes | Steps | Problems |
 |---|---:|---:|---:|---:|---:|---:|---:|---|---|
@@ -26,13 +26,13 @@ Plan: round 1: Aimed Marksman · round 2: Double Shot + Lock & Loose + attack ·
 | Minion | 7 | 12 | 2 | 2.0 | 1 / 1.0 | 14 / 14.5 |
 | Grunt | 31 | 13 | 2 | 4.9 | 2 / 2.0 | 6 / 6.1 |
 | Standard | 57 | 13 | 2 | 7.7 | 3 / 2.9 | 4 / 4.1 |
-| Elite | 120 | 14 | 3 | 16.8 | 5 / 4.7 | 2 / 2.2 |
+| Elite | 120 | 14 | 3 | 16.8 | 5 / 5.3 | 2 / 2.2 |
 
 ## Archer (ranged damage), `classes/archer-2.txt`
 
 Health 29 (Body 15 + Mind 14) · AD 13 · WD 13 · Weapon Modifier +2 · Power Modifier +2 · Rally Points 7 (each heals 8) · targeted ×0.75
 
-**Damage a turn** (Monte Carlo, 20,000 turns each; measured at the lowest Escalation the turn needs ("Esc": its passives at that Escalation too), and once at Escalation 3; the target's Defense is both AD and WD; an Action against "a different creature" or an area counts only the target, but a Linked Action that needs a different creature still hits it; **best** = the most damage at Def 13 among the valid turns):
+**Damage a turn** (Monte Carlo, 20,000 turns each; measured with the Escalation the turn spends ("Esc"; its passives see what is left after spending), and once at Escalation 3; the target's Defense is both AD and WD; an Action against "a different creature" or an area counts only the target, but a Linked Action that needs a different creature still hits it; **best** = the most damage at Def 13 among the valid turns):
 
 | Turn | Esc | Def 12 | Def 13 | Def 14 | Def 13, Esc 3 | AP | Strikes | Steps | Problems |
 |---|---:|---:|---:|---:|---:|---:|---:|---|---|
@@ -50,13 +50,13 @@ Plan: round 1: Aimed Marksman · round 2: Double Shot + Wing Clip + Lock & Loose
 | Minion | 7 | 12 | 2 | 2.0 | 1 / 1.0 | 15 / 15.5 |
 | Grunt | 31 | 13 | 2 | 4.9 | 2 / 2.0 | 6 / 6.5 |
 | Standard | 57 | 13 | 2 | 7.7 | 3 / 2.8 | 4 / 4.4 |
-| Elite | 120 | 14 | 3 | 16.8 | 4 / 4.5 | 2 / 2.3 |
+| Elite | 120 | 14 | 3 | 16.8 | 5 / 5.1 | 2 / 2.3 |
 
 ## Paladin (tank / support), `classes/paladin-1.txt`
 
 Health 36 (Body 21 + Mind 15) · AD 14 · WD 13 · Weapon Modifier +2 · Power Modifier +2 · Rally Points 8 (each heals 9) · targeted ×1.5
 
-**Damage a turn** (Monte Carlo, 20,000 turns each; measured at the lowest Escalation the turn needs ("Esc": its passives at that Escalation too), and once at Escalation 3; the target's Defense is both AD and WD; an Action against "a different creature" or an area counts only the target, but a Linked Action that needs a different creature still hits it; **best** = the most damage at Def 13 among the valid turns):
+**Damage a turn** (Monte Carlo, 20,000 turns each; measured with the Escalation the turn spends ("Esc"; its passives see what is left after spending), and once at Escalation 3; the target's Defense is both AD and WD; an Action against "a different creature" or an area counts only the target, but a Linked Action that needs a different creature still hits it; **best** = the most damage at Def 13 among the valid turns):
 
 | Turn | Esc | Def 12 | Def 13 | Def 14 | Def 13, Esc 3 | AP | Strikes | Steps | Problems |
 |---|---:|---:|---:|---:|---:|---:|---:|---|---|
@@ -84,7 +84,7 @@ Plan: round 1: Radiance opening · round 2+: Surge Smite 3 · when an ally is be
 
 Health 39 (Body 23 + Mind 16) · AD 14 · WD 13 · Weapon Modifier +2 · Power Modifier +2 · Rally Points 9 (each heals 10) · targeted ×1.5
 
-**Damage a turn** (Monte Carlo, 20,000 turns each; measured at the lowest Escalation the turn needs ("Esc": its passives at that Escalation too), and once at Escalation 3; the target's Defense is both AD and WD; an Action against "a different creature" or an area counts only the target, but a Linked Action that needs a different creature still hits it; **best** = the most damage at Def 13 among the valid turns):
+**Damage a turn** (Monte Carlo, 20,000 turns each; measured with the Escalation the turn spends ("Esc"; its passives see what is left after spending), and once at Escalation 3; the target's Defense is both AD and WD; an Action against "a different creature" or an area counts only the target, but a Linked Action that needs a different creature still hits it; **best** = the most damage at Def 13 among the valid turns):
 
 | Turn | Esc | Def 12 | Def 13 | Def 14 | Def 13, Esc 3 | AP | Strikes | Steps | Problems |
 |---|---:|---:|---:|---:|---:|---:|---:|---|---|
@@ -112,7 +112,7 @@ Plan: round 1: Radiance opening · round 2+: Shield surge · when an ally is bel
 
 Health 39 (Body 23 + Mind 16) · AD 14 · WD 13 · Weapon Modifier +2 · Power Modifier +2 · Rally Points 9 (each heals 10) · targeted ×1.5
 
-**Damage a turn** (Monte Carlo, 20,000 turns each; measured at the lowest Escalation the turn needs ("Esc": its passives at that Escalation too), and once at Escalation 3; the target's Defense is both AD and WD; an Action against "a different creature" or an area counts only the target, but a Linked Action that needs a different creature still hits it; **best** = the most damage at Def 13 among the valid turns):
+**Damage a turn** (Monte Carlo, 20,000 turns each; measured with the Escalation the turn spends ("Esc"; its passives see what is left after spending), and once at Escalation 3; the target's Defense is both AD and WD; an Action against "a different creature" or an area counts only the target, but a Linked Action that needs a different creature still hits it; **best** = the most damage at Def 13 among the valid turns):
 
 | Turn | Esc | Def 12 | Def 13 | Def 14 | Def 13, Esc 3 | AP | Strikes | Steps | Problems |
 |---|---:|---:|---:|---:|---:|---:|---:|---|---|
@@ -142,14 +142,14 @@ The book's target for a typical fight (CV 4 against 4 PCs): about **3 rounds** a
 
 | Encounter | CV | rounds (median / mean / 90%) | party won | Health lost | a PC goes Down | first Down (median round) | Paladin Down | Paladin Down | Archer Down | Archer Down |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 4 Standards | 4 | 3 / 3.0 / 3 | 100% | 28% | 2% | 2 | 0% | 0% | 0% | 1% |
-| 2 Elites | 4 | 3 / 3.2 / 4 | 99% | 36% | 15% | 2 | 5% | 4% | 5% | 5% |
-| Elite + 2 Standards | 4 | 3 / 3.0 / 3 | 100% | 32% | 6% | 2 | 2% | 2% | 2% | 2% |
-| 8 Grunts | 4 | 4 / 3.5 / 4 | 100% | 34% | 0% | 2 | 0% | 0% | 0% | 0% |
-| 2 Standards + 8 Minions | 4 | 3 / 3.1 / 3 | 100% | 30% | 2% | 2 | 0% | 0% | 0% | 1% |
-| 6 Standards (CV 6, hard) | 6 | 4 / 4.4 / 5 | 98% | 44% | 23% | 2 | 7% | 9% | 8% | 8% |
+| 4 Standards | 4 | 3 / 3.0 / 3 | 100% | 28% | 2% | 2 | 1% | 0% | 1% | 1% |
+| 2 Elites | 4 | 3 / 3.1 / 4 | 100% | 37% | 17% | 2 | 5% | 5% | 4% | 5% |
+| Elite + 2 Standards | 4 | 3 / 3.1 / 3 | 100% | 32% | 8% | 2 | 3% | 3% | 2% | 2% |
+| 8 Grunts | 4 | 4 / 3.5 / 4 | 100% | 35% | 1% | 2 | 0% | 1% | 0% | 0% |
+| 2 Standards + 8 Minions | 4 | 3 / 3.1 / 3 | 100% | 31% | 1% | 2 | 0% | 0% | 0% | 0% |
+| 6 Standards (CV 6, hard) | 6 | 5 / 4.7 / 5 | 94% | 49% | 30% | 2 | 14% | 14% | 12% | 12% |
 
-How the fight is simulated: initiative is shuffled once; every PC follows its plan (the round's turn; its `when` turn when it is unloaded or an ally is hurt) and attacks its Marked Quarry if it has one, else the enemy closest to dying (a new quarry when the old one dies); each NPC makes its Strikes a turn (Minion 1, Grunt and Standard 2, Elite 3; At-will Banes on the 2nd and 3rd), choosing a PC at random weighted by `targeted` (a taunted NPC takes the taunt's Banes against anyone else); Defense bonuses last until their giver's next turn; one Health Pool per creature (Body and Mind together); a PC at its Health Pool is Down and stops; nobody moves, uses Rally Points on their own or uses Reactions. Escalation is 0 in round 1, then +1 a round (up to 3).
+How the fight is simulated: initiative is shuffled once; every PC follows its plan (the round's turn; its `when` turn when it is unloaded or an ally is hurt) and attacks its Marked Quarry if it has one, else the enemy closest to dying (a new quarry when the old one dies); each NPC makes its Strikes a turn (Minion 1, Grunt and Standard 2, Elite 3; At-will Banes on the 2nd and 3rd), choosing a PC at random weighted by `targeted` (a taunted NPC takes the taunt's Banes against anyone else); Defense bonuses last until their giver's next turn; one Health Pool per creature (Body and Mind together); a PC at its Health Pool is Down and stops; nobody moves, uses Rally Points on their own or uses Reactions. Escalation is 0 in round 1 (with Momentum in a day: half the level, rounded up, up to 2), then +1 a round (up to 3); an Escalation Active spends what it costs, and a passive works only while the PC has at least its number (so spending can turn it off).
 
 ## Adventuring days (1000 days each)
 
@@ -161,319 +161,319 @@ Credits: **Defense given** and **Vulnerable given** are the average damage they 
 
 Fight 1: 2 standard, 4 minion (CV 3) · Fight 2: 4 standard (CV 4) · Fight 3: 1 elite, 2 standard (CV 4) · Fight 4: 2 elite, 2 standard (CV 6)
 
-**Level 1** (paladin-1, paladin-1, archer-1, archer-1; NPCs of level 1): the day cleared 73% · a PC Down during the day 68% · Downs a day 1.80 · Rally Points left at the end 19% · Health at the end 53%
+**Level 1** (paladin-1, paladin-1, archer-1, archer-1; NPCs of level 1): the day cleared 70% · a PC Down during the day 70% · Downs a day 1.84 · Rally Points left at the end 20% · Health at the end 51%
 
 | Fight | won (of the days that reach it) | rounds (mean) | party Health lost in it | a PC goes Down in it |
 |---|---:|---:|---:|---:|
 | 1: 2 standard, 4 minion | 100% | 2.5 | 20% | 0% |
-| 2: 4 standard | 100% | 3.0 | 25% | 2% |
-| 3: 1 elite, 2 standard | 100% | 3.1 | 29% | 10% |
-| 4: 2 elite, 2 standard | 73% | 4.8 | 61% | 66% |
+| 2: 4 standard | 100% | 3.0 | 26% | 3% |
+| 3: 1 elite, 2 standard | 100% | 3.1 | 28% | 8% |
+| 4: 2 elite, 2 standard | 70% | 4.7 | 62% | 67% |
 
 | Per PC, over the day | Paladin `paladin-1` | Archer `archer-1` |
 |---|---:|---:|
-| Damage dealt | 296.7 | 275.3 |
-| Damage a turn (its own turns) | 27.1 | 24.6 |
+| Damage dealt | 295.5 | 278.1 |
+| Damage a turn (its own turns) | 27.3 | 24.9 |
 | Share of the party's damage (%) | 26 | 24 |
-| Turns taken | 11.0 | 11.1 |
+| Turns taken | 10.9 | 11.1 |
 | Health Pool | 36 | 27 |
-| Damage aimed at it (before reduction) | 85.1 | 49.9 |
-| Reduced (Hallowed Stance) | 5.9 | 0.0 |
-| Damage taken | 79.2 | 49.9 |
-| Damage taken a round of combat | 5.9 | 3.7 |
-| Times Down | 0.44 | 0.46 |
-| Rally Points (of 8 / 7): used in combat (Steel Yourself) | 1.28 | 0.65 |
-| Rally Points used through an ally's Lay On Hands | 1.61 | 1.57 |
-| Rally Points used between fights | 3.92 | 3.05 |
-| Rally Points left | 1.19 | 1.73 |
-| **Buffs:** healed allies (Lay On Hands) | 25.4 | 0.0 |
+| Damage aimed at it (before reduction) | 83.7 | 49.3 |
+| Reduced (Hallowed Stance) | 2.9 | 0.0 |
+| Damage taken | 80.7 | 49.3 |
+| Damage taken a round of combat | 6.1 | 3.7 |
+| Times Down | 0.46 | 0.46 |
+| Rally Points (of 8 / 7): used in combat (Steel Yourself) | 1.34 | 0.64 |
+| Rally Points used through an ally's Lay On Hands | 1.59 | 1.55 |
+| Rally Points used between fights | 3.93 | 2.97 |
+| Rally Points left | 1.15 | 1.85 |
+| **Buffs:** healed allies (Lay On Hands) | 25.1 | 0.0 |
 | Defense given (damage it stopped) | 0.0 | 0.0 |
-| Vulnerable given (extra damage dealt by the party) | 0.0 | 3.7 |
-| **Debuff:** Bane on its next Save (times) | 0.00 | 3.31 |
-| **Debuff:** Hindered (until it moves) (times) | 0.00 | 2.95 |
-| **Debuff:** Immobilized (times) | 0.00 | 2.04 |
-| **Debuff:** Prone (times) | 0.96 | 0.00 |
-| **Debuff:** Vulnerable 2 (times) | 0.00 | 1.58 |
+| Vulnerable given (extra damage dealt by the party) | 0.0 | 3.5 |
+| **Debuff:** Bane on its next Save (times) | 0.00 | 3.30 |
+| **Debuff:** Hindered (until it moves) (times) | 0.00 | 3.01 |
+| **Debuff:** Immobilized (times) | 0.00 | 2.00 |
+| **Debuff:** Prone (times) | 0.97 | 0.00 |
+| **Debuff:** Vulnerable 2 (times) | 0.00 | 1.54 |
 
-**Level 2** (paladin-2, paladin-2, archer-2, archer-2; NPCs of level 2): the day cleared 55% · a PC Down during the day 83% · Downs a day 2.54 · Rally Points left at the end 24% · Health at the end 40%
-
-| Fight | won (of the days that reach it) | rounds (mean) | party Health lost in it | a PC goes Down in it |
-|---|---:|---:|---:|---:|
-| 1: 2 standard, 4 minion | 100% | 2.7 | 20% | 0% |
-| 2: 4 standard | 100% | 3.1 | 26% | 4% |
-| 3: 1 elite, 2 standard | 100% | 3.3 | 32% | 17% |
-| 4: 2 elite, 2 standard | 55% | 4.9 | 70% | 79% |
-
-| Per PC, over the day | Paladin `paladin-2` | Archer `archer-2` |
-|---|---:|---:|
-| Damage dealt | 313.2 | 300.2 |
-| Damage a turn (its own turns) | 27.7 | 26.2 |
-| Share of the party's damage (%) | 26 | 24 |
-| Turns taken | 11.4 | 11.4 |
-| Health Pool | 39 | 29 |
-| Damage aimed at it (before reduction) | 101.7 | 60.2 |
-| Reduced (Hallowed Stance) | 6.9 | 0.0 |
-| Damage taken | 94.8 | 60.2 |
-| Damage taken a round of combat | 6.8 | 4.3 |
-| Times Down | 0.60 | 0.67 |
-| Rally Points (of 9 / 7): used in combat (Steel Yourself) | 1.49 | 0.76 |
-| Rally Points used through an ally's Lay On Hands | 1.71 | 1.48 |
-| Rally Points used between fights | 3.80 | 2.98 |
-| Rally Points left | 2.00 | 1.79 |
-| **Buffs:** healed allies (Lay On Hands) | 28.8 | 0.0 |
-| Defense given (damage it stopped) | 0.0 | 0.0 |
-| Vulnerable given (extra damage dealt by the party) | 0.0 | 4.0 |
-| **Debuff:** Bane on its next Save (times) | 0.00 | 3.27 |
-| **Debuff:** Hindered (times) | 0.00 | 2.07 |
-| **Debuff:** Hindered (until it moves) (times) | 0.00 | 1.67 |
-| **Debuff:** Immobilized (times) | 0.00 | 1.19 |
-| **Debuff:** Prone (times) | 0.96 | 0.00 |
-| **Debuff:** Vulnerable 2 (times) | 0.00 | 1.59 |
-
-**Level 2, one support Paladin** (paladin-2-support, paladin-2, archer-2, archer-2; NPCs of level 2): the day cleared 55% · a PC Down during the day 83% · Downs a day 2.57 · Rally Points left at the end 24% · Health at the end 39%
+**Level 2** (paladin-2, paladin-2, archer-2, archer-2; NPCs of level 2): the day cleared 50% · a PC Down during the day 85% · Downs a day 2.72 · Rally Points left at the end 24% · Health at the end 36%
 
 | Fight | won (of the days that reach it) | rounds (mean) | party Health lost in it | a PC goes Down in it |
 |---|---:|---:|---:|---:|
 | 1: 2 standard, 4 minion | 100% | 2.7 | 21% | 0% |
 | 2: 4 standard | 100% | 3.1 | 27% | 5% |
-| 3: 1 elite, 2 standard | 100% | 3.3 | 32% | 18% |
-| 4: 2 elite, 2 standard | 55% | 5.0 | 70% | 80% |
+| 3: 1 elite, 2 standard | 100% | 3.2 | 31% | 14% |
+| 4: 2 elite, 2 standard | 50% | 4.9 | 73% | 81% |
+
+| Per PC, over the day | Paladin `paladin-2` | Archer `archer-2` |
+|---|---:|---:|
+| Damage dealt | 312.1 | 302.6 |
+| Damage a turn (its own turns) | 28.0 | 26.4 |
+| Share of the party's damage (%) | 25 | 25 |
+| Turns taken | 11.2 | 11.4 |
+| Health Pool | 39 | 29 |
+| Damage aimed at it (before reduction) | 99.8 | 60.5 |
+| Reduced (Hallowed Stance) | 3.0 | 0.0 |
+| Damage taken | 96.8 | 60.5 |
+| Damage taken a round of combat | 7.0 | 4.4 |
+| Times Down | 0.68 | 0.68 |
+| Rally Points (of 9 / 7): used in combat (Steel Yourself) | 1.50 | 0.74 |
+| Rally Points used through an ally's Lay On Hands | 1.63 | 1.46 |
+| Rally Points used between fights | 3.87 | 2.91 |
+| Rally Points left | 2.00 | 1.90 |
+| **Buffs:** healed allies (Lay On Hands) | 28.0 | 0.0 |
+| Defense given (damage it stopped) | 0.0 | 0.0 |
+| Vulnerable given (extra damage dealt by the party) | 0.0 | 4.0 |
+| **Debuff:** Bane on its next Save (times) | 0.00 | 3.30 |
+| **Debuff:** Hindered (times) | 0.00 | 2.01 |
+| **Debuff:** Hindered (until it moves) (times) | 0.00 | 1.67 |
+| **Debuff:** Immobilized (times) | 0.00 | 1.13 |
+| **Debuff:** Prone (times) | 0.96 | 0.00 |
+| **Debuff:** Vulnerable 2 (times) | 0.00 | 1.58 |
+
+**Level 2, one support Paladin** (paladin-2-support, paladin-2, archer-2, archer-2; NPCs of level 2): the day cleared 50% · a PC Down during the day 86% · Downs a day 2.73 · Rally Points left at the end 24% · Health at the end 36%
+
+| Fight | won (of the days that reach it) | rounds (mean) | party Health lost in it | a PC goes Down in it |
+|---|---:|---:|---:|---:|
+| 1: 2 standard, 4 minion | 100% | 2.7 | 20% | 0% |
+| 2: 4 standard | 100% | 3.1 | 27% | 4% |
+| 3: 1 elite, 2 standard | 99% | 3.2 | 32% | 18% |
+| 4: 2 elite, 2 standard | 50% | 4.9 | 73% | 82% |
 
 | Per PC, over the day | Paladin (support) `paladin-2-support` | Paladin `paladin-2` | Archer `archer-2` |
 |---|---:|---:|---:|
-| Damage dealt | 296.5 | 317.1 | 305.4 |
-| Damage a turn (its own turns) | 25.9 | 27.8 | 26.4 |
+| Damage dealt | 292.5 | 316.7 | 306.5 |
+| Damage a turn (its own turns) | 26.2 | 28.0 | 26.5 |
 | Share of the party's damage (%) | 24 | 26 | 25 |
-| Turns taken | 11.5 | 11.5 | 11.5 |
+| Turns taken | 11.2 | 11.3 | 11.5 |
 | Health Pool | 39 | 39 | 29 |
-| Damage aimed at it (before reduction) | 102.7 | 102.5 | 60.1 |
-| Reduced (Hallowed Stance) | 7.1 | 6.9 | 0.0 |
-| Damage taken | 95.7 | 95.6 | 60.1 |
-| Damage taken a round of combat | 6.8 | 6.8 | 4.3 |
-| Times Down | 0.60 | 0.62 | 0.67 |
-| Rally Points (of 9 / 9 / 7): used in combat (Steel Yourself) | 1.53 | 1.54 | 0.67 |
-| Rally Points used through an ally's Lay On Hands | 1.71 | 1.68 | 1.50 |
-| Rally Points used between fights | 3.84 | 3.82 | 2.97 |
-| Rally Points left | 1.93 | 1.96 | 1.85 |
-| **Buffs:** healed allies (Lay On Hands) | 28.7 | 29.1 | 0.0 |
-| Defense given (damage it stopped) | 1.4 | 0.0 | 0.0 |
+| Damage aimed at it (before reduction) | 100.0 | 100.7 | 60.3 |
+| Reduced (Hallowed Stance) | 3.1 | 3.2 | 0.0 |
+| Damage taken | 96.9 | 97.5 | 60.3 |
+| Damage taken a round of combat | 7.0 | 7.0 | 4.3 |
+| Times Down | 0.69 | 0.69 | 0.68 |
+| Rally Points (of 9 / 9 / 7): used in combat (Steel Yourself) | 1.45 | 1.47 | 0.73 |
+| Rally Points used through an ally's Lay On Hands | 1.70 | 1.69 | 1.45 |
+| Rally Points used between fights | 3.83 | 3.85 | 2.91 |
+| Rally Points left | 2.01 | 1.98 | 1.91 |
+| **Buffs:** healed allies (Lay On Hands) | 28.6 | 28.5 | 0.0 |
+| Defense given (damage it stopped) | 1.3 | 0.0 | 0.0 |
 | Vulnerable given (extra damage dealt by the party) | 0.0 | 0.0 | 3.8 |
-| **Debuff:** Bane on its next Save (times) | 0.00 | 0.00 | 3.30 |
-| **Debuff:** Hindered (times) | 0.00 | 0.00 | 2.10 |
-| **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.00 | 1.67 |
-| **Debuff:** Immobilized (times) | 0.00 | 0.00 | 1.18 |
-| **Debuff:** Prone (times) | 0.96 | 0.98 | 0.00 |
+| **Debuff:** Bane on its next Save (times) | 0.00 | 0.00 | 3.26 |
+| **Debuff:** Hindered (times) | 0.00 | 0.00 | 2.09 |
+| **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.00 | 1.70 |
+| **Debuff:** Immobilized (times) | 0.00 | 0.00 | 1.14 |
+| **Debuff:** Prone (times) | 0.99 | 0.94 | 0.00 |
 | **Debuff:** Vulnerable 2 (times) | 0.00 | 0.00 | 1.55 |
 
 ### Long day (normal, hard, normal, hard)
 
 Fight 1: 8 grunt (CV 4) · Fight 2: 6 standard (CV 6) · Fight 3: 2 elite (CV 4) · Fight 4: 1 elite, 4 standard (CV 6)
 
-**Level 1** (paladin-1, paladin-1, archer-1, archer-1; NPCs of level 1): the day cleared 41% · a PC Down during the day 90% · Downs a day 3.40 · Rally Points left at the end 7% · Health at the end 19%
+**Level 1** (paladin-1, paladin-1, archer-1, archer-1; NPCs of level 1): the day cleared 36% · a PC Down during the day 90% · Downs a day 3.47 · Rally Points left at the end 9% · Health at the end 17%
 
 | Fight | won (of the days that reach it) | rounds (mean) | party Health lost in it | a PC goes Down in it |
 |---|---:|---:|---:|---:|
-| 1: 8 grunt | 100% | 3.5 | 34% | 1% |
-| 2: 6 standard | 96% | 4.5 | 40% | 29% |
-| 3: 2 elite | 99% | 3.3 | 35% | 27% |
-| 4: 1 elite, 4 standard | 43% | 4.3 | 65% | 85% |
+| 1: 8 grunt | 100% | 3.5 | 35% | 1% |
+| 2: 6 standard | 95% | 4.4 | 41% | 30% |
+| 3: 2 elite | 99% | 3.1 | 34% | 22% |
+| 4: 1 elite, 4 standard | 38% | 4.2 | 66% | 86% |
 
 | Per PC, over the day | Paladin `paladin-1` | Archer `archer-1` |
 |---|---:|---:|
-| Damage dealt | 319.1 | 330.9 |
-| Damage a turn (its own turns) | 26.2 | 26.3 |
-| Share of the party's damage (%) | 25 | 25 |
-| Turns taken | 12.2 | 12.5 |
+| Damage dealt | 314.1 | 328.7 |
+| Damage a turn (its own turns) | 26.4 | 26.3 |
+| Share of the party's damage (%) | 24 | 26 |
+| Turns taken | 11.9 | 12.4 |
 | Health Pool | 36 | 27 |
-| Damage aimed at it (before reduction) | 110.9 | 66.8 |
-| Reduced (Hallowed Stance) | 10.5 | 0.0 |
-| Damage taken | 100.4 | 66.8 |
-| Damage taken a round of combat | 6.7 | 4.4 |
-| Times Down | 0.86 | 0.85 |
-| Rally Points (of 8 / 7): used in combat (Steel Yourself) | 1.76 | 0.73 |
-| Rally Points used through an ally's Lay On Hands | 2.07 | 2.36 |
-| Rally Points used between fights | 3.78 | 3.18 |
-| Rally Points left | 0.38 | 0.73 |
-| **Buffs:** healed allies (Lay On Hands) | 34.5 | 0.0 |
+| Damage aimed at it (before reduction) | 105.2 | 66.5 |
+| Reduced (Hallowed Stance) | 4.3 | 0.0 |
+| Damage taken | 100.8 | 66.5 |
+| Damage taken a round of combat | 6.8 | 4.5 |
+| Times Down | 0.90 | 0.84 |
+| Rally Points (of 8 / 7): used in combat (Steel Yourself) | 1.66 | 0.68 |
+| Rally Points used through an ally's Lay On Hands | 2.09 | 2.35 |
+| Rally Points used between fights | 3.79 | 3.15 |
+| Rally Points left | 0.46 | 0.82 |
+| **Buffs:** healed allies (Lay On Hands) | 34.6 | 0.0 |
 | Defense given (damage it stopped) | 0.0 | 0.0 |
-| Vulnerable given (extra damage dealt by the party) | 0.0 | 4.0 |
+| Vulnerable given (extra damage dealt by the party) | 0.0 | 4.1 |
 | **Debuff:** Bane on its next Save (times) | 0.00 | 3.10 |
-| **Debuff:** Hindered (until it moves) (times) | 0.00 | 3.66 |
-| **Debuff:** Immobilized (times) | 0.00 | 2.46 |
-| **Debuff:** Prone (times) | 0.80 | 0.00 |
-| **Debuff:** Vulnerable 2 (times) | 0.00 | 1.40 |
+| **Debuff:** Hindered (until it moves) (times) | 0.00 | 3.63 |
+| **Debuff:** Immobilized (times) | 0.00 | 2.50 |
+| **Debuff:** Prone (times) | 0.75 | 0.00 |
+| **Debuff:** Vulnerable 2 (times) | 0.00 | 1.41 |
 
-**Level 2** (paladin-2, paladin-2, archer-2, archer-2; NPCs of level 2): the day cleared 38% · a PC Down during the day 93% · Downs a day 3.66 · Rally Points left at the end 10% · Health at the end 18%
+**Level 2** (paladin-2, paladin-2, archer-2, archer-2; NPCs of level 2): the day cleared 32% · a PC Down during the day 92% · Downs a day 3.76 · Rally Points left at the end 10% · Health at the end 15%
 
 | Fight | won (of the days that reach it) | rounds (mean) | party Health lost in it | a PC goes Down in it |
 |---|---:|---:|---:|---:|
-| 1: 8 grunt | 100% | 3.7 | 34% | 0% |
-| 2: 6 standard | 95% | 4.9 | 42% | 34% |
-| 3: 2 elite | 97% | 3.5 | 39% | 38% |
-| 4: 1 elite, 4 standard | 41% | 4.6 | 69% | 89% |
+| 1: 8 grunt | 100% | 3.7 | 35% | 1% |
+| 2: 6 standard | 94% | 4.7 | 43% | 32% |
+| 3: 2 elite | 97% | 3.4 | 39% | 33% |
+| 4: 1 elite, 4 standard | 35% | 4.4 | 70% | 89% |
 
 | Per PC, over the day | Paladin `paladin-2` | Archer `archer-2` |
 |---|---:|---:|
-| Damage dealt | 339.2 | 368.4 |
-| Damage a turn (its own turns) | 26.4 | 28.2 |
+| Damage dealt | 336.6 | 359.3 |
+| Damage a turn (its own turns) | 26.8 | 27.7 |
 | Share of the party's damage (%) | 24 | 26 |
-| Turns taken | 12.9 | 13.0 |
+| Turns taken | 12.6 | 12.9 |
 | Health Pool | 39 | 29 |
-| Damage aimed at it (before reduction) | 128.9 | 75.0 |
-| Reduced (Hallowed Stance) | 12.4 | 0.0 |
-| Damage taken | 116.5 | 75.0 |
-| Damage taken a round of combat | 7.3 | 4.7 |
-| Times Down | 0.91 | 0.92 |
-| Rally Points (of 9 / 7): used in combat (Steel Yourself) | 2.05 | 0.81 |
-| Rally Points used through an ally's Lay On Hands | 2.19 | 2.18 |
-| Rally Points used between fights | 3.98 | 3.21 |
-| Rally Points left | 0.77 | 0.79 |
-| **Buffs:** healed allies (Lay On Hands) | 38.8 | 0.0 |
+| Damage aimed at it (before reduction) | 123.4 | 75.1 |
+| Reduced (Hallowed Stance) | 5.3 | 0.0 |
+| Damage taken | 118.1 | 75.1 |
+| Damage taken a round of combat | 7.6 | 4.9 |
+| Times Down | 0.96 | 0.92 |
+| Rally Points (of 9 / 7): used in combat (Steel Yourself) | 1.92 | 0.78 |
+| Rally Points used through an ally's Lay On Hands | 2.32 | 2.18 |
+| Rally Points used between fights | 3.95 | 3.17 |
+| Rally Points left | 0.80 | 0.87 |
+| **Buffs:** healed allies (Lay On Hands) | 40.1 | 0.0 |
 | Defense given (damage it stopped) | 0.0 | 0.0 |
 | Vulnerable given (extra damage dealt by the party) | 0.0 | 4.3 |
-| **Debuff:** Bane on its next Save (times) | 0.00 | 3.08 |
-| **Debuff:** Hindered (times) | 0.00 | 2.60 |
+| **Debuff:** Bane on its next Save (times) | 0.00 | 3.03 |
+| **Debuff:** Hindered (times) | 0.00 | 2.57 |
 | **Debuff:** Hindered (until it moves) (times) | 0.00 | 1.53 |
-| **Debuff:** Immobilized (times) | 0.00 | 1.05 |
+| **Debuff:** Immobilized (times) | 0.00 | 1.04 |
 | **Debuff:** Prone (times) | 0.76 | 0.00 |
-| **Debuff:** Vulnerable 2 (times) | 0.00 | 1.42 |
+| **Debuff:** Vulnerable 2 (times) | 0.00 | 1.40 |
 
-**Level 2, one support Paladin** (paladin-2-support, paladin-2, archer-2, archer-2; NPCs of level 2): the day cleared 34% · a PC Down during the day 94% · Downs a day 3.77 · Rally Points left at the end 10% · Health at the end 16%
+**Level 2, one support Paladin** (paladin-2-support, paladin-2, archer-2, archer-2; NPCs of level 2): the day cleared 31% · a PC Down during the day 93% · Downs a day 3.78 · Rally Points left at the end 11% · Health at the end 15%
 
 | Fight | won (of the days that reach it) | rounds (mean) | party Health lost in it | a PC goes Down in it |
 |---|---:|---:|---:|---:|
-| 1: 8 grunt | 100% | 3.8 | 34% | 0% |
-| 2: 6 standard | 94% | 4.9 | 43% | 33% |
-| 3: 2 elite | 97% | 3.5 | 40% | 35% |
-| 4: 1 elite, 4 standard | 37% | 4.6 | 70% | 91% |
+| 1: 8 grunt | 100% | 3.8 | 35% | 1% |
+| 2: 6 standard | 93% | 4.8 | 43% | 32% |
+| 3: 2 elite | 97% | 3.4 | 39% | 35% |
+| 4: 1 elite, 4 standard | 35% | 4.4 | 70% | 89% |
 
 | Per PC, over the day | Paladin (support) `paladin-2-support` | Paladin `paladin-2` | Archer `archer-2` |
 |---|---:|---:|---:|
-| Damage dealt | 318.6 | 340.5 | 369.5 |
-| Damage a turn (its own turns) | 25.0 | 26.5 | 28.2 |
+| Damage dealt | 322.0 | 338.6 | 361.8 |
+| Damage a turn (its own turns) | 25.4 | 26.8 | 27.8 |
 | Share of the party's damage (%) | 23 | 24 | 26 |
-| Turns taken | 12.8 | 12.9 | 13.0 |
+| Turns taken | 12.7 | 12.7 | 13.0 |
 | Health Pool | 39 | 39 | 29 |
-| Damage aimed at it (before reduction) | 129.2 | 129.4 | 76.2 |
-| Reduced (Hallowed Stance) | 12.9 | 12.8 | 0.0 |
-| Damage taken | 116.3 | 116.6 | 76.2 |
-| Damage taken a round of combat | 7.3 | 7.3 | 4.8 |
-| Times Down | 0.94 | 0.92 | 0.96 |
-| Rally Points (of 9 / 9 / 7): used in combat (Steel Yourself) | 2.03 | 2.04 | 0.82 |
-| Rally Points used through an ally's Lay On Hands | 2.16 | 2.22 | 2.20 |
-| Rally Points used between fights | 3.93 | 3.92 | 3.17 |
-| Rally Points left | 0.88 | 0.82 | 0.81 |
-| **Buffs:** healed allies (Lay On Hands) | 39.0 | 38.8 | 0.0 |
-| Defense given (damage it stopped) | 2.2 | 0.0 | 0.0 |
-| Vulnerable given (extra damage dealt by the party) | 0.0 | 0.0 | 4.2 |
+| Damage aimed at it (before reduction) | 124.0 | 122.7 | 74.9 |
+| Reduced (Hallowed Stance) | 5.7 | 5.2 | 0.0 |
+| Damage taken | 118.4 | 117.4 | 74.9 |
+| Damage taken a round of combat | 7.6 | 7.5 | 4.8 |
+| Times Down | 0.96 | 0.95 | 0.93 |
+| Rally Points (of 9 / 9 / 7): used in combat (Steel Yourself) | 1.97 | 1.92 | 0.79 |
+| Rally Points used through an ally's Lay On Hands | 2.34 | 2.30 | 2.15 |
+| Rally Points used between fights | 3.89 | 3.94 | 3.15 |
+| Rally Points left | 0.80 | 0.84 | 0.91 |
+| **Buffs:** healed allies (Lay On Hands) | 39.9 | 39.8 | 0.0 |
+| Defense given (damage it stopped) | 1.9 | 0.0 | 0.0 |
+| Vulnerable given (extra damage dealt by the party) | 0.0 | 0.0 | 3.9 |
 | **Debuff:** Bane on its next Save (times) | 0.00 | 0.00 | 3.04 |
-| **Debuff:** Hindered (times) | 0.00 | 0.00 | 2.58 |
-| **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.00 | 1.49 |
+| **Debuff:** Hindered (times) | 0.00 | 0.00 | 2.60 |
+| **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.00 | 1.55 |
 | **Debuff:** Immobilized (times) | 0.00 | 0.00 | 1.07 |
-| **Debuff:** Prone (times) | 0.81 | 0.78 | 0.00 |
-| **Debuff:** Vulnerable 2 (times) | 0.00 | 0.00 | 1.36 |
+| **Debuff:** Prone (times) | 0.79 | 0.81 | 0.00 |
+| **Debuff:** Vulnerable 2 (times) | 0.00 | 0.00 | 1.34 |
 
 ### Short hard day (normal, hard, hard)
 
 Fight 1: 4 standard (CV 4) · Fight 2: 2 elite, 2 standard (CV 6) · Fight 3: 6 standard (CV 6)
 
-**Level 1** (paladin-1, paladin-1, archer-1, archer-1; NPCs of level 1): the day cleared 68% · a PC Down during the day 76% · Downs a day 2.16 · Rally Points left at the end 26% · Health at the end 47%
+**Level 1** (paladin-1, paladin-1, archer-1, archer-1; NPCs of level 1): the day cleared 65% · a PC Down during the day 77% · Downs a day 2.27 · Rally Points left at the end 27% · Health at the end 45%
 
 | Fight | won (of the days that reach it) | rounds (mean) | party Health lost in it | a PC goes Down in it |
 |---|---:|---:|---:|---:|
-| 1: 4 standard | 100% | 3.0 | 28% | 2% |
-| 2: 2 elite, 2 standard | 75% | 4.8 | 59% | 60% |
-| 3: 6 standard | 90% | 4.6 | 45% | 45% |
+| 1: 4 standard | 100% | 3.0 | 29% | 2% |
+| 2: 2 elite, 2 standard | 73% | 4.7 | 61% | 63% |
+| 3: 6 standard | 89% | 4.5 | 48% | 46% |
 
 | Per PC, over the day | Paladin `paladin-1` | Archer `archer-1` |
 |---|---:|---:|
-| Damage dealt | 234.4 | 239.0 |
-| Damage a turn (its own turns) | 26.2 | 25.6 |
+| Damage dealt | 229.8 | 238.8 |
+| Damage a turn (its own turns) | 26.5 | 25.9 |
 | Share of the party's damage (%) | 25 | 25 |
-| Turns taken | 9.1 | 9.1 |
+| Turns taken | 8.8 | 9.1 |
 | Health Pool | 36 | 27 |
-| Damage aimed at it (before reduction) | 83.4 | 49.5 |
-| Reduced (Hallowed Stance) | 8.1 | 0.0 |
-| Damage taken | 75.3 | 49.5 |
-| Damage taken a round of combat | 6.8 | 4.5 |
-| Times Down | 0.52 | 0.56 |
-| Rally Points (of 8 / 7): used in combat (Steel Yourself) | 1.71 | 0.79 |
-| Rally Points used through an ally's Lay On Hands | 1.51 | 1.66 |
-| Rally Points used between fights | 2.90 | 2.48 |
-| Rally Points left | 1.87 | 2.07 |
-| **Buffs:** healed allies (Lay On Hands) | 25.0 | 0.0 |
+| Damage aimed at it (before reduction) | 80.1 | 48.7 |
+| Reduced (Hallowed Stance) | 3.3 | 0.0 |
+| Damage taken | 76.8 | 48.7 |
+| Damage taken a round of combat | 7.1 | 4.6 |
+| Times Down | 0.59 | 0.55 |
+| Rally Points (of 8 / 7): used in combat (Steel Yourself) | 1.62 | 0.75 |
+| Rally Points used through an ally's Lay On Hands | 1.47 | 1.60 |
+| Rally Points used between fights | 3.00 | 2.44 |
+| Rally Points left | 1.91 | 2.21 |
+| **Buffs:** healed allies (Lay On Hands) | 24.3 | 0.0 |
 | Defense given (damage it stopped) | 0.0 | 0.0 |
-| Vulnerable given (extra damage dealt by the party) | 0.0 | 2.9 |
-| **Debuff:** Bane on its next Save (times) | 0.00 | 2.24 |
-| **Debuff:** Hindered (until it moves) (times) | 0.00 | 2.57 |
-| **Debuff:** Immobilized (times) | 0.00 | 1.79 |
-| **Debuff:** Prone (times) | 0.58 | 0.00 |
+| Vulnerable given (extra damage dealt by the party) | 0.0 | 3.1 |
+| **Debuff:** Bane on its next Save (times) | 0.00 | 2.21 |
+| **Debuff:** Hindered (until it moves) (times) | 0.00 | 2.52 |
+| **Debuff:** Immobilized (times) | 0.00 | 1.81 |
+| **Debuff:** Prone (times) | 0.60 | 0.00 |
 | **Debuff:** Vulnerable 2 (times) | 0.00 | 1.03 |
 
-**Level 2** (paladin-2, paladin-2, archer-2, archer-2; NPCs of level 2): the day cleared 49% · a PC Down during the day 89% · Downs a day 2.85 · Rally Points left at the end 39% · Health at the end 35%
-
-| Fight | won (of the days that reach it) | rounds (mean) | party Health lost in it | a PC goes Down in it |
-|---|---:|---:|---:|---:|
-| 1: 4 standard | 100% | 3.1 | 29% | 3% |
-| 2: 2 elite, 2 standard | 55% | 4.9 | 71% | 80% |
-| 3: 6 standard | 90% | 5.0 | 46% | 50% |
-
-| Per PC, over the day | Paladin `paladin-2` | Archer `archer-2` |
-|---|---:|---:|
-| Damage dealt | 223.3 | 233.6 |
-| Damage a turn (its own turns) | 26.8 | 26.7 |
-| Share of the party's damage (%) | 25 | 25 |
-| Turns taken | 8.5 | 8.5 |
-| Health Pool | 39 | 29 |
-| Damage aimed at it (before reduction) | 91.0 | 54.5 |
-| Reduced (Hallowed Stance) | 8.4 | 0.0 |
-| Damage taken | 82.6 | 54.5 |
-| Damage taken a round of combat | 8.0 | 5.4 |
-| Times Down | 0.69 | 0.74 |
-| Rally Points (of 9 / 7): used in combat (Steel Yourself) | 1.69 | 0.82 |
-| Rally Points used through an ally's Lay On Hands | 1.38 | 1.34 |
-| Rally Points used between fights | 2.49 | 2.06 |
-| Rally Points left | 3.43 | 2.78 |
-| **Buffs:** healed allies (Lay On Hands) | 24.4 | 0.0 |
-| Defense given (damage it stopped) | 0.0 | 0.0 |
-| Vulnerable given (extra damage dealt by the party) | 0.0 | 2.9 |
-| **Debuff:** Bane on its next Save (times) | 0.00 | 2.05 |
-| **Debuff:** Hindered (times) | 0.00 | 1.60 |
-| **Debuff:** Hindered (until it moves) (times) | 0.00 | 1.02 |
-| **Debuff:** Immobilized (times) | 0.00 | 0.69 |
-| **Debuff:** Prone (times) | 0.54 | 0.00 |
-| **Debuff:** Vulnerable 2 (times) | 0.00 | 0.94 |
-
-**Level 2, one support Paladin** (paladin-2-support, paladin-2, archer-2, archer-2; NPCs of level 2): the day cleared 53% · a PC Down during the day 86% · Downs a day 2.71 · Rally Points left at the end 36% · Health at the end 38%
+**Level 2** (paladin-2, paladin-2, archer-2, archer-2; NPCs of level 2): the day cleared 44% · a PC Down during the day 88% · Downs a day 2.94 · Rally Points left at the end 41% · Health at the end 31%
 
 | Fight | won (of the days that reach it) | rounds (mean) | party Health lost in it | a PC goes Down in it |
 |---|---:|---:|---:|---:|
 | 1: 4 standard | 100% | 3.1 | 29% | 2% |
-| 2: 2 elite, 2 standard | 59% | 5.0 | 69% | 78% |
-| 3: 6 standard | 89% | 4.9 | 45% | 45% |
+| 2: 2 elite, 2 standard | 49% | 4.9 | 73% | 81% |
+| 3: 6 standard | 89% | 4.8 | 47% | 45% |
+
+| Per PC, over the day | Paladin `paladin-2` | Archer `archer-2` |
+|---|---:|---:|
+| Damage dealt | 217.8 | 227.7 |
+| Damage a turn (its own turns) | 27.1 | 26.7 |
+| Share of the party's damage (%) | 25 | 25 |
+| Turns taken | 8.2 | 8.4 |
+| Health Pool | 39 | 29 |
+| Damage aimed at it (before reduction) | 86.3 | 53.8 |
+| Reduced (Hallowed Stance) | 3.5 | 0.0 |
+| Damage taken | 82.9 | 53.8 |
+| Damage taken a round of combat | 8.3 | 5.5 |
+| Times Down | 0.74 | 0.73 |
+| Rally Points (of 9 / 7): used in combat (Steel Yourself) | 1.61 | 0.79 |
+| Rally Points used through an ally's Lay On Hands | 1.34 | 1.25 |
+| Rally Points used between fights | 2.41 | 1.97 |
+| Rally Points left | 3.64 | 2.99 |
+| **Buffs:** healed allies (Lay On Hands) | 23.3 | 0.0 |
+| Defense given (damage it stopped) | 0.0 | 0.0 |
+| Vulnerable given (extra damage dealt by the party) | 0.0 | 2.8 |
+| **Debuff:** Bane on its next Save (times) | 0.00 | 2.00 |
+| **Debuff:** Hindered (times) | 0.00 | 1.57 |
+| **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.99 |
+| **Debuff:** Immobilized (times) | 0.00 | 0.68 |
+| **Debuff:** Prone (times) | 0.54 | 0.00 |
+| **Debuff:** Vulnerable 2 (times) | 0.00 | 0.90 |
+
+**Level 2, one support Paladin** (paladin-2-support, paladin-2, archer-2, archer-2; NPCs of level 2): the day cleared 44% · a PC Down during the day 90% · Downs a day 3.00 · Rally Points left at the end 41% · Health at the end 31%
+
+| Fight | won (of the days that reach it) | rounds (mean) | party Health lost in it | a PC goes Down in it |
+|---|---:|---:|---:|---:|
+| 1: 4 standard | 100% | 3.1 | 30% | 4% |
+| 2: 2 elite, 2 standard | 49% | 4.9 | 74% | 83% |
+| 3: 6 standard | 89% | 5.0 | 47% | 48% |
 
 | Per PC, over the day | Paladin (support) `paladin-2-support` | Paladin `paladin-2` | Archer `archer-2` |
 |---|---:|---:|---:|
-| Damage dealt | 218.0 | 232.3 | 244.8 |
-| Damage a turn (its own turns) | 25.5 | 26.9 | 26.9 |
+| Damage dealt | 204.9 | 219.7 | 228.8 |
+| Damage a turn (its own turns) | 25.6 | 27.2 | 26.7 |
 | Share of the party's damage (%) | 23 | 25 | 26 |
-| Turns taken | 8.7 | 8.8 | 8.9 |
+| Turns taken | 8.1 | 8.2 | 8.4 |
 | Health Pool | 39 | 39 | 29 |
-| Damage aimed at it (before reduction) | 91.8 | 92.2 | 55.1 |
-| Reduced (Hallowed Stance) | 8.4 | 8.4 | 0.0 |
-| Damage taken | 83.4 | 83.8 | 55.1 |
-| Damage taken a round of combat | 7.9 | 7.9 | 5.3 |
-| Times Down | 0.65 | 0.65 | 0.70 |
-| Rally Points (of 9 / 9 / 7): used in combat (Steel Yourself) | 1.74 | 1.74 | 0.87 |
-| Rally Points used through an ally's Lay On Hands | 1.42 | 1.45 | 1.37 |
-| Rally Points used between fights | 2.60 | 2.60 | 2.17 |
-| Rally Points left | 3.24 | 3.22 | 2.59 |
-| **Buffs:** healed allies (Lay On Hands) | 25.0 | 25.2 | 0.0 |
-| Defense given (damage it stopped) | 1.2 | 0.0 | 0.0 |
-| Vulnerable given (extra damage dealt by the party) | 0.0 | 0.0 | 3.0 |
-| **Debuff:** Bane on its next Save (times) | 0.00 | 0.00 | 2.07 |
-| **Debuff:** Hindered (times) | 0.00 | 0.00 | 1.71 |
-| **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.00 | 1.05 |
-| **Debuff:** Immobilized (times) | 0.00 | 0.00 | 0.72 |
-| **Debuff:** Prone (times) | 0.54 | 0.60 | 0.00 |
-| **Debuff:** Vulnerable 2 (times) | 0.00 | 0.00 | 0.96 |
+| Damage aimed at it (before reduction) | 86.3 | 86.3 | 54.2 |
+| Reduced (Hallowed Stance) | 3.4 | 3.2 | 0.0 |
+| Damage taken | 83.0 | 83.1 | 54.2 |
+| Damage taken a round of combat | 8.2 | 8.2 | 5.5 |
+| Times Down | 0.74 | 0.74 | 0.76 |
+| Rally Points (of 9 / 9 / 7): used in combat (Steel Yourself) | 1.60 | 1.59 | 0.82 |
+| Rally Points used through an ally's Lay On Hands | 1.36 | 1.36 | 1.26 |
+| Rally Points used between fights | 2.41 | 2.45 | 1.97 |
+| Rally Points left | 3.63 | 3.60 | 2.95 |
+| **Buffs:** healed allies (Lay On Hands) | 23.5 | 23.6 | 0.0 |
+| Defense given (damage it stopped) | 1.1 | 0.0 | 0.0 |
+| Vulnerable given (extra damage dealt by the party) | 0.0 | 0.0 | 2.6 |
+| **Debuff:** Bane on its next Save (times) | 0.00 | 0.00 | 2.00 |
+| **Debuff:** Hindered (times) | 0.00 | 0.00 | 1.60 |
+| **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.00 | 0.99 |
+| **Debuff:** Immobilized (times) | 0.00 | 0.00 | 0.67 |
+| **Debuff:** Prone (times) | 0.55 | 0.55 | 0.00 |
+| **Debuff:** Vulnerable 2 (times) | 0.00 | 0.00 | 0.92 |

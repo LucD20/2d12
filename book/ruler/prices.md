@@ -17,7 +17,16 @@ Everything is priced in **damage-equivalents (DE)**: average damage against the 
 | 1 Health healed | 1.10 | 1.10 | 1.10 | Lucas: a little more than 1 damage |
 | A Down prevented or undone | 34.95 | 39.84 | 39.84 | 1.5 baseline turns (the turns it would lose), plus the Health |
 
-**Escalation timing** (the Standard day (easy, normal, normal, hard) of fights.txt, level 1 party, simulated): share of the rounds at Escalation 0 or more: 100%; 1 or more: 70%; 2 or more: 40%; **3 or more: 14%**. An Escalation 1 ability is there for about 70% of the turns, an Escalation 3 one for 14%. In the same day an ally goes Down in 20% of the fights and on 70% of the days; a Paladin uses Lay On Hands on 30% of its turns.
+**Escalation is spent** (the book, Escalation): an Active costs its Escalation; a passive works while you have at least its number, so spending turns it off. **Momentum** (Lucas, 2026-10-29): +1 after each fight harder than easy; with Momentum you start a fight with half your level in Escalation (rounded up), up to 2; a Rest resets it. In the Standard day (easy, normal, normal, hard) of fights.txt (level 1 party, simulated; 3.3 rounds a fight, 50% of the fights start with Momentum):
+
+| | Escalation 1 or more | 2 or more | 3 or more |
+|---|---:|---:|---:|
+| Share of the rounds, nothing spent, with Momentum | 85% | 55% | 29% |
+| The same without Momentum | 70% | 40% | 14% |
+| Uses a fight of an Active that costs it (spent as soon as possible) | 2.83 | 1.18 | 0.55 |
+| The same without Momentum | 2.33 | 1.01 | 0.28 |
+
+An Active and a passive compete: a level 1 PC who spends 1 Escalation every round never reaches 2, so its Escalation 2 passive stays off. In the same day an ally goes Down in 21% of the fights and on 72% of the days; a Paladin uses Lay On Hands on 29% of its turns.
 
 ## 2. The price list (level 1; DE, and as a share of what it modifies)
 
@@ -38,14 +47,14 @@ Everything is priced in **damage-equivalents (DE)**: average damage against the 
 
 ## 3. The role budgets (level 1 and 2 builds of `classes/`)
 
-Baseline Health: the average Health Pool of the Paladin and the Archer builds at the level. Sustained (Esc 0): the best turn with no Encounter or Daily Action and no Escalation (a Reload Shot turn is left out: it needs a Reload turn after it); with Escalation: the best turn available at each Escalation, weighted by the share of the rounds at it; Nova: the best turn with an Encounter or Daily Action. Real: the damage a turn in the simulated day (openings, heals and Steel Yourself turns included; level 1).
+Baseline Health: the average Health Pool of the Paladin and the Archer builds at the level. Sustained (Esc 0): the best turn with no Encounter or Daily Action and no Escalation (a Reload Shot turn is left out: it needs a Reload turn after it); Nova: the best turn with an Encounter or Daily Action. Real: the damage a turn in the simulated day (openings, heals and Steel Yourself turns included; Escalation spent as the plan does; Momentum on).
 
-| Build | Sustained (Esc 0) | Sustained (with Escalation) | Nova | Real (the day) | Health | Budget: sustained / Nova / Health | Verdict |
-|---|---:|---:|---:|---:|---:|---|---|
-| Paladin L1 | 24.5 (105%) | 27.8 (119%) | 24.3 (104%) | 27.0 (116%) | 36 (114%) | 85%-90% / 150%-180% / 120%-130% | sustained high (119%); Nova low (104%); Health low (114%) |
-| Archer L1 | 24.7 (106%) | 30.4 (131%) | 19.2 (82%) | 24.8 (107%) | 27 (86%) | 100%-105% / 110%-130% / 80%-85% | sustained high (131%); Nova low (82%); Health ok (86%) |
-| Paladin L2 | 27.0 (102%) | 30.9 (116%) | 24.3 (91%) | - | 39 (115%) | 85%-90% / 150%-180% / 120%-130% | sustained high (116%); Nova low (91%); Health low (115%) |
-| Archer L2 | 26.8 (101%) | 32.7 (123%) | 19.2 (72%) | - | 29 (85%) | 100%-105% / 110%-130% / 80%-85% | sustained high (123%); Nova low (72%); Health ok (85%) |
+| Build | Sustained (Esc 0) | Nova | Real (the day) | Health | Budget: sustained / Nova / Health | Verdict |
+|---|---:|---:|---:|---:|---|---|
+| Paladin L1 | 24.5 (105%) | 24.3 (104%) | 27.3 (117%) | 36 (114%) | 85%-90% / 150%-180% / 120%-130% | real high (117%); Nova low (104%); Health low (114%) |
+| Archer L1 | 24.7 (106%) | 19.2 (82%) | 25.0 (107%) | 27 (86%) | 100%-105% / 110%-130% / 80%-85% | real ok (107%); Nova low (82%); Health ok (86%) |
+| Paladin L2 | 27.0 (102%) | 24.3 (91%) | 28.1 (106%) | 39 (115%) | 85%-90% / 150%-180% / 120%-130% | real high (106%); Nova low (91%); Health low (115%) |
+| Archer L2 | 26.8 (101%) | 19.2 (72%) | 26.5 (100%) | 29 (85%) | 100%-105% / 110%-130% / 80%-85% | real ok (100%); Nova low (72%); Health ok (85%) |
 
 Roles: Paladin: tank and support: more Health, heals and Defense for allies, Nova damage. Archer: mobile, fragile, constant ranged damage (a future melee class has the top damage: about 1.15).
 
@@ -84,23 +93,23 @@ Roles: Paladin: tank and support: more Health, heals and Defense for allies, Nov
 | Miraculous Recovery 3 | 3 | daily |  | 0.0 | 26.4 | 26.4 | 8.80 | 1.89 | 1.86 | 2.07 | a little under + E2 | E2: ends an effect |
 | Consecrated Ground 2 | 2 | daily |  | 0.0 | 21.7 | 21.7 | 10.85 | 2.33 | 2.08 | 2.14 | on target |  |
 | Consecrated Ground 3 | 3 | daily |  | 0.0 | 45.2 | 45.2 | 15.08 | 3.24 | 2.89 | 2.97 | a little over |  |
-| Divine Intervention 1 (R) | 1 | daily |  | 0.0 | 24.5 | 24.5 | 24.51 | 5.26 | 5.26 | 5.26 | **over** | a Down undone or prevented: 35 DE a use, x 70% (how often an ally goes Down in a day); Reaction: needs AP kept after your turn |
-| Divine Intervention 2 (R) | 2 | daily |  | 0.0 | 33.3 | 33.3 | 16.65 | 3.57 | 3.56 | 3.67 | **over** | a Down undone or prevented: 35 DE a use, x 70% (how often an ally goes Down in a day); Reaction: needs AP kept after your turn |
-| Call to Arms | 0 | round | 1 | 0.0 | 15.7 | 15.7 | - | 67% of a turn | 67% | 71% | **over** (0 AP: >25% of a turn) | a Down undone or prevented: 35 DE a use, x 20% (how often an ally goes Down in a fight); there in 70% of the rounds |
-| Divine Surge | 0 | round | 1 | 0.0 | 4.5 | 4.5 | - | 19% of a turn | 17% | 17% | on target (0 AP) | there in 70% of the rounds |
-| Hand of Mercy | 1 | round | 1 | 0.0 | 0.0 | 0.0 | 0.00 | 0.00 | 0.00 | 0.00 | **under** + E2 | E2: ends an effect; there in 70% of the rounds |
-| Judgment | 1 | round | 2 | 5.6 | 0.0 | 5.6 | 5.59 | 1.20 | 1.05 | 1.05 | on target + E2 | E2: Hindered; there in 40% of the rounds |
-| Sanctified Ground | 1 | round | 2 | 0.0 | 2.6 | 2.6 | 2.60 | 0.56 | 0.53 | 0.59 | **under** | there in 40% of the rounds |
+| Divine Intervention 1 (R) | 1 | daily |  | 0.0 | 25.2 | 25.2 | 25.21 | 5.41 | 5.41 | 5.41 | **over** | a Down undone or prevented: 35 DE a use, x 72% (how often an ally goes Down in a day); Reaction: needs AP kept after your turn |
+| Divine Intervention 2 (R) | 2 | daily |  | 0.0 | 34.0 | 34.0 | 17.00 | 3.65 | 3.64 | 3.74 | **over** | a Down undone or prevented: 35 DE a use, x 72% (how often an ally goes Down in a day); Reaction: needs AP kept after your turn |
+| Call to Arms | 0 | round | 1 | 0.0 | 16.1 | 16.1 | - | 69% of a turn | 68% | 73% | **over** (0 AP: >25% of a turn) | a Down undone or prevented: 35 DE a use, x 21% (how often an ally goes Down in a fight); costs 1 Escalation: 2.83 uses a fight (2.33 without Momentum), 4.8 DE a turn |
+| Divine Surge | 0 | round | 1 | 0.0 | 4.5 | 4.5 | - | 19% of a turn | 17% | 17% | on target (0 AP) | costs 1 Escalation: 2.83 uses a fight (2.33 without Momentum), 3.8 DE a turn |
+| Hand of Mercy | 1 | round | 1 | 0.0 | 0.0 | 0.0 | 0.00 | 0.00 | 0.00 | 0.00 | **under** + E2 | E2: ends an effect; costs 1 Escalation: 2.83 uses a fight (2.33 without Momentum), 0.0 DE a turn |
+| Judgment | 1 | round | 2 | 5.6 | 0.0 | 5.6 | 5.59 | 1.20 | 1.05 | 1.05 | on target + E2 | E2: Hindered; costs 2 Escalation: 1.18 uses a fight (1.01 without Momentum), 2.0 DE a turn |
+| Sanctified Ground | 1 | round | 2 | 0.0 | 2.6 | 2.6 | 2.60 | 0.56 | 0.53 | 0.59 | **under** | costs 2 Escalation: 1.18 uses a fight (1.01 without Momentum), 0.9 DE a turn |
 
 **Paladin passives** (DE a turn, weighted by the share of the rounds at its Escalation):
 
 | Passive | Esc | DE a turn (when on) | Weighted | Share of a baseline turn | How / not priced |
 |---|---:|---:|---:|---:|---|
-| Hallowed Stance | 2 | 7.2 | 2.9 | 12% | Body damage: you (chosen 1.5 times as often) and one adjacent ally; only while you don't leave your square |
+| Hallowed Stance | 2 | 7.2 | 4.0 | 17% | Body damage: you (chosen 1.5 times as often) and one adjacent ally; only while you don't leave your square |
 | Avenger's Oath | 2 | 0.2 | 0.1 | 0% | about once a fight (a third of the turns) |
 | Aegis |  | 0.0 | 0.0 | 0% | E2 / not modeled: 1 |
 | Divine Vigil | 2 | 0.0 | 0.0 | 0% | E2 / not modeled: Boon on Saves against Fear |
-| Mercy's Reward |  | 1.8 | 1.8 | 8% | 6.0 a Smite after a Lay On Hands that heals; weighted by Lay On Hands on 30% of the turns |
+| Mercy's Reward |  | 1.8 | 1.8 | 8% | 6.0 a Smite after a Lay On Hands that heals; weighted by Lay On Hands on 29% of the turns |
 | Profane Judgment |  | 0.0 | 0.0 | 0% | E2 / not modeled: Enfeebled 1 on Profane creatures |
 
 ## 4. Archer: every Action (level 1; efficiency also at levels 2 and 3)
@@ -127,19 +136,19 @@ Roles: Paladin: tank and support: more Health, heals and Defense for allies, Nov
 | Rain of Arrows | 3 | daily |  | 11.4 | 0.0 | 11.4 | 3.81 | 0.82 | 0.72 | 0.72 | **under** + E2 | E2: the area lasts 2 rounds (hazardous terrain) |
 | Hunter's Focus | 1 | daily |  | 0.0 | 14.2 | 14.2 | 14.16 | 3.04 | 2.66 | 2.66 | a little over |  |
 | Deadeye | 3 | daily |  | 12.4 | 0.0 | 12.4 | 4.14 | 0.89 | 0.78 | 0.78 | **under** + E2 | E2: Prone |
-| Steady Aim | 0 | round | 1 | 0.0 | 0.5 | 0.5 | - | 2% of a turn | 2% | 2% | under (0 AP: <8% of a turn) + E2 | E2: range; there in 70% of the rounds |
-| Vanish | 1 | round | 1 | 0.0 | 0.0 | 0.0 | 0.00 | 0.00 | 0.00 | 0.00 | **under** + E2 | E2: Evade 3; E2: the first Strike against you takes 1 Bane; there in 70% of the rounds |
-| Pinning Shot | 1 | round | 2 | 5.5 | 0.0 | 5.5 | 5.50 | 1.18 | 1.03 | 1.03 | on target + E2 | E2: Immobilized; there in 40% of the rounds |
-| Twin Shot | 1 | round | 3 | 16.0 | 0.0 | 16.0 | 16.05 | 3.44 | 3.02 | 3.02 | **over** | there in 14% of the rounds |
-| Perfect Shot | 0 | round | 3 | 0.0 | 3.5 | 3.5 | - | 15% of a turn | 13% | 13% | on target (0 AP) + E2 | E2: ignores Cover; there in 14% of the rounds |
+| Steady Aim | 0 | round | 1 | 0.0 | 0.5 | 0.5 | - | 2% of a turn | 2% | 2% | under (0 AP: <8% of a turn) + E2 | E2: range; costs 1 Escalation: 2.83 uses a fight (2.33 without Momentum), 0.4 DE a turn |
+| Vanish | 1 | round | 1 | 0.0 | 0.0 | 0.0 | 0.00 | 0.00 | 0.00 | 0.00 | **under** + E2 | E2: Evade 3; E2: the first Strike against you takes 1 Bane; costs 1 Escalation: 2.83 uses a fight (2.33 without Momentum), 0.0 DE a turn |
+| Pinning Shot | 1 | round | 2 | 5.5 | 0.0 | 5.5 | 5.50 | 1.18 | 1.03 | 1.03 | on target + E2 | E2: Immobilized; costs 2 Escalation: 1.18 uses a fight (1.01 without Momentum), 1.9 DE a turn |
+| Twin Shot | 1 | round | 3 | 16.0 | 0.0 | 16.0 | 16.05 | 3.44 | 3.02 | 3.02 | **over** | costs 3 Escalation: 0.55 uses a fight (0.28 without Momentum), 2.7 DE a turn |
+| Perfect Shot | 0 | round | 3 | 0.0 | 3.5 | 3.5 | - | 15% of a turn | 13% | 13% | on target (0 AP) + E2 | E2: ignores Cover; costs 3 Escalation: 0.55 uses a fight (0.28 without Momentum), 0.6 DE a turn |
 
 **Archer passives** (DE a turn, weighted by the share of the rounds at its Escalation):
 
 | Passive | Esc | DE a turn (when on) | Weighted | Share of a baseline turn | How / not priced |
 |---|---:|---:|---:|---:|---|
 | Marked Quarry |  | 1.8 | 1.8 | 8% | the typical turn's Shot Strikes against the quarry, +1 Boon each |
-| Killer's Focus | 2 | 2.5 | 1.0 | 4% | the first qualifying hit each round |
-| Patient Hunter | 2 | 1.8 | 0.7 | 3% | the typical turn's Shots; only while you don't leave your square: against the Archer's role (mobile) |
+| Killer's Focus | 2 | 2.5 | 1.4 | 6% | the first qualifying hit each round |
+| Patient Hunter | 2 | 1.8 | 1.0 | 4% | the typical turn's Shots; only while you don't leave your square: against the Archer's role (mobile) |
 | Long Draw |  | 0.0 | 0.0 | 0% | E2 / not modeled: 0 |
 | Steady Nerves | 2 | 0.0 | 0.0 | 0% | E2 / not modeled: no Banes for [Ranged] while Engaged |
 

@@ -125,25 +125,32 @@ export function valueOf(b, a, r) {
 }
 
 /* ------------------------------------------------------------------ timing and how often things happen: the Standard day of fights.txt */
-// The level 1 party through the first `day` of fights.txt: the share of rounds at each Escalation, how often an ally goes Down, how often Lay On Hands is used.
-const DAY = (() => {
+// A party of 2 Paladins and 2 Archers of the level through the first `day` of fights.txt (with Momentum): every fight's rounds and starting
+// Escalation, how often an ally goes Down, how often Lay On Hands is used, the damage a turn of each class.
+const dayStats = lv => {
   const cls = name => S.parseSpec(fs.readFileSync(HERE + "classes/" + name, "utf8"), name);
   const fights = S.parseFights(fs.readFileSync(HERE + "fights.txt", "utf8")), d = fights.days[0];
-  const party = [cls("paladin-1.txt"), cls("paladin-1.txt"), cls("archer-1.txt"), cls("archer-1.txt")], R = S.rng(17), byRound = [];
+  const party = [cls(`paladin-${lv}.txt`), cls(`paladin-${lv}.txt`), cls(`archer-${lv}.txt`), cls(`archer-${lv}.txt`)], R = S.rng(17), log = [];
   let fightsRun = 0, fightsDown = 0, daysDown = 0, loh = 0, turns = 0; const real = {};
   const n = 800;
   for (let k = 0; k < n; k++) {
-    const res = S.day(party, d.fights.map(f => f.map(x => S.npcOf(x.role, x.rating, 1))), R);
-    for (const f of res.fights) { fightsRun++; if (f.firstDown) fightsDown++; for (let rr = 1; rr <= f.rounds; rr++) byRound[rr] = (byRound[rr] ?? 0) + 1; }
+    const res = S.day(party, d.fights.map(f => f.map(x => S.npcOf(x.role, x.rating, lv))), R);
+    for (const f of res.fights) { fightsRun++; if (f.firstDown) fightsDown++; log.push({ rounds: f.rounds, start: f.startEsc ?? 0 }); }
     if (res.pcs.some(p => p.st.downs)) daysDown++;
     loh += res.pcs.reduce((s, p) => s + p.st.rpByAlly, 0); turns += res.pcs.filter(p => p.build.name === "Paladin").reduce((s, p) => s + p.st.rounds, 0);
     for (const p of res.pcs) { const c = (real[p.build.name] ??= { dealt: 0, turns: 0 }); c.dealt += p.st.dealt; c.turns += p.st.rounds; }
   }
-  const total = byRound.reduce((s, x) => s + (x ?? 0), 0);
-  return { name: d.name, esc: [0, 1, 2, 3].map(e => byRound.reduce((s, x, rr) => s + (rr >= e + 1 ? (x ?? 0) : 0), 0) / total),   // share of rounds at Escalation >= e
-    pDownFight: fightsDown / fightsRun, pDownDay: daysDown / n, lohPerTurn: loh / turns, real: Object.fromEntries(Object.entries(real).map(([k, v]) => [k, v.dealt / v.turns])) };
-})();
-export const escalationShare = () => DAY.esc;
+  const rounds = log.reduce((s, f) => s + f.rounds, 0);
+  /** Share of the rounds at Escalation >= e if nothing is spent (momentum false: every fight starts at 0). */
+  const share = (e, momentum = true) => log.reduce((s, f) => { let c = 0; for (let r = 1; r <= f.rounds; r++) if (Math.min(3, (momentum ? f.start : 0) + r - 1) >= e) c++; return s + c; }, 0) / rounds;
+  /** Uses a fight of an Escalation Active costing `cost`, spent as soon as you have it (once a round), with nothing else spent. */
+  const uses = (cost, momentum = true) => log.reduce((s, f) => { let esc = momentum ? f.start : 0, u = 0; for (let r = 1; r <= f.rounds; r++) { if (r > 1) esc = Math.min(3, esc + 1); if (esc >= cost) { u++; esc -= cost; } } return s + u; }, 0) / log.length;
+  return { name: d.name, share, uses, roundsPerFight: rounds / log.length, startShare: log.filter(f => f.start > 0).length / log.length,
+    pDownFight: fightsDown / fightsRun, pDownDay: daysDown / n, lohPerTurn: loh / turns, real: Object.fromEntries(Object.entries(real).map(([k2, v]) => [k2, v.dealt / v.turns])) };
+};
+const DAYS = { 1: dayStats(1), 2: dayStats(2) };
+const DAY = DAYS[1];
+export const escalationShare = (momentum = true) => [0, 1, 2, 3].map(e => DAY.share(e, momentum));
 
 /* ------------------------------------------------------------------ the report */
 const f1 = x => (Number.isFinite(x) ? x.toFixed(1) : "-"), f2 = x => (Number.isFinite(x) ? x.toFixed(2) : "-"), pc = x => `${Math.round(x * 100)}%`;
@@ -170,7 +177,12 @@ export function report() {
   row("1 Health healed", () => A.heal, "Lucas: a little more than 1 damage");
   row("A Down prevented or undone", r => r.down, `${A.downTurns} baseline turns (the turns it would lose), plus the Health`);
   L.push("");
-  L.push(`**Escalation timing** (the ${DAY.name} of fights.txt, level 1 party, simulated): share of the rounds at Escalation 0 or more: ${pc(esc[0])}; 1 or more: ${pc(esc[1])}; 2 or more: ${pc(esc[2])}; **3 or more: ${pc(esc[3])}**. An Escalation 1 ability is there for about ${pc(esc[1])} of the turns, an Escalation 3 one for ${pc(esc[3])}. In the same day an ally goes Down in ${pc(R[0].pDownFight)} of the fights and on ${pc(R[0].pDownDay)} of the days; a Paladin uses Lay On Hands on ${pc(R[0].lohPerTurn)} of its turns.`, "");
+  const e0 = escalationShare(false);
+  L.push(`**Escalation is spent** (the book, Escalation): an Active costs its Escalation; a passive works while you have at least its number, so spending turns it off. **Momentum** (Lucas, 2026-10-29): +1 after each fight harder than easy; with Momentum you start a fight with half your level in Escalation (rounded up), up to 2; a Rest resets it. In the ${DAY.name} of fights.txt (level 1 party, simulated; ${f1(DAY.roundsPerFight)} rounds a fight, ${pc(DAY.startShare)} of the fights start with Momentum):`, "",
+    "| | Escalation 1 or more | 2 or more | 3 or more |", "|---|---:|---:|---:|",
+    `| Share of the rounds, nothing spent, with Momentum | ${pc(esc[1])} | ${pc(esc[2])} | ${pc(esc[3])} |`, `| The same without Momentum | ${pc(e0[1])} | ${pc(e0[2])} | ${pc(e0[3])} |`,
+    `| Uses a fight of an Active that costs it (spent as soon as possible) | ${f2(DAY.uses(1))} | ${f2(DAY.uses(2))} | ${f2(DAY.uses(3))} |`, `| The same without Momentum | ${f2(DAY.uses(1, false))} | ${f2(DAY.uses(2, false))} | ${f2(DAY.uses(3, false))} |`, "");
+  L.push(`An Active and a passive compete: a level 1 PC who spends 1 Escalation every round never reaches 2, so its Escalation 2 passive stays off. In the same day an ally goes Down in ${pc(R[0].pDownFight)} of the fights and on ${pc(R[0].pDownDay)} of the days; a Paladin uses Lay On Hands on ${pc(R[0].lohPerTurn)} of its turns.`, "");
   // 2. The price list.
   const r1 = R[0], pal = cats[0], arc = cats[1], wa = b => b.actions["weapon attack"];
   const on = (b, o, r = r1) => dmgOf(b, wa(b), r, o) - dmgOf(b, wa(b), r);
@@ -188,23 +200,21 @@ export function report() {
   P("A Down prevented or undone", r1.down, "-", "");
   L.push("", `**Frequency bands** (DE per AP, divided by the price of 1 AP): At-will ${A.bands["at-will"].join(" to ")}, Round and Turn ${A.bands.round.join(" to ")}, Encounter ${A.bands.encounter.join(" to ")}, Daily ${A.bands.daily.join(" to ")}. An At-will Action takes a Bane on each use after the first, so its first use can sit at the top. A **0 AP** Action is priced per use as a share of a baseline turn. Verdict: **under** or **over** when more than 10% outside its band; **+ E2** when part of its value (movement, Evade, Push, Cover, range, Hindered, Immobilized, Prone, Saves) can't be priced before pack E2, so the verdict isn't final.`, "");
   // Role budgets.
-  L.push("## 3. The role budgets (level 1 and 2 builds of `classes/`)", "", "Baseline Health: the average Health Pool of the Paladin and the Archer builds at the level. Sustained (Esc 0): the best turn with no Encounter or Daily Action and no Escalation (a Reload Shot turn is left out: it needs a Reload turn after it); with Escalation: the best turn available at each Escalation, weighted by the share of the rounds at it; Nova: the best turn with an Encounter or Daily Action. Real: the damage a turn in the simulated day (openings, heals and Steel Yourself turns included; level 1).", "",
-    "| Build | Sustained (Esc 0) | Sustained (with Escalation) | Nova | Real (the day) | Health | Budget: sustained / Nova / Health | Verdict |", "|---|---:|---:|---:|---:|---:|---|---|");
+  L.push("## 3. The role budgets (level 1 and 2 builds of `classes/`)", "", "Baseline Health: the average Health Pool of the Paladin and the Archer builds at the level. Sustained (Esc 0): the best turn with no Encounter or Daily Action and no Escalation (a Reload Shot turn is left out: it needs a Reload turn after it); Nova: the best turn with an Encounter or Daily Action. Real: the damage a turn in the simulated day (openings, heals and Steel Yourself turns included; Escalation spent as the plan does; Momentum on).", "",
+    "| Build | Sustained (Esc 0) | Nova | Real (the day) | Health | Budget: sustained / Nova / Health | Verdict |", "|---|---:|---:|---:|---:|---|---|");
   for (const file of ["paladin-1", "archer-1", "paladin-2", "archer-2"]) {
     const b = S.parseSpec(fs.readFileSync(HERE + `classes/${file}.txt`, "utf8"), file), r = R[b.level - 1], role = A.roles[b.name];
     const rows = Object.entries(b.turns).map(([k, t]) => {
       const acts = t.steps.map(x => b.actions[x.toLowerCase().replace(/\s*\(.*\)$/, "")]).filter(Boolean);
-      const esc = Math.max(0, ...acts.map(a => a.escalation)), nova = acts.some(a => a.freq === "encounter" || a.freq === "daily"), heal = acts.some(a => a.effects.some(e => e.effect.kind === "heal"));
+      const esc = Math.min(3, acts.reduce((s2, a) => s2 + a.escalation, 0)), nova = acts.some(a => a.freq === "encounter" || a.freq === "daily"), heal = acts.some(a => a.effects.some(e => e.effect.kind === "heal"));
       return { k, esc, nova, heal, v: S.turnDamage(b, k, 13, { n: 6000, escalation: esc }) };
     }).filter(x => !x.v.problems.length && !x.heal && !t0(b, x.k) && !b.turns[x.k].steps.some(st => /reload shot/i.test(st)));
     const best = list => list.reduce((m, x) => Math.max(m, x.v.avg), 0);
-    // With Escalation: the best turn available at each Escalation, weighted by the share of the rounds spent at it.
-    const at = e => rows.filter(x => !x.nova && x.esc <= e).reduce((m, x) => Math.max(m, S.turnDamage(b, x.k, 13, { n: 6000, escalation: e }).avg), 0), sh = [0, 1, 2, 3].map(e => esc[e] - (esc[e + 1] ?? 0));   // passives count at that Escalation too
-    const s0 = at(0), sE = [0, 1, 2, 3].reduce((s, e) => s + sh[e] * at(e), 0), nv = best(rows.filter(x => x.nova));
-    const baseHealth = r.avgPool, real = b.level === 1 ? DAY.real[b.name] : NaN;
+    const s0 = best(rows.filter(x => !x.nova && x.esc === 0)), nv = best(rows.filter(x => x.nova));
+    const baseHealth = r.avgPool, real = DAYS[b.level]?.real[b.name] ?? NaN, sE = real;
     const fit = (x, [lo, hi]) => (x < lo * 0.97 ? "low" : x > hi * 1.03 ? "high" : "ok");
-    const v = [`sustained ${fit(sE / r.B, role.sustained)} (${pc(sE / r.B)})`, `Nova ${nv ? fit(nv / r.B, role.nova) + ` (${pc(nv / r.B)})` : "none"}`, `Health ${fit(b.pool / baseHealth, role.health)} (${pc(b.pool / baseHealth)})`];
-    L.push(`| ${b.name} L${b.level} | ${f1(s0)} (${pc(s0 / r.B)}) | ${f1(sE)} (${pc(sE / r.B)}) | ${nv ? `${f1(nv)} (${pc(nv / r.B)})` : "-"} | ${Number.isFinite(real) ? `${f1(real)} (${pc(real / r.B)})` : "-"} | ${b.pool} (${pc(b.pool / baseHealth)}) | ${pc(role.sustained[0])}-${pc(role.sustained[1])} / ${pc(role.nova[0])}-${pc(role.nova[1])} / ${pc(role.health[0])}-${pc(role.health[1])} | ${v.join("; ")} |`);
+    const v = [`real ${fit(sE / r.B, role.sustained)} (${pc(sE / r.B)})`, `Nova ${nv ? fit(nv / r.B, role.nova) + ` (${pc(nv / r.B)})` : "none"}`, `Health ${fit(b.pool / baseHealth, role.health)} (${pc(b.pool / baseHealth)})`];
+    L.push(`| ${b.name} L${b.level} | ${f1(s0)} (${pc(s0 / r.B)}) | ${nv ? `${f1(nv)} (${pc(nv / r.B)})` : "-"} | ${Number.isFinite(real) ? `${f1(real)} (${pc(real / r.B)})` : "-"} | ${b.pool} (${pc(b.pool / baseHealth)}) | ${pc(role.sustained[0])}-${pc(role.sustained[1])} / ${pc(role.nova[0])}-${pc(role.nova[1])} / ${pc(role.health[0])}-${pc(role.health[1])} | ${v.join("; ")} |`);
   }
   L.push("", `Roles: Paladin: ${A.roles.Paladin.note}. Archer: ${A.roles.Archer.note}.`, "");
   // 4. The audit.
@@ -218,7 +228,7 @@ export function report() {
       let verd = a.ap ? verdict(eff[0], freq) : (eff[0] > 0.25 ? "**over** (0 AP: >25% of a turn)" : eff[0] < 0.08 ? "under (0 AP: <8% of a turn)" : "on target (0 AP)");
       if (a.name === "Reload") verd = "a cost (of a Reload Shot)";
       else if (v[0].e2.length && !/over/.test(verd)) verd += " + E2";   // part of its value needs positions: not final
-      const extra = [...v[0].e2.map(x => `E2: ${x}`), ...v[0].notes, a.reaction ? "Reaction: needs AP kept after your turn" : "", a.escalation ? `there in ${pc(esc[Math.min(3, a.escalation)])} of the rounds` : ""].filter(Boolean).join("; ");
+      const extra = [...v[0].e2.map(x => `E2: ${x}`), ...v[0].notes, a.reaction ? "Reaction: needs AP kept after your turn" : "", a.escalation ? `costs ${a.escalation} Escalation: ${f2(DAY.uses(a.escalation))} uses a fight (${f2(DAY.uses(a.escalation, false))} without Momentum), ${f1(v[0].total * (a.effects.some(e => e.effect.kind === "revive") ? Math.min(1, DAY.uses(a.escalation)) : DAY.uses(a.escalation)) / DAY.roundsPerFight)} DE a turn` : ""].filter(Boolean).join("; ");
       L.push(`| ${a.name}${a.reaction ? " (R)" : ""} | ${a.ap} | ${freq} | ${a.escalation || ""} | ${f1(v[0].dmg)} | ${f1(v[0].fx)} | ${f1(v[0].total)} | ${a.ap ? f2(v[0].total / a.ap) : "-"} | ${a.ap ? f2(eff[0]) : pc(eff[0]) + " of a turn"} | ${a.ap ? f2(eff[1]) : pc(eff[1])} | ${a.ap ? f2(eff[2]) : pc(eff[2])} | ${verd} | ${extra} |`);
     }
     L.push("");

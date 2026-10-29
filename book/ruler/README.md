@@ -119,6 +119,12 @@ Rally Points carry over; Encounter Actions and Escalation start again each fight
 
 ## The price list of the core rules (pack E1, 2026-10-29): `econ.mjs`
 
+**Correction (2026-10-29, the same day): Escalation is spent** (the book: an Active costs its Escalation, spending turns passives off).
+The first run treated it as a threshold. Both scripts now spend it, and the days add **Momentum** (book/class-charter.md). The numbers
+below and in prices.md are after the fix where they say "real"; with it the Archer's real damage a turn is 107% of the baseline at L1
+(within its budget) and the Paladin's 117% (over). The adventuring-day tables earlier in this file are from before the fix (Escalation as
+a threshold, no Momentum): report.md has the current ones.
+
 `node book/ruler/econ.mjs` writes **`prices.md`**: what everything an Action can do is worth in **damage-equivalents (DE)** at levels 1 to 3,
 then every Action, Reaction and passive of `catalogue/paladin.txt` and `catalogue/archer.txt` (every card of the class, in the spec format)
 priced against it, with a verdict for its Frequency. Exact dice math where it can; the simulated Standard day for timing (how many rounds reach
@@ -129,7 +135,7 @@ each Escalation, how often an ally goes Down, how often Lay On Hands is used). I
 Weapon Attack; +1 Modifier and -1 Defense are the same), +1 Bane -10%, Favored +35% (3.7 Boons), Doomed -44%, Empowered 1 = +1 a die that
 lands (+18% on a Greatsword attack, +13% on a Crossbow attack), Vulnerable 1 until its turn ends 1.2 DE, **+1 Defense for a round on an ally 0.87 DE**
 (11% of what it takes), 1 Bane on an enemy's Strikes for its turn 0.87 DE. **Frequency bands** (DE per AP / 4.66): At-will 0.9-1.1, Round 1.0-1.3,
-Encounter 1.4-2.0, Daily 2.0-3.0. **Escalation timing** in a Standard day: Escalation 1 or more in 70% of the rounds, 2 or more 40%, 3 or more 14%.
+Encounter 1.4-2.0, Daily 2.0-3.0. **Escalation timing** in a Standard day (nothing spent): Escalation 1 or more in 85% of the rounds with Momentum (70% without), 2 or more 55% (40%), 3 or more 29% (14%); an Active that costs 1 / 2 / 3 is used 2.8 / 1.2 / 0.55 times a fight with Momentum.
 
 **What it finds (level 1):**
 - **Buffs and Defense are priced far below damage.** A point of Defense for a round is worth 0.87 DE against 4.66 for the AP that buys it, so
@@ -140,8 +146,8 @@ Encounter 1.4-2.0, Daily 2.0-3.0. **Escalation timing** in a Standard day: Escal
   The Archer's Encounter and Daily attacks are under their bands: Marksman's Shot 0.68, Volley 0.88, Deadeye 0.89 and Rain of Arrows 0.82 (Daily band 2.0-3.0).
 - **Over:** Smite 1 (1.60: 1 AP for +1d4 over a Weapon Attack), Wing Clip (1.62), Twin Shot (3.44, now in only 14% of the rounds at Escalation 3), Lay On Hands, Divine Intervention, Call to Arms; a little over: Smite 2, Consecrated Ground 3, Hunter's Focus.
 - **Double Shot 3 is under (0.86):** its 3rd AP buys only 1 DE (a Boon on each attack). Its real value is that its two attacks don't use Strikes or take At-will Banes (not priced).
-- **Role budgets** (sustained with Escalation, Nova, Health, as a share of the baseline): Paladin L1 119% / 104% / 114% against a budget of 85-90% / 150-180% / 120-130%; Archer L1 131% (117% with Twin Shot at Escalation 3) / 82% / 86% against 100-105% / 110-130% / 80-85%.
-  Both classes deal too much sustained damage and too little Nova; the Paladin needs more Health.
+- **Role budgets** (real damage a turn in the simulated day, Nova, Health, as a share of the baseline; after the Escalation fix): Paladin L1 117% / 104% / 114% against a budget of 85-90% / 150-180% / 120-130%; Archer L1 107% / 82% / 86% against 100-105% / 110-130% / 80-85%.
+  The Paladin deals too much sustained damage; neither class has a Nova; the Paladin needs more Health.
 - **Against the roles:** Hallowed Stance (the Paladin, fine: a tank stands) and **Patient Hunter** (the Archer: a Boon only while it doesn't move, against "very mobile").
 - **Not priced yet (pack E2, positions):** Evade, Push, Cover, range, Hindered, Immobilized, Prone, the Boon on Saves (NPC Save Actions), ending an effect: Rolling Shot, Vanish, True Shot, Lock & Loose's and Pinning Shot's riders, Hand of Mercy and Long Draw get "+ E2": their verdicts aren't final.
 

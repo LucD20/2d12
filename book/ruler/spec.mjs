@@ -246,7 +246,9 @@ const hasDamage = d => d.dice.length + d.w + d.flat + d.mod > 0;
  */
 export function runTurn(pc, turn, ctx) {
   const b = pc.build, R = ctx.R, st = { next: [], turnFx: [], atWill: {}, used: new Set() }, res = { damage: 0, ap: 0, strikes: 0, problems: [], missed: [] };
-  const passives = b.passives.filter(p => (ctx.escalation ?? 3) >= p.escalation);
+  // Escalation is a resource (the book, Escalation): an Active spends what it costs; a passive works while you have at least its number.
+  pc.esc ??= ctx.escalation ?? 3;
+  const passives = () => b.passives.filter(p => pc.esc >= p.escalation);
   pc.firstThisRound ??= new Set();
   // A Weapon Action takes Ranged or Melee from the weapon, and Shot when the weapon is Projectile (the book, Traits: Shot).
   const weaponGives = () => [...(b.weapon?.traits ?? []).filter(x => x === "ranged" || x === "melee"), ...((b.weapon?.traits ?? []).includes("projectile") ? ["shot"] : [])];
@@ -277,7 +279,7 @@ export function runTurn(pc, turn, ctx) {
     const extra = [...(opts.extra ?? [])], dc = a.vs.match(/^dc\s+(\d+)/)?.[1];
     const target = dc ? null : (forced ?? ctx.target());
     if (!dc && !target) return;
-    for (const p of passives) {
+    for (const p of passives()) {
       if (!matches(p.effect, a, traits, target, pc)) continue;
       if (p.effect.kind === "boon") boons += p.effect.n;
       if (p.effect.kind === "empowered") emp += p.effect.n;
@@ -328,12 +330,13 @@ export function runTurn(pc, turn, ctx) {
     const step = stepOf(s);
     if (step.kind === "move") { res.ap += step.ap; continue; }
     const a = b.actions[step.name], g = group(a.name);
-    if (a.escalation > (ctx.escalation ?? 3)) { res.problems.push(`${a.name}: needs Escalation ${a.escalation}`); continue; }
+    if (a.escalation > pc.esc) { res.missed.push(`${a.name}: costs ${a.escalation} Escalation (you have ${pc.esc})`); continue; }   // not a rule problem: the plan tries it when it can
     if ((a.freq === "encounter" || a.freq === "daily") && pc.spent?.has(g)) { res.problems.push(`${a.name}: already used this ${a.freq === "encounter" ? "encounter" : "day"}`); continue; }
     if (a.freq === "round" || a.freq === "turn") { if (st.used.has(g)) res.problems.push(`${a.name}: once a ${a.freq}`); st.used.add(g); }
     if (a.freq === "encounter" || a.freq === "daily") (pc.spent ??= new Set()).add(g);
     res.ap += a.ap;
     if (a.traits.includes("strike")) res.strikes++;
+    pc.esc -= a.escalation;
     doAction(a, step);
   }
   if (res.ap > 5) res.problems.push(`${res.ap} AP (5 a turn)`);
@@ -353,7 +356,7 @@ export function turnDamage(build, turnName, defense, { n = 20000, seed = 7, esca
   const startsUnloaded = !!first?.effects.some(e => e.effect.kind === "reload");
   let sum = 0, last = null;
   for (let k = 0; k < n; k++) {
-    const target = { ad: defense, wd: defense, save: { body: 2, mind: 1, instinct: 1, appeal: 1 } }, pc = { build, quarry: target, unloaded: startsUnloaded };
+    const target = { ad: defense, wd: defense, save: { body: 2, mind: 1, instinct: 1, appeal: 1 } }, pc = { build, quarry: target, unloaded: startsUnloaded, esc: escalation };
     last = runTurn(pc, turn, { R, escalation, target: () => target, others: () => [] });
     sum += last.damage;
   }
@@ -396,7 +399,7 @@ export const pcState = b => ({ build: b, damage: 0, down: false, rallyLeft: b.ra
  */
 export function fight(party, npcs, R, { maxRounds = 12 } = {}) {
   const pcs = party.map(p => (p.build ? p : pcState(p)));
-  for (const p of pcs) { p.down = p.damage >= p.build.pool; p.defBonus = 0; p.defBy = null; p.spent = new Set([...(p.spent ?? [])].filter(g => p.build.actions[Object.keys(p.build.actions).find(k => group(k) === g)]?.freq === "daily")); p.quarry = null; p.unloaded = false; p.startDamage = p.damage; }
+  for (const p of pcs) { p.down = p.damage >= p.build.pool; p.defBonus = 0; p.defBy = null; p.spent = new Set([...(p.spent ?? [])].filter(g => p.build.actions[Object.keys(p.build.actions).find(k => group(k) === g)]?.freq === "daily")); p.quarry = null; p.unloaded = false; p.startDamage = p.damage; p.esc = p.startEsc ?? 0; }
   const foes = npcs.map(n => ({ ...n, damage: 0, dead: false, vulnerable: 0 }));
   const order = [...pcs.map(p => ({ pc: p })), ...foes.map(f => ({ npc: f }))];
   for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(R() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; }   // initiative
@@ -412,7 +415,7 @@ export function fight(party, npcs, R, { maxRounds = 12 } = {}) {
   };
   while (alive().length && up().length && round < maxRounds) {
     round++;
-    for (const p of pcs) p.firstThisRound = new Set();
+    for (const p of pcs) { p.firstThisRound = new Set(); if (round > 1 && !p.down) p.esc = Math.min(3, p.esc + 1); }   // +1 Escalation at the start of every round after the first
     for (const o of order) {
       if (!alive().length || !up().length) break;
       if (o.pc) {
@@ -421,7 +424,7 @@ export function fight(party, npcs, R, { maxRounds = 12 } = {}) {
         for (const x of pcs) if (x.defBy === pc) { x.defBonus = 0; x.defBy = null; }   // a Defense bonus lasts 1 round: until its giver's next turn
         if (!pc.quarry || pc.quarry.dead) pc.quarry = focus();   // Marked Quarry: the first target; a new one when it dies
         const r = runTurn(pc, pc.build.turns[turnFor(pc, round, pcs)], {
-          R, escalation: Math.min(3, round - 1),
+          R, escalation: pc.esc,
           target: () => (pc.quarry && !pc.quarry.dead && pc.build.passives.some(p => p.effect.quarry) ? pc.quarry : focus()),
           others: n => alive().filter(f => f !== pc.quarry && f !== focus()).concat(alive().filter(f => f !== pc.quarry)).filter((f, i, a) => a.indexOf(f) === i).slice(0, n),
           heal: (who, n, kind) => useRally(kind === "self" ? who : mostHurt(up().filter(x => x.damage > 0 && x.rallyLeft > 0)), n, who),
@@ -436,7 +439,7 @@ export function fight(party, npcs, R, { maxRounds = 12 } = {}) {
           const w = targets.map(p => p.build.targeted), sum = w.reduce((a, x) => a + x, 0); let x = R() * sum;
           const t = targets.find((p, k) => (x -= w[k]) < 0) ?? targets[0];
           const taunted = f.taunt && !f.taunt.by.down && t !== f.taunt.by ? f.taunt.n : 0;   // Champion's Challenge: Banes against anyone else
-          t.damage += npcStrike(R, f, t, s + taunted, Math.min(3, round - 1));   // At-will Banes on the 2nd and 3rd Strike
+          t.damage += npcStrike(R, f, t, s + taunted, t.esc);   // At-will Banes on the 2nd and 3rd Strike
           if (t.damage >= t.build.pool && !t.down) { t.down = true; t.st.downs++; if (!firstDown) firstDown = round; }
         }
         f.taunt = null; f.vulnerable = 0;   // EoT effects end with its turn
@@ -463,13 +466,22 @@ export function between(pcs) {
   }
 }
 
-/** A day: the party (builds) through its fights, in order, with no Rest. Returns { fights: [fight results], pcs, survived, cleared }. */
-export function day(party, encounters, R) {
+/**
+ * A day: the party (builds) through its fights, in order, with no Rest. Momentum (Lucas, 2026-10-29): +1 after each fight harder than easy
+ * (more than CV 3/4 per PC); with Momentum a PC starts a fight with half its level in Escalation (rounded up), up to 2; a Rest resets it.
+ * Returns { fights: [fight results], pcs, cleared }.
+ */
+export const MOMENTUM = { on: true, minCvPerPc: 0.75, startEsc: lv => Math.min(2, Math.ceil(lv / 2)) };
+export function day(party, encounters, R, { momentum = MOMENTUM.on } = {}) {
   const pcs = party.map(pcState), out = [];
+  let mom = 0;
   for (const e of encounters) {
     if (!pcs.some(p => p.damage < p.build.pool)) break;
+    for (const p of pcs) p.startEsc = momentum && mom > 0 ? MOMENTUM.startEsc(p.build.level) : 0;
     out.push(fight(pcs, e, R));
+    out.at(-1).momentum = mom; out.at(-1).startEsc = pcs[0].startEsc;
     if (!out.at(-1).won) break;
+    if (e.reduce((s, n) => s + (n.cv ?? TW.npcRoles[n.role]?.cv ?? 1), 0) / pcs.length > MOMENTUM.minCvPerPc) mom++;
     between(pcs);
   }
   return { fights: out, pcs, cleared: out.length === encounters.length && out.every(f => f.won) };
@@ -483,11 +495,11 @@ export function report({ builds, fights }) {
   for (const b of builds) {
     L.push(`## ${b.name} (${b.role || "no role"}), \`${b.file}\``, "");
     L.push(`Health ${b.pool} (Body ${b.bodyHealth} + Mind ${b.mindHealth}) · AD ${b.ad} · WD ${b.wd} · Weapon Modifier +${b.weaponMod} · Power Modifier +${b.powerMod} · Rally Points ${b.rallyPoints} (each heals ${b.rallyHeal}) · targeted ×${b.targeted}`, "");
-    L.push(`**Damage a turn** (Monte Carlo, 20,000 turns each; measured at the lowest Escalation the turn needs ("Esc": its passives at that Escalation too), and once at Escalation 3; the target's Defense is both AD and WD; an Action against "a different creature" or an area counts only the target, but a Linked Action that needs a different creature still hits it; **best** = the most damage at Def ${fights.defenses[Math.floor(fights.defenses.length / 2)]} among the valid turns):`, "");
+    L.push(`**Damage a turn** (Monte Carlo, 20,000 turns each; measured with the Escalation the turn spends ("Esc"; its passives see what is left after spending), and once at Escalation 3; the target's Defense is both AD and WD; an Action against "a different creature" or an area counts only the target, but a Linked Action that needs a different creature still hits it; **best** = the most damage at Def ${fights.defenses[Math.floor(fights.defenses.length / 2)]} among the valid turns):`, "");
     L.push(`| Turn | Esc | ${fights.defenses.map(d => `Def ${d}`).join(" | ")} | Def ${fights.defenses[Math.floor(fights.defenses.length / 2)]}, Esc 3 | AP | Strikes | Steps | Problems |`, `|---|---:|${fights.defenses.map(() => "---:").join("|")}|---:|---:|---:|---|---|`);
     const mid = Math.floor(fights.defenses.length / 2);
     const rows = Object.entries(b.turns).map(([k, t]) => {
-      const esc = Math.max(0, ...t.steps.map(stepOf).filter(x => x.kind === "action").map(x => b.actions[x.name].escalation));
+      const esc = Math.min(3, t.steps.map(stepOf).filter(x => x.kind === "action").reduce((s2, x) => s2 + b.actions[x.name].escalation, 0));   // the Escalation the turn spends
       return { k, t, esc, r: fights.defenses.map(d => turnDamage(b, k, d, { escalation: esc })), e3: turnDamage(b, k, fights.defenses[mid], { escalation: 3 }) };
     });
     const ok = rows.filter(x => !x.r[mid].problems.length && !(b.unloadedTurn === x.k));
@@ -503,7 +515,8 @@ export function report({ builds, fights }) {
       const npc = npcOf(role, "medium", lv), R = rng(11), kill = [], down = [];
       for (let k = 0; k < 2000; k++) {
         const f = { ...npc, damage: 0 }, pc = { build: b, quarry: f }; let r = 0;
-        while (f.damage < f.pool && r < 30) { r++; pc.firstThisRound = new Set(); runTurn(pc, b.turns[turnFor(pc, r)], { R, escalation: Math.min(3, r - 1), target: () => f, others: () => [] }); f.vulnerable = 0; }
+        pc.esc = 0;
+        while (f.damage < f.pool && r < 30) { r++; if (r > 1) pc.esc = Math.min(3, pc.esc + 1); pc.firstThisRound = new Set(); runTurn(pc, b.turns[turnFor(pc, r)], { R, escalation: pc.esc, target: () => f, others: () => [] }); f.vulnerable = 0; }
         kill.push(r);
         const me = { build: b }; let dmg = 0, rr = 0;
         while (dmg < b.pool && rr < 60) { rr++; for (let s = 0; s < npc.strikes; s++) dmg += npcStrike(R, npc, me, s, Math.min(3, rr - 1)); }
@@ -526,7 +539,7 @@ export function report({ builds, fights }) {
     const cv = e.npcs.reduce((s, n) => s + (TW.npcRoles[n.role]?.cv ?? 1), 0);
     L.push(`| ${e.name} | ${cv} | ${median(rounds)} / ${fmt(mean(rounds))} / ${sorted[Math.floor(sorted.length * 0.9)]} | ${pct(mean(res.map(r => (r.won ? 1 : 0))))} | ${pct(mean(res.map(r => r.lost)))} | ${pct(mean(res.map(r => (r.downs ? 1 : 0))))} | ${firsts.length ? median(firsts) : "-"} | ${party.map((b, i) => pct(mean(res.map(r => (r.downBy[i] ? 1 : 0))))).join(" | ")} |`);
   }
-  L.push("", "How the fight is simulated: initiative is shuffled once; every PC follows its plan (the round's turn; its `when` turn when it is unloaded or an ally is hurt) and attacks its Marked Quarry if it has one, else the enemy closest to dying (a new quarry when the old one dies); each NPC makes its Strikes a turn (Minion 1, Grunt and Standard 2, Elite 3; At-will Banes on the 2nd and 3rd), choosing a PC at random weighted by `targeted` (a taunted NPC takes the taunt's Banes against anyone else); Defense bonuses last until their giver's next turn; one Health Pool per creature (Body and Mind together); a PC at its Health Pool is Down and stops; nobody moves, uses Rally Points on their own or uses Reactions. Escalation is 0 in round 1, then +1 a round (up to 3).", "");
+  L.push("", "How the fight is simulated: initiative is shuffled once; every PC follows its plan (the round's turn; its `when` turn when it is unloaded or an ally is hurt) and attacks its Marked Quarry if it has one, else the enemy closest to dying (a new quarry when the old one dies); each NPC makes its Strikes a turn (Minion 1, Grunt and Standard 2, Elite 3; At-will Banes on the 2nd and 3rd), choosing a PC at random weighted by `targeted` (a taunted NPC takes the taunt's Banes against anyone else); Defense bonuses last until their giver's next turn; one Health Pool per creature (Body and Mind together); a PC at its Health Pool is Down and stops; nobody moves, uses Rally Points on their own or uses Reactions. Escalation is 0 in round 1 (with Momentum in a day: half the level, rounded up, up to 2), then +1 a round (up to 3); an Escalation Active spends what it costs, and a passive works only while the PC has at least its number (so spending can turn it off).", "");
   // Adventuring days: the fights between two Rests, one after another.
   if (fights.days.length && fights.dayParties.length) {
     const byFile = n => builds.find(b => b.file.replace(/^classes\//, "").replace(/\.txt$/, "") === n) ?? (() => { throw new Error(`fights.txt: day-party names "${n}", which is not a file in classes/`); })();
