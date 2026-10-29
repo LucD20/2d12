@@ -10,7 +10,7 @@ Your **Health Pool** is the sum of two thresholds:
 
 Round each threshold up. The Health Multipliers come from your class, and the Species Health values from your species.
 
-*Example:* a level 4 Human Paladin has Body +2 and Mind +1. BDT = ((2 + 2) × 4 + 3) × 1.4 = 26.6, rounded up to **27**. MDT = ((1 + 2) × 3 + 4) × 1.4 = 18.2, rounded up to **19**. Health Pool = **46**.
+*Example:* a level 4 Human Paladin has Body +2 and Mind +1. BDT = ((2 + 2) × 4 + 3) × 1.4 = 26.6, rounded up to **27**. MDT = ((1 + 2) × 4 + 4) × 1.4 = 22.4, rounded up to **23**. Health Pool = **50**.
 
 Body and Mind are not separate pools. All damage reduces the same Health Pool. The thresholds only decide which conditions you suffer.
 
@@ -94,6 +94,18 @@ While **Down** (Desperate, Dying or Shattered) or **Unconscious**, you can't use
 Nonlethal damage is removed like any other damage.
 
 Only a Rest restores Rally Points. Sleep does not. A new encounter does not.
+
+## Guard
+
+Some effects give you **Guard**, written with a value: **Guard 6**. When you take damage, your Guard takes it first (Body or Mind damage alike), and only the rest reaches your Health. Damage your Guard takes isn't damage you take: it doesn't count toward your thresholds or your Health Pool, and it doesn't trigger anything that happens when you take damage.
+
+- Damage reduction (such as Hallowed Stance) applies first; Guard takes what is left.
+- Guard isn't Health: it can't be healed, and Rally Points don't restore it.
+- It doesn't stack: if you gain Guard while you have some, keep the higher value (see [[Stacking]]).
+- It ends at the end of the encounter.
+
+> [!example]
+> Zack has Guard 6 and takes 8 Body damage: his Guard takes 6 and ends, and he takes 2 Body damage.
 
 
 ## Recovery

@@ -63,7 +63,7 @@ Shot Actions need a weapon with the [[Projectile]] property, such as a bow or a 
 
 ### Signature
 
-These Actions roll your **Signature Modifier**: the higher of your Weapon Modifier and your Power Modifier. A Signature Action is a Signature roll: effects on Weapon rolls or Power rolls don't apply to it (see [[Rolls]]).
+These Actions roll your **Signature Modifier**: the higher of your Weapon Modifier and your Power Modifier, even when they also have the Weapon or Power trait. They keep their other traits: a [Signature, Weapon] Action still needs a weapon and gets every effect on [Weapon] Actions (see [[Rolls]]). Signature is used for a class's own Actions, such as its Daily Actions and its Signature Class Action.
 
 ### Split
 
@@ -83,7 +83,7 @@ A Weapon Action with the Melee or Ranged trait needs a weapon with that property
 
 ### Tags
 
-Creatures have **Tags** instead of traits: words that other rules refer to, such as **Profane** (Profane Judgment). A creature's Tags are listed in its stat block. Like traits with no rule of their own, a Tag does nothing by itself.
+Creatures have **Tags** instead of traits: words that other rules refer to, such as **Profane** (the Paladin's Divine Power). A creature's Tags are listed in its stat block. Like traits with no rule of their own, a Tag does nothing by itself.
 
 > [!tbd]
 > The list of Tags (Profane, Beast, Undead...) and what each one covers is not written yet.

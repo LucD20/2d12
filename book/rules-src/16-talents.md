@@ -128,6 +128,15 @@ When you use Charge, your Speed counts as 2 higher for its movement, and its Wea
 </div>
 
 <div class="action" markdown="1">
+<div class="action-head"><span>Heavy Blows</span><span class="cat">Talent 1</span></div>
+
+**Flavor:** Every swing carries the whole weight of the steel.
+
+When a [Melee, Strike, Weapon] Action you make with a Two-handed weapon deals damage, it deals 1 more.
+
+</div>
+
+<div class="action" markdown="1">
 <div class="action-head"><span>Bloodlust</span><span>1 AP</span><span class="cat">Talent 1</span></div>
 
 **Flavor:** The red haze settles, and you stop caring about pain.

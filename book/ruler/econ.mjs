@@ -176,8 +176,8 @@ function verdict(eff, freq) {
 const t0 = (b, k) => b.unloadedTurn === k || b.whenSelf?.turn === k;
 const roleOf = b => A.roles[b.name.split(" (")[0]];
 const CATALOGUE_NOTES = {
-  "catalogue/paladin-p1.txt": "**The P1 main build (pack P1, 2026-10-29; PROPOSED, not in the book yet)**: the defaults of every level 1 to 3 Pick, then two repriced support options (proposals for the Options step). Cards marked (book) are unchanged.",
-  "catalogue/paladin.txt": "**The Paladin as the book has it today** (before P1), kept to compare.",
+  "catalogue/paladin-p1.txt": "**The P1 main build (pack P1, 2026-10-29; in the book since 2026-10-29)**: the defaults of every level 1 to 3 Pick, then two repriced support options (proposals for the Options step). Cards marked (book) are unchanged.",
+  "catalogue/paladin.txt": "**The Paladin before P1** (the book until 2026-10-29), kept to compare.",
 };
 export function report() {
   const L = [], R = [1, 2, 3].map(rates), esc = escalationShare();

@@ -1,4 +1,4 @@
-# The Paladin's P1 main build (pack P1, 2026-10-29; PROPOSED: Lucas approves the cards before they go into book/rules-src), for the price list: node book/ruler/econ.mjs
+# The Paladin's P1 main build (pack P1, 2026-10-29; in the book: book/rules-src/12-paladin.md), for the price list: node book/ruler/econ.mjs
 # Every default of the level 1 to 3 Picks, in the spec format (book/ruler/README.md, "The spec files"); then two repriced support options.
 # "area N" = creatures it is expected to reach, "allies N" = allies (you included), "rounds N" = how long (see catalogue/paladin.txt).
 class Paladin (P1)

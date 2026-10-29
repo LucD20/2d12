@@ -82,7 +82,7 @@ If an Action has multiple traits that reference the type of roll, such as the Tr
 
 A Split Action is a Weapon roll or a Power roll, depending on the mode you choose when you use it.
 
-An effect that names one kind applies only to that kind: "1 Boon on Weapon rolls" doesn't help a Body roll, even if your Weapon Modifier uses your Body Attribute in its calculation when you picked your class. An effect that names an Attribute and "Rolls" applies to every kind that uses that Attribute (for a Weapon, Power or Signature roll, the Attribute behind its Modifier). "Your Rolls" means all of them.
+An effect on Actions names their **trait**: "1 Boon on [Weapon] Actions" helps every Action with the Weapon trait, whatever Modifier it rolls (a [Signature, Weapon] Action too), and doesn't help a Body roll, even if your Weapon Modifier uses your Body Attribute in its calculation when you picked your class. An effect that names a Check or a Save applies only to that kind. An effect that names an Attribute and "Rolls" applies to every kind that uses that Attribute (for a Weapon, Power or Signature roll, the Attribute behind its Modifier). "Your Rolls" means all of them.
 
 Like the previous example, if you actually got "1 Boon on Body Rolls", it would apply to your Weapon rolls, since they use your Body.
 
@@ -90,8 +90,8 @@ Like the previous example, if you actually got "1 Boon on Body Rolls", it would 
 |---|---|---|---|---|---|---|
 | 1 Boon on Attribute\* Checks | ✔ | — | — | — | — | — |
 | 1 Boon on Attribute\* Saves | — | ✔ | — | — | — | — |
-| 1 Boon on Weapon rolls | — | — | ✔ | — | — | — |
-| 1 Boon on Power rolls | — | — | — | ✔ | — | — |
+| 1 Boon on [Weapon] Actions | — | — | ✔ | — | ✔ if it has the Weapon trait | — |
+| 1 Boon on [Power] Actions | — | — | — | ✔ | ✔ if it has the Power trait | — |
 | 1 Boon on Attribute\* Rolls | ✔ | ✔ | ✔ | ✔ | ✔ | ✔ |
 
 \*Body, Mind, Appeal or Instinct (the same one in each row and column).
@@ -112,7 +112,7 @@ The three values are what happens on its Tier 1 / Tier 2 / Tier 3 result: here 1
 
 An Action with the **Save** trait doesn't roll: each target rolls the Save the card names (its Vs. line says, for example, **Instinct Save**). The DC comes from the Action's other traits: **11 + your Weapon Modifier** for a [Save, Weapon] Action, **11 + your Power Modifier** for a [Power, Save] Action, **11 + your Signature Modifier** for a [Save, Signature] Action, and for a Save Action that rolls an Attribute (such as [Body, Save]), **11 + ⌈Attribute ÷ 2⌉ + 1**.
 
-The tiers are the target's result: **Tier 1 is the worst for them**. So everything that follows your result on an attack follows theirs here, reversed: a [Save, Weapon] Action adds your Weapon Modifier to its damage ([Mod]) on **Tier 1 and 2**, and its **Effects** row happens on **Tier 1 and 2**.
+The tiers are the target's result: **Tier 1 is the worst for them**. So everything that follows your result on an attack follows theirs here, reversed: a [Save, Weapon] Action deals its [Mod] on **Tier 1 and 2**, and its **Effects** row happens on **Tier 1 and 2**.
 
 A Save Action has no Critical, and it is not a Strike. Boons and Banes on your own rolls don't apply to it; effects on the target's Saves do. **Vulnerable** gives the target that many Banes on the Save, and **Cover** gives them Boons, counted from the center of the area's Point of Origin to the target.
 

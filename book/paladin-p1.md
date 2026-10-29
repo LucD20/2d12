@@ -1,4 +1,6 @@
-# The Paladin main build (pack P1, 2026-10-29): PROPOSED, for Lucas to approve
+# The Paladin main build (pack P1, 2026-10-29): APPROVED, in the book
+
+> **Applied 2026-10-29** to book/rules-src (12-paladin.md, 16-talents.md and the Core Rules: Guard, Willing and Unwilling, [Weapon] Actions by trait). Lucas's round 3: an Unconscious creature counts as willing (a new Willing and Unwilling section); Guard's absorbed damage isn't damage you take; effects on Actions name the trait ("1 Boon on [Weapon] Actions") and Chapter 5's "adds your Weapon Modifier" sentence is gone; Opportunity Attack stays the level 1 Talent. This file keeps the prices, the budget table and the reasons.
 
 Written to `book/class-charter.md`. Nothing here is in `book/rules-src` yet: you approve (or change) the cards first, then they go into the book,
 then Foundry. The ruler files are `book/ruler/classes/paladin-smite-*.txt` and `paladin-hands-*.txt` (levels 1 to 3; `paladin-smite-1-hold`

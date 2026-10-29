@@ -108,6 +108,8 @@ last several rounds, or carry a damage rider to be worth their AP.
   you can Advance 5"). With the rule above, starting with 2 needs level 3 or more, so such an ability is a level 3+ one (or comes with a
   feature that raises the starting Escalation). Pack E2 prices the Advance.
 
+**P1 done (2026-10-29):** the Paladin main build is in the book (book/paladin-p1.md has the cards' prices and the budget table): sustained 86% of the baseline, Nova 157-166%, Health 124% at level 1, +10% a level.
+
 ## 7. The order of work
 
 1. **This charter** (done; Lucas answered its open points on 2026-10-29).

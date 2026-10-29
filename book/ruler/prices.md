@@ -70,7 +70,7 @@ Roles: Paladin: tank and support: more Health, heals and Defense for allies, Nov
 
 ## 4. Paladin (P1): every Action of `catalogue/paladin-p1.txt` (level 1; efficiency also at levels 2 and 3)
 
-**The P1 main build (pack P1, 2026-10-29; PROPOSED, not in the book yet)**: the defaults of every level 1 to 3 Pick, then two repriced support options (proposals for the Options step). Cards marked (book) are unchanged.
+**The P1 main build (pack P1, 2026-10-29; in the book since 2026-10-29)**: the defaults of every level 1 to 3 Pick, then two repriced support options (proposals for the Options step). Cards marked (book) are unchanged.
 
 | Action | AP | Frequency | Esc | Damage | Effects | Total DE | DE / AP | Efficiency L1 | L2 | L3 | Verdict (L1) | Not priced yet (E2) / notes |
 |---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---|---|
@@ -141,7 +141,7 @@ Roles: Paladin: tank and support: more Health, heals and Defense for allies, Nov
 
 ## 4. Paladin: every Action of `catalogue/paladin.txt` (level 1; efficiency also at levels 2 and 3)
 
-**The Paladin as the book has it today** (before P1), kept to compare.
+**The Paladin before P1** (the book until 2026-10-29), kept to compare.
 
 | Action | AP | Frequency | Esc | Damage | Effects | Total DE | DE / AP | Efficiency L1 | L2 | L3 | Verdict (L1) | Not priced yet (E2) / notes |
 |---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---|---|
