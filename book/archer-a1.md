@@ -2,7 +2,7 @@
 
 > **Applied 2026-10-29** (Lucas: "use the default answers, they all fit") to book/rules-src/13-archer.md, with the rename **Signature Class
 > Action → Hallmark Action** (Chapter 5 says a Hallmark Action needn't have the Signature trait). Section 7 (Radiant Zeal) is kept as it is for
-> playtesting. Firearms: their own property (Firearm), the trait for their Actions proposed as [Gun] (rules-backlog). The other Archer cards are
+> playtesting. Firearms: their own property (Firearm), the trait for their Actions [Gun] (decided). The other Archer cards are
 > in `book/archer-old-cards.md`. This file keeps the prices, the budget table and the reasons.
 
 > **Round 2 (Lucas's notes, 2026-10-29), applied here:** Double Shot's Linked attacks are **[Ranged, Shot] Weapon Attacks (1A)** (Rolling Shot's
