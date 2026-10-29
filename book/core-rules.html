@@ -1240,6 +1240,8 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </ul>
 <p>Damage is <strong>Lethal</strong> unless an Action or effect says it is Nonlethal. Lethal and Nonlethal damage both count toward the thresholds and toward your total damage. They never cancel or convert each other. Damage keeps accumulating after you are <span class="kw-neg">Down</span>.</p>
 <p>When you have <span class="at-body">Body</span> damage <strong>equal to or more than</strong> your BDT, you are <strong>Bloodied</strong>. When you have <span class="at-mind">Mind</span> damage <strong>equal to or more than</strong> your MDT, you are <strong>Strained</strong>.</p>
+<h3 id="instances-of-damage">Instances of Damage</h3>
+<p>An Action's damage can come in several <strong>instances</strong>: each part with its own pool and damage type is one instance. "<span class="pool-b">[B] 1[W] + [Mod]</span> + <span class="pool-m">[M] 2d8</span> <span class="dcode" style="--dc:#b8921c">Ho</span>" deals two: the weapon's damage with your Modifier (<span class="at-body">Body</span>, the weapon's type), and 2d8 <span class="dmgword" style="--dc:#b8921c">Holy</span> (<span class="at-mind">Mind</span>). Each [W] is its own instance (2[W] is two, see the <a class="xref" href="gear.html#gear">Gear</a> document), and extra damage from another effect, such as Divine Surge's 1d8, is its own instance. Each target takes its own instances. Rules that count instances, such as Hallowed Stance ("one instance of damage per Action"), count them this way.</p>
 <h3 id="lethal-and-nonlethal">Lethal and Nonlethal</h3>
 <p>Actions deal <strong>Lethal</strong> damage by default. Actions with the <strong>Nonlethal</strong> trait deal <strong>Nonlethal</strong> damage by default. A <span class="trhl" style="--tc:var(--g-damage)">Nonlethal</span> Action can deal Lethal damage by taking a <span class="kw-bane">Bane</span>, and a Lethal Action can deal Nonlethal damage by taking a <span class="kw-bane">Bane</span> as well.</p>
 <p>How damage is written on a card ([B], [M], [W], [Mod] and the damage types) is in <a class="xref" href="#roll-effects">Roll Effects</a>. <span class="kw-pos">Empowered</span> and <span class="kw-neg">Enfeebled</span>, which change the dice of damage, are in <a class="xref" href="#chapter-8-conditions">Conditions</a>.</p>
@@ -2000,6 +2002,10 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <tr>
 <td><a class="xref" href="#end-of-turn"><strong>Initiative slot</strong></a></td>
 <td>A position in the turn order.</td>
+</tr>
+<tr>
+<td><a class="xref" href="#instances-of-damage"><strong>Instance of damage</strong></a></td>
+<td>One part of an Action's damage with its own pool and damage type; each [W] and each extra damage from another effect is its own instance.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#chapter-6-basic-actions"><strong>Interact</strong></a></td>

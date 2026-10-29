@@ -25,6 +25,10 @@ Damage is **Lethal** unless an Action or effect says it is Nonlethal. Lethal and
 
 When you have Body damage **equal to or more than** your BDT, you are **Bloodied**. When you have Mind damage **equal to or more than** your MDT, you are **Strained**.
 
+### Instances of Damage
+
+An Action's damage can come in several **instances**: each part with its own pool and damage type is one instance. "[B] 1[W] + [Mod] + [M] 2d8 Ho" deals two: the weapon's damage with your Modifier (Body, the weapon's type), and 2d8 Holy (Mind). Each [W] is its own instance (2[W] is two, see the [[Gear]] document), and extra damage from another effect, such as Divine Surge's 1d8, is its own instance. Each target takes its own instances. Rules that count instances, such as Hallowed Stance ("one instance of damage per Action"), count them this way.
+
 ### Lethal and Nonlethal
 
 Actions deal **Lethal** damage by default. Actions with the **Nonlethal** trait deal **Nonlethal** damage by default. A Nonlethal Action can deal Lethal damage by taking a Bane, and a Lethal Action can deal Nonlethal damage by taking a Bane as well.

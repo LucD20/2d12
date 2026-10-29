@@ -20,7 +20,7 @@
 
 <div class="levels">
 <div class="lvl"><div class="lvn"><b>1</b><span>Level</span></div><div class="lvb">
-<div><span class="lbl">Core Features</span> Divine Power, Font of Mercy</div>
+<div><span class="lbl">Core Features</span> Divine Power</div>
 <div><span class="lbl">Signature Class Action</span> Smite or Lay On Hands</div>
 <div><span class="lbl">Talents</span> 1 Talent</div>
 <div><span class="lbl">Picks</span> 1 Encounter Pick</div>
@@ -38,33 +38,22 @@
 
 ## Level 1
 
-### 1st Level Features
+### Features
 
-As a holy warrior, you gain two Features at level 1.
+As a holy warrior, you gain this Feature at level 1.
 
 <div class="action" markdown="1">
 <div class="action-head"><span>Divine Power</span><span class="cat">Paladin Feature 1</span></div>
 
 **Flavor:** Your god's strength flows through your weapon and your hands.
 
-Choose your Signature Class Action: **Smite** or **Lay On Hands**. You gain it.
-
 When you deal Holy damage to a creature with the Profane [[Tags|Tag]], that creature is Enfeebled 1 (EoT).
 
 </div>
 
-<div class="action" markdown="1">
-<div class="action-head"><span>Font of Mercy</span><span class="cat">Paladin Feature 1</span></div>
+### Signature Class Action Selection
 
-**Flavor:** Where you kneel, wounds remember how to close.
-
-When you or an ally within 5 squares of you uses a Rally Point, they heal 2 more.
-
-</div>
-
-### Signature Class Action
-
-You choose one of these two with Divine Power. The other is not yours.
+Choose one of the following Signature Actions:
 
 <div class="action" markdown="1">
 <div class="action-head"><span>Smite</span><span>1 / 2 / 3 AP</span><span class="cat">Divine Power 1</span></div>
@@ -109,7 +98,7 @@ You choose one of these two with Divine Power. The other is not yours.
 
 </div>
 
-### 1st Level Picks
+### Picks
 
 - You pick one Talent (the [[Talents]] document).
 - You pick one Encounter Action from the [[Paladin Repertoire]].
@@ -133,7 +122,7 @@ You choose one of these two with Divine Power. The other is not yours.
 
 **Distance:** 5 sq.
 
-**Interrupt:** A Strike would damage you or an ally within 5 squares.
+**Interrupt:** A [Strike] Action would damage you or an ally within 5 squares.
 
 | 1R |
 |---|
@@ -167,21 +156,23 @@ You choose one of these two with Divine Power. The other is not yours.
 </div>
 
 <div class="action" markdown="1">
-<div class="action-head"><span>Aura of Protection</span><span>1 AP</span><span class="cat">Paladin Feature 1</span></div>
+<div class="action-head"><span>Bulwark of Faith</span><span>1 / 2R</span><span class="cat">Paladin Feature 1</span></div>
 
-**Flavor:** You plant your feet, and light rims the shoulders of everyone near you.
+**Flavor:** You step into the blow meant for them, and your god holds the line with you.
 
-*Area • Divine*
+*Divine • Focus*
 
 **Frequency:** Encounter
 
-**Target:** You and allies in the Area
+**Target:** The creature the [Strike] Action would damage (an ally)
 
-**Area:** Aura 2
+**Distance:** 5 sq.
 
-| 1 AP |
-|---|
-| Until the end of the encounter, you and allies in the Aura gain +1 Defense. |
+**Interrupt:** A [Strike] Action would damage an ally within 5 squares.
+
+| 1R | 2R |
+|---|---|
+| The target gains [[Guard]] equal to what one of their Rally Points heals, before the damage. | As 1R, and you can make a Shove (2A) against the triggering creature. |
 
 </div>
 
@@ -204,7 +195,7 @@ You choose one of these two with Divine Power. The other is not yours.
 
 | 2 AP | 3 AP |
 |---|---|
-| For 3 rounds, enemies in the area take 1 Bane on [Strike] and [Power] Actions, and allies in it heal 1d4 at the start of each of their turns. | As 2 AP, but for 5 rounds. |
+| For 3 rounds, enemies in the area take 1 Bane on [Weapon], [Power] and [Signature] Actions, and allies in it heal 1d4 at the start of each of their turns. | As 2 AP, but for 5 rounds. |
 
 </div>
 
@@ -230,7 +221,37 @@ While your Escalation is 1 or more, the first [Strike] Action you make each roun
 
 </div>
 
+<div class="action" markdown="1">
+<div class="action-head"><span>Font of Mercy</span><span class="cat">Paladin Escalation (Passive)</span></div>
+
+**Flavor:** Where you kneel, wounds remember how to close.
+
+While your Escalation is 1 or more, when you or an ally within 5 squares of you uses a Rally Point, they heal 2 more.
+
+</div>
+
 ### Actives
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Aura of Protection</span><span class="cat">Paladin Escalation</span></div>
+
+**Flavor:** You plant your feet, and light rims the shoulders of everyone near you.
+
+*Area • Divine*
+
+**Escalation:** 1
+
+**Frequency:** Encounter
+
+**Target:** You and allies in the Area
+
+**Area:** Aura 2
+
+| 0 AP |
+|---|
+| Until the end of the encounter, you and allies in the Aura gain +1 Defense. |
+
+</div>
 
 <div class="action" markdown="1">
 <div class="action-head"><span>Divine Surge</span><span class="cat">Paladin Escalation</span></div>

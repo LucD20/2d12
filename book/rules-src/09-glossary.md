@@ -74,6 +74,7 @@
 | [[Senses\|**Hidden**]] | Your Actions against the creature are Doomed; its Actions against you are Favored. |
 | [[Imperiled\|**Imperiled**]] | Barely avoided a Deadly Hazard: all your Rolls are Doomed, Vulnerable 3, safe again at the start of your turn. |
 | [[End of Turn\|**Initiative slot**]] | A position in the turn order. |
+| [[Instances of Damage\|**Instance of damage**]] | One part of an Action's damage with its own pool and damage type; each [W] and each extra damage from another effect is its own instance. |
 | [[Chapter 6: Basic Actions\|**Interact**]] | The Handle Action for objects and for helping others: swap, grab, grip, open; help a creature stand up, get to safety or wake up. |
 | [[Reactions\|**Interrupt**]] | A Reaction that happens before the Action that triggers it. |
 | [[Leaning\|**Leaning**]] | Until the end of your turn: cover is calculated from one of your corners, and your own cover is reduced by 1 level. |

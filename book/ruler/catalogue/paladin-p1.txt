@@ -32,15 +32,17 @@ action Consecrated Ground 3 | ap 3 | daily | traits area divine | rounds 5 | are
 # Active Escalation (level 1): Divine Surge (the support version Lucas chose)
 action Divine Surge | ap 0 | round | escalation 1 | traits divine | surge 1d8
 
-# Options (PROPOSED reprices of two support cards that were far under their bands; not in the main build)
+# Options (not in the default build): Shield of Faith (Turn Reaction), Bulwark of Faith (Encounter Reaction: Guard worth a Rally Point, used by the hit at once), Aura of Protection (Active Escalation)
 action Shield of Faith | ap 1 | turn | reaction | traits divine focus | block 1d6+[Mod]
-action Aura of Protection | ap 1 | encounter | traits area divine | allies 2.5 | rounds 3 | defense 1 allies
+action Bulwark of Faith 1 | ap 1 | encounter | reaction | traits divine focus | block 9
+action Bulwark of Faith 2 | ap 2 | encounter | reaction | traits divine focus | block 9; push 2
+action Aura of Protection | ap 0 | encounter | escalation 1 | traits area divine | allies 2.5 | rounds 2.5 | defense 1 allies
 
 # The typical turn ("for the turn" buffs and passives are priced on it)
 turn Typical: Smite 3, Weapon Attack, Weapon Attack
 
-# Passives: Feature Font of Mercy; Passive Escalation Hallowed Stance (book; level 1) and Radiant Zeal (level 3); Talent Heavy Blows (level 2, a stand-in)
-passive Font of Mercy: rally-bonus 2
+# Passives: Passive Escalation Hallowed Stance (level 1 default), Radiant Zeal (level 3 default), Font of Mercy (an option); Talent Heavy Blows (level 2)
+passive Font of Mercy: escalation 1: rally-bonus 2
 passive Hallowed Stance: escalation 2: reduce 2 adjacent 1
 passive Radiant Zeal: escalation 1: extra 1d6 first strike
 passive Heavy Blows: bonus 1 melee weapon strike

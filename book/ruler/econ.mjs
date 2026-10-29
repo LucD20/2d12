@@ -144,13 +144,13 @@ export const partyFor = file => { const b = cls(file), lv = b.level, pal = `pala
 const dayStats = (lv, file = `paladin-smite-${lv}.txt`, n = 800) => {
   const fights = S.parseFights(fs.readFileSync(HERE + "fights.txt", "utf8")), d = fights.days[0];
   const party = partyFor(file), R = S.rng(17), log = [];
-  let fightsRun = 0, fightsDown = 0, daysDown = 0, loh = 0, turns = 0, mercy = 0; const real = {};
+  let fightsRun = 0, fightsDown = 0, daysDown = 0, loh = 0, turns = 0, mercy = 0, combatRp = 0; const real = {};
   for (let k = 0; k < n; k++) {
     const res = S.day(party, d.fights.map(f => f.map(x => S.npcOf(x.role, x.rating, lv))), R);
     for (const f of res.fights) { fightsRun++; if (f.firstDown) fightsDown++; log.push({ rounds: f.rounds, start: f.startEsc ?? 0 }); }
     if (res.pcs.some(p => p.st.downs)) daysDown++;
     loh += res.pcs.reduce((s, p) => s + p.st.rpByAlly, 0); turns += res.pcs.filter(p => /^Paladin/.test(p.build.name)).reduce((s, p) => s + p.st.rounds, 0);
-    mercy += res.pcs.reduce((s, p) => s + p.st.mercyGiven, 0);
+    mercy += res.pcs.reduce((s, p) => s + p.st.mercyGiven, 0); combatRp += res.pcs.reduce((s, p) => s + p.st.rpSelf + p.st.rpByAlly, 0);
     for (const p of res.pcs) { const c = (real[p.build.file] ??= { dealt: 0, turns: 0, nova: 0, novaTurns: 0 }); c.dealt += p.st.dealt; c.turns += p.st.rounds; c.nova += p.st.novaDealt; c.novaTurns += p.st.novaTurns; }
   }
   const rounds = log.reduce((s, f) => s + f.rounds, 0);
@@ -159,12 +159,13 @@ const dayStats = (lv, file = `paladin-smite-${lv}.txt`, n = 800) => {
   /** Uses a fight of an Escalation Active costing `cost`, spent as soon as you have it (once a round), with nothing else spent. */
   const uses = (cost, momentum = true) => log.reduce((s, f) => { let esc = momentum ? f.start : 0, u = 0; for (let r = 1; r <= f.rounds; r++) { if (r > 1) esc = Math.min(3, esc + 1); if (esc >= cost) { u++; esc -= cost; } } return s + u; }, 0) / log.length;
   return { name: d.name, share, uses, roundsPerFight: rounds / log.length, startShare: log.filter(f => f.start > 0).length / log.length,
-    pDownFight: fightsDown / fightsRun, pDownDay: daysDown / n, lohPerTurn: loh / turns, mercyPerTurn: mercy / turns,
+    pDownFight: fightsDown / fightsRun, pDownDay: daysDown / n, lohPerTurn: loh / turns, mercyPerTurn: mercy / turns, combatRpPerTurn: combatRp / turns,
     real: Object.fromEntries(Object.entries(real).map(([k2, v]) => [k2, { all: v.dealt / v.turns, sustained: (v.dealt - v.nova) / Math.max(1, v.turns - v.novaTurns), nova: v.novaTurns ? v.nova / v.novaTurns : NaN, novaShare: v.novaTurns / v.turns }])) };
 };
 const DAYS = { 1: dayStats(1), 2: dayStats(2), 3: dayStats(3) }, REAL = {};
 const DAY = DAYS[1];
-DAY.lohPerTurn = dayStats(1, "paladin-hands-1.txt").lohPerTurn;   // how often a Lay On Hands Paladin heals (Mercy's Reward)
+const DAYH = dayStats(1, "paladin-hands-1.txt");
+DAY.lohPerTurn = DAYH.lohPerTurn;   // how often a Lay On Hands Paladin heals
 export const escalationShare = (momentum = true) => [0, 1, 2, 3].map(e => DAY.share(e, momentum));
 
 /* ------------------------------------------------------------------ the report */
@@ -176,7 +177,7 @@ function verdict(eff, freq) {
 const t0 = (b, k) => b.unloadedTurn === k || b.whenSelf?.turn === k;
 const roleOf = b => A.roles[b.name.split(" (")[0]];
 const CATALOGUE_NOTES = {
-  "catalogue/paladin-p1.txt": "**The P1 main build (pack P1, 2026-10-29; in the book since 2026-10-29)**: the defaults of every level 1 to 3 Pick, then two repriced support options (proposals for the Options step). Cards marked (book) are unchanged.",
+  "catalogue/paladin-p1.txt": "**The P1 main build (pack P1, 2026-10-29; in the book since 2026-10-29)**: the defaults of every level 1 to 3 Pick, then the options in the Paladin document (Shield of Faith, Bulwark of Faith, Aura of Protection, Font of Mercy).",
   "catalogue/paladin.txt": "**The Paladin before P1** (the book until 2026-10-29), kept to compare.",
 };
 export function report() {
@@ -272,7 +273,7 @@ export function report() {
       else if (e.kind === "extra") { v = S.avgDamage(e.dmg, null, 2, 0) * pDeals(b, wa(b), r1); how = "the first qualifying hit each round"; }
       else if (e.kind === "reduce") { v = Math.min(e.n, r1.hitAvg) * r1.hits * (1.5 + 1); how = "Body damage: you (chosen 1.5 times as often) and one adjacent ally; only while you don't leave your square"; }
       else if (e.kind === "bonus") { const t = b.turns.typical; v = t ? t.steps.map(x => b.actions[x.toLowerCase()]).filter(a => a?.tiers && (e.traits ?? []).every(tr => traitsOf(b, a).includes(tr))).reduce((s2, a) => s2 + e.n * pDeals(b, a, r1), 0) : 0; how = `+${e.n} on each damaging hit of the typical turn's matching Actions`; }
-      else if (e.kind === "rallybonus") { v = r1.mercyPerTurn * A.heal; how = `the extra Health on every Rally Point the party uses (in and between fights), from the simulated Standard day: ${f1(r1.mercyPerTurn)} a Paladin turn`; }
+      else if (e.kind === "rallybonus") { const rp = DAY.combatRpPerTurn; v = rp * e.n * A.heal; how = `+${e.n} on every Rally Point the party uses in a fight (Escalation is 0 between fights): ${f2(rp)} a Paladin turn in the Standard day (a Lay On Hands party uses more: ${f2(DAYH.combatRpPerTurn)}, ${f1(DAYH.combatRpPerTurn * e.n * A.heal)} DE)`; }
       else if (e.kind === "empowered") { const s2 = b.actions["smite 2"]; v = s2 ? (dmgOf(b, s2, r1, { empowered: e.n }) - dmgOf(b, s2, r1)) : 0; how = `${f1(v)} a Smite after a Lay On Hands that heals; weighted by Lay On Hands on ${pc(r1.lohPerTurn)} of the turns`; v *= r1.lohPerTurn; }
       else { how = `E2 / not modeled: ${e.text || (e.kind === "save-boon" ? "Boon on Saves" : e.kind)}`; }
       L.push(`| ${p.name} | ${p.escalation || ""} | ${f1(v)} | ${f1(v * w)} | ${pc((v * w) / r1.B)} | ${how} |`);

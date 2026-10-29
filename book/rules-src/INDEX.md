@@ -7,14 +7,14 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 19.1 | 275 |
 | 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 22.4 | 252 |
 | 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 35.2 | 429 |
-| 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 11.6 | 240 |
+| 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 12.2 | 244 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 5.5 | 62 |
 | 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 8.4 | 321 |
 | 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 5.2 | 91 |
 | 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 5.1 | 78 |
-| 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 19.0 | 160 |
+| 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 19.2 | 161 |
 | 11-species.md | Species | species |  | 0.8 | 35 |
-| 12-paladin.md | Paladin | paladin |  | 8.1 | 255 |
+| 12-paladin.md | Paladin | paladin |  | 8.7 | 276 |
 | 13-archer.md | Archer | archer |  | 13.4 | 497 |
 | 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 14.6 | 301 |
 | 15-gear.md | Gear | gear |  | 7.2 | 162 |
@@ -133,27 +133,28 @@ Open (to be decided) boxes: 298: "Targeting walls and objects (and the Breach tr
 
 - 4: ## Health Pool
 - 17: ## Damage
-- 28:   ### Lethal and Nonlethal
-- 34: ## Going Down
-- 42:   ### Getting Back Up
-- 46:   ### NPCs Going Down
-- 50:   ### Dominant Damage
-- 59: ## Wounds and the Tables
-- 82: ## Rally Points
-- 98: ## Guard
-- 111: ## Recovery
-- 115:   ### Take a Breather
-- 119:   ### Sleep
-- 127:   ### Rest
-- 141: ## Health States
-- 143:   ### Bloodied
-- 147:   ### Strained
-- 151:   ### Desperate
-- 160:   ### Dying
-- 194:   ### Shattered
-- 228:   ### Unconscious
+- 28:   ### Instances of Damage
+- 32:   ### Lethal and Nonlethal
+- 38: ## Going Down
+- 46:   ### Getting Back Up
+- 50:   ### NPCs Going Down
+- 54:   ### Dominant Damage
+- 63: ## Wounds and the Tables
+- 86: ## Rally Points
+- 102: ## Guard
+- 115: ## Recovery
+- 119:   ### Take a Breather
+- 123:   ### Sleep
+- 131:   ### Rest
+- 145: ## Health States
+- 147:   ### Bloodied
+- 151:   ### Strained
+- 155:   ### Desperate
+- 164:   ### Dying
+- 198:   ### Shattered
+- 232:   ### Unconscious
 
-Open (to be decided) boxes: 79: "The entries of the Dying and Shattered Tables are placeholders."
+Open (to be decided) boxes: 83: "The entries of the Dying and Shattered Tables are placeholders."
 
 ## 05-characters.md: Chapter 5: Characters
 
@@ -209,7 +210,7 @@ Open (to be decided) boxes: 88: "The list of Tags (Profane, Beast, Undead...) an
 ## 09-glossary.md: Chapter 9: Glossary
 
 
-Glossary entries (line: term): 6: [Mod]; 7: [W]; 8: [Trait]; 9: 0 AP; 10: 0R; 11: Action Points (AP); 12: Advance; 13: Ally; 14: Area; 15: Armor; 16: Armor Training; 17: Attribute Action; 18: At-will; 19: Aura; 20: Bane, Boon; 21: Barehanded; 22: Class Actions; 23: Pick; 24: Repertoire; 25: Basic attack; 26: Body Action, Mind Action; 27: Breather; 28: Category; 29: Check; 30: Clear; 31: Cleave; 32: Collision; 33: Combat Value (CV); 34: Corners; 35: Cover; 36: Crawl; 37: Critical; 38: CV Multiplier; 39: Daily; 40: Dark Sight; 41: Deadly Hazard; 42: Defense; 43: Difficult Terrain; 44: Dim-light Sight; 45: Disrupted; 46: Distinct Choices; 47: Dominant Damage; 48: Doomed; 49: Doubles; 50: Down; 51: Elevation; 52: Elite; 53: Empowered; 54: Encounter; 55: Enfeebled; 56: Engaged; 57: EoT; 58: Escalation; 59: Evade; 60: Exhausted; 61: Favored; 62: Fists; 63: Flanking; 64: Forced Movement; 65: Frequency; 66: General Effects; 67: Grunt; 68: Guard; 69: Hands; 70: Hazardous Terrain [HT]; 71: Hazardous Terrain; 72: Heal; 73: Hearing; 74: Hidden; 75: Imperiled; 76: Initiative slot; 77: Interact; 78: Interrupt; 79: Leaning; 80: Left your square; 81: Lethal, Nonlethal; 82: Line of Effect; 83: Linked Action; 84: Long; 85: Mastery; 86: Minion; 87: Minor enemies; 88: Move; 89: Moved; 90: Moves closer; 91: Next Action; 92: Non-threatening; 93: Obscured; 94: Origin; 95: Point of Origin; 96: Power Modifier; 97: Power roll; 98: Prerequisites; 99: Projectile; 100: Properties; 101: Pulled; 102: Pushed; 103: Quickened; 104: Rally Point; 105: Range; 106: Ranged Combat While Engaged; 107: Rating; 108: Reach; 109: Reaction; 110: Recovery; 111: Release; 112: Reload; 113: Reload Shot; 114: Reposition; 115: Requirements; 116: Rest; 117: Role; 118: Roll; 119: Round; 120: Save; 121: Save Action; 122: Sense; 123: Setup; 124: Several Targets; 125: Shot; 126: Signature Class Action; 127: Signature Modifier; 128: Signature roll; 129: Size; 130: Slid; 131: Slowed; 132: Sleep; 133: Special Action; 134: Specific beats general; 135: Speed; 136: Split; 137: Squeezing; 138: SR; 139: Stacking; 140: Standard; 141: Steadiness; 142: Steel Yourself; 143: Strike; 144: Success; 145: Tag; 146: Threatens; 147: Thrown; 148: Tier; 149: Trigger; 150: Turn; 151: Turn; 152: Unsensed; 153: Vs.; 154: Vulnerable; 155: Ward; 156: Weapon Modifier; 157: Weapon roll; 158: Willing, Unwilling; 159: Wound
+Glossary entries (line: term): 6: [Mod]; 7: [W]; 8: [Trait]; 9: 0 AP; 10: 0R; 11: Action Points (AP); 12: Advance; 13: Ally; 14: Area; 15: Armor; 16: Armor Training; 17: Attribute Action; 18: At-will; 19: Aura; 20: Bane, Boon; 21: Barehanded; 22: Class Actions; 23: Pick; 24: Repertoire; 25: Basic attack; 26: Body Action, Mind Action; 27: Breather; 28: Category; 29: Check; 30: Clear; 31: Cleave; 32: Collision; 33: Combat Value (CV); 34: Corners; 35: Cover; 36: Crawl; 37: Critical; 38: CV Multiplier; 39: Daily; 40: Dark Sight; 41: Deadly Hazard; 42: Defense; 43: Difficult Terrain; 44: Dim-light Sight; 45: Disrupted; 46: Distinct Choices; 47: Dominant Damage; 48: Doomed; 49: Doubles; 50: Down; 51: Elevation; 52: Elite; 53: Empowered; 54: Encounter; 55: Enfeebled; 56: Engaged; 57: EoT; 58: Escalation; 59: Evade; 60: Exhausted; 61: Favored; 62: Fists; 63: Flanking; 64: Forced Movement; 65: Frequency; 66: General Effects; 67: Grunt; 68: Guard; 69: Hands; 70: Hazardous Terrain [HT]; 71: Hazardous Terrain; 72: Heal; 73: Hearing; 74: Hidden; 75: Imperiled; 76: Initiative slot; 77: Instance of damage; 78: Interact; 79: Interrupt; 80: Leaning; 81: Left your square; 82: Lethal, Nonlethal; 83: Line of Effect; 84: Linked Action; 85: Long; 86: Mastery; 87: Minion; 88: Minor enemies; 89: Move; 90: Moved; 91: Moves closer; 92: Next Action; 93: Non-threatening; 94: Obscured; 95: Origin; 96: Point of Origin; 97: Power Modifier; 98: Power roll; 99: Prerequisites; 100: Projectile; 101: Properties; 102: Pulled; 103: Pushed; 104: Quickened; 105: Rally Point; 106: Range; 107: Ranged Combat While Engaged; 108: Rating; 109: Reach; 110: Reaction; 111: Recovery; 112: Release; 113: Reload; 114: Reload Shot; 115: Reposition; 116: Requirements; 117: Rest; 118: Role; 119: Roll; 120: Round; 121: Save; 122: Save Action; 123: Sense; 124: Setup; 125: Several Targets; 126: Shot; 127: Signature Class Action; 128: Signature Modifier; 129: Signature roll; 130: Size; 131: Slid; 132: Slowed; 133: Sleep; 134: Special Action; 135: Specific beats general; 136: Speed; 137: Split; 138: Squeezing; 139: SR; 140: Stacking; 141: Standard; 142: Steadiness; 143: Steel Yourself; 144: Strike; 145: Success; 146: Tag; 147: Threatens; 148: Thrown; 149: Tier; 150: Trigger; 151: Turn; 152: Turn; 153: Unsensed; 154: Vs.; 155: Vulnerable; 156: Ward; 157: Weapon Modifier; 158: Weapon roll; 159: Willing, Unwilling; 160: Wound
 
 ## 11-species.md: Species
 
@@ -221,18 +222,18 @@ Glossary entries (line: term): 6: [Mod]; 7: [W]; 8: [Trait]; 9: 0 AP; 10: 0R; 11
 
 - 19: ## The Paladin by Level
 - 39: ## Level 1
-- 41:   ### 1st Level Features
-- 65:   ### Signature Class Action
-- 112:   ### 1st Level Picks
-- 119: ## Paladin Repertoire
-- 121:   ### Turn
-- 144:   ### Encounter
-- 188:   ### Daily
-- 211: ## Paladin Escalation
-- 213:   ### Passives
+- 41:   ### Features
+- 54:   ### Signature Class Action Selection
+- 101:   ### Picks
+- 108: ## Paladin Repertoire
+- 110:   ### Turn
+- 133:   ### Encounter
+- 179:   ### Daily
+- 202: ## Paladin Escalation
+- 204:   ### Passives
 - 233:   ### Actives
 
-Action cards: Divine Power (46, Paladin Feature 1); Font of Mercy (57, Paladin Feature 1); Smite (70, Divine Power 1, Round); Lay On Hands (94, Divine Power 1, Round); Shield of Faith (124, Paladin Feature 1, Turn); Holy Wrath (147, Paladin Feature 1, Encounter); Aura of Protection (170, Paladin Feature 1, Encounter); Consecrated Ground (191, Paladin Feature 1, Daily); Hallowed Stance (216, Paladin Escalation (Passive)); Radiant Zeal (225, Paladin Escalation (Passive)); Divine Surge (236, Paladin Escalation, Round)
+Action cards: Divine Power (46, Paladin Feature 1); Smite (59, Divine Power 1, Round); Lay On Hands (83, Divine Power 1, Round); Shield of Faith (113, Paladin Feature 1, Turn); Holy Wrath (136, Paladin Feature 1, Encounter); Bulwark of Faith (159, Paladin Feature 1, Encounter); Consecrated Ground (182, Paladin Feature 1, Daily); Hallowed Stance (207, Paladin Escalation (Passive)); Radiant Zeal (216, Paladin Escalation (Passive)); Font of Mercy (225, Paladin Escalation (Passive)); Aura of Protection (236, Paladin Escalation, Encounter); Divine Surge (257, Paladin Escalation, Round)
 
 ## 13-archer.md: Archer
 

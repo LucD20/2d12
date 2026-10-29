@@ -1,6 +1,8 @@
 # The Paladin main build (pack P1, 2026-10-29): APPROVED, in the book
 
 > **Applied 2026-10-29** to book/rules-src (12-paladin.md, 16-talents.md and the Core Rules: Guard, Willing and Unwilling, [Weapon] Actions by trait). Lucas's round 3: an Unconscious creature counts as willing (a new Willing and Unwilling section); Guard's absorbed damage isn't damage you take; effects on Actions name the trait ("1 Boon on [Weapon] Actions") and Chapter 5's "adds your Weapon Modifier" sentence is gone; Opportunity Attack stays the level 1 Talent. This file keeps the prices, the budget table and the reasons.
+>
+> **Round 5 (Lucas 2026-10-29), applied:** headings "Features", "Signature Class Action Selection" ("Choose one of the following Signature Actions:") and "Picks"; Divine Power keeps only the Profane line; **Font of Mercy is a Passive Escalation** (Escalation 1, an option, no longer a Feature: the Paladin has one Feature now); **Aura of Protection is an Active Escalation** (1 Escalation, 0 AP, Encounter: +1 Defense in your Aura 2 until the end of the encounter); **Bulwark of Faith** (new Encounter Reaction, 1 / 2R: an ally about to be hit gains Guard equal to one of their Rally Points; 2R also Shoves the attacker) takes Aura of Protection's place; Shield of Faith's Interrupt names a [Strike] Action; Consecrated Ground's Bane is on [Weapon], [Power] and [Signature] Actions; the card builder writes "**Area:**" in bold; Chapter 4 defines an **instance of damage**. Section 3's support numbers include Font of Mercy as a Feature (before round 5): without it, the default build's support is lower (prices.md and report.md have the current numbers).
 
 Written to `book/class-charter.md`. Nothing here is in `book/rules-src` yet: you approve (or change) the cards first, then they go into the book,
 then Foundry. The ruler files are `book/ruler/classes/paladin-smite-*.txt` and `paladin-hands-*.txt` (levels 1 to 3; `paladin-smite-1-hold`
@@ -11,7 +13,7 @@ is the same build holding its Escalation), the cards are priced in `book/ruler/c
 
 | Level | What you gain (default in brackets) |
 |---|---|
-| **1** | 2 Features (Divine Power, Font of Mercy) · 1 Signature Class Action: **Smite or Lay On Hands** · 1 Talent (Opportunity Attack) · **1 Encounter Pick (Holy Wrath)** · 1 Passive Escalation (Hallowed Stance) · 1 Active Escalation (Divine Surge) |
+| **1** | 1 Feature (Divine Power) · 1 Signature Class Action: **Smite or Lay On Hands** · 1 Talent (Opportunity Attack) · **1 Encounter Pick (Holy Wrath)** · 1 Passive Escalation (Hallowed Stance) · 1 Active Escalation (Divine Surge) |
 | **2** | 1 Talent (Heavy Blows, a stand-in until the Talents pack) |
 | **3** | 1 Daily Pick (Consecrated Ground) · 1 Passive Escalation (Radiant Zeal) |
 
