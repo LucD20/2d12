@@ -1,0 +1,46 @@
+# Paladin, level 1, the P1 main build (pack P1, 2026-10-29; book/class-charter.md): Signature Smite.
+# Level 1: Divine Power + Font of Mercy; the Signature; Talent Opportunity Attack (a Reaction: not modeled); Encounter Pick Holy Wrath;
+# Escalation Divine Surge (active) and Hallowed Stance (passive).
+# HOLD: Divine Surge only above 2 Escalation (keeps Hallowed Stance on); compare with paladin-smite-1.txt (spends it every round).
+# The format: book/ruler/README.md, "The spec files". Run: node book/ruler/spec.mjs
+class Paladin (Smite, hold)
+role tank / support
+level 1
+attributes body 2, mind 1, instinct 0, appeal 0
+health body x4 +3, mind x4 +4     # P1: Mind Health Multiplier x4 (was x3)
+armor 3
+weapon-mod 2
+power-mod 2
+rally 6
+targeted 1.5          # the tank stands in front: NPCs choose it 1.5 times as often as another PC
+
+weapon Greatsword (melee, two-handed): 0 / 1d8 / 2d6
+
+# Features: Divine Power (Profane Judgment, not modeled) and Font of Mercy (a Feature that is an Escalation Passive: Escalation 1, +Power Mod + 2 on every Rally Point).
+passive Font of Mercy: escalation 1: rally-bonus 4
+
+action Steel Yourself 2 | ap 2 | round | traits self | heal 1 self     # Basic Action: you use 1 Rally Point
+action Weapon Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod]
+
+# Signature: Smite (damage, with a support rider)
+action Smite 1 | ap 1 | round | traits divine signature strike weapon | vs ad | tiers [B] 1[W] / [B] 1[W] + [Mod] + [M] 1d4 / [B] 1[W] + [Mod] + [M] 1d6
+action Smite 2 | ap 2 | round | traits divine signature strike weapon | vs ad | tiers [B] 1[W] + [M] 1d6 / [B] 1[W] + [Mod] + [M] 1d10 / [B] 1[W] + [Mod] + [M] 2d8 | on 2+: defense 1 ally
+action Smite 3 | ap 3 | round | traits divine signature strike weapon | vs ad | tiers [B] 1[W] + [M] 1d6 / [B] 1[W] + [Mod] + [M] 1d10 / [B] 1[W] + [Mod] + [M] 2d8 | on 2+: defense 1 ally; on 2+: guard 1d8+[Mod] self
+
+# Encounter Pick (level 1): Holy Wrath
+action Holy Wrath 2 | ap 2 | encounter | traits divine strike weapon | vs ad | tiers [B] 1[W] + [M] 2d6 / [B] 1[W] + [Mod] + [M] 3d8 / [B] 1[W] + [Mod] + [M] 4d8
+action Holy Wrath 3 | ap 3 | encounter | traits divine strike weapon | vs ad | tiers [B] 1[W] + [M] 3d8 / [B] 1[W] + [Mod] + [M] 5d8 / [B] 1[W] + [Mod] + [M] 7d8
+
+# Escalation (level 1): Divine Surge (active) and Hallowed Stance (passive)
+action Divine Surge | ap 0 | round | traits divine | escalation 1 | always: surge 1d8; always: guard 2d6 self     # the next ally who damages the target before your next turn deals +[M] 1d8
+passive Hallowed Stance: escalation 2: reduce 2 adjacent 1     # you and adjacent allies: Body damage reduced by the Power Modifier (the turns never move)
+
+turn Main: Divine Surge (keep 2), Smite 3, Weapon Attack, Weapon Attack
+turn Main without Escalation: Smite 3, Weapon Attack, Weapon Attack
+turn Smite 2 and move: Divine Surge (keep 2), Smite 2, Weapon Attack, Weapon Attack, move 1
+turn Nova: Divine Surge (keep 2), Holy Wrath 3, Smite 2
+turn Three attacks: Weapon Attack, Weapon Attack, Weapon Attack
+turn Steel: Steel Yourself 2, Divine Surge (keep 2), Smite 2, Weapon Attack
+
+plan Nova, Main
+when self below 35%: Steel

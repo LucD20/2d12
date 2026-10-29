@@ -1,9 +1,9 @@
-# The party fights (node book/ruler/spec.mjs). The party names class files (class + level = the level below).
+# The party fights (node book/ruler/spec.mjs). The party names class files (a file name, or a class name + the level below).
 # encounter <name>: <count> <role> [rating], ...  (rating Medium unless given; NPCs use the Bestiary at this level, Foundry's default ratings)
 level 1
 runs 2000
 defenses 12 13 14
-party Paladin, Paladin, Archer, Archer
+party paladin-smite-1, paladin-hands-1, archer-1, archer-1
 
 encounter 4 Standards: 4 standard
 encounter 2 Elites: 2 elite
@@ -18,6 +18,12 @@ day-runs 1000
 day Standard day (easy, normal, normal, hard): 2 standard, 4 minion | 4 standard | 1 elite, 2 standard | 2 elite, 2 standard
 day Long day (normal, hard, normal, hard): 8 grunt | 6 standard | 2 elite | 1 elite, 4 standard
 day Short hard day (normal, hard, hard): 4 standard | 2 elite, 2 standard | 6 standard
-day-party Level 1: paladin-1, paladin-1, archer-1, archer-1
-day-party Level 2: paladin-2, paladin-2, archer-2, archer-2
-day-party Level 2, one support Paladin: paladin-2-support, paladin-2, archer-2, archer-2
+day-party Level 1, the book's Paladin today: paladin-book-1, paladin-book-1, archer-1, archer-1
+day-party Level 1, P1 Smite: paladin-smite-1, paladin-smite-1, archer-1, archer-1
+day-party Level 1, P1 Smite holding Escalation: paladin-smite-1-hold, paladin-smite-1-hold, archer-1, archer-1
+day-party Level 1, P1 Lay On Hands: paladin-hands-1, paladin-hands-1, archer-1, archer-1
+day-party Level 1, P1 one of each: paladin-smite-1, paladin-hands-1, archer-1, archer-1
+day-party Level 2, P1 Smite: paladin-smite-2, paladin-smite-2, archer-2, archer-2
+day-party Level 2, P1 Lay On Hands: paladin-hands-2, paladin-hands-2, archer-2, archer-2
+day-party Level 3, P1 Smite: paladin-smite-3, paladin-smite-3, archer-3, archer-3
+day-party Level 3, P1 Lay On Hands: paladin-hands-3, paladin-hands-3, archer-3, archer-3

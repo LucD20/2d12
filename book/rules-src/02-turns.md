@@ -96,6 +96,10 @@ Some Actions have a **Setup** entry before the Action. It describes what happens
 
 An Action that targets something can only be used if it has a valid target. An Action with no valid target can't be used. Most Actions target creatures only, but the GM can allow one to target an unattended object, such as a barrel, a crate or a door. Usually the Action rolls against DC 13 for the object, but the GM can set a different DC depending on the circumstances.
 
+### Willing and Unwilling
+
+Some Actions target a **willing** creature, and some rules change for an **unwilling** one (passing through its square, for example). A creature is **willing** when it accepts the effect: you choose for yourself, and each creature chooses for itself when the effect would happen. An **Unconscious** creature counts as willing. Any other creature that doesn't accept is **unwilling**. A creature doesn't have to know what the effect does to accept it.
+
 ### Requirements
 
 Some Actions have **Requirements**, written under the Frequency line (and above the Interrupt or Trigger of a Reaction). To use the Action, you must meet them; otherwise you can't use it at all. They are checked when you start to use the Action, before you pay its cost and before any Setup. Charge requires at least Speed 3: with Speed 2, you can't Charge, and a Speed bonus that the Charge itself gives doesn't count toward it.
@@ -109,7 +113,7 @@ A **0 AP** Action costs no AP, but it is still an Action: you can use it only on
 An Action that another Action lets you use as part of it is a **Linked Action**. It is written with the AP of the Version you use, such as "Weapon Attack (1A)", or "(1A/2A)" when you choose between two Versions.
 
 - It is part of the original Action, so it **costs no AP**.
-- It keeps its traits and requirements, unless the Action says otherwise: you must still be able to use it. If Lay On Hands lets you Evade while you are Immobilized, you can't.
+- It keeps its traits and requirements, unless the Action says otherwise: you must still be able to use it. If an Action lets you Evade (a Linked Action) while you are Immobilized, you can't.
 - It affects the target of the original Action, unless it says otherwise. If the original Action doesn't list a target, you can choose the target per Linked Action.
 - It doesn't count toward its own uses: not toward its Frequency, the 3 Strikes of the turn, or At-will Banes.
 - If it isn't optional and you can't make it, the whole Action is **[[Disrupting Actions|disrupted]]**. A Linked Action is optional when the Action says you **can** make it ("you can Evade 2"), and required when it says you **do** it ("you Advance 5, make a Weapon Attack (1A) and Advance 5 again").
@@ -121,7 +125,7 @@ If a Linked Action has no valid target, the rest of the Action is disrupted (tha
 
 ### Targets of Effects
 
-Unless something says otherwise, the effects of an Action, and the Actions it lets you use (Linked Actions), affect the **target of the Action**. Remember, if the Action doesn't have a target, you choose who to target on each individual Linked Action. If you use Lay On Hands on an ally, the ally is the one who can Evade 2.
+Unless something says otherwise, the effects of an Action, and the Actions it lets you use (Linked Actions), affect the **target of the Action**. Remember, if the Action doesn't have a target, you choose who to target on each individual Linked Action. If you use Shove on an enemy, the enemy is the one who is Pushed.
 
 ### Effect Timing
 
@@ -146,18 +150,18 @@ A **Buff** is an effect that modifies another Action, such as Rimebrand's bonus 
 
 #### Stacking
 
-The same effect never stacks with itself, and bonuses from different effects don't add up either: for each value (Empowered, Enfeebled, Vulnerable, a Defense...), a creature uses only the **highest bonus** and the **highest penalty** that apply. If a creature gets the same effect again, it keeps the higher value and the longer duration: two effects that make it Enfeebled 1 do not make it Enfeebled 2.
+The same effect never stacks with itself, and bonuses from different effects don't add up either: for each value (Empowered, Enfeebled, Vulnerable, a Defense, [[Guard]]...), a creature uses only the **highest bonus** and the **highest penalty** that apply. If a creature gets the same effect again, it keeps the higher value and the longer duration: two effects that make it Enfeebled 1 do not make it Enfeebled 2.
 
 Three things do add up:
 
-- An effect that says it **increases** a value: "increase your Enfeebled value by 1" (as Vow of Enmity does with Empowered).
+- An effect that says it **increases** a value: "increase your Enfeebled value by 1" (an Action that says "increase your Empowered value by 1" adds to the Empowered you have).
 - **Boons and Banes.**
 - An effect that **increases** your [[Slowed]] value (being Desperate, Dying or Shattered).
 
 **Equipment is not a bonus.** Your armor gives your Armor value and your charm your Ward value; effects add to those. With +1 AD and +1 Defense, your Armor Defense rises by 1 (not 2) and every other Defense by 1.
 
 > [!example]
-> Divine Surge makes the next damage you deal with Smite deal an extra [M] 1d8 Holy. If you use Divine Surge twice before that Smite, it still deals only one extra 1d8: it is the same effect.
+> Divine Surge makes the next ally who deals damage to its target deal an extra [M] 1d8 Holy. If two Paladins use Divine Surge on the same creature, the next ally still deals only one extra 1d8: it is the same effect.
 
 ### Frequency
 

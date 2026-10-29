@@ -25,7 +25,7 @@ Each class is written in its own document: [[Paladin]] and [[Archer]].
 
 ### Class Actions, Picks and the Repertoire
 
-A class's **Class Actions** are the Actions every character of that class has from level 1. Its **Repertoire** is everything else it offers, listed by [[Frequency]]: **Passive** (it works on its own), **Turn**, **Round**, **Encounter** and **Daily**. A **Pick** is one choice from the Repertoire: the level list says how many Picks you take at each level and from which list (an Encounter Pick comes from the Encounter list; a Pick "from any list" can come from any of them). Escalation abilities are chosen the same way, from the class's Escalation list.
+A class's **Class Actions** are the Actions it gives you at level 1. A class can give a **Signature Class Action** instead: a choice of two Actions that are the class's fantasy (the Paladin: Smite or Lay On Hands); you take one, and the other is not yours. Its **Repertoire** is everything else it offers, listed by [[Frequency]]: **Passive** (it works on its own), **Turn**, **Round**, **Encounter** and **Daily**. A **Pick** is one choice from the Repertoire: the level list says how many Picks you take at each level and from which list (an Encounter Pick comes from the Encounter list; a Pick "from any list" can come from any of them). Escalation abilities are chosen the same way, from the class's Escalation list.
 
 ### Leveling Up
 
@@ -47,7 +47,7 @@ Each class lists two Attributes for its **Weapon Modifier** and two for its **Po
 - **Weapon Modifier** = the higher of the class's two Weapon Attributes ÷ 2 + 1
 - **Power Modifier** = the higher of the class's two Power Attributes ÷ 2 + 1
 
-The Attribute a Modifier uses is your **Weapon Attribute** or your **Power Attribute**. A Weapon Action adds your Weapon Modifier to its damage on Tier 2 or 3.
+The Attribute a Modifier uses is your **Weapon Attribute** or your **Power Attribute**.
 
 If the same Attribute is the higher one for both Modifiers, one of them uses its other Attribute instead. You choose which, and you can change that choice when you level up.
 

@@ -235,7 +235,7 @@ def card(block, markers=False):
     sep = " <i class='sep'>&#10022;</i> "
     vs_txt = (f'<span class="vs">{"" if vsm.group(1).strip().endswith("Save") else "Vs. "}{inline(vsm.group(1))}</span>') if vsm else ''
     l1 = [f'<span class="esc">{inline(escm.group(1))} Escalation</span>'] if escm else []
-    l2 = ([f'<span>{inline(target.group(1))}</span>'] if target else []) + ([f'<span class="dist">Area: {inline(aream.group(1))}</span>'] if aream else [])
+    l2 = ([f'<span>{inline(target.group(1))}</span>'] if target else []) + ([f'<span class="dist"><b>Area:</b> {inline(aream.group(1))}</span>'] if aream else [])
     l3 = ([f'<span class="dist"><b>Distance:</b> {inline(distm.group(1))}</span>'] if distm and distm.group(1).strip().lower() != 'self' else []) + ([vs_txt] if vs_txt else [])
     meta_lines = [l for l in (l1, l2, l3) if l]
     meta = meta_lines
