@@ -84,6 +84,7 @@ Current version: **v0.0.180**. Tests: `node tools/tests/run.mjs` (145 tests, see
 The older full lists (every "to watch" note and finished item) were in `archive/old-notes/foundry-backlog-history-v0.0.92.md`, which is not in this bundle.
 
 ## Decisions waiting
+- **E3, the Bestiary refit (PROPOSED 2026-10-29, book/bestiary-e3.md; build only after Lucas answers and the book changes):** config.mjs `npcRoles` / `npcRatings` and the tier factors (Health ×1.10, damage ×1.38 at Tier 1; Elite damage ×0.75 more, Grunt Health ×0.69 more; Tier 2 ×1.17 / ×1.22, Tier 3 ×1.61 / ×1.39 of Tier 1), no more `npcBump` / `npcMeasured`, `npcTableLevel` becomes the tier (levels 1-4, 5-7, 8-10); the Builder's level → tier and its CV with the tier gap (×0.8 / ×0.65); the PC Health factor (Level + 17) / 16 and the Modifier steps at levels 5 and 8; `pcDamageVsDefense` checked again; tests for the tables.
 - (none: Release is a Basic Action now, and a willing creature letting someone pass is left to the GM; the book says an unwilling creature's square is Difficult Terrain and a creature can allow you to pass.)
 
 ## Known limits (by design for now)
