@@ -1,5 +1,10 @@
 # The Archer main build (pack A1, 2026-10-29): PROPOSED, waiting for Lucas
 
+> **Round 2 (Lucas's notes, 2026-10-29), applied here:** Double Shot's Linked attacks are **[Ranged, Shot] Weapon Attacks (1A)** (Rolling Shot's
+> too, for the same reason); **Double Shot and Rolling Shot lose the Signature trait** (they make no roll themselves: the trait only sets the
+> Modifier an Action rolls, and a Signature Class Action doesn't need it); **Chapter 1, Rules Language: "Weapons by property"** (a Projectile
+> weapon is a weapon with the Projectile property) is in the book. Firearms: section 8. The numbers don't change (the ruler never used the trait here).
+
 Written to `book/class-charter.md` and the progression model A (`book/progression-lv.md`: no sustained growth inside tier 1). **Nothing here is
 in `book/rules-src` yet**: you approve (or change) the cards first, then they go into the book (`13-archer.md`), then Foundry (pack C).
 The ruler files are `book/ruler/classes/archer-double-1..3.txt` and `archer-rolling-1..3.txt` (one per Signature); the cards are priced in
@@ -40,26 +45,26 @@ Marked Quarry during an encounter by spending 1 AP [Focus].
 
 *Price:* the Boon +1.1 to 1.5 DE a turn (5-6%), the floor +1.6 (7%).
 
-### Double Shot (Sharpshooter 1) · 2 / 3 AP · Signature, changed
+### Double Shot (Sharpshooter 1) · 2 / 3 AP · Signature Class Action, changed
 **Flavor:** Two shots, so close together they sound like one.
 
-*Shot • Signature • Strike* · **Frequency:** Round · **Target:** Two creatures
+*Shot • Strike* · **Frequency:** Round · **Target:** Two creatures
 
 | 2 AP | 3 AP |
 |---|---|
-| You make two [Ranged] Weapon Attacks (1A), each against a different creature. | Evade 1, then as 2 AP. |
+| You make two [Ranged, Shot] Weapon Attacks (1A), each against a different creature. | Evade 1, then as 2 AP. |
 
 *Price:* 2 AP 11.0 (1.18, on target); 3 AP 13.2 (0.94, a little under; was 12.0, 0.86 with its two Boons). The 3 AP Version is now the step
 away: the damage Signature with a mobility rider.
 
-### Rolling Shot (Sharpshooter 1) · 1 / 2 / 3 AP · Signature, changed (was a Round Pick)
+### Rolling Shot (Sharpshooter 1) · 1 / 2 / 3 AP · Signature Class Action, changed (was a Round Pick)
 **Flavor:** You keep moving, and the shot rides along with the motion.
 
-*Ranged • Shot • Signature • Strike • Weapon* · **Frequency:** Round · **Target:** One creature · **Distance:** Weapon
+*Ranged • Shot • Strike • Weapon* · **Frequency:** Round · **Target:** One creature · **Distance:** Weapon
 
 | 1 AP | 2 AP | 3 AP |
 |---|---|---|
-| Evade 1, then make a Weapon Attack (1A). | Evade 2, then make a Weapon Attack (1A) that deals an extra [B] 1d6 Pi. | Evade 3, then make a Weapon Attack (1A) that deals an extra [B] 2d6 Pi. |
+| Evade 1, then make a [Ranged, Shot] Weapon Attack (1A). | Evade 2, then make a [Ranged, Shot] Weapon Attack (1A) that deals an extra [B] 1d6 Pi. | Evade 3, then make a [Ranged, Shot] Weapon Attack (1A) that deals an extra [B] 2d6 Pi. |
 
 *Price:* 1 AP 7.7 (1.65, over: the book's card, kept as P1 kept Smite 1); 2 AP 10.2 (1.10, on target); 3 AP 12.7 (0.91, a little under). The
 mobility Signature with a damage rider: it never spends an AP on stepping away.
@@ -151,3 +156,20 @@ Encounter or Daily at the Escalation Momentum starts with; **Nova (real)** = the
 
 - **The P1 Paladin's Radiant Zeal** (its level 3 Passive Escalation: +1d6 on the first Strike) gives it +11% sustained at level 3: against model A. For the Options step: a non-damage passive there, as Elusive is for the Archer.
 - Question 5 is the same for the Paladin: its level 3 numbers also rise with Momentum 2.
+
+## 8. Round 2 (Lucas's notes, 2026-10-29)
+
+- **"X weapon" in the Rules Language: APPLIED** (Chapter 1, Rules Language, "Weapons by property"): a rule that names a property before
+  "weapon" means a weapon with that property (a Two-handed weapon, a Projectile weapon).
+- **[Ranged, Shot] Weapon Attacks:** Double Shot (as you wrote) and Rolling Shot (my addition: the same reason).
+- **The Signature trait:** off both cards. Making their Linked attacks roll the Signature Modifier would only matter for an Archer whose Power
+  Modifier is higher than its Weapon Modifier, and would add a rule for it. **For the book (with these cards):** Chapter 5 says a Signature Class
+  Action needn't have the Signature trait (Smite has it because it rolls; Double Shot doesn't).
+- **Classes needn't be symmetrical** (noted in the class charter, section 3): one class can offer three Signatures or start with two, another
+  more Escalation (the Gladiator: "gathering the crowd"). The Archer and the Paladin stay as they are.
+- **Firearms (your question: now or later?). My recommendation: decide the direction now, build it in D2 (Weapons and Gear).** The fix is in
+  the weapon, not the Archer: **firearms get their own property, Firearm, and are not Projectile weapons.** Then Shot Actions (which need a
+  Projectile weapon) and every Archer card stay bows and crossbows with no new wording, and a future gunslinger class (or a Firearm Talent tree)
+  gets its own trait for gun Actions. Nothing in the book has firearms yet, so nothing breaks before D2. Question 6.
+
+6. **Firearms are their own property (Firearm), not Projectile**, so the Archer's Shot cards never work with guns (built in D2)? **[yes]**

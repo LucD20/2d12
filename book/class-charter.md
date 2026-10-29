@@ -41,6 +41,8 @@ The playtest showed too many features at the start. The table is the **template*
 kind for another (Lucas: classes can have different Picks at different levels, as they have more or fewer Features), as long as each
 level keeps the same total budget. The Paladin, for example, can start with an Encounter Action at level 1 and have more Encounter Picks than Round ones.
 
+**Classes needn't be symmetrical (Lucas, 2026-10-29):** one class can offer three Signature choices or start with two Signatures, another can have more Escalation features (the planned Gladiator: "gathering the crowd"), as long as the role budget holds. The Paladin and the Archer stay symmetrical.
+
 | Level | What you gain |
 |---|---|
 | **1** | 2 class Features · 1 Signature Class Action (a choice) · **1 Talent** · 1 Passive Escalation · 1 Active Escalation |

@@ -264,6 +264,8 @@ When a rule names a trait before the word "Action," it means an Action with that
 - Separate brackets joined by "and" mean **either**: "[Strike] and [Weapon] Actions" are Actions with the Strike trait, the Weapon trait, or both. Alternatives can also be written with "or" inside the brackets: [Melee or Ranged].
 - A **Body Action** is an Action with the Body trait, and so on; an Action can be more than one (Trip is both a Body and an Instinct Action).
 
+**Weapons by property.** When a rule names a weapon [[Properties|property]] before the word "weapon," it means a weapon with that property. A **Two-handed weapon** is a weapon with the Two-handed property, and a **Projectile weapon** is a weapon with the Projectile property, such as a bow or a crossbow.
+
 ## Summary
 
 1. Roll **2d12** and add the relevant Modifier.

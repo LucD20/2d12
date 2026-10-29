@@ -4,7 +4,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 
 | File | Chapter | Document | Part | KB | Lines |
 |---|---|---|---|---|---|
-| 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 19.1 | 275 |
+| 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 19.4 | 277 |
 | 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 22.4 | 252 |
 | 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 35.2 | 429 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 12.2 | 244 |
@@ -43,7 +43,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 - 188: ## Reading an Action
 - 224:   ### Notation
 - 247:   ### Rules Language
-- 267: ## Summary
+- 269: ## Summary
 
 Open (to be decided) boxes: 156: "Resist and Weak, which use damage subtypes, are not written yet."
 

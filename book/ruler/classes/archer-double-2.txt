@@ -25,8 +25,8 @@ action Weapon Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 /
 action Lock & Loose | ap 1 | round | traits ranged shot strike weapon | vs ad | tiers [Mod] / 1d4 + 2 + [Mod] / 1d10 + [Mod] | on 2: debuff Hindered (until it moves); on 3: debuff Immobilized
 
 # Signature: Double Shot (damage; 3 AP adds the step away: Evade 1)
-action Double Shot 2 | ap 2 | round | traits signature shot strike | does Weapon Attack x2 | different
-action Double Shot 3 | ap 3 | round | traits signature shot strike | does Weapon Attack x2 | different | evade 1
+action Double Shot 2 | ap 2 | round | traits shot strike | does Weapon Attack x2 | different
+action Double Shot 3 | ap 3 | round | traits shot strike | does Weapon Attack x2 | different | evade 1
 
 # Escalation (level 1): Killer's Focus (passive) and Pinning Shot (active: spending it turns Killer's Focus off)
 passive Killer's Focus: escalation 2: extra 1d6 first shot strike weapon
