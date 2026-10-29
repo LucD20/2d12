@@ -1,0 +1,38 @@
+# Paladin, level 1 (book/rules-src/12-paladin.md). A Human Paladin: Body 2, Mind 1, Heavy armor, a Greatsword.
+# Level 1: Smite and Lay On Hands; the Encounter Pick: Word of Radiance; Escalation: Hallowed Stance (passive) and Divine Surge (active).
+# The format: book/ruler/README.md, "The spec files". Run: node book/ruler/spec.mjs
+class Paladin
+role tank / support
+level 1
+attributes body 2, mind 1, instinct 0, appeal 0
+health body x4 +3, mind x3 +4
+armor 3
+weapon-mod 2
+power-mod 2
+rally 6
+targeted 1.5          # the tank stands in front: NPCs choose it 1.5 times as often as another PC
+
+weapon Greatsword (melee, two-handed): 0 / 1d8 / 2d6
+
+action Weapon Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod]
+action Smite 1 | ap 1 | round | traits divine strike weapon | vs ad | tiers [B] 1[W] / [B] 1[W] + [Mod] + [M] 1d4 / [B] 1[W] + [Mod] + [M] 1d6
+action Smite 2 | ap 2 | round | traits divine strike weapon | vs ad | tiers [B] 1[W] + [M] 2d4 / [B] 1[W] + [Mod] + [M] 2d6 / [B] 1[W] + [Mod] + [M] 2d8 | always: boon 1 next divine
+action Smite 3 | ap 3 | round | traits divine strike weapon | vs ad | tiers [B] 1[W] + [M] 2d4 / [B] 1[W] + [Mod] + [M] 2d6 / [B] 1[W] + [Mod] + [M] 2d8 | always: boon 1 next divine | then Smite Light
+action Smite Light | traits divine | vs save appeal | tiers [M] 1d6 / [M] 1d4 / 0 | area 3     # Smite 3: enemies in the 2 Emanation of Bright light make an Appeal Save (the target and 2 more)
+action Lay On Hands 1 | ap 1 | round | traits divine focus | heal 1
+action Word of Radiance 2 | ap 2 | encounter | traits area divine power | vs wd | tiers [M] 1d8 / [M] 2d6 / [M] 2d8 | area 2
+action Word of Radiance 3 | ap 3 | encounter | traits area divine power | vs wd | tiers [M] 2d6 / [M] 2d8 / [M] 2d10 | area 2
+action Divine Surge | ap 0 | round | traits divine self | escalation 1 | always: extra 1d8 next @Smite
+
+passive Hallowed Stance: escalation 2: reduce 2     # Body damage reduced by the Power Modifier while you don't leave your square (the turns below never move)
+
+turn Smite and two attacks: Smite 2, Weapon Attack, Weapon Attack
+turn Smite 3 and two attacks: Smite 3, Weapon Attack, Weapon Attack
+turn Surge Smite 3: Divine Surge, Smite 3, Weapon Attack, Weapon Attack
+turn Radiance opening: Word of Radiance 2, Smite 2, Weapon Attack
+turn Surge: Divine Surge, Smite 2, Weapon Attack, Weapon Attack
+turn Heal: Lay On Hands 1, Divine Surge, Smite 2, Weapon Attack
+turn Three attacks: Weapon Attack, Weapon Attack, Weapon Attack
+
+plan Radiance opening, Surge Smite 3
+when ally below 50%: Heal

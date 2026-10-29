@@ -1,0 +1,13 @@
+# The party fights (node book/ruler/spec.mjs). The party names class files (class + level = the level below).
+# encounter <name>: <count> <role> [rating], ...  (rating Medium unless given; NPCs use the Bestiary at this level, Foundry's default ratings)
+level 1
+runs 2000
+defenses 12 13 14
+party Paladin, Paladin, Archer, Archer
+
+encounter 4 Standards: 4 standard
+encounter 2 Elites: 2 elite
+encounter Elite + 2 Standards: 1 elite, 2 standard
+encounter 8 Grunts: 8 grunt
+encounter 2 Standards + 8 Minions: 2 standard, 8 minion
+encounter 6 Standards (CV 6, hard): 6 standard

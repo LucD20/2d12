@@ -1,4 +1,88 @@
-# The level 1 PC ruler (for the NPC / Bestiary rules)
+# The ruler (for the class and Bestiary numbers)
+
+## The spec-driven ruler (2026-10-29): `spec.mjs`
+
+Describe a class build in a plain file (`classes/*.txt`: its numbers, Actions with AP, Frequency, traits and Tier results, passives,
+the turns it can take and its plan by round) and the fights in `fights.txt`; one script writes the whole table to **`report.md`**:
+
+- each turn's damage against Defense 12 to 14 (Monte Carlo, at the Escalation the turn needs, and at Escalation 3), the best turn,
+  and the turn's AP and Strikes, with the rules checked: at most 5 AP and 3 Strikes, At-will Banes, Round / Turn / Encounter Frequency,
+  the Escalation an Action needs, a Reload Shot only with a Reload weapon, and nothing with an unloaded weapon but a Reload;
+- the build's Health (the book's thresholds and level factor), AD, WD, Rally Points and what each heals;
+- **duels** against one Medium NPC of each role (the Bestiary at the build's level): its damage a turn to this PC, **rounds to kill it**
+  and **rounds for it to put this PC Down**;
+- a **Monte Carlo fight** of the party against each encounter of `fights.txt` (2,000 runs): rounds, the party's win rate, Health lost,
+  how often a PC goes Down and in which round, each PC's chance to go Down.
+
+```
+node book/ruler/spec.mjs            # writes report.md and prints it (about 10 seconds)
+node book/ruler/spec.mjs --quiet    # writes report.md only
+node book/ruler/spec.mjs --check    # the simulation against the exact dice math (calc.mjs); must print only "ok"
+```
+
+It uses the system's own code: the dice (`calc.mjs` tierProbs: exploding d12s, Doubles, Boons and Banes as 1d3-1, Favored) and the
+Bestiary (`config.mjs` npcHm, npcDamage, the roles and ratings). Random numbers are seeded, so the same files give the same report.
+
+### The spec files
+
+One thing per line; `#` starts a comment. A class file (`classes/paladin-1.txt` is the full example):
+
+| Line | Example | Meaning |
+|---|---|---|
+| `class`, `role`, `level` | `class Paladin` · `level 1` | Its name (the party in fights.txt uses it, with the level) |
+| `attributes` | `attributes body 2, mind 1, instinct 0, appeal 0` | |
+| `health` | `health body x4 +3, mind x3 +4` | Multiplier and species bonus: ⌈((Attribute + 2) × mult + species) × (level + 10) / 10⌉ |
+| `armor`, `ward` | `armor 3` | AD = 11 + armor; WD = 11 + Power Modifier + ward |
+| `weapon-mod`, `power-mod`, `rally` | `rally 6` | Modifiers; the class's Rally value (Rally Points = rally + ⌈(Body + Mind + level) / 2⌉) |
+| `targeted` | `targeted 1.5` | How often NPCs choose this PC (1 = as often as anyone; a tank in front more, an archer behind less) |
+| `weapon` | `weapon Crossbow (ranged, reload): 0 / 1d4+2 / 1d10+2` | Its properties in brackets, then Tier 1 / 2 / 3 |
+| `action` | see below | One Version of an Action (write Versions as `Smite 2`, `Smite 3`: they share Frequency) |
+| `passive` | `passive Marked Quarry: boon 1 shot strike quarry` · `passive Killer's Focus: escalation 2: extra 1d6 first shot strike weapon` | Always on (from an Escalation) |
+| `turn` | `turn Main: Smite 2, Weapon Attack, Weapon Attack, move 1` | A turn: Actions in order; `move N` spends AP; `(reload shot)` after a Weapon Action makes it a Reload Shot |
+| `plan` | `plan Opening, Main` | The turn of round 1, round 2...; the last one repeats |
+| `when` | `when ally below 50%: Heal` · `when unloaded: Reload turn` | A turn that replaces the plan's |
+
+An `action` line is fields separated by `|`: the name, then any of
+`ap N` · a Frequency (`at-will`, `turn`, `round`, `encounter`, `daily`) · `traits a b c` · `vs ad` / `vs wd` / `vs save instinct` / `vs dc 13` ·
+`tiers T1 / T2 / T3` (damage as the book writes it: `[B] 1[W] + [Mod] + [M] 2d6 Ho`; pools and damage types are read and ignored) ·
+`escalation N` · `area N` (how many creatures it hits) · `does Weapon Attack x2` (Linked Actions) with `each boon 1` / `each extra 1d6` and
+`different` (each against a different creature) · `then Smite Light` (a Linked Action after its roll) · effects.
+
+Effects: `on 2+: ...`, `on 3: ...`, `on 1: ...` or `always: ...`, several separated by `;`:
+`boon N next <traits>` · `bane N next ...` · `empowered N next ...` / `empowered N turn` (every Action of the turn) · `favored next ...` ·
+`extra 1d8 next @Smite` (`@Name`: only that Action) · `vulnerable N` · `taunt N` (Banes on the target's attacks against others) ·
+`heal N` (N Rally Points to the most hurt ally) · `defense N ally` / `defense N allies` / `defense N self` (until your next turn) · `reload` ·
+`reduce N` (a passive: each NPC hit deals N less). The traits after `next` must all be on the Action (the book's [Shot, Strike] rule);
+`quarry` limits it to your Marked Quarry.
+
+The fight (`fights.txt`): `level`, `runs`, `defenses`, `party Paladin, Paladin, Archer, Archer`, and `encounter <name>: 4 standard` or
+`1 elite, 2 standard high` (a rating after the role, Medium by default). NPCs are the Bestiary's at that level with Foundry's default
+ratings (Body High, the rest Medium): a Standard has 57 Health, Defense 13, Modifier +2. What the fight leaves out: movement and
+positions, Reactions, Rally Points used by the PCs themselves, NPC special Actions, Body and Mind as two pools.
+
+### Results (2026-10-29, level 1 unless said; the full tables: `report.md`)
+
+- **The spec matches the hand-written ruler** where the rules are the same: Paladin L1 Smite 2 + two Weapon Attacks 22.4 at Defense 13
+  (ruler.mjs 22.5); Paladin L2 Sacred Weapon turn 27.3 (levels.mjs 27.4). `--check` agrees with the exact math within 0.02.
+- **Archer: the Linked Weapon Attacks of Double Shot have no Shot trait**, so Marked Quarry ([Shot, Strike]), Precise Aim
+  ([Ranged, Shot, Strike, Weapon]) and Killer's Focus ([Shot, Strike, Weapon]) don't apply to them (the book: a Linked Action keeps its own
+  traits). Lock & Loose and the Weapon Attack have no Shot either. The L1 Archer's main turn is **22.9** at Defense 13 (the old ruler gave
+  the Quarry's Boon to every attack: 24.8). If the Linked Actions counted as Shots: 26.8 (+17%); at L2 (with Wing Clip) 28.4 -> 29.6 at Escalation 3.
+  At level 1, Marked Quarry and Precise Aim help only Marksman's Shot (Encounter) and, from Escalation 2, Twin Shot's own roll. This is for D1.
+- **Smite 3 is worth more than the old ruler counted:** its Bright light makes enemies in it (the target too) roll an Appeal Save
+  (1d6 / 1d4 / 0): +2.3 on the target alone, so Smite 3 + two Weapon Attacks is 24.7 against Smite 2's 22.4 (ruler.mjs had them equal).
+- **Best turns:** Paladin L1 Divine Surge + Smite 3 + two Weapon Attacks 29.2 from Escalation 1; Paladin L2 Sacred Weapon + Divine Surge + Smite 2
+  + two Weapon Attacks 32.8;
+  Archer L1 Double Shot 3 + Twin Shot + Lock & Loose 33.5 from Escalation 2 (Twin Shot counted as two attacks: a high estimate).
+  A Reload Shot as the last attack is worth +3.1 (26.0 against 22.9), but the next turn pays 1 AP and a roll for the Reload (14.8 that turn): not worth it on a plan.
+- **Duels** (Defense 13 Standard, 57 Health): one PC kills it in about 3 rounds; it puts an Archer Down in about 4 rounds and the Paladin
+  in about 8 (AD 14 and Hallowed Stance). An Elite (120 Health) takes about 5 rounds and puts either Down in 2 to 3. NPC damage a turn
+  against an AD 13 PC: Minion 2.0, Grunt 4.9, Standard 7.7, Elite 16.8 (the book's targets: 3 to 4, 5, 7 to 8, 15).
+- **Party fights** (2 Paladins + 2 Archers, CV 4): 3 rounds (8 Grunts: 4), 28 to 38% of the party's Health lost, a PC Down in 1 to 16%
+  of the fights (2 Elites the most: 16%). The book's target is about 3 rounds and 40%: the length is on target, the Health lost is a little low
+  (the sim ignores NPC special Actions, which are part of what makes a fight cost 40%). CV 6 (6 Standards): 4 to 5 rounds, 48%, a PC Down in 27%.
+
+## The level 1 PC ruler (2026-10-24, the hand-written scripts)
 
 Computed by `book/ruler/ruler.mjs` with the system's own dice math (foundry/twod12/module/calc.mjs: exploding d12s, Doubles, boons and banes as 1d3-1),
 from the book's numbers: Weapon Modifier 2 at level 1 (Attribute 2), Greatsword 0 / 1d8 / 2d6, Crossbow 0 / 1d4+2 / 1d10+2, Smite, Wing Clip,
@@ -65,6 +149,8 @@ Health Pool: Human Paladin 36 / 39 / 42, Dwarf Paladin 41 / 44 / 48, Human Arche
 - **Rally Points:** the class's Rally value (Paladin 6, Archer 5) + ceil((Body + Mind + level) / 2), each removing ceil(Pool / 4): 1.6 to 2.4 Health Pools a day at level 1, 1.9 to 2.5 at level 3, 2.2 to 2.8 at level 5 (six builds: Human, Dwarf and Elf of each class).
 
 ## The scripts in this folder
+- `spec.mjs` with `classes/*.txt` and `fights.txt`: the spec-driven ruler (top of this file); it writes `report.md`.
+
 They import the system's dice math (`foundry/twod12/module/calc.mjs`) by a relative path: run them from anywhere with `node book/ruler/<name>.mjs` or `python3 book/ruler/<name>.py`.
 - `ruler.mjs`: the PC ruler above (a level 1 PC's damage a turn against AD 12 to 14).
 - `ratings.py`: writes the Bestiary's rating tables (levels as rows, ratings as columns); levels 2 and 3 scale NPC Health by the PCs' damage growth and NPC damage by the PCs' Health factor (a draft: `book/draft-bestiary-levels.md`).

@@ -5,6 +5,7 @@
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT implementation. This bundle has everything. Read this file first.
 
 ## Where we are now (v0.0.180, 145 tests; READ THIS FIRST)
+- **2026-10-29: the spec-driven ruler DONE** (branch pack-7-ruler-spec, its pull request; book/ruler only, no Foundry version): a class build is a plain file (book/ruler/classes/paladin-1.txt, -2, archer-1, -2: numbers, Actions with AP, Frequency, traits and Tiers, passives, turns, a plan by round), the fights are book/ruler/fights.txt, and `node book/ruler/spec.mjs` writes book/ruler/report.md (damage a turn against Defense 12 to 14, the best turn, rules checked: 5 AP, 3 Strikes, At-will Banes, Frequency, Escalation, Reload; duels: rounds to kill each NPC role and rounds for it to put the PC Down; a Monte Carlo party fight against six encounters). `--check` compares it with the exact dice math. Findings for D1 (rules-backlog, top): Double Shot's attacks have no Shot trait, so Marked Quarry barely applies; Smite 3 is worth +2.3 over Smite 2. **Next: D1** (prep with spec.mjs).
 - **2026-10-29: D0 DONE as v0.0.180, waiting for Lucas's test** (branch pack-6-chat-traits, its pull request): the chat cards (Action and Save) show tight trait chips (option E: no group labels, a line between groups, the group's name in the tooltip); everything else keeps the labeled groups of v0.0.179. Phase 1 (v0.0.170-179) is merged. **Next: the Phase 2 design sessions D1-D4** (prep documents first).
 - **2026-10-28: Pack 5 (F, the format) DONE as v0.0.179, waiting for Lucas's test** (branch pack-5-format, its pull request): trait groups (Roll, Requires, Kind, Damage, Keywords) with the book's tinted chips and labels, grouped trait pickers, weapon properties without color, the book's text colors on cards and sheets. **Phase 1 is complete** once it is merged (packs Q, M1, M2, R, F: v0.0.170-179). **Next: Phase 2, the design sessions** (D1 Archer, D2 Mastery/Groups/Gear, D3 Skills, D4 Magic/Momentum; their prep documents first).
 - **2026-10-28: v0.0.178** (branch pack-4-rules-sync): one Region shape per area (regionshape.mjs), drawn Regions snapped to whole squares when created.
@@ -32,7 +33,7 @@ A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT implementation. 
     rules_tools.py           the checks the build runs (links, glossary, cards, placeholders)
     rules.css, rules-assets/ the look of the book
     diagrams/                diagrams.py draws every diagram of the book; a chapter places one with @@DIAGRAM:name@@
-    ruler/                   the level 1 numbers: README.md (the PC ruler), ratings.py (the Bestiary's tables), defense.mjs, tablecheck.mjs, ruler.mjs... (they use the system's dice math; run them from anywhere)
+    ruler/                   the numbers: spec.mjs + classes/*.txt + fights.txt -> report.md (the spec-driven ruler, README.md "The spec files"); README.md (the PC ruler), ratings.py (the Bestiary's tables), defense.mjs, tablecheck.mjs, ruler.mjs... (they use the system's dice math; run them from anywhere)
     rules-backlog.md         THE LOG OF RULE DECISIONS and the open items of the book
   foundry/
     twod12/                  the Foundry system (id twod12, Foundry V14): module/, templates/, styles/, lang/, packs/, tools/, docs/reference.md, README.md

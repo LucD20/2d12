@@ -27,7 +27,8 @@ Sizes: S = under an hour of work, M = a normal session, L = a long session, XL =
 | ID | What | Size | Depends on |
 |---|---|---|---|
 | D0 | **DONE 2026-10-29 (v0.0.180): Lucas picked option E, tight chips, on the chat card only.** **Chat card traits (Lucas, 2026-10-28, after v0.0.179):** the trait groups on the chat card make the cards too long. Keep the grouped chips on the previews and the details (sheets, the roll dialog), but the chat card needs a condensed form that still gives the information (ideas for the prep: one line of small chips with no group labels, the group colors only; or the trait words as colored text on the meta line; or the groups on hover). Mockups first, then Lucas picks | S | nothing |
-| D1 | **Archer design:** Marked Quarry (worth about 7% of the Archer's damage), Sharpshooter, Hunter's Focus; then the final Level 1 text | M | nothing |
+| T | **DONE 2026-10-29 (no version: book/ruler only).** The spec-driven ruler: class builds in plain files (book/ruler/classes/*.txt), one script (spec.mjs) writes report.md: damage a turn, best turns, duels (rounds to kill, rounds to go Down) and a Monte Carlo party fight | M | nothing |
+| D1 | **Archer design:** Marked Quarry (worth about 7% of the Archer's damage in the old ruler; **the spec ruler finds it applies to almost nothing at level 1**: Double Shot's Linked Weapon Attacks, Lock & Loose and the Weapon Attack have no Shot trait, see rules-backlog), Sharpshooter, Hunter's Focus; then the final Level 1 text. Prep: edit classes/archer-1.txt per option and run spec.mjs | M | nothing |
 | D2 | **Weapon Mastery, Weapon Groups and Gear** (per-weapon Mastery, groups with a 1/3 head start, 1 Mastery per group per combat; the open points of the Mastery note) | L | D1 not needed |
 | D3 | **Skills** (16 skills, 4 per Attribute; how a skill roll works; Talents) | M | nothing |
 | D4 | **Magic and Momentum** (Magic Talents raw and primal; Momentum and the starting Escalation; the Engaged banes of [Ranged] Power Actions) | L | D3 helps |
@@ -48,6 +49,7 @@ Sizes: S = under an hour of work, M = a normal session, L = a long session, XL =
 
 **Phase 2: design sessions (the only place where back-and-forth is wanted; each is prepared).**
 6. **D0 Chat card traits** (DONE: v0.0.180, option E).
+6. **T The spec-driven ruler** (DONE 2026-10-29: book/ruler/spec.mjs; the D1 prep numbers come from it).
 6. **D1 Archer** first: it unblocks B1 and the Foundry content. Prep: three options (keep, remove with compensation, rework) with ruler numbers.
 7. **D2 Mastery, Groups and Gear**, then **D3 Skills**, then **D4 Magic and Momentum** (Skills before Magic: spells may use skills).
    Between sessions I run the autonomous book packs that are ready: B1 after D1, B2 and B3 at the end, B4 any time.
