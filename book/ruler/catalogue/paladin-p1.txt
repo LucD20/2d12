@@ -35,7 +35,7 @@ action Divine Surge | ap 0 | round | escalation 1 | traits divine | surge 1d8; g
 # Options (not in the default build): Shield of Faith (Turn Reaction), Bulwark of Faith (Encounter Reaction: Guard worth a Rally Point, used by the hit at once), Aura of Protection (Active Escalation)
 action Shield of Faith | ap 1 | turn | reaction | traits divine focus | block 1d6+[Mod]
 action Bulwark of Faith 1 | ap 1 | encounter | reaction | traits divine focus | block 9
-action Bulwark of Faith 2 | ap 2 | encounter | reaction | traits divine focus | block 9; push 2     # Slid 2 (priced as a push: E2)
+action Bulwark of Faith 2 | ap 2 | encounter | reaction | traits divine focus | block 9; slide 2     # Slid 2
 action Aura of Protection | ap 0 | encounter | escalation 1 | traits area divine | allies 2.5 | rounds 2.5 | defense 1 allies
 
 # The typical turn ("for the turn" buffs and passives are priced on it)

@@ -10,7 +10,8 @@ power-mod 2
 rally 5
 targeted 0.75
 
-weapon Crossbow (ranged, projectile, reload, two-handed): 0 / 1d4+2 / 1d10+2
+weapon Crossbow (ranged, projectile, reload, two-handed, range 10/20/40): 0 / 1d4+2 / 1d10+2
+speed 6               # Human 5, Archer +1 (the map model)
 
 action Steel Yourself 2 | ap 2 | round | traits self | heal 1 self     # Basic Action: you use 1 Rally Point
 action Weapon Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod]
@@ -32,4 +33,6 @@ turn Twin: Double Shot 3, Twin Shot, Wing Clip
 turn Steel: Steel Yourself 2, Double Shot 3
 
 plan Aimed Marksman, Double Shot + Wing Clip + Lock & Loose, Twin
+turn Kite: advance, Double Shot 3, Wing Clip
 when self below 35%: Steel
+when engaged: Kite     # the map model: it starts its turn next to an enemy, so it steps away first (Advance: 1 AP, Speed 6), then shoots with no Engaged Banes

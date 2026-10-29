@@ -1,0 +1,428 @@
+{
+ "1": {
+  "lv": 1,
+  "npc": [
+   {
+    "name": "Hindered (EoT)",
+    "rounds": [
+     2.0818333333333334,
+     1.4273333333333333,
+     0.8736666666666667
+    ],
+    "se": 0.17983776001142016,
+    "avg": 1.4609444444444444
+   },
+   {
+    "name": "Hindered until it moves (Lock & Loose)",
+    "rounds": [
+     0.594,
+     0.709,
+     0.7545
+    ],
+    "se": 0.14223121961557553,
+    "avg": 0.6858333333333334
+   },
+   {
+    "name": "Immobilized (EoT)",
+    "rounds": [
+     5.4445,
+     4.678166666666667,
+     3.984
+    ],
+    "se": 0.20292729539811324,
+    "avg": 4.702222222222223
+   },
+   {
+    "name": "Immobilized until it escapes (Interact, 1 AP)",
+    "rounds": [
+     1.5601666666666667,
+     1.593,
+     1.4183333333333332
+    ],
+    "se": 0.172678096951135,
+    "avg": 1.5238333333333332
+   },
+   {
+    "name": "Prone (Stand, 1 AP)",
+    "rounds": [
+     1.3356666666666666,
+     1.1255,
+     1.1396666666666666
+    ],
+    "se": 0.18291805227265748,
+    "avg": 1.2002777777777778
+   },
+   {
+    "name": "Slowed 1 (its next turn)",
+    "rounds": [
+     1.5871666666666666,
+     1.2743333333333333,
+     1.43
+    ],
+    "se": 0.17652702400398454,
+    "avg": 1.4305
+   },
+   {
+    "name": "Slowed 2 (its next turn)",
+    "rounds": [
+     3.4865,
+     3.886,
+     3.484
+    ],
+    "se": 0.19961911398126808,
+    "avg": 3.6188333333333333
+   },
+   {
+    "name": "Pushed 1 (from the nearest PC)",
+    "rounds": [
+     0.25116666666666665,
+     0.99,
+     1.284
+    ],
+    "se": 0.16674926286693975,
+    "avg": 0.8417222222222221
+   },
+   {
+    "name": "Pushed 2 (from the nearest PC)",
+    "rounds": [
+     0.41433333333333333,
+     0.7505,
+     1.1663333333333334
+    ],
+    "se": 0.1906781391143444,
+    "avg": 0.7770555555555555
+   },
+   {
+    "name": "Pushed 4 (from the nearest PC)",
+    "rounds": [
+     1.0293333333333334,
+     1.051,
+     1.2468333333333332
+    ],
+    "se": 0.2135553788443002,
+    "avg": 1.1090555555555557
+   },
+   {
+    "name": "Slid 2 (away from the PCs)",
+    "rounds": [
+     0.41433333333333333,
+     1.141,
+     1.4445
+    ],
+    "se": 0.18159162930414546,
+    "avg": 0.9999444444444444
+   },
+   {
+    "name": "Pulled 2 (toward the nearest Paladin)",
+    "rounds": [
+     3.1455,
+     0.13416666666666666,
+     0.27066666666666667
+    ],
+    "se": 0.20553885672787262,
+    "avg": 1.1834444444444445
+   },
+   {
+    "name": "Vulnerable 1 (EoT; E1 prices it 1.23)",
+    "rounds": [
+     0.4205,
+     0.5786666666666667,
+     0.8361666666666666
+    ],
+    "se": 0.05787773315680408,
+    "avg": 0.6117777777777778
+   }
+  ],
+  "pc": [
+   {
+    "name": "Hindered (EoT) on a Paladin",
+    "rounds": [
+     5.1765,
+     0.17866666666666667,
+     0.221
+    ],
+    "se": 0.14371113837023403,
+    "avg": 1.8587222222222222,
+    "sev": "Mild"
+   },
+   {
+    "name": "Hindered (EoT) on an Archer",
+    "rounds": [
+     -0.029,
+     0.04533333333333334,
+     -0.010833333333333334
+    ],
+    "se": 0.05560367427241083,
+    "avg": 0.0018333333333333337,
+    "sev": "Mild"
+   },
+   {
+    "name": "Pushed 2 on a Paladin",
+    "rounds": [
+     2.0203333333333333,
+     1.2413333333333334,
+     0.8536666666666667
+    ],
+    "se": 0.23090519455042766,
+    "avg": 1.3717777777777778,
+    "sev": "Mild"
+   },
+   {
+    "name": "Pushed 2 on an Archer",
+    "rounds": [
+     -1.5275,
+     -2.2161666666666666,
+     -1.8908333333333334
+    ],
+    "se": 0.2076216842556414,
+    "avg": -1.8781666666666668,
+    "sev": "Mild"
+   },
+   {
+    "name": "Prone on a Paladin",
+    "rounds": [
+     6.673166666666667,
+     5.834333333333333,
+     5.806166666666667
+    ],
+    "se": 0.13696322776299896,
+    "avg": 6.104555555555556,
+    "sev": "Moderate"
+   },
+   {
+    "name": "Prone on an Archer",
+    "rounds": [
+     5.409833333333333,
+     6.0296666666666665,
+     5.881
+    ],
+    "se": 0.14748453019943614,
+    "avg": 5.773499999999999,
+    "sev": "Moderate"
+   },
+   {
+    "name": "Immobilized (EoT) on a Paladin",
+    "rounds": [
+     13.1295,
+     2.007,
+     1.5595
+    ],
+    "se": 0.2733832463827551,
+    "avg": 5.565333333333334,
+    "sev": "Moderate"
+   },
+   {
+    "name": "Immobilized (EoT) on an Archer",
+    "rounds": [
+     1.3403333333333334,
+     2.804666666666667,
+     2.3388333333333335
+    ],
+    "se": 0.15468705588787846,
+    "avg": 2.161277777777778,
+    "sev": "Moderate"
+   },
+   {
+    "name": "Slowed 1 on a Paladin",
+    "rounds": [
+     6.248833333333334,
+     5.067833333333334,
+     5.092666666666666
+    ],
+    "se": 0.1242163649794339,
+    "avg": 5.469777777777778,
+    "sev": "Moderate"
+   },
+   {
+    "name": "Slowed 1 on an Archer",
+    "rounds": [
+     5.2205,
+     5.524166666666667,
+     5.413166666666666
+    ],
+    "se": 0.13872459685703908,
+    "avg": 5.385944444444444,
+    "sev": "Moderate"
+   },
+   {
+    "name": "Pushed 4 on a Paladin",
+    "rounds": [
+     4.472666666666667,
+     2.0953333333333335,
+     1.5223333333333333
+    ],
+    "se": 0.25729247340404415,
+    "avg": 2.6967777777777777,
+    "sev": "Moderate"
+   },
+   {
+    "name": "Immobilized until it escapes, on an Archer",
+    "rounds": [
+     3.0563333333333333,
+     4.7058333333333335,
+     3.8818333333333332
+    ],
+    "se": 0.1667064782312243,
+    "avg": 3.8813333333333335,
+    "sev": "Severe"
+   },
+   {
+    "name": "Slowed 2 on a Paladin",
+    "rounds": [
+     15.6575,
+     9.763833333333332,
+     9.992666666666667
+    ],
+    "se": 0.15972747298132495,
+    "avg": 11.804666666666668,
+    "sev": "Severe"
+   }
+  ],
+  "rules": [
+   {
+    "name": "Ranged while Engaged (2 Banes)",
+    "total": -0.14483333333333334,
+    "se": 0.010018059849499389,
+    "who": "Archer"
+   },
+   {
+    "name": "Ranged into melee (1 Bane)",
+    "total": -2.4204166666666667,
+    "se": 0.052067897434859366,
+    "who": "Archer"
+   },
+   {
+    "name": "Cover (creatures in the line, the map's cover)",
+    "total": -1.9417916666666666,
+    "se": 0.09225116428647744,
+    "who": "Archer"
+   },
+   {
+    "name": "Range (far 1 Bane, maximum 2)",
+    "total": -0.9355416666666667,
+    "se": 0.03417794864121854,
+    "who": "Archer"
+   },
+   {
+    "name": "Flanking (both sides)",
+    "total": -2.179333333333333,
+    "se": 0.07257224127518733,
+    "who": "Paladin"
+   }
+  ],
+  "builds": [
+   {
+    "name": "+1 Speed (Archer 6 → 7)",
+    "perTurn": 0.009324061444894127,
+    "se": 0.004432783286975864,
+    "who": "Archer",
+    "note": ""
+   },
+   {
+    "name": "-1 Speed (Archer 6 → 5)",
+    "perTurn": 0.00635091014803882,
+    "se": 0.010393002768695208,
+    "who": "Archer",
+    "note": ""
+   },
+   {
+    "name": "+1 Speed (Paladin 5 → 6)",
+    "perTurn": 0.042962003454231436,
+    "se": 0.006244543830445542,
+    "who": "Paladin",
+    "note": ""
+   },
+   {
+    "name": "-1 Speed (Paladin 5 → 4)",
+    "perTurn": -0.06879951643891803,
+    "se": 0.005541745736317838,
+    "who": "Paladin",
+    "note": ""
+   },
+   {
+    "name": "The Archer stands and shoots when Engaged (no Kite turn)",
+    "perTurn": -1.5052241321199864,
+    "se": 0.05984272172603378,
+    "who": "Archer",
+    "note": "the price of stepping away"
+   },
+   {
+    "name": "Opportunity Attack (the Paladin's Talent) removed",
+    "perTurn": 0,
+    "se": 0,
+    "who": "Paladin",
+    "note": "AP kept after its turn are rare: most turns spend 5"
+   },
+   {
+    "name": "The Paladin keeps 1 AP for Opportunity Attack (its last Weapon Attack dropped)",
+    "perTurn": -1.7772989443900318,
+    "se": 0.04251240970512365,
+    "who": "Paladin",
+    "note": ""
+   },
+   {
+    "name": "Steady Nerves always on (no Engaged Banes)",
+    "perTurn": 0.07773503891224619,
+    "se": 0.005376899463010675,
+    "who": "Archer",
+    "note": "the Archer kites, so it is rarely Engaged when it shoots"
+   },
+   {
+    "name": "Steady Nerves, an Archer that doesn't kite",
+    "perTurn": 1.9616758396046277,
+    "se": 0.030245596943915116,
+    "who": "Archer",
+    "note": "against the same Archer without it"
+   },
+   {
+    "name": "Long Draw (far range no Bane, maximum 1)",
+    "perTurn": 0.4967244270542202,
+    "se": 0.01827313367667825,
+    "who": "Archer",
+    "note": ""
+   },
+   {
+    "name": "Rolling Shot 1 for the step away (Evade 1 + a Weapon Attack for the Advance's AP)",
+    "perTurn": 2.1250537172324884,
+    "se": 0.057412200372798476,
+    "who": "Archer",
+    "note": "the Evade is worth the AP of the step away on the turns the Archer starts Engaged"
+   },
+   {
+    "name": "Every Standard has an Opportunity Attack; the Archer still steps away",
+    "perTurn": -0.2488866785722359,
+    "se": 0.04812799157931866,
+    "who": "Archer",
+    "note": "what it costs the party (map npc-reactions standard, elite)"
+   },
+   {
+    "name": "Every Standard has an Opportunity Attack; Rolling Shot 1 to step away",
+    "perTurn": 2.374075498156651,
+    "se": 0.044626355968412454,
+    "who": "Archer",
+    "note": "against the Advance away, in the same world"
+   }
+  ],
+  "stats": {
+   "archerTurns": 22308,
+   "shots": 76101,
+   "engagedShots": 0.02105097173493121,
+   "intoMelee": 0.7183479849147844,
+   "covered": 0.528008830370166,
+   "coverBanes": 0.5791908122100893,
+   "rangeBanes": 0.2629137593461321,
+   "mapBanes": 1.602554499940868,
+   "turnsEngaged": 0.4710866057019903,
+   "stillTurns": 0.6966110812264659,
+   "archerMoveAP": 0.4487627756858526,
+   "palMoveAP": 0.2537146302597011,
+   "palLostAP": 0.2537146302597011,
+   "flankBoons": 0.2130280488637139,
+   "oa": 0,
+   "struckPal": 0.6879638433706672,
+   "struckArcher": 0.3120361566293328
+  }
+ },
+ "measured": "2026-10-29",
+ "runs": 6000
+}

@@ -38,12 +38,14 @@ One thing per line; `#` starts a comment. A class file (`classes/paladin-1.txt` 
 | `armor`, `ward` | `armor 3` | AD = 11 + armor; WD = 11 + Power Modifier + ward |
 | `weapon-mod`, `power-mod`, `rally` | `rally 6` | Modifiers; the class's Rally value (Rally Points = rally + ⌈(Body + Mind + level) / 2⌉) |
 | `targeted` | `targeted 1.5` | How often NPCs choose this PC (1 = as often as anyone; a tank in front more, an archer behind less) |
-| `weapon` | `weapon Crossbow (ranged, projectile, reload): 0 / 1d4+2 / 1d10+2` | Its properties in brackets, then Tier 1 / 2 / 3. A [Weapon] Action takes Ranged or Melee from it, and Shot when it is Projectile |
+| `weapon` | `weapon Crossbow (ranged, projectile, reload, range 10/20/40): 0 / 1d4+2 / 1d10+2` | Its properties in brackets, then Tier 1 / 2 / 3. A [Weapon] Action takes Ranged or Melee from it, and Shot when it is Projectile. `range` (the map model): normal / far / maximum; melee 1 and ranged 10/20/40 by default |
+| `speed` | `speed 6` | The map model: species + class (Human 5; Archer +1) |
+| `reaction` | `reaction Opportunity Attack: opportunity` · `reaction Quick Draw: quick-draw` | The map model: Reactions it makes with the AP it keeps after its turn |
 | `action` | see below | One Version of an Action (write Versions as `Smite 2`, `Smite 3`: they share Frequency) |
 | `passive` | `passive Marked Quarry: boon 1 shot strike quarry` · `passive Killer's Focus: escalation 2: extra 1d6 first shot strike weapon` | Always on (from an Escalation) |
-| `turn` | `turn Main: Smite 2, Weapon Attack, Weapon Attack, move 1` | A turn: Actions in order; `move N` spends AP; `(reload shot)` after a Weapon Action makes it a Reload Shot; `(keep 2)` after an Escalation Active spends it only if 2 are left after (holding for a passive) |
+| `turn` | `turn Main: Smite 2, Weapon Attack, Weapon Attack, move 1` | A turn: Actions in order; `move N` spends AP (the map model: only when it moves); `advance`, `evade 1`, `evade 2` (the Basic Actions: Speed, 1 square, half Speed); `(reload shot)` after a Weapon Action makes it a Reload Shot; `(keep 2)` after an Escalation Active spends it only if 2 are left after (holding for a passive) |
 | `plan` | `plan Opening, Main` · `plan Nova, Consecrate \| Main, Main` | The turn of round 1, round 2...; the last one repeats. `A \| B`: A while its Encounter and Daily Actions are unused (a Daily only in a hard fight), else B |
-| `when` | `when ally below 50%: Heal` · `when self below 35%: Steel` · `when unloaded: Reload turn` | A turn that replaces the plan's |
+| `when` | `when ally below 50%: Heal` · `when self below 35%: Steel` · `when unloaded: Reload turn` · `when engaged: Kite` | A turn that replaces the plan's (`engaged`: the map model, it starts its turn next to an enemy) |
 
 An `action` line is fields separated by `|`: the name, then any of
 `ap N` · a Frequency (`at-will`, `turn`, `round`, `encounter`, `daily`) · `traits a b c` · `vs ad` / `vs wd` / `vs save instinct` / `vs dc 13` ·
@@ -59,14 +61,16 @@ Effects: `on 2+: ...`, `on 3: ...`, `on 1: ...` or `always: ...`, several separa
 `mend 1d8 any` (new Health, not a Rally Point: `any` the most hurt of you and your allies, `ally`, `self`) · `surge 1d8` (the next ally who damages the target before your next turn deals that extra, credited to you) ·
 `banes N strike power` with `area`/`rounds` (the enemies in the area take N Banes on their Strikes while it lasts) · `heal-dice 1d4` with `allies`/`rounds` (they heal it at the start of their turns) ·
 `bonus N <traits>` (a passive: +N damage on matching Actions that deal damage) · `rally-bonus N` (a passive: you and your allies heal N more for each Rally Point; the best one in the party counts) ·
-`block 1d6+[Mod]` (price list only: a ward Reaction that takes that much off one hit on an ally). The traits after `next` must all be on the Action (the book's [Shot, Strike] rule);
+`block 1d6+[Mod]` (price list only: a ward Reaction that takes that much off one hit on an ally) ·
+`debuff Hindered (EoT)` / `debuff Hindered (until it moves)` / `debuff Immobilized (EoT)` / `debuff Immobilized` (until it escapes) / `debuff Prone` / `debuff Slowed 1` (the map model puts them on the NPC) · `push N` / `pull N` / `slide N` (Forced Movement) · `evade N` (you Evade before the roll: Rolling Shot) ·
+`cover` (your next Strike ignores Cover) · passives `steady-nerves` and `long-draw`. The traits after `next` must all be on the Action (the book's [Shot, Strike] rule);
 `quarry` limits it to your Marked Quarry.
 
 The fight (`fights.txt`): `level`, `runs`, `defenses`, `party Paladin, Paladin, Archer, Archer`, and `encounter <name>: 4 standard` or
-`1 elite, 2 standard high` (a rating after the role, Medium by default). Days: `day-runs 1000`, `day <name>: <fight> | <fight> | ...` and
+`1 elite, 2 standard high` (a rating after the role, Medium by default; `ranged` for a ranged Basic attack, `speed-6` for another Speed). The map model's settings: `map on` / `map off`, `map start 8`, `map back 2`, `map cover 5% 2, 15% 1`, `map npc-reactions elite` (map.mjs `MAP`). Days: `day-runs 1000`, `day <name>: <fight> | <fight> | ...` and
 `day-party <name>: paladin-smite-1, archer-1, ...` (class file names; the NPCs use the party's level). A Daily Action is kept for a hard fight (CV 1.25 or more per PC) or the last fight of the day. `party` takes file names too. NPCs are the Bestiary's at that level with Foundry's default
-ratings (Body High, the rest Medium): a Standard has 57 Health, Defense 13, Modifier +2. What the fight leaves out: movement and
-positions, Reactions, Rally Points used by the PCs themselves, NPC special Actions, Body and Mind as two pools.
+ratings (Body High, the rest Medium): a Standard has 57 Health, Defense 13, Modifier +2. What the fight leaves out: Rally Points used by the PCs themselves, NPC special Actions, Body and Mind as two pools,
+and (with `map on`) walls, Difficult Terrain, elevation and Large creatures; with `map off`, all positions and Reactions.
 
 ### Results (2026-10-29, level 1 unless said; the full tables: `report.md`)
 
@@ -121,6 +125,51 @@ Rally Points carry over; Encounter Actions and Escalation start again each fight
   is lost in 27% (L1) to 45% (L2) of the days; alone, 6 Standards are lost 4% of the time. **Level 2 is harder than level 1** against the Bestiary's
   level 2 NPCs (Standard day cleared 55% against 73%): the Bestiary grows NPC Health by the best turn's growth (+14%), but in real fights the PCs' damage a turn grows 2 to 6%.
 
+## Positions: the map model (pack E2, 2026-10-29): `map.mjs`, `positions.mjs`
+
+The fights of `spec.mjs` now happen on a grid (`map on` in fights.txt; `map off` gives the old fight, and the report shows both). **`map.mjs`** has the geometry and
+the book's rules (Chapter 3): distances with every second diagonal 2, Engaged, [Ranged] 2 Banes while Engaged and 1 Bane into melee, Cover (a creature on the line
+from center to center, and the map's own cover drawn per shot: 5% Medium, 15% Low), far and maximum range, Flanking for both sides, Prone, Hindered, Immobilized,
+Slowed, Pushed / Pulled / Slid, Evade, Opportunity Attack and Quick Draw with the AP kept after a turn. **The fight** (`fight()` in spec.mjs):
+
+- **Start:** the melee PCs on a line, the ranged PCs 2 squares behind and to the sides, the NPCs 8 squares away (ranged NPCs 3 more): a crossbow starts in normal range.
+- **A melee PC** closes in before its Actions (a Charge when it can: 2 AP, 1 Boon on its first Weapon Attack); the AP it spends moving drop the turn's last Actions (a lower Version first, else a Weapon Attack).
+- **A ranged PC** that starts its turn Engaged takes its `when engaged` turn (`turn Kite: advance, Double Shot 3, Lock & Loose`): it steps away from the enemies (an Evade 1 next to an NPC with an Opportunity Attack), staying in normal range of its target.
+- **An NPC** stands up from Prone (1 AP), ends Immobilized with Interact (1 AP) when it must move, chooses the PC it can strike most after moving (and a hurt one a little more), moves and strikes. Its Bestiary Strikes keep 1 AP for moving: a Standard has 2 Strikes with 5 AP, so a second Advance costs half a Strike. NPC Opportunity Attacks: Elites only (`map npc-reactions`).
+- Left out: walls and Line of Effect (an open field), Difficult Terrain, Collision, Large creatures, elevation. So Speed buys little (see below).
+
+**`positions.mjs`** prices movement and conditions (about 13 minutes; it writes `positions.json`, which `econ.mjs` reads for prices.md section 5; run it again after
+changing map.mjs, the fight, or `paladin-smite-1` / `archer-1`). Each price is a pair of fights with the same dice (each creature rolls its own dice stream, so a change
+to one leaves the others' rolls alone), the change in one: the party of a Standard day against 4 Standards that don't die, 6,000 pairs, 2 rounds from the round the
+condition is put on (rounds 1, 2 and 3 averaged). **Value = damage dealt more + damage taken less.**
+
+### What positions found (level 1; the tables: prices.md section 5, report.md)
+
+- **Positions cost the Archer a fifth of its damage.** Real sustained damage a turn: Archer 121% → **96%** of the baseline (its budget is 100-105%), the Smite Paladin
+  87% → 81%. The Archer's shots carry **1.6 Banes from the map** on average: 72% of them go into melee (the target is Engaged with a Paladin: 1 Bane, 2.4 DE a round for the
+  party), 53% have Cover, mostly a creature in the line (1.9 DE a round), and range costs 0.9. The 2 Banes for shooting while Engaged cost nothing, because the
+  Archer steps away (47% of its turns start Engaged; stepping away is worth 1.5 DE a turn against standing and shooting).
+- **Hard fights get much harder; normal ones don't.** A normal fight costs the same Health (4 Standards: 14%), but every fight lasts longer (3.0 → 3.4 rounds) and the
+  NPCs focus the hurt PCs: the P1 Smite party's Standard day is cleared 79% of the time (95% without positions), Downs a day 0.8 → 2.3, and its hard fight (2 Elites +
+  2 Standards) costs 60% of the party's Health (45%). Not Flanking (NPCs flank the Paladins: 2.2 DE a round for them, and taking it away changes the hard fight by 3%) nor
+  Opportunity Attacks: the PCs' lower damage makes the fight a round longer. Pack E3 (the Bestiary refit) must use the map.
+- **Conditions on one Standard** (DE; 1 AP = 4.66): Immobilized (EoT) **4.7** (an AP: a melee NPC that can't reach loses its Strikes), Slowed 2 3.6, Hindered (EoT) 1.5,
+  Immobilized until it escapes 1.5, Slowed 1 1.4, Prone 1.2, Pulled 2 1.2 (3.2 while it closes in), Pushed 1 to 4 **0.8 to 1.1** (the NPC walks back with its spare AP: the
+  distance hardly matters), Slid 2 1.0, Lock & Loose's Hindered until it moves 0.7, Vulnerable 1 (EoT) 0.6 (E1 assumed 1.23: fewer party attacks reach it than 2.5).
+- **The Bestiary's condition steps, checked on the PCs** (one step on a Standard's 2 AP Special is about 2.1 DE): Prone and Slowed 1 are worth **about 3 steps**
+  (the Bestiary: Moderate, 2), Slowed 2 **5.7** (Severe, 3), Pushed 2 and 4 about 0.7 and 1.3 (Mild 1, Moderate 2), Immobilized until it escapes 1.9 (Severe 3),
+  Hindered 0 on an Archer and 0.9 on a Paladin (Mild 1). Losing AP is the expensive kind; movement conditions are cheap. For E3.
+- **Speed is worth nothing on an open field:** ±1 Speed changes 0.0 to 0.07 DE a turn for either class. Every Advance costs 1 AP whatever its length, and there is no
+  terrain to go around. Speed needs walls and Difficult Terrain to be priced (not modeled).
+- **Opportunity Attack, the P1 Paladin's level 1 Talent, is worth 0:** the Paladin spends all 5 AP every turn, so it never has AP left for a Reaction, and keeping 1 AP
+  costs 1.8 DE a turn (its last Weapon Attack). For the Options step (a Talent the default build can use).
+- **Evade** is worth the AP of the step away on the turns the Archer starts Engaged: Rolling Shot 1 (Evade 1 + a Weapon Attack) is 2.1 DE a turn better than the Advance
+  (efficiency 1.65: over), 2.4 if every Standard had an Opportunity Attack. Steady Nerves is worth 0.1 to a kiting Archer, 2.0 (8% of a turn) to one that stands and shoots.
+  Long Draw 0.5. True Shot 0.07 of its band (ignores 0.58 Banes of Cover on one shot). Patient Hunter's condition holds on 70% of the Archer's turns.
+- **Measured instead of assumed:** an NPC Strike goes to each Paladin 34% of the time and to each Archer 16% (the `targeted` weights 1.5 / 0.75 gave 33% / 17%:
+  confirmed); econ.mjs now uses these for Hunter's Focus (0.16, was 0.3) and Champion's Challenge (0.66, was 0.75). Perfect Shot was priced at 0 (its "favored next..."
+  was read as the Action's own Favored): fixed, 16% of a turn.
+
 ## The Paladin main build (pack P1, 2026-10-29): PROPOSED
 
 `classes/paladin-smite-1..3.txt` and `paladin-hands-1..3.txt` are the P1 main build with each Signature (`paladin-smite-1-hold.txt`: the same, holding
@@ -163,7 +212,7 @@ Encounter 1.4-2.0, Daily 2.0-3.0. **Escalation timing** in a Standard day (nothi
 - **Role budgets** (real damage a turn in the simulated day, Nova, Health, as a share of the baseline; after the Escalation fix): Paladin L1 117% / 104% / 114% against a budget of 85-90% / 150-180% / 120-130%; Archer L1 107% / 82% / 86% against 100-105% / 110-130% / 80-85%.
   The Paladin deals too much sustained damage; neither class has a Nova; the Paladin needs more Health.
 - **Against the roles:** Hallowed Stance (the Paladin, fine: a tank stands) and **Patient Hunter** (the Archer: a Boon only while it doesn't move, against "very mobile").
-- **Not priced yet (pack E2, positions):** Evade, Push, Cover, range, Hindered, Immobilized, Prone, the Boon on Saves (NPC Save Actions), ending an effect: Rolling Shot, Vanish, True Shot, Lock & Loose's and Pinning Shot's riders, Hand of Mercy and Long Draw get "+ E2": their verdicts aren't final.
+- **Not priced yet (pack E2, positions):** Evade, Push, Cover, range, Hindered, Immobilized, Prone, the Boon on Saves (NPC Save Actions), ending an effect: Rolling Shot, Vanish, True Shot, Lock & Loose's and Pinning Shot's riders, Hand of Mercy and Long Draw get "+ E2": their verdicts aren't final. **Priced since pack E2** (above), except the Boon on Saves and hazardous areas ("+ ?").
 
 ## The level 1 PC ruler (2026-10-24, the hand-written scripts)
 
@@ -234,6 +283,8 @@ Health Pool: Human Paladin 36 / 39 / 42, Dwarf Paladin 41 / 44 / 48, Human Arche
 ## The scripts in this folder
 - `spec.mjs` with `classes/*.txt` and `fights.txt`: the spec-driven ruler (top of this file); it writes `report.md`.
 - `econ.mjs` with `catalogue/*.txt`: the price list of the core rules (pack E1); it writes `prices.md`.
+- `map.mjs`: the map model (pack E2): grid, movement, Banes and Boons of positions, conditions, Forced Movement; `spec.mjs` uses it (`map on`).
+- `positions.mjs`: the prices of positions (pack E2); it writes `positions.json` (econ.mjs reads it).
 
 They import the system's dice math (`foundry/twod12/module/calc.mjs`) by a relative path: run them from anywhere with `node book/ruler/<name>.mjs` or `python3 book/ruler/<name>.py`.
 - `ruler.mjs`: the PC ruler above (a level 1 PC's damage a turn against AD 12 to 14).
