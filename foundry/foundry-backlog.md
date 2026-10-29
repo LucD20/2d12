@@ -1,9 +1,9 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.179**. Tests: `node tools/tests/run.mjs` (144 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.180**. Tests: `node tools/tests/run.mjs` (145 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
 
 ## Asked by Lucas, not built
-- [ ] **Chat card traits too long (Lucas, after v0.0.179; design session D0 in MASTER-PLAN.md):** the grouped trait chips stay on the previews and details (item sheets, the roll dialog's preview), but the chat card gets a condensed form that still gives the information. Mockups first; built in the next Foundry version after Lucas picks one.
+- [x] (v0.0.180) **Chat card traits too long (Lucas, after v0.0.179; design session D0 in MASTER-PLAN.md):** the grouped trait chips stay on the previews and details (item sheets, the roll dialog's preview). **Lucas picked option E (tight chips). Built in v0.0.180**, on the chat cards only (Action and Save cards): same groups, order, colors and 16% tint, no group labels, no visible outline, 16px high, 10.5px text, 4px horizontal padding, 2px gap, a 1px x 10px line between groups (hidden at the edge of a wrapped row), the group's name (then the rule) as the tooltip. The item sheets, the Actions tab, the pickers and the roll dialog's preview keep the grouped chips with labels (v0.0.179). Options F (chips on the Target row), G (hide traits the card already shows) and H (E + F + G) were not chosen; they can come back later.
 - [x] (v0.0.174) **The grey tiers table** (Lucas, test of v0.0.173): the element was `table.tiers` (the chat-style card the item sheet also shows), not `ac-tiers`; the theme painted the table and its cells. Fixed in v0.0.174, the v0.0.173 attempt removed.
 - [x] (v0.0.168; Lucas reordered the Action Details: Traits, Flavor, Reaction + Kind, Category/Level/Frequency/Escalation cost, Targets/Distance/Vs., Area, Setup, Requirements, [Prerequisites kept], Interrupt/Trigger; Kind and Trigger greyed until Reaction) **Polish pass:** (a) the **Tiers** in the Edit Versions window (right click an Action, Edit) have a weird dark background; (b) a numeric **Range** on the Actions tab (Vow of Enmity: "5") reads **"5 sq."** (words like Weapon/Reach/Self and bands like 10/20/40 stay); (c) the **Effect's Details tab** gets the sheet's look (parchment, dark text); (d) **Action, Feature, Talent and Weapon Details** in the same style (Class and Species later, when they are redone).
 - [x] (v0.0.172, pack Q) **Next version (Lucas, after v0.0.168):** (a) the **Traits field of a Talent** (and of other item sheets where it is still the plain tag box) should be a **drop-down selection like the Action's**; (b) **no button to hide the help tips** on the Talent and Action sheets (the Effect has "Show help"): add one to both.
@@ -51,6 +51,7 @@ Current version: **v0.0.179**. Tests: `node tools/tests/run.mjs` (144 tests, see
 - v0.0.164: Builder fixes (colors, click-to-clear, custom numbers with warnings, Speed row, CV, Level -/+); shield AD/WD; Global Illumination on new scenes; a Default Scene; Quick Insert switched on.
 - v0.0.165: the Line of Effect button; Strike rows' red line; the sheet keeps its scroll; shield Bo/Mi/Ap/In.
 - v0.0.166: Leaning cover from the vision peek point; the Cover height calculation side view.
+- v0.0.180: D0, tight trait chips on chat cards (option E).
 - v0.0.179: F, the format (trait groups, tinted chips, weapon properties without color, the book's text colors).
 - v0.0.178: an area kept on the map is one Region shape (an outline polygon); a Region drawn by hand is put on whole squares when created (a circle becomes the Emanation or Burst of its size).
 - v0.0.177: lights reach an N Emanation wherever they come from (scene lights, tokens; a light on a corner is a Burst); Regions snap to whole squares.

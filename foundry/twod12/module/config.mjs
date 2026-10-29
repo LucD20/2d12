@@ -279,12 +279,22 @@ export const traitColor = k => `var(--g-${traitGroupOf(k)})`;
  * Trait chips (v0.0.179, the book's look): a block per trait group, in the order Roll, Requires, Kind, Damage, Keywords, alphabetical inside a group,
  * each with a small uppercase label over its chips and a thin line between blocks; the chips are tinted in the group's color.
  * properties: a weapon's properties (Melee, Ranged, Thrown...): plain neutral chips, no groups and no color.
+ * compact (v0.0.180, D0 option E, chat cards only): the same groups, order and colors as tight chips with no group labels and a short line
+ * between groups; each chip's tooltip starts with its group's name. The sheets, the pickers and the roll dialog keep the labeled groups.
  */
-export function traitChevrons(traits, { properties = false } = {}) {
+export function traitChevrons(traits, { properties = false, compact = false } = {}) {
   const label = k => String(TWOD12.traits[k] ?? k), byLabel = (a, b) => label(a).localeCompare(label(b));
-  const chip = (k, cls = "") => `<span class="tchip${cls}" data-tooltip="${escAttr(TWOD12.traitHelp[k] ?? "TBD")}">${escAttr(label(k))}</span>`;
+  const help = k => TWOD12.traitHelp[k] ?? "TBD";
+  const chip = (k, cls = "", tip = help(k), style = "") => `<span class="tchip${cls}"${style ? ` style="${style}"` : ""} data-tooltip="${escAttr(tip)}">${escAttr(label(k))}</span>`;
   const list = [...(traits ?? [])];
   if (properties) return list.length ? `<span class="tprops">${list.sort(byLabel).map(k => chip(k, " prop")).join("")}</span>` : "";
+  if (compact) {
+    const blocks = TWOD12.traitGroups.map(g => {
+      const ks = list.filter(k => traitGroupOf(k) === g.key).sort(byLabel);
+      return ks.map(k => chip(k, ` tc tg-${g.key}`, `${g.label} \u00b7 ${help(k)}`, `--tg:var(--g-${g.key})`)).join("");
+    }).filter(Boolean);
+    return blocks.length ? `<span class="tcompact">${blocks.join('<span class="tsep" aria-hidden="true"></span>')}</span>` : "";
+  }
   return TWOD12.traitGroups.map(g => {
     const ks = list.filter(k => traitGroupOf(k) === g.key).sort(byLabel);
     return ks.length ? `<span class="tg tg-${g.key}" style="--tg:var(--g-${g.key})"><span class="tgl">${g.label}</span><span class="tgc">${ks.map(k => chip(k)).join("")}</span></span>` : "";

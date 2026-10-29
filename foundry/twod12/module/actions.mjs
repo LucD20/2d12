@@ -47,7 +47,7 @@ export function versionRow(v) {
   return { ap: v.ap, effects: v.effects, tiers: ["t1", "t2", "t3"].map((k, i) => [...v[k].map(instanceText), v[`x${i + 1}`]].filter(Boolean).join(" & ") || "-") };
 }
 export const targetLine = ts => `<div class="tline">${ts.length ? `<i class="fa-solid fa-crosshairs"></i> ${esc(ts.map(t => t.name).join(", "))}` : ""}</div>`;
-const traitsHtml = traitChevrons;
+const traitsHtml = t => traitChevrons(t, { compact: true });   // v0.0.180: the chat card shows tight chips (D0, option E)
 
 function weaponFormula(d, n) {
   const dice = d.die ? d.count * n : 0, mod = d.mod * n;

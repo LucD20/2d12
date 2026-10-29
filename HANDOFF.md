@@ -4,7 +4,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT implementation. This bundle has everything. Read this file first.
 
-## Where we are now (v0.0.179, 144 tests; READ THIS FIRST)
+## Where we are now (v0.0.180, 145 tests; READ THIS FIRST)
+- **2026-10-29: D0 DONE as v0.0.180, waiting for Lucas's test** (branch pack-6-chat-traits, its pull request): the chat cards (Action and Save) show tight trait chips (option E: no group labels, a line between groups, the group's name in the tooltip); everything else keeps the labeled groups of v0.0.179. Phase 1 (v0.0.170-179) is merged. **Next: the Phase 2 design sessions D1-D4** (prep documents first).
 - **2026-10-28: Pack 5 (F, the format) DONE as v0.0.179, waiting for Lucas's test** (branch pack-5-format, its pull request): trait groups (Roll, Requires, Kind, Damage, Keywords) with the book's tinted chips and labels, grouped trait pickers, weapon properties without color, the book's text colors on cards and sheets. **Phase 1 is complete** once it is merged (packs Q, M1, M2, R, F: v0.0.170-179). **Next: Phase 2, the design sessions** (D1 Archer, D2 Mastery/Groups/Gear, D3 Skills, D4 Magic/Momentum; their prep documents first).
 - **2026-10-28: v0.0.178** (branch pack-4-rules-sync): one Region shape per area (regionshape.mjs), drawn Regions snapped to whole squares when created.
 - **2026-10-28: v0.0.177** (branch pack-4-rules-sync): lights reach an N Emanation wherever they come from (lightradius.mjs), Regions snap to whole squares.
@@ -43,7 +44,7 @@ Python needs `markdown`. Node 22 is enough for the tests.
 
 ## Commands
 - Book: `cd book && python3 build_rules.py` (builds the seven documents; "unresolved refs: 0" is the goal). `python3 build_rules.py --where Flanking`.
-- System tests: `cd foundry/twod12 && node tools/tests/run.mjs` (138 tests; each has an expected output in tools/tests/expected; accept a meant change with `node tools/tests/run.mjs --update t84`). **Test numbers have gaps (t12b, t37b; t133 is old, new ones are t135-t146): check before creating a test file.** Lint: `npx eslint@8 --no-eslintrc -c tools/eslint.json --ext .mjs module`.
+- System tests: `cd foundry/twod12 && node tools/tests/run.mjs` (138 tests; each has an expected output in tools/tests/expected; accept a meant change with `node tools/tests/run.mjs --update t84`). **Test numbers have gaps (t12b, t37b; t133 is old, new ones are t135-t147): check before creating a test file.** Lint: `npx eslint@8 --no-eslintrc -c tools/eslint.json --ext .mjs module`.
 - Compendiums: the content is written in `tools/content.mjs` and compiled with the Foundry CLI: in foundry/ run `npm install @foundryvtt/foundryvtt-cli` (it creates node_modules and package files there: never ship them), then `node twod12/tools/build-packs.mjs`.
 - Package for the user: bump `version` in system.json, add the changelog entry to docs/reference.md (copy it to foundry/reference.md), zip the `twod12` folder (without node_modules) as `twod12.zip`, run the tests from a fresh unzip. The project zip leaves out node_modules, package files and __pycache__.
 

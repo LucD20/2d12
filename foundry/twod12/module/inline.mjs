@@ -491,7 +491,7 @@ async function saveCardHtml(st) {
     const parts = parseParts(cfg.tiers[`t${n}`]), rolled = st.tierDmg?.[`t${n}`];
     rows.push(`<tr class="t${n}"><th data-tooltip="Tier ${n}">${labels[n - 1]}</th><td>${rolled ? await tierRolled(parts, rolled) : await tierSummary(parts)}</td></tr>`);
   }
-  const traits = cfg.traits.length ? `<div class="traits">${traitChevrons(cfg.traits)}</div>` : "";
+  const traits = cfg.traits.length ? `<div class="traits">${traitChevrons(cfg.traits, { compact: true })}</div>` : "";   // a chat card: tight chips (v0.0.180)
   const targets = st.rows.map((r, i) => {
     const res = r.result;
     const mid = res ? `<span class="shield small ${res.total >= dc ? "win" : "lose"}" data-tooltip="${esc(res.tip)}"><b class="rtotal">${res.total}</b><small class="vsdc">DC ${dc}</small></span>` : `<button type="button" data-twod12="saveRoll" data-idx="${i}">${esc(attr)}</button>`;

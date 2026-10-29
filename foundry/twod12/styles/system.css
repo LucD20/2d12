@@ -1524,3 +1524,13 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 .twod12 .pool-b { color: var(--c-body); } .twod12 .pool-m { color: var(--c-mind); }
 /* Body and Mind keep their heart and brain icons, in their colors */
 .twod12 i.dt-body { color: var(--c-body); } .twod12 i.dt-mind { color: var(--c-mind); }
+
+/* ---- v0.0.180 (D0, option E): the chat card's trait chips are tight. The same groups, order, colors and 16% tint as v0.0.179, but no group labels,
+   no visible outline (the border stays, transparent), 16px high, 10.5px text, 2px between chips (3px between rows), and a 1px x 10px line between
+   groups (3px each side: the 2px gap + 1px margin). The line's color is the same light line as the v0.0.179 group separators. Only the chat cards use it. */
+.twod12 .tcompact { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 3px 2px; vertical-align: middle; }
+.twod12 .tcompact .tchip.tc { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; height: 16px; margin: 0; padding: 0 4px; border-radius: 3px;
+  font-size: 10.5px; font-weight: 600; line-height: 1; color: var(--tg); box-shadow: none;
+  background: color-mix(in srgb, var(--tg) 16%, transparent); border: 1px solid transparent; }
+.twod12 .tcompact .tsep { display: inline-block; flex: none; width: 1px; height: 10px; margin: 0 1px; background: color-mix(in srgb, currentColor 22%, transparent); }
+.twod12 .tcompact .tsep.edge { display: none; }   /* at the start or end of a wrapped row (chatchips.mjs) */

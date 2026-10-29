@@ -4,6 +4,7 @@ The Foundry VTT system of the 2d12 homebrew RPG (id `twod12`). The version is in
 
 - **Install:** copy the `twod12` folder into `Data/systems/` (or unzip `twod12.zip` there), restart Foundry and create a world with this system.
 - **How it works, and the changelog:** `docs/reference.md`. The rules are in the book (Core Rules and its documents).
+- **Traits (v0.0.180):** on sheets, the pickers and the roll dialog's preview they are grouped chips with labels (Roll, Requires, Kind, Damage, Keywords, as in the book); on chat cards they are tight chips with a short line between groups and the group's name in the tooltip.
 - **Recommended module:** Quick Insert (switched on once per world when it is installed).
 
 ## Tests

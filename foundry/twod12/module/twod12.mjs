@@ -8,6 +8,7 @@ import { registerLoE } from "./loe.mjs";
 import { solidTiles, tileConfigSolid } from "./corners.mjs";
 import { registerLightRadius } from "./lightradius.mjs";
 import { registerRegionSnap } from "./regionshape.mjs";
+import { chatChips } from "./chatchips.mjs";
 import { registerEscalationHooks } from "./escalation.mjs";
 import { registerArmorHooks } from "./armor.mjs";
 import { registerFloatText } from "./floattext.mjs";
@@ -196,6 +197,7 @@ function collapsibleCards(msg, html) {
   head?.addEventListener("click", () => root.classList.toggle("collapsed"));
 }
 Hooks.on("renderChatMessageHTML", collapsibleCards);
+Hooks.on("renderChatMessageHTML", chatChips);   // v0.0.180: no line between trait groups at the start or end of a wrapped row
 // v0.0.177: a light of size N reaches an N Emanation (the half square Foundry leaves out is added), and Regions snap to whole squares.
 Hooks.once("setup", () => { try { registerLightRadius(); } catch (e) { console.warn("twod12 | light radius", e); } });
 registerRegionSnap();   // v0.0.178: a Region drawn by hand is snapped to whole squares when it is created (a circle becomes the area of its size)

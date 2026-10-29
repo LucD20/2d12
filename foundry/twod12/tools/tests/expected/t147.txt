@@ -1,0 +1,17 @@
+--- the chat card's tight chips
+Smite (4 groups):     Weapon(roll: "Roll") | Melee(requires: "Requires") | Strike(kind: "Kind") | Divine(keywords: "Keywords")
+Relocate (4 traits):  Body(roll: "Roll") Instinct(roll: "Roll") | Handle(requires: "Requires") | Strike(kind: "Kind")
+5 groups:             Power(roll: "Roll") | Ranged(requires: "Requires") | Area(kind: "Kind") | Nonlethal(damage: "Damage") | Focus(keywords: "Keywords")
+one group:            Body(roll: "Roll") | no traits: ""
+no group labels: true | the tooltip is the group, then the rule: Roll · Requires a weapon. Rolls your Weapon Modifier. On a Tier 2 or 3, your Weapon Attribute is added to the weapon's damage.
+the sheets keep the labeled groups: true | weapon properties stay neutral: true
+--- who uses which
+the Action chat card: true | the Save card: true | the item sheet card, the roll dialog's preview and the weapon card stay labeled: true
+--- a line is never left at the start or end of a wrapped row
+one row (chip chip | chip | chip)            []
+the row breaks right after a line            [1]
+the row breaks right before a line           [2]
+the row breaks inside a group                []
+--- the CSS
+16px high, 10.5px text, 4px padding, 3px radius: true | the 16% tint, no visible outline: true | 2px between chips, 3px between rows: true | a 1px x 10px line, 3px each side: true | hidden at a row's edge: true
+measured when a chat message is drawn: true
