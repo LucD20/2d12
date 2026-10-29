@@ -31,7 +31,7 @@ action Holy Wrath 2 | ap 2 | encounter | traits divine strike weapon | vs ad | t
 action Holy Wrath 3 | ap 3 | encounter | traits divine strike weapon | vs ad | tiers [B] 1[W] + [M] 3d8 / [B] 1[W] + [Mod] + [M] 5d8 / [B] 1[W] + [Mod] + [M] 7d8
 
 # Escalation (level 1): Divine Surge (active) and Hallowed Stance (passive)
-action Divine Surge | ap 0 | round | traits divine | escalation 1 | always: surge 1d8     # the next ally who damages the target before your next turn deals +[M] 1d8
+action Divine Surge | ap 0 | round | traits divine | escalation 1 | always: surge 1d8; always: guard 2d6 self     # the next ally who damages the target before your next turn deals +[M] 1d8
 passive Hallowed Stance: escalation 2: reduce 2 adjacent 1     # you and adjacent allies: Body damage reduced by the Power Modifier (the turns never move)
 
 # Talent (level 2, a stand-in for the Talents pack): Heavy Blows

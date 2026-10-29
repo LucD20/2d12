@@ -272,3 +272,14 @@ party's Health lost (the book's target is about 40%), a PC Down in 0 to 6% of th
    (it heals 13 a day there): it is the Lay On Hands Paladin's Feature in practice.
 7. Cards off their band: Smite 1 over (1.60, the book's), Smite 3 a little under (0.96), Lay On Hands over on the price list (it counts the
    ally's own Rally Points), Bulwark of Faith 1R a little under (1.27) and 2R under until E2 prices Slid.
+
+## 9. Round 7 (Lucas 2026-10-29): Divine Surge buffed; the Options step waits
+
+Lucas: buff Divine Surge so spending competes with holding for Hallowed Stance; Lay On Hands' level 2-3 Nova waits for the Options step.
+More damage didn't do it (the Smite Paladin's day, spending / holding: 1d8 84% / 94%, 1d10 84% / 93%, 2d8 86% / 94%; a Bane on the target 88% / 94%):
+what holding buys is fewer Downs on the tank, so the buff is defensive. **Divine Surge now also gives you Guard 2d6:** spending and holding both
+clear 95% of the Standard days (Downs 0.82 and 0.81 a day). Its price is 27% of a turn for 0 AP (a little over the 25% guide).
+
+After it (level 1, Standard day cleared): Smite 95%, Lay On Hands 99%, one of each 97%; level 2 89% / 97%; level 3 100% / 100%; the budgets
+didn't move (sustained 86-87%, Nova 157-166%, Health 124%). The party is now well above the Bestiary (15-27% of its Health lost a fight):
+pack E3 refits the Bestiary to it.

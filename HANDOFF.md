@@ -5,6 +5,7 @@
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT implementation. This bundle has everything. Read this file first.
 
 ## Where we are now (v0.0.180, 145 tests; READ THIS FIRST)
+- **2026-10-29: P1 DONE (round 7: Divine Surge also gives you Guard 2d6, so spending it and holding for Hallowed Stance are even).** Branch pack-8-paladin, PR #8, on top of pack-7 (PR #7). Everything in book/rules-src; the Foundry part waits in foundry-backlog.md (pack C). **Next (MASTER-PLAN):** E2 positions in the ruler, then A1 the Archer, then E3 the Bestiary refit.
 - **2026-10-29: P1 round 6** (same branch): Font of Mercy a Feature again (an Escalation Passive, Power Modifier + 2), Bulwark of Faith 2R Slid 2, a ruler fix; the Paladin's numbers in book/paladin-p1.md section 8.
 - **2026-10-29: P1 round 5** (same branch): Font of Mercy → Passive Escalation, Aura of Protection → Active Escalation, new Encounter Reaction Bulwark of Faith, "Instances of Damage" defined (Chapter 4), "Area:" bold, heading and wording fixes. Open: the Paladin has 1 Feature (the charter says 2).
 - **2026-10-29: P1 round 4** (same branch): the Paladin document lists only the default build's cards (+ the two reworked options); the other 16 are in book/paladin-old-cards.md for the Options step; new Rules Language entry "Up to" (Chapter 1).

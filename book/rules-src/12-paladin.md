@@ -270,6 +270,6 @@ While your Escalation is 1 or more, the first [Strike] Action you make each roun
 
 | 0 AP |
 |---|
-| For 1 round, the next time an ally deals damage to the target, they deal an extra [M] 1d8 Ho. |
+| For 1 round, the next time an ally deals damage to the target, they deal an extra [M] 1d8 Ho. You gain [[Guard]] 2d6. |
 
 </div>

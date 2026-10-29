@@ -30,7 +30,7 @@ action Consecrated Ground 2 | ap 2 | daily | traits area divine | rounds 3 | are
 action Consecrated Ground 3 | ap 3 | daily | traits area divine | rounds 5 | area 2.5 | allies 2.5 | banes 1 strike power; heal-dice 1d4
 
 # Active Escalation (level 1): Divine Surge (the support version Lucas chose)
-action Divine Surge | ap 0 | round | escalation 1 | traits divine | surge 1d8
+action Divine Surge | ap 0 | round | escalation 1 | traits divine | surge 1d8; guard 2d6 self
 
 # Options (not in the default build): Shield of Faith (Turn Reaction), Bulwark of Faith (Encounter Reaction: Guard worth a Rally Point, used by the hit at once), Aura of Protection (Active Escalation)
 action Shield of Faith | ap 1 | turn | reaction | traits divine focus | block 1d6+[Mod]
