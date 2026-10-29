@@ -123,8 +123,10 @@ export function prices(lv = 1, { fresh = false } = {}) {
   variant("+1 Speed (Paladin 5 → 6)", "paladin-smite", x => x.replace(/^speed 5/m, "speed 6"), "Paladin");
   variant("-1 Speed (Paladin 5 → 4)", "paladin-smite", x => x.replace(/^speed 5/m, "speed 4"), "Paladin");
   variant("The Archer stands and shoots when Engaged (no Kite turn)", "archer", x => x.replace(/^when engaged:.*$/m, ""), "Archer", "the price of stepping away");
-  variant("Opportunity Attack (the Paladin's Talent) removed", "paladin-smite", x => x.replace(/^reaction Opportunity Attack.*$/m, ""), "Paladin", "AP kept after its turn are rare: most turns spend 5");
-  variant("The Paladin keeps 1 AP for Opportunity Attack (its last Weapon Attack dropped)", "paladin-smite", x => x.replace(/^(turn Main: .*), Weapon Attack$/m, "$1"), "Paladin");
+  // Talents are not in the class files (Lucas, 2026-10-29): a Talent is priced here by adding it.
+  const oa = add1("reaction Opportunity Attack: opportunity");
+  variant("Talent: Opportunity Attack added", "paladin-smite", oa, "Paladin", "AP kept after its turn are rare: most turns spend 5");
+  variant("Talent: Opportunity Attack, keeping 1 AP for it (its last Weapon Attack dropped)", "paladin-smite", x => oa(x).replace(/^(turn Main: .*), Weapon Attack$/m, "$1"), "Paladin");
   variant("Steady Nerves always on (no Engaged Banes)", "archer", add1("passive Steady Nerves: steady-nerves"), "Archer", "the Archer kites, so it is rarely Engaged when it shoots");
   const noKite = x => x.replace(/^when engaged:.*$/m, "");
   variant("Steady Nerves, an Archer that doesn't kite", "archer", x => add1("passive Steady Nerves: steady-nerves")(noKite(x)), "Archer", "against the same Archer without it", S.MAP, S.MAP, noKite);

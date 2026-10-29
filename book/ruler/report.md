@@ -140,11 +140,11 @@ Health 43 (Body 23 + Mind 20) · AD 14 · WD 13 · Weapon Modifier +2 · Power M
 
 | Turn | Esc | Def 12 | Def 13 | Def 14 | Def 13, Esc 3 | AP | Strikes | Steps | Problems |
 |---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| Main (plan) | 1 | 25.1 | 22.8 | 20.4 | 22.8 | 5 | 3 | Divine Surge, Lay On Hands 2, Weapon Attack, Weapon Attack, Weapon Attack |  |
-| Main without Escalation | 0 | 25.1 | 22.8 | 20.4 | 22.8 | 5 | 3 | Lay On Hands 2, Weapon Attack, Weapon Attack, Weapon Attack |  |
-| Heal and move | 1 | 18.1 | 16.4 | 14.6 | 16.4 | 5 | 3 | Divine Surge, Lay On Hands 1, Weapon Attack, Weapon Attack, Weapon Attack, move 1 |  |
-| Nova (plan, **best**) | 1 | 39.1 | 37.7 | 36.2 | 37.7 | 5 | 1 | Divine Surge, Lay On Hands 2, Holy Wrath 3 |  |
-| Three attacks | 0 | 18.1 | 16.4 | 14.6 | 16.4 | 3 | 3 | Weapon Attack, Weapon Attack, Weapon Attack |  |
+| Main (plan) | 1 | 22.9 | 20.8 | 18.7 | 20.8 | 5 | 3 | Divine Surge, Lay On Hands 2, Weapon Attack, Weapon Attack, Weapon Attack |  |
+| Main without Escalation | 0 | 22.9 | 20.8 | 18.7 | 20.8 | 5 | 3 | Lay On Hands 2, Weapon Attack, Weapon Attack, Weapon Attack |  |
+| Heal and move | 1 | 16.0 | 14.4 | 12.9 | 14.4 | 5 | 3 | Divine Surge, Lay On Hands 1, Weapon Attack, Weapon Attack, Weapon Attack, move 1 |  |
+| Nova (plan, **best**) | 1 | 38.1 | 36.7 | 35.2 | 36.7 | 5 | 1 | Divine Surge, Lay On Hands 2, Holy Wrath 3 |  |
+| Three attacks | 0 | 16.0 | 14.4 | 12.9 | 14.4 | 3 | 3 | Weapon Attack, Weapon Attack, Weapon Attack |  |
 
 Plan: round 1: Nova · round 2+: Main
 
@@ -154,8 +154,8 @@ Plan: round 1: Nova · round 2+: Main
 |---|---:|---:|---:|---:|---:|---:|
 | Minion | 7 | 12 | 2 | 1.8 | 1 / 1.0 | 60+ / - |
 | Grunt | 31 | 13 | 2 | 4.4 | 1 / 1.4 | 21 / 20.8 |
-| Standard | 57 | 13 | 2 | 6.9 | 2 / 2.4 | 9 / 9.4 |
-| Elite | 120 | 14 | 3 | 15.1 | 6 / 5.7 | 4 / 3.7 |
+| Standard | 57 | 13 | 2 | 6.9 | 2 / 2.6 | 9 / 9.4 |
+| Elite | 120 | 14 | 3 | 15.1 | 6 / 6.1 | 4 / 3.7 |
 
 ## Paladin (Lay On Hands) (tank / support), `classes/paladin-hands-3.txt`
 
@@ -165,12 +165,12 @@ Health 46 (Body 25 + Mind 21) · AD 14 · WD 13 · Weapon Modifier +2 · Power M
 
 | Turn | Esc | Def 12 | Def 13 | Def 14 | Def 13, Esc 3 | AP | Strikes | Steps | Problems |
 |---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| Main (plan) | 1 | 25.1 | 22.8 | 20.4 | 25.4 | 5 | 3 | Divine Surge, Lay On Hands 2, Weapon Attack, Weapon Attack, Weapon Attack |  |
-| Main without Escalation | 0 | 25.1 | 22.8 | 20.4 | 25.4 | 5 | 3 | Lay On Hands 2, Weapon Attack, Weapon Attack, Weapon Attack |  |
-| Heal and move | 1 | 18.1 | 16.4 | 14.6 | 18.9 | 5 | 3 | Divine Surge, Lay On Hands 1, Weapon Attack, Weapon Attack, Weapon Attack, move 1 |  |
-| Nova (plan, **best**) | 1 | 39.1 | 37.7 | 36.2 | 41.3 | 5 | 1 | Divine Surge, Lay On Hands 2, Holy Wrath 3 |  |
-| Three attacks | 0 | 18.1 | 16.4 | 14.6 | 18.9 | 3 | 3 | Weapon Attack, Weapon Attack, Weapon Attack |  |
-| Consecrate | 1 | 13.6 | 12.5 | 11.3 | 15.0 | 5 | 1 | Divine Surge, Consecrated Ground 2, Lay On Hands 2, Weapon Attack |  |
+| Main (plan) | 1 | 22.9 | 20.8 | 18.7 | 23.5 | 5 | 3 | Divine Surge, Lay On Hands 2, Weapon Attack, Weapon Attack, Weapon Attack |  |
+| Main without Escalation | 0 | 22.9 | 20.8 | 18.7 | 23.5 | 5 | 3 | Lay On Hands 2, Weapon Attack, Weapon Attack, Weapon Attack |  |
+| Heal and move | 1 | 16.0 | 14.4 | 12.9 | 16.9 | 5 | 3 | Divine Surge, Lay On Hands 1, Weapon Attack, Weapon Attack, Weapon Attack, move 1 |  |
+| Nova (plan, **best**) | 1 | 38.1 | 36.7 | 35.2 | 40.3 | 5 | 1 | Divine Surge, Lay On Hands 2, Holy Wrath 3 |  |
+| Three attacks | 0 | 16.0 | 14.4 | 12.9 | 16.9 | 3 | 3 | Weapon Attack, Weapon Attack, Weapon Attack |  |
+| Consecrate | 1 | 12.8 | 11.8 | 10.6 | 14.3 | 5 | 1 | Divine Surge, Consecrated Ground 2, Lay On Hands 2, Weapon Attack |  |
 
 Plan: round 1: Nova · round 2: Consecrate (once used: Main) · round 3+: Main
 
@@ -179,9 +179,9 @@ Plan: round 1: Nova · round 2: Consecrate (once used: Main) · round 3+: Main
 | NPC | its Health | its Defense | its Modifier | its damage a turn to this PC | rounds to kill it (median / mean) | rounds for it to put this PC Down (median / mean) |
 |---|---:|---:|---:|---:|---:|---:|
 | Minion | 7 | 12 | 2 | 1.8 | 1 / 1.0 | 60+ / - |
-| Grunt | 31 | 13 | 2 | 4.4 | 1 / 1.4 | 22 / 22.4 |
-| Standard | 57 | 13 | 2 | 6.9 | 3 / 2.8 | 10 / 10.1 |
-| Elite | 120 | 14 | 3 | 15.1 | 6 / 6.1 | 4 / 4.0 |
+| Grunt | 31 | 13 | 2 | 4.4 | 1 / 1.5 | 22 / 22.4 |
+| Standard | 57 | 13 | 2 | 6.9 | 3 / 2.9 | 10 / 10.2 |
+| Elite | 120 | 14 | 3 | 15.1 | 6 / 6.6 | 4 / 4.0 |
 
 ## Paladin (Smite, hold) (tank / support), `classes/paladin-smite-1-hold.txt`
 
@@ -243,12 +243,12 @@ Health 43 (Body 23 + Mind 20) · AD 14 · WD 13 · Weapon Modifier +2 · Power M
 
 | Turn | Esc | Def 12 | Def 13 | Def 14 | Def 13, Esc 3 | AP | Strikes | Steps | Problems |
 |---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| Main (plan) | 1 | 25.6 | 23.7 | 21.7 | 23.7 | 5 | 3 | Divine Surge, Smite 3, Weapon Attack, Weapon Attack |  |
-| Main without Escalation | 0 | 25.6 | 23.7 | 21.7 | 23.7 | 5 | 3 | Smite 3, Weapon Attack, Weapon Attack |  |
-| Smite 2 and move | 1 | 25.6 | 23.7 | 21.7 | 23.7 | 5 | 3 | Divine Surge, Smite 2, Weapon Attack, Weapon Attack, move 1 |  |
-| Nova (plan, **best**) | 1 | 43.1 | 40.9 | 38.7 | 40.9 | 5 | 2 | Divine Surge, Holy Wrath 3, Smite 2 |  |
-| Three attacks | 0 | 18.1 | 16.4 | 14.6 | 16.4 | 3 | 3 | Weapon Attack, Weapon Attack, Weapon Attack |  |
-| Steel | 1 | 19.6 | 18.3 | 16.9 | 18.3 | 5 | 2 | Steel Yourself 2, Divine Surge, Smite 2, Weapon Attack |  |
+| Main (plan) | 1 | 23.1 | 21.3 | 19.5 | 21.3 | 5 | 3 | Divine Surge, Smite 3, Weapon Attack, Weapon Attack |  |
+| Main without Escalation | 0 | 23.1 | 21.3 | 19.5 | 21.3 | 5 | 3 | Smite 3, Weapon Attack, Weapon Attack |  |
+| Smite 2 and move | 1 | 23.1 | 21.3 | 19.5 | 21.3 | 5 | 3 | Divine Surge, Smite 2, Weapon Attack, Weapon Attack, move 1 |  |
+| Nova (plan, **best**) | 1 | 41.1 | 38.9 | 36.7 | 38.9 | 5 | 2 | Divine Surge, Holy Wrath 3, Smite 2 |  |
+| Three attacks | 0 | 16.0 | 14.4 | 12.9 | 14.4 | 3 | 3 | Weapon Attack, Weapon Attack, Weapon Attack |  |
+| Steel | 1 | 17.9 | 16.6 | 15.2 | 16.6 | 5 | 2 | Steel Yourself 2, Divine Surge, Smite 2, Weapon Attack |  |
 
 Plan: round 1: Nova · round 2+: Main · when itself below 35% Health: Steel
 
@@ -257,9 +257,9 @@ Plan: round 1: Nova · round 2+: Main · when itself below 35% Health: Steel
 | NPC | its Health | its Defense | its Modifier | its damage a turn to this PC | rounds to kill it (median / mean) | rounds for it to put this PC Down (median / mean) |
 |---|---:|---:|---:|---:|---:|---:|
 | Minion | 7 | 12 | 2 | 1.8 | 1 / 1.0 | 60+ / - |
-| Grunt | 31 | 13 | 2 | 4.4 | 1 / 1.2 | 21 / 20.9 |
-| Standard | 57 | 13 | 2 | 6.9 | 2 / 2.2 | 9 / 9.4 |
-| Elite | 120 | 14 | 3 | 15.1 | 5 / 5.3 | 4 / 3.7 |
+| Grunt | 31 | 13 | 2 | 4.4 | 1 / 1.3 | 21 / 20.9 |
+| Standard | 57 | 13 | 2 | 6.9 | 2 / 2.4 | 9 / 9.4 |
+| Elite | 120 | 14 | 3 | 15.1 | 6 / 5.8 | 4 / 3.7 |
 
 ## Paladin (Smite) (tank / support), `classes/paladin-smite-3.txt`
 
@@ -269,13 +269,13 @@ Health 46 (Body 25 + Mind 21) · AD 14 · WD 13 · Weapon Modifier +2 · Power M
 
 | Turn | Esc | Def 12 | Def 13 | Def 14 | Def 13, Esc 3 | AP | Strikes | Steps | Problems |
 |---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| Main (plan) | 1 | 25.6 | 23.7 | 21.7 | 27.1 | 5 | 3 | Divine Surge, Smite 3, Weapon Attack, Weapon Attack |  |
-| Main without Escalation | 0 | 25.6 | 23.7 | 21.7 | 27.1 | 5 | 3 | Smite 3, Weapon Attack, Weapon Attack |  |
-| Smite 2 and move | 1 | 25.6 | 23.7 | 21.7 | 27.1 | 5 | 3 | Divine Surge, Smite 2, Weapon Attack, Weapon Attack, move 1 |  |
-| Nova (plan, **best**) | 1 | 43.1 | 40.9 | 38.7 | 44.4 | 5 | 2 | Divine Surge, Holy Wrath 3, Smite 2 |  |
-| Three attacks | 0 | 18.1 | 16.4 | 14.6 | 18.9 | 3 | 3 | Weapon Attack, Weapon Attack, Weapon Attack |  |
-| Steel | 1 | 19.6 | 18.3 | 16.9 | 21.7 | 5 | 2 | Steel Yourself 2, Divine Surge, Smite 2, Weapon Attack |  |
-| Consecrate | 1 | 19.6 | 18.3 | 16.9 | 21.7 | 5 | 2 | Divine Surge, Consecrated Ground 2, Smite 2, Weapon Attack |  |
+| Main (plan) | 1 | 23.1 | 21.3 | 19.5 | 24.8 | 5 | 3 | Divine Surge, Smite 3, Weapon Attack, Weapon Attack |  |
+| Main without Escalation | 0 | 23.1 | 21.3 | 19.5 | 24.8 | 5 | 3 | Smite 3, Weapon Attack, Weapon Attack |  |
+| Smite 2 and move | 1 | 23.1 | 21.3 | 19.5 | 24.8 | 5 | 3 | Divine Surge, Smite 2, Weapon Attack, Weapon Attack, move 1 |  |
+| Nova (plan, **best**) | 1 | 41.1 | 38.9 | 36.7 | 42.4 | 5 | 2 | Divine Surge, Holy Wrath 3, Smite 2 |  |
+| Three attacks | 0 | 16.0 | 14.4 | 12.9 | 16.9 | 3 | 3 | Weapon Attack, Weapon Attack, Weapon Attack |  |
+| Steel | 1 | 17.9 | 16.6 | 15.2 | 20.0 | 5 | 2 | Steel Yourself 2, Divine Surge, Smite 2, Weapon Attack |  |
+| Consecrate | 1 | 17.9 | 16.6 | 15.2 | 20.0 | 5 | 2 | Divine Surge, Consecrated Ground 2, Smite 2, Weapon Attack |  |
 
 Plan: round 1: Nova · round 2: Consecrate (once used: Main) · round 3+: Main · when itself below 35% Health: Steel
 
@@ -284,9 +284,9 @@ Plan: round 1: Nova · round 2: Consecrate (once used: Main) · round 3+: Main �
 | NPC | its Health | its Defense | its Modifier | its damage a turn to this PC | rounds to kill it (median / mean) | rounds for it to put this PC Down (median / mean) |
 |---|---:|---:|---:|---:|---:|---:|
 | Minion | 7 | 12 | 2 | 1.8 | 1 / 1.0 | 60+ / - |
-| Grunt | 31 | 13 | 2 | 4.4 | 1 / 1.3 | 22 / 22.3 |
-| Standard | 57 | 13 | 2 | 6.9 | 2 / 2.4 | 10 / 10.0 |
-| Elite | 120 | 14 | 3 | 15.1 | 5 / 5.5 | 4 / 4.0 |
+| Grunt | 31 | 13 | 2 | 4.4 | 1 / 1.3 | 22 / 22.4 |
+| Standard | 57 | 13 | 2 | 6.9 | 3 / 2.5 | 10 / 10.1 |
+| Elite | 120 | 14 | 3 | 15.1 | 6 / 6.0 | 4 / 4.0 |
 
 ## Party fights (Paladin (Smite), Paladin (Lay On Hands), Archer, Archer; 2000 runs each)
 
@@ -569,212 +569,212 @@ Fight 1: 2 standard, 4 minion (CV 3) · Fight 2: 4 standard (CV 4) · Fight 3: 1
 | **Debuff:** Immobilized (times) | 0.00 | 0.00 | 2.32 |
 | **Debuff:** Vulnerable 2 (times) | 0.00 | 0.00 | 0.89 |
 
-**Level 2, P1 Smite** (paladin-smite-2, paladin-smite-2, archer-2, archer-2; NPCs of level 2): the day cleared 63% · a PC Down during the day 94% · Downs a day 2.98 · Rally Points left at the end 45% · Health at the end 57%
+**Level 2, P1 Smite** (paladin-smite-2, paladin-smite-2, archer-2, archer-2; NPCs of level 2): the day cleared 56% · a PC Down during the day 96% · Downs a day 3.24 · Rally Points left at the end 44% · Health at the end 51%
 
 | Fight | won (of the days that reach it) | rounds (mean) | party Health lost in it | a PC goes Down in it |
 |---|---:|---:|---:|---:|
-| 1: 2 standard, 4 minion | 100% | 3.0 | 17% | 3% |
-| 2: 4 standard | 100% | 3.5 | 27% | 17% |
-| 3: 1 elite, 2 standard | 100% | 3.6 | 29% | 34% |
-| 4: 2 elite, 2 standard | 63% | 6.1 | 69% | 89% |
+| 1: 2 standard, 4 minion | 100% | 3.0 | 18% | 5% |
+| 2: 4 standard | 100% | 3.7 | 28% | 18% |
+| 3: 1 elite, 2 standard | 100% | 3.7 | 30% | 39% |
+| 4: 2 elite, 2 standard | 56% | 6.3 | 71% | 90% |
 
 | Per PC, over the day | Paladin (Smite) `paladin-smite-2` | Archer `archer-2` |
 |---|---:|---:|
-| Damage dealt | 340.5 | 269.6 |
-| Damage a turn (its own turns) | 26.1 | 22.3 |
-| Damage a turn without its Nova turns (no Encounter or Daily Action) | 20.9 | 24.4 |
-| Damage a Nova turn (with an Encounter or Daily Action) | 37.8 | - |
-| Share of the party's damage (%) | 28 | 22 |
-| Turns taken | 13.2 | 12.0 |
+| Damage dealt | 324.6 | 273.1 |
+| Damage a turn (its own turns) | 24.1 | 22.3 |
+| Damage a turn without its Nova turns (no Encounter or Daily Action) | 19.0 | 24.3 |
+| Damage a Nova turn (with an Encounter or Daily Action) | 36.2 | - |
+| Share of the party's damage (%) | 27 | 23 |
+| Turns taken | 13.6 | 12.2 |
 | Health Pool | 43 | 29 |
-| Damage aimed at it (before reduction) | 113.0 | 51.7 |
+| Damage aimed at it (before reduction) | 118.5 | 54.0 |
 | Reduced (Hallowed Stance, its own or an adjacent ally's) | 0.0 | 0.0 |
 | Reduced for adjacent allies (its Hallowed Stance) | 0.0 | 0.0 |
-| Damage taken | 78.3 | 51.7 |
-| Damage taken a round of combat | 4.9 | 3.2 |
-| Times Down | 0.57 | 0.92 |
-| Rally Points (of 9 / 7): used in combat (Steel Yourself) | 1.21 | 0.31 |
+| Damage taken | 81.6 | 54.0 |
+| Damage taken a round of combat | 4.9 | 3.3 |
+| Times Down | 0.61 | 1.01 |
+| Rally Points (of 9 / 7): used in combat (Steel Yourself) | 1.32 | 0.33 |
 | Rally Points used through an ally's Lay On Hands | 0.00 | 0.00 |
-| Rally Points used between fights | 3.54 | 3.81 |
-| Rally Points left | 4.25 | 2.88 |
+| Rally Points used between fights | 3.45 | 3.81 |
+| Rally Points left | 4.23 | 2.86 |
 | **Buffs:** healed allies (Lay On Hands) | 0.0 | 0.0 |
-| Defense given (damage it stopped) | 5.0 | 0.0 |
+| Defense given (damage it stopped) | 5.2 | 0.0 |
 | Vulnerable given (extra damage dealt by the party) | 0.0 | 1.9 |
-| Divine Surge given (extra damage dealt by allies) | 21.4 | 0.0 |
+| Divine Surge given (extra damage dealt by allies) | 22.3 | 0.0 |
 | Banes given (damage its areas stopped) | 0.0 | 0.0 |
 | Healed with new Health (Smite, Consecrated Ground) | 0.0 | 0.0 |
-| Guard given (damage it took instead of Health) | 34.7 | 0.0 |
-| Extra healing on Rally Points (Font of Mercy) | 5.6 | 0.0 |
-| **Map:** AP spent moving | 6.6 | 3.8 |
+| Guard given (damage it took instead of Health) | 36.9 | 0.0 |
+| Extra healing on Rally Points (Font of Mercy) | 6.0 | 0.0 |
+| **Map:** AP spent moving | 6.6 | 3.9 |
 | AP lost to moving (Actions dropped or made smaller) | 6.6 | 0.0 |
-| Turns that start Engaged | 8.4 | 3.9 |
-| Shots ([Ranged] Actions) | 0.0 | 43.3 |
-| ... into melee (1 Bane) | 0.0 | 29.4 |
-| ... with Cover | 0.0 | 19.8 |
+| Turns that start Engaged | 8.8 | 4.0 |
+| Shots ([Ranged] Actions) | 0.0 | 43.9 |
+| ... into melee (1 Bane) | 0.0 | 30.2 |
+| ... with Cover | 0.0 | 20.2 |
 | ... while Engaged (2 Banes) | 0.0 | 0.4 |
-| Flanking Boons on its melee Actions | 11.6 | 0.0 |
+| Flanking Boons on its melee Actions | 12.3 | 0.0 |
 | Opportunity Attacks made / taken | 0.0 / 0.0 | 0.0 / 0.0 |
-| Conditions it put on NPCs (Hindered, Immobilized, Prone...) | 0.00 | 3.72 |
-| **Debuff:** Bane on its next Save (times) | 0.00 | 2.11 |
-| **Debuff:** Hindered (times) | 0.00 | 2.27 |
+| Conditions it put on NPCs (Hindered, Immobilized, Prone...) | 0.00 | 3.74 |
+| **Debuff:** Bane on its next Save (times) | 0.00 | 2.12 |
+| **Debuff:** Hindered (times) | 0.00 | 2.30 |
 | **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.92 |
-| **Debuff:** Immobilized (times) | 0.00 | 0.53 |
-| **Debuff:** Vulnerable 2 (times) | 0.00 | 0.86 |
+| **Debuff:** Immobilized (times) | 0.00 | 0.52 |
+| **Debuff:** Vulnerable 2 (times) | 0.00 | 0.87 |
 
-**Level 2, P1 Lay On Hands** (paladin-hands-2, paladin-hands-2, archer-2, archer-2; NPCs of level 2): the day cleared 81% · a PC Down during the day 80% · Downs a day 1.84 · Rally Points left at the end 31% · Health at the end 67%
+**Level 2, P1 Lay On Hands** (paladin-hands-2, paladin-hands-2, archer-2, archer-2; NPCs of level 2): the day cleared 77% · a PC Down during the day 79% · Downs a day 1.97 · Rally Points left at the end 31% · Health at the end 62%
 
 | Fight | won (of the days that reach it) | rounds (mean) | party Health lost in it | a PC goes Down in it |
 |---|---:|---:|---:|---:|
-| 1: 2 standard, 4 minion | 100% | 3.0 | 6% | 0% |
-| 2: 4 standard | 100% | 3.6 | 6% | 4% |
-| 3: 1 elite, 2 standard | 100% | 3.6 | 10% | 20% |
-| 4: 2 elite, 2 standard | 81% | 6.0 | 42% | 75% |
+| 1: 2 standard, 4 minion | 100% | 3.0 | 6% | 1% |
+| 2: 4 standard | 100% | 3.7 | 6% | 3% |
+| 3: 1 elite, 2 standard | 100% | 3.7 | 10% | 22% |
+| 4: 2 elite, 2 standard | 77% | 6.2 | 45% | 75% |
 
 | Per PC, over the day | Paladin (Lay On Hands) `paladin-hands-2` | Archer `archer-2` |
 |---|---:|---:|
-| Damage dealt | 324.9 | 294.0 |
-| Damage a turn (its own turns) | 23.7 | 22.9 |
-| Damage a turn without its Nova turns (no Encounter or Daily Action) | 20.3 | 25.0 |
+| Damage dealt | 310.9 | 298.7 |
+| Damage a turn (its own turns) | 22.1 | 22.9 |
+| Damage a turn without its Nova turns (no Encounter or Daily Action) | 18.8 | 24.9 |
 | Damage a Nova turn (with an Encounter or Daily Action) | - | - |
-| Share of the party's damage (%) | 26 | 24 |
-| Turns taken | 13.8 | 12.8 |
+| Share of the party's damage (%) | 25 | 25 |
+| Turns taken | 14.2 | 13.0 |
 | Health Pool | 43 | 29 |
-| Damage aimed at it (before reduction) | 118.8 | 57.5 |
+| Damage aimed at it (before reduction) | 122.9 | 58.9 |
 | Reduced (Hallowed Stance, its own or an adjacent ally's) | 0.0 | 0.0 |
 | Reduced for adjacent allies (its Hallowed Stance) | 0.0 | 0.0 |
-| Damage taken | 85.1 | 57.5 |
-| Damage taken a round of combat | 5.2 | 3.5 |
-| Times Down | 0.30 | 0.62 |
-| Rally Points (of 9 / 7): used in combat (Steel Yourself) | 2.73 | 0.01 |
-| Rally Points used through an ally's Lay On Hands | 2.44 | 3.59 |
-| Rally Points used between fights | 0.73 | 1.50 |
-| Rally Points left | 3.10 | 1.90 |
-| **Buffs:** healed allies (Lay On Hands) | 54.2 | 0.0 |
+| Damage taken | 87.2 | 58.9 |
+| Damage taken a round of combat | 5.3 | 3.5 |
+| Times Down | 0.33 | 0.65 |
+| Rally Points (of 9 / 7): used in combat (Steel Yourself) | 2.81 | 0.01 |
+| Rally Points used through an ally's Lay On Hands | 2.42 | 3.63 |
+| Rally Points used between fights | 0.68 | 1.42 |
+| Rally Points left | 3.09 | 1.94 |
+| **Buffs:** healed allies (Lay On Hands) | 54.4 | 0.0 |
 | Defense given (damage it stopped) | 0.0 | 0.0 |
-| Vulnerable given (extra damage dealt by the party) | 0.0 | 1.9 |
-| Divine Surge given (extra damage dealt by allies) | 24.1 | 0.0 |
+| Vulnerable given (extra damage dealt by the party) | 0.0 | 1.8 |
+| Divine Surge given (extra damage dealt by allies) | 24.9 | 0.0 |
 | Banes given (damage its areas stopped) | 0.0 | 0.0 |
 | Healed with new Health (Smite, Consecrated Ground) | 0.0 | 0.0 |
-| Guard given (damage it took instead of Health) | 33.7 | 0.0 |
-| Extra healing on Rally Points (Font of Mercy) | 12.4 | 0.0 |
+| Guard given (damage it took instead of Health) | 35.7 | 0.0 |
+| Extra healing on Rally Points (Font of Mercy) | 12.7 | 0.0 |
 | **Map:** AP spent moving | 6.9 | 4.3 |
 | AP lost to moving (Actions dropped or made smaller) | 6.9 | 0.0 |
-| Turns that start Engaged | 8.8 | 4.3 |
-| Shots ([Ranged] Actions) | 0.0 | 47.0 |
-| ... into melee (1 Bane) | 0.0 | 33.2 |
-| ... with Cover | 0.0 | 21.4 |
+| Turns that start Engaged | 9.1 | 4.3 |
+| Shots ([Ranged] Actions) | 0.0 | 47.8 |
+| ... into melee (1 Bane) | 0.0 | 33.8 |
+| ... with Cover | 0.0 | 22.0 |
 | ... while Engaged (2 Banes) | 0.0 | 0.4 |
-| Flanking Boons on its melee Actions | 11.7 | 0.0 |
+| Flanking Boons on its melee Actions | 12.3 | 0.0 |
 | Opportunity Attacks made / taken | 0.0 / 0.0 | 0.0 / 0.0 |
-| Conditions it put on NPCs (Hindered, Immobilized, Prone...) | 0.00 | 4.00 |
-| **Debuff:** Bane on its next Save (times) | 0.00 | 2.16 |
-| **Debuff:** Hindered (times) | 0.00 | 2.54 |
+| Conditions it put on NPCs (Hindered, Immobilized, Prone...) | 0.00 | 3.97 |
+| **Debuff:** Bane on its next Save (times) | 0.00 | 2.12 |
+| **Debuff:** Hindered (times) | 0.00 | 2.51 |
 | **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.92 |
-| **Debuff:** Immobilized (times) | 0.00 | 0.55 |
+| **Debuff:** Immobilized (times) | 0.00 | 0.54 |
 | **Debuff:** Vulnerable 2 (times) | 0.00 | 0.89 |
 
-**Level 3, P1 Smite** (paladin-smite-3, paladin-smite-3, archer-3, archer-3; NPCs of level 3): the day cleared 92% · a PC Down during the day 86% · Downs a day 1.84 · Rally Points left at the end 46% · Health at the end 85%
+**Level 3, P1 Smite** (paladin-smite-3, paladin-smite-3, archer-3, archer-3; NPCs of level 3): the day cleared 89% · a PC Down during the day 87% · Downs a day 1.99 · Rally Points left at the end 45% · Health at the end 82%
 
 | Fight | won (of the days that reach it) | rounds (mean) | party Health lost in it | a PC goes Down in it |
 |---|---:|---:|---:|---:|
-| 1: 2 standard, 4 minion | 100% | 2.9 | 18% | 5% |
-| 2: 4 standard | 100% | 3.5 | 30% | 19% |
-| 3: 1 elite, 2 standard | 100% | 3.3 | 24% | 23% |
-| 4: 2 elite, 2 standard | 92% | 5.7 | 49% | 76% |
+| 1: 2 standard, 4 minion | 100% | 3.0 | 19% | 5% |
+| 2: 4 standard | 100% | 3.6 | 30% | 21% |
+| 3: 1 elite, 2 standard | 100% | 3.3 | 24% | 26% |
+| 4: 2 elite, 2 standard | 89% | 6.0 | 51% | 76% |
 
 | Per PC, over the day | Paladin (Smite) `paladin-smite-3` | Archer `archer-3` |
 |---|---:|---:|
-| Damage dealt | 368.1 | 269.2 |
-| Damage a turn (its own turns) | 27.8 | 22.6 |
-| Damage a turn without its Nova turns (no Encounter or Daily Action) | 23.1 | 24.3 |
-| Damage a Nova turn (with an Encounter or Daily Action) | 35.9 | - |
-| Share of the party's damage (%) | 29 | 21 |
-| Turns taken | 13.3 | 11.9 |
+| Damage dealt | 353.1 | 276.4 |
+| Damage a turn (its own turns) | 25.9 | 22.7 |
+| Damage a turn without its Nova turns (no Encounter or Daily Action) | 21.1 | 24.5 |
+| Damage a Nova turn (with an Encounter or Daily Action) | 34.6 | - |
+| Share of the party's damage (%) | 28 | 22 |
+| Turns taken | 13.7 | 12.1 |
 | Health Pool | 46 | 31 |
-| Damage aimed at it (before reduction) | 108.5 | 50.2 |
-| Reduced (Hallowed Stance, its own or an adjacent ally's) | 9.6 | 0.0 |
-| Reduced for adjacent allies (its Hallowed Stance) | 1.8 | 0.0 |
-| Damage taken | 67.5 | 50.2 |
-| Damage taken a round of combat | 4.4 | 3.2 |
-| Times Down | 0.21 | 0.71 |
-| Rally Points (of 9 / 8): used in combat (Steel Yourself) | 0.80 | 0.26 |
+| Damage aimed at it (before reduction) | 113.7 | 52.2 |
+| Reduced (Hallowed Stance, its own or an adjacent ally's) | 10.6 | 0.0 |
+| Reduced for adjacent allies (its Hallowed Stance) | 1.9 | 0.0 |
+| Damage taken | 69.8 | 52.2 |
+| Damage taken a round of combat | 4.4 | 3.3 |
+| Times Down | 0.23 | 0.76 |
+| Rally Points (of 9 / 8): used in combat (Steel Yourself) | 0.86 | 0.29 |
 | Rally Points used through an ally's Lay On Hands | 0.00 | 0.00 |
-| Rally Points used between fights | 3.53 | 4.67 |
-| Rally Points left | 4.67 | 3.06 |
+| Rally Points used between fights | 3.53 | 4.72 |
+| Rally Points left | 4.61 | 2.99 |
 | **Buffs:** healed allies (Lay On Hands) | 0.0 | 0.0 |
-| Defense given (damage it stopped) | 4.7 | 0.0 |
-| Vulnerable given (extra damage dealt by the party) | 0.0 | 1.9 |
-| Divine Surge given (extra damage dealt by allies) | 21.5 | 0.0 |
-| Banes given (damage its areas stopped) | 4.1 | 0.0 |
+| Defense given (damage it stopped) | 5.0 | 0.0 |
+| Vulnerable given (extra damage dealt by the party) | 0.0 | 2.0 |
+| Divine Surge given (extra damage dealt by allies) | 22.3 | 0.0 |
+| Banes given (damage its areas stopped) | 4.4 | 0.0 |
 | Healed with new Health (Smite, Consecrated Ground) | 5.8 | 0.0 |
-| Guard given (damage it took instead of Health) | 31.4 | 0.0 |
-| Extra healing on Rally Points (Font of Mercy) | 4.1 | 0.0 |
-| **Map:** AP spent moving | 6.7 | 3.7 |
+| Guard given (damage it took instead of Health) | 33.4 | 0.0 |
+| Extra healing on Rally Points (Font of Mercy) | 4.5 | 0.0 |
+| **Map:** AP spent moving | 6.7 | 3.8 |
 | AP lost to moving (Actions dropped or made smaller) | 6.7 | 0.0 |
-| Turns that start Engaged | 8.4 | 3.7 |
-| Shots ([Ranged] Actions) | 0.0 | 42.9 |
-| ... into melee (1 Bane) | 0.0 | 30.0 |
-| ... with Cover | 0.0 | 19.9 |
+| Turns that start Engaged | 8.8 | 3.8 |
+| Shots ([Ranged] Actions) | 0.0 | 43.6 |
+| ... into melee (1 Bane) | 0.0 | 30.7 |
+| ... with Cover | 0.0 | 20.5 |
 | ... while Engaged (2 Banes) | 0.0 | 0.4 |
-| Flanking Boons on its melee Actions | 12.4 | 0.0 |
+| Flanking Boons on its melee Actions | 12.8 | 0.0 |
 | Opportunity Attacks made / taken | 0.0 / 0.0 | 0.0 / 0.0 |
 | Conditions it put on NPCs (Hindered, Immobilized, Prone...) | 0.00 | 3.73 |
 | **Debuff:** Bane on its next Save (times) | 0.00 | 2.15 |
-| **Debuff:** Hindered (times) | 0.00 | 2.23 |
-| **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.94 |
-| **Debuff:** Immobilized (times) | 0.00 | 0.56 |
-| **Debuff:** Vulnerable 2 (times) | 0.00 | 0.91 |
+| **Debuff:** Hindered (times) | 0.00 | 2.26 |
+| **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.92 |
+| **Debuff:** Immobilized (times) | 0.00 | 0.55 |
+| **Debuff:** Vulnerable 2 (times) | 0.00 | 0.87 |
 
-**Level 3, P1 Lay On Hands** (paladin-hands-3, paladin-hands-3, archer-3, archer-3; NPCs of level 3): the day cleared 97% · a PC Down during the day 55% · Downs a day 0.87 · Rally Points left at the end 40% · Health at the end 88%
+**Level 3, P1 Lay On Hands** (paladin-hands-3, paladin-hands-3, archer-3, archer-3; NPCs of level 3): the day cleared 97% · a PC Down during the day 59% · Downs a day 0.91 · Rally Points left at the end 38% · Health at the end 87%
 
 | Fight | won (of the days that reach it) | rounds (mean) | party Health lost in it | a PC goes Down in it |
 |---|---:|---:|---:|---:|
-| 1: 2 standard, 4 minion | 100% | 3.0 | 6% | 0% |
-| 2: 4 standard | 100% | 3.6 | 6% | 5% |
-| 3: 1 elite, 2 standard | 100% | 3.4 | 7% | 12% |
-| 4: 2 elite, 2 standard | 97% | 5.6 | 19% | 49% |
+| 1: 2 standard, 4 minion | 100% | 3.0 | 5% | 1% |
+| 2: 4 standard | 100% | 3.7 | 7% | 4% |
+| 3: 1 elite, 2 standard | 100% | 3.4 | 7% | 11% |
+| 4: 2 elite, 2 standard | 97% | 5.8 | 21% | 52% |
 
 | Per PC, over the day | Paladin (Lay On Hands) `paladin-hands-3` | Archer `archer-3` |
 |---|---:|---:|
-| Damage dealt | 333.3 | 300.7 |
-| Damage a turn (its own turns) | 24.4 | 23.2 |
-| Damage a turn without its Nova turns (no Encounter or Daily Action) | 21.6 | 25.0 |
-| Damage a Nova turn (with an Encounter or Daily Action) | 30.8 | - |
+| Damage dealt | 321.5 | 308.2 |
+| Damage a turn (its own turns) | 22.9 | 23.3 |
+| Damage a turn without its Nova turns (no Encounter or Daily Action) | 19.9 | 25.1 |
+| Damage a Nova turn (with an Encounter or Daily Action) | - | - |
 | Share of the party's damage (%) | 26 | 24 |
-| Turns taken | 13.7 | 12.9 |
+| Turns taken | 14.1 | 13.2 |
 | Health Pool | 46 | 31 |
-| Damage aimed at it (before reduction) | 112.9 | 58.4 |
-| Reduced (Hallowed Stance, its own or an adjacent ally's) | 10.0 | 0.0 |
+| Damage aimed at it (before reduction) | 116.5 | 60.4 |
+| Reduced (Hallowed Stance, its own or an adjacent ally's) | 9.9 | 0.0 |
 | Reduced for adjacent allies (its Hallowed Stance) | 2.0 | 0.0 |
-| Damage taken | 71.7 | 58.3 |
-| Damage taken a round of combat | 4.6 | 3.7 |
-| Times Down | 0.08 | 0.36 |
-| Rally Points (of 9 / 8): used in combat (Steel Yourself) | 2.20 | 0.00 |
-| Rally Points used through an ally's Lay On Hands | 2.09 | 4.10 |
-| Rally Points used between fights | 0.47 | 1.37 |
-| Rally Points left | 4.24 | 2.53 |
-| **Buffs:** healed allies (Lay On Hands) | 56.2 | 0.0 |
+| Damage taken | 74.0 | 60.4 |
+| Damage taken a round of combat | 4.6 | 3.8 |
+| Times Down | 0.07 | 0.38 |
+| Rally Points (of 9 / 8): used in combat (Steel Yourself) | 2.27 | 0.00 |
+| Rally Points used through an ally's Lay On Hands | 2.16 | 4.19 |
+| Rally Points used between fights | 0.44 | 1.39 |
+| Rally Points left | 4.13 | 2.42 |
+| **Buffs:** healed allies (Lay On Hands) | 57.7 | 0.0 |
 | Defense given (damage it stopped) | 0.0 | 0.0 |
-| Vulnerable given (extra damage dealt by the party) | 0.0 | 1.9 |
-| Divine Surge given (extra damage dealt by allies) | 24.7 | 0.0 |
-| Banes given (damage its areas stopped) | 4.4 | 0.0 |
+| Vulnerable given (extra damage dealt by the party) | 0.0 | 2.0 |
+| Divine Surge given (extra damage dealt by allies) | 25.5 | 0.0 |
+| Banes given (damage its areas stopped) | 4.5 | 0.0 |
 | Healed with new Health (Smite, Consecrated Ground) | 4.7 | 0.0 |
-| Guard given (damage it took instead of Health) | 31.2 | 0.0 |
-| Extra healing on Rally Points (Font of Mercy) | 17.8 | 0.0 |
-| **Map:** AP spent moving | 7.0 | 4.3 |
-| AP lost to moving (Actions dropped or made smaller) | 7.0 | 0.0 |
-| Turns that start Engaged | 8.7 | 4.4 |
-| Shots ([Ranged] Actions) | 0.0 | 47.4 |
-| ... into melee (1 Bane) | 0.0 | 34.0 |
-| ... with Cover | 0.0 | 21.9 |
+| Guard given (damage it took instead of Health) | 32.6 | 0.0 |
+| Extra healing on Rally Points (Font of Mercy) | 18.6 | 0.0 |
+| **Map:** AP spent moving | 7.1 | 4.4 |
+| AP lost to moving (Actions dropped or made smaller) | 7.1 | 0.0 |
+| Turns that start Engaged | 9.0 | 4.5 |
+| Shots ([Ranged] Actions) | 0.0 | 48.5 |
+| ... into melee (1 Bane) | 0.0 | 34.9 |
+| ... with Cover | 0.0 | 22.3 |
 | ... while Engaged (2 Banes) | 0.0 | 0.5 |
-| Flanking Boons on its melee Actions | 11.6 | 0.0 |
+| Flanking Boons on its melee Actions | 12.4 | 0.0 |
 | Opportunity Attacks made / taken | 0.0 / 0.0 | 0.0 / 0.0 |
-| Conditions it put on NPCs (Hindered, Immobilized, Prone...) | 0.00 | 4.07 |
+| Conditions it put on NPCs (Hindered, Immobilized, Prone...) | 0.00 | 4.12 |
 | **Debuff:** Bane on its next Save (times) | 0.00 | 2.13 |
-| **Debuff:** Hindered (times) | 0.00 | 2.57 |
-| **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.95 |
-| **Debuff:** Immobilized (times) | 0.00 | 0.55 |
+| **Debuff:** Hindered (times) | 0.00 | 2.63 |
+| **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.96 |
+| **Debuff:** Immobilized (times) | 0.00 | 0.52 |
 | **Debuff:** Vulnerable 2 (times) | 0.00 | 0.89 |
 
 ### Long day (normal, hard, normal, hard)
@@ -1037,213 +1037,213 @@ Fight 1: 8 grunt (CV 4) · Fight 2: 6 standard (CV 6) · Fight 3: 2 elite (CV 4)
 | **Debuff:** Immobilized (times) | 0.00 | 0.00 | 2.94 |
 | **Debuff:** Vulnerable 2 (times) | 0.00 | 0.00 | 0.71 |
 
-**Level 2, P1 Smite** (paladin-smite-2, paladin-smite-2, archer-2, archer-2; NPCs of level 2): the day cleared 77% · a PC Down during the day 97% · Downs a day 3.39 · Rally Points left at the end 28% · Health at the end 63%
+**Level 2, P1 Smite** (paladin-smite-2, paladin-smite-2, archer-2, archer-2; NPCs of level 2): the day cleared 69% · a PC Down during the day 96% · Downs a day 3.60 · Rally Points left at the end 28% · Health at the end 56%
 
 | Fight | won (of the days that reach it) | rounds (mean) | party Health lost in it | a PC goes Down in it |
 |---|---:|---:|---:|---:|
-| 1: 8 grunt | 100% | 4.2 | 33% | 12% |
-| 2: 6 standard | 97% | 5.6 | 44% | 56% |
-| 3: 2 elite | 98% | 3.8 | 38% | 56% |
-| 4: 1 elite, 4 standard | 81% | 6.1 | 58% | 79% |
+| 1: 8 grunt | 100% | 4.4 | 34% | 13% |
+| 2: 6 standard | 94% | 5.9 | 46% | 60% |
+| 3: 2 elite | 98% | 4.0 | 38% | 54% |
+| 4: 1 elite, 4 standard | 75% | 6.4 | 61% | 83% |
 
 | Per PC, over the day | Paladin (Smite) `paladin-smite-2` | Archer `archer-2` |
 |---|---:|---:|
-| Damage dealt | 414.9 | 316.7 |
-| Damage a turn (its own turns) | 25.5 | 22.4 |
-| Damage a turn without its Nova turns (no Encounter or Daily Action) | 21.6 | 24.0 |
-| Damage a Nova turn (with an Encounter or Daily Action) | 37.8 | - |
+| Damage dealt | 391.7 | 317.3 |
+| Damage a turn (its own turns) | 23.3 | 22.2 |
+| Damage a turn without its Nova turns (no Encounter or Daily Action) | 19.6 | 23.7 |
+| Damage a Nova turn (with an Encounter or Daily Action) | 35.7 | - |
 | Share of the party's damage (%) | 28 | 22 |
-| Turns taken | 16.4 | 14.1 |
+| Turns taken | 16.9 | 14.2 |
 | Health Pool | 43 | 29 |
-| Damage aimed at it (before reduction) | 142.4 | 66.1 |
+| Damage aimed at it (before reduction) | 148.6 | 68.0 |
 | Reduced (Hallowed Stance, its own or an adjacent ally's) | 0.0 | 0.0 |
 | Reduced for adjacent allies (its Hallowed Stance) | 0.0 | 0.0 |
-| Damage taken | 89.0 | 66.1 |
+| Damage taken | 91.3 | 68.0 |
 | Damage taken a round of combat | 4.6 | 3.4 |
-| Times Down | 0.50 | 1.19 |
-| Rally Points (of 9 / 7): used in combat (Steel Yourself) | 1.54 | 0.45 |
+| Times Down | 0.53 | 1.27 |
+| Rally Points (of 9 / 7): used in combat (Steel Yourself) | 1.62 | 0.50 |
 | Rally Points used through an ally's Lay On Hands | 0.00 | 0.00 |
-| Rally Points used between fights | 4.46 | 5.15 |
-| Rally Points left | 3.00 | 1.41 |
+| Rally Points used between fights | 4.32 | 5.02 |
+| Rally Points left | 3.06 | 1.48 |
 | **Buffs:** healed allies (Lay On Hands) | 0.0 | 0.0 |
-| Defense given (damage it stopped) | 6.5 | 0.0 |
-| Vulnerable given (extra damage dealt by the party) | 0.0 | 1.8 |
-| Divine Surge given (extra damage dealt by allies) | 28.9 | 0.0 |
+| Defense given (damage it stopped) | 7.0 | 0.0 |
+| Vulnerable given (extra damage dealt by the party) | 0.0 | 1.7 |
+| Divine Surge given (extra damage dealt by allies) | 29.5 | 0.0 |
 | Banes given (damage its areas stopped) | 0.0 | 0.0 |
 | Healed with new Health (Smite, Consecrated Ground) | 0.0 | 0.0 |
-| Guard given (damage it took instead of Health) | 53.4 | 0.0 |
-| Extra healing on Rally Points (Font of Mercy) | 7.3 | 0.0 |
-| **Map:** AP spent moving | 6.5 | 5.8 |
-| AP lost to moving (Actions dropped or made smaller) | 6.5 | 0.0 |
-| Turns that start Engaged | 11.7 | 5.9 |
-| Shots ([Ranged] Actions) | 0.0 | 49.9 |
-| ... into melee (1 Bane) | 0.0 | 33.9 |
-| ... with Cover | 0.0 | 23.5 |
+| Guard given (damage it took instead of Health) | 57.3 | 0.0 |
+| Extra healing on Rally Points (Font of Mercy) | 7.8 | 0.0 |
+| **Map:** AP spent moving | 6.4 | 5.9 |
+| AP lost to moving (Actions dropped or made smaller) | 6.4 | 0.0 |
+| Turns that start Engaged | 12.3 | 6.1 |
+| Shots ([Ranged] Actions) | 0.0 | 50.1 |
+| ... into melee (1 Bane) | 0.0 | 34.1 |
+| ... with Cover | 0.0 | 23.9 |
 | ... while Engaged (2 Banes) | 0.0 | 0.8 |
-| Flanking Boons on its melee Actions | 13.0 | 0.0 |
+| Flanking Boons on its melee Actions | 13.9 | 0.0 |
 | Opportunity Attacks made / taken | 0.0 / 0.0 | 0.0 / 0.0 |
-| Conditions it put on NPCs (Hindered, Immobilized, Prone...) | 0.00 | 3.89 |
-| **Debuff:** Bane on its next Save (times) | 0.00 | 1.81 |
-| **Debuff:** Hindered (times) | 0.00 | 2.86 |
-| **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.65 |
-| **Debuff:** Immobilized (times) | 0.00 | 0.38 |
-| **Debuff:** Vulnerable 2 (times) | 0.00 | 0.70 |
+| Conditions it put on NPCs (Hindered, Immobilized, Prone...) | 0.00 | 3.85 |
+| **Debuff:** Bane on its next Save (times) | 0.00 | 1.77 |
+| **Debuff:** Hindered (times) | 0.00 | 2.82 |
+| **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.67 |
+| **Debuff:** Immobilized (times) | 0.00 | 0.35 |
+| **Debuff:** Vulnerable 2 (times) | 0.00 | 0.71 |
 
-**Level 2, P1 Lay On Hands** (paladin-hands-2, paladin-hands-2, archer-2, archer-2; NPCs of level 2): the day cleared 81% · a PC Down during the day 82% · Downs a day 2.20 · Rally Points left at the end 19% · Health at the end 57%
+**Level 2, P1 Lay On Hands** (paladin-hands-2, paladin-hands-2, archer-2, archer-2; NPCs of level 2): the day cleared 82% · a PC Down during the day 84% · Downs a day 2.23 · Rally Points left at the end 16% · Health at the end 57%
 
 | Fight | won (of the days that reach it) | rounds (mean) | party Health lost in it | a PC goes Down in it |
 |---|---:|---:|---:|---:|
 | 1: 8 grunt | 100% | 4.3 | 6% | 0% |
-| 2: 6 standard | 99% | 5.2 | 12% | 19% |
-| 3: 2 elite | 99% | 3.8 | 17% | 37% |
-| 4: 1 elite, 4 standard | 83% | 6.2 | 38% | 73% |
+| 2: 6 standard | 99% | 5.3 | 11% | 22% |
+| 3: 2 elite | 99% | 4.0 | 17% | 40% |
+| 4: 1 elite, 4 standard | 83% | 6.4 | 38% | 75% |
 
 | Per PC, over the day | Paladin (Lay On Hands) `paladin-hands-2` | Archer `archer-2` |
 |---|---:|---:|
-| Damage dealt | 394.4 | 345.1 |
-| Damage a turn (its own turns) | 23.6 | 23.0 |
-| Damage a turn without its Nova turns (no Encounter or Daily Action) | 20.9 | 24.6 |
+| Damage dealt | 384.8 | 354.1 |
+| Damage a turn (its own turns) | 22.0 | 23.0 |
+| Damage a turn without its Nova turns (no Encounter or Daily Action) | 19.3 | 24.6 |
 | Damage a Nova turn (with an Encounter or Daily Action) | - | - |
-| Share of the party's damage (%) | 27 | 23 |
-| Turns taken | 16.8 | 15.0 |
+| Share of the party's damage (%) | 26 | 24 |
+| Turns taken | 17.6 | 15.3 |
 | Health Pool | 43 | 29 |
-| Damage aimed at it (before reduction) | 150.1 | 73.6 |
+| Damage aimed at it (before reduction) | 157.2 | 75.3 |
 | Reduced (Hallowed Stance, its own or an adjacent ally's) | 0.0 | 0.0 |
 | Reduced for adjacent allies (its Hallowed Stance) | 0.0 | 0.0 |
-| Damage taken | 98.1 | 73.6 |
+| Damage taken | 102.1 | 75.3 |
 | Damage taken a round of combat | 5.1 | 3.8 |
-| Times Down | 0.31 | 0.79 |
-| Rally Points (of 9 / 7): used in combat (Steel Yourself) | 3.34 | 0.01 |
-| Rally Points used through an ally's Lay On Hands | 2.79 | 4.95 |
-| Rally Points used between fights | 0.67 | 1.20 |
-| Rally Points left | 2.21 | 0.84 |
-| **Buffs:** healed allies (Lay On Hands) | 68.2 | 0.0 |
+| Times Down | 0.30 | 0.81 |
+| Rally Points (of 9 / 7): used in combat (Steel Yourself) | 3.45 | 0.01 |
+| Rally Points used through an ally's Lay On Hands | 2.98 | 5.07 |
+| Rally Points used between fights | 0.65 | 1.23 |
+| Rally Points left | 1.93 | 0.70 |
+| **Buffs:** healed allies (Lay On Hands) | 71.1 | 0.0 |
 | Defense given (damage it stopped) | 0.0 | 0.0 |
 | Vulnerable given (extra damage dealt by the party) | 0.0 | 1.7 |
-| Divine Surge given (extra damage dealt by allies) | 30.9 | 0.0 |
+| Divine Surge given (extra damage dealt by allies) | 32.9 | 0.0 |
 | Banes given (damage its areas stopped) | 0.0 | 0.0 |
 | Healed with new Health (Smite, Consecrated Ground) | 0.0 | 0.0 |
-| Guard given (damage it took instead of Health) | 52.0 | 0.0 |
-| Extra healing on Rally Points (Font of Mercy) | 15.8 | 0.0 |
-| **Map:** AP spent moving | 6.7 | 6.4 |
-| AP lost to moving (Actions dropped or made smaller) | 6.7 | 0.0 |
-| Turns that start Engaged | 12.0 | 6.5 |
-| Shots ([Ranged] Actions) | 0.0 | 54.2 |
-| ... into melee (1 Bane) | 0.0 | 37.7 |
-| ... with Cover | 0.0 | 25.6 |
-| ... while Engaged (2 Banes) | 0.0 | 0.9 |
-| Flanking Boons on its melee Actions | 12.9 | 0.0 |
+| Guard given (damage it took instead of Health) | 55.2 | 0.0 |
+| Extra healing on Rally Points (Font of Mercy) | 16.6 | 0.0 |
+| **Map:** AP spent moving | 6.8 | 6.6 |
+| AP lost to moving (Actions dropped or made smaller) | 6.8 | 0.0 |
+| Turns that start Engaged | 12.7 | 6.7 |
+| Shots ([Ranged] Actions) | 0.0 | 55.7 |
+| ... into melee (1 Bane) | 0.0 | 39.4 |
+| ... with Cover | 0.0 | 26.1 |
+| ... while Engaged (2 Banes) | 0.0 | 1.0 |
+| Flanking Boons on its melee Actions | 13.8 | 0.0 |
 | Opportunity Attacks made / taken | 0.0 / 0.0 | 0.0 / 0.0 |
-| Conditions it put on NPCs (Hindered, Immobilized, Prone...) | 0.00 | 4.25 |
-| **Debuff:** Bane on its next Save (times) | 0.00 | 1.81 |
-| **Debuff:** Hindered (times) | 0.00 | 3.17 |
-| **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.68 |
-| **Debuff:** Immobilized (times) | 0.00 | 0.40 |
-| **Debuff:** Vulnerable 2 (times) | 0.00 | 0.73 |
+| Conditions it put on NPCs (Hindered, Immobilized, Prone...) | 0.00 | 4.22 |
+| **Debuff:** Bane on its next Save (times) | 0.00 | 1.79 |
+| **Debuff:** Hindered (times) | 0.00 | 3.19 |
+| **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.66 |
+| **Debuff:** Immobilized (times) | 0.00 | 0.37 |
+| **Debuff:** Vulnerable 2 (times) | 0.00 | 0.74 |
 
-**Level 3, P1 Smite** (paladin-smite-3, paladin-smite-3, archer-3, archer-3; NPCs of level 3): the day cleared 95% · a PC Down during the day 93% · Downs a day 2.44 · Rally Points left at the end 33% · Health at the end 84%
+**Level 3, P1 Smite** (paladin-smite-3, paladin-smite-3, archer-3, archer-3; NPCs of level 3): the day cleared 93% · a PC Down during the day 94% · Downs a day 2.64 · Rally Points left at the end 32% · Health at the end 81%
 
 | Fight | won (of the days that reach it) | rounds (mean) | party Health lost in it | a PC goes Down in it |
 |---|---:|---:|---:|---:|
-| 1: 8 grunt | 100% | 4.2 | 35% | 17% |
-| 2: 6 standard | 99% | 5.2 | 35% | 54% |
-| 3: 2 elite | 100% | 3.3 | 29% | 39% |
-| 4: 1 elite, 4 standard | 96% | 5.4 | 47% | 67% |
+| 1: 8 grunt | 100% | 4.3 | 35% | 15% |
+| 2: 6 standard | 99% | 5.5 | 37% | 58% |
+| 3: 2 elite | 100% | 3.5 | 30% | 41% |
+| 4: 1 elite, 4 standard | 95% | 5.7 | 47% | 70% |
 
 | Per PC, over the day | Paladin (Smite) `paladin-smite-3` | Archer `archer-3` |
 |---|---:|---:|
-| Damage dealt | 449.6 | 314.9 |
-| Damage a turn (its own turns) | 28.1 | 22.9 |
-| Damage a turn without its Nova turns (no Encounter or Daily Action) | 24.3 | 24.3 |
-| Damage a Nova turn (with an Encounter or Daily Action) | 36.4 | - |
+| Damage dealt | 433.6 | 321.3 |
+| Damage a turn (its own turns) | 26.1 | 22.8 |
+| Damage a turn without its Nova turns (no Encounter or Daily Action) | 22.2 | 24.2 |
+| Damage a Nova turn (with an Encounter or Daily Action) | 34.9 | - |
 | Share of the party's damage (%) | 29 | 21 |
-| Turns taken | 16.1 | 13.7 |
+| Turns taken | 16.7 | 14.1 |
 | Health Pool | 46 | 31 |
-| Damage aimed at it (before reduction) | 138.4 | 67.4 |
-| Reduced (Hallowed Stance, its own or an adjacent ally's) | 16.0 | 0.1 |
-| Reduced for adjacent allies (its Hallowed Stance) | 2.5 | 0.0 |
-| Damage taken | 74.4 | 67.2 |
-| Damage taken a round of combat | 4.1 | 3.7 |
-| Times Down | 0.20 | 1.02 |
-| Rally Points (of 9 / 8): used in combat (Steel Yourself) | 0.90 | 0.41 |
+| Damage aimed at it (before reduction) | 146.5 | 69.2 |
+| Reduced (Hallowed Stance, its own or an adjacent ally's) | 16.6 | 0.1 |
+| Reduced for adjacent allies (its Hallowed Stance) | 2.9 | 0.0 |
+| Damage taken | 78.6 | 69.1 |
+| Damage taken a round of combat | 4.2 | 3.6 |
+| Times Down | 0.22 | 1.10 |
+| Rally Points (of 9 / 8): used in combat (Steel Yourself) | 1.04 | 0.43 |
 | Rally Points used through an ally's Lay On Hands | 0.00 | 0.00 |
-| Rally Points used between fights | 4.00 | 6.02 |
-| Rally Points left | 4.10 | 1.57 |
+| Rally Points used between fights | 4.06 | 6.01 |
+| Rally Points left | 3.90 | 1.55 |
 | **Buffs:** healed allies (Lay On Hands) | 0.0 | 0.0 |
-| Defense given (damage it stopped) | 5.8 | 0.0 |
-| Vulnerable given (extra damage dealt by the party) | 0.0 | 1.9 |
-| Divine Surge given (extra damage dealt by allies) | 27.6 | 0.0 |
+| Defense given (damage it stopped) | 6.2 | 0.0 |
+| Vulnerable given (extra damage dealt by the party) | 0.0 | 2.0 |
+| Divine Surge given (extra damage dealt by allies) | 29.4 | 0.0 |
 | Banes given (damage its areas stopped) | 1.7 | 0.0 |
-| Healed with new Health (Smite, Consecrated Ground) | 6.5 | 0.0 |
-| Guard given (damage it took instead of Health) | 48.0 | 0.0 |
-| Extra healing on Rally Points (Font of Mercy) | 5.1 | 0.0 |
-| **Map:** AP spent moving | 6.5 | 5.5 |
-| AP lost to moving (Actions dropped or made smaller) | 6.5 | 0.0 |
-| Turns that start Engaged | 11.3 | 5.7 |
-| Shots ([Ranged] Actions) | 0.0 | 48.6 |
-| ... into melee (1 Bane) | 0.0 | 33.3 |
-| ... with Cover | 0.0 | 23.5 |
+| Healed with new Health (Smite, Consecrated Ground) | 6.7 | 0.0 |
+| Guard given (damage it took instead of Health) | 51.3 | 0.0 |
+| Extra healing on Rally Points (Font of Mercy) | 5.8 | 0.0 |
+| **Map:** AP spent moving | 6.7 | 5.7 |
+| AP lost to moving (Actions dropped or made smaller) | 6.7 | 0.0 |
+| Turns that start Engaged | 11.9 | 5.8 |
+| Shots ([Ranged] Actions) | 0.0 | 49.8 |
+| ... into melee (1 Bane) | 0.0 | 34.4 |
+| ... with Cover | 0.0 | 23.9 |
 | ... while Engaged (2 Banes) | 0.0 | 0.8 |
-| Flanking Boons on its melee Actions | 13.3 | 0.0 |
+| Flanking Boons on its melee Actions | 13.9 | 0.0 |
 | Opportunity Attacks made / taken | 0.0 / 0.0 | 0.0 / 0.0 |
-| Conditions it put on NPCs (Hindered, Immobilized, Prone...) | 0.00 | 3.85 |
-| **Debuff:** Bane on its next Save (times) | 0.00 | 1.85 |
-| **Debuff:** Hindered (times) | 0.00 | 2.73 |
+| Conditions it put on NPCs (Hindered, Immobilized, Prone...) | 0.00 | 3.92 |
+| **Debuff:** Bane on its next Save (times) | 0.00 | 1.84 |
+| **Debuff:** Hindered (times) | 0.00 | 2.82 |
 | **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.70 |
-| **Debuff:** Immobilized (times) | 0.00 | 0.41 |
-| **Debuff:** Vulnerable 2 (times) | 0.00 | 0.75 |
+| **Debuff:** Immobilized (times) | 0.00 | 0.40 |
+| **Debuff:** Vulnerable 2 (times) | 0.00 | 0.74 |
 
-**Level 3, P1 Lay On Hands** (paladin-hands-3, paladin-hands-3, archer-3, archer-3; NPCs of level 3): the day cleared 97% · a PC Down during the day 65% · Downs a day 1.22 · Rally Points left at the end 28% · Health at the end 80%
+**Level 3, P1 Lay On Hands** (paladin-hands-3, paladin-hands-3, archer-3, archer-3; NPCs of level 3): the day cleared 97% · a PC Down during the day 68% · Downs a day 1.27 · Rally Points left at the end 27% · Health at the end 78%
 
 | Fight | won (of the days that reach it) | rounds (mean) | party Health lost in it | a PC goes Down in it |
 |---|---:|---:|---:|---:|
-| 1: 8 grunt | 100% | 4.3 | 6% | 1% |
-| 2: 6 standard | 100% | 5.1 | 7% | 15% |
-| 3: 2 elite | 100% | 3.5 | 12% | 24% |
-| 4: 1 elite, 4 standard | 98% | 5.5 | 20% | 54% |
+| 1: 8 grunt | 100% | 4.4 | 6% | 1% |
+| 2: 6 standard | 100% | 5.2 | 7% | 14% |
+| 3: 2 elite | 100% | 3.6 | 11% | 24% |
+| 4: 1 elite, 4 standard | 97% | 5.7 | 22% | 57% |
 
 | Per PC, over the day | Paladin (Lay On Hands) `paladin-hands-3` | Archer `archer-3` |
 |---|---:|---:|
-| Damage dealt | 406.0 | 357.6 |
-| Damage a turn (its own turns) | 24.8 | 23.6 |
-| Damage a turn without its Nova turns (no Encounter or Daily Action) | 22.4 | 24.9 |
-| Damage a Nova turn (with an Encounter or Daily Action) | 31.7 | - |
-| Share of the party's damage (%) | 27 | 23 |
-| Turns taken | 16.4 | 15.1 |
+| Damage dealt | 394.5 | 365.6 |
+| Damage a turn (its own turns) | 23.4 | 23.5 |
+| Damage a turn without its Nova turns (no Encounter or Daily Action) | 20.8 | 24.8 |
+| Damage a Nova turn (with an Encounter or Daily Action) | 30.8 | - |
+| Share of the party's damage (%) | 26 | 24 |
+| Turns taken | 16.9 | 15.5 |
 | Health Pool | 46 | 31 |
-| Damage aimed at it (before reduction) | 147.5 | 77.8 |
-| Reduced (Hallowed Stance, its own or an adjacent ally's) | 16.1 | 0.1 |
-| Reduced for adjacent allies (its Hallowed Stance) | 2.7 | 0.0 |
-| Damage taken | 84.0 | 77.6 |
-| Damage taken a round of combat | 4.6 | 4.2 |
-| Times Down | 0.09 | 0.52 |
-| Rally Points (of 9 / 8): used in combat (Steel Yourself) | 2.66 | 0.00 |
-| Rally Points used through an ally's Lay On Hands | 2.45 | 5.49 |
-| Rally Points used between fights | 0.41 | 1.22 |
-| Rally Points left | 3.48 | 1.29 |
-| **Buffs:** healed allies (Lay On Hands) | 70.6 | 0.0 |
+| Damage aimed at it (before reduction) | 151.5 | 80.7 |
+| Reduced (Hallowed Stance, its own or an adjacent ally's) | 16.4 | 0.1 |
+| Reduced for adjacent allies (its Hallowed Stance) | 2.9 | 0.0 |
+| Damage taken | 85.7 | 80.6 |
+| Damage taken a round of combat | 4.5 | 4.3 |
+| Times Down | 0.09 | 0.55 |
+| Rally Points (of 9 / 8): used in combat (Steel Yourself) | 2.70 | 0.00 |
+| Rally Points used through an ally's Lay On Hands | 2.44 | 5.72 |
+| Rally Points used between fights | 0.41 | 1.15 |
+| Rally Points left | 3.44 | 1.13 |
+| **Buffs:** healed allies (Lay On Hands) | 72.5 | 0.0 |
 | Defense given (damage it stopped) | 0.0 | 0.0 |
-| Vulnerable given (extra damage dealt by the party) | 0.0 | 1.9 |
-| Divine Surge given (extra damage dealt by allies) | 31.0 | 0.0 |
+| Vulnerable given (extra damage dealt by the party) | 0.0 | 1.8 |
+| Divine Surge given (extra damage dealt by allies) | 32.5 | 0.0 |
 | Banes given (damage its areas stopped) | 1.6 | 0.0 |
-| Healed with new Health (Smite, Consecrated Ground) | 4.6 | 0.0 |
-| Guard given (damage it took instead of Health) | 47.4 | 0.0 |
-| Extra healing on Rally Points (Font of Mercy) | 24.0 | 0.0 |
-| **Map:** AP spent moving | 7.0 | 6.5 |
-| AP lost to moving (Actions dropped or made smaller) | 7.0 | 0.0 |
-| Turns that start Engaged | 11.5 | 6.6 |
-| Shots ([Ranged] Actions) | 0.0 | 54.8 |
-| ... into melee (1 Bane) | 0.0 | 38.6 |
-| ... with Cover | 0.0 | 25.7 |
+| Healed with new Health (Smite, Consecrated Ground) | 4.7 | 0.0 |
+| Guard given (damage it took instead of Health) | 49.4 | 0.0 |
+| Extra healing on Rally Points (Font of Mercy) | 24.8 | 0.0 |
+| **Map:** AP spent moving | 7.1 | 6.7 |
+| AP lost to moving (Actions dropped or made smaller) | 7.1 | 0.0 |
+| Turns that start Engaged | 11.9 | 6.9 |
+| Shots ([Ranged] Actions) | 0.0 | 56.2 |
+| ... into melee (1 Bane) | 0.0 | 39.5 |
+| ... with Cover | 0.0 | 26.1 |
 | ... while Engaged (2 Banes) | 0.0 | 0.9 |
-| Flanking Boons on its melee Actions | 12.5 | 0.0 |
+| Flanking Boons on its melee Actions | 13.2 | 0.0 |
 | Opportunity Attacks made / taken | 0.0 / 0.0 | 0.0 / 0.0 |
-| Conditions it put on NPCs (Hindered, Immobilized, Prone...) | 0.00 | 4.25 |
-| **Debuff:** Bane on its next Save (times) | 0.00 | 1.81 |
-| **Debuff:** Hindered (times) | 0.00 | 3.14 |
-| **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.70 |
-| **Debuff:** Immobilized (times) | 0.00 | 0.41 |
-| **Debuff:** Vulnerable 2 (times) | 0.00 | 0.74 |
+| Conditions it put on NPCs (Hindered, Immobilized, Prone...) | 0.00 | 4.33 |
+| **Debuff:** Bane on its next Save (times) | 0.00 | 1.77 |
+| **Debuff:** Hindered (times) | 0.00 | 3.28 |
+| **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.67 |
+| **Debuff:** Immobilized (times) | 0.00 | 0.38 |
+| **Debuff:** Vulnerable 2 (times) | 0.00 | 0.69 |
 
 ### Short hard day (normal, hard, hard)
 
@@ -1500,206 +1500,206 @@ Fight 1: 4 standard (CV 4) · Fight 2: 2 elite, 2 standard (CV 6) · Fight 3: 6 
 | **Debuff:** Immobilized (times) | 0.00 | 0.00 | 2.15 |
 | **Debuff:** Vulnerable 2 (times) | 0.00 | 0.00 | 0.57 |
 
-**Level 2, P1 Smite** (paladin-smite-2, paladin-smite-2, archer-2, archer-2; NPCs of level 2): the day cleared 59% · a PC Down during the day 96% · Downs a day 3.04 · Rally Points left at the end 54% · Health at the end 54%
+**Level 2, P1 Smite** (paladin-smite-2, paladin-smite-2, archer-2, archer-2; NPCs of level 2): the day cleared 54% · a PC Down during the day 97% · Downs a day 3.23 · Rally Points left at the end 55% · Health at the end 49%
 
 | Fight | won (of the days that reach it) | rounds (mean) | party Health lost in it | a PC goes Down in it |
 |---|---:|---:|---:|---:|
-| 1: 4 standard | 100% | 3.4 | 28% | 12% |
-| 2: 2 elite, 2 standard | 62% | 6.0 | 70% | 88% |
-| 3: 6 standard | 96% | 5.7 | 44% | 58% |
+| 1: 4 standard | 100% | 3.6 | 29% | 15% |
+| 2: 2 elite, 2 standard | 57% | 6.3 | 72% | 89% |
+| 3: 6 standard | 95% | 6.0 | 46% | 64% |
 
 | Per PC, over the day | Paladin (Smite) `paladin-smite-2` | Archer `archer-2` |
 |---|---:|---:|
-| Damage dealt | 267.0 | 203.1 |
-| Damage a turn (its own turns) | 25.8 | 22.3 |
-| Damage a turn without its Nova turns (no Encounter or Daily Action) | 21.4 | 24.0 |
-| Damage a Nova turn (with an Encounter or Daily Action) | - | - |
-| Share of the party's damage (%) | 28 | 22 |
-| Turns taken | 10.5 | 9.0 |
+| Damage dealt | 247.4 | 204.7 |
+| Damage a turn (its own turns) | 23.6 | 22.3 |
+| Damage a turn without its Nova turns (no Encounter or Daily Action) | 19.1 | 24.0 |
+| Damage a Nova turn (with an Encounter or Daily Action) | 36.0 | - |
+| Share of the party's damage (%) | 27 | 23 |
+| Turns taken | 10.7 | 9.1 |
 | Health Pool | 43 | 29 |
-| Damage aimed at it (before reduction) | 105.0 | 47.5 |
+| Damage aimed at it (before reduction) | 110.2 | 48.6 |
 | Reduced (Hallowed Stance, its own or an adjacent ally's) | 0.0 | 0.0 |
 | Reduced for adjacent allies (its Hallowed Stance) | 0.0 | 0.0 |
-| Damage taken | 69.7 | 47.5 |
-| Damage taken a round of combat | 5.7 | 3.9 |
-| Times Down | 0.57 | 0.96 |
-| Rally Points (of 9 / 7): used in combat (Steel Yourself) | 1.20 | 0.29 |
+| Damage taken | 72.7 | 48.6 |
+| Damage taken a round of combat | 5.8 | 3.8 |
+| Times Down | 0.62 | 1.00 |
+| Rally Points (of 9 / 7): used in combat (Steel Yourself) | 1.31 | 0.33 |
 | Rally Points used through an ally's Lay On Hands | 0.00 | 0.00 |
-| Rally Points used between fights | 2.66 | 3.17 |
-| Rally Points left | 5.14 | 3.54 |
+| Rally Points used between fights | 2.55 | 3.05 |
+| Rally Points left | 5.13 | 3.62 |
 | **Buffs:** healed allies (Lay On Hands) | 0.0 | 0.0 |
-| Defense given (damage it stopped) | 5.0 | 0.0 |
-| Vulnerable given (extra damage dealt by the party) | 0.0 | 1.1 |
-| Divine Surge given (extra damage dealt by allies) | 16.8 | 0.0 |
+| Defense given (damage it stopped) | 5.2 | 0.0 |
+| Vulnerable given (extra damage dealt by the party) | 0.0 | 1.2 |
+| Divine Surge given (extra damage dealt by allies) | 17.3 | 0.0 |
 | Banes given (damage its areas stopped) | 0.0 | 0.0 |
 | Healed with new Health (Smite, Consecrated Ground) | 0.0 | 0.0 |
-| Guard given (damage it took instead of Health) | 35.3 | 0.0 |
-| Extra healing on Rally Points (Font of Mercy) | 5.5 | 0.0 |
-| **Map:** AP spent moving | 4.2 | 3.4 |
+| Guard given (damage it took instead of Health) | 37.4 | 0.0 |
+| Extra healing on Rally Points (Font of Mercy) | 6.1 | 0.0 |
+| **Map:** AP spent moving | 4.2 | 3.5 |
 | AP lost to moving (Actions dropped or made smaller) | 4.2 | 0.0 |
-| Turns that start Engaged | 7.5 | 3.4 |
-| Shots ([Ranged] Actions) | 0.0 | 32.1 |
+| Turns that start Engaged | 7.7 | 3.5 |
+| Shots ([Ranged] Actions) | 0.0 | 32.2 |
 | ... into melee (1 Bane) | 0.0 | 21.6 |
 | ... with Cover | 0.0 | 14.7 |
 | ... while Engaged (2 Banes) | 0.0 | 0.4 |
-| Flanking Boons on its melee Actions | 8.6 | 0.0 |
+| Flanking Boons on its melee Actions | 8.5 | 0.0 |
 | Opportunity Attacks made / taken | 0.0 / 0.0 | 0.0 / 0.0 |
-| Conditions it put on NPCs (Hindered, Immobilized, Prone...) | 0.00 | 2.53 |
-| **Debuff:** Bane on its next Save (times) | 0.00 | 1.28 |
-| **Debuff:** Hindered (times) | 0.00 | 1.73 |
-| **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.51 |
-| **Debuff:** Immobilized (times) | 0.00 | 0.29 |
-| **Debuff:** Vulnerable 2 (times) | 0.00 | 0.52 |
+| Conditions it put on NPCs (Hindered, Immobilized, Prone...) | 0.00 | 2.57 |
+| **Debuff:** Bane on its next Save (times) | 0.00 | 1.26 |
+| **Debuff:** Hindered (times) | 0.00 | 1.80 |
+| **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.47 |
+| **Debuff:** Immobilized (times) | 0.00 | 0.30 |
+| **Debuff:** Vulnerable 2 (times) | 0.00 | 0.51 |
 
-**Level 2, P1 Lay On Hands** (paladin-hands-2, paladin-hands-2, archer-2, archer-2; NPCs of level 2): the day cleared 81% · a PC Down during the day 81% · Downs a day 1.99 · Rally Points left at the end 34% · Health at the end 65%
+**Level 2, P1 Lay On Hands** (paladin-hands-2, paladin-hands-2, archer-2, archer-2; NPCs of level 2): the day cleared 79% · a PC Down during the day 80% · Downs a day 2.00 · Rally Points left at the end 34% · Health at the end 64%
 
 | Fight | won (of the days that reach it) | rounds (mean) | party Health lost in it | a PC goes Down in it |
 |---|---:|---:|---:|---:|
-| 1: 4 standard | 100% | 3.6 | 8% | 3% |
-| 2: 2 elite, 2 standard | 82% | 5.9 | 41% | 73% |
-| 3: 6 standard | 98% | 5.6 | 19% | 40% |
+| 1: 4 standard | 100% | 3.7 | 8% | 3% |
+| 2: 2 elite, 2 standard | 82% | 6.2 | 40% | 71% |
+| 3: 6 standard | 96% | 5.7 | 21% | 42% |
 
 | Per PC, over the day | Paladin (Lay On Hands) `paladin-hands-2` | Archer `archer-2` |
 |---|---:|---:|
-| Damage dealt | 282.7 | 249.3 |
-| Damage a turn (its own turns) | 23.5 | 23.1 |
-| Damage a turn without its Nova turns (no Encounter or Daily Action) | 20.6 | 24.7 |
+| Damage dealt | 271.7 | 256.3 |
+| Damage a turn (its own turns) | 22.0 | 23.1 |
+| Damage a turn without its Nova turns (no Encounter or Daily Action) | 19.1 | 24.7 |
 | Damage a Nova turn (with an Encounter or Daily Action) | - | - |
 | Share of the party's damage (%) | 26 | 24 |
-| Turns taken | 12.1 | 10.7 |
+| Turns taken | 12.5 | 11.0 |
 | Health Pool | 43 | 29 |
-| Damage aimed at it (before reduction) | 118.3 | 58.2 |
+| Damage aimed at it (before reduction) | 121.8 | 58.9 |
 | Reduced (Hallowed Stance, its own or an adjacent ally's) | 0.0 | 0.0 |
 | Reduced for adjacent allies (its Hallowed Stance) | 0.0 | 0.0 |
-| Damage taken | 80.3 | 58.2 |
-| Damage taken a round of combat | 5.9 | 4.2 |
+| Damage taken | 82.3 | 58.9 |
+| Damage taken a round of combat | 5.8 | 4.1 |
 | Times Down | 0.32 | 0.68 |
-| Rally Points (of 9 / 7): used in combat (Steel Yourself) | 2.62 | 0.02 |
-| Rally Points used through an ally's Lay On Hands | 2.16 | 3.41 |
-| Rally Points used between fights | 0.70 | 1.60 |
-| Rally Points left | 3.52 | 1.97 |
-| **Buffs:** healed allies (Lay On Hands) | 49.9 | 0.0 |
+| Rally Points (of 9 / 7): used in combat (Steel Yourself) | 2.73 | 0.01 |
+| Rally Points used through an ally's Lay On Hands | 2.20 | 3.53 |
+| Rally Points used between fights | 0.65 | 1.47 |
+| Rally Points left | 3.42 | 1.99 |
+| **Buffs:** healed allies (Lay On Hands) | 51.3 | 0.0 |
 | Defense given (damage it stopped) | 0.0 | 0.0 |
-| Vulnerable given (extra damage dealt by the party) | 0.0 | 1.2 |
-| Divine Surge given (extra damage dealt by allies) | 21.0 | 0.0 |
+| Vulnerable given (extra damage dealt by the party) | 0.0 | 1.3 |
+| Divine Surge given (extra damage dealt by allies) | 22.2 | 0.0 |
 | Banes given (damage its areas stopped) | 0.0 | 0.0 |
 | Healed with new Health (Smite, Consecrated Ground) | 0.0 | 0.0 |
-| Guard given (damage it took instead of Health) | 38.0 | 0.0 |
-| Extra healing on Rally Points (Font of Mercy) | 11.9 | 0.0 |
-| **Map:** AP spent moving | 5.0 | 4.3 |
+| Guard given (damage it took instead of Health) | 39.5 | 0.0 |
+| Extra healing on Rally Points (Font of Mercy) | 12.4 | 0.0 |
+| **Map:** AP spent moving | 5.0 | 4.5 |
 | AP lost to moving (Actions dropped or made smaller) | 5.0 | 0.0 |
-| Turns that start Engaged | 8.5 | 4.4 |
-| Shots ([Ranged] Actions) | 0.0 | 39.0 |
-| ... into melee (1 Bane) | 0.0 | 27.0 |
-| ... with Cover | 0.0 | 17.6 |
+| Turns that start Engaged | 8.9 | 4.5 |
+| Shots ([Ranged] Actions) | 0.0 | 40.2 |
+| ... into melee (1 Bane) | 0.0 | 28.0 |
+| ... with Cover | 0.0 | 18.3 |
 | ... while Engaged (2 Banes) | 0.0 | 0.5 |
-| Flanking Boons on its melee Actions | 9.4 | 0.0 |
+| Flanking Boons on its melee Actions | 10.1 | 0.0 |
 | Opportunity Attacks made / taken | 0.0 / 0.0 | 0.0 / 0.0 |
-| Conditions it put on NPCs (Hindered, Immobilized, Prone...) | 0.00 | 3.07 |
-| **Debuff:** Bane on its next Save (times) | 0.00 | 1.36 |
-| **Debuff:** Hindered (times) | 0.00 | 2.21 |
-| **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.54 |
-| **Debuff:** Immobilized (times) | 0.00 | 0.32 |
-| **Debuff:** Vulnerable 2 (times) | 0.00 | 0.54 |
+| Conditions it put on NPCs (Hindered, Immobilized, Prone...) | 0.00 | 3.11 |
+| **Debuff:** Bane on its next Save (times) | 0.00 | 1.40 |
+| **Debuff:** Hindered (times) | 0.00 | 2.28 |
+| **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.52 |
+| **Debuff:** Immobilized (times) | 0.00 | 0.31 |
+| **Debuff:** Vulnerable 2 (times) | 0.00 | 0.57 |
 
-**Level 3, P1 Smite** (paladin-smite-3, paladin-smite-3, archer-3, archer-3; NPCs of level 3): the day cleared 89% · a PC Down during the day 89% · Downs a day 2.15 · Rally Points left at the end 48% · Health at the end 83%
+**Level 3, P1 Smite** (paladin-smite-3, paladin-smite-3, archer-3, archer-3; NPCs of level 3): the day cleared 89% · a PC Down during the day 91% · Downs a day 2.33 · Rally Points left at the end 46% · Health at the end 83%
 
 | Fight | won (of the days that reach it) | rounds (mean) | party Health lost in it | a PC goes Down in it |
 |---|---:|---:|---:|---:|
-| 1: 4 standard | 100% | 3.5 | 30% | 13% |
-| 2: 2 elite, 2 standard | 90% | 5.7 | 50% | 74% |
-| 3: 6 standard | 99% | 5.2 | 40% | 52% |
+| 1: 4 standard | 100% | 3.6 | 31% | 18% |
+| 2: 2 elite, 2 standard | 90% | 6.0 | 51% | 78% |
+| 3: 6 standard | 98% | 5.4 | 41% | 56% |
 
 | Per PC, over the day | Paladin (Smite) `paladin-smite-3` | Archer `archer-3` |
 |---|---:|---:|
-| Damage dealt | 330.8 | 233.4 |
-| Damage a turn (its own turns) | 27.7 | 23.1 |
-| Damage a turn without its Nova turns (no Encounter or Daily Action) | 24.0 | 24.5 |
-| Damage a Nova turn (with an Encounter or Daily Action) | 35.0 | - |
+| Damage dealt | 320.6 | 238.6 |
+| Damage a turn (its own turns) | 25.8 | 23.0 |
+| Damage a turn without its Nova turns (no Encounter or Daily Action) | 22.0 | 24.4 |
+| Damage a Nova turn (with an Encounter or Daily Action) | 33.6 | - |
 | Share of the party's damage (%) | 29 | 21 |
-| Turns taken | 12.0 | 10.1 |
+| Turns taken | 12.5 | 10.3 |
 | Health Pool | 46 | 31 |
-| Damage aimed at it (before reduction) | 112.5 | 52.4 |
-| Reduced (Hallowed Stance, its own or an adjacent ally's) | 12.3 | 0.1 |
-| Reduced for adjacent allies (its Hallowed Stance) | 2.3 | 0.0 |
-| Damage taken | 63.8 | 52.3 |
-| Damage taken a round of combat | 4.7 | 3.8 |
-| Times Down | 0.24 | 0.83 |
-| Rally Points (of 9 / 8): used in combat (Steel Yourself) | 0.83 | 0.33 |
+| Damage aimed at it (before reduction) | 119.9 | 53.9 |
+| Reduced (Hallowed Stance, its own or an adjacent ally's) | 13.2 | 0.0 |
+| Reduced for adjacent allies (its Hallowed Stance) | 2.4 | 0.0 |
+| Damage taken | 67.4 | 53.8 |
+| Damage taken a round of combat | 4.8 | 3.8 |
+| Times Down | 0.27 | 0.90 |
+| Rally Points (of 9 / 8): used in combat (Steel Yourself) | 0.90 | 0.36 |
 | Rally Points used through an ally's Lay On Hands | 0.00 | 0.00 |
-| Rally Points used between fights | 2.97 | 4.66 |
-| Rally Points left | 5.19 | 3.01 |
+| Rally Points used between fights | 3.13 | 4.71 |
+| Rally Points left | 4.97 | 2.93 |
 | **Buffs:** healed allies (Lay On Hands) | 0.0 | 0.0 |
-| Defense given (damage it stopped) | 4.9 | 0.0 |
+| Defense given (damage it stopped) | 5.6 | 0.0 |
 | Vulnerable given (extra damage dealt by the party) | 0.0 | 1.3 |
-| Divine Surge given (extra damage dealt by allies) | 19.2 | 0.0 |
-| Banes given (damage its areas stopped) | 4.3 | 0.0 |
-| Healed with new Health (Smite, Consecrated Ground) | 6.7 | 0.0 |
-| Guard given (damage it took instead of Health) | 36.4 | 0.0 |
-| Extra healing on Rally Points (Font of Mercy) | 4.6 | 0.0 |
-| **Map:** AP spent moving | 5.1 | 3.8 |
-| AP lost to moving (Actions dropped or made smaller) | 5.1 | 0.0 |
-| Turns that start Engaged | 8.3 | 3.9 |
-| Shots ([Ranged] Actions) | 0.0 | 35.9 |
-| ... into melee (1 Bane) | 0.0 | 24.6 |
-| ... with Cover | 0.0 | 16.4 |
-| ... while Engaged (2 Banes) | 0.0 | 0.5 |
-| Flanking Boons on its melee Actions | 10.2 | 0.0 |
+| Divine Surge given (extra damage dealt by allies) | 20.0 | 0.0 |
+| Banes given (damage its areas stopped) | 4.5 | 0.0 |
+| Healed with new Health (Smite, Consecrated Ground) | 6.9 | 0.0 |
+| Guard given (damage it took instead of Health) | 39.3 | 0.0 |
+| Extra healing on Rally Points (Font of Mercy) | 4.9 | 0.0 |
+| **Map:** AP spent moving | 4.9 | 3.9 |
+| AP lost to moving (Actions dropped or made smaller) | 4.9 | 0.0 |
+| Turns that start Engaged | 8.9 | 3.9 |
+| Shots ([Ranged] Actions) | 0.0 | 36.8 |
+| ... into melee (1 Bane) | 0.0 | 25.4 |
+| ... with Cover | 0.0 | 17.2 |
+| ... while Engaged (2 Banes) | 0.0 | 0.4 |
+| Flanking Boons on its melee Actions | 10.6 | 0.0 |
 | Opportunity Attacks made / taken | 0.0 / 0.0 | 0.0 / 0.0 |
-| Conditions it put on NPCs (Hindered, Immobilized, Prone...) | 0.00 | 2.88 |
-| **Debuff:** Bane on its next Save (times) | 0.00 | 1.45 |
-| **Debuff:** Hindered (times) | 0.00 | 2.01 |
-| **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.56 |
-| **Debuff:** Immobilized (times) | 0.00 | 0.31 |
-| **Debuff:** Vulnerable 2 (times) | 0.00 | 0.59 |
+| Conditions it put on NPCs (Hindered, Immobilized, Prone...) | 0.00 | 2.96 |
+| **Debuff:** Bane on its next Save (times) | 0.00 | 1.43 |
+| **Debuff:** Hindered (times) | 0.00 | 2.06 |
+| **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.57 |
+| **Debuff:** Immobilized (times) | 0.00 | 0.33 |
+| **Debuff:** Vulnerable 2 (times) | 0.00 | 0.58 |
 
-**Level 3, P1 Lay On Hands** (paladin-hands-3, paladin-hands-3, archer-3, archer-3; NPCs of level 3): the day cleared 98% · a PC Down during the day 56% · Downs a day 0.95 · Rally Points left at the end 40% · Health at the end 87%
+**Level 3, P1 Lay On Hands** (paladin-hands-3, paladin-hands-3, archer-3, archer-3; NPCs of level 3): the day cleared 97% · a PC Down during the day 59% · Downs a day 1.04 · Rally Points left at the end 39% · Health at the end 86%
 
 | Fight | won (of the days that reach it) | rounds (mean) | party Health lost in it | a PC goes Down in it |
 |---|---:|---:|---:|---:|
-| 1: 4 standard | 100% | 3.6 | 8% | 3% |
-| 2: 2 elite, 2 standard | 98% | 5.6 | 17% | 45% |
-| 3: 6 standard | 100% | 5.0 | 12% | 25% |
+| 1: 4 standard | 100% | 3.7 | 8% | 2% |
+| 2: 2 elite, 2 standard | 97% | 5.8 | 19% | 48% |
+| 3: 6 standard | 99% | 5.2 | 13% | 27% |
 
 | Per PC, over the day | Paladin (Lay On Hands) `paladin-hands-3` | Archer `archer-3` |
 |---|---:|---:|
-| Damage dealt | 307.8 | 276.9 |
-| Damage a turn (its own turns) | 24.6 | 23.8 |
-| Damage a turn without its Nova turns (no Encounter or Daily Action) | 22.5 | 25.2 |
-| Damage a Nova turn (with an Encounter or Daily Action) | 29.6 | - |
+| Damage dealt | 298.2 | 280.2 |
+| Damage a turn (its own turns) | 23.1 | 23.8 |
+| Damage a turn without its Nova turns (no Encounter or Daily Action) | 20.9 | 25.2 |
+| Damage a Nova turn (with an Encounter or Daily Action) | - | - |
 | Share of the party's damage (%) | 26 | 24 |
-| Turns taken | 12.6 | 11.6 |
+| Turns taken | 13.0 | 11.7 |
 | Health Pool | 46 | 31 |
-| Damage aimed at it (before reduction) | 119.0 | 62.7 |
-| Reduced (Hallowed Stance, its own or an adjacent ally's) | 12.6 | 0.0 |
-| Reduced for adjacent allies (its Hallowed Stance) | 2.4 | 0.0 |
-| Damage taken | 69.6 | 62.7 |
-| Damage taken a round of combat | 5.0 | 4.4 |
-| Times Down | 0.08 | 0.39 |
-| Rally Points (of 9 / 8): used in combat (Steel Yourself) | 2.09 | 0.00 |
-| Rally Points used through an ally's Lay On Hands | 1.96 | 4.35 |
-| Rally Points used between fights | 0.41 | 1.40 |
-| Rally Points left | 4.55 | 2.25 |
-| **Buffs:** healed allies (Lay On Hands) | 56.6 | 0.0 |
+| Damage aimed at it (before reduction) | 123.6 | 64.8 |
+| Reduced (Hallowed Stance, its own or an adjacent ally's) | 13.6 | 0.1 |
+| Reduced for adjacent allies (its Hallowed Stance) | 2.6 | 0.0 |
+| Damage taken | 71.9 | 64.7 |
+| Damage taken a round of combat | 5.0 | 4.5 |
+| Times Down | 0.09 | 0.43 |
+| Rally Points (of 9 / 8): used in combat (Steel Yourself) | 2.21 | 0.00 |
+| Rally Points used through an ally's Lay On Hands | 1.98 | 4.39 |
+| Rally Points used between fights | 0.39 | 1.48 |
+| Rally Points left | 4.42 | 2.13 |
+| **Buffs:** healed allies (Lay On Hands) | 57.1 | 0.0 |
 | Defense given (damage it stopped) | 0.0 | 0.0 |
 | Vulnerable given (extra damage dealt by the party) | 0.0 | 1.3 |
-| Divine Surge given (extra damage dealt by allies) | 23.3 | 0.0 |
-| Banes given (damage its areas stopped) | 4.4 | 0.0 |
+| Divine Surge given (extra damage dealt by allies) | 24.1 | 0.0 |
+| Banes given (damage its areas stopped) | 4.5 | 0.0 |
 | Healed with new Health (Smite, Consecrated Ground) | 5.0 | 0.0 |
-| Guard given (damage it took instead of Health) | 36.8 | 0.0 |
-| Extra healing on Rally Points (Font of Mercy) | 19.9 | 0.0 |
+| Guard given (damage it took instead of Health) | 38.1 | 0.0 |
+| Extra healing on Rally Points (Font of Mercy) | 20.3 | 0.0 |
 | **Map:** AP spent moving | 5.4 | 4.7 |
 | AP lost to moving (Actions dropped or made smaller) | 5.4 | 0.0 |
-| Turns that start Engaged | 8.7 | 4.8 |
-| Shots ([Ranged] Actions) | 0.0 | 42.5 |
-| ... into melee (1 Bane) | 0.0 | 30.0 |
-| ... with Cover | 0.0 | 19.1 |
+| Turns that start Engaged | 9.0 | 4.8 |
+| Shots ([Ranged] Actions) | 0.0 | 43.0 |
+| ... into melee (1 Bane) | 0.0 | 30.8 |
+| ... with Cover | 0.0 | 19.9 |
 | ... while Engaged (2 Banes) | 0.0 | 0.6 |
-| Flanking Boons on its melee Actions | 10.0 | 0.0 |
+| Flanking Boons on its melee Actions | 10.3 | 0.0 |
 | Opportunity Attacks made / taken | 0.0 / 0.0 | 0.0 / 0.0 |
-| Conditions it put on NPCs (Hindered, Immobilized, Prone...) | 0.00 | 3.34 |
+| Conditions it put on NPCs (Hindered, Immobilized, Prone...) | 0.00 | 3.35 |
 | **Debuff:** Bane on its next Save (times) | 0.00 | 1.43 |
-| **Debuff:** Hindered (times) | 0.00 | 2.41 |
-| **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.57 |
-| **Debuff:** Immobilized (times) | 0.00 | 0.36 |
+| **Debuff:** Hindered (times) | 0.00 | 2.47 |
+| **Debuff:** Hindered (until it moves) (times) | 0.00 | 0.56 |
+| **Debuff:** Immobilized (times) | 0.00 | 0.33 |
 | **Debuff:** Vulnerable 2 (times) | 0.00 | 0.56 |

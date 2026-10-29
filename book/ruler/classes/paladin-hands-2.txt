@@ -1,6 +1,7 @@
 # Paladin, level 2, the P1 main build (pack P1, 2026-10-29; book/class-charter.md): Signature Lay On Hands.
-# Level 1: Divine Power + Font of Mercy; the Signature; Talent Opportunity Attack (a Reaction: the map model uses it); Encounter Pick Holy Wrath;
-# Escalation Divine Surge (active) and Hallowed Stance (passive). Level 2: Talent Heavy Blows (a stand-in).
+# Talents are left out (Lucas, 2026-10-29): classes are compared with classes; a Talent is priced on its own (catalogue/, positions.mjs).
+# Level 1: Divine Power + Font of Mercy; the Signature; Encounter Pick Holy Wrath;
+# Escalation Divine Surge (active) and Hallowed Stance (passive).
 # The format: book/ruler/README.md, "The spec files". Run: node book/ruler/spec.mjs
 class Paladin (Lay On Hands)
 role tank / support
@@ -15,7 +16,6 @@ targeted 1.5          # the tank stands in front: NPCs choose it 1.5 times as of
 
 weapon Greatsword (melee, two-handed): 0 / 1d8 / 2d6
 speed 5               # Human 5, Paladin +0 (the map model)
-reaction Opportunity Attack: opportunity     # the level 1 Talent: a Weapon Attack when an enemy leaves a square of your reach during a Move Action (AP kept from your turn)
 
 # Features: Divine Power (Profane Judgment, not modeled) and Font of Mercy (a Feature that is an Escalation Passive: Escalation 1, +Power Mod + 2 on every Rally Point).
 passive Font of Mercy: escalation 1: rally-bonus 4
@@ -36,8 +36,6 @@ action Holy Wrath 3 | ap 3 | encounter | traits divine strike weapon | vs ad | t
 action Divine Surge | ap 0 | round | traits divine | escalation 1 | always: surge 1d8; always: guard 2d6 self     # the next ally who damages the target before your next turn deals +[M] 1d8
 passive Hallowed Stance: escalation 2: reduce 2 adjacent 1     # you and adjacent allies: Body damage reduced by the Power Modifier (the turns never move)
 
-# Talent (level 2, a stand-in for the Talents pack): Heavy Blows
-passive Heavy Blows: bonus 1 melee weapon strike
 
 turn Main: Divine Surge, Lay On Hands 2, Weapon Attack, Weapon Attack, Weapon Attack
 turn Main without Escalation: Lay On Hands 2, Weapon Attack, Weapon Attack, Weapon Attack

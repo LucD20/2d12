@@ -55,16 +55,16 @@ Shares of the baseline PC: damage against the Bestiary's baseline turn of the le
 | Build | Sustained (best) | Nova | Sustained (real) | No positions | All turns (real) | Health | Budget: sustained / Nova / Health | Verdict |
 |---|---:|---:|---:|---:|---:|---:|---|---|
 | Archer L1 `archer-1` | 24.7 (106%) | 19.2 (82%) | 22.4 (96%) | 28.1 (121%) | 20.8 (89%) | 27 (86%) | 100%-105% / 110%-130% / 80%-85% | sustained low; Nova low; Health ok (86%) |
-| Archer L2 `archer-2` | 26.8 (101%; 105%) | 19.2 (72%; 75%) | 24.3 (91%; 95%) | 29.8 (112%; 116%) | 22.3 (84%; 87%) | 29 (85%) | 100%-105% / 110%-130% / 80%-85% | sustained low; Nova low; Health ok (85%) |
-| Archer L3 `archer-3` | 26.8 (101%; 96%) | 22.0 (83%; 79%) | 24.6 (93%; 88%) | 30.4 (114%; 109%) | 22.8 (86%; 81%) | 31 (85%) | 100%-105% / 110%-130% / 80%-85% | sustained low; Nova low; Health ok (85%) |
+| Archer L2 `archer-2` | 26.8 (101%; 105%) | 19.2 (72%; 75%) | 24.3 (92%; 95%) | 30.0 (113%; 117%) | 22.4 (84%; 87%) | 29 (85%) | 100%-105% / 110%-130% / 80%-85% | sustained low; Nova low; Health ok (85%) |
+| Archer L3 `archer-3` | 26.8 (101%; 96%) | 22.0 (83%; 79%) | 24.3 (91%; 87%) | 30.5 (115%; 109%) | 22.7 (85%; 81%) | 31 (85%) | 100%-105% / 110%-130% / 80%-85% | sustained low; Nova low; Health ok (85%) |
 | Paladin (book) L1 `paladin-book-1` | 24.5 (105%) | 24.3 (104%) | 25.3 (108%) | 25.3 (109%) | 26.1 (112%) | 36 (114%) | 85%-90% / 150%-180% / 120%-130% | sustained high; Nova low; Health low (114%) |
 | Paladin (Lay On Hands) L1 `paladin-hands-1` | 20.7 (89%) | 36.5 (157%) | 18.5 (79%) | 20.1 (86%) | 22.1 (95%) | 39 (124%) | 85%-90% / 150%-180% / 120%-130% | sustained low; Nova ok; Health ok (124%) |
-| Paladin (Lay On Hands) L2 `paladin-hands-2` | 22.7 (85%; 88%) | 37.5 (141%; 146%) | 20.4 (77%; 80%) | 22.0 (83%; 86%) | 23.8 (90%; 93%) | 43 (126%) | 85%-90% / 150%-180% / 120%-130% | sustained low; Nova ok; Health ok (126%) |
-| Paladin (Lay On Hands) L3 `paladin-hands-3` | 22.7 (85%; 81%) | 41.2 (155%; 147%) | 21.4 (81%; 77%) | 23.3 (88%; 83%) | 24.3 (92%; 87%) | 46 (126%) | 85%-90% / 150%-180% / 120%-130% | sustained low; Nova ok; Health ok (126%) |
+| Paladin (Lay On Hands) L2 `paladin-hands-2` | 20.7 (78%; 81%) | 36.5 (137%; 142%) | 18.7 (70%; 73%) | 20.2 (76%; 79%) | 22.1 (83%; 86%) | 43 (126%) | 85%-90% / 150%-180% / 120%-130% | sustained low; Nova low; Health ok (126%) |
+| Paladin (Lay On Hands) L3 `paladin-hands-3` | 20.7 (78%; 74%) | 40.2 (151%; 144%) | 19.9 (75%; 71%) | 21.3 (80%; 76%) | 22.9 (86%; 82%) | 46 (126%) | 85%-90% / 150%-180% / 120%-130% | sustained low; Nova low; Health ok (126%) |
 | Paladin (Smite, hold) L1 `paladin-smite-1-hold` | 21.1 (91%) | 38.8 (166%) | 19.0 (82%) | 20.1 (86%) | 24.1 (103%) | 39 (124%) | 85%-90% / 150%-180% / 120%-130% | sustained low; Nova ok; Health ok (124%) |
 | Paladin (Smite) L1 `paladin-smite-1` | 21.1 (91%) | 38.8 (166%) | 18.9 (81%) | 20.2 (87%) | 24.0 (103%) | 39 (124%) | 85%-90% / 150%-180% / 120%-130% | sustained low; Nova ok; Health ok (124%) |
-| Paladin (Smite) L2 `paladin-smite-2` | 23.5 (89%; 92%) | 40.8 (153%; 159%) | 21.0 (79%; 82%) | 22.3 (84%; 87%) | 26.1 (98%; 102%) | 43 (126%) | 85%-90% / 150%-180% / 120%-130% | sustained low; Nova ok; Health ok (126%) |
-| Paladin (Smite) L3 `paladin-smite-3` | 23.5 (89%; 84%) | 44.3 (167%; 158%) | 22.9 (86%; 82%) | 24.7 (93%; 88%) | 27.6 (104%; 99%) | 46 (126%) | 85%-90% / 150%-180% / 120%-130% | sustained low; Nova ok; Health ok (126%) |
+| Paladin (Smite) L2 `paladin-smite-2` | 21.1 (80%; 83%) | 38.8 (146%; 151%) | 19.0 (71%; 74%) | 20.1 (76%; 78%) | 23.9 (90%; 93%) | 43 (126%) | 85%-90% / 150%-180% / 120%-130% | sustained low; Nova ok; Health ok (126%) |
+| Paladin (Smite) L3 `paladin-smite-3` | 21.1 (80%; 76%) | 42.3 (159%; 151%) | 21.1 (79%; 75%) | 22.3 (84%; 80%) | 25.8 (97%; 92%) | 46 (126%) | 85%-90% / 150%-180% / 120%-130% | sustained low; Nova ok; Health ok (126%) |
 
 Roles: Paladin: tank and support: more Health, heals and Defense for allies, Nova damage. Archer: mobile, fragile, constant ranged damage (a future melee class has the top damage: about 1.15). The verdict at level 2 and 3 uses the charter's curve (the Bestiary's level 3 baseline doesn't grow yet).
 
@@ -275,8 +275,8 @@ The Bestiary prices a condition on an NPC Action in steps of damage rating (Mild
 | +1 Speed (Paladin 5 → 6) | 0.04 | 0.01 | 0% |  |
 | -1 Speed (Paladin 5 → 4) | -0.07 | 0.01 | 0% |  |
 | The Archer stands and shoots when Engaged (no Kite turn) | -1.51 | 0.06 | -6% | the price of stepping away |
-| Opportunity Attack (the Paladin's Talent) removed | 0.00 | 0.00 | 0% | AP kept after its turn are rare: most turns spend 5 |
-| The Paladin keeps 1 AP for Opportunity Attack (its last Weapon Attack dropped) | -1.78 | 0.04 | -8% |  |
+| Talent: Opportunity Attack added | 0.00 | 0.00 | 0% | AP kept after its turn are rare: most turns spend 5 |
+| Talent: Opportunity Attack, keeping 1 AP for it (its last Weapon Attack dropped) | -1.78 | 0.04 | -8% |  |
 | Steady Nerves always on (no Engaged Banes) | 0.08 | 0.01 | 0% | the Archer kites, so it is rarely Engaged when it shoots |
 | Steady Nerves, an Archer that doesn't kite | 1.96 | 0.03 | 8% | against the same Archer without it |
 | Long Draw (far range no Bane, maximum 1) | 0.50 | 0.02 | 2% |  |

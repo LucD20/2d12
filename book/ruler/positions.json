@@ -347,14 +347,14 @@
     "note": "the price of stepping away"
    },
    {
-    "name": "Opportunity Attack (the Paladin's Talent) removed",
+    "name": "Talent: Opportunity Attack added",
     "perTurn": 0,
     "se": 0,
     "who": "Paladin",
     "note": "AP kept after its turn are rare: most turns spend 5"
    },
    {
-    "name": "The Paladin keeps 1 AP for Opportunity Attack (its last Weapon Attack dropped)",
+    "name": "Talent: Opportunity Attack, keeping 1 AP for it (its last Weapon Attack dropped)",
     "perTurn": -1.7772989443900318,
     "se": 0.04251240970512365,
     "who": "Paladin",

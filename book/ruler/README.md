@@ -127,6 +127,9 @@ Rally Points carry over; Encounter Actions and Escalation start again each fight
 
 ## Positions: the map model (pack E2, 2026-10-29): `map.mjs`, `positions.mjs`
 
+**Talents are left out of the class files (Lucas, 2026-10-29):** classes are compared with classes; a Talent is priced on its own (catalogue/, and
+positions.mjs adds Opportunity Attack to price it). So the level 2 Paladin files equal level 1 (its level 2 is only a Talent).
+
 The fights of `spec.mjs` now happen on a grid (`map on` in fights.txt; `map off` gives the old fight, and the report shows both). **`map.mjs`** has the geometry and
 the book's rules (Chapter 3): distances with every second diagonal 2, Engaged, [Ranged] 2 Banes while Engaged and 1 Bane into melee, Cover (a creature on the line
 from center to center, and the map's own cover drawn per shot: 5% Medium, 15% Low), far and maximum range, Flanking for both sides, Prone, Hindered, Immobilized,
