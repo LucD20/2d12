@@ -52,3 +52,7 @@ for (const f of fs.readdirSync(path.join(SRC, "npcs")).filter(f => f.endsWith(".
   const n = JSON.parse(fs.readFileSync(path.join(SRC, "npcs", f), "utf8"));
   console.log(`${n.name} (${n.system.role}, speed ${n.system.speed}):`, n.items.filter(i => i.type === "action" && !i.flags?.twod12?.basic).map(i => `${i.name} ${i.system.frequency}${i.system.reaction ? " reaction" : ""}`).join(", "));
 }
+// v0.0.184: a duplicate key stops the Foundry CLI's build of the pack (and of every pack after it): every key is unique, embedded Items too.
+const dupes = [...new Set(docs.map(d => d.pack))].flatMap(p => { const keys = docs.filter(d => d.pack === p).flatMap(d => [d._key, ...(d.items ?? []).map(i => `!actors.items!${d._id}.${i._id}`)]); return keys.filter((k, i) => keys.indexOf(k) !== i).map(k => `${p} ${k}`); });
+console.log("keys unique in each pack (embedded Items too):", dupes.length ? dupes.join(", ") : "yes");
+console.log("NPC Speed as a rating:", fs.readdirSync(path.join(SRC, "npcs")).filter(f => f.endsWith(".json") && !f.startsWith("_")).map(f => { const n = JSON.parse(fs.readFileSync(path.join(SRC, "npcs", f), "utf8")); return `${n.name} ${n.system.ratings.speed}`; }).join(", "));
