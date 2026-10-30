@@ -226,9 +226,10 @@
       <div class="fsec"><span>{{feat.classTitle}}</span><span class="fsec-sub">Level {{feat.level}} &middot; drag <i class="fa-solid fa-grip-vertical"></i> to reorder</span></div>
       <div class="flist olist" data-list="features" data-order-flag="featureOrder">{{#each feat.classCards}}{{> fcard}}{{/each}}</div>
       {{else}}<div class="emptyhint">Drop a Class on this sheet.</div>{{/if}}
-      {{#if feat.escCards.length}}
+      {{#if feat.classTitle}}
       <div class="fsec"><span>Escalation</span><span class="fsec-sub">now {{feat.escNow}} &middot; a highlighted card works at this Escalation</span></div>
-      <div class="flist">{{#each feat.escCards}}{{> fcard}}{{/each}}</div>
+      {{#if feat.escCards.length}}<div class="flist">{{#each feat.escCards}}{{> fcard}}{{/each}}</div>
+      {{else}}<div class="emptyhint">No Escalation Passives or Actives yet (a Feature with "Escalation Passive" ticked, or an Action with an Escalation cost).</div>{{/if}}
       {{/if}}
       <div class="fsec"><span>Talents</span><span class="fsec-sub">{{feat.talentNote}}</span></div>
       <div class="flist" data-list="talents">

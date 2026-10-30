@@ -98,6 +98,28 @@ export async function rallyBonusFor(actor) {
   return best;
 }
 
+/* ------------------------------------------------------------------ v0.0.187: an Effect each turn */
+/**
+ * The start of a creature's turn (the active GM): each "Effect each turn" setting of its Features, Talents and effects that works now
+ * (its Escalation minimum met) gives it that Effect again, replacing the old copy (Killer's Focus: a Bonus Damage used up by the next
+ * [Shot, Strike, Weapon] Action). It ends with the encounter. The player can remove or switch it off like any applied effect.
+ */
+export async function applyTurnStartEffects(actor) {
+  if (!actor) return 0;
+  const { createEffect, originInfo } = await import("./effects.mjs");
+  let n = 0;
+  for (const e of allEffects(actor)) {
+    if (effectOff(actor, e)) continue;
+    for (const t of e.getFlag(F, "turnStarts") ?? []) {
+      const item = await fromUuid(t.fxUuid);
+      if (item?.type !== "effect") continue;
+      await createEffect(actor, item, { ...originInfo(actor.uuid), escalation: true }, null, { turnStart: true });
+      n++;
+    }
+  }
+  return n;
+}
+
 /* ------------------------------------------------------------------ v0.0.186, once per world */
 /**
  * The cards whose automation was code that tested their name (Font of Mercy, Radiant Zeal, Elusive, Killer's Focus, Long Draw, Steady Nerves,
@@ -117,6 +139,29 @@ export async function giveSettingsV186(items, actors) {
     const settings = src.get(`${it.type}|${it.name}`);
     if (!settings || (it.system?.settings ?? []).length) return;
     try { await it.update({ "system.settings": settings }); n++; } catch (e) { console.warn("twod12 | settings for", it.name, e); }
+  };
+  for (const it of items ?? []) await fix(it);
+  for (const a of actors ?? []) if (a.isOwner) for (const it of a.items) await fix(it);
+  return n;
+}
+
+/**
+ * v0.0.187, once per world: Killer's Focus and Radiant Zeal give an Effect each turn instead of a once-per-round passive Bonus Damage
+ * (a copy whose settings are none or only Bonus Damage gets the compendium's), and Font of Mercy is ticked as an Escalation Passive.
+ */
+export async function giveSettingsV187(items, actors) {
+  const pack = globalThis.game?.packs?.get("twod12.features");
+  const src = new Map();
+  if (pack) for (const d of await pack.getDocuments()) if (["Killer's Focus", "Radiant Zeal"].includes(d.name) && d.type === "feature") src.set(d.name, d.system.toObject?.().settings ?? foundry.utils.deepClone(d.system.settings));
+  let n = 0;
+  const fix = async it => {
+    if (it.type !== "feature") return;
+    const upd = {};
+    const st = it.system?.settings ?? [];
+    if (src.has(it.name) && st.every(x => x.type === "bonusdamage")) upd["system.settings"] = src.get(it.name);
+    if (it.name === "Font of Mercy" && !it.system?.escalationPassive) upd["system.escalationPassive"] = true;
+    if (!Object.keys(upd).length) return;
+    try { await it.update(upd); n++; } catch (e) { console.warn("twod12 | v0.0.187 settings for", it.name, e); }
   };
   for (const it of items ?? []) await fix(it);
   for (const a of actors ?? []) if (a.isOwner) for (const it of a.items) await fix(it);

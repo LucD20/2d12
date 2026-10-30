@@ -185,6 +185,8 @@ async function startTurn(combat) {
     await c.update(fresh);
     await setAP(c, apPerTurn(c), "start of turn");
     await climbUp(c);
+    // v0.0.187: the Effects its Features give at the start of each turn (Killer's Focus, Radiant Zeal); not when it carries on after a swap.
+    try { const { applyTurnStartEffects } = await import("./automation.mjs"); await applyTurnStartEffects(c.actor); } catch (e) { console.warn("twod12 | Effect each turn", e); }
   }
   await takeSnapshot(combat);
 }

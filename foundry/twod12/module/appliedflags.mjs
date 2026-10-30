@@ -30,5 +30,6 @@ export function appliedFlags(s, source) {
   const triggers = s.settings.filter(x => x.type === "ondamage" && x.fxUuid).map(x => ({ sub: x.trigSub || "", tag: String(x.trigTag ?? "").trim(), fxUuid: x.fxUuid }));
   const ignores = s.settings.filter(x => x.type === "ignore" && x.ignoreRule).map(x => ({ rule: x.ignoreRule, all: [...(x.all ?? [])], any: [...(x.any ?? [])], none: [...(x.none ?? [])] }));   // v0.0.186
   const rallies = s.settings.filter(x => x.type === "rally" && String(x.rallyBonus ?? "").trim()).map(x => ({ bonus: String(x.rallyBonus).trim(), range: Math.max(0, Math.trunc(Number(x.rallyRange)) || 0) }));
-  return { description: s.description, hover: s.hover ?? "", notes, modifiers, bonuses, grants, speedMods, defenses, auras, triggers, ignores, rallies, minEscalation: Math.max(0, Number(s.minEscalation) || 0), expireOn: [...s.expireOn], expireAll: s.expireAll, source };
+  const turnStarts = s.settings.filter(x => x.type === "turnstart" && x.fxUuid).map(x => ({ fxUuid: x.fxUuid }));   // v0.0.187: gains this Effect at the start of each of its turns
+  return { description: s.description, hover: s.hover ?? "", notes, modifiers, bonuses, grants, speedMods, defenses, auras, triggers, ignores, rallies, turnStarts, minEscalation: Math.max(0, Number(s.minEscalation) || 0), expireOn: [...s.expireOn], expireAll: s.expireAll, source };
 }

@@ -1661,3 +1661,18 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 .twod12.sheet.ns .fsub:first-child { margin-top: 2px; }
 .twod12.sheet.ns .ktag.k-active.esc, .twod12.sheet.ns .ktag.k-passive.esc { opacity: .7; }
 .twod12.sheet.ns .ktag.esc-on { opacity: 1; background: #b8860b; color: #fff; }
+
+/* v0.0.187: a Talent's Prerequisites as one line, like an effect's traits: chips joined by "and" / "or" (click to switch). */
+.twod12 .prereqs { margin: 6px 0; }
+.twod12 .prereqs .pq-line { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; width: 100%; }
+.twod12 .prereqs .pq-lead { font-weight: 700; }
+.twod12 .prereqs .pq-chip { display: inline-flex; align-items: center; gap: 4px; padding: 2px 2px 2px 8px; border: 1px solid rgba(60, 40, 20, .35); border-radius: 12px; background: rgba(255, 255, 255, .45); }
+.twod12 .prereqs .pq-chip input, .twod12 .prereqs .pq-chip select { height: 22px; min-height: 0; padding: 0 4px; font-size: 12px; width: auto; }
+.twod12 .prereqs .pq-chip input[type="text"] { width: 140px; }
+.twod12 .prereqs .pq-chip input.wide { width: 240px; }
+.twod12 .prereqs .pq-chip input.n { width: 44px; }
+.twod12 .prereqs .pq-chip button { flex: 0 0 auto; width: 20px; height: 20px; min-height: 0; line-height: 1; padding: 0; border: none; background: none; }
+.twod12 .prereqs .pq-kind { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; opacity: .75; }
+.twod12 .prereqs .pq-join { font-style: italic; font-weight: 700; cursor: pointer; text-decoration: underline dotted; }
+.twod12 .prereqs .pq-none { font-style: italic; opacity: .7; }
+.twod12 .prereqs .pq-add { width: auto; height: 22px; min-height: 0; padding: 0 4px; font-size: 12px; }

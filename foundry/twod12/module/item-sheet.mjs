@@ -39,7 +39,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       addTalentMod: TwoD12ItemSheet.addTalentMod,
       createLinkedAction: TwoD12ItemSheet.createLinkedAction,
       removeTalentMod: TwoD12ItemSheet.removeTalentMod,
-      addPrereq: TwoD12ItemSheet.addPrereq,
+      togglePrereqMode: TwoD12ItemSheet.togglePrereqMode,
       removePrereq: TwoD12ItemSheet.removePrereq,
       editLevels: TwoD12ItemSheet.editLevels
     }
@@ -78,7 +78,8 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       ...(t === "talent" ? {
         talentGroups: TWOD12.talentGroups, prereqKinds: TWOD12.prereqKinds, prereqModes: { all: "all of these", any: "any one of these" },
         traitChoices: Object.fromEntries(Object.entries(TWOD12.traits).sort((a, b) => a[1].localeCompare(b[1]))),
-        prereqRows: (s.prereqs ?? []).map((p, i) => ({ i, ...p, text: prereqText(p), isTalent: p.kind === "talent", isLevel: p.kind === "level", isTrait: p.kind === "trait", isAttribute: p.kind === "attribute", isOther: p.kind === "other" })),
+        prereqJoin: s.prereqMode === "any" ? "or" : "and",
+        prereqRows: (s.prereqs ?? []).map((p, i) => ({ i, ...p, text: prereqText(p), kindLabel: { talent: "Talent", level: "Level", trait: "a", attribute: "", other: "Other" }[p.kind] ?? "", isTalent: p.kind === "talent", isLevel: p.kind === "level", isTrait: p.kind === "trait", isAttribute: p.kind === "attribute", isOther: p.kind === "other" })),
         prereqShown: prereqLine(s),
         talentNames: [...new Set([...(game.items ?? [])].filter(i => i.type === "talent").map(i => i.name))].sort()
       } : {}),
@@ -150,6 +151,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
                 isBoonBane: x.type === "boonbane",
                 isIgnore: x.type === "ignore",
                 isRally: x.type === "rally",
+                isTurnStart: x.type === "turnstart",
                 ignoreRule: x.ignoreRule,
                 ignoreRules: TWOD12.ignoreRules,
                 rallyBonus: x.rallyBonus,
@@ -358,7 +360,13 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
         await this.item.update({ "system.prereqs": arr });
       })
     );
-    this.element.querySelector("[data-prereqmode]")?.addEventListener("change", ev => this.item.update({ "system.prereqMode": ev.currentTarget.value }));
+    this.element.querySelector("[data-prereqadd]")?.addEventListener("change", async ev => {
+      const kind = ev.currentTarget.value;
+      if (!kind) return;
+      const arr = foundry.utils.deepClone(this.item.toObject().system.prereqs ?? []);
+      arr.push({ kind, name: "", value: ["level", "attribute"].includes(kind) ? 1 : 0 });
+      await this.item.update({ "system.prereqs": arr });
+    });
     this.element.querySelectorAll("[data-dfield]").forEach(el =>
       el.addEventListener("change", async () => {
         const arr = foundry.utils.deepClone(this.item.toObject().system.defenses);
@@ -570,10 +578,8 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       a.sheet.render(true);
     }
   }
-  static async addPrereq() {
-    const arr = foundry.utils.deepClone(this.item.toObject().system.prereqs ?? []);
-    arr.push({ kind: "talent", name: "", value: 0 });
-    await this.item.update({ "system.prereqs": arr });
+  static async togglePrereqMode() {
+    await this.item.update({ "system.prereqMode": this.item.system.prereqMode === "any" ? "all" : "any" });
   }
   static async removePrereq(event, target) {
     const arr = foundry.utils.deepClone(this.item.toObject().system.prereqs ?? []);

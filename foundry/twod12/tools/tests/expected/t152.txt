@@ -13,3 +13,6 @@ Class Expertise: level 1 no (needs Level 5) | level 5 yes
 Kickboxer: no Brawler no (needs the Talent Brawler) | Brawler yes | already a Kickboxer no (already taken)
 Iron Grip: Body 1 no (needs Body 2) [check by hand: a shield in hand] | Body 2 yes [check by hand: a shield in hand]
 content: Kickboxer needs Brawler as data true | the Talent sheet: Category, Theme, rows true
+--- v0.0.187
+a Feature's Escalation Passive box from an old 'Archer Escalation' Category: true | 'Paladin Feature': undefined | on the sheet: true
+Prerequisites as one line of chips joined by and / or: true | Escalation section always shown with a class: true

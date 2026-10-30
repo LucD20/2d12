@@ -334,6 +334,14 @@ export function registerBasicHooks() {
         if (r) ui.notifications.info(`2d12: ${r} Feature${r === 1 ? "" : "s"} or Effect${r === 1 ? "" : "s"} got their automation as settings you can edit (Killer's Focus, Radiant Zeal, Elusive...).`);
       }
     } catch (e) { console.warn("twod12 | settings v0.0.186", e); }
+    try {
+      if (!game.settings.get(F, "settingsV187")) {
+        const { giveSettingsV187 } = await import("./automation.mjs");
+        const r = await giveSettingsV187(game.items ?? [], game.actors ?? []);
+        await game.settings.set(F, "settingsV187", true);
+        if (r) ui.notifications.info(`2d12: Killer's Focus and Radiant Zeal now give an Effect each turn (${r} item${r === 1 ? "" : "s"} updated).`);
+      }
+    } catch (e) { console.warn("twod12 | settings v0.0.187", e); }
     // v0.0.169 and v0.0.170, once per creature that needs it: the new Basic Actions (Relocate, the 3 AP Shove, Fists as a Weapon Action, Haul) and Fists as an ordinary weapon.
     let n = 0;
     for (const actor of game.actors ?? []) {

@@ -101,20 +101,20 @@
     </div>
     <label>Flavor <input type="text" name="system.flavor" value="{{system.flavor}}" placeholder="A small gift from the god you follow."></label>
     <div class="prereqs">
-      <h3>Prerequisites {{#if prereqRows.length}}<small>the creature needs <select data-prereqmode>{{selectOptions prereqModes selected=system.prereqMode}}</select></small>{{/if}}
-        <button type="button" data-action="addPrereq" data-tooltip="Add a Prerequisite"><i class="fa-solid fa-plus"></i></button></h3>
-      {{#each prereqRows}}
-      <div class="prereq-row">
-        <select data-pfield="{{i}}" data-field="kind">{{selectOptions ../prereqKinds selected=kind}}</select>
-        {{#if isTalent}}<input type="text" data-pfield="{{i}}" data-field="name" value="{{name}}" placeholder="Brawler" list="twod12-talent-names">{{/if}}
-        {{#if isLevel}}<input type="number" min="1" data-pfield="{{i}}" data-field="value" value="{{value}}">{{/if}}
-        {{#if isTrait}}<select data-pfield="{{i}}" data-field="name">{{selectOptions ../traitChoices selected=name blank="(a trait)"}}</select>{{/if}}
-        {{#if isAttribute}}<select data-pfield="{{i}}" data-field="name">{{selectOptions ../attrChoices selected=name blank="(an Attribute)"}}</select> <input type="number" data-pfield="{{i}}" data-field="value" value="{{value}}">{{/if}}
-        {{#if isOther}}<input type="text" class="wide" data-pfield="{{i}}" data-field="name" value="{{name}}" placeholder="Proficient with shields">{{/if}}
-        <span class="prereq-txt">{{text}}</span>
-        <button type="button" data-action="removePrereq" data-index="{{i}}" aria-label="Remove">&times;</button>
+      <div class="pq-line"><span class="pq-lead">Prerequisites:</span>
+        {{#each prereqRows}}
+        {{#unless @first}}<a class="pq-join" data-action="togglePrereqMode" data-tooltip="Click to switch: and (all of them) / or (any one of them)">{{../prereqJoin}}</a>{{/unless}}
+        <span class="pq-chip pq-{{kind}}"><span class="pq-kind">{{kindLabel}}</span>
+          {{#if isTalent}}<input type="text" data-pfield="{{i}}" data-field="name" value="{{name}}" placeholder="Brawler" list="twod12-talent-names">{{/if}}
+          {{#if isLevel}}<input type="number" class="n" min="1" data-pfield="{{i}}" data-field="value" value="{{value}}">{{/if}}
+          {{#if isTrait}}<select data-pfield="{{i}}" data-field="name">{{selectOptions ../traitChoices selected=name blank="(trait)"}}</select><span class="pq-kind">Action</span>{{/if}}
+          {{#if isAttribute}}<select data-pfield="{{i}}" data-field="name">{{selectOptions ../attrChoices selected=name blank="(Attribute)"}}</select><input type="number" class="n" data-pfield="{{i}}" data-field="value" value="{{value}}">{{/if}}
+          {{#if isOther}}<input type="text" class="wide" data-pfield="{{i}}" data-field="name" value="{{name}}" placeholder="Proficient with shields">{{/if}}
+          <button type="button" data-action="removePrereq" data-index="{{i}}" aria-label="Remove">&times;</button></span>
+        {{else}}<span class="pq-none">none: any character can take it</span>{{/each}}
+        <select class="pq-add" data-prereqadd aria-label="Add a Prerequisite"><option value="">+ Add…</option>{{selectOptions prereqKinds}}</select>
       </div>
-      {{else}}<p class="hint">None. {{#if system.requirements}}Old text: <i>{{system.requirements}}</i> (add it as rows so the picker can check it).{{/if}}</p>{{/each}}
+      {{#if system.requirements}}{{#unless prereqRows.length}}<p class="hint">Old text: <i>{{system.requirements}}</i> (add it as Prerequisites so the picker can check it).</p>{{/unless}}{{/if}}
       <datalist id="twod12-talent-names">{{#each talentNames}}<option value="{{this}}"></option>{{/each}}</datalist>
     </div>
     <p class="hint">Level is the character level needed to choose the Talent. Shown as {{categoryShown}}{{#if prereqShown}}; Prerequisites: {{prereqShown}}{{/if}}. The class window's Talent picker checks the Level and every Prerequisite but Other.</p>
@@ -171,6 +171,8 @@
       <div class="ro"><span>Shown as</span><b>{{categoryShown}}</b></div>
     </div>
     <label>Flavor <input type="text" name="system.flavor" value="{{system.flavor}}" placeholder="Your bond with your god opens new paths."></label>
+    <label class="inline" data-tooltip="Shown in the Escalation section of the Features tab. When it works is each setting's own &quot;It works...&quot; below (Escalation 1, 2 or 3).">
+      <input type="checkbox" name="system.escalationPassive" {{#if system.escalationPassive}}checked{{/if}}> Escalation Passive</label>
     <label>Talents granted <input type="number" min="0" name="system.talents" value="{{system.talents}}"></label>
     <p class="hint">Level is the class level at which the Feature is gained (0 counts as 1). Each Talent granted becomes a Talent slot on the character sheet ("Drop a Talent here (Feature name)").</p>
     <h3>Defenses</h3>

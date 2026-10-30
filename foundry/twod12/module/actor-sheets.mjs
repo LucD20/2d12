@@ -159,7 +159,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     // v0.0.186 (Lucas): Escalation is its own section, like Class and Talents: the class's Escalation Passives and Actives (its lists, or an
     // "Escalation" Category, or an Escalation cost), with when each works.
     const escList = new Set([...(cls?.system?.escPassives ?? []), ...(cls?.system?.escActives ?? [])]);
-    const isEsc = it => escList.has(it.getFlag("twod12", "sourceUuid")) || /escalation/i.test(String(it.system?.category ?? "")) || Number(it.system?.escalation) > 0;
+    const isEsc = it => !!it.system?.escalationPassive || escList.has(it.getFlag("twod12", "sourceUuid")) || /escalation/i.test(String(it.system?.category ?? "")) || Number(it.system?.escalation) > 0;   // v0.0.187: the Feature's own box first
     const escNow = Number(a.system.escalation) || 0;
     const escCards = [];
     const escCard = async it => {

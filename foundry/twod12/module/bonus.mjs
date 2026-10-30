@@ -44,8 +44,8 @@ export function modDamage(dmg, mod) {
 /** "(T2/T3)" for a list of tiers; nothing when it is all of them. */
 
 /** Delete the effects that end when an action with one of these traits is used. */
-export async function expireOnUse(actor, traits) {
-  const gone = [...actor.effects].filter(e => { const list = e.getFlag(F, "expireOn") ?? []; return list.length && (e.getFlag(F, "expireAll") ? list.every(t => traits.has(t)) : list.some(t => traits.has(t))); }).map(e => e.id);
+export async function expireOnUse(actor, traits, keep = new Set()) {
+  const gone = [...actor.effects].filter(e => !keep.has(e.id)).filter(e => { const list = e.getFlag(F, "expireOn") ?? []; return list.length && (e.getFlag(F, "expireAll") ? list.every(t => traits.has(t)) : list.some(t => traits.has(t))); }).map(e => e.id);
   if (gone.length) await actor.deleteEmbeddedDocuments("ActiveEffect", gone);
   return gone.length;
 }

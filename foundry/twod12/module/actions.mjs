@@ -147,7 +147,7 @@ export const tileNumber = name => (/(\d+)\s*$/.exec(String(name ?? "")) ?? [])[1
 /** The Modifier's name for the card: "Exhausted 2" when it still has the value Exhausted put there. */
 export const adjLabelOf = data => (data?.adjLabel && Number(data.mod) === Number(data.adjDefault) ? data.adjLabel : "");
 
-export async function askRoll(actor, { title, attrKey, traits = new Set(), from = null, versions = null, defaults = {}, preview = null, dcNote = "", targetActors = [], targetTiles = [], extraMods = [], withDamage = false, withReload = false, notices = [] }) {
+export async function askRoll(actor, { title, attrKey, traits = new Set(), from = null, versions = null, defaults = {}, preview = null, dcNote = "", targetActors = [], targetTiles = [], extraMods = [], withDamage = false, withReload = false, notices = [], bonusChips = [] }) {
   // Armor beyond the creature's training: all its Rolls are Doomed (unless something else already made them Doomed, which keeps its label).
   if (actor?.system?.armorUntrained && !defaults.doomed) defaults = { ...defaults, doomed: true, doomedLabel: "Untrained armor (Doomed)", doomedWhy: "Your armor is beyond your Armor Training: all your Rolls are Doomed" };
   // Exhausted: its value as a penalty on all Rolls, in the Modifier, named on the card (unless the Modifier is changed).
@@ -181,6 +181,8 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
     `<label class="fxchip ${cls}" data-tooltip="${name === "favored" ? "Roll 3d12 and keep the two highest" : (defaults.doomedWhy ?? "Roll 3d12 and keep the two lowest")}"><input type="checkbox" name="${name}" ${(name === "doomed" && defaults.doomed) || (name === "favored" && defaults.favored) ? "checked" : ""}><i class="fa-solid fa-chevron-${icon}"></i><span>${label}</span></label>`;
   const stepChip = (name, label, icon, cls, n) =>
     `<button type="button" class="bbchip ${cls} ${n ? "on" : ""}" data-bb="${name}" data-tooltip="Left-click: +1. Right-click: \u22121. ${name === "empowered" ? "Empowered N adds N to every damage die." : "Enfeebled N subtracts N from every damage die (each die still deals at least 1)."}${defaults.empowerWhy ? ` \u2014 ${defaults.empowerWhy}` : ""}"><i class="fa-solid fa-chevron-${icon}"></i><span>${label}</span><b>${n}</b></button><input type="hidden" name="${name}" value="${n}">`;
+  // v0.0.187: Bonus Damage from effects and passives (Killer's Focus) is a chip: unticked, it isn't added and its effect isn't used up.
+  const bonusRow = bonusChips.length ? `<div class="rf-row"><span class="rf-label">Bonus</span>${bonusChips.map(b => `<label class="fxchip boon" data-tooltip="${esc(b.why ?? "")}"><input type="checkbox" name="bonusOn" value="${esc(b.key)}" checked><i class="fa-solid fa-sparkles"></i><span>${esc(b.text)}</span></label>`).join("")}</div>` : "";
   const special = [
     withReload
       ? `<label class="fxchip boon" data-tooltip="A powerful shot: Favored and Empowered 2. Afterwards the weapon must be reloaded before it is used again."><input type="checkbox" name="reloadshot"><i class="fa-solid fa-bullseye"></i><span>Reload shot</span></label>`
@@ -193,7 +195,7 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
     .join("");
   const chipRow =
     `<div class="rf-row"><span class="rf-label">Roll</span>${state("favored", defaults.favored && defaults.favoredLabel ? defaults.favoredLabel : "Favored", "boon", "up")}${state("doomed", defaults.doomed && defaults.doomedLabel ? defaults.doomedLabel : "Doomed", "bane", "down")}<span class="bbgroup">${bb("boons", "Boons", "up", defaults.boons ?? 0)}${bb("banes", "Banes", "down", defaults.banes ?? 0)}</span></div>` +
-    effectsRows +
+    effectsRows + bonusRow +
     (special ? `<div class="rf-row special"><span class="rf-label">Damage</span>${special}</div>` : "") +
     `<input type="hidden" name="forceTier" value="">${withDamage ? `<p class="hint forcehint">For testing: click a Tier in the preview to force that result.</p>` : ""}`;
   return DialogV2.prompt({
@@ -307,7 +309,7 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
       label: "Roll",
       callback: (ev, btn) => {
         const fd = new FormData(btn.form);
-        return { ...Object.fromEntries(fd), fx: fd.getAll("fx") };
+        return { ...Object.fromEntries(fd), fx: fd.getAll("fx"), bonusOn: fd.getAll("bonusOn") };
       }
     },
     rejectClose: false
@@ -556,8 +558,8 @@ export async function useAction(actor, item, opts = {}) {
   const dmgSubs = new Set();
   for (const v of versions) for (const tk of ["t1", "t2", "t3"]) for (const inst of v[tk] ?? []) { if (inst.useW && previewWeapon?.system?.subtype) dmgSubs.add(previewWeapon.system.subtype); if (inst.subtype) dmgSubs.add(inst.subtype); }
   for (const { b } of bonusSeen.values()) if (b.sub) dmgSubs.add(b.sub);
+  const bonusChips = [...bonusSeen.entries()].map(([key, { b, tiers }]) => ({ key, text: `${b.effect}: ${b.dmg ? `+${b.dmg} ${TWOD12.subtypes[b.sub] ?? ""}`.trim() : b.text}${tiers.length < 3 ? ` (Tier ${tiers.join(", ")})` : ""}`, why: `${b.hover || "This effect adds to the damage of this roll."} Untick it to leave it out (its effect isn't used up).` }));
   const extraNotices = [
-    ...[...bonusSeen.values()].map(({ b, tiers }) => ({ text: `${b.effect}: ${b.dmg ? `+${b.dmg} ${TWOD12.subtypes[b.sub] ?? ""}`.trim() : b.text}${tiers.length < 3 ? ` (Tier ${tiers.join(", ")})` : ""}`, icon: "fa-sparkles", why: b.hover || "This effect adds to the damage of this roll." })),
     ...triggerNotices(actor, multi ? perT.map(p => p.actor) : rollsAtOthers && targetToken?.actor ? [targetToken.actor] : [], dmgSubs)
   ];
   const data = await askRoll(actor, {
@@ -590,8 +592,11 @@ export async function useAction(actor, item, opts = {}) {
     extraMods,
     notices: [...(opts.grant ? [{ text: `Granted use: ${String(opts.grant.effect?.name ?? opts.label ?? "").replace(/\s*\(.*\)\s*$/, "")}, ${opts.grant.grant?.ap ? `${opts.grant.grant.ap} AP` : "free"} (${Math.max(0, (opts.grant.grant?.left ?? 1) - 1)} left after this)`, icon: "fa-gift", why: "A use another Action gave you: it doesn't count toward this Action's Frequency or the 3 Strikes of your turn. For a normal use, close this and Shift-click the use button." }] : []), ...extraNotices, ...(opts.splitMode ? [{ text: `Split: ${SPLIT_LABEL[opts.splitMode]}`, icon: "fa-code-branch", why: "A Split Action is used as an Action of the mode you chose (Weapon or Power)." }] : []), ...(wUse?.thrown && wUse.mode === "ranged" ? [{ text: `Thrown: Ranged, Range ${wUse.range.split("/").join(" / ")}`, icon: "fa-person-rifle", why: `${previewWeapon?.name} is thrown: a Ranged Action with its Thrown Range (the target is beyond its melee Range, or the Action is Ranged). It leaves your hand.` }] : [])],
     withDamage: true,
-    withReload: usesReload
+    withReload: usesReload,
+    bonusChips
   });
+  const bonusKey = b => `${b.effect}|${b.dmg}|${b.sub}|${b.text}`;
+  const bonusOff = new Set(bonusChips.map(c => c.key).filter(k => !(data?.bonusOn ?? []).includes(k)));
   if (!data) return;
   // The step the damage uses: the two chips (Empowered and Enfeebled; the player can change them, they start at the highest value that effects and conditions give), and a Reload shot is Empowered 2 by itself.
   const reloadShot = data.reloadshot === "on";
@@ -678,13 +683,15 @@ export async function useAction(actor, item, opts = {}) {
   // A "once per round" bonus (Killer's Focus, Radiant Zeal) only lands on a Tier that deals damage, and is then used for this turn-cycle.
   const rt = rollTraits(useTraits, src, item.name);
   const dealsAt = t => t > 0 && !version.noTiers && (version[`t${t}`] ?? []).length > 0;
-  const keepOnce = (list, t) => list.filter(b => !b.once || dealsAt(t));
+  const keepOnce = (list, t) => list.filter(b => (!b.once || dealsAt(t)) && !bonusOff.has(bonusKey(b)));   // v0.0.187: and not unticked in the dialog
   if (mres) for (const r of mres) r.bonuses = keepOnce(collectBonuses(actor, rt, r.chk.tier, { target: r.token?.actor ?? null, mod: src.mod }), r.chk.tier);
   const bonuses = mres ? [...new Map(mres.flatMap(r => r.bonuses).map(b => [`${b.effect}|${b.dmg}|${b.text}`, b])).values()] : (tier && !version.noTiers ? keepOnce(collectBonuses(actor, rt, tier, { target: rollsAtOthers ? (aimed[0]?.actor ?? null) : null, mod: src.mod }), tier) : []);
   { const used = bonuses.filter(b => b.once).map(b => b.once); if (used.length && (chk || mres)) await markOnce(actor, used); }
   // The "once per round" Boons and Banes that were in the roll (Elusive on the target) are used too.
   if (chk || mres) { try { await useOnceModifiers(actor, rt, multi ? perT.map(p => p.actor) : rollsAtOthers && targetToken?.actor ? [targetToken.actor] : [], null, data.fx); } catch (e) { console.warn("twod12 | once per round", e); } }
-  await expireOnUse(actor, rollTraits(useTraits, src, item.name));
+  // An effect whose Bonus Damage was unticked stays (it wasn't used).
+  { const kept = new Set(); for (const t of [1, 2, 3]) for (const b of collectBonuses(actor, rt, t, { target: rollsAtOthers ? (aimed[0]?.actor ?? null) : null, mod: src.mod })) if (bonusOff.has(bonusKey(b))) kept.add(b.effectId);
+    await expireOnUse(actor, rollTraits(useTraits, src, item.name), kept); }
   const targets = (multi ? perT.map(p => p.token) : (!rollsAtOthers ? (selfToken ? [selfToken] : []) : aimed)).map(t => ({ uuid: t.document?.uuid ?? t.uuid, name: t.name }));
 
   const dcSet = mres ? new Set(mres.map(r => r.chk.dc)) : null;

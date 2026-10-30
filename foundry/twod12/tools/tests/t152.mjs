@@ -32,3 +32,7 @@ console.log("Kickboxer: no Brawler", show(lv1, kick), "| Brawler", show(brawler,
 console.log("Iron Grip: Body 1", show(pc(1, [], { body: 1 }), strong), "| Body 2", show(pc(1, [], { body: 2 }), strong));
 const content = fs.readFileSync(ROOT + "tools/content.mjs", "utf8"), hbs = fs.readFileSync(ROOT + "templates/item-sheet.hbs", "utf8");
 console.log("content: Kickboxer needs Brawler as data", content.includes('theme: "Unarmed", prereqs: [{ kind: "talent", name: "Brawler", value: 0 }]'), "| the Talent sheet: Category, Theme, rows", hbs.includes('name="system.group"') && hbs.includes('name="system.theme"') && hbs.includes("data-pfield"));
+console.log("--- v0.0.187");
+const { FeatureData } = await import(ROOTURL + "module/data.mjs");
+console.log("a Feature's Escalation Passive box from an old 'Archer Escalation' Category:", FeatureData.migrateData({ category: "Archer Escalation" }).escalationPassive, "| 'Paladin Feature':", FeatureData.migrateData({ category: "Paladin Feature" }).escalationPassive, "| on the sheet:", hbs.includes('name="system.escalationPassive"'));
+console.log("Prerequisites as one line of chips joined by and / or:", hbs.includes('class="pq-line"') && hbs.includes('data-action="togglePrereqMode"') && hbs.includes("data-prereqadd"), "| Escalation section always shown with a class:", fs.readFileSync(ROOT + "templates/actor-sheet.hbs", "utf8").includes("No Escalation Passives or Actives yet"));

@@ -141,7 +141,7 @@ export const TWOD12 = {
     nonthreatening: "Doesn't threaten: you can't flank with it, unless a feature says otherwise (Fists have it; Brawler removes it).",
     move: "You must have a Speed of at least 1."
   },
-  effectSettings: { boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", speed: "Speed", light: "Token Light", note: "Note", ignore: "Ignore a Bane", rally: "Rally Points" },
+  effectSettings: { boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", speed: "Speed", light: "Token Light", note: "Note", ignore: "Ignore a Bane", rally: "Rally Points", turnstart: "Effect each turn" },
   // v0.0.186 (pack OT in the book, 16-talents.md): a Talent's Category, and the kinds of Prerequisite the Talent picker can check.
   talentGroups: { combat: "Combat", mobility: "Mobility", magic: "Magic", skill: "Skill" },
   prereqKinds: { talent: "A Talent", level: "A Level", trait: "An Action with a trait", attribute: "An Attribute", other: "Other (not checked)" },

@@ -155,6 +155,7 @@ Hooks.once("init", () => {
   game.settings.register("twod12", "diagonalsApplied", { scope: "world", config: false, type: Boolean, default: false });
   game.settings.register("twod12", "weaponRoundApplied", { scope: "world", config: false, type: Boolean, default: false });
   game.settings.register("twod12", "projectileApplied", { scope: "world", config: false, type: Boolean, default: false });
+  game.settings.register("twod12", "settingsV187", { scope: "world", config: false, type: Boolean, default: false });   // Killer's Focus and Radiant Zeal: an Effect each turn
   game.settings.register("twod12", "settingsV186", { scope: "world", config: false, type: Boolean, default: false });   // the cards automated by name get their settings (automation.mjs)
   game.settings.register("twod12", "rallyV176", { scope: "world", config: false, type: Boolean, default: false });   // the Paladin's and Archer's Rally values updated once
 

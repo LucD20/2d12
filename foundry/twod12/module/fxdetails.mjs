@@ -87,6 +87,8 @@ function settingSentenceOnly(x) {
       return x.speedMode === "override" ? `The creature's Speed becomes <b>${esc(x.speedFormula || "?")}</b>.` : `Add <b>${esc(x.speedFormula || "?")}</b> to the creature's Speed.`;
     case "ignore":
       return `Its Actions${predicateText(x) || ""} don't take <b>${esc(TWOD12.ignoreRules[x.ignoreRule] ?? "?")}</b>.`;
+    case "turnstart":
+      return `At the start of each of its turns, the creature gains <b>${esc(fxNameOf(x.fxUuid)) || "(drop an Effect)"}</b>.`;
     case "rally":
       return `Each Rally Point heals <b>${esc(x.rallyBonus || "?")}</b> more, for this creature${Number(x.rallyRange) > 0 ? ` and its allies within <b>${Number(x.rallyRange)}</b> squares` : ""}.`;
     case "light":
@@ -120,6 +122,7 @@ export function settingShort(x) {
     case "defense": { const n = Math.trunc(Number(x.defValue)) || 0; return `${n >= 0 ? "+" : "\u2212"}${Math.abs(n)} ${x.defKind === "all" ? "Defense" : (TWOD12.defenseKinds[x.defKind] ?? "Defense")}`; }
     case "speed": return x.speedMode === "override" ? `Speed becomes ${x.speedFormula || "?"}` : `Speed ${/^[-+]/.test(x.speedFormula ?? "") ? "" : "+"}${x.speedFormula || "?"}`;
     case "light": return `light ${x.bright}/${x.dim}`;
+    case "turnstart": return `${fxNameOf(x.fxUuid) || "an Effect"} each turn`;
     case "ignore": return `ignores ${(TWOD12.ignoreRules[x.ignoreRule] ?? "a Bane").replace(/ \(.*\)$/, "")}`;
     case "rally": return `Rally Points +${x.rallyBonus || "?"}${Number(x.rallyRange) > 0 ? ` (allies within ${Number(x.rallyRange)})` : ""}`;
     case "note": return `note "${x.title || "(no title)"}"`;

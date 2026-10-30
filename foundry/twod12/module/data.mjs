@@ -282,13 +282,19 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       category: str(), level: int(1, 0),
       // How many Talents this Feature gives: each one is a Talent slot on the character sheet.
       talents: int(0, 0),
+      // v0.0.187: an Escalation Passive (the Features tab shows it in its Escalation section).
+      escalationPassive: bool(),
       // Defense bonuses: +bonus to the DC of actions that roll "vs" this attribute (and carry all the listed tags, e.g. "pushed").
       // A passive: settings that work by themselves while the creature has it (always, or while its Escalation is at least passiveEscalation).
       settings: settingsField(),
       defenses: new ArrayField(new SchemaField({ attr: choice(TWOD12.defenseKinds, "body"), bonus: sint(1), tags: str() }))   // attr: what it raises (every Defense, Armor, Ward or one Vs. Attribute)
     };
   }
-  static migrateData(source) { migrateSettings(source); return super.migrateData(source); }
+  static migrateData(source) {
+    migrateSettings(source);
+    if (source && source.escalationPassive === undefined && /escalation/i.test(String(source.category ?? ""))) source.escalationPassive = true;   // v0.0.187
+    return super.migrateData(source);
+  }
 }
 
 const instance = () => new SchemaField({

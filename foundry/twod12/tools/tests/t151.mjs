@@ -9,12 +9,12 @@ globalThis.Hooks = { on() {}, once() {} }; globalThis.ui = { notifications: { in
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
 const emitted = [];
 globalThis.game = { settings: { get: () => true }, time: { worldTime: 0 }, user: { id: "u" }, combat: null, items: [], packs: new Map(), actors: [], socket: { emit: (n, d) => emitted.push(d) } };
-const { docs } = await import(ROOTURL + "tools/content.mjs");
+const { docs, uuidOf } = await import(ROOTURL + "tools/content.mjs");
 globalThis.game = { settings: { get: () => true }, time: { worldTime: 0 }, user: { id: "u" }, combat: null, items: [], packs: new Map(), actors: [], socket: { emit: (n, d) => emitted.push(d) } };   // (content.mjs puts its own stand-in)
 const E = await import(ROOTURL + "module/effects.mjs"), B = await import(ROOTURL + "module/bonus.mjs"), AU = await import(ROOTURL + "module/automation.mjs");
 const FD = await import(ROOTURL + "module/fxdetails.mjs");
 const F = "twod12";
-const card = name => docs.find(d => d.name === name && ["feature", "talent", "effect"].includes(d.type));
+const card = name => docs.find(d => d.name === name && ["feature", "talent"].includes(d.type)) ?? docs.find(d => d.name === name && d.type === "effect");
 const settingsOf = name => (card(name)?.system.settings ?? []).map(x => ({ all: [], any: [], none: [], from: [], tiers: ["t1", "t2", "t3"], ...x }));
 
 /** A creature with these Features (their compendium settings) and applied effects; its flags are kept in memory. */
@@ -44,22 +44,39 @@ const src = f => fs.readFileSync(ROOT + f, "utf8");
 const code = ["module/actions.mjs", "module/archer.mjs", "module/rally.mjs", "module/effects.mjs", "module/bonus.mjs"].map(src).join("\n");
 console.log("no hasFeature(name) left:", !/hasFeature\(/.test(code), "| paladin.mjs gone:", !fs.existsSync(ROOT + "module/paladin.mjs"), "| Mark Quarry marks by its box:", docs.find(d => d.name === "Mark Quarry").system.marksTarget === true);
 
-console.log("--- Killer's Focus: Bonus Damage, once per round, Escalation 2");
-const arc = creature("Lana", ["Killer's Focus"], { escalation: 1 });
-console.log("Escalation 1:", show(B.collectBonuses(arc, shot, 2)));
-arc.system.escalation = 2;
-console.log("Escalation 2, a [Shot] Strike:", show(B.collectBonuses(arc, shot, 2)), "| a melee Strike:", show(B.collectBonuses(arc, T("melee", "strike", "weapon"), 2)));
+console.log("--- once per round (the engine; no compendium card uses it on its own bonus now)");
+const onceFx = { id: "fxonce", name: "Test Focus", disabled: false, statuses: new Set(), flags: {}, getFlag: (s, k) => ({ bonuses: [{ dmg: "1d6", dmgPool: "B", dmgSub: "Pi", tiers: [], all: ["shot"], any: [], none: [], oncePerRound: true }] })[k] };
+const arc = creature("Lana", [], { escalation: 2 }); arc.effects = [onceFx];
 game.combat = { started: true, round: 2, turn: 1, turns: [{ actor: {} }, { actor: arc }] };
 const kf = B.collectBonuses(arc, shot, 2)[0];
+console.log("first:", show(B.collectBonuses(arc, shot, 2)));
 await AU.markOnce(arc, [kf.once]);
 console.log("used this turn-cycle:", show(B.collectBonuses(arc, shot, 2)), "| next round, before its turn:", (game.combat.round = 3, game.combat.turn = 0, show(B.collectBonuses(arc, shot, 2))), "| at its turn:", (game.combat.turn = 1, show(B.collectBonuses(arc, shot, 2))));
 game.combat = null;
-console.log("out of combat (never used up):", show(B.collectBonuses(arc, shot, 2)));
 
-console.log("--- Radiant Zeal: [M] 1d6 Ho on the first Strike, Escalation 1");
-const pal = creature("Abe", ["Radiant Zeal"], { escalation: 1 });
-console.log("a Strike:", show(B.collectBonuses(pal, T("strike", "weapon", "melee"), 1)), "| not a Strike:", show(B.collectBonuses(pal, T("self"), 1)));
-
+console.log("--- v0.0.187: Killer's Focus and Radiant Zeal give an Effect at the start of each turn, used up by the Action");
+const effectDoc = name => docs.find(d => d.name === name && d.type === "effect");
+globalThis.fromUuid = async u => { const d = docs.find(x => x.type === "effect" && uuidOf("effects", x.name) === u); return d ? { uuid: u, name: d.name, img: d.img, type: "effect", system: { duration: { type: "", rounds: 1 }, conditions: [], linked: "", minEscalation: 0, expireOn: [], expireAll: false, ...d.system, settings: (d.system.settings ?? []).map(x => ({ all: [], any: [], none: [], from: [], tiers: ["t1", "t2", "t3"], ...x })), expireOn: new Set(d.system.expireOn ?? []) }, toObject: () => ({ system: d.system }) } : null; };
+const live = a => {   // applied effects that behave like Foundry's (created, read, deleted)
+  a.effects = [];
+  a.createEmbeddedDocuments = async (k, list) => list.map(d => { const fx = { id: `ae${++nid}`, name: d.name, disabled: false, statuses: new Set(d.statuses ?? []), flags: d.flags, getFlag: (s, key) => d.flags?.[F]?.[key] }; a.effects.push(fx); return fx; });
+  a.deleteEmbeddedDocuments = async (k, ids) => { a.effects = a.effects.filter(e => !ids.includes(e.id)); };
+  return a;
+};
+console.log("the Features:", ["Killer's Focus", "Radiant Zeal"].map(n => `${n}: ${(card(n)?.system.settings ?? []).map(x => `${x.type} Escalation ${x.minEscalation}`).join(", ")} | Escalation Passive ${card(n)?.system.escalationPassive}`).join(" ; "));
+console.log("the Effects:", ["Killer's Focus", "Radiant Zeal"].map(n => { const d = effectDoc(n).system; return `${n}: ends after ${d.expireOn.join(" + ")}, works at Escalation ${d.minEscalation}`; }).join(" ; "));
+const kfa = live(creature("Lonny", ["Killer's Focus"], { escalation: 1 }));
+console.log("its turn at Escalation 1:", await AU.applyTurnStartEffects(kfa), "Effect(s)", kfa.effects.map(e => e.name));
+kfa.system.escalation = 2;
+console.log("at Escalation 2:", await AU.applyTurnStartEffects(kfa), "| again next turn (replaced, not stacked):", await AU.applyTurnStartEffects(kfa), kfa.effects.map(e => e.name), "| from Escalation (ends with the encounter):", kfa.effects[0]?.getFlag(F, "fromEscalation"));
+console.log("its bonus:", show(B.collectBonuses(kfa, shot, 2)), "| Escalation spent to 1:", (kfa.system.escalation = 1, show(B.collectBonuses(kfa, shot, 2))), (kfa.system.escalation = 2, ""));
+console.log("unticked in the dialog: the effect stays:", await B.expireOnUse(kfa, shot, new Set([kfa.effects[0].id])), kfa.effects.length, "| used: it ends:", await B.expireOnUse(kfa, shot), kfa.effects.length);
+const rza = live(creature("Abe", ["Radiant Zeal"], { escalation: 1 }));
+await AU.applyTurnStartEffects(rza);
+console.log("Radiant Zeal: a Strike:", show(B.collectBonuses(rza, T("strike", "weapon", "melee"), 1)), "| not a Strike:", show(B.collectBonuses(rza, T("self"), 1)));
+const pal = creature("Ivo2", ["Radiant Zeal"], { escalation: 1 });
+const dlg = src("module/actions.mjs");
+console.log("roll dialog: Bonus chips", dlg.includes('name="bonusOn"'), "| unticked ones left out", dlg.includes("!bonusOff.has(bonusKey(b))"), "| their effect kept", dlg.includes("await expireOnUse(actor, rollTraits(useTraits, src, item.name), kept);"), "| turn start wired", src("module/combat.mjs").includes("await applyTurnStartEffects(c.actor);"));
 console.log("--- Marked Quarry and Hunter's Focus: only against the marked creature");
 const lana = creature("Krysta", ["Marked Quarry"], { effects: ["Hunter's Focus"] });
 const orc = creature("Orc"), gob = creature("Goblin");

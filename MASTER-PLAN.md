@@ -102,13 +102,13 @@ C is XL: three versions, each with its own test checklist, all on the branch `pa
    - **Escalation** gets its own section, like Class, Species and Talents (the Passive and Active Escalation picks and what they gave).
    - **Talents are grouped by Category** (subsections Combat, Mobility, Magic, Skill; the slot cards stay where they are filled).
 
-### C-b: v0.0.187, the content (L)
+### C-b: v0.0.188, the content (L) (v0.0.187 went to the fixes from the test of v0.0.186)
 1. **The class items** in the C2 structure (levels as sections): the Paladin and Archer Repertoires and Escalation lists as the book has them now (12-paladin.md, 13-archer.md), the OT options included (Paladin: Word of Radiance, Miraculous Recovery, Divine Intervention, Mending Light, Shield of Faith as a 0R Escalation Active, Hand of Mercy; Archer: Volley, Covering Fire, Deadeye, Rain of Arrows, Harrying Shots, Twin Shot, Vanish). Each card automated with C-a's settings where it can be.
 2. **The cards that left the book** (book/options-talents.md section 4) go to "Paladin (old cards)" / "Archer (old cards)"; the ones that became Talents (Sacred Weapon, Challenge, Long Draw, Steady Nerves) are rebuilt as Talents.
 3. **Every Talent card** as in 16-talents.md, with C-a's fields filled (Leg Sweep without a free hand; Kickboxer grants it as its own Action; Class Expertise).
 4. **The text sync, done while each card is rewritten** (cheaper than a separate pass over the same cards): [B] explicit on every Body damage, "[Strike] Action", Rally Point numerals, Bane and Boon capitalized; then the same for the chat cards and the UI strings; a test that scans content.mjs for "bane"/"boon" in lower case and damage with no pool.
 
-### C-c: v0.0.188, the picker, Escalation in the Actions tab, the PCs (M)
+### C-c: v0.0.189, the picker, Escalation in the Actions tab, the PCs (M)
 1. **The Talent picker's filter bar** in the class window: search, Category, "only what I can take" (Level and Prerequisites through `canTake`; the reasons as a tooltip on the ones that can't be taken); a compact list option.
 2. **Escalation on the Actions tab:** the Escalation Actives show among the Actions when they can be used (Escalation at or above the cost, not Unconscious), with their Escalation cost on the row; the Escalation passives show as an "active" line at the top of the tab while their minimum is met.
 3. **The compendium PCs rebuilt from the ruler's builds** (book/ruler/classes/*.txt), last because they use every card above.
