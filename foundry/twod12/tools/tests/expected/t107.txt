@@ -5,6 +5,8 @@ Defenses use the worn armor: true | a character without one is Unarmored, an NPC
 sheet: armor cards with a Worn switch: true | rows: true | no separate Armor/Ward row: true | NPC Armor type choice: true | NPC Speed only in the Builder tab (a typed Speed is its Custom input), no Size field (v0.0.164): true | editable cells: true
 cells: current vs base colored: true | what each edit saves: true | bonuses from effects shown: true
 compendium: light-armor light, medium-armor medium, heavy-armor heavy
-Human Paladin wears: Medium Armor (worn true)
-Elf Archer wears: Light Armor (worn true)
+Paladin (Smite) wears: Heavy Armor (worn true)
+Paladin (Lay On Hands) wears: Heavy Armor (worn true)
+Archer (Double Shot) wears: Medium Armor (worn true)
+Archer (Rolling Shot) wears: Medium Armor (worn true)
 v0.0.121: titled groups: true | Enter with the same number closes the box: true

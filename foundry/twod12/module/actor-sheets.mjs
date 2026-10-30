@@ -623,6 +623,13 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       t.addEventListener("click", ev => change(ev, t.dataset.pool, 1));
       t.addEventListener("contextmenu", ev => change(ev, t.dataset.pool, -1));
     });
+    // v0.0.183: the Guard button works like the health view: click +1, right-click -1, Ctrl 5 at a time.
+    const gb = this.element.querySelector(".np-guardbtn");
+    if (gb) for (const [evName, sign] of [["click", 1], ["contextmenu", -1]]) gb.addEventListener(evName, async ev => {
+      ev.preventDefault();
+      if (!this.isEditable) return;
+      await this.actor.update({ "system.guard": Math.max(0, (Number(this.actor.system.guard) || 0) + (ev.ctrlKey || ev.metaKey ? 5 : 1) * sign) });
+    });
     const donut = this.element.querySelector(".np-donut");
     if (donut) {
       const poolAt = ev => {

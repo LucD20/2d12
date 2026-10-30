@@ -43,6 +43,12 @@ console.log("the Aura:", ap.type, `Aura ${ap.auraSize}`, ap.auraWho, "->", nameO
 const lh = fx("Lay On Hands (Holy Strike)").settings[0];
 console.log("Lay On Hands' strike:", lh.type, lh.dmg, lh.dmgPool, lh.dmgSub, lh.tiers.join(","), "| ends after:", fx("Lay On Hands (Holy Strike)").expireOn.join(","));
 console.log("old cards:", docs.filter(d => d.name === "Vow of Enmity" || d.name === "Word of Radiance").map(d => d.name).join(", "), "kept | in no pick:", !["Hallmark Action", "Encounter Pick", "Escalation Passive", "Escalation Active", "Daily Pick"].some(n => byName("features", n).system.choiceOptions.map(nameOf).some(x => ["Vow of Enmity", "Word of Radiance", "Call to Arms"].includes(x))));
-const pal = JSON.parse(fs.readFileSync(path.join(SRC, "pcs/human-paladin.pc.json"), "utf8"));
-console.log("pregen Paladin items:", pal.items.filter(i => ["feature", "action"].includes(i.type) && !/^(Fists|Weapon Attack|Interact|Reposition|Relocate|Haul|Trip|Shove|Reload|Leaning|Steel Yourself|Evade|Crawl|Stand|Advance|Release)/.test(i.name)).map(i => i.name).join(", "));
-const ids = pal.items.map(i => i._id); console.log("pregen ids unique:", new Set(ids).size === ids.length);
+// v0.0.183: the four builds of the ruler, and one NPC per role (the Bestiary's examples)
+for (const f of ["paladin-smite", "paladin-lay-on-hands", "archer-double-shot", "archer-rolling-shot"]) {
+  const pc = JSON.parse(fs.readFileSync(path.join(SRC, `pcs/${f}.pc.json`), "utf8")), ids = pc.items.map(i => i._id);
+  console.log(`${pc.name}:`, pc.items.filter(i => ["feature", "action", "talent"].includes(i.type) && !i.flags?.twod12?.basic && !/^(Fists|Lock & Loose|Reaping Sweep)$/.test(i.name)).map(i => i.name).join(", "), "| ids unique:", new Set(ids).size === ids.length);
+}
+for (const f of fs.readdirSync(path.join(SRC, "npcs")).filter(f => f.endsWith(".json") && !f.startsWith("_")).sort()) {
+  const n = JSON.parse(fs.readFileSync(path.join(SRC, "npcs", f), "utf8"));
+  console.log(`${n.name} (${n.system.role}, speed ${n.system.speed}):`, n.items.filter(i => i.type === "action" && !i.flags?.twod12?.basic).map(i => `${i.name} ${i.system.frequency}${i.system.reaction ? " reaction" : ""}`).join(", "));
+}

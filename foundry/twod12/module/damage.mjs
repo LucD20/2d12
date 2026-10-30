@@ -102,7 +102,15 @@ async function apply(msg, button, factor) {
         await logDamage({ originUuid: f.originUuid ?? "", originName: src?.name ?? f.name ?? "", targetName: t.name, amount: dealt });
         if (dealt > 0) await runDamageTriggers(src, actor, t.uuid, f.comps ?? []);   // "When you deal Holy damage to a Profane creature..." (triggers.mjs)
       }
-      await ChatMessage.create({ content: `<div class="twod12 chat">${lines.join("<br>")} damage${factor === 1 ? "" : (factor === 2 ? " (double)" : " (half)")} from ${esc(f.name)}.</div>` });
+      // v0.0.183: the result goes on the damage card itself, under its target line (a new message only when this user can't change the card).
+      const result = `${lines.join("<br>")} damage${factor === 1 ? "" : (factor === 2 ? " (double)" : " (half)")}.`;
+      const block = `<div class="applied dres"><i class="fa-solid fa-heart-crack"></i> ${result}</div>`;
+      const was = String(msg.content ?? "");
+      const content = /<div class="applied dres">[\s\S]*?<\/div>/.test(was) ? was.replace(/<div class="applied dres">[\s\S]*?<\/div>/, block)
+        : was.replace(/(<div class="tline">[\s\S]*?<\/div>)/, `$1${block}`);
+      let onCard = false;
+      if (content !== was && (msg.isOwner || game.user.isGM)) { try { await msg.update({ content }); onCard = true; } catch (e) { /* not the author */ } }
+      if (!onCard) await ChatMessage.create({ content: `<div class="twod12 chat">${lines.join("<br>")} damage${factor === 1 ? "" : (factor === 2 ? " (double)" : " (half)")} from ${esc(f.name)}.</div>` });
     }
   }
   else ui.notifications.info("This card deals 0 damage.");

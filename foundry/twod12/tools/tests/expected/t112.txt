@@ -26,5 +26,11 @@ Hallowed Stance: Paladin Escalation | While your Escalation is 2 or more, if you
 the Aura: aura Aura 2 allies -> Aura of Protection (+1 Defense) | lasts: until the encounter ends (an Escalation effect)
 Lay On Hands' strike: bonusdamage 2d8 M Ho t2,t3 | ends after: strike
 old cards: Vow of Enmity, Word of Radiance kept | in no pick: true
-pregen Paladin items: Divine Power, Font of Mercy, Smite, Holy Wrath, Hallowed Stance, Divine Surge, Reaping Sweep, Charge
-pregen ids unique: true
+Paladin (Smite): Divine Power, Font of Mercy, Smite, Holy Wrath, Hallowed Stance, Divine Surge, Heavy Blows | ids unique: true
+Paladin (Lay On Hands): Divine Power, Font of Mercy, Lay On Hands, Holy Wrath, Hallowed Stance, Divine Surge, Heavy Blows | ids unique: true
+Archer (Double Shot): Sharpshooter, Marked Quarry, Mark Quarry, Double Shot, Killer's Focus, Pinning Shot, Aim | ids unique: true
+Archer (Rolling Shot): Sharpshooter, Marked Quarry, Mark Quarry, Rolling Shot, Killer's Focus, Pinning Shot, Aim | ids unique: true
+Bandit Thug (grunt, speed 5): Cudgel atwill, Low Blow round
+Goblin Sneak (minion, speed 7): Rusty Knife atwill, Dirty Trick round
+Ogre Chieftain (elite, speed 4): Club atwill, Ground Slam encounter, Rally the Tribe round
+Orc Warrior (standard, speed 5): Cleaver atwill, Brutal Swing round, Hold the Line round reaction

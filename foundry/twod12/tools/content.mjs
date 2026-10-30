@@ -228,56 +228,43 @@ const npc = ({ name, img, role, weaponAttribute, powerAttribute = "mind", rating
   const basics = Object.keys(BASIC_ACTIONS).filter(k => k !== "rally").map(k => { const d = basicItemData(k); return embedded(name, "action", d.name, d.img, d.system, d.flags); });
   actors.push({ name, img, system: { level: 1, role, speed, weaponAttribute, powerAttribute, ratings: r, useEscalation: role === "elite" }, items: [...extra, ...basics, (() => { const f = fistsItemData(), e = embedded(name, "weapon", f.name, f.img, f.system, f.flags); e._id = idOf("Item", `${name}:weapon:Fists`); return e; })()] });
 };
-const sword = "shortsword: melee, slash, 0/1d6/2d4";
-
+// v0.0.183 (Lucas: a complete rebuild, simple NPCs to test with): one NPC for each role, at Stage 1 (level 1). The Minion, the Standard and
+// the Elite are the Bestiary's own examples (book: Example NPCs); the Grunt follows the same recipe. Damage is the book's average for the
+// rating ([Mod] is added on Tier 2 and 3, as for any Weapon Action); the weapon in its hands is only what the attack looks like.
+const atk = (n, w, name, img, ap, freq, t2, t3, extra = {}, effects = "") => npcAction(n, name, img, { category: "Basic attack", level: 0, traits: ["melee", "strike", "weapon"], frequency: freq, targets: "One creature", distance: "weapon", ...extra,
+  versions: [version(ap, "", t2, t3, effects)] }, { twod12: { weaponId: w._id } });
 {
-  // Two minions that fight differently: the Archer keeps its distance, the Swordsman closes in.
-  const n = "Skeleton Archer", bow = npcWeapon(n, "bone shortbow: ranged, pierce, range 8/16/32, 0/1d6/1d8", "icons/svg/target.svg");
-  npc({ name: n, img: "icons/svg/skull.svg", role: "minion", weaponAttribute: "instinct",
-    extra: [bow,
-      npcAction(n, "Suppressing Shot", "icons/svg/target.svg", { category: "Skeleton", level: 0, traits: ["strike", "ranged", "weapon"], frequency: "round", targets: "One creature", distance: "weapon",
-        versions: [(() => { const v = tiered(version(1, "AtB", "1WB", "1WB"), { t3: [uuidOf("effects", "Hindered (until Move)")] }); v.x3 = "For 1 round, the creature is Hindered until they use a Move Action."; return v; })()] }, { twod12: { weaponId: bow._id } }),
-      npcAction(n, "Deadeye Shot", "icons/svg/eye.svg", { category: "Skeleton", level: 0, traits: ["strike", "ranged", "weapon"], frequency: "round", targets: "One creature", distance: "weapon",
-        versions: [version(2, "AtB", "1WB,1d6BP", "1WB,2d6BP")] }, { twod12: { weaponId: bow._id } }),
-      npcAction(n, "Skitter Back", "icons/svg/wing.svg", { category: "Skeleton", level: 0, traits: [], frequency: "round", reaction: true, targets: "", trigger: "A creature ends a Move Action within 1 of you.",
-        versions: [noRoll(1, "You can Evade 2: @Move[evade|distance:2]")] })] });
+  const n = "Goblin Sneak", knife = npcWeapon(n, "rusty knife: melee, pierce, 0/1d4/1d6", "icons/svg/dagger.svg");
+  npc({ name: n, img: "icons/svg/mystery-man.svg", role: "minion", weaponAttribute: "instinct", speed: 7, ratings: { bodyHm: "low", mindHm: "low", wd: "low" },
+    extra: [knife,
+      atk(n, knife, "Rusty Knife", "icons/svg/dagger.svg", 1, "atwill", "1d2BPi", "1d6BPi"),
+      atk(n, knife, "Dirty Trick", "icons/svg/combat.svg", 1, "round", "1d2BPi", '1d6BPi', { category: "Special Action" }, "Hindered (EoT).")] });
 }
 {
-  const n = "Skeleton Swordsman", sword = npcWeapon(n, "rusty shortsword: melee, slash, 0/1d6/2d4", "icons/svg/sword.svg");
-  npc({ name: n, img: "icons/svg/skull.svg", role: "minion", weaponAttribute: "body",
-    extra: [sword,
-      npcAction(n, "Lunging Cut", "icons/svg/sword.svg", { category: "Skeleton", level: 0, traits: ["strike", "melee", "weapon"], frequency: "round", targets: "One creature", distance: "weapon",
-        setup: "Advance up to 2 (@Move[advance|distance:2]).", versions: [version(2, "AtB", "1WB,1d6BS", "1WB,1d8BS")] }, { twod12: { weaponId: sword._id } }),
-      npcAction(n, "Shield Bash", "icons/svg/shield.svg", { category: "Skeleton", level: 0, traits: ["strike", "melee", "body"], frequency: "round", targets: "One creature", distance: "reach", vs: "body",
-        versions: [version(1, '"No effect."', "1d4BBl", '1d4BBl,"Pushed 1"')] }),
-      npcAction(n, "Brittle Guard", "icons/svg/shield.svg", { category: "Skeleton", level: 0, traits: [], frequency: "round", reaction: true, targets: "", trigger: "A creature uses a Melee Strike against you.",
-        versions: [noRoll(1, "You Evade 1 before the Action happens: @Move[evade|distance:1]")] })] });
+  const n = "Bandit Thug", club = npcWeapon(n, "cudgel: melee, blunt, 0/1d4/1d6", "icons/svg/hammer.svg");
+  npc({ name: n, img: "icons/svg/mystery-man.svg", role: "grunt", weaponAttribute: "body",
+    extra: [club,
+      atk(n, club, "Cudgel", "icons/svg/hammer.svg", 1, "atwill", "1d3BBl", "1d6BBl"),
+      atk(n, club, "Low Blow", "icons/svg/combat.svg", 2, "round", "2d6BBl", "2d10BBl", { category: "Special Action" })] });
 }
-
-npc({ name: "Goblin Skirmisher", img: "icons/svg/mystery-man.svg", role: "grunt", weaponAttribute: "instinct",
-  extra: [npcWeapon("Goblin Skirmisher", "dagger: melee, pierce, 0/1d4/1d6+1", "icons/svg/dagger.svg"),
-    npcAction("Goblin Skirmisher", "Nick and Slip", "icons/svg/combat.svg", { category: "Goblin", level: 0, traits: ["strike", "melee", "weapon"], targets: "One creature", distance: "weapon",
-      versions: [version(1, "", "1WB", "1WB,1d4BP"), version(2, "AtB", "1WB,1d4BP", "1WB,1d6BP", "Evade 1 (T3)")] })] });
-
-npc({ name: "Roadside Bandit", img: "icons/svg/mystery-man.svg", role: "standard", weaponAttribute: "body",
-  extra: [npcWeapon("Roadside Bandit", "rusty shortsword: melee, slash, 0/1d6/2d4", "icons/svg/sword.svg"),
-    npcAction("Roadside Bandit", "Ruthless Cut", "icons/svg/combat.svg", { category: "Bandit", level: 0, traits: ["strike", "melee", "weapon"], targets: "One creature", distance: "weapon",
-      versions: [version(2, "AtB", "1WB,1d6BS", "1WB,2d6BS"), version(3, "AtB", "1WB,2d6BS", "1WB,3d6BS", "Hindered (T3)")] })] });
-
-npc({ name: "Dire Boar", img: "icons/svg/pawprint.svg", role: "standard", weaponAttribute: "body",
-  extra: [npcWeapon("Dire Boar", "tusks: melee, pierce, 0/1d6/2d6", "icons/svg/pawprint.svg"),
-    npcAction("Dire Boar", "Gore Rush", "icons/svg/combat.svg", { category: "Boar", level: 0, traits: ["strike", "melee", "weapon"], targets: "One creature", distance: "weapon",
-      versions: [version(2, "AtB", '1WB,"Pushed 1"', '1WB,1d6BB,"Pushed 2"'), version(3, "AtB", '1WB,1d6BB,"Pushed 2"', '1WB,2d6BB,"Pushed 4"')] })] });
-
 {
-  const n = "Skeleton Captain", greatsword = npcWeapon(n, "greatsword: two-handed, melee, slash, 0/1d8/2d6", "icons/svg/sword.svg");
-  const sweep = docs.find(d => d.name === "Reaping Sweep");
-  npc({ name: n, img: "icons/svg/skull.svg", role: "elite", weaponAttribute: "body",
-    extra: [greatsword,
-      npcAction(n, "Reaping Sweep", sweep.img, JSON.parse(JSON.stringify(sweep.system)), { twod12: { weaponId: greatsword._id } }),
-      npcAction(n, "Bone Verdict", "icons/svg/combat.svg", { category: "Captain", level: 0, traits: ["strike", "melee", "weapon"], targets: "One creature", distance: "weapon",
-        versions: [version(2, "AtB", "1WB,1d6BS", "1WB,1d10BS"), version(3, "AtB", "1WB,1d8BS", "1WB,2d8BS")] }),
-      npcAction(n, "Rattle of Command", "icons/svg/aura.svg", { category: "Captain", level: 0, traits: ["focus"], frequency: "round", distance: "3", versions: [noRoll(1, "Each ally within 3 can Evade 2.")] })] });
+  const n = "Orc Warrior", cleaver = npcWeapon(n, "cleaver: melee, slash, 0/1d8/2d8", "icons/svg/sword.svg");
+  npc({ name: n, img: "icons/svg/mystery-man.svg", role: "standard", weaponAttribute: "body", ratings: { bodyHm: "high", mindHm: "low", wd: "low" },
+    extra: [cleaver,
+      atk(n, cleaver, "Cleaver", "icons/svg/sword.svg", 1, "atwill", "1d8BSl", "2d8BSl"),
+      atk(n, cleaver, "Brutal Swing", "icons/svg/combat.svg", 2, "round", "2d6BSl", "2d10BSl", { category: "Special Action" }, "Prone."),
+      atk(n, cleaver, "Hold the Line", "icons/svg/shield.svg", 1, "round", "2d8BSl", "3d10BSl", { category: "Special Action", reaction: true, reactionKind: "trigger", targets: "The attacker", trigger: "An ally within 2 squares is hit." })] });
+}
+{
+  const n = "Ogre Chieftain", club = npcWeapon(n, "great club: two-handed, melee, blunt, 0/1d10/2d10", "icons/svg/hammer.svg");
+  npc({ name: n, img: "icons/svg/mystery-man.svg", role: "elite", weaponAttribute: "body", speed: 4, ratings: { wd: "low" },
+    extra: [club,
+      atk(n, club, "Club", "icons/svg/hammer.svg", 1, "atwill", "1d10BBl", "2d10BBl"),
+      npcAction(n, "Ground Slam", "icons/svg/explosion.svg", { category: "Special Action", level: 0, traits: ["area", "body", "save"], vs: "body", frequency: "encounter", targets: "All creatures in the Area",
+        areaCfg: { size: 1, shape: "emanation", within: 0, targets: "all", center: true, keep: false, rounds: 0 },
+        versions: [version(3, '3d10BBl,ModBBl,"Prone."', "2d8BBl,ModBBl", '"No effect."')] }),
+      npcAction(n, "Rally the Tribe", "icons/svg/aura.svg", { category: "Special Action", level: 0, traits: ["focus"], frequency: "round", escalation: 1, targets: "Allies within 5 squares", distance: "5",
+        versions: [noRoll(1, "Allies within 5 squares gain 1 Boon on their next Basic attack.")] })] });
 }
 actors.forEach(a => { a.system.level = 1; });
 
@@ -434,8 +421,14 @@ const pc = ({ name, img, species, chosen, cls, picks, features, slotFeature, wea
   if (armor) items.push(copyDoc(name, "armor", armor, {}, { worn: true }));
   pcs.push({ name, img, system: { level: 1 }, items });
 };
-pc({ name: "Human Paladin", img: "icons/svg/angel.svg", species: "Human", chosen: ["body", "appeal"], cls: "Paladin", picks: { a: "body", b: "mind", w: "body", m: "appeal" }, features: ["Divine Power", "Font of Mercy"], slotFeature: "", extras: [["action", "Smite"], ["action", "Holy Wrath"], ["feature", "Hallowed Stance"], ["action", "Divine Surge"], ["talent", "Heavy Blows"]], weapon: "Greatsword", armor: "Medium Armor" });
-pc({ name: "Elf Archer", img: "icons/svg/target.svg", species: "Elf", cls: "Archer", picks: { a: "instinct", b: "mind", w: "instinct", m: "mind" }, features: ["Sharpshooter", "Marked Quarry"], extras: [["action", "Double Shot"], ["feature", "Killer's Focus"], ["action", "Pinning Shot"], ["action", "Aim"]], weapon: "Crossbow", armor: "Light Armor" });
+// v0.0.183: the four level 1 builds of the ruler (book/ruler/classes: paladin-smite-1, paladin-hands-1, archer-double-1, archer-rolling-1), Humans all.
+const palPicks = { a: "body", b: "mind", w: "body", m: "appeal" }, arcPicks = { a: "instinct", b: "mind", w: "instinct", m: "mind" };
+for (const [hall, img] of [["Smite", "icons/svg/sun.svg"], ["Lay On Hands", "icons/svg/regen.svg"]])
+  pc({ name: `Paladin (${hall})`, img, species: "Human", chosen: ["body", "appeal"], cls: "Paladin", picks: palPicks, features: ["Divine Power", "Font of Mercy"], slotFeature: "",
+    extras: [["action", hall], ["action", "Holy Wrath"], ["feature", "Hallowed Stance"], ["action", "Divine Surge"], ["talent", "Heavy Blows"]], weapon: "Greatsword", armor: "Heavy Armor" });
+for (const [hall, img] of [["Double Shot", "icons/svg/target.svg"], ["Rolling Shot", "icons/svg/wing.svg"]])
+  pc({ name: `Archer (${hall})`, img, species: "Human", chosen: ["body", "instinct"], cls: "Archer", picks: arcPicks, features: ["Sharpshooter", "Marked Quarry"],
+    extras: [["action", hall], ["feature", "Killer's Focus"], ["action", "Pinning Shot"], ["action", "Aim"]], weapon: "Crossbow", armor: "Medium Armor" });
 
 const FOLDER_OF = { species: "Species", class: "Class", feature: "Feature", talent: "Talent" };
 for (const d of docs) if ((d.pack === "classes" || d.pack === "features") && !d.folder) d.folder = FOLDER_OF[d.type] ?? null;
@@ -454,6 +447,16 @@ const FLAVOR = {
  "Leaning": "You lean out from cover, just enough to see.",
  "Interact": "You pull the lever, open the door, grab what you need.",
  "Reload": "You work the mechanism and seat a fresh bolt.",
+ "Rusty Knife": "A notched blade, quick and dirty.",
+ "Dirty Trick": "Sand in the eyes, a heel on the toes, and the goblin is gone.",
+ "Cudgel": "A heavy stick and no reason to hold back.",
+ "Low Blow": "No rules in a back alley.",
+ "Cleaver": "A butcher's blade, swung by someone who enjoys it.",
+ "Brutal Swing": "The orc puts its whole weight behind one wild arc.",
+ "Hold the Line": "Touch its kin, and the orc answers.",
+ "Club": "A tree trunk with a handle.",
+ "Ground Slam": "The ogre brings both fists down, and the ground jumps.",
+ "Rally the Tribe": "One bellow, and the whole tribe fights harder.",
  "Divine Power": "Your god's strength flows through your weapon and your hands.",
  "Font of Mercy": "Where you kneel, wounds remember how to close.",
  "Holy Wrath": "For one blow, your god stops holding back.",
@@ -474,12 +477,6 @@ const FLAVOR = {
  "Ricochet": "Walls, shields and stones are just more angles.",
  "Reaping Sweep": "A wide, heavy arc for anyone standing too close.",
  "Cut Through": "You drive through the line without stopping, and strike as you pass.",
- "Suppressing Shot": "An arrow thuds into the ground right where your foot would be.",
- "Deadeye Shot": "The skeleton's hollow eyes narrow, and the string sings.",
- "Skitter Back": "Bones clatter as it scurries out of reach.",
- "Lunging Cut": "The skeleton lurches forward, rusty blade first.",
- "Shield Bash": "A battered shield slams home with the weight of old bones.",
- "Brittle Guard": "Brittle bones twist out of the way at the last moment.",
  "Battering Charge": "Nothing slows you down once you start running.",
  "Bloodlust": "The red haze settles, and you stop caring about pain.",
  "Brawler": "Your hands have won more fights than any blade.",
@@ -488,11 +485,6 @@ const FLAVOR = {
  "Leg Sweep": "A low kick takes their legs out from under them, and you follow it up.",
  "Whirlwind": "You spin, and everything within reach feels the blade.",
  "Lock & Loose": "A bolt to the knee, and they go nowhere.",
- "Nick and Slip": "The goblin darts in, cuts, and is already out of reach.",
- "Ruthless Cut": "No honor, no warning, just the blade.",
- "Gore Rush": "Tusks first, the boar barrels through anything in its path.",
- "Bone Verdict": "The captain's blade falls like a sentence long decided.",
- "Rattle of Command": "A dry rattle from the captain, and the dead move as one.",
   "Profane Judgment": "The profane flinch at your god's light.",
   "Aegis": "Your watchful presence protects one soul above all.",
   "Mercy's Reward": "Mercy shown is mercy returned.",

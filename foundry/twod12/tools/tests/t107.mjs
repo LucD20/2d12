@@ -22,5 +22,5 @@ console.log("cells: current vs base colored:", sh.includes('cls: now < ref ? "do
 const arm = n => JSON.parse(src(`packs/_source/weapons/${n}.armor.json`)).system;
 console.log("compendium:", ["light-armor", "medium-armor", "heavy-armor"].map(n => `${n} ${arm(n).category}`).join(", "));
 const pcs = n => JSON.parse(src(`packs/_source/pcs/${n}.pc.json`));
-for (const n of ["human-paladin", "elf-archer"]) { const a = pcs(n); const w = a.items.filter(i => i.type === "armor"); console.log(`${a.name} wears:`, w.map(i => `${i.name} (worn ${i.system.worn})`).join(", ")); }
+for (const n of ["paladin-smite", "paladin-lay-on-hands", "archer-double-shot", "archer-rolling-shot"]) { const a = pcs(n); const w = a.items.filter(i => i.type === "armor"); console.log(`${a.name} wears:`, w.map(i => `${i.name} (worn ${i.system.worn})`).join(", ")); }
 console.log("v0.0.121: titled groups:", tpl.includes('<h3>{{title}}{{#if note}}') && ['title: "Movement"', 'title: "Modifiers"', 'title: "Defenses"'].every(k => sh.includes(k)), "| Enter with the same number closes the box:", sh.includes("if (upd && v !== Number(cell.dataset.base)) await this.actor.update(upd);") && sh.includes("this.render();   // an unchanged number"));

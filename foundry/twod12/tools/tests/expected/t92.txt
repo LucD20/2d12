@@ -14,7 +14,10 @@ a step into a dark square: 2 | for Cut Through's Evade: 1
 --- the flag
 the tag: true | without: undefined | terrain:no: false | the distance still read: floor(speed/2)
 the movement is granted: true | the flag: true | Evade squares: 2 | Kai can Evade up to 2 squares (in one or more drags, until another Action): no reactions are triggered, and it can move through the space of any creat
-End movement clears it: undefined {"evadeMove":0,"freeMove":0}
+End movement clears it: undefined {"evadeMove":0,"diagPar":0,"freeMove":0}
 an ordinary Evade: true | the flag: undefined | Kai can Evade up to 2 squares (in one or more drags, until another Action): no reactions are triggered, and it can't ent
 the Evade used as an Advance loses it: undefined | free squares: 2
 Cut Through's Setup in the compendium: Evade 2 (@Move[evade|distance:2|terrain:ignore]). During thi
+diagonals on a path: 2
+1 square left, after an even number of diagonals: 9 squares | after an odd number (the next diagonal costs 2): 5 squares
+the drag pays the second diagonal and can't pass the Evade: true

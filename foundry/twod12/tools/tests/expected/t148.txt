@@ -57,3 +57,4 @@ an Evade keeps its unused squares until another Action: true
 one damage line: 12 − Guard 5 = 7 Body <small>(the Guard ends)</small> | 4 − Guard 4 = no damage <small>(Guard 3 left)</small> | ""
 Guard on the donut and on the token bar: true true
 granted use without asking, Shift for a normal one, blue button, the dialog's first line: true true true true
+v0.0.183: the damage card shows its result under the target line (no new message): true | the Guard button (click +1, right-click -1, Ctrl 5): true
