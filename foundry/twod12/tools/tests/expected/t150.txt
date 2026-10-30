@@ -7,7 +7,7 @@ hasLevels: the compendium classes Paladin true, Archer true | a class without le
 Smite: 1 / 2 / 3 AP · Round
 Bulwark of Faith: 1 / 2R · Encounter
 Divine Surge: 0 AP · Round · Esc 1
-Font of Mercy: Feature
+Font of Mercy: Passive
 Divine Power: Passive
 Heavy Blows: Talent
 Aim: 1 AP · At-will

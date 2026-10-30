@@ -325,6 +325,15 @@ export function registerBasicHooks() {
         if (r) ui.notifications.info(`2d12: the Rally value of ${r} Paladin or Archer class item${r === 1 ? "" : "s"} follows the book now (Paladin 6, Archer 5).`);
       }
     } catch (e) { console.warn("twod12 | Rally values", e); }
+    // v0.0.186, once per world: the cards automated by code that tested their name get their settings (automation.mjs).
+    try {
+      if (!game.settings.get(F, "settingsV186")) {
+        const { giveSettingsV186 } = await import("./automation.mjs");
+        const r = await giveSettingsV186(game.items ?? [], game.actors ?? []);
+        await game.settings.set(F, "settingsV186", true);
+        if (r) ui.notifications.info(`2d12: ${r} Feature${r === 1 ? "" : "s"} or Effect${r === 1 ? "" : "s"} got their automation as settings you can edit (Killer's Focus, Radiant Zeal, Elusive...).`);
+      }
+    } catch (e) { console.warn("twod12 | settings v0.0.186", e); }
     // v0.0.169 and v0.0.170, once per creature that needs it: the new Basic Actions (Relocate, the 3 AP Shove, Fists as a Weapon Action, Haul) and Fists as an ordinary weapon.
     let n = 0;
     for (const actor of game.actors ?? []) {

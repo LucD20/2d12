@@ -2,22 +2,43 @@
 
 import { hoverOf } from "./util.mjs";
 import { effectOff } from "./escalation.mjs";
+import { allEffects } from "./passives.mjs";
+import { onceKey, onceBlocked, isMarked } from "./automation.mjs";
 const F = "twod12";
 
-/** Bonus Damage settings of the actor's effects that match the action's traits and the tier rolled. */
-export function collectBonuses(actor, traits, tier) {
+/**
+ * Bonus Damage settings of the actor's effects and passives that match the action's traits and the tier rolled.
+ * v0.0.186: a passive's Bonus Damage works on every matching Action (an applied effect's is used up by its "Ends" traits);
+ * "once per round" ones only while unused this turn-cycle (they carry `once`), "only against my marked target" ones only with that target,
+ * and "[Mod]" in the damage is the Action's Modifier (opts.mod; nothing when it is 0 or less).
+ */
+export function collectBonuses(actor, traits, tier, opts = {}) {
   const out = [];
-  for (const e of actor.effects) {
+  for (const e of allEffects(actor)) {
     if (effectOff(actor, e)) continue;
-    for (const m of e.getFlag(F, "bonuses") ?? []) {
+    (e.getFlag(F, "bonuses") ?? []).forEach((m, i) => {
       const pred = (m.all ?? []).every(t => traits.has(t)) && (!(m.any?.length) || m.any.some(t => traits.has(t))) && !(m.none ?? []).some(t => traits.has(t));
-      if (!pred) continue;
+      if (!pred) return;
       const tiers = m.tiers?.length ? m.tiers : ["t1", "t2", "t3"];
-      if (!tiers.includes(`t${tier}`)) continue;
-      out.push({ effectId: e.id, effect: String(e.name ?? "").replace(/^\s*Effect:\s*/i, ""), dmg: m.dmg || "", pool: m.dmgPool || "B", sub: m.dmgSub || "", text: m.text || "", fxUuid: m.fxUuid || "", hover: hoverOf(e.getFlag(F, "hover"), e.getFlag(F, "description")) });
-    }
+      if (!tiers.includes(`t${tier}`)) return;
+      if (m.vsMarked && !isMarked(actor, opts.target ?? null)) return;
+      const once = m.oncePerRound ? onceKey(e, "b", i) : "";
+      if (once && onceBlocked(actor, once)) return;
+      const dmg = modDamage(m.dmg || "", opts.mod);
+      if (dmg === null) return;
+      out.push({ effectId: e.id, effect: String(e.name ?? "").replace(/^\s*Effect:\s*/i, ""), dmg, pool: m.dmgPool || "B", sub: m.dmgSub || "", text: m.text || "", fxUuid: m.fxUuid || "", hover: hoverOf(e.getFlag(F, "hover"), e.getFlag(F, "description")), ...(once ? { once } : {}) });
+    });
   }
   return out;
+}
+
+/** "[Mod]" in a Bonus Damage is the Action's Modifier: "[Mod]" with +3 is "3", "1d6 + [Mod]" is "1d6 + 3". null: it is only [Mod] and the Modifier is 0 or less (no damage). */
+export function modDamage(dmg, mod) {
+  const s = String(dmg ?? "");
+  if (!/\[mod\]/i.test(s)) return s;
+  const m = Math.trunc(Number(mod)) || 0;
+  if (/^\s*\[mod\]\s*$/i.test(s)) return m > 0 ? String(m) : null;
+  return s.replace(/\[mod\]/gi, String(m)).replace(/\+\s*-/g, "- ");
 }
 
 /** "(T2/T3)" for a list of tiers; nothing when it is all of them. */

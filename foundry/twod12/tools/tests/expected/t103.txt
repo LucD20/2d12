@@ -1,6 +1,6 @@
 --- sentences
 boonbane     | 1 boon on rolls made by this creature with Melee and Strike, but not Ranged. | 1 boon (with Melee and Strike, but not Ranged)
-boonbane     | 2 banes (times the condition's value) on rolls made against this creature with any of Body or Mind. | 2 banes (with any of Body or Mind)
+boonbane     | 2 banes (times the condition's value) on rolls made against this creature with any of Body or Mind. | 2 banes (against it, with any of Body or Mind)
 damagestep   | Rolls made by this creature with Weapon deal Empowered 2 damage. | Empowered 2 (with Weapon)
 boonbane     | 1 boon and 1 bane on rolls made by this creature (saves against Power Actions). | 1 boon and 1 bane (saves against Power Actions)
 damagestep   | Every roll made by this creature deals Empowered 1 and Enfeebled 2 damage. | Empowered 1, Enfeebled 2

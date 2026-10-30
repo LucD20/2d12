@@ -1,0 +1,42 @@
+--- the cards carry settings (no code tests their names)
+Font of Mercy   Rally Points +power + 2 (allies within 5)
+Radiant Zeal    next action with Strike deals +1d6 Holy damage to Mind (the first matching Action each round)
+Elusive         1 bane (against it, with Strike) (the first matching Action each round)
+Killer's Focus  next action with Shot, Strike and Weapon deals +1d6 Pierce damage to Body (the first matching Action each round)
+Long Draw       ignores one of their range Banes
+Steady Nerves   ignores the Banes for a [Ranged] Action while you are Engaged
+Sharpshooter    ignores the Bane for targeting a creature Engaged with a creature other than you
+Marked Quarry   1 boon (with Shot and Strike) (only against the creature it marked) | next action with Shot and Strike deals +[Mod] damage to Body on T1 (only against the creature it marked)
+Hunter's Focus  1 boon on every roll (only against the creature it marked) | Empowered 1 (only against the creature it marked)
+no hasFeature(name) left: true | paladin.mjs gone: true | Mark Quarry marks by its box: true
+--- Killer's Focus: Bonus Damage, once per round, Escalation 2
+Escalation 1: none
+Escalation 2, a [Shot] Strike: Killer's Focus +1d6 Pi [B] (once) | a melee Strike: none
+used this turn-cycle: none | next round, before its turn: none | at its turn: Killer's Focus +1d6 Pi [B] (once)
+out of combat (never used up): Killer's Focus +1d6 Pi [B] (once)
+--- Radiant Zeal: [M] 1d6 Ho on the first Strike, Escalation 1
+a Strike: Radiant Zeal +1d6 Ho [M] (once) | not a Strike: none
+--- Marked Quarry and Hunter's Focus: only against the marked creature
+boons vs the Orc: Hunter's Focus (Orc) 1, Marked Quarry (Orc) 1 | vs the Goblin: none
+Tier 1 vs the Orc (Modifier +2): Marked Quarry +2 [B] | Tier 2: none | vs the Goblin: none | Modifier 0: none
+Empowered vs the Orc: [{"name":"Hunter's Focus","n":1}] | vs the Goblin: []
+the mark matches a token too: true | uses a mark: true | the Orc doesn't: false
+[Mod] in a Bonus Damage: [Mod] -> "3" | 1d6 + [Mod] -> "1d6 + 3" | 1d4 -> "1d4" | [Mod] with -1: null "1d6 - 1"
+--- Elusive: 1 Bane on the first [Strike] against it each round, Escalation 1
+a Strike against it: Elusive (Nari) 1 once | not a Strike: 0
+Nari is not mine: the GM is asked to remember it: "markOnce" 1
+the next Strike this round: none | after Nari's next turn starts: Elusive (Nari) 1 once
+--- Ignore a Bane: Long Draw, Steady Nerves (now a Talent: no Escalation), Sharpshooter
+range Bane less, a Shot: ["Long Draw"] | a thrown dagger: []
+Engaged (you), Escalation 0: [] | Escalation 2: ["Steady Nerves"]
+Engaged target, a Shot: ["Sharpshooter"] | a Power Action: []
+--- Rally Points: Font of Mercy (power + 2, allies within 5, Escalation 1)
+formulas: power + 2 = 5 | signature = 3 | ceil(level/2) = 1 | 3 = 3 | alert(1) = null
+a Paladin without Font of Mercy, Escalation 1: null | Escalation 0: null
+Font of Mercy, Escalation 1: {"name":"Ivo","source":"Font of Mercy","bonus":5}
+--- the editor's sentences
+The next action with <b>Shot</b> and <b>Strike</b> deals <b>+1d6 Pierce</b> damage to Body <i class="fxd-lim">(the first matching Action each round; only against the creature it marked)</i>.
+<b>1 bane</b> on rolls made <b>against</b> this creature with <b>Strike</b> <i class="fxd-lim">(the first matching Action each round)</i>.
+Its Actions with <b>Shot</b> don't take <b>the Bane for targeting a creature Engaged with a creature other than you</b>.
+Each Rally Point heals <b>power + 2</b> more, for this creature and its allies within <b>5</b> squares.
+editor: once true | marked true | ignore true | rally true | Action: Marks the target true

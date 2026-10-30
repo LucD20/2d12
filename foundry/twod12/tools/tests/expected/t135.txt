@@ -21,4 +21,4 @@ same square, 3 up                      vertical 3 | distance 3
 size 2 creature, flyer 1 up over it    vertical 1 | distance 1
 withHeight(5, 0) = 5 | withHeight(4, 4) = 6 | withHeight(1, 1) = 1
 --- wiring
-squaresBetween adds the height: true | Killer's Focus in the roll dialog: true | quarry mark on refreshToken: true | species sheet has no Ward input: true | SpeciesData has no ward: true
+squaresBetween adds the height: true | Bonus Damage (Killer's Focus) in the roll dialog: true | quarry mark on refreshToken: true | species sheet has no Ward input: true | SpeciesData has no ward: true

@@ -45,12 +45,10 @@ Guard 0 vs {"B":{"l":3,"n":0},"M":{"l":0,"n":0}} -> takes 0, Guard 0 left, Healt
 keep the higher: 6 7 0
 damage goes through the Guard first: true | each target its own: true | ends with the encounter: true | @Guard and @Effect buttons: true | on the sheet: true
 --- the Archer (A1) and the Paladin (P1) in code
-Marked Quarry Tier 1 bonus: {"effectId":"markedQuarry","effect":"Marked Quarry","dmg":"2","pool":"B","sub":"","text":"","fxUuid":""} | not the quarry: null | not a Strike: null
-Sharpshooter skips the into-melee Bane on [Shot]: true | not without Shot: false | not without the Feature: false
-both Engaged Banes check it: 2
+Engaged Banes read the Ignore a Bane settings: 2
 Defense: [Signature, Weapon] (Smite) from power: armor | [Power, Signature]: ward | Signature alone: ward
 card: Smite Vs. AD
-Radiant Zeal, Elusive, Font of Mercy: true true true
+Rally Points read the Rally settings (Font of Mercy): true true
 a [Signature, Weapon] Action adds its [Mod] on Tier 2-3 (preview, card, damage): 3
 --- v0.0.182: Evade, the damage line with the Guard, the Guard display, granted uses
 an Evade keeps its unused squares until another Action: true

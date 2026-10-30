@@ -299,6 +299,11 @@ const tier = () => new ArrayField(instance());
 const fxList = () => new ArrayField(new SchemaField({ uuid: str(), mode: choice({ auto: "Automatically applied", conditional: "Conditional" }, "auto") }));
 
 export class ActionData extends foundry.abstract.TypeDataModel {
+  /** v0.0.186: Mark Quarry marked by its category before; now by its "Marks the target" box. */
+  static migrateData(source) {
+    if (source && source.marksTarget === undefined && source.category === "Marked Quarry") source.marksTarget = true;
+    return super.migrateData(source);
+  }
   /** An Action with an Area always has the Area trait (see the Area trait). */
   prepareDerivedData() {
     super.prepareDerivedData?.();
@@ -344,6 +349,7 @@ export class ActionData extends foundry.abstract.TypeDataModel {
       vs: choice(TWOD12.vsChoices),
       frequency: choice(TWOD12.frequencies),
       escalation: int(0, 0),   // the Escalation it costs on top of its AP (an Escalation Action); 0: none
+      marksTarget: bool(),   // v0.0.186: using it marks the targeted creature (Mark Quarry); settings "only against my marked target" read the mark
       versions: new ArrayField(
         new SchemaField({
           ap: int(1, 0),   // 0: a 0 AP Action (only on your turn), or a 0R Reaction
@@ -446,7 +452,15 @@ const settingsField = () => new ArrayField(new SchemaField({
         auraSize: int(1, 1), auraWho: choice({ allies: "Allies", enemies: "Enemies", all: "Everyone" }, "allies"), auraSelf: bool(),
         auraOutline: str(), auraFill: str(),   // colors on the map ("#rrggbb"; empty: the default of who it affects)
         // On damage: when the creature deals damage of this subtype to a creature with this Tag, that creature gains the Effect (fxUuid).
-        trigSub: choice(TWOD12.subtypes), trigTag: str()
+        trigSub: choice(TWOD12.subtypes), trigTag: str(),
+        // v0.0.186 (pack C-a), general automation that replaces the code that tested a card's name:
+        //   oncePerRound: Boons and Banes or Bonus Damage only on the first matching Action of each turn-cycle (Killer's Focus, Radiant Zeal, Elusive);
+        //   vsMarked: only against the creature this one marked (Marked Quarry, Hunter's Focus);
+        //   ignore: a Bane rule this creature ignores on matching Actions (Long Draw, Steady Nerves, Sharpshooter);
+        //   rally: each Rally Point used by this creature (and its allies within rallyRange squares) heals rallyBonus more (Font of Mercy).
+        oncePerRound: bool(), vsMarked: bool(),
+        ignoreRule: choice(TWOD12.ignoreRules, "rangeBane"),
+        rallyBonus: str(), rallyRange: int(0, 0)
       }));
 
 export class EffectData extends foundry.abstract.TypeDataModel {
