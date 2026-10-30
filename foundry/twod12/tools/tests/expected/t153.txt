@@ -1,0 +1,25 @@
+Paladin: Repertoire Holy Wrath, Word of Radiance, Bulwark of Faith, Consecrated Ground, Miraculous Recovery, Divine Intervention | Passives Font of Mercy, Hallowed Stance, Radiant Zeal, Mending Light | Actives Aura of Protection, Divine Surge, Shield of Faith, Hand of Mercy
+Archer: Repertoire Marksman's Shot, Volley, Covering Fire, Hunter's Focus, Deadeye, Rain of Arrows | Passives Killer's Focus, Elusive, Harrying Shots | Actives Pinning Shot, Twin Shot, Vanish
+the book's Talents: 16
+  Opportunity Attack ok combat 1 | grants Opportunity Attack
+  Challenge          ok combat 1
+  Heavy Blows        ok combat 1 | Great Weapon | settings bonusdamage
+  Whirlwind          ok combat 1 | needs talent:Heavy Blows | Great Weapon | grants Whirlwind
+  Bloodlust          ok combat 1 | grants Bloodlust
+  Brawler            ok combat 1 | Unarmed | grants Pummel
+  Kickboxer          ok combat 1 | needs talent:Brawler | Unarmed | grants Leg Sweep
+  Aim                ok combat 1 | Marksman | grants Aim
+  Ricochet           ok combat 1 | needs talent:Aim | Marksman
+  Long Draw          ok combat 1 | Marksman | settings ignore
+  Steady Nerves      ok combat 1 | Marksman | settings ignore
+  Battering Charge   ok mobility 1
+  Cut Through        ok mobility 1 | grants Cut Through
+  Lesser Blessing    ok magic 1 | Divine
+  Sacred Weapon      ok magic 1 | needs talent:Lesser Blessing or trait:divine | Divine | grants Sacred Weapon
+  Class Expertise    ok combat 5 | needs level:5
+no Talent Action offered twice (an Action's category is not "Talent..."): true
+Leg Sweep: a kick true | no free hand needed true | Kickboxer grants it Leg Sweep
+old cards: Paladin Divine Vigil (Boon against Fear), Aegis, Mercy's Reward, Divine Vigil, Avenger's Oath, Vow of Enmity, Rebuke, Champion's Challenge, Divine Retribution, Call to Arms, Judgment, Sanctified Ground
+old cards: Archer Precise Aim (1 Boon), Precise Aim (2 Boons), Precise Aim, Quick Draw, Wing Clip, True Shot, Suppressing Fire, Steady Aim, Perfect Shot, Bow Mastery, Patient Hunter
+lowercase Bane / Boon in the texts: none
+Rally Points written in words: none
