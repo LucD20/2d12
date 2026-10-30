@@ -1,0 +1,194 @@
+<title>Class Level Setup</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+SC:wght@700&family=Signika:wght@400;500;600&display=swap">
+<style>
+/* Layout: a separate, wider window opened from the Class Details tab. Left = the sections a player sees at the chosen level. Right = the class's Repertoire and Escalation items, from the Details tab, to drag in. Chrome matches the item sheets. */
+:root {
+  --desk: #2a2a30; --navy: #1b2a41; --navy-2: #243652; --paper: #ebe3d0; --paper-2: #e0d6bd; --card: #f5f0e1; --ink: #2c2a26; --ink-2: #5b564c;
+  --line: #bdb29a; --accent: #b85a14; --orange: #e07a2f; --chosen-bg: #f2dcc3; --band: #e2d1a0; --head: #7b2320; --warn: #9a4a00; --drop: #e7d8b3; --field: #fff;
+  --body: "Signika", system-ui, sans-serif; --caps: "Alegreya SC", Georgia, serif; color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { background: var(--desk); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.4; margin: 0; padding-block: 24px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+button, select, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+.win { max-width: 1060px; margin: 0 auto; background: var(--paper); border: 1px solid #000; box-shadow: 0 10px 30px rgba(0,0,0,.5); }
+.tb { display: flex; justify-content: space-between; background: #15181f; color: #eee; padding: 7px 12px; font-weight: 600; font-size: .92rem; }
+.hd { background: var(--navy); display: flex; align-items: center; gap: 14px; padding: 12px 20px; }
+.ico { width: 44px; height: 44px; border-radius: 8px; background: var(--navy-2); border: 1px solid #3a4c6b; display: grid; place-items: center; }
+.ico svg { width: 25px; height: 25px; }
+.hd h1 { margin: 0; color: #fff; font-family: var(--caps); font-size: 1.6rem; line-height: 1.1; }
+.hd h1 small { font-family: var(--body); font-size: .85rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: #c4cbd8; margin-left: 10px; }
+.lv { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 10px 20px; border-bottom: 1px solid var(--line); background: var(--paper-2); }
+.lv .lbl { font-weight: 600; margin-right: 6px; }
+.lvb { border: 1px solid var(--navy); background: #fff; border-radius: 5px; min-width: 40px; padding: 4px 12px; font-weight: 600; }
+.lvb[aria-pressed="true"] { background: var(--chosen-bg); box-shadow: inset 0 -3px 0 var(--orange); }
+.main { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 3fr); height: min(70vh, 700px); }
+.col { overflow-y: auto; padding: 14px 20px 20px; min-width: 0; }
+.col.left { border-right: 1px solid var(--line); }
+#secs { display: grid; gap: 12px; align-content: start; }
+.sec { border: 1px solid var(--line); border-radius: 5px; background: var(--card); }
+.sec-h { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 8px 10px; border-bottom: 1px solid var(--line); border-left: 4px solid #2b2b2b; background: linear-gradient(90deg, var(--band), transparent 90%); border-radius: 5px 5px 0 0; }
+.grip { color: var(--ink-2); letter-spacing: -2px; cursor: grab; user-select: none; }
+.sec-h input.t { flex: 1 1 12rem; min-width: 0; background: transparent; border: 1px solid transparent; border-bottom-color: var(--line); font-family: var(--caps); font-size: 1.05rem; text-transform: uppercase; color: var(--head); padding: 2px 4px; }
+.sec-h input.t:hover, .sec-h input.t:focus { background: var(--field); border-color: var(--line); }
+select, .num input { background: var(--field); border: 1px solid var(--line); border-radius: 4px; padding: 4px 8px; min-height: 32px; }
+.seg { display: inline-flex; border: 1px solid var(--navy); border-radius: 5px; overflow: hidden; background: #fff; }
+.seg button { border: 0; background: transparent; padding: 4px 12px; font-weight: 600; font-size: .9rem; }
+.seg button + button { border-left: 1px solid var(--navy); }
+.seg button[aria-pressed="true"] { background: var(--chosen-bg); box-shadow: inset 0 -3px 0 var(--orange); }
+.num { display: inline-flex; align-items: center; gap: 6px; font-size: .9rem; color: var(--ink-2); }
+.num input { width: 3.2rem; text-align: center; }
+.x { border: 0; background: transparent; color: var(--ink-2); font-size: 1.05rem; padding: 2px 8px; border-radius: 4px; }
+.x:hover { background: rgba(0,0,0,.08); color: var(--ink); }
+.sec-b { padding: 10px; display: grid; gap: 6px; }
+.row { display: flex; align-items: center; gap: 10px; padding: 5px 10px; border: 1px solid var(--line); border-radius: 5px; background: #fff; }
+.row .nm { font-weight: 600; flex: 1; min-width: 0; }
+.row .ty { font-size: .76rem; color: var(--ink-2); text-transform: uppercase; letter-spacing: .06em; white-space: nowrap; }
+.row .also { font-size: .78rem; color: var(--warn); white-space: nowrap; }
+.drop { border: 2px dashed var(--line); border-radius: 5px; padding: 10px; text-align: center; font-size: .88rem; color: var(--ink-2); display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; justify-content: center; }
+.drop.over { background: var(--drop); border-color: var(--accent); color: var(--ink); }
+.pair { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.pair span { color: var(--ink-2); font-size: .9rem; }
+.prev { padding: 6px 10px; border-top: 1px solid var(--line); font-size: .86rem; color: var(--ink-2); }
+.prev b { color: var(--ink); font-weight: 600; }
+.prev .warn { color: var(--warn); font-weight: 600; }
+.add { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn { padding: 7px 14px; border-radius: 5px; border: 1px solid var(--ink-2); background: #fff; font-weight: 600; }
+.btn:hover { background: #f4efe3; }
+.lib h2 { margin: 0 0 4px; font-family: var(--caps); font-size: 1.05rem; text-transform: uppercase; color: var(--head); }
+.lib p { margin: 0 0 8px; font-size: .82rem; color: var(--ink-2); }
+.lib h4 { margin: 12px 0 4px; font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); }
+.li { display: flex; justify-content: space-between; gap: 8px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 4px; margin-bottom: 4px; background: var(--card); cursor: grab; font-size: .9rem; }
+.li small { color: var(--ink-2); white-space: nowrap; }
+.foot { padding: 10px 20px; border-top: 1px solid var(--line); background: var(--paper-2); font-size: .88rem; color: var(--ink-2); }
+@media (max-width: 780px) { .main { grid-template-columns: minmax(0,1fr); height: auto; } .col { overflow: visible; } .col.left { border-right: 0; border-bottom: 1px solid var(--line); } }
+</style>
+
+<div class="win">
+  <div class="tb"><span>Class: Paladin</span><span aria-hidden="true">✕</span></div>
+  <div class="hd"><div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V5l8-3z" fill="#fff"/></svg></div><h1>Paladin <small>Levels</small></h1></div>
+  <div class="lv" id="lv"></div>
+  <div class="main">
+    <div class="col left"><div id="secs"></div></div>
+    <div class="col lib"><div id="lib"></div></div>
+  </div>
+  <div class="foot">What you set here is what the player sees in the class window when they drop the class or level up.</div>
+</div>
+
+<script>
+/* [name, kind, Frequency, source]  source: rep / esc come from the Details tab; other = dragged in from the sidebar */
+var IT = {
+  divinepower:['Divine Power','Feature','','other'], profane:['Profane Judgment','Feature','','other'],
+  smite:['Smite','Action','Round','other'], layon:['Lay On Hands','Action','Round','other'],
+  aegis:['Aegis','Feature','Passive','rep'], mrew:["Mercy's Reward",'Feature','Passive','rep'],
+  rebuke:['Rebuke','Action','Turn','rep'], vow:['Vow of Enmity','Action','Round','rep'], sof:['Shield of Faith','Action','Round','rep'], sacred:['Sacred Weapon','Action','Round','rep'], champ:["Champion's Challenge",'Action','Round','rep'],
+  radiance:['Word of Radiance','Action','Encounter','rep'], retribution:['Divine Retribution','Action','Encounter','rep'], aura:['Aura of Protection','Action','Encounter','rep'],
+  recovery:['Miraculous Recovery','Action','Daily','rep'], ground:['Consecrated Ground','Action','Daily','rep'], interv:['Divine Intervention','Action','Daily','rep'],
+  vigil:['Divine Vigil','Escalation Passive','','esc'], oath:["Avenger's Oath",'Escalation Passive','','esc'], stance:['Hallowed Stance','Escalation Passive','','esc'],
+  callarms:['Call to Arms','Escalation Active','','esc'], surge:['Divine Surge','Escalation Active','','esc'], hmercy:['Hand of Mercy','Escalation Active','','esc'], judgment:['Judgment','Escalation Active','','esc'], sanct:['Sanctified Ground','Escalation Active','','esc']
+};
+var FREQS = ['Passive','Turn','Round','Encounter','Daily'];
+var seq = 20, PE = ['vigil','oath','stance'];
+var L = {
+  1:[{id:1,title:'Attribute increases',kind:'attr',pairs:[['Body','Appeal'],['Mind','Instinct']]},
+     {id:2,title:'Core Features',kind:'items',mode:'granted',pick:1,items:['divinepower','profane']},
+     {id:3,title:'Class Actions',kind:'items',mode:'granted',pick:1,items:['smite','layon']},
+     {id:4,title:'Encounter Pick',kind:'items',mode:'choice',pick:1,items:['radiance','retribution','aura']},
+     {id:5,title:'Passive Escalation Pick',kind:'items',mode:'choice',pick:1,items:PE.slice()},
+     {id:6,title:'Active Escalation Pick',kind:'items',mode:'choice',pick:1,items:['callarms','surge','hmercy','judgment','sanct']}],
+  2:[{id:7,title:'Pick from any list',kind:'pool',pick:1,freq:'Any'},
+     {id:8,title:'Passive Escalation Pick',kind:'items',mode:'choice',pick:1,items:PE.slice()}],
+  3:[{id:9,title:'Pick from any list',kind:'pool',pick:1,freq:'Any'},
+     {id:10,title:'Daily Pick',kind:'pool',pick:1,freq:'Daily'},
+     {id:11,title:'Passive Escalation Pick',kind:'items',mode:'choice',pick:1,items:PE.slice()}]
+};
+var cur = 1, ATTRS = ['Body','Mind','Appeal','Instinct'];
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+function find(id){ var a=L[cur]; for (var i=0;i<a.length;i++) if (a[i].id==id) return a[i]; }
+function alsoIn(s,i){ return L[cur].filter(function(o){ return o!==s && o.items && o.items.indexOf(i)>-1; }).map(function(o){ return o.title; }); }
+function poolCount(f){
+  var granted = []; Object.keys(L).forEach(function(k){ L[k].forEach(function(s){ if (s.kind==='items'&&s.mode==='granted') granted = granted.concat(s.items); }); });
+  return Object.keys(IT).filter(function(k){ return IT[k][3]==='rep' && (f==='Any' || IT[k][2]===f) && granted.indexOf(k)<0; }).length;
+}
+function preview(s){
+  if (s.kind==='attr') return '<b>Player sees:</b> ' + s.pairs.map(function(p){ return p[0]+' or '+p[1]+' +1'; }).join(' · ');
+  if (s.kind==='pool') return '<b>Player sees:</b> Choose ' + s.pick + ' from the Repertoire (' + (s.freq==='Any'?'any Frequency':s.freq) + ', ' + poolCount(s.freq) + ' available)';
+  var n = s.items.length;
+  if (!n) return '<span class="warn">Empty: drop at least one item.</span>';
+  if (s.mode==='granted') return '<b>Player sees:</b> Granted: ' + s.items.map(function(i){ return esc(IT[i][0]); }).join(', ');
+  if (s.pick>n) return '<span class="warn">Choose ' + s.pick + ' but only ' + n + ' item' + (n>1?'s':'') + ' to pick from.</span>';
+  return '<b>Player sees:</b> Choose ' + s.pick + ' of ' + n;
+}
+function render(focusKey){
+  var lv = '<span class="lbl">Level</span>';
+  Object.keys(L).forEach(function(k){ lv += '<button type="button" class="lvb" data-act="lvl" data-v="'+k+'" aria-pressed="'+(+k===cur)+'">'+k+'</button>'; });
+  lv += '<button type="button" class="lvb" data-act="newlvl" aria-label="Add level">+</button>';
+  document.getElementById('lv').innerHTML = lv;
+  var h = '';
+  L[cur].forEach(function(s){
+    h += '<section class="sec"><div class="sec-h"><span class="grip" aria-hidden="true">⋮⋮</span><input class="t" id="t'+s.id+'" data-act="title" data-id="'+s.id+'" value="'+esc(s.title)+'" aria-label="Section title">';
+    h += '<select data-act="kind" data-id="'+s.id+'" aria-label="Section type"><option value="items"'+(s.kind==='items'?' selected':'')+'>Items I drop</option><option value="attr"'+(s.kind==='attr'?' selected':'')+'>Attribute increase</option><option value="pool"'+(s.kind==='pool'?' selected':'')+'>From the Repertoire</option></select>';
+    if (s.kind==='items') h += '<div class="seg" role="group" aria-label="Mode"><button type="button" data-act="mode" data-id="'+s.id+'" data-v="granted" aria-pressed="'+(s.mode==='granted')+'">Granted</button><button type="button" data-act="mode" data-id="'+s.id+'" data-v="choice" aria-pressed="'+(s.mode==='choice')+'">Choice</button></div>';
+    if ((s.kind==='items'&&s.mode==='choice') || s.kind==='pool') h += '<label class="num">Pick <input type="number" min="1" max="9" value="'+s.pick+'" data-act="pick" data-id="'+s.id+'"></label>';
+    h += '<button type="button" class="x" data-act="del" data-id="'+s.id+'" aria-label="Remove section">✕</button></div><div class="sec-b">';
+    if (s.kind==='items'){
+      s.items.forEach(function(i){
+        var al = alsoIn(s,i);
+        h += '<div class="row"><span class="nm">'+esc(IT[i][0])+'</span>'+(al.length?'<span class="also">also in: '+esc(al.join(', '))+'</span>':'')+'<span class="ty">'+IT[i][1]+(IT[i][2]?' · '+IT[i][2]:'')+'</span><button type="button" class="x" data-act="rm" data-id="'+s.id+'" data-v="'+i+'" aria-label="Remove '+esc(IT[i][0])+'">✕</button></div>';
+      });
+      h += '<div class="drop" data-drop="'+s.id+'">Drop an Action, Feature or Talent here <select data-act="addsel" data-id="'+s.id+'" aria-label="Or add from a list"><option value="">or add from a list…</option>' + Object.keys(IT).filter(function(k){ return s.items.indexOf(k)<0; }).map(function(k){ return '<option value="'+k+'">'+esc(IT[k][0])+' ('+IT[k][1]+')</option>'; }).join('') + '</select></div>';
+    } else if (s.kind==='attr'){
+      s.pairs.forEach(function(p,pi){
+        h += '<div class="pair"><span>Pair '+(pi+1)+':</span>' + [0,1].map(function(side){ return '<select data-act="pair" data-id="'+s.id+'" data-pi="'+pi+'" data-side="'+side+'" aria-label="Pair '+(pi+1)+', Attribute '+(side+1)+'">'+ATTRS.map(function(a){ return '<option'+(p[side]===a?' selected':'')+'>'+a+'</option>'; }).join('')+'</select>'; }).join('<span>or</span>') + '<span>+1</span></div>';
+      });
+    } else {
+      h += '<div class="pair"><span>Frequency:</span><select data-act="freq" data-id="'+s.id+'">' + ['Any'].concat(FREQS).map(function(f){ return '<option'+(s.freq===f?' selected':'')+'>'+f+'</option>'; }).join('') + '</select><span>The player picks from the class Repertoire; nothing to drop.</span></div>';
+    }
+    h += '</div><div class="prev" id="pv'+s.id+'">'+preview(s)+'</div></section>';
+  });
+  h += '<div class="add"><button type="button" class="btn" data-act="addsec">+ Add section</button></div>';
+  document.getElementById('secs').innerHTML = h;
+
+  var lib = '<h2>Class items</h2><p>From the Details tab: Repertoire and Escalation. Drag into a section. An item can go in more than one section; once a player has it, it leaves the other sections\' choices. For Features or Actions only one section uses (like Core Features), drag them from the sidebar.</p>';
+  FREQS.forEach(function(f){
+    var ks = Object.keys(IT).filter(function(k){ return IT[k][3]==='rep' && IT[k][2]===f; });
+    lib += '<h4>Repertoire · '+f+'</h4>' + ks.map(function(k){ return '<div class="li" draggable="true" data-drag="'+k+'"><span>'+esc(IT[k][0])+'</span></div>'; }).join('');
+  });
+  [['Escalation Passives','Escalation Passive'],['Escalation Actives','Escalation Active']].forEach(function(g){
+    lib += '<h4>'+g[0]+'</h4>' + Object.keys(IT).filter(function(k){ return IT[k][1]===g[1]; }).map(function(k){ return '<div class="li" draggable="true" data-drag="'+k+'"><span>'+esc(IT[k][0])+'</span></div>'; }).join('');
+  });
+  document.getElementById('lib').innerHTML = lib;
+  if (focusKey){ var e=document.getElementById(focusKey); if (e) e.focus(); }
+}
+function addItem(id,i){ var s=find(id); if (s && s.kind==='items' && IT[i] && s.items.indexOf(i)<0){ s.items.push(i); render(); } }
+document.addEventListener('click', function(ev){
+  var el = ev.target.closest('[data-act]'); if (!el) return;
+  var a = el.dataset.act, s = el.dataset.id ? find(el.dataset.id) : null;
+  if (a==='lvl'){ cur=+el.dataset.v; render(); }
+  else if (a==='newlvl'){ var n=Object.keys(L).length+1; L[n]=[]; cur=n; render(); }
+  else if (a==='mode'){ s.mode=el.dataset.v; render(); }
+  else if (a==='del'){ L[cur]=L[cur].filter(function(x){ return x.id!=s.id; }); render(); }
+  else if (a==='rm'){ s.items=s.items.filter(function(x){ return x!==el.dataset.v; }); render(); }
+  else if (a==='addsec'){ L[cur].push({id:++seq,title:'New section',kind:'items',mode:'choice',pick:1,items:[]}); render('t'+seq); }
+});
+document.addEventListener('input', function(ev){
+  var el = ev.target;
+  if (el.dataset.act==='title') find(el.dataset.id).title = el.value;
+  if (el.dataset.act==='pick'){ var s=find(el.dataset.id); s.pick=Math.max(1,Math.min(9,+el.value||1)); document.getElementById('pv'+s.id).innerHTML=preview(s); }
+});
+document.addEventListener('change', function(ev){
+  var el = ev.target, a = el.dataset.act; if (!a) return; var s = el.dataset.id ? find(el.dataset.id) : null;
+  if (a==='kind'){ s.kind=el.value; if (el.value==='attr' && !s.pairs) s.pairs=[['Body','Appeal'],['Mind','Instinct']]; if (el.value==='pool' && !s.freq) s.freq='Any'; if (el.value==='items'){ s.items=s.items||[]; s.mode=s.mode||'choice'; } render(); }
+  else if (a==='addsel' && el.value){ addItem(s.id, el.value); }
+  else if (a==='pair'){ s.pairs[+el.dataset.pi][+el.dataset.side]=el.value; document.getElementById('pv'+s.id).innerHTML=preview(s); }
+  else if (a==='freq'){ s.freq=el.value; render(); }
+});
+document.addEventListener('dragstart', function(ev){ var d=ev.target.closest('[data-drag]'); if (d){ ev.dataTransfer.setData('text/plain', d.dataset.drag); ev.dataTransfer.effectAllowed='copy'; } });
+document.addEventListener('dragover', function(ev){ var z=ev.target.closest('[data-drop]'); if (z){ ev.preventDefault(); z.classList.add('over'); } });
+document.addEventListener('dragleave', function(ev){ var z=ev.target.closest('[data-drop]'); if (z) z.classList.remove('over'); });
+document.addEventListener('drop', function(ev){ var z=ev.target.closest('[data-drop]'); if (z){ ev.preventDefault(); addItem(z.dataset.drop, ev.dataTransfer.getData('text/plain')); } });
+render();
+</script>

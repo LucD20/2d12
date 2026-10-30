@@ -1,0 +1,313 @@
+<title>Class Picker Mockup</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+SC:wght@700&family=Signika:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: the class window. Left = one section per thing gained at this level, each with option buttons. Right = the ability being read. Chrome matches the Talent / Feature / Class sheets. */
+:root {
+  --desk: #2a2a30; --navy: #1b2a41; --navy-2: #243652; --paper: #ebe3d0; --paper-2: #e0d6bd; --card: #f5f0e1; --ink: #2c2a26; --ink-2: #5b564c;
+  --line: #bdb29a; --accent: #b85a14; --accent-ink: #ffffff; --orange: #e07a2f; --chosen-bg: #f2dcc3; --band: #e2d1a0; --head: #7b2320; --ap: #3b4cb8;
+  --c-body: #7a1626; --c-mind: #17327a; --c-instinct: #14532d; --c-appeal: #6b4e00;
+  --g-roll: #1f7a73; --g-req: #2c5f9e; --g-kind: #b4472a; --g-dmg: #8a6a00; --g-key: #5c5a55;
+  --display: "Signika", system-ui, sans-serif; --body: "Signika", system-ui, sans-serif; --caps: "Alegreya SC", Georgia, serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { background: var(--desk); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.4; margin: 0; padding-block: 24px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+button, select, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+.win { max-width: 1060px; margin: 0 auto; background: var(--paper); border: 1px solid #000; box-shadow: 0 10px 30px rgba(0,0,0,.5); }
+.tb { display: flex; justify-content: space-between; background: #15181f; color: #eee; padding: 7px 12px; font-weight: 600; font-size: .92rem; }
+.head { background: var(--navy); padding: 14px 20px; display: grid; gap: 8px; }
+.head-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; }
+.ttl { display: flex; align-items: center; gap: 14px; }
+.ico { width: 46px; height: 46px; border-radius: 8px; background: var(--navy-2); border: 1px solid #3a4c6b; display: grid; place-items: center; }
+.ico svg { width: 26px; height: 26px; }
+.head h1 { margin: 0; color: #fff; font-family: var(--caps); font-size: 1.8rem; line-height: 1.1; }
+.head h1 small { font-family: var(--body); font-size: .85rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: #c4cbd8; margin-left: 10px; }
+.progress { display: flex; align-items: center; gap: 8px; font-size: .9rem; color: #c4cbd8; font-variant-numeric: tabular-nums; }
+.dots { display: flex; gap: 4px; }
+.dots i { width: 14px; height: 6px; border-radius: 3px; background: #3a4c6b; }
+.dots i.on { background: var(--orange); }
+.stats { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: .9rem; color: #c4cbd8; }
+.stats b { color: #fff; font-weight: 600; margin-left: 4px; font-variant-numeric: tabular-nums; }
+
+.body { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); height: min(70vh, 700px); }
+.col { overflow-y: auto; padding: 14px 20px 20px; min-width: 0; }
+.col.slots { border-right: 1px solid var(--line); }
+#slots { display: grid; gap: 16px; align-content: start; }
+.slot h2 { margin: 0 0 4px; font-family: var(--caps); font-size: 1.05rem; text-transform: uppercase; letter-spacing: .03em; color: var(--head); padding: 5px 10px; border-left: 4px solid #2b2b2b; background: linear-gradient(90deg, var(--band), transparent 90%); border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.slot .sub { margin: 0 0 8px; font-size: .84rem; color: var(--ink-2); }
+.pill { font-family: var(--body); font-size: .68rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--ink-2); color: var(--ink-2); white-space: nowrap; background: var(--paper); }
+.pill.done { background: var(--navy); border-color: var(--navy); color: #fff; }
+.tiles { display: grid; gap: 6px; }
+.tile { display: flex; align-items: stretch; border: 1px solid var(--line); border-radius: 5px; background: var(--card); min-width: 0; }
+.tile.viewing { border-color: var(--ink-2); box-shadow: inset 0 0 0 1px var(--ink-2); }
+.tile.chosen { background: var(--chosen-bg); border-color: var(--accent); }
+.tile.chosen.viewing { box-shadow: inset 0 0 0 1px var(--accent); }
+.tile .view { flex: 1; min-width: 0; text-align: left; background: none; border: 0; padding: 7px 10px; border-radius: 5px 0 0 5px; }
+.tile .view:hover { background: rgba(0,0,0,.05); }
+.tile .nm { display: block; font-weight: 600; font-size: 1rem; line-height: 1.2; }
+.tile .mt { display: block; font-size: .82rem; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.tile .act { display: flex; align-items: center; padding: 0 10px; border-left: 1px solid var(--line); }
+.choose { display: inline-flex; align-items: center; gap: 6px; padding: 4px 11px; min-width: 84px; justify-content: center; border-radius: 4px; border: 1px solid var(--navy); background: #fff; font-size: .85rem; font-weight: 600; }
+.choose:hover { background: #f4efe3; }
+.choose[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.choose svg { width: 13px; height: 13px; }
+.lock { font-size: .74rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.empty { padding: 8px 10px; border: 1px dashed var(--line); border-radius: 5px; font-size: .88rem; color: var(--ink-2); }
+.attr-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin-bottom: 6px; }
+.attr-row > span { font-size: .9rem; color: var(--ink-2); min-width: 8.5rem; }
+.seg { display: inline-flex; border: 1px solid var(--navy); border-radius: 5px; overflow: hidden; background: #fff; }
+.seg button { border: 0; background: transparent; padding: 5px 14px; font-weight: 600; font-size: .92rem; }
+.seg button + button { border-left: 1px solid var(--navy); }
+.seg button[aria-pressed="true"] { background: var(--chosen-bg); box-shadow: inset 0 -3px 0 var(--orange); }
+.cB { color: var(--c-body); } .cM { color: var(--c-mind); } .cI { color: var(--c-instinct); } .cA { color: var(--c-appeal); }
+
+.d-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.d-head h3 { margin: 0; font-size: 1.5rem; line-height: 1.15; font-weight: 600; }
+.cost { font-weight: 600; color: var(--ap); font-variant-numeric: tabular-nums; }
+.cat { margin: 2px 0 10px; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.flavor { margin: 0 0 12px; font-style: italic; color: var(--ink-2); }
+.chips { display: flex; flex-wrap: wrap; margin-bottom: 12px; }
+.grp { padding: 0 10px; border-left: 1px solid var(--line); }
+.grp:first-child { padding-left: 0; border-left: 0; }
+.grp .gl { display: block; font-size: .6rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 3px; }
+.grp .cs { display: flex; gap: 4px; }
+.chip { height: 22px; display: inline-flex; align-items: center; padding: 0 9px; border-radius: 4px; font-size: .76rem; font-weight: 600; color: var(--gc); background: color-mix(in srgb, var(--gc) 16%, transparent); border: 1px solid color-mix(in srgb, var(--gc) 50%, transparent); }
+.g-Roll { --gc: var(--g-roll); } .g-Requires { --gc: var(--g-req); } .g-Kind { --gc: var(--g-kind); } .g-Damage { --gc: var(--g-dmg); } .g-Keywords { --gc: var(--g-key); }
+dl.facts { margin: 0 0 12px; display: grid; grid-template-columns: max-content 1fr; gap: 3px 14px; font-size: .92rem; }
+dl.facts dt { font-weight: 600; color: var(--ink-2); } dl.facts dd { margin: 0; }
+.txt { margin: 0 0 12px; } .extra { margin: 10px 0 0; }
+.tw { overflow-x: auto; border: 1px solid var(--line); border-radius: 5px; background: var(--card); }
+table { border-collapse: collapse; width: 100%; font-size: .84rem; }
+th, td { text-align: left; vertical-align: top; padding: 6px 9px; border-bottom: 1px solid var(--line); min-width: 7.5rem; }
+th { background: var(--paper-2); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+tr:last-child td { border-bottom: 0; }
+th.rl, td.rl { min-width: 4.5rem; font-weight: 600; color: var(--ink-2); }
+.dB { color: var(--c-body); font-weight: 600; } .dM { color: var(--c-mind); font-weight: 600; }
+.d-foot { margin-top: 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+.d-foot .choose { padding: 7px 18px; font-size: .95rem; }
+.d-foot .note { font-size: .85rem; color: var(--ink-2); }
+
+.foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; padding: 10px 20px; border-top: 1px solid var(--line); background: var(--paper-2); }
+.foot .msg { font-size: .88rem; color: var(--ink-2); min-width: 0; }
+.foot .btns { display: flex; gap: 8px; }
+.btn { padding: 7px 18px; border-radius: 5px; border: 1px solid var(--ink-2); background: #fff; font-weight: 600; }
+.btn.primary { background: var(--navy); border-color: var(--navy); color: #fff; }
+.btn[disabled] { opacity: .45; cursor: not-allowed; }
+.ctl { max-width: 1060px; margin: 14px auto 0; color: #c9c4b6; font-size: .88rem; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+.ctl .lb { padding: 3px 12px; border: 1px solid #8d8777; background: transparent; border-radius: 4px; font-weight: 600; color: #e8e2d2; }
+.ctl .lb[aria-pressed="true"] { background: #e8e2d2; color: #1b2a41; }
+
+@media (max-width: 780px) {
+  .body { grid-template-columns: minmax(0, 1fr); height: auto; }
+  .col { overflow: visible; }
+  .col.slots { border-right: 0; border-bottom: 1px solid var(--line); }
+  .head h1 { font-size: 1.5rem; }
+  .attr-row > span { min-width: 100%; }
+}
+</style>
+
+<div class="win" role="dialog" aria-labelledby="ttl">
+  <div class="tb"><span>Class: Paladin</span><span aria-hidden="true">✕</span></div>
+  <div class="head">
+    <div class="head-top">
+      <div class="ttl"><div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V5l8-3z" fill="#fff"/></svg></div><h1 id="ttl">Paladin <small id="lvl">Level 1</small></h1></div>
+      <div class="progress"><div class="dots" id="dots" aria-hidden="true"></div><span id="ptext"></span></div>
+    </div>
+    <div class="stats" id="stats"></div>
+  </div>
+  <div class="body">
+    <div class="col slots" id="slotsCol"><div id="slots"></div></div>
+    <div class="col" id="detailCol"><div id="detail"></div></div>
+  </div>
+  <div class="foot">
+    <div class="msg" id="msg"></div>
+    <div class="btns"><button class="btn" id="cancel">Cancel</button><button class="btn primary" id="confirm">Add Paladin to sheet</button></div>
+  </div>
+</div>
+<div class="ctl"><span>Mockup control, not part of the window. Preview level:</span><button type="button" class="lb" data-lvl="1">1</button><button type="button" class="lb" data-lvl="2">2</button><button type="button" class="lb" data-lvl="3">3</button><span>Levels 2 and 3 assume the level 1 picks Divine Retribution, Divine Vigil and Divine Surge, so you can see them leave the lists.</span></div>
+
+<script>
+var TRAIT_GROUP = {weapon:'Roll',power:'Roll',split:'Roll',signature:'Roll',appeal:'Roll',body:'Roll',instinct:'Roll',mind:'Roll',save:'Roll',handle:'Requires',melee:'Requires',ranged:'Requires',shot:'Requires',area:'Kind',move:'Kind',self:'Kind',strike:'Kind',nonlethal:'Damage'};
+var GROUP_ORDER = ['Roll','Requires','Kind','Damage','Keywords'];
+function T(head, rows){ return {head:head, rows:rows}; }
+var AB = {
+  divinepower:{name:'Divine Power',cat:'Paladin Feature 1',meta:'Feature',flavor:"Your god's strength flows through your weapon and your hands.",text:'You gain <b>Smite</b> and <b>Lay On Hands</b>.'},
+  profane:{name:'Profane Judgment',cat:'Paladin Feature 1',meta:'Feature',flavor:"The profane flinch at your god's light.",text:'When you deal Holy damage to a creature with the Profane Tag, that creature is Enfeebled 1 (EoT).'},
+  smite:{name:'Smite',cost:'1 / 2 / 3 AP',cat:'Divine Power 1',meta:'1 / 2 / 3 AP · Round',flavor:'Your weapon blazes with holy light.',traits:['divine','strike','weapon'],
+    facts:[['Frequency','Round'],['Target','One creature'],['Distance','Weapon'],['Vs','AD']],
+    table:T(['','1 AP','2 AP','3 AP'],[['Tier 1','[B] 1[W]','[B] 1[W] + [M] 2d4 Ho','[B] 1[W] + [M] 2d4 Ho'],['Tier 2','[B] 1[W] + [Mod] + [M] 1d4 Ho','[B] 1[W] + [Mod] + [M] 2d6 Ho','[B] 1[W] + [Mod] + [M] 2d6 Ho'],['Tier 3','[B] 1[W] + [Mod] + [M] 1d6 Ho','[B] 1[W] + [Mod] + [M] 2d8 Ho','[B] 1[W] + [Mod] + [M] 2d8 Ho'],['Effects','The target sheds Bright light in a 1 Emanation and takes 1 Bane when they try to hide, for 1 round.','The target sheds Bright light in a 2 Emanation and takes 1 Bane when they try to hide, for 1 round. You gain 1 Boon on your next Divine Action against the target.','As 2 AP, and enemies in the Bright light must make an Appeal Save: 1d6 / 1d4 / 0 [M] Holy.']])},
+  layon:{name:'Lay On Hands',cost:'1 / 2 AP',cat:'Divine Power 1',meta:'1 / 2 AP · Round',flavor:"Your touch carries your god's mercy.",traits:['divine','focus'],facts:[['Frequency','Round'],['Target','One creature'],['Distance','Reach']],table:T(['1 AP','2 AP'],[['The target can use 1 Rally Point.','The target can use up to 2 Rally Points and Evade 2.']])},
+  aegis:{name:'Aegis',rep:1,freq:'Passive',cat:'Paladin Feature 1',meta:'Passive',flavor:'Your watchful presence protects one soul above all.',text:'At the start of each encounter, choose one ally. While you are within 3 squares of them, you and they gain 1 Boon on Saves.'},
+  mrew:{name:"Mercy's Reward",rep:1,freq:'Passive',cat:'Paladin Feature 1',meta:'Passive',flavor:'Mercy shown is mercy returned.',text:'When you heal an ally with Lay On Hands, your next Smite is Empowered 2. It is used up by that Smite.'},
+  rebuke:{name:'Rebuke',rep:1,freq:'Turn',cost:'1 / 2R',cat:'Paladin Feature 1',meta:'1 / 2R · Turn',flavor:'The hand that strikes the faithful is burned for its trouble.',traits:['divine','power'],facts:[['Frequency','Turn'],['Target','The triggering creature'],['Distance','Reach'],['Vs','WD'],['Trigger','An enemy within Reach damages an ally.']],
+    table:T(['','1R','2R'],[['Tier 1','[M] 1d4+1 Ho','[M] 1d6+1 Ho; Pushed 1'],['Tier 2','[M] 1d6+1 Ho','[M] 1d8+1 Ho; Pushed 2'],['Tier 3','[M] 1d8+1 Ho','[M] 1d10+1 Ho; Pushed 3'],['Critical','The target is Vulnerable 1 (EoT).','The target is Vulnerable 1 for 1 round.']])},
+  vow:{name:'Vow of Enmity',rep:1,freq:'Round',cost:'1 / 2 / 3 AP',cat:'Paladin Feature 1',meta:'1 / 2 / 3 AP · Round',flavor:'You name a foe, and your god listens.',traits:['divine','power'],facts:[['Frequency','Round'],['Target','One / one / two creatures'],['Distance','5 sq.'],['Vs','WD']],
+    table:T(['','1 AP','2 AP','3 AP'],[['Tier 1','No effect.','No effect.','No effect.'],['Tier 2','Your next [Strike] Action against them gains 1 Boon, and you increase your Empowered value by 1 for that Action.','As 1 AP, and [M] 1d6 Ho.','As 2 AP.'],['Tier 3','As Tier 2, and [M] 1d8 Ho.','As Tier 2, and the target is Vulnerable 1 (EoT).','As 2 AP.']])},
+  sof:{name:'Shield of Faith',rep:1,freq:'Round',cost:'1 / 2 / 3 AP',cat:'Paladin Feature 1',meta:'1 / 2 / 3 AP · Round',flavor:'A shimmer of light holds steady between them and harm.',traits:['divine','focus'],facts:[['Frequency','Round'],['Target','One creature / one creature / allies in the Aura'],['Distance','Reach / Reach / Aura 1']],
+    table:T(['1 AP','2 AP','3 AP'],[['You touch the creature: +1 Defense for 1 round.','You touch the creature: +2 Defense for 1 round.','You create an Aura 1 around you for 1 round. Allies in it gain +1 Defense and 1 Boon on Saves.']])},
+  sacred:{name:'Sacred Weapon',rep:1,freq:'Round',cost:'1 / 2 AP',cat:'Paladin Feature 1',meta:'1 / 2 AP · Round',flavor:'You lay a hand on the steel and bless it for what comes next.',traits:['divine','focus'],facts:[['Frequency','Round'],['Target','One / two creatures'],['Distance','Reach']],
+    table:T(['1 AP','2 AP'],[['You touch a creature (yourself or an ally). If they are not Empowered, they become Empowered 1 for 1 round. If they are Empowered 1 (from any source), they become Empowered 2 for 1 round. If they are Empowered 2 or higher, no effect.','As 1 AP, but you can touch up to two creatures.']])},
+  champ:{name:"Champion's Challenge",rep:1,freq:'Round',cost:'1 / 2 AP',cat:'Paladin Feature 1',meta:'1 / 2 AP · Round',flavor:'You call them out, and they cannot look away.',traits:['divine','power'],facts:[['Frequency','Round'],['Target','One / two creatures'],['Distance','5 sq.'],['Vs','WD']],
+    table:T(['','1 AP','2 AP'],[['Tier 1','No effect.','No effect.'],['Tier 2','1 Bane on [Strike] and [Power] Actions against anyone other than you (EoT).','As 1 AP.'],['Tier 3','As Tier 2, but 2 Banes instead of 1.','As 1 AP.']])},
+  radiance:{name:'Word of Radiance',rep:1,freq:'Encounter',cost:'2 / 3 AP',cat:'Paladin Feature 1',meta:'2 / 3 AP · Encounter',flavor:'You speak a word, and light pours from your hands across everything that stands against you.',traits:['area','divine','power'],
+    facts:[['Frequency','Encounter'],['Target','All enemies in the Area'],['Area','2 / 3 Emanation'],['Distance','5 sq.'],['Vs','WD']],table:T(['','2 AP','3 AP'],[['Tier 1','[M] 1d8 Ho','[M] 2d6 Ho'],['Tier 2','[M] 2d6 Ho','[M] 2d8 Ho'],['Tier 3','[M] 2d8 Ho; Prone','[M] 2d10 Ho; Prone']])},
+  retribution:{name:'Divine Retribution',rep:1,freq:'Encounter',cost:'2 / 3R',cat:'Paladin Feature 1',meta:'2 / 3R · Encounter',flavor:'They struck you. Your god strikes back.',traits:['divine','split','strike'],
+    facts:[['Frequency','Encounter'],['Target','The triggering creature'],['Distance','Weapon (Weapon mode) or Reach (Power mode)'],['Vs','AD (Weapon mode) or WD (Power mode)'],['Trigger','You take damage from an enemy within the Distance of this Action.'],['Split','Choose Weapon or Power when you use this Action.']],
+    table:T(['','Weapon','Power'],[['Tier 1','[B] 1[W] + [M] 1d10 Ho','[M] 2d8 Ho'],['Tier 2','[B] 1[W] + [Mod] + [M] 1d12 Ho','[M] 2d10 Ho'],['Tier 3','[B] 1[W] + [Mod] + [M] 2d8 Ho','[M] 2d12 Ho'],['Critical','The target is Pushed 3.','The target is Pushed 3.']]),
+    extra:'<b>3R:</b> As 2R, and every enemy in an Emanation 2 centered on you, except the triggering creature, must make an Appeal Save: [M] 1d10 Ho; Pushed 2 / [M] 1d8 Ho / 0.'},
+  aura:{name:'Aura of Protection',rep:1,freq:'Encounter',cost:'1 / 2 / 3 AP',cat:'Paladin Feature 1',meta:'1 / 2 / 3 AP · Encounter',flavor:'You plant your feet, and light rims the shoulders of everyone near you.',traits:['area','divine'],facts:[['Frequency','Encounter'],['Target','Allies in the Area'],['Area','Aura 2 / 3 / 3']],
+    table:T(['1 AP','2 AP','3 AP'],[['Allies in the Aura gain +1 Defense for 1 round.','Allies in the Aura gain +2 Defense for 1 round.','Allies in the Aura gain +2 Defense and 1 Boon on Saves, for 1 round.']])},
+  recovery:{name:'Miraculous Recovery',rep:1,freq:'Daily',cost:'2 / 3 AP',cat:'Paladin Feature 1',meta:'2 / 3 AP · Daily',flavor:'You lay both hands on the wound and call in a debt owed to your god.',traits:['divine','focus'],facts:[['Frequency','Daily'],['Target','One creature'],['Distance','Reach']],
+    table:T(['2 AP','3 AP'],[['You touch an ally. They heal twice what 1 Rally Point would heal, and you end one non-permanent effect of your choice on them.','As 2 AP, but three times what 1 Rally Point would heal.']])},
+  ground:{name:'Consecrated Ground',rep:1,freq:'Daily',cost:'2 / 3 AP',cat:'Paladin Feature 1',meta:'2 / 3 AP · Daily',flavor:'You drive your weapon into the earth, and the earth answers.',traits:['area','divine'],facts:[['Frequency','Daily'],['Target','All creatures in the Area'],['Area','2 / 3 Emanation'],['Distance','10 sq.']],
+    table:T(['2 AP','3 AP'],[['For 3 rounds, enemies in the area take 1 Bane on [Strike] and [Power] Actions, and allies in it heal 1d4 at the start of each of their turns.','As 2 AP, but for 5 rounds.']])},
+  interv:{name:'Divine Intervention',rep:1,freq:'Daily',cost:'1 / 2R',cat:'Paladin Feature 1',meta:'1 / 2R · Daily',flavor:'You reach out, and your god answers before you finish the prayer.',traits:['divine'],facts:[['Frequency','Daily'],['Target','One creature'],['Distance','5 sq.'],['Interrupt','You or an ally within 5 squares would go Down.']],
+    table:T(['1R','2R'],[["Instead of going Down, the creature's total damage becomes 1 less than their Health Pool, and they gain 1 Boon on their next Save (EoT).",'As 1R, and the creature can use 1 Rally Point at once.']])},
+  vigil:{name:'Divine Vigil',cat:'Paladin Escalation (Passive)',meta:'Passive',flavor:'Your watch does not end when the fighting starts.',text:'While your Escalation is 2 or more, you and your allies in an Aura 3 around you gain 1 Boon on Saves against [Fear] Actions.'},
+  oath:{name:"Avenger's Oath",cat:'Paladin Escalation (Passive)',meta:'Passive',flavor:'Every wound your friends take is written in the ledger.',text:'While your Escalation is 2 or more, when an ally within 5 squares becomes Bloodied, you gain 1 Boon on your next [Strike] Action.'},
+  stance:{name:'Hallowed Stance',cat:'Paladin Escalation (Passive)',meta:'Passive',flavor:'You do not move. Neither do those beside you.',text:"While your Escalation is 2 or more, if you haven't left your square since your last turn, you and your adjacent allies take less Body damage, reduced by your Power Modifier (minimum 0). This reduction applies to one instance of damage per Action; if the Action has several, the player chooses which one is reduced."},
+  callarms:{name:'Call to Arms',cost:'0 AP',cat:'Paladin Escalation',meta:'0 AP · Round · Esc 1',flavor:'Your voice carries further than the fight.',traits:['divine'],facts:[['Escalation','1'],['Frequency','Round'],['Target','One Down ally'],['Distance','3 sq.']],table:T(['0 AP'],[['The ally can use 1 Rally Point.']])},
+  surge:{name:'Divine Surge',cost:'0 AP',cat:'Paladin Escalation',meta:'0 AP · Round · Esc 1',flavor:'The light in your blade answers a brighter call.',traits:['divine','self'],facts:[['Escalation','1'],['Frequency','Round']],table:T(['0 AP'],[['The next time you deal damage with Smite, you deal an extra [M] 1d8 Ho.']])},
+  hmercy:{name:'Hand of Mercy',cost:'1 AP',cat:'Paladin Escalation',meta:'1 AP · Round · Esc 1',flavor:'A single touch undoes what the enemy worked for.',traits:['divine','focus'],facts:[['Escalation','1'],['Frequency','Round'],['Target','One ally'],['Distance','Reach']],table:T(['1 AP'],[['You touch the ally and remove one effect of your choice from them that is EoT or has 1 round left.']])},
+  judgment:{name:'Judgment',cost:'1 AP',cat:'Paladin Escalation',meta:'1 AP · Round · Esc 2',flavor:'The verdict is not yours to give, only to deliver.',traits:['divine','power'],facts:[['Escalation','2'],['Frequency','Round'],['Target','One enemy'],['Distance','Reach'],['Vs','WD']],table:T(['','1 AP'],[['Tier 1','No effect.'],['Tier 2','[M] 2d6 Ho; Hindered (EoT)'],['Tier 3','[M] 2d8 Ho; Hindered (EoT)']])},
+  sanct:{name:'Sanctified Ground',cost:'1 AP',cat:'Paladin Escalation',meta:'1 AP · Round · Esc 2',flavor:"You make a small piece of the world your god's, and it holds.",traits:['area','divine'],facts:[['Escalation','2'],['Frequency','Round'],['Area','1 Emanation'],['Distance','5 sq.']],table:T(['1 AP'],[['You fill the Emanation with Holy light for 2 rounds. Enemies in it take 1 Bane on [Strike] Actions.']])}
+};
+var PE = ['vigil','oath','stance'];
+var LV = {
+  1:[{id:'a',title:'Attribute increases',kind:'attr',pairs:[['Body','Appeal'],['Mind','Instinct']]},
+     {id:'core',title:'Core Features',kind:'items',mode:'granted',items:['divinepower','profane']},
+     {id:'cls',title:'Class Actions',kind:'items',mode:'granted',items:['smite','layon']},
+     {id:'enc',title:'Encounter Pick',kind:'items',mode:'choice',pick:1,items:['radiance','retribution','aura']},
+     {id:'pe1',title:'Passive Escalation Pick',kind:'items',mode:'choice',pick:1,items:PE},
+     {id:'ae',title:'Active Escalation Pick',kind:'items',mode:'choice',pick:1,items:['callarms','surge','hmercy','judgment','sanct']}],
+  2:[{id:'any2',title:'Pick from any list',kind:'pool',pick:1,freq:'Any'},
+     {id:'pe2',title:'Passive Escalation Pick',kind:'items',mode:'choice',pick:1,items:PE}],
+  3:[{id:'any3',title:'Pick from any list',kind:'pool',pick:1,freq:'Any'},
+     {id:'daily3',title:'Daily Pick',kind:'pool',pick:1,freq:'Daily'},
+     {id:'pe3',title:'Passive Escalation Pick',kind:'items',mode:'choice',pick:1,items:PE}]
+};
+/* what the character already has when this level opens (mock assumption) */
+var PRE = {1:{enc:['retribution'],pe1:['vigil'],ae:['surge']}, 2:{any2:['rebuke'],pe2:['oath']}};
+var STATS = [['Body Health','×4'],['Mind Health','×3'],['Rally','6'],['Speed','+0'],['Armor Training','Heavy']];
+var ATTR_CLS = {Body:'cB',Mind:'cM',Instinct:'cI',Appeal:'cA'};
+var S = {lvl:1, attr:{a1:'Body',a2:null}, picks:{pe1:['vigil']}, view:{id:'retribution',sec:'enc'}, done:false};
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+function fmt(s){ return esc(s).replace(/\[B\]/g,'<span class="dB">[B]</span>').replace(/\[M\]/g,'<span class="dM">[M]</span>'); }
+function grantedAt(l){ var o=[]; LV[l].forEach(function(s){ if (s.kind==='items'&&s.mode==='granted') o=o.concat(s.items); }); return o; }
+function ownedBefore(l){ var o=[]; for (var k=1;k<l;k++){ o=o.concat(grantedAt(k)); Object.keys(PRE[k]).forEach(function(id){ o=o.concat(PRE[k][id]); }); } return o; }
+function chosen(s){ return S.picks[s.id]||[]; }
+function candidates(s){
+  if (s.kind==='items') return s.items;
+  return Object.keys(AB).filter(function(k){ return AB[k].rep && (s.freq==='Any' || AB[k].freq===s.freq); });
+}
+/* choice and pool sections: an item is hidden once the character has it from anywhere else */
+function avail(s){
+  var l = S.lvl, owned = ownedBefore(l).concat(grantedAt(l)), elsewhere = [];
+  LV[l].forEach(function(o){ if (o!==s && o.kind!=='attr') elsewhere = elsewhere.concat(chosen(o)); });
+  return candidates(s).filter(function(i){ return owned.indexOf(i)<0 && elsewhere.indexOf(i)<0; });
+}
+function need(s){ return Math.min(s.pick, avail(s).length); }
+function sections(){ return LV[S.lvl]; }
+function secById(id){ var r; sections().forEach(function(s){ if (s.id===id) r=s; }); return r; }
+function total(){ var n=0; sections().forEach(function(s){ if (s.kind==='attr') n+=s.pairs.length; else if (s.kind!=='items'||s.mode==='choice') n+=need(s); }); return n; }
+function made(){ var n=0; sections().forEach(function(s){ if (s.kind==='attr') s.pairs.forEach(function(p,i){ if (S.attr['a'+(i+1)]) n++; }); else if (s.kind!=='items'||s.mode==='choice') n+=Math.min(need(s), chosen(s).length); }); return n; }
+function subText(s){
+  if (s.kind==='attr') return "One from each pair. These can't be changed later.";
+  if (s.kind==='pool') return 'Choose ' + s.pick + ' from the Repertoire (' + (s.freq==='Any'?'any Frequency':s.freq) + ').';
+  return s.mode==='granted' ? 'Yours at this level.' : 'Choose ' + s.pick + '.';
+}
+var CHECK = '<svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+function renderSlots(){
+  var h = '';
+  sections().forEach(function(s){
+    if (s.kind==='attr'){
+      var done = s.pairs.every(function(p,i){ return S.attr['a'+(i+1)]; });
+      h += '<section class="slot"><h2>' + esc(s.title) + ' <span class="pill ' + (done?'done':'') + '">' + (done?'Chosen':'Choose '+s.pairs.length) + '</span></h2><p class="sub">' + subText(s) + '</p>';
+      s.pairs.forEach(function(p,i){
+        var gid = 'a'+(i+1);
+        h += '<div class="attr-row"><span>' + p.join(' or ') + ' +1</span><div class="seg" role="group" aria-label="' + p.join(' or ') + '">';
+        p.forEach(function(o){ h += '<button type="button" data-key="attr:'+gid+':'+o+'" data-attr="'+gid+':'+o+'" aria-pressed="'+(S.attr[gid]===o)+'"><span class="'+ATTR_CLS[o]+'">'+o+'</span> +1</button>'; });
+        h += '</div></div>';
+      });
+      h += '</section>'; return;
+    }
+    var granted = s.kind==='items' && s.mode==='granted', list = granted ? s.items : avail(s), ch = chosen(s), nd = granted ? 0 : need(s);
+    var pill = granted ? '<span class="pill">Granted</span>' : (nd===0 ? '<span class="pill done">Complete</span>' : '<span class="pill ' + (ch.length>=nd?'done':'') + '">' + (ch.length>=nd?'Chosen':ch.length+' / '+nd) + '</span>');
+    h += '<section class="slot"><h2>' + esc(s.title) + ' ' + pill + '</h2><p class="sub">' + subText(s) + '</p><div class="tiles">';
+    if (!granted && nd===0) h += '<div class="empty">Everything here is already yours.</div>';
+    list.forEach(function(id){
+      var a = AB[id], on = ch.indexOf(id)>-1, vw = S.view.id===id && S.view.sec===s.id;
+      h += '<div class="tile' + (on?' chosen':'') + (vw?' viewing':'') + '">' +
+        '<button type="button" class="view" data-key="view:'+s.id+':'+id+'" data-view="'+id+'" data-sec="'+s.id+'" aria-label="Read '+esc(a.name)+'"><span class="nm">'+esc(a.name)+'</span><span class="mt">'+esc(a.meta)+'</span></button>' +
+        '<div class="act">' + (granted ? '<span class="lock">Granted</span>' : '<button type="button" class="choose" data-key="pick:'+s.id+':'+id+'" data-pick="'+s.id+':'+id+'" aria-pressed="'+on+'" aria-label="Choose '+esc(a.name)+'">'+(on?CHECK+'Chosen':'Choose')+'</button>') + '</div></div>';
+    });
+    h += '</div></section>';
+  });
+  document.getElementById('slots').innerHTML = h;
+}
+function chipsHtml(traits){
+  var g = {}; traits.forEach(function(t){ var k = TRAIT_GROUP[t]||'Keywords'; (g[k]=g[k]||[]).push(t); });
+  var h = '';
+  GROUP_ORDER.forEach(function(k){ if (!g[k]) return; g[k].sort();
+    h += '<div class="grp g-'+k+'"><span class="gl">'+k+'</span><div class="cs">'+g[k].map(function(t){ return '<span class="chip">'+t.charAt(0).toUpperCase()+t.slice(1)+'</span>'; }).join('')+'</div></div>'; });
+  return '<div class="chips">'+h+'</div>';
+}
+function renderDetail(){
+  var id = S.view.id, a = AB[id], s = secById(S.view.sec), h = '';
+  if (!a || !s){ document.getElementById('detail').innerHTML = ''; return; }
+  h += '<div class="d-head"><h3>'+esc(a.name)+'</h3>'+(a.cost?'<span class="cost">'+esc(a.cost)+'</span>':'')+'</div><div class="cat">'+esc(a.cat)+'</div><p class="flavor">'+esc(a.flavor)+'</p>';
+  if (a.traits) h += chipsHtml(a.traits);
+  if (a.facts) h += '<dl class="facts">'+a.facts.map(function(f){ return '<dt>'+f[0]+'</dt><dd>'+fmt(f[1])+'</dd>'; }).join('')+'</dl>';
+  if (a.text) h += '<p class="txt">'+a.text+'</p>';
+  if (a.table){ var t=a.table, lab=t.head[0]==='';
+    h += '<div class="tw"><table><thead><tr>'+t.head.map(function(c,i){ return '<th'+(lab&&i===0?' class="rl"':'')+'>'+esc(c)+'</th>'; }).join('')+'</tr></thead><tbody>'+t.rows.map(function(r){ return '<tr>'+r.map(function(c,i){ return '<td'+(lab&&i===0?' class="rl"':'')+'>'+fmt(c)+'</td>'; }).join('')+'</tr>'; }).join('')+'</tbody></table></div>'; }
+  if (a.extra) h += '<p class="extra">'+a.extra.replace(/\[M\]/g,'<span class="dM">[M]</span>')+'</p>';
+  var granted = s.kind==='items' && s.mode==='granted', on = chosen(s).indexOf(id)>-1;
+  h += '<div class="d-foot">' + (granted ? '<span class="note">Granted. You don\'t need to choose this.</span>' :
+    '<button type="button" class="choose" data-key="dpick:'+id+'" data-pick="'+s.id+':'+id+'" aria-pressed="'+on+'">'+(on?CHECK+'Chosen':'Choose')+'</button><span class="note">'+(on?'Click again to put it back.':(s.pick===1?'Choosing this replaces your current pick in this section.':''))+'</span>') + '</div>';
+  document.getElementById('detail').innerHTML = h;
+}
+function renderHead(){
+  document.getElementById('lvl').textContent = 'Level ' + S.lvl;
+  document.getElementById('stats').innerHTML = STATS.map(function(x){ return '<span>'+x[0]+'<b>'+x[1]+'</b></span>'; }).join('');
+  var n = made(), t = total(), d = ''; for (var i=0;i<t;i++) d += '<i class="'+(i<n?'on':'')+'"></i>';
+  document.getElementById('dots').innerHTML = d;
+  document.getElementById('ptext').textContent = n + ' of ' + t + ' choices made';
+  var ok = n===t; document.getElementById('confirm').disabled = !ok;
+  document.getElementById('confirm').textContent = S.lvl===1 ? 'Add Paladin to sheet' : 'Level up to ' + S.lvl;
+  document.getElementById('msg').textContent = S.done ? 'Mockup only: this would be applied to the sheet now.' : (ok ? 'Everything is chosen.' + (S.lvl===1?" Attribute choices can't be changed later.":'') : (t-n) + ' left to choose.');
+  [].forEach.call(document.querySelectorAll('.ctl .lb'), function(b){ b.setAttribute('aria-pressed', String(+b.dataset.lvl===S.lvl)); });
+}
+function render(keyFocus, resetDetail){
+  renderSlots(); renderDetail(); renderHead();
+  if (resetDetail) document.getElementById('detailCol').scrollTop = 0;
+  if (keyFocus){ var e = document.querySelector('[data-key="'+keyFocus+'"]'); if (e) e.focus({preventScroll:true}); }
+}
+function firstView(){
+  var out = null;
+  sections().forEach(function(s){ if (out || s.kind==='attr') return; var list = (s.kind==='items'&&s.mode==='granted') ? s.items : avail(s); if (list.length) out = {id:list[0],sec:s.id}; });
+  return out || {id:null,sec:null};
+}
+document.addEventListener('click', function(ev){
+  var el = ev.target.closest('[data-view],[data-pick],[data-attr],[data-lvl],#confirm,#cancel'); if (!el) return;
+  var key = el.getAttribute('data-key');
+  if (el.id==='confirm'){ if (!el.disabled){ S.done = true; renderHead(); } return; }
+  if (el.id==='cancel'){ S.done = false; document.getElementById('msg').textContent = 'Mockup only: Cancel would close the window and leave the sheet as it was.'; return; }
+  S.done = false;
+  if (el.dataset.lvl){ S.lvl = +el.dataset.lvl; S.view = firstView(); render(null, true); }
+  else if (el.dataset.view){ S.view = {id:el.dataset.view, sec:el.dataset.sec}; render(key, true); if (window.innerWidth <= 780) document.getElementById('detail').scrollIntoView({behavior:'smooth', block:'start'}); }
+  else if (el.dataset.attr){ var p = el.dataset.attr.split(':'); S.attr[p[0]] = p[1]; render(key, false); }
+  else if (el.dataset.pick){
+    var q = el.dataset.pick.split(':'), s = secById(q[0]), arr = S.picks[s.id] = S.picks[s.id]||[], i = arr.indexOf(q[1]);
+    if (i>-1) arr.splice(i,1); else { arr.push(q[1]); while (arr.length > s.pick) arr.shift(); }
+    render(key, false);
+  }
+});
+render();
+</script>
