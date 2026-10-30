@@ -75,6 +75,9 @@ Hooks.once("init", () => {
   registerLightOverlay();
   CONFIG.TWOD12 = TWOD12;
   registerRefresh();
+  // v0.0.196 (Lucas): Evade from the keyboard (Shift+E by default; Configure Controls can change it): Evade 1 AP with the selected token.
+  game.keybindings.register("twod12", "quickEvade", { name: "Evade (1 AP)", hint: "Uses Evade (1 AP) with your selected token: its movement starts at once, with the banner.", editable: [{ key: "KeyE", modifiers: ["Shift"] }],
+    onDown: () => { import("./actions.mjs").then(m => m.quickBasic("safeMovement", 1)); return true; } });
   CONFIG.Combat.documentClass = TwoD12Combat;
   game.twod12 = {
     catalog,

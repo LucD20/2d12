@@ -11,3 +11,6 @@ Double Shot: null | null
 wired: no card when the banner takes it true | the banner true | one line at the end true | Done, Advance instead true | closes on a turn change true
 --- the Talent filter bar
 search, Category, Only what I can take, compact list: true | checked by canTake at the level being taken: true | the reasons on the tile: true | filtered in place (no redraw): true | the actor reaches the window: 2 | compact list CSS: true
+--- v0.0.196: a drag is an Advance with the banner; no drag lines while it is up; the Evade key
+a drag that spends AP opens the banner (or adds to it): true | drag lines only without a banner: true | the banner counts the Speed left of a drag: true
+the Evade key (Shift+E): true | no dialog for it: true

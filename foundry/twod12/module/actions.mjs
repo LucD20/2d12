@@ -603,7 +603,9 @@ export async function useAction(actor, item, opts = {}) {
   const extraNotices = [
     ...triggerNotices(actor, multi ? perT.map(p => p.actor) : rollsAtOthers && targetToken?.actor ? [targetToken.actor] : [], dmgSubs)
   ];
-  const data = await askRoll(actor, {
+  // v0.0.196: a shortcut (the Evade key) uses a no-roll version at once, without the dialog.
+  const quick = opts.quickAp != null && versions.find(v => v.ap === Number(opts.quickAp))?.noTiers;
+  const data = quick ? { ap: String(opts.quickAp), fx: [], bonusOn: [], boons: 0, banes: 0, mod: 0, dc: 13, empowered: 0, enfeebled: 0 } : await askRoll(actor, {
     title: item.name,
     attrKey: preAttr,
     traits: rollTraits(rollUse, src, item.name),
@@ -979,4 +981,17 @@ export async function retargetAction(msg) {
   const content = msg.content.replace(/<div class="tline cardtargets">[\s\S]*?<\/div>/, targetsRowHtml(targets.map(t => t.name), { retarget: true }));
   try { await msg.update({ content, "flags.twod12.action.targets": targets }); }
   catch (e) { ui.notifications.warn("Only the author of this card or the GM can change its targets."); }
+}
+
+/**
+ * v0.0.196 (Lucas): a shortcut for a Basic Action of the selected token (the Evade key: Evade, 1 AP, straight to the movement banner).
+ * Returns false when there is no single selected token of yours, or it has no such Action.
+ */
+export async function quickBasic(key, ap = 1) {
+  const tokens = canvas?.tokens?.controlled?.filter(t => t.actor?.isOwner) ?? [];
+  if (tokens.length !== 1) { ui.notifications.warn("Select your token first."); return false; }
+  const actor = tokens[0].actor, item = actor.items.find(i => i.type === "action" && i.getFlag("twod12", "basic") === key);
+  if (!item) { ui.notifications.warn(`${actor.name} has no ${key === "safeMovement" ? "Evade" : key} Action.`); return false; }
+  await useAction(actor, item, { quickAp: ap });
+  return true;
 }

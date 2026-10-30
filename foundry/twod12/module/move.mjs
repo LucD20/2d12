@@ -221,7 +221,10 @@ export async function chargeMovement(c, cost, dest = null, { par = 0 } = {}) {
   const sq = Math.round(cost * 100) / 100;
   const what = useEvade ? `Evade ${sq} sq, no reactions` : `Advance ${sq} sq`;
   if (spent) await setAP(c, Math.max(0, ap - spent), what);
-  else await post(`<b>${esc(c.name)}</b>: ${what}${left > 0 ? `, ${Math.round(left * 100) / 100} sq of Speed left` : ""}${free + evade > 0 ? `. ${free + evade} sq left ${endBtn(c)}` : ""}`);
+  // v0.0.196 (Lucas): while the movement banner is up it says what is left, so the drags post nothing; a drag that spends AP (moving the
+  // token without using Advance first) is an Advance: it opens the banner, and its Speed left counts there.
+  if (spent && !useEvade && walk > 0) { if (bannerOn(c)) moveBar.add(walk * spent); else moveBanner(c, "walk", walk * spent, "Advance", { drag: true }); }
+  else if (!spent && !bannerOn(c)) await post(`<b>${esc(c.name)}</b>: ${what}${left > 0 ? `, ${Math.round(left * 100) / 100} sq of Speed left` : ""}${free + evade > 0 ? `. ${free + evade} sq left ${endBtn(c)}` : ""}`);
   if (spent && ap < spent) warn(`${c.name} did not have enough AP for that movement.`);
 }
 
@@ -479,16 +482,19 @@ export async function evadeAsAdvance(combatantId, { quiet = false } = {}) {
 
 /* ------------------------------------------------------------------ v0.0.195: the movement banner */
 const VERB = { walk: "Advances", evade: "Evades" };
-let moveBar = null;
+let moveBar = null, lastBar = { id: "", until: 0 };
+/** Is a movement banner up for this combatant (or did one just close: its last drag's update comes after)? */
+const bannerOn = c => !!c?.id && ((!!moveBar && moveBar.c?.id === c.id) || (lastBar.id === c.id && Date.now() < lastBar.until));
 /**
  * The banner of a movement-only Action (Advance, Evade, Crawl): how many squares are left, "Advance instead" for an Evade, and Done. It follows
  * the combatant's free movement as the token is dragged, and closes when it is used up, Done is clicked, or the turn changes; then one chat
  * line says what was done ("Kai Advances 4 squares").
  */
-export function moveBanner(c, kind, granted, name) {
+export function moveBanner(c, kind, granted, name, { drag = false } = {}) {
   if (typeof document === "undefined") return;
   moveBar?.finish(false);
-  const left = () => num(c.getFlag(F, "freeMove")) + num(c.getFlag(F, "evadeMove"));
+  // drag: started by moving the token (an Advance paid by the drag): the Speed left of that Advance (moveLeft) counts too.
+  const left = () => num(c.getFlag(F, "freeMove")) + num(c.getFlag(F, "evadeMove")) + (drag ? num(c.getFlag(F, "moveLeft")) : 0);
   let mode = kind;
   const bar = document.createElement("div");
   bar.id = "twod12-movebar";
@@ -506,14 +512,15 @@ export function moveBanner(c, kind, granted, name) {
   const finish = async (drop = true) => {
     if (!moveBar || moveBar.bar !== bar) return;
     moveBar = null;
+    lastBar = { id: c.id, until: Date.now() + 2500 };
     for (const [h, id] of hooks) Hooks.off(h, id);
     bar.remove();
     const l = left(), moved = Math.max(0, granted - l);
-    if (drop && l > 0 && c.isOwner && game.combat?.combatants?.has?.(c.id)) await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, [`flags.${F}.-=ignoreTerrain`]: null });
+    if (drop && l > 0 && c.isOwner && game.combat?.combatants?.has?.(c.id)) await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...(drag ? { [`flags.${F}.moveLeft`]: 0 } : {}), [`flags.${F}.-=ignoreTerrain`]: null });
     clearRange();
     await post(`<b>${esc(c.name)}</b> ${VERB[mode] ?? "moves"} ${moved} square${moved === 1 ? "" : "s"} <small>(${esc(name)})</small>.`);
   };
-  moveBar = { bar, finish };
+  moveBar = { bar, finish, c, add: n => { granted += n; draw(); } };
   bar.addEventListener("click", async ev => {
     const b = ev.target.closest("[data-mb]");
     if (!b) return;
