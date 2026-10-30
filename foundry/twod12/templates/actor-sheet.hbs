@@ -33,6 +33,7 @@
     <span class="ar-range">{{range}}</span>
     <span class="ar-freq" {{#if fadedWhy}}data-tooltip="{{fadedWhy}}"{{/if}}>{{freqText}}</span>
     {{#if unloaded}}<a class="ar-use reload" data-action="reloadFor" data-tooltip="Unloaded: Reload (1 AP)" aria-label="Reload"><i class="fa-solid fa-rotate-left"></i></a>
+    {{else if grant}}<a class="ar-use granted" data-action="useAction" data-tooltip="{{grant.tip}}" aria-label="Use {{name}} (granted)"><i class="fa-solid fa-gift"></i></a>
     {{else}}<a class="ar-use" data-action="useAction" data-tooltip="Use {{name}}" aria-label="Use {{name}}"><i class="fa-solid fa-dice"></i></a>{{/if}}
   </div>
   <div class="ar-card"></div>
@@ -90,7 +91,6 @@
       {{#if npcEsc}}<div class="hb-meter" data-tooltip="{{#if npcEscOn}}This NPC has Escalation (click the word to switch it off){{else}}NPCs have no Escalation unless you switch it on (an elite foe){{/if}}"><a class="esc-tog" data-action="toggleEscalation">Escalation{{#unless npcEscOn}}: off{{/unless}}</a>{{#if npcEscOn}}<span class="hpips">{{#each escPips}}<a class="hpip esc{{#if on}} on{{/if}}" data-action="setEscalation" data-n="{{n}}"></a>{{/each}}</span>{{/if}}</div>{{/if}}
       {{#if isPc}}<div class="hb-meter" data-tooltip="Escalation {{escNow}} / 3: +1 at the start of every round after the first (not while Unconscious), spent on Escalation Actions, back to 0 when the encounter ends. Click a pip to correct it."><span>Escalation</span><span class="hpips">{{#each escPips}}<a class="hpip esc{{#if on}} on{{/if}}" data-action="setEscalation" data-n="{{n}}"></a>{{/each}}</span></div>
       {{else}}<div class="hb-meter npcpool" data-tooltip="The NPC's Health Pool, from its role, its ratings and its Stage (Builder tab). {{head.cvTip}}">Health Pool <b>{{health.pool}}</b> &middot; CV {{head.cv}}</div>{{/if}}
-      {{#if system.guard}}<div class="hb-meter guard" data-tooltip="Guard: it takes damage before your Health (Body or Mind), after any damage reduction. It doesn't stack (keep the higher), can't be healed and ends with the encounter. Type 0 to remove it."><span>Guard</span><input type="number" min="0" name="system.guard" value="{{system.guard}}" aria-label="Guard"></div>{{/if}}
     </div>
   </header>
 
@@ -101,8 +101,11 @@
       </div>
       {{#if health.donut}}
       <div class="np-donutrow">
+        <div class="np-donutwrap{{#if system.guard}} guarded{{/if}}">
         <div class="np-donut" style="background:{{health.v.gradient}}" data-body-deg="{{health.v.bodyDeg}}" data-tooltip="{{health.tip}}" data-tooltip-direction="RIGHT">
           <div class="np-hole"><b>{{health.v.left}}</b><span>to Down</span></div>
+        </div>
+        {{#if system.guard}}<label class="np-guard" data-tooltip="Guard: it takes damage before your Health (Body or Mind), after any damage reduction. It doesn't stack (keep the higher), can't be healed and ends with the encounter. Type 0 to remove it."><i class="fa-solid fa-shield-halved"></i><input type="number" min="0" name="system.guard" value="{{system.guard}}" aria-label="Guard"></label>{{/if}}
         </div>
         <div class="np-legend">
           {{#each health.v.legend}}<span><i style="background:{{color}}"></i>{{#if pool}}{{label}} <a class="hpnum" data-action="hpEdit" data-pool="{{pool}}" data-tooltip="Type the {{label}} damage">{{value}}</a> / {{max}}{{else}}{{label}}: {{value}}{{/if}}</span>{{/each}}
@@ -110,6 +113,7 @@
         </div>
       </div>
       {{else}}
+      {{#if system.guard}}<label class="np-guard inline" data-tooltip="Guard: it takes damage before your Health (Body or Mind), after any damage reduction. It doesn't stack (keep the higher), can't be healed and ends with the encounter. Type 0 to remove it."><i class="fa-solid fa-shield-halved"></i><input type="number" min="0" name="system.guard" value="{{system.guard}}" aria-label="Guard"></label>{{/if}}
       <div class="np-bars" data-tooltip="{{health.tip}}" data-tooltip-direction="RIGHT">
         {{#each health.v.bars}}
         <div class="np-bar">

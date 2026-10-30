@@ -352,19 +352,11 @@ export async function useAction(actor, item, opts = {}) {
   // What the Action rolls (Signature, Weapon, Power or an Attribute) and what its damage adds: rollsource.mjs.
   const src = rollSource(s, it);
   const preAttr = src.attrKey;
-  // A granted use (from an Effect such as Double Shot) is free and does not count: offer it first.
+  // A granted use (from an Effect such as Double Shot) is free and does not count. v0.0.182: it is used without asking (the roll dialog says so
+  // at the top); a normal use with one waiting: Shift-click the use button (opts.noGrant).
   if (!opts.free && !opts.noGrant) {
     const g = activeGrants(actor, item)[0];
-    if (g) {
-      const use = await DialogV2.confirm({
-        window: { title: item.name },
-        content: `<p><b>${esc(g.effect.name)}</b> lets you use ${esc(item.name)} (${g.grant.left} left)${g.grant.ap ? ` for ${g.grant.ap} AP` : " for free"}. It doesn't count toward its Frequency or the 3 Strikes.</p><p>Use the granted use?</p>`,
-        yes: { label: "Granted use" },
-        no: { label: "Normal use" },
-        rejectClose: false
-      });
-      if (use) opts = { ...opts, free: true, ap: g.grant.ap, boons: g.grant.boons, banes: g.grant.banes, label: g.effect.name, grant: g, excludeTargets: g.grant.distinct ? (g.grant.used ?? []) : [] };
-    }
+    if (g) opts = { ...opts, free: true, ap: g.grant.ap, boons: g.grant.boons, banes: g.grant.banes, label: g.effect.name, grant: g, excludeTargets: g.grant.distinct ? (g.grant.used ?? []) : [] };
   }
   // An Action that needs a free hand (Handle, "free hand" in its Requirements, such as Reload): with both hands full, offer Release first (v0.0.138).
   if (!opts.noHandle && !(await ensureFreeHand(actor, item))) return;
@@ -601,7 +593,7 @@ export async function useAction(actor, item, opts = {}) {
     targetActors: multi ? perT.map(p => p.actor) : rollsAtOthers && targetToken?.actor ? [targetToken.actor] : [],
     targetTiles: multi ? perT.map(p => ({ uuid: p.actorUuid, name: p.label, img: p.token.document?.texture?.src ?? p.actor.img ?? "", dc: p.dcInfo.dc })) : [],
     extraMods,
-    notices: [...extraNotices, ...(opts.splitMode ? [{ text: `Split: ${SPLIT_LABEL[opts.splitMode]}`, icon: "fa-code-branch", why: "A Split Action is used as an Action of the mode you chose (Weapon or Power)." }] : []), ...(wUse?.thrown && wUse.mode === "ranged" ? [{ text: `Thrown: Ranged, Range ${wUse.range.split("/").join(" / ")}`, icon: "fa-person-rifle", why: `${previewWeapon?.name} is thrown: a Ranged Action with its Thrown Range (the target is beyond its melee Range, or the Action is Ranged). It leaves your hand.` }] : [])],
+    notices: [...(opts.grant ? [{ text: `Granted use: ${String(opts.grant.effect?.name ?? opts.label ?? "").replace(/\s*\(.*\)\s*$/, "")}, ${opts.grant.grant?.ap ? `${opts.grant.grant.ap} AP` : "free"} (${Math.max(0, (opts.grant.grant?.left ?? 1) - 1)} left after this)`, icon: "fa-gift", why: "A use another Action gave you: it doesn't count toward this Action's Frequency or the 3 Strikes of your turn. For a normal use, close this and Shift-click the use button." }] : []), ...extraNotices, ...(opts.splitMode ? [{ text: `Split: ${SPLIT_LABEL[opts.splitMode]}`, icon: "fa-code-branch", why: "A Split Action is used as an Action of the mode you chose (Weapon or Power)." }] : []), ...(wUse?.thrown && wUse.mode === "ranged" ? [{ text: `Thrown: Ranged, Range ${wUse.range.split("/").join(" / ")}`, icon: "fa-person-rifle", why: `${previewWeapon?.name} is thrown: a Ranged Action with its Thrown Range (the target is beyond its melee Range, or the Action is Ranged). It leaves your hand.` }] : [])],
     withDamage: true,
     withReload: usesReload
   });

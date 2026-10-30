@@ -68,3 +68,9 @@ console.log("card: Smite Vs.", cf.vsText({ traits: new Set(["divine", "signature
 const pal = src("module/paladin.mjs"), ral = src("module/rally.mjs");
 console.log("Radiant Zeal, Elusive, Font of Mercy:", pal.includes('effect: "Radiant Zeal", dmg: "1d6", pool: "M", sub: "Ho"'), pal.includes("banes: 1, match: true"), ral.includes("const total = (s.rallyHeal + (fm?.bonus ?? 0)) * n;"));
 console.log("a [Signature, Weapon] Action adds its [Mod] on Tier 2-3 (preview, card, damage):", (src("module/actions.mjs").match(/isWeapon: modOnWeapon\(src, useTraits\)/g) ?? []).length);
+console.log("--- v0.0.182: Evade, the damage line with the Guard, the Guard display, granted uses");
+const mv = src("module/move.mjs"), cb = src("module/combat.mjs");
+console.log("an Evade keeps its unused squares until another Action:", mv.includes("need -= useEvade; evade -= useEvade;") && cb.includes('if (Number(c.getFlag(F, "evadeMove")) > 0) await c.update('));
+console.log("one damage line:", [G.guardBefore(12, 5) + "7 Body" + G.guardAfter(5, 0), G.guardBefore(4, 4) + "no damage" + G.guardAfter(4, 3), JSON.stringify(G.guardBefore(6, 0))].join(" | "));
+console.log("Guard on the donut and on the token bar:", tpl.includes('class="np-donutwrap{{#if system.guard}} guarded{{/if}}"') && !tpl.includes('hb-meter guard'), src("module/healthbar.mjs").includes("COLORS.guard, 0.95"));
+console.log("granted use without asking, Shift for a normal one, blue button, the dialog's first line:", !src("module/actions.mjs").includes('yes: { label: "Granted use" }'), src("module/actor-sheets.mjs").includes("event?.shiftKey ? { noGrant: true } : {}"), tpl.includes('class="ar-use granted"'), src("module/actions.mjs").includes("notices: [...(opts.grant ? [{ text: `Granted use:"));

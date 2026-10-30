@@ -18,7 +18,7 @@ import { applySpeedMods } from "./speedmods.mjs";
 import { unloadedWeapon, costText, frequencyText, costGroup, groupRows, GROUP_BY, SORT_BY, sortKeyOf } from "./actionrows.mjs";
 import { buildActionCard } from "./actioncard.mjs";
 import { enableDragging, dropEffect } from "./drag.mjs";
-import { isFaded, grantMatches } from "./usage.mjs";
+import { isFaded, grantMatches, activeGrants } from "./usage.mjs";
 import { chooseRecovery } from "./rest.mjs";
 import { addBasicActions, missingBasic } from "./basic.mjs";
 import { openEffectSheet } from "./fxopen.mjs";
@@ -494,7 +494,11 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const aps = (it.versions ?? []).map(v => Number(v.ap) || 0);
     // On the row only Unloaded; what effects change shows on the card when the row is opened (v0.0.132).
     const chips = out ? [{ text: "Unloaded", cls: "down", why: `${out.name} must be reloaded first (Reload, 1 AP)` }] : [];
+    // v0.0.182: a granted use waiting (Double Shot's Weapon Attacks): the use button turns blue and uses it.
+    const g = activeGrants(a, i)[0];
+    const grant = g ? { tip: `Granted by ${g.effect.name.replace(/\s*\(.*\)\s*$/, "")}: ${g.grant.left} use${g.grant.left === 1 ? "" : "s"} left, ${g.grant.ap ? `${g.grant.ap} AP` : "free"}. Click to use it; Shift-click for a normal use.` } : null;
     return {
+      grant,
       id: i.id, name: i.name, costLabel: costText(i), cost: costGroup(i), fq: cardColorFor(it), freq: effectiveFrequency(it), freqText: frequencyText(i, (a.getFlag("twod12", "dailyUsed") ?? []).includes(i.id)),
       // v0.0.168: a number reads as squares ("5 sq."); words (Weapon, Reach, Self) and bands (10/20/40) stay
       range: ((r => (/^\d+$/.test(r) ? `${r} sq.` : r))((areaText(it) || distanceText(it, weapon) || "\u2014"))),
@@ -1041,7 +1045,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     }
   }
   static async rollTable(event, target) { await rollTable(this.actor, target.dataset.kind); }
-  static async useAction(event, target) { await useAction(this.actor, this._item(target)); }
+  static async useAction(event, target) { await useAction(this.actor, this._item(target), event?.shiftKey ? { noGrant: true } : {}); }   // v0.0.182: Shift: a normal use, even with a granted use waiting
   static openItem(event, target) { this._item(target)?.sheet.render(true); }
   static async deleteItem(event, target) { await this._item(target)?.delete(); }
   static async confirmDelete(event, target) {

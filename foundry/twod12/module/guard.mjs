@@ -18,3 +18,7 @@ export function absorbGuard(guard, a) {
 
 /** Gaining Guard: the higher value is kept (Stacking). */
 export const gainGuard = (current, value) => Math.max(Math.max(0, Number(current) || 0), Math.max(0, Math.floor(Number(value) || 0)));
+
+/** v0.0.182: what the Guard did, for the damage line: "12 − Guard 5 = " before the damage, and "(Guard 3 left)" after it. */
+export const guardBefore = (total, taken) => (taken ? `${total} \u2212 Guard ${taken} = ` : "");
+export const guardAfter = (taken, left) => (taken ? ` <small>(${left ? `Guard ${left} left` : "the Guard ends"})</small>` : "");

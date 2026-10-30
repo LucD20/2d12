@@ -1,6 +1,6 @@
 // Custom token resource bar for the "health" attribute: lethal damage from the left (Body red, Mind blue),
 // Nonlethal damage from the right on a bar above (bright yellow / cyan). No threshold ticks.
-const COLORS = { body: 0xd2331f, mind: 0x2c62e6, nbody: 0xffd21f, nmind: 0x2fe6dc, track: 0xdcdcdc };
+const COLORS = { body: 0xd2331f, mind: 0x2c62e6, nbody: 0xffd21f, nmind: 0x2fe6dc, track: 0xdcdcdc, guard: 0x7cc4f2, guardEdge: 0xffffff };
 
 function rect(g, x, y, w, h, color, alpha = 1) {
   if (w <= 0 || h <= 0) return;
@@ -24,6 +24,9 @@ function draw(token, number, bar) {
   const bn = px(d.bodyNonlethal), mn = Math.min(px(d.mindNonlethal), w - bn);
   rect(bar, w - bn, 0, bn, nh, COLORS.nbody);
   rect(bar, w - bn - mn, 0, mn, nh, COLORS.nmind);
+  // v0.0.182: Guard is a shield over the right end of the main bar (what it can still take, against the Health Pool), with a white edge.
+  const g = Math.max(0, Number(s.guard) || 0);
+  if (g > 0) { const gw = Math.max(3, px(g)); rect(bar, w - gw - 1, nh + gap - 1, gw + 1, h + 2, COLORS.guardEdge, 0.9); rect(bar, w - gw, nh + gap, gw, h, COLORS.guard, 0.95); }
   bar.position.set(0, number === 0 ? token.h - total : 0);
 }
 
@@ -36,4 +39,9 @@ export function registerHealthBar() {
     }
     return orig.call(this, number, bar, data);
   };
+  // v0.0.182: a change of Guard alone redraws the bars too (Foundry only watches the bar's own attribute).
+  Hooks.on("updateActor", (actor, change) => {
+    if (change?.system?.guard === undefined) return;
+    for (const t of actor.getActiveTokens?.() ?? []) { try { t.renderFlags?.set?.({ refreshBars: true }); } catch (e) { t.drawBars?.(); } }
+  });
 }

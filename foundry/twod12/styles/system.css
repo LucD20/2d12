@@ -1537,5 +1537,16 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 
 /* v0.0.181 (E3): the NPC Builder shows the Stage under the Level. */
 .twod12.sheet.ns .nb-stage { display: block; margin-top: 2px; font-size: 11px; color: var(--nb-dim); white-space: nowrap; }
-/* v0.0.181: the Guard meter (shown while the creature has Guard). */
-.twod12.sheet .hb-meter.guard input { width: 42px; height: 20px; margin-left: 4px; padding: 0 2px; text-align: center; }
+/* v0.0.182: Guard is a shield on the Health donut (a blue ring around it and a badge with the value), or a badge over the bars. */
+.twod12.sheet.ns .np-donutwrap { position: relative; flex: none; border-radius: 50%; }
+.twod12.sheet.ns .np-donutwrap.guarded .np-donut { box-shadow: 0 0 0 3px var(--np-bg, #1d2533), 0 0 0 5px #7cc4f2, 0 0 8px 5px rgba(124,196,242,.35); }
+.twod12.sheet.ns .np-guard { display: inline-flex; align-items: center; gap: 2px; height: 22px; padding: 0 5px 0 4px; border-radius: 11px; border: 1px solid #7cc4f2;
+  background: #1f3d57; color: #d9f0ff; font-size: 12px; font-weight: 700; cursor: text; box-shadow: 0 1px 3px rgba(0,0,0,.4); }
+.twod12.sheet.ns .np-donutwrap .np-guard { position: absolute; right: -10px; top: -8px; z-index: 1; }
+.twod12.sheet.ns .np-guard.inline { margin-bottom: 6px; }
+.twod12.sheet.ns .np-guard i { color: #7cc4f2; font-size: 12px; }
+.twod12.sheet.ns .np-guard input { width: 26px; height: 18px; padding: 0; border: none; background: transparent; color: inherit; font: inherit; text-align: center; box-shadow: none; }
+.twod12.sheet.ns .np-guard input::-webkit-inner-spin-button { display: none; }
+/* v0.0.182: a granted use waiting for this Action: a light blue use button (click uses it; Shift-click, a normal use). */
+.twod12.sheet.ns .ar-use.granted { background: #7cc4f2; color: #10283c; box-shadow: 0 0 0 1px #d9f0ff inset; }
+.twod12.sheet.ns .ar-use.granted:hover { background: #a5d8f7; color: #10283c; }

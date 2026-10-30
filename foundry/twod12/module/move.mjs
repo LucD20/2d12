@@ -203,15 +203,16 @@ export async function chargeMovement(c, cost, dest = null) {
   const walk = num(c.actor?.system?.moveSpeed ?? c.actor?.system?.speed);
   let evade = num(c.getFlag(F, "evadeMove")), free = num(c.getFlag(F, "freeMove")), left = num(c.getFlag(F, "moveLeft"));
   let need = cost;
-  const useEvade = Math.min(evade, need); need -= useEvade;
-  if (useEvade > 0) evade = 0;   // Evade can not be split: what is not used is gone
+  // v0.0.182: an Evade goes on square by square (its area stays shown) until the creature uses another Action or ends the movement:
+  // it can't be split around other Actions (spendAP in combat.mjs clears what is left), but one Evade can take several drags.
+  const useEvade = Math.min(evade, need); need -= useEvade; evade -= useEvade;
   const useFree = Math.min(free, need); free -= useFree; need -= useFree;
   let spent = 0;
   if (need > 0) {
     if (walk <= 0) warn(`${c.name} has no Speed.`);
     else { while (need > left + 1e-9) { left += walk; spent++; } left -= need; }
   }
-  await c.update({ [`flags.${F}.evadeMove`]: evade, [`flags.${F}.freeMove`]: free, [`flags.${F}.moveLeft`]: Math.round(left * 100) / 100 });
+  await c.update({ [`flags.${F}.evadeMove`]: evade, [`flags.${F}.freeMove`]: free, [`flags.${F}.moveLeft`]: Math.round(left * 100) / 100, ...(useEvade > 0 && evade <= 0 ? { [`flags.${F}.-=ignoreTerrain`]: null } : {}) });
   clearRange();
   // "Until it uses a Move Action": the effect lasts through this move and ends once it is resolved (an Evade is not a Move Action).
   if (!useEvade) await expireOnUse(c.actor, new Set(["move"])).catch(() => {});
@@ -455,7 +456,7 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
   }
   await post(
     kind === "evade"
-      ? `<b>${esc(c.name)}</b> can Evade up to ${sq} in one move: no reactions are triggered, and ${cfg.ignoreTerrain ? "it can move through the space of any creature (it can't end in one) and ignores Difficult Terrain" : "it can't enter or pass through Difficult Terrain"}. ${endBtn(c)} <button type="button" class="endmove" data-twod12="evadeAdvance" data-combatant="${c.id}"><i class="fa-solid fa-person-running"></i> Advance instead</button>`
+      ? `<b>${esc(c.name)}</b> can Evade up to ${sq} (in one or more drags, until another Action): no reactions are triggered, and ${cfg.ignoreTerrain ? "it can move through the space of any creature (it can't end in one) and ignores Difficult Terrain" : "it can't enter or pass through Difficult Terrain"}. ${endBtn(c)} <button type="button" class="endmove" data-twod12="evadeAdvance" data-combatant="${c.id}"><i class="fa-solid fa-person-running"></i> Advance instead</button>`
       : `<b>${esc(c.name)}</b> can Advance up to ${sq} without spending AP. ${endBtn(c)}`
   );
   showRange(c, n);

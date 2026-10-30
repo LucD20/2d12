@@ -3,7 +3,7 @@ import { logDamage } from "./damagelog.mjs";
 import { targetLine } from "./actions.mjs";
 import { esc } from "./roll.mjs";
 import { applyEffects, originInfo, applyCondition, applyBoonEffect } from "./effects.mjs";
-import { absorbGuard } from "./guard.mjs";
+import { absorbGuard, guardBefore, guardAfter } from "./guard.mjs";
 const { DialogV2 } = foundry.applications.api;
 const SOCKET = "system.twod12";
 
@@ -12,14 +12,14 @@ const SOCKET = "system.twod12";
  * v0.0.181: the actor's Guard takes the damage first (guard.mjs); the buckets are changed in place to what reached the Health,
  * so the callers count, log and trigger only that. Returns what the Guard took.
  */
-export async function applyToActor(actor, a) {
+export async function applyToActor(actor, a, { announce = true } = {}) {
   if (!actor) return 0;
   const d = actor.system.damage, upd = {};
   const g = absorbGuard(actor.system.guard, a);
-  if (g.taken) { a.B = g.a.B; a.M = g.a.M; upd["system.guard"] = g.guard; }
+  if (g.taken) { a.B = g.a.B; a.M = g.a.M; upd["system.guard"] = g.guard; a.guardLeft = g.guard; }
   const add = (k, amt) => { if (amt) upd[`system.damage.${k}`] = (upd[`system.damage.${k}`] ?? d[k]) + amt; };
   add("bodyLethal", a.B.l); add("bodyNonlethal", a.B.n); add("mindLethal", a.M.l); add("mindNonlethal", a.M.n);
-  if (g.taken) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: `<div class="twod12 chat apmsg"><b>${esc(actor.name)}</b>'s Guard takes <b>${g.taken}</b> damage${g.guard ? ` (Guard ${g.guard} left)` : " and ends"}.</div>` });
+  if (g.taken && announce) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: `<div class="twod12 chat apmsg"><b>${esc(actor.name)}</b>'s Guard takes <b>${g.taken}</b> damage${g.guard ? ` (Guard ${g.guard} left)` : " and ends"}.</div>` });
   if (!Object.keys(upd).length) return g.taken;
   if (actor.isOwner) await actor.update(upd);
   else game.socket.emit(SOCKET, { type: "applyDamage", actorUuid: actor.uuid, upd });
@@ -49,8 +49,9 @@ export async function dealDamage(actor, comps) {
   const a = { B: { ...b.B }, M: { ...b.M } };
   const cTot = b.C.l + b.C.n;
   if (cTot) { const p = (await chooseChoicePool(cTot)) ?? "B"; a[p].l += b.C.l; a[p].n += b.C.n; }
-  await applyToActor(actor, a);
-  return summaryText(a);
+  const total = a.B.l + a.B.n + a.M.l + a.M.n, taken = await applyToActor(actor, a, { announce: false });
+  // plain text: the Save cards escape it
+  return taken ? `${guardBefore(total, taken)}${summaryText(a) || "no damage"} (${a.guardLeft ? `Guard ${a.guardLeft} left` : "the Guard ends"})` : summaryText(a);
 }
 
 async function chooseChoicePool(amount) {
@@ -88,20 +89,20 @@ async function apply(msg, button, factor) {
         if (!p) return;
         a[p].l += half(b.C.l); a[p].n += half(b.C.n);
       }
-      const names = [];
+      const lines = [];
       for (const t of targets) {
         const actor = (await fromUuid(t.uuid))?.actor;
         if (!actor) continue;
         const mine = { B: { ...a.B }, M: { ...a.M } };   // each target's Guard takes its own share (v0.0.181)
-        await applyToActor(actor, mine);
-        names.push(esc(t.name));
+        const before = mine.B.l + mine.B.n + mine.M.l + mine.M.n, taken = await applyToActor(actor, mine, { announce: false });
         const dealt = mine.B.l + mine.B.n + mine.M.l + mine.M.n;
+        // v0.0.182: one line per creature, the Guard in it: "12 − Guard 5 = 7 Body"
+        lines.push(`${esc(t.name)} takes ${guardBefore(before, taken)}<b>${summaryText(mine) || "no damage"}</b>${guardAfter(taken, mine.guardLeft)}`);
         const src = f.originUuid ? await fromUuid(f.originUuid) : null;
         await logDamage({ originUuid: f.originUuid ?? "", originName: src?.name ?? f.name ?? "", targetName: t.name, amount: dealt });
         if (dealt > 0) await runDamageTriggers(src, actor, t.uuid, f.comps ?? []);   // "When you deal Holy damage to a Profane creature..." (triggers.mjs)
       }
-      const parts = [[a.B.l, "Body"], [a.B.n, "Body Nonlethal"], [a.M.l, "Mind"], [a.M.n, "Mind Nonlethal"]].filter(([n]) => n).map(([n, l]) => `${n} ${l}`).join(", ");
-      await ChatMessage.create({ content: `<div class="twod12 chat">${names.join(", ")} takes <b>${parts}</b> damage${factor === 1 ? "" : (factor === 2 ? " (double)" : " (half)")} from ${esc(f.name)}.</div>` });
+      await ChatMessage.create({ content: `<div class="twod12 chat">${lines.join("<br>")} damage${factor === 1 ? "" : (factor === 2 ? " (double)" : " (half)")} from ${esc(f.name)}.</div>` });
     }
   }
   else ui.notifications.info("This card deals 0 damage.");
@@ -132,7 +133,8 @@ async function applyRow(f, row, factor, selNl) {
   if (cTotal) { const p = await chooseChoicePool(cTotal); if (!p) return null; a[p].l += h(b.C.l); a[p].n += h(b.C.n); }
   const actor = (await fromUuid(row.uuid))?.actor;
   if (!actor) return null;
-  if (a.B.l + a.B.n + a.M.l + a.M.n > 0) await applyToActor(actor, a);   // v0.0.181: the Guard takes its part first, a is what is left
+  const before = a.B.l + a.B.n + a.M.l + a.M.n;
+  const taken = before > 0 ? await applyToActor(actor, a, { announce: false }) : 0;   // v0.0.181: the Guard takes its part first, a is what is left
   const dealt = a.B.l + a.B.n + a.M.l + a.M.n;
   if (dealt > 0) {
     const src = f.originUuid ? await fromUuid(f.originUuid) : null;
@@ -142,7 +144,9 @@ async function applyRow(f, row, factor, selNl) {
   const auto = (row.fx ?? []).filter(x => x.mode === "auto").map(x => x.uuid);
   if (auto.length) await applyEffects(auto, [row.uuid], { ...originInfo(f.originUuid), escalation: !!f.escalation, ...(Number.isFinite(f.originMod) ? { mod: f.originMod } : {}) });
   const parts = [[a.B.l, "Body"], [a.B.n, "Body Nonlethal"], [a.M.l, "Mind"], [a.M.n, "Mind Nonlethal"]].filter(([n]) => n).map(([n, l]) => `${n} ${l}`).join(", ");
-  return { dealt, text: dealt > 0 ? `<b>${esc(parts)}</b>${factor === 0.5 ? " (half)" : factor === 2 ? " (double)" : ""}` : "No damage" };
+  const mult = factor === 0.5 ? " (half)" : factor === 2 ? " (double)" : "";
+  if (taken) return { dealt, text: `${guardBefore(before, taken)}<b>${esc(parts) || "no damage"}</b>${mult}${guardAfter(taken, a.guardLeft)}` };   // v0.0.182
+  return { dealt, text: dealt > 0 ? `<b>${esc(parts)}</b>${mult}` : "No damage" };
 }
 
 /** Redraw a merged card after a change (only its author or the GM can). */
