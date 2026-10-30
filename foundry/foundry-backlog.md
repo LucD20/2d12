@@ -1,8 +1,10 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.196**. Tests: `node tools/tests/run.mjs` (156 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.197**. Tests: `node tools/tests/run.mjs` (156 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
 
 ## Asked by Lucas, not built
+- [x] **(v0.0.197) Lucas's test of v0.0.196:** one chat line per movement (no AP or drag lines for it), the movement tag on the token instead of the banner, Shift+E asks which Evade.
+- **Shortcuts (Lucas, 2026-10-30: "an amazing idea, to be worked on later"):** keyboard shortcuts for common Actions (Shift+E Evade exists since v0.0.196); candidates: Advance, Weapon Attack, Steel Yourself, End turn, the Favorites by number. Its own small pack (a list to choose from first).
 - [x] **(v0.0.196) Lucas's test of v0.0.195:** no drag lines while the movement banner is up; a drag without Advance opens the banner (it is an Advance); Shift+E uses Evade (1 AP). **Ideas not built (for Lucas):** Alt+drag as an Evade; a keyboard Advance key.
 - [x] **(v0.0.195, pack C-c) DONE, waiting for Lucas's test:** the Talent picker's filter bar (search, Category, Only what I can take, compact list) and movement-only Actions through the banner. **Pack C is complete with it** (C-a v0.0.186, C-b v0.0.188, the fixes and the Granted / Escalation block up to v0.0.194).
 - [x] **(v0.0.194) The Granted tickets and the Escalation ladder** on the Actions and Favorites tabs (module/escblock.mjs, the mockup foundry/mockups/granted-C2-ladder.html); the dialog's Avg follows its chips live. **Next: C-c v0.0.195** (the Talent picker's filter bar, Move Actions through the banner).

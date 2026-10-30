@@ -58,17 +58,17 @@ const apMessage = (c, from, to, why) => ChatMessage.create({
 });
 
 /** Set a combatant's AP and say so in the chat. */
-export async function setAP(c, value, why = "") {
+export async function setAP(c, value, why = "", { quiet = false } = {}) {
   // Nobody holds more than their most AP (5, or more while Quickened); the GM's own edits in the tracker are not limited.
   const want = Math.max(0, Math.round(Number(value) || 0));
   const from = getAP(c), to = why === "edited" ? want : Math.min(want, Math.max(apMax(c), from));
   if (from === to && why === "edited") return;
   await c.setFlag(F, "ap", to);
-  await apMessage(c, from, to, why);
+  if (!quiet) await apMessage(c, from, to, why);   // v0.0.197: a movement says its AP in its own line
 }
 
 /** Pay the AP of an action. Returns false when the player decides not to go ahead. Does nothing outside combat. */
-export async function spendAP(actor, cost, label = "") {
+export async function spendAP(actor, cost, label = "", { quiet = false } = {}) {
   const c = combatantOf(actor);
   if (!c || !game.combat?.started) return true;
   if (c.getFlag(F, "frozen")) {
@@ -82,7 +82,7 @@ export async function spendAP(actor, cost, label = "") {
   }
   await c.setFlag(F, "acted", true);
   if (Number(c.getFlag(F, "evadeMove")) > 0) await c.update({ [`flags.${F}.evadeMove`]: 0, [`flags.${F}.-=ignoreTerrain`]: null });   // v0.0.182: an Evade left unused ends when another Action is used
-  await setAP(c, Math.max(0, have - cost), label);
+  await setAP(c, Math.max(0, have - cost), label, { quiet });
   return true;
 }
 

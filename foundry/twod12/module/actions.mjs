@@ -651,7 +651,9 @@ export async function useAction(actor, item, opts = {}) {
   // An Escalation Action: its Escalation is checked before the AP is spent, and spent after it.
   const escCost = opts.free ? 0 : Math.max(0, Number(it.escalation) || 0);
   if (escCost) { const pay = canPayEscalation(actor, escCost); if (!pay.ok) return ui.notifications.warn(pay.why); }
-  if (apCost > 0 && !(await spendAP(actor, apCost, item.name))) return;
+  // v0.0.197: a movement-only Action in combat says its AP in its own chat line (the movement tag's), not in an AP line.
+  const moveQuiet = !!pureMove(it, version, basicKey) && !!game.combat?.started && !!canvas?.ready;
+  if (apCost > 0 && !(await spendAP(actor, apCost, item.name, { quiet: moveQuiet }))) return;
   if (escCost) await spendEscalation(actor, escCost);
   const isWeapon = it.traits.has("weapon");
 
@@ -834,7 +836,7 @@ export async function useAction(actor, item, opts = {}) {
   if (mvInner && game.combat?.started && canvas?.ready) {
     const { parseInline } = await import("./inline.mjs"), { handleMove } = await import("./move.mjs");
     const cfg = parseInline("Move", mvInner);
-    bannerMove = (await handleMove({ ...cfg, traits: [...new Set([...(cfg.traits ?? []), "self"])], banner: item.name }, { actor, token: selfToken })) === true;
+    bannerMove = (await handleMove({ ...cfg, traits: [...new Set([...(cfg.traits ?? []), "self"])], banner: item.name, bannerAp: apCost }, { actor, token: selfToken })) === true;
   }
   if (!bannerMove) await ChatMessage.create({
     speaker: ChatMessage.getSpeaker({ actor }),
@@ -987,11 +989,19 @@ export async function retargetAction(msg) {
  * v0.0.196 (Lucas): a shortcut for a Basic Action of the selected token (the Evade key: Evade, 1 AP, straight to the movement banner).
  * Returns false when there is no single selected token of yours, or it has no such Action.
  */
-export async function quickBasic(key, ap = 1) {
+export async function quickBasic(key, ap = null) {
   const tokens = canvas?.tokens?.controlled?.filter(t => t.actor?.isOwner) ?? [];
   if (tokens.length !== 1) { ui.notifications.warn("Select your token first."); return false; }
   const actor = tokens[0].actor, item = actor.items.find(i => i.type === "action" && i.getFlag("twod12", "basic") === key);
   if (!item) { ui.notifications.warn(`${actor.name} has no ${key === "safeMovement" ? "Evade" : key} Action.`); return false; }
-  await useAction(actor, item, { quickAp: ap });
+  // v0.0.197 (Lucas): which version, when there are several (Evade: 1 AP, Evade 1; 2 AP, Evade half your Speed).
+  const vs = [...item.system.versions].sort((a, b) => a.ap - b.ap);
+  if (ap === null && vs.length > 1) {
+    const speed = Number(actor.system?.moveSpeed ?? actor.system?.speed) || 0;
+    const label = v => (key === "safeMovement" ? `Evade ${v.ap >= 2 ? Math.floor(speed / 2) : 1} (${v.ap} AP)` : `${item.name} (${v.ap} AP)`);
+    ap = await DialogV2.wait({ window: { title: `${actor.name}: ${item.name}` }, content: `<p>Which ${esc(item.name)}?</p>`, buttons: vs.map((v, k) => ({ action: `v${v.ap}`, label: label(v), default: k === 0, callback: () => v.ap })), rejectClose: false });
+    if (ap === null || ap === undefined) return false;
+  }
+  await useAction(actor, item, { quickAp: ap ?? vs[0]?.ap ?? 1 });
   return true;
 }

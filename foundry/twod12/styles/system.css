@@ -1810,3 +1810,8 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 #twod12-movebar .tb-btns { display: inline-flex; gap: 8px; }
 #twod12-movebar button { width: auto; height: 26px; line-height: 24px; padding: 0 10px; font-size: 13px; background: #2e3442; color: #f4e9d0; border: 1px solid #c9a24a; border-radius: 5px; cursor: pointer; white-space: nowrap; }
 #twod12-movebar button:hover { background: #3c4458; }
+/* v0.0.197 (Lucas): the movement tag over the token (Advance, Evade, Crawl, a drag): squares left, Done, Evade → Advance. */
+#twod12-movetag { position: fixed; transform: translate(-50%, -100%); z-index: 70; display: inline-flex; align-items: center; gap: 4px; padding: 2px 4px 2px 8px; border-radius: 12px; background: rgba(20, 24, 32, .88); color: #f4e9d0; border: 1px solid #c9a24a; font-size: 12px; white-space: nowrap; box-shadow: 0 2px 6px rgba(0, 0, 0, .45); pointer-events: auto; }
+#twod12-movetag .mt-txt i { color: #7cc4f2; margin-right: 3px; }
+#twod12-movetag button { width: 22px; height: 20px; min-height: 0; line-height: 18px; padding: 0; font-size: 11px; background: #2e3442; color: #f4e9d0; border: 1px solid #6b5a33; border-radius: 10px; cursor: pointer; }
+#twod12-movetag button:hover { background: #3c4458; }

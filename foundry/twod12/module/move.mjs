@@ -220,10 +220,10 @@ export async function chargeMovement(c, cost, dest = null, { par = 0 } = {}) {
   const ap = getAP(c);
   const sq = Math.round(cost * 100) / 100;
   const what = useEvade ? `Evade ${sq} sq, no reactions` : `Advance ${sq} sq`;
-  if (spent) await setAP(c, Math.max(0, ap - spent), what);
+  if (spent) await setAP(c, Math.max(0, ap - spent), what, { quiet: !useEvade && walk > 0 });   // v0.0.197: the movement's own line says it
   // v0.0.196 (Lucas): while the movement banner is up it says what is left, so the drags post nothing; a drag that spends AP (moving the
   // token without using Advance first) is an Advance: it opens the banner, and its Speed left counts there.
-  if (spent && !useEvade && walk > 0) { if (bannerOn(c)) moveBar.add(walk * spent); else moveBanner(c, "walk", walk * spent, "Advance", { drag: true }); }
+  if (spent && !useEvade && walk > 0) { if (bannerOn(c) && moveBar) moveBar.add(walk * spent, spent); else moveBanner(c, "walk", walk * spent, "Advance", { drag: true, ap: spent }); }
   else if (!spent && !bannerOn(c)) await post(`<b>${esc(c.name)}</b>: ${what}${left > 0 ? `, ${Math.round(left * 100) / 100} sq of Speed left` : ""}${free + evade > 0 ? `. ${free + evade} sq left ${endBtn(c)}` : ""}`);
   if (spent && ap < spent) warn(`${c.name} did not have enough AP for that movement.`);
 }
@@ -454,7 +454,7 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
   if (kind === "charge") await c.setFlag(F, "charge", { min: cfg.min || 3, max: n });
   const sq = `${n} square${n === 1 ? "" : "s"}`;
   // v0.0.195 (Lucas): from a movement-only Action, the banner instead of a chat line; one short line is posted when the movement ends.
-  if (cfg.banner && kind !== "charge") { showRange(c, n); moveBanner(c, kind, n, cfg.banner); return true; }
+  if (cfg.banner && kind !== "charge") { showRange(c, n); moveBanner(c, kind, n, cfg.banner, { ap: cfg.bannerAp ?? 0 }); return true; }
   if (kind === "charge") {
     await post(`<b>${esc(c.name)}</b> can Charge: move in a straight line at least ${cfg.min || 3} and up to ${sq}, not through Difficult Terrain. ${endBtn(c)}`);
     showRange(c, n);
@@ -480,54 +480,73 @@ export async function evadeAsAdvance(combatantId, { quiet = false } = {}) {
   showRange(c, n);
 }
 
-/* ------------------------------------------------------------------ v0.0.195: the movement banner */
-const VERB = { walk: "Advances", evade: "Evades" };
+/* ------------------------------------------------------------------ v0.0.197: the movement tag on the token */
+const VERB = { walk: "Advanced", evade: "Evaded" }, NOUN = { walk: "Advance", evade: "Evade" };
 let moveBar = null, lastBar = { id: "", until: 0 };
-/** Is a movement banner up for this combatant (or did one just close: its last drag's update comes after)? */
+/** Is a movement tag up for this combatant (or did one just close: its last drag's update comes after)? */
 const bannerOn = c => !!c?.id && ((!!moveBar && moveBar.c?.id === c.id) || (lastBar.id === c.id && Date.now() < lastBar.until));
+/** Pure: the chat line of a movement, while it goes on (moved null) and when it ends. */
+export const moveLine = (who, mode, name, ap, granted, moved = null) => {
+  const sq = n => `${n} square${n === 1 ? "" : "s"}`;
+  if (moved === null) return `<b>${esc(who)}</b> uses <b>${esc(name)}</b> <small>(${ap ? `${ap} AP: ` : ""}up to ${sq(granted)})</small>`;
+  const tag = [name !== NOUN[mode] ? name : "", ap ? `${ap} AP` : ""].filter(Boolean).join(", ");
+  return `<b>${esc(who)}</b> ${VERB[mode] ?? "moved"} <b>${moved}</b> of ${sq(granted)}${tag ? ` <small>(${esc(tag)})</small>` : ""}`;
+};
+
 /**
- * The banner of a movement-only Action (Advance, Evade, Crawl): how many squares are left, "Advance instead" for an Evade, and Done. It follows
- * the combatant's free movement as the token is dragged, and closes when it is used up, Done is clicked, or the turn changes; then one chat
- * line says what was done ("Kai Advances 4 squares").
+ * v0.0.197 (Lucas): a movement-only Action (Advance, Evade, Crawl) or a drag that pays an Advance: a small tag over the token ("Advance · 3 sq
+ * left", Done; Evade: "Advance instead") that follows it on the map, and ONE chat line: "Kai uses Advance (1 AP: up to 7 squares)", changed
+ * to "Kai Advanced 4 of 7 squares (Advance, 1 AP)" when it ends (used up, Done, or the turn changes). The AP lines of these are not posted.
  */
-export function moveBanner(c, kind, granted, name, { drag = false } = {}) {
+export function moveBanner(c, kind, granted, name, { drag = false, ap = 0 } = {}) {
   if (typeof document === "undefined") return;
   moveBar?.finish(false);
   // drag: started by moving the token (an Advance paid by the drag): the Speed left of that Advance (moveLeft) counts too.
   const left = () => num(c.getFlag(F, "freeMove")) + num(c.getFlag(F, "evadeMove")) + (drag ? num(c.getFlag(F, "moveLeft")) : 0);
-  let mode = kind;
-  const bar = document.createElement("div");
-  bar.id = "twod12-movebar";
-  bar.className = "twod12-bar";
+  let mode = kind, msg = null;
+  const el = document.createElement("div");
+  el.id = "twod12-movetag";
+  el.className = "twod12-movetag";
   const draw = () => {
-    const l = left();
-    bar.innerHTML = `<i class="fa-solid fa-grip-vertical tb-grip" data-tooltip="Drag to move"></i><span class="tb-text"><i class="fa-solid ${mode === "evade" ? "fa-shield" : "fa-person-walking"}"></i> <b>${esc(c.name)}</b> &middot; ${esc(name)}: drag the token, <b>${l}</b> of ${granted} square${granted === 1 ? "" : "s"} left${mode === "evade" ? " (no reactions)" : ""}.</span>`
-      + `<span class="tb-btns">${mode === "evade" ? '<button type="button" data-mb="advance"><i class="fa-solid fa-person-running"></i> Advance instead</button>' : ""}<button type="button" data-mb="done"><i class="fa-solid fa-flag-checkered"></i> Done</button></span>`;
+    el.innerHTML = `<span class="mt-txt"><i class="fa-solid ${mode === "evade" ? "fa-shield" : "fa-person-walking"}"></i> ${NOUN[mode] ?? esc(name)} &middot; <b>${left()}</b> sq left</span>`
+      + `${mode === "evade" ? '<button type="button" data-mb="advance" data-tooltip="Use it as an Advance instead (it can trigger Reactions)"><i class="fa-solid fa-person-running"></i></button>' : ""}`
+      + '<button type="button" data-mb="done" data-tooltip="End the movement (the squares left are lost)"><i class="fa-solid fa-flag-checkered"></i></button>';
+  };
+  const place = () => {
+    const t = c.token?.object;
+    if (!t || !canvas?.ready) { el.style.display = "none"; return; }
+    const p = canvas.clientCoordinatesFromCanvas?.({ x: t.center.x, y: t.y }) ?? null;
+    if (!p) { el.style.display = "none"; return; }
+    el.style.display = ""; el.style.left = `${p.x}px`; el.style.top = `${p.y - 4}px`;
   };
   draw();
-  document.body.append(bar);
-  import("./targeting.mjs").then(m => m.placeBar(bar)).catch(() => {});
+  document.body.append(el);
+  place();
+  ChatMessage.create({ content: `<div class="twod12 chat apmsg">${moveLine(c.name, mode, name, ap, granted)}</div>` }).then(m => { msg = m; }).catch(() => {});
   const hooks = [];
   const on = (h, fn) => hooks.push([h, Hooks.on(h, fn)]);
   const finish = async (drop = true) => {
-    if (!moveBar || moveBar.bar !== bar) return;
+    if (!moveBar || moveBar.el !== el) return;
     moveBar = null;
     lastBar = { id: c.id, until: Date.now() + 2500 };
     for (const [h, id] of hooks) Hooks.off(h, id);
-    bar.remove();
+    el.remove();
     const l = left(), moved = Math.max(0, granted - l);
     if (drop && l > 0 && c.isOwner && game.combat?.combatants?.has?.(c.id)) await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...(drag ? { [`flags.${F}.moveLeft`]: 0 } : {}), [`flags.${F}.-=ignoreTerrain`]: null });
     clearRange();
-    await post(`<b>${esc(c.name)}</b> ${VERB[mode] ?? "moves"} ${moved} square${moved === 1 ? "" : "s"} <small>(${esc(name)})</small>.`);
+    const html = `<div class="twod12 chat apmsg">${moveLine(c.name, mode, name, ap, granted, moved)}</div>`;
+    try { if (msg) await msg.update({ content: html }); else await post(moveLine(c.name, mode, name, ap, granted, moved)); } catch (e) { await post(moveLine(c.name, mode, name, ap, granted, moved)); }
   };
-  moveBar = { bar, finish, c, add: n => { granted += n; draw(); } };
-  bar.addEventListener("click", async ev => {
+  moveBar = { el, finish, c, add: (n, moreAp = 0) => { granted += n; ap += moreAp; draw(); if (msg) msg.update({ content: `<div class="twod12 chat apmsg">${moveLine(c.name, mode, name, ap, granted)}</div>` }).catch(() => {}); } };
+  el.addEventListener("click", async ev => {
     const b = ev.target.closest("[data-mb]");
     if (!b) return;
     if (b.dataset.mb === "done") return finish(true);
     if (b.dataset.mb === "advance") { mode = "walk"; await evadeAsAdvance(c.id, { quiet: true }); draw(); }
   });
-  on("updateCombatant", cb => { if (cb.id !== c.id || !moveBar || moveBar.bar !== bar) return; if (left() <= 0) finish(false); else draw(); });
+  on("updateCombatant", cb => { if (cb.id !== c.id || !moveBar || moveBar.el !== el) return; if (left() <= 0) finish(false); else draw(); });
+  on("refreshToken", t => { if (t?.document?.id === c.tokenId) place(); });
+  on("canvasPan", place);
   on("combatTurnChange", () => finish(false));
   on("deleteCombat", () => finish(false));
 }
