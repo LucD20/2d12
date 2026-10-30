@@ -424,10 +424,23 @@ export class TalentData extends foundry.abstract.TypeDataModel {
       // Talents that modify other Actions: which Actions (a name, "category:Weapon Technique" or "trait:strike"), when, and what they add.
       modifiers: modifiersField(),
       // A passive, as on a Feature.
-      settings: settingsField()
+      settings: settingsField(),
+      // v0.0.186 (pack C-a; book 16-talents.md): the Category (Combat, Mobility, Magic, Skill), the Prerequisites as data the Talent picker checks
+      // (each a Talent by name, a Level, an Action with a trait, an Attribute at a value, or Other: free text, not checked; all of them, or any one),
+      // and a theme tag (Unarmed, Great Weapon, Marksman, Divine) the picker can filter by. "requirements" stays as the old free text.
+      group: choice(TWOD12.talentGroups, "combat"),
+      prereqs: new ArrayField(new SchemaField({ kind: choice(TWOD12.prereqKinds, "talent"), name: str(), value: int(0) })),
+      prereqMode: choice({ all: "all of these", any: "any one of these" }, "all"),
+      theme: str()
     };
   }
-  static migrateData(source) { migrateSettings(source); return super.migrateData(source); }
+  static migrateData(source) {
+    migrateSettings(source);
+    // v0.0.186: "Combat Talent" in the Category becomes the Category field.
+    const m = /^\s*(combat|mobility|magic|skill)\s+talent\s*$/i.exec(String(source?.category ?? ""));
+    if (m && source.group === undefined) { source.group = m[1].toLowerCase(); source.category = "Talent"; }
+    return super.migrateData(source);
+  }
 }
 
 /** The settings of an Effect (and of a Feature's or Talent's passive, v0.0.125): what it does. */

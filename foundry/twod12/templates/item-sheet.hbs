@@ -93,14 +93,31 @@
 
 
     {{#if isTalent}}
-    <div class="grid3">
-      <label>Category <input type="text" name="system.category" value="{{system.category}}" placeholder="Talent"></label>
+    <div class="grid4">
+      <label>Category <select name="system.group">{{selectOptions talentGroups selected=system.group}}</select></label>
       <label>Level <input type="number" min="0" name="system.level" value="{{system.level}}"></label>
       <label>Frequency <select name="system.frequency">{{selectOptions freqChoices selected=system.frequency}}</select></label>
+      <label data-tooltip="A theme the Talent picker can filter by (Unarmed, Great Weapon, Marksman, Divine): usually the chain it belongs to">Theme <input type="text" name="system.theme" value="{{system.theme}}" placeholder="Unarmed"></label>
     </div>
     <label>Flavor <input type="text" name="system.flavor" value="{{system.flavor}}" placeholder="A small gift from the god you follow."></label>
-    <label>Prerequisites <input type="text" name="system.requirements" value="{{system.requirements}}" placeholder="e.g. Brawler, Appeal +1"></label>
-    <p class="hint">Level is the character level needed to choose the Talent. Shown as {{categoryShown}}.</p>
+    <div class="prereqs">
+      <h3>Prerequisites {{#if prereqRows.length}}<small>the creature needs <select data-prereqmode>{{selectOptions prereqModes selected=system.prereqMode}}</select></small>{{/if}}
+        <button type="button" data-action="addPrereq" data-tooltip="Add a Prerequisite"><i class="fa-solid fa-plus"></i></button></h3>
+      {{#each prereqRows}}
+      <div class="prereq-row">
+        <select data-pfield="{{i}}" data-field="kind">{{selectOptions ../prereqKinds selected=kind}}</select>
+        {{#if isTalent}}<input type="text" data-pfield="{{i}}" data-field="name" value="{{name}}" placeholder="Brawler" list="twod12-talent-names">{{/if}}
+        {{#if isLevel}}<input type="number" min="1" data-pfield="{{i}}" data-field="value" value="{{value}}">{{/if}}
+        {{#if isTrait}}<select data-pfield="{{i}}" data-field="name">{{selectOptions ../traitChoices selected=name blank="(a trait)"}}</select>{{/if}}
+        {{#if isAttribute}}<select data-pfield="{{i}}" data-field="name">{{selectOptions ../attrChoices selected=name blank="(an Attribute)"}}</select> <input type="number" data-pfield="{{i}}" data-field="value" value="{{value}}">{{/if}}
+        {{#if isOther}}<input type="text" class="wide" data-pfield="{{i}}" data-field="name" value="{{name}}" placeholder="Proficient with shields">{{/if}}
+        <span class="prereq-txt">{{text}}</span>
+        <button type="button" data-action="removePrereq" data-index="{{i}}" aria-label="Remove">&times;</button>
+      </div>
+      {{else}}<p class="hint">None. {{#if system.requirements}}Old text: <i>{{system.requirements}}</i> (add it as rows so the picker can check it).{{/if}}</p>{{/each}}
+      <datalist id="twod12-talent-names">{{#each talentNames}}<option value="{{this}}"></option>{{/each}}</datalist>
+    </div>
+    <p class="hint">Level is the character level needed to choose the Talent. Shown as {{categoryShown}}{{#if prereqShown}}; Prerequisites: {{prereqShown}}{{/if}}. The class window's Talent picker checks the Level and every Prerequisite but Other.</p>
     <label>Traits {{formInput fields.traits value=system.traits name="system.traits" options=traitPicker.options groups=traitPicker.groups}}</label>
     {{/if}}
 

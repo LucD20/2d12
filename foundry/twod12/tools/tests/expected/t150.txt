@@ -9,7 +9,7 @@ Bulwark of Faith: 1 / 2R · Encounter
 Divine Surge: 0 AP · Round · Esc 1
 Font of Mercy: Passive
 Divine Power: Passive
-Heavy Blows: Talent
+Heavy Blows: Combat Talent
 Aim: 1 AP · At-will
 --- the wiring
 a class with levels dropped on a character opens the window: true | the old dialogs stay for a class without levels: true

@@ -1,7 +1,8 @@
 // v0.0.185 (pack C2): the class window the player sees. It opens when a Class with levels is dropped on a character (level 1, then each
 // level up to the character's) and when the character's Level goes up (each new level in turn). Nothing is applied before confirm;
 // Cancel changes nothing (on a level up the Level goes back). A Level that goes down removes what the higher levels gave.
-import { TWOD12, effectiveFrequency } from "./config.mjs";
+import { prereqLine } from "./talents.mjs";
+import { TWOD12, effectiveFrequency, categoryText } from "./config.mjs";
 import { esc } from "./util.mjs";
 import { levelModel, togglePick, setAttr, attrList, levelPlan, sectionsAt, stageLine } from "./classlevels.mjs";
 import { grantFeature, grantTalent } from "./grants.mjs";
@@ -20,7 +21,7 @@ export function itemInfo(doc) {
   if (doc.type === "action") {
     const aps = [...new Set((s.versions ?? []).map(v => v.ap))].sort((a, b) => a - b);
     meta = [aps.length ? `${aps.join(" / ")}${s.reaction ? "R" : " AP"}` : "", TWOD12.frequencies[frequency] && frequency ? TWOD12.frequencies[frequency] : "", esc1 ? `Esc ${esc1}` : ""].filter(Boolean).join(" · ");
-  } else if (doc.type === "talent") meta = ["Talent", s.category && !/^talent$/i.test(s.category) ? s.category : "", s.requirements ? `Requires ${s.requirements}` : ""].filter(Boolean).join(" · ");
+  } else if (doc.type === "talent") meta = [categoryText({ group: s.group, category: s.category }) || "Talent", prereqLine(s) ? `Requires ${prereqLine(s)}` : ""].filter(Boolean).join(" · ");   // v0.0.186: "Combat Talent · Requires Brawler"
   else meta = (s.settings ?? []).length || /escalation/i.test(s.category ?? "") ? "Passive" : "Feature";
   return { uuid: doc.uuid, name: doc.name, type: doc.type, img: doc.img, frequency, escalation: esc1, category: s.category ?? "", level: Number(s.level) || 0, meta };
 }

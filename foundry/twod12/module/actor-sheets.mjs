@@ -1,4 +1,5 @@
 // The character and NPC sheets.
+import { prereqLine } from "./talents.mjs";
 import { masteryRows, masteryOf, setMastery, setCollapsed, techniqueState, bowMasteryOf, chooseBowMastery } from "./mastery.mjs";
 import { weaponRanges } from "./weaponrange.mjs";
 import { defenseBonus, steadinessOf } from "./defense.mjs";
@@ -786,7 +787,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       id: i.id, name: i.name, img: i.img, type: i.type, cat: categoryText(i.system), traits: traitChevrons(i.system.traits ?? []),
       apsHtml: i.type === "action" ? apLabel(i.system.versions.map(v => v.ap), i.system.reaction) : ""
     })).sort((x, y) => x.name.localeCompare(y.name));
-    const row = t => ({ children: kids(t), id: t.id, name: t.name, img: t.img, cat: categoryText(t.system), traits: traitChevrons(t.system.traits), requirements: t.type === "action" ? t.system.prerequisites : t.system.requirements, freq: TWOD12.frequencies[t.system.frequency] ?? "" });
+    const row = t => ({ children: kids(t), id: t.id, name: t.name, img: t.img, cat: categoryText(t.system), traits: traitChevrons(t.system.traits), requirements: t.type === "action" ? t.system.prerequisites : prereqLine(t.system), freq: TWOD12.frequencies[t.system.frequency] ?? "" });
     // Talents are Talent items and Actions that are Talents.
     const talents = [...a.itemTypes.talent, ...a.itemTypes.action.filter(isTalentAction)];
     const used = new Set();

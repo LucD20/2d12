@@ -1,4 +1,5 @@
 // Roll dialog preview: what the action will roll, per Version, in the look of the chat card.
+import { prereqLine } from "./talents.mjs";
 import { attrFromTier } from "./rollsource.mjs";
 import { TWOD12, expandAsText, cardVars, cardHead, flavorHtml, apIcon, apLabel, traitChevrons, categoryText, highlightText, metaRowHtml, effectiveFrequency, distanceText, areaText, cardColorFor, vsText, areaButton, poolIcon, dtypeHtml, inkOf, prettyDamage } from "./config.mjs";
 import { setupFor } from "./setup.mjs";
@@ -197,7 +198,7 @@ export async function buildInfoCard(item) {
   if (options.length) blocks.push(`<div class="iblock"><div class="eh">${esc(s.choiceLabel || "Choose")} ${Math.max(1, s.choiceCount || 1)}</div>${options.map(kid).join("")}</div>`);
   if (s.talents) blocks.push(`<div class="iblock"><div class="eh">Talent slots</div><div class="et">${s.talents}</div></div>`);
   blocks.push(...modifierBlocks(s));
-  const meta = [freq ? `<span class="freq">${esc(freq)}</span>` : "", s.requirements ? `<span><b>Prerequisites:</b> ${esc(s.requirements)}</span>` : ""].filter(Boolean);
+  const meta = [freq ? `<span class="freq">${esc(freq)}</span>` : "", prereqLine(s) ? `<span><b>Prerequisites:</b> ${esc(prereqLine(s))}</span>` : ""].filter(Boolean);
   const head = `${flavorHtml(s)}${s.traits?.size ? `<div class="traits">${traitChevrons(s.traits)}</div>` : ""}${meta.length ? `<div class="trow">${meta.join('<i class="fa-solid fa-sparkle sep"></i>')}</div>` : ""}`;
   const text = body.trim() ? `<div class="anote">${highlightText(body)}</div>` : "";
   return `<div class="twod12 chat action rawcard infocard">

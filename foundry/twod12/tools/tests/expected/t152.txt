@@ -1,0 +1,15 @@
+--- the head: Category + Level
+Combat Talent 1 | Mobility Talent 1 | Combat Talent 5 | Paladin Feature 1
+old 'Magic Talent' in the Category: {"category":"Talent","group":"magic"} | 'Talent' stays: {"category":"Talent"}
+--- the Prerequisites line
+Sacred Weapon: Lesser Blessing or a [Divine] Action
+Class Expertise: Level 5
+Kickboxer: Brawler
+Iron Grip: Body 2, a shield in hand
+old free text when there is no list: "Brawler"
+--- can this creature take it?
+Sacred Weapon: a level 1 nobody no (needs Lesser Blessing or a [Divine] Action) | a Paladin ([Divine] Smite) yes | with Lesser Blessing yes
+Class Expertise: level 1 no (needs Level 5) | level 5 yes
+Kickboxer: no Brawler no (needs the Talent Brawler) | Brawler yes | already a Kickboxer no (already taken)
+Iron Grip: Body 1 no (needs Body 2) [check by hand: a shield in hand] | Body 2 yes [check by hand: a shield in hand]
+content: Kickboxer needs Brawler as data true | the Talent sheet: Category, Theme, rows true

@@ -13,6 +13,7 @@ import { VersionsEditor } from "./versions.mjs";
 import { attrLine, choicesToMake, freqOf, SECTION_FREQS } from "./classlevels.mjs";
 import { itemInfo } from "./classwindow.mjs";
 import { openLevelsEditor } from "./classeditor.mjs";
+import { prereqText, prereqLine } from "./talents.mjs";
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ItemSheetV2 } = foundry.applications.sheets;
 
@@ -38,6 +39,8 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       addTalentMod: TwoD12ItemSheet.addTalentMod,
       createLinkedAction: TwoD12ItemSheet.createLinkedAction,
       removeTalentMod: TwoD12ItemSheet.removeTalentMod,
+      addPrereq: TwoD12ItemSheet.addPrereq,
+      removePrereq: TwoD12ItemSheet.removePrereq,
       editLevels: TwoD12ItemSheet.editLevels
     }
   };
@@ -71,6 +74,14 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       condRows: (s.conditions ?? []).map((c, i) => ({ i, name: c.name, value: c.value, valued: !!c.valued, mode: c.mode || "set" })),
       riderModes: { set: "the highest counts", increase: "increase the value" },
       isTalent: t === "talent",
+      // v0.0.186: the Talent's Category and Prerequisites as data (talents.mjs).
+      ...(t === "talent" ? {
+        talentGroups: TWOD12.talentGroups, prereqKinds: TWOD12.prereqKinds, prereqModes: { all: "all of these", any: "any one of these" },
+        traitChoices: Object.fromEntries(Object.entries(TWOD12.traits).sort((a, b) => a[1].localeCompare(b[1]))),
+        prereqRows: (s.prereqs ?? []).map((p, i) => ({ i, ...p, text: prereqText(p), isTalent: p.kind === "talent", isLevel: p.kind === "level", isTrait: p.kind === "trait", isAttribute: p.kind === "attribute", isOther: p.kind === "other" })),
+        prereqShown: prereqLine(s),
+        talentNames: [...new Set([...(game.items ?? [])].filter(i => i.type === "talent").map(i => i.name))].sort()
+      } : {}),
       hasMods: t === "talent" || t === "action",
       talentMods:
         t === "talent" || t === "action"
@@ -337,6 +348,17 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
         await this.item.update({ "system.settings": arr });
       })
     );
+    // v0.0.186: a Talent's Prerequisite rows (a new kind starts with its own default: Level 1, an Attribute at 1).
+    this.element.querySelectorAll("[data-pfield]").forEach(el =>
+      el.addEventListener("change", async () => {
+        const arr = foundry.utils.deepClone(this.item.toObject().system.prereqs ?? []), row = arr[Number(el.dataset.pfield)];
+        if (!row) return;
+        row[el.dataset.field] = el.type === "number" ? Math.trunc(Number(el.value)) || 0 : el.value;
+        if (el.dataset.field === "kind") { row.name = ""; row.value = ["level", "attribute"].includes(el.value) ? 1 : 0; }
+        await this.item.update({ "system.prereqs": arr });
+      })
+    );
+    this.element.querySelector("[data-prereqmode]")?.addEventListener("change", ev => this.item.update({ "system.prereqMode": ev.currentTarget.value }));
     this.element.querySelectorAll("[data-dfield]").forEach(el =>
       el.addEventListener("change", async () => {
         const arr = foundry.utils.deepClone(this.item.toObject().system.defenses);
@@ -547,6 +569,16 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       await w.update({ "system.actions": [...w.system.actions, a.uuid] });
       a.sheet.render(true);
     }
+  }
+  static async addPrereq() {
+    const arr = foundry.utils.deepClone(this.item.toObject().system.prereqs ?? []);
+    arr.push({ kind: "talent", name: "", value: 0 });
+    await this.item.update({ "system.prereqs": arr });
+  }
+  static async removePrereq(event, target) {
+    const arr = foundry.utils.deepClone(this.item.toObject().system.prereqs ?? []);
+    arr.splice(Number(target.dataset.index), 1);
+    await this.item.update({ "system.prereqs": arr });
   }
   static async addDefense() {
     const arr = foundry.utils.deepClone(this.item.toObject().system.defenses);

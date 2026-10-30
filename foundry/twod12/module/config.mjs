@@ -142,6 +142,9 @@ export const TWOD12 = {
     move: "You must have a Speed of at least 1."
   },
   effectSettings: { boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", speed: "Speed", light: "Token Light", note: "Note", ignore: "Ignore a Bane", rally: "Rally Points" },
+  // v0.0.186 (pack OT in the book, 16-talents.md): a Talent's Category, and the kinds of Prerequisite the Talent picker can check.
+  talentGroups: { combat: "Combat", mobility: "Mobility", magic: "Magic", skill: "Skill" },
+  prereqKinds: { talent: "A Talent", level: "A Level", trait: "An Action with a trait", attribute: "An Attribute", other: "Other (not checked)" },
   // v0.0.186: the Bane rules a setting can switch off for matching Actions (the "Ignore a Bane" setting).
   ignoreRules: { rangeBane: "one of their range Banes (far range none, maximum range 1)", engagedSelf: "the Banes for a [Ranged] Action while you are Engaged", engagedTarget: "the Bane for targeting a creature Engaged with a creature other than you" },
   durationTypes: { "": "None", eot: "End of Turn (EoT)", rounds: "Rounds" },
@@ -309,7 +312,8 @@ export function traitChevrons(traits, { properties = false, compact = false } = 
 
 /** The category shown at the far right of an Action title: "Paladin Feature 1" (the number is the level it is gained). */
 export const categoryText = d => {
-  const c = String(d?.category ?? "").trim(), l = Number(d?.level) || 0;
+  // v0.0.186: a Talent with a Category reads like the book's head, "Combat Talent 1".
+  const g = TWOD12.talentGroups[d?.group], c0 = String(d?.category ?? "").trim(), c = g && (!c0 || c0 === "Talent") ? `${g} Talent` : c0, l = Number(d?.level) || 0;
   return c ? (l > 0 ? `${c} ${l}` : c) : (l > 0 ? `Level ${l}` : "");
 };
 
