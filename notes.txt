@@ -1,4 +1,2 @@
 Lucas's running notes (merged at the start of each pack). Legend: [ADD] add  [DEL] delete  [CHG] change  [Q] question  [IDEA] idea  [NOTE] note  [FOUNDRY] Foundry-only
 
-
-(merged 2026-10-30, v0.0.194: the Granted area and Escalation block decisions: foundry-backlog.md and the changelog.)
