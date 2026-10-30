@@ -1227,11 +1227,11 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <h2 id="health-pool">Health Pool</h2>
 <p>Your <strong>Health Pool</strong> is the sum of two thresholds:</p>
 <ul>
-<li><strong><span class="at-body">Body</span> Damage Threshold (BDT)</strong> = ((<span class="at-body">Body</span> + 2) × <span class="at-body">Body</span> Health Multiplier + Species <span class="at-body">Body</span> Health) × (Level ÷ 10 + 1)</li>
-<li><strong><span class="at-mind">Mind</span> Damage Threshold (MDT)</strong> = ((<span class="at-mind">Mind</span> + 2) × <span class="at-mind">Mind</span> Health Multiplier + Species <span class="at-mind">Mind</span> Health) × (Level ÷ 10 + 1)</li>
+<li><strong><span class="at-body">Body</span> Damage Threshold (BDT)</strong> = ((<span class="at-body">Body</span> + 2) × <span class="at-body">Body</span> Health Multiplier + Species <span class="at-body">Body</span> Health) × (Level + 17) ÷ 16</li>
+<li><strong><span class="at-mind">Mind</span> Damage Threshold (MDT)</strong> = ((<span class="at-mind">Mind</span> + 2) × <span class="at-mind">Mind</span> Health Multiplier + Species <span class="at-mind">Mind</span> Health) × (Level + 17) ÷ 16</li>
 </ul>
 <p>Round each threshold up. The Health Multipliers come from your class, and the Species Health values from your species.</p>
-<p><em>Example:</em> a level 4 Human Paladin has <span class="at-body">Body</span> +2 and <span class="at-mind">Mind</span> +1. BDT = ((2 + 2) × 4 + 3) × 1.4 = 26.6, rounded up to <strong>27</strong>. MDT = ((1 + 2) × 4 + 4) × 1.4 = 22.4, rounded up to <strong>23</strong>. Health Pool = <strong>50</strong>.</p>
+<p><em>Example:</em> a level 4 Human Paladin has <span class="at-body">Body</span> +2 and <span class="at-mind">Mind</span> +1. BDT = ((2 + 2) × 4 + 3) × 21 ÷ 16 = 24.9, rounded up to <strong>25</strong>. MDT = ((1 + 2) × 4 + 4) × 21 ÷ 16 = <strong>21</strong>. Health Pool = <strong>46</strong>.</p>
 <p><span class="at-body">Body</span> and <span class="at-mind">Mind</span> are not separate pools. All damage reduces the same Health Pool. The thresholds only decide which conditions you suffer.</p>
 <h2 id="damage">Damage</h2>
 <p>Record every point of damage as:</p>
@@ -1547,8 +1547,8 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <li><strong>Class.</strong> Apply your class' Attribute increases. It also gives you a <strong><span class="at-body">Body</span> Health Multiplier</strong> and a <strong><span class="at-mind">Mind</span> Health Multiplier</strong>, a <strong>Rally</strong> value, a <strong>Speed Modifier</strong>, a <strong><span class="mod-weapon">Weapon Modifier</span></strong> and a <strong><span class="mod-power">Power Modifier</span></strong>. Your Speed is your species' Speed plus your class' Speed Modifier.</li>
 <li><strong>Choices.</strong> When a species or class says "or", pick one. A class's choices between two Attributes must be different from each other (see <a class="xref" href="#distinct-choices">Distinct Choices</a>).</li>
 <li><strong><a class="xref" href="#health-pool">Health Pool</a>.</strong> Calculate it from your Attributes, the Health Multipliers and the Species Health values:<ul>
-<li><span class="at-body">Body</span> Damage Threshold = ((<span class="at-body">Body</span> + 2) × <span class="at-body">Body</span> Health Multiplier + Species <span class="at-body">Body</span> Health) × (Level ÷ 10 + 1)</li>
-<li><span class="at-mind">Mind</span> Damage Threshold = ((<span class="at-mind">Mind</span> + 2) × <span class="at-mind">Mind</span> Health Multiplier + Species <span class="at-mind">Mind</span> Health) × (Level ÷ 10 + 1)</li>
+<li><span class="at-body">Body</span> Damage Threshold = ((<span class="at-body">Body</span> + 2) × <span class="at-body">Body</span> Health Multiplier + Species <span class="at-body">Body</span> Health) × (Level + 17) ÷ 16</li>
+<li><span class="at-mind">Mind</span> Damage Threshold = ((<span class="at-mind">Mind</span> + 2) × <span class="at-mind">Mind</span> Health Multiplier + Species <span class="at-mind">Mind</span> Health) × (Level + 17) ÷ 16</li>
 <li>Health Pool = the two thresholds added together.</li>
 </ul>
 </li>
@@ -1564,6 +1564,8 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <p>A class's <strong>Class Actions</strong> are the Actions it gives you at level 1. A class can give a <strong>Hallmark Action</strong> instead: a choice of two Actions that are the class's fantasy (the Paladin: Smite or Lay On Hands; the Archer: Double Shot or Rolling Shot); you take one, and the other is not yours. A Hallmark Action doesn't need the <a class="xref" href="#signature">Signature</a> trait: that trait only sets the Modifier an Action rolls (Smite has it, Double Shot makes no roll of its own). Its <strong>Repertoire</strong> is everything else it offers, listed by <a class="xref" href="#frequency">Frequency</a>: <strong>Passive</strong> (it works on its own), <strong>Turn</strong>, <strong>Round</strong>, <strong>Encounter</strong> and <strong>Daily</strong>. A <strong>Pick</strong> is one choice from the Repertoire: the level list says how many Picks you take at each level and from which list (an Encounter Pick comes from the Encounter list; a Pick "from any list" can come from any of them). Escalation abilities are chosen the same way, from the class's Escalation list.</p>
 <h3 id="leveling-up">Leveling Up</h3>
 <p>Each class has a <strong>level list</strong>: what you gain at each level (Features, Class Actions, Picks and Escalation abilities). When you reach a new level, you take what its entry gives you. Your Health thresholds grow with your level too (see Building a Character, step 5).</p>
+<h3 id="stages">Stages</h3>
+<p>The levels are grouped in <strong>Stages</strong>: <strong>Stage 1</strong> is levels 1 to 4, <strong>Stage 2</strong> levels 5 to 7, <strong>Stage 3</strong> levels 8 to 10. A new Stage raises your Modifiers (see <a class="xref" href="#weapon-power-and-signature-modifiers">Weapon, Power and <span class="mod-signature">Signature Modifiers</span></a>) and the NPCs of the <a class="xref" href="bestiary.html#bestiary-building-npcs">Bestiary</a> (their tables have one row per Stage).</p>
 <h3 id="distinct-choices">Distinct Choices</h3>
 <p>When your class gives you a choice between two Attributes, you can't pick an Attribute you already picked from another choice of the same kind:</p>
 <ul>
@@ -1578,6 +1580,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <li><strong><span class="mod-power">Power Modifier</span></strong> = the higher of the class's two <span class="mod-power">Power Attributes</span> ÷ 2 + 1</li>
 </ul>
 <p>The Attribute a Modifier uses is your <strong><span class="mod-weapon">Weapon Attribute</span></strong> or your <strong><span class="mod-power">Power Attribute</span></strong>.</p>
+<p><strong>Your Modifiers grow with your <a class="xref" href="#stages">Stage</a>:</strong> your Weapon and <span class="mod-power">Power Modifiers</span> are <strong>+1 at level 5</strong> (Stage 2) and <strong>+2 at level 8</strong> (Stage 3), but <strong>never above +4</strong>. A Modifier of +3 at level 1 is +4 from level 5 on.</p>
 <p>If the same Attribute is the higher one for both Modifiers, one of them uses its other Attribute instead. You choose which, and you can change that choice when you level up.</p>
 <p>Your <strong><span class="mod-signature">Signature Modifier</span></strong> is the higher of your <span class="mod-weapon">Weapon Modifier</span> and your <span class="mod-power">Power Modifier</span> (if they are equal, choose one). Its Attribute is your <strong><span class="mod-signature">Signature Attribute</span></strong>. Actions with the <span class="trhl" style="--tc:var(--g-roll)">Signature</span> trait roll it.</p>
 <div class="callout example"><div class="ctitle">Example</div><p>A Paladin with <span class="at-body">Body</span> 1, <span class="at-mind">Mind</span> 2 and <span class="at-appeal">Appeal</span> 3. Both Modifiers want <span class="at-appeal">Appeal</span>. If the <span class="mod-weapon">Weapon Modifier</span> keeps it, it is 3 (3 ÷ 2 = 1.5, rounded up to 2, + 1) and the <span class="mod-power">Power Modifier</span> uses <span class="at-mind">Mind</span>: 2 (2 ÷ 2 + 1); the <span class="mod-signature">Signature Modifier</span> is 3, from <span class="at-appeal">Appeal</span>. If the <span class="mod-power">Power Modifier</span> keeps <span class="at-appeal">Appeal</span> instead, it is 3, and the <span class="mod-weapon">Weapon Modifier</span> uses <span class="at-body">Body</span>: 2 (1 ÷ 2 = 0.5, rounded up to 1, + 1).</p></div>
@@ -1830,7 +1833,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#the-targets"><strong>Combat Value (CV)</strong></a></td>
-<td>What an NPC counts for in an encounter: at level 1, its role's CV Multiplier. CV 1 per PC is a normal fight.</td>
+<td>What an NPC counts for in an encounter: Minion 25, Grunt 50, Standard 100, Elite 200; less for an NPC of an earlier Stage than the party. CV 100 per PC is a normal fight.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#corners"><strong>Corners</strong></a></td>
@@ -1847,10 +1850,6 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <tr>
 <td><a class="xref" href="#critical"><strong>Critical</strong></a></td>
 <td>Doubles on a result that is already Tier 3, or a total 20 or more above the DC. Only Actions with a Critical row use it.</td>
-</tr>
-<tr>
-<td><a class="xref" href="bestiary.html#the-targets"><strong>CV Multiplier</strong></a></td>
-<td>A role's Combat Value factor: Minion ¼, Grunt ½, Standard 1, Elite 2.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#daily"><strong>Daily</strong></a></td>
@@ -1906,7 +1905,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#elites"><strong>Elite</strong></a></td>
-<td>An NPC role with a CV Multiplier of 2: about 108 Health at level 1, 3 Strikes a turn, and it can have Escalation.</td>
+<td>An NPC role with CV 200: about 118 Health at Stage 1, 3 Strikes a turn, and it can have Escalation.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#empowered"><strong><span class="kw-pos">Empowered</span></strong></a></td>
@@ -1966,7 +1965,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#grunts"><strong>Grunt</strong></a></td>
-<td>An NPC role with a CV Multiplier of ½: about 26 Health at level 1, dies to about 1 PC turn.</td>
+<td>An NPC role with CV 50: about 24 Health at Stage 1, dies to about 1 PC turn.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#guard"><strong>Guard</strong></a></td>
@@ -2050,11 +2049,11 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#minions"><strong>Minion</strong></a></td>
-<td>An NPC role with a CV Multiplier of ¼, with <span class="kw-ap">3 AP</span> a turn and no Dying: at 0 Health it dies, or falls Unconscious if the GM prefers.</td>
+<td>An NPC role with CV 25, with <span class="kw-ap">3 AP</span> a turn and no Dying: at 0 Health it dies, or falls Unconscious if the GM prefers.</td>
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#minor-enemies"><strong>Minor enemies</strong></a></td>
-<td>Minions and Grunts (CV Multiplier below 1).</td>
+<td>Minions and Grunts (CV below 100).</td>
 </tr>
 <tr>
 <td><a class="xref" href="#rules-language"><strong>Move</strong></a></td>
@@ -2174,7 +2173,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#the-targets"><strong>Role</strong></a></td>
-<td>What an NPC is for in a fight: Minion, Grunt, Standard or Elite. It sets the NPC's CV Multiplier, AP and the tables its ratings use.</td>
+<td>What an NPC is for in a fight: Minion, Grunt, Standard or Elite. It sets the NPC's CV, AP and the tables its ratings use.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#rolls"><strong>Roll</strong></a></td>
@@ -2261,8 +2260,12 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>Bonuses don't add up: for each value (Guard included) use the highest bonus and the highest penalty. "Increase by N", <span class="kw-boon">Boons</span>, <span class="kw-bane">Banes</span> and AP losses do add up.</td>
 </tr>
 <tr>
+<td><a class="xref" href="#stages"><strong>Stage</strong></a></td>
+<td>A group of levels: Stage 1 is levels 1-4, Stage 2 levels 5-7, Stage 3 levels 8-10. It raises your Modifiers and sets the Bestiary's row.</td>
+</tr>
+<tr>
 <td><a class="xref" href="bestiary.html#standards"><strong>Standard</strong></a></td>
-<td>An NPC role with a CV Multiplier of 1: about 50 Health at level 1, dies to about 2 PC turns.</td>
+<td>An NPC role with CV 100: about 56 Health at Stage 1, dies to about 2 to 3 PC turns.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#steadiness"><strong>Steadiness</strong></a></td>

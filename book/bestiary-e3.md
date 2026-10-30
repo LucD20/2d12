@@ -1,7 +1,11 @@
-# Bestiary refit (pack E3, 2026-10-29): PROPOSED
+# Bestiary refit (pack E3, 2026-10-29): DECIDED, IN THE BOOK (2026-10-30)
 
-> **Nothing here is in `book/rules-src` yet.** This is the proposal with its numbers and a decision sheet (section 6). Once Lucas answers, the
-> Bestiary, the Core Rules (Health factor, Modifier steps) and the glossary change together, and Foundry follows (foundry-backlog.md).
+> **Lucas decided (2026-10-30):** 1 a third; 2 Elites keep today's damage (CV 2 = 200); 3 **Grunt Health ×0.75** (a round factor, not the
+> measured 0.69: a Grunt then counts 0.51-0.53 Standards and 8 Grunts last 3.4-3.6 rounds, re-run in bestiary.md); 4 yes; 5 capped at +4 like the
+> players (NPCs: no step, and never above +4); 6 yes. **New:** CV is written ×100 (Minion 25, Grunt 50, Standard 100, Elite 200; CV 100 a PC is a
+> normal fight). **Applied** to the Bestiary (14), Chapter 4 (Health), Chapter 5 (Modifiers, the new heading **Stages**) and the glossary. The level
+> bands are called **Stages** (Stage 1 levels 1-4, 2 5-7, 3 8-10), because "Tier" is already a roll's result. Sections 4-6 below are the proposal as
+> it was; the book has the final text. Time at the table: section 10.
 
 It applies LV's decisions (`book/progression-lv.md`: model A; 3.5-round standard fights; difficulty by CV a PC easy ¾, standard 1,
 hard 1¼, deadly 1½; CV by tier gap ×1 / ×0.8 / ×0.65; the Health factor (Level + 17) / 16 with the Modifier steps at levels 5 and 8), measured
@@ -219,3 +223,40 @@ Once answered: the Bestiary (14-bestiary.md), Chapter 4 (Health), Chapter 5 (Mod
 rules-backlog. **Foundry** (a version of its own, or with pack C): config.mjs `npcRoles` / `npcRatings` / the tier factors (no more
 `npcBump` / `npcMeasured`; `npcTableLevel` becomes the tier), the Builder's level → tier, the PC Health factor (actor.mjs) and the Modifier
 steps; tests for the tables.
+
+## 10. Time at the table (an estimate, for the playtest)
+
+From the simulated fights (bestiary.md; Stage 1, 4 PCs against 4 Standards): each round has **3.4 PC turns** (some PCs are Down), **about
+9.6 PC attack rolls** (2.8 a turn: the Paladin's Smite + two Weapon Attacks, the Archer's Double Shot 3 + Lock & Loose + a Weapon Attack) and
+**3 to 4 NPC Strikes** (5 to 6 with 8 Grunts). Hard and deadly fights have a little fewer rolls a round (more PCs Down) and more NPCs.
+
+What I counted for one action at the table, **in Foundry** (the system rolls and applies the damage):
+
+| Step | Seconds | Why |
+|---|---:|---|
+| A PC chooses its turn | 30 at Stage 1, 45 at Stage 2, 60 at Stage 3 | more Picks, Talents, Overcast up to 3 and Momentum up to 3 as levels go up |
+| A PC moves its token | 10 | |
+| A PC attack roll | 12 | the roll dialog (Boons, Banes), the result, the damage applied |
+| An NPC's turn (the GM) | 10 + 12 a Strike | the GM's choices are simpler (Basic attack, a Special) |
+
+That is **about 5½ minutes of pure play a round** at Stage 1 (6¼ at Stage 2, 7 at Stage 3). People don't play at that speed: table talk,
+a rule checked, a turn planned out loud, a Reaction asked for. I multiplied by **1.25 (a fast table) to 1.75 (a chatty one)**, 1.5 in the
+middle, and added **3 minutes** a fight to set it up (tokens, initiative). The fight rows use the middle value, the setup and round 1's extra time.
+
+| | Stage 1 (levels 1-4) | Stage 2 (levels 5-7) | Stage 3 (levels 8-10) |
+|---|---|---|---|
+| **One round** | 7 to 9½ min (about 8) | 8 to 11 min (about 9½) | 9 to 12½ min (about 10½) |
+| Round 1 | +1 to 2 min | +1 to 2 min | +2 min (Novas, positioning) |
+| **Easy fight** (2½ rounds) | about 25 min | about 28 min | about 30 min |
+| **Standard fight** (3½ rounds) | about 33 min | about 37 min | about 42 min |
+| **Hard fight** (4½ to 5 rounds) | about 41 to 45 min | about 47 to 51 min | about 53 to 58 min |
+| **Deadly fight** (6 rounds) | about 53 min | about 60 min | about 70 min |
+| **The Standard day** (easy, standard, standard, hard) | about 2¼ hours of fights | about 2½ hours | about 2¾ hours |
+
+- **Many creatures** cost GM time: 8 Grunts or 2 Standards + 8 Minions add about 1 to 1½ minutes a round (more NPC turns and Strikes; the Minions'
+  fight also lasts 4 rounds instead of 3½).
+- **With physical dice** (no Foundry), an attack roll is closer to 25 seconds (add the dice, Boons and Banes, look up the Tier, roll the damage):
+  about **11 minutes a round** at Stage 1, a standard fight about 45 minutes.
+- **Stages 2 and 3 are less certain**: no class has those levels yet, and the extra time is mostly choosing between more options. The rounds
+  of a fight don't change (the Bestiary keeps 3½), so the time grows only with the turns.
+- Not counted: describing what happens, Reactions (Hold the Line, Shield of Faith), Saves rolled by the PCs, looting and talking between fights.

@@ -329,7 +329,7 @@ They import the system's dice math (`foundry/twod12/module/calc.mjs`) by a relat
 - `tablecheck.mjs`: the Basic attack tables against the "deals about" targets.
 - `roles.mjs`, `npcdmg.mjs`, `bigger.mjs`, `fight.py`: the earlier role, NPC damage and fight checks.
 
-## The Bestiary refit (pack E3, 2026-10-29): `bestiary.mjs`: PROPOSED
+## The Bestiary refit (pack E3, 2026-10-29): `bestiary.mjs`: IN THE BOOK (2026-10-30)
 
 `node book/ruler/bestiary.mjs` (about 23 minutes; `--quick` about 7) writes **`bestiary.md`**; the proposal that reads it is **`book/bestiary-e3.md`**.
 The real classes (2 P1 Smite Paladins + 2 A1 Archers, Double Shot and Rolling Shot, levels 1-3; a mixed party as a check) on the map, with LV's
@@ -339,4 +339,4 @@ Minion are worth in Standards and the fixes that bring them to their CV; the Sta
 tier; the PCs' Health with the new factor. **New in spec.mjs:** an NPC with `exact: true` rolls its table's average exactly (the nearest dice
 moved by a flat amount; opt-in, so report.md and the other reports don't change). **Findings:** the real classes lose 22% a normal fight against
 today's Bestiary; the refit is Health ×1.10, damage ×1.38 for a third; an Elite is worth about 2.6 Standards (fix: today's Elite damage), a Grunt
-0.57 (fix: Health ×0.69), Minions ¼; the Standard day 93% / 95% / 100% at levels 1-3 (today 82% / 71% / 94%).
+0.57 (fix: Health ×0.69; Lucas chose ×0.75, CV 0.51-0.53), Minions ¼; the Standard day 93% / 95% / 100% at levels 1-3 (today 82% / 71% / 94%).

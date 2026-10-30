@@ -30,12 +30,11 @@
 | [[Senses\|**Clear**]] | You perceive the creature well: no penalty either way. |
 | [[Cleave\|**Cleave**]] | Deal the Modifier used as damage to creatures next to the target. |
 | [[Collision\|**Collision**]] | Where a Forced Movement stops when something blocks the destination the origin chose; the unused squares hurt. |
-| [[The targets\|**Combat Value (CV)**]] | What an NPC counts for in an encounter: at level 1, its role's CV Multiplier. CV 1 per PC is a normal fight. |
+| [[The targets\|**Combat Value (CV)**]] | What an NPC counts for in an encounter: Minion 25, Grunt 50, Standard 100, Elite 200; less for an NPC of an earlier Stage than the party. CV 100 per PC is a normal fight. |
 | [[Corners\|**Corners**]] | You can't cut a solid corner: anything solid, such as a wall, a pillar or an object that fills a square, that reaches the corner point where four squares meet. |
 | [[Cover\|**Cover**]] | How well a target is protected: count the blocked corners of its space, 1 Bane for each. |
 | [[Chapter 6: Basic Actions\|**Crawl**]] | A Move Action: you move 1 square, or 3 with Speed 5 or higher. The movement a Prone creature can use. |
 | [[Critical\|**Critical**]] | Doubles on a result that is already Tier 3, or a total 20 or more above the DC. Only Actions with a Critical row use it. |
-| [[The targets\|**CV Multiplier**]] | A role's Combat Value factor: Minion ¼, Grunt ½, Standard 1, Elite 2. |
 | [[Daily\|**Daily**]] | Once per Sleep. |
 | [[Sight Senses\|**Dark Sight**]] | A Sight Sense: Dim light and Darkness count as Bright for you. |
 | [[Deadly Hazards\|**Deadly Hazard**]] | A hazard that kills Minor enemies at once and leaves anyone else Imperiled. |
@@ -49,7 +48,7 @@
 | [[Doubles\|**Doubles**]] | Both d12s match: the tier goes up. |
 | [[Going Down\|**Down**]] | Your total damage equals or goes above your Health Pool. |
 | [[Playing on the Grid\|**Elevation**]] | Squares up or down count like a diagonal: the larger count plus half the smaller one. A creature is as tall as it is wide. |
-| [[Elites\|**Elite**]] | An NPC role with a CV Multiplier of 2: about 108 Health at level 1, 3 Strikes a turn, and it can have Escalation. |
+| [[Elites\|**Elite**]] | An NPC role with CV 200: about 118 Health at Stage 1, 3 Strikes a turn, and it can have Escalation. |
 | [[Empowered\|**Empowered**]] | Adds its value to every damage die (Empowered 1: 1 more per die). |
 | [[Frequency\|**Encounter**]] | A fight or similar scene, from Initiative until the GM ends it. |
 | [[Enfeebled\|**Enfeebled**]] | Subtracts its value from every damage die; each die still deals at least 1. |
@@ -64,7 +63,7 @@
 | [[Forced Movement\|**Forced Movement**]] | Movement you impose on another creature (Pushed, Pulled or Slid): no reactions, ignores Difficult Terrain, each square counts 1. |
 | [[Frequency\|**Frequency**]] | How often an Action can be used. |
 | [[Effect Timing\|**General Effects**]] | The Effects row of an Action. They happen on a Tier 2 or 3 result. |
-| [[Grunts\|**Grunt**]] | An NPC role with a CV Multiplier of ½: about 26 Health at level 1, dies to about 1 PC turn. |
+| [[Grunts\|**Grunt**]] | An NPC role with CV 50: about 24 Health at Stage 1, dies to about 1 PC turn. |
 | [[Guard\|**Guard**]] | A buffer written Guard N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take. |
 | [[Class Actions, Picks and the Repertoire\|**Hallmark Action**]] | A choice of two class Actions at level 1 (the Paladin: Smite or Lay On Hands; the Archer: Double Shot or Rolling Shot); you take one. |
 | [[Hands\|**Hands**]] | How many hands hold a weapon. |
@@ -85,8 +84,8 @@
 | [[Linked Actions\|**Linked Action**]] | An Action another Action lets you use as part of it, written like Weapon Attack (1A). It costs no AP. |
 | [[Long\|**Long**]] | A weapon property: 1 Bane against adjacent creatures, and it doesn't threaten them. |
 | [[Mastery\|**Mastery**]] | How well you know a kind of weapon: +1 for each Tier 3 on a Weapon Action with it. 3 unlocks its Weapon Technique. |
-| [[Minions\|**Minion**]] | An NPC role with a CV Multiplier of ¼, with 3 AP a turn and no Dying: at 0 Health it dies, or falls Unconscious if the GM prefers. |
-| [[Minor enemies\|**Minor enemies**]] | Minions and Grunts (CV Multiplier below 1). |
+| [[Minions\|**Minion**]] | An NPC role with CV 25, with 3 AP a turn and no Dying: at 0 Health it dies, or falls Unconscious if the GM prefers. |
+| [[Minor enemies\|**Minor enemies**]] | Minions and Grunts (CV below 100). |
 | [[Rules Language\|**Move**]] | An Action with the Move trait. |
 | [[Moving and Leaving Your Square\|**Moved**]] | You moved with an Action that moves you, Evade included. Forced Movement, Reposition and Stand don't count. |
 | [[Moving Closer\|**Moves closer**]] | The distance between you is smaller after the movement; an Interrupt checks it square by square. |
@@ -116,7 +115,7 @@
 | [[Reposition\|**Reposition**]] | Moving a creature along a path you choose, up to its value. Not Forced Movement: it never passes through creatures, never enters hazards, and needs Line of Effect. |
 | [[Requirements\|**Requirements**]] | What you need to use an Action. |
 | [[Rest\|**Rest**]] | A day in a safe place. It includes a Sleep. |
-| [[The targets\|**Role**]] | What an NPC is for in a fight: Minion, Grunt, Standard or Elite. It sets the NPC's CV Multiplier, AP and the tables its ratings use. |
+| [[The targets\|**Role**]] | What an NPC is for in a fight: Minion, Grunt, Standard or Elite. It sets the NPC's CV, AP and the tables its ratings use. |
 | [[Rolls\|**Roll**]] | Anything you roll: a Check, a Save, a Weapon, Power or Signature roll, or an Attribute Action. |
 | [[Rounds\|**Round**]] | One full cycle of turns. |
 | [[Saves\|**Save**]] | A roll a creature makes against an effect; its three values are for Tier 1 / 2 / 3. |
@@ -138,7 +137,8 @@
 | [[Squeezing\|**Squeezing**]] | Moving through a gap one square narrower than you: Difficult Terrain, and Doomed and Vulnerable if you stop there. |
 | [[Size\|**SR**]] | Size Rank: a creature's Size as a number from 1 (Tiny) to 7 (Titanic). Medium is SR 3. |
 | [[Stacking\|**Stacking**]] | Bonuses don't add up: for each value (Guard included) use the highest bonus and the highest penalty. "Increase by N", Boons, Banes and AP losses do add up. |
-| [[Standards\|**Standard**]] | An NPC role with a CV Multiplier of 1: about 50 Health at level 1, dies to about 2 PC turns. |
+| [[Stages\|**Stage**]] | A group of levels: Stage 1 is levels 1-4, Stage 2 levels 5-7, Stage 3 levels 8-10. It raises your Modifiers and sets the Bestiary's row. |
+| [[Standards\|**Standard**]] | An NPC role with CV 100: about 56 Health at Stage 1, dies to about 2 to 3 PC turns. |
 | [[Steadiness\|**Steadiness**]] | A creature's resistance to being moved: it reduces the value of Forced Movement and Reposition. Normally 0. |
 | [[Chapter 6: Basic Actions\|**Steel Yourself**]] | The Basic Action that uses your Rally Points. |
 | [[Strike\|**Strike**]] | An Action that tries to hit a creature. At most 3 per turn. |

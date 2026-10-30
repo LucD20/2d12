@@ -118,7 +118,7 @@ Each fix found by bisection at level 1 so that the encounter (Elite + 2 Standard
 
 ## 5. The Standard day on the new scale
 
-spec.mjs day(): four fights with no Rest; Momentum after each fight harder than easy; Rally Points carried over; a Daily in the hard fight. **New scale:** easy 3 Standards | standard 4 Standards | standard Elite + 2 Standards | hard Elite + 3 Standards (CV 5). **Today's scale** for comparison: the same, hard 2 Elites + 2 Standards (CV 6). **The proposal** = the refit + the Elite's damage fix + the Grunt's Health fix (section 4). Cleared · Downs a day (the party) · Rally Points left.
+spec.mjs day(): four fights with no Rest; Momentum after each fight harder than easy; Rally Points carried over; a Daily in the hard fight. **New scale:** easy 3 Standards | standard 4 Standards | standard Elite + 2 Standards | hard Elite + 3 Standards (CV 5). **Today's scale** for comparison: the same, hard 2 Elites + 2 Standards (CV 6). **The proposal** = the refit + the Elite's damage fix + the Grunt's Health fix (section 4); at 33% the decided numbers (Health ×1.10, damage ×1.38, Elite damage ×0.75, Grunt Health ×0.75). Cleared · Downs a day (the party) · Rally Points left.
 
 | NPCs | Scale | Level 1 | Level 2 | Level 3 |
 |---|---|---|---|---|
@@ -126,29 +126,29 @@ spec.mjs day(): four fights with no Rest; Momentum after each fight harder than 
 | today's Bestiary, today's Health factor | new | 99% · 0.97 · 48% | 98% · 1.18 · 48% | 100% · 0.86 · 56% |
 | refit 33%, no role fix | today's | 23% · 4.74 · 40% | 35% · 4.24 · 45% | 72% · 2.82 · 44% |
 | refit 33%, no role fix | new | 75% · 3.10 · 31% | 85% · 2.60 · 38% | 98% · 1.52 · 47% |
-| **the proposal, 33%** | new | 93% · 2.04 · 33% | 95% · 1.67 · 42% | 100% · 1.01 · 52% |
+| **the proposal, 33%** | new | 93% · 2.01 · 32% | 95% · 1.68 · 42% | 100% · 0.97 · 53% |
 | refit 40%, no role fix | today's | 7% · 5.70 · 40% | 11% · 5.42 · 46% | 41% · 4.31 · 44% |
 | refit 40%, no role fix | new | 43% · 4.79 · 34% | 55% · 4.21 · 37% | 88% · 2.83 · 38% |
 | **the proposal, 40%** | new | 72% · 3.54 · 30% | 82% · 2.88 · 36% | 96% · 1.94 · 43% |
-| the proposal, 33%: Smite + Lay On Hands + Double Shot + Rolling Shot (a check) | new | 94% · 1.62 · 28% | 97% · 1.15 · 38% | 100% · 0.63 · 51% |
+| the proposal, 33%: Smite + Lay On Hands + Double Shot + Rolling Shot (a check) | new | 96% · 1.49 · 29% | 96% · 1.25 · 39% | 100% · 0.65 · 51% |
 
 ## 5b. The proposal as a whole (target 33%): fights by CV
 
-The refit with the Elite's damage fix and the Grunt's Health fix. Rounds · Health lost · a PC Down · the party wins. Last column: the mixed party at level 1 (a check).
+The decided numbers: the refit (Health ×1.10, damage ×1.38), Elite damage ×0.75, Grunt Health ×0.75. Rounds · Health lost · a PC Down · the party wins. Last column: the mixed party at level 1 (a check).
 
 | Fight | target rounds | Level 1 | Level 2 | Level 3 | mixed party, level 1 |
 |---|---:|---|---|---|---|
 | easy: 3 Standards (CV 3) | 2.5 | 2.6 r · 20% · Down 9% · won 100% | 2.5 r · 19% · Down 7% · won 100% | 2.4 r · 17% · Down 5% · won 100% | 2.7 r · 12% · Down 7% · won 100% |
-| standard: 4 Standards (CV 4) | 3.5 | 3.5 r · 32% · Down 27% · won 100% | 3.4 r · 31% · Down 23% · won 100% | 3.3 r · 27% · Down 17% · won 100% | 3.5 r · 20% · Down 18% · won 100% |
-| standard: Elite + 2 Standards (CV 4) | 3.5 | 3.6 r · 34% · Down 35% · won 100% | 3.5 r · 32% · Down 28% · won 100% | 3.3 r · 28% · Down 22% · won 100% | 3.6 r · 22% · Down 27% · won 100% |
+| standard: 4 Standards (CV 4) | 3.5 | 3.5 r · 32% · Down 27% · won 100% | 3.4 r · 31% · Down 23% · won 100% | 3.3 r · 27% · Down 16% · won 100% | 3.5 r · 20% · Down 18% · won 100% |
+| standard: Elite + 2 Standards (CV 4) | 3.5 | 3.6 r · 33% · Down 36% · won 100% | 3.5 r · 32% · Down 29% · won 100% | 3.3 r · 27% · Down 22% · won 100% | 3.6 r · 22% · Down 26% · won 100% |
 | standard: 2 Elites (CV 4) | 3.5 | 3.7 r · 36% · Down 39% · won 100% | 3.6 r · 34% · Down 36% · won 100% | 3.3 r · 29% · Down 25% · won 100% | 3.7 r · 24% · Down 32% · won 100% |
-| standard: 8 Grunts (CV 4) | 3.5 | 3.3 r · 33% · Down 20% · won 100% | 3.3 r · 32% · Down 15% · won 100% | 3.1 r · 27% · Down 11% · won 100% | 3.3 r · 21% · Down 10% · won 100% |
-| standard: 2 Standards + 8 Minions (CV 4) | 3.5 | 4.1 r · 33% · Down 30% · won 100% | 4.1 r · 31% · Down 25% · won 100% | 4.0 r · 28% · Down 21% · won 100% | 4.0 r · 18% · Down 16% · won 100% |
-| hard: 5 Standards (CV 5) | 4-4.5 | 4.8 r · 49% · Down 57% · won 95% | 4.7 r · 46% · Down 50% · won 97% | 4.3 r · 36% · Down 39% · won 99% | 4.7 r · 34% · Down 43% · won 97% |
-| hard: Elite + 3 Standards (CV 5) | 4-4.5 | 5.0 r · 50% · Down 63% · won 95% | 4.8 r · 47% · Down 54% · won 98% | 4.3 r · 35% · Down 41% · won 99% | 4.8 r · 35% · Down 48% · won 97% |
-| deadly: 6 Standards (CV 6) | 5 | 6.0 r · 70% · Down 82% · won 71% | 6.0 r · 65% · Down 78% · won 79% | 5.5 r · 51% · Down 65% · won 91% | 5.9 r · 56% · Down 72% · won 78% |
-| deadly: 2 Elites + 2 Standards (CV 6) | 5 | 6.2 r · 74% · Down 85% · won 66% | 6.3 r · 67% · Down 80% · won 78% | 5.6 r · 51% · Down 66% · won 92% | 6.2 r · 60% · Down 79% · won 75% |
-| beyond: 8 Standards (CV 8, today's deadly) |  | 4.4 r · 98% · Down 99% · won 7% | 4.9 r · 96% · Down 99% · won 11% | 6.0 r · 87% · Down 94% · won 34% | 5.0 r · 93% · Down 97% · won 16% |
+| standard: 8 Grunts (CV 4) | 3.5 | 3.6 r · 36% · Down 25% · won 100% | 3.5 r · 34% · Down 19% · won 100% | 3.4 r · 29% · Down 13% · won 100% | 3.6 r · 22% · Down 9% · won 100% |
+| standard: 2 Standards + 8 Minions (CV 4) | 3.5 | 4.1 r · 33% · Down 30% · won 100% | 4.1 r · 31% · Down 25% · won 100% | 4.0 r · 28% · Down 21% · won 100% | 4.1 r · 19% · Down 17% · won 100% |
+| hard: 5 Standards (CV 5) | 4-4.5 | 4.9 r · 49% · Down 58% · won 95% | 4.7 r · 46% · Down 52% · won 97% | 4.3 r · 36% · Down 38% · won 99% | 4.6 r · 33% · Down 43% · won 98% |
+| hard: Elite + 3 Standards (CV 5) | 4-4.5 | 5.0 r · 50% · Down 61% · won 95% | 4.8 r · 47% · Down 54% · won 97% | 4.3 r · 35% · Down 41% · won 99% | 4.8 r · 35% · Down 49% · won 96% |
+| deadly: 6 Standards (CV 6) | 5 | 6.0 r · 70% · Down 83% · won 72% | 6.0 r · 66% · Down 78% · won 78% | 5.6 r · 52% · Down 66% · won 90% | 5.8 r · 55% · Down 68% · won 78% |
+| deadly: 2 Elites + 2 Standards (CV 6) | 5 | 6.3 r · 74% · Down 86% · won 66% | 6.3 r · 67% · Down 81% · won 78% | 5.6 r · 50% · Down 65% · won 92% | 6.2 r · 59% · Down 80% · won 76% |
+| beyond: 8 Standards (CV 8, today's deadly) |  | 4.4 r · 98% · Down 100% · won 7% | 4.8 r · 96% · Down 99% · won 11% | 5.9 r · 89% · Down 95% · won 31% | 4.9 r · 93% · Down 98% · won 15% |
 
 ## 6. Tiers 2 and 3 (levels 5-10): from LV's stand-ins
 
@@ -162,13 +162,13 @@ No class has levels above 3 yet, so the steps of model A come from LV (progressi
 
 ## 7. The proposed tables (target 33%)
 
-Today's level 1 numbers × the refit (Health ×1.10, damage ×1.38; Elite damage ×0.75 more, Grunt Health ×0.69 more) × the tier (section 6). Health Multipliers rounded to 0.25, damage to 0.5. The ratings keep today's level 1 steps at every tier (no drift between ratings inside a tier). Health Base, Attributes and Defenses don't change.
+Today's level 1 numbers × the refit (Health ×1.10, damage ×1.38; Elite damage ×0.75 more, Grunt Health ×0.75 more) × the tier (section 6). Health Multipliers rounded to 0.25, damage to 0.5. The ratings keep today's level 1 steps at every tier (no drift between ratings inside a tier). Health Base, Attributes and Defenses don't change.
 
 ### Minion
 
 | Tier | Health Multiplier terrible | Health Multiplier low | Health Multiplier medium | Health Multiplier high | damage terrible | damage low | damage medium | damage high | all Medium: Health |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 1 (1-4) | ×0 | ×0.75 | ×1 | ×1.25 | 1.5 / 3.5 | 2 / 5 | 3 / 5.5 | 3.5 / 7 | 6 |
+| 1 (1-4) | ×0 | ×0.75 | ×1 | ×1.5 | 1.5 / 3.5 | 2 / 5 | 3 / 5.5 | 3.5 / 7 | 6 |
 | 2 (5-7) | ×0 | ×1 | ×1.25 | ×1.5 | 1.5 / 4 | 2.5 / 6 | 3.5 / 6.5 | 4 / 8.5 | 8 |
 | 3 (8-10) | ×0 | ×1.25 | ×1.75 | ×2.25 | 2 / 5 | 3 / 6.5 | 4 / 7.5 | 5 / 9.5 | 10 |
 | today, level 1 | ×0 | ×0.75 | ×1 | ×1.25 | 1 / 2.5 | 1.5 / 3.5 | 2 / 4 | 2.5 / 5 | 6 |
@@ -177,27 +177,27 @@ Today's level 1 numbers × the refit (Health ×1.10, damage ×1.38; Elite damage
 
 | Tier | Health Multiplier terrible | Health Multiplier low | Health Multiplier medium | Health Multiplier high | Health Multiplier extreme | damage terrible | damage low | damage medium | damage high | damage extreme | all Medium: Health |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 1 (1-4) | ×2 | ×2.75 | ×3.75 | ×4.75 | ×5.75 | 3 / 4 | 3.5 / 5 | 4 / 6 | 5.5 / 7.5 | 6 / 9.5 | 22 |
-| 2 (5-7) | ×2.25 | ×3.25 | ×4.5 | ×5.5 | ×6.75 | 3.5 / 5 | 4 / 6 | 5 / 7.5 | 6.5 / 9.5 | 7.5 / 12 | 24 |
-| 3 (8-10) | ×3 | ×4.5 | ×6 | ×7.75 | ×9.25 | 4 / 5.5 | 5 / 6.5 | 5.5 / 8.5 | 7.5 / 10.5 | 8.5 / 13.5 | 30 |
+| 1 (1-4) | ×2 | ×3 | ×4.25 | ×5.25 | ×6.25 | 3 / 4 | 3.5 / 5 | 4 / 6 | 5.5 / 7.5 | 6 / 9.5 | 24 |
+| 2 (5-7) | ×2.5 | ×3.75 | ×4.75 | ×6 | ×7.25 | 3.5 / 5 | 4 / 6 | 5 / 7.5 | 6.5 / 9.5 | 7.5 / 12 | 26 |
+| 3 (8-10) | ×3.25 | ×5 | ×6.75 | ×8.25 | ×10 | 4 / 6 | 5 / 6.5 | 6 / 8.5 | 7.5 / 10.5 | 8.5 / 13.5 | 34 |
 | today, level 1 | ×2.5 | ×3.75 | ×5 | ×6.25 | ×7.5 | 2 / 3 | 2.5 / 3.5 | 3 / 4.5 | 4 / 5.5 | 4.5 / 7 | 26 |
 
 ### Standard
 
 | Tier | Health Multiplier terrible | Health Multiplier low | Health Multiplier medium | Health Multiplier high | Health Multiplier extreme | damage terrible | damage low | damage medium | damage high | damage extreme | all Medium: Health |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 1 (1-4) | ×3.75 | ×5.75 | ×7.75 | ×9.5 | ×11.5 | 4 / 6 | 5 / 8.5 | 6 / 11 | 7.5 / 13 | 9.5 / 16 | 56 |
+| 1 (1-4) | ×3.75 | ×5.75 | ×7.75 | ×9.75 | ×11.5 | 4 / 6 | 5 / 8.5 | 6 / 11 | 7.5 / 13 | 9.5 / 16 | 56 |
 | 2 (5-7) | ×4.5 | ×6.75 | ×9 | ×11.25 | ×13.5 | 5 / 7.5 | 6 / 10 | 7.5 / 13.5 | 9.5 / 16 | 12 / 19.5 | 62 |
-| 3 (8-10) | ×6.25 | ×9.25 | ×12.5 | ×15.5 | ×18.5 | 5.5 / 8.5 | 6.5 / 11.5 | 8.5 / 15.5 | 10.5 / 18 | 13.5 / 22 | 84 |
+| 3 (8-10) | ×6.25 | ×9.25 | ×12.5 | ×15.5 | ×18.75 | 6 / 8.5 | 6.5 / 11.5 | 8.5 / 15.5 | 10.5 / 18 | 13.5 / 22 | 84 |
 | today, level 1 | ×3.5 | ×5.25 | ×7 | ×8.75 | ×10.5 | 3 / 4.5 | 3.5 / 6 | 4.5 / 8 | 5.5 / 9.5 | 7 / 11.5 | 50 |
 
 ### Elite
 
 | Tier | Health Multiplier terrible | Health Multiplier low | Health Multiplier medium | Health Multiplier high | Health Multiplier extreme | damage terrible | damage low | damage medium | damage high | damage extreme | all Medium: Health |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 1 (1-4) | ×6.5 | ×9.75 | ×13.25 | ×16.5 | ×19.75 | 4 / 6 | 5.5 / 9 | 7 / 11 | 9 / 13.5 | 10.5 / 15.5 | 118 |
-| 2 (5-7) | ×7.75 | ×11.5 | ×15.5 | ×19.25 | ×23.25 | 5 / 7.5 | 7 / 10.5 | 9 / 13.5 | 10.5 / 16.5 | 12.5 / 19 | 136 |
-| 3 (8-10) | ×10.75 | ×16 | ×21.25 | ×26.5 | ×32 | 5.5 / 8.5 | 8 / 12 | 10 / 15 | 12 / 18.5 | 14.5 / 21.5 | 182 |
+| 1 (1-4) | ×6.5 | ×10 | ×13.25 | ×16.5 | ×19.75 | 4 / 6 | 5.5 / 9 | 7 / 11 | 9 / 13.5 | 10.5 / 15.5 | 118 |
+| 2 (5-7) | ×7.75 | ×11.5 | ×15.5 | ×19.25 | ×23.25 | 5 / 7.5 | 7 / 11 | 9 / 13.5 | 11 / 16.5 | 12.5 / 19 | 136 |
+| 3 (8-10) | ×10.75 | ×16 | ×21.25 | ×26.75 | ×32 | 5.5 / 8.5 | 8 / 12 | 10 / 15 | 12 / 18.5 | 14.5 / 21.5 | 182 |
 | today, level 1 | ×6 | ×9 | ×12 | ×15 | ×18 | 4 / 6 | 5.5 / 8.5 | 7 / 10.5 | 8.5 / 13 | 10 / 15 | 108 |
 
 ## 8. The PCs' Health: (Level + 10) / 10 today, (Level + 17) / 16 decided
@@ -207,4 +207,4 @@ Today's level 1 numbers × the refit (Health ×1.10, damage ×1.38; Elite damage
 | paladin-smite (today → decided) | 39 → 40 | 43 → 42 | 46 → 44 | 50 → 46 | 53 → 49 | 64 → 55 | 70 → 60 |
 | archer-double (today → decided) | 27 → 27 | 29 → 29 | 31 → 30 | 34 → 32 | 36 → 33 | 43 → 37 | 47 → 41 |
 
-Run time: 1356 s.
+Run time: 1360 s.

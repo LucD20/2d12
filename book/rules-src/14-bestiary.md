@@ -5,27 +5,24 @@ You build an NPC by picking a **role**, then a **rating** for each of its number
 
 ## The targets
 
-Each role has a **CV Multiplier**: at level 1, an NPC's **Combat Value (CV)** is its role's CV Multiplier (later levels are not written yet). A typical fight is **4 PCs against enemies with a total CV of 4** (CV 1 per PC). It lasts about **3 rounds** and costs the party about **40% of its Health**. A level 1 PC deals about 22 to 27 damage a turn to one creature, and has 19 to 36 Health (about 28).
+Each role has a **Combat Value (CV)**: what one NPC of the role counts for in an encounter. It is lower for an NPC of an earlier [[Stages|Stage]] than the party (see [[Building an encounter]]). A typical fight is **4 PCs against enemies with a total CV of 400** (CV 100 per PC). It lasts about **3½ rounds** and costs the party about **a third of its Health**. A level 1 PC deals about 20 to 25 damage a turn to one creature, and has 27 to 40 Health.
 
-| Role | CV Multiplier | AP a turn | Takes about | Deals about (per turn, to an average PC) |
+| Role | CV | AP a turn | Takes about | Deals about (per turn, to an average PC) |
 |---|---|---|---|---|
-| **Minion** | ¼ | **3** | one PC hit | 3 to 4 |
-| **Grunt** | ½ | 5 | 1 PC turn | 5 |
-| **Standard** | 1 | 5 | 2 PC turns | 7 to 8 |
-| **Elite** | 2 | 5 | 4 to 5 PC turns | 15 |
+| **Minion** | 25 | **3** | one PC hit | 3 |
+| **Grunt** | 50 | 5 | 1 PC turn | 6 to 7 |
+| **Standard** | 100 | 5 | 2 to 3 PC turns | 10 to 11 |
+| **Elite** | 200 | 5 | 5 PC turns | 17 to 18 |
 
 **Minions have 3 AP a turn**, not 5: quick, simple creatures that move and strike, and die fast.
 
 ### Minor enemies
 
-**Minor enemies** are Minions and Grunts: the roles with a CV Multiplier below 1.
+**Minor enemies** are Minions and Grunts: the roles with a CV below 100.
 
 ## Ratings
 
-Each role has tables (below) with five **ratings**: **Terrible, Low, Medium, High, Extreme**. Medium is the role's normal value; the others go down or up from it. Minions have no Extreme. The rows of a table are **levels**: levels 1 to 3 are filled; level 4 waits for the PC levels. NPCs grow with the party: from level 2 an NPC's Health follows the PCs' damage and its damage follows the PCs' Health. A Medium NPC keeps exact pace with the PCs, a Low or Terrible one falls a little behind each level and a High or Extreme one pulls a little ahead (about 2% to 5% a level in how hard the fight is), and a level 1 Basic attack is a little higher than a bare calculation would give. The tables already include all of it; Attributes and Defenses don't change.
-
-> [!tbd]
-> Level 4 and up are empty until those PC levels are written.
+Each role has tables (below) with five **ratings**: **Terrible, Low, Medium, High, Extreme**. Medium is the role's normal value; the others go down or up from it. Minions have no Extreme. The rows of the Health and Basic attack tables are **[[Stages]]**: **Stage 1** (levels 1 to 4), **Stage 2** (levels 5 to 7) and **Stage 3** (levels 8 to 10). An NPC uses the row of its level's Stage, and nothing changes inside a Stage. Each rating keeps the same step from Medium at every Stage. Attributes, Defenses and Modifiers don't change with the Stage.
 
 - **Attributes**: by default one **High**, two **Medium** and one **Low**.
 - **Health**: a rating for the **Body Health Multiplier** and one for the **Mind Health Multiplier**, Medium by default. A brute might have High Body and Low Mind; a ghost, Terrible Body and High Mind.
@@ -42,7 +39,7 @@ An NPC has an **Armor Defense** and a **Ward Defense**. Each one is a rating fro
 
 ## Attributes and Modifiers
 
-Assign the Attributes to **Body, Mind, Appeal and Instinct**. Choose a **Weapon Attribute** and a **Power Attribute**: each Modifier is **⌈Attribute ÷ 2⌉ + 1**, as for a PC (see [[Weapon, Power and Signature Modifiers]]). Its Vs. Attributes are 13 + half, as for anyone.
+Assign the Attributes to **Body, Mind, Appeal and Instinct**. Choose a **Weapon Attribute** and a **Power Attribute**: each Modifier is **⌈Attribute ÷ 2⌉ + 1**, as for a PC (see [[Weapon, Power and Signature Modifiers]]). Its Vs. Attributes are 13 + half, as for anyone. **An NPC's Modifiers don't grow with its Stage** (its Health and damage tables do), and are never above +4.
 
 ## Health
 
@@ -81,7 +78,7 @@ Special Actions make an NPC interesting. **Every role has them, Minions included
 | 2 AP | Round | × 2.2 |
 | 3 AP | Encounter | × 3.5 |
 
-Minions have at most 2 AP Special Actions (3 AP is their whole turn). For example, a level 1 Standard's Medium Basic attack averages 4.5 / 7.5: its Medium 2 AP Special averages about 10 / 16.5.
+Minions have at most 2 AP Special Actions (3 AP is their whole turn). For example, a Stage 1 Standard's Medium Basic attack averages 6 / 11: its Medium 2 AP Special averages about 13 / 24.
 
 - **Area Save Actions** (a Save the targets roll, DC 11 + the Modifier): about **half** the damage, to each creature in the area.
 
@@ -91,11 +88,11 @@ A condition is worth **steps of rating**: **Mild 1, Moderate 2, Severe 3**. An A
 
 | Severity | Examples |
 |---|---|
-| **Mild** | Hindered (EoT); 1 Bane on its next roll; Pushed or Pulled 1 or 2; Bright light on it (it can't hide) |
-| **Moderate** | Prone; Vulnerable 1 (EoT); Immobilized (EoT); Enfeebled 1; Slowed 1; Pushed 3 or more |
-| **Severe** | Vulnerable 2 (EoT); Immobilized until it escapes; Slowed 2; Doomed on its next roll |
+| **Mild** | Hindered (EoT); 1 Bane on its next roll; Pushed, Pulled or Slid (any distance); Bright light on it (it can't hide) |
+| **Moderate** | Vulnerable 1 (EoT); Immobilized (EoT); Immobilized until it escapes; Enfeebled 1 |
+| **Severe** | Prone; Slowed 1; Vulnerable 2 (EoT); Doomed on its next roll |
 
-A condition that lasts longer than EoT, or that a Save can't shake off, is one step more severe. A condition on Tier 3 only costs one step less.
+**Slowed 2** is one step beyond Severe (4 steps). Conditions that cost AP (Prone, Slowed) are the strongest; conditions that only move a creature are the weakest. A condition that lasts longer than EoT, or that a Save can't shake off, is one step more severe, unless the table already lists that duration. A condition on Tier 3 only costs one step less.
 
 ### Reactions
 
@@ -115,186 +112,163 @@ An Elite can have Escalation (the NPC sheet's switch). Give it one or two Escala
 
 **Attributes**
 
-| Level | **Terrible** | **Low** | **Medium** | **High** |
+| Stage | **Terrible** | **Low** | **Medium** | **High** |
 |---|---|---|---|---|
-| **Level 1** | -2 | -1 | +0 | +1 |
-| **Level 2** | -2 | -1 | +0 | +1 |
-| **Level 3** | -2 | -1 | +0 | +1 |
-| **Level 4** | — | — | — | — |
+| **Every Stage** | -2 | -1 | +0 | +1 |
 
 **Health Multiplier (Health Base +1)**
 
-| Level | **Terrible** | **Low** | **Medium** | **High** |
+| Stage | **Terrible** | **Low** | **Medium** | **High** |
 |---|---|---|---|---|
-| **Level 1** | ×0 | ×0.75 | ×1 | ×1.25 |
-| **Level 2** | ×0 | ×0.75 | ×1.25 | ×1.5 |
-| **Level 3** | ×0 | ×0.75 | ×1.25 | ×1.5 |
-| **Level 4** | — | — | — | — |
+| **Stage 1** (levels 1-4) | ×0 | ×0.75 | ×1 | ×1.25 |
+| **Stage 2** (levels 5-7) | ×0 | ×1 | ×1.25 | ×1.5 |
+| **Stage 3** (levels 8-10) | ×0 | ×1.25 | ×1.75 | ×2.25 |
 
 **Defense (Armor Defense or Ward Defense)**
 
-| Level | **Terrible** | **Low** | **Medium** | **High** |
+| Stage | **Terrible** | **Low** | **Medium** | **High** |
 |---|---|---|---|---|
-| **Level 1** | 11 | 11 | 12 | 13 |
-| **Level 2** | 11 | 11 | 12 | 13 |
-| **Level 3** | 11 | 11 | 12 | 13 |
-| **Level 4** | — | — | — | — |
+| **Every Stage** | 11 | 11 | 12 | 13 |
 
 **Basic attack, average damage: Tier 2 / Tier 3**
 
-| Level | **Terrible** | **Low** | **Medium** | **High** |
+| Stage | **Terrible** | **Low** | **Medium** | **High** |
 |---|---|---|---|---|
-| **Level 1** | 1 / 2.5 | 1.5 / 3.5 | 2 / 4 | 2.5 / 5 |
-| **Level 2** | 1.5 / 2.5 | 2 / 3.5 | 2.5 / 4.5 | 3 / 5.5 |
-| **Level 3** | 1.5 / 3 | 2 / 4 | 2.5 / 5 | 3 / 6 |
-| **Level 4** | — | — | — | — |
+| **Stage 1** (levels 1-4) | 1.5 / 3.5 | 2 / 5 | 3 / 5.5 | 3.5 / 7 |
+| **Stage 2** (levels 5-7) | 1.5 / 4 | 2.5 / 6 | 3.5 / 6.5 | 4 / 8.5 |
+| **Stage 3** (levels 8-10) | 2 / 5 | 3 / 6.5 | 4 / 7.5 | 5 / 9.5 |
 
-With every rating Medium, a level 1 minion has **6 Health**.
+With every rating Medium, a Stage 1 minion has **6 Health** (Stage 2: 8, Stage 3: 10).
 
 ### Grunts
 
 **Attributes**
 
-| Level | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
+| Stage | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
 |---|---|---|---|---|---|
-| **Level 1** | -2 | -1 | +0 | +1 | +2 |
-| **Level 2** | -2 | -1 | +0 | +1 | +2 |
-| **Level 3** | -2 | -1 | +0 | +1 | +2 |
-| **Level 4** | — | — | — | — | — |
+| **Every Stage** | -2 | -1 | +0 | +1 | +2 |
 
 **Health Multiplier (Health Base +3)**
 
-| Level | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
+| Stage | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
 |---|---|---|---|---|---|
-| **Level 1** | ×2.5 | ×3.75 | ×5 | ×6.25 | ×7.5 |
-| **Level 2** | ×3 | ×4 | ×5.5 | ×7 | ×8.5 |
-| **Level 3** | ×2.5 | ×4 | ×5.5 | ×7.5 | ×9 |
-| **Level 4** | — | — | — | — | — |
+| **Stage 1** (levels 1-4) | ×2 | ×3 | ×4.25 | ×5.25 | ×6.25 |
+| **Stage 2** (levels 5-7) | ×2.5 | ×3.75 | ×4.75 | ×6 | ×7.25 |
+| **Stage 3** (levels 8-10) | ×3.25 | ×5 | ×6.75 | ×8.25 | ×10 |
 
 **Defense (Armor Defense or Ward Defense)**
 
-| Level | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
+| Stage | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
 |---|---|---|---|---|---|
-| **Level 1** | 11 | 12 | 13 | 14 | 15 |
-| **Level 2** | 11 | 12 | 13 | 14 | 15 |
-| **Level 3** | 11 | 12 | 13 | 14 | 15 |
-| **Level 4** | — | — | — | — | — |
+| **Every Stage** | 11 | 12 | 13 | 14 | 15 |
 
 **Basic attack, average damage: Tier 2 / Tier 3**
 
-| Level | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
+| Stage | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
 |---|---|---|---|---|---|
-| **Level 1** | 2 / 3 | 2.5 / 3.5 | 3 / 4.5 | 4 / 5.5 | 4.5 / 7 |
-| **Level 2** | 2 / 3 | 2.5 / 4 | 3.5 / 5 | 4 / 6.5 | 5 / 7.5 |
-| **Level 3** | 2 / 3 | 3 / 4.5 | 3.5 / 5.5 | 4.5 / 7 | 5.5 / 8.5 |
-| **Level 4** | — | — | — | — | — |
+| **Stage 1** (levels 1-4) | 3 / 4 | 3.5 / 5 | 4 / 6 | 5.5 / 7.5 | 6 / 9.5 |
+| **Stage 2** (levels 5-7) | 3.5 / 5 | 4 / 6 | 5 / 7.5 | 6.5 / 9.5 | 7.5 / 12 |
+| **Stage 3** (levels 8-10) | 4 / 6 | 5 / 6.5 | 6 / 8.5 | 7.5 / 10.5 | 8.5 / 13.5 |
 
-With every rating Medium, a level 1 grunt has **26 Health**.
+With every rating Medium, a Stage 1 grunt has **24 Health** (Stage 2: 26, Stage 3: 34).
 
 ### Standards
 
 **Attributes**
 
-| Level | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
+| Stage | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
 |---|---|---|---|---|---|
-| **Level 1** | -1 | +0 | +1 | +2 | +3 |
-| **Level 2** | -1 | +0 | +1 | +2 | +3 |
-| **Level 3** | -1 | +0 | +1 | +2 | +3 |
-| **Level 4** | — | — | — | — | — |
+| **Every Stage** | -1 | +0 | +1 | +2 | +3 |
 
 **Health Multiplier (Health Base +4)**
 
-| Level | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
+| Stage | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
 |---|---|---|---|---|---|
-| **Level 1** | ×3.5 | ×5.25 | ×7 | ×8.75 | ×10.5 |
-| **Level 2** | ×4 | ×6 | ×8 | ×10 | ×12 |
-| **Level 3** | ×4 | ×6 | ×8 | ×10 | ×12.5 |
-| **Level 4** | — | — | — | — | — |
+| **Stage 1** (levels 1-4) | ×3.75 | ×5.75 | ×7.75 | ×9.75 | ×11.5 |
+| **Stage 2** (levels 5-7) | ×4.5 | ×6.75 | ×9 | ×11.25 | ×13.5 |
+| **Stage 3** (levels 8-10) | ×6.25 | ×9.25 | ×12.5 | ×15.5 | ×18.75 |
 
 **Defense (Armor Defense or Ward Defense)**
 
-| Level | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
+| Stage | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
 |---|---|---|---|---|---|
-| **Level 1** | 11 | 12 | 13 | 14 | 15 |
-| **Level 2** | 11 | 12 | 13 | 14 | 15 |
-| **Level 3** | 11 | 12 | 13 | 14 | 15 |
-| **Level 4** | — | — | — | — | — |
+| **Every Stage** | 11 | 12 | 13 | 14 | 15 |
 
 **Basic attack, average damage: Tier 2 / Tier 3**
 
-| Level | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
+| Stage | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
 |---|---|---|---|---|---|
-| **Level 1** | 3 / 4.5 | 3.5 / 6 | 4.5 / 8 | 5.5 / 9.5 | 7 / 11.5 |
-| **Level 2** | 3 / 5 | 4 / 6.5 | 5 / 8.5 | 6.5 / 10.5 | 7.5 / 12.5 |
-| **Level 3** | 3 / 5 | 4.5 / 7 | 5.5 / 9.5 | 7 / 11.5 | 8.5 / 14 |
-| **Level 4** | — | — | — | — | — |
+| **Stage 1** (levels 1-4) | 4 / 6 | 5 / 8.5 | 6 / 11 | 7.5 / 13 | 9.5 / 16 |
+| **Stage 2** (levels 5-7) | 5 / 7.5 | 6 / 10 | 7.5 / 13.5 | 9.5 / 16 | 12 / 19.5 |
+| **Stage 3** (levels 8-10) | 6 / 8.5 | 6.5 / 11.5 | 8.5 / 15.5 | 10.5 / 18 | 13.5 / 22 |
 
-With every rating Medium, a level 1 standard has **50 Health**.
+With every rating Medium, a Stage 1 standard has **56 Health** (Stage 2: 62, Stage 3: 84).
 
 ### Elites
 
 **Attributes**
 
-| Level | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
+| Stage | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
 |---|---|---|---|---|---|
-| **Level 1** | +0 | +1 | +2 | +3 | +4 |
-| **Level 2** | +0 | +1 | +2 | +3 | +4 |
-| **Level 3** | +0 | +1 | +2 | +3 | +4 |
-| **Level 4** | — | — | — | — | — |
+| **Every Stage** | +0 | +1 | +2 | +3 | +4 |
 
 **Health Multiplier (Health Base +6)**
 
-| Level | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
+| Stage | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
 |---|---|---|---|---|---|
-| **Level 1** | ×6 | ×9 | ×12 | ×15 | ×18 |
-| **Level 2** | ×6.5 | ×10 | ×13.5 | ×17.5 | ×21 |
-| **Level 3** | ×6.5 | ×10 | ×13.5 | ×17.5 | ×21.5 |
-| **Level 4** | — | — | — | — | — |
+| **Stage 1** (levels 1-4) | ×6.5 | ×10 | ×13.25 | ×16.5 | ×19.75 |
+| **Stage 2** (levels 5-7) | ×7.75 | ×11.5 | ×15.5 | ×19.25 | ×23.25 |
+| **Stage 3** (levels 8-10) | ×10.75 | ×16 | ×21.25 | ×26.75 | ×32 |
 
 **Defense (Armor Defense or Ward Defense)**
 
-| Level | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
+| Stage | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
 |---|---|---|---|---|---|
-| **Level 1** | 12 | 13 | 14 | 15 | 16 |
-| **Level 2** | 12 | 13 | 14 | 15 | 16 |
-| **Level 3** | 12 | 13 | 14 | 15 | 16 |
-| **Level 4** | — | — | — | — | — |
+| **Every Stage** | 12 | 13 | 14 | 15 | 16 |
 
 **Basic attack, average damage: Tier 2 / Tier 3**
 
-| Level | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
+| Stage | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
 |---|---|---|---|---|---|
-| **Level 1** | 4 / 6 | 5.5 / 8.5 | 7 / 10.5 | 8.5 / 13 | 10 / 15 |
-| **Level 2** | 4.5 / 6.5 | 6 / 9 | 7.5 / 11.5 | 9 / 14 | 11 / 17 |
-| **Level 3** | 4.5 / 7 | 6 / 9.5 | 8 / 12.5 | 10 / 15.5 | 12 / 18.5 |
-| **Level 4** | — | — | — | — | — |
+| **Stage 1** (levels 1-4) | 4 / 6 | 5.5 / 9 | 7 / 11 | 9 / 13.5 | 10.5 / 15.5 |
+| **Stage 2** (levels 5-7) | 5 / 7.5 | 7 / 11 | 9 / 13.5 | 11 / 16.5 | 12.5 / 19 |
+| **Stage 3** (levels 8-10) | 5.5 / 8.5 | 8 / 12 | 10 / 15 | 12 / 18.5 | 14.5 / 21.5 |
 
-With every rating Medium, a level 1 elite has **108 Health**.
+With every rating Medium, a Stage 1 elite has **118 Health** (Stage 2: 136, Stage 3: 182).
 
 ## Building an encounter
 
-Add up the CV of the enemies. **CV 1 per PC is a normal fight**: ¾ is easy, 1½ is hard, 2 is deadly. Many Minions are cheap but act often: no more than 4 Minions per PC.
+Add up the CV of the enemies. **CV 100 per PC is a normal fight**: 75 per PC is easy, **125 is hard, 150 is deadly**. Many Minions are cheap but act often: no more than 4 Minions per PC.
 
-What the fight model gives for 4 PCs (all ratings Medium):
+**An NPC of an earlier Stage counts for less.** The NPCs of a Stage are the same at every level of it, so only the Stage matters:
 
-| Enemies | Rounds | Party Health lost |
+| The NPC's Stage is | Minion | Grunt | Standard | Elite |
+|---|---|---|---|---|
+| the party's Stage | 25 | 50 | 100 | 200 |
+| one Stage below | 20 | 40 | 80 | 160 |
+| two Stages below | 15 | 30 | 65 | 130 |
+
+What the fight model gives for 4 PCs (all ratings Medium, levels 1 to 3):
+
+| Enemies (total CV) | Rounds | Party Health lost |
 |---|---|---|
-| 4 Standards | 3 | about 40% |
-| 1 Elite and 2 Standards | 3 | about 45% |
-| 2 Elites | 3 | about 55% |
+| 3 Standards (300, easy) | 2½ | about 20% |
+| 4 Standards, 1 Elite and 2 Standards, or 8 Grunts (400) | 3½ | about a third |
+| 5 Standards, or 1 Elite and 3 Standards (500, hard) | 4½ to 5 | about half |
+| 6 Standards, or 2 Elites and 2 Standards (600, deadly) | 6 | half to three quarters; the party wins about 3 times in 4 |
 
-## Example NPCs (level 1)
+## Example NPCs (Stage 1)
 
-**Goblin Sneak** (Minion, CV ¼, 3 AP): Instinct High (+1), Body Medium (0), Mind Medium (0), Appeal Low (−1). Weapon Modifier +2 (Instinct). Body and Mind Health Low (×0.75): Health 6 (3 + 3). Armor Defense Medium (12), Ward Defense Low (11). **Speed 7** (fast: its Health is Low).
-- *Rusty Knife* (Basic attack, Medium): about 2 / 4 ([Mod] / 1d4 + [Mod] Pi).
-- *Dirty Trick* (Special, 1 AP, Round): Low damage + Mild condition = Medium: about 2 / 4, and Hindered (EoT).
+**Goblin Sneak** (Minion, CV 25, 3 AP): Instinct High (+1), Body Medium (0), Mind Medium (0), Appeal Low (−1). Weapon Modifier +2 (Instinct). Body and Mind Health Low (×0.75): Health 6 (3 + 3). Armor Defense Medium (12), Ward Defense Low (11). **Speed 7** (fast: its Health is Low).
+- *Rusty Knife* (Basic attack, Medium): about 3 / 5.5 (1d2 + [Mod] / 1d6 + [Mod] Pi).
+- *Dirty Trick* (Special, 1 AP, Round): Low damage + Mild condition = Medium: about 3 / 5.5, and Hindered (EoT).
 
-**Orc Warrior** (Standard, CV 1): Body High (+2), Instinct Medium (+1), Mind Medium (+1), Appeal Low (0). Weapon Modifier +2 (Body). Body Health High (×8.75), Mind Health Low (×5.25): Health 59 (Body 39, Mind 20). Armor Defense Medium (13), Ward Defense Low (12).
-- *Cleaver* (Basic attack, Medium): about 4.5 / 7.5 (1d4 + [Mod] / 1d10 + [Mod] Sl).
-- *Brutal Swing* (Special, 2 AP, Round): Low damage + Moderate condition = High: about 7.5 / 13, and Prone.
-- *Hold the Line* (Reaction, Trigger: an ally within 2 squares is hit; 1 AP): the attacker takes a Medium 1 AP Special one rating up: about 7.5 / 12.5 Sl.
+**Orc Warrior** (Standard, CV 100): Body High (+2), Instinct Medium (+1), Mind Medium (+1), Appeal Low (0). Weapon Modifier +2 (Body). Body Health High (×9.75), Mind Health Low (×5.75): Health 65 (Body 43, Mind 22). Armor Defense Medium (13), Ward Defense Low (12).
+- *Cleaver* (Basic attack, Medium): about 6 / 11 (1d8 + [Mod] / 2d8 + [Mod] Sl).
+- *Brutal Swing* (Special, 2 AP, Round): Terrible damage + Severe condition = High: about 9 / 13, and Prone.
+- *Hold the Line* (Reaction, Trigger: an ally within 2 squares is hit; 1 AP): the attacker takes a Medium 1 AP Special one rating up: about 10.5 / 18 Sl.
 
-**Ogre Chieftain** (Elite, CV 2): Body High (+3), Instinct Medium (+2), Mind Medium (+2), Appeal Low (+1). Weapon Modifier +3 (Body). Health Medium: 120 (Body 66, Mind 54). Armor Defense Medium (14), Ward Defense Low (13). Speed 4 (slow: High Basic attack). Escalation on.
-- *Club* (Basic attack, High): about 8 / 12 (1d8 + [Mod] / 2d8 + [Mod] Bl).
-- *Ground Slam* (Special, 3 AP, Encounter, Area 1 Emanation, a Save Action: Body Save, DC 14): half of a Medium 3 AP: about 17.5 / 11.5 / 0 (Tier 1 is the worst for them), and Prone on Tier 1.
+**Ogre Chieftain** (Elite, CV 200): Body High (+3), Instinct Medium (+2), Mind Medium (+2), Appeal Low (+1). Weapon Modifier +3 (Body). Health Medium: 132 (Body 73, Mind 59). Armor Defense Medium (14), Ward Defense Low (13). Speed 4 (slow: High Basic attack). Escalation on.
+- *Club* (Basic attack, High): about 9 / 13.5 (1d10 + [Mod] / 2d10 + [Mod] Bl).
+- *Ground Slam* (Special, 3 AP, Encounter, Area 1 Emanation, a Save Action: Body Save, DC 14): half of a Medium 3 AP: about 19.5 / 12 / 0 (Tier 1 is the worst for them), and Prone on Tier 1.
 - *Rally the Tribe* (1 Escalation, 1 AP): allies within 5 squares gain 1 Boon on their next Basic attack.

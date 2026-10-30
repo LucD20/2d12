@@ -8,8 +8,8 @@
 3. **Class.** Apply your class' Attribute increases. It also gives you a **Body Health Multiplier** and a **Mind Health Multiplier**, a **Rally** value, a **Speed Modifier**, a **Weapon Modifier** and a **Power Modifier**. Your Speed is your species' Speed plus your class' Speed Modifier.
 4. **Choices.** When a species or class says "or", pick one. A class's choices between two Attributes must be different from each other (see [[Distinct Choices]]).
 5. **[[Health Pool]].** Calculate it from your Attributes, the Health Multipliers and the Species Health values:
-    - Body Damage Threshold = ((Body + 2) × Body Health Multiplier + Species Body Health) × (Level ÷ 10 + 1)
-    - Mind Damage Threshold = ((Mind + 2) × Mind Health Multiplier + Species Mind Health) × (Level ÷ 10 + 1)
+    - Body Damage Threshold = ((Body + 2) × Body Health Multiplier + Species Body Health) × (Level + 17) ÷ 16
+    - Mind Damage Threshold = ((Mind + 2) × Mind Health Multiplier + Species Mind Health) × (Level + 17) ÷ 16
     - Health Pool = the two thresholds added together.
 6. **[[Rally Points]]** = your class' Rally value + ⌈(Body + Mind + your level) ÷ 2⌉.
 7. **Features and Talents.** Take the Features and Class Actions of your class for your level, the Picks its level list gives you, and the Talents they let you pick (the Talents are in the [[Talents]] document; weapons and armor in the [[Gear]] document).
@@ -31,6 +31,10 @@ A class's **Class Actions** are the Actions it gives you at level 1. A class can
 
 Each class has a **level list**: what you gain at each level (Features, Class Actions, Picks and Escalation abilities). When you reach a new level, you take what its entry gives you. Your Health thresholds grow with your level too (see Building a Character, step 5).
 
+### Stages
+
+The levels are grouped in **Stages**: **Stage 1** is levels 1 to 4, **Stage 2** levels 5 to 7, **Stage 3** levels 8 to 10. A new Stage raises your Modifiers (see [[Weapon, Power and Signature Modifiers]]) and the NPCs of the [[Bestiary]] (their tables have one row per Stage).
+
 ### Distinct Choices
 
 When your class gives you a choice between two Attributes, you can't pick an Attribute you already picked from another choice of the same kind:
@@ -48,6 +52,8 @@ Each class lists two Attributes for its **Weapon Modifier** and two for its **Po
 - **Power Modifier** = the higher of the class's two Power Attributes ÷ 2 + 1
 
 The Attribute a Modifier uses is your **Weapon Attribute** or your **Power Attribute**.
+
+**Your Modifiers grow with your [[Stages|Stage]]:** your Weapon and Power Modifiers are **+1 at level 5** (Stage 2) and **+2 at level 8** (Stage 3), but **never above +4**. A Modifier of +3 at level 1 is +4 from level 5 on.
 
 If the same Attribute is the higher one for both Modifiers, one of them uses its other Attribute instead. You choose which, and you can change that choice when you level up.
 

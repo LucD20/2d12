@@ -5,12 +5,12 @@
 
 Your **Health Pool** is the sum of two thresholds:
 
-- **Body Damage Threshold (BDT)** = ((Body + 2) × Body Health Multiplier + Species Body Health) × (Level ÷ 10 + 1)
-- **Mind Damage Threshold (MDT)** = ((Mind + 2) × Mind Health Multiplier + Species Mind Health) × (Level ÷ 10 + 1)
+- **Body Damage Threshold (BDT)** = ((Body + 2) × Body Health Multiplier + Species Body Health) × (Level + 17) ÷ 16
+- **Mind Damage Threshold (MDT)** = ((Mind + 2) × Mind Health Multiplier + Species Mind Health) × (Level + 17) ÷ 16
 
 Round each threshold up. The Health Multipliers come from your class, and the Species Health values from your species.
 
-*Example:* a level 4 Human Paladin has Body +2 and Mind +1. BDT = ((2 + 2) × 4 + 3) × 1.4 = 26.6, rounded up to **27**. MDT = ((1 + 2) × 4 + 4) × 1.4 = 22.4, rounded up to **23**. Health Pool = **50**.
+*Example:* a level 4 Human Paladin has Body +2 and Mind +1. BDT = ((2 + 2) × 4 + 3) × 21 ÷ 16 = 24.9, rounded up to **25**. MDT = ((1 + 2) × 4 + 4) × 21 ÷ 16 = **21**. Health Pool = **46**.
 
 Body and Mind are not separate pools. All damage reduces the same Health Pool. The thresholds only decide which conditions you suffer.
 

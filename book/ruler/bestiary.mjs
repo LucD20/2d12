@@ -165,10 +165,13 @@ export function run() {
   }
   L.push("");
   /** The proposal at a target: the refit, the Elite's damage fix and the Grunt's Health fix. */
-  const PROP = t => withFix(withFix(CALS[t], "elite", 1, FIX[t].elite["damage only"].x), "grunt", FIX[t].grunt["Health only"].x, 1);
+  // Lucas decided (2026-10-30): a third (33%), the measured refit rounded (Health ×1.10, damage ×1.38), Elites today's damage (×0.75), Grunt Health ×0.75 (not the measured 0.69).
+  // At 40% (not chosen) the measured fixes.
+  const DECIDED = withFix(withFix({ h: 1.10, d: 1.38 }, "elite", 1, 0.75), "grunt", 0.75, 1);
+  const PROP = t => (t === TARGETS[0] ? DECIDED : withFix(withFix(CALS[t], "elite", 1, FIX[t].elite["damage only"].x), "grunt", FIX[t].grunt["Health only"].x, 1));
 
   // 5. The Standard day.
-  L.push("## 5. The Standard day on the new scale", "", "spec.mjs day(): four fights with no Rest; Momentum after each fight harder than easy; Rally Points carried over; a Daily in the hard fight. **New scale:** easy 3 Standards | standard 4 Standards | standard Elite + 2 Standards | hard Elite + 3 Standards (CV 5). **Today's scale** for comparison: the same, hard 2 Elites + 2 Standards (CV 6). **The proposal** = the refit + the Elite's damage fix + the Grunt's Health fix (section 4). Cleared · Downs a day (the party) · Rally Points left.", "",
+  L.push("## 5. The Standard day on the new scale", "", "spec.mjs day(): four fights with no Rest; Momentum after each fight harder than easy; Rally Points carried over; a Daily in the hard fight. **New scale:** easy 3 Standards | standard 4 Standards | standard Elite + 2 Standards | hard Elite + 3 Standards (CV 5). **Today's scale** for comparison: the same, hard 2 Elites + 2 Standards (CV 6). **The proposal** = the refit + the Elite's damage fix + the Grunt's Health fix (section 4); at 33% the decided numbers (Health ×1.10, damage ×1.38, Elite damage ×0.75, Grunt Health ×0.75). Cleared · Downs a day (the party) · Rally Points left.", "",
     "| NPCs | Scale | Level 1 | Level 2 | Level 3 |", "|---|---|---|---|---|");
   const dayList = { new: [[["standard", 3]], [["standard", 4]], [["elite", 1], ["standard", 2]], [["elite", 1], ["standard", 3]]], today: [[["standard", 3]], [["standard", 4]], [["elite", 1], ["standard", 2]], [["elite", 2], ["standard", 2]]] };
   const dayCell = (lv, which, mkNpcs, hf = healthNew, keys = MAIN) => {
@@ -189,7 +192,7 @@ export function run() {
   log("days");
 
   // The proposal as a whole.
-  L.push(`## 5b. The proposal as a whole (target ${pc(TARGETS[0])}): fights by CV`, "", "The refit with the Elite's damage fix and the Grunt's Health fix. Rounds · Health lost · a PC Down · the party wins. Last column: the mixed party at level 1 (a check).", "",
+  L.push(`## 5b. The proposal as a whole (target ${pc(TARGETS[0])}): fights by CV`, "", "The decided numbers: the refit (Health ×1.10, damage ×1.38), Elite damage ×0.75, Grunt Health ×0.75. Rounds · Health lost · a PC Down · the party wins. Last column: the mixed party at level 1 (a check).", "",
     "| Fight | target rounds | Level 1 | Level 2 | Level 3 | mixed party, level 1 |", "|---|---:|---|---|---|---|");
   for (const [name, list, tr] of DIFF) { const P = PROP(TARGETS[0]); L.push(`| ${name} | ${tr} | ${[1, 2, 3].map(lv => cell(both(lv, list, P, RUNS, 31))).join(" | ")} | ${cell(both(1, list, P, RUNS, 31, ["mixed"]))} |`); }
   L.push("");
