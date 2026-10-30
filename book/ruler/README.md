@@ -34,7 +34,7 @@ One thing per line; `#` starts a comment. A class file (`classes/paladin-1.txt` 
 |---|---|---|
 | `class`, `role`, `level` | `class Paladin` · `level 1` | Its name (the party in fights.txt uses it, with the level) |
 | `attributes` | `attributes body 2, mind 1, instinct 0, appeal 0` | |
-| `health` | `health body x4 +3, mind x3 +4` | Multiplier and species bonus: ⌈((Attribute + 2) × mult + species) × (level + 10) / 10⌉ |
+| `health` | `health body x4 +3, mind x3 +4` | Multiplier and species bonus: ⌈((Attribute + 2) × mult + species) × (level + 10) / 10⌉ (the book since E3: (Level + 17) / 16; the class files keep the old factor unless they say `health-factor`) |
 | `armor`, `ward` | `armor 3` | AD = 11 + armor; WD = 11 + Power Modifier + ward |
 | `weapon-mod`, `power-mod`, `rally` | `rally 6` | Modifiers; the class's Rally value (Rally Points = rally + ⌈(Body + Mind + level) / 2⌉) |
 | `targeted` | `targeted 1.5` | How often NPCs choose this PC (1 = as often as anyone; a tank in front more, an archer behind less) |
@@ -207,7 +207,7 @@ matches 2[W] for a caster; the Standard day.
 ## The Paladin main build (pack P1, 2026-10-29): PROPOSED
 
 `classes/paladin-smite-1..3.txt` and `paladin-hands-1..3.txt` are the P1 main build with each Signature (`paladin-smite-1-hold.txt`: the same, holding
-Escalation for Hallowed Stance); `paladin-book-1.txt` is today's Paladin (the old level 2 files are in `classes/old/`, not read); `archer-3.txt` is a
+Escalation for Hallowed Stance); `paladin-book-1.txt` is today's Paladin (the old level 2 files are in `archive/ruler-old/classes-old/`); `archer-3.txt` is a
 stand-in (the level 2 Archer at level 3) until A1. `catalogue/paladin-p1.txt` prices the new cards. The cards, the budget table and the
 questions: **`book/paladin-p1.md`**. Level 1: sustained 86-87% of the baseline (today's Paladin 109%), Nova 151-161% (104%), Health 124% (114%),
 support 18-27% of a turn; growth +10% a level. `econ.mjs` section 3 now lists every class file, with the sustained budget checked on the turns

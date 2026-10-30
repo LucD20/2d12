@@ -13,7 +13,7 @@ encounter 8 Grunts: 8 grunt
 encounter 2 Standards + 8 Minions: 2 standard, 8 minion
 encounter 6 Standards (CV 6, hard): 6 standard
 
-# Adventuring days: the fights between two Rests (book, Bestiary: CV 1 per PC is a normal fight, 3/4 easy, 1 1/2 hard, 2 deadly).
+# Adventuring days: the fights between two Rests (the Bestiary since E3: CV 100 per PC is a normal fight, 75 easy, 125 hard, 150 deadly; here roles count 1/4, 1/2, 1, 2 per PC).
 # day <name>: <fight 1> | <fight 2> | ...      day-party <name>: <class file>, ... (the NPCs use the party's level)
 day-runs 1000
 day Standard day (easy, normal, normal, hard): 2 standard, 4 minion | 4 standard | 1 elite, 2 standard | 2 elite, 2 standard
