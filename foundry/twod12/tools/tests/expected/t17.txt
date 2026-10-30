@@ -1,51 +1,51 @@
---- every rating Medium, level 1 (the Bestiary: 6 / 26 / 50 / 108 Health)
+--- every rating Medium, level 1 (the Bestiary, v0.0.181: 6 / 24 / 56 / 118 Health)
 minion    Health 6 (3 + 3)  Attributes 0/0/0/0  AD 12 WD 12  AP 3
-grunt     Health 26 (13 + 13)  Attributes 0/0/0/0  AD 13 WD 13  AP 5
-standard  Health 50 (25 + 25)  Attributes 1/1/1/1  AD 13 WD 13  AP 5
-elite     Health 108 (54 + 54)  Attributes 2/2/2/2  AD 14 WD 14  AP 5
+grunt     Health 24 (12 + 12)  Attributes 0/0/0/0  AD 13 WD 13  AP 5
+standard  Health 56 (28 + 28)  Attributes 1/1/1/1  AD 13 WD 13  AP 5
+elite     Health 118 (59 + 59)  Attributes 2/2/2/2  AD 14 WD 14  AP 5
 --- every Defense rating (Terrible..Extreme; never below 11)
 minion    11 11 12 13 13
 grunt     11 12 13 14 15
 standard  11 12 13 14 15
 elite     12 13 14 15 16
 --- the Orc Warrior (Bestiary example): Body High, Mind Medium, Appeal Low, Instinct Medium; Body Health High, Mind Health Low; AD Medium, WD Low
-Health 59 (Body 39, Mind 20)  Attributes {"body":2,"mind":1,"appeal":0,"instinct":1}  AD 13 WD 12
+Health 65 (Body 43, Mind 22)  Attributes {"body":2,"mind":1,"appeal":0,"instinct":1}  AD 13 WD 12
 --- a Minion can't be Extreme (it counts as High); Terrible Health is x0
 Body 1  Body Health 1 (x0)  Mind Health 3
 --- Custom values (typed numbers); a typed Defense under 11 is 11
 Appeal 3  Body Health 44 (hm null)  AD 17 WD 9
 --- the derived NPC
-Orc Warrior                    pool 59  AP 5  Weapon 2 (body)  Power 2 (instinct)  Signature 2 from weapon  AD 13 WD 12  Standard CV 1
-a Minion                       pool 6  AP 3  Weapon 1 (body)  Power 1 (mind)  Signature 1 from weapon  AD 12 WD 12  Minion CV 0.25
-Elite, Power Attribute higher  pool 132  AP 5  Weapon 2 (body)  Power 3 (mind)  Signature 3 from power  AD 14 WD 14  Elite CV 2
+Orc Warrior                    pool 65  AP 5  Weapon 2 (body)  Power 2 (instinct)  Signature 2 from weapon  AD 13 WD 12  Standard CV 100
+a Minion                       pool 6  AP 3  Weapon 1 (body)  Power 1 (mind)  Signature 1 from weapon  AD 12 WD 12  Minion CV 25
+Elite, Power Attribute higher  pool 145  AP 5  Weapon 2 (body)  Power 3 (mind)  Signature 3 from power  AD 14 WD 14  Elite CV 200
 --- dice that come close (the Modifier taken out)
 0->[Mod]  0.4->[Mod]  1->1  2.5->1d4  3->1d4  4->1d6  5.5->1d10  7->2d6  8->2d6  10->2d8  12.5->2d12
 --- the Builder tab (Orc Warrior)
 Attributes: Body +2 [High] (High, Standard: +2) | Mind +1 [Medium] (Medium, Standard: +1) | Appeal +0 [Low] (Low, Standard: +0) | Instinct +1 [Medium] (Medium, Standard: +1)
-Health: Body Health 39 [High] ((Body +2 + 2) × 8.75 + 4 = 39) | Mind Health 20 [Low] ((Mind +1 + 2) × 5.25 + 4 = 19.75, rounded up to 20)
+Health: Body Health 43 [High] ((Body +2 + 2) × 9.75 + 4 = 43) | Mind Health 22 [Low] ((Mind +1 + 2) × 5.75 + 4 = 21.25, rounded up to 22)
 Defenses: Armor Defense 13 [Medium] (Medium, Standard: 13) | Ward Defense 12 [Low] (Low, Standard: 12)
 Speed: Speed 5 [5] (Every NPC has Speed 5 unless it says otherwise)
 Steadiness: Steadiness 0 [0] (Forced Movement and Reposition move it fully (a big or heavy creature can have 1 or more))
 chips of Body: Terrible −1, Low +0, Medium +1, High +2, Extreme +3
-Basic attack    Terrible 3 / 4.5 [1 + [Mod] / 1d4 + [Mod]] | Low 3.5 / 6 [1 + [Mod] / 1d6 + [Mod]] | Medium 4.5 / 8 [1d4 + [Mod] / 1d10 + [Mod]] | High 5.5 / 9.5 [1d6 + [Mod] / 2d6 + [Mod]] | Extreme 7 / 11.5 [1d8 + [Mod] / 2d8 + [Mod]]
-Special, 1 AP   Terrible 4 / 6.5 [2 + [Mod] / 1d8 + [Mod]] | Low 5 / 8.5 [1d4 + [Mod] / 1d12 + [Mod]] | Medium 6.5 / 11 [1d8 + [Mod] / 2d8 + [Mod]] | High 8 / 13.5 [1d10 + [Mod] / 2d10 + [Mod]] | Extreme 9.5 / 16 [2d6 + [Mod] / 3d8 + [Mod]]
-Special, 2 AP   Terrible 6 / 10 [1d6 + [Mod] / 2d6 + [Mod]] | Low 8 / 13.5 [1d10 + [Mod] / 2d10 + [Mod]] | Medium 10.5 / 17.5 [2d8 + [Mod] / 3d10 + [Mod]] | High 12.5 / 21 [2d10 + [Mod] / 3d12 + [Mod]] | Extreme 15 / 25 [2d12 + [Mod] / 4d10 + [Mod]]
-Special, 3 AP   Terrible 9.5 / 16 [2d6 + [Mod] / 3d8 + [Mod]] | Low 13 / 22 [2d10 + [Mod] / 3d12 + [Mod]] | Medium 16.5 / 27.5 [3d8 + [Mod] / 4d12 + [Mod]] | High 20 / 33.5 [3d10 + [Mod] / 5d12 + [Mod]] | Extreme 23.5 / 39.5 [4d10 + [Mod] / 6d12 + [Mod]]
-check: Health: 59 (Body 39 + Mind 20)
-check: Down in about: 2.4 PC turns (A level 1 PC deals about 24.25 a turn against AD 13 and WD 12. Target for a Standard: 2 PC turns)
-check: Should deal: about 7 to 8 (a turn to an average PC: the book's target, to check its Actions against)
+Basic attack    Terrible 4 / 6 [2 + [Mod] / 1d6 + [Mod]] | Low 5 / 8.5 [1d4 + [Mod] / 1d12 + [Mod]] | Medium 6 / 11 [1d6 + [Mod] / 2d8 + [Mod]] | High 7.5 / 13 [1d10 + [Mod] / 2d10 + [Mod]] | Extreme 9.5 / 16 [2d6 + [Mod] / 3d8 + [Mod]]
+Special, 1 AP   Terrible 5.5 / 8.5 [1d6 + [Mod] / 1d12 + [Mod]] | Low 7 / 12 [1d8 + [Mod] / 2d8 + [Mod]] | Medium 8.5 / 15.5 [1d12 + [Mod] / 3d8 + [Mod]] | High 10.5 / 18 [2d8 + [Mod] / 3d10 + [Mod]] | Extreme 13.5 / 22.5 [2d10 + [Mod] / 3d12 + [Mod]]
+Special, 2 AP   Terrible 9 / 13 [2d6 + [Mod] / 2d10 + [Mod]] | Low 11 / 18.5 [2d8 + [Mod] / 3d10 + [Mod]] | Medium 13 / 24 [2d10 + [Mod] / 4d10 + [Mod]] | High 16.5 / 28.5 [3d8 + [Mod] / 4d12 + [Mod]] | Extreme 21 / 35 [3d12 + [Mod] / 5d12 + [Mod]]
+Special, 3 AP   Terrible 14 / 21 [2d10 + [Mod] / 3d12 + [Mod]] | Low 17.5 / 30 [3d10 + [Mod] / 5d10 + [Mod]] | Medium 21 / 38.5 [3d12 + [Mod] / 6d12 + [Mod]] | High 26.5 / 45.5 [4d12 + [Mod] / 7d12 + [Mod]] | Extreme 33.5 / 56 [5d12 + [Mod] / 7d12 + [Mod]]
+check: Health: 65 (Body 43 + Mind 22)
+check: Down in about: 2.7 PC turns (A Stage 1 PC deals about 24.3 a turn against AD 13 and WD 12. Target for a Standard: 2 to 3 PC turns)
+check: Should deal: about 10 to 11 (a turn to an average PC: the book's target, to check its Actions against)
 check: Ratings average: Medium (No Custom numbers)
-roles: Minion CV 0.25, Grunt CV 0.5, Standard CV 1 (on), Elite CV 2 | CV: 1 | level note: ""
+roles: Minion CV 25, Grunt CV 50, Standard CV 100 (on), Elite CV 200 | CV: 100 | level note: ""
 a Minion's tab: Basic attack, Special, 1 AP, Special, 2 AP | 
 --- v0.0.164: no Custom chip; clicking the selected chip clears it (Custom), any other chip selects it
 Body chips (label -> what a click writes): Terrible->terrible, Low->low, Medium->medium, High->custom, Extreme->extreme
 --- Custom numbers outside the tables: a warning, never prevented
 AD 1 WD 18 Speed 9 moveSpeed 9
-warning: Body Health: Above Extreme (36)
+warning: Body Health: Above Extreme (39)
 warning: Armor Defense: Below Terrible (11)
 warning: Ward Defense: Above Extreme (15)
 warning: Speed: Faster than 7
 --- Speed: 3 to 7 (5 by default)
 Speed 7: 3 (slow), 4 (slow), 5 (default), 6 (fast), 7* (fast) | Fast: give it a downside (Low Health, Low AD or a Low Basic attack)
 --- switching a rating to Custom keeps the number it showed
-{"system.ratings.speed":"custom","system.speed":5} {"system.ratings.appeal":"custom","system.custom.appeal":0} {"system.ratings.bodyHm":"custom","system.custom.bodyHealth":39} {"system.ratings.wd":"custom","system.wardDef":12} {"system.ratings.ad":"high"}
+{"system.ratings.speed":"custom","system.speed":5} {"system.ratings.appeal":"custom","system.custom.appeal":0} {"system.ratings.bodyHm":"custom","system.custom.bodyHealth":43} {"system.ratings.wd":"custom","system.wardDef":12} {"system.ratings.ad":"high"}

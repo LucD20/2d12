@@ -72,3 +72,9 @@ await M.handleMove(cfg, { actor: kai, token: me }); await M.evadeAsAdvance("c1")
 import fs from "node:fs";
 const pack = JSON.parse(fs.readFileSync(ROOT + "packs/_source/actions/cut-through.action.json", "utf8").toString());
 console.log("Cut Through's Setup in the compendium:", pack.system.setup.slice(0, 60));
+// v0.0.183: an Evade over several drags counts its diagonals as one movement (the area and the cost).
+console.log("diagonals on a path:", M.diagonalsOn([{ i: 0, j: 0 }, { i: 1, j: 1 }, { i: 3, j: 2 }], p => p));
+const area = par => M.reachableCells([{ i: 0, j: 0 }], 1, () => false, par).length;
+console.log("1 square left, after an even number of diagonals:", area(0), "squares | after an odd number (the next diagonal costs 2):", area(1), "squares");
+const mvsrc = (await import("node:fs")).readFileSync(ROOT + "module/move.mjs", "utf8");
+console.log("the drag pays the second diagonal and can't pass the Evade:", mvsrc.includes("if (p === 1 && d % 2 === 1) squares += 1;") && mvsrc.includes("if (squares > left + 1e-6) { warn(`Evade has"));

@@ -1,0 +1,135 @@
+<title>Class Details Tab</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+SC:wght@700&family=Signika:wght@400;500;600&display=swap">
+<style>
+/* Layout: replica of the Talent and Feature item sheets (navy header, tabs, parchment body, gold section bands), here for a Class. One deliberate look, same in light and dark. */
+:root {
+  --desk: #2a2a30; --navy: #1b2a41; --navy-2: #243652; --paper: #ebe3d0; --ink: #2c2a26; --ink-2: #5b564c;
+  --line: #bdb29a; --field: #ffffff; --head: #7b2320; --band: #e2d1a0; --orange: #e07a2f; --chip: #d8ccb0;
+  --body: "Signika", system-ui, sans-serif; --display: "Alegreya SC", Georgia, serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { background: var(--desk); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.35; margin: 0; padding-block: 24px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+button, select, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+.win { max-width: 600px; margin: 0 auto; background: var(--paper); border: 1px solid #000; box-shadow: 0 10px 30px rgba(0,0,0,.5); }
+.tb { display: flex; justify-content: space-between; align-items: center; background: #15181f; color: #eee; padding: 7px 12px; font-weight: 600; font-size: .92rem; }
+.hd { background: var(--navy); display: flex; align-items: center; gap: 16px; padding: 14px 18px; }
+.ico { width: 48px; height: 48px; border-radius: 8px; background: var(--navy-2); border: 1px solid #3a4c6b; display: grid; place-items: center; }
+.ico svg { width: 28px; height: 28px; }
+.hd h1 { margin: 0; color: #fff; font-family: var(--display); font-size: 1.7rem; line-height: 1.1; }
+.tabs { display: flex; justify-content: center; gap: 36px; background: var(--navy); border-bottom: 1px solid #0d1624; }
+.tabs span { padding: 9px 34px 8px; color: #c4cbd8; font-weight: 600; border-bottom: 2px solid transparent; }
+.tabs span.on { color: #fff; border-bottom-color: var(--orange); background: var(--navy-2); }
+.pg { padding: 14px 18px 22px; }
+.help { text-align: center; margin-bottom: 12px; font-size: .85rem; }
+.cb { width: 22px; height: 22px; border-radius: 4px; background: var(--orange); display: block; margin: 0 auto 4px; border: 0; padding: 0; }
+.cb svg { width: 16px; height: 16px; display: block; margin: 3px auto; }
+.cb[aria-pressed="false"] { background: var(--field); border: 1px solid var(--line); }
+.cb[aria-pressed="false"] svg { display: none; }
+.g { display: grid; gap: 10px 14px; margin-bottom: 10px; }
+.g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+label { display: block; font-size: .85rem; color: var(--ink-2); font-weight: 500; margin-bottom: 3px; }
+input[type=text], input[type=number], select { width: 100%; background: var(--field); border: 1px solid var(--line); border-radius: 5px; padding: 8px 10px; min-height: 38px; }
+.shown { font-size: .85rem; color: var(--ink-2); } .shown b { display: block; color: var(--ink); font-size: 1rem; }
+.tip { font-size: .8rem; color: var(--ink-2); margin: 6px 0 12px; }
+body.nohelp .tip { display: none; }
+h2 { margin: 18px 0 8px; font-family: var(--display); font-size: 1.15rem; color: var(--head); text-transform: uppercase; letter-spacing: .03em; padding: 6px 10px; border-left: 4px solid #2b2b2b; background: linear-gradient(90deg, var(--band), transparent 90%); border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.btn { background: var(--field); border: 1px solid var(--ink-2); border-radius: 5px; padding: 7px 14px; font-weight: 500; cursor: pointer; }
+.btn:hover { background: #f4efe3; }
+.btn.main { background: var(--navy); color: #fff; border-color: var(--navy); }
+.btn.main:hover { background: var(--navy-2); }
+.lv { display: grid; gap: 6px; margin-bottom: 10px; }
+.lv div { display: flex; justify-content: space-between; gap: 10px; background: var(--field); border: 1px solid var(--line); border-radius: 5px; padding: 6px 10px; }
+.lv b { font-weight: 600; } .lv span { color: var(--ink-2); font-size: .9rem; }
+.note { font-size: .85rem; color: var(--ink-2); margin-left: 10px; }
+.drop { border: 2px dashed var(--line); border-radius: 5px; padding: 14px; text-align: center; color: var(--ink-2); font-weight: 500; margin-top: 8px; }
+.grp { margin-bottom: 8px; }
+.grp .gl { font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 3px; }
+.chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.chip { display: inline-flex; align-items: center; gap: 4px; background: var(--chip); border: 1px solid var(--line); border-radius: 4px; padding: 2px 4px 2px 9px; font-size: .88rem; }
+.chip i { font-style: normal; color: var(--ink-2); font-size: .75rem; }
+.chip button { border: 0; background: transparent; cursor: pointer; color: var(--ink-2); padding: 0 5px; font-size: 1rem; line-height: 1; border-radius: 3px; }
+.chip button:hover { background: rgba(0,0,0,.1); color: var(--ink); }
+.empty { color: var(--ink-2); font-size: .85rem; }
+@media (max-width: 520px) { .g3 { grid-template-columns: minmax(0,1fr); } .tabs { gap: 8px; } .tabs span { padding-inline: 18px; } }
+</style>
+
+<div class="win">
+  <div class="tb"><span>Class: Paladin</span><span aria-hidden="true">⋮ &nbsp; ✕</span></div>
+  <div class="hd"><div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V5l8-3z" fill="#fff"/></svg></div><h1>Paladin</h1></div>
+  <div class="tabs" aria-hidden="true"><span>Description</span><span class="on">Details</span></div>
+  <div class="pg">
+    <div class="help"><button type="button" class="cb" id="help" aria-pressed="true" aria-label="Show help"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3.2L13 4.5" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>Show help</div>
+
+    <div class="g g3">
+      <div><label for="cat">Category</label><input type="text" id="cat" value="Class"></div>
+      <div><label for="arm">Armor Training</label><select id="arm"><option>Light</option><option>Medium</option><option selected>Heavy</option></select></div>
+      <div class="shown">Shown as<b>Paladin</b></div>
+    </div>
+    <div><label for="fl">Flavor</label><input type="text" id="fl" value="Your god's strength flows through your weapon and your hands."></div>
+
+    <div class="g g3" style="margin-top:10px">
+      <div><label for="bhm">Body Health Multiplier</label><input type="number" id="bhm" value="4" step="0.5"></div>
+      <div><label for="mhm">Mind Health Multiplier</label><input type="number" id="mhm" value="3" step="0.5"></div>
+      <div><label for="ral">Rally</label><input type="number" id="ral" value="6"></div>
+    </div>
+    <div class="g g3">
+      <div><label for="spd">Speed Modifier</label><input type="number" id="spd" value="0"></div>
+      <div><label for="wa">Weapon Modifier uses</label><select id="wa"><option selected>Body</option><option>Mind</option><option>Appeal</option><option>Instinct</option></select></div>
+      <div><label for="wb">&nbsp;or</label><select id="wb" aria-label="Weapon Modifier, second Attribute"><option>Body</option><option>Mind</option><option selected>Appeal</option><option>Instinct</option></select></div>
+    </div>
+    <div class="g g3">
+      <div class="shown">Attribute increases<b>Body or Appeal +1, Mind or Instinct +1</b></div>
+      <div><label for="pa">Power Modifier uses</label><select id="pa"><option>Body</option><option selected>Mind</option><option>Appeal</option><option>Instinct</option></select></div>
+      <div><label for="pb">&nbsp;or</label><select id="pb" aria-label="Power Modifier, second Attribute"><option>Body</option><option>Mind</option><option selected>Appeal</option><option>Instinct</option></select></div>
+    </div>
+    <p class="tip">Each Modifier uses the higher of its two Attributes. The two Modifiers can't use the same Attribute. The Attribute increases are set on level 1, in the Levels window.</p>
+
+    <h2>Levels <button type="button" class="btn main" id="edit">Edit levels…</button></h2>
+    <p class="tip">What the player gets at each level (Features, Class Actions, Picks, Attribute choices) is set up in the Levels window. It opens wider than this sheet.</p>
+    <div class="lv" id="lv"></div>
+    <div id="msg" class="note" role="status"></div>
+
+    <h2>Repertoire</h2>
+    <p class="tip">Everything else the class offers, by Frequency. A "From the Repertoire" pick in the Levels window chooses from here.</p>
+    <div id="rep"></div>
+    <div class="drop">Drop Actions and Features here</div>
+
+    <h2>Escalation</h2>
+    <p class="tip">The class's Escalation abilities. Passives and Actives are chosen from these.</p>
+    <div id="esc"></div>
+    <div class="drop">Drop Escalation abilities here</div>
+  </div>
+</div>
+
+<script>
+var LEVELS = [['Level 1','6 sections','5 choices to make'],['Level 2','2 sections','2 choices to make'],['Level 3','3 sections','3 choices to make']];
+var REP = {Passive:['Aegis',"Mercy's Reward"],Turn:['Rebuke'],Round:['Vow of Enmity','Shield of Faith','Sacred Weapon',"Champion's Challenge"],Encounter:['Word of Radiance','Divine Retribution','Aura of Protection'],Daily:['Miraculous Recovery','Consecrated Ground','Divine Intervention']};
+var ESC = {Passives:[['Divine Vigil',''],["Avenger's Oath",''],['Hallowed Stance','']],Actives:[['Call to Arms','Esc 1'],['Divine Surge','Esc 1'],['Hand of Mercy','Esc 1'],['Judgment','Esc 2'],['Sanctified Ground','Esc 2']]};
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+function group(label, list, kind, key){
+  var h = '<div class="grp"><div class="gl">' + esc(label) + ' · ' + list.length + '</div><div class="chips">';
+  if (!list.length) h += '<span class="empty">None yet</span>';
+  list.forEach(function(it, i){
+    var n = Array.isArray(it) ? it[0] : it, x = Array.isArray(it) && it[1] ? ' <i>' + esc(it[1]) + '</i>' : '';
+    h += '<span class="chip">' + esc(n) + x + '<button type="button" data-k="' + kind + '" data-g="' + esc(key) + '" data-i="' + i + '" aria-label="Remove ' + esc(n) + '">✕</button></span>';
+  });
+  return h + '</div></div>';
+}
+function render(){
+  document.getElementById('lv').innerHTML = LEVELS.map(function(l){ return '<div><b>' + l[0] + '</b><span>' + l[1] + ' · ' + l[2] + '</span></div>'; }).join('');
+  document.getElementById('rep').innerHTML = Object.keys(REP).map(function(k){ return group(k, REP[k], 'rep', k); }).join('');
+  document.getElementById('esc').innerHTML = Object.keys(ESC).map(function(k){ return group(k, ESC[k], 'esc', k); }).join('');
+}
+document.addEventListener('click', function(ev){
+  var b = ev.target.closest('button'); if (!b) return;
+  if (b.id==='help'){ var on = b.getAttribute('aria-pressed')!=='true'; b.setAttribute('aria-pressed', on); document.body.classList.toggle('nohelp', !on); }
+  else if (b.id==='edit'){ document.getElementById('msg').textContent = 'Mockup: this opens the Levels window (see the Levels window mockup; it is wider than the sheet).'; }
+  else if (b.dataset.k){ var src = b.dataset.k==='rep' ? REP : ESC; src[b.dataset.g].splice(+b.dataset.i,1); render(); }
+});
+render();
+</script>

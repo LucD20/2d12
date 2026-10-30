@@ -259,7 +259,7 @@ a.twod12-inline.chatbtn i { font-size: 9px; }
 .twod12.chat.collapsed .ahead.clickable::after { content: "\25be"; margin-left: 8px; opacity: .6; font-size: .8em; }
 .twod12.chat:not(.collapsed) .ahead.clickable::after { content: "\25b4"; margin-left: 8px; opacity: .6; font-size: .8em; }
 .twod12.chat.action.collapsed > .traits, .twod12.chat.action.collapsed > .trow, .twod12.chat.action.collapsed > .vsrow, .twod12.chat.action.collapsed > .chk, .twod12.chat.action.collapsed > .fxrow, .twod12.chat.action.collapsed > .bonusrow, .twod12.chat.action.collapsed > table.tiers tr:not(.hit):not(.up), .twod12.chat.action.collapsed > .tline, .twod12.chat.action.collapsed > button { display: none; }
-.twod12.chat.dmg.collapsed > *:not(.ahead):not(.dtotal) { display: none; }
+.twod12.chat.dmg.collapsed > *:not(.ahead):not(.dtotal):not(.dres) { display: none; }   /* v0.0.183: the result stays visible */
 .twod12.chat.dmg.collapsed > .dtotal .tgt { display: none; }
 .twod12 details.setting { border: 1px solid var(--sh-line, rgba(128,128,128,.5)); border-radius: 4px; margin: 6px 0; padding: 2px 8px 6px; }
 .twod12 details.setting > summary.shead { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 3px 0; list-style: none; }
@@ -1534,3 +1534,23 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
   background: color-mix(in srgb, var(--tg) 16%, transparent); border: 1px solid transparent; }
 .twod12 .tcompact .tsep { display: inline-block; flex: none; width: 1px; height: 10px; margin: 0 1px; background: color-mix(in srgb, currentColor 22%, transparent); }
 .twod12 .tcompact .tsep.edge { display: none; }   /* at the start or end of a wrapped row (chatchips.mjs) */
+
+/* v0.0.181 (E3): the NPC Builder shows the Stage under the Level. */
+.twod12.sheet.ns .nb-stage { display: block; margin-top: 2px; font-size: 11px; color: var(--nb-dim); white-space: nowrap; }
+/* v0.0.182: Guard: a blue ring around the Health donut while you have some, and a button under the Donut / Classic switch (v0.0.183). */
+.twod12.sheet.ns .np-donutwrap { position: relative; flex: none; border-radius: 50%; }
+.twod12.sheet.ns .np-donutwrap.guarded .np-donut { box-shadow: 0 0 0 3px var(--np-bg, #1d2533), 0 0 0 5px #7cc4f2, 0 0 8px 5px rgba(124,196,242,.35); }
+.twod12.sheet.ns .np-guardrow { display: flex; justify-content: flex-end; margin: -2px 0 6px; }
+/* v0.0.184: in the Donut view it floats beside the donut, under the switch, and takes no room (the Classic bars need the full width: a row there). */
+.twod12.sheet.ns .np-health { position: relative; }
+.twod12.sheet.ns .np-guardrow.float { position: absolute; right: 0; top: 30px; margin: 0; z-index: 1; }
+.twod12.sheet.ns .np-guardbtn { display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px; border-radius: 10px; border: 1px solid var(--np-dim, #6b7a90);
+  font-size: 11px; color: var(--np-dim, #9aa6b8); cursor: pointer; user-select: none; }
+.twod12.sheet.ns .np-guardbtn.on { border-color: #7cc4f2; background: #1f3d57; color: #d9f0ff; }
+.twod12.sheet.ns .np-guardbtn.on i { color: #7cc4f2; }
+/* v0.0.182: a granted use waiting for this Action: a light blue use button (click uses it; Shift-click, a normal use). */
+.twod12.sheet.ns .ar-use.granted { background: #7cc4f2; color: #10283c; box-shadow: 0 0 0 1px #d9f0ff inset; }
+.twod12.sheet.ns .ar-use.granted:hover { background: #a5d8f7; color: #10283c; }
+/* v0.0.183: the damage card says what it did, under its target line ("15 − Guard 5 = 10 Body"). */
+.twod12.chat.dmg .applied.dres { margin: 4px 0; padding: 4px 6px; border-radius: 4px; background: rgba(0,0,0,.06); font-style: normal; font-size: 12px; }
+.twod12.chat.dmg .applied.dres i { color: #b3261e; }

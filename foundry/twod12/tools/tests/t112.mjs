@@ -2,7 +2,7 @@
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 import path from "node:path";
-// v0.0.126: the Paladin of Rounds 11 and 12 in the compendiums: every reference between the documents resolves, the class has its choices,
+// v0.0.126: the Paladin of Rounds 11 and 12 (v0.0.181: the P1 Paladin of the book) in the compendiums: every reference between the documents resolves, the class has its choices,
 // the cards have the numbers of the book (Escalation costs, Split modes, scaling meta-line values), and Divine Connection is gone.
 const SRC = path.join(ROOT, "packs/_source");
 const docs = [];
@@ -17,24 +17,42 @@ console.log("references:", refs, "| broken:", broken.length ? broken.join("; ") 
 const nameOf = u => { const m = u.match(/Compendium\.twod12\.(\w+)\.Item\.(\w{16})/); return byId.get(`${m[1]}:${m[2]}`)?.name; };
 const paladin = byName("classes", "Paladin").system;
 console.log("Paladin features:", paladin.features.map(f => nameOf(f.uuid)).join(", "), "| Divine Connection kept for testing (not in the class):", !!byName("features", "Divine Connection") && !paladin.features.some(f => nameOf(f.uuid) === "Divine Connection"), "| its id is the old one:", byName("features", "Divine Connection")?._id);
-for (const n of ["Encounter Pick", "Daily Pick", "Free Picks", "Escalation Passive", "Escalation Actives"]) { const f = byName("features", n).system; console.log(`${n}: choose ${f.choiceCount} of ${f.choiceOptions.length}: ${f.choiceOptions.map(nameOf).join(", ")}`); }
+// v0.0.181 (P1): the book's Paladin: the level list in today's structure, the Hallmark Action, the new cards, Guard and the old cards' folder.
+const featLv = n => byName("features", n).system.level;
+for (const n of ["Hallmark Action", "Encounter Pick", "Escalation Passive", "Escalation Active", "Daily Pick", "Escalation Passive (Level 3)"]) { const f = byName("features", n).system; console.log(`${n} (level ${f.level}): choose ${f.choiceCount} of ${f.choiceOptions.length}: ${f.choiceOptions.map(nameOf).join(", ")}`); }
+console.log("Talent slots:", ["Talent (Level 1)", "Talent (Level 2)"].map(n => `${n}: ${byName("features", n).system.talents} at level ${featLv(n)}`).join(" | "), "| Mind Health x" + paladin.mindMult);
 console.log("--- the cards");
 const act = n => byName("actions", n).system;
-for (const n of ["Call to Arms", "Divine Surge", "Hand of Mercy", "Judgment", "Sanctified Ground"]) console.log(n.padEnd(18), `Escalation ${act(n).escalation}`, `| AP ${act(n).versions.map(v => v.ap).join("/")}`, `| ${act(n).frequency}`);
-const dr = act("Divine Retribution");
-console.log("Divine Retribution: split:", dr.traits.includes("split"), "| versions:", dr.versions.map(v => `${v.ap}R ${v.mode}`).join(", "), "| reaction:", dr.reaction);
-console.log("Rebuke: Turn:", act("Rebuke").frequency, "| 1R / 2R:", act("Rebuke").versions.map(v => v.ap).join("/"), "| trigger:", act("Rebuke").trigger);
-console.log("Smite 2 AP Holy dice:", act("Smite").versions.map(v => v.t2.find(i => i.dice)?.dice ?? "-").join(" / "), "(1 / 2 / 3 AP, Tier 2)");
-console.log("Judgment tiers:", ["t1", "t2", "t3"].map(t => act("Judgment").versions[0][t].map(i => i.dice).join("+") || "-").join(" / "), "| Vow of Enmity targets:", act("Vow of Enmity").targets, "| distance:", act("Vow of Enmity").distance);
+const tiersOf = (n, i) => ["t1", "t2", "t3"].map(t => act(n).versions[i][t].map(x => (x.useW ? "1[W]" : "") + (x.dice ? `${x.useW ? "+" : ""}${x.dice}${x.subtype ? " " + x.subtype : ""}` : "")).join("+") || "-").join(" / ");
+const txt = h => String(h ?? "").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+console.log("Smite:", act("Smite").traits.join(","), "|", act("Smite").versions.map((v, i) => `${v.ap} AP ${tiersOf("Smite", i)}`).join(" || "));
+console.log("Smite 3 AP effects:", txt(act("Smite").versions[2].effects));
+console.log("Lay On Hands:", act("Lay On Hands").targets, "|", act("Lay On Hands").versions.map(v => `${v.ap} AP: ${txt(v.effects)}${v.fx.all.length ? ` [${v.fx.all.map(x => nameOf(x.uuid)).join(", ")}]` : ""}`).join(" || "));
+console.log("Holy Wrath:", act("Holy Wrath").frequency, "|", act("Holy Wrath").versions.map((v, i) => `${v.ap} AP ${tiersOf("Holy Wrath", i)}`).join(" || "));
+for (const n of ["Shield of Faith", "Bulwark of Faith"]) console.log(`${n}:`, act(n).frequency, act(n).reactionKind, `| ${act(n).versions.map(v => v.ap + "R").join("/")} | ${act(n).trigger} | ${act(n).versions.map(v => txt(v.effects)).join(" || ")}`);
+console.log("Aura of Protection:", `Escalation ${act("Aura of Protection").escalation}`, act("Aura of Protection").frequency, `${act("Aura of Protection").versions[0].ap} AP`, "->", act("Aura of Protection").versions[0].fx.all.map(x => nameOf(x.uuid)).join(", "));
+console.log("Divine Surge:", `Escalation ${act("Divine Surge").escalation}`, act("Divine Surge").targets, "|", txt(act("Divine Surge").versions[0].effects));
+console.log("Consecrated Ground:", txt(act("Consecrated Ground").versions[0].effects));
 console.log("--- the passives and effects");
 const feat = n => byName("features", n).system, fx = n => byName("effects", n).system;
-const pj = feat("Profane Judgment").settings[0];
-console.log("Profane Judgment:", pj.type, pj.trigSub, pj.trigTag, "->", nameOf(pj.fxUuid), "| that effect:", fx("Profane Judgment (Enfeebled)").settings[0].type, "Enfeebled", fx("Profane Judgment (Enfeebled)").settings[0].enfeebled, fx("Profane Judgment (Enfeebled)").duration.type);
-const dv = feat("Divine Vigil").settings[0];
-console.log("Divine Vigil:", dv.type, `Aura ${dv.auraSize}`, dv.auraWho, "self", dv.auraSelf, "from Escalation", dv.minEscalation, "->", nameOf(dv.fxUuid), "| boon on Saves against", fx("Divine Vigil (Boon against Fear)").settings[0].from.join(","));
-const ds = fx("Divine Surge"), b = ds.settings[0];
-console.log("Divine Surge:", b.type, b.dmg, b.dmgPool, b.dmgSub, "| by name:", b.predicate, "| ends after:", ds.expireOn.join(","));
-console.log("auras: Shield of Faith 3 AP:", nameOf(fx("Shield of Faith (Aura)").settings[0].fxUuid), "| Aura of Protection:", ["1 AP", "2 AP", "3 AP"].map(a => `${fx(`Aura of Protection (${a})`).settings[0].auraSize}: ${nameOf(fx(`Aura of Protection (${a})`).settings[0].fxUuid)}`).join(" | "));
-const pal = JSON.parse(fs.readFileSync(path.join(SRC, "pcs/human-paladin.pc.json"), "utf8"));
-console.log("pregen Paladin items:", pal.items.filter(i => ["feature", "action"].includes(i.type) && !/^(Fists|Weapon Attack|Interact|Reposition|Relocate|Haul|Trip|Shove|Reload|Leaning|Steel Yourself|Evade|Crawl|Stand|Advance|Release)/.test(i.name)).map(i => i.name).join(", "));
-const ids = pal.items.map(i => i._id); console.log("pregen ids unique:", new Set(ids).size === ids.length);
+const pj = feat("Divine Power").settings[0];
+console.log("Divine Power:", pj.type, pj.trigSub, pj.trigTag, "->", nameOf(pj.fxUuid), "| that effect:", fx("Divine Power (Enfeebled)").settings[0].type, "Enfeebled", fx("Divine Power (Enfeebled)").settings[0].enfeebled, fx("Divine Power (Enfeebled)").duration.type, "| Profane Judgment gone:", !byName("features", "Profane Judgment"));
+for (const n of ["Font of Mercy", "Radiant Zeal", "Hallowed Stance"]) console.log(`${n}: ${feat(n).category} | ${txt(feat(n).description)}`);
+const ap = fx("Aura of Protection").settings[0];
+console.log("the Aura:", ap.type, `Aura ${ap.auraSize}`, ap.auraWho, "->", nameOf(ap.fxUuid), "| lasts:", fx("Aura of Protection").duration.type || "until the encounter ends (an Escalation effect)");
+const lh = fx("Lay On Hands (Holy Strike)").settings[0];
+console.log("Lay On Hands' strike:", lh.type, lh.dmg, lh.dmgPool, lh.dmgSub, lh.tiers.join(","), "| ends after:", fx("Lay On Hands (Holy Strike)").expireOn.join(","));
+console.log("old cards:", docs.filter(d => d.name === "Vow of Enmity" || d.name === "Word of Radiance").map(d => d.name).join(", "), "kept | in no pick:", !["Hallmark Action", "Encounter Pick", "Escalation Passive", "Escalation Active", "Daily Pick"].some(n => byName("features", n).system.choiceOptions.map(nameOf).some(x => ["Vow of Enmity", "Word of Radiance", "Call to Arms"].includes(x))));
+// v0.0.183: the four builds of the ruler, and one NPC per role (the Bestiary's examples)
+for (const f of ["paladin-smite", "paladin-lay-on-hands", "archer-double-shot", "archer-rolling-shot"]) {
+  const pc = JSON.parse(fs.readFileSync(path.join(SRC, `pcs/${f}.pc.json`), "utf8")), ids = pc.items.map(i => i._id);
+  console.log(`${pc.name}:`, pc.items.filter(i => ["feature", "action", "talent"].includes(i.type) && !i.flags?.twod12?.basic && !/^(Fists|Lock & Loose|Reaping Sweep)$/.test(i.name)).map(i => i.name).join(", "), "| ids unique:", new Set(ids).size === ids.length);
+}
+for (const f of fs.readdirSync(path.join(SRC, "npcs")).filter(f => f.endsWith(".json") && !f.startsWith("_")).sort()) {
+  const n = JSON.parse(fs.readFileSync(path.join(SRC, "npcs", f), "utf8"));
+  console.log(`${n.name} (${n.system.role}, speed ${n.system.speed}):`, n.items.filter(i => i.type === "action" && !i.flags?.twod12?.basic).map(i => `${i.name} ${i.system.frequency}${i.system.reaction ? " reaction" : ""}`).join(", "));
+}
+// v0.0.184: a duplicate key stops the Foundry CLI's build of the pack (and of every pack after it): every key is unique, embedded Items too.
+const dupes = [...new Set(docs.map(d => d.pack))].flatMap(p => { const keys = docs.filter(d => d.pack === p).flatMap(d => [d._key, ...(d.items ?? []).map(i => `!actors.items!${d._id}.${i._id}`)]); return keys.filter((k, i) => keys.indexOf(k) !== i).map(k => `${p} ${k}`); });
+console.log("keys unique in each pack (embedded Items too):", dupes.length ? dupes.join(", ") : "yes");
+console.log("NPC Speed as a rating:", fs.readdirSync(path.join(SRC, "npcs")).filter(f => f.endsWith(".json") && !f.startsWith("_")).map(f => { const n = JSON.parse(fs.readFileSync(path.join(SRC, "npcs", f), "utf8")); return `${n.name} ${n.system.ratings.speed}`; }).join(", "));

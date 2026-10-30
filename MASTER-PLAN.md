@@ -20,7 +20,9 @@ Sizes: S = under an hour of work, M = a normal session, L = a long session, XL =
 | M2 | **DONE 2026-10-28 (v0.0.174).** Movement B: the path tool (Slid, Relocate / Reposition), Immobilized's DC, the Steadiness checkbox | L | M1 |
 | R | **DONE 2026-10-28 (v0.0.176).** Rules sync: Rally Points (Paladin 6, Archer 5, the new formula), the NPC tables and the Builder's level scaling (levels 1 to 3), Light (only the target's light, N + 0.5 radius), Burst corner-only, Area and Distance as two fields, Dying and Shattered from the second time, Unconscious wake rule | M | the book (done) |
 | F | **DONE 2026-10-28 (v0.0.179).** FORMAT: trait groups (picker, chips, order), tinted chips, weapon properties without color, the text colors | L | the traits (done) |
-| C | Content: class items in the new structure (Level 1, Picks, Repertoire by Frequency), the level list and the level-up flow, the Archer card changes, the compendium text sync (explicit [B], "[Strike] Action", Rally numerals, Bane and Boon capitalized), the compendium PCs and NPCs rebuilt from a spec | XL | the Archer design (D1) |
+| C1 | **DONE 2026-10-30 (v0.0.181).** Foundry follows the book: E3 (the Bestiary by Stage, CV ×100, CV by Stage gap), the Core Rules (Health × (Level + 17) ÷ 16, Modifier steps at 5 and 8), P1 and A1 cards and level lists in today's class structure, Guard, Lock & Loose with Shot, Sharpshooter's into-melee Bane | L | E3, P1, A1 (done) |
+| C2 | **NEXT.** The new class selection: levels, sections, the class window (foundry/mockups/class-selection-brief.md: corrected to the book; it wins over the original beside it, and the three mockups) | L | C1 |
+| C | Content (what C1 and C2 leave): class items in the new structure (Level 1, Picks, Repertoire by Frequency), the level list and the level-up flow, the Archer card changes, the compendium text sync (explicit [B], "[Strike] Action", Rally numerals, Bane and Boon capitalized), the compendium PCs and NPCs rebuilt from a spec | XL | the Archer design (D1) |
 | X | After the design sessions: Mastery and Gear, Skills, Magic in the system | XL | D2, D3, D4 |
 
 ### Book

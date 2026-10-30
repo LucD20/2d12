@@ -50,7 +50,7 @@ console.log("Smite (Holy) against a Profane creature:", tn(paladin(0), [target([
 console.log("the trigger knows the ability that fired:", T.matchingTriggers(paladin(0), target(["profane"]), [{ sub: "Ho", total: 3 }])[0]?.source);
 const dmg2 = fs.readFileSync(ROOT + "module/damage.mjs", "utf8"), acts2 = fs.readFileSync(ROOT + "module/actions.mjs", "utf8"), trg = fs.readFileSync(ROOT + "module/triggers.mjs", "utf8");
 console.log("the single-target Apply runs triggers:", dmg2.includes("if (dealt > 0) await runDamageTriggers(src, actor, t.uuid, f.comps ?? []);"), "| so does a merged card row:", dmg2.includes("await runDamageTriggers(src, actor, row.uuid, row.comps ?? []);"), "| a chat line says it fired:", trg.includes("triggers: ${esc(target.name)} gains"));
-console.log("the dialog lists bonus damage effects and triggers:", acts2.includes("const extraNotices = [") && acts2.includes('...triggerNotices(actor,') && acts2.includes("notices: [...extraNotices,"), "| bonus damage text, e.g.:", "Divine Surge: +1d8 Holy");
+console.log("the dialog lists bonus damage effects and triggers:", acts2.includes("const extraNotices = [") && acts2.includes('...triggerNotices(actor,') && acts2.includes("...extraNotices,"), "| bonus damage text, e.g.:", "Divine Surge: +1d8 Holy");
 
 console.log("--- v0.0.128: hover texts live on the items; chips are short; per creature; the Aura's squares");
 const { hoverOf } = await import(ROOTURL + "module/util.mjs");
@@ -79,4 +79,4 @@ const flagsC = AF.appliedFlags({ settings: [{ ...blank, type: "aura", auraSize: 
 console.log("the flags carry the colors:", JSON.stringify(flagsC.auras));
 const aur2 = fs.readFileSync(ROOT + "module/aura.mjs", "utf8"), stl2 = fs.readFileSync(ROOT + "templates/parts/settings.hbs", "utf8");
 console.log("drawn in combat, for every token with an Aura:", aur2.includes('const inCombat = !!game.combat?.started && outlinesOn()') && aur2.includes("if (!inCombat && t.id !== hoveredId) continue;"), "| the squares only on hover:", aur2.includes("if (t.id === hoveredId && grid?.highlightPosition)"), "| both PixiJS 7 and 8 drawing:", aur2.includes("typeof g.lineStyle === \"function\"") && aur2.includes("g.stroke({"), "| color pickers in the editor:", stl2.includes('data-field="auraOutline"') && stl2.includes('data-field="auraFill"'), "| a setting turns the combat outlines off:", fs.readFileSync(ROOT + "module/twod12.mjs", "utf8").includes('"auraOutlines"'));
-console.log("the Paladin's auras have their own colors:", ["Shield of Faith (Aura)", "Aura of Protection (1 AP)", "Divine Vigil"].map(n => { const d = docs2.find(x => x.name === n); return `${n}: ${d?.system.settings[0].auraOutline}`; }).join(" | "));
+console.log("the Paladin's auras have their own colors:", ["Aura of Protection", "Divine Vigil"].map(n => { const d = docs2.find(x => x.name === n && x.type !== "action"); return `${n}: ${d?.system.settings[0].auraOutline}`; }).join(" | "));

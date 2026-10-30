@@ -1,25 +1,38 @@
-documents: 129
-references: 104 | broken: none
-Paladin features: Divine Power, Profane Judgment, Encounter Pick, Daily Pick, Free Picks, Escalation Passive, Escalation Actives | Divine Connection kept for testing (not in the class): true | its id is the old one: vaYnV1XM6HT1TpMP
-Encounter Pick: choose 1 of 3: Word of Radiance, Divine Retribution, Aura of Protection
-Daily Pick: choose 1 of 3: Miraculous Recovery, Consecrated Ground, Divine Intervention
-Free Picks: choose 2 of 13: Aegis, Mercy's Reward, Vow of Enmity, Shield of Faith, Rebuke, Sacred Weapon, Champion's Challenge, Word of Radiance, Divine Retribution, Aura of Protection, Miraculous Recovery, Consecrated Ground, Divine Intervention
-Escalation Passive: choose 1 of 3: Divine Vigil, Avenger's Oath, Hallowed Stance
-Escalation Actives: choose 3 of 5: Call to Arms, Divine Surge, Hand of Mercy, Judgment, Sanctified Ground
+documents: 133
+references: 70 | broken: none
+Paladin features: Divine Power, Font of Mercy, Hallmark Action, Talent (Level 1), Encounter Pick, Escalation Passive, Escalation Active, Talent (Level 2), Daily Pick, Escalation Passive (Level 3) | Divine Connection kept for testing (not in the class): true | its id is the old one: vaYnV1XM6HT1TpMP
+Hallmark Action (level 1): choose 1 of 2: Smite, Lay On Hands
+Encounter Pick (level 1): choose 1 of 2: Holy Wrath, Bulwark of Faith
+Escalation Passive (level 1): choose 1 of 2: Hallowed Stance, Radiant Zeal
+Escalation Active (level 1): choose 1 of 2: Aura of Protection, Divine Surge
+Daily Pick (level 3): choose 1 of 1: Consecrated Ground
+Escalation Passive (Level 3) (level 3): choose 1 of 2: Hallowed Stance, Radiant Zeal
+Talent slots: Talent (Level 1): 1 at level 1 | Talent (Level 2): 1 at level 2 | Mind Health x4
 --- the cards
-Call to Arms       Escalation 1 | AP 0 | round
-Divine Surge       Escalation 1 | AP 0 | round
-Hand of Mercy      Escalation 1 | AP 1 | round
-Judgment           Escalation 2 | AP 1 | round
-Sanctified Ground  Escalation 2 | AP 1 | round
-Divine Retribution: split: true | versions: 2R weapon, 2R power, 3R weapon, 3R power | reaction: true
-Rebuke: Turn: turn | 1R / 2R: 1/2 | trigger: An enemy within Reach damages an ally.
-Smite 2 AP Holy dice: 1d4 / 2d6 / 2d6 (1 / 2 / 3 AP, Tier 2)
-Judgment tiers: - / 2d6 / 2d8 | Vow of Enmity targets: One / one / two creatures | distance: 5
+Smite: divine,signature,strike,weapon | 1 AP 1[W] / 1[W]+1d4 Ho / 1[W]+1d6 Ho || 2 AP 1[W]+1d6 Ho / 1[W]+1d10 Ho / 1[W]+2d8 Ho || 3 AP 1[W]+1d6 Ho / 1[W]+1d10 Ho / 1[W]+2d8 Ho
+Smite 3 AP effects: The target sheds Bright light in a @Template[emanation|distance:2|rounds:1] and takes 1 Bane when they try to hide, for 1 round. You or one ally in the light gain @Effect[Compendium.twod12.effects.Item.G20TdfpcMVkMGcxl]{+1 Defense for 1 round}. You or one ally in the light gain @Guard[1d8+mod]{Guard 1d8 + [Mod]}. You choose who gains the Defense and who gains the Guard separately: the same creature or two different ones.
+Lay On Hands: One willing creature | 1 AP: The target can use @Rally[1]. || 2 AP: As 1 AP (the target can use @Rally[1]), and your next [Strike] Action deals an extra [M] 0/2d8/2d8 Ho. [Lay On Hands (Holy Strike)] || 3 AP: As 2 AP (your next [Strike] Action deals an extra [M] 0/2d8/2d8 Ho), but the target can use @Rally[2]. [Lay On Hands (Holy Strike)]
+Holy Wrath: encounter | 2 AP 1[W]+2d6 Ho / 1[W]+3d8 Ho / 1[W]+4d8 Ho || 3 AP 1[W]+3d8 Ho / 1[W]+5d8 Ho / 1[W]+7d8 Ho
+Shield of Faith: turn interrupt | 1R | A [Strike] Action would damage you or an ally within 5 squares. | The damage that Strike deals to the target is reduced by 1d6 + your Power Modifier.
+Bulwark of Faith: encounter interrupt | 1R/2R | A [Strike] Action would damage an ally within 5 squares. | The target gains @Guard[rally]{Guard equal to what one of their Rally Points heals}, before the damage. || As 1R (the target gains @Guard[rally]{Guard equal to what one of their Rally Points heals}, before the damage), and the triggering creature is @Move[slid|distance:2].
+Aura of Protection: Escalation 1 encounter 0 AP -> Aura of Protection
+Divine Surge: Escalation 1 One enemy | For 1 round, the next time an ally deals damage to the target, they deal an extra [M] 1d8 Ho. You gain @Guard[2d6|self:yes]{Guard 2d6}.
+Consecrated Ground: For 3 rounds, enemies in the area take 1 Bane on [Weapon], [Power] and [Signature] Actions, and allies in it heal 1d4 at the start of each of their turns.
 --- the passives and effects
-Profane Judgment: ondamage Ho Profane -> Profane Judgment (Enfeebled) | that effect: damagestep Enfeebled 1 eot
-Divine Vigil: aura Aura 3 allies self true from Escalation 2 -> Divine Vigil (Boon against Fear) | boon on Saves against fear
-Divine Surge: bonusdamage 1d8 M Ho | by name: __name:smite | ends after: __name:smite
-auras: Shield of Faith 3 AP: Shield of Faith (Blessing) | Aura of Protection: 2: Aura of Protection (+1 Defense) | 3: Aura of Protection (+2 Defense) | 3: Aura of Protection (+2 Defense, boon)
-pregen Paladin items: Divine Power, Smite, Lay On Hands, Profane Judgment, Divine Retribution, Miraculous Recovery, Vow of Enmity, Shield of Faith, Divine Vigil, Call to Arms, Divine Surge, Judgment, Reaping Sweep, Charge
-pregen ids unique: true
+Divine Power: ondamage Ho Profane -> Divine Power (Enfeebled) | that effect: damagestep Enfeebled 1 eot | Profane Judgment gone: true
+Font of Mercy: Paladin Feature | While your Escalation is 1 or more, when you or an ally within 5 squares of you uses a Rally Point, they heal your Power Modifier + 2 more.
+Radiant Zeal: Paladin Escalation | While your Escalation is 1 or more, the first [Strike] Action you make each round that deals damage deals an extra [M] 1d6 Ho.
+Hallowed Stance: Paladin Escalation | While your Escalation is 2 or more, if you haven't left your square since your last turn, you and your adjacent allies take less Body damage, reduced by your Power Modifier (minimum 0). It reduces one instance of damage per Action; if the Action has several, the player chooses which one. (Not automated.)
+the Aura: aura Aura 2 allies -> Aura of Protection (+1 Defense) | lasts: until the encounter ends (an Escalation effect)
+Lay On Hands' strike: bonusdamage 2d8 M Ho t2,t3 | ends after: strike
+old cards: Vow of Enmity, Word of Radiance kept | in no pick: true
+Paladin (Smite): Divine Power, Font of Mercy, Smite, Holy Wrath, Hallowed Stance, Divine Surge, Heavy Blows | ids unique: true
+Paladin (Lay On Hands): Divine Power, Font of Mercy, Lay On Hands, Holy Wrath, Hallowed Stance, Divine Surge, Heavy Blows | ids unique: true
+Archer (Double Shot): Sharpshooter, Marked Quarry, Mark Quarry, Double Shot, Killer's Focus, Pinning Shot, Aim | ids unique: true
+Archer (Rolling Shot): Sharpshooter, Marked Quarry, Mark Quarry, Rolling Shot, Killer's Focus, Pinning Shot, Aim | ids unique: true
+Bandit Thug (grunt, speed 5): Cudgel atwill, Low Blow round
+Goblin Sneak (minion, speed 7): Rusty Knife atwill, Dirty Trick round
+Ogre Chieftain (elite, speed 4): Club atwill, Ground Slam encounter, Rally the Tribe round
+Orc Warrior (standard, speed 5): Cleaver atwill, Brutal Swing round, Hold the Line round reaction
+keys unique in each pack (embedded Items too): yes
+NPC Speed as a rating: Bandit Thug 5, Goblin Sneak 7, Ogre Chieftain 4, Orc Warrior 5

@@ -1,6 +1,6 @@
 import { triggerNotices } from "./triggers.mjs";
 import { techniqueLock, TECHNIQUE_AT, masteryAfterRoll } from "./mastery.mjs";
-import { archerMods, hunterEmpowered, longDraw, steadyNerves, killersFocusBonus, useKillersFocus, setQuarry } from "./archer.mjs";
+import { archerMods, hunterEmpowered, longDraw, steadyNerves, killersFocusBonus, useKillersFocus, setQuarry, quarryTier1Bonus, sharpshooterShot } from "./archer.mjs";
 import { splitModes, splitView, SPLIT_LABEL } from "./split.mjs";
 import { canPayEscalation, spendEscalation } from "./escalation.mjs";
 import { weaponUse, weaponRanges } from "./weaponrange.mjs";
@@ -9,6 +9,7 @@ import { perceptionOf, perceive } from "./senses.mjs";
 import { TWOD12, expandAsText, areaButton, isTalentAction, targetsNeeded, areaConfigOf } from "./config.mjs";
 import { weaponsFor, hasProp } from "./fists.mjs";
 import { isEngaged, engagedWithOther } from "./engaged.mjs";
+import { radiantZealBonus, useRadiantZeal, elusiveMod, useElusive } from "./paladin.mjs";
 import { flankingMod } from "./flanking.mjs";
 import { offerWake } from "./down.mjs";
 import { performCheck, performMultiCheck, multiCheckHtml, collapseNames, uniqueLabels, checkHtml, esc, sgn } from "./roll.mjs";
@@ -27,6 +28,9 @@ import { consumeGrant } from "./freeuse.mjs";
 import { buildPreviews, updateOdds, applyTalentMods, tierLines } from "./preview.mjs";
 const { DialogV2 } = foundry.applications.api;
 import { ensureFreeHand } from "./hands.mjs";
+
+/** v0.0.181 (P1, Smite): a Weapon Action adds the Modifier it rolls to its damage on Tier 2 or 3: a Weapon roll, or a [Signature, Weapon] Action's Signature roll. */
+const modOnWeapon = (src, traits) => src?.kind === "weapon" || (src?.kind === "signature" && !!traits?.has?.("weapon"));
 
 /** Text form of a damage instance, e.g. "[B] 1[W] + 1d4 H". */
 export function instanceText(i) {
@@ -348,19 +352,11 @@ export async function useAction(actor, item, opts = {}) {
   // What the Action rolls (Signature, Weapon, Power or an Attribute) and what its damage adds: rollsource.mjs.
   const src = rollSource(s, it);
   const preAttr = src.attrKey;
-  // A granted use (from an Effect such as Double Shot) is free and does not count: offer it first.
+  // A granted use (from an Effect such as Double Shot) is free and does not count. v0.0.182: it is used without asking (the roll dialog says so
+  // at the top); a normal use with one waiting: Shift-click the use button (opts.noGrant).
   if (!opts.free && !opts.noGrant) {
     const g = activeGrants(actor, item)[0];
-    if (g) {
-      const use = await DialogV2.confirm({
-        window: { title: item.name },
-        content: `<p><b>${esc(g.effect.name)}</b> lets you use ${esc(item.name)} (${g.grant.left} left)${g.grant.ap ? ` for ${g.grant.ap} AP` : " for free"}. It doesn't count toward its Frequency or the 3 Strikes.</p><p>Use the granted use?</p>`,
-        yes: { label: "Granted use" },
-        no: { label: "Normal use" },
-        rejectClose: false
-      });
-      if (use) opts = { ...opts, free: true, ap: g.grant.ap, boons: g.grant.boons, banes: g.grant.banes, label: g.effect.name, grant: g, excludeTargets: g.grant.distinct ? (g.grant.used ?? []) : [] };
-    }
+    if (g) opts = { ...opts, free: true, ap: g.grant.ap, boons: g.grant.boons, banes: g.grant.banes, label: g.effect.name, grant: g, excludeTargets: g.grant.distinct ? (g.grant.used ?? []) : [] };
   }
   // An Action that needs a free hand (Handle, "free hand" in its Requirements, such as Reload): with both hands full, offer Release first (v0.0.138).
   if (!opts.noHandle && !(await ensureFreeHand(actor, item))) return;
@@ -436,7 +432,7 @@ export async function useAction(actor, item, opts = {}) {
   const useTraits = new Set([...it.traits, ...(wUse?.mode ? [wUse.mode] : []), ...(wUse?.mode === "ranged" && !wUse.thrown && hasProp(previewWeapon, "projectile") ? ["shot"] : [])]);   // a Weapon Action with a Projectile weapon is a Shot
   const attrKeyForPreview = src.attrKey;
   const preview = await buildPreviews({ setupDone, talentMods: talentModsFor(actor, item),
-    item, actor, isSelf, weapon: previewWeapon, isWeapon: src.kind === "weapon", attrMode: src.attrMode, mod: previewMod, dc: dcInfo.dc, dcNote: dcInfo.note,
+    item, actor, isSelf, weapon: previewWeapon, isWeapon: modOnWeapon(src, useTraits), attrMode: src.attrMode, mod: previewMod, dc: dcInfo.dc, dcNote: dcInfo.note,
     attrVal: src.kind ? (Number(src.mod) || 0) : 0, attrLabel: src.kind === "attribute" ? (TWOD12.attributes[attrKeyForPreview] ?? "") : (src.chip ?? ""),   // [Mod]: the Modifier used on the roll
     checkLabel: (src.kind === "attribute" || !src.kind ? `${TWOD12.attributes[src.attrKey] ?? ""} Check` : `${src.chip} (${TWOD12.attributes[src.attrKey] ?? "?"})`) + (it.vs ? ` vs. ${vsText(it)}` : "")
   });
@@ -478,7 +474,8 @@ export async function useAction(actor, item, opts = {}) {
         if (wUse.long && band?.squares <= 1) extraMods.push({ id: `syn:long|${a.uuid}`, name: `Long weapon, adjacent (${tk.name})`, boons: 0, banes: 1, match: true, predicate: `${previewWeapon.name} is Long: 1 bane against adjacent creatures` });
       }
       if (useTraits.has("melee") && selfToken) { const fm = flankingMod(selfToken, tk, { tag: a.uuid }); if (fm) extraMods.push(fm); }
-      if (useTraits.has("weapon") && useTraits.has("ranged") && engagedWithOther(tk, selfToken))
+      { const el = elusiveMod(a, useTraits, a.uuid); if (el) extraMods.push({ ...el, tokenId: tk.id }); }   // v0.0.181
+      if (useTraits.has("weapon") && useTraits.has("ranged") && !sharpshooterShot(actor, useTraits) && engagedWithOther(tk, selfToken))
         extraMods.push({
           id: `syn:engaged-target|${a.uuid}`,
           name: `Engaged (${tk.name}, 1 Bane)`,
@@ -532,11 +529,12 @@ export async function useAction(actor, item, opts = {}) {
   const rangedWeapon = useTraits.has("ranged");
   // The Archer: Marked Quarry and Hunter's Focus boons against the quarry (archer.mjs).
   if (!multi && rollsAtOthers && targetToken) extraMods.push(...archerMods(actor, useTraits, targetToken));
+  if (!multi && rollsAtOthers && targetToken) { const el = elusiveMod(targetToken.actor, useTraits); if (el) extraMods.push({ ...el, tokenId: targetToken.id }); }   // v0.0.181
   // Flanking: [Melee] Actions gain a boon for each other ally that flanks the target (up to 3).
   if (useTraits.has("melee") && !multi && rollsAtOthers && selfToken && targetToken) { const fm = flankingMod(selfToken, targetToken); if (fm) extraMods.push(fm); }
   if (rangedWeapon && selfToken) {
     if (isEngaged(selfToken) && !steadyNerves(actor)) extraMods.push({ id: "syn:engaged", name: "You are Engaged (2 Banes)", boons: 0, banes: 2, match: true, predicate: "Using a [Ranged] Action while you are Engaged is hard" });
-    if (!multi && rollsAtOthers && targetToken && engagedWithOther(targetToken, selfToken))
+    if (!multi && rollsAtOthers && targetToken && !sharpshooterShot(actor, useTraits) && engagedWithOther(targetToken, selfToken))   // Sharpshooter: not for [Shot] Actions (v0.0.181)
       extraMods.push({
         id: "syn:engaged-target",
         name: "Target is Engaged (1 Bane)",
@@ -558,6 +556,7 @@ export async function useAction(actor, item, opts = {}) {
   // What will add to this roll's damage or trigger when it lands, shown in the dialog so the player knows: effects with bonus damage ("Divine Surge: +1d8 Holy") and abilities that trigger ("Profane Judgment").
   const dlgTraits = rollTraits(useTraits, src, item.name), bonusSeen = new Map();
   for (const t of [1, 2, 3]) for (const b of collectBonuses(actor, dlgTraits, t)) { const bk = `${b.effect}|${b.dmg}|${b.sub}|${b.text}`; if (!bonusSeen.has(bk)) bonusSeen.set(bk, { b, tiers: [] }); bonusSeen.get(bk).tiers.push(t); }
+  { const rz = radiantZealBonus(actor, dlgTraits); if (rz) bonusSeen.set("radiantZeal", { b: { ...rz, hover: "Radiant Zeal: your first [Strike] Action this round that deals damage deals an extra [M] 1d6 Holy (Escalation 1 or more)." }, tiers: [1, 2, 3] }); }   // v0.0.181
   { const kf = killersFocusBonus(actor, dlgTraits); if (kf) bonusSeen.set("killersFocus", { b: { ...kf, hover: "Killer's Focus: your first [Ranged, Shot, Strike, Weapon] Action this turn-cycle deals an extra [B] 1d6 Pierce, on every Tier (Escalation 2 or more)." }, tiers: [1, 2, 3] }); }   // v0.0.162
   const dmgSubs = new Set();
   for (const v of versions) for (const tk of ["t1", "t2", "t3"]) for (const inst of v[tk] ?? []) { if (inst.useW && previewWeapon?.system?.subtype) dmgSubs.add(previewWeapon.system.subtype); if (inst.subtype) dmgSubs.add(inst.subtype); }
@@ -594,7 +593,7 @@ export async function useAction(actor, item, opts = {}) {
     targetActors: multi ? perT.map(p => p.actor) : rollsAtOthers && targetToken?.actor ? [targetToken.actor] : [],
     targetTiles: multi ? perT.map(p => ({ uuid: p.actorUuid, name: p.label, img: p.token.document?.texture?.src ?? p.actor.img ?? "", dc: p.dcInfo.dc })) : [],
     extraMods,
-    notices: [...extraNotices, ...(opts.splitMode ? [{ text: `Split: ${SPLIT_LABEL[opts.splitMode]}`, icon: "fa-code-branch", why: "A Split Action is used as an Action of the mode you chose (Weapon or Power)." }] : []), ...(wUse?.thrown && wUse.mode === "ranged" ? [{ text: `Thrown: Ranged, Range ${wUse.range.split("/").join(" / ")}`, icon: "fa-person-rifle", why: `${previewWeapon?.name} is thrown: a Ranged Action with its Thrown Range (the target is beyond its melee Range, or the Action is Ranged). It leaves your hand.` }] : [])],
+    notices: [...(opts.grant ? [{ text: `Granted use: ${String(opts.grant.effect?.name ?? opts.label ?? "").replace(/\s*\(.*\)\s*$/, "")}, ${opts.grant.grant?.ap ? `${opts.grant.grant.ap} AP` : "free"} (${Math.max(0, (opts.grant.grant?.left ?? 1) - 1)} left after this)`, icon: "fa-gift", why: "A use another Action gave you: it doesn't count toward this Action's Frequency or the 3 Strikes of your turn. For a normal use, close this and Shift-click the use button." }] : []), ...extraNotices, ...(opts.splitMode ? [{ text: `Split: ${SPLIT_LABEL[opts.splitMode]}`, icon: "fa-code-branch", why: "A Split Action is used as an Action of the mode you chose (Weapon or Power)." }] : []), ...(wUse?.thrown && wUse.mode === "ranged" ? [{ text: `Thrown: Ranged, Range ${wUse.range.split("/").join(" / ")}`, icon: "fa-person-rifle", why: `${previewWeapon?.name} is thrown: a Ranged Action with its Thrown Range (the target is beyond its melee Range, or the Action is Ranged). It leaves your hand.` }] : [])],
     withDamage: true,
     withReload: usesReload
   });
@@ -683,6 +682,17 @@ export async function useAction(actor, item, opts = {}) {
   if (mres) for (const r of mres) r.bonuses = collectBonuses(actor, rollTraits(useTraits, src, item.name), r.chk.tier);
   const bonuses = mres ? [...new Map(mres.flatMap(r => r.bonuses).map(b => [`${b.effect}|${b.dmg}|${b.text}`, b])).values()] : (tier && !version.noTiers ? collectBonuses(actor, rollTraits(useTraits, src, item.name), tier) : []);
   // Killer's Focus: the first [Ranged, Shot, Strike, Weapon] Action of the turn-cycle deals an extra [B] 1d6 Pi, on every Tier (archer.mjs).
+  // Marked Quarry (v0.0.181): [B] [Mod] on a Tier 1 of a [Shot, Strike] Action against the quarry (archer.mjs).
+  if (!version.noTiers) {
+    const rt = rollTraits(useTraits, src, item.name);
+    if (chk?.tier === 1 && rollsAtOthers && aimed[0]) { const qb = quarryTier1Bonus(actor, rt, aimed[0], src.mod); if (qb) bonuses.push(qb); }
+    if (mres) for (const r of mres) if (r.chk.tier === 1) { const qb = quarryTier1Bonus(actor, rt, r.token, src.mod); if (qb) { r.bonuses.push(qb); if (!bonuses.some(b => b.effectId === "markedQuarry")) bonuses.push(qb); } }
+  }
+  // Radiant Zeal (v0.0.181): the first [Strike] Action this round that deals damage (a Tier with damage) gets +[M] 1d6 Ho (paladin.mjs).
+  { const rz = radiantZealBonus(actor, rollTraits(useTraits, src, item.name)), dealsAt = t => t > 0 && ((version[`t${t}`] ?? []).length > 0 || bonuses.some(b => b.dmg));
+    if (rz && !version.noTiers && (chk ? dealsAt(chk.tier) : mres?.some(r => dealsAt(r.chk.tier)))) { bonuses.push(rz); if (mres) for (const r of mres) if (dealsAt(r.chk.tier)) r.bonuses.push(rz); await useRadiantZeal(actor); } }
+  // Elusive (v0.0.181): the first [Strike] Action against the Archer this round took its Bane: it is used.
+  for (const m of extraMods) if (String(m.id).startsWith("syn:elusive")) { const t = canvas.tokens?.get(m.tokenId ?? "")?.actor ?? targetToken?.actor; if (t) await useElusive(t); }
   { const kf = killersFocusBonus(actor, rollTraits(useTraits, src, item.name)); if (kf && (chk || mres)) { bonuses.push(kf); if (mres) for (const r of mres) r.bonuses.push(kf); await useKillersFocus(actor); } }
   await expireOnUse(actor, rollTraits(useTraits, src, item.name));
   const targets = (multi ? perT.map(p => p.token) : (!rollsAtOthers ? (selfToken ? [selfToken] : []) : aimed)).map(t => ({ uuid: t.document?.uuid ?? t.uuid, name: t.name }));
@@ -695,7 +705,7 @@ export async function useAction(actor, item, opts = {}) {
   const rolledTier = chk ? (chk.forced ? tier : chk.base) : 0;
   const fxName = async k => Promise.all((version.fx?.[k] ?? []).map(async x => `${(await fromUuid(x.uuid))?.name ?? "?"}`));
   const fxn = { all: await fxName("all"), t1: await fxName("t1"), t2: await fxName("t2"), t3: await fxName("t3") };
-  const cardCtx = { item, weapon: weapon ?? previewWeapon ?? null, isWeapon: src.kind === "weapon" && !saveAct, attrMode: saveAct ? "none" : src.attrMode, attrVal: src.kind ? (Number(src.mod) || 0) : 0,
+  const cardCtx = { item, weapon: weapon ?? previewWeapon ?? null, isWeapon: modOnWeapon(src, useTraits) && !saveAct, attrMode: saveAct ? "none" : src.attrMode, attrVal: src.kind ? (Number(src.mod) || 0) : 0,
     attrLabel: src.kind === "attribute" ? (TWOD12.attributes[src.attrKey] ?? "") : (src.chip ?? "") };
   const rowParts = [];
   for (const [i, k] of (version.noTiers ? [] : ["t1", "t2", "t3"]).entries()) {
@@ -798,7 +808,7 @@ export async function useAction(actor, item, opts = {}) {
           weaponId: weapon?.id ?? "",
           mode: opts.splitMode ?? "",
           attrVal: src.kind ? (Number(src.mod) || 0) : 0,   // [Mod]: the Modifier used on the roll (also Cleave's damage)
-          isWeapon: src.kind === "weapon",
+          isWeapon: modOnWeapon(src, useTraits),
           escalation: escCost > 0,   // the effects it applies end with the encounter (escalation.mjs)
           fxOnUse: true,   // its automatic effects were applied on use: the damage card doesn't apply them again
           attrMode: src.attrMode,
@@ -884,7 +894,7 @@ export async function rollDamage(message) {
     for (const r of resolved) for (const c of r.comps) comps.push({ pool: r.inst.pool || "B", sub: c.sub, kind: c.kind, formula: c.formula, total: c.total, dice: c.dice });
     let chip = "";
     const dmgRes = resolved;
-    // [Mod]: the Weapon Modifier on Tiers 2 and 3 (to the weapon's damage); nothing for Power, Signature and Attribute Actions. Old cards: isWeapon / attrMode "all".
+    // [Mod]: the Weapon Modifier on Tiers 2 and 3 (to the weapon's damage), the Signature Modifier for a [Signature, Weapon] Action (v0.0.181); nothing for Power, Signature and Attribute Actions. Old cards: isWeapon / attrMode "all".
     const attrFrom = f.attrMode === "all" ? 1 : f.attrMode === "t2" ? 2 : f.attrMode === "none" ? Infinity : (f.isWeapon ? 2 : Infinity);
     if (tier >= attrFrom && !insts.some(i => i.useAt) && dmgRes.length) {
       const wInst = (f.attrMode === "all" ? null : dmgRes.find(r => r.inst.useW)) ?? dmgRes.find(r => r.comps.length) ?? dmgRes[0];

@@ -18,7 +18,7 @@ import { applySpeedMods } from "./speedmods.mjs";
 import { unloadedWeapon, costText, frequencyText, costGroup, groupRows, GROUP_BY, SORT_BY, sortKeyOf } from "./actionrows.mjs";
 import { buildActionCard } from "./actioncard.mjs";
 import { enableDragging, dropEffect } from "./drag.mjs";
-import { isFaded, grantMatches } from "./usage.mjs";
+import { isFaded, grantMatches, activeGrants } from "./usage.mjs";
 import { chooseRecovery } from "./rest.mjs";
 import { addBasicActions, missingBasic } from "./basic.mjs";
 import { openEffectSheet } from "./fxopen.mjs";
@@ -29,7 +29,7 @@ import { ensureHandsFor } from "./hands.mjs";
 import { passiveSources } from "./passives.mjs";
 import { weaponsFor } from "./fists.mjs";
 import { effectOff } from "./escalation.mjs";
-import { npcBuilderContext, ratingUpdate } from "./npcbuilder.mjs";
+import { npcBuilderContext, ratingUpdate, cvTip } from "./npcbuilder.mjs";
 // What keeps its scroll position when the sheet is drawn again (v0.0.165): the window, the side panel, the main pane and each tab.
 // (v0.0.164's "scrollable" parts were not enough: the tab is shown after Foundry puts the position back, and a hidden element can't be scrolled.)
 const SCROLL_SEL = ".window-content, .np, .mn, .tab[data-tab]";
@@ -151,8 +151,8 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     // Class: the granted Features in your order (level order at first), then the ones not reached yet.
     const cls = a.itemTypes.class[0];
     const classCards = [];
-    // The pick Features (Encounter Pick, Daily Pick, Free Picks...: a choice whose name says Pick) go together in one "Class picks" card.
-    const isPick = it => (it.system?.choiceOptions ?? []).some(Boolean) && /\bpicks?\b/i.test(it.name);
+    // The pick Features (Encounter Pick, Daily Pick, Free Picks...: a choice whose name says Pick) go together in one "Class picks" card. v0.0.181: the Hallmark Action too.
+    const isPick = it => (it.system?.choiceOptions ?? []).some(Boolean) && /\bpicks?\b|\bhallmark action\b/i.test(it.name);
     const pickCopies = [];
     for (const f of (ctx.classTab?.features ?? []).filter(x => x.unlocked).map((x, k) => ({ x, k })).sort((p, q) => idx(p.x.id) - idx(q.x.id) || p.k - q.k)) {
       const copy = a.items.get(f.x.id);
@@ -468,6 +468,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         const tags = [...(s.tags ?? [])].map(t => tagChoices()[t] ?? t).join(", ");
         return {
           size: SIZE_NAMES[s.size ?? 3] ?? "", tags, role: s.roleLabel ?? "", cv: s.cv ?? "",
+          cvTip: a.type === "npc" ? cvTip(TWOD12.npcRoles[s.role] ?? TWOD12.npcRoles.standard) : "",
           ap: { inCombat: !!c, pips: Array.from({ length: Math.max(Number(s.apPerTurn) || 5, ap) }, (_, k) => ({ n: k + 1, on: k < ap })),
             tip: c ? `${ap} AP. Click a pip to correct it (it is said in the chat).` : "Not in combat: AP is gained at the start of each turn in combat." }
         };
@@ -493,7 +494,11 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const aps = (it.versions ?? []).map(v => Number(v.ap) || 0);
     // On the row only Unloaded; what effects change shows on the card when the row is opened (v0.0.132).
     const chips = out ? [{ text: "Unloaded", cls: "down", why: `${out.name} must be reloaded first (Reload, 1 AP)` }] : [];
+    // v0.0.182: a granted use waiting (Double Shot's Weapon Attacks): the use button turns blue and uses it.
+    const g = activeGrants(a, i)[0];
+    const grant = g ? { tip: `Granted by ${g.effect.name.replace(/\s*\(.*\)\s*$/, "")}: ${g.grant.left} use${g.grant.left === 1 ? "" : "s"} left, ${g.grant.ap ? `${g.grant.ap} AP` : "free"}. Click to use it; Shift-click for a normal use.` } : null;
     return {
+      grant,
       id: i.id, name: i.name, costLabel: costText(i), cost: costGroup(i), fq: cardColorFor(it), freq: effectiveFrequency(it), freqText: frequencyText(i, (a.getFlag("twod12", "dailyUsed") ?? []).includes(i.id)),
       // v0.0.168: a number reads as squares ("5 sq."); words (Weapon, Reach, Self) and bands (10/20/40) stay
       range: ((r => (/^\d+$/.test(r) ? `${r} sq.` : r))((areaText(it) || distanceText(it, weapon) || "\u2014"))),
@@ -617,6 +622,13 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     this.element.querySelectorAll(".np-track[data-pool]").forEach(t => {
       t.addEventListener("click", ev => change(ev, t.dataset.pool, 1));
       t.addEventListener("contextmenu", ev => change(ev, t.dataset.pool, -1));
+    });
+    // v0.0.183: the Guard button works like the health view: click +1, right-click -1, Ctrl 5 at a time.
+    const gb = this.element.querySelector(".np-guardbtn");
+    if (gb) for (const [evName, sign] of [["click", 1], ["contextmenu", -1]]) gb.addEventListener(evName, async ev => {
+      ev.preventDefault();
+      if (!this.isEditable) return;
+      await this.actor.update({ "system.guard": Math.max(0, (Number(this.actor.system.guard) || 0) + (ev.ctrlKey || ev.metaKey ? 5 : 1) * sign) });
     });
     const donut = this.element.querySelector(".np-donut");
     if (donut) {
@@ -1040,7 +1052,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     }
   }
   static async rollTable(event, target) { await rollTable(this.actor, target.dataset.kind); }
-  static async useAction(event, target) { await useAction(this.actor, this._item(target)); }
+  static async useAction(event, target) { await useAction(this.actor, this._item(target), event?.shiftKey ? { noGrant: true } : {}); }   // v0.0.182: Shift: a normal use, even with a granted use waiting
   static openItem(event, target) { this._item(target)?.sheet.render(true); }
   static async deleteItem(event, target) { await this._item(target)?.delete(); }
   static async confirmDelete(event, target) {

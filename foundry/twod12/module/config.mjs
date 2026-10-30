@@ -152,32 +152,41 @@ export const TWOD12 = {
     { key: "damage", label: "Damage", traits: ["nonlethal"] },
     { key: "keywords", label: "Keywords", traits: ["divine", "focus", "fear"] }
   ],
-  // The Bestiary (book: bestiary.html; v0.0.163): an NPC is a role plus a rating for each number. Level 1 tables only (later levels are not written yet).
-  //   attr: the Medium Attribute; hm, hb: the Medium Health Multiplier and the Health Base; defense: the Medium Defense; basic: Medium Basic attack averages (Tier 2, Tier 3, [Mod] included);
-  //   deals: what it should deal a turn to an average PC (the book's targets).
+  // The Bestiary (book: bestiary.html; v0.0.163, refit by E3 in v0.0.181): an NPC is a role plus a rating for each number.
+  //   attr: the Medium Attribute; hb: the Health Base; defense: the Medium Defense; cv: the Combat Value at the party's Stage, one Stage below, two Stages below
+  //   (a normal fight is CV 100 a PC); deals / takes: the book's targets (a turn to an average PC; the PC turns it lasts).
+  //   hm and basic: the Health Multiplier and the Basic attack averages (Tier 2 / Tier 3, [Mod] included) by Stage (1, 2, 3), one per rating
+  //   (Terrible, Low, Medium, High, Extreme; a Minion has no Extreme). Exactly the book's tables: nothing is computed from them.
   npcRoles: {
-    minion: { label: "Minion", cv: 0.25, ap: 3, attr: 0, hm: 1, hb: 1, defense: 12, basic: [2, 4], extreme: false, deals: "3 to 4", takes: "one PC hit" },
-    grunt: { label: "Grunt", cv: 0.5, ap: 5, attr: 0, hm: 5, hb: 3, defense: 13, basic: [3, 4.5], extreme: true, deals: "5", takes: "1 PC turn" },
-    standard: { label: "Standard", cv: 1, ap: 5, attr: 1, hm: 7, hb: 4, defense: 13, basic: [4.5, 7.5], extreme: true, deals: "7 to 8", takes: "2 PC turns" },
-    elite: { label: "Elite", cv: 2, ap: 5, attr: 2, hm: 12, hb: 6, defense: 14, basic: [6.5, 10], extreme: true, deals: "15", takes: "4 to 5 PC turns" }
+    minion: { label: "Minion", cv: [25, 20, 15], ap: 3, attr: 0, hb: 1, defense: 12, extreme: false, deals: "3", takes: "one PC hit",
+      hm: [[0, 0.75, 1, 1.25], [0, 1, 1.25, 1.5], [0, 1.25, 1.75, 2.25]],
+      basic: [[[1.5, 3.5], [2, 5], [3, 5.5], [3.5, 7]], [[1.5, 4], [2.5, 6], [3.5, 6.5], [4, 8.5]], [[2, 5], [3, 6.5], [4, 7.5], [5, 9.5]]] },
+    grunt: { label: "Grunt", cv: [50, 40, 30], ap: 5, attr: 0, hb: 3, defense: 13, extreme: true, deals: "6 to 7", takes: "1 PC turn",
+      hm: [[2, 3, 4.25, 5.25, 6.25], [2.5, 3.75, 4.75, 6, 7.25], [3.25, 5, 6.75, 8.25, 10]],
+      basic: [[[3, 4], [3.5, 5], [4, 6], [5.5, 7.5], [6, 9.5]], [[3.5, 5], [4, 6], [5, 7.5], [6.5, 9.5], [7.5, 12]], [[4, 6], [5, 6.5], [6, 8.5], [7.5, 10.5], [8.5, 13.5]]] },
+    standard: { label: "Standard", cv: [100, 80, 65], ap: 5, attr: 1, hb: 4, defense: 13, extreme: true, deals: "10 to 11", takes: "2 to 3 PC turns",
+      hm: [[3.75, 5.75, 7.75, 9.75, 11.5], [4.5, 6.75, 9, 11.25, 13.5], [6.25, 9.25, 12.5, 15.5, 18.75]],
+      basic: [[[4, 6], [5, 8.5], [6, 11], [7.5, 13], [9.5, 16]], [[5, 7.5], [6, 10], [7.5, 13.5], [9.5, 16], [12, 19.5]], [[6, 8.5], [6.5, 11.5], [8.5, 15.5], [10.5, 18], [13.5, 22]]] },
+    elite: { label: "Elite", cv: [200, 160, 130], ap: 5, attr: 2, hb: 6, defense: 14, extreme: true, deals: "17 to 18", takes: "5 PC turns",
+      hm: [[6.5, 10, 13.25, 16.5, 19.75], [7.75, 11.5, 15.5, 19.25, 23.25], [10.75, 16, 21.25, 26.75, 32]],
+      basic: [[[4, 6], [5.5, 9], [7, 11], [9, 13.5], [10.5, 15.5]], [[5, 7.5], [7, 11], [9, 13.5], [11, 16.5], [12.5, 19]], [[5.5, 8.5], [8, 12], [10, 15], [12, 18.5], [14.5, 21.5]]] }
   },
-  //   off: Attribute and Defense steps; step: damage; hstep: Health Multiplier; score: for "the ratings average" (-2 to +2).
+  //   off: Attribute and Defense steps; score: for "the ratings average" (-2 to +2); i: the column of the role tables.
   npcRatings: {
-    terrible: { label: "Terrible", off: -2, step: 0.6, hstep: 0.5, score: -2 },
-    low: { label: "Low", off: -1, step: 0.8, hstep: 0.75, score: -1 },
-    medium: { label: "Medium", off: 0, step: 1, hstep: 1, score: 0 },
-    high: { label: "High", off: 1, step: 1.2, hstep: 1.25, score: 1 },
-    extreme: { label: "Extreme", off: 2, step: 1.4, hstep: 1.5, score: 2 }
+    terrible: { label: "Terrible", off: -2, score: -2, i: 0 },
+    low: { label: "Low", off: -1, score: -1, i: 1 },
+    medium: { label: "Medium", off: 0, score: 0, i: 2 },
+    high: { label: "High", off: 1, score: 1, i: 3 },
+    extreme: { label: "Extreme", off: 2, score: 2, i: 4 }
   },
-  npcMinionHm: { terrible: 0, low: 0.75, medium: 1, high: 1.25 },
-  // Levels (v0.0.176, the Bestiary's rows; spec: book/ruler/ratings.py). bump: the 5-15% a rating grows; measured: how the PCs grow
-  // (h: their sustained damage, so NPC Health keeps a fight as long; d: their Health, so NPC damage keeps a PC going Down after as many hits).
-  npcBump: { terrible: 0.05, low: 0.075, medium: 0.10, high: 0.125, extreme: 0.15 },
-  npcMeasured: { h: { 1: 1, 2: 1.14, 3: 1.14 }, d: { 1: 1, 2: 12 / 11, 3: 13 / 11 } },
-  npcMaxLevel: 3,   // the Bestiary has rows for levels 1 to 3; a higher level uses the level 3 numbers
-  npcSpeeds: [3, 4, 5, 6, 7],   // the Builder's Speed choices (5 by default); any other Speed is Custom   // a Minion's Health Multipliers (no Extreme)
+  // Stages (book, Chapter 5): levels 1-4, 5-7, 8-10 (a level above 10 counts as Stage 3, level 0 as Stage 1).
+  stages: [{ n: 1, from: 1, to: 4 }, { n: 2, from: 5, to: 7 }, { n: 3, from: 8, to: 10 }],
+  // A PC's Weapon and Power Modifiers by Stage (book, Chapter 5): +1 at Stage 2, +2 at Stage 3, never above +4 (NPCs: no step).
+  stageModStep: [0, 1, 2], modCap: 4,
+  npcSpeeds: [3, 4, 5, 6, 7],   // the Builder's Speed choices (5 by default); any other Speed is Custom
   npcSpecial: [{ key: "basic", label: "Basic attack", sub: "1 AP, At-will", x: 1 }, { key: "s1", label: "Special, 1 AP", sub: "Round", x: 1.4 }, { key: "s2", label: "Special, 2 AP", sub: "Round", x: 2.2 }, { key: "s3", label: "Special, 3 AP", sub: "Encounter (not Minions)", x: 3.5 }],
-  // A level 1 PC's damage a turn against a Defense (ruler: book/ruler/defense.mjs, mean of the Paladin's and the Archer's turn), for the Builder's check.
+  // A Stage 1 PC's damage a turn against a Defense (ruler: book/ruler/defense.mjs, mean of the Paladin's and the Archer's turn), for the Builder's check.
+  // v0.0.181: checked against the P1 and A1 main turns (book/ruler/report.md: 24.7 / 23.1 / 21.4 at Defense 12 / 13 / 14), within 2%: kept.
   pcDamageVsDefense: { 11: 27.0, 12: 25.2, 13: 23.3, 14: 21.3, 15: 19.2, 16: 17.3 },
   cardColors: { weapon: "#d6b53f", self: "Always targets you, the origin of the Action. An [Area] Action with Self is centered on you.", default: "#9c9c9c" },
   movementActions: { walk: "Walk", fly: "Fly", swim: "Swim", climb: "Climb", crawl: "Crawl", burrow: "Burrow" },
@@ -199,24 +208,19 @@ export const TWOD12 = {
   pushCone: 45
 };
 
-/* ------------------------------------------------------------------ the Bestiary's levels (v0.0.176; spec: book/ruler/ratings.py) */
-const r5 = x => Math.round(x * 2) / 2, r25 = x => Math.round(x * 4) / 4;
-/** The level the tables use: 1 to 3 (the Bestiary has no rows above 3 yet; level 0 counts as 1). */
-export const npcTableLevel = lv => Math.min(TWOD12.npcMaxLevel, Math.max(1, Math.trunc(Number(lv)) || 1));
-/** How a rating grows a level relative to Medium (shared by Health and damage). */
-const npcRel = k => Math.sqrt((1 + (TWOD12.npcBump[k] ?? 0.1)) / (1 + TWOD12.npcBump.medium));
-/** The damage factor of a rating at a level: level 1 is raised by half the rating's bump; then it grows like the PCs' Health. */
-export const npcDfac = (k, lv) => { const l = npcTableLevel(lv); return (1 + (TWOD12.npcBump[k] ?? 0.1) / 2) * TWOD12.npcMeasured.d[l] * npcRel(k) ** (l - 1); };
-/** The Health factor of a rating at a level: it grows like the PCs' sustained damage. */
-export const npcHfac = (k, lv) => { const l = npcTableLevel(lv); return TWOD12.npcMeasured.h[l] * npcRel(k) ** (l - 1); };
-/** The Health Multiplier of a rating at a level: level 1 exactly as the table writes it; later levels rounded to 0.5 (a Minion's to 0.25). */
-export function npcHm(roleKey, rating, lv) {
-  const role = TWOD12.npcRoles[roleKey] ?? TWOD12.npcRoles.standard, l = npcTableLevel(lv);
-  const v = (roleKey === "minion" ? (TWOD12.npcMinionHm[rating] ?? 1) : role.hm * (TWOD12.npcRatings[rating]?.hstep ?? 1)) * npcHfac(rating, l);
-  return l === 1 ? v : (roleKey === "minion" ? r25(v) : r5(v));
-}
-/** The average damage of an attack (Tier 2 or 3) for a rating at a level: the table's number x the rating's step x the level's factor, rounded to 0.5. */
-export const npcDamage = (base, rating, lv, x = 1) => r5(base * (TWOD12.npcRatings[rating]?.step ?? 1) * x * npcDfac(rating, lv));
+/* ------------------------------------------------------------------ Stages and the Bestiary's tables (v0.0.181, E3; book: Bestiary, Chapter 5) */
+const r5 = x => Math.round(x * 2) / 2;
+/** The Stage of a level: 1 (levels 1-4; level 0 too), 2 (5-7), 3 (8 and up). */
+export const stageOf = lv => { const l = Math.trunc(Number(lv)) || 0; return l >= 8 ? 3 : l >= 5 ? 2 : 1; };
+/** A PC's Modifier with its Stage's step: +1 at Stage 2, +2 at Stage 3, never raised above +4 (a higher Modifier stays as it is). */
+export const stageMod = (mod, lv) => Math.max(mod, Math.min(TWOD12.modCap, mod + TWOD12.stageModStep[stageOf(lv) - 1]));
+const npcCol = (roleKey, rating) => { const role = TWOD12.npcRoles[roleKey] ?? TWOD12.npcRoles.standard; return Math.min(role.hm[0].length - 1, TWOD12.npcRatings[rating]?.i ?? 2); };
+/** The Health Multiplier of a rating at the NPC's level (the row of its Stage). */
+export const npcHm = (roleKey, rating, lv) => (TWOD12.npcRoles[roleKey] ?? TWOD12.npcRoles.standard).hm[stageOf(lv) - 1][npcCol(roleKey, rating)];
+/** The Basic attack's average damage [Tier 2, Tier 3] of a rating at the NPC's level, times x (a Special Action), rounded to 0.5. */
+export const npcDamage = (roleKey, rating, lv, x = 1) => (TWOD12.npcRoles[roleKey] ?? TWOD12.npcRoles.standard).basic[stageOf(lv) - 1][npcCol(roleKey, rating)].map(v => r5(v * x));
+/** The Combat Value of an NPC against a party: the role's CV, lower when the NPC's Stage is below the party's (one Stage x0.8, two x0.65, the book's table). */
+export const npcCv = (roleKey, npcLv = 1, partyLv = npcLv) => { const cv = (TWOD12.npcRoles[roleKey] ?? TWOD12.npcRoles.standard).cv; return cv[Math.min(2, Math.max(0, stageOf(partyLv) - stageOf(npcLv)))]; };
 
 /** CSS variables for a card color (title color and a soft gradient). */
 export const cardVars = hex => {
@@ -490,6 +494,8 @@ export function vsText(d, { src = null, fists = false, rolls = null } = {}) {
   if (has("split") && !has("weapon") && !has("magic")) return "AD (Weapon mode) or WD (Power mode)";
   if (has("handle") && !has("strike")) return "DC 13";   // handling things (Reload, Interact): no Defense to roll against
   if (String(d.distance ?? "").toLowerCase() === "self" && !has("area")) return "DC 13";   // an Action on yourself that rolls (Rimebrand): no Defense either (Whirlwind's area rolls against each creature)
+  if (has("signature") && has("weapon")) return "AD";   // v0.0.181: a [Signature, Weapon] Action is a Weapon Action (the book's Smite)
+  if (has("signature") && (has("power") || has("magic"))) return "WD";
   if (src?.kind === "signature") return src.from === "power" ? "WD" : "AD";
   if (has("signature")) return "AD or WD";
   if (has("weapon") || fists || src?.kind === "weapon") return "AD";

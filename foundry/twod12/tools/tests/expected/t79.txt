@@ -7,6 +7,6 @@ shift+click: opened | opened: Exhausted 5 | value unchanged: 5
 ctrl+click at 5: removed → Exhausted 0 | conditions left: 0
 a non-owner can't change it: denied | messages shown for all of that: 0
 an old effect now shows on the token: true | Exhausted 2
-Exhausted 0: Mind Damage Threshold 19 | Health Pool 46 | Rally heal 12 | Rally Points 8
-Exhausted 3: Mind Damage Threshold 7 | Health Pool 34 | Rally heal 12 | Rally Points 8
+Exhausted 0: Mind Damage Threshold 18 | Health Pool 43 | Rally heal 11 | Rally Points 8
+Exhausted 3: Mind Damage Threshold 6 | Health Pool 31 | Rally heal 11 | Rally Points 8
 the pool shrinks, Rally stays: true

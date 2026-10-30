@@ -199,23 +199,24 @@ export function immobilizedDc(actor) {
 /* Movement tracking                                                   */
 /* ------------------------------------------------------------------ */
 /** Charge a move of `cost` squares: free movement first, then Walk allotments (1 AP each, they can be split). */
-export async function chargeMovement(c, cost, dest = null) {
+export async function chargeMovement(c, cost, dest = null, { par = 0 } = {}) {
   const walk = num(c.actor?.system?.moveSpeed ?? c.actor?.system?.speed);
   let evade = num(c.getFlag(F, "evadeMove")), free = num(c.getFlag(F, "freeMove")), left = num(c.getFlag(F, "moveLeft"));
   let need = cost;
-  const useEvade = Math.min(evade, need); need -= useEvade;
-  if (useEvade > 0) evade = 0;   // Evade can not be split: what is not used is gone
+  // v0.0.182: an Evade goes on square by square (its area stays shown) until the creature uses another Action or ends the movement:
+  // it can't be split around other Actions (spendAP in combat.mjs clears what is left), but one Evade can take several drags.
+  const useEvade = Math.min(evade, need); need -= useEvade; evade -= useEvade;
   const useFree = Math.min(free, need); free -= useFree; need -= useFree;
   let spent = 0;
   if (need > 0) {
     if (walk <= 0) warn(`${c.name} has no Speed.`);
     else { while (need > left + 1e-9) { left += walk; spent++; } left -= need; }
   }
-  await c.update({ [`flags.${F}.evadeMove`]: evade, [`flags.${F}.freeMove`]: free, [`flags.${F}.moveLeft`]: Math.round(left * 100) / 100 });
+  await c.update({ [`flags.${F}.evadeMove`]: evade, [`flags.${F}.freeMove`]: free, [`flags.${F}.moveLeft`]: Math.round(left * 100) / 100, ...(useEvade > 0 && evade <= 0 ? { [`flags.${F}.-=ignoreTerrain`]: null } : {}), ...(useEvade > 0 ? { [`flags.${F}.diagPar`]: evade > 0 ? par : 0 } : {}) });
   clearRange();
   // "Until it uses a Move Action": the effect lasts through this move and ends once it is resolved (an Evade is not a Move Action).
   if (!useEvade) await expireOnUse(c.actor, new Set(["move"])).catch(() => {});
-  if (free + evade > 0 && dest) showRange(c, free + evade, dest);
+  if (free + evade > 0 && dest) showRange(c, free + evade, dest, evade > 0 ? par : 0);
   const ap = getAP(c);
   const sq = Math.round(cost * 100) / 100;
   const what = useEvade ? `Evade ${sq} sq, no reactions` : `Advance ${sq} sq`;
@@ -445,6 +446,7 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
   if (!inCombat) { await looseMove(token, n, kind, cfg); return true; }
   const key = kind === "evade" ? "evadeMove" : "freeMove";
   await c.setFlag(F, key, num(c.getFlag(F, key)) + n);
+  if (kind === "evade") await c.setFlag(F, "diagPar", 0);   // v0.0.183: a new Evade starts its diagonals from 0
   if (cfg.ignoreTerrain) await c.setFlag(F, "ignoreTerrain", true);
   if (kind === "charge") await c.setFlag(F, "charge", { min: cfg.min || 3, max: n });
   const sq = `${n} square${n === 1 ? "" : "s"}`;
@@ -455,7 +457,7 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
   }
   await post(
     kind === "evade"
-      ? `<b>${esc(c.name)}</b> can Evade up to ${sq} in one move: no reactions are triggered, and ${cfg.ignoreTerrain ? "it can move through the space of any creature (it can't end in one) and ignores Difficult Terrain" : "it can't enter or pass through Difficult Terrain"}. ${endBtn(c)} <button type="button" class="endmove" data-twod12="evadeAdvance" data-combatant="${c.id}"><i class="fa-solid fa-person-running"></i> Advance instead</button>`
+      ? `<b>${esc(c.name)}</b> can Evade up to ${sq} (in one or more drags, until another Action): no reactions are triggered, and ${cfg.ignoreTerrain ? "it can move through the space of any creature (it can't end in one) and ignores Difficult Terrain" : "it can't enter or pass through Difficult Terrain"}. ${endBtn(c)} <button type="button" class="endmove" data-twod12="evadeAdvance" data-combatant="${c.id}"><i class="fa-solid fa-person-running"></i> Advance instead</button>`
       : `<b>${esc(c.name)}</b> can Advance up to ${sq} without spending AP. ${endBtn(c)}`
   );
   showRange(c, n);
@@ -1025,10 +1027,20 @@ export function registerMovement() {
         const reach = Math.max(1, num(c.actor?.system?.reach) || 1);
         setTimeout(() => chargeFollowUp(c, doc, reach), 600);
       }
+      // v0.0.183: an Evade over several drags counts its diagonals as one movement: after an odd number, the next diagonal costs 2
+      // (Foundry measures each drag from 0). It can't go beyond the Evade's squares.
+      let par = 0;
+      if (evading && !ch) {
+        const p = num(c.getFlag(F, "diagPar")) % 2, d = diagonalsOn([origin, ...(movement?.pending?.waypoints ?? []), to]);
+        if (p === 1 && d % 2 === 1) squares += 1;
+        const left = num(c.getFlag(F, "evadeMove"));
+        if (squares > left + 1e-6) { warn(`Evade has ${left} square${left === 1 ? "" : "s"} left${p === 1 && d % 2 === 1 ? " (this diagonal is the second one: it costs 2)" : ""}. Choose a shorter path, or use End movement.`); return false; }
+        par = (p + d) % 2;
+      }
       // An Advance through an unwilling creature's squares pays for Difficult Terrain (unless Foundry already counted it).
       if (!ch && !evading && !ignoring) squares += extraCost(way, cost > dist + 1e-6);
       mark(keyOf(doc, to.x, to.y));
-      chargeMovement(c, squares, to).catch(e => console.error("twod12 | could not charge movement", e));
+      chargeMovement(c, squares, to, { par }).catch(e => console.error("twod12 | could not charge movement", e));
     } catch (e) { console.error("twod12 | movement tracking failed", e); }
   });
   // Fallback when preMoveToken does not report the move: the plain update of the position.
@@ -1065,11 +1077,18 @@ let rangeGfx = null;
 export function clearRange() { try { rangeGfx?.destroy(); } catch (e) { /* already gone */ } rangeGfx = null; }
 
 const NEIGH = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
+/** The diagonal steps of a path of positions (token top-left points): each leg moves min(|di|, |dj|) squares diagonally (v0.0.183). */
+export function diagonalsOn(points, offsetOf = p => canvas.grid.getOffset(p)) {
+  let d = 0;
+  for (let k = 1; k < points.length; k++) { const a = offsetOf(points[k - 1]), b = offsetOf(points[k]); d += Math.min(Math.abs(b.i - a.i), Math.abs(b.j - a.j)); }
+  return d;
+}
+
 /** Squares within N of the token (every second diagonal costs 2), not through walls. */
-export function reachableCells(cells, n, blocked = () => false) {
+export function reachableCells(cells, n, blocked = () => false, par0 = 0) {
   const best = new Map(), key = (i, j) => `${i},${j}`;
   const queue = [];
-  for (const c of cells) { best.set(`${key(c.i, c.j)}|0`, 0); queue.push({ i: c.i, j: c.j, cost: 0, par: 0 }); }
+  for (const c of cells) { best.set(`${key(c.i, c.j)}|${par0}`, 0); queue.push({ i: c.i, j: c.j, cost: 0, par: par0 ? 1 : 0 }); }   // par0 1: the next diagonal costs 2 (v0.0.183)
   const seen = new Map();
   while (queue.length) {
     queue.sort((a, b) => a.cost - b.cost);
@@ -1094,7 +1113,7 @@ export function reachableCells(cells, n, blocked = () => false) {
 }
 
 /** Draw the area around the combatant's token (or around a position it is about to be at). */
-export function showRange(c, squares, dest = null) {
+export function showRange(c, squares, dest = null, par = 0) {
   clearRange();
   try {
     const tok = c.token?.object;
@@ -1104,7 +1123,7 @@ export function showRange(c, squares, dest = null) {
     const cells = [];
     for (let i = 0; i < h; i++) for (let j = 0; j < w; j++) cells.push({ i: o.i + i, j: o.j + j });
     const pt = ({ i, j }) => cellCenter(i, j);
-    const area = reachableCells(cells, squares, (a, b) => wallBetween(pt(a), pt(b)));
+    const area = reachableCells(cells, squares, (a, b) => wallBetween(pt(a), pt(b)), par);
     rangeGfx = new PIXI.Graphics();
     (canvas.interface ?? canvas.stage).addChild(rangeGfx);
     fillCells(rangeGfx, area, 0x66ccff, 0.2);

@@ -8,7 +8,7 @@ const { NpcData, npcBuild } = await import(ROOTURL + "module/data.mjs");
 const { TWOD12 } = await import(ROOTURL + "module/config.mjs");
 const { npcBuilderContext, diceFor, ratingUpdate } = await import(ROOTURL + "module/npcbuilder.mjs");
 const all = r => ({ body: r, mind: r, appeal: r, instinct: r, bodyHm: r, mindHm: r, ad: r, wd: r });
-console.log("--- every rating Medium, level 1 (the Bestiary: 6 / 26 / 50 / 108 Health)");
+console.log("--- every rating Medium, level 1 (the Bestiary, v0.0.181: 6 / 24 / 56 / 118 Health)");
 for (const role of Object.keys(TWOD12.npcRoles)) { const b = npcBuild({ role, ratings: all("medium") }); console.log(role.padEnd(9), `Health ${b.bdt + b.mdt} (${b.bdt} + ${b.mdt})  Attributes ${Object.values(b.attributes).join("/")}  AD ${b.armorDef} WD ${b.wardDef}  AP ${b.role.ap}`); }
 console.log("--- every Defense rating (Terrible..Extreme; never below 11)");
 for (const role of Object.keys(TWOD12.npcRoles)) console.log(role.padEnd(9), Object.keys(TWOD12.npcRatings).map(r => npcBuild({ role, ratings: { ...all("medium"), ad: r } }).armorDef).join(" "));

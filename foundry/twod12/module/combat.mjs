@@ -81,6 +81,7 @@ export async function spendAP(actor, cost, label = "") {
     if (!ok) return false;
   }
   await c.setFlag(F, "acted", true);
+  if (Number(c.getFlag(F, "evadeMove")) > 0) await c.update({ [`flags.${F}.evadeMove`]: 0, [`flags.${F}.-=ignoreTerrain`]: null });   // v0.0.182: an Evade left unused ends when another Action is used
   await setAP(c, Math.max(0, have - cost), label);
   return true;
 }

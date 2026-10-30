@@ -3,6 +3,7 @@
 //     Mark it with the Mark Quarry Action (0 AP when you have none: the start of an encounter, or it died or went Down; 1 AP [Focus] to change it,
 //     once per turn). When it dies or goes Down, the mark ends and you are told to choose a new one.
 //   Hunter's Focus (Daily): for the encounter, against your Marked Quarry, 1 boon and Empowered 1 (its damage reduction is not automated).
+//   Marked Quarry (A1, v0.0.181): [B] [Mod] on a Tier 1 of those Actions. Sharpshooter (A1): [Shot] Actions skip the Bane for shooting into melee.
 //   Long Draw: with a Projectile weapon, far range has no bane and maximum range 1 (one bane less).
 //   Steady Nerves: while your Escalation is 2 or more, no banes for shooting while you are Engaged.
 //   Killer's Focus: while your Escalation is 2 or more, your first [Ranged, Shot, Strike, Weapon] Action each turn-cycle deals an extra [B] 1d6 Pi.
@@ -28,7 +29,7 @@ export function archerMods(actor, traits, targetToken) {
   const out = [];
   if (!targetToken || !isQuarry(actor, targetToken)) return out;
   if (hasFeature(actor, "Marked Quarry") && traits.has("shot") && traits.has("strike"))
-    out.push({ id: "syn:quarry", name: `Marked Quarry (${targetToken.name})`, boons: 1, banes: 0, match: true, predicate: "Your [Shot, Strike] Actions against your Marked Quarry gain 1 boon" });
+    out.push({ id: "syn:quarry", name: `Marked Quarry (${targetToken.name})`, boons: 1, banes: 0, match: true, predicate: "Your [Shot, Strike] Actions against your Marked Quarry gain 1 Boon, and deal [B] [Mod] on a Tier 1" });
   if (hunterFocus(actor)) out.push({ id: "syn:hunter", name: "Hunter's Focus (1 Boon)", boons: 1, banes: 0, match: true, predicate: "Against your Marked Quarry: 1 boon and Empowered 1" });
   return out;
 }
@@ -38,6 +39,15 @@ export const hunterEmpowered = (actor, targetToken) => (hunterFocus(actor) && is
 export const longDraw = (actor, weapon) => hasFeature(actor, "Long Draw") && !!weapon?.system?.traits?.has?.("projectile");
 /** Steady Nerves: no Engaged banes for shooting while your Escalation is 2 or more. */
 export const steadyNerves = actor => hasFeature(actor, "Steady Nerves") && escOf(actor) >= 2;
+
+/** Marked Quarry (A1, v0.0.181): a [Shot, Strike] Action against your Marked Quarry deals [B] [Mod] on a Tier 1 (a bonus like the effects' ones), or null. */
+export function quarryTier1Bonus(actor, traits, token, mod) {
+  const m = Number(mod) || 0;
+  if (m <= 0 || !hasFeature(actor, "Marked Quarry") || !traits.has("shot") || !traits.has("strike") || !isQuarry(actor, token)) return null;
+  return { effectId: "markedQuarry", effect: "Marked Quarry", dmg: String(m), pool: "B", sub: "", text: "", fxUuid: "" };
+}
+/** Sharpshooter (A1, v0.0.181): your [Shot] Actions don't take the Bane for targeting a creature Engaged with a creature other than you. */
+export const sharpshooterShot = (actor, traits) => hasFeature(actor, "Sharpshooter") && traits.has("shot");
 
 /** Killer's Focus: the extra damage of the first [Ranged, Shot, Strike, Weapon] Action of this turn-cycle (a bonus like the effects' ones), or null. */
 export function killersFocusBonus(actor, traits) {
