@@ -23,7 +23,7 @@ Sizes: S = under an hour of work, M = a normal session, L = a long session, XL =
 | C1 | **DONE 2026-10-30 (v0.0.181).** Foundry follows the book: E3 (the Bestiary by Stage, CV ×100, CV by Stage gap), the Core Rules (Health × (Level + 17) ÷ 16, Modifier steps at 5 and 8), P1 and A1 cards and level lists in today's class structure, Guard, Lock & Loose with Shot, Sharpshooter's into-melee Bane | L | E3, P1, A1 (done) |
 | C2 | **DONE 2026-10-30 (v0.0.185).** The new class selection: levels as sections, the Class Details tab, the Levels window, the player's class window on drop and on level up (foundry/mockups/: the brief, the Step 0 report, the three mockups) | L | C1 |
 | OT | **DONE 2026-10-30, IN THE BOOK (Lucas: all defaults; Leg Sweep without a free hand; book/options-talents.md).** Options (sidegrades) for every Pick slot and the Talents (structure, budget, overlap); then the approved cards go into the book | M | P1, A1, E3 |
-| C | **NEXT, PLANNED 2026-10-30 (section 6): three versions, C-a engine and data, C-b content, C-c picker and PCs.** Content (what C1, C2 and OT leave): class items in the C2 structure with the OT Repertoires and Escalation lists, every Talent card with Category / Level / Prerequisites / theme as data, the old cards to "(old cards)", the compendium text sync, the Talent picker's filter bar, the Features tab fixes, Escalation on the Actions tab, general (editable) automation instead of per-card code, the compendium PCs from the ruler's builds | XL | OT (done) |
+| C | **IN PROGRESS (section 6): C-a DONE (v0.0.186); NEXT C-b content, then C-c picker and PCs.** Content (what C1, C2 and OT leave): class items in the C2 structure with the OT Repertoires and Escalation lists, every Talent card with Category / Level / Prerequisites / theme as data, the old cards to "(old cards)", the compendium text sync, the Talent picker's filter bar, the Features tab fixes, Escalation on the Actions tab, general (editable) automation instead of per-card code, the compendium PCs from the ruler's builds | XL | OT (done) |
 | X | After the design sessions: Mastery and Gear, Skills, Magic in the system | XL | D2, D3, D4 |
 
 ### Book
@@ -87,7 +87,7 @@ C is XL: three versions, each with its own test checklist, all on the branch `pa
 
 **Lucas's rule for automation (2026-10-30):** a card is automated with *general* effect settings that he can see and edit on the item in Foundry, never with code that looks for the card's name. Cards that are very specific and need no automation (Ricochet) stay text. Today `archer.mjs` and `paladin.mjs` test names (`hasFeature(actor, "Killer's Focus")`, Radiant Zeal, Elusive, Long Draw, Steady Nerves, Marked Quarry, Sharpshooter, Font of Mercy): those are what C-a replaces.
 
-### C-a: v0.0.186, the engine and the data (L)
+### C-a: v0.0.186, the engine and the data (L) — DONE 2026-10-30 (waiting for Lucas's test)
 1. **General effect settings** (the effect editor, fxeditor.mjs; bonus.mjs, effects.mjs), each a field anyone can set on any effect:
    - *Once per round* on a Bonus Damage or a Boon/Bane modifier: "only the first matching Action each turn-cycle" (the `turnCycleBlocked` logic of usage.mjs, stored on the effect, not on the actor under a card's name).
    - *Minimum Escalation* already exists (`minEscalation`): shown plainly in the editor with its own label.
