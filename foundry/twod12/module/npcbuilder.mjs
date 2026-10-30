@@ -2,7 +2,7 @@
 //   Every number is a row: its rating chips (each showing the table's value), the result, and how it was found. A row can be Custom (the typed number).
 //   The Basic attack and Special Actions are a reference only: the damage a rating gives, with dice that come close; the Actions are written by hand.
 //   The check at the bottom only informs (the ratings are guidance).
-import { TWOD12, npcHm, npcDamage, npcTableLevel } from "./config.mjs";
+import { TWOD12, npcHm, npcDamage, stageOf } from "./config.mjs";
 import { npcBuild } from "./data.mjs";
 
 const sg = v => (v >= 0 ? `+${v}` : `\u2212${Math.abs(v)}`);
@@ -16,6 +16,12 @@ export function diceFor(avg) {
   return best[0];
 }
 const withMod = d => (d ? `${d} + [Mod]` : "[Mod]");
+
+/** "Stage 2 (levels 5-7)". */
+export const stageLabel = n => { const st = TWOD12.stages[n - 1] ?? TWOD12.stages[0]; return `Stage ${st.n} (levels ${st.from}-${st.to})`; };
+/** The CV tooltip (v0.0.181): a normal fight is CV 100 a PC; an NPC of an earlier Stage than the party counts for less. */
+export const cvTip = role => `Combat Value: what it counts for in an encounter. A normal fight is CV 100 a PC (75 easy, 125 hard, 150 deadly). `
+  + `Against a party of its Stage: ${role.cv[0]}; one Stage above it: ${role.cv[1]}; two Stages above it: ${role.cv[2]}`;
 
 export function npcBuilderContext(actor) {
   const s = actor.system, nb = npcBuild(s), role = nb.role, R = TWOD12.npcRatings;
@@ -40,7 +46,7 @@ export function npcBuilderContext(actor) {
       [v, role.attr + R[lo].off, role.attr + R[hi].off, sg]);
   });
   // Health
-  const hmOf = x => npcHm(s.role, x, s.level);   // v0.0.176: the Bestiary's row for the NPC's level (1 to 3)
+  const hmOf = x => npcHm(s.role, x, s.level);   // v0.0.181: the Bestiary's row for the NPC's Stage
   const healthOf = (attr, x) => Math.ceil((attr + 2) * hmOf(x) + role.hb - 1e-9);
   const healthRow = (pool, attrKey, label) => {
     const key = `${pool}Hm`, r = nb.rating(key), attr = nb.attributes[attrKey], value = pool === "body" ? nb.bdt : nb.mdt;
@@ -84,11 +90,12 @@ export function npcBuilderContext(actor) {
   // Attacks: a reference (the Actions are written by hand). Dice use the Weapon Modifier; a Power attack uses the Power Modifier instead.
   const wm = Number(s.weaponMod) || 0;
   const attacks = TWOD12.npcSpecial.filter(x => !(s.role === "minion" && x.key === "s3")).map(x => ({ label: x.label, sub: x.sub, x: x.x,
-    cells: keys.map(r => { const t2 = npcDamage(role.basic[0], r, s.level, x.x), t3 = npcDamage(role.basic[1], r, s.level, x.x);
+    cells: keys.map(r => { const [t2, t3] = npcDamage(s.role, r, s.level, x.x);
       return { label: R[r].label, avg: `${fmt(t2)} / ${fmt(t3)}`, dice: `${withMod(diceFor(t2 - wm))} / ${withMod(diceFor(t3 - wm))}` }; }) }));
 
-  // The check (informs only).
-  const pcAt = d => TWOD12.pcDamageVsDefense[Math.min(16, Math.max(11, d))];
+  // The check (informs only). v0.0.181: a later Stage's PC deals more, as much as the tables' Health grows (the Standard's Medium multiplier).
+  const stage = stageOf(s.level), sh = TWOD12.npcRoles.standard.hm, pcGrow = sh[stage - 1][2] / sh[0][2];
+  const pcAt = d => TWOD12.pcDamageVsDefense[Math.min(16, Math.max(11, d))] * pcGrow;
   const pool = Math.max(0, nb.bdt) + Math.max(0, nb.mdt), pcDmg = (pcAt(nb.armorDef) + pcAt(nb.wardDef)) / 2;
   const rated = Object.keys(R).length && ["body", "mind", "appeal", "instinct", "bodyHm", "mindHm", "ad", "wd"].map(k => nb.rating(k));
   const customs = rated.filter(r => r === "custom").length + (nb.speedCustom ? 1 : 0), scored = rated.filter(r => r !== "custom");
@@ -96,14 +103,14 @@ export function npcBuilderContext(actor) {
   const avgLabel = Object.values(R).reduce((b, x) => (Math.abs(x.score - avgScore) < Math.abs(b.score - avgScore) ? x : b)).label;
   const check = [
     { k: "Health", v: String(pool), s: `Body ${nb.bdt} + Mind ${nb.mdt}` },
-    { k: "Down in about", v: `${fmt(Math.round(pool / pcDmg * 10) / 10)} PC turns`, s: `A level 1 PC deals about ${fmt(pcDmg)} a turn against AD ${nb.armorDef} and WD ${nb.wardDef}. Target for a ${role.label}: ${role.takes}` },
+    { k: "Down in about", v: `${fmt(Math.round(pool / pcDmg * 10) / 10)} PC turns`, s: `A Stage ${stage} PC deals about ${fmt(Math.round(pcDmg * 10) / 10)} a turn against AD ${nb.armorDef} and WD ${nb.wardDef}. Target for a ${role.label}: ${role.takes}` },
     { k: "Should deal", v: `about ${role.deals}`, s: "a turn to an average PC: the book's target, to check its Actions against" },
     { k: "Ratings average", v: avgLabel, s: customs ? `${customs} Custom number${customs > 1 ? "s" : ""} not counted` : "No Custom numbers" }
   ];
   return {
-    roles: Object.entries(TWOD12.npcRoles).map(([k, v]) => ({ key: k, label: v.label, cv: fmt(v.cv), on: (s.role || "standard") === k })),
-    role, cv: fmt(role.cv), groups, attacks, check, warnings, ratingHeads: keys.map(r => R[r].label),
-    levelNote: Number(s.level) > TWOD12.npcMaxLevel ? `The Bestiary has rows for levels 1 to ${TWOD12.npcMaxLevel}: level ${s.level} uses the level ${npcTableLevel(s.level)} numbers.` : (Number(s.level) < 1 ? `Level ${s.level} uses the level 1 numbers.` : ""),
+    roles: Object.entries(TWOD12.npcRoles).map(([k, v]) => ({ key: k, label: v.label, cv: fmt(v.cv[0]), on: (s.role || "standard") === k })),
+    role, cv: fmt(role.cv[0]), cvTip: cvTip(role), stage, stageLabel: stageLabel(stage), groups, attacks, check, warnings, ratingHeads: keys.map(r => R[r].label),
+    levelNote: Number(s.level) > 10 ? `The Bestiary stops at level 10: level ${s.level} uses the Stage 3 numbers.` : (Number(s.level) < 1 ? `Level ${s.level} uses the Stage 1 numbers.` : ""),
     minionNote: s.role === "minion" ? "Minions: 3 AP a turn, no Extreme, at most 2 AP Special Actions, no Dying (at 0 they die, or fall Unconscious if the GM prefers)." : ""
   };
 }

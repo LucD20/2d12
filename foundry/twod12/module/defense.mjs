@@ -76,7 +76,14 @@ export function defenseOf(item, src = null, rolledAttr = "") {
   if (!src) return null;
   if (src.kind === "weapon") return { type: "armor" };
   if (src.kind === "power") return { type: "ward" };
-  if (src.kind === "signature") return { type: src.from === "power" ? "ward" : "armor" };
+  // v0.0.181 (P1, the book's Smite: Vs AD): a [Signature, Weapon] Action is a Weapon Action (AD), a [Power, Signature] one a Power Action (WD);
+  // only a Signature Action with neither trait faces the Defense of the Modifier it rolls.
+  if (src.kind === "signature") {
+    const t = item.system.traits, has = k => t?.has?.(k) ?? (Array.isArray(t) && t.includes(k));
+    if (has("weapon")) return { type: "armor" };
+    if (has("power") || has("magic")) return { type: "ward" };
+    return { type: src.from === "power" ? "ward" : "armor" };
+  }
   return null;
 }
 

@@ -4,19 +4,19 @@ Paladin, Body +2, Mind +1, level 1     8
 Archer, Body +1, Mind +1, level 1      7
 Paladin, Body +2, Mind +1, level 3     9
 old class items updated once: 2 Paladin 6, Archer 5, Paladin kept 7, Fighter kept 4
---- the Bestiary's levels 1-3 (book/ruler/ratings.py, all 57 rows checked against it)
-standard  level 1: low x5.25 3.5/6 | medium x7 4.5/8 | high x8.75 5.5/9.5 | extreme x10.5 7/11.5
-standard  level 2: low x6 4/6.5 | medium x8 5/8.5 | high x10 6.5/10.5 | extreme x12 7.5/12.5
-standard  level 3: low x6 4.5/7 | medium x8 5.5/9.5 | high x10 7/11.5 | extreme x12.5 8.5/14
-standard  level 4: low x6 4.5/7 | medium x8 5.5/9.5 | high x10 7/11.5 | extreme x12.5 8.5/14
-grunt     level 1: low x3.75 2.5/3.5 | medium x5 3/4.5 | high x6.25 4/5.5 | extreme x7.5 4.5/7
-grunt     level 2: low x4 2.5/4 | medium x5.5 3.5/5 | high x7 4/6.5 | extreme x8.5 5/7.5
-grunt     level 3: low x4 3/4.5 | medium x5.5 3.5/5.5 | high x7.5 4.5/7 | extreme x9 5.5/8.5
-grunt     level 4: low x4 3/4.5 | medium x5.5 3.5/5.5 | high x7.5 4.5/7 | extreme x9 5.5/8.5
-minion    level 1: low x0.75 1.5/3.5 | medium x1 2/4 | high x1.25 2.5/5
-minion    level 2: low x0.75 2/3.5 | medium x1.25 2.5/4.5 | high x1.5 3/5.5
-minion    level 3: low x0.75 2/4 | medium x1.25 2.5/5 | high x1.5 3/6
-minion    level 4: low x0.75 2/4 | medium x1.25 2.5/5 | high x1.5 3/6
+--- the Bestiary by Stage (v0.0.181, E3: the book's tables, levels 1-4, 5-7, 8-10)
+standard  level 1: low x5.75 5/8.5 | medium x7.75 6/11 | high x9.75 7.5/13 | extreme x11.5 9.5/16
+standard  level 4: low x5.75 5/8.5 | medium x7.75 6/11 | high x9.75 7.5/13 | extreme x11.5 9.5/16
+standard  level 5: low x6.75 6/10 | medium x9 7.5/13.5 | high x11.25 9.5/16 | extreme x13.5 12/19.5
+standard  level 8: low x9.25 6.5/11.5 | medium x12.5 8.5/15.5 | high x15.5 10.5/18 | extreme x18.75 13.5/22
+grunt     level 1: low x3 3.5/5 | medium x4.25 4/6 | high x5.25 5.5/7.5 | extreme x6.25 6/9.5
+grunt     level 4: low x3 3.5/5 | medium x4.25 4/6 | high x5.25 5.5/7.5 | extreme x6.25 6/9.5
+grunt     level 5: low x3.75 4/6 | medium x4.75 5/7.5 | high x6 6.5/9.5 | extreme x7.25 7.5/12
+grunt     level 8: low x5 5/6.5 | medium x6.75 6/8.5 | high x8.25 7.5/10.5 | extreme x10 8.5/13.5
+minion    level 1: low x0.75 2/5 | medium x1 3/5.5 | high x1.25 3.5/7
+minion    level 4: low x0.75 2/5 | medium x1 3/5.5 | high x1.25 3.5/7
+minion    level 5: low x1 2.5/6 | medium x1.25 3.5/6.5 | high x1.5 4/8.5
+minion    level 8: low x1.25 3/6.5 | medium x1.75 4/7.5 | high x2.25 5/9.5
 the NPC's Health uses the level: true | the Builder too: true
 --- Light: only the target's light; a light of size N is an N Emanation
 a Check no longer reads the light where you stand: true

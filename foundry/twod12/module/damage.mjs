@@ -3,18 +3,27 @@ import { logDamage } from "./damagelog.mjs";
 import { targetLine } from "./actions.mjs";
 import { esc } from "./roll.mjs";
 import { applyEffects, originInfo, applyCondition, applyBoonEffect } from "./effects.mjs";
+import { absorbGuard } from "./guard.mjs";
 const { DialogV2 } = foundry.applications.api;
 const SOCKET = "system.twod12";
 
-/** Apply damage buckets { B: {l, n}, M: {l, n} } (lethal / nonlethal) to an actor (via the GM when needed). */
+/**
+ * Apply damage buckets { B: {l, n}, M: {l, n} } (lethal / nonlethal) to an actor (via the GM when needed).
+ * v0.0.181: the actor's Guard takes the damage first (guard.mjs); the buckets are changed in place to what reached the Health,
+ * so the callers count, log and trigger only that. Returns what the Guard took.
+ */
 export async function applyToActor(actor, a) {
-  if (!actor) return;
+  if (!actor) return 0;
   const d = actor.system.damage, upd = {};
+  const g = absorbGuard(actor.system.guard, a);
+  if (g.taken) { a.B = g.a.B; a.M = g.a.M; upd["system.guard"] = g.guard; }
   const add = (k, amt) => { if (amt) upd[`system.damage.${k}`] = (upd[`system.damage.${k}`] ?? d[k]) + amt; };
   add("bodyLethal", a.B.l); add("bodyNonlethal", a.B.n); add("mindLethal", a.M.l); add("mindNonlethal", a.M.n);
-  if (!Object.keys(upd).length) return;
+  if (g.taken) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: `<div class="twod12 chat apmsg"><b>${esc(actor.name)}</b>'s Guard takes <b>${g.taken}</b> damage${g.guard ? ` (Guard ${g.guard} left)` : " and ends"}.</div>` });
+  if (!Object.keys(upd).length) return g.taken;
   if (actor.isOwner) await actor.update(upd);
   else game.socket.emit(SOCKET, { type: "applyDamage", actorUuid: actor.uuid, upd });
+  return g.taken;
 }
 
 export function registerSocket() {
@@ -23,9 +32,10 @@ export function registerSocket() {
     if (data?.type === "applyEffects") return applyEffects(data.effectUuids, data.targetUuids, data.origin, data.over);
     if (data?.type === "applyBoon") { const a = await fromUuid(data.actorUuid); if (a) await applyBoonEffect(a, data.cfg, data.origin); return; }
     if (data?.type === "applyCondition") { const a = await fromUuid(data.actorUuid); if (a) await applyCondition(data.cond, [a], data.dur, data.origin); return; }
+    if (data?.type === "applyGuard") { const a = await fromUuid(data.actorUuid); if (a) await a.update({ "system.guard": Math.max(0, Number(data.value) || 0) }); return; }
     if (data?.type !== "applyDamage") return;
     const actor = await fromUuid(data.actorUuid);
-    const upd = Object.fromEntries(Object.entries(data.upd).filter(([k]) => k.startsWith("system.damage.")));
+    const upd = Object.fromEntries(Object.entries(data.upd).filter(([k]) => k.startsWith("system.damage.") || k === "system.guard"));
     if (actor && Object.keys(upd).length) await actor.update(upd);
   });
 }
@@ -82,9 +92,10 @@ async function apply(msg, button, factor) {
       for (const t of targets) {
         const actor = (await fromUuid(t.uuid))?.actor;
         if (!actor) continue;
-        await applyToActor(actor, a);
+        const mine = { B: { ...a.B }, M: { ...a.M } };   // each target's Guard takes its own share (v0.0.181)
+        await applyToActor(actor, mine);
         names.push(esc(t.name));
-        const dealt = a.B.l + a.B.n + a.M.l + a.M.n;
+        const dealt = mine.B.l + mine.B.n + mine.M.l + mine.M.n;
         const src = f.originUuid ? await fromUuid(f.originUuid) : null;
         await logDamage({ originUuid: f.originUuid ?? "", originName: src?.name ?? f.name ?? "", targetName: t.name, amount: dealt });
         if (dealt > 0) await runDamageTriggers(src, actor, t.uuid, f.comps ?? []);   // "When you deal Holy damage to a Profane creature..." (triggers.mjs)
@@ -121,9 +132,9 @@ async function applyRow(f, row, factor, selNl) {
   if (cTotal) { const p = await chooseChoicePool(cTotal); if (!p) return null; a[p].l += h(b.C.l); a[p].n += h(b.C.n); }
   const actor = (await fromUuid(row.uuid))?.actor;
   if (!actor) return null;
+  if (a.B.l + a.B.n + a.M.l + a.M.n > 0) await applyToActor(actor, a);   // v0.0.181: the Guard takes its part first, a is what is left
   const dealt = a.B.l + a.B.n + a.M.l + a.M.n;
   if (dealt > 0) {
-    await applyToActor(actor, a);
     const src = f.originUuid ? await fromUuid(f.originUuid) : null;
     await logDamage({ originUuid: f.originUuid ?? "", originName: src?.name ?? f.name ?? "", targetName: row.name, amount: dealt });
     await runDamageTriggers(src, actor, row.uuid, row.comps ?? []);   // "When you deal Holy damage to a Profane creature..." (triggers.mjs)

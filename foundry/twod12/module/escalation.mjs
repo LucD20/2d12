@@ -46,11 +46,12 @@ export async function gainForRound(combat) {
   }
 }
 
-/** The encounter ended: Escalation back to 0, and the effects that spending it created end. */
+/** The encounter ended: Escalation back to 0, and the effects that spending it created end. Guard ends too (v0.0.181). */
 export async function resetAfterCombat(combat) {
   if (!game.user.isActiveGM) return;
   for (const c of combat?.combatants ?? []) {
     const a = c.actor;
+    if (a?.system?.guard > 0) await a.update({ "system.guard": 0 });
     if (escalationOf(a) === null) continue;
     if (escalationOf(a) > 0) await a.update({ "system.escalation": 0 });
     const ids = [...(a.effects ?? [])].filter(e => e.getFlag?.(F, "fromEscalation")).map(e => e.id);

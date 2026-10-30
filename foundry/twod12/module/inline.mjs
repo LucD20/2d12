@@ -14,6 +14,7 @@ import { postDamageCard } from "./dmgcard.mjs";
 import { startTemplate } from "./template.mjs";
 import { handleMove, moveDistance } from "./move.mjs";
 import { handleRally } from "./rally.mjs";
+import { gainGuard } from "./guard.mjs";
 import { handleUse } from "./freeuse.mjs";
 import { squaresBetween } from "./move.mjs";
 
@@ -95,7 +96,7 @@ export function parseInline(kind, inner) {
   if (kind === "Use") cfg.target = segs[0].trim();
   if (kind === "Cleave") cfg.n = Math.max(1, Number(segs[0]) || 1);
   if (kind === "Boon") cfg.n = Number(segs[0]) || 0;
-  if (kind === "Template") cfg.shape = segs[0].toLowerCase(); else if (kind === "Move") { const k = segs[0].toLowerCase(); cfg.kind = ["move", "walk"].includes(k) ? "advance" : k; } else if (kind === "Rally") cfg.n = Number(segs[0]) || 1; else cfg.attr = segs[0].toLowerCase();
+  if (kind === "Template") cfg.shape = segs[0].toLowerCase(); else if (kind === "Move") { const k = segs[0].toLowerCase(); cfg.kind = ["move", "walk"].includes(k) ? "advance" : k; } else if (kind === "Rally") cfg.n = Number(segs[0]) || 1; else if (kind === "Effect") cfg.uuid = segs[0].trim(); else if (kind === "Guard") cfg.formula = segs[0].trim().toLowerCase().replace(/\s+/g, "").replace(/\[mod\]/g, "mod"); else cfg.attr = segs[0].toLowerCase();
   for (const s of segs.slice(1)) {
     const k = s.indexOf(":");
     if (k < 0) continue;
@@ -172,7 +173,7 @@ export function registerInline() {
   if (!list) return console.warn("twod12 | text enrichers are not available");
   list.push({
     id: "twod12-inline",
-    pattern: /@(Check|Damage|Save|Template|Move|Rally|Condition|Use|Cleave|Reload|Release|Boon)\[((?:[^\[\]]|\[(?:[^\[\]]|\[[^\[\]]*\])*\])*)\](?:\{([^}]+)\})?/g,
+    pattern: /@(Check|Damage|Save|Template|Move|Rally|Guard|Effect|Condition|Use|Cleave|Reload|Release|Boon)\[((?:[^\[\]]|\[(?:[^\[\]]|\[[^\[\]]*\])*\])*)\](?:\{([^}]+)\})?/g,
     enricher: async (match, options) => {
       const kind = match[1];
       const cfg = parseInline(kind, match[2]);
@@ -217,6 +218,8 @@ export function registerInline() {
         return inlineEl("Boon", cfg, cfg.label ?? match[3] ?? `${n} ${cfg.n < 0 ? "Bane" : "Boon"}${n === 1 ? "" : "s"} on the next ${what}`, cfg.n < 0 ? "fa-chevron-down" : "fa-chevron-up");
       }
       if (kind === "Rally") return inlineEl("Rally", cfg, cfg.label ?? match[3] ?? `${cfg.n} Rally Point${cfg.n === 1 ? "" : "s"}`, "fa-heart-pulse");
+      if (kind === "Effect") return inlineEl("Effect", cfg, cfg.label ?? match[3] ?? "Apply the effect", "fa-shield-halved");
+      if (kind === "Guard") return inlineEl("Guard", cfg, cfg.label ?? match[3] ?? `Guard ${guardText(cfg.formula)}`, "fa-shield-heart");
       if (kind === "Move") {
         // A distance that is calculated (floor(speed/2)) shows its number for the creature whose card or sheet this is, with a calculator.
         const calc = !!cfg.distanceExpr && !cfg.label && !match[3];
@@ -369,7 +372,56 @@ async function doDamage(cfg) {
   });
 }
 
+/**
+ * Who a "you or one ally" button (@Guard, @Effect) is for (v0.0.181): the targeted creatures on the card's creature's side;
+ * with none, the card's creature itself (self:yes: always the card's creature). The enemy you just hit is never chosen by accident.
+ */
+function allyRecipients(cfg, ctx) {
+  const origin = actorOfDoc(ctx.message) ?? canvas.tokens?.controlled[0]?.actor ?? game.user.character ?? null;
+  if (cfg.self) return { origin, who: [origin].filter(Boolean) };
+  const side = (origin?.getActiveTokens?.()[0]?.document?.disposition) ?? canvas.tokens?.controlled[0]?.document?.disposition ?? 1;
+  const allies = [...game.user.targets].filter(t => t.document?.disposition === side).map(t => t.actor).filter(Boolean);
+  return { origin, who: allies.length ? allies : [origin].filter(Boolean) };
+}
+
+/** The @Effect[uuid] button (v0.0.181): applies an Effect item to you or the targeted allies ("you or one ally gain +1 Defense"). */
+async function handleEffect(cfg, ctx) {
+  const { origin, who } = allyRecipients(cfg, ctx);
+  if (!who.length) return ui.notifications.warn("Select your token, or target the ally that gains the effect.");
+  const act = ctx.message?.getFlag?.("twod12", "action");
+  const uuids = who.map(a => a.getActiveTokens?.()[0]?.document?.uuid ?? a.uuid);
+  await applyEffects([cfg.uuid], uuids, { ...originInfo(origin?.uuid ?? ""), ...(Number.isFinite(act?.attrVal) ? { mod: act.attrVal } : {}) });
+}
+
+/** "1d8+mod" -> "1d8 + [Mod]"; "rally" -> "a Rally Point's heal". */
+export const guardText = f => String(f ?? "").replace(/\+/g, " + ").replace(/\bmod\b/g, "[Mod]").replace(/\brally\b/g, "a Rally Point's heal");
+
+/**
+ * The @Guard[formula] button (v0.0.181; book: Guard, Chapter 4): @Guard[1d8+mod], @Guard[2d6|self:yes], @Guard[rally] (the creature's own Rally Point heal).
+ * mod is the Modifier of the card's roll (or the origin's Signature Modifier). It goes to the targets (or the selected tokens); self:yes: the card's creature.
+ * Each creature keeps the higher of its Guard and the new value.
+ */
+async function handleGuard(cfg, ctx) {
+  const { origin, who } = allyRecipients(cfg, ctx);
+  const act = ctx.message?.getFlag?.("twod12", "action");
+  const mod = Number.isFinite(Number(act?.attrVal)) && act?.attrVal !== undefined ? Number(act.attrVal) : (Number(origin?.system?.signatureMod) || 0);
+  if (!who.length) return ui.notifications.warn("Select your token, or target the ally that gains the Guard.");
+  for (const a of who) {
+    const f = String(cfg.formula || "0").replace(/\bmod\b/g, `(${mod})`).replace(/\brally\b/g, `(${Number(a.system?.rallyHeal) || 0})`);
+    const roll = await new Roll(f).evaluate();
+    const now = Number(a.system?.guard) || 0, next = gainGuard(now, roll.total);
+    if (next !== now) {
+      if (a.isOwner) await a.update({ "system.guard": next });
+      else game.socket.emit("system.twod12", { type: "applyGuard", actorUuid: a.uuid, value: next });
+    }
+    await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: origin ?? a }), rolls: /d/.test(f) ? [roll] : [],
+      content: `<div class="twod12 chat apmsg"><b>${esc(a.name)}</b> ${next > now ? `gains <b>Guard ${next}</b>` : `keeps Guard ${now} (the higher; the new Guard was ${roll.total})`} <small>(${esc(guardText(cfg.formula))} = ${roll.total})</small>.</div>` });
+  }
+}
+
 export async function handleInline(kind, cfg, ctx = {}) {
+  if (kind === "Guard") return handleGuard(cfg, ctx);
+  if (kind === "Effect") return handleEffect(cfg, ctx);
   if (kind === "Move") return handleMove(cfg, ctx);
   if (kind === "Rally") return handleRally(cfg);
   if (kind === "Condition") return handleCondition(cfg, ctx);

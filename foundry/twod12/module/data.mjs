@@ -1,4 +1,4 @@
-import { TWOD12, migrateTags, npcHm } from "./config.mjs";
+import { TWOD12, migrateTags, npcHm, npcCv, stageOf, stageMod } from "./config.mjs";
 import { migrateSettings } from "./settingsmigrate.mjs";
 import { classModifiers, modOf } from "./modifiers.mjs";
 
@@ -30,6 +30,7 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
       // Defenses: the armor worn (its value: 0 / 1 / 2 / 3) and the Ward value (charms, holy symbols, features). Armor Defense (AD) = 11 + Armor value + bonuses;
       // Ward Defense (WD) = 11 + Power Modifier + Ward value + bonuses (v0.0.162). An NPC types both Defenses instead (NpcData armorDef, wardDef).
       armor: choice(Object.fromEntries(Object.entries(TWOD12.armors).map(([k, v]) => [k, v.label])), "unarmored"), ward: int(0, 0),
+      guard: int(0, 0),   // v0.0.181: Guard N (book, Chapter 4): takes damage before the Health, the higher value kept, 0 at the end of the encounter (guard.mjs)
       escalation: int(0, 0),   // 0 to 3: gained each round after the first, spent on Escalation Actions, back to 0 after the encounter (escalation.mjs)
       tags: new SetField(new StringField({ required: true, blank: false })),   // Tags of the creature (a selection: the list is the world setting "Tags"); other rules refer to them
       // Senses beyond Sight and Hearing (see Senses): Sight Senses as switches, and other senses with a range and a condition.
@@ -67,7 +68,8 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     this.wounds = this.bodyWounds + this.mindWounds;
 
     const lv = this.level;
-    const thr = (at, mult, sp) => Math.max(0, Math.ceil(((at + 2) * mult + sp) * (lv + 10) / 10));
+    // v0.0.181 (book, Chapter 4): each threshold x (Level + 17) / 16, rounded up.
+    const thr = (at, mult, sp) => Math.max(0, Math.ceil(((at + 2) * mult + sp) * ((Number(lv) || 0) + 17) / 16 - 1e-9));
     this.bdt = thr(a.body, cls?.system.bodyMult ?? 0, species?.system.bodyMod ?? 0);
     const mdtFull = thr(a.mind, cls?.system.mindMult ?? 0, species?.system.mindMod ?? 0);
     this.mdt = Math.max(0, mdtFull - 4 * (this.exhausted ?? 0));   // Exhausted: - 4 x value
@@ -84,6 +86,10 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     const wKeys = cs ? ([...(cs.weaponAttrs ?? [])].length ? [...cs.weaponAttrs] : [cs.chosenWeapon].filter(Boolean)) : [];
     const pKeys = cs ? ([...(cs.magicAttrs ?? [])].length ? [...cs.magicAttrs] : [cs.chosenMagic].filter(Boolean)) : [];
     const cm = classModifiers(a, wKeys, pKeys, cs?.modPriority === "power" ? "power" : "weapon");
+    // v0.0.181 (book, Chapter 5): the Stage step, +1 at level 5 and +2 at level 8, never above +4; the Signature Modifier follows the higher one.
+    cm.weapon.mod = stageMod(cm.weapon.mod, lv); cm.power.mod = stageMod(cm.power.mod, lv);
+    cm.signature.mod = cm.signature.from === "power" ? cm.power.mod : cm.weapon.mod;
+    this.stage = stageOf(lv);
     this.weaponAttribute = cm.weapon.key; this.weaponAttrValue = cm.weapon.value; this.weaponMod = cm.weapon.mod;
     this.powerAttribute = cm.power.key; this.powerAttrValue = cm.power.value; this.powerMod = cm.power.mod;
     this.signatureAttribute = cm.signature.key; this.signatureAttrValue = cm.signature.value; this.signatureMod = cm.signature.mod; this.signatureFrom = cm.signature.from;
@@ -160,7 +166,7 @@ function deriveHealth(m) {
 
 /**
  * The Bestiary (v0.0.163): an NPC's numbers from its role and its ratings. A rating can be "custom": then the typed number is used
- * (custom.<attribute>, custom.bodyHealth / mindHealth, armorDef / wardDef). Level 1 tables only.
+ * (custom.<attribute>, custom.bodyHealth / mindHealth, armorDef / wardDef). Health uses the row of the NPC's Stage (v0.0.181).
  * Returns { role, rating(key), attributes, bodyHm, mindHm, bdt, mdt, armorDef, wardDef } (hm null when custom).
  */
 export function npcBuild(sys) {
@@ -168,7 +174,7 @@ export function npcBuild(sys) {
   const rating = k => { let r = sys.ratings?.[k] || "medium"; if (r !== "custom" && !R[r]) r = "medium"; if (r === "extreme" && !role.extreme) r = "high"; return r; };
   const attributes = {};
   for (const k of Object.keys(TWOD12.attributes)) attributes[k] = rating(k) === "custom" ? (Number(sys.custom?.[k]) || 0) : role.attr + R[rating(k)].off;
-  const hmOf = r => npcHm(sys.role, r, sys.level);   // v0.0.176: the level's row (levels 1 to 3)
+  const hmOf = r => npcHm(sys.role, r, sys.level);   // v0.0.181: the row of the level's Stage
   const health = (key, attr) => { const r = rating(`${key}Hm`); if (r === "custom") return { hm: null, v: Number(sys.custom?.[`${key}Health`]) || 0 };
     const hm = hmOf(r); return { hm, v: Math.max(0, Math.ceil((attr + 2) * hm + role.hb - 1e-9)) }; };
   const b = health("body", attributes.body), m = health("mind", attributes.mind);
@@ -203,7 +209,7 @@ export class NpcData extends CharacterData {
     const nb = npcBuild(this);
     Object.assign(this.attributes, nb.attributes);
     this.bdt = Math.max(0, nb.bdt); this.mdt = Math.max(0, nb.mdt); this.armorDef = nb.armorDef; this.wardDef = nb.wardDef; this.speed = nb.speed;
-    this.bodyHm = nb.bodyHm; this.mindHm = nb.mindHm; this.roleLabel = nb.role.label; this.cv = nb.role.cv; this.apPerTurn = nb.role.ap;
+    this.bodyHm = nb.bodyHm; this.mindHm = nb.mindHm; this.roleLabel = nb.role.label; this.cv = npcCv(this.role, this.level); this.stage = stageOf(this.level); this.apPerTurn = nb.role.ap;
     deriveHealth(this);
     this.wounds = 0;
     this.reach = Math.max(1, Number(this.reachBase) || 1);   // the stat block's Reach (edited in the sidebar)
@@ -213,10 +219,11 @@ export class NpcData extends CharacterData {
     if (this.atZero) this.zeroState = this.lethal > this.nonlethal ? "Dead (more Lethal damage)" : (this.nonlethal > this.lethal ? "Unconscious (more Nonlethal damage)" : "Dead or Unconscious (the GM chooses)");
     this.rallyHeal = 0; this.rallyMax = 0; this.rallyLeft = 0;
     // Weapon and Power Attributes (the Bestiary): each Modifier is half the Attribute, rounded up, + 1; Signature uses the higher (Weapon on a tie).
+    // v0.0.181: no Stage step for NPCs, and never above +4 (a Custom Attribute could go higher).
     this.weaponAttrValue = this.attributes[this.weaponAttribute] ?? 0;
-    this.weaponMod = Math.ceil(this.weaponAttrValue / 2 + 1);
+    this.weaponMod = Math.min(TWOD12.modCap, Math.ceil(this.weaponAttrValue / 2 + 1));
     this.powerAttrValue = this.attributes[this.powerAttribute] ?? 0;
-    this.powerMod = Math.ceil(this.powerAttrValue / 2 + 1);
+    this.powerMod = Math.min(TWOD12.modCap, Math.ceil(this.powerAttrValue / 2 + 1));
     const sigP = this.powerMod > this.weaponMod;
     this.signatureAttribute = sigP ? this.powerAttribute : this.weaponAttribute; this.signatureAttrValue = sigP ? this.powerAttrValue : this.weaponAttrValue;
     this.signatureMod = sigP ? this.powerMod : this.weaponMod; this.signatureFrom = sigP ? "power" : "weapon";

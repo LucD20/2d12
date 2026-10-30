@@ -74,7 +74,7 @@
         <span class="dot">&middot;</span>{{#each species}}<span class="lnk" data-item-id="{{id}}"><a data-action="openItem">{{name}}</a><a class="rm" data-action="confirmDelete" data-tooltip="Remove">&times;</a></span>{{else}}<em>No species</em>{{/each}}
         <span class="dot">&middot;</span>{{#each classes}}<span class="lnk" data-item-id="{{id}}"><a data-action="openItem">{{name}}</a><a class="rm" data-action="confirmDelete" data-tooltip="Remove">&times;</a></span>{{else}}<em>No class</em>{{/each}}
         {{else}}
-        <span class="dot">&middot;</span><span>{{head.role}}</span><span class="dot">&middot;</span><span data-tooltip="Combat Value: what it counts for in an encounter (1 per PC is a normal fight)">CV {{head.cv}}</span>
+        <span class="dot">&middot;</span><span>{{head.role}}</span><span class="dot">&middot;</span><span data-tooltip="{{head.cvTip}}">CV {{head.cv}}</span>
         {{#if head.tags}}<span class="dot">&middot;</span><span>{{head.tags}}</span>{{/if}}
         {{/if}}
         <span class="dot">&middot;</span><span>{{head.size}}</span>
@@ -89,7 +89,8 @@
       <div class="hb-meter {{#unless head.ap.inCombat}}off{{/unless}}" data-tooltip="{{head.ap.tip}}"><span>AP</span><span class="hpips">{{#each head.ap.pips}}<a class="hpip ap{{#if on}} on{{/if}}" data-action="setApPip" data-n="{{n}}"></a>{{/each}}</span></div>
       {{#if npcEsc}}<div class="hb-meter" data-tooltip="{{#if npcEscOn}}This NPC has Escalation (click the word to switch it off){{else}}NPCs have no Escalation unless you switch it on (an elite foe){{/if}}"><a class="esc-tog" data-action="toggleEscalation">Escalation{{#unless npcEscOn}}: off{{/unless}}</a>{{#if npcEscOn}}<span class="hpips">{{#each escPips}}<a class="hpip esc{{#if on}} on{{/if}}" data-action="setEscalation" data-n="{{n}}"></a>{{/each}}</span>{{/if}}</div>{{/if}}
       {{#if isPc}}<div class="hb-meter" data-tooltip="Escalation {{escNow}} / 3: +1 at the start of every round after the first (not while Unconscious), spent on Escalation Actions, back to 0 when the encounter ends. Click a pip to correct it."><span>Escalation</span><span class="hpips">{{#each escPips}}<a class="hpip esc{{#if on}} on{{/if}}" data-action="setEscalation" data-n="{{n}}"></a>{{/each}}</span></div>
-      {{else}}<div class="hb-meter npcpool" data-tooltip="The NPC's Health Pool, from its role and ratings (Builder tab)">Health Pool <b>{{health.pool}}</b> &middot; CV {{head.cv}}</div>{{/if}}
+      {{else}}<div class="hb-meter npcpool" data-tooltip="The NPC's Health Pool, from its role, its ratings and its Stage (Builder tab). {{head.cvTip}}">Health Pool <b>{{health.pool}}</b> &middot; CV {{head.cv}}</div>{{/if}}
+      {{#if system.guard}}<div class="hb-meter guard" data-tooltip="Guard: it takes damage before your Health (Body or Mind), after any damage reduction. It doesn't stack (keep the higher), can't be healed and ends with the encounter. Type 0 to remove it."><span>Guard</span><input type="number" min="0" name="system.guard" value="{{system.guard}}" aria-label="Guard"></div>{{/if}}
     </div>
   </header>
 
@@ -315,7 +316,7 @@
     <div class="tab" data-tab="mastery">
       <div class="fsec"><span>Weapon Mastery</span><span class="fsec-sub">A Tier 3 on a Weapon Action: +1 Mastery with that weapon. 3 unlocks its Weapon Technique.</span></div>
       <label class="mst-opt" data-tooltip="Weapon Techniques whose weapon isn't in your hands are hidden instead of greyed (your choice, on every sheet)"><input class="at-hidetech" type="checkbox" {{#if hideTech}}checked{{/if}}> Only show usable Techniques in the Actions table</label>
-      {{#if bowMastery}}<div class="mst-bow"><i class="fa-solid fa-bullseye"></i> <b>Bow Mastery:</b> {{#if bowMastery.chosen}}{{bowMastery.chosen}} (3 Mastery from the start){{else}}<a data-action="chooseBowMastery">choose your Projectile weapon</a> to start with 3 Mastery with it{{/if}}</div>{{/if}}
+      {{#if bowMastery}}<div class="mst-bow"><i class="fa-solid fa-bullseye"></i> <b>{{bowMastery.from}}:</b> {{#if bowMastery.chosen}}{{bowMastery.chosen}} (3 Mastery from the start){{else}}<a data-action="chooseBowMastery">choose your Projectile weapon</a> to start with 3 Mastery with it{{/if}}</div>{{/if}}
       {{#each mastery}}
       {{#if collapsed}}
       <div class="mst-row mini{{#if technique}} tech{{/if}}">
@@ -383,9 +384,9 @@
     <div class="tab" data-tab="builder">
       <div class="nb">
         <div class="nb-top">
-          <div class="nb-field"><span class="nb-lab">Role</span><div class="nb-roles">{{#each builder.roles}}<button type="button" class="nb-role{{#if on}} on{{/if}}" data-action="setRole" data-role="{{key}}" aria-pressed="{{#if on}}true{{else}}false{{/if}}" data-tooltip="Combat Value {{cv}}">{{label}}</button>{{/each}}</div></div>
-          <div class="nb-field"><span class="nb-lab">Level</span><div class="nb-step"><button type="button" data-action="levelStep" data-d="-1" aria-label="Level down">&minus;</button><input type="number" min="0" name="system.level" value="{{system.level}}" aria-label="Level"><button type="button" data-action="levelStep" data-d="1" aria-label="Level up">+</button></div></div>
-          <div class="nb-field nb-cv"><span class="nb-lab">Combat Value</span><b data-tooltip="What it counts for in an encounter (1 per PC is a normal fight)">CV {{builder.cv}}</b></div>
+          <div class="nb-field"><span class="nb-lab">Role</span><div class="nb-roles">{{#each builder.roles}}<button type="button" class="nb-role{{#if on}} on{{/if}}" data-action="setRole" data-role="{{key}}" aria-pressed="{{#if on}}true{{else}}false{{/if}}" data-tooltip="Combat Value {{cv}} (a normal fight is CV 100 a PC)">{{label}}</button>{{/each}}</div></div>
+          <div class="nb-field"><span class="nb-lab">Level</span><div class="nb-step"><button type="button" data-action="levelStep" data-d="-1" aria-label="Level down">&minus;</button><input type="number" min="0" name="system.level" value="{{system.level}}" aria-label="Level"><button type="button" data-action="levelStep" data-d="1" aria-label="Level up">+</button></div><span class="nb-stage" data-tooltip="The Bestiary's tables have one row per Stage: an NPC is the same at every level of its Stage">{{builder.stageLabel}}</span></div>
+          <div class="nb-field nb-cv"><span class="nb-lab">Combat Value</span><b data-tooltip="{{builder.cvTip}}">CV {{builder.cv}}</b></div>
           <label class="nb-field nb-check"><input type="checkbox" name="system.useEscalation" {{#if system.useEscalation}}checked{{/if}}> Escalation</label>
         </div>
         <div class="nb-top">

@@ -29,7 +29,7 @@ import { ensureHandsFor } from "./hands.mjs";
 import { passiveSources } from "./passives.mjs";
 import { weaponsFor } from "./fists.mjs";
 import { effectOff } from "./escalation.mjs";
-import { npcBuilderContext, ratingUpdate } from "./npcbuilder.mjs";
+import { npcBuilderContext, ratingUpdate, cvTip } from "./npcbuilder.mjs";
 // What keeps its scroll position when the sheet is drawn again (v0.0.165): the window, the side panel, the main pane and each tab.
 // (v0.0.164's "scrollable" parts were not enough: the tab is shown after Foundry puts the position back, and a hidden element can't be scrolled.)
 const SCROLL_SEL = ".window-content, .np, .mn, .tab[data-tab]";
@@ -151,8 +151,8 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     // Class: the granted Features in your order (level order at first), then the ones not reached yet.
     const cls = a.itemTypes.class[0];
     const classCards = [];
-    // The pick Features (Encounter Pick, Daily Pick, Free Picks...: a choice whose name says Pick) go together in one "Class picks" card.
-    const isPick = it => (it.system?.choiceOptions ?? []).some(Boolean) && /\bpicks?\b/i.test(it.name);
+    // The pick Features (Encounter Pick, Daily Pick, Free Picks...: a choice whose name says Pick) go together in one "Class picks" card. v0.0.181: the Hallmark Action too.
+    const isPick = it => (it.system?.choiceOptions ?? []).some(Boolean) && /\bpicks?\b|\bhallmark action\b/i.test(it.name);
     const pickCopies = [];
     for (const f of (ctx.classTab?.features ?? []).filter(x => x.unlocked).map((x, k) => ({ x, k })).sort((p, q) => idx(p.x.id) - idx(q.x.id) || p.k - q.k)) {
       const copy = a.items.get(f.x.id);
@@ -468,6 +468,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         const tags = [...(s.tags ?? [])].map(t => tagChoices()[t] ?? t).join(", ");
         return {
           size: SIZE_NAMES[s.size ?? 3] ?? "", tags, role: s.roleLabel ?? "", cv: s.cv ?? "",
+          cvTip: a.type === "npc" ? cvTip(TWOD12.npcRoles[s.role] ?? TWOD12.npcRoles.standard) : "",
           ap: { inCombat: !!c, pips: Array.from({ length: Math.max(Number(s.apPerTurn) || 5, ap) }, (_, k) => ({ n: k + 1, on: k < ap })),
             tip: c ? `${ap} AP. Click a pip to correct it (it is said in the chat).` : "Not in combat: AP is gained at the start of each turn in combat." }
         };

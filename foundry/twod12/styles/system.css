@@ -1534,3 +1534,8 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
   background: color-mix(in srgb, var(--tg) 16%, transparent); border: 1px solid transparent; }
 .twod12 .tcompact .tsep { display: inline-block; flex: none; width: 1px; height: 10px; margin: 0 1px; background: color-mix(in srgb, currentColor 22%, transparent); }
 .twod12 .tcompact .tsep.edge { display: none; }   /* at the start or end of a wrapped row (chatchips.mjs) */
+
+/* v0.0.181 (E3): the NPC Builder shows the Stage under the Level. */
+.twod12.sheet.ns .nb-stage { display: block; margin-top: 2px; font-size: 11px; color: var(--nb-dim); white-space: nowrap; }
+/* v0.0.181: the Guard meter (shown while the creature has Guard). */
+.twod12.sheet .hb-meter.guard input { width: 42px; height: 20px; margin-left: 4px; padding: 0 2px; text-align: center; }

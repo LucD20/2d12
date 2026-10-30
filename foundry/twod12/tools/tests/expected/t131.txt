@@ -1,19 +1,19 @@
 Projectile is a weapon property: Projectile | Shot and Save are Action traits: Shot Save | Crossbow: projectile, ranged, reload, twohanded
-Archer: Body x3, Mind x2.5, Rally +5, Speed +1, medium armor | features: Sharpshooter, Marked Quarry, Bow Mastery, Archer Encounter Pick, Archer Daily Pick, Archer Free Picks, Archer Escalation Passive, Archer Escalation Actives
+Archer: Body x3, Mind x2.5, Rally +5, Speed +1, medium armor | features: Sharpshooter, Marked Quarry, Archer Hallmark Action, Talent (Level 1), Archer Escalation Passive, Archer Escalation Active, Talent (Level 2), Archer Encounter Pick, Archer Daily Pick, Archer Escalation Passive (Level 3)
 cards: all 18 | features: true | Field Training gone: true
-  Wing Clip: round | ranged,shot,strike,weapon | AD
-  Deadeye: daily | ranged,shot,strike,weapon | AD
-  Quick Draw: turn | ranged,shot,strike,weapon | - | interrupt
-  Volley: encounter | area,ranged,save,shot,weapon | Instinct Save
-  Covering Fire: encounter | area,ranged,shot,weapon | -
-  Rain of Arrows: daily | area,ranged,save,shot,weapon | Instinct Save
-  Twin Shot: round | ranged,shot,strike,weapon | - | 2 Esc.
-  Wing Clip -> 1AP: 1[W] / 1[W]+1d4 Pi / 1[W]+1d6 Pi "@Condition[hindered|eot]"
-  Marksman's Shot -> 2AP: 1[W] / 1[W] "the target takes 1 bane on their next Save" / 1[W] "the target takes 1 bane on their next Save and is Vulnerable 2 (EoT)"
-  Deadeye -> 3AP: 1[W] / 1[W]+2d6 Pi / 1[W]+4d6 Pi "@Condition[prone]"
-  Rolling Shot -> 1AP: @Move[evade|distance:1], then make a @Use[Weapon Attack|label:Weapon Attack (1A)]. || 2AP: @Move[evade|distance:3], then make a @Use[Weapon Attack|label:Weapon Attack (1A)] with 1 b
-  Volley -> 3AP: 1d10 Pi+ "@Condition[hindered|eot]" / 1d8 Pi+ / 1d6 Pi
-areas: Covering Fire {"size":2,"shape":"emanation","within":0,"withinRange":"normal","targets":"all","center":false,"keep":true,"rounds":2,"ht":"entering"} | Rain of Arrows ht: entering+turn
-picks: Encounter Pick 1 of 3 | Daily Pick 1 of 3 | Free Picks 2 of 12 | Escalation Passive 1 of 3 | Escalation Actives 3 of 5
+old cards' folder: true | A1 cards in it: none
+  Double Shot: round | shot,strike | -
+  Rolling Shot: round | ranged,shot,strike,weapon | -
+  Marksman's Shot: encounter | ranged,shot,strike,weapon | AD
+  Pinning Shot: round | ranged,shot,strike,weapon | - | 2 Esc.
+  Lock & Loose: round | ranged,shot,strike,weapon | AD
+  Double Shot -> 2AP: You make two [Ranged, Shot] Weapon Attacks (1A), each against a different creature. [1 effect] || 3AP: @Move[evade|distance:1], then as 2 AP (two [Ranged, Shot] Weapon Attacks (1A), each against a different creature). [1 effect]
+  Rolling Shot -> 1AP: @Move[evade|distance:1], then make a @Use[Weapon Attack|label:[Ranged, Shot] Weapon Attack (1A)]. || 2AP: @Move[evade|distance:2], then make a @Use[Weapon Attack|label:[Ranged, Shot] Weapon Attack (1A)] that deals an extra [B] [1 effect] || 3AP: @Move[evade|distance:3], then make a @Use[Weapon Attack|label:[Ranged, Shot] Weapon Attack (1A)] that deals an extra [B] [1 effect]
+  Marksman's Shot -> 2AP: 1[W]+1d8 Pi / 1[W]+3d6 Pi / 1[W]+4d6 Pi "Vulnerable 2 (EoT)."
+Rolling Shot 3 AP's extra: bonusdamage 2d6 B Pi t2,t3 | ends after: strike
+Sharpshooter: Choose your Hallmark Action: Double Shot or Rolling Shot. Choose one Projectile weapon, such as a bow or a crossbow: you start with 3 Mastery with it. Your [Shot] Actions don't take the Bane for targeting a creature Engaged with a creature other than you. | no Actions: true
+Marked Quarry: At the start of each encounter, choose one enemy as your Marked Quarry. You gain 1 Boon on [Shot, Strike] Actions against them, and those Actions deal [B] [Mod] on a Tier 1. When they die or go Down, you can choose a new Marked Quarry (0R [Focus]). Once per turn, you can change your Marked Quarry during an encounter by spending 1 AP [Focus].
+Elusive: Archer Escalation | While your Escalation is 1 or more, the first [Strike] Action against you each round takes 1 Bane.
+picks: Hallmark Action (level 1) 1 of Double Shot/Rolling Shot | Escalation Passive (level 1) 1 of Killer's Focus/Elusive | Escalation Active (level 1) 1 of Pinning Shot | Encounter Pick (level 2) 1 of Marksman's Shot | Daily Pick (level 3) 1 of Hunter's Focus | Escalation Passive (Level 3) (level 3) 1 of Killer's Focus/Elusive
 Shot needs a Projectile weapon: true | a Weapon Action with one is a Shot: true | old ranged weapons get Projectile once: true
-Mastery tab: Techniques option true | Bow Mastery choice true | tab for every character true
+Mastery tab: Techniques option true | Bow Mastery choice (Sharpshooter gives it) true | tab for every character true

@@ -18,10 +18,10 @@ const cls = (name, rallyMod) => { const it = { type: "class", name, system: { ra
 const world = [cls("Paladin", 4), cls("Archer", 3), cls("Paladin", 7), cls("Fighter", 4)];
 console.log("old class items updated once:", await b.fixClassRally(world, []), world.map(i => `${i.name} ${i.updated?.["system.rallyMod"] ?? "kept " + i.system.rallyMod}`).join(", "));
 
-console.log("--- the Bestiary's levels 1-3 (book/ruler/ratings.py, all 57 rows checked against it)");
-for (const role of ["standard", "grunt", "minion"]) for (const lv of [1, 2, 3, 4]) {
-  const base = cf.TWOD12.npcRoles[role].basic, rs = role === "minion" ? ["low", "medium", "high"] : ["low", "medium", "high", "extreme"];
-  console.log(`${role.padEnd(9)} level ${lv}:`, rs.map(r => `${r} x${cf.npcHm(role, r, lv)} ${cf.npcDamage(base[0], r, lv)}/${cf.npcDamage(base[1], r, lv)}`).join(" | "));
+console.log("--- the Bestiary by Stage (v0.0.181, E3: the book's tables, levels 1-4, 5-7, 8-10)");
+for (const role of ["standard", "grunt", "minion"]) for (const lv of [1, 4, 5, 8]) {
+  const rs = role === "minion" ? ["low", "medium", "high"] : ["low", "medium", "high", "extreme"];
+  console.log(`${role.padEnd(9)} level ${lv}:`, rs.map(r => `${r} x${cf.npcHm(role, r, lv)} ${cf.npcDamage(role, r, lv).join("/")}`).join(" | "));
 }
 console.log("the NPC's Health uses the level:", data.includes("const hmOf = r => npcHm(sys.role, r, sys.level);"), "| the Builder too:", src("module/npcbuilder.mjs").includes("const hmOf = x => npcHm(s.role, x, s.level);"));
 

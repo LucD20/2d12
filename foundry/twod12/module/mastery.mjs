@@ -100,10 +100,12 @@ export function registerMasteryHooks() {
   });
 }
 
-/** Bow Mastery (Archer): the Projectile weapon chosen, or "" (the actor flag twod12.bowMastery). Null when the character doesn't have it. */
+/** Bow Mastery (Archer): the Projectile weapon chosen, or "" (the actor flag twod12.bowMastery). Null when the character doesn't have it.
+ *  v0.0.181 (A1): Sharpshooter gives it now (the Bow Mastery Feature is an old card); from: the Feature's name. */
 export function bowMasteryOf(actor) {
-  if (actor?.type !== "character" || !(actor.itemTypes?.feature ?? []).some(f => f.name === "Bow Mastery")) return null;
-  return { chosen: actor.getFlag?.(F, "bowMastery") ?? "" };
+  const f = actor?.type === "character" ? (actor.itemTypes?.feature ?? []).find(x => ["Sharpshooter", "Bow Mastery"].includes(x.name)) : null;
+  if (!f) return null;
+  return { chosen: actor.getFlag?.(F, "bowMastery") ?? "", from: f.name };
 }
 /** Choose the Bow Mastery weapon: a Projectile weapon the character carries or one from the system's weapons; it starts at 3 Mastery. */
 export async function chooseBowMastery(actor) {
