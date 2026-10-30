@@ -1785,3 +1785,28 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
   .twod12.sheet.ns .gtk-ads { display: none; }
   .twod12.sheet.ns .gtk-ads-body { display: flex; }
 }
+
+/* v0.0.195 (C-c): the class window's Talent filter bar (search, Category, Only what I can take, tiles / compact list). */
+.classwin .cw-filter { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin: 0 0 6px; }
+.classwin .cw-filter .cw-fq { flex: 1 1 140px; min-width: 0; height: 26px; background: #fff; color: var(--cw-ink); border: 1px solid var(--cw-line); border-radius: 4px; padding: 0 8px; }
+.classwin .cw-filter .cw-fcat { width: auto; height: 26px; background: #fff; color: var(--cw-ink); border: 1px solid var(--cw-line); border-radius: 4px; }
+.classwin .cw-filter .cw-fonly { display: inline-flex; align-items: center; gap: 4px; font-size: .85rem; color: var(--cw-ink); white-space: nowrap; }
+.classwin .cw-filter .cw-fview { width: 28px; height: 26px; padding: 0; flex: none; background: #fff; color: var(--cw-navy); border: 1px solid var(--cw-line); border-radius: 4px; }
+.classwin .cw-tile[hidden] { display: none; }
+.classwin .cw-tile.cant { opacity: .55; }
+.classwin .cw-tile.cant .cw-view .mt::after { content: " · not yet"; color: var(--cw-acc); }
+.classwin .cw-none { color: var(--cw-mut); font-style: italic; margin: 4px 2px; }
+/* the compact list: one line a Talent, its meta in the same line */
+.classwin .cw-tiles.compact { gap: 2px; }
+.classwin .cw-tiles.compact .cw-tile { border-radius: 3px; }
+.classwin .cw-tiles.compact .cw-view { display: flex; align-items: baseline; gap: 8px; padding: 3px 8px; }
+.classwin .cw-tiles.compact .cw-view .nm { display: inline; }
+.classwin .cw-tiles.compact .cw-view .mt { display: inline; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.classwin .cw-tiles.compact .cw-choose { min-width: 64px; padding: 1px 8px; font-size: .8rem; }
+/* v0.0.195: the movement banner (Advance, Evade, Crawl): the targeting banner's look and place. */
+#twod12-movebar { position: fixed; left: 50%; transform: translateX(-50%); bottom: 86px; z-index: 1000; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; max-width: calc(100vw - 340px); padding: 8px 16px; border-radius: 8px; background: rgba(20, 24, 32, .92); color: #f4e9d0; border: 1px solid #c9a24a; font-size: 14px; box-shadow: 0 4px 14px rgba(0, 0, 0, .5); }
+#twod12-movebar .tb-grip { cursor: grab; color: #c9a24a; }
+#twod12-movebar .tb-text i { color: #7cc4f2; margin-right: 4px; }
+#twod12-movebar .tb-btns { display: inline-flex; gap: 8px; }
+#twod12-movebar button { width: auto; height: 26px; line-height: 24px; padding: 0 10px; font-size: 13px; background: #2e3442; color: #f4e9d0; border: 1px solid #c9a24a; border-radius: 5px; cursor: pointer; white-space: nowrap; }
+#twod12-movebar button:hover { background: #3c4458; }

@@ -1,0 +1,13 @@
+--- movement-only Actions (the banner) and the others (their card)
+Advance: "advance|distance:speed"
+Evade: "evade|distance:1" | "evade|distance:floor(speed/2)"
+Crawl: "advance|distance:1|label:Crawl 1" | "advance|distance:3|label:Crawl 3"
+Stand: null
+Charge: null
+Relocate: null | null | null
+Vanish: null
+Rolling Shot: null | null | null
+Double Shot: null | null
+wired: no card when the banner takes it true | the banner true | one line at the end true | Done, Advance instead true | closes on a turn change true
+--- the Talent filter bar
+search, Category, Only what I can take, compact list: true | checked by canTake at the level being taken: true | the reasons on the tile: true | filtered in place (no redraw): true | the actor reaches the window: 2 | compact list CSS: true

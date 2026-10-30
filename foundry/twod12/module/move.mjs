@@ -450,6 +450,8 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
   if (cfg.ignoreTerrain) await c.setFlag(F, "ignoreTerrain", true);
   if (kind === "charge") await c.setFlag(F, "charge", { min: cfg.min || 3, max: n });
   const sq = `${n} square${n === 1 ? "" : "s"}`;
+  // v0.0.195 (Lucas): from a movement-only Action, the banner instead of a chat line; one short line is posted when the movement ends.
+  if (cfg.banner && kind !== "charge") { showRange(c, n); moveBanner(c, kind, n, cfg.banner); return true; }
   if (kind === "charge") {
     await post(`<b>${esc(c.name)}</b> can Charge: move in a straight line at least ${cfg.min || 3} and up to ${sq}, not through Difficult Terrain. ${endBtn(c)}`);
     showRange(c, n);
@@ -465,14 +467,62 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
 }
 
 /** The Evade becomes an Advance: it can then be used on a move that does trigger reactions (or by a creature that can not Evade). */
-export async function evadeAsAdvance(combatantId) {
+export async function evadeAsAdvance(combatantId, { quiet = false } = {}) {
   const c = game.combat?.combatants.get(combatantId);
   if (!c?.isOwner) return warn("Only the owner can change this movement.");
   const n = num(c.getFlag(F, "evadeMove"));
   if (!n) return warn("There is no Evade movement left.");
   await c.update({ [`flags.${F}.evadeMove`]: 0, [`flags.${F}.freeMove`]: num(c.getFlag(F, "freeMove")) + n, [`flags.${F}.-=ignoreTerrain`]: null });
-  await post(`<b>${esc(c.name)}</b> uses the movement as an Advance of up to ${n} square${n === 1 ? "" : "s"} instead of an Evade.`);
+  if (!quiet) await post(`<b>${esc(c.name)}</b> uses the movement as an Advance of up to ${n} square${n === 1 ? "" : "s"} instead of an Evade.`);
   showRange(c, n);
+}
+
+/* ------------------------------------------------------------------ v0.0.195: the movement banner */
+const VERB = { walk: "Advances", evade: "Evades" };
+let moveBar = null;
+/**
+ * The banner of a movement-only Action (Advance, Evade, Crawl): how many squares are left, "Advance instead" for an Evade, and Done. It follows
+ * the combatant's free movement as the token is dragged, and closes when it is used up, Done is clicked, or the turn changes; then one chat
+ * line says what was done ("Kai Advances 4 squares").
+ */
+export function moveBanner(c, kind, granted, name) {
+  if (typeof document === "undefined") return;
+  moveBar?.finish(false);
+  const left = () => num(c.getFlag(F, "freeMove")) + num(c.getFlag(F, "evadeMove"));
+  let mode = kind;
+  const bar = document.createElement("div");
+  bar.id = "twod12-movebar";
+  bar.className = "twod12-bar";
+  const draw = () => {
+    const l = left();
+    bar.innerHTML = `<i class="fa-solid fa-grip-vertical tb-grip" data-tooltip="Drag to move"></i><span class="tb-text"><i class="fa-solid ${mode === "evade" ? "fa-shield" : "fa-person-walking"}"></i> <b>${esc(c.name)}</b> &middot; ${esc(name)}: drag the token, <b>${l}</b> of ${granted} square${granted === 1 ? "" : "s"} left${mode === "evade" ? " (no reactions)" : ""}.</span>`
+      + `<span class="tb-btns">${mode === "evade" ? '<button type="button" data-mb="advance"><i class="fa-solid fa-person-running"></i> Advance instead</button>' : ""}<button type="button" data-mb="done"><i class="fa-solid fa-flag-checkered"></i> Done</button></span>`;
+  };
+  draw();
+  document.body.append(bar);
+  import("./targeting.mjs").then(m => m.placeBar(bar)).catch(() => {});
+  const hooks = [];
+  const on = (h, fn) => hooks.push([h, Hooks.on(h, fn)]);
+  const finish = async (drop = true) => {
+    if (!moveBar || moveBar.bar !== bar) return;
+    moveBar = null;
+    for (const [h, id] of hooks) Hooks.off(h, id);
+    bar.remove();
+    const l = left(), moved = Math.max(0, granted - l);
+    if (drop && l > 0 && c.isOwner && game.combat?.combatants?.has?.(c.id)) await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, [`flags.${F}.-=ignoreTerrain`]: null });
+    clearRange();
+    await post(`<b>${esc(c.name)}</b> ${VERB[mode] ?? "moves"} ${moved} square${moved === 1 ? "" : "s"} <small>(${esc(name)})</small>.`);
+  };
+  moveBar = { bar, finish };
+  bar.addEventListener("click", async ev => {
+    const b = ev.target.closest("[data-mb]");
+    if (!b) return;
+    if (b.dataset.mb === "done") return finish(true);
+    if (b.dataset.mb === "advance") { mode = "walk"; await evadeAsAdvance(c.id, { quiet: true }); draw(); }
+  });
+  on("updateCombatant", cb => { if (cb.id !== c.id || !moveBar || moveBar.bar !== bar) return; if (left() <= 0) finish(false); else draw(); });
+  on("combatTurnChange", () => finish(false));
+  on("deleteCombat", () => finish(false));
 }
 
 /** The creature is done moving: the free squares it did not use are dropped. */

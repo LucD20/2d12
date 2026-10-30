@@ -124,6 +124,19 @@ const oddsText = chk => {
   return { p, text: `T1 ${pct(p[0])} \u00b7 T2 ${pct(p[1])} \u00b7 T3 ${pct(p[2])}`, html: `T1 ${pct(p[0])} &middot; T2 ${pct(p[1])} &middot; <b>T3 ${pct(p[2])}</b>` };
 };
 const oddsRow = chk => `<div class="oddsrow" data-tooltip="Chance of each tier for this roll">Odds: ${oddsText(chk).html}</div>`;
+/**
+ * v0.0.195: the @Move inside a movement-only Action's text (Advance, Evade, Crawl): a version with no roll and no effect to apply, one @Move of
+ * the creature's own movement (advance or evade) and no other button, on a [Move] Action or Evade. null for anything else (Charge, Vanish...).
+ */
+export function pureMove(it, version, basicKey = "") {
+  if (!version?.noTiers || (version.fx?.all ?? []).length) return null;
+  const txt = String(version.effects ?? ""), moves = [...txt.matchAll(/@Move\[([^\]]+)\]/g)];
+  if (moves.length !== 1 || /@(?!Move\[)\w+\[/.test(txt)) return null;
+  if (!["advance", "walk", "move", "evade"].includes(moves[0][1].split("|")[0].trim().toLowerCase())) return null;
+  const traits = it?.traits;
+  if (!(traits?.has?.("move") || (Array.isArray(traits) && traits.includes("move")) || basicKey === "safeMovement")) return null;
+  return moves[0][1];
+}
 /** v0.0.189: the name of what a bonus comes from, as a link that opens it (Foundry's content links); plain text when it has no item. */
 export const srcLink = (name, uuid) => (uuid ? `<a class="content-link" draggable="true" data-link data-uuid="${esc(uuid)}" data-tooltip="Open ${esc(name)}">${esc(name)}</a>` : esc(name));
 /** Does this tier need a Damage button? attrFrom: the lowest Tier on which the Attribute is added (0: never; true: Weapon, from Tier 2). */
@@ -812,7 +825,16 @@ export async function useAction(actor, item, opts = {}) {
     ${critHtml}${effectsHtml}
     ${fxn.all.length && !effectsOff ? `<div class="fxrow">&#10022; ${esc(fxn.all.join(", "))}</div>` : ""}
     ${btn}${isSelf && !String(it.area ?? "").trim() ? "" : targetsRowHtml([collapseNames(targets.map(t => t.name))].filter(Boolean), { retarget: true })}</div>`;
-  await ChatMessage.create({
+  // v0.0.195 (Lucas): a movement-only Action (Advance, Evade, Crawl) in combat starts its movement with the banner (squares left, Done) and
+  // posts one short line when it ends, instead of a card whose button then posted the movement (two messages for one step).
+  const mvInner = pureMove(it, version, basicKey);
+  let bannerMove = false;
+  if (mvInner && game.combat?.started && canvas?.ready) {
+    const { parseInline } = await import("./inline.mjs"), { handleMove } = await import("./move.mjs");
+    const cfg = parseInline("Move", mvInner);
+    bannerMove = (await handleMove({ ...cfg, traits: [...new Set([...(cfg.traits ?? []), "self"])], banner: item.name }, { actor, token: selfToken })) === true;
+  }
+  if (!bannerMove) await ChatMessage.create({
     speaker: ChatMessage.getSpeaker({ actor }),
     content: html,
     rolls: mres ? multiRoll.rolls : (chk?.rolls ?? []),

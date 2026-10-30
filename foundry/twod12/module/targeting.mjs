@@ -21,7 +21,7 @@ function collapseWindows() {
 
 // v0.0.191 (Lucas): the banner sits at the bottom, above the macro bar, and can be dragged by its grip; where it was left is kept (per user).
 const POS_KEY = "twod12.targetingPos";
-function placeBar(bar) {
+export function placeBar(bar) {
   let pos = null;
   try { pos = JSON.parse(localStorage.getItem(POS_KEY) ?? "null"); } catch (e) { /* no storage */ }
   if (pos && Number.isFinite(pos.left) && Number.isFinite(pos.top)) {

@@ -1,7 +1,7 @@
 // v0.0.185 (pack C2): the class window the player sees. It opens when a Class with levels is dropped on a character (level 1, then each
 // level up to the character's) and when the character's Level goes up (each new level in turn). Nothing is applied before confirm;
 // Cancel changes nothing (on a level up the Level goes back). A Level that goes down removes what the higher levels gave.
-import { prereqLine } from "./talents.mjs";
+import { prereqLine, canTake } from "./talents.mjs";
 import { TWOD12, effectiveFrequency, categoryText } from "./config.mjs";
 import { esc } from "./util.mjs";
 import { levelModel, togglePick, setAttr, attrList, levelPlan, sectionsAt, stageLine } from "./classlevels.mjs";
@@ -62,6 +62,36 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
   constructor(o) {
     super({ window: { title: `Class: ${o.name}` } });
     Object.assign(this, { o, picks: {}, attrs: {}, view: null, cards: new Map(), done: false, priority: o.cls.modPriority === "power" ? "power" : "weapon" });
+    this.tf = { q: "", cat: "", only: true, compact: false };   // v0.0.195: the Talent filter bar
+  }
+
+  /** v0.0.195: a Talent's filter data: { q (name, Category, Theme), cat, ok, reasons } (canTake against the level being taken). */
+  _talentData(u) {
+    const d = this.o.data.docs.get(u), s = d?.system ?? {};
+    const cat = d?.type === "talent" ? (s.group || "combat") : (/^(combat|mobility|magic|skill)/i.exec(String(s.category ?? ""))?.[1]?.toLowerCase() ?? "combat");
+    const who = { system: { level: this.o.level, attributes: this.o.actor?.system?.attributes ?? {} }, items: this.o.actor?.items ?? [] };
+    const r = d?.type === "talent" ? canTake(who, d) : { ok: true, reasons: [] };
+    return { q: [d?.name, TWOD12.talentGroups[cat], s.theme].filter(Boolean).join(" ").toLowerCase(), cat, ok: r.ok, reasons: r.reasons };
+  }
+  _filterBar(sec) {
+    const t = this.tf, opt = (v, l) => `<option value="${v}"${t.cat === v ? " selected" : ""}>${l}</option>`;
+    return `<div class="cw-filter" data-sec="${sec}"><input type="search" class="cw-fq" placeholder="Search Talents…" value="${esc(t.q)}" aria-label="Search Talents">
+      <select class="cw-fcat" aria-label="Category">${opt("", "All categories")}${Object.entries(TWOD12.talentGroups).map(([k, l]) => opt(k, l)).join("")}</select>
+      <label class="cw-fonly" data-tooltip="Hide the Talents whose Level or Prerequisites you don't meet yet"><input type="checkbox" class="cw-fok"${t.only ? " checked" : ""}> Only what I can take</label>
+      <button type="button" class="cw-fview" data-key="tfview" data-tooltip="${t.compact ? "Show as tiles" : "Show as a compact list"}"><i class="fa-solid ${t.compact ? "fa-grip" : "fa-list"}"></i></button></div>`;
+  }
+  /** Show or hide the Talent tiles by the filter (no redraw: typing keeps its place). The chosen ones always show. */
+  _applyFilter() {
+    const t = this.tf, q = t.q.trim().toLowerCase();
+    this.element?.querySelectorAll(".cw-tiles[data-sec]").forEach(box => {
+      let shown = 0;
+      box.querySelectorAll(".cw-tile[data-q]").forEach(tile => {
+        const ok = tile.classList.contains("chosen") || ((!q || tile.dataset.q.includes(q)) && (!t.cat || tile.dataset.cat === t.cat) && (!t.only || tile.dataset.ok === "1"));
+        tile.hidden = !ok; if (ok) shown++;
+      });
+      const none = box.parentElement?.querySelector(".cw-none");
+      if (none) none.hidden = shown > 0 || !box.querySelector(".cw-tile[data-q]");
+    });
   }
 
   _model() {
@@ -84,9 +114,11 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
     const info = data.info;
     const tile = (x, u) => {
       const i = info(u), on = !!x.chosen?.includes(u), vw = this.view?.uuid === u && this.view?.sec === x.s.id;
+      // v0.0.195: a Talent tile carries what the filter bar reads (name, Category, Theme, and whether the character can take it, and why not).
+      const tal = x.s.kind === "talent" ? this._talentData(u) : null;
       const act = x.kind === "granted" ? '<span class="cw-lock">Granted</span>'
         : `<button type="button" class="cw-choose" data-key="pick:${x.s.id}:${u}" data-pick="${x.s.id}" data-uuid="${u}" aria-pressed="${on}">${on ? `${CHECK} Chosen` : "Choose"}</button>`;
-      return `<div class="cw-tile${on ? " chosen" : ""}${vw ? " viewing" : ""}"><button type="button" class="cw-view" data-key="view:${x.s.id}:${u}" data-view="${u}" data-sec="${x.s.id}"><span class="nm">${esc(i?.name ?? "(missing item)")}</span><span class="mt">${esc(i?.meta ?? "")}</span></button><div class="cw-act">${act}</div></div>`;
+      return `<div class="cw-tile${on ? " chosen" : ""}${vw ? " viewing" : ""}${tal && !tal.ok ? " cant" : ""}"${tal ? ` data-q="${esc(tal.q)}" data-cat="${tal.cat}" data-ok="${tal.ok ? 1 : 0}"${tal.ok ? "" : ` data-tooltip="${esc(`Not yet: ${tal.reasons.join("; ")}`)}"`}` : ""}><button type="button" class="cw-view" data-key="view:${x.s.id}:${u}" data-view="${u}" data-sec="${x.s.id}"><span class="nm">${esc(i?.name ?? "(missing item)")}</span><span class="mt">${esc(i?.meta ?? "")}</span></button><div class="cw-act">${act}</div></div>`;
     };
     const shared = level === 1 ? [...(cls.weaponAttrs ?? [])].filter(k => [...(cls.magicAttrs ?? [])].includes(k)) : [];
     const secs = m.sections.map(x => {
@@ -96,7 +128,8 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
         body = x.pairs.map(p => `<div class="cw-attr"><span>${p.opts.map(k => AN[k]).join(" or ")} +1</span><div class="cw-seg">${p.opts.map(k => `<button type="button" data-key="attr:${x.s.id}:${p.i}:${k}" data-attr="${x.s.id}" data-pair="${p.i}" data-k="${k}" aria-pressed="${p.chosen === k}"${p.free.includes(k) ? "" : ' disabled data-tooltip="Chosen at an earlier level"'}><span class="${ATTR_CLS[k] ?? ""}">${AN[k]}</span> +1</button>`).join("")}</div></div>`).join("");
         if (shared.length) body += `<div class="cw-attr"><span>If ${shared.map(k => AN[k]).join(" or ")} is the higher for both Modifiers</span><div class="cw-seg">${[["weapon", "Weapon Modifier keeps it"], ["power", "Power Modifier keeps it"]].map(([k, l]) => `<button type="button" data-key="prio:${k}" data-prio="${k}" aria-pressed="${this.priority === k}">${l}</button>`).join("")}</div></div>`;
       } else {
-        body = `${x.empty ? '<div class="cw-empty">Everything here is already yours.</div>' : ""}<div class="cw-tiles">${x.list.map(u => tile(x, u)).join("")}</div>`;
+        const bar = x.s.kind === "talent" ? this._filterBar(x.s.id) : "";
+        body = `${x.empty ? '<div class="cw-empty">Everything here is already yours.</div>' : ""}${bar}<div class="cw-tiles${x.s.kind === "talent" && this.tf.compact ? " compact" : ""}" data-sec="${x.s.id}">${x.list.map(u => tile(x, u)).join("")}</div>${x.s.kind === "talent" ? '<p class="cw-none" hidden>No Talent matches the filter.</p>' : ""}`;
       }
       return `<section class="cw-sec"><h2>${esc(x.s.title)} ${pill}</h2><p class="cw-sub">${esc(x.sub)}</p>${body}</section>`;
     }).join("") || '<p class="cw-empty">Nothing to choose at this level.</p>';
@@ -134,6 +167,19 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
   _onFirstRender(context, options) {
     super._onFirstRender?.(context, options);
     this.element.addEventListener("click", ev => this._click(ev));
+    // v0.0.195: the Talent filter bar.
+    this.element.addEventListener("input", ev => {
+      if (ev.target.matches(".cw-fq")) { this.tf.q = ev.target.value; this._applyFilter(); }
+    });
+    this.element.addEventListener("change", ev => {
+      if (ev.target.matches(".cw-fcat")) { this.tf.cat = ev.target.value; this._applyFilter(); }
+      if (ev.target.matches(".cw-fok")) { this.tf.only = ev.target.checked; this._applyFilter(); }
+    });
+  }
+
+  _onRender(context, options) {
+    super._onRender?.(context, options);
+    this._applyFilter();
   }
 
   _click(ev) {
@@ -145,6 +191,7 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
     else if (b.dataset.pick) { const s = sec(b.dataset.pick); if (s) { this.picks = togglePick(this.picks, s, b.dataset.uuid); this.view = { uuid: b.dataset.uuid, sec: s.id }; } }
     else if (b.dataset.attr) this.attrs = setAttr(this.attrs, sectionsAt(this.o.cls, this.o.level), b.dataset.attr, Number(b.dataset.pair), b.dataset.k, this.o.priorAttrs);
     else if (b.dataset.prio) this.priority = b.dataset.prio;
+    else if (b.dataset.key === "tfview") this.tf.compact = !this.tf.compact;
     else if (b.hasAttribute("data-cancel")) return this.close();
     else if (b.hasAttribute("data-confirm")) {
       if (!m.complete) return;
@@ -162,9 +209,9 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
 }
 
 /** Opens the window for one level and waits: the confirmed choices, or null (Cancel or closed). */
-export async function chooseLevel({ name, img, cls, level, adding = false, owned = [], priorAttrs = [] }) {
+export async function chooseLevel({ name, img, cls, level, adding = false, owned = [], priorAttrs = [], actor = null }) {
   const data = await gather(cls, level);
-  return new Promise(resolve => new ClassWindow({ name, img, cls, level, adding, owned, priorAttrs, data, resolve }).render({ force: true }));
+  return new Promise(resolve => new ClassWindow({ name, img, cls, level, adding, owned, priorAttrs, data, resolve, actor }).render({ force: true }));
 }
 
 const sourceOf = i => i.getFlag(F, "sourceUuid");
@@ -211,7 +258,7 @@ async function levelsUp(actor, from, to) {
   for (let l = from + 1; l <= to; l++) {
     const cls = actor.itemTypes.class[0];
     if (!cls) return;
-    const res = await chooseLevel({ name: cls.name, img: cls.img, cls: cls.system, level: l, owned: actor.items.map(sourceOf).filter(Boolean), priorAttrs: [...(cls.system.chosenAttrs ?? [])] });
+    const res = await chooseLevel({ name: cls.name, img: cls.img, cls: cls.system, level: l, owned: actor.items.map(sourceOf).filter(Boolean), priorAttrs: [...(cls.system.chosenAttrs ?? [])], actor });
     if (!res) {
       await actor.update({ "system.level": l - 1 }, { twod12Class: "skip" });
       if (l - 1 !== to) ui.notifications.info(`${actor.name} stays at level ${l - 1}.`);
@@ -256,7 +303,7 @@ export async function classLevelChange(actor, from, to) {
 export async function dropClassLevels(actor, item) {
   const leaving = new Set(classItems(actor).map(i => i.id));
   const owned = actor.items.filter(i => !leaving.has(i.id) && i.type !== "class").map(sourceOf).filter(Boolean);
-  const res = await chooseLevel({ name: item.name, img: item.img, cls: item.system, level: 1, adding: true, owned });
+  const res = await chooseLevel({ name: item.name, img: item.img, cls: item.system, level: 1, adding: true, owned, actor });
   if (!res) return;
   for (const old of actor.itemTypes.class) await old.delete();
   if (leaving.size) await actor.deleteEmbeddedDocuments("Item", [...leaving].filter(id => actor.items.has(id)));

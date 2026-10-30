@@ -4,7 +4,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT implementation. This bundle has everything. Read this file first.
 
-## Where we are now (v0.0.194, 155 tests; READ THIS FIRST)
+## Where we are now (v0.0.195, 156 tests; READ THIS FIRST)
+- **2026-10-30: PACK C-c DONE as v0.0.195, waiting for Lucas's test; with it PACK C IS COMPLETE** (C-a v0.0.186, C-b v0.0.188, fixes and the Granted / Escalation block v0.0.187-v0.0.194, C-c v0.0.195): the Talent picker's filter bar, movement-only Actions through the banner. **Next (MASTER-PLAN):** the open design sessions (D2 Mastery / Groups / Gear, D3 Skills, D4 Magic and Momentum) and X; "Fewer clicks for weapons" (foundry-backlog top) is its own small pack with a mockup.
 - **2026-10-30: v0.0.194, the Granted tickets and the Escalation ladder** (mockup foundry/mockups/granted-C2-ladder.html; module/escblock.mjs) on the Actions and Favorites tabs; Escalation Actions only there; the roll dialog's Avg follows its chips live. **Next: C-c v0.0.195** (the Talent picker's filter bar, Move Actions through the banner).
 - **2026-10-30: v0.0.193, from Lucas's test of v0.0.192:** the sheet card's Effects text flows, no "None" on the Bonus chip, the preview's Avg counts Bonus Damage and Empowered / Enfeebled. **Waiting on Lucas:** the Granted area mockups. **Next: C-c v0.0.194.**
 - **2026-10-30: v0.0.192, from Lucas's test of v0.0.191:** Effects text flows in the Actions tab's preview, bracketed trait groups, collapsed damage cards keep their Effects. **Waiting on Lucas:** the Granted area mockups (brief: foundry/mockups/granted-row-brief.md). **Next: C-c v0.0.193** (the Talent picker's filter bar, the Granted area with Escalation once a mockup is picked, Move Actions through the banner).
