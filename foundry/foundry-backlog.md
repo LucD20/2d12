@@ -1,8 +1,10 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.191**. Tests: `node tools/tests/run.mjs` (153 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.192**. Tests: `node tools/tests/run.mjs` (153 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
 
 ## Asked by Lucas, not built
+- [x] **(v0.0.192) Lucas's test of v0.0.191:** the Effects text in the Actions tab's preview; bracketed trait groups colored as one; collapsed damage cards keep their Effects.
+- **The Granted area redesign, with Escalation in it (Lucas, test of v0.0.191): mockups first.** The brief for a design chat: foundry/mockups/granted-row-brief.md (Lucas sends it, picks an option; then it is built, probably with C-c's "Escalation on the Actions tab", which it replaces).
 - [x] **(v0.0.191) Lucas's test of v0.0.190:** the targeting banner at the bottom and draggable; a bigger diamond; locked compendiums' Details tab (tabs are links now) and the "Unlock the system compendiums" world setting (the v0.0.190 one-time unlock didn't work). **Next: C-c v0.0.192.**
 - [x] **(v0.0.190) Lucas's test of v0.0.189:** targeting banner with Cancel and "No target" + DC; the automation rank as a diamond; Update from the compendium (asked after each system update, a settings button, a macro); a locked compendium's Details tab; the system compendiums unlocked once; click a portrait to roll initiative.
 - **Movement Actions without chat clutter (Lucas, test of v0.0.189; with C-c):** "the banner with buttons is a good idea for all buttons, like Evade, Advance": today a Move Action posts a card whose @Move button starts the movement. Proposal (default): a Move Action whose card is only a movement (Advance, Evade, Crawl, Stand, Charge's movement) starts the path tool at once with the banner (its buttons: the movement's options, Cancel), and the chat gets one short line ("Kai Advances 4 squares") after it ends. Cards with a roll keep their card.

@@ -258,8 +258,8 @@ a.twod12-inline.chatbtn i { font-size: 9px; }
 .twod12.chat .ahead.clickable { cursor: pointer; }
 .twod12.chat.collapsed .ahead.clickable::after { content: "\25be"; margin-left: 8px; opacity: .6; font-size: .8em; }
 .twod12.chat:not(.collapsed) .ahead.clickable::after { content: "\25b4"; margin-left: 8px; opacity: .6; font-size: .8em; }
-.twod12.chat.action.collapsed > .traits, .twod12.chat.action.collapsed > .trow, .twod12.chat.action.collapsed > .vsrow, .twod12.chat.action.collapsed > .chk, .twod12.chat.action.collapsed > .fxrow, .twod12.chat.action.collapsed > .bonusrow, .twod12.chat.action.collapsed > table.tiers tr:not(.hit):not(.up), .twod12.chat.action.collapsed > .tline, .twod12.chat.action.collapsed > button { display: none; }
-.twod12.chat.dmg.collapsed > *:not(.ahead):not(.dtotal):not(.dres) { display: none; }   /* v0.0.183: the result stays visible */
+.twod12.chat.action.collapsed > .traits, .twod12.chat.action.collapsed > .trow, .twod12.chat.action.collapsed > .vsrow, .twod12.chat.action.collapsed > .chk, .twod12.chat.action.collapsed > .fxrow, .twod12.chat.action.collapsed > table.tiers tr:not(.hit):not(.up), .twod12.chat.action.collapsed > .tline, .twod12.chat.action.collapsed > button { display: none; }
+.twod12.chat.dmg.collapsed > *:not(.ahead):not(.dtotal):not(.dres):not(.dtexts) { display: none; }   /* v0.0.192 (Lucas): the Effects stay too */   /* v0.0.183: the result stays visible */
 .twod12.chat.dmg.collapsed > .dtotal .tgt { display: none; }
 .twod12 details.setting { border: 1px solid var(--sh-line, rgba(128,128,128,.5)); border-radius: 4px; margin: 6px 0; padding: 2px 8px 6px; }
 .twod12 details.setting > summary.shead { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 3px 0; list-style: none; }
@@ -1717,3 +1717,10 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 #twod12-targeting button { white-space: nowrap; }
 /* v0.0.191: the automation diamond a little bigger. */
 .twod12 .autodia { font-size: 11px; vertical-align: 1px; }
+/* v0.0.192 (Lucas, image of Twin Shot): a card's Effects text is plain flowing text everywhere (in the sheet's Actions tab something
+   laid it out as a grid, one column per word or chip). */
+.twod12 .effects, .twod12 .effects .et, .twod12 .anote { display: block !important; grid-template-columns: none !important; }
+.twod12 .effects .et > *, .twod12 .anote > * { display: inline; }
+.twod12 .effects .et > p, .twod12 .anote > p { display: block; margin: 0 0 4px; }
+.twod12 .effects .et a.inline-btn, .twod12 .effects .et button, .twod12 .effects .et .twod12-inline { display: inline-flex; }
+.twod12 .trgrp { white-space: nowrap; }

@@ -330,6 +330,9 @@ export const cardColorFor = d => FREQ_COLORS[effectiveFrequency(d ?? {})] ?? FRE
 const TRAIT_WORDS = { Strike: "strike", Nonlethal: "nonlethal", Divine: "divine", Focus: "focus", Handle: "handle", Power: "magic", Signature: "signature", Melee: "melee", Ranged: "ranged", Self: "self", Weapon: "weapon", Reload: "reload", "Two-handed": "twohanded" };
 const DAMAGE_WORDS = { Acid: "Ac", Blunt: "Bl", Cold: "Co", Electricity: "El", Fire: "Fi", Force: "Fo", Holy: "Ho", Pierce: "Pi", Psychic: "Ps", Slash: "Sl", Thunder: "Th", Unholy: "Un" };
 const famColor = key => traitColor(key);
+// v0.0.192: every trait name (as the book writes them in brackets) → its key, for "[Ranged, Shot]".
+const TRAIT_KEY_OF = Object.fromEntries([...Object.entries(TWOD12.traits).map(([k, label]) => [String(label).toLowerCase(), k]), ["power", "magic"]]);
+const TRAIT_KEYS = [...new Set(Object.values(TWOD12.traits).map(String))].sort((a, b) => b.length - a.length).map(l => l.replace(/[.*+?^${}()|[\]\\-]/g, "\\$&")).join("|");
 
 /* ------------------------------------------------------------------ text colors (v0.0.179: the book's CLASS_TOKEN, book/build_rules.py) */
 const ATOM = String.raw`(?:\d+d\d+|\d+\[W\]|\[Mod\]|\d+)`, EXPR = String.raw`${ATOM}(?:\s*[+\-\u2212/]\s*${ATOM})*`;
@@ -337,19 +340,22 @@ const TOKEN_RE = new RegExp([
   String.raw`(?<slash>${ATOM}(?:\s*/\s*${ATOM})+\s*\[(?<sp>[BM])\])`,      // "1d6 / 1d4 / 0 [M]": tier values with the pool after them
   String.raw`(?<tag>\[(?<tp>[BM])\]\s*${EXPR})`,                             // "[B] 1[W] + [Mod]", "[M] 1d6+1"
   String.raw`(?<ht>\[HT(?::[^\]]*)?\])`,                                      // "[HT: Entering, Turn]"
+  // v0.0.192: a bracketed list of traits, "[Ranged, Shot]" or "[Strike]", colored as one group (each trait in its group's color).
+  String.raw`(?<tgrp>\[(?:${TRAIT_KEYS})(?:,\s*(?:${TRAIT_KEYS}))*\])`,
   String.raw`(?<mod>\b(?:Weapon|Power|Signature)\s(?:Modifier|Attribute)s?\b)`,
   String.raw`\((?<apa>\d(?:/\d)*A)\)|(?<ap>\b\d(?:\s*/\s*\d)*\s?AP\b)|(?<rx>\b\d(?:/\d)*R\b)`,
   String.raw`(?<mv>\b(?:Advance|Evade|Pushed|Pulled|Slid|Reposition)\s\d+\b)`,
   String.raw`(?<neg>\b(?:Doomed|Enfeebled|Vulnerable|Down)\b(?:\s\d+\b)?)|(?<pos>\b(?:Favored|Empowered)\b(?:\s\d+\b)?)`,
   String.raw`(?<bane>\b(?:\d+\s+)?Banes?\b)|(?<boon>\b(?:\d+\s+)?Boons?\b)|(?<rally>\b(?:(?:up to )?\d+\s+)?Rally Points?\b)`,
   String.raw`(?<attr>\b(?:Body|Mind|Instinct|Appeal)\b)`,
-  `(?<word>\\b(?:${[...Object.keys(TRAIT_WORDS), ...Object.keys(DAMAGE_WORDS)].sort((a, b) => b.length - a.length).join("|")})\\b)`
+  `(?<word>\\b(?:${[...Object.keys(TRAIT_WORDS), ...Object.keys(DAMAGE_WORDS)].sort((a, b) => b.length - a.length).join("|")})\\b(?!\\s+(?:Attack|Technique)))`
 ].join("|"), "g");
 /** One colored token of text (the class names are the book's). */
 function colorToken(m, g) {
   if (g.slash) return `<span class="pool-${g.sp.toLowerCase()}">${m}</span>`;
   if (g.tag) return `<span class="pool-${g.tp.toLowerCase()}">${m}</span>`;
   if (g.ht) return `<span class="kw-ht">${m}</span>`;
+  if (g.tgrp) return `<span class="trgrp">[${m.slice(1, -1).split(/,\s*/).map(w => `<span class="trhl" style="--tc:${famColor(TRAIT_KEY_OF[w.toLowerCase()])}">${w}</span>`).join(", ")}]</span>`;
   if (g.mod) return `<span class="mod-${m.split(/\s/)[0].toLowerCase()}">${m}</span>`;
   if (g.apa) return `(<span class="kw-ap">${g.apa}</span>)`;
   if (g.ap || g.rx) return `<span class="kw-ap">${m}</span>`;
