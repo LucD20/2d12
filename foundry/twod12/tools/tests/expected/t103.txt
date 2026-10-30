@@ -1,15 +1,15 @@
 --- sentences
-boonbane     | 1 boon on rolls made by this creature with Melee and Strike, but not Ranged. | 1 boon (with Melee and Strike, but not Ranged)
-boonbane     | 2 banes (times the condition's value) on rolls made against this creature with any of Body or Mind. | 2 banes (against it, with any of Body or Mind)
+boonbane     | 1 Boon on rolls made by this creature with Melee and Strike, but not Ranged. | 1 Boon (with Melee and Strike, but not Ranged)
+boonbane     | 2 Banes (times the condition's value) on rolls made against this creature with any of Body or Mind. | 2 Banes (against it, with any of Body or Mind)
 damagestep   | Rolls made by this creature with Weapon deal Empowered 2 damage. | Empowered 2 (with Weapon)
-boonbane     | 1 boon and 1 bane on rolls made by this creature (saves against Power Actions). | 1 boon and 1 bane (saves against Power Actions)
+boonbane     | 1 Boon and 1 Bane on rolls made by this creature (saves against Power Actions). | 1 Boon and 1 Bane (saves against Power Actions)
 damagestep   | Every roll made by this creature deals Empowered 1 and Enfeebled 2 damage. | Empowered 1, Enfeebled 2
 damagestep   | Nothing yet on every roll made by this creature. | no damage step yet
-boonbane     | Nothing yet on every roll made by this creature. | no boons yet
+boonbane     | Nothing yet on every roll made by this creature. | no Boons yet
 bonusdamage  | The next action with Weapon deals +1d4 Fire damage to Body on T2 and T3. | next action with Weapon deals +1d4 Fire damage to Body on T2 and T3
 bonusdamage  | The next action of any kind deals +? damage. | next action of any kind deals +? damage
 grant        | Can use Weapon Attack once for free. | Can use Weapon Attack once for free
-grant        | Can use trait:strike 2 times for 1 AP, with 1 boon, a different target each time. | Can use trait:strike 2 times for 1 AP, with 1 boon, a different target each time
+grant        | Can use trait:strike 2 times for 1 AP, with 1 Boon, a different target each time. | Can use trait:strike 2 times for 1 AP, with 1 Boon, a different target each time
 speed        | Add 2 to the creature's Speed. | Speed +2
 speed        | The creature's Speed becomes floor(speed/2). | Speed becomes floor(speed/2)
 light        | The token sheds bright light out to 2 and dim light out to 4 squares. | light 2/4
@@ -17,11 +17,11 @@ note         | Shows the note Watch the flank in Body and Instinct rolls. | note
 note         | Shows the note (no title) in every roll. | note "(no title)"
 escapes names: true
 --- the In short line
-1 boon (with Melee and Strike, but not Ranged) · Can use Weapon Attack once for free · applies Empowered 1 · applies Prone · lasts 2 rounds · ends early after a Power action.
+1 Boon (with Melee and Strike, but not Ranged) · Can use Weapon Attack once for free · applies Empowered 1 · applies Prone · lasts 2 rounds · ends early after a Power action.
 Also applies Hindered · lasts until the end of its turn · ends early after an action that is Ranged and Strike.
 Does nothing yet.
 --- chip rows
-with all of: Melee var(--g-requires), Strike var(--g-kind) [29 to add] | but none of: Ranged var(--g-requires) [30 to add]
+with all of: Melee var(--g-requires), Strike var(--g-kind) [30 to add] | but none of: Ranged var(--g-requires) [31 to add]
 hidden: Any of, Saves against | once Any of is opened: all,any,none / from
 bonus damage has no Saves against: any,none
 --- the template
@@ -43,10 +43,10 @@ fxd-help                   template: true | sheet listens: -
 no old 88-checkbox predicate grid: true | no old Add setting button: true
 help setting registered: true
 --- v0.0.115: every roll
-1 boon on every roll made by this creature. | 1 boon on every roll | 1 boon on every roll made against this creature. | 1 boon on every roll against it
+1 Boon on every roll made by this creature. | 1 Boon on every roll | 1 Boon on every roll made against this creature. | 1 Boon on every roll against it
 Every roll made by this creature deals Empowered 1 damage. | Rolls made by this creature with Melee deal Enfeebled 2 damage.
 the chip: "every roll" | goes once a trait is there: "" | bonus damage: "any action"
-template shows it: true | no boons, no damage: no boons yet
+template shows it: true | no boons, no damage: no Boons yet
 --- v0.0.126: Empowered and Enfeebled are their own setting; migration of old settings
 boonbane 1b/0n E0 min=2 | damagestep E1/F0 all=melee,weapon min=2 | damagestep E0/F2 all= min=2 | boonbane 2b/0n E0 against min=2 | boonbane 0b/1n E3 against min=2 | speed min=2
 running it again changes nothing: true | a setting already saved "always" keeps it: 0

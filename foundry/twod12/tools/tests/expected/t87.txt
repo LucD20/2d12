@@ -106,4 +106,4 @@ Charge's expression: 7 | the Evade button: 2
 things it must refuse: null null null null null null null
 Evade in the Basic Actions: @Move[evade|distance:1] || Evade half your Speed (rounded down): @Move[evade|distance:floor(speed/2)] | traits: self
 
-the Prone effect: Melee Actions against you gain 1 boon, and Ranged Actions against you suffer 1 bane. You can't Evade. The only [Move] Actions you can use are Crawl and Stand. | Hindered linked: "" | settings: boonbane 1b 0n, boonbane 0b 1n
+the Prone effect: Melee Actions against you gain 1 Boon, and Ranged Actions against you suffer 1 Bane. You can't Evade. The only [Move] Actions you can use are Crawl and Stand. | Hindered linked: "" | settings: boonbane 1b 0n, boonbane 0b 1n

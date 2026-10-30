@@ -41,7 +41,7 @@ export function heightCover(st) {
 
 /** The text under the view. */
 export function heightLabel(c) {
-  return c.noLoE ? "No Line of Effect: 4 of 4 blocked" : `${c.label}: ${c.blocked} blocked${c.level ? ` (${c.level} bane${c.level > 1 ? "s" : ""}, put on the roll by hand)` : ""}`;
+  return c.noLoE ? "No Line of Effect: 4 of 4 blocked" : `${c.label}: ${c.blocked} blocked${c.level ? ` (${c.level} Bane${c.level > 1 ? "s" : ""}, put on the roll by hand)` : ""}`;
 }
 
 /** Squares between two tokens on the map, without heights (the book's count: every second diagonal counts 2). */

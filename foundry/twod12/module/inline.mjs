@@ -585,7 +585,7 @@ function saveRowMods(tokenDoc, point) {
   try {
     if (point && tokenDoc?.object && canvas?.grid) {
       const c = coverFromPoint(point, tokenDoc.object);   // counted from the center of the area (its Point of Origin)
-      if (c?.level > 0) { const n = Math.min(3, c.level); out.boon += n; out.why.push(`${c.label} (${n} boon${n === 1 ? "" : "s"})`); }
+      if (c?.level > 0) { const n = Math.min(3, c.level); out.boon += n; out.why.push(`${c.label} (${n} Boon${n === 1 ? "" : "s"})`); }
     }
   } catch (e) { console.warn("twod12 | cover from the area", e); }
   return out;

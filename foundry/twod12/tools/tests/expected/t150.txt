@@ -10,7 +10,7 @@ Divine Surge: 0 AP · Round · Esc 1
 Font of Mercy: Passive
 Divine Power: Passive
 Heavy Blows: Combat Talent
-Aim: 1 AP · At-will
+Aim: 1 AP · Round
 --- the wiring
 a class with levels dropped on a character opens the window: true | the old dialogs stay for a class without levels: true
 the Level before a change is kept: true | the window runs on a change, the old grant without levels: true

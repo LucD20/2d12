@@ -27,7 +27,7 @@ for (const [name, t] of [["Weapon", ["weapon"]], ["Power", ["magic"]], ["Signatu
 const vs = (t, o = {}) => G.vsText({ traits: new Set(t), versions: [{ noTiers: false }], ...o.d }, o) || "(none)";
 console.log("Vs.:", ["weapon", "magic", "signature", "body", "split"].map(k => `${k} ${vs([k])}`).join(" | "), "| Fists", vs(["body"], { fists: true }), "| Trip", vs(["body", "instinct"], { d: { vs: "roll" } }), "| no roll", G.vsText({ traits: new Set(["weapon"]), versions: [{ noTiers: true }] }) || "(none)");
 const content = fs.readFileSync(ROOT + "tools/content.mjs", "utf8");
-console.log("Rimebrand damage on every Tier:", (content.match(/coldSetting\("1d[68]", \["t1", "t2", "t3"\]\)/g) || []).length === 2, "| its Hindered still Tier 2 or 3:", content.includes('coldSetting("", ["t2", "t3"], "Hindered (EoT)"'));
+console.log("Rimebrand (v0.0.188, OT: a turn buff, no roll): [M] 1d4 Co on every Tier:", content.includes('coldSetting("1d4", ["t1", "t2", "t3"])'), "| Hindered on a Tier 3:", content.includes('coldSetting("", ["t3"], "Hindered (EoT)"'));
 console.log("species have no Ward value (v0.0.162):", /true, 3, 4, 5\);/.test(content) && /false, 5, 3, 4, 1\);/.test(content) && /false, 1, 5, 6\);/.test(content) && !/reach: 1, ward/.test(content));
 const src = fs.readFileSync(ROOT + "module/actions.mjs", "utf8") + fs.readFileSync(ROOT + "module/inline.mjs", "utf8");
 console.log("damage rolled once per Tier (actions, Save cards):", src.includes("byTier.set(r.tier, d)") && src.includes("st.tierDmg?.[`t${chk.tier}`]"));

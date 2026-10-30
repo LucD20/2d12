@@ -18,6 +18,7 @@ export function activeWeapons(actor) {
 }
 /** The weapons ONE Action can use: a Fists Action (the Fists card, Pummel and their Techniques) uses only the Fists. */
 export function weaponsFor(actor, item) {
+  if (item?.getFlag?.(F, "kick")) { const f = fistsOf(actor); return f ? [f] : []; }   // v0.0.188: a kick (Leg Sweep) uses the Fists even with no free hand
   if (item?.getFlag?.(F, "basic") === "fists" || item?.getFlag?.(F, "fistsOnly")) { const f = hasFreeHand(actor) ? fistsOf(actor) : null; return f ? [f] : []; }
   return activeWeapons(actor);
 }

@@ -140,7 +140,7 @@ export const modifiersForTarget = (ids, actorUuid) => (ids ?? []).filter(id => {
 /** The dots over a target tile: a green dot for each boon and a red dot for each bane (at most 5 of each). */
 export const tileDots = (boons, banes) => `${'<i class="dot g"></i>'.repeat(Math.min(5, Math.max(0, boons)))}${'<i class="dot r"></i>'.repeat(Math.min(5, Math.max(0, banes)))}`;
 /** The caption under the tiles for the selected creature: { name, detail }. */
-export const tileCaption = (name, dc, boons, banes) => ({ name, detail: [`DC ${dc}`, boons ? `${boons} boon${boons > 1 ? "s" : ""}` : "", banes ? `${banes} bane${banes > 1 ? "s" : ""}` : ""].filter(Boolean).join(" \u00b7 ") });
+export const tileCaption = (name, dc, boons, banes) => ({ name, detail: [`DC ${dc}`, boons ? `${boons} Boon${boons > 1 ? "s" : ""}` : "", banes ? `${banes} Bane${banes > 1 ? "s" : ""}` : ""].filter(Boolean).join(" \u00b7 ") });
 /** The number a duplicate name ends with ("Skeleton Captain 2" → "2"). */
 export const tileNumber = name => (/(\d+)\s*$/.exec(String(name ?? "")) ?? [])[1] ?? "";
 
@@ -432,6 +432,8 @@ export async function useAction(actor, item, opts = {}) {
   const isAreaAction = !!(String(it.area ?? "").trim() || Number(it.areaCfg?.size) > 0);   // an Area decides who is affected: no weapon Range check
   const wUse = it.traits.has("weapon") && previewWeapon ? weaponUse(previewWeapon, it.traits, s.reach ?? 1, wpnSquares) : null;
   const useTraits = new Set([...it.traits, ...(wUse?.mode ? [wUse.mode] : []), ...(wUse?.mode === "ranged" && !wUse.thrown && hasProp(previewWeapon, "projectile") ? ["shot"] : [])]);   // a Weapon Action with a Projectile weapon is a Shot
+  // v0.0.188: a Weapon Action with a Two-handed weapon also matches "Two-handed weapon" in settings (Heavy Blows); not shown as a trait.
+  const rollUse = new Set([...useTraits, ...(it.traits.has("weapon") && hasProp(previewWeapon, "twohanded") ? ["__twohanded"] : [])]);
   const attrKeyForPreview = src.attrKey;
   const preview = await buildPreviews({ setupDone, talentMods: talentModsFor(actor, item),
     item, actor, isSelf, weapon: previewWeapon, isWeapon: modOnWeapon(src, useTraits), attrMode: src.attrMode, mod: previewMod, dc: dcInfo.dc, dcNote: dcInfo.note,
@@ -549,11 +551,11 @@ export async function useAction(actor, item, opts = {}) {
   // What makes the roll Doomed or Empowered, shown on the option itself ("Target is Hidden (Doomed)").
   const doomReason = doomStatus(actor) || (seen === "hidden" ? "Target is Hidden" : seen === "unsensed" ? "Target is Unsensed" : "");
   // Empowered and Enfeebled: what gives them, and the one value that counts (the highest of each; the Enfeebled value is taken from the Empowered one).
-  const steps = damageSteps(actor, rollTraits(useTraits, src, item.name), rollsAtOthers ? (aimed[0]?.actor ?? null) : null);   // v0.0.186: the target, for "only against my marked target"
+  const steps = damageSteps(actor, rollTraits(rollUse, src, item.name), rollsAtOthers ? (aimed[0]?.actor ?? null) : null);   // v0.0.186: the target, for "only against my marked target"
   if (opts.empowered) steps.empowered.push({ name: opts.label ?? "this Action", n: stepOf(opts.empowered) });
   const stepSources = [...steps.empowered.map(x => `${x.name}: Empowered ${x.n}`), ...steps.enfeebled.map(x => `${x.name}: Enfeebled ${x.n}`)];
   // What will add to this roll's damage or trigger when it lands, shown in the dialog so the player knows: effects with bonus damage ("Divine Surge: +1d8 Holy") and abilities that trigger ("Profane Judgment").
-  const dlgTraits = rollTraits(useTraits, src, item.name), bonusSeen = new Map();
+  const dlgTraits = rollTraits(rollUse, src, item.name), bonusSeen = new Map();
   for (const t of [1, 2, 3]) for (const b of collectBonuses(actor, dlgTraits, t, { target: rollsAtOthers ? (aimed[0]?.actor ?? null) : null, mod: src.mod })) { const bk = `${b.effect}|${b.dmg}|${b.sub}|${b.text}`; if (!bonusSeen.has(bk)) bonusSeen.set(bk, { b, tiers: [] }); bonusSeen.get(bk).tiers.push(t); }
   const dmgSubs = new Set();
   for (const v of versions) for (const tk of ["t1", "t2", "t3"]) for (const inst of v[tk] ?? []) { if (inst.useW && previewWeapon?.system?.subtype) dmgSubs.add(previewWeapon.system.subtype); if (inst.subtype) dmgSubs.add(inst.subtype); }
@@ -565,7 +567,7 @@ export async function useAction(actor, item, opts = {}) {
   const data = await askRoll(actor, {
     title: item.name,
     attrKey: preAttr,
-    traits: rollTraits(useTraits, src, item.name),
+    traits: rollTraits(rollUse, src, item.name),
     versions,
     defaults: {
       doomedLabel: doomReason ? `${doomReason} (Doomed)` : undefined,
@@ -681,7 +683,7 @@ export async function useAction(actor, item, opts = {}) {
   // Effects waiting for this kind of action (bonus damage, added text); then the ones that end when it is used.
   // v0.0.186: effects' and passives' Bonus Damage, each with its own target (only against my marked target) and the Action's Modifier ([Mod]).
   // A "once per round" bonus (Killer's Focus, Radiant Zeal) only lands on a Tier that deals damage, and is then used for this turn-cycle.
-  const rt = rollTraits(useTraits, src, item.name);
+  const rt = rollTraits(rollUse, src, item.name);
   const dealsAt = t => t > 0 && !version.noTiers && (version[`t${t}`] ?? []).length > 0;
   const keepOnce = (list, t) => list.filter(b => (!b.once || dealsAt(t)) && !bonusOff.has(bonusKey(b)));   // v0.0.187: and not unticked in the dialog
   if (mres) for (const r of mres) r.bonuses = keepOnce(collectBonuses(actor, rt, r.chk.tier, { target: r.token?.actor ?? null, mod: src.mod }), r.chk.tier);
@@ -691,7 +693,7 @@ export async function useAction(actor, item, opts = {}) {
   if (chk || mres) { try { await useOnceModifiers(actor, rt, multi ? perT.map(p => p.actor) : rollsAtOthers && targetToken?.actor ? [targetToken.actor] : [], null, data.fx); } catch (e) { console.warn("twod12 | once per round", e); } }
   // An effect whose Bonus Damage was unticked stays (it wasn't used).
   { const kept = new Set(); for (const t of [1, 2, 3]) for (const b of collectBonuses(actor, rt, t, { target: rollsAtOthers ? (aimed[0]?.actor ?? null) : null, mod: src.mod })) if (bonusOff.has(bonusKey(b))) kept.add(b.effectId);
-    await expireOnUse(actor, rollTraits(useTraits, src, item.name), kept); }
+    await expireOnUse(actor, rollTraits(rollUse, src, item.name), kept); }
   const targets = (multi ? perT.map(p => p.token) : (!rollsAtOthers ? (selfToken ? [selfToken] : []) : aimed)).map(t => ({ uuid: t.document?.uuid ?? t.uuid, name: t.name }));
 
   const dcSet = mres ? new Set(mres.map(r => r.chk.dc)) : null;

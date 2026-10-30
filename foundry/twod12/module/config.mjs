@@ -68,7 +68,7 @@ export const TWOD12 = {
   frequencies: { "": "Default", none: "None", atwill: "At-will", turn: "Turn", round: "Round", encounter: "Encounter", daily: "Daily" },
   // The kind of a roll, for effects (Round 10): checks and saves are marked when they are rolled, and an Action that rolls an Attribute
   // directly (not a Weapon, Power or Signature roll) is an Attribute Action. Weapon, Power and Signature rolls are their traits.
-  rollKinds: { __check: "Check", __save: "Save", __attr: "Attribute Action" },
+  rollKinds: { __check: "Check", __save: "Save", __attr: "Attribute Action", __twohanded: "Two-handed weapon" },   // v0.0.188: Two-handed weapon (Heavy Blows)
   pools: { "": "None", B: "Body [B]", M: "Mind [M]", C: "Choice [C]" },
   // Damage types: one icon each (Slash also has Foundry's sword image on cards), bright colors for dark backgrounds,
   // and dark "ink" colors for the parchment cards.
@@ -122,7 +122,7 @@ export const TWOD12 = {
   traitHelp: {
     area: "These Actions target every creature in their area that they affect, ignoring Senses (no penalty against Obscured, Hidden or Unsensed creatures, and light doesn't change the roll). You need Line of Effect to the Point of Origin to place the area; Line of Effect and Cover are checked from the Point of Origin to each creature.",
     strike: "Extra rules: you can make at most three Strikes per turn.",
-    nonlethal: "Deals Nonlethal damage by default. Taking a bane makes it deal Lethal damage instead.",
+    nonlethal: "Deals Nonlethal damage by default. Taking a Bane makes it deal Lethal damage instead.",
     body: "Rolls Body.",
     mind: "Rolls Mind.",
     appeal: "Rolls Appeal.",

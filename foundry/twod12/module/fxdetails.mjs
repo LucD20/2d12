@@ -50,7 +50,7 @@ export function settingSentence(x) {
 function settingSentenceOnly(x) {
   switch (x.type) {
     case "boonbane": {
-      const gains = [x.boons ? plural(x.boons, "boon") : "", x.banes ? plural(x.banes, "bane") : ""].filter(Boolean).join(" and ");
+      const gains = [x.boons ? plural(x.boons, "Boon") : "", x.banes ? plural(x.banes, "Bane") : ""].filter(Boolean).join(" and ");
       const pred = predicateText(x), every = !pred;   // no traits: every roll
       const rolls = `${every ? "every roll" : "rolls"} made ${x.against ? "<b>against</b> this creature" : "by this creature"}${pred}`;
       if (!gains) return `Nothing yet on ${rolls}.`;
@@ -70,7 +70,7 @@ function settingSentenceOnly(x) {
       return `The next action${predicateText(x) || " of any kind"} deals <b>+${esc(x.dmg || "?")}${x.dmgSub ? " " + esc(TWOD12.subtypes[x.dmgSub]) : ""}</b> damage${pool}${on}.`;
     }
     case "grant":
-      return `Can use <b>${esc(x.grantAction || "?")}</b> ${x.grantCount === 1 ? "once" : `${x.grantCount} times`} for <b>${x.grantAp ? `${x.grantAp} AP` : "free"}</b>${x.boons ? `, with ${plural(x.boons, "boon")}` : ""}${x.grantDistinct ? ", a different target each time" : ""}.`;
+      return `Can use <b>${esc(x.grantAction || "?")}</b> ${x.grantCount === 1 ? "once" : `${x.grantCount} times`} for <b>${x.grantAp ? `${x.grantAp} AP` : "free"}</b>${x.boons ? `, with ${plural(x.boons, "Boon")}` : ""}${x.grantDistinct ? ", a different target each time" : ""}.`;
     case "aura": {
       const fx = fxNameOf(x.fxUuid), who = { allies: "allies", enemies: "enemies", all: "creatures" }[x.auraWho] ?? "allies";
       return `An <b>Aura ${Math.max(1, Number(x.auraSize) || 1)}</b> around the creature: ${who}${x.auraSelf ? " and the creature itself" : ""} inside gain <b>${esc(fx) || "(drop an Effect)"}</b>.`;
@@ -106,9 +106,9 @@ export function settingShort(x) {
   const strip = s => s.replace(/<[^>]+>/g, "");
   switch (x.type) {
     case "boonbane": {
-      const gains = [x.boons ? plural(x.boons, "boon") : "", x.banes ? plural(x.banes, "bane") : ""].filter(Boolean).join(" and ");
+      const gains = [x.boons ? plural(x.boons, "Boon") : "", x.banes ? plural(x.banes, "Bane") : ""].filter(Boolean).join(" and ");
       const p = strip(predicateText(x)).trim();
-      if (!gains) return "no boons yet";
+      if (!gains) return "no Boons yet";
       return `${gains}${p ? (p.startsWith("(") ? ` ${p}` : ` (${x.against ? "against it, " : ""}${p})`) : (x.against ? " on every roll against it" : " on every roll")}${strip(limitText(x))}`;
     }
     case "damagestep": {

@@ -50,7 +50,7 @@ export const BASIC_ACTIONS = {
     distance: "self",
     versions: [
       V(1, [], [], [], "", {
-        x1: "Your next Reload attempt gains 2 boons.",
+        x1: "Your next Reload attempt gains 2 Boons.",
         x2: "You Reload your weapon. @Reload[weapon] Then you can Interact to grip your weapon with two hands: @Use[Interact|label:Interact (grip)]",
         x3: "You Reload your weapon and @Move[evade|distance:1]. @Reload[weapon] Then you can Interact to grip your weapon with two hands: @Use[Interact|label:Interact (grip)]"
       })
@@ -142,7 +142,7 @@ export const BASIC_ACTIONS = {
         [],
         [],
         [],
-        "Advance at least 3 squares and up to your Speed in a straight line: @Move[charge|distance:speed+2*has(Battering Charge)|min:3|uncapped:yes|label:Charge]. You can't Charge through Difficult Terrain. At the end of your movement, make a Weapon Attack (1A) with 1 boon: @Use[Weapon Attack|boons:1|empowered:has(Battering Charge)|label:Weapon Attack (1A, 1 boon)]",
+        "Advance at least 3 squares and up to your Speed in a straight line: @Move[charge|distance:speed+2*has(Battering Charge)|min:3|uncapped:yes|label:Charge]. You can't Charge through Difficult Terrain. At the end of your movement, make a Weapon Attack (1A) with 1 Boon: @Use[Weapon Attack|boons:1|empowered:has(Battering Charge)|label:Weapon Attack (1A, 1 Boon)]",
         { noTiers: true }
       )
     ]

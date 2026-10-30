@@ -12,7 +12,7 @@ Signature   | signature mod 3 | [Mod] added from Tier Infinity | Save DC 14
 Body Action | attribute mod 3 | [Mod] added from Tier Infinity | Save DC 14
 no roll     | - mod - | [Mod] added from Tier Infinity | Save DC 13
 Vs.: weapon AD | magic WD | signature AD or WD | body DC 13 | split AD (Weapon mode) or WD (Power mode) | Fists AD | Trip Body or Instinct | no roll (none)
-Rimebrand damage on every Tier: true | its Hindered still Tier 2 or 3: true
+Rimebrand (v0.0.188, OT: a turn buff, no roll): [M] 1d4 Co on every Tier: true | Hindered on a Tier 3: true
 species have no Ward value (v0.0.162): true
 damage rolled once per Tier (actions, Save cards): true
 shorter title bar: true

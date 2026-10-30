@@ -14,7 +14,7 @@ export function fxTabHtml(fx) {
   return `<div class="twod12-fxtab">
     ${valued ? `<div class="form-group"><label>${esc(baseNameOf(fx))} value</label><input type="number" min="1" name="twod12Value" value="${Math.max(1, Number(fx.getFlag(F, "value")) || 1)}"></div>` : ""}
     ${exh ? `<div class="form-group"><label>Exhausted value</label><input type="number" min="0" name="twod12Value" value="${Number(fx.parent.system.exhausted ?? 0)}"></div>` : ""}
-    <div class="form-group stacked"><label>2d12 settings <span class="hint">JSON: duration, modifiers (boons and banes), bonuses, grants, notes…</span></label>
+    <div class="form-group stacked"><label>2d12 settings <span class="hint">JSON: duration, modifiers (Boons and Banes), bonuses, grants, notes…</span></label>
       <textarea name="twod12Json" rows="14" spellcheck="false" style="width:100%;font-family:monospace;font-size:12px">${esc(JSON.stringify(flags, null, 2))}</textarea></div>
     <button type="button" class="twod12-fxsave"><i class="fa-solid fa-floppy-disk"></i> Save 2d12 settings</button>
   </div>`;
