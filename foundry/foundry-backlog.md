@@ -1,8 +1,9 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.192**. Tests: `node tools/tests/run.mjs` (153 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.193**. Tests: `node tools/tests/run.mjs` (154 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
 
 ## Asked by Lucas, not built
+- [x] **(v0.0.193) Lucas's test of v0.0.192:** the sheet card's Effects text (actioncard.mjs, the real cause), no "None" on the Bonus chip, the preview's Avg with the Bonus Damage and Empowered / Enfeebled. Not done: the Avg doesn't change live when a Bonus chip is unticked in the dialog.
 - [x] **(v0.0.192) Lucas's test of v0.0.191:** the Effects text in the Actions tab's preview; bracketed trait groups colored as one; collapsed damage cards keep their Effects.
 - **The Granted area redesign, with Escalation in it (Lucas, test of v0.0.191): mockups first.** The brief for a design chat: foundry/mockups/granted-row-brief.md (Lucas sends it, picks an option; then it is built, probably with C-c's "Escalation on the Actions tab", which it replaces).
 - [x] **(v0.0.191) Lucas's test of v0.0.190:** the targeting banner at the bottom and draggable; a bigger diamond; locked compendiums' Details tab (tabs are links now) and the "Unlock the system compendiums" world setting (the v0.0.190 one-time unlock didn't work). **Next: C-c v0.0.192.**

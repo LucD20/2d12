@@ -56,8 +56,9 @@ export async function buildActionCard(item, { actor = null } = {}) {
   if (fxv.length) {
     const once = fxv.length === versions.length && fxv.every(v => v.effects === fxv[0].effects);
     const title = versions.every(v => v.noTiers) ? "Effects" : "Effects (Tier 2+)";
-    const lines = once ? [`<div class="ac-fxl">${await enrich(fxv[0].effects, item)}</div>`]
-      : await Promise.all(fxv.map(async v => `<div class="ac-fxl">${multi ? badge(v, it.reaction) : ""}<span>${await enrich(v.effects, item)}</span></div>`));
+    // v0.0.193: the text in its own span: the line is a flex row, and loose text and chips each became a column (Twin Shot).
+    const lines = once ? [`<div class="ac-fxl"><span class="ac-fxt">${await enrich(fxv[0].effects, item)}</span></div>`]
+      : await Promise.all(fxv.map(async v => `<div class="ac-fxl">${multi ? badge(v, it.reaction) : ""}<span class="ac-fxt">${await enrich(v.effects, item)}</span></div>`));
     effects = `<div class="ac-fx"><b>${title}</b>${lines.join("")}</div>`;
   }
 

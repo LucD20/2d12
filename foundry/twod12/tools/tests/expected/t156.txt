@@ -1,0 +1,6 @@
+sheet card: the Effects text in its own span: true
+Bonus chip without a type has no None: true
+Smite Tier 3 with Heavy Blows: {"add":2,"why":["Heavy Blows +2"]}
+with Killer's Focus and Empowered 1 (2d6 + 1d6 + 1d6 = 4 dice): {"add":7.5,"why":["Killer's Focus +1d6","Empowered 1"]}
+Enfeebled 1, no bonus: {"add":-3,"why":["Enfeebled 1"]} | a Tier with no damage: {"add":0,"why":[]}
+wired: true

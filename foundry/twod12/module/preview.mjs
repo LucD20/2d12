@@ -4,7 +4,7 @@ import { attrFromTier } from "./rollsource.mjs";
 import { TWOD12, expandAsText, cardVars, cardHead, flavorHtml, apIcon, apLabel, traitChevrons, categoryText, highlightText, metaRowHtml, effectiveFrequency, distanceText, areaText, cardColorFor, vsText, areaButton, poolIcon, dtypeHtml, inkOf, prettyDamage } from "./config.mjs";
 import { setupFor } from "./setup.mjs";
 import { esc } from "./roll.mjs";
-import { tierAvg, tierProbs, critProb, fmt } from "./calc.mjs";
+import { tierAvg, tierProbs, critProb, fmt, avgFormula } from "./calc.mjs";
 
 
 const enrich = async (txt, doc = null) => highlightText(await foundry.applications.ux.TextEditor.implementation.enrichHTML(txt ?? "", doc ? { relativeTo: doc } : {}));
@@ -49,6 +49,23 @@ export function applyTalentMods(v, mods = []) {
   return { ...v, critical: [v.critical, ...mods.map(m => m.critical)].filter(Boolean).join(" "), effects: [v.effects, ...mods.map(m => m.effects)].filter(Boolean).join(" ") };
 }
 
+/**
+ * v0.0.193: what the effects add to a Tier's average: its Bonus Damage (ctx.bonusByTier) and the Empowered / Enfeebled step (ctx.step) on
+ * every die. { add, why: ["Heavy Blows +2", "Empowered 1"] }. Only for a Tier that deals damage.
+ */
+export function avgExtras(insts, tier, ctx = {}) {
+  if (!insts.length) return { add: 0, why: [] };
+  const bon = ctx.bonusByTier?.[tier] ?? [];
+  let add = 0, dice = 0;
+  const why = [];
+  for (const b of bon) { const a = avgFormula(b.dmg) ?? 0; if (a) { add += a; why.push(`${b.effect} +${b.dmg}`); } dice += diceIn(b.dmg); }
+  for (const i of insts) { if (i.useW && ctx.weapon) dice += (Number(ctx.weapon.system?.damage?.[`t${tier}`]?.count) || 0) * (i.wCount || 1); if (i.dice) dice += diceIn(i.dice); }
+  const step = Math.trunc(Number(ctx.step) || 0);
+  if (step && dice) { add += step * dice; why.push(step > 0 ? `Empowered ${step}` : `Enfeebled ${-step}`); }
+  return { add, why };
+}
+const diceIn = f => [...String(f ?? "").matchAll(/(\d*)d\d+/g)].reduce((s, m) => s + (Number(m[1]) || 1), 0);
+
 export async function buildPreviews(ctx) {
   const { item } = ctx, it = item.system;
   const color = cardColorFor(it);
@@ -58,8 +75,8 @@ export async function buildPreviews(ctx) {
     const rows = [];
     for (const [n, k] of (v.noTiers ? [] : [1, 2, 3]).map(n => [n, `t${n}`])) {
       const lines = await tierLines(v[k] ?? [], n, ctx, expandAsText(v[`x${n}`], item.system.versions, v0, n));   // "As 1 AP" written out (the dialog shows one Version)
-      const avg = tierAvg(v[k] ?? [], n, ctx);
-      rows.push(`<tr data-t="${n}"><th>Tier ${n} <small class="pv-p"></small></th><td>${lines.length ? lines.join("<br>") : "&mdash;"}${avg ? `<div class="calc">Avg ${fmt(avg)}</div>` : ""}</td></tr>`);
+      const avg0 = tierAvg(v[k] ?? [], n, ctx), extra = avgExtras(v[k] ?? [], n, ctx), avg = avg0 ? avg0 + extra.add : 0;
+      rows.push(`<tr data-t="${n}"><th>Tier ${n} <small class="pv-p"></small></th><td>${lines.length ? lines.join("<br>") : "&mdash;"}${avg ? `<div class="calc"${extra.why.length ? ` data-tooltip="${esc(`Without them: ${fmt(avg0)}`)}"` : ""}>Avg ${fmt(avg)}${extra.why.length ? ` <small>(with ${esc(extra.why.join(", "))})</small>` : ""}</div>` : ""}</td></tr>`);
     }
     // The Critical row sits under Tier 3, only for Actions that have one.
     if (!v.noTiers && v.critical) rows.push(`<tr class="critp"><th>Critical <small class="pv-c"></small></th><td>${await enrich(v.critical, item)}</td></tr>`);

@@ -1724,3 +1724,5 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 .twod12 .effects .et > p, .twod12 .anote > p { display: block; margin: 0 0 4px; }
 .twod12 .effects .et a.inline-btn, .twod12 .effects .et button, .twod12 .effects .et .twod12-inline { display: inline-flex; }
 .twod12 .trgrp { white-space: nowrap; }
+/* v0.0.193: the sheet card's Effects text is one block of flowing text (its line is a flex row: badge + text). */
+.twod12.acard .ac-fxl > .ac-fxt { display: block; flex: 1; min-width: 0; }
