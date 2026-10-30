@@ -248,7 +248,11 @@
       <div class="at-basic{{#if basicOpen}} open{{/if}}">
         <div class="at-gh basic"><a data-action="toggleBasic"><i class="fa-solid {{#if basicOpen}}fa-chevron-down{{else}}fa-chevron-right{{/if}}"></i> Basic Actions <span class="at-count">{{basicRows.length}}{{#unless basicOpen}} &middot; collapsed{{/unless}}</span></a>
           <span class="ghr">{{#if isNpc}}<a data-action="newAction"><i class="fa-solid fa-plus"></i> New Action</a> &middot; {{/if}}<a data-action="addBasic">{{#if missingBasic}}Add{{else}}Update{{/if}} Basic Actions</a></span></div>
-        {{#if basicOpen}}<div class="atable" data-list="basic">{{#each basicRows}}{{> actrow}}{{/each}}</div>{{/if}}
+        {{#if basicOpen}}
+        {{!-- v0.0.198 (Lucas): 4 groups in a 2x2 grid; the Frequency column is gone (the chip and the row tint say it); a legend --}}
+        <div class="bx-legend"><span class="bx-lg at"><i></i>At-will</span><span class="bx-lg rd"><i></i>Once per Round</span><span class="bx-lg st"><i></i>Strike</span></div>
+        <div class="bx-grid">{{#each basicGroups}}<div class="bx-group" data-group="{{key}}"><div class="bx-gh">{{label}}</div><div class="atable bx-rows">{{#each rows}}{{> actrow}}{{/each}}</div></div>{{/each}}</div>
+        {{/if}}
       </div>
     </div>
 

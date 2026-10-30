@@ -20,7 +20,7 @@ const card = n => C.docs.find(d => d.type === "action" && d.name === n);
 for (const n of ["Vanish", "Rolling Shot", "Double Shot"]) { const d = card(n); console.log(`${n}:`, d.system.versions.map(v => JSON.stringify(A.pureMove({ traits: traits(d.system.traits) }, v))).join(" | ")); }
 const src = f => fs.readFileSync(ROOT + f, "utf8"), act = src("module/actions.mjs"), mv = src("module/move.mjs");
 console.log("wired: no card when the banner takes it", act.includes("if (!bannerMove) await ChatMessage.create({"), "| the movement tag (v0.0.197)", mv.includes("if (cfg.banner && kind !== \"charge\") { showRange(c, n); moveBanner(c, kind, n, cfg.banner, { ap: cfg.bannerAp ?? 0 }); return true; }"),
-  "| one line, changed when it ends", mv.includes("if (msg) await msg.update({ content: html })"), "| Done, Advance instead", mv.includes('data-mb="done"') && mv.includes('data-mb="advance"'), "| closes on a turn change", mv.includes('on("combatTurnChange", () => finish(false));'));
+  "| one line, changed when it ends", mv.includes("if (msg) await msg.update({ content: line(moved) })"), "| End, Advance instead (on the strip, v0.0.198)", src("module/carousel.mjs").includes('btn("endmove"') && src("module/carousel.mjs").includes('btn("evadeadv"'), "| closes on a turn change", mv.includes('on("combatTurnChange", () => finish(false));'));
 console.log("--- the Talent filter bar");
 const cw = src("module/classwindow.mjs"), css = src("styles/system.css");
 console.log("search, Category, Only what I can take, compact list:", cw.includes('class="cw-fq"') && cw.includes('class="cw-fcat"') && cw.includes('class="cw-fok"') && cw.includes('data-key="tfview"'),
@@ -33,4 +33,6 @@ console.log("the Evade key (Shift+E):", src("module/twod12.mjs").includes('edita
 console.log("--- v0.0.197: one line per movement, no AP line for it");
 const MV = await import(ROOTURL + "module/move.mjs");
 console.log(MV.moveLine("Kai", "walk", "Advance", 1, 7).replace(/<[^>]+>/g, ""), "|", MV.moveLine("Kai", "walk", "Advance", 1, 7, 4).replace(/<[^>]+>/g, ""), "|", MV.moveLine("Nari", "evade", "Evade", 2, 3, 3).replace(/<[^>]+>/g, ""));
-console.log("AP lines kept out:", src("module/combat.mjs").includes("if (!quiet) await apMessage(c, from, to, why);") && act.includes("spendAP(actor, apCost, item.name, { quiet: moveQuiet })") && mv.includes("{ quiet: !useEvade && walk > 0 }"), "| the tag follows the token:", mv.includes('on("refreshToken", t => { if (t?.document?.id === c.tokenId) place(); });') && mv.includes('on("canvasPan", place);'));
+console.log("AP lines kept out:", src("module/combat.mjs").includes("if (!quiet) await apMessage(c, from, to, why);") && act.includes("spendAP(actor, apCost, item.name, { quiet: moveQuiet })") && mv.includes("{ quiet: !useEvade && walk > 0 }"), "| no tag over the token (v0.0.198):", !mv.includes("twod12-movetag"));
+const sm = (f, e, l) => MV.stripMove({ getFlag: (s, k) => ({ freeMove: f, evadeMove: e, moveLeft: l })[k] });
+console.log("the strip under the AP dots: Advance 4:", JSON.stringify(sm(4, 0, 0)), "| Evade 2:", JSON.stringify(sm(0, 2, 0)), "| a drag's Speed left 3:", JSON.stringify(sm(0, 0, 3)), "| nothing:", JSON.stringify(sm(0, 0, 0)), "| shown:", src("module/carousel.mjs").includes('class="tc-move'));

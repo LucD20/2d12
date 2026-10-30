@@ -480,7 +480,7 @@ export async function evadeAsAdvance(combatantId, { quiet = false } = {}) {
   showRange(c, n);
 }
 
-/* ------------------------------------------------------------------ v0.0.197: the movement tag on the token */
+/* ------------------------------------------------------------------ v0.0.197-v0.0.198: a movement's line and its squares left (on the strip) */
 const VERB = { walk: "Advanced", evade: "Evaded" }, NOUN = { walk: "Advance", evade: "Evade" };
 let moveBar = null, lastBar = { id: "", until: 0 };
 /** Is a movement tag up for this combatant (or did one just close: its last drag's update comes after)? */
@@ -494,62 +494,53 @@ export const moveLine = (who, mode, name, ap, granted, moved = null) => {
 };
 
 /**
- * v0.0.197 (Lucas): a movement-only Action (Advance, Evade, Crawl) or a drag that pays an Advance: a small tag over the token ("Advance · 3 sq
- * left", Done; Evade: "Advance instead") that follows it on the map, and ONE chat line: "Kai uses Advance (1 AP: up to 7 squares)", changed
- * to "Kai Advanced 4 of 7 squares (Advance, 1 AP)" when it ends (used up, Done, or the turn changes). The AP lines of these are not posted.
+ * v0.0.198 (Lucas): a movement-only Action (Advance, Evade, Crawl) or a drag that pays an Advance: the squares left show on the combat strip
+ * under the creature's AP dots, with End (and Advance instead, for an Evade) next to Next turn (carousel.mjs); nothing covers the map.
+ * ONE chat line: "Kai uses Advance (1 AP: up to 7 squares)", changed to "Kai Advanced 4 of 7 squares (1 AP)" when it ends (used up, End,
+ * or the turn changes). This keeps that line and the end of the movement, on the client of whoever moved.
  */
 export function moveBanner(c, kind, granted, name, { drag = false, ap = 0 } = {}) {
-  if (typeof document === "undefined") return;
   moveBar?.finish(false);
   // drag: started by moving the token (an Advance paid by the drag): the Speed left of that Advance (moveLeft) counts too.
   const left = () => num(c.getFlag(F, "freeMove")) + num(c.getFlag(F, "evadeMove")) + (drag ? num(c.getFlag(F, "moveLeft")) : 0);
   let mode = kind, msg = null;
-  const el = document.createElement("div");
-  el.id = "twod12-movetag";
-  el.className = "twod12-movetag";
-  const draw = () => {
-    el.innerHTML = `<span class="mt-txt"><i class="fa-solid ${mode === "evade" ? "fa-shield" : "fa-person-walking"}"></i> ${NOUN[mode] ?? esc(name)} &middot; <b>${left()}</b> sq left</span>`
-      + `${mode === "evade" ? '<button type="button" data-mb="advance" data-tooltip="Use it as an Advance instead (it can trigger Reactions)"><i class="fa-solid fa-person-running"></i></button>' : ""}`
-      + '<button type="button" data-mb="done" data-tooltip="End the movement (the squares left are lost)"><i class="fa-solid fa-flag-checkered"></i></button>';
-  };
-  const place = () => {
-    const t = c.token?.object;
-    if (!t || !canvas?.ready) { el.style.display = "none"; return; }
-    const p = canvas.clientCoordinatesFromCanvas?.({ x: t.center.x, y: t.y }) ?? null;
-    if (!p) { el.style.display = "none"; return; }
-    el.style.display = ""; el.style.left = `${p.x}px`; el.style.top = `${p.y - 4}px`;
-  };
-  draw();
-  document.body.append(el);
-  place();
-  ChatMessage.create({ content: `<div class="twod12 chat apmsg">${moveLine(c.name, mode, name, ap, granted)}</div>` }).then(m => { msg = m; }).catch(() => {});
+  const line = (moved = null) => `<div class="twod12 chat apmsg">${moveLine(c.name, mode, name, ap, granted, moved)}</div>`;
+  if (typeof ChatMessage !== "undefined") ChatMessage.create({ content: line() }).then(m => { msg = m; }).catch(() => {});
   const hooks = [];
   const on = (h, fn) => hooks.push([h, Hooks.on(h, fn)]);
   const finish = async (drop = true) => {
-    if (!moveBar || moveBar.el !== el) return;
+    if (!moveBar || moveBar.c !== c) return;
     moveBar = null;
     lastBar = { id: c.id, until: Date.now() + 2500 };
     for (const [h, id] of hooks) Hooks.off(h, id);
-    el.remove();
     const l = left(), moved = Math.max(0, granted - l);
     if (drop && l > 0 && c.isOwner && game.combat?.combatants?.has?.(c.id)) await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...(drag ? { [`flags.${F}.moveLeft`]: 0 } : {}), [`flags.${F}.-=ignoreTerrain`]: null });
     clearRange();
-    const html = `<div class="twod12 chat apmsg">${moveLine(c.name, mode, name, ap, granted, moved)}</div>`;
-    try { if (msg) await msg.update({ content: html }); else await post(moveLine(c.name, mode, name, ap, granted, moved)); } catch (e) { await post(moveLine(c.name, mode, name, ap, granted, moved)); }
+    try { if (msg) await msg.update({ content: line(moved) }); else await post(moveLine(c.name, mode, name, ap, granted, moved)); } catch (e) { await post(moveLine(c.name, mode, name, ap, granted, moved)); }
   };
-  moveBar = { el, finish, c, add: (n, moreAp = 0) => { granted += n; ap += moreAp; draw(); if (msg) msg.update({ content: `<div class="twod12 chat apmsg">${moveLine(c.name, mode, name, ap, granted)}</div>` }).catch(() => {}); } };
-  el.addEventListener("click", async ev => {
-    const b = ev.target.closest("[data-mb]");
-    if (!b) return;
-    if (b.dataset.mb === "done") return finish(true);
-    if (b.dataset.mb === "advance") { mode = "walk"; await evadeAsAdvance(c.id, { quiet: true }); draw(); }
-  });
-  on("updateCombatant", cb => { if (cb.id !== c.id || !moveBar || moveBar.el !== el) return; if (left() <= 0) finish(false); else draw(); });
-  on("refreshToken", t => { if (t?.document?.id === c.tokenId) place(); });
-  on("canvasPan", place);
+  moveBar = { c, finish, toAdvance: () => { mode = "walk"; }, add: (n, moreAp = 0) => { granted += n; ap += moreAp; if (msg) msg.update({ content: line() }).catch(() => {}); } };
+  on("updateCombatant", cb => { if (cb.id !== c.id || moveBar?.c !== c) return; if (left() <= 0) finish(false); });
   on("combatTurnChange", () => finish(false));
   on("deleteCombat", () => finish(false));
 }
+
+/** v0.0.198: the strip's End button: the movement this client tracks ends (its line is completed), or the free squares are dropped. */
+export async function endMoveFor(combatantId) {
+  const c = game.combat?.combatants.get(combatantId);
+  if (!c) return;
+  if (moveBar?.c?.id === combatantId) return moveBar.finish(true);
+  if (c.getFlag(F, "charge")) return endMovement(combatantId);
+  if (!c.isOwner) return warn("Only the owner can end this movement.");
+  await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, [`flags.${F}.moveLeft`]: 0, [`flags.${F}.-=ignoreTerrain`]: null });
+  clearRange();
+}
+/** v0.0.198: the strip's Advance instead (an Evade becomes an Advance; the movement's line says Advanced). */
+export async function evadeToAdvance(combatantId) {
+  if (moveBar?.c?.id === combatantId) moveBar.toAdvance();
+  return evadeAsAdvance(combatantId, { quiet: true });
+}
+/** Pure: what the strip shows under a creature's AP dots: { n, evade } (n 0: nothing). */
+export const stripMove = c => { const ev = num(c?.getFlag?.(F, "evadeMove")), n = ev + num(c?.getFlag?.(F, "freeMove")) + num(c?.getFlag?.(F, "moveLeft")); return { n: Math.round(n * 100) / 100, evade: ev > 0 }; };
 
 /** The creature is done moving: the free squares it did not use are dropped. */
 export async function endMovement(combatantId) {

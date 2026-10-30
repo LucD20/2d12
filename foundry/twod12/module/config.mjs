@@ -142,6 +142,14 @@ export const TWOD12 = {
     move: "You must have a Speed of at least 1."
   },
   effectSettings: { boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", speed: "Speed", light: "Token Light", note: "Note", ignore: "Ignore a Bane", rally: "Rally Points", turnstart: "Effect each turn" },
+  // v0.0.198 (Lucas, 2026-10-30): the Basic Actions section of the Actions tab, 4 groups in a 2x2 grid (row 1 Attack | Control, row 2
+  // Movement | Utility), each in this order. By name: the Kind traits don't separate them. The items and the compendium don't change.
+  basicGroups: [
+    { key: "attack", label: "Attack", names: ["Weapon Attack", "Fists", "Charge", "Reload"] },
+    { key: "control", label: "Control", names: ["Shove", "Haul", "Relocate", "Trip"] },
+    { key: "movement", label: "Movement", names: ["Advance", "Evade", "Crawl", "Stand"] },
+    { key: "utility", label: "Utility", names: ["Interact", "Release", "Leaning", "Steel Yourself"] }
+  ],
   // v0.0.189 (Lucas, after Draw Steel's Codex): how much of a card Foundry does for you, as a chip on the card. "" shows nothing.
   automationRanks: { "": "(not set)", none: "Not implemented", bronze: "Bronze", silver: "Silver", gold: "Gold" },
   automationHints: { none: "Not implemented: read the card and do it by hand", bronze: "Bronze: partly automated (buttons or an effect to apply; the rest by hand)", silver: "Silver: mostly automated (one part by hand)", gold: "Gold: fully automated" },

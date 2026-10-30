@@ -1815,3 +1815,29 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 #twod12-movetag .mt-txt i { color: #7cc4f2; margin-right: 3px; }
 #twod12-movetag button { width: 22px; height: 20px; min-height: 0; line-height: 18px; padding: 0; font-size: 11px; background: #2e3442; color: #f4e9d0; border: 1px solid #6b5a33; border-radius: 10px; cursor: pointer; }
 #twod12-movetag button:hover { background: #3c4458; }
+/* v0.0.198 (Lucas): the squares left of a movement, under the AP dots on the combat strip (the tag over the token is gone). */
+#twod12-carousel .tc-move { margin-top: 1px; font-size: 10.5px; font-weight: 700; line-height: 14px; text-align: center; color: #7cc4f2; white-space: nowrap; }
+#twod12-carousel .tc-move.evade { color: #9fe0b5; }
+#twod12-carousel .tc-move i { font-size: 9px; margin-right: 1px; }
+
+/* v0.0.198 (Lucas, mockup basic-actions-grouped): the Basic Actions in 4 groups, 2x2; a row is grip, chevron, name / Range / AP chip / Use
+   (no Frequency column: the chip's color and the row's tint say it); the Strike line stays; a one-line legend. */
+.twod12.sheet.ns .bx-legend { display: flex; flex-wrap: wrap; gap: 14px; margin: 2px 2px 8px; font-size: 11px; color: #5b564c; }
+.twod12.sheet.ns .bx-lg { display: inline-flex; align-items: center; gap: 5px; }
+.twod12.sheet.ns .bx-lg i { display: inline-block; width: 18px; height: 10px; border-radius: 5px; }
+.twod12.sheet.ns .bx-lg.at i { background: #3B6D11; }
+.twod12.sheet.ns .bx-lg.rd i { background: #185FA5; }
+.twod12.sheet.ns .bx-lg.st i { width: 3px; height: 14px; border-radius: 0; background: #b3261e; }
+.twod12.sheet.ns .bx-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 20px; row-gap: 10px; }
+.twod12.sheet.ns .bx-gh { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #b0731a; padding-bottom: 3px; margin-bottom: 4px; border-bottom: 1px solid rgba(176, 115, 26, .35); }
+.twod12.sheet.ns .bx-rows { gap: 4px; }
+.twod12.sheet.ns .bx-rows .ar-line { grid-template-columns: 12px 12px minmax(0, 1fr) auto auto 28px; min-height: 30px; }
+.twod12.sheet.ns .bx-rows .ar-line > .grip { order: 0; } .twod12.sheet.ns .bx-rows .ar-line > .ar-chev { order: 1; }
+.twod12.sheet.ns .bx-rows .ar-line > .ar-name { order: 2; } .twod12.sheet.ns .bx-rows .ar-line > .ar-range { order: 3; font-size: 11px; white-space: nowrap; }
+.twod12.sheet.ns .bx-rows .ar-line > .ar-cost { order: 4; } .twod12.sheet.ns .bx-rows .ar-line > .ar-use { order: 5; }
+.twod12.sheet.ns .bx-rows .ar-freq { display: none; }
+.twod12.sheet.ns .bx-rows .ar-ap { min-width: 34px; }
+@container (max-width: 440px) {
+  .twod12.sheet.ns .bx-grid { grid-template-columns: minmax(0, 1fr); }
+  .twod12.sheet.ns .bx-rows .ar-line > .ar-range { display: inline; }
+}

@@ -1,8 +1,10 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.197**. Tests: `node tools/tests/run.mjs` (156 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.198**. Tests: `node tools/tests/run.mjs` (157 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
 
 ## Asked by Lucas, not built
+- [x] **(v0.0.198) Lucas's decisions of 2026-10-30:** the movement's squares left on the combat strip (End move, Advance instead) instead of the tag over the token; the Basic Actions in 4 groups (2x2), no Frequency column, a legend.
+- **Reload's Distance (Lucas's [Q], 2026-10-30; reported, nothing changed):** the book (06-basic-actions.md) says **Target: One target, Distance: Reach** (you can reload an ally's weapon); Foundry's Basic Action has Distance "self" and no Target (basic.mjs: "reloading an ally's weapon isn't automated yet"). The book is the rule; Foundry is simplified. To decide: show "Reach" on the card (and keep reloading only your own weapon), or automate an ally's reload.
 - [x] **(v0.0.197) Lucas's test of v0.0.196:** one chat line per movement (no AP or drag lines for it), the movement tag on the token instead of the banner, Shift+E asks which Evade.
 - **Shortcuts (Lucas, 2026-10-30: "an amazing idea, to be worked on later"):** keyboard shortcuts for common Actions (Shift+E Evade exists since v0.0.196); candidates: Advance, Weapon Attack, Steel Yourself, End turn, the Favorites by number. Its own small pack (a list to choose from first).
 - [x] **(v0.0.196) Lucas's test of v0.0.195:** no drag lines while the movement banner is up; a drag without Advance opens the banner (it is an Advance); Shift+E uses Evade (1 AP). **Ideas not built (for Lucas):** Alt+drag as an Evade; a keyboard Advance key.

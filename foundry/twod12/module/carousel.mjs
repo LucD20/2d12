@@ -1,6 +1,7 @@
 // A strip of portraits across the top of the screen while there is a combat (also while it is being prepared):
 // turn order, the creature whose turn it is, and its Action Points as dots under the portrait.
 import { getAP, setAP, apMax, requestSwap, endTurnFor } from "./combat.mjs";
+import { stripMove, endMoveFor, evadeToAdvance } from "./move.mjs";
 import { groupColor } from "./config.mjs";
 import { esc } from "./util.mjs";
 const F = "twod12", ID = "twod12-carousel";
@@ -17,7 +18,7 @@ function card(combat, c) {
   return `<div class="tc-card ${current ? "current" : ""} ${noInit ? "noinit" : ""} ${c.isDefeated ? "defeated" : ""} ${frozen ? "frozen" : ""}" data-combatant-id="${c.id}" style="--tcc:${groupColor(c)}" data-tooltip="${noInit ? "Click to roll initiative · " : ""}${esc(c.name)}: ${ap} AP${frozen ? " (frozen)" : ""}">
     <div class="tc-portrait"><img src="${img}" alt="">${init}</div>
     <div class="tc-name">${esc(c.name)}</div>
-    <div class="tc-ap">${dots}</div></div>`;
+    <div class="tc-ap">${dots}</div>${(m => (m.n > 0 ? `<div class="tc-move${m.evade ? " evade" : ""}" data-tooltip="${m.evade ? "Evade" : "Movement"}: ${m.n} square${m.n === 1 ? "" : "s"} left"><i class="fa-solid ${m.evade ? "fa-shield" : "fa-person-walking"}"></i> ${m.n} sq</div>` : ""))(stripMove(c))}</div>`;   // v0.0.198: the squares left
 }
 
 export function renderCarousel() {
@@ -42,6 +43,9 @@ export function renderCarousel() {
   const middle = started ? `<b>Round ${combat.round}</b>` : '<b class="tc-prep">Preparing the encounter</b>';
   const right = [
     started && canSwap ? btn("swap", "fa-right-left", "Swap", "Swap initiative with an ally (1 AP)") : "",
+    // v0.0.198 (Lucas): a movement under way: End it (the squares left are lost), and an Evade can become an Advance.
+    started && (mine || gm) && cur && stripMove(cur).evade ? btn("evadeadv", "fa-person-running", "Advance instead", "Use the Evade as an Advance (it can trigger Reactions)") : "",
+    started && (mine || gm) && cur && stripMove(cur).n > 0 ? btn("endmove", "fa-flag-checkered", "End move", "End the movement: the squares left are lost") : "",
     started && (mine || gm) ? btn("next", "fa-forward-step", "Next turn", "End this turn") : "",
     gm && !started ? btn("begin", "fa-play", "Begin", "Begin the combat") : "",
     gm ? btn("end", "fa-flag-checkered", "End", "End the encounter") : ""
@@ -61,6 +65,8 @@ export function renderCarousel() {
   el.querySelectorAll("[data-tc]").forEach(b => b.addEventListener("click", async ev => {
     ev.stopPropagation();
     const k = b.dataset.tc, c = b.dataset.id ? combat.combatants.get(b.dataset.id) : null;
+    if (k === "endmove" && cur) return endMoveFor(cur.id);
+    if (k === "evadeadv" && cur) return evadeToAdvance(cur.id);
     if (k === "next") return endTurnFor(combat);
     if (k === "prev") return combat.previousTurn();
     if (k === "swap" && cur) return requestSwap(combat, cur);

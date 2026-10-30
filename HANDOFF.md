@@ -4,7 +4,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT implementation. This bundle has everything. Read this file first.
 
-## Where we are now (v0.0.197, 156 tests; READ THIS FIRST)
+## Where we are now (v0.0.198, 157 tests; READ THIS FIRST)
+- **2026-10-30: v0.0.198:** the movement's squares left on the combat strip (no tag over the token), the Basic Actions in 4 groups (2x2). Reload's Distance: the book says Reach, Foundry self (reported in foundry-backlog, not changed).
 - **2026-10-30: v0.0.197, from Lucas's test of v0.0.196:** one chat line per movement, the movement tag over the token, Shift+E asks which Evade. Shortcuts are noted for a later pack (foundry-backlog).
 - **2026-10-30: v0.0.196, from Lucas's test of v0.0.195:** no drag lines while the movement banner is up, a drag without Advance opens the banner, Shift+E for Evade (1 AP). Pack C is complete.
 - **2026-10-30: PACK C-c DONE as v0.0.195, waiting for Lucas's test; with it PACK C IS COMPLETE** (C-a v0.0.186, C-b v0.0.188, fixes and the Granted / Escalation block v0.0.187-v0.0.194, C-c v0.0.195): the Talent picker's filter bar, movement-only Actions through the banner. **Next (MASTER-PLAN):** the open design sessions (D2 Mastery / Groups / Gear, D3 Skills, D4 Magic and Momentum) and X; "Fewer clicks for weapons" (foundry-backlog top) is its own small pack with a mockup.

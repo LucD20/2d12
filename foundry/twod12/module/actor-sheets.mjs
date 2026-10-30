@@ -1,6 +1,19 @@
 // The character and NPC sheets.
 import { prereqLine } from "./talents.mjs";
 import { escalationModel, grantBadges } from "./escblock.mjs";
+
+/** v0.0.198: the Basic Actions in their 4 groups (config basicGroups), each in its order; any other Basic Action goes in a fifth group. */
+export function basicGroupsOf(rows) {
+  const used = new Set(), out = [];
+  for (const g of TWOD12.basicGroups) {
+    const list = g.names.map(n => rows.find(r => r.name === n)).filter(Boolean);
+    list.forEach(r => used.add(r));
+    if (list.length) out.push({ key: g.key, label: g.label, rows: list });
+  }
+  const rest = rows.filter(r => !used.has(r));
+  if (rest.length) out.push({ key: "other", label: "Other", rows: rest });
+  return out;
+}
 import { masteryRows, masteryOf, setMastery, setCollapsed, techniqueState, bowMasteryOf, chooseBowMastery } from "./mastery.mjs";
 import { weaponRanges } from "./weaponrange.mjs";
 import { defenseBonus, steadinessOf } from "./defense.mjs";
@@ -440,6 +453,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       actSearch: this._search ?? "",
       basicOpen: !!game.user.getFlag("twod12", "basicOpen"),
       basicRows: basics.map(b => actRow(a.items.get(b.id))),
+      basicGroups: basicGroupsOf(basics.map(b => actRow(a.items.get(b.id)))),
       // The Favorites tab (v0.0.137): the same rows as the Actions table, in the Favorites' own order.
       favRows: favs.map(id => a.items.get(id)).filter(i => i?.type === "action" && !(Number(i.system?.escalation) > 0)).map(actRow), esc,
       favorites,
