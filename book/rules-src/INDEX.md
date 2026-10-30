@@ -14,11 +14,11 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 5.1 | 78 |
 | 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 19.3 | 161 |
 | 11-species.md | Species | species |  | 0.8 | 35 |
-| 12-paladin.md | Paladin | paladin |  | 8.8 | 276 |
-| 13-archer.md | Archer | archer |  | 6.6 | 197 |
+| 12-paladin.md | Paladin | paladin |  | 11.3 | 371 |
+| 13-archer.md | Archer | archer |  | 10.0 | 340 |
 | 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 14.5 | 275 |
 | 15-gear.md | Gear | gear |  | 7.2 | 162 |
-| 16-talents.md | Talents | talents |  | 7.0 | 246 |
+| 16-talents.md | Talents | talents |  | 9.8 | 311 |
 
 ## 01-roll.md: Chapter 1: The Roll
 
@@ -227,14 +227,13 @@ Glossary entries (line: term): 6: [Mod]; 7: [W]; 8: [Trait]; 9: 0 AP; 10: 0R; 11
 - 63:   ### Hallmark Action Selection
 - 110:   ### Picks
 - 117: ## Paladin Repertoire
-- 119:   ### Turn
-- 142:   ### Encounter
-- 188:   ### Daily
-- 211: ## Paladin Escalation
-- 213:   ### Passives
-- 233:   ### Actives
+- 119:   ### Encounter
+- 190:   ### Daily
+- 253: ## Paladin Escalation
+- 255:   ### Passives
+- 284:   ### Actives
 
-Action cards: Divine Power (46, Paladin Feature 1); Font of Mercy (55, Paladin Feature 1); Smite (68, Divine Power 1, Round); Lay On Hands (92, Divine Power 1, Round); Shield of Faith (122, Paladin Feature 1, Turn); Holy Wrath (145, Paladin Feature 1, Encounter); Bulwark of Faith (168, Paladin Feature 1, Encounter); Consecrated Ground (191, Paladin Feature 1, Daily); Hallowed Stance (216, Paladin Escalation (Passive)); Radiant Zeal (225, Paladin Escalation (Passive)); Aura of Protection (236, Paladin Escalation, Encounter); Divine Surge (257, Paladin Escalation, Round)
+Action cards: Divine Power (46, Paladin Feature 1); Font of Mercy (55, Paladin Feature 1); Smite (68, Divine Power 1, Round); Lay On Hands (92, Divine Power 1, Round); Holy Wrath (122, Paladin Feature 1, Encounter); Word of Radiance (145, Paladin Feature 1, Encounter); Bulwark of Faith (170, Paladin Feature 1, Encounter); Consecrated Ground (193, Paladin Feature 1, Daily); Miraculous Recovery (214, Paladin Feature 1, Daily); Divine Intervention (233, Paladin Feature 1, Daily); Hallowed Stance (258, Paladin Escalation (Passive)); Radiant Zeal (267, Paladin Escalation (Passive)); Mending Light (276, Paladin Escalation (Passive)); Aura of Protection (287, Paladin Escalation, Encounter); Divine Surge (308, Paladin Escalation, Round); Shield of Faith (329, Paladin Escalation, Turn); Hand of Mercy (352, Paladin Escalation, Round)
 
 ## 13-archer.md: Archer
 
@@ -245,12 +244,12 @@ Action cards: Divine Power (46, Paladin Feature 1); Font of Mercy (55, Paladin F
 - 103:   ### Picks
 - 109: ## Archer Repertoire
 - 111:   ### Encounter
-- 136:   ### Daily
-- 153: ## Archer Escalation
-- 155:   ### Passives
-- 175:   ### Actives
+- 182:   ### Daily
+- 249: ## Archer Escalation
+- 251:   ### Passives
+- 280:   ### Actives
 
-Action cards: Sharpshooter (46, Archer Feature 1); Marked Quarry (55, Archer Feature 1); Double Shot (68, Sharpshooter 1, Round); Rolling Shot (85, Sharpshooter 1, Round); Marksman's Shot (114, Archer Feature 1, Encounter); Hunter's Focus (139, Archer Feature 1, Daily); Killer's Focus (158, Archer Escalation (Passive)); Elusive (167, Archer Escalation (Passive)); Pinning Shot (178, Archer Escalation, Round)
+Action cards: Sharpshooter (46, Archer Feature 1); Marked Quarry (55, Archer Feature 1); Double Shot (68, Sharpshooter 1, Round); Rolling Shot (85, Sharpshooter 1, Round); Marksman's Shot (114, Archer Feature 1, Encounter); Volley (137, Archer Feature 1, Encounter); Covering Fire (162, Archer Feature 1, Encounter); Hunter's Focus (185, Archer Feature 1, Daily); Deadeye (200, Archer Feature 1, Daily); Rain of Arrows (225, Archer Feature 1, Daily); Killer's Focus (254, Archer Escalation (Passive)); Elusive (263, Archer Escalation (Passive)); Harrying Shots (272, Archer Escalation (Passive)); Pinning Shot (283, Archer Escalation, Round); Twin Shot (304, Archer Escalation, Round); Vanish (325, Archer Escalation, Round)
 
 ## 14-bestiary.md: Bestiary: Building NPCs
 
@@ -301,9 +300,10 @@ Open (to be decided) boxes: 129: "What 8 and 15 Mastery unlock (an Advanced Tech
 
 ## 16-talents.md: Talents
 
-- 8: ## Talents That Modify Actions
-- 27: ## Divine Talents
-- 59: ## Ranged Talents
-- 91: ## Martial Talents
+- 14: ## Talents That Modify Actions
+- 18: ## Combat Talents
+- 213: ## Mobility Talents
+- 250: ## Magic Talents
+- 299: ## Class Talents
 
-Action cards: Opportunity Attack (13, Talent 1, At-will); Lesser Blessing (30, Talent 1); Rimebrand (Cold) (41, Lesser Blessing, Round); Aim (62, Talent 1, At-will); Ricochet (77, Talent 1, At-will); Cut Through (96, Talent 1, Round); Battering Charge (122, Talent 1); Heavy Blows (131, Talent 1); Bloodlust (140, Talent 1, Encounter); Brawler (155, Talent 1); Pummel (164, Brawler, At-will); Kickboxer (189, Talent 1); Leg Sweep (200, Weapon Technique, Round); Whirlwind (225, Talent 1, Encounter)
+Action cards: Opportunity Attack (23, Combat Talent 1, At-will); Challenge (38, Combat Talent 1); Heavy Blows (47, Combat Talent 1); Whirlwind (56, Combat Talent 1, Encounter); Bloodlust (81, Combat Talent 1, Encounter); Brawler (96, Combat Talent 1); Pummel (105, Brawler, At-will); Kickboxer (130, Combat Talent 1); Leg Sweep (141, Kickboxer, Round); Aim (166, Combat Talent 1, Round); Ricochet (185, Combat Talent 1); Long Draw (196, Combat Talent 1); Steady Nerves (205, Combat Talent 1); Battering Charge (216, Mobility Talent 1); Cut Through (225, Mobility Talent 1, Round); Lesser Blessing (253, Magic Talent 1); Rimebrand (Cold) (264, Lesser Blessing, Round); Sacred Weapon (279, Magic Talent 1, Round); Class Expertise (302, Combat Talent 5)

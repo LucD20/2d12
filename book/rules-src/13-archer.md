@@ -133,6 +133,52 @@ Choose one of the following Hallmark Actions:
 
 </div>
 
+<div class="action" markdown="1">
+<div class="action-head"><span>Volley</span><span>2 AP</span><span class="cat">Archer Feature 1</span></div>
+
+**Flavor:** You empty the quiver skyward, and the arrows fall together.
+
+*Area • Ranged • Save • Shot • Weapon*
+
+**Frequency:** Encounter
+
+**Target:** All creatures in the Area
+
+**Area:** 2 Emanation
+
+**Distance:** Your weapon's normal range
+
+**Vs:** Instinct Save
+
+| | 2 AP |
+|---|---|
+| **Tier 1** | [B] 2d8 + [Mod] Pi; Hindered (EoT). |
+| **Tier 2** | [B] 1d10 + [Mod] Pi |
+| **Tier 3** | [B] 1d4 Pi |
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Covering Fire</span><span>2 AP</span><span class="cat">Archer Feature 1</span></div>
+
+**Flavor:** Nobody walks through that ground without paying for it.
+
+*Area • Ranged • Shot • Weapon*
+
+**Frequency:** Encounter
+
+**Target:** All creatures in the Area
+
+**Area:** 2 Emanation
+
+**Distance:** Your weapon's normal range
+
+| 2 AP |
+|---|
+| For 3 rounds (the area doesn't move), enemies in the area take 1 Bane on [Strike] Actions, and allies in it gain +1 Defense. |
+
+</div>
+
 ### Daily
 
 <div class="action" markdown="1">
@@ -147,6 +193,56 @@ Choose one of the following Hallmark Actions:
 | 1 AP |
 |---|
 | For the rest of the encounter, against your Marked Quarry (a new Marked Quarry when you choose one): you gain 1 Boon and Empowered 1 against them, and you take less damage from each of their Actions, reduced by your **Signature Modifier** (you choose which instance of its damage is reduced). |
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Deadeye</span><span>1 AP</span><span class="cat">Archer Feature 1</span></div>
+
+**Flavor:** You put everything into one shot, and everything into the one after.
+
+*Ranged • Shot • Strike • Weapon*
+
+**Frequency:** Daily
+
+**Target:** One creature
+
+**Distance:** Weapon
+
+**Vs:** AD
+
+This Action is Favored.
+
+| | 1 AP |
+|---|---|
+| **Tier 1** | [B] 1[W] |
+| **Tier 2** | [B] 1[W] + [Mod] + 1d6 Pi |
+| **Tier 3** | [B] 1[W] + [Mod] + 2d6 Pi; Prone. |
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Rain of Arrows</span><span>2 AP</span><span class="cat">Archer Feature 1</span></div>
+
+**Flavor:** Arrows fall from nothing, again and again, until the ground is gone.
+
+*Area • Ranged • Save • Shot • Weapon*
+
+**Frequency:** Daily
+
+**Target:** All enemies in the Area
+
+**Area:** 3 Emanation
+
+**Distance:** Your weapon's maximum range
+
+**Vs:** Instinct Save
+
+| | 2 AP |
+|---|---|
+| **Tier 1** | [B] 2d8 + [Mod] Pi; Prone. |
+| **Tier 2** | [B] 2d6 + [Mod] Pi |
+| **Tier 3** | [B] 1d6 Pi |
 
 </div>
 
@@ -172,6 +268,15 @@ While your Escalation is 1 or more, the first [Strike] Action against you each r
 
 </div>
 
+<div class="action" markdown="1">
+<div class="action-head"><span>Harrying Shots</span><span class="cat">Archer Escalation (Passive)</span></div>
+
+**Flavor:** Every arrow says the same thing: not yet.
+
+While your Escalation is 1 or more, the first time each round you deal damage to your Marked Quarry with a [Shot] Action, they take 1 Bane on [Strike] Actions until the end of their next turn.
+
+</div>
+
 ### Actives
 
 <div class="action" markdown="1">
@@ -192,5 +297,43 @@ While your Escalation is 1 or more, the first [Strike] Action against you each r
 | 1 AP |
 |---|
 | Make a [Ranged] Weapon Attack (1A). On a Tier 2 or 3, the target is Immobilized (EoT). |
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Twin Shot</span><span>1 AP</span><span class="cat">Archer Escalation</span></div>
+
+**Flavor:** Two arrows, one motion, two answers.
+
+*Ranged • Shot • Strike • Weapon*
+
+**Escalation:** 3
+
+**Frequency:** Round
+
+**Target:** Two creatures
+
+**Distance:** Weapon
+
+| 1 AP |
+|---|
+| Make one [Ranged, Shot] Weapon Attack (1A) and compare its result to two different creatures no more than 5 squares apart. It deals an extra [B] 1d6 Pi to each of them. |
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Vanish</span><span>0 AP</span><span class="cat">Archer Escalation</span></div>
+
+**Flavor:** You were there a moment ago. You are not now.
+
+*Self*
+
+**Escalation:** 1
+
+**Frequency:** Round
+
+| 0 AP |
+|---|
+| Evade 2. You gain +1 Defense until the start of your next turn. |
 
 </div>

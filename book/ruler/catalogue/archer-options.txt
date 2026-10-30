@@ -1,0 +1,28 @@
+# The Archer's options (pack OT, options and Talents, 2026-10-30; PROPOSED: book/options-talents.md), for the price list: node book/ruler/econ.mjs
+# Every option of a level 1 to 3 Pick slot, written to sit next to the slot's default (catalogue/archer-a1.txt). The Crossbow's Weapon Attack is a Shot.
+class Archer (options)
+level 1
+attributes body 1, mind 1, instinct 2
+weapon-mod 2
+power-mod 2
+weapon Crossbow (ranged, projectile, reload, two-handed): 0 / 1d4+2 / 1d10+2
+
+action Weapon Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod]
+
+# Encounter slot (default Marksman's Shot: 2 AP, 16.0)
+action Volley | ap 2 | encounter | traits area ranged save shot weapon | vs save instinct | tiers [B] 2d8 + [Mod] / [B] 1d10 + [Mod] / [B] 1d4 | area 2 | on 1: debuff Hindered (EoT)
+action Covering Fire | ap 2 | encounter | traits area ranged shot weapon | rounds 3 | area 2 | allies 2 | banes 1 strike; defense 1 allies
+
+# Daily slot (default Hunter's Focus: 1 AP, 13.0)
+action Deadeye | ap 1 | daily | traits ranged shot strike weapon | favored | vs ad | tiers [B] 1[W] / [B] 1[W] + [Mod] + 1d6 / [B] 1[W] + [Mod] + 2d6 | on 3: debuff Prone
+action Rain of Arrows | ap 2 | daily | traits area ranged save shot weapon | vs save instinct | tiers [B] 2d8 + [Mod] / [B] 2d6 + [Mod] / [B] 1d6 | area 2.5 | on 1: debuff Prone
+
+# Active Escalation slot (default Pinning Shot: Escalation 2, 1 AP)
+action Twin Shot | ap 1 | round | escalation 3 | traits ranged shot strike weapon | does Weapon Attack | each extra 1d6 | area 2
+action Vanish | ap 0 | round | escalation 1 | traits self | evade 2; defense 1 self
+
+turn Typical: Double Shot 2, Weapon Attack, Weapon Attack
+action Double Shot 2 | ap 2 | round | traits shot strike | does Weapon Attack x2 | different
+
+# Passive Escalation slot (defaults Killer's Focus, Elusive): Harrying Shots is priced by hand (1 Bane on the quarry's Strikes: book/options-talents.md)
+passive Killer's Focus: escalation 2: extra 1d6 first shot strike weapon

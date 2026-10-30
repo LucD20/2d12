@@ -180,6 +180,16 @@ condition is put on (rounds 1, 2 and 3 averaged). **Value = damage dealt more + 
   confirmed); econ.mjs now uses these for Hunter's Focus (0.16, was 0.3) and Champion's Challenge (0.66, was 0.75). Perfect Shot was priced at 0 (its "favored next..."
   was read as the Action's own Favored): fixed, 16% of a turn.
 
+## Options and Talents (pack OT, 2026-10-30): IN THE BOOK
+
+`catalogue/paladin-options.txt`, `catalogue/archer-options.txt` (every option of a Pick slot, next to its default), `catalogue/talents.txt`
+(melee Talents on the P1 Paladin's numbers) and `catalogue/talents-ranged.txt` (ranged, on the A1 Archer's); the builds
+`classes/paladin-smite-1-options.txt` and `classes/archer-double-3-options.txt` take options in the simulated days (prices.md section 3). The
+cards, the prices and the decision sheet: `book/options-talents.md`. Escalation Actives are compared per turn (a use × the uses a fight ÷ the rounds).
+**Fixed the same day:** since pack C1 the scripts crashed on Foundry's new config (the Bestiary by Stage, CV ×100): `econ.mjs` uses the flat
+model A baseline, `spec.mjs` reads `npcDamage(role, rating, level)` and `roleCv()` (CV ÷ 100). prices.md and report.md now use the E3 Bestiary
+(a Standard: 63 Health, 10.7 damage a turn against AD 13), so their P1 and A1 rows moved by 0 to 4 points.
+
 ## The Archer main build (pack A1, 2026-10-29): PROPOSED
 
 `classes/archer-double-1..3.txt` and `archer-rolling-1..3.txt` are the A1 main build with each Signature (`archer-1..3.txt` stay as today's

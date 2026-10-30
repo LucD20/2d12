@@ -270,7 +270,7 @@ export function npcOf(role, rating = "medium", level = 1, opts = {}) {
   const hm = CF.npcHm(role, rating, level), hp = a => Math.max(0, Math.ceil((a + 2) * hm + r.hb - 1e-9));
   const mod = Math.ceil(body / 2 + 1);
   return { role, rating, name: r.label, pool: hp(body) + hp(mind), ad: Math.max(TW.defenseBase, r.defense), wd: Math.max(TW.defenseBase, r.defense), mod,
-    save: { body, mind, instinct: attr("medium"), appeal: attr("medium") }, t2: CF.npcDamage(r.basic[0], rating, level), t3: CF.npcDamage(r.basic[1], rating, level),
+    save: { body, mind, instinct: attr("medium"), appeal: attr("medium") }, t2: CF.npcDamage(role in TW.npcRoles ? role : "standard", rating, level)[0], t3: CF.npcDamage(role in TW.npcRoles ? role : "standard", rating, level)[1],
     strikes: { minion: 1, grunt: 2, standard: 2, elite: 3 }[role] ?? 2,
     apMax: role === "minion" ? 3 : 5, speed: opts.speed ?? 5, ranged: !!opts.ranged };   // the map model: AP a turn (the Bestiary), Speed 5, a ranged Basic attack
 }
@@ -785,18 +785,20 @@ export function between(pcs) {
  * (more than CV 3/4 per PC); with Momentum a PC starts a fight with half its level in Escalation (rounded up), up to 2; a Rest resets it.
  * Returns { fights: [fight results], pcs, cleared }.
  */
+/** An NPC role's CV a PC (pack E3: the Bestiary writes CV ×100, by Stage gap; the same Stage here). */
+export const roleCv = role => { const c = TW.npcRoles[role]?.cv; return Array.isArray(c) ? c[0] / 100 : (c ?? 1); };
 export const MOMENTUM = { on: true, minCvPerPc: 0.75, startEsc: lv => Math.min(2, Math.ceil(lv / 2)) };
 export function day(party, encounters, R, { momentum = MOMENTUM.on, map = MP.MAP } = {}) {
   const pcs = party.map(pcState), out = [];
   let mom = 0;
-  const cvOf = e => e.reduce((s, n) => s + (n.cv ?? TW.npcRoles[n.role]?.cv ?? 1), 0) / pcs.length;
+  const cvOf = e => e.reduce((s, n) => s + (n.cv ?? roleCv(n.role)), 0) / pcs.length;
   for (const [i, e] of encounters.entries()) {
     if (!pcs.some(p => p.damage < p.build.pool)) break;
     for (const p of pcs) { p.startEsc = momentum && mom > 0 ? MOMENTUM.startEsc(p.build.level) : 0; p.dailyOK = cvOf(e) >= 1.25 || i === encounters.length - 1; }   // a Daily is kept for a hard fight (or the last one)
     out.push(fight(pcs, e, R, { map }));
     out.at(-1).momentum = mom; out.at(-1).startEsc = pcs[0].startEsc;
     if (!out.at(-1).won) break;
-    if (e.reduce((s, n) => s + (n.cv ?? TW.npcRoles[n.role]?.cv ?? 1), 0) / pcs.length > MOMENTUM.minCvPerPc) mom++;
+    if (e.reduce((s, n) => s + (n.cv ?? roleCv(n.role)), 0) / pcs.length > MOMENTUM.minCvPerPc) mom++;
     between(pcs);
   }
   return { fights: out, pcs, cleared: out.length === encounters.length && out.every(f => f.won) };
@@ -852,7 +854,7 @@ export function report({ builds, fights }) {
     const R = rng(29), npcs = e.npcs.map(n => npcOf(n.role, n.rating, lv, n)), res = [];
     for (let k = 0; k < fights.runs; k++) res.push(fight(party, npcs, R));
     const rounds = res.map(r => r.rounds), sorted = [...rounds].sort((x, y) => x - y), firsts = res.filter(r => r.firstDown).map(r => r.firstDown);
-    const cv = e.npcs.reduce((s, n) => s + (TW.npcRoles[n.role]?.cv ?? 1), 0);
+    const cv = e.npcs.reduce((s, n) => s + (roleCv(n.role)), 0);
     const R0 = rng(29), flat = []; for (let k = 0; k < fights.runs; k++) flat.push(fight(party, npcs, R0, { map: { ...MP.MAP, on: false } }));
     L.push(`| ${e.name} | ${cv} | ${median(rounds)} / ${fmt(mean(rounds))} / ${sorted[Math.floor(sorted.length * 0.9)]} | ${pct(mean(res.map(r => (r.won ? 1 : 0))))} | ${pct(mean(res.map(r => r.lost)))} | ${pct(mean(res.map(r => (r.downs ? 1 : 0))))} | ${firsts.length ? median(firsts) : "-"} | ${party.map((b, i) => pct(mean(res.map(r => (r.downBy[i] ? 1 : 0))))).join(" | ")} | ${fmt(mean(flat.map(r => r.rounds)))} / ${pct(mean(flat.map(r => r.lost)))} |`);
   }
@@ -864,7 +866,7 @@ export function report({ builds, fights }) {
       "The fights of a day in order, with no Rest: damage and Rally Points carry over, Encounter Actions and Escalation start again each fight. Between fights every PC uses Rally Points (Steel Yourself, no AP limit out of combat) while its damage is at least 3/4 of what one heals; a PC that is Down gets back up with one Rally Point through an ally's Lay On Hands (or one Rally Point's worth after an hour Unconscious). In a fight a PC uses Steel Yourself when its `when self below` turn says so. A lost fight ends the day.", "",
       "Credits: **Defense given**, **Vulnerable given** and **Banes given** are the average damage they changed (the same roll made with and without the bonus); **reduced** is what Hallowed Stance took off; **Divine Surge given** is the extra damage allies dealt (not counted in anyone's own damage); **healed allies** is the Health its Lay On Hands gave back (from the allies' own Rally Points); **new Health** is healing that uses no Rally Point; **Font of Mercy** is the extra Health on every Rally Point used in the party. A Daily Action is kept for a hard fight (CV 1.25 or more per PC) or the last fight of the day. **Nova turns** are the turns with an Encounter or Daily Action. Debuffs with no number in the fight (Prone, Hindered, Immobilized) are counted.", "");
     for (const d of fights.days) {
-      const cv = d.fights.map(f => f.reduce((s, n) => s + (TW.npcRoles[n.role]?.cv ?? 1), 0));
+      const cv = d.fights.map(f => f.reduce((s, n) => s + (roleCv(n.role)), 0));
       L.push(`### ${d.name}`, "", d.text.map((t, i) => `Fight ${i + 1}: ${t} (CV ${cv[i]})`).join(" · "), "");
       for (const dp of fights.dayParties) {
         const party = dp.files.map(byFile), R = rng(41), days = [], encs = d.fights.map(f => f.map(n => npcOf(n.role, n.rating, party[0].level, n)));   // the NPCs of the party's level

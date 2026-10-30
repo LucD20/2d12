@@ -40,7 +40,7 @@ const npcStrikeAvg = (npc, ad, banes) => { const p = C.tierProbs(npc.mod, ad, 0,
 const npcTurnAvg = (npc, ad, extraBanes = 0) => { let s = 0; for (let k = 0; k < npc.strikes; k++) s += npcStrikeAvg(npc, ad, k + extraBanes); return s; };
 const refPool = (text, lv) => S.parseSpec(`class ref\nlevel ${lv}\n${text}`, "baseline").pool;
 export function rates(lv) {
-  const B = TW.pcDamageVsDefense[13] * (TW.npcMeasured.h[lv] ?? 1), npc = S.npcOf("standard", "medium", lv);
+  const B = TW.pcDamageVsDefense[13] * (1 + A.growth * (lv - 1)), npc = S.npcOf("standard", "medium", lv);
   const avgPool = A.baseHealthSpecs.reduce((s2, t) => s2 + refPool(t, lv), 0) / A.baseHealthSpecs.length;
   return {
     lv, B, perAP: B / 5, npc, avgPool, rallyHeal: Math.ceil(avgPool / 4),
@@ -191,6 +191,10 @@ const roleOf = b => A.roles[b.name.split(" (")[0]];
 const CATALOGUE_NOTES = {
   "catalogue/paladin-p1.txt": "**The P1 main build (pack P1, 2026-10-29; in the book since 2026-10-29)**: the defaults of every level 1 to 3 Pick, then the options in the Paladin document (Shield of Faith, Bulwark of Faith, Aura of Protection, Font of Mercy).",
   "catalogue/paladin.txt": "**The Paladin before P1** (the book until 2026-10-29), kept to compare.",
+  "catalogue/paladin-options.txt": "**The Paladin's options (pack OT, 2026-10-30; in the book: book/options-talents.md)**: every option of a level 1 to 3 Pick slot, to compare with its default above.",
+  "catalogue/archer-options.txt": "**The Archer's options (pack OT, 2026-10-30; in the book: book/options-talents.md)**: every option of a level 1 to 3 Pick slot, to compare with its default (A1).",
+  "catalogue/talents.txt": "**The Talents, melee (pack OT, 2026-10-30; in the book: book/options-talents.md)**: priced on the P1 Paladin's numbers.",
+  "catalogue/talents-ranged.txt": "**The Talents, ranged (pack OT, 2026-10-30; in the book: book/options-talents.md)**: priced on the A1 Archer's numbers.",
   "catalogue/archer-a1.txt": "**The A1 main build (pack A1, 2026-10-29; PROPOSED: book/archer-a1.md)**: both Signatures and the defaults of every level 1 to 3 Pick.",
 };
 export function report() {
@@ -205,7 +209,7 @@ export function report() {
   // 1. The exchange rate.
   L.push("## 1. The exchange rate", "", "| | Level 1 | Level 2 | Level 3 | Where it comes from |", "|---|---:|---:|---:|---|");
   const row = (n, fn, src) => L.push(`| ${n} | ${R.map(r => f2(fn(r))).join(" | ")} | ${src} |`);
-  row("A baseline PC's damage a turn (Defense 13)", r => r.B, "the Bestiary's PC baseline (config pcDamageVsDefense, x the level's measured growth)");
+  row("A baseline PC's damage a turn (Defense 13)", r => r.B, "the Bestiary's PC baseline (config pcDamageVsDefense, flat inside Stage 1: model A, pack LV)");
   row("**1 AP** (the baseline turn / 5)", r => r.perAP, "the price of one Action Point");
   row("A Paladin Weapon Attack (Greatsword)", r => dmgOf(pal, pal.actions["weapon attack"], r), "exact");
   row("An Archer Weapon Attack (Crossbow)", r => dmgOf(arc, arc.actions["weapon attack"], r), "exact");
