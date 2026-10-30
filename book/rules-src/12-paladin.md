@@ -116,29 +116,6 @@ Choose one of the following Hallmark Actions:
 
 ## Paladin Repertoire
 
-### Turn
-
-<div class="action" markdown="1">
-<div class="action-head"><span>Shield of Faith</span><span>1R</span><span class="cat">Paladin Feature 1</span></div>
-
-**Flavor:** A shimmer of light holds steady between them and harm.
-
-*Divine • Focus*
-
-**Frequency:** Turn
-
-**Target:** The creature the Strike would damage (you or an ally)
-
-**Distance:** 5 sq.
-
-**Interrupt:** A [Strike] Action would damage you or an ally within 5 squares.
-
-| 1R |
-|---|
-| The damage that Strike deals to the target is reduced by 1d6 + your Power Modifier. |
-
-</div>
-
 ### Encounter
 
 <div class="action" markdown="1">
@@ -161,6 +138,31 @@ Choose one of the following Hallmark Actions:
 | **Tier 1** | [B] 1[W] + [M] 2d6 Ho | [B] 1[W] + [M] 3d8 Ho |
 | **Tier 2** | [B] 1[W] + [Mod] + [M] 3d8 Ho | [B] 1[W] + [Mod] + [M] 5d8 Ho |
 | **Tier 3** | [B] 1[W] + [Mod] + [M] 4d8 Ho | [B] 1[W] + [Mod] + [M] 7d8 Ho |
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Word of Radiance</span><span>2 / 3 AP</span><span class="cat">Paladin Feature 1</span></div>
+
+**Flavor:** You speak a word, and light pours from your hands across everything that stands against you.
+
+*Area • Divine • Power*
+
+**Frequency:** Encounter
+
+**Target:** All enemies in the Area
+
+**Area:** 2 / 3 Emanation
+
+**Distance:** 5 sq.
+
+**Vs:** WD
+
+| | 2 AP | 3 AP |
+|---|---|---|
+| **Tier 1** | [M] 1d10 Ho | [M] 2d6 Ho |
+| **Tier 2** | [M] 2d8 Ho | [M] 2d10 Ho |
+| **Tier 3** | [M] 3d6 Ho; Prone | [M] 3d8 Ho; Prone |
 
 </div>
 
@@ -208,6 +210,46 @@ Choose one of the following Hallmark Actions:
 
 </div>
 
+<div class="action" markdown="1">
+<div class="action-head"><span>Miraculous Recovery</span><span>2 / 3 AP</span><span class="cat">Paladin Feature 1</span></div>
+
+**Flavor:** You lay both hands on the wound and call in a debt owed to your god.
+
+*Divine • Focus*
+
+**Frequency:** Daily
+
+**Target:** One [[Willing and Unwilling|willing]] creature
+
+**Distance:** Reach
+
+| 2 AP | 3 AP |
+|---|---|
+| The target heals twice what 1 Rally Point would heal, and you end one non-permanent effect of your choice on them. | As 2 AP, but three times what 1 Rally Point would heal. |
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Divine Intervention</span><span>2R</span><span class="cat">Paladin Feature 1</span></div>
+
+**Flavor:** You reach out, and your god answers before you finish the prayer.
+
+*Divine*
+
+**Frequency:** Daily
+
+**Target:** One creature
+
+**Distance:** 5 sq.
+
+**Interrupt:** You or an ally within 5 squares would go Down.
+
+| 2R |
+|---|
+| Instead of going Down, the creature's total damage becomes 1 less than their Health Pool. |
+
+</div>
+
 ## Paladin Escalation
 
 ### Passives
@@ -227,6 +269,15 @@ While your Escalation is 2 or more, if you haven't left your square since your l
 **Flavor:** The longer the fight, the brighter you burn.
 
 While your Escalation is 1 or more, the first [Strike] Action you make each round that deals damage deals an extra [M] 1d6 Ho.
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Mending Light</span><span class="cat">Paladin Escalation (Passive)</span></div>
+
+**Flavor:** Light gathers where you stand, and the hurt are drawn to it.
+
+While your Escalation is 1 or more, at the start of each of your turns, you or one ally within 5 squares of you heals your Power Modifier + 1.
 
 </div>
 
@@ -271,5 +322,49 @@ While your Escalation is 1 or more, the first [Strike] Action you make each roun
 | 0 AP |
 |---|
 | For 1 round, the next time an ally deals damage to the target, they deal an extra [M] 1d8 Ho. You gain [[Guard]] 2d6. |
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Shield of Faith</span><span>0R</span><span class="cat">Paladin Escalation</span></div>
+
+**Flavor:** A shimmer of light holds steady between them and harm.
+
+*Divine • Focus*
+
+**Escalation:** 1
+
+**Frequency:** Turn
+
+**Target:** The creature the Strike would damage (you or an ally)
+
+**Distance:** 5 sq.
+
+**Interrupt:** A [Strike] Action would damage you or an ally within 5 squares.
+
+| 0R |
+|---|
+| The damage that Strike deals to the target is reduced by 1d8 + your Power Modifier. |
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Hand of Mercy</span><span>1 AP</span><span class="cat">Paladin Escalation</span></div>
+
+**Flavor:** A single touch undoes what the enemy worked for.
+
+*Divine • Focus*
+
+**Escalation:** 1
+
+**Frequency:** Round
+
+**Target:** One ally
+
+**Distance:** 5 sq.
+
+| 1 AP |
+|---|
+| Choose one: the ally ends one effect on them that is EoT or has 1 round left; or, if the ally is Down, they can use 1 Rally Point. |
 
 </div>

@@ -139,7 +139,7 @@ When an effect applies only to some tiers, it says so with the tiers in parenthe
 
 ### Buffs
 
-A **Buff** is an effect that modifies another Action, such as Rimebrand's bonus to your next Strike.
+A **Buff** is an effect that modifies another Action, such as Rimebrand's extra damage on your Weapon Actions.
 
 - A Buff that gives a single value ("+[M] 1d6 Co") applies on every Tier, Tier 1 included.
 - A Buff that gives a value per Tier ("+[M] 1d4/1d6/1d8 Co") applies its Tier 1 value on a Tier 1, its Tier 2 value on a Tier 2 and its Tier 3 value on a Tier 3.

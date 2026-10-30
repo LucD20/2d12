@@ -1,16 +1,26 @@
 <!-- doc: talents -->
 # Talents
 
-Talents are features that you get as you level up. Use them to customize your character the more powerful they get. Talents have prerequisites and a level, which determine whether you qualify to choose one.
+Talents are features that you get as you level up. Use them to customize your character the more powerful they get. You pick a Talent at levels 1 and 2 (your class's level list says when).
 
-Talents can be Actions. For example, Aim is an Action, while Battering Charge is just a Talent.
+Every Talent has a **category**, a **level** and sometimes **Prerequisites**. The card's head shows the category and the level: *Combat Talent 1* is a Combat Talent you can take from level 1.
+
+- **Categories:** **Combat** (fighting with weapons and bare hands), **Mobility** (moving), **Magic** (gifts and spells) and **Skill** (skills; they come with the Skills rules).
+- **Level:** you can take the Talent once your level is at least this.
+- **Prerequisites:** what you need before you take it. Each one is a Talent ("Brawler"), a level ("Level 5"), an Action with a trait you have ("a [Divine] Action") or an Attribute ("Body 2"). Some Talents form a chain: Brawler, then Kickboxer.
+
+Talents can be Actions. For example, Aim is an Action, while Battering Charge is just a Talent. Effects of the same kind don't stack (see [[Stacking]]): two Talents that make you Empowered give one Empowered.
 
 ## Talents That Modify Actions
 
 Some Talents change other Actions instead of (or as well as) giving you a new one. The Talent says which Actions it changes and when, and what it adds: for example a Critical, an effect, or a Boon. Opportunity Attack gives your Weapon Technique Actions a Critical when you use them out of your turn.
 
+## Combat Talents
+
+These Talents are for characters who fight with a weapon or with their bare hands. Any character can choose them if they meet the Prerequisites.
+
 <div class="action" markdown="1">
-<div class="action-head"><span>Opportunity Attack</span><span>1R</span><span class="cat">Talent 1</span></div>
+<div class="action-head"><span>Opportunity Attack</span><span>1R</span><span class="cat">Combat Talent 1</span></div>
 
 **Flavor:** You punish anyone who moves carelessly near you.
 
@@ -24,120 +34,51 @@ You can make a Weapon Attack (1A) against the triggering creature, as long as yo
 
 </div>
 
-## Divine Talents
-
 <div class="action" markdown="1">
-<div class="action-head"><span>Lesser Blessing</span><span class="cat">Talent 1</span></div>
+<div class="action-head"><span>Challenge</span><span class="cat">Combat Talent 1</span></div>
 
-**Flavor:** A small gift from the god you follow.
+**Flavor:** You call them out, and they cannot look away.
 
-*Divine • Power*
-
-Pick one blessing from the list below, related to a god you follow. You gain its Action. (More blessings will be added.)
+Once per round, when you deal damage to a creature with a [Melee, Strike] Action, you can challenge them: until the end of their next turn, their [Strike] Actions against creatures other than you take 1 Bane.
 
 </div>
 
 <div class="action" markdown="1">
-<div class="action-head"><span>Rimebrand (Cold)</span><span>1 AP</span><span class="cat">Lesser Blessing</span></div>
-
-**Flavor:** Frost creeps along your weapon, a gift from a winter god.
-
-*Divine • Power • Self*
-
-**Frequency:** Round
-
-**Vs:** DC 13
-
-| | 1 AP |
-|---|---|
-| **Tier 1** | No effect. |
-| **Tier 2** | For 1 round, your next Strike deals +[M] 1d6 Co. |
-| **Tier 3** | For 1 round, your next Strike deals +[M] 1d8 Co and causes Hindered (EoT). |
-
-</div>
-
-## Ranged Talents
-
-<div class="action" markdown="1">
-<div class="action-head"><span>Aim</span><span>1 AP</span><span class="cat">Talent 1</span></div>
-
-**Flavor:** Patience turns a good shot into a sure one.
-
-*Focus • Self*
-
-**Frequency:** At-will
-
-| 1 AP |
-|---|
-| If your next Action is a [Ranged, Strike, Weapon], you gain a Boon. |
-
-</div>
-
-<div class="action" markdown="1">
-<div class="action-head"><span>Ricochet</span><span>1 AP</span><span class="cat">Talent 1</span></div>
-
-**Flavor:** Walls, shields and stones are just more angles.
-
-*Focus • Self*
-
-**Frequency:** At-will
-
-| 1 AP |
-|---|
-| If your next Action is a [Ranged, Strike, Weapon], you can shoot at a creature by shooting at a surface first. The projectile then goes from the surface to the creature, and you calculate Line of Effect, Cover and Sight from the center of the surface. You calculate the total distance the projectile travels: if you shoot at a surface 5 squares from you and the target is within 6 squares of the surface, that is an 11-square shot. You must still perceive the creature to target them. |
-
-</div>
-
-## Martial Talents
-
-These Talents are for characters who fight with a weapon or with their bare hands. Any character can choose them if they meet the prerequisites.
-
-<div class="action" markdown="1">
-<div class="action-head"><span>Cut Through</span><span>2 AP</span><span class="cat">Talent 1</span></div>
-
-**Flavor:** You drive through the line without stopping, and strike as you pass.
-
-*Melee • Strike • Weapon*
-
-**Frequency:** Round
-
-**Target:** One creature
-
-**Distance:** Weapon
-
-**Vs:** AD
-
-**Setup:** Evade 2. During this Evade you can move through the space of any creature (you can't end in one), and you ignore Difficult Terrain.
-
-| | 2 AP |
-|---|---|
-| **Tier 1** | [B] [Mod] |
-| **Tier 2** | [B] 1[W] + [Mod] |
-| **Tier 3** | [B] 1[W] + [Mod] + 2 |
-| **Critical** | Relocate (1A) the target, ignoring the Handle trait. |
-
-</div>
-
-<div class="action" markdown="1">
-<div class="action-head"><span>Battering Charge</span><span class="cat">Talent 1</span></div>
-
-**Flavor:** Nothing slows you down once you start running.
-
-When you use Charge, your Speed counts as 2 higher for its movement, and its Weapon Attack (1A) is [[Empowered]] 1.
-
-</div>
-
-<div class="action" markdown="1">
-<div class="action-head"><span>Heavy Blows</span><span class="cat">Talent 1</span></div>
+<div class="action-head"><span>Heavy Blows</span><span class="cat">Combat Talent 1</span></div>
 
 **Flavor:** Every swing carries the whole weight of the steel.
 
-When a [Melee, Strike, Weapon] Action you make with a Two-handed weapon deals damage, it deals 1 more.
+When a [Melee, Strike, Weapon] Action you make with a Two-handed weapon deals damage on a Tier 3, it deals 2 more.
 
 </div>
 
 <div class="action" markdown="1">
-<div class="action-head"><span>Bloodlust</span><span>1 AP</span><span class="cat">Talent 1</span></div>
+<div class="action-head"><span>Whirlwind</span><span>2 AP</span><span class="cat">Combat Talent 1</span></div>
+
+**Flavor:** You spin, and everything within reach feels the blade.
+
+*Area • Melee • Self • Strike • Weapon*
+
+**Prerequisites:** Heavy Blows.
+
+**Frequency:** Encounter
+
+**Target:** All creatures in the Area
+
+**Area:** 1 Emanation
+
+**Vs:** AD
+
+| | 2 AP |
+|---|---|
+| **Tier 1** | [B] 1[W] + [Mod] |
+| **Tier 2** | [B] 1[W] + [Mod] + 4 |
+| **Tier 3** | [B] 1[W] + [Mod] + 6 |
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Bloodlust</span><span>1 AP</span><span class="cat">Combat Talent 1</span></div>
 
 **Flavor:** The red haze settles, and you stop caring about pain.
 
@@ -147,12 +88,12 @@ When a [Melee, Strike, Weapon] Action you make with a Two-handed weapon deals da
 
 | 1 AP |
 |---|
-| For 1 round, your [Melee, Weapon] Actions are [[Empowered]] 1 and gain 1 Boon, and you take 1 Bane on Saves. |
+| For 1 round, your [Melee, Weapon] Actions are [[Empowered]] 1 and gain 2 Boons, and you take 1 Bane on Saves. |
 
 </div>
 
 <div class="action" markdown="1">
-<div class="action-head"><span>Brawler</span><span class="cat">Talent 1</span></div>
+<div class="action-head"><span>Brawler</span><span class="cat">Combat Talent 1</span></div>
 
 **Flavor:** Your hands have won more fights than any blade.
 
@@ -186,20 +127,20 @@ You gain the Pummel Action. Your [[Fists]] don't have the [[Non-threatening]] pr
 </div>
 
 <div class="action" markdown="1">
-<div class="action-head"><span>Kickboxer</span><span class="cat">Talent 1</span></div>
+<div class="action-head"><span>Kickboxer</span><span class="cat">Combat Talent 1</span></div>
 
 **Flavor:** Your legs hit as hard as your fists.
 
 **Prerequisites:** Brawler.
 
-Pummel gains a Weapon Technique: Leg Sweep.
+You gain the Leg Sweep Action: a kick, so it needs no free hand. You can use it with your hands full.
 
 </div>
 
 <div class="action" markdown="1">
-<div class="action-head"><span>Leg Sweep</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
+<div class="action-head"><span>Leg Sweep</span><span>1 AP</span><span class="cat">Kickboxer</span></div>
 
-**Flavor:** A low kick takes their legs out from under them, and you follow it up.
+**Flavor:** A low kick takes their legs out from under them.
 
 *Melee • Strike • Weapon*
 
@@ -211,35 +152,159 @@ Pummel gains a Weapon Technique: Leg Sweep.
 
 **Vs:** AD
 
-**Requirements:** You have a free hand.
+This Action uses your [[Fists]] even when you have no free hand.
 
 | | 1 AP |
 |---|---|
 | **Tier 1** | [B] 1d4 Bl |
-| **Tier 2** | [B] 1d6 + [Mod] Bl; Pummel (1A) |
-| **Tier 3** | [B] 2d4 + [Mod] Bl; Pummel (1A) |
+| **Tier 2** | [B] 1d4 + [Mod] Bl |
+| **Tier 3** | [B] 1d6 + [Mod] Bl; Prone. |
 
 </div>
 
 <div class="action" markdown="1">
-<div class="action-head"><span>Whirlwind</span><span>2 AP</span><span class="cat">Talent 1</span></div>
+<div class="action-head"><span>Aim</span><span>1 AP</span><span class="cat">Combat Talent 1</span></div>
 
-**Flavor:** You spin, and everything within reach feels the blade.
+**Flavor:** Patience turns a good shot into a sure one.
 
-*Area • Melee • Self • Strike • Weapon*
+*Ranged • Strike • Weapon*
 
-**Frequency:** Encounter
+**Frequency:** Round
 
-**Target:** All creatures in the Area
+**Target:** One creature
 
-**Area:** 1 Emanation
+**Distance:** Weapon
+
+| 1 AP |
+|---|
+| Make a [Ranged] Weapon Attack (1A) with 1 Boon. It ignores Low Cover. |
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Ricochet</span><span class="cat">Combat Talent 1</span></div>
+
+**Flavor:** Walls, shields and stones are just more angles.
+
+**Prerequisites:** Aim.
+
+Your [Ranged, Weapon] Actions can bounce off one surface on the way. The projectile goes from the surface to the creature, and you calculate Line of Effect, Cover and Sight from the center of the surface. The distance is the total the projectile travels: if you shoot at a surface 5 squares from you and the target is within 6 squares of the surface, that is an 11-square shot. You must still perceive the creature to target them. A bounced shot takes 1 Bane.
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Long Draw</span><span class="cat">Combat Talent 1</span></div>
+
+**Flavor:** You pull a little further, and the arrow flies a little truer.
+
+With a [[Projectile]] weapon, your far range has no Bane and your maximum range has 1 Bane instead of 2.
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Steady Nerves</span><span class="cat">Combat Talent 1</span></div>
+
+**Flavor:** They are in your face. You are still calm.
+
+Your [Ranged] Actions don't take the Banes for being Engaged.
+
+</div>
+
+## Mobility Talents
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Battering Charge</span><span class="cat">Mobility Talent 1</span></div>
+
+**Flavor:** Nothing slows you down once you start running.
+
+When you use Charge, your Speed counts as 2 higher for its movement, and its Weapon Attack (1A) is [[Empowered]] 1.
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Cut Through</span><span>2 AP</span><span class="cat">Mobility Talent 1</span></div>
+
+**Flavor:** You drive through the line without stopping, and strike as you pass.
+
+*Melee • Strike • Weapon*
+
+**Frequency:** Round
+
+**Target:** One creature
+
+**Distance:** Weapon
 
 **Vs:** AD
+
+**Setup:** Evade 2. During this Evade you can move through the space of any creature (you can't end in one), and you ignore Difficult Terrain.
 
 | | 2 AP |
 |---|---|
 | **Tier 1** | [B] [Mod] |
-| **Tier 2** | [B] 1[W] + [Mod] + 1 |
-| **Tier 3** | [B] 1[W] + [Mod] + 3 |
+| **Tier 2** | [B] 1[W] + [Mod] |
+| **Tier 3** | [B] 1[W] + [Mod] + 2 |
+| **Critical** | Relocate (1A) the target, ignoring the Handle trait. |
+
+</div>
+
+## Magic Talents
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Lesser Blessing</span><span class="cat">Magic Talent 1</span></div>
+
+**Flavor:** A small gift from the god you follow.
+
+*Divine • Power*
+
+Pick one blessing from the list below, related to a god you follow. You gain its Action. (More blessings will be added.)
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Rimebrand (Cold)</span><span>1 AP</span><span class="cat">Lesser Blessing</span></div>
+
+**Flavor:** Frost creeps along your weapon, a gift from a winter god.
+
+*Divine • Power • Self*
+
+**Frequency:** Round
+
+| 1 AP |
+|---|
+| Until the end of your turn, your [Weapon] Actions deal an extra [M] 1d4 Co, and the first one that deals damage on a Tier 3 makes the target Hindered (EoT). |
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Sacred Weapon</span><span>1 / 2 AP</span><span class="cat">Magic Talent 1</span></div>
+
+**Flavor:** You lay a hand on the steel and bless it for what comes next.
+
+*Divine • Focus*
+
+**Prerequisites:** Lesser Blessing, or a [Divine] Action.
+
+**Frequency:** Round
+
+**Target:** One / two creatures
+
+**Distance:** Reach
+
+| 1 AP | 2 AP |
+|---|---|
+| You touch a creature (yourself or an ally). If they are not Empowered, they become Empowered 1 for 1 round. If they are Empowered 1 (from any source), they become Empowered 2 for 1 round. If they are Empowered 2 or higher, no effect. | As 1 AP, but you can touch up to two creatures. |
+
+</div>
+
+## Class Talents
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Class Expertise</span><span class="cat">Combat Talent 5</span></div>
+
+**Flavor:** You have studied your craft longer than most.
+
+**Prerequisites:** Level 5.
+
+Choose one Encounter or Daily Action from your class's Repertoire that you don't have. You gain it.
 
 </div>

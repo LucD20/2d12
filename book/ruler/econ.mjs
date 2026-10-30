@@ -191,10 +191,10 @@ const roleOf = b => A.roles[b.name.split(" (")[0]];
 const CATALOGUE_NOTES = {
   "catalogue/paladin-p1.txt": "**The P1 main build (pack P1, 2026-10-29; in the book since 2026-10-29)**: the defaults of every level 1 to 3 Pick, then the options in the Paladin document (Shield of Faith, Bulwark of Faith, Aura of Protection, Font of Mercy).",
   "catalogue/paladin.txt": "**The Paladin before P1** (the book until 2026-10-29), kept to compare.",
-  "catalogue/paladin-options.txt": "**The Paladin's options (pack OT, 2026-10-30; PROPOSED: book/options-talents.md)**: every option of a level 1 to 3 Pick slot, to compare with its default above.",
-  "catalogue/archer-options.txt": "**The Archer's options (pack OT, 2026-10-30; PROPOSED: book/options-talents.md)**: every option of a level 1 to 3 Pick slot, to compare with its default (A1).",
-  "catalogue/talents.txt": "**The Talents, melee (pack OT, 2026-10-30; PROPOSED: book/options-talents.md)**: priced on the P1 Paladin's numbers.",
-  "catalogue/talents-ranged.txt": "**The Talents, ranged (pack OT, 2026-10-30; PROPOSED: book/options-talents.md)**: priced on the A1 Archer's numbers.",
+  "catalogue/paladin-options.txt": "**The Paladin's options (pack OT, 2026-10-30; in the book: book/options-talents.md)**: every option of a level 1 to 3 Pick slot, to compare with its default above.",
+  "catalogue/archer-options.txt": "**The Archer's options (pack OT, 2026-10-30; in the book: book/options-talents.md)**: every option of a level 1 to 3 Pick slot, to compare with its default (A1).",
+  "catalogue/talents.txt": "**The Talents, melee (pack OT, 2026-10-30; in the book: book/options-talents.md)**: priced on the P1 Paladin's numbers.",
+  "catalogue/talents-ranged.txt": "**The Talents, ranged (pack OT, 2026-10-30; in the book: book/options-talents.md)**: priced on the A1 Archer's numbers.",
   "catalogue/archer-a1.txt": "**The A1 main build (pack A1, 2026-10-29; PROPOSED: book/archer-a1.md)**: both Signatures and the defaults of every level 1 to 3 Pick.",
 };
 export function report() {

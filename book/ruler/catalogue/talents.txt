@@ -1,4 +1,4 @@
-# The Talents (pack OT, 2026-10-30; PROPOSED: book/options-talents.md), for the price list: node book/ruler/econ.mjs
+# The Talents (pack OT, 2026-10-30; in the book: book/options-talents.md), for the price list: node book/ruler/econ.mjs
 # A Talent is priced on the class that would take it: the melee ones on the P1 Paladin's numbers (a Greatsword), the ranged ones in catalogue/talents-ranged.txt.
 class Talents (melee, on the Paladin)
 level 1

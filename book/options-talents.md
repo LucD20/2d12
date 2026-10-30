@@ -1,4 +1,9 @@
-# Options (sidegrades) and Talents (pack OT, 2026-10-30): PROPOSED
+# Options (sidegrades) and Talents (pack OT, 2026-10-30): APPROVED, in the book
+
+> **Applied 2026-10-30** (Lucas: "All defaults") to book/rules-src: 12-paladin.md, 13-archer.md, 16-talents.md (and Chapter 2's Buff
+> example, which named Rimebrand). **One change from this file (Lucas):** **Leg Sweep needs no free hand**: it is the attack you make when
+> your hands are full (a kick that uses your Fists anyway); Kickboxer gives it as its own Action, not as a technique of Pummel. Word of
+> Radiance stays as priced (question 2's default). This file keeps the prices, the reasons and the assumptions.
 
 Step 6 of the class charter (`book/class-charter.md`, section 7): **every other Pick as a sidegrade priced against the default; then the
 Talents (Class Expertise included), checked for overlap.** Nothing here is in `book/rules-src` yet: you answer the decision sheet (section 8),
@@ -315,10 +320,10 @@ When a [Melee, Strike, Weapon] Action you make with a Two-handed weapon deals da
 #### Bloodlust (Combat Talent 1) · changed
 1 AP, Encounter, Self: for 1 round, your [Melee, Weapon] Actions are Empowered 1 and gain **2 Boons**, and you take 1 Bane on Saves. Flavor unchanged.
 
-#### Leg Sweep (Weapon Technique, Kickboxer) · changed
+#### Leg Sweep (Kickboxer) · changed
 **Flavor:** A low kick takes their legs out from under them.
 
-1 AP, Round, [Melee, Strike, Weapon], Requirements: a free hand · **Tier 1** [B] 1d4 Bl · **Tier 2** [B] 1d4 + [Mod] Bl · **Tier 3** [B] 1d6 + [Mod] Bl; Prone.
+1 AP, Round, [Melee, Strike, Weapon], no free hand needed (Lucas: it uses your Fists even with your hands full) · **Tier 1** [B] 1d4 Bl · **Tier 2** [B] 1d4 + [Mod] Bl · **Tier 3** [B] 1d6 + [Mod] Bl; Prone.
 
 #### Aim (Combat Talent 1) · changed
 **Flavor:** Patience turns a good shot into a sure one.

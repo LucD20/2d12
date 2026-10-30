@@ -1,4 +1,4 @@
-# The ranged Talents (pack OT, 2026-10-30; PROPOSED: book/options-talents.md), priced on the A1 Archer's numbers (a Crossbow), for: node book/ruler/econ.mjs
+# The ranged Talents (pack OT, 2026-10-30; in the book: book/options-talents.md), priced on the A1 Archer's numbers (a Crossbow), for: node book/ruler/econ.mjs
 class Talents (ranged, on the Archer)
 level 1
 attributes body 1, mind 1, instinct 2

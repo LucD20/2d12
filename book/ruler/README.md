@@ -180,7 +180,7 @@ condition is put on (rounds 1, 2 and 3 averaged). **Value = damage dealt more + 
   confirmed); econ.mjs now uses these for Hunter's Focus (0.16, was 0.3) and Champion's Challenge (0.66, was 0.75). Perfect Shot was priced at 0 (its "favored next..."
   was read as the Action's own Favored): fixed, 16% of a turn.
 
-## Options and Talents (pack OT, 2026-10-30): PROPOSED
+## Options and Talents (pack OT, 2026-10-30): IN THE BOOK
 
 `catalogue/paladin-options.txt`, `catalogue/archer-options.txt` (every option of a Pick slot, next to its default), `catalogue/talents.txt`
 (melee Talents on the P1 Paladin's numbers) and `catalogue/talents-ranged.txt` (ranged, on the A1 Archer's); the builds
