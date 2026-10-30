@@ -282,6 +282,7 @@ function npcDamage(R, npc, tier) {
   const avg = tier === 2 ? npc.t2 : npc.t3, d = diceFor(avg - npc.mod);
   let t = npc.mod;
   if (d[1] <= 2 && d[0] === 1) t += d[1]; else for (let k = 0; k < d[0]; k++) t += die(R, d[1]);
+  if (npc.exact) t += avg - npc.mod - d[2];   // pack E3: the table's average exactly (the dice's mean moved by a flat amount), not the nearest dice
   return Math.max(0, t);
 }
 

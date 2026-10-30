@@ -34,7 +34,7 @@ One thing per line; `#` starts a comment. A class file (`classes/paladin-1.txt` 
 |---|---|---|
 | `class`, `role`, `level` | `class Paladin` · `level 1` | Its name (the party in fights.txt uses it, with the level) |
 | `attributes` | `attributes body 2, mind 1, instinct 0, appeal 0` | |
-| `health` | `health body x4 +3, mind x3 +4` | Multiplier and species bonus: ⌈((Attribute + 2) × mult + species) × (level + 10) / 10⌉ |
+| `health` | `health body x4 +3, mind x3 +4` | Multiplier and species bonus: ⌈((Attribute + 2) × mult + species) × (level + 10) / 10⌉ (the book since E3: (Level + 17) / 16; the class files keep the old factor unless they say `health-factor`) |
 | `armor`, `ward` | `armor 3` | AD = 11 + armor; WD = 11 + Power Modifier + ward |
 | `weapon-mod`, `power-mod`, `rally` | `rally 6` | Modifiers; the class's Rally value (Rally Points = rally + ⌈(Body + Mind + level) / 2⌉) |
 | `targeted` | `targeted 1.5` | How often NPCs choose this PC (1 = as often as anyone; a tank in front more, an archer behind less) |
@@ -207,7 +207,7 @@ matches 2[W] for a caster; the Standard day.
 ## The Paladin main build (pack P1, 2026-10-29): PROPOSED
 
 `classes/paladin-smite-1..3.txt` and `paladin-hands-1..3.txt` are the P1 main build with each Signature (`paladin-smite-1-hold.txt`: the same, holding
-Escalation for Hallowed Stance); `paladin-book-1.txt` is today's Paladin (the old level 2 files are in `classes/old/`, not read); `archer-3.txt` is a
+Escalation for Hallowed Stance); `paladin-book-1.txt` is today's Paladin (the old level 2 files are in `archive/ruler-old/classes-old/`); `archer-3.txt` is a
 stand-in (the level 2 Archer at level 3) until A1. `catalogue/paladin-p1.txt` prices the new cards. The cards, the budget table and the
 questions: **`book/paladin-p1.md`**. Level 1: sustained 86-87% of the baseline (today's Paladin 109%), Nova 151-161% (104%), Health 124% (114%),
 support 18-27% of a turn; growth +10% a level. `econ.mjs` section 3 now lists every class file, with the sustained budget checked on the turns
@@ -328,3 +328,15 @@ They import the system's dice math (`foundry/twod12/module/calc.mjs`) by a relat
 - `defense.mjs`: what a Defense value costs the PCs, and NPC offence against the PC Defense range.
 - `tablecheck.mjs`: the Basic attack tables against the "deals about" targets.
 - `roles.mjs`, `npcdmg.mjs`, `bigger.mjs`, `fight.py`: the earlier role, NPC damage and fight checks.
+
+## The Bestiary refit (pack E3, 2026-10-29): `bestiary.mjs`: IN THE BOOK (2026-10-30)
+
+`node book/ruler/bestiary.mjs` (about 23 minutes; `--quick` about 7) writes **`bestiary.md`**; the proposal that reads it is **`book/bestiary-e3.md`**.
+The real classes (2 P1 Smite Paladins + 2 A1 Archers, Double Shot and Rolling Shot, levels 1-3; a mixed party as a check) on the map, with LV's
+decisions (3.5-round standard fights, the CV scale ¾ / 1 / 1¼ / 1½ a PC, the Health factor (Level + 17) / 16): today's Bestiary; the tier 1 refit
+(NPC Health and damage factors by bisection for 3.5 rounds and a target Health lost, 33% and 40%); fights by CV; what an Elite, a Grunt and a
+Minion are worth in Standards and the fixes that bring them to their CV; the Standard day; tiers 2-3 from LV's stand-ins; the proposed tables by
+tier; the PCs' Health with the new factor. **New in spec.mjs:** an NPC with `exact: true` rolls its table's average exactly (the nearest dice
+moved by a flat amount; opt-in, so report.md and the other reports don't change). **Findings:** the real classes lose 22% a normal fight against
+today's Bestiary; the refit is Health ×1.10, damage ×1.38 for a third; an Elite is worth about 2.6 Standards (fix: today's Elite damage), a Grunt
+0.57 (fix: Health ×0.69; Lucas chose ×0.75, CV 0.51-0.53), Minions ¼; the Standard day 93% / 95% / 100% at levels 1-3 (today 82% / 71% / 94%).
