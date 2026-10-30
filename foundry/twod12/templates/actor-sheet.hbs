@@ -226,13 +226,17 @@
       <div class="fsec"><span>{{feat.classTitle}}</span><span class="fsec-sub">Level {{feat.level}} &middot; drag <i class="fa-solid fa-grip-vertical"></i> to reorder</span></div>
       <div class="flist olist" data-list="features" data-order-flag="featureOrder">{{#each feat.classCards}}{{> fcard}}{{/each}}</div>
       {{else}}<div class="emptyhint">Drop a Class on this sheet.</div>{{/if}}
+      {{#if feat.escCards.length}}
+      <div class="fsec"><span>Escalation</span><span class="fsec-sub">now {{feat.escNow}} &middot; a highlighted card works at this Escalation</span></div>
+      <div class="flist">{{#each feat.escCards}}{{> fcard}}{{/each}}</div>
+      {{/if}}
       <div class="fsec"><span>Talents</span><span class="fsec-sub">{{feat.talentNote}}</span></div>
       <div class="flist" data-list="talents">
-        {{#each feat.slots}}
-        {{#if card}}{{#with card}}{{> fcard}}{{/with}}
-        {{else}}<div class="tfslot talentslot" data-slot="{{key}}"><i class="fa-solid fa-plus"></i> Drop a Talent here <span class="tfslotsrc">from {{feature}}</span></div>{{/if}}
+        {{#each feat.talentGroups}}
+        <div class="fsub">{{label}}</div>
+        {{#each cards}}{{> fcard}}{{/each}}
         {{/each}}
-        {{#each feat.extras}}{{> fcard}}{{/each}}
+        {{#each feat.emptySlots}}<div class="tfslot talentslot" data-slot="{{key}}"><i class="fa-solid fa-plus"></i> Drop a Talent here <span class="tfslotsrc">from {{feature}}</span></div>{{/each}}
         <div class="tfslot talentslot extra" data-slot=""><i class="fa-solid fa-plus"></i> Drop an extra Talent here</div>
       </div>
       {{#if feat.others.length}}

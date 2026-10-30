@@ -156,10 +156,24 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     // The pick Features (Encounter Pick, Daily Pick, Free Picks...: a choice whose name says Pick) go together in one "Class picks" card. v0.0.181: the Hallmark Action too.
     const isPick = it => (it.system?.choiceOptions ?? []).some(Boolean) && /\bpicks?\b|\bhallmark action\b/i.test(it.name);
     const pickCopies = [];
+    // v0.0.186 (Lucas): Escalation is its own section, like Class and Talents: the class's Escalation Passives and Actives (its lists, or an
+    // "Escalation" Category, or an Escalation cost), with when each works.
+    const escList = new Set([...(cls?.system?.escPassives ?? []), ...(cls?.system?.escActives ?? [])]);
+    const isEsc = it => escList.has(it.getFlag("twod12", "sourceUuid")) || /escalation/i.test(String(it.system?.category ?? "")) || Number(it.system?.escalation) > 0;
+    const escNow = Number(a.system.escalation) || 0;
+    const escCards = [];
+    const escCard = async it => {
+      const cost = Number(it.system?.escalation) || 0, min = Math.min(...(it.system?.settings ?? []).map(x => Number(x.minEscalation) || 0).filter(n => n > 0), 99);
+      const at = it.type === "action" ? cost : (min < 99 ? min : 0);
+      const detail = it.type === "action" ? `costs ${cost} Escalation` : (at ? `works at Escalation ${at}+` : "always on");
+      const c = await card(it, { kind: it.type === "action" ? "Active" : "Passive", detail, rows: it.type === "action" ? [it, ...kidsOf(it)] : undefined });
+      return { ...c, kcls: `${c.kcls} esc${at && escNow >= at ? " esc-on" : ""}` };
+    };
     for (const f of (ctx.classTab?.features ?? []).filter(x => x.unlocked).map((x, k) => ({ x, k })).sort((p, q) => idx(p.x.id) - idx(q.x.id) || p.k - q.k)) {
       const copy = a.items.get(f.x.id);
       if (!copy) continue;
-      if (isPick(copy)) pickCopies.push(copy); else classCards.push(await card(copy));
+      if (isEsc(copy)) escCards.push(await escCard(copy));
+      else if (isPick(copy)) pickCopies.push(copy); else classCards.push(await card(copy));
     }
     // Class picks: first of the class. Opened, it shows the Attribute increases and Modifiers; it always lists what each pick chose.
     const picks = (ctx.classTab?.picks ?? "").split(" | ").filter(Boolean);
@@ -171,13 +185,17 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       }
       // v0.0.185: a class with levels: one label per section reached, with what was chosen in it (and what that gave).
       for (const p of ctx.classTab?.pickSections ?? []) {
-        const kids = p.items.flatMap(it => [it, ...(it.type === "action" ? [] : kidsOf(it))]).map(subRow);
+        const mine = [];
+        for (const it of p.items) if (isEsc(it)) { if (!escCards.some(c => c.id === it.id)) escCards.push(await escCard(it)); } else mine.push(it);
+        if (!mine.length && p.items.length) continue;   // a section of Escalation picks: they are in the Escalation section
+        const kids = mine.flatMap(it => [it, ...(it.type === "action" ? [] : kidsOf(it))]).map(subRow);
         rows.push({ isLabel: true, id: "", name: `${p.title} (Level ${p.level})`, empty: !kids.length, tip: "" }, ...kids);
       }
       classCards.unshift({ key: "classpicks", name: "Class picks", kind: "Picks", kcls: "picks", detail: "", rows, open: !!this._openFeat?.has("classpicks"),
         text: picks.map(p => `<p>${esc(p)}</p>`).join("") });
     }
-    for (const f of (ctx.classTab?.features ?? []).filter(x => !x.unlocked)) classCards.push({ key: f.lockKey ?? f.uuid, uuid: f.uuid, name: f.name, kind: `Level ${f.level}`, kcls: "locked", detail: `Gained at level ${f.level}`, locked: true, rows: [], open: false, text: "" });
+    // v0.0.186 (Lucas): the Features of higher levels are not shown until they are reached (no greyed cards).
+    // (the cards of the levels not reached are no longer pushed)
     // Species: one card with what it gives.
     const sp = a.itemTypes.species[0];
     const spText = sp ? (() => {
@@ -196,10 +214,15 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     for (const sl of ctx.talentSlots ?? []) slots.push(sl.talent ? { card: await talentCard(sl.talent, `Slot from ${sl.feature}`) } : { key: sl.key, feature: sl.feature });
     const extras = (await Promise.all((ctx.talents ?? []).map(t => talentCard(t, "Extra")))).filter(Boolean);
     const filled = slots.filter(x => x.card).length;
+    // v0.0.186 (Lucas): the Talents in subsections by Category (Combat, Mobility, Magic, Skill; "Other" for an Action that is a Talent), then the empty slots.
+    const groupOf = c => { const it = a.items.get(c.id); return TWOD12.talentGroups[it?.system?.group] ?? "Other"; };
+    const groupOrder = [...Object.values(TWOD12.talentGroups), "Other"];
+    const talentGroups = groupOrder.map(label => ({ label, cards: [...slots.filter(x => x.card).map(x => x.card), ...extras].filter(c => groupOf(c) === label) })).filter(g => g.cards.length);
+    const emptySlots = slots.filter(x => !x.card);
     const others = await Promise.all(a.itemTypes.feature.filter(f => !["class", "choice"].includes(f.getFlag("twod12", "grantedBy"))).sort((x, y) => idx(x.id) - idx(y.id)).map(f => card(f, { canRemove: true })));
     return {
       classTitle: cls ? `Class \u00b7 ${cls.name}` : "", classId: cls?.id ?? "", level: a.system.level, picks: (ctx.classTab?.picks ?? "").split(" | ").join(" \u00b7 "), classCards,
-      species, slots, extras, talentNote: slots.length ? `${filled} of ${slots.length} slot${slots.length === 1 ? "" : "s"} filled` : (extras.length ? "" : "none yet"), others
+      species, slots, extras, talentGroups, emptySlots, escCards, escNow, talentNote: slots.length ? `${filled} of ${slots.length} slot${slots.length === 1 ? "" : "s"} filled` : (extras.length ? "" : "none yet"), others
     };
   }
 

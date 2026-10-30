@@ -1655,3 +1655,9 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 .application.twod12-styled .sk .cls-chip i { color: var(--sk-mut); font-size: 11px; }
 .application.twod12-styled .sk .cls-chip button { width: 20px; height: 20px; padding: 0; line-height: 1; border: 0; }
 .application.twod12-styled .sk .cls-none { color: var(--sk-mut); font-style: italic; }
+
+/* v0.0.186 (pack C-a): the Features tab's Escalation section and the Talent subsections by Category. */
+.twod12.sheet.ns .fsub { margin: 8px 2px 2px; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #7a2f22; opacity: .8; border-bottom: 1px solid rgba(122, 47, 34, .25); }
+.twod12.sheet.ns .fsub:first-child { margin-top: 2px; }
+.twod12.sheet.ns .ktag.k-active.esc, .twod12.sheet.ns .ktag.k-passive.esc { opacity: .7; }
+.twod12.sheet.ns .ktag.esc-on { opacity: 1; background: #b8860b; color: #fff; }

@@ -22,7 +22,8 @@ mk("feature", "pj", "Profane Judgment", { settings: [{ type: "ondamage" }], hove
 mk("feature", "xp", "Escalation Passive", { choiceOptions: ["v", "w", "z"] }, { grantedBy: "class", choices: ["v"] });
 mk("feature", "dv", "Divine Vigil", { settings: [{ type: "aura", auraSize: 3, minEscalation: 2 }] }, { grantedBy: "choice", talentId: "xp", choice: true });
 mk("feature", "ft", "Field Training", { talents: 1 }, { grantedBy: "class" });
-mk("talent", "br", "Brawler", { requirements: "" }, { slot: "ft:0" });
+mk("talent", "br", "Brawler", { requirements: "", group: "combat" }, { slot: "ft:0" });
+mk("feature", "rz", "Radiant Zeal", { category: "Paladin Escalation", settings: [{ type: "bonusdamage", minEscalation: 1 }] }, { grantedBy: "class" });   // v0.0.186: the Escalation section
 mk("talent", "pa", "Patient Hunter", {}, {});
 mk("feature", "bw", "Bulwark", {}, { grantedBy: "manual" });
 mk("species", "hu", "Human", { attributes: { body: 1, mind: 0, appeal: 1, instinct: 0 }, speed: 5, reach: 1, size: 3, chosen: [] });
@@ -36,7 +37,7 @@ Object.defineProperty(sheet, "actor", { value: actor });
 sheet._groupLabels = ["Class", "Talents", "Items", "Other", "Basic"];
 const feature = (id, level = 1) => ({ id, name: items.find(i => i.id === id)?.name, uuid: `u.${id}`, level, unlocked: true });
 const ctx = {
-  classTab: { picks: "+1 Body, +1 Appeal | Weapon Modifier: Body | Power Modifier: Mind", features: [feature("dp"), feature("ep"), feature("dpk"), feature("pj"), feature("xp"), feature("ft"), { name: "Aura of Courage", uuid: "u.ac", level: 3, unlocked: false }] },
+  classTab: { picks: "+1 Body, +1 Appeal | Weapon Modifier: Body | Power Modifier: Mind", features: [feature("dp"), feature("ep"), feature("dpk"), feature("pj"), feature("xp"), feature("ft"), feature("rz"), { name: "Aura of Courage", uuid: "u.ac", level: 3, unlocked: false }] },
   ...sheet._talentSlots()
 };
 const m = await sheet._featModel(ctx);
@@ -46,6 +47,8 @@ for (const c of m.classCards) console.log("  ", show(c));
 console.log("species:", show(m.species));
 console.log("talents:", m.talentNote, "|", m.slots.map(s => (s.card ? show(s.card) : `empty slot ${s.key} from ${s.feature}`)).join(" || "), "| extras:", m.extras.map(show).join(", "));
 console.log("others:", m.others.map(show).join(", "));
+console.log("v0.0.186: Escalation section:", m.escCards.map(c => `${c.name} [${c.kind} | ${c.detail} | ${c.kcls}]`).join(", "), "| Escalation now", m.escNow,
+  "| Talents by Category:", m.talentGroups.map(g => `${g.label}: ${g.cards.map(c => c.name).join(", ")}`).join(" ; "), "| empty slots:", m.emptySlots.length);
 sheet._openFeat = new Set(["dp"]);
 console.log("opened Divine Power stays open, the others start folded:", (await sheet._featModel(ctx)).classCards.map(c => `${c.name} ${c.open ? "open" : "folded"}`).join(", "));
 

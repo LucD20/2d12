@@ -4,10 +4,10 @@ Class · Paladin | +1 Body, +1 Appeal · Weapon Modifier: Body · Power Modifier
    Divine Power [Feature] -> Smite (1/2/3 | Weapon | Round) (folded)
    Escalation Passive [Choice] -> Divine Vigil (Passive | Aura 3 | From Esc. 2) (folded)
    Field Training [Feature | 1 Talent slot] text: Field Training text. (folded)
-   Aura of Courage [Level 3 | Gained at level 3] (folded)
 species: Human [Species | Body +1, Appeal +1 · Speed 5 · Reach 1 · Size 3 (Medium)] text: Human text. (removable) (folded)
 talents: 1 of 1 slot filled | Brawler [Talent | Slot from Field Training] text: Brawler text. (removable) (folded) | extras: Patient Hunter [Talent | Extra] text: Patient Hunter text. (removable) (folded)
 others: Bulwark [Feature] text: Bulwark text. (removable) (folded)
-opened Divine Power stays open, the others start folded: Class picks folded, Profane Judgment folded, Divine Power open, Escalation Passive folded, Field Training folded, Aura of Courage folded
+v0.0.186: Escalation section: Radiant Zeal [Passive | works at Escalation 1+ | passive esc] | Escalation now 0 | Talents by Category: Combat: Brawler ; Other: Patient Hunter | empty slots: 0
+opened Divine Power stays open, the others start folded: Class picks folded, Profane Judgment folded, Divine Power open, Escalation Passive folded, Field Training folded
 --- the sheet: tabs: true true | cards fold: true | slots kept: true | feature order saved: true | non-Action rows open their card: true
 v0.0.133: band and panel always dark blue: true | Foundry's own title bar: true | no padding: true | Species above Class: true | Expand / Collapse all: true | description before Grants: true | rows show only Unloaded: true | Escalation cost as a chip: true
