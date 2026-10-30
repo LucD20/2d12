@@ -1,5 +1,5 @@
-documents: 119
-references: 65 | broken: none
+documents: 121
+references: 67 | broken: none
 Paladin features:  | Divine Connection kept for testing (not in the class): true | its id is the old one: vaYnV1XM6HT1TpMP
 Level 1: Attribute increases (attr: body or appeal, mind or instinct) | Core Features (items, granted): Divine Power, Font of Mercy | Hallmark Action (items, choice, pick 1): Smite, Lay On Hands | Talent (talent, pick 1) | Encounter Pick (repertoire, encounter, pick 1) | Passive Escalation Pick (items, choice, pick 1): Font of Mercy, Hallowed Stance, Radiant Zeal | Active Escalation Pick (items, choice, pick 1): Aura of Protection, Divine Surge
 Level 2: Talent (talent, pick 1)
