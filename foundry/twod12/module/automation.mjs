@@ -108,17 +108,27 @@ export async function applyTurnStartEffects(actor) {
   if (!actor) return 0;
   const { createEffect, originInfo } = await import("./effects.mjs");
   let n = 0;
+  const given = [];
   for (const e of allEffects(actor)) {
     if (effectOff(actor, e)) continue;
     for (const t of e.getFlag(F, "turnStarts") ?? []) {
       const item = await fromUuid(t.fxUuid);
       if (item?.type !== "effect") continue;
       await createEffect(actor, item, { ...originInfo(actor.uuid), escalation: true }, null, { turnStart: true });
+      given.push(t.fxUuid);
       n++;
     }
   }
+  // v0.0.194: when each was given (the Escalation block reads it: given this turn-cycle and gone = "Used"; still there = "Ready").
+  const c = globalThis.game?.combat;
+  if (given.length && c?.started && actor.isOwner) {
+    const at = foundry.utils.deepClone(actor.getFlag(F, "tsGiven") ?? {});
+    for (const u of given) at[tsKey(u)] = [c.round, c.turn];
+    await actor.setFlag(F, "tsGiven", at);
+  }
   return n;
 }
+export const tsKey = uuid => String(uuid).replace(/\./g, "_");
 
 /* ------------------------------------------------------------------ v0.0.186, once per world */
 /**

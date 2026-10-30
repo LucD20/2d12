@@ -56,13 +56,14 @@ export function applyTalentMods(v, mods = []) {
 export function avgExtras(insts, tier, ctx = {}) {
   if (!insts.length) return { add: 0, why: [] };
   const bon = ctx.bonusByTier?.[tier] ?? [];
-  let add = 0, dice = 0;
-  const why = [];
-  for (const b of bon) { const a = avgFormula(b.dmg) ?? 0; if (a) { add += a; why.push(`${b.effect} +${b.dmg}`); } dice += diceIn(b.dmg); }
-  for (const i of insts) { if (i.useW && ctx.weapon) dice += (Number(ctx.weapon.system?.damage?.[`t${tier}`]?.count) || 0) * (i.wCount || 1); if (i.dice) dice += diceIn(i.dice); }
+  let add = 0, dice = 0, own = 0;
+  const why = [], parts = [];
+  for (const b of bon) { const a = avgFormula(b.dmg) ?? 0, d = diceIn(b.dmg); if (a) { add += a; why.push(`${b.effect} +${b.dmg}`); } dice += d; parts.push({ key: `${b.effect}|${b.dmg}|${b.sub}|${b.text}`, name: `${b.effect} +${b.dmg}`, avg: a, dice: d }); }
+  for (const i of insts) { if (i.useW && ctx.weapon) own += (Number(ctx.weapon.system?.damage?.[`t${tier}`]?.count) || 0) * (i.wCount || 1); if (i.dice) own += diceIn(i.dice); }
+  dice += own;
   const step = Math.trunc(Number(ctx.step) || 0);
   if (step && dice) { add += step * dice; why.push(step > 0 ? `Empowered ${step}` : `Enfeebled ${-step}`); }
-  return { add, why };
+  return { add, why, dice: own, parts };   // v0.0.194: dice and parts let the dialog recompute it live
 }
 const diceIn = f => [...String(f ?? "").matchAll(/(\d*)d\d+/g)].reduce((s, m) => s + (Number(m[1]) || 1), 0);
 
@@ -76,7 +77,8 @@ export async function buildPreviews(ctx) {
     for (const [n, k] of (v.noTiers ? [] : [1, 2, 3]).map(n => [n, `t${n}`])) {
       const lines = await tierLines(v[k] ?? [], n, ctx, expandAsText(v[`x${n}`], item.system.versions, v0, n));   // "As 1 AP" written out (the dialog shows one Version)
       const avg0 = tierAvg(v[k] ?? [], n, ctx), extra = avgExtras(v[k] ?? [], n, ctx), avg = avg0 ? avg0 + extra.add : 0;
-      rows.push(`<tr data-t="${n}"><th>Tier ${n} <small class="pv-p"></small></th><td>${lines.length ? lines.join("<br>") : "&mdash;"}${avg ? `<div class="calc"${extra.why.length ? ` data-tooltip="${esc(`Without them: ${fmt(avg0)}`)}"` : ""}>Avg ${fmt(avg)}${extra.why.length ? ` <small>(with ${esc(extra.why.join(", "))})</small>` : ""}</div>` : ""}</td></tr>`);
+      const live = avg0 ? ` data-avg="${esc(JSON.stringify({ base: avg0, dice: extra.dice, parts: extra.parts }))}"` : "";   // v0.0.194: recomputed when a Bonus chip or Empowered changes
+      rows.push(`<tr data-t="${n}"><th>Tier ${n} <small class="pv-p"></small></th><td>${lines.length ? lines.join("<br>") : "&mdash;"}${avg ? `<div class="calc"${live}${extra.why.length ? ` data-tooltip="${esc(`Without them: ${fmt(avg0)}`)}"` : ""}>Avg ${fmt(avg)}${extra.why.length ? ` <small>(with ${esc(extra.why.join(", "))})</small>` : ""}</div>` : ""}</td></tr>`);
     }
     // The Critical row sits under Tier 3, only for Actions that have one.
     if (!v.noTiers && v.critical) rows.push(`<tr class="critp"><th>Critical <small class="pv-c"></small></th><td>${await enrich(v.critical, item)}</td></tr>`);
@@ -227,4 +229,17 @@ export async function buildInfoCard(item) {
 export async function sendItemToChat(item, actor = null) {
   const content = item.type === "action" ? await buildRawCard(item) : (item.type === "weapon" ? await buildWeaponCard(item) : await buildInfoCard(item));
   await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content });
+}
+
+/**
+ * v0.0.194 (Lucas): the roll dialog's Avg follows its chips: the Bonus Damage ticked (keys) and the Empowered / Enfeebled step.
+ * d = { base, dice, parts: [{ key, name, avg, dice }] }. Returns { avg, why }.
+ */
+export function liveAvg(d, on, step) {
+  let avg = Number(d?.base) || 0, dice = Number(d?.dice) || 0;
+  const why = [];
+  for (const p of d?.parts ?? []) if (on.has(p.key)) { avg += p.avg; dice += p.dice; if (p.avg) why.push(p.name); }
+  const k = Math.trunc(Number(step) || 0);
+  if (k && dice) { avg += k * dice; why.push(k > 0 ? `Empowered ${k}` : `Enfeebled ${-k}`); }
+  return { avg, why };
 }

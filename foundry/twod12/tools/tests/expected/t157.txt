@@ -1,0 +1,12 @@
+thresholds: Killer's Focus 2, Elusive 1, Hallowed Stance 2, Radiant Zeal 1, Mending Light 1
+out of combat, Escalation 0 (collapsed): 3: Twin Shot{off Round} | 2: Killer's Focus[grey], Hallowed Stance[grey], Pinning Shot{off Round} | 1: Elusive[grey], Vanish{off Round} | open: false | shown: true
+Escalation 3, its turn, nothing given yet: 3*: Twin Shot{use Round} | 2*: Killer's Focus[Active], Hallowed Stance[Active], Pinning Shot{use Round} | 1*: Elusive[Ready], Vanish{use Round}
+Killer's Focus given (Ready): 3*: Twin Shot{use Round} | 2*: Killer's Focus[Ready], Hallowed Stance[Active], Pinning Shot{use Round} | 1*: Elusive[Ready], Vanish{use Round}
+then used, Pinning Shot used this round: 3*: Twin Shot{use Round} | 2*: Killer's Focus[Used], Hallowed Stance[Active], Pinning Shot{off Round 0/1} | 1*: Elusive[Ready], Vanish{use Round}
+Escalation spent to 1: 3: Twin Shot{off Round} | 2: Killer's Focus[grey], Hallowed Stance[grey], Pinning Shot{off Round} | 1*: Elusive[Ready], Vanish{use Round}
+Elusive's Bane used this round: used | next round after its turn: ready
+--- Granted ticket badges
+Pinning Shot: ["Immobilized T2–3"] | ["Immobilized (EoT) on T2–3"]
+Double Shot (2 Attacks): ["≠ targets"] | ["Each use needs a different target"]
+Twin Shot: ["+1d6 Pi"] | ["+[B] 1d6 Pierce damage"]
+on both tabs: 2 | Escalation Actions out of the list and the Favorites: true | collapse remembered per sheet: true | narrow sheet rules: true

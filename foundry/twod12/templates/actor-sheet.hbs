@@ -34,10 +34,61 @@
     <span class="ar-freq" {{#if fadedWhy}}data-tooltip="{{fadedWhy}}"{{/if}}>{{freqText}}</span>
     {{#if unloaded}}<a class="ar-use reload" data-action="reloadFor" data-tooltip="Unloaded: Reload (1 AP)" aria-label="Reload"><i class="fa-solid fa-rotate-left"></i></a>
     {{else if grant}}<a class="ar-use granted" data-action="useAction" data-tooltip="{{grant.tip}}" aria-label="Use {{name}} (granted)"><i class="fa-solid fa-gift"></i></a>
+    {{else if useOff}}<span class="ar-use off" {{#if fadedWhy}}data-tooltip="{{fadedWhy}}"{{/if}} aria-disabled="true"><i class="fa-solid fa-dice"></i></span>
     {{else}}<a class="ar-use" data-action="useAction" data-tooltip="Use {{name}}" aria-label="Use {{name}}"><i class="fa-solid fa-dice"></i></a>{{/if}}
   </div>
   <div class="ar-card"></div>
 </div>
+{{/inline}}
+{{#*inline "escblock"}}
+{{!-- v0.0.194 (Lucas, mockup foundry/mockups/granted-C2-ladder.html): Granted tickets, then the Escalation ladder, above the list. --}}
+{{#if granted.length}}
+<div class="gx-head granted"><i class="fa-solid fa-gift"></i> Granted <span class="gx-ct">{{granted.length}}</span></div>
+<div class="gx-list">
+  {{#each granted}}
+  <div class="gtk{{#if open}} open{{/if}}" data-key="{{key}}" data-item-id="{{actionId}}" data-tooltip="{{tip}}" data-tooltip-direction="LEFT">
+    <div class="gtk-line" data-action="toggleGrant">
+      <span class="gtk-stub"><b>{{left}}/{{count}}</b><small>LEFT</small></span>
+      <span class="gtk-nm">{{name}}</span>
+      <span class="gtk-cost{{#if free}} free{{/if}}">{{cost}}</span>
+      <span class="gtk-src">&larr; {{source}}{{#if dur}} &middot; {{dur}}{{/if}}</span>
+      <span class="gtk-ads">{{#each badges}}<span class="gtk-ad">{{this}}</span>{{/each}}</span>
+      <a class="ar-use granted" data-action="useAction" aria-label="Use {{name}} (granted)"><i class="fa-solid fa-gift"></i></a>
+    </div>
+    <div class="gtk-body">
+      <div><span class="k">From</span> {{source}}{{#if dur}} &middot; {{dur}}{{/if}}</div>
+      <div><span class="k">Uses</span> {{left}} of {{count}} left</div>
+      {{#if adds.length}}<div><span class="k">Adds</span> {{#each adds}}{{this}}{{#unless @last}}; {{/unless}}{{/each}}</div>{{/if}}
+      {{#if badges.length}}<div class="gtk-ads-body">{{#each badges}}<span class="gtk-ad">{{this}}</span>{{/each}}</div>{{/if}}
+      <div><span class="k">Action</span> {{#if range}}{{range}} &middot; {{/if}}{{traits}}</div>
+    </div>
+  </div>
+  {{/each}}
+</div>
+{{/if}}
+{{#if esc.show}}
+<div class="ex-block{{#if esc.open}} open{{/if}}">
+  <div class="gx-head escal" data-action="toggleEsc" data-tooltip="Show or hide the Escalation block">
+    <i class="fa-solid fa-chevron-right ex-chev"></i> Escalation
+    <span class="ex-pips">{{#each esc.pips}}<i class="{{#if on}}on{{/if}}"></i>{{/each}}</span><span class="gx-ct">{{esc.now}}/3</span>
+  </div>
+  {{#if esc.open}}
+  <div class="ex-ladder">
+    {{#each esc.rungs}}
+    <div class="ex-rung{{#if lit}} lit{{/if}}">
+      <div class="ex-rail"><span>{{n}}</span></div>
+      <div class="ex-items">
+        {{#each passives}}
+        <div class="ex-pass {{state}}" data-item-id="{{id}}" data-tooltip="{{tip}}"><i class="fa-solid fa-star"></i><a class="ex-pnm" data-action="openItem">{{name}}</a>{{#if tag}}<span class="ex-tag">{{tag}}</span>{{/if}}</div>
+        {{/each}}
+        {{#if actives.length}}<div class="atable ex-acts">{{#each actives}}{{> actrow}}{{/each}}</div>{{/if}}
+      </div>
+    </div>
+    {{/each}}
+  </div>
+  {{/if}}
+</div>
+{{/if}}
 {{/inline}}
 {{#*inline "tfrow"}}
 <details class="tfitem {{#if locked}}locked{{/if}} {{#if child}}child{{/if}}" style="--fq:{{fq}}" data-item-id="{{id}}" {{#if uuid}}data-item-uuid="{{uuid}}"{{/if}}>
@@ -172,6 +223,7 @@
     </nav>
 
     <div class="tab" data-tab="favorites">
+      {{> escblock}}
       {{#if favRows.length}}
       <div class="at-head"><span></span><span></span><span>Favorite</span><span>Cost</span><span>Range</span><span>Frequency</span><span>Use</span></div>
       <div class="atable" data-list="favorites">{{#each favRows}}{{> actrow}}{{/each}}</div>
@@ -185,19 +237,7 @@
         <label>Sort by <select class="at-sortsel">{{selectOptions sortByChoices selected=sortBy}}</select></label>
         <label>Filter <input class="at-filter" type="search" placeholder="Search actions…" value="{{actSearch}}"></label>
       </div>
-      {{#if granted.length}}
-      <div class="gh granted">Granted</div>
-      <div class="alist normal">
-        {{#each granted}}
-        <div class="arow granted" data-item-id="{{actionId}}" style="--fq:#1D9E75">
-          <span></span><span></span><img class="aic" src="{{img}}" alt="">
-          <a class="anm" data-action="useAction">{{name}} <span class="uses">{{#each boxes}}<span class="{{#if on}}f{{/if}}"></span>{{/each}}</span></a>
-          <span class="acost">{{{apsHtml}}}</span><span class="atr">{{traitShort}}</span><span></span>
-          <div class="asrc">From {{source}}{{#if dur}} &middot; {{dur}}{{/if}} &middot; {{left}} of {{count}} left</div>
-        </div>
-        {{/each}}
-      </div>
-      {{/if}}
+      {{> escblock}}
       <div class="at-head"><span></span><span></span><span>Action</span><span>Cost</span><span>Range</span><span>Frequency</span><span>Use</span></div>
       {{#each actGroups}}
       <div class="at-group">

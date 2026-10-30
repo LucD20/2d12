@@ -26,7 +26,7 @@ import { squaresBetween, rangeBand } from "./move.mjs";
 import { setupFor } from "./setup.mjs";
 import { coverBetween, coverWhy } from "./cover.mjs";
 import { consumeGrant } from "./freeuse.mjs";
-import { buildPreviews, updateOdds, applyTalentMods, tierLines } from "./preview.mjs";
+import { buildPreviews, updateOdds, applyTalentMods, tierLines, liveAvg } from "./preview.mjs";
 const { DialogV2 } = foundry.applications.api;
 import { ensureFreeHand } from "./hands.mjs";
 
@@ -263,6 +263,16 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
             boons += m.boons;
             banes += m.banes;
           }
+        });
+        // v0.0.194: each Tier's Avg follows the Bonus chips ticked and the Empowered / Enfeebled chips.
+        const on = new Set([...root.querySelectorAll("[name=bonusOn]:checked")].map(c => c.value));
+        const step = (Number(root.querySelector("[name=empowered]")?.value) || 0) - (Number(root.querySelector("[name=enfeebled]")?.value) || 0);
+        pv.querySelectorAll(".calc[data-avg]").forEach(el => {
+          let d = null;
+          try { d = JSON.parse(el.dataset.avg); } catch (e) { return; }
+          const r = liveAvg(d, on, step);
+          el.innerHTML = `Avg ${Math.round(r.avg * 10) / 10}${r.why.length ? ` <small>(with ${esc(r.why.join(", "))})</small>` : ""}`;
+          el.dataset.tooltip = r.why.length ? `Without them: ${Math.round(d.base * 10) / 10}` : "";
         });
         const forced = root.querySelector("[name=forceTier]")?.value ?? "";
         pv.querySelectorAll("tr[data-t]").forEach(tr => tr.classList.toggle("forced", tr.dataset.t === forced));

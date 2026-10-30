@@ -1,5 +1,6 @@
 // The character and NPC sheets.
 import { prereqLine } from "./talents.mjs";
+import { escalationModel, grantBadges } from "./escblock.mjs";
 import { masteryRows, masteryOf, setMastery, setCollapsed, techniqueState, bowMasteryOf, chooseBowMastery } from "./mastery.mjs";
 import { weaponRanges } from "./weaponrange.mjs";
 import { defenseBonus, steadinessOf } from "./defense.mjs";
@@ -59,7 +60,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       confirmDelete: CharacterSheet.confirmDelete,
       rollInitiative: CharacterSheet.rollInitiative, addBasic: CharacterSheet.addBasic, rest: CharacterSheet.rest, editSenses: CharacterSheet.editSenses,
       sendItem: CharacterSheet.sendItem, toggleGroup: CharacterSheet.toggleGroup, generateWeapon: CharacterSheet.generateWeapon, toggleLoaded: CharacterSheet.toggleLoaded,
-      toggleFav: CharacterSheet.toggleFav, toggleDetails: CharacterSheet.toggleDetails, setFilter: CharacterSheet.setFilter, setView: CharacterSheet.setView,
+      toggleFav: CharacterSheet.toggleFav, toggleDetails: CharacterSheet.toggleDetails, toggleEsc: CharacterSheet.toggleEsc, toggleGrant: CharacterSheet.toggleGrant, setFilter: CharacterSheet.setFilter, setView: CharacterSheet.setView,
       setHands: CharacterSheet.setHands, setWorn: CharacterSheet.setWorn, setEscalation: CharacterSheet.setEscalation, toggleEscalation: CharacterSheet.toggleEscalation, masteryStep: CharacterSheet.masteryStep, masteryCollapse: CharacterSheet.masteryCollapse, masteryOpen: CharacterSheet.masteryOpen, chooseBowMastery: CharacterSheet.chooseBowMastery, hpEdit: CharacterSheet.hpEdit,
       setHealthView: CharacterSheet.setHealthView, setApPip: CharacterSheet.setApPip,
       toggleCard: CharacterSheet.toggleCard, reloadFor: CharacterSheet.reloadFor, toggleBasic: CharacterSheet.toggleBasic,
@@ -307,7 +308,11 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const groupBy = game.user.getFlag("twod12", "sheetGroup") ?? "cost";
     const sortBy = sortKeyOf(sort);
     const actRow = i => this._actionRow(i);
-    const tableRows = actions.filter(i => !i.getFlag("twod12", "basic")).map(actRow);
+    // v0.0.194: Escalation Actions live only in the Escalation block (escblock.mjs), not in the list or the Favorites.
+    const isEscAct = i => Number(i.system?.escalation) > 0;
+    const tableRows = actions.filter(i => !i.getFlag("twod12", "basic") && !isEscAct(i)).map(actRow);
+    const escOpen = (game.user.getFlag("twod12", "escOpen") ?? {})[a.id];
+    const esc = isPc || a.system?.useEscalation ? escalationModel(a, { actionRow: i => this._actionRow(i), isFaded, open: escOpen ?? null }) : { show: false };
     const actGroups = groupRows(tableRows, { groupBy, sort: sortBy, order, sourceLabels: this._groupLabels.filter(l => l !== "Basic") })
       .map(g => ({ ...g, collapsed: !!g.label && collapsed.has(g.label) }));
     // Granted: Actions an effect lets you use for free, with the uses left and where they came from.
@@ -318,10 +323,16 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         const act = actions.find(i => grantMatches(g.spec, i));
         const count = Math.max(g.count ?? g.left, g.left);
         const tr = act ? orderTraits(act.system.traits).map(t => TWOD12.traits[t] ?? t) : [];
+        // v0.0.194 (Lucas, mockup granted-C2-ladder): a ticket: uses left, cost, source and duration, what it adds; expanded, the details.
+        const bd = grantBadges(g, e), row = act ? this._actionRow(act) : null;
+        const source = e.name.replace(/\s*\(.*\)\s*$/, ""), dur = durationText(e);
         granted.push({
-          actionId: act?.id ?? "", name: act?.name ?? g.spec.replace(/^(category|trait):/i, ""), img: act?.img ?? e.img,
-          apsHtml: g.ap ? apLabel([g.ap]) : `<span class="apmark free" data-tooltip="A free use">Free</span>`, traitShort: tr.slice(0, 3).join(" \u00b7 "), source: e.name.replace(/\s*\(.*\)\s*$/, ""),
-          dur: durationText(e), left: g.left, count, boxes: Array.from({ length: count }, (_, k) => ({ on: k < g.left }))
+          key: `${e.id}:${granted.length}`, actionId: act?.id ?? "", name: act?.name ?? g.spec.replace(/^(category|trait):/i, ""), img: act?.img ?? e.img,
+          apsHtml: g.ap ? apLabel([g.ap]) : `<span class="apmark free" data-tooltip="A free use">Free</span>`, cost: g.ap ? `${g.ap} AP` : "Free", free: !g.ap,
+          traitShort: tr.slice(0, 3).join(" \u00b7 "), source, dur, left: g.left, count, badges: bd.short, adds: bd.long,
+          range: row?.range ?? "", traits: tr.join(" \u00b7 "), open: !!this._openGrant?.has(`${e.id}:${granted.length}`),
+          tip: [`From ${source}${dur ? ` · ${dur}` : ""}`, `${g.left} of ${count} left`, ...bd.long].join(" · "),
+          boxes: Array.from({ length: count }, (_, k) => ({ on: k < g.left }))
         });
       }
     }
@@ -430,7 +441,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       basicOpen: !!game.user.getFlag("twod12", "basicOpen"),
       basicRows: basics.map(b => actRow(a.items.get(b.id))),
       // The Favorites tab (v0.0.137): the same rows as the Actions table, in the Favorites' own order.
-      favRows: favs.map(id => a.items.get(id)).filter(i => i?.type === "action").map(actRow),
+      favRows: favs.map(id => a.items.get(id)).filter(i => i?.type === "action" && !(Number(i.system?.escalation) > 0)).map(actRow), esc,
       favorites,
       granted,
       basics,
@@ -844,6 +855,23 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     await this.actor.setFlag("twod12", "favorites", favs);
   }
   /** The arrow at the end of a row opens the Action's card under it (one Version at a time). */
+  /** v0.0.194: open or collapse the Escalation block (remembered per sheet, for each user). */
+  static async toggleEsc() {
+    const all = foundry.utils.deepClone(game.user.getFlag("twod12", "escOpen") ?? {});
+    const now = all[this.actor.id] ?? !!game.combat?.started;
+    all[this.actor.id] = !now;
+    await game.user.setFlag("twod12", "escOpen", all);
+    this.render();
+  }
+  /** v0.0.194: open or fold a Granted ticket (kept while the sheet is open). */
+  static toggleGrant(event, target) {
+    if (event.target.closest("[data-action='useAction']")) return;
+    const t = target.closest(".gtk"), key = t?.dataset.key;
+    if (!key) return;
+    (this._openGrant ??= new Set());
+    if (this._openGrant.has(key)) this._openGrant.delete(key); else this._openGrant.add(key);
+    t.classList.toggle("open", this._openGrant.has(key));
+  }
   static async toggleDetails(event, target) {
     const row = target.closest(".arow"), box = row?.querySelector(".adetail");
     const item = this._item(target);

@@ -17,3 +17,8 @@ console.log("Smite Tier 3 with Heavy Blows:", JSON.stringify(P.avgExtras(insts, 
 console.log("with Killer's Focus and Empowered 1 (2d6 + 1d6 + 1d6 = 4 dice):", JSON.stringify(P.avgExtras(insts, 3, { weapon: gs, bonusByTier: { 3: [kf] }, step: 1 })));
 console.log("Enfeebled 1, no bonus:", JSON.stringify(P.avgExtras(insts, 3, { weapon: gs, step: -1 })), "| a Tier with no damage:", JSON.stringify(P.avgExtras([], 1, { bonusByTier: { 1: [hb] } })));
 console.log("wired:", src("module/actions.mjs").includes("bonusByTier: pvBonus, step: pvStep,"));
+console.log("--- v0.0.194: the Avg follows the dialog's chips");
+const d = { base: 10.5, dice: 3, parts: [{ key: "Heavy Blows|2||", name: "Heavy Blows +2", avg: 2, dice: 0 }, { key: "Killer's Focus|1d6|Pi|", name: "Killer's Focus +1d6", avg: 3.5, dice: 1 }] };
+const live = (on, step) => { const r = P.liveAvg(d, new Set(on), step); return `${r.avg} (${r.why.join(", ")})`; };
+console.log("all ticked:", live(["Heavy Blows|2||", "Killer's Focus|1d6|Pi|"], 0), "| Heavy Blows unticked:", live(["Killer's Focus|1d6|Pi|"], 0), "| none, Empowered 1:", live([], 1), "| both, Enfeebled 1:", live(["Heavy Blows|2||", "Killer's Focus|1d6|Pi|"], -1));
+console.log("wired:", src("module/actions.mjs").includes("const r = liveAvg(d, on, step);"), src("module/preview.mjs").includes("data-avg="));
