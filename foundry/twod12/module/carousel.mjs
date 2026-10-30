@@ -1,6 +1,6 @@
 // A strip of portraits across the top of the screen while there is a combat (also while it is being prepared):
 // turn order, the creature whose turn it is, and its Action Points as dots under the portrait.
-import { getAP, setAP, apMax, requestSwap, endTurnFor, swapCandidates } from "./combat.mjs";
+import { getAP, setAP, apMax, requestSwap, endTurnFor } from "./combat.mjs";
 import { groupColor } from "./config.mjs";
 import { esc } from "./util.mjs";
 const F = "twod12", ID = "twod12-carousel";
@@ -31,8 +31,11 @@ export function renderCarousel() {
   const mine = !!cur?.isOwner;
   let hideDead = false;
   try { hideDead = game.settings.get("twod12", "carouselHideDead"); } catch (e) { /* not registered */ }
-  const list = (combat.turns?.length ? combat.turns : [...combat.combatants]).filter(c => (gm || !c.hidden) && !(hideDead && c.isDefeated));
-  const canSwap = started && mine && !cur.getFlag(F, "acted") && getAP(cur) >= 1 && swapCandidates(combat, cur).length > 0;
+  // v0.0.189: a creature added after the combat started may not be in the turn order yet: it is shown at the end until it is.
+  const turns = combat.turns?.length ? [...combat.turns] : [];
+  for (const c of combat.combatants) if (!turns.includes(c)) turns.push(c);
+  const list = turns.filter(c => (gm || !c.hidden) && !(hideDead && c.isDefeated));
+  const canSwap = started && mine && !cur.getFlag(F, "acted") && getAP(cur) >= 1;   // v0.0.189: shown even with no ally left to swap with (clicking says so)
   const btn = (k, icon, label, tip) => `<button type="button" class="tc-btn" data-tc="${k}" data-tooltip="${tip}"><i class="fa-solid ${icon}"></i>${label ? ` ${label}` : ""}</button>`;
   const left = gm ? (started ? btn("prev", "fa-backward-step", "Previous turn", "Go back one turn") : btn("init", "fa-dice-d20", "Initiative", "Roll initiative for everyone")) : "";
   const middle = started ? `<b>Round ${combat.round}</b>` : '<b class="tc-prep">Preparing the encounter</b>';
@@ -102,6 +105,6 @@ function hideApButtons() { clearTimeout(hideTimer); hideTimer = setTimeout(() =>
 export function registerCarousel() {
   game.settings.register("twod12", "carouselHideDead", { name: "Combat strip: hide defeated creatures", hint: "Hide dead or defeated creatures from the strip. When off, they are shown in grey.", scope: "client", config: true, type: Boolean, default: false, onChange: renderCarousel });
   game.settings.register("twod12", "carousel", { name: "Combat strip with Action Points", hint: "Shows the turn order across the top of the screen with the Action Points of each creature as dots.", scope: "client", config: true, type: Boolean, default: true, onChange: renderCarousel });
-  for (const h of ["createCombat", "updateCombat", "deleteCombat", "createCombatant", "updateCombatant", "deleteCombatant", "combatStart", "combatTurnChange", "canvasReady"]) Hooks.on(h, () => renderCarousel());
+  for (const h of ["createCombat", "updateCombat", "deleteCombat", "createCombatant", "updateCombatant", "deleteCombatant", "combatStart", "combatTurnChange", "canvasReady"]) Hooks.on(h, () => { renderCarousel(); setTimeout(renderCarousel, 50); });   // again once Foundry has set the new turn order (v0.0.189)
   renderCarousel();
 }

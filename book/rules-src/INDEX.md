@@ -15,7 +15,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 19.3 | 161 |
 | 11-species.md | Species | species |  | 0.8 | 35 |
 | 12-paladin.md | Paladin | paladin |  | 11.3 | 371 |
-| 13-archer.md | Archer | archer |  | 10.0 | 340 |
+| 13-archer.md | Archer | archer |  | 9.9 | 340 |
 | 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 14.5 | 275 |
 | 15-gear.md | Gear | gear |  | 7.2 | 162 |
 | 16-talents.md | Talents | talents |  | 9.8 | 311 |

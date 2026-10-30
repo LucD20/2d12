@@ -1676,3 +1676,19 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 .twod12 .prereqs .pq-join { font-style: italic; font-weight: 700; cursor: pointer; text-decoration: underline dotted; }
 .twod12 .prereqs .pq-none { font-style: italic; opacity: .7; }
 .twod12 .prereqs .pq-add { width: auto; height: 22px; min-height: 0; padding: 0 4px; font-size: 12px; }
+
+/* v0.0.189: bonus damage on a damage card names its source (a link to the item). */
+.twod12.chat .comp .ctype .csrc { font-size: 10px; opacity: .8; margin-left: 4px; }
+.twod12.chat .comp .ctype a.content-link, .twod12.chat .bonusrow a.content-link { background: none; border: none; padding: 0; color: inherit; text-decoration: underline dotted; }
+
+/* v0.0.189: the automation rank chip (after Draw Steel's Codex): Not implemented, Bronze, Silver, Gold. */
+.twod12 .autochip { display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 4px; font-size: 9.5px; line-height: 15px; font-weight: 700; letter-spacing: .03em; vertical-align: middle; text-transform: uppercase; color: #1e1e1e; border: 1px solid rgba(0, 0, 0, .35); font-family: var(--font-sans, sans-serif); }
+.twod12 .autochip.auto-none { background: #8a8a8a; color: #fff; }
+.twod12 .autochip.auto-bronze { background: linear-gradient(#e3a46b, #b8743c); }
+.twod12 .autochip.auto-silver { background: linear-gradient(#f1f1f1, #b9bec4); }
+.twod12 .autochip.auto-gold { background: linear-gradient(#ffe38a, #d4a72c); }
+.twod12 .autosel select { width: auto; }
+
+/* v0.0.189: targeting mode (an Action asks for its targets on the map). */
+#twod12-targeting { position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 1000; padding: 8px 16px; border-radius: 8px; background: rgba(20, 24, 32, .92); color: #f4e9d0; border: 1px solid #c9a24a; font-size: 14px; box-shadow: 0 4px 14px rgba(0, 0, 0, .5); pointer-events: none; }
+#twod12-targeting i { color: #e05a4f; margin-right: 6px; }

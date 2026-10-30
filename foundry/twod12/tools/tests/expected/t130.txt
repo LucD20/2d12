@@ -1,5 +1,6 @@
 groups: Greatsword | Greatsword | keys: great-sword 1-long-bow
 entry on getting the weapon: {"greatsword":{"name":"Greatsword","value":0}} | Technique: {"locked":true,"group":"Greatsword","value":0}
+v0.0.189: a Tier 3 out of combat gives nothing: 0
 Tier 2, or not a Weapon roll: nothing: 0
 several targets with two Tier 3: +1 once: 1
 the +1 Greatsword counts for the Greatsword: 2

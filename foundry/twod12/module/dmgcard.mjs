@@ -4,8 +4,10 @@ import { damageOdds } from "./calc.mjs";
 
 const POOL_LABEL = { B: "Body", M: "Mind", C: "Body or Mind", "": "Other" };
 
+const srcA = c => (c.srcUuid ? `<a class="content-link" draggable="true" data-link data-uuid="${esc(c.srcUuid)}" data-tooltip="Open ${esc(c.src)}">${esc(c.src)}</a>` : esc(c.src));
 const compHtml = c => {
-  const name = c.sub ? TWOD12.subtypes[c.sub] : (c.kind === "A" ? "Modifier" : "Untyped");
+  // v0.0.189: bonus damage names where it comes from ("Heavy Blows", a link that opens it), with its type when it has one.
+  const name = c.src ? (c.sub ? `${TWOD12.subtypes[c.sub]} <span class="csrc">${srcA(c)}</span>` : srcA(c)) : (c.sub ? TWOD12.subtypes[c.sub] : (c.kind === "A" ? "Modifier" : "Untyped"));
   const icon = c.sub ? `${dtypeIcon(c.sub)} ` : "";
   const dice = (c.dice ?? []).map(d => d.results.map(x => `<span class="die d${d.faces}">${x}</span>`).join("")).join("");
   return `<div class="comp sub-${c.sub || "N"}" style="--sc:${TWOD12.subtypeInk[c.sub] ?? "#888780"}"><span class="ctype">${icon}${name}${c.nl ? ' <span class="nlb">NL</span>' : ""}</span><span class="cform">${esc(c.formula)}</span><span class="cdice">${dice}</span><span class="ctotal">${c.total}</span></div>`;

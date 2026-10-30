@@ -100,6 +100,7 @@
       <label data-tooltip="A theme the Talent picker can filter by (Unarmed, Great Weapon, Marksman, Divine): usually the chain it belongs to">Theme <input type="text" name="system.theme" value="{{system.theme}}" placeholder="Unarmed"></label>
     </div>
     <label>Flavor <input type="text" name="system.flavor" value="{{system.flavor}}" placeholder="A small gift from the god you follow."></label>
+    <label class="autosel" data-tooltip="How much Foundry does for this card, shown as a chip on it (Not implemented, Bronze, Silver, Gold)">Automation <select name="system.automation">{{selectOptions autoRanks selected=system.automation}}</select></label>
     <div class="prereqs">
       <div class="pq-line"><span class="pq-lead">Prerequisites:</span>
         {{#each prereqRows}}
@@ -171,6 +172,7 @@
       <div class="ro"><span>Shown as</span><b>{{categoryShown}}</b></div>
     </div>
     <label>Flavor <input type="text" name="system.flavor" value="{{system.flavor}}" placeholder="Your bond with your god opens new paths."></label>
+    <label class="autosel" data-tooltip="How much Foundry does for this card, shown as a chip on it (Not implemented, Bronze, Silver, Gold)">Automation <select name="system.automation">{{selectOptions autoRanks selected=system.automation}}</select></label>
     <label class="inline" data-tooltip="Shown in the Escalation section of the Features tab. When it works is each setting's own &quot;It works...&quot; below (Escalation 1, 2 or 3).">
       <input type="checkbox" name="system.escalationPassive" {{#if system.escalationPassive}}checked{{/if}}> Escalation Passive</label>
     <label>Talents granted <input type="number" min="0" name="system.talents" value="{{system.talents}}"></label>
@@ -198,6 +200,7 @@
     {{#if isAction}}
     <label>Traits {{formInput fields.traits value=system.traits name="system.traits" options=traitPicker.options groups=traitPicker.groups}}</label>
     <label>Flavor <input type="text" name="system.flavor" value="{{system.flavor}}" placeholder="Your weapon blazes with holy light."></label>
+    <label class="autosel" data-tooltip="How much Foundry does for this card, shown as a chip on it (Not implemented, Bronze, Silver, Gold)">Automation <select name="system.automation">{{selectOptions autoRanks selected=system.automation}}</select></label>
     <div class="grid3 rx">
       <label class="inline"><input type="checkbox" name="system.reaction" {{#if system.reaction}}checked{{/if}}> Reaction</label>
       <label>Kind <select name="system.reactionKind" {{#unless system.reaction}}disabled{{/unless}}>{{selectOptions reactionKinds selected=system.reactionKind}}</select></label>
@@ -321,6 +324,7 @@
       {{#if applied.exhausted}}<p class="fxd-help">Exhausted's own rules (Speed, the penalty on Rolls, the Mind Damage Threshold) come from its value; 0 removes it. Settings added here come on top of them.</p>{{/if}}
       {{else}}
       <h3>Identity</h3>
+      <label class="autosel" data-tooltip="How much Foundry does for this card, shown as a chip on it (Not implemented, Bronze, Silver, Gold)">Automation <select name="system.automation">{{selectOptions autoRanks selected=system.automation}}</select></label>
       <div class="fxd-s">This is <select class="fxd-f" data-fxkind>{{selectOptions kindChoices selected=kindVal}}</select> placed on <select class="fxd-f" data-fxself>{{selectOptions selfChoices selected=selfVal}}</select>.
         {{#if system.isCondition}}<label class="fxd-inl"><input type="checkbox" name="system.valued" {{#if system.valued}}checked{{/if}}> It has a value (like Empowered 2)</label>{{/if}}</div>
       <p class="fxd-help">An effect is a bundle of the settings below. A condition is a named state from the book (Prone, Empowered); one with a value keeps it on the creature, and clicking its icon raises it. "The user" is the creature that used the Action.</p>

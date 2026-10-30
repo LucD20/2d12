@@ -26,7 +26,7 @@ export function collectBonuses(actor, traits, tier, opts = {}) {
       if (once && onceBlocked(actor, once)) return;
       const dmg = modDamage(m.dmg || "", opts.mod);
       if (dmg === null) return;
-      out.push({ effectId: e.id, effect: String(e.name ?? "").replace(/^\s*Effect:\s*/i, ""), dmg, pool: m.dmgPool || "B", sub: m.dmgSub || "", text: m.text || "", fxUuid: m.fxUuid || "", hover: hoverOf(e.getFlag(F, "hover"), e.getFlag(F, "description")), ...(once ? { once } : {}) });
+      out.push({ effectId: e.id, effect: String(e.name ?? "").replace(/^\s*Effect:\s*/i, ""), dmg, pool: m.dmgPool || "B", sub: m.dmgSub || "", text: m.text || "", fxUuid: m.fxUuid || "", hover: hoverOf(e.getFlag(F, "hover"), e.getFlag(F, "description")), srcUuid: e.srcUuid || e.getFlag(F, "effectUuid") || e.uuid || "", ...(once ? { once } : {}) });
     });
   }
   return out;

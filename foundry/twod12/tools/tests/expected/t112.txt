@@ -1,5 +1,5 @@
-documents: 133
-references: 93 | broken: none
+documents: 134
+references: 95 | broken: none
 Paladin features:  | Divine Connection kept for testing (not in the class): true | its id is the old one: vaYnV1XM6HT1TpMP
 Level 1: Attribute increases (attr: body or appeal, mind or instinct) | Core Features (items, granted): Divine Power, Font of Mercy | Hallmark Action (items, choice, pick 1): Smite, Lay On Hands | Talent (talent, pick 1) | Encounter Pick (repertoire, encounter, pick 1) | Passive Escalation Pick (items, choice, pick 1): Font of Mercy, Hallowed Stance, Radiant Zeal, Mending Light | Active Escalation Pick (items, choice, pick 1): Aura of Protection, Divine Surge, Shield of Faith, Hand of Mercy
 Level 2: Talent (talent, pick 1)
@@ -24,10 +24,10 @@ Hallowed Stance: Paladin Escalation | While your Escalation is 2 or more, if you
 the Aura: aura Aura 2 allies -> Aura of Protection (+1 Defense) | lasts: until the encounter ends (an Escalation effect)
 Lay On Hands' strike: bonusdamage 2d8 M Ho t2,t3 | ends after: strike
 old cards: Vow of Enmity, Word of Radiance kept | in no level: false
-Paladin (Smite): Divine Power, Font of Mercy, Smite, Heavy Blows, Holy Wrath, Hallowed Stance, Divine Surge | ids unique: true
-Paladin (Lay On Hands): Divine Power, Font of Mercy, Lay On Hands, Heavy Blows, Holy Wrath, Hallowed Stance, Divine Surge | ids unique: true
-Archer (Double Shot): Sharpshooter, Marked Quarry, Mark Quarry, Double Shot, Aim, Aim, Killer's Focus, Pinning Shot | ids unique: true
-Archer (Rolling Shot): Sharpshooter, Marked Quarry, Mark Quarry, Rolling Shot, Aim, Aim, Killer's Focus, Pinning Shot | ids unique: true
+Paladin 1 (Smite, Heavy Blows): Divine Power, Font of Mercy, Smite, Heavy Blows, Holy Wrath, Radiant Zeal, Divine Surge | ids unique: true
+Paladin 3 (Lay On Hands, Protector): Divine Power, Font of Mercy, Lay On Hands, Opportunity Attack, Opportunity Attack, Word of Radiance, Mending Light, Shield of Faith, Bloodlust, Bloodlust, Miraculous Recovery, Hallowed Stance | ids unique: true
+Archer 1 (Double Shot, Marksman): Sharpshooter, Marked Quarry, Mark Quarry, Double Shot, Aim, Aim, Killer's Focus, Pinning Shot | ids unique: true
+Archer 3 (Rolling Shot, Kickboxer): Sharpshooter, Marked Quarry, Mark Quarry, Rolling Shot, Brawler, Pummel, Elusive, Twin Shot, Kickboxer, Leg Sweep, Volley, Rain of Arrows, Harrying Shots | ids unique: true
 Bandit Thug (grunt, speed 5): Cudgel atwill, Low Blow round
 Goblin Sneak (minion, speed 7): Rusty Knife atwill, Dirty Trick round
 Ogre Chieftain (elite, speed 4): Club atwill, Ground Slam encounter, Rally the Tribe round

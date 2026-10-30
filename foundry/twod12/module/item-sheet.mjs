@@ -74,6 +74,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       condRows: (s.conditions ?? []).map((c, i) => ({ i, name: c.name, value: c.value, valued: !!c.valued, mode: c.mode || "set" })),
       riderModes: { set: "the highest counts", increase: "increase the value" },
       isTalent: t === "talent",
+      autoRanks: TWOD12.automationRanks,
       // v0.0.186: the Talent's Category and Prerequisites as data (talents.mjs).
       ...(t === "talent" ? {
         talentGroups: TWOD12.talentGroups, prereqKinds: TWOD12.prereqKinds, prereqModes: { all: "all of these", any: "any one of these" },

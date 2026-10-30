@@ -20,7 +20,7 @@ export function passiveSources(actor) {
       const flags = appliedFlags({ settings, description: it.system?.description ?? "", hover: it.system?.hover ?? "", expireOn: new Set(), expireAll: false }, null);
       flags.minEscalation = min;
       flags.passive = true;
-      out.push({ id: `passive-${it.id}-${min}`, name: it.name, disabled: false, statuses: new Set(), flags: { [F]: flags }, getFlag: (scope, k) => (scope === F ? flags[k] : undefined) });
+      out.push({ id: `passive-${it.id}-${min}`, name: it.name, srcUuid: it.getFlag?.(F, "sourceUuid") || it.uuid || "", disabled: false, statuses: new Set(), flags: { [F]: flags }, getFlag: (scope, k) => (scope === F ? flags[k] : undefined) });
     }
   }
   return out;

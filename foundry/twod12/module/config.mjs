@@ -142,6 +142,9 @@ export const TWOD12 = {
     move: "You must have a Speed of at least 1."
   },
   effectSettings: { boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", speed: "Speed", light: "Token Light", note: "Note", ignore: "Ignore a Bane", rally: "Rally Points", turnstart: "Effect each turn" },
+  // v0.0.189 (Lucas, after Draw Steel's Codex): how much of a card Foundry does for you, as a chip on the card. "" shows nothing.
+  automationRanks: { "": "(not set)", none: "Not implemented", bronze: "Bronze", silver: "Silver", gold: "Gold" },
+  automationHints: { none: "Not implemented: read the card and do it by hand", bronze: "Bronze: partly automated (buttons or an effect to apply; the rest by hand)", silver: "Silver: mostly automated (one part by hand)", gold: "Gold: fully automated" },
   // v0.0.186 (pack OT in the book, 16-talents.md): a Talent's Category, and the kinds of Prerequisite the Talent picker can check.
   talentGroups: { combat: "Combat", mobility: "Mobility", magic: "Magic", skill: "Skill" },
   prereqKinds: { talent: "A Talent", level: "A Level", trait: "An Action with a trait", attribute: "An Attribute", other: "Other (not checked)" },
@@ -234,7 +237,9 @@ export const cardVars = hex => {
 };
 
 /** The title bar of an Action card: name on the left, category and cost on the right. */
-export const cardHead = (name, cat, costHtml, freq = "") => `<div class="ahead"><b>${escAttr(name)}</b><div class="aright"><span class="atop">${freq && TWOD12.frequencies[freq] ? `<span class="afreq">${escAttr(TWOD12.frequencies[freq])}</span>` : ""}${costHtml ? `<span class="aps">${costHtml}</span>` : ""}</span>${cat ? `<span class="acat">${escAttr(cat)}</span>` : ""}</div></div>`;
+/** v0.0.189: the automation rank as a small chip (nothing when it isn't set). */
+export const autoChip = rank => (rank && TWOD12.automationRanks[rank] && rank !== "" ? `<span class="autochip auto-${rank}" data-tooltip="${escAttr(TWOD12.automationHints[rank] ?? "")}">${escAttr(TWOD12.automationRanks[rank])}</span>` : "");
+export const cardHead = (name, cat, costHtml, freq = "", auto = "") => `<div class="ahead"><b>${escAttr(name)}${autoChip(auto)}</b><div class="aright"><span class="atop">${freq && TWOD12.frequencies[freq] ? `<span class="afreq">${escAttr(TWOD12.frequencies[freq])}</span>` : ""}${costHtml ? `<span class="aps">${costHtml}</span>` : ""}</span>${cat ? `<span class="acat">${escAttr(cat)}</span>` : ""}</div></div>`;
 /** Damage on cards: a filled heart for Body, a filled brain for Mind, and each damage type in its own color with its icon. */
 export const poolIcon = pool => pool === "M" ? '<i class="fa-solid fa-brain dt-mind" data-tooltip="Mind damage"></i>'
   : pool === "C" ? '<span class="dt-choose" data-tooltip="Body or Mind: the origin chooses"><i class="fa-solid fa-heart dt-body"></i><i class="fa-solid fa-brain dt-mind"></i></span>'

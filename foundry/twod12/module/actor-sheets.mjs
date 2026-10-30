@@ -5,7 +5,7 @@ import { weaponRanges } from "./weaponrange.mjs";
 import { defenseBonus, steadinessOf } from "./defense.mjs";
 import { setWorn } from "./armor.mjs";
 import { bumpExhausted, isExhaustedFx, exhaustedClick } from "./sleep.mjs";
-import { TWOD12, orderTraits, apLabel, traitChevrons, categoryText, unconsciousDoom, doomStatus, cardColorFor, effectiveFrequency, distanceText, areaText, lineColorFor, KIND_LINE, SIZE_NAMES, isTalentAction, tagChoices } from "./config.mjs";
+import { autoChip, TWOD12, orderTraits, apLabel, traitChevrons, categoryText, unconsciousDoom, doomStatus, cardColorFor, effectiveFrequency, distanceText, areaText, lineColorFor, KIND_LINE, SIZE_NAMES, isTalentAction, tagChoices } from "./config.mjs";
 import { rollCheck, rollTable, esc, sgn } from "./roll.mjs";
 import { useAction, askRoll, adjLabelOf } from "./actions.mjs";
 import { handleDrop } from "./grants.mjs";
@@ -147,7 +147,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       if (!detail && String(sys.hover ?? "").trim()) detail = short(tipOf(it));   // its own hover text; the description shows when the card is opened
       const key = it.id ?? it.uuid;
       // Opened: its description first, then what it grants.
-      return { key, id: it.id, name: it.name, kind, kcls: kind.toLowerCase(), detail: o.detail ?? detail, tip: tipOf(it), rows, open: !!this._openFeat?.has(key), canRemove: !!o.canRemove,
+      return { key, id: it.id, name: it.name, auto: autoChip(sys.automation), kind, kcls: kind.toLowerCase(), detail: o.detail ?? detail, tip: tipOf(it), rows, open: !!this._openFeat?.has(key), canRemove: !!o.canRemove,
         text: (await TE.enrichHTML(sys.description ?? "", { relativeTo: it })).trim() || (rows.length ? "" : "<p><em>No description.</em></p>") };
     };
     // Class: the granted Features in your order (level order at first), then the ones not reached yet.

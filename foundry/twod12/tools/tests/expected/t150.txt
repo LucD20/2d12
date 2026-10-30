@@ -1,5 +1,5 @@
 the compendium Paladin's class copy: body, mind | picks: pal1hall, pal1tal, pal1enc, pal1pass, pal1act
-Class tab, level 1: granted Divine Power, Font of Mercy | picks Hallmark Action: Smite | Encounter Pick: Holy Wrath | Passive Escalation Pick: Hallowed Stance | Active Escalation Pick: Divine Surge | not reached Talent (2), Daily Pick (3), Passive Escalation Pick (3)
+Class tab, level 1: granted Divine Power, Font of Mercy | picks Hallmark Action: Smite | Encounter Pick: Holy Wrath | Passive Escalation Pick: Radiant Zeal | Active Escalation Pick: Divine Surge | not reached Talent (2), Daily Pick (3), Passive Escalation Pick (3)
 Talent slots at level 1: [{"key":"class:1:pal1tal:0","feature":"Talent (Level 1)"}] | Heavy Blows is in it: class:1:pal1tal:0
 at level 3 (nothing chosen yet): slots Talent (Level 1), Talent (Level 2) | not reached: 0
 hasLevels: the compendium classes Paladin true, Archer true | a class without levels: false

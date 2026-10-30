@@ -12,7 +12,7 @@ const C = await import(ROOTURL + "tools/content.mjs");
 const src = f => fs.readFileSync(ROOT + f, "utf8");
 
 // A level 2 Paladin built like the compendium's (its items carry classLevel and classSection).
-const pc = JSON.parse(fs.readFileSync(ROOT + "packs/_source/pcs/paladin-smite.pc.json", "utf8"));
+const pc = JSON.parse(fs.readFileSync(ROOT + "packs/_source/pcs/paladin-1-smite-heavy-blows.pc.json", "utf8"));
 const mkItems = list => list.map(i => ({ ...i, id: i._id, getFlag: (s, k) => i.flags?.twod12?.[k] }));
 const actorOf = (level, items) => { const its = mkItems(items); return { type: "character", system: { level }, items: Object.assign(its, { get: id => its.find(i => i.id === id) }), itemTypes: { class: its.filter(i => i.type === "class") } }; };
 const a1 = actorOf(1, pc.items), cls = a1.itemTypes.class[0];

@@ -1,6 +1,7 @@
 import { triggerNotices } from "./triggers.mjs";
 import { techniqueLock, TECHNIQUE_AT, masteryAfterRoll } from "./mastery.mjs";
 import { setQuarry } from "./archer.mjs";
+import { pickTargets, needsTargets } from "./targeting.mjs";
 import { ignoredBy, markOnce } from "./automation.mjs";
 import { splitModes, splitView, SPLIT_LABEL } from "./split.mjs";
 import { canPayEscalation, spendEscalation } from "./escalation.mjs";
@@ -123,6 +124,8 @@ const oddsText = chk => {
   return { p, text: `T1 ${pct(p[0])} \u00b7 T2 ${pct(p[1])} \u00b7 T3 ${pct(p[2])}`, html: `T1 ${pct(p[0])} &middot; T2 ${pct(p[1])} &middot; <b>T3 ${pct(p[2])}</b>` };
 };
 const oddsRow = chk => `<div class="oddsrow" data-tooltip="Chance of each tier for this roll">Odds: ${oddsText(chk).html}</div>`;
+/** v0.0.189: the name of what a bonus comes from, as a link that opens it (Foundry's content links); plain text when it has no item. */
+export const srcLink = (name, uuid) => (uuid ? `<a class="content-link" draggable="true" data-link data-uuid="${esc(uuid)}" data-tooltip="Open ${esc(name)}">${esc(name)}</a>` : esc(name));
 /** Does this tier need a Damage button? attrFrom: the lowest Tier on which the Attribute is added (0: never; true: Weapon, from Tier 2). */
 const needsDamage = (attrFrom, tier, insts, fx) => { const from = attrFrom === true ? 2 : Number(attrFrom) || 0; return tier > 0 && (insts.some(i => i.useW || i.dice || i.useAt) || (from > 0 && tier >= from) || fx.length > 0); };
 
@@ -339,6 +342,11 @@ export async function useAction(actor, item, opts = {}) {
     }
   }
   const s = actor.system, it = item.system;
+  // v0.0.189 (Lucas): an Action that targets, used with too few creatures targeted, asks for them on the map (targeting.mjs) instead of refusing.
+  if (needsTargets(it)) {
+    const need = Math.max(1, targetsNeeded(it.targets));
+    if (game.user.targets.size < need && (await pickTargets(need, item.name)) === false) return;
+  }
   // An Action that marks the target needs it (targeted).
   if (it.marksTarget && !game.user.targets.size) return ui.notifications.warn(`Target the creature ${item.name} marks first.`);
   // A Save Action (the Save trait): you don't roll; each target rolls the Save named on its Vs. line against 11 + your Modifier (Save Actions in the rules).
@@ -749,7 +757,8 @@ export async function useAction(actor, item, opts = {}) {
   const effWho = mres && !effectsOff && mres.some(r => r.chk.tier === 1) ? ` \u2014 ${collapseNames(mres.filter(r => r.chk.tier >= 2).map(r => r.name))}` : "";
   const effLabel = version.noTiers || saveAct ? "Effects" : `Effects (Tier 2+)${effWho}`;
   const effectsHtml = version.effects ? `<div class="effects${effectsOff ? " off" : ""}${rowParts.length || bonuses.length ? " sep" : ""}"><div class="eh">${effLabel}</div><div class="et">${await enrich(version.effects, item)}</div></div>` : "";
-  const bonusRows = bonuses.map(b => `<div class="bonusrow"><i class="fa-solid fa-sparkle"></i> <b>${esc(b.effect)}</b>: ${b.dmg ? `+${esc(b.dmg)} ${esc(TWOD12.subtypes[b.sub] ?? "")}`.trim() : ""}${b.text ? ` ${esc(b.text)}` : ""}</div>`).join("");
+  // v0.0.189: the name opens the item it comes from (a Talent, a Feature, an Effect), for everyone who reads the card.
+  const bonusRows = bonuses.map(b => `<div class="bonusrow"><i class="fa-solid fa-sparkle"></i> <b>${srcLink(b.effect, b.srcUuid)}</b>: ${b.dmg ? `+${esc(b.dmg)}${b.sub ? ` ${esc(TWOD12.subtypes[b.sub] ?? "")}` : ""}` : ""}${b.text ? ` ${esc(b.text)}` : ""}</div>`).join("");
   const dmgNeeded = (t, bon) =>
     needsDamage(
       src.attrMode !== "none" ? (src.attrMode === "all" ? 1 : 2) : 0,
@@ -770,7 +779,7 @@ export async function useAction(actor, item, opts = {}) {
   const areaRow = areaButton(it) && !areaPlaced ? `<div class="trow arearow">${await enrich(areaButton(it), item)}</div>` : "";
   const setupRow = it.setup ? `<div class="trow setuprow"><b>Setup:</b> ${await enrich(setupFor(it.setup, setupDone), item)}</div>` : "";
   const html = `<div class="twod12 chat action" style="${cardVars(color)}">
-    ${cardHead(item.name, categoryText(it), apIcon(version.ap, it.reaction), effectiveFrequency(it))}
+    ${cardHead(item.name, categoryText(it), apIcon(version.ap, it.reaction), effectiveFrequency(it), it.automation)}
     ${flavorHtml(it)}
     ${useTraits.size ? `<div class="traits">${traitsHtml(useTraits)}</div>` : ""}
     ${trow}${areaRow}${setupRow}
@@ -842,7 +851,8 @@ export async function useAction(actor, item, opts = {}) {
   if (it.marksTarget) { try { await setQuarry(actor, [...game.user.targets][0] ?? null); } catch (e) { console.warn("twod12 | marking", e); } }
   // Mastery: a Tier 3 on a Weapon Action with a weapon gives +1 Mastery with that kind of weapon (once per Action; characters only).
   if (!version.noTiers) {
-    try { await masteryAfterRoll(actor, weapon, src.kind === "weapon", mres ? mres.map(r => r.chk.tier) : [tier]); } catch (e) { console.warn("twod12 | Mastery", e); }
+    // v0.0.189: a forced Tier (testing) gives no Mastery.
+    try { if (!forcedTier) await masteryAfterRoll(actor, weapon, src.kind === "weapon", mres ? mres.map(r => r.chk.tier) : [tier]); } catch (e) { console.warn("twod12 | Mastery", e); }
   }
   // A version that rolls applies its automatic effects on use too, for the Tier each creature got: the tier's effects, the Effects row
   // on Tier 2 or 3, and the effects your bonuses add (Rimebrand's Hindered). Conditional ones stay on the damage card's Effects button.
@@ -882,7 +892,7 @@ export async function rollDamage(message) {
   const weapon = f.weaponId ? actor.items.get(f.weaponId) : null;
   // One creature's damage: its tier, its bonuses, and only that creature as the target of the damage and its effects.
   const rollFor = async (tier, bonus, targets, who) => {
-    const insts = [...version[`t${tier}`], ...bonus.filter(b => b.dmg).map(b => ({ pool: b.pool, useW: false, wCount: 1, dice: b.dmg, useAt: false, subtype: b.sub }))];
+    const insts = [...version[`t${tier}`], ...bonus.filter(b => b.dmg).map(b => ({ pool: b.pool, useW: false, wCount: 1, dice: b.dmg, useAt: false, subtype: b.sub, source: b.effect, srcUuid: b.srcUuid ?? "" }))];
     const fx = [...(tier >= 2 ? (version.fx?.all ?? []) : []), ...(version.fx?.[`t${tier}`] ?? []), ...bonus.filter(b => b.fxUuid).map(b => ({ uuid: b.fxUuid, mode: "auto" }))]
       .filter(x => !f.fxOnUse || x.mode !== "auto");   // cards from v0.0.144 on applied their automatic effects when the Action was used
     const rolls = [];
@@ -890,7 +900,7 @@ export async function rollDamage(message) {
     const resolved = [];
     for (const inst of insts) resolved.push(await resolveInstance(inst, ctx));
     const comps = [];
-    for (const r of resolved) for (const c of r.comps) comps.push({ pool: r.inst.pool || "B", sub: c.sub, kind: c.kind, formula: c.formula, total: c.total, dice: c.dice });
+    for (const r of resolved) for (const c of r.comps) comps.push({ pool: r.inst.pool || "B", sub: c.sub, kind: c.kind, formula: c.formula, total: c.total, dice: c.dice, ...(r.inst.source ? { src: r.inst.source, srcUuid: r.inst.srcUuid } : {}) });   // v0.0.189: bonus damage names its source
     let chip = "";
     const dmgRes = resolved;
     // [Mod]: the Weapon Modifier on Tiers 2 and 3 (to the weapon's damage), the Signature Modifier for a [Signature, Weapon] Action (v0.0.181); nothing for Power, Signature and Attribute Actions. Old cards: isWeapon / attrMode "all".

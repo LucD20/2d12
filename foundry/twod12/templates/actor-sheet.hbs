@@ -14,7 +14,7 @@
 <div class="fcard{{#if locked}} locked{{/if}}{{#if open}} open{{/if}}" {{#if id}}data-item-id="{{id}}"{{/if}} {{#if uuid}}data-item-uuid="{{uuid}}"{{/if}} data-fkey="{{key}}">
   <div class="fc-head">
     {{#if id}}<i class="fa-solid fa-grip-vertical grip" data-tooltip="Drag to reorder"></i>{{else}}<span></span>{{/if}}
-    <a class="fc-toggle" data-action="toggleFeat"><i class="fa-solid fa-chevron-right fc-chev" aria-hidden="true"></i><span class="fc-name" {{#if tip}}data-tooltip="{{tip}}"{{/if}}>{{name}}</span><span class="ktag k-{{kcls}}">{{kind}}</span><span class="fc-detail">{{detail}}</span></a>
+    <a class="fc-toggle" data-action="toggleFeat"><i class="fa-solid fa-chevron-right fc-chev" aria-hidden="true"></i><span class="fc-name" {{#if tip}}data-tooltip="{{tip}}"{{/if}}>{{name}}</span>{{{auto}}}<span class="ktag k-{{kcls}}">{{kind}}</span><span class="fc-detail">{{detail}}</span></a>
     <span class="fc-btns">{{#if id}}<a data-action="openItem" data-tooltip="Edit"><i class="fa-solid fa-pen-to-square"></i></a>{{/if}}{{#if canRemove}}<a data-action="confirmDelete" data-tooltip="Remove"><i class="fa-solid fa-xmark"></i></a>{{/if}}</span>
   </div>
   {{#if text}}<div class="fc-desc"><div class="fc-text">{{{text}}}</div></div>{{/if}}

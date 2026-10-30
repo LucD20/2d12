@@ -5,7 +5,7 @@ import fs from "node:fs";
 globalThis.foundry ??= { utils: {} };
 const G = await import(ROOTURL + "module/config.mjs");
 const C = await import(ROOTURL + "tools/content.mjs");
-const get = n => C.docs.find(d => d.name === n);
+const get = n => C.docs.find(d => d.name === n && d.type !== "effect") ?? C.docs.find(d => d.name === n);   // v0.0.189: Pinning Shot is also an Effect
 console.log("Projectile is a weapon property:", G.TWOD12.weaponTraits.projectile, "| Shot and Save are Action traits:", G.TWOD12.traits.shot, G.TWOD12.traits.save, "| Crossbow:", [...get("Crossbow").system.traits].sort().join(", "));
 const cls = get("Archer").system;
 console.log("Archer:", `Body x${cls.bodyMult}, Mind x${cls.mindMult}, Rally +${cls.rallyMod}, Speed +${cls.speedMod}, ${cls.armorTraining} armor`, "| features:", cls.features.map(f => C.docs.find(d => d.type === "feature" && C.uuidOf("features", d.name) === f.uuid)?.name ?? "?").join(", "));

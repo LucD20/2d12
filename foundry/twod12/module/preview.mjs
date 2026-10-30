@@ -68,7 +68,7 @@ export async function buildPreviews(ctx) {
     const pvSetup = it.setup ? `<div class="trow setuprow"><b>Setup:</b> ${await enrich(setupFor(it.setup, ctx.setupDone), item)}</div>` : "";
     const check = ctx.mod === null || v.noTiers ? "" : `<div class="pv-check">${esc(ctx.checkLabel)}: 2d12 ${sgnN(ctx.mod)} vs DC <b class="pv-dc">${ctx.dc}</b> <span class="pv-odds"></span></div>`;
     out[v.ap] = `<div class="twod12 chat action pv" style="${cardVars(color)}">
-      ${cardHead(item.name, categoryText(it), apIcon(v.ap, it.reaction), effectiveFrequency(it))}
+      ${cardHead(item.name, categoryText(it), apIcon(v.ap, it.reaction), effectiveFrequency(it), it.automation)}
       ${flavorHtml(it)}
       ${it.traits.size ? `<div class="traits">${traitChevrons(it.traits)}</div>` : ""}
       ${pvMeta}${pvArea}${pvSetup}
@@ -141,7 +141,7 @@ export async function buildRawCard(item) {
   const setupRow = it.setup ? `<div class="trow setuprow"><b>Setup:</b> ${await enrich(it.setup, item)}</div>` : "";
   const tabs = it.versions.length > 1 ? `<div class="vtabs">${it.versions.map((v, vi) => `<a class="vtab${vi ? "" : " on"}" data-vtab="${vi}">${apIcon(v.ap, it.reaction)}</a>`).join("")}</div>` : "";
   return `<div class="twod12 chat action rawcard" style="${cardVars(color)}">
-    ${cardHead(item.name, categoryText(it), apLabel(it.versions.map(v => v.ap), it.reaction), effectiveFrequency(it))}
+    ${cardHead(item.name, categoryText(it), apLabel(it.versions.map(v => v.ap), it.reaction), effectiveFrequency(it), it.automation)}
     ${flavorHtml(it)}
     ${it.traits.size ? `<div class="traits">${traitChevrons(it.traits)}</div>` : ""}
     ${metaRowHtml({ escalation: it.escalation ?? 0, frequency: effectiveFrequency(it), targetText: it.targets, distance: distanceText(it), area: areaText(it), vs: vsText(it, { fists: item.getFlag?.("twod12", "basic") === "fists" }), requirements: it.requirements, trigger: it.trigger, reactionKind: it.reactionKind, self: it.traits.has("self") })}${areaRow}${setupRow}
@@ -202,7 +202,7 @@ export async function buildInfoCard(item) {
   const head = `${flavorHtml(s)}${s.traits?.size ? `<div class="traits">${traitChevrons(s.traits)}</div>` : ""}${meta.length ? `<div class="trow">${meta.join('<i class="fa-solid fa-sparkle sep"></i>')}</div>` : ""}`;
   const text = body.trim() ? `<div class="anote">${highlightText(body)}</div>` : "";
   return `<div class="twod12 chat action rawcard infocard">
-    ${cardHead(item.name, cat, "")}
+    ${cardHead(item.name, cat, "", "", s.automation)}
     ${head}${head && (text || blocks.length) ? `<hr class="cdiv">` : ""}${text}${blocks.join("")}</div>`;
 }
 

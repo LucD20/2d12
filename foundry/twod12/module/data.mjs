@@ -284,6 +284,7 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       talents: int(0, 0),
       // v0.0.187: an Escalation Passive (the Features tab shows it in its Escalation section).
       escalationPassive: bool(),
+      automation: choice(TWOD12.automationRanks, ""),   // v0.0.189: Not implemented / Bronze / Silver / Gold
       // Defense bonuses: +bonus to the DC of actions that roll "vs" this attribute (and carry all the listed tags, e.g. "pushed").
       // A passive: settings that work by themselves while the creature has it (always, or while its Escalation is at least passiveEscalation).
       settings: settingsField(),
@@ -355,7 +356,8 @@ export class ActionData extends foundry.abstract.TypeDataModel {
       vs: choice(TWOD12.vsChoices),
       frequency: choice(TWOD12.frequencies),
       escalation: int(0, 0),   // the Escalation it costs on top of its AP (an Escalation Action); 0: none
-      marksTarget: bool(),   // v0.0.186: using it marks the targeted creature (Mark Quarry); settings "only against my marked target" read the mark
+      marksTarget: bool(),
+      automation: choice(TWOD12.automationRanks, ""),   // v0.0.189   // v0.0.186: using it marks the targeted creature (Mark Quarry); settings "only against my marked target" read the mark
       versions: new ArrayField(
         new SchemaField({
           ap: int(1, 0),   // 0: a 0 AP Action (only on your turn), or a 0R Reaction
@@ -437,6 +439,7 @@ export class TalentData extends foundry.abstract.TypeDataModel {
       group: choice(TWOD12.talentGroups, "combat"),
       prereqs: new ArrayField(new SchemaField({ kind: choice(TWOD12.prereqKinds, "talent"), name: str(), value: int(0) })),
       prereqMode: choice({ all: "all of these", any: "any one of these" }, "all"),
+      automation: choice(TWOD12.automationRanks, ""),   // v0.0.189
       theme: str()
     };
   }
@@ -491,6 +494,7 @@ export class EffectData extends foundry.abstract.TypeDataModel {
       isCondition: bool(),
       valued: bool(),   // a condition with a value (Empowered 2): the value is kept on the effect on the creature
       selfApplied: bool(),
+      automation: choice(TWOD12.automationRanks, ""),   // v0.0.189
       minEscalation: int(0, 0),   // a passive that works only while its owner's Escalation is at least this (0: always)
       linked: str(),   // other conditions this one brings with it, by name ("Hindered"); they end when this one does
       conditions: new ArrayField(new SchemaField({ uuid: str(), name: str(), value: int(1, 0), valued: bool(), mode: choice({ set: "The highest counts", increase: "Increase the value", halfLevel: "Half the creature's level, rounded up (Squeezing)" }, "set") })),   // conditions this effect applies, each with its value; they end when this one does

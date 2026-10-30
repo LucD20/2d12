@@ -334,6 +334,6 @@ While your Escalation is 1 or more, the first time each round you deal damage to
 
 | 0 AP |
 |---|
-| Evade 2. You gain +1 Defense until the start of your next turn. |
+| Evade 2. You gain +1 Defense for 1 round. |
 
 </div>

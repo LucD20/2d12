@@ -415,13 +415,17 @@ add("actions", "action", "Hunter's Focus", "icons/svg/target.svg", {"category": 
 add("actions", "action", "Deadeye", "icons/svg/target.svg", { category: "Archer Feature", level: 1, traits: ["ranged", "shot", "strike", "weapon"], frequency: "daily", targets: "One creature", distance: "weapon", versions: [
   vt(1, [["1WB", ""], ["1WB, 1d6BPi", ""], ["1WB, 2d6BPi", "Prone"]], "This Action is Favored (tick Favored in the roll dialog).")] }, "Archer");
 add("actions", "action", "Steady Aim", "icons/svg/target.svg", {"category": "Archer Escalation", "level": 1, "traits": ["focus", "self"], "frequency": "round", "distance": "self", "escalation": 1, versions: [noRoll(0, "Your next [Shot, Strike] gains 1 Boon, and all of the weapon's ranges increase by 5.")] }, "Archer");
-add("effects", "effect", "Vanish (+1 Defense)", "icons/svg/invisible.svg", { selfApplied: true, duration: dur("rounds"), description: "<p>+1 Defense until the start of your next turn (Vanish).</p>", settings: [{ type: "defense", defKind: "all", defValue: 1 }] }, "Archer");
+add("effects", "effect", "Vanish (+1 Defense)", "icons/svg/invisible.svg", { selfApplied: true, duration: dur("rounds"), description: "<p>+1 Defense for 1 round (Vanish).</p>", settings: [{ type: "defense", defKind: "all", defValue: 1 }] }, "Archer");
 add("actions", "action", "Vanish", "icons/svg/target.svg", { category: "Archer Escalation", level: 1, traits: ["self"], frequency: "round", distance: "self", escalation: 1, versions: [
-  noRoll(0, "@Move[evade|distance:2]. You gain +1 Defense until the start of your next turn.", [uuidOf("effects", "Vanish (+1 Defense)")])] }, "Archer");
-add("actions", "action", "Pinning Shot", "icons/svg/target.svg", {"category": "Archer Escalation", "level": 1, "traits": ["ranged", "shot", "strike", "weapon"], "frequency": "round", "targets": "One creature", "distance": "weapon", "escalation": 2, versions: [noRoll(1, "Make a @Use[Weapon Attack|label:[Ranged] Weapon Attack (1A)]. On a Tier 2 or 3, the target is Immobilized (EoT).")] }, "Archer");
-add("effects", "effect", "Twin Shot (+1d6 Pi)", "icons/svg/target.svg", { selfApplied: true, duration: dur("eot"), expireOn: ["strike"], description: "<p>Your next [Ranged, Shot] Weapon Attack this turn deals an extra [B] 1d6 Pi to each creature (Twin Shot).</p>", settings: [sBonus("1d6", "B", "Pi", P(["ranged", "shot", "strike"]))] }, "Archer");
+  noRoll(0, "@Move[evade|distance:2]. You gain +1 Defense for 1 round.", [uuidOf("effects", "Vanish (+1 Defense)")])] }, "Archer");
+// v0.0.189 (Lucas): Pinning Shot and Twin Shot give their Weapon Attack as a granted use (the sheet's button turns blue), as Double Shot does.
+const grant1 = { type: "grant", grantAction: "Weapon Attack", grantCount: 1, grantAp: 0, grantDistinct: false, boons: 0, banes: 0 };
+add("effects", "effect", "Pinning Shot", "icons/svg/net.svg", { selfApplied: true, duration: dur("eot"), expireOn: ["strike"], description: "<p>Your next Weapon Attack this turn is free; on a Tier 2 or 3 the target is Immobilized (EoT) (Pinning Shot).</p>", settings: [grant1, sBonus("", "B", "", P(["strike"]), { tiers: ["t2", "t3"], text: "Immobilized (EoT)", fxUuid: uuidOf("conditions", "Immobilized") })] }, "Archer");
+add("actions", "action", "Pinning Shot", "icons/svg/target.svg", { category: "Archer Escalation", level: 1, traits: ["ranged", "shot", "strike", "weapon"], frequency: "round", targets: "One creature", distance: "weapon", escalation: 2, versions: [
+  noRoll(1, "Make a [Ranged] Weapon Attack (1A). On a Tier 2 or 3, the target is Immobilized (EoT).", [uuidOf("effects", "Pinning Shot")])] }, "Archer");
+add("effects", "effect", "Twin Shot", "icons/svg/target.svg", { selfApplied: true, duration: dur("eot"), expireOn: ["strike"], description: "<p>Your next Weapon Attack this turn is free: target two creatures no more than 5 squares apart; it deals an extra [B] 1d6 Pi to each of them (Twin Shot).</p>", settings: [grant1, sBonus("1d6", "B", "Pi", P(["ranged", "shot", "strike"]))] }, "Archer");
 add("actions", "action", "Twin Shot", "icons/svg/target.svg", { category: "Archer Escalation", level: 1, traits: ["ranged", "shot", "strike", "weapon"], frequency: "round", targets: "Two creatures", distance: "weapon", escalation: 3, versions: [
-  noRoll(1, "Target two different creatures no more than 5 squares apart and make one @Use[Weapon Attack|label:[Ranged, Shot] Weapon Attack (1A)]: its result is compared to each of them. It deals an extra [B] 1d6 Pi to each of them.", [uuidOf("effects", "Twin Shot (+1d6 Pi)")])] }, "Archer");
+  noRoll(1, "Make one [Ranged, Shot] Weapon Attack (1A) and compare its result to two different creatures no more than 5 squares apart (target both). It deals an extra [B] 1d6 Pi to each of them.", [uuidOf("effects", "Twin Shot")])] }, "Archer");
 add("actions", "action", "Perfect Shot", "icons/svg/target.svg", {"category": "Archer Escalation", "level": 1, "traits": ["focus", "self"], "frequency": "round", "distance": "self", "escalation": 3, versions: [noRoll(0, "Your next [Shot, Strike] is Favored and Empowered 2, and ignores Cover.")] }, "Archer");
 add("features", "feature", "Marked Quarry", "icons/svg/target.svg", { category: "Archer Feature", level: 1, description: "<p>At the start of each encounter, choose one enemy as your <b>Marked Quarry</b>. You gain 1 Boon on [Shot, Strike] Actions against them, and those Actions deal [B] [Mod] on a Tier 1. When they die or go Down, you can choose a new Marked Quarry (0R [Focus]). Once per turn, you can change your Marked Quarry during an encounter by spending 1 AP [Focus].</p>", settings: [sBoon(1, P(["shot", "strike"]), { vsMarked: true }), sBonus("[Mod]", "B", "", P(["shot", "strike"]), { tiers: ["t1"], vsMarked: true })], actions: [uuidOf("actions", "Mark Quarry")] }, "Archer");
 add("features", "feature", "Bow Mastery", "icons/svg/target.svg", { category: "Archer Feature", level: 1, description: "<p>Choose one Projectile weapon, such as a bow or a crossbow. You start with **3 Mastery** with it, so its Weapon Technique is unlocked (see Mastery).</p>" }, "Archer");
@@ -449,19 +453,25 @@ const copyDoc = (who, type, name, flags = {}, extra = {}) => {
 const pcs = [];
 // v0.0.185: built as the class window would: the class copy records the choices of level 1 (flags classPicks / classAttrs, chosenAttrs) and
 // every item the class gave carries classLevel and classSection (a Talent also its slot), so levelling and re-dropping the class work on them.
-const pc = ({ name, img, species, chosen, cls, attrs, picks, weapon, armor = "", extras = [] }) => {
+// v0.0.189 (Lucas: "too similar"): picks by level ({ 1: {...}, 2: {...}, 3: {...} }), so a PC can be built at level 3 as the class window would.
+const pc = ({ name, img, species, chosen, cls, attrs, picks, level = 1, weapon, armor = "", extras = [] }) => {
   const c = docOf("class", cls), lv1 = c.system.levels[0].sections, attrSec = lv1.find(x => x.kind === "attr");
-  const picked = Object.fromEntries(Object.entries(picks).map(([id, n]) => [id, [uuidOf(PACK_OF[docOf(lv1Type(n), n).type], n)]]));
+  const byLevel = typeof Object.values(picks)[0] === "string" ? { 1: picks } : picks;
+  const pickedAt = L => Object.fromEntries(Object.entries(byLevel[L] ?? {}).map(([id, n]) => [id, [uuidOf(PACK_OF[docOf(lv1Type(n), n).type], n)]]));
+  const classPicks = Object.fromEntries(Array.from({ length: level }, (_, i) => [i + 1, pickedAt(i + 1)]));
   const items = [copyDoc(name, "species", species, {}, chosen ? { chosen } : {}),
-    copyDoc(name, "class", cls, { classPicks: { 1: picked }, classAttrs: { 1: attrs } }, { chosenA: attrs[0], chosenB: attrs[1], chosenAttrs: attrs, chosenWeapon: "", chosenMagic: "", modPriority: "weapon" })];
+    copyDoc(name, "class", cls, { classPicks, classAttrs: { 1: attrs } }, { chosenA: attrs[0], chosenB: attrs[1], chosenAttrs: attrs, chosenWeapon: "", chosenMagic: "", modPriority: "weapon" })];
   if (!attrSec) throw new Error(`${cls}: no Attribute section at level 1`);
-  const give = (n, section, kind) => {
-    const type = lv1Type(n), it = copyDoc(name, type, n, { classLevel: 1, classSection: section, ...(type === "feature" ? { grantedBy: "class", level: 1 } : {}), ...(kind === "talent" ? { slot: `class:1:${section}:0` } : {}) });
+  const give = (n, section, kind, L) => {
+    const type = lv1Type(n), it = copyDoc(name, type, n, { classLevel: L, classSection: section, ...(type === "feature" ? { grantedBy: "class", level: L } : {}), ...(kind === "talent" ? { slot: `class:${L}:${section}:0` } : {}) });
     items.push(it);
     for (const u of (it.system.actions ?? [])) { const a = byUuid(u); if (a) items.push(copyDoc(name, "action", a.name, { [type === "talent" ? "talentId" : "featureId"]: it._id })); }
   };
-  for (const x of lv1.filter(x => x.kind === "items" && x.mode === "granted")) for (const u of x.items) give(byUuid(u).name, x.id, x.kind);
-  for (const [id, n] of Object.entries(picks)) give(n, id, lv1.find(x => x.id === id)?.kind);
+  for (let L = 1; L <= level; L++) {
+    const secs = c.system.levels[L - 1]?.sections ?? [];
+    for (const x of secs.filter(x => x.kind === "items" && x.mode === "granted")) for (const u of x.items) give(byUuid(u).name, x.id, x.kind, L);
+    for (const [id, n] of Object.entries(byLevel[L] ?? {})) { const sec = secs.find(x => x.id === id); if (!sec) throw new Error(`${cls} level ${L}: no section ${id}`); give(n, id, sec.kind, L); }
+  }
   for (const [type, n] of extras) items.push(copyDoc(name, type, n, {}));
   const w = copyDoc(name, "weapon", weapon, {}, { wielded: true });
   items.push(w);
@@ -469,18 +479,23 @@ const pc = ({ name, img, species, chosen, cls, attrs, picks, weapon, armor = "",
   for (const k of Object.keys(BASIC_ACTIONS)) { const d = basicItemData(k); items.push({ _id: idOf("Item", `${name}:basic:${d.name}`), name: d.name, type: "action", img: d.img, system: d.system, flags: d.flags, effects: [], folder: null, sort: 0, ownership: { default: 0 } }); }
   { const f = fistsItemData(); items.push({ _id: idOf("Item", `${name}:Fists`), name: f.name, type: "weapon", img: f.img, system: f.system, flags: f.flags, effects: [], folder: null, sort: 0, ownership: { default: 0 } }); }
   if (armor) items.push(copyDoc(name, "armor", armor, {}, { worn: true }));
-  pcs.push({ name, img, system: { level: 1 }, items });
+  pcs.push({ name, img, system: { level }, items });
 };
 // The type of an item by its name (a Feature, a Talent or an Action), for the picks above.
 // v0.0.188: a Talent before the Action it grants (Aim).
 function lv1Type(n) { const d = ["talent", "feature", "action"].map(t => docs.find(x => x.name === n && x.type === t)).find(Boolean); if (!d) throw new Error(`No item called ${n}`); return d.type; }
 // v0.0.183: the four level 1 builds of the ruler (book/ruler/classes: paladin-smite-1, paladin-hands-1, archer-double-1, archer-rolling-1), Humans all.
-for (const [hall, img] of [["Smite", "icons/svg/sun.svg"], ["Lay On Hands", "icons/svg/regen.svg"]])
-  pc({ name: `Paladin (${hall})`, img, species: "Human", chosen: ["body", "appeal"], cls: "Paladin", attrs: ["body", "mind"],
-    picks: { pal1hall: hall, pal1tal: "Heavy Blows", pal1enc: "Holy Wrath", pal1pass: "Hallowed Stance", pal1act: "Divine Surge" }, weapon: "Greatsword", armor: "Heavy Armor" });
-for (const [hall, img] of [["Double Shot", "icons/svg/target.svg"], ["Rolling Shot", "icons/svg/wing.svg"]])
-  pc({ name: `Archer (${hall})`, img, species: "Human", chosen: ["body", "instinct"], cls: "Archer", attrs: ["instinct", "mind"],
-    picks: { arc1hall: hall, arc1tal: "Aim", arc1pass: "Killer's Focus", arc1act: "Pinning Shot" }, weapon: "Crossbow", armor: "Medium Armor" });
+// v0.0.189 (Lucas: the compendium PCs test different cards): two builds a class, one at level 1 and one at level 3, every pick different.
+pc({ name: "Paladin 1 (Smite, Heavy Blows)", img: "icons/svg/sun.svg", species: "Human", chosen: ["body", "appeal"], cls: "Paladin", attrs: ["body", "mind"],
+  picks: { pal1hall: "Smite", pal1tal: "Heavy Blows", pal1enc: "Holy Wrath", pal1pass: "Radiant Zeal", pal1act: "Divine Surge" }, weapon: "Greatsword", armor: "Heavy Armor" });
+pc({ name: "Paladin 3 (Lay On Hands, Protector)", img: "icons/svg/regen.svg", species: "Dwarf", cls: "Paladin", attrs: ["appeal", "mind"], level: 3,
+  picks: { 1: { pal1hall: "Lay On Hands", pal1tal: "Opportunity Attack", pal1enc: "Word of Radiance", pal1pass: "Mending Light", pal1act: "Shield of Faith" },
+    2: { pal2tal: "Bloodlust" }, 3: { pal3daily: "Miraculous Recovery", pal3pass: "Hallowed Stance" } }, weapon: "Greatsword", armor: "Heavy Armor" });
+pc({ name: "Archer 1 (Double Shot, Marksman)", img: "icons/svg/target.svg", species: "Elf", cls: "Archer", attrs: ["instinct", "mind"],
+  picks: { arc1hall: "Double Shot", arc1tal: "Aim", arc1pass: "Killer's Focus", arc1act: "Pinning Shot" }, weapon: "Crossbow", armor: "Medium Armor" });
+pc({ name: "Archer 3 (Rolling Shot, Kickboxer)", img: "icons/svg/wing.svg", species: "Human", chosen: ["body", "instinct"], cls: "Archer", attrs: ["body", "appeal"], level: 3,
+  picks: { 1: { arc1hall: "Rolling Shot", arc1tal: "Brawler", arc1pass: "Elusive", arc1act: "Twin Shot" },
+    2: { arc2tal: "Kickboxer", arc2enc: "Volley" }, 3: { arc3daily: "Rain of Arrows", arc3pass: "Harrying Shots" } }, weapon: "Crossbow", armor: "Medium Armor" });
 
 const FOLDER_OF = { species: "Species", class: "Class", feature: "Feature", talent: "Talent" };
 for (const d of docs) if ((d.pack === "classes" || d.pack === "features") && !d.folder) d.folder = FOLDER_OF[d.type] ?? null;
@@ -593,6 +608,17 @@ FLAVOR["Harrying Shots"] = "Every arrow says the same thing: not yet.";
 FLAVOR["Mark Quarry"] = "One name, one face, and the rest of the field goes quiet.";
 
 for (const d of docs) if (["action", "talent", "feature"].includes(d.type) && FLAVOR[d.name]) d.system.flavor = FLAVOR[d.name];
+// v0.0.189 (Lucas): how much Foundry does for each current card (a chip on the card). Gold: all of it; Silver: one part by hand;
+// Bronze: buttons or a compendium effect, the rest by hand; Not implemented: text only. Old cards and Basic Actions have none set.
+const AUTO = {
+  gold: ["Smite", "Lay On Hands", "Holy Wrath", "Word of Radiance", "Font of Mercy", "Radiant Zeal", "Divine Power", "Aura of Protection", "Double Shot", "Rolling Shot", "Marksman's Shot", "Volley", "Rain of Arrows",
+    "Marked Quarry", "Mark Quarry", "Killer's Focus", "Elusive", "Pinning Shot", "Vanish", "Long Draw", "Steady Nerves", "Heavy Blows", "Whirlwind", "Bloodlust", "Brawler", "Pummel", "Kickboxer", "Leg Sweep",
+    "Battering Charge", "Lesser Blessing", "Rimebrand (Cold)", "Rimebrand", "Lay On Hands (Holy Strike)", "Smite (+1 Defense)", "Vanish (+1 Defense)"],
+  silver: ["Sharpshooter", "Hunter's Focus", "Twin Shot", "Deadeye", "Aim", "Opportunity Attack", "Cut Through", "Divine Surge", "Bulwark of Faith"],
+  bronze: ["Covering Fire", "Consecrated Ground", "Hand of Mercy", "Harrying Shots", "Harried", "Challenge", "Challenged"],
+  none: ["Shield of Faith", "Miraculous Recovery", "Divine Intervention", "Mending Light", "Hallowed Stance", "Ricochet", "Sacred Weapon", "Class Expertise"]
+};
+for (const [rank, list] of Object.entries(AUTO)) for (const d of docs) if (list.includes(d.name) && ["action", "feature", "talent", "effect"].includes(d.type) && !/old cards/.test(d.folder ?? "") && !d.system.automation) d.system.automation = rank;
 // v0.0.187: the Escalation Passives say so (the Features tab's Escalation section); Font of Mercy is one too (the book).
 for (const d of docs) if (d.type === "feature" && (/escalation/i.test(d.system.category ?? "") || d.name === "Font of Mercy")) d.system.escalationPassive = true;
 for (const a of [...actors, ...pcs]) for (const it of (a.items ?? [])) if (["action", "talent", "feature"].includes(it.type) && FLAVOR[it.name]) { it.system ??= {}; it.system.flavor = FLAVOR[it.name]; }
