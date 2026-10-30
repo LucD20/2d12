@@ -325,6 +325,13 @@ export function registerBasicHooks() {
         if (r) ui.notifications.info(`2d12: the Rally value of ${r} Paladin or Archer class item${r === 1 ? "" : "s"} follows the book now (Paladin 6, Archer 5).`);
       }
     } catch (e) { console.warn("twod12 | Rally values", e); }
+    // v0.0.190 (Lucas), once per world: the system compendiums open unlocked (only the GM and Assistants can edit them: their ownership).
+    try {
+      if (!game.settings.get(F, "packsUnlockedV190")) {
+        for (const p of game.packs ?? []) if (p.metadata?.packageName === F && p.locked) await p.configure({ locked: false });
+        await game.settings.set(F, "packsUnlockedV190", true);
+      }
+    } catch (e) { console.warn("twod12 | unlocking the compendiums", e); }
     // v0.0.186, once per world: the cards automated by code that tested their name get their settings (automation.mjs).
     try {
       if (!game.settings.get(F, "settingsV186")) {

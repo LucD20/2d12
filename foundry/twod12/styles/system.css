@@ -1692,3 +1692,20 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 /* v0.0.189: targeting mode (an Action asks for its targets on the map). */
 #twod12-targeting { position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 1000; padding: 8px 16px; border-radius: 8px; background: rgba(20, 24, 32, .92); color: #f4e9d0; border: 1px solid #c9a24a; font-size: 14px; box-shadow: 0 4px 14px rgba(0, 0, 0, .5); pointer-events: none; }
 #twod12-targeting i { color: #e05a4f; margin-right: 6px; }
+/* v0.0.190: the targeting banner's buttons (Cancel; No target with its DC). */
+#twod12-targeting { pointer-events: auto; display: flex; align-items: center; gap: 12px; }
+#twod12-targeting .tb-btns { display: inline-flex; align-items: center; gap: 8px; }
+#twod12-targeting button { width: auto; height: 26px; line-height: 24px; padding: 0 10px; font-size: 13px; background: #2e3442; color: #f4e9d0; border: 1px solid #c9a24a; border-radius: 5px; cursor: pointer; }
+#twod12-targeting button:hover { background: #3c4458; }
+#twod12-targeting .tb-dc { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+#twod12-targeting .tb-dc input { width: 46px; height: 24px; text-align: center; background: #1b1f28; color: #f4e9d0; border: 1px solid #6b5a33; }
+/* v0.0.190 (Lucas): the automation rank is a small diamond after the name (grey, bronze, silver, gold), its rank on hover; no extra line. */
+.twod12 .autodia { margin-left: 5px; font-size: 9px; vertical-align: 2px; -webkit-text-stroke: .6px rgba(0, 0, 0, .55); }
+.twod12 .autodia.auto-none { color: #9a9a9a; }
+.twod12 .autodia.auto-bronze { color: #c9824a; }
+.twod12 .autodia.auto-silver { color: #d9dde2; }
+.twod12 .autodia.auto-gold { color: #f2c94c; }
+/* v0.0.190: a portrait with no initiative yet: click it to roll. */
+#twod12-carousel .tc-card.noinit .tc-portrait { cursor: pointer; outline: 2px dashed rgba(242, 201, 76, .8); outline-offset: -2px; }
+#twod12-carousel .tc-card.noinit .tc-portrait::after { content: "\f6cf"; font-family: "Font Awesome 6 Pro", "Font Awesome 6 Free"; font-weight: 900; position: absolute; right: 2px; bottom: 2px; font-size: 11px; color: #f2c94c; text-shadow: 0 0 2px #000; }
+#twod12-carousel .tc-portrait { position: relative; }

@@ -13,7 +13,8 @@ function card(combat, c) {
   const dots = Array.from({ length: max }, (_, i) => `<i class="dot ${i < ap ? "on" : ""}"></i>`).join("");
   const img = c.token?.texture?.src ?? c.img ?? "icons/svg/mystery-man.svg";
   const init = c.initiative === null || c.initiative === undefined ? "" : `<span class="tc-init">${Math.round(c.initiative)}</span>`;
-  return `<div class="tc-card ${current ? "current" : ""} ${c.isDefeated ? "defeated" : ""} ${frozen ? "frozen" : ""}" data-combatant-id="${c.id}" style="--tcc:${groupColor(c)}" data-tooltip="${esc(c.name)}: ${ap} AP${frozen ? " (frozen)" : ""}">
+  const noInit = c.initiative === null || c.initiative === undefined;
+  return `<div class="tc-card ${current ? "current" : ""} ${noInit ? "noinit" : ""} ${c.isDefeated ? "defeated" : ""} ${frozen ? "frozen" : ""}" data-combatant-id="${c.id}" style="--tcc:${groupColor(c)}" data-tooltip="${noInit ? "Click to roll initiative · " : ""}${esc(c.name)}: ${ap} AP${frozen ? " (frozen)" : ""}">
     <div class="tc-portrait"><img src="${img}" alt="">${init}</div>
     <div class="tc-name">${esc(c.name)}</div>
     <div class="tc-ap">${dots}</div></div>`;
@@ -51,6 +52,8 @@ export function renderCarousel() {
   el.querySelectorAll(".tc-card").forEach(div => div.addEventListener("click", ev => {
     if (ev.target.closest("[data-tc]")) return;
     const c = combat.combatants.get(div.dataset.combatantId);
+    // v0.0.190 (Lucas): a creature with no initiative yet (a new encounter, or added later) rolls it when its portrait is clicked.
+    if (c && (c.initiative === null || c.initiative === undefined) && (c.isOwner || game.user.isGM)) { combat.rollInitiative([c.id]); return; }
     const tok = c?.token?.object;
     if (tok?.isOwner) tok.control({ releaseOthers: true });
     if (tok) canvas.animatePan({ x: tok.center.x, y: tok.center.y });

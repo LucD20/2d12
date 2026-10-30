@@ -1,6 +1,6 @@
 // Targeting mode (v0.0.189, Lucas): an Action that needs targets, used with nothing targeted, doesn't stop with a warning any more.
 // The open windows collapse, a banner asks for the creatures, and each left click on a token targets it (T works as usual; clicking a
-// targeted token again un-targets it). Right click or Escape cancels. When enough creatures are targeted, the windows come back and the
+// targeted token again un-targets it). Cancel (or Escape) stops; No target rolls against a DC (13, editable). When enough creatures are targeted, the windows come back and the
 // Action goes on to its roll dialog.
 import { esc } from "./util.mjs";
 const BANNER = "twod12-targeting";
@@ -20,11 +20,12 @@ function collapseWindows() {
 }
 
 /** Pure: how the banner reads ("Aim: target 1 creature (0 of 1)"). */
-export const bannerText = (name, need, have) => `${name}: target ${need} creature${need === 1 ? "" : "s"} (${have} of ${need}). Click a token, or press T over it. Right click or Esc to cancel.`;
+export const bannerText = (name, need, have) => `${name}: target ${need} creature${need === 1 ? "" : "s"} (${have} of ${need}). Click a token, or press T over it.`;
 
 /**
- * Ask for `need` targets on the map. Resolves true once the user has that many (counting the ones already targeted), false when cancelled.
- * Without a map it resolves null at once (the caller goes on without targets, as before).
+ * Ask for `need` targets on the map. Resolves { ok: true } once the user has that many (counting the ones already targeted),
+ * { ok: true, noTarget: true, dc } when "No target" is clicked (the roll goes on against that DC), and { ok: false } on Cancel or Esc.
+ * v0.0.190 (Lucas): buttons on the banner instead of the right click (which pans the map). Without a map it resolves null at once.
  */
 export function pickTargets(need, name) {
   if (typeof canvas === "undefined" || !canvas?.ready || typeof document === "undefined") return Promise.resolve(null);   // no map: the caller goes on as before
@@ -33,25 +34,29 @@ export function pickTargets(need, name) {
     const view = canvas.app?.view ?? canvas.app?.canvas;
     const bar = document.createElement("div");
     bar.id = BANNER;
-    bar.className = "twod12-targeting";
-    const draw = () => { bar.innerHTML = `<i class="fa-solid fa-crosshairs"></i> ${esc(bannerText(name, need, game.user.targets.size))}`; };
+    bar.className = "twod12-targeting twod12-bar";
+    bar.innerHTML = `<span class="tb-text"></span><span class="tb-btns"><label class="tb-dc" data-tooltip="Roll with no target, against this DC"><button type="button" data-tb="none"><i class="fa-solid fa-ban"></i> No target</button> DC <input type="number" value="13" min="0"></label><button type="button" data-tb="cancel"><i class="fa-solid fa-xmark"></i> Cancel</button></span>`;
+    const draw = () => { bar.querySelector(".tb-text").innerHTML = `<i class="fa-solid fa-crosshairs"></i> ${esc(bannerText(name, need, game.user.targets.size))}`; };
     draw();
     document.body.append(bar);
     let done = false;
-    const finish = ok => {
+    const finish = res => {
       if (done) return;
       done = true;
       Hooks.off("targetToken", onTarget);
       view?.removeEventListener("pointerdown", onDown, true);
-      view?.removeEventListener("contextmenu", onMenu, true);
       document.removeEventListener("keydown", onKey, true);
       bar.remove();
       for (const app of restore) { try { app.maximize(); } catch (e) { /* closed meanwhile */ } }
-      resolve(ok);
+      resolve(res);
     };
-    const onTarget = user => { if (user?.id !== game.user.id) return; draw(); if (game.user.targets.size >= need) finish(true); };
+    bar.querySelector('[data-tb="cancel"]').addEventListener("click", () => finish({ ok: false }));
+    bar.querySelector('[data-tb="none"]').addEventListener("click", () => {
+      for (const t of [...game.user.targets]) t.setTarget(false, { releaseOthers: false });
+      finish({ ok: true, noTarget: true, dc: Math.max(0, Math.trunc(Number(bar.querySelector(".tb-dc input").value)) || 13) });
+    });
+    const onTarget = user => { if (user?.id !== game.user.id) return; draw(); if (game.user.targets.size >= need) finish({ ok: true }); };
     const onDown = ev => {
-      if (ev.button === 2) { ev.stopPropagation(); ev.preventDefault(); return finish(false); }
       if (ev.button !== 0) return;
       const p = canvas.canvasCoordinatesFromClient?.({ x: ev.clientX, y: ev.clientY });
       if (!p) return;
@@ -61,11 +66,9 @@ export function pickTargets(need, name) {
       ev.stopPropagation(); ev.preventDefault();
       tok.setTarget(!tok.isTargeted, { releaseOthers: false });
     };
-    const onMenu = ev => { ev.preventDefault(); ev.stopPropagation(); finish(false); };
-    const onKey = ev => { if (ev.key === "Escape") { ev.stopPropagation(); ev.preventDefault(); finish(false); } };
+    const onKey = ev => { if (ev.key === "Escape") { ev.stopPropagation(); ev.preventDefault(); finish({ ok: false }); } };
     Hooks.on("targetToken", onTarget);
     view?.addEventListener("pointerdown", onDown, true);
-    view?.addEventListener("contextmenu", onMenu, true);
     document.addEventListener("keydown", onKey, true);
   });
 }

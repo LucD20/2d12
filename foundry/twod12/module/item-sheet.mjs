@@ -296,6 +296,9 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
 
   _onRender(context, options) {
     super._onRender?.(context, options);
+    // v0.0.190 (Lucas): a locked compendium's item (read-only) still opens its Details tab: Foundry disables every button of a read-only
+    // sheet, so the tab buttons (and "Edit levels…", which only shows) are switched back on. The fields stay read-only.
+    if (!this.isEditable) this.element.querySelectorAll(".tabbtn, [data-action='openLinked']").forEach(b => { b.disabled = false; });
     this.element.classList.toggle("twod12-styled", this.item.type !== "species");   // v0.0.168 (system.css "Item sheets")
     applyTab(this);
     enableDragging(this);

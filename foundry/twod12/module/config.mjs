@@ -238,7 +238,7 @@ export const cardVars = hex => {
 
 /** The title bar of an Action card: name on the left, category and cost on the right. */
 /** v0.0.189: the automation rank as a small chip (nothing when it isn't set). */
-export const autoChip = rank => (rank && TWOD12.automationRanks[rank] && rank !== "" ? `<span class="autochip auto-${rank}" data-tooltip="${escAttr(TWOD12.automationHints[rank] ?? "")}">${escAttr(TWOD12.automationRanks[rank])}</span>` : "");
+export const autoChip = rank => (rank && TWOD12.automationRanks[rank] ? `<i class="fa-solid fa-diamond autodia auto-${rank}" data-tooltip="${escAttr(TWOD12.automationHints[rank] ?? "")}" aria-label="${escAttr(TWOD12.automationRanks[rank])}"></i>` : "");   // v0.0.190: a diamond (grey, bronze, silver, gold), the rank on hover
 export const cardHead = (name, cat, costHtml, freq = "", auto = "") => `<div class="ahead"><b>${escAttr(name)}${autoChip(auto)}</b><div class="aright"><span class="atop">${freq && TWOD12.frequencies[freq] ? `<span class="afreq">${escAttr(TWOD12.frequencies[freq])}</span>` : ""}${costHtml ? `<span class="aps">${costHtml}</span>` : ""}</span>${cat ? `<span class="acat">${escAttr(cat)}</span>` : ""}</div></div>`;
 /** Damage on cards: a filled heart for Body, a filled brain for Mind, and each damage type in its own color with its icon. */
 export const poolIcon = pool => pool === "M" ? '<i class="fa-solid fa-brain dt-mind" data-tooltip="Mind damage"></i>'

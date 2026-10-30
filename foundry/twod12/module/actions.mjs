@@ -345,7 +345,11 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.189 (Lucas): an Action that targets, used with too few creatures targeted, asks for them on the map (targeting.mjs) instead of refusing.
   if (needsTargets(it)) {
     const need = Math.max(1, targetsNeeded(it.targets));
-    if (game.user.targets.size < need && (await pickTargets(need, item.name)) === false) return;
+    if (game.user.targets.size < need) {
+      const pk = await pickTargets(need, item.name);
+      if (pk && !pk.ok) return;
+      if (pk?.noTarget) opts = { ...opts, noTargetDc: pk.dc };   // v0.0.190: "No target" on the banner, with its DC
+    }
   }
   // An Action that marks the target needs it (targeted).
   if (it.marksTarget && !game.user.targets.size) return ui.notifications.warn(`Target the creature ${item.name} marks first.`);
@@ -581,7 +585,7 @@ export async function useAction(actor, item, opts = {}) {
       doomedLabel: doomReason ? `${doomReason} (Doomed)` : undefined,
       empowerN: topStep(steps.empowered),
       enfeebleN: topStep(steps.enfeebled),
-      dc: dcInfo.dc,
+      dc: opts.noTargetDc ?? dcInfo.dc,
       reaction: it.reaction,
       favored: unseenYou || untrainedTarget,
       favoredLabel: unseenYou ? `${mine === "hidden" ? "Hidden" : "Unsensed"} (Favored)` : (untrainedTarget ? "Target's untrained armor (Favored)" : undefined),

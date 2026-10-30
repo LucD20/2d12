@@ -1,0 +1,10 @@
+--- Update from the compendium: what a copy keeps
+class: {"chosenA":"body","rallyMod":6,"levels":[1]}
+weapon: {"wielded":true,"damage":"new"}
+talent (keeps nothing of its own system): {"group":"combat","level":1}
+matched by sourceUuid or compendium source, then by name: true | world items first: true | unlinked tokens too: true | asked once per version: true | settings button: true | macro: true
+--- the rest
+targeting banner: Cancel true | No target with a DC true | no right click true | the DC reaches the roll true
+automation diamond: true
+locked compendium: tabs still work: true | the system compendiums unlocked once: true | GM / Assistant edit only: true
+click a portrait with no initiative to roll it: true | marked: true
