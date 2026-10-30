@@ -11,7 +11,7 @@ const at = order.map(k => act.indexOf(k));
 console.log("Action Details order:", order.map((k, i) => `${k.replace("</label>", "")}@${at[i] > -1 ? "ok" : "MISSING"}`).join(" "), "| in Lucas's order:", at.every((x, i) => x > -1 && (i === 0 || x > at[i - 1])));
 console.log("\"Shown as\" gone:", !act.includes("Shown as"), "| \"costs written as 1R\" gone:", !act.includes("costs written as 1R"),
   "| Kind greyed until Reaction:", /name="system.reactionKind" \{\{#unless system.reaction\}\}disabled/.test(act), "| Interrupt/Trigger greyed until Reaction:", /name="system.trigger" \{\{#unless system.reaction\}\}disabled/.test(act));
-console.log("item sheets styled (not Class and Species):", isj.includes('styled: !["class", "species"].includes(t)') && isj.includes('classList.toggle("twod12-styled"') && tpl.includes('<div class="twod12 sheet item{{#if styled}} sk{{/if}}">'),
+console.log("item sheets styled (not Species; Class since v0.0.185):", isj.includes('styled: t !== "species"') && isj.includes('classList.toggle("twod12-styled"') && tpl.includes('<div class="twod12 sheet item{{#if styled}} sk{{/if}}">'),
   "| Versions window styled:", src("module/versions.mjs").includes('classes: ["twod12", "twod12-styled"]') && ver.includes('class="twod12 sheet versions sk"'));
 console.log("Tiers in their own colored boxes:", ver.includes('class="tierbox tier-{{key}}"') && ver.includes('class="tierbox whole"') && ["tier-t1", "tier-t2", "tier-t3"].every(k => css.includes(`.tierbox.${k}`)));
 console.log("dark text on parchment whatever the theme:", css.includes(".application.twod12-styled .window-content { background: var(--sk-par); color: var(--sk-ink); color-scheme: light;") && css.includes("--input-background-color: #fff;"));

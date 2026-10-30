@@ -1,0 +1,20 @@
+the compendium Paladin's class copy: body, mind | picks: pal1hall, pal1tal, pal1enc, pal1pass, pal1act
+Class tab, level 1: granted Divine Power, Font of Mercy | picks Hallmark Action: Smite | Encounter Pick: Holy Wrath | Passive Escalation Pick: Hallowed Stance | Active Escalation Pick: Divine Surge | not reached Talent (2), Daily Pick (3), Passive Escalation Pick (3)
+Talent slots at level 1: [{"key":"class:1:pal1tal:0","feature":"Talent (Level 1)"}] | Heavy Blows is in it: class:1:pal1tal:0
+at level 3 (nothing chosen yet): slots Talent (Level 1), Talent (Level 2) | not reached: 0
+hasLevels: the compendium classes Paladin true, Archer true | a class without levels: false
+--- the tiles' meta lines
+Smite: 1 / 2 / 3 AP · Round
+Bulwark of Faith: 1 / 2R · Encounter
+Divine Surge: 0 AP · Round · Esc 1
+Font of Mercy: Feature
+Divine Power: Passive
+Heavy Blows: Talent
+Aim: 1 AP · At-will
+--- the wiring
+a class with levels dropped on a character opens the window: true | the old dialogs stay for a class without levels: true
+the Level before a change is kept: true | the window runs on a change, the old grant without levels: true
+Cancel on a level up puts the Level back: true | a lower Level asks, then removes what the higher levels gave: true | No keeps the Level: true
+nothing applied before confirm (drop): true | confirm disabled until complete: true | buttons: true
+the sheet reads the sections: true
+Class Details: the Levels button true | Repertoire and Escalation drop zones true | Modifier selects true | the old Features list only when there is one true

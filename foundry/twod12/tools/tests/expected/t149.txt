@@ -1,0 +1,40 @@
+--- choices to make (a new character)
+Paladin: level 1 7, level 2 1, level 3 2 | Archer: level 1 6, level 2 2, level 3 2
+Attribute increases (Details tab): Body or Appeal +1, Mind or Instinct +1 | Body or Instinct +1, Mind or Appeal +1
+--- the Paladin's level 1
+nothing chosen: 0 of 7 made, complete false | Attribute increases [Choose 2] | Core Features [Granted] | Hallmark Action [0 / 1] Smite/Lay On Hands | Talent [0 / 1] Aim/Ricochet/Opportunity Attack/Cut Through/Whirlwind/Bloodlust/Lesser Blessing/Heavy Blows/Battering Charge/Brawler/Kickboxer | Encounter Pick [0 / 1] Holy Wrath/Bulwark of Faith | Passive Escalation Pick [0 / 1] Hallowed Stance/Radiant Zeal | Active Escalation Pick [0 / 1] Aura of Protection/Divine Surge
+Font of Mercy is granted, so the Passive Escalation Pick doesn't offer it: true | offers: Hallowed Stance, Radiant Zeal
+Pick 1: choosing Lay On Hands after Smite replaces it: Lay On Hands
+choosing it again puts it back: []
+Pick 2: a third choice drops the oldest: Lay On Hands, Holy Wrath
+Distinct Choices: Appeal for pair 1: ["appeal"]
+Body, then Mind: ["body","mind"] | list: body, mind
+the book's example (Body or Appeal, Appeal or Instinct): Appeal moves to the second pair and the first must be chosen again: [null,"appeal"]
+an Attribute chosen at an earlier level can't be chosen: {}
+all but the Talent: 6 of 7 made, complete false | Attribute increases [Chosen] | Core Features [Granted] | Hallmark Action [Chosen] Smite/Lay On Hands | Talent [0 / 1] Aim/Ricochet/Opportunity Attack/Cut Through/Whirlwind/Bloodlust/Lesser Blessing/Heavy Blows/Battering Charge/Brawler/Kickboxer | Encounter Pick [Chosen] Holy Wrath/Bulwark of Faith | Passive Escalation Pick [Chosen] Hallowed Stance/Radiant Zeal | Active Escalation Pick [Chosen] Aura of Protection/Divine Surge
+with the Talent: complete true (7 of 7)
+what confirm gives: Divine Power (Core Features), Font of Mercy (Core Features), Smite (Hallmark Action), Heavy Blows (Talent), Holy Wrath (Encounter Pick), Hallowed Stance (Passive Escalation Pick), Divine Surge (Active Escalation Pick)
+--- the same item in two sections
+Hallowed Stance chosen in First: 1 of 2 made, complete false | First [Chosen] Hallowed Stance/Radiant Zeal | Second [0 / 1] Radiant Zeal
+also in (Levels window): Second
+Radiant Zeal chosen in Second: 2 of 2 made, complete true | First [Chosen] Hallowed Stance | Second [Chosen] Radiant Zeal
+both owned from before: 0 of 0 made, complete true | First [Complete] - | Second [Complete] -
+--- level up: only that level's sections; what the character owns leaves the choices
+Paladin level 2: 0 of 1 made, complete false | Talent [0 / 1] Aim/Ricochet/Opportunity Attack/Cut Through/Whirlwind/Bloodlust/Lesser Blessing/Battering Charge/Brawler/Kickboxer
+the level 2 Talent doesn't offer Heavy Blows (owned): true | 10 Talents offered
+Paladin level 3: 0 of 2 made, complete false | Daily Pick [0 / 1] Consecrated Ground | Passive Escalation Pick [0 / 1] Radiant Zeal
+Archer level 2: 0 of 2 made, complete false | Talent [0 / 1] Ricochet/Opportunity Attack/Cut Through/Whirlwind/Bloodlust/Lesser Blessing/Heavy Blows/Battering Charge/Brawler/Kickboxer | Encounter Pick [0 / 1] Marksman's Shot
+Repertoire filter: Any Shield of Faith, Holy Wrath, Bulwark of Faith, Consecrated Ground | Turn Shield of Faith | Passive 0
+a Feature in the Repertoire is Passive: Radiant Zeal | and in Any: true
+a Repertoire pick excludes what this level grants: 0 of 1 made, complete false | Core [Granted] | Encounter Pick [0 / 1] Bulwark of Faith
+and what the character owns: 0 of 0 made, complete true | Core [Granted] | Encounter Pick [Complete] -
+--- the Levels window's lines
+Attribute increases: {"text":"Body or Appeal +1 · Mind or Instinct +1","warn":false}
+Core Features: {"text":"Granted: Divine Power, Font of Mercy","warn":false}
+Hallmark Action: {"text":"Choose 1 of 2","warn":false}
+Talent: {"text":"Choose 1 Talent","warn":false}
+Encounter Pick: {"text":"Choose 1 from the Repertoire (Encounter, 2 available)","warn":false}
+Passive Escalation Pick: {"text":"Choose 1 of 3","warn":false}
+Active Escalation Pick: {"text":"Choose 1 of 2","warn":false}
+an empty section: {"text":"Empty: drop at least one item.","warn":true} | too few: {"text":"Choose 3 but only 1 item to pick from.","warn":true}
+the Stage line: 1: - | 4: - | 5: Stage 2: your Weapon and Power Modifiers +1 (never above +4). | 8: Stage 3: your Weapon and Power Modifiers +2 (never above +4).

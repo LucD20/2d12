@@ -55,7 +55,7 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
       for (const k of Object.keys(a)) a[k] += species.system.attributes[k] ?? 0;
       if (species.system.pickTwo) for (const k of species.system.chosen) if (k in a) a[k] += 1;
     }
-    if (cls) for (const k of [cls.system.chosenA, cls.system.chosenB]) if (k in a) a[k] += 1;
+    if (cls) for (const k of (cls.system.chosenAttrs?.length ? cls.system.chosenAttrs : [cls.system.chosenA, cls.system.chosenB])) if (k in a) a[k] += 1;
     this.attributes = a;
     this.speciesName = species?.name ?? "None";
     this.className = cls?.name ?? "None";
@@ -258,7 +258,17 @@ export class ClassData extends foundry.abstract.TypeDataModel {
       features: new ArrayField(new SchemaField({ uuid: str(), level: int(1, 0) })),
       chosenA: str(), chosenB: str(), chosenWeapon: str(), chosenMagic: str(),   // chosenWeapon / chosenMagic: only for classes from before v0.0.117
       modPriority: choice({ weapon: "Weapon Modifier", power: "Power Modifier" }, "weapon"),   // which Modifier keeps an Attribute both would use
-      armorTraining: choice(TWOD12.armorTrainings, "light")
+      armorTraining: choice(TWOD12.armorTrainings, "light"),
+      // v0.0.185 (pack C2): the class sheet's new fields, the Repertoire and Escalation lists, and the levels as sections (classlevels.mjs).
+      category: new StringField({ required: true, blank: true, initial: "Class" }), flavor: str(),
+      repertoire: new ArrayField(str()), escPassives: new ArrayField(str()), escActives: new ArrayField(str()),
+      levels: new ArrayField(new SchemaField({ sections: new ArrayField(new SchemaField({
+        id: str(), title: str(), kind: choice({ items: "Items I drop", attr: "Attribute increase", repertoire: "From the Repertoire", talent: "Talent" }, "items"),
+        mode: choice({ granted: "Granted", choice: "Choice" }, "choice"), pick: int(1, 0), items: new ArrayField(str()),
+        pairs: new ArrayField(new SchemaField({ a: str(), b: str() })),
+        freq: choice({ any: "Any", passive: "Passive", turn: "Turn", round: "Round", encounter: "Encounter", daily: "Daily" }, "any"), category: str()
+      })) })),
+      chosenAttrs: new ArrayField(str())   // on a character's copy: every Attribute increase chosen in the class window, level by level
     };
   }
 }

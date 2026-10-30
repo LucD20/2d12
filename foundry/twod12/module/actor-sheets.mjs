@@ -8,6 +8,7 @@ import { TWOD12, orderTraits, apLabel, traitChevrons, categoryText, unconsciousD
 import { rollCheck, rollTable, esc, sgn } from "./roll.mjs";
 import { useAction, askRoll, adjLabelOf } from "./actions.mjs";
 import { handleDrop } from "./grants.mjs";
+import { hasLevels, classTabSections, classTalentSlots } from "./classwindow.mjs";
 import { resolveModifiers } from "./effects.mjs";
 import { buildRawCard, buildInfoCard, sendItemToChat } from "./preview.mjs";
 import { openWeaponGenerator } from "./gen.mjs";
@@ -161,16 +162,21 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     }
     // Class picks: first of the class. Opened, it shows the Attribute increases and Modifiers; it always lists what each pick chose.
     const picks = (ctx.classTab?.picks ?? "").split(" | ").filter(Boolean);
-    if (cls && (picks.length || pickCopies.length)) {
+    if (cls && (picks.length || pickCopies.length || ctx.classTab?.pickSections?.length)) {
       const rows = [];
       for (const p of pickCopies) {
         const kids = kidsOf(p).map(subRow);
         rows.push({ isLabel: true, id: p.id, name: p.name, empty: !kids.length, tip: tipOf(p) }, ...kids);
       }
+      // v0.0.185: a class with levels: one label per section reached, with what was chosen in it (and what that gave).
+      for (const p of ctx.classTab?.pickSections ?? []) {
+        const kids = p.items.flatMap(it => [it, ...(it.type === "action" ? [] : kidsOf(it))]).map(subRow);
+        rows.push({ isLabel: true, id: "", name: `${p.title} (Level ${p.level})`, empty: !kids.length, tip: "" }, ...kids);
+      }
       classCards.unshift({ key: "classpicks", name: "Class picks", kind: "Picks", kcls: "picks", detail: "", rows, open: !!this._openFeat?.has("classpicks"),
         text: picks.map(p => `<p>${esc(p)}</p>`).join("") });
     }
-    for (const f of (ctx.classTab?.features ?? []).filter(x => !x.unlocked)) classCards.push({ key: f.uuid, uuid: f.uuid, name: f.name, kind: `Level ${f.level}`, kcls: "locked", detail: `Gained at level ${f.level}`, locked: true, rows: [], open: false, text: "" });
+    for (const f of (ctx.classTab?.features ?? []).filter(x => !x.unlocked)) classCards.push({ key: f.lockKey ?? f.uuid, uuid: f.uuid, name: f.name, kind: `Level ${f.level}`, kcls: "locked", detail: `Gained at level ${f.level}`, locked: true, rows: [], open: false, text: "" });
     // Species: one card with what it gives.
     const sp = a.itemTypes.species[0];
     const spText = sp ? (() => {
@@ -511,7 +517,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   }
 
   _groupLabels = ["Class", "Talents", "Items", "Other", "Basic"];
-  _groupOf(i) { return i.getFlag("twod12", "talentId") || isTalentAction(i) ? "Talents" : i.getFlag("twod12", "basic") ? "Basic" : i.getFlag("twod12", "weaponId") ? "Items" : (i.getFlag("twod12", "featureId") ? "Class" : "Other"); }
+  _groupOf(i) { return i.getFlag("twod12", "talentId") || isTalentAction(i) ? "Talents" : i.getFlag("twod12", "basic") ? "Basic" : i.getFlag("twod12", "weaponId") ? "Items" : (i.getFlag("twod12", "featureId") || i.getFlag("twod12", "classLevel") ? "Class" : "Other"); }
 
   async _classTab() {
     const cls = this.actor.itemTypes.class[0];
@@ -520,7 +526,14 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const s = cls.system, L = TWOD12.attributes;
     const granted = this.actor.itemTypes.feature;
     const rows = [];
-    for (const f of s.features) {
+    let pickSections = null;
+    // v0.0.185: a class with levels: the Features of its Granted sections, its picks by section, and the sections of the levels not reached.
+    if (hasLevels(cls)) {
+      const t = classTabSections(this.actor, cls);
+      for (const { it, level } of t.granted) rows.push({ name: it.name, icon: it.img, uuid: it.getFlag("twod12", "sourceUuid") ?? "", id: it.id, level, cat: categoryText(it.system), unlocked: true, description: await TE.enrichHTML(it.system.description ?? "", { relativeTo: it }) });
+      for (const l of t.locked) rows.push({ name: l.title, icon: cls.img, uuid: "", lockKey: l.key, id: "", level: l.level, cat: "", unlocked: false, description: "" });
+      pickSections = t.picks;
+    } else for (const f of s.features) {
       const src = await fromUuid(f.uuid);
       const copy = granted.find(g => g.getFlag("twod12", "sourceUuid") === f.uuid);
       rows.push({
@@ -530,7 +543,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     }
     rows.sort((x, y) => x.level - y.level);
     return {
-      name: cls.name, features: rows,
+      name: cls.name, features: rows, pickSections,
       picks: (() => {
         const as = this.actor.system;
         const both = `${as.modConflict ? ` | Both Modifiers wanted the same Attribute: the ${s.modPriority === "power" ? "Power" : "Weapon"} Modifier kept it (change it on the class)` : ""}`;
@@ -785,6 +798,12 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         if (t) used.add(t.id);
         slots.push({ key, feature: f.name, talent: t ? row(t) : null });
       }
+    }
+    // v0.0.185: the Talent sections of the class (one slot per Pick, at the levels reached).
+    for (const sl of classTalentSlots(a)) {
+      const t = talents.find(x => x.getFlag("twod12", "slot") === sl.key);
+      if (t) used.add(t.id);
+      slots.push({ ...sl, talent: t ? row(t) : null });
     }
     const extras = talents.filter(t => !used.has(t.id)).map(row).sort((x, y) => x.name.localeCompare(y.name));
     return { talentSlots: slots, talents: extras };

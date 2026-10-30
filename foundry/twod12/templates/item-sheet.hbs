@@ -35,23 +35,51 @@
     {{/if}}
 
     {{#if isClass}}
-    <div class="setbox oneline"><b>Attribute Increase Choices</b>
-      <span class="grp"><i>first</i>{{#each attrChecks.choiceA}}<label class="inline"><input type="checkbox" data-set="choiceA" data-key="{{key}}" {{#if checked}}checked{{/if}}> {{label}}</label>{{/each}}</span>
-      <span class="grp"><i>second</i>{{#each attrChecks.choiceB}}<label class="inline"><input type="checkbox" data-set="choiceB" data-key="{{key}}" {{#if checked}}checked{{/if}}> {{label}}</label>{{/each}}</span></div>
+    {{!-- v0.0.185 (pack C2): the Class's Details tab in the look of the Talent and Feature sheets; the levels are set in the Levels window. --}}
+    <div class="grid3">
+      <label>Category <input type="text" name="system.category" value="{{system.category}}" placeholder="Class"></label>
+      <label>Armor Training <select name="system.armorTraining">{{selectOptions armorTrainingChoices selected=system.armorTraining}}</select></label>
+      <div class="ro"><span>Shown as</span><b>{{item.name}}</b></div>
+    </div>
+    <label>Flavor <input type="text" name="system.flavor" value="{{system.flavor}}" placeholder="Your god's strength flows through your weapon and your hands."></label>
     <div class="grid4">
-      <label>Body Health Multiplier (&times;) <input type="number" min="0" step="0.5" name="system.bodyMult" value="{{system.bodyMult}}"></label>
-      <label>Mind Health Multiplier (&times;) <input type="number" min="0" step="0.5" name="system.mindMult" value="{{system.mindMult}}"></label>
-      <label>Rally value <input type="number" name="system.rallyMod" value="{{system.rallyMod}}"></label>
+      <label>Body Health Multiplier <input type="number" min="0" step="0.5" name="system.bodyMult" value="{{system.bodyMult}}"></label>
+      <label>Mind Health Multiplier <input type="number" min="0" step="0.5" name="system.mindMult" value="{{system.mindMult}}"></label>
+      <label>Rally <input type="number" name="system.rallyMod" value="{{system.rallyMod}}"></label>
       <label>Speed Modifier <input type="number" name="system.speedMod" value="{{system.speedMod}}"></label>
     </div>
-    <div class="setbox"><b>Weapon Modifier Attributes</b>
-      {{#each attrChecks.weaponAttrs}}<label class="inline"><input type="checkbox" data-set="weaponAttrs" data-key="{{key}}" {{#if checked}}checked{{/if}}> {{label}}</label>{{/each}}</div>
-    <div class="setbox"><b>Power Modifier Attributes</b>
-      {{#each attrChecks.magicAttrs}}<label class="inline"><input type="checkbox" data-set="magicAttrs" data-key="{{key}}" {{#if checked}}checked{{/if}}> {{label}}</label>{{/each}}</div>
-    <label>Armor Training <select name="system.armorTraining">{{selectOptions armorTrainingChoices selected=system.armorTraining}}</select></label>
-    <label>If one Attribute is the higher for both Modifiers <select name="system.modPriority">{{selectOptions modPriorityChoices selected=system.modPriority}}</select></label>
-    <p class="hint">Each Modifier uses the higher of its two Attributes (&divide; 2 + 1, rounded up), and the two never use the same one: when one Attribute is the higher for both, the Modifier chosen above keeps it and the other uses its other Attribute. Change it when you level up. When a character receives this class, they choose the two Attribute increases (different Attributes).</p>
-    <h3>Features</h3>
+    <div class="grid4">
+      <label>Weapon Modifier uses <select data-modsel="weaponAttrs" data-side="0">{{selectOptions attrChoices selected=cls.weapon.[0]}}</select></label>
+      <label>or <select data-modsel="weaponAttrs" data-side="1">{{selectOptions attrChoices selected=cls.weapon.[1]}}</select></label>
+      <label>Power Modifier uses <select data-modsel="magicAttrs" data-side="0">{{selectOptions attrChoices selected=cls.power.[0]}}</select></label>
+      <label>or <select data-modsel="magicAttrs" data-side="1">{{selectOptions attrChoices selected=cls.power.[1]}}</select></label>
+    </div>
+    <div class="grid3">
+      <div class="ro"><span>Attribute increases</span><b>{{#if cls.attrLine}}{{cls.attrLine}}{{else}}none (set them on level 1){{/if}}</b></div>
+      {{#if cls.shared}}<label>If {{cls.shared}} is the higher for both <select name="system.modPriority">{{selectOptions modPriorityChoices selected=system.modPriority}}</select></label>{{/if}}
+    </div>
+    <p class="hint">Each Modifier uses the higher of its two Attributes. The two Modifiers can't use the same Attribute: when one Attribute is the higher for both, the Modifier chosen above keeps it (the player can change it in the class window). The Attribute increases are set on level 1, in the Levels window.</p>
+    <h3 class="cls-h">Levels <button type="button" data-action="editLevels"><i class="fa-solid fa-layer-group"></i> Edit levels&hellip;</button></h3>
+    <p class="hint">What the player gets at each level (Features, the Hallmark Action, Picks, Talents, Attribute choices) is set up in the Levels window. It opens wider than this sheet.</p>
+    <div class="cls-levels">
+      {{#each cls.levels}}<div><b>Level {{n}}</b><span>{{sections}} section{{#unless one}}s{{/unless}} &middot; {{choices}} choice{{#unless oneChoice}}s{{/unless}} to make</span></div>{{else}}<div><span>No levels yet.</span></div>{{/each}}
+    </div>
+    <h3>Repertoire</h3>
+    <p class="hint">Everything else the class offers, by Frequency. A "From the Repertoire" section in the Levels window chooses from here.</p>
+    {{#each cls.rep}}<div class="cls-grp"><span class="cls-gl">{{label}} &middot; {{list.length}}</span><span class="cls-chips">{{#each list}}<span class="cls-chip"><a data-action="openLinked" data-uuid="{{uuid}}">{{name}}</a><button type="button" data-action="removeLink" data-list="repertoire" data-index="{{index}}" aria-label="Remove {{name}}">&times;</button></span>{{/each}}</span></div>{{/each}}
+    <div class="drop-zone" data-list="repertoire" data-accept="action,feature">Drop Actions and Features here</div>
+    <h3>Escalation</h3>
+    <p class="hint">The class's Escalation abilities: the Passive and Active Escalation Picks choose from these. A Feature goes to the Passives, an Action to the Actives.</p>
+    {{#each cls.esc}}<div class="cls-grp"><span class="cls-gl">{{label}} &middot; {{list.length}}</span><span class="cls-chips">{{#each list}}<span class="cls-chip"><a data-action="openLinked" data-uuid="{{uuid}}">{{name}}</a>{{#if esc}} <i>Esc {{esc}}</i>{{/if}}<button type="button" data-action="removeLink" data-list="{{../key}}" data-index="{{index}}" aria-label="Remove {{name}}">&times;</button></span>{{/each}}{{#unless list.length}}<span class="cls-none">None yet</span>{{/unless}}</span></div>{{/each}}
+    <div class="drop-zone" data-list="escalation" data-accept="action,feature">Drop Escalation abilities here</div>
+    {{#unless cls.levels.length}}
+    <div class="setbox oneline"><b>Attribute Increase Choices (a class without levels)</b>
+      <span class="grp"><i>first</i>{{#each attrChecks.choiceA}}<label class="inline"><input type="checkbox" data-set="choiceA" data-key="{{key}}" {{#if checked}}checked{{/if}}> {{label}}</label>{{/each}}</span>
+      <span class="grp"><i>second</i>{{#each attrChecks.choiceB}}<label class="inline"><input type="checkbox" data-set="choiceB" data-key="{{key}}" {{#if checked}}checked{{/if}}> {{label}}</label>{{/each}}</span></div>
+    {{/unless}}
+    {{#if featuresList.length}}
+    <h3>Features (before the levels)</h3>
+    <p class="hint">The old list of Features, each gained at its own level. A class with levels doesn't use it; it stays for classes made before v0.0.185.</p>
     <div class="drop-zone" data-list="features" data-accept="feature">Drop Features here</div>
     <ul class="items">
       {{#each featuresList}}
@@ -60,6 +88,7 @@
         <button type="button" data-action="removeLink" data-list="features" data-index="{{index}}">&times;</button></li>
       {{/each}}
     </ul>
+    {{/if}}
     {{/if}}
 
 
