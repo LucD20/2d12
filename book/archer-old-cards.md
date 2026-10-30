@@ -1,5 +1,7 @@
 # The Archer's other cards (kept for later reference)
 
+> **Pack OT (2026-10-30, proposed):** where each card below goes (an option, a Talent, folded in, or out) is in `book/options-talents.md`, sections 2 to 5.
+
 These are the Archer cards as the book had them before pack A1 (2026-10-29). The A1 main build replaced the document with only its defaults
 (book/archer-a1.md); every card below comes back, reworked or not, in the Options step (book/class-charter.md, section 7). Not built.
 

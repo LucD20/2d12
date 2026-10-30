@@ -1,0 +1,28 @@
+# The Talents (pack OT, 2026-10-30; PROPOSED: book/options-talents.md), for the price list: node book/ruler/econ.mjs
+# A Talent is priced on the class that would take it: the melee ones on the P1 Paladin's numbers (a Greatsword), the ranged ones in catalogue/talents-ranged.txt.
+class Talents (melee, on the Paladin)
+level 1
+attributes body 2, mind 1
+weapon-mod 2
+power-mod 2
+weapon Greatsword (melee, two-handed): 0 / 1d8 / 2d6
+
+action Weapon Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod]
+action Smite 2 | ap 2 | round | traits divine signature strike weapon | vs ad | tiers [B] 1[W] + [M] 1d6 / [B] 1[W] + [Mod] + [M] 1d10 / [B] 1[W] + [Mod] + [M] 2d8
+
+# Combat
+action Opportunity Attack | ap 1 | at-will | reaction | traits strike weapon | does Weapon Attack
+action Challenge (per use) | ap 0 | round | traits focus | always: taunt 1
+action Bloodlust | ap 1 | encounter | traits self | always: empowered 1 turn melee weapon; boon 2 turn melee weapon
+action Whirlwind | ap 2 | encounter | traits area melee self strike weapon | vs ad | tiers [B] 1[W] + [Mod] / [B] 1[W] + [Mod] + 4 / [B] 1[W] + [Mod] + 6 | area 1.5
+action Pummel | ap 1 | at-will | traits melee strike weapon | vs ad | tiers [B] [Mod] / [B] 1d4 + [Mod] / [B] 1d6 + [Mod]
+action Leg Sweep | ap 1 | round | traits melee strike weapon | vs ad | tiers [B] 1d4 / [B] 1d4 + [Mod] / [B] 1d6 + [Mod] | on 3: debuff Prone
+# Mobility
+action Cut Through | ap 2 | round | traits melee strike weapon | vs ad | tiers [B] [Mod] / [B] 1[W] + [Mod] / [B] 1[W] + [Mod] + 2 | evade 2
+# Magic (Divine)
+action Sacred Weapon 1 | ap 1 | round | traits divine focus | always: empowered 1 turn
+action Sacred Weapon 2 | ap 2 | round | traits divine focus | allies 2 | always: empowered 1 turn
+
+turn Typical: Smite 2, Weapon Attack, Weapon Attack
+
+passive Heavy Blows (today): bonus 1 melee weapon strike

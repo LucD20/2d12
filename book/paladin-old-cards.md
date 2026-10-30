@@ -1,5 +1,7 @@
 # The Paladin's other cards (kept for later reference)
 
+> **Pack OT (2026-10-30, proposed):** where each card below goes (an option, a Talent, folded in, or out) is in `book/options-talents.md`, sections 2 to 5.
+
 These are the Paladin cards that are **not** in the default build (pack P1, 2026-10-29), as the book had them. Lucas: "let's just include the ones we are working on"; they come back, reworked or not, in the Options step (book/class-charter.md, section 7: every other Pick as a sidegrade priced against the default). Their prices before P1 are in `book/ruler/prices.md` (`catalogue/paladin.txt`). Nothing here is in the built book.
 
 **Open for the Options step:**

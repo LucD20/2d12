@@ -1,0 +1,16 @@
+# The ranged Talents (pack OT, 2026-10-30; PROPOSED: book/options-talents.md), priced on the A1 Archer's numbers (a Crossbow), for: node book/ruler/econ.mjs
+class Talents (ranged, on the Archer)
+level 1
+attributes body 1, mind 1, instinct 2
+weapon-mod 2
+power-mod 2
+weapon Crossbow (ranged, projectile, reload, two-handed): 0 / 1d4+2 / 1d10+2
+
+action Weapon Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod]
+action Aim (today) | ap 1 | at-will | traits focus self | always: boon 1 next ranged strike weapon
+action Aim | ap 1 | round | traits ranged shot strike weapon | does Weapon Attack | each boon 1 | cover
+
+turn Typical: Weapon Attack, Weapon Attack, Weapon Attack
+
+passive Long Draw: long-draw
+passive Steady Nerves: steady-nerves
