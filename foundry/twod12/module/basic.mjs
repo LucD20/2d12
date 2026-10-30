@@ -325,13 +325,9 @@ export function registerBasicHooks() {
         if (r) ui.notifications.info(`2d12: the Rally value of ${r} Paladin or Archer class item${r === 1 ? "" : "s"} follows the book now (Paladin 6, Archer 5).`);
       }
     } catch (e) { console.warn("twod12 | Rally values", e); }
-    // v0.0.190 (Lucas), once per world: the system compendiums open unlocked (only the GM and Assistants can edit them: their ownership).
-    try {
-      if (!game.settings.get(F, "packsUnlockedV190")) {
-        for (const p of game.packs ?? []) if (p.metadata?.packageName === F && p.locked) await p.configure({ locked: false });
-        await game.settings.set(F, "packsUnlockedV190", true);
-      }
-    } catch (e) { console.warn("twod12 | unlocking the compendiums", e); }
+    // v0.0.191 (Lucas): the system compendiums are unlocked while the world setting says so (on by default); only the GM and Assistants can
+    // edit them (their ownership). Written straight into Foundry's compendium configuration (v0.0.190's one-time call didn't take).
+    try { await unlockSystemPacks(); } catch (e) { console.warn("twod12 | unlocking the compendiums", e); }
     // v0.0.186, once per world: the cards automated by code that tested their name get their settings (automation.mjs).
     try {
       if (!game.settings.get(F, "settingsV186")) {
@@ -392,5 +388,20 @@ export async function fixReleaseCost(actors) {
       try { await it.update({ "system.versions": vs.map(v => ({ ...(v.toObject?.() ?? v), ap: 0 })) }); n++; } catch (e) { console.warn("twod12 | could not fix Release on", actor.name, e); }
     }
   }
+  return n;
+}
+
+/** v0.0.191: unlock the system's compendiums (world setting "unlockPacks", on by default). Returns how many were unlocked. */
+export async function unlockSystemPacks() {
+  if (!game.user.isGM || !game.settings.get(F, "unlockPacks")) return 0;
+  const cfg = foundry.utils.deepClone(game.settings.get("core", "compendiumConfiguration") ?? {});
+  let n = 0;
+  for (const p of game.packs ?? []) {
+    if (p.metadata?.packageName !== F || p.metadata?.packageType !== "system") continue;
+    if (cfg[p.collection]?.locked === false) continue;
+    cfg[p.collection] = { ...(cfg[p.collection] ?? {}), locked: false };
+    n++;
+  }
+  if (n) { await game.settings.set("core", "compendiumConfiguration", cfg); console.log(`twod12 | ${n} system compendium(s) unlocked`); }
   return n;
 }

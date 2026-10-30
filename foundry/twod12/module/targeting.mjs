@@ -19,6 +19,29 @@ function collapseWindows() {
   return out;
 }
 
+// v0.0.191 (Lucas): the banner sits at the bottom, above the macro bar, and can be dragged by its grip; where it was left is kept (per user).
+const POS_KEY = "twod12.targetingPos";
+function placeBar(bar) {
+  let pos = null;
+  try { pos = JSON.parse(localStorage.getItem(POS_KEY) ?? "null"); } catch (e) { /* no storage */ }
+  if (pos && Number.isFinite(pos.left) && Number.isFinite(pos.top)) {
+    bar.style.left = `${Math.min(Math.max(0, pos.left), window.innerWidth - 80)}px`;
+    bar.style.top = `${Math.min(Math.max(0, pos.top), window.innerHeight - 40)}px`;
+    bar.style.bottom = "auto"; bar.style.transform = "none";
+  }
+  bar.querySelector(".tb-grip")?.addEventListener("pointerdown", ev => {
+    ev.preventDefault();
+    const r = bar.getBoundingClientRect(), dx = ev.clientX - r.left, dy = ev.clientY - r.top;
+    const move = e => { bar.style.left = `${e.clientX - dx}px`; bar.style.top = `${e.clientY - dy}px`; bar.style.bottom = "auto"; bar.style.transform = "none"; };
+    const up = () => {
+      document.removeEventListener("pointermove", move); document.removeEventListener("pointerup", up);
+      const q = bar.getBoundingClientRect();
+      try { localStorage.setItem(POS_KEY, JSON.stringify({ left: Math.round(q.left), top: Math.round(q.top) })); } catch (e) { /* no storage */ }
+    };
+    document.addEventListener("pointermove", move); document.addEventListener("pointerup", up);
+  });
+}
+
 /** Pure: how the banner reads ("Aim: target 1 creature (0 of 1)"). */
 export const bannerText = (name, need, have) => `${name}: target ${need} creature${need === 1 ? "" : "s"} (${have} of ${need}). Click a token, or press T over it.`;
 
@@ -35,10 +58,11 @@ export function pickTargets(need, name) {
     const bar = document.createElement("div");
     bar.id = BANNER;
     bar.className = "twod12-targeting twod12-bar";
-    bar.innerHTML = `<span class="tb-text"></span><span class="tb-btns"><label class="tb-dc" data-tooltip="Roll with no target, against this DC"><button type="button" data-tb="none"><i class="fa-solid fa-ban"></i> No target</button> DC <input type="number" value="13" min="0"></label><button type="button" data-tb="cancel"><i class="fa-solid fa-xmark"></i> Cancel</button></span>`;
+    bar.innerHTML = `<i class="fa-solid fa-grip-vertical tb-grip" data-tooltip="Drag to move"></i><span class="tb-text"></span><span class="tb-btns"><label class="tb-dc" data-tooltip="Roll with no target, against this DC"><button type="button" data-tb="none"><i class="fa-solid fa-ban"></i> No target</button> DC <input type="number" value="13" min="0"></label><button type="button" data-tb="cancel"><i class="fa-solid fa-xmark"></i> Cancel</button></span>`;
     const draw = () => { bar.querySelector(".tb-text").innerHTML = `<i class="fa-solid fa-crosshairs"></i> ${esc(bannerText(name, need, game.user.targets.size))}`; };
     draw();
     document.body.append(bar);
+    placeBar(bar);
     let done = false;
     const finish = res => {
       if (done) return;

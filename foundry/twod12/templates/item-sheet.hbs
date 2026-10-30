@@ -4,8 +4,9 @@
     <input class="name" type="text" name="name" value="{{item.name}}" placeholder="Name">
   </header>
   <nav class="tabs">
-    <button type="button" class="tabbtn" data-action="switchTab" data-tab-target="description">Description</button>
-    <button type="button" class="tabbtn" data-action="switchTab" data-tab-target="details">Details</button>
+    {{!-- v0.0.191: links, not buttons: a read-only sheet (a locked compendium) disables every button, and the Details tab could not be opened --}}
+    <a class="tabbtn" role="tab" data-action="switchTab" data-tab-target="description">Description</a>
+    <a class="tabbtn" role="tab" data-action="switchTab" data-tab-target="details">Details</a>
   </nav>
 
   <section class="tab" data-tab="description">

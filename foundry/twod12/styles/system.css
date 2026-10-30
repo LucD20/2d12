@@ -1709,3 +1709,11 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 #twod12-carousel .tc-card.noinit .tc-portrait { cursor: pointer; outline: 2px dashed rgba(242, 201, 76, .8); outline-offset: -2px; }
 #twod12-carousel .tc-card.noinit .tc-portrait::after { content: "\f6cf"; font-family: "Font Awesome 6 Pro", "Font Awesome 6 Free"; font-weight: 900; position: absolute; right: 2px; bottom: 2px; font-size: 11px; color: #f2c94c; text-shadow: 0 0 2px #000; }
 #twod12-carousel .tc-portrait { position: relative; }
+/* v0.0.191: the item sheet's tabs are links (they work on a read-only sheet). */
+.twod12 nav.tabs a.tabbtn { display: inline-block; cursor: pointer; text-decoration: none; color: inherit; }
+/* v0.0.191: the targeting banner at the bottom (above the macro bar), draggable by its grip. */
+#twod12-targeting { top: auto; bottom: 86px; max-width: calc(100vw - 340px); flex-wrap: wrap; }
+#twod12-targeting .tb-grip { cursor: grab; color: #c9a24a; margin-right: 0; }
+#twod12-targeting button { white-space: nowrap; }
+/* v0.0.191: the automation diamond a little bigger. */
+.twod12 .autodia { font-size: 11px; vertical-align: 1px; }
