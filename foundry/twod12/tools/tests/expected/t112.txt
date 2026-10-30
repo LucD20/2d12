@@ -1,13 +1,11 @@
-documents: 133
-references: 70 | broken: none
-Paladin features: Divine Power, Font of Mercy, Hallmark Action, Talent (Level 1), Encounter Pick, Escalation Passive, Escalation Active, Talent (Level 2), Daily Pick, Escalation Passive (Level 3) | Divine Connection kept for testing (not in the class): true | its id is the old one: vaYnV1XM6HT1TpMP
-Hallmark Action (level 1): choose 1 of 2: Smite, Lay On Hands
-Encounter Pick (level 1): choose 1 of 2: Holy Wrath, Bulwark of Faith
-Escalation Passive (level 1): choose 1 of 2: Hallowed Stance, Radiant Zeal
-Escalation Active (level 1): choose 1 of 2: Aura of Protection, Divine Surge
-Daily Pick (level 3): choose 1 of 1: Consecrated Ground
-Escalation Passive (Level 3) (level 3): choose 1 of 2: Hallowed Stance, Radiant Zeal
-Talent slots: Talent (Level 1): 1 at level 1 | Talent (Level 2): 1 at level 2 | Mind Health x4
+documents: 119
+references: 65 | broken: none
+Paladin features:  | Divine Connection kept for testing (not in the class): true | its id is the old one: vaYnV1XM6HT1TpMP
+Level 1: Attribute increases (attr: body or appeal, mind or instinct) | Core Features (items, granted): Divine Power, Font of Mercy | Hallmark Action (items, choice, pick 1): Smite, Lay On Hands | Talent (talent, pick 1) | Encounter Pick (repertoire, encounter, pick 1) | Passive Escalation Pick (items, choice, pick 1): Font of Mercy, Hallowed Stance, Radiant Zeal | Active Escalation Pick (items, choice, pick 1): Aura of Protection, Divine Surge
+Level 2: Talent (talent, pick 1)
+Level 3: Daily Pick (repertoire, daily, pick 1) | Passive Escalation Pick (items, choice, pick 1): Font of Mercy, Hallowed Stance, Radiant Zeal
+Repertoire: Shield of Faith, Holy Wrath, Bulwark of Faith, Consecrated Ground | Escalation: Font of Mercy, Hallowed Stance, Radiant Zeal / Aura of Protection, Divine Surge
+pick Features gone: true | Mind Health x4
 --- the cards
 Smite: divine,signature,strike,weapon | 1 AP 1[W] / 1[W]+1d4 Ho / 1[W]+1d6 Ho || 2 AP 1[W]+1d6 Ho / 1[W]+1d10 Ho / 1[W]+2d8 Ho || 3 AP 1[W]+1d6 Ho / 1[W]+1d10 Ho / 1[W]+2d8 Ho
 Smite 3 AP effects: The target sheds Bright light in a @Template[emanation|distance:2|rounds:1] and takes 1 Bane when they try to hide, for 1 round. You or one ally in the light gain @Effect[Compendium.twod12.effects.Item.G20TdfpcMVkMGcxl]{+1 Defense for 1 round}. You or one ally in the light gain @Guard[1d8+mod]{Guard 1d8 + [Mod]}. You choose who gains the Defense and who gains the Guard separately: the same creature or two different ones.
@@ -25,11 +23,11 @@ Radiant Zeal: Paladin Escalation | While your Escalation is 1 or more, the first
 Hallowed Stance: Paladin Escalation | While your Escalation is 2 or more, if you haven't left your square since your last turn, you and your adjacent allies take less Body damage, reduced by your Power Modifier (minimum 0). It reduces one instance of damage per Action; if the Action has several, the player chooses which one. (Not automated.)
 the Aura: aura Aura 2 allies -> Aura of Protection (+1 Defense) | lasts: until the encounter ends (an Escalation effect)
 Lay On Hands' strike: bonusdamage 2d8 M Ho t2,t3 | ends after: strike
-old cards: Vow of Enmity, Word of Radiance kept | in no pick: true
-Paladin (Smite): Divine Power, Font of Mercy, Smite, Holy Wrath, Hallowed Stance, Divine Surge, Heavy Blows | ids unique: true
-Paladin (Lay On Hands): Divine Power, Font of Mercy, Lay On Hands, Holy Wrath, Hallowed Stance, Divine Surge, Heavy Blows | ids unique: true
-Archer (Double Shot): Sharpshooter, Marked Quarry, Mark Quarry, Double Shot, Killer's Focus, Pinning Shot, Aim | ids unique: true
-Archer (Rolling Shot): Sharpshooter, Marked Quarry, Mark Quarry, Rolling Shot, Killer's Focus, Pinning Shot, Aim | ids unique: true
+old cards: Vow of Enmity, Word of Radiance kept | in no level: true
+Paladin (Smite): Divine Power, Font of Mercy, Smite, Heavy Blows, Holy Wrath, Hallowed Stance, Divine Surge | ids unique: true
+Paladin (Lay On Hands): Divine Power, Font of Mercy, Lay On Hands, Heavy Blows, Holy Wrath, Hallowed Stance, Divine Surge | ids unique: true
+Archer (Double Shot): Sharpshooter, Marked Quarry, Mark Quarry, Double Shot, Aim, Killer's Focus, Pinning Shot | ids unique: true
+Archer (Rolling Shot): Sharpshooter, Marked Quarry, Mark Quarry, Rolling Shot, Aim, Killer's Focus, Pinning Shot | ids unique: true
 Bandit Thug (grunt, speed 5): Cudgel atwill, Low Blow round
 Goblin Sneak (minion, speed 7): Rusty Knife atwill, Dirty Trick round
 Ogre Chieftain (elite, speed 4): Club atwill, Ground Slam encounter, Rally the Tribe round

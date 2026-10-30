@@ -26,6 +26,7 @@ import { openBuilder } from "./builder.mjs";
 import { CharacterSheet, NpcSheet, TwoD12ItemSheet, registerSheetHooks } from "./sheets.mjs";
 import { registerHandSetting } from "./hands.mjs";
 import { grantClassFeatures } from "./grants.mjs";
+import { classLevelChange } from "./classwindow.mjs";
 import { rollDamage, retargetAction } from "./actions.mjs";
 import { damageButton, registerSocket } from "./damage.mjs";
 import { TWOD12 } from "./config.mjs";
@@ -280,10 +281,13 @@ Hooks.on("getSceneControlButtons", controls => {
   else if (controls?.tokens?.tools) { controls.tokens.tools[tool.name] = tool; controls.tokens.tools[report.name] = report; }
 });
 
+// v0.0.185: the Level before a change, for the class window (each new level in turn; a lower Level removes what the higher levels gave).
+Hooks.on("preUpdateActor", (actor, changes, options) => { if (foundry.utils.hasProperty(changes, "system.level")) options.twod12FromLevel = actor.system.level; });
 Hooks.on("updateActor", (actor, changes, options, userId) => {
   if (!["character", "npc"].includes(actor.type)) return;
-  // Level up: grant newly available class features (only on the client that made the change).
-  if (userId === game.user.id && foundry.utils.hasProperty(changes, "system.level")) grantClassFeatures(actor);
+  // Level up: the class window for a class with levels, else grant newly available class features (only on the client that made the change).
+  if (userId === game.user.id && foundry.utils.hasProperty(changes, "system.level") && options.twod12Class !== "skip")
+    classLevelChange(actor, options.twod12FromLevel, actor.system.level).then(done => { if (!done) grantClassFeatures(actor); });
   // Bloodied / Strained follow the damage thresholds.
   if (game.user.isActiveGM && foundry.utils.hasProperty(changes, "system.damage")) {
     actor.toggleStatusEffect("bloodied", { active: actor.system.bloodied });

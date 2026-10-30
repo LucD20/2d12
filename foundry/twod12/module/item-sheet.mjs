@@ -10,6 +10,9 @@ import { enableDragging } from "./drag.mjs";
 import { settingSentence, effectSummary, predRows, hiddenPreds, familyColor } from "./fxdetails.mjs";
 import { applyTab, dragData } from "./sheet-common.mjs";
 import { VersionsEditor } from "./versions.mjs";
+import { attrLine, choicesToMake, freqOf, SECTION_FREQS } from "./classlevels.mjs";
+import { itemInfo } from "./classwindow.mjs";
+import { openLevelsEditor } from "./classeditor.mjs";
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ItemSheetV2 } = foundry.applications.sheets;
 
@@ -34,7 +37,8 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       removeSetting: TwoD12ItemSheet.removeSetting,
       addTalentMod: TwoD12ItemSheet.addTalentMod,
       createLinkedAction: TwoD12ItemSheet.createLinkedAction,
-      removeTalentMod: TwoD12ItemSheet.removeTalentMod
+      removeTalentMod: TwoD12ItemSheet.removeTalentMod,
+      editLevels: TwoD12ItemSheet.editLevels
     }
   };
   static PARTS = { main: { template: "systems/twod12/templates/item-sheet.hbs" } };
@@ -52,7 +56,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       fields: s.schema.fields,
       traitPicker: traitPicker(),   // v0.0.179: the Traits drop-down grouped Roll, Requires, Kind, Damage, Keywords
       // v0.0.172: the help tips (the grey hints) of the Action and Talent sheets can be hidden, like the Effect's (one choice per user, for both sheets).
-      helpable: t === "action" || t === "talent",
+      helpable: t === "action" || t === "talent" || t === "class",
       sheetHelp: (() => { try { return game.settings.get("twod12", "sheetHelp") !== false; } catch (e) { return true; } })(),
       rawCard: t === "action" ? await buildRawCard(it) : t === "weapon" ? await buildWeaponCard(it) : "",
       categoryShown: categoryText(s),
@@ -83,12 +87,13 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       isSpecies: t === "species",
       steadinessChoices: [0, 1, 2, 3, 4].map(v => ({ v, on: Number(s.steadiness ?? 0) === v })),
       isClass: t === "class",
+      cls: t === "class" ? await this._classContext(s) : null,
       defenseKindChoices: TWOD12.defenseKinds,
       armorTrainingChoices: TWOD12.armorTrainings,
       modPriorityChoices: { weapon: "the Weapon Modifier keeps it", power: "the Power Modifier keeps it" },
       isFeature: t === "feature",
       isEffect: t === "effect",
-      styled: !["class", "species"].includes(t),   // v0.0.168: the sheet's look (parchment, dark text); Class and Species keep the old one until they are redone
+      styled: t !== "species",   // v0.0.168: the sheet's look (parchment, dark text); v0.0.185: Class too, Species keeps the old one until it is redone
       durationChoices: TWOD12.durationTypes,
       settingChoices: TWOD12.effectSettings,
       settingsList:
@@ -207,6 +212,28 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     });
   }
 
+  /** v0.0.185: the Class's Details tab: the Modifier selects, the Attribute increases of level 1, the level rows, the Repertoire and Escalation chips. */
+  async _classContext(s) {
+    const infos = new Map();
+    for (const u of new Set([...(s.repertoire ?? []), ...(s.escPassives ?? []), ...(s.escActives ?? []), ...(s.levels ?? []).flatMap(l => l.sections.flatMap(x => x.items ?? []))])) {
+      let d = null; try { d = await fromUuid(u); } catch (e) { /* missing */ }
+      infos.set(u, itemInfo(d));
+    }
+    const info = u => infos.get(u) ?? null;
+    const chip = (u, index) => ({ uuid: u, index, name: info(u)?.name ?? "(missing item)", esc: info(u)?.escalation || 0 });
+    const freqs = ["passive", "turn", "round", "encounter", "daily"];
+    const rep = (s.repertoire ?? []).map(chip);
+    const repGroups = [...freqs.map(f => ({ label: SECTION_FREQS[f], list: rep.filter(c => freqOf(info(c.uuid)) === f) })), { label: "Other", list: rep.filter(c => !freqs.includes(freqOf(info(c.uuid)))) }].filter((g, i) => g.list.length || i < freqs.length);
+    const w = [...(s.weaponAttrs ?? [])], p = [...(s.magicAttrs ?? [])];
+    const shared = w.filter(k => p.includes(k)).map(k => TWOD12.attributes[k]);
+    return {
+      weapon: [w[0] ?? "body", w[1] ?? w[0] ?? "body"], power: [p[0] ?? "mind", p[1] ?? p[0] ?? "mind"], attrLine: attrLine(s, 1), shared: shared.join(" or "),
+      levels: (s.levels ?? []).map((l, i) => { const c = choicesToMake(s, i + 1, info); return { n: i + 1, sections: l.sections.length, one: l.sections.length === 1, choices: c, oneChoice: c === 1 }; }),
+      rep: repGroups,
+      esc: [{ key: "escPassives", label: "Passives", list: (s.escPassives ?? []).map(chip) }, { key: "escActives", label: "Actives", list: (s.escActives ?? []).map(chip) }]
+    };
+  }
+
   /** A Feature's or Talent's passive: the same sentences as an Effect's settings. */
   _passiveContext() {
     let help = false;
@@ -245,7 +272,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
 
   _onRender(context, options) {
     super._onRender?.(context, options);
-    this.element.classList.toggle("twod12-styled", !["class", "species"].includes(this.item.type));   // v0.0.168 (system.css "Item sheets")
+    this.element.classList.toggle("twod12-styled", this.item.type !== "species");   // v0.0.168 (system.css "Item sheets")
     applyTab(this);
     enableDragging(this);
     this.element.querySelectorAll("details.setting").forEach(d =>
@@ -257,6 +284,12 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       })
     );
     this._effectListeners();
+    // v0.0.185: the Class's Weapon and Power Modifier selects ("uses X or Y") write the two-Attribute lists.
+    this.element.querySelectorAll("[data-modsel]").forEach(el => el.addEventListener("change", async () => {
+      const key = el.dataset.modsel, pair = [...this.element.querySelectorAll(`[data-modsel="${key}"]`)].map(x => x.value);
+      if (pair[0] === pair[1]) ui.notifications.info("The two Attributes of a Modifier should be different.");
+      await this.item.update({ [`system.${key}`]: [...new Set(pair)] });
+    }));
     this.element.querySelectorAll("[data-sheethelp]").forEach(el => el.addEventListener("change", async () => {
       el.closest("section.tab")?.classList.toggle("help-off", !el.checked);
       try { await game.settings.set("twod12", "sheetHelp", el.checked); } catch (e) { /* not registered */ }
@@ -346,8 +379,9 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
         const doc = data?.uuid ? await fromUuid(data.uuid) : null;
         if (!doc || !zone.dataset.accept.split(",").includes(doc.type))
           return ui.notifications.warn(`Drop a ${zone.dataset.accept.replace(/,/g, " or ")} here.`);
-        const list = zone.dataset.list;
+        const list = zone.dataset.list === "escalation" ? (doc.type === "feature" ? "escPassives" : "escActives") : zone.dataset.list;
         const arr = foundry.utils.deepClone(this.item.toObject().system[list]);
+        if (["repertoire", "escPassives", "escActives"].includes(list) && arr.includes(doc.uuid)) return ui.notifications.info(`${doc.name} is already in the list.`);
         if (list === "conditions" && !doc.system?.isCondition) return ui.notifications.warn("Drop a condition here (from the Conditions compendium).");
         arr.push(
           list === "features"
@@ -524,6 +558,8 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     arr.splice(Number(target.dataset.index), 1);
     await this.item.update({ [`system.${list}`]: arr });
   }
+  /** v0.0.185: the Class's Levels window. */
+  static editLevels() { openLevelsEditor(this.item); }
   static async openLinked(event, target) {
     (await fromUuid(target.dataset.uuid))?.sheet.render(true);
   }

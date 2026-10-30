@@ -1,5 +1,6 @@
 import { TWOD12, isTalentAction } from "./config.mjs";
 import { applyEffects, originInfo } from "./effects.mjs";
+import { dropClassLevels } from "./classwindow.mjs";
 const { DialogV2 } = foundry.applications.api;
 const F = "twod12";
 
@@ -133,6 +134,8 @@ async function dropSpecies(actor, item) {
 
 async function dropClass(actor, item) {
   const s = item.system;
+  // v0.0.185: a class with levels uses the class window (classwindow.mjs); one without keeps the old dialogs.
+  if (s.levels?.length && actor.type === "character") return dropClassLevels(actor, item);
   if ([s.choiceA, s.choiceB, s.weaponAttrs, s.magicAttrs].every(x => [...x].length === 0)) {
     ui.notifications.warn(`${item.name} has no attribute options set (Details tab).`);
   }

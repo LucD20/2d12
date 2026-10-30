@@ -24,7 +24,10 @@ console.log("Sharpshooter:", strip(get("Sharpshooter").system.description), "| n
 console.log("Marked Quarry:", strip(get("Marked Quarry").system.description));
 console.log("Elusive:", get("Elusive").system.category, "|", strip(get("Elusive").system.description));
 const nm = u => C.docs.find(d => C.uuidOf(d.type === "action" ? "actions" : "features", d.name) === u)?.name ?? "?";
-console.log("picks:", ["Archer Hallmark Action", "Archer Escalation Passive", "Archer Escalation Active", "Archer Encounter Pick", "Archer Daily Pick", "Archer Escalation Passive (Level 3)"].map(n => `${n.replace("Archer ", "")} (level ${get(n).system.level}) ${get(n).system.choiceCount} of ${get(n).system.choiceOptions.map(nm).join("/")}`).join(" | "));
+// v0.0.185 (pack C2): the Archer's levels as sections.
+const archer = get("Archer").system;
+archer.levels.forEach((l, i) => console.log(`Level ${i + 1}:`, l.sections.map(x => `${x.title} (${x.kind}${x.kind === "repertoire" ? ` ${x.freq}` : ""}${x.mode === "granted" && x.kind === "items" ? " granted" : ""})${x.items.length ? `: ${x.items.map(nm).join(", ")}` : ""}`).join(" | ")));
+console.log("Repertoire:", archer.repertoire.map(nm).join(", "), "| Escalation:", archer.escPassives.map(nm).join(", "), "/", archer.escActives.map(nm).join(", "));
 const src = n => fs.readFileSync(ROOT + n, "utf8");
 const act = src("module/actions.mjs"), main = src("module/twod12.mjs"), tpl = src("templates/actor-sheet.hbs"), m = src("module/mastery.mjs");
 console.log("Shot needs a Projectile weapon:", act.includes('is a Shot: it needs a wielded Projectile weapon'), "| a Weapon Action with one is a Shot:", act.includes('hasProp(previewWeapon, "projectile") ? ["shot"] : []'), "| old ranged weapons get Projectile once:", main.includes('"projectileApplied"'));

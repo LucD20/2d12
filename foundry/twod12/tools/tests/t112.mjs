@@ -19,8 +19,11 @@ const paladin = byName("classes", "Paladin").system;
 console.log("Paladin features:", paladin.features.map(f => nameOf(f.uuid)).join(", "), "| Divine Connection kept for testing (not in the class):", !!byName("features", "Divine Connection") && !paladin.features.some(f => nameOf(f.uuid) === "Divine Connection"), "| its id is the old one:", byName("features", "Divine Connection")?._id);
 // v0.0.181 (P1): the book's Paladin: the level list in today's structure, the Hallmark Action, the new cards, Guard and the old cards' folder.
 const featLv = n => byName("features", n).system.level;
-for (const n of ["Hallmark Action", "Encounter Pick", "Escalation Passive", "Escalation Active", "Daily Pick", "Escalation Passive (Level 3)"]) { const f = byName("features", n).system; console.log(`${n} (level ${f.level}): choose ${f.choiceCount} of ${f.choiceOptions.length}: ${f.choiceOptions.map(nameOf).join(", ")}`); }
-console.log("Talent slots:", ["Talent (Level 1)", "Talent (Level 2)"].map(n => `${n}: ${byName("features", n).system.talents} at level ${featLv(n)}`).join(" | "), "| Mind Health x" + paladin.mindMult);
+// v0.0.185 (pack C2): the level list is the class's levels (sections), no more pick Features.
+const secLine = x => `${x.title} (${x.kind}${x.kind === "items" ? `, ${x.mode}` : ""}${x.kind === "repertoire" ? `, ${x.freq}` : ""}${x.kind === "attr" ? `: ${x.pairs.map(p => `${p.a} or ${p.b}`).join(", ")}` : x.mode === "granted" ? "" : `, pick ${x.pick}`})${x.items.length ? `: ${x.items.map(nameOf).join(", ")}` : ""}`;
+paladin.levels.forEach((l, i) => console.log(`Level ${i + 1}:`, l.sections.map(secLine).join(" | ")));
+console.log("Repertoire:", paladin.repertoire.map(nameOf).join(", "), "| Escalation:", paladin.escPassives.map(nameOf).join(", "), "/", paladin.escActives.map(nameOf).join(", "));
+console.log("pick Features gone:", !["Hallmark Action", "Encounter Pick", "Talent (Level 1)", "Talent (Level 2)"].some(n => docs.some(d => d.name === n)), "| Mind Health x" + paladin.mindMult);
 console.log("--- the cards");
 const act = n => byName("actions", n).system;
 const tiersOf = (n, i) => ["t1", "t2", "t3"].map(t => act(n).versions[i][t].map(x => (x.useW ? "1[W]" : "") + (x.dice ? `${x.useW ? "+" : ""}${x.dice}${x.subtype ? " " + x.subtype : ""}` : "")).join("+") || "-").join(" / ");
@@ -42,7 +45,7 @@ const ap = fx("Aura of Protection").settings[0];
 console.log("the Aura:", ap.type, `Aura ${ap.auraSize}`, ap.auraWho, "->", nameOf(ap.fxUuid), "| lasts:", fx("Aura of Protection").duration.type || "until the encounter ends (an Escalation effect)");
 const lh = fx("Lay On Hands (Holy Strike)").settings[0];
 console.log("Lay On Hands' strike:", lh.type, lh.dmg, lh.dmgPool, lh.dmgSub, lh.tiers.join(","), "| ends after:", fx("Lay On Hands (Holy Strike)").expireOn.join(","));
-console.log("old cards:", docs.filter(d => d.name === "Vow of Enmity" || d.name === "Word of Radiance").map(d => d.name).join(", "), "kept | in no pick:", !["Hallmark Action", "Encounter Pick", "Escalation Passive", "Escalation Active", "Daily Pick"].some(n => byName("features", n).system.choiceOptions.map(nameOf).some(x => ["Vow of Enmity", "Word of Radiance", "Call to Arms"].includes(x))));
+console.log("old cards:", docs.filter(d => d.name === "Vow of Enmity" || d.name === "Word of Radiance").map(d => d.name).join(", "), "kept | in no level:", !paladin.levels.some(l => l.sections.some(x => x.items.map(nameOf).some(n => ["Vow of Enmity", "Word of Radiance", "Call to Arms"].includes(n)))) && !paladin.repertoire.map(nameOf).some(n => ["Word of Radiance", "Call to Arms"].includes(n)));
 // v0.0.183: the four builds of the ruler, and one NPC per role (the Bestiary's examples)
 for (const f of ["paladin-smite", "paladin-lay-on-hands", "archer-double-shot", "archer-rolling-shot"]) {
   const pc = JSON.parse(fs.readFileSync(path.join(SRC, `pcs/${f}.pc.json`), "utf8")), ids = pc.items.map(i => i._id);

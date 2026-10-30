@@ -203,16 +203,37 @@ const sp = (name, attrs, pickTwo, bodyMod, mindMod, speed, steadiness = 0) => ad
 sp("Human", { body: 0, mind: 0, appeal: 0, instinct: 0 }, true, 3, 4, 5);
 sp("Dwarf", { body: 1, mind: 1, appeal: -1, instinct: 1 }, false, 5, 3, 4, 1);
 sp("Elf", { body: -1, mind: 1, appeal: 1, instinct: 1 }, false, 1, 5, 6);
+// v0.0.185 (pack C2): the classes' levels as sections (module/classlevels.mjs), from the book's "by Level" tables; the class window reads them.
+const U = names => names.map(n => uuidOf(n === "Font of Mercy" || /^(Divine Power|Sharpshooter|Marked Quarry|Hallowed Stance|Radiant Zeal|Killer's Focus|Elusive)$/.test(n) ? "features" : "actions", n));
+const sec = (id, title, kind, o = {}) => ({ id, title, kind, mode: o.mode ?? "choice", pick: o.pick ?? 1, items: o.items ?? [], pairs: (o.pairs ?? []).map(([a, b]) => ({ a, b })), freq: o.freq ?? "any", category: o.category ?? "" });
+const PAL_PASSIVES = ["Font of Mercy", "Hallowed Stance", "Radiant Zeal"], PAL_ACTIVES = ["Aura of Protection", "Divine Surge"];
 add("classes", "class", "Paladin", "icons/svg/angel.svg", {
-  description: "<p>A holy warrior.</p>", choiceA: ["body", "appeal"], choiceB: ["mind", "instinct"], bodyMult: 4, mindMult: 4, rallyMod: 6, speedMod: 0,
-  // P1 (v0.0.181): the book's level list in today's structure (each Feature carries its level; C2 brings the new class window).
-  weaponAttrs: ["body", "appeal"], magicAttrs: ["mind", "appeal"], armorTraining: "heavy", features: ["Divine Power", "Font of Mercy", "Hallmark Action", "Talent (Level 1)", "Encounter Pick", "Escalation Passive", "Escalation Active", "Talent (Level 2)", "Daily Pick", "Escalation Passive (Level 3)"].map(n => ({ uuid: uuidOf("features", n), level: 1 }))
+  description: "<p>A holy warrior.</p>", category: "Class", flavor: "Your god's strength flows through your weapon and your hands.",
+  choiceA: ["body", "appeal"], choiceB: ["mind", "instinct"], bodyMult: 4, mindMult: 4, rallyMod: 6, speedMod: 0,
+  weaponAttrs: ["body", "appeal"], magicAttrs: ["mind", "appeal"], armorTraining: "heavy", features: [],
+  repertoire: U(["Shield of Faith", "Holy Wrath", "Bulwark of Faith", "Consecrated Ground"]), escPassives: U(PAL_PASSIVES), escActives: U(PAL_ACTIVES),
+  // Font of Mercy is in the Escalation Passives (it is one) and granted at level 1, so the Passive Escalation Pick never offers it.
+  levels: [
+    { sections: [sec("pal1attr", "Attribute increases", "attr", { pairs: [["body", "appeal"], ["mind", "instinct"]] }), sec("pal1core", "Core Features", "items", { mode: "granted", items: U(["Divine Power", "Font of Mercy"]) }),
+      sec("pal1hall", "Hallmark Action", "items", { items: U(["Smite", "Lay On Hands"]) }), sec("pal1tal", "Talent", "talent"), sec("pal1enc", "Encounter Pick", "repertoire", { freq: "encounter" }),
+      sec("pal1pass", "Passive Escalation Pick", "items", { items: U(PAL_PASSIVES) }), sec("pal1act", "Active Escalation Pick", "items", { items: U(PAL_ACTIVES) })] },
+    { sections: [sec("pal2tal", "Talent", "talent")] },
+    { sections: [sec("pal3daily", "Daily Pick", "repertoire", { freq: "daily" }), sec("pal3pass", "Passive Escalation Pick", "items", { items: U(PAL_PASSIVES) })] }
+  ]
 });
+const ARC_PASSIVES = ["Killer's Focus", "Elusive"], ARC_ACTIVES = ["Pinning Shot"];
 add("classes", "class", "Archer", "icons/svg/target.svg", {
-  description: "<p>An Archer fights from a distance.</p>", choiceA: ["body", "instinct"], choiceB: ["mind", "appeal"], bodyMult: 3, mindMult: 2.5, rallyMod: 5,
-  weaponAttrs: ["instinct", "body"], magicAttrs: ["mind", "appeal"], armorTraining: "medium", speedMod: 1,
-  // A1 (v0.0.181): the book's level list in today's structure (each Feature carries its level; C2 brings the new class window).
-  features: ["Sharpshooter", "Marked Quarry", "Archer Hallmark Action", "Talent (Level 1)", "Archer Escalation Passive", "Archer Escalation Active", "Talent (Level 2)", "Archer Encounter Pick", "Archer Daily Pick", "Archer Escalation Passive (Level 3)"].map(n => ({ uuid: uuidOf("features", n), level: 1 }))
+  description: "<p>An Archer fights from a distance.</p>", category: "Class", flavor: "You were made for the shot no one else would take.",
+  choiceA: ["body", "instinct"], choiceB: ["mind", "appeal"], bodyMult: 3, mindMult: 2.5, rallyMod: 5,
+  weaponAttrs: ["instinct", "body"], magicAttrs: ["mind", "appeal"], armorTraining: "medium", speedMod: 1, features: [],
+  repertoire: U(["Marksman's Shot", "Hunter's Focus"]), escPassives: U(ARC_PASSIVES), escActives: U(ARC_ACTIVES),
+  levels: [
+    { sections: [sec("arc1attr", "Attribute increases", "attr", { pairs: [["body", "instinct"], ["mind", "appeal"]] }), sec("arc1core", "Core Features", "items", { mode: "granted", items: U(["Sharpshooter", "Marked Quarry"]) }),
+      sec("arc1hall", "Hallmark Action", "items", { items: U(["Double Shot", "Rolling Shot"]) }), sec("arc1tal", "Talent", "talent"),
+      sec("arc1pass", "Passive Escalation Pick", "items", { items: U(ARC_PASSIVES) }), sec("arc1act", "Active Escalation Pick", "items", { items: U(ARC_ACTIVES) })] },
+    { sections: [sec("arc2tal", "Talent", "talent"), sec("arc2enc", "Encounter Pick", "repertoire", { freq: "encounter" })] },
+    { sections: [sec("arc3daily", "Daily Pick", "repertoire", { freq: "daily" }), sec("arc3pass", "Passive Escalation Pick", "items", { items: U(ARC_PASSIVES) })] }
+  ]
 });
 
 /* ------------------------------------------------------------------ NPCs (Actors, with their items inside) */
@@ -375,23 +396,7 @@ add("features", "feature", "Steady Nerves", "icons/svg/target.svg", { category: 
 add("features", "feature", "Elusive", "icons/svg/target.svg", { category: "Archer Escalation", level: 1, description: "<p>While your Escalation is 1 or more, the first [Strike] Action against you each round takes 1 Bane.</p>" }, "Archer");
 add("features", "feature", "Killer's Focus", "icons/svg/target.svg", { category: "Archer Escalation", level: 1, description: "<p>While your Escalation is 2 or more, your first [Shot, Strike, Weapon] Action each round deals an extra [B] 1d6 Pi.</p>" }, "Archer");
 
-// The choices of the class (P1 and A1, v0.0.181: the book's level lists; a Feature is gained at its level)
-const pickOf = cat => (name, label, count, options, level = 1) => add("features", "feature", name, "icons/svg/book.svg", { category: cat, level, description: `<p>${label}.</p>`, choiceLabel: label, choiceCount: count, choiceOptions: options.map(([pack, n]) => uuidOf(pack, n)) });
-const pickFeature = pickOf("Paladin Feature"), archerPick = pickOf("Archer Feature");
-const A = names => names.map(n => ["actions", n]), Fe = names => names.map(n => ["features", n]);
-for (const lv of [1, 2]) add("features", "feature", `Talent (Level ${lv})`, "icons/svg/book.svg", { category: "Class Feature", level: lv, talents: 1, description: `<p>Level ${lv}: you pick one Talent (the Talents document).</p>` });
-pickFeature("Hallmark Action", "Choose your Hallmark Action", 1, A(["Smite", "Lay On Hands"]));
-pickFeature("Encounter Pick", "Choose 1 Encounter Pick", 1, A(["Holy Wrath", "Bulwark of Faith"]));
-pickFeature("Escalation Passive", "Choose 1 Passive Escalation Pick", 1, Fe(["Hallowed Stance", "Radiant Zeal"]));
-pickFeature("Escalation Active", "Choose 1 Active Escalation Pick", 1, A(["Aura of Protection", "Divine Surge"]));
-pickFeature("Daily Pick", "Choose 1 Daily Pick", 1, A(["Consecrated Ground"]), 3);
-pickFeature("Escalation Passive (Level 3)", "Choose 1 Passive Escalation Pick", 1, Fe(["Hallowed Stance", "Radiant Zeal"]), 3);
-archerPick("Archer Hallmark Action", "Choose your Hallmark Action", 1, A(["Double Shot", "Rolling Shot"]));
-archerPick("Archer Escalation Passive", "Choose 1 Passive Escalation Pick", 1, Fe(["Killer's Focus", "Elusive"]));
-archerPick("Archer Escalation Active", "Choose 1 Active Escalation Pick", 1, A(["Pinning Shot"]));
-archerPick("Archer Encounter Pick", "Choose 1 Encounter Pick", 1, A(["Marksman's Shot"]), 2);
-archerPick("Archer Daily Pick", "Choose 1 Daily Pick", 1, A(["Hunter's Focus"]), 3);
-archerPick("Archer Escalation Passive (Level 3)", "Choose 1 Passive Escalation Pick", 1, Fe(["Killer's Focus", "Elusive"]), 3);
+// v0.0.185: the pick Features of v0.0.181 (Hallmark Action, Encounter Pick, Talent (Level 1)...) are gone: the classes have levels now.
 // The cards the P1 and A1 builds left out (book/paladin-old-cards.md, book/archer-old-cards.md): kept in the compendium, in folders of their own, for the Options step.
 const OLD = { "Paladin (old cards)": ["Aegis", "Mercy's Reward", "Divine Vigil", "Avenger's Oath", "Vow of Enmity", "Rebuke", "Sacred Weapon", "Champion's Challenge", "Word of Radiance", "Divine Retribution", "Miraculous Recovery", "Divine Intervention", "Call to Arms", "Hand of Mercy", "Judgment", "Sanctified Ground", "Divine Vigil (Boon against Fear)"],
   "Archer (old cards)": ["Precise Aim", "Precise Aim (1 Boon)", "Precise Aim (2 Boons)", "Quick Draw", "Wing Clip", "True Shot", "Suppressing Fire", "Volley", "Covering Fire", "Rain of Arrows", "Deadeye", "Steady Aim", "Vanish", "Twin Shot", "Perfect Shot", "Bow Mastery", "Long Draw", "Patient Hunter", "Steady Nerves"] };
@@ -406,15 +411,21 @@ const copyDoc = (who, type, name, flags = {}, extra = {}) => {
   return { _id: idOf("Item", `${who}:${type}:${name}`), name, type, img: d.img, system: { ...JSON.parse(JSON.stringify(d.system)), ...extra }, flags: { twod12: { sourceUuid: uuidOf(PACK_OF[type], name), ...flags } }, effects: [], folder: null, sort: 0, ownership: { default: 0 } };
 };
 const pcs = [];
-const pc = ({ name, img, species, chosen, cls, picks, features, slotFeature, weapon, armor = "", extras = [] }) => {
-  const items = [copyDoc(name, "species", species, {}, chosen ? { chosen } : {}), copyDoc(name, "class", cls, {}, { chosenA: picks.a, chosenB: picks.b, chosenWeapon: "", chosenMagic: "", modPriority: picks.priority ?? "weapon" })];
-  const ids = {};
-  for (const f of features) {
-    const it = copyDoc(name, "feature", f, { grantedBy: "class", level: 1 });
-    ids[f] = it._id; items.push(it);
-    for (const u of (it.system.actions ?? [])) { const a = byUuid(u); if (a) items.push(copyDoc(name, "action", a.name, { featureId: it._id })); }
-  }
-  if (slotFeature && ids[slotFeature]) items.push(copyDoc(name, "action", "Opportunity Attack", { slot: `${ids[slotFeature]}:0` }));
+// v0.0.185: built as the class window would: the class copy records the choices of level 1 (flags classPicks / classAttrs, chosenAttrs) and
+// every item the class gave carries classLevel and classSection (a Talent also its slot), so levelling and re-dropping the class work on them.
+const pc = ({ name, img, species, chosen, cls, attrs, picks, weapon, armor = "", extras = [] }) => {
+  const c = docOf("class", cls), lv1 = c.system.levels[0].sections, attrSec = lv1.find(x => x.kind === "attr");
+  const picked = Object.fromEntries(Object.entries(picks).map(([id, n]) => [id, [uuidOf(PACK_OF[docOf(lv1Type(n), n).type], n)]]));
+  const items = [copyDoc(name, "species", species, {}, chosen ? { chosen } : {}),
+    copyDoc(name, "class", cls, { classPicks: { 1: picked }, classAttrs: { 1: attrs } }, { chosenA: attrs[0], chosenB: attrs[1], chosenAttrs: attrs, chosenWeapon: "", chosenMagic: "", modPriority: "weapon" })];
+  if (!attrSec) throw new Error(`${cls}: no Attribute section at level 1`);
+  const give = (n, section, kind) => {
+    const type = lv1Type(n), it = copyDoc(name, type, n, { classLevel: 1, classSection: section, ...(type === "feature" ? { grantedBy: "class", level: 1 } : {}), ...(kind === "talent" ? { slot: `class:1:${section}:0` } : {}) });
+    items.push(it);
+    for (const u of (it.system.actions ?? [])) { const a = byUuid(u); if (a) items.push(copyDoc(name, "action", a.name, { [type === "talent" ? "talentId" : "featureId"]: it._id })); }
+  };
+  for (const x of lv1.filter(x => x.kind === "items" && x.mode === "granted")) for (const u of x.items) give(byUuid(u).name, x.id, x.kind);
+  for (const [id, n] of Object.entries(picks)) give(n, id, lv1.find(x => x.id === id)?.kind);
   for (const [type, n] of extras) items.push(copyDoc(name, type, n, {}));
   const w = copyDoc(name, "weapon", weapon, {}, { wielded: true });
   items.push(w);
@@ -424,14 +435,15 @@ const pc = ({ name, img, species, chosen, cls, picks, features, slotFeature, wea
   if (armor) items.push(copyDoc(name, "armor", armor, {}, { worn: true }));
   pcs.push({ name, img, system: { level: 1 }, items });
 };
+// The type of an item by its name (a Feature, a Talent or an Action), for the picks above.
+function lv1Type(n) { const d = docs.find(x => x.name === n && ["feature", "talent", "action"].includes(x.type)); if (!d) throw new Error(`No item called ${n}`); return d.type; }
 // v0.0.183: the four level 1 builds of the ruler (book/ruler/classes: paladin-smite-1, paladin-hands-1, archer-double-1, archer-rolling-1), Humans all.
-const palPicks = { a: "body", b: "mind", w: "body", m: "appeal" }, arcPicks = { a: "instinct", b: "mind", w: "instinct", m: "mind" };
 for (const [hall, img] of [["Smite", "icons/svg/sun.svg"], ["Lay On Hands", "icons/svg/regen.svg"]])
-  pc({ name: `Paladin (${hall})`, img, species: "Human", chosen: ["body", "appeal"], cls: "Paladin", picks: palPicks, features: ["Divine Power", "Font of Mercy"], slotFeature: "",
-    extras: [["action", hall], ["action", "Holy Wrath"], ["feature", "Hallowed Stance"], ["action", "Divine Surge"], ["talent", "Heavy Blows"]], weapon: "Greatsword", armor: "Heavy Armor" });
+  pc({ name: `Paladin (${hall})`, img, species: "Human", chosen: ["body", "appeal"], cls: "Paladin", attrs: ["body", "mind"],
+    picks: { pal1hall: hall, pal1tal: "Heavy Blows", pal1enc: "Holy Wrath", pal1pass: "Hallowed Stance", pal1act: "Divine Surge" }, weapon: "Greatsword", armor: "Heavy Armor" });
 for (const [hall, img] of [["Double Shot", "icons/svg/target.svg"], ["Rolling Shot", "icons/svg/wing.svg"]])
-  pc({ name: `Archer (${hall})`, img, species: "Human", chosen: ["body", "instinct"], cls: "Archer", picks: arcPicks, features: ["Sharpshooter", "Marked Quarry"],
-    extras: [["action", hall], ["feature", "Killer's Focus"], ["action", "Pinning Shot"], ["action", "Aim"]], weapon: "Crossbow", armor: "Medium Armor" });
+  pc({ name: `Archer (${hall})`, img, species: "Human", chosen: ["body", "instinct"], cls: "Archer", attrs: ["instinct", "mind"],
+    picks: { arc1hall: hall, arc1tal: "Aim", arc1pass: "Killer's Focus", arc1act: "Pinning Shot" }, weapon: "Crossbow", armor: "Medium Armor" });
 
 const FOLDER_OF = { species: "Species", class: "Class", feature: "Feature", talent: "Talent" };
 for (const d of docs) if ((d.pack === "classes" || d.pack === "features") && !d.folder) d.folder = FOLDER_OF[d.type] ?? null;
