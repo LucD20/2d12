@@ -39,7 +39,7 @@ Sizes: S = under an hour of work, M = a normal session, L = a long session, XL =
 | E3 | **DONE 2026-10-30, IN THE BOOK (book/bestiary-e3.md; Lucas answered; CV ×100, Stages; Foundry follows in pack C or its own version).** **Bestiary refit** to the new PC baseline (and the level 2 problem: NPC Health +14% while the PCs' real damage grows 2-6%) | M | E1, E2 |
 | D1 | **Archer design:** Marked Quarry (worth 6 to 8% of every Archer turn: the spec ruler, 2026-10-29), Sharpshooter, Hunter's Focus; then the final Level 1 text. Prep: edit classes/archer-1.txt per option and run spec.mjs | M | nothing |
 | D2 | **Weapon Mastery, Weapon Groups and Gear** (firearms as their own property, Firearm, not Projectile, with the trait [Gun]: decided 2026-10-29, book/archer-a1.md section 8; per-weapon Mastery, groups with a 1/3 head start, 1 Mastery per group per combat; the open points of the Mastery note) | L | D1 not needed |
-| D3 | **Skills** (16 skills, 4 per Attribute; how a skill roll works; Talents) | M | nothing |
+| D3 | **Skills** (16 skills, 4 per Attribute; how a skill roll works; Talents: their types and Prerequisites as data, which the filterable Talent picker needs: foundry-backlog top) | M | nothing |
 | D4 | **Magic and Momentum** (Magic Talents raw and primal; Momentum and the starting Escalation; the Engaged banes of [Ranged] Power Actions) | L | D3 helps |
 | B1 | The level-by-level explanation of each class | M | D1 |
 | B2 | Rules still to write: Hide; [HT] as notation (and the Archer's Rain of Arrows and Covering Fire); Slowed and Quickened (idea); Escalation while Unconscious; Resist and Weak; Minor enemies; falling with Forced Movement; Hooked, Grab, Pummel and Brawler | L | D4 for some |
