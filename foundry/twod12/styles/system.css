@@ -1920,3 +1920,35 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 .twod12.chat.ticker .tl-ico.mv { color: var(--c-mv); }
 .twod12.chat.ticker .tl-nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .twod12.chat.ticker .tl-c { opacity: .7; font-size: 11px; min-width: 20px; text-align: right; }
+
+/* ------------------------------------------------------------------ v0.0.201 (Lucas): the strip in the chat cards' and sheet's own look */
+#twod12-carousel { --tp-navy: #1e2a3a; --tp-navy2: #2a3a52; --tp-parch: #f4ecdc; --tp-parch2: #ebe0c8; --tp-border: #c8b48a; --tp-ink: #2c2a26; --tp-mut: #6b5a3a;
+  --tp-foe: #a32d2d; --tp-ally: #3b6d11; --tp-neutral: #8a7d62; --tp-gold: #BA7517; --tp-teal: #0f6e6e; --tp-ice: #3d7fc4; }
+#twod12-carousel .tc-head.tc-bar { background: var(--tp-navy); border-color: #0f1622; color: #f4ecdc; font-family: "Cinzel", Georgia, serif; font-variant: normal; letter-spacing: .03em; }
+#twod12-carousel .tc-bar .tc-btn { font-family: "Cinzel", Georgia, serif; font-variant: normal; font-weight: 700; font-size: 10.5px; background: var(--tp-navy2); border-color: #3a4a62; color: #f4ecdc; }
+#twod12-carousel .tc-bar .tc-btn:hover:not([disabled]) { border-color: #EF9F27; }
+#twod12-carousel .tc-round b { color: #EF9F27; }
+#twod12-carousel .tp { background: linear-gradient(var(--tp-parch), var(--tp-parch2)); border-color: var(--tp-border); color: var(--tp-ink); }
+#twod12-carousel .tp-band { font-family: "Cinzel", Georgia, serif; letter-spacing: .08em; font-size: 9.5px; }
+#twod12-carousel .tp.act { border-color: #EF9F27; box-shadow: 0 0 0 1px var(--tp-gold), 0 3px 10px rgba(0, 0, 0, .45); }
+#twod12-carousel .tp.act .tp-band { color: #EF9F27; }
+#twod12-carousel .tp-seal { background: var(--tp-navy); border-color: #EF9F27; font-family: "Cinzel", Georgia, serif; }
+#twod12-carousel .tp-name { font-family: "Cinzel", Georgia, serif; font-size: 11px; line-height: 14px; font-weight: 700; letter-spacing: .02em; }
+#twod12-carousel .tp.act .tp-name { font-size: 11.5px; }
+/* pips: its turn = indigo discs; out of turn = teal diamonds (AP left for Reactions); frozen = dashed ice rings */
+#twod12-carousel .tp-pips { gap: 3px; }
+#twod12-carousel .tp-pips i { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid rgba(44, 42, 38, .35); background: transparent; }
+#twod12-carousel .tp-pips.turn i.on, #twod12-carousel .tp.act .tp-pips.turn i.on { background: var(--c-ap, #3b4cb8); border-color: var(--c-ap, #3b4cb8); }
+#twod12-carousel .tp.act .tp-pips i { width: 10px; height: 10px; }
+#twod12-carousel .tp-pips.react i { border-radius: 1px; transform: rotate(45deg) scale(.82); }
+#twod12-carousel .tp-pips.react i.on { background: var(--tp-teal); border-color: var(--tp-teal); }
+#twod12-carousel .tp-pips.frozen i { border-style: dashed; border-color: var(--tp-ice); }
+#twod12-carousel .tp-pips.frozen i.on { background: color-mix(in srgb, var(--tp-ice) 35%, transparent); border-color: var(--tp-ice); }
+#twod12-carousel .tp.frozen .tp-pips i.on { background: color-mix(in srgb, var(--tp-ice) 35%, transparent); }
+#twod12-carousel .tp-move { font-family: "Cinzel", Georgia, serif; font-variant: normal; font-size: 10px; font-weight: 700; color: var(--c-mv, #4d6b0a); background: rgba(77, 107, 10, .08); border-color: rgba(77, 107, 10, .35); }
+#twod12-carousel .tp-move b { font-size: 12px; }
+#twod12-carousel .tp-move.none { color: var(--tp-mut); }
+#twod12-carousel .tp-swap { font-family: "Cinzel", Georgia, serif; font-variant: normal; font-weight: 700; font-size: 10px; background: var(--tp-navy); border-color: #3a4a62; color: #f4ecdc; }
+#twod12-carousel .tp-swap.on { background: #EF9F27; color: var(--tp-navy); border-color: var(--tp-gold); }
+#twod12-carousel .tp.swapok { outline-color: #EF9F27; }
+#twod12-carousel .tp-swapb { background: #EF9F27; }

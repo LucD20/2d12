@@ -1,8 +1,9 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.200**. Tests: `node tools/tests/run.mjs` (159 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.201**. Tests: `node tools/tests/run.mjs` (159 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
 
 ## Asked by Lucas, not built
+- [x] **(v0.0.201) Combat strip, second pass**: no tooltip on the acting plate, smaller Cinzel names, chat-card parchment and sheet navy, three pip kinds (turn discs / Reaction diamonds / frozen dashed rings), GM right-click on the Move row sets the squares left. Unverified in Foundry: the look, and the right-click while the movement banner is open.
 - [x] **(v0.0.200) The AP ticker and the Turn Log** (design M1 + L3; module/ticker.mjs): one message per event, the log a snapshot in the message, Actions only, pips for AP; no per-square movement value; edits post nothing.
 - [x] **(v0.0.199) The combat strip redesign** (mockup D2, foundry/mockups/combat-strip.html): plates, navy bar, Move and Swap on the active plate, End move always in the bar. Swapping Initiative already existed (v0.0.1xx, combat.mjs) and follows the book; only how the ally is picked changed.
 - [x] **(v0.0.198) Lucas's decisions of 2026-10-30:** the movement's squares left on the combat strip (End move, Advance instead) instead of the tag over the token; the Basic Actions in 4 groups (2x2), no Frequency column, a legend.

@@ -4,6 +4,7 @@ import { getAP, setAP, apMax, endTurnFor, swapCandidates, swapWith } from "./com
 import { stripMove, endMoveFor, evadeToAdvance } from "./move.mjs";
 import { groupColor } from "./config.mjs";
 import { esc } from "./util.mjs";
+const { DialogV2 } = foundry.applications.api;
 const F = "twod12", ID = "twod12-carousel";
 
 
@@ -15,7 +16,10 @@ function card(combat, c, st) {
   const current = combat.started && combat.combatant?.id === c.id;
   const ap = getAP(c), max = Math.max(apMax(c), ap, 1);
   const frozen = !!c.getFlag(F, "frozen");
-  const pips = Array.from({ length: max }, (_, i) => `<i class="${i < ap ? "on" : ""}"></i>`).join("");
+  // v0.0.201 (Lucas): three kinds of pips, by shape as well as color: its turn (discs), out of turn (diamonds: AP for Reactions), frozen (dashed rings).
+  const pipKind = frozen ? "frozen" : (current ? "turn" : "react");
+  const pipTip = { turn: `${ap} AP this turn`, react: `${ap} AP left for Reactions`, frozen: `${ap} AP, frozen until its new turn (it swapped initiative)` }[pipKind];
+  const pips = `<div class="tp-pips ${pipKind}" data-tooltip="${pipTip}">${Array.from({ length: max }, (_, i) => `<i class="${i < ap ? "on" : ""}"></i>`).join("")}</div>`;
   const img = c.token?.texture?.src ?? c.img ?? "icons/svg/mystery-man.svg";
   const noInit = c.initiative === null || c.initiative === undefined;
   const d = dispOf(c), band = current ? "Acting" : (DISP_LABEL[d] ?? "");
@@ -24,17 +28,18 @@ function card(combat, c, st) {
   if (current) {
     const m = stripMove(c);
     const move = m.n > 0
-      ? `<div class="tp-move${m.evade ? " evade" : ""}" data-tc="endmove" data-tooltip="${m.evade ? "Evade" : "Movement"} left this turn. Click to end it (the squares left are lost)"><span>${m.evade ? "Evade" : "Move"}</span> <b>${m.n}</b> sq${m.evade && st.canAct ? ' <a class="tp-adv" data-tc="evadeadv" data-tooltip="Use the Evade as an Advance (it can trigger Reactions)"><i class="fa-solid fa-person-running"></i></a>' : ""}</div>`
-      : `<div class="tp-move none" data-tooltip="No movement left this turn (Advance or drag the token to move)">No move</div>`;
+      ? `<div class="tp-move${m.evade ? " evade" : ""}" data-tc="endmove" data-tooltip="${m.evade ? "Evade" : "Movement"} left this turn. Click to end it (the squares left are lost)${st.gm ? "; right-click to set it" : ""}"><span>${m.evade ? "Evade" : "Move"}</span> <b>${m.n}</b> sq${m.evade && st.canAct ? ' <a class="tp-adv" data-tc="evadeadv" data-tooltip="Use the Evade as an Advance (it can trigger Reactions)"><i class="fa-solid fa-person-running"></i></a>' : ""}</div>`
+      : `<div class="tp-move none" data-tooltip="No movement left this turn (Advance or drag the token to move)${st.gm ? "; right-click to set it" : ""}">No move</div>`;
     const swap = `<button type="button" class="tp-swap${st.swapping ? " on" : ""}" data-tc="swap"${st.swapWhy ? ` disabled data-tooltip="${esc(st.swapWhy)}"` : ` data-tooltip="${st.swapping ? "Click an ally with the swap badge, or here to cancel" : "Swap initiative with an ally who hasn't had a turn this round (1 AP)"}"`}><i class="fa-solid fa-right-left"></i> Swap &middot; 1 AP</button>`;
     extra = move + swap;
   }
-  const tip = `${noInit ? "Click to roll initiative · " : ""}${swapOk ? "Click to swap with this ally · " : ""}${esc(c.name)}: ${ap} AP${frozen ? " (frozen: it swapped initiative)" : ""}`;
-  return `<div class="tp ${current ? "act" : ""} d${d < 0 ? "m" : ""}${Math.abs(d)} ${noInit ? "noinit" : ""} ${c.isDefeated ? "defeated" : ""} ${frozen ? "frozen" : ""} ${swapOk ? "swapok" : ""}" data-combatant-id="${c.id}" style="--tcc:${groupColor(c)}" data-tooltip="${tip}">
+  // v0.0.201 (Lucas): no tooltip on the creature whose turn it is (its plate says it all); the others name themselves.
+  const tip = current ? "" : `${noInit ? "Click to roll initiative · " : ""}${swapOk ? "Click to swap with this ally · " : ""}${esc(c.name)}`;
+  return `<div class="tp ${current ? "act" : ""} d${d < 0 ? "m" : ""}${Math.abs(d)} ${noInit ? "noinit" : ""} ${c.isDefeated ? "defeated" : ""} ${frozen ? "frozen" : ""} ${swapOk ? "swapok" : ""}" data-combatant-id="${c.id}" style="--tcc:${groupColor(c)}"${tip ? ` data-tooltip="${tip}"` : ""}>
     <div class="tp-band">${band}</div>
     <div class="tp-por"><img src="${img}" alt="">${noInit ? "" : `<span class="tp-seal">${Math.round(c.initiative)}</span>`}${swapOk ? '<span class="tp-swapb"><i class="fa-solid fa-right-left"></i></span>' : ""}</div>
     <div class="tp-name">${esc(c.name)}</div>
-    <div class="tp-pips">${pips}</div>${extra}</div>`;
+    ${pips}${extra}</div>`;
 }
 
 /** v0.0.199: why the active creature can't swap now ("" when it can): Swapping Initiative, Core Rules Chapter 2. Pure. */
@@ -46,7 +51,16 @@ export function swapBlock({ mine, acted, down, ap, candidates }) {
   if (!candidates) return "No ally is left who hasn't had a turn this round";
   return "";
 }
-let swapping = null;   // the combatant id that is choosing an ally to swap with (this client only)
+let swapping = null;
+
+/** v0.0.201: the GM sets a creature's movement left this turn (an Evade under way stays an Evade). */
+async function setMoveLeft(c) {
+  const m = stripMove(c);
+  const n = await DialogV2.prompt({ window: { title: `${c.name}: movement left` }, content: `<p>Squares ${m.evade ? "of Evade" : "of movement"} left this turn:</p><div class="form-group"><input type="number" name="n" min="0" step="1" value="${m.n}" autofocus></div>`,
+    ok: { label: "Set", callback: (ev, btn) => Math.max(0, Math.trunc(Number(new FormData(btn.form).get("n"))) || 0) }, rejectClose: false });
+  if (n === null || n === undefined) return;
+  await c.update(m.evade ? { [`flags.${F}.evadeMove`]: n, [`flags.${F}.freeMove`]: 0, [`flags.${F}.moveLeft`]: 0 } : { [`flags.${F}.freeMove`]: n, [`flags.${F}.moveLeft`]: 0, [`flags.${F}.evadeMove`]: 0 });
+}   // the combatant id that is choosing an ally to swap with (this client only)
 
 export function renderCarousel() {
   const combat = game.combat;
@@ -68,7 +82,7 @@ export function renderCarousel() {
   const cands = cur ? swapCandidates(combat, cur) : [];
   const swapWhy = cur ? swapBlock({ mine: mine || gm, acted: !!cur.getFlag(F, "acted"), down: !!cur.actor?.system?.atZero, ap: getAP(cur), candidates: cands.length }) : "Not started";
   if (swapping && (swapping !== cur?.id || swapWhy)) swapping = null;
-  const st = { swapWhy, swapping: !!swapping, swapIds: new Set(swapping ? cands.map(x => x.id) : []), canAct: mine || gm };
+  const st = { swapWhy, swapping: !!swapping, swapIds: new Set(swapping ? cands.map(x => x.id) : []), canAct: mine || gm, gm };
   const btn = (k, icon, label, tip, off = false) => `<button type="button" class="tc-btn" data-tc="${k}" data-tooltip="${tip}"${off ? " disabled" : ""}><i class="fa-solid ${icon}"></i>${label ? ` ${label}` : ""}</button>`;
   const left = gm ? (started ? btn("prev", "fa-backward-step", "Previous turn", "Go back one turn") : btn("init", "fa-dice-d20", "Initiative", "Roll initiative for everyone")) : "";
   const middle = started ? `<span class="tc-round">Round <b>${combat.round}</b></span>` : '<span class="tc-round tc-prep">Preparing the encounter</span>';
@@ -108,6 +122,8 @@ export function renderCarousel() {
     if (k === "apminus" && c) return setAP(c, Math.max(0, getAP(c) - 1), "edited");
   }));
   el.querySelector(".tp.act")?.scrollIntoView?.({ inline: "center", block: "nearest" });
+  // v0.0.201 (Lucas): the GM can set the movement left by hand (right-click the MOVE row).
+  if (gm && cur) el.querySelector(".tp-move")?.addEventListener("contextmenu", async ev => { ev.preventDefault(); ev.stopPropagation(); await setMoveLeft(cur); });
   if (gm) el.querySelectorAll(".tp").forEach(div => {
     div.addEventListener("mouseenter", () => showApButtons(div, combat));
     div.addEventListener("mouseleave", () => hideApButtons());
