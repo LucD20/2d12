@@ -184,3 +184,16 @@ limits; I'd keep it for a Talent tree.
 
 Expert's AP saving (it depends on how often a PC switches weapons); the reach of Lunge and the Pike and Point Blank's Engaged Bane; Firearms
 against an NPC's Cover; how many days a level takes (the GM's), so the level at which a PC reaches 15 is an estimate.
+
+## 10. Lucas's answers (2026-10-31) and what comes next
+
+1. Yes, but the numbers go up (with the tree idea below). 2. Yes; **utility unlocks are the direction**: more of them, different for each
+weapon. 3. Yes, but the groups need fixing: **Daggers become their own light-themed group, Swords (Longsword, Greatsword...) their own**.
+4. Yes, with changes to come. 5. **A rule: off-hand Weapon Actions take 1 or 2 Banes** until a Talent (Ambidextrous) removes them.
+6. Yes.
+
+**New idea (Lucas, from a player): Weapon Trees.** Some weapons need a minimum Mastery in their group before they can be used well
+(a Warbow at 2 Bow Group Mastery, say); below it, 2 to 3 Banes. They are not stronger, but start with more damage and fewer unlocks, so
+switching up the tree trades a basic weapon's unlocked features for raw damage. **Status: being evaluated (discussion only), then one
+group's tree at a time, with research per weapon.** Nothing of it is in rules-src yet; the D2 text in the book stays as it is until the trees
+are decided.
