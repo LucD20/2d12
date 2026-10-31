@@ -96,7 +96,7 @@ through brush and to use in tight places. Its arrows wound more than they kill o
 
 | Group | Gate | Properties | Type | Range | Damage | Weapon Attack |
 |---|---|---|---|---|---|---:|
-| Bows | Basic (Group Mastery 0) | Projectile, Ranged, Two-handed | Pierce | 8 / 16 / 24 | [B] 0 / 1d6 / 1d10 | 4.51 DE |
+| Bows | Basic (Group Mastery 0) | Projectile, Ranged, Strung | Pierce | 8 / 16 / 24 | [B] 0 / 1d6 / 1d10 | 4.51 DE |
 
 | Mastery | About (0.9 a combat) | Unlock | Kind | Worth (prices.md) |
 |---:|---|---|---|---|
@@ -181,7 +181,7 @@ bleeding side 1 AP or more a turn; left alone, it deals its value each turn unti
 
 | Group | Gate | Properties | Type | Range | Damage | Weapon Attack |
 |---|---|---|---|---|---|---:|
-| Bows | Basic (Group Mastery 0) | Projectile, Ranged, Two-handed | Pierce | 8 / 16 / 24 | [B] 0 / 1d6 / 1d10 | 4.51 DE |
+| Bows | Basic (Group Mastery 0) | Projectile, Ranged, Strung | Pierce | 8 / 16 / 24 | [B] 0 / 1d6 / 1d10 | 4.51 DE |
 
 | Mastery | About | Unlock |
 |---:|---|---|
@@ -213,7 +213,7 @@ to shoot while moving, from cover to cover. Its arrows are lighter than a longbo
 
 | Group | Gate | Properties | Type | Range | Damage | Weapon Attack |
 |---|---|---|---|---|---|---:|
-| Bows | Basic (Group Mastery 0) | Projectile, Ranged, Two-handed | Pierce | 6 / 12 / 18 | [B] 0 / 1d4+1 / 1d8+1 | 4.51 DE |
+| Bows | Basic (Group Mastery 0) | Projectile, Ranged, Strung | Pierce | 6 / 12 / 18 | [B] 0 / 1d4+1 / 1d8+1 | 4.51 DE |
 
 | Mastery | About | Unlock |
 |---:|---|---|
@@ -271,7 +271,7 @@ becomes **Patient Shot**, a Reaction: the hunter who waits for the prey to step 
 
 | Group | Gate | Properties | Type | Range | Damage | Weapon Attack |
 |---|---|---|---|---|---|---:|
-| Bows | Basic (Group Mastery 0) | Projectile, Ranged, Two-handed | Pierce | 8 / 16 / 24 | [B] 0 / 1d6 / 1d10 | 4.51 DE |
+| Bows | Basic (Group Mastery 0) | Projectile, Ranged, Strung | Pierce | 8 / 16 / 24 | [B] 0 / 1d6 / 1d10 | 4.51 DE |
 
 | Mastery | About | Unlock |
 |---:|---|---|
@@ -350,3 +350,59 @@ are only on the bow's own Strikes, not on another weapon's. Crossbows and the Mu
 the main hand, so the off-hand Bane should not hit the normal way of shooting: proposed, **a Strung weapon takes the off-hand Bane only when
 the other hand holds something** (bow in the off hand, main hand free: 0 Banes; dagger in the main hand: 3 + off-hand). A Hunting Bow
 Weapon Attack: 4.51 DE (0 Banes), 3.61 (2), 3.20 (3), 2.83 (4), **2.49 (5: a hit 41% of the time, a Tier 3 13%)**.
+
+**Lucas: all decided.** **Strung** (property, for every bow): "You hold a Strung weapon in one hand. Its [Strike] Actions need your other
+hand free to draw: if that hand holds something, they take 3 Banes." The bows' tables above now say Strung instead of Two-handed (their
+damage stays at the one-handed level). **The off-hand Bane is 2, and 1 for light weapons** (the Daggers group); **a Strung weapon takes it
+only when its other hand holds something** (a bow in the off hand with the main hand free: no Bane; with a dagger in the main hand: 3 + 2 = 5).
+Crossbows and the Musket stay Two-handed.
+
+## Bow 2 rebuilt: the Recurve Bow (Basic), to confirm
+
+**Its idea:** the archer who never stands still, built around a **Reaction** (the Archer's Rolling Shot already is "Evade, then shoot" on your
+turn): you take the hit, step back and shoot (the "Parthian shot": loosing while you pull away).
+
+| Group | Gate | Properties | Type | Range | Damage | Weapon Attack |
+|---|---|---|---|---|---|---:|
+| Bows | Basic (Group Mastery 0) | Projectile, Ranged, Strung | Pierce | 6 / 12 / 18 | [B] 0 / 1d4+1 / 1d8+1 | 4.51 DE |
+
+| Mastery | About | Unlock |
+|---:|---|---|
+| 3 | session 2 to 3 | **Light Feet:** while you hold the Recurve Bow, your Speed is 1 higher. |
+| 8 | level 2 | **Parthian Shot** (Weapon Technique, a Reaction, 1R / 2R, below). |
+| 14 | level 4 | **Turn and Loose:** Parthian Shot can also trigger when an enemy ends a Move Action adjacent to you. |
+| 20 | level 5 | **Second Wind:** once each encounter, you can use Parthian Shot's 1R Version as 0R. |
+| 28 | level 7 | **Gone Before They Land:** Parthian Shot's Evades are 1 longer (Evade 2 / Evade 3). |
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Parthian Shot</span><span>1R / 2R</span><span class="cat">Weapon Technique</span></div>
+
+**Flavor:** You give ground, turn in the step, and the arrow is already on its way.
+
+*Ranged • Shot • Strike • Weapon*
+
+**Frequency:** Round
+
+**Target:** The triggering creature
+
+**Distance:** Weapon
+
+**Trigger:** A creature makes a [Melee, Strike] Action against you.
+
+| 1R | 2R |
+|---|---|
+| Evade 1, then make a [Ranged, Shot] Weapon Attack (1A) against the triggering creature. | Evade 2, then make a [Ranged, Shot] Weapon Attack (1A) with 1 Boon against the triggering creature. |
+| **Critical:** The triggering creature is Hindered (EoT): it can't follow you this turn. | As 1R. |
+
+</div>
+
+**Why a Trigger, not an Interrupt:** an Interrupt would let you Evade out of the Strike before it lands: every melee attack against you would
+be disrupted. As a Trigger you take the hit, then pull away and answer; after the Evade you are usually no longer Engaged, so the Shot has
+no Engaged Banes (Close Quarters is the Hunting Bow's way; this is the Recurve's).
+**Worth:** a Weapon Attack (4.51) and an Evade for AP you kept: 1R about 5.5 DE (the Evade saves the step away on your next turn, and the
+Engaged Banes on the Shot); 2R about 9 DE with the Boon and the longer Evade: in the Round band for a Reaction. Light Feet and the Evades are
+movement (the map model prices them when the bow goes into the ruler).
+**The two Basic bows together:** the Hunting Bow acts on its turn (Wounding Shot, with variance in its Bleed) and waits (Patient Shot); the
+Recurve reacts (Parthian Shot) and moves. Same damage, two ways to play.
+
+**To confirm:** Parthian Shot as a Trigger with 1R / 2R, the Critical, and the ladder (Light Feet first, then the Technique).
