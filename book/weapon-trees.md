@@ -517,3 +517,50 @@ and fall); **a jump that arcs** can start next to what it jumps over and land on
 obstacle or a Medium or smaller creature (a high arc: up to 2 squares, a Large creature); its length comes from the ability ("Jump 3").
 Passing over an unwilling creature this way is not Difficult Terrain (you don't go through its space); Reactions to movement still apply.
 The ceiling rule (3 squares) is for every arc.
+
+**Lucas (Longbow): confirmed**, with **Arrowfall** fixed: "the 2 AP Version can target a creature you can't perceive, if an ally within 5
+squares of it perceives it **and your high arc can reach it** (nothing higher than 2 squares is in the way: a creature hiding behind a low
+wall, not one behind a castle's keep)". Without the second part it would shoot through walls.
+
+## Bow 4: the Composite Bow (Advanced), to confirm
+
+**The real weapon:** horn on the belly, wood in the core, sinew on the back, in a recurve: a short bow with the power of a long one, the
+war bow of the steppe. Its archers shot fast (several arrows held in the drawing hand, a thumb ring), and on the move. **Its idea: speed**,
+one shot after another while it keeps landing (the system's variance), and the Recurve's movement with more force.
+
+| Group | Gate | Properties | Type | Range | Damage | Weapon Attack |
+|---|---|---|---|---|---|---:|
+| Bows | Advanced (Group Mastery 6) | Projectile, Ranged, Strung | Pierce | 10 / 20 / 30 | [B] 0 / 1d6 / 1d12 | 4.77 DE (+6%) |
+
+| Mastery | About | Unlock |
+|---:|---|---|
+| 9 | level 5 to 6 | **Flurry of Arrows** (Weapon Technique, 1 / 2 AP, below). |
+| 14 | level 6 | **Rider's Stride:** during Flurry of Arrows, you can Advance up to 2 between two of its Weapon Attacks. |
+| 20 | level 7 | **Unbroken Rhythm:** the first Tier 1 of a Flurry of Arrows doesn't end it. |
+| 28 | level 8 to 9 | **Storm of the Steppe:** the Weapon Attacks of a Flurry after the first can each target a different creature. |
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Flurry of Arrows</span><span>1 / 2 AP</span><span class="cat">Weapon Technique</span></div>
+
+**Flavor:** The next arrow is on the string before the first one lands.
+
+*Ranged • Shot • Strike • Weapon*
+
+**Frequency:** Round
+
+**Target:** One creature
+
+**Distance:** Weapon
+
+| 1 AP | 2 AP |
+|---|---|
+| Make a [Ranged, Shot] Weapon Attack (1A). On a Tier 3, make another one (1A) with 1 Bane. | Make [Ranged, Shot] Weapon Attacks (1A), one after another, up to three: each one after the first takes 1 more Bane (1, then 2), and a Tier 1 ends the Flurry. |
+
+</div>
+
+**Worth:** 1 AP 5.9 DE (efficiency 1.27); 2 AP 9.7 DE (1.04: on average 2.2 Weapon Attacks); with Unbroken Rhythm 12.5 (1.34, a little
+over: a Stage 2 unlock). Its Weapon Attacks are Linked: they don't count toward the 3 Strikes or the At-will Banes; the Flurry itself is one
+Strike. **Against the Longbow:** a little less damage on a Weapon Attack (+6% against +10%), more swing (one to three hits), and movement
+(Rider's Stride); the Longbow has the reach, the arcs and the volley.
+
+**To confirm:** the Flurry (1 / 2 AP), the ladder (Rider's Stride, Unbroken Rhythm, Storm of the Steppe).
