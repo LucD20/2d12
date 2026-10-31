@@ -1,0 +1,17 @@
+--- Swap: why not (Core Rules, Swapping Initiative)
+allowed: ""
+someone else's turn: "Only on your own turn"
+after an Action: "Only before you take any Action this turn"
+while Down: "Not while Down"
+no AP: "It costs 1 AP"
+no ally left: "No ally is left who hasn't had a turn this round"
+allies Lana can swap with (later, same side, not defeated): Kai
+Kai's turn (Lana already acted this round): none
+--- the plates
+  act d1    " | Acting | Move 3 sq | Swap
+  dm1    " | Foe
+  d1    " | Ally
+  d1  defeated  " | Ally
+  dm1    " | Foe
+Move and Swap only on the active plate: true | End move in the bar: true | Round in gold: true
+pips: active in the AP color, the others teal: true | top-aligned, scrolls sideways only: true

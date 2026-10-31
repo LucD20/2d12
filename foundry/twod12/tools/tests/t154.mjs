@@ -24,7 +24,7 @@ console.log(TG.bannerText("Twin Shot", 2, 1));
 console.log("wired:", act.includes("const pk = await pickTargets(need, item.name);") && act.includes("dc: opts.noTargetDc ?? dcInfo.dc,"));
 console.log("--- combat");
 const car = src("module/carousel.mjs");
-console.log("swap shown with no ally left (the click warns):", car.includes('const canSwap = started && mine && !cur.getFlag(F, "acted") && getAP(cur) >= 1;'), "| a creature added mid-combat is shown:", car.includes("for (const c of combat.combatants) if (!turns.includes(c)) turns.push(c);"), "| Mastery only in combat:", src("module/mastery.mjs").includes("if (!c?.started ||"));
+console.log("swap shown with no ally left (the click warns):", car.includes('<button type="button" class="tp-swap'), "| a creature added mid-combat is shown:", car.includes("for (const c of combat.combatants) if (!turns.includes(c)) turns.push(c);"), "| Mastery only in combat:", src("module/mastery.mjs").includes("if (!c?.started ||"));
 console.log("--- cards");
 const fx = n => C.docs.find(d => d.type === "effect" && d.name === n);
 console.log("Pinning Shot and Twin Shot grant the Weapon Attack:", ["Pinning Shot", "Twin Shot"].map(n => fx(n).system.settings.some(x => x.type === "grant" && x.grantAction === "Weapon Attack")).join(" "), "| Vanish for 1 round:", fx("Vanish (+1 Defense)").system.description);

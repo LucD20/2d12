@@ -33,7 +33,7 @@ console.log("Round, used as a Reaction before its turn (round 2, turn 0):", ["r2
 console.log("Round, used at the end of the order (round 1, turn 2), new round starts: r2 t0", at(2, 0, [1, 2]) ? "used" : "free", "(the rules' example)");
 const src = n => fs.readFileSync(ROOT + n, "utf8");
 const combat = src("module/combat.mjs"), basic = src("module/basic.mjs"), content = src("tools/content.mjs"), main = src("module/twod12.mjs"), car = src("module/carousel.mjs");
-console.log("no swap while Down:", combat.includes("is Down and can't swap initiative"), "| AP over the most only when edited:", combat.includes('why === "edited" ? want : Math.min(want, Math.max(apMax(c), from))'), "| tracker shows the most:", car.includes("Math.max(apMax(c), ap)"));
+console.log("no swap while Down:", combat.includes("is Down and can't swap initiative"), "| AP over the most only when edited:", combat.includes('why === "edited" ? want : Math.min(want, Math.max(apMax(c), from))'), "| tracker shows the most:", car.includes("Math.max(apMax(c), ap, 1)"));
 console.log("Reload is [Handle, Weapon]:", basic.includes('traits: ["handle", "weapon"],'), "| Slowed and Quickened conditions:", content.includes('cond("Slowed"') && content.includes('cond("Quickened"') && main.includes('["slowed", ') && main.includes('["quickened", '));
 console.log("Imperiled: Slowed 1:", content.includes("you are Slowed 1 for that turn"), "| Immobilized: Interact:", content.includes("by using an Interact (1 AP) Action"), "| old Weapon Actions set to Round once:", main.includes('"weaponRoundApplied"'));
 console.log("Smite, Reaping Sweep and Lock & Loose say Round:", (content.match(/distance: "weapon", frequency: "round",/g) || []).length === 3);

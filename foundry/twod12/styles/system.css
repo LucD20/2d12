@@ -1841,3 +1841,48 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
   .twod12.sheet.ns .bx-grid { grid-template-columns: minmax(0, 1fr); }
   .twod12.sheet.ns .bx-rows .ar-line > .ar-range { display: inline; }
 }
+
+/* ------------------------------------------------------------------ v0.0.199 (Lucas, mockup "D2. Plates, condensed"): the combat strip */
+#twod12-carousel { --tp-navy: #1b2640; --tp-navy2: #26345a; --tp-parch: #d9dbcc; --tp-parch2: #c6cab7; --tp-border: #8a8d7c; --tp-ink: #23252b; --tp-mut: #4a4d45;
+  --tp-foe: #a8322f; --tp-ally: #2f6b3a; --tp-neutral: #6b6a60; --tp-gold: #e8a22c; --tp-teal: #43b3a8; gap: 4px; }
+#twod12-carousel .tc-head.tc-bar { background: var(--tp-navy); color: #e9e4d2; border: 1px solid #0e1528; border-radius: 6px; padding: 3px 8px; box-shadow: 0 2px 6px rgba(0, 0, 0, .35); font-variant: small-caps; letter-spacing: .04em; }
+#twod12-carousel .tc-bar .tc-btn { height: 20px; padding: 0 8px; font-size: 11.5px; font-variant: small-caps; letter-spacing: .03em; background: var(--tp-navy2); color: #e9e4d2; border: 1px solid #3a4a76; border-radius: 4px; }
+#twod12-carousel .tc-bar .tc-btn:hover:not([disabled]) { border-color: var(--tp-gold); color: #fff; }
+#twod12-carousel .tc-bar .tc-btn[disabled] { opacity: .4; cursor: default; }
+#twod12-carousel .tc-round { font-size: 13px; }
+#twod12-carousel .tc-round b { color: var(--tp-gold); font-size: 15px; margin-left: 3px; }
+/* the plates: top-aligned, the active one wider and taller (it grows down); many creatures scroll sideways, never down */
+#twod12-carousel .tp-list { display: flex; align-items: flex-start; gap: 5px; padding: 0 2px 4px; overflow-x: auto; overflow-y: hidden; max-width: 100%; background: none; scrollbar-width: thin; }
+#twod12-carousel .tp { flex: none; width: 100px; box-sizing: border-box; background: linear-gradient(var(--tp-parch), var(--tp-parch2)); color: var(--tp-ink); border: 1px solid var(--tp-border); border-radius: 6px; overflow: hidden; text-align: center; cursor: pointer; box-shadow: 0 2px 5px rgba(0, 0, 0, .35); padding-bottom: 4px; }
+#twod12-carousel .tp-band { height: 15px; line-height: 15px; font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #fff; background: var(--tp-neutral); }
+#twod12-carousel .tp.d1 .tp-band { background: var(--tp-ally); }
+#twod12-carousel .tp.dm1 .tp-band { background: var(--tp-foe); }
+#twod12-carousel .tp.act .tp-band { background: var(--tp-navy); color: var(--tp-gold); }
+#twod12-carousel .tp-por { position: relative; width: 52px; height: 52px; margin: 4px auto 0; }
+#twod12-carousel .tp-por img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 3px solid var(--tp-neutral); box-sizing: border-box; background: #2a2a2a; }
+#twod12-carousel .tp.d1 .tp-por img { border-color: var(--tp-ally); }
+#twod12-carousel .tp.dm1 .tp-por img { border-color: var(--tp-foe); }
+#twod12-carousel .tp-seal { position: absolute; right: -4px; bottom: -2px; min-width: 18px; height: 18px; padding: 0 3px; box-sizing: border-box; border-radius: 9px; background: var(--tp-navy); color: #f4e9d0; border: 1px solid var(--tp-gold); font-size: 10.5px; font-weight: 700; line-height: 16px; }
+#twod12-carousel .tp-name { margin: 2px 4px 0; font-size: 14px; line-height: 16px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#twod12-carousel .tp-pips { display: flex; justify-content: center; flex-wrap: wrap; gap: 3px; margin: 3px 4px 0; }
+#twod12-carousel .tp-pips i { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--tp-teal); box-sizing: border-box; }
+#twod12-carousel .tp-pips i.on { background: var(--tp-teal); }
+#twod12-carousel .tp.act .tp-pips i { border-color: var(--c-ap, #3b4cb8); }
+#twod12-carousel .tp.act .tp-pips i.on { background: var(--c-ap, #3b4cb8); }
+/* the active plate */
+#twod12-carousel .tp.act { width: 130px; border: 2px solid var(--tp-gold); box-shadow: 0 0 0 1px #7a5410, 0 3px 10px rgba(0, 0, 0, .45); }
+#twod12-carousel .tp.act .tp-por { width: 56px; height: 56px; }
+#twod12-carousel .tp-move { margin: 4px 6px 0; padding: 1px 4px; border-radius: 4px; font-size: 11px; font-variant: small-caps; letter-spacing: .04em; color: var(--c-mv, #4d6b0a); background: rgba(77, 107, 10, .1); border: 1px solid rgba(77, 107, 10, .3); }
+#twod12-carousel .tp-move b { font-size: 13px; font-variant: normal; }
+#twod12-carousel .tp-move:not(.none):hover { border-color: var(--c-mv, #4d6b0a); }
+#twod12-carousel .tp-move.none { color: var(--tp-mut); background: none; border-color: transparent; cursor: default; }
+#twod12-carousel .tp-adv { margin-left: 4px; color: var(--tp-ink); }
+#twod12-carousel .tp-swap { display: block; width: calc(100% - 12px); margin: 4px 6px 0; height: 20px; line-height: 18px; padding: 0; font-size: 11px; font-variant: small-caps; letter-spacing: .04em; background: var(--tp-navy2); color: #e9e4d2; border: 1px solid #3a4a76; border-radius: 4px; }
+#twod12-carousel .tp-swap.on { background: var(--tp-gold); color: var(--tp-navy); border-color: #7a5410; }
+#twod12-carousel .tp-swap[disabled] { opacity: .4; cursor: default; }
+/* while choosing who to swap with: the allies it can swap with */
+#twod12-carousel .tp.swapok { outline: 2px dashed var(--tp-gold); outline-offset: -3px; }
+#twod12-carousel .tp-swapb { position: absolute; left: -4px; top: -2px; width: 18px; height: 18px; border-radius: 50%; background: var(--tp-gold); color: var(--tp-navy); font-size: 9px; line-height: 18px; }
+#twod12-carousel .tp.defeated { filter: grayscale(1); opacity: .45; }
+#twod12-carousel .tp.frozen .tp-pips i.on { background: #6fa8ff; border-color: #6fa8ff; }
+#twod12-carousel .tp.noinit .tp-por img { outline: 2px dashed var(--tp-gold); outline-offset: 1px; }

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>2d12 chat: ticker + turn log mockups</title>
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --page:#e9e2d0; --card:#f6f1e3; --card2:#efe8d4; --ink:#2b2620; --muted:#6f665a; --line:#cfc4aa;
+  --ap:#3b4cb8; --ap-bg:rgba(59,76,184,.10); --mv:#4d6b0a; --mv-bg:rgba(77,107,10,.12);
+  --act:#2f6b1a; --warn:#b3261e; --pipoff:rgba(0,0,0,.12); --hl:rgba(59,76,184,.09);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --page:#1b1a18; --card:#262421; --card2:#2e2b27; --ink:#ece6d8; --muted:#a39a8a; --line:#433e36;
+    --ap:#9aa7ff; --ap-bg:rgba(154,167,255,.13); --mv:#b9dc6a; --mv-bg:rgba(185,220,106,.13);
+    --act:#5fae45; --warn:#ff6a4d; --pipoff:rgba(255,255,255,.12); --hl:rgba(154,167,255,.12);
+  }
+}
+:root[data-theme="dark"]{
+  --page:#1b1a18; --card:#262421; --card2:#2e2b27; --ink:#ece6d8; --muted:#a39a8a; --line:#433e36;
+  --ap:#9aa7ff; --ap-bg:rgba(154,167,255,.13); --mv:#b9dc6a; --mv-bg:rgba(185,220,106,.13);
+  --act:#5fae45; --warn:#ff6a4d; --pipoff:rgba(255,255,255,.12); --hl:rgba(154,167,255,.12);
+}
+html{box-sizing:border-box}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--page);color:var(--ink);font:14px/1.35 "Segoe UI",system-ui,-apple-system,sans-serif;padding:18px}
+h1{font:600 20px Georgia,"Palatino Linotype",serif;margin:0 0 4px}
+h2.sec{font:600 16px Georgia,serif;margin:26px 0 4px;padding-top:14px;border-top:1px solid var(--line)}
+.sub{color:var(--muted);margin:0 0 12px}
+.bar{display:flex;gap:8px;margin-bottom:14px}
+button{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:5px 10px;font:inherit;cursor:pointer}
+.cols{display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start}
+.col{width:300px;max-width:100%}
+.col h3{font:600 15px Georgia,serif;margin:0 0 2px}
+.col .why{color:var(--muted);font-size:12.5px;margin:0 0 10px;min-height:52px}
+.stack{display:flex;flex-direction:column;gap:6px}
+.ap{color:var(--ap);font-weight:600}
+.mv{color:var(--mv);font-weight:600}
+.muted{color:var(--muted)}
+
+.pips{display:inline-flex;gap:3px;vertical-align:middle;flex:none}
+.pip{width:10px;height:10px;border-radius:50%;background:var(--ap);display:inline-block}
+.pip.off{background:var(--pipoff)}
+.pip.spent{background:transparent;border:1.5px solid var(--warn)}
+.pips.sm .pip{width:7px;height:7px}
+.pips.sm .pip.spent{border-width:1.2px}
+
+/* shared message shell */
+details.msg{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--ap);border-radius:0 6px 6px 0;overflow:hidden}
+details.msg.mvk{border-left-color:var(--mv)}
+details.msg>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:7px;padding:4px 8px;font-size:12.5px;background:var(--ap-bg);white-space:nowrap}
+details.msg.mvk>summary{background:var(--mv-bg)}
+details.msg>summary::-webkit-details-marker{display:none}
+summary .who{font-weight:700}
+summary .act{overflow:hidden;text-overflow:ellipsis;min-width:0}
+summary .cost{color:var(--muted);font-size:11.5px}
+summary .sp{margin-left:auto;display:inline-flex;align-items:center;gap:7px}
+summary .chev{font-size:9px;color:var(--muted);transition:transform .15s;display:inline-block}
+details[open]>summary .chev{transform:rotate(90deg)}
+.body{border-top:1px solid var(--line)}
+
+/* L1: lines */
+.L1 .ln{display:grid;grid-template-columns:16px 1fr auto;gap:6px;align-items:center;padding:4px 9px;font-size:12.5px;border-bottom:1px dashed var(--line)}
+.L1 .ln:last-child{border-bottom:0}
+.L1 .ln .ico{text-align:center;font-size:11px}
+.L1 .ln .c{font-weight:700;white-space:nowrap}
+.ln.now{background:var(--hl)}
+.ln.old{color:var(--muted)}
+
+/* L2: timeline */
+.L2{padding:6px 10px 6px 14px}
+.L2 .ln{position:relative;padding:3px 0 3px 16px;font-size:12.5px;display:flex;align-items:center;gap:8px}
+.L2 .ln::before{content:"";position:absolute;left:3px;top:0;bottom:0;width:2px;background:var(--line)}
+.L2 .ln:first-child::before{top:50%}
+.L2 .ln:last-child::before{bottom:50%}
+.L2 .ln::after{content:"";position:absolute;left:0;top:50%;width:8px;height:8px;margin-top:-4px;border-radius:50%;background:var(--card);border:2px solid var(--ap)}
+.L2 .ln.mvk::after{border-color:var(--mv)}
+.L2 .ln.now::after{background:var(--ap)}
+.L2 .ln.mvk.now::after{background:var(--mv)}
+.L2 .ln.now{background:none;font-weight:700}
+.L2 .chip{margin-left:auto;border:1px solid var(--line);border-radius:10px;padding:0 7px;font-size:11px;color:var(--muted);background:var(--card2)}
+
+/* L3: AP ledger */
+.L3 .ln{display:grid;grid-template-columns:16px 1fr auto auto;gap:7px;align-items:center;padding:4px 9px;font-size:12.5px;border-bottom:1px dashed var(--line)}
+.L3 .ln:last-child{border-bottom:0}
+.L3 .ln .ico{text-align:center;font-size:11px}
+.L3 .ln .c{color:var(--muted);font-size:11.5px;min-width:20px;text-align:right}
+
+/* chat sequence */
+.chat{background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:8px;display:flex;flex-direction:column;gap:6px}
+.chat .hint{font-size:11px;color:var(--muted);text-align:center;letter-spacing:.03em}
+.atk{border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--card)}
+.atk .h{background:var(--act);color:#fff;padding:3px 9px;font:15px Georgia,serif;font-variant:small-caps;letter-spacing:.04em;display:flex;justify-content:space-between}
+.atk .h span:last-child{font:700 11px "Segoe UI",sans-serif;letter-spacing:0}
+.atk .b{padding:8px 10px;color:var(--muted);font-size:12px}
+.pro,.con{font-size:12.5px;margin:0;padding-left:16px}
+.pro li,.con li{margin:2px 0}
+</style>
+</head>
+<body>
+<h1>Chat: ticker by default, Turn Log on click</h1>
+<p class="sub">Click any ticker to open its log. Each line is one Action (no per-square updates), the pips are the AP left after that message.</p>
+<div class="bar"><button onclick="t('light')">Light</button><button onclick="t('dark')">Dark</button></div>
+
+<h2 class="sec">1. The open log, three styles</h2>
+<p class="sub">Same ticker closed. The highlighted line is the message you clicked.</p>
+<div class="cols" id="styles"></div>
+
+<h2 class="sec">2. Where the log lives in the chat</h2>
+<p class="sub">Same Round 2 turn, two ways to store it. Both look identical when closed.</p>
+<div class="cols" id="modes"></div>
+
+<script>
+const ROWS=[
+ {i:'◆',k:'',t:'Turn start',c:'+5',rem:5,sp:0},
+ {i:'➤',k:'mvk',t:'Advance',c:'−1 AP',rem:4,sp:1},
+ {i:'✦',k:'',t:'Weapon Attack',c:'−1 AP',rem:3,sp:1}
+];
+function pips(rem,sp,sm){
+  let h='<span class="pips'+(sm?' sm':'')+'">';
+  for(let n=0;n<5;n++){
+    h+= n<rem?'<i class="pip"></i>' : (n<rem+sp?'<i class="pip spent"></i>':'<i class="pip off"></i>');
+  }
+  return h+'</span>';
+}
+function lines(style,n){
+  let out='';
+  for(let j=0;j<=n;j++){
+    const r=ROWS[j], cls=(j===n?'now':'old');
+    if(style==='L1') out+=`<div class="ln ${cls}"><span class="ico ${r.k?'mv':'ap'}">${r.i}</span><span>${r.t}</span><span class="c">${r.c}</span></div>`;
+    if(style==='L2') out+=`<div class="ln ${r.k} ${cls}"><span>${r.t}</span><span class="chip">${r.c}</span></div>`;
+    if(style==='L3') out+=`<div class="ln ${cls}"><span class="ico ${r.k?'mv':'ap'}">${r.i}</span><span>${r.t}</span><span class="c">${r.c.replace(' AP','')}</span>${pips(r.rem,r.sp,true)}</div>`;
+  }
+  return `<div class="body ${style}">${style==='L2'?'<div class="L2">'+lines('L2x',n)+'</div>':''}${style==='L2'?'':out}</div>`;
+}
+function lines2(n){let o='';for(let j=0;j<=n;j++){const r=ROWS[j];o+=`<div class="ln ${r.k} ${j===n?'now':'old'}"><span>${r.t}</span><span class="chip">${r.c}</span></div>`;}return o;}
+function msg(style,n,open){
+  const r=ROWS[n];
+  const body = style==='L2' ? `<div class="body"><div class="L2">${lines2(n)}</div></div>` : lines(style,n);
+  return `<details class="msg ${r.k}" ${open?'open':''}><summary><span class="${r.k?'mv':'ap'}">${r.i}</span><span class="who">Archer 1</span><span class="act">${r.t}</span><span class="cost">${r.c}</span><span class="sp">${pips(r.rem,r.sp)}<span class="chev">▶</span></span></summary>${body}</details>`;
+}
+const atk=`<div class="atk"><div class="h"><span>Weapon Attack</span><span>1AP</span></div><div class="b">(the card as today)</div></div>`;
+
+document.getElementById('styles').innerHTML=[
+ ['L1','Lines','Icon, Action, cost. Closest to what you described.'],
+ ['L2','Timeline','A rail with dots; cost as a small chip. Reads as a sequence.'],
+ ['L3','AP ledger','Every line also shows the pips after it, so you watch AP drain without numbers.']
+].map(([s,n,w])=>`<div class="col"><h3>${s}. ${n}</h3><p class="why">${w}</p><div class="stack">${msg(s,2,true)}</div></div>`).join('');
+
+document.getElementById('modes').innerHTML=`
+<div class="col"><h3>M1. One message per Action</h3>
+<p class="why">Each Action posts its own ticker. The log inside is a snapshot of the turn up to that point. Nothing is edited later.</p>
+<div class="chat"><div class="stack">${msg('L1',0,false)}${msg('L1',1,false)}${msg('L1',2,true)}</div>${atk}</div></div>
+<div class="col"><h3>M2. One message per turn</h3>
+<p class="why">One ticker is posted at turn start and edited after every Action. It stays where it was posted, so it sits above the cards that came after.</p>
+<div class="chat"><div class="stack">${msg('L1',2,false)}</div>${atk}<div class="hint">…later actions land below; the ticker above updates</div></div></div>`;
+
+function t(m){document.documentElement.setAttribute('data-theme',m)}
+</script>
+</body>
+</html>

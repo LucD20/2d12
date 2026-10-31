@@ -285,6 +285,13 @@ export async function performSwap(combat, aId, bId, userId = null) {
   await ChatMessage.create({ content: `<div class="twod12 chat apmsg"><b>${esc(A.name)}</b> swaps initiative with <b>${esc(B.name)}</b>. ${esc(B.name)} takes the turn now; ${esc(A.name)}'s remaining actions are frozen until its new turn.</div>` });
 }
 
+/** v0.0.199: swap with a chosen ally (the strip's Swap, then a click on the ally): the GM does it, or is asked to. */
+export async function swapWith(combat, a, bId) {
+  if (a?.actor?.system?.atZero) return warn(`${a.name} is Down and can't swap initiative.`);
+  if (game.user.isGM) return performSwap(combat, a.id, bId);
+  game.socket.emit("system.twod12", { type: "swapInit", combatId: combat.id, aId: a.id, bId, userId: game.user.id });
+}
+
 export async function requestSwap(combat, a) {
   // Swapping Initiative: not while Down (at 0 HP: Desperate, Dying, Shattered or Unconscious).
   if (a?.actor?.system?.atZero) return warn(`${a.name} is Down and can't swap initiative.`);
