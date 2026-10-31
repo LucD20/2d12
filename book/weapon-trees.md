@@ -437,9 +437,9 @@ military arrows, shot in massed volleys at long range; arrows that fall from abo
 | Mastery | About | Unlock |
 |---:|---|---|
 | 9 | level 5 to 6 (from 6) | **Plunging Shot** (Weapon Technique, 1 / 2 AP, below). |
-| 14 | level 6 | **Loose Together** (a Reaction, below): the volley. |
-| 20 | level 7 | **Steady Draw:** your far range with it has no Bane. |
-| 28 | level 8 to 9 | **Arrowfall:** Plunging Shot also ignores High Cover. |
+| 14 | level 6 to 7 | **Loose Together** (a Reaction, below): the volley. |
+| 20 | level 8 | **Steady Draw:** your far range with it has no Bane. |
+| 28 | level 10 | **Arrowfall:** Plunging Shot also ignores High Cover. |
 
 <div class="action" markdown="1">
 <div class="action-head"><span>Plunging Shot</span><span>1 / 2 AP</span><span class="cat">Weapon Technique</span></div>
@@ -535,9 +535,9 @@ one shot after another while it keeps landing (the system's variance), and the R
 | Mastery | About | Unlock |
 |---:|---|---|
 | 9 | level 5 to 6 | **Flurry of Arrows** (Weapon Technique, 1 / 2 AP, below). |
-| 14 | level 6 | **Rider's Stride:** during Flurry of Arrows, you can Advance up to 2 between two of its Weapon Attacks. |
-| 20 | level 7 | **Unbroken Rhythm:** the first Tier 1 of a Flurry of Arrows doesn't end it. |
-| 28 | level 8 to 9 | **Storm of the Steppe:** the Weapon Attacks of a Flurry after the first can each target a different creature. |
+| 14 | level 6 to 7 | **Rider's Stride:** during Flurry of Arrows, you can Advance up to 2 between two of its Weapon Attacks. |
+| 20 | level 8 | **Unbroken Rhythm:** the first Tier 1 of a Flurry of Arrows doesn't end it. |
+| 28 | level 10 | **Storm of the Steppe:** the Weapon Attacks of a Flurry after the first can each target a different creature. |
 
 <div class="action" markdown="1">
 <div class="action-head"><span>Flurry of Arrows</span><span>1 / 2 AP</span><span class="cat">Weapon Technique</span></div>
@@ -582,3 +582,23 @@ Bestiary's Defenses don't change with the Stage; the PC's Modifier is +3 in Stag
 (Plunging Shot's extra 1d6) get worse. **From now on each weapon is priced at its own Stage** (Basic +2, Advanced +3, Exotic +4).
 **Fixes proposed:** Plunging Shot 2 AP **+1d8** instead of +1d6 (about 0.98 at +3); Flurry 1 AP stays (1.35, a little over the Round
 band); Unbroken Rhythm stays at level 7 (1.40: a late unlock), or it becomes "the second Weapon Attack takes no Bane" if you want it on the band.
+
+**Lucas:** every unlock is priced **at the level you get it** (an unlock at Mastery 20 fits that level's numbers), so all weapons stay on the
+same level: deeper weapons with a little less versatility and more damage, or extreme versatility. **Agreed, with a second check:** each
+**card** sits on its Frequency band at the Modifier of the level it arrives, and **the whole weapon** (its dice and the unlocks it has by
+then) is compared with the other weapons of its group at **level 1, 5 and 8**.
+
+**When an unlock arrives** (0.9 Mastery a combat, about 5 combats a level, +4.5 Mastery a level): a Basic weapon from 0: 3 → level 1, 8 → 2,
+14 → 4, 20 → 5, 28 → 7. **An Advanced weapon starts at 6 at about level 5**, so its 9 → level 5 to 6, 14 → 6 to 7, **20 → 8, 28 → 10**
+(the Advanced "About" columns above are corrected); an Exotic one starts at 11 at about level 8: 14 → 8 to 9, 20 → 10, 28 → after 10.
+
+| Unlock | Mastery | Level | Modifier | Check |
+|---|---:|---|---:|---|
+| Wounding Shot, Parthian Shot | 8 | 2 | +2 | on the band (priced at +2) |
+| Close Quarters, Light Feet, Quick Nock, Turn and Loose | 3 to 14 | 1 to 4 | +2 | utility (positions) |
+| Blood Trail, Second Wind | 20 | 5 | +3 | Blood Trail: Wounding Shot 2 AP with DC 15 at +3, about 1.2; Second Wind: a free 1R once an encounter |
+| Patient Shot, Gone Before They Land | 28 | 7 | +3 | a Weapon Attack for kept AP (grows with the level, as the price of 1 AP does) |
+| Plunging Shot, Flurry of Arrows | 9 | 5 to 6 | +3 | Plunging 1 AP 1.18, 2 AP 0.89 (+1d8: 0.98); Flurry 1 AP 1.35, 2 AP 1.13 |
+| Loose Together, Rider's Stride | 14 | 6 to 7 | +3 | a Weapon Attack for kept AP; movement |
+| Steady Draw, Unbroken Rhythm | 20 | 8 | +4 | Unbroken Rhythm: Flurry 2 AP 1.45 (over: make it "the second Weapon Attack takes no Bane", or keep it as the Composite's high point) |
+| Arrowfall, Storm of the Steppe | 28 | 10 | +4 | utility |
