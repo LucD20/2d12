@@ -17,3 +17,4 @@ Regrip, a two-hander in one hand: two:gs move:gs | two one-handed: swap | both h
 warn on a one-handed two-hander: true true | not on the crossbow in both: false
 greyed buttons ask true | Regrip is a Basic Action without Handle true | Interact no longer grips true | the Items tab 1H to 2H spends Regrip true
 one-hand Banes only with that weapon: true | Interact draws, stows and swaps: true
+v0.0.213: a Technique whose weapon is not in hand can't be used: true

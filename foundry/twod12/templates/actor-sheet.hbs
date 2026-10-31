@@ -368,7 +368,6 @@
     {{#if showMastery}}
     <div class="tab" data-tab="mastery">
       <div class="fsec"><span>Weapon Mastery</span><span class="fsec-sub">A Tier 3 on a Weapon Action: +1 Mastery with that weapon. 3 unlocks its Weapon Technique.</span></div>
-      <label class="mst-opt" data-tooltip="Weapon Techniques whose weapon isn't in your hands are hidden instead of greyed (your choice, on every sheet)"><input class="at-hidetech" type="checkbox" {{#if hideTech}}checked{{/if}}> Only show usable Techniques in the Actions table</label>
       {{#each startMastery}}<div class="mst-bow"><i class="fa-solid fa-bullseye"></i> <b>{{from}}:</b> {{#if chosen}}{{chosen}} ({{value}} Mastery from the start){{else}}<a data-action="chooseStartMastery" data-item="{{itemId}}">choose your {{traitName}} weapon</a> to start with {{value}} Mastery with it{{/if}}</div>{{/each}}
       {{#each mastery}}
       {{#if collapsed}}

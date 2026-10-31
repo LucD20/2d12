@@ -42,3 +42,4 @@ console.log("greyed buttons ask", tpl2.includes('data-action="handBlocked"') && 
 // v0.0.212: a Two-handed weapon in one hand: its 3 Banes only on Actions with that weapon (__twohanded), not the other hand's or the Fists.
 const fx = src("module/effects.mjs"), bas2 = src("module/basic.mjs");
 console.log("one-hand Banes only with that weapon:", fx.includes('banes: 3, all: ["strike", "weapon", "__twohanded"]'), "| Interact draws, stows and swaps:", bas2.includes("draw an object you carry into a free hand; stow an object you hold"));
+console.log("v0.0.213: a Technique whose weapon is not in hand can't be used:", src("module/actions.mjs").includes('techniqueState(actor, item) === "unwielded"'));

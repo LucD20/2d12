@@ -1,5 +1,5 @@
 import { triggerNotices } from "./triggers.mjs";
-import { techniqueLock, TECHNIQUE_AT, masteryAfterRoll } from "./mastery.mjs";
+import { techniqueLock, TECHNIQUE_AT, masteryAfterRoll, techniqueState } from "./mastery.mjs";
 import { setQuarry } from "./mark.mjs";
 import { pickTargets, needsTargets } from "./targeting.mjs";
 import { ignoredBy, markOnce } from "./automation.mjs";
@@ -352,6 +352,8 @@ export async function useAction(actor, item, opts = {}) {
   // A Weapon Technique stays locked until 3 Mastery with its weapon (mastery.mjs).
   const lock = techniqueLock(actor, item);
   if (lock.locked) return ui.notifications.warn(`${item.name} is locked: ${TECHNIQUE_AT} ${lock.group} Mastery unlocks it (${actor.name} has ${lock.value}).`);
+  // v0.0.213 (Lucas): a Weapon Technique is used only with its own weapon, in hand (a Favorite or a macro can still call it).
+  if (techniqueState(actor, item) === "unwielded") return ui.notifications.warn(`${item.name} is ${actor.items.get(item.getFlag("twod12", "weaponId"))?.name ?? "its weapon"}'s Weapon Technique: wield it first.`);
   // A Split Action has two modes: choose one (Weapon needs a weapon, Power doesn't), then it is used as an Action of that mode (split.mjs).
   if (item.system.traits?.has?.("split") && !opts.splitMode) {
     const modes = splitModes(item);

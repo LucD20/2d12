@@ -295,9 +295,8 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         tip: condensed ? await buildRawCard(i) : ""
       };
     };
-    // Weapon Techniques: not shown before 3 Mastery; one whose weapon is not in hand is greyed, or hidden with "Only usable Techniques" (mastery.mjs).
-    const hideTech = !!game.user.getFlag("twod12", "hideTechniques");
-    const actions = a.itemTypes.action.filter(i => { const st = techniqueState(a, i); return st !== "locked" && !(hideTech && st === "unwielded"); });
+    // Weapon Techniques: not shown before their Mastery, nor while their weapon is not in hand (v0.0.213, Lucas: a Technique is used only with its own weapon).
+    const actions = a.itemTypes.action.filter(i => techniqueState(a, i) === "ok");
     const all = await Promise.all(actions.filter(i => !i.getFlag("twod12", "basic")).map(rowOf));
     const pass = r => {
       const it = a.items.get(r.id)?.system;
@@ -445,7 +444,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       groups,
       actGroups,
       groupByChoices: GROUP_BY,
-      hideTech: !!game.user.getFlag("twod12", "hideTechniques"), hasTechniques: a.itemTypes.action.some(i => i.system?.category === "Weapon Technique"),
+      hasTechniques: a.itemTypes.action.some(i => i.system?.category === "Weapon Technique"),
       masteryOpen: [...(this._masteryOpen ?? [])], isGMUser: game.user.isGM,
       sortByChoices: SORT_BY,
       groupBy,
@@ -717,7 +716,6 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const el = this.element;
     el.querySelector("select.at-groupsel")?.addEventListener("change", async ev => { await game.user.setFlag("twod12", "sheetGroup", ev.target.value); this.render(); });
     el.querySelector("select.at-sortsel")?.addEventListener("change", async ev => { await game.user.setFlag("twod12", "sheetSort", ev.target.value); this.render(); });
-    el.querySelector("input.at-hidetech")?.addEventListener("change", async ev => { await game.user.setFlag("twod12", "hideTechniques", ev.target.checked); this.render(); });
     const box = el.querySelector("input.at-filter");
     const apply = () => {
       const q = this._search.trim().toLowerCase();

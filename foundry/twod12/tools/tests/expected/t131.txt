@@ -19,4 +19,4 @@ Level 2: Talent (talent) | Encounter Pick (repertoire encounter)
 Level 3: Daily Pick (repertoire daily) | Passive Escalation Pick (items): Killer's Focus, Elusive, Harrying Shots
 Repertoire: Marksman's Shot, Volley, Covering Fire, Hunter's Focus, Deadeye, Rain of Arrows | Escalation: Killer's Focus, Elusive, Harrying Shots / Pinning Shot, Twin Shot, Vanish
 Shot needs a Projectile weapon: true | a Weapon Action with one is a Shot: true | old ranged weapons get Projectile once: true
-Mastery tab: Techniques option true | Bow Mastery choice (Sharpshooter gives it) true | tab for every character true
+Mastery tab: no Techniques option (v0.0.213) true | Bow Mastery choice (Sharpshooter gives it) true | tab for every character true

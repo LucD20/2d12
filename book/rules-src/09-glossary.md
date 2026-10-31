@@ -163,5 +163,6 @@
 | [[Weapon Groups\|**Weapon Group**]] | Blades, Axes, Hammers, Polearms, Bows, Crossbows, Firearms, Unarmed. Your Mastery with a weapon is at least a third of your best in its group. |
 | [[Weapon, Power and Signature Modifiers\|**Weapon Modifier**]] | The higher of the class's two Weapon Attributes ÷ 2 + 1. Weapon Actions roll it. |
 | [[Rolls\|**Weapon roll**]] | An Action with the Weapon trait (or a Split Action in Weapon mode). |
+| [[Weapons\|**Weapon Technique**]] | A weapon's own Action, unlocked with Mastery; used only with that weapon, while you wield it. |
 | [[Willing and Unwilling\|**Willing, Unwilling**]] | Willing: a creature that accepts the effect (an Unconscious creature counts as willing). Unwilling: one that doesn't. |
 | [[Wounds and the Tables\|**Wound**]] | A result of the Dying or Shattered Table (Body or Mind). |
