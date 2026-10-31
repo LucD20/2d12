@@ -149,3 +149,13 @@ Wounding Shot with it: Tier 3 [B] 1d10 + [Mod] Pi; **Bleed 1** (instead of Hinde
 +0.5 DE a use if the bleeding lasts 2 of its turns (efficiency about 1.2); the ruler learns `bleed N` before the number is final.
 **Note:** "the first unlock is the Technique" (rule 3) becomes "the Technique is one of the first two unlocks", and the Archer's Sharpshooter
 (3 Mastery with one Projectile weapon, to unlock its Technique at level 1) would give Close Quarters instead: keep it, or 8?
+
+**Lucas (Bleed, round 2):** removing Bleed is an **Interact Action that allows a Save**, with the Attributes in its notation:
+**Bleed 5 (Mi/Ap)** = Mind or Appeal, **DC 13** unless written ("Bleed 5 (Mi/Ap; DC 15)"). Three ideas for the tiers: (A) no effect / halve
+the next Bleed damage / removed; (B) take half the Bleed damage / no effect / removed; (C) no effect / 1 Boon on the next attempt / removed.
+**The numbers** (2d12 + Attribute against DC 13; Tier 3 is 19% / 23% / 27% at +0 / +1 / +2): when only a Tier 3 removes it, removing Bleed
+takes **3.4 to 5.3 Interacts** on average (A and B 3.7 to 5.3, C 3.4 to 4.9); fights last about 3.5 rounds, so Bleed would almost never be
+removed and the Save would rarely matter. **My proposal (D):** no effect / **you take half the Bleed damage at the end of this turn, then it
+ends** / **it ends now**: removed in 1.4 to 1.7 Interacts on average, so staunching is a real choice (about one Strike's worth of AP).
+Questions: the pool of the damage (the pool of its Attributes: Bo/In Body, Mi/Ap Mind?), the better of the two Attributes, and can an ally
+staunch you (with your Save, or its own: Skills, D3)?
