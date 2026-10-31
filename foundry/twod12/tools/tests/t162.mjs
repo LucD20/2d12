@@ -26,7 +26,7 @@ Object.defineProperty(combat, "combatant", { get() { return combat.turns[combat.
 combat.setupTurns(); game.combat = combat; registerCombatHooks();
 const names = () => combat.turns.map(c => c.name).join(", ");
 const [Nari, , , , Drak] = all;
-Nari.flags.ap = 5;
+Nari.flags.ap = 5; Nari.flags.apTurn = "2:Nari";   // v0.0.204: its own turn had started this round (the bug: its new slot was taken for the same turn start)
 console.log("three-way fight (ally, foe, ally, neutral, ally):", names());
 console.log("Nari can swap with:", swapCandidates(combat, Nari).map(c => c.name).join(", "));
 await performSwap(combat, "Nari", "Drak");   // the last ally in the order
@@ -36,8 +36,12 @@ console.log("card:", card.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim());
 console.log("card parts: header with 1AP chip:", card.includes('class="ahead"') && card.includes(">1AP<"), "| swap icon:", card.includes("fa-right-left"), "| AP in the AP color:", (card.match(/class="kw-ap"/g) ?? []).length === 2, "| flag slot:", JSON.stringify(rawFlags.at(-1)?.twod12?.swap));
 combat.turn = combat.turns.findIndex(c => c.id === "Nari"); handlers.combatTurnChange(combat); await new Promise(r => setTimeout(r, 5));
 const thaw = rawMsgs.at(-1);
+console.log("Nari at its new slot: frozen", !!Nari.flags.frozen, "| AP", Nari.flags.ap, "| acted", !!Nari.flags.acted);
 console.log("thaw:", thaw.replace(/<[^>]+>/g, "").trim(), "| a line, no header:", thaw.includes("sysline") && !thaw.includes("ahead"), "| lock icon:", thaw.includes("fa-lock-open"));
 const before = rawMsgs.length; combat.turn = combat.turns.findIndex(c => c.id === "Steven"); handlers.combatTurnChange(combat); await new Promise(r => setTimeout(r, 5));
 console.log("Steven's turn posts no thaw:", !rawMsgs.slice(before).some(m => m.includes("thaws")));
 const { swapCardHtml } = await import(ROOTURL + "module/sysmsg.mjs");
 console.log("names are escaped:", swapCardHtml("<b>Zack</b>", "Lana", 5, 4, 3).includes("&lt;b&gt;Zack"));
+const fsx = await import("node:fs");
+const arch = fsx.readFileSync(ROOT + "module/archer.mjs", "utf8");
+console.log("v0.0.204: the three mark messages use the system line:", (arch.match(/content: sysLine\("fa-crosshairs"/g) ?? []).length === 3, "| no plain twod12 chat left in archer.mjs:", !arch.includes('<div class="twod12 chat">'));

@@ -3,6 +3,8 @@
 // Boon and Tier 1 [Mod], Hunter's Focus. When the marked creature dies or goes Down the mark ends and the marker is told; at the start of an
 // encounter every creature that uses a mark is reminded to choose one. The Archer's other cards are settings on their items (no code here).
 import { usesMark } from "./automation.mjs";
+import { sysLine, apText } from "./sysmsg.mjs";
+import { esc } from "./util.mjs";
 const F = "twod12";
 export const quarryOf = actor => actor?.getFlag?.(F, "quarry") ?? null;
 const uuidOfToken = t => t?.document?.uuid ?? t?.uuid ?? "";
@@ -11,7 +13,7 @@ const uuidOfToken = t => t?.document?.uuid ?? t?.uuid ?? "";
 export async function setQuarry(actor, token) {
   if (!token) { if (quarryOf(actor)) await actor.unsetFlag(F, "quarry"); return; }
   await actor.setFlag(F, "quarry", { uuid: uuidOfToken(token), name: token.name });
-  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: `<div class="twod12 chat"><i class="fa-solid fa-crosshairs"></i> <b>${actor.name}</b> marks <b>${token.name}</b>.</div>` });
+  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-crosshairs", `<b>${esc(actor.name)}</b> marks <b>${esc(token.name)}</b>.`, "mark") });   // v0.0.204: the system line (sysmsg.mjs)
 }
 
 /** The token uuids that are a Marked Quarry this user should see: of an Archer they own (the GM sees every mark). */
@@ -52,7 +54,7 @@ export function registerArcherHooks() {
       const q = quarryOf(archer);
       if (!q || !uuids.has(q.uuid)) continue;
       await archer.unsetFlag(F, "quarry");
-      await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: archer }), whisper: game.users.filter(u => archer.testUserPermission?.(u, "OWNER")).map(u => u.id), content: `<div class="twod12 chat"><i class="fa-solid fa-crosshairs"></i> <b>${archer.name}</b>: the creature you marked, ${q.name}, went Down. Choose a new one: target a creature and use your marking Action (Mark Quarry: 0 AP).</div>` });
+      await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: archer }), whisper: game.users.filter(u => archer.testUserPermission?.(u, "OWNER")).map(u => u.id), content: sysLine("fa-crosshairs", `<b>${esc(archer.name)}</b>: your mark, <b>${esc(q.name)}</b>, went Down. Choose a new one: target a creature and use your marking Action (Mark Quarry, ${apText(0)}).`, "mark") });
     }
   });
   // An encounter starts: every creature that uses a mark is reminded to choose one.
@@ -62,7 +64,7 @@ export function registerArcherHooks() {
       const a = c.actor;
       if (!a || !usesMark(a)) continue;
       if (quarryOf(a)) await a.unsetFlag(F, "quarry");
-      await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: a }), whisper: game.users.filter(u => a.testUserPermission?.(u, "OWNER")).map(u => u.id), content: `<div class="twod12 chat"><i class="fa-solid fa-crosshairs"></i> <b>${a.name}</b>: choose the creature to mark: target it and use your marking Action (Mark Quarry: 0 AP).</div>` });
+      await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: a }), whisper: game.users.filter(u => a.testUserPermission?.(u, "OWNER")).map(u => u.id), content: sysLine("fa-crosshairs", `<b>${esc(a.name)}</b>: choose a creature to mark. Target it and use your marking Action (Mark Quarry, ${apText(0)}).`, "mark") });
     }
   });
 }

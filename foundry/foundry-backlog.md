@@ -1,8 +1,9 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.203**. Tests: `node tools/tests/run.mjs` (160 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.204**. Tests: `node tools/tests/run.mjs` (160 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
 
 ## Asked by Lucas, not built
+- [x] **(v0.0.204) Fix: the swapper stayed frozen at its new slot** (startTurn's once-per-round check); the mark messages in the system line. [Q] for Lucas: after it thaws, the strip still offers Swap (the creature has taken no Action in that turn); allowed by the rule as written?
 - [x] **(v0.0.203) The Swap Initiative card and the thaw line** (module/sysmsg.mjs = the default look for system messages: sysCard, sysLine). The strip starts after the scene navigation. Unverified in Foundry: the look in the real chat (light/dark, narrow), the scene navigation measure in V14.
 - [ ] **Editability sweep** (MASTER-PLAN section 7): every card mechanic editable from item settings; first known gap: Mark Quarry's start-of-encounter reminder and "your mark went Down" message (archer.mjs) have no setting. Later: move other system messages to sysmsg.mjs (the initiative card, the mark reminders).
 - [x] **(v0.0.202) Tooltip delay setting (900 ms) and the strip fits between the controls and the sidebar** (plates scroll sideways, mouse wheel too). Unverified in Foundry: the measured left edge (#scene-controls) in V14.

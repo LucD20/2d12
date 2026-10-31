@@ -1971,3 +1971,7 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 .twod12.chat.sysline { display: flex; align-items: baseline; gap: 7px; padding: 4px 9px; border: 1px solid #c8b48a; border-radius: 5px; background: #f4ecdc; color: #2c2a26; line-height: 1.35; }
 .twod12.chat.sysline > i { flex: none; font-size: 11px; color: #6b5a3a; }
 .twod12.chat.sysline .kw-ap { color: #3b4cb8; }
+
+/* ------------------------------------------------------------------ v0.0.204: the mark lines (archer.mjs) in the system line's look; the swap card's names wrap as a pair */
+.twod12.chat.sysline.mark > i { color: #a32d2d; }
+.twod12.chat.sysmsg .sm-lead .sm-swap { flex: none; }

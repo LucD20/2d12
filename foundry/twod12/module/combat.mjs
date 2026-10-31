@@ -183,7 +183,8 @@ async function startTurn(combat) {
   const c = combat.combatant;
   if (!c) return;
   const key = `${combat.round}:${c.id}`;
-  if (c.getFlag(F, "apTurn") === key) return;
+  // v0.0.204: a creature that swapped had its turn start this round already; its new slot is a new start (it thaws), so frozen skips this check.
+  if (c.getFlag(F, "apTurn") === key && !c.getFlag(F, "frozen")) return;
   const fresh = { [`flags.${F}.apTurn`]: key, [`flags.${F}.acted`]: false, [`flags.${F}.moveLeft`]: 0, [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, [`flags.${F}.-=ignoreTerrain`]: null };
   if (c.getFlag(F, "frozen")) {
     // It swapped initiative earlier: it carries on with the AP it had left.
