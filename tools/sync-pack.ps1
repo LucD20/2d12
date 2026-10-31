@@ -1,4 +1,4 @@
-# Pulls the newest unmerged origin/pack-* branch, tests it, rebuilds the compendium when needed and notifies.
+# Pulls the newest unmerged origin/pack-* (or origin/claude/pack-*, from cloud sessions) branch, tests it, rebuilds the compendium when needed and notifies.
 # When the pack branch it is on has been merged (and no newer pack waits), it goes back to main the same way.
 # When changed files stop it, it says so once with a notification (until the list changes).
 # Run it by double-clicking "Update Foundry.cmd" in the project folder (-Interactive: a window shows each step and waits for Foundry
@@ -115,7 +115,7 @@ if ($dirty.Count) {
 [void](G fetch origin --prune)
 if ($GitExit -ne 0) { Log "git fetch failed, stopping"; exit 1 }
 $pick = $null
-foreach ($line in (G for-each-ref --sort=-committerdate "--format=%(refname:short) %(objectname)" "refs/remotes/origin/pack-*")) {
+foreach ($line in (G for-each-ref --sort=-committerdate "--format=%(refname:short) %(objectname)" "refs/remotes/origin/pack-*" "refs/remotes/origin/claude/pack-*")) {   # cloud sessions push claude/pack-...
     $ref, $hash = $line -split " "
     [void](G merge-base --is-ancestor $ref origin/main)
     if ($GitExit -eq 0) { continue }                       # already merged into main
@@ -127,12 +127,12 @@ if (-not $pick) {
     # 3b. back to main: the repo is on a pack branch that was merged (or deleted on GitHub), and no newer pack waits.
     $cur = @(G branch --show-current)[0]
     $merged = $false
-    if ($cur -like "pack-*") {
+    if ($cur -like "pack-*" -or $cur -like "claude/pack-*") {
         [void](G rev-parse --verify --quiet "refs/remotes/origin/$cur")
         if ($GitExit -ne 0) { $merged = $true } else { [void](G merge-base --is-ancestor "origin/$cur" origin/main); $merged = ($GitExit -eq 0) }
     }
     if (-not $merged) {
-        if ($DryRun) { Log "nothing to sync (no new unmerged origin/pack-* branch; on $cur)" }
+        if ($DryRun) { Log "nothing to sync (no new unmerged origin/pack-* or origin/claude/pack-* branch; on $cur)" }
         if ($Interactive) { Notify "Already up to date" "on $cur, v$((Get-Content (Join-Path $Repo 'foundry\twod12\system.json') -Raw | ConvertFrom-Json).version); no newer pack branch" }
         exit 0
     }

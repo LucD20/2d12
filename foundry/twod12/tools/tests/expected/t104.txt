@@ -1,5 +1,5 @@
 --- a boon becomes 2, Speed is added
-name: Battle Fervor | modifiers: [{"against":false,"boons":2,"empowered":0,"enfeebled":0,"byValue":false,"all":["melee"],"any":[],"none":[],"from":[]}] | speed: [{"mode":"add","formula":"2"}]
+name: Battle Fervor | modifiers: [{"against":false,"boons":2,"empowered":0,"enfeebled":0,"byValue":false,"all":["melee"],"any":[],"none":[],"from":[],"oncePerRound":false,"vsMarked":false}] | speed: [{"mode":"add","formula":"2"}]
 same duration: the rounds left stay: true | source kept: true
 --- the duration changes: it starts again
 {"type":"rounds","rounds":3} remaining 3

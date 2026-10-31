@@ -25,7 +25,7 @@ Initiative is a **zipper**. The creatures are split into however many different 
 
 On your turn, if you haven't taken any Actions yet and aren't Down, you can spend **1 AP** to swap places in the turn order with an ally who hasn't had a turn this round. The ally takes the turn now, at your place in the order, and gains its AP as normal.
 
-You act at the ally's old place. Until then, your remaining Actions are **frozen**: you can't use them. When your new turn arrives, you carry on with the AP you had left instead of gaining new AP.
+You act at the ally's old place. Until then, your remaining Actions are **frozen**: you can't use them. When your new turn arrives, you carry on with the AP you had left instead of gaining new AP. You can't swap again that round.
 
 > [!example]
 > PC1 (first in the order) swaps with PC3 and keeps 4 AP. The order becomes PC3, NPC1, PC2, NPC2, PC1. When PC1's turn comes, PC1 has 4 AP.

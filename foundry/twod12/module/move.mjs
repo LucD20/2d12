@@ -6,7 +6,7 @@ import { esc } from "./roll.mjs";
 import { tokenCells, fillCells, outlineCells, cellCenter, cellAt } from "./template.mjs";
 import { TWOD12 } from "./config.mjs";
 import { applyToActor } from "./damage.mjs";
-import { getAP, setAP, combatantOf } from "./combat.mjs";
+import { getAP, setAP, combatantOf, apMax } from "./combat.mjs";
 import { expireOnUse } from "./bonus.mjs";
 import { evalExpr } from "./refs.mjs";
 import { stepCorners, solidCorner, creatureIn, straightCells, chooseLine } from "./corners.mjs";
@@ -220,8 +220,11 @@ export async function chargeMovement(c, cost, dest = null, { par = 0 } = {}) {
   const ap = getAP(c);
   const sq = Math.round(cost * 100) / 100;
   const what = useEvade ? `Evade ${sq} sq, no reactions` : `Advance ${sq} sq`;
-  if (spent) await setAP(c, Math.max(0, ap - spent), what);
-  else await post(`<b>${esc(c.name)}</b>: ${what}${left > 0 ? `, ${Math.round(left * 100) / 100} sq of Speed left` : ""}${free + evade > 0 ? `. ${free + evade} sq left ${endBtn(c)}` : ""}`);
+  if (spent) await setAP(c, Math.max(0, ap - spent), what, { quiet: !useEvade && walk > 0 });   // v0.0.197: the movement's own line says it
+  // v0.0.196 (Lucas): while the movement banner is up it says what is left, so the drags post nothing; a drag that spends AP (moving the
+  // token without using Advance first) is an Advance: it opens the banner, and its Speed left counts there.
+  if (spent && !useEvade && walk > 0) { if (bannerOn(c) && moveBar && !moveBar.logged()) moveBar.add(walk * spent, spent); else moveBanner(c, "walk", walk * spent, "Advance", { drag: true, ap: spent }); }
+  else if (!spent && !bannerOn(c)) await post(`<b>${esc(c.name)}</b>: ${what}${left > 0 ? `, ${Math.round(left * 100) / 100} sq of Speed left` : ""}${free + evade > 0 ? `. ${free + evade} sq left ${endBtn(c)}` : ""}`);
   if (spent && ap < spent) warn(`${c.name} did not have enough AP for that movement.`);
 }
 
@@ -450,6 +453,8 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
   if (cfg.ignoreTerrain) await c.setFlag(F, "ignoreTerrain", true);
   if (kind === "charge") await c.setFlag(F, "charge", { min: cfg.min || 3, max: n });
   const sq = `${n} square${n === 1 ? "" : "s"}`;
+  // v0.0.195 (Lucas): from a movement-only Action, the banner instead of a chat line; one short line is posted when the movement ends.
+  if (cfg.banner && kind !== "charge") { showRange(c, n); moveBanner(c, kind, n, cfg.banner, { ap: cfg.bannerAp ?? 0 }); return true; }
   if (kind === "charge") {
     await post(`<b>${esc(c.name)}</b> can Charge: move in a straight line at least ${cfg.min || 3} and up to ${sq}, not through Difficult Terrain. ${endBtn(c)}`);
     showRange(c, n);
@@ -465,15 +470,87 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
 }
 
 /** The Evade becomes an Advance: it can then be used on a move that does trigger reactions (or by a creature that can not Evade). */
-export async function evadeAsAdvance(combatantId) {
+export async function evadeAsAdvance(combatantId, { quiet = false } = {}) {
   const c = game.combat?.combatants.get(combatantId);
   if (!c?.isOwner) return warn("Only the owner can change this movement.");
   const n = num(c.getFlag(F, "evadeMove"));
   if (!n) return warn("There is no Evade movement left.");
   await c.update({ [`flags.${F}.evadeMove`]: 0, [`flags.${F}.freeMove`]: num(c.getFlag(F, "freeMove")) + n, [`flags.${F}.-=ignoreTerrain`]: null });
-  await post(`<b>${esc(c.name)}</b> uses the movement as an Advance of up to ${n} square${n === 1 ? "" : "s"} instead of an Evade.`);
+  if (!quiet) await post(`<b>${esc(c.name)}</b> uses the movement as an Advance of up to ${n} square${n === 1 ? "" : "s"} instead of an Evade.`);
   showRange(c, n);
 }
+
+/* ------------------------------------------------------------------ v0.0.197-v0.0.198: a movement's line and its squares left (on the strip) */
+const VERB = { walk: "Advanced", evade: "Evaded" }, NOUN = { walk: "Advance", evade: "Evade" };
+let moveBar = null, lastBar = { id: "", until: 0 };
+/** Is a movement tag up for this combatant (or did one just close: its last drag's update comes after)? */
+const bannerOn = c => !!c?.id && ((!!moveBar && moveBar.c?.id === c.id) || (lastBar.id === c.id && Date.now() < lastBar.until));
+/** Pure: the chat line of a movement, while it goes on (moved null) and when it ends. */
+export const moveLine = (who, mode, name, ap, granted, moved = null) => {
+  const sq = n => `${n} square${n === 1 ? "" : "s"}`;
+  if (moved === null) return `<b>${esc(who)}</b> uses <b>${esc(name)}</b> <small>(${ap ? `${ap} AP: ` : ""}up to ${sq(granted)})</small>`;
+  const tag = [name !== NOUN[mode] ? name : "", ap ? `${ap} AP` : ""].filter(Boolean).join(", ");
+  return `<b>${esc(who)}</b> ${VERB[mode] ?? "moved"} <b>${moved}</b> of ${sq(granted)}${tag ? ` <small>(${esc(tag)})</small>` : ""}`;
+};
+
+/**
+ * v0.0.198 (Lucas): a movement-only Action (Advance, Evade, Crawl) or a drag that pays an Advance: the squares left show on the combat strip
+ * under the creature's AP dots, with End (and Advance instead, for an Evade) next to Next turn (carousel.mjs); nothing covers the map.
+ * ONE chat line: "Kai uses Advance (1 AP: up to 7 squares)", changed to "Kai Advanced 4 of 7 squares (1 AP)" when it ends (used up, End,
+ * or the turn changes). This keeps that line and the end of the movement, on the client of whoever moved.
+ */
+export function moveBanner(c, kind, granted, name, { drag = false, ap = 0 } = {}) {
+  moveBar?.finish(false);
+  // drag: started by moving the token (an Advance paid by the drag): the Speed left of that Advance (moveLeft) counts too.
+  const left = () => num(c.getFlag(F, "freeMove")) + num(c.getFlag(F, "evadeMove")) + (drag ? num(c.getFlag(F, "moveLeft")) : 0);
+  let after = getAP(c), logged = false;
+  // v0.0.200 (Lucas): the movement's line goes to the Turn Log ONCE, when it ends (or when another Action comes first): its name and cost.
+  const writeLine = async () => {
+    if (logged) return;
+    logged = true;
+    const { logEvent, makeLine } = await import("./ticker.mjs");
+    await logEvent(c, makeLine("move", name, after + ap, after, Math.max(apMax(c), after + ap)));
+  };
+  const hooks = [];
+  const on = (h, fn) => hooks.push([h, Hooks.on(h, fn)]);
+  const finish = async (drop = true) => {
+    if (!moveBar || moveBar.c !== c) return;
+    moveBar = null;
+    lastBar = { id: c.id, until: Date.now() + 2500 };
+    for (const [h, id] of hooks) Hooks.off(h, id);
+    const l = left();
+    if (drop && l > 0 && c.isOwner && game.combat?.combatants?.has?.(c.id)) await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...(drag ? { [`flags.${F}.moveLeft`]: 0 } : {}), [`flags.${F}.-=ignoreTerrain`]: null });
+    clearRange();
+    await writeLine();
+  };
+  moveBar = { c, finish, writeLine, logged: () => logged, toAdvance: () => { name = name === "Evade" ? "Advance" : name; }, add: (n, moreAp = 0) => { granted += n; ap += moreAp; after = getAP(c); } };
+  on("updateCombatant", cb => { if (cb.id !== c.id || moveBar?.c !== c) return; if (left() <= 0) finish(false); });
+  on("combatTurnChange", () => finish(false));
+  on("deleteCombat", () => finish(false));
+}
+
+/** v0.0.200: another Action is about to be used: a movement under way writes its Turn Log line first (it goes on tracking its squares). */
+export async function closeMoveLine(c) {
+  if (moveBar?.c?.id === c?.id) await moveBar.writeLine();
+}
+
+/** v0.0.198: the strip's End button: the movement this client tracks ends (its line is completed), or the free squares are dropped. */
+export async function endMoveFor(combatantId) {
+  const c = game.combat?.combatants.get(combatantId);
+  if (!c) return;
+  if (moveBar?.c?.id === combatantId) return moveBar.finish(true);
+  if (c.getFlag(F, "charge")) return endMovement(combatantId);
+  if (!c.isOwner) return warn("Only the owner can end this movement.");
+  await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, [`flags.${F}.moveLeft`]: 0, [`flags.${F}.-=ignoreTerrain`]: null });
+  clearRange();
+}
+/** v0.0.198: the strip's Advance instead (an Evade becomes an Advance; the movement's line says Advanced). */
+export async function evadeToAdvance(combatantId) {
+  if (moveBar?.c?.id === combatantId) moveBar.toAdvance();
+  return evadeAsAdvance(combatantId, { quiet: true });
+}
+/** Pure: what the strip shows under a creature's AP dots: { n, evade } (n 0: nothing). */
+export const stripMove = c => { const ev = num(c?.getFlag?.(F, "evadeMove")), n = ev + num(c?.getFlag?.(F, "freeMove")) + num(c?.getFlag?.(F, "moveLeft")); return { n: Math.round(n * 100) / 100, evade: ev > 0 }; };
 
 /** The creature is done moving: the free squares it did not use are dropped. */
 export async function endMovement(combatantId) {

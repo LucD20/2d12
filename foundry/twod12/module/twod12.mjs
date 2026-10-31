@@ -42,11 +42,17 @@ import { registerDamageReport, toggleDamageReport } from "./damagelog.mjs";
 import { updateUseButtons } from "./freeuse.mjs";
 import { registerVersionTabs } from "./preview.mjs";
 import { registerCarousel, renderCarousel } from "./carousel.mjs";
+import { bindInitCard } from "./initcard.mjs";
+import { registerRefresh, refreshFromCompendium, askRefresh } from "./refresh.mjs";
 import { GROUPS } from "./config.mjs";
 import { registerDragCopy } from "./drag.mjs";
 import { registerUsageHooks } from "./usage.mjs";
 
 Hooks.once("init", () => {
+  // v0.0.202 (Lucas): tooltips wait a little longer before they show (Foundry's own wait is 0.5 s); a client setting.
+  const tipDelay = v => { const TM = foundry.helpers?.interaction?.TooltipManager ?? globalThis.TooltipManager; if (TM) TM.TOOLTIP_ACTIVATION_MS = Math.max(0, Number(v) || 0); };
+  game.settings.register("twod12", "tooltipDelay", { name: "Tooltip delay (ms)", hint: "How long the pointer rests on something before its tooltip shows. Foundry's own is 500.", scope: "client", config: true, type: Number, default: 900, range: { min: 0, max: 3000, step: 100 }, onChange: tipDelay });
+  tipDelay(game.settings.get("twod12", "tooltipDelay"));
   registerSenses();
   registerSleep();
   registerClock();
@@ -73,6 +79,10 @@ Hooks.once("init", () => {
   registerLight();
   registerLightOverlay();
   CONFIG.TWOD12 = TWOD12;
+  registerRefresh();
+  // v0.0.196 (Lucas): Evade from the keyboard (Shift+E by default; Configure Controls can change it): Evade 1 AP with the selected token.
+  game.keybindings.register("twod12", "quickEvade", { name: "Evade", hint: "Uses Evade with your selected token: choose 1 AP (Evade 1) or 2 AP (half your Speed); its movement starts at once.", editable: [{ key: "KeyE", modifiers: ["Shift"] }],
+    onDown: () => { import("./actions.mjs").then(m => m.quickBasic("safeMovement")); return true; } });
   CONFIG.Combat.documentClass = TwoD12Combat;
   game.twod12 = {
     catalog,
@@ -83,6 +93,7 @@ Hooks.once("init", () => {
     lightInfo,
     sliderInfo,
     refreshBasics: refreshAllBasics,
+    refreshFromCompendium: (opts = {}) => (Object.keys(opts).length ? refreshFromCompendium(opts) : askRefresh()),   // v0.0.190: a macro can call it
     shadowedEffects,
     rulerInfo,
     solidTiles: (on = true) => solidTiles(on),
@@ -155,6 +166,9 @@ Hooks.once("init", () => {
   game.settings.register("twod12", "diagonalsApplied", { scope: "world", config: false, type: Boolean, default: false });
   game.settings.register("twod12", "weaponRoundApplied", { scope: "world", config: false, type: Boolean, default: false });
   game.settings.register("twod12", "projectileApplied", { scope: "world", config: false, type: Boolean, default: false });
+  game.settings.register("twod12", "unlockPacks", { name: "Unlock the system compendiums", hint: "Keep the 2d12 compendiums unlocked, so their items can be opened and edited without unlocking them first (only the GM and Assistants can edit; a system update rebuilds them, so edits there are lost).", scope: "world", config: true, type: Boolean, default: true, onChange: () => import("./basic.mjs").then(m => m.unlockSystemPacks()) });   // v0.0.191
+  game.settings.register("twod12", "settingsV187", { scope: "world", config: false, type: Boolean, default: false });   // Killer's Focus and Radiant Zeal: an Effect each turn
+  game.settings.register("twod12", "settingsV186", { scope: "world", config: false, type: Boolean, default: false });   // the cards automated by name get their settings (automation.mjs)
   game.settings.register("twod12", "rallyV176", { scope: "world", config: false, type: Boolean, default: false });   // the Paladin's and Archer's Rally values updated once
 
   // Initiative is an Attribute Check rolled by TwoD12Combat#rollInitiative; this formula is only a fallback.
@@ -198,6 +212,7 @@ function collapsibleCards(msg, html) {
   head?.addEventListener("click", () => root.classList.toggle("collapsed"));
 }
 Hooks.on("renderChatMessageHTML", collapsibleCards);
+Hooks.on("renderChatMessageHTML", bindInitCard);   // v0.0.206: the Initiative card's rows open on click
 Hooks.on("renderChatMessageHTML", chatChips);   // v0.0.180: no line between trait groups at the start or end of a wrapped row
 // v0.0.177: a light of size N reaches an N Emanation (the half square Foundry leaves out is added), and Regions snap to whole squares.
 Hooks.once("setup", () => { try { registerLightRadius(); } catch (e) { console.warn("twod12 | light radius", e); } });

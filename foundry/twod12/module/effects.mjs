@@ -6,6 +6,7 @@ import { bumpExhausted, isExhaustedFx, exhaustedClick, heldModifiers } from "./s
 import { esc } from "./roll.mjs";
 import { TWOD12 } from "./config.mjs";
 import { combatantOf } from "./combat.mjs";
+import { onceKey, onceBlocked, isMarked } from "./automation.mjs";
 const SOCKET = "system.twod12";
 const F = "twod12";
 
@@ -45,10 +46,11 @@ const predText = m0 => { const m = { ...m0, all: vis(m0.all), any: vis(m0.any), 
 ].filter(Boolean).join("; ") || "Any roll"; };
 
 /** The Empowered and Enfeebled values that a creature's effects give to the damage of an Action with these traits: { empowered: [{ name, n }], enfeebled: [{ name, n }] } (Bloodlust: Empowered 1). */
-export function damageSteps(actor, traits) {
+export function damageSteps(actor, traits, target = null) {
   const out = { empowered: [], enfeebled: [] };
   for (const e of allEffects(actor)) for (const m of (effectOff(actor, e) ? [] : e.getFlag(F, "modifiers") ?? [])) {
     if (m.against || !matches(m, traits)) continue;
+    if (m.vsMarked && !isMarked(actor, target)) continue;   // v0.0.186: only against the creature it marked (Hunter's Focus)
     const emp = m.empowered === true ? 1 : Math.trunc(Number(m.empowered)) || 0, enf = Math.trunc(Number(m.enfeebled)) || 0;   // (older effects stored true for Empowered)
     if (emp > 0) out.empowered.push({ name: shortName(e.name), n: emp });
     if (enf > 0) out.enfeebled.push({ name: shortName(e.name), n: enf });
@@ -102,6 +104,7 @@ export function derivedMods(actor) {
   return out;
 }
 
+const onceText = m => (m.oncePerRound ? " (the first one each round)" : "");
 /** How many times a modifier counts: one that is "by value" (a condition with a value) counts as many times as the value (Vulnerable 2: 2 boons). */
 const kOf = (m, e) => (m.byValue ? Math.max(1, Number(e.getFlag(F, "value")) || 1) : 1);
 /** The value of a Vulnerable effect: the condition with a value, or an older effect named "Vulnerable 2". 0 for anything else. */
@@ -117,7 +120,13 @@ export function modifierList(actor, traits, targetActors = [], from = null) {
   for (const e of allEffects(actor)) {
     if (effectOff(actor, e)) continue;
     (e.getFlag(F, "modifiers") ?? []).forEach((m, i) => {
-      if (!m.against && (m.boons || m.banes)) out.push({ id: `${e.id}:${i}`, name: shortName(e.name), boons: m.boons * kOf(m, e), banes: m.banes * kOf(m, e), match: matches(m, traits, from), predicate: predText(m) });
+      if (m.against || !(m.boons || m.banes)) return;
+      // v0.0.186: once per round (used: not offered) and only against the marked target (one chip for that target).
+      const once = m.oncePerRound ? onceKey(e, "m", i) : "";
+      if (once && onceBlocked(actor, once)) return;
+      const base = { name: shortName(e.name), boons: m.boons * kOf(m, e), banes: m.banes * kOf(m, e), match: matches(m, traits, from), predicate: predText(m) + onceText(m), ...(once ? { once, onceActor: actor.uuid } : {}) };
+      if (!m.vsMarked) return out.push({ id: `${e.id}:${i}`, ...base });
+      for (const t of targetActors) if (isMarked(actor, t)) out.push({ ...base, id: `${t.uuid}|${e.id}:${i}`, name: `${base.name} (${t.name})`, predicate: `Against your marked target, ${t.name}: ${base.predicate}` });
     });
   }
   // Effects on the target that change rolls made against it (Prone: Melee Actions against you gain 1 boon).
@@ -130,11 +139,27 @@ export function modifierList(actor, traits, targetActors = [], from = null) {
       const vo = vulnerableOf(e);
       if (vo) { if (vo < vul || vulSeen) continue; vulSeen = true; }
       (e.getFlag(F, "modifiers") ?? []).forEach((m, i) => {
-        if (m.against && (m.boons || m.banes)) out.push({ id: `${t.uuid}|${e.id}:${i}`, name: `${shortName(e.name)} (${t.name})`, boons: m.boons * kOf(m, e), banes: m.banes * kOf(m, e), match: matches(m, traits), predicate: `Against ${t.name}: ${predText(m)}` });
+        if (!m.against || !(m.boons || m.banes)) return;
+        const once = m.oncePerRound ? onceKey(e, "m", i) : "";   // v0.0.186: the first matching Action against it each round (Elusive)
+        if (once && onceBlocked(t, once)) return;
+        out.push({ id: `${t.uuid}|${e.id}:${i}`, name: `${shortName(e.name)} (${t.name})`, boons: m.boons * kOf(m, e), banes: m.banes * kOf(m, e), match: matches(m, traits), predicate: `Against ${t.name}: ${predText(m)}${onceText(m)}`, ...(once ? { once, onceActor: t.uuid } : {}) });
       });
     }
   }
   return out;
+}
+
+/** v0.0.186: the "once per round" modifiers that were in this roll (selected in the dialog) are used: remembered on the creature that has them. */
+export async function useOnceModifiers(actor, traits, targetActors = [], from = null, selected = []) {
+  const ids = new Set((Array.isArray(selected) ? selected : [selected]).filter(Boolean).map(String));
+  const byActor = new Map([actor, ...targetActors].filter(Boolean).map(a => [a.uuid, a]));
+  const keys = new Map();
+  for (const m of modifierList(actor, traits, targetActors, from)) if (m.once && ids.has(String(m.id))) {
+    if (!keys.has(m.onceActor)) keys.set(m.onceActor, []);
+    keys.get(m.onceActor).push(m.once);
+  }
+  const { markOnce } = await import("./automation.mjs");
+  for (const [uuid, list] of keys) { const a = byActor.get(uuid); if (a) await markOnce(a, list); }
 }
 
 /** Sum of the chosen modifiers ("effectId:index" ids). */

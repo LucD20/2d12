@@ -1,0 +1,20 @@
+TASK: Mockups (static HTML files, one per option) for the "Granted" area at the top of the Actions tab of a character sheet in the twod12 Foundry V14 system (a homebrew 2d12 TTRPG). Nothing is built yet: Lucas picks one option, then it is built.
+
+WHAT THE GRANTED ROW IS TODAY
+- The Actions tab lists the character's Actions as rows (columns: grip, icon, Action name, Cost chip like "1AP" or "2/3", Range "10 / 20 / 40", Frequency "Round", a Use button with a dice icon). Rows have a colored left edge by Frequency, a light card-like background, and expand into the Action's card (a parchment chat-style card: colored title bar with the name, category and AP; italic flavor line; trait chips grouped Roll / Requires / Kind; Target, Distance; a Tiers table; an Effects block).
+- Above the list, a "Granted" header (green) shows uses that an effect grants for free. Example: Pinning Shot (1 AP, Escalation 2) grants one free "Weapon Attack" this turn; Double Shot grants two Weapon Attacks against different creatures; Twin Shot grants one Weapon Attack that hits two creatures. Today the row reads: an icon, "Weapon A..." (truncated), a grey "Free" chip, a truncated "W..." trait column, and under it "From Pinning Shot · EoT · 1 of 1 left". Lucas: "it looks very weird; it is in the right place; make it look like the other chat cards, maybe with more information."
+- Data available for each granted use: the granted Action (name, icon, traits, range, its card), the AP it costs now (0 = Free, or N AP), uses left / total (with boxes), the source effect (Pinning Shot, Double Shot, Twin Shot) and its duration (EoT, N rounds), extra conditions (each use needs a different target; +N Boons on it; extra damage the source adds, such as Twin Shot's +[B] 1d6 Pi, Pinning Shot's Immobilized on Tier 2-3).
+- Clicking the row (or its button) makes the granted use: it opens the roll dialog for that Action, free, with the grant's Boons.
+
+ALSO SHOW ESCALATION HERE (Lucas: "so people don't have to change to the Features tab to use/see them in combat")
+- Escalation is a 0-3 resource gained each round in combat. Escalation Passives work while Escalation is at least N (Killer's Focus: Escalation 2, "your first [Shot, Strike, Weapon] Action each round deals an extra [B] 1d6 Pi"; Radiant Zeal: Escalation 1; Elusive: Escalation 1; Hallowed Stance: 2). Escalation Actives are Actions that cost Escalation on top of AP (Pinning Shot: 1 AP + 2 Escalation; Twin Shot: 1 AP + 3; Vanish: 0 AP + 1; Shield of Faith: 0R + 1; Divine Surge: 0 AP + 1).
+- Some passives give an Effect at the start of each turn that is used up by the next matching Action (Killer's Focus and Radiant Zeal): "ready" until used, then "used this round".
+- Wanted: the current Escalation (0-3, as pips), the passives that are working now (and which are not yet, greyed with "at 2"), whether a once-a-round passive is still ready or already used, and the Actives that can be paid now (usable) vs not (greyed with why: "needs 2 Escalation").
+
+ASK
+1. 2 or 3 options for the Granted area, each as an HTML file with inline CSS, at the sheet's real width (about 560 px), on the sheet's parchment background (#ece6d6-ish), next to two normal Action rows so the fit can be judged. Same visual language as the Action rows and cards (rounded light cards, Frequency-colored left edge, the Cost chips: navy "1AP", teal "Free"; trait chips tinted by group: Roll teal #1f7a73, Requires blue #2c5f9e, Kind orange #b4472a).
+2. In each option, an Escalation strip or block in the same area, with: the Escalation pips, the passives (active / not yet / ready / used), and the usable Actives with a Use button.
+3. Show three states: no grants (only Escalation, or nothing at all outside combat), one grant (Pinning Shot's Weapon Attack), two grants at once (Double Shot's 2 uses with "different targets" and a Twin Shot use with its +1d6 Pi).
+4. Keep it compact: one line per grant when collapsed; the details (source, duration, what it adds) on hover or when expanded.
+5. Say for each option what changes when the sheet is narrow (about 420 px).
+Do not invent rules: the examples above are the real cards.

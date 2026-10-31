@@ -36,5 +36,5 @@ damage: one card with 6 rows, named: Skeleton Captain 1, Skeleton Captain 2, Ske
 size of the roll card: about 4122 characters for 6 creatures (one row), against 4987 for 3
 gridless scene: Whirlwind still rolls: true 
 dots: "" | g g r | capped at 5 each: 5 5 | never negative: ""
-captions: {"name":"Skeleton Captain 2","detail":"DC 13 · 2 banes"} {"name":"Nari","detail":"DC 17 · 1 boon"} {"name":"Goblin","detail":"DC 20"} {"name":"Lonny","detail":"DC 15 · 3 boons · 1 bane"}
+captions: {"name":"Skeleton Captain 2","detail":"DC 13 · 2 Banes"} {"name":"Nari","detail":"DC 17 · 1 Boon"} {"name":"Goblin","detail":"DC 20"} {"name":"Lonny","detail":"DC 15 · 3 Boons · 1 Bane"}
 numbers: "2" "" "10" "7" ""

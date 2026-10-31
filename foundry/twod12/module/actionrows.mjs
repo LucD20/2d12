@@ -29,7 +29,7 @@ export function actionChanges(actor, item) {
     c.parts.push(part); if (good) c.up++; else c.down++;
     byName.set(name, c);
   };
-  for (const m of derivedMods(actor)) if (matches(m, traits)) { if (m.banes) add(m.name, plural(m.banes, "bane"), false); if (m.boons) add(m.name, plural(m.boons, "boon"), true); }
+  for (const m of derivedMods(actor)) if (matches(m, traits)) { if (m.banes) add(m.name, plural(m.banes, "Bane"), false); if (m.boons) add(m.name, plural(m.boons, "Boon"), true); }
   let emp = 0, enf = 0;
   const bonuses = { 1: [], 2: [], 3: [] };
   for (const e of allEffects(actor)) {
@@ -38,8 +38,8 @@ export function actionChanges(actor, item) {
     const k = m => (m.byValue ? valueOf(e) : 1);
     for (const m of flagOf(e, "modifiers") ?? []) {
       if (m.against || !matches(m, traits)) continue;
-      if (m.boons) add(name, plural(m.boons * k(m), "boon"), true);
-      if (m.banes) add(name, plural(m.banes * k(m), "bane"), false);
+      if (m.boons) add(name, plural(m.boons * k(m), "Boon"), true);
+      if (m.banes) add(name, plural(m.banes * k(m), "Bane"), false);
       const up = m.empowered === true ? 1 : Math.trunc(Number(m.empowered)) || 0, down = Math.trunc(Number(m.enfeebled)) || 0;
       if (up > 0) { emp = Math.max(emp, up); add(name, `Empowered ${up}: +${up} per damage die`, true); }
       if (down > 0) { enf = Math.max(enf, down); add(name, `Enfeebled ${down}: \u2212${down} per damage die`, false); }

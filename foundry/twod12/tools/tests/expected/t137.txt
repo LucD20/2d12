@@ -5,11 +5,11 @@ leaning, no corner picked (best of 4)    from (124, 124): 0 blocked -> No cover
 --- (2) the side view (squares, y up)
 layout: {"A":{"x":0,"y":0,"w":1,"h":1},"T":{"x":4,"y":3,"w":1,"h":1},"cols":5,"rMin":0,"rMax":6}
 open ground, target 3 up, 4 apart            green green green green | No cover: 0 blocked
-a 2-square column in front of it             green green red green | Low cover: 1 blocked (1 bane, put on the roll by hand)
-the same + a half square on top (the image)  green red red red | High cover: 3 blocked (3 banes, put on the roll by hand)
+a 2-square column in front of it             green green red green | Low cover: 1 blocked (1 Bane, put on the roll by hand)
+the same + a half square on top (the image)  green red red red | High cover: 3 blocked (3 Banes, put on the roll by hand)
 a wall 4 squares tall                        red red red red | No Line of Effect: 4 of 4 blocked
 a wall 5 squares tall                        red red red red | No Line of Effect: 4 of 4 blocked
-half wall, lines from your top front corner  green red red red | High cover: 3 blocked (3 banes, put on the roll by hand)
+half wall, lines from your top front corner  green red red red | High cover: 3 blocked (3 Banes, put on the roll by hand)
 a block right under you (doesn't count)      green green green green | No cover: 0 blocked
 origins: center (0.5,0.5) tl (0,1) tr (1,1) bl (0,0) br (1,0)
 flat squares apart: 4, 6, 1, 4

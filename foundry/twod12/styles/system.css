@@ -258,8 +258,8 @@ a.twod12-inline.chatbtn i { font-size: 9px; }
 .twod12.chat .ahead.clickable { cursor: pointer; }
 .twod12.chat.collapsed .ahead.clickable::after { content: "\25be"; margin-left: 8px; opacity: .6; font-size: .8em; }
 .twod12.chat:not(.collapsed) .ahead.clickable::after { content: "\25b4"; margin-left: 8px; opacity: .6; font-size: .8em; }
-.twod12.chat.action.collapsed > .traits, .twod12.chat.action.collapsed > .trow, .twod12.chat.action.collapsed > .vsrow, .twod12.chat.action.collapsed > .chk, .twod12.chat.action.collapsed > .fxrow, .twod12.chat.action.collapsed > .bonusrow, .twod12.chat.action.collapsed > table.tiers tr:not(.hit):not(.up), .twod12.chat.action.collapsed > .tline, .twod12.chat.action.collapsed > button { display: none; }
-.twod12.chat.dmg.collapsed > *:not(.ahead):not(.dtotal):not(.dres) { display: none; }   /* v0.0.183: the result stays visible */
+.twod12.chat.action.collapsed > .traits, .twod12.chat.action.collapsed > .trow, .twod12.chat.action.collapsed > .vsrow, .twod12.chat.action.collapsed > .chk, .twod12.chat.action.collapsed > .fxrow, .twod12.chat.action.collapsed > table.tiers tr:not(.hit):not(.up), .twod12.chat.action.collapsed > .tline, .twod12.chat.action.collapsed > button { display: none; }
+.twod12.chat.dmg.collapsed > *:not(.ahead):not(.dtotal):not(.dres):not(.dtexts) { display: none; }   /* v0.0.192 (Lucas): the Effects stay too */   /* v0.0.183: the result stays visible */
 .twod12.chat.dmg.collapsed > .dtotal .tgt { display: none; }
 .twod12 details.setting { border: 1px solid var(--sh-line, rgba(128,128,128,.5)); border-radius: 4px; margin: 6px 0; padding: 2px 8px 6px; }
 .twod12 details.setting > summary.shead { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 3px 0; list-style: none; }
@@ -1655,3 +1655,362 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 .application.twod12-styled .sk .cls-chip i { color: var(--sk-mut); font-size: 11px; }
 .application.twod12-styled .sk .cls-chip button { width: 20px; height: 20px; padding: 0; line-height: 1; border: 0; }
 .application.twod12-styled .sk .cls-none { color: var(--sk-mut); font-style: italic; }
+
+/* v0.0.186 (pack C-a): the Features tab's Escalation section and the Talent subsections by Category. */
+.twod12.sheet.ns .fsub { margin: 8px 2px 2px; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #7a2f22; opacity: .8; border-bottom: 1px solid rgba(122, 47, 34, .25); }
+.twod12.sheet.ns .fsub:first-child { margin-top: 2px; }
+.twod12.sheet.ns .ktag.k-active.esc, .twod12.sheet.ns .ktag.k-passive.esc { opacity: .7; }
+.twod12.sheet.ns .ktag.esc-on { opacity: 1; background: #b8860b; color: #fff; }
+
+/* v0.0.187: a Talent's Prerequisites as one line, like an effect's traits: chips joined by "and" / "or" (click to switch). */
+.twod12 .prereqs { margin: 6px 0; }
+.twod12 .prereqs .pq-line { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; width: 100%; }
+.twod12 .prereqs .pq-lead { font-weight: 700; }
+.twod12 .prereqs .pq-chip { display: inline-flex; align-items: center; gap: 4px; padding: 2px 2px 2px 8px; border: 1px solid rgba(60, 40, 20, .35); border-radius: 12px; background: rgba(255, 255, 255, .45); }
+.twod12 .prereqs .pq-chip input, .twod12 .prereqs .pq-chip select { height: 22px; min-height: 0; padding: 0 4px; font-size: 12px; width: auto; }
+.twod12 .prereqs .pq-chip input[type="text"] { width: 140px; }
+.twod12 .prereqs .pq-chip input.wide { width: 240px; }
+.twod12 .prereqs .pq-chip input.n { width: 44px; }
+.twod12 .prereqs .pq-chip button { flex: 0 0 auto; width: 20px; height: 20px; min-height: 0; line-height: 1; padding: 0; border: none; background: none; }
+.twod12 .prereqs .pq-kind { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; opacity: .75; }
+.twod12 .prereqs .pq-join { font-style: italic; font-weight: 700; cursor: pointer; text-decoration: underline dotted; }
+.twod12 .prereqs .pq-none { font-style: italic; opacity: .7; }
+.twod12 .prereqs .pq-add { width: auto; height: 22px; min-height: 0; padding: 0 4px; font-size: 12px; }
+
+/* v0.0.189: bonus damage on a damage card names its source (a link to the item). */
+.twod12.chat .comp .ctype .csrc { font-size: 10px; opacity: .8; margin-left: 4px; }
+.twod12.chat .comp .ctype a.content-link, .twod12.chat .bonusrow a.content-link { background: none; border: none; padding: 0; color: inherit; text-decoration: underline dotted; }
+
+/* v0.0.189: the automation rank chip (after Draw Steel's Codex): Not implemented, Bronze, Silver, Gold. */
+.twod12 .autochip { display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 4px; font-size: 9.5px; line-height: 15px; font-weight: 700; letter-spacing: .03em; vertical-align: middle; text-transform: uppercase; color: #1e1e1e; border: 1px solid rgba(0, 0, 0, .35); font-family: var(--font-sans, sans-serif); }
+.twod12 .autochip.auto-none { background: #8a8a8a; color: #fff; }
+.twod12 .autochip.auto-bronze { background: linear-gradient(#e3a46b, #b8743c); }
+.twod12 .autochip.auto-silver { background: linear-gradient(#f1f1f1, #b9bec4); }
+.twod12 .autochip.auto-gold { background: linear-gradient(#ffe38a, #d4a72c); }
+.twod12 .autosel select { width: auto; }
+
+/* v0.0.189: targeting mode (an Action asks for its targets on the map). */
+#twod12-targeting { position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 1000; padding: 8px 16px; border-radius: 8px; background: rgba(20, 24, 32, .92); color: #f4e9d0; border: 1px solid #c9a24a; font-size: 14px; box-shadow: 0 4px 14px rgba(0, 0, 0, .5); pointer-events: none; }
+#twod12-targeting i { color: #e05a4f; margin-right: 6px; }
+/* v0.0.190: the targeting banner's buttons (Cancel; No target with its DC). */
+#twod12-targeting { pointer-events: auto; display: flex; align-items: center; gap: 12px; }
+#twod12-targeting .tb-btns { display: inline-flex; align-items: center; gap: 8px; }
+#twod12-targeting button { width: auto; height: 26px; line-height: 24px; padding: 0 10px; font-size: 13px; background: #2e3442; color: #f4e9d0; border: 1px solid #c9a24a; border-radius: 5px; cursor: pointer; }
+#twod12-targeting button:hover { background: #3c4458; }
+#twod12-targeting .tb-dc { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+#twod12-targeting .tb-dc input { width: 46px; height: 24px; text-align: center; background: #1b1f28; color: #f4e9d0; border: 1px solid #6b5a33; }
+/* v0.0.190 (Lucas): the automation rank is a small diamond after the name (grey, bronze, silver, gold), its rank on hover; no extra line. */
+.twod12 .autodia { margin-left: 5px; font-size: 9px; vertical-align: 2px; -webkit-text-stroke: .6px rgba(0, 0, 0, .55); }
+.twod12 .autodia.auto-none { color: #9a9a9a; }
+.twod12 .autodia.auto-bronze { color: #c9824a; }
+.twod12 .autodia.auto-silver { color: #d9dde2; }
+.twod12 .autodia.auto-gold { color: #f2c94c; }
+/* v0.0.190: a portrait with no initiative yet: click it to roll. */
+#twod12-carousel .tc-card.noinit .tc-portrait { cursor: pointer; outline: 2px dashed rgba(242, 201, 76, .8); outline-offset: -2px; }
+#twod12-carousel .tc-card.noinit .tc-portrait::after { content: "\f6cf"; font-family: "Font Awesome 6 Pro", "Font Awesome 6 Free"; font-weight: 900; position: absolute; right: 2px; bottom: 2px; font-size: 11px; color: #f2c94c; text-shadow: 0 0 2px #000; }
+#twod12-carousel .tc-portrait { position: relative; }
+/* v0.0.191: the item sheet's tabs are links (they work on a read-only sheet). */
+.twod12 nav.tabs a.tabbtn { display: inline-block; cursor: pointer; text-decoration: none; color: inherit; }
+/* v0.0.191: the targeting banner at the bottom (above the macro bar), draggable by its grip. */
+#twod12-targeting { top: auto; bottom: 86px; max-width: calc(100vw - 340px); flex-wrap: wrap; }
+#twod12-targeting .tb-grip { cursor: grab; color: #c9a24a; margin-right: 0; }
+#twod12-targeting button { white-space: nowrap; }
+/* v0.0.191: the automation diamond a little bigger. */
+.twod12 .autodia { font-size: 11px; vertical-align: 1px; }
+/* v0.0.192 (Lucas, image of Twin Shot): a card's Effects text is plain flowing text everywhere (in the sheet's Actions tab something
+   laid it out as a grid, one column per word or chip). */
+.twod12 .effects, .twod12 .effects .et, .twod12 .anote { display: block !important; grid-template-columns: none !important; }
+.twod12 .effects .et > *, .twod12 .anote > * { display: inline; }
+.twod12 .effects .et > p, .twod12 .anote > p { display: block; margin: 0 0 4px; }
+.twod12 .effects .et a.inline-btn, .twod12 .effects .et button, .twod12 .effects .et .twod12-inline { display: inline-flex; }
+.twod12 .trgrp { white-space: nowrap; }
+/* v0.0.193: the sheet card's Effects text is one block of flowing text (its line is a flex row: badge + text). */
+.twod12.acard .ac-fxl > .ac-fxt { display: block; flex: 1; min-width: 0; }
+
+/* ------------------------------------------------------------------ v0.0.194 (Lucas, mockup granted-C2-ladder): Granted tickets and the Escalation ladder */
+.twod12.sheet.ns .mn { container-type: inline-size; }
+.twod12.sheet.ns .gx-head { display: flex; align-items: center; gap: 7px; margin: 6px 2px 5px; font-size: 12px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
+.twod12.sheet.ns .gx-head .gx-ct { margin-left: auto; color: #7a7364; letter-spacing: 0; font-weight: 600; }
+.twod12.sheet.ns .gx-head.granted { color: #2f7d4f; }
+.twod12.sheet.ns .gx-head.escal { color: #b0731a; cursor: pointer; user-select: none; }
+.twod12.sheet.ns .ex-chev { font-size: 10px; transition: transform .1s; }
+.twod12.sheet.ns .ex-block.open .ex-chev { transform: rotate(90deg); }
+.twod12.sheet.ns .ex-pips { display: inline-flex; gap: 3px; margin-left: 2px; }
+.twod12.sheet.ns .ex-pips i { width: 12px; height: 12px; border-radius: 50%; border: 2px solid #b0731a; box-sizing: border-box; }
+.twod12.sheet.ns .ex-pips i.on { background: #e39a1c; }
+/* Granted tickets */
+.twod12.sheet.ns .gx-list { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+.twod12.sheet.ns .gtk { background: #d4e3cf; border: 1px solid #b9d0b1; border-radius: 4px; overflow: hidden; }
+.twod12.sheet.ns .gtk-line { display: flex; align-items: center; gap: 7px; min-height: 36px; padding-right: 4px; cursor: pointer; }
+.twod12.sheet.ns .gtk-stub { align-self: stretch; width: 46px; flex: none; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #2f7d4f; color: #fff; font-size: 13px; border-right: 2px dashed #d4e3cf; }
+.twod12.sheet.ns .gtk-stub small { font-size: 8.5px; letter-spacing: .06em; font-weight: 600; opacity: .85; line-height: 1; }
+.twod12.sheet.ns .gtk-nm { font-weight: 600; white-space: nowrap; }
+.twod12.sheet.ns .gtk-cost { flex: none; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; color: #fff; background: #1f66b0; }
+.twod12.sheet.ns .gtk-cost.free { background: #1c7a73; }
+.twod12.sheet.ns .gtk-src { flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 11.5px; color: #3d6a46; }
+.twod12.sheet.ns .gtk-ads { display: inline-flex; gap: 4px; flex: none; }
+.twod12.sheet.ns .gtk-ad { font-size: 10.5px; font-weight: 600; color: #2f5e3a; background: #e8f1e3; border: 1px solid #a9c79d; border-radius: 8px; padding: 0 6px; line-height: 16px; white-space: nowrap; }
+.twod12.sheet.ns .gtk .ar-use.granted { flex: none; }
+.twod12.sheet.ns .gtk-body { display: none; padding: 5px 10px 7px 56px; font-size: 12px; gap: 3px; border-top: 1px dashed #a9c79d; background: #e1ecdc; }
+.twod12.sheet.ns .gtk.open .gtk-body { display: grid; }
+.twod12.sheet.ns .gtk-body .k { display: inline-block; width: 56px; color: #6a6e60; }
+.twod12.sheet.ns .gtk-ads-body { display: none; flex-wrap: wrap; gap: 4px; }
+/* the Escalation ladder */
+.twod12.sheet.ns .ex-ladder { border: 1px solid #cdc4a8; border-radius: 6px; background: rgba(241, 236, 220, .6); overflow: hidden; margin-bottom: 8px; }
+.twod12.sheet.ns .ex-rung { display: grid; grid-template-columns: 30px minmax(0, 1fr); border-top: 1px solid #ddd5bc; }
+.twod12.sheet.ns .ex-rung:first-child { border-top: 0; }
+.twod12.sheet.ns .ex-rail { background: #ece5d0; border-right: 1px solid #ddd5bc; display: flex; justify-content: center; padding-top: 8px; }
+.twod12.sheet.ns .ex-rail span { width: 20px; height: 20px; border-radius: 50%; border: 2px solid #b0731a; color: #b0731a; background: #f1ecdc; font-size: 11px; font-weight: 700; display: grid; place-items: center; box-sizing: border-box; }
+.twod12.sheet.ns .ex-rung.lit .ex-rail { background: #f5dba3; }
+.twod12.sheet.ns .ex-rung.lit .ex-rail span { background: #e39a1c; color: #fff; }
+.twod12.sheet.ns .ex-items { padding: 4px 5px 1px; min-width: 0; }
+.twod12.sheet.ns .ex-pass { display: flex; align-items: center; gap: 7px; min-height: 30px; padding: 0 8px; margin-bottom: 4px; background: #f6f1e1; border: 1px solid #d9d0b4; border-left: 3px solid #e39a1c; border-radius: 3px; }
+.twod12.sheet.ns .ex-pass .fa-star { color: #b0731a; font-size: 12px; }
+.twod12.sheet.ns .ex-pass .ex-pnm { font-weight: 600; flex: 1; color: inherit; }
+.twod12.sheet.ns .ex-tag { font-size: 11px; font-weight: 700; padding: 1px 9px; border-radius: 9px; }
+.twod12.sheet.ns .ex-pass.active .ex-tag { background: #cfe6dd; color: #17564f; }
+.twod12.sheet.ns .ex-pass.ready .ex-tag { background: #f7dc9f; color: #7a4e08; }
+.twod12.sheet.ns .ex-pass.used .ex-tag { background: #e0dac6; color: #7a7364; }
+.twod12.sheet.ns .ex-pass.used .ex-pnm { text-decoration: line-through; color: #7a7364; }
+.twod12.sheet.ns .ex-pass.off { opacity: .5; filter: grayscale(.8); }
+.twod12.sheet.ns .ex-acts { margin-bottom: 4px; }
+.twod12.sheet.ns .ex-acts .ar.faded { filter: grayscale(1); opacity: .55; }
+.twod12.sheet.ns .ar-use.off { opacity: .45; cursor: default; }
+/* narrow sheet (about 420 px): Range off the rows, Frequency off the Escalation Actions, the ticket badges into its body */
+@container (max-width: 440px) {
+  .twod12.sheet.ns .at-head, .twod12.sheet.ns .ar-line { grid-template-columns: 12px 12px minmax(0, 1fr) 54px 76px 28px; }
+  .twod12.sheet.ns .ar-range, .twod12.sheet.ns .at-head > span:nth-child(5) { display: none; }
+  .twod12.sheet.ns .ex-acts .ar-line { grid-template-columns: 12px 12px minmax(0, 1fr) 54px 28px; }
+  .twod12.sheet.ns .ex-acts .ar-freq { display: none; }
+  .twod12.sheet.ns .gtk-ads { display: none; }
+  .twod12.sheet.ns .gtk-ads-body { display: flex; }
+}
+
+/* v0.0.195 (C-c): the class window's Talent filter bar (search, Category, Only what I can take, tiles / compact list). */
+.classwin .cw-filter { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin: 0 0 6px; }
+.classwin .cw-filter .cw-fq { flex: 1 1 140px; min-width: 0; height: 26px; background: #fff; color: var(--cw-ink); border: 1px solid var(--cw-line); border-radius: 4px; padding: 0 8px; }
+.classwin .cw-filter .cw-fcat { width: auto; height: 26px; background: #fff; color: var(--cw-ink); border: 1px solid var(--cw-line); border-radius: 4px; }
+.classwin .cw-filter .cw-fonly { display: inline-flex; align-items: center; gap: 4px; font-size: .85rem; color: var(--cw-ink); white-space: nowrap; }
+.classwin .cw-filter .cw-fview { width: 28px; height: 26px; padding: 0; flex: none; background: #fff; color: var(--cw-navy); border: 1px solid var(--cw-line); border-radius: 4px; }
+.classwin .cw-tile[hidden] { display: none; }
+.classwin .cw-tile.cant { opacity: .55; }
+.classwin .cw-tile.cant .cw-view .mt::after { content: " · not yet"; color: var(--cw-acc); }
+.classwin .cw-none { color: var(--cw-mut); font-style: italic; margin: 4px 2px; }
+/* the compact list: one line a Talent, its meta in the same line */
+.classwin .cw-tiles.compact { gap: 2px; }
+.classwin .cw-tiles.compact .cw-tile { border-radius: 3px; }
+.classwin .cw-tiles.compact .cw-view { display: flex; align-items: baseline; gap: 8px; padding: 3px 8px; }
+.classwin .cw-tiles.compact .cw-view .nm { display: inline; }
+.classwin .cw-tiles.compact .cw-view .mt { display: inline; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.classwin .cw-tiles.compact .cw-choose { min-width: 64px; padding: 1px 8px; font-size: .8rem; }
+/* v0.0.195: the movement banner (Advance, Evade, Crawl): the targeting banner's look and place. */
+#twod12-movebar { position: fixed; left: 50%; transform: translateX(-50%); bottom: 86px; z-index: 1000; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; max-width: calc(100vw - 340px); padding: 8px 16px; border-radius: 8px; background: rgba(20, 24, 32, .92); color: #f4e9d0; border: 1px solid #c9a24a; font-size: 14px; box-shadow: 0 4px 14px rgba(0, 0, 0, .5); }
+#twod12-movebar .tb-grip { cursor: grab; color: #c9a24a; }
+#twod12-movebar .tb-text i { color: #7cc4f2; margin-right: 4px; }
+#twod12-movebar .tb-btns { display: inline-flex; gap: 8px; }
+#twod12-movebar button { width: auto; height: 26px; line-height: 24px; padding: 0 10px; font-size: 13px; background: #2e3442; color: #f4e9d0; border: 1px solid #c9a24a; border-radius: 5px; cursor: pointer; white-space: nowrap; }
+#twod12-movebar button:hover { background: #3c4458; }
+/* v0.0.197 (Lucas): the movement tag over the token (Advance, Evade, Crawl, a drag): squares left, Done, Evade → Advance. */
+#twod12-movetag { position: fixed; transform: translate(-50%, -100%); z-index: 70; display: inline-flex; align-items: center; gap: 4px; padding: 2px 4px 2px 8px; border-radius: 12px; background: rgba(20, 24, 32, .88); color: #f4e9d0; border: 1px solid #c9a24a; font-size: 12px; white-space: nowrap; box-shadow: 0 2px 6px rgba(0, 0, 0, .45); pointer-events: auto; }
+#twod12-movetag .mt-txt i { color: #7cc4f2; margin-right: 3px; }
+#twod12-movetag button { width: 22px; height: 20px; min-height: 0; line-height: 18px; padding: 0; font-size: 11px; background: #2e3442; color: #f4e9d0; border: 1px solid #6b5a33; border-radius: 10px; cursor: pointer; }
+#twod12-movetag button:hover { background: #3c4458; }
+/* v0.0.198 (Lucas): the squares left of a movement, under the AP dots on the combat strip (the tag over the token is gone). */
+#twod12-carousel .tc-move { margin-top: 1px; font-size: 10.5px; font-weight: 700; line-height: 14px; text-align: center; color: #7cc4f2; white-space: nowrap; }
+#twod12-carousel .tc-move.evade { color: #9fe0b5; }
+#twod12-carousel .tc-move i { font-size: 9px; margin-right: 1px; }
+
+/* v0.0.198 (Lucas, mockup basic-actions-grouped): the Basic Actions in 4 groups, 2x2; a row is grip, chevron, name / Range / AP chip / Use
+   (no Frequency column: the chip's color and the row's tint say it); the Strike line stays; a one-line legend. */
+.twod12.sheet.ns .bx-legend { display: flex; flex-wrap: wrap; gap: 14px; margin: 2px 2px 8px; font-size: 11px; color: #5b564c; }
+.twod12.sheet.ns .bx-lg { display: inline-flex; align-items: center; gap: 5px; }
+.twod12.sheet.ns .bx-lg i { display: inline-block; width: 18px; height: 10px; border-radius: 5px; }
+.twod12.sheet.ns .bx-lg.at i { background: #3B6D11; }
+.twod12.sheet.ns .bx-lg.rd i { background: #185FA5; }
+.twod12.sheet.ns .bx-lg.st i { width: 3px; height: 14px; border-radius: 0; background: #b3261e; }
+.twod12.sheet.ns .bx-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 20px; row-gap: 10px; }
+.twod12.sheet.ns .bx-gh { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #b0731a; padding-bottom: 3px; margin-bottom: 4px; border-bottom: 1px solid rgba(176, 115, 26, .35); }
+.twod12.sheet.ns .bx-rows { gap: 4px; }
+.twod12.sheet.ns .bx-rows .ar-line { grid-template-columns: 12px 12px minmax(0, 1fr) auto auto 28px; min-height: 30px; }
+.twod12.sheet.ns .bx-rows .ar-line > .grip { order: 0; } .twod12.sheet.ns .bx-rows .ar-line > .ar-chev { order: 1; }
+.twod12.sheet.ns .bx-rows .ar-line > .ar-name { order: 2; } .twod12.sheet.ns .bx-rows .ar-line > .ar-range { order: 3; font-size: 11px; white-space: nowrap; }
+.twod12.sheet.ns .bx-rows .ar-line > .ar-cost { order: 4; } .twod12.sheet.ns .bx-rows .ar-line > .ar-use { order: 5; }
+.twod12.sheet.ns .bx-rows .ar-freq { display: none; }
+.twod12.sheet.ns .bx-rows .ar-ap { min-width: 34px; }
+@container (max-width: 440px) {
+  .twod12.sheet.ns .bx-grid { grid-template-columns: minmax(0, 1fr); }
+  .twod12.sheet.ns .bx-rows .ar-line > .ar-range { display: inline; }
+}
+
+/* ------------------------------------------------------------------ v0.0.199 (Lucas, mockup "D2. Plates, condensed"): the combat strip */
+#twod12-carousel { --tp-navy: #1b2640; --tp-navy2: #26345a; --tp-parch: #d9dbcc; --tp-parch2: #c6cab7; --tp-border: #8a8d7c; --tp-ink: #23252b; --tp-mut: #4a4d45;
+  --tp-foe: #a8322f; --tp-ally: #2f6b3a; --tp-neutral: #6b6a60; --tp-gold: #e8a22c; --tp-teal: #43b3a8; gap: 4px; }
+#twod12-carousel .tc-head.tc-bar { background: var(--tp-navy); color: #e9e4d2; border: 1px solid #0e1528; border-radius: 6px; padding: 3px 8px; box-shadow: 0 2px 6px rgba(0, 0, 0, .35); font-variant: small-caps; letter-spacing: .04em; }
+#twod12-carousel .tc-bar .tc-btn { height: 20px; padding: 0 8px; font-size: 11.5px; font-variant: small-caps; letter-spacing: .03em; background: var(--tp-navy2); color: #e9e4d2; border: 1px solid #3a4a76; border-radius: 4px; }
+#twod12-carousel .tc-bar .tc-btn:hover:not([disabled]) { border-color: var(--tp-gold); color: #fff; }
+#twod12-carousel .tc-bar .tc-btn[disabled] { opacity: .4; cursor: default; }
+#twod12-carousel .tc-round { font-size: 13px; }
+#twod12-carousel .tc-round b { color: var(--tp-gold); font-size: 15px; margin-left: 3px; }
+/* the plates: top-aligned, the active one wider and taller (it grows down); many creatures scroll sideways, never down */
+#twod12-carousel .tp-list { display: flex; align-items: flex-start; gap: 5px; padding: 0 2px 4px; overflow-x: auto; overflow-y: hidden; max-width: 100%; background: none; scrollbar-width: thin; }
+#twod12-carousel .tp { flex: none; width: 100px; box-sizing: border-box; background: linear-gradient(var(--tp-parch), var(--tp-parch2)); color: var(--tp-ink); border: 1px solid var(--tp-border); border-radius: 6px; overflow: hidden; text-align: center; cursor: pointer; box-shadow: 0 2px 5px rgba(0, 0, 0, .35); padding-bottom: 4px; }
+#twod12-carousel .tp-band { height: 15px; line-height: 15px; font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #fff; background: var(--tp-neutral); }
+#twod12-carousel .tp.d1 .tp-band { background: var(--tp-ally); }
+#twod12-carousel .tp.dm1 .tp-band { background: var(--tp-foe); }
+#twod12-carousel .tp.act .tp-band { background: var(--tp-navy); color: var(--tp-gold); }
+#twod12-carousel .tp-por { position: relative; width: 52px; height: 52px; margin: 4px auto 0; }
+#twod12-carousel .tp-por img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 3px solid var(--tp-neutral); box-sizing: border-box; background: #2a2a2a; }
+#twod12-carousel .tp.d1 .tp-por img { border-color: var(--tp-ally); }
+#twod12-carousel .tp.dm1 .tp-por img { border-color: var(--tp-foe); }
+#twod12-carousel .tp-seal { position: absolute; right: -4px; bottom: -2px; min-width: 18px; height: 18px; padding: 0 3px; box-sizing: border-box; border-radius: 9px; background: var(--tp-navy); color: #f4e9d0; border: 1px solid var(--tp-gold); font-size: 10.5px; font-weight: 700; line-height: 16px; }
+#twod12-carousel .tp-name { margin: 2px 4px 0; font-size: 14px; line-height: 16px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#twod12-carousel .tp-pips { display: flex; justify-content: center; flex-wrap: wrap; gap: 3px; margin: 3px 4px 0; }
+#twod12-carousel .tp-pips i { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--tp-teal); box-sizing: border-box; }
+#twod12-carousel .tp-pips i.on { background: var(--tp-teal); }
+#twod12-carousel .tp.act .tp-pips i { border-color: var(--c-ap, #3b4cb8); }
+#twod12-carousel .tp.act .tp-pips i.on { background: var(--c-ap, #3b4cb8); }
+/* the active plate */
+#twod12-carousel .tp.act { width: 130px; border: 2px solid var(--tp-gold); box-shadow: 0 0 0 1px #7a5410, 0 3px 10px rgba(0, 0, 0, .45); }
+#twod12-carousel .tp.act .tp-por { width: 56px; height: 56px; }
+#twod12-carousel .tp-move { margin: 4px 6px 0; padding: 1px 4px; border-radius: 4px; font-size: 11px; font-variant: small-caps; letter-spacing: .04em; color: var(--c-mv, #4d6b0a); background: rgba(77, 107, 10, .1); border: 1px solid rgba(77, 107, 10, .3); }
+#twod12-carousel .tp-move b { font-size: 13px; font-variant: normal; }
+#twod12-carousel .tp-move:not(.none):hover { border-color: var(--c-mv, #4d6b0a); }
+#twod12-carousel .tp-move.none { color: var(--tp-mut); background: none; border-color: transparent; cursor: default; }
+#twod12-carousel .tp-adv { margin-left: 4px; color: var(--tp-ink); }
+#twod12-carousel .tp-swap { display: block; width: calc(100% - 12px); margin: 4px 6px 0; height: 20px; line-height: 18px; padding: 0; font-size: 11px; font-variant: small-caps; letter-spacing: .04em; background: var(--tp-navy2); color: #e9e4d2; border: 1px solid #3a4a76; border-radius: 4px; }
+#twod12-carousel .tp-swap.on { background: var(--tp-gold); color: var(--tp-navy); border-color: #7a5410; }
+#twod12-carousel .tp-swap[disabled] { opacity: .4; cursor: default; }
+/* while choosing who to swap with: the allies it can swap with */
+#twod12-carousel .tp.swapok { outline: 2px dashed var(--tp-gold); outline-offset: -3px; }
+#twod12-carousel .tp-swapb { position: absolute; left: -4px; top: -2px; width: 18px; height: 18px; border-radius: 50%; background: var(--tp-gold); color: var(--tp-navy); font-size: 9px; line-height: 18px; }
+#twod12-carousel .tp.defeated { filter: grayscale(1); opacity: .45; }
+#twod12-carousel .tp.frozen .tp-pips i.on { background: #6fa8ff; border-color: #6fa8ff; }
+#twod12-carousel .tp.noinit .tp-por img { outline: 2px dashed var(--tp-gold); outline-offset: 1px; }
+
+/* ------------------------------------------------------------------ v0.0.200 (Lucas, design M1 + L3): the AP ticker and its Turn Log */
+.twod12.chat.ticker { padding: 0; margin: 0; background: none; border: none; }
+.twod12.chat.ticker details.tk { background: rgba(255, 255, 255, .35); border: 1px solid rgba(128, 128, 128, .35); border-left: 3px solid var(--c-ap); border-radius: 0 5px 5px 0; overflow: hidden; }
+.twod12.chat.ticker details.tk.mv { border-left-color: var(--c-mv); }
+.twod12.chat.ticker details.tk > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 6px; min-height: 22px; padding: 2px 7px; font-size: 12.5px; white-space: nowrap; background: color-mix(in srgb, var(--c-ap) 10%, transparent); }
+.twod12.chat.ticker details.tk.mv > summary { background: color-mix(in srgb, var(--c-mv) 12%, transparent); }
+.twod12.chat.ticker details.tk > summary::-webkit-details-marker { display: none; }
+.twod12.chat.ticker .tk-ico { color: var(--c-ap); font-size: 11px; }
+.twod12.chat.ticker details.tk.mv .tk-ico { color: var(--c-mv); }
+.twod12.chat.ticker .tk-who { font-weight: 700; overflow: hidden; text-overflow: ellipsis; max-width: 40%; }
+.twod12.chat.ticker .tk-act { overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.twod12.chat.ticker .tk-cost { opacity: .7; font-size: 11.5px; }
+.twod12.chat.ticker .tk-sp { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; flex: none; }
+.twod12.chat.ticker .tk-chev { font-size: 8px; opacity: .6; transition: transform .15s; display: inline-block; }
+.twod12.chat.ticker details[open] .tk-chev { transform: rotate(90deg); }
+/* the pips: filled = AP left, a red ring = spent on this line, grey = spent before; more than 5 shrink a little, never wrap the line */
+.twod12.chat.ticker .tk-pips { display: inline-flex; gap: 3px; flex: none; }
+.twod12.chat.ticker .tk-pips i { width: 9px; height: 9px; border-radius: 50%; box-sizing: border-box; background: rgba(128, 128, 128, .28); }
+.twod12.chat.ticker .tk-pips i.on { background: var(--c-ap); }
+.twod12.chat.ticker .tk-pips i.spent { background: transparent; border: 1.5px solid var(--c-bane); }
+.twod12.chat.ticker .tk-pips.many { gap: 2px; } .twod12.chat.ticker .tk-pips.many i { width: 7px; height: 7px; }
+.twod12.chat.ticker .tk-pips.sm i { width: 7px; height: 7px; } .twod12.chat.ticker .tk-pips.sm i.spent { border-width: 1.2px; }
+.twod12.chat.ticker .tk-pips.sm.many i { width: 6px; height: 6px; }
+/* the Turn Log (L3, the AP ledger) */
+.twod12.chat.ticker .tl { border-top: 1px solid rgba(128, 128, 128, .35); }
+.twod12.chat.ticker .tl-ln { display: grid; grid-template-columns: 14px minmax(0, 1fr) auto auto; gap: 6px; align-items: center; padding: 3px 8px; font-size: 12px; border-bottom: 1px dashed rgba(128, 128, 128, .35); }
+.twod12.chat.ticker .tl-ln:last-child { border-bottom: 0; }
+.twod12.chat.ticker .tl-ln.old { opacity: .6; }
+.twod12.chat.ticker .tl-ln.now { background: color-mix(in srgb, var(--c-ap) 9%, transparent); font-weight: 600; }
+.twod12.chat.ticker .tl-ico { text-align: center; font-size: 10.5px; color: var(--c-ap); }
+.twod12.chat.ticker .tl-ico.mv { color: var(--c-mv); }
+.twod12.chat.ticker .tl-nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.twod12.chat.ticker .tl-c { opacity: .7; font-size: 11px; min-width: 20px; text-align: right; }
+
+/* ------------------------------------------------------------------ v0.0.201 (Lucas): the strip in the chat cards' and sheet's own look */
+#twod12-carousel { --tp-navy: #1e2a3a; --tp-navy2: #2a3a52; --tp-parch: #f4ecdc; --tp-parch2: #ebe0c8; --tp-border: #c8b48a; --tp-ink: #2c2a26; --tp-mut: #6b5a3a;
+  --tp-foe: #a32d2d; --tp-ally: #3b6d11; --tp-neutral: #8a7d62; --tp-gold: #BA7517; --tp-teal: #0f6e6e; --tp-ice: #3d7fc4; }
+#twod12-carousel .tc-head.tc-bar { background: var(--tp-navy); border-color: #0f1622; color: #f4ecdc; font-family: "Cinzel", Georgia, serif; font-variant: normal; letter-spacing: .03em; }
+#twod12-carousel .tc-bar .tc-btn { font-family: "Cinzel", Georgia, serif; font-variant: normal; font-weight: 700; font-size: 10.5px; background: var(--tp-navy2); border-color: #3a4a62; color: #f4ecdc; }
+#twod12-carousel .tc-bar .tc-btn:hover:not([disabled]) { border-color: #EF9F27; }
+#twod12-carousel .tc-round b { color: #EF9F27; }
+#twod12-carousel .tp { background: linear-gradient(var(--tp-parch), var(--tp-parch2)); border-color: var(--tp-border); color: var(--tp-ink); }
+#twod12-carousel .tp-band { font-family: "Cinzel", Georgia, serif; letter-spacing: .08em; font-size: 9.5px; }
+#twod12-carousel .tp.act { border-color: #EF9F27; box-shadow: 0 0 0 1px var(--tp-gold), 0 3px 10px rgba(0, 0, 0, .45); }
+#twod12-carousel .tp.act .tp-band { color: #EF9F27; }
+#twod12-carousel .tp-seal { background: var(--tp-navy); border-color: #EF9F27; font-family: "Cinzel", Georgia, serif; }
+#twod12-carousel .tp-name { font-family: "Cinzel", Georgia, serif; font-size: 11px; line-height: 14px; font-weight: 700; letter-spacing: .02em; }
+#twod12-carousel .tp.act .tp-name { font-size: 11.5px; }
+/* pips: its turn = indigo discs; out of turn = teal diamonds (AP left for Reactions); frozen = dashed ice rings */
+#twod12-carousel .tp-pips { gap: 3px; }
+#twod12-carousel .tp-pips i { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid rgba(44, 42, 38, .35); background: transparent; }
+#twod12-carousel .tp-pips.turn i.on, #twod12-carousel .tp.act .tp-pips.turn i.on { background: var(--c-ap, #3b4cb8); border-color: var(--c-ap, #3b4cb8); }
+#twod12-carousel .tp.act .tp-pips i { width: 10px; height: 10px; }
+#twod12-carousel .tp-pips.react i { border-radius: 1px; transform: rotate(45deg) scale(.82); }
+#twod12-carousel .tp-pips.react i.on { background: var(--tp-teal); border-color: var(--tp-teal); }
+#twod12-carousel .tp-pips.frozen i { border-style: dashed; border-color: var(--tp-ice); }
+#twod12-carousel .tp-pips.frozen i.on { background: color-mix(in srgb, var(--tp-ice) 35%, transparent); border-color: var(--tp-ice); }
+#twod12-carousel .tp.frozen .tp-pips i.on { background: color-mix(in srgb, var(--tp-ice) 35%, transparent); }
+#twod12-carousel .tp-move { font-family: "Cinzel", Georgia, serif; font-variant: normal; font-size: 10px; font-weight: 700; color: var(--c-mv, #4d6b0a); background: rgba(77, 107, 10, .08); border-color: rgba(77, 107, 10, .35); }
+#twod12-carousel .tp-move b { font-size: 12px; }
+#twod12-carousel .tp-move.none { color: var(--tp-mut); }
+#twod12-carousel .tp-swap { font-family: "Cinzel", Georgia, serif; font-variant: normal; font-weight: 700; font-size: 10px; background: var(--tp-navy); border-color: #3a4a62; color: #f4ecdc; }
+#twod12-carousel .tp-swap.on { background: #EF9F27; color: var(--tp-navy); border-color: var(--tp-gold); }
+#twod12-carousel .tp.swapok { outline-color: #EF9F27; }
+#twod12-carousel .tp-swapb { background: #EF9F27; }
+
+/* ------------------------------------------------------------------ v0.0.202 (Lucas): the strip stays between the controls and the sidebar; the plates scroll */
+#twod12-carousel { align-items: stretch; width: max-content; box-sizing: border-box; }
+#twod12-carousel .tc-head.tc-bar { flex: none; flex-wrap: nowrap; }
+#twod12-carousel .tc-head .tc-btn { white-space: nowrap; }
+#twod12-carousel .tp-list { min-width: 0; max-width: 100%; box-sizing: border-box; scroll-behavior: smooth; }
+#twod12-carousel .tp-list > .tp { flex: none; }
+
+/* ------------------------------------------------------------------ v0.0.203 (Lucas): the system messages' default look (module/sysmsg.mjs): Swap Initiative, the thaw line */
+.twod12.chat.sysmsg { padding-bottom: 7px; }
+.twod12.chat.sysmsg > .ahead { align-items: center; margin-bottom: 5px; padding: 4px 8px; }
+.twod12.chat.sysmsg > .ahead > b { font-family: "Cinzel", Georgia, serif; font-size: 13px; letter-spacing: .02em; }
+.twod12.chat.sysmsg > .ahead .apmark { background: #5b6fd0; color: #fff; font-size: 10.5px; line-height: 16px; padding: 0 4px; }
+.twod12.chat.sysmsg .sm-lead { display: flex; flex-wrap: wrap; align-items: center; gap: 0 7px; font-weight: 700; font-size: 1.12em; line-height: 1.3; }
+.twod12.chat.sysmsg .sm-swap { font-size: .8em; opacity: .7; }
+.twod12.chat.sysmsg .sm-text { margin-top: 2px; line-height: 1.4; }
+.twod12.chat.sysline { display: flex; align-items: baseline; gap: 7px; padding: 4px 9px; border: 1px solid #c8b48a; border-radius: 5px; background: #f4ecdc; color: #2c2a26; line-height: 1.35; }
+.twod12.chat.sysline > i { flex: none; font-size: 11px; color: #6b5a3a; }
+.twod12.chat.sysline .kw-ap { color: #3b4cb8; }
+
+/* ------------------------------------------------------------------ v0.0.204: the mark lines (archer.mjs) in the system line's look; the swap card's names wrap as a pair */
+.twod12.chat.sysline.mark > i { color: #a32d2d; }
+.twod12.chat.sysmsg .sm-lead .sm-swap { flex: none; }
+
+/* ------------------------------------------------------------------ v0.0.206 (Lucas, B4): the Initiative card (module/initcard.mjs); bands in the strip's banner colors */
+.twod12.chat.initcard { --ic-foe: #a32d2d; --ic-ally: #3b6d11; --ic-neutral: #8a7d62; padding-bottom: 0; }
+.twod12.chat.initcard > .orn { margin: 5px 8px 4px; }
+.twod12.chat.initcard > .ic-band, .twod12.chat.initcard > .ic-row, .twod12.chat.initcard > .ic-exp { margin-left: 0; margin-right: 0; }
+.twod12.chat.initcard .ic-band { display: flex; justify-content: space-between; align-items: center; padding: 3px 8px; background: var(--ic-neutral); color: #fff; font: 700 11px/1.2 "Cinzel", Georgia, serif; letter-spacing: .08em; text-transform: uppercase; }
+.twod12.chat.initcard .ic-band.foe { background: var(--ic-foe); }
+.twod12.chat.initcard .ic-band.ally { background: var(--ic-ally); }
+.twod12.chat.initcard .ic-best { font: 500 11px/1 var(--font-primary, sans-serif); letter-spacing: 0; text-transform: none; opacity: .92; }
+.twod12.chat.initcard .ic-row { --ic: var(--ic-neutral); display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-bottom: 1px solid #dccfae; cursor: pointer; }
+.twod12.chat.initcard .ic-row.foe { --ic: var(--ic-foe); }
+.twod12.chat.initcard .ic-row.ally { --ic: var(--ic-ally); }
+.twod12.chat.initcard .ic-row:hover { background: rgba(186, 117, 23, .07); }
+.twod12.chat.initcard .ic-pos { flex: none; width: 19px; height: 19px; box-sizing: border-box; border: 2px solid var(--ic); border-radius: 50%; background: #fbf7ee; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 700; color: #2c2c2a; }
+.twod12.chat.initcard .ic-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 700 12px/1.3 "Cinzel", Georgia, serif; letter-spacing: .02em; color: #2c2c2a; }
+.twod12.chat.initcard .ic-num { font: 600 11px/1 var(--font-primary, sans-serif); color: #6b5a3a; }
+.twod12.chat.initcard .ic-note { font: italic 400 11px/1 Georgia, serif; letter-spacing: 0; color: #6b5a3a; }
+.twod12.chat.initcard .ic-attr { flex: none; width: 16px; height: 16px; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: var(--c-ia, #5c5a55); background: color-mix(in srgb, var(--c-ia, #5c5a55) 15%, transparent); }
+.twod12.chat.initcard .ic-attr.body { --c-ia: #7a1626; } .twod12.chat.initcard .ic-attr.mind { --c-ia: #17327a; }
+.twod12.chat.initcard .ic-attr.appeal { --c-ia: #6b4e00; } .twod12.chat.initcard .ic-attr.instinct { --c-ia: #14532d; }
+.twod12.chat.initcard .ic-tot { flex: none; min-width: 28px; box-sizing: border-box; padding: 2px 3px; border: 1.5px solid var(--ic); border-radius: 7px; background: #fbf7ee; text-align: center; font-size: 13.5px; font-weight: 700; line-height: 1.1; color: #2c2c2a; }
+.twod12.chat.initcard .ic-chev { flex: none; width: 10px; font-size: 9px; color: #8a7650; text-align: center; transition: transform .12s; }
+.twod12.chat.initcard .ic-row.open { border-bottom-color: transparent; }
+.twod12.chat.initcard .ic-row.open .ic-chev { transform: rotate(90deg); }
+.twod12.chat.initcard .ic-exp { display: none; padding: 4px 8px 6px 33px; background: #ebe0c8; border-bottom: 1px solid #dccfae; }
+.twod12.chat.initcard .ic-row.open + .ic-exp { display: block; }
+.twod12.chat.initcard .ic-k { font-size: 10.5px; color: #6b5a3a; margin-bottom: 2px; }
+.twod12.chat.initcard .ic-dice { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 1px; }
+.twod12.chat.initcard .ic-dice .plus { margin: 0 3px; font-size: 12px; color: #4a3f2a; }
+.twod12.chat.initcard .ic-dice .die.d12 { min-width: 22px; height: 22px; font-size: 10.5px; }
+.twod12.chat.initcard .ic-dice .die.d12::before { inset: 3px; }
+.twod12.chat.initcard .ic-dice .dlink { font-size: 9px; color: #BA7517; margin: 0 -1px; }
+.twod12.chat.initcard .ic-drop { opacity: .5; margin-left: 2px; }
+.twod12.chat.initcard .ic-drop .die.d12::before { border-style: dashed; background: transparent; }
+.twod12.chat.initcard .ic-pill { margin-left: 4px; padding: 2px 6px; border-radius: 8px; font-size: 10.5px; font-weight: 600; line-height: 1.1; white-space: nowrap; }
+.twod12.chat.initcard .ic-pill:first-child { margin: 0 4px 0 0; }
+.twod12.chat.initcard .ic-pill.boon { color: #0b5cad; background: rgba(11, 92, 173, .14); }
+.twod12.chat.initcard .ic-pill.bane { color: #b3261e; background: rgba(179, 38, 30, .14); }
+.twod12.chat.initcard .ic-exp .ic-dice { margin: 0; padding: 0; min-height: 0; line-height: 1; }

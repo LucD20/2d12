@@ -67,6 +67,6 @@ export function flankingMod(attacker, target, { tag = "" } = {}) {
   const f = flankingFor(attacker, target);
   if (!f.boons) return null;
   const n = f.boons, c = f.cancelledBy;
-  return { id: tag ? `syn:flanking|${tag}` : "syn:flanking", name: `Flanking${tag ? ` (${target.name}, ` : " ("}${n} boon${n === 1 ? "" : "s"})`, boons: n, banes: 0, match: true,
-    predicate: `${target.name} is also threatened by ${f.flankers.join(", ")}: a boon for each, up to 3${c.length ? `; ${c.join(", ")} ${c.length === 1 ? "is an ally" : "are allies"} of ${target.name} that threaten${c.length === 1 ? "s" : ""} you: one boon cancelled for each` : ""}` };
+  return { id: tag ? `syn:flanking|${tag}` : "syn:flanking", name: `Flanking${tag ? ` (${target.name}, ` : " ("}${n} Boon${n === 1 ? "" : "s"})`, boons: n, banes: 0, match: true,
+    predicate: `${target.name} is also threatened by ${f.flankers.join(", ")}: a Boon for each, up to 3${c.length ? `; ${c.join(", ")} ${c.length === 1 ? "is an ally" : "are allies"} of ${target.name} that threaten${c.length === 1 ? "s" : ""} you: one boon cancelled for each` : ""}` };
 }

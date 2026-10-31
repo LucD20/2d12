@@ -1,7 +1,7 @@
 // Passives (v0.0.125): a Feature or Talent can have settings, like an Effect, that work by themselves while the creature has it.
 // Each setting has its own "It works...": always, or only while the creature's Escalation is at least its number (v0.0.126), so one Feature can
 // hold settings that work at different moments. They are read like applied effects by the rolls (boons and banes, Empowered/Enfeebled), notes,
-// Defense and Speed. (Bonus damage and granted uses need an applied effect, which is used up: a passive doesn't give them.)
+// Defense and Speed. v0.0.186: a passive's Bonus Damage works on every matching Action (or the first each round); granted uses still need an applied effect.
 import { appliedFlags } from "./appliedflags.mjs";
 const F = "twod12";
 
@@ -20,7 +20,7 @@ export function passiveSources(actor) {
       const flags = appliedFlags({ settings, description: it.system?.description ?? "", hover: it.system?.hover ?? "", expireOn: new Set(), expireAll: false }, null);
       flags.minEscalation = min;
       flags.passive = true;
-      out.push({ id: `passive-${it.id}-${min}`, name: it.name, disabled: false, statuses: new Set(), flags: { [F]: flags }, getFlag: (scope, k) => (scope === F ? flags[k] : undefined) });
+      out.push({ id: `passive-${it.id}-${min}`, name: it.name, srcUuid: it.getFlag?.(F, "sourceUuid") || it.uuid || "", disabled: false, statuses: new Set(), flags: { [F]: flags }, getFlag: (scope, k) => (scope === F ? flags[k] : undefined) });
     }
   }
   return out;

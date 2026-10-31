@@ -282,13 +282,20 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       category: str(), level: int(1, 0),
       // How many Talents this Feature gives: each one is a Talent slot on the character sheet.
       talents: int(0, 0),
+      // v0.0.187: an Escalation Passive (the Features tab shows it in its Escalation section).
+      escalationPassive: bool(),
+      automation: choice(TWOD12.automationRanks, ""),   // v0.0.189: Not implemented / Bronze / Silver / Gold
       // Defense bonuses: +bonus to the DC of actions that roll "vs" this attribute (and carry all the listed tags, e.g. "pushed").
       // A passive: settings that work by themselves while the creature has it (always, or while its Escalation is at least passiveEscalation).
       settings: settingsField(),
       defenses: new ArrayField(new SchemaField({ attr: choice(TWOD12.defenseKinds, "body"), bonus: sint(1), tags: str() }))   // attr: what it raises (every Defense, Armor, Ward or one Vs. Attribute)
     };
   }
-  static migrateData(source) { migrateSettings(source); return super.migrateData(source); }
+  static migrateData(source) {
+    migrateSettings(source);
+    if (source && source.escalationPassive === undefined && /escalation/i.test(String(source.category ?? ""))) source.escalationPassive = true;   // v0.0.187
+    return super.migrateData(source);
+  }
 }
 
 const instance = () => new SchemaField({
@@ -299,6 +306,11 @@ const tier = () => new ArrayField(instance());
 const fxList = () => new ArrayField(new SchemaField({ uuid: str(), mode: choice({ auto: "Automatically applied", conditional: "Conditional" }, "auto") }));
 
 export class ActionData extends foundry.abstract.TypeDataModel {
+  /** v0.0.186: Mark Quarry marked by its category before; now by its "Marks the target" box. */
+  static migrateData(source) {
+    if (source && source.marksTarget === undefined && source.category === "Marked Quarry") source.marksTarget = true;
+    return super.migrateData(source);
+  }
   /** An Action with an Area always has the Area trait (see the Area trait). */
   prepareDerivedData() {
     super.prepareDerivedData?.();
@@ -344,6 +356,8 @@ export class ActionData extends foundry.abstract.TypeDataModel {
       vs: choice(TWOD12.vsChoices),
       frequency: choice(TWOD12.frequencies),
       escalation: int(0, 0),   // the Escalation it costs on top of its AP (an Escalation Action); 0: none
+      marksTarget: bool(),
+      automation: choice(TWOD12.automationRanks, ""),   // v0.0.189   // v0.0.186: using it marks the targeted creature (Mark Quarry); settings "only against my marked target" read the mark
       versions: new ArrayField(
         new SchemaField({
           ap: int(1, 0),   // 0: a 0 AP Action (only on your turn), or a 0R Reaction
@@ -418,10 +432,24 @@ export class TalentData extends foundry.abstract.TypeDataModel {
       // Talents that modify other Actions: which Actions (a name, "category:Weapon Technique" or "trait:strike"), when, and what they add.
       modifiers: modifiersField(),
       // A passive, as on a Feature.
-      settings: settingsField()
+      settings: settingsField(),
+      // v0.0.186 (pack C-a; book 16-talents.md): the Category (Combat, Mobility, Magic, Skill), the Prerequisites as data the Talent picker checks
+      // (each a Talent by name, a Level, an Action with a trait, an Attribute at a value, or Other: free text, not checked; all of them, or any one),
+      // and a theme tag (Unarmed, Great Weapon, Marksman, Divine) the picker can filter by. "requirements" stays as the old free text.
+      group: choice(TWOD12.talentGroups, "combat"),
+      prereqs: new ArrayField(new SchemaField({ kind: choice(TWOD12.prereqKinds, "talent"), name: str(), value: int(0) })),
+      prereqMode: choice({ all: "all of these", any: "any one of these" }, "all"),
+      automation: choice(TWOD12.automationRanks, ""),   // v0.0.189
+      theme: str()
     };
   }
-  static migrateData(source) { migrateSettings(source); return super.migrateData(source); }
+  static migrateData(source) {
+    migrateSettings(source);
+    // v0.0.186: "Combat Talent" in the Category becomes the Category field.
+    const m = /^\s*(combat|mobility|magic|skill)\s+talent\s*$/i.exec(String(source?.category ?? ""));
+    if (m && source.group === undefined) { source.group = m[1].toLowerCase(); source.category = "Talent"; }
+    return super.migrateData(source);
+  }
 }
 
 /** The settings of an Effect (and of a Feature's or Talent's passive, v0.0.125): what it does. */
@@ -446,7 +474,15 @@ const settingsField = () => new ArrayField(new SchemaField({
         auraSize: int(1, 1), auraWho: choice({ allies: "Allies", enemies: "Enemies", all: "Everyone" }, "allies"), auraSelf: bool(),
         auraOutline: str(), auraFill: str(),   // colors on the map ("#rrggbb"; empty: the default of who it affects)
         // On damage: when the creature deals damage of this subtype to a creature with this Tag, that creature gains the Effect (fxUuid).
-        trigSub: choice(TWOD12.subtypes), trigTag: str()
+        trigSub: choice(TWOD12.subtypes), trigTag: str(),
+        // v0.0.186 (pack C-a), general automation that replaces the code that tested a card's name:
+        //   oncePerRound: Boons and Banes or Bonus Damage only on the first matching Action of each turn-cycle (Killer's Focus, Radiant Zeal, Elusive);
+        //   vsMarked: only against the creature this one marked (Marked Quarry, Hunter's Focus);
+        //   ignore: a Bane rule this creature ignores on matching Actions (Long Draw, Steady Nerves, Sharpshooter);
+        //   rally: each Rally Point used by this creature (and its allies within rallyRange squares) heals rallyBonus more (Font of Mercy).
+        oncePerRound: bool(), vsMarked: bool(),
+        ignoreRule: choice(TWOD12.ignoreRules, "rangeBane"),
+        rallyBonus: str(), rallyRange: int(0, 0)
       }));
 
 export class EffectData extends foundry.abstract.TypeDataModel {
@@ -458,6 +494,7 @@ export class EffectData extends foundry.abstract.TypeDataModel {
       isCondition: bool(),
       valued: bool(),   // a condition with a value (Empowered 2): the value is kept on the effect on the creature
       selfApplied: bool(),
+      automation: choice(TWOD12.automationRanks, ""),   // v0.0.189
       minEscalation: int(0, 0),   // a passive that works only while its owner's Escalation is at least this (0: always)
       linked: str(),   // other conditions this one brings with it, by name ("Hindered"); they end when this one does
       conditions: new ArrayField(new SchemaField({ uuid: str(), name: str(), value: int(1, 0), valued: bool(), mode: choice({ set: "The highest counts", increase: "Increase the value", halfLevel: "Half the creature's level, rounded up (Squeezing)" }, "set") })),   // conditions this effect applies, each with its value; they end when this one does

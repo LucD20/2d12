@@ -1,10 +1,10 @@
 start: PC1, NPC1, PC2, NPC2, PC3 | current: PC1
 candidates for PC1: PC2,PC3
 after swap: PC3, NPC1, PC2, NPC2, PC1 | current: PC3 | PC1 AP 4 frozen true | PC3 AP 5
-PC1: AP 5 → 4 (swap with PC3)
-PC3: AP 0 → 5 (swapped in: start of turn)
-PC1 swaps initiative with PC3. PC3 takes the turn now; PC1's remaining actions are frozen until its new turn.
+✦PC1Swap with PC3−1 AP&#9654;✦Swap with PC3−1
+◆PC3Turn start+5&#9654;◆Turn start+5
+Swap Initiative1APPC1  PC3PC3 acts now with 5 AP. PC1 keeps 4 AP, frozen until slot 5.
 frozen action blocked: true
-PC1 new turn: PC1 AP 4 frozen false | PC1 carries on with 4 AP.
+PC1 new turn: PC1 AP 4 frozen false | PC1 thaws and carries on with 4 AP. No new AP.
 acted/earlier ally: WARN: PC2 has already taken an action this turn.
 done

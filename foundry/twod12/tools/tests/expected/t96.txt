@@ -44,9 +44,9 @@ hostile creatures flank a hero                                   Orc1: 1  Orc2: 
 --- an attacker that does not threaten gets nothing
 two flank, an archer 2 squares away (a Melee Action it cannot make) Kai: 1  Archer: 0
 --- the roll modifier
-{"id":"syn:flanking","name":"Flanking (2 boons)","boons":2,"banes":0,"match":true,"predicate":"Goblin is also threatened by Nari, Mara: a boon for each, up to 3"}
-{"id":"syn:flanking|Scene.s.Token.7","name":"Flanking (Goblin, 2 boons)","boons":2,"banes":0,"match":true,"predicate":"Goblin is also threatened by Nari, Mara: a boon for each, up to 3"}
-with a cancelled boon: Flanking (1 boon) | Kai is also threatened by Goblin A, Goblin C: a boon for each, up to 3; Nari is an ally of Kai that threatens you: one boon cancelled for each
+{"id":"syn:flanking","name":"Flanking (2 Boons)","boons":2,"banes":0,"match":true,"predicate":"Goblin is also threatened by Nari, Mara: a Boon for each, up to 3"}
+{"id":"syn:flanking|Scene.s.Token.7","name":"Flanking (Goblin, 2 Boons)","boons":2,"banes":0,"match":true,"predicate":"Goblin is also threatened by Nari, Mara: a Boon for each, up to 3"}
+with a cancelled boon: Flanking (1 Boon) | Kai is also threatened by Goblin A, Goblin C: a Boon for each, up to 3; Nari is an ally of Kai that threatens you: one boon cancelled for each
 a lone attacker next to a defender gets no chip: null
 a boon that is fully cancelled gives no chip (Kai at goblin B): null
 --- the roll dialog

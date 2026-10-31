@@ -86,6 +86,9 @@ export function masteryRows(actor) {
 /** After an Action: a Tier 3 on a Weapon Action with a weapon gives +1 Mastery (posted when a step is reached). */
 export async function masteryAfterRoll(actor, weapon, isWeaponRoll, tiers) {
   if (actor?.type !== "character" || !weapon || !isWeaponRoll || !tiers.some(t => t === 3)) return;
+  // v0.0.189 (Lucas): only in combat (an encounter that has started, with this creature in it).
+  const c = game.combat;
+  if (!c?.started || !c.combatants?.some?.(x => x.actor === actor || x.actor?.id === actor.id)) return;
   const r = await addMastery(actor, weapon, 1);
   if (!r) return;
   const what = r.reached.map(s => `<b>${STEP_TEXT[s]}</b> unlocked`).join(", ");

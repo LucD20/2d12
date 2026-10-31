@@ -10,7 +10,7 @@ console.log("Vow of Enmity 2 AP:", tiers("Vow of Enmity", 2), "|| 3 AP:", tiers(
 console.log("Champion's Challenge 2 AP:", tiers("Champion's Challenge", 2));
 console.log("Hallowed Stance:", get("Hallowed Stance").system.description.replace(/<[^>]+>/g, "").slice(150));
 const vs = n => { const d = get(n); return G.vsText({ ...d.system, traits: new Set(d.system.traits) }) || "(none)"; };
-const book = { "Smite": "AD", "Vow of Enmity": "WD", "Rebuke": "WD", "Champion's Challenge": "WD", "Word of Radiance": "WD", "Divine Retribution": "AD (Weapon mode) or WD (Power mode)", "Judgment": "WD", "Rimebrand (Cold)": "DC 13", "Whirlwind": "AD", "Cut Through": "AD", "Pummel": "AD", "Leg Sweep": "AD" };
+const book = { "Smite": "AD", "Vow of Enmity": "WD", "Rebuke": "WD", "Champion's Challenge": "WD", "Word of Radiance": "WD", "Divine Retribution": "AD (Weapon mode) or WD (Power mode)", "Judgment": "WD", "Whirlwind": "AD", "Cut Through": "AD", "Pummel": "AD", "Leg Sweep": "AD" };
 const bad = Object.entries(book).filter(([n, v]) => vs(n) !== v).map(([n, v]) => `${n}: ${vs(n)} (book ${v})`);
 console.log("Vs. entries as in the book:", bad.length ? bad.join(" | ") : "all " + Object.keys(book).length + " match");
 console.log("no-roll cards have no Vs.:", ["Lay On Hands", "Shield of Faith", "Sacred Weapon", "Aura of Protection", "Miraculous Recovery", "Consecrated Ground", "Divine Intervention", "Precise Aim"].every(n => vs(n) === "(none)"));

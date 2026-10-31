@@ -68,7 +68,7 @@ export const TWOD12 = {
   frequencies: { "": "Default", none: "None", atwill: "At-will", turn: "Turn", round: "Round", encounter: "Encounter", daily: "Daily" },
   // The kind of a roll, for effects (Round 10): checks and saves are marked when they are rolled, and an Action that rolls an Attribute
   // directly (not a Weapon, Power or Signature roll) is an Attribute Action. Weapon, Power and Signature rolls are their traits.
-  rollKinds: { __check: "Check", __save: "Save", __attr: "Attribute Action" },
+  rollKinds: { __check: "Check", __save: "Save", __attr: "Attribute Action", __twohanded: "Two-handed weapon" },   // v0.0.188: Two-handed weapon (Heavy Blows)
   pools: { "": "None", B: "Body [B]", M: "Mind [M]", C: "Choice [C]" },
   // Damage types: one icon each (Slash also has Foundry's sword image on cards), bright colors for dark backgrounds,
   // and dark "ink" colors for the parchment cards.
@@ -122,7 +122,7 @@ export const TWOD12 = {
   traitHelp: {
     area: "These Actions target every creature in their area that they affect, ignoring Senses (no penalty against Obscured, Hidden or Unsensed creatures, and light doesn't change the roll). You need Line of Effect to the Point of Origin to place the area; Line of Effect and Cover are checked from the Point of Origin to each creature.",
     strike: "Extra rules: you can make at most three Strikes per turn.",
-    nonlethal: "Deals Nonlethal damage by default. Taking a bane makes it deal Lethal damage instead.",
+    nonlethal: "Deals Nonlethal damage by default. Taking a Bane makes it deal Lethal damage instead.",
     body: "Rolls Body.",
     mind: "Rolls Mind.",
     appeal: "Rolls Appeal.",
@@ -141,7 +141,23 @@ export const TWOD12 = {
     nonthreatening: "Doesn't threaten: you can't flank with it, unless a feature says otherwise (Fists have it; Brawler removes it).",
     move: "You must have a Speed of at least 1."
   },
-  effectSettings: { boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", speed: "Speed", light: "Token Light", note: "Note" },
+  effectSettings: { boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", speed: "Speed", light: "Token Light", note: "Note", ignore: "Ignore a Bane", rally: "Rally Points", turnstart: "Effect each turn" },
+  // v0.0.198 (Lucas, 2026-10-30): the Basic Actions section of the Actions tab, 4 groups in a 2x2 grid (row 1 Attack | Control, row 2
+  // Movement | Utility), each in this order. By name: the Kind traits don't separate them. The items and the compendium don't change.
+  basicGroups: [
+    { key: "attack", label: "Attack", names: ["Weapon Attack", "Fists", "Charge", "Reload"] },
+    { key: "control", label: "Control", names: ["Shove", "Haul", "Relocate", "Trip"] },
+    { key: "movement", label: "Movement", names: ["Advance", "Evade", "Crawl", "Stand"] },
+    { key: "utility", label: "Utility", names: ["Interact", "Release", "Leaning", "Steel Yourself"] }
+  ],
+  // v0.0.189 (Lucas, after Draw Steel's Codex): how much of a card Foundry does for you, as a chip on the card. "" shows nothing.
+  automationRanks: { "": "(not set)", none: "Not implemented", bronze: "Bronze", silver: "Silver", gold: "Gold" },
+  automationHints: { none: "Not implemented: read the card and do it by hand", bronze: "Bronze: partly automated (buttons or an effect to apply; the rest by hand)", silver: "Silver: mostly automated (one part by hand)", gold: "Gold: fully automated" },
+  // v0.0.186 (pack OT in the book, 16-talents.md): a Talent's Category, and the kinds of Prerequisite the Talent picker can check.
+  talentGroups: { combat: "Combat", mobility: "Mobility", magic: "Magic", skill: "Skill" },
+  prereqKinds: { talent: "A Talent", level: "A Level", trait: "An Action with a trait", attribute: "An Attribute", other: "Other (not checked)" },
+  // v0.0.186: the Bane rules a setting can switch off for matching Actions (the "Ignore a Bane" setting).
+  ignoreRules: { rangeBane: "one of their range Banes (far range none, maximum range 1)", engagedSelf: "the Banes for a [Ranged] Action while you are Engaged", engagedTarget: "the Bane for targeting a creature Engaged with a creature other than you" },
   durationTypes: { "": "None", eot: "End of Turn (EoT)", rounds: "Rounds" },
   // Trait groups (v0.0.179, the book's GROUPS in book/build_rules.py): listed in this order, a trait with no group of its own is a Keyword.
   // Their colors are CSS variables (--g-roll...), light on parchment and dark on the dark sheets (system.css). Weapon properties have no group and no color.
@@ -229,7 +245,9 @@ export const cardVars = hex => {
 };
 
 /** The title bar of an Action card: name on the left, category and cost on the right. */
-export const cardHead = (name, cat, costHtml, freq = "") => `<div class="ahead"><b>${escAttr(name)}</b><div class="aright"><span class="atop">${freq && TWOD12.frequencies[freq] ? `<span class="afreq">${escAttr(TWOD12.frequencies[freq])}</span>` : ""}${costHtml ? `<span class="aps">${costHtml}</span>` : ""}</span>${cat ? `<span class="acat">${escAttr(cat)}</span>` : ""}</div></div>`;
+/** v0.0.189: the automation rank as a small chip (nothing when it isn't set). */
+export const autoChip = rank => (rank && TWOD12.automationRanks[rank] ? `<i class="fa-solid fa-diamond autodia auto-${rank}" data-tooltip="${escAttr(TWOD12.automationHints[rank] ?? "")}" aria-label="${escAttr(TWOD12.automationRanks[rank])}"></i>` : "");   // v0.0.190: a diamond (grey, bronze, silver, gold), the rank on hover
+export const cardHead = (name, cat, costHtml, freq = "", auto = "") => `<div class="ahead"><b>${escAttr(name)}${autoChip(auto)}</b><div class="aright"><span class="atop">${freq && TWOD12.frequencies[freq] ? `<span class="afreq">${escAttr(TWOD12.frequencies[freq])}</span>` : ""}${costHtml ? `<span class="aps">${costHtml}</span>` : ""}</span>${cat ? `<span class="acat">${escAttr(cat)}</span>` : ""}</div></div>`;
 /** Damage on cards: a filled heart for Body, a filled brain for Mind, and each damage type in its own color with its icon. */
 export const poolIcon = pool => pool === "M" ? '<i class="fa-solid fa-brain dt-mind" data-tooltip="Mind damage"></i>'
   : pool === "C" ? '<span class="dt-choose" data-tooltip="Body or Mind: the origin chooses"><i class="fa-solid fa-heart dt-body"></i><i class="fa-solid fa-brain dt-mind"></i></span>'
@@ -307,7 +325,8 @@ export function traitChevrons(traits, { properties = false, compact = false } = 
 
 /** The category shown at the far right of an Action title: "Paladin Feature 1" (the number is the level it is gained). */
 export const categoryText = d => {
-  const c = String(d?.category ?? "").trim(), l = Number(d?.level) || 0;
+  // v0.0.186: a Talent with a Category reads like the book's head, "Combat Talent 1".
+  const g = TWOD12.talentGroups[d?.group], c0 = String(d?.category ?? "").trim(), c = g && (!c0 || c0 === "Talent") ? `${g} Talent` : c0, l = Number(d?.level) || 0;
   return c ? (l > 0 ? `${c} ${l}` : c) : (l > 0 ? `Level ${l}` : "");
 };
 
@@ -319,6 +338,9 @@ export const cardColorFor = d => FREQ_COLORS[effectiveFrequency(d ?? {})] ?? FRE
 const TRAIT_WORDS = { Strike: "strike", Nonlethal: "nonlethal", Divine: "divine", Focus: "focus", Handle: "handle", Power: "magic", Signature: "signature", Melee: "melee", Ranged: "ranged", Self: "self", Weapon: "weapon", Reload: "reload", "Two-handed": "twohanded" };
 const DAMAGE_WORDS = { Acid: "Ac", Blunt: "Bl", Cold: "Co", Electricity: "El", Fire: "Fi", Force: "Fo", Holy: "Ho", Pierce: "Pi", Psychic: "Ps", Slash: "Sl", Thunder: "Th", Unholy: "Un" };
 const famColor = key => traitColor(key);
+// v0.0.192: every trait name (as the book writes them in brackets) → its key, for "[Ranged, Shot]".
+const TRAIT_KEY_OF = Object.fromEntries([...Object.entries(TWOD12.traits).map(([k, label]) => [String(label).toLowerCase(), k]), ["power", "magic"]]);
+const TRAIT_KEYS = [...new Set(Object.values(TWOD12.traits).map(String))].sort((a, b) => b.length - a.length).map(l => l.replace(/[.*+?^${}()|[\]\\-]/g, "\\$&")).join("|");
 
 /* ------------------------------------------------------------------ text colors (v0.0.179: the book's CLASS_TOKEN, book/build_rules.py) */
 const ATOM = String.raw`(?:\d+d\d+|\d+\[W\]|\[Mod\]|\d+)`, EXPR = String.raw`${ATOM}(?:\s*[+\-\u2212/]\s*${ATOM})*`;
@@ -326,19 +348,22 @@ const TOKEN_RE = new RegExp([
   String.raw`(?<slash>${ATOM}(?:\s*/\s*${ATOM})+\s*\[(?<sp>[BM])\])`,      // "1d6 / 1d4 / 0 [M]": tier values with the pool after them
   String.raw`(?<tag>\[(?<tp>[BM])\]\s*${EXPR})`,                             // "[B] 1[W] + [Mod]", "[M] 1d6+1"
   String.raw`(?<ht>\[HT(?::[^\]]*)?\])`,                                      // "[HT: Entering, Turn]"
+  // v0.0.192: a bracketed list of traits, "[Ranged, Shot]" or "[Strike]", colored as one group (each trait in its group's color).
+  String.raw`(?<tgrp>\[(?:${TRAIT_KEYS})(?:,\s*(?:${TRAIT_KEYS}))*\])`,
   String.raw`(?<mod>\b(?:Weapon|Power|Signature)\s(?:Modifier|Attribute)s?\b)`,
   String.raw`\((?<apa>\d(?:/\d)*A)\)|(?<ap>\b\d(?:\s*/\s*\d)*\s?AP\b)|(?<rx>\b\d(?:/\d)*R\b)`,
   String.raw`(?<mv>\b(?:Advance|Evade|Pushed|Pulled|Slid|Reposition)\s\d+\b)`,
   String.raw`(?<neg>\b(?:Doomed|Enfeebled|Vulnerable|Down)\b(?:\s\d+\b)?)|(?<pos>\b(?:Favored|Empowered)\b(?:\s\d+\b)?)`,
   String.raw`(?<bane>\b(?:\d+\s+)?Banes?\b)|(?<boon>\b(?:\d+\s+)?Boons?\b)|(?<rally>\b(?:(?:up to )?\d+\s+)?Rally Points?\b)`,
   String.raw`(?<attr>\b(?:Body|Mind|Instinct|Appeal)\b)`,
-  `(?<word>\\b(?:${[...Object.keys(TRAIT_WORDS), ...Object.keys(DAMAGE_WORDS)].sort((a, b) => b.length - a.length).join("|")})\\b)`
+  `(?<word>\\b(?:${[...Object.keys(TRAIT_WORDS), ...Object.keys(DAMAGE_WORDS)].sort((a, b) => b.length - a.length).join("|")})\\b(?!\\s+(?:Attack|Technique)))`
 ].join("|"), "g");
 /** One colored token of text (the class names are the book's). */
 function colorToken(m, g) {
   if (g.slash) return `<span class="pool-${g.sp.toLowerCase()}">${m}</span>`;
   if (g.tag) return `<span class="pool-${g.tp.toLowerCase()}">${m}</span>`;
   if (g.ht) return `<span class="kw-ht">${m}</span>`;
+  if (g.tgrp) return `<span class="trgrp">[${m.slice(1, -1).split(/,\s*/).map(w => `<span class="trhl" style="--tc:${famColor(TRAIT_KEY_OF[w.toLowerCase()])}">${w}</span>`).join(", ")}]</span>`;
   if (g.mod) return `<span class="mod-${m.split(/\s/)[0].toLowerCase()}">${m}</span>`;
   if (g.apa) return `(<span class="kw-ap">${g.apa}</span>)`;
   if (g.ap || g.rx) return `<span class="kw-ap">${m}</span>`;

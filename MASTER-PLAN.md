@@ -23,7 +23,7 @@ Sizes: S = under an hour of work, M = a normal session, L = a long session, XL =
 | C1 | **DONE 2026-10-30 (v0.0.181).** Foundry follows the book: E3 (the Bestiary by Stage, CV ×100, CV by Stage gap), the Core Rules (Health × (Level + 17) ÷ 16, Modifier steps at 5 and 8), P1 and A1 cards and level lists in today's class structure, Guard, Lock & Loose with Shot, Sharpshooter's into-melee Bane | L | E3, P1, A1 (done) |
 | C2 | **DONE 2026-10-30 (v0.0.185).** The new class selection: levels as sections, the Class Details tab, the Levels window, the player's class window on drop and on level up (foundry/mockups/: the brief, the Step 0 report, the three mockups) | L | C1 |
 | OT | **DONE 2026-10-30, IN THE BOOK (Lucas: all defaults; Leg Sweep without a free hand; book/options-talents.md).** Options (sidegrades) for every Pick slot and the Talents (structure, budget, overlap); then the approved cards go into the book | M | P1, A1, E3 |
-| C | **NEXT.** Content (what C1 and C2 leave): class items in the new structure (Level 1, Picks, Repertoire by Frequency), the level list and the level-up flow, the Archer card changes, the compendium text sync (explicit [B], "[Strike] Action", Rally numerals, Bane and Boon capitalized), the compendium PCs and NPCs rebuilt from a spec | XL | the Archer design (D1) |
+| C | **IN PROGRESS (section 6): C-a DONE (v0.0.186, fixes v0.0.187), C-b DONE (v0.0.188), fixes and the PCs (v0.0.189); fixes (v0.0.190); fixes (v0.0.191); fixes (v0.0.192); fixes (v0.0.193); the Granted area and Escalation block (v0.0.194); C-c DONE (v0.0.195: the Talent picker's filter bar, Move Actions through the banner). **Pack C is complete** once Lucas tests v0.0.195 picker, Escalation on Actions, Move Actions through the banner.** Content (what C1, C2 and OT leave): class items in the C2 structure with the OT Repertoires and Escalation lists, every Talent card with Category / Level / Prerequisites / theme as data, the old cards to "(old cards)", the compendium text sync, the Talent picker's filter bar, the Features tab fixes, Escalation on the Actions tab, general (editable) automation instead of per-card code, the compendium PCs from the ruler's builds | XL | OT (done) |
 | X | After the design sessions: Mastery and Gear, Skills, Magic in the system | XL | D2, D3, D4 |
 
 ### Book
@@ -80,3 +80,44 @@ Sizes: S = under an hour of work, M = a normal session, L = a long session, XL =
 
 ## 5. Standing rules (all packs)
 Concise ability text; I write every new card's Flavor line; the names list in examples; Y for you in diagrams; each Foundry version comes with a test checklist; every pack updates the backlogs, the README and HANDOFF.
+
+## 6. Pack C, the order (planned 2026-10-30; Lucas: "add all of this in the best order, then we start")
+
+C is XL: three versions, each with its own test checklist, all on the branch `pack-c-content` (Update Foundry.cmd finds it). The order follows the dependencies: the engine before the cards that use it, the data fields before the cards that fill them, the cards before the UI that lists them, the PCs last because they are built from everything.
+
+**Lucas's rule for automation (2026-10-30):** a card is automated with *general* effect settings that he can see and edit on the item in Foundry, never with code that looks for the card's name. Cards that are very specific and need no automation (Ricochet) stay text. Today `archer.mjs` and `paladin.mjs` test names (`hasFeature(actor, "Killer's Focus")`, Radiant Zeal, Elusive, Long Draw, Steady Nerves, Marked Quarry, Sharpshooter, Font of Mercy): those are what C-a replaces.
+
+### C-a: v0.0.186, the engine and the data (L) — DONE 2026-10-30 (waiting for Lucas's test)
+1. **General effect settings** (the effect editor, fxeditor.mjs; bonus.mjs, effects.mjs), each a field anyone can set on any effect:
+   - *Once per round* on a Bonus Damage or a Boon/Bane modifier: "only the first matching Action each turn-cycle" (the `turnCycleBlocked` logic of usage.mjs, stored on the effect, not on the actor under a card's name).
+   - *Minimum Escalation* already exists (`minEscalation`): shown plainly in the editor with its own label.
+   - *Against me*: a modifier on Actions made against the creature (Elusive's Bane), with the same once-per-round option.
+   - *Aura*: the effect also applies to allies within N squares (Font of Mercy's Rally bonus, the Paladin's Aura line), the healing bonus of a Rally Point as a modifier kind.
+   - *Against the marked target* (Marked Quarry's Tier 1 [Mod]): a condition "only against a target marked by me", the mark being a status any card can put on.
+   - Anything that still needs code after this (Sharpshooter's into-melee Bane: a property of the Feature, "[Shot] Actions skip the into-melee Bane", as a checkbox) is a named setting, never a name test.
+   Then Killer's Focus, Radiant Zeal, Elusive, Font of Mercy, Long Draw, Steady Nerves, Marked Quarry move to effects on their items; the name tests are removed; the tests are moved to the settings. Old characters: their copies get the new effects at the next drop (or a once-per-world update, as for Rally).
+2. **The Talent data** (data.mjs, the Talent sheet): Category (Combat / Mobility / Magic / Skill), Level, Prerequisites as a list of typed rows (Talent [name], Level [N], Action with a trait [trait], Attribute [name N], Other [text]), a theme tag (free text, e.g. Divine, Brawler). A function `canTake(actor, talent)` returns met / not met with the reasons (the picker uses it in C-c).
+3. **The Features tab fixes** (actor-sheets.mjs, actor-sheet.hbs):
+   - Features of higher levels are **not shown** until reached (no greyed "Level N" cards).
+   - **Escalation** gets its own section, like Class, Species and Talents (the Passive and Active Escalation picks and what they gave).
+   - **Talents are grouped by Category** (subsections Combat, Mobility, Magic, Skill; the slot cards stay where they are filled).
+
+### C-b: v0.0.188, the content (L) — DONE 2026-10-30 (v0.0.187 went to the fixes from the test of v0.0.186)
+1. **The class items** in the C2 structure (levels as sections): the Paladin and Archer Repertoires and Escalation lists as the book has them now (12-paladin.md, 13-archer.md), the OT options included (Paladin: Word of Radiance, Miraculous Recovery, Divine Intervention, Mending Light, Shield of Faith as a 0R Escalation Active, Hand of Mercy; Archer: Volley, Covering Fire, Deadeye, Rain of Arrows, Harrying Shots, Twin Shot, Vanish). Each card automated with C-a's settings where it can be.
+2. **The cards that left the book** (book/options-talents.md section 4) go to "Paladin (old cards)" / "Archer (old cards)"; the ones that became Talents (Sacred Weapon, Challenge, Long Draw, Steady Nerves) are rebuilt as Talents.
+3. **Every Talent card** as in 16-talents.md, with C-a's fields filled (Leg Sweep without a free hand; Kickboxer grants it as its own Action; Class Expertise).
+4. **The text sync, done while each card is rewritten** (cheaper than a separate pass over the same cards): [B] explicit on every Body damage, "[Strike] Action", Rally Point numerals, Bane and Boon capitalized; then the same for the chat cards and the UI strings; a test that scans content.mjs for "bane"/"boon" in lower case and damage with no pool.
+
+### C-c: v0.0.195, the picker — DONE 2026-10-30 (waiting for Lucas's test) (the Granted area and Escalation block were built in v0.0.194) (v0.0.189 and v0.0.190 went to the fixes from the tests; the PCs below were done in v0.0.189; Move Actions through the banner added, foundry-backlog top), Escalation in the Actions tab, the PCs (M)
+1. **The Talent picker's filter bar** in the class window: search, Category, "only what I can take" (Level and Prerequisites through `canTake`; the reasons as a tooltip on the ones that can't be taken); a compact list option.
+2. **Escalation on the Actions tab:** the Escalation Actives show among the Actions when they can be used (Escalation at or above the cost, not Unconscious), with their Escalation cost on the row; the Escalation passives show as an "active" line at the top of the tab while their minimum is met.
+3. **The compendium PCs rebuilt from the ruler's builds** (book/ruler/classes/*.txt), last because they use every card above.
+
+**Why this order and not the scope's 1-2-3-4:** the scope listed the class items first, but writing the cards before the general settings would mean automating Twin Shot, Harrying Shots and the new Talents by name and redoing them; and the text sync costs nothing extra while the cards are being rewritten, so it moves into C-b. The picker comes after the cards because it needs real Talents with data to test.
+
+## 7. Next step: the editability sweep (added 2026-10-31, Lucas: "pretty much every mechanic editable, just not the basic ones")
+Go through every automated mechanic and check that anyone can see it on an item and recreate it from the item's settings, without code that tests a card's name or a hidden rule. One pass, in this order:
+1. **List them** (code search of module/: Hooks that post or change something for a creature because of what it has; `usesMark`, archer.mjs, paladin.mjs, the start-of-turn and start-of-encounter hooks; every chat message the system posts on its own). Split into **basic** (the core rules every creature has: AP, turns, Swap Initiative, Escalation gain, Down/Dying, initiative; no settings) and **card mechanics** (need a setting).
+2. **Card mechanics with no setting yet**, known so far: Mark Quarry's start-of-encounter reminder ("choose the creature to mark", archer.mjs, fired for any creature that has a mark-reading setting) and the "your mark went Down" message. Likely shape: a setting type "At the start of an encounter" / "When your marked creature goes Down" with a message text and an optional Action to offer (button), shown in the item's Details like the other settings.
+3. **A test** that every automated card in content.mjs carries its settings (no name lists left in module/), and the list of basic mechanics in the backlog.
+Size: M. Its own pack (pack-editability), after Lucas's tests of v0.0.203.

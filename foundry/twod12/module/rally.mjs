@@ -1,6 +1,6 @@
 // Rally Points: each point heals ceil(Health Pool / 4). @Rally[N] buttons and Actions with "Use Rally Points" spend them.
 import { esc } from "./roll.mjs";
-import { fontOfMercy } from "./paladin.mjs";
+import { rallyBonusFor } from "./automation.mjs";
 const { DialogV2 } = foundry.applications.api;
 const warn = m => ui.notifications.warn(m);
 
@@ -48,10 +48,10 @@ export async function useRally(actor, n, why = "", { announce = true } = {}) {
   if (!s?.rallyMax) { warn(`${actor?.name ?? "This creature"} has no Rally Points.`); return false; }
   if (!actor.isOwner) { warn(`Only the owner of ${actor.name} can use its Rally Points.`); return false; }
   if (s.rallyLeft < n) { warn(`${actor.name} has ${s.rallyLeft} Rally Point${s.rallyLeft === 1 ? "" : "s"} left and ${n} are needed.`); return false; }
-  // Font of Mercy (P1, v0.0.181): a Paladin with Escalation 1+ within 5 squares adds its Power Modifier + 2 to each Rally Point.
-  const fm = await fontOfMercy(actor);
+  // v0.0.186: the "Rally Points" settings of the creature and of allies within their range (Font of Mercy: Power Modifier + 2, within 5); the highest counts.
+  const fm = await rallyBonusFor(actor);
   const total = (s.rallyHeal + (fm?.bonus ?? 0)) * n;
-  const head = `<b>${esc(actor.name)}</b> uses ${n} Rally Point${n === 1 ? "" : "s"}${why ? ` <small>(${esc(why)})</small>` : ""}${fm ? ` <small>(Font of Mercy, ${esc(fm.name)}: +${fm.bonus} each)</small>` : ""}`;
+  const head = `<b>${esc(actor.name)}</b> uses ${n} Rally Point${n === 1 ? "" : "s"}${why ? ` <small>(${esc(why)})</small>` : ""}${fm ? ` <small>(${esc(fm.source)}, ${esc(fm.name)}: +${fm.bonus} each)</small>` : ""}`;
   const card = announce ? await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: `<div class="twod12 chat apmsg">${head}.</div>` }) : null;
   const plan = await chooseHealing(actor, total);
   const upd = { "system.rallyUsed": s.rallyUsed + n };

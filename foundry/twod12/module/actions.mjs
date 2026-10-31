@@ -1,6 +1,8 @@
 import { triggerNotices } from "./triggers.mjs";
 import { techniqueLock, TECHNIQUE_AT, masteryAfterRoll } from "./mastery.mjs";
-import { archerMods, hunterEmpowered, longDraw, steadyNerves, killersFocusBonus, useKillersFocus, setQuarry, quarryTier1Bonus, sharpshooterShot } from "./archer.mjs";
+import { setQuarry } from "./archer.mjs";
+import { pickTargets, needsTargets } from "./targeting.mjs";
+import { ignoredBy, markOnce } from "./automation.mjs";
 import { splitModes, splitView, SPLIT_LABEL } from "./split.mjs";
 import { canPayEscalation, spendEscalation } from "./escalation.mjs";
 import { weaponUse, weaponRanges } from "./weaponrange.mjs";
@@ -9,14 +11,13 @@ import { perceptionOf, perceive } from "./senses.mjs";
 import { TWOD12, expandAsText, areaButton, isTalentAction, targetsNeeded, areaConfigOf } from "./config.mjs";
 import { weaponsFor, hasProp } from "./fists.mjs";
 import { isEngaged, engagedWithOther } from "./engaged.mjs";
-import { radiantZealBonus, useRadiantZeal, elusiveMod, useElusive } from "./paladin.mjs";
 import { flankingMod } from "./flanking.mjs";
 import { offerWake } from "./down.mjs";
 import { performCheck, performMultiCheck, multiCheckHtml, collapseNames, uniqueLabels, checkHtml, esc, sgn } from "./roll.mjs";
 import { postDamageCard, postMultiDamageCard } from "./dmgcard.mjs";
 import { cardVars, cardHead, flavorHtml, apIcon, traitChevrons, categoryText, highlightText, metaRowHtml, effectiveFrequency, distanceText, areaText, cardColorFor, vsText, targetsRowHtml, requirementProblem, doomStatus } from "./config.mjs";
 import { collectBonuses, expireOnUse } from "./bonus.mjs";
-import { notesFor, resolveModifiers, applyEffects, originInfo, damageSteps, modifierList } from "./effects.mjs";
+import { notesFor, useOnceModifiers, resolveModifiers, applyEffects, originInfo, damageSteps, modifierList } from "./effects.mjs";
 import { spendAP, combatantOf } from "./combat.mjs";
 import { computeDC } from "./defense.mjs";
 import { markUsed, activeGrants, atWillUses, grantMatches } from "./usage.mjs";
@@ -25,7 +26,7 @@ import { squaresBetween, rangeBand } from "./move.mjs";
 import { setupFor } from "./setup.mjs";
 import { coverBetween, coverWhy } from "./cover.mjs";
 import { consumeGrant } from "./freeuse.mjs";
-import { buildPreviews, updateOdds, applyTalentMods, tierLines } from "./preview.mjs";
+import { buildPreviews, updateOdds, applyTalentMods, tierLines, liveAvg } from "./preview.mjs";
 const { DialogV2 } = foundry.applications.api;
 import { ensureFreeHand } from "./hands.mjs";
 
@@ -123,6 +124,21 @@ const oddsText = chk => {
   return { p, text: `T1 ${pct(p[0])} \u00b7 T2 ${pct(p[1])} \u00b7 T3 ${pct(p[2])}`, html: `T1 ${pct(p[0])} &middot; T2 ${pct(p[1])} &middot; <b>T3 ${pct(p[2])}</b>` };
 };
 const oddsRow = chk => `<div class="oddsrow" data-tooltip="Chance of each tier for this roll">Odds: ${oddsText(chk).html}</div>`;
+/**
+ * v0.0.195: the @Move inside a movement-only Action's text (Advance, Evade, Crawl): a version with no roll and no effect to apply, one @Move of
+ * the creature's own movement (advance or evade) and no other button, on a [Move] Action or Evade. null for anything else (Charge, Vanish...).
+ */
+export function pureMove(it, version, basicKey = "") {
+  if (!version?.noTiers || (version.fx?.all ?? []).length) return null;
+  const txt = String(version.effects ?? ""), moves = [...txt.matchAll(/@Move\[([^\]]+)\]/g)];
+  if (moves.length !== 1 || /@(?!Move\[)\w+\[/.test(txt)) return null;
+  if (!["advance", "walk", "move", "evade"].includes(moves[0][1].split("|")[0].trim().toLowerCase())) return null;
+  const traits = it?.traits;
+  if (!(traits?.has?.("move") || (Array.isArray(traits) && traits.includes("move")) || basicKey === "safeMovement")) return null;
+  return moves[0][1];
+}
+/** v0.0.189: the name of what a bonus comes from, as a link that opens it (Foundry's content links); plain text when it has no item. */
+export const srcLink = (name, uuid) => (uuid ? `<a class="content-link" draggable="true" data-link data-uuid="${esc(uuid)}" data-tooltip="Open ${esc(name)}">${esc(name)}</a>` : esc(name));
 /** Does this tier need a Damage button? attrFrom: the lowest Tier on which the Attribute is added (0: never; true: Weapon, from Tier 2). */
 const needsDamage = (attrFrom, tier, insts, fx) => { const from = attrFrom === true ? 2 : Number(attrFrom) || 0; return tier > 0 && (insts.some(i => i.useW || i.dice || i.useAt) || (from > 0 && tier >= from) || fx.length > 0); };
 
@@ -140,14 +156,14 @@ export const modifiersForTarget = (ids, actorUuid) => (ids ?? []).filter(id => {
 /** The dots over a target tile: a green dot for each boon and a red dot for each bane (at most 5 of each). */
 export const tileDots = (boons, banes) => `${'<i class="dot g"></i>'.repeat(Math.min(5, Math.max(0, boons)))}${'<i class="dot r"></i>'.repeat(Math.min(5, Math.max(0, banes)))}`;
 /** The caption under the tiles for the selected creature: { name, detail }. */
-export const tileCaption = (name, dc, boons, banes) => ({ name, detail: [`DC ${dc}`, boons ? `${boons} boon${boons > 1 ? "s" : ""}` : "", banes ? `${banes} bane${banes > 1 ? "s" : ""}` : ""].filter(Boolean).join(" \u00b7 ") });
+export const tileCaption = (name, dc, boons, banes) => ({ name, detail: [`DC ${dc}`, boons ? `${boons} Boon${boons > 1 ? "s" : ""}` : "", banes ? `${banes} Bane${banes > 1 ? "s" : ""}` : ""].filter(Boolean).join(" \u00b7 ") });
 /** The number a duplicate name ends with ("Skeleton Captain 2" → "2"). */
 export const tileNumber = name => (/(\d+)\s*$/.exec(String(name ?? "")) ?? [])[1] ?? "";
 
 /** The Modifier's name for the card: "Exhausted 2" when it still has the value Exhausted put there. */
 export const adjLabelOf = data => (data?.adjLabel && Number(data.mod) === Number(data.adjDefault) ? data.adjLabel : "");
 
-export async function askRoll(actor, { title, attrKey, traits = new Set(), from = null, versions = null, defaults = {}, preview = null, dcNote = "", targetActors = [], targetTiles = [], extraMods = [], withDamage = false, withReload = false, notices = [] }) {
+export async function askRoll(actor, { title, attrKey, traits = new Set(), from = null, versions = null, defaults = {}, preview = null, dcNote = "", targetActors = [], targetTiles = [], extraMods = [], withDamage = false, withReload = false, notices = [], bonusChips = [] }) {
   // Armor beyond the creature's training: all its Rolls are Doomed (unless something else already made them Doomed, which keeps its label).
   if (actor?.system?.armorUntrained && !defaults.doomed) defaults = { ...defaults, doomed: true, doomedLabel: "Untrained armor (Doomed)", doomedWhy: "Your armor is beyond your Armor Training: all your Rolls are Doomed" };
   // Exhausted: its value as a penalty on all Rolls, in the Modifier, named on the card (unless the Modifier is changed).
@@ -181,6 +197,8 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
     `<label class="fxchip ${cls}" data-tooltip="${name === "favored" ? "Roll 3d12 and keep the two highest" : (defaults.doomedWhy ?? "Roll 3d12 and keep the two lowest")}"><input type="checkbox" name="${name}" ${(name === "doomed" && defaults.doomed) || (name === "favored" && defaults.favored) ? "checked" : ""}><i class="fa-solid fa-chevron-${icon}"></i><span>${label}</span></label>`;
   const stepChip = (name, label, icon, cls, n) =>
     `<button type="button" class="bbchip ${cls} ${n ? "on" : ""}" data-bb="${name}" data-tooltip="Left-click: +1. Right-click: \u22121. ${name === "empowered" ? "Empowered N adds N to every damage die." : "Enfeebled N subtracts N from every damage die (each die still deals at least 1)."}${defaults.empowerWhy ? ` \u2014 ${defaults.empowerWhy}` : ""}"><i class="fa-solid fa-chevron-${icon}"></i><span>${label}</span><b>${n}</b></button><input type="hidden" name="${name}" value="${n}">`;
+  // v0.0.187: Bonus Damage from effects and passives (Killer's Focus) is a chip: unticked, it isn't added and its effect isn't used up.
+  const bonusRow = bonusChips.length ? `<div class="rf-row"><span class="rf-label">Bonus</span>${bonusChips.map(b => `<label class="fxchip boon" data-tooltip="${esc(b.why ?? "")}"><input type="checkbox" name="bonusOn" value="${esc(b.key)}" checked><i class="fa-solid fa-sparkles"></i><span>${esc(b.text)}</span></label>`).join("")}</div>` : "";
   const special = [
     withReload
       ? `<label class="fxchip boon" data-tooltip="A powerful shot: Favored and Empowered 2. Afterwards the weapon must be reloaded before it is used again."><input type="checkbox" name="reloadshot"><i class="fa-solid fa-bullseye"></i><span>Reload shot</span></label>`
@@ -193,7 +211,7 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
     .join("");
   const chipRow =
     `<div class="rf-row"><span class="rf-label">Roll</span>${state("favored", defaults.favored && defaults.favoredLabel ? defaults.favoredLabel : "Favored", "boon", "up")}${state("doomed", defaults.doomed && defaults.doomedLabel ? defaults.doomedLabel : "Doomed", "bane", "down")}<span class="bbgroup">${bb("boons", "Boons", "up", defaults.boons ?? 0)}${bb("banes", "Banes", "down", defaults.banes ?? 0)}</span></div>` +
-    effectsRows +
+    effectsRows + bonusRow +
     (special ? `<div class="rf-row special"><span class="rf-label">Damage</span>${special}</div>` : "") +
     `<input type="hidden" name="forceTier" value="">${withDamage ? `<p class="hint forcehint">For testing: click a Tier in the preview to force that result.</p>` : ""}`;
   return DialogV2.prompt({
@@ -259,6 +277,16 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
             banes += m.banes;
           }
         });
+        // v0.0.194: each Tier's Avg follows the Bonus chips ticked and the Empowered / Enfeebled chips.
+        const on = new Set([...root.querySelectorAll("[name=bonusOn]:checked")].map(c => c.value));
+        const step = (Number(root.querySelector("[name=empowered]")?.value) || 0) - (Number(root.querySelector("[name=enfeebled]")?.value) || 0);
+        pv.querySelectorAll(".calc[data-avg]").forEach(el => {
+          let d = null;
+          try { d = JSON.parse(el.dataset.avg); } catch (e) { return; }
+          const r = liveAvg(d, on, step);
+          el.innerHTML = `Avg ${Math.round(r.avg * 10) / 10}${r.why.length ? ` <small>(with ${esc(r.why.join(", "))})</small>` : ""}`;
+          el.dataset.tooltip = r.why.length ? `Without them: ${Math.round(d.base * 10) / 10}` : "";
+        });
         const forced = root.querySelector("[name=forceTier]")?.value ?? "";
         pv.querySelectorAll("tr[data-t]").forEach(tr => tr.classList.toggle("forced", tr.dataset.t === forced));
         const fav = root.querySelector("[name=favored]")?.checked || root.querySelector("[name=reloadshot]")?.checked,
@@ -307,7 +335,7 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
       label: "Roll",
       callback: (ev, btn) => {
         const fd = new FormData(btn.form);
-        return { ...Object.fromEntries(fd), fx: fd.getAll("fx") };
+        return { ...Object.fromEntries(fd), fx: fd.getAll("fx"), bonusOn: fd.getAll("bonusOn") };
       }
     },
     rejectClose: false
@@ -337,8 +365,17 @@ export async function useAction(actor, item, opts = {}) {
     }
   }
   const s = actor.system, it = item.system;
-  // Mark Quarry: it needs the creature to mark (targeted).
-  if (it.category === "Marked Quarry" && !game.user.targets.size) return ui.notifications.warn("Target the creature you want as your Marked Quarry first.");
+  // v0.0.189 (Lucas): an Action that targets, used with too few creatures targeted, asks for them on the map (targeting.mjs) instead of refusing.
+  if (needsTargets(it)) {
+    const need = Math.max(1, targetsNeeded(it.targets));
+    if (game.user.targets.size < need) {
+      const pk = await pickTargets(need, item.name);
+      if (pk && !pk.ok) return;
+      if (pk?.noTarget) opts = { ...opts, noTargetDc: pk.dc };   // v0.0.190: "No target" on the banner, with its DC
+    }
+  }
+  // An Action that marks the target needs it (targeted).
+  if (it.marksTarget && !game.user.targets.size) return ui.notifications.warn(`Target the creature ${item.name} marks first.`);
   // A Save Action (the Save trait): you don't roll; each target rolls the Save named on its Vs. line against 11 + your Modifier (Save Actions in the rules).
   const saveAct = !!it.traits?.has?.("save");
   // A Weapon Action needs its weapon before anything else happens (no area to place first, then refused). The same checks run again below.
@@ -430,8 +467,14 @@ export async function useAction(actor, item, opts = {}) {
   const isAreaAction = !!(String(it.area ?? "").trim() || Number(it.areaCfg?.size) > 0);   // an Area decides who is affected: no weapon Range check
   const wUse = it.traits.has("weapon") && previewWeapon ? weaponUse(previewWeapon, it.traits, s.reach ?? 1, wpnSquares) : null;
   const useTraits = new Set([...it.traits, ...(wUse?.mode ? [wUse.mode] : []), ...(wUse?.mode === "ranged" && !wUse.thrown && hasProp(previewWeapon, "projectile") ? ["shot"] : [])]);   // a Weapon Action with a Projectile weapon is a Shot
+  // v0.0.188: a Weapon Action with a Two-handed weapon also matches "Two-handed weapon" in settings (Heavy Blows); not shown as a trait.
+  const rollUse = new Set([...useTraits, ...(it.traits.has("weapon") && hasProp(previewWeapon, "twohanded") ? ["__twohanded"] : [])]);
   const attrKeyForPreview = src.attrKey;
-  const preview = await buildPreviews({ setupDone, talentMods: talentModsFor(actor, item),
+  // v0.0.193 (Lucas): the preview's Avg counts the Bonus Damage of each Tier and the Empowered / Enfeebled step the effects give.
+  const pvTarget = rollsAtOthers ? (aimed[0]?.actor ?? null) : null, pvTraits = rollTraits(rollUse, src, item.name);
+  const pvBonus = Object.fromEntries([1, 2, 3].map(t => [t, collectBonuses(actor, pvTraits, t, { target: pvTarget, mod: src.mod }).filter(b => b.dmg)]));
+  const pvSteps = damageSteps(actor, pvTraits, pvTarget), pvStep = topStep(pvSteps.empowered) - topStep(pvSteps.enfeebled);
+  const preview = await buildPreviews({ setupDone, talentMods: talentModsFor(actor, item), bonusByTier: pvBonus, step: pvStep,
     item, actor, isSelf, weapon: previewWeapon, isWeapon: modOnWeapon(src, useTraits), attrMode: src.attrMode, mod: previewMod, dc: dcInfo.dc, dcNote: dcInfo.note,
     attrVal: src.kind ? (Number(src.mod) || 0) : 0, attrLabel: src.kind === "attribute" ? (TWOD12.attributes[attrKeyForPreview] ?? "") : (src.chip ?? ""),   // [Mod]: the Modifier used on the roll
     checkLabel: (src.kind === "attribute" || !src.kind ? `${TWOD12.attributes[src.attrKey] ?? ""} Check` : `${src.chip} (${TWOD12.attributes[src.attrKey] ?? "?"})`) + (it.vs ? ` vs. ${vsText(it)}` : "")
@@ -439,6 +482,8 @@ export async function useAction(actor, item, opts = {}) {
   if (saveAct) preview.noOdds = true;   // a Save Action: you don't roll, so no odds in the dialog (its targets roll)
   // A ranged weapon: the distance to the target decides the banes (far range 1, maximum range 2).
   let extraMods = [];
+  // v0.0.186, the "Ignore a Bane" settings of the creature's effects and passives (Long Draw, Steady Nerves, Sharpshooter): the names of what ignores each rule.
+  const lessRange = ignoredBy(actor, "rangeBane", useTraits), noEngagedTarget = ignoredBy(actor, "engagedTarget", useTraits);
   const rw = previewWeapon?.system;
   const usesReload = it.traits.has("weapon") && rw?.traits?.has?.("reload");
   if (usesReload && rw.unloaded) return ui.notifications.warn(`${previewWeapon.name} is unloaded: Reload it before using it again.`);
@@ -469,13 +514,12 @@ export async function useAction(actor, item, opts = {}) {
       if (wUse?.range && selfToken && !isAreaAction) {
         const band = rangeBand(squaresBetween(selfToken, tk), wUse.range);
         if (band?.out) { skipped.push(`${tk.name}: out of range (${band.squares} squares, maximum ${band.max})`); continue; }
-        const rb = band?.banes ? Math.max(0, band.banes - (longDraw(actor, previewWeapon) ? 1 : 0)) : 0;   // Long Draw: far range 0, maximum range 1
-        if (rb) extraMods.push({ id: `syn:range|${a.uuid}`, name: `${band.label} (${tk.name})${rb < band.banes ? ", Long Draw" : ""}`, boons: 0, banes: rb, match: true, predicate: `${previewWeapon.name}: Range ${wUse.range}` });
+        const rb = band?.banes ? Math.max(0, band.banes - (lessRange.length ? 1 : 0)) : 0;   // "Ignore a Bane: one range Bane less" (Long Draw): far range 0, maximum range 1
+        if (rb) extraMods.push({ id: `syn:range|${a.uuid}`, name: `${band.label} (${tk.name})${rb < band.banes ? `, ${lessRange[0]}` : ""}`, boons: 0, banes: rb, match: true, predicate: `${previewWeapon.name}: Range ${wUse.range}` });
         if (wUse.long && band?.squares <= 1) extraMods.push({ id: `syn:long|${a.uuid}`, name: `Long weapon, adjacent (${tk.name})`, boons: 0, banes: 1, match: true, predicate: `${previewWeapon.name} is Long: 1 bane against adjacent creatures` });
       }
       if (useTraits.has("melee") && selfToken) { const fm = flankingMod(selfToken, tk, { tag: a.uuid }); if (fm) extraMods.push(fm); }
-      { const el = elusiveMod(a, useTraits, a.uuid); if (el) extraMods.push({ ...el, tokenId: tk.id }); }   // v0.0.181
-      if (useTraits.has("weapon") && useTraits.has("ranged") && !sharpshooterShot(actor, useTraits) && engagedWithOther(tk, selfToken))
+      if (useTraits.has("weapon") && useTraits.has("ranged") && !noEngagedTarget.length && engagedWithOther(tk, selfToken))
         extraMods.push({
           id: `syn:engaged-target|${a.uuid}`,
           name: `Engaged (${tk.name}, 1 Bane)`,
@@ -522,19 +566,16 @@ export async function useAction(actor, item, opts = {}) {
   if (wUse?.range && selfToken && targetToken && !multi && rollsAtOthers && !isAreaAction) {
     const band = rangeBand(squaresBetween(selfToken, targetToken), wUse.range);
     if (band?.out) ui.notifications.warn(`${targetToken.name} is out of range: ${band.squares} squares away, the maximum is ${band.max}${wUse.thrown ? " (thrown)" : ""}.`);
-    else if (band?.banes) extraMods.push({ id: "syn:range", name: band.label, boons: 0, banes: band.banes, match: true, predicate: `${previewWeapon.name}: Range ${wUse.range}` });
+    else if (band?.banes) { const rb = Math.max(0, band.banes - (lessRange.length ? 1 : 0)); if (rb) extraMods.push({ id: "syn:range", name: `${band.label}${rb < band.banes ? `, ${lessRange[0]}` : ""}`, boons: 0, banes: rb, match: true, predicate: `${previewWeapon.name}: Range ${wUse.range}` }); }
     if (wUse.long && band && band.squares <= 1) extraMods.push({ id: "syn:long", name: "Long weapon, adjacent", boons: 0, banes: 1, match: true, predicate: `${previewWeapon.name} is Long: 1 bane against adjacent creatures` });
   }
   // Ranged Combat While Engaged: a [Ranged] Action (a ranged Weapon Action, or any Action with the Ranged trait) while you are Engaged has 2 banes; against an Engaged creature, 1 bane (v0.0.169).
   const rangedWeapon = useTraits.has("ranged");
-  // The Archer: Marked Quarry and Hunter's Focus boons against the quarry (archer.mjs).
-  if (!multi && rollsAtOthers && targetToken) extraMods.push(...archerMods(actor, useTraits, targetToken));
-  if (!multi && rollsAtOthers && targetToken) { const el = elusiveMod(targetToken.actor, useTraits); if (el) extraMods.push({ ...el, tokenId: targetToken.id }); }   // v0.0.181
   // Flanking: [Melee] Actions gain a boon for each other ally that flanks the target (up to 3).
   if (useTraits.has("melee") && !multi && rollsAtOthers && selfToken && targetToken) { const fm = flankingMod(selfToken, targetToken); if (fm) extraMods.push(fm); }
   if (rangedWeapon && selfToken) {
-    if (isEngaged(selfToken) && !steadyNerves(actor)) extraMods.push({ id: "syn:engaged", name: "You are Engaged (2 Banes)", boons: 0, banes: 2, match: true, predicate: "Using a [Ranged] Action while you are Engaged is hard" });
-    if (!multi && rollsAtOthers && targetToken && !sharpshooterShot(actor, useTraits) && engagedWithOther(targetToken, selfToken))   // Sharpshooter: not for [Shot] Actions (v0.0.181)
+    if (isEngaged(selfToken) && !ignoredBy(actor, "engagedSelf", useTraits).length) extraMods.push({ id: "syn:engaged", name: "You are Engaged (2 Banes)", boons: 0, banes: 2, match: true, predicate: "Using a [Ranged] Action while you are Engaged is hard" });
+    if (!multi && rollsAtOthers && targetToken && !noEngagedTarget.length && engagedWithOther(targetToken, selfToken))   // "Ignore a Bane" (Sharpshooter: [Shot] Actions)
       extraMods.push({
         id: "syn:engaged-target",
         name: "Target is Engaged (1 Bane)",
@@ -549,32 +590,31 @@ export async function useAction(actor, item, opts = {}) {
   // What makes the roll Doomed or Empowered, shown on the option itself ("Target is Hidden (Doomed)").
   const doomReason = doomStatus(actor) || (seen === "hidden" ? "Target is Hidden" : seen === "unsensed" ? "Target is Unsensed" : "");
   // Empowered and Enfeebled: what gives them, and the one value that counts (the highest of each; the Enfeebled value is taken from the Empowered one).
-  const steps = damageSteps(actor, rollTraits(useTraits, src, item.name));
+  const steps = damageSteps(actor, rollTraits(rollUse, src, item.name), rollsAtOthers ? (aimed[0]?.actor ?? null) : null);   // v0.0.186: the target, for "only against my marked target"
   if (opts.empowered) steps.empowered.push({ name: opts.label ?? "this Action", n: stepOf(opts.empowered) });
-  { const he = hunterEmpowered(actor, rollsAtOthers ? (aimed[0] ?? null) : null); if (he) steps.empowered.push(he); }   // Hunter's Focus
   const stepSources = [...steps.empowered.map(x => `${x.name}: Empowered ${x.n}`), ...steps.enfeebled.map(x => `${x.name}: Enfeebled ${x.n}`)];
   // What will add to this roll's damage or trigger when it lands, shown in the dialog so the player knows: effects with bonus damage ("Divine Surge: +1d8 Holy") and abilities that trigger ("Profane Judgment").
-  const dlgTraits = rollTraits(useTraits, src, item.name), bonusSeen = new Map();
-  for (const t of [1, 2, 3]) for (const b of collectBonuses(actor, dlgTraits, t)) { const bk = `${b.effect}|${b.dmg}|${b.sub}|${b.text}`; if (!bonusSeen.has(bk)) bonusSeen.set(bk, { b, tiers: [] }); bonusSeen.get(bk).tiers.push(t); }
-  { const rz = radiantZealBonus(actor, dlgTraits); if (rz) bonusSeen.set("radiantZeal", { b: { ...rz, hover: "Radiant Zeal: your first [Strike] Action this round that deals damage deals an extra [M] 1d6 Holy (Escalation 1 or more)." }, tiers: [1, 2, 3] }); }   // v0.0.181
-  { const kf = killersFocusBonus(actor, dlgTraits); if (kf) bonusSeen.set("killersFocus", { b: { ...kf, hover: "Killer's Focus: your first [Ranged, Shot, Strike, Weapon] Action this turn-cycle deals an extra [B] 1d6 Pierce, on every Tier (Escalation 2 or more)." }, tiers: [1, 2, 3] }); }   // v0.0.162
+  const dlgTraits = rollTraits(rollUse, src, item.name), bonusSeen = new Map();
+  for (const t of [1, 2, 3]) for (const b of collectBonuses(actor, dlgTraits, t, { target: rollsAtOthers ? (aimed[0]?.actor ?? null) : null, mod: src.mod })) { const bk = `${b.effect}|${b.dmg}|${b.sub}|${b.text}`; if (!bonusSeen.has(bk)) bonusSeen.set(bk, { b, tiers: [] }); bonusSeen.get(bk).tiers.push(t); }
   const dmgSubs = new Set();
   for (const v of versions) for (const tk of ["t1", "t2", "t3"]) for (const inst of v[tk] ?? []) { if (inst.useW && previewWeapon?.system?.subtype) dmgSubs.add(previewWeapon.system.subtype); if (inst.subtype) dmgSubs.add(inst.subtype); }
   for (const { b } of bonusSeen.values()) if (b.sub) dmgSubs.add(b.sub);
+  const bonusChips = [...bonusSeen.entries()].map(([key, { b, tiers }]) => ({ key, text: `${b.effect}: ${b.dmg ? `+${b.dmg}${b.sub ? ` ${TWOD12.subtypes[b.sub] ?? ""}` : ""}` : b.text}${tiers.length < 3 ? ` (Tier ${tiers.join(", ")})` : ""}`, why: `${b.hover || "This effect adds to the damage of this roll."} Untick it to leave it out (its effect isn't used up).` }));
   const extraNotices = [
-    ...[...bonusSeen.values()].map(({ b, tiers }) => ({ text: `${b.effect}: ${b.dmg ? `+${b.dmg} ${TWOD12.subtypes[b.sub] ?? ""}`.trim() : b.text}${tiers.length < 3 ? ` (Tier ${tiers.join(", ")})` : ""}`, icon: "fa-sparkles", why: b.hover || "This effect adds to the damage of this roll." })),
     ...triggerNotices(actor, multi ? perT.map(p => p.actor) : rollsAtOthers && targetToken?.actor ? [targetToken.actor] : [], dmgSubs)
   ];
-  const data = await askRoll(actor, {
+  // v0.0.196: a shortcut (the Evade key) uses a no-roll version at once, without the dialog.
+  const quick = opts.quickAp != null && versions.find(v => v.ap === Number(opts.quickAp))?.noTiers;
+  const data = quick ? { ap: String(opts.quickAp), fx: [], bonusOn: [], boons: 0, banes: 0, mod: 0, dc: 13, empowered: 0, enfeebled: 0 } : await askRoll(actor, {
     title: item.name,
     attrKey: preAttr,
-    traits: rollTraits(useTraits, src, item.name),
+    traits: rollTraits(rollUse, src, item.name),
     versions,
     defaults: {
       doomedLabel: doomReason ? `${doomReason} (Doomed)` : undefined,
       empowerN: topStep(steps.empowered),
       enfeebleN: topStep(steps.enfeebled),
-      dc: dcInfo.dc,
+      dc: opts.noTargetDc ?? dcInfo.dc,
       reaction: it.reaction,
       favored: unseenYou || untrainedTarget,
       favoredLabel: unseenYou ? `${mine === "hidden" ? "Hidden" : "Unsensed"} (Favored)` : (untrainedTarget ? "Target's untrained armor (Favored)" : undefined),
@@ -595,8 +635,11 @@ export async function useAction(actor, item, opts = {}) {
     extraMods,
     notices: [...(opts.grant ? [{ text: `Granted use: ${String(opts.grant.effect?.name ?? opts.label ?? "").replace(/\s*\(.*\)\s*$/, "")}, ${opts.grant.grant?.ap ? `${opts.grant.grant.ap} AP` : "free"} (${Math.max(0, (opts.grant.grant?.left ?? 1) - 1)} left after this)`, icon: "fa-gift", why: "A use another Action gave you: it doesn't count toward this Action's Frequency or the 3 Strikes of your turn. For a normal use, close this and Shift-click the use button." }] : []), ...extraNotices, ...(opts.splitMode ? [{ text: `Split: ${SPLIT_LABEL[opts.splitMode]}`, icon: "fa-code-branch", why: "A Split Action is used as an Action of the mode you chose (Weapon or Power)." }] : []), ...(wUse?.thrown && wUse.mode === "ranged" ? [{ text: `Thrown: Ranged, Range ${wUse.range.split("/").join(" / ")}`, icon: "fa-person-rifle", why: `${previewWeapon?.name} is thrown: a Ranged Action with its Thrown Range (the target is beyond its melee Range, or the Action is Ranged). It leaves your hand.` }] : [])],
     withDamage: true,
-    withReload: usesReload
+    withReload: usesReload,
+    bonusChips
   });
+  const bonusKey = b => `${b.effect}|${b.dmg}|${b.sub}|${b.text}`;
+  const bonusOff = new Set(bonusChips.map(c => c.key).filter(k => !(data?.bonusOn ?? []).includes(k)));
   if (!data) return;
   // The step the damage uses: the two chips (Empowered and Enfeebled; the player can change them, they start at the highest value that effects and conditions give), and a Reload shot is Empowered 2 by itself.
   const reloadShot = data.reloadshot === "on";
@@ -608,7 +651,9 @@ export async function useAction(actor, item, opts = {}) {
   // An Escalation Action: its Escalation is checked before the AP is spent, and spent after it.
   const escCost = opts.free ? 0 : Math.max(0, Number(it.escalation) || 0);
   if (escCost) { const pay = canPayEscalation(actor, escCost); if (!pay.ok) return ui.notifications.warn(pay.why); }
-  if (apCost > 0 && !(await spendAP(actor, apCost, item.name))) return;
+  // v0.0.197: a movement-only Action in combat says its AP in its own chat line (the movement tag's), not in an AP line.
+  const moveQuiet = !!pureMove(it, version, basicKey) && !!game.combat?.started && !!canvas?.ready;
+  if (apCost > 0 && !(await spendAP(actor, apCost, item.name, { quiet: moveQuiet, reaction: !!it.reaction }))) return;
   if (escCost) await spendEscalation(actor, escCost);
   const isWeapon = it.traits.has("weapon");
 
@@ -679,22 +724,19 @@ export async function useAction(actor, item, opts = {}) {
   if (mres) for (const r of mres) r.chk.dcLabel = dcWord(r.dcInfo, Number(data.dc) !== Number(perT[0]?.dcInfo?.dc));
   const tier = chk?.tier ?? (mres ? Math.max(...mres.map(r => r.chk.tier)) : 0);
   // Effects waiting for this kind of action (bonus damage, added text); then the ones that end when it is used.
-  if (mres) for (const r of mres) r.bonuses = collectBonuses(actor, rollTraits(useTraits, src, item.name), r.chk.tier);
-  const bonuses = mres ? [...new Map(mres.flatMap(r => r.bonuses).map(b => [`${b.effect}|${b.dmg}|${b.text}`, b])).values()] : (tier && !version.noTiers ? collectBonuses(actor, rollTraits(useTraits, src, item.name), tier) : []);
-  // Killer's Focus: the first [Ranged, Shot, Strike, Weapon] Action of the turn-cycle deals an extra [B] 1d6 Pi, on every Tier (archer.mjs).
-  // Marked Quarry (v0.0.181): [B] [Mod] on a Tier 1 of a [Shot, Strike] Action against the quarry (archer.mjs).
-  if (!version.noTiers) {
-    const rt = rollTraits(useTraits, src, item.name);
-    if (chk?.tier === 1 && rollsAtOthers && aimed[0]) { const qb = quarryTier1Bonus(actor, rt, aimed[0], src.mod); if (qb) bonuses.push(qb); }
-    if (mres) for (const r of mres) if (r.chk.tier === 1) { const qb = quarryTier1Bonus(actor, rt, r.token, src.mod); if (qb) { r.bonuses.push(qb); if (!bonuses.some(b => b.effectId === "markedQuarry")) bonuses.push(qb); } }
-  }
-  // Radiant Zeal (v0.0.181): the first [Strike] Action this round that deals damage (a Tier with damage) gets +[M] 1d6 Ho (paladin.mjs).
-  { const rz = radiantZealBonus(actor, rollTraits(useTraits, src, item.name)), dealsAt = t => t > 0 && ((version[`t${t}`] ?? []).length > 0 || bonuses.some(b => b.dmg));
-    if (rz && !version.noTiers && (chk ? dealsAt(chk.tier) : mres?.some(r => dealsAt(r.chk.tier)))) { bonuses.push(rz); if (mres) for (const r of mres) if (dealsAt(r.chk.tier)) r.bonuses.push(rz); await useRadiantZeal(actor); } }
-  // Elusive (v0.0.181): the first [Strike] Action against the Archer this round took its Bane: it is used.
-  for (const m of extraMods) if (String(m.id).startsWith("syn:elusive")) { const t = canvas.tokens?.get(m.tokenId ?? "")?.actor ?? targetToken?.actor; if (t) await useElusive(t); }
-  { const kf = killersFocusBonus(actor, rollTraits(useTraits, src, item.name)); if (kf && (chk || mres)) { bonuses.push(kf); if (mres) for (const r of mres) r.bonuses.push(kf); await useKillersFocus(actor); } }
-  await expireOnUse(actor, rollTraits(useTraits, src, item.name));
+  // v0.0.186: effects' and passives' Bonus Damage, each with its own target (only against my marked target) and the Action's Modifier ([Mod]).
+  // A "once per round" bonus (Killer's Focus, Radiant Zeal) only lands on a Tier that deals damage, and is then used for this turn-cycle.
+  const rt = rollTraits(rollUse, src, item.name);
+  const dealsAt = t => t > 0 && !version.noTiers && (version[`t${t}`] ?? []).length > 0;
+  const keepOnce = (list, t) => list.filter(b => (!b.once || dealsAt(t)) && !bonusOff.has(bonusKey(b)));   // v0.0.187: and not unticked in the dialog
+  if (mres) for (const r of mres) r.bonuses = keepOnce(collectBonuses(actor, rt, r.chk.tier, { target: r.token?.actor ?? null, mod: src.mod }), r.chk.tier);
+  const bonuses = mres ? [...new Map(mres.flatMap(r => r.bonuses).map(b => [`${b.effect}|${b.dmg}|${b.text}`, b])).values()] : (tier && !version.noTiers ? keepOnce(collectBonuses(actor, rt, tier, { target: rollsAtOthers ? (aimed[0]?.actor ?? null) : null, mod: src.mod }), tier) : []);
+  { const used = bonuses.filter(b => b.once).map(b => b.once); if (used.length && (chk || mres)) await markOnce(actor, used); }
+  // The "once per round" Boons and Banes that were in the roll (Elusive on the target) are used too.
+  if (chk || mres) { try { await useOnceModifiers(actor, rt, multi ? perT.map(p => p.actor) : rollsAtOthers && targetToken?.actor ? [targetToken.actor] : [], null, data.fx); } catch (e) { console.warn("twod12 | once per round", e); } }
+  // An effect whose Bonus Damage was unticked stays (it wasn't used).
+  { const kept = new Set(); for (const t of [1, 2, 3]) for (const b of collectBonuses(actor, rt, t, { target: rollsAtOthers ? (aimed[0]?.actor ?? null) : null, mod: src.mod })) if (bonusOff.has(bonusKey(b))) kept.add(b.effectId);
+    await expireOnUse(actor, rollTraits(rollUse, src, item.name), kept); }
   const targets = (multi ? perT.map(p => p.token) : (!rollsAtOthers ? (selfToken ? [selfToken] : []) : aimed)).map(t => ({ uuid: t.document?.uuid ?? t.uuid, name: t.name }));
 
   const dcSet = mres ? new Set(mres.map(r => r.chk.dc)) : null;
@@ -750,7 +792,8 @@ export async function useAction(actor, item, opts = {}) {
   const effWho = mres && !effectsOff && mres.some(r => r.chk.tier === 1) ? ` \u2014 ${collapseNames(mres.filter(r => r.chk.tier >= 2).map(r => r.name))}` : "";
   const effLabel = version.noTiers || saveAct ? "Effects" : `Effects (Tier 2+)${effWho}`;
   const effectsHtml = version.effects ? `<div class="effects${effectsOff ? " off" : ""}${rowParts.length || bonuses.length ? " sep" : ""}"><div class="eh">${effLabel}</div><div class="et">${await enrich(version.effects, item)}</div></div>` : "";
-  const bonusRows = bonuses.map(b => `<div class="bonusrow"><i class="fa-solid fa-sparkle"></i> <b>${esc(b.effect)}</b>: ${b.dmg ? `+${esc(b.dmg)} ${esc(TWOD12.subtypes[b.sub] ?? "")}`.trim() : ""}${b.text ? ` ${esc(b.text)}` : ""}</div>`).join("");
+  // v0.0.189: the name opens the item it comes from (a Talent, a Feature, an Effect), for everyone who reads the card.
+  const bonusRows = bonuses.map(b => `<div class="bonusrow"><i class="fa-solid fa-sparkle"></i> <b>${srcLink(b.effect, b.srcUuid)}</b>: ${b.dmg ? `+${esc(b.dmg)}${b.sub ? ` ${esc(TWOD12.subtypes[b.sub] ?? "")}` : ""}` : ""}${b.text ? ` ${esc(b.text)}` : ""}</div>`).join("");
   const dmgNeeded = (t, bon) =>
     needsDamage(
       src.attrMode !== "none" ? (src.attrMode === "all" ? 1 : 2) : 0,
@@ -771,7 +814,7 @@ export async function useAction(actor, item, opts = {}) {
   const areaRow = areaButton(it) && !areaPlaced ? `<div class="trow arearow">${await enrich(areaButton(it), item)}</div>` : "";
   const setupRow = it.setup ? `<div class="trow setuprow"><b>Setup:</b> ${await enrich(setupFor(it.setup, setupDone), item)}</div>` : "";
   const html = `<div class="twod12 chat action" style="${cardVars(color)}">
-    ${cardHead(item.name, categoryText(it), apIcon(version.ap, it.reaction), effectiveFrequency(it))}
+    ${cardHead(item.name, categoryText(it), apIcon(version.ap, it.reaction), effectiveFrequency(it), it.automation)}
     ${flavorHtml(it)}
     ${useTraits.size ? `<div class="traits">${traitsHtml(useTraits)}</div>` : ""}
     ${trow}${areaRow}${setupRow}
@@ -786,7 +829,16 @@ export async function useAction(actor, item, opts = {}) {
     ${critHtml}${effectsHtml}
     ${fxn.all.length && !effectsOff ? `<div class="fxrow">&#10022; ${esc(fxn.all.join(", "))}</div>` : ""}
     ${btn}${isSelf && !String(it.area ?? "").trim() ? "" : targetsRowHtml([collapseNames(targets.map(t => t.name))].filter(Boolean), { retarget: true })}</div>`;
-  await ChatMessage.create({
+  // v0.0.195 (Lucas): a movement-only Action (Advance, Evade, Crawl) in combat starts its movement with the banner (squares left, Done) and
+  // posts one short line when it ends, instead of a card whose button then posted the movement (two messages for one step).
+  const mvInner = pureMove(it, version, basicKey);
+  let bannerMove = false;
+  if (mvInner && game.combat?.started && canvas?.ready) {
+    const { parseInline } = await import("./inline.mjs"), { handleMove } = await import("./move.mjs");
+    const cfg = parseInline("Move", mvInner);
+    bannerMove = (await handleMove({ ...cfg, traits: [...new Set([...(cfg.traits ?? []), "self"])], banner: item.name, bannerAp: apCost }, { actor, token: selfToken })) === true;
+  }
+  if (!bannerMove) await ChatMessage.create({
     speaker: ChatMessage.getSpeaker({ actor }),
     content: html,
     rolls: mres ? multiRoll.rolls : (chk?.rolls ?? []),
@@ -839,11 +891,12 @@ export async function useAction(actor, item, opts = {}) {
       }
     } catch (e) { console.warn("twod12 | Save Action", e); }
   }
-  // Mark Quarry: the targeted creature becomes the Marked Quarry (archer.mjs).
-  if (it.category === "Marked Quarry") { try { await setQuarry(actor, [...game.user.targets][0] ?? null); } catch (e) { console.warn("twod12 | Marked Quarry", e); } }
+  // An Action that marks (Mark Quarry; v0.0.186 the Action's "Marks the target" box): the targeted creature becomes the marked one (archer.mjs).
+  if (it.marksTarget) { try { await setQuarry(actor, [...game.user.targets][0] ?? null); } catch (e) { console.warn("twod12 | marking", e); } }
   // Mastery: a Tier 3 on a Weapon Action with a weapon gives +1 Mastery with that kind of weapon (once per Action; characters only).
   if (!version.noTiers) {
-    try { await masteryAfterRoll(actor, weapon, src.kind === "weapon", mres ? mres.map(r => r.chk.tier) : [tier]); } catch (e) { console.warn("twod12 | Mastery", e); }
+    // v0.0.189: a forced Tier (testing) gives no Mastery.
+    try { if (!forcedTier) await masteryAfterRoll(actor, weapon, src.kind === "weapon", mres ? mres.map(r => r.chk.tier) : [tier]); } catch (e) { console.warn("twod12 | Mastery", e); }
   }
   // A version that rolls applies its automatic effects on use too, for the Tier each creature got: the tier's effects, the Effects row
   // on Tier 2 or 3, and the effects your bonuses add (Rimebrand's Hindered). Conditional ones stay on the damage card's Effects button.
@@ -883,7 +936,7 @@ export async function rollDamage(message) {
   const weapon = f.weaponId ? actor.items.get(f.weaponId) : null;
   // One creature's damage: its tier, its bonuses, and only that creature as the target of the damage and its effects.
   const rollFor = async (tier, bonus, targets, who) => {
-    const insts = [...version[`t${tier}`], ...bonus.filter(b => b.dmg).map(b => ({ pool: b.pool, useW: false, wCount: 1, dice: b.dmg, useAt: false, subtype: b.sub }))];
+    const insts = [...version[`t${tier}`], ...bonus.filter(b => b.dmg).map(b => ({ pool: b.pool, useW: false, wCount: 1, dice: b.dmg, useAt: false, subtype: b.sub, source: b.effect, srcUuid: b.srcUuid ?? "" }))];
     const fx = [...(tier >= 2 ? (version.fx?.all ?? []) : []), ...(version.fx?.[`t${tier}`] ?? []), ...bonus.filter(b => b.fxUuid).map(b => ({ uuid: b.fxUuid, mode: "auto" }))]
       .filter(x => !f.fxOnUse || x.mode !== "auto");   // cards from v0.0.144 on applied their automatic effects when the Action was used
     const rolls = [];
@@ -891,7 +944,7 @@ export async function rollDamage(message) {
     const resolved = [];
     for (const inst of insts) resolved.push(await resolveInstance(inst, ctx));
     const comps = [];
-    for (const r of resolved) for (const c of r.comps) comps.push({ pool: r.inst.pool || "B", sub: c.sub, kind: c.kind, formula: c.formula, total: c.total, dice: c.dice });
+    for (const r of resolved) for (const c of r.comps) comps.push({ pool: r.inst.pool || "B", sub: c.sub, kind: c.kind, formula: c.formula, total: c.total, dice: c.dice, ...(r.inst.source ? { src: r.inst.source, srcUuid: r.inst.srcUuid } : {}) });   // v0.0.189: bonus damage names its source
     let chip = "";
     const dmgRes = resolved;
     // [Mod]: the Weapon Modifier on Tiers 2 and 3 (to the weapon's damage), the Signature Modifier for a [Signature, Weapon] Action (v0.0.181); nothing for Power, Signature and Attribute Actions. Old cards: isWeapon / attrMode "all".
@@ -930,4 +983,25 @@ export async function retargetAction(msg) {
   const content = msg.content.replace(/<div class="tline cardtargets">[\s\S]*?<\/div>/, targetsRowHtml(targets.map(t => t.name), { retarget: true }));
   try { await msg.update({ content, "flags.twod12.action.targets": targets }); }
   catch (e) { ui.notifications.warn("Only the author of this card or the GM can change its targets."); }
+}
+
+/**
+ * v0.0.196 (Lucas): a shortcut for a Basic Action of the selected token (the Evade key: Evade, 1 AP, straight to the movement banner).
+ * Returns false when there is no single selected token of yours, or it has no such Action.
+ */
+export async function quickBasic(key, ap = null) {
+  const tokens = canvas?.tokens?.controlled?.filter(t => t.actor?.isOwner) ?? [];
+  if (tokens.length !== 1) { ui.notifications.warn("Select your token first."); return false; }
+  const actor = tokens[0].actor, item = actor.items.find(i => i.type === "action" && i.getFlag("twod12", "basic") === key);
+  if (!item) { ui.notifications.warn(`${actor.name} has no ${key === "safeMovement" ? "Evade" : key} Action.`); return false; }
+  // v0.0.197 (Lucas): which version, when there are several (Evade: 1 AP, Evade 1; 2 AP, Evade half your Speed).
+  const vs = [...item.system.versions].sort((a, b) => a.ap - b.ap);
+  if (ap === null && vs.length > 1) {
+    const speed = Number(actor.system?.moveSpeed ?? actor.system?.speed) || 0;
+    const label = v => (key === "safeMovement" ? `Evade ${v.ap >= 2 ? Math.floor(speed / 2) : 1} (${v.ap} AP)` : `${item.name} (${v.ap} AP)`);
+    ap = await DialogV2.wait({ window: { title: `${actor.name}: ${item.name}` }, content: `<p>Which ${esc(item.name)}?</p>`, buttons: vs.map((v, k) => ({ action: `v${v.ap}`, label: label(v), default: k === 0, callback: () => v.ap })), rejectClose: false });
+    if (ap === null || ap === undefined) return false;
+  }
+  await useAction(actor, item, { quickAp: ap ?? vs[0]?.ap ?? 1 });
+  return true;
 }

@@ -5,7 +5,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | File | Chapter | Document | Part | KB | Lines |
 |---|---|---|---|---|---|
 | 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 19.4 | 277 |
-| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 22.4 | 252 |
+| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 22.5 | 252 |
 | 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 35.2 | 429 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 12.2 | 244 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 6.2 | 68 |
@@ -15,7 +15,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 19.3 | 161 |
 | 11-species.md | Species | species |  | 0.8 | 35 |
 | 12-paladin.md | Paladin | paladin |  | 11.3 | 371 |
-| 13-archer.md | Archer | archer |  | 10.0 | 340 |
+| 13-archer.md | Archer | archer |  | 9.9 | 340 |
 | 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 14.5 | 275 |
 | 15-gear.md | Gear | gear |  | 7.2 | 162 |
 | 16-talents.md | Talents | talents |  | 9.8 | 311 |

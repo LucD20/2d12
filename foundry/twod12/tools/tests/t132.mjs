@@ -16,8 +16,9 @@ console.log("no Check field:", !("checks" in G.TWOD12), "| checkAttr reads only 
 const src = n => fs.readFileSync(ROOT + n, "utf8");
 const data = src("module/data.mjs"), isheet = src("templates/item-sheet.hbs"), content = src("tools/content.mjs");
 console.log("Action data has no check:", !/\n\s+check: choice\(TWOD12\.checks\)/.test(data), "| the editor has no 'Other roll':", !isheet.includes("Other roll"));
-console.log("[HT] in the effect text: Rain of Arrows", content.includes("\"The area lasts 2 rounds [HT: Entering, Turn].\")]"), "| Covering Fire", content.includes("Lasts 2 rounds [HT: Entering]. Allies inside gain +1 Defense."));
-console.log("Opportunity Attack makes a Weapon Attack:", content.includes("@Use[Weapon Attack|label:Weapon Attack (1A)]\")]\n}, \"Talents\")") && content.includes('spec: "Weapon Attack", when: "outOfTurn"'), "| Vow of Enmity 3 AP Tier 3:", content.includes('["1d6MH", "As 2 AP."]'));
+// v0.0.188 (OT): Rain of Arrows and Covering Fire have no [HT] any more (the book's cards); Covering Fire keeps its area 3 rounds.
+console.log("OT: no [HT] on Rain of Arrows and Covering Fire:", !content.includes("[HT: Entering"), "| Covering Fire kept 3 rounds:", content.includes('withinRange: "normal", targets: "all", center: false, keep: true, rounds: 3 }'));
+console.log("Opportunity Attack makes a Weapon Attack:", content.includes("@Use[Weapon Attack|label:Weapon Attack (1A)]. Used this way, out of your turn") && content.includes('spec: "Weapon Attack", when: "outOfTurn"'), "| Vow of Enmity 3 AP Tier 3:", content.includes('["1d6MH", "As 2 AP."]'));
 // v0.0.158: "Distance:" written on the third line; the weapon is checked before an area is placed; windows step aside while placing
 const act = src("module/actions.mjs"), tpl = src("module/template.mjs");
 console.log("weapon checked before anything:", act.indexOf("A Weapon Action needs its weapon before anything else happens") < act.indexOf("areaConfigOf(it)"), "| windows minimized while placing, then back:", tpl.includes("const back = await stepAside();") && tpl.includes("finally { await back(); }"), "| Volley:", !content.includes("you included"));

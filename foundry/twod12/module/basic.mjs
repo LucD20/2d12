@@ -50,7 +50,7 @@ export const BASIC_ACTIONS = {
     distance: "self",
     versions: [
       V(1, [], [], [], "", {
-        x1: "Your next Reload attempt gains 2 boons.",
+        x1: "Your next Reload attempt gains 2 Boons.",
         x2: "You Reload your weapon. @Reload[weapon] Then you can Interact to grip your weapon with two hands: @Use[Interact|label:Interact (grip)]",
         x3: "You Reload your weapon and @Move[evade|distance:1]. @Reload[weapon] Then you can Interact to grip your weapon with two hands: @Use[Interact|label:Interact (grip)]"
       })
@@ -142,7 +142,7 @@ export const BASIC_ACTIONS = {
         [],
         [],
         [],
-        "Advance at least 3 squares and up to your Speed in a straight line: @Move[charge|distance:speed+2*has(Battering Charge)|min:3|uncapped:yes|label:Charge]. You can't Charge through Difficult Terrain. At the end of your movement, make a Weapon Attack (1A) with 1 boon: @Use[Weapon Attack|boons:1|empowered:has(Battering Charge)|label:Weapon Attack (1A, 1 boon)]",
+        "Advance at least 3 squares and up to your Speed in a straight line: @Move[charge|distance:speed+2*has(Battering Charge)|min:3|uncapped:yes|label:Charge]. You can't Charge through Difficult Terrain. At the end of your movement, make a Weapon Attack (1A) with 1 Boon: @Use[Weapon Attack|boons:1|empowered:has(Battering Charge)|label:Weapon Attack (1A, 1 Boon)]",
         { noTiers: true }
       )
     ]
@@ -325,6 +325,26 @@ export function registerBasicHooks() {
         if (r) ui.notifications.info(`2d12: the Rally value of ${r} Paladin or Archer class item${r === 1 ? "" : "s"} follows the book now (Paladin 6, Archer 5).`);
       }
     } catch (e) { console.warn("twod12 | Rally values", e); }
+    // v0.0.191 (Lucas): the system compendiums are unlocked while the world setting says so (on by default); only the GM and Assistants can
+    // edit them (their ownership). Written straight into Foundry's compendium configuration (v0.0.190's one-time call didn't take).
+    try { await unlockSystemPacks(); } catch (e) { console.warn("twod12 | unlocking the compendiums", e); }
+    // v0.0.186, once per world: the cards automated by code that tested their name get their settings (automation.mjs).
+    try {
+      if (!game.settings.get(F, "settingsV186")) {
+        const { giveSettingsV186 } = await import("./automation.mjs");
+        const r = await giveSettingsV186(game.items ?? [], game.actors ?? []);
+        await game.settings.set(F, "settingsV186", true);
+        if (r) ui.notifications.info(`2d12: ${r} Feature${r === 1 ? "" : "s"} or Effect${r === 1 ? "" : "s"} got their automation as settings you can edit (Killer's Focus, Radiant Zeal, Elusive...).`);
+      }
+    } catch (e) { console.warn("twod12 | settings v0.0.186", e); }
+    try {
+      if (!game.settings.get(F, "settingsV187")) {
+        const { giveSettingsV187 } = await import("./automation.mjs");
+        const r = await giveSettingsV187(game.items ?? [], game.actors ?? []);
+        await game.settings.set(F, "settingsV187", true);
+        if (r) ui.notifications.info(`2d12: Killer's Focus and Radiant Zeal now give an Effect each turn (${r} item${r === 1 ? "" : "s"} updated).`);
+      }
+    } catch (e) { console.warn("twod12 | settings v0.0.187", e); }
     // v0.0.169 and v0.0.170, once per creature that needs it: the new Basic Actions (Relocate, the 3 AP Shove, Fists as a Weapon Action, Haul) and Fists as an ordinary weapon.
     let n = 0;
     for (const actor of game.actors ?? []) {
@@ -368,5 +388,20 @@ export async function fixReleaseCost(actors) {
       try { await it.update({ "system.versions": vs.map(v => ({ ...(v.toObject?.() ?? v), ap: 0 })) }); n++; } catch (e) { console.warn("twod12 | could not fix Release on", actor.name, e); }
     }
   }
+  return n;
+}
+
+/** v0.0.191: unlock the system's compendiums (world setting "unlockPacks", on by default). Returns how many were unlocked. */
+export async function unlockSystemPacks() {
+  if (!game.user.isGM || !game.settings.get(F, "unlockPacks")) return 0;
+  const cfg = foundry.utils.deepClone(game.settings.get("core", "compendiumConfiguration") ?? {});
+  let n = 0;
+  for (const p of game.packs ?? []) {
+    if (p.metadata?.packageName !== F || p.metadata?.packageType !== "system") continue;
+    if (cfg[p.collection]?.locked === false) continue;
+    cfg[p.collection] = { ...(cfg[p.collection] ?? {}), locked: false };
+    n++;
+  }
+  if (n) { await game.settings.set("core", "compendiumConfiguration", cfg); console.log(`twod12 | ${n} system compendium(s) unlocked`); }
   return n;
 }

@@ -13,6 +13,7 @@ import { VersionsEditor } from "./versions.mjs";
 import { attrLine, choicesToMake, freqOf, SECTION_FREQS } from "./classlevels.mjs";
 import { itemInfo } from "./classwindow.mjs";
 import { openLevelsEditor } from "./classeditor.mjs";
+import { prereqText, prereqLine } from "./talents.mjs";
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ItemSheetV2 } = foundry.applications.sheets;
 
@@ -38,6 +39,8 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       addTalentMod: TwoD12ItemSheet.addTalentMod,
       createLinkedAction: TwoD12ItemSheet.createLinkedAction,
       removeTalentMod: TwoD12ItemSheet.removeTalentMod,
+      togglePrereqMode: TwoD12ItemSheet.togglePrereqMode,
+      removePrereq: TwoD12ItemSheet.removePrereq,
       editLevels: TwoD12ItemSheet.editLevels
     }
   };
@@ -71,6 +74,16 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       condRows: (s.conditions ?? []).map((c, i) => ({ i, name: c.name, value: c.value, valued: !!c.valued, mode: c.mode || "set" })),
       riderModes: { set: "the highest counts", increase: "increase the value" },
       isTalent: t === "talent",
+      autoRanks: TWOD12.automationRanks,
+      // v0.0.186: the Talent's Category and Prerequisites as data (talents.mjs).
+      ...(t === "talent" ? {
+        talentGroups: TWOD12.talentGroups, prereqKinds: TWOD12.prereqKinds, prereqModes: { all: "all of these", any: "any one of these" },
+        traitChoices: Object.fromEntries(Object.entries(TWOD12.traits).sort((a, b) => a[1].localeCompare(b[1]))),
+        prereqJoin: s.prereqMode === "any" ? "or" : "and",
+        prereqRows: (s.prereqs ?? []).map((p, i) => ({ i, ...p, text: prereqText(p), kindLabel: { talent: "Talent", level: "Level", trait: "a", attribute: "", other: "Other" }[p.kind] ?? "", isTalent: p.kind === "talent", isLevel: p.kind === "level", isTrait: p.kind === "trait", isAttribute: p.kind === "attribute", isOther: p.kind === "other" })),
+        prereqShown: prereqLine(s),
+        talentNames: [...new Set([...(game.items ?? [])].filter(i => i.type === "talent").map(i => i.name))].sort()
+      } : {}),
       hasMods: t === "talent" || t === "action",
       talentMods:
         t === "talent" || t === "action"
@@ -137,6 +150,17 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
                 speedFormula: x.speedFormula,
                 speedModes: { add: "Add to the creature's Speed:", override: "Replace the creature's Speed with:" },
                 isBoonBane: x.type === "boonbane",
+                isIgnore: x.type === "ignore",
+                isRally: x.type === "rally",
+                isTurnStart: x.type === "turnstart",
+                ignoreRule: x.ignoreRule,
+                ignoreRules: TWOD12.ignoreRules,
+                rallyBonus: x.rallyBonus,
+                rallyRange: x.rallyRange,
+                oncePerRound: x.oncePerRound,
+                vsMarked: x.vsMarked,
+                showOnce: ["boonbane", "bonusdamage"].includes(x.type),
+                showMarked: ["bonusdamage", "damagestep"].includes(x.type) || (x.type === "boonbane" && !x.against),
                 isBonus: x.type === "bonusdamage",
                 boons: x.boons,
                 banes: x.banes,
@@ -144,8 +168,8 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
                 enfeebled: x.enfeebled,
                 byValue: x.byValue,
                 showByValue: !!(s.valued || x.byValue),
-                boonWord: x.boons === 1 ? "boon" : "boons",
-                baneWord: x.banes === 1 ? "bane" : "banes",
+                boonWord: x.boons === 1 ? "Boon" : "Boons",
+                baneWord: x.banes === 1 ? "Bane" : "Banes",
                 timesWord: x.grantCount === 1 ? "time" : "times",
                 dmg: x.dmg,
                 poolOpts: TWOD12.pools,
@@ -154,8 +178,8 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
                 dmgSub: x.dmgSub,
                 fxName: x.fxUuid ? (fromUuidSync(x.fxUuid)?.name ?? "(missing)") : "",
                 tierBoxes: ["t1", "t2", "t3"].map((k, ti) => ({ key: k, label: `T${ti + 1}`, checked: x.tiers.has(k) })),
-                preds: ["boonbane", "bonusdamage", "damagestep"].includes(x.type) ? predRows(x, shown, fields, x.type === "bonusdamage" ? "any action" : "every roll") : [],
-                hidden: ["boonbane", "bonusdamage", "damagestep"].includes(x.type) ? hiddenPreds(x, shown, fields) : [],
+                preds: ["boonbane", "bonusdamage", "damagestep", "ignore"].includes(x.type) ? predRows(x, shown, fields, ["bonusdamage", "ignore"].includes(x.type) ? "any action" : "every roll") : [],
+                hidden: ["boonbane", "bonusdamage", "damagestep", "ignore"].includes(x.type) ? hiddenPreds(x, shown, fields) : [],
                 title: x.title,
                 text: x.text,
                 bright: x.bright,
@@ -272,6 +296,9 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
 
   _onRender(context, options) {
     super._onRender?.(context, options);
+    // v0.0.190 (Lucas): a locked compendium's item (read-only) still opens its Details tab: Foundry disables every button of a read-only
+    // sheet, so the tab buttons (and "Edit levels…", which only shows) are switched back on. The fields stay read-only.
+    if (!this.isEditable) this.element.querySelectorAll(".tabbtn, [data-action='openLinked']").forEach(b => { b.disabled = false; });
     this.element.classList.toggle("twod12-styled", this.item.type !== "species");   // v0.0.168 (system.css "Item sheets")
     applyTab(this);
     enableDragging(this);
@@ -327,6 +354,23 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
         await this.item.update({ "system.settings": arr });
       })
     );
+    // v0.0.186: a Talent's Prerequisite rows (a new kind starts with its own default: Level 1, an Attribute at 1).
+    this.element.querySelectorAll("[data-pfield]").forEach(el =>
+      el.addEventListener("change", async () => {
+        const arr = foundry.utils.deepClone(this.item.toObject().system.prereqs ?? []), row = arr[Number(el.dataset.pfield)];
+        if (!row) return;
+        row[el.dataset.field] = el.type === "number" ? Math.trunc(Number(el.value)) || 0 : el.value;
+        if (el.dataset.field === "kind") { row.name = ""; row.value = ["level", "attribute"].includes(el.value) ? 1 : 0; }
+        await this.item.update({ "system.prereqs": arr });
+      })
+    );
+    this.element.querySelector("[data-prereqadd]")?.addEventListener("change", async ev => {
+      const kind = ev.currentTarget.value;
+      if (!kind) return;
+      const arr = foundry.utils.deepClone(this.item.toObject().system.prereqs ?? []);
+      arr.push({ kind, name: "", value: ["level", "attribute"].includes(kind) ? 1 : 0 });
+      await this.item.update({ "system.prereqs": arr });
+    });
     this.element.querySelectorAll("[data-dfield]").forEach(el =>
       el.addEventListener("change", async () => {
         const arr = foundry.utils.deepClone(this.item.toObject().system.defenses);
@@ -537,6 +581,14 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       await w.update({ "system.actions": [...w.system.actions, a.uuid] });
       a.sheet.render(true);
     }
+  }
+  static async togglePrereqMode() {
+    await this.item.update({ "system.prereqMode": this.item.system.prereqMode === "any" ? "all" : "any" });
+  }
+  static async removePrereq(event, target) {
+    const arr = foundry.utils.deepClone(this.item.toObject().system.prereqs ?? []);
+    arr.splice(Number(target.dataset.index), 1);
+    await this.item.update({ "system.prereqs": arr });
   }
   static async addDefense() {
     const arr = foundry.utils.deepClone(this.item.toObject().system.defenses);

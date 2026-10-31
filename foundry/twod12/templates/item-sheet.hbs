@@ -4,8 +4,9 @@
     <input class="name" type="text" name="name" value="{{item.name}}" placeholder="Name">
   </header>
   <nav class="tabs">
-    <button type="button" class="tabbtn" data-action="switchTab" data-tab-target="description">Description</button>
-    <button type="button" class="tabbtn" data-action="switchTab" data-tab-target="details">Details</button>
+    {{!-- v0.0.191: links, not buttons: a read-only sheet (a locked compendium) disables every button, and the Details tab could not be opened --}}
+    <a class="tabbtn" role="tab" data-action="switchTab" data-tab-target="description">Description</a>
+    <a class="tabbtn" role="tab" data-action="switchTab" data-tab-target="details">Details</a>
   </nav>
 
   <section class="tab" data-tab="description">
@@ -93,14 +94,32 @@
 
 
     {{#if isTalent}}
-    <div class="grid3">
-      <label>Category <input type="text" name="system.category" value="{{system.category}}" placeholder="Talent"></label>
+    <div class="grid4">
+      <label>Category <select name="system.group">{{selectOptions talentGroups selected=system.group}}</select></label>
       <label>Level <input type="number" min="0" name="system.level" value="{{system.level}}"></label>
       <label>Frequency <select name="system.frequency">{{selectOptions freqChoices selected=system.frequency}}</select></label>
+      <label data-tooltip="A theme the Talent picker can filter by (Unarmed, Great Weapon, Marksman, Divine): usually the chain it belongs to">Theme <input type="text" name="system.theme" value="{{system.theme}}" placeholder="Unarmed"></label>
     </div>
     <label>Flavor <input type="text" name="system.flavor" value="{{system.flavor}}" placeholder="A small gift from the god you follow."></label>
-    <label>Prerequisites <input type="text" name="system.requirements" value="{{system.requirements}}" placeholder="e.g. Brawler, Appeal +1"></label>
-    <p class="hint">Level is the character level needed to choose the Talent. Shown as {{categoryShown}}.</p>
+    <label class="autosel" data-tooltip="How much Foundry does for this card, shown as a chip on it (Not implemented, Bronze, Silver, Gold)">Automation <select name="system.automation">{{selectOptions autoRanks selected=system.automation}}</select></label>
+    <div class="prereqs">
+      <div class="pq-line"><span class="pq-lead">Prerequisites:</span>
+        {{#each prereqRows}}
+        {{#unless @first}}<a class="pq-join" data-action="togglePrereqMode" data-tooltip="Click to switch: and (all of them) / or (any one of them)">{{../prereqJoin}}</a>{{/unless}}
+        <span class="pq-chip pq-{{kind}}"><span class="pq-kind">{{kindLabel}}</span>
+          {{#if isTalent}}<input type="text" data-pfield="{{i}}" data-field="name" value="{{name}}" placeholder="Brawler" list="twod12-talent-names">{{/if}}
+          {{#if isLevel}}<input type="number" class="n" min="1" data-pfield="{{i}}" data-field="value" value="{{value}}">{{/if}}
+          {{#if isTrait}}<select data-pfield="{{i}}" data-field="name">{{selectOptions ../traitChoices selected=name blank="(trait)"}}</select><span class="pq-kind">Action</span>{{/if}}
+          {{#if isAttribute}}<select data-pfield="{{i}}" data-field="name">{{selectOptions ../attrChoices selected=name blank="(Attribute)"}}</select><input type="number" class="n" data-pfield="{{i}}" data-field="value" value="{{value}}">{{/if}}
+          {{#if isOther}}<input type="text" class="wide" data-pfield="{{i}}" data-field="name" value="{{name}}" placeholder="Proficient with shields">{{/if}}
+          <button type="button" data-action="removePrereq" data-index="{{i}}" aria-label="Remove">&times;</button></span>
+        {{else}}<span class="pq-none">none: any character can take it</span>{{/each}}
+        <select class="pq-add" data-prereqadd aria-label="Add a Prerequisite"><option value="">+ Add…</option>{{selectOptions prereqKinds}}</select>
+      </div>
+      {{#if system.requirements}}{{#unless prereqRows.length}}<p class="hint">Old text: <i>{{system.requirements}}</i> (add it as Prerequisites so the picker can check it).</p>{{/unless}}{{/if}}
+      <datalist id="twod12-talent-names">{{#each talentNames}}<option value="{{this}}"></option>{{/each}}</datalist>
+    </div>
+    <p class="hint">Level is the character level needed to choose the Talent. Shown as {{categoryShown}}{{#if prereqShown}}; Prerequisites: {{prereqShown}}{{/if}}. The class window's Talent picker checks the Level and every Prerequisite but Other.</p>
     <label>Traits {{formInput fields.traits value=system.traits name="system.traits" options=traitPicker.options groups=traitPicker.groups}}</label>
     {{/if}}
 
@@ -154,6 +173,9 @@
       <div class="ro"><span>Shown as</span><b>{{categoryShown}}</b></div>
     </div>
     <label>Flavor <input type="text" name="system.flavor" value="{{system.flavor}}" placeholder="Your bond with your god opens new paths."></label>
+    <label class="autosel" data-tooltip="How much Foundry does for this card, shown as a chip on it (Not implemented, Bronze, Silver, Gold)">Automation <select name="system.automation">{{selectOptions autoRanks selected=system.automation}}</select></label>
+    <label class="inline" data-tooltip="Shown in the Escalation section of the Features tab. When it works is each setting's own &quot;It works...&quot; below (Escalation 1, 2 or 3).">
+      <input type="checkbox" name="system.escalationPassive" {{#if system.escalationPassive}}checked{{/if}}> Escalation Passive</label>
     <label>Talents granted <input type="number" min="0" name="system.talents" value="{{system.talents}}"></label>
     <p class="hint">Level is the class level at which the Feature is gained (0 counts as 1). Each Talent granted becomes a Talent slot on the character sheet ("Drop a Talent here (Feature name)").</p>
     <h3>Defenses</h3>
@@ -179,6 +201,7 @@
     {{#if isAction}}
     <label>Traits {{formInput fields.traits value=system.traits name="system.traits" options=traitPicker.options groups=traitPicker.groups}}</label>
     <label>Flavor <input type="text" name="system.flavor" value="{{system.flavor}}" placeholder="Your weapon blazes with holy light."></label>
+    <label class="autosel" data-tooltip="How much Foundry does for this card, shown as a chip on it (Not implemented, Bronze, Silver, Gold)">Automation <select name="system.automation">{{selectOptions autoRanks selected=system.automation}}</select></label>
     <div class="grid3 rx">
       <label class="inline"><input type="checkbox" name="system.reaction" {{#if system.reaction}}checked{{/if}}> Reaction</label>
       <label>Kind <select name="system.reactionKind" {{#unless system.reaction}}disabled{{/unless}}>{{selectOptions reactionKinds selected=system.reactionKind}}</select></label>
@@ -195,6 +218,8 @@
       <label>Distance <input type="text" name="system.distance" value="{{system.distance}}" placeholder="reach, self, weapon, 10/20/40"></label>
       <label>Vs. <select name="system.vs">{{selectOptions vsChoices selected=system.vs}}</select></label>
     </div>
+    <label class="inline" data-tooltip="Using it marks the targeted creature (Mark Quarry). Settings with &quot;Only against the creature it marked&quot; read the mark; it ends when that creature goes Down.">
+      <input type="checkbox" name="system.marksTarget" {{#if system.marksTarget}}checked{{/if}}> Marks the target</label>
     <p class="hint">Actions with the Weapon trait always roll the Weapon Modifier; for the others, pick the attribute rolled. With no Defense the DC is 13. With Defense Body, the DC is 13 + the target's Body (negatives included) + any defense bonuses it has against this action.</p>
     <p class="hint">Actions with the Weapon trait use the class Weapon Modifier instead of the Check.</p>
     <div class="areaedit"><b>Area</b>
@@ -253,7 +278,7 @@
       <label data-tooltip="The kind of weapon its Mastery counts for. Empty: its name. A +1 Greatsword with 'Greatsword' here shares the Greatsword's Mastery.">Mastery group <input type="text" name="system.masteryGroup" value="{{system.masteryGroup}}" placeholder="{{item.name}}"></label>
       {{#if system.reach}}<label>Old extra Reach <input type="number" min="0" name="system.reach" value="{{system.reach}}"></label>{{/if}}
     </div>
-    <p class="hint">Every weapon has a Range, melee weapons included: normal / far (1 bane) / maximum (2 banes); one number has no far or maximum range (most melee weapons: 1). Reach above 1 adds to every number of a melee weapon's Range. Long: 1 bane against adjacent creatures, and it doesn't threaten them. Thrown: used in hand with its Range, thrown with its Thrown Range (a Ranged Action). A melee weapon without a Range uses 1 + its old extra Reach.</p>
+    <p class="hint">Every weapon has a Range, melee weapons included: normal / far (1 Bane) / maximum (2 Banes); one number has no far or maximum range (most melee weapons: 1). Reach above 1 adds to every number of a melee weapon's Range. Long: 1 bane against adjacent creatures, and it doesn't threaten them. Thrown: used in hand with its Range, thrown with its Thrown Range (a Ranged Action). A melee weapon without a Range uses 1 + its old extra Reach.</p>
     <label>Damage Subtype <select name="system.subtype">{{selectOptions subtypeChoices selected=system.subtype}}</select></label>
     {{#each weaponTiers}}
     <h3>{{label}} Damage</h3>
@@ -280,7 +305,7 @@
     <div class="fxd{{#if fxHelp}} help-on{{/if}} passive">
       <h3>Passive <select class="fxd-add" data-fxadd aria-label="Add a setting"><option value="">+ Add…</option>{{selectOptions settingChoices}}</select></h3>
       <label class="fxd-hover" data-tooltip="Shown when the mouse is over this effect or ability in a roll. Empty: the start of its description.">Hover text <input type="text" name="system.hover" value="{{system.hover}}" placeholder="What it does, in a short line (optional)"></label>
-      <p class="hint">What the creature with this {{#if isFeature}}Feature{{else}}Talent{{/if}} has by itself (boons and banes, Empowered and Enfeebled, Defense, Speed, notes). Each setting has its own "It works...": always, or only while the Escalation is high enough (an Escalation Passive: "while your Escalation is 2 or more"), so one {{#if isFeature}}Feature{{else}}Talent{{/if}} can hold settings that work at different moments.</p>
+      <p class="hint">What the creature with this {{#if isFeature}}Feature{{else}}Talent{{/if}} has by itself (Boons and Banes, Empowered and Enfeebled, Defense, Speed, notes). Each setting has its own "It works...": always, or only while the Escalation is high enough (an Escalation Passive: "while your Escalation is 2 or more"), so one {{#if isFeature}}Feature{{else}}Talent{{/if}} can hold settings that work at different moments.</p>
       {{> "systems/twod12/templates/parts/settings.hbs"}}
     </div>
     {{/if}}
@@ -300,6 +325,7 @@
       {{#if applied.exhausted}}<p class="fxd-help">Exhausted's own rules (Speed, the penalty on Rolls, the Mind Damage Threshold) come from its value; 0 removes it. Settings added here come on top of them.</p>{{/if}}
       {{else}}
       <h3>Identity</h3>
+      <label class="autosel" data-tooltip="How much Foundry does for this card, shown as a chip on it (Not implemented, Bronze, Silver, Gold)">Automation <select name="system.automation">{{selectOptions autoRanks selected=system.automation}}</select></label>
       <div class="fxd-s">This is <select class="fxd-f" data-fxkind>{{selectOptions kindChoices selected=kindVal}}</select> placed on <select class="fxd-f" data-fxself>{{selectOptions selfChoices selected=selfVal}}</select>.
         {{#if system.isCondition}}<label class="fxd-inl"><input type="checkbox" name="system.valued" {{#if system.valued}}checked{{/if}}> It has a value (like Empowered 2)</label>{{/if}}</div>
       <p class="fxd-help">An effect is a bundle of the settings below. A condition is a named state from the book (Prone, Empowered); one with a value keeps it on the creature, and clicking its icon raises it. "The user" is the creature that used the Action.</p>

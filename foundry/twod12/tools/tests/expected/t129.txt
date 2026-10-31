@@ -1,11 +1,11 @@
 Vow of Enmity 2 AP: No effect. / As 1 AP. / As Tier 2, and the target is Vulnerable 1 (EoT). || 3 AP: No effect. / As 2 AP. / As 2 AP.
 Champion's Challenge 2 AP: No effect. / As 1 AP. / As 1 AP.
 Hallowed Stance: by your Power Modifier (minimum 0). It reduces one instance of damage per Action; if the Action has several, the player chooses which one. (Not automated.)
-Vs. entries as in the book: all 12 match
+Vs. entries as in the book: all 11 match
 no-roll cards have no Vs.: true
-Vow of Enmity 2 AP T2: Your next Strike against them gains 1 boon, and you increase your Empowered value by 1 for that Strike.
-Vow of Enmity 3 AP T3: Your next Strike against them gains 1 boon, and you increase your Empowered value by 1 for that Strike, and the target is Vulnerable 1 (EoT).
-Vow of Enmity 1 AP T3: Your next Strike against them gains 1 boon, and you increase your Empowered value by 1 for that Strike.
-Champion's Challenge 2 AP T3: 1 bane on [Strike] and [Power] Actions against anyone other than you (EoT), but 2 banes instead of 1.
+Vow of Enmity 2 AP T2: Your next [Strike] Action against them gains 1 Boon, and you increase your Empowered value by 1 for that Strike.
+Vow of Enmity 3 AP T3: Your next [Strike] Action against them gains 1 Boon, and you increase your Empowered value by 1 for that Strike, and the target is Vulnerable 1 (EoT).
+Vow of Enmity 1 AP T3: Your next [Strike] Action against them gains 1 Boon, and you increase your Empowered value by 1 for that Strike.
+Champion's Challenge 2 AP T3: 1 Bane on [Strike] and [Power] Actions against anyone other than you (EoT), but 2 Banes instead of 1.
 kept as is: 'No effect.' No effect. | text with no 'As': @Condition[hindered|eot]
 a loop stops: As 1 AP.

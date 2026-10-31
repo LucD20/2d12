@@ -21,7 +21,7 @@ none  4.5 / 4.5 / 4.5
 old isWeapon: 4.5 / 7.5 / 7.5 | no damage on a tier adds nothing: 0
 --- costs and the Turn Frequency
 0 AP: 0AP | 0R: 0R | 1/2R: 1/2R | Turn: Turn #0F6E6E | Power is the label of the magic key: Power | Signature: Signature
-roll kinds: {"__check":"Check","__save":"Save","__attr":"Attribute Action"}
+roll kinds: {"__check":"Check","__save":"Save","__attr":"Attribute Action","__twohanded":"Two-handed weapon"}
 before: {"faded":false,"why":""}
 used on turn 1: {"faded":true,"why":"Used this turn"}
 the next creature's turn: {"faded":false,"why":""}

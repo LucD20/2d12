@@ -1,9 +1,10 @@
 // Roll dialog preview: what the action will roll, per Version, in the look of the chat card.
+import { prereqLine } from "./talents.mjs";
 import { attrFromTier } from "./rollsource.mjs";
 import { TWOD12, expandAsText, cardVars, cardHead, flavorHtml, apIcon, apLabel, traitChevrons, categoryText, highlightText, metaRowHtml, effectiveFrequency, distanceText, areaText, cardColorFor, vsText, areaButton, poolIcon, dtypeHtml, inkOf, prettyDamage } from "./config.mjs";
 import { setupFor } from "./setup.mjs";
 import { esc } from "./roll.mjs";
-import { tierAvg, tierProbs, critProb, fmt } from "./calc.mjs";
+import { tierAvg, tierProbs, critProb, fmt, avgFormula } from "./calc.mjs";
 
 
 const enrich = async (txt, doc = null) => highlightText(await foundry.applications.ux.TextEditor.implementation.enrichHTML(txt ?? "", doc ? { relativeTo: doc } : {}));
@@ -48,6 +49,24 @@ export function applyTalentMods(v, mods = []) {
   return { ...v, critical: [v.critical, ...mods.map(m => m.critical)].filter(Boolean).join(" "), effects: [v.effects, ...mods.map(m => m.effects)].filter(Boolean).join(" ") };
 }
 
+/**
+ * v0.0.193: what the effects add to a Tier's average: its Bonus Damage (ctx.bonusByTier) and the Empowered / Enfeebled step (ctx.step) on
+ * every die. { add, why: ["Heavy Blows +2", "Empowered 1"] }. Only for a Tier that deals damage.
+ */
+export function avgExtras(insts, tier, ctx = {}) {
+  if (!insts.length) return { add: 0, why: [] };
+  const bon = ctx.bonusByTier?.[tier] ?? [];
+  let add = 0, dice = 0, own = 0;
+  const why = [], parts = [];
+  for (const b of bon) { const a = avgFormula(b.dmg) ?? 0, d = diceIn(b.dmg); if (a) { add += a; why.push(`${b.effect} +${b.dmg}`); } dice += d; parts.push({ key: `${b.effect}|${b.dmg}|${b.sub}|${b.text}`, name: `${b.effect} +${b.dmg}`, avg: a, dice: d }); }
+  for (const i of insts) { if (i.useW && ctx.weapon) own += (Number(ctx.weapon.system?.damage?.[`t${tier}`]?.count) || 0) * (i.wCount || 1); if (i.dice) own += diceIn(i.dice); }
+  dice += own;
+  const step = Math.trunc(Number(ctx.step) || 0);
+  if (step && dice) { add += step * dice; why.push(step > 0 ? `Empowered ${step}` : `Enfeebled ${-step}`); }
+  return { add, why, dice: own, parts };   // v0.0.194: dice and parts let the dialog recompute it live
+}
+const diceIn = f => [...String(f ?? "").matchAll(/(\d*)d\d+/g)].reduce((s, m) => s + (Number(m[1]) || 1), 0);
+
 export async function buildPreviews(ctx) {
   const { item } = ctx, it = item.system;
   const color = cardColorFor(it);
@@ -57,8 +76,9 @@ export async function buildPreviews(ctx) {
     const rows = [];
     for (const [n, k] of (v.noTiers ? [] : [1, 2, 3]).map(n => [n, `t${n}`])) {
       const lines = await tierLines(v[k] ?? [], n, ctx, expandAsText(v[`x${n}`], item.system.versions, v0, n));   // "As 1 AP" written out (the dialog shows one Version)
-      const avg = tierAvg(v[k] ?? [], n, ctx);
-      rows.push(`<tr data-t="${n}"><th>Tier ${n} <small class="pv-p"></small></th><td>${lines.length ? lines.join("<br>") : "&mdash;"}${avg ? `<div class="calc">Avg ${fmt(avg)}</div>` : ""}</td></tr>`);
+      const avg0 = tierAvg(v[k] ?? [], n, ctx), extra = avgExtras(v[k] ?? [], n, ctx), avg = avg0 ? avg0 + extra.add : 0;
+      const live = avg0 ? ` data-avg="${esc(JSON.stringify({ base: avg0, dice: extra.dice, parts: extra.parts }))}"` : "";   // v0.0.194: recomputed when a Bonus chip or Empowered changes
+      rows.push(`<tr data-t="${n}"><th>Tier ${n} <small class="pv-p"></small></th><td>${lines.length ? lines.join("<br>") : "&mdash;"}${avg ? `<div class="calc"${live}${extra.why.length ? ` data-tooltip="${esc(`Without them: ${fmt(avg0)}`)}"` : ""}>Avg ${fmt(avg)}${extra.why.length ? ` <small>(with ${esc(extra.why.join(", "))})</small>` : ""}</div>` : ""}</td></tr>`);
     }
     // The Critical row sits under Tier 3, only for Actions that have one.
     if (!v.noTiers && v.critical) rows.push(`<tr class="critp"><th>Critical <small class="pv-c"></small></th><td>${await enrich(v.critical, item)}</td></tr>`);
@@ -67,7 +87,7 @@ export async function buildPreviews(ctx) {
     const pvSetup = it.setup ? `<div class="trow setuprow"><b>Setup:</b> ${await enrich(setupFor(it.setup, ctx.setupDone), item)}</div>` : "";
     const check = ctx.mod === null || v.noTiers ? "" : `<div class="pv-check">${esc(ctx.checkLabel)}: 2d12 ${sgnN(ctx.mod)} vs DC <b class="pv-dc">${ctx.dc}</b> <span class="pv-odds"></span></div>`;
     out[v.ap] = `<div class="twod12 chat action pv" style="${cardVars(color)}">
-      ${cardHead(item.name, categoryText(it), apIcon(v.ap, it.reaction), effectiveFrequency(it))}
+      ${cardHead(item.name, categoryText(it), apIcon(v.ap, it.reaction), effectiveFrequency(it), it.automation)}
       ${flavorHtml(it)}
       ${it.traits.size ? `<div class="traits">${traitChevrons(it.traits)}</div>` : ""}
       ${pvMeta}${pvArea}${pvSetup}
@@ -140,7 +160,7 @@ export async function buildRawCard(item) {
   const setupRow = it.setup ? `<div class="trow setuprow"><b>Setup:</b> ${await enrich(it.setup, item)}</div>` : "";
   const tabs = it.versions.length > 1 ? `<div class="vtabs">${it.versions.map((v, vi) => `<a class="vtab${vi ? "" : " on"}" data-vtab="${vi}">${apIcon(v.ap, it.reaction)}</a>`).join("")}</div>` : "";
   return `<div class="twod12 chat action rawcard" style="${cardVars(color)}">
-    ${cardHead(item.name, categoryText(it), apLabel(it.versions.map(v => v.ap), it.reaction), effectiveFrequency(it))}
+    ${cardHead(item.name, categoryText(it), apLabel(it.versions.map(v => v.ap), it.reaction), effectiveFrequency(it), it.automation)}
     ${flavorHtml(it)}
     ${it.traits.size ? `<div class="traits">${traitChevrons(it.traits)}</div>` : ""}
     ${metaRowHtml({ escalation: it.escalation ?? 0, frequency: effectiveFrequency(it), targetText: it.targets, distance: distanceText(it), area: areaText(it), vs: vsText(it, { fists: item.getFlag?.("twod12", "basic") === "fists" }), requirements: it.requirements, trigger: it.trigger, reactionKind: it.reactionKind, self: it.traits.has("self") })}${areaRow}${setupRow}
@@ -197,11 +217,11 @@ export async function buildInfoCard(item) {
   if (options.length) blocks.push(`<div class="iblock"><div class="eh">${esc(s.choiceLabel || "Choose")} ${Math.max(1, s.choiceCount || 1)}</div>${options.map(kid).join("")}</div>`);
   if (s.talents) blocks.push(`<div class="iblock"><div class="eh">Talent slots</div><div class="et">${s.talents}</div></div>`);
   blocks.push(...modifierBlocks(s));
-  const meta = [freq ? `<span class="freq">${esc(freq)}</span>` : "", s.requirements ? `<span><b>Prerequisites:</b> ${esc(s.requirements)}</span>` : ""].filter(Boolean);
+  const meta = [freq ? `<span class="freq">${esc(freq)}</span>` : "", prereqLine(s) ? `<span><b>Prerequisites:</b> ${esc(prereqLine(s))}</span>` : ""].filter(Boolean);
   const head = `${flavorHtml(s)}${s.traits?.size ? `<div class="traits">${traitChevrons(s.traits)}</div>` : ""}${meta.length ? `<div class="trow">${meta.join('<i class="fa-solid fa-sparkle sep"></i>')}</div>` : ""}`;
   const text = body.trim() ? `<div class="anote">${highlightText(body)}</div>` : "";
   return `<div class="twod12 chat action rawcard infocard">
-    ${cardHead(item.name, cat, "")}
+    ${cardHead(item.name, cat, "", "", s.automation)}
     ${head}${head && (text || blocks.length) ? `<hr class="cdiv">` : ""}${text}${blocks.join("")}</div>`;
 }
 
@@ -209,4 +229,17 @@ export async function buildInfoCard(item) {
 export async function sendItemToChat(item, actor = null) {
   const content = item.type === "action" ? await buildRawCard(item) : (item.type === "weapon" ? await buildWeaponCard(item) : await buildInfoCard(item));
   await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content });
+}
+
+/**
+ * v0.0.194 (Lucas): the roll dialog's Avg follows its chips: the Bonus Damage ticked (keys) and the Empowered / Enfeebled step.
+ * d = { base, dice, parts: [{ key, name, avg, dice }] }. Returns { avg, why }.
+ */
+export function liveAvg(d, on, step) {
+  let avg = Number(d?.base) || 0, dice = Number(d?.dice) || 0;
+  const why = [];
+  for (const p of d?.parts ?? []) if (on.has(p.key)) { avg += p.avg; dice += p.dice; if (p.avg) why.push(p.name); }
+  const k = Math.trunc(Number(step) || 0);
+  if (k && dice) { avg += k * dice; why.push(k > 0 ? `Empowered ${k}` : `Enfeebled ${-k}`); }
+  return { avg, why };
 }

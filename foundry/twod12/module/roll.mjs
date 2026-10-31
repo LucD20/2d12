@@ -25,11 +25,11 @@ async function rollDie() {
  * Doomed keeps the two lowest totals and can't produce Doubles. Favored keeps the pair that gives the highest Tier
  * (then a Critical, then the higher total): usually the two highest, but sometimes a pair of Doubles. Pure: the tests load it.
  */
-export function keepDice(dice, state, flat = 0, dc = 13) {
+export function keepDice(dice, state, flat = 0, dc = 13, noDoubles = false) {   // v0.0.206: noDoubles for a roll where Doubles do nothing (initiative): Favored keeps the highest pair
   const score = (a, b) => {
     const total = a.total + b.total + flat;
     const base = total < dc ? 1 : (total < dc + 7 ? 2 : 3);
-    const doubles = state !== "doomed" && a.first === b.first;
+    const doubles = !noDoubles && state !== "doomed" && a.first === b.first;
     return { total, base, doubles, tier: doubles ? Math.min(3, base + 1) : base, crit: (doubles && base === 3) || total >= dc + 20 };
   };
   if (!state || dice.length < 3) return { i: [0, 1], out: -1, ...score(dice[0], dice[1]) };
@@ -60,7 +60,7 @@ export async function showDice(rolls) {
 }
 
 /** 2d12 + mod + boons - banes vs DC. Does not post anything. */
-export async function performCheck({ mod = 0, boons = 0, banes = 0, dc = 13, sources = [], manualBoons = 0, manualBanes = 0, adj = 0, adjLabel = "", favored = false, doomed = false } = {}) {
+export async function performCheck({ mod = 0, boons = 0, banes = 0, dc = 13, sources = [], manualBoons = 0, manualBanes = 0, adj = 0, adjLabel = "", favored = false, doomed = false, noDoubles = false } = {}) {
   // Favored: 3d12, keep the pair with the best Tier. Doomed: keep the two lowest, no Doubles. Both cancel out.
   const state = favored && doomed ? "" : (favored ? "favored" : (doomed ? "doomed" : ""));
   const dice = [await rollDie(), await rollDie()];
@@ -69,7 +69,7 @@ export async function performCheck({ mod = 0, boons = 0, banes = 0, dc = 13, sou
   const boonRoll = boons > 0 ? await new Roll(`${boons}d3-${boons}`).evaluate() : null;
   const baneRoll = banes > 0 ? await new Roll(`${banes}d3-${banes}`).evaluate() : null;
   const bo = boonRoll?.total ?? 0, ba = baneRoll?.total ?? 0;
-  const k = keepDice(dice, state, mod + adj + bo - ba, dc);
+  const k = keepDice(dice, state, mod + adj + bo - ba, dc, noDoubles);
   const d1 = dice[k.i[0]], d2 = dice[k.i[1]], dropped = k.out >= 0 ? dice[k.out] : null;
   return {
     adjLabel, tier: k.tier, crit: k.crit, total: k.total, base: k.base, doubles: k.doubles, dc, mod, adj, bo, ba, sources, manualBoons, manualBanes,

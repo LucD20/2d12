@@ -1,10 +1,25 @@
 // The character and NPC sheets.
+import { prereqLine } from "./talents.mjs";
+import { escalationModel, grantBadges } from "./escblock.mjs";
+
+/** v0.0.198: the Basic Actions in their 4 groups (config basicGroups), each in its order; any other Basic Action goes in a fifth group. */
+export function basicGroupsOf(rows) {
+  const used = new Set(), out = [];
+  for (const g of TWOD12.basicGroups) {
+    const list = g.names.map(n => rows.find(r => r.name === n)).filter(Boolean);
+    list.forEach(r => used.add(r));
+    if (list.length) out.push({ key: g.key, label: g.label, rows: list });
+  }
+  const rest = rows.filter(r => !used.has(r));
+  if (rest.length) out.push({ key: "other", label: "Other", rows: rest });
+  return out;
+}
 import { masteryRows, masteryOf, setMastery, setCollapsed, techniqueState, bowMasteryOf, chooseBowMastery } from "./mastery.mjs";
 import { weaponRanges } from "./weaponrange.mjs";
 import { defenseBonus, steadinessOf } from "./defense.mjs";
 import { setWorn } from "./armor.mjs";
 import { bumpExhausted, isExhaustedFx, exhaustedClick } from "./sleep.mjs";
-import { TWOD12, orderTraits, apLabel, traitChevrons, categoryText, unconsciousDoom, doomStatus, cardColorFor, effectiveFrequency, distanceText, areaText, lineColorFor, KIND_LINE, SIZE_NAMES, isTalentAction, tagChoices } from "./config.mjs";
+import { autoChip, TWOD12, orderTraits, apLabel, traitChevrons, categoryText, unconsciousDoom, doomStatus, cardColorFor, effectiveFrequency, distanceText, areaText, lineColorFor, KIND_LINE, SIZE_NAMES, isTalentAction, tagChoices } from "./config.mjs";
 import { rollCheck, rollTable, esc, sgn } from "./roll.mjs";
 import { useAction, askRoll, adjLabelOf } from "./actions.mjs";
 import { handleDrop } from "./grants.mjs";
@@ -58,7 +73,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       confirmDelete: CharacterSheet.confirmDelete,
       rollInitiative: CharacterSheet.rollInitiative, addBasic: CharacterSheet.addBasic, rest: CharacterSheet.rest, editSenses: CharacterSheet.editSenses,
       sendItem: CharacterSheet.sendItem, toggleGroup: CharacterSheet.toggleGroup, generateWeapon: CharacterSheet.generateWeapon, toggleLoaded: CharacterSheet.toggleLoaded,
-      toggleFav: CharacterSheet.toggleFav, toggleDetails: CharacterSheet.toggleDetails, setFilter: CharacterSheet.setFilter, setView: CharacterSheet.setView,
+      toggleFav: CharacterSheet.toggleFav, toggleDetails: CharacterSheet.toggleDetails, toggleEsc: CharacterSheet.toggleEsc, toggleGrant: CharacterSheet.toggleGrant, setFilter: CharacterSheet.setFilter, setView: CharacterSheet.setView,
       setHands: CharacterSheet.setHands, setWorn: CharacterSheet.setWorn, setEscalation: CharacterSheet.setEscalation, toggleEscalation: CharacterSheet.toggleEscalation, masteryStep: CharacterSheet.masteryStep, masteryCollapse: CharacterSheet.masteryCollapse, masteryOpen: CharacterSheet.masteryOpen, chooseBowMastery: CharacterSheet.chooseBowMastery, hpEdit: CharacterSheet.hpEdit,
       setHealthView: CharacterSheet.setHealthView, setApPip: CharacterSheet.setApPip,
       toggleCard: CharacterSheet.toggleCard, reloadFor: CharacterSheet.reloadFor, toggleBasic: CharacterSheet.toggleBasic,
@@ -146,7 +161,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       if (!detail && String(sys.hover ?? "").trim()) detail = short(tipOf(it));   // its own hover text; the description shows when the card is opened
       const key = it.id ?? it.uuid;
       // Opened: its description first, then what it grants.
-      return { key, id: it.id, name: it.name, kind, kcls: kind.toLowerCase(), detail: o.detail ?? detail, tip: tipOf(it), rows, open: !!this._openFeat?.has(key), canRemove: !!o.canRemove,
+      return { key, id: it.id, name: it.name, auto: autoChip(sys.automation), kind, kcls: kind.toLowerCase(), detail: o.detail ?? detail, tip: tipOf(it), rows, open: !!this._openFeat?.has(key), canRemove: !!o.canRemove,
         text: (await TE.enrichHTML(sys.description ?? "", { relativeTo: it })).trim() || (rows.length ? "" : "<p><em>No description.</em></p>") };
     };
     // Class: the granted Features in your order (level order at first), then the ones not reached yet.
@@ -155,10 +170,24 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     // The pick Features (Encounter Pick, Daily Pick, Free Picks...: a choice whose name says Pick) go together in one "Class picks" card. v0.0.181: the Hallmark Action too.
     const isPick = it => (it.system?.choiceOptions ?? []).some(Boolean) && /\bpicks?\b|\bhallmark action\b/i.test(it.name);
     const pickCopies = [];
+    // v0.0.186 (Lucas): Escalation is its own section, like Class and Talents: the class's Escalation Passives and Actives (its lists, or an
+    // "Escalation" Category, or an Escalation cost), with when each works.
+    const escList = new Set([...(cls?.system?.escPassives ?? []), ...(cls?.system?.escActives ?? [])]);
+    const isEsc = it => !!it.system?.escalationPassive || escList.has(it.getFlag("twod12", "sourceUuid")) || /escalation/i.test(String(it.system?.category ?? "")) || Number(it.system?.escalation) > 0;   // v0.0.187: the Feature's own box first
+    const escNow = Number(a.system.escalation) || 0;
+    const escCards = [];
+    const escCard = async it => {
+      const cost = Number(it.system?.escalation) || 0, min = Math.min(...(it.system?.settings ?? []).map(x => Number(x.minEscalation) || 0).filter(n => n > 0), 99);
+      const at = it.type === "action" ? cost : (min < 99 ? min : 0);
+      const detail = it.type === "action" ? `costs ${cost} Escalation` : (at ? `works at Escalation ${at}+` : "always on");
+      const c = await card(it, { kind: it.type === "action" ? "Active" : "Passive", detail, rows: it.type === "action" ? [it, ...kidsOf(it)] : undefined });
+      return { ...c, kcls: `${c.kcls} esc${at && escNow >= at ? " esc-on" : ""}` };
+    };
     for (const f of (ctx.classTab?.features ?? []).filter(x => x.unlocked).map((x, k) => ({ x, k })).sort((p, q) => idx(p.x.id) - idx(q.x.id) || p.k - q.k)) {
       const copy = a.items.get(f.x.id);
       if (!copy) continue;
-      if (isPick(copy)) pickCopies.push(copy); else classCards.push(await card(copy));
+      if (isEsc(copy)) escCards.push(await escCard(copy));
+      else if (isPick(copy)) pickCopies.push(copy); else classCards.push(await card(copy));
     }
     // Class picks: first of the class. Opened, it shows the Attribute increases and Modifiers; it always lists what each pick chose.
     const picks = (ctx.classTab?.picks ?? "").split(" | ").filter(Boolean);
@@ -170,13 +199,17 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       }
       // v0.0.185: a class with levels: one label per section reached, with what was chosen in it (and what that gave).
       for (const p of ctx.classTab?.pickSections ?? []) {
-        const kids = p.items.flatMap(it => [it, ...(it.type === "action" ? [] : kidsOf(it))]).map(subRow);
+        const mine = [];
+        for (const it of p.items) if (isEsc(it)) { if (!escCards.some(c => c.id === it.id)) escCards.push(await escCard(it)); } else mine.push(it);
+        if (!mine.length && p.items.length) continue;   // a section of Escalation picks: they are in the Escalation section
+        const kids = mine.flatMap(it => [it, ...(it.type === "action" ? [] : kidsOf(it))]).map(subRow);
         rows.push({ isLabel: true, id: "", name: `${p.title} (Level ${p.level})`, empty: !kids.length, tip: "" }, ...kids);
       }
       classCards.unshift({ key: "classpicks", name: "Class picks", kind: "Picks", kcls: "picks", detail: "", rows, open: !!this._openFeat?.has("classpicks"),
         text: picks.map(p => `<p>${esc(p)}</p>`).join("") });
     }
-    for (const f of (ctx.classTab?.features ?? []).filter(x => !x.unlocked)) classCards.push({ key: f.lockKey ?? f.uuid, uuid: f.uuid, name: f.name, kind: `Level ${f.level}`, kcls: "locked", detail: `Gained at level ${f.level}`, locked: true, rows: [], open: false, text: "" });
+    // v0.0.186 (Lucas): the Features of higher levels are not shown until they are reached (no greyed cards).
+    // (the cards of the levels not reached are no longer pushed)
     // Species: one card with what it gives.
     const sp = a.itemTypes.species[0];
     const spText = sp ? (() => {
@@ -195,10 +228,15 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     for (const sl of ctx.talentSlots ?? []) slots.push(sl.talent ? { card: await talentCard(sl.talent, `Slot from ${sl.feature}`) } : { key: sl.key, feature: sl.feature });
     const extras = (await Promise.all((ctx.talents ?? []).map(t => talentCard(t, "Extra")))).filter(Boolean);
     const filled = slots.filter(x => x.card).length;
+    // v0.0.186 (Lucas): the Talents in subsections by Category (Combat, Mobility, Magic, Skill; "Other" for an Action that is a Talent), then the empty slots.
+    const groupOf = c => { const it = a.items.get(c.id); return TWOD12.talentGroups[it?.system?.group] ?? "Other"; };
+    const groupOrder = [...Object.values(TWOD12.talentGroups), "Other"];
+    const talentGroups = groupOrder.map(label => ({ label, cards: [...slots.filter(x => x.card).map(x => x.card), ...extras].filter(c => groupOf(c) === label) })).filter(g => g.cards.length);
+    const emptySlots = slots.filter(x => !x.card);
     const others = await Promise.all(a.itemTypes.feature.filter(f => !["class", "choice"].includes(f.getFlag("twod12", "grantedBy"))).sort((x, y) => idx(x.id) - idx(y.id)).map(f => card(f, { canRemove: true })));
     return {
       classTitle: cls ? `Class \u00b7 ${cls.name}` : "", classId: cls?.id ?? "", level: a.system.level, picks: (ctx.classTab?.picks ?? "").split(" | ").join(" \u00b7 "), classCards,
-      species, slots, extras, talentNote: slots.length ? `${filled} of ${slots.length} slot${slots.length === 1 ? "" : "s"} filled` : (extras.length ? "" : "none yet"), others
+      species, slots, extras, talentGroups, emptySlots, escCards, escNow, talentNote: slots.length ? `${filled} of ${slots.length} slot${slots.length === 1 ? "" : "s"} filled` : (extras.length ? "" : "none yet"), others
     };
   }
 
@@ -283,7 +321,11 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const groupBy = game.user.getFlag("twod12", "sheetGroup") ?? "cost";
     const sortBy = sortKeyOf(sort);
     const actRow = i => this._actionRow(i);
-    const tableRows = actions.filter(i => !i.getFlag("twod12", "basic")).map(actRow);
+    // v0.0.194: Escalation Actions live only in the Escalation block (escblock.mjs), not in the list or the Favorites.
+    const isEscAct = i => Number(i.system?.escalation) > 0;
+    const tableRows = actions.filter(i => !i.getFlag("twod12", "basic") && !isEscAct(i)).map(actRow);
+    const escOpen = (game.user.getFlag("twod12", "escOpen") ?? {})[a.id];
+    const esc = isPc || a.system?.useEscalation ? escalationModel(a, { actionRow: i => this._actionRow(i), isFaded, open: escOpen ?? null }) : { show: false };
     const actGroups = groupRows(tableRows, { groupBy, sort: sortBy, order, sourceLabels: this._groupLabels.filter(l => l !== "Basic") })
       .map(g => ({ ...g, collapsed: !!g.label && collapsed.has(g.label) }));
     // Granted: Actions an effect lets you use for free, with the uses left and where they came from.
@@ -294,10 +336,16 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         const act = actions.find(i => grantMatches(g.spec, i));
         const count = Math.max(g.count ?? g.left, g.left);
         const tr = act ? orderTraits(act.system.traits).map(t => TWOD12.traits[t] ?? t) : [];
+        // v0.0.194 (Lucas, mockup granted-C2-ladder): a ticket: uses left, cost, source and duration, what it adds; expanded, the details.
+        const bd = grantBadges(g, e), row = act ? this._actionRow(act) : null;
+        const source = e.name.replace(/\s*\(.*\)\s*$/, ""), dur = durationText(e);
         granted.push({
-          actionId: act?.id ?? "", name: act?.name ?? g.spec.replace(/^(category|trait):/i, ""), img: act?.img ?? e.img,
-          apsHtml: g.ap ? apLabel([g.ap]) : `<span class="apmark free" data-tooltip="A free use">Free</span>`, traitShort: tr.slice(0, 3).join(" \u00b7 "), source: e.name.replace(/\s*\(.*\)\s*$/, ""),
-          dur: durationText(e), left: g.left, count, boxes: Array.from({ length: count }, (_, k) => ({ on: k < g.left }))
+          key: `${e.id}:${granted.length}`, actionId: act?.id ?? "", name: act?.name ?? g.spec.replace(/^(category|trait):/i, ""), img: act?.img ?? e.img,
+          apsHtml: g.ap ? apLabel([g.ap]) : `<span class="apmark free" data-tooltip="A free use">Free</span>`, cost: g.ap ? `${g.ap} AP` : "Free", free: !g.ap,
+          traitShort: tr.slice(0, 3).join(" \u00b7 "), source, dur, left: g.left, count, badges: bd.short, adds: bd.long,
+          range: row?.range ?? "", traits: tr.join(" \u00b7 "), open: !!this._openGrant?.has(`${e.id}:${granted.length}`),
+          tip: [`From ${source}${dur ? ` · ${dur}` : ""}`, `${g.left} of ${count} left`, ...bd.long].join(" · "),
+          boxes: Array.from({ length: count }, (_, k) => ({ on: k < g.left }))
         });
       }
     }
@@ -405,8 +453,9 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       actSearch: this._search ?? "",
       basicOpen: !!game.user.getFlag("twod12", "basicOpen"),
       basicRows: basics.map(b => actRow(a.items.get(b.id))),
+      basicGroups: basicGroupsOf(basics.map(b => actRow(a.items.get(b.id)))),
       // The Favorites tab (v0.0.137): the same rows as the Actions table, in the Favorites' own order.
-      favRows: favs.map(id => a.items.get(id)).filter(i => i?.type === "action").map(actRow),
+      favRows: favs.map(id => a.items.get(id)).filter(i => i?.type === "action" && !(Number(i.system?.escalation) > 0)).map(actRow), esc,
       favorites,
       granted,
       basics,
@@ -786,7 +835,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       id: i.id, name: i.name, img: i.img, type: i.type, cat: categoryText(i.system), traits: traitChevrons(i.system.traits ?? []),
       apsHtml: i.type === "action" ? apLabel(i.system.versions.map(v => v.ap), i.system.reaction) : ""
     })).sort((x, y) => x.name.localeCompare(y.name));
-    const row = t => ({ children: kids(t), id: t.id, name: t.name, img: t.img, cat: categoryText(t.system), traits: traitChevrons(t.system.traits), requirements: t.type === "action" ? t.system.prerequisites : t.system.requirements, freq: TWOD12.frequencies[t.system.frequency] ?? "" });
+    const row = t => ({ children: kids(t), id: t.id, name: t.name, img: t.img, cat: categoryText(t.system), traits: traitChevrons(t.system.traits), requirements: t.type === "action" ? t.system.prerequisites : prereqLine(t.system), freq: TWOD12.frequencies[t.system.frequency] ?? "" });
     // Talents are Talent items and Actions that are Talents.
     const talents = [...a.itemTypes.talent, ...a.itemTypes.action.filter(isTalentAction)];
     const used = new Set();
@@ -820,6 +869,23 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     await this.actor.setFlag("twod12", "favorites", favs);
   }
   /** The arrow at the end of a row opens the Action's card under it (one Version at a time). */
+  /** v0.0.194: open or collapse the Escalation block (remembered per sheet, for each user). */
+  static async toggleEsc() {
+    const all = foundry.utils.deepClone(game.user.getFlag("twod12", "escOpen") ?? {});
+    const now = all[this.actor.id] ?? !!game.combat?.started;
+    all[this.actor.id] = !now;
+    await game.user.setFlag("twod12", "escOpen", all);
+    this.render();
+  }
+  /** v0.0.194: open or fold a Granted ticket (kept while the sheet is open). */
+  static toggleGrant(event, target) {
+    if (event.target.closest("[data-action='useAction']")) return;
+    const t = target.closest(".gtk"), key = t?.dataset.key;
+    if (!key) return;
+    (this._openGrant ??= new Set());
+    if (this._openGrant.has(key)) this._openGrant.delete(key); else this._openGrant.add(key);
+    t.classList.toggle("open", this._openGrant.has(key));
+  }
   static async toggleDetails(event, target) {
     const row = target.closest(".arow"), box = row?.querySelector(".adetail");
     const item = this._item(target);

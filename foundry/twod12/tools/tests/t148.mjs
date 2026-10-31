@@ -9,7 +9,7 @@ globalThis.game = { combat: null };
 const cf = await import(ROOTURL + "module/config.mjs"), { TWOD12 } = cf;
 const { CharacterData, npcBuild } = await import(ROOTURL + "module/data.mjs");
 const { npcBuilderContext, cvTip, stageLabel } = await import(ROOTURL + "module/npcbuilder.mjs");
-const G = await import(ROOTURL + "module/guard.mjs"), AR = await import(ROOTURL + "module/archer.mjs"), D = await import(ROOTURL + "module/defense.mjs");
+const G = await import(ROOTURL + "module/guard.mjs"), D = await import(ROOTURL + "module/defense.mjs");
 const src = f => fs.readFileSync(ROOT + f, "utf8");
 
 console.log("--- Stages (levels 1-4, 5-7, 8-10)");
@@ -56,17 +56,13 @@ const dmg = src("module/damage.mjs"), esc = src("module/escalation.mjs"), inl = 
 console.log("damage goes through the Guard first:", dmg.includes("const g = absorbGuard(actor.system.guard, a);"), "| each target its own:", dmg.includes("const mine = { B: { ...a.B }, M: { ...a.M } };"), "| ends with the encounter:", esc.includes('if (a?.system?.guard > 0) await a.update({ "system.guard": 0 });'), "| @Guard and @Effect buttons:", inl.includes("|Guard|Effect|"), "| on the sheet:", tpl.includes('class="np-guardbtn'));
 
 console.log("--- the Archer (A1) and the Paladin (P1) in code");
-const feats = names => ({ itemTypes: { feature: names.map(name => ({ name })) }, getFlag: (s, k) => (k === "quarry" ? { uuid: "Scene.s.Token.q", name: "Quarry" } : undefined), effects: [], system: { escalation: 0 } });
-const archer = feats(["Marked Quarry", "Sharpshooter"]), q = { document: { uuid: "Scene.s.Token.q" } }, other = { document: { uuid: "Scene.s.Token.o" } };
-const T = (...t) => new Set(t);
-console.log("Marked Quarry Tier 1 bonus:", JSON.stringify(AR.quarryTier1Bonus(archer, T("ranged", "shot", "strike", "weapon"), q, 2)), "| not the quarry:", AR.quarryTier1Bonus(archer, T("shot", "strike"), other, 2), "| not a Strike:", AR.quarryTier1Bonus(archer, T("shot"), q, 2));
-console.log("Sharpshooter skips the into-melee Bane on [Shot]:", AR.sharpshooterShot(archer, T("ranged", "shot", "strike")), "| not without Shot:", AR.sharpshooterShot(archer, T("ranged", "strike")), "| not without the Feature:", AR.sharpshooterShot(feats([]), T("shot")));
-console.log("both Engaged Banes check it:", (src("module/actions.mjs").match(/!sharpshooterShot\(actor, useTraits\)/g) ?? []).length);
+// v0.0.186: Marked Quarry's Tier 1 and Sharpshooter are settings on their cards now (automation.mjs; tested in t151).
+console.log("Engaged Banes read the Ignore a Bane settings:", (src("module/actions.mjs").match(/!noEngagedTarget\.length/g) ?? []).length);
 const item = traits => ({ system: { vs: "", traits: new Set(traits) } });
 console.log("Defense: [Signature, Weapon] (Smite) from power:", D.defenseOf(item(["signature", "weapon", "strike"]), { kind: "signature", from: "power" }).type, "| [Power, Signature]:", D.defenseOf(item(["signature", "power"]), { kind: "signature", from: "weapon" }).type, "| Signature alone:", D.defenseOf(item(["signature"]), { kind: "signature", from: "power" }).type);
 console.log("card: Smite Vs.", cf.vsText({ traits: new Set(["divine", "signature", "strike", "weapon"]), versions: [{ noTiers: false }] }));
-const pal = src("module/paladin.mjs"), ral = src("module/rally.mjs");
-console.log("Radiant Zeal, Elusive, Font of Mercy:", pal.includes('effect: "Radiant Zeal", dmg: "1d6", pool: "M", sub: "Ho"'), pal.includes("banes: 1, match: true"), ral.includes("const total = (s.rallyHeal + (fm?.bonus ?? 0)) * n;"));
+const ral = src("module/rally.mjs");
+console.log("Rally Points read the Rally settings (Font of Mercy):", ral.includes("const fm = await rallyBonusFor(actor);"), ral.includes("const total = (s.rallyHeal + (fm?.bonus ?? 0)) * n;"));
 console.log("a [Signature, Weapon] Action adds its [Mod] on Tier 2-3 (preview, card, damage):", (src("module/actions.mjs").match(/isWeapon: modOnWeapon\(src, useTraits\)/g) ?? []).length);
 console.log("--- v0.0.182: Evade, the damage line with the Guard, the Guard display, granted uses");
 const mv = src("module/move.mjs"), cb = src("module/combat.mjs");
@@ -74,4 +70,4 @@ console.log("an Evade keeps its unused squares until another Action:", mv.includ
 console.log("one damage line:", [G.guardBefore(12, 5) + "7 Body" + G.guardAfter(5, 0), G.guardBefore(4, 4) + "no damage" + G.guardAfter(4, 3), JSON.stringify(G.guardBefore(6, 0))].join(" | "));
 console.log("Guard on the donut and on the token bar:", tpl.includes('class="np-donutwrap{{#if system.guard}} guarded{{/if}}"') && !tpl.includes('hb-meter guard'), src("module/healthbar.mjs").includes("COLORS.guard, 0.95"));
 console.log("granted use without asking, Shift for a normal one, blue button, the dialog's first line:", !src("module/actions.mjs").includes('yes: { label: "Granted use" }'), src("module/actor-sheets.mjs").includes("event?.shiftKey ? { noGrant: true } : {}"), tpl.includes('class="ar-use granted"'), src("module/actions.mjs").includes("notices: [...(opts.grant ? [{ text: `Granted use:"));
-console.log("v0.0.183: the damage card shows its result under the target line (no new message):", src("module/damage.mjs").includes('const block = `<div class="applied dres">') && src("styles/system.css").includes(":not(.dres) { display: none; }"), "| the Guard button (click +1, right-click -1, Ctrl 5):", src("module/actor-sheets.mjs").includes('const gb = this.element.querySelector(".np-guardbtn");'));
+console.log("v0.0.183: the damage card shows its result under the target line (no new message):", src("module/damage.mjs").includes('const block = `<div class="applied dres">') && src("styles/system.css").includes(":not(.dres):not(.dtexts) { display: none; }"), "| the Guard button (click +1, right-click -1, Ctrl 5):", src("module/actor-sheets.mjs").includes('const gb = this.element.querySelector(".np-guardbtn");'));

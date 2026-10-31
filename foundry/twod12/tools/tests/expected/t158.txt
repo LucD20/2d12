@@ -1,0 +1,20 @@
+--- movement-only Actions (the banner) and the others (their card)
+Advance: "advance|distance:speed"
+Evade: "evade|distance:1" | "evade|distance:floor(speed/2)"
+Crawl: "advance|distance:1|label:Crawl 1" | "advance|distance:3|label:Crawl 3"
+Stand: null
+Charge: null
+Relocate: null | null | null
+Vanish: null
+Rolling Shot: null | null | null
+Double Shot: null | null
+wired: no card when the banner takes it true | the movement tag (v0.0.197) true | one Turn Log line when it ends (v0.0.200) true | End, Advance instead (on the strip, v0.0.198) true | closes on a turn change true
+--- the Talent filter bar
+search, Category, Only what I can take, compact list: true | checked by canTake at the level being taken: true | the reasons on the tile: true | filtered in place (no redraw): true | the actor reaches the window: 2 | compact list CSS: true
+--- v0.0.196: a drag is an Advance with the banner; no drag lines while it is up; the Evade key
+a drag that spends AP opens the banner (or adds to it): true | drag lines only without a banner: true | the banner counts the Speed left of a drag: true
+the Evade key (Shift+E): true | no dialog for it: true
+--- v0.0.197: one line per movement, no AP line for it
+Kai uses Advance (1 AP: up to 7 squares) | Kai Advanced 4 of 7 squares (1 AP) | Nari Evaded 3 of 3 squares (2 AP)
+AP lines kept out: true | no tag over the token (v0.0.198): true
+the strip under the AP dots: Advance 4: {"n":4,"evade":false} | Evade 2: {"n":2,"evade":true} | a drag's Speed left 3: {"n":3,"evade":false} | nothing: {"n":0,"evade":false} | shown: true

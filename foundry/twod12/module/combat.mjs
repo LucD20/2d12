@@ -1,7 +1,10 @@
+import { logEvent, makeLine } from "./ticker.mjs";
+import { swapCardHtml, thawLineHtml } from "./sysmsg.mjs";
+import { initCardData, initCardHtml } from "./initcard.mjs";
 import { groupColor } from "./config.mjs";
 // Combat: attribute-roll Initiative for everyone, "zipper" turn order between the two sides,
 // and an Action Points counter per combatant (shown and editable in the tracker, changes sent to the chat).
-import { performCheck, esc, sgn, combineRolls } from "./roll.mjs";
+import { performCheck, esc, combineRolls } from "./roll.mjs";
 import { TWOD12 } from "./config.mjs";
 import { forgetRestored } from "./effects.mjs";
 const { DialogV2 } = foundry.applications.api;
@@ -53,22 +56,26 @@ export function combatantOf(actor, combat = game.combat) {
   return byId.length === 1 ? byId[0] : null;
 }
 
-const apMessage = (c, from, to, why) => ChatMessage.create({
-  content: `<div class="twod12 chat apmsg"><b>${esc(c.name)}</b>: AP ${from} &rarr; <b>${to}</b>${why ? ` <small>(${esc(why)})</small>` : ""}</div>`
-});
 
 /** Set a combatant's AP and say so in the chat. */
-export async function setAP(c, value, why = "") {
+export async function setAP(c, value, why = "", { quiet = false, reaction = false, kind: as = "" } = {}) {
   // Nobody holds more than their most AP (5, or more while Quickened); the GM's own edits in the tracker are not limited.
   const want = Math.max(0, Math.round(Number(value) || 0));
   const from = getAP(c), to = why === "edited" ? want : Math.min(want, Math.max(apMax(c), from));
   if (from === to && why === "edited") return;
   await c.setFlag(F, "ap", to);
-  await apMessage(c, from, to, why);
+  // v0.0.200 (Lucas, design M1 + L3): a ticker with the Turn Log instead of "AP 5 → 4 (…)". A movement posts its own line when it ends
+  // (move.mjs); an edit in the tracker or the strip posts nothing.
+  if (quiet || why === "edited") return;
+  const start = /^(start of turn|swapped in)/i.test(why);
+  const off = !start && game.combat?.combatant?.id !== c.id;   // spent in someone else's turn: a Reaction
+  const kind = as || (start ? "start" : (reaction || off ? "react" : "act"));
+  const name = start ? "Turn start" : String(why).replace(/^swap with /i, "Swap with ");
+  await logEvent(c, makeLine(kind, name, from, to, Math.max(apMax(c), from, to)));
 }
 
 /** Pay the AP of an action. Returns false when the player decides not to go ahead. Does nothing outside combat. */
-export async function spendAP(actor, cost, label = "") {
+export async function spendAP(actor, cost, label = "", { quiet = false, reaction = false } = {}) {
   const c = combatantOf(actor);
   if (!c || !game.combat?.started) return true;
   if (c.getFlag(F, "frozen")) {
@@ -82,7 +89,9 @@ export async function spendAP(actor, cost, label = "") {
   }
   await c.setFlag(F, "acted", true);
   if (Number(c.getFlag(F, "evadeMove")) > 0) await c.update({ [`flags.${F}.evadeMove`]: 0, [`flags.${F}.-=ignoreTerrain`]: null });   // v0.0.182: an Evade left unused ends when another Action is used
-  await setAP(c, Math.max(0, have - cost), label);
+  // v0.0.200: a movement still under way is written to the Turn Log before this Action (its line comes first).
+  try { const { closeMoveLine } = await import("./move.mjs"); await closeMoveLine(c); } catch (e) { /* none */ }
+  await setAP(c, Math.max(0, have - cost), label, { quiet, reaction });
   return true;
 }
 
@@ -108,15 +117,27 @@ export function zipper(list) {
   return out;
 }
 
-async function askInitiativeAttr() {
+/**
+ * The initiative dialog: the Attribute (Instinct unless the GM calls another), v0.0.206: another Attribute for some creatures,
+ * and Boons, Banes, Favored or Doomed for this roll. Returns { attr, per: { id: attr }, boons, banes, favored, doomed } or null.
+ */
+async function askInitiativeAttr(list = []) {
+  const opts = sel => Object.entries(TWOD12.attributes).map(([k, l]) => `<option value="${k}"${k === sel ? " selected" : ""}>${l}</option>`).join("");
+  const per = list.length > 1 ? `<details class="init-per"><summary>Another Attribute for some creatures</summary>${list.map(c => `<div class="form-group"><label>${esc(c.name)}</label><select name="per-${c.id}"><option value="">Same as above</option>${opts("")}</select></div>`).join("")}</details>` : "";
   return DialogV2.prompt({
     window: { title: "Initiative" },
-    content: `<p>Initiative is an Attribute Check. Roll with:</p>${Object.entries(TWOD12.attributes).map(([k, l]) => `<label class="pick"><input type="radio" name="attr" value="${k}" ${k === "instinct" ? "checked" : ""}> ${l}</label>`).join("<br>")}`,
-    ok: { label: "Roll", callback: (ev, btn) => new FormData(btn.form).get("attr") }, rejectClose: false
+    content: `<p>Initiative is an Attribute Check. Roll with:</p>${Object.entries(TWOD12.attributes).map(([k, l]) => `<label class="pick"><input type="radio" name="attr" value="${k}" ${k === "instinct" ? "checked" : ""}> ${l}</label>`).join("<br>")}${per}
+      <div class="form-group"><label>Boons</label><input type="number" name="boons" value="0" min="0" step="1"></div>
+      <div class="form-group"><label>Banes</label><input type="number" name="banes" value="0" min="0" step="1"></div>
+      <div class="form-group"><label><input type="checkbox" name="favored"> Favored</label><label><input type="checkbox" name="doomed"> Doomed</label></div>`,
+    ok: { label: "Roll", callback: (ev, btn) => {
+      const f = new FormData(btn.form);
+      const p = {};
+      for (const c of list) { const v = f.get(`per-${c.id}`); if (v) p[c.id] = v; }
+      return { attr: f.get("attr"), per: p, boons: Math.max(0, Math.trunc(Number(f.get("boons"))) || 0), banes: Math.max(0, Math.trunc(Number(f.get("banes"))) || 0), favored: !!f.get("favored"), doomed: !!f.get("doomed") };
+    } }, rejectClose: false
   });
 }
-
-const chip = (f, dbl) => `<span class="die d12${f === 12 ? " boom" : ""}${dbl ? " dbl" : ""}">${f}</span>`;
 
 export class TwoD12Combat extends Combat {
   /** An encounter can't end while a creature is Dying or Shattered: every creature must be unharmed, stabilized or dead. */
@@ -145,24 +166,23 @@ export class TwoD12Combat extends Combat {
     ids = typeof ids === "string" ? [ids] : [...ids];
     const list = ids.map(id => this.combatants.get(id)).filter(c => c?.isOwner && c.actor);
     if (!list.length) return this;
-    const attr = await askInitiativeAttr();
-    if (!attr) return this;
+    const ask = await askInitiativeAttr(list);
+    if (!ask?.attr) return this;
     const curId = this.started ? this.combatant?.id : null;
     const rows = [], rolls = [], updates = [];
     for (const c of list) {
+      const attr = ask.per?.[c.id] || ask.attr;
       const mod = c.actor.system.attributes?.[attr] ?? 0;
-      const r = await performCheck({ mod });
+      const r = await performCheck({ mod, boons: ask.boons, banes: ask.banes, manualBoons: ask.boons, manualBanes: ask.banes, favored: ask.favored, doomed: ask.doomed, noDoubles: true });
       rolls.push(...r.rolls);
       updates.push({ _id: c.id, initiative: r.total, [`flags.${F}.initAttr`]: mod });
-      rows.push(
-        `<div class="irow"><span class="sname">${esc(c.name)}</span><span class="dice"><span class="dgroup">${r.d1.map((f, i) => chip(f, r.doubles && i === 0)).join("")}</span><span class="plus">+</span><span class="dgroup">${r.d2.map((f, i) => chip(f, r.doubles && i === 0)).join("")}</span><span class="plus">${sgn(mod)}</span></span><b class="rtotal">${r.total}</b></div>`
-      );
+      rows.push({ id: c.id, name: c.name, side: sideOf(c), attr, mod, r });
     }
     await this.updateEmbeddedDocuments("Combatant", updates);
     const all = combineRolls(rolls);
-    await ChatMessage.create({
-      rolls: all ? [all] : [], content: `<div class="twod12 chat"><div class="ahead"><b>Initiative</b><span>${esc(TWOD12.attributes[attr])}</span></div>${rows.join("")}</div>`
-    });
+    // v0.0.206 (Lucas, B4): the card lists them in the turn order the tracker now has (setupTurns: the zipper).
+    const data = initCardData(rows, (this.turns ?? []).map(c => c.id));
+    await ChatMessage.create({ rolls: all ? [all] : [], content: initCardHtml(data), flags: { [F]: { initiative: rows.map(x => ({ id: x.id, attr: x.attr, mod: x.mod, total: x.r.total })) } } });
     // Keep the creature whose turn it is as the current one when the order changes.
     if (curId) { const idx = this.turns.findIndex(c => c.id === curId); if (idx >= 0 && idx !== this.turn) await this.update({ turn: idx }); }
     return this;
@@ -175,16 +195,19 @@ async function startTurn(combat) {
   const c = combat.combatant;
   if (!c) return;
   const key = `${combat.round}:${c.id}`;
-  if (c.getFlag(F, "apTurn") === key) return;
+  // v0.0.204: a creature that swapped had its turn start this round already; its new slot is a new start (it thaws), so frozen skips this check.
+  if (c.getFlag(F, "apTurn") === key && !c.getFlag(F, "frozen")) return;
   const fresh = { [`flags.${F}.apTurn`]: key, [`flags.${F}.acted`]: false, [`flags.${F}.moveLeft`]: 0, [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, [`flags.${F}.-=ignoreTerrain`]: null };
   if (c.getFlag(F, "frozen")) {
     // It swapped initiative earlier: it carries on with the AP it had left.
-    await c.update({ ...fresh, [`flags.${F}.frozen`]: false });
-    await ChatMessage.create({ content: `<div class="twod12 chat apmsg"><b>${esc(c.name)}</b> carries on with <b>${getAP(c)}</b> AP.</div>` });
+    await c.update({ ...fresh, [`flags.${F}.frozen`]: false, [`flags.${F}.thawed`]: key });   // v0.0.205: a thawed turn can't swap again
+    await ChatMessage.create({ content: thawLineHtml(c.name, getAP(c)) });
   } else {
     await c.update(fresh);
     await setAP(c, apPerTurn(c), "start of turn");
     await climbUp(c);
+    // v0.0.187: the Effects its Features give at the start of each turn (Killer's Focus, Radiant Zeal); not when it carries on after a swap.
+    try { const { applyTurnStartEffects } = await import("./automation.mjs"); await applyTurnStartEffects(c.actor); } catch (e) { console.warn("twod12 | Effect each turn", e); }
   }
   await takeSnapshot(combat);
 }
@@ -255,6 +278,9 @@ export async function rollActorInitiative(actor) {
 /* ---- Swapping initiative ---- */
 
 /** Allies who have not had a turn this round: same side, later in the order. */
+/** v0.0.205 (Lucas): is this the turn a creature carries on after swapping? (It can't swap again.) */
+export const thawedNow = (combat, c) => !!c && c.getFlag?.(F, "thawed") === `${combat?.round}:${c.id}`;
+
 export function swapCandidates(combat, a) {
   const idx = combat.turns.indexOf(a);
   return combat.turns.slice(idx + 1).filter(b => sideOf(b) === sideOf(a) && !b.isDefeated);
@@ -266,6 +292,7 @@ export async function performSwap(combat, aId, bId, userId = null) {
   if (!A || !B || A.id === B.id) return;
   if (userId && !A.testUserPermission(game.users.get(userId), "OWNER")) return;
   if (combat.combatant?.id !== A.id) return warn("It is not that creature's turn.");
+  if (thawedNow(combat, A)) return warn(`${A.name} already swapped this round and can't swap again.`);
   if (A.getFlag(F, "acted")) return warn(`${A.name} has already taken an action this turn.`);
   if (!swapCandidates(combat, A).some(b => b.id === B.id)) return warn(`${B.name} cannot be swapped with.`);
   const left = getAP(A);
@@ -276,11 +303,20 @@ export async function performSwap(combat, aId, bId, userId = null) {
   const idx = combat.turns.findIndex(c => c.id === B.id);
   if (idx >= 0 && idx !== combat.turn) await combat.update({ turn: idx });
   await A.update({ [`flags.${F}.frozen`]: true });
-  await setAP(A, left - 1, `swap with ${B.name}`);
+  await setAP(A, left - 1, `swap with ${B.name}`, { kind: "act" });   // its own turn, though the turn has already moved to B
   await B.update({ [`flags.${F}.apTurn`]: `${combat.round}:${B.id}`, [`flags.${F}.acted`]: false, [`flags.${F}.frozen`]: false, [`flags.${F}.moveLeft`]: 0, [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, [`flags.${F}.-=ignoreTerrain`]: null });
   await setAP(B, apPerTurn(B), "swapped in: start of turn");
   await climbUp(B);
-  await ChatMessage.create({ content: `<div class="twod12 chat apmsg"><b>${esc(A.name)}</b> swaps initiative with <b>${esc(B.name)}</b>. ${esc(B.name)} takes the turn now; ${esc(A.name)}'s remaining actions are frozen until its new turn.</div>` });
+  // v0.0.203: the system card (sysmsg.mjs); the slot is where A acts now (B's old place), counted from 1.
+  const slot = combat.turns.findIndex(c => c.id === A.id) + 1;
+  await ChatMessage.create({ content: swapCardHtml(A.name, B.name, getAP(B), getAP(A), slot), flags: { [F]: { swap: { a: A.id, b: B.id, slot, round: combat.round } } } });
+}
+
+/** v0.0.199: swap with a chosen ally (the strip's Swap, then a click on the ally): the GM does it, or is asked to. */
+export async function swapWith(combat, a, bId) {
+  if (a?.actor?.system?.atZero) return warn(`${a.name} is Down and can't swap initiative.`);
+  if (game.user.isGM) return performSwap(combat, a.id, bId);
+  game.socket.emit("system.twod12", { type: "swapInit", combatId: combat.id, aId: a.id, bId, userId: game.user.id });
 }
 
 export async function requestSwap(combat, a) {

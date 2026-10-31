@@ -7,7 +7,9 @@
         <div class="fxd-s">Give <input type="number" min="0" class="fxd-f n" data-sfield="{{i}}" data-field="boons" value="{{boons}}"> {{boonWord}} and <input type="number" min="0" class="fxd-f n" data-sfield="{{i}}" data-field="banes" value="{{banes}}"> {{baneWord}} to rolls made <select class="fxd-f" data-sfield="{{i}}" data-field="against" data-bool>{{selectOptions ../whoChoices selected=againstVal}}</select></div>
         {{> "systems/twod12/templates/parts/preds.hbs"}}
         {{#if showByValue}}<label class="fxd-inl"><input type="checkbox" data-sfield="{{i}}" data-field="byValue" {{#if byValue}}checked{{/if}}> Multiply by the condition's value (Vulnerable 2: 2 boons)</label>{{/if}}
-        <p class="fxd-help">Only rolls whose traits match get it; no traits = every roll. "Against this creature" is for rolls others make against it (Prone). Empowered and Enfeebled are their own setting.</p>
+        {{#if showOnce}}<label class="fxd-inl"><input type="checkbox" data-sfield="{{i}}" data-field="oncePerRound" {{#if oncePerRound}}checked{{/if}}> Only the first matching Action each round</label>{{/if}}
+        {{#if showMarked}}<label class="fxd-inl"><input type="checkbox" data-sfield="{{i}}" data-field="vsMarked" {{#if vsMarked}}checked{{/if}}> Only against the creature it marked</label>{{/if}}
+        <p class="fxd-help">Only rolls whose traits match get it; no traits = every roll. "Against this creature" is for rolls others make against it (Prone). Empowered and Enfeebled are their own setting. "Only the first matching Action each round": once per turn-cycle (from the start of the creature's turn to the start of its next one; against this creature, its own turn-cycle). "Only against the creature it marked": the creature an Action with "Marks the target" marked (Mark Quarry).</p>
         {{/if}}
         {{#if isAura}}
         <div class="fxd-s">An Aura <input type="number" min="1" class="fxd-f n" data-sfield="{{i}}" data-field="auraSize" value="{{auraSize}}"> around the creature. It affects <select class="fxd-f" data-sfield="{{i}}" data-field="auraWho">{{selectOptions auraWhoChoices selected=auraWho}}</select> <label class="fxd-inl"><input type="checkbox" data-sfield="{{i}}" data-field="auraSelf" {{#if auraSelf}}checked{{/if}}> and the creature itself</label></div>
@@ -23,6 +25,8 @@
         {{#if isDamageStep}}
         <div class="fxd-s">The damage of rolls made by this creature is Empowered <input type="number" min="0" class="fxd-f n" data-sfield="{{i}}" data-field="empowered" value="{{empowered}}"> and Enfeebled <input type="number" min="0" class="fxd-f n" data-sfield="{{i}}" data-field="enfeebled" value="{{enfeebled}}">.</div>
         {{> "systems/twod12/templates/parts/preds.hbs"}}
+        {{#if false}}<label class="fxd-inl"><input type="checkbox" data-sfield="{{i}}" data-field="oncePerRound" {{#if oncePerRound}}checked{{/if}}> Only the first matching Action each round</label>{{/if}}
+        {{#if showMarked}}<label class="fxd-inl"><input type="checkbox" data-sfield="{{i}}" data-field="vsMarked" {{#if vsMarked}}checked{{/if}}> Only against the creature it marked</label>{{/if}}
         <p class="fxd-help">Empowered N adds N to every damage die of the matching Actions, Enfeebled N takes N away (each die still deals at least 1). Only the highest of each counts (Stacking). Only rolls whose traits match; no traits = every roll.</p>
         {{/if}}
         {{#if isBonus}}
@@ -31,7 +35,22 @@
         {{> "systems/twod12/templates/parts/preds.hbs"}}
         <div class="fxd-s">The card adds <input type="text" class="fxd-f wide" data-sfield="{{i}}" data-field="text" value="{{text}}" placeholder="Hindered (EoT)"></div>
         <div class="fx-drop" data-sfx="{{i}}">{{#if fxName}}It also applies <b>{{fxName}}</b> (drop another Effect to replace it){{else}}Drop an Effect here to apply it to the target on these tiers (optional){{/if}}</div>
-        <p class="fxd-help">Used up by the next action whose traits match. The tiers are the tier that action rolls; the card shows them like "(T2/T3)".</p>
+        {{#if showOnce}}<label class="fxd-inl"><input type="checkbox" data-sfield="{{i}}" data-field="oncePerRound" {{#if oncePerRound}}checked{{/if}}> Only the first matching Action each round</label>{{/if}}
+        {{#if showMarked}}<label class="fxd-inl"><input type="checkbox" data-sfield="{{i}}" data-field="vsMarked" {{#if vsMarked}}checked{{/if}}> Only against the creature it marked</label>{{/if}}
+        <p class="fxd-help">On an Effect, used up by the next action whose traits match; on a Feature's or Talent's passive, it works on every matching Action (or only the first each round, and then only on a Tier that deals damage). Write <code>[Mod]</code> for the Action's Modifier (Marked Quarry: [Mod] on T1). The tiers are the tier that action rolls; the card shows them like "(T2/T3)".</p>
+        {{/if}}
+        {{#if isIgnore}}
+        <div class="fxd-s">Matching Actions don't take <select class="fxd-f" data-sfield="{{i}}" data-field="ignoreRule">{{selectOptions ignoreRules selected=ignoreRule}}</select>.</div>
+        {{> "systems/twod12/templates/parts/preds.hbs"}}
+        <p class="fxd-help">A Bane rule that this creature's matching Actions skip (Long Draw: one range Bane less with [Shot] Actions; Steady Nerves: the Engaged Banes; Sharpshooter: the Bane for a target Engaged with someone else). No traits = every Action.</p>
+        {{/if}}
+        {{#if isRally}}
+        <div class="fxd-s">Each Rally Point heals <input type="text" class="fxd-f w" data-sfield="{{i}}" data-field="rallyBonus" value="{{rallyBonus}}" placeholder="power + 2"> more, for this creature and its allies within <input type="number" min="0" class="fxd-f n" data-sfield="{{i}}" data-field="rallyRange" value="{{rallyRange}}"> squares.</div>
+        <p class="fxd-help">A number or a formula with <code>power</code>, <code>weapon</code>, <code>signature</code> (the Modifiers), <code>body</code>, <code>mind</code>, <code>appeal</code>, <code>instinct</code>, <code>level</code>, and <code>floor( )</code>, <code>ceil( )</code>, <code>min( , )</code>, <code>max( , )</code>. 0 squares: only this creature. Several such settings don't add up: the highest counts.</p>
+        {{/if}}
+        {{#if isTurnStart}}
+        <div class="fx-drop" data-sfx="{{i}}">{{#if fxName}}At the start of each of its turns, the creature gains <b>{{fxName}}</b> (drop another Effect to replace it){{else}}Drop the Effect the creature gains at the start of each of its turns{{/if}}</div>
+        <p class="fxd-help">Killer's Focus, Radiant Zeal: the Effect holds the Bonus Damage and ends after the Action that uses it ("Ends" on the Effect). A new copy replaces the old one each turn, only while this setting works (its "It works..."); it ends with the encounter. In play it is an ordinary applied effect: remove it, or untick its chip in the roll dialog.</p>
         {{/if}}
         {{#if isGrant}}
         <div class="fxd-s">Can use <input type="text" class="fxd-f wide" data-sfield="{{i}}" data-field="grantAction" value="{{grantAction}}" placeholder="Weapon Attack / category:Weapon Technique / trait:strike"> <input type="number" min="1" class="fxd-f n" data-sfield="{{i}}" data-field="grantCount" value="{{grantCount}}"> {{timesWord}} for <input type="number" min="0" class="fxd-f n" data-sfield="{{i}}" data-field="grantAp" value="{{grantAp}}"> AP, with <input type="number" min="0" class="fxd-f n" data-sfield="{{i}}" data-field="boons" value="{{boons}}"> {{boonWord}}.</div>

@@ -36,11 +36,21 @@ export function predicateText(x) {
   return bits.length ? " " + bits.join(", ") : "";
 }
 
+/** v0.0.186: " (the first matching Action each round), only against the creature it marked" (empty when neither is set). */
+export function limitText(x) {
+  const bits = [x.oncePerRound ? "the first matching Action each round" : "", x.vsMarked && !x.against ? "only against the creature it marked" : ""].filter(Boolean);
+  return bits.length ? ` <i class="fxd-lim">(${bits.join("; ")})</i>` : "";
+}
+
 /** One sentence that says what a setting does. */
 export function settingSentence(x) {
+  const s = settingSentenceOnly(x), lim = ["boonbane", "bonusdamage", "damagestep"].includes(x.type) ? limitText(x) : "";
+  return lim ? s.replace(/\.$/, `${lim}.`) : s;
+}
+function settingSentenceOnly(x) {
   switch (x.type) {
     case "boonbane": {
-      const gains = [x.boons ? plural(x.boons, "boon") : "", x.banes ? plural(x.banes, "bane") : ""].filter(Boolean).join(" and ");
+      const gains = [x.boons ? plural(x.boons, "Boon") : "", x.banes ? plural(x.banes, "Bane") : ""].filter(Boolean).join(" and ");
       const pred = predicateText(x), every = !pred;   // no traits: every roll
       const rolls = `${every ? "every roll" : "rolls"} made ${x.against ? "<b>against</b> this creature" : "by this creature"}${pred}`;
       if (!gains) return `Nothing yet on ${rolls}.`;
@@ -60,7 +70,7 @@ export function settingSentence(x) {
       return `The next action${predicateText(x) || " of any kind"} deals <b>+${esc(x.dmg || "?")}${x.dmgSub ? " " + esc(TWOD12.subtypes[x.dmgSub]) : ""}</b> damage${pool}${on}.`;
     }
     case "grant":
-      return `Can use <b>${esc(x.grantAction || "?")}</b> ${x.grantCount === 1 ? "once" : `${x.grantCount} times`} for <b>${x.grantAp ? `${x.grantAp} AP` : "free"}</b>${x.boons ? `, with ${plural(x.boons, "boon")}` : ""}${x.grantDistinct ? ", a different target each time" : ""}.`;
+      return `Can use <b>${esc(x.grantAction || "?")}</b> ${x.grantCount === 1 ? "once" : `${x.grantCount} times`} for <b>${x.grantAp ? `${x.grantAp} AP` : "free"}</b>${x.boons ? `, with ${plural(x.boons, "Boon")}` : ""}${x.grantDistinct ? ", a different target each time" : ""}.`;
     case "aura": {
       const fx = fxNameOf(x.fxUuid), who = { allies: "allies", enemies: "enemies", all: "creatures" }[x.auraWho] ?? "allies";
       return `An <b>Aura ${Math.max(1, Number(x.auraSize) || 1)}</b> around the creature: ${who}${x.auraSelf ? " and the creature itself" : ""} inside gain <b>${esc(fx) || "(drop an Effect)"}</b>.`;
@@ -75,6 +85,12 @@ export function settingSentence(x) {
     }
     case "speed":
       return x.speedMode === "override" ? `The creature's Speed becomes <b>${esc(x.speedFormula || "?")}</b>.` : `Add <b>${esc(x.speedFormula || "?")}</b> to the creature's Speed.`;
+    case "ignore":
+      return `Its Actions${predicateText(x) || ""} don't take <b>${esc(TWOD12.ignoreRules[x.ignoreRule] ?? "?")}</b>.`;
+    case "turnstart":
+      return `At the start of each of its turns, the creature gains <b>${esc(fxNameOf(x.fxUuid)) || "(drop an Effect)"}</b>.`;
+    case "rally":
+      return `Each Rally Point heals <b>${esc(x.rallyBonus || "?")}</b> more, for this creature${Number(x.rallyRange) > 0 ? ` and its allies within <b>${Number(x.rallyRange)}</b> squares` : ""}.`;
     case "light":
       return `The token sheds bright light out to <b>${x.bright}</b> and dim light out to <b>${x.dim}</b> squares.`;
     case "note": {
@@ -90,22 +106,25 @@ export function settingShort(x) {
   const strip = s => s.replace(/<[^>]+>/g, "");
   switch (x.type) {
     case "boonbane": {
-      const gains = [x.boons ? plural(x.boons, "boon") : "", x.banes ? plural(x.banes, "bane") : ""].filter(Boolean).join(" and ");
+      const gains = [x.boons ? plural(x.boons, "Boon") : "", x.banes ? plural(x.banes, "Bane") : ""].filter(Boolean).join(" and ");
       const p = strip(predicateText(x)).trim();
-      if (!gains) return "no boons yet";
-      return `${gains}${p ? (p.startsWith("(") ? ` ${p}` : ` (${p})`) : (x.against ? " on every roll against it" : " on every roll")}`;
+      if (!gains) return "no Boons yet";
+      return `${gains}${p ? (p.startsWith("(") ? ` ${p}` : ` (${x.against ? "against it, " : ""}${p})`) : (x.against ? " on every roll against it" : " on every roll")}${strip(limitText(x))}`;
     }
     case "damagestep": {
       const dmg = [x.empowered ? `Empowered ${x.empowered}` : "", x.enfeebled ? `Enfeebled ${x.enfeebled}` : ""].filter(Boolean).join(", ");
       const p = strip(predicateText(x)).trim();
       if (!dmg) return "no damage step yet";
-      return `${dmg}${p ? ` (${p})` : ""}`;
+      return `${dmg}${p ? ` (${p})` : ""}${strip(limitText(x))}`;
     }
     case "aura": return `Aura ${Math.max(1, Number(x.auraSize) || 1)}: ${fxNameOf(x.fxUuid) || "no Effect yet"}`;
     case "ondamage": return `${fxNameOf(x.fxUuid) || "an Effect"} on ${TWOD12.subtypes[x.trigSub] ?? "any"} damage${x.trigTag ? ` to ${x.trigTag}` : ""}`;
     case "defense": { const n = Math.trunc(Number(x.defValue)) || 0; return `${n >= 0 ? "+" : "\u2212"}${Math.abs(n)} ${x.defKind === "all" ? "Defense" : (TWOD12.defenseKinds[x.defKind] ?? "Defense")}`; }
     case "speed": return x.speedMode === "override" ? `Speed becomes ${x.speedFormula || "?"}` : `Speed ${/^[-+]/.test(x.speedFormula ?? "") ? "" : "+"}${x.speedFormula || "?"}`;
     case "light": return `light ${x.bright}/${x.dim}`;
+    case "turnstart": return `${fxNameOf(x.fxUuid) || "an Effect"} each turn`;
+    case "ignore": return `ignores ${(TWOD12.ignoreRules[x.ignoreRule] ?? "a Bane").replace(/ \(.*\)$/, "")}`;
+    case "rally": return `Rally Points +${x.rallyBonus || "?"}${Number(x.rallyRange) > 0 ? ` (allies within ${Number(x.rallyRange)})` : ""}`;
     case "note": return `note "${x.title || "(no title)"}"`;
     default: return strip(settingSentence(x)).replace(/\.$/, "").replace(/^The next action/, "next action");
   }

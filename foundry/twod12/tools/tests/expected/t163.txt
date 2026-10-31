@@ -1,0 +1,16 @@
+turn order (zipper): g2, a3, nari, g4, zack, g1, lana, g3, a1
+tie inside a side (Zack and Lana at 13): the higher Modifier first: true
+tie between sides at 20: the higher Modifier leads: f2, p, f
+same total and Modifier: Friendly first: p, f
+Foe (best 34): 1. Goblin Sneak #2 [instinct] 34 | 4. Goblin Sneak #4 [body] 13 | 6. Goblin Sneak #1 [instinct] 7 | 8. Goblin Sneak #3 [instinct] 6
+Ally (best 22): 2. Archer 3 (Rolling Shot, Kickboxer) [instinct] 22 | 5. Zack [instinct] 13 | 7. Lana [mind] 13 | 9. Archer 1 (Double Shot, Marksman) [instinct] 7
+Neutral (best 13): 3. Nari [appeal] 13
+Goblin 2, a chained explosion: Instinct Check 12 12 5 + 6 + 1 | two links: true | orange dice (a 12 or a reroll): 3
+Goblin 4, Body with a Bane: Body Check 5 + 9 + 0 Bane −1
+Archer 3, a Boon: Instinct Check 11 + 8 + 1 Boon +2
+Archer 1, Favored, the dropped die: Instinct Check Favored 3 + 2 1 + 2 | dropped marked: true
+Nari, Doomed, a dropped exploded die: Appeal Check Doomed 4 + 6 12 4 + 3
+no Doubles mark: true | no Attribute in the header: true | letter chips: IBIIIIMIA
+parentheses muted: true | names escaped: true
+splitName: {"base":"Archer 1","note":"Double Shot, Marksman"} {"base":"(Odd)","note":""}
+Favored with Doubles counting keeps: 0+1 | initiative (noDoubles) keeps: 1+2
