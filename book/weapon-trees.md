@@ -36,6 +36,8 @@ group per encounter), so **Group Mastery is about 6 at level 5 and 11 at level 8
 
 ### Two trees
 
+**The line names (Yew, Horn) are design flavor only (Lucas): never in the book.** Every weapon group gets the same treatment: a short research, then its trees.
+
 | | **The Yew line** (wood: range, weight, any weather) | **The Horn line** (composite: moving, speed, fragile) |
 |---|---|---|
 | **Basic** (Group Mastery 0) | **Hunting Bow:** a short wooden self bow or flatbow, light draw | **Horse Bow:** a short sinew-backed or composite bow, made to shoot from a moving horse |
@@ -47,20 +49,40 @@ group per encounter), so **Group Mastery is about 6 at level 5 and 11 at level 8
 | Hunting Bow | 8 / 16 / 32 | 1d6 / 1d10 | 4.51 | Handy and quiet: close quarters, hunting (Hide, when it exists), quick to nock |
 | Horse Bow | 6 / 12 / 24 | 1d4+1 / 1d8+1 | 4.51 | Shooting while moving: its unlocks are Evades and Advances around a Shot |
 | Longbow | 15 / 30 / 60 | 1d8 / 1d10 | 4.96 (+10%) | Range and volleys: far range easier, Area Shots (Volley, Rain of Arrows) better |
-| Composite Bow | 10 / 20 / 40 | 1d6 / 1d12 | 4.77 (+6%) and a utility | Power for its size: the Horse Bow's movement with real force; **damp: 1 Bane in rain or after it is soaked** (optional drawback) |
+| Composite Bow | 10 / 20 / 40 | 1d6 / 1d12 | 4.77 (+6%) and a utility | Power for its size: the Horse Bow's movement with real force (the damp drawback: out, Lucas) |
 | Warbow | 12 / 24 / 48 | 1d8 / 2d6 | 5.36 (+19%) | The heavy arrow: Tier 3 effects that move or stagger (Pushed, Prone), against armor; slow to draw (it can't Evade in the same Action) |
 | Flight Bow | 20 / 40 / 80 | 1d4 / 2d8 | 4.99 (+11%) | Extreme range and precision: no far range Bane, and its edge is the range itself, not the hit |
 
-**Two notes on the numbers:**
-- The Flight Bow breaks "deeper = more damage": the real bow hit lightly. Its +20% is in its range (no Bane at far range is about +10% on
-  those Shots) instead of the dice. Keep it that way, or give it the dice and forget the history?
-- The Horn line trades a little damage for movement (the Composite Bow +6% and an unlock where the Longbow has +10%).
+**Lucas's answers (round 2):** 1 yes (the line names are flavor only). 2 **History is the base and the flavor, game mechanics decide the
+numbers**: maps are at most about 25 x 25 squares, so long historical ranges mean nothing in play. 3 No damp drawback (too specific); a
+**Volley N** property ("a Shot with it against a creature within N squares takes 1 Bane") is possible where it fits. 4 Always from Basic up,
+and **everything is confirmed before a bow is built**: the sheet below.
 
-**The Shortbow of round 1** becomes the Hunting Bow (its ladder stays: Skirmish Shot at 3, Quick Nock 8, Close Quarters 14, Skirmisher 20, one more at 28).
-Skirmish Shot's Evade fits the Horse Bow better: the Hunting Bow may want its own Technique when we do its card.
+## To confirm before building (round 3)
 
-**Questions (round 2):**
-1. The two lines (Yew and Horn) and the six bows?
-2. The Flight Bow: range instead of damage, or damage?
-3. The Composite Bow's damp drawback: in, or out?
-4. Which bow first, in full (stats, Technique, the whole ladder)? I'd do the two Basic ones first (Hunting Bow, then Horse Bow).
+**Already decided:** Group Mastery = Mastery gained in the group / 3; a new weapon starts at it; Stage 1 Basic, Stage 2 Advanced, Stage 3
+Exotic; about 5 combats a level and 0.9 Mastery a combat; utility unlocks, different for each weapon; overlaps between weapons are fine.
+
+| # | What | My proposal |
+|---|---|---|
+| 1 | The gates | Advanced at Group Mastery **6** (about level 5), Exotic at **11** (about level 8); **2 Banes** on [Strike] Actions with a weapon below its gate |
+| 2 | Damage (working numbers, Lucas: decided later) | A Weapon Attack about **4.5** Basic, **+10%** Advanced, **+20%** Exotic (Defense 13, Modifier +2); a weapon with a drawback (Volley) or a strong utility sits a little higher or lower |
+| 3 | The ladder (the weapon's own Mastery) | Basic: **3, 8, 14, 20, 28** (5 unlocks); Advanced, starting at 6: **9, 14, 20, 28** (4); Exotic, starting at 11: **14, 20, 28** (3). The first unlock of each weapon is its Weapon Technique |
+| 4 | What an unlock can be | A Weapon Technique (one per weapon), a **utility** (movement, hands, Banes in special cases, Reactions, areas), or a step of the Technique; **never extra dice** (the dice come from the tier) |
+| 5 | Master | Level 8 **and** Group Mastery 11: one more [W] with every weapon of the group |
+| 6 | Ranges on a 25 x 25 map | **Normal range is what matters.** Basic bows normal 6 to 8, Advanced 10 to 12, Exotic up to 15; far = 2 x normal, maximum = 3 x (the book uses 2 x and 4 x today: 10 / 20 / 40). A bow whose normal range covers the map takes no range Bane in practice: that is the Flight Bow's edge, with Exotic dice |
+| 7 | Volley N | A property for the heavy bows (the Longbow, the Warbow): 1 Bane on Shots within N squares. If a third of the Shots are that close, Volley 3 costs about 3% of the damage and pays for a little more dice. I measure it with the map model before giving it a number |
+| 8 | The book | Nothing goes into rules-src until a whole group is confirmed; then its trees replace D2's weapon rows for that group (D2's Shortbow and Longbow) |
+
+**The six bows after these answers:**
+
+| Weapon | Gate | Range | Damage (T2 / T3) | Its thing |
+|---|---|---|---|---|
+| Hunting Bow | Basic | 8 / 16 / 24 | 1d6 / 1d10 | Handy and quiet, quick to nock, close quarters |
+| Horse Bow | Basic | 6 / 12 / 18 | 1d4+1 / 1d8+1 | Shooting on the move |
+| Longbow | Advanced | 12 / 24 / 36, Volley ? | about +10% | Range and volleys |
+| Composite Bow | Advanced | 10 / 20 / 30 | about +6%, and a movement unlock | The Horse Bow's movement with more force |
+| Warbow | Exotic | 12 / 24 / 36, Volley ? | about +20% | The heavy arrow: Tier 3 effects that move or stagger; slow |
+| Flight Bow | Exotic | 15 / 30 / 45 | about +20% (history says light hits; the game gives it the dice) | Range that covers the map: no range Banes in practice; light, fast arrows (Reactions, quick Shots) |
+
+Once 1 to 8 are confirmed (or changed): the Hunting Bow in full (stats, Technique, the whole ladder), then the Horse Bow.
