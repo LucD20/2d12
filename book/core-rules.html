@@ -1616,6 +1616,8 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <p>The Fear trait has no rules of its own. Other rules, Talents and Tags refer to it.</p>
 <h3 id="focus">Focus</h3>
 <p>These Actions require concentration. This is not a mechanic by itself, but some features affect your ability to concentrate.</p>
+<h3 id="gun">Gun</h3>
+<p><span class="trhl" style="--tc:var(--g-requires)">Gun</span> Actions need a weapon with the <a class="xref" href="gear.html#firearm">Firearm</a> property, such as a pistol or a musket, and use its Range as their Distance. A <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action without this trait gets it when you use such a weapon (so a Weapon Attack with a musket is a <span class="trhl" style="--tc:var(--g-requires)">Gun</span> Action). A Firearm is not a Projectile weapon: <span class="trhl" style="--tc:var(--g-requires)">Shot</span> Actions can't use it.</p>
 <h3 id="handle">Handle</h3>
 <p>To use an Action with the <span class="trhl" style="--tc:var(--g-requires)">Handle</span> trait, you must be able to use your hands (or similar appendages). You also need a <strong>hand free</strong> to make any Action with this trait. Releasing an object costs no AP (Release).</p>
 <h3 id="melee">Melee</h3>
@@ -1940,8 +1942,16 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>A condition with a value: less Speed, a penalty on all Rolls, a lower <span class="at-mind">Mind</span> Damage Threshold.</td>
 </tr>
 <tr>
+<td><a class="xref" href="gear.html#mastery"><strong>Expert</strong></a></td>
+<td>8 Mastery with a weapon: once each turn, you draw, stow or regrip it without Interact.</td>
+</tr>
+<tr>
 <td><a class="xref" href="#favored-and-doomed-rolls"><strong><span class="kw-pos">Favored</span></strong></a></td>
 <td>A roll of 3d12, keeping the two highest.</td>
+</tr>
+<tr>
+<td><a class="xref" href="gear.html#firearm"><strong>Firearm</strong></a></td>
+<td>A weapon property: the weapon shoots with powder (a pistol, a musket). It is not Projectile; <span class="trhl" style="--tc:var(--g-requires)">Gun</span> Actions need one.</td>
 </tr>
 <tr>
 <td><a class="xref" href="gear.html#fists"><strong>Fists</strong></a></td>
@@ -1972,12 +1982,16 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>A buffer written Guard N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take.</td>
 </tr>
 <tr>
+<td><a class="xref" href="#gun"><strong>Gun</strong></a></td>
+<td>A trait: the Action needs a Firearm (a pistol, a musket).</td>
+</tr>
+<tr>
 <td><a class="xref" href="#class-actions-picks-and-the-repertoire"><strong>Hallmark Action</strong></a></td>
 <td>A choice of two class Actions at level 1 (the Paladin: Smite or Lay On Hands; the Archer: Double Shot or Rolling Shot); you take one.</td>
 </tr>
 <tr>
 <td><a class="xref" href="gear.html#hands"><strong>Hands</strong></a></td>
-<td>How many hands hold a weapon.</td>
+<td>How many hands hold a weapon: your main hand and your off hand.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#hazardous-terrain"><strong>Hazardous Terrain <span class="kw-ht">[HT]</span></strong></a></td>
@@ -2044,8 +2058,16 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>A weapon property: <span class="kw-bane">1 Bane</span> against adjacent creatures, and it doesn't threaten them.</td>
 </tr>
 <tr>
+<td><a class="xref" href="gear.html#hands"><strong>Main hand, off hand</strong></a></td>
+<td>Your two hands. Which one holds a weapon changes nothing, unless a feature says so.</td>
+</tr>
+<tr>
+<td><a class="xref" href="gear.html#mastery"><strong>Master</strong></a></td>
+<td>15 Mastery with a weapon: from level 8, your Actions that deal [W] with it deal one more [W].</td>
+</tr>
+<tr>
 <td><a class="xref" href="gear.html#mastery"><strong>Mastery</strong></a></td>
-<td>How well you know a kind of weapon: +1 for each Tier 3 on a <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action with it. 3 unlocks its Weapon Technique.</td>
+<td>How well you know a kind of weapon: +1 for a Tier 3 on a <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action with it (at most 1 per Weapon Group an encounter). The weapon's Mastery (3, 4 or 5) unlocks its Weapon Technique; 8 Expert, 15 Master.</td>
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#minions"><strong>Minion</strong></a></td>
@@ -2105,7 +2127,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="gear.html#properties"><strong>Properties</strong></a></td>
-<td>The properties of a weapon (Actions have traits, creatures have Tags): Melee, Ranged, Long, Projectile, Thrown, Reload, Two-handed, Barehanded, Non-threatening.</td>
+<td>The properties of a weapon (Actions have traits, creatures have Tags): Melee, Ranged, Long, Projectile, Firearm, Thrown, Reload, Two-handed, Barehanded, Non-threatening.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#pulled"><strong>Pulled</strong></a></td>
@@ -2326,6 +2348,10 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <tr>
 <td><a class="xref" href="#defenses"><strong>Ward</strong></a></td>
 <td>Ward Defense (WD) — 11 + <span class="mod-power">Power Modifier</span> + Ward value + other items + bonuses − penalties. The Defense against <span class="trhl" style="--tc:var(--g-roll)">Power</span> Actions.</td>
+</tr>
+<tr>
+<td><a class="xref" href="gear.html#weapon-groups"><strong>Weapon Group</strong></a></td>
+<td>Blades, Axes, Hammers, Polearms, Bows, Crossbows, Firearms, Unarmed. Your Mastery with a weapon is at least a third of your best in its group.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#weapon-power-and-signature-modifiers"><strong><span class="mod-weapon">Weapon Modifier</span></strong></a></td>

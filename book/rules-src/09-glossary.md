@@ -57,7 +57,9 @@
 | [[Escalation\|**Escalation**]] | A PC's adrenaline: 0 at the start of an encounter, +1 at the start of every round after the first (up to 3), spent on Escalation abilities, back to 0 when the encounter ends. |
 | [[Evade\|**Evade**]] | Movement that doesn't trigger reactions and can't be split. |
 | [[Exhausted\|**Exhausted**]] | A condition with a value: less Speed, a penalty on all Rolls, a lower Mind Damage Threshold. |
+| [[Mastery\|**Expert**]] | 8 Mastery with a weapon: once each turn, you draw, stow or regrip it without Interact. |
 | [[Favored and Doomed Rolls\|**Favored**]] | A roll of 3d12, keeping the two highest. |
+| [[Firearm\|**Firearm**]] | A weapon property: the weapon shoots with powder (a pistol, a musket). It is not Projectile; Gun Actions need one. |
 | [[Fists\|**Fists**]] | The Barehanded weapon every creature has (Melee, Non-threatening). While you have a free hand, it counts as a weapon you wield. |
 | [[Flanking\|**Flanking**]] | Creatures that threaten the same enemy: each gets 1 Boon on [Melee] Actions against it for each other flanker, up to 3, minus 1 for each ally of the enemy that threatens it. |
 | [[Forced Movement\|**Forced Movement**]] | Movement you impose on another creature (Pushed, Pulled or Slid): no reactions, ignores Difficult Terrain, each square counts 1. |
@@ -65,8 +67,9 @@
 | [[Effect Timing\|**General Effects**]] | The Effects row of an Action. They happen on a Tier 2 or 3 result. |
 | [[Grunts\|**Grunt**]] | An NPC role with CV 50: about 24 Health at Stage 1, dies to about 1 PC turn. |
 | [[Guard\|**Guard**]] | A buffer written Guard N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take. |
+| [[Gun\|**Gun**]] | A trait: the Action needs a Firearm (a pistol, a musket). |
 | [[Class Actions, Picks and the Repertoire\|**Hallmark Action**]] | A choice of two class Actions at level 1 (the Paladin: Smite or Lay On Hands; the Archer: Double Shot or Rolling Shot); you take one. |
-| [[Hands\|**Hands**]] | How many hands hold a weapon. |
+| [[Hands\|**Hands**]] | How many hands hold a weapon: your main hand and your off hand. |
 | [[Hazardous Terrain\|**Hazardous Terrain [HT]**]] | Terrain that harms the creatures in it. Written [HT: Entering, Turn] in the text of the effect that creates it (notation, not a trait). |
 | [[Hazardous Terrain\|**Hazardous Terrain**]] | Terrain that deals damage or inflicts a condition, once per Movement. |
 | [[Rally Points\|**Heal**]] | To remove damage. The creature chooses which damage. |
@@ -83,7 +86,9 @@
 | [[Line of Effect\|**Line of Effect**]] | A straight line from the center of your square to any corner of the target's space that nothing blocks. |
 | [[Linked Actions\|**Linked Action**]] | An Action another Action lets you use as part of it, written like Weapon Attack (1A). It costs no AP. |
 | [[Long\|**Long**]] | A weapon property: 1 Bane against adjacent creatures, and it doesn't threaten them. |
-| [[Mastery\|**Mastery**]] | How well you know a kind of weapon: +1 for each Tier 3 on a Weapon Action with it. 3 unlocks its Weapon Technique. |
+| [[Hands\|**Main hand, off hand**]] | Your two hands. Which one holds a weapon changes nothing, unless a feature says so. |
+| [[Mastery\|**Master**]] | 15 Mastery with a weapon: from level 8, your Actions that deal [W] with it deal one more [W]. |
+| [[Mastery\|**Mastery**]] | How well you know a kind of weapon: +1 for a Tier 3 on a Weapon Action with it (at most 1 per Weapon Group an encounter). The weapon's Mastery (3, 4 or 5) unlocks its Weapon Technique; 8 Expert, 15 Master. |
 | [[Minions\|**Minion**]] | An NPC role with CV 25, with 3 AP a turn and no Dying: at 0 Health it dies, or falls Unconscious if the GM prefers. |
 | [[Minor enemies\|**Minor enemies**]] | Minions and Grunts (CV below 100). |
 | [[Rules Language\|**Move**]] | An Action with the Move trait. |
@@ -98,7 +103,7 @@
 | [[Rolls\|**Power roll**]] | An Action with the Power trait (or a Split Action in Power mode). |
 | [[Talents\|**Prerequisites**]] | What you need to choose a Talent. |
 | [[Projectile\|**Projectile**]] | A weapon property: the weapon shoots (a bow, a crossbow). Shot Actions need one. |
-| [[Properties\|**Properties**]] | The properties of a weapon (Actions have traits, creatures have Tags): Melee, Ranged, Long, Projectile, Thrown, Reload, Two-handed, Barehanded, Non-threatening. |
+| [[Properties\|**Properties**]] | The properties of a weapon (Actions have traits, creatures have Tags): Melee, Ranged, Long, Projectile, Firearm, Thrown, Reload, Two-handed, Barehanded, Non-threatening. |
 | [[Pulled\|**Pulled**]] | Forced Movement toward the origin, up to its value, inside a 45° cone. |
 | [[Pushed\|**Pushed**]] | Forced Movement away from the origin, up to its value, inside a 45° cone. |
 | [[Quickened\|**Quickened**]] | A condition with a value: you regain (and can hold) that many more AP at the start of your turn. |
@@ -154,6 +159,7 @@
 | [[Defenses\|**Vs.**]] | An entry that names an Attribute: the Action rolls against half of it (rounded up) instead of Armor Defense or Ward Defense. |
 | [[Vulnerable\|**Vulnerable**]] | A condition with a value: Actions against you gain that many Boons. |
 | [[Defenses\|**Ward**]] | Ward Defense (WD) — 11 + Power Modifier + Ward value + other items + bonuses − penalties. The Defense against Power Actions. |
+| [[Weapon Groups\|**Weapon Group**]] | Blades, Axes, Hammers, Polearms, Bows, Crossbows, Firearms, Unarmed. Your Mastery with a weapon is at least a third of your best in its group. |
 | [[Weapon, Power and Signature Modifiers\|**Weapon Modifier**]] | The higher of the class's two Weapon Attributes ÷ 2 + 1. Weapon Actions roll it. |
 | [[Rolls\|**Weapon roll**]] | An Action with the Weapon trait (or a Split Action in Weapon mode). |
 | [[Willing and Unwilling\|**Willing, Unwilling**]] | Willing: a creature that accepts the effect (an Unconscious creature counts as willing). Unwilling: one that doesn't. |

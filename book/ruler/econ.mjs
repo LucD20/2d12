@@ -196,6 +196,7 @@ const CATALOGUE_NOTES = {
   "catalogue/talents.txt": "**The Talents, melee (pack OT, 2026-10-30; in the book: book/options-talents.md)**: priced on the P1 Paladin's numbers.",
   "catalogue/talents-ranged.txt": "**The Talents, ranged (pack OT, 2026-10-30; in the book: book/options-talents.md)**: priced on the A1 Archer's numbers.",
   "catalogue/archer-a1.txt": "**The A1 main build (pack A1, 2026-10-29; PROPOSED: book/archer-a1.md)**: both Signatures and the defaults of every level 1 to 3 Pick.",
+  "catalogue/gear-d2.txt": "**The weapons and Weapon Techniques of D2 (2026-10-31; book/gear-d2.md)**: every weapon's Weapon Attack and its Technique, on a level 1 PC (Weapon Modifier +2).",
 };
 export function report() {
   // Measured by positions (pack E2) instead of assumed: who the NPCs strike on the map.

@@ -194,6 +194,42 @@ Roles: Paladin: tank and support: more Health, heals and Defense for allies, Nov
 | Long Draw |  | 0.5 | 0.5 | 2% | 1 range Bane off (0.26 a shot on average: positions) |
 | Steady Nerves | 2 | 0.1 | 0.1 | 0% | 2 Banes off the 2% of the shots made while Engaged (the Archer kites: positions); an Archer that doesn't kite: section 5 |
 
+## 4. Gear (D2 weapons): every Action of `catalogue/gear-d2.txt` (level 1; efficiency also at levels 2 and 3)
+
+**The weapons and Weapon Techniques of D2 (2026-10-31; book/gear-d2.md)**: every weapon's Weapon Attack and its Technique, on a level 1 PC (Weapon Modifier +2).
+
+| Action | AP | Frequency | Esc | Damage | Effects | Total DE | DE / AP | Efficiency L1 | L2 | L3 | Verdict (L1) | Notes (positions; what is not modeled) |
+|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---|---|
+| Weapon Attack | 1 | at-will |  | 5.4 | 0.0 | 5.4 | 5.36 | 1.15 | 1.15 | 1.15 | a little over |  |
+| Dagger Attack | 1 | at-will |  | 3.8 | 0.0 | 3.8 | 3.78 | 0.81 | 0.81 | 0.81 | a little under |  |
+| Longsword Attack | 1 | at-will |  | 4.5 | 0.0 | 4.5 | 4.51 | 0.97 | 0.97 | 0.97 | on target |  |
+| Maul Attack | 1 | at-will |  | 5.5 | 0.0 | 5.5 | 5.50 | 1.18 | 1.18 | 1.18 | a little over |  |
+| Greataxe Attack | 1 | at-will |  | 5.4 | 0.0 | 5.4 | 5.44 | 1.17 | 1.17 | 1.17 | a little over |  |
+| Musket Attack | 1 | at-will |  | 5.0 | 0.0 | 5.0 | 4.99 | 1.07 | 1.07 | 1.07 | on target |  |
+| Pistol Attack | 1 | at-will |  | 4.5 | 0.0 | 4.5 | 4.45 | 0.96 | 0.96 | 0.96 | on target |  |
+| Knuckle Attack | 1 | at-will |  | 3.5 | 0.0 | 3.5 | 3.52 | 0.75 | 0.75 | 0.75 | **under** |  |
+| Reaping Sweep | 1 | round |  | 6.4 | 0.0 | 6.4 | 6.37 | 1.37 | 1.37 | 1.37 | a little over |  |
+| Stick and Slip (Dagger) | 1 | round |  | 4.3 | 1.6 | 5.9 | 5.93 | 1.27 | 1.27 | 1.27 | on target | Evade 1: saves the step away (1 AP) on the 47% of the turns it starts Engaged |
+| Guarded Cut (Longsword) | 1 | round |  | 5.1 | 0.3 | 5.4 | 5.38 | 1.15 | 1.15 | 1.15 | on target |  |
+| Hooking Chop (Handaxe) | 1 | round |  | 4.3 | 0.9 | 5.2 | 5.19 | 1.11 | 1.11 | 1.11 | on target | Pulled 1: 1.18 (positions) |
+| Rending Chop (Greataxe) | 1 | round |  | 6.0 | 0.3 | 6.3 | 6.33 | 1.36 | 1.36 | 1.36 | a little over |  |
+| Ringing Blow (Mace) | 1 | round |  | 5.1 | 0.2 | 5.3 | 5.27 | 1.13 | 1.13 | 1.13 | on target |  |
+| Bowl Over (Maul) | 1 | round |  | 6.1 | 0.3 | 6.4 | 6.37 | 1.37 | 1.37 | 1.37 | a little over | Prone: 1.20 (positions) |
+| Lunge (Spear) | 1 | round |  | 4.3 | 0.4 | 4.7 | 4.73 | 1.02 | 1.02 | 1.02 | on target | Hindered (EoT): 1.46 (positions) |
+| Keep Them Off (Pike) | 1 | round |  | 5.1 | 0.7 | 5.7 | 5.72 | 1.23 | 1.23 | 1.23 | on target | Pushed 1: 0.91 (positions); Pushed 2: 0.91 (positions) |
+| Gut Punch (Knuckle Dagger) | 1 | round |  | 4.1 | 1.1 | 5.1 | 5.13 | 1.10 | 1.10 | 1.10 | on target | Hindered (EoT): 1.46 (positions) |
+| Skirmish Shot (Shortbow) | 1 | round |  | 5.1 | 0.6 | 5.6 | 5.65 | 1.21 | 1.21 | 1.21 | on target | Evade 1: saves the step away (1 AP) on the 47% of the turns it starts Engaged |
+| Heartseeker (Longbow) | 1 | round |  | 5.1 | 0.3 | 5.4 | 5.39 | 1.16 | 1.16 | 1.16 | on target |  |
+| Sting (Hand Crossbow) | 1 | round |  | 4.3 | 0.4 | 4.7 | 4.73 | 1.02 | 1.02 | 1.02 | on target | Hindered (EoT): 1.46 (positions) |
+| Lock & Loose | 1 | round |  | 5.5 | 0.7 | 6.2 | 6.24 | 1.34 | 1.34 | 1.34 | a little over | Hindered (until it moves): 0.69 (positions); Immobilized: 1.52 (positions) |
+| Point Blank (Pistol) | 1 | round |  | 5.0 | 0.2 | 5.3 | 5.25 | 1.13 | 1.13 | 1.13 | on target | Pushed 1: 0.91 (positions) |
+| Thunderclap (Musket) | 1 | round |  | 5.5 | 0.3 | 5.9 | 5.86 | 1.26 | 1.26 | 1.26 | on target | Prone: 1.20 (positions) |
+
+**Gear (D2 weapons) passives** (DE a turn, weighted by the share of the rounds at its Escalation):
+
+| Passive | Esc | DE a turn (when on) | Weighted | Share of a baseline turn | How / not priced |
+|---|---:|---:|---:|---:|---|
+
 ## 4. Paladin (options): every Action of `catalogue/paladin-options.txt` (level 1; efficiency also at levels 2 and 3)
 
 **The Paladin's options (pack OT, 2026-10-30; in the book: book/options-talents.md)**: every option of a level 1 to 3 Pick slot, to compare with its default above.

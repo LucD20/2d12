@@ -21,6 +21,10 @@ The Fear trait has no rules of its own. Other rules, Talents and Tags refer to i
 
 These Actions require concentration. This is not a mechanic by itself, but some features affect your ability to concentrate.
 
+### Gun
+
+Gun Actions need a weapon with the [[Firearm]] property, such as a pistol or a musket, and use its Range as their Distance. A Weapon Action without this trait gets it when you use such a weapon (so a Weapon Attack with a musket is a Gun Action). A Firearm is not a Projectile weapon: Shot Actions can't use it.
+
 ### Handle
 
 To use an Action with the Handle trait, you must be able to use your hands (or similar appendages). You also need a **hand free** to make any Action with this trait. Releasing an object costs no AP (Release).
