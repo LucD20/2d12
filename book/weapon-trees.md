@@ -236,3 +236,27 @@ to shoot while moving, from cover to cover. Its arrows are lighter than a longbo
 for level 5, not 8). Light Feet and Shot on the Run are movement (priced by the map model when the bow is built in the ruler).
 **Against the Hunting Bow:** the same damage; the Hunting Bow wins standing still and in close quarters, the Recurve Bow while moving
 (shorter range: 6 instead of 8).
+
+**Lucas (Recurve Bow, round 1):** Skirmish Shot is lame (a Weapon Attack with other dice): **a Technique must feel good, almost unique**;
+use everything the system has (Setup, Versions, Lines: Lucas has their rules). **Shot on the Run is already RAW** (Chapter 3: you can split an
+Advance and use other Actions between its parts): removed. Restart with the rules reread.
+
+## The toolbox (what the rules already offer a weapon; reread 2026-10-31)
+
+- **The card:** Versions (1 / 2 / 3 AP columns, "As 2 AP"), **Setup** (movement or an effect before the roll: Cut Through's Evade 2 through
+  creatures), **Requirements**, a **Critical** row (Doubles on a Tier 3, or 20 over the DC), the **Effects** row (Tier 2 and 3), Linked Actions
+  ("Weapon Attack (1A)"), **Reactions** (Interrupt before / Trigger after; 0R and 1R; a Critical that **disrupts**), Frequencies (At-will with
+  its Banes, Turn, Round, Encounter, Daily), an Escalation cost.
+- **Rolls:** Boons and Banes, Favored and Doomed, Save Actions (the targets roll; [Mod] on Tier 1 and 2), several targets rolled once.
+- **Movement:** Advance (splittable), Evade (no Reactions, not splittable), Charge, straight lines, Pushed / Pulled / Slid / Reposition,
+  Collision (damage for unused squares), Steadiness, Difficult and Hazardous Terrain ([HT: ...] areas), Imperiled (Deadly Hazards).
+- **The battlefield:** Line of Effect, **Cover** (1 to 3 Banes by blocked corners; a creature in the way is Low cover), **Leaning**,
+  Engaged (2 Banes on [Ranged] Actions; 1 against a target Engaged with someone else), **Flanking**, Reach and Range (Long), Light and
+  Senses (Obscured, Hidden, Unsensed; Areas ignore them).
+- **Areas:** Emanation, Burst, Aura, and **Lines and Cones (Lucas's rules: to come)**; Line of Effect and Cover from the Point of Origin.
+- **Effects:** damage on two pools, Cleave, Guard, **Bleed** (new), Hindered, Immobilized, Prone, Vulnerable, Empowered / Enfeebled,
+  Slowed / Quickened, losing or gaining AP now, Reload Shots (Favored, Empowered 2), the mark (a class's: Marked Quarry).
+
+**Found in the reread:** the Archer's **Rolling Shot** is already "Evade 1 to 3, then a Weapon Attack": a Technique that is a Setup Evade +
+a Shot would copy the Archer's Hallmark. A bow Technique should do what no card does yet: react (an Interrupt), shape an area (a Line),
+play with Cover (a shot that ignores it, or arcs over it), move the target, or change the AP economy.
