@@ -510,3 +510,10 @@ can't, unless an ability says so (jumps will use the same rule later). Now, or o
 **Plunging Shot rewritten with it** (no Cleave): 1 AP **arcs**; 2 AP **arcs high** and deals 1d6 more. Worth: 1 AP about 5.6 DE (1.2),
 2 AP about 9 DE (about 1.0, plus the cover it skips: High Cover is 3 Banes). **Arrowfall (28)** becomes: the 2 AP Version can target a
 creature you can't perceive, if an ally within 5 squares of it perceives it (the volley called by a spotter).
+
+**Lucas:** yes, a high arc passes over a full wall (Total Cover) up to 2 squares high. **Jumps:** a jumping creature should be able to
+jump over a creature next to it. **The rule, revised:** the 3-square minimum is for **Shots and throws** (a missile needs distance to rise
+and fall); **a jump that arcs** can start next to what it jumps over and land on the other side (a legal empty square), passing over a low
+obstacle or a Medium or smaller creature (a high arc: up to 2 squares, a Large creature); its length comes from the ability ("Jump 3").
+Passing over an unwilling creature this way is not Difficult Terrain (you don't go through its space); Reactions to movement still apply.
+The ceiling rule (3 squares) is for every arc.
