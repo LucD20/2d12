@@ -344,3 +344,9 @@ take 3 Banes (as a Two-handed weapon held with one hand)." Bows lose Two-handed 
 level, 4.5). Unlike Two-handed: carrying the bow leaves a hand free (Handle Actions, Fists) with no Release / Interact to regrip, and the Banes
 are only on the bow's own Strikes, not on another weapon's. Crossbows and the Musket stay Two-handed. To settle with it: the off-hand Bane
 (D2 answer 5) doesn't apply to a Draw weapon (it is held in one hand and drawn with the other).
+
+**Lucas:** the property is called **Strung**. A bow can be used from the off hand (a dagger in the main hand, the bow in the off hand): 3 Banes
+(the other hand is full) + the off-hand Banes = 5, "which is fair". **My note:** a real archer holds the bow in the off hand and draws with
+the main hand, so the off-hand Bane should not hit the normal way of shooting: proposed, **a Strung weapon takes the off-hand Bane only when
+the other hand holds something** (bow in the off hand, main hand free: 0 Banes; dagger in the main hand: 3 + off-hand). A Hunting Bow
+Weapon Attack: 4.51 DE (0 Banes), 3.61 (2), 3.20 (3), 2.83 (4), **2.49 (5: a hit 41% of the time, a Tier 3 13%)**.
