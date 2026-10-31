@@ -1,0 +1,11 @@
+by order: [{"label":"Main hand","hand":"main","id":"ls"},{"label":"Off hand","hand":"off","id":"hc"}]
+the crossbow says main: [{"label":"Main hand","hand":"main","id":"hc"},{"label":"Off hand","hand":"off","id":"ls"}] | hand of the longsword: off
+Weapon Attack (both fit): M:Hand Crossbow O:Longsword
+[Melee] Action (only the longsword): M(off):Hand Crossbow O:Longsword | tips: Main hand: Hand Crossbow can't be used for this Action / Off hand: Longsword
+[Ranged] Action fits neither: single button
+one weapon: single button | drawn next goes to: off | the longsword alone would go to: main
+two-handed grip: 2H:Greatsword | not fitting: single button | slots: [{"label":"Both hands","hand":"both","id":"gs","both":true}]
+moves: {"system.wielded":true,"system.hands":1,"system.dropped":false,"system.hand":"off"} {"system.wielded":true,"system.hands":1,"system.dropped":false} {"system.wielded":true,"system.hands":2,"system.dropped":false,"system.hand":""}
+data: hand on weapons true | heldFirst and weaponCandidates true
+useAction: the button's weapon is the preview and the pick true | the window names the hands true
+sheet: useWith and swapHands true | row buttons true | a free slot gives its hand true | css true

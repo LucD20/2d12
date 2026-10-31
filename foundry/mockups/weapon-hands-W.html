@@ -1,0 +1,40 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Weapon hands (W)</title><style>
+*{box-sizing:border-box}
+body{margin:0;padding:24px;background:#2a303c;font:13px/1.35 system-ui,"Segoe UI",Roboto,sans-serif;color:#2b2620}
+h1{color:#f1ead6;font:600 20px system-ui;margin:0 0 4px}.lead{color:#cfc7b0;max-width:900px;margin:0 0 22px}.lead b{color:#fff}
+.frames{display:flex;flex-wrap:wrap;gap:26px 30px;align-items:flex-start}
+.frame h3{color:#d9d2bf;font:600 12px system-ui;margin:0 0 6px;max-width:560px}
+.frame p{color:#b8b09a;font-size:12px;margin:6px 0 0;max-width:560px}
+.sheet{width:560px;background:linear-gradient(#ebe6d6,#e2dcc7);padding:10px 12px 8px;border-radius:4px;box-shadow:0 2px 10px #0006}
+.ar{display:flex;align-items:center;gap:8px;padding:5px 6px;border-bottom:1px solid #d3c9ad;border-left:3px solid #c0392b}
+.ar .nm{flex:1;font-weight:600}.ar .ap{width:44px;color:#3d3b8f;font-weight:700}.ar .rg{width:70px;color:#5b5446}.ar .fq{width:62px;color:#5b5446}
+.use{display:inline-flex;gap:3px}
+.b{height:28px;min-width:28px;padding:0 6px;display:inline-flex;align-items:center;justify-content:center;gap:4px;border-radius:6px;background:#1e2a3a;color:#fff;font:700 11px system-ui;cursor:pointer}
+.b:hover{background:#2d3e56}.b.off{opacity:.4;cursor:default}.b.wide{min-width:60px}
+.b i{font-style:normal;font-size:13px}
+.tip{display:inline-block;margin-left:6px;background:#111;color:#eee;font-size:11px;padding:2px 6px;border-radius:4px}
+.slots{display:flex;gap:6px;margin-bottom:8px}.slot{flex:1;border:1px solid #b9ae92;border-radius:6px;padding:4px 6px;background:#f4efe0}.slot .k{font:700 10px system-ui;color:#7a7364;text-transform:uppercase;letter-spacing:.06em;display:flex;justify-content:space-between}.slot b{display:block}.swap{font-size:11px;color:#3d3b8f;cursor:pointer}
+</style></head><body>
+<h1>W: fewer clicks for weapons</h1>
+<p class="lead">The use button of a <b>[Weapon] Action</b> shows the hand(s) instead of the "Which weapon?" window. <b>Only the buttons that matter:</b> one weapon that fits = the usual dice button (its tooltip names the weapon); a two-handed grip = one wide <b>2H</b> button; two one-handed weapons = <b>M</b> (main hand) and <b>O</b> (off hand), a hand whose weapon can't be used for that Action greyed, with why. Fists count only when no held weapon fits (the Fists Basic Action is still there). Weapon Techniques and "Weapon used" Actions (Pummel, Leg Sweep) keep their one button.</p>
+<div class="frames">
+ <div class="frame"><h3>1. Longsword in the main hand, Hand Crossbow in the off hand</h3><div class="sheet">
+  <div class="ar"><span class="nm">Weapon Attack</span><span class="ap">1 AP</span><span class="rg">Weapon</span><span class="fq">At-will</span><span class="use"><a class="b">M</a><a class="b">O</a></span></div>
+  <div class="ar"><span class="nm">Opportunity Attack</span><span class="ap">1R</span><span class="rg">Weapon</span><span class="fq">At-will</span><span class="use"><a class="b">M</a><a class="b off">O</a></span></div>
+  <div class="ar"><span class="nm">Wing Clip</span><span class="ap">1 AP</span><span class="rg">Weapon</span><span class="fq">Round</span><span class="use"><a class="b off">M</a><a class="b">O</a></span></div>
+  <div class="ar"><span class="nm">Guarded Cut</span><span class="ap">1 AP</span><span class="rg">1 sq.</span><span class="fq">Round</span><span class="use"><a class="b"><i>&#9861;</i></a></span><span class="tip">Weapon Technique: its own weapon</span></div>
+ </div><p>Hover M: "Main hand: Longsword". Hover the greyed O on a [Melee] Action: "Off hand: Hand Crossbow can't be used for a [Melee] Action".</p></div>
+
+ <div class="frame"><h3>2. Greatsword in both hands</h3><div class="sheet">
+  <div class="ar"><span class="nm">Weapon Attack</span><span class="ap">1 AP</span><span class="rg">Weapon</span><span class="fq">At-will</span><span class="use"><a class="b wide">2H</a></span></div>
+  <div class="ar"><span class="nm">Smite</span><span class="ap">1-3 AP</span><span class="rg">Weapon</span><span class="fq">Round</span><span class="use"><a class="b wide">2H</a></span></div>
+ </div><p>One wide button: "Both hands: Greatsword". No window.</p></div>
+
+ <div class="frame"><h3>3. One Mace in the main hand, the off hand free</h3><div class="sheet">
+  <div class="ar"><span class="nm">Weapon Attack</span><span class="ap">1 AP</span><span class="rg">Weapon</span><span class="fq">At-will</span><span class="use"><a class="b"><i>&#9861;</i></a></span><span class="tip">Use with Mace (main hand)</span></div>
+ </div><p>One weapon: one button. Today this asks "Which weapon?" (Mace or Fists): now it uses the Mace. The Fists Action uses the free hand.</p></div>
+
+ <div class="frame"><h3>4. Items tab: the hands are remembered</h3><div class="sheet">
+  <div class="slots"><div class="slot"><span class="k">Main hand <span class="swap">&#8646; Swap</span></span><b>Longsword</b></div><div class="slot"><span class="k">Off hand</span><b>Hand Crossbow</b></div><div class="slot"><span class="k">Armor</span><b>Medium</b></div></div>
+ </div><p>Drawing a one-handed weapon puts it in the free hand (main first); dropping it on a Free hand slot puts it in that hand; "Swap" exchanges them. The book: main hand and off hand are names only (D2, question 5).</p></div>
+</div></body></html>

@@ -40,10 +40,10 @@ import { addBasicActions, missingBasic } from "./basic.mjs";
 import { openEffectSheet } from "./fxopen.mjs";
 import { applyTab, durationText, dragData } from "./sheet-common.mjs";
 import { hoverOf } from "./util.mjs";
-import { WEAPON_WHERE, ARMOR_WHERE, weaponWhere, armorWhere, weaponMove, armorMove, handsFor, tierBoxes, handSlots, whereButtons } from "./loadout.mjs";
+import { WEAPON_WHERE, ARMOR_WHERE, weaponWhere, armorWhere, weaponMove, armorMove, handsFor, tierBoxes, handSlots, whereButtons, freeHandFor, useButtons, handOf, HAND_LABEL } from "./loadout.mjs";
 import { ensureHandsFor } from "./hands.mjs";
 import { passiveSources } from "./passives.mjs";
-import { weaponsFor } from "./fists.mjs";
+import { weaponsFor, weaponCandidates, heldFirst } from "./fists.mjs";
 import { effectOff } from "./escalation.mjs";
 import { npcBuilderContext, ratingUpdate, cvTip } from "./npcbuilder.mjs";
 // What keeps its scroll position when the sheet is drawn again (v0.0.165): the window, the side panel, the main pane and each tab.
@@ -68,7 +68,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     form: { submitOnChange: true },
     actions: {
       switchTab: CharacterSheet.switchTab, rollAttr: CharacterSheet.rollAttr, rollTable: CharacterSheet.rollTable,
-      useAction: CharacterSheet.useAction, openItem: CharacterSheet.openItem, deleteItem: CharacterSheet.deleteItem,
+      useAction: CharacterSheet.useAction, useWith: CharacterSheet.useWith, swapHands: CharacterSheet.swapHands, openItem: CharacterSheet.openItem, deleteItem: CharacterSheet.deleteItem,
       openEffect: CharacterSheet.openEffect, deleteEffect: CharacterSheet.deleteEffect, exhaustedUp: CharacterSheet.exhaustedUp, exhaustedDown: CharacterSheet.exhaustedDown,
       confirmDelete: CharacterSheet.confirmDelete,
       rollInitiative: CharacterSheet.rollInitiative, addBasic: CharacterSheet.addBasic, rest: CharacterSheet.rest, editSenses: CharacterSheet.editSenses,
@@ -415,7 +415,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const wornArmor = armorRows.find(r => r.where === "worn");
     const fold = game.user.getFlag("twod12", "itemFold") ?? {};
     const loadout = {
-      hands: handSlots(weapons).map(slot => (slot.free ? slot : { ...slot, ...weaponRows.find(r => r.id === slot.id), label: slot.label })),
+      hands: (sl => sl.map(slot => (slot.free ? slot : { ...slot, ...weaponRows.find(r => r.id === slot.id), label: slot.label, swap: slot.hand === "main" && !sl.some(x => x.free) })))(handSlots(weapons)),   // v0.0.208: Swap on the main hand when both hold a weapon
       armor: (isPc ? wornArmor : null) ?? { free: true, text: isPc ? "Unarmored" : "Stat block", sub: isPc ? "Armor 11 · Ward +0" : `AD ${s.armorDC ?? 13} · WD ${s.wardDC ?? 13} (armor items are loot)` }
     };
     const fmtN = n => String(Math.round(n * 100) / 100);
@@ -551,9 +551,13 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const chips = out ? [{ text: "Unloaded", cls: "down", why: `${out.name} must be reloaded first (Reload, 1 AP)` }] : [];
     // v0.0.182: a granted use waiting (Double Shot's Weapon Attacks): the use button turns blue and uses it.
     const g = activeGrants(a, i)[0];
+    // v0.0.208 (W): a [Weapon] Action that picks its weapon gets a button per hand (2H, or M and O); one weapon that fits: its name on the tooltip.
+    const picks = it.traits?.has?.("weapon") && !i.getFlag("twod12", "weaponId") && !it.weaponUse ? heldFirst(weaponCandidates(a, i)) : null;
+    const ordered = picks ? this._weaponsInOrder() : null, hands = picks ? useButtons(ordered, new Set(picks.map(w => w.id))) : null;
+    const useTip = picks?.length === 1 ? `Use ${i.name} with ${picks[0].name}${(h => (h ? ` (${HAND_LABEL[h].toLowerCase()})` : ""))(handOf(ordered, picks[0].id))}` : `Use ${i.name}`;
     const grant = g ? { tip: `Granted by ${g.effect.name.replace(/\s*\(.*\)\s*$/, "")}: ${g.grant.left} use${g.grant.left === 1 ? "" : "s"} left, ${g.grant.ap ? `${g.grant.ap} AP` : "free"}. Click to use it; Shift-click for a normal use.` } : null;
     return {
-      grant,
+      grant, hands, useTip,
       id: i.id, name: i.name, costLabel: costText(i), cost: costGroup(i), fq: cardColorFor(it), freq: effectiveFrequency(it), freqText: frequencyText(i, (a.getFlag("twod12", "dailyUsed") ?? []).includes(i.id)),
       // v0.0.168: a number reads as squares ("5 sq."); words (Weapon, Reach, Self) and bands (10/20/40) stay
       range: ((r => (/^\d+$/.test(r) ? `${r} sq.` : r))((areaText(it) || distanceText(it, weapon) || "\u2014"))),
@@ -778,7 +782,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         const data = dragData(ev), w = data?.uuid ? fromUuidSync(data.uuid) : null;
         if (!w || w.parent !== this.actor || w.type !== "weapon") return;
         ev.preventDefault(); ev.stopImmediatePropagation(); ev._twod12 = true;
-        this._moveItem(w, "1h");
+        this._moveItem(w, "1h", slot.dataset.hand ?? "");
       }, true);
     });
     // The quantity of a gear row, typed in place.
@@ -859,6 +863,8 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   }
 
   _item(target) { return this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId); }
+  /** v0.0.208: the weapons in the Items tab's order (the hands of weapons that don't say theirs follow it). */
+  _weaponsInOrder() { const o = this.actor.getFlag("twod12", "itemOrder") ?? [], k = id => { const n = o.indexOf(id); return n < 0 ? 9999 : n; }; return [...this.actor.itemTypes.weapon].sort((x, y) => k(x.id) - k(y.id)); }
   /** Star: add or remove an Action from the Favorites tab. */
   static async toggleFav(event, target) {
     event?.stopPropagation?.();
@@ -963,12 +969,13 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   /** Wear or take off an armor (only one is worn at a time). */
   /** Move a weapon or an armor (Dropped, Worn, One hand, Both hands; Dropped, Carried, Worn). Taking a weapon in hand checks the hands first. */
-  async _moveItem(item, where) {
+  async _moveItem(item, where, hand = "") {
     if (!item || !where) return;
     if (item.type === "weapon") {
       const need = handsFor(where);
       if (need && !(await ensureHandsFor(this.actor, item, need))) return this.render();   // put the dropdown back
-      return item.update(weaponMove(where));
+      // v0.0.208: a weapon taken in one hand goes into the free hand (the main hand first), or the hand of the slot it was dropped on.
+      return item.update(weaponMove(where, where === "1h" ? (hand || freeHandFor(this._weaponsInOrder(), item.id)) : ""));
     }
     if (item.type === "armor") {
       if (where === "worn") { await setWorn(item, true); return item.system.dropped ? item.update({ "system.dropped": false }) : null; }
@@ -1137,7 +1144,15 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     }
   }
   static async rollTable(event, target) { await rollTable(this.actor, target.dataset.kind); }
-  static async useAction(event, target) { await useAction(this.actor, this._item(target), event?.shiftKey ? { noGrant: true } : {}); }   // v0.0.182: Shift: a normal use, even with a granted use waiting
+  static async useAction(event, target) { await useAction(this.actor, this._item(target), event?.shiftKey ? { noGrant: true } : {}); }
+  /** v0.0.208 (W): a hand button: the Action with the weapon in that hand (no "Which weapon?" window). */
+  static async useWith(event, target) { await useAction(this.actor, this._item(target), { weaponId: target.dataset.weaponId, ...(event?.shiftKey ? { noGrant: true } : {}) }); }
+  /** v0.0.208: the Items tab's Swap: the main-hand and off-hand weapons change hands. */
+  static async swapHands() {
+    const slots = handSlots(this._weaponsInOrder());
+    if (slots.length !== 2 || slots.some(s => s.free)) return;
+    await this.actor.updateEmbeddedDocuments("Item", slots.map(s => ({ _id: s.id, "system.hand": s.hand === "main" ? "off" : "main" })));
+  }   // v0.0.182: Shift: a normal use, even with a granted use waiting
   static openItem(event, target) { this._item(target)?.sheet.render(true); }
   static async deleteItem(event, target) { await this._item(target)?.delete(); }
   static async confirmDelete(event, target) {

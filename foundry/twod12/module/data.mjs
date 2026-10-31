@@ -396,6 +396,7 @@ export class WeaponData extends foundry.abstract.TypeDataModel {
       damage: new SchemaField({ t1: tierDamage(), t2: tierDamage(), t3: tierDamage() }),
       actions: new ArrayField(str()),
       wielded: bool(),
+      hand: str(),   // v0.0.208: the hand that holds it, "main" or "off" (empty: by order; a two-handed grip uses both)
       dropped: bool()   // v0.0.139: on the ground (not in hand, not worn); Worn = not wielded and not dropped
     };
   }

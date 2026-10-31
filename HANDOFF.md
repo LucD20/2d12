@@ -2,10 +2,10 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.207, 166 tests; READ THIS FIRST)
-- **Foundry:** v0.0.207 is on `main`; Lucas tested it (2026-10-31: all works). Pack C (the Paladin and Archer content, Talents, the class window and the Talent picker) and the editability sweep are complete: every card mechanic is a setting or field on its item, the basic mechanics are listed in foundry/foundry-backlog.md.
-- **Book:** seven documents built from book/rules-src (Core Rules, Species, Gear, Talents, Paladin, Archer, Bestiary). P1 (Paladin), A1 (Archer), E3 (Bestiary by Stage), LV (progression, model A) and OT (options and Talents) are in the book. Open: the design sessions D2, D3, D4 and the book packs B1 to B4 (MASTER-PLAN).
-- **Next:** MASTER-PLAN section 3: D2 (Mastery, Groups and Gear), D3 (Skills), D4 (Magic and Momentum); between them B1, W (fewer clicks for weapons), K (shortcuts).
+## Where we are now (v0.0.208, 167 tests; READ THIS FIRST)
+- **Foundry:** v0.0.208 (pack W, fewer clicks for weapons: a button per hand on [Weapon] Actions, the hands remembered, Swap; the Gun trait and the Firearm property) is on branch `claude/laughing-brown-g5zkem`, **not tested by Lucas yet** (its checklist is in the session report; what to check: foundry/foundry-backlog.md, Leftovers). v0.0.207 was tested (2026-10-31: all works): every card mechanic is a setting or field on its item, the basic mechanics are listed in foundry/foundry-backlog.md.
+- **Book:** seven documents built from book/rules-src (Core Rules, Species, Gear, Talents, Paladin, Archer, Bestiary). P1, A1, E3, LV, OT are in the book; **D2 (Weapon Mastery, Weapon Groups and Gear) is in the book with my defaults, waiting for Lucas's answers by exception** (the prep document and its decision sheet: `book/gear-d2.md`): 17 weapons in 8 groups, a Mastery per weapon (3 / 4 / 5), 14 new Weapon Techniques, Expert 8, Master 15 (one more [W] from level 8), 1 Mastery per group per encounter, the Firearm property and [Gun], main hand and off hand (names only). Open: D3, D4 and B1 to B4.
+- **Next:** Lucas answers D2's decision sheet (gear-d2.md section 7) and tests v0.0.208; then D3 (Skills), D4 (Magic and Momentum); between them B1, K (shortcuts). X (Mastery and Gear in the system) after D3 and D4.
 - **History:** every earlier "where we are" entry (2026-10-23 to v0.0.207) is in `archive/old-notes/HANDOFF-to-v0.0.207.md` (older: `handoff-history-v0.0.166.md`); each version's details are in the changelog (foundry/twod12/docs/reference.md).
 
 ## What is in the repository
@@ -22,7 +22,7 @@ book/
   diagrams/                  diagrams.py draws every diagram; a chapter places one with @@DIAGRAM:name@@
   ruler/                     the numbers (README.md, spec.mjs, classes/*.txt, prices, positions, progression, ratings.py)
   rules-backlog.md           THE LOG OF RULE DECISIONS and the open items of the book
-  *.md (paladin-p1, archer-a1, options-talents, bestiary-e3, progression-lv, class-charter; paladin- and archer-old-cards)   the design documents behind the book's changes, and the cards that left it
+  *.md (paladin-p1, archer-a1, options-talents, bestiary-e3, progression-lv, gear-d2, class-charter; paladin- and archer-old-cards)   the design documents behind the book's changes, and the cards that left it
 foundry/
   twod12/                    the system (id twod12): module/, templates/, styles/, lang/, packs/ (built, gitignored), tools/ (content.mjs, build-packs.mjs, tests/), docs/reference.md, README.md
   foundry-backlog.md         what is left in the system, the basic mechanics, known limits, tools
@@ -34,7 +34,7 @@ Python needs `markdown`. Node 18+ for the tests.
 
 ## Commands
 - Book: `cd book && python3 build_rules.py` ("unresolved refs: 0" is the goal). `python3 build_rules.py --where Flanking`.
-- System tests: **in a fresh clone (a cloud session) first build the packs** (below): about 10 tests read packs/_source and fail with ENOENT without it. Then `cd foundry/twod12 && node tools/tests/run.mjs` (166 tests; each has an expected output in tools/tests/expected; accept a meant change with `node tools/tests/run.mjs --update t84`). **Test numbers have gaps (t1, t6, t21, t31; also t12b, t37b): the next new one is t169.** Lint: `npx eslint@8 --no-eslintrc -c tools/eslint.json --ext .mjs module`.
+- System tests: **in a fresh clone (a cloud session) first build the packs** (below): about 10 tests read packs/_source and fail with ENOENT without it. Then `cd foundry/twod12 && node tools/tests/run.mjs` (167 tests; each has an expected output in tools/tests/expected; accept a meant change with `node tools/tests/run.mjs --update t84`). **Test numbers have gaps (t1, t6, t21, t31; also t12b, t37b): the next new one is t170.** Lint: `npx eslint@8 --no-eslintrc -c tools/eslint.json --ext .mjs module`.
 - Compendiums: the content is in `tools/content.mjs`; in foundry/ run `npm install @foundryvtt/foundryvtt-cli` (node_modules and package files: never commit them), then `node twod12/tools/build-packs.mjs`.
 - A version: bump `version` in system.json, add the changelog entry to docs/reference.md (copy it to foundry/reference.md), run the tests, give Lucas a short test checklist; commit on a `pack-...` branch (Update Foundry.cmd finds it). No zips.
 

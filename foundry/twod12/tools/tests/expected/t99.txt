@@ -5,7 +5,7 @@ kind ""              -> Trigger: A creature within 3 squares leaves a square dur
 kind undefined       -> Trigger: A creature within 3 squares leaves a square during a Move Action
 no trigger, no line: false
 --- the Fear trait
-in the trait list: Fear | sorted among the others: Appeal, Area, Body, Divine, Fear, Focus, Handle | help: No rules of its own: other features refer to it.
+in the trait list: Fear | sorted among the others: Appeal, Area, Body, Divine, Fear, Focus, Gun | help: No rules of its own: other features refer to it.
 --- the fields and the sheets
 reaction kind (data): true | Tags (data): true | Empowered and Enfeebled as numbers (effect settings): true
 reaction kind select (item sheet): true | Empowered and Enfeebled inputs: true | no old checkbox: true

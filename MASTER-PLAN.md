@@ -2,7 +2,7 @@
 
 One list of everything open, in the order I recommend, with what each step needs from you. The backlogs keep the detail.
 Sizes: S = under an hour of work, M = a normal session, L = a long session, XL = several.
-Finished: Phase 1 (Q, M1, M2, R, F), D0, T, E1, CH, E2, P1, LV, A1 (it was D1, the Archer design), E3, OT, C1, C2, pack C (v0.0.186 to v0.0.195), the editability sweep (v0.0.207). The full plan as it was, with every finished pack: `archive/old-notes/MASTER-PLAN-to-v0.0.207.md`.
+Finished: Phase 1 (Q, M1, M2, R, F), D0, T, E1, CH, E2, P1, LV, A1 (it was D1, the Archer design), E3, OT, C1, C2, pack C (v0.0.186 to v0.0.195), the editability sweep (v0.0.207), **D2 (2026-10-31, in the book with defaults; Lucas answers by exception: book/gear-d2.md section 7)** and **W (v0.0.208, to test)**. The full plan as it was, with every finished pack: `archive/old-notes/MASTER-PLAN-to-v0.0.207.md`.
 
 ## 1. How we work from here (to cut the back-and-forth)
 1. **Decisions are asked once, in a decision sheet, with my default.** You answer by exception ("all defaults except 2 and 5"). I never stop a pack to ask a minor question: I choose, and list it under "Assumptions I made" in the report, so you can revert it.
@@ -16,7 +16,7 @@ Finished: Phase 1 (Q, M1, M2, R, F), D0, T, E1, CH, E2, P1, LV, A1 (it was D1, t
 ### Design sessions (book first; each gets a prep document with numbers and 2 to 4 questions)
 | ID | What | Size | Depends on |
 |---|---|---|---|
-| D2 | **Weapon Mastery, Weapon Groups and Gear** (firearms as their own property, Firearm, not Projectile, with the trait [Gun]: decided 2026-10-29, book/archer-a1.md section 8; per-weapon Mastery, groups with a 1/3 head start, 1 Mastery per group per combat; the open points of the Mastery note) | L | D1 not needed |
+| D2 | **DONE 2026-10-31 (defaults in the book, waiting for answers by exception: book/gear-d2.md).** Weapon Mastery, Weapon Groups and Gear | L | - |
 | D3 | **Skills** (16 skills, 4 per Attribute; how a skill roll works; the Skill Talents; the Talent data and picker exist since v0.0.186 / v0.0.195) | M | nothing |
 | D4 | **Magic and Momentum** (Magic Talents raw and primal; Momentum and the starting Escalation; the Engaged banes of [Ranged] Power Actions) | L | D3 helps |
 
@@ -31,13 +31,13 @@ Finished: Phase 1 (Q, M1, M2, R, F), D0, T, E1, CH, E2, P1, LV, A1 (it was D1, t
 ### Foundry
 | ID | What | Size | Depends on |
 |---|---|---|---|
-| X | After the design sessions: Mastery and Gear, Skills, Magic in the system | XL | D2, D3, D4 |
-| W | **Fewer clicks for weapons** (foundry-backlog: hand buttons instead of the "Which weapon?" window; needs a Main / Off hand decision and a mockup first) | M | a mockup |
+| X | After the design sessions: Mastery and Gear (D2's list for X: foundry-backlog.md), Skills, Magic in the system | XL | D2 (done), D3, D4 |
+| W | **DONE: v0.0.208 (to test).** Fewer clicks for weapons: a button per hand (mockup foundry/mockups/weapon-hands-W.html) | M | - |
 | K | **Shortcuts** (keyboard shortcuts for common Actions; a list to choose from first) | S | nothing |
 | CL | **Code cleanup** (foundry-backlog: system messages to sysmsg.mjs, dead code; CSS only with a visual check) | S | best after X |
 
 ## 3. The order
-1. **D2 Mastery, Groups and Gear**, then **D3 Skills**, then **D4 Magic and Momentum** (Skills before Magic: spells may use skills). Between sessions, the book packs that are ready: B1 now, B2 and B3 at the end, B4 any time; W and K fit between sessions too.
+1. ~~D2~~ (done; your answers to gear-d2.md section 7 first), then **D3 Skills**, then **D4 Magic and Momentum** (Skills before Magic: spells may use skills). Between sessions, the book packs that are ready: B1 now, B2 and B3 at the end, B4 any time; K fits between sessions too (W done: v0.0.208).
 2. **X** (Mastery and Gear, Skills, Magic in the system), one version each or split by size, then **CL**.
    Why: everything in X has to be decided first, or the compendium is rewritten twice.
 

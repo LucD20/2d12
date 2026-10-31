@@ -2014,3 +2014,18 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 .twod12.chat.initcard .ic-pill.boon { color: #0b5cad; background: rgba(11, 92, 173, .14); }
 .twod12.chat.initcard .ic-pill.bane { color: #b3261e; background: rgba(179, 38, 30, .14); }
 .twod12.chat.initcard .ic-exp .ic-dice { margin: 0; padding: 0; min-height: 0; line-height: 1; }
+
+/* v0.0.208 (W): the hand buttons of a [Weapon] Action (2H, or M and O) and the Items tab's Swap. */
+.twod12.sheet.ns .ar-hands { display: inline-flex; gap: 3px; flex: none; }
+.twod12.sheet.ns .ar-use.hand { width: auto; min-width: 24px; padding: 0 5px; font: 700 11px/1 var(--font-primary, system-ui); letter-spacing: .02em; }
+.twod12.sheet.ns .ar-use.hand.wide { min-width: 44px; }
+.twod12.sheet.ns .lo-swap { margin-left: 6px; font-size: 10px; opacity: .75; }
+.twod12.sheet.ns .lo-swap:hover { opacity: 1; text-shadow: none; }
+/* The Use column holds two hand buttons: 52px instead of 28px (every row, so the columns stay aligned); a single button sits at its right. */
+.twod12.sheet.ns .at-head, .twod12.sheet.ns .ar-line { grid-template-columns: 12px 12px minmax(0, 1fr) 54px 84px 76px 52px; }
+.twod12.sheet.ns .bx-rows .ar-line { grid-template-columns: 12px 12px minmax(0, 1fr) auto auto 52px; }
+.twod12.sheet.ns .ar-line > .ar-use, .twod12.sheet.ns .ar-line > .ar-hands { justify-self: end; }
+@container (max-width: 440px) {
+  .twod12.sheet.ns .at-head, .twod12.sheet.ns .ar-line { grid-template-columns: 12px 12px minmax(0, 1fr) 54px 76px 52px; }
+  .twod12.sheet.ns .ex-acts .ar-line { grid-template-columns: 12px 12px minmax(0, 1fr) 54px 52px; }
+}

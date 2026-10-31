@@ -26,10 +26,10 @@ export function armorWhere(a) {
 }
 
 /** The item update that puts a weapon there. */
-export function weaponMove(where) {
+export function weaponMove(where, hand = "") {
   if (where === "dropped") return { "system.wielded": false, "system.dropped": true };
-  if (where === "1h") return { "system.wielded": true, "system.hands": 1, "system.dropped": false };
-  if (where === "2h") return { "system.wielded": true, "system.hands": 2, "system.dropped": false };
+  if (where === "1h") return { "system.wielded": true, "system.hands": 1, "system.dropped": false, ...(hand ? { "system.hand": hand } : {}) };   // v0.0.208: and the hand
+  if (where === "2h") return { "system.wielded": true, "system.hands": 2, "system.dropped": false, "system.hand": "" };
   return { "system.wielded": false, "system.dropped": false };   // worn
 }
 
@@ -71,15 +71,43 @@ export function tierBoxes(w) {
 }
 
 /**
- * The hand slots: a two-handed grip is one wide tile; otherwise the first weapon in hand is the main hand, the second the off hand,
- * and an empty hand is a "Free hand" tile. [{ label, id?, both?, free? }]
+ * The hand slots: a two-handed grip is one wide tile; otherwise the main hand and the off hand. v0.0.208 (W): a weapon remembers its hand
+ * (system.hand "main" / "off"); one that doesn't say takes the first free hand, in order. An empty hand is a "Free hand" tile.
+ * [{ label, hand, id?, both?, free? }]
  */
 export function handSlots(weapons) {
   const held = (weapons ?? []).filter(w => !usesNoHand(w) && w.system.wielded);
   const both = held.find(w => (Number(w.system.hands) || 1) >= 2);
-  if (both) return [{ label: "Both hands", id: both.id, both: true }];
-  const one = held.slice(0, 2);
-  return ["Main hand", "Off hand"].map((label, k) => (one[k] ? { label, id: one[k].id } : { label, free: true }));
+  if (both) return [{ label: "Both hands", hand: "both", id: both.id, both: true }];
+  const main = held.find(w => w.system.hand === "main") ?? null;
+  const off = held.find(w => w !== main && w.system.hand === "off") ?? null;
+  const rest = held.filter(w => w !== main && w !== off);
+  const inHand = { main: main ?? rest.shift() ?? null, off: off ?? rest.shift() ?? null };
+  return [["Main hand", "main"], ["Off hand", "off"]].map(([label, hand]) => (inHand[hand] ? { label, hand, id: inHand[hand].id } : { label, hand, free: true }));
+}
+
+/** v0.0.208: the hand a one-handed weapon goes into when it is drawn (the main hand first), not counting the weapon itself. */
+export function freeHandFor(weapons, id) {
+  const slots = handSlots((weapons ?? []).filter(w => w.id !== id));
+  return slots.find(s => s.free)?.hand ?? "main";
+}
+
+/** v0.0.208: the hand a weapon is in ("main", "off", "both"), or "" when it is not in hand. */
+export const handOf = (weapons, id) => handSlots(weapons).find(s => s.id === id)?.hand ?? "";
+export const HAND_LABEL = { main: "Main hand", off: "Off hand", both: "Both hands" };
+
+/**
+ * v0.0.208 (W, Lucas): the use buttons of a [Weapon] Action, by hand, instead of the "Which weapon?" window. fits: the ids of the weapons
+ * this Action can use. A two-handed grip that fits: one wide "2H" button. Two one-handed weapons: "M" and "O", a hand whose weapon doesn't
+ * fit greyed (off). Anything else (one weapon, nothing in hand): null, the usual single button. [{ hand, label, id, name, off, wide, tip }]
+ */
+export function useButtons(weapons, fits) {
+  const slots = handSlots(weapons), name = id => (weapons ?? []).find(w => w.id === id)?.name ?? "";
+  if (slots[0]?.both) return fits.has(slots[0].id) ? [{ hand: "both", label: "2H", id: slots[0].id, name: name(slots[0].id), off: false, wide: true, tip: `Both hands: ${name(slots[0].id)}` }] : null;
+  if (slots.some(s => s.free)) return null;
+  const out = slots.map(s => ({ hand: s.hand, label: s.hand === "main" ? "M" : "O", id: s.id, name: name(s.id), off: !fits.has(s.id), wide: false }));
+  if (out.every(b => b.off)) return null;
+  return out.map(b => ({ ...b, tip: b.off ? `${HAND_LABEL[b.hand]}: ${b.name} can't be used for this Action` : `${HAND_LABEL[b.hand]}: ${b.name}` }));
 }
 
 /** v0.0.141: the row's "where" buttons. Weapons: Dropped / Worn / 1H / 2H; armor: Dropped / Carried / Worn. [{ v, l, tip, on, drop }] */

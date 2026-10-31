@@ -9,7 +9,8 @@ import { weaponUse, weaponRanges } from "./weaponrange.mjs";
 import { rollSource, rollTraits, saveDcOf } from "./rollsource.mjs";
 import { perceptionOf, perceive } from "./senses.mjs";
 import { TWOD12, expandAsText, areaButton, isTalentAction, targetsNeeded, areaConfigOf } from "./config.mjs";
-import { weaponsFor, hasProp } from "./fists.mjs";
+import { weaponsFor, hasProp, heldFirst } from "./fists.mjs";
+import { handOf, HAND_LABEL } from "./loadout.mjs";
 import { isEngaged, engagedWithOther } from "./engaged.mjs";
 import { flankingMod } from "./flanking.mjs";
 import { offerWake } from "./down.mjs";
@@ -102,13 +103,17 @@ export function talentModsFor(actor, item) {
   return [...(actor.itemTypes?.talent ?? []), ...(actor.itemTypes?.action ?? []).filter(isTalentAction)].flatMap(t => (t.system.modifiers ?? []).filter(m => m.spec && grantMatches(m.spec, item) && (m.when === "always" || out)).map(m => ({ ...m, talent: t.name })));
 }
 
-async function pickWeapon(actor, item, candidates = null) {
+async function pickWeapon(actor, item, candidates = null, chosenId = "") {
   const linked = item.getFlag("twod12", "weaponId");
   if (linked) return actor.items.get(linked) ?? null;
-  const wielded = candidates ?? weaponsFor(actor, item);
+  // v0.0.208 (W): a hand button of the sheet chose the weapon; a held weapon comes before the Fists (the Fists Action uses them).
+  const wielded = heldFirst(candidates ?? weaponsFor(actor, item));
+  const chosen = chosenId ? wielded.find(w => w.id === chosenId) : null;
+  if (chosen) return chosen;
   if (wielded.length === 1) return wielded[0];
   if (!wielded.length) { ui.notifications.warn("No wielded weapon: [W] damage will be 0."); return null; }
-  const opts = wielded.map(w => `<option value="${w.id}">${esc(w.name)}</option>`).join("");
+  const all = actor.itemTypes?.weapon ?? [];
+  const opts = wielded.map(w => { const h = HAND_LABEL[handOf(all, w.id)]; return `<option value="${w.id}">${h ? `${h}: ` : ""}${esc(w.name)}</option>`; }).join("");
   const id = await DialogV2.prompt({
     window: { title: "Which weapon?" }, content: `<div class="form-group"><label>Weapon</label><select name="w">${opts}</select></div>`,
     ok: { label: "Use", callback: (ev, btn) => new FormData(btn.form).get("w") }, rejectClose: false
@@ -460,13 +465,15 @@ export async function useAction(actor, item, opts = {}) {
   if (needProp && !linkedW && !candidates.length) return ui.notifications.warn(`${item.name} needs a wielded ${needProp === "melee" ? "Melee" : "Ranged"} weapon.`);
   // A Shot Action needs a Projectile weapon (a bow, a crossbow).
   if (it.traits.has("shot") && it.traits.has("weapon")) { const shooters = candidates.filter(w => hasProp(w, "projectile")); if (!linkedW && !shooters.length) return ui.notifications.warn(`${item.name} is a Shot: it needs a wielded Projectile weapon (a bow or a crossbow).`); candidates.splice(0, candidates.length, ...shooters); }
-  const previewWeapon = linkedW ? actor.items.get(linkedW) : (candidates[0] ?? null);
+  // v0.0.208 (D2): a Gun Action needs a Firearm (a pistol, a musket); a Firearm is not a Projectile weapon.
+  if (it.traits.has("gun") && it.traits.has("weapon")) { const guns = candidates.filter(w => hasProp(w, "firearm")); if (!linkedW && !guns.length) return ui.notifications.warn(`${item.name} is a Gun Action: it needs a wielded Firearm (a pistol or a musket).`); candidates.splice(0, candidates.length, ...guns); }
+  const previewWeapon = linkedW ? actor.items.get(linkedW) : (candidates.find(w => w.id === opts.weaponId) ?? heldFirst(candidates)[0] ?? null);   // v0.0.208: the hand button's weapon
   // A Weapon Action takes Melee or Ranged from its weapon and how it is used (a Thrown weapon thrown is Ranged), and the weapon's Range
   // for that use, with Reach above 1 added to a melee Range (weaponrange.mjs). Prone, Precise Aim and other effects use the trait.
   const wpnSquares = selfToken && targetToken && targetToken !== selfToken ? squaresBetween(selfToken, targetToken) : null;
   const isAreaAction = !!(String(it.area ?? "").trim() || Number(it.areaCfg?.size) > 0);   // an Area decides who is affected: no weapon Range check
   const wUse = it.traits.has("weapon") && previewWeapon ? weaponUse(previewWeapon, it.traits, s.reach ?? 1, wpnSquares) : null;
-  const useTraits = new Set([...it.traits, ...(wUse?.mode ? [wUse.mode] : []), ...(wUse?.mode === "ranged" && !wUse.thrown && hasProp(previewWeapon, "projectile") ? ["shot"] : [])]);   // a Weapon Action with a Projectile weapon is a Shot
+  const useTraits = new Set([...it.traits, ...(wUse?.mode ? [wUse.mode] : []), ...(wUse?.mode === "ranged" && !wUse.thrown && hasProp(previewWeapon, "projectile") ? ["shot"] : []), ...(wUse?.mode === "ranged" && !wUse.thrown && hasProp(previewWeapon, "firearm") ? ["gun"] : [])]);   // v0.0.208: with a Firearm, a Gun Action   // a Weapon Action with a Projectile weapon is a Shot
   // v0.0.188: a Weapon Action with a Two-handed weapon also matches "Two-handed weapon" in settings (Heavy Blows); not shown as a trait.
   const rollUse = new Set([...useTraits, ...(it.traits.has("weapon") && hasProp(previewWeapon, "twohanded") ? ["__twohanded"] : [])]);
   const attrKeyForPreview = src.attrKey;
@@ -658,7 +665,7 @@ export async function useAction(actor, item, opts = {}) {
   const isWeapon = it.traits.has("weapon");
 
   let attrKey = null, mod = null, weapon = null, title = "", chip = "";
-  if (isWeapon) weapon = await pickWeapon(actor, item, candidates);
+  if (isWeapon) weapon = await pickWeapon(actor, item, candidates, opts.weaponId);
   if (src.kind) {
     attrKey = src.attrKey; mod = src.mod; title = src.label; chip = `${src.chip} ${sgn(mod)}`;
     if (!attrKey && src.kind !== "attribute") ui.notifications.warn(`No ${src.chip} Attribute: add a Class to this character.`);

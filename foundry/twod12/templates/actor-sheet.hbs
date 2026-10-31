@@ -35,7 +35,8 @@
     {{#if unloaded}}<a class="ar-use reload" data-action="reloadFor" data-tooltip="Unloaded: Reload (1 AP)" aria-label="Reload"><i class="fa-solid fa-rotate-left"></i></a>
     {{else if grant}}<a class="ar-use granted" data-action="useAction" data-tooltip="{{grant.tip}}" aria-label="Use {{name}} (granted)"><i class="fa-solid fa-gift"></i></a>
     {{else if useOff}}<span class="ar-use off" {{#if fadedWhy}}data-tooltip="{{fadedWhy}}"{{/if}} aria-disabled="true"><i class="fa-solid fa-dice"></i></span>
-    {{else}}<a class="ar-use" data-action="useAction" data-tooltip="Use {{name}}" aria-label="Use {{name}}"><i class="fa-solid fa-dice"></i></a>{{/if}}
+    {{else if hands}}<span class="ar-hands">{{#each hands}}{{#if off}}<span class="ar-use hand off" data-tooltip="{{tip}}" aria-disabled="true">{{label}}</span>{{else}}<a class="ar-use hand{{#if wide}} wide{{/if}}" data-action="useWith" data-weapon-id="{{id}}" data-tooltip="{{tip}}" aria-label="{{tip}}">{{label}}</a>{{/if}}{{/each}}</span>
+    {{else}}<a class="ar-use" data-action="useAction" data-tooltip="{{#if useTip}}{{useTip}}{{else}}Use {{name}}{{/if}}" aria-label="Use {{name}}"><i class="fa-solid fa-dice"></i></a>{{/if}}
   </div>
   <div class="ar-card"></div>
 </div>
@@ -296,9 +297,9 @@
       <div class="lo-title">Loadout</div>
       <div class="lo-strip">
         {{#each loadout.hands}}
-        {{#if free}}<div class="lo-slot free" data-slot="hand"><span class="lo-k">{{label}}</span><b>Free hand</b><span class="lo-sub">Drop a weapon here to draw it</span></div>
+        {{#if free}}<div class="lo-slot free" data-slot="hand" data-hand="{{hand}}"><span class="lo-k">{{label}}</span><b>Free hand</b><span class="lo-sub">Drop a weapon here to draw it</span></div>
         {{else}}<div class="lo-slot{{#if both}} both{{/if}}{{#if warn}} untrained{{/if}}" data-item-id="{{id}}">
-          <span class="lo-k"><span class="lo-kl">{{label}}{{#if warn}}<i class="lo-wi fa-solid fa-triangle-exclamation" data-tooltip="A two-handed weapon in one hand: 3 banes on Strike Weapon Actions"></i>{{/if}}</span>{{#if both}}<span class="lo-2h">2H</span>{{/if}}</span>
+          <span class="lo-k"><span class="lo-kl">{{label}}{{#if swap}}<a class="lo-swap" data-action="swapHands" data-tooltip="Swap hands: the main-hand and off-hand weapons change hands"><i class="fa-solid fa-right-left"></i></a>{{/if}}{{#if warn}}<i class="lo-wi fa-solid fa-triangle-exclamation" data-tooltip="A two-handed weapon in one hand: 3 banes on Strike Weapon Actions"></i>{{/if}}</span>{{#if both}}<span class="lo-2h">2H</span>{{/if}}</span>
           <a class="lo-name" data-action="openItem">{{name}}</a>{{#if unloaded}}<a class="eff down" data-action="reloadWeapon" data-tooltip="Unloaded: Reload (1 AP)">Unloaded</a>{{/if}}
           <div class="tboxes dark">{{#each tiers}}<div><span>{{l}}</span><b>{{v}}</b></div>{{/each}}</div>
           <span class="lo-sub">{{sub}}</span>
