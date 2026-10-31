@@ -495,3 +495,18 @@ Attack for AP you kept, once a round: with another archer in the party, a volley
 and Recurve Bow keep their mobility and bleed; the Longbow plays from behind the line, over cover, with its allies.
 
 **To confirm:** Volley 5 (or drop Volley: it costs about 2%), the Requirement (3 squares), the 2 AP Version, Loose Together, and Arrowfall.
+
+**Lucas (Longbow, round 1):** Cleave doesn't fit a bow (it is a big weapon cutting through). The parabola shot is good, but written as "ignore
+cover" it is only that; **arcs are a thing TTRPGs leave to the GM** ("can I shoot over a creature, jump over it?"): the book should say you
+can't, unless an ability says so (jumps will use the same rule later). Now, or only "ignores cover from creatures, objects, low walls"?
+
+**Proposal: a short general rule now** (Chapter 3, after Cover; Plunging Shot is its first user, jumps later):
+
+> **Arcs.** Shots, throws and jumps go in a straight line: you can't shoot, throw or jump **over** a creature or an obstacle unless an
+> ability says the Action **arcs**. An Action that arcs passes over **low obstacles**, anything up to 1 square high (a crate, a barricade, a
+> low wall, a creature of Size Medium or smaller): they give no Cover and don't block it. A **high arc** passes over anything up to 2 squares
+> high. An arc needs room: the target must be at least 3 squares away, and the Action can't arc under a ceiling lower than 3 squares.
+
+**Plunging Shot rewritten with it** (no Cleave): 1 AP **arcs**; 2 AP **arcs high** and deals 1d6 more. Worth: 1 AP about 5.6 DE (1.2),
+2 AP about 9 DE (about 1.0, plus the cover it skips: High Cover is 3 Banes). **Arrowfall (28)** becomes: the 2 AP Version can target a
+creature you can't perceive, if an ally within 5 squares of it perceives it (the volley called by a spotter).
