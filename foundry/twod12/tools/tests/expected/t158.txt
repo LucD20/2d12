@@ -8,7 +8,7 @@ Relocate: null | null | null
 Vanish: null
 Rolling Shot: null | null | null
 Double Shot: null | null
-wired: no card when the banner takes it true | the movement tag (v0.0.197) true | one line, changed when it ends true | End, Advance instead (on the strip, v0.0.198) true | closes on a turn change true
+wired: no card when the banner takes it true | the movement tag (v0.0.197) true | one Turn Log line when it ends (v0.0.200) true | End, Advance instead (on the strip, v0.0.198) true | closes on a turn change true
 --- the Talent filter bar
 search, Category, Only what I can take, compact list: true | checked by canTake at the level being taken: true | the reasons on the tile: true | filtered in place (no redraw): true | the actor reaches the window: 2 | compact list CSS: true
 --- v0.0.196: a drag is an Advance with the banner; no drag lines while it is up; the Evade key

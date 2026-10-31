@@ -1,8 +1,9 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.199**. Tests: `node tools/tests/run.mjs` (158 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.200**. Tests: `node tools/tests/run.mjs` (159 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
 
 ## Asked by Lucas, not built
+- [x] **(v0.0.200) The AP ticker and the Turn Log** (design M1 + L3; module/ticker.mjs): one message per event, the log a snapshot in the message, Actions only, pips for AP; no per-square movement value; edits post nothing.
 - [x] **(v0.0.199) The combat strip redesign** (mockup D2, foundry/mockups/combat-strip.html): plates, navy bar, Move and Swap on the active plate, End move always in the bar. Swapping Initiative already existed (v0.0.1xx, combat.mjs) and follows the book; only how the ally is picked changed.
 - [x] **(v0.0.198) Lucas's decisions of 2026-10-30:** the movement's squares left on the combat strip (End move, Advance instead) instead of the tag over the token; the Basic Actions in 4 groups (2x2), no Frequency column, a legend.
 - **Reload's Distance (Lucas's [Q], 2026-10-30; reported, nothing changed):** the book (06-basic-actions.md) says **Target: One target, Distance: Reach** (you can reload an ally's weapon); Foundry's Basic Action has Distance "self" and no Target (basic.mjs: "reloading an ally's weapon isn't automated yet"). The book is the rule; Foundry is simplified. To decide: show "Reach" on the card (and keep reloading only your own weapon), or automate an ally's reload.

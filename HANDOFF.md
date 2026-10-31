@@ -4,7 +4,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT implementation. This bundle has everything. Read this file first.
 
-## Where we are now (v0.0.199, 158 tests; READ THIS FIRST)
+## Where we are now (v0.0.200, 159 tests; READ THIS FIRST)
+- **2026-10-31: v0.0.200, the AP ticker with the Turn Log** (module/ticker.mjs; the combat strip redesign was v0.0.199). Next: MASTER-PLAN (the design sessions D2/D3/D4; Fewer clicks for weapons; Shortcuts).
 - **2026-10-31: v0.0.199, the combat strip redesign** (plates, mockup D2). Next: v0.0.200, the chat ticker with the Turn Log (mockup foundry/mockups/chat-turnlog.html).
 - **2026-10-30: v0.0.198:** the movement's squares left on the combat strip (no tag over the token), the Basic Actions in 4 groups (2x2). Reload's Distance: the book says Reach, Foundry self (reported in foundry-backlog, not changed).
 - **2026-10-30: v0.0.197, from Lucas's test of v0.0.196:** one chat line per movement, the movement tag over the token, Shift+E asks which Evade. Shortcuts are noted for a later pack (foundry-backlog).

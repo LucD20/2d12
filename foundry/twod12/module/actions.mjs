@@ -653,7 +653,7 @@ export async function useAction(actor, item, opts = {}) {
   if (escCost) { const pay = canPayEscalation(actor, escCost); if (!pay.ok) return ui.notifications.warn(pay.why); }
   // v0.0.197: a movement-only Action in combat says its AP in its own chat line (the movement tag's), not in an AP line.
   const moveQuiet = !!pureMove(it, version, basicKey) && !!game.combat?.started && !!canvas?.ready;
-  if (apCost > 0 && !(await spendAP(actor, apCost, item.name, { quiet: moveQuiet }))) return;
+  if (apCost > 0 && !(await spendAP(actor, apCost, item.name, { quiet: moveQuiet, reaction: !!it.reaction }))) return;
   if (escCost) await spendEscalation(actor, escCost);
   const isWeapon = it.traits.has("weapon");
 

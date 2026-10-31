@@ -6,7 +6,7 @@ import { esc } from "./roll.mjs";
 import { tokenCells, fillCells, outlineCells, cellCenter, cellAt } from "./template.mjs";
 import { TWOD12 } from "./config.mjs";
 import { applyToActor } from "./damage.mjs";
-import { getAP, setAP, combatantOf } from "./combat.mjs";
+import { getAP, setAP, combatantOf, apMax } from "./combat.mjs";
 import { expireOnUse } from "./bonus.mjs";
 import { evalExpr } from "./refs.mjs";
 import { stepCorners, solidCorner, creatureIn, straightCells, chooseLine } from "./corners.mjs";
@@ -223,7 +223,7 @@ export async function chargeMovement(c, cost, dest = null, { par = 0 } = {}) {
   if (spent) await setAP(c, Math.max(0, ap - spent), what, { quiet: !useEvade && walk > 0 });   // v0.0.197: the movement's own line says it
   // v0.0.196 (Lucas): while the movement banner is up it says what is left, so the drags post nothing; a drag that spends AP (moving the
   // token without using Advance first) is an Advance: it opens the banner, and its Speed left counts there.
-  if (spent && !useEvade && walk > 0) { if (bannerOn(c) && moveBar) moveBar.add(walk * spent, spent); else moveBanner(c, "walk", walk * spent, "Advance", { drag: true, ap: spent }); }
+  if (spent && !useEvade && walk > 0) { if (bannerOn(c) && moveBar && !moveBar.logged()) moveBar.add(walk * spent, spent); else moveBanner(c, "walk", walk * spent, "Advance", { drag: true, ap: spent }); }
   else if (!spent && !bannerOn(c)) await post(`<b>${esc(c.name)}</b>: ${what}${left > 0 ? `, ${Math.round(left * 100) / 100} sq of Speed left` : ""}${free + evade > 0 ? `. ${free + evade} sq left ${endBtn(c)}` : ""}`);
   if (spent && ap < spent) warn(`${c.name} did not have enough AP for that movement.`);
 }
@@ -503,9 +503,14 @@ export function moveBanner(c, kind, granted, name, { drag = false, ap = 0 } = {}
   moveBar?.finish(false);
   // drag: started by moving the token (an Advance paid by the drag): the Speed left of that Advance (moveLeft) counts too.
   const left = () => num(c.getFlag(F, "freeMove")) + num(c.getFlag(F, "evadeMove")) + (drag ? num(c.getFlag(F, "moveLeft")) : 0);
-  let mode = kind, msg = null;
-  const line = (moved = null) => `<div class="twod12 chat apmsg">${moveLine(c.name, mode, name, ap, granted, moved)}</div>`;
-  if (typeof ChatMessage !== "undefined") ChatMessage.create({ content: line() }).then(m => { msg = m; }).catch(() => {});
+  let after = getAP(c), logged = false;
+  // v0.0.200 (Lucas): the movement's line goes to the Turn Log ONCE, when it ends (or when another Action comes first): its name and cost.
+  const writeLine = async () => {
+    if (logged) return;
+    logged = true;
+    const { logEvent, makeLine } = await import("./ticker.mjs");
+    await logEvent(c, makeLine("move", name, after + ap, after, Math.max(apMax(c), after + ap)));
+  };
   const hooks = [];
   const on = (h, fn) => hooks.push([h, Hooks.on(h, fn)]);
   const finish = async (drop = true) => {
@@ -513,15 +518,20 @@ export function moveBanner(c, kind, granted, name, { drag = false, ap = 0 } = {}
     moveBar = null;
     lastBar = { id: c.id, until: Date.now() + 2500 };
     for (const [h, id] of hooks) Hooks.off(h, id);
-    const l = left(), moved = Math.max(0, granted - l);
+    const l = left();
     if (drop && l > 0 && c.isOwner && game.combat?.combatants?.has?.(c.id)) await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...(drag ? { [`flags.${F}.moveLeft`]: 0 } : {}), [`flags.${F}.-=ignoreTerrain`]: null });
     clearRange();
-    try { if (msg) await msg.update({ content: line(moved) }); else await post(moveLine(c.name, mode, name, ap, granted, moved)); } catch (e) { await post(moveLine(c.name, mode, name, ap, granted, moved)); }
+    await writeLine();
   };
-  moveBar = { c, finish, toAdvance: () => { mode = "walk"; }, add: (n, moreAp = 0) => { granted += n; ap += moreAp; if (msg) msg.update({ content: line() }).catch(() => {}); } };
+  moveBar = { c, finish, writeLine, logged: () => logged, toAdvance: () => { name = name === "Evade" ? "Advance" : name; }, add: (n, moreAp = 0) => { granted += n; ap += moreAp; after = getAP(c); } };
   on("updateCombatant", cb => { if (cb.id !== c.id || moveBar?.c !== c) return; if (left() <= 0) finish(false); });
   on("combatTurnChange", () => finish(false));
   on("deleteCombat", () => finish(false));
+}
+
+/** v0.0.200: another Action is about to be used: a movement under way writes its Turn Log line first (it goes on tracking its squares). */
+export async function closeMoveLine(c) {
+  if (moveBar?.c?.id === c?.id) await moveBar.writeLine();
 }
 
 /** v0.0.198: the strip's End button: the movement this client tracks ends (its line is completed), or the free squares are dropped. */

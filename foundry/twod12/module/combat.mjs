@@ -1,3 +1,4 @@
+import { logEvent, makeLine } from "./ticker.mjs";
 import { groupColor } from "./config.mjs";
 // Combat: attribute-roll Initiative for everyone, "zipper" turn order between the two sides,
 // and an Action Points counter per combatant (shown and editable in the tracker, changes sent to the chat).
@@ -53,22 +54,26 @@ export function combatantOf(actor, combat = game.combat) {
   return byId.length === 1 ? byId[0] : null;
 }
 
-const apMessage = (c, from, to, why) => ChatMessage.create({
-  content: `<div class="twod12 chat apmsg"><b>${esc(c.name)}</b>: AP ${from} &rarr; <b>${to}</b>${why ? ` <small>(${esc(why)})</small>` : ""}</div>`
-});
 
 /** Set a combatant's AP and say so in the chat. */
-export async function setAP(c, value, why = "", { quiet = false } = {}) {
+export async function setAP(c, value, why = "", { quiet = false, reaction = false, kind: as = "" } = {}) {
   // Nobody holds more than their most AP (5, or more while Quickened); the GM's own edits in the tracker are not limited.
   const want = Math.max(0, Math.round(Number(value) || 0));
   const from = getAP(c), to = why === "edited" ? want : Math.min(want, Math.max(apMax(c), from));
   if (from === to && why === "edited") return;
   await c.setFlag(F, "ap", to);
-  if (!quiet) await apMessage(c, from, to, why);   // v0.0.197: a movement says its AP in its own line
+  // v0.0.200 (Lucas, design M1 + L3): a ticker with the Turn Log instead of "AP 5 → 4 (…)". A movement posts its own line when it ends
+  // (move.mjs); an edit in the tracker or the strip posts nothing.
+  if (quiet || why === "edited") return;
+  const start = /^(start of turn|swapped in)/i.test(why);
+  const off = !start && game.combat?.combatant?.id !== c.id;   // spent in someone else's turn: a Reaction
+  const kind = as || (start ? "start" : (reaction || off ? "react" : "act"));
+  const name = start ? "Turn start" : String(why).replace(/^swap with /i, "Swap with ");
+  await logEvent(c, makeLine(kind, name, from, to, Math.max(apMax(c), from, to)));
 }
 
 /** Pay the AP of an action. Returns false when the player decides not to go ahead. Does nothing outside combat. */
-export async function spendAP(actor, cost, label = "", { quiet = false } = {}) {
+export async function spendAP(actor, cost, label = "", { quiet = false, reaction = false } = {}) {
   const c = combatantOf(actor);
   if (!c || !game.combat?.started) return true;
   if (c.getFlag(F, "frozen")) {
@@ -82,7 +87,9 @@ export async function spendAP(actor, cost, label = "", { quiet = false } = {}) {
   }
   await c.setFlag(F, "acted", true);
   if (Number(c.getFlag(F, "evadeMove")) > 0) await c.update({ [`flags.${F}.evadeMove`]: 0, [`flags.${F}.-=ignoreTerrain`]: null });   // v0.0.182: an Evade left unused ends when another Action is used
-  await setAP(c, Math.max(0, have - cost), label, { quiet });
+  // v0.0.200: a movement still under way is written to the Turn Log before this Action (its line comes first).
+  try { const { closeMoveLine } = await import("./move.mjs"); await closeMoveLine(c); } catch (e) { /* none */ }
+  await setAP(c, Math.max(0, have - cost), label, { quiet, reaction });
   return true;
 }
 
@@ -278,7 +285,7 @@ export async function performSwap(combat, aId, bId, userId = null) {
   const idx = combat.turns.findIndex(c => c.id === B.id);
   if (idx >= 0 && idx !== combat.turn) await combat.update({ turn: idx });
   await A.update({ [`flags.${F}.frozen`]: true });
-  await setAP(A, left - 1, `swap with ${B.name}`);
+  await setAP(A, left - 1, `swap with ${B.name}`, { kind: "act" });   // its own turn, though the turn has already moved to B
   await B.update({ [`flags.${F}.apTurn`]: `${combat.round}:${B.id}`, [`flags.${F}.acted`]: false, [`flags.${F}.frozen`]: false, [`flags.${F}.moveLeft`]: 0, [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, [`flags.${F}.-=ignoreTerrain`]: null });
   await setAP(B, apPerTurn(B), "swapped in: start of turn");
   await climbUp(B);
