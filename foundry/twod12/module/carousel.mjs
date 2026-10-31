@@ -1,6 +1,6 @@
 // A strip of portraits across the top of the screen while there is a combat (also while it is being prepared):
 // turn order, the creature whose turn it is, and its Action Points as dots under the portrait.
-import { getAP, setAP, apMax, endTurnFor, swapCandidates, swapWith } from "./combat.mjs";
+import { getAP, setAP, apMax, endTurnFor, swapCandidates, swapWith, thawedNow } from "./combat.mjs";
 import { stripMove, endMoveFor, evadeToAdvance } from "./move.mjs";
 import { groupColor } from "./config.mjs";
 import { esc } from "./util.mjs";
@@ -43,8 +43,9 @@ function card(combat, c, st) {
 }
 
 /** v0.0.199: why the active creature can't swap now ("" when it can): Swapping Initiative, Core Rules Chapter 2. Pure. */
-export function swapBlock({ mine, acted, down, ap, candidates }) {
+export function swapBlock({ mine, acted, down, ap, candidates, thawed = false }) {
   if (!mine) return "Only on your own turn";
+  if (thawed) return "Already swapped this round: it carries on, it can't swap again";
   if (down) return "Not while Down";
   if (acted) return "Only before you take any Action this turn";
   if (ap < 1) return "It costs 1 AP";
@@ -80,7 +81,7 @@ export function renderCarousel() {
   const list = turns.filter(c => (gm || !c.hidden) && !(hideDead && c.isDefeated));
   // v0.0.199: Swap on the active plate (Core Rules, Swapping Initiative); while choosing, the allies it can swap with are marked.
   const cands = cur ? swapCandidates(combat, cur) : [];
-  const swapWhy = cur ? swapBlock({ mine: mine || gm, acted: !!cur.getFlag(F, "acted"), down: !!cur.actor?.system?.atZero, ap: getAP(cur), candidates: cands.length }) : "Not started";
+  const swapWhy = cur ? swapBlock({ mine: mine || gm, acted: !!cur.getFlag(F, "acted"), down: !!cur.actor?.system?.atZero, ap: getAP(cur), candidates: cands.length, thawed: thawedNow(combat, cur) }) : "Not started";
   if (swapping && (swapping !== cur?.id || swapWhy)) swapping = null;
   const st = { swapWhy, swapping: !!swapping, swapIds: new Set(swapping ? cands.map(x => x.id) : []), canAct: mine || gm, gm };
   const btn = (k, icon, label, tip, off = false) => `<button type="button" class="tc-btn" data-tc="${k}" data-tooltip="${tip}"${off ? " disabled" : ""}><i class="fa-solid ${icon}"></i>${label ? ` ${label}` : ""}</button>`;
@@ -95,6 +96,7 @@ export function renderCarousel() {
     gm ? btn("end", "fa-flag-checkered", "End", "End the encounter") : ""
   ].join("");
   const head = `<div class="tc-side left">${left}</div>${middle}<div class="tc-side right">${right}</div>`;
+  const oldScroll = el.querySelector(".tp-list")?.scrollLeft ?? 0;
   el.innerHTML = `<div class="tc-head tc-bar">${head}</div><div class="tc-list tp-list">${list.map(c => card(combat, c, st)).join("")}</div>`;
   el.querySelectorAll(".tp").forEach(div => div.addEventListener("click", ev => {
     if (ev.target.closest("[data-tc]")) return;
@@ -125,7 +127,15 @@ export function renderCarousel() {
   // v0.0.202: the mouse wheel scrolls the plates sideways when they don't all fit.
   const lst = el.querySelector(".tp-list");
   lst?.addEventListener("wheel", ev => { if (lst.scrollWidth <= lst.clientWidth || Math.abs(ev.deltaX) > Math.abs(ev.deltaY)) return; ev.preventDefault(); lst.scrollLeft += ev.deltaY; }, { passive: false });
-  el.querySelector(".tp.act")?.scrollIntoView?.({ inline: "center", block: "nearest" });
+  // v0.0.205 (Lucas): the new list starts where the old one was scrolled, then glides to the acting plate (it used to jump to the left first).
+  if (lst) {
+    lst.scrollTo?.({ left: oldScroll, behavior: "instant" });
+    const act = lst.querySelector(".tp.act");
+    if (act) {
+      const goal = Math.max(0, Math.min(lst.scrollWidth - lst.clientWidth, act.offsetLeft - lst.offsetLeft - (lst.clientWidth - act.offsetWidth) / 2));
+      if (Math.abs(goal - lst.scrollLeft) > 2) lst.scrollTo?.({ left: goal, behavior: "smooth" });
+    }
+  }
   // v0.0.201 (Lucas): the GM can set the movement left by hand (right-click the MOVE row).
   if (gm && cur) el.querySelector(".tp-move")?.addEventListener("contextmenu", async ev => { ev.preventDefault(); ev.stopPropagation(); await setMoveLeft(cur); });
   if (gm) el.querySelectorAll(".tp").forEach(div => {
@@ -188,6 +198,10 @@ export function registerCarousel() {
   game.settings.register("twod12", "carousel", { name: "Combat strip with Action Points", hint: "Shows the turn order across the top of the screen with the Action Points of each creature as dots.", scope: "client", config: true, type: Boolean, default: true, onChange: renderCarousel });
   for (const h of ["createCombat", "updateCombat", "deleteCombat", "createCombatant", "updateCombatant", "deleteCombatant", "combatStart", "combatTurnChange", "canvasReady"]) Hooks.on(h, () => { renderCarousel(); setTimeout(renderCarousel, 50); });   // again once Foundry has set the new turn order (v0.0.189)
   renderCarousel();
-  for (const h of ["collapseSidebar", "renderSidebar", "renderSceneControls", "renderSceneNavigation", "collapseSceneNavigation"]) Hooks.on(h, () => setTimeout(placeCarousel, 0));
+  for (const h of ["collapseSidebar", "renderSidebar", "renderSceneControls", "renderSceneNavigation", "collapseSceneNavigation"]) Hooks.on(h, () => { setTimeout(placeCarousel, 0); setTimeout(placeCarousel, 450); });   // again once the sidebar's slide has ended
+  // v0.0.205 (Lucas): collapsing the sidebar didn't re-fit the strip; follow its size and its slide.
+  const sb = document.getElementById("sidebar");
+  if (sb && typeof ResizeObserver !== "undefined") new ResizeObserver(() => placeCarousel()).observe(sb);
+  sb?.addEventListener("transitionend", () => placeCarousel());
   window.addEventListener("resize", placeCarousel);
 }

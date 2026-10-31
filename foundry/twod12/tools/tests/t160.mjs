@@ -15,7 +15,7 @@ const K = await import(ROOTURL + "module/carousel.mjs");
 const { swapCandidates } = await import(ROOTURL + "module/combat.mjs");
 console.log("--- Swap: why not (Core Rules, Swapping Initiative)");
 const ok = { mine: true, acted: false, down: false, ap: 5, candidates: 2 };
-for (const [name, o] of [["allowed", {}], ["someone else's turn", { mine: false }], ["after an Action", { acted: true }], ["while Down", { down: true }], ["no AP", { ap: 0 }], ["no ally left", { candidates: 0 }]])
+for (const [name, o] of [["allowed", {}], ["someone else's turn", { mine: false }], ["after an Action", { acted: true }], ["while Down", { down: true }], ["no AP", { ap: 0 }], ["no ally left", { candidates: 0 }], ["thawed (v0.0.205)", { thawed: true }]])
   console.log(`${name}:`, JSON.stringify(K.swapBlock({ ...ok, ...o })));
 const cb = (id, name, disp, init, f = {}) => ({ id, name, initiative: init, isOwner: id === "a", isDefeated: !!f.dead, hidden: false, img: "", token: { disposition: disp, texture: { src: "" } }, actor: { type: disp === 1 ? "character" : "npc", system: { atZero: false } }, getFlag: (s, k) => ({ ap: f.ap ?? 5, ...f })[k] });
 const A = cb("a", "Lana", 1, 20), B = cb("b", "Goblin", -1, 18), C = cb("c", "Kai", 1, 15), D = cb("d", "Nari", 1, 9, { dead: true }), E = cb("e", "Orc", -1, 5);

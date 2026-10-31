@@ -188,7 +188,7 @@ async function startTurn(combat) {
   const fresh = { [`flags.${F}.apTurn`]: key, [`flags.${F}.acted`]: false, [`flags.${F}.moveLeft`]: 0, [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, [`flags.${F}.-=ignoreTerrain`]: null };
   if (c.getFlag(F, "frozen")) {
     // It swapped initiative earlier: it carries on with the AP it had left.
-    await c.update({ ...fresh, [`flags.${F}.frozen`]: false });
+    await c.update({ ...fresh, [`flags.${F}.frozen`]: false, [`flags.${F}.thawed`]: key });   // v0.0.205: a thawed turn can't swap again
     await ChatMessage.create({ content: thawLineHtml(c.name, getAP(c)) });
   } else {
     await c.update(fresh);
@@ -266,6 +266,9 @@ export async function rollActorInitiative(actor) {
 /* ---- Swapping initiative ---- */
 
 /** Allies who have not had a turn this round: same side, later in the order. */
+/** v0.0.205 (Lucas): is this the turn a creature carries on after swapping? (It can't swap again.) */
+export const thawedNow = (combat, c) => !!c && c.getFlag?.(F, "thawed") === `${combat?.round}:${c.id}`;
+
 export function swapCandidates(combat, a) {
   const idx = combat.turns.indexOf(a);
   return combat.turns.slice(idx + 1).filter(b => sideOf(b) === sideOf(a) && !b.isDefeated);
@@ -277,6 +280,7 @@ export async function performSwap(combat, aId, bId, userId = null) {
   if (!A || !B || A.id === B.id) return;
   if (userId && !A.testUserPermission(game.users.get(userId), "OWNER")) return;
   if (combat.combatant?.id !== A.id) return warn("It is not that creature's turn.");
+  if (thawedNow(combat, A)) return warn(`${A.name} already swapped this round and can't swap again.`);
   if (A.getFlag(F, "acted")) return warn(`${A.name} has already taken an action this turn.`);
   if (!swapCandidates(combat, A).some(b => b.id === B.id)) return warn(`${B.name} cannot be swapped with.`);
   const left = getAP(A);

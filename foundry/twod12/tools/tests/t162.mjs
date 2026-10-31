@@ -45,3 +45,7 @@ console.log("names are escaped:", swapCardHtml("<b>Zack</b>", "Lana", 5, 4, 3).i
 const fsx = await import("node:fs");
 const arch = fsx.readFileSync(ROOT + "module/archer.mjs", "utf8");
 console.log("v0.0.204: the three mark messages use the system line:", (arch.match(/content: sysLine\("fa-crosshairs"/g) ?? []).length === 3, "| no plain twod12 chat left in archer.mjs:", !arch.includes('<div class="twod12 chat">'));
+// v0.0.205 (Lucas): a thawed creature can't swap again
+combat.turn = combat.turns.findIndex(c => c.id === "Nari");
+const nmsg = rawMsgs.length; msgs.length = 0;
+console.log("Nari thawed this turn:", (await import(ROOTURL + "module/combat.mjs")).thawedNow(combat, Nari), "| Nari tries to swap again:", (await performSwap(combat, "Nari", "Zack"), "→"), msgs.filter(m => m.startsWith("WARN")).join(" / "), "| no card:", rawMsgs.length === nmsg);

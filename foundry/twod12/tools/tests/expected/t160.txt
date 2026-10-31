@@ -5,6 +5,7 @@ after an Action: "Only before you take any Action this turn"
 while Down: "Not while Down"
 no AP: "It costs 1 AP"
 no ally left: "No ally is left who hasn't had a turn this round"
+thawed (v0.0.205): "Already swapped this round: it carries on, it can't swap again"
 allies Lana can swap with (later, same side, not defeated): Kai
 Kai's turn (Lana already acted this round): none
 --- the plates

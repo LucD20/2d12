@@ -4,7 +4,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT implementation. This bundle has everything. Read this file first.
 
-## Where we are now (v0.0.204, 160 tests; READ THIS FIRST)
+## Where we are now (v0.0.205, 160 tests; READ THIS FIRST)
+- **2026-10-31: v0.0.205, no second swap after thawing (book + Foundry); strip fixes (sidebar collapse, scroll jump).** Next: the editability sweep (MASTER-PLAN section 7).
 - **2026-10-31: v0.0.204, fix: the swapper stayed frozen at its new slot; the mark messages as system lines.** Next: Lucas's test, then the editability sweep (MASTER-PLAN section 7).
 - **2026-10-31: v0.0.203, the Swap Initiative card and the thaw line** (pack-swap-message; module/sysmsg.mjs is the default card for system messages). Next: Lucas's test, then the editability sweep (MASTER-PLAN section 7).
 - **2026-10-31: v0.0.202, tooltip delay setting and the strip fits on screen** (plates scroll). Next: MASTER-PLAN.

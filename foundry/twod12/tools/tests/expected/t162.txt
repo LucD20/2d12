@@ -8,3 +8,4 @@ thaw: Nari thaws and carries on with 4 AP. No new AP. | a line, no header: true 
 Steven's turn posts no thaw: true
 names are escaped: true
 v0.0.204: the three mark messages use the system line: true | no plain twod12 chat left in archer.mjs: true
+Nari thawed this turn: true | Nari tries to swap again: → WARN: Nari already swapped this round and can't swap again. | no card: true
