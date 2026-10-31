@@ -460,10 +460,10 @@ military arrows, shot in massed volleys at long range; arrows that fall from abo
 
 | | 1 AP | 2 AP |
 |---|---|---|
-| **Tier 1** | [B] [Mod] Pi | [B] 1d6 + [Mod] Pi |
-| **Tier 2** | [B] 1d8 + [Mod] Pi | [B] 1d8 + 1d6 + [Mod] Pi; Cleave 1. |
-| **Tier 3** | [B] 1d10 + [Mod] Pi | [B] 1d10 + 1d6 + [Mod] Pi; Cleave 2. |
-| **Effects** | The arrow falls from above: this Action ignores Low and Medium Cover (walls and creatures). | As 1 AP. |
+| **Tier 1** | [B] [Mod] Pi | [B] 1d8 + [Mod] Pi |
+| **Tier 2** | [B] 1d8 + [Mod] Pi | [B] 1d8 + 1d8 + [Mod] Pi |
+| **Tier 3** | [B] 1d10 + [Mod] Pi | [B] 1d10 + 1d8 + [Mod] Pi |
+| **Effects** | This Shot **arcs**. | This Shot **arcs high**. |
 
 </div>
 
@@ -536,7 +536,7 @@ one shot after another while it keeps landing (the system's variance), and the R
 |---:|---|---|
 | 9 | level 5 to 6 | **Flurry of Arrows** (Weapon Technique, 1 / 2 AP, below). |
 | 14 | level 6 to 7 | **Rider's Stride:** during Flurry of Arrows, you can Advance up to 2 between two of its Weapon Attacks. |
-| 20 | level 8 | **Unbroken Rhythm:** the first Tier 1 of a Flurry of Arrows doesn't end it. |
+| 20 | level 8 | **Unbroken Rhythm:** the second Weapon Attack of a Flurry of Arrows takes no Bane. |
 | 28 | level 10 | **Storm of the Steppe:** the Weapon Attacks of a Flurry after the first can each target a different creature. |
 
 <div class="action" markdown="1">
@@ -602,3 +602,56 @@ then) is compared with the other weapons of its group at **level 1, 5 and 8**.
 | Loose Together, Rider's Stride | 14 | 6 to 7 | +3 | a Weapon Attack for kept AP; movement |
 | Steady Draw, Unbroken Rhythm | 20 | 8 | +4 | Unbroken Rhythm: Flurry 2 AP 1.45 (over: make it "the second Weapon Attack takes no Bane", or keep it as the Composite's high point) |
 | Arrowfall, Storm of the Steppe | 28 | 10 | +4 | utility |
+
+**Lucas: all changes accepted.** Plunging Shot (card above): 1 AP **arcs**, 2 AP **arcs high** with +1d8 (0.98 at +3); **Unbroken Rhythm:
+the second Weapon Attack of a Flurry takes no Bane** (Flurry 2 AP 1.28 at +4, on the band). The Composite Bow is confirmed.
+
+## Bow 5: the Warbow (Exotic), to confirm (priced at +4, level 8)
+
+**The real weapon:** the heaviest war longbows, drawn with the whole body (years of training: archers' skeletons show it), shooting heavy
+military arrows (bodkins, broadheads) that punch through and knock men down. **Its idea:** the heavy arrow. Big hits, a **Line** shot that
+goes through the ranks, Forced Movement.
+
+| Group | Gate | Properties | Type | Range | Damage | Weapon Attack at +4 |
+|---|---|---|---|---|---|---:|
+| Bows | Exotic (Group Mastery 11: it starts at 11 Mastery) | Projectile, Ranged, Strung, Volley 5 | Pierce | 12 / 24 / 36 | [B] 0 / 1d10 / 2d6 | 8.47 DE (+21% on a Basic bow's 6.99) |
+
+| Mastery | About | Unlock |
+|---:|---|---|
+| 14 | level 8 to 9 | **Heavy Shaft** (Weapon Technique, 1 / 2 AP, below). |
+| 20 | level 10 | **Bodkin Point:** Heavy Shaft pushes 2 instead of 1, and a creature it pushes into a Collision is also Prone. |
+| 28 | after level 10 | **Clothyard Shaft:** Heavy Shaft's Line is Line 10. |
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Heavy Shaft</span><span>1 / 2 AP</span><span class="cat">Weapon Technique</span></div>
+
+**Flavor:** An arrow the length of your arm, and nothing in its way stays standing.
+
+*Ranged • Shot • Strike • Weapon* (2 AP: also *Area*)
+
+**Frequency:** Round
+
+**Target:** One creature / All creatures in the Area
+
+**Area:** — / Line 8
+
+**Distance:** Weapon / —
+
+**Vs:** AD
+
+| | 1 AP | 2 AP |
+|---|---|---|
+| **Tier 1** | 0 | [B] [Mod] Pi |
+| **Tier 2** | [B] 1d10 + [Mod] Pi | [B] 1d10 + [Mod] Pi |
+| **Tier 3** | [B] 2d6 + [Mod] Pi; Pushed 1. | [B] 2d6 + [Mod] Pi; Pushed 1. |
+
+</div>
+
+**Worth at +4 (1 AP = 6.95 DE):** 1 AP 8.5 DE (1.22) and a push; 2 AP: one roll against every creature in the Line: with 1.6 creatures on
+average 14.6 DE (1.05), with 2 about 1.3. Allies in the Line are hit too (an Area affects everyone unless it says otherwise): the archer
+aims around them, or doesn't. **Master** (level 8, Group Mastery 11) adds one more [W] to every bow Action: the Line is where it shows most.
+**Against the Advanced bows at level 8:** +21% on every Weapon Attack against +6 to +10%, three unlocks (they have four, and earlier).
+
+**Questions:**
+1. The 2 AP Version: an Area Strike against everyone in the Line (allies included), or "enemies in the Line"?
+2. A card whose Area exists only in one Version: is "Area: — / Line 8" fine, or should the Line be its own Version-free card (two cards)?
