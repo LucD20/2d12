@@ -1,6 +1,7 @@
 // Free hands (v0.0.138): an Action that needs a free hand (the Handle trait, or "free hand" in its Requirements, such as Reload)
 // asks to use Release first when both hands are full. With the world setting "Enforce hand requirement" off, it only warns.
 import { handsUsed } from "./config.mjs";
+import { handSlots } from "./loadout.mjs";
 import { esc } from "./util.mjs";
 
 /** Does this Action need a free hand? */
@@ -68,4 +69,47 @@ export async function ensureFreeHand(actor, item) {
   if (!pick || pick === "cancel") return false;
   await applyRelease(actor, pick);
   return handsUsed(actor) < 2;
+}
+
+/**
+ * v0.0.211: what Regrip can do with these weapons (in the Items tab's order): a weapon in one hand taken in both (the other hand free),
+ * a weapon moved to the free hand, the two one-handed weapons swapped. [{ action: "two:<id>" | "move:<id>" | "swap", label, icon }]
+ */
+export function regripOptions(weapons) {
+  const slots = handSlots(weapons), name = id => (weapons ?? []).find(w => w.id === id)?.name ?? "";
+  if (slots[0]?.both) return [];
+  const held = slots.filter(s => !s.free), free = slots.find(s => s.free);
+  const out = [];
+  if (held.length === 1 && free) {
+    out.push({ action: `two:${held[0].id}`, label: `Hold ${name(held[0].id)} with both hands`, icon: "fa-solid fa-hands" });
+    out.push({ action: `move:${held[0].id}`, label: `Move ${name(held[0].id)} to your ${free.hand === "main" ? "main" : "off"} hand`, icon: "fa-solid fa-right-left" });
+  }
+  if (held.length === 2) out.push({ action: "swap", label: `Swap: ${name(held[0].id)} to the off hand, ${name(held[1].id)} to the main hand`, icon: "fa-solid fa-right-left" });
+  return out;
+}
+/** Apply a Regrip choice (the item updates; the AP are paid by the caller). Returns the chat text or "". */
+export async function applyRegrip(actor, weapons, pick) {
+  const [kind, id] = String(pick).split(":"), slots = handSlots(weapons), w = id ? actor.items.get(id) : null;
+  if (kind === "two" && w) { await w.update({ "system.hands": 2, "system.hand": "" }); return `holds <b>${esc(w.name)}</b> with both hands`; }
+  if (kind === "move" && w) { const to = slots.find(s => s.free)?.hand ?? "main"; await w.update({ "system.hand": to }); return `moves <b>${esc(w.name)}</b> to the ${to} hand`; }
+  if (kind === "swap" && slots.length === 2 && !slots.some(s => s.free)) {
+    await actor.updateEmbeddedDocuments("Item", slots.map(s => ({ _id: s.id, "system.hand": s.hand === "main" ? "off" : "main" })));
+    return "swaps the weapons in its hands";
+  }
+  return "";
+}
+/** Ask what to Regrip, apply it and say it in the chat. ap: the AP to spend first (0 when the Action already paid). Returns true if done. */
+export async function regripPrompt(actor, weapons, { ap = 0, only = null, spend = null } = {}) {
+  let buttons = regripOptions(weapons);
+  if (only) buttons = buttons.filter(b => only(b.action));
+  if (!buttons.length) { ui.notifications.info(`${actor.name} has nothing to Regrip.`); return false; }
+  const pick = buttons.length === 1 && only ? buttons[0].action : await foundry.applications.api.DialogV2.wait({
+    window: { title: `Regrip: ${actor.name}` }, rejectClose: false, content: "<p>Regrip (1 AP, no free hand needed): what do you do?</p>",
+    buttons: [...buttons, { action: "cancel", label: "Cancel", icon: "fa-solid fa-xmark" }]
+  });
+  if (!pick || pick === "cancel") return false;
+  if (ap && spend && !(await spend(actor, ap, "Regrip"))) return false;
+  const text = await applyRegrip(actor, weapons, pick);
+  if (text) await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: `<div class="twod12 chat note"><i class="fa-solid fa-hands"></i> <b>Regrip</b>${ap ? ` (${ap} AP)` : ""}: ${esc(actor.name)} ${text}.</div>` });
+  return !!text;
 }

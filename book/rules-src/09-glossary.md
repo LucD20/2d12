@@ -78,7 +78,7 @@
 | [[Imperiled\|**Imperiled**]] | Barely avoided a Deadly Hazard: all your Rolls are Doomed, Vulnerable 3, safe again at the start of your turn. |
 | [[End of Turn\|**Initiative slot**]] | A position in the turn order. |
 | [[Instances of Damage\|**Instance of damage**]] | One part of an Action's damage with its own pool and damage type; each [W] and each extra damage from another effect is its own instance. |
-| [[Chapter 6: Basic Actions\|**Interact**]] | The Handle Action for objects and for helping others: swap, grab, grip, open; help a creature stand up, get to safety or wake up. |
+| [[Chapter 6: Basic Actions\|**Interact**]] | The Handle Action for objects and for helping others: swap, grab, open; help a creature stand up, get to safety or wake up. |
 | [[Reactions\|**Interrupt**]] | A Reaction that happens before the Action that triggers it. |
 | [[Leaning\|**Leaning**]] | Until the end of your turn: cover is calculated from one of your corners, and your own cover is reduced by 1 level. |
 | [[Moving and Leaving Your Square\|**Left your square**]] | Any change of your position, Forced Movement and Reposition included. |
@@ -114,6 +114,7 @@
 | [[Reach\|**Reach**]] | How far your body reaches: 1 square for every Species. Weapons have a Range instead. |
 | [[Reactions\|**Reaction**]] | An Action used in response to an Interrupt or a Trigger, with a cost like 1R (0R costs no AP). |
 | [[Recovery\|**Recovery**]] | The three ways to recover: a Breather, a Sleep and a Rest. |
+| [[Chapter 6: Basic Actions\|**Regrip**]] | The Basic Action (1 AP, no Handle) to hold a weapon with both hands again, move it to the other hand or swap the weapons in your hands. |
 | [[Chapter 6: Basic Actions\|**Release**]] | 0 AP: drop an object, or let go of it with one hand. |
 | [[Reload\|**Reload**]] | A weapon property: a Reload Shot needs a reload afterwards. |
 | [[Reload\|**Reload Shot**]] | A Favored and Empowered 2 shot with a Reload weapon. |

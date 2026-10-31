@@ -11,5 +11,8 @@ useAction: the button's weapon is the preview and the pick true | the window nam
 sheet: useWith and swapHands true | row buttons true | a free slot gives its hand true | css true
 Technique of the main-hand longsword: M:Longsword | of a two-handed crossbow: 2H:Crossbow | not in hand: single button
 Fists with the off hand free: O:Fists | both free: M:Fists O:Fists | none free: M(off):Fists O(off):Fists | two one-handed: M(off):Fists O(off):Fists
-Swap hands spends 1 AP (Interact) true | Reload offers only Reload weapons true | basic rows: hands last true
+Swap hands spends 1 AP (Regrip) true | Reload offers only Reload weapons true | basic rows: hands last true
 v0.0.210: a row with hands can wrap its name in the Basic columns true
+Regrip, a two-hander in one hand: two:gs move:gs | two one-handed: swap | both hands on one: 0
+warn on a one-handed two-hander: true true | not on the crossbow in both: false
+greyed buttons ask true | Regrip is a Basic Action without Handle true | Interact no longer grips true | the Items tab 1H to 2H spends Regrip true

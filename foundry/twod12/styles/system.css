@@ -2034,3 +2034,6 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 /* v0.0.210 (Lucas, test of v0.0.209): in the Basic Actions' two columns a row with hand buttons lets its name wrap ("Weapon Attack" was cut to "Weapon ...") and its buttons are narrower. */
 .twod12.sheet.ns .bx-rows .ar.hands .ar-name { white-space: normal; line-height: 1.15; }
 .twod12.sheet.ns .bx-rows .ar-use.hand { min-width: 22px; padding: 0 4px; }
+/* v0.0.211: a hand button of a Two-handed weapon held in one hand (3 Banes): an amber ring; a greyed button can be clicked (it asks). */
+.twod12.sheet.ns .ar-use.hand.warn { box-shadow: 0 0 0 2px #d08a1e inset; }
+.twod12.sheet.ns .ar-use.hand.off { cursor: pointer; }

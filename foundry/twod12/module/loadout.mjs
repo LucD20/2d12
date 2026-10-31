@@ -95,6 +95,10 @@ export function freeHandFor(weapons, id) {
 /** v0.0.208: the hand a weapon is in ("main", "off", "both"), or "" when it is not in hand. */
 export const handOf = (weapons, id) => handSlots(weapons).find(s => s.id === id)?.hand ?? "";
 export const HAND_LABEL = { main: "Main hand", off: "Off hand", both: "Both hands" };
+/** v0.0.211: a Two-handed weapon held in one hand (3 Banes on [Strike, Weapon] Actions): its hand button warns and offers Regrip. */
+export const oneHandedTwoHander = w => !!w?.system?.traits?.has?.("twohanded") && !!w.system.wielded && (Number(w.system.hands) || 1) < 2;
+const warnOf = (weapons, id) => oneHandedTwoHander((weapons ?? []).find(w => w.id === id));
+const warnTip = " (a Two-handed weapon in one hand: 3 Banes; click to Regrip first)";
 
 /**
  * v0.0.208 (W, Lucas): the use buttons of a [Weapon] Action, by hand, instead of the "Which weapon?" window. fits: the ids of the weapons
@@ -105,7 +109,8 @@ export const HAND_LABEL = { main: "Main hand", off: "Off hand", both: "Both hand
 export function handButtonsFor(weapons, id) {
   const h = handOf(weapons, id), name = (weapons ?? []).find(w => w.id === id)?.name ?? "";
   if (!h) return null;
-  return [{ hand: h, label: h === "both" ? "2H" : h === "main" ? "M" : "O", id, name, off: false, wide: h === "both", tip: `${HAND_LABEL[h]}: ${name}` }];
+  const warn = warnOf(weapons, id);
+  return [{ hand: h, label: h === "both" ? "2H" : h === "main" ? "M" : "O", id, name, off: false, warn, wide: h === "both", tip: `${HAND_LABEL[h]}: ${name}${warn ? warnTip : ""}` }];
 }
 /** v0.0.209: the Fists' buttons: one for each free hand (v0.0.210: none free: both hands greyed). */
 export function freeHandButtons(weapons, fistsId, name = "Fists") {
@@ -123,7 +128,7 @@ export function useButtons(weapons, fits) {
   if (slots.some(s => s.free)) return null;
   const out = slots.map(s => ({ hand: s.hand, label: s.hand === "main" ? "M" : "O", id: s.id, name: name(s.id), off: !fits.has(s.id), wide: false }));
   if (out.every(b => b.off)) return null;
-  return out.map(b => ({ ...b, tip: b.off ? `${HAND_LABEL[b.hand]}: ${b.name} can't be used for this Action` : `${HAND_LABEL[b.hand]}: ${b.name}` }));
+  return out.map(b => { const warn = !b.off && warnOf(weapons, b.id); return { ...b, warn, tip: b.off ? `${HAND_LABEL[b.hand]}: ${b.name} can't be used for this Action` : `${HAND_LABEL[b.hand]}: ${b.name}${warn ? warnTip : ""}` }; });
 }
 
 /** v0.0.141: the row's "where" buttons. Weapons: Dropped / Worn / 1H / 2H; armor: Dropped / Carried / Worn. [{ v, l, tip, on, drop }] */

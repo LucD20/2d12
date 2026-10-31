@@ -149,7 +149,7 @@ export const TWOD12 = {
     { key: "attack", label: "Attack", names: ["Weapon Attack", "Fists", "Charge", "Reload"] },
     { key: "control", label: "Control", names: ["Shove", "Haul", "Relocate", "Trip"] },
     { key: "movement", label: "Movement", names: ["Advance", "Evade", "Crawl", "Stand"] },
-    { key: "utility", label: "Utility", names: ["Interact", "Release", "Leaning", "Steel Yourself"] }
+    { key: "utility", label: "Utility", names: ["Interact", "Release", "Regrip", "Leaning", "Steel Yourself"] }
   ],
   // v0.0.189 (Lucas, after Draw Steel's Codex): how much of a card Foundry does for you, as a chip on the card. "" shows nothing.
   automationRanks: { "": "(not set)", none: "Not implemented", bronze: "Bronze", silver: "Silver", gold: "Gold" },

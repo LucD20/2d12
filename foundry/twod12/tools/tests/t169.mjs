@@ -29,5 +29,13 @@ const ls2 = w("ls", "Longsword", { wielded: true, hand: "main" }, ["melee"]), cb
 console.log("Technique of the main-hand longsword:", show(L.handButtonsFor([ls2, fi], "ls")), "| of a two-handed crossbow:", show(L.handButtonsFor([cb], "cb")), "| not in hand:", show(L.handButtonsFor([ls2], "xx")));
 console.log("Fists with the off hand free:", show(L.freeHandButtons([ls2, fi], "fi")), "| both free:", show(L.freeHandButtons([fi], "fi")), "| none free:", show(L.freeHandButtons([cb, fi], "fi")), "| two one-handed:", show(L.freeHandButtons([ls2, w("dg", "Dagger", { wielded: true, hand: "off" }), fi], "fi")));
 const sh2 = src("module/actor-sheets.mjs");
-console.log("Swap hands spends 1 AP (Interact)", sh2.includes('spendAP(this.actor, 1, "Interact (swap hands)")'), "| Reload offers only Reload weapons", sh2.includes('picks.filter(w => hasProp(w, "reload"))'), "| basic rows: hands last", css.includes(".bx-rows .ar-line > .ar-hands { order: 5; }"));
+console.log("Swap hands spends 1 AP (Regrip)", sh2.includes('spendAP(this.actor, 1, "Regrip (swap hands)")'), "| Reload offers only Reload weapons", sh2.includes('picks.filter(w => hasProp(w, "reload"))'), "| basic rows: hands last", css.includes(".bx-rows .ar-line > .ar-hands { order: 5; }"));
 console.log("v0.0.210: a row with hands can wrap its name in the Basic columns", css.includes(".bx-rows .ar.hands .ar-name { white-space: normal;") && src("templates/actor-sheet.hbs").includes("{{#if hands}} hands{{/if}}"));
+// v0.0.211: Regrip (a Basic Action, no Handle): its choices; a Two-handed weapon in one hand warns; greyed buttons ask.
+globalThis.CONFIG ??= {}; globalThis.Hooks ??= { on() {} }; globalThis.game ??= { settings: { get: () => true } }; globalThis.foundry ??= { applications: { api: { DialogV2: {} } } };
+const H = await import(ROOTURL + "module/hands.mjs");
+const gs2 = w("gs", "Greatsword", { wielded: true, hands: 1 }, ["melee", "twohanded"]);
+console.log("Regrip, a two-hander in one hand:", H.regripOptions([gs2, fi]).map(o => o.action).join(" "), "| two one-handed:", H.regripOptions([ls2, w("dg", "Dagger", { wielded: true, hand: "off" }), fi]).map(o => o.action).join(" "), "| both hands on one:", H.regripOptions([cb]).length);
+console.log("warn on a one-handed two-hander:", L.handButtonsFor([gs2], "gs")[0].warn, L.oneHandedTwoHander(gs2), "| not on the crossbow in both:", L.handButtonsFor([cb], "cb")[0].warn);
+const tpl2 = src("templates/actor-sheet.hbs"), bas = src("module/basic.mjs");
+console.log("greyed buttons ask", tpl2.includes('data-action="handBlocked"') && sh2.includes("static async handBlocked("), "| Regrip is a Basic Action without Handle", /regrip: \{[\s\S]{0,120}traits: \["self"\]/.test(bas), "| Interact no longer grips", !bas.includes("grip a weapon with two hands; help"), "| the Items tab 1H to 2H spends Regrip", sh2.includes('spendAP(this.actor, 1, "Regrip")'));
