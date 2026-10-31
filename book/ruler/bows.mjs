@@ -1,5 +1,5 @@
 // The six bows of book/weapon-trees.md turn by turn at levels 1 to 10 (the Revision of 2026-10-31): node book/ruler/bows.mjs
-const { tierProbs } = await import("/home/user/2d12/foundry/twod12/module/calc.mjs");
+const { tierProbs } = await import(new URL("../../foundry/twod12/module/calc.mjs", import.meta.url).href);
 const AVG = { d4: 2.5, d6: 3.5, d8: 4.5, d10: 5.5, d12: 6.5 };
 const av = s => String(s).split("+").map(x => x.trim()).reduce((t, x) => { const m = /^(\d*)(d\d+)$/.exec(x); return t + (m ? (Number(m[1] || 1) * AVG[m[2]]) : Number(x) || 0); }, 0);
 const ref = m => { const q = tierProbs(m, 13); return q[1] * (4.5 + m) + q[2] * (7 + m); };
