@@ -137,3 +137,15 @@ is the same for both.
 **Left for later:** a "quiet" unlock (the Hunting Bow makes no noise: Hearing) when the Hide rules exist; it could replace Quick Nock.
 
 **To confirm:** the stats, the five unlocks and their steps, and the card. Then: the Horse Bow.
+
+**Lucas (Hunting Bow, round 1):** swap the order: **Close Quarters at 3, Wounding Shot at 8, Quick Nock at 14**. Wounding Shot can use a
+coming mechanic, **Bleed** (persistent damage): now or later? My proposal (to confirm), as a rule for every weapon group:
+
+> **Bleed N:** at the end of each of its turns, the creature takes N damage of the pool that caused it. Bleed ends when the creature is
+> healed, when a creature staunches it with Interact (1 AP; the bleeding creature can), or when the encounter ends. Bleed again: keep the
+> higher value.
+
+Wounding Shot with it: Tier 3 [B] 1d10 + [Mod] Pi; **Bleed 1** (instead of Hindered); Blood Trail (20): Bleed on a Tier 2 too. Worth: about
++0.5 DE a use if the bleeding lasts 2 of its turns (efficiency about 1.2); the ruler learns `bleed N` before the number is final.
+**Note:** "the first unlock is the Technique" (rule 3) becomes "the Technique is one of the first two unlocks", and the Archer's Sharpshooter
+(3 Mastery with one Projectile weapon, to unlock its Technique at level 1) would give Close Quarters instead: keep it, or 8?
