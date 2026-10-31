@@ -9,7 +9,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 35.2 | 429 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 12.2 | 244 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 6.2 | 68 |
-| 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 8.9 | 336 |
+| 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 9.0 | 336 |
 | 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 5.6 | 95 |
 | 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 5.1 | 78 |
 | 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 20.3 | 168 |

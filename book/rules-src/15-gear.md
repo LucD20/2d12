@@ -422,7 +422,7 @@ A weapon that takes both hands deals the most, a weapon that leaves a hand free 
 </div>
 ### Hands
 
-You have two hands: your **main hand** and your **off hand**. Which hand holds a weapon changes nothing in the rules, unless a feature says so. Each weapon you hold uses one or two hands. A weapon with the **Two-handed** property must be held with both hands: holding it with one hand gives **3 Banes on all [Strike, Weapon] Actions**, including Actions that use another weapon. Actions without the Weapon trait, such as Trip and Shove, don't take these Banes.
+You have two hands: your **main hand** and your **off hand**. Which hand holds a weapon changes nothing in the rules, unless a feature says so. Each weapon you hold uses one or two hands. A weapon with the **Two-handed** property must be held with both hands: holding it with one hand gives **3 Banes on [Strike, Weapon] Actions with that weapon**. A weapon or your Fists in the other hand don't take them.
 
 You need a hand free to use Handle Actions. A creature with both hands full has to **Release** something first (0 AP: drop an object, or let go of it with one hand), and can **[[Chapter 6: Basic Actions|Regrip]]** (1 AP) to hold a weapon with both hands again, move a weapon to the other hand or swap the weapons in your hands (Regrip doesn't need a free hand).
 

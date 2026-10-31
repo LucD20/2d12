@@ -31,7 +31,7 @@ const ef = await import(ROOTURL + "module/effects.mjs");
 const w = (hands, wielded = true, extra = []) => ({ system: { wielded, hands, traits: T("twohanded", ...extra) } });
 const mk = ws => ({ effects: [], system: {}, itemTypes: { weapon: ws } });
 console.log("greatsword in 1 hand:", ef.derivedMods(mk([w(1)])).map(m => `${m.name} ${m.banes}b all=${m.all}`).join(","), "| in 2 hands:", ef.derivedMods(mk([w(2)])).length, "| not wielded:", ef.derivedMods(mk([w(1, false)])).length);
-const ml = ef.modifierList(mk([w(1)]), T("strike", "weapon")); console.log("chip matches Strike Weapon:", ml[0].match, "| melee spell:", ef.modifierList(mk([w(1)]), T("magic", "strike"))[0].match);
+const ml = ef.modifierList(mk([w(1)]), T("strike", "weapon")); console.log("chip matches Strike Weapon:", ml[0].match, "| with that Two-handed weapon (v0.0.212):", ef.modifierList(mk([w(1)]), T("strike", "weapon", "__twohanded"))[0].match, "| melee spell:", ef.modifierList(mk([w(1)]), T("magic", "strike"))[0].match);
 // 4. basic actions
 const bs = await import(ROOTURL + "module/basic.mjs");
 const B = bs.BASIC_ACTIONS;

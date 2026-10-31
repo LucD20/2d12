@@ -39,3 +39,6 @@ console.log("Regrip, a two-hander in one hand:", H.regripOptions([gs2, fi]).map(
 console.log("warn on a one-handed two-hander:", L.handButtonsFor([gs2], "gs")[0].warn, L.oneHandedTwoHander(gs2), "| not on the crossbow in both:", L.handButtonsFor([cb], "cb")[0].warn);
 const tpl2 = src("templates/actor-sheet.hbs"), bas = src("module/basic.mjs");
 console.log("greyed buttons ask", tpl2.includes('data-action="handBlocked"') && sh2.includes("static async handBlocked("), "| Regrip is a Basic Action without Handle", /regrip: \{[\s\S]{0,120}traits: \["self"\]/.test(bas), "| Interact no longer grips", !bas.includes("grip a weapon with two hands; help"), "| the Items tab 1H to 2H spends Regrip", sh2.includes('spendAP(this.actor, 1, "Regrip")'));
+// v0.0.212: a Two-handed weapon in one hand: its 3 Banes only on Actions with that weapon (__twohanded), not the other hand's or the Fists.
+const fx = src("module/effects.mjs"), bas2 = src("module/basic.mjs");
+console.log("one-hand Banes only with that weapon:", fx.includes('banes: 3, all: ["strike", "weapon", "__twohanded"]'), "| Interact draws, stows and swaps:", bas2.includes("draw an object you carry into a free hand; stow an object you hold"));
