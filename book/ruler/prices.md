@@ -226,6 +226,8 @@ Roles: Paladin: tank and support: more Health, heals and Defense for allies, Nov
 | Thunderclap (Musket) | 1 | round |  | 5.5 | 0.3 | 5.9 | 5.86 | 1.26 | 1.26 | 1.26 | on target | Prone: 1.20 (positions) |
 | Wounding Shot (Hunting Bow) | 1 | round |  | 5.1 | 0.4 | 5.5 | 5.45 | 1.17 | 1.17 | 1.17 | on target | Hindered (EoT): 1.46 (positions) |
 | Wounding Shot at 20 (Hunting Bow) | 1 | round |  | 5.1 | 1.1 | 6.1 | 6.12 | 1.31 | 1.31 | 1.31 | a little over | Hindered (EoT): 1.46 (positions) |
+| Skirmish Shot (Recurve Bow) | 1 | round |  | 5.1 | 0.6 | 5.6 | 5.65 | 1.21 | 1.21 | 1.21 | on target | Evade 1: saves the step away (1 AP) on the 47% of the turns it starts Engaged |
+| Skirmish Shot at 8 (Recurve Bow) | 1 | round |  | 5.1 | 1.6 | 6.6 | 6.65 | 1.43 | 1.43 | 1.43 | a little over | Evade 1: saves the step away (1 AP) on the 47% of the turns it starts Engaged |
 
 **Gear (D2 weapons) passives** (DE a turn, weighted by the share of the rounds at its Escalation):
 

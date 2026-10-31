@@ -170,12 +170,12 @@ written ([B] or [M]) when it isn't the Attributes' own: "Bleed 1 ([B] Ap)" is Bo
 > Body for **Bo/In** and Mind for **Mi/Ap**, unless the Bleed writes its pool: **Bleed 1 ([B] Ap)**. A creature can end it with **Interact
 > (1 AP)**, on itself or on a creature within its Reach: the bleeding creature makes a Save with the better of the two Attributes against
 > **DC 13**, or the DC written (**Bleed 1d6 (Bo/In; DC 15)**). **Tier 1:** no effect. **Tier 2:** it takes half the Bleed at the end of this
-> turn, then the Bleed ends. **Tier 3:** the Bleed ends. Bleed also ends when the creature is healed and when the encounter ends. A creature
+> turn, then the Bleed ends. **Tier 3:** the Bleed ends. Bleed ends when the encounter ends; healing doesn't end it. A creature
 > that gets Bleed again keeps the one with the higher average.
 
 **The numbers:** staunched every turn, a Bleed deals 0.7 to 1.05 of its value (Save +2 to +0; 1.05 to 1.55 at DC 15) and costs the
 bleeding side 1 AP or more a turn; left alone, it deals its value each turn until the fight ends (about 2 more turns).
-**Assumption:** the bleeding creature always makes the Save, even when an ally staunches it (until Skills, D3, says otherwise).
+**Decided (Lucas):** the bleeding creature always makes the Save, even when another creature staunches it; healing doesn't end Bleed.
 
 ## Bow 1: the Hunting Bow (Basic), round 2 (to confirm)
 
@@ -201,3 +201,38 @@ bleeding side 1 AP or more a turn; left alone, it deals its value each turn unti
 | **Tier 3** | [B] 1d8 + [Mod] Pi; Bleed 1d4 (Bo/In). |
 
 Worth: 5.5 to 6.1 DE (efficiency 1.17 to 1.32, as the Bleed lasts 1 to 2 turns), plus the AP the target spends staunching. On target.
+
+**Lucas (round 3 of the Hunting Bow):** the bleeding creature always rolls; healing doesn't end Bleed (both written above). The Hunting Bow
+is confirmed. **"Horse Bow" is a bad name** (it reads as mounted combat, written last): the second Basic bow is the **Recurve Bow**
+(research: a recurve can be a wooden self bow or a composite; the short recurve is the light, quick bow of the moving archer).
+
+## Bow 2: the Recurve Bow (Basic), to confirm
+
+**The real weapon:** a short bow whose tips curve away from the archer, so a short, light bow still casts an arrow well: easy to carry and
+to shoot while moving, from cover to cover. Its arrows are lighter than a longbow's.
+
+| Group | Gate | Properties | Type | Range | Damage | Weapon Attack |
+|---|---|---|---|---|---|---:|
+| Bows | Basic (Group Mastery 0) | Projectile, Ranged, Two-handed | Pierce | 6 / 12 / 18 | [B] 0 / 1d4+1 / 1d8+1 | 4.51 DE |
+
+| Mastery | About | Unlock |
+|---:|---|---|
+| 3 | session 2 to 3 | **Skirmish Shot** (Weapon Technique, below). |
+| 8 | level 2 | **Light Feet:** while you hold the Recurve Bow in both hands, your Speed is 1 higher. |
+| 14 | level 4 | **Shot on the Run:** once each round, when you Advance, you can stop at any point of the movement to make a [Shot] Action with it (paying its AP), then finish the movement. |
+| 20 | level 5 | **Skirmisher:** Skirmish Shot's Evade 1 also happens on a Tier 2. |
+| 28 | level 7 | **Hit and Run:** Skirmish Shot's Evade is Evade 2. |
+
+**Skirmish Shot** (1 AP, Weapon Technique; *Ranged • Shot • Strike • Weapon*; Round; One creature; Distance: Weapon; Vs: AD)
+**Flavor:** Loose, and be gone before the arrow lands.
+
+| | 1 AP |
+|---|---|
+| **Tier 1** | [B] [Mod] Pi |
+| **Tier 2** | [B] 1d4 + 1 + [Mod] Pi |
+| **Tier 3** | [B] 1d8 + 1 + [Mod] Pi; you can Evade 1. |
+
+**Worth (prices.md):** Skirmish Shot 5.65 DE, efficiency 1.21 (on target); with Skirmisher 6.65, 1.43 (a little over: that is why it waits
+for level 5, not 8). Light Feet and Shot on the Run are movement (priced by the map model when the bow is built in the ruler).
+**Against the Hunting Bow:** the same damage; the Hunting Bow wins standing still and in close quarters, the Recurve Bow while moving
+(shorter range: 6 instead of 8).

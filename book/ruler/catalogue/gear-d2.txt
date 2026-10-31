@@ -36,3 +36,6 @@ turn Typical: Weapon Attack, Weapon Attack, Weapon Attack
 # Weapon Trees (book/weapon-trees.md): the Hunting Bow's Technique and its step at 20
 action Wounding Shot (Hunting Bow) | ap 1 | round | traits ranged shot strike weapon | vs ad | tiers [Mod] / 1d6 + [Mod] / 1d10 + [Mod] | on 3: debuff Hindered (EoT)
 action Wounding Shot at 20 (Hunting Bow) | ap 1 | round | traits ranged shot strike weapon | vs ad | tiers [Mod] / 1d6 + [Mod] / 1d10 + [Mod] | on 2+: debuff Hindered (EoT)
+# Weapon Trees: the Recurve Bow (Basic): Skirmish Shot with its dice, and its step at 8
+action Skirmish Shot (Recurve Bow) | ap 1 | round | traits ranged shot strike weapon | vs ad | tiers [Mod] / 1d4 + 1 + [Mod] / 1d8 + 1 + [Mod] | on 3: evade 1
+action Skirmish Shot at 8 (Recurve Bow) | ap 1 | round | traits ranged shot strike weapon | vs ad | tiers [Mod] / 1d4 + 1 + [Mod] / 1d8 + 1 + [Mod] | on 2+: evade 1
