@@ -671,12 +671,12 @@ Bane in practice; its arrow goes exactly where it is meant to, and its unlocks a
 
 | Mastery | About | Unlock |
 |---:|---|---|
-| 14 | level 8 to 9 | **Called Shot** (Weapon Technique, 1 / 2 AP, below). |
-| 20 | level 10 | **Snap Release:** once each round, you can use Called Shot's 1 AP Version as **1R**, when an enemy within its normal range makes a [Strike] Action against an ally (Trigger). |
-| 28 | after level 10 | **Needle's Eye:** Called Shot can also choose **Prone**. |
+| 14 | level 8 to 9 | **Pinpoint Shot** (Weapon Technique, 1 / 2 AP, below). |
+| 20 | level 10 | **Snap Release:** once each round, you can use Pinpoint Shot's 1 AP Version as **1R**, when an enemy within its normal range makes a [Strike] Action against an ally (Trigger). |
+| 28 | after level 10 | **Needle's Eye:** Pinpoint Shot can also choose **Prone**. |
 
 <div class="action" markdown="1">
-<div class="action-head"><span>Called Shot</span><span>1 / 2 AP</span><span class="cat">Weapon Technique</span></div>
+<div class="action-head"><span>Pinpoint Shot</span><span>1 / 2 AP</span><span class="cat">Weapon Technique</span></div>
 
 **Flavor:** You name the spot before you loose. The arrow agrees.
 
@@ -691,7 +691,7 @@ Bane in practice; its arrow goes exactly where it is meant to, and its unlocks a
 **Vs:** AD
 
 **Setup:** Choose where you aim: **the legs** (Hindered (EoT)), **the weapon arm** (its next [Strike] Action before the end of its next turn
-takes 1 Bane) or **the eyes** (it can't use Reactions until the end of its next turn). At 2 AP, choose two.
+takes 1 Bane) or **the eyes** (it loses 1 AP now, if it has any: one Reaction less). At 2 AP, choose two.
 
 | | 1 AP | 2 AP |
 |---|---|---|
@@ -710,3 +710,8 @@ choices on a Tier 2 or 3). Each choice is priced like "1 Bane on its Strikes for
 Bow picks the one thing a creature must not do this turn.
 
 **To confirm:** the three choices (legs, arm, eyes), the 2 AP Favored, Snap Release, Needle's Eye. With this the Bow group has its six bows.
+
+**Lucas (Flight Bow):** Called Shots will be **a general mechanic** later (nothing concrete yet), so the Technique is renamed **Pinpoint Shot**
+(its own aimed shot). **The eyes was too strong:** "no Reactions until the end of its next turn" could take away every AP a creature saved
+(two Reactions or more). Now: **"it loses 1 AP now, if it has any"** (Chapter 2: losing AP "now"): at most one Reaction less, and nothing
+against a creature that saved none. The worth stays about the same (each choice priced as about one Bane on one enemy turn).
