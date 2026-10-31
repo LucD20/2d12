@@ -318,7 +318,7 @@ becomes **Patient Shot**, a Reaction: the hunter who waits for the prey to step 
 
 **Distance:** Weapon
 
-**Trigger:** An enemy within your Hunting Bow's normal range ends a Move Action in a square where it has no Cover from you.
+**Trigger:** An enemy within your Hunting Bow's normal range stops moving in a square where it has no Cover from you (it ends its movement there, or uses another Action there).
 
 | 1R |
 |---|
@@ -370,7 +370,7 @@ turn): you take the hit, step back and shoot (the "Parthian shot": loosing while
 |---:|---|---|
 | 3 | session 2 to 3 | **Light Feet:** while you hold the Recurve Bow, your Speed is 1 higher. |
 | 8 | level 2 | **Parthian Shot** (Weapon Technique, a Reaction, 1R / 2R, below). |
-| 14 | level 4 | **Turn and Loose:** Parthian Shot can also trigger when an enemy ends a Move Action adjacent to you. |
+| 14 | level 4 | **Turn and Loose:** Parthian Shot can also trigger when an enemy **stops moving in a square adjacent to you** (it ends its movement there, or uses another Action there: a creature that only passes by doesn't trigger it). |
 | 20 | level 5 | **Second Wind:** once each encounter, you can use Parthian Shot's 1R Version as 0R. |
 | 28 | level 7 | **Gone Before They Land:** Parthian Shot's Evades are 1 longer (Evade 2 / Evade 3). |
 
@@ -406,3 +406,9 @@ movement (the map model prices them when the bow goes into the ruler).
 Recurve reacts (Parthian Shot) and moves. Same damage, two ways to play.
 
 **To confirm:** Parthian Shot as a Trigger with 1R / 2R, the Critical, and the ladder (Light Feet first, then the Technique).
+
+**Lucas (Recurve Bow): confirmed**, with two changes (written above): **the off-hand wording**: "a Strung weapon in your off hand takes the
+off-hand Bane only when your **main hand** holds something"; **"stops moving in a square"** instead of "ends a Move Action" (a split
+Advance, Chapter 3, doesn't end where it pauses; a passer-by doesn't stop), used by Turn and Loose and, for the same reason, Patient Shot.
+Note: Turn and Loose lets the archer step away before the melee Strike comes; the enemy can still finish a split Advance to close in again,
+so it costs it movement, not the attack.
