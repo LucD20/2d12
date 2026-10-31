@@ -159,3 +159,45 @@ removed and the Save would rarely matter. **My proposal (D):** no effect / **you
 ends** / **it ends now**: removed in 1.4 to 1.7 Interacts on average, so staunching is a real choice (about one Strike's worth of AP).
 Questions: the pool of the damage (the pool of its Attributes: Bo/In Body, Mi/Ap Mind?), the better of the two Attributes, and can an ally
 staunch you (with your Save, or its own: Skills, D3)?
+
+**Lucas (Bleed, round 3): yes to all (D, the pool from the Attributes, the better of the two, allies can staunch), and:** the pool can be
+written ([B] or [M]) when it isn't the Attributes' own: "Bleed 1 ([B] Ap)" is Body damage with an Appeal Save; and **Bleed can be dice**
+("Bleed 2d6", "Bleed 1d4+2"), flat numbers still allowed.
+
+## Bleed (the rule, decided; for the book with the first group that uses it: Conditions)
+
+> **Bleed X (Attributes):** at the end of each of its turns, the creature takes X damage (a number or dice, rolled each time). The damage is
+> Body for **Bo/In** and Mind for **Mi/Ap**, unless the Bleed writes its pool: **Bleed 1 ([B] Ap)**. A creature can end it with **Interact
+> (1 AP)**, on itself or on a creature within its Reach: the bleeding creature makes a Save with the better of the two Attributes against
+> **DC 13**, or the DC written (**Bleed 1d6 (Bo/In; DC 15)**). **Tier 1:** no effect. **Tier 2:** it takes half the Bleed at the end of this
+> turn, then the Bleed ends. **Tier 3:** the Bleed ends. Bleed also ends when the creature is healed and when the encounter ends. A creature
+> that gets Bleed again keeps the one with the higher average.
+
+**The numbers:** staunched every turn, a Bleed deals 0.7 to 1.05 of its value (Save +2 to +0; 1.05 to 1.55 at DC 15) and costs the
+bleeding side 1 AP or more a turn; left alone, it deals its value each turn until the fight ends (about 2 more turns).
+**Assumption:** the bleeding creature always makes the Save, even when an ally staunches it (until Skills, D3, says otherwise).
+
+## Bow 1: the Hunting Bow (Basic), round 2 (to confirm)
+
+| Group | Gate | Properties | Type | Range | Damage | Weapon Attack |
+|---|---|---|---|---|---|---:|
+| Bows | Basic (Group Mastery 0) | Projectile, Ranged, Two-handed | Pierce | 8 / 16 / 24 | [B] 0 / 1d6 / 1d10 | 4.51 DE |
+
+| Mastery | About | Unlock |
+|---:|---|---|
+| 3 | session 2 to 3 | **Close Quarters:** while you are Engaged, [Ranged] Actions with it take 1 Bane for it instead of 2. |
+| 8 | level 2 | **Wounding Shot** (Weapon Technique, below). |
+| 14 | level 4 | **Quick Nock:** once each turn, you draw or stow it without the Interact Action. |
+| 20 | level 5 | **Blood Trail:** the Bleed of your Wounding Shot has DC 15, and a creature bleeding from it is never Unsensed by you. |
+| 28 | level 7 | **Steady Hands:** once each round, a Shot with it ignores 1 Bane (from any source). |
+
+**Wounding Shot** (1 AP, Weapon Technique; *Ranged • Shot • Strike • Weapon*; Round; One creature; Distance: Weapon; Vs: AD)
+**Flavor:** Not the kill: the wound that slows them down, and you follow.
+
+| | 1 AP |
+|---|---|
+| **Tier 1** | [B] [Mod] Pi |
+| **Tier 2** | [B] 1d6 + [Mod] Pi |
+| **Tier 3** | [B] 1d8 + [Mod] Pi; Bleed 1d4 (Bo/In). |
+
+Worth: 5.5 to 6.1 DE (efficiency 1.17 to 1.32, as the Bleed lasts 1 to 2 turns), plus the AP the target spends staunching. On target.
