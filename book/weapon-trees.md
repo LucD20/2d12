@@ -554,7 +554,7 @@ one shot after another while it keeps landing (the system's variance), and the R
 
 | 1 AP | 2 AP |
 |---|---|
-| Make a [Ranged, Shot] Weapon Attack (1A). On a Tier 3, make another one (1A) with 1 Bane. | Make [Ranged, Shot] Weapon Attacks (1A), one after another, up to three: each one after the first takes 1 more Bane (1, then 2), and a Tier 1 ends the Flurry. |
+| Make a [Ranged, Shot] Weapon Attack (1A). On a Tier 3, make another one (1A) with 1 Bane. | Make three [Ranged, Shot] Weapon Attacks (1A), one after another: each one after the first takes 1 more Bane (1, then 2), and a Tier 1 ends the Flurry. |
 
 </div>
 
@@ -564,3 +564,21 @@ Strike. **Against the Longbow:** a little less damage on a Weapon Attack (+6% ag
 (Rider's Stride); the Longbow has the reach, the arcs and the volley.
 
 **To confirm:** the Flurry (1 / 2 AP), the ladder (Rider's Stride, Unbroken Rhythm, Storm of the Steppe).
+
+**Lucas:** no "up to" (Rules Language already says a number is a maximum): Flurry's 2 AP now says "three". **Q: is the efficiency against
+the level that gets the weapon, or level 1?** It was level 1 (Weapon Modifier +2, 1 AP = 4.66 DE). **At the weapon's Stage** (the
+Bestiary's Defenses don't change with the Stage; the PC's Modifier is +3 in Stage 2 and +4 in Stage 3, and the price of 1 AP grows with it:
+5.77 DE at +3, 6.95 at +4):
+
+| | Mod +2 (level 1) | **Mod +3 (Stage 2: Advanced)** | Mod +4 (Stage 3) |
+|---|---:|---:|---:|
+| Flurry of Arrows 1 AP | 1.27 | **1.35** | 1.42 |
+| Flurry of Arrows 2 AP | 1.04 | **1.13** | 1.22 |
+| Flurry 2 AP with Unbroken Rhythm | 1.34 | **1.40** | 1.45 |
+| Plunging Shot 1 AP | 1.18 | **1.18** | 1.17 |
+| Plunging Shot 2 AP (+1d6) | 0.97 | **0.89** | 0.84 |
+
+**What it shows:** a chain that goes on while you hit (Flurry) gets better as the Modifier grows (more hits, longer chains); flat dice
+(Plunging Shot's extra 1d6) get worse. **From now on each weapon is priced at its own Stage** (Basic +2, Advanced +3, Exotic +4).
+**Fixes proposed:** Plunging Shot 2 AP **+1d8** instead of +1d6 (about 0.98 at +3); Flurry 1 AP stays (1.35, a little over the Round
+band); Unbroken Rhythm stays at level 7 (1.40: a late unlock), or it becomes "the second Weapon Attack takes no Bane" if you want it on the band.
