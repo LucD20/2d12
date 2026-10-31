@@ -715,3 +715,89 @@ Bow picks the one thing a creature must not do this turn.
 (its own aimed shot). **The eyes was too strong:** "no Reactions until the end of its next turn" could take away every AP a creature saved
 (two Reactions or more). Now: **"it loses 1 AP now, if it has any"** (Chapter 2: losing AP "now"): at most one Reaction less, and nothing
 against a creature that saved none. The worth stays about the same (each choice priced as about one Bane on one enemy turn).
+
+# Revision of the Bow group (2026-10-31)
+
+## 1. How the worth of an Action is calculated (reminder)
+
+- **The dice:** the system's own math (calc.mjs `tierProbs`: 2d12, a 12 explodes, Doubles raise a tier, Boons and Banes 1d3-1, Favored and
+  Doomed) gives the chance of each Tier against **Defense 13** (the Medium Standard of the Bestiary; Defenses don't change with the Stage).
+- **Damage-equivalents (DE):** the average damage of the Action on each Tier times its chance, plus its effects in damage terms from the
+  price list (book/ruler/prices.md: 1 Boon about 0.5 DE on a Weapon Attack, 1 Bane on an enemy's Strikes for its turn 1.18, Hindered (EoT)
+  1.46 by the map model, Vulnerable 1 1.23...). Bleed: its average per tick x 1.5 ticks (between staunched at once and left alone). A Reaction:
+  what it does, for AP kept from your turn, times the chance its trigger happens in a round.
+- **The price of 1 AP:** a baseline PC's turn / 5 = **4.66 DE at level 1** (23.3 / 5). It grows with the Modifier as a Weapon Attack does:
+  **5.77 at +3 (Stage 2), 6.95 at +4 (Stage 3)**.
+- **Efficiency = DE / AP / the price of 1 AP** at the Modifier of **the level the Action arrives**. The bands (prices.md): At-will 0.9 to 1.1,
+  **Round and Turn 1.0 to 1.3**, Encounter 1.4 to 2, Daily 2 to 3. So "1.28" is a Round Action that gives 28% more than an average AP.
+- **What it leaves out:** positions beyond the price list (Evade, Light Feet, Cover skipped by an arc: noted, not counted), the class's own
+  Actions (an Archer's turn also has Double Shot or Rolling Shot: the weapon's Technique competes with them for AP and Strikes).
+
+## 2. The bows turn by turn (book/ruler/bows.mjs)
+
+A turn of 5 AP and at most 3 Strikes with the bow only: Weapon Attacks (At-will Banes 0, 1, 2), the Technique once a round, a Reaction when
+its trigger comes (AP kept). Master (one more [W]) from level 8. **As confirmed:**
+
+| Level (Mod) | Hunting | Recurve | Longbow | Composite | Warbow | Flight |
+|---|---:|---:|---:|---:|---:|---:|
+| 1 (+2) | 12.2 | 12.2 | | | | |
+| 2 (+2) | 19.1 | 15.8 | | | | |
+| 4 (+2) | 19.1 | 16.9 | | | | |
+| 5 (+3) | 22.9 | 23.2 | **16.6** | **16.4** | | |
+| 7 (+3) | 26.3 | 23.2 | 26.9 | 24.5 | | |
+| 8 (+4) | 44.0 | 42.3 | 46.2 | **49.3** | **37.0** | **36.2** |
+| 10 (+4) | 44.0 | 42.3 | 46.2 | 49.3 | 48.1 | 52.2 |
+
+**What it shows:**
+1. **Switching up the tree costs a level of damage:** a fresh Longbow or Composite at level 5 has no Technique (it comes at 9) and a 3-Strike
+   turn leaves 2 AP with nothing to do: **-28%** against the Basic bows (16.5 against 23). The same for the Exotic bows at level 8 (-17%).
+   The 2 AP Technique is where the 4th AP goes.
+2. **The Recurve trails at levels 2 to 4 (-12 to -17%)**: its Technique is a Reaction that waits for a melee Strike (half the rounds), so
+   the 2 AP it keeps are often lost. (Its mobility isn't counted.)
+3. **The Composite runs away at level 8 (+7% over the Longbow, above the Exotic bows):** Flurry's chain grows with the Modifier (more hits,
+   longer chains), Unbroken Rhythm, and **Master adds a [W] to every Weapon Attack of the chain**.
+4. **Master skips the Techniques written with their own dice:** Wounding Shot, Plunging Shot, Heavy Shaft and Pinpoint Shot write dice
+   ("1d6 + [Mod]") instead of 1[W]: Master ("Actions that deal [W]") doesn't apply to them. Wounding Shot 2 AP at level 8: 13.5 as written,
+   17.1 with 1[W].
+5. **The Exotic bows' last unlock (28) comes after level 10** (they start at 11 at level 8, +4.5 a level): no one reaches it before the
+   level cap.
+
+## 3. The revisions (my proposal)
+
+| # | Change | Why |
+|---|---|---|
+| R1 | **An Advanced or Exotic weapon has its Technique as soon as you can use it** (at its gate: 6 or 11 Mastery). Advanced: Technique, then 14, 20, 28 (4 unlocks); Exotic: Technique, then **16, 22** (3, both before level 10: 16 at level 9, 22 at level 10) | finding 1 and 5; switching still costs the Basic bow's utilities (Close Quarters, Quick Nock, Blood Trail...), not a level of damage |
+| R2 | **Every Technique writes the weapon's damage as 1[W]** (Wounding Shot 1 AP Tier 3 becomes 1[W] + [Mod], 1.30 at +2; Plunging Shot 2 AP: 1[W] + 1d8; Heavy Shaft, Pinpoint Shot: 1[W]) | finding 4; Master and better weapons (a +1 bow) then work on them too |
+| R3 | **Parthian Shot's Trigger: a creature makes a [Strike] Action against you** (melee or ranged; Turn and Loose still adds "stops moving adjacent to you") | finding 2: 70% of the rounds instead of 50% (85% with Turn and Loose) |
+| R4 | **Flurry of Arrows: each Weapon Attack after the first takes 2 more Banes** (1 AP: the second takes 2 Banes; 2 AP: 2, then 4); **Unbroken Rhythm: the second takes 1 Bane instead of 2** | finding 3; Flurry 2 AP 1.03 at +3, 1.17 with Unbroken Rhythm at +4 (on the band, where it was 1.28) |
+
+**After R1 to R4:**
+
+| Level (Mod) | Hunting | Recurve | Longbow | Composite | Warbow | Flight |
+|---|---:|---:|---:|---:|---:|---:|
+| 1 (+2) | 12.2 | 12.2 | | | | |
+| 2 (+2) | 19.1 | 17.2 | | | | |
+| 4 (+2) | 19.1 | 18.3 | | | | |
+| 5 (+3) | 22.9 | 25.0 | 22.7 | 23.3 | | |
+| 7 (+3) | 26.3 | 25.0 | 26.9 | 23.3 | | |
+| 8 (+4) | 44.0 | 45.2 | 46.2 | 46.9 | 48.1 | 46.3 |
+| 10 (+4) | 44.0 | 45.2 | 46.2 | 46.9 | 48.1 | 52.2 |
+
+Every bow within about 10% of the others at each level; the Exotic bows a little ahead at level 8 (Warbow +9% on the Hunting Bow, with fewer
+abilities; the Flight Bow +5% with the most choices), the Flight Bow +13% at level 10 with Snap Release (a Reaction once a round). The Recurve
+stays a little behind at level 2 to 4 (-4 to -10%) with its uncounted mobility.
+
+**Also noted (no change):** the jump at level 8 (+65 to 80% a turn) is the Modifier +4 and Master (LV's 2[W]), for every weapon; bigger
+weapon dice gain more from Master (the Exotic bows). Volley 5 costs 2%. Bleed doesn't grow with the Modifier (Wounding Shot 2 AP at level 8
+with 1[W]: 1.23, still on the band).
+
+**The ladders after R1:**
+
+| Bow | Unlocks |
+|---|---|
+| Hunting Bow (Basic) | 3 Close Quarters · 8 Wounding Shot · 14 Quick Nock · 20 Blood Trail · 28 Patient Shot |
+| Recurve Bow (Basic) | 3 Light Feet · 8 Parthian Shot · 14 Turn and Loose · 20 Second Wind · 28 Gone Before They Land |
+| Longbow (Advanced, from 6) | 6 Plunging Shot · 14 Loose Together · 20 Steady Draw · 28 Arrowfall |
+| Composite Bow (Advanced, from 6) | 6 Flurry of Arrows · 14 Rider's Stride · 20 Unbroken Rhythm · 28 Storm of the Steppe |
+| Warbow (Exotic, from 11) | 11 Heavy Shaft · 16 Bodkin Point · 22 Clothyard Shaft |
+| Flight Bow (Exotic, from 11) | 11 Pinpoint Shot · 16 Snap Release · 22 Needle's Eye |
