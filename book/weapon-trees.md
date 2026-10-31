@@ -655,3 +655,58 @@ aims around them, or doesn't. **Master** (level 8, Group Mastery 11) adds one mo
 **Questions:**
 1. The 2 AP Version: an Area Strike against everyone in the Line (allies included), or "enemies in the Line"?
 2. A card whose Area exists only in one Version: is "Area: — / Line 8" fine, or should the Line be its own Version-free card (two cards)?
+
+**Lucas (Warbow): confirmed.** Heavy Shaft's Line hits **every creature in it, allies included** (the default for an Area), and one card with
+"Area: — / Line 8" is fine.
+
+## Bow 6: the Flight Bow (Exotic), to confirm (priced at +4, level 8)
+
+**The real weapon:** the Ottoman flight bow, a composite recurve made only for distance, with light flight arrows (records about 845 m). In
+the game (history as flavor, the numbers from the game): **light, fast, precise**. Its normal range covers almost any map, so it takes no range
+Bane in practice; its arrow goes exactly where it is meant to, and its unlocks are **choices** (the "extreme versatility" of an Exotic weapon).
+
+| Group | Gate | Properties | Type | Range | Damage | Weapon Attack at +4 |
+|---|---|---|---|---|---|---:|
+| Bows | Exotic (Group Mastery 11) | Projectile, Ranged, Strung | Pierce | 15 / 30 / 45 | [B] 0 / 1d6 / 2d8 | 8.27 DE (+18%) |
+
+| Mastery | About | Unlock |
+|---:|---|---|
+| 14 | level 8 to 9 | **Called Shot** (Weapon Technique, 1 / 2 AP, below). |
+| 20 | level 10 | **Snap Release:** once each round, you can use Called Shot's 1 AP Version as **1R**, when an enemy within its normal range makes a [Strike] Action against an ally (Trigger). |
+| 28 | after level 10 | **Needle's Eye:** Called Shot can also choose **Prone**. |
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Called Shot</span><span>1 / 2 AP</span><span class="cat">Weapon Technique</span></div>
+
+**Flavor:** You name the spot before you loose. The arrow agrees.
+
+*Ranged • Shot • Strike • Weapon*
+
+**Frequency:** Round
+
+**Target:** One creature
+
+**Distance:** Weapon
+
+**Vs:** AD
+
+**Setup:** Choose where you aim: **the legs** (Hindered (EoT)), **the weapon arm** (its next [Strike] Action before the end of its next turn
+takes 1 Bane) or **the eyes** (it can't use Reactions until the end of its next turn). At 2 AP, choose two.
+
+| | 1 AP | 2 AP |
+|---|---|---|
+| **Tier 1** | 0 | 0 |
+| **Tier 2** | [B] 1d6 + [Mod] Pi | [B] 1d6 + [Mod] Pi; what you chose. |
+| **Tier 3** | [B] 2d8 + [Mod] Pi; what you chose. | [B] 2d8 + [Mod] Pi; what you chose. |
+| **Critical** | All three. | All three. |
+
+**Effects:** At 2 AP, this Shot is Favored.
+
+</div>
+
+**Worth at +4 (1 AP = 6.95 DE):** 1 AP about 8.9 DE (1.28: the choice on a Tier 3, 37% at +4); 2 AP about 13.7 DE (about 1.0: Favored, two
+choices on a Tier 2 or 3). Each choice is priced like "1 Bane on its Strikes for its turn" (1.18 DE at level 1, x1.49 at +4).
+**Against the Warbow:** about the same damage (+18% against +21%), no Volley, no friendly fire; the Warbow hits groups and pushes, the Flight
+Bow picks the one thing a creature must not do this turn.
+
+**To confirm:** the three choices (legs, arm, eyes), the 2 AP Favored, Snap Release, Needle's Eye. With this the Bow group has its six bows.
