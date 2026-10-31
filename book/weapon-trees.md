@@ -260,3 +260,79 @@ Advance and use other Actions between its parts): removed. Restart with the rule
 **Found in the reread:** the Archer's **Rolling Shot** is already "Evade 1 to 3, then a Weapon Attack": a Technique that is a Setup Evade +
 a Shot would copy the Archer's Hallmark. A bow Technique should do what no card does yet: react (an Interrupt), shape an area (a Line),
 play with Cover (a shot that ignores it, or arcs over it), move the target, or change the AP economy.
+
+**Lucas:** the Line pack runs after the bows; its rules are decided (book/line-area-prompt.md) and the trees can use **Line N** (it always
+starts from you, no range Banes inside it, creatures in it give no cover to each other, it stops at a wall, 1 square high).
+
+## Bow 1 rebuilt: the Hunting Bow (Basic), to confirm
+
+**What changed:** Wounding Shot gets a 2 AP Version that makes even a graze bleed, and a Critical; Steady Hands (a plain "ignore a Bane")
+becomes **Patient Shot**, a Reaction: the hunter who waits for the prey to step into the open. Close Quarters, Quick Nock and Blood Trail stay.
+
+| Group | Gate | Properties | Type | Range | Damage | Weapon Attack |
+|---|---|---|---|---|---|---:|
+| Bows | Basic (Group Mastery 0) | Projectile, Ranged, Two-handed | Pierce | 8 / 16 / 24 | [B] 0 / 1d6 / 1d10 | 4.51 DE |
+
+| Mastery | About | Unlock |
+|---:|---|---|
+| 3 | session 2 to 3 | **Close Quarters:** while you are Engaged, [Ranged] Actions with it take 1 Bane for it instead of 2. |
+| 8 | level 2 | **Wounding Shot** (Weapon Technique, 1 / 2 AP, below). |
+| 14 | level 4 | **Quick Nock:** once each turn, you draw or stow it without the Interact Action. |
+| 20 | level 5 | **Blood Trail:** the Bleed of your Wounding Shot has DC 15, and a creature bleeding from it is never Unsensed by you. |
+| 28 | level 7 | **Patient Shot** (a Reaction, below). |
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Wounding Shot</span><span>1 / 2 AP</span><span class="cat">Weapon Technique</span></div>
+
+**Flavor:** Not the kill: the wound that slows them down, and you follow.
+
+*Ranged • Shot • Strike • Weapon*
+
+**Frequency:** Round
+
+**Target:** One creature
+
+**Distance:** Weapon
+
+**Vs:** AD
+
+| | 1 AP | 2 AP |
+|---|---|---|
+| **Tier 1** | [B] [Mod] Pi | [B] [Mod] Pi; Bleed 1d4 (Bo/In). |
+| **Tier 2** | [B] 1d6 + [Mod] Pi | [B] 1d6 + [Mod] Pi; Bleed 1d6 (Bo/In). |
+| **Tier 3** | [B] 1d8 + [Mod] Pi; Bleed 1d4 (Bo/In). | [B] 1d10 + [Mod] Pi; Bleed 2d4 (Bo/In). |
+| **Critical** | The wound won't close: only a Tier 3 on the Save ends this Bleed. | As 1 AP. |
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Patient Shot</span><span>1R</span><span class="cat">Hunting Bow 28</span></div>
+
+**Flavor:** You waited. It stepped out. That was enough.
+
+*Ranged • Shot • Strike • Weapon*
+
+**Frequency:** Round
+
+**Target:** The triggering creature
+
+**Distance:** Weapon
+
+**Trigger:** An enemy within your Hunting Bow's normal range ends a Move Action in a square where it has no Cover from you.
+
+| 1R |
+|---|
+| Make a [Ranged, Shot] Weapon Attack (1A) against the triggering creature. |
+
+</div>
+
+**Worth (Bleed lasting 1.5 of the target's turns, the middle of "staunched at once" and "left alone"):** Wounding Shot 1 AP 5.8 DE,
+efficiency 1.24; **2 AP 10.5 DE, 1.13** (0.93 if staunched at once, 1.32 if left alone): on target. The 2 AP Version is the bleed shot (its
+damage is mostly the Bleed, and a Tier 1 still bleeds); the 1 AP is the shot you mix into a turn. Bleed doesn't add up (the higher stays), so a
+second Wounding Shot on a bleeding target only helps if its Bleed is bigger. Patient Shot is a Weapon Attack for AP you kept, once a round,
+at the moment the prey shows itself (Cover: checked as for any Action).
+
+**Why it should feel good:** a Tier 1 that still wounds; a Critical that makes the wound a problem (only a Tier 3 stops it: 19 to 27%);
+the trail (never Unsensed) and the Reaction tie it to hunting: wound, follow, wait.
+
+**To confirm:** the 2 AP Version and its numbers, the Critical, Patient Shot instead of Steady Hands (or keep both and drop Quick Nock).
