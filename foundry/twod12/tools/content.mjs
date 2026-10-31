@@ -51,6 +51,9 @@ const P = (all = [], any = [], none = []) => ({ all, any, none });
 const sBoon = (boons, pred, extra = {}) => ({ type: "boonbane", boons, banes: 0, ...pred, ...extra });
 const sBonus = (dmg, pool, sub, pred, extra = {}) => ({ type: "bonusdamage", dmg, dmgPool: pool, dmgSub: sub, tiers: ["t1", "t2", "t3"], text: "", fxUuid: "", ...pred, ...extra });
 const sIgnore = (rule, pred, extra = {}) => ({ type: "ignore", ignoreRule: rule, ...pred, ...extra });
+// v0.0.207 (editability sweep): a chat message at a moment with an Action to offer (Marked Quarry), a Starting Mastery (Sharpshooter, Bow Mastery).
+const sMessage = (when, text, action = "", ap = 0, to = "owners") => ({ type: "message", msgWhen: when, text, msgAction: action, msgAp: ap, msgTo: to });
+const sMastery = (trait, value) => ({ type: "mastery", mstTrait: trait, mstValue: value });
 const cond = (name, img, description, settings, extra = {}) => add("conditions", "effect", name, img, { isCondition: true, duration: { type: "", rounds: 1 }, description, settings, ...extra }, null);
 cond("Empowered", "icons/svg/upgrade.svg", "<p>Empowered N adds N to every die of your damage. Only the highest Empowered value applies, and the Enfeebled value is taken from it.</p>", [], { valued: true });
 cond("Enfeebled", "icons/svg/degen.svg", "<p>Enfeebled N subtracts N from every die of your damage, but each die still deals at least 1. Only the highest Enfeebled value applies, and it is taken from the Empowered value.</p>", [], { valued: true });
@@ -148,15 +151,15 @@ add("actions", "action", "Opportunity Attack", "icons/svg/combat.svg", {
 /* ------------------------------------------------------------------ Martial Talents */
 add("actions", "action", "Pummel", "icons/svg/combat.svg", {
   category: "Brawler", level: 1, traits: ["melee", "strike", "weapon"], frequency: "atwill", targets: "One creature", distance: "weapon", requirements: "You have a free hand.",
-  versions: [version(1, "AtBBl", "1d4BBl", "1d6BBl")]
+  versions: [version(1, "AtBBl", "1d4BBl", "1d6BBl")],
+  weaponUse: "fists"   // Pummel uses only the Fists (v0.0.169; v0.0.207 its "Weapon used")
 }, "Talents");
-docs[docs.length - 1].flags = { twod12: { fistsOnly: true } };   // Pummel uses only the Fists (v0.0.169)
 // OT (Lucas 2026-10-30): Leg Sweep is a kick, Kickboxer's own Action: it uses your Fists even with no free hand.
 add("actions", "action", "Leg Sweep", "icons/svg/combat.svg", {
   category: "Kickboxer", level: 1, traits: ["melee", "strike", "weapon"], frequency: "round", targets: "One creature", distance: "weapon",
-  versions: [version(1, "1d4BBl", "1d4BBl", '1d6BBl,"Prone."')]
+  versions: [version(1, "1d4BBl", "1d4BBl", '1d6BBl,"Prone."')],
+  weaponUse: "kick"   // v0.0.207: its "Weapon used"
 }, "Talents");
-docs[docs.length - 1].flags = { twod12: { kick: true } };
 add("actions", "action", "Cut Through", "icons/svg/sword.svg", {
   category: "Mobility Talent", level: 1, traits: ["melee", "strike", "weapon"], frequency: "round", targets: "One creature", distance: "weapon",
   setup: "Evade 2 (@Move[evade|distance:2|terrain:ignore]). During this Evade you can move through the space of any creature (you can't end in one), and you ignore Difficult Terrain.",
@@ -174,7 +177,7 @@ add("actions", "action", "Bloodlust", "icons/svg/blood.svg", {
 /* ------------------------------------------------------------------ Features and Talents */
 add("features", "feature", "Divine Power", "icons/svg/angel.svg", { category: "Paladin Feature", level: 1, description: "<p>When you deal Holy damage to a creature with the Profane Tag, that creature is Enfeebled 1 (EoT).</p>", settings: [{ type: "ondamage", trigSub: "Ho", trigTag: "Profane", fxUuid: uuidOf("effects", "Divine Power (Enfeebled)") }] });
 add("features", "feature", "Divine Connection", "icons/svg/aura.svg", { category: "Paladin Feature", level: 1, talents: 2, description: "<p>Select 1 Talent and 1 Talent with the Divine trait. (Retired in the rules; kept here to test Talent slots.)</p>" });
-add("features", "feature", "Sharpshooter", "icons/svg/target.svg", { category: "Archer Feature", level: 1, description: "<p>Choose your Hallmark Action: <b>Double Shot</b> or <b>Rolling Shot</b>. Choose one Projectile weapon, such as a bow or a crossbow: you start with <b>3 Mastery</b> with it. Your [Shot] Actions don't take the Bane for targeting a creature Engaged with a creature other than you.</p>", settings: [sIgnore("engagedTarget", P(["shot"]))] });
+add("features", "feature", "Sharpshooter", "icons/svg/target.svg", { category: "Archer Feature", level: 1, description: "<p>Choose your Hallmark Action: <b>Double Shot</b> or <b>Rolling Shot</b>. Choose one Projectile weapon, such as a bow or a crossbow: you start with <b>3 Mastery</b> with it. Your [Shot] Actions don't take the Bane for targeting a creature Engaged with a creature other than you.</p>", settings: [sIgnore("engagedTarget", P(["shot"])), sMastery("projectile", 3)] });
 
 
 /* ------------------------------------------------------------------ Talents (book 16-talents.md; OT 2026-10-30): Category, Level, Prerequisites and Theme as data */
@@ -189,8 +192,7 @@ tal("Heavy Blows", "icons/svg/sword.svg", "combat", { theme: "Great Weapon", des
   settings: [{ type: "bonusdamage", dmg: "2", dmgPool: "B", dmgSub: "", tiers: ["t3"], text: "", fxUuid: "", all: ["melee", "strike", "weapon", "__twohanded"], any: [], none: [] }] });
 tal("Whirlwind", "icons/svg/sword.svg", "combat", { theme: "Great Weapon", prereqs: [pre("talent", "Heavy Blows")], description: "<p>You gain the Whirlwind Action.</p>", actions: [uuidOf("actions", "Whirlwind")] });
 tal("Bloodlust", "icons/svg/blood.svg", "combat", { description: "<p>You gain the Bloodlust Action.</p>", actions: [uuidOf("actions", "Bloodlust")] });
-tal("Brawler", "icons/svg/combat.svg", "combat", { theme: "Unarmed", description: "<p>You gain the Pummel Action. Your Fists don't have the Non-threatening property: you can flank with them.</p>", actions: [uuidOf("actions", "Pummel")] });
-docs[docs.length - 1].flags = { twod12: { fistsThreaten: true } };
+tal("Brawler", "icons/svg/combat.svg", "combat", { theme: "Unarmed", description: "<p>You gain the Pummel Action. Your Fists don't have the Non-threatening property: you can flank with them.</p>", actions: [uuidOf("actions", "Pummel")], settings: [{ type: "weaponprop", wpWhich: "fists", wpProp: "nonthreatening" }] });
 tal("Kickboxer", "icons/svg/combat.svg", "combat", { theme: "Unarmed", prereqs: [pre("talent", "Brawler")], description: "<p>You gain the Leg Sweep Action: a kick, so it needs no free hand. You can use it with your hands full.</p>", actions: [uuidOf("actions", "Leg Sweep")] });
 tal("Aim", "icons/svg/target.svg", "combat", { theme: "Marksman", description: "<p>You gain the Aim Action.</p>", actions: [uuidOf("actions", "Aim")] });
 tal("Ricochet", "icons/svg/target.svg", "combat", { theme: "Marksman", prereqs: [pre("talent", "Aim")], description: "<p>Your [Ranged, Weapon] Actions can bounce off one surface on the way. The projectile goes from the surface to the creature, and you calculate Line of Effect, Cover and Sight from the center of the surface. The distance is the total the projectile travels: if you shoot at a surface 5 squares from you and the target is within 6 squares of the surface, that is an 11-square shot. You must still perceive the creature. A bounced shot takes 1 Bane.</p>" });
@@ -427,8 +429,10 @@ add("effects", "effect", "Twin Shot", "icons/svg/target.svg", { selfApplied: tru
 add("actions", "action", "Twin Shot", "icons/svg/target.svg", { category: "Archer Escalation", level: 1, traits: ["ranged", "shot", "strike", "weapon"], frequency: "round", targets: "Two creatures", distance: "weapon", escalation: 3, versions: [
   noRoll(1, "Make one [Ranged, Shot] Weapon Attack (1A) and compare its result to two different creatures no more than 5 squares apart (target both). It deals an extra [B] 1d6 Pi to each of them.", [uuidOf("effects", "Twin Shot")])] }, "Archer");
 add("actions", "action", "Perfect Shot", "icons/svg/target.svg", {"category": "Archer Escalation", "level": 1, "traits": ["focus", "self"], "frequency": "round", "distance": "self", "escalation": 3, versions: [noRoll(0, "Your next [Shot, Strike] is Favored and Empowered 2, and ignores Cover.")] }, "Archer");
-add("features", "feature", "Marked Quarry", "icons/svg/target.svg", { category: "Archer Feature", level: 1, description: "<p>At the start of each encounter, choose one enemy as your <b>Marked Quarry</b>. You gain 1 Boon on [Shot, Strike] Actions against them, and those Actions deal [B] [Mod] on a Tier 1. When they die or go Down, you can choose a new Marked Quarry (0R [Focus]). Once per turn, you can change your Marked Quarry during an encounter by spending 1 AP [Focus].</p>", settings: [sBoon(1, P(["shot", "strike"]), { vsMarked: true }), sBonus("[Mod]", "B", "", P(["shot", "strike"]), { tiers: ["t1"], vsMarked: true })], actions: [uuidOf("actions", "Mark Quarry")] }, "Archer");
-add("features", "feature", "Bow Mastery", "icons/svg/target.svg", { category: "Archer Feature", level: 1, description: "<p>Choose one Projectile weapon, such as a bow or a crossbow. You start with **3 Mastery** with it, so its Weapon Technique is unlocked (see Mastery).</p>" }, "Archer");
+add("features", "feature", "Marked Quarry", "icons/svg/target.svg", { category: "Archer Feature", level: 1, description: "<p>At the start of each encounter, choose one enemy as your <b>Marked Quarry</b>. You gain 1 Boon on [Shot, Strike] Actions against them, and those Actions deal [B] [Mod] on a Tier 1. When they die or go Down, you can choose a new Marked Quarry (0R [Focus]). Once per turn, you can change your Marked Quarry during an encounter by spending 1 AP [Focus].</p>", settings: [sBoon(1, P(["shot", "strike"]), { vsMarked: true }), sBonus("[Mod]", "B", "", P(["shot", "strike"]), { tiers: ["t1"], vsMarked: true }),
+  sMessage("encounter", "choose a creature to mark. Target it and use your marking Action:", "Mark Quarry"),
+  sMessage("markDown", "your mark, {mark}, went Down. Choose a new one: target a creature and use your marking Action:", "Mark Quarry")], actions: [uuidOf("actions", "Mark Quarry")] }, "Archer");
+add("features", "feature", "Bow Mastery", "icons/svg/target.svg", { category: "Archer Feature", level: 1, description: "<p>Choose one Projectile weapon, such as a bow or a crossbow. You start with **3 Mastery** with it, so its Weapon Technique is unlocked (see Mastery).</p>", settings: [sMastery("projectile", 3)] }, "Archer");
 add("features", "feature", "Patient Hunter", "icons/svg/target.svg", { category: "Archer Escalation", level: 1, description: "<p>While your Escalation is 2 or more, if you have not left your square since the start of your last turn, gain 1 Boon on [Shot, Strike] Actions until you leave your square.</p>" }, "Archer");
 add("features", "feature", "Elusive", "icons/svg/target.svg", { category: "Archer Escalation", level: 1, description: "<p>While your Escalation is 1 or more, the first [Strike] Action against you each round takes 1 Bane.</p>", settings: [{ type: "boonbane", against: true, boons: 0, banes: 1, ...P(["strike"]), oncePerRound: true, minEscalation: 1 }] }, "Archer");
 add("features", "feature", "Harrying Shots", "icons/svg/target.svg", { category: "Archer Escalation", level: 1, description: "<p>While your Escalation is 1 or more, the first time each round you deal damage to your Marked Quarry with a [Shot] Action, they take 1 Bane on [Strike] Actions until the end of their next turn. (Apply the Harried effect from the compendium.)</p>" }, "Archer");

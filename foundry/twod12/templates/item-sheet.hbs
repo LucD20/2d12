@@ -218,8 +218,9 @@
       <label>Distance <input type="text" name="system.distance" value="{{system.distance}}" placeholder="reach, self, weapon, 10/20/40"></label>
       <label>Vs. <select name="system.vs">{{selectOptions vsChoices selected=system.vs}}</select></label>
     </div>
-    <label class="inline" data-tooltip="Using it marks the targeted creature (Mark Quarry). Settings with &quot;Only against the creature it marked&quot; read the mark; it ends when that creature goes Down.">
+    <label class="inline" data-tooltip="Using it marks the targeted creature (Mark Quarry). Settings with &quot;Only against the creature it marked&quot; read the mark; it ends when that creature goes Down and when an encounter starts. What the creature is told then: a Chat message setting on its Feature (Marked Quarry).">
       <input type="checkbox" name="system.marksTarget" {{#if system.marksTarget}}checked{{/if}}> Marks the target</label>
+    <label data-tooltip="Which weapon a [Weapon] Action uses: Pummel uses only the Fists (a free hand); Leg Sweep is a kick (the Fists, even with both hands full)">Weapon used <select name="system.weaponUse">{{selectOptions weaponUses selected=system.weaponUse}}</select></label>
     <p class="hint">Actions with the Weapon trait always roll the Weapon Modifier; for the others, pick the attribute rolled. With no Defense the DC is 13. With Defense Body, the DC is 13 + the target's Body (negatives included) + any defense bonuses it has against this action.</p>
     <p class="hint">Actions with the Weapon trait use the class Weapon Modifier instead of the Check.</p>
     <div class="areaedit"><b>Area</b>

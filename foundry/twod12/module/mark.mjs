@@ -1,9 +1,9 @@
-// The mark (v0.0.161 as the Archer's Marked Quarry; v0.0.186 general): an Action with "Marks the target" (Mark Quarry) marks a creature
-// (actor flag twod12.quarry = { uuid, name } of its token). Settings "only against my marked target" read it (automation.mjs): Marked Quarry's
-// Boon and Tier 1 [Mod], Hunter's Focus. When the marked creature dies or goes Down the mark ends and the marker is told; at the start of an
-// encounter every creature that uses a mark is reminded to choose one. The Archer's other cards are settings on their items (no code here).
-import { usesMark } from "./automation.mjs";
-import { sysLine, apText } from "./sysmsg.mjs";
+// The mark (v0.0.161 as the Archer's Marked Quarry; v0.0.186 general; v0.0.207 the messages are settings): an Action with "Marks the target"
+// (Mark Quarry) marks a creature (actor flag twod12.quarry = { uuid, name } of its token). Settings "only against the creature it marked" read it
+// (automation.mjs). The mark ends when an encounter starts and when the marked creature dies or goes Down. What the marker is told then is
+// not code: the "Chat message" settings of its items (Marked Quarry: "At the start of an encounter", "When the creature it marked goes Down").
+import { postMessages } from "./automation.mjs";
+import { sysLine } from "./sysmsg.mjs";
 import { esc } from "./util.mjs";
 const F = "twod12";
 export const quarryOf = actor => actor?.getFlag?.(F, "quarry") ?? null;
@@ -16,10 +16,11 @@ export async function setQuarry(actor, token) {
   await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-crosshairs", `<b>${esc(actor.name)}</b> marks <b>${esc(token.name)}</b>.`, "mark") });   // v0.0.204: the system line (sysmsg.mjs)
 }
 
-/** The token uuids that are a Marked Quarry this user should see: of an Archer they own (the GM sees every mark). */
+/** The creatures that could hold a mark: the world's actors and the unlinked tokens of the scene. */
+const markers = () => game.actors.contents.concat((canvas?.scene?.tokens ?? []).filter(t => !t.actorLink).map(t => t.actor).filter(Boolean));
+/** The token uuids that are marked by a creature this user owns (the GM sees every mark). */
 function quarryMarks() {
-  const archers = game.actors.contents.concat((canvas?.scene?.tokens ?? []).filter(t => !t.actorLink).map(t => t.actor).filter(Boolean));
-  return new Set(archers.filter(a => game.user.isGM || a.isOwner).map(a => quarryOf(a)?.uuid).filter(Boolean));
+  return new Set(markers().filter(a => game.user.isGM || a.isOwner).map(a => quarryOf(a)?.uuid).filter(Boolean));
 }
 /** Draws (or removes) the crosshair mark at the top right of a token. */
 function drawQuarryMark(token, marks = quarryMarks()) {
@@ -38,33 +39,33 @@ function drawQuarryMark(token, marks = quarryMarks()) {
 }
 const redrawQuarryMarks = () => { if (!canvas?.ready) return; const m = quarryMarks(); for (const t of canvas.tokens?.placeables ?? []) drawQuarryMark(t, m); };
 
-export function registerArcherHooks() {
-  // v0.0.162: the Marked Quarry shows a crosshair on its token (for the Archer's owners and the GM).
+export function registerMarkHooks() {
+  // v0.0.162: a marked creature shows a crosshair on its token (for the marker's owners and the GM).
   Hooks.on("refreshToken", token => drawQuarryMark(token));
   Hooks.on("canvasReady", redrawQuarryMarks);
   Hooks.on("updateActor", (actor, change) => { const f = change?.flags?.twod12; if (f && ("quarry" in f || "-=quarry" in f)) redrawQuarryMarks(); });
-  // The Marked Quarry dies or goes Down: the mark ends, and its Archer is told (the active GM does it).
+  // The marked creature dies or goes Down: the mark ends, and the marker's "When the creature it marked goes Down" messages are posted (the active GM).
   Hooks.on("createActiveEffect", async effect => {
     if (!game.user.isActiveGM) return;
     if (!["dead", "unconscious", "desperate", "dying", "shattered"].some(s => effect.statuses?.has?.(s))) return;
     const a = effect.parent;
     if (a?.documentName !== "Actor") return;
     const uuids = new Set((a.isToken ? [a.token] : (a.getActiveTokens?.() ?? []).map(t => t.document)).filter(Boolean).map(d => d.uuid));
-    for (const archer of game.actors.contents.concat((canvas.scene?.tokens ?? []).filter(t => !t.actorLink).map(t => t.actor).filter(Boolean))) {
-      const q = quarryOf(archer);
+    for (const marker of markers()) {
+      const q = quarryOf(marker);
       if (!q || !uuids.has(q.uuid)) continue;
-      await archer.unsetFlag(F, "quarry");
-      await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: archer }), whisper: game.users.filter(u => archer.testUserPermission?.(u, "OWNER")).map(u => u.id), content: sysLine("fa-crosshairs", `<b>${esc(archer.name)}</b>: your mark, <b>${esc(q.name)}</b>, went Down. Choose a new one: target a creature and use your marking Action (Mark Quarry, ${apText(0)}).`, "mark") });
+      await marker.unsetFlag(F, "quarry");
+      await postMessages(marker, "markDown", { mark: q.name });
     }
   });
-  // An encounter starts: every creature that uses a mark is reminded to choose one.
+  // An encounter starts: every mark ends, then each creature's "At the start of an encounter" messages are posted.
   Hooks.on("combatStart", async combat => {
     if (!game.user.isActiveGM) return;
     for (const c of combat.combatants) {
       const a = c.actor;
-      if (!a || !usesMark(a)) continue;
+      if (!a) continue;
       if (quarryOf(a)) await a.unsetFlag(F, "quarry");
-      await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: a }), whisper: game.users.filter(u => a.testUserPermission?.(u, "OWNER")).map(u => u.id), content: sysLine("fa-crosshairs", `<b>${esc(a.name)}</b>: choose a creature to mark. Target it and use your marking Action (Mark Quarry, ${apText(0)}).`, "mark") });
+      await postMessages(a, "encounter");
     }
   });
 }

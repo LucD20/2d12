@@ -24,7 +24,7 @@ for (const h of heads) {
 }
 console.log("no Talent Action offered twice (an Action's category is not \"Talent...\"):", !C.docs.some(d => d.type === "action" && /^talent/i.test(d.system.category ?? "")));
 const leg = C.docs.find(d => d.type === "action" && d.name === "Leg Sweep");
-console.log("Leg Sweep: a kick", leg.flags?.twod12?.kick === true, "| no free hand needed", !leg.system.requirements, "| Kickboxer grants it", names(C.docs.find(d => d.type === "talent" && d.name === "Kickboxer").system.actions));
+console.log("Leg Sweep: a kick", leg.system.weaponUse === "kick", "| no free hand needed", !leg.system.requirements, "| Kickboxer grants it", names(C.docs.find(d => d.type === "talent" && d.name === "Kickboxer").system.actions));
 console.log("old cards: Paladin", C.docs.filter(d => d.folder === "Paladin (old cards)").map(d => d.name).join(", "));
 console.log("old cards: Archer", C.docs.filter(d => d.folder === "Archer (old cards)").map(d => d.name).join(", "));
 // the text sync: every compendium and Basic Action text

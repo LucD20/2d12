@@ -9,7 +9,7 @@ Speed 3 uses the current Speed: needs a Speed of at least 3 | ""
 no Brawler: Sword,Fists | with Brawler: Sword,Fists | Fists are Melee: true | a sword is Ranged: false
 v0.0.169 Fists as a weapon: with a two-handed weapon (no free hand): Greatsword | an older Fists item still has the properties: true
 the Fists card uses only the Fists: Fists | a Weapon Attack can use: Sword,Fists | Fists card, no free hand: 0
-Fists threaten (flanking): without Brawler false | with Brawler true | the old Brawler flag true | a sword true
+Fists threaten (flanking): without Brawler false | with Brawler true | the old hidden flag alone (v0.0.207: made a setting once per world) false | a sword true
 --- Reposition
 Reposition 1 from the north: 0,-1 0,1 1,-1 1,1 (your own square is not offered)
 Reposition 3: 7 squares | the line to (3,0): 0,0 1,0 2,0 3,0 | a long diagonal: 0,0 1,-1 2,-2

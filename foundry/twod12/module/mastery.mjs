@@ -4,6 +4,7 @@
 //   Mastery belongs to the character, by kind of weapon (the weapon's "Mastery group", or its name): a +1 Greatsword shares the Greatsword's,
 //   and the entry stays when the weapon goes. Characters only (NPCs' items are flavor and loot).
 // Stored as the actor flag twod12.mastery = { key: { name, value } }.
+import { TWOD12 } from "./config.mjs";
 const F = "twod12";
 export const MASTERY_STEPS = [3, 8, 15];
 export const TECHNIQUE_AT = 3;
@@ -103,26 +104,38 @@ export function registerMasteryHooks() {
   });
 }
 
-/** Bow Mastery (Archer): the Projectile weapon chosen, or "" (the actor flag twod12.bowMastery). Null when the character doesn't have it.
- *  v0.0.181 (A1): Sharpshooter gives it now (the Bow Mastery Feature is an old card); from: the Feature's name. */
-export function bowMasteryOf(actor) {
-  const f = actor?.type === "character" ? (actor.itemTypes?.feature ?? []).find(x => ["Sharpshooter", "Bow Mastery"].includes(x.name)) : null;
-  if (!f) return null;
-  return { chosen: actor.getFlag?.(F, "bowMastery") ?? "", from: f.name };
+/**
+ * v0.0.207: the "Starting Mastery" settings of a character's Features and Talents (Sharpshooter, Bow Mastery: "Choose one Projectile weapon:
+ * you start with 3 Mastery with it"), each with the weapon chosen ("" until chosen; the actor flag twod12.startMastery, by item id).
+ * [{ itemId, from, trait, traitName, value, chosen }]; [] for an NPC or a character without one.
+ */
+export function startMasteryOf(actor) {
+  if (actor?.type !== "character") return [];
+  const picks = actor.getFlag?.(F, "startMastery") ?? {};
+  const out = [];
+  for (const it of [...(actor.itemTypes?.feature ?? []), ...(actor.itemTypes?.talent ?? [])])
+    for (const st of it.system?.settings ?? []) {
+      if (st.type !== "mastery") continue;
+      const trait = st.mstTrait || "projectile", value = Math.max(0, Math.trunc(Number(st.mstValue)) || 0);
+      out.push({ itemId: it.id, from: it.name, trait, traitName: TWOD12.weaponTraits?.[trait] ?? trait, value, chosen: picks[it.id] ?? "" });
+    }
+  return out;
 }
-/** Choose the Bow Mastery weapon: a Projectile weapon the character carries or one from the system's weapons; it starts at 3 Mastery. */
-export async function chooseBowMastery(actor) {
+/** Choose the weapon of a Starting Mastery: a weapon with its trait the character carries or one from the system's weapons; it starts at that Mastery. */
+export async function chooseStartMastery(actor, itemId) {
+  const sm = startMasteryOf(actor).find(x => x.itemId === itemId);
+  if (!sm) return;
   const kinds = new Map();
-  for (const w of actor.itemTypes?.weapon ?? []) if (w.system?.traits?.has?.("projectile")) kinds.set(masteryKey(groupOf(w)), groupOf(w));
+  for (const w of actor.itemTypes?.weapon ?? []) if (w.system?.traits?.has?.(sm.trait)) kinds.set(masteryKey(groupOf(w)), groupOf(w));
   try {
     const pack = game.packs.get("twod12.weapons");
-    for (const e of (await pack?.getDocuments?.()) ?? []) if (e.type === "weapon" && e.system?.traits?.has?.("projectile")) kinds.set(masteryKey(groupOf(e)), groupOf(e));
-  } catch (e) { console.warn("twod12 | Bow Mastery: weapons", e); }
-  if (!kinds.size) return ui.notifications.warn("No Projectile weapon found (a bow or a crossbow).");
+    for (const e of (await pack?.getDocuments?.()) ?? []) if (e.type === "weapon" && e.system?.traits?.has?.(sm.trait)) kinds.set(masteryKey(groupOf(e)), groupOf(e));
+  } catch (e) { console.warn("twod12 | Starting Mastery: weapons", e); }
+  if (!kinds.size) return ui.notifications.warn(`No ${sm.traitName} weapon found.`);
   const opts = [...kinds].map(([k, n]) => `<option value="${k}">${n}</option>`).join("");
-  const key = await foundry.applications.api.DialogV2.prompt({ window: { title: "Bow Mastery" }, content: `<p>Choose your Projectile weapon: you start with 3 Mastery with it.</p><select name="k" style="width:100%">${opts}</select>`, ok: { label: "Choose", callback: (ev, btn) => btn.form.elements.k.value }, rejectClose: false });
+  const key = await foundry.applications.api.DialogV2.prompt({ window: { title: sm.from }, content: `<p>Choose your ${sm.traitName} weapon: you start with ${sm.value} Mastery with it.</p><select name="k" style="width:100%">${opts}</select>`, ok: { label: "Choose", callback: (ev, btn) => btn.form.elements.k.value }, rejectClose: false });
   if (!key) return;
   const name = kinds.get(key), cur = Number(masteryOf(actor)[key]?.value) || 0;
-  await setMastery(actor, key, Math.max(TECHNIQUE_AT, cur), name);
-  await actor.setFlag(F, "bowMastery", name);
+  await setMastery(actor, key, Math.max(sm.value, cur), name);
+  await actor.update({ [`flags.${F}.startMastery.${itemId}`]: name });
 }

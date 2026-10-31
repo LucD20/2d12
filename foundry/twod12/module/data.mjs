@@ -357,6 +357,7 @@ export class ActionData extends foundry.abstract.TypeDataModel {
       frequency: choice(TWOD12.frequencies),
       escalation: int(0, 0),   // the Escalation it costs on top of its AP (an Escalation Action); 0: none
       marksTarget: bool(),
+      weaponUse: choice(TWOD12.weaponUses, ""),   // v0.0.207: which weapon a Weapon Action uses (Pummel: only the Fists; Leg Sweep: a kick)
       automation: choice(TWOD12.automationRanks, ""),   // v0.0.189   // v0.0.186: using it marks the targeted creature (Mark Quarry); settings "only against my marked target" read the mark
       versions: new ArrayField(
         new SchemaField({
@@ -482,7 +483,15 @@ const settingsField = () => new ArrayField(new SchemaField({
         //   rally: each Rally Point used by this creature (and its allies within rallyRange squares) heals rallyBonus more (Font of Mercy).
         oncePerRound: bool(), vsMarked: bool(),
         ignoreRule: choice(TWOD12.ignoreRules, "rangeBane"),
-        rallyBonus: str(), rallyRange: int(0, 0)
+        rallyBonus: str(), rallyRange: int(0, 0),
+        // v0.0.207 (editability sweep), more general automation:
+        //   message: a chat message (text; {name} the creature, {mark} its marked creature) at a moment (msgWhen), to msgTo, with a button that
+        //     uses the Action msgAction for msgAp AP (a free use: no Frequency); Marked Quarry's reminders;
+        //   weaponprop: this creature's Fists (or weapons) don't have the property wpProp (Brawler: Non-threatening);
+        //   mastery: choose one weapon with the trait mstTrait, it starts at mstValue Mastery (Sharpshooter, Bow Mastery).
+        msgWhen: choice(TWOD12.messageWhen, "encounter"), msgTo: choice(TWOD12.messageTo, "owners"), msgAction: str(), msgAp: int(0, 0),
+        wpWhich: choice(TWOD12.propWeapons, "fists"), wpProp: choice(TWOD12.removableProps, "nonthreatening"),
+        mstTrait: choice(TWOD12.weaponTraits, "projectile"), mstValue: int(3, 0)
       }));
 
 export class EffectData extends foundry.abstract.TypeDataModel {

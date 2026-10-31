@@ -43,11 +43,6 @@ export function isMarked(actor, target) {
   if (target.document?.uuid || target.documentName === "Token") return m.uuid === (target.document?.uuid ?? target.uuid);
   return tokenUuids(target).has(m.uuid);
 }
-/** Does this creature have something that reads its mark (a setting "only against my marked target", or an Action that marks)? */
-export function usesMark(actor) {
-  if ((actor?.itemTypes?.action ?? []).some(i => i.system?.marksTarget)) return true;
-  return allEffects(actor).some(e => [...(e.getFlag(F, "modifiers") ?? []), ...(e.getFlag(F, "bonuses") ?? [])].some(m => m.vsMarked));
-}
 
 /* ------------------------------------------------------------------ Ignore a Bane */
 /** The names of what lets this creature ignore a Bane rule for an Action with these traits ([] when nothing does). */
@@ -130,6 +125,42 @@ export async function applyTurnStartEffects(actor) {
 }
 export const tsKey = uuid => String(uuid).replace(/\./g, "_");
 
+/* ------------------------------------------------------------------ v0.0.207: Chat message */
+/**
+ * The "Chat message" settings of a creature's Features, Talents and effects that work now, for one moment (TWOD12.messageWhen):
+ * [{ source, text, action, ap, to }]. Marked Quarry: "At the start of an encounter" and "When the creature it marked goes Down".
+ */
+export function messagesFor(actor, when) {
+  const out = [];
+  for (const e of allEffects(actor)) {
+    if (effectOff(actor, e)) continue;
+    for (const m of e.getFlag(F, "messages") ?? []) if (m.when === when) out.push({ ...m, source: String(e.name ?? "").replace(/^\s*Effect:\s*/i, "") });
+  }
+  return out;
+}
+const escHtml = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+/** One message as HTML before the buttons are made: "<b>Name</b>: text" ({name}, {mark} filled in) and a @Use button for the Action it offers. */
+export function messageHtml(actor, m, { mark = "" } = {}) {
+  const text = escHtml(m.text).replace(/\{name\}/g, `<b>${escHtml(actor?.name)}</b>`).replace(/\{mark\}/g, `<b>${escHtml(mark || "?")}</b>`);
+  const clean = s => String(s).replace(/[[\]|]/g, " ").trim();
+  const btn = m.action ? ` @Use[${clean(m.action)}|ap:${m.ap}|source:${clean(m.source)}|label:${clean(m.action)} (${m.ap} AP)]` : "";
+  return `<b>${escHtml(actor?.name)}</b>: ${text}${btn}`;
+}
+/** Post a creature's messages for this moment (the active GM calls it): the system line (sysmsg.mjs), whispered to its owners unless "everyone". */
+export async function postMessages(actor, when, opts = {}) {
+  const list = actor ? messagesFor(actor, when) : [];
+  if (!list.length) return 0;
+  const { sysLine } = await import("./sysmsg.mjs");
+  const TE = foundry.applications?.ux?.TextEditor?.implementation;
+  for (const m of list) {
+    const raw = messageHtml(actor, m, opts);
+    const html = TE?.enrichHTML ? await TE.enrichHTML(raw) : raw;
+    const whisper = m.to === "all" ? [] : game.users.filter(u => actor.testUserPermission?.(u, "OWNER")).map(u => u.id);
+    await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), whisper, content: sysLine("fa-comment-dots", html, "cardmsg"), flags: { [F]: { action: { actorUuid: actor.uuid } } } });
+  }
+  return list.length;
+}
+
 /* ------------------------------------------------------------------ v0.0.186, once per world */
 /**
  * The cards whose automation was code that tested their name (Font of Mercy, Radiant Zeal, Elusive, Killer's Focus, Long Draw, Steady Nerves,
@@ -175,5 +206,57 @@ export async function giveSettingsV187(items, actors) {
   };
   for (const it of items ?? []) await fix(it);
   for (const a of actors ?? []) if (a.isOwner) for (const it of a.items) await fix(it);
+  return n;
+}
+
+/**
+ * v0.0.207 (editability sweep), once per world: the last hidden card rules are settings and fields now. On world items and the items of creatures:
+ *   a copy of Marked Quarry, Sharpshooter, Bow Mastery or Brawler gets the compendium's new settings it lacks (Chat message, Starting Mastery,
+ *   Weapon property; matched by name, the settings it already has are kept);
+ *   the old hidden flags become what the Details show: fistsOnly / kick on an Action -> its "Weapon used" (Pummel, Leg Sweep; the Fists Basic
+ *   Action too), fistsThreaten / fistsWeapon on a Talent or Feature -> a "Weapon property" setting (Brawler); the flags are removed;
+ *   a character's Bow Mastery choice (flag bowMastery) becomes the choice of its first Starting Mastery setting.
+ * source: optional Map name -> settings (else read from the system compendium). Returns how many documents were updated.
+ */
+export async function giveSettingsV207(items, actors, source = null) {
+  const NAMES = ["Marked Quarry", "Sharpshooter", "Bow Mastery", "Brawler"], NEW = ["message", "mastery", "weaponprop"];
+  let src = source;
+  if (!src) {
+    src = new Map();
+    const pack = globalThis.game?.packs?.get("twod12.features");
+    if (pack) for (const d of await pack.getDocuments()) if (NAMES.includes(d.name) && ["feature", "talent"].includes(d.type)) src.set(d.name, (d.system.toObject?.().settings ?? foundry.utils.deepClone(d.system.settings)).filter(x => NEW.includes(x.type)));
+  }
+  const PROP = { type: "weaponprop", wpWhich: "fists", wpProp: "nonthreatening" };
+  let n = 0;
+  const fix = async it => {
+    const upd = {}, fl = it.flags?.twod12 ?? {};
+    if (it.type === "action") {
+      const use = fl.fistsOnly || fl.basic === "fists" || it.name === "Pummel" ? "fists" : (fl.kick || it.name === "Leg Sweep" ? "kick" : "");
+      if (use && !it.system?.weaponUse) upd["system.weaponUse"] = use;
+      if ("fistsOnly" in fl) upd["flags.twod12.-=fistsOnly"] = null;
+      if ("kick" in fl) upd["flags.twod12.-=kick"] = null;
+    } else if (["feature", "talent"].includes(it.type)) {
+      const have = (it.system?.toObject?.().settings ?? foundry.utils.deepClone(it.system?.settings ?? []));
+      const add = (src.get(it.name) ?? []).filter(x => !have.some(h => h.type === x.type && (x.type !== "message" || h.msgWhen === x.msgWhen)));
+      if ((fl.fistsThreaten || fl.fistsWeapon) && !have.some(h => h.type === "weaponprop") && !add.some(x => x.type === "weaponprop")) add.push(PROP);
+      if (add.length) upd["system.settings"] = [...have, ...foundry.utils.deepClone(add)];
+      if ("fistsThreaten" in fl) upd["flags.twod12.-=fistsThreaten"] = null;
+      if ("fistsWeapon" in fl) upd["flags.twod12.-=fistsWeapon"] = null;
+    }
+    if (!Object.keys(upd).length) return;
+    try { await it.update(upd); n++; } catch (e) { console.warn("twod12 | v0.0.207 settings for", it.name, e); }
+  };
+  for (const it of items ?? []) await fix(it);
+  for (const a of actors ?? []) {
+    if (!a.isOwner) continue;
+    for (const it of a.items) await fix(it);
+    const bow = a.flags?.twod12?.bowMastery;
+    if (bow === undefined) continue;
+    const { startMasteryOf } = await import("./mastery.mjs");
+    const first = startMasteryOf(a)[0];
+    const upd = { "flags.twod12.-=bowMastery": null };
+    if (first && bow && !first.chosen) upd[`flags.twod12.startMastery.${first.itemId}`] = bow;
+    try { await a.update(upd); n++; } catch (e) { console.warn("twod12 | v0.0.207 Bow Mastery of", a.name, e); }
+  }
   return n;
 }

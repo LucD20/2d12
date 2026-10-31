@@ -7,5 +7,5 @@ Nari at its new slot: frozen false | AP 4 | acted false
 thaw: Nari thaws and carries on with 4 AP. No new AP. | a line, no header: true | lock icon: true
 Steven's turn posts no thaw: true
 names are escaped: true
-v0.0.204: the three mark messages use the system line: true | no plain twod12 chat left in archer.mjs: true
+v0.0.204: the mark messages use the system line (v0.0.207: the reminders are Chat message settings, posted by automation.mjs): true | no plain twod12 chat left in mark.mjs: true
 Nari thawed this turn: true | Nari tries to swap again: → WARN: Nari already swapped this round and can't swap again. | no card: true

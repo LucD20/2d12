@@ -171,6 +171,7 @@ export const BASIC_ACTIONS = {
     name: "Fists",
     requirements: "You have a free hand.",
     img: "icons/svg/combat.svg",
+    weaponUse: "fists",   // v0.0.207: shown as its "Weapon used"
     traits: ["strike", "weapon"],   // a Weapon Action that uses only the Fists (fists.mjs weaponsFor): 0 / 1[W] + [Mod] / 1[W] + [Mod], [W] being 0 / 1 / 1d4 Bl
     targets: "One creature",
     vs: "",
@@ -260,7 +261,7 @@ const BASIC_FLAVOR = {
 
 const toItem = (key, d) => ({
   name: d.name, type: "action", img: d.img,
-  system: { category: TWOD12.basicCategory, level: 0, flavor: BASIC_FLAVOR[d.name] ?? "", frequency: d.frequency ?? "", distance: d.distance ?? "", requirements: d.requirements ?? "", traits: d.traits, targets: d.targets, vs: d.vs, versions: foundry.utils.deepClone(d.versions) },
+  system: { category: TWOD12.basicCategory, level: 0, flavor: BASIC_FLAVOR[d.name] ?? "", frequency: d.frequency ?? "", distance: d.distance ?? "", requirements: d.requirements ?? "", traits: d.traits, targets: d.targets, vs: d.vs, ...(d.weaponUse ? { weaponUse: d.weaponUse } : {}), versions: foundry.utils.deepClone(d.versions) },
   flags: { [F]: { basic: key } }
 });
 
@@ -345,6 +346,15 @@ export function registerBasicHooks() {
         if (r) ui.notifications.info(`2d12: Killer's Focus and Radiant Zeal now give an Effect each turn (${r} item${r === 1 ? "" : "s"} updated).`);
       }
     } catch (e) { console.warn("twod12 | settings v0.0.187", e); }
+    // v0.0.207, once per world (editability sweep): Marked Quarry's messages, the Starting Mastery, Brawler's Weapon property, the Actions' Weapon used.
+    try {
+      if (!game.settings.get(F, "settingsV207")) {
+        const { giveSettingsV207 } = await import("./automation.mjs");
+        const r = await giveSettingsV207(game.items ?? [], game.actors ?? []);
+        await game.settings.set(F, "settingsV207", true);
+        if (r) ui.notifications.info(`2d12: ${r} item${r === 1 ? "" : "s"} or character${r === 1 ? "" : "s"} updated: the last hidden card rules are settings you can see and edit (Marked Quarry's messages, Sharpshooter's Starting Mastery, Brawler, Pummel, Leg Sweep).`);
+      }
+    } catch (e) { console.warn("twod12 | settings v0.0.207", e); }
     // v0.0.169 and v0.0.170, once per creature that needs it: the new Basic Actions (Relocate, the 3 AP Shove, Fists as a Weapon Action, Haul) and Fists as an ordinary weapon.
     let n = 0;
     for (const actor of game.actors ?? []) {

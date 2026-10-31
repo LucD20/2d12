@@ -6,7 +6,7 @@ the book's Talents: 16
   Heavy Blows        ok combat 1 | Great Weapon | settings bonusdamage
   Whirlwind          ok combat 1 | needs talent:Heavy Blows | Great Weapon | grants Whirlwind
   Bloodlust          ok combat 1 | grants Bloodlust
-  Brawler            ok combat 1 | Unarmed | grants Pummel
+  Brawler            ok combat 1 | Unarmed | grants Pummel | settings weaponprop
   Kickboxer          ok combat 1 | needs talent:Brawler | Unarmed | grants Leg Sweep
   Aim                ok combat 1 | Marksman | grants Aim
   Ricochet           ok combat 1 | needs talent:Aim | Marksman
