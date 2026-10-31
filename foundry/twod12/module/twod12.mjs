@@ -42,6 +42,7 @@ import { registerDamageReport, toggleDamageReport } from "./damagelog.mjs";
 import { updateUseButtons } from "./freeuse.mjs";
 import { registerVersionTabs } from "./preview.mjs";
 import { registerCarousel, renderCarousel } from "./carousel.mjs";
+import { bindInitCard } from "./initcard.mjs";
 import { registerRefresh, refreshFromCompendium, askRefresh } from "./refresh.mjs";
 import { GROUPS } from "./config.mjs";
 import { registerDragCopy } from "./drag.mjs";
@@ -211,6 +212,7 @@ function collapsibleCards(msg, html) {
   head?.addEventListener("click", () => root.classList.toggle("collapsed"));
 }
 Hooks.on("renderChatMessageHTML", collapsibleCards);
+Hooks.on("renderChatMessageHTML", bindInitCard);   // v0.0.206: the Initiative card's rows open on click
 Hooks.on("renderChatMessageHTML", chatChips);   // v0.0.180: no line between trait groups at the start or end of a wrapped row
 // v0.0.177: a light of size N reaches an N Emanation (the half square Foundry leaves out is added), and Regions snap to whole squares.
 Hooks.once("setup", () => { try { registerLightRadius(); } catch (e) { console.warn("twod12 | light radius", e); } });

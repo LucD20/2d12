@@ -1975,3 +1975,42 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 /* ------------------------------------------------------------------ v0.0.204: the mark lines (archer.mjs) in the system line's look; the swap card's names wrap as a pair */
 .twod12.chat.sysline.mark > i { color: #a32d2d; }
 .twod12.chat.sysmsg .sm-lead .sm-swap { flex: none; }
+
+/* ------------------------------------------------------------------ v0.0.206 (Lucas, B4): the Initiative card (module/initcard.mjs); bands in the strip's banner colors */
+.twod12.chat.initcard { --ic-foe: #a32d2d; --ic-ally: #3b6d11; --ic-neutral: #8a7d62; padding-bottom: 0; }
+.twod12.chat.initcard > .orn { margin: 5px 8px 4px; }
+.twod12.chat.initcard > .ic-band, .twod12.chat.initcard > .ic-row, .twod12.chat.initcard > .ic-exp { margin-left: 0; margin-right: 0; }
+.twod12.chat.initcard .ic-band { display: flex; justify-content: space-between; align-items: center; padding: 3px 8px; background: var(--ic-neutral); color: #fff; font: 700 11px/1.2 "Cinzel", Georgia, serif; letter-spacing: .08em; text-transform: uppercase; }
+.twod12.chat.initcard .ic-band.foe { background: var(--ic-foe); }
+.twod12.chat.initcard .ic-band.ally { background: var(--ic-ally); }
+.twod12.chat.initcard .ic-best { font: 500 11px/1 var(--font-primary, sans-serif); letter-spacing: 0; text-transform: none; opacity: .92; }
+.twod12.chat.initcard .ic-row { --ic: var(--ic-neutral); display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-bottom: 1px solid #dccfae; cursor: pointer; }
+.twod12.chat.initcard .ic-row.foe { --ic: var(--ic-foe); }
+.twod12.chat.initcard .ic-row.ally { --ic: var(--ic-ally); }
+.twod12.chat.initcard .ic-row:hover { background: rgba(186, 117, 23, .07); }
+.twod12.chat.initcard .ic-pos { flex: none; width: 19px; height: 19px; box-sizing: border-box; border: 2px solid var(--ic); border-radius: 50%; background: #fbf7ee; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 700; color: #2c2c2a; }
+.twod12.chat.initcard .ic-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 700 12px/1.3 "Cinzel", Georgia, serif; letter-spacing: .02em; color: #2c2c2a; }
+.twod12.chat.initcard .ic-num { font: 600 11px/1 var(--font-primary, sans-serif); color: #6b5a3a; }
+.twod12.chat.initcard .ic-note { font: italic 400 11px/1 Georgia, serif; letter-spacing: 0; color: #6b5a3a; }
+.twod12.chat.initcard .ic-attr { flex: none; width: 16px; height: 16px; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: var(--c-ia, #5c5a55); background: color-mix(in srgb, var(--c-ia, #5c5a55) 15%, transparent); }
+.twod12.chat.initcard .ic-attr.body { --c-ia: #7a1626; } .twod12.chat.initcard .ic-attr.mind { --c-ia: #17327a; }
+.twod12.chat.initcard .ic-attr.appeal { --c-ia: #6b4e00; } .twod12.chat.initcard .ic-attr.instinct { --c-ia: #14532d; }
+.twod12.chat.initcard .ic-tot { flex: none; min-width: 28px; box-sizing: border-box; padding: 2px 3px; border: 1.5px solid var(--ic); border-radius: 7px; background: #fbf7ee; text-align: center; font-size: 13.5px; font-weight: 700; line-height: 1.1; color: #2c2c2a; }
+.twod12.chat.initcard .ic-chev { flex: none; width: 10px; font-size: 9px; color: #8a7650; text-align: center; transition: transform .12s; }
+.twod12.chat.initcard .ic-row.open { border-bottom-color: transparent; }
+.twod12.chat.initcard .ic-row.open .ic-chev { transform: rotate(90deg); }
+.twod12.chat.initcard .ic-exp { display: none; padding: 4px 8px 6px 33px; background: #ebe0c8; border-bottom: 1px solid #dccfae; }
+.twod12.chat.initcard .ic-row.open + .ic-exp { display: block; }
+.twod12.chat.initcard .ic-k { font-size: 10.5px; color: #6b5a3a; margin-bottom: 2px; }
+.twod12.chat.initcard .ic-dice { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 1px; }
+.twod12.chat.initcard .ic-dice .plus { margin: 0 3px; font-size: 12px; color: #4a3f2a; }
+.twod12.chat.initcard .ic-dice .die.d12 { min-width: 22px; height: 22px; font-size: 10.5px; }
+.twod12.chat.initcard .ic-dice .die.d12::before { inset: 3px; }
+.twod12.chat.initcard .ic-dice .dlink { font-size: 9px; color: #BA7517; margin: 0 -1px; }
+.twod12.chat.initcard .ic-drop { opacity: .5; margin-left: 2px; }
+.twod12.chat.initcard .ic-drop .die.d12::before { border-style: dashed; background: transparent; }
+.twod12.chat.initcard .ic-pill { margin-left: 4px; padding: 2px 6px; border-radius: 8px; font-size: 10.5px; font-weight: 600; line-height: 1.1; white-space: nowrap; }
+.twod12.chat.initcard .ic-pill:first-child { margin: 0 4px 0 0; }
+.twod12.chat.initcard .ic-pill.boon { color: #0b5cad; background: rgba(11, 92, 173, .14); }
+.twod12.chat.initcard .ic-pill.bane { color: #b3261e; background: rgba(179, 38, 30, .14); }
+.twod12.chat.initcard .ic-exp .ic-dice { margin: 0; padding: 0; min-height: 0; line-height: 1; }

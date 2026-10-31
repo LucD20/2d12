@@ -1,8 +1,9 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.205**. Tests: `node tools/tests/run.mjs` (160 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.206**. Tests: `node tools/tests/run.mjs` (161 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
 
 ## Asked by Lucas, not built
+- [x] **(v0.0.206) The Initiative card, B4** (module/initcard.mjs): turn order, Foe/Ally bands, place numbers, Attribute letter chips, click to open the dice line; the dialog takes Boons, Banes, Favored/Doomed and a per-creature Attribute. Unverified in Foundry: the look in the real chat (fonts, icons), the row click after a re-render, Dice So Nice with the extra dice.
 - [x] **(v0.0.205) A thawed creature can't swap again; the strip re-fits on sidebar collapse; no jump to the left when the turn passes.**
 - [x] **(v0.0.204) Fix: the swapper stayed frozen at its new slot** (startTurn's once-per-round check); the mark messages in the system line. Lucas answered: a thawed creature can't swap again (v0.0.205).
 - [x] **(v0.0.203) The Swap Initiative card and the thaw line** (module/sysmsg.mjs = the default look for system messages: sysCard, sysLine). The strip starts after the scene navigation. Unverified in Foundry: the look in the real chat (light/dark, narrow), the scene navigation measure in V14.

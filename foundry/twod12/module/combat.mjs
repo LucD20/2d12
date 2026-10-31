@@ -1,9 +1,10 @@
 import { logEvent, makeLine } from "./ticker.mjs";
 import { swapCardHtml, thawLineHtml } from "./sysmsg.mjs";
+import { initCardData, initCardHtml } from "./initcard.mjs";
 import { groupColor } from "./config.mjs";
 // Combat: attribute-roll Initiative for everyone, "zipper" turn order between the two sides,
 // and an Action Points counter per combatant (shown and editable in the tracker, changes sent to the chat).
-import { performCheck, esc, sgn, combineRolls } from "./roll.mjs";
+import { performCheck, esc, combineRolls } from "./roll.mjs";
 import { TWOD12 } from "./config.mjs";
 import { forgetRestored } from "./effects.mjs";
 const { DialogV2 } = foundry.applications.api;
@@ -116,15 +117,27 @@ export function zipper(list) {
   return out;
 }
 
-async function askInitiativeAttr() {
+/**
+ * The initiative dialog: the Attribute (Instinct unless the GM calls another), v0.0.206: another Attribute for some creatures,
+ * and Boons, Banes, Favored or Doomed for this roll. Returns { attr, per: { id: attr }, boons, banes, favored, doomed } or null.
+ */
+async function askInitiativeAttr(list = []) {
+  const opts = sel => Object.entries(TWOD12.attributes).map(([k, l]) => `<option value="${k}"${k === sel ? " selected" : ""}>${l}</option>`).join("");
+  const per = list.length > 1 ? `<details class="init-per"><summary>Another Attribute for some creatures</summary>${list.map(c => `<div class="form-group"><label>${esc(c.name)}</label><select name="per-${c.id}"><option value="">Same as above</option>${opts("")}</select></div>`).join("")}</details>` : "";
   return DialogV2.prompt({
     window: { title: "Initiative" },
-    content: `<p>Initiative is an Attribute Check. Roll with:</p>${Object.entries(TWOD12.attributes).map(([k, l]) => `<label class="pick"><input type="radio" name="attr" value="${k}" ${k === "instinct" ? "checked" : ""}> ${l}</label>`).join("<br>")}`,
-    ok: { label: "Roll", callback: (ev, btn) => new FormData(btn.form).get("attr") }, rejectClose: false
+    content: `<p>Initiative is an Attribute Check. Roll with:</p>${Object.entries(TWOD12.attributes).map(([k, l]) => `<label class="pick"><input type="radio" name="attr" value="${k}" ${k === "instinct" ? "checked" : ""}> ${l}</label>`).join("<br>")}${per}
+      <div class="form-group"><label>Boons</label><input type="number" name="boons" value="0" min="0" step="1"></div>
+      <div class="form-group"><label>Banes</label><input type="number" name="banes" value="0" min="0" step="1"></div>
+      <div class="form-group"><label><input type="checkbox" name="favored"> Favored</label><label><input type="checkbox" name="doomed"> Doomed</label></div>`,
+    ok: { label: "Roll", callback: (ev, btn) => {
+      const f = new FormData(btn.form);
+      const p = {};
+      for (const c of list) { const v = f.get(`per-${c.id}`); if (v) p[c.id] = v; }
+      return { attr: f.get("attr"), per: p, boons: Math.max(0, Math.trunc(Number(f.get("boons"))) || 0), banes: Math.max(0, Math.trunc(Number(f.get("banes"))) || 0), favored: !!f.get("favored"), doomed: !!f.get("doomed") };
+    } }, rejectClose: false
   });
 }
-
-const chip = (f, dbl) => `<span class="die d12${f === 12 ? " boom" : ""}${dbl ? " dbl" : ""}">${f}</span>`;
 
 export class TwoD12Combat extends Combat {
   /** An encounter can't end while a creature is Dying or Shattered: every creature must be unharmed, stabilized or dead. */
@@ -153,24 +166,23 @@ export class TwoD12Combat extends Combat {
     ids = typeof ids === "string" ? [ids] : [...ids];
     const list = ids.map(id => this.combatants.get(id)).filter(c => c?.isOwner && c.actor);
     if (!list.length) return this;
-    const attr = await askInitiativeAttr();
-    if (!attr) return this;
+    const ask = await askInitiativeAttr(list);
+    if (!ask?.attr) return this;
     const curId = this.started ? this.combatant?.id : null;
     const rows = [], rolls = [], updates = [];
     for (const c of list) {
+      const attr = ask.per?.[c.id] || ask.attr;
       const mod = c.actor.system.attributes?.[attr] ?? 0;
-      const r = await performCheck({ mod });
+      const r = await performCheck({ mod, boons: ask.boons, banes: ask.banes, manualBoons: ask.boons, manualBanes: ask.banes, favored: ask.favored, doomed: ask.doomed, noDoubles: true });
       rolls.push(...r.rolls);
       updates.push({ _id: c.id, initiative: r.total, [`flags.${F}.initAttr`]: mod });
-      rows.push(
-        `<div class="irow"><span class="sname">${esc(c.name)}</span><span class="dice"><span class="dgroup">${r.d1.map((f, i) => chip(f, r.doubles && i === 0)).join("")}</span><span class="plus">+</span><span class="dgroup">${r.d2.map((f, i) => chip(f, r.doubles && i === 0)).join("")}</span><span class="plus">${sgn(mod)}</span></span><b class="rtotal">${r.total}</b></div>`
-      );
+      rows.push({ id: c.id, name: c.name, side: sideOf(c), attr, mod, r });
     }
     await this.updateEmbeddedDocuments("Combatant", updates);
     const all = combineRolls(rolls);
-    await ChatMessage.create({
-      rolls: all ? [all] : [], content: `<div class="twod12 chat"><div class="ahead"><b>Initiative</b><span>${esc(TWOD12.attributes[attr])}</span></div>${rows.join("")}</div>`
-    });
+    // v0.0.206 (Lucas, B4): the card lists them in the turn order the tracker now has (setupTurns: the zipper).
+    const data = initCardData(rows, (this.turns ?? []).map(c => c.id));
+    await ChatMessage.create({ rolls: all ? [all] : [], content: initCardHtml(data), flags: { [F]: { initiative: rows.map(x => ({ id: x.id, attr: x.attr, mod: x.mod, total: x.r.total })) } } });
     // Keep the creature whose turn it is as the current one when the order changes.
     if (curId) { const idx = this.turns.findIndex(c => c.id === curId); if (idx >= 0 && idx !== this.turn) await this.update({ turn: idx }); }
     return this;
