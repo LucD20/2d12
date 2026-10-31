@@ -197,3 +197,10 @@ weapon. 3. Yes, but the groups need fixing: **Daggers become their own light-the
 switching up the tree trades a basic weapon's unlocked features for raw damage. **Status: being evaluated (discussion only), then one
 group's tree at a time, with research per weapon.** Nothing of it is in rules-src yet; the D2 text in the book stays as it is until the trees
 are decided.
+
+**Pace (Lucas, 2026-10-31):** a level every 3 to 4 sessions of 3 hours, 1 to 2 combats a session: about **5 combats a level**, Stage 1
+(levels 1-4) about 20 combats, level 8 about 37. **Stage 1: Basic weapons, Stage 2: Advanced, Stage 3: Exotic** (Shortbow → Recurve Bow
+→ Flight Bow). **Group Mastery = Mastery / 3**, and a new weapon of the group starts at it (Lucas: the highest Mastery / 3; my proposal: the
+Mastery gained in the whole group / 3, so switching weapons never slows the group: with "highest", a player who switches to the Recurve at
+level 5 has Group Mastery 6 at level 8 against 11 for one who stayed). Draft gates: Advanced at Group Mastery 6 (about combat 20, level 5),
+Exotic at 11 (about combat 37, level 8); 2 Banes below the gate. Waiting for Lucas's choice between "highest" and "gained in the group".
