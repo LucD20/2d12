@@ -18,50 +18,49 @@ group per encounter), so **Group Mastery is about 6 at level 5 and 11 at level 8
 - **Master** (one more [W] from level 8) becomes "level 8 and Group Mastery 11": every bow of the group has it then.
 - **Unlocks are mostly utility** (Lucas, answer 2): different for each weapon, from what the real weapon was good at.
 
-## The Bow tree (proposal)
+## The Bow trees (proposal, round 2: two starting bows, two full trees)
 
-```
-                Shortbow (Basic)
-               /                \
-   Recurve Bow (Advanced)    Longbow (Advanced)
-          |                        |
-   Flight Bow (Exotic)       Warbow (Exotic)
-```
+### What the research says (summary; sources in the chat of 2026-10-31)
+- **Self bows** are one piece of wood. Wood needs long limbs to bend without breaking, so a short self bow is a light bow, and a powerful self
+  bow is a long one: the **longbow** is a tall self bow (English: yew, D-shaped section). A **flatbow** has flat, wide limbs (dense woods like
+  hickory or osage orange, favored by many Native American peoples); it can be long or very short.
+- **Composite bows** laminate horn (belly), wood (core) and sinew (back), usually in a **recurve** shape: short and still powerful, which is
+  why they were the horse archers' bow (steppe peoples; the Plains peoples made short sinew-backed bows for horseback after the horse came).
+  They take longer and more skill to make, and the glue makes them **sensitive to rain and damp**.
+- **War longbows** (the Mary Rose, 1545): estimates from about 100 to 185 lb of draw; Robert Hardy's team put most at 150-160 lb, the Mary
+  Rose Trust says most are lighter than the heavyweights. **Military arrows** were much heavier than hunting arrows (one estimate: about 50%).
+- **Ottoman flight bows**: composite recurves built only for distance, with special light flight arrows; the record is about **845 m**
+  (still unbeaten with similar equipment). Light hits: they were for sport and records, not for armor.
+- Also seen, for later trees or branches: the Japanese **yumi** (over 2 m, asymmetric, held below the center; the samurai's main weapon until
+  firearms, 1543).
 
-Two lines from one root: **the skirmisher's** (Recurve, Flight: moving, speed, reach) and **the line archer's** (Longbow, Warbow: range,
-weight of the arrow). The lines are flavor: a gate is only Group Mastery, so a Recurve user can pick up a Warbow at 11.
+### Two trees
 
-| Weapon | Stage | The real weapon (short research) | Its identity in the game |
-|---|---|---|---|
-| **Shortbow** | Basic | A short wooden self bow (one piece of wood), light draw; quick to nock and shoot, easy in brush, in tight places and on horseback. Effective out to about 50 to 100 m. | Handy and quick: utility in close and cramped fights |
-| **Recurve Bow** | Advanced | The tips curve away from the archer, so a short bow stores more energy; composite (wood, horn, sinew) bows of the steppe peoples (Scythians, Huns, Mongols, Turks): shot from horseback at speed. | Shooting on the move |
-| **Longbow** | Advanced | The English and Welsh yew longbow, as tall as the archer; heavy draws (the Mary Rose bows: about 100 to 180 lb); massed volleys at long range. | Range and steady volleys |
-| **Flight Bow** | Exotic | Turkish flight bows, made only for distance: very light arrows and an overdraw guide (siper); records over 800 m (Sultan Selim III, 1798). Light hits. | Extreme range, precision over power |
-| **Warbow** | Exotic | The heaviest war longbows; heavy bodkin and broadhead arrows; years of training to draw (archers' skeletons show it). | The heaviest arrow: big hits, slow |
+| | **The Yew line** (wood: range, weight, any weather) | **The Horn line** (composite: moving, speed, fragile) |
+|---|---|---|
+| **Basic** (Group Mastery 0) | **Hunting Bow:** a short wooden self bow or flatbow, light draw | **Horse Bow:** a short sinew-backed or composite bow, made to shoot from a moving horse |
+| **Advanced** (Group Mastery 6) | **Longbow:** the tall yew self bow, heavy draw, volleys | **Composite Bow:** the full horn-wood-sinew recurve war bow of the steppe |
+| **Exotic** (Group Mastery 11) | **Warbow:** the heaviest war longbow, heavy military arrows | **Flight Bow:** the Ottoman distance bow, light flight arrows |
 
-## 1. Shortbow (Basic): the baseline, for Lucas's review
+| Weapon | Range | Damage (T2 / T3) | Weapon Attack | Its thing (first draft of the identity) |
+|---|---|---|---:|---|
+| Hunting Bow | 8 / 16 / 32 | 1d6 / 1d10 | 4.51 | Handy and quiet: close quarters, hunting (Hide, when it exists), quick to nock |
+| Horse Bow | 6 / 12 / 24 | 1d4+1 / 1d8+1 | 4.51 | Shooting while moving: its unlocks are Evades and Advances around a Shot |
+| Longbow | 15 / 30 / 60 | 1d8 / 1d10 | 4.96 (+10%) | Range and volleys: far range easier, Area Shots (Volley, Rain of Arrows) better |
+| Composite Bow | 10 / 20 / 40 | 1d6 / 1d12 | 4.77 (+6%) and a utility | Power for its size: the Horse Bow's movement with real force; **damp: 1 Bane in rain or after it is soaked** (optional drawback) |
+| Warbow | 12 / 24 / 48 | 1d8 / 2d6 | 5.36 (+19%) | The heavy arrow: Tier 3 effects that move or stagger (Pushed, Prone), against armor; slow to draw (it can't Evade in the same Action) |
+| Flight Bow | 20 / 40 / 80 | 1d4 / 2d8 | 4.99 (+11%) | Extreme range and precision: no far range Bane, and its edge is the range itself, not the hit |
 
-| Group | Properties | Type | Range | Damage | Weapon Attack |
-|---|---|---|---|---|---:|
-| Bows | Projectile, Ranged, Two-handed | Pierce | 8 / 16 / 32 | [B] 0 / 1d6 / 1d10 | 4.51 DE |
+**Two notes on the numbers:**
+- The Flight Bow breaks "deeper = more damage": the real bow hit lightly. Its +20% is in its range (no Bane at far range is about +10% on
+  those Shots) instead of the dice. Keep it that way, or give it the dice and forget the history?
+- The Horn line trades a little damage for movement (the Composite Bow +6% and an unlock where the Longbow has +10%).
 
-**Its unlocks (Shortbow Mastery; about 0.9 a combat):**
+**The Shortbow of round 1** becomes the Hunting Bow (its ladder stays: Skirmish Shot at 3, Quick Nock 8, Close Quarters 14, Skirmisher 20, one more at 28).
+Skirmish Shot's Evade fits the Horse Bow better: the Hunting Bow may want its own Technique when we do its card.
 
-| Mastery | About | Unlock | Kind | Worth |
-|---:|---|---|---|---|
-| 3 | session 2-3 (level 1) | **Skirmish Shot** (its Weapon Technique: D2's card, Tier 3: Evade 1) | Technique | +1.1 DE once a round |
-| 8 | level 2 | **Quick Nock:** once each turn, you draw or stow it without the Interact Action (D2's Expert, as the Shortbow's own) | utility | 1 AP when you switch weapons |
-| 14 | level 3-4 | **Close Quarters:** while you are Engaged, [Ranged] Actions with it take 1 Bane for it instead of 2 | utility | +0.44 DE a Shot while Engaged (3.61 → 4.05); about +2% of a turn |
-| 20 | Stage 2 (level 5-6) | **Skirmisher:** Skirmish Shot's Evade 1 works on a Tier 2 too | Technique step | about +2% of a turn |
-| 28 | Stage 3 (level 8) | **Hunter's Bow:** to be decided with the rest of the tree (a utility that keeps the Shortbow worth holding next to the Exotic bows) | utility | |
-
-**Why these:** each is what a short bow did well (quick, close, handy) and none adds dice. Against an Advanced bow at level 5 (+10% on
-every Weapon Attack, but its own unlocks start at 6), the Shortbow at 18-20 has its Technique, Quick Nock, Close Quarters and Skirmisher:
-about even in damage, better when the fight is close.
-
-**Questions on the Shortbow (answer what you want; the rest stays):**
-1. The baseline damage 1d6 / 1d10 (as D2) and Range 8 / 16 / 32?
-2. The unlock steps 3, 8, 14, 20, 28 (one about every level or two)?
-3. Close Quarters as the Shortbow's thing (D2 gave the Engaged Bane to the Pistol's Point Blank: one of them should change)?
-
-Next, once the Shortbow is settled: the Recurve Bow.
+**Questions (round 2):**
+1. The two lines (Yew and Horn) and the six bows?
+2. The Flight Bow: range instead of damage, or damage?
+3. The Composite Bow's damp drawback: in, or out?
+4. Which bow first, in full (stats, Technique, the whole ladder)? I'd do the two Basic ones first (Hunting Bow, then Horse Bow).
