@@ -2029,3 +2029,5 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
   .twod12.sheet.ns .at-head, .twod12.sheet.ns .ar-line { grid-template-columns: 12px 12px minmax(0, 1fr) 54px 76px 52px; }
   .twod12.sheet.ns .ex-acts .ar-line { grid-template-columns: 12px 12px minmax(0, 1fr) 54px 52px; }
 }
+/* v0.0.209: the hand buttons in the Basic Actions rows sit where the use button does (last), not first. */
+.twod12.sheet.ns .bx-rows .ar-line > .ar-hands { order: 5; }

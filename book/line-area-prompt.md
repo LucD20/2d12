@@ -1,7 +1,7 @@
 # Pack prompt: the Line area (book + Foundry). Reviewed with Lucas 2026-10-31; nothing applied yet.
 
 Run as its own pack: "Read HANDOFF.md and MASTER-PLAN.md and run the Line pack (book/line-area-prompt.md)".
-**Start from the branch `claude/pack-d2-w`** (it has v0.0.208 and D2, not yet on main) unless it has been merged; the version is **v0.0.209**, the next new test **t170**. Don't edit book/weapon-trees.md (another session is designing there).
+**Start from the branch `claude/pack-d2-w`** (it has v0.0.208 and D2, not yet on main) unless it has been merged; the version is **v0.0.210**, the next new test **t170**. Don't edit book/weapon-trees.md (another session is designing there).
 The original prompt and diagrams came from the design chat (Line_Area_Diagrams.html); this file is that prompt with the review's decisions.
 
 ## The rule (decided)

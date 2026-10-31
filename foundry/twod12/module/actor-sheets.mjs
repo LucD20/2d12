@@ -28,7 +28,7 @@ import { resolveModifiers } from "./effects.mjs";
 import { buildRawCard, buildInfoCard, sendItemToChat } from "./preview.mjs";
 import { openWeaponGenerator } from "./gen.mjs";
 import { openActionGenerator } from "./genaction.mjs";
-import { rollActorInitiative, combatantOf, getAP, setAP } from "./combat.mjs";
+import { rollActorInitiative, combatantOf, getAP, setAP, spendAP } from "./combat.mjs";
 import { healthView, donutPoolAt } from "./healthview.mjs";
 import { applySpeedMods } from "./speedmods.mjs";
 import { unloadedWeapon, costText, frequencyText, costGroup, groupRows, GROUP_BY, SORT_BY, sortKeyOf } from "./actionrows.mjs";
@@ -40,10 +40,10 @@ import { addBasicActions, missingBasic } from "./basic.mjs";
 import { openEffectSheet } from "./fxopen.mjs";
 import { applyTab, durationText, dragData } from "./sheet-common.mjs";
 import { hoverOf } from "./util.mjs";
-import { WEAPON_WHERE, ARMOR_WHERE, weaponWhere, armorWhere, weaponMove, armorMove, handsFor, tierBoxes, handSlots, whereButtons, freeHandFor, useButtons, handOf, HAND_LABEL } from "./loadout.mjs";
+import { WEAPON_WHERE, ARMOR_WHERE, weaponWhere, armorWhere, weaponMove, armorMove, handsFor, tierBoxes, handSlots, whereButtons, freeHandFor, useButtons, handOf, HAND_LABEL, handButtonsFor, freeHandButtons } from "./loadout.mjs";
 import { ensureHandsFor } from "./hands.mjs";
 import { passiveSources } from "./passives.mjs";
-import { weaponsFor, weaponCandidates, heldFirst } from "./fists.mjs";
+import { weaponsFor, weaponCandidates, heldFirst, fistsOf, hasProp } from "./fists.mjs";
 import { effectOff } from "./escalation.mjs";
 import { npcBuilderContext, ratingUpdate, cvTip } from "./npcbuilder.mjs";
 // What keeps its scroll position when the sheet is drawn again (v0.0.165): the window, the side panel, the main pane and each tab.
@@ -552,8 +552,12 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     // v0.0.182: a granted use waiting (Double Shot's Weapon Attacks): the use button turns blue and uses it.
     const g = activeGrants(a, i)[0];
     // v0.0.208 (W): a [Weapon] Action that picks its weapon gets a button per hand (2H, or M and O); one weapon that fits: its name on the tooltip.
-    const picks = it.traits?.has?.("weapon") && !i.getFlag("twod12", "weaponId") && !it.weaponUse ? heldFirst(weaponCandidates(a, i)) : null;
-    const ordered = picks ? this._weaponsInOrder() : null, hands = picks ? useButtons(ordered, new Set(picks.map(w => w.id))) : null;
+    // v0.0.209: Reload offers only the Reload weapons; a Weapon Technique shows the hand that holds its weapon; the Fists (and Pummel) the free hands.
+    const isW = !!it.traits?.has?.("weapon"), linkedId = i.getFlag("twod12", "weaponId"), fistsUse = it.weaponUse === "fists" || i.getFlag("twod12", "basic") === "fists";
+    let picks = isW && !linkedId && !it.weaponUse && !fistsUse ? heldFirst(weaponCandidates(a, i)) : null;
+    if (picks && i.getFlag("twod12", "basic") === "reload") picks = picks.filter(w => hasProp(w, "reload"));
+    const ordered = isW ? this._weaponsInOrder() : null;
+    const hands = !isW ? null : linkedId ? handButtonsFor(ordered, linkedId) : fistsUse ? freeHandButtons(ordered, fistsOf(a)?.id) : picks ? useButtons(ordered, new Set(picks.map(w => w.id))) : null;
     const useTip = picks?.length === 1 ? `Use ${i.name} with ${picks[0].name}${(h => (h ? ` (${HAND_LABEL[h].toLowerCase()})` : ""))(handOf(ordered, picks[0].id))}` : `Use ${i.name}`;
     const grant = g ? { tip: `Granted by ${g.effect.name.replace(/\s*\(.*\)\s*$/, "")}: ${g.grant.left} use${g.grant.left === 1 ? "" : "s"} left, ${g.grant.ap ? `${g.grant.ap} AP` : "free"}. Click to use it; Shift-click for a normal use.` } : null;
     return {
@@ -1151,6 +1155,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static async swapHands() {
     const slots = handSlots(this._weaponsInOrder());
     if (slots.length !== 2 || slots.some(s => s.free)) return;
+    if (!(await spendAP(this.actor, 1, "Interact (swap hands)"))) return;   // v0.0.209 (Lucas): an Interact (1A) in combat; free out of combat
     await this.actor.updateEmbeddedDocuments("Item", slots.map(s => ({ _id: s.id, "system.hand": s.hand === "main" ? "off" : "main" })));
   }   // v0.0.182: Shift: a normal use, even with a granted use waiting
   static openItem(event, target) { this._item(target)?.sheet.render(true); }

@@ -101,6 +101,19 @@ export const HAND_LABEL = { main: "Main hand", off: "Off hand", both: "Both hand
  * this Action can use. A two-handed grip that fits: one wide "2H" button. Two one-handed weapons: "M" and "O", a hand whose weapon doesn't
  * fit greyed (off). Anything else (one weapon, nothing in hand): null, the usual single button. [{ hand, label, id, name, off, wide, tip }]
  */
+/** v0.0.209 (Lucas, test of v0.0.208): the button of an Action tied to one weapon (a Weapon Technique): the hand that holds it; not in hand: null. */
+export function handButtonsFor(weapons, id) {
+  const h = handOf(weapons, id), name = (weapons ?? []).find(w => w.id === id)?.name ?? "";
+  if (!h) return null;
+  return [{ hand: h, label: h === "both" ? "2H" : h === "main" ? "M" : "O", id, name, off: false, wide: h === "both", tip: `${HAND_LABEL[h]}: ${name}` }];
+}
+/** v0.0.209: the Fists' buttons: one for each free hand (none free: null, the usual button). */
+export function freeHandButtons(weapons, fistsId, name = "Fists") {
+  if (!fistsId) return null;
+  const free = handSlots(weapons).filter(s => s.free);
+  if (!free.length) return null;
+  return free.map(s => ({ hand: s.hand, label: s.hand === "main" ? "M" : "O", id: fistsId, name, off: false, wide: false, tip: `${HAND_LABEL[s.hand]} (free): ${name}` }));
+}
 export function useButtons(weapons, fits) {
   const slots = handSlots(weapons), name = id => (weapons ?? []).find(w => w.id === id)?.name ?? "";
   if (slots[0]?.both) return fits.has(slots[0].id) ? [{ hand: "both", label: "2H", id: slots[0].id, name: name(slots[0].id), off: false, wide: true, tip: `Both hands: ${name(slots[0].id)}` }] : null;

@@ -1,6 +1,6 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.208**. Tests: `node tools/tests/run.mjs` (167 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.209**. Tests: `node tools/tests/run.mjs` (167 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 ## Asked by Lucas, not built
@@ -8,7 +8,7 @@ Everything finished up to v0.0.207 (the done items, the per-version "to check" n
 - **Code cleanup (its own small pack, after the design sessions; noted 2026-10-31):** move the remaining plain chat lines (`twod12 chat apmsg` and similar, about 12 files) to the default look of sysmsg.mjs (sysCard / sysLine); remove the dead flag `keepWhenSpent` (freeuse.mjs reads it, nothing sets it) and the unused reposition branch of choosePush (since v0.0.174); regroup the CSS only with a visual check (it is in version-tagged blocks).
 
 ## Leftovers from finished packs (small, not scheduled)
-- **W (v0.0.208), to check in Foundry:** the hand buttons in the Actions tab rows (the Use column is 52px now: check the narrow sheet and the Escalation block); the Favorites and the name click still go through the window when two weapons fit (it names the hands); an existing character's weapons have no hand stored until drawn again or swapped (the order of the Items tab decides). Not built: hand buttons in the Favorites tab and the Granted tickets; an off-hand rule (the book has none, D2).
+- **W (v0.0.208, fixes in v0.0.209: Swap hands is an Interact, the Basic rows, Techniques and Fists show hands, Reload only Reload weapons), to check in Foundry:** the hand buttons in the Actions tab rows (the Use column is 52px now: check the narrow sheet and the Escalation block); the Favorites and the name click still go through the window when two weapons fit (it names the hands); an existing character's weapons have no hand stored until drawn again or swapped (the order of the Items tab decides). Not built: hand buttons in the Favorites tab and the Granted tickets; an off-hand rule (the book has none, D2).
 - **Squeezing** is only GM-applied: its automatic detection is not built (F2/F4, v0.0.170).
 - **Not built in M2 (v0.0.174):** a Reposition Action card (the book has none yet; Relocate is the Basic Action), Deadly Hazards (no region type exists).
 - **The Charge preview** could color the squares as the book's figures do (blue passed, green end, red not legal); the straight-line tie is done.

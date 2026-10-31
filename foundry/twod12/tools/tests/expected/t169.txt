@@ -9,3 +9,6 @@ moves: {"system.wielded":true,"system.hands":1,"system.dropped":false,"system.ha
 data: hand on weapons true | heldFirst and weaponCandidates true
 useAction: the button's weapon is the preview and the pick true | the window names the hands true
 sheet: useWith and swapHands true | row buttons true | a free slot gives its hand true | css true
+Technique of the main-hand longsword: M:Longsword | of a two-handed crossbow: 2H:Crossbow | not in hand: single button
+Fists with the off hand free: O:Fists | both free: M:Fists O:Fists | none free: single button
+Swap hands spends 1 AP (Interact) true | Reload offers only Reload weapons true | basic rows: hands last true
