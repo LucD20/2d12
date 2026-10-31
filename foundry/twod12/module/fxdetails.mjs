@@ -89,6 +89,15 @@ function settingSentenceOnly(x) {
       return `Its Actions${predicateText(x) || ""} don't take <b>${esc(TWOD12.ignoreRules[x.ignoreRule] ?? "?")}</b>.`;
     case "turnstart":
       return `At the start of each of its turns, the creature gains <b>${esc(fxNameOf(x.fxUuid)) || "(drop an Effect)"}</b>.`;
+    case "message": {
+      const when = TWOD12.messageWhen[x.msgWhen] ?? TWOD12.messageWhen.encounter;
+      const btn = String(x.msgAction ?? "").trim() ? `, with a button for <b>${esc(x.msgAction)}</b> (${Math.max(0, Number(x.msgAp) || 0)} AP)` : "";
+      return `${esc(when)}, posts ${x.msgTo === "all" ? "" : "to its owners "}"${esc(x.text || "(no text)")}"${btn}.`;
+    }
+    case "weaponprop":
+      return `Its <b>${esc(TWOD12.propWeapons[x.wpWhich] ?? "Fists")}</b> don't have the property <b>${esc(TWOD12.removableProps[x.wpProp] ?? "?")}</b>.`;
+    case "mastery":
+      return `Choose one <b>${esc(TWOD12.weaponTraits[x.mstTrait] ?? "?")}</b> weapon: it starts at <b>${Math.max(0, Number(x.mstValue) || 0)}</b> Mastery.`;
     case "rally":
       return `Each Rally Point heals <b>${esc(x.rallyBonus || "?")}</b> more, for this creature${Number(x.rallyRange) > 0 ? ` and its allies within <b>${Number(x.rallyRange)}</b> squares` : ""}.`;
     case "light":
@@ -125,6 +134,9 @@ export function settingShort(x) {
     case "turnstart": return `${fxNameOf(x.fxUuid) || "an Effect"} each turn`;
     case "ignore": return `ignores ${(TWOD12.ignoreRules[x.ignoreRule] ?? "a Bane").replace(/ \(.*\)$/, "")}`;
     case "rally": return `Rally Points +${x.rallyBonus || "?"}${Number(x.rallyRange) > 0 ? ` (allies within ${Number(x.rallyRange)})` : ""}`;
+    case "message": return `message ${(TWOD12.messageWhen[x.msgWhen] ?? "").replace(/^At the start of an? /, "at ").replace(/^At the start of each of its turns$/, "each turn").replace(/^When the creature it marked goes Down$/, "when its mark goes Down")}${String(x.msgAction ?? "").trim() ? ` (${x.msgAction})` : ""}`;
+    case "weaponprop": return `${TWOD12.propWeapons[x.wpWhich] ?? "Fists"} not ${TWOD12.removableProps[x.wpProp] ?? "?"}`;
+    case "mastery": return `${TWOD12.weaponTraits[x.mstTrait] ?? "?"} weapon at ${Math.max(0, Number(x.mstValue) || 0)} Mastery`;
     case "note": return `note "${x.title || "(no title)"}"`;
     default: return strip(settingSentence(x)).replace(/\.$/, "").replace(/^The next action/, "next action");
   }

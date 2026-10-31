@@ -52,6 +52,20 @@
         <div class="fx-drop" data-sfx="{{i}}">{{#if fxName}}At the start of each of its turns, the creature gains <b>{{fxName}}</b> (drop another Effect to replace it){{else}}Drop the Effect the creature gains at the start of each of its turns{{/if}}</div>
         <p class="fxd-help">Killer's Focus, Radiant Zeal: the Effect holds the Bonus Damage and ends after the Action that uses it ("Ends" on the Effect). A new copy replaces the old one each turn, only while this setting works (its "It works..."); it ends with the encounter. In play it is an ordinary applied effect: remove it, or untick its chip in the roll dialog.</p>
         {{/if}}
+        {{#if isMessage}}
+        <div class="fxd-s"><select class="fxd-f" data-sfield="{{i}}" data-field="msgWhen">{{selectOptions msgWhens selected=msgWhen}}</select>, post to <select class="fxd-f" data-sfield="{{i}}" data-field="msgTo">{{selectOptions msgTos selected=msgTo}}</select>:</div>
+        <input type="text" class="fxd-f wide" data-sfield="{{i}}" data-field="text" value="{{text}}" placeholder="choose a creature to mark. Target it and use your marking Action.">
+        <div class="fxd-s">and offer the Action <input type="text" class="fxd-f w" data-sfield="{{i}}" data-field="msgAction" value="{{msgAction}}" placeholder="Mark Quarry"> as a button, for <input type="number" min="0" class="fxd-f n" data-sfield="{{i}}" data-field="msgAp" value="{{msgAp}}"> AP.</div>
+        <p class="fxd-help">The message starts with the creature's name; in the text, <code>{mark}</code> is the creature it marked (for "goes Down"). The button uses the creature's Action of that name (or <code>category:...</code>, <code>trait:...</code>) as a free use: it doesn't count toward its Frequency. No Action: no button. "Its owners" whispers it to the players who own the creature and the GM. "When the creature it marked goes Down": the mark of an Action with "Marks the target" (it ends then, and when an encounter starts).</p>
+        {{/if}}
+        {{#if isWeaponProp}}
+        <div class="fxd-s">This creature's <select class="fxd-f" data-sfield="{{i}}" data-field="wpWhich">{{selectOptions wpWhiches selected=wpWhich}}</select> don't have the property <select class="fxd-f" data-sfield="{{i}}" data-field="wpProp">{{selectOptions wpProps selected=wpProp}}</select>.</div>
+        <p class="fxd-help">Brawler: "Your Fists don't have the Non-threatening property": they threaten, so you can flank with them. Only the properties listed are read this way for now.</p>
+        {{/if}}
+        {{#if isMastery}}
+        <div class="fxd-s">Choose one weapon with the property <select class="fxd-f" data-sfield="{{i}}" data-field="mstTrait">{{selectOptions mstTraits selected=mstTrait}}</select>: it starts at <input type="number" min="0" class="fxd-f n" data-sfield="{{i}}" data-field="mstValue" value="{{mstValue}}"> Mastery.</div>
+        <p class="fxd-help">On a Feature or Talent of a character: the Mastery tab asks the player to choose the weapon (Sharpshooter: a Projectile weapon, 3 Mastery, so its Weapon Technique is unlocked). The Mastery never goes below that number when chosen; it can still grow.</p>
+        {{/if}}
         {{#if isGrant}}
         <div class="fxd-s">Can use <input type="text" class="fxd-f wide" data-sfield="{{i}}" data-field="grantAction" value="{{grantAction}}" placeholder="Weapon Attack / category:Weapon Technique / trait:strike"> <input type="number" min="1" class="fxd-f n" data-sfield="{{i}}" data-field="grantCount" value="{{grantCount}}"> {{timesWord}} for <input type="number" min="0" class="fxd-f n" data-sfield="{{i}}" data-field="grantAp" value="{{grantAp}}"> AP, with <input type="number" min="0" class="fxd-f n" data-sfield="{{i}}" data-field="boons" value="{{boons}}"> {{boonWord}}.</div>
         <label class="fxd-inl"><input type="checkbox" data-sfield="{{i}}" data-field="grantDistinct" {{#if grantDistinct}}checked{{/if}}> Each use needs a different target</label>

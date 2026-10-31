@@ -43,8 +43,8 @@ console.log("Steven's turn posts no thaw:", !rawMsgs.slice(before).some(m => m.i
 const { swapCardHtml } = await import(ROOTURL + "module/sysmsg.mjs");
 console.log("names are escaped:", swapCardHtml("<b>Zack</b>", "Lana", 5, 4, 3).includes("&lt;b&gt;Zack"));
 const fsx = await import("node:fs");
-const arch = fsx.readFileSync(ROOT + "module/archer.mjs", "utf8");
-console.log("v0.0.204: the three mark messages use the system line:", (arch.match(/content: sysLine\("fa-crosshairs"/g) ?? []).length === 3, "| no plain twod12 chat left in archer.mjs:", !arch.includes('<div class="twod12 chat">'));
+const arch = fsx.readFileSync(ROOT + "module/mark.mjs", "utf8"), auto = fsx.readFileSync(ROOT + "module/automation.mjs", "utf8");
+console.log("v0.0.204: the mark messages use the system line (v0.0.207: the reminders are Chat message settings, posted by automation.mjs):", (arch.match(/content: sysLine\("fa-crosshairs"/g) ?? []).length === 1 && auto.includes('content: sysLine("fa-comment-dots", html, "cardmsg")'), "| no plain twod12 chat left in mark.mjs:", !arch.includes('<div class="twod12 chat">'));
 // v0.0.205 (Lucas): a thawed creature can't swap again
 combat.turn = combat.turns.findIndex(c => c.id === "Nari");
 const nmsg = rawMsgs.length; msgs.length = 0;

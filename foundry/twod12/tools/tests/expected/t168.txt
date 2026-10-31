@@ -1,0 +1,16 @@
+--- world items
+updated: 9
+  Marked Quarry  settings: boonbane, message/encounter, message/markDown          weaponUse: - | flags: {}
+  Sharpshooter   settings: ignore, mastery                                        weaponUse: - | flags: {}
+  Brawler        settings: weaponprop                                             weaponUse: - | flags: {}
+  Iron Fist      settings: weaponprop                                             weaponUse: - | flags: {}
+  Pummel         settings: none                                                   weaponUse: fists | flags: {}
+  Low Kick       settings: none                                                   weaponUse: kick | flags: {}
+  Weapon Attack  settings: none                                                   weaponUse:  | flags: {"basic":"attack"}
+  Elusive        settings: boonbane                                               weaponUse: - | flags: {}
+Marked Quarry kept the GM's 2 Boons: true | its messages offer: Mark Quarry 0 AP, Mark Quarry 0 AP
+--- a character
+Sharpshooter: mastery | the Fists Basic Action: fists | Bow Mastery choice moved: {"startMastery":{"sh":"Longbow"}}
+a creature this user doesn't own is left alone: true
+--- twice changes nothing
+updated the second time: 0

@@ -35,7 +35,7 @@ const fi = fx.fistsItemData();
 console.log("the Fists item:", JSON.stringify({ traits: fi.system.traits, range: fi.system.range, damage: [fi.system.damage.t1.count, fi.system.damage.t2.mod, fi.system.damage.t3.die] }), "| a weapon property list has Non-threatening:", !!cf.TWOD12 && JSON.stringify(Object.keys(cf.TWOD12.traits ?? {})).includes("nonthreatening"));
 const fa = b.BASIC_ACTIONS.fists;
 console.log("the Fists card:", fa.traits.join("/"), "| distance", fa.distance, "| Tier 2 and 3 use [W]:", fa.versions[0].t2[0].useW && fa.versions[0].t3[0].useW);
-console.log("Pummel uses only the Fists, Leg Sweep is a kick (Fists, no free hand: v0.0.188); Brawler removes Non-threatening:", (content.match(/fistsOnly: true/g) ?? []).length === 1 && content.includes("flags = { twod12: { kick: true } }") && content.includes("fistsThreaten: true"));
+console.log("Pummel uses only the Fists, Leg Sweep is a kick (Fists, no free hand: v0.0.188); Brawler removes Non-threatening:", (content.match(/weaponUse: "fists"/g) ?? []).length === 1 && content.includes('weaponUse: "kick"') && content.includes('{ type: "weaponprop", wpWhich: "fists", wpProp: "nonthreatening" }'));
 console.log("--- the Basic Actions");
 const ladder = d => d.versions.map(v => `${v.ap}AP: ${[v.x1, v.x2, v.x3].map(x => (x.match(/distance:(\d)/)?.[1] ?? "0")).join("/")}`).join(" | ");
 console.log("Shove  ", ladder(b.BASIC_ACTIONS.shove), "|", b.BASIC_ACTIONS.shove.traits.join("/"));

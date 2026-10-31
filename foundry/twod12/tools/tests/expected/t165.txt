@@ -1,0 +1,21 @@
+--- the setting becomes flags
+[{"when":"encounter","to":"owners","text":"choose a creature to mark. Target it and use your marking Action:","action":"Mark Quarry","ap":0},{"when":"markDown","to":"owners","text":"your mark, {mark}, went Down. Choose a new one: target a creature and use your marking Action:","action":"Mark Quarry","ap":0}]
+an empty one (no text, no Action) is ignored: 0
+--- Marked Quarry: the start of an encounter (the old reminder, now from its settings)
+the old mark ended: true | messages: 1
+  whisper ["gm","p1"] | speaker Lana | flags {"twod12":{"action":{"actorUuid":"Actor.Lana"}}}
+  <div class="twod12 chat sysline cardmsg"><i class="fa-solid fa-comment-dots"></i><span><b>Lana</b>: choose a creature to mark. Target it and use your marking Action: <a data-twod12-inline="Use">Mark Quarry|ap:0|source:Marked Quarry|label:Mark Quarry (0 AP)</a></span></div>
+--- the marked creature goes Down
+Prone is not Down: nothing: 0 | still marked: true
+Unconscious: the mark ended: true | messages: 1
+  whisper ["gm","p1"] | <div class="twod12 chat sysline cardmsg"><i class="fa-solid fa-comment-dots"></i><span><b>Lana</b>: your mark, <b>Goblin</b>, went Down. Choose a new one: target a creature and use your marking Action: <a data-twod12-inline="Use">Mark Quarry|ap:0|source:Marked Quarry|label:Mark Quarry (0 AP)</a></span></div>
+--- an item made from scratch: a turn-start message to everyone, Escalation 2+, no Action
+Escalation 1: 0 | Escalation 2: 1 | at the start of an encounter: 0
+  whisper [] | <div class="twod12 chat sysline cardmsg"><i class="fa-solid fa-comment-dots"></i><span><b>Kai</b>: <b>Kai</b> roars. Allies near <b>Kai</b> take heart.</span></div>
+HTML in the text is escaped: <b>Kai</b>: &lt;script&gt;x&lt;/script&gt;
+an Action name with brackets can't break the button: <b>Kai</b>: go @Use[Strike  ap:9|ap:1|source:Test|label:Strike  ap:9 (1 AP)]
+turn start wired (after the Effect each turn, not on a thaw): true
+--- the editor's sentences
+At the start of an encounter, posts to its owners "choose a creature to mark. Target it and use your marking Action:", with a button for <b>Mark Quarry</b> (0 AP). | message at encounter (Mark Quarry)
+When the creature it marked goes Down, posts to its owners "your mark, {mark}, went Down. Choose a new one: target a creature and use your marking Action:", with a button for <b>Mark Quarry</b> (0 AP). | message when its mark goes Down (Mark Quarry)
+At the start of each of its turns, posts "roars". | message each turn

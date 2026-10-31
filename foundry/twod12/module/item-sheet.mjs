@@ -109,6 +109,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       styled: t !== "species",   // v0.0.168: the sheet's look (parchment, dark text); v0.0.185: Class too, Species keeps the old one until it is redone
       durationChoices: TWOD12.durationTypes,
       settingChoices: TWOD12.effectSettings,
+      weaponUses: TWOD12.weaponUses,   // v0.0.207
       settingsList:
         ["effect", "feature", "talent"].includes(t) && Array.isArray(s.settings)
           ? s.settings.map((x, i) => {
@@ -153,6 +154,11 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
                 isIgnore: x.type === "ignore",
                 isRally: x.type === "rally",
                 isTurnStart: x.type === "turnstart",
+                // v0.0.207: Chat message, Weapon property, Starting Mastery
+                isMessage: x.type === "message", msgWhen: x.msgWhen, msgTo: x.msgTo, msgAction: x.msgAction, msgAp: x.msgAp,
+                msgWhens: TWOD12.messageWhen, msgTos: TWOD12.messageTo,
+                isWeaponProp: x.type === "weaponprop", wpWhich: x.wpWhich, wpProp: x.wpProp, wpWhiches: TWOD12.propWeapons, wpProps: TWOD12.removableProps,
+                isMastery: x.type === "mastery", mstTrait: x.mstTrait, mstValue: x.mstValue, mstTraits: TWOD12.weaponTraits,
                 ignoreRule: x.ignoreRule,
                 ignoreRules: TWOD12.ignoreRules,
                 rallyBonus: x.rallyBonus,

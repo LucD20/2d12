@@ -141,7 +141,7 @@ export const TWOD12 = {
     nonthreatening: "Doesn't threaten: you can't flank with it, unless a feature says otherwise (Fists have it; Brawler removes it).",
     move: "You must have a Speed of at least 1."
   },
-  effectSettings: { boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", speed: "Speed", light: "Token Light", note: "Note", ignore: "Ignore a Bane", rally: "Rally Points", turnstart: "Effect each turn" },
+  effectSettings: { boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", speed: "Speed", light: "Token Light", note: "Note", ignore: "Ignore a Bane", rally: "Rally Points", turnstart: "Effect each turn", message: "Chat message", weaponprop: "Weapon property", mastery: "Starting Mastery" },
   // v0.0.198 (Lucas, 2026-10-30): the Basic Actions section of the Actions tab, 4 groups in a 2x2 grid (row 1 Attack | Control, row 2
   // Movement | Utility), each in this order. By name: the Kind traits don't separate them. The items and the compendium don't change.
   basicGroups: [
@@ -157,6 +157,12 @@ export const TWOD12 = {
   talentGroups: { combat: "Combat", mobility: "Mobility", magic: "Magic", skill: "Skill" },
   prereqKinds: { talent: "A Talent", level: "A Level", trait: "An Action with a trait", attribute: "An Attribute", other: "Other (not checked)" },
   // v0.0.186: the Bane rules a setting can switch off for matching Actions (the "Ignore a Bane" setting).
+  // v0.0.207 (editability sweep): the general settings that replaced the last hidden card rules (automation.mjs, fists.mjs, mastery.mjs).
+  messageWhen: { encounter: "At the start of an encounter", turn: "At the start of each of its turns", markDown: "When the creature it marked goes Down" },
+  messageTo: { owners: "its owners (and the GM)", all: "everyone" },
+  removableProps: { nonthreatening: "Non-threatening" },
+  propWeapons: { fists: "Fists", all: "weapons" },
+  weaponUses: { "": "Its weapon (any weapon it can use)", fists: "Only the Fists (needs a free hand)", kick: "The Fists, even with no free hand (a kick)" },
   ignoreRules: { rangeBane: "one of their range Banes (far range none, maximum range 1)", engagedSelf: "the Banes for a [Ranged] Action while you are Engaged", engagedTarget: "the Bane for targeting a creature Engaged with a creature other than you" },
   durationTypes: { "": "None", eot: "End of Turn (EoT)", rounds: "Rounds" },
   // Trait groups (v0.0.179, the book's GROUPS in book/build_rules.py): listed in this order, a trait with no group of its own is a Keyword.

@@ -4,7 +4,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT implementation. This bundle has everything. Read this file first.
 
-## Where we are now (v0.0.206, 161 tests; READ THIS FIRST)
+## Where we are now (v0.0.207, 166 tests; READ THIS FIRST)
+- **2026-10-31: v0.0.207, the editability sweep (MASTER-PLAN section 7 done)** (pack-editability): every card mechanic is a setting or field on its item; new settings Chat message, Weapon property, Starting Mastery, Action field Weapon used; Marked Quarry's reminders, Brawler, Sharpshooter / Bow Mastery, Pummel, Leg Sweep filled; archer.mjs is module/mark.mjs; once-per-world update (giveSettingsV207); t164 fails on a card name in module/ code; the basic mechanics list is in foundry-backlog.md. Next: Lucas's test (checklist in the pack report and the v0.0.207 changelog), then MASTER-PLAN (design sessions D2/D3/D4; Fewer clicks for weapons; Shortcuts).
 - **2026-10-31: v0.0.206, the Initiative card (B4)** (pack-initiative-card; module/initcard.mjs). Next: Lucas's test, then merge; then the editability sweep (MASTER-PLAN section 7).
 - **2026-10-31: v0.0.205, no second swap after thawing (book + Foundry); strip fixes (sidebar collapse, scroll jump).** Next: the editability sweep (MASTER-PLAN section 7).
 - **2026-10-31: v0.0.204, fix: the swapper stayed frozen at its new slot; the mark messages as system lines.** Next: Lucas's test, then the editability sweep (MASTER-PLAN section 7).

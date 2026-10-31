@@ -1,0 +1,17 @@
+--- the compendium
+Sharpshooter  [{"type":"mastery","mstTrait":"projectile","mstValue":3}]
+Bow Mastery   [{"type":"mastery","mstTrait":"projectile","mstValue":3}]
+Lana (Sharpshooter): [{"itemId":"sh","from":"Sharpshooter","trait":"projectile","traitName":"Projectile","value":3,"chosen":""}]
+an NPC with it: none (Mastery is for characters): 0 | a character without one: 0
+--- choosing the weapon
+the window: <p>Choose your Projectile weapon: you start with 3 Mastery with it.</p><select name="k" style="width:100%"><option value="longbow">Longbow</option><option value="crossbow">Crossbow</option></select>
+chosen: ["Crossbow"] | Mastery: {"crossbow":{"name":"Crossbow","value":3}}
+chosen again with 5 Mastery: it stays 5: 5
+--- made from scratch: a Talent "Javelin Thrower" (a Thrown weapon at 2 Mastery), next to Sharpshooter
+only Thrown weapons offered: <p>Choose your Thrown weapon: you start with 2 Mastery with it.</p><select name="k" style="width:100%"><option value="javelin">Javelin</option></select>
+["Sharpshooter: Projectile 3 -> (to choose)","Javelin Thrower: Thrown 2 -> Javelin"] | Mastery: {"javelin":{"name":"Javelin","value":2}}
+closing the window changes nothing: ["","Javelin"]
+an unknown item: nothing asked: true
+--- the editor's sentences
+Choose one <b>Projectile</b> weapon: it starts at <b>3</b> Mastery. | Projectile weapon at 3 Mastery
+Choose one <b>Thrown</b> weapon: it starts at <b>2</b> Mastery. | Thrown weapon at 2 Mastery

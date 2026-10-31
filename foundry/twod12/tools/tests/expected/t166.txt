@@ -1,0 +1,16 @@
+--- Weapon property
+Brawler's settings: [{"type":"weaponprop","wpWhich":"fists","wpProp":"nonthreatening"}]
+Fists threaten: without Brawler false | with Brawler true | Brawler doesn't touch a Non-threatening whip false
+made from scratch, "weapons": the whip threatens true | and the Fists true | lost: nonthreatening
+with its own Escalation minimum 2: at 1 false | at 2 true
+an applied Effect with it works too: true | switched off: false
+--- Weapon used
+compendium: Pummel fists | Leg Sweep kick
+its weapon             | a sword and a free hand: Sword,Fists  | both hands full: Greatsword
+only the Fists         | a sword and a free hand: Fists        | both hands full: none
+a kick                 | a sword and a free hand: Fists        | both hands full: Fists
+the Fists Basic Action | a sword and a free hand: Fists        | both hands full: none
+the old hidden flag alone does nothing now: Greatsword (the world update turns it into the field)
+--- the editor's sentences
+Its <b>Fists</b> don't have the property <b>Non-threatening</b>. | Fists not Non-threatening
+Its <b>weapons</b> don't have the property <b>Non-threatening</b>. | weapons not Non-threatening

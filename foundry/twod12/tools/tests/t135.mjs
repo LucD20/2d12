@@ -41,6 +41,6 @@ const src = f => fs.readFileSync(ROOT + f, "utf8");
 console.log("--- wiring");
 console.log("squaresBetween adds the height:", src("module/move.mjs").includes("withHeight(best, verticalSquares(a, b))"),
   "| Bonus Damage (Killer's Focus) in the roll dialog:", src("module/actions.mjs").includes("for (const t of [1, 2, 3]) for (const b of collectBonuses(actor, dlgTraits, t,"),
-  "| quarry mark on refreshToken:", src("module/archer.mjs").includes('Hooks.on("refreshToken", token => drawQuarryMark(token))'),
+  "| quarry mark on refreshToken:", src("module/mark.mjs").includes('Hooks.on("refreshToken", token => drawQuarryMark(token))'),
   "| species sheet has no Ward input:", !src("templates/item-sheet.hbs").includes("Part of the Ward value"),
   "| SpeciesData has no ward:", !/the species' Ward value/.test(src("module/data.mjs")));

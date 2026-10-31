@@ -1,6 +1,6 @@
 import { triggerNotices } from "./triggers.mjs";
 import { techniqueLock, TECHNIQUE_AT, masteryAfterRoll } from "./mastery.mjs";
-import { setQuarry } from "./archer.mjs";
+import { setQuarry } from "./mark.mjs";
 import { pickTargets, needsTargets } from "./targeting.mjs";
 import { ignoredBy, markOnce } from "./automation.mjs";
 import { splitModes, splitView, SPLIT_LABEL } from "./split.mjs";
@@ -891,7 +891,7 @@ export async function useAction(actor, item, opts = {}) {
       }
     } catch (e) { console.warn("twod12 | Save Action", e); }
   }
-  // An Action that marks (Mark Quarry; v0.0.186 the Action's "Marks the target" box): the targeted creature becomes the marked one (archer.mjs).
+  // An Action that marks (Mark Quarry; v0.0.186 the Action's "Marks the target" box): the targeted creature becomes the marked one (mark.mjs).
   if (it.marksTarget) { try { await setQuarry(actor, [...game.user.targets][0] ?? null); } catch (e) { console.warn("twod12 | marking", e); } }
   // Mastery: a Tier 3 on a Weapon Action with a weapon gives +1 Mastery with that kind of weapon (once per Action; characters only).
   if (!version.noTiers) {

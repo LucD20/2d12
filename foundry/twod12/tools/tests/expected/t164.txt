@@ -1,0 +1,12 @@
+cards checked: 91 | e.g. true
+card names in module/ code: none
+the scan itself: a name in code is caught, in a comment or a migration it isn't: Brawler true, Pummel false, Sharpshooter false, Elusive true
+no name list of cards (an array of card names) left: true
+archer.mjs and paladin.mjs are gone (the mark is module/mark.mjs): true true true
+--- the cards whose rules were hidden carry them on the item
+Marked Quarry  boonbane, bonusdamage, message/encounter/Mark Quarry/0 AP, message/markDown/Mark Quarry/0 AP
+Sharpshooter   ignore, mastery
+Bow Mastery    mastery
+Brawler        weaponprop
+Weapon used: Pummel fists | Leg Sweep kick | the Fists Basic Action fists
+compendium items with hidden flags: none

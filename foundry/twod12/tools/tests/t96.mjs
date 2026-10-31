@@ -60,7 +60,7 @@ N.actor.itemTypes.weapon = [weapon(0, ["ranged"])]; row("Nari holds a ranged wea
 N.actor.itemTypes.weapon = [weapon(0, ["melee"], false)]; row("Nari's Melee weapon is not wielded", [["Kai", K, G], ["Nari", N, G]]); N.actor.itemTypes.weapon = [weapon()];
 const fists = { system: { wielded: false, traits: new Set(["barehanded", "melee", "nonthreatening"]), reach: 0 }, getFlag: (s, k) => k === "fists" };
 N.actor.itemTypes.weapon = [fists]; row("Nari has only her Fists (Non-threatening: they don't threaten)", [["Kai", K, G], ["Nari", N, G]]);
-N.actor.itemTypes.talent = [{ getFlag: (s, k) => k === "fistsThreaten" }]; row("... with Brawler (her Fists threaten)", [["Kai", K, G], ["Nari", N, G]]);
+N.actor.itemTypes.talent = [{ id: "brawler", name: "Brawler", system: { settings: [{ type: "weaponprop", wpWhich: "fists", wpProp: "nonthreatening", minEscalation: 0 }] } }]; row("... with Brawler (her Fists threaten)", [["Kai", K, G], ["Nari", N, G]]);   // v0.0.207: its Weapon property setting
 N.actor.itemTypes.talent = []; N.actor.itemTypes.weapon = [weapon()];
 const claw = action(["melee", "strike"], true), bite = action(["melee", "strike"], false), spit = action(["ranged"], true), swing = action(["melee", "strike", "weapon"], true), far = action(["melee"], true, "2");
 N.actor.itemTypes.weapon = []; N.actor.itemTypes.action = [claw]; row("an NPC's own [Melee] Action that deals damage (a claw)", [["Kai", K, G], ["Nari", N, G]]);

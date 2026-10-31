@@ -14,7 +14,7 @@ export function basicGroupsOf(rows) {
   if (rest.length) out.push({ key: "other", label: "Other", rows: rest });
   return out;
 }
-import { masteryRows, masteryOf, setMastery, setCollapsed, techniqueState, bowMasteryOf, chooseBowMastery } from "./mastery.mjs";
+import { masteryRows, masteryOf, setMastery, setCollapsed, techniqueState, startMasteryOf, chooseStartMastery } from "./mastery.mjs";
 import { weaponRanges } from "./weaponrange.mjs";
 import { defenseBonus, steadinessOf } from "./defense.mjs";
 import { setWorn } from "./armor.mjs";
@@ -74,7 +74,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       rollInitiative: CharacterSheet.rollInitiative, addBasic: CharacterSheet.addBasic, rest: CharacterSheet.rest, editSenses: CharacterSheet.editSenses,
       sendItem: CharacterSheet.sendItem, toggleGroup: CharacterSheet.toggleGroup, generateWeapon: CharacterSheet.generateWeapon, toggleLoaded: CharacterSheet.toggleLoaded,
       toggleFav: CharacterSheet.toggleFav, toggleDetails: CharacterSheet.toggleDetails, toggleEsc: CharacterSheet.toggleEsc, toggleGrant: CharacterSheet.toggleGrant, setFilter: CharacterSheet.setFilter, setView: CharacterSheet.setView,
-      setHands: CharacterSheet.setHands, setWorn: CharacterSheet.setWorn, setEscalation: CharacterSheet.setEscalation, toggleEscalation: CharacterSheet.toggleEscalation, masteryStep: CharacterSheet.masteryStep, masteryCollapse: CharacterSheet.masteryCollapse, masteryOpen: CharacterSheet.masteryOpen, chooseBowMastery: CharacterSheet.chooseBowMastery, hpEdit: CharacterSheet.hpEdit,
+      setHands: CharacterSheet.setHands, setWorn: CharacterSheet.setWorn, setEscalation: CharacterSheet.setEscalation, toggleEscalation: CharacterSheet.toggleEscalation, masteryStep: CharacterSheet.masteryStep, masteryCollapse: CharacterSheet.masteryCollapse, masteryOpen: CharacterSheet.masteryOpen, chooseStartMastery: CharacterSheet.chooseStartMastery, hpEdit: CharacterSheet.hpEdit,
       setHealthView: CharacterSheet.setHealthView, setApPip: CharacterSheet.setApPip,
       toggleCard: CharacterSheet.toggleCard, reloadFor: CharacterSheet.reloadFor, toggleBasic: CharacterSheet.toggleBasic,
       toggleFeat: CharacterSheet.toggleFeat, foldAll: CharacterSheet.foldAll, newGear: CharacterSheet.newGear, reloadWeapon: CharacterSheet.reloadWeapon,
@@ -474,7 +474,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       escPips: a.type === "character" || s.useEscalation ? [1, 2, 3].map(n => ({ n, on: (Number(s.escalation) || 0) >= n })) : null,
       npcEsc: a.type === "npc", npcEscOn: !!s.useEscalation,
       mastery: a.type === "character" ? masteryRows(a).map(r => ({ ...r, open: !!this._masteryOpen?.has(r.key) })) : null,   // the Mastery tab (mastery.mjs)
-      bowMastery: bowMasteryOf(a), showMastery: a.type === "character",
+      startMastery: startMasteryOf(a), showMastery: a.type === "character",
       escNow: Number(s.escalation) || 0,
       armorTypeChoices: Object.fromEntries(Object.entries(TWOD12.armors).map(([k, v]) => [k, v.label])),
       armorChoices: Object.fromEntries(Object.entries(TWOD12.armors).map(([k, v]) => [k, `${v.label} (${11 + v.value})`])),
@@ -927,7 +927,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const k = target.dataset.key, d = Number(target.dataset.d) || 0, cur = Number(masteryOf(this.actor)[k]?.value) || 0;
     await setMastery(this.actor, k, cur + d, target.closest(".mst-row")?.querySelector(".mst-name b")?.textContent ?? "");
   }
-  static async chooseBowMastery() { await chooseBowMastery(this.actor); }
+  static async chooseStartMastery(event, target) { await chooseStartMastery(this.actor, target.dataset.item); }
 
   /** Shrink a Mastery row to one small line (name, bar, number), or open it again. Kept on the character. */
   static async masteryCollapse(event, target) {

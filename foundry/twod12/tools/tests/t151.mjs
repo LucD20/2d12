@@ -41,7 +41,7 @@ console.log("--- the cards carry settings (no code tests their names)");
 for (const n of ["Font of Mercy", "Radiant Zeal", "Elusive", "Killer's Focus", "Long Draw", "Steady Nerves", "Sharpshooter", "Marked Quarry", "Hunter's Focus"])
   console.log(n.padEnd(15), (card(n)?.system.settings ?? []).map(x => FD.settingShort({ all: new Set(x.all ?? []), any: new Set(x.any ?? []), none: new Set(x.none ?? []), from: new Set(), tiers: new Set(x.tiers ?? []), ...x, ...(x.all ? { all: new Set(x.all) } : {}) })).join(" | "));
 const src = f => fs.readFileSync(ROOT + f, "utf8");
-const code = ["module/actions.mjs", "module/archer.mjs", "module/rally.mjs", "module/effects.mjs", "module/bonus.mjs"].map(src).join("\n");
+const code = ["module/actions.mjs", "module/mark.mjs", "module/rally.mjs", "module/effects.mjs", "module/bonus.mjs"].map(src).join("\n");
 console.log("no hasFeature(name) left:", !/hasFeature\(/.test(code), "| paladin.mjs gone:", !fs.existsSync(ROOT + "module/paladin.mjs"), "| Mark Quarry marks by its box:", docs.find(d => d.name === "Mark Quarry").system.marksTarget === true);
 
 console.log("--- once per round (the engine; no compendium card uses it on its own bonus now)");
@@ -85,7 +85,7 @@ const boonsVs = t => E.modifierList(lana, shot, [t]).filter(m => m.boons).map(m 
 console.log("boons vs the Orc:", boonsVs(orc), "| vs the Goblin:", boonsVs(gob));
 console.log("Tier 1 vs the Orc (Modifier +2):", show(B.collectBonuses(lana, shot, 1, { target: orc, mod: 2 })), "| Tier 2:", show(B.collectBonuses(lana, shot, 2, { target: orc, mod: 2 })), "| vs the Goblin:", show(B.collectBonuses(lana, shot, 1, { target: gob, mod: 2 })), "| Modifier 0:", show(B.collectBonuses(lana, shot, 1, { target: orc, mod: 0 })));
 console.log("Empowered vs the Orc:", JSON.stringify(E.damageSteps(lana, shot, orc).empowered), "| vs the Goblin:", JSON.stringify(E.damageSteps(lana, shot, gob).empowered));
-console.log("the mark matches a token too:", AU.isMarked(lana, { document: { uuid: "Scene.s.Token.Orc" } }), "| uses a mark:", AU.usesMark(lana), "| the Orc doesn't:", AU.usesMark(orc));
+console.log("the mark matches a token too:", AU.isMarked(lana, { document: { uuid: "Scene.s.Token.Orc" } }), "| v0.0.207 its reminders are settings:", AU.messagesFor(lana, "encounter").map(m => m.action).join(","), "| the Orc has none:", AU.messagesFor(orc, "encounter").length);
 console.log("[Mod] in a Bonus Damage:", ["[Mod]", "1d6 + [Mod]", "1d4"].map(d => `${d} -> ${JSON.stringify(B.modDamage(d, 3))}`).join(" | "), "| [Mod] with -1:", JSON.stringify(B.modDamage("[Mod]", -1)), JSON.stringify(B.modDamage("1d6 + [Mod]", -1)));
 
 console.log("--- Elusive: 1 Bane on the first [Strike] against it each round, Escalation 1");
