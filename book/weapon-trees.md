@@ -336,3 +336,11 @@ at the moment the prey shows itself (Cover: checked as for any Action).
 the trail (never Unsensed) and the Reaction tie it to hunting: wound, follow, wait.
 
 **To confirm:** the 2 AP Version and its numbers, the Critical, Patient Shot instead of Steady Hands (or keep both and drop Quick Nock).
+
+**Lucas (Hunting Bow rebuilt): confirmed** ("the system thrives on multiple actions and variance"). **New: bows are held in one hand** and
+need the other hand to shoot; with something in the other hand they take Banes. Proposal (to confirm): a new property **Draw** (or
+"Strung"): "You hold a Draw weapon in one hand. Its [Strike] Actions need your other hand free to draw: with something in that hand, they
+take 3 Banes (as a Two-handed weapon held with one hand)." Bows lose Two-handed and get Draw (their damage was already at the one-handed
+level, 4.5). Unlike Two-handed: carrying the bow leaves a hand free (Handle Actions, Fists) with no Release / Interact to regrip, and the Banes
+are only on the bow's own Strikes, not on another weapon's. Crossbows and the Musket stay Two-handed. To settle with it: the off-hand Bane
+(D2 answer 5) doesn't apply to a Draw weapon (it is held in one hand and drawn with the other).
