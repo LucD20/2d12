@@ -114,3 +114,10 @@ C is XL: three versions, each with its own test checklist, all on the branch `pa
 3. **The compendium PCs rebuilt from the ruler's builds** (book/ruler/classes/*.txt), last because they use every card above.
 
 **Why this order and not the scope's 1-2-3-4:** the scope listed the class items first, but writing the cards before the general settings would mean automating Twin Shot, Harrying Shots and the new Talents by name and redoing them; and the text sync costs nothing extra while the cards are being rewritten, so it moves into C-b. The picker comes after the cards because it needs real Talents with data to test.
+
+## 7. Next step: the editability sweep (added 2026-10-31, Lucas: "pretty much every mechanic editable, just not the basic ones")
+Go through every automated mechanic and check that anyone can see it on an item and recreate it from the item's settings, without code that tests a card's name or a hidden rule. One pass, in this order:
+1. **List them** (code search of module/: Hooks that post or change something for a creature because of what it has; `usesMark`, archer.mjs, paladin.mjs, the start-of-turn and start-of-encounter hooks; every chat message the system posts on its own). Split into **basic** (the core rules every creature has: AP, turns, Swap Initiative, Escalation gain, Down/Dying, initiative; no settings) and **card mechanics** (need a setting).
+2. **Card mechanics with no setting yet**, known so far: Mark Quarry's start-of-encounter reminder ("choose the creature to mark", archer.mjs, fired for any creature that has a mark-reading setting) and the "your mark went Down" message. Likely shape: a setting type "At the start of an encounter" / "When your marked creature goes Down" with a message text and an optional Action to offer (button), shown in the item's Details like the other settings.
+3. **A test** that every automated card in content.mjs carries its settings (no name lists left in module/), and the list of basic mechanics in the backlog.
+Size: M. Its own pack (pack-editability), after Lucas's tests of v0.0.203.

@@ -1,4 +1,5 @@
 import { logEvent, makeLine } from "./ticker.mjs";
+import { swapCardHtml, thawLineHtml } from "./sysmsg.mjs";
 import { groupColor } from "./config.mjs";
 // Combat: attribute-roll Initiative for everyone, "zipper" turn order between the two sides,
 // and an Action Points counter per combatant (shown and editable in the tracker, changes sent to the chat).
@@ -187,7 +188,7 @@ async function startTurn(combat) {
   if (c.getFlag(F, "frozen")) {
     // It swapped initiative earlier: it carries on with the AP it had left.
     await c.update({ ...fresh, [`flags.${F}.frozen`]: false });
-    await ChatMessage.create({ content: `<div class="twod12 chat apmsg"><b>${esc(c.name)}</b> carries on with <b>${getAP(c)}</b> AP.</div>` });
+    await ChatMessage.create({ content: thawLineHtml(c.name, getAP(c)) });
   } else {
     await c.update(fresh);
     await setAP(c, apPerTurn(c), "start of turn");
@@ -289,7 +290,9 @@ export async function performSwap(combat, aId, bId, userId = null) {
   await B.update({ [`flags.${F}.apTurn`]: `${combat.round}:${B.id}`, [`flags.${F}.acted`]: false, [`flags.${F}.frozen`]: false, [`flags.${F}.moveLeft`]: 0, [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, [`flags.${F}.-=ignoreTerrain`]: null });
   await setAP(B, apPerTurn(B), "swapped in: start of turn");
   await climbUp(B);
-  await ChatMessage.create({ content: `<div class="twod12 chat apmsg"><b>${esc(A.name)}</b> swaps initiative with <b>${esc(B.name)}</b>. ${esc(B.name)} takes the turn now; ${esc(A.name)}'s remaining actions are frozen until its new turn.</div>` });
+  // v0.0.203: the system card (sysmsg.mjs); the slot is where A acts now (B's old place), counted from 1.
+  const slot = combat.turns.findIndex(c => c.id === A.id) + 1;
+  await ChatMessage.create({ content: swapCardHtml(A.name, B.name, getAP(B), getAP(A), slot), flags: { [F]: { swap: { a: A.id, b: B.id, slot, round: combat.round } } } });
 }
 
 /** v0.0.199: swap with a chosen ally (the strip's Swap, then a click on the ally): the GM does it, or is asked to. */

@@ -172,7 +172,11 @@ export function placeCarousel() {
   const right = document.getElementById("sidebar")?.getBoundingClientRect?.().left || window.innerWidth;
   // the left column: Foundry's scene controls (the tools under them included), not the players list below
   const ctl = document.getElementById("scene-controls") ?? document.getElementById("controls");
-  const edge = Math.max(0, ...[ctl, ...(ctl?.querySelectorAll?.("menu, ol") ?? [])].map(x => x?.getBoundingClientRect?.().right ?? 0).filter(n => n < window.innerWidth / 3));
+  // v0.0.203 (Lucas): and the scene navigation ("Default Scene"), which sits at the top beside them and covered the strip's left buttons.
+  const nav = document.getElementById("scene-navigation") ?? document.getElementById("navigation");
+  const navR = nav?.offsetParent !== null ? nav?.getBoundingClientRect?.() : null;
+  const navEdge = navR && navR.width > 0 && navR.top < 90 && navR.right < window.innerWidth * 0.4 ? navR.right : 0;
+  const edge = Math.max(0, navEdge, ...[ctl, ...(ctl?.querySelectorAll?.("menu, ol") ?? [])].map(x => x?.getBoundingClientRect?.().right ?? 0).filter(n => n < window.innerWidth / 3));
   const left = (edge || 90) + 8;
   const w = Math.max(240, right - 8 - left);
   el.style.left = `${left + w / 2}px`;
@@ -184,6 +188,6 @@ export function registerCarousel() {
   game.settings.register("twod12", "carousel", { name: "Combat strip with Action Points", hint: "Shows the turn order across the top of the screen with the Action Points of each creature as dots.", scope: "client", config: true, type: Boolean, default: true, onChange: renderCarousel });
   for (const h of ["createCombat", "updateCombat", "deleteCombat", "createCombatant", "updateCombatant", "deleteCombatant", "combatStart", "combatTurnChange", "canvasReady"]) Hooks.on(h, () => { renderCarousel(); setTimeout(renderCarousel, 50); });   // again once Foundry has set the new turn order (v0.0.189)
   renderCarousel();
-  for (const h of ["collapseSidebar", "renderSidebar", "renderSceneControls"]) Hooks.on(h, () => setTimeout(placeCarousel, 0));
+  for (const h of ["collapseSidebar", "renderSidebar", "renderSceneControls", "renderSceneNavigation", "collapseSceneNavigation"]) Hooks.on(h, () => setTimeout(placeCarousel, 0));
   window.addEventListener("resize", placeCarousel);
 }

@@ -1959,3 +1959,15 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 #twod12-carousel .tc-head .tc-btn { white-space: nowrap; }
 #twod12-carousel .tp-list { min-width: 0; max-width: 100%; box-sizing: border-box; scroll-behavior: smooth; }
 #twod12-carousel .tp-list > .tp { flex: none; }
+
+/* ------------------------------------------------------------------ v0.0.203 (Lucas): the system messages' default look (module/sysmsg.mjs): Swap Initiative, the thaw line */
+.twod12.chat.sysmsg { padding-bottom: 7px; }
+.twod12.chat.sysmsg > .ahead { align-items: center; margin-bottom: 5px; padding: 4px 8px; }
+.twod12.chat.sysmsg > .ahead > b { font-family: "Cinzel", Georgia, serif; font-size: 13px; letter-spacing: .02em; }
+.twod12.chat.sysmsg > .ahead .apmark { background: #5b6fd0; color: #fff; font-size: 10.5px; line-height: 16px; padding: 0 4px; }
+.twod12.chat.sysmsg .sm-lead { display: flex; flex-wrap: wrap; align-items: center; gap: 0 7px; font-weight: 700; font-size: 1.12em; line-height: 1.3; }
+.twod12.chat.sysmsg .sm-swap { font-size: .8em; opacity: .7; }
+.twod12.chat.sysmsg .sm-text { margin-top: 2px; line-height: 1.4; }
+.twod12.chat.sysline { display: flex; align-items: baseline; gap: 7px; padding: 4px 9px; border: 1px solid #c8b48a; border-radius: 5px; background: #f4ecdc; color: #2c2a26; line-height: 1.35; }
+.twod12.chat.sysline > i { flex: none; font-size: 11px; color: #6b5a3a; }
+.twod12.chat.sysline .kw-ap { color: #3b4cb8; }

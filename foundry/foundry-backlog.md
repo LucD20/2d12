@@ -1,8 +1,10 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.202**. Tests: `node tools/tests/run.mjs` (159 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.203**. Tests: `node tools/tests/run.mjs` (160 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
 
 ## Asked by Lucas, not built
+- [x] **(v0.0.203) The Swap Initiative card and the thaw line** (module/sysmsg.mjs = the default look for system messages: sysCard, sysLine). The strip starts after the scene navigation. Unverified in Foundry: the look in the real chat (light/dark, narrow), the scene navigation measure in V14.
+- [ ] **Editability sweep** (MASTER-PLAN section 7): every card mechanic editable from item settings; first known gap: Mark Quarry's start-of-encounter reminder and "your mark went Down" message (archer.mjs) have no setting. Later: move other system messages to sysmsg.mjs (the initiative card, the mark reminders).
 - [x] **(v0.0.202) Tooltip delay setting (900 ms) and the strip fits between the controls and the sidebar** (plates scroll sideways, mouse wheel too). Unverified in Foundry: the measured left edge (#scene-controls) in V14.
 - [x] **(v0.0.201) Combat strip, second pass**: no tooltip on the acting plate, smaller Cinzel names, chat-card parchment and sheet navy, three pip kinds (turn discs / Reaction diamonds / frozen dashed rings), GM right-click on the Move row sets the squares left. Unverified in Foundry: the look, and the right-click while the movement banner is open.
 - [x] **(v0.0.200) The AP ticker and the Turn Log** (design M1 + L3; module/ticker.mjs): one message per event, the log a snapshot in the message, Actions only, pips for AP; no per-square movement value; edits post nothing.
