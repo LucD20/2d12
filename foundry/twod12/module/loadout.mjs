@@ -107,11 +107,14 @@ export function handButtonsFor(weapons, id) {
   if (!h) return null;
   return [{ hand: h, label: h === "both" ? "2H" : h === "main" ? "M" : "O", id, name, off: false, wide: h === "both", tip: `${HAND_LABEL[h]}: ${name}` }];
 }
-/** v0.0.209: the Fists' buttons: one for each free hand (none free: null, the usual button). */
+/** v0.0.209: the Fists' buttons: one for each free hand (v0.0.210: none free: both hands greyed). */
 export function freeHandButtons(weapons, fistsId, name = "Fists") {
   if (!fistsId) return null;
-  const free = handSlots(weapons).filter(s => s.free);
-  if (!free.length) return null;
+  const slots = handSlots(weapons), free = slots.filter(s => s.free);
+  // v0.0.210 (Lucas): no free hand: both hands greyed, with what holds them (Release, 0 AP, frees one)
+  if (!free.length) return slots[0]?.both
+    ? ["main", "off"].map(h => ({ hand: h, label: h === "main" ? "M" : "O", id: fistsId, name, off: true, wide: false, tip: `${HAND_LABEL[h]}: ${(weapons ?? []).find(w => w.id === slots[0].id)?.name ?? ""} (both hands): no free hand for ${name} (Release first, 0 AP)` }))
+    : slots.map(s => ({ hand: s.hand, label: s.hand === "main" ? "M" : "O", id: fistsId, name, off: true, wide: false, tip: `${HAND_LABEL[s.hand]}: ${(weapons ?? []).find(w => w.id === s.id)?.name ?? ""}: no free hand for ${name} (Release first, 0 AP)` }));
   return free.map(s => ({ hand: s.hand, label: s.hand === "main" ? "M" : "O", id: fistsId, name, off: false, wide: false, tip: `${HAND_LABEL[s.hand]} (free): ${name}` }));
 }
 export function useButtons(weapons, fits) {

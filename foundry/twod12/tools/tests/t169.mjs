@@ -27,6 +27,7 @@ console.log("sheet: useWith and swapHands", sh.includes("static async useWith(")
 // v0.0.209 (Lucas's test of v0.0.208): a Weapon Technique shows its weapon's hand; the Fists the free hands; Swap hands is an Interact.
 const ls2 = w("ls", "Longsword", { wielded: true, hand: "main" }, ["melee"]), cb = w("cb", "Crossbow", { wielded: true, hands: 2 }, ["ranged", "reload"]);
 console.log("Technique of the main-hand longsword:", show(L.handButtonsFor([ls2, fi], "ls")), "| of a two-handed crossbow:", show(L.handButtonsFor([cb], "cb")), "| not in hand:", show(L.handButtonsFor([ls2], "xx")));
-console.log("Fists with the off hand free:", show(L.freeHandButtons([ls2, fi], "fi")), "| both free:", show(L.freeHandButtons([fi], "fi")), "| none free:", show(L.freeHandButtons([cb, fi], "fi")));
+console.log("Fists with the off hand free:", show(L.freeHandButtons([ls2, fi], "fi")), "| both free:", show(L.freeHandButtons([fi], "fi")), "| none free:", show(L.freeHandButtons([cb, fi], "fi")), "| two one-handed:", show(L.freeHandButtons([ls2, w("dg", "Dagger", { wielded: true, hand: "off" }), fi], "fi")));
 const sh2 = src("module/actor-sheets.mjs");
 console.log("Swap hands spends 1 AP (Interact)", sh2.includes('spendAP(this.actor, 1, "Interact (swap hands)")'), "| Reload offers only Reload weapons", sh2.includes('picks.filter(w => hasProp(w, "reload"))'), "| basic rows: hands last", css.includes(".bx-rows .ar-line > .ar-hands { order: 5; }"));
+console.log("v0.0.210: a row with hands can wrap its name in the Basic columns", css.includes(".bx-rows .ar.hands .ar-name { white-space: normal;") && src("templates/actor-sheet.hbs").includes("{{#if hands}} hands{{/if}}"));

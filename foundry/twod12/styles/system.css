@@ -2031,3 +2031,6 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 }
 /* v0.0.209: the hand buttons in the Basic Actions rows sit where the use button does (last), not first. */
 .twod12.sheet.ns .bx-rows .ar-line > .ar-hands { order: 5; }
+/* v0.0.210 (Lucas, test of v0.0.209): in the Basic Actions' two columns a row with hand buttons lets its name wrap ("Weapon Attack" was cut to "Weapon ...") and its buttons are narrower. */
+.twod12.sheet.ns .bx-rows .ar.hands .ar-name { white-space: normal; line-height: 1.15; }
+.twod12.sheet.ns .bx-rows .ar-use.hand { min-width: 22px; padding: 0 4px; }
