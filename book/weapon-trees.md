@@ -412,3 +412,86 @@ off-hand Bane only when your **main hand** holds something"; **"stops moving in 
 Advance, Chapter 3, doesn't end where it pauses; a passer-by doesn't stop), used by Turn and Loose and, for the same reason, Patient Shot.
 Note: Turn and Loose lets the archer step away before the melee Strike comes; the enemy can still finish a split Advance to close in again,
 so it costs it movement, not the attack.
+
+## Volley N, measured (the map model, every PC Shot of the simulated days, 2026-10-31)
+
+| Shots within | 2 sq. | 3 | 4 | 5 | 8 | 12 |
+|---|---:|---:|---:|---:|---:|---:|
+| Share of the Shots | 3% | 7% | 12% | 20% | 52% | 92% |
+
+So **Volley N costs little**: 1 Bane on 7% of the Shots (Volley 3) is about 0.7% of the bow's damage, Volley 5 about 2%. It is mostly
+flavor (a heavy bow is bad up close) and a reason to stay back; it can't pay for much damage. A Longbow user who gets caught in melee pays more
+than the average.
+
+## Bow 3: the Longbow (Advanced), to confirm
+
+**The real weapon:** the tall yew self bow of the English and Welsh archers: very heavy draws (the Mary Rose bows, about 100 to 185 lb), heavy
+military arrows, shot in massed volleys at long range; arrows that fall from above on men behind cover.
+
+| Group | Gate | Properties | Type | Range | Damage | Weapon Attack |
+|---|---|---|---|---|---|---:|
+| Bows | Advanced (Group Mastery 6: it starts at 6 Mastery) | Projectile, Ranged, Strung, Volley 5 | Pierce | 12 / 24 / 36 | [B] 0 / 1d8 / 1d10 | 4.96 DE (+10%) |
+
+**Volley N** (a new property): a [Strike] Action with it against a creature within N squares takes 1 Bane.
+
+| Mastery | About | Unlock |
+|---:|---|---|
+| 9 | level 5 to 6 (from 6) | **Plunging Shot** (Weapon Technique, 1 / 2 AP, below). |
+| 14 | level 6 | **Loose Together** (a Reaction, below): the volley. |
+| 20 | level 7 | **Steady Draw:** your far range with it has no Bane. |
+| 28 | level 8 to 9 | **Arrowfall:** Plunging Shot also ignores High Cover. |
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Plunging Shot</span><span>1 / 2 AP</span><span class="cat">Weapon Technique</span></div>
+
+**Flavor:** Up, over the wall, and down on the one who thought he was safe.
+
+*Ranged • Shot • Strike • Weapon*
+
+**Frequency:** Round
+
+**Target:** One creature
+
+**Distance:** Weapon
+
+**Vs:** AD
+
+**Requirements:** The target is at least 3 squares away.
+
+| | 1 AP | 2 AP |
+|---|---|---|
+| **Tier 1** | [B] [Mod] Pi | [B] 1d6 + [Mod] Pi |
+| **Tier 2** | [B] 1d8 + [Mod] Pi | [B] 1d8 + 1d6 + [Mod] Pi; Cleave 1. |
+| **Tier 3** | [B] 1d10 + [Mod] Pi | [B] 1d10 + 1d6 + [Mod] Pi; Cleave 2. |
+| **Effects** | The arrow falls from above: this Action ignores Low and Medium Cover (walls and creatures). | As 1 AP. |
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Loose Together</span><span>1R</span><span class="cat">Longbow 14</span></div>
+
+**Flavor:** One command, one sky full of arrows.
+
+*Ranged • Shot • Strike • Weapon*
+
+**Frequency:** Round
+
+**Target:** The creature the ally targeted
+
+**Distance:** Weapon
+
+**Trigger:** An ally within 5 squares of you makes a [Ranged, Strike] Action against a creature.
+
+| 1R |
+|---|
+| Make a [Ranged, Shot] Weapon Attack (1A) with the Longbow against the same creature. |
+
+</div>
+
+**Worth:** Plunging Shot 1 AP 5.6 DE, efficiency 1.2; 2 AP 10.3 DE, 1.1 (the 2 AP Cleave counts a creature adjacent to the target 60% of
+the time); ignoring cover adds about 0.1 a Shot on average, much more in the fights with walls. Both on target. Loose Together is a Weapon
+Attack for AP you kept, once a round: with another archer in the party, a volley each round.
+**Against the Basic bows at level 5:** +10% on every Weapon Attack and a longer reach (12 normal: most of a 25 x 25 map), the Hunting Bow
+and Recurve Bow keep their mobility and bleed; the Longbow plays from behind the line, over cover, with its allies.
+
+**To confirm:** Volley 5 (or drop Volley: it costs about 2%), the Requirement (3 squares), the 2 AP Version, Loose Together, and Arrowfall.
