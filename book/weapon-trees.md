@@ -86,3 +86,54 @@ Exotic; about 5 combats a level and 0.9 Mastery a combat; utility unlocks, diffe
 | Flight Bow | Exotic | 15 / 30 / 45 | about +20% (history says light hits; the game gives it the dice) | Range that covers the map: no range Banes in practice; light, fast arrows (Reactions, quick Shots) |
 
 Once 1 to 8 are confirmed (or changed): the Hunting Bow in full (stats, Technique, the whole ladder), then the Horse Bow.
+
+**Lucas (round 3): yes to all 8.** Building starts, from Basic up, one bow at a time; each is confirmed before the next.
+
+## Bow 1: the Hunting Bow (Basic), to confirm
+
+**The real weapon:** a short wooden self bow or flatbow with a light draw: the bow of hunters, quick to nock and shoot, easy to carry
+through brush and to use in tight places. Its arrows wound more than they kill outright: the hunter follows the wounded prey.
+
+| Group | Gate | Properties | Type | Range | Damage | Weapon Attack |
+|---|---|---|---|---|---|---:|
+| Bows | Basic (Group Mastery 0) | Projectile, Ranged, Two-handed | Pierce | 8 / 16 / 24 | [B] 0 / 1d6 / 1d10 | 4.51 DE |
+
+| Mastery | About (0.9 a combat) | Unlock | Kind | Worth (prices.md) |
+|---:|---|---|---|---|
+| 3 | combat 4 (session 2 to 3) | **Wounding Shot** (Weapon Technique, card below) | Technique | 5.5 DE, efficiency 1.17 (on target) |
+| 8 | combat 9 (level 2) | **Quick Nock:** once each turn, you draw or stow the Hunting Bow without the Interact Action. | utility | 1 AP on a turn you switch weapons |
+| 14 | combat 16 (level 4) | **Close Quarters:** while you are Engaged, [Ranged] Actions with it take 1 Bane for it instead of 2. | utility | +0.44 DE a Shot while Engaged (3.61 → 4.05) |
+| 20 | combat 22 (level 5) | **Blood Trail:** Wounding Shot's Hindered also happens on a Tier 2. | Technique step | 6.1 DE, efficiency 1.31 (a little over the Round band: fine for a Stage 2 unlock) |
+| 28 | combat 31 (level 7) | **Steady Hands:** once each round, a Shot with it ignores 1 Bane (from any source). | utility | about +3% of a turn (it keeps the Hunting Bow worth holding against the Exotic bows' +20%) |
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Wounding Shot</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
+
+**Flavor:** Not the kill: the wound that slows them down, and you follow.
+
+*Ranged • Shot • Strike • Weapon*
+
+**Frequency:** Round
+
+**Target:** One creature
+
+**Distance:** Weapon
+
+**Vs:** AD
+
+| | 1 AP |
+|---|---|
+| **Tier 1** | [B] [Mod] Pi |
+| **Tier 2** | [B] 1d6 + [Mod] Pi |
+| **Tier 3** | [B] 1d10 + [Mod] Pi; Hindered (EoT). |
+
+</div>
+
+**Against an Advanced bow at level 5** (+10% on every Weapon Attack, its own unlocks from 9): the Hunting Bow has its Technique, Quick Nock,
+Close Quarters and, at about the same time, Blood Trail: about even in damage (Technique +5% of a turn, Close Quarters +2%, Blood Trail +2%),
+better in close and changing fights. **Against an Exotic bow at level 8** (+20%): Steady Hands closes part of the gap; Master (one more [W])
+is the same for both.
+
+**Left for later:** a "quiet" unlock (the Hunting Bow makes no noise: Hearing) when the Hide rules exist; it could replace Quick Nock.
+
+**To confirm:** the stats, the five unlocks and their steps, and the card. Then: the Horse Bow.
