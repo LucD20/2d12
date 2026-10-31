@@ -1952,3 +1952,10 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 #twod12-carousel .tp-swap.on { background: #EF9F27; color: var(--tp-navy); border-color: var(--tp-gold); }
 #twod12-carousel .tp.swapok { outline-color: #EF9F27; }
 #twod12-carousel .tp-swapb { background: #EF9F27; }
+
+/* ------------------------------------------------------------------ v0.0.202 (Lucas): the strip stays between the controls and the sidebar; the plates scroll */
+#twod12-carousel { align-items: stretch; width: max-content; box-sizing: border-box; }
+#twod12-carousel .tc-head.tc-bar { flex: none; flex-wrap: nowrap; }
+#twod12-carousel .tc-head .tc-btn { white-space: nowrap; }
+#twod12-carousel .tp-list { min-width: 0; max-width: 100%; box-sizing: border-box; scroll-behavior: smooth; }
+#twod12-carousel .tp-list > .tp { flex: none; }

@@ -4,7 +4,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT implementation. This bundle has everything. Read this file first.
 
-## Where we are now (v0.0.201, 159 tests; READ THIS FIRST)
+## Where we are now (v0.0.202, 159 tests; READ THIS FIRST)
+- **2026-10-31: v0.0.202, tooltip delay setting and the strip fits on screen** (plates scroll). Next: MASTER-PLAN.
 - **2026-10-31: v0.0.201, the combat strip second pass** (Lucas's feedback on v0.0.199: no tooltip on the acting plate, smaller Cinzel names, chat-card colors, three pip kinds, GM right-click to set movement). Next: MASTER-PLAN.
 - **2026-10-31: v0.0.200, the AP ticker with the Turn Log** (module/ticker.mjs; the combat strip redesign was v0.0.199). Next: MASTER-PLAN (the design sessions D2/D3/D4; Fewer clicks for weapons; Shortcuts).
 - **2026-10-31: v0.0.199, the combat strip redesign** (plates, mockup D2). Next: v0.0.200, the chat ticker with the Turn Log (mockup foundry/mockups/chat-turnlog.html).

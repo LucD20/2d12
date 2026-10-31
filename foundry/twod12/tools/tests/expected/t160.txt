@@ -17,3 +17,4 @@ Move and Swap only on the active plate: true | End move in the bar: true | Round
 pips: active in the AP color, the others teal: true | top-aligned, scrolls sideways only: true
 v0.0.201: no tooltip on the acting plate: true | pip kinds: turn,react,react,react,react | a player sees no right-click hint: true
 v0.0.201 CSS: Cinzel names, frozen dashed rings, Reactions as diamonds: true
+v0.0.202: the strip fits between the controls and the sidebar (placeCarousel), plates scroll: true

@@ -48,6 +48,10 @@ import { registerDragCopy } from "./drag.mjs";
 import { registerUsageHooks } from "./usage.mjs";
 
 Hooks.once("init", () => {
+  // v0.0.202 (Lucas): tooltips wait a little longer before they show (Foundry's own wait is 0.5 s); a client setting.
+  const tipDelay = v => { const TM = foundry.helpers?.interaction?.TooltipManager ?? globalThis.TooltipManager; if (TM) TM.TOOLTIP_ACTIVATION_MS = Math.max(0, Number(v) || 0); };
+  game.settings.register("twod12", "tooltipDelay", { name: "Tooltip delay (ms)", hint: "How long the pointer rests on something before its tooltip shows. Foundry's own is 500.", scope: "client", config: true, type: Number, default: 900, range: { min: 0, max: 3000, step: 100 }, onChange: tipDelay });
+  tipDelay(game.settings.get("twod12", "tooltipDelay"));
   registerSenses();
   registerSleep();
   registerClock();

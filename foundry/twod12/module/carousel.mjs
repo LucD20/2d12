@@ -121,6 +121,10 @@ export function renderCarousel() {
     if (k === "applus" && c) return setAP(c, getAP(c) + 1, "edited");
     if (k === "apminus" && c) return setAP(c, Math.max(0, getAP(c) - 1), "edited");
   }));
+  placeCarousel();
+  // v0.0.202: the mouse wheel scrolls the plates sideways when they don't all fit.
+  const lst = el.querySelector(".tp-list");
+  lst?.addEventListener("wheel", ev => { if (lst.scrollWidth <= lst.clientWidth || Math.abs(ev.deltaX) > Math.abs(ev.deltaY)) return; ev.preventDefault(); lst.scrollLeft += ev.deltaY; }, { passive: false });
   el.querySelector(".tp.act")?.scrollIntoView?.({ inline: "center", block: "nearest" });
   // v0.0.201 (Lucas): the GM can set the movement left by hand (right-click the MOVE row).
   if (gm && cur) el.querySelector(".tp-move")?.addEventListener("contextmenu", async ev => { ev.preventDefault(); ev.stopPropagation(); await setMoveLeft(cur); });
@@ -158,9 +162,28 @@ function showApButtons(div, combat) {
 }
 function hideApButtons() { clearTimeout(hideTimer); hideTimer = setTimeout(() => { const f = document.getElementById("twod12-apfloat"); if (f) f.style.display = "none"; }, 200); }
 
+/**
+ * v0.0.202 (Lucas): the strip fits between the left controls and the sidebar (open or collapsed), so its buttons always show;
+ * the plates scroll sideways inside it.
+ */
+export function placeCarousel() {
+  const el = typeof window !== "undefined" ? document.getElementById(ID) : null;
+  if (!el?.style) return;
+  const right = document.getElementById("sidebar")?.getBoundingClientRect?.().left || window.innerWidth;
+  // the left column: Foundry's scene controls (the tools under them included), not the players list below
+  const ctl = document.getElementById("scene-controls") ?? document.getElementById("controls");
+  const edge = Math.max(0, ...[ctl, ...(ctl?.querySelectorAll?.("menu, ol") ?? [])].map(x => x?.getBoundingClientRect?.().right ?? 0).filter(n => n < window.innerWidth / 3));
+  const left = (edge || 90) + 8;
+  const w = Math.max(240, right - 8 - left);
+  el.style.left = `${left + w / 2}px`;
+  el.style.maxWidth = `${w}px`;
+}
+
 export function registerCarousel() {
   game.settings.register("twod12", "carouselHideDead", { name: "Combat strip: hide defeated creatures", hint: "Hide dead or defeated creatures from the strip. When off, they are shown in grey.", scope: "client", config: true, type: Boolean, default: false, onChange: renderCarousel });
   game.settings.register("twod12", "carousel", { name: "Combat strip with Action Points", hint: "Shows the turn order across the top of the screen with the Action Points of each creature as dots.", scope: "client", config: true, type: Boolean, default: true, onChange: renderCarousel });
   for (const h of ["createCombat", "updateCombat", "deleteCombat", "createCombatant", "updateCombatant", "deleteCombatant", "combatStart", "combatTurnChange", "canvasReady"]) Hooks.on(h, () => { renderCarousel(); setTimeout(renderCarousel, 50); });   // again once Foundry has set the new turn order (v0.0.189)
   renderCarousel();
+  for (const h of ["collapseSidebar", "renderSidebar", "renderSceneControls"]) Hooks.on(h, () => setTimeout(placeCarousel, 0));
+  window.addEventListener("resize", placeCarousel);
 }
