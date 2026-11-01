@@ -36,6 +36,20 @@ export function weaponsFor(actor, item) {
   if (use === "fists" || item?.getFlag?.(F, "basic") === "fists") { const f = hasFreeHand(actor) ? fistsOf(actor) : null; return f ? [f] : []; }
   return activeWeapons(actor);
 }
+/**
+ * v0.0.208: the weapons a Weapon Action can use with its traits: a [Melee] or [Ranged] Action needs that property (a Thrown weapon can be
+ * thrown for [Ranged]), a [Shot] needs a Projectile weapon. The same filter as useAction (actions.mjs), for the sheet's hand buttons.
+ */
+export function weaponCandidates(actor, item) {
+  const tr = item?.system?.traits, has = t => !!tr?.has?.(t);
+  const need = has("weapon") ? ["melee", "ranged"].find(has) : null;
+  let list = weaponsFor(actor, item).filter(w => !need || hasProp(w, need) || (need === "ranged" && hasProp(w, "thrown")));
+  if (has("shot") && has("weapon")) list = list.filter(w => hasProp(w, "projectile"));
+  if (has("gun") && has("weapon")) list = list.filter(w => hasProp(w, "firearm"));
+  return list;
+}
+/** v0.0.208 (W): a weapon in hand comes before the Fists: the Fists are a choice only when no held weapon fits (the Fists Action uses them). */
+export const heldFirst = list => { const held = (list ?? []).filter(w => !isFists(w)); return held.length ? held : (list ?? []); };
 /** A weapon property, as the weapon's traits say. */
 export const hasProp = (w, p) => !!w?.system?.traits?.has?.(p) || (isFists(w) && FISTS_TRAITS.includes(p));   // an older Fists item (before the update) has them too
 /** Does this weapon threaten (flanking)? A Non-threatening weapon doesn't, unless a "Weapon property" setting of the creature removes it. */

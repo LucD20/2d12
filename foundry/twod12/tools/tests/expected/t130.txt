@@ -16,4 +16,4 @@ Mastery 3, not in hand: unwielded
 Mastery 3, in hand: ok | an NPC: ok
 shrunk: true | what each step grants: 3: Reaping Sweep | 8: to be decided | 15: to be decided
 only the GM changes Mastery by hand: true | no trash: shrink instead true
-Actions tab: locked hidden, toggle hides the ones not in hand: true | greyed with why: true
+Actions tab: locked and not-in-hand Techniques hidden (v0.0.213, no toggle): true | greyed with why: true

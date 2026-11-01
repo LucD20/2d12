@@ -57,4 +57,4 @@ const row = M.masteryRows(C3)[0];
 console.log("shrunk:", row.collapsed, "| what each step grants:", row.steps.map(s => `${s.s}: ${s.grants}`).join(" | "));
 const sh = fs.readFileSync(ROOT + "module/actor-sheets.mjs", "utf8"), tp = fs.readFileSync(ROOT + "templates/actor-sheet.hbs", "utf8"), us = fs.readFileSync(ROOT + "module/usage.mjs", "utf8");
 console.log("only the GM changes Mastery by hand:", sh.includes('if (!game.user.isGM) return ui.notifications.warn("Only the GM can change Mastery by hand.")') && tp.includes("{{#if @root.isGMUser}}"), "| no trash: shrink instead", !tp.includes("masteryRemove") && tp.includes('data-action="masteryCollapse"'));
-console.log("Actions tab: locked hidden, toggle hides the ones not in hand:", sh.includes('return st !== "locked" && !(hideTech && st === "unwielded");') && tp.includes('class="at-hidetech"'), "| greyed with why:", us.includes("to use it` };"));
+console.log("Actions tab: locked and not-in-hand Techniques hidden (v0.0.213, no toggle):", sh.includes('a.itemTypes.action.filter(i => techniqueState(a, i) === "ok")') && !tp.includes('class="at-hidetech"'), "| greyed with why:", us.includes("to use it` };"));

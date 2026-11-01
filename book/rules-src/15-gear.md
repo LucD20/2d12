@@ -3,7 +3,7 @@
 
 ## Weapons
 
-Your class determines your Weapon Modifier. Each weapon also has its own Weapon Technique, which you unlock with [[Mastery]].
+Your class determines your Weapon Modifier. Each weapon belongs to a [[Weapon Groups|Weapon Group]] and has its own **Weapon Technique**, which you unlock with [[Mastery]]. A Weapon Technique can only be used with the weapon it belongs to, while you wield it: its Weapon Actions use that weapon, never another one.
 
 > [!example]
 > A Paladin whose Weapon Modifier uses Body deals 1d8 + Body slash damage on Tier 2 with a Greatsword Weapon Attack.
@@ -14,13 +14,77 @@ Your class determines your Weapon Modifier. Each weapon also has its own Weapon 
 
 *Example:* an Action that deals 2[W] deals 0 / 2d8 / 4d6 with a Greatsword, and 0 / 2d4+4 / 2d10+4 with a Crossbow.
 
+### Reading the Weapon Tables
+
+- **Group:** its [[Weapon Groups|Weapon Group]].
+- **Range:** in squares. Melee weapons have a [[Weapon Range|Range]] too: 1 for most of them. For a ranged weapon, the first number is the normal range, the second the far range (1 Bane) and the third the maximum range (2 Banes).
+- **Damage:** Tier 1 / Tier 2 / Tier 3, all [B]. Tier 1 is 0 for every weapon but Fists.
+- **Mastery:** the [[Mastery]] its Weapon Technique needs: 3 for common weapons, 4 for specialist ones, 5 for exotic ones.
+
+A weapon that takes both hands deals the most, a weapon that leaves a hand free a little less, and a light or Thrown weapon less again: what the weapon can do pays for the difference.
+
 ### Melee
 
-Melee weapons have a [[Weapon Range|Range]] too: 1 for most of them.
+| Name | Group | Properties | Type | Range | Damage | Mastery |
+|---|---|---|---|---|---|---|
+| Dagger | Blades | Melee, Thrown | Pierce | 1, Thrown 4 / 8 / 12 | [B] 0 / 1d4 / 1d8 | 3 |
+| Longsword | Blades | Melee | Slash | 1 | [B] 0 / 1d6 / 1d10 | 3 |
+| Greatsword | Blades | Melee, Two-handed | Slash | 1 | [B] 0 / 1d8 / 2d6 | 3 |
+| Handaxe | Axes | Melee, Thrown | Slash | 1, Thrown 4 / 8 / 12 | [B] 0 / 1d4 / 1d8 | 3 |
+| Greataxe | Axes | Melee, Two-handed | Slash | 1 | [B] 0 / 1d6 / 2d8 | 4 |
+| Mace | Hammers | Melee | Blunt | 1 | [B] 0 / 1d4+1 / 1d8+1 | 3 |
+| Maul | Hammers | Melee, Two-handed | Blunt | 1 | [B] 0 / 1d4+2 / 1d10+2 | 4 |
+| Spear | Polearms | Melee, Thrown | Pierce | 1, Thrown 4 / 8 / 12 | [B] 0 / 1d4 / 1d8 | 3 |
+| Pike | Polearms | Long, Melee, Two-handed | Pierce | 3 | [B] 0 / 1d6 / 1d10 | 4 |
+| Knuckle Dagger | Unarmed | Barehanded, Melee | Pierce | 1 | [B] 0 / 1d4 / 1d6 | 5 |
 
-| Name | Properties | Type | Range | Damage (Tier 1 / Tier 2 / Tier 3) |
-|---|---|---|---|---|
-| Greatsword | Two-handed | Slash | 1 | [B] 0 / 1d8 / 2d6 |
+#### Melee Weapon Techniques
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Stick and Slip</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
+
+**Flavor:** In, a quick cut, and out before they can answer.
+
+*Melee • Strike • Weapon*
+
+**Frequency:** Round
+
+**Target:** One creature
+
+**Distance:** Weapon
+
+**Vs:** AD
+
+| | 1 AP |
+|---|---|
+| **Tier 1** | [B] [Mod] Pi |
+| **Tier 2** | [B] 1d4 + [Mod] Pi; you can Evade 1. |
+| **Tier 3** | [B] 1d8 + [Mod] Pi; you can Evade 1. |
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Guarded Cut</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
+
+**Flavor:** The blade strikes and comes straight back to guard.
+
+*Melee • Strike • Weapon*
+
+**Frequency:** Round
+
+**Target:** One creature
+
+**Distance:** Weapon
+
+**Vs:** AD
+
+| | 1 AP |
+|---|---|
+| **Tier 1** | [B] [Mod] Sl |
+| **Tier 2** | [B] 1d6 + [Mod] Sl |
+| **Tier 3** | [B] 1d10 + [Mod] Sl; you gain +1 Armor Defense for 1 round. |
+
+</div>
 
 <div class="action" markdown="1">
 <div class="action-head"><span>Reaping Sweep</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
@@ -45,13 +109,247 @@ Melee weapons have a [[Weapon Range|Range]] too: 1 for most of them.
 
 </div>
 
+<div class="action" markdown="1">
+<div class="action-head"><span>Hooking Chop</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
+
+**Flavor:** The beard of the axe catches, and you pull.
+
+*Melee • Strike • Weapon*
+
+**Frequency:** Round
+
+**Target:** One creature
+
+**Distance:** Weapon
+
+**Vs:** AD
+
+| | 1 AP |
+|---|---|
+| **Tier 1** | [B] [Mod] Sl |
+| **Tier 2** | [B] 1d4 + [Mod] Sl; Pulled 1. |
+| **Tier 3** | [B] 1d8 + [Mod] Sl; Pulled 1. |
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Rending Chop</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
+
+**Flavor:** A blow that splits armor and leaves the flesh open.
+
+*Melee • Strike • Weapon*
+
+**Frequency:** Round
+
+**Target:** One creature
+
+**Distance:** Weapon
+
+**Vs:** AD
+
+| | 1 AP |
+|---|---|
+| **Tier 1** | [B] [Mod] Sl |
+| **Tier 2** | [B] 1d6 + [Mod] Sl |
+| **Tier 3** | [B] 2d8 + [Mod] Sl; Vulnerable 1 (EoT). |
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Ringing Blow</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
+
+**Flavor:** A crack on the helm, and their next swing goes wide.
+
+*Melee • Strike • Weapon*
+
+**Frequency:** Round
+
+**Target:** One creature
+
+**Distance:** Weapon
+
+**Vs:** AD
+
+| | 1 AP |
+|---|---|
+| **Tier 1** | [B] [Mod] Bl |
+| **Tier 2** | [B] 1d4 + 1 + [Mod] Bl |
+| **Tier 3** | [B] 1d8 + 1 + [Mod] Bl; its next [Strike] Action before the end of its next turn takes 1 Bane. |
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Bowl Over</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
+
+**Flavor:** All the weight of the head, low and through.
+
+*Melee • Strike • Weapon*
+
+**Frequency:** Round
+
+**Target:** One creature
+
+**Distance:** Weapon
+
+**Vs:** AD
+
+| | 1 AP |
+|---|---|
+| **Tier 1** | [B] [Mod] Bl |
+| **Tier 2** | [B] 1d4 + 2 + [Mod] Bl |
+| **Tier 3** | [B] 1d10 + 2 + [Mod] Bl; Prone. |
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Lunge</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
+
+**Flavor:** A full extension that reaches farther than they thought.
+
+*Melee • Strike • Weapon*
+
+**Frequency:** Round
+
+**Target:** One creature
+
+**Distance:** Weapon + 1
+
+**Vs:** AD
+
+| | 1 AP |
+|---|---|
+| **Tier 1** | [B] [Mod] Pi |
+| **Tier 2** | [B] 1d4 + [Mod] Pi |
+| **Tier 3** | [B] 1d8 + [Mod] Pi; Hindered (EoT). |
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Keep Them Off</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
+
+**Flavor:** The point stays between you and them, and it pushes.
+
+*Melee • Strike • Weapon*
+
+**Frequency:** Round
+
+**Target:** One creature
+
+**Distance:** Weapon
+
+**Vs:** AD
+
+| | 1 AP |
+|---|---|
+| **Tier 1** | [B] [Mod] Pi |
+| **Tier 2** | [B] 1d6 + [Mod] Pi; Pushed 1. |
+| **Tier 3** | [B] 1d10 + [Mod] Pi; Pushed 2. |
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Gut Punch</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
+
+**Flavor:** A fist with a blade in it, right under the ribs.
+
+*Melee • Strike • Weapon*
+
+**Frequency:** Round
+
+**Target:** One creature
+
+**Distance:** Weapon
+
+**Vs:** AD
+
+| | 1 AP |
+|---|---|
+| **Tier 1** | [B] [Mod] Pi |
+| **Tier 2** | [B] 1d4 + [Mod] Pi; Hindered (EoT). |
+| **Tier 3** | [B] 1d6 + [Mod] Pi; Hindered (EoT). |
+
+</div>
 ### Ranged
 
-**Range:** the first number is the normal range. The second is the far range, which causes 1 Bane. The third is the maximum range, which causes 2 Banes. Ranges are always in squares.
+| Name | Group | Properties | Type | Range | Damage | Mastery |
+|---|---|---|---|---|---|---|
+| Shortbow | Bows | Projectile, Ranged, Two-handed | Pierce | 8 / 16 / 32 | [B] 0 / 1d6 / 1d10 | 3 |
+| Longbow | Bows | Projectile, Ranged, Two-handed | Pierce | 15 / 30 / 60 | [B] 0 / 1d4+1 / 1d8+1 | 4 |
+| Hand Crossbow | Crossbows | Projectile, Ranged, Reload | Pierce | 6 / 12 / 24 | [B] 0 / 1d4 / 1d8 | 4 |
+| Crossbow | Crossbows | Projectile, Ranged, Reload, Two-handed | Pierce | 10 / 20 / 40 | [B] 0 / 1d4+2 / 1d10+2 | 3 |
+| Pistol | Firearms | Firearm, Ranged, Reload | Pierce | 5 / 10 / 20 | [B] 0 / 1d4 / 2d6 | 4 |
+| Musket | Firearms | Firearm, Ranged, Reload, Two-handed | Pierce | 10 / 20 / 40 | [B] 0 / 1d4 / 2d8 | 5 |
 
-| Name | Properties | Type | Range | Damage (Tier 1 / Tier 2 / Tier 3) |
-|---|---|---|---|---|
-| Crossbow | Projectile, Reload, Two-handed | Pierce | 10 / 20 / 40 | [B] 0 / 1d4+2 / 1d10+2 |
+#### Ranged Weapon Techniques
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Skirmish Shot</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
+
+**Flavor:** Loose, and be gone before the arrow lands.
+
+*Ranged • Shot • Strike • Weapon*
+
+**Frequency:** Round
+
+**Target:** One creature
+
+**Distance:** Weapon
+
+**Vs:** AD
+
+| | 1 AP |
+|---|---|
+| **Tier 1** | [B] [Mod] Pi |
+| **Tier 2** | [B] 1d6 + [Mod] Pi |
+| **Tier 3** | [B] 1d10 + [Mod] Pi; you can Evade 1. |
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Heartseeker</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
+
+**Flavor:** A full draw, aimed where the armor gives.
+
+*Ranged • Shot • Strike • Weapon*
+
+**Frequency:** Round
+
+**Target:** One creature
+
+**Distance:** Weapon
+
+**Vs:** AD
+
+| | 1 AP |
+|---|---|
+| **Tier 1** | [B] [Mod] Pi |
+| **Tier 2** | [B] 1d4 + 1 + [Mod] Pi |
+| **Tier 3** | [B] 1d8 + 1 + [Mod] Pi; Vulnerable 1 (EoT). |
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Sting</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
+
+**Flavor:** A small bolt in the leg: small, and enough.
+
+*Ranged • Shot • Strike • Weapon*
+
+**Frequency:** Round
+
+**Target:** One creature
+
+**Distance:** Weapon
+
+**Vs:** AD
+
+| | 1 AP |
+|---|---|
+| **Tier 1** | [B] [Mod] Pi |
+| **Tier 2** | [B] 1d4 + [Mod] Pi |
+| **Tier 3** | [B] 1d8 + [Mod] Pi; Hindered (EoT). |
+
+</div>
 
 <div class="action" markdown="1">
 <div class="action-head"><span>Lock & Loose</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
@@ -76,25 +374,75 @@ Melee weapons have a [[Weapon Range|Range]] too: 1 for most of them.
 
 </div>
 
+<div class="action" markdown="1">
+<div class="action-head"><span>Point Blank</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
+
+**Flavor:** Too close for a bow. Not too close for this.
+
+*Gun • Ranged • Strike • Weapon*
+
+**Frequency:** Round
+
+**Target:** One creature
+
+**Distance:** Weapon
+
+**Vs:** AD
+
+| | 1 AP |
+|---|---|
+| **Tier 1** | [B] [Mod] Pi |
+| **Tier 2** | [B] 1d4 + [Mod] Pi |
+| **Tier 3** | [B] 2d6 + [Mod] Pi; Pushed 1. |
+| **Effects** | While you are Engaged, this attack takes 1 Bane for it instead of 2. |
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Thunderclap</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
+
+**Flavor:** The shot and the smoke, and they are on the ground.
+
+*Gun • Ranged • Strike • Weapon*
+
+**Frequency:** Round
+
+**Target:** One creature
+
+**Distance:** Weapon
+
+**Vs:** AD
+
+| | 1 AP |
+|---|---|
+| **Tier 1** | [B] [Mod] Pi |
+| **Tier 2** | [B] 1d4 + [Mod] Pi |
+| **Tier 3** | [B] 2d8 + [Mod] Pi; Prone. |
+
+</div>
 ### Hands
 
-You have two hands. Each weapon you hold uses one or two hands. A weapon with the **Two-handed** property must be held with both hands: holding it with one hand gives **3 Banes on all [Strike, Weapon] Actions**, including Actions that use another weapon. Actions without the Weapon trait, such as Trip and Shove, don't take these Banes.
+You have two hands: your **main hand** and your **off hand**. Which hand holds a weapon changes nothing in the rules, unless a feature says so. Each weapon you hold uses one or two hands. A weapon with the **Two-handed** property must be held with both hands: holding it with one hand gives **3 Banes on [Strike, Weapon] Actions with that weapon**. A weapon or your Fists in the other hand don't take them.
 
-You need a hand free to use Handle Actions. A creature with both hands full has to **Release** something first (0 AP: drop an object, or let go of it with one hand), and can **Interact** (1 AP) to grip a weapon with both hands again.
+You need a hand free to use Handle Actions. A creature with both hands full has to **Release** something first (0 AP: drop an object, or let go of it with one hand), and can **[[Chapter 6: Basic Actions|Regrip]]** (1 AP) to hold a weapon with both hands again, move a weapon to the other hand or swap the weapons in your hands (Regrip doesn't need a free hand).
 
 ### Properties
 
-Weapons have properties instead of traits: Melee, Ranged, Long, Projectile, Thrown, Reload, Two-handed, Barehanded and Non-threatening. Every weapon has the property of its kind: a melee weapon has Melee, a ranged weapon has Ranged.
+Weapons have properties instead of traits: Melee, Ranged, Long, Projectile, Firearm, Thrown, Reload, Two-handed, Barehanded and Non-threatening. Every weapon has the property of its kind: a melee weapon has Melee, a ranged weapon has Ranged.
 
 An Action with the Weapon trait and the Melee or Ranged trait needs a weapon with that property. A Weapon Action without them takes [[Weapon Actions and Your Weapon|the property of the weapon you use]].
 
 #### Barehanded
 
-A **Barehanded** weapon can't be disarmed and doesn't occupy a hand (or a similar appendage), but you must still have a free hand to use it. Fists are Barehanded. A hidden blade or a spiked buckle could be too.
+A **Barehanded** weapon can't be disarmed and doesn't occupy a hand (or a similar appendage), but you must still have a free hand to use it. Fists are Barehanded. A hidden blade, a Knuckle Dagger or a spiked buckle could be too.
+
+#### Firearm
+
+A **Firearm** shoots with powder, such as a pistol or a musket. It is not a Projectile weapon: [[Shot]] Actions can't use it. [[Gun]] Actions need a Firearm, and a Weapon Action with a Firearm is a [Gun] Action.
 
 #### Long
 
-A weapon with the **Long** property is made to keep enemies at a distance: you take **1 Bane** on Weapon Actions with it against adjacent creatures, and it doesn't threaten them (see [[Flanking]]). A pike has Range 3 and Long.
+A weapon with the **Long** property is made to keep enemies at a distance: you take **1 Bane** on Weapon Actions with it against adjacent creatures, and it doesn't threaten them (see [[Flanking]]). A Pike has Range 3 and Long.
 
 #### Projectile
 
@@ -114,28 +462,37 @@ A weapon with the Reload property doesn't need to be reloaded every time you use
 
 Before you roll a Weapon Strike with the weapon, you can choose to make a **Reload Shot**: the Strike is **[[Favored and Doomed Rolls|Favored]]** and **[[Empowered]] 2**. After the shot, you must Reload before you can use that weapon again. See the Reload Action in [[Chapter 6: Basic Actions]].
 
+### Weapon Groups
+
+Every weapon belongs to one of eight **Weapon Groups**: **Blades**, **Axes**, **Hammers**, **Polearms**, **Bows**, **Crossbows**, **Firearms** and **Unarmed** (Fists and the Knuckle Dagger). Weapons of a group are used the same way, so what you learn with one helps with the others: see [[Mastery]].
+
 ### Mastery
 
-Anyone can use any weapon; you get better with the ones you use. Each time you get a **Tier 3** on a Weapon Action with a weapon, you gain **1 Mastery** with that kind of weapon (once per Action, even against several targets).
+Anyone can use any weapon; you get better with the ones you use. In an encounter, when you get a **Tier 3** on a Weapon Action with a weapon, you gain **1 Mastery** with that kind of weapon. You gain at most **1 Mastery per Weapon Group in each encounter**: the first Tier 3 with a weapon of a group gives it, and no weapon of that group gains more until the next encounter (a weapon of another group still can).
 
 Mastery belongs to you, not to the weapon you hold: it is for a kind of weapon (a Greatsword, a Crossbow), so a better or different Greatsword uses the same Mastery, and you keep it when you lose the weapon.
 
+**Your Mastery with a weapon is at least a third of your highest Mastery with a weapon of its group** (rounded down). The Mastery you gain with it adds to that.
+
+> [!example]
+> Zack has 15 Mastery with the Greatsword. His Mastery with a Longsword and a Dagger, both Blades, is at least 5, so their Weapon Techniques are unlocked. When he gets his first Tier 3 with the Longsword in an encounter, it has 6 Mastery.
+
 | Mastery | You unlock |
 |---|---|
-| **3** | The weapon's **Weapon Technique**. Until then, you can't use it. |
-| **8** | To be decided. |
-| **15** | To be decided. |
+| **The weapon's Mastery** (3, 4 or 5) | The weapon's **Weapon Technique**. Until then, you can't use it. |
+| **8: Expert** | Once each turn, you can draw, stow or change the grip of the weapon without using the Interact Action. |
+| **15: Master** | From **level 8**, your Actions that deal [W] with the weapon deal one more [W] (1[W] becomes 2[W]). |
 
 > [!tbd]
-> What 8 and 15 Mastery unlock (an Advanced Technique?), and how classes or Talents grant Mastery (the Archer's Sharpshooter starts at 3 with one weapon).
+> How classes or Talents grant Mastery beyond the Archer's Sharpshooter (3 with one Projectile weapon), and Spell Mastery for casters (D4).
 
 ### Fists
 
-Every creature counts as having **Fists**. They are a weapon like any other, with the properties Barehanded, Melee and Non-threatening. While you have a free hand, your Fists count as a weapon you are wielding, alongside any other weapon you hold: a Weapon Action can use them.
+Every creature counts as having **Fists**. They are a weapon like any other, with the properties Barehanded, Melee and Non-threatening, in the Unarmed group. While you have a free hand, your Fists count as a weapon you are wielding, alongside any other weapon you hold: a Weapon Action can use them. Fists have no Weapon Technique: Unarmed Talents give their Actions.
 
-| Name | Properties | Type | Range | Damage (Tier 1 / Tier 2 / Tier 3) |
-|---|---|---|---|---|
-| Fists | Barehanded, Melee, Non-threatening | Blunt | 1 | [B] 0 / 1 / 1d4 |
+| Name | Group | Properties | Type | Range | Damage | Mastery |
+|---|---|---|---|---|---|---|
+| Fists | Unarmed | Barehanded, Melee, Non-threatening | Blunt | 1 | [B] 0 / 1 / 1d4 | - |
 
 Fists are used with the [[Chapter 6: Basic Actions|Fists Basic Action]], or with any Weapon Action.
 

@@ -217,67 +217,225 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <body id="top"><div class="layout"><nav class="toc"><details class="tocwrap" open><summary>Contents</summary><div class="tocbtns"><button id="expandAll" type="button">Expand all</button><button id="collapseAll" type="button">Collapse all</button></div><div class="tocch"><a href="#gear">Gear</a><div class="toch2"><a href="#weapons">Weapons</a><a href="#armor">Armor</a></div></div><div class="tocch"><a href="#open-items">Appendix: Open Items</a><div class="toch2"></div></div></details></nav>
 <main><div class="docnav"><a href="core-rules.html">Core Rules</a><a href="species.html">Species</a><a href="gear.html" class=cur>Gear</a><a href="talents.html">Talents</a><a href="paladin.html">Paladin</a><a href="archer.html">Archer</a><a href="bestiary.html">Bestiary</a></div><section class="chapter"><details open><summary><h1 id="gear">Gear</h1></summary><div class="cbody">
 <h2 id="weapons">Weapons</h2>
-<p>Your class determines your <span class="mod-weapon">Weapon Modifier</span>. Each weapon also has its own Weapon Technique, which you unlock with <a class="xref" href="#mastery">Mastery</a>.</p>
+<p>Your class determines your <span class="mod-weapon">Weapon Modifier</span>. Each weapon belongs to a <a class="xref" href="#weapon-groups">Weapon Group</a> and has its own <strong>Weapon Technique</strong>, which you unlock with <a class="xref" href="#mastery">Mastery</a>. A Weapon Technique can only be used with the weapon it belongs to, while you wield it: its <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Actions use that weapon, never another one.</p>
 <div class="callout example"><div class="ctitle">Example</div><p>A Paladin whose <span class="mod-weapon">Weapon Modifier</span> uses <span class="at-body">Body</span> deals 1d8 + <span class="at-body">Body</span> slash damage on Tier 2 with a Greatsword Weapon Attack.</p></div>
 <h3 id="weapon-damage-w">Weapon Damage [W]</h3>
 <p><strong>[W]</strong> is the damage of your weapon. An Action that deals 1[W] adds one instance of the weapon's damage. 2[W] is two instances, including any modifier and all dice. A weapon's damage has its own type, written in its table ([B] for every weapon so far): 1[W] deals that type, whatever the rest of the Action deals. Later weapons, such as wands and staves, may deal <span class="at-mind">Mind</span> damage or both.</p>
 <p><em>Example:</em> an Action that deals 2[W] deals 0 / 2d8 / 4d6 with a Greatsword, and 0 / 2d4+4 / 2d10+4 with a Crossbow.</p>
+<h3 id="reading-the-weapon-tables">Reading the Weapon Tables</h3>
+<ul>
+<li><strong>Group:</strong> its <a class="xref" href="#weapon-groups">Weapon Group</a>.</li>
+<li><strong>Range:</strong> in squares. Melee weapons have a <a class="xref" href="core-rules.html#weapon-range">Range</a> too: 1 for most of them. For a ranged weapon, the first number is the normal range, the second the far range (<span class="kw-bane">1 Bane</span>) and the third the maximum range (<span class="kw-bane">2 Banes</span>).</li>
+<li><strong>Damage:</strong> Tier 1 / Tier 2 / Tier 3, all [B]. Tier 1 is 0 for every weapon but Fists.</li>
+<li><strong>Mastery:</strong> the <a class="xref" href="#mastery">Mastery</a> its Weapon Technique needs: 3 for common weapons, 4 for specialist ones, 5 for exotic ones.</li>
+</ul>
+<p>A weapon that takes both hands deals the most, a weapon that leaves a hand free a little less, and a light or Thrown weapon less again: what the weapon can do pays for the difference.</p>
 <h3 id="melee-2">Melee</h3>
-<p>Melee weapons have a <a class="xref" href="core-rules.html#weapon-range">Range</a> too: 1 for most of them.</p>
 <div class="tablewrap"><table>
 <thead>
 <tr>
 <th>Name</th>
+<th>Group</th>
 <th>Properties</th>
 <th>Type</th>
 <th>Range</th>
-<th>Damage (Tier 1 / Tier 2 / Tier 3)</th>
+<th>Damage</th>
+<th>Mastery</th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td>Dagger</td>
+<td>Blades</td>
+<td>Melee, Thrown</td>
+<td><span class="dmgword" style="--dc:#8a8a8a">Pierce</span></td>
+<td>1, Thrown 4 / 8 / 12</td>
+<td><span class="pool-b">[B] 0 / 1d4 / 1d8</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>Longsword</td>
+<td>Blades</td>
+<td>Melee</td>
+<td><span class="dmgword" style="--dc:#8a8a8a">Slash</span></td>
+<td>1</td>
+<td><span class="pool-b">[B] 0 / 1d6 / 1d10</span></td>
+<td>3</td>
+</tr>
+<tr>
 <td>Greatsword</td>
-<td>Two-handed</td>
+<td>Blades</td>
+<td>Melee, Two-handed</td>
 <td><span class="dmgword" style="--dc:#8a8a8a">Slash</span></td>
 <td>1</td>
 <td><span class="pool-b">[B] 0 / 1d8 / 2d6</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>Handaxe</td>
+<td>Axes</td>
+<td>Melee, Thrown</td>
+<td><span class="dmgword" style="--dc:#8a8a8a">Slash</span></td>
+<td>1, Thrown 4 / 8 / 12</td>
+<td><span class="pool-b">[B] 0 / 1d4 / 1d8</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>Greataxe</td>
+<td>Axes</td>
+<td>Melee, Two-handed</td>
+<td><span class="dmgword" style="--dc:#8a8a8a">Slash</span></td>
+<td>1</td>
+<td><span class="pool-b">[B] 0 / 1d6 / 2d8</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>Mace</td>
+<td>Hammers</td>
+<td>Melee</td>
+<td><span class="dmgword" style="--dc:#8a8a8a">Blunt</span></td>
+<td>1</td>
+<td><span class="pool-b">[B] 0 / 1d4+1 / 1d8+1</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>Maul</td>
+<td>Hammers</td>
+<td>Melee, Two-handed</td>
+<td><span class="dmgword" style="--dc:#8a8a8a">Blunt</span></td>
+<td>1</td>
+<td><span class="pool-b">[B] 0 / 1d4+2 / 1d10+2</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>Spear</td>
+<td>Polearms</td>
+<td>Melee, Thrown</td>
+<td><span class="dmgword" style="--dc:#8a8a8a">Pierce</span></td>
+<td>1, Thrown 4 / 8 / 12</td>
+<td><span class="pool-b">[B] 0 / 1d4 / 1d8</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>Pike</td>
+<td>Polearms</td>
+<td>Long, Melee, Two-handed</td>
+<td><span class="dmgword" style="--dc:#8a8a8a">Pierce</span></td>
+<td>3</td>
+<td><span class="pool-b">[B] 0 / 1d6 / 1d10</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>Knuckle Dagger</td>
+<td>Unarmed</td>
+<td>Barehanded, Melee</td>
+<td><span class="dmgword" style="--dc:#8a8a8a">Pierce</span></td>
+<td>1</td>
+<td><span class="pool-b">[B] 0 / 1d4 / 1d6</span></td>
+<td>5</td>
 </tr>
 </tbody>
 </table></div>
+<h4 id="melee-weapon-techniques">Melee Weapon Techniques</h4>
+<div class="acard" style="--fq:#185FA5;--fqt:#E6F1FB"><div class="ahead"><b>Stick and Slip</b><span class="acat">Weapon Technique</span><span class="afreq">Round</span><span class="aps"><span class="apmark" role="img" aria-label="1 Action Points">1AP</span></span></div><div class="abody"><div class="flavor">In, a quick cut, and out before they can answer.</div><div class="traits"><span class="tg" style="--tg:var(--g-roll)"><span class="tgl">Roll</span><span class="tgc"><span class="tchip">Weapon</span></span></span><span class="tg" style="--tg:var(--g-requires)"><span class="tgl">Requires</span><span class="tgc"><span class="tchip">Melee</span></span></span><span class="tg" style="--tg:var(--g-kind)"><span class="tgl">Kind</span><span class="tgc"><span class="tchip">Strike</span></span></span></div><div class="meta"><span>One creature</span></div><div class="meta"><span class="dist"><b>Distance:</b> Weapon</span> <i class='sep'>&#10022;</i> <span class="vs">Vs. AD</span></div><hr class="cdiv"><table class="tgrid"><tr><th class="lbl">Tier 1</th><td><span class="pool-b">[B] [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span></td></tr><tr><th class="lbl">Tier 2</th><td><span class="pool-b">[B] 1d4 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span>; you can <span class="kw-mv">Evade 1</span>.</td></tr><tr><th class="lbl">Tier 3</th><td><span class="pool-b">[B] 1d8 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span>; you can <span class="kw-mv">Evade 1</span>.</td></tr></table></div></div>
+<div class="acard" style="--fq:#185FA5;--fqt:#E6F1FB"><div class="ahead"><b>Guarded Cut</b><span class="acat">Weapon Technique</span><span class="afreq">Round</span><span class="aps"><span class="apmark" role="img" aria-label="1 Action Points">1AP</span></span></div><div class="abody"><div class="flavor">The blade strikes and comes straight back to guard.</div><div class="traits"><span class="tg" style="--tg:var(--g-roll)"><span class="tgl">Roll</span><span class="tgc"><span class="tchip">Weapon</span></span></span><span class="tg" style="--tg:var(--g-requires)"><span class="tgl">Requires</span><span class="tgc"><span class="tchip">Melee</span></span></span><span class="tg" style="--tg:var(--g-kind)"><span class="tgl">Kind</span><span class="tgc"><span class="tchip">Strike</span></span></span></div><div class="meta"><span>One creature</span></div><div class="meta"><span class="dist"><b>Distance:</b> Weapon</span> <i class='sep'>&#10022;</i> <span class="vs">Vs. AD</span></div><hr class="cdiv"><table class="tgrid"><tr><th class="lbl">Tier 1</th><td><span class="pool-b">[B] [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Sl</span></td></tr><tr><th class="lbl">Tier 2</th><td><span class="pool-b">[B] 1d6 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Sl</span></td></tr><tr><th class="lbl">Tier 3</th><td><span class="pool-b">[B] 1d10 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Sl</span>; you gain +1 Armor Defense for 1 round.</td></tr></table></div></div>
 <div class="acard" style="--fq:#185FA5;--fqt:#E6F1FB"><div class="ahead"><b>Reaping Sweep</b><span class="acat">Weapon Technique</span><span class="afreq">Round</span><span class="aps"><span class="apmark" role="img" aria-label="1 Action Points">1AP</span></span></div><div class="abody"><div class="flavor">A wide, heavy arc for anyone standing too close.</div><div class="traits"><span class="tg" style="--tg:var(--g-roll)"><span class="tgl">Roll</span><span class="tgc"><span class="tchip">Weapon</span></span></span><span class="tg" style="--tg:var(--g-requires)"><span class="tgl">Requires</span><span class="tgc"><span class="tchip">Melee</span></span></span><span class="tg" style="--tg:var(--g-kind)"><span class="tgl">Kind</span><span class="tgc"><span class="tchip">Strike</span></span></span></div><div class="meta"><span>One creature</span></div><div class="meta"><span class="dist"><b>Distance:</b> Weapon</span> <i class='sep'>&#10022;</i> <span class="vs">Vs. AD</span></div><hr class="cdiv"><table class="tgrid"><tr><th class="lbl">Tier 1</th><td><span class="pool-b">[B] [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Sl</span></td></tr><tr><th class="lbl">Tier 2</th><td><span class="pool-b">[B] 1d10 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Sl</span>; Cleave 1</td></tr><tr><th class="lbl">Tier 3</th><td><span class="pool-b">[B] 2d6 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Sl</span>; Cleave 2</td></tr></table></div></div>
+<div class="acard" style="--fq:#185FA5;--fqt:#E6F1FB"><div class="ahead"><b>Hooking Chop</b><span class="acat">Weapon Technique</span><span class="afreq">Round</span><span class="aps"><span class="apmark" role="img" aria-label="1 Action Points">1AP</span></span></div><div class="abody"><div class="flavor">The beard of the axe catches, and you pull.</div><div class="traits"><span class="tg" style="--tg:var(--g-roll)"><span class="tgl">Roll</span><span class="tgc"><span class="tchip">Weapon</span></span></span><span class="tg" style="--tg:var(--g-requires)"><span class="tgl">Requires</span><span class="tgc"><span class="tchip">Melee</span></span></span><span class="tg" style="--tg:var(--g-kind)"><span class="tgl">Kind</span><span class="tgc"><span class="tchip">Strike</span></span></span></div><div class="meta"><span>One creature</span></div><div class="meta"><span class="dist"><b>Distance:</b> Weapon</span> <i class='sep'>&#10022;</i> <span class="vs">Vs. AD</span></div><hr class="cdiv"><table class="tgrid"><tr><th class="lbl">Tier 1</th><td><span class="pool-b">[B] [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Sl</span></td></tr><tr><th class="lbl">Tier 2</th><td><span class="pool-b">[B] 1d4 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Sl</span>; <span class="kw-mv">Pulled 1</span>.</td></tr><tr><th class="lbl">Tier 3</th><td><span class="pool-b">[B] 1d8 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Sl</span>; <span class="kw-mv">Pulled 1</span>.</td></tr></table></div></div>
+<div class="acard" style="--fq:#185FA5;--fqt:#E6F1FB"><div class="ahead"><b>Rending Chop</b><span class="acat">Weapon Technique</span><span class="afreq">Round</span><span class="aps"><span class="apmark" role="img" aria-label="1 Action Points">1AP</span></span></div><div class="abody"><div class="flavor">A blow that splits armor and leaves the flesh open.</div><div class="traits"><span class="tg" style="--tg:var(--g-roll)"><span class="tgl">Roll</span><span class="tgc"><span class="tchip">Weapon</span></span></span><span class="tg" style="--tg:var(--g-requires)"><span class="tgl">Requires</span><span class="tgc"><span class="tchip">Melee</span></span></span><span class="tg" style="--tg:var(--g-kind)"><span class="tgl">Kind</span><span class="tgc"><span class="tchip">Strike</span></span></span></div><div class="meta"><span>One creature</span></div><div class="meta"><span class="dist"><b>Distance:</b> Weapon</span> <i class='sep'>&#10022;</i> <span class="vs">Vs. AD</span></div><hr class="cdiv"><table class="tgrid"><tr><th class="lbl">Tier 1</th><td><span class="pool-b">[B] [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Sl</span></td></tr><tr><th class="lbl">Tier 2</th><td><span class="pool-b">[B] 1d6 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Sl</span></td></tr><tr><th class="lbl">Tier 3</th><td><span class="pool-b">[B] 2d8 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Sl</span>; <span class="kw-neg">Vulnerable 1</span> (EoT).</td></tr></table></div></div>
+<div class="acard" style="--fq:#185FA5;--fqt:#E6F1FB"><div class="ahead"><b>Ringing Blow</b><span class="acat">Weapon Technique</span><span class="afreq">Round</span><span class="aps"><span class="apmark" role="img" aria-label="1 Action Points">1AP</span></span></div><div class="abody"><div class="flavor">A crack on the helm, and their next swing goes wide.</div><div class="traits"><span class="tg" style="--tg:var(--g-roll)"><span class="tgl">Roll</span><span class="tgc"><span class="tchip">Weapon</span></span></span><span class="tg" style="--tg:var(--g-requires)"><span class="tgl">Requires</span><span class="tgc"><span class="tchip">Melee</span></span></span><span class="tg" style="--tg:var(--g-kind)"><span class="tgl">Kind</span><span class="tgc"><span class="tchip">Strike</span></span></span></div><div class="meta"><span>One creature</span></div><div class="meta"><span class="dist"><b>Distance:</b> Weapon</span> <i class='sep'>&#10022;</i> <span class="vs">Vs. AD</span></div><hr class="cdiv"><table class="tgrid"><tr><th class="lbl">Tier 1</th><td><span class="pool-b">[B] [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Bl</span></td></tr><tr><th class="lbl">Tier 2</th><td><span class="pool-b">[B] 1d4 + 1 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Bl</span></td></tr><tr><th class="lbl">Tier 3</th><td><span class="pool-b">[B] 1d8 + 1 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Bl</span>; its next [Strike] Action before the end of its next turn takes <span class="kw-bane">1 Bane</span>.</td></tr></table></div></div>
+<div class="acard" style="--fq:#185FA5;--fqt:#E6F1FB"><div class="ahead"><b>Bowl Over</b><span class="acat">Weapon Technique</span><span class="afreq">Round</span><span class="aps"><span class="apmark" role="img" aria-label="1 Action Points">1AP</span></span></div><div class="abody"><div class="flavor">All the weight of the head, low and through.</div><div class="traits"><span class="tg" style="--tg:var(--g-roll)"><span class="tgl">Roll</span><span class="tgc"><span class="tchip">Weapon</span></span></span><span class="tg" style="--tg:var(--g-requires)"><span class="tgl">Requires</span><span class="tgc"><span class="tchip">Melee</span></span></span><span class="tg" style="--tg:var(--g-kind)"><span class="tgl">Kind</span><span class="tgc"><span class="tchip">Strike</span></span></span></div><div class="meta"><span>One creature</span></div><div class="meta"><span class="dist"><b>Distance:</b> Weapon</span> <i class='sep'>&#10022;</i> <span class="vs">Vs. AD</span></div><hr class="cdiv"><table class="tgrid"><tr><th class="lbl">Tier 1</th><td><span class="pool-b">[B] [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Bl</span></td></tr><tr><th class="lbl">Tier 2</th><td><span class="pool-b">[B] 1d4 + 2 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Bl</span></td></tr><tr><th class="lbl">Tier 3</th><td><span class="pool-b">[B] 1d10 + 2 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Bl</span>; Prone.</td></tr></table></div></div>
+<div class="acard" style="--fq:#185FA5;--fqt:#E6F1FB"><div class="ahead"><b>Lunge</b><span class="acat">Weapon Technique</span><span class="afreq">Round</span><span class="aps"><span class="apmark" role="img" aria-label="1 Action Points">1AP</span></span></div><div class="abody"><div class="flavor">A full extension that reaches farther than they thought.</div><div class="traits"><span class="tg" style="--tg:var(--g-roll)"><span class="tgl">Roll</span><span class="tgc"><span class="tchip">Weapon</span></span></span><span class="tg" style="--tg:var(--g-requires)"><span class="tgl">Requires</span><span class="tgc"><span class="tchip">Melee</span></span></span><span class="tg" style="--tg:var(--g-kind)"><span class="tgl">Kind</span><span class="tgc"><span class="tchip">Strike</span></span></span></div><div class="meta"><span>One creature</span></div><div class="meta"><span class="dist"><b>Distance:</b> Weapon + 1</span> <i class='sep'>&#10022;</i> <span class="vs">Vs. AD</span></div><hr class="cdiv"><table class="tgrid"><tr><th class="lbl">Tier 1</th><td><span class="pool-b">[B] [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span></td></tr><tr><th class="lbl">Tier 2</th><td><span class="pool-b">[B] 1d4 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span></td></tr><tr><th class="lbl">Tier 3</th><td><span class="pool-b">[B] 1d8 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span>; Hindered (EoT).</td></tr></table></div></div>
+<div class="acard" style="--fq:#185FA5;--fqt:#E6F1FB"><div class="ahead"><b>Keep Them Off</b><span class="acat">Weapon Technique</span><span class="afreq">Round</span><span class="aps"><span class="apmark" role="img" aria-label="1 Action Points">1AP</span></span></div><div class="abody"><div class="flavor">The point stays between you and them, and it pushes.</div><div class="traits"><span class="tg" style="--tg:var(--g-roll)"><span class="tgl">Roll</span><span class="tgc"><span class="tchip">Weapon</span></span></span><span class="tg" style="--tg:var(--g-requires)"><span class="tgl">Requires</span><span class="tgc"><span class="tchip">Melee</span></span></span><span class="tg" style="--tg:var(--g-kind)"><span class="tgl">Kind</span><span class="tgc"><span class="tchip">Strike</span></span></span></div><div class="meta"><span>One creature</span></div><div class="meta"><span class="dist"><b>Distance:</b> Weapon</span> <i class='sep'>&#10022;</i> <span class="vs">Vs. AD</span></div><hr class="cdiv"><table class="tgrid"><tr><th class="lbl">Tier 1</th><td><span class="pool-b">[B] [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span></td></tr><tr><th class="lbl">Tier 2</th><td><span class="pool-b">[B] 1d6 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span>; <span class="kw-mv">Pushed 1</span>.</td></tr><tr><th class="lbl">Tier 3</th><td><span class="pool-b">[B] 1d10 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span>; <span class="kw-mv">Pushed 2</span>.</td></tr></table></div></div>
+<div class="acard" style="--fq:#185FA5;--fqt:#E6F1FB"><div class="ahead"><b>Gut Punch</b><span class="acat">Weapon Technique</span><span class="afreq">Round</span><span class="aps"><span class="apmark" role="img" aria-label="1 Action Points">1AP</span></span></div><div class="abody"><div class="flavor">A fist with a blade in it, right under the ribs.</div><div class="traits"><span class="tg" style="--tg:var(--g-roll)"><span class="tgl">Roll</span><span class="tgc"><span class="tchip">Weapon</span></span></span><span class="tg" style="--tg:var(--g-requires)"><span class="tgl">Requires</span><span class="tgc"><span class="tchip">Melee</span></span></span><span class="tg" style="--tg:var(--g-kind)"><span class="tgl">Kind</span><span class="tgc"><span class="tchip">Strike</span></span></span></div><div class="meta"><span>One creature</span></div><div class="meta"><span class="dist"><b>Distance:</b> Weapon</span> <i class='sep'>&#10022;</i> <span class="vs">Vs. AD</span></div><hr class="cdiv"><table class="tgrid"><tr><th class="lbl">Tier 1</th><td><span class="pool-b">[B] [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span></td></tr><tr><th class="lbl">Tier 2</th><td><span class="pool-b">[B] 1d4 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span>; Hindered (EoT).</td></tr><tr><th class="lbl">Tier 3</th><td><span class="pool-b">[B] 1d6 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span>; Hindered (EoT).</td></tr></table></div></div>
 <h3 id="ranged-2">Ranged</h3>
-<p><strong>Range:</strong> the first number is the normal range. The second is the far range, which causes <span class="kw-bane">1 Bane</span>. The third is the maximum range, which causes <span class="kw-bane">2 Banes</span>. Ranges are always in squares.</p>
 <div class="tablewrap"><table>
 <thead>
 <tr>
 <th>Name</th>
+<th>Group</th>
 <th>Properties</th>
 <th>Type</th>
 <th>Range</th>
-<th>Damage (Tier 1 / Tier 2 / Tier 3)</th>
+<th>Damage</th>
+<th>Mastery</th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td>Shortbow</td>
+<td>Bows</td>
+<td>Projectile, Ranged, Two-handed</td>
+<td><span class="dmgword" style="--dc:#8a8a8a">Pierce</span></td>
+<td>8 / 16 / 32</td>
+<td><span class="pool-b">[B] 0 / 1d6 / 1d10</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>Longbow</td>
+<td>Bows</td>
+<td>Projectile, Ranged, Two-handed</td>
+<td><span class="dmgword" style="--dc:#8a8a8a">Pierce</span></td>
+<td>15 / 30 / 60</td>
+<td><span class="pool-b">[B] 0 / 1d4+1 / 1d8+1</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>Hand Crossbow</td>
+<td>Crossbows</td>
+<td>Projectile, Ranged, Reload</td>
+<td><span class="dmgword" style="--dc:#8a8a8a">Pierce</span></td>
+<td>6 / 12 / 24</td>
+<td><span class="pool-b">[B] 0 / 1d4 / 1d8</span></td>
+<td>4</td>
+</tr>
+<tr>
 <td>Crossbow</td>
-<td>Projectile, Reload, Two-handed</td>
+<td>Crossbows</td>
+<td>Projectile, Ranged, Reload, Two-handed</td>
 <td><span class="dmgword" style="--dc:#8a8a8a">Pierce</span></td>
 <td>10 / 20 / 40</td>
 <td><span class="pool-b">[B] 0 / 1d4+2 / 1d10+2</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td>Pistol</td>
+<td>Firearms</td>
+<td>Firearm, Ranged, Reload</td>
+<td><span class="dmgword" style="--dc:#8a8a8a">Pierce</span></td>
+<td>5 / 10 / 20</td>
+<td><span class="pool-b">[B] 0 / 1d4 / 2d6</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td>Musket</td>
+<td>Firearms</td>
+<td>Firearm, Ranged, Reload, Two-handed</td>
+<td><span class="dmgword" style="--dc:#8a8a8a">Pierce</span></td>
+<td>10 / 20 / 40</td>
+<td><span class="pool-b">[B] 0 / 1d4 / 2d8</span></td>
+<td>5</td>
 </tr>
 </tbody>
 </table></div>
+<h4 id="ranged-weapon-techniques">Ranged Weapon Techniques</h4>
+<div class="acard" style="--fq:#185FA5;--fqt:#E6F1FB"><div class="ahead"><b>Skirmish Shot</b><span class="acat">Weapon Technique</span><span class="afreq">Round</span><span class="aps"><span class="apmark" role="img" aria-label="1 Action Points">1AP</span></span></div><div class="abody"><div class="flavor">Loose, and be gone before the arrow lands.</div><div class="traits"><span class="tg" style="--tg:var(--g-roll)"><span class="tgl">Roll</span><span class="tgc"><span class="tchip">Weapon</span></span></span><span class="tg" style="--tg:var(--g-requires)"><span class="tgl">Requires</span><span class="tgc"><span class="tchip">Ranged</span><span class="tchip">Shot</span></span></span><span class="tg" style="--tg:var(--g-kind)"><span class="tgl">Kind</span><span class="tgc"><span class="tchip">Strike</span></span></span></div><div class="meta"><span>One creature</span></div><div class="meta"><span class="dist"><b>Distance:</b> Weapon</span> <i class='sep'>&#10022;</i> <span class="vs">Vs. AD</span></div><hr class="cdiv"><table class="tgrid"><tr><th class="lbl">Tier 1</th><td><span class="pool-b">[B] [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span></td></tr><tr><th class="lbl">Tier 2</th><td><span class="pool-b">[B] 1d6 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span></td></tr><tr><th class="lbl">Tier 3</th><td><span class="pool-b">[B] 1d10 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span>; you can <span class="kw-mv">Evade 1</span>.</td></tr></table></div></div>
+<div class="acard" style="--fq:#185FA5;--fqt:#E6F1FB"><div class="ahead"><b>Heartseeker</b><span class="acat">Weapon Technique</span><span class="afreq">Round</span><span class="aps"><span class="apmark" role="img" aria-label="1 Action Points">1AP</span></span></div><div class="abody"><div class="flavor">A full draw, aimed where the armor gives.</div><div class="traits"><span class="tg" style="--tg:var(--g-roll)"><span class="tgl">Roll</span><span class="tgc"><span class="tchip">Weapon</span></span></span><span class="tg" style="--tg:var(--g-requires)"><span class="tgl">Requires</span><span class="tgc"><span class="tchip">Ranged</span><span class="tchip">Shot</span></span></span><span class="tg" style="--tg:var(--g-kind)"><span class="tgl">Kind</span><span class="tgc"><span class="tchip">Strike</span></span></span></div><div class="meta"><span>One creature</span></div><div class="meta"><span class="dist"><b>Distance:</b> Weapon</span> <i class='sep'>&#10022;</i> <span class="vs">Vs. AD</span></div><hr class="cdiv"><table class="tgrid"><tr><th class="lbl">Tier 1</th><td><span class="pool-b">[B] [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span></td></tr><tr><th class="lbl">Tier 2</th><td><span class="pool-b">[B] 1d4 + 1 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span></td></tr><tr><th class="lbl">Tier 3</th><td><span class="pool-b">[B] 1d8 + 1 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span>; <span class="kw-neg">Vulnerable 1</span> (EoT).</td></tr></table></div></div>
+<div class="acard" style="--fq:#185FA5;--fqt:#E6F1FB"><div class="ahead"><b>Sting</b><span class="acat">Weapon Technique</span><span class="afreq">Round</span><span class="aps"><span class="apmark" role="img" aria-label="1 Action Points">1AP</span></span></div><div class="abody"><div class="flavor">A small bolt in the leg: small, and enough.</div><div class="traits"><span class="tg" style="--tg:var(--g-roll)"><span class="tgl">Roll</span><span class="tgc"><span class="tchip">Weapon</span></span></span><span class="tg" style="--tg:var(--g-requires)"><span class="tgl">Requires</span><span class="tgc"><span class="tchip">Ranged</span><span class="tchip">Shot</span></span></span><span class="tg" style="--tg:var(--g-kind)"><span class="tgl">Kind</span><span class="tgc"><span class="tchip">Strike</span></span></span></div><div class="meta"><span>One creature</span></div><div class="meta"><span class="dist"><b>Distance:</b> Weapon</span> <i class='sep'>&#10022;</i> <span class="vs">Vs. AD</span></div><hr class="cdiv"><table class="tgrid"><tr><th class="lbl">Tier 1</th><td><span class="pool-b">[B] [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span></td></tr><tr><th class="lbl">Tier 2</th><td><span class="pool-b">[B] 1d4 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span></td></tr><tr><th class="lbl">Tier 3</th><td><span class="pool-b">[B] 1d8 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span>; Hindered (EoT).</td></tr></table></div></div>
 <div class="acard" style="--fq:#185FA5;--fqt:#E6F1FB"><div class="ahead"><b>Lock & Loose</b><span class="acat">Weapon Technique</span><span class="afreq">Round</span><span class="aps"><span class="apmark" role="img" aria-label="1 Action Points">1AP</span></span></div><div class="abody"><div class="flavor">A bolt to the knee, and they go nowhere.</div><div class="traits"><span class="tg" style="--tg:var(--g-roll)"><span class="tgl">Roll</span><span class="tgc"><span class="tchip">Weapon</span></span></span><span class="tg" style="--tg:var(--g-requires)"><span class="tgl">Requires</span><span class="tgc"><span class="tchip">Ranged</span><span class="tchip">Shot</span></span></span><span class="tg" style="--tg:var(--g-kind)"><span class="tgl">Kind</span><span class="tgc"><span class="tchip">Strike</span></span></span></div><div class="meta"><span>One creature</span></div><div class="meta"><span class="dist"><b>Distance:</b> Weapon</span> <i class='sep'>&#10022;</i> <span class="vs">Vs. AD</span></div><hr class="cdiv"><table class="tgrid"><tr><th class="lbl">Tier 1</th><td><span class="pool-b">[B] [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span></td></tr><tr><th class="lbl">Tier 2</th><td><span class="pool-b">[B] 1d4+2+[Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span>; For 1 round, the creature is Hindered until they use a Move Action.</td></tr><tr><th class="lbl">Tier 3</th><td><span class="pool-b">[B] 1d10 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span>; Immobilized</td></tr></table></div></div>
+<div class="acard" style="--fq:#185FA5;--fqt:#E6F1FB"><div class="ahead"><b>Point Blank</b><span class="acat">Weapon Technique</span><span class="afreq">Round</span><span class="aps"><span class="apmark" role="img" aria-label="1 Action Points">1AP</span></span></div><div class="abody"><div class="flavor">Too close for a bow. Not too close for this.</div><div class="traits"><span class="tg" style="--tg:var(--g-roll)"><span class="tgl">Roll</span><span class="tgc"><span class="tchip">Weapon</span></span></span><span class="tg" style="--tg:var(--g-requires)"><span class="tgl">Requires</span><span class="tgc"><span class="tchip">Gun</span><span class="tchip">Ranged</span></span></span><span class="tg" style="--tg:var(--g-kind)"><span class="tgl">Kind</span><span class="tgc"><span class="tchip">Strike</span></span></span></div><div class="meta"><span>One creature</span></div><div class="meta"><span class="dist"><b>Distance:</b> Weapon</span> <i class='sep'>&#10022;</i> <span class="vs">Vs. AD</span></div><hr class="cdiv"><table class="tgrid"><tr><th class="lbl">Tier 1</th><td><span class="pool-b">[B] [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span></td></tr><tr><th class="lbl">Tier 2</th><td><span class="pool-b">[B] 1d4 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span></td></tr><tr><th class="lbl">Tier 3</th><td><span class="pool-b">[B] 2d6 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span>; <span class="kw-mv">Pushed 1</span>.</td></tr></table><div class="eff sep"><div class="eh">Effects (Tier 2+)</div><div class="el"><span>While you are Engaged, this attack takes <span class="kw-bane">1 Bane</span> for it instead of 2.</span></div></div></div></div>
+<div class="acard" style="--fq:#185FA5;--fqt:#E6F1FB"><div class="ahead"><b>Thunderclap</b><span class="acat">Weapon Technique</span><span class="afreq">Round</span><span class="aps"><span class="apmark" role="img" aria-label="1 Action Points">1AP</span></span></div><div class="abody"><div class="flavor">The shot and the smoke, and they are on the ground.</div><div class="traits"><span class="tg" style="--tg:var(--g-roll)"><span class="tgl">Roll</span><span class="tgc"><span class="tchip">Weapon</span></span></span><span class="tg" style="--tg:var(--g-requires)"><span class="tgl">Requires</span><span class="tgc"><span class="tchip">Gun</span><span class="tchip">Ranged</span></span></span><span class="tg" style="--tg:var(--g-kind)"><span class="tgl">Kind</span><span class="tgc"><span class="tchip">Strike</span></span></span></div><div class="meta"><span>One creature</span></div><div class="meta"><span class="dist"><b>Distance:</b> Weapon</span> <i class='sep'>&#10022;</i> <span class="vs">Vs. AD</span></div><hr class="cdiv"><table class="tgrid"><tr><th class="lbl">Tier 1</th><td><span class="pool-b">[B] [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span></td></tr><tr><th class="lbl">Tier 2</th><td><span class="pool-b">[B] 1d4 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span></td></tr><tr><th class="lbl">Tier 3</th><td><span class="pool-b">[B] 2d8 + [Mod]</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span>; Prone.</td></tr></table></div></div>
 <h3 id="hands">Hands</h3>
-<p>You have two hands. Each weapon you hold uses one or two hands. A weapon with the <strong>Two-handed</strong> property must be held with both hands: holding it with one hand gives <strong><span class="kw-bane">3 Banes</span> on all [<span class="trhl" style="--tc:var(--g-kind)">Strike</span>, <span class="trhl" style="--tc:var(--g-roll)">Weapon</span>] Actions</strong>, including Actions that use another weapon. Actions without the <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> trait, such as Trip and Shove, don't take these <span class="kw-bane">Banes</span>.</p>
-<p>You need a hand free to use <span class="trhl" style="--tc:var(--g-requires)">Handle</span> Actions. A creature with both hands full has to <strong>Release</strong> something first (<span class="kw-ap">0 AP</span>: drop an object, or let go of it with one hand), and can <strong>Interact</strong> (<span class="kw-ap">1 AP</span>) to grip a weapon with both hands again.</p>
+<p>You have two hands: your <strong>main hand</strong> and your <strong>off hand</strong>. Which hand holds a weapon changes nothing in the rules, unless a feature says so. Each weapon you hold uses one or two hands. A weapon with the <strong>Two-handed</strong> property must be held with both hands: holding it with one hand gives <strong><span class="kw-bane">3 Banes</span> on [<span class="trhl" style="--tc:var(--g-kind)">Strike</span>, <span class="trhl" style="--tc:var(--g-roll)">Weapon</span>] Actions with that weapon</strong>. A weapon or your Fists in the other hand don't take them.</p>
+<p>You need a hand free to use <span class="trhl" style="--tc:var(--g-requires)">Handle</span> Actions. A creature with both hands full has to <strong>Release</strong> something first (<span class="kw-ap">0 AP</span>: drop an object, or let go of it with one hand), and can <strong><a class="xref" href="core-rules.html#chapter-6-basic-actions">Regrip</a></strong> (<span class="kw-ap">1 AP</span>) to hold a weapon with both hands again, move a weapon to the other hand or swap the weapons in your hands (Regrip doesn't need a free hand).</p>
 <h3 id="properties">Properties</h3>
-<p>Weapons have properties instead of traits: Melee, Ranged, Long, Projectile, Thrown, Reload, Two-handed, Barehanded and Non-threatening. Every weapon has the property of its kind: a melee weapon has Melee, a ranged weapon has Ranged.</p>
+<p>Weapons have properties instead of traits: Melee, Ranged, Long, Projectile, Firearm, Thrown, Reload, Two-handed, Barehanded and Non-threatening. Every weapon has the property of its kind: a melee weapon has Melee, a ranged weapon has Ranged.</p>
 <p>An Action with the <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> trait and the <span class="trhl" style="--tc:var(--g-requires)">Melee</span> or <span class="trhl" style="--tc:var(--g-requires)">Ranged</span> trait needs a weapon with that property. A <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action without them takes <a class="xref" href="core-rules.html#weapon-actions-and-your-weapon">the property of the weapon you use</a>.</p>
 <h4 id="barehanded">Barehanded</h4>
-<p>A <strong>Barehanded</strong> weapon can't be disarmed and doesn't occupy a hand (or a similar appendage), but you must still have a free hand to use it. Fists are Barehanded. A hidden blade or a spiked buckle could be too.</p>
+<p>A <strong>Barehanded</strong> weapon can't be disarmed and doesn't occupy a hand (or a similar appendage), but you must still have a free hand to use it. Fists are Barehanded. A hidden blade, a Knuckle Dagger or a spiked buckle could be too.</p>
+<h4 id="firearm">Firearm</h4>
+<p>A <strong>Firearm</strong> shoots with powder, such as a pistol or a musket. It is not a Projectile weapon: <a class="xref" href="core-rules.html#shot">Shot</a> Actions can't use it. <a class="xref" href="core-rules.html#gun">Gun</a> Actions need a Firearm, and a <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action with a Firearm is a [<span class="trhl" style="--tc:var(--g-requires)">Gun</span>] Action.</p>
 <h4 id="long">Long</h4>
-<p>A weapon with the <strong>Long</strong> property is made to keep enemies at a distance: you take <strong><span class="kw-bane">1 Bane</span></strong> on <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Actions with it against adjacent creatures, and it doesn't threaten them (see <a class="xref" href="core-rules.html#flanking">Flanking</a>). A pike has Range 3 and Long.</p>
+<p>A weapon with the <strong>Long</strong> property is made to keep enemies at a distance: you take <strong><span class="kw-bane">1 Bane</span></strong> on <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Actions with it against adjacent creatures, and it doesn't threaten them (see <a class="xref" href="core-rules.html#flanking">Flanking</a>). A Pike has Range 3 and Long.</p>
 <h4 id="projectile">Projectile</h4>
 <p>A <strong>Projectile</strong> weapon shoots something, such as a bow or a crossbow, instead of being swung or thrown. <a class="xref" href="core-rules.html#shot">Shot</a> Actions need a Projectile weapon.</p>
 <h4 id="thrown">Thrown</h4>
@@ -287,9 +445,13 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <h4 id="reload">Reload</h4>
 <p>A weapon with the Reload property doesn't need to be reloaded every time you use it: you can reload quickly between shots. But you can make a more powerful shot that does require a reload.</p>
 <p>Before you roll a Weapon Strike with the weapon, you can choose to make a <strong>Reload Shot</strong>: the Strike is <strong><a class="xref" href="core-rules.html#favored-and-doomed-rolls"><span class="kw-pos">Favored</span></a></strong> and <strong><a class="xref" href="core-rules.html#empowered"><span class="kw-pos">Empowered</span></a> 2</strong>. After the shot, you must Reload before you can use that weapon again. See the Reload Action in <a class="xref" href="core-rules.html#chapter-6-basic-actions">Chapter 6: Basic Actions</a>.</p>
+<h3 id="weapon-groups">Weapon Groups</h3>
+<p>Every weapon belongs to one of eight <strong>Weapon Groups</strong>: <strong>Blades</strong>, <strong>Axes</strong>, <strong>Hammers</strong>, <strong>Polearms</strong>, <strong>Bows</strong>, <strong>Crossbows</strong>, <strong>Firearms</strong> and <strong>Unarmed</strong> (Fists and the Knuckle Dagger). Weapons of a group are used the same way, so what you learn with one helps with the others: see <a class="xref" href="#mastery">Mastery</a>.</p>
 <h3 id="mastery">Mastery</h3>
-<p>Anyone can use any weapon; you get better with the ones you use. Each time you get a <strong>Tier 3</strong> on a <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action with a weapon, you gain <strong>1 Mastery</strong> with that kind of weapon (once per Action, even against several targets).</p>
+<p>Anyone can use any weapon; you get better with the ones you use. In an encounter, when you get a <strong>Tier 3</strong> on a <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action with a weapon, you gain <strong>1 Mastery</strong> with that kind of weapon. You gain at most <strong>1 Mastery per Weapon Group in each encounter</strong>: the first Tier 3 with a weapon of a group gives it, and no weapon of that group gains more until the next encounter (a weapon of another group still can).</p>
 <p>Mastery belongs to you, not to the weapon you hold: it is for a kind of weapon (a Greatsword, a Crossbow), so a better or different Greatsword uses the same Mastery, and you keep it when you lose the weapon.</p>
+<p><strong>Your Mastery with a weapon is at least a third of your highest Mastery with a weapon of its group</strong> (rounded down). The Mastery you gain with it adds to that.</p>
+<div class="callout example"><div class="ctitle">Example</div><p>Zack has 15 Mastery with the Greatsword. His Mastery with a Longsword and a Dagger, both Blades, is at least 5, so their Weapon Techniques are unlocked. When he gets his first Tier 3 with the Longsword in an encounter, it has 6 Mastery.</p></div>
 <div class="tablewrap"><table>
 <thead>
 <tr>
@@ -299,39 +461,43 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </thead>
 <tbody>
 <tr>
-<td><strong>3</strong></td>
+<td><strong>The weapon's Mastery</strong> (3, 4 or 5)</td>
 <td>The weapon's <strong>Weapon Technique</strong>. Until then, you can't use it.</td>
 </tr>
 <tr>
-<td><strong>8</strong></td>
-<td>To be decided.</td>
+<td><strong>8: Expert</strong></td>
+<td>Once each turn, you can draw, stow or change the grip of the weapon without using the Interact Action.</td>
 </tr>
 <tr>
-<td><strong>15</strong></td>
-<td>To be decided.</td>
+<td><strong>15: Master</strong></td>
+<td>From <strong>level 8</strong>, your Actions that deal [W] with the weapon deal one more [W] (1[W] becomes 2[W]).</td>
 </tr>
 </tbody>
 </table></div>
-<div class="callout tbd"><div class="ctitle">To be decided</div><p>What 8 and 15 Mastery unlock (an Advanced Technique?), and how classes or Talents grant Mastery (the Archer's Sharpshooter starts at 3 with one weapon).</p></div>
+<div class="callout tbd"><div class="ctitle">To be decided</div><p>How classes or Talents grant Mastery beyond the Archer's Sharpshooter (3 with one Projectile weapon), and Spell Mastery for casters (D4).</p></div>
 <h3 id="fists">Fists</h3>
-<p>Every creature counts as having <strong>Fists</strong>. They are a weapon like any other, with the properties Barehanded, Melee and Non-threatening. While you have a free hand, your Fists count as a weapon you are wielding, alongside any other weapon you hold: a <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action can use them.</p>
+<p>Every creature counts as having <strong>Fists</strong>. They are a weapon like any other, with the properties Barehanded, Melee and Non-threatening, in the Unarmed group. While you have a free hand, your Fists count as a weapon you are wielding, alongside any other weapon you hold: a <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action can use them. Fists have no Weapon Technique: Unarmed Talents give their Actions.</p>
 <div class="tablewrap"><table>
 <thead>
 <tr>
 <th>Name</th>
+<th>Group</th>
 <th>Properties</th>
 <th>Type</th>
 <th>Range</th>
-<th>Damage (Tier 1 / Tier 2 / Tier 3)</th>
+<th>Damage</th>
+<th>Mastery</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Fists</td>
+<td>Unarmed</td>
 <td>Barehanded, Melee, Non-threatening</td>
 <td><span class="dmgword" style="--dc:#8a8a8a">Blunt</span></td>
 <td>1</td>
 <td><span class="pool-b">[B] 0 / 1 / 1d4</span></td>
+<td>-</td>
 </tr>
 </tbody>
 </table></div>
@@ -373,7 +539,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <p>Each class has an <strong>Armor Training</strong>: Light, Medium or Heavy. Each one includes the lighter ones (Heavy covers Medium and Light), and every creature is trained in Unarmored. The Paladin has Heavy and the Archer Light.</p>
 <p>If you wear armor you are not trained in, <strong>all your Rolls are <span class="kw-neg">Doomed</span></strong>, and <strong>Actions that roll against your Armor Defense or Ward Defense are <span class="kw-pos">Favored</span></strong>.</p>
 <div class="callout tbd"><div class="ctitle">To be decided</div><p>Armor properties and named armors are not written yet: Resist by damage subtype (padded, mail, plate), drawbacks (Bulky −1 Speed, Noisy for stealth), Warded (+1 WD), shields (a Block Reaction), and an unarmored Talent tree.</p></div></div></details></section>
-<section class="chapter"><details open><summary><h1 id="open-items">Appendix: Open Items</h1></summary><div class="cbody"><p>Rules that are not decided or not written yet. They are collected from the "To be decided" boxes in the chapters.</p><ol class="openitems"><li><a href="#mastery">Mastery</a>: What 8 and 15 Mastery unlock (an Advanced Technique?), and how classes or Talents grant Mastery (the Archer's Sharpshooter starts at 3 with one weapon).</li><li><a href="#armor-training">Armor Training</a>: Armor properties and named armors are not written yet: Resist by damage subtype (padded, mail, plate), drawbacks (Bulky −1 Speed, Noisy for stealth), Warded (+1 WD), shields (a Block Reaction), and an unarmored Talent tree.</li></ol></div></details></section><p class="credits">Icons: Font Awesome Free (CC BY 4.0). Card title font: Cinzel (SIL Open Font License).</p><p class="totop"><a href="#top">Back to top</a></p></main></div><script>
+<section class="chapter"><details open><summary><h1 id="open-items">Appendix: Open Items</h1></summary><div class="cbody"><p>Rules that are not decided or not written yet. They are collected from the "To be decided" boxes in the chapters.</p><ol class="openitems"><li><a href="#mastery">Mastery</a>: How classes or Talents grant Mastery beyond the Archer's Sharpshooter (3 with one Projectile weapon), and Spell Mastery for casters (D4).</li><li><a href="#armor-training">Armor Training</a>: Armor properties and named armors are not written yet: Resist by damage subtype (padded, mail, plate), drawbacks (Bulky −1 Speed, Noisy for stealth), Warded (+1 WD), shields (a Block Reaction), and an unarmored Talent tree.</li></ol></div></details></section><p class="credits">Icons: Font Awesome Free (CC BY 4.0). Card title font: Cinzel (SIL Open Font License).</p><p class="totop"><a href="#top">Back to top</a></p></main></div><script>
 function openUp(el){let d=el&&el.closest('details');while(d){d.open=true;d=d.parentElement&&d.parentElement.closest('details');}}
 document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',()=>{const t=document.getElementById(a.getAttribute('href').slice(1));openUp(t);}));
 window.addEventListener('hashchange',()=>openUp(document.getElementById(location.hash.slice(1))));

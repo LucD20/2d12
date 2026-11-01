@@ -1,7 +1,7 @@
 // Inline rolls for chat, descriptions and card text:
 // @Check[body|dc:14|adj:2|boon:1|bane:2|traits:divine]   @Damage[(1d4+1)[body,slash],1d6[mind,holy]]
 // @Save[appeal|dc:13|t1:1d6[mind,holy]|t2:"text"|t3:0]   @Template[emanation|distance:2|targets:enemies|self:no|places:yes]
-import { releaseOptions } from "./hands.mjs";
+import { releaseOptions, regripPrompt } from "./hands.mjs";
 import { rollSource, saveDcOf } from "./rollsource.mjs";
 import { coverFromPoint } from "./cover.mjs";
 import { TWOD12, unconsciousDoom, doomStatus, cardVars, cardHead, prettyDamage, poolIcon, dtypeIcon } from "./config.mjs";
@@ -173,7 +173,7 @@ export function registerInline() {
   if (!list) return console.warn("twod12 | text enrichers are not available");
   list.push({
     id: "twod12-inline",
-    pattern: /@(Check|Damage|Save|Template|Move|Rally|Guard|Effect|Condition|Use|Cleave|Reload|Release|Boon)\[((?:[^\[\]]|\[(?:[^\[\]]|\[[^\[\]]*\])*\])*)\](?:\{([^}]+)\})?/g,
+    pattern: /@(Check|Damage|Save|Template|Move|Rally|Guard|Effect|Condition|Use|Cleave|Reload|Release|Regrip|Boon)\[((?:[^\[\]]|\[(?:[^\[\]]|\[[^\[\]]*\])*\])*)\](?:\{([^}]+)\})?/g,
     enricher: async (match, options) => {
       const kind = match[1];
       const cfg = parseInline(kind, match[2]);
@@ -211,6 +211,7 @@ export function registerInline() {
       }
       if (kind === "Reload") return inlineEl("Reload", cfg, cfg.label ?? match[3] ?? "Weapon reloaded", "fa-bullseye");
       if (kind === "Release") return inlineEl("Release", cfg, cfg.label ?? match[3] ?? "Release", "fa-hand");
+      if (kind === "Regrip") return inlineEl("Regrip", cfg, cfg.label ?? match[3] ?? "Regrip", "fa-hands");
       if (kind === "Cleave") return inlineEl("Cleave", cfg, cfg.label ?? match[3] ?? `Cleave ${cfg.n}`, "fa-crosshairs");
       if (kind === "Boon") {
         if (match[3]) cfg.name = match[3];
@@ -429,6 +430,7 @@ export async function handleInline(kind, cfg, ctx = {}) {
   if (kind === "Cleave") return handleCleave(cfg, ctx);
   if (kind === "Reload") return handleReloadWeapon(ctx);
   if (kind === "Release") return handleRelease(ctx);
+  if (kind === "Regrip") return handleRegrip(ctx);
   if (kind === "Check" || kind === "Save") return doCheck(kind, cfg, ctx);
   if (kind === "Damage") return doDamage(cfg);
   if (kind === "SaveCard") return postSaveCard(cfg, ctx);
@@ -480,6 +482,17 @@ async function handleRelease(ctx = {}) {
   if (!w) return;
   if (kind === "one") await w.update({ "system.hands": 1 }); else await w.update({ "system.wielded": false, "system.dropped": true });   // on the ground (v0.0.139)
   ui.notifications.info(kind === "one" ? `${actor.name} holds ${w.name} with one hand.` : `${actor.name} drops ${w.name}.`);
+}
+
+/** v0.0.211: Regrip from its card (the Action already paid its AP): the choices for the creature that used it. */
+async function handleRegrip(ctx = {}) {
+  const f = ctx.message?.getFlag?.("twod12", "action");
+  let actor = null;
+  try { actor = f?.actorUuid ? await fromUuid(f.actorUuid) : null; } catch (e) { /* not loaded */ }
+  actor ??= canvas.tokens?.controlled[0]?.actor ?? game.user.character ?? null;
+  if (!actor?.isOwner) return ui.notifications.warn("Select your token first.");
+  const o = actor.getFlag?.("twod12", "itemOrder") ?? [], k = id => { const n = o.indexOf(id); return n < 0 ? 9999 : n; };
+  await regripPrompt(actor, [...actor.itemTypes.weapon].sort((x, y) => k(x.id) - k(y.id)));
 }
 
 /** The weapon (with the Reload property) of the creature that used the Action is loaded again. */

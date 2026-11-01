@@ -7,6 +7,7 @@ const actionTraits = sortObj({
   divine: "Divine",
   fear: "Fear",
   focus: "Focus",
+  gun: "Gun",   // v0.0.208 (D2): needs a Firearm, as Shot needs a Projectile weapon
   handle: "Handle",
   instinct: "Instinct",
   magic: "Power",   // the key stays "magic" (saved worlds and content use it); the trait is called Power since v0.0.117
@@ -23,7 +24,7 @@ const actionTraits = sortObj({
   strike: "Strike",
   weapon: "Weapon"
 });
-const weaponTraits = sortObj({ barehanded: "Barehanded", long: "Long", melee: "Melee", nonthreatening: "Non-threatening", projectile: "Projectile", ranged: "Ranged", reload: "Reload", thrown: "Thrown", twohanded: "Two-handed" });
+const weaponTraits = sortObj({ barehanded: "Barehanded", firearm: "Firearm", long: "Long", melee: "Melee", nonthreatening: "Non-threatening", projectile: "Projectile", ranged: "Ranged", reload: "Reload", thrown: "Thrown", twohanded: "Two-handed" });
 
 export const TWOD12 = {
   attributes: { body: "Body", mind: "Mind", appeal: "Appeal", instinct: "Instinct" },
@@ -148,7 +149,7 @@ export const TWOD12 = {
     { key: "attack", label: "Attack", names: ["Weapon Attack", "Fists", "Charge", "Reload"] },
     { key: "control", label: "Control", names: ["Shove", "Haul", "Relocate", "Trip"] },
     { key: "movement", label: "Movement", names: ["Advance", "Evade", "Crawl", "Stand"] },
-    { key: "utility", label: "Utility", names: ["Interact", "Release", "Leaning", "Steel Yourself"] }
+    { key: "utility", label: "Utility", names: ["Interact", "Release", "Regrip", "Leaning", "Steel Yourself"] }
   ],
   // v0.0.189 (Lucas, after Draw Steel's Codex): how much of a card Foundry does for you, as a chip on the card. "" shows nothing.
   automationRanks: { "": "(not set)", none: "Not implemented", bronze: "Bronze", silver: "Silver", gold: "Gold" },
@@ -169,7 +170,7 @@ export const TWOD12 = {
   // Their colors are CSS variables (--g-roll...), light on parchment and dark on the dark sheets (system.css). Weapon properties have no group and no color.
   traitGroups: [
     { key: "roll", label: "Roll", traits: ["appeal", "body", "instinct", "magic", "mind", "save", "signature", "split", "weapon"] },
-    { key: "requires", label: "Requires", traits: ["handle", "melee", "ranged", "shot"] },
+    { key: "requires", label: "Requires", traits: ["gun", "handle", "melee", "ranged", "shot"] },
     { key: "kind", label: "Kind", traits: ["area", "move", "self", "strike"] },
     { key: "damage", label: "Damage", traits: ["nonlethal"] },
     { key: "keywords", label: "Keywords", traits: ["divine", "focus", "fear"] }

@@ -128,7 +128,7 @@ Every creature can use these Actions.
 
 | 1 AP |
 |---|
-| You do one of the following: swap two objects (one you are holding with one on your person); grab objects within Reach, as many as you have free hands; grip a weapon with two hands; help a Prone creature within Reach stand up; help an Imperiled creature within Reach get to safety; wake an Unconscious creature within Reach; open a door, chest or something similar. This Action is broader than most: it can be used for similar things in the world. |
+| You do one of the following: draw an object you carry into a free hand; stow an object you hold (put it away on your person, such as sheathing a sword); swap two objects (stow the one you hold and draw another, in the same Action); grab objects within Reach, as many as you have free hands; help a Prone creature within Reach stand up; help an Imperiled creature within Reach get to safety; wake an Unconscious creature within Reach; open a door, chest or something similar. This Action is broader than most: it can be used for similar things in the world. |
 
 </div>
 
@@ -144,6 +144,21 @@ Every creature can use these Actions.
 | 1 AP |
 |---|
 | Until the end of your turn, you calculate cover from one of your corners instead of the center of your square, and your own cover against other creatures' Actions is reduced by 1 level. You can stop Leaning at any time on your turn, at no cost. |
+
+</div>
+
+<div class="action" markdown="1">
+<div class="action-head"><span>Regrip</span><span>1 AP</span><span class="cat">Basic Action</span></div>
+
+**Flavor:** You shift your hands on the grip, and the weapon sits where you want it.
+
+*Self*
+
+**Frequency:** At-will
+
+| 1 AP |
+|---|
+| You do one of the following: hold a weapon you hold in one hand with both hands (your other hand must be free); move a weapon from one hand to the other; or swap the weapons in your two hands. Regrip doesn't have the Handle trait: it doesn't need a free hand. |
 
 </div>
 
@@ -182,8 +197,8 @@ Every creature can use these Actions.
 | | 1 AP |
 |---|---|
 | **Tier 1** | Your next Reload attempt gains 2 Boons. |
-| **Tier 2** | You Reload your weapon. Then you can Interact to grip the weapon with two hands, or the ally can. |
-| **Tier 3** | You Reload your weapon and the weapon's wielder can Evade 1. Then you can Interact to grip the weapon with two hands, or the ally can. |
+| **Tier 2** | You Reload your weapon. Then you can Regrip (1A) to hold the weapon with two hands, or the ally can. |
+| **Tier 3** | You Reload your weapon and the weapon's wielder can Evade 1. Then you can Regrip (1A) to hold the weapon with two hands, or the ally can. |
 
 </div>
 

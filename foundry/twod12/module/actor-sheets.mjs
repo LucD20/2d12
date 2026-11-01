@@ -28,7 +28,7 @@ import { resolveModifiers } from "./effects.mjs";
 import { buildRawCard, buildInfoCard, sendItemToChat } from "./preview.mjs";
 import { openWeaponGenerator } from "./gen.mjs";
 import { openActionGenerator } from "./genaction.mjs";
-import { rollActorInitiative, combatantOf, getAP, setAP } from "./combat.mjs";
+import { rollActorInitiative, combatantOf, getAP, setAP, spendAP } from "./combat.mjs";
 import { healthView, donutPoolAt } from "./healthview.mjs";
 import { applySpeedMods } from "./speedmods.mjs";
 import { unloadedWeapon, costText, frequencyText, costGroup, groupRows, GROUP_BY, SORT_BY, sortKeyOf } from "./actionrows.mjs";
@@ -40,10 +40,10 @@ import { addBasicActions, missingBasic } from "./basic.mjs";
 import { openEffectSheet } from "./fxopen.mjs";
 import { applyTab, durationText, dragData } from "./sheet-common.mjs";
 import { hoverOf } from "./util.mjs";
-import { WEAPON_WHERE, ARMOR_WHERE, weaponWhere, armorWhere, weaponMove, armorMove, handsFor, tierBoxes, handSlots, whereButtons } from "./loadout.mjs";
-import { ensureHandsFor } from "./hands.mjs";
+import { WEAPON_WHERE, ARMOR_WHERE, weaponWhere, armorWhere, weaponMove, armorMove, handsFor, tierBoxes, handSlots, whereButtons, freeHandFor, useButtons, handOf, HAND_LABEL, handButtonsFor, freeHandButtons, oneHandedTwoHander } from "./loadout.mjs";
+import { ensureHandsFor, releaseOptions, applyRelease, applyRegrip } from "./hands.mjs";
 import { passiveSources } from "./passives.mjs";
-import { weaponsFor } from "./fists.mjs";
+import { weaponsFor, weaponCandidates, heldFirst, fistsOf, hasProp } from "./fists.mjs";
 import { effectOff } from "./escalation.mjs";
 import { npcBuilderContext, ratingUpdate, cvTip } from "./npcbuilder.mjs";
 // What keeps its scroll position when the sheet is drawn again (v0.0.165): the window, the side panel, the main pane and each tab.
@@ -68,7 +68,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     form: { submitOnChange: true },
     actions: {
       switchTab: CharacterSheet.switchTab, rollAttr: CharacterSheet.rollAttr, rollTable: CharacterSheet.rollTable,
-      useAction: CharacterSheet.useAction, openItem: CharacterSheet.openItem, deleteItem: CharacterSheet.deleteItem,
+      useAction: CharacterSheet.useAction, useWith: CharacterSheet.useWith, swapHands: CharacterSheet.swapHands, handBlocked: CharacterSheet.handBlocked, openItem: CharacterSheet.openItem, deleteItem: CharacterSheet.deleteItem,
       openEffect: CharacterSheet.openEffect, deleteEffect: CharacterSheet.deleteEffect, exhaustedUp: CharacterSheet.exhaustedUp, exhaustedDown: CharacterSheet.exhaustedDown,
       confirmDelete: CharacterSheet.confirmDelete,
       rollInitiative: CharacterSheet.rollInitiative, addBasic: CharacterSheet.addBasic, rest: CharacterSheet.rest, editSenses: CharacterSheet.editSenses,
@@ -295,9 +295,8 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         tip: condensed ? await buildRawCard(i) : ""
       };
     };
-    // Weapon Techniques: not shown before 3 Mastery; one whose weapon is not in hand is greyed, or hidden with "Only usable Techniques" (mastery.mjs).
-    const hideTech = !!game.user.getFlag("twod12", "hideTechniques");
-    const actions = a.itemTypes.action.filter(i => { const st = techniqueState(a, i); return st !== "locked" && !(hideTech && st === "unwielded"); });
+    // Weapon Techniques: not shown before their Mastery, nor while their weapon is not in hand (v0.0.213, Lucas: a Technique is used only with its own weapon).
+    const actions = a.itemTypes.action.filter(i => techniqueState(a, i) === "ok");
     const all = await Promise.all(actions.filter(i => !i.getFlag("twod12", "basic")).map(rowOf));
     const pass = r => {
       const it = a.items.get(r.id)?.system;
@@ -415,7 +414,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const wornArmor = armorRows.find(r => r.where === "worn");
     const fold = game.user.getFlag("twod12", "itemFold") ?? {};
     const loadout = {
-      hands: handSlots(weapons).map(slot => (slot.free ? slot : { ...slot, ...weaponRows.find(r => r.id === slot.id), label: slot.label })),
+      hands: (sl => sl.map(slot => (slot.free ? slot : { ...slot, ...weaponRows.find(r => r.id === slot.id), label: slot.label, swap: slot.hand === "main" && !sl.some(x => x.free) })))(handSlots(weapons)),   // v0.0.208: Swap on the main hand when both hold a weapon
       armor: (isPc ? wornArmor : null) ?? { free: true, text: isPc ? "Unarmored" : "Stat block", sub: isPc ? "Armor 11 · Ward +0" : `AD ${s.armorDC ?? 13} · WD ${s.wardDC ?? 13} (armor items are loot)` }
     };
     const fmtN = n => String(Math.round(n * 100) / 100);
@@ -445,7 +444,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       groups,
       actGroups,
       groupByChoices: GROUP_BY,
-      hideTech: !!game.user.getFlag("twod12", "hideTechniques"), hasTechniques: a.itemTypes.action.some(i => i.system?.category === "Weapon Technique"),
+      hasTechniques: a.itemTypes.action.some(i => i.system?.category === "Weapon Technique"),
       masteryOpen: [...(this._masteryOpen ?? [])], isGMUser: game.user.isGM,
       sortByChoices: SORT_BY,
       groupBy,
@@ -551,9 +550,17 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const chips = out ? [{ text: "Unloaded", cls: "down", why: `${out.name} must be reloaded first (Reload, 1 AP)` }] : [];
     // v0.0.182: a granted use waiting (Double Shot's Weapon Attacks): the use button turns blue and uses it.
     const g = activeGrants(a, i)[0];
+    // v0.0.208 (W): a [Weapon] Action that picks its weapon gets a button per hand (2H, or M and O); one weapon that fits: its name on the tooltip.
+    // v0.0.209: Reload offers only the Reload weapons; a Weapon Technique shows the hand that holds its weapon; the Fists (and Pummel) the free hands.
+    const isW = !!it.traits?.has?.("weapon"), linkedId = i.getFlag("twod12", "weaponId"), fistsUse = it.weaponUse === "fists" || i.getFlag("twod12", "basic") === "fists";
+    let picks = isW && !linkedId && !it.weaponUse && !fistsUse ? heldFirst(weaponCandidates(a, i)) : null;
+    if (picks && i.getFlag("twod12", "basic") === "reload") picks = picks.filter(w => hasProp(w, "reload"));
+    const ordered = isW ? this._weaponsInOrder() : null;
+    const hands = !isW ? null : linkedId ? handButtonsFor(ordered, linkedId) : fistsUse ? freeHandButtons(ordered, fistsOf(a)?.id) : picks ? useButtons(ordered, new Set(picks.map(w => w.id))) : null;
+    const useTip = picks?.length === 1 ? `Use ${i.name} with ${picks[0].name}${(h => (h ? ` (${HAND_LABEL[h].toLowerCase()})` : ""))(handOf(ordered, picks[0].id))}` : `Use ${i.name}`;
     const grant = g ? { tip: `Granted by ${g.effect.name.replace(/\s*\(.*\)\s*$/, "")}: ${g.grant.left} use${g.grant.left === 1 ? "" : "s"} left, ${g.grant.ap ? `${g.grant.ap} AP` : "free"}. Click to use it; Shift-click for a normal use.` } : null;
     return {
-      grant,
+      grant, hands, useTip,
       id: i.id, name: i.name, costLabel: costText(i), cost: costGroup(i), fq: cardColorFor(it), freq: effectiveFrequency(it), freqText: frequencyText(i, (a.getFlag("twod12", "dailyUsed") ?? []).includes(i.id)),
       // v0.0.168: a number reads as squares ("5 sq."); words (Weapon, Reach, Self) and bands (10/20/40) stay
       range: ((r => (/^\d+$/.test(r) ? `${r} sq.` : r))((areaText(it) || distanceText(it, weapon) || "\u2014"))),
@@ -709,7 +716,6 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const el = this.element;
     el.querySelector("select.at-groupsel")?.addEventListener("change", async ev => { await game.user.setFlag("twod12", "sheetGroup", ev.target.value); this.render(); });
     el.querySelector("select.at-sortsel")?.addEventListener("change", async ev => { await game.user.setFlag("twod12", "sheetSort", ev.target.value); this.render(); });
-    el.querySelector("input.at-hidetech")?.addEventListener("change", async ev => { await game.user.setFlag("twod12", "hideTechniques", ev.target.checked); this.render(); });
     const box = el.querySelector("input.at-filter");
     const apply = () => {
       const q = this._search.trim().toLowerCase();
@@ -778,7 +784,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         const data = dragData(ev), w = data?.uuid ? fromUuidSync(data.uuid) : null;
         if (!w || w.parent !== this.actor || w.type !== "weapon") return;
         ev.preventDefault(); ev.stopImmediatePropagation(); ev._twod12 = true;
-        this._moveItem(w, "1h");
+        this._moveItem(w, "1h", slot.dataset.hand ?? "");
       }, true);
     });
     // The quantity of a gear row, typed in place.
@@ -859,6 +865,8 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   }
 
   _item(target) { return this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId); }
+  /** v0.0.208: the weapons in the Items tab's order (the hands of weapons that don't say theirs follow it). */
+  _weaponsInOrder() { const o = this.actor.getFlag("twod12", "itemOrder") ?? [], k = id => { const n = o.indexOf(id); return n < 0 ? 9999 : n; }; return [...this.actor.itemTypes.weapon].sort((x, y) => k(x.id) - k(y.id)); }
   /** Star: add or remove an Action from the Favorites tab. */
   static async toggleFav(event, target) {
     event?.stopPropagation?.();
@@ -963,12 +971,15 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   /** Wear or take off an armor (only one is worn at a time). */
   /** Move a weapon or an armor (Dropped, Worn, One hand, Both hands; Dropped, Carried, Worn). Taking a weapon in hand checks the hands first. */
-  async _moveItem(item, where) {
+  async _moveItem(item, where, hand = "") {
     if (!item || !where) return;
     if (item.type === "weapon") {
       const need = handsFor(where);
       if (need && !(await ensureHandsFor(this.actor, item, need))) return this.render();   // put the dropdown back
-      return item.update(weaponMove(where));
+      // v0.0.208: a weapon taken in one hand goes into the free hand (the main hand first), or the hand of the slot it was dropped on.
+      // v0.0.211: a weapon already in one hand taken in both is a Regrip (1 AP in combat)
+      if (where === "2h" && item.system.wielded && (Number(item.system.hands) || 1) < 2 && !(await spendAP(this.actor, 1, "Regrip"))) return this.render();
+      return item.update(weaponMove(where, where === "1h" ? (hand || freeHandFor(this._weaponsInOrder(), item.id)) : ""));
     }
     if (item.type === "armor") {
       if (where === "worn") { await setWorn(item, true); return item.system.dropped ? item.update({ "system.dropped": false }) : null; }
@@ -1137,7 +1148,45 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     }
   }
   static async rollTable(event, target) { await rollTable(this.actor, target.dataset.kind); }
-  static async useAction(event, target) { await useAction(this.actor, this._item(target), event?.shiftKey ? { noGrant: true } : {}); }   // v0.0.182: Shift: a normal use, even with a granted use waiting
+  static async useAction(event, target) { await useAction(this.actor, this._item(target), event?.shiftKey ? { noGrant: true } : {}); }
+  /** v0.0.208 (W): a hand button: the Action with the weapon in that hand (no "Which weapon?" window). */
+  static async useWith(event, target) {
+    const w = this.actor.items.get(target.dataset.weaponId);
+    // v0.0.211 (Lucas): a Two-handed weapon held in one hand: Regrip first (Release the other hand first if it is full), use it anyway, or cancel.
+    if (oneHandedTwoHander(w)) {
+      const weapons = this._weaponsInOrder(), others = weapons.filter(x => x.id !== w.id);
+      const otherFull = handSlots(weapons).some(s => !s.free && s.id !== w.id);
+      const buttons = otherFull
+        ? releaseOptions({ itemTypes: { weapon: others } }).filter(o => o.action.startsWith("drop:")).map(o => ({ action: `rel|${o.action}`, label: `${o.label} (Release, 0 AP), then Regrip (1 AP)`, icon: "fa-solid fa-hands" }))
+        : [{ action: "regrip", label: `Regrip (1 AP): ${w.name} in both hands`, icon: "fa-solid fa-hands" }];
+      buttons.push({ action: "anyway", label: "Use it in one hand (3 Banes)", icon: "fa-solid fa-hand" }, { action: "cancel", label: "Cancel", icon: "fa-solid fa-xmark" });
+      const pick = await DialogV2.wait({ window: { title: `${w.name}: one hand` }, content: `<p><b>${esc(w.name)}</b> is Two-handed and held in one hand: 3 Banes on [Strike, Weapon] Actions.</p>`, buttons, rejectClose: false });
+      if (!pick || pick === "cancel") return;
+      if (pick !== "anyway") {
+        if (pick.startsWith("rel|")) await applyRelease(this.actor, pick.slice(4));
+        if (!(await spendAP(this.actor, 1, "Regrip"))) return;
+        const text = await applyRegrip(this.actor, this._weaponsInOrder(), `two:${w.id}`);
+        if (text) await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: this.actor }), content: `<div class="twod12 chat note"><i class="fa-solid fa-hands"></i> <b>Regrip</b> (1 AP): ${esc(this.actor.name)} ${text}.</div>` });
+      }
+    }
+    await useAction(this.actor, this._item(target), { weaponId: target.dataset.weaponId, ...(event?.shiftKey ? { noGrant: true } : {}) });
+  }
+  /** v0.0.211 (Lucas): a greyed hand button. The Fists with no free hand: Release first (0 AP: one hand off a two-handed grip, or drop a weapon). A weapon that can't be used for this Action: say why. */
+  static async handBlocked(event, target) {
+    const item = this._item(target), fistsUse = item?.system?.weaponUse === "fists" || item?.getFlag?.("twod12", "basic") === "fists";
+    if (!fistsUse) return ui.notifications.info(target.dataset.tooltip || "That hand's weapon can't be used for this Action.");
+    const buttons = [...releaseOptions(this.actor).map(o => ({ ...o, label: `${o.label} (Release, 0 AP)` })), { action: "cancel", label: "Cancel", icon: "fa-solid fa-xmark" }];
+    const pick = await DialogV2.wait({ window: { title: `${item.name}: no free hand` }, content: `<p><b>${esc(this.actor.name)}</b> needs a free hand for <b>${esc(item.name)}</b>. Release one first?</p>`, buttons, rejectClose: false });
+    if (!pick || pick === "cancel") return;
+    await applyRelease(this.actor, pick);
+  }
+  /** v0.0.208: the Items tab's Swap: the main-hand and off-hand weapons change hands. */
+  static async swapHands() {
+    const slots = handSlots(this._weaponsInOrder());
+    if (slots.length !== 2 || slots.some(s => s.free)) return;
+    if (!(await spendAP(this.actor, 1, "Regrip (swap hands)"))) return;   // v0.0.211 (Lucas): Regrip (1 AP in combat; free out of combat)
+    await this.actor.updateEmbeddedDocuments("Item", slots.map(s => ({ _id: s.id, "system.hand": s.hand === "main" ? "off" : "main" })));
+  }   // v0.0.182: Shift: a normal use, even with a granted use waiting
   static openItem(event, target) { this._item(target)?.sheet.render(true); }
   static async deleteItem(event, target) { await this._item(target)?.delete(); }
   static async confirmDelete(event, target) {

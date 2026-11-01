@@ -51,8 +51,8 @@ export const BASIC_ACTIONS = {
     versions: [
       V(1, [], [], [], "", {
         x1: "Your next Reload attempt gains 2 Boons.",
-        x2: "You Reload your weapon. @Reload[weapon] Then you can Interact to grip your weapon with two hands: @Use[Interact|label:Interact (grip)]",
-        x3: "You Reload your weapon and @Move[evade|distance:1]. @Reload[weapon] Then you can Interact to grip your weapon with two hands: @Use[Interact|label:Interact (grip)]"
+        x2: "You Reload your weapon. @Reload[weapon] Then you can Regrip (1A) to hold your weapon with two hands: @Regrip[weapon|label:Regrip (1A)]",
+        x3: "You Reload your weapon and @Move[evade|distance:1]. @Reload[weapon] Then you can Regrip (1A) to hold your weapon with two hands: @Regrip[weapon|label:Regrip (1A)]"
       })
     ]
   },
@@ -70,7 +70,7 @@ export const BASIC_ACTIONS = {
         [],
         [],
         [],
-        "You do one of the following: swap two objects (one you are holding with one on your person); grab objects within Reach, as many as you have free hands; grip a weapon with two hands; help a Prone creature within Reach stand up; help an Imperiled creature within Reach get to safety; wake an Unconscious creature within Reach; open a door, chest or something similar. This Action is broader than most: it can be used for similar things in the world.",
+        "You do one of the following: draw an object you carry into a free hand; stow an object you hold (put it away on your person, such as sheathing a sword); swap two objects (stow the one you hold and draw another, in the same Action); grab objects within Reach, as many as you have free hands; help a Prone creature within Reach stand up; help an Imperiled creature within Reach get to safety; wake an Unconscious creature within Reach; open a door, chest or something similar. This Action is broader than most: it can be used for similar things in the world.",
         { noTiers: true }
       )
     ]
@@ -96,6 +96,19 @@ export const BASIC_ACTIONS = {
     versions: [
       V(1, [], [], [], "You move 1 square. @Move[advance|distance:1|label:Crawl 1]", { noTiers: true }),
       V(2, [], [], [], "Requirements: Your Speed is 5 or higher. You move 3 squares. @Move[advance|distance:3|label:Crawl 3]", { noTiers: true })
+    ]
+  },
+  // v0.0.211 (Lucas): Regrip, the hands' own Action (no Handle: it needs no free hand).
+  regrip: {
+    name: "Regrip",
+    frequency: "atwill",
+    img: "icons/svg/sword.svg",
+    traits: ["self"],
+    targets: "",
+    vs: "",
+    distance: "self",
+    versions: [
+      V(1, [], [], [], "You do one of the following: hold a weapon you hold in one hand with both hands (your other hand must be free); move a weapon from one hand to the other; or swap the weapons in your two hands. Regrip doesn't have the Handle trait: it doesn't need a free hand. @Regrip[weapon]", { noTiers: true })
     ]
   },
   release: {
@@ -252,6 +265,7 @@ const BASIC_FLAVOR = {
  "Advance": "You press forward, one deliberate step at a time.",
  "Crawl": "You drag yourself along the ground.",
  "Release": "You let it go.",
+ "Regrip": "You shift your hands on the grip, and the weapon sits where you want it.",
  "Evade": "You slip through the fray without giving anyone an opening.",
  "Stand": "You get your feet back under you.",
  "Leaning": "You lean out from cover, just enough to see.",

@@ -99,8 +99,8 @@ export function derivedMods(actor) {
     out.push({ id: "syn:strained", name: "Strained", boons: 0, banes: 1, all: ["__action"], any: ["magic"], none: [] });
     out.push({ id: "syn:strained-save", name: "Strained", boons: 0, banes: 1, all: ["__save"], any: ["mind", "appeal"], none: [] });
   }
-  // A two-handed weapon held with one hand: 3 banes on all [Strike, Weapon] Actions, whichever weapon they use.
-  if ((actor?.itemTypes?.weapon ?? []).some(w => w.system.wielded && w.system.traits?.has?.("twohanded") && (w.system.hands ?? 1) < 2)) out.push({ id: "syn:onehand", name: "Two-handed weapon in one hand", boons: 0, banes: 3, all: ["strike", "weapon"], any: [], none: [] });
+  // A two-handed weapon held with one hand: 3 banes on [Strike, Weapon] Actions with that weapon (v0.0.212, Lucas: not the other hand's weapon or Fists).
+  if ((actor?.itemTypes?.weapon ?? []).some(w => w.system.wielded && w.system.traits?.has?.("twohanded") && (w.system.hands ?? 1) < 2)) out.push({ id: "syn:onehand", name: "Two-handed weapon in one hand", boons: 0, banes: 3, all: ["strike", "weapon", "__twohanded"], any: [], none: [] });
   return out;
 }
 
