@@ -2070,3 +2070,6 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 .twod12-linebar .lb-side button:hover { background: #3c4458; }
 .twod12-linebar .lb-side button.on { background: #c9a24a; color: #1b1f28; font-weight: 700; }
 .twod12-linebar kbd { font-size: 11px; padding: 1px 5px; border: 1px solid #6b5a33; border-radius: 3px; background: #1b1f28; color: #c9a24a; }
+/* v0.0.218 (Lucas): the Charge picker's bar (the Line's bar) and its Give up button. */
+.twod12-chargebar .lb-give { width: auto; height: 26px; line-height: 24px; padding: 0 10px; margin: 0; font-size: 13px; background: #4a2420; color: #f4e9d0; border: 1px solid #c9a24a; border-radius: 5px; cursor: pointer; white-space: nowrap; }
+.twod12-chargebar .lb-give:hover { background: #6a3028; }

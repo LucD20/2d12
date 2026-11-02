@@ -30,7 +30,7 @@ console.log("Ground Slam:", JSON.stringify(U.isFaded(actor, slam)));
 console.log("--- the rest (source checks)");
 const mv = src("module/move.mjs"), cw = src("module/classwindow.mjs"), pv = src("module/preview.mjs"), gr = src("module/grants.mjs"), cf = src("module/config.mjs"), tw = src("module/twod12.mjs"), loe = src("module/loe.mjs");
 const rally = src("module/rally.mjs"), tpl = src("module/template.mjs"), acts = src("module/actions.mjs"), esc = src("module/escblock.mjs"), sheet = src("templates/actor-sheet.hbs"), data = src("module/data.mjs"), content = src("tools/content.mjs");
-console.log("Charge disrupted: measured from the end square:", mv.includes("chargeFollowUp(c, doc, reach, end)"));
+console.log("Charge disrupted: measured from the end square:", mv.includes("chargeFollowUp(c, doc, reach, go.stopTl)"));
 console.log("class window keeps its scroll:", cw.includes("focus({ preventScroll: true })") && cw.includes("content.scrollTop = own"));
 console.log("an Action-only Talent shows its Action:", pv.includes("export const actionOnlyTalent") && !/tal\("Aim"[^\n]*You gain the Aim Action/.test(content), "| granted Actions in full:", pv.includes('class="igrant"'));
 console.log("a choice picked in the class window:", cw.includes("_choiceBlock(") && gr.includes("grantChoices(actor, parent, copy, preset = null)"));

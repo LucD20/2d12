@@ -1,6 +1,6 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.217**. Tests: `node tools/tests/run.mjs` (171 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.218**. Tests: `node tools/tests/run.mjs` (171 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 ## Asked by Lucas, not built
@@ -15,7 +15,7 @@ Everything finished up to v0.0.207 (the done items, the per-version "to check" n
 - **W (v0.0.208, fixes in v0.0.209: Swap hands is an Interact, the Basic rows, Techniques and Fists show hands, Reload only Reload weapons), to check in Foundry:** the hand buttons in the Actions tab rows (the Use column is 52px now: check the narrow sheet and the Escalation block); the Favorites and the name click still go through the window when two weapons fit (it names the hands); an existing character's weapons have no hand stored until drawn again or swapped (the order of the Items tab decides). Not built: hand buttons in the Favorites tab and the Granted tickets; an off-hand rule (the book has none, D2).
 - **Squeezing** is only GM-applied: its automatic detection is not built (F2/F4, v0.0.170).
 - **Not built in M2 (v0.0.174):** a Reposition Action card (the book has none yet; Relocate is the Basic Action), Deadly Hazards (no region type exists).
-- **The Charge preview** could color the squares as the book's figures do (blue passed, green end, red not legal); the straight-line tie is done.
+- **The Charge picker (v0.0.218), to check:** a Large creature aims with the top-left of its space (the destination square is where its top-left square goes); an NPC Charge from the GM's client; the token's animation along several squares (TokenDocument#move with waypoints, else square by square).
 - **To confirm:** Actions with a Distance written normal/far/maximum and the Ranged trait take the range Banes (weapons already do); the "Origin" of an Area is its Point of Origin (Pulled and Slid toward a point).
 - **Optional:** the class documents' colors (Bane red, Boon blue, Rally Point turquoise) in the chat cards.
 - **Old characters** keep their old class picks until the class is dropped again (v0.0.185).
