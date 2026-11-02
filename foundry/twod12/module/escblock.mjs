@@ -56,7 +56,7 @@ export const PASSIVE_TAG = { active: "Active", ready: "Ready", used: "Used", off
  * actionRow(item) gives the sheet's own Action row; an Active that can't be paid now (Escalation, Unconscious) or whose Frequency is used
  * is greyed and its Use button off; a used Round / Turn / Encounter Action reads "Round 0/1".
  */
-export function escalationModel(actor, { actionRow, isFaded, open = null } = {}) {
+export function escalationModel(actor, { actionRow, isFaded, open = null, openPass = null } = {}) {
   const now = escalationOf(actor) ?? 0, cls = actor.itemTypes?.class?.[0] ?? null;
   const passives = (actor.itemTypes?.feature ?? []).filter(f => isEscPassive(f, cls));
   const actives = (actor.itemTypes?.action ?? []).filter(i => Number(i.system?.escalation) > 0);
@@ -65,7 +65,9 @@ export function escalationModel(actor, { actionRow, isFaded, open = null } = {})
     n, lit: now >= n,
     passives: passives.filter(p => passiveThreshold(p) === n).map(p => {
       const state = passiveState(actor, p, now);
-      return { id: p.id, name: p.name, state, tag: PASSIVE_TAG[state], tip: `${p.name} · Escalation ${n}+: ${String(p.system?.hover || p.system?.description || "").replace(/<[^>]+>/g, "").trim()}` };
+      // v0.0.215 (Lucas, playtest 2): clicking a Passive shows its description under it (desc), instead of opening the Feature window.
+      return { id: p.id, name: p.name, state, tag: PASSIVE_TAG[state], tip: `${p.name} · Escalation ${n}+: ${String(p.system?.hover || p.system?.description || "").replace(/<[^>]+>/g, "").trim()}`,
+        desc: String(p.system?.description || p.system?.hover || "").trim() || "<p><em>No description.</em></p>", open: !!openPass?.has?.(p.id) };
     }),
     actives: actives.filter(i => Math.min(3, Number(i.system.escalation)) === n).map(i => {
       const row = actionRow ? actionRow(i) : { id: i.id, name: i.name };

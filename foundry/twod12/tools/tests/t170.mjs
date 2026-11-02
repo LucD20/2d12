@@ -86,7 +86,7 @@ const lineAct = { areaCfg: { size: 6, shape: "line", within: 5, targets: "enemie
 console.log("areaConfigOf a Line (no Distance, no center):", JSON.stringify(cf.areaConfigOf(lineAct)));
 console.log("its button:", cf.areaButton(lineAct));
 const data = src("module/data.mjs"), tpl = src("module/template.mjs"), sheet = src("templates/item-sheet.hbs"), inl = src("module/inline.mjs"), act = src("module/actions.mjs");
-console.log("data: the Line shape and its text", data.includes('line: "Line" }, "emanation")') && data.includes('c.shape === "line" ? `Line ${c.size}`'), "| no Distance line:", data.includes('c.size > 0 && c.shape !== "line"'));
+console.log("data: the Line shape and its text", data.includes('line: "Line" }, "emanation")') && data.includes("c.shape === \"line\" ? `Line ${sz}`"), "| no Distance line:", data.includes('c.size > 0 && c.shape !== "line"'));
 console.log("sheet option", sheet.includes('<option value="line"'), "| chat button label", inl.includes("isLine ? `Line ${cfg.distance || 1}`"), "| area name", tp.areaName("line", 10), tp.areaName("burst", 2), tp.areaName("emanation", 1));
 console.log("template: the tie toggle (Tab and a button), dashed passed squares, the side kept on the region", tpl.includes('ev.key === "Tab"') && tpl.includes("lb-side") && tpl.includes("dashedCells(gfx, current.passed)") && tpl.includes("line: placed.line"));
 console.log("creatures in the Line give no cover to each other", tpl.includes("placed.noCover = [origin?.id, ...tokensIn(placed.cells).map(t => t.id)]") && tpl.includes("...(placed?.noCover ?? [])"), "| 1 square high", tpl.includes("lineHeightOk(origin, t"));

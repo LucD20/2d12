@@ -935,9 +935,13 @@ export function creaturesInReach(token, reach = 1) {
 }
 
 /** After a Charge's movement: if no creature is within Reach, its required Weapon Attack (1A) can't be made, so the Charge is disrupted. */
-function chargeFollowUp(c, doc, reach) {
+function chargeFollowUp(c, doc, reach, to = null) {
   const token = doc.object ?? canvas.tokens?.get?.(doc.id);
-  if (!token || creaturesInReach(token, reach).length) return;
+  if (!token) return;
+  // v0.0.215 (Lucas, playtest 2: "disrupted" when it wasn't): measured from the Charge's end square, not from where the token is drawn
+  // 600 ms later (a long Charge was still moving, so nobody seemed to be within Reach).
+  const at = to ? { id: doc.id, document: { id: doc.id, x: to.x, y: to.y, width: doc.width, height: doc.height, elevation: doc.elevation, disposition: doc.disposition } } : token;
+  if (creaturesInReach(at, reach).length) return;
   post(`<b>${esc(c.name)}</b>'s Charge is disrupted: no creature within Reach for its Weapon Attack (1A). The AP stays spent.`).catch(() => {});
 }
 
@@ -1114,7 +1118,8 @@ export function registerMovement() {
         squares = measureSquares(from, to);   // a Charge costs the length of its straight line, whatever path the token took
         c.unsetFlag(F, "charge").catch(() => {});
         const reach = Math.max(1, num(c.actor?.system?.reach) || 1);
-        setTimeout(() => chargeFollowUp(c, doc, reach), 600);
+        const end = { x: to.x, y: to.y };
+        setTimeout(() => chargeFollowUp(c, doc, reach, end), 600);
       }
       // v0.0.183: an Evade over several drags counts its diagonals as one movement: after an odd number, the next diagonal costs 2
       // (Foundry measures each drag from 0). It can't go beyond the Evade's squares.

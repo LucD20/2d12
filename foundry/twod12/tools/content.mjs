@@ -190,17 +190,17 @@ tal("Challenge", "icons/svg/combat.svg", "combat", { description: "<p>Once per r
 add("effects", "effect", "Challenged", "icons/svg/combat.svg", { duration: { type: "eot", rounds: 1 }, description: "<p>Until the end of your next turn, your [Strike] Actions against creatures other than the one who challenged you take 1 Bane (Challenge).</p>", settings: [{ type: "boonbane", boons: 0, banes: 1, all: ["strike"], any: [], none: [] }] }, "Talents");
 tal("Heavy Blows", "icons/svg/sword.svg", "combat", { theme: "Great Weapon", description: "<p>When a [Melee, Strike, Weapon] Action you make with a Two-handed weapon deals damage on a Tier 3, it deals 2 more.</p>",
   settings: [{ type: "bonusdamage", dmg: "2", dmgPool: "B", dmgSub: "", tiers: ["t3"], text: "", fxUuid: "", all: ["melee", "strike", "weapon", "__twohanded"], any: [], none: [] }] });
-tal("Whirlwind", "icons/svg/sword.svg", "combat", { theme: "Great Weapon", prereqs: [pre("talent", "Heavy Blows")], description: "<p>You gain the Whirlwind Action.</p>", actions: [uuidOf("actions", "Whirlwind")] });
-tal("Bloodlust", "icons/svg/blood.svg", "combat", { description: "<p>You gain the Bloodlust Action.</p>", actions: [uuidOf("actions", "Bloodlust")] });
+tal("Whirlwind", "icons/svg/sword.svg", "combat", { theme: "Great Weapon", prereqs: [pre("talent", "Heavy Blows")], actions: [uuidOf("actions", "Whirlwind")] });
+tal("Bloodlust", "icons/svg/blood.svg", "combat", { actions: [uuidOf("actions", "Bloodlust")] });
 tal("Brawler", "icons/svg/combat.svg", "combat", { theme: "Unarmed", description: "<p>You gain the Pummel Action. Your Fists don't have the Non-threatening property: you can flank with them.</p>", actions: [uuidOf("actions", "Pummel")], settings: [{ type: "weaponprop", wpWhich: "fists", wpProp: "nonthreatening" }] });
 tal("Kickboxer", "icons/svg/combat.svg", "combat", { theme: "Unarmed", prereqs: [pre("talent", "Brawler")], description: "<p>You gain the Leg Sweep Action: a kick, so it needs no free hand. You can use it with your hands full.</p>", actions: [uuidOf("actions", "Leg Sweep")] });
-tal("Aim", "icons/svg/target.svg", "combat", { theme: "Marksman", description: "<p>You gain the Aim Action.</p>", actions: [uuidOf("actions", "Aim")] });
+tal("Aim", "icons/svg/target.svg", "combat", { theme: "Marksman", actions: [uuidOf("actions", "Aim")] });
 tal("Ricochet", "icons/svg/target.svg", "combat", { theme: "Marksman", prereqs: [pre("talent", "Aim")], description: "<p>Your [Ranged, Weapon] Actions can bounce off one surface on the way. The projectile goes from the surface to the creature, and you calculate Line of Effect, Cover and Sight from the center of the surface. The distance is the total the projectile travels: if you shoot at a surface 5 squares from you and the target is within 6 squares of the surface, that is an 11-square shot. You must still perceive the creature. A bounced shot takes 1 Bane.</p>" });
 tal("Long Draw", "icons/svg/target.svg", "combat", { theme: "Marksman", description: "<p>With a Projectile weapon, your far range has no Bane and your maximum range has 1 Bane instead of 2.</p>", settings: [sIgnore("rangeBane", P(["shot"]))] });
 tal("Steady Nerves", "icons/svg/target.svg", "combat", { theme: "Marksman", description: "<p>Your [Ranged] Actions don't take the Banes for being Engaged.</p>", settings: [sIgnore("engagedSelf", P(["ranged"]))] });
 // Mobility
 tal("Battering Charge", "icons/svg/thrust.svg", "mobility", { description: "<p>When you use Charge, your Speed counts as 2 higher for its movement, and its Weapon Attack (1A) is Empowered 1.</p>" });
-tal("Cut Through", "icons/svg/sword.svg", "mobility", { description: "<p>You gain the Cut Through Action.</p>", actions: [uuidOf("actions", "Cut Through")] });
+tal("Cut Through", "icons/svg/sword.svg", "mobility", { actions: [uuidOf("actions", "Cut Through")] });
 // Magic
 tal("Lesser Blessing", "icons/svg/holy-shield.svg", "magic", { theme: "Divine", traits: ["divine", "magic"], description: "<p>Pick one blessing from the list below, related to a god you follow. You gain its Action. (More blessings will be added.)</p>", choiceLabel: "Choose a blessing", choiceCount: 1, choiceOptions: [uuidOf("actions", "Rimebrand (Cold)")] });
 tal("Sacred Weapon", "icons/svg/sword.svg", "magic", { theme: "Divine", prereqs: [pre("talent", "Lesser Blessing"), pre("trait", "divine")], prereqMode: "any", description: "<p>You gain the Sacred Weapon Action.</p>", actions: [uuidOf("actions", "Sacred Weapon")] });
@@ -313,7 +313,7 @@ const atk = (n, w, name, img, ap, freq, t2, t3, extra = {}, effects = "") => npc
         areaCfg: { size: 1, shape: "emanation", within: 0, targets: "all", center: true, keep: false, rounds: 0 },
         versions: [version(3, '3d10BBl,ModBBl,"Prone."', "2d8BBl,ModBBl", '"No effect."')] }),
       npcAction(n, "Rally the Tribe", "icons/svg/aura.svg", { category: "Special Action", level: 0, traits: ["focus"], frequency: "round", escalation: 1, targets: "Allies within 5 squares", distance: "5",
-        versions: [noRoll(1, "Allies within 5 squares gain 1 Boon on their next Basic attack.")] })] });
+        versions: [noRoll(1, "Allies within 5 squares gain 1 Boon on their next [Weapon] Action.")] })] });
 }
 actors.forEach(a => { a.system.level = 1; });
 
@@ -367,7 +367,7 @@ add("actions", "action", "Champion's Challenge", "icons/svg/combat.svg", { categ
   vt(2, [["", "No effect."], ["", "As 1 AP."], ["", "As 1 AP."]])] }, "Paladin");
 add("actions", "action", "Word of Radiance", "icons/svg/sun.svg", { category: PAL, level: 1, traits: ["area", "divine", "magic"], frequency: "encounter", targets: "All enemies in the Area", areaCfg: { size: 2, shape: "emanation", within: 5, targets: "enemies", center: false, keep: false, rounds: 0 }, versions: [
   vt(2, [["1d10MH", ""], ["2d8MH", ""], ["3d6MH", "Prone."]]),
-  vt(3, [["2d6MH", ""], ["2d10MH", ""], ["3d8MH", "Prone."]], "At 3 AP the Area is a 3 Emanation.")] }, "Paladin");
+  vt(3, [["2d6MH", ""], ["2d10MH", ""], ["3d8MH", "Prone."]], "", { areaSize: 3 })] }, "Paladin");   // v0.0.215: "Area: 2 / 3 Emanation", no sentence
 const dr = (ap, extra) => [
   vt(ap, [["1WB,1d10MH", ""], ["1WB,1d12MH", ""], ["1WB,2d8MH", ""]], extra, { mode: "weapon", critical: "The target is Pushed 3." }),
   vt(ap, [["2d8MH", ""], ["2d10MH", ""], ["2d12MH", ""]], extra, { mode: "power", critical: "The target is Pushed 3." })];
@@ -386,7 +386,7 @@ add("actions", "action", "Miraculous Recovery", "icons/svg/regen.svg", { categor
   noRoll(3, "As 2 AP, but three times what 1 Rally Point would heal.")] }, "Paladin");
 add("actions", "action", "Consecrated Ground", "icons/svg/sun.svg", { category: PAL, level: 1, traits: ["divine", "area"], frequency: "daily", targets: "All creatures in the Area", areaCfg: { size: 2, shape: "emanation", within: 10, targets: "all", center: false, keep: true, rounds: 3 }, versions: [
   noRoll(2, "For 3 rounds, enemies in the area take 1 Bane on [Weapon], [Power] and [Signature] Actions, and allies in it heal 1d4 at the start of each of their turns."),
-  noRoll(3, "As 2 AP, but for 5 rounds (at 3 AP the Area is a 3 Emanation).")] }, "Paladin");
+  { ...noRoll(3, "As 2 AP, but for 5 rounds."), areaSize: 3 }] }, "Paladin");   // v0.0.215: "Area: 2 / 3 Emanation", as the book
 add("actions", "action", "Divine Intervention", "icons/svg/angel.svg", { category: PAL, level: 1, traits: ["divine"], frequency: "daily", reaction: true, reactionKind: "interrupt", targets: "One creature", distance: "5", trigger: "You or an ally within 5 squares would go Down.", versions: [
   noRoll(2, "Instead of going Down, the creature's total damage becomes 1 less than their Health Pool.")] }, "Paladin");
 // the Escalation Actives
@@ -622,7 +622,20 @@ const AUTO = {
   bronze: ["Covering Fire", "Consecrated Ground", "Hand of Mercy", "Harrying Shots", "Harried", "Challenge", "Challenged"],
   none: ["Shield of Faith", "Miraculous Recovery", "Divine Intervention", "Mending Light", "Hallowed Stance", "Ricochet", "Sacred Weapon", "Class Expertise"]
 };
-for (const [rank, list] of Object.entries(AUTO)) for (const d of docs) if (list.includes(d.name) && ["action", "feature", "talent", "effect"].includes(d.type) && !/old cards/.test(d.folder ?? "") && !d.system.automation) d.system.automation = rank;
+// v0.0.215 (Lucas, playtest 2): what each Bronze and Silver card still leaves to the players (the diamond's tooltip, "By hand" on the item).
+const AUTO_NOTE = {
+  "Hunter's Focus": "the damage reduction against your Marked Quarry (lower the damage yourself).",
+  "Aim": "ignoring Low Cover (untick the Low cover chip in the roll dialog).",
+  "Deadeye": "Favored (tick it in the roll dialog).",
+  "Divine Surge": "the ally clicks the button on the mark for the extra [M] 1d8 Ho.",
+  "Covering Fire": "the Bane and +1 Defense for creatures in the area (the area is placed and kept for 3 rounds).",
+  "Consecrated Ground": "the Banes and the 1d4 healing for creatures in the area (the area is placed and kept).",
+  "Hand of Mercy": "ending the effect (the Rally Point button works).",
+  "Harrying Shots": "apply the Harried effect from the compendium.",
+  "Challenge": "apply the Challenged effect from the compendium.",
+  "Challenged": "the attacker unticks the Bane when it attacks the creature that challenged it."
+};
+for (const [rank, list] of Object.entries(AUTO)) for (const d of docs) if (list.includes(d.name) && ["action", "feature", "talent", "effect"].includes(d.type) && !/old cards/.test(d.folder ?? "") && !d.system.automation) { d.system.automation = rank; if (AUTO_NOTE[d.name] && ["bronze", "silver"].includes(rank)) d.system.automationNote = AUTO_NOTE[d.name]; }
 // v0.0.187: the Escalation Passives say so (the Features tab's Escalation section); Font of Mercy is one too (the book).
 for (const d of docs) if (d.type === "feature" && (/escalation/i.test(d.system.category ?? "") || d.name === "Font of Mercy")) d.system.escalationPassive = true;
 for (const a of [...actors, ...pcs]) for (const it of (a.items ?? [])) if (["action", "talent", "feature"].includes(it.type) && FLAVOR[it.name]) { it.system ??= {}; it.system.flavor = FLAVOR[it.name]; }

@@ -271,4 +271,4 @@ What the fight model gives for 4 PCs (all ratings Medium, levels 1 to 3):
 **Ogre Chieftain** (Elite, CV 200): Body High (+3), Instinct Medium (+2), Mind Medium (+2), Appeal Low (+1). Weapon Modifier +3 (Body). Health Medium: 132 (Body 73, Mind 59). Armor Defense Medium (14), Ward Defense Low (13). Speed 4 (slow: High Basic attack). Escalation on.
 - *Club* (Basic attack, High): about 9 / 13.5 (1d10 + [Mod] / 2d10 + [Mod] Bl).
 - *Ground Slam* (Special, 3 AP, Encounter, Area 1 Emanation, a Save Action: Body Save, DC 14): half of a Medium 3 AP: about 19.5 / 12 / 0 (Tier 1 is the worst for them), and Prone on Tier 1.
-- *Rally the Tribe* (1 Escalation, 1 AP): allies within 5 squares gain 1 Boon on their next Basic attack.
+- *Rally the Tribe* (1 Escalation, 1 AP): allies within 5 squares gain 1 Boon on their next [Weapon] Action.

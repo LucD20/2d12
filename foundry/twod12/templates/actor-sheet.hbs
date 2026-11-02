@@ -80,7 +80,8 @@
       <div class="ex-rail"><span>{{n}}</span></div>
       <div class="ex-items">
         {{#each passives}}
-        <div class="ex-pass {{state}}" data-item-id="{{id}}" data-tooltip="{{tip}}"><i class="fa-solid fa-star"></i><a class="ex-pnm" data-action="openItem">{{name}}</a>{{#if tag}}<span class="ex-tag">{{tag}}</span>{{/if}}</div>
+        <div class="ex-pass {{state}}{{#if open}} open{{/if}}" data-item-id="{{id}}" {{#unless open}}data-tooltip="{{tip}}"{{/unless}}><i class="fa-solid fa-star"></i><a class="ex-pnm" data-action="toggleEscPass">{{name}}</a>{{#if tag}}<span class="ex-tag">{{tag}}</span>{{/if}}<a class="ex-edit" data-action="openItem" data-tooltip="Open the Feature"><i class="fa-solid fa-pen-to-square"></i></a></div>
+        {{#if open}}<div class="ex-pdesc" data-item-id="{{id}}">{{{desc}}}</div>{{/if}}
         {{/each}}
         {{#if actives.length}}<div class="atable ex-acts">{{#each actives}}{{> actrow}}{{/each}}</div>{{/if}}
       </div>
@@ -306,9 +307,9 @@
         </div>{{/if}}
         {{/each}}
         {{#with loadout.armor}}
-        {{#if free}}<div class="lo-slot free"><span class="lo-k">Armor</span><b>{{text}}</b><span class="lo-sub">{{sub}}</span></div>
+        {{#if free}}<div class="lo-slot free"><span class="lo-k">Armor{{#if @root.isPc}}<span class="lo-train" data-tooltip="Armor Training: the heaviest armor your class wears without penalty (from your class)">Training: {{@root.armorTrainingLabel}}</span>{{/if}}</span><b>{{text}}</b><span class="lo-sub">{{sub}}</span></div>
         {{else}}<div class="lo-slot{{#if untrained}} untrained{{/if}}" data-item-id="{{id}}">
-          <span class="lo-k"><span class="lo-kl">Armor{{#if untrained}}<i class="lo-wi fa-solid fa-triangle-exclamation" data-tooltip="Untrained: beyond your Armor Training. All your Rolls are Doomed, and Actions against your Armor or Ward are Favored."></i>{{/if}}</span></span>
+          <span class="lo-k"><span class="lo-kl">Armor{{#if untrained}}<i class="lo-wi fa-solid fa-triangle-exclamation" data-tooltip="Untrained: beyond your Armor Training. All your Rolls are Doomed, and Actions against your Armor or Ward are Favored."></i>{{/if}}</span>{{#if @root.isPc}}<span class="lo-train" data-tooltip="Armor Training: the heaviest armor your class wears without penalty (from your class)">Training: {{@root.armorTrainingLabel}}</span>{{/if}}</span>
           <a class="lo-name" data-action="openItem">{{name}}</a>
           <div class="tboxes dark n2">{{#each boxes}}<div><span>{{l}}</span><b>{{v}}</b></div>{{/each}}</div>
           <span class="lo-sub">{{sub}}</span>

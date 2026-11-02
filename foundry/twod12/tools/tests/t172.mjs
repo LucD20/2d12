@@ -1,0 +1,51 @@
+// Run with: node tools/tests/run.mjs (or node tools/tests/t172.mjs)
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
+import fs from "node:fs";
+// v0.0.215 (Lucas's playtest 2 notes): fixes and Foundry improvements.
+class Fl { constructor(o) { this.o = o; } }
+let flag = null;
+globalThis.CONFIG = {}; globalThis.Hooks = { on() {}, once() {} };
+globalThis.game = { settings: { get: () => true }, combat: { started: true, id: "c1", round: 1, turn: 0, turns: [] } };
+globalThis.foundry = { abstract: { TypeDataModel: class { static migrateData(s) { return s; } } }, data: { fields: { SchemaField: Fl, NumberField: Fl, StringField: Fl, BooleanField: Fl, ArrayField: Fl, SetField: Fl, HTMLField: Fl } },
+  applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } },
+  utils: { deepClone: o => JSON.parse(JSON.stringify(o)), debounce: f => f, getRoute: p => "/" + p,
+    // Foundry's setFlag merges objects into what is stored: the stand-in does the same (the cause of the At-will bug).
+    mergeObject: (a, b) => { const out = JSON.parse(JSON.stringify(a ?? {})); const m = (x, y) => { for (const [k, v] of Object.entries(y)) { if (v && typeof v === "object" && !Array.isArray(v) && x[k] && typeof x[k] === "object" && !Array.isArray(x[k])) m(x[k], v); else x[k] = v; } }; m(out, b); return out; } } };
+const U = await import(ROOTURL + "module/usage.mjs");
+const src = f => fs.readFileSync(ROOT + f, "utf8");
+const actor = { type: "npc", isOwner: true, getFlag: () => flag, setFlag: async (s, k, v) => { flag = foundry.utils.mergeObject(flag ?? {}, v); } };
+const act = (id, frequency, traits = []) => ({ id, type: "action", system: { frequency, traits: new Set(traits) }, getFlag: () => null });
+const club = act("club", "atwill", ["strike", "weapon"]), wa = act("wa", "atwill", ["strike", "weapon"]), slam = act("slam", "encounter", ["area"]);
+
+console.log("--- At-will: a first use each turn has no Bane (Club, then Weapon Attack)");
+await U.markUsed(actor, club); await U.markUsed(actor, wa);
+console.log("turn 1, after Club and Weapon Attack: Club", U.atWillUses(actor, club), "| Weapon Attack", U.atWillUses(actor, wa));
+game.combat.turn = 1;
+await U.markUsed(actor, club);
+console.log("turn 2, Club used once: Club", U.atWillUses(actor, club), "| Weapon Attack (not used this turn)", U.atWillUses(actor, wa), "(was 1 before v0.0.215: last turn's count stayed in the merged flag)");
+console.log("--- Encounter: greyed after its use");
+await U.markUsed(actor, slam);
+console.log("Ground Slam:", JSON.stringify(U.isFaded(actor, slam)));
+
+console.log("--- the rest (source checks)");
+const mv = src("module/move.mjs"), cw = src("module/classwindow.mjs"), pv = src("module/preview.mjs"), gr = src("module/grants.mjs"), cf = src("module/config.mjs"), tw = src("module/twod12.mjs"), loe = src("module/loe.mjs");
+const rally = src("module/rally.mjs"), tpl = src("module/template.mjs"), acts = src("module/actions.mjs"), esc = src("module/escblock.mjs"), sheet = src("templates/actor-sheet.hbs"), data = src("module/data.mjs"), content = src("tools/content.mjs");
+console.log("Charge disrupted: measured from the end square:", mv.includes("chargeFollowUp(c, doc, reach, end)"));
+console.log("class window keeps its scroll:", cw.includes("focus({ preventScroll: true })") && cw.includes("content.scrollTop = own"));
+console.log("an Action-only Talent shows its Action:", pv.includes("export const actionOnlyTalent") && !/tal\("Aim"[^\n]*You gain the Aim Action/.test(content), "| granted Actions in full:", pv.includes('class="igrant"'));
+console.log("a choice picked in the class window:", cw.includes("_choiceBlock(") && gr.includes("grantChoices(actor, parent, copy, preset = null)"));
+console.log("Armor Training on the Loadout:", sheet.includes('class="lo-train"'));
+console.log("new tokens: bars always, no rotation:", tw.includes('"prototypeToken.displayBars": bars') && tw.includes('"prototypeToken.lockRotation": true'), "| core rotation off once:", tw.includes("tokenDefaultsV215"));
+console.log("Rally card:", rally.includes('sysCard({ title: "Rally"'));
+console.log("shortcuts Shift+L and Shift+H:", tw.includes('"lineOfEffect", {') && tw.includes('"coverHeight", {') && loe.includes("export function loeShortcut") && loe.includes("export function heightShortcut"));
+console.log("the diamond says what is by hand:", cf.includes("By hand: ${String(note).trim()}") && data.includes("automationNote: str()"), "| notes:", (content.match(/^  "[^"]+": "/gm) ?? []).length >= 10);
+console.log("Rally the Tribe:", content.includes("gain 1 Boon on their next [Weapon] Action."));
+console.log("an Emanation with no Distance is around you:", cf.includes('const onSelf = a.shape === "emanation" && !a.within && !c?.withinRange;'), "| asks about yourself:", tpl.includes("Affect ${escT(centerTok.name)} too"));
+console.log("remove a target in the roll dialog:", acts.includes('class="ttx" data-rm=') && acts.includes('removed: fd.getAll("removed")'));
+console.log("Escalation Passive: description on click:", sheet.includes('data-action="toggleEscPass"') && esc.includes("desc:"));
+console.log("Word of Radiance and Consecrated Ground: 2 / 3 Emanation:", data.includes('areaSize: int(0, 0)') && content.includes('"", { areaSize: 3 })') && !content.includes("At 3 AP the Area is"), "| the version asked before placing:", acts.includes("Which version? The Area depends on it."));
+const D = await import(ROOTURL + "module/data.mjs").catch(() => null);
+if (D?.ActionData) {
+  const d = Object.assign(Object.create(D.ActionData.prototype), { areaCfg: { size: 2, shape: "emanation", within: 5 }, versions: [{ ap: 3, areaSize: 3 }, { ap: 2, areaSize: 0 }], traits: new Set() });
+  d.prepareDerivedData(); console.log("its Area text:", d.area, "|", d.areaDistance);
+}

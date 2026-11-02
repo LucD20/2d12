@@ -1,6 +1,7 @@
 // Rally Points: each point heals ceil(Health Pool / 4). @Rally[N] buttons and Actions with "Use Rally Points" spend them.
 import { esc } from "./roll.mjs";
 import { rallyBonusFor } from "./automation.mjs";
+import { sysCard } from "./sysmsg.mjs";
 const { DialogV2 } = foundry.applications.api;
 const warn = m => ui.notifications.warn(m);
 
@@ -51,17 +52,21 @@ export async function useRally(actor, n, why = "", { announce = true } = {}) {
   // v0.0.186: the "Rally Points" settings of the creature and of allies within their range (Font of Mercy: Power Modifier + 2, within 5); the highest counts.
   const fm = await rallyBonusFor(actor);
   const total = (s.rallyHeal + (fm?.bonus ?? 0)) * n;
-  const head = `<b>${esc(actor.name)}</b> uses ${n} Rally Point${n === 1 ? "" : "s"}${why ? ` <small>(${esc(why)})</small>` : ""}${fm ? ` <small>(${esc(fm.source)}, ${esc(fm.name)}: +${fm.bonus} each)</small>` : ""}`;
-  const card = announce ? await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: `<div class="twod12 chat apmsg">${head}.</div>` }) : null;
+  // v0.0.215 (Lucas, playtest 2): the system card look (sysmsg.mjs, as Swap Initiative): a title bar, a bold line, a plain line.
+  const lead = `${esc(actor.name)} uses ${n} Rally Point${n === 1 ? "" : "s"}`;
+  const sub = [why && !/^rally$/i.test(why) ? esc(why) : "", `${total} healing (${n} × ${s.rallyHeal + (fm?.bonus ?? 0)})`, fm ? `${esc(fm.source)}, ${esc(fm.name)}: +${fm.bonus} each` : ""].filter(Boolean).join(" · ");
+  const rallyCard = text => sysCard({ title: "Rally", lead, text, cls: "rallymsg" });
+  const card = announce ? await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: rallyCard(`${sub}. Choosing the damage to remove…`) }) : null;
   const plan = await chooseHealing(actor, total);
   const upd = { "system.rallyUsed": s.rallyUsed + n };
   for (const [k, v] of Object.entries(plan)) upd[`system.damage.${k}`] = s.damage[k] - v;
   await actor.update(upd);
   const healed = Object.values(plan).reduce((a, b) => a + b, 0);
   const parts = BUCKETS.filter(([k]) => plan[k]).map(([k, l]) => `${plan[k]} ${l}`).join(", ");
-  const result = `removes <b>${healed}</b> damage${parts ? ` (${parts})` : ""}. ${s.rallyMax - s.rallyUsed - n} Rally Points left.`;
-  if (card) { try { await card.update({ content: `<div class="twod12 chat apmsg">${head}: ${result}</div>` }); return true; } catch (e) { /* not the author */ } }
-  await ChatMessage.create({ content: `<div class="twod12 chat apmsg"><b>${esc(actor.name)}</b> ${result}</div>` });
+  const leftN = s.rallyMax - s.rallyUsed - n;
+  const result = `Removes <b>${healed}</b> damage${parts ? ` (${parts})` : ""}. <b>${leftN}</b> Rally Point${leftN === 1 ? "" : "s"} left.`;
+  if (card) { try { await card.update({ content: rallyCard(`${sub}. ${result}`) }); return true; } catch (e) { /* not the author */ } }
+  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: rallyCard(`${sub}. ${result}`) });
   return true;
 }
 

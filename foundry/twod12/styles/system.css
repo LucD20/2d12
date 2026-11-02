@@ -2037,3 +2037,24 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 /* v0.0.211: a hand button of a Two-handed weapon held in one hand (3 Banes): an amber ring; a greyed button can be clicked (it asks). */
 .twod12.sheet.ns .ar-use.hand.warn { box-shadow: 0 0 0 2px #d08a1e inset; }
 .twod12.sheet.ns .ar-use.hand.off { cursor: pointer; }
+
+/* v0.0.215 (Lucas, playtest 2): what a Talent or Feature grants is shown as the Action's card; a choice's options fold. */
+.twod12.chat.infocard .igrant { margin: 4px 0 0 4px; padding-left: 8px; border-left: 2px solid rgba(128,128,128,.45); }
+.twod12.chat.infocard .igrant > .twod12.chat { margin: 0; box-shadow: none; }
+.twod12.chat.infocard details.ichoice > summary { cursor: pointer; list-style: none; }
+.twod12.chat.infocard details.ichoice > summary::-webkit-details-marker { display: none; }
+.twod12.chat.infocard details.ichoice[open] > summary .ikid { font-weight: 600; }
+/* v0.0.215: a choice (Lesser Blessing's blessing) made in the class window, under the card. */
+.classwin .cw-choice { margin: 8px 0 4px; padding: 6px 8px; border: 1px dashed var(--cw-navy); border-radius: 6px; background: #fff; color: #1f2430; }
+.classwin .cw-choice-h { font-weight: 700; margin-bottom: 4px; }
+/* v0.0.215 (Lucas, playtest 2): the Armor Training on the Loadout's Armor slot. */
+.twod12.sheet .lo-slot .lo-train { margin-left: auto; font-size: 10px; font-weight: 600; opacity: .8; white-space: nowrap; padding-left: 6px; }
+/* v0.0.215 (Lucas, playtest 2): remove a target from the roll dialog (the x on its tile). */
+.twod12.usedlg .ttile { position: relative; }
+.twod12.usedlg .ttile .ttx { position: absolute; top: -5px; right: -5px; width: 15px; height: 15px; border-radius: 50%; background: #8f2a20; color: #fff; font-size: 9px; line-height: 15px; text-align: center; display: none; cursor: pointer; }
+.twod12.usedlg .ttile:hover .ttx { display: block; }
+/* v0.0.215 (Lucas, playtest 2): an Escalation Passive's description opens under it in the Actions tab. */
+.twod12.sheet .ex-pass .ex-edit { margin-left: auto; opacity: .55; font-size: 11px; }
+.twod12.sheet .ex-pass .ex-edit:hover { opacity: 1; }
+.twod12.sheet .ex-pdesc { margin: 2px 0 6px 22px; padding: 4px 8px; border-left: 2px solid var(--fq, #8a7650); font-size: 12px; }
+.twod12.sheet .ex-pdesc p { margin: 2px 0; }

@@ -192,7 +192,7 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
     const shared = mods.filter(m => !ownerOf(m.id)), own = u => mods.filter(m => ownerOf(m.id) === u);
     const first = shared.length ? "all" : (targetTiles.find(t => own(t.uuid).length)?.uuid ?? "all");
     const group = (id, list) => `<div class="fxgroup${id === first ? "" : " off"}" data-for="${esc(id)}">${list.length ? list.map(chipOf).join("") : '<span class="hint">Nothing changes this roll for this creature.</span>'}</div>`;
-    effectsRows = `<div class="rf-row tilesrow"><span class="rf-label">Targets</span><div class="ttiles${targetTiles.length >= 10 ? " compact" : ""}"><button type="button" class="ttile${first === "all" ? " on" : ""}" data-tg="all" data-name="Yours" data-tooltip="Your own effects, for every target"><span class="tdots"></span><i class="fa-solid fa-user"></i></button>${targetTiles.map((t, k) => `<button type="button" class="ttile${first === t.uuid ? " on" : ""}" data-tg="${esc(t.uuid)}" data-name="${esc(t.name)}" data-dc="${t.dc}" data-tooltip="${esc(t.name)}: DC ${t.dc}"><span class="tdots"></span>${targetTiles.length >= 10 ? `<b class="tabnum">${k + 1}</b>` : `<img src="${esc(t.img)}" alt="">${tileNumber(t.name) ? `<span class="tnum">${tileNumber(t.name)}</span>` : ""}`}</button>`).join("")}</div></div><div class="tcap"></div><div class="fxgroups">${group("all", shared)}${targetTiles.map(t => group(t.uuid, own(t.uuid))).join("")}</div>`;
+    effectsRows = `<div class="rf-row tilesrow"><span class="rf-label">Targets</span><div class="ttiles${targetTiles.length >= 10 ? " compact" : ""}"><button type="button" class="ttile${first === "all" ? " on" : ""}" data-tg="all" data-name="Yours" data-tooltip="Your own effects, for every target"><span class="tdots"></span><i class="fa-solid fa-user"></i></button>${targetTiles.map((t, k) => `<button type="button" class="ttile${first === t.uuid ? " on" : ""}" data-tg="${esc(t.uuid)}" data-name="${esc(t.name)}" data-dc="${t.dc}" data-tooltip="${esc(t.name)}: DC ${t.dc}"><span class="tdots"></span>${targetTiles.length >= 10 ? `<b class="tabnum">${k + 1}</b>` : `<img src="${esc(t.img)}" alt="">${tileNumber(t.name) ? `<span class="tnum">${tileNumber(t.name)}</span>` : ""}`}<span class="ttx" data-rm="${esc(t.uuid)}" data-tooltip="Remove ${esc(t.name)} from the targets"><i class="fa-solid fa-xmark"></i></span></button>`).join("")}</div></div><div class="tremoved"></div><div class="tcap"></div><div class="fxgroups">${group("all", shared)}${targetTiles.map(t => group(t.uuid, own(t.uuid))).join("")}</div>`;
   } else effectsRows = chips ? `<div class="rf-row"><span class="rf-label">Effects</span>${chips}</div>` : "";
   // Notices: how the roll is made, shown as labels (a Thrown weapon thrown, for example).
   if (generalNotices.length) effectsRows = `<div class="rf-row"><span class="rf-label">Use</span>${generalNotices.map(n => `<span class="rnotice" data-tooltip="${esc(n.why ?? "")}"><i class="fa-solid ${esc(n.icon ?? "fa-circle-info")}"></i> ${esc(n.text)}</span>`).join("")}</div>` + effectsRows;
@@ -253,6 +253,20 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
           cap.replaceChildren(b, sp);
         }
       };
+      // v0.0.215 (Lucas, playtest 2): a target can be removed here (the x on its tile): it is not rolled against and is untargeted.
+      root.querySelectorAll(".ttx").forEach(x =>
+        x.addEventListener("click", ev => {
+          ev.preventDefault(); ev.stopPropagation();
+          const tile = x.closest(".ttile"), left = root.querySelectorAll('.ttile:not([data-tg="all"]):not(.gone)').length;
+          if (left <= 1) return ui.notifications.warn("At least one target stays: cancel the Action to use it on nobody.");
+          tile.classList.add("gone"); tile.hidden = true;
+          const inp = document.createElement("input"); inp.type = "hidden"; inp.name = "removed"; inp.value = x.dataset.rm;
+          root.querySelector(".tremoved")?.append(inp);
+          root.querySelector(`.fxgroup[data-for="${CSS.escape(x.dataset.rm)}"]`)?.querySelectorAll("[name=fx]").forEach(c => { c.checked = false; c.disabled = true; });
+          if (tile.classList.contains("on")) root.querySelector('.ttile[data-tg="all"]')?.click();
+          refreshTiles();
+        })
+      );
       root.querySelectorAll(".ttile").forEach(t =>
         t.addEventListener("click", ev => {
           ev.preventDefault();
@@ -340,7 +354,7 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
       label: "Roll",
       callback: (ev, btn) => {
         const fd = new FormData(btn.form);
-        return { ...Object.fromEntries(fd), fx: fd.getAll("fx"), bonusOn: fd.getAll("bonusOn") };
+        return { ...Object.fromEntries(fd), fx: fd.getAll("fx"), bonusOn: fd.getAll("bonusOn"), removed: fd.getAll("removed") };
       }
     },
     rejectClose: false
@@ -391,7 +405,7 @@ export async function useAction(actor, item, opts = {}) {
     const ws = weaponsFor(actor, item).filter(w => (!need || hasProp(w, need) || (need === "ranged" && hasProp(w, "thrown"))) && (!it.traits.has("shot") || hasProp(w, "projectile")));
     if (need && !ws.length) return ui.notifications.warn(it.traits.has("shot") ? `${item.name} is a Shot: it needs a wielded Projectile weapon (a bow or a crossbow).` : `${item.name} needs a wielded ${need === "melee" ? "Melee" : "Ranged"} weapon.`);
   }
-  const versions = [...it.versions].sort((a, b) => a.ap - b.ap);
+  let versions = [...it.versions].sort((a, b) => a.ap - b.ap);
   if (!versions.length) return ui.notifications.warn(`${item.name} has no versions yet.`);
   // What the Action rolls (Signature, Weapon, Power or an Attribute) and what its damage adds: rollsource.mjs.
   const src = rollSource(s, it);
@@ -438,6 +452,14 @@ export async function useAction(actor, item, opts = {}) {
   // An Action with an Area and a roll: the area is placed first, so the roll is made once for the creatures in it.
   let areaPlaced = false, areaOutcome = null;
   const areaSet = String(it.area ?? "").trim() ? areaConfigOf(it) : null;
+  // v0.0.215: versions with their own Area size (Word of Radiance: 2 / 3 Emanation): the version is chosen before the area is placed, and the roll keeps it.
+  if (areaSet && canvas.ready && canvas.grid?.isSquare && src.kind && new Set(versions.map(v => v.areaSize || areaSet.distance)).size > 1) {
+    const pickAp = await DialogV2.wait({ window: { title: item.name }, content: `<p>Which version? The Area depends on it.</p>`, rejectClose: false,
+      buttons: versions.map(v => ({ action: String(v.ap), label: `${v.ap} AP: ${v.areaSize || areaSet.distance} ${areaSet.shape === "burst" ? "Burst" : areaSet.shape === "line" ? "Line" : "Emanation"}` })) });
+    if (pickAp == null) return;
+    versions = versions.filter(v => v.ap === Number(pickAp));
+    areaSet.distance = versions[0].areaSize || areaSet.distance;
+  }
   if (areaSet && canvas.ready && canvas.grid?.isSquare && src.kind) {   // no square grid: no placing, rolled as before
     const { startTemplate } = await import("./template.mjs");
     const outcome = {}; areaOutcome = outcome;
@@ -650,6 +672,13 @@ export async function useAction(actor, item, opts = {}) {
   const bonusKey = b => `${b.effect}|${b.dmg}|${b.sub}|${b.text}`;
   const bonusOff = new Set(bonusChips.map(c => c.key).filter(k => !(data?.bonusOn ?? []).includes(k)));
   if (!data) return;
+  // v0.0.215: targets removed in the dialog are left out (and untargeted).
+  if (multi && data.removed?.length) {
+    const gone = new Set(data.removed);
+    for (const p of perT.filter(x => gone.has(x.actorUuid))) { try { p.token.setTarget(false, { releaseOthers: false, groupSelection: true }); } catch (e) { /* gone */ } }
+    perT.splice(0, perT.length, ...perT.filter(x => !gone.has(x.actorUuid)));
+    if (!perT.length) return ui.notifications.warn(`${item.name} has no target left.`);
+  }
   // The step the damage uses: the two chips (Empowered and Enfeebled; the player can change them, they start at the highest value that effects and conditions give), and a Reload shot is Empowered 2 by itself.
   const reloadShot = data.reloadshot === "on";
   const damageStep = Math.max(Math.max(0, Math.trunc(Number(data.empowered)) || 0), reloadShot ? 2 : 0) - Math.max(0, Math.trunc(Number(data.enfeebled)) || 0);
@@ -823,7 +852,7 @@ export async function useAction(actor, item, opts = {}) {
   const areaRow = areaButton(it) && !areaPlaced ? `<div class="trow arearow">${await enrich(areaButton(it), item)}</div>` : "";
   const setupRow = it.setup ? `<div class="trow setuprow"><b>Setup:</b> ${await enrich(setupFor(it.setup, setupDone), item)}</div>` : "";
   const html = `<div class="twod12 chat action" style="${cardVars(color)}">
-    ${cardHead(item.name, categoryText(it), apIcon(version.ap, it.reaction), effectiveFrequency(it), it.automation)}
+    ${cardHead(item.name, categoryText(it), apIcon(version.ap, it.reaction), effectiveFrequency(it), it.automation, it.automationNote)}
     ${flavorHtml(it)}
     ${useTraits.size ? `<div class="traits">${traitsHtml(useTraits)}</div>` : ""}
     ${trow}${areaRow}${setupRow}

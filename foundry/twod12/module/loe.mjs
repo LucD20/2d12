@@ -60,6 +60,25 @@ export function toggleLoE(token) {
 }
 export const loeOn = token => state?.tokenId === token?.id;
 
+/** v0.0.215 (Lucas, playtest 2): the selected token of yours (the shortcuts), or a warning. */
+function selectedOwn() {
+  const t = (canvas?.tokens?.controlled ?? []).filter(x => x.isOwner);
+  if (t.length !== 1) { ui.notifications.warn("Select one token of yours first."); return null; }
+  return t[0];
+}
+/** Shortcut (Shift+L by default): Line of Effect on or off for the selected token, as its HUD button. */
+export function loeShortcut() { const t = selectedOwn(); if (t) toggleLoE(t); return true; }
+/** Shortcut (Shift+H by default): Cover height calculation with the selected token and its first target, as its HUD button. */
+export function heightShortcut() {
+  const token = selectedOwn();
+  if (!token) return true;
+  const targets = [...game.user.targets].filter(t => t.id !== token.id);
+  if (!targets.length) { ui.notifications.warn("Target a creature first: the side view shows you and your target."); return true; }
+  if (targets.length > 1) ui.notifications.info(`Side view with your first target, ${targets[0].name}.`);
+  HeightCover.open(token, targets[0]);
+  return true;
+}
+
 export function registerLoE() {
   Hooks.on("renderTokenHUD", (hud, html) => {
     const root = html instanceof HTMLElement ? html : html?.[0];

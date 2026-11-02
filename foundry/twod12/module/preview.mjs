@@ -87,7 +87,7 @@ export async function buildPreviews(ctx) {
     const pvSetup = it.setup ? `<div class="trow setuprow"><b>Setup:</b> ${await enrich(setupFor(it.setup, ctx.setupDone), item)}</div>` : "";
     const check = ctx.mod === null || v.noTiers ? "" : `<div class="pv-check">${esc(ctx.checkLabel)}: 2d12 ${sgnN(ctx.mod)} vs DC <b class="pv-dc">${ctx.dc}</b> <span class="pv-odds"></span></div>`;
     out[v.ap] = `<div class="twod12 chat action pv" style="${cardVars(color)}">
-      ${cardHead(item.name, categoryText(it), apIcon(v.ap, it.reaction), effectiveFrequency(it), it.automation)}
+      ${cardHead(item.name, categoryText(it), apIcon(v.ap, it.reaction), effectiveFrequency(it), it.automation, it.automationNote)}
       ${flavorHtml(it)}
       ${it.traits.size ? `<div class="traits">${traitChevrons(it.traits)}</div>` : ""}
       ${pvMeta}${pvArea}${pvSetup}
@@ -160,7 +160,7 @@ export async function buildRawCard(item) {
   const setupRow = it.setup ? `<div class="trow setuprow"><b>Setup:</b> ${await enrich(it.setup, item)}</div>` : "";
   const tabs = it.versions.length > 1 ? `<div class="vtabs">${it.versions.map((v, vi) => `<a class="vtab${vi ? "" : " on"}" data-vtab="${vi}">${apIcon(v.ap, it.reaction)}</a>`).join("")}</div>` : "";
   return `<div class="twod12 chat action rawcard" style="${cardVars(color)}">
-    ${cardHead(item.name, categoryText(it), apLabel(it.versions.map(v => v.ap), it.reaction), effectiveFrequency(it), it.automation)}
+    ${cardHead(item.name, categoryText(it), apLabel(it.versions.map(v => v.ap), it.reaction), effectiveFrequency(it), it.automation, it.automationNote)}
     ${flavorHtml(it)}
     ${it.traits.size ? `<div class="traits">${traitChevrons(it.traits)}</div>` : ""}
     ${metaRowHtml({ escalation: it.escalation ?? 0, frequency: effectiveFrequency(it), targetText: it.targets, distance: distanceText(it), area: areaText(it), vs: vsText(it, { fists: item.getFlag?.("twod12", "basic") === "fists" }), requirements: it.requirements, trigger: it.trigger, reactionKind: it.reactionKind, self: it.traits.has("self") })}${areaRow}${setupRow}
@@ -204,24 +204,34 @@ export const modifierBlocks = s => (s.modifiers ?? []).filter(m => m.spec).map(m
   return `<div class="iblock"><div class="eh">Modifies ${esc(what)}${m.when === "outOfTurn" ? " (out of your turn)" : ""}</div><div class="et">${m.critical ? `<b>Critical:</b> ${esc(m.critical)} ` : ""}${m.effects ? esc(m.effects) : ""}</div></div>`;
 });
 
+/**
+ * v0.0.215 (Lucas, playtest 2): a Talent that is only its Action (Aim, Bloodlust, Cut Through, Whirlwind: it grants one Action and has no text,
+ * settings, modifiers or choices of its own) is shown as that Action's card.
+ */
+export const actionOnlyTalent = s => (s?.actions ?? []).filter(Boolean).length === 1 && !String(s.description ?? "").replace(/<[^>]*>/g, "").trim()
+  && !(s.settings ?? []).length && !(s.modifiers ?? []).length && !(s.choiceOptions ?? []).filter(Boolean).length && !s.talents;
+
 export async function buildInfoCard(item) {
   // A Talent or Feature (not an Action): a plain title bar, then traits, Frequency and Requirements, the text, and what it gives.
   const s = item.system, cat = categoryText(s);
+  const load = async list => (await Promise.all((list ?? []).filter(Boolean).map(async u => { try { return await fromUuid(u); } catch (e) { return null; } }))).filter(Boolean);
+  if (item.type === "talent" && actionOnlyTalent(s)) { const [a] = await load(s.actions); if (a?.type === "action") return buildRawCard(a); }
   const body = await foundry.applications.ux.TextEditor.implementation.enrichHTML(s.description ?? "", { relativeTo: item });
   const ef = effectiveFrequency(s), freq = ef ? TWOD12.frequencies[ef] : "";
-  const load = async list => (await Promise.all((list ?? []).filter(Boolean).map(async u => { try { return await fromUuid(u); } catch (e) { return null; } }))).filter(Boolean);
   const kid = d => `<div class="ikid">${d.type === "action" ? apLabel(d.system.versions.map(v => v.ap), d.system.reaction) : ""}<span>${esc(d.name)}</span></div>`;
+  // v0.0.215 (Lucas): what it grants is shown in full (the Action's card), not only its name; a choice's options too, folded.
+  const full = async d => { try { return d.type === "action" ? await buildRawCard(d) : await buildInfoCard(d); } catch (e) { return kid(d); } };
   const grants = await load(s.actions), options = await load(s.choiceOptions);
   const blocks = [];
-  if (grants.length) blocks.push(`<div class="iblock"><div class="eh">Grants</div>${grants.map(kid).join("")}</div>`);
-  if (options.length) blocks.push(`<div class="iblock"><div class="eh">${esc(s.choiceLabel || "Choose")} ${Math.max(1, s.choiceCount || 1)}</div>${options.map(kid).join("")}</div>`);
+  if (grants.length) blocks.push(`<div class="iblock"><div class="eh">Grants</div>${(await Promise.all(grants.map(full))).map(h => `<div class="igrant">${h}</div>`).join("")}</div>`);
+  if (options.length) blocks.push(`<div class="iblock"><div class="eh">${esc(s.choiceLabel || "Choose")} ${Math.max(1, s.choiceCount || 1)}</div>${(await Promise.all(options.map(async d => `<details class="ichoice"><summary>${kid(d)}</summary><div class="igrant">${await full(d)}</div></details>`))).join("")}</div>`);
   if (s.talents) blocks.push(`<div class="iblock"><div class="eh">Talent slots</div><div class="et">${s.talents}</div></div>`);
   blocks.push(...modifierBlocks(s));
   const meta = [freq ? `<span class="freq">${esc(freq)}</span>` : "", prereqLine(s) ? `<span><b>Prerequisites:</b> ${esc(prereqLine(s))}</span>` : ""].filter(Boolean);
   const head = `${flavorHtml(s)}${s.traits?.size ? `<div class="traits">${traitChevrons(s.traits)}</div>` : ""}${meta.length ? `<div class="trow">${meta.join('<i class="fa-solid fa-sparkle sep"></i>')}</div>` : ""}`;
   const text = body.trim() ? `<div class="anote">${highlightText(body)}</div>` : "";
   return `<div class="twod12 chat action rawcard infocard">
-    ${cardHead(item.name, cat, "", "", s.automation)}
+    ${cardHead(item.name, cat, "", "", s.automation, s.automationNote)}
     ${head}${head && (text || blocks.length) ? `<hr class="cdiv">` : ""}${text}${blocks.join("")}</div>`;
 }
 

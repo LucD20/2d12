@@ -60,13 +60,14 @@ async function classChoices(item) {
  * A Talent or Feature with a choice (Lesser Blessing: pick the blessing): a window asks which options to grant. The chosen Actions, Features
  * or Talents are added to the character and shown under the item; they are removed with it.
  */
-export async function grantChoices(actor, parent, copy) {
+export async function grantChoices(actor, parent, copy, preset = null) {
   const s = parent.system, all = (s.choiceOptions ?? []).filter(Boolean);
   if (!all.length) return;
   const docs = (await Promise.all(all.map(async u => { try { return await fromUuid(u); } catch (e) { return null; } }))).filter(Boolean);
   const count = Math.max(1, s.choiceCount || 1);
   let picked = docs;
-  if (docs.length > count) {
+  if (docs.length > count && preset?.length) picked = docs.filter(d => preset.includes(d.uuid)).slice(0, count);   // v0.0.215: chosen in the class window
+  else if (docs.length > count) {
     const opts = Object.fromEntries(docs.map(d => [d.uuid, `${d.name} (${d.type})`]));
     const res = await chooseDialog(`${parent.name}: ${s.choiceLabel || "Choose"}`, `Choose ${count}.`, opts, count);
     if (!res) { ui.notifications.warn(`No choice made for ${parent.name}.`); return; }
@@ -93,13 +94,13 @@ async function grantActions(actor, uuids, flag, id) {
   return n;
 }
 
-export async function grantFeature(actor, feature, by = "manual", level = null, extra = {}) {
+export async function grantFeature(actor, feature, by = "manual", level = null, extra = {}, preset = null) {
   if (actor.items.some(i => i.type === "feature" && i.getFlag(F, "sourceUuid") === feature.uuid)) return;
   const flags = { sourceUuid: feature.uuid, grantedBy: by, ...extra };
   if (level !== null) flags.level = level;
   const [copy] = await actor.createEmbeddedDocuments("Item", [copyData(feature, flags)]);
   await grantActions(actor, feature.system.actions, "featureId", copy.id);
-  await grantChoices(actor, feature, copy);
+  await grantChoices(actor, feature, copy, preset);
 }
 
 export async function grantClassFeatures(actor) {
@@ -153,12 +154,12 @@ async function dropClass(actor, item) {
 }
 
 /** Talents (characters only): the Talent and the Actions it gives. */
-export async function grantTalent(actor, talent, slot = "", extra = {}) {
+export async function grantTalent(actor, talent, slot = "", extra = {}, preset = null) {
   if (actor.type !== "character") return ui.notifications.warn("Talents are for characters.");
   if (actor.items.some(i => i.type === "talent" && i.getFlag(F, "sourceUuid") === talent.uuid)) return ui.notifications.info(`${actor.name} already has ${talent.name}.`);
   const [copy] = await actor.createEmbeddedDocuments("Item", [copyData(talent, { sourceUuid: talent.uuid, ...(slot ? { slot } : {}), ...extra })]);
   const n = await grantActions(actor, talent.system.actions, "talentId", copy.id);
-  await grantChoices(actor, talent, copy);
+  await grantChoices(actor, talent, copy, preset);
   ui.notifications.info(`${talent.name} added${n ? ` with ${n} action(s)` : ""}.`);
 }
 

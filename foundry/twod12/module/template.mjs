@@ -348,6 +348,7 @@ export async function startTemplate(cfg, ctx = {}) {
   let tokens = tokensIn(placed.cells);
   if (data.targets === "allies") tokens = tokens.filter(t => t.document.disposition === od);
   if (data.targets === "enemies") tokens = tokens.filter(t => t.document.disposition !== 0 && t.document.disposition !== od);
+  const centerTok = center && tokens.find(t => t.id === center.id);   // v0.0.215: the creature it is around, if it could be affected (asked below)
   if (!data.self && center) tokens = tokens.filter(t => t.id !== center.id);
   if (shape === "line") {
     // v0.0.214: a Line is 1 square high (a creature flying above its squares is not in it), and its creatures give no cover to each other.
@@ -361,14 +362,18 @@ export async function startTemplate(cfg, ctx = {}) {
   if (ctx?.outcome) { ctx.outcome.cover = reach.cover; ctx.outcome.blocked = noLoE; ctx.outcome.point = placed.point ?? null; }
   if (preview) {
     const actName = (() => { try { const f = ctx?.message?.getFlag?.("twod12", "action"); return fromUuidSync(f?.actorUuid)?.items?.get?.(f?.itemId)?.name ?? ""; } catch (e) { return ""; } })();
-    const names = tokens.map(t => escT(t.name)).join(", ") || "nobody";
-    const ok = await DialogV2.confirm({
+    const names = tokens.filter(t => t.id !== centerTok?.id).map(t => escT(t.name)).join(", ") || "nobody";
+    // v0.0.215 (Lucas, playtest 2: Ground Slam): an Emanation around its user is only shown; this window asks whether the user is affected too, and confirms.
+    const selfBox = centerTok ? `<div class="form-group"><label><input type="checkbox" name="self" ${data.self ? "checked" : ""}> Affect ${escT(centerTok.name)} too (the creature it is around)</label></div>` : "";
+    const res = await DialogV2.wait({
       window: { title: actName || "Apply Area" },
-      content: `<p>Apply ${escT(actName || "the area")}'s area (shown on the map)?</p><p>Targets: <b>${names}</b></p>${noLoE.length ? `<p>No Line of Effect from the Point of Origin: <b>${noLoE.map(escT).join(", ")}</b></p>` : ""}`,
+      content: `<p>Apply ${escT(actName || "the area")}'s area (shown on the map)?</p><p>Targets: <b>${names}</b></p>${selfBox}${noLoE.length ? `<p>No Line of Effect from the Point of Origin: <b>${noLoE.map(escT).join(", ")}</b></p>` : ""}`,
+      buttons: [{ action: "yes", label: "Apply", icon: "fa-solid fa-check", default: true, callback: (ev, btn) => ({ self: !!btn.form?.elements?.self?.checked }) }, { action: "no", label: "Cancel", icon: "fa-solid fa-xmark" }],
       rejectClose: false
     });
     dropPreview();
-    if (!ok) return;
+    if (!res || res === "no") return;
+    if (centerTok) tokens = res.self ? [...new Set([...tokens, centerTok])] : tokens.filter(t => t.id !== centerTok.id);
   }
   // Restart the targeting: release every current target, then target the tokens in the area.
   for (const t of [...game.user.targets]) t.setTarget(false, { releaseOthers: false, groupSelection: true });

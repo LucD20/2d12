@@ -35,7 +35,9 @@ const state = actor => {
     turnUsed: mine && u.turnUsedKey === `${combat.round}:${combat.turn}` ? (u.turnUsed ?? []) : [],
     encounter: mine ? (u.encounter ?? []) : [],
     strikes: mine && u.turnKey === `${combat.round}:${combat.turn}` ? (u.strikes ?? 0) : 0,
-    atwill: mine && u.atwillKey === `${combat.round}:${combat.turn}` ? (u.atwill ?? {}) : {}
+    // v0.0.215 (Lucas, playtest 2): a list, not an object. setFlag merges objects, so last turn's counts (an object keyed by item id) stayed in
+    // the flag and a first use this turn got "At-will use 2". A list is replaced whole.
+    atwill: mine && u.atwillKey === `${combat.round}:${combat.turn}` ? Object.fromEntries(u.atwillList ?? []) : {}
   };
 };
 
@@ -102,8 +104,11 @@ export async function markUsed(actor, item) {
   if (f === "encounter" && !(u.encounter ??= []).includes(item.id)) u.encounter.push(item.id);
   if (f === "atwill") {
     const k = `${combat.round}:${combat.turn}`;
-    if (u.atwillKey !== k) { u.atwillKey = k; u.atwill = {}; }
-    u.atwill[item.id] = (u.atwill[item.id] ?? 0) + 1;
+    const counts = u.atwillKey === k ? Object.fromEntries(u.atwillList ?? []) : {};
+    u.atwillKey = k;
+    counts[item.id] = (counts[item.id] ?? 0) + 1;
+    u.atwillList = Object.entries(counts);
+    delete u.atwill;
   }
   if (item.system.traits.has("strike")) {
     const key = `${combat.round}:${combat.turn}`;
