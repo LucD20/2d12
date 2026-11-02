@@ -81,7 +81,7 @@ async function openBuilderDialog() {
     <div class="bsec" data-types="move"><div class="grid4"><label>Kind <select name="mkind">${sel({ pushed: "Pushed (forced movement)", pulled: "Pulled (forced movement)", slid: "Slid (forced movement, a path)", reposition: "Reposition (a path)", advance: "Advance (up to N squares)", evade: "Evade (no reactions)" })}</select></label><label>Distance <input type="text" name="mdistance" value="2" placeholder="2 or walk/2"></label></div></div>
     <div class="bsec" data-types="damage">${rows}<label class="inline"><input type="checkbox" name="nlAll"> All instances nonlethal</label></div>
     <div class="bsec" data-types="template">
-      <div class="grid4"><label>Shape <select name="shape">${sel({ emanation: "Emanation", burst: "Burst" })}</select></label><label>Distance <input type="number" name="distance" value="2" min="1"></label>
+      <div class="grid4"><label>Shape <select name="shape">${sel({ emanation: "Emanation", burst: "Burst", line: "Line (from you)" })}</select></label><label>Distance <input type="number" name="distance" value="2" min="1"></label>
       <label>Targets <select name="targets">${sel({ all: "All", allies: "Allies", enemies: "Enemies" })}</select></label></div>
       <label class="inline"><input type="checkbox" name="self"> Target self</label> <label class="inline"><input type="checkbox" name="places"> Keep the area on the map</label>
       <div class="grid4"><label>Rounds (0 = until removed) <input type="number" name="rounds" value="0" min="0"></label>

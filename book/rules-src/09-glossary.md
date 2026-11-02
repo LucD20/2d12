@@ -83,6 +83,7 @@
 | [[Leaning\|**Leaning**]] | Until the end of your turn: cover is calculated from one of your corners, and your own cover is reduced by 1 level. |
 | [[Moving and Leaving Your Square\|**Left your square**]] | Any change of your position, Forced Movement and Reposition included. |
 | [[Lethal and Nonlethal\|**Lethal, Nonlethal**]] | The two kinds of damage. Damage is Lethal unless stated. |
+| [[Line\|**Line**]] | An area that starts from your square, aimed at any square, written like Line 10: one square per step, the nearest to the segment; ties take one side, chosen before rolling. |
 | [[Line of Effect\|**Line of Effect**]] | A straight line from the center of your square to any corner of the target's space that nothing blocks. |
 | [[Linked Actions\|**Linked Action**]] | An Action another Action lets you use as part of it, written like Weapon Attack (1A). It costs no AP. |
 | [[Long\|**Long**]] | A weapon property: 1 Bane against adjacent creatures, and it doesn't threaten them. |
@@ -98,7 +99,7 @@
 | [[Non-threatening\|**Non-threatening**]] | A weapon property: the weapon doesn't threaten, so you can't flank with it, unless a feature says otherwise (Brawler). Fists have it. |
 | [[Senses\|**Obscured**]] | Your Actions against the creature take 1 Bane; its Actions against you gain 1 Boon. |
 | [[Rules Language\|**Origin**]] | The creature that uses an Action, or the Point of Origin of an Area. |
-| [[Areas\|**Point of Origin**]] | The place an area spreads from: an Emanation's target, the tip of a cone. Line of Effect and Cover for the area are checked from it. |
+| [[Areas\|**Point of Origin**]] | The place an area spreads from: an Emanation's target, your square for a Line, the tip of a cone. Line of Effect and Cover for the area are checked from it. |
 | [[Weapon, Power and Signature Modifiers\|**Power Modifier**]] | The higher of the class's two Power Attributes ÷ 2 + 1. Power Actions roll it. |
 | [[Rolls\|**Power roll**]] | An Action with the Power trait (or a Split Action in Power mode). |
 | [[Talents\|**Prerequisites**]] | What you need to choose a Talent. |

@@ -456,8 +456,10 @@ export function requirementProblem(d, actor, target = null, opts = {}) {
   return "";
 }
 
-/** "1 Emanation within 10 sq." -> { shape, size, within }. */
+/** "1 Emanation within 10 sq." -> { shape, size, within }; v0.0.214: "Line 10" -> { shape: "line", size: 10, within: 0 }. */
 export function parseArea(text) {
+  const ln = String(text ?? "").trim().match(/^line\s+(\d+)$/i);
+  if (ln) return { size: Number(ln[1]), shape: "line", within: 0 };
   const m = String(text ?? "").trim().match(/^(\d+)\s*(emanation|burst)(?:\s+within\s+(\d+)\s*sq\.?)?$/i);
   return m ? { size: Number(m[1]), shape: m[2].toLowerCase(), within: m[3] ? Number(m[3]) : 0 } : null;
 }
@@ -468,7 +470,8 @@ export function areaConfigOf(d) {
   const a = set ? { size: c.size, shape: c.shape || "emanation", within: c.within || 0 } : parseArea(d?.area);
   if (!a) return null;
   const onSelf = a.shape === "emanation" && !a.within && !!d?.traits?.has?.("self");
-  return { shape: a.shape, distance: a.size, targets: c?.targets || "all", self: !!c?.center, keep: !!c?.keep, rounds: c?.rounds || 0, at: onSelf ? "self" : "", withinRange: c?.withinRange || "", ht: c?.ht || "" };
+  const line = a.shape === "line";   // v0.0.214: a Line starts from you: no Distance
+  return { shape: a.shape, distance: a.size, targets: c?.targets || "all", self: !!c?.center && !line, keep: !!c?.keep, rounds: c?.rounds || 0, at: onSelf ? "self" : "", withinRange: line ? "" : c?.withinRange || "", ht: c?.ht || "", ...(line ? { within: 0 } : {}) };
 }
 
 export const areaButton = d => {
@@ -477,7 +480,7 @@ export const areaButton = d => {
   if (!a) return "";
   // A Self Action whose Emanation has no "within" is centered on you: no placing needed.
   const onSelf = a.shape === "emanation" && !a.within && !!d?.traits?.has?.("self");
-  const opts = [a.shape, `distance:${a.size}`, `targets:${c?.targets || "all"}`, `self:${c?.center ? "yes" : "no"}`, c?.keep ? "keep:yes" : "", c?.rounds ? `rounds:${c.rounds}` : "", c?.ht ? `ht:${c.ht}` : "", onSelf ? "at:self" : "", set ? "quick:yes" : "", `label:${onSelf ? "Apply Area" : "Place Area"}`];
+  const opts = [a.shape, `distance:${a.size}`, `targets:${c?.targets || "all"}`, `self:${c?.center && a.shape !== "line" ? "yes" : "no"}`, c?.keep ? "keep:yes" : "", c?.rounds ? `rounds:${c.rounds}` : "", c?.ht ? `ht:${c.ht}` : "", onSelf ? "at:self" : "", set ? "quick:yes" : "", `label:${onSelf ? "Apply Area" : "Place Area"}`];
   return `@Template[${opts.filter(Boolean).join("|")}]`;
 };
 /** An Action that is a Talent: its category starts with "Talent" (Aim, Cut Through...). It goes in the Talents and Features tab, not only in Actions. */

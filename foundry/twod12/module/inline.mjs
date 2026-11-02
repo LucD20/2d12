@@ -120,6 +120,7 @@ export function parseInline(kind, inner) {
     else if (key === "upto") cfg.upto = /^(yes|true|1|y)$/i.test(val);
     else if (key === "expire") cfg.expire = val.toLowerCase();
     else if (key === "round" || key === "rounds") cfg.rounds = Number(val) || 0;
+    else if (key === "height") cfg.height = Math.max(1, Number(val) || 1);   // v0.0.214: a Line's height in squares (1 unless the card says otherwise)
     else if (key === "ht") cfg.ht = val;   // Hazardous Terrain: ht:entering+turn (or ht:yes for the default, Entering and Turn)
     else if (key === "difficult") cfg.difficult = /^(no|false|0)$/i.test(val) ? [] : (/^(yes|true|1|y)$/i.test(val) ? ["walk"] : (val.toLowerCase() === "all" ? Object.keys(TWOD12.movementActions) : val.toLowerCase().split(",").map(x => x.trim()).filter(Boolean)));
     else if (key === "difficultfor" || key === "dfor") cfg.dfor = val.toLowerCase();
@@ -231,8 +232,8 @@ export function registerInline() {
         if (calc) { const c = document.createElement("i"); c.className = "fa-solid fa-calculator calc"; c.dataset.tooltip = value ? `Calculated from your stats: ${cfg.distanceExpr} = ${value}` : `Calculated: ${cfg.distanceExpr}`; el.append(" ", c); }
         return el;
       }
-      const burst = cfg.shape === "burst";
-      return inlineEl(kind, cfg, cfg.label ?? match[3] ?? String(cfg.distance || 1), burst ? "fa-burst" : "fa-vector-square");
+      const burst = cfg.shape === "burst", isLine = cfg.shape === "line";   // v0.0.214: a Line ("Line 10")
+      return inlineEl(kind, cfg, cfg.label ?? match[3] ?? (isLine ? `Line ${cfg.distance || 1}` : String(cfg.distance || 1)), burst ? "fa-burst" : isLine ? "fa-arrow-right-long" : "fa-vector-square");
     }
   });
 }

@@ -40,8 +40,39 @@ export function cellsOutline(cells) {
   return loops;
 }
 
-/** The region shapes of a set of squares: one polygon when the area is in one piece; a rectangle per row otherwise (as before). */
+/** v0.0.214: do two squares of the set touch only at a corner (a diagonal Line)? Its outline would pass twice through that corner. */
+export function cornerOnly(cells) {
+  const set = new Set(cells.map(c => k(c.i, c.j))), has = (i, j) => set.has(k(i, j));
+  return cells.some(({ i, j }) => [[1, 1], [1, -1]].some(([di, dj]) => has(i + di, j + dj) && !has(i + di, j) && !has(i, j + dj)));
+}
+
+/** Rectangles, one per straight run of squares: along the rows, or along the columns when that takes fewer (a steep Line). */
+export function runRects(cells, topLeft, size) {
+  const by = (major, minor) => {
+    const groups = new Map(), out = [];
+    for (const c of cells) { const g = c[major]; if (!groups.has(g)) groups.set(g, []); groups.get(g).push(c[minor]); }
+    for (const [g, list] of groups) {
+      list.sort((x, y) => x - y);
+      let start = list[0], prev = list[0];
+      const flush = (a, b) => {
+        const t = major === "i" ? topLeft(g, a) : topLeft(a, g), len = (b - a + 1) * size;
+        out.push({ type: "rectangle", x: t.x, y: t.y, width: major === "i" ? len : size, height: major === "i" ? size : len, rotation: 0, hole: false });
+      };
+      for (let n = 1; n < list.length; n++) { if (list[n] === prev + 1) { prev = list[n]; continue; } flush(start, prev); start = prev = list[n]; }
+      flush(start, prev);
+    }
+    return out;
+  };
+  const rows = by("i", "j"), cols = by("j", "i");
+  return cols.length < rows.length ? cols : rows;
+}
+
+/**
+ * The region shapes of a set of squares: one polygon when the area is in one piece; a rectangle per row otherwise (as before).
+ * v0.0.214: squares that touch only at corners (a diagonal Line) are rectangles, one per straight run.
+ */
 export function shapesForCells(cells, topLeft, size) {
+  if (cornerOnly(cells)) return runRects(cells, topLeft, size);
   const loops = cellsOutline(cells);
   if (loops.length === 1) {
     const points = loops[0].flatMap(p => { const t = topLeft(p.i, p.j); return [t.x, t.y]; });

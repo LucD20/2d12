@@ -9,7 +9,8 @@ import { applyToActor } from "./damage.mjs";
 import { getAP, setAP, combatantOf, apMax } from "./combat.mjs";
 import { expireOnUse } from "./bonus.mjs";
 import { evalExpr } from "./refs.mjs";
-import { stepCorners, solidCorner, creatureIn, straightCells, chooseLine } from "./corners.mjs";
+import { stepCorners, solidCorner, creatureIn, straightCells } from "./corners.mjs";
+import { lineSteps } from "./linearea.mjs";
 import { coverFromPoint } from "./cover.mjs";
 import { hazardIn } from "./hazard.mjs";
 import { steadinessOf } from "./defense.mjs";
@@ -120,10 +121,14 @@ export function repositionShifts(cells, originCells, N, reach = 1) {
   return out;
 }
 
+/** v0.0.214 (book: Straight Line): the squares of a straight line from the creature's square to the shift, one tie side for the whole line. */
+export const sideShifts = (di, dj, side = "left") => [{ di: 0, dj: 0 }, ...lineSteps({ x: 0, y: 0 }, { x: dj, y: di }, side).map(c => ({ di: c.y, dj: c.x }))];
+
 /** The straight line (one square per step) from the creature's square to the shift. Reposition moves along this line. */
 export function lineShifts(node) {
-  const n = node.steps || 1;
-  return Array.from({ length: n + 1 }, (_, k) => ({ di: Math.round((node.di * k) / n) || 0, dj: Math.round((node.dj * k) / n) || 0 }));
+  const n = node.steps || 1, line = sideShifts(node.di, node.dj);
+  if (line.length === n + 1) return line;
+  return Array.from({ length: n + 1 }, (_, k) => ({ di: Math.round((node.di * k) / n) || 0, dj: Math.round((node.dj * k) / n) || 0 }));   // a node whose steps are not its straight length
 }
 
 /** The straight line to the square when it is a valid push path, otherwise the first shortest path found. */
@@ -131,10 +136,10 @@ export function pathTo(map, key) {
   const node = map.get(key);
   if (!node) return [];
   const n = node.steps;
-  const line = [];
-  for (let k = 0; k <= n; k++) line.push({ di: Math.round((node.di * k) / n || 0), dj: Math.round((node.dj * k) / n || 0) });
-  const ok = line.every((s, k) => map.has(shiftKey(s)) && (k === 0 || (map.dist ? map.dist(s) > map.dist(line[k - 1]) : true)));
-  if (ok) return line.map(s => map.get(shiftKey(s)));
+  // v0.0.214 (book: Straight Line): the straight line's squares, one tie side for the whole movement (the origin chooses: left, else right).
+  const okLine = line => line.length === n + 1 && line.every((s, k) => map.has(shiftKey(s)) && (k === 0 || (map.dist ? map.dist(s) > map.dist(line[k - 1]) : true)));
+  const line = [sideShifts(node.di, node.dj, "left"), sideShifts(node.di, node.dj, "right")].find(okLine);
+  if (line) return line.map(s => map.get(shiftKey(s)));
   const path = [];
   for (let k = key; k; k = map.get(k)?.parent) path.unshift(map.get(k));
   return path;
@@ -1005,17 +1010,24 @@ export function creaturesOnPath(doc, points, { ignoring = false } = {}) {
 
 /**
  * The squares of a Charge's straight line (book: "Straight Line"): from the center of the start square to the center of the end square, one square a step.
- * At a tie (the line passes exactly between two squares) the creature that moves chooses: the square its own drag passed through (via), else a legal one.
- * Returns { cells, ties }.
+ * v0.0.214: at a tie (the line passes exactly between two squares) the creature that moves chooses ONE side for the whole line: the side that goes
+ * farther before a square that isn't legal; equal, the side its own drag passed through more (via); equal, left. Returns { cells, ties, side }.
  */
 export function chargeLine(doc, from, to, via = []) {
   const cellOf = p => cellAt({ x: p.x + 2, y: p.y + 2 });
   const w = Math.max(1, Math.round(doc.width ?? 1)), h = Math.max(1, Math.round(doc.height ?? 1));
-  const raw = straightCells(cellOf(from), cellOf(to));
+  const a = cellOf(from), b = cellOf(to);
+  const raw = straightCells(a, b);
   const prefer = new Set();
-  for (let k = 0; k < via.length + 1; k++) { const a = k ? via[k - 1] : from, b = via[k] ?? to; for (const c of cellLine(cellOf(a), cellOf(b))) prefer.add(`${c.i},${c.j}`); }
+  for (let k = 0; k < via.length + 1; k++) { const p = k ? via[k - 1] : from, q = via[k] ?? to; for (const c of cellLine(cellOf(p), cellOf(q))) prefer.add(`${c.i},${c.j}`); }
   const legal = (prev, c) => !chargeSquareProblem(doc, prev, c, w, h);
-  return { cells: chooseLine(raw, { prefer, legal }), ties: raw.filter(c => c.alt).length };
+  const sides = ["left", "right"].map(side => {
+    const cells = [{ i: a.i, j: a.j }, ...lineSteps({ x: a.j, y: a.i }, { x: b.j, y: b.i }, side).map(c => ({ i: c.y, j: c.x }))];
+    let reach = 1; while (reach < cells.length && legal(cells[reach - 1], cells[reach])) reach++;
+    return { side, cells, reach, liked: cells.filter(c => prefer.has(`${c.i},${c.j}`)).length };
+  });
+  const best = sides.reduce((x, y) => (y.reach > x.reach || (y.reach === x.reach && y.liked > x.liked) ? y : x));
+  return { cells: best.cells, ties: raw.filter(c => c.alt).length, side: best.side };
 }
 
 /** Why the Charge can't go from square a into square b (the top-left squares of its space): "" when it can. */

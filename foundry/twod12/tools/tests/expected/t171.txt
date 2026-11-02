@@ -1,0 +1,10 @@
+an NPC doesn't get: Steel Yourself, Weapon Attack, Fists | a character gets all: true
+an NPC made before v0.0.214 has Weapon Attack: Weapon Attack, Fists | missing anything: false
+adding the Basic Actions removes them: Weapon Attack, Fists | creates: nothing | left over: 0
+a character keeps them: true | it still has Weapon Attack: true
+the GM's first load updates such NPCs: true | the NPC compendium: true
+a Charge (or a grant) that uses Weapon Attack uses an NPC's Basic attack: true
+Bandit Thug: Weapon Attack false, Fists Action false, Fists weapon true, Basic attacks: Cudgel
+Goblin Sneak: Weapon Attack false, Fists Action false, Fists weapon true, Basic attacks: Rusty Knife
+Ogre Chieftain: Weapon Attack false, Fists Action false, Fists weapon true, Basic attacks: Club
+Orc Warrior: Weapon Attack false, Fists Action false, Fists weapon true, Basic attacks: Cleaver

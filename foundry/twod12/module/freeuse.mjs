@@ -45,7 +45,9 @@ export async function handleUse(cfg, ctx = {}) {
   const uses = foundry.utils.deepClone(msg?.getFlag?.(F, "uses") ?? {});
   const total = cfg.count ?? 1, left = total - (uses[key] ?? 0);
   if (left <= 0) return ui.notifications.warn("No uses left.");
-  const list = actionsFor(actor, cfg.target);
+  let list = actionsFor(actor, cfg.target);
+  // v0.0.214: NPCs have no Weapon Attack: a use of it (the attack at the end of a Charge, a grant) is their Basic attack.
+  if (!list.length && actor.type === "npc" && /^weapon attack$/i.test(String(cfg.target ?? "").trim())) list = actionsFor(actor, "category:Basic attack");
   if (!list.length) return ui.notifications.warn(`${actor.name} has no Action called "${cfg.target}".`);
   const item = await chooseAction(list, cfg.target);
   if (!item) return;

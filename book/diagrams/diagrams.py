@@ -252,22 +252,85 @@ def bres(a, b):
         if e2 >= dy: err += dy; x += sx
         if e2 <= dx: err += dx; y += sy
     return out
-def sq(c): return 'ABCDEFGHIJ'[c[1]] + str(c[0] + 1)
+def sq(c): return 'ABCDEFGHIJKLMN'[c[1]] + str(c[0] + 1)
+
+# ------------------------------------------------------------------ the Line (the same walk as Foundry's linearea.mjs)
+def line_walk(o, t, steps, side='left'):
+    """Squares (row, col) from o toward t, one per step along the longer direction: the square whose center is nearest to the segment.
+    A tie (exactly between two squares) takes the side chosen once (left or right, from o looking at t). Returns [(cell, tie, other)]."""
+    dx, dy = t[1] - o[1], t[0] - o[0]; ax, ay = abs(dx), abs(dy); maj, mn = max(ax, ay), min(ax, ay); out = []
+    if not maj: return out
+    xmaj = ax >= ay; smaj = (1 if (dx if xmaj else dy) >= 0 else -1); smin = (1 if (dy if xmaj else dx) >= 0 else -1)
+    at = lambda k, m: (o[0] + smin * m, o[1] + smaj * k) if xmaj else (o[0] + smaj * k, o[1] + smin * m)
+    left = lambda c: dx * (c[0] - o[0]) - dy * (c[1] - o[1]) < 0
+    for k in range(1, steps + 1):
+        q, rem = divmod(k * mn, maj)
+        if 2 * rem != maj: out.append((at(k, q + 1 if 2 * rem > maj else q), False, None)); continue
+        a, b = at(k, q), at(k, q + 1)
+        take, other = (b, a) if (side == 'right') == left(a) else (a, b)
+        out.append((take, True, other))
+    return out
+def line_cost(o, c): return dist(o, c)
+def line_squares(o, t, n, side='left'):
+    """A Line n from o aimed at t: continues past t until the count would pass n."""
+    return [x for x in line_walk(o, t, 4 * n + 4, side) if line_cost(o, x[0]) <= n] if (o != t) else []
+def line_steps(a, b, side='left'):
+    """A straight movement from a to b (Straight Line): its squares, b last."""
+    return line_walk(a, b, max(abs(b[0] - a[0]), abs(b[1] - a[1])), side)
+
+def line_panel(rows, cols, o, t, n, side='left', caption='', S=24, count=True, walls=(), big=None, stop=None):
+    g = Svg(rows, cols, S, caption)
+    sqs = line_squares(o, t, n, side)
+    if stop: sqs = sqs[:stop]
+    for c, tie, other in sqs:
+        g.cell(c[0], c[1], 'gtie' if tie else 'greach')
+        if count: g.text(c[0], c[1], line_cost(o, c[0:2]), size=10)
+    for c, tie, other in sqs:
+        if other and 0 <= other[0] < rows and 0 <= other[1] < cols: g.over.append(f'<rect x="{other[1] * S + 2}" y="{other[0] * S + 2}" width="{S - 4}" height="{S - 4}" class="gdash"/>')
+    tc = center(t); oc = center(o); ux, uy = tc[0] - oc[0], tc[1] - oc[1]
+    far = min([v for v in ((((cols if ux > 0 else 0) - oc[0]) / ux) if ux else None, (((rows if uy > 0 else 0) - oc[1]) / uy) if uy else None) if v is not None])   # to the edge of the grid
+    end = (oc[0] + ux * far, oc[1] + uy * far)
+    g.over.insert(0, f'<line x1="{oc[0] * S}" y1="{oc[1] * S}" x2="{end[0] * S}" y2="{end[1] * S}" class="gcenter"/>')
+    g.over.append(f'<rect x="{t[1] * S + 1.5}" y="{t[0] * S + 1.5}" width="{S - 3}" height="{S - 3}" class="gaim"/>')
+    for w in walls: g.wall(*w)
+    if big: g.token_big(big[0], big[1], 2, 'Y', 'ally')
+    else: g.token(o[0], o[1], 'Y', 'ally')
+    return g, [c for c, _, _ in sqs]
+
+def line_diagrams():
+    """The Line: straight, diagonal, 5:2, steep; the 2:1 ties left and right; a Large creature; a wall."""
+    figs, facts = [], {}
+    g, a = line_panel(3, 12, (1, 0), (1, 1), 10, caption='Line 10 straight: 10 squares'); figs.append(g); facts['straight'] = len(a)
+    g, a = line_panel(8, 8, (0, 0), (1, 1), 10, caption='Line 10 on a diagonal: 7 squares (every second diagonal counts 2)'); figs.append(g); facts['diagonal'] = len(a)
+    g, a = line_panel(5, 10, (0, 0), (2, 5), 10, caption='Line 10 aimed at F3 (5 across, 2 down): 8 squares, no ties'); figs.append(g); facts['5:2'] = len(a)
+    g, a = line_panel(10, 5, (9, 3), (4, 1), 10, caption='Line 10 aimed steeply at B5 (2 across, 5 up): 8 squares'); figs.append(g); facts['steep'] = len(a)
+    l, al = line_panel(6, 10, (0, 0), (1, 2), 10, 'left', caption='Line 10 aimed at C2 (2:1), ties to the left: 8 squares'); figs.append(l)
+    r, ar = line_panel(6, 10, (0, 0), (1, 2), 10, 'right', caption='The same Line, ties to the right: 8 squares'); figs.append(r)
+    facts['left'] = [sq(c) for c in al]; facts['right'] = [sq(c) for c in ar]
+    # A Large creature (Y, 2 x 2 in A1-B2) starts from a square of its space on the side it aims toward.
+    for aim, start, cap in (((0, 7), (0, 1), 'A Large creature aims east along its top row: the Line starts from B1'), ((6, 6), (1, 1), 'The same creature aims southeast: the Line starts from B2')):
+        g, a = line_panel(8, 9, start, aim, 6, caption=cap, big=(0, 0), count=False); figs.append(g); facts[cap[:20]] = [sq(c) for c in a]
+    # A wall: the Line stops at the first square it can't enter.
+    sqs = line_squares((1, 0), (1, 1), 8); k = next(n for n, (c, _, _) in enumerate(sqs) if c[1] == 5)
+    g, a = line_panel(3, 10, (1, 0), (1, 1), 8, caption=f'Line 8 east with a wall before F2: it stops at E2 ({k} squares); nothing behind the wall is in it', walls=[((5, 0), (5, 3))], stop=k); figs.append(g); facts['wall'] = len(a)
+    return [f.figure() for f in figs], facts
 
 def straight_diagrams():
     rows, cols, S = 6, 9, 30; start = (0, 0); out = []
     # 1. a clear line: A1 to G4
-    aim = (3, 6); path = bres(start, aim)
-    assert [sq(c) for c in path] == ['A1', 'B2', 'C2', 'D3', 'E3', 'F4', 'G4']
+    aim = (3, 6); steps = line_steps(start, aim, 'right'); path = [start] + [c for c, _, _ in steps]
+    assert path == bres(start, aim) and [sq(c) for c in path] == ['A1', 'B2', 'C2', 'D3', 'E3', 'F4', 'G4']
     g = Svg(rows, cols, S)
     for c in path[1:-1]: g.cell(c[0], c[1], 'gpass')
     g.cell(aim[0], aim[1], 'gstop')
+    for c, tie, other in steps:
+        if other: g.over.append(f'<rect x="{other[1] * S + 2}" y="{other[0] * S + 2}" width="{S - 4}" height="{S - 4}" class="gdash"/>')
     g.line(center(start), center(aim), 'gcenter'); g.token(start[0], start[1], 'Y', 'ally')
-    g.caption = 'A straight line from the center of your square (A1) to the center of another square (G4). The colored squares are the movement the token would make using an Action that requires a straight line, such as Charge'
+    g.caption = 'A straight line from the center of your square (A1) to the center of another square (G4). The colored squares are the movement the token would make using an Action that requires a straight line, such as Charge. The line passes exactly between two squares three times; you chose the right side, so every tie takes it (dashed: the left side, not taken)'
     out.append(g)
     # 2. an obstacle on the line: the movement stops on the last legal square
-    aim2 = (3, 7); path2 = bres(start, aim2); obst = (2, 4)
-    assert [sq(c) for c in path2] == ['A1', 'B1', 'C2', 'D2', 'E3', 'F3', 'G4', 'H4']
+    aim2 = (3, 7); path2 = [start] + [c for c, _, _ in line_steps(start, aim2)]; obst = (2, 4)
+    assert path2 == bres(start, aim2) and [sq(c) for c in path2] == ['A1', 'B1', 'C2', 'D2', 'E3', 'F3', 'G4', 'H4']
     k = path2.index(obst); legal, last, blocked = path2[1:k - 1], path2[k - 1], path2[k:]
     g = Svg(rows, cols, S)
     for c in legal: g.cell(c[0], c[1], 'gpass')
@@ -453,6 +516,11 @@ def book_diagram(name):
         figs, _ = burst_diagrams(); return wrap(figs, 'The dot is the corner the Burst is centered on.')
     if name in ('straight', 'charge'):
         figs, _ = straight_diagrams(); return wrap(figs)
+    if name in ('line1', 'line2', 'line3'):
+        figs, _ = line_diagrams(); k = int(name[-1])
+        return wrap({1: figs[0:4], 2: figs[4:6], 3: figs[6:9]}[k], {1: 'Y is you. The number in each square is its distance from you, counted as for any distance. The dashed line is the segment from the center of your square through the square you aim at (outlined).',
+                    2: 'Orange squares are ties (the segment passes exactly between two squares): every tie takes the side you chose. Dashed squares are the other side, not taken.',
+                    3: 'Y is you. The dashed line is the segment; the outlined square is the one aimed at.'}[k])
     if name == 'difficult':
         fig, _ = difficult_diagram(); return wrap([fig])
     raise KeyError(f'no diagram called {name}')
@@ -485,4 +553,7 @@ CSS = '''
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pushsvg .gobj{fill:#7a6248;stroke:#b79e74}:root:not([data-theme="light"]) .pushsvg .ghaz{fill:#6a3a30;stroke:#ff7d6e}:root:not([data-theme="light"]) .pushsvg .gpath{stroke:#d6c9a8}:root:not([data-theme="light"]) .pushsvg .gpathhead{fill:#d6c9a8}}
 :root[data-theme="dark"] .pushsvg .gobj{fill:#7a6248;stroke:#b79e74}:root[data-theme="dark"] .pushsvg .ghaz{fill:#6a3a30;stroke:#ff7d6e}:root[data-theme="dark"] .pushsvg .gpath{stroke:#d6c9a8}:root[data-theme="dark"] .pushsvg .gpathhead{fill:#d6c9a8}
 .pushfig figure{max-width:var(--w,290px)}
+.pushsvg .gtie{fill:#e9a25a;stroke:#d9d3c7}.pushsvg .gdash{fill:none;stroke:#8a7650;stroke-width:1.6;stroke-dasharray:4 3}.pushsvg .gaim{fill:none;stroke:#6b5a3a;stroke-width:2}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pushsvg .gtie{fill:#9a5a22;stroke:#3a3732}:root:not([data-theme="light"]) .pushsvg .gdash{stroke:#c8b48a}:root:not([data-theme="light"]) .pushsvg .gaim{stroke:#d6c9a8}}
+:root[data-theme="dark"] .pushsvg .gtie{fill:#9a5a22;stroke:#3a3732}:root[data-theme="dark"] .pushsvg .gdash{stroke:#c8b48a}:root[data-theme="dark"] .pushsvg .gaim{stroke:#d6c9a8}
 '''

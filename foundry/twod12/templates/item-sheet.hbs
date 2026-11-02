@@ -225,8 +225,8 @@
     <p class="hint">Actions with the Weapon trait use the class Weapon Modifier instead of the Check.</p>
     <div class="areaedit"><b>Area</b>
       <input type="number" min="0" name="system.areaCfg.size" value="{{system.areaCfg.size}}" style="width:4em" data-tooltip="Size in squares (0: no Area, the Action uses its Distance)">
-      <select name="system.areaCfg.shape"><option value="emanation" {{#if (eq system.areaCfg.shape "emanation")}}selected{{/if}}>Emanation</option><option value="burst" {{#if (eq system.areaCfg.shape "burst")}}selected{{/if}}>Burst</option></select>
-      within <input type="number" min="0" name="system.areaCfg.within" value="{{system.areaCfg.within}}" style="width:4em" data-tooltip="Placed up to this many squares away (0: around you; with the Self trait it is applied on you)"> sq.
+      <select name="system.areaCfg.shape"><option value="emanation" {{#if (eq system.areaCfg.shape "emanation")}}selected{{/if}}>Emanation</option><option value="burst" {{#if (eq system.areaCfg.shape "burst")}}selected{{/if}}>Burst</option><option value="line" {{#if (eq system.areaCfg.shape "line")}}selected{{/if}} data-tooltip="Line N: from your square, aimed at any square (no Distance)">Line</option></select>
+      within <input type="number" min="0" name="system.areaCfg.within" value="{{system.areaCfg.within}}" style="width:4em" data-tooltip="Placed up to this many squares away (0: around you; with the Self trait it is applied on you). A Line has no Distance: it ignores this."> sq.
       <span class="aelabel">Targets</span> <select name="system.areaCfg.targets"><option value="all" {{#if (eq system.areaCfg.targets "all")}}selected{{/if}}>All</option><option value="allies" {{#if (eq system.areaCfg.targets "allies")}}selected{{/if}}>Allies</option><option value="enemies" {{#if (eq system.areaCfg.targets "enemies")}}selected{{/if}}>Enemies</option></select>
       <span class="aebreak"></span>
       <label class="inline"><input type="checkbox" name="system.areaCfg.center" {{checked system.areaCfg.center}}> Affect the creature it is around</label>

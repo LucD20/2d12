@@ -2,7 +2,7 @@
 
 One list of everything open, in the order I recommend, with what each step needs from you. The backlogs keep the detail.
 Sizes: S = under an hour of work, M = a normal session, L = a long session, XL = several.
-Finished: Phase 1 (Q, M1, M2, R, F), D0, T, E1, CH, E2, P1, LV, A1 (it was D1, the Archer design), E3, OT, C1, C2, pack C (v0.0.186 to v0.0.195), the editability sweep (v0.0.207), **D2 (2026-10-31, in the book with defaults; Lucas answers by exception: book/gear-d2.md section 7)** and **W (v0.0.208, to test)**. The full plan as it was, with every finished pack: `archive/old-notes/MASTER-PLAN-to-v0.0.207.md`.
+Finished: Phase 1 (Q, M1, M2, R, F), D0, T, E1, CH, E2, P1, LV, A1 (it was D1, the Archer design), E3, OT, C1, C2, pack C (v0.0.186 to v0.0.195), the editability sweep (v0.0.207), **D2 (2026-10-31, in the book with defaults; Lucas answers by exception: book/gear-d2.md section 7)**, **W (v0.0.208, to test)** and **L (v0.0.214, 2026-11-02, to test)**. The full plan as it was, with every finished pack: `archive/old-notes/MASTER-PLAN-to-v0.0.207.md`.
 
 ## 1. How we work from here (to cut the back-and-forth)
 1. **Decisions are asked once, in a decision sheet, with my default.** You answer by exception ("all defaults except 2 and 5"). I never stop a pack to ask a minor question: I choose, and list it under "Assumptions I made" in the report, so you can revert it.
@@ -39,7 +39,7 @@ Finished: Phase 1 (Q, M1, M2, R, F), D0, T, E1, CH, E2, P1, LV, A1 (it was D1, t
 ## 3. The order
 0. **Playtest 2 rework first (Lucas, 2026-11-02; replaces the "weapons first" order: the rework changes every AP cost, the weapon Techniques included; decisions: book/playtest-2.md and rules-backlog.md "PLAYTEST 2"):**
    1. ~~Log session~~ (done 2026-11-02).
-   2. **Pack L: v0.0.214 = the Line area (book/line-area-prompt.md) + the v0.0.208 test fixes from notes.txt + NPCs have no Weapon Attack** (foundry-backlog). M.
+   2. ~~**Pack L: v0.0.214 = the Line area (book/line-area-prompt.md) + the v0.0.208 test fixes from notes.txt + NPCs have no Weapon Attack** (foundry-backlog). M.~~ **Done 2026-11-02** (branch pack-l-line; notes.txt had no v0.0.208 fixes). Lucas tests v0.0.214 before or with playtest 3.
    3. **Playtest 3 (Lucas): the baseline** (no NPC Weapon Attack; v0.0.208's hands), the same encounter if possible. Watch the heal loop and Rally Points.
    4. **Prep pack R (the rework), one document because the parts depend on each other:** 4 AP + 1 Reaction AP (Slowed, Minions, the Special multipliers, Health about -20%), Escalation as a level with Momentum, the Escalation 3 abilities, Overcast as a Passive, Bloodied / Strained as hooks; one ruler run for all; a decision sheet with defaults. L.
    5. **Pack R-book:** Core Rules (Chapter 2 AP and Escalation, Chapter 4 states, a basic Reaction in Chapter 6) and the Bestiary (tables, NPC Reactions, Elite Bloodied / Strained phases, no NPC Weapon Attack). L.

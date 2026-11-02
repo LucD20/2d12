@@ -318,8 +318,9 @@ export class ActionData extends foundry.abstract.TypeDataModel {
     // and can have a Distance line): how far the area can be placed is the Distance ("10 sq.", "Your weapon's normal range"), shown on its own line.
     const c = this.areaCfg;
     if (c) {
-      this.area = c.size > 0 ? `${c.size} ${c.shape === "burst" ? "Burst" : "Emanation"}` : "";
-      this.areaDistance = c.size > 0 ? (c.withinRange ? `Your weapon's ${c.withinRange} range` : (c.within > 0 ? `${c.within} sq.` : "")) : "";
+      // v0.0.214: a Line is written "Line 10" (the value after the word) and has no Distance: it always starts from you.
+      this.area = c.size > 0 ? (c.shape === "line" ? `Line ${c.size}` : `${c.size} ${c.shape === "burst" ? "Burst" : "Emanation"}`) : "";
+      this.areaDistance = c.size > 0 && c.shape !== "line" ? (c.withinRange ? `Your weapon's ${c.withinRange} range` : (c.within > 0 ? `${c.within} sq.` : "")) : "";
     }
     if (String(this.area ?? "").trim() && this.traits instanceof Set && !this.traits.has("area")) this.traits.add("area");
   }
@@ -342,7 +343,7 @@ export class ActionData extends foundry.abstract.TypeDataModel {
       // The Area, as the Place Area button uses it: size, shape, how far it can be placed (0 = around you), who it targets, and its options.
       areaCfg: new SchemaField({
         size: int(0, 0),
-        shape: choice({ emanation: "Emanation", burst: "Burst" }, "emanation"),
+        shape: choice({ emanation: "Emanation", burst: "Burst", line: "Line" }, "emanation"),
         within: int(0, 0),
         targets: choice({ all: "All", allies: "Allies", enemies: "Enemies" }, "all"),
         center: bool(),

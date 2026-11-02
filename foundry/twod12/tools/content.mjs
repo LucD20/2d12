@@ -262,7 +262,7 @@ add("classes", "class", "Archer", "icons/svg/target.svg", {
 });
 
 /* ------------------------------------------------------------------ NPCs (Actors, with their items inside) */
-const { basicItemData, BASIC_ACTIONS } = await import("../module/basic.mjs");
+const { basicItemData, BASIC_ACTIONS, wanted } = await import("../module/basic.mjs");   // v0.0.214: no Weapon Attack or Fists Action on NPCs
 const { fistsItemData } = await import("../module/fists.mjs");
 const actors = [];
 // v0.0.184: the id includes the type, so a weapon and its Basic attack can share a name ("Cudgel"); a duplicate id stopped the whole build.
@@ -272,7 +272,7 @@ const npcAction = (actorName, name, img, system, flags = {}) => embedded(actorNa
 // The Bestiary (v0.0.163): a role and ratings. By default its Weapon Attribute is High, the others Medium, Appeal Low (Appeal Medium when Appeal is its Weapon Attribute).
 const npc = ({ name, img, role, weaponAttribute, powerAttribute = "mind", ratings = {}, speed = 5, extra = [] }) => {
   const r = { body: "medium", mind: "medium", appeal: "low", instinct: "medium", bodyHm: "medium", mindHm: "medium", ad: "medium", wd: "medium", [weaponAttribute]: "high", ...ratings };
-  const basics = Object.keys(BASIC_ACTIONS).filter(k => k !== "rally").map(k => { const d = basicItemData(k); return embedded(name, "action", d.name, d.img, d.system, d.flags); });
+  const basics = Object.keys(BASIC_ACTIONS).filter(k => wanted({ type: "npc" }, k)).map(k => { const d = basicItemData(k); return embedded(name, "action", d.name, d.img, d.system, d.flags); });
   // v0.0.184: the Speed is a rating (3 to 7, or Custom with system.speed), as the Builder sets it
   r.speed = [3, 4, 5, 6, 7].includes(speed) ? String(speed) : "custom";
   actors.push({ name, img, system: { level: 1, role, speed, weaponAttribute, powerAttribute, ratings: r, useEscalation: role === "elite" }, items: [...extra, ...basics, (() => { const f = fistsItemData(), e = embedded(name, "weapon", f.name, f.img, f.system, f.flags); e._id = idOf("Item", `${name}:weapon:Fists`); return e; })()] });
