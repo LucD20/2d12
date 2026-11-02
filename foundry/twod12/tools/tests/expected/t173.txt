@@ -10,3 +10,5 @@ NPC's Basic attack box: true
   Ogre Chieftain: Basic attack box on Club
   Orc Warrior: Basic attack box on Cleaver
 v0.0.217: remove a target by right-click or the x (one capturing listener on the dialog): true
+v0.0.219: the Charge picker outlines its limit: true | no chat line when it opens: true | giving up refunds the AP and the use: true | a fixed-size bar: true
+a Charge given up is usable again this round: true -> false

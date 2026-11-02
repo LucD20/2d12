@@ -905,6 +905,7 @@ export async function useAction(actor, item, opts = {}) {
           actorUuid: actor.uuid,
           itemId: item.id,
           ap: version.ap,
+          apPaid: apCost,   // v0.0.219: what was really spent (a granted use: its own cost), for a Charge given up
           tier,
           total: chk?.total ?? null,   // v0.0.174: the roll's result (Forced Movement against an Immobilized creature compares it with the Immobilized DC)
           results: mres ? mres.map(r => ({ uuid: r.uuid, name: r.label, tier: r.chk.tier, crit: r.chk.crit, bonuses: r.bonuses, total: r.chk.total })) : undefined,

@@ -27,3 +27,10 @@ console.log("NPC's Basic attack box:", data.includes("basicAttack: bool()") && s
 const dir = ROOT + "packs/_source/npcs";
 if (fs.existsSync(dir)) for (const f of fs.readdirSync(dir).filter(f => f.endsWith(".json")).sort()) { const a = JSON.parse(fs.readFileSync(`${dir}/${f}`, "utf8")); console.log(`  ${a.name}: Basic attack box on ${(a.items ?? []).filter(i => i.system?.basicAttack).map(i => i.name).join(", ")}`); }
 console.log("v0.0.217: remove a target by right-click or the x (one capturing listener on the dialog):", acts.includes('root.addEventListener("contextmenu"') && acts.includes("const removeTile = tile =>"));
+const mv2 = src("module/move.mjs");
+console.log("v0.0.219: the Charge picker outlines its limit:", mv2.includes("outlineCells(gfx, limit, { color: 0xf1c84b"), "| no chat line when it opens:", !mv2.includes("Charges: in a straight line"), "| giving up refunds the AP and the use:", mv2.includes('setAP(c, getAP(c) + back, "Charge given up"') && src("module/usage.mjs").includes("export async function unmarkUsed") && acts.includes("apPaid: apCost"), "| a fixed-size bar:", css.includes(".twod12-linebar.twod12-chargebar { width: min(780px"));
+const charge = { id: "chg", type: "action", system: { frequency: "round", traits: new Set(["move", "self"]) }, getFlag: () => null };
+await U.markUsed(actor, charge);
+const before = U.isFaded(actor, charge).faded;
+await U.unmarkUsed(actor, charge);
+console.log("a Charge given up is usable again this round:", before, "->", U.isFaded(actor, charge).faded);

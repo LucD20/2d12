@@ -3,7 +3,7 @@ import { tokenDistance, lightAt, seenLight, regionHasPoint, verticalSquares, wit
 // Movement: AP tracking for the creature whose turn it is (split movement, free movement from @Move[walk]),
 // and Pushed and Pulled with collision: @Move[pushed|distance:N] (@Move[pulled|distance:N]) lets the clicking player drag the target away from (toward) the origin.
 import { esc } from "./roll.mjs";
-import { tokenCells, fillCells, outlineCells, cellCenter, cellAt } from "./template.mjs";
+import { tokenCells, fillCells, outlineCells, cellCenter, cellAt, emanationCells } from "./template.mjs";
 import { TWOD12 } from "./config.mjs";
 import { applyToActor } from "./damage.mjs";
 import { getAP, setAP, combatantOf, apMax } from "./combat.mjs";
@@ -456,14 +456,17 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
   await c.setFlag(F, key, num(c.getFlag(F, key)) + n);
   if (kind === "evade") await c.setFlag(F, "diagPar", 0);   // v0.0.183: a new Evade starts its diagonals from 0
   if (cfg.ignoreTerrain) await c.setFlag(F, "ignoreTerrain", true);
-  if (kind === "charge") await c.setFlag(F, "charge", { min: cfg.min || 3, max: n });
+  if (kind === "charge") {
+    // v0.0.219 (Lucas): giving up a Charge before it moves refunds the AP its Action cost (from its card).
+    const f = ctx?.message?.getFlag?.(F, "action");
+    await c.setFlag(F, "charge", { min: cfg.min || 3, max: n, refund: Math.max(0, num(f?.apPaid ?? f?.ap)), itemId: f?.itemId ?? "" });
+  }
   const sq = `${n} square${n === 1 ? "" : "s"}`;
   // v0.0.195 (Lucas): from a movement-only Action, the banner instead of a chat line; one short line is posted when the movement ends.
   if (cfg.banner && kind !== "charge") { showRange(c, n); moveBanner(c, kind, n, cfg.banner, { ap: cfg.bannerAp ?? 0 }); return true; }
   if (kind === "charge") {
-    // v0.0.218 (Lucas): aimed like a Line (the Charge picker), not dragged.
-    await post(`<b>${esc(c.name)}</b> Charges: in a straight line, at least ${cfg.min || 3} and up to ${sq}, not through Difficult Terrain. Click the destination on the map. ${endBtn(c)}`);
-    if (!openChargePicker(c, token)) showRange(c, n);
+    // v0.0.218 (Lucas): aimed like a Line (the Charge picker), not dragged. v0.0.219: no chat line (the picker's bar says it all).
+    if (!openChargePicker(c, token)) { await post(`<b>${esc(c.name)}</b> can Charge: in a straight line, at least ${cfg.min || 3} and up to ${sq}. ${endBtn(c)}`); showRange(c, n); }
     return true;
   }
   await post(
@@ -564,11 +567,16 @@ export async function endMovement(combatantId) {
   if (!c) return warn("That combatant is no longer in the combat.");
   if (!c.isOwner) return warn("Only the owner can end this movement.");
   const left = num(c.getFlag(F, "freeMove")) + num(c.getFlag(F, "evadeMove"));
-  const charging = !!c.getFlag(F, "charge");
+  const charging = c.getFlag(F, "charge");
   await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, [`flags.${F}.-=charge`]: null, [`flags.${F}.-=ignoreTerrain`]: null });
   clearRange();
-  // Giving up a Charge before its movement means its required Weapon Attack (1A) never happens: the Charge is disrupted.
-  if (charging) return post(`<b>${esc(c.name)}</b> gives up the Charge: it is disrupted, and the AP stays spent.`);
+  // v0.0.219 (Lucas): giving up a Charge before it moves takes it back: its AP are refunded.
+  if (charging) {
+    const back = num(charging.refund);
+    if (back > 0) await setAP(c, getAP(c) + back, "Charge given up", { quiet: true });
+    try { const it = charging.itemId ? c.actor?.items?.get(charging.itemId) : null; if (it) { const { unmarkUsed } = await import("./usage.mjs"); await unmarkUsed(c.actor, it); } } catch (e) { console.warn("twod12 | Charge given up: its use", e); }
+    return post(`<b>${esc(c.name)}</b> gives up the Charge${back > 0 ? `: ${back} AP back` : ""}.`);
+  }
   await post(left > 0 ? `<b>${esc(c.name)}</b> ends the movement. ${left} free square${left === 1 ? "" : "s"} unused.` : `<b>${esc(c.name)}</b> has no free movement left.`);
 }
 
@@ -1256,13 +1264,15 @@ export function openChargePicker(c, token) {
   canvas.tokens.interactiveChildren = false;
   const a = cellAt({ x: homePos(doc).x + 2, y: homePos(doc).y + 2 });
   const reach = Math.max(1, num(c.actor?.system?.reach) || 1);
+  // v0.0.219 (Lucas): the limit is outlined (every square within its maximum, counted from your space), so nobody has to guess how far it goes.
+  const limit = emanationCells(tokenCells(doc), Math.max(0, Math.floor(num(ch.max))));
   let side = "left", pos = null, cur = null, armed = "";
   const bar = document.createElement("div");
   bar.className = "twod12-linebar twod12-chargebar";
-  bar.innerHTML = `<i class="fa-solid fa-person-running-fast lb-ic"></i><span class="lb-text"></span><span class="lb-side" hidden><span class="lb-lbl" data-tooltip="Where the line passes exactly between two squares, every tie takes this side (seen from you toward the destination). Tab switches.">Ties</span><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><kbd>Tab</kbd></span><button type="button" class="lb-give" data-tooltip="Give up the Charge: it is disrupted, and the AP stays spent">Give up</button>`;
+  bar.innerHTML = `<i class="fa-solid fa-person-running-fast lb-ic"></i><span class="lb-text"></span><span class="lb-side"><span class="lb-lbl" data-tooltip="Where the line passes exactly between two squares, every tie takes this side (seen from you toward the destination). Tab switches.">Ties</span><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><kbd>Tab</kbd></span><button type="button" class="lb-give" data-tooltip="Give up the Charge: it is taken back, and its AP are refunded">Give up</button>`;
   document.body.append(bar);
   const text = () => {
-    if (!cur) return `Charge (at least ${ch.min}, up to ${ch.max} squares): click the destination square. Esc or right-click: give up.`;
+    if (!cur) return `Charge: at least ${ch.min}, up to ${ch.max} squares (the gold outline). Click the destination.`;
     const r = cur.path, last = r.bad >= 0 ? r.cells[r.bad - 1] : r.cells.at(-1);
     if (r.cells.length < 2) return "Click a square outside your space.";
     if (r.sq + 1e-6 < ch.min) return `Too short: a Charge moves at least ${ch.min} squares (this is ${r.sq}).`;
@@ -1283,9 +1293,11 @@ export function openChargePicker(c, token) {
   };
   const draw = () => {
     gfx.clear();
-    const t = text(); bar.querySelector(".lb-text").textContent = t;
+    outlineCells(gfx, limit, { color: 0xf1c84b, width: 2 });
+    const t = text(); bar.querySelector(".lb-text").textContent = t; bar.querySelector(".lb-text").title = t;
+    // v0.0.219 (Lucas): the bar keeps one size; the Ties buttons keep their place (hidden, not removed) so Give up never moves.
     const sb = bar.querySelector(".lb-side"), tie = !!cur?.path.ties;
-    sb.hidden = !tie; sb.style.display = tie ? "" : "none";
+    sb.hidden = false; sb.style.visibility = tie ? "visible" : "hidden";
     sb.querySelectorAll("button").forEach(x => x.classList.toggle("on", x.dataset.side === side));
     if (!cur) return;
     const r = cur.path, okLen = r.sq + 1e-6 >= ch.min && r.sq <= ch.max + 1e-6;
