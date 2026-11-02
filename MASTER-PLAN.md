@@ -37,7 +37,16 @@ Finished: Phase 1 (Q, M1, M2, R, F), D0, T, E1, CH, E2, P1, LV, A1 (it was D1, t
 | CL | **Code cleanup** (foundry-backlog: system messages to sysmsg.mjs, dead code; CSS only with a visual check) | S | best after X |
 
 ## 3. The order
-0. **Weapons first (Lucas, 2026-10-31):** (a) playtest v0.0.208 with the current classes, notes in notes.txt; (b) **pack L: v0.0.214 = the playtest fixes + the Line area** (book/line-area-prompt.md); (c) **design: the Sword group** (book/weapon-trees.md, the bows' method); (d) **pack WB: the Bow and Sword groups into the book** with their rules (Strung, Volley, Bleed, Arcs, Group Mastery, the off hand), replacing D2's list for them; (e) **pack WF: the weapon system in Foundry** (groups, ladders, Techniques, Bleed, Strung, Arcs), then a playtest. D3 and D4 after.
+0. **Playtest 2 rework first (Lucas, 2026-11-02; replaces the "weapons first" order: the rework changes every AP cost, the weapon Techniques included; decisions: book/playtest-2.md and rules-backlog.md "PLAYTEST 2"):**
+   1. ~~Log session~~ (done 2026-11-02).
+   2. **Pack L: v0.0.214 = the Line area (book/line-area-prompt.md) + the v0.0.208 test fixes from notes.txt + NPCs have no Weapon Attack** (foundry-backlog). M.
+   3. **Playtest 3 (Lucas): the baseline** (no NPC Weapon Attack; v0.0.208's hands), the same encounter if possible. Watch the heal loop and Rally Points.
+   4. **Prep pack R (the rework), one document because the parts depend on each other:** 4 AP + 1 Reaction AP (Slowed, Minions, the Special multipliers, Health about -20%), Escalation as a level with Momentum, the Escalation 3 abilities, Overcast as a Passive, Bloodied / Strained as hooks; one ruler run for all; a decision sheet with defaults. L.
+   5. **Pack R-book:** Core Rules (Chapter 2 AP and Escalation, Chapter 4 states, a basic Reaction in Chapter 6) and the Bestiary (tables, NPC Reactions, Elite Bloodied / Strained phases, no NPC Weapon Attack). L.
+   6. **Pack R-classes:** Paladin and Archer: two Hallmark Reactions each, the Escalation ladder (a Passive per level + the Escalation 3 abilities), Bloodied / Strained cards; a pass over the Talents (Opportunity Attack). Defaults, answered by exception. L.
+   7. **Pack R-Foundry:** 4 + 1 AP, Escalation as a level, the states without Banes, "against a Bloodied / Strained target" as a general item setting, the new cards; one or two versions with checklists. L-XL.
+   8. **Playtest 4 (Lucas):** the whole package.
+   9. **Then the weapon line as planned before:** design the Sword group (book/weapon-trees.md, the bows' method), pack WB (Bow and Sword into the book, the bows re-costed for 4 + 1 AP), pack WF (the weapon system in Foundry), a playtest. D2's open answers fit here. D3 and D4 after (D4 is smaller: Overcast and Momentum are settled in pack R).
 1. ~~D2~~ (done; your answers to gear-d2.md section 7 first), then **D3 Skills**, then **D4 Magic and Momentum** (Skills before Magic: spells may use skills). Between sessions, the book packs that are ready: B1 now, B2 and B3 at the end, B4 any time; K fits between sessions too (W done: v0.0.208).
 2. **X** (Mastery and Gear, Skills, Magic in the system), one version each or split by size, then **CL**.
    Why: everything in X has to be decided first, or the compendium is rewritten twice.
