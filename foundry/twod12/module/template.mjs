@@ -200,18 +200,19 @@ function place(shape, n, { within = 0, user = null } = {}) {
     // v0.0.214: a Line's tie side (left or right, from you toward the target), chosen before placing and locked when placed: Tab or the button.
     const bar = isLine ? document.createElement("div") : null;
     if (bar) {
+      // v0.0.216 (Lucas: the bar looked poor and the button text overflowed): the target-picking banner's look; Left and Right are two buttons.
       bar.className = "twod12-linebar";
-      bar.style.cssText = "position:fixed;top:70px;left:50%;transform:translateX(-50%);z-index:1000;background:rgba(20,18,16,.92);color:#f3ede2;padding:6px 12px;border-radius:6px;font-size:13px;display:flex;gap:10px;align-items:center;box-shadow:0 2px 8px #0008";
-      bar.innerHTML = `<span class="lb-text">Line ${n}: aim with the mouse, click to place, right-click or Esc to cancel.</span><button type="button" class="lb-side" style="display:none;width:auto;line-height:1.4;padding:2px 10px">Ties: left (Tab)</button>`;
+      bar.innerHTML = `<i class="fa-solid fa-arrow-right-long lb-ic"></i><span class="lb-text">Line ${n}: aim with the mouse, click to place, right-click or Esc to cancel.</span><span class="lb-side" hidden><span class="lb-lbl" data-tooltip="Where the line passes exactly between two squares, every tie takes this side (seen from you toward the aim). Tab switches.">Ties</span><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><kbd>Tab</kbd></span>`;
       document.body.append(bar);
-      bar.querySelector(".lb-side").addEventListener("click", ev => { ev.preventDefault(); ev.stopPropagation(); flip(); });
+      bar.querySelectorAll(".lb-side button").forEach(b => b.addEventListener("click", ev => { ev.preventDefault(); ev.stopPropagation(); if (b.dataset.side !== side) flip(); }));
     }
     const flip = () => { side = side === "left" ? "right" : "left"; if (lastPos) current = compute(shape, n, lastPos, { user, side }); draw(); };
     const showBar = () => {
       if (!bar) return;
       const b = bar.querySelector(".lb-side"), tie = !!current?.hasTie;
-      b.style.display = tie ? "" : "none"; b.textContent = `Ties: ${side} (Tab)`;
-      bar.querySelector(".lb-text").textContent = !current ? `Line ${n}: aim with the mouse at any square.` : `Line ${n}: ${current.cells.length} square${current.cells.length === 1 ? "" : "s"}${current.cut ? ", stopped by a wall" : ""}${tie ? ", the line has ties (dashed: the squares not taken)" : ""}. Click to place.`;
+      b.hidden = !tie; b.style.display = tie ? "" : "none";
+      b.querySelectorAll("button").forEach(x => x.classList.toggle("on", x.dataset.side === side));
+      bar.querySelector(".lb-text").textContent = !current ? `Line ${n}: aim with the mouse at any square.` : `Line ${n}: ${current.cells.length} square${current.cells.length === 1 ? "" : "s"}${current.cut ? ", stopped by a wall" : ""}. Click to place.`;
     };
     // "Within N sq.": the Point of Origin can be at most that far from the creature using the Action (a spot that is too far is shown in red).
     const tooFar = c => !!(within && user && c && placementDistance(user, c) > within);

@@ -187,6 +187,7 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
     const viewKey = `${this.view?.sec}|${this.view?.uuid}`, sameCard = viewKey === this._viewKey;
     this._viewKey = viewKey;
     content.replaceChildren(result);
+    this._applyFilter();   // v0.0.216: before the scroll comes back (the hidden Talents above the Escalation picks made it jump)
     content.querySelectorAll(".cw-col").forEach((c, i) => { c.scrollTop = c.classList.contains("cw-detail") && !sameCard ? 0 : scrolls[i] ?? 0; });
     content.scrollTop = own;
     if (key) content.querySelector(`[data-key="${CSS.escape(key)}"]`)?.focus({ preventScroll: true });

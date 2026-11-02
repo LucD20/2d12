@@ -2058,3 +2058,15 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 .twod12.sheet .ex-pass .ex-edit:hover { opacity: 1; }
 .twod12.sheet .ex-pdesc { margin: 2px 0 6px 22px; padding: 4px 8px; border-left: 2px solid var(--fq, #8a7650); font-size: 12px; }
 .twod12.sheet .ex-pdesc p { margin: 2px 0; }
+/* v0.0.216: the targets removed in the roll dialog, each a chip that puts it back. */
+.twod12.usedlg .tremoved { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; font-size: 11px; margin: 2px 0; }
+.twod12.usedlg .tremoved:empty { display: none; }
+.twod12.usedlg .tremoved .trm-chip { cursor: pointer; padding: 1px 7px; border-radius: 9px; background: rgba(143,42,32,.15); border: 1px solid rgba(143,42,32,.5); }
+/* v0.0.216 (Lucas): the Line's placing bar, in the target-picking banner's look (#twod12-targeting). */
+.twod12-linebar { position: fixed; bottom: 86px; left: 50%; transform: translateX(-50%); z-index: 1000; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; max-width: calc(100vw - 340px); padding: 8px 16px; border-radius: 8px; background: rgba(20, 24, 32, .92); color: #f4e9d0; border: 1px solid #c9a24a; font-size: 14px; box-shadow: 0 4px 14px rgba(0, 0, 0, .5); }
+.twod12-linebar .lb-ic { color: #e05a4f; }
+.twod12-linebar .lb-side { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+.twod12-linebar .lb-side button { width: auto; height: 26px; line-height: 24px; padding: 0 10px; margin: 0; font-size: 13px; background: #2e3442; color: #f4e9d0; border: 1px solid #c9a24a; border-radius: 5px; cursor: pointer; white-space: nowrap; }
+.twod12-linebar .lb-side button:hover { background: #3c4458; }
+.twod12-linebar .lb-side button.on { background: #c9a24a; color: #1b1f28; font-weight: 700; }
+.twod12-linebar kbd { font-size: 11px; padding: 1px 5px; border: 1px solid #6b5a33; border-radius: 3px; background: #1b1f28; color: #c9a24a; }

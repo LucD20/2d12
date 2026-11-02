@@ -362,6 +362,7 @@ export class ActionData extends foundry.abstract.TypeDataModel {
       frequency: choice(TWOD12.frequencies),
       escalation: int(0, 0),   // the Escalation it costs on top of its AP (an Escalation Action); 0: none
       marksTarget: bool(),
+      basicAttack: bool(),   // v0.0.216 (Lucas): an NPC's Basic attack: used when an Action calls for a Weapon Attack (NPCs have none)
       weaponUse: choice(TWOD12.weaponUses, ""),   // v0.0.207: which weapon a Weapon Action uses (Pummel: only the Fists; Leg Sweep: a kick)
       automation: choice(TWOD12.automationRanks, ""), automationNote: str(),   // v0.0.215: what is done by hand (the diamond tooltip)
         // v0.0.189   // v0.0.186: using it marks the targeted creature (Mark Quarry); settings "only against my marked target" read the mark

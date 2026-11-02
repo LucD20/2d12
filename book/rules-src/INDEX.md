@@ -16,7 +16,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 11-species.md | Species | species |  | 0.8 | 35 |
 | 12-paladin.md | Paladin | paladin |  | 11.3 | 371 |
 | 13-archer.md | Archer | archer |  | 9.9 | 340 |
-| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 14.5 | 275 |
+| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 14.7 | 277 |
 | 15-gear.md | Gear | gear |  | 17.5 | 519 |
 | 16-talents.md | Talents | talents |  | 9.8 | 311 |
 
@@ -265,17 +265,17 @@ Action cards: Sharpshooter (46, Archer Feature 1); Marked Quarry (55, Archer Fea
 - 61: ## Steadiness
 - 65: ## Actions
 - 67:   ### The Basic attack
-- 71:   ### Special Actions
-- 85:   ### Conditions
-- 97:   ### Reactions
-- 105:   ### Escalation
-- 109: ## The roles
-- 111:   ### Minions
-- 143:   ### Grunts
-- 175:   ### Standards
-- 207:   ### Elites
-- 239: ## Building an encounter
-- 260: ## Example NPCs (Stage 1)
+- 73:   ### Special Actions
+- 87:   ### Conditions
+- 99:   ### Reactions
+- 107:   ### Escalation
+- 111: ## The roles
+- 113:   ### Minions
+- 145:   ### Grunts
+- 177:   ### Standards
+- 209:   ### Elites
+- 241: ## Building an encounter
+- 262: ## Example NPCs (Stage 1)
 
 ## 15-gear.md: Gear
 

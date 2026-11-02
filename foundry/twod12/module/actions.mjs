@@ -259,12 +259,21 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
           ev.preventDefault(); ev.stopPropagation();
           const tile = x.closest(".ttile"), left = root.querySelectorAll('.ttile:not([data-tg="all"]):not(.gone)').length;
           if (left <= 1) return ui.notifications.warn("At least one target stays: cancel the Action to use it on nobody.");
-          tile.classList.add("gone"); tile.hidden = true;
-          const inp = document.createElement("input"); inp.type = "hidden"; inp.name = "removed"; inp.value = x.dataset.rm;
-          root.querySelector(".tremoved")?.append(inp);
-          root.querySelector(`.fxgroup[data-for="${CSS.escape(x.dataset.rm)}"]`)?.querySelectorAll("[name=fx]").forEach(c => { c.checked = false; c.disabled = true; });
+          // v0.0.216 (Lucas: "the X does nothing"): the tile's own display beat the hidden attribute; it is now display:none, with an undo chip.
+          tile.classList.add("gone"); tile.style.display = "none";
+          const box = root.querySelector(".tremoved"), u = x.dataset.rm, group = root.querySelector(`.fxgroup[data-for="${CSS.escape(u)}"]`);
+          const chip = document.createElement("span"); chip.className = "trm-chip"; chip.dataset.tooltip = "Removed from the targets: click to put it back";
+          chip.innerHTML = `<input type="hidden" name="removed" value="${esc(u)}"><i class="fa-solid fa-rotate-left"></i> ${esc(tile.dataset.name ?? "")}`;
+          const was = [...(group?.querySelectorAll("[name=fx]") ?? [])].map(c => c.checked);
+          group?.querySelectorAll("[name=fx]").forEach(c => { c.checked = false; c.disabled = true; });
+          chip.addEventListener("click", e2 => {
+            e2.preventDefault(); chip.remove(); tile.classList.remove("gone"); tile.style.display = "";
+            group?.querySelectorAll("[name=fx]").forEach((c, k) => { c.disabled = false; c.checked = was[k]; });
+            refreshTiles(); root.dispatchEvent(new Event("change", { bubbles: true }));
+          });
+          if (box) { if (!box.querySelector(".trm-h")) box.insertAdjacentHTML("afterbegin", '<span class="trm-h">Removed:</span>'); box.append(chip); }
           if (tile.classList.contains("on")) root.querySelector('.ttile[data-tg="all"]')?.click();
-          refreshTiles();
+          refreshTiles(); root.dispatchEvent(new Event("change", { bubbles: true }));
         })
       );
       root.querySelectorAll(".ttile").forEach(t =>
@@ -470,7 +479,9 @@ export async function useAction(actor, item, opts = {}) {
       const nums = String(weaponRanges(w, s.reach ?? 1).ranged || "").split("/").map(Number).filter(n => n > 0);
       within = (areaSet.withinRange === "normal" ? nums[0] : areaSet.withinRange === "far" ? nums[1] ?? nums.at(-1) : nums.at(-1)) || within;
     }
-    await startTemplate({ ...areaSet, quick: true, within, htSave: saveAct }, { token: selfToken, outcome });
+    // v0.0.216 (Lucas): a damaging Action doesn't tick "Affect the creature it is around" by default (Ground Slam); the window still asks.
+    const damaging = versions.some(v => ["t1", "t2", "t3"].some(t => (v[t] ?? []).length));
+    await startTemplate({ ...areaSet, self: areaSet.self && !damaging, quick: true, within, htSave: saveAct }, { token: selfToken, outcome });
     if (!outcome.ok) return;
     areaPlaced = true;
     if (!outcome.count) ui.notifications.info("No creature is in the area.");

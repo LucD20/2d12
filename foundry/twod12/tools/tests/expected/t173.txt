@@ -1,0 +1,11 @@
+Encounter use kept on the combatant too: {"combatId":"c1","encounter":["slam"],"roundAt":{}}
+the creature's own record lost (what Lucas saw after a reload): still greyed: {"faded":true,"why":"Used this encounter"}
+roll dialog: a removed tile is display:none, with an undo chip: true
+a damaging Action doesn't tick Affect yourself: true
+class window: the Talent filter before the scroll comes back: true
+the Line's bar: the banner look, Left and Right buttons: true
+NPC's Basic attack box: true
+  Bandit Thug: Basic attack box on Cudgel
+  Goblin Sneak: Basic attack box on Rusty Knife
+  Ogre Chieftain: Basic attack box on Club
+  Orc Warrior: Basic attack box on Cleaver

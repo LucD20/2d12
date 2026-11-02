@@ -25,7 +25,7 @@ await b.addBasicActions(pc);
 console.log("a character keeps them:", pc.log.deleted.length === 0, "| it still has Weapon Attack:", pc.items.some(i => i.name === "Weapon Attack"));
 const bas = src("module/basic.mjs"), fu = src("module/freeuse.mjs"), content = src("tools/content.mjs");
 console.log("the GM's first load updates such NPCs:", bas.includes("oldRelocate || unwantedBasics(actor).length > 0"), "| the NPC compendium:", content.includes("filter(k => wanted({ type: \"npc\" }, k))"));
-console.log("a Charge (or a grant) that uses Weapon Attack uses an NPC's Basic attack:", fu.includes('list = actionsFor(actor, "category:Basic attack")'));
+console.log("a Charge (or a grant) that uses Weapon Attack uses an NPC's Basic attack:", fu.includes('actionsFor(actor, "category:Basic attack")'));
 // The built NPC compendium (packs/_source, built by tools/build-packs.mjs).
 const dir = ROOT + "packs/_source/npcs";
 if (fs.existsSync(dir)) {

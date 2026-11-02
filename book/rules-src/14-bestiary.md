@@ -68,6 +68,8 @@ An NPC has Steadiness 0 unless it says otherwise. A big or heavy creature can ha
 
 Every NPC has one **Basic attack**: its main attack, 1 AP, At-will, Vs. AD (a Weapon Action) or WD (a Power Action). Its damage is the role's (the tables give the **average damage** on Tier 2 and Tier 3, [Mod] included; pick dice that come close). Tier 1 deals nothing, like a Weapon Attack. The weapon in its hands is only what the attack looks like.
 
+**NPCs have no Weapon Attack.** Their Basic attack takes its place: when an Action or rule calls for a Weapon Attack (the Weapon Attack (1A) at the end of a Charge, for example), an NPC uses its Basic attack.
+
 ### Special Actions
 
 Special Actions make an NPC interesting. **Every role has them, Minions included.** A Special Action deals the **Basic attack's average damage**, at the rating you give it, **times**:

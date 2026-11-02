@@ -280,7 +280,7 @@ const npc = ({ name, img, role, weaponAttribute, powerAttribute = "mind", rating
 // v0.0.183 (Lucas: a complete rebuild, simple NPCs to test with): one NPC for each role, at Stage 1 (level 1). The Minion, the Standard and
 // the Elite are the Bestiary's own examples (book: Example NPCs); the Grunt follows the same recipe. Damage is the book's average for the
 // rating ([Mod] is added on Tier 2 and 3, as for any Weapon Action); the weapon in its hands is only what the attack looks like.
-const atk = (n, w, name, img, ap, freq, t2, t3, extra = {}, effects = "") => npcAction(n, name, img, { category: "Basic attack", level: 0, traits: ["melee", "strike", "weapon"], frequency: freq, targets: "One creature", distance: "weapon", ...extra,
+const atk = (n, w, name, img, ap, freq, t2, t3, extra = {}, effects = "") => npcAction(n, name, img, { category: "Basic attack", level: 0, traits: ["melee", "strike", "weapon"], frequency: freq, targets: "One creature", distance: "weapon", basicAttack: !extra.category, ...extra,
   versions: [version(ap, "", t2, t3, effects)] }, { twod12: { weaponId: w._id } });
 {
   const n = "Goblin Sneak", knife = npcWeapon(n, "rusty knife: melee, pierce, 0/1d4/1d6", "icons/svg/dagger.svg");
