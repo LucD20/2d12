@@ -192,7 +192,7 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
     const shared = mods.filter(m => !ownerOf(m.id)), own = u => mods.filter(m => ownerOf(m.id) === u);
     const first = shared.length ? "all" : (targetTiles.find(t => own(t.uuid).length)?.uuid ?? "all");
     const group = (id, list) => `<div class="fxgroup${id === first ? "" : " off"}" data-for="${esc(id)}">${list.length ? list.map(chipOf).join("") : '<span class="hint">Nothing changes this roll for this creature.</span>'}</div>`;
-    effectsRows = `<div class="rf-row tilesrow"><span class="rf-label">Targets</span><div class="ttiles${targetTiles.length >= 10 ? " compact" : ""}"><button type="button" class="ttile${first === "all" ? " on" : ""}" data-tg="all" data-name="Yours" data-tooltip="Your own effects, for every target"><span class="tdots"></span><i class="fa-solid fa-user"></i></button>${targetTiles.map((t, k) => `<button type="button" class="ttile${first === t.uuid ? " on" : ""}" data-tg="${esc(t.uuid)}" data-name="${esc(t.name)}" data-dc="${t.dc}" data-tooltip="${esc(t.name)}: DC ${t.dc}"><span class="tdots"></span>${targetTiles.length >= 10 ? `<b class="tabnum">${k + 1}</b>` : `<img src="${esc(t.img)}" alt="">${tileNumber(t.name) ? `<span class="tnum">${tileNumber(t.name)}</span>` : ""}`}<span class="ttx" data-rm="${esc(t.uuid)}" data-tooltip="Remove ${esc(t.name)} from the targets"><i class="fa-solid fa-xmark"></i></span></button>`).join("")}</div></div><div class="tremoved"></div><div class="tcap"></div><div class="fxgroups">${group("all", shared)}${targetTiles.map(t => group(t.uuid, own(t.uuid))).join("")}</div>`;
+    effectsRows = `<div class="rf-row tilesrow"><span class="rf-label">Targets</span><div class="ttiles${targetTiles.length >= 10 ? " compact" : ""}"><button type="button" class="ttile${first === "all" ? " on" : ""}" data-tg="all" data-name="Yours" data-tooltip="Your own effects, for every target"><span class="tdots"></span><i class="fa-solid fa-user"></i></button>${targetTiles.map((t, k) => `<button type="button" class="ttile${first === t.uuid ? " on" : ""}" data-tg="${esc(t.uuid)}" data-name="${esc(t.name)}" data-dc="${t.dc}" data-tooltip="${esc(t.name)}: DC ${t.dc}. Right-click to remove it from the targets"><span class="tdots"></span>${targetTiles.length >= 10 ? `<b class="tabnum">${k + 1}</b>` : `<img src="${esc(t.img)}" alt="">${tileNumber(t.name) ? `<span class="tnum">${tileNumber(t.name)}</span>` : ""}`}<span class="ttx" data-rm="${esc(t.uuid)}" data-tooltip="Remove ${esc(t.name)} from the targets"><i class="fa-solid fa-xmark"></i></span></button>`).join("")}</div></div><div class="tremoved"></div><div class="tcap"></div><div class="fxgroups">${group("all", shared)}${targetTiles.map(t => group(t.uuid, own(t.uuid))).join("")}</div>`;
   } else effectsRows = chips ? `<div class="rf-row"><span class="rf-label">Effects</span>${chips}</div>` : "";
   // Notices: how the roll is made, shown as labels (a Thrown weapon thrown, for example).
   if (generalNotices.length) effectsRows = `<div class="rf-row"><span class="rf-label">Use</span>${generalNotices.map(n => `<span class="rnotice" data-tooltip="${esc(n.why ?? "")}"><i class="fa-solid ${esc(n.icon ?? "fa-circle-info")}"></i> ${esc(n.text)}</span>`).join("")}</div>` + effectsRows;
@@ -254,14 +254,15 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
         }
       };
       // v0.0.215 (Lucas, playtest 2): a target can be removed here (the x on its tile): it is not rolled against and is untargeted.
-      root.querySelectorAll(".ttx").forEach(x =>
-        x.addEventListener("click", ev => {
-          ev.preventDefault(); ev.stopPropagation();
-          const tile = x.closest(".ttile"), left = root.querySelectorAll('.ttile:not([data-tg="all"]):not(.gone)').length;
+      // v0.0.217 (Lucas: the x still did nothing): one listener on the dialog, in the capture phase, for the x and for a right-click on a tile.
+      const removeTile = tile => {
+        if (!tile || tile.dataset.tg === "all" || tile.classList.contains("gone")) return;
+        const u0 = tile.dataset.tg;
+          const left = root.querySelectorAll('.ttile:not([data-tg="all"]):not(.gone)').length;
           if (left <= 1) return ui.notifications.warn("At least one target stays: cancel the Action to use it on nobody.");
           // v0.0.216 (Lucas: "the X does nothing"): the tile's own display beat the hidden attribute; it is now display:none, with an undo chip.
           tile.classList.add("gone"); tile.style.display = "none";
-          const box = root.querySelector(".tremoved"), u = x.dataset.rm, group = root.querySelector(`.fxgroup[data-for="${CSS.escape(u)}"]`);
+          const box = root.querySelector(".tremoved"), u = u0, group = root.querySelector(`.fxgroup[data-for="${CSS.escape(u)}"]`);
           const chip = document.createElement("span"); chip.className = "trm-chip"; chip.dataset.tooltip = "Removed from the targets: click to put it back";
           chip.innerHTML = `<input type="hidden" name="removed" value="${esc(u)}"><i class="fa-solid fa-rotate-left"></i> ${esc(tile.dataset.name ?? "")}`;
           const was = [...(group?.querySelectorAll("[name=fx]") ?? [])].map(c => c.checked);
@@ -274,8 +275,9 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
           if (box) { if (!box.querySelector(".trm-h")) box.insertAdjacentHTML("afterbegin", '<span class="trm-h">Removed:</span>'); box.append(chip); }
           if (tile.classList.contains("on")) root.querySelector('.ttile[data-tg="all"]')?.click();
           refreshTiles(); root.dispatchEvent(new Event("change", { bubbles: true }));
-        })
-      );
+      };
+      root.addEventListener("click", ev => { const x = ev.target.closest?.(".ttx"); if (!x) return; ev.preventDefault(); ev.stopPropagation(); removeTile(x.closest(".ttile")); }, true);
+      root.addEventListener("contextmenu", ev => { const t = ev.target.closest?.(".ttile"); if (!t || t.dataset.tg === "all") return; ev.preventDefault(); ev.stopPropagation(); removeTile(t); }, true);
       root.querySelectorAll(".ttile").forEach(t =>
         t.addEventListener("click", ev => {
           ev.preventDefault();

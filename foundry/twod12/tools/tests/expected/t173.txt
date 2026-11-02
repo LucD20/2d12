@@ -9,3 +9,4 @@ NPC's Basic attack box: true
   Goblin Sneak: Basic attack box on Rusty Knife
   Ogre Chieftain: Basic attack box on Club
   Orc Warrior: Basic attack box on Cleaver
+v0.0.217: remove a target by right-click or the x (one capturing listener on the dialog): true

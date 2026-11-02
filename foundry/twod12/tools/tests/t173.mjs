@@ -26,3 +26,4 @@ console.log("the Line's bar: the banner look, Left and Right buttons:", tpl.incl
 console.log("NPC's Basic attack box:", data.includes("basicAttack: bool()") && sheet.includes('name="system.basicAttack"') && fu.includes("i.system?.basicAttack") && content.includes("basicAttack: !extra.category"));
 const dir = ROOT + "packs/_source/npcs";
 if (fs.existsSync(dir)) for (const f of fs.readdirSync(dir).filter(f => f.endsWith(".json")).sort()) { const a = JSON.parse(fs.readFileSync(`${dir}/${f}`, "utf8")); console.log(`  ${a.name}: Basic attack box on ${(a.items ?? []).filter(i => i.system?.basicAttack).map(i => i.name).join(", ")}`); }
+console.log("v0.0.217: remove a target by right-click or the x (one capturing listener on the dialog):", acts.includes('root.addEventListener("contextmenu"') && acts.includes("const removeTile = tile =>"));
