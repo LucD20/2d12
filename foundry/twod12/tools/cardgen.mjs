@@ -2,13 +2,11 @@
 // and, from CS-2 on, by tools/content.mjs (the compendium items). The Foundry text of a Version is the book's text (links and bold stripped,
 // then convertEffects makes its buttons) plus the card's Foundry-only `append` (buttons the text can't derive, map instructions).
 // Data to data: no card is named here; the rules are the ones book/cards/README.md lists.
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 // The generators read Foundry globals when they load: give them stand-ins (content.mjs does the same; `??=` keeps its own).
 globalThis.foundry ??= { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: {} } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
 globalThis.Hooks ??= { on() {} }; globalThis.Combat ??= class {}; globalThis.CONFIG ??= {}; globalThis.game ??= { settings: { get: () => true } };
 const { parseTierFull, convertEffects } = await import("../module/gen.mjs");
-const { loadCards, isReaction, hasVersions, splitTier, isDamage, stripLinks, stripBold } = await import(path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../book/cards/load.mjs"));
+const { loadCards, isReaction, hasVersions, splitTier, isDamage, stripLinks, stripBold } = await import(new URL("../../../book/cards/load.mjs", import.meta.url).href);   // a URL, not a path: a Windows path is not a valid ESM import (v0.0.231)
 export { loadCards };
 
 const FREQ = { "at-will": "atwill", turn: "turn", round: "round", encounter: "encounter", daily: "daily" };
