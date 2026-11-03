@@ -478,13 +478,38 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
     if (!openChargePicker(c, token)) { await post(`<b>${esc(c.name)}</b> can Charge: in a straight line, at least ${cfg.min || 3} and up to ${sq}. ${endBtn(c)}`); showRange(c, n); }
     return true;
   }
-  await post(
-    kind === "evade"
-      ? `<b>${esc(c.name)}</b> can Evade up to ${sq} (in one or more drags, until another Action): no reactions are triggered, and ${cfg.ignoreTerrain ? "it can move through the space of any creature (it can't end in one) and ignores Difficult Terrain" : "it can't enter or pass through Difficult Terrain"}. ${endBtn(c)} <button type="button" class="endmove" data-twod12="evadeAdvance" data-combatant="${c.id}"><i class="fa-solid fa-person-running"></i> Advance instead</button>`
-      : `<b>${esc(c.name)}</b> can Advance up to ${sq} without spending AP. ${endBtn(c)}`
-  );
+  // v0.0.225 (Lucas: "End movement" and "Advance instead" were still chat buttons): a bottom bar, as a Setup's movement (Cut Through).
+  const what = kind === "evade"
+    ? `Evade up to ${sq}: no reactions; ${cfg.ignoreTerrain ? "through any creature's space (not ending in one), ignoring Difficult Terrain" : "not into or through Difficult Terrain"}. Drag your token.`
+    : `Advance up to ${sq} without spending AP. Drag your token.`;
+  freeMoveBar(c, kind, what);
   showRange(c, n);
   return true;   // granted: the area is on the map
+}
+
+/** v0.0.225: the bar of free movement granted by a card (an Evade or an Advance inside an Action): End movement, and Advance instead for an Evade.
+ *  It goes away when the squares are used up or dropped, or the turn changes. */
+let freeBar = null;
+function freeMoveBar(c, kind, text) {
+  if (typeof document === "undefined") return;   // the tests
+  freeBar?.remove();
+  const bar = document.createElement("div");
+  bar.className = "twod12-linebar twod12-setupbar twod12-freebar";
+  bar.innerHTML = `<i class="fa-solid ${kind === "evade" ? "fa-wind" : "fa-person-running"} lb-ic"></i><span class="lb-text"><b>${esc(c.name)}</b>: ${esc(text)}</span>${kind === "evade" ? '<button type="button" class="lb-go lb-adv"><i class="fa-solid fa-person-running"></i> Advance instead</button>' : ""}<button type="button" class="lb-give lb-end">End movement</button>`;
+  document.body.append(bar);
+  const turn = `${game.combat?.round}:${game.combat?.turn}`;
+  const close = () => { bar.remove(); if (freeBar === bar) freeBar = null; Hooks.off("updateCombatant", watch); Hooks.off("updateCombat", watchTurn); };
+  const watch = cb => { if (cb.id !== c.id) return; if (num(cb.getFlag(F, "freeMove")) + num(cb.getFlag(F, "evadeMove")) <= 0) close(); };
+  const watchTurn = cb => { if (`${cb.round}:${cb.turn}` !== turn) close(); };
+  Hooks.on("updateCombatant", watch); Hooks.on("updateCombat", watchTurn);
+  bar.querySelector(".lb-end").addEventListener("click", ev => { ev.preventDefault(); close(); endMovement(c.id).catch(() => {}); });
+  bar.querySelector(".lb-adv")?.addEventListener("click", ev => {
+    ev.preventDefault();
+    evadeAsAdvance(c.id).catch(() => {});
+    bar.querySelector(".lb-adv")?.remove();
+    const t = bar.querySelector(".lb-text"); if (t) t.innerHTML = `<b>${esc(c.name)}</b>: the movement is an Advance now (it triggers reactions). Drag your token.`;
+  });
+  freeBar = bar;
 }
 
 /** The Evade becomes an Advance: it can then be used on a move that does trigger reactions (or by a creature that can not Evade). */

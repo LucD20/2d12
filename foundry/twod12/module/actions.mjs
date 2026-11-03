@@ -706,6 +706,14 @@ export async function useAction(actor, item, opts = {}) {
   if (escCost) { const pay = canPayEscalation(actor, escCost); if (!pay.ok) return ui.notifications.warn(pay.why); }
   // v0.0.197: a movement-only Action in combat says its AP in its own chat line (the movement tag's), not in an AP line.
   const moveQuiet = !!pureMove(it, version, basicKey) && !!game.combat?.started && !!canvas?.ready;
+  // v0.0.225 (Lucas): a fourth Strike in a turn asks first, as too few AP does (Linked uses don't count).
+  if (it.traits.has("strike") && !opts.free && game.combat?.started) {
+    const { strikesUsed } = await import("./usage.mjs");
+    if (strikesUsed(actor) >= 3) {
+      const ok = await DialogV2.confirm({ window: { title: "3 Strikes made" }, content: `<p><b>${esc(actor.name)}</b> already made 3 Strikes this turn (the most a creature can make in a turn). Use ${esc(item.name)} anyway?</p>`, rejectClose: false });
+      if (!ok) return;
+    }
+  }
   if (apCost > 0 && !(await spendAP(actor, apCost, item.name, { quiet: moveQuiet, reaction: !!it.reaction }))) return;
   if (escCost) await spendEscalation(actor, escCost);
   const isWeapon = it.traits.has("weapon");

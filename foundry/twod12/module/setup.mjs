@@ -20,8 +20,11 @@ const plainSetup = text => String(text ?? "").replace(/\s*\(\s*@\w+\[[^\]]*\]\s*
  * v0.0.224 (Lucas, playtest 3: Cut Through's Setup was a plain window): the Setup's movement in the bottom bar (the Line and Charge bars'
  * look): what the Setup says, then Continue (make the roll) or Cancel the Action. Returns "go" or "cancel".
  */
-export function setupBar(o) {
-  return new Promise(resolve => {
+export async function setupBar(o) {
+  // v0.0.225 (Lucas): the sheets and windows get out of the way of the map while the bar is up, and come back after.
+  let back = async () => {};
+  try { back = await (await import("./template.mjs")).stepAside(); } catch (e) { /* nothing to minimize */ }
+  const pick = await new Promise(resolve => {
     const bar = document.createElement("div");
     bar.className = "twod12-linebar twod12-setupbar";
     const txt = String(o.text ?? "").trim();
@@ -33,6 +36,8 @@ export function setupBar(o) {
     bar.querySelector(".lb-give").addEventListener("click", ev => { ev.preventDefault(); done("cancel"); });
     window.addEventListener("keydown", key, true);
   });
+  await back();
+  return pick;
 }
 
 export async function runSetup(actor, item, token, deps = {}) {
