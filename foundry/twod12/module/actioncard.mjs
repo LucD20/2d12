@@ -67,6 +67,8 @@ export async function buildActionCard(item, { actor = null } = {}) {
   const changed = chips.length ? `<div class="ac-changed"><b>Changed by effects</b>${chips.map(c => `<span class="eff ${c.cls}" data-tooltip="${esc(c.why)}">${esc(c.text)}</span>`).join("")}</div>` : "";
   const area = areaButton(it) ? `<div class="trow arearow">${await enrich(areaButton(it), item)}</div>` : "";
   const setup = it.setup ? `<div class="trow setuprow"><b>Setup:</b> ${await enrich(it.setup, item)}</div>` : "";
+  // v0.0.229 (pack CS): the card's prose (the book's text before and after the table: Weapon Attack, Steel Yourself) is the item's description, shown on the card.
+  const notes = it.description && String(it.description).replace(/<[^>]+>/g, "").trim() ? `<div class="ac-notes">${await enrich(it.description, item)}</div>` : "";
   const meta = metaRowHtml({ escalation: it.escalation ?? 0, frequency: "", targetText: it.targets, distance: distanceText(it, weapon), area: areaText(it), vs: vsText(it, { src: actor?.system?.attributes ? rollSource(actor.system, it) : null, fists: item.getFlag?.("twod12", "basic") === "fists" }), requirements: it.requirements, trigger: it.trigger, reactionKind: it.reactionKind, self: it.traits?.has?.("self") });
   const cat = categoryText(it);
   return `<div class="twod12 acard" style="--fqc:${color}">
@@ -76,6 +78,7 @@ export async function buildActionCard(item, { actor = null } = {}) {
       ${it.traits?.size ? `<div class="ac-traits">${traitChevrons(it.traits)}</div>` : ""}
       ${meta}${area}${setup}
       ${it.prerequisites ? `<div class="trow"><b>Prerequisites:</b> ${esc(it.prerequisites)}</div>` : ""}
+      ${notes}
       ${grid}${changed}${effects}${modifierBlocks(it).join("")}
     </div></div>`;
 }
