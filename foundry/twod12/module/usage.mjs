@@ -83,7 +83,7 @@ export function turnCycleBlocked(round, turn, own, at) {
   if (!at) return false;
   const [r, t] = at;
   // v0.0.222 (Lucas: Round Actions stayed greyed): a use recorded after now (the round was moved back: Previous Round, or reset to test) is stale.
-  if (r > round || (r === round && t > turn)) return false;
+  if (r > round || (own >= 0 && r === round && t > turn)) return false;
   if (own < 0) return round === r;
   const next = t < own ? [r, own] : [r + 1, own];
   return round < next[0] || (round === next[0] && turn < next[1]);
