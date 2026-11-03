@@ -6,7 +6,6 @@ weapon-mod 2
 power-mod 2
 weapon Greatsword (melee, two-handed): 0 / 1d8 / 2d6
 
-action Weapon Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod]
 action Dagger Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1d4 + [Mod] / 1d8 + [Mod]
 action Longsword Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1d6 + [Mod] / 1d10 + [Mod]
 action Maul Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1d4 + 2 + [Mod] / 1d10 + 2 + [Mod]

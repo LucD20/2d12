@@ -26,6 +26,38 @@ const die = (R, s) => 1 + Math.floor(R() * s);
 const pickU = (x, probs) => (x < probs[0] ? 1 : x < probs[0] + probs[1] ? 2 : 3);
 const pick = (R, probs) => pickU(R(), probs);
 
+/* ------------------------------------------------------------------ the cards (book/cards/*.json; pack CS, 2026-11-03) */
+// Every build starts with one action line per Version of every card that has tiers or a ruler modeling string (and a passive line per
+// Passive with one): the same line a class file would write, generated from the card. A class file's own line for the same name overrides it
+// (experiments, options; catalogue/paladin.txt keeps the old cards). `[PMod]` in a card's ruler string is the build's power-mod.
+const CARDS = await import(new URL("../cards/load.mjs", import.meta.url).href);
+const RFREQ = { "at-will": "at-will", turn: "turn", round: "round", encounter: "encounter", daily: "daily" };
+const rulerVs = vs => { const t = String(vs ?? "").trim(); if (/^AD$/i.test(t)) return "vs ad"; if (/^WD$/i.test(t)) return "vs wd"; const m = t.match(/^(\w+) Save$/); return m ? `vs save ${m[1].toLowerCase()}` : ""; };
+export function cardLines(cards = CARDS.loadCards()) {
+  const out = [];
+  for (const c of cards) {
+    if (c.ruler === false || c.ruler?.skip) continue;
+    const multi = (c.versions ?? []).length > 1;
+    for (const v of c.versions ?? []) {
+      const tiers = v.tiers ? v.tiers.map(t => CARDS.splitTier(t)[0]) : null;
+      const damage = tiers && tiers.some(CARDS.isDamage);
+      if (!damage && !v.ruler) continue;   // nothing the ruler models (Advance, Interact...)
+      const f = [`action ${c.name}${multi ? " " + v.ap : ""}`, `ap ${v.ap}`, RFREQ[String(c.frequency).toLowerCase()] ?? "none"];
+      if (c.traits?.length) f.push(`traits ${c.traits.join(" ")}`);
+      if (CARDS.isReaction(c)) f.push("reaction");
+      if (c.escalation) f.push(`escalation ${c.escalation}`);
+      const vs = rulerVs(c.vs); if (vs) f.push(vs);
+      if (damage) f.push(`tiers ${tiers.map(t => (CARDS.isDamage(t) ? t : "0")).join(" / ")}`);
+      if (v.ruler) f.push(v.ruler);
+      out.push(f.join(" | "));
+    }
+    if (c.ruler?.passive) out.push(`passive ${c.name}: ${c.ruler.passive}`);
+  }
+  return out;
+}
+let CARD_LINES = null;
+const cardLinesFor = () => (CARD_LINES ??= cardLines());
+
 /* ------------------------------------------------------------------ damage expressions */
 /**
  * "[B] 1[W] + [Mod] + [M] 2d6 Ho" -> { w: 1, mod: 1, dice: [[2, 6]], flat: 0 }. Pools ([B] [M]) and damage types (Ho, Pi...) are read and left out
@@ -126,10 +158,12 @@ function parseEffects(text) {
 export function parseSpec(text, file = "spec") {
   const b = { file, name: "", role: "", level: 1, attributes: {}, weaponMod: 2, powerMod: 2, health: null, armor: 0, wdBonus: 0, rally: 0, targeted: 1,
     weapon: null, actions: {}, passives: [], turns: {}, plan: [], when: [], speed: 5, reactions: [], dmgScale: 1, keepBest: null, overcastFloor: 0, healthFactor: null };
-  text.split(/\r?\n/).forEach((rawLine, i) => {
+  const pmod = (text.match(/^power-mod\s+(\d+)/m) ?? [])[1] ?? "2";
+  const lines = [...cardLinesFor().map(l => [l.replace(/\[PMod\]/g, pmod), "book/cards"]), ...text.split(/\r?\n/).map(l => [l, file])];
+  lines.forEach(([rawLine, where], i) => {
     const line = clean(rawLine);
     if (!line) return;
-    const fail = msg => { throw new Error(`${file}, line ${i + 1}: ${msg}\n  ${rawLine.trim()}`); };
+    const fail = msg => { throw new Error(`${where}, line ${where === file ? i + 1 - cardLinesFor().length : i + 1}: ${msg}\n  ${rawLine.trim()}`); };
     const [head] = line.split(/\s+/), rest = line.slice(head.length).trim(), key = head.toLowerCase();
     try {
       if (key === "class") b.name = rest;

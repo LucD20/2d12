@@ -28,6 +28,8 @@ Bestiary (`config.mjs` npcHm, npcDamage, the roles and ratings). Random numbers 
 
 ### The spec files
 
+**The cards come from `book/cards/*.json` (pack CS, 2026-11-03):** every build starts with one `action` line per Version of every card that has damage tiers or a ruler modeling string (`cardLines` in spec.mjs: today Weapon Attack, Fists, Steel Yourself 2 / 3, Trip 2; the class Actions follow in CS-2), so a class file no longer writes them. A class file's own `action` line for the same name overrides the card's (experiments, options; the catalogue's old cards). `[PMod]` in a card's ruler string is the build's `power-mod`. The format of a card and of its `ruler` string: `book/cards/README.md`.
+
 One thing per line; `#` starts a comment. A class file (`classes/paladin-1.txt` is the full example):
 
 | Line | Example | Meaning |

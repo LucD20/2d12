@@ -20,8 +20,6 @@ speed 5               # Human 5, Paladin +0 (the map model)
 # Features: Divine Power (Profane Judgment, not modeled) and Font of Mercy (a Feature that is an Escalation Passive: Escalation 1, +Power Mod + 2 on every Rally Point).
 passive Font of Mercy: escalation 1: rally-bonus 4
 
-action Steel Yourself 2 | ap 2 | round | traits self | heal 1 self     # Basic Action: you use 1 Rally Point
-action Weapon Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod]
 
 # Signature: Smite (damage, with a support rider)
 action Smite 1 | ap 1 | round | traits divine signature strike weapon | vs ad | tiers [B] 1[W] / [B] 1[W] + [Mod] + [M] 1d4 / [B] 1[W] + [Mod] + [M] 1d6

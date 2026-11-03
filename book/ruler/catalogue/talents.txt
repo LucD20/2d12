@@ -7,7 +7,6 @@ weapon-mod 2
 power-mod 2
 weapon Greatsword (melee, two-handed): 0 / 1d8 / 2d6
 
-action Weapon Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod]
 action Smite 2 | ap 2 | round | traits divine signature strike weapon | vs ad | tiers [B] 1[W] + [M] 1d6 / [B] 1[W] + [Mod] + [M] 1d10 / [B] 1[W] + [Mod] + [M] 2d8
 
 # Combat

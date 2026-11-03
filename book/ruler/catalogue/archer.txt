@@ -8,8 +8,6 @@ power-mod 2
 weapon Crossbow (ranged, projectile, reload, two-handed): 0 / 1d4+2 / 1d10+2
 
 # Basic Actions
-action Weapon Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod]
-action Steel Yourself 2 | ap 2 | round | traits self | heal 1 self
 action Reload | ap 1 | at-will | traits weapon handle | vs dc 13 | on 1: boon 2 next @Reload; on 2+: reload
 
 # Class Actions

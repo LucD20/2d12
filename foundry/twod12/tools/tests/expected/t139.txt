@@ -15,8 +15,8 @@ the Fists item: {"traits":["barehanded","melee","nonthreatening"],"range":"1","d
 the Fists card: strike/weapon | distance weapon | Tier 2 and 3 use [W]: true
 Pummel uses only the Fists, Leg Sweep is a kick (Fists, no free hand: v0.0.188); Brawler removes Non-threatening: true
 --- the Basic Actions
-Shove   1AP: 0/1/2 | 2AP: 0/2/4 | 3AP: 1/3/5 | strike/handle/body
-Relocate 1AP: 0/1/2 | 2AP: 0/2/4 | 3AP: 1/3/5 | strike/handle/body/instinct | The target's SR is at most 1 higher than yours. The target must remain within your Reach throughout the whole movement.
+Shove   1AP: 0/1/2 | 2AP: 0/2/4 | 3AP: 1/3/5 | body/handle/strike
+Relocate 1AP: 0/1/2 | 2AP: 0/2/4 | 3AP: 1/3/5 | body/handle/instinct/strike | The target's SR is at most 1 higher than yours. The target must remain within your Reach throughout the whole movement.
 no old Reposition Basic Action: true | Haul (v0.0.170): true | Trip says SR: The target's SR is at most 1 higher than yours.
 Cut Through's Critical uses Relocate: true
 --- the Engaged banes are for [Ranged] Actions

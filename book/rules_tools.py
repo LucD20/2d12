@@ -5,11 +5,17 @@
 Run them from the folder that holds rules-src/.
 """
 import os, re
+import cards as CARDS
 
 CHAPTER = re.compile(r'^\d\d-.*\.md$')
 CALLOUTS = {'example', 'tbd', 'note', 'tip'}
 norm = lambda s: re.sub(r'[^a-z0-9]', '', re.sub(r'<[^>]+>', '', s).lower())
 plain = lambda s: re.sub(r'\[\[(?:[^\]|]*\|)?([^\]]*)\]\]', r'\1', re.sub(r'\\\|', '|', s)).replace('**', '').replace('*', '').strip()
+
+_CARDS = {}
+def _cards():
+    if not _CARDS: _CARDS.update(CARDS.by_name(CARDS.load()))
+    return _CARDS
 
 def chapter_files(src):
     return sorted(f for f in os.listdir(src) if CHAPTER.match(f))
@@ -22,6 +28,11 @@ def parse(src):
         d = dict(lines=lines, title='', part='', doc='core', headings=[], cards=[], tbds=[], glossary=[], callouts=[], size=os.path.getsize(os.path.join(src, fn)))
         card = None
         for n, l in enumerate(lines, 1):
+            km = re.match(r'^@@CARD:(.+?)@@\s*$', l)
+            if km:   # a card of book/cards/: the chapter only places it
+                c = _cards().get(km.group(1).strip())
+                if c: d['cards'].append(dict(line=n, name=c['name'], cost=CARDS.cost_text(c), cat=c['category'] + (' %d' % c['level'] if c.get('level') else ''), freq=c.get('frequency', ''), source=True))
+                continue
             pm = re.match(r'<!-- part: (.*?) -->', l)
             if pm: d['part'] = pm.group(1)
             dm = re.match(r'<!-- doc: (\w+) -->', l)
@@ -80,6 +91,12 @@ def where(src, terms):
             for n, l in enumerate(d['lines'], 1):
                 hm = re.match(r'^#{1,4} (.+?)\s*$', l)
                 if hm: section = plain(hm.group(1))
+                km = re.match(r'^@@CARD:(.+?)@@\s*$', l)
+                if km:   # a placed card: its block's lines count as this line
+                    c = _cards().get(km.group(1).strip())
+                    for bl in (CARDS.block(c).split('\n') if c else []):
+                        if rx.search(bl): hits.append((fn, n, 'card', section, bl.strip()))
+                    continue
                 if not rx.search(l): continue
                 kind = 'heading' if hm and rx.search(hm.group(1)) else 'glossary' if fn.startswith('09-') and l.startswith('| [[') else 'defined' if re.search(r'\*\*[^*]*' + re.escape(term) + r'[^*]*\*\*', l, re.I) and not l.startswith('|') and not l.startswith('<') else 'xref' if re.search(r'\[\[[^\]]*' + re.escape(term) + r'[^\]]*\]\]', l, re.I) and not rx.search(re.sub(r'\[\[.*?\]\]', '', l)) else 'text'
                 hits.append((fn, n, kind, section, l.strip()))
@@ -151,3 +168,20 @@ def report(parsed, doc_html):
     check('placeholders left in the built book', left)
     out.append(f'  info {sum(len(d["tbds"]) for d in parsed.values())} open (to be decided) boxes; {len(cards)} Action cards; {len(gl)} glossary entries')
     print('CHECKS\n' + '\n'.join(out))
+
+
+# ------------------------------------------------------------------ the cards of book/cards/
+def report_cards(cards, placed, problems, parsed):
+    """The checks of the card files: every card the book shows is placed once; no chapter still writes a card by hand that the files have; markers resolve."""
+    out = list(problems)
+    for name, c in cards.items():
+        if c.get('book') is False: continue
+        if name not in placed: out.append(f'{c["_file"]}: the card "{name}" is placed in no chapter (write @@CARD:{name}@@ where it goes)')
+    for fn, d in parsed.items():
+        for c in d['cards']:
+            if not c.get('source') and c['name'] in cards: out.append(f'{fn}:{c["line"]} "{c["name"]}" is written by hand but is in {cards[c["name"]]["_file"]}: replace the block with @@CARD:{c["name"]}@@')
+    counts = {}
+    for n in placed: counts[n] = counts.get(n, 0) + 1
+    kind = 'ok  ' if not out else 'WARN'
+    print(f'  {kind} cards of book/cards/ ({len(cards)} cards, {len([c for c in cards.values() if c.get("book") is not False])} shown in the book){"" if not out else ": " + str(len(out))}')
+    for o in out: print(f'         {o}')

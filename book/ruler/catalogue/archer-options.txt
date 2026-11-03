@@ -7,7 +7,6 @@ weapon-mod 2
 power-mod 2
 weapon Crossbow (ranged, projectile, reload, two-handed): 0 / 1d4+2 / 1d10+2
 
-action Weapon Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod]
 
 # Encounter slot (default Marksman's Shot: 2 AP, 16.0)
 action Volley | ap 2 | encounter | traits area ranged save shot weapon | vs save instinct | tiers [B] 2d8 + [Mod] / [B] 1d10 + [Mod] / [B] 1d4 | area 2 | on 1: debuff Hindered (EoT)

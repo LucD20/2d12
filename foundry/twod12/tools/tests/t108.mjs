@@ -1,5 +1,6 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t108.mjs)
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
+const BD = (await import(ROOTURL + "module/basic-data.mjs")).BASIC_ACTIONS;   // v0.0.227 (pack CS): the Basic Actions are data generated from book/cards
 import fs from "node:fs";
 // v0.0.122 (Round 10, part 3): every weapon has a Range (melee too), Reach above 1, Long, Thrown, Distance: Weapon, threatening from the normal range.
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {}, HandlebarsApplicationMixin: c => c }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)), getRoute: p => "/" + p, escapeHTML: s => s } };
@@ -32,7 +33,7 @@ console.log("--- the generator");
 const G = await import(ROOTURL + "module/gen.mjs");
 for (const t of ["lance: melee, pierce, range 1/2, 0/1d8/2d6", "dagger: melee, thrown 4/8/12, pierce, 0/1d4/1d6", "pike: two-handed, melee, long, pierce, range 3, 0/1d8/2d6", "greatsword: two-handed, melee, slash, 0/1d8/2d6", "bow: two-handed, pierce, ranges 10/20/40, 0/1d6/1d10"]) { const p = G.parseWeaponText(t), d = G.weaponSystemData(p); console.log(p.name.padEnd(11), [...p.traits].join(","), "| range", d.range || "-", "| thrown", d.thrownRange || "-", p.problems.length ? `| ${p.problems}` : ""); }
 const src = n => fs.readFileSync(ROOT + n, "utf8");
-console.log("--- content: Weapon Attack uses Distance: Weapon:", /name: "Weapon Attack"[\s\S]{0,400}distance: "weapon"/.test(src("module/basic.mjs")), "| Trip keeps Reach:", /name: "Trip"[\s\S]{0,400}distance: "reach"/.test(src("module/basic.mjs")), "| compendium Greatsword Range:", JSON.parse(src("packs/_source/weapons/greatsword.weapon.json")).system.range, "| Smite:", JSON.parse(src("packs/_source/actions/smite.action.json")).system.distance);
+console.log("--- content: Weapon Attack uses Distance: Weapon:", BD.basicWeaponAttack.distance === "weapon", "| Trip keeps Reach:", BD.trip.distance === "reach", "| compendium Greatsword Range:", JSON.parse(src("packs/_source/weapons/greatsword.weapon.json")).system.range, "| Smite:", JSON.parse(src("packs/_source/actions/smite.action.json")).system.distance);
 console.log("--- v0.0.123");
 const acts = src("module/actions.mjs"), tpl = src("templates/actor-sheet.hbs"), sheet = src("module/actor-sheets.mjs"), data = src("module/data.mjs");
 console.log("a thrown weapon shows a notice in the roll dialog:", acts.includes('...(wUse?.thrown && wUse.mode === "ranged"') && acts.includes('<span class="rnotice"'), "| NPC Reach editable:", data.includes("reachBase: int(1, 1)") && data.includes("this.reach = Math.max(1, Number(this.reachBase) || 1)") && sheet.includes('reach: { "system.reachBase"'), "| Tags as chips:", tpl.includes('<span class="tchip">'));

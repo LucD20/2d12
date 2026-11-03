@@ -1,6 +1,6 @@
 # Pack CS proof: three cards from one source
 
-Throwaway (2026-11-03, pack CS proposal: `book/card-source-proposal.md`). Nothing in the real builds reads this folder.
+Throwaway (2026-11-03, pack CS proposal: `book/card-source-proposal.md`). Nothing in the real builds reads this folder. It shows the format **as proposed** (Smite's Foundry texts as overrides); the format as built (`book/cards/README.md`, from CS-1) has no overrides: the Foundry text is the book's text plus an appended `foundry.append`. The real loaders are `book/cards.py`, `book/cards/load.mjs` and `foundry/twod12/tools/cardgen.mjs`.
 
 - `cards.json`: Weapon Attack, Smite and Lock & Loose in the proposed format (core fields shared by the three targets, `foundry` and `ruler` extras).
 - `proof.mjs` (Node): generates the book's card block, the Foundry item data and the ruler's action lines, and diffs each against what exists today (rules-src, tools/content.mjs or module/basic.mjs, the class files of the ruler).

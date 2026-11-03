@@ -62,11 +62,13 @@ The first line says which Part it belongs to. Headings (`##`, `###`) are the tar
 - `{{dt:Holy}}` is a damage type with its icon and color: Acid, Blunt, Cold, Electricity, Fire, Force, Holy, Pierce, Psychic, Slash, Thunder, Unholy.
 - `{{dc:Ho}}` is a two-letter code in the type's color (Ac, Bl, Co, El, Fi, Fo, Ho, Pi, Ps, Sl, Th, Un). A code written after a number or a `]` ("1d6 Ho", "[Mod] Bl") is colored by itself.
 - `{{pool:B}}` and `{{pool:M}}` are the heart (Body) and the brain (Mind).
-- `@@SAMPLE_CARD@@` is drawn by the builder. `@@DIAGRAM:name@@` puts a diagram in the text: cover, leaning, flanking, engaged, reach, emanation, light, burst, straight (charge), line1 to line3 (the Line area), difficult, push and the rest. They are drawn by `diagrams/diagrams.py` (the names are listed in `book_diagram` there); a new one needs a drawing function and a name. Every number in them is computed from the rule. `python3 diagrams/build_diagrams_draft.py` builds a page with all of them to look at. The builder needs the `diagrams/` folder beside it.
+- `@@CARD:Name@@` places a card of `book/cards/*.json` (see above). `@@SAMPLE_CARD@@` is drawn by the builder. `@@DIAGRAM:name@@` puts a diagram in the text: cover, leaning, flanking, engaged, reach, emanation, light, burst, straight (charge), line1 to line3 (the Line area), difficult, push and the rest. They are drawn by `diagrams/diagrams.py` (the names are listed in `book_diagram` there); a new one needs a drawing function and a name. Every number in them is computed from the rule. `python3 diagrams/build_diagrams_draft.py` builds a page with all of them to look at. The builder needs the `diagrams/` folder beside it.
 - Trait words (Strike, Weapon, Melee, Ranged, Move...) and damage type names are colored by the builder wherever they appear: write them as plain words.
 - Notation in the text: `[B]` and `[M]` (Body and Mind damage), `[Mod]` (Modifier), `[W]` and `1[W]` (weapon damage).
 
 ## An Action card
+**Since pack CS (2026-11-03) the Basic Actions are not written in the chapter:** `06-basic-actions.md` writes `@@CARD:Weapon Attack@@` where the card goes and the card lives in `book/cards/basic-actions.json` (one source for the book, Foundry and the ruler; the format: `book/cards/README.md`). The builder renders the block below from the card, so everything here still describes what the reader sees; the Paladin, Archer, Gear and Talents cards are still written in their chapters until CS-2 and CS-3 move them. The build's card check lists a marker with no card, a card no chapter places, and a block written by hand for a card the files have.
+
 ```
 <div class="action" markdown="1">
 <div class="action-head"><span>Charge</span><span>2 AP</span><span class="cat">Basic Action</span></div>

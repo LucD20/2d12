@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.226, 174 tests; READ THIS FIRST)
+## Where we are now (v0.0.227, 175 tests; READ THIS FIRST)
+- **v0.0.227 (2026-11-03, branch `pack-cs-1`): pack CS-1, one source for every card, the Basic Actions.** Lucas accepted the proposal with all defaults plus one change (the Foundry text of a card is the book's text, buttons appended). The 17 Basic Actions (and Break Free) live in `book/cards/basic-actions.json` (format: `book/cards/README.md`); `06-basic-actions.md` places them with `@@CARD:Name@@` (the built HTML byte-identical); Foundry generates `module/basic-data.mjs` from it (`node tools/gen-basic.mjs`; t177 fails when stale); the ruler reads it (the class files lost their Weapon Attack / Steel Yourself lines; report.md unchanged). **Not tested by Lucas yet** (checklist in the session report). **Next: CS-2 (Paladin and Archer cards), CS-3 (Gear, Talents, Bestiary), then prep pack R** (MASTER-PLAN step 0.3b).
 - **Pack CS proposal (2026-11-03, branch `pack-cs-proposal`; nothing applied):** `book/card-source-proposal.md` proposes one source per card (`book/cards/*.json`, about 85 cards) from which the book's card block, the Foundry item and the ruler's action line are generated, with a test when one is missing; the proof `book/card-source-proof/` regenerates Weapon Attack, Smite and Lock & Loose identical to today's three formats. Planned as MASTER-PLAN step 0.3b (after playtest 3, before prep pack R, three sessions); Lucas answers its 4 questions by exception. Found on the way: the ruler's Shield of Faith line is stale (1 AP, 1d6; the book says 0R, 1d8).
 - **v0.0.226 (2026-11-03, branch `pack-p3-polish`):** an Evade always moves its user; Evade instead after Advance instead.
 - **v0.0.225 (2026-11-03, branch `pack-p3-polish` on top of pack-p3-fixes):** a card\'s Evade / Advance in a bottom bar, the Setup bar minimizes windows, a fourth Strike asks first. Next: Lucas\'s test, then prep pack R.
@@ -51,7 +52,7 @@ Python needs `markdown`. Node 18+ for the tests.
 
 ## Commands
 - Book: `cd book && python3 build_rules.py` ("unresolved refs: 0" is the goal). `python3 build_rules.py --where Flanking`.
-- System tests: **in a fresh clone (a cloud session) first build the packs** (below): about 10 tests read packs/_source and fail with ENOENT without it. Then `cd foundry/twod12 && node tools/tests/run.mjs` (174 tests; each has an expected output in tools/tests/expected; accept a meant change with `node tools/tests/run.mjs --update t84`). **Test numbers have gaps (t1, t6, t21, t31; also t12b, t37b): the next new one is t177.** Lint: `npx eslint@8 --no-eslintrc -c tools/eslint.json --ext .mjs module`.
+- System tests: **in a fresh clone (a cloud session) first build the packs** (below): about 10 tests read packs/_source and fail with ENOENT without it. Then `cd foundry/twod12 && node tools/tests/run.mjs` (175 tests; each has an expected output in tools/tests/expected; accept a meant change with `node tools/tests/run.mjs --update t84`). **Test numbers have gaps (t1, t6, t21, t31; also t12b, t37b): the next new one is t178.** Lint: `npx eslint@8 --no-eslintrc -c tools/eslint.json --ext .mjs module`.
 - Compendiums: the content is in `tools/content.mjs`; in foundry/ run `npm install @foundryvtt/foundryvtt-cli` (node_modules and package files: never commit them), then `node twod12/tools/build-packs.mjs`.
 - A version: bump `version` in system.json, add the changelog entry to docs/reference.md (copy it to foundry/reference.md), run the tests, give Lucas a short test checklist; commit on a `pack-...` branch (Update Foundry.cmd finds it). No zips.
 

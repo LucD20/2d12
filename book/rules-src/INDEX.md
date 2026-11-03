@@ -9,7 +9,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 38.1 | 451 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 12.2 | 244 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 6.2 | 68 |
-| 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 9.2 | 338 |
+| 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.4 | 39 |
 | 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 5.6 | 95 |
 | 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 5.1 | 78 |
 | 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 20.7 | 170 |
@@ -171,7 +171,7 @@ Open (to be decided) boxes: 83: "The entries of the Dying and Shattered Tables a
 ## 06-basic-actions.md: Chapter 6: Basic Actions
 
 
-Action cards: Advance (7, Basic Action, At-will); Charge (22, Basic Action, Round); Crawl (41, Basic Action, At-will); Evade (56, Basic Action, At-will); Fists (71, Basic Action, At-will); Haul (96, Basic Action, Round); Interact (121, Basic Action, At-will); Leaning (138, Basic Action, At-will); Regrip (153, Basic Action, At-will); Release (168, Basic Action, At-will); Reload (183, Basic Action, At-will); Relocate (208, Basic Action, At-will); Shove (233, Basic Action, Round); Stand (258, Basic Action, At-will); Steel Yourself (273, Basic Action, Round); Trip (290, Basic Action, Round); Weapon Attack (315, Basic Action, At-will)
+Action cards: Advance (6, Basic Action, At-will); Charge (8, Basic Action, Round); Crawl (10, Basic Action, At-will); Evade (12, Basic Action, At-will); Fists (14, Basic Action, At-will); Haul (16, Basic Action, Round); Interact (18, Basic Action, At-will); Leaning (20, Basic Action, At-will); Regrip (22, Basic Action, At-will); Release (24, Basic Action, At-will); Reload (26, Basic Action, At-will); Relocate (28, Basic Action, At-will); Shove (30, Basic Action, Round); Stand (32, Basic Action, At-will); Steel Yourself (34, Basic Action, Round); Trip (36, Basic Action, Round); Weapon Attack (38, Basic Action, At-will)
 
 ## 07-traits.md: Chapter 7: Traits
 

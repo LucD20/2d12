@@ -15,8 +15,6 @@ targeted 0.75         # at range, behind the tank: chosen less often
 weapon Crossbow (ranged, projectile, reload, two-handed, range 10/20/40): 0 / 1d4+2 / 1d10+2
 speed 6               # Human 5, Archer +1 (the map model)
 
-action Steel Yourself 2 | ap 2 | round | traits self | heal 1 self     # Basic Action: you use 1 Rally Point
-action Weapon Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod]
 action Reload | ap 1 | at-will | traits weapon handle | vs dc 13 | on 1: boon 2 next @Reload; on 2+: reload
 action Double Shot 2 | ap 2 | round | traits shot strike | does Weapon Attack x2 | different
 action Double Shot 3 | ap 3 | round | traits shot strike | does Weapon Attack x2 | each boon 1 | different

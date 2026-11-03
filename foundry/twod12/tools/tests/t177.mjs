@@ -1,0 +1,49 @@
+// Run with: node tools/tests/run.mjs (or node tools/tests/t177.mjs)
+// Pack CS (2026-11-03): one source for every card (book/cards/*.json). The three targets (the book, Foundry, the ruler) read the same files,
+// so they cannot disagree; this test fails when a card is missing somewhere or an extra contradicts the core:
+//   - module/basic-data.mjs (generated from the Basic Action cards) is up to date;
+//   - every card with a Foundry key (foundry.basic) is a Basic Action and the other way round; every Basic Action card the book shows is placed
+//     in its chapter with @@CARD:Name@@, and no chapter still writes a card the files have by hand;
+//   - every tier reads as damage or as text, with Foundry's parser and the ruler's; every Version's ruler string parses;
+//   - a Foundry extra never repeats a core field (tiers, cost, traits, Frequency).
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
+import fs from "node:fs";
+import { spawnSync } from "node:child_process";
+const { loadCards, cardSystem, basicEntry } = await import(ROOTURL + "tools/cardgen.mjs");
+const { BASIC_ACTIONS } = await import(ROOTURL + "module/basic-data.mjs");
+const S = await import(ROOTURL + "../../book/ruler/spec.mjs");
+
+const cards = loadCards();
+console.log("cards:", cards.length, "| files:", [...new Set(cards.map(c => c._file))].join(", "));
+
+console.log("--- the generated Basic Actions");
+const check = spawnSync(process.execPath, [ROOT + "tools/gen-basic.mjs", "--check"], { encoding: "utf8" });
+console.log("module/basic-data.mjs up to date:", check.status === 0, (check.stdout + check.stderr).trim());
+const basics = cards.filter(c => c.foundry?.basic);
+console.log("Basic Action cards:", basics.length, "| keys in basic-data.mjs:", Object.keys(BASIC_ACTIONS).length, "| the same set:", JSON.stringify(basics.map(c => c.foundry.basic).sort()) === JSON.stringify(Object.keys(BASIC_ACTIONS).sort()));
+console.log("every Basic Action card is a Basic Action:", basics.every(c => c.category === "Basic Action"), "| every card in basic-actions.json has a key:", cards.filter(c => c._file === "basic-actions.json").every(c => c.foundry?.basic));
+console.log("the generator gives the data of the file:", basics.every(c => JSON.stringify(basicEntry(c)) === JSON.stringify(BASIC_ACTIONS[c.foundry.basic])));
+
+console.log("--- the book places every card it shows");
+const srcDir = ROOT + "../../book/rules-src/";
+const chapters = fs.readdirSync(srcDir).filter(f => /^\d\d-.*\.md$/.test(f)).map(f => [f, fs.readFileSync(srcDir + f, "utf8")]);
+const placed = new Map();
+for (const [f, t] of chapters) for (const m of t.matchAll(/^@@CARD:(.+?)@@[ \t]*$/gm)) placed.set(m[1].trim(), [...(placed.get(m[1].trim()) ?? []), f]);
+const shown = cards.filter(c => c.book !== false);
+console.log("shown in the book:", shown.length, "| placed once:", shown.every(c => placed.get(c.name)?.length === 1), "| markers with no card:", [...placed.keys()].filter(n => !cards.some(c => c.name === n)).join(", ") || "none");
+const byHand = [];
+for (const [f, t] of chapters) for (const m of t.matchAll(/<div class="action-head"><span>(.*?)<\/span>/g)) if (cards.some(c => c.name === m[1])) byHand.push(`${f}: ${m[1]}`);
+console.log("cards of the files still written by hand in a chapter:", byHand.join(", ") || "none");
+console.log("a card the book does not show (book: false):", cards.filter(c => c.book === false).map(c => c.name).join(", ") || "none");
+
+console.log("--- every card reads for Foundry and the ruler");
+const problems = [];
+for (const c of cards) {
+  try { cardSystem(c); } catch (e) { problems.push(`${c.name}: Foundry: ${e.message}`); }
+  for (const k of ["tiers", "ap", "traits", "frequency", "effects", "name", "cost"]) if (c.foundry?.[k] !== undefined) problems.push(`${c.name}: foundry.${k} repeats a core field`);
+  for (const v of c.versions ?? []) for (const k of ["tiers", "ap", "effects"]) if (v.foundry?.[k] !== undefined) problems.push(`${c.name} ${v.ap} AP: foundry.${k} repeats a core field`);
+}
+try { const lines = S.cardLines(cards); S.parseSpec(`class X\n${lines.join("\n")}\n`, "book/cards"); console.log("ruler lines:", lines.length, "| they parse:", true); }
+catch (e) { problems.push(`ruler: ${e.message}`); }
+console.log("problems:", problems.length ? problems.join(" ; ") : "none");
+if (problems.length || check.status !== 0 || byHand.length) throw new Error("the card files and their targets disagree (see above)");

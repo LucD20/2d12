@@ -8,7 +8,7 @@ next turn resets: 0 | faded: false
 frequency label: At-will | effective: atwill | round for non-weapon default: ""
 greatsword in 1 hand: Two-handed weapon in one hand 3b all=strike,weapon,__twohanded | in 2 hands: 0 | not wielded: 0
 chip matches Strike Weapon: false | with that Two-handed weapon (v0.0.212): true | melee spell: false
-Weapon Attack: atwill | Trip: strike,handle,body,instinct vs roll check undefined | Shove: strike,handle,body vs body
+Weapon Attack: atwill | Trip: body,handle,instinct,strike vs roll check undefined | Shove: body,handle,strike vs body
 Trip 1AP: No effect. / No effect. / @Condition[prone] | 2AP: No effect. / @Condition[prone] / 1d8Bl + @Condition[prone]
 Interact: handle reach true | Reload buttons: 2
 @Reload button: Weapon reloaded

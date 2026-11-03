@@ -1,5 +1,6 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t176.mjs)
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
+const BD = (await import(ROOTURL + "module/basic-data.mjs")).BASIC_ACTIONS;   // v0.0.227 (pack CS): the Basic Actions are data generated from book/cards
 import fs from "node:fs";
 // v0.0.224 (Lucas's playtest 3 answers and fixes).
 class Fl { constructor(o) { this.o = o; } }
@@ -20,9 +21,9 @@ console.log("after 3 Strikes: not greyed, its own marker:", JSON.stringify(U.isF
 const dark = c => c.i === 0 && c.j === 2;
 const area = (cost) => M.reachableCells([{ i: 0, j: 0 }], 3, () => false, 0, cost).filter(c => c.i === 0).map(c => c.j).sort((a, b) => a - b).join(",");
 console.log("a row with Darkness on column 2, 3 squares: Advance reaches", area(c => (dark(c) ? 1 : 0)), "| Evade reaches", area(c => (dark(c) ? Infinity : 0)), "| nothing in the way", area(() => 0));
-const b = src("module/basic.mjs"), mv = src("module/move.mjs"), mk = src("module/mark.mjs"), sh = src("module/actor-sheets.mjs"), st = src("module/setup.mjs"), car = src("module/carousel.mjs"), el = src("module/enclog.mjs"), tpl = src("templates/actor-sheet.hbs"), co = src("tools/content.mjs"), act = src("module/actions.mjs");
-console.log("Charge: a Strike that targets", /charge: \{[\s\S]{0,120}traits: \["move", "strike"\][\s\S]{0,140}targets: "One creature"/.test(b), "| its Weapon Attack counts toward At-will", b.includes("|atwill:yes|"), "| the picker goes toward the target", mv.includes("const computeTarget = () =>"), "| no End movement line", mv.includes('logMode !== "Charge") await post('));
-console.log("Relocate At-will", /relocate: \{\s*frequency: "atwill"/.test(b), "| Break Free (1 AP, Move, only while Immobilized)", b.includes("breakFree: {") && act.includes('basicKey === "breakFree" && !actor.statuses?.has?.("immobilized")') && co.includes("by spending 1 AP [Move]"));
+const mv = src("module/move.mjs"), mk = src("module/mark.mjs"), sh = src("module/actor-sheets.mjs"), st = src("module/setup.mjs"), car = src("module/carousel.mjs"), el = src("module/enclog.mjs"), tpl = src("templates/actor-sheet.hbs"), co = src("tools/content.mjs"), act = src("module/actions.mjs");
+console.log("Charge: a Strike that targets", JSON.stringify(BD.charge.traits) === '["move","strike"]' && BD.charge.targets === "One creature", "| its Weapon Attack counts toward At-will", BD.charge.versions[0].effects.includes("|atwill:yes|"), "| the picker goes toward the target", mv.includes("const computeTarget = () =>"), "| no End movement line", mv.includes('logMode !== "Charge") await post('));
+console.log("Relocate At-will", BD.relocate.frequency === "atwill", "| Break Free (1 AP, Move, only while Immobilized)", "breakFree" in BD && act.includes('basicKey === "breakFree" && !actor.statuses?.has?.("immobilized")') && co.includes("by spending 1 AP [Move]"));
 console.log("the mark ends with the combat", mk.includes('Hooks.on("deleteCombat"'), "| shows the marker's portrait", mk.includes("PIXI.Sprite.from(src)"));
 console.log("Remove on every Action's right-click", sh.includes("Remove for every Action, with a confirmation"), "| the Setup in the bottom bar", st.includes("export async function setupBar(o)"), "| Strike pips", car.includes('class="tp-strikes"'), "| the log window by its id", el.includes('instances?.get?.("twod12-encounter-log")'));
 console.log("row markers: too few AP", tpl.includes("{{#if noAp}} noap{{/if}}"), "| 3 Strikes", tpl.includes("ar-capd"));
