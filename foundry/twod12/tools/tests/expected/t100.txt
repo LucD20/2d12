@@ -12,9 +12,9 @@ Evade, the Action targets an enemy (the case that was refused)     -> Kai
 Advance, the Action targets an enemy, Kai is selected              -> Kai
 Charge, two enemy targets                                          -> Kai
 Evade, the Action targets an enemy, the enemy is selected          -> Kai
-Evade, the Action targets an ally (a buff)                         -> Nari
-Evade, an ally and an enemy are targets                            -> Nari
-Evade, two allies, one of them selected                            -> Nari
+Evade, the Action targets an ally (a buff)                         -> Kai
+Evade, an ally and an enemy are targets                            -> Kai
+Evade, two allies, one of them selected                            -> Kai
 Evade, a neutral target                                            -> Kai
 Evade on a Self Action                                             -> Kai
 Evade with |traits:self and an enemy target                        -> Kai

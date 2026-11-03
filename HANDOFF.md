@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.225, 174 tests; READ THIS FIRST)
+## Where we are now (v0.0.226, 174 tests; READ THIS FIRST)
+- **v0.0.226 (2026-11-03, branch `pack-p3-polish`):** an Evade always moves its user; Evade instead after Advance instead.
 - **v0.0.225 (2026-11-03, branch `pack-p3-polish` on top of pack-p3-fixes):** a card\'s Evade / Advance in a bottom bar, the Setup bar minimizes windows, a fourth Strike asks first. Next: Lucas\'s test, then prep pack R.
 - **v0.0.224 (2026-11-03), branch `pack-p3-fixes` (on top of pack-encounter-log, v0.0.223):** playtest 3 (book/playtest-3.md): the answers in the book (Charge a Strike toward its target, its Weapon Attack counts toward At-will; Relocate At-will; Immobilized removed by 1 AP [Move], Break Free in Foundry) and Foundry's fixes (mark, Remove, Darkness in the move area, live log, Setup bar, Strike pips, AP / Strike markers, the marker's portrait). Next: Lucas's test, then prep pack R.
 - **v0.0.223 (2026-11-03), branch `pack-encounter-log` (from main, after PR #19):** the Encounter Log for playtests (every Action with tiers, movement, damage, healing, conditions, Down; remove / edit / note; Copy in the playtest format). Next: Lucas's test, then playtest 3 (with the log).

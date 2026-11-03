@@ -261,6 +261,8 @@ export function moverToken(ctx, cfg = {}) {
   const self = (cfg.traits ?? []).includes("self") || !!f?.self;
   // Self: the creature that used the Action (the selected token). Otherwise: the target of the Action (the ally of a Lay On Hands).
   if (self) return ctx?.token ?? (selected.length === 1 ? selected[0] : tokenOf(contextActor(ctx)));
+  // v0.0.226 (Lucas: Rolling Shot's Evade moved the targeted ally): an Evade and a Charge are always made by the creature that used the Action.
+  if (["evade", "charge"].includes(cfg.kind)) return ctx?.token ?? tokenOf(contextActor(ctx)) ?? (selected.length === 1 ? selected[0] : null);
   // Advance, Evade and Charge are made willingly: an enemy target never moves because of an Action used on it (that is Forced Movement), so the creature that used the Action moves, or an ally that is a target (a buff).
   if (["advance", "evade", "charge"].includes(cfg.kind)) {
     const user = ctx?.token ?? tokenOf(contextActor(ctx)) ?? (selected.length === 1 ? selected[0] : null);   // the creature that used the Action
@@ -503,12 +505,22 @@ function freeMoveBar(c, kind, text) {
   const watchTurn = cb => { if (`${cb.round}:${cb.turn}` !== turn) close(); };
   Hooks.on("updateCombatant", watch); Hooks.on("updateCombat", watchTurn);
   bar.querySelector(".lb-end").addEventListener("click", ev => { ev.preventDefault(); close(); endMovement(c.id).catch(() => {}); });
-  bar.querySelector(".lb-adv")?.addEventListener("click", ev => {
-    ev.preventDefault();
-    evadeAsAdvance(c.id).catch(() => {});
-    bar.querySelector(".lb-adv")?.remove();
-    const t = bar.querySelector(".lb-text"); if (t) t.innerHTML = `<b>${esc(c.name)}</b>: the movement is an Advance now (it triggers reactions). Drag your token.`;
-  });
+  // v0.0.226 (Lucas): after Advance instead, Evade instead turns it back (only for a movement that was an Evade).
+  const swap = toAdvance => {
+    const b = bar.querySelector(".lb-adv"), t = bar.querySelector(".lb-text");
+    if (toAdvance) {
+      bar.dataset.evadeN = String(num(game.combat?.combatants.get(c.id)?.getFlag(F, "evadeMove")));
+      evadeAsAdvance(c.id).catch(() => {});
+      if (b) b.innerHTML = '<i class="fa-solid fa-wind"></i> Evade instead';
+      if (t) t.innerHTML = `<b>${esc(c.name)}</b>: the movement is an Advance now (it triggers reactions). Drag your token.`;
+    } else {
+      advanceAsEvade(c.id, num(bar.dataset.evadeN)).catch(() => {});
+      if (b) b.innerHTML = '<i class="fa-solid fa-person-running"></i> Advance instead';
+      if (t) t.innerHTML = `<b>${esc(c.name)}</b>: ${esc(text)}`;
+    }
+    bar.dataset.mode = toAdvance ? "advance" : "evade";
+  };
+  bar.querySelector(".lb-adv")?.addEventListener("click", ev => { ev.preventDefault(); swap(bar.dataset.mode !== "advance"); });
   freeBar = bar;
 }
 
@@ -520,6 +532,16 @@ export async function evadeAsAdvance(combatantId, { quiet = false } = {}) {
   if (!n) return warn("There is no Evade movement left.");
   await c.update({ [`flags.${F}.evadeMove`]: 0, [`flags.${F}.freeMove`]: num(c.getFlag(F, "freeMove")) + n, [`flags.${F}.-=ignoreTerrain`]: null });
   if (!quiet) await post(`<b>${esc(c.name)}</b> uses the movement as an Advance of up to ${n} square${n === 1 ? "" : "s"} instead of an Evade.`);
+  showRange(c, n);
+}
+
+/** v0.0.226: an Evade turned into an Advance goes back to an Evade (the free squares left, up to what the Evade was). */
+export async function advanceAsEvade(combatantId, max = 0) {
+  const c = game.combat?.combatants.get(combatantId);
+  if (!c?.isOwner) return warn("Only the owner can change this movement.");
+  const free = num(c.getFlag(F, "freeMove")), n = max > 0 ? Math.min(free, max) : free;
+  if (!n) return warn("There is no movement left to Evade with.");
+  await c.update({ [`flags.${F}.evadeMove`]: num(c.getFlag(F, "evadeMove")) + n, [`flags.${F}.freeMove`]: free - n, [`flags.${F}.diagPar`]: 0 });
   showRange(c, n);
 }
 
