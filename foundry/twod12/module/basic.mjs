@@ -20,6 +20,10 @@ export const basicItemData = key => toItem(key, BASIC_ACTIONS[key]);
  */
 export const NPC_NO_BASIC = ["rally", "basicWeaponAttack", "fists"];
 export const wanted = (actor, key) => !(actor?.type === "npc" && NPC_NO_BASIC.includes(key));
+/** v0.0.228 (pack CS): a Basic Action on the actor whose texts or fields differ from the generated data (a card edited in book/cards): it is replaced.
+ *  Compared: the texts of each Version, the requirements, the description, the targets, the traits, the distance and the Frequency (strings and numbers, not the tier shapes the data model normalizes). */
+const basicPrint = sys => JSON.stringify({ d: sys.description ?? "", r: sys.requirements ?? "", t: sys.targets ?? "", tr: [...(sys.traits ?? [])].sort(), di: sys.distance ?? "", f: sys.frequency ?? "", v: (sys.versions ?? []).map(v => [v.ap, v.effects ?? "", v.x1 ?? "", v.x2 ?? "", v.x3 ?? ""]) });
+export const staleBasics = actor => actor.items.filter(i => { const k = i.type === "action" && i.getFlag(F, "basic"); return k && BASIC_ACTIONS[k] && basicPrint(i.system) !== basicPrint(toItem(k, BASIC_ACTIONS[k]).system); });
 /** The Basic Actions a creature has but shouldn't (an NPC made before v0.0.214 with Weapon Attack). */
 export const unwantedBasics = actor => actor.items.filter(i => i.type === "action" && i.getFlag(F, "basic") && !wanted(actor, i.getFlag(F, "basic")));
 
@@ -115,11 +119,11 @@ export function registerBasicHooks() {
       try {
         // v0.0.174: Relocate keeps the target within your Reach (its buttons say reach:yes): an older copy is replaced.
         const oldRelocate = actor.items.some(i => i.type === "action" && i.getFlag(F, "basic") === "relocate" && !JSON.stringify(i.system.versions ?? []).includes("reach:yes"));
-        const old = actor.items.some(i => i.type === "action" && i.getFlag(F, "basic") === "reposition") || missingBasic(actor) || oldRelocate || unwantedBasics(actor).length > 0;   // v0.0.214: an NPC with Weapon Attack
+        const old = actor.items.some(i => i.type === "action" && i.getFlag(F, "basic") === "reposition") || missingBasic(actor) || oldRelocate || unwantedBasics(actor).length > 0 || staleBasics(actor).length > 0;   // v0.0.214: an NPC with Weapon Attack; v0.0.228: a card changed in book/cards
         if (old) { await addBasicActions(actor, { replace: true }); n++; } else await ensureFists(actor);
       } catch (e) { console.warn("twod12 | could not update the Basic Actions of", actor.name, e); }
     }
-    if (n) ui.notifications.info(`2d12: the Basic Actions were updated on ${n} creature${n === 1 ? "" : "s"} (Relocate, Shove, Haul, Fists; NPCs have no Weapon Attack).`);
+    if (n) ui.notifications.info(`2d12: the Basic Actions were updated on ${n} creature${n === 1 ? "" : "s"} (their cards changed; NPCs have no Weapon Attack).`);
   });
 }
 
