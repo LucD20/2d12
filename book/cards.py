@@ -28,7 +28,7 @@ cap = lambda s: s[0].upper() + s[1:]
 
 def cost_text(c):
     aps = [v['ap'] for v in c.get('versions', [])]
-    if not aps: return ''
+    if not aps: return c.get('cost', '')   # a costed card with no table (Opportunity Attack: 1R and prose)
     return '%sR' % ' / '.join(map(str, aps)) if reaction(c) else '%s AP' % ' / '.join(map(str, aps))
 
 def block(c):

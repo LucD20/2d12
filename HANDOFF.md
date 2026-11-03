@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.231, 175 tests; READ THIS FIRST)
+## Where we are now (v0.0.232, 175 tests; READ THIS FIRST)
+- **v0.0.232 (2026-11-03, branch `pack-cs-1`): pack CS-3, Gear, Talents and the Bestiary: the card migration is complete.** All 85 cards of the book are in `book/cards/*.json` (format: `book/cards/README.md`); the book, Foundry (every compendium Action, Feature, Talent, Technique and NPC Action; 14 Technique items new, their weapons come with pack X) and the ruler read them; HTML identical, report.md unchanged. **Not tested by Lucas yet** (checklist in the session report). **Next: prep pack R** (MASTER-PLAN step 0.4): every card's AP is one field in one file now.
 - **v0.0.231 (2026-11-03, branch `pack-cs-1`):** the packs rebuild on Windows again (cardgen.mjs imported the card loader by a path, not a URL); Lucas's v0.0.230 compendium was the old one.
 - **v0.0.230 (2026-11-03, branch `pack-cs-1`): pack CS-2, the Paladin's and the Archer's 33 cards in `book/cards/paladin.json` and `archer.json`** (the book identical; Foundry builds their items from the cards, texts = the book's with buttons appended; the ruler reads them, 190 copied lines gone, report.md unchanged). **Not tested by Lucas yet** (checklist in the session report). **Next: CS-3 (Gear, Talents, Bestiary), then prep pack R.**
 - **v0.0.229 (2026-11-03, branch `pack-cs-1`):** an Action's description (a card's prose) is shown on the Action card (sheet and chat); Lucas saw it nowhere in v0.0.228.

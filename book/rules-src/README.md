@@ -67,7 +67,7 @@ The first line says which Part it belongs to. Headings (`##`, `###`) are the tar
 - Notation in the text: `[B]` and `[M]` (Body and Mind damage), `[Mod]` (Modifier), `[W]` and `1[W]` (weapon damage).
 
 ## An Action card
-**Since pack CS (2026-11-03) the Basic Actions are not written in the chapter:** `06-basic-actions.md`, `12-paladin.md` and `13-archer.md` write `@@CARD:Weapon Attack@@` where the card goes and the card lives in `book/cards/*.json` (one source for the book, Foundry and the ruler; the format: `book/cards/README.md`). The builder renders the block below from the card, so everything here still describes what the reader sees; the Gear and Talents cards are still written in their chapters until CS-3 moves them. The build's card check lists a marker with no card, a card no chapter places, and a block written by hand for a card the files have.
+**Since pack CS (2026-11-03) the cards are not written in the chapters:** **every chapter writes `@@CARD:Weapon Attack@@` where a card goes and the card lives in `book/cards/*.json`** (since CS-3, 2026-11-03, all 85 cards) (one source for the book, Foundry and the ruler; the format: `book/cards/README.md`). The builder renders the block below from the card, so everything here still describes what the reader sees; no chapter writes a card by hand any more (the build warns when one does). The build's card check lists a marker with no card, a card no chapter places, and a block written by hand for a card the files have.
 
 ```
 <div class="action" markdown="1">

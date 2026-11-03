@@ -11,5 +11,5 @@ action Aim | ap 1 | round | traits ranged shot strike weapon | does Weapon Attac
 
 turn Typical: Weapon Attack, Weapon Attack, Weapon Attack
 
-passive Long Draw: long-draw
-passive Steady Nerves: steady-nerves
+passive Long Draw
+passive Steady Nerves

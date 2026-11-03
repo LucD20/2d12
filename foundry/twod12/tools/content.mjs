@@ -91,10 +91,6 @@ add("effects", "effect", "Smite (+1 Defense)", "icons/svg/shield.svg", { duratio
 add("effects", "effect", "Lay On Hands (Holy Strike)", "icons/svg/regen.svg", { selfApplied: true, duration: { type: "", rounds: 1 }, expireOn: ["strike"], description: "<p>Your next [Strike] Action deals an extra [M] 0/2d8/2d8 Ho (Tier 2 and 3).</p>", settings: [{ type: "bonusdamage", dmg: "2d8", dmgPool: "M", dmgSub: "Ho", tiers: ["t2", "t3"], all: ["strike"], any: [], none: [] }] }, "Paladin");
 const smiteLight = n => `The target sheds Bright light in a [${n}Emanation 1/round] and takes 1 Bane when they try to hide, for 1 round.`;
 const smiteDef = `You or one ally in the light gain @Effect[${uuidOf("effects", "Smite (+1 Defense)")}]{+1 Defense for 1 round}.`;
-add("actions", "action", "Rimebrand (Cold)", "icons/svg/frozen.svg", {
-  category: "Lesser Blessing", level: 0, traits: ["divine", "magic", "self"], frequency: "round", distance: "self",
-  versions: [noRoll(1, "Until the end of your turn, your [Weapon] Actions deal an extra [M] 1d4 Co, and the first one that deals damage on a Tier 3 makes the target Hindered (EoT).", [uuidOf("effects", "Rimebrand")])]
-}, "Talents");
 // A1 (book 2026-10-29; v0.0.181): Double Shot and Rolling Shot are the Archer's Hallmark Action (choose one).
 for (const [n, d] of [[2, "1d6"], [3, "2d6"]]) add("effects", "effect", `Rolling Shot (+${d} Pi)`, "icons/svg/target.svg", { selfApplied: true, duration: { type: "eot", rounds: 1 }, expireOn: ["strike"], description: `<p>Your next [Ranged, Shot] Weapon Attack this turn deals an extra [B] ${d} Pi (Rolling Shot, ${n} AP).</p>`, settings: [{ type: "bonusdamage", dmg: d, dmgPool: "B", dmgSub: "Pi", tiers: ["t2", "t3"], all: ["ranged", "shot", "strike"], any: [], none: [] }] }, "Archer");
 const wa = "@Use[Weapon Attack|label:[Ranged, Shot] Weapon Attack (1A)]";
@@ -102,85 +98,22 @@ add("actions", "action", "Precise Aim", "icons/svg/eye.svg", {
   category: "Sharpshooter", level: 1, traits: ["focus", "self"], frequency: "round", distance: "self",
   versions: [noRoll(1, "You gain 1 Boon on your next [Ranged, Shot, Strike, Weapon] Action.", [uuidOf("effects", "Precise Aim (1 Boon)")]), noRoll(2, "You gain 2 Boons on your next [Ranged, Shot, Strike, Weapon] Action.", [uuidOf("effects", "Precise Aim (2 Boons)")])]
 }, "Archer");
-add("actions", "action", "Reaping Sweep", "icons/svg/sword.svg", {
-  category: "Weapon Technique", level: 0, traits: ["strike", "melee", "weapon"], targets: "One creature", distance: "weapon", frequency: "round",
-  versions: [version(1, "AtS", '1d10S,"Cleave 1"', '2d6S,"Cleave 2"')]
-}, "Weapon Techniques");
-add("actions", "action", "Lock & Loose", "icons/svg/target.svg", {
-  category: "Weapon Technique", level: 0, traits: ["ranged", "shot", "strike", "weapon"], targets: "One creature", distance: "weapon", frequency: "round",
-  versions: [(() => {
-    const v = tiered(version(1, "AtBPi", '1d4+2BPi,"x"', '1d10BPi,"Immobilized"'), { t2: [uuidOf("effects", "Hindered (until Move)")] });
-    v.x2 = "For 1 round, the creature is Hindered until they use a Move Action.";   // plain text: the Effect applies it, not a Condition button
-    return v;
-  })()]
-}, "Weapon Techniques");
 // OT (book 2026-10-30): every Talent is a Talent item (Category, Level, Prerequisites, Theme as data); an Action Talent grants its Action,
 // whose category is the Talent's head ("Combat Talent"), so the class window offers the Talent once.
-add("actions", "action", "Aim", "icons/svg/target.svg", {
-  category: "Combat Talent", level: 1, traits: ["ranged", "strike", "weapon"], frequency: "round", targets: "One creature", distance: "weapon",
-  versions: [noRoll(1, "Make a @Use[Weapon Attack|boons:1|label:[Ranged] Weapon Attack (1A) with 1 Boon]. It ignores Low Cover.")]
-}, "Talents");
-add("actions", "action", "Opportunity Attack", "icons/svg/combat.svg", {
-  category: "Combat Talent", level: 1, traits: [], frequency: "atwill", reaction: true, reactionKind: "interrupt", targets: "The triggering creature", trigger: "A creature within 3 squares would leave a square during a Move Action or uses the Stand Action.",
-  versions: [noRoll(1, "You can make a Weapon Attack (1A) against the triggering creature, as long as your weapon can target them: @Use[Weapon Attack|label:Weapon Attack (1A)]. Used this way, out of your turn, it has a Critical: you disrupt the triggering Action before it happens.")]
-}, "Talents");
 
 /* ------------------------------------------------------------------ Martial Talents */
-add("actions", "action", "Pummel", "icons/svg/combat.svg", {
-  category: "Brawler", level: 1, traits: ["melee", "strike", "weapon"], frequency: "atwill", targets: "One creature", distance: "weapon", requirements: "You have a free hand.",
-  versions: [version(1, "AtBBl", "1d4BBl", "1d6BBl")],
-  weaponUse: "fists"   // Pummel uses only the Fists (v0.0.169; v0.0.207 its "Weapon used")
-}, "Talents");
 // OT (Lucas 2026-10-30): Leg Sweep is a kick, Kickboxer's own Action: it uses your Fists even with no free hand.
-add("actions", "action", "Leg Sweep", "icons/svg/combat.svg", {
-  category: "Kickboxer", level: 1, traits: ["melee", "strike", "weapon"], frequency: "round", targets: "One creature", distance: "weapon",
-  versions: [version(1, "1d4BBl", "1d4BBl", '1d6BBl,"Prone."')],
-  weaponUse: "kick"   // v0.0.207: its "Weapon used"
-}, "Talents");
-add("actions", "action", "Cut Through", "icons/svg/sword.svg", {
-  category: "Mobility Talent", level: 1, traits: ["melee", "strike", "weapon"], frequency: "round", targets: "One creature", distance: "weapon",
-  setup: "Evade 2 (@Move[evade|distance:2|terrain:ignore]). During this Evade you can move through the space of any creature (you can't end in one), and you ignore Difficult Terrain.",
-  versions: [(() => { const v = version(2, "AtB", "1WB", "1WB,2B"); v.critical = "@Use[Relocate|nohandle:yes|label:Relocate (1A)] the target, ignoring the Handle trait."; return v; })()]
-}, "Talents");
-add("actions", "action", "Whirlwind", "icons/svg/sword.svg", {
-  category: "Combat Talent", level: 1, traits: ["area", "melee", "self", "strike", "weapon"], frequency: "encounter", targets: "All creatures in the Area", areaCfg: { size: 1, shape: "emanation", within: 0, targets: "all", center: false, keep: false, rounds: 0 }, distance: "",
-  versions: [version(2, "1WB,AtB", "1WB,4B", "1WB,6B")]
-}, "Talents");
-add("actions", "action", "Bloodlust", "icons/svg/blood.svg", {
-  category: "Combat Talent", level: 1, traits: ["self"], frequency: "encounter", distance: "self",
-  versions: [noRoll(1, "For 1 round, your [Melee, Weapon] Actions are Empowered 1 and gain 2 Boons, and you take 1 Bane on Saves.", [uuidOf("effects", "Bloodlust")])]
-}, "Talents");
 
 /* ------------------------------------------------------------------ Features and Talents */
 add("features", "feature", "Divine Connection", "icons/svg/aura.svg", { category: "Paladin Feature", level: 1, talents: 2, description: "<p>Select 1 Talent and 1 Talent with the Divine trait. (Retired in the rules; kept here to test Talent slots.)</p>" });
 
 
 /* ------------------------------------------------------------------ Talents (book 16-talents.md; OT 2026-10-30): Category, Level, Prerequisites and Theme as data */
-const tal = (name, img, group, sys = {}) => add("features", "talent", name, img, { category: "Talent", level: 1, group, ...sys });
-const pre = (kind, name = "", value = 0) => ({ kind, name, value });
 // Combat
-tal("Opportunity Attack", "icons/svg/combat.svg", "combat", { description: "<p>You gain the Opportunity Attack Reaction.</p>", actions: [uuidOf("actions", "Opportunity Attack")],
-  modifiers: [{ spec: "Weapon Attack", when: "outOfTurn", critical: "You disrupt the triggering Action before it happens.", effects: "" }] });
-tal("Challenge", "icons/svg/combat.svg", "combat", { description: "<p>Once per round, when you deal damage to a creature with a [Melee, Strike] Action, you can challenge them: until the end of their next turn, their [Strike] Actions against creatures other than you take 1 Bane. (Apply the Challenged effect from the compendium; its Bane is a chip the attacker unticks when they attack you.)</p>" });
 add("effects", "effect", "Challenged", "icons/svg/combat.svg", { duration: { type: "eot", rounds: 1 }, description: "<p>Until the end of your next turn, your [Strike] Actions against creatures other than the one who challenged you take 1 Bane (Challenge).</p>", settings: [{ type: "boonbane", boons: 0, banes: 1, all: ["strike"], any: [], none: [] }] }, "Talents");
-tal("Heavy Blows", "icons/svg/sword.svg", "combat", { theme: "Great Weapon", description: "<p>When a [Melee, Strike, Weapon] Action you make with a Two-handed weapon deals damage on a Tier 3, it deals 2 more.</p>",
-  settings: [{ type: "bonusdamage", dmg: "2", dmgPool: "B", dmgSub: "", tiers: ["t3"], text: "", fxUuid: "", all: ["melee", "strike", "weapon", "__twohanded"], any: [], none: [] }] });
-tal("Whirlwind", "icons/svg/sword.svg", "combat", { theme: "Great Weapon", prereqs: [pre("talent", "Heavy Blows")], actions: [uuidOf("actions", "Whirlwind")] });
-tal("Bloodlust", "icons/svg/blood.svg", "combat", { actions: [uuidOf("actions", "Bloodlust")] });
-tal("Brawler", "icons/svg/combat.svg", "combat", { theme: "Unarmed", description: "<p>You gain the Pummel Action. Your Fists don't have the Non-threatening property: you can flank with them.</p>", actions: [uuidOf("actions", "Pummel")], settings: [{ type: "weaponprop", wpWhich: "fists", wpProp: "nonthreatening" }] });
-tal("Kickboxer", "icons/svg/combat.svg", "combat", { theme: "Unarmed", prereqs: [pre("talent", "Brawler")], description: "<p>You gain the Leg Sweep Action: a kick, so it needs no free hand. You can use it with your hands full.</p>", actions: [uuidOf("actions", "Leg Sweep")] });
-tal("Aim", "icons/svg/target.svg", "combat", { theme: "Marksman", actions: [uuidOf("actions", "Aim")] });
-tal("Ricochet", "icons/svg/target.svg", "combat", { theme: "Marksman", prereqs: [pre("talent", "Aim")], description: "<p>Your [Ranged, Weapon] Actions can bounce off one surface on the way. The projectile goes from the surface to the creature, and you calculate Line of Effect, Cover and Sight from the center of the surface. The distance is the total the projectile travels: if you shoot at a surface 5 squares from you and the target is within 6 squares of the surface, that is an 11-square shot. You must still perceive the creature. A bounced shot takes 1 Bane.</p>" });
-tal("Long Draw", "icons/svg/target.svg", "combat", { theme: "Marksman", description: "<p>With a Projectile weapon, your far range has no Bane and your maximum range has 1 Bane instead of 2.</p>", settings: [sIgnore("rangeBane", P(["shot"]))] });
-tal("Steady Nerves", "icons/svg/target.svg", "combat", { theme: "Marksman", description: "<p>Your [Ranged] Actions don't take the Banes for being Engaged.</p>", settings: [sIgnore("engagedSelf", P(["ranged"]))] });
 // Mobility
-tal("Battering Charge", "icons/svg/thrust.svg", "mobility", { description: "<p>When you use Charge, your Speed counts as 2 higher for its movement, and its Weapon Attack (1A) is Empowered 1.</p>" });
-tal("Cut Through", "icons/svg/sword.svg", "mobility", { actions: [uuidOf("actions", "Cut Through")] });
 // Magic
-tal("Lesser Blessing", "icons/svg/holy-shield.svg", "magic", { theme: "Divine", traits: ["divine", "magic"], description: "<p>Pick one blessing from the list below, related to a god you follow. You gain its Action. (More blessings will be added.)</p>", choiceLabel: "Choose a blessing", choiceCount: 1, choiceOptions: [uuidOf("actions", "Rimebrand (Cold)")] });
-tal("Sacred Weapon", "icons/svg/sword.svg", "magic", { theme: "Divine", prereqs: [pre("talent", "Lesser Blessing"), pre("trait", "divine")], prereqMode: "any", description: "<p>You gain the Sacred Weapon Action.</p>", actions: [uuidOf("actions", "Sacred Weapon")] });
 // Class Talents
-tal("Class Expertise", "icons/svg/book.svg", "combat", { level: 5, prereqs: [pre("level", "", 5)], description: "<p>Choose one Encounter or Daily Action from your class's Repertoire that you don't have. You gain it. (Drag it from the compendium onto your sheet.)</p>" });
 
 /* ------------------------------------------------------------------ Weapons */
 const weapon = (text, img, actions = []) => {
@@ -188,8 +121,8 @@ const weapon = (text, img, actions = []) => {
   if (w.problems.length) throw new Error(`${text}: ${w.problems.join("; ")}`);
   add("weapons", "weapon", w.name, img, { ...weaponSystemData(w), actions });
 };
-weapon("greatsword: two-handed, melee, slash, 0/1d8/2d6", "icons/svg/sword.svg", [uuidOf("actions", "Reaping Sweep")]);
-weapon("crossbow: projectile, reload, two-handed, pierce, ranges 10/20/40, 0/1d4+2/1d10+2", "icons/svg/target.svg", [uuidOf("actions", "Lock & Loose")]);
+weapon("greatsword: two-handed, melee, slash, 0/1d8/2d6", "icons/svg/sword.svg");
+weapon("crossbow: projectile, reload, two-handed, pierce, ranges 10/20/40, 0/1d4+2/1d10+2", "icons/svg/target.svg");
 
 /* ------------------------------------------------------------------ Armor (generic for now: named armors and properties are still open in the book) */
 const armorDoc = (name, category, description) => add("weapons", "armor", name, "icons/svg/shield.svg", { description: `<p>${description}</p>`, category, bonus: 0, ward: 0, properties: "", worn: false }, "Armor");
@@ -255,40 +188,25 @@ const npc = ({ name, img, role, weaponAttribute, powerAttribute = "mind", rating
 // v0.0.183 (Lucas: a complete rebuild, simple NPCs to test with): one NPC for each role, at Stage 1 (level 1). The Minion, the Standard and
 // the Elite are the Bestiary's own examples (book: Example NPCs); the Grunt follows the same recipe. Damage is the book's average for the
 // rating ([Mod] is added on Tier 2 and 3, as for any Weapon Action); the weapon in its hands is only what the attack looks like.
-const atk = (n, w, name, img, ap, freq, t2, t3, extra = {}, effects = "") => npcAction(n, name, img, { category: "Basic attack", level: 0, traits: ["melee", "strike", "weapon"], frequency: freq, targets: "One creature", distance: "weapon", basicAttack: !extra.category, ...extra,
-  versions: [version(ap, "", t2, t3, effects)] }, { twod12: { weaponId: w._id } });
 {
   const n = "Goblin Sneak", knife = npcWeapon(n, "rusty knife: melee, pierce, 0/1d4/1d6", "icons/svg/dagger.svg");
   npc({ name: n, img: "icons/svg/mystery-man.svg", role: "minion", weaponAttribute: "instinct", speed: 7, ratings: { bodyHm: "low", mindHm: "low", wd: "low" },
-    extra: [knife,
-      atk(n, knife, "Rusty Knife", "icons/svg/dagger.svg", 1, "atwill", "1d2BPi", "1d6BPi"),
-      atk(n, knife, "Dirty Trick", "icons/svg/combat.svg", 1, "round", "1d2BPi", '1d6BPi', { category: "Special Action" }, "Hindered (EoT).")] });
+    extra: [knife] });
 }
 {
   const n = "Bandit Thug", club = npcWeapon(n, "cudgel: melee, blunt, 0/1d4/1d6", "icons/svg/hammer.svg");
   npc({ name: n, img: "icons/svg/mystery-man.svg", role: "grunt", weaponAttribute: "body",
-    extra: [club,
-      atk(n, club, "Cudgel", "icons/svg/hammer.svg", 1, "atwill", "1d3BBl", "1d6BBl"),
-      atk(n, club, "Low Blow", "icons/svg/combat.svg", 2, "round", "2d6BBl", "2d10BBl", { category: "Special Action" })] });
+    extra: [club] });
 }
 {
   const n = "Orc Warrior", cleaver = npcWeapon(n, "cleaver: melee, slash, 0/1d8/2d8", "icons/svg/sword.svg");
   npc({ name: n, img: "icons/svg/mystery-man.svg", role: "standard", weaponAttribute: "body", ratings: { bodyHm: "high", mindHm: "low", wd: "low" },
-    extra: [cleaver,
-      atk(n, cleaver, "Cleaver", "icons/svg/sword.svg", 1, "atwill", "1d8BSl", "2d8BSl"),
-      atk(n, cleaver, "Brutal Swing", "icons/svg/combat.svg", 2, "round", "2d6BSl", "2d10BSl", { category: "Special Action" }, "Prone."),
-      atk(n, cleaver, "Hold the Line", "icons/svg/shield.svg", 1, "round", "2d8BSl", "3d10BSl", { category: "Special Action", reaction: true, reactionKind: "trigger", targets: "The attacker", trigger: "An ally within 2 squares is hit." })] });
+    extra: [cleaver] });
 }
 {
   const n = "Ogre Chieftain", club = npcWeapon(n, "great club: two-handed, melee, blunt, 0/1d10/2d10", "icons/svg/hammer.svg");
   npc({ name: n, img: "icons/svg/mystery-man.svg", role: "elite", weaponAttribute: "body", speed: 4, ratings: { wd: "low" },
-    extra: [club,
-      atk(n, club, "Club", "icons/svg/hammer.svg", 1, "atwill", "1d10BBl", "2d10BBl"),
-      npcAction(n, "Ground Slam", "icons/svg/explosion.svg", { category: "Special Action", level: 0, traits: ["area", "body", "save"], vs: "body", frequency: "encounter", targets: "All creatures in the Area",
-        areaCfg: { size: 1, shape: "emanation", within: 0, targets: "all", center: true, keep: false, rounds: 0 },
-        versions: [version(3, '3d10BBl,ModBBl,"Prone."', "2d8BBl,ModBBl", '"No effect."')] }),
-      npcAction(n, "Rally the Tribe", "icons/svg/aura.svg", { category: "Special Action", level: 0, traits: ["focus"], frequency: "round", escalation: 1, targets: "Allies within 5 squares", distance: "5",
-        versions: [noRoll(1, "Allies within 5 squares gain 1 Boon on their next [Weapon] Action.")] })] });
+    extra: [club] });
 }
 actors.forEach(a => { a.system.level = 1; });
 
@@ -328,9 +246,6 @@ add("actions", "action", "Vow of Enmity", "icons/svg/sword.svg", { category: PAL
 add("actions", "action", "Rebuke", "icons/svg/sun.svg", { category: PAL, level: 1, traits: ["divine", "magic"], frequency: "turn", reaction: true, reactionKind: "trigger", targets: "The triggering creature", distance: "reach", trigger: "An enemy within Reach damages an ally.", versions: [
   vt(1, [["1d4+1MH", ""], ["1d6+1MH", ""], ["1d8+1MH", ""]], "", { critical: "The target is Vulnerable 1 (EoT)." }),
   vt(2, [["1d6+1MH", "Pushed 1."], ["1d8+1MH", "Pushed 2."], ["1d10+1MH", "Pushed 3."]], "", { critical: "The target is Vulnerable 1 for 1 round." })] }, "Paladin");
-add("actions", "action", "Sacred Weapon", "icons/svg/sword.svg", { category: "Magic Talent", level: 1, traits: ["divine", "focus"], frequency: "round", targets: "One / two creatures", distance: "reach", versions: [
-  noRoll(1, "You touch a creature (yourself or an ally). If they are not Empowered, they become Empowered 1 for 1 round. If they are Empowered 1 (from any source), they become Empowered 2 for 1 round. If they are Empowered 2 or higher, no effect."),
-  noRoll(2, "As 1 AP, but you can touch up to two creatures.")] }, "Talents");
 add("actions", "action", "Champion's Challenge", "icons/svg/combat.svg", { category: PAL, level: 1, traits: ["divine", "magic"], frequency: "round", targets: "One / two creatures", distance: "5", versions: [
   vt(1, [["", "No effect."], ["", "1 Bane on [Strike] and [Power] Actions against anyone other than you (EoT)."], ["", "As Tier 2, but 2 Banes instead of 1."]]),
   vt(2, [["", "No effect."], ["", "As 1 AP."], ["", "As 1 AP."]])] }, "Paladin");
@@ -366,13 +281,25 @@ add("effects", "effect", "Killer's Focus", "icons/svg/target.svg", { selfApplied
 /* ------------------------------------------------------------------ the cards of book/cards/*.json (pack CS, 2026-11-03): one source for the book, Foundry and the ruler.
    A card with Versions is an Action item, one without is a Feature; {{fx:Name}} and {{action:Name}} in a card are the compendium uuids. The Basic Actions
    come through module/basic-data.mjs (tools/gen-basic.mjs); the Techniques (weapon) and the NPC Actions (npc) follow in CS-3. The format: book/cards/README.md. */
-const { loadCards, cardSystem, featureSystem } = await import("./cardgen.mjs");
+const { loadCards, cardSystem, featureSystem, talentSystem, isAction } = await import("./cardgen.mjs");
 const resolveRefs = s => s.replace(/\{\{fx:([^}]+)\}\}/g, (m, n) => uuidOf("effects", n)).replace(/\{\{action:([^}]+)\}\}/g, (m, n) => uuidOf("actions", n));
 export const CARDS = loadCards();
 for (const c of CARDS) {
-  if (c.foundry?.basic || c.weapon || c.npc) continue;
-  if (c.versions?.length) add("actions", "action", c.name, c.foundry?.img ?? "icons/svg/sword.svg", cardSystem(c, resolveRefs), c.foundry?.folder ?? null);
-  else add("features", "feature", c.name, c.foundry?.img ?? "icons/svg/book.svg", featureSystem(c, resolveRefs), c.foundry?.folder ?? null);
+  if (c.foundry?.basic) continue;
+  const img = c.foundry?.img ?? "icons/svg/sword.svg", folder = c.foundry?.folder ?? null;
+  if (c.npc) {   // an NPC's Action (CS-3): embedded on its actor after the weapon in its hands, before the Basic Actions
+    const actor = actors.find(a => a.name === c.npc); if (!actor) throw new Error(`${c.name}: no NPC called ${c.npc}`);
+    const w = c.foundry?.npcWeapon ? actor.items.find(i => i.type === "weapon" && i.name.toLowerCase() === c.foundry.npcWeapon.toLowerCase()) : null;
+    if (c.foundry?.npcWeapon && !w) throw new Error(`${c.name}: ${c.npc} has no weapon called ${c.foundry.npcWeapon}`);
+    const it = npcAction(c.npc, c.name, img, cardSystem(c, resolveRefs), w ? { twod12: { weaponId: w._id } } : {});
+    const at = actor.items.findIndex(i => i.flags?.twod12?.basic);
+    actor.items.splice(at < 0 ? actor.items.length : at, 0, it);
+    continue;
+  }
+  if (isAction(c)) add("actions", "action", c.name, img, cardSystem(c, resolveRefs), folder);
+  if (c.talent) add("features", "talent", c.name, img, talentSystem(c, resolveRefs), null);   // a Talent (and, with Versions, the Action it grants, above)
+  else if (!isAction(c)) add("features", "feature", c.name, img, featureSystem(c, resolveRefs), folder);
+  if (c.weapon) { const w = docs.find(d => d.type === "weapon" && d.name.toLowerCase() === c.weapon.toLowerCase()); if (w) (w.system.actions ??= []).push(uuidOf("actions", c.name)); }   // a Technique on its weapon (when the weapon is in the compendium)
 }
 
 // v0.0.185: the pick Features of v0.0.181 (Hallmark Action, Encounter Pick, Talent (Level 1)...) are gone: the classes have levels now.
@@ -453,34 +380,8 @@ const FLAVOR = {
  "Leaning": "You lean out from cover, just enough to see.",
  "Interact": "You pull the lever, open the door, grab what you need.",
  "Reload": "You work the mechanism and seat a fresh bolt.",
- "Rusty Knife": "A notched blade, quick and dirty.",
- "Dirty Trick": "Sand in the eyes, a heel on the toes, and the goblin is gone.",
- "Cudgel": "A heavy stick and no reason to hold back.",
- "Low Blow": "No rules in a back alley.",
- "Cleaver": "A butcher's blade, swung by someone who enjoys it.",
- "Brutal Swing": "The orc puts its whole weight behind one wild arc.",
- "Hold the Line": "Touch its kin, and the orc answers.",
- "Club": "A tree trunk with a handle.",
- "Ground Slam": "The ogre brings both fists down, and the ground jumps.",
- "Rally the Tribe": "One bellow, and the whole tribe fights harder.",
- "Heavy Blows": "Every swing carries the whole weight of the steel.",
  "Divine Connection": "Your bond with your god opens new paths.",
  "Precise Aim": "You slow your breath and let the world narrow to one point.",
- "Opportunity Attack": "You punish anyone who moves carelessly near you.",
- "Lesser Blessing": "A small gift from the god you follow.",
- "Rimebrand (Cold)": "Frost creeps along your weapon, a gift from a winter god.",
- "Aim": "Patience turns a good shot into a sure one.",
- "Ricochet": "Walls, shields and stones are just more angles.",
- "Reaping Sweep": "A wide, heavy arc for anyone standing too close.",
- "Cut Through": "You drive through the line without stopping, and strike as you pass.",
- "Battering Charge": "Nothing slows you down once you start running.",
- "Bloodlust": "The red haze settles, and you stop caring about pain.",
- "Brawler": "Your hands have won more fights than any blade.",
- "Pummel": "A flurry of blows until something gives.",
- "Kickboxer": "Your legs hit as hard as your fists.",
- "Leg Sweep": "A low kick takes their legs out from under them.",
- "Whirlwind": "You spin, and everything within reach feels the blade.",
- "Lock & Loose": "A bolt to the knee, and they go nowhere.",
   "Profane Judgment": "The profane flinch at your god's light.",
   "Aegis": "Your watchful presence protects one soul above all.",
   "Mercy's Reward": "Mercy shown is mercy returned.",
@@ -488,7 +389,6 @@ const FLAVOR = {
   "Avenger's Oath": "Every wound your friends take is written in the ledger.",
   "Vow of Enmity": "You name a foe, and your god listens.",
   "Rebuke": "The hand that strikes the faithful is burned for its trouble.",
-  "Sacred Weapon": "You lay a hand on the steel and bless it for what comes next.",
   "Champion's Challenge": "You call them out, and they cannot look away.",
   "Divine Retribution": "They struck you. Your god strikes back.",
   "Call to Arms": "Your voice carries further than the fight.",
@@ -503,28 +403,22 @@ FLAVOR["Suppressing Fire"] = "They keep their heads down while your friends clos
 FLAVOR["Steady Aim"] = "Breathe in. Breathe out. Loose.";
 FLAVOR["Perfect Shot"] = "The arrow has already landed. You have only to release it.";
 FLAVOR["Bow Mastery"] = "One weapon has been in your hands longer than any other.";
-FLAVOR["Long Draw"] = "You pull a little further, and the arrow flies a little truer.";
 FLAVOR["Patient Hunter"] = "The shot is worth waiting for.";
-FLAVOR["Steady Nerves"] = "They are in your face. You are still calm.";
 // v0.0.188 (OT): the book's Flavor lines of the new cards (Mark Quarry's is new here).
-FLAVOR["Challenge"] = "You call them out, and they cannot look away.";
-FLAVOR["Class Expertise"] = "You have studied your craft longer than most.";
 
 for (const d of docs) if (["action", "talent", "feature"].includes(d.type) && FLAVOR[d.name]) d.system.flavor = FLAVOR[d.name];
 // v0.0.189 (Lucas): how much Foundry does for each current card (a chip on the card). Gold: all of it; Silver: one part by hand;
 // Bronze: buttons or a compendium effect, the rest by hand; Not implemented: text only. Old cards and Basic Actions have none set.
 const AUTO = {
   gold: ["Rain of Arrows",
-    "Long Draw", "Steady Nerves", "Heavy Blows", "Whirlwind", "Bloodlust", "Brawler", "Pummel", "Kickboxer", "Leg Sweep",
-    "Battering Charge", "Lesser Blessing", "Rimebrand (Cold)", "Rimebrand", "Lay On Hands (Holy Strike)", "Smite (+1 Defense)", "Vanish (+1 Defense)"],
-  silver: ["Aim", "Opportunity Attack", "Cut Through"],
-  bronze: ["Harried", "Challenge", "Challenged"],
-  none: ["Ricochet", "Sacred Weapon", "Class Expertise"]
+    "Steady Nerves",
+    "Rimebrand", "Lay On Hands (Holy Strike)", "Smite (+1 Defense)", "Vanish (+1 Defense)"],
+  silver: ["Cut Through"],
+  bronze: ["Harried", "Challenged"],
+  none: ["Class Expertise"]
 };
 // v0.0.215 (Lucas, playtest 2): what each Bronze and Silver card still leaves to the players (the diamond's tooltip, "By hand" on the item).
 const AUTO_NOTE = {
-  "Aim": "ignoring Low Cover (untick the Low cover chip in the roll dialog).",
-  "Challenge": "apply the Challenged effect from the compendium.",
   "Challenged": "the attacker unticks the Bane when it attacks the creature that challenged it."
 };
 for (const c of CARDS) for (const d of docs) if (d.type === "effect" && d.name === c.name && c.foundry?.automation) { d.system.automation = c.foundry.automation; if (c.foundry.automationNote) d.system.automationNote = c.foundry.automationNote; }   // an Effect named like a card (Divine Surge, Pinning Shot) shows the card's rank

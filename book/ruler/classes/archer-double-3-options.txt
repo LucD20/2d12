@@ -19,7 +19,6 @@ passive Sharpshooter
 passive Marked Quarry
 passive Marked Quarry floor: floor [Mod] shot strike quarry   # decided: your [Shot] Strikes against it deal [Mod] on a Tier 1
 
-action Lock & Loose | ap 1 | round | traits ranged shot strike weapon | vs ad | tiers [Mod] / 1d4 + 2 + [Mod] / 1d10 + [Mod] | on 2: debuff Hindered (until it moves); on 3: debuff Immobilized
 
 # Signature: Double Shot (damage; 3 AP adds the step away: Evade 1)
 

@@ -1,0 +1,313 @@
+{
+ "_about": "The example NPCs' Actions (the Bestiary document writes them as bullets with their average damage: no card in the book). `npc` names the actor; Foundry embeds the Action on it, `foundry.npcWeapon` is the weapon in its hands. One source per card: book/cards/README.md.",
+ "cards": [
+  {
+   "name": "Rusty Knife",
+   "category": "Basic attack",
+   "book": false,
+   "npc": "Goblin Sneak",
+   "flavor": "A notched blade, quick and dirty.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "At-will",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "0",
+      "[B] 1d2 Pi",
+      "[B] 1d6 Pi"
+     ]
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/dagger.svg",
+    "npcWeapon": "Rusty Knife"
+   },
+   "ruler": false
+  },
+  {
+   "name": "Dirty Trick",
+   "category": "Special Action",
+   "book": false,
+   "npc": "Goblin Sneak",
+   "flavor": "Sand in the eyes, a heel on the toes, and the goblin is gone.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "0",
+      "[B] 1d2 Pi",
+      "[B] 1d6 Pi"
+     ],
+     "effects": "Hindered (EoT)."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/combat.svg",
+    "npcWeapon": "Rusty Knife"
+   },
+   "ruler": false
+  },
+  {
+   "name": "Cudgel",
+   "category": "Basic attack",
+   "book": false,
+   "npc": "Bandit Thug",
+   "flavor": "A heavy stick and no reason to hold back.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "At-will",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "0",
+      "[B] 1d3 Bl",
+      "[B] 1d6 Bl"
+     ]
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/hammer.svg",
+    "npcWeapon": "Cudgel"
+   },
+   "ruler": false
+  },
+  {
+   "name": "Low Blow",
+   "category": "Special Action",
+   "book": false,
+   "npc": "Bandit Thug",
+   "flavor": "No rules in a back alley.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 2,
+     "tiers": [
+      "0",
+      "[B] 2d6 Bl",
+      "[B] 2d10 Bl"
+     ]
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/combat.svg",
+    "npcWeapon": "Cudgel"
+   },
+   "ruler": false
+  },
+  {
+   "name": "Cleaver",
+   "category": "Basic attack",
+   "book": false,
+   "npc": "Orc Warrior",
+   "flavor": "A butcher's blade, swung by someone who enjoys it.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "At-will",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "0",
+      "[B] 1d8 Sl",
+      "[B] 2d8 Sl"
+     ]
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/sword.svg",
+    "npcWeapon": "Cleaver"
+   },
+   "ruler": false
+  },
+  {
+   "name": "Brutal Swing",
+   "category": "Special Action",
+   "book": false,
+   "npc": "Orc Warrior",
+   "flavor": "The orc puts its whole weight behind one wild arc.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 2,
+     "tiers": [
+      "0",
+      "[B] 2d6 Sl",
+      "[B] 2d10 Sl"
+     ],
+     "effects": "Prone."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/combat.svg",
+    "npcWeapon": "Cleaver"
+   },
+   "ruler": false
+  },
+  {
+   "name": "Hold the Line",
+   "category": "Special Action",
+   "book": false,
+   "npc": "Orc Warrior",
+   "flavor": "Touch its kin, and the orc answers.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "The attacker",
+   "distance": "Weapon",
+   "vs": "AD",
+   "trigger": "An ally within 2 squares is hit.",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "0",
+      "[B] 2d8 Sl",
+      "[B] 3d10 Sl"
+     ]
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/shield.svg",
+    "npcWeapon": "Cleaver"
+   },
+   "ruler": false
+  },
+  {
+   "name": "Club",
+   "category": "Basic attack",
+   "book": false,
+   "npc": "Ogre Chieftain",
+   "flavor": "A tree trunk with a handle.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "At-will",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "0",
+      "[B] 1d10 Bl",
+      "[B] 2d10 Bl"
+     ]
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/hammer.svg",
+    "npcWeapon": "Great Club"
+   },
+   "ruler": false
+  },
+  {
+   "name": "Ground Slam",
+   "category": "Special Action",
+   "book": false,
+   "npc": "Ogre Chieftain",
+   "flavor": "The ogre brings both fists down, and the ground jumps.",
+   "traits": [
+    "area",
+    "body",
+    "save"
+   ],
+   "frequency": "Encounter",
+   "target": "All creatures in the Area",
+   "area": "1 Emanation",
+   "vs": "Body Save",
+   "versions": [
+    {
+     "ap": 3,
+     "tiers": [
+      "[B] 3d10 + [Mod] Bl; Prone.",
+      "[B] 2d8 + [Mod] Bl",
+      "No effect."
+     ]
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/explosion.svg",
+    "areaCfg": {
+     "center": true
+    }
+   },
+   "ruler": false
+  },
+  {
+   "name": "Rally the Tribe",
+   "category": "Special Action",
+   "book": false,
+   "npc": "Ogre Chieftain",
+   "flavor": "One bellow, and the whole tribe fights harder.",
+   "traits": [
+    "focus"
+   ],
+   "escalation": 1,
+   "frequency": "Round",
+   "target": "Allies within 5 squares",
+   "distance": "5 sq.",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "Allies within 5 squares gain 1 Boon on their next [Weapon] Action."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/aura.svg"
+   },
+   "ruler": false
+  }
+ ]
+}

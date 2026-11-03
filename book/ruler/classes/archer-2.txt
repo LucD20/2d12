@@ -15,7 +15,6 @@ speed 6               # Human 5, Archer +1 (the map model)
 
 action Double Shot 3 | ap 3 | round | traits shot strike | does Weapon Attack x2 | each boon 1 | different
 action Precise Aim 1 | ap 1 | round | traits focus self | always: boon 1 next ranged shot strike weapon
-action Lock & Loose | ap 1 | round | traits ranged shot strike weapon | vs ad | tiers [Mod] / 1d4 + 2 + [Mod] / 1d10 + [Mod] | on 2: debuff Hindered (until it moves); on 3: debuff Immobilized
 action Marksman's Shot | ap 2 | encounter | traits ranged shot strike weapon | vs ad | tiers 1[W] / 1[W] + [Mod] / 1[W] + [Mod] | on 2+: debuff Bane on its next Save; on 3: vulnerable 2
 action Wing Clip | ap 1 | round | traits ranged shot strike weapon | vs ad | tiers 1[W] / 1[W] + [Mod] + 1d4 / 1[W] + [Mod] + 1d6 | on 3: debuff Hindered
 action Twin Shot | ap 1 | round | traits ranged shot strike weapon | escalation 2 | does Weapon Attack x2 | each extra 1d6 | different

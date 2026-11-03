@@ -55,10 +55,10 @@ export function tierTokens(dmg, weaponAction, tier) {
     if ((m = p.match(/^(\d*)\[W\]$/))) out.push({ k: "w", t: `${m[1] || 1}W${pl}` });
     else if (p === "[Mod]") { if (!(weaponAction && tier >= 2)) out.push({ k: "at", t: `Mod${pl}${sub}` }); }
     else if (/^\d+d\d+$/.test(p)) out.push({ k: "dice", t: `${p}${pl}${sub}` });
-    else if (/^\d+$/.test(p)) flat = p;
+    else if (/^\d+$/.test(p)) flat = { n: p, pool: pl };
     else throw new Error(`can't read the damage "${dmg}" (the part "${p}")`);
   }
-  if (flat !== null) { const d = out.find(x => x.k === "dice"); if (!d) throw new Error(`a flat number with no dice in "${dmg}"`); d.t = d.t.replace(/^(\d+d\d+)/, `$1+${flat}`); }
+  if (flat !== null) { const d = out.find(x => x.k === "dice"); if (d) d.t = d.t.replace(/^(\d+d\d+)/, `$1+${flat.n}`); else out.push({ k: "dice", t: `${flat.n}${flat.pool}${sub}` }); }   // "[B] 1[W] + [Mod] + 4": a flat 4 of its own
   return out.map(x => x.t).join(",");
 }
 
@@ -104,8 +104,11 @@ export function areaOf(c) {
   return { cfg, sizes };
 }
 /** The item's system data of a card (an Action). `resolve` turns {{fx:Name}} into the Effect's uuid (content.mjs). */
+/** A costed card with no table ("1R" and prose: Opportunity Attack) reads as one Version whose text is the card's text. */
+export const versionsOf = c => (hasVersions(c) ? c.versions : c.cost ? [{ ap: Number(String(c.cost).match(/\d+/)?.[0] ?? 0), effects: c.text ?? "", foundry: c.foundry?.append ? { append: c.foundry.append } : undefined, ruler: c.ruler?.line }] : []);
+export const isAction = c => hasVersions(c) || Boolean(c.cost);
 export function cardSystem(c, resolve = s => s) {
-  if (!hasVersions(c)) throw new Error(`${c.name}: an Action card needs versions`);
+  if (!isAction(c)) throw new Error(`${c.name}: an Action card needs versions`);
   const area = areaOf(c);
   const sys = { category: c.category, level: c.level ?? c.foundry?.level ?? 0, traits: traitKeys(c.traits), targets: stripLinks(c.target ?? ""), distance: area ? undefined : (/^Aura \d+$/i.test(c.area ?? "") ? c.area.trim() : distanceKey(c)), frequency: frequencyKey(c.frequency) };
   if (sys.distance === undefined) delete sys.distance;   // an Action with an Area places it from its areaCfg (within or the weapon's range)
@@ -118,7 +121,8 @@ export function cardSystem(c, resolve = s => s) {
   if (c.setup) sys.setup = resolve(fxText(c.setup, c.foundry?.appendSetup));
   const prose = [c.rules, c.notes].filter(Boolean).map(t => `<p>${boldHtml(stripLinks(t))}</p>`).join("");
   if (prose) sys.description = prose;
-  sys.versions = c.versions.map((v, i) => { const d = versionData(c, v, resolve); if (area && i > 0 && area.sizes[i] && area.sizes[i] !== area.sizes[0]) d.areaSize = area.sizes[i]; return d; });
+  if (c.category === "Basic attack") sys.basicAttack = true;   // an NPC's Basic attack stands in for the Weapon Attack NPCs don't have
+  sys.versions = versionsOf(c).map((v, i) => { const d = versionData(c, v, resolve); if (area && i > 0 && area.sizes[i] && area.sizes[i] !== area.sizes[0]) d.areaSize = area.sizes[i]; return d; });
   if (c.flavor) sys.flavor = c.flavor;
   for (const k of ["weaponUse", "automation", "automationNote", "marksTarget", "basicAttack", "modifiers"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];
   return sys;
@@ -126,7 +130,7 @@ export function cardSystem(c, resolve = s => s) {
 
 /** The item's system data of a Feature or Talent card (no Versions): its text is the description (plus the Foundry-only `append`), its automation is settings. */
 export function featureSystem(c, resolve = s => s) {
-  if (hasVersions(c)) throw new Error(`${c.name}: a Feature card has no versions`);
+  if (isAction(c)) throw new Error(`${c.name}: a Feature card has no versions`);
   const category = String(c.category).replace(/\s*\(Passive\)$/, "");
   const text = [boldHtml(stripLinks(c.text ?? "")), c.foundry?.append ?? ""].filter(Boolean).join(" ");
   const sys = { category, level: c.level ?? c.foundry?.level ?? 0, description: text ? `<p>${text}</p>` : "" };
@@ -135,6 +139,27 @@ export function featureSystem(c, resolve = s => s) {
   if (c.flavor) sys.flavor = c.flavor;
   for (const k of ["automation", "automationNote", "talents"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];
   if (/escalation/i.test(category) || c.foundry?.escalationPassive) sys.escalationPassive = true;
+  return sys;
+}
+
+/** The item's system data of a Talent card (`talent` on the card: group, theme, prerequisites, choices as data). A Talent with Versions is also an Action
+ *  (cardSystem) that the Talent grants; its description is then the Talent's own `talent.description`, not the Action's text. */
+export function talentSystem(c, resolve = s => s) {
+  const t = c.talent ?? {};
+  const sys = { category: "Talent", level: c.level ?? c.foundry?.level ?? 1, group: t.group ?? "combat" };
+  if (t.theme) sys.theme = t.theme;
+  if (t.traits) sys.traits = t.traits.map(x => TRAIT_KEY[x] ?? x);
+  if (t.prereqs) sys.prereqs = t.prereqs;
+  if (t.prereqMode) sys.prereqMode = t.prereqMode;
+  const text = isAction(c) ? (t.description ?? "") : [boldHtml(stripLinks(c.text ?? "")), c.foundry?.append ?? ""].filter(Boolean).join(" ");
+  if (text) sys.description = `<p>${text}</p>`;
+  const actions = [...(isAction(c) ? [c.name] : []), ...(c.foundry?.actions ?? [])];
+  if (actions.length) sys.actions = actions.map(n => resolve(`{{action:${n}}}`));
+  if (t.modifiers) sys.modifiers = t.modifiers;
+  if (t.choiceLabel) { sys.choiceLabel = t.choiceLabel; sys.choiceCount = t.choiceCount ?? 1; sys.choiceOptions = (t.choiceOptions ?? []).map(n => resolve(`{{action:${n}}}`)); }
+  if (c.foundry?.settings) sys.settings = JSON.parse(resolve(JSON.stringify(c.foundry.settings)));
+  if (c.flavor) sys.flavor = c.flavor;
+  for (const k of ["automation", "automationNote"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];
   return sys;
 }
 

@@ -1,0 +1,485 @@
+{
+ "_about": "The Weapon Techniques (the Gear document, 15-gear.md). `weapon` names the weapon the Technique belongs to; Foundry links it when that weapon is in the compendium (the Greatsword and the Crossbow today). One source per card: book/cards/README.md.",
+ "cards": [
+  {
+   "name": "Stick and Slip",
+   "category": "Weapon Technique",
+   "weapon": "Dagger",
+   "flavor": "In, a quick cut, and out before they can answer.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[B] [Mod] Pi",
+      "[B] 1d4 + [Mod] Pi; you can Evade 1.",
+      "[B] 1d8 + [Mod] Pi; you can Evade 1."
+     ]
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/sword.svg",
+    "folder": "Weapon Techniques"
+   }
+  },
+  {
+   "name": "Guarded Cut",
+   "category": "Weapon Technique",
+   "weapon": "Longsword",
+   "flavor": "The blade strikes and comes straight back to guard.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[B] [Mod] Sl",
+      "[B] 1d6 + [Mod] Sl",
+      "[B] 1d10 + [Mod] Sl; you gain +1 Armor Defense for 1 round."
+     ]
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/sword.svg",
+    "folder": "Weapon Techniques"
+   }
+  },
+  {
+   "name": "Reaping Sweep",
+   "category": "Weapon Technique",
+   "weapon": "Greatsword",
+   "flavor": "A wide, heavy arc for anyone standing too close.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[B] [Mod] Sl",
+      "[B] 1d10 + [Mod] Sl; Cleave 1",
+      "[B] 2d6 + [Mod] Sl; Cleave 2"
+     ]
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/sword.svg",
+    "folder": "Weapon Techniques"
+   }
+  },
+  {
+   "name": "Hooking Chop",
+   "category": "Weapon Technique",
+   "weapon": "Handaxe",
+   "flavor": "The beard of the axe catches, and you pull.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[B] [Mod] Sl",
+      "[B] 1d4 + [Mod] Sl; Pulled 1.",
+      "[B] 1d8 + [Mod] Sl; Pulled 1."
+     ]
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/sword.svg",
+    "folder": "Weapon Techniques"
+   }
+  },
+  {
+   "name": "Rending Chop",
+   "category": "Weapon Technique",
+   "weapon": "Greataxe",
+   "flavor": "A blow that splits armor and leaves the flesh open.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[B] [Mod] Sl",
+      "[B] 1d6 + [Mod] Sl",
+      "[B] 2d8 + [Mod] Sl; Vulnerable 1 (EoT)."
+     ]
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/sword.svg",
+    "folder": "Weapon Techniques"
+   }
+  },
+  {
+   "name": "Ringing Blow",
+   "category": "Weapon Technique",
+   "weapon": "Mace",
+   "flavor": "A crack on the helm, and their next swing goes wide.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[B] [Mod] Bl",
+      "[B] 1d4 + 1 + [Mod] Bl",
+      "[B] 1d8 + 1 + [Mod] Bl; its next [Strike] Action before the end of its next turn takes 1 Bane."
+     ]
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/sword.svg",
+    "folder": "Weapon Techniques"
+   }
+  },
+  {
+   "name": "Bowl Over",
+   "category": "Weapon Technique",
+   "weapon": "Maul",
+   "flavor": "All the weight of the head, low and through.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[B] [Mod] Bl",
+      "[B] 1d4 + 2 + [Mod] Bl",
+      "[B] 1d10 + 2 + [Mod] Bl; Prone."
+     ]
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/sword.svg",
+    "folder": "Weapon Techniques"
+   }
+  },
+  {
+   "name": "Lunge",
+   "category": "Weapon Technique",
+   "weapon": "Spear",
+   "flavor": "A full extension that reaches farther than they thought.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon + 1",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[B] [Mod] Pi",
+      "[B] 1d4 + [Mod] Pi",
+      "[B] 1d8 + [Mod] Pi; Hindered (EoT)."
+     ]
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/sword.svg",
+    "folder": "Weapon Techniques"
+   }
+  },
+  {
+   "name": "Keep Them Off",
+   "category": "Weapon Technique",
+   "weapon": "Pike",
+   "flavor": "The point stays between you and them, and it pushes.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[B] [Mod] Pi",
+      "[B] 1d6 + [Mod] Pi; Pushed 1.",
+      "[B] 1d10 + [Mod] Pi; Pushed 2."
+     ]
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/sword.svg",
+    "folder": "Weapon Techniques"
+   }
+  },
+  {
+   "name": "Gut Punch",
+   "category": "Weapon Technique",
+   "weapon": "Knuckle Dagger",
+   "flavor": "A fist with a blade in it, right under the ribs.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[B] [Mod] Pi",
+      "[B] 1d4 + [Mod] Pi; Hindered (EoT).",
+      "[B] 1d6 + [Mod] Pi; Hindered (EoT)."
+     ]
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/sword.svg",
+    "folder": "Weapon Techniques"
+   }
+  },
+  {
+   "name": "Skirmish Shot",
+   "category": "Weapon Technique",
+   "weapon": "Shortbow",
+   "flavor": "Loose, and be gone before the arrow lands.",
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[B] [Mod] Pi",
+      "[B] 1d6 + [Mod] Pi",
+      "[B] 1d10 + [Mod] Pi; you can Evade 1."
+     ]
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Weapon Techniques"
+   }
+  },
+  {
+   "name": "Heartseeker",
+   "category": "Weapon Technique",
+   "weapon": "Longbow",
+   "flavor": "A full draw, aimed where the armor gives.",
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[B] [Mod] Pi",
+      "[B] 1d4 + 1 + [Mod] Pi",
+      "[B] 1d8 + 1 + [Mod] Pi; Vulnerable 1 (EoT)."
+     ]
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Weapon Techniques"
+   }
+  },
+  {
+   "name": "Sting",
+   "category": "Weapon Technique",
+   "weapon": "Hand Crossbow",
+   "flavor": "A small bolt in the leg: small, and enough.",
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[B] [Mod] Pi",
+      "[B] 1d4 + [Mod] Pi",
+      "[B] 1d8 + [Mod] Pi; Hindered (EoT)."
+     ]
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Weapon Techniques"
+   }
+  },
+  {
+   "name": "Lock & Loose",
+   "category": "Weapon Technique",
+   "weapon": "Crossbow",
+   "flavor": "A bolt to the knee, and they go nowhere.",
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[B] [Mod] Pi",
+      "[B] 1d4+2+[Mod] Pi; For 1 round, the creature is Hindered until they use a Move Action.",
+      "[B] 1d10 + [Mod] Pi; Immobilized"
+     ],
+     "foundry": {
+      "x2": "For 1 round, the creature is Hindered until they use a Move Action.",
+      "fx": {
+       "t2": [
+        "{{fx:Hindered (until Move)}}"
+       ]
+      }
+     },
+     "ruler": "on 2: debuff Hindered (until it moves); on 3: debuff Immobilized"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Weapon Techniques"
+   }
+  },
+  {
+   "name": "Point Blank",
+   "category": "Weapon Technique",
+   "weapon": "Pistol",
+   "flavor": "Too close for a bow. Not too close for this.",
+   "traits": [
+    "gun",
+    "ranged",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[B] [Mod] Pi",
+      "[B] 1d4 + [Mod] Pi",
+      "[B] 2d6 + [Mod] Pi; Pushed 1."
+     ],
+     "effects": "While you are Engaged, this attack takes 1 Bane for it instead of 2."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Weapon Techniques"
+   }
+  },
+  {
+   "name": "Thunderclap",
+   "category": "Weapon Technique",
+   "weapon": "Musket",
+   "flavor": "The shot and the smoke, and they are on the ground.",
+   "traits": [
+    "gun",
+    "ranged",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[B] [Mod] Pi",
+      "[B] 1d4 + [Mod] Pi",
+      "[B] 2d8 + [Mod] Pi; Prone."
+     ]
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Weapon Techniques"
+   }
+  }
+ ]
+}

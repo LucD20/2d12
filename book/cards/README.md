@@ -5,10 +5,10 @@ Every card (a Basic Action, a class Action, a Technique, a Talent, an NPC Action
 - **Foundry** builds the item: the Basic Actions as `module/basic-data.mjs` (`node tools/gen-basic.mjs`, a generated file; test t177 fails when it is stale), the compendium items from `tools/content.mjs` (from CS-2 on);
 - **the ruler** reads one `action` line per Version (`spec.mjs cardLines`): a build gets the card Actions its turns, reactions and Linked Actions name (with their other Versions); a class file's own `action` line for the same name overrides it (the catalogue's old cards, the pre-A1 Archer builds). A Passive is a build's choice: the class file names it (`passive Hallowed Stance`) and the card's `ruler.passive` string fills the line; a full line (`passive Hallowed Stance: escalation 2: reduce 2`) overrides the card's.
 
-A rule change is **one edit in one file**. The design and its decisions: `book/card-source-proposal.md`. Status: `basic-actions.json` (CS-1, v0.0.227), `paladin.json` and `archer.json` (CS-2, v0.0.230); Gear, Talents and the Bestiary (CS-3) are still written by hand in rules-src, content.mjs and the ruler.
+A rule change is **one edit in one file**. The design and its decisions: `book/card-source-proposal.md`. Status: **complete** (CS-1 v0.0.227 the Basic Actions, CS-2 v0.0.230 the Paladin and the Archer, CS-3 v0.0.232 Gear, Talents and the Bestiary): every card of the book is here; no chapter writes a card by hand, content.mjs holds no card, the class files write no card line.
 
 ## Files
-`basic-actions.json` (Chapter 6), `paladin.json` (the Paladin document), `archer.json` (the Archer document; Mark Quarry is Foundry-only), then `gear.json`, `talents.json`, `bestiary.json` (CS-3). Each is `{ "_about": "...", "cards": [ ... ] }`; one object per card, one field per line, the keys in the order below. JSON: double quotes inside a text are written `\"`, no trailing commas, no comments (`"_note"` fields are ignored). A name must be unique across all files.
+`basic-actions.json` (Chapter 6), `paladin.json` (the Paladin document), `archer.json` (the Archer document; Mark Quarry is Foundry-only), `gear.json` (the Weapon Techniques; `weapon` names each one's weapon, from gear-d2.md), `talents.json` (the Talents; a card with `talent` is a Talent item), `bestiary.json` (the example NPCs' Actions, Foundry-only; `npc` names the actor). Each is `{ "_about": "...", "cards": [ ... ] }`; one object per card, one field per line, the keys in the order below. JSON: double quotes inside a text are written `\"`, no trailing commas, no comments (`"_note"` fields are ignored). A name must be unique across all files.
 
 ## A card (the core, shared by the three targets)
 | Field | Meaning (write it as the book writes it) |
@@ -27,7 +27,9 @@ A rule change is **one edit in one file**. The design and its decisions: `book/c
 | `text` | A Passive's or Talent's whole text (a card with no `versions`). |
 | `notes` | Prose after the table (Steel Yourself's "You can't use this Action while Down..."). Foundry: the description. |
 | `modifies` | The "Modifies" lines of a Talent that changes other Actions. |
-| `weapon` | A Technique's weapon (Foundry puts the Technique on it). |
+| `weapon` | A Technique's weapon (Foundry puts the Technique on it when the weapon is in the compendium; t177 lists the others). |
+| `cost` | A costed card with no table (Opportunity Attack: `1R` and prose): its `text` is its one Version. |
+| `talent` | A Talent (an item of the Talents pack): `group` (combat / mobility / magic / skill), `theme`, `prereqs` (`[{ "kind": "talent", "name": "Brawler" }]`, `level`, `trait`), `prereqMode`, `modifiers`, `choiceLabel` / `choiceCount` / `choiceOptions` (Action names), `traits`, `description` (an Action-Talent's own line: "You gain the Sacred Weapon Action."). A Talent with Versions is also the Action it grants; `foundry.actions` names other Actions it grants (Brawler: Pummel). |
 | `npc` | A Bestiary card's NPC (Foundry embeds the Action on the actor). |
 | `book: false` | A card the book doesn't show (Break Free: a rule of Chapter 8 as a Foundry Action). |
 
@@ -45,6 +47,7 @@ A rule change is **one edit in one file**. The design and its decisions: `book/c
 ## The extras (per target, on the same card)
 - `foundry` (card level): `basic` (the key in BASIC_ACTIONS, for a Basic Action), `img`, `folder`, `automation` (`gold` / `silver` / `bronze` / `none`) and `automationNote`, `weaponUse` (`fists`, `kick`), `areaCfg` (the Foundry-only parts of an Area: who it targets, centered, kept, rounds), `settings` and `modifiers` (a Feature's or Talent's), `marksTarget`, `basicAttack`, `description` (a Feature whose Foundry text differs), `appendSetup`.
 - `foundry` (in a Version): `append` (a string appended to the Version's text, or `{ "effects": ..., "x1": ..., "x2": ..., "x3": ..., "critical": ... }` for the tier texts), `fx` (`{ "t2": ["{{fx:Hindered (until Move)}}"] }`: the Effects a tier applies, by name), `areaSize`.
+- `foundry.npcWeapon` (an NPC Action): the weapon in the NPC's hands (the attack's look); `foundry.areaCfg.center` for an Emanation centered on the user.
 - `ruler` (in a Version): the modeling string appended to the line (`heal 1 self`, `on 2+: defense 1 ally`, `does Weapon Attack x2 | different`); `[PMod]` is the build's `power-mod`. `ruler` (card level): `{ "passive": "escalation 2: reduce [PMod] adjacent 1" }` for a Passive's line (used by the builds that name the Passive), `{ "skip": true }` or `false` for a card the ruler never models.
 
 An extra never repeats a core field (a tier, a cost, a trait, the Frequency): test t177 fails on it.

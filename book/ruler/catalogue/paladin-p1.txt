@@ -28,4 +28,4 @@ turn Typical: Smite 3, Weapon Attack, Weapon Attack
 passive Font of Mercy
 passive Hallowed Stance
 passive Radiant Zeal
-passive Heavy Blows: bonus 1 melee weapon strike
+passive Heavy Blows

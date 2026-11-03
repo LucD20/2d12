@@ -98,6 +98,8 @@ export function convertEffects(text) {
   s = s.replace(new RegExp(`\\b(\\d+d\\d+(?:[+-]\\d+)?)([BMC])(${SUBCODES}|[BCHMPS])?\\b`, "g"), (m, dice, p, sub) => `@Damage[${dice}[${POOL[p]}${sub ? "," + TWOD12.subtypes[subtypeCode(sub)].toLowerCase() : ""}]]`);
   // v0.0.230 (pack CS): "...in a 2 Emanation ..., for 1 round." -> the template lasts that long (the book writes the duration in the sentence)
   s = s.replace(/(@Template\[emanation\|distance:\d+)(\])([^.]*?\bfor (\d+) rounds?\b)/g, (m, a, b, rest, n) => `${a}|rounds:${n}${b}${rest}`);
+  // v0.0.232 (pack CS): a movement in a text that says "you ignore Difficult Terrain" ignores it (Cut Through's Setup).
+  if (/ignores? Difficult Terrain/i.test(s)) s = s.replace(/@Move\[(advance|evade|charge)\|([^\]]*)\]/g, (m, k, rest) => (rest.includes("terrain:") ? m : `@Move[${k}|${rest}|terrain:ignore]`));
   return s;
 }
 

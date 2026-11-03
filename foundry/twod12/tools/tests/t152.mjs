@@ -1,6 +1,7 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t152.mjs)
 // v0.0.186 (pack C-a): a Talent's Category, Level and Prerequisites as data (talents.mjs), what the class window's Talent picker will check.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
+const CDOCS = (await import(ROOTURL + "tools/content.mjs")).docs, cdoc = (n, t = "action") => CDOCS.find(d => d.name === n && d.type === t);   // v0.0.232 (pack CS): the cards are data (book/cards), read from the built content
 import fs from "node:fs";
 class Fld { constructor(o) { this.o = o; } }
 globalThis.foundry = { abstract: { TypeDataModel: class { static migrateData(s) { return s; } } }, data: { fields: { SchemaField: Fld, NumberField: Fld, StringField: Fld, BooleanField: Fld, ArrayField: Fld, SetField: Fld, HTMLField: Fld } }, utils: {} };
@@ -31,7 +32,7 @@ console.log("Class Expertise: level 1", show(lv1, expertise), "| level 5", show(
 console.log("Kickboxer: no Brawler", show(lv1, kick), "| Brawler", show(brawler, kick), "| already a Kickboxer", show(pc(1, [{ type: "talent", name: "Brawler" }, { type: "talent", name: "Kickboxer" }]), kick));
 console.log("Iron Grip: Body 1", show(pc(1, [], { body: 1 }), strong), "| Body 2", show(pc(1, [], { body: 2 }), strong));
 const content = fs.readFileSync(ROOT + "tools/content.mjs", "utf8"), hbs = fs.readFileSync(ROOT + "templates/item-sheet.hbs", "utf8");
-console.log("content: Kickboxer needs Brawler as data", content.includes('tal("Kickboxer", "icons/svg/combat.svg", "combat", { theme: "Unarmed", prereqs: [pre("talent", "Brawler")]'), "| the Talent sheet: Category, Theme, rows", hbs.includes('name="system.group"') && hbs.includes('name="system.theme"') && hbs.includes("data-pfield"));
+console.log("content: Kickboxer needs Brawler as data", (() => { const k = cdoc("Kickboxer", "talent").system; return k.group === "combat" && k.theme === "Unarmed" && k.prereqs?.[0]?.kind === "talent" && k.prereqs[0].name === "Brawler"; })(), "| the Talent sheet: Category, Theme, rows", hbs.includes('name="system.group"') && hbs.includes('name="system.theme"') && hbs.includes("data-pfield"));
 console.log("--- v0.0.187");
 const { FeatureData } = await import(ROOTURL + "module/data.mjs");
 console.log("a Feature's Escalation Passive box from an old 'Archer Escalation' Category:", FeatureData.migrateData({ category: "Archer Escalation" }).escalationPassive, "| 'Paladin Feature':", FeatureData.migrateData({ category: "Paladin Feature" }).escalationPassive, "| on the sheet:", hbs.includes('name="system.escalationPassive"'));

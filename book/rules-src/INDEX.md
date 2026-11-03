@@ -17,8 +17,8 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 12-paladin.md | Paladin | paladin |  | 3.0 | 101 |
 | 13-archer.md | Archer | archer |  | 2.7 | 98 |
 | 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 14.7 | 277 |
-| 15-gear.md | Gear | gear |  | 17.5 | 519 |
-| 16-talents.md | Talents | talents |  | 9.8 | 311 |
+| 15-gear.md | Gear | gear |  | 10.1 | 182 |
+| 16-talents.md | Talents | talents |  | 2.0 | 65 |
 
 ## 01-roll.md: Chapter 1: The Roll
 
@@ -284,33 +284,33 @@ Action cards: Sharpshooter (45, Archer Feature 1); Marked Quarry (47, Archer Fea
 - 17:   ### Reading the Weapon Tables
 - 26:   ### Melee
 - 41:     #### Melee Weapon Techniques
-- 272:   ### Ranged
-- 283:     #### Ranged Weapon Techniques
-- 423:   ### Hands
-- 429:   ### Properties
-- 435:     #### Barehanded
-- 439:     #### Firearm
-- 443:     #### Long
-- 447:     #### Projectile
-- 451:     #### Thrown
-- 455:     #### Non-threatening
-- 459:     #### Reload
-- 465:   ### Weapon Groups
-- 469:   ### Mastery
-- 489:   ### Fists
-- 499: ## Armor
-- 510:   ### Armor Training
+- 62:   ### Ranged
+- 73:     #### Ranged Weapon Techniques
+- 86:   ### Hands
+- 92:   ### Properties
+- 98:     #### Barehanded
+- 102:     #### Firearm
+- 106:     #### Long
+- 110:     #### Projectile
+- 114:     #### Thrown
+- 118:     #### Non-threatening
+- 122:     #### Reload
+- 128:   ### Weapon Groups
+- 132:   ### Mastery
+- 152:   ### Fists
+- 162: ## Armor
+- 173:   ### Armor Training
 
-Action cards: Stick and Slip (44, Weapon Technique, Round); Guarded Cut (67, Weapon Technique, Round); Reaping Sweep (90, Weapon Technique, Round); Hooking Chop (113, Weapon Technique, Round); Rending Chop (136, Weapon Technique, Round); Ringing Blow (159, Weapon Technique, Round); Bowl Over (182, Weapon Technique, Round); Lunge (205, Weapon Technique, Round); Keep Them Off (228, Weapon Technique, Round); Gut Punch (251, Weapon Technique, Round); Skirmish Shot (286, Weapon Technique, Round); Heartseeker (309, Weapon Technique, Round); Sting (332, Weapon Technique, Round); Lock & Loose (355, Weapon Technique, Round); Point Blank (378, Weapon Technique, Round); Thunderclap (402, Weapon Technique, Round)
+Action cards: Stick and Slip (43, Weapon Technique, Round); Guarded Cut (45, Weapon Technique, Round); Reaping Sweep (47, Weapon Technique, Round); Hooking Chop (49, Weapon Technique, Round); Rending Chop (51, Weapon Technique, Round); Ringing Blow (53, Weapon Technique, Round); Bowl Over (55, Weapon Technique, Round); Lunge (57, Weapon Technique, Round); Keep Them Off (59, Weapon Technique, Round); Gut Punch (61, Weapon Technique, Round); Skirmish Shot (75, Weapon Technique, Round); Heartseeker (77, Weapon Technique, Round); Sting (79, Weapon Technique, Round); Lock & Loose (81, Weapon Technique, Round); Point Blank (83, Weapon Technique, Round); Thunderclap (85, Weapon Technique, Round)
 
-Open (to be decided) boxes: 486: "How classes or Talents grant Mastery beyond the Archer's Sharpshooter "; 516: "Armor properties and named armors are not written yet: Resist by damag"
+Open (to be decided) boxes: 149: "How classes or Talents grant Mastery beyond the Archer's Sharpshooter "; 179: "Armor properties and named armors are not written yet: Resist by damag"
 
 ## 16-talents.md: Talents
 
 - 14: ## Talents That Modify Actions
 - 18: ## Combat Talents
-- 213: ## Mobility Talents
-- 250: ## Magic Talents
-- 299: ## Class Talents
+- 48: ## Mobility Talents
+- 54: ## Magic Talents
+- 62: ## Class Talents
 
-Action cards: Opportunity Attack (23, Combat Talent 1, At-will); Challenge (38, Combat Talent 1); Heavy Blows (47, Combat Talent 1); Whirlwind (56, Combat Talent 1, Encounter); Bloodlust (81, Combat Talent 1, Encounter); Brawler (96, Combat Talent 1); Pummel (105, Brawler, At-will); Kickboxer (130, Combat Talent 1); Leg Sweep (141, Kickboxer, Round); Aim (166, Combat Talent 1, Round); Ricochet (185, Combat Talent 1); Long Draw (196, Combat Talent 1); Steady Nerves (205, Combat Talent 1); Battering Charge (216, Mobility Talent 1); Cut Through (225, Mobility Talent 1, Round); Lesser Blessing (253, Magic Talent 1); Rimebrand (Cold) (264, Lesser Blessing, Round); Sacred Weapon (279, Magic Talent 1, Round); Class Expertise (302, Combat Talent 5)
+Action cards: Opportunity Attack (22, Combat Talent 1, At-will); Challenge (24, Combat Talent 1); Heavy Blows (26, Combat Talent 1); Whirlwind (28, Combat Talent 1, Encounter); Bloodlust (30, Combat Talent 1, Encounter); Brawler (32, Combat Talent 1); Pummel (34, Brawler, At-will); Kickboxer (36, Combat Talent 1); Leg Sweep (38, Kickboxer, Round); Aim (40, Combat Talent 1, Round); Ricochet (42, Combat Talent 1); Long Draw (44, Combat Talent 1); Steady Nerves (46, Combat Talent 1); Battering Charge (50, Mobility Talent 1); Cut Through (52, Mobility Talent 1, Round); Lesser Blessing (56, Magic Talent 1); Rimebrand (Cold) (58, Lesser Blessing, Round); Sacred Weapon (60, Magic Talent 1, Round); Class Expertise (64, Combat Talent 5)

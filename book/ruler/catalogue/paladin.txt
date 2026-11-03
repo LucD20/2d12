@@ -26,8 +26,6 @@ action Vow of Enmity 3 | ap 3 | round | traits divine power | vs wd | tiers 0 / 
 action Shield of Faith 1 | ap 1 | round | traits divine focus | defense 1 ally
 action Shield of Faith 2 | ap 2 | round | traits divine focus | defense 2 ally
 action Shield of Faith 3 | ap 3 | round | traits divine focus | allies 1.5 | defense 1 allies; save-boon 1
-action Sacred Weapon 1 | ap 1 | round | traits divine focus | always: empowered 1 turn
-action Sacred Weapon 2 | ap 2 | round | traits divine focus | allies 2 | always: empowered 1 turn
 action Champion's Challenge 1 | ap 1 | round | traits divine power | vs wd | tiers 0 / 0 / 0 | on 2: taunt 1; on 3: taunt 2
 action Champion's Challenge 2 | ap 2 | round | traits divine power | vs wd | tiers 0 / 0 / 0 | on 2: taunt 1; on 3: taunt 2 | area 2
 
