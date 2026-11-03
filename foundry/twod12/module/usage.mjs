@@ -23,19 +23,32 @@ export function activeGrants(actor, item) {
   return out;
 }
 
+/** v0.0.216: the creature's combatant in this combat (its token's, for an unlinked NPC). */
+export function combatantOf(combat, actor) {
+  const list = [...(combat?.combatants ?? [])];
+  return list.find(c => actor?.isToken && c.tokenId === actor.token?.id) ?? list.find(c => c.actor === actor) ?? list.find(c => !actor?.isToken && c.actorId === actor?.id) ?? null;
+}
+/** v0.0.216 (Lucas: Encounter uses came back after a reload): the uses are also kept on the combatant (saved with the combat), and both are read. */
+const backup = (combat, actor) => { try { return combatantOf(combat, actor)?.getFlag?.(F, "usedHere") ?? null; } catch (e) { return null; } };
+
 const state = actor => {
   const combat = game.combat;
   if (!combat?.started) return null;
   const u = actor.getFlag(F, "usage");
   const mine = u && u.combatId === combat.id;
+  const b = backup(combat, actor), bm = b && b.combatId === combat.id;
+  const roundAt = { ...(bm ? (b.roundAt ?? {}) : {}), ...(mine ? (u.roundAt ?? {}) : {}) };
+  for (const [id, at] of Object.entries(bm ? (b.roundAt ?? {}) : {})) if (!roundAt[id] || at[0] > roundAt[id][0] || (at[0] === roundAt[id][0] && at[1] > roundAt[id][1])) roundAt[id] = at;
   return {
     combat,
     roundUsed: mine && u.round === combat.round ? (u.roundUsed ?? []) : [],   // (before v0.0.146: used this round number)
-    roundAt: mine ? (u.roundAt ?? {}) : {},   // id -> [round, turn] when it was used
+    roundAt,   // id -> [round, turn] when it was used (the latest of the actor's and the combatant's)
     turnUsed: mine && u.turnUsedKey === `${combat.round}:${combat.turn}` ? (u.turnUsed ?? []) : [],
-    encounter: mine ? (u.encounter ?? []) : [],
+    encounter: [...new Set([...(mine ? (u.encounter ?? []) : []), ...(bm ? (b.encounter ?? []) : [])])],
     strikes: mine && u.turnKey === `${combat.round}:${combat.turn}` ? (u.strikes ?? 0) : 0,
-    atwill: mine && u.atwillKey === `${combat.round}:${combat.turn}` ? (u.atwill ?? {}) : {}
+    // v0.0.215 (Lucas, playtest 2): a list, not an object. setFlag merges objects, so last turn's counts (an object keyed by item id) stayed in
+    // the flag and a first use this turn got "At-will use 2". A list is replaced whole.
+    atwill: mine && u.atwillKey === `${combat.round}:${combat.turn}` ? Object.fromEntries(u.atwillList ?? []) : {}
   };
 };
 
@@ -69,6 +82,8 @@ function roundBlocked(actor, combat, at) {
 export function turnCycleBlocked(round, turn, own, at) {
   if (!at) return false;
   const [r, t] = at;
+  // v0.0.222 (Lucas: Round Actions stayed greyed): a use recorded after now (the round was moved back: Previous Round, or reset to test) is stale.
+  if (r > round || (own >= 0 && r === round && t > turn)) return false;
   if (own < 0) return round === r;
   const next = t < own ? [r, own] : [r + 1, own];
   return round < next[0] || (round === next[0] && turn < next[1]);
@@ -102,8 +117,11 @@ export async function markUsed(actor, item) {
   if (f === "encounter" && !(u.encounter ??= []).includes(item.id)) u.encounter.push(item.id);
   if (f === "atwill") {
     const k = `${combat.round}:${combat.turn}`;
-    if (u.atwillKey !== k) { u.atwillKey = k; u.atwill = {}; }
-    u.atwill[item.id] = (u.atwill[item.id] ?? 0) + 1;
+    const counts = u.atwillKey === k ? Object.fromEntries(u.atwillList ?? []) : {};
+    u.atwillKey = k;
+    counts[item.id] = (counts[item.id] ?? 0) + 1;
+    u.atwillList = Object.entries(counts);
+    delete u.atwill;
   }
   if (item.system.traits.has("strike")) {
     const key = `${combat.round}:${combat.turn}`;
@@ -111,6 +129,34 @@ export async function markUsed(actor, item) {
     u.strikes += 1;
   }
   await actor.setFlag(F, "usage", u);
+  if (f === "encounter" || f === "round") {
+    try {
+      const c = combatantOf(combat, actor);
+      const old = c?.getFlag?.(F, "usedHere"), same = old?.combatId === combat.id;
+      if (c?.isOwner) await c.setFlag(F, "usedHere", { combatId: combat.id, encounter: [...new Set([...(same ? old.encounter ?? [] : []), ...(u.encounter ?? [])])], roundAt: { ...(same ? old.roundAt ?? {} : {}), ...(u.roundAt ?? {}) } });
+    } catch (e) { console.warn("twod12 | keeping the uses on the combatant", e); }
+  }
+}
+
+/** v0.0.219: take a use back (a Charge given up before it moved): its Frequency and Strike count as unused again. */
+export async function unmarkUsed(actor, item) {
+  const combat = game.combat;
+  if (!combat?.started || !actor?.isOwner || !item) return;
+  const u = foundry.utils.deepClone(actor.getFlag(F, "usage") ?? {});
+  const id = item.id;
+  if (u.combatId === combat.id) {
+    if (u.roundAt?.[id]) u.roundAt[id] = [-1, -1];   // an object merges: overwrite the entry rather than delete it
+    u.turnUsed = (u.turnUsed ?? []).filter(x => x !== id);
+    u.encounter = (u.encounter ?? []).filter(x => x !== id);
+    u.roundUsed = (u.roundUsed ?? []).filter(x => x !== id);
+    if (u.atwillKey === `${combat.round}:${combat.turn}`) u.atwillList = (u.atwillList ?? []).map(([k, n]) => [k, k === id ? Math.max(0, n - 1) : n]);
+    if (item.system?.traits?.has?.("strike") && u.turnKey === `${combat.round}:${combat.turn}`) u.strikes = Math.max(0, (u.strikes ?? 0) - 1);
+    await actor.setFlag(F, "usage", u);
+  }
+  try {   // the combatant's copy too, even when the actor had no record (v0.0.221)
+    const c = combatantOf(combat, actor), old = c?.getFlag?.(F, "usedHere");
+    if (c?.isOwner && old?.combatId === combat.id) await c.setFlag(F, "usedHere", { combatId: combat.id, encounter: (old.encounter ?? []).filter(x => x !== id), roundAt: { ...(old.roundAt ?? {}), ...(old.roundAt?.[id] ? { [id]: [-1, -1] } : {}) } });
+  } catch (e) { /* the combatant's copy stays */ }
 }
 
 /** Open actor sheets redraw when the round or the turn changes. */

@@ -2,7 +2,7 @@
 
 One list of everything open, in the order I recommend, with what each step needs from you. The backlogs keep the detail.
 Sizes: S = under an hour of work, M = a normal session, L = a long session, XL = several.
-Finished: Phase 1 (Q, M1, M2, R, F), D0, T, E1, CH, E2, P1, LV, A1 (it was D1, the Archer design), E3, OT, C1, C2, pack C (v0.0.186 to v0.0.195), the editability sweep (v0.0.207), **D2 (2026-10-31, in the book with defaults; Lucas answers by exception: book/gear-d2.md section 7)** and **W (v0.0.208, to test)**. The full plan as it was, with every finished pack: `archive/old-notes/MASTER-PLAN-to-v0.0.207.md`.
+Finished: Phase 1 (Q, M1, M2, R, F), D0, T, E1, CH, E2, P1, LV, A1 (it was D1, the Archer design), E3, OT, C1, C2, pack C (v0.0.186 to v0.0.195), the editability sweep (v0.0.207), **D2 (2026-10-31, in the book with defaults; Lucas answers by exception: book/gear-d2.md section 7)**, **W (v0.0.208, to test)** and **L (v0.0.214, 2026-11-02, to test)**. The full plan as it was, with every finished pack: `archive/old-notes/MASTER-PLAN-to-v0.0.207.md`.
 
 ## 1. How we work from here (to cut the back-and-forth)
 1. **Decisions are asked once, in a decision sheet, with my default.** You answer by exception ("all defaults except 2 and 5"). I never stop a pack to ask a minor question: I choose, and list it under "Assumptions I made" in the report, so you can revert it.
@@ -33,13 +33,13 @@ Finished: Phase 1 (Q, M1, M2, R, F), D0, T, E1, CH, E2, P1, LV, A1 (it was D1, t
 |---|---|---|---|
 | X | After the design sessions: Mastery and Gear (D2's list for X: foundry-backlog.md), Skills, Magic in the system | XL | D2 (done), D3, D4 |
 | W | **DONE: v0.0.208 (to test).** Fewer clicks for weapons: a button per hand (mockup foundry/mockups/weapon-hands-W.html) | M | - |
-| K | **Shortcuts** (keyboard shortcuts for common Actions; a list to choose from first) | S | nothing |
+| K | **DONE: v0.0.221.** Shortcuts (Shift+A/W/R/Q, Alt+1..9 Favorites) | S | - |
 | CL | **Code cleanup** (foundry-backlog: system messages to sysmsg.mjs, dead code; CSS only with a visual check) | S | best after X |
 
 ## 3. The order
 0. **Playtest 2 rework first (Lucas, 2026-11-02; replaces the "weapons first" order: the rework changes every AP cost, the weapon Techniques included; decisions: book/playtest-2.md and rules-backlog.md "PLAYTEST 2"):**
    1. ~~Log session~~ (done 2026-11-02).
-   2. **Pack L: v0.0.214 = the Line area (book/line-area-prompt.md) + the v0.0.208 test fixes from notes.txt + NPCs have no Weapon Attack** (foundry-backlog). M.
+   2. ~~**Pack L: v0.0.214 = the Line area (book/line-area-prompt.md) + the v0.0.208 test fixes from notes.txt + NPCs have no Weapon Attack** (foundry-backlog). M.~~ **Done 2026-11-02** (branch pack-l-line; notes.txt had no v0.0.208 fixes). Lucas tests v0.0.214 before or with playtest 3.
    3. **Playtest 3 (Lucas): the baseline** (no NPC Weapon Attack; v0.0.208's hands), the same encounter if possible. Watch the heal loop and Rally Points.
    4. **Prep pack R (the rework), one document because the parts depend on each other:** 4 AP + 1 Reaction AP (Slowed, Minions, the Special multipliers, Health about -20%), Escalation as a level with Momentum, the Escalation 3 abilities, Overcast as a Passive, Bloodied / Strained as hooks; one ruler run for all; a decision sheet with defaults. L.
    5. **Pack R-book:** Core Rules (Chapter 2 AP and Escalation, Chapter 4 states, a basic Reaction in Chapter 6) and the Bestiary (tables, NPC Reactions, Elite Bloodied / Strained phases, no NPC Weapon Attack). L.
@@ -52,6 +52,7 @@ Finished: Phase 1 (Q, M1, M2, R, F), D0, T, E1, CH, E2, P1, LV, A1 (it was D1, t
    Why: everything in X has to be decided first, or the compendium is rewritten twice.
 
 ## 4. Standing rules (all packs)
+- **Every new chat message uses the system's design** (sysmsg.mjs `sysCard` / `sysLine`, or the Action card), never plain text (Lucas, 2026-11-03); old plain messages are converted when touched, the rest in pack CL.
 - Concise ability text; I write every new card's Flavor line; the names list in examples; Y for you in diagrams; each Foundry version comes with a test checklist; every pack updates the backlogs, the README and HANDOFF.
 - **Lucas's rule for automation (2026-10-30):** a card is automated with *general* settings he can see and edit on the item in Foundry, never with code that looks for the card's name. Cards that are very specific and need no automation (Ricochet) stay text.
 - **The basic mechanics** (code, no settings) are listed in foundry/foundry-backlog.md; anything else the system automates is a setting or field on an item, and test t164 fails on a card name in module/ code.

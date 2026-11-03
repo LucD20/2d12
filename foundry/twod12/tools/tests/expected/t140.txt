@@ -31,6 +31,8 @@ A1 to G4, a tie square that is not legal is avoided: A1 B2 C2 D2 E3 F3 G4
 Charge A1 to G4 with an Orc on B1: the line uses B2: A1 B2 C2 D3 E3 F4 G4 | ties: 3
 a drag through B1 (not legal) still takes the legal B2: A1 B2 C2
 with no Orc, a drag along row 1 is honored at every tie: A1 B1 C2 D2 E3 F3 G4
+Charge picker A1 to G4, ties left: A1 B1 C2 D2 E3 F3 G4 | ties 3 | first not legal: none
+Charge picker A1 to G4, ties right: A1 B2 C2 D3 E3 F4 G4 | ties 3 | first not legal: D3 (the straight line passes through Orc (an unwilling creature's space is Difficult Terrain))
 Charge checks the chosen line square by square: true
 --- Haul
 Haul 1AP: 0/1/2 | 2AP: 0/2/4 | 3AP: 1/3/5 | strike/handle/appeal/body | vs roll | distance reach | round: true

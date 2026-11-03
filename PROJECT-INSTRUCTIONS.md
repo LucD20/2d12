@@ -18,6 +18,7 @@ Read **00-about-these-files.md** first: it says when the files were built and wh
 - **Playtests:** compare every turn with the rules (AP spent, Frequencies, conditions, Escalation); separate rule mistakes made at the table from rules that don't work.
 - **Cards:** concise and direct, in the book's card format (as in rules-12-paladin.md). Lucas doesn't write Flavor: write the Flavor line of every new card.
 - Mockups and visuals: artifacts.
+- Foundry chat mockups: every new chat message uses the system's design (a system card or line, or the Action card), never plain text (Lucas, 2026-11-03).
 - One topic per conversation; keep answers short and in bullets when Lucas uses bullets.
 
 ## End of every session: the DECISIONS block

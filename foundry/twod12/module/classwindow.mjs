@@ -63,6 +63,7 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
     super({ window: { title: `Class: ${o.name}` } });
     Object.assign(this, { o, picks: {}, attrs: {}, view: null, cards: new Map(), done: false, priority: o.cls.modPriority === "power" ? "power" : "weapon" });
     this.tf = { q: "", cat: "", only: true, compact: false };   // v0.0.195: the Talent filter bar
+    this.choiceSel = {};   // v0.0.215: a chosen Talent or Feature with a choice (Lesser Blessing's blessing): uuid -> the options picked here
   }
 
   /** v0.0.195: a Talent's filter data: { q (name, Category, Theme), cat, ok, reasons } (canTake against the level being taken). */
@@ -140,8 +141,10 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
       const on = !!x?.chosen?.includes(this.view.uuid);
       const foot = !x ? "" : x.kind === "granted" ? '<p class="cw-note">Granted. You don\'t need to choose this.</p>'
         : `<button type="button" class="cw-choose big" data-key="dpick" data-pick="${x.s.id}" data-uuid="${this.view.uuid}" aria-pressed="${on}">${on ? `${CHECK} Chosen` : "Choose"}</button>`;
-      detail = `${await this._card(this.view.uuid)}<div class="cw-dfoot">${foot}</div>`;
+      detail = `${await this._card(this.view.uuid)}${on ? await this._choiceBlock(this.view.uuid) : ""}<div class="cw-dfoot">${foot}</div>`;
     }
+    const missing = this._missingChoices(m);
+    if (missing.length) m.complete = false;
     const dots = Array.from({ length: m.total }, (_, i) => `<i class="${i < m.made ? "on" : ""}"></i>`).join("");
     const stats = [["Body Health", `×${cls.bodyMult}`], ["Mind Health", `×${cls.mindMult}`], ["Rally", cls.rallyMod], ["Speed", `${cls.speedMod >= 0 ? "+" : "−"}${Math.abs(cls.speedMod)}`], ["Armor Training", TWOD12.armorTrainings[cls.armorTraining] ?? cls.armorTraining]];
     const left = m.total - m.made, stage = stageLine(level);
@@ -151,17 +154,43 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
         <div class="cw-progress"><span class="cw-dots">${dots}</span><span>${m.made} of ${m.total} choices made</span></div></div>
         <div class="cw-stats">${stats.map(([k, v]) => `<span>${k}<b>${esc(v)}</b></span>`).join("")}</div>${stage ? `<div class="cw-stage">${esc(stage)}</div>` : ""}</header>
       <div class="cw-body"><div class="cw-col cw-slots">${secs}</div><div class="cw-col cw-detail">${detail}</div></div>
-      <footer class="cw-foot"><span class="cw-msg">${left > 0 ? `${left} left to choose.` : "Everything is chosen. Attribute choices can't be changed later."}</span>
+      <footer class="cw-foot"><span class="cw-msg">${left > 0 ? `${left} left to choose.` : missing.length ? `Choose for ${esc(missing.join(", "))} (under its card).` : "Everything is chosen. Attribute choices can't be changed later."}</span>
         <span class="cw-btns"><button type="button" class="cw-btn" data-key="cancel" data-cancel>Cancel</button><button type="button" class="cw-btn primary" data-key="confirm" data-confirm${m.complete ? "" : " disabled"}>${adding ? `Add ${esc(name)} to sheet` : `Level up to ${level}`}</button></span></footer>`;
     return div;
   }
 
+  /** v0.0.215 (Lucas): the options of a chosen item with a choice (Lesser Blessing: its blessing), picked here instead of a window after Confirm. */
+  async _choiceBlock(uuid) {
+    const d = this.o.data.docs.get(uuid), opts = (d?.system?.choiceOptions ?? []).filter(Boolean);
+    if (!opts.length) return "";
+    const count = Math.max(1, d.system.choiceCount || 1), sel = this._choicesFor(uuid);
+    const names = await Promise.all(opts.map(async u => (await load(u))?.name ?? "(missing item)"));
+    const only = opts.length <= count;
+    return `<div class="cw-choice"><div class="cw-choice-h">${esc(d.system.choiceLabel || "Choose")} ${count}${only ? " (the only option: granted with it)" : ""}</div><div class="cw-seg">${opts.map((u, k) => `<button type="button" data-key="choice:${uuid}:${u}" data-choice="${uuid}" data-opt="${u}" aria-pressed="${only || sel.includes(u)}"${only ? " disabled" : ""}>${esc(names[k])}</button>`).join("")}</div></div>`;
+  }
+  _choicesFor(uuid) { return this.choiceSel[uuid] ?? []; }
+  /** The chosen items whose choice is not made yet (more options than it grants). */
+  _missingChoices(m) {
+    const out = [];
+    for (const x of m.sections) for (const u of x.chosen ?? []) {
+      const d = this.o.data.docs.get(u), opts = (d?.system?.choiceOptions ?? []).filter(Boolean), count = Math.max(1, d?.system?.choiceCount || 1);
+      if (x.kind !== "granted" && opts.length > count && this._choicesFor(u).length < count) out.push(d.name);
+    }
+    return out;
+  }
+
   _replaceHTML(result, content) {
+    // v0.0.215 (Lucas, playtest 2: clicking any option scrolled the window): every scrolled box is kept (the window's own content too), the
+    // focus comes back without scrolling, and the card column starts at its top only when another card is shown.
     const key = content.querySelector(":focus")?.dataset?.key;
-    const scrolls = [...content.querySelectorAll(".cw-col")].map(c => c.scrollTop);
+    const scrolls = [...content.querySelectorAll(".cw-col")].map(c => c.scrollTop), own = content.scrollTop;
+    const viewKey = `${this.view?.sec}|${this.view?.uuid}`, sameCard = viewKey === this._viewKey;
+    this._viewKey = viewKey;
     content.replaceChildren(result);
-    content.querySelectorAll(".cw-col").forEach((c, i) => { c.scrollTop = scrolls[i] ?? 0; });
-    if (key) content.querySelector(`[data-key="${CSS.escape(key)}"]`)?.focus();
+    this._applyFilter();   // v0.0.216: before the scroll comes back (the hidden Talents above the Escalation picks made it jump)
+    content.querySelectorAll(".cw-col").forEach((c, i) => { c.scrollTop = c.classList.contains("cw-detail") && !sameCard ? 0 : scrolls[i] ?? 0; });
+    content.scrollTop = own;
+    if (key) content.querySelector(`[data-key="${CSS.escape(key)}"]`)?.focus({ preventScroll: true });
   }
 
   _onFirstRender(context, options) {
@@ -191,12 +220,16 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
     else if (b.dataset.pick) { const s = sec(b.dataset.pick); if (s) { this.picks = togglePick(this.picks, s, b.dataset.uuid); this.view = { uuid: b.dataset.uuid, sec: s.id }; } }
     else if (b.dataset.attr) this.attrs = setAttr(this.attrs, sectionsAt(this.o.cls, this.o.level), b.dataset.attr, Number(b.dataset.pair), b.dataset.k, this.o.priorAttrs);
     else if (b.dataset.prio) this.priority = b.dataset.prio;
+    else if (b.dataset.choice) {
+      const u = b.dataset.choice, d = this.o.data.docs.get(u), count = Math.max(1, d?.system?.choiceCount || 1), cur = this._choicesFor(u);
+      this.choiceSel[u] = cur.includes(b.dataset.opt) ? cur.filter(x => x !== b.dataset.opt) : [...cur, b.dataset.opt].slice(-count);
+    }
     else if (b.dataset.key === "tfview") this.tf.compact = !this.tf.compact;
     else if (b.hasAttribute("data-cancel")) return this.close();
     else if (b.hasAttribute("data-confirm")) {
-      if (!m.complete) return;
+      if (!m.complete || this._missingChoices(m).length) return;
       this.done = true;
-      this.o.resolve({ grant: levelPlan(this.o.cls, this.o.level, m), attrs: attrList(this.o.cls, this.o.level, this.attrs), attrMap: this.attrs, picks: this.picks, priority: this.priority });
+      this.o.resolve({ grant: levelPlan(this.o.cls, this.o.level, m), attrs: attrList(this.o.cls, this.o.level, this.attrs), attrMap: this.attrs, picks: this.picks, priority: this.priority, choices: this.choiceSel });
       return this.close();
     } else return;
     this.render();
@@ -238,8 +271,9 @@ async function applyLevel(actor, level, res) {
     if (!doc) { ui.notifications.warn(`Class item not found: ${g.uuid}`); continue; }
     const flags = { classLevel: level, classSection: g.section };
     const slot = g.kind === "talent" ? `class:${level}:${g.section}:${g.slot ?? 0}` : "";
-    if (doc.type === "feature") await grantFeature(actor, doc, "class", level, flags);
-    else if (doc.type === "talent") await grantTalent(actor, doc, slot, flags);
+    const preset = res.choices?.[g.uuid] ?? null;   // v0.0.215: the choice made in the window (Lesser Blessing's blessing)
+    if (doc.type === "feature") await grantFeature(actor, doc, "class", level, flags, preset);
+    else if (doc.type === "talent") await grantTalent(actor, doc, slot, flags, preset);
     else if (actor.items.some(i => sourceOf(i) === doc.uuid)) continue;
     else {
       const d = doc.toObject(); delete d._id;

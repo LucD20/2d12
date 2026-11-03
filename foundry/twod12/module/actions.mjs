@@ -192,7 +192,7 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
     const shared = mods.filter(m => !ownerOf(m.id)), own = u => mods.filter(m => ownerOf(m.id) === u);
     const first = shared.length ? "all" : (targetTiles.find(t => own(t.uuid).length)?.uuid ?? "all");
     const group = (id, list) => `<div class="fxgroup${id === first ? "" : " off"}" data-for="${esc(id)}">${list.length ? list.map(chipOf).join("") : '<span class="hint">Nothing changes this roll for this creature.</span>'}</div>`;
-    effectsRows = `<div class="rf-row tilesrow"><span class="rf-label">Targets</span><div class="ttiles${targetTiles.length >= 10 ? " compact" : ""}"><button type="button" class="ttile${first === "all" ? " on" : ""}" data-tg="all" data-name="Yours" data-tooltip="Your own effects, for every target"><span class="tdots"></span><i class="fa-solid fa-user"></i></button>${targetTiles.map((t, k) => `<button type="button" class="ttile${first === t.uuid ? " on" : ""}" data-tg="${esc(t.uuid)}" data-name="${esc(t.name)}" data-dc="${t.dc}" data-tooltip="${esc(t.name)}: DC ${t.dc}"><span class="tdots"></span>${targetTiles.length >= 10 ? `<b class="tabnum">${k + 1}</b>` : `<img src="${esc(t.img)}" alt="">${tileNumber(t.name) ? `<span class="tnum">${tileNumber(t.name)}</span>` : ""}`}</button>`).join("")}</div></div><div class="tcap"></div><div class="fxgroups">${group("all", shared)}${targetTiles.map(t => group(t.uuid, own(t.uuid))).join("")}</div>`;
+    effectsRows = `<div class="rf-row tilesrow"><span class="rf-label">Targets</span><div class="ttiles${targetTiles.length >= 10 ? " compact" : ""}"><button type="button" class="ttile${first === "all" ? " on" : ""}" data-tg="all" data-name="Yours" data-tooltip="Your own effects, for every target"><span class="tdots"></span><i class="fa-solid fa-user"></i></button>${targetTiles.map((t, k) => `<button type="button" class="ttile${first === t.uuid ? " on" : ""}" data-tg="${esc(t.uuid)}" data-name="${esc(t.name)}" data-dc="${t.dc}" data-tooltip="${esc(t.name)}: DC ${t.dc}. Right-click to remove it from the targets"><span class="tdots"></span>${targetTiles.length >= 10 ? `<b class="tabnum">${k + 1}</b>` : `<img src="${esc(t.img)}" alt="">${tileNumber(t.name) ? `<span class="tnum">${tileNumber(t.name)}</span>` : ""}`}<span class="ttx" data-rm="${esc(t.uuid)}" data-tooltip="Remove ${esc(t.name)} from the targets"><i class="fa-solid fa-xmark"></i></span></button>`).join("")}</div></div><div class="tremoved"></div><div class="tcap"></div><div class="fxgroups">${group("all", shared)}${targetTiles.map(t => group(t.uuid, own(t.uuid))).join("")}</div>`;
   } else effectsRows = chips ? `<div class="rf-row"><span class="rf-label">Effects</span>${chips}</div>` : "";
   // Notices: how the roll is made, shown as labels (a Thrown weapon thrown, for example).
   if (generalNotices.length) effectsRows = `<div class="rf-row"><span class="rf-label">Use</span>${generalNotices.map(n => `<span class="rnotice" data-tooltip="${esc(n.why ?? "")}"><i class="fa-solid ${esc(n.icon ?? "fa-circle-info")}"></i> ${esc(n.text)}</span>`).join("")}</div>` + effectsRows;
@@ -253,6 +253,31 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
           cap.replaceChildren(b, sp);
         }
       };
+      // v0.0.215 (Lucas, playtest 2): a target can be removed here (the x on its tile): it is not rolled against and is untargeted.
+      // v0.0.217 (Lucas: the x still did nothing): one listener on the dialog, in the capture phase, for the x and for a right-click on a tile.
+      const removeTile = tile => {
+        if (!tile || tile.dataset.tg === "all" || tile.classList.contains("gone")) return;
+        const u0 = tile.dataset.tg;
+          const left = root.querySelectorAll('.ttile:not([data-tg="all"]):not(.gone)').length;
+          if (left <= 1) return ui.notifications.warn("At least one target stays: cancel the Action to use it on nobody.");
+          // v0.0.216 (Lucas: "the X does nothing"): the tile's own display beat the hidden attribute; it is now display:none, with an undo chip.
+          tile.classList.add("gone"); tile.style.display = "none";
+          const box = root.querySelector(".tremoved"), u = u0, group = root.querySelector(`.fxgroup[data-for="${CSS.escape(u)}"]`);
+          const chip = document.createElement("span"); chip.className = "trm-chip"; chip.dataset.tooltip = "Removed from the targets: click to put it back";
+          chip.innerHTML = `<input type="hidden" name="removed" value="${esc(u)}"><i class="fa-solid fa-rotate-left"></i> ${esc(tile.dataset.name ?? "")}`;
+          const was = [...(group?.querySelectorAll("[name=fx]") ?? [])].map(c => c.checked);
+          group?.querySelectorAll("[name=fx]").forEach(c => { c.checked = false; c.disabled = true; });
+          chip.addEventListener("click", e2 => {
+            e2.preventDefault(); chip.remove(); tile.classList.remove("gone"); tile.style.display = "";
+            group?.querySelectorAll("[name=fx]").forEach((c, k) => { c.disabled = false; c.checked = was[k]; });
+            refreshTiles(); root.dispatchEvent(new Event("change", { bubbles: true }));
+          });
+          if (box) { if (!box.querySelector(".trm-h")) box.insertAdjacentHTML("afterbegin", '<span class="trm-h">Removed:</span>'); box.append(chip); }
+          if (tile.classList.contains("on")) root.querySelector('.ttile[data-tg="all"]')?.click();
+          refreshTiles(); root.dispatchEvent(new Event("change", { bubbles: true }));
+      };
+      root.addEventListener("click", ev => { const x = ev.target.closest?.(".ttx"); if (!x) return; ev.preventDefault(); ev.stopPropagation(); removeTile(x.closest(".ttile")); }, true);
+      root.addEventListener("contextmenu", ev => { const t = ev.target.closest?.(".ttile"); if (!t || t.dataset.tg === "all") return; ev.preventDefault(); ev.stopPropagation(); removeTile(t); }, true);
       root.querySelectorAll(".ttile").forEach(t =>
         t.addEventListener("click", ev => {
           ev.preventDefault();
@@ -340,7 +365,7 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
       label: "Roll",
       callback: (ev, btn) => {
         const fd = new FormData(btn.form);
-        return { ...Object.fromEntries(fd), fx: fd.getAll("fx"), bonusOn: fd.getAll("bonusOn") };
+        return { ...Object.fromEntries(fd), fx: fd.getAll("fx"), bonusOn: fd.getAll("bonusOn"), removed: fd.getAll("removed") };
       }
     },
     rejectClose: false
@@ -391,7 +416,7 @@ export async function useAction(actor, item, opts = {}) {
     const ws = weaponsFor(actor, item).filter(w => (!need || hasProp(w, need) || (need === "ranged" && hasProp(w, "thrown"))) && (!it.traits.has("shot") || hasProp(w, "projectile")));
     if (need && !ws.length) return ui.notifications.warn(it.traits.has("shot") ? `${item.name} is a Shot: it needs a wielded Projectile weapon (a bow or a crossbow).` : `${item.name} needs a wielded ${need === "melee" ? "Melee" : "Ranged"} weapon.`);
   }
-  const versions = [...it.versions].sort((a, b) => a.ap - b.ap);
+  let versions = [...it.versions].sort((a, b) => a.ap - b.ap);
   if (!versions.length) return ui.notifications.warn(`${item.name} has no versions yet.`);
   // What the Action rolls (Signature, Weapon, Power or an Attribute) and what its damage adds: rollsource.mjs.
   const src = rollSource(s, it);
@@ -438,6 +463,14 @@ export async function useAction(actor, item, opts = {}) {
   // An Action with an Area and a roll: the area is placed first, so the roll is made once for the creatures in it.
   let areaPlaced = false, areaOutcome = null;
   const areaSet = String(it.area ?? "").trim() ? areaConfigOf(it) : null;
+  // v0.0.215: versions with their own Area size (Word of Radiance: 2 / 3 Emanation): the version is chosen before the area is placed, and the roll keeps it.
+  if (areaSet && canvas.ready && canvas.grid?.isSquare && src.kind && new Set(versions.map(v => v.areaSize || areaSet.distance)).size > 1) {
+    const pickAp = await DialogV2.wait({ window: { title: item.name }, content: `<p>Which version? The Area depends on it.</p>`, rejectClose: false,
+      buttons: versions.map(v => ({ action: String(v.ap), label: `${v.ap} AP: ${v.areaSize || areaSet.distance} ${areaSet.shape === "burst" ? "Burst" : areaSet.shape === "line" ? "Line" : "Emanation"}` })) });
+    if (pickAp == null) return;
+    versions = versions.filter(v => v.ap === Number(pickAp));
+    areaSet.distance = versions[0].areaSize || areaSet.distance;
+  }
   if (areaSet && canvas.ready && canvas.grid?.isSquare && src.kind) {   // no square grid: no placing, rolled as before
     const { startTemplate } = await import("./template.mjs");
     const outcome = {}; areaOutcome = outcome;
@@ -448,7 +481,9 @@ export async function useAction(actor, item, opts = {}) {
       const nums = String(weaponRanges(w, s.reach ?? 1).ranged || "").split("/").map(Number).filter(n => n > 0);
       within = (areaSet.withinRange === "normal" ? nums[0] : areaSet.withinRange === "far" ? nums[1] ?? nums.at(-1) : nums.at(-1)) || within;
     }
-    await startTemplate({ ...areaSet, quick: true, within, htSave: saveAct }, { token: selfToken, outcome });
+    // v0.0.216 (Lucas): a damaging Action doesn't tick "Affect the creature it is around" by default (Ground Slam); the window still asks.
+    const damaging = versions.some(v => ["t1", "t2", "t3"].some(t => (v[t] ?? []).length));
+    await startTemplate({ ...areaSet, self: areaSet.self && !damaging, quick: true, within, htSave: saveAct }, { token: selfToken, outcome });
     if (!outcome.ok) return;
     areaPlaced = true;
     if (!outcome.count) ui.notifications.info("No creature is in the area.");
@@ -494,7 +529,7 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.186, the "Ignore a Bane" settings of the creature's effects and passives (Long Draw, Steady Nerves, Sharpshooter): the names of what ignores each rule.
   const lessRange = ignoredBy(actor, "rangeBane", useTraits), noEngagedTarget = ignoredBy(actor, "engagedTarget", useTraits);
   const rw = previewWeapon?.system;
-  const usesReload = it.traits.has("weapon") && rw?.traits?.has?.("reload");
+  const usesReload = it.traits.has("weapon") && rw?.traits?.has?.("reload") && basicKey !== "reload";   // Reload itself is what loads it (v0.0.221)
   if (usesReload && rw.unloaded) return ui.notifications.warn(`${previewWeapon.name} is unloaded: Reload it before using it again.`);
   // At-will: each use after the first in a turn has 1 more bane (uses from another Action don't count).
   const atWill = opts.free ? 0 : atWillUses(actor, item);
@@ -650,6 +685,13 @@ export async function useAction(actor, item, opts = {}) {
   const bonusKey = b => `${b.effect}|${b.dmg}|${b.sub}|${b.text}`;
   const bonusOff = new Set(bonusChips.map(c => c.key).filter(k => !(data?.bonusOn ?? []).includes(k)));
   if (!data) return;
+  // v0.0.215: targets removed in the dialog are left out (and untargeted).
+  if (multi && data.removed?.length) {
+    const gone = new Set(data.removed);
+    for (const p of perT.filter(x => gone.has(x.actorUuid))) { try { p.token.setTarget(false, { releaseOthers: false, groupSelection: true }); } catch (e) { /* gone */ } }
+    perT.splice(0, perT.length, ...perT.filter(x => !gone.has(x.actorUuid)));
+    if (!perT.length) return ui.notifications.warn(`${item.name} has no target left.`);
+  }
   // The step the damage uses: the two chips (Empowered and Enfeebled; the player can change them, they start at the highest value that effects and conditions give), and a Reload shot is Empowered 2 by itself.
   const reloadShot = data.reloadshot === "on";
   const damageStep = Math.max(Math.max(0, Math.trunc(Number(data.empowered)) || 0), reloadShot ? 2 : 0) - Math.max(0, Math.trunc(Number(data.enfeebled)) || 0);
@@ -823,7 +865,7 @@ export async function useAction(actor, item, opts = {}) {
   const areaRow = areaButton(it) && !areaPlaced ? `<div class="trow arearow">${await enrich(areaButton(it), item)}</div>` : "";
   const setupRow = it.setup ? `<div class="trow setuprow"><b>Setup:</b> ${await enrich(setupFor(it.setup, setupDone), item)}</div>` : "";
   const html = `<div class="twod12 chat action" style="${cardVars(color)}">
-    ${cardHead(item.name, categoryText(it), apIcon(version.ap, it.reaction), effectiveFrequency(it), it.automation)}
+    ${cardHead(item.name, categoryText(it), apIcon(version.ap, it.reaction), effectiveFrequency(it), it.automation, it.automationNote)}
     ${flavorHtml(it)}
     ${useTraits.size ? `<div class="traits">${traitsHtml(useTraits)}</div>` : ""}
     ${trow}${areaRow}${setupRow}
@@ -863,6 +905,7 @@ export async function useAction(actor, item, opts = {}) {
           actorUuid: actor.uuid,
           itemId: item.id,
           ap: version.ap,
+          apPaid: apCost,   // v0.0.219: what was really spent (a granted use: its own cost), for a Charge given up
           tier,
           total: chk?.total ?? null,   // v0.0.174: the roll's result (Forced Movement against an Immobilized creature compares it with the Immobilized DC)
           results: mres ? mres.map(r => ({ uuid: r.uuid, name: r.label, tier: r.chk.tier, crit: r.chk.crit, bonuses: r.bonuses, total: r.chk.total })) : undefined,
@@ -998,11 +1041,24 @@ export async function retargetAction(msg) {
  * v0.0.196 (Lucas): a shortcut for a Basic Action of the selected token (the Evade key: Evade, 1 AP, straight to the movement banner).
  * Returns false when there is no single selected token of yours, or it has no such Action.
  */
+/** v0.0.221 (Lucas): Favorite number n (1-9) of the selected token, by the Favorites' order on the sheet. */
+export async function quickFavorite(n) {
+  const tokens = canvas?.tokens?.controlled?.filter(t => t.actor?.isOwner) ?? [];
+  if (tokens.length !== 1) { ui.notifications.warn("Select your token first."); return false; }
+  const actor = tokens[0].actor, id = (actor.getFlag("twod12", "favorites") ?? [])[n - 1], item = id ? actor.items.get(id) : null;
+  if (!item) { ui.notifications.warn(`${actor.name} has no Favorite ${n} (star Actions on the sheet: their order is their number).`); return false; }
+  await useAction(actor, item);
+  return true;
+}
+
 export async function quickBasic(key, ap = null) {
   const tokens = canvas?.tokens?.controlled?.filter(t => t.actor?.isOwner) ?? [];
   if (tokens.length !== 1) { ui.notifications.warn("Select your token first."); return false; }
-  const actor = tokens[0].actor, item = actor.items.find(i => i.type === "action" && i.getFlag("twod12", "basic") === key);
-  if (!item) { ui.notifications.warn(`${actor.name} has no ${key === "safeMovement" ? "Evade" : key} Action.`); return false; }
+  const actor = tokens[0].actor;
+  let item = actor.items.find(i => i.type === "action" && i.getFlag("twod12", "basic") === key);
+  // v0.0.221: Weapon Attack's key on an NPC uses its Basic attack (NPCs have no Weapon Attack).
+  if (!item && key === "basicWeaponAttack" && actor.type === "npc") item = actor.itemTypes.action.find(i => i.system?.basicAttack) ?? actor.itemTypes.action.find(i => /^basic attack$/i.test(String(i.system?.category ?? "")));
+  if (!item) { ui.notifications.warn(`${actor.name} has no ${{ safeMovement: "Evade", basicWeaponAttack: "Weapon Attack", rally: "Steel Yourself", advance: "Advance" }[key] ?? key} Action.`); return false; }
   // v0.0.197 (Lucas): which version, when there are several (Evade: 1 AP, Evade 1; 2 AP, Evade half your Speed).
   const vs = [...item.system.versions].sort((a, b) => a.ap - b.ap);
   if (ap === null && vs.length > 1) {

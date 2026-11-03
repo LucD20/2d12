@@ -5,7 +5,7 @@ All Actions have traits. Traits have their own rule interactions. Traits with no
 
 ### Area
 
-These Actions have an **Area** (see [[Areas]]), and can have a Distance that says how far from you the area can be placed. They target every creature inside their area that they affect, and they ignore Senses: they target creatures you perceive as Obscured, Hidden or Unsensed, with no penalty for it, and light doesn't change their roll. You need Line of Effect to the Point of Origin to place the area, and Line of Effect and Cover are checked from the Point of Origin to each creature.
+These Actions have an **Area** (see [[Areas]]), and can have a Distance that says how far from you the area can be placed. They target every creature inside their area that they affect, and they ignore Senses: they target creatures you perceive as Obscured, Hidden or Unsensed, with no penalty for it, and light doesn't change their roll. You need Line of Effect to the Point of Origin to place the area, and Line of Effect and Cover are checked from the Point of Origin to each creature. A [[Line]] has no Distance: it always starts from your square.
 
 ### Body, Mind, Appeal and Instinct
 

@@ -87,7 +87,7 @@ Creatures aren't solid corners: you can move diagonally between two creatures. I
 
 ## Straight Line
 
-When an Action, effect or rule moves a creature (yourself included) in a straight line, like the Charge Action, draw a line from the center of the creature's square to the center of the destination square. The creature moves one square at a time along that line, even if the token's path on the grid isn't exactly straight. If the line passes exactly between two squares, the creature that moves chooses which one it uses. If a square on the line isn't a legal move (for Charge: Difficult Terrain, a creature in the way, or a solid corner), the movement stops in the last legal square before it.
+When an Action, effect or rule moves a creature (yourself included) in a straight line, like the Charge Action, draw a line from the center of the creature's square to the center of the destination square. The creature moves along the same squares as a [[Line]]: one square per step along the line's longer direction, at each step the square whose center is nearest to the line, ending in the destination. Where the line passes exactly between two squares, choose a side once, left or right (looking toward the destination), for the whole movement: every tie takes that side. The creature that moves chooses for its own movement; the origin chooses for a Forced Movement. If a square on the line isn't a legal move (for Charge: Difficult Terrain, a creature in the way, or a solid corner), the movement stops in the last legal square before it.
 
 In the figures, Y is you. Blue squares are the squares the token passes, the green square is where it ends, and red squares are not legal. The line is what counts: the path of the token on the grid does not have to be exactly straight, because a token moves from square to square.
 
@@ -325,7 +325,7 @@ A creature behind a wall can lean out to attack. While you are **Leaning**, you 
 
 Some Actions have an **Area**, written on its own line, for example **Area: 1 Emanation**. These Actions have the [[Area]] trait. An Area Action can also have a **Distance**, on the next line: how far from the creature using the Action its area can be placed, for example **Distance: 10 sq.** With no Distance, an Emanation is around the creature that uses the Action.
 
-Every area spreads from a **Point of Origin**: for an Emanation, its target (a creature's space or a square); for other areas, the point the Action says they start from (for example, the tip of a cone). The Point of Origin is a place, not the creature that uses the Action, which is still called the origin.
+Every area spreads from a **Point of Origin**: for an Emanation, its target (a creature's space or a square); for a Line, your square; for other areas, the point the Action says they start from (for example, the tip of a cone). The Point of Origin is a place, not the creature that uses the Action, which is still called the origin.
 
 ### Emanation
 
@@ -345,12 +345,34 @@ A **Burst**, written with a value like **2 Burst**, is centered on a **corner**,
 
 @@DIAGRAM:burst@@
 
+### Line
+
+A **Line**, written with a value like **Line 10**, is a row of squares that always starts from you: its Point of Origin is the center of your square, as for an Aura. It has no Distance: its value is how far it reaches.
+
+**Aim** it at any square. Draw a segment from the center of your square through the center of that square, and take one square per step along the segment's longer direction: at each step, the square whose center is nearest to the segment. The first square is the one next to you. The Line goes on past the square you aimed at until the next square would be farther from you than its value (counted like any distance: every second diagonal counts 2). Only those squares are the Line, never every square the segment touches. A Line 10 is 10 squares straight, 8 squares at a slope like 2 to 1 or 5 to 2, and 7 squares on a diagonal.
+
+- **Ties.** Where the segment passes exactly between two squares, choose a side before rolling: left or right, seen from above looking from you toward the square you aimed at. Every tie in that Line takes that side. A Line with no ties has nothing to choose. Both sides give the same number of squares, though not always the same shape.
+- **Larger creatures.** A creature bigger than Medium starts the Line from one of the squares of its space on the side it aims toward.
+- **Walls.** A Line stops at the first square it can't enter (a wall or a solid obstacle): the squares behind it are not part of the Line. This matters for a Line that stays on the map, or Hazardous Terrain.
+- **Height.** A Line is 1 square high unless the Action says otherwise: it doesn't reach a creature flying above its squares.
+- **Targets and cover.** A Line affects every creature in its squares unless the Action says otherwise, and the Action is [[Several Targets|rolled once for all of them]]. [[Line of Effect]] and [[Cover]] are checked from your square, as for any area, but creatures in the Line don't give cover to other creatures in it (walls still do).
+- **No range Banes.** The Line's value is its reach, so a weapon's far or maximum range adds no Banes inside it. Other Banes still apply: Engaged for a [Ranged] Action, Cover from walls.
+
+> [!example]
+> You use a Line 6 and aim at the square 2 squares east and 1 south of you. The segment passes exactly between two squares at the first, third and fifth steps. You choose left: the Line takes the square directly east of you, then goes 1 south for every 2 squares east, 5 squares in all (the 6th would be 7 squares away). Had you chosen right, it would start with the square diagonally southeast of you: a different shape, the same 5 squares.
+
+@@DIAGRAM:line1@@
+
+@@DIAGRAM:line2@@
+
+@@DIAGRAM:line3@@
+
 ### Other areas
 
-Other areas (cones and lines) also affect every creature in them unless the Action says otherwise. [[Line of Effect]] and [[Cover]] are checked from the Point of Origin to each creature, and the Action is [[Several Targets|rolled once for all its targets]].
+Other areas (cones) also affect every creature in them unless the Action says otherwise. [[Line of Effect]] and [[Cover]] are checked from the Point of Origin to each creature, and the Action is [[Several Targets|rolled once for all its targets]].
 
 > [!tbd]
-> Cones and lines are not written yet.
+> Cones are not written yet (and Lines wider than 1 square).
 
 ## Light
 

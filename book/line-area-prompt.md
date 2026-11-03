@@ -1,4 +1,4 @@
-# Pack prompt: the Line area (book + Foundry). Reviewed with Lucas 2026-10-31; nothing applied yet.
+# Pack prompt: the Line area (book + Foundry). Reviewed with Lucas 2026-10-31. **APPLIED 2026-11-02 in pack L (v0.0.214)**: what was built and what was left is in rules-backlog.md (the LINE AREA item) and foundry-backlog.md (Leftovers, L).
 
 Run as its own pack: "Read HANDOFF.md and MASTER-PLAN.md and run the Line pack (book/line-area-prompt.md)".
 **Start from main** (v0.0.208 to v0.0.213 and D2 are merged); the version is **v0.0.214**, the next new test **t170**. Don't edit book/weapon-trees.md (another session is designing there).

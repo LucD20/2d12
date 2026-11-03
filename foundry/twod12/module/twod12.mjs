@@ -83,6 +83,26 @@ Hooks.once("init", () => {
   // v0.0.196 (Lucas): Evade from the keyboard (Shift+E by default; Configure Controls can change it): Evade 1 AP with the selected token.
   game.keybindings.register("twod12", "quickEvade", { name: "Evade", hint: "Uses Evade with your selected token: choose 1 AP (Evade 1) or 2 AP (half your Speed); its movement starts at once.", editable: [{ key: "KeyE", modifiers: ["Shift"] }],
     onDown: () => { import("./actions.mjs").then(m => m.quickBasic("safeMovement")); return true; } });
+  // v0.0.221 (Lucas, pack K): shortcuts for common Actions of the selected token, and End turn. Configure Controls can change them.
+  const quick = (key, name, hint, code) => game.keybindings.register("twod12", key, { name, hint, editable: [{ key: code, modifiers: ["Shift"] }], onDown: () => { import("./actions.mjs").then(m => m.quickBasic(key === "quickAttack" ? "basicWeaponAttack" : key === "quickRally" ? "rally" : "advance")); return true; } });
+  quick("quickAdvance", "Advance", "Uses Advance with your selected token: its movement starts at once.", "KeyA");
+  quick("quickAttack", "Weapon Attack", "Uses Weapon Attack with your selected token (an NPC: its Basic attack).", "KeyW");
+  quick("quickRally", "Steel Yourself", "Uses Steel Yourself with your selected token (choose its version).", "KeyR");
+  game.keybindings.register("twod12", "quickEndTurn", { name: "End turn", hint: "Ends the current turn when it is yours (the combat strip's Next turn).", editable: [{ key: "KeyQ", modifiers: ["Shift"] }],
+    onDown: () => {
+      const cb = game.combat;
+      if (!cb?.started) { ui.notifications.warn("No combat has started."); return true; }
+      if (!game.user.isGM && !cb.combatant?.isOwner) { ui.notifications.warn("It is not your turn."); return true; }
+      import("./combat.mjs").then(m => m.endTurnFor(cb));
+      return true;
+    } });
+  for (let n = 1; n <= 9; n++) game.keybindings.register("twod12", `favorite${n}`, { name: `Favorite ${n}`, hint: `Uses Favorite ${n} of your selected token (the Favorites' order on its sheet).`, editable: [{ key: `Digit${n}`, modifiers: ["Alt"] }],
+    onDown: () => { import("./actions.mjs").then(m => m.quickFavorite(n)); return true; } });
+  // v0.0.215 (Lucas, playtest 2): the token HUD's two buttons as shortcuts, for speed in play.
+  game.keybindings.register("twod12", "lineOfEffect", { name: "Line of Effect", hint: "Shows or hides the Line of Effect lines of your selected token (the token HUD's button).", editable: [{ key: "KeyL", modifiers: ["Shift"] }],
+    onDown: () => { import("./loe.mjs").then(m => m.loeShortcut()); return true; } });
+  game.keybindings.register("twod12", "coverHeight", { name: "Cover height calculation", hint: "Opens the side view of your selected token and its first target (the token HUD's button).", editable: [{ key: "KeyH", modifiers: ["Shift"] }],
+    onDown: () => { import("./loe.mjs").then(m => m.heightShortcut()); return true; } });
   CONFIG.Combat.documentClass = TwoD12Combat;
   game.twod12 = {
     catalog,
@@ -167,6 +187,7 @@ Hooks.once("init", () => {
   game.settings.register("twod12", "weaponRoundApplied", { scope: "world", config: false, type: Boolean, default: false });
   game.settings.register("twod12", "projectileApplied", { scope: "world", config: false, type: Boolean, default: false });
   game.settings.register("twod12", "unlockPacks", { name: "Unlock the system compendiums", hint: "Keep the 2d12 compendiums unlocked, so their items can be opened and edited without unlocking them first (only the GM and Assistants can edit; a system update rebuilds them, so edits there are lost).", scope: "world", config: true, type: Boolean, default: true, onChange: () => import("./basic.mjs").then(m => m.unlockSystemPacks()) });   // v0.0.191
+  game.settings.register("twod12", "tokenDefaultsV215", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.215: core token rotation off, once
   game.settings.register("twod12", "settingsV207", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.207: the editability sweep's settings and fields (automation.mjs)
   game.settings.register("twod12", "settingsV187", { scope: "world", config: false, type: Boolean, default: false });   // Killer's Focus and Radiant Zeal: an Effect each turn
   game.settings.register("twod12", "settingsV186", { scope: "world", config: false, type: Boolean, default: false });   // the cards automated by name get their settings (automation.mjs)
@@ -348,9 +369,24 @@ function registerDeadHooks() {
 
 
 // New characters are Friendly and linked to their token (with the vision of their Senses); new NPCs are Hostile.
+// v0.0.215 (Lucas, playtest 2): every new creature's token shows its bars always, to everyone, and doesn't rotate.
+Hooks.on("preCreateActor", (actor, data) => {
+  const bars = globalThis.CONST?.TOKEN_DISPLAY_MODES?.ALWAYS ?? 50;
+  if (data?.prototypeToken?.displayBars === undefined) actor.updateSource({ "prototypeToken.displayBars": bars });
+  if (data?.prototypeToken?.lockRotation === undefined) actor.updateSource({ "prototypeToken.lockRotation": true });
+});
 Hooks.on("preCreateActor", actor => {
   if (actor.type === "character") { actor.updateSource({ "prototypeToken.disposition": 1, "prototypeToken.actorLink": true }); giveHearing(actor); giveVision(actor); }
   else if (actor.type === "npc") actor.updateSource({ "prototypeToken.disposition": -1 });
+});
+
+// v0.0.215 (Lucas, playtest 2): Foundry's own token auto-rotation is turned off once per world (the GM can turn it back on in Core settings).
+Hooks.once("ready", async () => {
+  try {
+    if (!game.user.isActiveGM || game.settings.get("twod12", "tokenDefaultsV215")) return;
+    for (const key of ["core.tokenAutoRotate", "core.autoRotate", "core.tokenRotation"]) if (game.settings.settings.has(key)) { const [ns, k] = key.split("."); await game.settings.set(ns, k, false); }
+    await game.settings.set("twod12", "tokenDefaultsV215", true);
+  } catch (e) { console.warn("twod12 | token rotation default", e); }
 });
 
 Hooks.once("ready", () => { try { registerLightLabel(); } catch (e) { console.warn("twod12 | light level label", e); } });

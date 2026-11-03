@@ -101,7 +101,7 @@
       <label data-tooltip="A theme the Talent picker can filter by (Unarmed, Great Weapon, Marksman, Divine): usually the chain it belongs to">Theme <input type="text" name="system.theme" value="{{system.theme}}" placeholder="Unarmed"></label>
     </div>
     <label>Flavor <input type="text" name="system.flavor" value="{{system.flavor}}" placeholder="A small gift from the god you follow."></label>
-    <label class="autosel" data-tooltip="How much Foundry does for this card, shown as a chip on it (Not implemented, Bronze, Silver, Gold)">Automation <select name="system.automation">{{selectOptions autoRanks selected=system.automation}}</select></label>
+    <label class="autosel" data-tooltip="How much Foundry does for this card, shown as a chip on it (Not implemented, Bronze, Silver, Gold)">Automation <select name="system.automation">{{selectOptions autoRanks selected=system.automation}}</select></label> <label class="autosel autonote" data-tooltip="What Foundry doesn't do yet for this card (shown on the diamond's tooltip). Mostly for Bronze and Silver">By hand <input type="text" name="system.automationNote" value="{{system.automationNote}}" placeholder="What the players do themselves"></label>
     <div class="prereqs">
       <div class="pq-line"><span class="pq-lead">Prerequisites:</span>
         {{#each prereqRows}}
@@ -173,7 +173,7 @@
       <div class="ro"><span>Shown as</span><b>{{categoryShown}}</b></div>
     </div>
     <label>Flavor <input type="text" name="system.flavor" value="{{system.flavor}}" placeholder="Your bond with your god opens new paths."></label>
-    <label class="autosel" data-tooltip="How much Foundry does for this card, shown as a chip on it (Not implemented, Bronze, Silver, Gold)">Automation <select name="system.automation">{{selectOptions autoRanks selected=system.automation}}</select></label>
+    <label class="autosel" data-tooltip="How much Foundry does for this card, shown as a chip on it (Not implemented, Bronze, Silver, Gold)">Automation <select name="system.automation">{{selectOptions autoRanks selected=system.automation}}</select></label> <label class="autosel autonote" data-tooltip="What Foundry doesn't do yet for this card (shown on the diamond's tooltip). Mostly for Bronze and Silver">By hand <input type="text" name="system.automationNote" value="{{system.automationNote}}" placeholder="What the players do themselves"></label>
     <label class="inline" data-tooltip="Shown in the Escalation section of the Features tab. When it works is each setting's own &quot;It works...&quot; below (Escalation 1, 2 or 3).">
       <input type="checkbox" name="system.escalationPassive" {{#if system.escalationPassive}}checked{{/if}}> Escalation Passive</label>
     <label>Talents granted <input type="number" min="0" name="system.talents" value="{{system.talents}}"></label>
@@ -201,7 +201,7 @@
     {{#if isAction}}
     <label>Traits {{formInput fields.traits value=system.traits name="system.traits" options=traitPicker.options groups=traitPicker.groups}}</label>
     <label>Flavor <input type="text" name="system.flavor" value="{{system.flavor}}" placeholder="Your weapon blazes with holy light."></label>
-    <label class="autosel" data-tooltip="How much Foundry does for this card, shown as a chip on it (Not implemented, Bronze, Silver, Gold)">Automation <select name="system.automation">{{selectOptions autoRanks selected=system.automation}}</select></label>
+    <label class="autosel" data-tooltip="How much Foundry does for this card, shown as a chip on it (Not implemented, Bronze, Silver, Gold)">Automation <select name="system.automation">{{selectOptions autoRanks selected=system.automation}}</select></label> <label class="autosel autonote" data-tooltip="What Foundry doesn't do yet for this card (shown on the diamond's tooltip). Mostly for Bronze and Silver">By hand <input type="text" name="system.automationNote" value="{{system.automationNote}}" placeholder="What the players do themselves"></label>
     <div class="grid3 rx">
       <label class="inline"><input type="checkbox" name="system.reaction" {{#if system.reaction}}checked{{/if}}> Reaction</label>
       <label>Kind <select name="system.reactionKind" {{#unless system.reaction}}disabled{{/unless}}>{{selectOptions reactionKinds selected=system.reactionKind}}</select></label>
@@ -220,13 +220,14 @@
     </div>
     <label class="inline" data-tooltip="Using it marks the targeted creature (Mark Quarry). Settings with &quot;Only against the creature it marked&quot; read the mark; it ends when that creature goes Down and when an encounter starts. What the creature is told then: a Chat message setting on its Feature (Marked Quarry).">
       <input type="checkbox" name="system.marksTarget" {{#if system.marksTarget}}checked{{/if}}> Marks the target</label>
+    <label class="inline" data-tooltip="An NPC's Basic attack: NPCs have no Weapon Attack, so when an Action calls for one (the attack at the end of a Charge), the NPC uses this"><input type="checkbox" name="system.basicAttack" {{#if system.basicAttack}}checked{{/if}}> NPC's Basic attack</label>
     <label data-tooltip="Which weapon a [Weapon] Action uses: Pummel uses only the Fists (a free hand); Leg Sweep is a kick (the Fists, even with both hands full)">Weapon used <select name="system.weaponUse">{{selectOptions weaponUses selected=system.weaponUse}}</select></label>
     <p class="hint">Actions with the Weapon trait always roll the Weapon Modifier; for the others, pick the attribute rolled. With no Defense the DC is 13. With Defense Body, the DC is 13 + the target's Body (negatives included) + any defense bonuses it has against this action.</p>
     <p class="hint">Actions with the Weapon trait use the class Weapon Modifier instead of the Check.</p>
     <div class="areaedit"><b>Area</b>
       <input type="number" min="0" name="system.areaCfg.size" value="{{system.areaCfg.size}}" style="width:4em" data-tooltip="Size in squares (0: no Area, the Action uses its Distance)">
-      <select name="system.areaCfg.shape"><option value="emanation" {{#if (eq system.areaCfg.shape "emanation")}}selected{{/if}}>Emanation</option><option value="burst" {{#if (eq system.areaCfg.shape "burst")}}selected{{/if}}>Burst</option></select>
-      within <input type="number" min="0" name="system.areaCfg.within" value="{{system.areaCfg.within}}" style="width:4em" data-tooltip="Placed up to this many squares away (0: around you; with the Self trait it is applied on you)"> sq.
+      <select name="system.areaCfg.shape"><option value="emanation" {{#if (eq system.areaCfg.shape "emanation")}}selected{{/if}}>Emanation</option><option value="burst" {{#if (eq system.areaCfg.shape "burst")}}selected{{/if}}>Burst</option><option value="line" {{#if (eq system.areaCfg.shape "line")}}selected{{/if}} data-tooltip="Line N: from your square, aimed at any square (no Distance)">Line</option></select>
+      within <input type="number" min="0" name="system.areaCfg.within" value="{{system.areaCfg.within}}" style="width:4em" data-tooltip="Placed up to this many squares away (0: around you; with the Self trait it is applied on you). A Line has no Distance: it ignores this."> sq.
       <span class="aelabel">Targets</span> <select name="system.areaCfg.targets"><option value="all" {{#if (eq system.areaCfg.targets "all")}}selected{{/if}}>All</option><option value="allies" {{#if (eq system.areaCfg.targets "allies")}}selected{{/if}}>Allies</option><option value="enemies" {{#if (eq system.areaCfg.targets "enemies")}}selected{{/if}}>Enemies</option></select>
       <span class="aebreak"></span>
       <label class="inline"><input type="checkbox" name="system.areaCfg.center" {{checked system.areaCfg.center}}> Affect the creature it is around</label>
@@ -326,7 +327,7 @@
       {{#if applied.exhausted}}<p class="fxd-help">Exhausted's own rules (Speed, the penalty on Rolls, the Mind Damage Threshold) come from its value; 0 removes it. Settings added here come on top of them.</p>{{/if}}
       {{else}}
       <h3>Identity</h3>
-      <label class="autosel" data-tooltip="How much Foundry does for this card, shown as a chip on it (Not implemented, Bronze, Silver, Gold)">Automation <select name="system.automation">{{selectOptions autoRanks selected=system.automation}}</select></label>
+      <label class="autosel" data-tooltip="How much Foundry does for this card, shown as a chip on it (Not implemented, Bronze, Silver, Gold)">Automation <select name="system.automation">{{selectOptions autoRanks selected=system.automation}}</select></label> <label class="autosel autonote" data-tooltip="What Foundry doesn't do yet for this card (shown on the diamond's tooltip). Mostly for Bronze and Silver">By hand <input type="text" name="system.automationNote" value="{{system.automationNote}}" placeholder="What the players do themselves"></label>
       <div class="fxd-s">This is <select class="fxd-f" data-fxkind>{{selectOptions kindChoices selected=kindVal}}</select> placed on <select class="fxd-f" data-fxself>{{selectOptions selfChoices selected=selfVal}}</select>.
         {{#if system.isCondition}}<label class="fxd-inl"><input type="checkbox" name="system.valued" {{#if system.valued}}checked{{/if}}> It has a value (like Empowered 2)</label>{{/if}}</div>
       <p class="fxd-help">An effect is a bundle of the settings below. A condition is a named state from the book (Prone, Empowered); one with a value keeps it on the creature, and clicking its icon raises it. "The user" is the creature that used the Action.</p>

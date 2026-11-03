@@ -284,7 +284,8 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       talents: int(0, 0),
       // v0.0.187: an Escalation Passive (the Features tab shows it in its Escalation section).
       escalationPassive: bool(),
-      automation: choice(TWOD12.automationRanks, ""),   // v0.0.189: Not implemented / Bronze / Silver / Gold
+      automation: choice(TWOD12.automationRanks, ""), automationNote: str(),   // v0.0.215: what is done by hand (the diamond tooltip)
+        // v0.0.189: Not implemented / Bronze / Silver / Gold
       // Defense bonuses: +bonus to the DC of actions that roll "vs" this attribute (and carry all the listed tags, e.g. "pushed").
       // A passive: settings that work by themselves while the creature has it (always, or while its Escalation is at least passiveEscalation).
       settings: settingsField(),
@@ -318,8 +319,12 @@ export class ActionData extends foundry.abstract.TypeDataModel {
     // and can have a Distance line): how far the area can be placed is the Distance ("10 sq.", "Your weapon's normal range"), shown on its own line.
     const c = this.areaCfg;
     if (c) {
-      this.area = c.size > 0 ? `${c.size} ${c.shape === "burst" ? "Burst" : "Emanation"}` : "";
-      this.areaDistance = c.size > 0 ? (c.withinRange ? `Your weapon's ${c.withinRange} range` : (c.within > 0 ? `${c.within} sq.` : "")) : "";
+      // v0.0.214: a Line is written "Line 10" (the value after the word) and has no Distance: it always starts from you.
+      // v0.0.215: versions with their own size write them all, by AP ("2 / 3 Emanation").
+      const sizes = c.size > 0 ? [...new Set([...(this.versions ?? [])].sort((a, b) => a.ap - b.ap).map(v => v.areaSize || c.size))] : [];
+      const sz = sizes.length > 1 ? sizes.join(" / ") : c.size;
+      this.area = c.size > 0 ? (c.shape === "line" ? `Line ${sz}` : `${sz} ${c.shape === "burst" ? "Burst" : "Emanation"}`) : "";
+      this.areaDistance = c.size > 0 && c.shape !== "line" ? (c.withinRange ? `Your weapon's ${c.withinRange} range` : (c.within > 0 ? `${c.within} sq.` : "")) : "";
     }
     if (String(this.area ?? "").trim() && this.traits instanceof Set && !this.traits.has("area")) this.traits.add("area");
   }
@@ -342,7 +347,7 @@ export class ActionData extends foundry.abstract.TypeDataModel {
       // The Area, as the Place Area button uses it: size, shape, how far it can be placed (0 = around you), who it targets, and its options.
       areaCfg: new SchemaField({
         size: int(0, 0),
-        shape: choice({ emanation: "Emanation", burst: "Burst" }, "emanation"),
+        shape: choice({ emanation: "Emanation", burst: "Burst", line: "Line" }, "emanation"),
         within: int(0, 0),
         targets: choice({ all: "All", allies: "Allies", enemies: "Enemies" }, "all"),
         center: bool(),
@@ -357,13 +362,16 @@ export class ActionData extends foundry.abstract.TypeDataModel {
       frequency: choice(TWOD12.frequencies),
       escalation: int(0, 0),   // the Escalation it costs on top of its AP (an Escalation Action); 0: none
       marksTarget: bool(),
+      basicAttack: bool(),   // v0.0.216 (Lucas): an NPC's Basic attack: used when an Action calls for a Weapon Attack (NPCs have none)
       weaponUse: choice(TWOD12.weaponUses, ""),   // v0.0.207: which weapon a Weapon Action uses (Pummel: only the Fists; Leg Sweep: a kick)
-      automation: choice(TWOD12.automationRanks, ""),   // v0.0.189   // v0.0.186: using it marks the targeted creature (Mark Quarry); settings "only against my marked target" read the mark
+      automation: choice(TWOD12.automationRanks, ""), automationNote: str(),   // v0.0.215: what is done by hand (the diamond tooltip)
+        // v0.0.189   // v0.0.186: using it marks the targeted creature (Mark Quarry); settings "only against my marked target" read the mark
       versions: new ArrayField(
         new SchemaField({
           ap: int(1, 0),   // 0: a 0 AP Action (only on your turn), or a 0R Reaction
           mode: choice({ weapon: "Weapon mode", power: "Power mode" }),   // a Split Action's versions: "" for the others
           noTiers: bool(),
+          areaSize: int(0, 0),   // v0.0.215: this version's Area size (0: the Action's); Word of Radiance is "2 / 3 Emanation"
           t1: tier(),
           t2: tier(),
           t3: tier(),
@@ -441,7 +449,8 @@ export class TalentData extends foundry.abstract.TypeDataModel {
       group: choice(TWOD12.talentGroups, "combat"),
       prereqs: new ArrayField(new SchemaField({ kind: choice(TWOD12.prereqKinds, "talent"), name: str(), value: int(0) })),
       prereqMode: choice({ all: "all of these", any: "any one of these" }, "all"),
-      automation: choice(TWOD12.automationRanks, ""),   // v0.0.189
+      automation: choice(TWOD12.automationRanks, ""), automationNote: str(),   // v0.0.215: what is done by hand (the diamond tooltip)
+        // v0.0.189
       theme: str()
     };
   }
@@ -504,7 +513,8 @@ export class EffectData extends foundry.abstract.TypeDataModel {
       isCondition: bool(),
       valued: bool(),   // a condition with a value (Empowered 2): the value is kept on the effect on the creature
       selfApplied: bool(),
-      automation: choice(TWOD12.automationRanks, ""),   // v0.0.189
+      automation: choice(TWOD12.automationRanks, ""), automationNote: str(),   // v0.0.215: what is done by hand (the diamond tooltip)
+        // v0.0.189
       minEscalation: int(0, 0),   // a passive that works only while its owner's Escalation is at least this (0: always)
       linked: str(),   // other conditions this one brings with it, by name ("Hindered"); they end when this one does
       conditions: new ArrayField(new SchemaField({ uuid: str(), name: str(), value: int(1, 0), valued: bool(), mode: choice({ set: "The highest counts", increase: "Increase the value", halfLevel: "Half the creature's level, rounded up (Squeezing)" }, "set") })),   // conditions this effect applies, each with its value; they end when this one does

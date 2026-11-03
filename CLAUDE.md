@@ -4,7 +4,7 @@ Read first, in this order: **HANDOFF.md** (state), **MASTER-PLAN.md** (the order
 
 ## What is here
 - `book/rules-src/*.md` = **the rulebook source (the only thing to edit)**. `python3 build_rules.py` (in `book/`) builds 7 HTML documents; never edit the HTML. Conventions: `book/rules-src/README.md`. Numbers: `book/ruler/` (README + scripts). Diagrams: `book/diagrams/diagrams.py`.
-- `foundry/twod12/` = the Foundry system (module/, templates/, tools/content.mjs = the compendium content, tools/tests = 167 tests; build the packs first in a fresh clone).
+- `foundry/twod12/` = the Foundry system (module/, templates/, tools/content.mjs = the compendium content, tools/tests = 172 tests; build the packs first in a fresh clone).
 - Backlogs: `book/rules-backlog.md` (rules log), `foundry/foundry-backlog.md` (what Foundry must follow). `archive/` = applied change logs.
 
 ## Commands
@@ -19,6 +19,7 @@ Read first, in this order: **HANDOFF.md** (state), **MASTER-PLAN.md** (the order
 - "analyze", "brainstorm", "not applying yet", "don't write yet" = discuss only; note decisions in the backlogs; no edits until told to apply.
 - Lucas decides the rules. Rules go into the book first (rules-src), then Foundry. Log every rule change in `rules-backlog.md`; update README, backlogs and HANDOFF at the end of every pack.
 - Corrections apply going forward, not retroactively, unless asked.
+- **Chat messages (Lucas, 2026-11-03):** every new feature that posts to the chat uses the system's design, never a plain text line: `sysCard` (title bar, bold lead line, text line) or `sysLine` (a short follow-up with an icon) from `foundry/twod12/module/sysmsg.mjs`, or the Action card look for Action results. When you touch an old plain message, convert it too.
 - Ability and item text: concise and direct. **Lucas doesn't write Flavor: write the Flavor line of every new Action, Talent or Feature.**
 - You cannot run Foundry. Say plainly what could not be tried and give a diagnostic when possible (with the Chrome extension connected you may smoke-test in the browser, but Lucas's own test stays the source of truth).
 - Commit after each pack (clear message). Don't commit zips.

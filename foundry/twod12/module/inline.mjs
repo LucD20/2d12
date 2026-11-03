@@ -120,6 +120,7 @@ export function parseInline(kind, inner) {
     else if (key === "upto") cfg.upto = /^(yes|true|1|y)$/i.test(val);
     else if (key === "expire") cfg.expire = val.toLowerCase();
     else if (key === "round" || key === "rounds") cfg.rounds = Number(val) || 0;
+    else if (key === "height") cfg.height = Math.max(1, Number(val) || 1);   // v0.0.214: a Line's height in squares (1 unless the card says otherwise)
     else if (key === "ht") cfg.ht = val;   // Hazardous Terrain: ht:entering+turn (or ht:yes for the default, Entering and Turn)
     else if (key === "difficult") cfg.difficult = /^(no|false|0)$/i.test(val) ? [] : (/^(yes|true|1|y)$/i.test(val) ? ["walk"] : (val.toLowerCase() === "all" ? Object.keys(TWOD12.movementActions) : val.toLowerCase().split(",").map(x => x.trim()).filter(Boolean)));
     else if (key === "difficultfor" || key === "dfor") cfg.dfor = val.toLowerCase();
@@ -231,8 +232,8 @@ export function registerInline() {
         if (calc) { const c = document.createElement("i"); c.className = "fa-solid fa-calculator calc"; c.dataset.tooltip = value ? `Calculated from your stats: ${cfg.distanceExpr} = ${value}` : `Calculated: ${cfg.distanceExpr}`; el.append(" ", c); }
         return el;
       }
-      const burst = cfg.shape === "burst";
-      return inlineEl(kind, cfg, cfg.label ?? match[3] ?? String(cfg.distance || 1), burst ? "fa-burst" : "fa-vector-square");
+      const burst = cfg.shape === "burst", isLine = cfg.shape === "line";   // v0.0.214: a Line ("Line 10")
+      return inlineEl(kind, cfg, cfg.label ?? match[3] ?? (isLine ? `Line ${cfg.distance || 1}` : String(cfg.distance || 1)), burst ? "fa-burst" : isLine ? "fa-arrow-right-long" : "fa-vector-square");
     }
   });
 }
@@ -502,10 +503,30 @@ async function handleReloadWeapon(ctx = {}) {
   try { actor = f?.actorUuid ? await fromUuid(f.actorUuid) : null; } catch (e) { /* not loaded */ }
   actor ??= canvas.tokens?.controlled[0]?.actor ?? game.user.character ?? null;
   if (!actor?.isOwner) return ui.notifications.warn("Select your token first.");
-  const empty = actor.itemTypes.weapon.filter(w => w.system.wielded && w.system.traits.has("reload") && w.system.unloaded);
-  if (!empty.length) return ui.notifications.info(`${actor.name} has no unloaded weapon in hand.`);
-  for (const w of empty) await w.update({ "system.unloaded": false });
-  ui.notifications.info(`${empty.map(w => w.name).join(", ")} reloaded.`);
+  // v0.0.221 (Lucas; book: Reload, Distance Reach): your own unloaded weapon, or an ally's within your Reach. Several: you choose one.
+  const emptyOf = a => (a?.itemTypes?.weapon ?? []).filter(w => w.system.wielded && w.system.traits.has("reload") && w.system.unloaded);
+  const opts = emptyOf(actor).map(w => ({ w, who: actor, label: `Your ${w.name}` }));
+  const me = actor.token?.object ?? actor.getActiveTokens?.()[0] ?? null;
+  if (me) {
+    const reach = Math.max(1, Number(actor.system?.reach) || 1);
+    const { tokenDistance } = await import("./light.mjs");
+    for (const t of canvas.tokens?.placeables ?? []) {
+      if (t.id === me.id || !t.actor || t.document.hidden || (t.document.disposition ?? 0) !== (me.document.disposition ?? 0) || tokenDistance(me, t) > reach) continue;
+      for (const w of emptyOf(t.actor)) opts.push({ w, who: t.actor, label: `${t.name}'s ${w.name}` });
+    }
+  }
+  if (!opts.length) return ui.notifications.info(`No unloaded weapon in hand: neither ${actor.name}'s nor an ally's within Reach.`);
+  let pick = opts[0];
+  if (opts.length > 1) {
+    const k = await foundry.applications.api.DialogV2.wait({ window: { title: "Reload" }, content: "<p>Which weapon do you reload?</p>", rejectClose: false,
+      buttons: opts.map((o, n) => ({ action: String(n), label: o.label, default: n === 0 })) });
+    if (k == null) return;
+    pick = opts[Number(k)];
+  }
+  if (pick.w.isOwner) await pick.w.update({ "system.unloaded": false });
+  else game.socket.emit("system.twod12", { type: "reloadWeapon", uuid: pick.w.uuid });   // the GM reloads an ally's weapon you don't own
+  const { sysLine } = await import("./sysmsg.mjs");
+  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-bullseye", pick.who === actor ? `<b>${esc(actor.name)}</b> reloads ${esc(pick.w.name)}.` : `<b>${esc(actor.name)}</b> reloads <b>${esc(pick.who.name)}</b>'s ${esc(pick.w.name)}.`, "reloadmsg") });
 }
 
 /** The condition goes on the targets of the card (or the targeted / selected tokens), with the duration written on the button. */

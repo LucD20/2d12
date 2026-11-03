@@ -253,8 +253,9 @@ export const cardVars = hex => {
 
 /** The title bar of an Action card: name on the left, category and cost on the right. */
 /** v0.0.189: the automation rank as a small chip (nothing when it isn't set). */
-export const autoChip = rank => (rank && TWOD12.automationRanks[rank] ? `<i class="fa-solid fa-diamond autodia auto-${rank}" data-tooltip="${escAttr(TWOD12.automationHints[rank] ?? "")}" aria-label="${escAttr(TWOD12.automationRanks[rank])}"></i>` : "");   // v0.0.190: a diamond (grey, bronze, silver, gold), the rank on hover
-export const cardHead = (name, cat, costHtml, freq = "", auto = "") => `<div class="ahead"><b>${escAttr(name)}${autoChip(auto)}</b><div class="aright"><span class="atop">${freq && TWOD12.frequencies[freq] ? `<span class="afreq">${escAttr(TWOD12.frequencies[freq])}</span>` : ""}${costHtml ? `<span class="aps">${costHtml}</span>` : ""}</span>${cat ? `<span class="acat">${escAttr(cat)}</span>` : ""}</div></div>`;
+// v0.0.215 (Lucas, playtest 2): the diamond's tooltip also says what is not implemented yet (the item's "By hand" note), for Bronze and Silver.
+export const autoChip = (rank, note = "") => (rank && TWOD12.automationRanks[rank] ? `<i class="fa-solid fa-diamond autodia auto-${rank}" data-tooltip="${escAttr(`${TWOD12.automationHints[rank] ?? ""}${String(note ?? "").trim() ? ` By hand: ${String(note).trim()}` : ""}`)}" aria-label="${escAttr(TWOD12.automationRanks[rank])}"></i>` : "");   // v0.0.190: a diamond (grey, bronze, silver, gold), the rank on hover
+export const cardHead = (name, cat, costHtml, freq = "", auto = "", autoNote = "") => `<div class="ahead"><b>${escAttr(name)}${autoChip(auto, autoNote)}</b><div class="aright"><span class="atop">${freq && TWOD12.frequencies[freq] ? `<span class="afreq">${escAttr(TWOD12.frequencies[freq])}</span>` : ""}${costHtml ? `<span class="aps">${costHtml}</span>` : ""}</span>${cat ? `<span class="acat">${escAttr(cat)}</span>` : ""}</div></div>`;
 /** Damage on cards: a filled heart for Body, a filled brain for Mind, and each damage type in its own color with its icon. */
 export const poolIcon = pool => pool === "M" ? '<i class="fa-solid fa-brain dt-mind" data-tooltip="Mind damage"></i>'
   : pool === "C" ? '<span class="dt-choose" data-tooltip="Body or Mind: the origin chooses"><i class="fa-solid fa-heart dt-body"></i><i class="fa-solid fa-brain dt-mind"></i></span>'
@@ -456,8 +457,10 @@ export function requirementProblem(d, actor, target = null, opts = {}) {
   return "";
 }
 
-/** "1 Emanation within 10 sq." -> { shape, size, within }. */
+/** "1 Emanation within 10 sq." -> { shape, size, within }; v0.0.214: "Line 10" -> { shape: "line", size: 10, within: 0 }. */
 export function parseArea(text) {
+  const ln = String(text ?? "").trim().match(/^line\s+(\d+)$/i);
+  if (ln) return { size: Number(ln[1]), shape: "line", within: 0 };
   const m = String(text ?? "").trim().match(/^(\d+)\s*(emanation|burst)(?:\s+within\s+(\d+)\s*sq\.?)?$/i);
   return m ? { size: Number(m[1]), shape: m[2].toLowerCase(), within: m[3] ? Number(m[3]) : 0 } : null;
 }
@@ -467,17 +470,19 @@ export function areaConfigOf(d) {
   const c = d?.areaCfg, set = c?.size > 0;
   const a = set ? { size: c.size, shape: c.shape || "emanation", within: c.within || 0 } : parseArea(d?.area);
   if (!a) return null;
-  const onSelf = a.shape === "emanation" && !a.within && !!d?.traits?.has?.("self");
-  return { shape: a.shape, distance: a.size, targets: c?.targets || "all", self: !!c?.center, keep: !!c?.keep, rounds: c?.rounds || 0, at: onSelf ? "self" : "", withinRange: c?.withinRange || "", ht: c?.ht || "" };
+  // v0.0.215 (Lucas, playtest 2): an Emanation with no Distance is always around its user (Ground Slam, not only Self Actions): shown, not placed.
+  const onSelf = a.shape === "emanation" && !a.within && !c?.withinRange;
+  const line = a.shape === "line";   // v0.0.214: a Line starts from you: no Distance
+  return { shape: a.shape, distance: a.size, targets: c?.targets || "all", self: !!c?.center && !line, keep: !!c?.keep, rounds: c?.rounds || 0, at: onSelf ? "self" : "", withinRange: line ? "" : c?.withinRange || "", ht: c?.ht || "", ...(line ? { within: 0 } : {}) };
 }
 
 export const areaButton = d => {
   const c = d?.areaCfg, set = c?.size > 0;
   const a = set ? { size: c.size, shape: c.shape || "emanation", within: c.within || 0 } : parseArea(d?.area);
   if (!a) return "";
-  // A Self Action whose Emanation has no "within" is centered on you: no placing needed.
-  const onSelf = a.shape === "emanation" && !a.within && !!d?.traits?.has?.("self");
-  const opts = [a.shape, `distance:${a.size}`, `targets:${c?.targets || "all"}`, `self:${c?.center ? "yes" : "no"}`, c?.keep ? "keep:yes" : "", c?.rounds ? `rounds:${c.rounds}` : "", c?.ht ? `ht:${c.ht}` : "", onSelf ? "at:self" : "", set ? "quick:yes" : "", `label:${onSelf ? "Apply Area" : "Place Area"}`];
+  // An Emanation with no "within" (no Distance) is centered on you: no placing needed (v0.0.215: not only Self Actions).
+  const onSelf = a.shape === "emanation" && !a.within && !c?.withinRange;
+  const opts = [a.shape, `distance:${a.size}`, `targets:${c?.targets || "all"}`, `self:${c?.center && a.shape !== "line" ? "yes" : "no"}`, c?.keep ? "keep:yes" : "", c?.rounds ? `rounds:${c.rounds}` : "", c?.ht ? `ht:${c.ht}` : "", onSelf ? "at:self" : "", set ? "quick:yes" : "", `label:${onSelf ? "Apply Area" : "Place Area"}`];
   return `@Template[${opts.filter(Boolean).join("|")}]`;
 };
 /** An Action that is a Talent: its category starts with "Talent" (Aim, Cut Through...). It goes in the Talents and Features tab, not only in Actions. */

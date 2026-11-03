@@ -73,7 +73,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       confirmDelete: CharacterSheet.confirmDelete,
       rollInitiative: CharacterSheet.rollInitiative, addBasic: CharacterSheet.addBasic, rest: CharacterSheet.rest, editSenses: CharacterSheet.editSenses,
       sendItem: CharacterSheet.sendItem, toggleGroup: CharacterSheet.toggleGroup, generateWeapon: CharacterSheet.generateWeapon, toggleLoaded: CharacterSheet.toggleLoaded,
-      toggleFav: CharacterSheet.toggleFav, toggleDetails: CharacterSheet.toggleDetails, toggleEsc: CharacterSheet.toggleEsc, toggleGrant: CharacterSheet.toggleGrant, setFilter: CharacterSheet.setFilter, setView: CharacterSheet.setView,
+      toggleFav: CharacterSheet.toggleFav, toggleDetails: CharacterSheet.toggleDetails, toggleEsc: CharacterSheet.toggleEsc, toggleEscPass: CharacterSheet.toggleEscPass, toggleGrant: CharacterSheet.toggleGrant, setFilter: CharacterSheet.setFilter, setView: CharacterSheet.setView,
       setHands: CharacterSheet.setHands, setWorn: CharacterSheet.setWorn, setEscalation: CharacterSheet.setEscalation, toggleEscalation: CharacterSheet.toggleEscalation, masteryStep: CharacterSheet.masteryStep, masteryCollapse: CharacterSheet.masteryCollapse, masteryOpen: CharacterSheet.masteryOpen, chooseStartMastery: CharacterSheet.chooseStartMastery, hpEdit: CharacterSheet.hpEdit,
       setHealthView: CharacterSheet.setHealthView, setApPip: CharacterSheet.setApPip,
       toggleCard: CharacterSheet.toggleCard, reloadFor: CharacterSheet.reloadFor, toggleBasic: CharacterSheet.toggleBasic,
@@ -161,7 +161,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       if (!detail && String(sys.hover ?? "").trim()) detail = short(tipOf(it));   // its own hover text; the description shows when the card is opened
       const key = it.id ?? it.uuid;
       // Opened: its description first, then what it grants.
-      return { key, id: it.id, name: it.name, auto: autoChip(sys.automation), kind, kcls: kind.toLowerCase(), detail: o.detail ?? detail, tip: tipOf(it), rows, open: !!this._openFeat?.has(key), canRemove: !!o.canRemove,
+      return { key, id: it.id, name: it.name, auto: autoChip(sys.automation, sys.automationNote), kind, kcls: kind.toLowerCase(), detail: o.detail ?? detail, tip: tipOf(it), rows, open: !!this._openFeat?.has(key), canRemove: !!o.canRemove,
         text: (await TE.enrichHTML(sys.description ?? "", { relativeTo: it })).trim() || (rows.length ? "" : "<p><em>No description.</em></p>") };
     };
     // Class: the granted Features in your order (level order at first), then the ones not reached yet.
@@ -324,7 +324,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const isEscAct = i => Number(i.system?.escalation) > 0;
     const tableRows = actions.filter(i => !i.getFlag("twod12", "basic") && !isEscAct(i)).map(actRow);
     const escOpen = (game.user.getFlag("twod12", "escOpen") ?? {})[a.id];
-    const esc = isPc || a.system?.useEscalation ? escalationModel(a, { actionRow: i => this._actionRow(i), isFaded, open: escOpen ?? null }) : { show: false };
+    const esc = isPc || a.system?.useEscalation ? escalationModel(a, { actionRow: i => this._actionRow(i), isFaded, open: escOpen ?? null, openPass: this._escPass }) : { show: false };
     const actGroups = groupRows(tableRows, { groupBy, sort: sortBy, order, sourceLabels: this._groupLabels.filter(l => l !== "Basic") })
       .map(g => ({ ...g, collapsed: !!g.label && collapsed.has(g.label) }));
     // Granted: Actions an effect lets you use for free, with the uses left and where they came from.
@@ -878,6 +878,14 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   }
   /** The arrow at the end of a row opens the Action's card under it (one Version at a time). */
   /** v0.0.194: open or collapse the Escalation block (remembered per sheet, for each user). */
+  /** v0.0.215: show or hide an Escalation Passive's description under it (kept while the sheet is open). */
+  static toggleEscPass(event, target) {
+    const id = target.closest("[data-item-id]")?.dataset.itemId;
+    if (!id) return;
+    this._escPass ??= new Set();
+    if (this._escPass.has(id)) this._escPass.delete(id); else this._escPass.add(id);
+    this.render();
+  }
   static async toggleEsc() {
     const all = foundry.utils.deepClone(game.user.getFlag("twod12", "escOpen") ?? {});
     const now = all[this.actor.id] ?? !!game.combat?.started;

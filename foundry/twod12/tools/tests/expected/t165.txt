@@ -8,7 +8,7 @@ the old mark ended: true | messages: 1
 --- the marked creature goes Down
 Prone is not Down: nothing: 0 | still marked: true
 Unconscious: the mark ended: true | messages: 1
-  whisper ["gm","p1"] | <div class="twod12 chat sysline cardmsg"><i class="fa-solid fa-comment-dots"></i><span><b>Lana</b>: your mark, <b>Goblin</b>, went Down. Choose a new one: target a creature and use your marking Action: <a data-twod12-inline="Use">Mark Quarry|ap:0|source:Marked Quarry|label:Mark Quarry (0 AP)</a></span></div>
+  whisper ["gm","p1"] | <div class="twod12 chat sysline cardmsg"><i class="fa-solid fa-comment-dots"></i><span><b>Lana</b>: your mark, <b>Goblin</b>, went <span class="kw-neg">Down</span>. Choose a new one: target a creature and use your marking Action: <a data-twod12-inline="Use">Mark Quarry|ap:0|source:Marked Quarry|label:Mark Quarry (0 AP)</a></span></div>
 --- an item made from scratch: a turn-start message to everyone, Escalation 2+, no Action
 Escalation 1: 0 | Escalation 2: 1 | at the start of an encounter: 0
   whisper [] | <div class="twod12 chat sysline cardmsg"><i class="fa-solid fa-comment-dots"></i><span><b>Kai</b>: <b>Kai</b> roars. Allies near <b>Kai</b> take heart.</span></div>

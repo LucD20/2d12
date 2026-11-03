@@ -2037,3 +2037,45 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 /* v0.0.211: a hand button of a Two-handed weapon held in one hand (3 Banes): an amber ring; a greyed button can be clicked (it asks). */
 .twod12.sheet.ns .ar-use.hand.warn { box-shadow: 0 0 0 2px #d08a1e inset; }
 .twod12.sheet.ns .ar-use.hand.off { cursor: pointer; }
+
+/* v0.0.215 (Lucas, playtest 2): what a Talent or Feature grants is shown as the Action's card; a choice's options fold. */
+.twod12.chat.infocard .igrant { margin: 4px 0 0 4px; padding-left: 8px; border-left: 2px solid rgba(128,128,128,.45); }
+.twod12.chat.infocard .igrant > .twod12.chat { margin: 0; box-shadow: none; }
+.twod12.chat.infocard details.ichoice > summary { cursor: pointer; list-style: none; }
+.twod12.chat.infocard details.ichoice > summary::-webkit-details-marker { display: none; }
+.twod12.chat.infocard details.ichoice[open] > summary .ikid { font-weight: 600; }
+/* v0.0.215: a choice (Lesser Blessing's blessing) made in the class window, under the card. */
+.classwin .cw-choice { margin: 8px 0 4px; padding: 6px 8px; border: 1px dashed var(--cw-navy); border-radius: 6px; background: #fff; color: #1f2430; }
+.classwin .cw-choice-h { font-weight: 700; margin-bottom: 4px; }
+/* v0.0.215 (Lucas, playtest 2): the Armor Training on the Loadout's Armor slot. */
+.twod12.sheet .lo-slot .lo-train { margin-left: auto; font-size: 10px; font-weight: 600; opacity: .8; white-space: nowrap; padding-left: 6px; }
+/* v0.0.215 (Lucas, playtest 2): remove a target from the roll dialog (the x on its tile). */
+.twod12.usedlg .ttile { position: relative; }
+.twod12.usedlg .ttile .ttx { position: absolute; top: -5px; right: -5px; width: 15px; height: 15px; border-radius: 50%; background: #8f2a20; color: #fff; font-size: 9px; line-height: 15px; text-align: center; display: none; cursor: pointer; }
+.twod12.usedlg .ttile:hover .ttx { display: block; }
+/* v0.0.215 (Lucas, playtest 2): an Escalation Passive's description opens under it in the Actions tab. */
+.twod12.sheet .ex-pass .ex-edit { margin-left: auto; opacity: .55; font-size: 11px; }
+.twod12.sheet .ex-pass .ex-edit:hover { opacity: 1; }
+.twod12.sheet .ex-pdesc { margin: 2px 0 6px 22px; padding: 4px 8px; border-left: 2px solid var(--fq, #8a7650); font-size: 12px; }
+.twod12.sheet .ex-pdesc p { margin: 2px 0; }
+/* v0.0.216: the targets removed in the roll dialog, each a chip that puts it back. */
+.twod12.usedlg .tremoved { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; font-size: 11px; margin: 2px 0; }
+.twod12.usedlg .tremoved:empty { display: none; }
+.twod12.usedlg .tremoved .trm-chip { cursor: pointer; padding: 1px 7px; border-radius: 9px; background: rgba(143,42,32,.15); border: 1px solid rgba(143,42,32,.5); }
+/* v0.0.216 (Lucas): the Line's placing bar, in the target-picking banner's look (#twod12-targeting). */
+.twod12-linebar { position: fixed; bottom: 86px; left: 50%; transform: translateX(-50%); z-index: 1000; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; max-width: calc(100vw - 340px); padding: 8px 16px; border-radius: 8px; background: rgba(20, 24, 32, .92); color: #f4e9d0; border: 1px solid #c9a24a; font-size: 14px; box-shadow: 0 4px 14px rgba(0, 0, 0, .5); }
+.twod12-linebar .lb-ic { color: #e05a4f; }
+.twod12-linebar .lb-side { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+.twod12-linebar .lb-side button { width: auto; height: 26px; line-height: 24px; padding: 0 10px; margin: 0; font-size: 13px; background: #2e3442; color: #f4e9d0; border: 1px solid #c9a24a; border-radius: 5px; cursor: pointer; white-space: nowrap; }
+.twod12-linebar .lb-side button:hover { background: #3c4458; }
+.twod12-linebar .lb-side button.on { background: #c9a24a; color: #1b1f28; font-weight: 700; }
+.twod12-linebar kbd { font-size: 11px; padding: 1px 5px; border: 1px solid #6b5a33; border-radius: 3px; background: #1b1f28; color: #c9a24a; }
+/* v0.0.218 (Lucas): the Charge picker's bar (the Line's bar) and its Give up button. */
+.twod12-chargebar .lb-give { width: auto; height: 26px; line-height: 24px; padding: 0 10px; margin: 0; font-size: 13px; background: #4a2420; color: #f4e9d0; border: 1px solid #c9a24a; border-radius: 5px; cursor: pointer; white-space: nowrap; }
+.twod12-chargebar .lb-give:hover { background: #6a3028; }
+/* v0.0.219 (Lucas): the Charge bar keeps one size (its text changes as you aim; the buttons stay where they are). */
+.twod12-linebar.twod12-chargebar { width: min(780px, calc(100vw - 340px)); max-width: none; flex-wrap: nowrap; box-sizing: border-box; }
+.twod12-chargebar .lb-text { flex: 1 1 auto; min-width: 0; height: 2.6em; line-height: 1.3em; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.twod12-chargebar .lb-side, .twod12-chargebar .lb-give, .twod12-chargebar .lb-ic { flex: 0 0 auto; }
+/* v0.0.221: movement messages are system lines; their buttons (End movement, Advance instead) sit on the line. */
+.twod12.chat.sysline.movemsg button.endmove { width: auto; display: inline-flex; align-items: center; gap: 4px; margin: 3px 4px 0 0; padding: 1px 8px; font-size: 12px; line-height: 18px; }

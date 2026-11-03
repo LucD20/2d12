@@ -4,7 +4,7 @@ free hand, empty hands: "" | greatsword in 2 hands: needs a free hand | a hidden
 Speed 3 uses the current Speed: needs a Speed of at least 3 | ""
 --- Area
 {"size":1,"shape":"emanation","within":0} {"size":2,"shape":"burst","within":10} null
-@Template[emanation|distance:1|targets:all|self:no|label:Place Area] | true | 10 sq.
+@Template[emanation|distance:1|targets:all|self:no|at:self|label:Apply Area] | true | 10 sq.
 --- Fists
 no Brawler: Sword,Fists | with Brawler: Sword,Fists | Fists are Melee: true | a sword is Ranged: false
 v0.0.169 Fists as a weapon: with a two-handed weapon (no free hand): Greatsword | an older Fists item still has the properties: true

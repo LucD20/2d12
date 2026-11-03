@@ -85,9 +85,12 @@ const runner = { id: "me", x: 0, y: 0, width: 1, height: 1, disposition: 1, acto
 console.log("Charge A1 to G4 with an Orc on B1: the line uses B2:", mv.chargeLine(runner, { x: 0, y: 0 }, { x: 600, y: 300 }).cells.map(sq).join(" "), "| ties:", mv.chargeLine(runner, { x: 0, y: 0 }, { x: 600, y: 300 }).ties);
 console.log("a drag through B1 (not legal) still takes the legal B2:", mv.chargeLine(runner, { x: 0, y: 0 }, { x: 600, y: 300 }, [{ x: 100, y: 0 }]).cells.map(sq).slice(0, 3).join(" "));
 console.log("with no Orc, a drag along row 1 is honored at every tie:", (tokens.length = 0, mv.chargeLine(runner, { x: 0, y: 0 }, { x: 600, y: 300 }, [{ x: 300, y: 100 }, { x: 500, y: 200 }]).cells.map(sq).join(" ")));
+// v0.0.218: the Charge picker's path: the Line's squares on one side, the first square that isn't legal, where it stops.
+tokens.push({ id: "x", name: "Orc", actor: {}, document: { id: "x", x: 300, y: 200, width: 1, height: 1, disposition: -1, hidden: false } });
+for (const side of ["left", "right"]) { const p = mv.chargePath(runner, { i: 0, j: 0 }, { i: 3, j: 6 }, side); console.log(`Charge picker A1 to G4, ties ${side}:`, p.cells.map(sq).join(" "), "| ties", p.ties, "| first not legal:", p.bad >= 0 ? `${sq(p.cells[p.bad])} (${p.problem})` : "none"); }
 tokens.length = 0;
 const mvSrc = src("module/move.mjs");
-console.log("Charge checks the chosen line square by square:", mvSrc.includes("const { cells } = chargeLine(doc, from, to, via);") && mvSrc.includes("chargeProblem(doc, from, to, ch, via)"));
+console.log("Charge checks the chosen line square by square:", mvSrc.includes("export function chargePath(doc, a, b, side") && mvSrc.includes("chargeSquareProblem(doc, prev, cur, w, h)"));   // v0.0.218: the Charge picker
 
 console.log("--- Haul");
 const h = b.BASIC_ACTIONS.haul, lad = h.versions.map(v => `${v.ap}AP: ${[v.x1, v.x2, v.x3].map(x => (x.match(/pulled\|distance:(\d)/)?.[1] ?? "0")).join("/")}`).join(" | ");

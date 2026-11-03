@@ -44,15 +44,16 @@ export const BASIC_ACTIONS = {
     name: "Reload",
     frequency: "atwill",
     img: "icons/svg/upgrade.svg",
-    traits: ["handle", "weapon"],   // a Weapon Action (the Weapon Modifier) against DC 13; reloading an ally's weapon isn't automated yet
+    traits: ["handle", "weapon"],   // a Weapon Action (the Weapon Modifier) against DC 13; v0.0.221: your weapon or an ally's within Reach (the button asks)
     targets: "",
     vs: "",
-    distance: "self",
+    distance: "reach",
+    requirements: "You or an ally within Reach is wielding an unloaded weapon.",
     versions: [
       V(1, [], [], [], "", {
         x1: "Your next Reload attempt gains 2 Boons.",
-        x2: "You Reload your weapon. @Reload[weapon] Then you can Regrip (1A) to hold your weapon with two hands: @Regrip[weapon|label:Regrip (1A)]",
-        x3: "You Reload your weapon and @Move[evade|distance:1]. @Reload[weapon] Then you can Regrip (1A) to hold your weapon with two hands: @Regrip[weapon|label:Regrip (1A)]"
+        x2: "You Reload the weapon (yours, or an ally's within Reach). @Reload[weapon] Then you can Regrip (1A) to hold the weapon with two hands, or the ally can: @Regrip[weapon|label:Regrip (1A)]",
+        x3: "You Reload the weapon (yours, or an ally's within Reach), and its wielder can Evade 1: @Move[evade|distance:1]. @Reload[weapon] Then you can Regrip (1A) to hold the weapon with two hands, or the ally can: @Regrip[weapon|label:Regrip (1A)]"
       })
     ]
   },
@@ -282,13 +283,20 @@ const toItem = (key, d) => ({
 /** The data of a Basic Action as an embedded Item (used to build the NPC compendium). */
 export const basicItemData = key => toItem(key, BASIC_ACTIONS[key]);
 
-/** NPCs do not have Rally Points, so they do not get the Rally action. */
-const wanted = (actor, key) => !(actor.type === "npc" && key === "rally");
+/**
+ * The Basic Actions an NPC doesn't get: Rally (NPCs have no Rally Points) and, v0.0.214 (Lucas, playtest 2), Weapon Attack and the Fists Action:
+ * NPCs have no weapons of their own, their Basic attack is their weapon attack (with both they made two Bane-free attacks a turn).
+ */
+export const NPC_NO_BASIC = ["rally", "basicWeaponAttack", "fists"];
+export const wanted = (actor, key) => !(actor?.type === "npc" && NPC_NO_BASIC.includes(key));
+/** The Basic Actions a creature has but shouldn't (an NPC made before v0.0.214 with Weapon Attack). */
+export const unwantedBasics = actor => actor.items.filter(i => i.type === "action" && i.getFlag(F, "basic") && !wanted(actor, i.getFlag(F, "basic")));
 
-/** Add (or replace) the Basic Actions on an actor. */
+/** Add (or replace) the Basic Actions on an actor; an NPC loses the ones it doesn't get (v0.0.214: Weapon Attack, Fists). */
 export async function addBasicActions(actor, { replace = false } = {}) {
   const have = actor.items.filter(i => i.type === "action" && i.getFlag(F, "basic"));
-  if (replace && have.length) await actor.deleteEmbeddedDocuments("Item", have.map(i => i.id));
+  const drop = replace ? have : unwantedBasics(actor);
+  if (drop.length) await actor.deleteEmbeddedDocuments("Item", drop.map(i => i.id));
   const keep = new Set(replace ? [] : have.map(i => i.getFlag(F, "basic")));
   const data = Object.entries(BASIC_ACTIONS).filter(([k]) => !keep.has(k) && wanted(actor, k)).map(([k, d]) => toItem(k, d));
   if (data.length) await actor.createEmbeddedDocuments("Item", data);
@@ -376,11 +384,11 @@ export function registerBasicHooks() {
       try {
         // v0.0.174: Relocate keeps the target within your Reach (its buttons say reach:yes): an older copy is replaced.
         const oldRelocate = actor.items.some(i => i.type === "action" && i.getFlag(F, "basic") === "relocate" && !JSON.stringify(i.system.versions ?? []).includes("reach:yes"));
-        const old = actor.items.some(i => i.type === "action" && i.getFlag(F, "basic") === "reposition") || missingBasic(actor) || oldRelocate;
+        const old = actor.items.some(i => i.type === "action" && i.getFlag(F, "basic") === "reposition") || missingBasic(actor) || oldRelocate || unwantedBasics(actor).length > 0;   // v0.0.214: an NPC with Weapon Attack
         if (old) { await addBasicActions(actor, { replace: true }); n++; } else await ensureFists(actor);
       } catch (e) { console.warn("twod12 | could not update the Basic Actions of", actor.name, e); }
     }
-    if (n) ui.notifications.info(`2d12: the Basic Actions were updated on ${n} creature${n === 1 ? "" : "s"} (Relocate, Shove, Haul, Fists).`);
+    if (n) ui.notifications.info(`2d12: the Basic Actions were updated on ${n} creature${n === 1 ? "" : "s"} (Relocate, Shove, Haul, Fists; NPCs have no Weapon Attack).`);
   });
 }
 

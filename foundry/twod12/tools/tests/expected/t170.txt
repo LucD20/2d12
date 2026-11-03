@@ -1,0 +1,42 @@
+--- Line 10 from (0,0) (the prompt's cases)
+aim (1,0): (1,0) (2,0) (3,0) (4,0) (5,0) (6,0) (7,0) (8,0) (9,0) (10,0)
+aim (1,1): (1,1) (2,2) (3,3) (4,4) (5,5) (6,6) (7,7)
+aim (2,1) left:  (1,0) (2,1) (3,1) (4,2) (5,2) (6,3) (7,3) (8,4)
+aim (2,1) right: (1,1) (2,1) (3,2) (4,2) (5,3) (6,3) (7,4) (8,4)
+aim (5,2): (1,0) (2,1) (3,1) (4,2) (5,2) (6,2) (7,3) (8,3) | right is the same (no tie): true | ties: false
+aim (-2,-5): (0,-1) (-1,-2) (-1,-3) (-2,-4) (-2,-5) (-2,-6) (-3,-7) (-3,-8)
+aim at the origin: nothing
+lengths: straight 10 | 45 degrees 7 | 2:1 8 | 5:2 8
+(4,2) is (2,1): true | (6,3) right is (2,1) right: true
+rotated 90: true true | 180: true | mirrored swaps the side: true
+4:1 both sides the same length, not the same shape: 9 9 | (1,0) (2,0) (3,1) (4,1) (5,1) (6,1) (7,2) (8,2) (9,2) | (1,0) (2,1) (3,1) (4,1) (5,1) (6,2) (7,2) (8,2) (9,2)
+tie squares passed over (2,1) left: (1,1) (3,2) (5,3) (7,4)
+the count: (7,3) costs 8 | (8,4) 10 | (9,4) 11
+--- walls, a Large creature, height
+a wall before (4,0) cuts it: (1,0) (2,0) (3,0)
+Line 10 east with a wall at x=5: (1,0) (2,0) (3,0) (4,0) | stopped: true | side kept: {"origin":{"x":0,"y":0},"target":{"x":9,"y":0},"value":10,"side":"left"}
+a Large creature aims southeast: from (1,1) (2,2) (3,3) (4,4)
+aims east along its top row: from (1,0) (2,0) (3,0) (4,0) (5,0) | south from its left column: (0,1) (0,2) (0,3) (0,4)
+aiming inside its own space: nothing: 0
+height 1: on the ground true | flying 1 square up false | a Large creature (2 tall) standing 1 below true | half a square up true
+--- the region of a diagonal Line (squares touching only at corners)
+corner-only contacts: true | an Emanation has none: false
+diagonal Line 4: rectangle 100,100 100x100 | rectangle 200,200 100x100 | rectangle 300,300 100x100
+a steep Line 6 (runs down the columns): 0,100 100x100 | 100,200 100x300 | 200,500 100x100
+a 2:1 Line 6 (its steps touch at corners too): true rectangle rectangle rectangle
+--- Straight Line movement: one tie side for the whole movement
+A1 to G4 left:  (1,0) (2,1) (3,1) (4,2) (5,2) (6,3) | right: (1,1) (2,1) (3,2) (4,2) (5,3) (6,3)
+Charge A1 to G4, no drag: A1 B2 C2 D3 E3 F4 G4 right
+a drag along the lower squares takes the right side at every tie: A1 B2 C2 D3 E3 F4 G4
+an Orc on D3 (a right tie square): the line goes left all the way: A1 B1 C2 D2 E3 F3 G4 left | never mixed: true
+Pushed 4 east-southeast (shift 2,4): left 0,0 0,1 1,2 1,3 2,4 | right 0,0 1,1 1,2 2,3 2,4
+the push path to 2,4 is one side: 0,0 0,1 1,2 1,3 2,4
+--- the Action's Area setting and text
+parseArea: {"size":10,"shape":"line","within":0} {"size":2,"shape":"burst","within":0}
+areaConfigOf a Line (no Distance, no center): {"shape":"line","distance":6,"targets":"enemies","self":false,"keep":false,"rounds":0,"at":"","withinRange":"","ht":"","within":0}
+its button: @Template[line|distance:6|targets:enemies|self:no|quick:yes|label:Place Area]
+data: the Line shape and its text true | no Distance line: true
+sheet option true | chat button label true | area name Line 10 Burst 2 Emanation 1
+template: the tie toggle (Tab and a button), dashed passed squares, the side kept on the region true
+creatures in the Line give no cover to each other true | 1 square high true
+no range Banes inside an area (a Line included) true

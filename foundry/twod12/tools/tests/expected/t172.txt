@@ -1,0 +1,21 @@
+--- At-will: a first use each turn has no Bane (Club, then Weapon Attack)
+turn 1, after Club and Weapon Attack: Club 1 | Weapon Attack 1
+turn 2, Club used once: Club 1 | Weapon Attack (not used this turn) 0 (was 1 before v0.0.215: last turn's count stayed in the merged flag)
+--- Encounter: greyed after its use
+Ground Slam: {"faded":true,"why":"Used this encounter"}
+--- the rest (source checks)
+Charge disrupted: measured from the end square: true
+class window keeps its scroll: true
+an Action-only Talent shows its Action: true | granted Actions in full: true
+a choice picked in the class window: true
+Armor Training on the Loadout: true
+new tokens: bars always, no rotation: true | core rotation off once: true
+Rally card: true
+shortcuts Shift+L and Shift+H: true
+the diamond says what is by hand: true | notes: true
+Rally the Tribe: true
+an Emanation with no Distance is around you: true | asks about yourself: true
+remove a target in the roll dialog: true
+Escalation Passive: description on click: true
+Word of Radiance and Consecrated Ground: 2 / 3 Emanation: true | the version asked before placing: true
+its Area text: 2 / 3 Emanation | 5 sq.

@@ -197,8 +197,8 @@ Every creature can use these Actions.
 | | 1 AP |
 |---|---|
 | **Tier 1** | Your next Reload attempt gains 2 Boons. |
-| **Tier 2** | You Reload your weapon. Then you can Regrip (1A) to hold the weapon with two hands, or the ally can. |
-| **Tier 3** | You Reload your weapon and the weapon's wielder can Evade 1. Then you can Regrip (1A) to hold the weapon with two hands, or the ally can. |
+| **Tier 2** | You Reload the weapon. Then you can Regrip (1A) to hold the weapon with two hands, or the ally can. |
+| **Tier 3** | You Reload the weapon and its wielder can Evade 1. Then you can Regrip (1A) to hold the weapon with two hands, or the ally can. |
 
 </div>
 

@@ -1,5 +1,5 @@
-// Grid areas: Emanation (squares within N by the 1-2-1 diagonal rule, from the creature's squares)
-// and Burst (squares whose centers are within N of a square center or a grid corner).
+// Grid areas: Emanation (squares within N by the 1-2-1 diagonal rule, from the creature's squares),
+// Burst (squares whose centers are within N of a square center or a grid corner) and, v0.0.214, Line (linearea.mjs: from your square, aimed).
 const { DialogV2 } = foundry.applications.api;
 const COLOR = 0xb05aa0;
 const MOVES = { walk: "Walk", fly: "Fly", swim: "Swim", climb: "Climb", crawl: "Crawl", burrow: "Burrow" };
@@ -8,7 +8,9 @@ const size = () => canvas.grid.size;
 import { HT_PATTERNS, parsePatterns, patternText } from "./hazard.mjs";
 import { homePos } from "./lean.mjs";
 import { tokenDistance } from "./light.mjs";
-import { coverFromPoint } from "./cover.mjs";
+import { coverFromPoint, wallBlocks } from "./cover.mjs";
+import { lineFromSpace, cutLine, inLineHeight } from "./linearea.mjs";
+import { solidTile } from "./corners.mjs";
 import { shapesForCells } from "./regionshape.mjs";
 
 /** The center of a token's whole space. */
@@ -34,7 +36,8 @@ export function placementDistance(user, placed) {
  */
 export function areaReach(placed, tokens, { blockedFn } = {}) {
   const affected = [], blocked = [], cover = {};
-  const opts = { ...(blockedFn ? { blockedFn } : {}), exclude: [placed?.origin?.id].filter(Boolean) };
+  // v0.0.214: creatures in a Line don't give cover to other creatures in it (placed.noCover: their ids and the user's); walls still do.
+  const opts = { ...(blockedFn ? { blockedFn } : {}), exclude: [placed?.origin?.id, ...(placed?.noCover ?? [])].filter(Boolean) };
   for (const t of tokens) {
     const cov = placed?.point ? coverFromPoint(placed.point, t, opts) : null;
     if (cov) cover[t.id] = cov;
@@ -105,10 +108,62 @@ export function outlineCells(g, cells, { color = 0xffffff, width = 3, under = 0x
   for (const [w, col, al] of [[width + 3, under, 0.6], [width, color, 1]]) for (const [a, b] of segs) line(g, a, b, col, w, al);
 }
 
+/** The name of an area: "Line 10" (the value after the word, like Aura, as the book writes it); "Burst 2", "Emanation 1" as before. */
+export const areaName = (shape, n) => (shape === "line" ? `Line ${n}` : `${shape === "burst" ? "Burst" : "Emanation"} ${n}`);   // the old names of the other two kept (region and chat names)
+
+/** A square a Line can't enter: a solid Tile (marked solid by the GM) over its center. */
+function solidCell(c) {
+  const p = cellCenter(c.i, c.j);
+  return (canvas.tiles?.placeables ?? []).some(t => { const d = t.document; return solidTile(d) && p.x >= d.x && p.x <= d.x + d.width && p.y >= d.y && p.y <= d.y + d.height; });
+}
+
+/**
+ * A Line from the user's space toward a square (book: Areas > Line). Its squares are cut at the first square it can't enter (a wall between it and the
+ * previous square, or a solid Tile). Returns { cells, passed (tie squares not taken, among the kept ones), hasTie, origin: null, point, line, user }.
+ */
+export function lineCompute(user, n, pos, side = "left") {
+  if (!user) return null;
+  const s = size(), aimC = cellAt(pos), tl = cTL(aimC.i, aimC.j);
+  const space = tokenCells(user).map(c => ({ x: c.j, y: c.i })), aim = { x: aimC.j, y: aimC.i };
+  const point = { x: aim.x + (pos.x - tl.x) / s, y: aim.y + (pos.y - tl.y) / s };
+  const { start, cells } = lineFromSpace(space, aim, n, side, point);
+  if (!start) return null;
+  const toIJ = c => ({ i: c.y, j: c.x });
+  const kept = cutLine(cells, start, (a, b) => wallBlocks(cellCenter(a.y, a.x), cellCenter(b.y, b.x)) || solidCell(toIJ(b)));
+  return {
+    cells: kept.map(toIJ), passed: kept.filter(c => c.other).map(c => toIJ(c.other)), hasTie: cells.some(c => c.tie), cut: kept.length < cells.length,
+    origin: null, point: cellCenter(start.y, start.x), line: { origin: start, target: aim, value: n, side }, user
+  };
+}
+
+/** The squares of a placed Line, rebuilt from what its region keeps ({ origin, target, value, side }; the same walls cut it). */
+export function lineCellsFromFlag(flag, user) {
+  if (!flag?.origin || !flag?.target) return [];
+  const tl = cTL(flag.target.y, flag.target.x), s = size();
+  const tk = user ?? { document: { x: cTL(flag.origin.y, flag.origin.x).x, y: cTL(flag.origin.y, flag.origin.x).y, width: 1, height: 1 } };
+  return lineCompute(tk, flag.value, { x: tl.x + s / 2, y: tl.y + s / 2 }, flag.side)?.cells ?? [];
+}
+
+/** The creatures a Line reaches in height: 1 square high from the user's elevation unless the card says otherwise (a creature flying above it is not in it). */
+function lineHeightOk(user, t, height = 1) {
+  const unit = Number(canvas.scene?.grid?.distance) || 5, e = d => (Number(d?.elevation) || 0) / unit;
+  return inLineHeight(e(user?.document), e(t.document), Number(t.document?.width) || 1, height);
+}
+
+/** Dashed square edges (PIXI has no dashed lines): the tie squares a Line passed over. */
+function dashedCells(g, cells, color = 0xf3c9ee) {
+  const s = size(), dash = s / 8;
+  for (const c of cells) {
+    const tl = cTL(c.i, c.j), pts = [[tl.x, tl.y, 1, 0], [tl.x + s, tl.y, 0, 1], [tl.x + s, tl.y + s, -1, 0], [tl.x, tl.y + s, 0, -1]];
+    for (const [x, y, ux, uy] of pts) for (let d = 0; d < s; d += 2 * dash) line(g, { x: x + ux * d, y: y + uy * d }, { x: x + ux * Math.min(s, d + dash), y: y + uy * Math.min(s, d + dash) }, color, 2, 0.9);
+  }
+}
+
 const tokensAt = c => canvas.tokens.placeables.filter(t => tokenCells(t).some(x => x.i === c.i && x.j === c.j));
 const tokensIn = cells => { const set = new Set(cells.map(key)); return canvas.tokens.placeables.filter(t => tokenCells(t).some(c => set.has(key(c)))); };
 
-function compute(shape, n, pos) {
+function compute(shape, n, pos, { user = null, side = "left" } = {}) {
+  if (shape === "line") return lineCompute(user, n, pos, side);
   if (shape === "emanation") {
     const c = cellAt(pos), tk = tokensAt(c)[0] ?? null;
     const baseCells = tk ? tokenCells(tk) : [c];
@@ -140,20 +195,42 @@ function place(shape, n, { within = 0, user = null } = {}) {
     (canvas.interface ?? canvas.stage).addChild(gfx);
     const prevInteractive = canvas.tokens.interactiveChildren;
     canvas.tokens.interactiveChildren = false;
-    let current = null;
+    let current = null, side = "left", lastPos = null;
+    const isLine = shape === "line";
+    // v0.0.214: a Line's tie side (left or right, from you toward the target), chosen before placing and locked when placed: Tab or the button.
+    const bar = isLine ? document.createElement("div") : null;
+    if (bar) {
+      // v0.0.216 (Lucas: the bar looked poor and the button text overflowed): the target-picking banner's look; Left and Right are two buttons.
+      bar.className = "twod12-linebar";
+      bar.innerHTML = `<i class="fa-solid fa-arrow-right-long lb-ic"></i><span class="lb-text">Line ${n}: aim with the mouse, click to place, right-click or Esc to cancel.</span><span class="lb-side" hidden><span class="lb-lbl" data-tooltip="Where the line passes exactly between two squares, every tie takes this side (seen from you toward the aim). Tab switches.">Ties</span><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><kbd>Tab</kbd></span>`;
+      document.body.append(bar);
+      bar.querySelectorAll(".lb-side button").forEach(b => b.addEventListener("click", ev => { ev.preventDefault(); ev.stopPropagation(); if (b.dataset.side !== side) flip(); }));
+    }
+    const flip = () => { side = side === "left" ? "right" : "left"; if (lastPos) current = compute(shape, n, lastPos, { user, side }); draw(); };
+    const showBar = () => {
+      if (!bar) return;
+      const b = bar.querySelector(".lb-side"), tie = !!current?.hasTie;
+      b.hidden = !tie; b.style.display = tie ? "" : "none";
+      b.querySelectorAll("button").forEach(x => x.classList.toggle("on", x.dataset.side === side));
+      bar.querySelector(".lb-text").textContent = !current ? `Line ${n}: aim with the mouse at any square.` : `Line ${n}: ${current.cells.length} square${current.cells.length === 1 ? "" : "s"}${current.cut ? ", stopped by a wall" : ""}. Click to place.`;
+    };
     // "Within N sq.": the Point of Origin can be at most that far from the creature using the Action (a spot that is too far is shown in red).
     const tooFar = c => !!(within && user && c && placementDistance(user, c) > within);
     const draw = () => {
       gfx.clear();
+      showBar();
       if (!current) return;
       const far = tooFar(current);
       fillCells(gfx, current.cells, far ? 0xc0392b : COLOR, far ? 0.35 : 0.5);
       outlineCells(gfx, current.cells, { color: far ? 0xe74c3c : 0xf3c9ee });
+      if (current.passed?.length) dashedCells(gfx, current.passed);
+      if (isLine && current.line) { const t = current.line.target; line(gfx, current.point, cellCenter(t.y, t.x), 0xffffff, 1.5, 0.7); }
     };
-    const move = ev => { current = compute(shape, n, localPos(ev)); draw(); };
+    const move = ev => { lastPos = localPos(ev); current = compute(shape, n, lastPos, { user, side }); draw(); };
     const done = result => {
+      bar?.remove();
       canvas.stage.off("pointermove", move); canvas.stage.off("pointerdown", down);
-      window.removeEventListener("keydown", key_);
+      window.removeEventListener("keydown", key_, true);
       canvas.tokens.interactiveChildren = prevInteractive;
       gfx.destroy();
       resolve(result);
@@ -161,15 +238,20 @@ function place(shape, n, { within = 0, user = null } = {}) {
     const down = ev => {
       if (ev.button === 2) return done(null);
       if (ev.button !== 0) return;
-      current = compute(shape, n, localPos(ev));
+      lastPos = localPos(ev); current = compute(shape, n, lastPos, { user, side });
+      if (isLine && !current?.cells?.length) { ui.notifications.warn("Aim the Line at a square outside your space."); return; }
       if (tooFar(current)) { ui.notifications.warn(`Too far: the Point of Origin is ${placementDistance(user, current)} squares away, and the Action says within ${within}.`); draw(); return; }
       done(current);
     };
-    const key_ = ev => { if (ev.key === "Escape") done(null); };
+    const key_ = ev => {
+      if (ev.key === "Escape") done(null);
+      if (isLine && ev.key === "Tab") { ev.preventDefault(); ev.stopImmediatePropagation(); if (current?.hasTie) flip(); }   // before Foundry's own Tab
+    };
     canvas.stage.on("pointermove", move);
     canvas.stage.on("pointerdown", down);
-    window.addEventListener("keydown", key_);
-    ui.notifications.info(`${shape === "burst" ? "Burst" : "Emanation"} ${n}${within ? ` (within ${within} sq.)` : ""}: click to place, right-click or Esc to cancel.`);
+    window.addEventListener("keydown", key_, true);
+    if (!isLine) ui.notifications.info(`${shape === "burst" ? "Burst" : "Emanation"} ${n}${within ? ` (within ${within} sq.)` : ""}: click to place, right-click or Esc to cancel.`);
+    else showBar();
   });
 }
 
@@ -181,7 +263,7 @@ function cardToken(ctx) {
 
 export async function startTemplate(cfg, ctx = {}) {
   if (!canvas.ready || !canvas.grid?.isSquare) return ui.notifications.warn("Templates need a scene with a square grid.");
-  const shape = cfg.shape === "burst" ? "burst" : "emanation";
+  const shape = ["burst", "line"].includes(cfg.shape) ? cfg.shape : "emanation";
   const n = Number(cfg.distance) || 1;
   const user = cardToken(ctx) ?? canvas.tokens.controlled[0] ?? game.user.character?.getActiveTokens()[0] ?? null;
   // at:self: an Emanation centered on the user (a Self Action), no placing needed.
@@ -198,7 +280,8 @@ export async function startTemplate(cfg, ctx = {}) {
     outlineCells(preview, placed.cells, { color: 0xf3c9ee });
   } else {
     const back = await stepAside();   // the sheets and dialogs get out of the way of the map, and come back after
-    try { placed = await place(shape, n, { within: Number(cfg.within) || 0, user }); } finally { await back(); }
+    if (shape === "line" && !user) { await back(); return ui.notifications.warn("Select your token first: a Line starts from your square."); }
+    try { placed = await place(shape, n, { within: shape === "line" ? 0 : Number(cfg.within) || 0, user }); } finally { await back(); }
   }
   if (!placed) return;
   // The target of an Emanation: the creature it is placed around (null for a square or a Burst).
@@ -223,7 +306,7 @@ export async function startTemplate(cfg, ctx = {}) {
         ht: htDef, httext: htText
       }
     : await DialogV2.prompt({
-        window: { title: `${shape === "burst" ? "Burst" : "Emanation"} ${n}` },
+        window: { title: areaName(shape, n) },
         content: `<div class="form-group"><label>Targets</label><select name="targets">${["all", "allies", "enemies"].map(v => sel(v, targetsDef)).join("")}</select></div>
       ${center ? `<div class="form-group"><label>Affect ${escT(center.name)} (the creature it is around)?</label><input type="checkbox" name="self" ${cfg.self ? "checked" : ""}></div>` : ""}
       <div class="form-group"><label>Keep the area on the map?</label><input type="checkbox" name="keep" ${(cfg.places ?? cfg.keep) || cfg.rounds || cfg.expire === "eot" || cfg.difficult?.length ? "checked" : ""}></div>
@@ -266,7 +349,13 @@ export async function startTemplate(cfg, ctx = {}) {
   let tokens = tokensIn(placed.cells);
   if (data.targets === "allies") tokens = tokens.filter(t => t.document.disposition === od);
   if (data.targets === "enemies") tokens = tokens.filter(t => t.document.disposition !== 0 && t.document.disposition !== od);
+  const centerTok = center && tokens.find(t => t.id === center.id);   // v0.0.215: the creature it is around, if it could be affected (asked below)
   if (!data.self && center) tokens = tokens.filter(t => t.id !== center.id);
+  if (shape === "line") {
+    // v0.0.214: a Line is 1 square high (a creature flying above its squares is not in it), and its creatures give no cover to each other.
+    tokens = tokens.filter(t => t.id !== origin?.id && lineHeightOk(origin, t, Number(cfg.height) || 1));
+    placed.noCover = [origin?.id, ...tokensIn(placed.cells).map(t => t.id)].filter(Boolean);
+  }
   // Line of Effect from the Point of Origin to each creature: one it can't reach isn't affected. Its cover (from the Point of Origin) goes to the roll.
   const reach = areaReach(placed, tokens);
   tokens = reach.affected;
@@ -274,14 +363,18 @@ export async function startTemplate(cfg, ctx = {}) {
   if (ctx?.outcome) { ctx.outcome.cover = reach.cover; ctx.outcome.blocked = noLoE; ctx.outcome.point = placed.point ?? null; }
   if (preview) {
     const actName = (() => { try { const f = ctx?.message?.getFlag?.("twod12", "action"); return fromUuidSync(f?.actorUuid)?.items?.get?.(f?.itemId)?.name ?? ""; } catch (e) { return ""; } })();
-    const names = tokens.map(t => escT(t.name)).join(", ") || "nobody";
-    const ok = await DialogV2.confirm({
+    const names = tokens.filter(t => t.id !== centerTok?.id).map(t => escT(t.name)).join(", ") || "nobody";
+    // v0.0.215 (Lucas, playtest 2: Ground Slam): an Emanation around its user is only shown; this window asks whether the user is affected too, and confirms.
+    const selfBox = centerTok ? `<div class="form-group"><label><input type="checkbox" name="self" ${data.self ? "checked" : ""}> Affect ${escT(centerTok.name)} too (the creature it is around)</label></div>` : "";
+    const res = await DialogV2.wait({
       window: { title: actName || "Apply Area" },
-      content: `<p>Apply ${escT(actName || "the area")}'s area (shown on the map)?</p><p>Targets: <b>${names}</b></p>${noLoE.length ? `<p>No Line of Effect from the Point of Origin: <b>${noLoE.map(escT).join(", ")}</b></p>` : ""}`,
+      content: `<p>Apply ${escT(actName || "the area")}'s area (shown on the map)?</p><p>Targets: <b>${names}</b></p>${selfBox}${noLoE.length ? `<p>No Line of Effect from the Point of Origin: <b>${noLoE.map(escT).join(", ")}</b></p>` : ""}`,
+      buttons: [{ action: "yes", label: "Apply", icon: "fa-solid fa-check", default: true, callback: (ev, btn) => ({ self: !!btn.form?.elements?.self?.checked }) }, { action: "no", label: "Cancel", icon: "fa-solid fa-xmark" }],
       rejectClose: false
     });
     dropPreview();
-    if (!ok) return;
+    if (!res || res === "no") return;
+    if (centerTok) tokens = res.self ? [...new Set([...tokens, centerTok])] : tokens.filter(t => t.id !== centerTok.id);
   }
   // Restart the targeting: release every current target, then target the tokens in the area.
   for (const t of [...game.user.targets]) t.setTarget(false, { releaseOthers: false, groupSelection: true });
@@ -295,7 +388,7 @@ export async function startTemplate(cfg, ctx = {}) {
   if (data.keep || timed || difficult || hazard) {
     const comb = game.combat?.combatants.find(c => c.tokenId === origin?.id);
     const cur = game.combat?.combatant;
-    const flags = { twod12: { template: true } };
+    const flags = { twod12: { template: true, ...(placed.line ? { line: placed.line } : {}) } };   // a Line keeps { origin, target, value, side }: lineCellsFromFlag rebuilds it
     if (hazard) {
       const actName = (() => { try { const f = ctx?.message?.getFlag?.("twod12", "action"); return fromUuidSync(f?.actorUuid)?.items?.get?.(f?.itemId)?.name ?? ""; } catch (e) { return ""; } })();
       flags.twod12.ht = { patterns: data.ht, text: data.httext ?? "", originUuid: origin?.actor?.uuid ?? "", name: actName || cfg.source || "", cells: placed.cells.map(key), hits: {}, appearHandled: !!cfg.htSave };   // a Save Action makes the creatures inside save itself
@@ -309,7 +402,7 @@ export async function startTemplate(cfg, ctx = {}) {
     });
     const difficulties = Object.fromEntries(data.dtypes.map(a => [a, 2]));
     const base = {
-      name: hazard && flags.twod12.ht.name ? `${flags.twod12.ht.name} [HT: ${patternText(data.ht)}]` : `${hazard ? "[HT] " : ""}${difficult ? "Difficult " : ""}${shape === "burst" ? "Burst" : "Emanation"} ${n}`, color: hazard ? "#c0502a" : difficult ? "#8a6a3a" : "#b05aa0",
+      name: hazard && flags.twod12.ht.name ? `${flags.twod12.ht.name} [HT: ${patternText(data.ht)}]` : `${hazard ? "[HT] " : ""}${difficult ? "Difficult " : ""}${areaName(shape, n)}`, color: hazard ? "#c0502a" : difficult ? "#8a6a3a" : "#b05aa0",
       visibility: CONST.REGION_VISIBILITY?.ALWAYS ?? 2, flags
     };
     const core = { type: "modifyMovementCost", name: "Difficult Terrain", system: { difficulties } };
@@ -335,5 +428,6 @@ export async function startTemplate(cfg, ctx = {}) {
       if (ctx?.outcome) ctx.outcome.region = made;
     } catch (e) { console.warn("twod12 | could not create the region", e); ui.notifications.warn("Could not keep the area on the map (permissions?)."); }
   }
-  await ChatMessage.create({ content: `<div class="twod12 chat"><b>${shape === "burst" ? "Burst" : "Emanation"} ${n}</b>: ${tokens.length ? "targeting " + tokens.map(t => t.name).join(", ") : "no targets"}.${noLoE.length ? ` No Line of Effect: ${noLoE.join(", ")}.` : ""}</div>` });
+  const lineNote = placed.line ? ` (${placed.cells.length} square${placed.cells.length === 1 ? "" : "s"}${placed.hasTie ? `, ties ${placed.line.side}` : ""}${placed.cut ? ", stopped by a wall" : ""})` : "";
+  await ChatMessage.create({ content: `<div class="twod12 chat"><b>${areaName(shape, n)}</b>${lineNote}: ${tokens.length ? "targeting " + tokens.map(t => t.name).join(", ") : "no targets"}.${noLoE.length ? ` No Line of Effect: ${noLoE.join(", ")}.` : ""}</div>` });
 }

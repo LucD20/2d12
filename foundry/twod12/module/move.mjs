@@ -3,20 +3,25 @@ import { tokenDistance, lightAt, seenLight, regionHasPoint, verticalSquares, wit
 // Movement: AP tracking for the creature whose turn it is (split movement, free movement from @Move[walk]),
 // and Pushed and Pulled with collision: @Move[pushed|distance:N] (@Move[pulled|distance:N]) lets the clicking player drag the target away from (toward) the origin.
 import { esc } from "./roll.mjs";
-import { tokenCells, fillCells, outlineCells, cellCenter, cellAt } from "./template.mjs";
+import { sysCard, sysLine, apText } from "./sysmsg.mjs";
+import { tokenCells, fillCells, outlineCells, cellCenter, cellAt, emanationCells } from "./template.mjs";
 import { TWOD12 } from "./config.mjs";
 import { applyToActor } from "./damage.mjs";
 import { getAP, setAP, combatantOf, apMax } from "./combat.mjs";
 import { expireOnUse } from "./bonus.mjs";
 import { evalExpr } from "./refs.mjs";
-import { stepCorners, solidCorner, creatureIn, straightCells, chooseLine } from "./corners.mjs";
+import { stepCorners, solidCorner, creatureIn, straightCells } from "./corners.mjs";
+import { lineSteps } from "./linearea.mjs";
 import { coverFromPoint } from "./cover.mjs";
 import { hazardIn } from "./hazard.mjs";
 import { steadinessOf } from "./defense.mjs";
 const F = "twod12", SOCKET = "system.twod12";
 const warn = m => ui.notifications.warn(m);
 const refuse = m => { warn(m); return false; };   // a refusal that says no
-const post = html => ChatMessage.create({ content: `<div class="twod12 chat apmsg">${html}</div>` });
+// v0.0.221 (Lucas: every chat message in the system's design): the movement messages are system lines (sysmsg.mjs), not plain text.
+const post = html => ChatMessage.create({ content: sysLine("fa-shoe-prints", html, "movemsg") });
+// v0.0.220 (Lucas: every new chat message follows the system's design): the Charge's messages are system cards (sysmsg.mjs).
+const postCard = (title, lead, text = "", cls = "") => ChatMessage.create({ content: sysCard({ title, lead, text, cls }) });
 const endBtn = c => `<button type="button" class="endmove" data-twod12="endMove" data-combatant="${c.id}"><i class="fa-solid fa-flag-checkered"></i> End movement</button>`;
 const num = v => Number(v) || 0;
 
@@ -120,10 +125,14 @@ export function repositionShifts(cells, originCells, N, reach = 1) {
   return out;
 }
 
+/** v0.0.214 (book: Straight Line): the squares of a straight line from the creature's square to the shift, one tie side for the whole line. */
+export const sideShifts = (di, dj, side = "left") => [{ di: 0, dj: 0 }, ...lineSteps({ x: 0, y: 0 }, { x: dj, y: di }, side).map(c => ({ di: c.y, dj: c.x }))];
+
 /** The straight line (one square per step) from the creature's square to the shift. Reposition moves along this line. */
 export function lineShifts(node) {
-  const n = node.steps || 1;
-  return Array.from({ length: n + 1 }, (_, k) => ({ di: Math.round((node.di * k) / n) || 0, dj: Math.round((node.dj * k) / n) || 0 }));
+  const n = node.steps || 1, line = sideShifts(node.di, node.dj);
+  if (line.length === n + 1) return line;
+  return Array.from({ length: n + 1 }, (_, k) => ({ di: Math.round((node.di * k) / n) || 0, dj: Math.round((node.dj * k) / n) || 0 }));   // a node whose steps are not its straight length
 }
 
 /** The straight line to the square when it is a valid push path, otherwise the first shortest path found. */
@@ -131,10 +140,10 @@ export function pathTo(map, key) {
   const node = map.get(key);
   if (!node) return [];
   const n = node.steps;
-  const line = [];
-  for (let k = 0; k <= n; k++) line.push({ di: Math.round((node.di * k) / n || 0), dj: Math.round((node.dj * k) / n || 0) });
-  const ok = line.every((s, k) => map.has(shiftKey(s)) && (k === 0 || (map.dist ? map.dist(s) > map.dist(line[k - 1]) : true)));
-  if (ok) return line.map(s => map.get(shiftKey(s)));
+  // v0.0.214 (book: Straight Line): the straight line's squares, one tie side for the whole movement (the origin chooses: left, else right).
+  const okLine = line => line.length === n + 1 && line.every((s, k) => map.has(shiftKey(s)) && (k === 0 || (map.dist ? map.dist(s) > map.dist(line[k - 1]) : true)));
+  const line = [sideShifts(node.di, node.dj, "left"), sideShifts(node.di, node.dj, "right")].find(okLine);
+  if (line) return line.map(s => map.get(shiftKey(s)));
   const path = [];
   for (let k = key; k; k = map.get(k)?.parent) path.unshift(map.get(k));
   return path;
@@ -451,13 +460,17 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
   await c.setFlag(F, key, num(c.getFlag(F, key)) + n);
   if (kind === "evade") await c.setFlag(F, "diagPar", 0);   // v0.0.183: a new Evade starts its diagonals from 0
   if (cfg.ignoreTerrain) await c.setFlag(F, "ignoreTerrain", true);
-  if (kind === "charge") await c.setFlag(F, "charge", { min: cfg.min || 3, max: n });
+  if (kind === "charge") {
+    // v0.0.219 (Lucas): giving up a Charge before it moves refunds the AP its Action cost (from its card).
+    const f = ctx?.message?.getFlag?.(F, "action");
+    await c.setFlag(F, "charge", { min: cfg.min || 3, max: n, refund: Math.max(0, num(f?.apPaid ?? f?.ap)), itemId: f?.itemId ?? "", actorUuid: f?.actorUuid ?? "" });
+  }
   const sq = `${n} square${n === 1 ? "" : "s"}`;
   // v0.0.195 (Lucas): from a movement-only Action, the banner instead of a chat line; one short line is posted when the movement ends.
   if (cfg.banner && kind !== "charge") { showRange(c, n); moveBanner(c, kind, n, cfg.banner, { ap: cfg.bannerAp ?? 0 }); return true; }
   if (kind === "charge") {
-    await post(`<b>${esc(c.name)}</b> can Charge: move in a straight line at least ${cfg.min || 3} and up to ${sq}, not through Difficult Terrain. ${endBtn(c)}`);
-    showRange(c, n);
+    // v0.0.218 (Lucas): aimed like a Line (the Charge picker), not dragged. v0.0.219: no chat line (the picker's bar says it all).
+    if (!openChargePicker(c, token)) { await post(`<b>${esc(c.name)}</b> can Charge: in a straight line, at least ${cfg.min || 3} and up to ${sq}. ${endBtn(c)}`); showRange(c, n); }
     return true;
   }
   await post(
@@ -558,11 +571,22 @@ export async function endMovement(combatantId) {
   if (!c) return warn("That combatant is no longer in the combat.");
   if (!c.isOwner) return warn("Only the owner can end this movement.");
   const left = num(c.getFlag(F, "freeMove")) + num(c.getFlag(F, "evadeMove"));
-  const charging = !!c.getFlag(F, "charge");
+  const charging = c.getFlag(F, "charge");
   await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, [`flags.${F}.-=charge`]: null, [`flags.${F}.-=ignoreTerrain`]: null });
   clearRange();
-  // Giving up a Charge before its movement means its required Weapon Attack (1A) never happens: the Charge is disrupted.
-  if (charging) return post(`<b>${esc(c.name)}</b> gives up the Charge: it is disrupted, and the AP stays spent.`);
+  // v0.0.219 (Lucas): giving up a Charge before it moves takes it back: its AP are refunded.
+  if (charging) {
+    const back = num(charging.refund);
+    if (back > 0) await setAP(c, getAP(c) + back, "Charge given up", { quiet: true });
+    // v0.0.221 (Lucas: still greyed): the use is taken back on the actor it was used from (an NPC's sheet opened from the sidebar is not its token's
+    // actor) and on the combatant's actor.
+    try {
+      const { unmarkUsed } = await import("./usage.mjs");
+      let from = null; try { from = charging.actorUuid ? await fromUuid(charging.actorUuid) : null; } catch (e) { /* gone */ }
+      for (const a of new Set([from, c.actor].filter(Boolean))) { const it = charging.itemId ? a.items?.get(charging.itemId) : null; if (it) await unmarkUsed(a, it); }
+    } catch (e) { console.warn("twod12 | Charge given up: its use", e); }
+    return postCard("Charge", `${esc(c.name)} gives up the Charge`, back > 0 ? `${apText(back)} back. The Charge can be used again this round.` : "Nothing was spent.", "chargemsg");
+  }
   await post(left > 0 ? `<b>${esc(c.name)}</b> ends the movement. ${left} free square${left === 1 ? "" : "s"} unused.` : `<b>${esc(c.name)}</b> has no free movement left.`);
 }
 
@@ -872,7 +896,7 @@ async function pushOne(origin, target, N0, mode = "push", opts = {}) {
       if (o.actor && d.other) await applyToActor(o.actor, bodyDamage(d.other));
     }
   }
-  await ChatMessage.create({ content: `<div class="twod12 chat apmsg">${lines.join(" ")}</div>` });
+  await ChatMessage.create({ content: sysLine("fa-hand", lines.join(" "), "pushmsg") });
 }
 
 async function pushFlow(cfg, ctx, mode = "push") {
@@ -930,10 +954,14 @@ export function creaturesInReach(token, reach = 1) {
 }
 
 /** After a Charge's movement: if no creature is within Reach, its required Weapon Attack (1A) can't be made, so the Charge is disrupted. */
-function chargeFollowUp(c, doc, reach) {
+function chargeFollowUp(c, doc, reach, to = null) {
   const token = doc.object ?? canvas.tokens?.get?.(doc.id);
-  if (!token || creaturesInReach(token, reach).length) return;
-  post(`<b>${esc(c.name)}</b>'s Charge is disrupted: no creature within Reach for its Weapon Attack (1A). The AP stays spent.`).catch(() => {});
+  if (!token) return;
+  // v0.0.215 (Lucas, playtest 2: "disrupted" when it wasn't): measured from the Charge's end square, not from where the token is drawn
+  // 600 ms later (a long Charge was still moving, so nobody seemed to be within Reach).
+  const at = to ? { id: doc.id, document: { id: doc.id, x: to.x, y: to.y, width: doc.width, height: doc.height, elevation: doc.elevation, disposition: doc.disposition } } : token;
+  if (creaturesInReach(at, reach).length) return;
+  postCard("Charge", `${esc(c.name)}'s Charge is disrupted`, "No creature within Reach for its Weapon Attack (1A). The AP stay spent.", "chargemsg").catch(() => {});
 }
 
 /** Squares of a path between two cells (Bresenham). The rules' straight line (Charge) is straightCells in corners.mjs, with its ties. */
@@ -1005,17 +1033,24 @@ export function creaturesOnPath(doc, points, { ignoring = false } = {}) {
 
 /**
  * The squares of a Charge's straight line (book: "Straight Line"): from the center of the start square to the center of the end square, one square a step.
- * At a tie (the line passes exactly between two squares) the creature that moves chooses: the square its own drag passed through (via), else a legal one.
- * Returns { cells, ties }.
+ * v0.0.214: at a tie (the line passes exactly between two squares) the creature that moves chooses ONE side for the whole line: the side that goes
+ * farther before a square that isn't legal; equal, the side its own drag passed through more (via); equal, left. Returns { cells, ties, side }.
  */
 export function chargeLine(doc, from, to, via = []) {
   const cellOf = p => cellAt({ x: p.x + 2, y: p.y + 2 });
   const w = Math.max(1, Math.round(doc.width ?? 1)), h = Math.max(1, Math.round(doc.height ?? 1));
-  const raw = straightCells(cellOf(from), cellOf(to));
+  const a = cellOf(from), b = cellOf(to);
+  const raw = straightCells(a, b);
   const prefer = new Set();
-  for (let k = 0; k < via.length + 1; k++) { const a = k ? via[k - 1] : from, b = via[k] ?? to; for (const c of cellLine(cellOf(a), cellOf(b))) prefer.add(`${c.i},${c.j}`); }
+  for (let k = 0; k < via.length + 1; k++) { const p = k ? via[k - 1] : from, q = via[k] ?? to; for (const c of cellLine(cellOf(p), cellOf(q))) prefer.add(`${c.i},${c.j}`); }
   const legal = (prev, c) => !chargeSquareProblem(doc, prev, c, w, h);
-  return { cells: chooseLine(raw, { prefer, legal }), ties: raw.filter(c => c.alt).length };
+  const sides = ["left", "right"].map(side => {
+    const cells = [{ i: a.i, j: a.j }, ...lineSteps({ x: a.j, y: a.i }, { x: b.j, y: b.i }, side).map(c => ({ i: c.y, j: c.x }))];
+    let reach = 1; while (reach < cells.length && legal(cells[reach - 1], cells[reach])) reach++;
+    return { side, cells, reach, liked: cells.filter(c => prefer.has(`${c.i},${c.j}`)).length };
+  });
+  const best = sides.reduce((x, y) => (y.reach > x.reach || (y.reach === x.reach && y.liked > x.liked) ? y : x));
+  return { cells: best.cells, ties: raw.filter(c => c.alt).length, side: best.side };
 }
 
 /** Why the Charge can't go from square a into square b (the top-left squares of its space): "" when it can. */
@@ -1030,30 +1065,6 @@ function chargeSquareProblem(doc, a, b, w = 1, h = 1) {
   return "";
 }
 
-function chargeProblem(doc, from, to, ch, via = []) {
-  const size = canvas.grid.size, half = { x: (doc.width * size) / 2, y: (doc.height * size) / 2 };
-  const a = { x: from.x + half.x, y: from.y + half.y }, b = { x: to.x + half.x, y: to.y + half.y };
-  const sq = measureSquares(from, to);
-  if (sq + 1e-6 < ch.min) return `a Charge moves at least ${ch.min} squares in a straight line`;
-  if (sq > ch.max + 1e-6) return `a Charge moves up to ${ch.max} squares`;
-  if (wallBetween(a, b)) return "a wall is in the way of the straight line";
-  const w = Math.max(1, Math.round(doc.width ?? 1)), h = Math.max(1, Math.round(doc.height ?? 1));
-  const { cells } = chargeLine(doc, from, to, via);
-  for (let n = 1; n < cells.length; n++) {
-    const problem = chargeSquareProblem(doc, cells[n - 1], cells[n], w, h);
-    if (problem) return problem;
-  }
-  try {
-    // Difficult Terrain anywhere along the line stops the Charge.
-    const regions = (canvas.regions?.placeables ?? []).filter(r => r.document.behaviors?.some(x => x.type === "difficultTerrain" && !x.disabled));
-    const steps = Math.max(8, Math.ceil(Math.hypot(b.x - a.x, b.y - a.y) / (size / 4)));
-    for (let i = 0; i <= steps; i++) {
-      const p = { x: a.x + ((b.x - a.x) * i) / steps, y: a.y + ((b.y - a.y) * i) / steps };
-      if (regions.some(r => regionHasPoint(r.document, p, doc.elevation ?? 0))) return "the straight line crosses Difficult Terrain";
-    }
-  } catch (e) { console.warn("twod12 | could not test the Charge line against Difficult Terrain", e); }
-  return "";
-}
 
 /** Squares of movement between two points (grid units divided by the scene's distance per square). */
 function measureSquares(from, to) {
@@ -1082,7 +1093,6 @@ export function registerMovement() {
       squares = squares ? squares / gridUnit() : measureSquares(origin, to);
       if (squares <= 0) return;
       // Creatures in the way: no move ends inside another creature's space, and an unwilling creature's squares are Difficult Terrain.
-      const via = (movement?.pending?.waypoints ?? []).slice(0, -1);
       const way = creaturesOnPath(doc, [origin, ...(movement?.pending?.waypoints ?? []), to], { ignoring });
       if (way.endIn) { warn(`You can't end your movement in ${way.endIn}'s space.`); return false; }
       const ch = c.getFlag(F, "charge");
@@ -1096,13 +1106,10 @@ export function registerMovement() {
         return false;
       }
       if (ch) {
-        const from = origin;
-        const problem = chargeProblem(doc, from, to, ch, via);
-        if (problem) { warn(`Charge: ${problem}. Move again, or use End movement to give up the Charge.`); return false; }
-        squares = measureSquares(from, to);   // a Charge costs the length of its straight line, whatever path the token took
-        c.unsetFlag(F, "charge").catch(() => {});
-        const reach = Math.max(1, num(c.actor?.system?.reach) || 1);
-        setTimeout(() => chargeFollowUp(c, doc, reach), 600);
+        // v0.0.218 (Lucas): a Charge is aimed with the picker, not dragged: the drag is refused and the picker opens again.
+        warn("Charge: click the destination with the Charge picker (it is open), or give up the Charge.");
+        try { if (!chargePick) openChargePicker(c, doc.object); } catch (e) { /* no canvas */ }
+        return false;
       }
       // v0.0.183: an Evade over several drags counts its diagonals as one movement: after an odd number, the next diagonal costs 2
       // (Foundry measures each drag from 0). It can't go beyond the Evade's squares.
@@ -1139,6 +1146,7 @@ export function registerMovement() {
     } catch (e) { console.error("twod12 | movement tracking failed", e); }
   });
   game.socket.on(SOCKET, async data => {
+    if (data?.type === "reloadWeapon" && game.user.isActiveGM) { const w = await fromUuid(data.uuid); if (w) await w.update({ "system.unloaded": false }); return; }   // v0.0.221: an ally's weapon
     if (data?.type === "pushPath" && game.user.isActiveGM) { const d = await fromUuid(data.tokenUuid); if (d) await moveThrough(d, data.points ?? []); return; }
     if (data?.type !== "pushMove" || !game.user.isActiveGM) return;
     const doc = await fromUuid(data.tokenUuid);
@@ -1228,4 +1236,139 @@ export function rangeBand(squares, rangeText) {
   if (squares <= far) return { squares, band: 1, banes: 1, out: false, label: `Far range (${squares} sq)` };
   if (squares <= max) return { squares, band: 2, banes: 2, out: false, label: `Maximum range (${squares} sq)` };
   return { squares, band: 3, banes: 0, out: true, label: `Out of range (${squares} sq)`, max };
+}
+
+/* ------------------------------------------------------------------ */
+/* v0.0.218 (Lucas): the Charge picker. Charge is Straight Line movement, so it is aimed like a Line: from the creature's square to the     */
+/* square clicked (the destination), with the Line's squares and one tie side; it moves the token there itself (no dragging).            */
+
+/** The Charge's squares from cell a to cell b (top-left cells of the space), side: { cells (a first), ties, bad (first illegal index or -1), problem, sq }. */
+export function chargePath(doc, a, b, side = "left") {
+  const w = Math.max(1, Math.round(doc.width ?? 1)), h = Math.max(1, Math.round(doc.height ?? 1));
+  const steps = lineSteps({ x: a.j, y: a.i }, { x: b.j, y: b.i }, side);
+  const cells = [{ i: a.i, j: a.j }, ...steps.map(c => ({ i: c.y, j: c.x }))];
+  const size = canvas.grid.size, mid = c => { const t = canvas.grid.getTopLeftPoint({ i: c.i, j: c.j }); return { x: t.x + (w * size) / 2, y: t.y + (h * size) / 2 }; };
+  let regions = [];
+  try { regions = (canvas.regions?.placeables ?? []).filter(r => r.document.behaviors?.some(x => ["difficultTerrain", "modifyMovementCost"].includes(x.type) && !x.disabled)); } catch (e) { /* no regions */ }
+  const foot = c => { const out = []; for (let di = 0; di < h; di++) for (let dj = 0; dj < w; dj++) out.push({ i: c.i + di, j: c.j + dj }); return out; };
+  let bad = -1, problem = "";
+  for (let n = 1; n < cells.length && bad < 0; n++) {
+    const prev = cells[n - 1], cur = cells[n];
+    let p = wallBetween(mid(prev), mid(cur)) ? "a wall is in the way" : chargeSquareProblem(doc, prev, cur, w, h);
+    if (!p && regions.some(r => foot(cur).some(f => regionHasPoint(r.document, cellCenter(f.i, f.j), doc.elevation ?? 0)))) p = "Difficult Terrain";
+    if (p) { bad = n; problem = p; }
+  }
+  const tl = c => canvas.grid.getTopLeftPoint({ i: c.i, j: c.j });
+  return { cells, ties: steps.filter(s => s.tie).length, bad, problem, sq: measureSquares(tl(a), tl(b)), tl };
+}
+
+let chargePick = null;
+/** Opens the picker for a combatant that has a Charge to make (its "charge" flag: { min, max }). */
+export function openChargePicker(c, token) {
+  const doc = token?.document ?? token;
+  const ch = c?.getFlag?.(F, "charge");
+  if (!doc || !ch || !canvas?.ready) return false;
+  if (chargePick) chargePick.close(false);
+  const gfx = new PIXI.Graphics();
+  (canvas.interface ?? canvas.stage).addChild(gfx);
+  const prevInteractive = canvas.tokens.interactiveChildren;
+  canvas.tokens.interactiveChildren = false;
+  const a = cellAt({ x: homePos(doc).x + 2, y: homePos(doc).y + 2 });
+  const reach = Math.max(1, num(c.actor?.system?.reach) || 1);
+  // v0.0.219 (Lucas): the limit is outlined (every square within its maximum, counted from your space), so nobody has to guess how far it goes.
+  const limit = emanationCells(tokenCells(doc), Math.max(0, Math.floor(num(ch.max))));
+  let side = "left", pos = null, cur = null, armed = "";
+  const bar = document.createElement("div");
+  bar.className = "twod12-linebar twod12-chargebar";
+  bar.innerHTML = `<i class="fa-solid fa-person-running-fast lb-ic"></i><span class="lb-text"></span><span class="lb-side"><span class="lb-lbl" data-tooltip="Where the line passes exactly between two squares, every tie takes this side (seen from you toward the destination). Tab switches.">Ties</span><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><kbd>Tab</kbd></span><button type="button" class="lb-give" data-tooltip="Give up the Charge: it is taken back, and its AP are refunded">Give up</button>`;
+  document.body.append(bar);
+  const text = () => {
+    if (!cur) return `Charge: at least ${ch.min}, up to ${ch.max} squares (the gold outline). Click the destination.`;
+    const r = cur.path, last = r.bad >= 0 ? r.cells[r.bad - 1] : r.cells.at(-1);
+    if (r.cells.length < 2) return "Click a square outside your space.";
+    if (r.sq + 1e-6 < ch.min) return `Too short: a Charge moves at least ${ch.min} squares (this is ${r.sq}).`;
+    if (r.sq > ch.max + 1e-6) return `Too far: up to ${ch.max} squares (this is ${r.sq}).`;
+    const who = cur.inReach.map(t => t.name).join(", ");
+    const end = who ? `${who} in Reach at the end` : "no one in Reach at the end: it would be disrupted";
+    if (r.bad >= 0) return `${r.problem}: the Charge stops at ${sqName(last)} (${cur.stopSq} squares), ${end}. ${armed === cur.key ? "Click again to Charge anyway." : "Click to choose it, then again to confirm."}`;
+    return `Charge ${r.sq} squares to ${sqName(last)}: ${end}. Click to Charge.`;
+  };
+  const sqName = cell => `${String.fromCharCode(65 + ((cell.j % 26) + 26) % 26)}${cell.i + 1}`;
+  const compute = p => {
+    // v0.0.221: a larger creature aims with the center of its space (the space is centered on the mouse), not its top-left square.
+    const gs = canvas.grid.size, b = cellAt({ x: p.x - ((Math.max(1, Math.round(doc.width ?? 1)) - 1) * gs) / 2, y: p.y - ((Math.max(1, Math.round(doc.height ?? 1)) - 1) * gs) / 2 });
+    const path = chargePath(doc, a, b, side);
+    const stop = path.bad >= 0 ? path.cells[path.bad - 1] : path.cells.at(-1), stopTl = path.tl(stop);
+    const stopSq = measureSquares(path.tl(a), stopTl);
+    const virt = { id: doc.id, document: { id: doc.id, x: stopTl.x, y: stopTl.y, width: doc.width, height: doc.height, elevation: doc.elevation, disposition: doc.disposition } };
+    return { key: `${b.i},${b.j}|${side}`, path, stop, stopTl, stopSq, inReach: creaturesInReach(virt, reach) };
+  };
+  const draw = () => {
+    gfx.clear();
+    outlineCells(gfx, limit, { color: 0xf1c84b, width: 2 });
+    const t = text(); bar.querySelector(".lb-text").textContent = t; bar.querySelector(".lb-text").title = t;
+    // v0.0.219 (Lucas): the bar keeps one size; the Ties buttons keep their place (hidden, not removed) so Give up never moves.
+    const sb = bar.querySelector(".lb-side"), tie = !!cur?.path.ties;
+    sb.hidden = false; sb.style.visibility = tie ? "visible" : "hidden";
+    sb.querySelectorAll("button").forEach(x => x.classList.toggle("on", x.dataset.side === side));
+    if (!cur) return;
+    const r = cur.path, okLen = r.sq + 1e-6 >= ch.min && r.sq <= ch.max + 1e-6;
+    const legal = r.bad >= 0 ? r.cells.slice(1, r.bad) : r.cells.slice(1), illegal = r.bad >= 0 ? r.cells.slice(r.bad) : [];
+    const foot = c => { const out = []; for (let di = 0; di < Math.max(1, Math.round(doc.height)); di++) for (let dj = 0; dj < Math.max(1, Math.round(doc.width)); dj++) out.push({ i: c.i + di, j: c.j + dj }); return out; };
+    if (!okLen) { fillCells(gfx, r.cells.slice(1).flatMap(foot), 0xe07a6a, 0.45); return; }
+    fillCells(gfx, legal.slice(0, -1).flatMap(foot), 0x6fa8dc, 0.5);      // blue: the squares passed
+    if (legal.length) fillCells(gfx, foot(legal.at(-1)), 0x5fbf86, 0.65);  // green: where it ends
+    fillCells(gfx, illegal.flatMap(foot), 0xe07a6a, 0.5);                 // red: not legal
+    if (legal.length) outlineCells(gfx, foot(legal.at(-1)), { color: 0xd8ffe6 });
+  };
+  const flip = () => { side = side === "left" ? "right" : "left"; armed = ""; if (pos) cur = compute(pos); draw(); };
+  bar.querySelectorAll(".lb-side button").forEach(b => b.addEventListener("click", ev => { ev.preventDefault(); ev.stopPropagation(); if (b.dataset.side !== side) flip(); }));
+  bar.querySelector(".lb-give").addEventListener("click", ev => { ev.preventDefault(); close(true); });
+  const local = ev => (ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) : ev.data.getLocalPosition(canvas.stage));
+  const move = ev => { pos = local(ev); const n = compute(pos); if (n.key !== cur?.key) armed = ""; cur = n; draw(); };
+  const down = async ev => {
+    if (ev.button === 2) return close(true);
+    if (ev.button !== 0) return;
+    pos = local(ev); cur = compute(pos);
+    const r = cur.path;
+    if (r.cells.length < 2 || r.sq + 1e-6 < ch.min || r.sq > ch.max + 1e-6) { draw(); return; }
+    if (r.bad >= 0 && armed !== cur.key) { armed = cur.key; draw(); return; }   // a blocked line: a second click confirms
+    const go = cur;
+    close(false);
+    await runCharge(c, doc, go, reach);
+  };
+  const key_ = ev => {
+    if (ev.key === "Escape") { ev.preventDefault(); ev.stopImmediatePropagation(); close(true); }
+    if (ev.key === "Tab") { ev.preventDefault(); ev.stopImmediatePropagation(); if (cur?.path.ties) flip(); }
+  };
+  const close = giveUp => {
+    canvas.stage.off("pointermove", move); canvas.stage.off("pointerdown", down);
+    window.removeEventListener("keydown", key_, true);
+    canvas.tokens.interactiveChildren = prevInteractive;
+    try { gfx.destroy(); } catch (e) { /* gone */ }
+    bar.remove();
+    chargePick = null;
+    if (giveUp) endMovement(c.id).catch(() => {});
+  };
+  canvas.stage.on("pointermove", move);
+  canvas.stage.on("pointerdown", down);
+  window.addEventListener("keydown", key_, true);
+  chargePick = { c, close };
+  draw();
+  return true;
+}
+
+/** Moves the token along the Charge's squares (to its last legal one), spends the movement, and checks Reach for the Weapon Attack (1A). */
+async function runCharge(c, doc, go, reach) {
+  const r = go.path, end = r.bad >= 0 ? r.bad - 1 : r.cells.length - 1;
+  const points = r.cells.slice(1, end + 1).map(cell => r.tl(cell));
+  if (!points.length) return endMovement(c.id);
+  await c.unsetFlag(F, "charge").catch(() => {});
+  if (r.bad >= 0) await postCard("Charge", `${esc(c.name)}'s Charge stops early`, `${esc(r.problem[0].toUpperCase() + r.problem.slice(1))}: it ends on the last legal square (${go.stopSq} squares).`, "chargemsg");
+  await moveThrough(doc, points);
+  // The Charge is one movement: its free squares are spent (the rest is dropped).
+  await chargeMovement(c, go.stopSq, null);
+  await c.update({ [`flags.${F}.freeMove`]: 0 });
+  clearRange();
+  chargeFollowUp(c, doc, reach, go.stopTl);
 }
