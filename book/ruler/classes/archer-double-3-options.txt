@@ -15,28 +15,20 @@ weapon Crossbow (ranged, projectile, reload, two-handed, range 10/20/40): 0 / 1d
 speed 6
 
 # Features
-passive Sharpshooter: clear-shot                         # your [Shot] Actions take no Bane for a target Engaged with your ally
-passive Marked Quarry: boon 1 shot strike quarry
+passive Sharpshooter
+passive Marked Quarry
 passive Marked Quarry floor: floor [Mod] shot strike quarry   # decided: your [Shot] Strikes against it deal [Mod] on a Tier 1
 
-action Steel Yourself 2 | ap 2 | round | traits self | heal 1 self
-action Weapon Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod]
-action Lock & Loose | ap 1 | round | traits ranged shot strike weapon | vs ad | tiers [Mod] / 1d4 + 2 + [Mod] / 1d10 + [Mod] | on 2: debuff Hindered (until it moves); on 3: debuff Immobilized
 
 # Signature: Double Shot (damage; 3 AP adds the step away: Evade 1)
-action Double Shot 2 | ap 2 | round | traits shot strike | does Weapon Attack x2 | different
-action Double Shot 3 | ap 3 | round | traits shot strike | does Weapon Attack x2 | different | evade 1
 
 # Escalation (level 1): Killer's Focus (passive) and Twin Shot (active, Escalation 3)
-passive Killer's Focus: escalation 2: extra 1d6 first shot strike weapon
-action Twin Shot | ap 1 | round | escalation 3 | traits ranged shot strike weapon | does Weapon Attack | each extra 1d6 | area 2
+passive Killer's Focus
 
 # Encounter Pick (level 2): Volley (the area option)
-action Volley | ap 2 | encounter | traits area ranged save shot weapon | vs save instinct | tiers [B] 2d8 + [Mod] / [B] 1d10 + [Mod] / [B] 1d4 | area 2 | on 1: debuff Hindered (EoT)
 
 # Daily Pick (level 3): Deadeye (1 AP). Passive Escalation (level 3): Elusive.
-action Deadeye | ap 1 | daily | traits ranged shot strike weapon | favored | vs ad | tiers [B] 1[W] / [B] 1[W] + [Mod] + 1d6 / [B] 1[W] + [Mod] + 2d6 | on 3: debuff Prone
-passive Elusive: escalation 1: elusive 1                  # the first [Strike] Action against you each round takes 1 Bane
+passive Elusive
 
 turn Main: Double Shot 3, Lock & Loose, Weapon Attack
 turn Pin: Double Shot 3, Lock & Loose, Twin Shot (else Weapon Attack)

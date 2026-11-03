@@ -40,235 +40,25 @@ A weapon that takes both hands deals the most, a weapon that leaves a hand free 
 
 #### Melee Weapon Techniques
 
-<div class="action" markdown="1">
-<div class="action-head"><span>Stick and Slip</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
+@@CARD:Stick and Slip@@
 
-**Flavor:** In, a quick cut, and out before they can answer.
+@@CARD:Guarded Cut@@
 
-*Melee • Strike • Weapon*
+@@CARD:Reaping Sweep@@
 
-**Frequency:** Round
+@@CARD:Hooking Chop@@
 
-**Target:** One creature
+@@CARD:Rending Chop@@
 
-**Distance:** Weapon
+@@CARD:Ringing Blow@@
 
-**Vs:** AD
+@@CARD:Bowl Over@@
 
-| | 1 AP |
-|---|---|
-| **Tier 1** | [B] [Mod] Pi |
-| **Tier 2** | [B] 1d4 + [Mod] Pi; you can Evade 1. |
-| **Tier 3** | [B] 1d8 + [Mod] Pi; you can Evade 1. |
+@@CARD:Lunge@@
 
-</div>
+@@CARD:Keep Them Off@@
 
-<div class="action" markdown="1">
-<div class="action-head"><span>Guarded Cut</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
-
-**Flavor:** The blade strikes and comes straight back to guard.
-
-*Melee • Strike • Weapon*
-
-**Frequency:** Round
-
-**Target:** One creature
-
-**Distance:** Weapon
-
-**Vs:** AD
-
-| | 1 AP |
-|---|---|
-| **Tier 1** | [B] [Mod] Sl |
-| **Tier 2** | [B] 1d6 + [Mod] Sl |
-| **Tier 3** | [B] 1d10 + [Mod] Sl; you gain +1 Armor Defense for 1 round. |
-
-</div>
-
-<div class="action" markdown="1">
-<div class="action-head"><span>Reaping Sweep</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
-
-**Flavor:** A wide, heavy arc for anyone standing too close.
-
-*Melee • Strike • Weapon*
-
-**Frequency:** Round
-
-**Target:** One creature
-
-**Distance:** Weapon
-
-**Vs:** AD
-
-| | 1 AP |
-|---|---|
-| **Tier 1** | [B] [Mod] Sl |
-| **Tier 2** | [B] 1d10 + [Mod] Sl; Cleave 1 |
-| **Tier 3** | [B] 2d6 + [Mod] Sl; Cleave 2 |
-
-</div>
-
-<div class="action" markdown="1">
-<div class="action-head"><span>Hooking Chop</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
-
-**Flavor:** The beard of the axe catches, and you pull.
-
-*Melee • Strike • Weapon*
-
-**Frequency:** Round
-
-**Target:** One creature
-
-**Distance:** Weapon
-
-**Vs:** AD
-
-| | 1 AP |
-|---|---|
-| **Tier 1** | [B] [Mod] Sl |
-| **Tier 2** | [B] 1d4 + [Mod] Sl; Pulled 1. |
-| **Tier 3** | [B] 1d8 + [Mod] Sl; Pulled 1. |
-
-</div>
-
-<div class="action" markdown="1">
-<div class="action-head"><span>Rending Chop</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
-
-**Flavor:** A blow that splits armor and leaves the flesh open.
-
-*Melee • Strike • Weapon*
-
-**Frequency:** Round
-
-**Target:** One creature
-
-**Distance:** Weapon
-
-**Vs:** AD
-
-| | 1 AP |
-|---|---|
-| **Tier 1** | [B] [Mod] Sl |
-| **Tier 2** | [B] 1d6 + [Mod] Sl |
-| **Tier 3** | [B] 2d8 + [Mod] Sl; Vulnerable 1 (EoT). |
-
-</div>
-
-<div class="action" markdown="1">
-<div class="action-head"><span>Ringing Blow</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
-
-**Flavor:** A crack on the helm, and their next swing goes wide.
-
-*Melee • Strike • Weapon*
-
-**Frequency:** Round
-
-**Target:** One creature
-
-**Distance:** Weapon
-
-**Vs:** AD
-
-| | 1 AP |
-|---|---|
-| **Tier 1** | [B] [Mod] Bl |
-| **Tier 2** | [B] 1d4 + 1 + [Mod] Bl |
-| **Tier 3** | [B] 1d8 + 1 + [Mod] Bl; its next [Strike] Action before the end of its next turn takes 1 Bane. |
-
-</div>
-
-<div class="action" markdown="1">
-<div class="action-head"><span>Bowl Over</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
-
-**Flavor:** All the weight of the head, low and through.
-
-*Melee • Strike • Weapon*
-
-**Frequency:** Round
-
-**Target:** One creature
-
-**Distance:** Weapon
-
-**Vs:** AD
-
-| | 1 AP |
-|---|---|
-| **Tier 1** | [B] [Mod] Bl |
-| **Tier 2** | [B] 1d4 + 2 + [Mod] Bl |
-| **Tier 3** | [B] 1d10 + 2 + [Mod] Bl; Prone. |
-
-</div>
-
-<div class="action" markdown="1">
-<div class="action-head"><span>Lunge</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
-
-**Flavor:** A full extension that reaches farther than they thought.
-
-*Melee • Strike • Weapon*
-
-**Frequency:** Round
-
-**Target:** One creature
-
-**Distance:** Weapon + 1
-
-**Vs:** AD
-
-| | 1 AP |
-|---|---|
-| **Tier 1** | [B] [Mod] Pi |
-| **Tier 2** | [B] 1d4 + [Mod] Pi |
-| **Tier 3** | [B] 1d8 + [Mod] Pi; Hindered (EoT). |
-
-</div>
-
-<div class="action" markdown="1">
-<div class="action-head"><span>Keep Them Off</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
-
-**Flavor:** The point stays between you and them, and it pushes.
-
-*Melee • Strike • Weapon*
-
-**Frequency:** Round
-
-**Target:** One creature
-
-**Distance:** Weapon
-
-**Vs:** AD
-
-| | 1 AP |
-|---|---|
-| **Tier 1** | [B] [Mod] Pi |
-| **Tier 2** | [B] 1d6 + [Mod] Pi; Pushed 1. |
-| **Tier 3** | [B] 1d10 + [Mod] Pi; Pushed 2. |
-
-</div>
-
-<div class="action" markdown="1">
-<div class="action-head"><span>Gut Punch</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
-
-**Flavor:** A fist with a blade in it, right under the ribs.
-
-*Melee • Strike • Weapon*
-
-**Frequency:** Round
-
-**Target:** One creature
-
-**Distance:** Weapon
-
-**Vs:** AD
-
-| | 1 AP |
-|---|---|
-| **Tier 1** | [B] [Mod] Pi |
-| **Tier 2** | [B] 1d4 + [Mod] Pi; Hindered (EoT). |
-| **Tier 3** | [B] 1d6 + [Mod] Pi; Hindered (EoT). |
-
-</div>
+@@CARD:Gut Punch@@
 ### Ranged
 
 | Name | Group | Properties | Type | Range | Damage | Mastery |
@@ -282,144 +72,17 @@ A weapon that takes both hands deals the most, a weapon that leaves a hand free 
 
 #### Ranged Weapon Techniques
 
-<div class="action" markdown="1">
-<div class="action-head"><span>Skirmish Shot</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
+@@CARD:Skirmish Shot@@
 
-**Flavor:** Loose, and be gone before the arrow lands.
+@@CARD:Heartseeker@@
 
-*Ranged • Shot • Strike • Weapon*
+@@CARD:Sting@@
 
-**Frequency:** Round
+@@CARD:Lock & Loose@@
 
-**Target:** One creature
+@@CARD:Point Blank@@
 
-**Distance:** Weapon
-
-**Vs:** AD
-
-| | 1 AP |
-|---|---|
-| **Tier 1** | [B] [Mod] Pi |
-| **Tier 2** | [B] 1d6 + [Mod] Pi |
-| **Tier 3** | [B] 1d10 + [Mod] Pi; you can Evade 1. |
-
-</div>
-
-<div class="action" markdown="1">
-<div class="action-head"><span>Heartseeker</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
-
-**Flavor:** A full draw, aimed where the armor gives.
-
-*Ranged • Shot • Strike • Weapon*
-
-**Frequency:** Round
-
-**Target:** One creature
-
-**Distance:** Weapon
-
-**Vs:** AD
-
-| | 1 AP |
-|---|---|
-| **Tier 1** | [B] [Mod] Pi |
-| **Tier 2** | [B] 1d4 + 1 + [Mod] Pi |
-| **Tier 3** | [B] 1d8 + 1 + [Mod] Pi; Vulnerable 1 (EoT). |
-
-</div>
-
-<div class="action" markdown="1">
-<div class="action-head"><span>Sting</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
-
-**Flavor:** A small bolt in the leg: small, and enough.
-
-*Ranged • Shot • Strike • Weapon*
-
-**Frequency:** Round
-
-**Target:** One creature
-
-**Distance:** Weapon
-
-**Vs:** AD
-
-| | 1 AP |
-|---|---|
-| **Tier 1** | [B] [Mod] Pi |
-| **Tier 2** | [B] 1d4 + [Mod] Pi |
-| **Tier 3** | [B] 1d8 + [Mod] Pi; Hindered (EoT). |
-
-</div>
-
-<div class="action" markdown="1">
-<div class="action-head"><span>Lock & Loose</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
-
-**Flavor:** A bolt to the knee, and they go nowhere.
-
-*Ranged • Shot • Strike • Weapon*
-
-**Frequency:** Round
-
-**Target:** One creature
-
-**Distance:** Weapon
-
-**Vs:** AD
-
-| | 1 AP |
-|---|---|
-| **Tier 1** | [B] [Mod] Pi |
-| **Tier 2** | [B] 1d4+2+[Mod] Pi; For 1 round, the creature is Hindered until they use a Move Action. |
-| **Tier 3** | [B] 1d10 + [Mod] Pi; Immobilized |
-
-</div>
-
-<div class="action" markdown="1">
-<div class="action-head"><span>Point Blank</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
-
-**Flavor:** Too close for a bow. Not too close for this.
-
-*Gun • Ranged • Strike • Weapon*
-
-**Frequency:** Round
-
-**Target:** One creature
-
-**Distance:** Weapon
-
-**Vs:** AD
-
-| | 1 AP |
-|---|---|
-| **Tier 1** | [B] [Mod] Pi |
-| **Tier 2** | [B] 1d4 + [Mod] Pi |
-| **Tier 3** | [B] 2d6 + [Mod] Pi; Pushed 1. |
-| **Effects** | While you are Engaged, this attack takes 1 Bane for it instead of 2. |
-
-</div>
-
-<div class="action" markdown="1">
-<div class="action-head"><span>Thunderclap</span><span>1 AP</span><span class="cat">Weapon Technique</span></div>
-
-**Flavor:** The shot and the smoke, and they are on the ground.
-
-*Gun • Ranged • Strike • Weapon*
-
-**Frequency:** Round
-
-**Target:** One creature
-
-**Distance:** Weapon
-
-**Vs:** AD
-
-| | 1 AP |
-|---|---|
-| **Tier 1** | [B] [Mod] Pi |
-| **Tier 2** | [B] 1d4 + [Mod] Pi |
-| **Tier 3** | [B] 2d8 + [Mod] Pi; Prone. |
-
-</div>
+@@CARD:Thunderclap@@
 ### Hands
 
 You have two hands: your **main hand** and your **off hand**. Which hand holds a weapon changes nothing in the rules, unless a feature says so. Each weapon you hold uses one or two hands. A weapon with the **Two-handed** property must be held with both hands: holding it with one hand gives **3 Banes on [Strike, Weapon] Actions with that weapon**. A weapon or your Fists in the other hand don't take them.

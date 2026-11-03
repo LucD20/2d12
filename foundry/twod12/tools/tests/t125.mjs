@@ -2,6 +2,8 @@
 // v0.0.146 (Pass B of the core rules update): Slowed and Quickened, the AP cap, Round = once per turn-cycle, no Round default for Weapon,
 // no swapping while Down, Reload as a Weapon Action against DC 13, Imperiled and Immobilized texts.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
+const CDOCS = (await import(ROOTURL + "tools/content.mjs")).docs, cdoc = (n, t = "action") => CDOCS.find(d => d.name === n && d.type === t);   // v0.0.230 (pack CS): the cards are data (book/cards), read from the built content
+const BD = (await import(ROOTURL + "module/basic-data.mjs")).BASIC_ACTIONS;   // v0.0.227 (pack CS): the Basic Actions are data generated from book/cards
 import fs from "node:fs";
 globalThis.Combat = class {}; globalThis.CONFIG = {};
 globalThis.foundry = { applications: { api: { DialogV2: {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
@@ -34,6 +36,6 @@ console.log("Round, used at the end of the order (round 1, turn 2), new round st
 const src = n => fs.readFileSync(ROOT + n, "utf8");
 const combat = src("module/combat.mjs"), basic = src("module/basic.mjs"), content = src("tools/content.mjs"), main = src("module/twod12.mjs"), car = src("module/carousel.mjs");
 console.log("no swap while Down:", combat.includes("is Down and can't swap initiative"), "| AP over the most only when edited:", combat.includes('why === "edited" ? want : Math.min(want, Math.max(apMax(c), from))'), "| tracker shows the most:", car.includes("Math.max(apMax(c), ap, 1)"));
-console.log("Reload is [Handle, Weapon]:", basic.includes('traits: ["handle", "weapon"],'), "| Slowed and Quickened conditions:", content.includes('cond("Slowed"') && content.includes('cond("Quickened"') && main.includes('["slowed", ') && main.includes('["quickened", '));
+console.log("Reload is [Handle, Weapon]:", JSON.stringify(BD.reload.traits) === '["handle","weapon"]', "| Slowed and Quickened conditions:", content.includes('cond("Slowed"') && content.includes('cond("Quickened"') && main.includes('["slowed", ') && main.includes('["quickened", '));
 console.log("Imperiled: Slowed 1:", content.includes("you are Slowed 1 for that turn"), "| Immobilized: 1 AP [Move] (v0.0.224):", content.includes("by spending 1 AP [Move]"), "| old Weapon Actions set to Round once:", main.includes('"weaponRoundApplied"'));
-console.log("Smite, Reaping Sweep and Lock & Loose say Round:", (content.match(/distance: "weapon", frequency: "round",/g) || []).length === 3);
+console.log("Smite, Reaping Sweep and Lock & Loose say Round:", ["Smite", "Reaping Sweep", "Lock & Loose"].every(n => cdoc(n).system.distance === "weapon" && cdoc(n).system.frequency === "round"));

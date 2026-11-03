@@ -12,5 +12,5 @@ reaction kind select (item sheet): true | Empowered and Enfeebled inputs: true |
 Tags input (NPC sheet): true
 --- the compendium
 Opportunity Attack: interrupt | A creature within 3 squares would leave a square during a Move Action or uses the Stand Action. | reaction: true
-Cut Through's Setup: Evade 2 (@Move[evade|distance:2|terrain:ignore])
+Cut Through's Setup: @Move[evade|distance:2|terrain:ignore]. During t
 Bloodlust (effect): Empowered 1 | Enfeebled (none) | boons 2 | for ["melee","weapon"]

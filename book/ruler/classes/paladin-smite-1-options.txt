@@ -17,23 +17,15 @@ weapon Greatsword (melee, two-handed): 0 / 1d8 / 2d6
 speed 5               # Human 5, Paladin +0 (the map model)
 
 # Features: Divine Power (Profane Judgment, not modeled) and Font of Mercy (a Feature that is an Escalation Passive: Escalation 1, +Power Mod + 2 on every Rally Point).
-passive Font of Mercy: escalation 1: rally-bonus 4
+passive Font of Mercy
 
-action Steel Yourself 2 | ap 2 | round | traits self | heal 1 self     # Basic Action: you use 1 Rally Point
-action Weapon Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod]
 
 # Signature: Smite (damage, with a support rider)
-action Smite 1 | ap 1 | round | traits divine signature strike weapon | vs ad | tiers [B] 1[W] / [B] 1[W] + [Mod] + [M] 1d4 / [B] 1[W] + [Mod] + [M] 1d6
-action Smite 2 | ap 2 | round | traits divine signature strike weapon | vs ad | tiers [B] 1[W] + [M] 1d6 / [B] 1[W] + [Mod] + [M] 1d10 / [B] 1[W] + [Mod] + [M] 2d8 | on 2+: defense 1 ally
-action Smite 3 | ap 3 | round | traits divine signature strike weapon | vs ad | tiers [B] 1[W] + [M] 1d6 / [B] 1[W] + [Mod] + [M] 1d10 / [B] 1[W] + [Mod] + [M] 2d8 | on 2+: defense 1 ally; on 2+: guard 1d8+[Mod] self
 
 # Encounter Pick (level 1): Word of Radiance (the area option, a Power Action)
-action Word of Radiance 2 | ap 2 | encounter | traits area divine power | vs wd | tiers [M] 1d10 / [M] 2d8 / [M] 3d6 | area 2 | on 3: debuff Prone
-action Word of Radiance 3 | ap 3 | encounter | traits area divine power | vs wd | tiers [M] 2d6 / [M] 2d10 / [M] 3d8 | area 2.5 | on 3: debuff Prone
 
 # Escalation (level 1): Aura of Protection (active) and Hallowed Stance (passive)
-action Aura of Protection | ap 0 | encounter | escalation 1 | traits area divine | allies 2.5 | rounds 2.5 | defense 1 allies
-passive Hallowed Stance: escalation 2: reduce 2 adjacent 1     # you and adjacent allies: Body damage reduced by the Power Modifier (the turns never move)
+passive Hallowed Stance
 
 turn Main: Aura of Protection, Smite 3, Weapon Attack, Weapon Attack
 turn Main without Escalation: Smite 3, Weapon Attack, Weapon Attack

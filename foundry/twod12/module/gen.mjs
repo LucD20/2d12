@@ -83,18 +83,23 @@ export function convertEffects(text) {
   s = s.replace(new RegExp(`\\b(${ATTRS})\\s+Check\\b(?![\\w\\[])`, "g"), (m, a) => `@Check[${a.toLowerCase()}]`);
   const REF = "(?:\\d+|speed|walk|move|body|mind|appeal|instinct|level|weapon|hp|rally)";
   const EXPR = `${REF}(?:\\s*[/*+\\-]\\s*${REF})*`;
-  s = s.replace(/\b(pushed|pulled|slid|advance|walk|evade)\s+half\s+(?:your\s+)?(speed|walk)\b/gi, (m, k, r) => `${k} ${r}/2`);
-  s = s.replace(new RegExp(`\\b(pushed|pulled|slid|advance|walk|evade)\\s+(${EXPR})(?![\\w/])`, "gi"), (m, k, e) => `@Move[${k.toLowerCase() === "walk" ? "advance" : k.toLowerCase()}|distance:${e.replace(/\s+/g, "").toLowerCase()}]`);
+  s = s.replace(/\b(pushed|pulled|slid|advance|walk|evade|reposition)\s+half\s+(?:your\s+)?(speed|walk)\b(\s*\(rounded down\))?/gi, (m, k, r, down) => `@Move[${k.toLowerCase() === "walk" ? "advance" : k.toLowerCase()}|distance:${down ? `floor(${r.toLowerCase()}/2)` : `${r.toLowerCase()}/2`}${k.toLowerCase() === "reposition" ? "|reach:yes" : ""}]`);   // v0.0.227: "(rounded down)" floors (the evaluator rounds up)
+  s = s.replace(new RegExp(`\\b(pushed|pulled|slid|advance|walk|evade|reposition)\\s+(${EXPR})(?![\\w/])`, "gi"), (m, k, e) => `@Move[${k.toLowerCase() === "walk" ? "advance" : k.toLowerCase()}|distance:${e.replace(/\s+/g, "").toLowerCase()}${k.toLowerCase() === "reposition" ? "|reach:yes" : ""}]`);   // v0.0.227: "Reposition N" (Relocate) is a move button too, kept within Reach
   // "Reposition 3": a free-direction Forced Movement within an Emanation of that many squares
   s = s.replace(/\bReposition\s+(\d+)\b/g, "@Move[reposition|distance:$1]");
   // "Cleave 2": a button that deals Attribute damage to the creatures next to the target
   s = s.replace(/\bCleave\s+(\d+)\b/g, "@Cleave[$1]");
   // "Prone", "Immobilized (EoT)", "Hindered (2 rounds)": a condition button (with the duration)
-  s = s.replace(/\b(Hindered|Immobilized|Prone)\b(?:\s*\((EoT|\d+\s*rounds?)\))?/g, (m, c, d) => `@Condition[${c.toLowerCase()}${d ? (/eot/i.test(d) ? "|eot" : `|rounds:${parseInt(d, 10)}`) : ""}]`);
+  // v0.0.227: only a condition that ends its clause ("Prone.", "Hindered (EoT);") is a button: "a Prone creature" and "no longer Prone" are words.
+  s = s.replace(/(?<!\b(?:no longer|not|a|an|the|any|every|while|being)\s)\b(Hindered|Immobilized|Prone)\b(?:\s*\((EoT|\d+\s*rounds?)\))?(?=\s*(?:[.;,()]|$))/g, (m, c, d) => `@Condition[${c.toLowerCase()}${d ? (/eot/i.test(d) ? "|eot" : `|rounds:${parseInt(d, 10)}`) : ""}]`);
   // "2Emanation 1/round" and "[2Burst EoT]": the area, and how long it stays
   s = s.replace(/\[?\b(\d+)\s*(emanation|burst)\b(?:\s+(?:(\d+)\s*\/\s*rounds?|(EoT)))?\]?/gi, (m, n, shape, rounds, eot) =>
     `@Template[${shape.toLowerCase()}|distance:${n}${rounds ? `|rounds:${rounds}` : (eot ? "|expire:eot" : "")}]`);
   s = s.replace(new RegExp(`\\b(\\d+d\\d+(?:[+-]\\d+)?)([BMC])(${SUBCODES}|[BCHMPS])?\\b`, "g"), (m, dice, p, sub) => `@Damage[${dice}[${POOL[p]}${sub ? "," + TWOD12.subtypes[subtypeCode(sub)].toLowerCase() : ""}]]`);
+  // v0.0.230 (pack CS): "...in a 2 Emanation ..., for 1 round." -> the template lasts that long (the book writes the duration in the sentence)
+  s = s.replace(/(@Template\[emanation\|distance:\d+)(\])([^.]*?\bfor (\d+) rounds?\b)/g, (m, a, b, rest, n) => `${a}|rounds:${n}${b}${rest}`);
+  // v0.0.232 (pack CS): a movement in a text that says "you ignore Difficult Terrain" ignores it (Cut Through's Setup).
+  if (/ignores? Difficult Terrain/i.test(s)) s = s.replace(/@Move\[(advance|evade|charge)\|([^\]]*)\]/g, (m, k, rest) => (rest.includes("terrain:") ? m : `@Move[${k}|${rest}|terrain:ignore]`));
   return s;
 }
 

@@ -1,0 +1,584 @@
+{
+ "_about": "The Talents (the Talents document, 16-talents.md). A card with `talent` is a Talent item (its group, theme and prerequisites as data); one with Versions is an Action too (the Talent grants it); a card whose category is a Talent's name (Pummel, Leg Sweep, Rimebrand) is the Action that Talent grants. One source per card: book/cards/README.md.",
+ "cards": [
+  {
+   "name": "Opportunity Attack",
+   "category": "Combat Talent",
+   "level": 1,
+   "flavor": "You punish anyone who moves carelessly near you.",
+   "frequency": "At-will",
+   "target": "The triggering creature",
+   "interrupt": "A creature within 3 squares would leave a square during a Move Action or uses the Stand Action.",
+   "cost": "1R",
+   "text": "You can make a Weapon Attack (1A) against the triggering creature, as long as your weapon can target them. Used this way, out of your turn, it has a **Critical:** You disrupt the triggering Action before it happens.",
+   "foundry": {
+    "img": "icons/svg/combat.svg",
+    "folder": "Talents",
+    "automation": "silver",
+    "append": "@Use[Weapon Attack|label:Weapon Attack (1A)]"
+   },
+   "talent": {
+    "group": "combat",
+    "description": "You gain the Opportunity Attack Reaction.",
+    "modifiers": [
+     {
+      "spec": "Weapon Attack",
+      "when": "outOfTurn",
+      "critical": "You disrupt the triggering Action before it happens.",
+      "effects": ""
+     }
+    ]
+   },
+   "ruler": {
+    "line": "does Weapon Attack"
+   }
+  },
+  {
+   "name": "Challenge",
+   "category": "Combat Talent",
+   "level": 1,
+   "flavor": "You call them out, and they cannot look away.",
+   "text": "Once per round, when you deal damage to a creature with a [Melee, Strike] Action, you can challenge them: until the end of their next turn, their [Strike] Actions against creatures other than you take 1 Bane.",
+   "foundry": {
+    "img": "icons/svg/combat.svg",
+    "automation": "bronze",
+    "automationNote": "apply the Challenged effect from the compendium.",
+    "append": "(Apply the Challenged effect from the compendium; its Bane is a chip the attacker unticks when they attack you.)"
+   },
+   "talent": {
+    "group": "combat"
+   }
+  },
+  {
+   "name": "Heavy Blows",
+   "category": "Combat Talent",
+   "level": 1,
+   "flavor": "Every swing carries the whole weight of the steel.",
+   "text": "When a [Melee, Strike, Weapon] Action you make with a Two-handed weapon deals damage on a Tier 3, it deals 2 more.",
+   "foundry": {
+    "img": "icons/svg/sword.svg",
+    "automation": "gold",
+    "settings": [
+     {
+      "type": "bonusdamage",
+      "dmg": "2",
+      "dmgPool": "B",
+      "dmgSub": "",
+      "tiers": [
+       "t3"
+      ],
+      "text": "",
+      "fxUuid": "",
+      "all": [
+       "melee",
+       "strike",
+       "weapon",
+       "__twohanded"
+      ],
+      "any": [],
+      "none": []
+     }
+    ]
+   },
+   "talent": {
+    "group": "combat",
+    "theme": "Great Weapon"
+   },
+   "ruler": {
+    "passive": "bonus 1 melee weapon strike"
+   }
+  },
+  {
+   "name": "Whirlwind",
+   "category": "Combat Talent",
+   "level": 1,
+   "flavor": "You spin, and everything within reach feels the blade.",
+   "traits": [
+    "area",
+    "melee",
+    "self",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Encounter",
+   "target": "All creatures in the Area",
+   "area": "1 Emanation",
+   "vs": "AD",
+   "prerequisites": "Heavy Blows.",
+   "versions": [
+    {
+     "ap": 2,
+     "tiers": [
+      "[B] 1[W] + [Mod]",
+      "[B] 1[W] + [Mod] + 4",
+      "[B] 1[W] + [Mod] + 6"
+     ],
+     "ruler": "area 1.5"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/sword.svg",
+    "folder": "Talents",
+    "automation": "gold"
+   },
+   "talent": {
+    "group": "combat",
+    "theme": "Great Weapon",
+    "prereqs": [
+     {
+      "kind": "talent",
+      "name": "Heavy Blows",
+      "value": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Bloodlust",
+   "category": "Combat Talent",
+   "level": 1,
+   "flavor": "The red haze settles, and you stop caring about pain.",
+   "traits": [
+    "self"
+   ],
+   "frequency": "Encounter",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "For 1 round, your [Melee, Weapon] Actions are [[Empowered]] 1 and gain 2 Boons, and you take 1 Bane on Saves.",
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Bloodlust}}"
+       ]
+      }
+     },
+     "ruler": "always: empowered 1 turn melee weapon; boon 2 turn melee weapon"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/blood.svg",
+    "folder": "Talents",
+    "automation": "gold"
+   },
+   "talent": {
+    "group": "combat"
+   }
+  },
+  {
+   "name": "Brawler",
+   "category": "Combat Talent",
+   "level": 1,
+   "flavor": "Your hands have won more fights than any blade.",
+   "text": "You gain the Pummel Action. Your [[Fists]] don't have the [[Non-threatening]] property: you can flank with them.",
+   "foundry": {
+    "img": "icons/svg/combat.svg",
+    "automation": "gold",
+    "actions": [
+     "Pummel"
+    ],
+    "settings": [
+     {
+      "type": "weaponprop",
+      "wpWhich": "fists",
+      "wpProp": "nonthreatening"
+     }
+    ]
+   },
+   "talent": {
+    "group": "combat",
+    "theme": "Unarmed"
+   }
+  },
+  {
+   "name": "Pummel",
+   "category": "Brawler",
+   "flavor": "A flurry of blows until something gives.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "At-will",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "requirements": "You have a free hand.",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[B] [Mod] Bl",
+      "[B] 1d4 + [Mod] Bl",
+      "[B] 1d6 + [Mod] Bl"
+     ]
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/combat.svg",
+    "folder": "Talents",
+    "level": 1,
+    "automation": "gold",
+    "weaponUse": "fists"
+   }
+  },
+  {
+   "name": "Kickboxer",
+   "category": "Combat Talent",
+   "level": 1,
+   "flavor": "Your legs hit as hard as your fists.",
+   "prerequisites": "Brawler.",
+   "text": "You gain the Leg Sweep Action: a kick, so it needs no free hand. You can use it with your hands full.",
+   "foundry": {
+    "img": "icons/svg/combat.svg",
+    "automation": "gold",
+    "actions": [
+     "Leg Sweep"
+    ]
+   },
+   "talent": {
+    "group": "combat",
+    "theme": "Unarmed",
+    "prereqs": [
+     {
+      "kind": "talent",
+      "name": "Brawler",
+      "value": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Leg Sweep",
+   "category": "Kickboxer",
+   "flavor": "A low kick takes their legs out from under them.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "rules": "This Action uses your [[Fists]] even when you have no free hand.",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[B] 1d4 Bl",
+      "[B] 1d4 + [Mod] Bl",
+      "[B] 1d6 + [Mod] Bl; Prone."
+     ],
+     "ruler": "on 3: debuff Prone"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/combat.svg",
+    "folder": "Talents",
+    "level": 1,
+    "automation": "gold",
+    "weaponUse": "kick"
+   }
+  },
+  {
+   "name": "Aim",
+   "category": "Combat Talent",
+   "level": 1,
+   "flavor": "Patience turns a good shot into a sure one.",
+   "traits": [
+    "ranged",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "Make a [Ranged] Weapon Attack (1A) with 1 Boon. It ignores Low Cover.",
+     "foundry": {
+      "append": "@Use[Weapon Attack|boons:1|label:[Ranged] Weapon Attack (1A) with 1 Boon]"
+     },
+     "ruler": "does Weapon Attack | each boon 1 | cover"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Talents",
+    "automation": "silver",
+    "automationNote": "ignoring Low Cover (untick the Low cover chip in the roll dialog)."
+   },
+   "talent": {
+    "group": "combat",
+    "theme": "Marksman"
+   }
+  },
+  {
+   "name": "Ricochet",
+   "category": "Combat Talent",
+   "level": 1,
+   "flavor": "Walls, shields and stones are just more angles.",
+   "prerequisites": "Aim.",
+   "text": "Your [Ranged, Weapon] Actions can bounce off one surface on the way. The projectile goes from the surface to the creature, and you calculate Line of Effect, Cover and Sight from the center of the surface. The distance is the total the projectile travels: if you shoot at a surface 5 squares from you and the target is within 6 squares of the surface, that is an 11-square shot. You must still perceive the creature to target them. A bounced shot takes 1 Bane.",
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "automation": "none"
+   },
+   "talent": {
+    "group": "combat",
+    "theme": "Marksman",
+    "prereqs": [
+     {
+      "kind": "talent",
+      "name": "Aim",
+      "value": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Long Draw",
+   "category": "Combat Talent",
+   "level": 1,
+   "flavor": "You pull a little further, and the arrow flies a little truer.",
+   "text": "With a [[Projectile]] weapon, your far range has no Bane and your maximum range has 1 Bane instead of 2.",
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "automation": "gold",
+    "settings": [
+     {
+      "type": "ignore",
+      "ignoreRule": "rangeBane",
+      "all": [
+       "shot"
+      ],
+      "any": [],
+      "none": []
+     }
+    ]
+   },
+   "talent": {
+    "group": "combat",
+    "theme": "Marksman"
+   },
+   "ruler": {
+    "passive": "long-draw"
+   }
+  },
+  {
+   "name": "Steady Nerves",
+   "category": "Combat Talent",
+   "level": 1,
+   "flavor": "They are in your face. You are still calm.",
+   "text": "Your [Ranged] Actions don't take the Banes for being Engaged.",
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "automation": "gold",
+    "settings": [
+     {
+      "type": "ignore",
+      "ignoreRule": "engagedSelf",
+      "all": [
+       "ranged"
+      ],
+      "any": [],
+      "none": []
+     }
+    ]
+   },
+   "talent": {
+    "group": "combat",
+    "theme": "Marksman"
+   },
+   "ruler": {
+    "passive": "steady-nerves"
+   }
+  },
+  {
+   "name": "Battering Charge",
+   "category": "Mobility Talent",
+   "level": 1,
+   "flavor": "Nothing slows you down once you start running.",
+   "text": "When you use Charge, your Speed counts as 2 higher for its movement, and its Weapon Attack (1A) is [[Empowered]] 1.",
+   "foundry": {
+    "img": "icons/svg/thrust.svg",
+    "automation": "gold"
+   },
+   "talent": {
+    "group": "mobility"
+   }
+  },
+  {
+   "name": "Cut Through",
+   "category": "Mobility Talent",
+   "level": 1,
+   "flavor": "You drive through the line without stopping, and strike as you pass.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "setup": "Evade 2. During this Evade you can move through the space of any creature (you can't end in one), and you ignore Difficult Terrain.",
+   "versions": [
+    {
+     "ap": 2,
+     "tiers": [
+      "[B] [Mod]",
+      "[B] 1[W] + [Mod]",
+      "[B] 1[W] + [Mod] + 2"
+     ],
+     "critical": "Relocate (1A) the target, ignoring the Handle trait.",
+     "foundry": {
+      "append": {
+       "critical": "@Use[Relocate|nohandle:yes|label:Relocate (1A)]"
+      }
+     },
+     "ruler": "evade 2"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/sword.svg",
+    "folder": "Talents",
+    "automation": "silver"
+   },
+   "talent": {
+    "group": "mobility"
+   }
+  },
+  {
+   "name": "Lesser Blessing",
+   "category": "Magic Talent",
+   "level": 1,
+   "flavor": "A small gift from the god you follow.",
+   "traits": [
+    "divine",
+    "power"
+   ],
+   "text": "Pick one blessing from the list below, related to a god you follow. You gain its Action. (More blessings will be added.)",
+   "foundry": {
+    "img": "icons/svg/holy-shield.svg",
+    "automation": "gold"
+   },
+   "talent": {
+    "group": "magic",
+    "theme": "Divine",
+    "traits": [
+     "divine",
+     "power"
+    ],
+    "choiceLabel": "Choose a blessing",
+    "choiceCount": 1,
+    "choiceOptions": [
+     "Rimebrand (Cold)"
+    ]
+   }
+  },
+  {
+   "name": "Rimebrand (Cold)",
+   "category": "Lesser Blessing",
+   "flavor": "Frost creeps along your weapon, a gift from a winter god.",
+   "traits": [
+    "divine",
+    "power",
+    "self"
+   ],
+   "frequency": "Round",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "Until the end of your turn, your [Weapon] Actions deal an extra [M] 1d4 Co, and the first one that deals damage on a Tier 3 makes the target Hindered (EoT).",
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Rimebrand}}"
+       ]
+      }
+     }
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/frozen.svg",
+    "folder": "Talents",
+    "automation": "gold"
+   }
+  },
+  {
+   "name": "Sacred Weapon",
+   "category": "Magic Talent",
+   "level": 1,
+   "flavor": "You lay a hand on the steel and bless it for what comes next.",
+   "traits": [
+    "divine",
+    "focus"
+   ],
+   "frequency": "Round",
+   "target": "One / two creatures",
+   "distance": "Reach",
+   "prerequisites": "Lesser Blessing, or a [Divine] Action.",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "You touch a creature (yourself or an ally). If they are not Empowered, they become Empowered 1 for 1 round. If they are Empowered 1 (from any source), they become Empowered 2 for 1 round. If they are Empowered 2 or higher, no effect.",
+     "ruler": "always: empowered 1 turn"
+    },
+    {
+     "ap": 2,
+     "effects": "As 1 AP, but you can touch up to two creatures.",
+     "ruler": "allies 2 | always: empowered 1 turn"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/sword.svg",
+    "folder": "Talents",
+    "automation": "none"
+   },
+   "talent": {
+    "group": "magic",
+    "theme": "Divine",
+    "prereqs": [
+     {
+      "kind": "talent",
+      "name": "Lesser Blessing",
+      "value": 0
+     },
+     {
+      "kind": "trait",
+      "name": "divine",
+      "value": 0
+     }
+    ],
+    "prereqMode": "any",
+    "description": "You gain the Sacred Weapon Action."
+   }
+  },
+  {
+   "name": "Class Expertise",
+   "category": "Combat Talent",
+   "level": 5,
+   "flavor": "You have studied your craft longer than most.",
+   "prerequisites": "Level 5.",
+   "text": "Choose one Encounter or Daily Action from your class's Repertoire that you don't have. You gain it.",
+   "foundry": {
+    "img": "icons/svg/book.svg",
+    "automation": "none",
+    "append": "(Drag it from the compendium onto your sheet.)"
+   },
+   "talent": {
+    "group": "combat",
+    "prereqs": [
+     {
+      "kind": "level",
+      "name": "",
+      "value": 5
+     }
+    ]
+   }
+  }
+ ]
+}

@@ -26,6 +26,40 @@ const die = (R, s) => 1 + Math.floor(R() * s);
 const pickU = (x, probs) => (x < probs[0] ? 1 : x < probs[0] + probs[1] ? 2 : 3);
 const pick = (R, probs) => pickU(R(), probs);
 
+/* ------------------------------------------------------------------ the cards (book/cards/*.json; pack CS, 2026-11-03) */
+// Every build starts with one action line per Version of every card that has tiers or a ruler modeling string (and a passive line per
+// Passive with one): the same line a class file would write, generated from the card. A class file's own line for the same name overrides it
+// (experiments, options; catalogue/paladin.txt keeps the old cards). `[PMod]` in a card's ruler string is the build's power-mod.
+const CARDS = await import(new URL("../cards/load.mjs", import.meta.url).href);
+const RFREQ = { "at-will": "at-will", turn: "turn", round: "round", encounter: "encounter", daily: "daily" };
+const rulerVs = vs => { const t = String(vs ?? "").trim(); if (/^AD$/i.test(t)) return "vs ad"; if (/^WD$/i.test(t)) return "vs wd"; const m = t.match(/^(\w+) Save$/); return m ? `vs save ${m[1].toLowerCase()}` : ""; };
+export function cardLines(cards = CARDS.loadCards()) {
+  const out = [];
+  for (const c of cards) {
+    if (c.ruler === false || c.ruler?.skip) continue;
+    const multi = (c.versions ?? []).length > 1;
+    for (const v of c.versions ?? []) {
+      const tiers = v.tiers ? v.tiers.map(t => CARDS.splitTier(t)[0]) : null;
+      const damage = tiers && tiers.some(CARDS.isDamage);
+      if (!damage && !v.ruler) continue;   // nothing the ruler models (Advance, Interact...)
+      const f = [`action ${c.name}${multi ? " " + v.ap : ""}`, `ap ${v.ap}`, RFREQ[String(c.frequency).toLowerCase()] ?? "none"];
+      if (c.traits?.length) f.push(`traits ${c.traits.join(" ")}`);
+      if (CARDS.isReaction(c)) f.push("reaction");
+      if (c.escalation) f.push(`escalation ${c.escalation}`);
+      const vs = rulerVs(c.vs); if (vs) f.push(vs);
+      if (damage) f.push(`tiers ${tiers.map(t => (CARDS.isDamage(t) ? t : "0")).join(" / ")}`);
+      if (v.ruler) f.push(v.ruler);
+      out.push(f.join(" | "));
+    }
+    if (c.ruler?.passive) out.push(`passive ${c.name}: ${c.ruler.passive}`);
+  }
+  return out;
+}
+let CARD_LINES = null;
+const cardLinesFor = () => (CARD_LINES ??= cardLines().filter(l => l.startsWith("action ")));   // every build has every card's Actions (its turns name the ones it uses)
+let CARD_PASSIVES = null;   // a Passive is a build's choice: a class file names it ("passive Hallowed Stance") and the card's ruler string fills the line
+const cardPassive = name => { CARD_PASSIVES ??= Object.fromEntries(cardLines().filter(l => l.startsWith("passive ")).map(l => { const m = l.match(/^passive (.+?):\s*(.+)$/); return [m[1].toLowerCase(), m[2]]; })); return CARD_PASSIVES[name.toLowerCase()]; };
+
 /* ------------------------------------------------------------------ damage expressions */
 /**
  * "[B] 1[W] + [Mod] + [M] 2d6 Ho" -> { w: 1, mod: 1, dice: [[2, 6]], flat: 0 }. Pools ([B] [M]) and damage types (Ho, Pi...) are read and left out
@@ -126,10 +160,12 @@ function parseEffects(text) {
 export function parseSpec(text, file = "spec") {
   const b = { file, name: "", role: "", level: 1, attributes: {}, weaponMod: 2, powerMod: 2, health: null, armor: 0, wdBonus: 0, rally: 0, targeted: 1,
     weapon: null, actions: {}, passives: [], turns: {}, plan: [], when: [], speed: 5, reactions: [], dmgScale: 1, keepBest: null, overcastFloor: 0, healthFactor: null };
-  text.split(/\r?\n/).forEach((rawLine, i) => {
+  const pmod = (text.match(/^power-mod\s+(\d+)/m) ?? [])[1] ?? "2";
+  const lines = [...cardLinesFor().map(l => [l.replace(/\[PMod([+-]\d+)?\]/g, (m, n) => String(Number(pmod) + Number(n ?? 0))), "book/cards"]), ...text.split(/\r?\n/).map(l => [l, file])];   // [PMod], [PMod+2]: the build's power-mod
+  lines.forEach(([rawLine, where], i) => {
     const line = clean(rawLine);
     if (!line) return;
-    const fail = msg => { throw new Error(`${file}, line ${i + 1}: ${msg}\n  ${rawLine.trim()}`); };
+    const fail = msg => { throw new Error(`${where}, line ${where === file ? i + 1 - cardLinesFor().length : i + 1}: ${msg}\n  ${rawLine.trim()}`); };
     const [head] = line.split(/\s+/), rest = line.slice(head.length).trim(), key = head.toLowerCase();
     try {
       if (key === "class") b.name = rest;
@@ -184,9 +220,13 @@ export function parseSpec(text, file = "spec") {
           else a.effects.push(...parseEffects(field));
         }
         for (const e of a.effects) if (e.effect.kind === "area") a.area = e.effect.n;
+        if (where !== file) a.fromCard = true;   // pack CS: a card's line (dropped below unless the build names it)
         b.actions[a.name.toLowerCase()] = a;
       } else if (key === "passive") {
-        const m = rest.match(/^(.+?):\s*(?:escalation\s+(\d)\s*:\s*)?(.+)$/i); if (!m) fail("write passive like: Marked Quarry: boon 1 shot strike");
+        let full = rest;
+        if (!rest.includes(":")) { const cp = cardPassive(rest.trim()); if (!cp) fail(`"${rest.trim()}" is not a card with a ruler passive (book/cards); write the passive in full`); full = `${rest.trim()}: ${cp.replace(/\[PMod([+-]\d+)?\]/g, (m, n) => String(Number(pmod) + Number(n ?? 0)))}`; }   // pack CS: the card's line
+        const m = full.match(/^(.+?):\s*(?:escalation\s+(\d)\s*:\s*)?(.+)$/i); if (!m) fail("write passive like: Marked Quarry: boon 1 shot strike");
+        b.passives = b.passives.filter(x => x.name.toLowerCase() !== m[1].trim().toLowerCase());   // a file's passive line replaces the card's (pack CS)
         b.passives.push({ name: m[1].trim(), escalation: Number(m[2] ?? 0), effect: parseEffect(m[3]) });
       } else if (key === "turn") {
         const m = rest.match(/^(.+?):\s*(.+)$/); if (!m) fail("write turn like: Main: Smite 2, Weapon Attack, move 1");
@@ -211,6 +251,15 @@ export function parseSpec(text, file = "spec") {
   b.ad = 11 + b.armor; b.wd = 11 + b.powerMod + b.wdBonus;
   b.rallyPoints = b.rally + Math.ceil((at("body") + at("mind") + b.level) / 2);
   b.rallyHeal = Math.ceil(b.pool / 4);
+  // Pack CS: a build keeps the card Actions its turns, reactions and Linked Actions name (with their other Versions, for the lower-Version fallback) and drops the rest,
+  // so a build has only its own cards (the day model and the fallbacks look at a build's whole action list).
+  const named = new Set();
+  for (const t of Object.values(b.turns)) for (const s of t.steps) { const st = stepOf(s); if (st.kind === "action") { named.add(st.name); if (st.alt) named.add(st.alt); } }
+  for (const r of b.reactions) named.add(r.name.toLowerCase());
+  const grp = n => n.replace(/ \d$/, "");
+  for (let more = true; more;) { more = false; for (const a of Object.values(b.actions)) if (!a.fromCard || named.has(a.name.toLowerCase()) || [...named].some(n => grp(n) === grp(a.name.toLowerCase()))) for (const d of [...a.does, ...a.then]) if (!named.has(d.toLowerCase())) { named.add(d.toLowerCase()); more = true; } }
+  const groups = new Set([...named].map(grp));
+  for (const [k, a] of Object.entries(b.actions)) if (a.fromCard && !named.has(k) && !groups.has(grp(k))) delete b.actions[k];
   // Every turn and plan entry must name things that exist.
   for (const t of Object.values(b.turns)) for (const s of t.steps) { const st = stepOf(s); if (st.kind === "action" && (!b.actions[st.name] || (st.alt && !b.actions[st.alt]))) throw new Error(`${file}: turn "${t.name}" uses "${s}", which is not an action of the file`); }
   for (const p of [...b.plan.flatMap(x => x.split("|").map(y => y.trim())), ...b.when.map(w => w.turn), ...(b.unloadedTurn ? [b.unloadedTurn] : []), ...(b.whenSelf ? [b.whenSelf.turn] : []), ...(b.whenEngaged ? [b.whenEngaged] : [])]) if (!b.turns[p]) throw new Error(`${file}: the plan names "${p}", which is not a turn of the file`);

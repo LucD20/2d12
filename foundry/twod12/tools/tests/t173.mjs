@@ -1,5 +1,6 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t173.mjs)
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
+const CDOCS = (await import(ROOTURL + "tools/content.mjs")).docs, cdoc = (n, t = "action") => CDOCS.find(d => d.name === n && d.type === t);   // v0.0.232 (pack CS): the cards are data (book/cards), read from the built content
 import fs from "node:fs";
 // v0.0.216 (Lucas's test of v0.0.214 and v0.0.215).
 class Fl { constructor(o) { this.o = o; } }
@@ -23,7 +24,7 @@ console.log("roll dialog: a removed tile is display:none, with an undo chip:", a
 console.log("a damaging Action doesn't tick Affect yourself:", acts.includes("self: areaSet.self && !damaging"));
 console.log("class window: the Talent filter before the scroll comes back:", /replaceChildren\(result\);\n\s+this\._applyFilter\(\);/.test(cw));
 console.log("the Line's bar: the banner look, Left and Right buttons:", tpl.includes('data-side="left">Left</button><button type="button" data-side="right">Right</button>') && css.includes(".twod12-linebar {"));
-console.log("NPC's Basic attack box:", data.includes("basicAttack: bool()") && sheet.includes('name="system.basicAttack"') && fu.includes("i.system?.basicAttack") && content.includes("basicAttack: !extra.category"));
+console.log("NPC's Basic attack box:", data.includes("basicAttack: bool()") && sheet.includes('name="system.basicAttack"') && fu.includes("i.system?.basicAttack") && (await import(ROOTURL + "tools/content.mjs")).actors.every(a => a.items.filter(i => i.system?.basicAttack).length === 1 && a.items.filter(i => i.system?.category === "Basic attack").every(i => i.system.basicAttack)));
 const dir = ROOT + "packs/_source/npcs";
 if (fs.existsSync(dir)) for (const f of fs.readdirSync(dir).filter(f => f.endsWith(".json")).sort()) { const a = JSON.parse(fs.readFileSync(`${dir}/${f}`, "utf8")); console.log(`  ${a.name}: Basic attack box on ${(a.items ?? []).filter(i => i.system?.basicAttack).map(i => i.name).join(", ")}`); }
 console.log("v0.0.217: remove a target by right-click or the x (one capturing listener on the dialog):", acts.includes('root.addEventListener("contextmenu"') && acts.includes("const removeTile = tile =>"));

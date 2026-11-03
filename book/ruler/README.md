@@ -28,6 +28,8 @@ Bestiary (`config.mjs` npcHm, npcDamage, the roles and ratings). Random numbers 
 
 ### The spec files
 
+**The cards come from `book/cards/*.json` (pack CS, 2026-11-03):** a build gets one `action` line per Version of every card its turns, reactions and Linked Actions name, with the card's other Versions (`cardLines` in spec.mjs: every card of the book since CS-3), so a class file no longer writes them; a Passive is the build's choice, so the class file names it (`passive Hallowed Stance`, `passive Marked Quarry`) and the card's ruler string fills the line. A class file's own full `action` or `passive` line for the same name overrides the card's (the pre-A1 Archer builds archer-1..3, the old cards of catalogue/paladin.txt and archer.txt, paladin-book-1, the simplified Smite of catalogue/talents.txt). `[PMod]` in a card's ruler string is the build's `power-mod`. The format of a card and of its `ruler` string: `book/cards/README.md`.
+
 One thing per line; `#` starts a comment. A class file (`classes/paladin-1.txt` is the full example):
 
 | Line | Example | Meaning |

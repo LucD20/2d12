@@ -9,16 +9,16 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 38.1 | 451 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 12.2 | 244 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 6.2 | 68 |
-| 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 9.2 | 338 |
+| 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.4 | 39 |
 | 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 5.6 | 95 |
 | 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 5.1 | 78 |
 | 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 20.7 | 170 |
 | 11-species.md | Species | species |  | 0.8 | 35 |
-| 12-paladin.md | Paladin | paladin |  | 11.3 | 371 |
-| 13-archer.md | Archer | archer |  | 9.9 | 340 |
+| 12-paladin.md | Paladin | paladin |  | 3.0 | 101 |
+| 13-archer.md | Archer | archer |  | 2.7 | 98 |
 | 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 14.7 | 277 |
-| 15-gear.md | Gear | gear |  | 17.5 | 519 |
-| 16-talents.md | Talents | talents |  | 9.8 | 311 |
+| 15-gear.md | Gear | gear |  | 10.1 | 182 |
+| 16-talents.md | Talents | talents |  | 2.0 | 65 |
 
 ## 01-roll.md: Chapter 1: The Roll
 
@@ -171,7 +171,7 @@ Open (to be decided) boxes: 83: "The entries of the Dying and Shattered Tables a
 ## 06-basic-actions.md: Chapter 6: Basic Actions
 
 
-Action cards: Advance (7, Basic Action, At-will); Charge (22, Basic Action, Round); Crawl (41, Basic Action, At-will); Evade (56, Basic Action, At-will); Fists (71, Basic Action, At-will); Haul (96, Basic Action, Round); Interact (121, Basic Action, At-will); Leaning (138, Basic Action, At-will); Regrip (153, Basic Action, At-will); Release (168, Basic Action, At-will); Reload (183, Basic Action, At-will); Relocate (208, Basic Action, At-will); Shove (233, Basic Action, Round); Stand (258, Basic Action, At-will); Steel Yourself (273, Basic Action, Round); Trip (290, Basic Action, Round); Weapon Attack (315, Basic Action, At-will)
+Action cards: Advance (6, Basic Action, At-will); Charge (8, Basic Action, Round); Crawl (10, Basic Action, At-will); Evade (12, Basic Action, At-will); Fists (14, Basic Action, At-will); Haul (16, Basic Action, Round); Interact (18, Basic Action, At-will); Leaning (20, Basic Action, At-will); Regrip (22, Basic Action, At-will); Release (24, Basic Action, At-will); Reload (26, Basic Action, At-will); Relocate (28, Basic Action, At-will); Shove (30, Basic Action, Round); Stand (32, Basic Action, At-will); Steel Yourself (34, Basic Action, Round); Trip (36, Basic Action, Round); Weapon Attack (38, Basic Action, At-will)
 
 ## 07-traits.md: Chapter 7: Traits
 
@@ -226,32 +226,32 @@ Glossary entries (line: term): 6: [Mod]; 7: [W]; 8: [Trait]; 9: 0 AP; 10: 0R; 11
 - 19: ## The Paladin by Level
 - 39: ## Level 1
 - 41:   ### Features
-- 63:   ### Hallmark Action Selection
-- 110:   ### Picks
-- 117: ## Paladin Repertoire
-- 119:   ### Encounter
-- 190:   ### Daily
-- 253: ## Paladin Escalation
-- 255:   ### Passives
-- 284:   ### Actives
+- 49:   ### Hallmark Action Selection
+- 57:   ### Picks
+- 64: ## Paladin Repertoire
+- 66:   ### Encounter
+- 74:   ### Daily
+- 82: ## Paladin Escalation
+- 84:   ### Passives
+- 92:   ### Actives
 
-Action cards: Divine Power (46, Paladin Feature 1); Font of Mercy (55, Paladin Feature 1); Smite (68, Divine Power 1, Round); Lay On Hands (92, Divine Power 1, Round); Holy Wrath (122, Paladin Feature 1, Encounter); Word of Radiance (145, Paladin Feature 1, Encounter); Bulwark of Faith (170, Paladin Feature 1, Encounter); Consecrated Ground (193, Paladin Feature 1, Daily); Miraculous Recovery (214, Paladin Feature 1, Daily); Divine Intervention (233, Paladin Feature 1, Daily); Hallowed Stance (258, Paladin Escalation (Passive)); Radiant Zeal (267, Paladin Escalation (Passive)); Mending Light (276, Paladin Escalation (Passive)); Aura of Protection (287, Paladin Escalation, Encounter); Divine Surge (308, Paladin Escalation, Round); Shield of Faith (329, Paladin Escalation, Turn); Hand of Mercy (352, Paladin Escalation, Round)
+Action cards: Divine Power (45, Paladin Feature 1); Font of Mercy (47, Paladin Feature 1); Smite (53, Divine Power 1, Round); Lay On Hands (55, Divine Power 1, Round); Holy Wrath (68, Paladin Feature 1, Encounter); Word of Radiance (70, Paladin Feature 1, Encounter); Bulwark of Faith (72, Paladin Feature 1, Encounter); Consecrated Ground (76, Paladin Feature 1, Daily); Miraculous Recovery (78, Paladin Feature 1, Daily); Divine Intervention (80, Paladin Feature 1, Daily); Hallowed Stance (86, Paladin Escalation (Passive)); Radiant Zeal (88, Paladin Escalation (Passive)); Mending Light (90, Paladin Escalation (Passive)); Aura of Protection (94, Paladin Escalation, Encounter); Divine Surge (96, Paladin Escalation, Round); Shield of Faith (98, Paladin Escalation, Turn); Hand of Mercy (100, Paladin Escalation, Round)
 
 ## 13-archer.md: Archer
 
 - 19: ## The Archer by Level
 - 39: ## Level 1
 - 41:   ### Features
-- 63:   ### Hallmark Action Selection
-- 103:   ### Picks
-- 109: ## Archer Repertoire
-- 111:   ### Encounter
-- 182:   ### Daily
-- 249: ## Archer Escalation
-- 251:   ### Passives
-- 280:   ### Actives
+- 49:   ### Hallmark Action Selection
+- 57:   ### Picks
+- 63: ## Archer Repertoire
+- 65:   ### Encounter
+- 73:   ### Daily
+- 81: ## Archer Escalation
+- 83:   ### Passives
+- 91:   ### Actives
 
-Action cards: Sharpshooter (46, Archer Feature 1); Marked Quarry (55, Archer Feature 1); Double Shot (68, Sharpshooter 1, Round); Rolling Shot (85, Sharpshooter 1, Round); Marksman's Shot (114, Archer Feature 1, Encounter); Volley (137, Archer Feature 1, Encounter); Covering Fire (162, Archer Feature 1, Encounter); Hunter's Focus (185, Archer Feature 1, Daily); Deadeye (200, Archer Feature 1, Daily); Rain of Arrows (225, Archer Feature 1, Daily); Killer's Focus (254, Archer Escalation (Passive)); Elusive (263, Archer Escalation (Passive)); Harrying Shots (272, Archer Escalation (Passive)); Pinning Shot (283, Archer Escalation, Round); Twin Shot (304, Archer Escalation, Round); Vanish (325, Archer Escalation, Round)
+Action cards: Sharpshooter (45, Archer Feature 1); Marked Quarry (47, Archer Feature 1); Double Shot (53, Sharpshooter 1, Round); Rolling Shot (55, Sharpshooter 1, Round); Marksman's Shot (67, Archer Feature 1, Encounter); Volley (69, Archer Feature 1, Encounter); Covering Fire (71, Archer Feature 1, Encounter); Hunter's Focus (75, Archer Feature 1, Daily); Deadeye (77, Archer Feature 1, Daily); Rain of Arrows (79, Archer Feature 1, Daily); Killer's Focus (85, Archer Escalation (Passive)); Elusive (87, Archer Escalation (Passive)); Harrying Shots (89, Archer Escalation (Passive)); Pinning Shot (93, Archer Escalation, Round); Twin Shot (95, Archer Escalation, Round); Vanish (97, Archer Escalation, Round)
 
 ## 14-bestiary.md: Bestiary: Building NPCs
 
@@ -284,33 +284,33 @@ Action cards: Sharpshooter (46, Archer Feature 1); Marked Quarry (55, Archer Fea
 - 17:   ### Reading the Weapon Tables
 - 26:   ### Melee
 - 41:     #### Melee Weapon Techniques
-- 272:   ### Ranged
-- 283:     #### Ranged Weapon Techniques
-- 423:   ### Hands
-- 429:   ### Properties
-- 435:     #### Barehanded
-- 439:     #### Firearm
-- 443:     #### Long
-- 447:     #### Projectile
-- 451:     #### Thrown
-- 455:     #### Non-threatening
-- 459:     #### Reload
-- 465:   ### Weapon Groups
-- 469:   ### Mastery
-- 489:   ### Fists
-- 499: ## Armor
-- 510:   ### Armor Training
+- 62:   ### Ranged
+- 73:     #### Ranged Weapon Techniques
+- 86:   ### Hands
+- 92:   ### Properties
+- 98:     #### Barehanded
+- 102:     #### Firearm
+- 106:     #### Long
+- 110:     #### Projectile
+- 114:     #### Thrown
+- 118:     #### Non-threatening
+- 122:     #### Reload
+- 128:   ### Weapon Groups
+- 132:   ### Mastery
+- 152:   ### Fists
+- 162: ## Armor
+- 173:   ### Armor Training
 
-Action cards: Stick and Slip (44, Weapon Technique, Round); Guarded Cut (67, Weapon Technique, Round); Reaping Sweep (90, Weapon Technique, Round); Hooking Chop (113, Weapon Technique, Round); Rending Chop (136, Weapon Technique, Round); Ringing Blow (159, Weapon Technique, Round); Bowl Over (182, Weapon Technique, Round); Lunge (205, Weapon Technique, Round); Keep Them Off (228, Weapon Technique, Round); Gut Punch (251, Weapon Technique, Round); Skirmish Shot (286, Weapon Technique, Round); Heartseeker (309, Weapon Technique, Round); Sting (332, Weapon Technique, Round); Lock & Loose (355, Weapon Technique, Round); Point Blank (378, Weapon Technique, Round); Thunderclap (402, Weapon Technique, Round)
+Action cards: Stick and Slip (43, Weapon Technique, Round); Guarded Cut (45, Weapon Technique, Round); Reaping Sweep (47, Weapon Technique, Round); Hooking Chop (49, Weapon Technique, Round); Rending Chop (51, Weapon Technique, Round); Ringing Blow (53, Weapon Technique, Round); Bowl Over (55, Weapon Technique, Round); Lunge (57, Weapon Technique, Round); Keep Them Off (59, Weapon Technique, Round); Gut Punch (61, Weapon Technique, Round); Skirmish Shot (75, Weapon Technique, Round); Heartseeker (77, Weapon Technique, Round); Sting (79, Weapon Technique, Round); Lock & Loose (81, Weapon Technique, Round); Point Blank (83, Weapon Technique, Round); Thunderclap (85, Weapon Technique, Round)
 
-Open (to be decided) boxes: 486: "How classes or Talents grant Mastery beyond the Archer's Sharpshooter "; 516: "Armor properties and named armors are not written yet: Resist by damag"
+Open (to be decided) boxes: 149: "How classes or Talents grant Mastery beyond the Archer's Sharpshooter "; 179: "Armor properties and named armors are not written yet: Resist by damag"
 
 ## 16-talents.md: Talents
 
 - 14: ## Talents That Modify Actions
 - 18: ## Combat Talents
-- 213: ## Mobility Talents
-- 250: ## Magic Talents
-- 299: ## Class Talents
+- 48: ## Mobility Talents
+- 54: ## Magic Talents
+- 62: ## Class Talents
 
-Action cards: Opportunity Attack (23, Combat Talent 1, At-will); Challenge (38, Combat Talent 1); Heavy Blows (47, Combat Talent 1); Whirlwind (56, Combat Talent 1, Encounter); Bloodlust (81, Combat Talent 1, Encounter); Brawler (96, Combat Talent 1); Pummel (105, Brawler, At-will); Kickboxer (130, Combat Talent 1); Leg Sweep (141, Kickboxer, Round); Aim (166, Combat Talent 1, Round); Ricochet (185, Combat Talent 1); Long Draw (196, Combat Talent 1); Steady Nerves (205, Combat Talent 1); Battering Charge (216, Mobility Talent 1); Cut Through (225, Mobility Talent 1, Round); Lesser Blessing (253, Magic Talent 1); Rimebrand (Cold) (264, Lesser Blessing, Round); Sacred Weapon (279, Magic Talent 1, Round); Class Expertise (302, Combat Talent 5)
+Action cards: Opportunity Attack (22, Combat Talent 1, At-will); Challenge (24, Combat Talent 1); Heavy Blows (26, Combat Talent 1); Whirlwind (28, Combat Talent 1, Encounter); Bloodlust (30, Combat Talent 1, Encounter); Brawler (32, Combat Talent 1); Pummel (34, Brawler, At-will); Kickboxer (36, Combat Talent 1); Leg Sweep (38, Kickboxer, Round); Aim (40, Combat Talent 1, Round); Ricochet (42, Combat Talent 1); Long Draw (44, Combat Talent 1); Steady Nerves (46, Combat Talent 1); Battering Charge (50, Mobility Talent 1); Cut Through (52, Mobility Talent 1, Round); Lesser Blessing (56, Magic Talent 1); Rimebrand (Cold) (58, Lesser Blessing, Round); Sacred Weapon (60, Magic Talent 1, Round); Class Expertise (64, Combat Talent 5)

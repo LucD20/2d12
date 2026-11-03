@@ -12,8 +12,8 @@ for (const cls of ["Paladin", "Archer"]) {
   console.log(`${cls}: Repertoire ${names(s.repertoire)} | Passives ${names(s.escPassives)} | Actives ${names(s.escActives)}`);
 }
 // the book's Talents, in its order
-const book = fs.readFileSync(ROOT + "../../book/rules-src/16-talents.md", "utf8");
-const heads = [...book.matchAll(/<span>([^<]+)<\/span>(?:<span>[^<]*<\/span>)?<span class="cat">(Combat|Mobility|Magic|Skill) Talent (\d+)<\/span>/g)].map(m => ({ name: m[1], group: m[2].toLowerCase(), level: Number(m[3]) }));
+const { loadCards } = await import(ROOTURL + "tools/cardgen.mjs");   // v0.0.232 (pack CS): the book's Talents are the cards of book/cards/talents.json (the chapter places them)
+const heads = loadCards().filter(c => c._file === "talents.json" && /^(Combat|Mobility|Magic|Skill) Talent$/.test(c.category)).map(c => ({ name: c.name, group: c.category.split(" ")[0].toLowerCase(), level: c.level ?? 1 }));
 console.log(`the book's Talents: ${heads.length}`);
 for (const h of heads) {
   const t = C.docs.find(d => d.type === "talent" && d.name === h.name);

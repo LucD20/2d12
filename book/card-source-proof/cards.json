@@ -1,0 +1,66 @@
+{
+  "_about": "Pack CS proof (2026-11-03): three cards in the proposed one-source format (book/card-source-proposal.md). Throwaway: nothing reads this but proof.mjs and book_block.py.",
+  "cards": [
+    {
+      "name": "Weapon Attack",
+      "category": "Basic Action",
+      "flavor": "You strike with the weapon in your hands.",
+      "traits": ["strike", "weapon"],
+      "frequency": "At-will",
+      "target": "One creature",
+      "distance": "Weapon",
+      "vs": "AD",
+      "rules": "You attack with the weapon you are wielding. Weapon Attack takes the Melee or Ranged trait of that weapon, and its Range.",
+      "versions": [
+        { "ap": 1, "tiers": ["0", "[B] 1[W] + [Mod]", "[B] 1[W] + [Mod]"] }
+      ],
+      "foundry": { "basic": "basicWeaponAttack", "img": "icons/svg/sword.svg" }
+    },
+    {
+      "name": "Smite",
+      "category": "Divine Power",
+      "level": 1,
+      "flavor": "Your weapon blazes with holy light.",
+      "traits": ["divine", "signature", "strike", "weapon"],
+      "frequency": "Round",
+      "target": "One creature",
+      "distance": "Weapon",
+      "vs": "AD",
+      "versions": [
+        { "ap": 1,
+          "tiers": ["[B] 1[W]", "[B] 1[W] + [Mod] + [M] 1d4 Ho", "[B] 1[W] + [Mod] + [M] 1d6 Ho"],
+          "effects": "The target sheds Bright light in a 1 Emanation and takes 1 Bane when they try to hide, for 1 round.",
+          "foundry": { "effects": "The target sheds Bright light in a [1Emanation 1/round] and takes 1 Bane when they try to hide, for 1 round." } },
+        { "ap": 2,
+          "tiers": ["[B] 1[W] + [M] 1d6 Ho", "[B] 1[W] + [Mod] + [M] 1d10 Ho", "[B] 1[W] + [Mod] + [M] 2d8 Ho"],
+          "effects": "As 1 AP, but a 2 Emanation. You or one ally in the light gain +1 Defense for 1 round.",
+          "foundry": { "effects": "The target sheds Bright light in a [2Emanation 1/round] and takes 1 Bane when they try to hide, for 1 round. You or one ally in the light gain @Effect[{{fx:Smite (+1 Defense)}}]{+1 Defense for 1 round}." },
+          "ruler": "on 2+: defense 1 ally" },
+        { "ap": 3,
+          "tiers": ["[B] 1[W] + [M] 1d6 Ho", "[B] 1[W] + [Mod] + [M] 1d10 Ho", "[B] 1[W] + [Mod] + [M] 2d8 Ho"],
+          "effects": "As 2 AP, and you or one ally in the light gain [[Guard]] 1d8 + [Mod]. You choose who gains the Defense and who gains the Guard separately: the same creature or two different ones.",
+          "foundry": { "effects": "The target sheds Bright light in a [2Emanation 1/round] and takes 1 Bane when they try to hide, for 1 round. You or one ally in the light gain @Effect[{{fx:Smite (+1 Defense)}}]{+1 Defense for 1 round}. You or one ally in the light gain @Guard[1d8+mod]{Guard 1d8 + [Mod]}. You choose who gains the Defense and who gains the Guard separately: the same creature or two different ones." },
+          "ruler": "on 2+: defense 1 ally; on 2+: guard 1d8+[Mod] self" }
+      ],
+      "foundry": { "img": "icons/svg/sun.svg", "folder": "Paladin", "automation": "gold" }
+    },
+    {
+      "name": "Lock & Loose",
+      "category": "Weapon Technique",
+      "flavor": "A bolt to the knee, and they go nowhere.",
+      "traits": ["ranged", "shot", "strike", "weapon"],
+      "frequency": "Round",
+      "target": "One creature",
+      "distance": "Weapon",
+      "vs": "AD",
+      "weapon": "Crossbow",
+      "versions": [
+        { "ap": 1,
+          "tiers": ["[B] [Mod] Pi", "[B] 1d4+2+[Mod] Pi; For 1 round, the creature is Hindered until they use a Move Action.", "[B] 1d10 + [Mod] Pi; Immobilized"],
+          "foundry": { "x2": "For 1 round, the creature is Hindered until they use a Move Action.", "fx": { "t2": ["{{fx:Hindered (until Move)}}"] } },
+          "ruler": "on 2: debuff Hindered (until it moves); on 3: debuff Immobilized" }
+      ],
+      "foundry": { "img": "icons/svg/target.svg", "folder": "Weapon Techniques" }
+    }
+  ]
+}

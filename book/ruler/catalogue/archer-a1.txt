@@ -9,22 +9,13 @@ power-mod 2
 weapon Crossbow (ranged, projectile, reload, two-handed): 0 / 1d4+2 / 1d10+2
 
 # Basic Actions and Bow Mastery (Sharpshooter)
-action Weapon Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod]
-action Lock & Loose | ap 1 | round | traits ranged shot strike weapon | vs ad | tiers [Mod] / 1d4 + 2 + [Mod] / 1d10 + [Mod] | on 2: debuff Hindered (until it moves); on 3: debuff Immobilized
 # Signature: Double Shot
-action Double Shot 2 | ap 2 | round | traits shot strike | does Weapon Attack x2 | different
-action Double Shot 3 | ap 3 | round | traits shot strike | does Weapon Attack x2 | different | evade 1
 # Signature: Rolling Shot
-action Rolling Shot 1 | ap 1 | round | traits ranged shot strike weapon | does Weapon Attack | evade 1
-action Rolling Shot 2 | ap 2 | round | traits ranged shot strike weapon | does Weapon Attack | each extra 1d6 | evade 2
-action Rolling Shot 3 | ap 3 | round | traits ranged shot strike weapon | does Weapon Attack | each extra 2d6 | evade 3
 # Active Escalation (level 1): Pinning Shot
-action Pinning Shot | ap 1 | round | escalation 2 | traits ranged shot strike weapon | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod] | on 2+: debuff Immobilized (EoT)
 # Encounter Pick (level 2): Marksman's Shot, reworked
-action Marksman's Shot | ap 2 | encounter | traits ranged shot strike weapon | vs ad | tiers [B] 1[W] + 1d8 / [B] 1[W] + [Mod] + 3d6 / [B] 1[W] + [Mod] + 4d6 | on 3: vulnerable 2
 # Daily Pick (level 3): Hunter's Focus, the book's card
 action Hunter's Focus | ap 1 | daily | traits focus self | rounds 2.5 | boon 1 turn shot strike quarry; empowered 1 turn quarry; reduce-from 2
 # The typical turn
 turn Typical: Double Shot 3, Lock & Loose, Weapon Attack
-passive Killer's Focus: escalation 2: extra 1d6 first shot strike weapon
-passive Marked Quarry: boon 1 shot strike quarry
+passive Killer's Focus
+passive Marked Quarry

@@ -6,7 +6,6 @@ weapon-mod 2
 power-mod 2
 weapon Greatsword (melee, two-handed): 0 / 1d8 / 2d6
 
-action Weapon Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod]
 action Dagger Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1d4 + [Mod] / 1d8 + [Mod]
 action Longsword Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1d6 + [Mod] / 1d10 + [Mod]
 action Maul Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1d4 + 2 + [Mod] / 1d10 + 2 + [Mod]
@@ -14,7 +13,6 @@ action Greataxe Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0
 action Musket Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1d4 + [Mod] / 2d8 + [Mod]
 action Pistol Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1d4 + [Mod] / 2d6 + [Mod]
 action Knuckle Attack | ap 1 | at-will | traits strike weapon | vs ad | tiers 0 / 1d4 + [Mod] / 1d6 + [Mod]
-action Reaping Sweep | ap 1 | round | traits melee strike weapon | vs ad | tiers [Mod] / 1d10 + [Mod] / 2d6 + [Mod]
 action Stick and Slip (Dagger) | ap 1 | round | traits melee strike weapon | vs ad | tiers [Mod] / 1d4 + [Mod] / 1d8 + [Mod] | on 2+: evade 1
 action Guarded Cut (Longsword) | ap 1 | round | traits melee strike weapon | vs ad | tiers [Mod] / 1d6 + [Mod] / 1d10 + [Mod] | on 3: defense 1 self
 action Hooking Chop (Handaxe) | ap 1 | round | traits melee strike weapon | vs ad | tiers [Mod] / 1d4 + [Mod] / 1d8 + [Mod] | on 2+: pull 1
@@ -27,7 +25,6 @@ action Gut Punch (Knuckle Dagger) | ap 1 | round | traits melee strike weapon | 
 action Skirmish Shot (Shortbow) | ap 1 | round | traits ranged shot strike weapon | vs ad | tiers [Mod] / 1d6 + [Mod] / 1d10 + [Mod] | on 3: evade 1
 action Heartseeker (Longbow) | ap 1 | round | traits ranged shot strike weapon | vs ad | tiers [Mod] / 1d4 + 1 + [Mod] / 1d8 + 1 + [Mod] | on 3: vulnerable 1
 action Sting (Hand Crossbow) | ap 1 | round | traits ranged shot strike weapon | vs ad | tiers [Mod] / 1d4 + [Mod] / 1d8 + [Mod] | on 3: debuff Hindered (EoT)
-action Lock & Loose | ap 1 | round | traits ranged shot strike weapon | vs ad | tiers [Mod] / 1d4 + 2 + [Mod] / 1d10 + [Mod] | on 2: debuff Hindered (until it moves); on 3: debuff Immobilized
 action Point Blank (Pistol) | ap 1 | round | traits ranged strike weapon | vs ad | tiers [Mod] / 1d4 + [Mod] / 2d6 + [Mod] | on 3: push 1
 action Thunderclap (Musket) | ap 1 | round | traits ranged strike weapon | vs ad | tiers [Mod] / 1d4 + [Mod] / 2d8 + [Mod] | on 3: debuff Prone
 

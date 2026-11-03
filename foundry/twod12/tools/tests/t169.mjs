@@ -1,5 +1,6 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t169.mjs)
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
+const BD = (await import(ROOTURL + "module/basic-data.mjs")).BASIC_ACTIONS;   // v0.0.227 (pack CS): the Basic Actions are data generated from book/cards
 import fs from "node:fs";
 // v0.0.208 (W): the hands remember their weapon (main / off), and a [Weapon] Action's use button is a button per hand (2H, or M and O).
 const L = await import(ROOTURL + "module/loadout.mjs");
@@ -37,9 +38,9 @@ const H = await import(ROOTURL + "module/hands.mjs");
 const gs2 = w("gs", "Greatsword", { wielded: true, hands: 1 }, ["melee", "twohanded"]);
 console.log("Regrip, a two-hander in one hand:", H.regripOptions([gs2, fi]).map(o => o.action).join(" "), "| two one-handed:", H.regripOptions([ls2, w("dg", "Dagger", { wielded: true, hand: "off" }), fi]).map(o => o.action).join(" "), "| both hands on one:", H.regripOptions([cb]).length);
 console.log("warn on a one-handed two-hander:", L.handButtonsFor([gs2], "gs")[0].warn, L.oneHandedTwoHander(gs2), "| not on the crossbow in both:", L.handButtonsFor([cb], "cb")[0].warn);
-const tpl2 = src("templates/actor-sheet.hbs"), bas = src("module/basic.mjs");
-console.log("greyed buttons ask", tpl2.includes('data-action="handBlocked"') && sh2.includes("static async handBlocked("), "| Regrip is a Basic Action without Handle", /regrip: \{[\s\S]{0,120}traits: \["self"\]/.test(bas), "| Interact no longer grips", !bas.includes("grip a weapon with two hands; help"), "| the Items tab 1H to 2H spends Regrip", sh2.includes('spendAP(this.actor, 1, "Regrip")'));
+const tpl2 = src("templates/actor-sheet.hbs"), bas = src("module/basic-data.mjs");
+console.log("greyed buttons ask", tpl2.includes('data-action="handBlocked"') && sh2.includes("static async handBlocked("), "| Regrip is a Basic Action without Handle", JSON.stringify(BD.regrip.traits) === '["self"]', "| Interact no longer grips", !bas.includes("grip a weapon with two hands; help"), "| the Items tab 1H to 2H spends Regrip", sh2.includes('spendAP(this.actor, 1, "Regrip")'));
 // v0.0.212: a Two-handed weapon in one hand: its 3 Banes only on Actions with that weapon (__twohanded), not the other hand's or the Fists.
-const fx = src("module/effects.mjs"), bas2 = src("module/basic.mjs");
+const fx = src("module/effects.mjs"), bas2 = src("module/basic-data.mjs");
 console.log("one-hand Banes only with that weapon:", fx.includes('banes: 3, all: ["strike", "weapon", "__twohanded"]'), "| Interact draws, stows and swaps:", bas2.includes("draw an object you carry into a free hand; stow an object you hold"));
 console.log("v0.0.213: a Technique whose weapon is not in hand can't be used:", src("module/actions.mjs").includes('techniqueState(actor, item) === "unwielded"'));

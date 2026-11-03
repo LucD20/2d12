@@ -2,11 +2,12 @@
 // v0.0.144: fixes after Pass A: real weapon dice on chat cards, Weapon Attack 0 on Tier 1, "DC N Attribute Save" labels and @weapon.dc,
 // no Defense calculation row on chat cards, automatic effects applied when the Action is used.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
+const BD = (await import(ROOTURL + "module/basic-data.mjs")).BASIC_ACTIONS;   // v0.0.227 (pack CS): the Basic Actions are data generated from book/cards
 import fs from "node:fs";
 const src = n => fs.readFileSync(ROOT + n, "utf8");
 const actions = src("module/actions.mjs"), inline = src("module/inline.mjs"), basic = src("module/basic.mjs"), data = src("module/data.mjs"), sheets = src("module/actor-sheets.mjs");
 console.log("chat card tiers use tierLines (weapon dice + Modifier):", actions.includes("await tierLines(version[k], n, cardCtx, expandAsText(version[`x${n}`], item.system.versions, version, n))"), "| no Defense calculation row:", !actions.includes('<div class="vsrow">'));
-console.log("Weapon Attack: 0 / 1[W] / 1[W] (+ Weapon Modifier on 2 and 3):", basic.includes("versions: [V(1, [], [I({ useW: true })], [I({ useW: true })], \"\")]"));
+console.log("Weapon Attack: 0 / 1[W] / 1[W] (+ Weapon Modifier on 2 and 3):", (() => { const v = BD.basicWeaponAttack.versions[0], w = JSON.stringify([{ pool: "B", useW: true, wCount: 1, dice: "", useAt: false, subtype: "" }]); return v.t1.length === 0 && JSON.stringify(v.t2) === w && JSON.stringify(v.t3) === w; })());
 const m = inline.match(/if \(key === "dc"\) \{([^\n]+)/);
 const ref = /@(weapon|power|signature|body|mind|appeal|instinct)(?:\.dc)?$/i;
 console.log("dc:@weapon.dc reads:", ["@weapon.dc", "@power", "@body.dc", "@Signature.DC", "14", "@foo.dc"].map(v => `${v} ${ref.test(v) ? "ref" : "number"}`).join(" | "), "| parser in place:", !!m && m[1].includes("cfg.dcRef"));

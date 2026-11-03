@@ -2,6 +2,7 @@
 # A chapter file says which document it belongs to on its first line: <!-- doc: species -->  (no tag = Core Rules).
 import re, os, sys, math, json, base64, html as H, markdown
 import rules_tools as RT
+import cards as CARDS   # the cards of book/cards/*.json: a chapter writes @@CARD:Name@@ where one goes
 sys.path.insert(0, 'diagrams')
 import diagrams as D   # the drawing code of the diagrams (diagrams/diagrams.py)
 from markdown.extensions.toc import slugify as md_slugify
@@ -325,6 +326,9 @@ def slug(value, sep='-'):
 norm = lambda s: re.sub(r'[^a-z0-9]', '', re.sub(r'<[^>]+>', '', s).lower())
 CALL_TITLES = {'example': 'Example', 'tbd': 'To be decided', 'note': 'Designer note', 'tip': "Designer's Tip"}
 files = RT.chapter_files(SRC)   # only the numbered chapter files (INDEX.md and README.md are not chapters)
+CARD_DATA = CARDS.by_name(CARDS.load())   # name -> card
+CARD_PROBLEMS = []   # @@CARD@@ markers with no card, cards the book doesn't show, cards no chapter places
+PLACED_CARDS = set()
 chapters = []          # dicts: part, html, h1 (id, title), h2 list
 open_items = []        # (heading title, html)
 headings = {}          # normalized title -> id
@@ -337,6 +341,8 @@ for fn in files:
     style = (re.search(r'<!-- style: (\w+) -->', text[:300]) or [None, ''])[1]
     text = re.sub(r'<!-- style: \w+ -->\n', '', text, count=1)
     CLASSY['on'] = (style == 'class')
+    PLACED_CARDS.update(m.group(1).strip() for m in re.finditer(r'^@@CARD:(.+?)@@\s*$', text, re.M))
+    text = CARDS.expand(text, CARD_DATA, fn, CARD_PROBLEMS)   # the cards of book/cards/ take the place of their markers; card() reads them as before
     stash = {}
     def put(html):
         k = f'@@S{len(stash)}@@'; stash[k] = html; return k
@@ -442,3 +448,4 @@ if bad: print('BAD REFS:', bad)
 parsed = RT.parse(SRC)
 RT.write_index(parsed, SRC)
 RT.report(parsed, doc)
+RT.report_cards(CARD_DATA, PLACED_CARDS, CARD_PROBLEMS, parsed)
