@@ -24,12 +24,12 @@
 </div>
 {{/inline}}
 {{#*inline "actrow"}}
-<div class="ar{{#if faded}} faded{{/if}}{{#if open}} open{{/if}}{{#if strike}} strike{{/if}}{{#if hands}} hands{{/if}}" data-item-id="{{id}}" data-search="{{search}}" style="--fq:{{fq}}">
+<div class="ar{{#if faded}} faded{{/if}}{{#if open}} open{{/if}}{{#if strike}} strike{{/if}}{{#if hands}} hands{{/if}}{{#if noAp}} noap{{/if}}{{#if strikeCap}} strikecap{{/if}}" data-item-id="{{id}}" data-search="{{search}}" style="--fq:{{fq}}">
   <div class="ar-line" data-action="toggleCard">
     <i class="fa-solid fa-grip-vertical grip" data-tooltip="Drag to reorder"></i>
     <i class="fa-solid fa-chevron-right ar-chev" aria-hidden="true"></i>
-    <span class="ar-name"><span class="ar-nm">{{name}}</span>{{#if escText}}<span class="ar-esc">{{escText}}</span>{{/if}}{{#each chips}}<span class="eff {{cls}}" data-tooltip="{{why}}">{{text}}</span>{{/each}}</span>
-    <span class="ar-cost"><span class="ar-ap">{{costLabel}}</span></span>
+    <span class="ar-name">{{#if strikeCap}}<i class="fa-solid fa-diamond ar-capd" data-tooltip="{{strikeWhy}}"></i>{{/if}}<span class="ar-nm">{{name}}</span>{{#if escText}}<span class="ar-esc">{{escText}}</span>{{/if}}{{#each chips}}<span class="eff {{cls}}" data-tooltip="{{why}}">{{text}}</span>{{/each}}</span>
+    <span class="ar-cost" {{#if noApWhy}}data-tooltip="{{noApWhy}}"{{/if}}><span class="ar-ap">{{costLabel}}</span></span>
     <span class="ar-range">{{range}}</span>
     <span class="ar-freq" {{#if fadedWhy}}data-tooltip="{{fadedWhy}}"{{/if}}>{{freqText}}</span>
     {{#if unloaded}}<a class="ar-use reload" data-action="reloadFor" data-tooltip="Unloaded: Reload (1 AP)" aria-label="Reload"><i class="fa-solid fa-rotate-left"></i></a>

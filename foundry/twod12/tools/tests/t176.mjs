@@ -1,0 +1,28 @@
+// Run with: node tools/tests/run.mjs (or node tools/tests/t176.mjs)
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
+import fs from "node:fs";
+// v0.0.224 (Lucas's playtest 3 answers and fixes).
+class Fl { constructor(o) { this.o = o; } }
+const merge = (a, b) => { const out = JSON.parse(JSON.stringify(a ?? {})); const m = (x, y) => { for (const [k, v] of Object.entries(y)) { if (v && typeof v === "object" && !Array.isArray(v) && x[k] && typeof x[k] === "object" && !Array.isArray(x[k])) m(x[k], v); else x[k] = v; } }; m(out, b); return out; };
+const doc = () => { let f = null; return { isOwner: true, getFlag: () => f, setFlag: async (s, k, v) => { f = merge(f ?? {}, { [k]: v })[k]; } }; };
+globalThis.CONFIG = {}; globalThis.Hooks = { on() {}, once() {} }; globalThis.Combat = class {};
+const actor = { type: "npc", id: "oc", ...doc() };
+globalThis.game = { settings: { get: () => true }, combat: { started: true, id: "c1", round: 1, turn: 0, turns: [], combatants: [] } };
+globalThis.foundry = { abstract: { TypeDataModel: class {} }, data: { fields: { SchemaField: Fl, NumberField: Fl, StringField: Fl, BooleanField: Fl, ArrayField: Fl, SetField: Fl, HTMLField: Fl } }, applications: { api: { DialogV2: {}, ApplicationV2: class {} } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)), mergeObject: merge } };
+const U = await import(ROOTURL + "module/usage.mjs"), M = await import(ROOTURL + "module/move.mjs");
+const src = f => fs.readFileSync(ROOT + f, "utf8");
+const club = { id: "club", type: "action", system: { frequency: "atwill", traits: new Set(["strike", "weapon"]) }, getFlag: () => null };
+await U.markAtWill(actor, club);
+console.log("a Charge's Weapon Attack (Club, the Basic attack) counts toward At-will: the next Club has", U.atWillUses(actor, club), "Bane | Strikes made:", U.strikesUsed(actor));
+for (let n = 0; n < 3; n++) await U.markUsed(actor, club);
+console.log("after 3 Strikes: not greyed, its own marker:", JSON.stringify(U.isFaded(actor, club)), "| strikes:", U.strikesUsed(actor));
+// The movement area: an Advance pays 1 more to enter Darkness / Difficult Terrain; an Evade can't enter it.
+const dark = c => c.i === 0 && c.j === 2;
+const area = (cost) => M.reachableCells([{ i: 0, j: 0 }], 3, () => false, 0, cost).filter(c => c.i === 0).map(c => c.j).sort((a, b) => a - b).join(",");
+console.log("a row with Darkness on column 2, 3 squares: Advance reaches", area(c => (dark(c) ? 1 : 0)), "| Evade reaches", area(c => (dark(c) ? Infinity : 0)), "| nothing in the way", area(() => 0));
+const b = src("module/basic.mjs"), mv = src("module/move.mjs"), mk = src("module/mark.mjs"), sh = src("module/actor-sheets.mjs"), st = src("module/setup.mjs"), car = src("module/carousel.mjs"), el = src("module/enclog.mjs"), tpl = src("templates/actor-sheet.hbs"), co = src("tools/content.mjs"), act = src("module/actions.mjs");
+console.log("Charge: a Strike that targets", /charge: \{[\s\S]{0,120}traits: \["move", "strike"\][\s\S]{0,140}targets: "One creature"/.test(b), "| its Weapon Attack counts toward At-will", b.includes("|atwill:yes|"), "| the picker goes toward the target", mv.includes("const computeTarget = () =>"), "| no End movement line", mv.includes('logMode !== "Charge") await post('));
+console.log("Relocate At-will", /relocate: \{\s*frequency: "atwill"/.test(b), "| Break Free (1 AP, Move, only while Immobilized)", b.includes("breakFree: {") && act.includes('basicKey === "breakFree" && !actor.statuses?.has?.("immobilized")') && co.includes("by spending 1 AP [Move]"));
+console.log("the mark ends with the combat", mk.includes('Hooks.on("deleteCombat"'), "| shows the marker's portrait", mk.includes("PIXI.Sprite.from(src)"));
+console.log("Remove on every Action's right-click", sh.includes("Remove for every Action, with a confirmation"), "| the Setup in the bottom bar", st.includes("export function setupBar(o)"), "| Strike pips", car.includes('class="tp-strikes"'), "| the log window by its id", el.includes('instances?.get?.("twod12-encounter-log")'));
+console.log("row markers: too few AP", tpl.includes("{{#if noAp}} noap{{/if}}"), "| 3 Strikes", tpl.includes("ar-capd"));

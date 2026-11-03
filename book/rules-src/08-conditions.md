@@ -37,7 +37,7 @@ Your Speed is halved, rounded down.
 
 ### Immobilized
 
-You can't use Move Actions or Evade. Unless otherwise specified, you can remove Immobilized by using an Interact (1 AP) Action.
+You can't use Move Actions or Evade. Unless otherwise specified, you can remove Immobilized by spending 1 AP [Move]: the one Move Action you can use while Immobilized.
 
 An Immobilized creature is also hard to move. An Action or effect that attempts to [[Forced Movement|Force Move]] or [[Reposition]] you and doesn't roll is automatically disrupted: you aren't moved.
 

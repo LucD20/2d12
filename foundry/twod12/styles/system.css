@@ -2106,3 +2106,17 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 .enclog .el-line.k-dmg { color: #8f2a20; } .enclog .el-line.k-heal { color: #0a6b62; } .enclog .el-line.k-down { color: #8f2a20; font-weight: 700; } .enclog .el-line.k-note { font-style: italic; }
 .enclog .el-line.empty { opacity: .5; font-style: italic; }
 .enclog .el-edited { font-size: 9px; opacity: .5; }
+/* v0.0.224 (Lucas): the Setup's bar (Cut Through's Evade) in the Line / Charge bars' look. */
+.twod12-setupbar .lb-go, .twod12-setupbar .lb-give { width: auto; height: 26px; line-height: 24px; padding: 0 12px; margin: 0; font-size: 13px; color: #f4e9d0; border: 1px solid #c9a24a; border-radius: 5px; cursor: pointer; white-space: nowrap; flex: 0 0 auto; }
+.twod12-setupbar .lb-go { background: #2e5a3a; } .twod12-setupbar .lb-go:hover { background: #3a7049; }
+.twod12-setupbar .lb-give { background: #4a2420; } .twod12-setupbar .lb-give:hover { background: #6a3028; }
+.twod12-setupbar .lb-text { flex: 1 1 auto; min-width: 0; }
+/* v0.0.224 (Lucas): the 3 Strikes of the turn, under the AP pips: red diamonds, hollow when spent. */
+#twod12-carousel .tp-strikes { display: flex; justify-content: center; gap: 3px; margin: 2px 4px 0; }
+#twod12-carousel .tp-strikes i { width: 8px; height: 8px; transform: rotate(45deg); border: 1.5px solid #b3261e; box-sizing: border-box; }
+#twod12-carousel .tp-strikes i.on { background: #b3261e; }
+/* v0.0.224 (Lucas, playtest 3): too few AP: the cost and the dice dimmed, the cost struck through; 3 Strikes made: a red diamond before the name. */
+.twod12.sheet .ar.noap .ar-ap { opacity: .45; text-decoration: line-through; }
+.twod12.sheet .ar.noap .ar-use { opacity: .4; }
+.twod12.sheet .ar .ar-capd { color: #b3261e; font-size: 9px; margin-right: 4px; vertical-align: middle; }
+.twod12.sheet .ar.strikecap .ar-nm { color: #8f2a20; }

@@ -1,6 +1,6 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.223**. Tests: `node tools/tests/run.mjs` (173 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.224**. Tests: `node tools/tests/run.mjs` (174 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 ## Asked by Lucas, not built
@@ -9,6 +9,7 @@ Everything finished up to v0.0.207 (the done items, the per-version "to check" n
 - **Code cleanup (its own small pack, after the design sessions; noted 2026-10-31):** move the remaining plain chat lines (`twod12 chat apmsg` and similar, about 12 files) to the default look of sysmsg.mjs (sysCard / sysLine); remove the dead flag `keepWhenSpent` (freeuse.mjs reads it, nothing sets it) and the unused reposition branch of choosePush (since v0.0.174); regroup the CSS only with a visual check (it is in version-tagged blocks).
 
 ## Leftovers from finished packs (small, not scheduled)
+- **Playtest 3 (v0.0.224), not reproduced:** (a) **Brutal Swing showed "2 sq."**: the compendium's Orc Warrior has Reach 1 and its Cleaver Range 1, so it reads "1 sq." there; Lucas's world Orc likely has Reach 2 (the sidebar's Reach) or an older Cleaver. Diagnostic, with the Orc's token selected: `const a = canvas.tokens.controlled[0].actor; [a.system.reach, a.items.getName("Cleaver")?.system.range, a.items.getName("Cleaver")?.system.reach]`. (b) **Lock & Loose greyed after Double Shot:** granted uses don't count toward the 3 Strikes in the code; the new Strike pips show the count live: if it happens again, note the pips and the row's tooltip. **Break Free** is Foundry's card for the Immobilized rule (the book has no card for it).
 - **The Encounter Log (v0.0.223), to check / later:** the order of lines written by several clients at once (each carries its round and turn; within a turn they follow the order the GM receives them); a Save Action logs who saves, not each creature's result (the Save card's rolls are not logged yet); damage and healing come from any change of a creature's damage (cards, hazards, Collision, edits by hand); option C (numbers per round against the ruler's targets) is for later.
 - **v0.0.221, to check:** Shift+W, Shift+A and Shift+R with Foundry's own keys (W/A pan the map without Shift; if a key clashes, Configure Controls changes it); Alt+number on Windows; reloading an ally's weapon as a player (the GM must be connected).
 - **v0.0.216, to check:** the Encounter-after-reload problem is worked around (uses also on the combatant), its cause is still unknown: if a reload frees a use again, run with the token selected `canvas.tokens.controlled[0].actor.getFlag("twod12","usage")` and `game.combat.combatants.find(c => c.tokenId === canvas.tokens.controlled[0].id).getFlag("twod12","usedHere")` and send both. The combatant is written only by its owner (players own their own).

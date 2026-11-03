@@ -21,7 +21,7 @@ import { collectBonuses, expireOnUse } from "./bonus.mjs";
 import { notesFor, useOnceModifiers, resolveModifiers, applyEffects, originInfo, damageSteps, modifierList } from "./effects.mjs";
 import { spendAP, combatantOf } from "./combat.mjs";
 import { computeDC } from "./defense.mjs";
-import { markUsed, activeGrants, atWillUses, grantMatches } from "./usage.mjs";
+import { markUsed, activeGrants, atWillUses, grantMatches } from "./usage.mjs";   // (markAtWill: imported where used)
 import { tierProbs, perDieDelta, topStep } from "./calc.mjs";
 import { squaresBetween, rangeBand } from "./move.mjs";
 import { setupFor } from "./setup.mjs";
@@ -442,7 +442,9 @@ export async function useAction(actor, item, opts = {}) {
   // An Action that needs several different creatures (Double Shot: "Two creatures") can't be made against fewer: its Linked Actions would be disrupted.
   const needed = targetsNeeded(it.targets);
   if (needed > 1 && new Set([...game.user.targets].map(t => t.document?.uuid ?? t.id)).size < needed) return ui.notifications.warn(`${item.name} needs ${needed} different creatures as targets. Target them first.`);
-  if ((it.traits.has("move") || basicKey === "safeMovement") && actor.statuses?.has?.("immobilized")) return ui.notifications.warn(`${actor.name} is Immobilized and can't move.`);
+  // v0.0.224: Break Free is the one Move Action an Immobilized creature can use (and only then).
+  if (basicKey === "breakFree" && !actor.statuses?.has?.("immobilized")) return ui.notifications.warn(`${actor.name} is not Immobilized.`);
+  if ((it.traits.has("move") || basicKey === "safeMovement") && basicKey !== "breakFree" && actor.statuses?.has?.("immobilized")) return ui.notifications.warn(`${actor.name} is Immobilized and can't move: Break Free (1 AP) first.`);
   // Prone: you can't Evade, and the only Move Actions you can use are Crawl and Stand.
   if (actor.statuses?.has?.("prone")) {
     if (basicKey === "safeMovement") return ui.notifications.warn(`${actor.name} is Prone and can't Evade.`);
@@ -532,7 +534,7 @@ export async function useAction(actor, item, opts = {}) {
   const usesReload = it.traits.has("weapon") && rw?.traits?.has?.("reload") && basicKey !== "reload";   // Reload itself is what loads it (v0.0.221)
   if (usesReload && rw.unloaded) return ui.notifications.warn(`${previewWeapon.name} is unloaded: Reload it before using it again.`);
   // At-will: each use after the first in a turn has 1 more bane (uses from another Action don't count).
-  const atWill = opts.free ? 0 : atWillUses(actor, item);
+  const atWill = opts.free && !opts.countAtWill ? 0 : atWillUses(actor, item);   // v0.0.224: a Charge's Weapon Attack counts
   if (atWill > 0) extraMods.push({ id: "syn:atwill", name: `At-will use ${atWill + 1}`, boons: 0, banes: atWill, match: true, predicate: "Each use of an At-will Action after the first in a turn adds 1 bane" });
   // Several targets: for each creature, its DC, its cover, how you perceive it and it perceives you, and the range to it.
   const perT = [];
@@ -965,6 +967,7 @@ export async function useAction(actor, item, opts = {}) {
   }
   // Actions used because of another Action do not count toward Frequency or the Strike limit.
   if (!opts.free) await markUsed(actor, item);
+  else if (opts.countAtWill) { const { markAtWill } = await import("./usage.mjs"); await markAtWill(actor, item); }
   // v0.0.223: the Encounter Log (enclog.mjs): the Action, its AP, each target with its tier (a Save: who saves). A movement-only Action logs its movement instead.
   if (!bannerMove) {
     try {
@@ -972,6 +975,11 @@ export async function useAction(actor, item, opts = {}) {
       const tgs = isSelf && !String(it.area ?? "").trim() ? [] : mres ? mres.map(r => ({ uuid: r.uuid, name: r.label ?? r.name, tier: r.chk.tier })) : targets.map(t => ({ ...t, tier: version.noTiers ? null : tier }));
       logAction(selfToken ?? actor, item, { ap: version.ap, targets: tgs, save: saveAct ? (TWOD12.attributes[it.vs] ?? it.vs ?? "") : "", free: !!opts.free });
     } catch (e) { console.warn("twod12 | encounter log", e); }
+  }
+  // v0.0.224: Break Free: no longer Immobilized.
+  if (basicKey === "breakFree") {
+    const held = [...actor.effects].filter(e => e.statuses?.has?.("immobilized")).map(e => e.id);
+    if (held.length) await actor.deleteEmbeddedDocuments("ActiveEffect", held);
   }
   // Stand: no longer Prone.
   if (item.getFlag?.("twod12", "basic") === "stand") {

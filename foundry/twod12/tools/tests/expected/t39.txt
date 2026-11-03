@@ -2,7 +2,7 @@ freq: weapon default "" | weapon + None "" | weapon + Encounter encounter | non 
 T1: Hindered (EoT). | T2: <i class="fa-solid fa-heart dt-body" data-tooltip="Body damage"></i> <span class="pool-b">1[W] + [Mod] + 1d4</span> H; Prone. | T3: <i class="fa-solid fa-heart dt-body" data-tooltip="Body damage"></i> <span class="pool-b">1d10</span> B + [Mod]; Prone. | frequency shown (weapon default): false
 before: false,false,false
 after Weapon Attack (Round): false,false,false | 
-after 3 Strikes: true,true,true,false | Three Strikes this turn
+after 3 Strikes: false,false,false,false | Three Strikes this turn
 next turn, same round (Round actions stay faded, Strike cap reset): false,false,false
 next round: false,false,false
 Encounter action later in the same combat: true

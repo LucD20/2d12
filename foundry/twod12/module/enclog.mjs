@@ -260,14 +260,19 @@ export class EncounterLog extends (ApplicationV2 ?? class {}) {
   }
 }
 
-let win = null;
+// v0.0.224 (Lucas: the open log didn't update): the open window is found by its id (the toolbar button can fire twice and make a second
+// instance, so a kept reference could point at the wrong one); a toggle within half a second of the last one is ignored.
+const openWin = () => foundry.applications.instances?.get?.("twod12-encounter-log") ?? null;
+let lastToggle = 0;
 export function toggleEncounterLog() {
-  if (win?.rendered) { win.close(); return; }
-  win = new EncounterLog();
-  win.render({ force: true });
+  if (Date.now() - lastToggle < 500) return;
+  lastToggle = Date.now();
+  const w = openWin();
+  if (w?.rendered) { w.close(); return; }
+  new EncounterLog().render({ force: true });
 }
 export function registerEncounterLog() {
   registerEncLogSocket();
   registerEncLogHooks();
-  for (const h of ["updateCombat", "deleteCombat", "createCombat"]) Hooks.on(h, () => { if (win?.rendered) win.render(); });
+  for (const h of ["updateCombat", "deleteCombat", "createCombat"]) Hooks.on(h, () => { const w = openWin(); if (w?.rendered) w.render(); });
 }

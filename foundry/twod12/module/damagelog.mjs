@@ -63,13 +63,17 @@ export class DamageReport extends (ApplicationV2 ?? class {}) {
   _replaceHTML(result, content) { content.replaceChildren(result); }
 }
 
-let report = null;
+// v0.0.224: as the Encounter Log, the open window is found by its id, and a double toggle is ignored.
+const openReport = () => foundry.applications.instances?.get?.("twod12-damage-report") ?? null;
+let lastToggle = 0;
 export function toggleDamageReport() {
-  if (report?.rendered) { report.close(); return; }
-  report = new DamageReport();
-  report.render({ force: true });
+  if (Date.now() - lastToggle < 500) return;
+  lastToggle = Date.now();
+  const r = openReport();
+  if (r?.rendered) { r.close(); return; }
+  new DamageReport().render({ force: true });
 }
 export function registerDamageReport() {
   registerDamageLogSocket();
-  for (const h of ["updateCombat", "deleteCombat", "createCombat"]) Hooks.on(h, () => { if (report?.rendered) report.render(); });
+  for (const h of ["updateCombat", "deleteCombat", "createCombat"]) Hooks.on(h, () => { const r = openReport(); if (r?.rendered) r.render(); });
 }

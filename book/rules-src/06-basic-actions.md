@@ -23,15 +23,17 @@ Every creature can use these Actions.
 
 **Flavor:** You close the distance in one straight, reckless line.
 
-*Move • Self*
+*Move • Strike*
 
 **Frequency:** Round
+
+**Target:** One creature
 
 **Requirements:** You have at least Speed 3.
 
 | 2 AP |
 |---|
-| Advance at least 3 squares and up to your Speed in a straight line. You can't Charge through Difficult Terrain (an unwilling creature's space is Difficult Terrain), even if you have movement left: the Charge ends in the last **empty** square where the line is legal. At the end of your movement, make a Weapon Attack (1A) with 1 Boon against a creature of your choice. |
+| Advance in a [[Straight Line|straight line]] toward the target, at least 3 squares and up to your Speed, and stop on the first square from which the target is within your Reach. You can't Charge through Difficult Terrain (an unwilling creature's space is Difficult Terrain), even if you have movement left: the Charge ends in the last **empty** square where the line is legal. At the end of your movement, make a Weapon Attack (1A) with 1 Boon against the target. That Weapon Attack counts toward At-will Banes. |
 
 </div>
 
@@ -209,7 +211,7 @@ Every creature can use these Actions.
 
 *Body • Handle • Instinct • Strike*
 
-**Frequency:** Round
+**Frequency:** At-will
 
 **Target:** One creature
 

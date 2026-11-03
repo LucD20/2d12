@@ -115,7 +115,7 @@ An Action that another Action lets you use as part of it is a **Linked Action**.
 - It is part of the original Action, so it **costs no AP**.
 - It keeps its traits and requirements, unless the Action says otherwise: you must still be able to use it. If an Action lets you Evade (a Linked Action) while you are Immobilized, you can't.
 - It affects the target of the original Action, unless it says otherwise. If the original Action doesn't list a target, you can choose the target per Linked Action.
-- It doesn't count toward its own uses: not toward its Frequency, the 3 Strikes of the turn, or At-will Banes.
+- It doesn't count toward its own uses: not toward its Frequency, the 3 Strikes of the turn, or At-will Banes, unless the Action says otherwise (a Charge's Weapon Attack counts toward At-will Banes).
 - If it isn't optional and you can't make it, the whole Action is **[[Disrupting Actions|disrupted]]**. A Linked Action is optional when the Action says you **can** make it ("you can Evade 2"), and required when it says you **do** it ("you Advance 5, make a Weapon Attack (1A) and Advance 5 again").
 
 If a Linked Action has no valid target, the rest of the Action is disrupted (that Linked Action and anything after it don't happen); what already happened stays. By default, you can't change the target of a Linked Action. For example, if a player asks to change the target from a creature to an object so they can continue the Action, the GM should probably accept it only if it makes sense, such as attacking a door on the way, and not "attacking the ground".

@@ -60,6 +60,7 @@ export async function handleUse(cfg, ctx = {}) {
     free: true, ap: cfg.ap ?? 0, boons: cfg.boon ?? 0, banes: cfg.bane ?? 0, label: cfg.source || grantName(msg) || "Granted use", noHandle: !!cfg.noHandle,
     empowered: cfg.empowered ? (["yes", "true"].includes(cfg.empowered) ? 1 : Math.max(0, Math.trunc(evalExpr(cfg.empowered, actor) ?? 0))) : 0,   // Empowered N: yes is 1, or an expression
     excludeTargets: cfg.distinct ? (used[key] ?? []) : [],
+    countAtWill: !!cfg.countAtWill,
     onUsed: ({ targets }) => { used[key] = [...(used[key] ?? []), ...targets.map(t => t.uuid)]; }
   });
   if (!ok) return;

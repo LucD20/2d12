@@ -65,7 +65,8 @@ export function isFaded(actor, item) {
   if (f === "turn" && s.turnUsed.includes(item.id)) return { faded: true, why: "Used this turn" };
   if (f === "round" && (s.roundUsed.includes(item.id) || roundBlocked(actor, s.combat, s.roundAt[item.id]))) return { faded: true, why: "Used: available again at the start of your next turn" };
   if (f === "encounter" && s.encounter.includes(item.id)) return { faded: true, why: "Used this encounter" };
-  if (item.system.traits.has("strike") && s.strikes >= 3) return { faded: true, why: "Three Strikes this turn" };
+  // v0.0.224 (Lucas): the 3 Strikes are not greyed like a used Frequency: the row gets its own marker (strikeCap).
+  if (item.system.traits.has("strike") && s.strikes >= 3) return { faded: false, strikeCap: true, why: "Three Strikes this turn" };
   return { faded: false, why: "" };
 }
 
@@ -88,6 +89,9 @@ export function turnCycleBlocked(round, turn, own, at) {
   const next = t < own ? [r, own] : [r + 1, own];
   return round < next[0] || (round === next[0] && turn < next[1]);
 }
+
+/** v0.0.224: the Strikes this creature made in the current turn (any creature's turn: up to 3 in each). */
+export function strikesUsed(actor) { if (typeof actor?.getFlag !== "function") return 0; const s = actor?.type ? state(actor) : null; return s ? s.strikes : 0; }
 
 /** At-will: how many times this Action was used this turn. Each use after the first adds 1 bane (so the next use has this many banes). */
 export function atWillUses(actor, item) {
@@ -136,6 +140,18 @@ export async function markUsed(actor, item) {
       if (c?.isOwner) await c.setFlag(F, "usedHere", { combatId: combat.id, encounter: [...new Set([...(same ? old.encounter ?? [] : []), ...(u.encounter ?? [])])], roundAt: { ...(same ? old.roundAt ?? {} : {}), ...(u.roundAt ?? {}) } });
     } catch (e) { console.warn("twod12 | keeping the uses on the combatant", e); }
   }
+}
+
+/** v0.0.224: a Linked use that counts toward At-will Banes only (a Charge's Weapon Attack): not its Frequency or the 3 Strikes. */
+export async function markAtWill(actor, item) {
+  const combat = game.combat;
+  if (!combat?.started || !actor?.isOwner || effectiveFrequency(item.system) !== "atwill") return;
+  const u = foundry.utils.deepClone(actor.getFlag(F, "usage") ?? {});
+  if (u.combatId !== combat.id) Object.assign(u, { combatId: combat.id, round: combat.round, roundUsed: [], encounter: [], turnKey: "", strikes: 0 });
+  const k = `${combat.round}:${combat.turn}`;
+  const counts = u.atwillKey === k ? Object.fromEntries(u.atwillList ?? []) : {};
+  u.atwillKey = k; counts[item.id] = (counts[item.id] ?? 0) + 1; u.atwillList = Object.entries(counts);
+  await actor.setFlag(F, "usage", u);
 }
 
 /** v0.0.219: take a use back (a Charge given up before it moved): its Frequency and Strike count as unused again. */

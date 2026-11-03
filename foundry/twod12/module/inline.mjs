@@ -109,6 +109,7 @@ export function parseInline(kind, inner) {
     else if (key === "count") cfg.count = Math.max(1, Number(val) || 1);
     else if (key === "ap") cfg.ap = Math.max(0, Number(val) || 0);
     else if (key === "distinct") cfg.distinct = yes(val);
+    else if (key === "atwill") cfg.countAtWill = yes(val);   // v0.0.224: a Linked use that counts toward At-will Banes (a Charge's Weapon Attack)
     else if (key === "nohandle") cfg.noHandle = yes(val);
     else if (key === "sight") cfg.sight = yes(val);
     else if (key === "empowered") cfg.empowered = val.toLowerCase().replace(/\s+/g, "");
