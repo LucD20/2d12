@@ -34,3 +34,4 @@ await U.markUsed(actor, charge);
 const before = U.isFaded(actor, charge).faded;
 await U.unmarkUsed(actor, charge);
 console.log("a Charge given up is usable again this round:", before, "->", U.isFaded(actor, charge).faded);
+console.log("v0.0.220: the Charge's messages are system cards:", mv2.includes('const postCard = (title, lead, text = "", cls = "") => ChatMessage.create({ content: sysCard(') && !mv2.includes("post(`<b>${esc(c.name)}</b> gives up the Charge"));

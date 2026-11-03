@@ -8,6 +8,7 @@ How to work:
 - For a design topic: first read the relevant knowledge files, then bring **a proposal with numbers** (use the ruler README's method when damage or Health are involved) and at most 2 to 4 yes/no questions with your default for each. Don't ask a question whose answer is in the files.
 - Mockups and visuals: use artifacts.
 - Ability and item text: concise. Lucas doesn't write Flavor: write the Flavor line of every new card. Examples in the book use only the names list in the README, in diagrams "you" is Y.
+- Foundry chat messages: every new feature that posts to the chat uses the system's design (sysmsg.mjs sysCard / sysLine, or the Action card), never plain text (Lucas, 2026-11-03).
 - **End every design session with a DECISIONS block** that Lucas can paste into notes.txt for Claude Code: one line per decision, with his legend ([ADD], [DEL], [CHG], [Q], [IDEA], [NOTE], [FOUNDRY]), the old text quoted for every [CHG] and [DEL], and the file or section it belongs to.
 - Keep conversations short: one topic per conversation.
 

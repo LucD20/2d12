@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.219, 171 tests; READ THIS FIRST)
+## Where we are now (v0.0.220, 171 tests; READ THIS FIRST)
+- **v0.0.220 (2026-11-03):** the Charge messages are system cards; **standing rule: every new chat message uses sysmsg.mjs (sysCard / sysLine), never plain text** (CLAUDE.md).
 - **v0.0.219 (2026-11-02, branch `pack-p2-test-fixes`):** Lucas tested v0.0.218 (all works): the Charge picker gets a limit outline, a refund when given up, no chat line, a fixed-size bar.
 - **v0.0.218 (2026-11-02, branch `pack-p2-test-fixes`):** the Charge picker (Charge aimed like a Line: blue / green / red squares, tie side, Reach at the end, click to move; no dragging). Lucas hasn't tested v0.0.217 or v0.0.218 yet.
 - **v0.0.217 (2026-11-02, same branch `pack-p2-test-fixes`):** Lucas tested v0.0.216 (all works but the roll dialog's x): a target is removed by right-clicking its tile (or the x). **Next: Lucas's playtest 3** (MASTER-PLAN step 0.3), then prep pack R.

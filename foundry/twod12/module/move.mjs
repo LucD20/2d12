@@ -3,6 +3,7 @@ import { tokenDistance, lightAt, seenLight, regionHasPoint, verticalSquares, wit
 // Movement: AP tracking for the creature whose turn it is (split movement, free movement from @Move[walk]),
 // and Pushed and Pulled with collision: @Move[pushed|distance:N] (@Move[pulled|distance:N]) lets the clicking player drag the target away from (toward) the origin.
 import { esc } from "./roll.mjs";
+import { sysCard, apText } from "./sysmsg.mjs";
 import { tokenCells, fillCells, outlineCells, cellCenter, cellAt, emanationCells } from "./template.mjs";
 import { TWOD12 } from "./config.mjs";
 import { applyToActor } from "./damage.mjs";
@@ -18,6 +19,8 @@ const F = "twod12", SOCKET = "system.twod12";
 const warn = m => ui.notifications.warn(m);
 const refuse = m => { warn(m); return false; };   // a refusal that says no
 const post = html => ChatMessage.create({ content: `<div class="twod12 chat apmsg">${html}</div>` });
+// v0.0.220 (Lucas: every new chat message follows the system's design): the Charge's messages are system cards (sysmsg.mjs).
+const postCard = (title, lead, text = "", cls = "") => ChatMessage.create({ content: sysCard({ title, lead, text, cls }) });
 const endBtn = c => `<button type="button" class="endmove" data-twod12="endMove" data-combatant="${c.id}"><i class="fa-solid fa-flag-checkered"></i> End movement</button>`;
 const num = v => Number(v) || 0;
 
@@ -575,7 +578,7 @@ export async function endMovement(combatantId) {
     const back = num(charging.refund);
     if (back > 0) await setAP(c, getAP(c) + back, "Charge given up", { quiet: true });
     try { const it = charging.itemId ? c.actor?.items?.get(charging.itemId) : null; if (it) { const { unmarkUsed } = await import("./usage.mjs"); await unmarkUsed(c.actor, it); } } catch (e) { console.warn("twod12 | Charge given up: its use", e); }
-    return post(`<b>${esc(c.name)}</b> gives up the Charge${back > 0 ? `: ${back} AP back` : ""}.`);
+    return postCard("Charge", `${esc(c.name)} gives up the Charge`, back > 0 ? `${apText(back)} back. The Charge can be used again this round.` : "Nothing was spent.", "chargemsg");
   }
   await post(left > 0 ? `<b>${esc(c.name)}</b> ends the movement. ${left} free square${left === 1 ? "" : "s"} unused.` : `<b>${esc(c.name)}</b> has no free movement left.`);
 }
@@ -951,7 +954,7 @@ function chargeFollowUp(c, doc, reach, to = null) {
   // 600 ms later (a long Charge was still moving, so nobody seemed to be within Reach).
   const at = to ? { id: doc.id, document: { id: doc.id, x: to.x, y: to.y, width: doc.width, height: doc.height, elevation: doc.elevation, disposition: doc.disposition } } : token;
   if (creaturesInReach(at, reach).length) return;
-  post(`<b>${esc(c.name)}</b>'s Charge is disrupted: no creature within Reach for its Weapon Attack (1A). The AP stays spent.`).catch(() => {});
+  postCard("Charge", `${esc(c.name)}'s Charge is disrupted`, "No creature within Reach for its Weapon Attack (1A). The AP stay spent.", "chargemsg").catch(() => {});
 }
 
 /** Squares of a path between two cells (Bresenham). The rules' straight line (Charge) is straightCells in corners.mjs, with its ties. */
@@ -1352,7 +1355,7 @@ async function runCharge(c, doc, go, reach) {
   const points = r.cells.slice(1, end + 1).map(cell => r.tl(cell));
   if (!points.length) return endMovement(c.id);
   await c.unsetFlag(F, "charge").catch(() => {});
-  if (r.bad >= 0) await post(`<b>${esc(c.name)}</b>'s Charge stops early: ${esc(r.problem)}.`);
+  if (r.bad >= 0) await postCard("Charge", `${esc(c.name)}'s Charge stops early`, `${esc(r.problem[0].toUpperCase() + r.problem.slice(1))}: it ends on the last legal square (${go.stopSq} squares).`, "chargemsg");
   await moveThrough(doc, points);
   // The Charge is one movement: its free squares are spent (the rest is dropped).
   await chargeMovement(c, go.stopSq, null);

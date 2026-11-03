@@ -52,6 +52,7 @@ Finished: Phase 1 (Q, M1, M2, R, F), D0, T, E1, CH, E2, P1, LV, A1 (it was D1, t
    Why: everything in X has to be decided first, or the compendium is rewritten twice.
 
 ## 4. Standing rules (all packs)
+- **Every new chat message uses the system's design** (sysmsg.mjs `sysCard` / `sysLine`, or the Action card), never plain text (Lucas, 2026-11-03); old plain messages are converted when touched, the rest in pack CL.
 - Concise ability text; I write every new card's Flavor line; the names list in examples; Y for you in diagrams; each Foundry version comes with a test checklist; every pack updates the backlogs, the README and HANDOFF.
 - **Lucas's rule for automation (2026-10-30):** a card is automated with *general* settings he can see and edit on the item in Foundry, never with code that looks for the card's name. Cards that are very specific and need no automation (Ricochet) stay text.
 - **The basic mechanics** (code, no settings) are listed in foundry/foundry-backlog.md; anything else the system automates is a setting or field on an item, and test t164 fails on a card name in module/ code.
