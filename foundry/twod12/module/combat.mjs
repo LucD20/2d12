@@ -239,15 +239,16 @@ export async function resetTurn(combat) {
   if (snap.round !== combat.round || snap.turn !== combat.turn) return warn(`The saved state is from round ${snap.round}, turn ${snap.turn + 1}. Reset only works during that turn.`);
   const ok = await DialogV2.confirm({ window: { title: "Reset Turn" }, content: `<p>Put everything back as it was when ${esc(snap.who)}'s turn began: damage, effects, token positions, areas, AP and movement.</p>`, rejectClose: false });
   if (!ok) return;
+  try { const { voidTurn } = await import("./enclog.mjs"); voidTurn(combat, snap.round, snap.turn, "Reset Turn"); } catch (e) { /* no log */ }   // v0.0.223: the Encounter Log
   const scene = canvas.scene;
   for (const a of snap.actors) {
     const actor = await fromUuid(a.uuid);
     if (!actor) continue;
-    await actor.update({ "system.damage": a.damage, "system.bodyWounds": a.bodyWounds ?? 0, "system.mindWounds": a.mindWounds ?? 0 });
+    await actor.update({ "system.damage": a.damage, "system.bodyWounds": a.bodyWounds ?? 0, "system.mindWounds": a.mindWounds ?? 0 }, { twod12Reset: true });   // the Encounter Log ignores it
     const have = [...actor.effects].map(e => e.id);
     if (have.length) await actor.deleteEmbeddedDocuments("ActiveEffect", have);
     for (const e of a.effects) forgetRestored(e._id);
-    if (a.effects.length) await actor.createEmbeddedDocuments("ActiveEffect", a.effects, { keepId: true });
+    if (a.effects.length) await actor.createEmbeddedDocuments("ActiveEffect", a.effects, { keepId: true, twod12Reset: true });
   }
   if (scene) {
     await scene.updateEmbeddedDocuments("Token", snap.tokens.filter(t => scene.tokens.get(t._id)).map(t => ({ ...t })), { twod12Forced: true, animate: true });

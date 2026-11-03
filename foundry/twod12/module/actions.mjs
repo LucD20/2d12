@@ -965,6 +965,14 @@ export async function useAction(actor, item, opts = {}) {
   }
   // Actions used because of another Action do not count toward Frequency or the Strike limit.
   if (!opts.free) await markUsed(actor, item);
+  // v0.0.223: the Encounter Log (enclog.mjs): the Action, its AP, each target with its tier (a Save: who saves). A movement-only Action logs its movement instead.
+  if (!bannerMove) {
+    try {
+      const { logAction } = await import("./enclog.mjs");
+      const tgs = isSelf && !String(it.area ?? "").trim() ? [] : mres ? mres.map(r => ({ uuid: r.uuid, name: r.label ?? r.name, tier: r.chk.tier })) : targets.map(t => ({ ...t, tier: version.noTiers ? null : tier }));
+      logAction(selfToken ?? actor, item, { ap: version.ap, targets: tgs, save: saveAct ? (TWOD12.attributes[it.vs] ?? it.vs ?? "") : "", free: !!opts.free });
+    } catch (e) { console.warn("twod12 | encounter log", e); }
+  }
   // Stand: no longer Prone.
   if (item.getFlag?.("twod12", "basic") === "stand") {
     const prone = [...actor.effects].filter(e => e.statuses?.has?.("prone")).map(e => e.id);

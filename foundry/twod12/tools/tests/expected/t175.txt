@@ -1,0 +1,30 @@
+Action names: LoH LnL WA SoF Cleaver RS
+Creatures: {"oc":"OC","dp":"DP","hp":"HP","g1":"GS1","g2":"GS2","na":"N"}
+one line: Club vs Dwarf Paladin T3 | Shield of Faith 1R vs Dwarf Paladin | Ground Slam vs Dwarf Paladin, Human Paladin (Body Save) | Dwarf Paladin heals 18 (2 RP) | edited: RK vs Nari T2 (forced)
+turns: 1.0 10, 1.1 3, 2.0 3, 2.1 1 | with the removed line: 11
+--- the copy (short names)
+DP - Dwarf Paladin
+HP - Human Paladin
+OC - Ogre Chieftain
+GS1 - Goblin Sneak
+GS2 - Goblin Sneak
+WA - Weapon Attack
+SoF - Shield of Faith
+LoH - Lay on Hands
+
+Round 1
+OC - Charge 4, WA vs DP T3; Club vs DP T3; HP SoF 1R vs DP; Advance 3. DP goes Down. DP chose to keep fighting.
+HP - LoH 3A vs DP. DP heals 18 (2 RP). DP is back up.
+
+Round 2
+OC - Ground Slam vs DP, HP (Body Save); GS1 Pushed 2 (hits a wall).
+GS2 - RK vs Nari T2 (forced).
+--- full names, with damage and conditions
+Round 1
+Ogre Chieftain - Charge 4, Weapon Attack vs Dwarf Paladin T3; Club vs Dwarf Paladin T3; Human Paladin Shield of Faith 1R vs Dwarf Paladin; Advance 3. Dwarf Paladin takes 14 Body. Dwarf Paladin goes Down. DP chose to keep fighting.
+Human Paladin - Lay on Hands 3A vs Dwarf Paladin. Dwarf Paladin heals 18 (2 RP). Dwarf Paladin is back up.
+
+Round 2
+Ogre Chieftain - Ground Slam vs Dwarf Paladin, Human Paladin (Body Save); Goblin Sneak Pushed 2 (hits a wall). Dwarf Paladin: Prone.
+Goblin Sneak - RK vs Nari T2 (forced).
+--- wired: Actions true | movement true | Pushed / Pulled true | Reset Turn removes the turn true | a Charge given up true | the toolbar button true

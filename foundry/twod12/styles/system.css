@@ -2079,3 +2079,30 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 .twod12-chargebar .lb-side, .twod12-chargebar .lb-give, .twod12-chargebar .lb-ic { flex: 0 0 auto; }
 /* v0.0.221: movement messages are system lines; their buttons (End movement, Advance instead) sit on the line. */
 .twod12.chat.sysline.movemsg button.endmove { width: auto; display: inline-flex; align-items: center; gap: 4px; margin: 3px 4px 0 0; padding: 1px 8px; font-size: 12px; line-height: 18px; }
+
+/* v0.0.223 (Lucas): the Encounter Log window. Parchment with fixed dark text (like the Builder tab), whatever the theme. */
+.enclog-app .window-content { padding: 0; background: #f4ecdc; color: #2c2a26; }
+.enclog { display: flex; flex-direction: column; height: 100%; font-size: 13px; }
+.enclog .el-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; padding: 6px 10px; border-bottom: 1px solid #c8b48a; background: #ece0c6; }
+.enclog .el-bar button { width: auto; height: 26px; line-height: 24px; padding: 0 10px; margin: 0; font-size: 12px; }
+.enclog .el-bar label { display: inline-flex; align-items: center; gap: 3px; font-size: 12px; white-space: nowrap; color: #2c2a26; }
+.enclog .el-sp { flex: 1; }
+.enclog .el-abbr { padding: 4px 10px; border-bottom: 1px solid #c8b48a; font-size: 12px; }
+.enclog .el-abbr summary { cursor: pointer; font-weight: 600; }
+.enclog .el-abbr label { display: inline-flex; align-items: center; gap: 4px; margin: 3px 12px 3px 0; color: #2c2a26; }
+.enclog .el-abbr input { width: 56px; height: 22px; color: #2c2a26; background: #fff; }
+.enclog .el-body { flex: 1; overflow-y: auto; padding: 6px 10px 12px; }
+.enclog .el-round { margin: 10px 0 4px; padding-bottom: 2px; border-bottom: 2px solid #8a7650; font-family: "Cinzel", Georgia, serif; font-size: 14px; color: #1e2a3a; }
+.enclog .el-turn { margin: 4px 0 8px; padding: 4px 8px; border-left: 3px solid #1e2a3a; background: rgba(255, 255, 255, .45); border-radius: 0 5px 5px 0; }
+.enclog .el-own { display: flex; align-items: baseline; gap: 6px; margin-bottom: 2px; color: #1e2a3a; }
+.enclog .el-own .el-ab { opacity: .6; font-size: 11px; }
+.enclog .el-own a { margin-left: auto; font-size: 11px; opacity: .7; }
+.enclog .el-line { display: flex; align-items: baseline; gap: 6px; padding: 1px 0; color: #2c2a26; }
+.enclog .el-line > i { width: 14px; text-align: center; opacity: .6; font-size: 11px; }
+.enclog .el-line .el-txt { flex: 1; }
+.enclog .el-line > a { opacity: 0; font-size: 11px; color: #5b4a2e; }
+.enclog .el-line:hover > a { opacity: .8; }
+.enclog .el-line.off .el-txt { text-decoration: line-through; opacity: .45; }
+.enclog .el-line.k-dmg { color: #8f2a20; } .enclog .el-line.k-heal { color: #0a6b62; } .enclog .el-line.k-down { color: #8f2a20; font-weight: 700; } .enclog .el-line.k-note { font-style: italic; }
+.enclog .el-line.empty { opacity: .5; font-style: italic; }
+.enclog .el-edited { font-size: 9px; opacity: .5; }

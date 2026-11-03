@@ -4,6 +4,7 @@ import { tokenDistance, lightAt, seenLight, regionHasPoint, verticalSquares, wit
 // and Pushed and Pulled with collision: @Move[pushed|distance:N] (@Move[pulled|distance:N]) lets the clicking player drag the target away from (toward) the origin.
 import { esc } from "./roll.mjs";
 import { sysCard, sysLine, apText } from "./sysmsg.mjs";
+import { logMove, logPush, voidLastAction } from "./enclog.mjs";   // v0.0.223: the Encounter Log
 import { tokenCells, fillCells, outlineCells, cellCenter, cellAt, emanationCells } from "./template.mjs";
 import { TWOD12 } from "./config.mjs";
 import { applyToActor } from "./damage.mjs";
@@ -208,13 +209,14 @@ export function immobilizedDc(actor) {
 /* Movement tracking                                                   */
 /* ------------------------------------------------------------------ */
 /** Charge a move of `cost` squares: free movement first, then Walk allotments (1 AP each, they can be split). */
-export async function chargeMovement(c, cost, dest = null, { par = 0 } = {}) {
+export async function chargeMovement(c, cost, dest = null, { par = 0, logMode = "" } = {}) {
   const walk = num(c.actor?.system?.moveSpeed ?? c.actor?.system?.speed);
   let evade = num(c.getFlag(F, "evadeMove")), free = num(c.getFlag(F, "freeMove")), left = num(c.getFlag(F, "moveLeft"));
   let need = cost;
   // v0.0.182: an Evade goes on square by square (its area stays shown) until the creature uses another Action or ends the movement:
   // it can't be split around other Actions (spendAP in combat.mjs clears what is left), but one Evade can take several drags.
   const useEvade = Math.min(evade, need); need -= useEvade; evade -= useEvade;
+  try { logMove(c.token?.object ?? c.actor, logMode || (useEvade ? "Evade" : "Advance"), cost); } catch (e) { /* no log */ }   // v0.0.223: the Encounter Log
   const useFree = Math.min(free, need); free -= useFree; need -= useFree;
   let spent = 0;
   if (need > 0) {
@@ -585,6 +587,7 @@ export async function endMovement(combatantId) {
       let from = null; try { from = charging.actorUuid ? await fromUuid(charging.actorUuid) : null; } catch (e) { /* gone */ }
       for (const a of new Set([from, c.actor].filter(Boolean))) { const it = charging.itemId ? a.items?.get(charging.itemId) : null; if (it) await unmarkUsed(a, it); }
     } catch (e) { console.warn("twod12 | Charge given up: its use", e); }
+    try { voidLastAction(c.token?.object ?? c.actor, c.actor?.items?.get(charging.itemId)?.name ?? "Charge", "Charge given up"); } catch (e) { /* no log */ }   // v0.0.223
     return postCard("Charge", `${esc(c.name)} gives up the Charge`, back > 0 ? `${apText(back)} back. The Charge can be used again this round.` : "Nothing was spent.", "chargemsg");
   }
   await post(left > 0 ? `<b>${esc(c.name)}</b> ends the movement. ${left} free square${left === 1 ? "" : "s"} unused.` : `<b>${esc(c.name)}</b> has no free movement left.`);
@@ -897,6 +900,7 @@ async function pushOne(origin, target, N0, mode = "push", opts = {}) {
     }
   }
   await ChatMessage.create({ content: sysLine("fa-hand", lines.join(" "), "pushmsg") });
+  try { logPush(origin, target, mode === "reposition" ? "Repositioned" : label, result.done, result.block ? (result.block.type === "wall" ? "hits a wall" : result.block.type === "loe" ? "stops" : `hits ${result.block.token?.name ?? "a creature"}`) : ""); } catch (e) { /* no log */ }
 }
 
 async function pushFlow(cfg, ctx, mode = "push") {
@@ -1367,7 +1371,7 @@ async function runCharge(c, doc, go, reach) {
   if (r.bad >= 0) await postCard("Charge", `${esc(c.name)}'s Charge stops early`, `${esc(r.problem[0].toUpperCase() + r.problem.slice(1))}: it ends on the last legal square (${go.stopSq} squares).`, "chargemsg");
   await moveThrough(doc, points);
   // The Charge is one movement: its free squares are spent (the rest is dropped).
-  await chargeMovement(c, go.stopSq, null);
+  await chargeMovement(c, go.stopSq, null, { logMode: "Charge" });
   await c.update({ [`flags.${F}.freeMove`]: 0 });
   clearRange();
   chargeFollowUp(c, doc, reach, go.stopTl);

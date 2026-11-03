@@ -39,6 +39,7 @@ import { giveVision, syncVision, globalLight, visionInfo } from "./vision.mjs";
 import { lightInfo } from "./sightgate.mjs";
 import { registerLightLabel, registerLightTool, sliderInfo } from "./lightlabel.mjs";
 import { registerDamageReport, toggleDamageReport } from "./damagelog.mjs";
+import { registerEncounterLog, toggleEncounterLog } from "./enclog.mjs";
 import { updateUseButtons } from "./freeuse.mjs";
 import { registerVersionTabs } from "./preview.mjs";
 import { registerCarousel, renderCarousel } from "./carousel.mjs";
@@ -306,6 +307,7 @@ Hooks.once("ready", async () => {
   registerUsageHooks();
   registerDeadHooks();
   registerDamageReport();
+  registerEncounterLog();   // v0.0.223
   setupPanel();
 });
 
@@ -314,8 +316,9 @@ Hooks.on("getSceneControlButtons", controls => {
   if (!game.user.isGM) return;
   const tool = { name: "twod12-button", title: "Create Button", icon: "fa-solid fa-square-plus", button: true, order: 99, visible: true, onChange: () => openBuilder(), onClick: () => openBuilder() };
   const report = { name: "twod12-report", title: "Damage Report", icon: "fa-solid fa-chart-column", button: true, order: 100, visible: true, onChange: () => toggleDamageReport(), onClick: () => toggleDamageReport() };
-  if (Array.isArray(controls)) controls.find(c => c.name === "token")?.tools.push(tool, report);
-  else if (controls?.tokens?.tools) { controls.tokens.tools[tool.name] = tool; controls.tokens.tools[report.name] = report; }
+  const enclog = { name: "twod12-enclog", title: "Encounter Log", icon: "fa-solid fa-book-open", button: true, order: 101, visible: true, onChange: () => toggleEncounterLog(), onClick: () => toggleEncounterLog() };   // v0.0.223
+  if (Array.isArray(controls)) controls.find(c => c.name === "token")?.tools.push(tool, report, enclog);
+  else if (controls?.tokens?.tools) { controls.tokens.tools[tool.name] = tool; controls.tokens.tools[report.name] = report; controls.tokens.tools[enclog.name] = enclog; }
 });
 
 // v0.0.185: the Level before a change, for the class window (each new level in turn; a lower Level removes what the higher levels gave).
