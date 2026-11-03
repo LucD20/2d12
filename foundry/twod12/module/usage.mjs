@@ -141,16 +141,17 @@ export async function unmarkUsed(actor, item) {
   const combat = game.combat;
   if (!combat?.started || !actor?.isOwner || !item) return;
   const u = foundry.utils.deepClone(actor.getFlag(F, "usage") ?? {});
-  if (u.combatId !== combat.id) return;
   const id = item.id;
-  if (u.roundAt?.[id]) u.roundAt[id] = [-1, -1];   // an object merges: overwrite the entry rather than delete it
-  u.turnUsed = (u.turnUsed ?? []).filter(x => x !== id);
-  u.encounter = (u.encounter ?? []).filter(x => x !== id);
-  u.roundUsed = (u.roundUsed ?? []).filter(x => x !== id);
-  if (u.atwillKey === `${combat.round}:${combat.turn}`) u.atwillList = (u.atwillList ?? []).map(([k, n]) => [k, k === id ? Math.max(0, n - 1) : n]);
-  if (item.system?.traits?.has?.("strike") && u.turnKey === `${combat.round}:${combat.turn}`) u.strikes = Math.max(0, (u.strikes ?? 0) - 1);
-  await actor.setFlag(F, "usage", u);
-  try {
+  if (u.combatId === combat.id) {
+    if (u.roundAt?.[id]) u.roundAt[id] = [-1, -1];   // an object merges: overwrite the entry rather than delete it
+    u.turnUsed = (u.turnUsed ?? []).filter(x => x !== id);
+    u.encounter = (u.encounter ?? []).filter(x => x !== id);
+    u.roundUsed = (u.roundUsed ?? []).filter(x => x !== id);
+    if (u.atwillKey === `${combat.round}:${combat.turn}`) u.atwillList = (u.atwillList ?? []).map(([k, n]) => [k, k === id ? Math.max(0, n - 1) : n]);
+    if (item.system?.traits?.has?.("strike") && u.turnKey === `${combat.round}:${combat.turn}`) u.strikes = Math.max(0, (u.strikes ?? 0) - 1);
+    await actor.setFlag(F, "usage", u);
+  }
+  try {   // the combatant's copy too, even when the actor had no record (v0.0.221)
     const c = combatantOf(combat, actor), old = c?.getFlag?.(F, "usedHere");
     if (c?.isOwner && old?.combatId === combat.id) await c.setFlag(F, "usedHere", { combatId: combat.id, encounter: (old.encounter ?? []).filter(x => x !== id), roundAt: { ...(old.roundAt ?? {}), ...(old.roundAt?.[id] ? { [id]: [-1, -1] } : {}) } });
   } catch (e) { /* the combatant's copy stays */ }

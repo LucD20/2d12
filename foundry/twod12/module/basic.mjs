@@ -44,15 +44,16 @@ export const BASIC_ACTIONS = {
     name: "Reload",
     frequency: "atwill",
     img: "icons/svg/upgrade.svg",
-    traits: ["handle", "weapon"],   // a Weapon Action (the Weapon Modifier) against DC 13; reloading an ally's weapon isn't automated yet
+    traits: ["handle", "weapon"],   // a Weapon Action (the Weapon Modifier) against DC 13; v0.0.221: your weapon or an ally's within Reach (the button asks)
     targets: "",
     vs: "",
-    distance: "self",
+    distance: "reach",
+    requirements: "You or an ally within Reach is wielding an unloaded weapon.",
     versions: [
       V(1, [], [], [], "", {
         x1: "Your next Reload attempt gains 2 Boons.",
-        x2: "You Reload your weapon. @Reload[weapon] Then you can Regrip (1A) to hold your weapon with two hands: @Regrip[weapon|label:Regrip (1A)]",
-        x3: "You Reload your weapon and @Move[evade|distance:1]. @Reload[weapon] Then you can Regrip (1A) to hold your weapon with two hands: @Regrip[weapon|label:Regrip (1A)]"
+        x2: "You Reload the weapon (yours, or an ally's within Reach). @Reload[weapon] Then you can Regrip (1A) to hold the weapon with two hands, or the ally can: @Regrip[weapon|label:Regrip (1A)]",
+        x3: "You Reload the weapon (yours, or an ally's within Reach), and its wielder can Evade 1: @Move[evade|distance:1]. @Reload[weapon] Then you can Regrip (1A) to hold the weapon with two hands, or the ally can: @Regrip[weapon|label:Regrip (1A)]"
       })
     ]
   },

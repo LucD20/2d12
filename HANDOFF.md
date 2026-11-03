@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.220, 171 tests; READ THIS FIRST)
+## Where we are now (v0.0.221, 172 tests; READ THIS FIRST)
+- **v0.0.221 (2026-11-03), branch `pack-p2-polish` (on top of pack-p2-test-fixes):** the Charge given-up greying fixed, movement messages as system lines, a Large creature's Charge centered, Reload an ally's weapon (book wording too), shortcuts (pack K: Shift+A/W/R/Q, Alt+1..9), the class colors in system messages. Next: Lucas's test, then playtest 3 (MASTER-PLAN step 0.3).
 - **v0.0.220 (2026-11-03):** the Charge messages are system cards; **standing rule: every new chat message uses sysmsg.mjs (sysCard / sysLine), never plain text** (CLAUDE.md).
 - **v0.0.219 (2026-11-02, branch `pack-p2-test-fixes`):** Lucas tested v0.0.218 (all works): the Charge picker gets a limit outline, a refund when given up, no chat line, a fixed-size bar.
 - **v0.0.218 (2026-11-02, branch `pack-p2-test-fixes`):** the Charge picker (Charge aimed like a Line: blue / green / red squares, tie side, Reach at the end, click to move; no dragging). Lucas hasn't tested v0.0.217 or v0.0.218 yet.
@@ -44,7 +45,7 @@ Python needs `markdown`. Node 18+ for the tests.
 
 ## Commands
 - Book: `cd book && python3 build_rules.py` ("unresolved refs: 0" is the goal). `python3 build_rules.py --where Flanking`.
-- System tests: **in a fresh clone (a cloud session) first build the packs** (below): about 10 tests read packs/_source and fail with ENOENT without it. Then `cd foundry/twod12 && node tools/tests/run.mjs` (171 tests; each has an expected output in tools/tests/expected; accept a meant change with `node tools/tests/run.mjs --update t84`). **Test numbers have gaps (t1, t6, t21, t31; also t12b, t37b): the next new one is t174.** Lint: `npx eslint@8 --no-eslintrc -c tools/eslint.json --ext .mjs module`.
+- System tests: **in a fresh clone (a cloud session) first build the packs** (below): about 10 tests read packs/_source and fail with ENOENT without it. Then `cd foundry/twod12 && node tools/tests/run.mjs` (172 tests; each has an expected output in tools/tests/expected; accept a meant change with `node tools/tests/run.mjs --update t84`). **Test numbers have gaps (t1, t6, t21, t31; also t12b, t37b): the next new one is t175.** Lint: `npx eslint@8 --no-eslintrc -c tools/eslint.json --ext .mjs module`.
 - Compendiums: the content is in `tools/content.mjs`; in foundry/ run `npm install @foundryvtt/foundryvtt-cli` (node_modules and package files: never commit them), then `node twod12/tools/build-packs.mjs`.
 - A version: bump `version` in system.json, add the changelog entry to docs/reference.md (copy it to foundry/reference.md), run the tests, give Lucas a short test checklist; commit on a `pack-...` branch (Update Foundry.cmd finds it). No zips.
 

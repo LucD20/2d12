@@ -1,0 +1,17 @@
+// Run with: node tools/tests/run.mjs (or node tools/tests/t174.mjs)
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
+import fs from "node:fs";
+// v0.0.221 (Lucas, 2026-11-03): the Charge given up frees its use on the actor it was used from; movement messages and colors; Reload an ally's
+// weapon; a Large creature's Charge aimed from its center; shortcuts (pack K).
+globalThis.CONFIG = {}; globalThis.Hooks = { on() {}, once() {} }; globalThis.game = { settings: { get: () => true } };
+globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
+const S = await import(ROOTURL + "module/sysmsg.mjs");
+const src = f => fs.readFileSync(ROOT + f, "utf8");
+console.log("a system line colors its words:", S.sysLine("fa-shoe-prints", "<b>Nari</b> gains 1 Boon and uses 2 Rally Points; 1 Bane, 2 AP."));
+const mv = src("module/move.mjs"), us = src("module/usage.mjs"), inl = src("module/inline.mjs"), bas = src("module/basic.mjs"), act = src("module/actions.mjs"), tw = src("module/twod12.mjs");
+console.log("Charge given up: the use is taken back on the actor it was used from and on the combatant's:", mv.includes('actorUuid: f?.actorUuid ?? ""') && mv.includes("for (const a of new Set([from, c.actor].filter(Boolean)))"), "| the combatant's copy even with no actor record:", us.includes("the combatant's copy too, even when the actor had no record"));
+console.log("movement messages are system lines:", mv.includes('const post = html => ChatMessage.create({ content: sysLine("fa-shoe-prints", html, "movemsg") });') && mv.includes('sysLine("fa-hand", lines.join(" "), "pushmsg")'));
+console.log("a larger creature's Charge is centered on the mouse:", mv.includes("a larger creature aims with the center of its space"));
+console.log("Reload: yours or an ally's within Reach (the GM relays):", inl.includes("an ally's within your Reach") && inl.includes('type: "reloadWeapon"') && mv.includes('data?.type === "reloadWeapon"') && bas.includes('distance: "reach"'), "| Reload isn't refused for its own unloaded weapon:", act.includes('basicKey !== "reload"'));
+const keys = [...tw.matchAll(/register\("twod12", "(\w+)"/g)].map(m => m[1]);
+console.log("shortcuts:", ["quickAdvance", "quickAttack", "quickRally", "quickEndTurn"].every(k => keys.includes(k)) || tw.includes('quick("quickAdvance"'), "| Shift+A, W, R, Q:", ['"KeyA"', '"KeyW"', '"KeyR"', '{ key: "KeyQ", modifiers: ["Shift"] }'].every(k => tw.includes(k)), "| Favorites Alt+1..9:", tw.includes("key: `Digit${n}`, modifiers: [\"Alt\"]") && act.includes("export async function quickFavorite(n)"), "| an NPC's Weapon Attack key uses its Basic attack:", act.includes('key === "basicWeaponAttack" && actor.type === "npc"'));

@@ -529,7 +529,7 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.186, the "Ignore a Bane" settings of the creature's effects and passives (Long Draw, Steady Nerves, Sharpshooter): the names of what ignores each rule.
   const lessRange = ignoredBy(actor, "rangeBane", useTraits), noEngagedTarget = ignoredBy(actor, "engagedTarget", useTraits);
   const rw = previewWeapon?.system;
-  const usesReload = it.traits.has("weapon") && rw?.traits?.has?.("reload");
+  const usesReload = it.traits.has("weapon") && rw?.traits?.has?.("reload") && basicKey !== "reload";   // Reload itself is what loads it (v0.0.221)
   if (usesReload && rw.unloaded) return ui.notifications.warn(`${previewWeapon.name} is unloaded: Reload it before using it again.`);
   // At-will: each use after the first in a turn has 1 more bane (uses from another Action don't count).
   const atWill = opts.free ? 0 : atWillUses(actor, item);
@@ -1041,11 +1041,24 @@ export async function retargetAction(msg) {
  * v0.0.196 (Lucas): a shortcut for a Basic Action of the selected token (the Evade key: Evade, 1 AP, straight to the movement banner).
  * Returns false when there is no single selected token of yours, or it has no such Action.
  */
+/** v0.0.221 (Lucas): Favorite number n (1-9) of the selected token, by the Favorites' order on the sheet. */
+export async function quickFavorite(n) {
+  const tokens = canvas?.tokens?.controlled?.filter(t => t.actor?.isOwner) ?? [];
+  if (tokens.length !== 1) { ui.notifications.warn("Select your token first."); return false; }
+  const actor = tokens[0].actor, id = (actor.getFlag("twod12", "favorites") ?? [])[n - 1], item = id ? actor.items.get(id) : null;
+  if (!item) { ui.notifications.warn(`${actor.name} has no Favorite ${n} (star Actions on the sheet: their order is their number).`); return false; }
+  await useAction(actor, item);
+  return true;
+}
+
 export async function quickBasic(key, ap = null) {
   const tokens = canvas?.tokens?.controlled?.filter(t => t.actor?.isOwner) ?? [];
   if (tokens.length !== 1) { ui.notifications.warn("Select your token first."); return false; }
-  const actor = tokens[0].actor, item = actor.items.find(i => i.type === "action" && i.getFlag("twod12", "basic") === key);
-  if (!item) { ui.notifications.warn(`${actor.name} has no ${key === "safeMovement" ? "Evade" : key} Action.`); return false; }
+  const actor = tokens[0].actor;
+  let item = actor.items.find(i => i.type === "action" && i.getFlag("twod12", "basic") === key);
+  // v0.0.221: Weapon Attack's key on an NPC uses its Basic attack (NPCs have no Weapon Attack).
+  if (!item && key === "basicWeaponAttack" && actor.type === "npc") item = actor.itemTypes.action.find(i => i.system?.basicAttack) ?? actor.itemTypes.action.find(i => /^basic attack$/i.test(String(i.system?.category ?? "")));
+  if (!item) { ui.notifications.warn(`${actor.name} has no ${{ safeMovement: "Evade", basicWeaponAttack: "Weapon Attack", rally: "Steel Yourself", advance: "Advance" }[key] ?? key} Action.`); return false; }
   // v0.0.197 (Lucas): which version, when there are several (Evade: 1 AP, Evade 1; 2 AP, Evade half your Speed).
   const vs = [...item.system.versions].sort((a, b) => a.ap - b.ap);
   if (ap === null && vs.length > 1) {

@@ -3,7 +3,7 @@ import { tokenDistance, lightAt, seenLight, regionHasPoint, verticalSquares, wit
 // Movement: AP tracking for the creature whose turn it is (split movement, free movement from @Move[walk]),
 // and Pushed and Pulled with collision: @Move[pushed|distance:N] (@Move[pulled|distance:N]) lets the clicking player drag the target away from (toward) the origin.
 import { esc } from "./roll.mjs";
-import { sysCard, apText } from "./sysmsg.mjs";
+import { sysCard, sysLine, apText } from "./sysmsg.mjs";
 import { tokenCells, fillCells, outlineCells, cellCenter, cellAt, emanationCells } from "./template.mjs";
 import { TWOD12 } from "./config.mjs";
 import { applyToActor } from "./damage.mjs";
@@ -18,7 +18,8 @@ import { steadinessOf } from "./defense.mjs";
 const F = "twod12", SOCKET = "system.twod12";
 const warn = m => ui.notifications.warn(m);
 const refuse = m => { warn(m); return false; };   // a refusal that says no
-const post = html => ChatMessage.create({ content: `<div class="twod12 chat apmsg">${html}</div>` });
+// v0.0.221 (Lucas: every chat message in the system's design): the movement messages are system lines (sysmsg.mjs), not plain text.
+const post = html => ChatMessage.create({ content: sysLine("fa-shoe-prints", html, "movemsg") });
 // v0.0.220 (Lucas: every new chat message follows the system's design): the Charge's messages are system cards (sysmsg.mjs).
 const postCard = (title, lead, text = "", cls = "") => ChatMessage.create({ content: sysCard({ title, lead, text, cls }) });
 const endBtn = c => `<button type="button" class="endmove" data-twod12="endMove" data-combatant="${c.id}"><i class="fa-solid fa-flag-checkered"></i> End movement</button>`;
@@ -462,7 +463,7 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
   if (kind === "charge") {
     // v0.0.219 (Lucas): giving up a Charge before it moves refunds the AP its Action cost (from its card).
     const f = ctx?.message?.getFlag?.(F, "action");
-    await c.setFlag(F, "charge", { min: cfg.min || 3, max: n, refund: Math.max(0, num(f?.apPaid ?? f?.ap)), itemId: f?.itemId ?? "" });
+    await c.setFlag(F, "charge", { min: cfg.min || 3, max: n, refund: Math.max(0, num(f?.apPaid ?? f?.ap)), itemId: f?.itemId ?? "", actorUuid: f?.actorUuid ?? "" });
   }
   const sq = `${n} square${n === 1 ? "" : "s"}`;
   // v0.0.195 (Lucas): from a movement-only Action, the banner instead of a chat line; one short line is posted when the movement ends.
@@ -577,7 +578,13 @@ export async function endMovement(combatantId) {
   if (charging) {
     const back = num(charging.refund);
     if (back > 0) await setAP(c, getAP(c) + back, "Charge given up", { quiet: true });
-    try { const it = charging.itemId ? c.actor?.items?.get(charging.itemId) : null; if (it) { const { unmarkUsed } = await import("./usage.mjs"); await unmarkUsed(c.actor, it); } } catch (e) { console.warn("twod12 | Charge given up: its use", e); }
+    // v0.0.221 (Lucas: still greyed): the use is taken back on the actor it was used from (an NPC's sheet opened from the sidebar is not its token's
+    // actor) and on the combatant's actor.
+    try {
+      const { unmarkUsed } = await import("./usage.mjs");
+      let from = null; try { from = charging.actorUuid ? await fromUuid(charging.actorUuid) : null; } catch (e) { /* gone */ }
+      for (const a of new Set([from, c.actor].filter(Boolean))) { const it = charging.itemId ? a.items?.get(charging.itemId) : null; if (it) await unmarkUsed(a, it); }
+    } catch (e) { console.warn("twod12 | Charge given up: its use", e); }
     return postCard("Charge", `${esc(c.name)} gives up the Charge`, back > 0 ? `${apText(back)} back. The Charge can be used again this round.` : "Nothing was spent.", "chargemsg");
   }
   await post(left > 0 ? `<b>${esc(c.name)}</b> ends the movement. ${left} free square${left === 1 ? "" : "s"} unused.` : `<b>${esc(c.name)}</b> has no free movement left.`);
@@ -889,7 +896,7 @@ async function pushOne(origin, target, N0, mode = "push", opts = {}) {
       if (o.actor && d.other) await applyToActor(o.actor, bodyDamage(d.other));
     }
   }
-  await ChatMessage.create({ content: `<div class="twod12 chat apmsg">${lines.join(" ")}</div>` });
+  await ChatMessage.create({ content: sysLine("fa-hand", lines.join(" "), "pushmsg") });
 }
 
 async function pushFlow(cfg, ctx, mode = "push") {
@@ -1139,6 +1146,7 @@ export function registerMovement() {
     } catch (e) { console.error("twod12 | movement tracking failed", e); }
   });
   game.socket.on(SOCKET, async data => {
+    if (data?.type === "reloadWeapon" && game.user.isActiveGM) { const w = await fromUuid(data.uuid); if (w) await w.update({ "system.unloaded": false }); return; }   // v0.0.221: an ally's weapon
     if (data?.type === "pushPath" && game.user.isActiveGM) { const d = await fromUuid(data.tokenUuid); if (d) await moveThrough(d, data.points ?? []); return; }
     if (data?.type !== "pushMove" || !game.user.isActiveGM) return;
     const doc = await fromUuid(data.tokenUuid);
@@ -1287,7 +1295,8 @@ export function openChargePicker(c, token) {
   };
   const sqName = cell => `${String.fromCharCode(65 + ((cell.j % 26) + 26) % 26)}${cell.i + 1}`;
   const compute = p => {
-    const b = cellAt(p);
+    // v0.0.221: a larger creature aims with the center of its space (the space is centered on the mouse), not its top-left square.
+    const gs = canvas.grid.size, b = cellAt({ x: p.x - ((Math.max(1, Math.round(doc.width ?? 1)) - 1) * gs) / 2, y: p.y - ((Math.max(1, Math.round(doc.height ?? 1)) - 1) * gs) / 2 });
     const path = chargePath(doc, a, b, side);
     const stop = path.bad >= 0 ? path.cells[path.bad - 1] : path.cells.at(-1), stopTl = path.tl(stop);
     const stopSq = measureSquares(path.tl(a), stopTl);

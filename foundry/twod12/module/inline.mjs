@@ -503,10 +503,30 @@ async function handleReloadWeapon(ctx = {}) {
   try { actor = f?.actorUuid ? await fromUuid(f.actorUuid) : null; } catch (e) { /* not loaded */ }
   actor ??= canvas.tokens?.controlled[0]?.actor ?? game.user.character ?? null;
   if (!actor?.isOwner) return ui.notifications.warn("Select your token first.");
-  const empty = actor.itemTypes.weapon.filter(w => w.system.wielded && w.system.traits.has("reload") && w.system.unloaded);
-  if (!empty.length) return ui.notifications.info(`${actor.name} has no unloaded weapon in hand.`);
-  for (const w of empty) await w.update({ "system.unloaded": false });
-  ui.notifications.info(`${empty.map(w => w.name).join(", ")} reloaded.`);
+  // v0.0.221 (Lucas; book: Reload, Distance Reach): your own unloaded weapon, or an ally's within your Reach. Several: you choose one.
+  const emptyOf = a => (a?.itemTypes?.weapon ?? []).filter(w => w.system.wielded && w.system.traits.has("reload") && w.system.unloaded);
+  const opts = emptyOf(actor).map(w => ({ w, who: actor, label: `Your ${w.name}` }));
+  const me = actor.token?.object ?? actor.getActiveTokens?.()[0] ?? null;
+  if (me) {
+    const reach = Math.max(1, Number(actor.system?.reach) || 1);
+    const { tokenDistance } = await import("./light.mjs");
+    for (const t of canvas.tokens?.placeables ?? []) {
+      if (t.id === me.id || !t.actor || t.document.hidden || (t.document.disposition ?? 0) !== (me.document.disposition ?? 0) || tokenDistance(me, t) > reach) continue;
+      for (const w of emptyOf(t.actor)) opts.push({ w, who: t.actor, label: `${t.name}'s ${w.name}` });
+    }
+  }
+  if (!opts.length) return ui.notifications.info(`No unloaded weapon in hand: neither ${actor.name}'s nor an ally's within Reach.`);
+  let pick = opts[0];
+  if (opts.length > 1) {
+    const k = await foundry.applications.api.DialogV2.wait({ window: { title: "Reload" }, content: "<p>Which weapon do you reload?</p>", rejectClose: false,
+      buttons: opts.map((o, n) => ({ action: String(n), label: o.label, default: n === 0 })) });
+    if (k == null) return;
+    pick = opts[Number(k)];
+  }
+  if (pick.w.isOwner) await pick.w.update({ "system.unloaded": false });
+  else game.socket.emit("system.twod12", { type: "reloadWeapon", uuid: pick.w.uuid });   // the GM reloads an ally's weapon you don't own
+  const { sysLine } = await import("./sysmsg.mjs");
+  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-bullseye", pick.who === actor ? `<b>${esc(actor.name)}</b> reloads ${esc(pick.w.name)}.` : `<b>${esc(actor.name)}</b> reloads <b>${esc(pick.who.name)}</b>'s ${esc(pick.w.name)}.`, "reloadmsg") });
 }
 
 /** The condition goes on the targets of the card (or the targeted / selected tokens), with the duration written on the button. */

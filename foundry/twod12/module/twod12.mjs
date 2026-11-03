@@ -83,6 +83,21 @@ Hooks.once("init", () => {
   // v0.0.196 (Lucas): Evade from the keyboard (Shift+E by default; Configure Controls can change it): Evade 1 AP with the selected token.
   game.keybindings.register("twod12", "quickEvade", { name: "Evade", hint: "Uses Evade with your selected token: choose 1 AP (Evade 1) or 2 AP (half your Speed); its movement starts at once.", editable: [{ key: "KeyE", modifiers: ["Shift"] }],
     onDown: () => { import("./actions.mjs").then(m => m.quickBasic("safeMovement")); return true; } });
+  // v0.0.221 (Lucas, pack K): shortcuts for common Actions of the selected token, and End turn. Configure Controls can change them.
+  const quick = (key, name, hint, code) => game.keybindings.register("twod12", key, { name, hint, editable: [{ key: code, modifiers: ["Shift"] }], onDown: () => { import("./actions.mjs").then(m => m.quickBasic(key === "quickAttack" ? "basicWeaponAttack" : key === "quickRally" ? "rally" : "advance")); return true; } });
+  quick("quickAdvance", "Advance", "Uses Advance with your selected token: its movement starts at once.", "KeyA");
+  quick("quickAttack", "Weapon Attack", "Uses Weapon Attack with your selected token (an NPC: its Basic attack).", "KeyW");
+  quick("quickRally", "Steel Yourself", "Uses Steel Yourself with your selected token (choose its version).", "KeyR");
+  game.keybindings.register("twod12", "quickEndTurn", { name: "End turn", hint: "Ends the current turn when it is yours (the combat strip's Next turn).", editable: [{ key: "KeyQ", modifiers: ["Shift"] }],
+    onDown: () => {
+      const cb = game.combat;
+      if (!cb?.started) { ui.notifications.warn("No combat has started."); return true; }
+      if (!game.user.isGM && !cb.combatant?.isOwner) { ui.notifications.warn("It is not your turn."); return true; }
+      import("./combat.mjs").then(m => m.endTurnFor(cb));
+      return true;
+    } });
+  for (let n = 1; n <= 9; n++) game.keybindings.register("twod12", `favorite${n}`, { name: `Favorite ${n}`, hint: `Uses Favorite ${n} of your selected token (the Favorites' order on its sheet).`, editable: [{ key: `Digit${n}`, modifiers: ["Alt"] }],
+    onDown: () => { import("./actions.mjs").then(m => m.quickFavorite(n)); return true; } });
   // v0.0.215 (Lucas, playtest 2): the token HUD's two buttons as shortcuts, for speed in play.
   game.keybindings.register("twod12", "lineOfEffect", { name: "Line of Effect", hint: "Shows or hides the Line of Effect lines of your selected token (the token HUD's button).", editable: [{ key: "KeyL", modifiers: ["Shift"] }],
     onDown: () => { import("./loe.mjs").then(m => m.loeShortcut()); return true; } });
