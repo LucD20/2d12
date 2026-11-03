@@ -4,3 +4,4 @@ movement messages are system lines: true
 a larger creature's Charge is centered on the mouse: true
 Reload: yours or an ally's within Reach (the GM relays): true | Reload isn't refused for its own unloaded weapon: true
 shortcuts: true | Shift+A, W, R, Q: true | Favorites Alt+1..9: true | an NPC's Weapon Attack key uses its Basic attack: true
+(next version) the Fists never show Unloaded; a non-Ranged Weapon Action with a free hand isn't blocked: true

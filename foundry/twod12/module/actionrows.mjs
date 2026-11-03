@@ -5,7 +5,7 @@ import { allEffects, isBaseSource } from "./passives.mjs";
 import { effectOff } from "./escalation.mjs";
 import { matches, derivedMods, shortName } from "./effects.mjs";
 import { rollSource, rollTraits } from "./rollsource.mjs";
-import { TWOD12, effectiveFrequency } from "./config.mjs";
+import { TWOD12, effectiveFrequency, handsUsed } from "./config.mjs";
 const F = "twod12";
 
 const flagOf = (e, k) => e?.getFlag?.(F, k) ?? e?.flags?.[F]?.[k];
@@ -70,6 +70,10 @@ export function unloadedWeapon(actor, item) {
   const isOut = w => !!w && w.system.traits?.has?.("reload") && !!w.system.unloaded;
   if (linked) { const w = weapons.find(x => x.id === linked); return isOut(w) ? w : null; }
   if (!item.system.traits?.has?.("weapon") || flagOf(item, "basic") === "reload") return null;
+  // v0.0.222 (Lucas: the Fists showed "Unloaded" while the crossbow was): an Action that uses the Fists (Fists, Pummel, a kick) never waits for a
+  // reload, and a [Weapon] Action that isn't Ranged can still use the Fists when a hand is free.
+  if (["fists", "kick"].includes(item.system.weaponUse) || flagOf(item, "basic") === "fists") return null;
+  if (!item.system.traits?.has?.("ranged") && handsUsed(actor) < 2) return null;
   // The weapons in hand this Action could use: a Melee Action a melee (or Thrown) weapon, a Ranged Action a ranged or Thrown one.
   const t = item.system.traits, wt = w => w.system.traits;
   const fits = w => (t.has("melee") ? wt(w)?.has?.("melee") || wt(w)?.has?.("thrown") : true) && (t.has("ranged") ? wt(w)?.has?.("ranged") || wt(w)?.has?.("thrown") : true);
