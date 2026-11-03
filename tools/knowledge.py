@@ -30,6 +30,7 @@ DESIGN_DOCS = [
     "book/playtest-3.md",       # playtest 3, the baseline (no NPC Weapon Attack); its questions
     "book/progression-lv.md",   # progression, Overcast and Momentum (pack R changes Overcast)
     "book/class-charter.md",    # what every class must have
+    "book/card-source-proposal.md",   # pack CS: one source for every card (proposed, not applied)
 ]
 # Topic sets: added only when named on the command line (they are big; the core set stays small).
 TOPICS = {
