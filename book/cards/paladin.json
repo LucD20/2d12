@@ -1,0 +1,535 @@
+{
+ "_about": "The Paladin's cards (the Paladin document, 12-paladin.md). One source per card: book/cards/README.md.",
+ "cards": [
+  {
+   "name": "Divine Power",
+   "category": "Paladin Feature",
+   "level": 1,
+   "flavor": "Your god's strength flows through your weapon and your hands.",
+   "text": "When you deal Holy damage to a creature with the Profane [[Tags|Tag]], that creature is Enfeebled 1 (EoT).",
+   "foundry": {
+    "img": "icons/svg/angel.svg",
+    "automation": "gold",
+    "settings": [
+     {
+      "type": "ondamage",
+      "trigSub": "Ho",
+      "trigTag": "Profane",
+      "fxUuid": "{{fx:Divine Power (Enfeebled)}}"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Font of Mercy",
+   "category": "Paladin Feature",
+   "level": 1,
+   "flavor": "Where you kneel, wounds remember how to close.",
+   "text": "While your Escalation is 1 or more, when you or an ally within 5 squares of you uses a Rally Point, they heal your Power Modifier + 2 more.",
+   "foundry": {
+    "img": "icons/svg/regen.svg",
+    "automation": "gold",
+    "escalationPassive": true,
+    "settings": [
+     {
+      "type": "rally",
+      "rallyBonus": "power + 2",
+      "rallyRange": 5,
+      "minEscalation": 1
+     }
+    ]
+   },
+   "ruler": {
+    "passive": "escalation 1: rally-bonus [PMod+2]"
+   }
+  },
+  {
+   "name": "Smite",
+   "category": "Divine Power",
+   "level": 1,
+   "flavor": "Your weapon blazes with holy light.",
+   "traits": [
+    "divine",
+    "signature",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[B] 1[W]",
+      "[B] 1[W] + [Mod] + [M] 1d4 Ho",
+      "[B] 1[W] + [Mod] + [M] 1d6 Ho"
+     ],
+     "effects": "The target sheds Bright light in a 1 Emanation and takes 1 Bane when they try to hide, for 1 round."
+    },
+    {
+     "ap": 2,
+     "tiers": [
+      "[B] 1[W] + [M] 1d6 Ho",
+      "[B] 1[W] + [Mod] + [M] 1d10 Ho",
+      "[B] 1[W] + [Mod] + [M] 2d8 Ho"
+     ],
+     "effects": "As 1 AP, but a 2 Emanation. You or one ally in the light gain +1 Defense for 1 round.",
+     "foundry": {
+      "append": "@Effect[{{fx:Smite (+1 Defense)}}]{+1 Defense for 1 round}"
+     },
+     "ruler": "on 2+: defense 1 ally"
+    },
+    {
+     "ap": 3,
+     "tiers": [
+      "[B] 1[W] + [M] 1d6 Ho",
+      "[B] 1[W] + [Mod] + [M] 1d10 Ho",
+      "[B] 1[W] + [Mod] + [M] 2d8 Ho"
+     ],
+     "effects": "As 2 AP, and you or one ally in the light gain [[Guard]] 1d8 + [Mod]. You choose who gains the Defense and who gains the Guard separately: the same creature or two different ones.",
+     "foundry": {
+      "append": "@Effect[{{fx:Smite (+1 Defense)}}]{+1 Defense for 1 round} @Guard[1d8+mod]{Guard 1d8 + [Mod]}"
+     },
+     "ruler": "on 2+: defense 1 ally; on 2+: guard 1d8+[Mod] self"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/sun.svg",
+    "folder": "Paladin",
+    "automation": "gold"
+   }
+  },
+  {
+   "name": "Lay On Hands",
+   "category": "Divine Power",
+   "level": 1,
+   "flavor": "Your touch carries your god's mercy.",
+   "traits": [
+    "divine",
+    "focus"
+   ],
+   "frequency": "Round",
+   "target": "One [[Willing and Unwilling|willing]] creature",
+   "distance": "Reach",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "The target can use 1 Rally Point.",
+     "ruler": "heal 1"
+    },
+    {
+     "ap": 2,
+     "effects": "As 1 AP, and your next [Strike] Action deals an extra [M] 0/2d8/2d8 Ho.",
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Lay On Hands (Holy Strike)}}"
+       ]
+      },
+      "append": "@Rally[1]"
+     },
+     "ruler": "heal 1; always: extra 2d8 next strike"
+    },
+    {
+     "ap": 3,
+     "effects": "As 2 AP, but the target can use 2 Rally Points.",
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Lay On Hands (Holy Strike)}}"
+       ]
+      }
+     },
+     "ruler": "heal 2; always: extra 2d8 next strike"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/regen.svg",
+    "folder": "Paladin",
+    "automation": "gold"
+   }
+  },
+  {
+   "name": "Holy Wrath",
+   "category": "Paladin Feature",
+   "level": 1,
+   "flavor": "For one blow, your god stops holding back.",
+   "traits": [
+    "divine",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Encounter",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 2,
+     "tiers": [
+      "[B] 1[W] + [M] 2d6 Ho",
+      "[B] 1[W] + [Mod] + [M] 3d8 Ho",
+      "[B] 1[W] + [Mod] + [M] 4d8 Ho"
+     ]
+    },
+    {
+     "ap": 3,
+     "tiers": [
+      "[B] 1[W] + [M] 3d8 Ho",
+      "[B] 1[W] + [Mod] + [M] 5d8 Ho",
+      "[B] 1[W] + [Mod] + [M] 7d8 Ho"
+     ]
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/sun.svg",
+    "folder": "Paladin",
+    "automation": "gold"
+   }
+  },
+  {
+   "name": "Word of Radiance",
+   "category": "Paladin Feature",
+   "level": 1,
+   "flavor": "You speak a word, and light pours from your hands across everything that stands against you.",
+   "traits": [
+    "area",
+    "divine",
+    "power"
+   ],
+   "frequency": "Encounter",
+   "target": "All enemies in the Area",
+   "area": "2 / 3 Emanation",
+   "distance": "5 sq.",
+   "vs": "WD",
+   "versions": [
+    {
+     "ap": 2,
+     "tiers": [
+      "[M] 1d10 Ho",
+      "[M] 2d8 Ho",
+      "[M] 3d6 Ho; Prone"
+     ],
+     "ruler": "area 2 | on 3: debuff Prone"
+    },
+    {
+     "ap": 3,
+     "tiers": [
+      "[M] 2d6 Ho",
+      "[M] 2d10 Ho",
+      "[M] 3d8 Ho; Prone"
+     ],
+     "ruler": "area 2.5 | on 3: debuff Prone"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/sun.svg",
+    "folder": "Paladin",
+    "automation": "gold",
+    "areaCfg": {
+     "targets": "enemies"
+    }
+   }
+  },
+  {
+   "name": "Bulwark of Faith",
+   "category": "Paladin Feature",
+   "level": 1,
+   "flavor": "You step into the blow meant for them, and your god holds the line with you.",
+   "traits": [
+    "divine",
+    "focus"
+   ],
+   "frequency": "Encounter",
+   "target": "The creature the [Strike] Action would damage (an ally)",
+   "distance": "5 sq.",
+   "interrupt": "A [Strike] Action would damage an ally within 5 squares.",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "The target gains [[Guard]] equal to what one of their Rally Points heals, before the damage.",
+     "foundry": {
+      "append": "@Guard[rally]{Guard equal to what one of their Rally Points heals}"
+     },
+     "ruler": "block 9"
+    },
+    {
+     "ap": 2,
+     "effects": "As 1R, and the triggering creature is Slid 2.",
+     "foundry": {
+      "append": "@Guard[rally]{Guard equal to what one of their Rally Points heals}"
+     },
+     "ruler": "block 9; slide 2"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/shield.svg",
+    "folder": "Paladin",
+    "automation": "silver"
+   }
+  },
+  {
+   "name": "Consecrated Ground",
+   "category": "Paladin Feature",
+   "level": 1,
+   "flavor": "You drive your weapon into the earth, and the earth answers.",
+   "traits": [
+    "area",
+    "divine"
+   ],
+   "frequency": "Daily",
+   "target": "All creatures in the Area",
+   "area": "2 / 3 Emanation",
+   "distance": "10 sq.",
+   "versions": [
+    {
+     "ap": 2,
+     "effects": "For 3 rounds, enemies in the area take 1 Bane on [Weapon], [Power] and [Signature] Actions, and allies in it heal 1d4 at the start of each of their turns.",
+     "ruler": "rounds 3 | area 2 | allies 2 | banes 1 strike power; heal-dice 1d4"
+    },
+    {
+     "ap": 3,
+     "effects": "As 2 AP, but for 5 rounds.",
+     "ruler": "rounds 5 | area 2.5 | allies 2.5 | banes 1 strike power; heal-dice 1d4"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/sun.svg",
+    "folder": "Paladin",
+    "automation": "bronze",
+    "automationNote": "the Banes and the 1d4 healing for creatures in the area (the area is placed and kept).",
+    "areaCfg": {
+     "targets": "all",
+     "keep": true,
+     "rounds": 3
+    }
+   }
+  },
+  {
+   "name": "Miraculous Recovery",
+   "category": "Paladin Feature",
+   "level": 1,
+   "flavor": "You lay both hands on the wound and call in a debt owed to your god.",
+   "traits": [
+    "divine",
+    "focus"
+   ],
+   "frequency": "Daily",
+   "target": "One [[Willing and Unwilling|willing]] creature",
+   "distance": "Reach",
+   "versions": [
+    {
+     "ap": 2,
+     "effects": "The target heals twice what 1 Rally Point would heal, and you end one non-permanent effect of your choice on them.",
+     "ruler": "heal 2; remove-effect 1"
+    },
+    {
+     "ap": 3,
+     "effects": "As 2 AP, but three times what 1 Rally Point would heal.",
+     "ruler": "heal 3; remove-effect 1"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/regen.svg",
+    "folder": "Paladin",
+    "automation": "none"
+   }
+  },
+  {
+   "name": "Divine Intervention",
+   "category": "Paladin Feature",
+   "level": 1,
+   "flavor": "You reach out, and your god answers before you finish the prayer.",
+   "traits": [
+    "divine"
+   ],
+   "frequency": "Daily",
+   "target": "One creature",
+   "distance": "5 sq.",
+   "interrupt": "You or an ally within 5 squares would go Down.",
+   "versions": [
+    {
+     "ap": 2,
+     "effects": "Instead of going Down, the creature's total damage becomes 1 less than their Health Pool.",
+     "ruler": "prevent-down"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/angel.svg",
+    "folder": "Paladin",
+    "automation": "none"
+   }
+  },
+  {
+   "name": "Hallowed Stance",
+   "category": "Paladin Escalation (Passive)",
+   "flavor": "You do not move. Neither do those beside you.",
+   "text": "While your Escalation is 2 or more, if you haven't left your square since your last turn, you and your adjacent allies take less Body damage, reduced by your Power Modifier (minimum 0). This reduction applies to one instance of damage per Action; if the Action has several, the player chooses which one is reduced.",
+   "foundry": {
+    "img": "icons/svg/statue.svg",
+    "level": 1,
+    "automation": "none",
+    "append": "(Not automated.)"
+   },
+   "ruler": {
+    "passive": "escalation 2: reduce [PMod] adjacent 1"
+   }
+  },
+  {
+   "name": "Radiant Zeal",
+   "category": "Paladin Escalation (Passive)",
+   "flavor": "The longer the fight, the brighter you burn.",
+   "text": "While your Escalation is 1 or more, the first [Strike] Action you make each round that deals damage deals an extra [M] 1d6 Ho.",
+   "foundry": {
+    "img": "icons/svg/sun.svg",
+    "level": 1,
+    "automation": "gold",
+    "settings": [
+     {
+      "type": "turnstart",
+      "fxUuid": "{{fx:Radiant Zeal}}",
+      "minEscalation": 1
+     }
+    ]
+   },
+   "ruler": {
+    "passive": "escalation 1: extra 1d6 first strike"
+   }
+  },
+  {
+   "name": "Mending Light",
+   "category": "Paladin Escalation (Passive)",
+   "flavor": "Light gathers where you stand, and the hurt are drawn to it.",
+   "text": "While your Escalation is 1 or more, at the start of each of your turns, you or one ally within 5 squares of you heals your Power Modifier + 1.",
+   "foundry": {
+    "img": "icons/svg/regen.svg",
+    "level": 1,
+    "automation": "none",
+    "append": "(Not automated: heal the creature you choose by hand.)"
+   }
+  },
+  {
+   "name": "Aura of Protection",
+   "category": "Paladin Escalation",
+   "flavor": "You plant your feet, and light rims the shoulders of everyone near you.",
+   "traits": [
+    "area",
+    "divine"
+   ],
+   "escalation": 1,
+   "frequency": "Encounter",
+   "target": "You and allies in the Area",
+   "area": "Aura 2",
+   "versions": [
+    {
+     "ap": 0,
+     "effects": "Until the end of the encounter, you and allies in the Aura gain +1 Defense.",
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Aura of Protection}}"
+       ]
+      }
+     },
+     "ruler": "allies 2.5 | rounds 2.5 | defense 1 allies"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/aura.svg",
+    "folder": "Paladin",
+    "level": 1,
+    "automation": "gold"
+   }
+  },
+  {
+   "name": "Divine Surge",
+   "category": "Paladin Escalation",
+   "flavor": "You name the foe in your god's sight, and every blade that finds it burns.",
+   "traits": [
+    "divine"
+   ],
+   "escalation": 1,
+   "frequency": "Round",
+   "target": "One enemy",
+   "distance": "5 sq.",
+   "versions": [
+    {
+     "ap": 0,
+     "effects": "For 1 round, the next time an ally deals damage to the target, they deal an extra [M] 1d8 Ho. You gain [[Guard]] 2d6.",
+     "foundry": {
+      "append": "@Guard[2d6|self:yes]{Guard 2d6}",
+      "fx": {
+       "all": [
+        "{{fx:Divine Surge}}"
+       ]
+      }
+     },
+     "ruler": "always: surge 1d8; always: guard 2d6 self"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/sun.svg",
+    "folder": "Paladin",
+    "level": 1,
+    "automation": "silver",
+    "automationNote": "the ally clicks the button on the mark for the extra [M] 1d8 Ho."
+   }
+  },
+  {
+   "name": "Shield of Faith",
+   "category": "Paladin Escalation",
+   "flavor": "A shimmer of light holds steady between them and harm.",
+   "traits": [
+    "divine",
+    "focus"
+   ],
+   "escalation": 1,
+   "frequency": "Turn",
+   "target": "The creature the Strike would damage (you or an ally)",
+   "distance": "5 sq.",
+   "interrupt": "A [Strike] Action would damage you or an ally within 5 squares.",
+   "versions": [
+    {
+     "ap": 0,
+     "effects": "The damage that Strike deals to the target is reduced by 1d8 + your Power Modifier.",
+     "ruler": "block 1d8+[Mod]"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/shield.svg",
+    "folder": "Paladin",
+    "level": 1,
+    "automation": "none"
+   }
+  },
+  {
+   "name": "Hand of Mercy",
+   "category": "Paladin Escalation",
+   "flavor": "A single touch undoes what the enemy worked for.",
+   "traits": [
+    "divine",
+    "focus"
+   ],
+   "escalation": 1,
+   "frequency": "Round",
+   "target": "One ally",
+   "distance": "5 sq.",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "Choose one: the ally ends one effect on them that is EoT or has 1 round left; or, if the ally is Down, they can use 1 Rally Point.",
+     "ruler": "remove-effect 1"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/regen.svg",
+    "folder": "Paladin",
+    "level": 1,
+    "automation": "bronze",
+    "automationNote": "ending the effect (the Rally Point button works)."
+   }
+  }
+ ]
+}

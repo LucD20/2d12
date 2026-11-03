@@ -14,8 +14,8 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 5.1 | 78 |
 | 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 20.7 | 170 |
 | 11-species.md | Species | species |  | 0.8 | 35 |
-| 12-paladin.md | Paladin | paladin |  | 11.3 | 371 |
-| 13-archer.md | Archer | archer |  | 9.9 | 340 |
+| 12-paladin.md | Paladin | paladin |  | 3.0 | 101 |
+| 13-archer.md | Archer | archer |  | 2.7 | 98 |
 | 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 14.7 | 277 |
 | 15-gear.md | Gear | gear |  | 17.5 | 519 |
 | 16-talents.md | Talents | talents |  | 9.8 | 311 |
@@ -226,32 +226,32 @@ Glossary entries (line: term): 6: [Mod]; 7: [W]; 8: [Trait]; 9: 0 AP; 10: 0R; 11
 - 19: ## The Paladin by Level
 - 39: ## Level 1
 - 41:   ### Features
-- 63:   ### Hallmark Action Selection
-- 110:   ### Picks
-- 117: ## Paladin Repertoire
-- 119:   ### Encounter
-- 190:   ### Daily
-- 253: ## Paladin Escalation
-- 255:   ### Passives
-- 284:   ### Actives
+- 49:   ### Hallmark Action Selection
+- 57:   ### Picks
+- 64: ## Paladin Repertoire
+- 66:   ### Encounter
+- 74:   ### Daily
+- 82: ## Paladin Escalation
+- 84:   ### Passives
+- 92:   ### Actives
 
-Action cards: Divine Power (46, Paladin Feature 1); Font of Mercy (55, Paladin Feature 1); Smite (68, Divine Power 1, Round); Lay On Hands (92, Divine Power 1, Round); Holy Wrath (122, Paladin Feature 1, Encounter); Word of Radiance (145, Paladin Feature 1, Encounter); Bulwark of Faith (170, Paladin Feature 1, Encounter); Consecrated Ground (193, Paladin Feature 1, Daily); Miraculous Recovery (214, Paladin Feature 1, Daily); Divine Intervention (233, Paladin Feature 1, Daily); Hallowed Stance (258, Paladin Escalation (Passive)); Radiant Zeal (267, Paladin Escalation (Passive)); Mending Light (276, Paladin Escalation (Passive)); Aura of Protection (287, Paladin Escalation, Encounter); Divine Surge (308, Paladin Escalation, Round); Shield of Faith (329, Paladin Escalation, Turn); Hand of Mercy (352, Paladin Escalation, Round)
+Action cards: Divine Power (45, Paladin Feature 1); Font of Mercy (47, Paladin Feature 1); Smite (53, Divine Power 1, Round); Lay On Hands (55, Divine Power 1, Round); Holy Wrath (68, Paladin Feature 1, Encounter); Word of Radiance (70, Paladin Feature 1, Encounter); Bulwark of Faith (72, Paladin Feature 1, Encounter); Consecrated Ground (76, Paladin Feature 1, Daily); Miraculous Recovery (78, Paladin Feature 1, Daily); Divine Intervention (80, Paladin Feature 1, Daily); Hallowed Stance (86, Paladin Escalation (Passive)); Radiant Zeal (88, Paladin Escalation (Passive)); Mending Light (90, Paladin Escalation (Passive)); Aura of Protection (94, Paladin Escalation, Encounter); Divine Surge (96, Paladin Escalation, Round); Shield of Faith (98, Paladin Escalation, Turn); Hand of Mercy (100, Paladin Escalation, Round)
 
 ## 13-archer.md: Archer
 
 - 19: ## The Archer by Level
 - 39: ## Level 1
 - 41:   ### Features
-- 63:   ### Hallmark Action Selection
-- 103:   ### Picks
-- 109: ## Archer Repertoire
-- 111:   ### Encounter
-- 182:   ### Daily
-- 249: ## Archer Escalation
-- 251:   ### Passives
-- 280:   ### Actives
+- 49:   ### Hallmark Action Selection
+- 57:   ### Picks
+- 63: ## Archer Repertoire
+- 65:   ### Encounter
+- 73:   ### Daily
+- 81: ## Archer Escalation
+- 83:   ### Passives
+- 91:   ### Actives
 
-Action cards: Sharpshooter (46, Archer Feature 1); Marked Quarry (55, Archer Feature 1); Double Shot (68, Sharpshooter 1, Round); Rolling Shot (85, Sharpshooter 1, Round); Marksman's Shot (114, Archer Feature 1, Encounter); Volley (137, Archer Feature 1, Encounter); Covering Fire (162, Archer Feature 1, Encounter); Hunter's Focus (185, Archer Feature 1, Daily); Deadeye (200, Archer Feature 1, Daily); Rain of Arrows (225, Archer Feature 1, Daily); Killer's Focus (254, Archer Escalation (Passive)); Elusive (263, Archer Escalation (Passive)); Harrying Shots (272, Archer Escalation (Passive)); Pinning Shot (283, Archer Escalation, Round); Twin Shot (304, Archer Escalation, Round); Vanish (325, Archer Escalation, Round)
+Action cards: Sharpshooter (45, Archer Feature 1); Marked Quarry (47, Archer Feature 1); Double Shot (53, Sharpshooter 1, Round); Rolling Shot (55, Sharpshooter 1, Round); Marksman's Shot (67, Archer Feature 1, Encounter); Volley (69, Archer Feature 1, Encounter); Covering Fire (71, Archer Feature 1, Encounter); Hunter's Focus (75, Archer Feature 1, Daily); Deadeye (77, Archer Feature 1, Daily); Rain of Arrows (79, Archer Feature 1, Daily); Killer's Focus (85, Archer Escalation (Passive)); Elusive (87, Archer Escalation (Passive)); Harrying Shots (89, Archer Escalation (Passive)); Pinning Shot (93, Archer Escalation, Round); Twin Shot (95, Archer Escalation, Round); Vanish (97, Archer Escalation, Round)
 
 ## 14-bestiary.md: Bestiary: Building NPCs
 

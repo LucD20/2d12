@@ -18,21 +18,15 @@ weapon Greatsword (melee, two-handed): 0 / 1d8 / 2d6
 speed 5               # Human 5, Paladin +0 (the map model)
 
 # Features: Divine Power (Profane Judgment, not modeled) and Font of Mercy (a Feature that is an Escalation Passive: Escalation 1, +Power Mod + 2 on every Rally Point).
-passive Font of Mercy: escalation 1: rally-bonus 4
+passive Font of Mercy
 
 
 # Signature: Smite (damage, with a support rider)
-action Smite 1 | ap 1 | round | traits divine signature strike weapon | vs ad | tiers [B] 1[W] / [B] 1[W] + [Mod] + [M] 1d4 / [B] 1[W] + [Mod] + [M] 1d6
-action Smite 2 | ap 2 | round | traits divine signature strike weapon | vs ad | tiers [B] 1[W] + [M] 1d6 / [B] 1[W] + [Mod] + [M] 1d10 / [B] 1[W] + [Mod] + [M] 2d8 | on 2+: defense 1 ally
-action Smite 3 | ap 3 | round | traits divine signature strike weapon | vs ad | tiers [B] 1[W] + [M] 1d6 / [B] 1[W] + [Mod] + [M] 1d10 / [B] 1[W] + [Mod] + [M] 2d8 | on 2+: defense 1 ally; on 2+: guard 1d8+[Mod] self
 
 # Encounter Pick (level 1): Holy Wrath
-action Holy Wrath 2 | ap 2 | encounter | traits divine strike weapon | vs ad | tiers [B] 1[W] + [M] 2d6 / [B] 1[W] + [Mod] + [M] 3d8 / [B] 1[W] + [Mod] + [M] 4d8
-action Holy Wrath 3 | ap 3 | encounter | traits divine strike weapon | vs ad | tiers [B] 1[W] + [M] 3d8 / [B] 1[W] + [Mod] + [M] 5d8 / [B] 1[W] + [Mod] + [M] 7d8
 
 # Escalation (level 1): Divine Surge (active) and Hallowed Stance (passive)
-action Divine Surge | ap 0 | round | traits divine | escalation 1 | always: surge 1d8; always: guard 2d6 self     # the next ally who damages the target before your next turn deals +[M] 1d8
-passive Hallowed Stance: escalation 2: reduce 2 adjacent 1     # you and adjacent allies: Body damage reduced by the Power Modifier (the turns never move)
+passive Hallowed Stance
 
 turn Main: Divine Surge, Smite 3, Weapon Attack, Weapon Attack
 turn Main without Escalation: Smite 3, Weapon Attack, Weapon Attack

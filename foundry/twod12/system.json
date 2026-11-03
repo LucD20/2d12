@@ -2,7 +2,7 @@
   "id": "twod12",
   "title": "2d12 System (Draft)",
   "description": "Draft system for testing the 2d12 tier-based rules.",
-  "version": "0.0.229",
+  "version": "0.0.230",
   "compatibility": {
     "minimum": "14",
     "verified": "14"

@@ -56,7 +56,9 @@ export function cardLines(cards = CARDS.loadCards()) {
   return out;
 }
 let CARD_LINES = null;
-const cardLinesFor = () => (CARD_LINES ??= cardLines());
+const cardLinesFor = () => (CARD_LINES ??= cardLines().filter(l => l.startsWith("action ")));   // every build has every card's Actions (its turns name the ones it uses)
+let CARD_PASSIVES = null;   // a Passive is a build's choice: a class file names it ("passive Hallowed Stance") and the card's ruler string fills the line
+const cardPassive = name => { CARD_PASSIVES ??= Object.fromEntries(cardLines().filter(l => l.startsWith("passive ")).map(l => { const m = l.match(/^passive (.+?):\s*(.+)$/); return [m[1].toLowerCase(), m[2]]; })); return CARD_PASSIVES[name.toLowerCase()]; };
 
 /* ------------------------------------------------------------------ damage expressions */
 /**
@@ -159,7 +161,7 @@ export function parseSpec(text, file = "spec") {
   const b = { file, name: "", role: "", level: 1, attributes: {}, weaponMod: 2, powerMod: 2, health: null, armor: 0, wdBonus: 0, rally: 0, targeted: 1,
     weapon: null, actions: {}, passives: [], turns: {}, plan: [], when: [], speed: 5, reactions: [], dmgScale: 1, keepBest: null, overcastFloor: 0, healthFactor: null };
   const pmod = (text.match(/^power-mod\s+(\d+)/m) ?? [])[1] ?? "2";
-  const lines = [...cardLinesFor().map(l => [l.replace(/\[PMod\]/g, pmod), "book/cards"]), ...text.split(/\r?\n/).map(l => [l, file])];
+  const lines = [...cardLinesFor().map(l => [l.replace(/\[PMod([+-]\d+)?\]/g, (m, n) => String(Number(pmod) + Number(n ?? 0))), "book/cards"]), ...text.split(/\r?\n/).map(l => [l, file])];   // [PMod], [PMod+2]: the build's power-mod
   lines.forEach(([rawLine, where], i) => {
     const line = clean(rawLine);
     if (!line) return;
@@ -218,9 +220,13 @@ export function parseSpec(text, file = "spec") {
           else a.effects.push(...parseEffects(field));
         }
         for (const e of a.effects) if (e.effect.kind === "area") a.area = e.effect.n;
+        if (where !== file) a.fromCard = true;   // pack CS: a card's line (dropped below unless the build names it)
         b.actions[a.name.toLowerCase()] = a;
       } else if (key === "passive") {
-        const m = rest.match(/^(.+?):\s*(?:escalation\s+(\d)\s*:\s*)?(.+)$/i); if (!m) fail("write passive like: Marked Quarry: boon 1 shot strike");
+        let full = rest;
+        if (!rest.includes(":")) { const cp = cardPassive(rest.trim()); if (!cp) fail(`"${rest.trim()}" is not a card with a ruler passive (book/cards); write the passive in full`); full = `${rest.trim()}: ${cp.replace(/\[PMod([+-]\d+)?\]/g, (m, n) => String(Number(pmod) + Number(n ?? 0)))}`; }   // pack CS: the card's line
+        const m = full.match(/^(.+?):\s*(?:escalation\s+(\d)\s*:\s*)?(.+)$/i); if (!m) fail("write passive like: Marked Quarry: boon 1 shot strike");
+        b.passives = b.passives.filter(x => x.name.toLowerCase() !== m[1].trim().toLowerCase());   // a file's passive line replaces the card's (pack CS)
         b.passives.push({ name: m[1].trim(), escalation: Number(m[2] ?? 0), effect: parseEffect(m[3]) });
       } else if (key === "turn") {
         const m = rest.match(/^(.+?):\s*(.+)$/); if (!m) fail("write turn like: Main: Smite 2, Weapon Attack, move 1");
@@ -245,6 +251,15 @@ export function parseSpec(text, file = "spec") {
   b.ad = 11 + b.armor; b.wd = 11 + b.powerMod + b.wdBonus;
   b.rallyPoints = b.rally + Math.ceil((at("body") + at("mind") + b.level) / 2);
   b.rallyHeal = Math.ceil(b.pool / 4);
+  // Pack CS: a build keeps the card Actions its turns, reactions and Linked Actions name (with their other Versions, for the lower-Version fallback) and drops the rest,
+  // so a build has only its own cards (the day model and the fallbacks look at a build's whole action list).
+  const named = new Set();
+  for (const t of Object.values(b.turns)) for (const s of t.steps) { const st = stepOf(s); if (st.kind === "action") { named.add(st.name); if (st.alt) named.add(st.alt); } }
+  for (const r of b.reactions) named.add(r.name.toLowerCase());
+  const grp = n => n.replace(/ \d$/, "");
+  for (let more = true; more;) { more = false; for (const a of Object.values(b.actions)) if (!a.fromCard || named.has(a.name.toLowerCase()) || [...named].some(n => grp(n) === grp(a.name.toLowerCase()))) for (const d of [...a.does, ...a.then]) if (!named.has(d.toLowerCase())) { named.add(d.toLowerCase()); more = true; } }
+  const groups = new Set([...named].map(grp));
+  for (const [k, a] of Object.entries(b.actions)) if (a.fromCard && !named.has(k) && !groups.has(grp(k))) delete b.actions[k];
   // Every turn and plan entry must name things that exist.
   for (const t of Object.values(b.turns)) for (const s of t.steps) { const st = stepOf(s); if (st.kind === "action" && (!b.actions[st.name] || (st.alt && !b.actions[st.alt]))) throw new Error(`${file}: turn "${t.name}" uses "${s}", which is not an action of the file`); }
   for (const p of [...b.plan.flatMap(x => x.split("|").map(y => y.trim())), ...b.when.map(w => w.turn), ...(b.unloadedTurn ? [b.unloadedTurn] : []), ...(b.whenSelf ? [b.whenSelf.turn] : []), ...(b.whenEngaged ? [b.whenEngaged] : [])]) if (!b.turns[p]) throw new Error(`${file}: the plan names "${p}", which is not a turn of the file`);

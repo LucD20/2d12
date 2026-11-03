@@ -39,7 +39,7 @@ export function vsKey(vs) {
 }
 
 /** The book's damage of one tier ("[B] 1[W] + [Mod] + [M] 1d6 Ho") to Foundry's tier tokens ("1WB,1d6MH").
- *  A [Weapon] Action adds the Weapon Modifier on Tiers 2 and 3 by itself (basic.mjs), so its [Mod] is left out there. */
+ *  A [Weapon] Action adds the Weapon Modifier on Tiers 2 and 3 by itself (actions.mjs attrFrom), so its [Mod] is left out there (not for a Save Action). */
 export function tierTokens(dmg, weaponAction, tier) {
   const s = String(dmg ?? "").trim();
   if (!s || s === "0" || s === "-") return "";
@@ -70,7 +70,7 @@ const appendOf = (v, key) => { const a = v.foundry?.append; if (!a) return ""; i
 
 /** One Version of a card as the item's version data. */
 export function versionData(c, v, resolve = s => s) {
-  const weaponAction = (c.traits ?? []).includes("weapon");
+  const weaponAction = (c.traits ?? []).includes("weapon") && !(c.traits ?? []).includes("save");   // a Save Action's tiers are the target's result: its [Mod] stays explicit
   const fx = { all: [], t1: [], t2: [], t3: [] };
   for (const [k, list] of Object.entries(v.foundry?.fx ?? {})) fx[k] = list.map(u => ({ uuid: resolve(u), mode: "auto" }));
   const out = { ap: v.ap, noTiers: !v.tiers, t1: [], t2: [], t3: [], x1: "", x2: "", x3: "", effects: resolve(fxText(v.effects, appendOf(v, "effects"))), fx };
@@ -90,21 +90,53 @@ export function versionData(c, v, resolve = s => s) {
   return out;
 }
 
+/** The book's **bold** to <b> (descriptions are HTML). */
+const boldHtml = s => String(s ?? "").replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
+/** The book's Area ("2 / 3 Emanation", "1 Burst") and Distance ("5 sq.", "Your weapon's normal range") to the item's areaCfg; "Aura N" is a Distance, not an area template. */
+export function areaOf(c) {
+  const a = String(c.area ?? "").trim();
+  if (!a) return null;
+  const m = a.match(/^(\d+(?:\s*\/\s*\d+)*)\s+(Emanation|Burst|Line)$/i);
+  if (!m) return null;   // "Aura 2": the Distance below
+  const sizes = m[1].split("/").map(x => Number(x.trim()));
+  const cfg = { size: sizes[0], shape: m[2].toLowerCase(), within: 0, targets: "all", center: false, keep: false, rounds: 0 };
+  const d = String(c.distance ?? "").trim(), r = d.match(/weapon's (normal|far|maximum) range/i);
+  if (r) cfg.withinRange = r[1].toLowerCase(); else if (d) cfg.within = Number(distanceKey(c)) || 0;
+  Object.assign(cfg, c.foundry?.areaCfg ?? {});
+  return { cfg, sizes };
+}
 /** The item's system data of a card (an Action). `resolve` turns {{fx:Name}} into the Effect's uuid (content.mjs). */
 export function cardSystem(c, resolve = s => s) {
   if (!hasVersions(c)) throw new Error(`${c.name}: an Action card needs versions`);
-  const sys = { category: c.category, level: c.level ?? 0, traits: traitKeys(c.traits), targets: c.target ?? "", distance: distanceKey(c), frequency: frequencyKey(c.frequency) };
+  const area = areaOf(c);
+  const sys = { category: c.category, level: c.level ?? c.foundry?.level ?? 0, traits: traitKeys(c.traits), targets: stripLinks(c.target ?? ""), distance: area ? undefined : (/^Aura \d+$/i.test(c.area ?? "") ? c.area.trim() : distanceKey(c)), frequency: frequencyKey(c.frequency) };
+  if (sys.distance === undefined) delete sys.distance;   // an Action with an Area places it from its areaCfg (within or the weapon's range)
+  if (area) sys.areaCfg = area.cfg;
   const vs = vsKey(c.vs); if (vs) sys.vs = vs;
   if (c.escalation) sys.escalation = c.escalation;
   if (isReaction(c)) { sys.reaction = true; sys.reactionKind = c.interrupt ? "interrupt" : "trigger"; sys.trigger = stripLinks(c.interrupt ?? c.trigger); }
   if (c.requirements) sys.requirements = stripLinks(c.requirements);
   if (c.prerequisites) sys.prerequisites = stripLinks(c.prerequisites);
   if (c.setup) sys.setup = resolve(fxText(c.setup, c.foundry?.appendSetup));
-  const prose = [c.rules, c.notes].filter(Boolean).map(t => `<p>${stripBold(stripLinks(t))}</p>`).join("");
+  const prose = [c.rules, c.notes].filter(Boolean).map(t => `<p>${boldHtml(stripLinks(t))}</p>`).join("");
   if (prose) sys.description = prose;
-  sys.versions = c.versions.map(v => versionData(c, v, resolve));
+  sys.versions = c.versions.map((v, i) => { const d = versionData(c, v, resolve); if (area && i > 0 && area.sizes[i] && area.sizes[i] !== area.sizes[0]) d.areaSize = area.sizes[i]; return d; });
   if (c.flavor) sys.flavor = c.flavor;
-  for (const k of ["weaponUse", "automation", "automationNote", "marksTarget", "basicAttack", "modifiers", "areaCfg"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];
+  for (const k of ["weaponUse", "automation", "automationNote", "marksTarget", "basicAttack", "modifiers"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];
+  return sys;
+}
+
+/** The item's system data of a Feature or Talent card (no Versions): its text is the description (plus the Foundry-only `append`), its automation is settings. */
+export function featureSystem(c, resolve = s => s) {
+  if (hasVersions(c)) throw new Error(`${c.name}: a Feature card has no versions`);
+  const category = String(c.category).replace(/\s*\(Passive\)$/, "");
+  const text = [boldHtml(stripLinks(c.text ?? "")), c.foundry?.append ?? ""].filter(Boolean).join(" ");
+  const sys = { category, level: c.level ?? c.foundry?.level ?? 0, description: text ? `<p>${text}</p>` : "" };
+  if (c.foundry?.settings) sys.settings = JSON.parse(resolve(JSON.stringify(c.foundry.settings)));
+  if (c.foundry?.actions) sys.actions = c.foundry.actions.map(n => resolve(`{{action:${n}}}`));
+  if (c.flavor) sys.flavor = c.flavor;
+  for (const k of ["automation", "automationNote", "talents"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];
+  if (/escalation/i.test(category) || c.foundry?.escalationPassive) sys.escalationPassive = true;
   return sys;
 }
 

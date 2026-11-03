@@ -15,7 +15,6 @@ action Smite 1 | ap 1 | round | traits divine strike weapon | vs ad | tiers [B] 
 action Smite 2 | ap 2 | round | traits divine strike weapon | vs ad | tiers [B] 1[W] + [M] 2d4 / [B] 1[W] + [Mod] + [M] 2d6 / [B] 1[W] + [Mod] + [M] 2d8 | always: boon 1 next divine
 action Smite 3 | ap 3 | round | traits divine strike weapon | vs ad | tiers [B] 1[W] + [M] 2d4 / [B] 1[W] + [Mod] + [M] 2d6 / [B] 1[W] + [Mod] + [M] 2d8 | always: boon 1 next divine | then Smite Light
 action Smite Light | traits divine | vs save appeal | tiers [M] 1d6 / [M] 1d4 / 0 | area 2
-action Lay On Hands 1 | ap 1 | round | traits divine focus | heal 1
 action Lay On Hands 2 | ap 2 | round | traits divine focus | heal 2; evade 2
 
 # Round Picks
@@ -42,17 +41,12 @@ action Aura of Protection 2 | ap 2 | encounter | traits area divine | allies 3 |
 action Aura of Protection 3 | ap 3 | encounter | traits area divine | allies 3 | defense 2 allies; save-boon 1
 
 # Daily Picks
-action Miraculous Recovery 2 | ap 2 | daily | traits divine focus | heal 2; remove-effect 1     # new Health (not the ally's Rally Points)
-action Miraculous Recovery 3 | ap 3 | daily | traits divine focus | heal 3; remove-effect 1
-action Consecrated Ground 2 | ap 2 | daily | traits area divine | rounds 3 | area 2 | allies 2 | banes 1 strike power; heal-dice 1d4
-action Consecrated Ground 3 | ap 3 | daily | traits area divine | rounds 5 | area 2.5 | allies 2.5 | banes 1 strike power; heal-dice 1d4
 action Divine Intervention 1 | ap 1 | daily | reaction | traits divine | prevent-down
 action Divine Intervention 2 | ap 2 | daily | reaction | traits divine | prevent-down; heal 1
 
 # Active Escalations
 action Call to Arms | ap 0 | round | escalation 1 | traits divine | revive; heal 1
 action Divine Surge | ap 0 | round | escalation 1 | traits divine self | extra 1d8 next @Smite
-action Hand of Mercy | ap 1 | round | escalation 1 | traits divine focus | remove-effect 1
 action Judgment | ap 1 | round | escalation 2 | traits divine power | vs wd | tiers 0 / [M] 2d6 / [M] 2d8 | on 2+: debuff Hindered
 action Sanctified Ground | ap 1 | round | escalation 2 | traits area divine | rounds 2 | area 1.5 | banes 1 strike
 

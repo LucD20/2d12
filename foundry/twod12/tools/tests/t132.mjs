@@ -1,6 +1,7 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t132.mjs)
 // v0.0.157 (card layout): three meta-lines in fixed places, the Frequency in the title bar, no Check field, [HT] in the effect text.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
+const CDOCS = (await import(ROOTURL + "tools/content.mjs")).docs, cdoc = (n, t = "action") => CDOCS.find(d => d.name === n && d.type === t);   // v0.0.230 (pack CS): the cards are data (book/cards), read from the built content
 import fs from "node:fs";
 globalThis.foundry ??= { utils: {} };
 const G = await import(ROOTURL + "module/config.mjs");
@@ -17,7 +18,7 @@ const src = n => fs.readFileSync(ROOT + n, "utf8");
 const data = src("module/data.mjs"), isheet = src("templates/item-sheet.hbs"), content = src("tools/content.mjs");
 console.log("Action data has no check:", !/\n\s+check: choice\(TWOD12\.checks\)/.test(data), "| the editor has no 'Other roll':", !isheet.includes("Other roll"));
 // v0.0.188 (OT): Rain of Arrows and Covering Fire have no [HT] any more (the book's cards); Covering Fire keeps its area 3 rounds.
-console.log("OT: no [HT] on Rain of Arrows and Covering Fire:", !content.includes("[HT: Entering"), "| Covering Fire kept 3 rounds:", content.includes('withinRange: "normal", targets: "all", center: false, keep: true, rounds: 3 }'));
+console.log("OT: no [HT] on Rain of Arrows and Covering Fire:", !content.includes("[HT: Entering"), "| Covering Fire kept 3 rounds:", (() => { const a = cdoc("Covering Fire").system.areaCfg; return a.withinRange === "normal" && a.targets === "all" && a.keep === true && a.rounds === 3; })());
 console.log("Opportunity Attack makes a Weapon Attack:", content.includes("@Use[Weapon Attack|label:Weapon Attack (1A)]. Used this way, out of your turn") && content.includes('spec: "Weapon Attack", when: "outOfTurn"'), "| Vow of Enmity 3 AP Tier 3:", content.includes('["1d6MH", "As 2 AP."]'));
 // v0.0.158: "Distance:" written on the third line; the weapon is checked before an area is placed; windows step aside while placing
 const act = src("module/actions.mjs"), tpl = src("module/template.mjs");

@@ -91,36 +91,13 @@ add("effects", "effect", "Smite (+1 Defense)", "icons/svg/shield.svg", { duratio
 add("effects", "effect", "Lay On Hands (Holy Strike)", "icons/svg/regen.svg", { selfApplied: true, duration: { type: "", rounds: 1 }, expireOn: ["strike"], description: "<p>Your next [Strike] Action deals an extra [M] 0/2d8/2d8 Ho (Tier 2 and 3).</p>", settings: [{ type: "bonusdamage", dmg: "2d8", dmgPool: "M", dmgSub: "Ho", tiers: ["t2", "t3"], all: ["strike"], any: [], none: [] }] }, "Paladin");
 const smiteLight = n => `The target sheds Bright light in a [${n}Emanation 1/round] and takes 1 Bane when they try to hide, for 1 round.`;
 const smiteDef = `You or one ally in the light gain @Effect[${uuidOf("effects", "Smite (+1 Defense)")}]{+1 Defense for 1 round}.`;
-add("actions", "action", "Smite", "icons/svg/sun.svg", {
-  category: "Divine Power", level: 1, traits: ["divine", "signature", "strike", "weapon"], targets: "One creature", distance: "weapon", frequency: "round",
-  versions: [
-    version(1, "1WB", "1WB,1d4MH", "1WB,1d6MH", smiteLight(1)),
-    version(2, "1WB,1d6MH", "1WB,1d10MH", "1WB,2d8MH", `${smiteLight(2)} ${smiteDef}`),
-    version(3, "1WB,1d6MH", "1WB,1d10MH", "1WB,2d8MH", `${smiteLight(2)} ${smiteDef} You or one ally in the light gain @Guard[1d8+mod]{Guard 1d8 + [Mod]}. You choose who gains the Defense and who gains the Guard separately: the same creature or two different ones.`)
-  ]
-}, "Paladin");
-add("actions", "action", "Lay On Hands", "icons/svg/regen.svg", {
-  category: "Divine Power", level: 1, traits: ["divine", "focus"], frequency: "round", targets: "One willing creature", distance: "reach",
-  versions: [noRoll(1, "The target can use 1 Rally Point."),
-    noRoll(2, "As 1 AP (the target can use 1 Rally Point), and your next [Strike] Action deals an extra [M] 0/2d8/2d8 Ho.", [uuidOf("effects", "Lay On Hands (Holy Strike)")]),
-    noRoll(3, "As 2 AP (your next [Strike] Action deals an extra [M] 0/2d8/2d8 Ho), but the target can use 2 Rally Points.", [uuidOf("effects", "Lay On Hands (Holy Strike)")])]
-}, "Paladin");
 add("actions", "action", "Rimebrand (Cold)", "icons/svg/frozen.svg", {
   category: "Lesser Blessing", level: 0, traits: ["divine", "magic", "self"], frequency: "round", distance: "self",
   versions: [noRoll(1, "Until the end of your turn, your [Weapon] Actions deal an extra [M] 1d4 Co, and the first one that deals damage on a Tier 3 makes the target Hindered (EoT).", [uuidOf("effects", "Rimebrand")])]
 }, "Talents");
 // A1 (book 2026-10-29; v0.0.181): Double Shot and Rolling Shot are the Archer's Hallmark Action (choose one).
-add("actions", "action", "Double Shot", "icons/svg/combat.svg", {
-  category: "Sharpshooter", level: 1, traits: ["shot", "strike"], frequency: "round", targets: "Two creatures", distance: "",
-  versions: [noRoll(2, "You make two [Ranged, Shot] Weapon Attacks (1A), each against a different creature.", [uuidOf("effects", "Double Shot (2 Attacks)")]),
-    noRoll(3, "@Move[evade|distance:1], then as 2 AP (two [Ranged, Shot] Weapon Attacks (1A), each against a different creature).", [uuidOf("effects", "Double Shot (2 Attacks)")])]
-}, "Archer");
 for (const [n, d] of [[2, "1d6"], [3, "2d6"]]) add("effects", "effect", `Rolling Shot (+${d} Pi)`, "icons/svg/target.svg", { selfApplied: true, duration: { type: "eot", rounds: 1 }, expireOn: ["strike"], description: `<p>Your next [Ranged, Shot] Weapon Attack this turn deals an extra [B] ${d} Pi (Rolling Shot, ${n} AP).</p>`, settings: [{ type: "bonusdamage", dmg: d, dmgPool: "B", dmgSub: "Pi", tiers: ["t2", "t3"], all: ["ranged", "shot", "strike"], any: [], none: [] }] }, "Archer");
 const wa = "@Use[Weapon Attack|label:[Ranged, Shot] Weapon Attack (1A)]";
-add("actions", "action", "Rolling Shot", "icons/svg/target.svg", { category: "Sharpshooter", level: 1, traits: ["ranged", "shot", "strike", "weapon"], frequency: "round", targets: "One creature", distance: "weapon", versions: [
-  noRoll(1, `@Move[evade|distance:1], then make a ${wa}.`),
-  noRoll(2, `@Move[evade|distance:2], then make a ${wa} that deals an extra [B] 1d6 Pi.`, [uuidOf("effects", "Rolling Shot (+1d6 Pi)")]),
-  noRoll(3, `@Move[evade|distance:3], then make a ${wa} that deals an extra [B] 2d6 Pi.`, [uuidOf("effects", "Rolling Shot (+2d6 Pi)")])] }, "Archer");
 add("actions", "action", "Precise Aim", "icons/svg/eye.svg", {
   category: "Sharpshooter", level: 1, traits: ["focus", "self"], frequency: "round", distance: "self",
   versions: [noRoll(1, "You gain 1 Boon on your next [Ranged, Shot, Strike, Weapon] Action.", [uuidOf("effects", "Precise Aim (1 Boon)")]), noRoll(2, "You gain 2 Boons on your next [Ranged, Shot, Strike, Weapon] Action.", [uuidOf("effects", "Precise Aim (2 Boons)")])]
@@ -175,9 +152,7 @@ add("actions", "action", "Bloodlust", "icons/svg/blood.svg", {
 }, "Talents");
 
 /* ------------------------------------------------------------------ Features and Talents */
-add("features", "feature", "Divine Power", "icons/svg/angel.svg", { category: "Paladin Feature", level: 1, description: "<p>When you deal Holy damage to a creature with the Profane Tag, that creature is Enfeebled 1 (EoT).</p>", settings: [{ type: "ondamage", trigSub: "Ho", trigTag: "Profane", fxUuid: uuidOf("effects", "Divine Power (Enfeebled)") }] });
 add("features", "feature", "Divine Connection", "icons/svg/aura.svg", { category: "Paladin Feature", level: 1, talents: 2, description: "<p>Select 1 Talent and 1 Talent with the Divine trait. (Retired in the rules; kept here to test Talent slots.)</p>" });
-add("features", "feature", "Sharpshooter", "icons/svg/target.svg", { category: "Archer Feature", level: 1, description: "<p>Choose your Hallmark Action: <b>Double Shot</b> or <b>Rolling Shot</b>. Choose one Projectile weapon, such as a bow or a crossbow: you start with <b>3 Mastery</b> with it. Your [Shot] Actions don't take the Bane for targeting a creature Engaged with a creature other than you.</p>", settings: [sIgnore("engagedTarget", P(["shot"])), sMastery("projectile", 3)] });
 
 
 /* ------------------------------------------------------------------ Talents (book 16-talents.md; OT 2026-10-30): Category, Level, Prerequisites and Theme as data */
@@ -336,16 +311,12 @@ FX("Divine Surge", "icons/svg/sun.svg", { duration: dur("rounds"), description: 
 FX("Aura of Protection", "icons/svg/aura.svg", { selfApplied: true, duration: dur(""), description: "<p>An Aura 2 around you until the end of the encounter: you and allies inside gain +1 Defense.</p>", settings: [{ type: "aura", auraSize: 2, auraWho: "allies", auraSelf: true, auraOutline: "#3fb68b", auraFill: "#3fb68b", fxUuid: uuidOf("effects", "Aura of Protection (+1 Defense)") }] });
 
 // Features: the Paladin's core features, the passives of the picks, and the choices
-add("features", "feature", "Font of Mercy", "icons/svg/regen.svg", { category: "Paladin Feature", level: 1, description: "<p>While your Escalation is 1 or more, when you or an ally within 5 squares of you uses a Rally Point, they heal your Power Modifier + 2 more.</p>", settings: [{ type: "rally", rallyBonus: "power + 2", rallyRange: 5, minEscalation: 1 }] });
-add("features", "feature", "Radiant Zeal", "icons/svg/sun.svg", { category: "Paladin Escalation", level: 1, description: "<p>While your Escalation is 1 or more, the first [Strike] Action you make each round that deals damage deals an extra [M] 1d6 Ho.</p>", settings: [{ type: "turnstart", fxUuid: uuidOf("effects", "Radiant Zeal"), minEscalation: 1 }] });
 // v0.0.187 (Lucas): the Escalation passives that add damage once a round give an Effect each turn, used up by the Action (switch it off in the roll dialog).
 FX("Radiant Zeal", "icons/svg/sun.svg", { selfApplied: true, duration: dur(""), minEscalation: 1, expireOn: ["strike"], description: "<p>Your next [Strike] Action that deals damage deals an extra [M] 1d6 Ho (Radiant Zeal, while your Escalation is 1 or more). Given again at the start of each of your turns.</p>", settings: [sBonus("1d6", "M", "Ho", P(["strike"]))] });
 add("features", "feature", "Aegis", "icons/svg/shield.svg", { category: "Paladin Feature", level: 1, description: "<p>At the start of each encounter, choose one ally. While you are within 3 squares of them, you and they gain 1 Boon on Saves. (Not automated: choose the ally and add the Boon by hand.)</p>" });
 add("features", "feature", "Mercy's Reward", "icons/svg/regen.svg", { category: "Paladin Feature", level: 1, description: "<p>When you heal an ally with Lay On Hands, your next Smite is Empowered 2. It is used up by that Smite. (Not automated.)</p>" });
 add("features", "feature", "Divine Vigil", "icons/svg/aura.svg", { category: "Paladin Escalation", level: 1, description: "<p>While your Escalation is 2 or more, you and your allies in an Aura 3 around you gain 1 Boon on Saves against [Fear] Actions.</p>", settings: [{ type: "aura", auraSize: 3, auraWho: "allies", auraSelf: true, auraOutline: "#d4a62a", auraFill: "#d4a62a", fxUuid: uuidOf("effects", "Divine Vigil (Boon against Fear)"), minEscalation: 2 }] });
 add("features", "feature", "Avenger's Oath", "icons/svg/sword.svg", { category: "Paladin Escalation", level: 1, description: "<p>While your Escalation is 2 or more, when an ally within 5 squares becomes Bloodied, you gain 1 Boon on your next [Strike] Action. (Not automated.)</p>" });
-add("features", "feature", "Hallowed Stance", "icons/svg/statue.svg", { category: "Paladin Escalation", level: 1, description: "<p>While your Escalation is 2 or more, if you haven't left your square since your last turn, you and your adjacent allies take less Body damage, reduced by your Power Modifier (minimum 0). It reduces one instance of damage per Action; if the Action has several, the player chooses which one. (Not automated.)</p>" });
-add("features", "feature", "Mending Light", "icons/svg/regen.svg", { category: "Paladin Escalation", level: 1, description: "<p>While your Escalation is 1 or more, at the start of each of your turns, you or one ally within 5 squares of you heals your Power Modifier + 1. (Not automated: heal the creature you choose by hand.)</p>" });
 
 // Actions: the picks
 const PAL = "Paladin Feature";
@@ -354,8 +325,6 @@ add("actions", "action", "Vow of Enmity", "icons/svg/sword.svg", { category: PAL
   vt(2, [["", "No effect."], ["1d6MH", "As 1 AP."], ["1d6MH", "As Tier 2, and the target is Vulnerable 1 (EoT)."]]),
   vt(3, [["", "No effect."], ["1d6MH", "As 2 AP."], ["1d6MH", "As 2 AP."]])] }, "Paladin");
 // OT (book 2026-10-30): Shield of Faith is a 0R Escalation Active (Escalation 1), 1d8 + your Power Modifier.
-add("actions", "action", "Shield of Faith", "icons/svg/shield.svg", { category: "Paladin Escalation", level: 1, traits: ["divine", "focus"], frequency: "turn", escalation: 1, reaction: true, reactionKind: "interrupt", targets: "The creature the Strike would damage (you or an ally)", distance: "5", trigger: "A [Strike] Action would damage you or an ally within 5 squares.", versions: [
-  noRoll(0, "The damage that Strike deals to the target is reduced by 1d8 + your Power Modifier.")] }, "Paladin");
 add("actions", "action", "Rebuke", "icons/svg/sun.svg", { category: PAL, level: 1, traits: ["divine", "magic"], frequency: "turn", reaction: true, reactionKind: "trigger", targets: "The triggering creature", distance: "reach", trigger: "An enemy within Reach damages an ally.", versions: [
   vt(1, [["1d4+1MH", ""], ["1d6+1MH", ""], ["1d8+1MH", ""]], "", { critical: "The target is Vulnerable 1 (EoT)." }),
   vt(2, [["1d6+1MH", "Pushed 1."], ["1d8+1MH", "Pushed 2."], ["1d10+1MH", "Pushed 3."]], "", { critical: "The target is Vulnerable 1 for 1 round." })] }, "Paladin");
@@ -365,80 +334,46 @@ add("actions", "action", "Sacred Weapon", "icons/svg/sword.svg", { category: "Ma
 add("actions", "action", "Champion's Challenge", "icons/svg/combat.svg", { category: PAL, level: 1, traits: ["divine", "magic"], frequency: "round", targets: "One / two creatures", distance: "5", versions: [
   vt(1, [["", "No effect."], ["", "1 Bane on [Strike] and [Power] Actions against anyone other than you (EoT)."], ["", "As Tier 2, but 2 Banes instead of 1."]]),
   vt(2, [["", "No effect."], ["", "As 1 AP."], ["", "As 1 AP."]])] }, "Paladin");
-add("actions", "action", "Word of Radiance", "icons/svg/sun.svg", { category: PAL, level: 1, traits: ["area", "divine", "magic"], frequency: "encounter", targets: "All enemies in the Area", areaCfg: { size: 2, shape: "emanation", within: 5, targets: "enemies", center: false, keep: false, rounds: 0 }, versions: [
-  vt(2, [["1d10MH", ""], ["2d8MH", ""], ["3d6MH", "Prone."]]),
-  vt(3, [["2d6MH", ""], ["2d10MH", ""], ["3d8MH", "Prone."]], "", { areaSize: 3 })] }, "Paladin");   // v0.0.215: "Area: 2 / 3 Emanation", no sentence
 const dr = (ap, extra) => [
   vt(ap, [["1WB,1d10MH", ""], ["1WB,1d12MH", ""], ["1WB,2d8MH", ""]], extra, { mode: "weapon", critical: "The target is Pushed 3." }),
   vt(ap, [["2d8MH", ""], ["2d10MH", ""], ["2d12MH", ""]], extra, { mode: "power", critical: "The target is Pushed 3." })];
 add("actions", "action", "Divine Retribution", "icons/svg/sword.svg", { category: PAL, level: 1, traits: ["divine", "strike", "split"], frequency: "encounter", reaction: true, reactionKind: "trigger", targets: "The triggering creature", distance: "weapon", trigger: "You take damage from an enemy within the Distance of this Action.", versions: [
   ...dr(2, ""), ...dr(3, "As 2R, and every enemy in an Emanation 2 centered on you, except the triggering creature, must make an Appeal Save: [M] 1d10 Ho; Pushed 2 / [M] 1d8 Ho / 0.")] }, "Paladin");
-add("actions", "action", "Aura of Protection", "icons/svg/aura.svg", { category: "Paladin Escalation", level: 1, traits: ["area", "divine"], frequency: "encounter", escalation: 1, targets: "You and allies in the Area", distance: "Aura 2", versions: [
-  noRoll(0, "Until the end of the encounter, you and allies in the Aura gain +1 Defense.", [uuidOf("effects", "Aura of Protection")])] }, "Paladin");
-add("actions", "action", "Holy Wrath", "icons/svg/sun.svg", { category: PAL, level: 1, traits: ["divine", "strike", "weapon"], frequency: "encounter", targets: "One creature", distance: "weapon", versions: [
-  version(2, "1WB,2d6MH", "1WB,3d8MH", "1WB,4d8MH"),
-  version(3, "1WB,3d8MH", "1WB,5d8MH", "1WB,7d8MH")] }, "Paladin");
-add("actions", "action", "Bulwark of Faith", "icons/svg/shield.svg", { category: PAL, level: 1, traits: ["divine", "focus"], frequency: "encounter", reaction: true, reactionKind: "interrupt", targets: "The creature the [Strike] Action would damage (an ally)", distance: "5", trigger: "A [Strike] Action would damage an ally within 5 squares.", versions: [
-  noRoll(1, "The target gains @Guard[rally]{Guard equal to what one of their Rally Points heals}, before the damage."),
-  noRoll(2, "As 1R (the target gains @Guard[rally]{Guard equal to what one of their Rally Points heals}, before the damage), and the triggering creature is Slid 2.")] }, "Paladin");
-add("actions", "action", "Miraculous Recovery", "icons/svg/regen.svg", { category: PAL, level: 1, traits: ["divine", "focus"], frequency: "daily", targets: "One willing creature", distance: "reach", versions: [
-  noRoll(2, "The target heals twice what 1 Rally Point would heal, and you end one non-permanent effect of your choice on them."),
-  noRoll(3, "As 2 AP, but three times what 1 Rally Point would heal.")] }, "Paladin");
-add("actions", "action", "Consecrated Ground", "icons/svg/sun.svg", { category: PAL, level: 1, traits: ["divine", "area"], frequency: "daily", targets: "All creatures in the Area", areaCfg: { size: 2, shape: "emanation", within: 10, targets: "all", center: false, keep: true, rounds: 3 }, versions: [
-  noRoll(2, "For 3 rounds, enemies in the area take 1 Bane on [Weapon], [Power] and [Signature] Actions, and allies in it heal 1d4 at the start of each of their turns."),
-  { ...noRoll(3, "As 2 AP, but for 5 rounds."), areaSize: 3 }] }, "Paladin");   // v0.0.215: "Area: 2 / 3 Emanation", as the book
-add("actions", "action", "Divine Intervention", "icons/svg/angel.svg", { category: PAL, level: 1, traits: ["divine"], frequency: "daily", reaction: true, reactionKind: "interrupt", targets: "One creature", distance: "5", trigger: "You or an ally within 5 squares would go Down.", versions: [
-  noRoll(2, "Instead of going Down, the creature's total damage becomes 1 less than their Health Pool.")] }, "Paladin");
 // the Escalation Actives
 const PE = "Paladin Escalation";
 add("actions", "action", "Call to Arms", "icons/svg/angel.svg", { category: PE, level: 1, traits: ["divine"], frequency: "round", escalation: 1, targets: "One Down ally", distance: "3", versions: [noRoll(0, "The ally can use 1 Rally Point.")] }, "Paladin");
-add("actions", "action", "Divine Surge", "icons/svg/sun.svg", { category: PE, level: 1, traits: ["divine"], frequency: "round", escalation: 1, targets: "One enemy", distance: "5", versions: [noRoll(0, "For 1 round, the next time an ally deals damage to the target, they deal an extra [M] 1d8 Ho. You gain @Guard[2d6|self:yes]{Guard 2d6}.", [uuidOf("effects", "Divine Surge")])] }, "Paladin");
-add("actions", "action", "Hand of Mercy", "icons/svg/regen.svg", { category: PE, level: 1, traits: ["divine", "focus"], frequency: "round", escalation: 1, targets: "One ally", distance: "5", versions: [
-  noRoll(1, "Choose one: the ally ends one effect on them that is EoT or has 1 round left; or, if the ally is Down, they can use @Rally[1]{1 Rally Point}.")] }, "Paladin");
 add("actions", "action", "Judgment", "icons/svg/sword.svg", { category: PE, level: 1, traits: ["divine", "magic"], frequency: "round", escalation: 2, targets: "One enemy", distance: "reach", versions: [vt(1, [["", "No effect."], ["2d6MH", "Hindered (EoT)"], ["2d8MH", "Hindered (EoT)"]])] }, "Paladin");
 add("actions", "action", "Sanctified Ground", "icons/svg/aura.svg", { category: PE, level: 1, traits: ["divine", "area"], frequency: "round", escalation: 2, targets: "All creatures in the Area", areaCfg: { size: 1, shape: "emanation", within: 5, targets: "all", center: false, keep: true, rounds: 2 }, versions: [noRoll(1, "You fill the Emanation with Holy light for 2 rounds. Enemies in it take 1 Bane on [Strike] Actions.")] }, "Paladin");
 
-add("actions", "action", "Mark Quarry", "icons/svg/target.svg", { category: "Marked Quarry", level: 1, traits: ["focus"], marksTarget: true, frequency: "turn", targets: "One creature", distance: "",
-  versions: [noRoll(0, "The targeted creature becomes your Marked Quarry: at the start of an encounter, or as a 0R [Focus] when yours died or went Down."), noRoll(1, "The targeted creature becomes your Marked Quarry instead of the one you had (once per turn).")] }, "Archer");
 add("effects", "effect", "Hunter's Focus", "icons/svg/eye.svg", { selfApplied: true, duration: dur(""), description: "<p>For the rest of the encounter, against your Marked Quarry: you gain 1 Boon and Empowered 1, and you take less damage from each of their Actions, reduced by your Signature Modifier (you choose which instance). The damage reduction is not automated.</p>", settings: [sBoon(1, P(), { vsMarked: true }), { type: "damagestep", empowered: 1, ...P(), vsMarked: true }] }, "Archer");
 /* ------------------------------------------------------------------ The Archer (from the book's cards; Save Actions and Marked Quarry are automated in the next passes) */
 add("actions", "action", "Quick Draw", "icons/svg/target.svg", {"category": "Archer Feature", "level": 1, "traits": ["ranged", "shot", "strike", "weapon"], "frequency": "turn", "targets": "The triggering creature", "distance": "weapon", "reaction": true, "reactionKind": "interrupt", "trigger": "An enemy within 5 squares moves closer to you.", versions: [noRoll(1, "Make a @Use[Weapon Attack|label:Weapon Attack (1A)] against the triggering creature.")] }, "Archer");
 add("actions", "action", "Wing Clip", "icons/svg/target.svg", {"category": "Archer Feature", "level": 1, "traits": ["ranged", "shot", "strike", "weapon"], "frequency": "round", "targets": "One creature", "distance": "weapon", versions: [vt(1, [["1WB", ""], ["1WB, 1d4BPi", ""], ["1WB, 1d6BPi", "Hindered (EoT)"]], "")] }, "Archer");
 add("actions", "action", "True Shot", "icons/svg/target.svg", {"category": "Archer Feature", "level": 1, "traits": ["focus", "self"], "frequency": "round", versions: [noRoll(1, "Your next [Strike] Action ignores Cover.")] }, "Archer");
 add("actions", "action", "Suppressing Fire", "icons/svg/target.svg", {"category": "Archer Feature", "level": 1, "traits": ["ranged", "shot", "weapon"], "frequency": "round", "targets": "One creature", "distance": "weapon", versions: [noRoll(1, "Until the end of your next turn, the target takes 1 Bane on [Ranged, Strike] and [Power, Ranged] Actions against creatures other than you.")] }, "Archer");
-add("actions", "action", "Volley", "icons/svg/target.svg", { category: "Archer Feature", level: 1, traits: ["area", "ranged", "save", "shot", "weapon"], frequency: "encounter", vs: "instinct", targets: "All creatures in the Area", areaCfg: { size: 2, shape: "emanation", within: 0, withinRange: "normal", targets: "all", center: false, keep: false, rounds: 0 }, versions: [
-  vt(2, [["2d8BPi, ModBPi", "Hindered (EoT)"], ["1d10BPi, ModBPi", ""], ["1d4BPi", ""]], "")] }, "Archer");
-add("actions", "action", "Marksman's Shot", "icons/svg/target.svg", {"category": "Archer Feature", "level": 1, "traits": ["ranged", "shot", "strike", "weapon"], "frequency": "encounter", "targets": "One creature", "distance": "weapon", versions: [vt(2, [["1WB, 1d8BPi", ""], ["1WB, 3d6BPi", ""], ["1WB, 4d6BPi", "Vulnerable 2 (EoT)."]], "")] }, "Archer");
-add("actions", "action", "Covering Fire", "icons/svg/target.svg", { category: "Archer Feature", level: 1, traits: ["area", "ranged", "shot", "weapon"], frequency: "encounter", targets: "All creatures in the Area", areaCfg: { size: 2, shape: "emanation", within: 0, withinRange: "normal", targets: "all", center: false, keep: true, rounds: 3 }, versions: [
-  noRoll(2, "For 3 rounds (the area doesn't move), enemies in the area take 1 Bane on [Strike] Actions, and allies in it gain +1 Defense.")] }, "Archer");
-add("actions", "action", "Rain of Arrows", "icons/svg/target.svg", { category: "Archer Feature", level: 1, traits: ["area", "ranged", "save", "shot", "weapon"], frequency: "daily", vs: "instinct", targets: "All enemies in the Area", areaCfg: { size: 3, shape: "emanation", within: 0, withinRange: "maximum", targets: "enemies", center: false, keep: false, rounds: 0 }, versions: [
-  vt(2, [["2d8BPi, ModBPi", "Prone"], ["2d6BPi, ModBPi", ""], ["1d6BPi", ""]], "")] }, "Archer");
-add("actions", "action", "Hunter's Focus", "icons/svg/target.svg", {"category": "Archer Feature", "level": 1, "traits": ["focus", "self"], "frequency": "daily", versions: [noRoll(1, "For the rest of the encounter, against your Marked Quarry (a new Marked Quarry when you choose one): you gain 1 Boon and Empowered 1 against them, and you take less damage from each of their Actions, reduced by your **Signature Modifier** (you choose which instance of its damage is reduced).", [uuidOf("effects", "Hunter's Focus")])] }, "Archer");
-add("actions", "action", "Deadeye", "icons/svg/target.svg", { category: "Archer Feature", level: 1, traits: ["ranged", "shot", "strike", "weapon"], frequency: "daily", targets: "One creature", distance: "weapon", versions: [
-  vt(1, [["1WB", ""], ["1WB, 1d6BPi", ""], ["1WB, 2d6BPi", "Prone"]], "This Action is Favored (tick Favored in the roll dialog).")] }, "Archer");
 add("actions", "action", "Steady Aim", "icons/svg/target.svg", {"category": "Archer Escalation", "level": 1, "traits": ["focus", "self"], "frequency": "round", "distance": "self", "escalation": 1, versions: [noRoll(0, "Your next [Shot, Strike] gains 1 Boon, and all of the weapon's ranges increase by 5.")] }, "Archer");
 add("effects", "effect", "Vanish (+1 Defense)", "icons/svg/invisible.svg", { selfApplied: true, duration: dur("rounds"), description: "<p>+1 Defense for 1 round (Vanish).</p>", settings: [{ type: "defense", defKind: "all", defValue: 1 }] }, "Archer");
-add("actions", "action", "Vanish", "icons/svg/target.svg", { category: "Archer Escalation", level: 1, traits: ["self"], frequency: "round", distance: "self", escalation: 1, versions: [
-  noRoll(0, "@Move[evade|distance:2]. You gain +1 Defense for 1 round.", [uuidOf("effects", "Vanish (+1 Defense)")])] }, "Archer");
 // v0.0.189 (Lucas): Pinning Shot and Twin Shot give their Weapon Attack as a granted use (the sheet's button turns blue), as Double Shot does.
 const grant1 = { type: "grant", grantAction: "Weapon Attack", grantCount: 1, grantAp: 0, grantDistinct: false, boons: 0, banes: 0 };
 add("effects", "effect", "Pinning Shot", "icons/svg/net.svg", { selfApplied: true, duration: dur("eot"), expireOn: ["strike"], description: "<p>Your next Weapon Attack this turn is free; on a Tier 2 or 3 the target is Immobilized (EoT) (Pinning Shot).</p>", settings: [grant1, sBonus("", "B", "", P(["strike"]), { tiers: ["t2", "t3"], text: "Immobilized (EoT)", fxUuid: uuidOf("conditions", "Immobilized") })] }, "Archer");
-add("actions", "action", "Pinning Shot", "icons/svg/target.svg", { category: "Archer Escalation", level: 1, traits: ["ranged", "shot", "strike", "weapon"], frequency: "round", targets: "One creature", distance: "weapon", escalation: 2, versions: [
-  noRoll(1, "Make a [Ranged] Weapon Attack (1A). On a Tier 2 or 3, the target is Immobilized (EoT).", [uuidOf("effects", "Pinning Shot")])] }, "Archer");
 add("effects", "effect", "Twin Shot", "icons/svg/target.svg", { selfApplied: true, duration: dur("eot"), expireOn: ["strike"], description: "<p>Your next Weapon Attack this turn is free: target two creatures no more than 5 squares apart; it deals an extra [B] 1d6 Pi to each of them (Twin Shot).</p>", settings: [grant1, sBonus("1d6", "B", "Pi", P(["ranged", "shot", "strike"]))] }, "Archer");
-add("actions", "action", "Twin Shot", "icons/svg/target.svg", { category: "Archer Escalation", level: 1, traits: ["ranged", "shot", "strike", "weapon"], frequency: "round", targets: "Two creatures", distance: "weapon", escalation: 3, versions: [
-  noRoll(1, "Make one [Ranged, Shot] Weapon Attack (1A) and compare its result to two different creatures no more than 5 squares apart (target both). It deals an extra [B] 1d6 Pi to each of them.", [uuidOf("effects", "Twin Shot")])] }, "Archer");
 add("actions", "action", "Perfect Shot", "icons/svg/target.svg", {"category": "Archer Escalation", "level": 1, "traits": ["focus", "self"], "frequency": "round", "distance": "self", "escalation": 3, versions: [noRoll(0, "Your next [Shot, Strike] is Favored and Empowered 2, and ignores Cover.")] }, "Archer");
-add("features", "feature", "Marked Quarry", "icons/svg/target.svg", { category: "Archer Feature", level: 1, description: "<p>At the start of each encounter, choose one enemy as your <b>Marked Quarry</b>. You gain 1 Boon on [Shot, Strike] Actions against them, and those Actions deal [B] [Mod] on a Tier 1. When they die or go Down, you can choose a new Marked Quarry (0R [Focus]). Once per turn, you can change your Marked Quarry during an encounter by spending 1 AP [Focus].</p>", settings: [sBoon(1, P(["shot", "strike"]), { vsMarked: true }), sBonus("[Mod]", "B", "", P(["shot", "strike"]), { tiers: ["t1"], vsMarked: true }),
-  sMessage("encounter", "choose a creature to mark. Target it and use your marking Action:", "Mark Quarry"),
-  sMessage("markDown", "your mark, {mark}, went Down. Choose a new one: target a creature and use your marking Action:", "Mark Quarry")], actions: [uuidOf("actions", "Mark Quarry")] }, "Archer");
 add("features", "feature", "Bow Mastery", "icons/svg/target.svg", { category: "Archer Feature", level: 1, description: "<p>Choose one Projectile weapon, such as a bow or a crossbow. You start with **3 Mastery** with it, so its Weapon Technique is unlocked (see Mastery).</p>", settings: [sMastery("projectile", 3)] }, "Archer");
 add("features", "feature", "Patient Hunter", "icons/svg/target.svg", { category: "Archer Escalation", level: 1, description: "<p>While your Escalation is 2 or more, if you have not left your square since the start of your last turn, gain 1 Boon on [Shot, Strike] Actions until you leave your square.</p>" }, "Archer");
-add("features", "feature", "Elusive", "icons/svg/target.svg", { category: "Archer Escalation", level: 1, description: "<p>While your Escalation is 1 or more, the first [Strike] Action against you each round takes 1 Bane.</p>", settings: [{ type: "boonbane", against: true, boons: 0, banes: 1, ...P(["strike"]), oncePerRound: true, minEscalation: 1 }] }, "Archer");
-add("features", "feature", "Harrying Shots", "icons/svg/target.svg", { category: "Archer Escalation", level: 1, description: "<p>While your Escalation is 1 or more, the first time each round you deal damage to your Marked Quarry with a [Shot] Action, they take 1 Bane on [Strike] Actions until the end of their next turn. (Apply the Harried effect from the compendium.)</p>" }, "Archer");
 add("effects", "effect", "Harried", "icons/svg/downgrade.svg", { duration: dur("eot"), description: "<p>1 Bane on [Strike] Actions until the end of your next turn (Harrying Shots).</p>", settings: [{ type: "boonbane", boons: 0, banes: 1, ...P(["strike"]) }] }, "Archer");
-add("features", "feature", "Killer's Focus", "icons/svg/target.svg", { category: "Archer Escalation", level: 1, description: "<p>While your Escalation is 2 or more, your first [Shot, Strike, Weapon] Action each round deals an extra [B] 1d6 Pi.</p>", settings: [{ type: "turnstart", fxUuid: uuidOf("effects", "Killer's Focus"), minEscalation: 2 }] }, "Archer");
 add("effects", "effect", "Killer's Focus", "icons/svg/target.svg", { selfApplied: true, duration: dur(""), minEscalation: 2, expireOn: ["shot", "strike", "weapon"], expireAll: true, description: "<p>Your next [Shot, Strike, Weapon] Action deals an extra [B] 1d6 Pi (Killer's Focus, while your Escalation is 2 or more). Given again at the start of each of your turns.</p>", settings: [sBonus("1d6", "B", "Pi", P(["shot", "strike", "weapon"]))] }, "Archer");
+
+/* ------------------------------------------------------------------ the cards of book/cards/*.json (pack CS, 2026-11-03): one source for the book, Foundry and the ruler.
+   A card with Versions is an Action item, one without is a Feature; {{fx:Name}} and {{action:Name}} in a card are the compendium uuids. The Basic Actions
+   come through module/basic-data.mjs (tools/gen-basic.mjs); the Techniques (weapon) and the NPC Actions (npc) follow in CS-3. The format: book/cards/README.md. */
+const { loadCards, cardSystem, featureSystem } = await import("./cardgen.mjs");
+const resolveRefs = s => s.replace(/\{\{fx:([^}]+)\}\}/g, (m, n) => uuidOf("effects", n)).replace(/\{\{action:([^}]+)\}\}/g, (m, n) => uuidOf("actions", n));
+export const CARDS = loadCards();
+for (const c of CARDS) {
+  if (c.foundry?.basic || c.weapon || c.npc) continue;
+  if (c.versions?.length) add("actions", "action", c.name, c.foundry?.img ?? "icons/svg/sword.svg", cardSystem(c, resolveRefs), c.foundry?.folder ?? null);
+  else add("features", "feature", c.name, c.foundry?.img ?? "icons/svg/book.svg", featureSystem(c, resolveRefs), c.foundry?.folder ?? null);
+}
 
 // v0.0.185: the pick Features of v0.0.181 (Hallmark Action, Encounter Pick, Talent (Level 1)...) are gone: the classes have levels now.
 // The cards the P1 and A1 builds left out (book/paladin-old-cards.md, book/archer-old-cards.md): kept in the compendium, in folders of their own, for the Options step.
@@ -528,18 +463,8 @@ const FLAVOR = {
  "Club": "A tree trunk with a handle.",
  "Ground Slam": "The ogre brings both fists down, and the ground jumps.",
  "Rally the Tribe": "One bellow, and the whole tribe fights harder.",
- "Divine Power": "Your god's strength flows through your weapon and your hands.",
- "Font of Mercy": "Where you kneel, wounds remember how to close.",
- "Holy Wrath": "For one blow, your god stops holding back.",
- "Bulwark of Faith": "You step into the blow meant for them, and your god holds the line with you.",
- "Radiant Zeal": "The longer the fight, the brighter you burn.",
  "Heavy Blows": "Every swing carries the whole weight of the steel.",
- "Elusive": "You are never quite where they aimed.",
  "Divine Connection": "Your bond with your god opens new paths.",
- "Smite": "Your weapon blazes with holy light.",
- "Lay On Hands": "Your touch carries your god's mercy.",
- "Sharpshooter": "You were made for the shot no one else would take.",
- "Double Shot": "Two shots, so close together they sound like one.",
  "Precise Aim": "You slow your breath and let the world narrow to one point.",
  "Opportunity Attack": "You punish anyone who moves carelessly near you.",
  "Lesser Blessing": "A small gift from the god you follow.",
@@ -561,83 +486,51 @@ const FLAVOR = {
   "Mercy's Reward": "Mercy shown is mercy returned.",
   "Divine Vigil": "Your watch does not end when the fighting starts.",
   "Avenger's Oath": "Every wound your friends take is written in the ledger.",
-  "Hallowed Stance": "You do not move. Neither do those beside you.",
   "Vow of Enmity": "You name a foe, and your god listens.",
-  "Shield of Faith": "A shimmer of light holds steady between them and harm.",
   "Rebuke": "The hand that strikes the faithful is burned for its trouble.",
   "Sacred Weapon": "You lay a hand on the steel and bless it for what comes next.",
   "Champion's Challenge": "You call them out, and they cannot look away.",
-  "Word of Radiance": "You speak a word, and light pours from your hands across everything that stands against you.",
   "Divine Retribution": "They struck you. Your god strikes back.",
-  "Aura of Protection": "You plant your feet, and light rims the shoulders of everyone near you.",
-  "Miraculous Recovery": "You lay both hands on the wound and call in a debt owed to your god.",
-  "Consecrated Ground": "You drive your weapon into the earth, and the earth answers.",
-  "Divine Intervention": "You reach out, and your god answers before you finish the prayer.",
   "Call to Arms": "Your voice carries further than the fight.",
-  "Divine Surge": "You name the foe in your god's sight, and every blade that finds it burns.",
-  "Hand of Mercy": "A single touch undoes what the enemy worked for.",
   "Judgment": "The verdict is not yours to give, only to deliver.",
   "Sanctified Ground": "You make a small piece of the world your god's, and it holds."
 };
-FLAVOR["Double Shot"] = "Two shots, so close together they sound like one.";
 FLAVOR["Precise Aim"] = "You slow your breath and let the world narrow to one point.";
 FLAVOR["Quick Draw"] = "You loose before they take the second step.";
-FLAVOR["Rolling Shot"] = "You keep moving, and the shot rides along with the motion.";
 FLAVOR["Wing Clip"] = "A shot at the knee is worth two in the chest.";
 FLAVOR["True Shot"] = "You see the gap in the wall, and the shot goes through it.";
 FLAVOR["Suppressing Fire"] = "They keep their heads down while your friends close in.";
-FLAVOR["Volley"] = "You empty the quiver skyward, and the arrows fall together.";
-FLAVOR["Marksman's Shot"] = "One shot, carefully placed. Everything after it is easier.";
-FLAVOR["Covering Fire"] = "Nobody walks through that ground without paying for it.";
-FLAVOR["Rain of Arrows"] = "Arrows fall from nothing, again and again, until the ground is gone.";
-FLAVOR["Hunter's Focus"] = "You and the quarry, and nothing else in the world.";
-FLAVOR["Deadeye"] = "You put everything into one shot, and everything into the one after.";
 FLAVOR["Steady Aim"] = "Breathe in. Breathe out. Loose.";
-FLAVOR["Vanish"] = "You were there a moment ago. You are not now.";
-FLAVOR["Pinning Shot"] = "You pin their foot to the ground with an arrow.";
-FLAVOR["Twin Shot"] = "Two arrows, one motion, two answers.";
 FLAVOR["Perfect Shot"] = "The arrow has already landed. You have only to release it.";
-FLAVOR["Sharpshooter"] = "You were made for the shot no one else would take.";
-FLAVOR["Marked Quarry"] = "You pick the one, and the world narrows.";
 FLAVOR["Bow Mastery"] = "One weapon has been in your hands longer than any other.";
 FLAVOR["Long Draw"] = "You pull a little further, and the arrow flies a little truer.";
 FLAVOR["Patient Hunter"] = "The shot is worth waiting for.";
 FLAVOR["Steady Nerves"] = "They are in your face. You are still calm.";
-FLAVOR["Killer's Focus"] = "First blood is the only blood that matters.";
 // v0.0.188 (OT): the book's Flavor lines of the new cards (Mark Quarry's is new here).
 FLAVOR["Challenge"] = "You call them out, and they cannot look away.";
 FLAVOR["Class Expertise"] = "You have studied your craft longer than most.";
-FLAVOR["Mending Light"] = "Light gathers where you stand, and the hurt are drawn to it.";
-FLAVOR["Harrying Shots"] = "Every arrow says the same thing: not yet.";
-FLAVOR["Mark Quarry"] = "One name, one face, and the rest of the field goes quiet.";
 
 for (const d of docs) if (["action", "talent", "feature"].includes(d.type) && FLAVOR[d.name]) d.system.flavor = FLAVOR[d.name];
 // v0.0.189 (Lucas): how much Foundry does for each current card (a chip on the card). Gold: all of it; Silver: one part by hand;
 // Bronze: buttons or a compendium effect, the rest by hand; Not implemented: text only. Old cards and Basic Actions have none set.
 const AUTO = {
-  gold: ["Smite", "Lay On Hands", "Holy Wrath", "Word of Radiance", "Font of Mercy", "Radiant Zeal", "Divine Power", "Aura of Protection", "Double Shot", "Rolling Shot", "Marksman's Shot", "Volley", "Rain of Arrows",
-    "Marked Quarry", "Mark Quarry", "Killer's Focus", "Elusive", "Pinning Shot", "Vanish", "Long Draw", "Steady Nerves", "Heavy Blows", "Whirlwind", "Bloodlust", "Brawler", "Pummel", "Kickboxer", "Leg Sweep",
+  gold: ["Rain of Arrows",
+    "Long Draw", "Steady Nerves", "Heavy Blows", "Whirlwind", "Bloodlust", "Brawler", "Pummel", "Kickboxer", "Leg Sweep",
     "Battering Charge", "Lesser Blessing", "Rimebrand (Cold)", "Rimebrand", "Lay On Hands (Holy Strike)", "Smite (+1 Defense)", "Vanish (+1 Defense)"],
-  silver: ["Sharpshooter", "Hunter's Focus", "Twin Shot", "Deadeye", "Aim", "Opportunity Attack", "Cut Through", "Divine Surge", "Bulwark of Faith"],
-  bronze: ["Covering Fire", "Consecrated Ground", "Hand of Mercy", "Harrying Shots", "Harried", "Challenge", "Challenged"],
-  none: ["Shield of Faith", "Miraculous Recovery", "Divine Intervention", "Mending Light", "Hallowed Stance", "Ricochet", "Sacred Weapon", "Class Expertise"]
+  silver: ["Aim", "Opportunity Attack", "Cut Through"],
+  bronze: ["Harried", "Challenge", "Challenged"],
+  none: ["Ricochet", "Sacred Weapon", "Class Expertise"]
 };
 // v0.0.215 (Lucas, playtest 2): what each Bronze and Silver card still leaves to the players (the diamond's tooltip, "By hand" on the item).
 const AUTO_NOTE = {
-  "Hunter's Focus": "the damage reduction against your Marked Quarry (lower the damage yourself).",
   "Aim": "ignoring Low Cover (untick the Low cover chip in the roll dialog).",
-  "Deadeye": "Favored (tick it in the roll dialog).",
-  "Divine Surge": "the ally clicks the button on the mark for the extra [M] 1d8 Ho.",
-  "Covering Fire": "the Bane and +1 Defense for creatures in the area (the area is placed and kept for 3 rounds).",
-  "Consecrated Ground": "the Banes and the 1d4 healing for creatures in the area (the area is placed and kept).",
-  "Hand of Mercy": "ending the effect (the Rally Point button works).",
-  "Harrying Shots": "apply the Harried effect from the compendium.",
   "Challenge": "apply the Challenged effect from the compendium.",
   "Challenged": "the attacker unticks the Bane when it attacks the creature that challenged it."
 };
+for (const c of CARDS) for (const d of docs) if (d.type === "effect" && d.name === c.name && c.foundry?.automation) { d.system.automation = c.foundry.automation; if (c.foundry.automationNote) d.system.automationNote = c.foundry.automationNote; }   // an Effect named like a card (Divine Surge, Pinning Shot) shows the card's rank
 for (const [rank, list] of Object.entries(AUTO)) for (const d of docs) if (list.includes(d.name) && ["action", "feature", "talent", "effect"].includes(d.type) && !/old cards/.test(d.folder ?? "") && !d.system.automation) { d.system.automation = rank; if (AUTO_NOTE[d.name] && ["bronze", "silver"].includes(rank)) d.system.automationNote = AUTO_NOTE[d.name]; }
-// v0.0.187: the Escalation Passives say so (the Features tab's Escalation section); Font of Mercy is one too (the book).
-for (const d of docs) if (d.type === "feature" && (/escalation/i.test(d.system.category ?? "") || d.name === "Font of Mercy")) d.system.escalationPassive = true;
+// v0.0.187: the Escalation Passives say so (the Features tab's Escalation section); a card says it with foundry.escalationPassive (Font of Mercy).
+for (const d of docs) if (d.type === "feature" && (/escalation/i.test(d.system.category ?? ""))) d.system.escalationPassive = true;
 for (const a of [...actors, ...pcs]) for (const it of (a.items ?? [])) if (["action", "talent", "feature"].includes(it.type) && FLAVOR[it.name]) { it.system ??= {}; it.system.flavor = FLAVOR[it.name]; }
 
 export { docs, folders, uuidOf, actors, pcs };

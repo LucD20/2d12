@@ -1,5 +1,6 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t172.mjs)
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
+const CDOCS = (await import(ROOTURL + "tools/content.mjs")).docs, cdoc = (n, t = "action") => CDOCS.find(d => d.name === n && d.type === t);   // v0.0.230 (pack CS): the cards are data (book/cards), read from the built content
 import fs from "node:fs";
 // v0.0.215 (Lucas's playtest 2 notes): fixes and Foundry improvements.
 class Fl { constructor(o) { this.o = o; } }
@@ -43,7 +44,7 @@ console.log("Rally the Tribe:", content.includes("gain 1 Boon on their next [Wea
 console.log("an Emanation with no Distance is around you:", cf.includes('const onSelf = a.shape === "emanation" && !a.within && !c?.withinRange;'), "| asks about yourself:", tpl.includes("Affect ${escT(centerTok.name)} too"));
 console.log("remove a target in the roll dialog:", acts.includes('class="ttx" data-rm=') && acts.includes('removed: fd.getAll("removed")'));
 console.log("Escalation Passive: description on click:", sheet.includes('data-action="toggleEscPass"') && esc.includes("desc:"));
-console.log("Word of Radiance and Consecrated Ground: 2 / 3 Emanation:", data.includes('areaSize: int(0, 0)') && content.includes('"", { areaSize: 3 })') && !content.includes("At 3 AP the Area is"), "| the version asked before placing:", acts.includes("Which version? The Area depends on it."));
+console.log("Word of Radiance and Consecrated Ground: 2 / 3 Emanation:", data.includes('areaSize: int(0, 0)') && ["Word of Radiance", "Consecrated Ground"].every(n => cdoc(n).system.areaCfg.size === 2 && cdoc(n).system.versions[1].areaSize === 3), "| the version asked before placing:", acts.includes("Which version? The Area depends on it."));
 const D = await import(ROOTURL + "module/data.mjs").catch(() => null);
 if (D?.ActionData) {
   const d = Object.assign(Object.create(D.ActionData.prototype), { areaCfg: { size: 2, shape: "emanation", within: 5 }, versions: [{ ap: 3, areaSize: 3 }, { ap: 2, areaSize: 0 }], traits: new Set() });

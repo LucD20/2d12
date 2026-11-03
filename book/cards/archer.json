@@ -1,0 +1,601 @@
+{
+ "_about": "The Archer's cards (the Archer document, 13-archer.md). One source per card: book/cards/README.md.",
+ "cards": [
+  {
+   "name": "Sharpshooter",
+   "category": "Archer Feature",
+   "level": 1,
+   "flavor": "You were made for the shot no one else would take.",
+   "text": "Choose your Hallmark Action: **Double Shot** or **Rolling Shot**. Choose one [[Projectile]] weapon, such as a bow or a crossbow: you start with **3 Mastery** with it. Your [Shot] Actions don't take the Bane for targeting a creature Engaged with a creature other than you.",
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "automation": "silver",
+    "settings": [
+     {
+      "type": "ignore",
+      "ignoreRule": "engagedTarget",
+      "all": [
+       "shot"
+      ],
+      "any": [],
+      "none": []
+     },
+     {
+      "type": "mastery",
+      "mstTrait": "projectile",
+      "mstValue": 3
+     }
+    ]
+   },
+   "ruler": {
+    "passive": "clear-shot"
+   }
+  },
+  {
+   "name": "Marked Quarry",
+   "category": "Archer Feature",
+   "level": 1,
+   "flavor": "You pick the one, and the world narrows.",
+   "text": "At the start of each encounter, choose one enemy as your **Marked Quarry**. You gain 1 Boon on [Shot, Strike] Actions against them, and those Actions deal [B] [Mod] on a Tier 1. When they die or go Down, you can choose a new Marked Quarry (0R [Focus]). Once per turn, you can change your Marked Quarry during an encounter by spending 1 AP [Focus].",
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "automation": "gold",
+    "actions": [
+     "Mark Quarry"
+    ],
+    "settings": [
+     {
+      "type": "boonbane",
+      "boons": 1,
+      "banes": 0,
+      "all": [
+       "shot",
+       "strike"
+      ],
+      "any": [],
+      "none": [],
+      "vsMarked": true
+     },
+     {
+      "type": "bonusdamage",
+      "dmg": "[Mod]",
+      "dmgPool": "B",
+      "dmgSub": "",
+      "tiers": [
+       "t1"
+      ],
+      "text": "",
+      "fxUuid": "",
+      "all": [
+       "shot",
+       "strike"
+      ],
+      "any": [],
+      "none": [],
+      "vsMarked": true
+     },
+     {
+      "type": "message",
+      "msgWhen": "encounter",
+      "text": "choose a creature to mark. Target it and use your marking Action:",
+      "msgAction": "Mark Quarry",
+      "msgAp": 0,
+      "msgTo": "owners"
+     },
+     {
+      "type": "message",
+      "msgWhen": "markDown",
+      "text": "your mark, {mark}, went Down. Choose a new one: target a creature and use your marking Action:",
+      "msgAction": "Mark Quarry",
+      "msgAp": 0,
+      "msgTo": "owners"
+     }
+    ],
+    "folder": "Archer"
+   },
+   "ruler": {
+    "passive": "boon 1 shot strike quarry"
+   }
+  },
+  {
+   "name": "Double Shot",
+   "category": "Sharpshooter",
+   "level": 1,
+   "flavor": "Two shots, so close together they sound like one.",
+   "traits": [
+    "shot",
+    "strike"
+   ],
+   "frequency": "Round",
+   "target": "Two creatures",
+   "versions": [
+    {
+     "ap": 2,
+     "effects": "You make two [Ranged, Shot] Weapon Attacks (1A), each against a different creature.",
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Double Shot (2 Attacks)}}"
+       ]
+      }
+     },
+     "ruler": "does Weapon Attack x2 | different"
+    },
+    {
+     "ap": 3,
+     "effects": "Evade 1, then as 2 AP.",
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Double Shot (2 Attacks)}}"
+       ]
+      }
+     },
+     "ruler": "does Weapon Attack x2 | different | evade 1"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/combat.svg",
+    "folder": "Archer",
+    "automation": "gold"
+   }
+  },
+  {
+   "name": "Rolling Shot",
+   "category": "Sharpshooter",
+   "level": 1,
+   "flavor": "You keep moving, and the shot rides along with the motion.",
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "Evade 1, then make a [Ranged, Shot] Weapon Attack (1A).",
+     "foundry": {
+      "append": "@Use[Weapon Attack|label:[Ranged, Shot] Weapon Attack (1A)]"
+     },
+     "ruler": "does Weapon Attack | evade 1"
+    },
+    {
+     "ap": 2,
+     "effects": "Evade 2, then make a [Ranged, Shot] Weapon Attack (1A) that deals an extra [B] 1d6 Pi.",
+     "foundry": {
+      "append": "@Use[Weapon Attack|label:[Ranged, Shot] Weapon Attack (1A)]",
+      "fx": {
+       "all": [
+        "{{fx:Rolling Shot (+1d6 Pi)}}"
+       ]
+      }
+     },
+     "ruler": "does Weapon Attack | each extra 1d6 | evade 2"
+    },
+    {
+     "ap": 3,
+     "effects": "Evade 3, then make a [Ranged, Shot] Weapon Attack (1A) that deals an extra [B] 2d6 Pi.",
+     "foundry": {
+      "append": "@Use[Weapon Attack|label:[Ranged, Shot] Weapon Attack (1A)]",
+      "fx": {
+       "all": [
+        "{{fx:Rolling Shot (+2d6 Pi)}}"
+       ]
+      }
+     },
+     "ruler": "does Weapon Attack | each extra 2d6 | evade 3"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Archer",
+    "automation": "gold"
+   }
+  },
+  {
+   "name": "Marksman's Shot",
+   "category": "Archer Feature",
+   "level": 1,
+   "flavor": "One shot, carefully placed. Everything after it is easier.",
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Encounter",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 2,
+     "tiers": [
+      "[B] 1[W] + 1d8 Pi",
+      "[B] 1[W] + [Mod] + 3d6 Pi",
+      "[B] 1[W] + [Mod] + 4d6 Pi; Vulnerable 2 (EoT)."
+     ],
+     "ruler": "on 3: vulnerable 2"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Archer",
+    "automation": "gold"
+   }
+  },
+  {
+   "name": "Volley",
+   "category": "Archer Feature",
+   "level": 1,
+   "flavor": "You empty the quiver skyward, and the arrows fall together.",
+   "traits": [
+    "area",
+    "ranged",
+    "save",
+    "shot",
+    "weapon"
+   ],
+   "frequency": "Encounter",
+   "target": "All creatures in the Area",
+   "area": "2 Emanation",
+   "distance": "Your weapon's normal range",
+   "vs": "Instinct Save",
+   "versions": [
+    {
+     "ap": 2,
+     "tiers": [
+      "[B] 2d8 + [Mod] Pi; Hindered (EoT).",
+      "[B] 1d10 + [Mod] Pi",
+      "[B] 1d4 Pi"
+     ],
+     "ruler": "area 2 | on 1: debuff Hindered (EoT)"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Archer",
+    "automation": "gold",
+    "areaCfg": {
+     "targets": "all"
+    }
+   }
+  },
+  {
+   "name": "Covering Fire",
+   "category": "Archer Feature",
+   "level": 1,
+   "flavor": "Nobody walks through that ground without paying for it.",
+   "traits": [
+    "area",
+    "ranged",
+    "shot",
+    "weapon"
+   ],
+   "frequency": "Encounter",
+   "target": "All creatures in the Area",
+   "area": "2 Emanation",
+   "distance": "Your weapon's normal range",
+   "versions": [
+    {
+     "ap": 2,
+     "effects": "For 3 rounds (the area doesn't move), enemies in the area take 1 Bane on [Strike] Actions, and allies in it gain +1 Defense.",
+     "ruler": "rounds 3 | area 2 | allies 2 | banes 1 strike; defense 1 allies"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Archer",
+    "automation": "bronze",
+    "automationNote": "the Bane and +1 Defense for creatures in the area (the area is placed and kept for 3 rounds).",
+    "areaCfg": {
+     "targets": "all",
+     "keep": true,
+     "rounds": 3
+    }
+   }
+  },
+  {
+   "name": "Hunter's Focus",
+   "category": "Archer Feature",
+   "level": 1,
+   "flavor": "You and the quarry, and nothing else in the world.",
+   "traits": [
+    "focus",
+    "self"
+   ],
+   "frequency": "Daily",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "For the rest of the encounter, against your Marked Quarry (a new Marked Quarry when you choose one): you gain 1 Boon and Empowered 1 against them, and you take less damage from each of their Actions, reduced by your **Signature Modifier** (you choose which instance of its damage is reduced).",
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Hunter's Focus}}"
+       ]
+      }
+     },
+     "ruler": "always: boon 1 encounter shot strike quarry; empowered 1 encounter shot strike quarry"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Archer",
+    "automation": "silver",
+    "automationNote": "the damage reduction against your Marked Quarry (lower the damage yourself)."
+   }
+  },
+  {
+   "name": "Deadeye",
+   "category": "Archer Feature",
+   "level": 1,
+   "flavor": "You put everything into one shot, and everything into the one after.",
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Daily",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "rules": "This Action is Favored.",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[B] 1[W]",
+      "[B] 1[W] + [Mod] + 1d6 Pi",
+      "[B] 1[W] + [Mod] + 2d6 Pi; Prone."
+     ],
+     "ruler": "favored | on 3: debuff Prone"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Archer",
+    "automation": "silver",
+    "automationNote": "Favored (tick it in the roll dialog)."
+   }
+  },
+  {
+   "name": "Rain of Arrows",
+   "category": "Archer Feature",
+   "level": 1,
+   "flavor": "Arrows fall from nothing, again and again, until the ground is gone.",
+   "traits": [
+    "area",
+    "ranged",
+    "save",
+    "shot",
+    "weapon"
+   ],
+   "frequency": "Daily",
+   "target": "All enemies in the Area",
+   "area": "3 Emanation",
+   "distance": "Your weapon's maximum range",
+   "vs": "Instinct Save",
+   "versions": [
+    {
+     "ap": 2,
+     "tiers": [
+      "[B] 2d8 + [Mod] Pi; Prone.",
+      "[B] 2d6 + [Mod] Pi",
+      "[B] 1d6 Pi"
+     ],
+     "ruler": "area 2.5 | on 1: debuff Prone"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Archer",
+    "automation": "gold",
+    "areaCfg": {
+     "targets": "enemies"
+    }
+   }
+  },
+  {
+   "name": "Killer's Focus",
+   "category": "Archer Escalation (Passive)",
+   "flavor": "First blood is the only blood that matters.",
+   "text": "While your Escalation is 2 or more, your first [Shot, Strike, Weapon] Action each round deals an extra [B] 1d6 Pi.",
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "level": 1,
+    "automation": "gold",
+    "settings": [
+     {
+      "type": "turnstart",
+      "fxUuid": "{{fx:Killer's Focus}}",
+      "minEscalation": 2
+     }
+    ],
+    "folder": "Archer"
+   },
+   "ruler": {
+    "passive": "escalation 2: extra 1d6 first shot strike weapon"
+   }
+  },
+  {
+   "name": "Elusive",
+   "category": "Archer Escalation (Passive)",
+   "flavor": "You are never quite where they aimed.",
+   "text": "While your Escalation is 1 or more, the first [Strike] Action against you each round takes 1 Bane.",
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "level": 1,
+    "automation": "gold",
+    "settings": [
+     {
+      "type": "boonbane",
+      "against": true,
+      "boons": 0,
+      "banes": 1,
+      "all": [
+       "strike"
+      ],
+      "any": [],
+      "none": [],
+      "oncePerRound": true,
+      "minEscalation": 1
+     }
+    ],
+    "folder": "Archer"
+   },
+   "ruler": {
+    "passive": "escalation 1: elusive 1"
+   }
+  },
+  {
+   "name": "Harrying Shots",
+   "category": "Archer Escalation (Passive)",
+   "flavor": "Every arrow says the same thing: not yet.",
+   "text": "While your Escalation is 1 or more, the first time each round you deal damage to your Marked Quarry with a [Shot] Action, they take 1 Bane on [Strike] Actions until the end of their next turn.",
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "level": 1,
+    "automation": "bronze",
+    "automationNote": "apply the Harried effect from the compendium.",
+    "append": "(Apply the Harried effect from the compendium.)",
+    "folder": "Archer"
+   }
+  },
+  {
+   "name": "Pinning Shot",
+   "category": "Archer Escalation",
+   "flavor": "You pin their foot to the ground with an arrow.",
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "escalation": 2,
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "Make a [Ranged] Weapon Attack (1A). On a Tier 2 or 3, the target is Immobilized (EoT).",
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Pinning Shot}}"
+       ]
+      }
+     },
+     "ruler": "vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod] | on 2+: debuff Immobilized (EoT)"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Archer",
+    "level": 1,
+    "automation": "gold"
+   }
+  },
+  {
+   "name": "Twin Shot",
+   "category": "Archer Escalation",
+   "flavor": "Two arrows, one motion, two answers.",
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "escalation": 3,
+   "frequency": "Round",
+   "target": "Two creatures",
+   "distance": "Weapon",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "Make one [Ranged, Shot] Weapon Attack (1A) and compare its result to two different creatures no more than 5 squares apart. It deals an extra [B] 1d6 Pi to each of them.",
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Twin Shot}}"
+       ]
+      }
+     },
+     "ruler": "does Weapon Attack | each extra 1d6 | area 2"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Archer",
+    "level": 1,
+    "automation": "silver"
+   }
+  },
+  {
+   "name": "Vanish",
+   "category": "Archer Escalation",
+   "flavor": "You were there a moment ago. You are not now.",
+   "traits": [
+    "self"
+   ],
+   "escalation": 1,
+   "frequency": "Round",
+   "versions": [
+    {
+     "ap": 0,
+     "effects": "Evade 2. You gain +1 Defense for 1 round.",
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Vanish (+1 Defense)}}"
+       ]
+      }
+     },
+     "ruler": "evade 2; defense 1 self"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Archer",
+    "level": 1,
+    "automation": "gold"
+   }
+  },
+  {
+   "name": "Mark Quarry",
+   "category": "Marked Quarry",
+   "level": 1,
+   "book": false,
+   "_note": "Foundry only (v0.0.186): the Action Marked Quarry grants to mark a creature; the book's Marked Quarry text covers it.",
+   "flavor": "One name, one face, and the rest of the field goes quiet.",
+   "traits": [
+    "focus"
+   ],
+   "frequency": "Turn",
+   "target": "One creature",
+   "versions": [
+    {
+     "ap": 0,
+     "effects": "The targeted creature becomes your Marked Quarry: at the start of an encounter, or as a 0R [Focus] when yours died or went Down."
+    },
+    {
+     "ap": 1,
+     "effects": "The targeted creature becomes your Marked Quarry instead of the one you had (once per turn)."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Archer",
+    "automation": "gold",
+    "marksTarget": true
+   },
+   "ruler": false
+  }
+ ]
+}

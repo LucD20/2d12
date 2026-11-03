@@ -96,6 +96,8 @@ export function convertEffects(text) {
   s = s.replace(/\[?\b(\d+)\s*(emanation|burst)\b(?:\s+(?:(\d+)\s*\/\s*rounds?|(EoT)))?\]?/gi, (m, n, shape, rounds, eot) =>
     `@Template[${shape.toLowerCase()}|distance:${n}${rounds ? `|rounds:${rounds}` : (eot ? "|expire:eot" : "")}]`);
   s = s.replace(new RegExp(`\\b(\\d+d\\d+(?:[+-]\\d+)?)([BMC])(${SUBCODES}|[BCHMPS])?\\b`, "g"), (m, dice, p, sub) => `@Damage[${dice}[${POOL[p]}${sub ? "," + TWOD12.subtypes[subtypeCode(sub)].toLowerCase() : ""}]]`);
+  // v0.0.230 (pack CS): "...in a 2 Emanation ..., for 1 round." -> the template lasts that long (the book writes the duration in the sentence)
+  s = s.replace(/(@Template\[emanation\|distance:\d+)(\])([^.]*?\bfor (\d+) rounds?\b)/g, (m, a, b, rest, n) => `${a}|rounds:${n}${b}${rest}`);
   return s;
 }
 
