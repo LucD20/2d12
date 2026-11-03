@@ -5,3 +5,4 @@ a larger creature's Charge is centered on the mouse: true
 Reload: yours or an ally's within Reach (the GM relays): true | Reload isn't refused for its own unloaded weapon: true
 shortcuts: true | Shift+A, W, R, Q: true | Favorites Alt+1..9: true | an NPC's Weapon Attack key uses its Basic attack: true
 (next version) the Fists never show Unloaded; a non-Ranged Weapon Action with a free hand isn't blocked: true
+v0.0.222: a Round use recorded in round 3 when the combat is back in round 1 (turn 2, own turn 5) doesn't block: false | used this round on its turn, later turn now: true | next round before its turn: true | at its next turn: false

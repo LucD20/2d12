@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.221, 172 tests; READ THIS FIRST)
+## Where we are now (v0.0.222, 172 tests; READ THIS FIRST)
+- **v0.0.222 (2026-11-03, branch `pack-p2-polish`):** Round uses recorded after the current round (the round moved back) no longer block; the Fists never show Unloaded.
 - **v0.0.221 (2026-11-03), branch `pack-p2-polish` (on top of pack-p2-test-fixes):** the Charge given-up greying fixed, movement messages as system lines, a Large creature's Charge centered, Reload an ally's weapon (book wording too), shortcuts (pack K: Shift+A/W/R/Q, Alt+1..9), the class colors in system messages. Next: Lucas's test, then playtest 3 (MASTER-PLAN step 0.3).
 - **v0.0.220 (2026-11-03):** the Charge messages are system cards; **standing rule: every new chat message uses sysmsg.mjs (sysCard / sysLine), never plain text** (CLAUDE.md).
 - **v0.0.219 (2026-11-02, branch `pack-p2-test-fixes`):** Lucas tested v0.0.218 (all works): the Charge picker gets a limit outline, a refund when given up, no chat line, a fixed-size bar.
