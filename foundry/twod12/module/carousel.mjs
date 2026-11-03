@@ -4,6 +4,7 @@ import { getAP, setAP, apMax, endTurnFor, swapCandidates, swapWith, thawedNow } 
 import { stripMove, endMoveFor, evadeToAdvance } from "./move.mjs";
 import { groupColor } from "./config.mjs";
 import { esc } from "./util.mjs";
+import { strikesUsed } from "./usage.mjs";
 const { DialogV2 } = foundry.applications.api;
 const F = "twod12", ID = "twod12-carousel";
 
@@ -20,6 +21,9 @@ function card(combat, c, st) {
   const pipKind = frozen ? "frozen" : (current ? "turn" : "react");
   const pipTip = { turn: `${ap} AP this turn`, react: `${ap} AP left for Reactions`, frozen: `${ap} AP, frozen until its new turn (it swapped initiative)` }[pipKind];
   const pips = `<div class="tp-pips ${pipKind}" data-tooltip="${pipTip}">${Array.from({ length: max }, (_, i) => `<i class="${i < ap ? "on" : ""}"></i>`).join("")}</div>`;
+  // v0.0.224 (Lucas, playtest 3): the 3 Strikes of this turn as three red diamonds; each Strike (not a Linked one) empties one.
+  const used = combat.started ? Math.min(3, strikesUsed(c.actor)) : 0;
+  const strikes = combat.started ? `<div class="tp-strikes" data-tooltip="${3 - used} of 3 Strikes left this turn">${[0, 1, 2].map(i => `<i class="${i < 3 - used ? "on" : ""}"></i>`).join("")}</div>` : "";
   const img = c.token?.texture?.src ?? c.img ?? "icons/svg/mystery-man.svg";
   const noInit = c.initiative === null || c.initiative === undefined;
   const d = dispOf(c), band = current ? "Acting" : (DISP_LABEL[d] ?? "");
@@ -39,7 +43,7 @@ function card(combat, c, st) {
     <div class="tp-band">${band}</div>
     <div class="tp-por"><img src="${img}" alt="">${noInit ? "" : `<span class="tp-seal">${Math.round(c.initiative)}</span>`}${swapOk ? '<span class="tp-swapb"><i class="fa-solid fa-right-left"></i></span>' : ""}</div>
     <div class="tp-name">${esc(c.name)}</div>
-    ${pips}${extra}</div>`;
+    ${pips}${strikes}${extra}</div>`;
 }
 
 /** v0.0.199: why the active creature can't swap now ("" when it can): Swapping Initiative, Core Rules Chapter 2. Pure. */
@@ -196,7 +200,9 @@ export function placeCarousel() {
 export function registerCarousel() {
   game.settings.register("twod12", "carouselHideDead", { name: "Combat strip: hide defeated creatures", hint: "Hide dead or defeated creatures from the strip. When off, they are shown in grey.", scope: "client", config: true, type: Boolean, default: false, onChange: renderCarousel });
   game.settings.register("twod12", "carousel", { name: "Combat strip with Action Points", hint: "Shows the turn order across the top of the screen with the Action Points of each creature as dots.", scope: "client", config: true, type: Boolean, default: true, onChange: renderCarousel });
-  for (const h of ["createCombat", "updateCombat", "deleteCombat", "createCombatant", "updateCombatant", "deleteCombatant", "combatStart", "combatTurnChange", "canvasReady"]) Hooks.on(h, () => { renderCarousel(); setTimeout(renderCarousel, 50); });   // again once Foundry has set the new turn order (v0.0.189)
+  for (const h of ["createCombat", "updateCombat", "deleteCombat", "createCombatant", "updateCombatant", "deleteCombatant", "combatStart", "combatTurnChange", "canvasReady"]) Hooks.on(h, () => { renderCarousel(); setTimeout(renderCarousel, 50); });
+  // v0.0.224: the Strike pips follow the creatures' usage (an actor flag).
+  Hooks.on("updateActor", (a, ch) => { if (ch?.flags?.twod12 && "usage" in ch.flags.twod12 && game.combat?.combatants?.some?.(c => c.actor === a)) renderCarousel(); });   // again once Foundry has set the new turn order (v0.0.189)
   renderCarousel();
   for (const h of ["collapseSidebar", "renderSidebar", "renderSceneControls", "renderSceneNavigation", "collapseSceneNavigation"]) Hooks.on(h, () => { setTimeout(placeCarousel, 0); setTimeout(placeCarousel, 450); });   // again once the sidebar's slide has ended
   // v0.0.205 (Lucas): collapsing the sidebar didn't re-fit the strip; follow its size and its slide.

@@ -27,6 +27,7 @@ OUT = ROOT / "knowledge"
 # Design documents still in progress (decided or proposed, not fully in rules-src yet). Keep this list short.
 DESIGN_DOCS = [
     "book/playtest-2.md",       # playtest 2 and the rework it decided (pack R)
+    "book/playtest-3.md",       # playtest 3, the baseline (no NPC Weapon Attack); its questions
     "book/progression-lv.md",   # progression, Overcast and Momentum (pack R changes Overcast)
     "book/class-charter.md",    # what every class must have
 ]

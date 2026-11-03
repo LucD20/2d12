@@ -141,12 +141,25 @@ export const BASIC_ACTIONS = {
     distance: "self",
     versions: [V(1, [], [], [], "You stand up: you are no longer Prone.", { noTiers: true })]
   },
+  // v0.0.224 (Lucas, playtest 3; book: 08-conditions.md, Immobilized): removing Immobilized costs 1 AP and is a Move Action (the one an
+  // Immobilized creature can use). The book has no card for it: this is that rule as a Basic Action.
+  breakFree: {
+    name: "Break Free",
+    frequency: "atwill",
+    img: "icons/svg/net.svg",
+    traits: ["move", "self"],
+    targets: "",
+    vs: "",
+    distance: "self",
+    requirements: "You are Immobilized.",
+    versions: [V(1, [], [], [], "You are no longer Immobilized.", { noTiers: true })]
+  },
   charge: {
     name: "Charge",
     frequency: "round",
     img: "icons/svg/thrust.svg",
-    traits: ["move", "self"],
-    targets: "",
+    traits: ["move", "strike"],   // v0.0.224 (Lucas, playtest 3): a Strike, and it targets the creature it charges
+    targets: "One creature",
     vs: "",
     distance: "",
     requirements: "You have at least Speed 3",
@@ -156,7 +169,7 @@ export const BASIC_ACTIONS = {
         [],
         [],
         [],
-        "Advance at least 3 squares and up to your Speed in a straight line: @Move[charge|distance:speed+2*has(Battering Charge)|min:3|uncapped:yes|label:Charge]. You can't Charge through Difficult Terrain. At the end of your movement, make a Weapon Attack (1A) with 1 Boon: @Use[Weapon Attack|boons:1|empowered:has(Battering Charge)|label:Weapon Attack (1A, 1 Boon)]",
+        "Advance in a straight line toward the target, at least 3 squares and up to your Speed, and stop on the first square from which the target is within your Reach: @Move[charge|distance:speed+2*has(Battering Charge)|min:3|uncapped:yes|label:Charge]. You can't Charge through Difficult Terrain. At the end of your movement, make a Weapon Attack (1A) with 1 Boon against the target (it counts toward At-will Banes): @Use[Weapon Attack|boons:1|empowered:has(Battering Charge)|atwill:yes|label:Weapon Attack (1A, 1 Boon)]",
         { noTiers: true }
       )
     ]
@@ -193,7 +206,7 @@ export const BASIC_ACTIONS = {
     versions: [V(1, [], [I({ useW: true })], [I({ useW: true })], "")]
   },
   relocate: {
-    frequency: "round",
+    frequency: "atwill",   // v0.0.224 (Lucas, playtest 3)
     name: "Relocate",
     img: "icons/svg/up.svg",
     traits: ["strike", "handle", "body", "instinct"],
@@ -269,6 +282,7 @@ const BASIC_FLAVOR = {
  "Regrip": "You shift your hands on the grip, and the weapon sits where you want it.",
  "Evade": "You slip through the fray without giving anyone an opening.",
  "Stand": "You get your feet back under you.",
+ "Break Free": "You tear loose from whatever holds you.",
  "Leaning": "You lean out from cover, just enough to see.",
  "Interact": "You pull the lever, open the door, grab what you need.",
  "Reload": "You work the mechanism and seat a fresh bolt."

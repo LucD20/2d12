@@ -548,6 +548,11 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const aps = (it.versions ?? []).map(v => Number(v.ap) || 0);
     // On the row only Unloaded; what effects change shows on the card when the row is opened (v0.0.132).
     const chips = out ? [{ text: "Unloaded", cls: "down", why: `${out.name} must be reloaded first (Reload, 1 AP)` }] : [];
+    // v0.0.224 (Lucas, playtest 3): three limits, three looks: a used Frequency greys the row; too few AP dims its cost and dice; 3 Strikes made
+    // this turn put a red diamond before its name.
+    const cbt = game.combat?.started ? combatantOf(a, game.combat) : null, apNow = cbt ? getAP(cbt) : null;
+    const minCost = Math.min(...(it.versions ?? []).map(v => Number(v.ap) || 0), 99);
+    const noAp = apNow !== null && minCost < 99 && minCost > apNow, strikeCap = !!f.strikeCap;
     // v0.0.182: a granted use waiting (Double Shot's Weapon Attacks): the use button turns blue and uses it.
     const g = activeGrants(a, i)[0];
     // v0.0.208 (W): a [Weapon] Action that picks its weapon gets a button per hand (2H, or M and O); one weapon that fits: its name on the tooltip.
@@ -566,6 +571,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       range: ((r => (/^\d+$/.test(r) ? `${r} sq.` : r))((areaText(it) || distanceText(it, weapon) || "\u2014"))),
       escText: Number(it.escalation) > 0 ? `${Number(it.escalation)} Esc.` : "", chips,
       faded: f.faded || !!out, fadedWhy: out ? `Unloaded: ${out.name} must be reloaded first` : (f.faded ? f.why : ""), unloaded: !!out,
+      noAp, noApWhy: noAp ? `Not enough AP: it costs ${minCost}, ${apNow} left` : "", strikeCap, strikeWhy: strikeCap ? "3 Strikes made this turn: no more Strikes until the next turn" : "",
       open: !!this._open?.has(i.id), minAp: aps.length ? Math.min(...aps) : 0, source: this._groupOf(i),
       strike: !!(it.traits?.has?.("strike") ?? (Array.isArray(it.traits) && it.traits.includes("strike"))),   // v0.0.165: a red line at the start of the row
       search: [i.name, ...[...(it.traits ?? [])].map(t => TWOD12.traits[t] ?? t)].join(" ").toLowerCase()
@@ -1086,7 +1092,8 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         { name: "Remove from favorites", icon: '<i class="fa-solid fa-star"></i>', condition: li => isFav(li), callback: li => CharacterSheet.toggleFav.call(this, null, li) },
         { name: "Send to chat", icon: '<i class="fa-solid fa-comment"></i>', callback: li => { const i = item(li); if (i) sendItemToChat(i, this.actor); } },
         { name: "Edit", icon: '<i class="fa-solid fa-pen"></i>', callback: li => item(li)?.sheet.render(true) },
-        { name: "Remove", icon: '<i class="fa-solid fa-trash"></i>', condition: li => !!item(li)?.getFlag("twod12", "basic"), callback: async li => { const i = item(li); if (i) await i.delete(); } }
+        // v0.0.224 (Lucas: no way to delete a custom Action): Remove for every Action, with a confirmation (it was offered only on Basic Actions).
+        { name: "Remove", icon: '<i class="fa-solid fa-trash"></i>', callback: async li => { const i = item(li); if (i && await DialogV2.confirm({ window: { title: `Remove ${i.name}` }, content: `<p>Remove <b>${esc(i.name)}</b> from ${esc(this.actor.name)}?</p>${i.getFlag("twod12", "basic") ? "<p>A Basic Action comes back with Update Basic Actions.</p>" : ""}`, rejectClose: false })) await i.delete(); } }
       ], { jQuery: false, fixed: true });
       new CM(this.element, ".arow", [
         { name: "Favorite", icon: '<i class="fa-regular fa-star"></i>', condition: li => !isFav(li), callback: li => CharacterSheet.toggleFav.call(this, null, li) },

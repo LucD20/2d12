@@ -180,7 +180,7 @@ const localPos = ev => (ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) 
 
 /** Interactive placement: move to preview, left-click to place, right-click or Escape to cancel. */
 /** Minimize every open window (character sheets, item sheets, dialogs) while an area is placed on the map; returns what brings them back. */
-async function stepAside() {
+export async function stepAside() {
   const done = [];
   try {
     for (const a of foundry.applications?.instances?.values?.() ?? []) if (a.rendered && a.hasFrame && !a.minimized && a.options?.window?.minimizable !== false) { await a.minimize?.(); done.push(a); }

@@ -5,4 +5,4 @@ Critical chance: +0 3.0% | +2 4.5% | +3 5.0% (simulation: 3.0 / 4.5 / 5.0)  | ti
 Unconscious Doom: plain true | Dying Body Check false | Dying Mind Save true | Shattered Mind Check false | awake false
 from-trait Save bonus: Save from a Divine Action true | from a non-divine Action false | a roll with no source false | setting without from true
 Self Action (Reload), paladin selected: paladin | Self + skeleton selected: skel | Lay On Hands on ally, paladin selected: ally | ally selected: ally | |traits:self on a non-Self card: paladin
-Charge: move,self | targets: "" | @Move[charge|distance:speed+2*has(Battering Charge)|min:3|uncapped:yes|label:Charge]
+Charge: move,strike | targets: "One creature" | @Move[charge|distance:speed+2*has(Battering Charge)|min:3|uncapped:yes|label:Charge]

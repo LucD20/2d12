@@ -4,6 +4,7 @@ import { tokenDistance, lightAt, seenLight, regionHasPoint, verticalSquares, wit
 // and Pushed and Pulled with collision: @Move[pushed|distance:N] (@Move[pulled|distance:N]) lets the clicking player drag the target away from (toward) the origin.
 import { esc } from "./roll.mjs";
 import { sysCard, sysLine, apText } from "./sysmsg.mjs";
+import { logMove, logPush, voidLastAction } from "./enclog.mjs";   // v0.0.223: the Encounter Log
 import { tokenCells, fillCells, outlineCells, cellCenter, cellAt, emanationCells } from "./template.mjs";
 import { TWOD12 } from "./config.mjs";
 import { applyToActor } from "./damage.mjs";
@@ -208,13 +209,14 @@ export function immobilizedDc(actor) {
 /* Movement tracking                                                   */
 /* ------------------------------------------------------------------ */
 /** Charge a move of `cost` squares: free movement first, then Walk allotments (1 AP each, they can be split). */
-export async function chargeMovement(c, cost, dest = null, { par = 0 } = {}) {
+export async function chargeMovement(c, cost, dest = null, { par = 0, logMode = "" } = {}) {
   const walk = num(c.actor?.system?.moveSpeed ?? c.actor?.system?.speed);
   let evade = num(c.getFlag(F, "evadeMove")), free = num(c.getFlag(F, "freeMove")), left = num(c.getFlag(F, "moveLeft"));
   let need = cost;
   // v0.0.182: an Evade goes on square by square (its area stays shown) until the creature uses another Action or ends the movement:
   // it can't be split around other Actions (spendAP in combat.mjs clears what is left), but one Evade can take several drags.
   const useEvade = Math.min(evade, need); need -= useEvade; evade -= useEvade;
+  try { logMove(c.token?.object ?? c.actor, logMode || (useEvade ? "Evade" : "Advance"), cost); } catch (e) { /* no log */ }   // v0.0.223: the Encounter Log
   const useFree = Math.min(free, need); free -= useFree; need -= useFree;
   let spent = 0;
   if (need > 0) {
@@ -233,7 +235,7 @@ export async function chargeMovement(c, cost, dest = null, { par = 0 } = {}) {
   // v0.0.196 (Lucas): while the movement banner is up it says what is left, so the drags post nothing; a drag that spends AP (moving the
   // token without using Advance first) is an Advance: it opens the banner, and its Speed left counts there.
   if (spent && !useEvade && walk > 0) { if (bannerOn(c) && moveBar && !moveBar.logged()) moveBar.add(walk * spent, spent); else moveBanner(c, "walk", walk * spent, "Advance", { drag: true, ap: spent }); }
-  else if (!spent && !bannerOn(c)) await post(`<b>${esc(c.name)}</b>: ${what}${left > 0 ? `, ${Math.round(left * 100) / 100} sq of Speed left` : ""}${free + evade > 0 ? `. ${free + evade} sq left ${endBtn(c)}` : ""}`);
+  else if (!spent && !bannerOn(c) && logMode !== "Charge") await post(`<b>${esc(c.name)}</b>: ${what}${left > 0 ? `, ${Math.round(left * 100) / 100} sq of Speed left` : ""}${free + evade > 0 ? `. ${free + evade} sq left ${endBtn(c)}` : ""}`);
   if (spent && ap < spent) warn(`${c.name} did not have enough AP for that movement.`);
 }
 
@@ -259,6 +261,8 @@ export function moverToken(ctx, cfg = {}) {
   const self = (cfg.traits ?? []).includes("self") || !!f?.self;
   // Self: the creature that used the Action (the selected token). Otherwise: the target of the Action (the ally of a Lay On Hands).
   if (self) return ctx?.token ?? (selected.length === 1 ? selected[0] : tokenOf(contextActor(ctx)));
+  // v0.0.226 (Lucas: Rolling Shot's Evade moved the targeted ally): an Evade and a Charge are always made by the creature that used the Action.
+  if (["evade", "charge"].includes(cfg.kind)) return ctx?.token ?? tokenOf(contextActor(ctx)) ?? (selected.length === 1 ? selected[0] : null);
   // Advance, Evade and Charge are made willingly: an enemy target never moves because of an Action used on it (that is Forced Movement), so the creature that used the Action moves, or an ally that is a target (a buff).
   if (["advance", "evade", "charge"].includes(cfg.kind)) {
     const user = ctx?.token ?? tokenOf(contextActor(ctx)) ?? (selected.length === 1 ? selected[0] : null);   // the creature that used the Action
@@ -435,7 +439,7 @@ async function looseMove(token, n, kind, cfg) {
   const sq = `${n} square${n === 1 ? "" : "s"}`;
   const what = kind === "evade" ? `Evade up to ${sq}: no reactions, and not into or through Difficult Terrain`
     : kind === "charge" ? `Charge in a straight line, at least ${cfg.min || 3} and up to ${sq}, not through Difficult Terrain` : `Advance up to ${sq}`;
-  showRange({ token: { object: token } }, n);
+  showRange({ token: { object: token }, kind }, n);   // v0.0.224: kind, for the Evade area (no Difficult Terrain)
   looseId = token.document?.id ?? token.id;
   await post(`<b>${esc(token.name)}</b> can ${what}. Outside combat the movement is not tracked. <button type="button" class="endmove" data-twod12="clearMove"><i class="fa-solid fa-eraser"></i> Clear</button>`);
 }
@@ -463,9 +467,12 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
   if (kind === "charge") {
     // v0.0.219 (Lucas): giving up a Charge before it moves refunds the AP its Action cost (from its card).
     const f = ctx?.message?.getFlag?.(F, "action");
-    await c.setFlag(F, "charge", { min: cfg.min || 3, max: n, refund: Math.max(0, num(f?.apPaid ?? f?.ap)), itemId: f?.itemId ?? "", actorUuid: f?.actorUuid ?? "" });
+    // v0.0.224 (Lucas, playtest 3): a Charge targets a creature (the card's target, else the one targeted now): its line goes toward it.
+    const tUuid = f?.targets?.[0]?.uuid ?? "", targetId = String(tUuid).split(".").pop() || ([...game.user.targets].find(t => t.id !== token?.id)?.id ?? "");
+    await c.setFlag(F, "charge", { min: cfg.min || 3, max: n, refund: Math.max(0, num(f?.apPaid ?? f?.ap)), itemId: f?.itemId ?? "", actorUuid: f?.actorUuid ?? "", targetId });
   }
   const sq = `${n} square${n === 1 ? "" : "s"}`;
+  if (cfg.quiet && kind !== "charge") { showRange(c, n); return true; }   // v0.0.224: a Setup's movement (its bar says it), no chat line
   // v0.0.195 (Lucas): from a movement-only Action, the banner instead of a chat line; one short line is posted when the movement ends.
   if (cfg.banner && kind !== "charge") { showRange(c, n); moveBanner(c, kind, n, cfg.banner, { ap: cfg.bannerAp ?? 0 }); return true; }
   if (kind === "charge") {
@@ -473,13 +480,48 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
     if (!openChargePicker(c, token)) { await post(`<b>${esc(c.name)}</b> can Charge: in a straight line, at least ${cfg.min || 3} and up to ${sq}. ${endBtn(c)}`); showRange(c, n); }
     return true;
   }
-  await post(
-    kind === "evade"
-      ? `<b>${esc(c.name)}</b> can Evade up to ${sq} (in one or more drags, until another Action): no reactions are triggered, and ${cfg.ignoreTerrain ? "it can move through the space of any creature (it can't end in one) and ignores Difficult Terrain" : "it can't enter or pass through Difficult Terrain"}. ${endBtn(c)} <button type="button" class="endmove" data-twod12="evadeAdvance" data-combatant="${c.id}"><i class="fa-solid fa-person-running"></i> Advance instead</button>`
-      : `<b>${esc(c.name)}</b> can Advance up to ${sq} without spending AP. ${endBtn(c)}`
-  );
+  // v0.0.225 (Lucas: "End movement" and "Advance instead" were still chat buttons): a bottom bar, as a Setup's movement (Cut Through).
+  const what = kind === "evade"
+    ? `Evade up to ${sq}: no reactions; ${cfg.ignoreTerrain ? "through any creature's space (not ending in one), ignoring Difficult Terrain" : "not into or through Difficult Terrain"}. Drag your token.`
+    : `Advance up to ${sq} without spending AP. Drag your token.`;
+  freeMoveBar(c, kind, what);
   showRange(c, n);
   return true;   // granted: the area is on the map
+}
+
+/** v0.0.225: the bar of free movement granted by a card (an Evade or an Advance inside an Action): End movement, and Advance instead for an Evade.
+ *  It goes away when the squares are used up or dropped, or the turn changes. */
+let freeBar = null;
+function freeMoveBar(c, kind, text) {
+  if (typeof document === "undefined") return;   // the tests
+  freeBar?.remove();
+  const bar = document.createElement("div");
+  bar.className = "twod12-linebar twod12-setupbar twod12-freebar";
+  bar.innerHTML = `<i class="fa-solid ${kind === "evade" ? "fa-wind" : "fa-person-running"} lb-ic"></i><span class="lb-text"><b>${esc(c.name)}</b>: ${esc(text)}</span>${kind === "evade" ? '<button type="button" class="lb-go lb-adv"><i class="fa-solid fa-person-running"></i> Advance instead</button>' : ""}<button type="button" class="lb-give lb-end">End movement</button>`;
+  document.body.append(bar);
+  const turn = `${game.combat?.round}:${game.combat?.turn}`;
+  const close = () => { bar.remove(); if (freeBar === bar) freeBar = null; Hooks.off("updateCombatant", watch); Hooks.off("updateCombat", watchTurn); };
+  const watch = cb => { if (cb.id !== c.id) return; if (num(cb.getFlag(F, "freeMove")) + num(cb.getFlag(F, "evadeMove")) <= 0) close(); };
+  const watchTurn = cb => { if (`${cb.round}:${cb.turn}` !== turn) close(); };
+  Hooks.on("updateCombatant", watch); Hooks.on("updateCombat", watchTurn);
+  bar.querySelector(".lb-end").addEventListener("click", ev => { ev.preventDefault(); close(); endMovement(c.id).catch(() => {}); });
+  // v0.0.226 (Lucas): after Advance instead, Evade instead turns it back (only for a movement that was an Evade).
+  const swap = toAdvance => {
+    const b = bar.querySelector(".lb-adv"), t = bar.querySelector(".lb-text");
+    if (toAdvance) {
+      bar.dataset.evadeN = String(num(game.combat?.combatants.get(c.id)?.getFlag(F, "evadeMove")));
+      evadeAsAdvance(c.id).catch(() => {});
+      if (b) b.innerHTML = '<i class="fa-solid fa-wind"></i> Evade instead';
+      if (t) t.innerHTML = `<b>${esc(c.name)}</b>: the movement is an Advance now (it triggers reactions). Drag your token.`;
+    } else {
+      advanceAsEvade(c.id, num(bar.dataset.evadeN)).catch(() => {});
+      if (b) b.innerHTML = '<i class="fa-solid fa-person-running"></i> Advance instead';
+      if (t) t.innerHTML = `<b>${esc(c.name)}</b>: ${esc(text)}`;
+    }
+    bar.dataset.mode = toAdvance ? "advance" : "evade";
+  };
+  bar.querySelector(".lb-adv")?.addEventListener("click", ev => { ev.preventDefault(); swap(bar.dataset.mode !== "advance"); });
+  freeBar = bar;
 }
 
 /** The Evade becomes an Advance: it can then be used on a move that does trigger reactions (or by a creature that can not Evade). */
@@ -490,6 +532,16 @@ export async function evadeAsAdvance(combatantId, { quiet = false } = {}) {
   if (!n) return warn("There is no Evade movement left.");
   await c.update({ [`flags.${F}.evadeMove`]: 0, [`flags.${F}.freeMove`]: num(c.getFlag(F, "freeMove")) + n, [`flags.${F}.-=ignoreTerrain`]: null });
   if (!quiet) await post(`<b>${esc(c.name)}</b> uses the movement as an Advance of up to ${n} square${n === 1 ? "" : "s"} instead of an Evade.`);
+  showRange(c, n);
+}
+
+/** v0.0.226: an Evade turned into an Advance goes back to an Evade (the free squares left, up to what the Evade was). */
+export async function advanceAsEvade(combatantId, max = 0) {
+  const c = game.combat?.combatants.get(combatantId);
+  if (!c?.isOwner) return warn("Only the owner can change this movement.");
+  const free = num(c.getFlag(F, "freeMove")), n = max > 0 ? Math.min(free, max) : free;
+  if (!n) return warn("There is no movement left to Evade with.");
+  await c.update({ [`flags.${F}.evadeMove`]: num(c.getFlag(F, "evadeMove")) + n, [`flags.${F}.freeMove`]: free - n, [`flags.${F}.diagPar`]: 0 });
   showRange(c, n);
 }
 
@@ -585,6 +637,7 @@ export async function endMovement(combatantId) {
       let from = null; try { from = charging.actorUuid ? await fromUuid(charging.actorUuid) : null; } catch (e) { /* gone */ }
       for (const a of new Set([from, c.actor].filter(Boolean))) { const it = charging.itemId ? a.items?.get(charging.itemId) : null; if (it) await unmarkUsed(a, it); }
     } catch (e) { console.warn("twod12 | Charge given up: its use", e); }
+    try { voidLastAction(c.token?.object ?? c.actor, c.actor?.items?.get(charging.itemId)?.name ?? "Charge", "Charge given up"); } catch (e) { /* no log */ }   // v0.0.223
     return postCard("Charge", `${esc(c.name)} gives up the Charge`, back > 0 ? `${apText(back)} back. The Charge can be used again this round.` : "Nothing was spent.", "chargemsg");
   }
   await post(left > 0 ? `<b>${esc(c.name)}</b> ends the movement. ${left} free square${left === 1 ? "" : "s"} unused.` : `<b>${esc(c.name)}</b> has no free movement left.`);
@@ -897,6 +950,7 @@ async function pushOne(origin, target, N0, mode = "push", opts = {}) {
     }
   }
   await ChatMessage.create({ content: sysLine("fa-hand", lines.join(" "), "pushmsg") });
+  try { logPush(origin, target, mode === "reposition" ? "Repositioned" : label, result.done, result.block ? (result.block.type === "wall" ? "hits a wall" : result.block.type === "loe" ? "stops" : `hits ${result.block.token?.name ?? "a creature"}`) : ""); } catch (e) { /* no log */ }
 }
 
 async function pushFlow(cfg, ctx, mode = "push") {
@@ -1170,7 +1224,7 @@ export function diagonalsOn(points, offsetOf = p => canvas.grid.getOffset(p)) {
 }
 
 /** Squares within N of the token (every second diagonal costs 2), not through walls. */
-export function reachableCells(cells, n, blocked = () => false, par0 = 0) {
+export function reachableCells(cells, n, blocked = () => false, par0 = 0, enterCost = () => 0) {
   const best = new Map(), key = (i, j) => `${i},${j}`;
   const queue = [];
   for (const c of cells) { best.set(`${key(c.i, c.j)}|${par0}`, 0); queue.push({ i: c.i, j: c.j, cost: 0, par: par0 ? 1 : 0 }); }   // par0 1: the next diagonal costs 2 (v0.0.183)
@@ -1187,9 +1241,12 @@ export function reachableCells(cells, n, blocked = () => false, par0 = 0) {
       if (nc > n) continue;
       const ni = cur.i + a, nj = cur.j + b;
       if (blocked({ i: cur.i, j: cur.j }, { i: ni, j: nj })) continue;
+      // v0.0.224 (Lucas: the area ignored Darkness): entering a square can cost more (Difficult Terrain: +1) or be impossible (Infinity: an Evade).
+      const more = enterCost({ i: ni, j: nj }), tc = nc + (Number.isFinite(more) ? more : Infinity);
+      if (tc > n) continue;
       const nk = `${key(ni, nj)}|${diag ? 1 - cur.par : cur.par}`;
-      if (seen.has(nk) && seen.get(nk) <= nc) continue;
-      queue.push({ i: ni, j: nj, cost: nc, par: diag ? 1 - cur.par : cur.par });
+      if (seen.has(nk) && seen.get(nk) <= tc) continue;
+      queue.push({ i: ni, j: nj, cost: tc, par: diag ? 1 - cur.par : cur.par });
     }
   }
   const out = new Map();
@@ -1208,7 +1265,27 @@ export function showRange(c, squares, dest = null, par = 0) {
     const cells = [];
     for (let i = 0; i < h; i++) for (let j = 0; j < w; j++) cells.push({ i: o.i + i, j: o.j + j });
     const pt = ({ i, j }) => cellCenter(i, j);
-    const area = reachableCells(cells, squares, (a, b) => wallBetween(pt(a), pt(b)), par);
+    // v0.0.224: Difficult Terrain for this creature (Darkness it can't see in, a Difficult Terrain area, an unwilling creature's space): an Advance
+    // pays 1 more to enter it, an Evade can't enter it (unless it ignores terrain, Cut Through).
+    const evading = num(c.getFlag?.(F, "evadeMove")) > 0 || c.kind === "evade", ignoring = !!c.getFlag?.(F, "ignoreTerrain");
+    const senses = tok.actor?.system?.senses ?? {}, memo = new Map();
+    let regions = [];
+    try { regions = (canvas.regions?.placeables ?? []).filter(r => r.document.behaviors?.some(x => ["difficultTerrain", "modifyMovementCost"].includes(x.type) && !x.disabled)); } catch (e) { /* none */ }
+    const own = new Set(cells.map(x => `${x.i},${x.j}`));
+    const difficult = cell => {
+      const k = `${cell.i},${cell.j}`;
+      if (memo.has(k)) return memo.get(k);
+      let d = false;
+      try {
+        const p = pt(cell);
+        d = seenLight(lightAt(p), senses) === "dark" || regions.some(r => regionHasPoint(r.document, p, tok.document.elevation ?? 0))
+          || (!own.has(k) && !!(() => { const o = creatureIn(cell, [tok.id]); return o && (o.document.disposition ?? 0) !== (tok.document.disposition ?? 0); })());
+      } catch (e) { d = false; }
+      memo.set(k, d);
+      return d;
+    };
+    const enterCost = cell => (ignoring ? 0 : difficult(cell) ? (evading ? Infinity : 1) : 0);
+    const area = reachableCells(cells, squares, (a, b) => wallBetween(pt(a), pt(b)), par, enterCost);
     rangeGfx = new PIXI.Graphics();
     (canvas.interface ?? canvas.stage).addChild(rangeGfx);
     fillCells(rangeGfx, area, 0x66ccff, 0.2);
@@ -1283,6 +1360,13 @@ export function openChargePicker(c, token) {
   bar.innerHTML = `<i class="fa-solid fa-person-running-fast lb-ic"></i><span class="lb-text"></span><span class="lb-side"><span class="lb-lbl" data-tooltip="Where the line passes exactly between two squares, every tie takes this side (seen from you toward the destination). Tab switches.">Ties</span><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><kbd>Tab</kbd></span><button type="button" class="lb-give" data-tooltip="Give up the Charge: it is taken back, and its AP are refunded">Give up</button>`;
   document.body.append(bar);
   const text = () => {
+    if (cur?.target) {
+      const r = cur.path, who = cur.inReach.some(t => t.id === target.id);
+      if (cur.tooFar) return `${target.name} is out of reach: a Charge goes up to ${ch.max} squares. Give up, or click to Charge anyway (it would be disrupted).`;
+      if (r.bad < 0 && r.sq + 1e-6 < ch.min) return `Too close: a Charge moves at least ${ch.min} squares (${target.name} is in Reach after ${r.sq}).`;
+      if (r.bad >= 0) return `${r.problem}: the Charge stops after ${cur.stopSq} squares${who ? "" : `, ${target.name} not in Reach: it would be disrupted`}. ${armed === cur.key ? "Click again to Charge anyway." : "Click to choose it, then again to confirm."}`;
+      return `Charge ${r.sq} squares toward ${target.name}: in Reach at the end. Click to Charge.`;
+    }
     if (!cur) return `Charge: at least ${ch.min}, up to ${ch.max} squares (the gold outline). Click the destination.`;
     const r = cur.path, last = r.bad >= 0 ? r.cells[r.bad - 1] : r.cells.at(-1);
     if (r.cells.length < 2) return "Click a square outside your space.";
@@ -1294,7 +1378,29 @@ export function openChargePicker(c, token) {
     return `Charge ${r.sq} squares to ${sqName(last)}: ${end}. Click to Charge.`;
   };
   const sqName = cell => `${String.fromCharCode(65 + ((cell.j % 26) + 26) % 26)}${cell.i + 1}`;
+  // v0.0.224 (Lucas, playtest 3): with a target, the line goes toward it (to the square of its space nearest to you) and stops on the first
+  // square from which it is within Reach; the mouse only confirms. A blocked line stops earlier (a second click confirms it).
+  const target = ch.targetId ? canvas.tokens?.get?.(ch.targetId) : null;
+  const tl0 = cell => canvas.grid.getTopLeftPoint({ i: cell.i, j: cell.j });
+  const virtAt = cell => { const t = tl0(cell); return { id: doc.id, document: { id: doc.id, x: t.x, y: t.y, width: doc.width, height: doc.height, elevation: doc.elevation, disposition: doc.disposition } }; };
+  const computeTarget = () => {
+    const tc = tokenCells(target).reduce((best, x) => { const d = Math.max(Math.abs(x.i - a.i), Math.abs(x.j - a.j)); return !best || d < best.d ? { ...x, d } : best; }, null);
+    const full = chargePath(doc, a, { i: tc.i, j: tc.j }, side);
+    let reachAt = -1;
+    for (let n = 1; n < full.cells.length; n++) { if (tokenDistance(virtAt(full.cells[n]), target) <= reach) { reachAt = n; break; } }
+    const blockedFirst = full.bad >= 0 && (reachAt < 0 || full.bad <= reachAt);
+    let end = blockedFirst ? full.bad : (reachAt >= 0 ? reachAt : full.cells.length - 1), tooFar = false;
+    // Beyond its maximum (Speed): it goes as far as it can and the target is not in Reach (disrupted).
+    const lim = blockedFirst ? end - 1 : end;
+    if (measureSquares(tl0(a), tl0(full.cells[lim])) > ch.max + 1e-6) { let n = lim; while (n > 0 && measureSquares(tl0(a), tl0(full.cells[n])) > ch.max + 1e-6) n--; end = n; tooFar = true; }
+    const blocked = blockedFirst && !tooFar;
+    const cells = full.cells.slice(0, end + 1);
+    const stop = blocked ? cells[end - 1] : cells[end], stopTl = tl0(stop), stopSq = measureSquares(tl0(a), stopTl);
+    const path = { cells, ties: full.ties, bad: blocked ? end : -1, problem: blocked ? full.problem : "", sq: stopSq, tl: tl0 };
+    return { key: `T|${side}`, path, stop, stopTl, stopSq, inReach: creaturesInReach(virtAt(stop), reach), target: true, reachAt, tooFar };
+  };
   const compute = p => {
+    if (target) return computeTarget();
     // v0.0.221: a larger creature aims with the center of its space (the space is centered on the mouse), not its top-left square.
     const gs = canvas.grid.size, b = cellAt({ x: p.x - ((Math.max(1, Math.round(doc.width ?? 1)) - 1) * gs) / 2, y: p.y - ((Math.max(1, Math.round(doc.height ?? 1)) - 1) * gs) / 2 });
     const path = chargePath(doc, a, b, side);
@@ -1312,7 +1418,7 @@ export function openChargePicker(c, token) {
     sb.hidden = false; sb.style.visibility = tie ? "visible" : "hidden";
     sb.querySelectorAll("button").forEach(x => x.classList.toggle("on", x.dataset.side === side));
     if (!cur) return;
-    const r = cur.path, okLen = r.sq + 1e-6 >= ch.min && r.sq <= ch.max + 1e-6;
+    const r = cur.path, okLen = cur.target ? (r.bad >= 0 || cur.tooFar || r.sq + 1e-6 >= ch.min) : r.sq + 1e-6 >= ch.min && r.sq <= ch.max + 1e-6;
     const legal = r.bad >= 0 ? r.cells.slice(1, r.bad) : r.cells.slice(1), illegal = r.bad >= 0 ? r.cells.slice(r.bad) : [];
     const foot = c => { const out = []; for (let di = 0; di < Math.max(1, Math.round(doc.height)); di++) for (let dj = 0; dj < Math.max(1, Math.round(doc.width)); dj++) out.push({ i: c.i + di, j: c.j + dj }); return out; };
     if (!okLen) { fillCells(gfx, r.cells.slice(1).flatMap(foot), 0xe07a6a, 0.45); return; }
@@ -1321,7 +1427,7 @@ export function openChargePicker(c, token) {
     fillCells(gfx, illegal.flatMap(foot), 0xe07a6a, 0.5);                 // red: not legal
     if (legal.length) outlineCells(gfx, foot(legal.at(-1)), { color: 0xd8ffe6 });
   };
-  const flip = () => { side = side === "left" ? "right" : "left"; armed = ""; if (pos) cur = compute(pos); draw(); };
+  const flip = () => { side = side === "left" ? "right" : "left"; armed = ""; if (target) cur = computeTarget(); else if (pos) cur = compute(pos); draw(); };
   bar.querySelectorAll(".lb-side button").forEach(b => b.addEventListener("click", ev => { ev.preventDefault(); ev.stopPropagation(); if (b.dataset.side !== side) flip(); }));
   bar.querySelector(".lb-give").addEventListener("click", ev => { ev.preventDefault(); close(true); });
   const local = ev => (ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) : ev.data.getLocalPosition(canvas.stage));
@@ -1331,8 +1437,13 @@ export function openChargePicker(c, token) {
     if (ev.button !== 0) return;
     pos = local(ev); cur = compute(pos);
     const r = cur.path;
-    if (r.cells.length < 2 || r.sq + 1e-6 < ch.min || r.sq > ch.max + 1e-6) { draw(); return; }
-    if (r.bad >= 0 && armed !== cur.key) { armed = cur.key; draw(); return; }   // a blocked line: a second click confirms
+    if (cur.target) {
+      if (r.cells.length < 2 || (r.bad < 0 && !cur.tooFar && r.sq + 1e-6 < ch.min)) { draw(); return; }
+      if ((r.bad >= 0 || cur.tooFar) && armed !== cur.key) { armed = cur.key; draw(); return; }
+    } else {
+      if (r.cells.length < 2 || r.sq + 1e-6 < ch.min || r.sq > ch.max + 1e-6) { draw(); return; }
+      if (r.bad >= 0 && armed !== cur.key) { armed = cur.key; draw(); return; }   // a blocked line: a second click confirms
+    }
     const go = cur;
     close(false);
     await runCharge(c, doc, go, reach);
@@ -1354,6 +1465,7 @@ export function openChargePicker(c, token) {
   canvas.stage.on("pointerdown", down);
   window.addEventListener("keydown", key_, true);
   chargePick = { c, close };
+  if (target) { cur = computeTarget(); }
   draw();
   return true;
 }
@@ -1367,7 +1479,7 @@ async function runCharge(c, doc, go, reach) {
   if (r.bad >= 0) await postCard("Charge", `${esc(c.name)}'s Charge stops early`, `${esc(r.problem[0].toUpperCase() + r.problem.slice(1))}: it ends on the last legal square (${go.stopSq} squares).`, "chargemsg");
   await moveThrough(doc, points);
   // The Charge is one movement: its free squares are spent (the rest is dropped).
-  await chargeMovement(c, go.stopSq, null);
+  await chargeMovement(c, go.stopSq, null, { logMode: "Charge" });
   await c.update({ [`flags.${F}.freeMove`]: 0 });
   clearRange();
   chargeFollowUp(c, doc, reach, go.stopTl);

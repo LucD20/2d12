@@ -148,7 +148,7 @@ export const TWOD12 = {
   basicGroups: [
     { key: "attack", label: "Attack", names: ["Weapon Attack", "Fists", "Charge", "Reload"] },
     { key: "control", label: "Control", names: ["Shove", "Haul", "Relocate", "Trip"] },
-    { key: "movement", label: "Movement", names: ["Advance", "Evade", "Crawl", "Stand"] },
+    { key: "movement", label: "Movement", names: ["Advance", "Evade", "Crawl", "Stand", "Break Free"] },
     { key: "utility", label: "Utility", names: ["Interact", "Release", "Regrip", "Leaning", "Steel Yourself"] }
   ],
   // v0.0.189 (Lucas, after Draw Steel's Codex): how much of a card Foundry does for you, as a chip on the card. "" shows nothing.

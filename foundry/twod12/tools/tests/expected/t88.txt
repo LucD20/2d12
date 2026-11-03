@@ -14,10 +14,10 @@ Prone Evade                                                | granted: false | ar
 Immobilized Advance                                        | granted: false | areas on the map: 0 | warn: Kai is Immobilized and can't move.
 no token selected, no combat                               | granted: true | areas on the map: 1 | Kai can Advance up to 2 squares. Outside combat the movement is not tracked. Clear [Clear button]
 --- in combat
-Advance 3 in combat (setting off)                          | granted: true | areas on the map: 1 | can Advance up to 3 squares without spending AP. End movement [End movement button]
+Advance 3 in combat (setting off)                          | granted: true | areas on the map: 1 | (nothing)
 free movement granted: 3 | the area is on the map: true
 the combat ends: area gone: true (an Evade started, not moved, then the combat ended)
-Evade 2 in combat                                          | granted: true | areas on the map: 1 | can Evade up to 2 squares (in one or more drags, until another Action): no reactions are triggered, and it can't enter or pass through Difficult Terrain. End movement Advance instead [End movement button]
+Evade 2 in combat                                          | granted: true | areas on the map: 1 | (nothing)
 the combat ends again: area gone: true
 ending a combat with no area drawn is harmless
 Advance outside combat                                     | granted: true | areas on the map: 1 | Kai can Advance up to 3 squares. Outside combat the movement is not tracked. Clear [Clear button]
