@@ -162,18 +162,18 @@
    "name": "Rebuke",
    "category": "Divine Power",
    "level": 1,
-   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): the Nova Paladin's Hallmark Reaction; a Trigger, not an Interrupt (an Interrupt that could cancel an Encounter Special on a Tier 2 Save was too strong), the first Reaction with a Save, Forced Movement and Frightened.",
+   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): the Nova Paladin's Hallmark Reaction; a Trigger, not an Interrupt (an Interrupt that could cancel an Encounter Special on a Tier 2 Save was too strong), the first Reaction with a Save, Forced Movement and Frightened. Turn, within 5 squares (Lucas's option B: at Reach and Round it measured 0.1 AP a turn, the enemy next to the Paladin strikes the Paladin; within 5 squares 0.33 in damage plus the Push and Frightened).",
    "flavor": "Strike my friends, and feel why you should not have.",
    "traits": [
     "divine",
     "power",
     "save"
    ],
-   "frequency": "Round",
+   "frequency": "Turn",
    "target": "The triggering creature",
-   "distance": "Reach",
+   "distance": "5 sq.",
    "vs": "Appeal Save",
-   "trigger": "An enemy within your Reach makes a [Strike] Action against an ally.",
+   "trigger": "An enemy within 5 squares makes a [Strike] Action against an ally.",
    "versions": [
     {
      "ap": 1,

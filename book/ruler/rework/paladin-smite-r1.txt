@@ -15,7 +15,7 @@ rally 6
 targeted 1.5
 weapon Greatsword (melee, two-handed): 0 / 1d8 / 2d6
 speed 5
-reaction Rebuke: rebuke
+reaction Rebuke: rebuke 5 turn
 
 passive Radiant Zeal
 passive Searing Blows

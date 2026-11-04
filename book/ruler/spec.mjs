@@ -223,9 +223,9 @@ export function parseSpec(text, file = "spec") {
       else if (key === "overcast-floor") b.overcastFloor = Number(rest);   // once a fight, an Action that costs up to N Escalation costs N less (the round-1 floor)
       else if (key === "health-factor") b.healthFactor = Number(rest);   // the level factor of Health (the book: (level + 10) / 10)
       else if (key === "reaction") {   // reaction Opportunity Attack: opportunity  ·  reaction Quick Draw: quick-draw  (the map model uses them)
-        const m = rest.match(/^(.+?):\s*(opportunity|quick-draw|overwatch|callshot|ready|rebuke(?:\s+\d+)?|block\s+\S+(?:\s+(?:spill|round|ally))*)(?:\s+with\s+(.+))?$/i); if (!m) fail("write reaction like: Opportunity Attack: opportunity (or quick-draw; or block 1d8+[Mod]: a Reaction that takes that much off one NPC hit on you or an ally within 5 squares)");
+        const m = rest.match(/^(.+?):\s*(opportunity|quick-draw|overwatch|callshot|ready|rebuke(?:\s+\d+)?(?:\s+turn)?|block\s+\S+(?:\s+(?:spill|round|ally))*)(?:\s+with\s+(.+))?$/i); if (!m) fail("write reaction like: Opportunity Attack: opportunity (or quick-draw; or block 1d8+[Mod]: a Reaction that takes that much off one NPC hit on you or an ally within 5 squares)");
         const kind = m[2].toLowerCase().split(/\s+/)[0];
-        b.reactions.push({ name: m[1].trim(), kind, action: (m[3] ?? "Weapon Attack").trim(), ...(kind === "block" ? { dmg: parseDamage(m[2].split(/\s+/)[1]), spill: /\sspill\b/i.test(m[2]), round: /\sround\b/i.test(m[2]), ally: /\sally\b/i.test(m[2]) } : {}), ...(kind === "rebuke" ? { range: Number(m[2].split(/\s+/)[1] ?? 0) } : {}) });   // spill: what the hit doesn't use becomes Guard on the target
+        b.reactions.push({ name: m[1].trim(), kind, action: (m[3] ?? "Weapon Attack").trim(), ...(kind === "block" ? { dmg: parseDamage(m[2].split(/\s+/)[1]), spill: /\sspill\b/i.test(m[2]), round: /\sround\b/i.test(m[2]), ally: /\sally\b/i.test(m[2]) } : {}), ...(kind === "rebuke" ? { range: Number(m[2].split(/\s+/)[1] ?? 0), turn: /\bturn\b/i.test(m[2]) } : {}) });   // spill: what the hit doesn't use becomes Guard on the target
       }
       else if (key === "action") {
         const f = rest.split("|").map(s => s.trim());
@@ -667,8 +667,8 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     // Pack R prep: an "overwatch" Reaction (a Trigger: an enemy within 10 squares makes a Strike; once per NPC turn), after the Strike.
     for (const p of up()) for (const rx of p.build.reactions ?? []) if (rx.kind === "overwatch" && p.keptAP >= 1 && !p.cond?.staggered && p.owFor !== f.turnId && !f.dead && (!M || MP.dist(p.pos, f.pos) <= 10)) { p.owFor = f.turnId; spendReact(p); p.st.oaMade++; pcReact(p, f, rx.action); }
     // Pack R-classes, part 3: Rebuke (1R, Round, Trigger: an enemy within your Reach makes a Strike against an ally): an Appeal Save against 11 + [PMod]; Tier 1 [R] 1d8 Ho, Pushed 2, Frightened (EoT); Tier 2 [R] 1d6 Ho, Pushed 1.
-    for (const p of up()) for (const rx of p.build.reactions ?? []) if (rx.kind === "rebuke" && p !== t && p.keptAP >= 1 && !p.cond?.staggered && p.rebukeRound !== round && !f.dead && (!M || (rx.range ? MP.dist(p.pos, f.pos) <= rx.range : MP.adj(p, f)))) {   // `rebuke 5`: within 5 squares instead of your Reach
-      p.rebukeRound = round; spendReact(p); p.st.reactions++;
+    for (const p of up()) for (const rx of p.build.reactions ?? []) if (rx.kind === "rebuke" && p !== t && p.keptAP >= 1 && !p.cond?.staggered && (rx.turn ? p.rebukeFor !== f.turnId : p.rebukeRound !== round) && !f.dead && (!M || (rx.range ? MP.dist(p.pos, f.pos) <= rx.range : MP.adj(p, f)))) {   // `rebuke 5`: within 5 squares instead of your Reach
+      p.rebukeRound = round; p.rebukeFor = f.turnId; spendReact(p); p.st.reactions++;
       const tier = pick(p.R ?? R, C.tierProbs(f.save?.appeal ?? 1, 11 + p.build.powerMod, 0, 0, ""));
       if (tier <= 2) { const v = rollDamage(p.R ?? R, parseDamage(tier === 1 ? "1d8" : "1d6")).total; f.damage += v; f.mindDamage = (f.mindDamage ?? 0) + v; p.st.dealt += v; p.st.reactionDealt += v; p.st.mindDealt += v;
         if (M) MP.force("push", p, f, tier === 1 ? 2 : 1, W); if (tier === 1) { MP.applyCondition(f, "Frightened (EoT)", p); p.st.condApplied++; } killCheck(); }
