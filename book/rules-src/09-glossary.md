@@ -96,7 +96,7 @@
 | [[Mastery\|**Mastery**]] | How well you know a kind of weapon: +1 for a Tier 3 on a Weapon Action with it (at most 1 per Weapon Group an encounter). The weapon's Mastery (3, 4 or 5) unlocks its Weapon Technique; 8 Expert, 15 Master. |
 | [[Minions\|**Minion**]] | An NPC role with CV 25, with 3 AP a turn and no Dying: at 0 Health it dies, or falls Unconscious if the GM prefers. |
 | [[Minor enemies\|**Minor enemies**]] | Minions and Grunts (CV below 100). |
-| [[Momentum\|**Momentum**]] | After an encounter harder than easy, your party starts its next encounter at Escalation 2 (until it Rests). |
+| [[Momentum\|**Momentum**]] | After an encounter harder than easy, your party starts the next encounter at Escalation 2 (a Rest before it ends Momentum). |
 | [[Rules Language\|**Move**]] | An Action with the Move trait. |
 | [[Moving and Leaving Your Square\|**Moved**]] | You moved with an Action that moves you, Evade included. Forced Movement, Reposition and Stand don't count. |
 | [[Moving Closer\|**Moves closer**]] | The distance between you is smaller after the movement; an Interrupt checks it square by square. |

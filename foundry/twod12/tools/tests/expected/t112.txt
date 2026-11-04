@@ -1,5 +1,5 @@
-documents: 148
-references: 95 | broken: none
+documents: 146
+references: 94 | broken: none
 Paladin features:  | Divine Connection kept for testing (not in the class): true | its id is the old one: vaYnV1XM6HT1TpMP
 Level 1: Attribute increases (attr: body or appeal, mind or instinct) | Core Features (items, granted): Divine Power, Font of Mercy | Hallmark Action (items, choice, pick 1): Smite, Lay On Hands | Talent (talent, pick 1) | Encounter Pick (repertoire, encounter, pick 1) | Passive Escalation Pick (items, choice, pick 1): Font of Mercy, Hallowed Stance, Radiant Zeal, Mending Light | Active Escalation Pick (items, choice, pick 1): Aura of Protection, Divine Surge, Shield of Faith, Hand of Mercy
 Level 2: Talent (talent, pick 1)
@@ -9,23 +9,23 @@ pick Features gone: true | Mind Health x4
 --- the cards
 Smite: divine,signature,strike,weapon | 1 AP 1[W] / 1[W]+1d4 Ho / 1[W]+1d6 Ho || 2 AP 1[W]+1d6 Ho / 1[W]+1d10 Ho / 1[W]+2d8 Ho || 3 AP 1[W]+1d6 Ho / 1[W]+1d10 Ho / 1[W]+2d8 Ho
 Smite 3 AP effects: As 2 AP, and you or one ally in the light gain Guard 1d8 + [Mod]. You choose who gains the Defense and who gains the Guard separately: the same creature or two different ones. @Effect[Compendium.twod12.effects.Item.G20TdfpcMVkMGcxl]{+1 Defense for 1 round} @Guard[1d8+mod]{Guard 1d8 + [Mod]}
-Lay On Hands: One willing creature | 1 AP: The target can use @Rally[1]. || 2 AP: As 1 AP, and your next [Strike] Action deals an extra [M] 0/2d8/2d8 Ho. @Rally[1] [Lay On Hands (Holy Strike)] || 3 AP: As 2 AP, but the target can use @Rally[2]. [Lay On Hands (Holy Strike)]
+Lay On Hands: One willing creature | 1 AP: The target can use @Rally[1]. || 2 AP: As 1 AP, and your next [Strike] Action deals an extra [R] 0/2d8/2d8 Ho. @Rally[1] [Lay On Hands (Holy Strike)] || 3 AP: As 2 AP, but the target can use @Rally[2]. [Lay On Hands (Holy Strike)]
 Holy Wrath: encounter | 2 AP 1[W]+2d6 Ho / 1[W]+3d8 Ho / 1[W]+4d8 Ho || 3 AP 1[W]+3d8 Ho / 1[W]+5d8 Ho / 1[W]+7d8 Ho
 Shield of Faith: turn interrupt | 0R | A [Strike] Action would damage you or an ally within 5 squares. | The damage that Strike deals to the target is reduced by 1d8 + your Power Modifier.
 Bulwark of Faith: encounter interrupt | 1R/2R | A [Strike] Action would damage an ally within 5 squares. | The target gains Guard equal to what one of their Rally Points heals, before the damage. @Guard[rally]{Guard equal to what one of their Rally Points heals} || As 1R, and the triggering creature is @Move[slid|distance:2]. @Guard[rally]{Guard equal to what one of their Rally Points heals}
 Aura of Protection: Escalation 1 encounter 0 AP -> Aura of Protection
-Divine Surge: Escalation 1 One enemy | For 1 round, the next time an ally deals damage to the target, they deal an extra [M] 1d8 Ho. You gain Guard 2d6. @Guard[2d6|self:yes]{Guard 2d6}
+Divine Surge: Escalation 1 One enemy | For 1 round, the next time an ally deals damage to the target, they deal an extra [R] 1d8 Ho. You gain Guard 2d6. @Guard[2d6|self:yes]{Guard 2d6}
 Consecrated Ground: For 3 rounds, enemies in the area take 1 Bane on [Weapon], [Power] and [Signature] Actions, and allies in it heal 1d4 at the start of each of their turns.
 --- the passives and effects
 Divine Power: ondamage Ho Profane -> Divine Power (Enfeebled) | that effect: damagestep Enfeebled 1 eot | Profane Judgment gone: true
 Font of Mercy: Paladin Feature | While your Escalation is 1 or more, when you or an ally within 5 squares of you uses a Rally Point, they heal your Power Modifier + 2 more.
-Radiant Zeal: Paladin Escalation | While your Escalation is 1 or more, the first [Strike] Action you make each round that deals damage deals an extra [M] 1d6 Ho.
-Hallowed Stance: Paladin Escalation | While your Escalation is 2 or more, if you haven't left your square since your last turn, you and your adjacent allies take less Body damage, reduced by your Power Modifier (minimum 0). This reduction applies to one instance of damage per Action; if the Action has several, the player chooses which one is reduced. (Not automated.)
+Radiant Zeal: Paladin Escalation | While your Escalation is 1 or more, the first [Strike] Action you make each round that deals damage deals an extra [R] 1d6 Ho.
+Hallowed Stance: Paladin Escalation | While your Escalation is 2 or more, if you haven't left your square since your last turn, you and your adjacent allies take less Vigor damage, reduced by your Power Modifier (minimum 0). This reduction applies to one instance of damage per Action; if the Action has several, the player chooses which one is reduced. (Not automated.)
 the Aura: aura Aura 2 allies -> Aura of Protection (+1 Defense) | lasts: until the encounter ends (an Escalation effect)
 Lay On Hands' strike: bonusdamage 2d8 M Ho t2,t3 | ends after: strike
 old cards: Vow of Enmity, Word of Radiance kept | in no level: false
 Paladin 1 (Smite, Heavy Blows): Divine Power, Font of Mercy, Smite, Heavy Blows, Holy Wrath, Radiant Zeal, Divine Surge | ids unique: true
-Paladin 3 (Lay On Hands, Protector): Divine Power, Font of Mercy, Lay On Hands, Opportunity Attack, Opportunity Attack, Word of Radiance, Mending Light, Shield of Faith, Bloodlust, Bloodlust, Miraculous Recovery, Hallowed Stance | ids unique: true
+Paladin 3 (Lay On Hands, Protector): Divine Power, Font of Mercy, Lay On Hands, Challenge, Word of Radiance, Mending Light, Shield of Faith, Bloodlust, Bloodlust, Miraculous Recovery, Hallowed Stance | ids unique: true
 Archer 1 (Double Shot, Marksman): Sharpshooter, Marked Quarry, Mark Quarry, Double Shot, Aim, Aim, Killer's Focus, Pinning Shot | ids unique: true
 Archer 3 (Rolling Shot, Kickboxer): Sharpshooter, Marked Quarry, Mark Quarry, Rolling Shot, Brawler, Pummel, Elusive, Twin Shot, Kickboxer, Leg Sweep, Volley, Rain of Arrows, Harrying Shots | ids unique: true
 Bandit Thug (grunt, speed 5): Cudgel atwill, Low Blow round

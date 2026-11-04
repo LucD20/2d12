@@ -292,10 +292,10 @@ SAMPLE = '''<div class="action" markdown="1">
 
 | | 1 AP | 2 AP | 3 AP |
 |---|---|---|---|
-| **Tier 1** | 1[W] | 1[W] + [M] 2d4 Ho | 1[W] + [M] 2d4 Ho |
-| **Tier 2** | 1[W] + [Mod] + [M] 1d4 Ho | 1[W] + [Mod] + [M] 2d6 Ho | 1[W] + [Mod] + [M] 2d6 Ho |
-| **Tier 3** | 1[W] + [Mod] + [M] 1d6 Ho | 1[W] + [Mod] + [M] 2d8 Ho | 1[W] + [Mod] + [M] 2d8 Ho |
-| **Effects** | The target sheds Bright light 1 ▣ and takes 1 bane when they try to hide, for 1 round. | The target sheds Bright light 2 ▣ and takes 1 bane when they try to hide, for 1 round. You gain 1 boon on your next Divine Action against the target. | As 2 AP, and enemies in the Bright light must make an Appeal Save: 1d6 / 1d4 / 0 [M] Holy. |
+| **Tier 1** | 1[W] | 1[W] + [R] 2d4 Ho | 1[W] + [R] 2d4 Ho |
+| **Tier 2** | 1[W] + [Mod] + [R] 1d4 Ho | 1[W] + [Mod] + [R] 2d6 Ho | 1[W] + [Mod] + [R] 2d6 Ho |
+| **Tier 3** | 1[W] + [Mod] + [R] 1d6 Ho | 1[W] + [Mod] + [R] 2d8 Ho | 1[W] + [Mod] + [R] 2d8 Ho |
+| **Effects** | The target sheds Bright light 1 ▣ and takes 1 bane when they try to hide, for 1 round. | The target sheds Bright light 2 ▣ and takes 1 bane when they try to hide, for 1 round. You gain 1 boon on your next Divine Action against the target. | As 2 AP, and enemies in the Bright light must make an Appeal Save: 1d6 / 1d4 / 0 [R] Holy. |
 
 </div>
 '''

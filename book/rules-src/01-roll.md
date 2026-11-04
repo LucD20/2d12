@@ -243,7 +243,7 @@ Actions are written as cards. Every card has the same structure, in this order:
 | [[Versus\|**Vs. Body**]] | The Defense of the target. |
 | [[0 AP Actions\|**0 AP**]] | An Action that costs no AP. You can use it only on your turn. |
 | [[Linked Actions\|**Weapon Attack (1A)**, **(1A/2A)**]] | A Linked Action and the Version you use (or a choice of two). |
-| [[Reactions\|**1R**, **0R**]] | A Reaction that uses 1 AP (your Reaction AP or an AP you kept), or none. |
+| [[Reactions\|**1R**, **0R**]] | A Reaction that uses 1 AP, or none (which AP can pay: see [[Reactions]]). |
 | [[Escalation\|**Escalation 3**]] | The Escalation an Action needs: you can use it only while your Escalation is at least that number. Nothing is spent. |
 
 ### Rules Language

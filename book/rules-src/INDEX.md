@@ -5,7 +5,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | File | Chapter | Document | Part | KB | Lines |
 |---|---|---|---|---|---|
 | 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 19.8 | 279 |
-| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 25.0 | 282 |
+| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 25.1 | 282 |
 | 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 38.1 | 451 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 13.5 | 254 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 7.0 | 84 |
@@ -16,9 +16,9 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 11-species.md | Species | species |  | 0.8 | 32 |
 | 12-paladin.md | Paladin | paladin |  | 3.4 | 103 |
 | 13-archer.md | Archer | archer |  | 3.2 | 100 |
-| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 15.2 | 280 |
+| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 15.4 | 281 |
 | 15-gear.md | Gear | gear |  | 10.1 | 182 |
-| 16-talents.md | Talents | talents |  | 2.1 | 63 |
+| 16-talents.md | Talents | talents |  | 2.2 | 66 |
 
 ## 01-roll.md: Chapter 1: The Roll
 
@@ -274,14 +274,14 @@ Open (to be decided) boxes: 18: "Pack R: the new core rules (4 AP + 1 Reaction A
 - 76:   ### Special Actions
 - 90:   ### Conditions
 - 102:   ### Reactions
-- 110:   ### Escalation
-- 114: ## The roles
-- 116:   ### Minions
-- 148:   ### Grunts
-- 180:   ### Standards
-- 212:   ### Elites
-- 244: ## Building an encounter
-- 265: ## Example NPCs (Stage 1)
+- 111:   ### Escalation
+- 115: ## The roles
+- 117:   ### Minions
+- 149:   ### Grunts
+- 181:   ### Standards
+- 213:   ### Elites
+- 245: ## Building an encounter
+- 266: ## Example NPCs (Stage 1)
 
 Open (to be decided) boxes: 6: "Pack R: the tables below are still calibrated for 5 AP turns and the o"
 
@@ -315,10 +315,12 @@ Open (to be decided) boxes: 149: "How classes or Talents grant Mastery beyond th
 
 ## 16-talents.md: Talents
 
-- 14: ## Talents That Modify Actions
-- 18: ## Combat Talents
-- 46: ## Mobility Talents
-- 52: ## Magic Talents
-- 60: ## Class Talents
+- 17: ## Talents That Modify Actions
+- 21: ## Combat Talents
+- 49: ## Mobility Talents
+- 55: ## Magic Talents
+- 63: ## Class Talents
 
-Action cards: Challenge (22, Combat Talent 1); Heavy Blows (24, Combat Talent 1); Whirlwind (26, Combat Talent 1, Encounter); Bloodlust (28, Combat Talent 1, Encounter); Brawler (30, Combat Talent 1); Pummel (32, Brawler, At-will); Kickboxer (34, Combat Talent 1); Leg Sweep (36, Kickboxer, Round); Aim (38, Combat Talent 1, Round); Ricochet (40, Combat Talent 1); Long Draw (42, Combat Talent 1); Steady Nerves (44, Combat Talent 1); Battering Charge (48, Mobility Talent 1); Cut Through (50, Mobility Talent 1, Round); Lesser Blessing (54, Magic Talent 1); Rimebrand (Cold) (56, Lesser Blessing, Round); Sacred Weapon (58, Magic Talent 1, Round); Class Expertise (62, Combat Talent 5)
+Action cards: Challenge (25, Combat Talent 1); Heavy Blows (27, Combat Talent 1); Whirlwind (29, Combat Talent 1, Encounter); Bloodlust (31, Combat Talent 1, Encounter); Brawler (33, Combat Talent 1); Pummel (35, Brawler, At-will); Kickboxer (37, Combat Talent 1); Leg Sweep (39, Kickboxer, Round); Aim (41, Combat Talent 1, Round); Ricochet (43, Combat Talent 1); Long Draw (45, Combat Talent 1); Steady Nerves (47, Combat Talent 1); Battering Charge (51, Mobility Talent 1); Cut Through (53, Mobility Talent 1, Round); Lesser Blessing (57, Magic Talent 1); Rimebrand (Cold) (59, Lesser Blessing, Round); Sacred Weapon (61, Magic Talent 1, Round); Class Expertise (65, Combat Talent 5)
+
+Open (to be decided) boxes: 14: "The Stage Talents (levels 5 and 8) and the Talents above level 1 are n"

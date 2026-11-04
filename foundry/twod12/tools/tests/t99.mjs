@@ -20,7 +20,8 @@ console.log("reaction kind select (item sheet):", has(item, 'name="system.reacti
 console.log("Tags input (NPC sheet):", has(actor, 'data-action="removeTag"') && has(actor, 'class="tagadd"'));
 console.log("--- the compendium");
 const pack = name => JSON.parse(fs.readFileSync(ROOT + `packs/_source/actions/${name}.action.json`, "utf8")).system;
-const oa = pack("opportunity-attack"), cut = pack("cut-through");
+// v0.0.234: Opportunity Attack is a Basic Action (pack R-core), read from the generated data, not the compendium.
+const oa = (await import(ROOTURL + "module/basic-data.mjs")).BASIC_ACTIONS.opportunityAttack, cut = pack("cut-through");
 console.log("Opportunity Attack:", oa.reactionKind, "|", oa.trigger, "| reaction:", oa.reaction);
 console.log("Cut Through's Setup:", cut.setup.slice(0, 48));
 const bl = JSON.parse(fs.readFileSync(ROOT + "packs/_source/effects/bloodlust.effect.json", "utf8")).system.settings, fx = { ...bl.find(st => st.type === "boonbane"), empowered: bl.find(st => st.type === "damagestep")?.empowered };   // Empowered is its own setting since v0.0.126

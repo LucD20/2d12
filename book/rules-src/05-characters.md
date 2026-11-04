@@ -7,7 +7,7 @@
 2. **Species.** Apply your species' Attribute changes (the species are in the [[Species]] document). It also gives you a **Vigor** and a **Resolve** bonus, a **Speed**, your **Reach** (1), your **Steadiness** and your **Size** (all current species are Medium (3)).
 3. **Class.** Apply your class' Attribute increases. It also gives you a **high** and a **low Health value** (and the steps they grow by at each Stage), a **Rally** value, a **Speed Modifier**, a **Weapon Modifier** and a **Power Modifier**. Your Speed is your species' Speed plus your class' Speed Modifier.
 4. **Choices.** When a species or class says "or", pick one. A class's choices between two Attributes must be different from each other (see [[Distinct Choices]]).
-5. **[[Health Pool]].** Assign your class's high Health value to Vigor or to Resolve and the low one to the other, then add your species' bonuses. Your Health Pool is the two added together.
+5. **[[Health Pool]].** Assign your class's high Health value to Vigor or to Resolve and the low one to the other, then add your species' bonuses (neither can be under a third of the total). Your Health Pool is the two added together.
 6. **[[Rally Points]]** = your class' Rally value + your Stage (1 at level 1).
 7. **Level 1.** Take your class's Features, its **Hallmark Action** and **Hallmark Reaction** (a choice of two each), its **Encounter Pick** and a **Talent** (the Talents are in the [[Talents]] document; weapons and armor in the [[Gear]] document).
 8. **Escalation.** Choose one **Escalation Passive** for each Escalation level (1, 2 and 3) and your **Apex** from your class's [[Escalation]] abilities.

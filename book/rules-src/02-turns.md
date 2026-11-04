@@ -63,7 +63,7 @@ When something gives or takes Action Points, it says whether it happens **now** 
 A **Reaction** is an Action you use in response to something another creature does. Its card has an **Interrupt** or a **Trigger** line that says what it responds to, and which of the two it is decides when it happens. Its cost is written with an R, such as **1R**: it uses that many Action Points, but only as a response. A **0R** Reaction uses no AP; its Frequency still limits it.
 
 - **Paying:** A Reaction is paid with your **Reaction AP**, with AP you kept from your turn (see [[Unspent AP]]), or with both: a 2R Reaction can use your Reaction AP and one kept AP. On your own turn, your turn's AP can pay for it too. Your Reaction AP lasts until you regain AP at the start of your next turn.
-- **Opportunity Attack:** Every creature has the Opportunity Attack Reaction (see [[Chapter 6: Basic Actions|Chapter 6]]): it can attack a creature that moves away from it.
+- **Opportunity Attack:** Every creature has the Opportunity Attack Reaction (see [[Chapter 6: Basic Actions|Chapter 6]]): it can attack a creature within 3 squares that moves with a Move Action or stands up.
 - **Interrupt:** An Interrupt happens **before** the Action that triggers it. "Interrupt: A creature would Advance" means the Reaction happens before the creature uses the Advance Action.
 - **Trigger:** A Trigger happens **after** the Action that triggers it. "Trigger: A creature deals damage to you" happens after you take the triggering damage.
 - **Once per triggering Action:** You can react only once to the same Action, but several creatures can react to it. Some Actions, mainly Move Actions, can happen throughout different squares. It is still a single Action, and you decide when you take the Reaction: for instance, you can wait for the creature to move into a more advantageous position before taking your Reaction, instead of taking it as soon as the creature moves.
@@ -258,7 +258,7 @@ Each position in the turn order is an **initiative slot**. Effects end at the en
 - **Rounds:** at the start of every round after the first, if you aren't Unconscious, your Escalation increases by 1. While Unconscious, you keep the Escalation you have.
 - **Critical:** once an encounter, when you score a [[Critical]] on one of your Actions, your Escalation increases by 1.
 - **Your class's hook:** each class names one more event that, once an encounter, increases your Escalation by 1 (the Paladin: an ally within 5 squares of you becomes Bloodied or goes Down; the Archer: your Marked Quarry goes Down).
-- **At most 3:** you can't have more than 3 Escalation, unless a feature says so. A hook that happens while your Escalation is 3 isn't used up: it can still increase your Escalation later in the encounter, if something lowered it.
+- **At most 3:** you can't have more than 3 Escalation, unless a feature says so. A Critical or a hook that happens while your Escalation is already 3 does nothing, and it isn't used up for the encounter.
 - **The end:** when the encounter ends, your Escalation goes back to 1, and the abilities that need it stop working.
 
 Your class has two kinds of Escalation abilities:
@@ -275,7 +275,7 @@ NPCs have no Escalation, except Elites (see the [[Bestiary]]).
 
 ### Momentum
 
-After an encounter harder than easy (more than CV 75 per PC, see the [[Bestiary]]), your party has **Momentum** until it Rests: each of you starts your next encounter at Escalation 2 instead of 1. Momentum doesn't stack.
+After an encounter harder than easy (more than CV 75 per PC, see the [[Bestiary]]), your party has **Momentum**: each of you starts the next encounter at Escalation 2 instead of 1. That encounter uses it up (it can give Momentum again), and so does a Rest before it. Momentum doesn't stack.
 
 > [!tip]
-> The GM's valve: after a bad turn of the dice for the whole table, the GM can give every PC +1 Escalation. There is no other way to spend or buy Escalation.
+> The GM's valve: after a bad turn of the dice for the whole table, the GM can give every PC +1 Escalation. Nothing else raises it, and nothing spends it.

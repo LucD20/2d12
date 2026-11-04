@@ -11,6 +11,9 @@ Every Talent has a **category**, a **level** and sometimes **Prerequisites**. Th
 
 Talents can be Actions. For example, Aim is an Action, while Battering Charge is just a Talent. Effects of the same kind don't stack (see [[Stacking]]): two Talents that make you Empowered give one Empowered.
 
+> [!tbd]
+> The Stage Talents (levels 5 and 8) and the Talents above level 1 are not written yet.
+
 ## Talents That Modify Actions
 
 Some Talents change other Actions instead of (or as well as) giving you a new one. The Talent says which Actions it changes and when, and what it adds: for example a Critical, an effect, or a Boon. Heavy Blows adds 2 damage to the Tier 3 of your [Melee, Strike, Weapon] Actions with a Two-handed weapon.

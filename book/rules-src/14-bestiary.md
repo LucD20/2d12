@@ -13,11 +13,11 @@ Each role has a **Combat Value (CV)**: what one NPC of the role counts for in an
 | Role | CV | AP a turn | Takes about | Deals about (per turn, to an average PC) |
 |---|---|---|---|---|
 | **Minion** | 25 | **3** | one PC hit | 3 |
-| **Grunt** | 50 | 5 | 1 PC turn | 6 to 7 |
-| **Standard** | 100 | 5 | 2 to 3 PC turns | 10 to 11 |
-| **Elite** | 200 | 5 | 5 PC turns | 17 to 18 |
+| **Grunt** | 50 | 4 | 1 PC turn | 6 to 7 |
+| **Standard** | 100 | 4 | 2 to 3 PC turns | 10 to 11 |
+| **Elite** | 200 | 4 | 5 PC turns | 17 to 18 |
 
-**Minions have 3 AP a turn**, not 5: quick, simple creatures that move and strike, and die fast.
+**Minions have 3 AP a turn**, not 4: quick, simple creatures that move and strike, and die fast. Every NPC also gains the Reaction AP, as a PC does (see [[Action Points]]).
 
 ### Minor enemies
 
@@ -101,9 +101,10 @@ A condition is worth **steps of rating**: **Mild 1, Moderate 2, Severe 3**. An A
 
 ### Reactions
 
-- **Minions and Grunts** normally have none.
+- **Every NPC** has Opportunity Attack, the basic Reaction (with its Basic attack: see [[Chapter 6: Basic Actions|Chapter 6]]).
+- **Minions and Grunts** normally have no other.
 - **Standards and Elites** may have one or more.
-- A Reaction uses AP from the NPC's next turn, as for a PC.
+- An NPC pays for a Reaction as a PC does: with its Reaction AP or the AP it kept from its turn (see [[Reactions]]).
 - **A Reaction that doesn't disrupt the triggering Action** (a Trigger, after it) should be **one rating stronger** than an Action of the same AP: it only happens when its trigger does.
 - **A Reaction that disrupts it** (an Interrupt that can stop the Action) is worth the same as an Action of the same AP: stopping the Action is its strength.
 
