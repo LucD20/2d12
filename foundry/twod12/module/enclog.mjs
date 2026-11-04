@@ -162,7 +162,7 @@ export function registerEncLogHooks() {
     try {
       if (userId !== game.user.id || !game.combat?.started || !options?.twod12LogDmg || options.twod12Reset || !["character", "npc"].includes(actor.type)) return;
       const old = options.twod12LogDmg, now = actor.system?.damage ?? {};
-      const KEYS = [["bodyLethal", "Body"], ["bodyNonlethal", "Body Nonlethal"], ["mindLethal", "Mind"], ["mindNonlethal", "Mind Nonlethal"]];
+      const KEYS = [["bodyLethal", "Vigor"], ["bodyNonlethal", "Vigor Nonlethal"], ["mindLethal", "Resolve"], ["mindNonlethal", "Resolve Nonlethal"]];
       const up = KEYS.map(([k, l]) => [(Number(now[k]) || 0) - (Number(old[k]) || 0), l]);
       const dealt = up.filter(([n]) => n > 0), healed = -up.filter(([n]) => n < 0).reduce((s, [n]) => s + n, 0);
       if (dealt.length) logLine("dmg", refOf(actor), { n: dealt.reduce((s, [n]) => s + n, 0), text: dealt.map(([n, l]) => `${n} ${l}`).join(", ") });

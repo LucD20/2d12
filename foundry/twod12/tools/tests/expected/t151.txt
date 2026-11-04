@@ -6,7 +6,7 @@ Killer's Focus  an Effect each turn
 Long Draw       ignores one of their range Banes
 Steady Nerves   ignores the Banes for a [Ranged] Action while you are Engaged
 Sharpshooter    ignores the Bane for targeting a creature Engaged with a creature other than you | Projectile weapon at 3 Mastery
-Marked Quarry   1 Boon (with Shot and Strike) (only against the creature it marked) | next action with Shot and Strike deals +[Mod] damage to Body on T1 (only against the creature it marked) | message at encounter (Mark Quarry) | message when its mark goes Down (Mark Quarry)
+Marked Quarry   1 Boon (with Shot and Strike) (only against the creature it marked) | next action with Shot and Strike deals +[Mod] damage to Vigor on T1 (only against the creature it marked) | message at encounter (Mark Quarry) | message when its mark goes Down (Mark Quarry)
 Hunter's Focus  1 Boon on every roll (only against the creature it marked) | Empowered 1 (only against the creature it marked)
 no hasFeature(name) left: true | paladin.mjs gone: true | Mark Quarry marks by its box: true
 --- once per round (the engine; no compendium card uses it on its own bonus now)
@@ -40,7 +40,7 @@ formulas: power + 2 = 5 | signature = 3 | ceil(level/2) = 1 | 3 = 3 | alert(1) =
 a Paladin without Font of Mercy, Escalation 1: null | Escalation 0: null
 Font of Mercy, Escalation 1: {"name":"Ivo","source":"Font of Mercy","bonus":5}
 --- the editor's sentences
-The next action with <b>Shot</b> and <b>Strike</b> deals <b>+1d6 Pierce</b> damage to Body <i class="fxd-lim">(the first matching Action each round; only against the creature it marked)</i>.
+The next action with <b>Shot</b> and <b>Strike</b> deals <b>+1d6 Pierce</b> damage to Vigor <i class="fxd-lim">(the first matching Action each round; only against the creature it marked)</i>.
 <b>1 Bane</b> on rolls made <b>against</b> this creature with <b>Strike</b> <i class="fxd-lim">(the first matching Action each round)</i>.
 Its Actions with <b>Shot</b> don't take <b>the Bane for targeting a creature Engaged with a creature other than you</b>.
 Each Rally Point heals <b>power + 2</b> more, for this creature and its allies within <b>5</b> squares.

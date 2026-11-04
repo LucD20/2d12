@@ -2,7 +2,7 @@ import { TWOD12, cardVars, dtypeIcon, dtypeHtml, poolIcon } from "./config.mjs";
 import { esc } from "./roll.mjs";
 import { damageOdds } from "./calc.mjs";
 
-const POOL_LABEL = { B: "Body", M: "Mind", C: "Body or Mind", "": "Other" };
+const POOL_LABEL = { B: "Vigor", M: "Resolve", C: "Vigor or Resolve", "": "Other" };
 
 const srcA = c => (c.srcUuid ? `<a class="content-link" draggable="true" data-link data-uuid="${esc(c.srcUuid)}" data-tooltip="Open ${esc(c.src)}">${esc(c.src)}</a>` : esc(c.src));
 const compHtml = c => {

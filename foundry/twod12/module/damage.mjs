@@ -41,7 +41,7 @@ export function registerSocket() {
   });
 }
 
-export const summaryText = a => [[a.B.l, "Body"], [a.B.n, "Body Nonlethal"], [a.M.l, "Mind"], [a.M.n, "Mind Nonlethal"]].filter(([n]) => n).map(([n, l]) => `${n} ${l}`).join(", ");
+export const summaryText = a => [[a.B.l, "Vigor"], [a.B.n, "Vigor Nonlethal"], [a.M.l, "Resolve"], [a.M.n, "Resolve Nonlethal"]].filter(([n]) => n).map(([n, l]) => `${n} ${l}`).join(", ");
 
 /** Apply a list of damage components (pool, nl, total) to an actor right away; returns a text summary. */
 export async function dealDamage(actor, comps) {
@@ -152,7 +152,7 @@ async function applyRow(f, row, factor, selNl) {
   }
   const auto = (row.fx ?? []).filter(x => x.mode === "auto").map(x => x.uuid);
   if (auto.length) await applyEffects(auto, [row.uuid], { ...originInfo(f.originUuid), escalation: !!f.escalation, ...(Number.isFinite(f.originMod) ? { mod: f.originMod } : {}) });
-  const parts = [[a.B.l, "Body"], [a.B.n, "Body Nonlethal"], [a.M.l, "Mind"], [a.M.n, "Mind Nonlethal"]].filter(([n]) => n).map(([n, l]) => `${n} ${l}`).join(", ");
+  const parts = [[a.B.l, "Vigor"], [a.B.n, "Vigor Nonlethal"], [a.M.l, "Resolve"], [a.M.n, "Resolve Nonlethal"]].filter(([n]) => n).map(([n, l]) => `${n} ${l}`).join(", ");
   const mult = factor === 0.5 ? " (half)" : factor === 2 ? " (double)" : "";
   if (taken) return { dealt, text: `${guardBefore(before, taken)}<b>${esc(parts) || "no damage"}</b>${mult}${guardAfter(taken, a.guardLeft)}` };   // v0.0.182
   return { dealt, text: dealt > 0 ? `<b>${esc(parts)}</b>${mult}` : "No damage" };

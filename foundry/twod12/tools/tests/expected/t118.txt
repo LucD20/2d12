@@ -13,21 +13,21 @@
 "" -> no damage
 --- a whole Action
 versions: 2AP noTiers false T1 1 T2 1+"@Condition[hindered|eot]" T3 1+"@Condition[hindered|eot]" crit "@Condition[immobilized|eot]" effects "" | 3AP noTiers true T1 0 T2 0+"" T3 0+"" crit "" effects "@Move[pushed|distance:2]" | traits power,ranged encounter One creature 5 squares
-Understood: 2AP: 3 tiers, Cold damage to Body, Hindered (EoT) on Tiers 2 and 3, a Critical | 3AP: no tiers, Effects
-back to the card's writing: "[B] 1d8 Co" "[B] 2d8 Co; Hindered (EoT)" "[B] 3d8 Co; Hindered (EoT)"
+Understood: 2AP: 3 tiers, Cold damage to Vigor, Hindered (EoT) on Tiers 2 and 3, a Critical | 3AP: no tiers, Effects
+back to the card's writing: "[V] 1d8 Co" "[V] 2d8 Co; Hindered (EoT)" "[V] 3d8 Co; Hindered (EoT)"
 --- Generate Weapon: what it understood
 rusty greatsword: two-handed, melee, slash, range 1, 0/1d8/2d6
    understood: Name: Rusty Greatsword | Two-handed | Melee | Slash | Range 1 | Damage 0 / 1d8 / 2d6
    not understood: nothing
-   card: Use Melee 1 · Two-handed | Damage Slash · [B] 0 / 1d8 / 2d6
+   card: Use Melee 1 · Two-handed | Damage Slash · [V] 0 / 1d8 / 2d6
 crossbow, reload, two-handed pierce, ranges 10/20/40, 0/1d4+2/1d10+2
    understood: Name: Crossbow | Reload | Two-handed | Ranged | Pierce | Range 10 / 20 / 40 | Damage 0 / 1d4+2 / 1d10+2
    not understood: nothing
-   card: Use Ranged 10 / 20 / 40 · Reload · Two-handed | Damage Pierce · [B] 0 / 1d4+2 / 1d10+2
+   card: Use Ranged 10 / 20 / 40 · Reload · Two-handed | Damage Pierce · [V] 0 / 1d4+2 / 1d10+2
 dagger: melee, thrown 4/8/12, pierce, 0/1d4/1d6
    understood: Name: Dagger | Melee | Thrown | Pierce | Thrown 4 / 8 / 12 | Damage 0 / 1d4 / 1d6
    not understood: nothing
-   card: Use Melee 1 · Thrown 4 / 8 / 12 | Damage Pierce · [B] 0 / 1d4 / 1d6
+   card: Use Melee 1 · Thrown 4 / 8 / 12 | Damage Pierce · [V] 0 / 1d4 / 1d6
 club, blunt, sparkly, 0/1d6
    understood: Name: Club | Blunt
    not understood: sparkly, 0/1d6 | Damage looks like 0/1d8/2d6 (Tier 1 / 2 / 3)

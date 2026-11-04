@@ -45,11 +45,11 @@ export function healthView(sys) {
   const gradient = stops.length ? `conic-gradient(${stops.join(", ")})` : C.empty;   // no thresholds yet (no class): an empty ring
 
   const legend = [
-    { pool: "body", color: C.body, label: "Body", value: body, max: bdt },
-    { pool: "mind", color: C.mind, label: "Mind", value: mind, max: mdt }
+    { pool: "body", color: C.body, label: "Vigor", value: body, max: bdt },
+    { pool: "mind", color: C.mind, label: "Resolve", value: mind, max: mdt }
   ];
-  if (mindOver) legend.push({ color: C.mindSpill, label: "Mind past its slice", value: mindOver });
-  if (bodyOver) legend.push({ color: C.bodySpill, label: "Body past its slice", value: bodyOver });
+  if (mindOver) legend.push({ color: C.mindSpill, label: "Resolve past its slice", value: mindOver });
+  if (bodyOver) legend.push({ color: C.bodySpill, label: "Vigor past its slice", value: bodyOver });
 
   // Classic: each bar is its own threshold; the other pool's spill is striped at the end.
   const pct = (n, of) => f2(of ? Math.max(0, Math.min(100, (n / of) * 100)) : 0);
@@ -58,8 +58,8 @@ export function healthView(sys) {
     segs: [{ cls: "l", w: pct(f.l, max), color }, { cls: "n", w: pct(f.n, max), color: nlColor }, { cls: "s", w: pct(f.s, max), color: spillColor }].filter(s => s.w > 0)
   });
   const bars = [
-    bar("body", "Body", body, bdt, B, C.body, C.bodyNl, C.mind, body >= bdt && bdt > 0 ? "Bloodied" : ""),
-    bar("mind", "Mind", mind, mdt, M, C.mind, C.mindNl, C.body, mind >= mdt && mdt > 0 ? "Strained" : "")
+    bar("body", "Vigor", body, bdt, B, C.body, C.bodyNl, C.mind, body >= bdt && bdt > 0 ? "Bloodied" : ""),
+    bar("mind", "Resolve", mind, mdt, M, C.mind, C.mindNl, C.body, mind >= mdt && mdt > 0 ? "Strained" : "")
   ];
   const states = bars.map(b => b.badge).filter(Boolean);
   return { pool, dmg, left: Math.max(0, pool - dmg), body, mind, bdt, mdt, bodyOver, mindOver, bodyDeg: f2(deg(bdt)), gradient, legend, bars, states };

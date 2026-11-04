@@ -70,7 +70,7 @@ export const TWOD12 = {
   // The kind of a roll, for effects (Round 10): checks and saves are marked when they are rolled, and an Action that rolls an Attribute
   // directly (not a Weapon, Power or Signature roll) is an Attribute Action. Weapon, Power and Signature rolls are their traits.
   rollKinds: { __check: "Check", __save: "Save", __attr: "Attribute Action", __twohanded: "Two-handed weapon" },   // v0.0.188: Two-handed weapon (Heavy Blows)
-  pools: { "": "None", B: "Body [B]", M: "Mind [M]", C: "Choice [C]" },
+  pools: { "": "None", B: "Vigor [V]", M: "Resolve [R]", C: "Choice [C]" },   // v0.0.234 (pack R-core): the labels; the keys stay B / M
   // Damage types: one icon each (Slash also has Foundry's sword image on cards), bright colors for dark backgrounds,
   // and dark "ink" colors for the parchment cards.
   subtypeIcons: {
@@ -119,7 +119,7 @@ export const TWOD12 = {
     "Undead",
     "Unholy"
   ], // the starting list of the world setting "Tags"
-  poolNames: { B: "Body [B]", M: "Mind [M]", C: "Choice [C]", "": "Damage" },
+  poolNames: { B: "Vigor [V]", M: "Resolve [R]", C: "Choice [C]", "": "Damage" },
   traitHelp: {
     area: "These Actions target every creature in their area that they affect, ignoring Senses (no penalty against Obscured, Hidden or Unsensed creatures, and light doesn't change the roll). You need Line of Effect to the Point of Origin to place the area; Line of Effect and Cover are checked from the Point of Origin to each creature.",
     strike: "Extra rules: you can make at most three Strikes per turn.",
@@ -256,10 +256,12 @@ export const cardVars = hex => {
 // v0.0.215 (Lucas, playtest 2): the diamond's tooltip also says what is not implemented yet (the item's "By hand" note), for Bronze and Silver.
 export const autoChip = (rank, note = "") => (rank && TWOD12.automationRanks[rank] ? `<i class="fa-solid fa-diamond autodia auto-${rank}" data-tooltip="${escAttr(`${TWOD12.automationHints[rank] ?? ""}${String(note ?? "").trim() ? ` By hand: ${String(note).trim()}` : ""}`)}" aria-label="${escAttr(TWOD12.automationRanks[rank])}"></i>` : "");   // v0.0.190: a diamond (grey, bronze, silver, gold), the rank on hover
 export const cardHead = (name, cat, costHtml, freq = "", auto = "", autoNote = "") => `<div class="ahead"><b>${escAttr(name)}${autoChip(auto, autoNote)}</b><div class="aright"><span class="atop">${freq && TWOD12.frequencies[freq] ? `<span class="afreq">${escAttr(TWOD12.frequencies[freq])}</span>` : ""}${costHtml ? `<span class="aps">${costHtml}</span>` : ""}</span>${cat ? `<span class="acat">${escAttr(cat)}</span>` : ""}</div></div>`;
-/** Damage on cards: a filled heart for Body, a filled brain for Mind, and each damage type in its own color with its icon. */
-export const poolIcon = pool => pool === "M" ? '<i class="fa-solid fa-brain dt-mind" data-tooltip="Mind damage"></i>'
-  : pool === "C" ? '<span class="dt-choose" data-tooltip="Body or Mind: the origin chooses"><i class="fa-solid fa-heart dt-body"></i><i class="fa-solid fa-brain dt-mind"></i></span>'
-  : '<i class="fa-solid fa-heart dt-body" data-tooltip="Body damage"></i>';
+/** v0.0.234 (pack R-core): the book writes the pool keys B / M as [V] / [R]: the tag of a stored pool in the text Foundry writes. */
+export const poolTag = pool => ({ B: "V", M: "R" })[pool] ?? pool;
+/** Damage on cards: a filled heart for Vigor, a filled brain for Resolve, and each damage type in its own color with its icon. */
+export const poolIcon = pool => pool === "M" ? '<i class="fa-solid fa-brain dt-mind" data-tooltip="Resolve damage"></i>'
+  : pool === "C" ? '<span class="dt-choose" data-tooltip="Vigor or Resolve: the origin chooses"><i class="fa-solid fa-heart dt-body"></i><i class="fa-solid fa-brain dt-mind"></i></span>'
+  : '<i class="fa-solid fa-heart dt-body" data-tooltip="Vigor damage"></i>';
 /** A damage type's icon (on parchment cards, Slash uses Foundry's sword image). */
 export const dtypeIcon = k => (k === "Sl" ? '<img class="dt-img" src="icons/svg/sword.svg" alt="">' : `<i class="${TWOD12.subtypeIcons[k] ?? ""}"></i>`);
 export const dtypeHtml = code => {

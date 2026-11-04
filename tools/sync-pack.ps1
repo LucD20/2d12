@@ -165,7 +165,9 @@ if (-not $pick) {
 }
 $branch = $pick.branch
 Log "candidate: $branch @ $($pick.hash.Substring(0, 7))"
-if ($Interactive -and (@(G rev-parse HEAD)[0] -eq $pick.hash) -and (Test-Path (Join-Path $Repo "foundry\twod12\packs\actions"))) {
+# Up to date only when the last sync built this commit: a Claude Code session that commits in this checkout puts HEAD on the pack
+# without testing or rebuilding the compendium (2026-11-04: pack-r-core's packs stayed v0.0.232).
+if ($Interactive -and (@(G rev-parse HEAD)[0] -eq $pick.hash) -and $state -and $state.hash -eq $pick.hash -and (Test-Path (Join-Path $Repo "foundry\twod12\packs\actions"))) {
     Notify "Already up to date" "on $branch, v$((Get-Content (Join-Path $Repo 'foundry\twod12\system.json') -Raw | ConvertFrom-Json).version)"
     exit 0
 }

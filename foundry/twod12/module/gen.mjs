@@ -117,7 +117,7 @@ export async function openGenerator(item) {
     ${[1, 2, 3].map(n => `<div class="form-group"><label>Tier ${n}</label><input type="text" name="t${n}" value="${esc(val(find(start), `t${n}`))}" placeholder="1WB,1d4BH,1d6MH"></div>`).join("")}
     <div class="form-group"><label>Effects</label><input type="text" name="effects" value="${esc(find(start)?.effects ?? "")}" placeholder="Bright light 2Emanation 1/round"></div>
     <div class="genprev"></div>
-    <p class="hint">Damage: <code>1WB</code> = 1 [W] to Body, <code>1d4BH</code> = 1d4 Body Holy, <code>1d6MH</code> = 1d6 Mind Holy, <code>BB</code> = Body Blunt, <code>ModB</code> or <code>Modifier</code> = [Mod], <code>"text"</code> = tier effect. Effects: <code>2Emanation 1/round</code> (or <code>EoT</code>), <code>2Burst</code>, <code>Appeal Save</code>, <code>DC 14 Body Check</code>, <code>Appeal Save: 1d6 / 1d4 / 0 [M] Holy</code>, <code>Prone</code>, <code>Immobilized (EoT)</code>, <code>1d6MH</code>, <code>Pushed 5</code>, <code>Pulled 3</code>, <code>Slid 2</code>, <code>Advance 5</code>, <code>Evade 1</code>, <code>Evade Speed/2</code> (references: speed, body, mind, appeal, instinct, level, weapon, hp, rally; rounded up), <code>uses 1 Rally Point</code>, <code>use up to 2 Rally Points</code>.</p></div>`;
+    <p class="hint">Damage: <code>1WB</code> = 1 [W] to Vigor (B), <code>1d4BH</code> = 1d4 Vigor Holy, <code>1d6MH</code> = 1d6 Resolve Holy (M), <code>BB</code> = Vigor Blunt, <code>ModB</code> or <code>Modifier</code> = [Mod], <code>"text"</code> = tier effect. Effects: <code>2Emanation 1/round</code> (or <code>EoT</code>), <code>2Burst</code>, <code>Appeal Save</code>, <code>DC 14 Body Check</code>, <code>Appeal Save: 1d6 / 1d4 / 0 [R] Holy</code>, <code>Prone</code>, <code>Immobilized (EoT)</code>, <code>1d6MH</code>, <code>Pushed 5</code>, <code>Pulled 3</code>, <code>Slid 2</code>, <code>Advance 5</code>, <code>Evade 1</code>, <code>Evade Speed/2</code> (references: speed, body, mind, appeal, instinct, level, weapon, hp, rally; rounded up), <code>uses 1 Rally Point</code>, <code>use up to 2 Rally Points</code>.</p></div>`;
   const preview = el => {
     const get = n => el.querySelector(`[name=${n}]`).value;
     const rows = [1, 2, 3].map(n => {
@@ -228,7 +228,7 @@ export function weaponSummary(w) {
     w.damage ? `Damage ${[1, 2, 3].map(n => dmgText(w.damage[`t${n}`])).join(" / ")}` : ""].filter(Boolean);
   const unknown = w.problems.map(p => p.match(/^"([^"]+)"/)?.[1]).filter(Boolean);
   const missing = w.problems.filter(p => !/^"/.test(p));
-  const damage = w.damage ? `${sub ? `${titleCase(sub)} \u00b7 ` : ""}[B] ${[1, 2, 3].map(n => dmgText(w.damage[`t${n}`])).join(" / ")}` : "\u2014";
+  const damage = w.damage ? `${sub ? `${titleCase(sub)} \u00b7 ` : ""}[V] ${[1, 2, 3].map(n => dmgText(w.damage[`t${n}`])).join(" / ")}` : "\u2014";
   return { chips, unknown, missing, use: use.join(" \u00b7 ") || "\u2014", damage };
 }
 

@@ -1,6 +1,6 @@
 --- what changes Smite right now (only temporary effects, Escalation passives and the creature's state)
 nothing                                [] | net 0 | bonus T1/T2/T3: 0/0/0
-Divine Surge, Enfeebled 1, Bless, Aim  ["Divine Surge up (+ [M] 1d8 Ho (Tier 2, 3))","Enfeebled 1 down (−1 per damage die)","Bless up (1 Boon)"] | net -1 | bonus T1/T2/T3: 0/1/1
+Divine Surge, Enfeebled 1, Bless, Aim  ["Divine Surge up (+ [R] 1d8 Ho (Tier 2, 3))","Enfeebled 1 down (−1 per damage die)","Bless up (1 Boon)"] | net -1 | bonus T1/T2/T3: 0/1/1
 always-on passive                      [] | net 0 | bonus T1/T2/T3: 0/0/0
 Escalation passive at 2                ["Hallowed Stance up (1 Boon)"] | net 0 | bonus T1/T2/T3: 0/0/0
 Escalation passive at 1                [] | net 0 | bonus T1/T2/T3: 0/0/0

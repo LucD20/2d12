@@ -1,8 +1,8 @@
 update {"system.damage.bodyLethal":8,"system.damage.mindLethal":4,"system.damage.mindNonlethal":3}
 update {"system.damage.bodyLethal":5,"system.damage.mindLethal":2,"system.damage.mindNonlethal":2}
 [
-  'Orc takes 7 Body, 4 Mind, 3 Mind Nonlethal damage from Test.',
-  'Orc takes 4 Body, 2 Mind, 2 Mind Nonlethal damage (half) from Test.'
+  'Orc takes 7 Vigor, 4 Resolve, 3 Resolve Nonlethal damage from Test.',
+  'Orc takes 4 Vigor, 2 Resolve, 2 Resolve Nonlethal damage (half) from Test.'
 ]
 {"damage":[{"formula":"1d6","pool":"M","sub":""}],"texts":[],"uuids":["Item.abc123"]}
 emanation 2:
