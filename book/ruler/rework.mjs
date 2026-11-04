@@ -6,6 +6,7 @@
 // is book/rework-r.md. Nothing here changes report.md: the rules it moves are spec.mjs RULES, set per run and reset after.
 //   node book/ruler/rework.mjs           writes rework.md and prints it (about 5 minutes)
 //   node book/ruler/rework.mjs --quick   fewer runs (a draft in about 2 minutes)
+//   node book/ruler/rework.mjs --sheet   part 2, the decision sheet's numbers (book/rework-r.md section 14): writes rework-sheet.md (--sheet --quick: a draft)
 import fs from "node:fs";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -21,7 +22,7 @@ const mean = a => a.reduce((s, x) => s + x, 0) / (a.length || 1);
 const f1 = x => (Number.isFinite(x) ? x.toFixed(1) : "-"), f2 = x => (Number.isFinite(x) ? x.toFixed(2) : "-"), pc = x => (Number.isFinite(x) ? `${Math.round(x * 100)}%` : "-");
 
 /* ------------------------------------------------------------------ the rules of a run */
-const TODAY = { ap: 5, reactionAp: 0, escalation: "spent", npcAp: 5, minionAp: 3, npcReactionAp: 0 };
+const TODAY = { ap: 5, reactionAp: 0, escalation: "spent", npcAp: 5, minionAp: 3, npcReactionAp: 0, npcSpecials: 0, apGuard: 0, apGuardKeep: false, escHooks: false, oaDisrupt: true };
 const R_RULES = { ap: 4, reactionAp: 1, escalation: "level", npcAp: 4, minionAp: 3, npcReactionAp: 1 };
 const setRules = o => Object.assign(S.RULES, TODAY, o);
 
@@ -35,13 +36,25 @@ const PARTIES = {
   r: { name: "the 4 AP builds (rework/)", files: ["paladin-smite-r1", "paladin-smite-r1", "archer-double-r1", "archer-double-r1"], dir: "rework" },
   rRolling: { name: "the 4 AP builds, Rolling Shot", files: ["paladin-smite-r1", "paladin-smite-r1", "archer-rolling-r1", "archer-rolling-r1"], dir: "rework" },
 };
-const partyOf = (key, o = {}) => PARTIES[key].files.map(f => load(PARTIES[key].dir, f, { ...o, edit: o.edits?.[f] ?? o.edit ?? (x => x) }));
+const partyOf = (key, o = {}) => PARTIES[key].files.map(f => o.line ? lineHealth(load(PARTIES[key].dir, f, { ...o, edit: o.edits?.[f] ?? o.edit ?? (x => x) }), o) : load(PARTIES[key].dir, f, { ...o, edit: o.edits?.[f] ?? o.edit ?? (x => x) }));
+/* Part 2: the Stage Health line (section 12.4): the class's high / low (high on Vigor here: NPC Basic attacks are Vigor damage), the species' flat bonus (Human +3 / +2), no
+   Attribute; Rally Points = the class's Rally value + Stage; the Escalation hook written on the class; o.dmg = every damage it deals × this (the dice cut, shape B). */
+const LINE = { Paladin: [[20, 10], [32, 16], [46, 23]], Archer: [[16, 8], [25, 13], [36, 19]] }, SPECIES = { human: [3, 2], dwarf: [4, 1], elf: [1, 4] };   // per Stage; species: [Vigor, Resolve] (Human: + 3 on its high, + 2 on its low)
+const stageOf = lv => (lv >= 8 ? 3 : lv >= 5 ? 2 : 1);
+function lineValues(cls, lv = 1, species = "human") { const [hi, lo] = LINE[cls][stageOf(lv) - 1], sp = SPECIES[species]; return { vigor: hi + sp[0], resolve: lo + sp[1] }; }
+function lineHealth(b, o = {}) {
+  const cls = b.name.startsWith("Paladin") ? "Paladin" : "Archer", v = lineValues(cls, b.level);
+  b.bodyHealth = v.vigor; b.mindHealth = v.resolve; b.pool = v.vigor + v.resolve; b.rallyHeal = Math.ceil(b.pool / 4); b.rallyPoints = b.rally + stageOf(b.level);
+  b.escHook = cls === "Paladin" ? "ally" : "quarry"; if (o.dmg) b.dmgScale = o.dmg;
+  return b;
+}
 const noReactions = x => x.replace(/^reaction .*$/gm, "");
 const sofBlock = x => x.replace(/^reaction Opportunity Attack: opportunity$/m, "reaction Shield of Faith: block 1d8+[Mod]");
 
 /* ------------------------------------------------------------------ the NPCs */
 /** A level 1 Bestiary NPC (Medium, exact averages) with its Health × h and damage × d; built after the rules are set (its AP a turn). */
-const npcAt = (role, h = 1, d = 1) => { const n = S.npcOf(role, "medium", 1); return { ...n, exact: true, pool: Math.round(n.pool * h), bodyPool: Math.round(n.bodyPool * h), mindPool: Math.round(n.mindPool * h), t2: n.t2 * d, t3: n.t3 * d }; };
+const KIT = { minion: { round: { ap: 1, mult: 1.4 } }, grunt: { round: { ap: 1, mult: 1.4 } }, standard: { round: { ap: 2, mult: 2.2 } }, elite: { round: { ap: 2, mult: 2.2 }, enc: { ap: 3, mult: 3.5 } } };   // part 2: each role's Specials (used only with RULES.npcSpecials)
+const npcAt = (role, h = 1, d = 1) => { const n = S.npcOf(role, "medium", 1); return { ...n, exact: true, kit: KIT[role], pool: Math.round(n.pool * h), bodyPool: Math.round(n.bodyPool * h), mindPool: Math.round(n.mindPool * h), t2: n.t2 * d, t3: n.t3 * d }; };
 const enc = (list, F = {}) => list.flatMap(([role, k]) => Array(k).fill(0).map(() => npcAt(role, (F.h ?? 1) * (F.x?.[role]?.h ?? 1), (F.d ?? 1) * (F.x?.[role]?.d ?? 1))));
 const cvOf = list => list.reduce((s, [role, k]) => s + CV[role] * k, 0);
 const ENCOUNTERS = [["3 Standards (CV 3, easy)", [["standard", 3]]], ["4 Standards (4)", [["standard", 4]]], ["Elite + 2 Standards (4)", [["elite", 1], ["standard", 2]]], ["2 Elites (4)", [["elite", 2]]],
@@ -50,11 +63,12 @@ const MAIN = ENCOUNTERS.filter(e => cvOf(e[1]) === 4);
 
 /* ------------------------------------------------------------------ fights */
 /** Fights of a party against NPCs; half start with Momentum (1 Escalation at level 1); a Daily only in a hard fight. Returns the means and the per-creature records. */
+let START = null;   // part 2: a function (fight index) -> the Escalation a PC starts the fight with; null = part 1's (0, or Momentum's 1 in half the fights)
 function fights(party, npcs, n = RUNS, seed = 17) {
   const R = S.rng(seed), out = [], cv = npcs.reduce((s, x) => s + CV[x.role], 0) / party.length;
   for (let k = 0; k < n; k++) {
     const pcs = party.map(S.pcState);
-    for (const p of pcs) { p.startEsc = k % 2 ? 0 : S.MOMENTUM.startEsc(p.build.level); p.dailyOK = cv >= 1.25; }
+    for (const p of pcs) { p.startEsc = START ? START(k) : k % 2 ? 0 : S.MOMENTUM.startEsc(p.build.level); p.dailyOK = cv >= 1.25; }
     out.push(S.fight(pcs, npcs, R, { maxRounds: 15 }));
   }
   const st = key => mean(out.flatMap(f => f.pcs.map(p => p.st[key] ?? 0)));
@@ -364,7 +378,193 @@ plan Nova | Main, Main
   return L.join("\n");
 }
 
-if (process.argv[1] && fileURLToPath(import.meta.url) === fs.realpathSync(process.argv[1])) {
+/* ------------------------------------------------------------------ part 2: the decision sheet's numbers */
+const C = await import(new URL("../../foundry/twod12/module/calc.mjs", import.meta.url).href);
+const SHEET = { ...R_RULES, npcSpecials: 1, apGuard: 2, escHooks: true, oaDisrupt: false };   // oaDisrupt: Lucas 2026-11-04 (item 6: no Critical disrupt on the basic Opportunity Attack)   // the rework as decided (section 12), with the Specials at the book's multipliers
+const START1 = k => (k % 2 ? 1 : 2);                                         // every fight starts at Escalation 1 (Momentum: 2): half the fights with Momentum
+const LN = { line: true };
+export function sheet() {
+  const L = [], keys = ["r", "rRolling"];
+  const at = (rules, start) => { setRules(rules); START = start; };
+  L.push("# The playtest 2 rework, part 2: the decision sheet's numbers", "",
+    "Written by `node book/ruler/rework.mjs --sheet`; don't edit, run it again. Read by `book/rework-r.md` section 14. Part 1's numbers: `rework.md`.", "",
+    `Runs: ${RUNS} fights a measurement, ${CAL} a calibration step. **The party:** the 4 AP builds of \`rework/\` (2 Smite Paladins + 2 Archers, Double Shot and Rolling Shot, each number the mean of the two parties), level 1, Human. **The rework as decided** (rework-r.md section 12) = 4 + 1 AP for PCs and NPCs, Escalation as a level; **the Health line** (Paladin Vigor 23 / Resolve 12 = 35, Archer 19 / 10 = 29; Rally Points = Rally + Stage: 7 and 6; today's builds: 40 and 27); **Escalation from 1** (Momentum 2: half the fights) with **the hooks** (a Critical, about 1 in 12 Tier 3s: +1 once an encounter; the Paladin: an ally within 5 squares becomes Bloodied or goes Down; the Archer: its Marked Quarry goes Down; each once an encounter); **Guard from unspent AP** (2 per turn AP left at the end of the turn, until the start of the next; the Reaction AP never converts; the AP that become Guard no longer pay Reactions unless said); **the Specials** (each NPC spends every AP left after moving on attacks: the 3 AP Encounter Special once (Elites), the Round Special once a round (Minions and Grunts 1 AP × 1.4, Standards and Elites 2 AP × 2.2), then Basic attacks with the At-will Bane, 3 Strikes at most; a Special is modeled as a single-target Strike with the multiplied damage: its condition, area or Save are its damage's worth, as the Bestiary prices them).`, "");
+  const t1 = Date.now();
+
+  // 1. An NPC's turn with its Specials (arithmetic).
+  const npc1 = role => S.npcOf(role, "medium", 1), strike = (n, ad, banes = 0) => { const p = C.tierProbs(n.mod, ad, 0, banes, ""); return p[1] * n.t2 + p[2] * n.t3; };
+  L.push("## 1. An NPC's turn with its Specials (arithmetic, AD 13)", "", "Damage a turn against one PC at AD 13: the Bestiary's Strikes (the calibration so far: 2 Basic attacks, 3 for an Elite, 1 for a Minion), and every AP on attacks with the Specials, standing next to its target or after 1 AP of movement. A Basic attack's 2nd and 3rd uses take the At-will Bane.", "",
+    "| Role (AP) | Basic attack | The Bestiary's Strikes | Specials × 1 (the book), no move · after a move | Specials × 1.25, no move · after a move | ratio to the Strikes (× 1, no move) |", "|---|---:|---:|---|---|---:|");
+  for (const role of ["minion", "grunt", "standard", "elite"]) {
+    const n = npc1(role), ap = role === "minion" ? 3 : 4, b0 = strike(n, 13), k = KIT[role];
+    const strikes = Array.from({ length: n.strikes }, (_, i) => strike(n, 13, i)).reduce((a, x) => a + x, 0);
+    const turn = (apLeft, scale, first = true) => { let d = 0, basics = 0, s = 0, encU = !first; let a = apLeft, rnd = false;
+      while (s < 3 && a > 0) { if (k.enc && !encU && a >= k.enc.ap) { d += b0 * k.enc.mult * scale; a -= k.enc.ap; encU = true; } else if (!rnd && a >= k.round.ap) { d += b0 * k.round.mult * scale; a -= k.round.ap; rnd = true; } else { d += strike(n, 13, basics++); a--; } s++; }
+      return d; };
+    const e = role === "elite" ? " (the Encounter Special's turn · a later turn)" : "";
+    const cellT = sc => role === "elite" ? `${f1(turn(ap, sc))} / ${f1(turn(ap, sc, false))} · ${f1(turn(ap - 1, sc))} / ${f1(turn(ap - 1, sc, false))}` : `${f1(turn(ap, sc))} · ${f1(turn(ap - 1, sc))}`;
+    L.push(`| ${n.name} (${ap})${e} | ${f1(b0)} | ${f1(strikes)} | ${cellT(1)} | ${cellT(1.25)} | × ${f2(turn(ap, 1, false) / strikes)} |`);
+  }
+  L.push("");
+
+  // 2. The fights, piece by piece.
+  L.push("## 2. The fights, piece by piece", "", "The CV 4 encounters (rounds · the party's Health lost · a PC goes Down · won), NPC Health and damage as the Bestiary has them (no factor); each column adds one piece to the one before. **Part 1** = the rework of part 1 (4 + 1 AP, Escalation as a level from 0, Momentum 1 in half the fights, today's Health).", "");
+  const PIECES = [
+    ["Part 1", { ...R_RULES }, null, {}],
+    ["+ the Health line", { ...R_RULES }, null, LN],
+    ["+ Escalation from 1, hooks", { ...R_RULES, escHooks: true }, START1, LN],
+    ["+ Guard from unspent AP", { ...R_RULES, escHooks: true, apGuard: 2 }, START1, LN],
+    ["+ the Specials (× 1)", SHEET, START1, LN],
+    ["the Specials × 1.25 instead", { ...SHEET, npcSpecials: 1.25 }, START1, LN],
+  ];
+  L.push(`| Encounter | ${PIECES.map(v => v[0]).join(" | ")} |`, `|---|${PIECES.map(() => "---").join("|")}|`);
+  const P = {};
+  for (const [name, list] of MAIN) { L.push(`| ${name} | ${PIECES.map(([vn, rules, st, o]) => { at(rules, st); const r = both(keys, list, {}, RUNS, 17, o); (P[vn] ??= {})[name] = r; return cell(r); }).join(" | ")} |`); }
+  const taken = r => mean(r.rs.map(x => mean(x.out.map(f => f.pcs.reduce((s2, p) => s2 + p.st.taken, 0)))));
+  L.push("", "The 4 Standards fight, per fight (all 4 PCs):", "", `| | ${PIECES.map(v => v[0]).join(" | ")} |`, `|---|${PIECES.map(() => "---:").join("|")}|`);
+  const prow = (label, fn) => L.push(`| ${label} | ${PIECES.map(v => fn(P[v[0]]["4 Standards (4)"])).join(" | ")} |`);
+  prow("Party damage dealt · a PC turn", r => `${f1(r.dealt)} · ${f1(r.dealt / r.turns)}`);
+  prow("Damage taken (after Guard and blocks)", r => f1(taken(r)));
+  prow("PC turns at Escalation 0 / 1 / 2 / 3", r => r.escTurns.map(f1).join(" / "));
+  L.push("", "Guard from unspent AP changes nothing here: the plans spend every AP (section 4 prices it with turns that hold one).", "");
+  log("S2. the pieces");
+
+  // 3. Escalation from 1 with the hooks.
+  at(SHEET, START1);
+  const S3 = P["+ the Specials (× 1)"]["4 Standards (4)"];
+  const reach = (R0, k, sel) => mean(R0.rs.flatMap(r => r.out.filter(sel).flatMap(f => f.pcs.map(p => (p.st.escTurns.slice(k).some(x => x > 0) ? 1 : 0)))));
+  const turnsAt = (R0, k, sel) => mean(R0.rs.flatMap(r => r.out.filter(sel).flatMap(f => f.pcs.map(p => p.st.escTurns.slice(k).reduce((s2, x) => s2 + x, 0)))));
+  const mom = (f, i) => i % 2 === 0, noMom = (f, i) => i % 2 === 1, all = () => true;
+  const hk = (R0, cls, key) => mean(R0.rs.flatMap(r => r.out.flatMap(f => f.pcs.filter(p => p.build.name.startsWith(cls)).map(p => p.st[key]))));
+  L.push("## 3. Escalation from 1, with the hooks", "", "The 4 Standards fight with every piece (column 5 of section 2). An Apex (Encounter, needs Escalation 3) is usable in the fights where the PC has a turn at 3:", "",
+    "| Per PC | all fights | with Momentum (starts at 2) | without (starts at 1) | Part 1 (starts at 0, Momentum 1), all fights |", "|---|---:|---:|---:|---:|");
+  const P1 = P["Part 1"]["4 Standards (4)"];
+  for (const k of [2, 3]) L.push(`| A turn at Escalation ${k} or more · such turns a fight | ${pc(reach(S3, k, all))} · ${f2(turnsAt(S3, k, all))} | ${pc(reach(S3, k, mom))} · ${f2(turnsAt(S3, k, mom))} | ${pc(reach(S3, k, noMom))} · ${f2(turnsAt(S3, k, noMom))} | ${pc(reach(P1, k, all))} · ${f2(turnsAt(P1, k, all))} |`);
+  const S3n = P["+ the Health line"]["4 Standards (4)"];
+  L.push("", `**The hooks, per PC a fight:** the Critical hook fires ${f2(hk(S3, "Paladin", "hookCrit"))} times for a Paladin and ${f2(hk(S3, "Archer", "hookCrit"))} for an Archer (it can't fire twice); the Paladin's hook (an ally within 5 squares Bloodied or Down) ${f2(hk(S3, "Paladin", "hookClass"))}; the Archer's (its Marked Quarry goes Down) ${f2(hk(S3, "Archer", "hookClass"))}. A hook is used only when it raises the Escalation (at 3 it waits), so these are raises.`, "");
+  log("S3. Escalation");
+
+  // 4. Guard from unspent AP.
+  const byCls = (R0, cls, key, per = false) => mean(R0.rs.flatMap(r => r.out.flatMap(f => f.pcs.filter(p => p.build.name.startsWith(cls)).map(p => (per ? p.st[key] / Math.max(1, p.st.rounds) : p.st[key])))));
+  const holdP = x => x.replace(/^turn Main: Divine Surge, Smite 2, Weapon Attack, Weapon Attack$/m, "turn Main: Divine Surge, Smite 2, Weapon Attack");
+  const holdA = x => x.replace(/^turn Pin: .*$/m, "turn Pin: Double Shot 2, Lock & Loose");
+  L.push("## 4. Guard from unspent AP", "", "The 4 Standards fight with every piece, NPCs as the Bestiary has them. The plans spend every AP, so an AP is left only when a step can't be made; to price the rule, a **hold** turn keeps one AP: the Paladins' main turn drops its second Weapon Attack (Divine Surge, Smite 2, Weapon Attack), the Archers' drops Pinning Shot (Double Shot 2, Lock & Loose). Per PC a fight; party = all 4 PCs.", "",
+    "| Rule and plan | rounds · lost · Down · won | AP left a turn (Paladin · Archer) | Guard gained · used a fight (Paladin / Archer) | Reactions a fight (Paladin · Archer) | Party dealt · taken |", "|---|---|---|---|---|---|");
+  const G4 = {};
+  for (const [name, rules, o] of [["Guard 2 an AP, the plans (every AP spent)", SHEET, LN], ["Paladins hold an AP, no Guard (part 1's rule: the AP pays Reactions)", { ...SHEET, apGuard: 0 }, { ...LN, edits: { "paladin-smite-r1": holdP } }], ["Paladins hold an AP, Guard 2 (the AP is gone)", SHEET, { ...LN, edits: { "paladin-smite-r1": holdP } }], ["Paladins hold, Guard 2, and the kept AP may still pay a Reaction (losing its Guard)", { ...SHEET, apGuardKeep: true }, { ...LN, edits: { "paladin-smite-r1": holdP } }], ["Paladins hold, Guard 3 (Stage 2's value)", { ...SHEET, apGuard: 3 }, { ...LN, edits: { "paladin-smite-r1": holdP } }], ["Archers hold an AP, Guard 2", SHEET, { ...LN, edits: { "archer-double-r1": holdA, "archer-rolling-r1": x => x.replace(/^turn Main: .*$/m, "turn Main: Rolling Shot 2, Lock & Loose") } }]]) {
+    at(rules, START1); const r = both(keys, [["standard", 4]], {}, RUNS, 17, o); G4[name] = r;
+    L.push(`| ${name} | ${cell(r)} | ${f2(byCls(r, "Paladin", "apLeft", true))} · ${f2(byCls(r, "Archer", "apLeft", true))} | ${f1(byCls(r, "Paladin", "apGuardGiven"))} · ${f1(byCls(r, "Paladin", "apGuardUsed"))} / ${f1(byCls(r, "Archer", "apGuardGiven"))} · ${f1(byCls(r, "Archer", "apGuardUsed"))} | ${f2(byCls(r, "Paladin", "reactions"))} · ${f2(byCls(r, "Archer", "reactions"))} | ${f1(r.dealt)} · ${f1(taken(r))} |`);
+  }
+  L.push("", "For scale: 1 AP is worth 5.8 DE at 4 AP (part 1, section 2), a Weapon Attack about 5.4, the second one in a turn (its At-will Bane) about 4.5.", "");
+  log("S4. Guard");
+
+  // 5. The Bestiary's factors.
+  L.push("## 5. The Bestiary's factors: a quarter, 30% or a third of the party's Health", "", `Every piece on (the Health line is the PCs' and stays): the NPC Health factor **h** for which 4 Standards last ${ROUNDS} rounds, then the NPC damage factor **d** (on the Basic attack tables, so on the Specials too) for which the fight costs the party the target share of its Health (bisection, alternating twice). Once with the book's Special multipliers, once with them × 1.25.`, "",
+    "| Specials | Target | NPC Health × h | NPC damage × d | 4 Standards at these factors | Party damage taken a fight | Downs a fight: a Paladin · an Archer |", "|---|---|---:|---:|---|---:|---|");
+  const calib2 = (rules, target) => { at(rules, START1); let h = 1, d = 0.7; for (let it = 0; it < 2; it++) { h = solve(x => both(keys, [["standard", 4]], { h: x, d }, CAL, 17, LN).rounds, ROUNDS, 0.5, 2); d = solve(x => both(keys, [["standard", 4]], { h, d: x }, CAL, 17, LN).lost, target, 0.25, 1.6); } return { h, d }; };
+  const FIT = {};
+  const downsBy = (r, cls) => mean(r.rs.map(x => x.by(cls).downs));
+  for (const [sn, rules] of [["× 1 (the book)", SHEET], ["× 1.25", { ...SHEET, npcSpecials: 1.25 }]]) for (const target of [0.25, 0.3, 0.33]) {
+    const f = calib2(rules, target); FIT[`${sn}|${target}`] = { ...f, rules };
+    at(rules, START1); const r = both(keys, [["standard", 4]], f, RUNS, 17, LN);
+    L.push(`| ${sn} | ${pc(target)} | ${f2(f.h)} | ${f2(f.d)} | ${cell(r)} | ${f1(taken(r))} | ${f2(downsBy(r, "Paladin"))} · ${f2(downsBy(r, "Archer"))} |`);
+    log(`S5. fitted ${sn} ${target}`);
+  }
+  { const f0 = FIT["× 1 (the book)|0.25"]; at(SHEET, START1); const d = solve(x => both(keys, [["standard", 4]], { h: f0.h, d: x }, CAL, 17, LN).down, 0.1, 0.25, 1.2); FIT.down10 = { h: f0.h, d, rules: SHEET };
+    const r = both(keys, [["standard", 4]], FIT.down10, RUNS, 17, LN);
+    L.push(`| × 1 (the book) | a Down in 1 fight of 10 | ${f2(f0.h)} | ${f2(d)} | ${cell(r)} | ${f1(taken(r))} | ${f2(downsBy(r, "Paladin"))} · ${f2(downsBy(r, "Archer"))} |`); log("S5. fitted Down 10%"); }
+  L.push("", `With the factors, a Medium Standard has ${npc1("standard").pool} × h Health and a Basic attack of ${npc1("standard").t2} / ${npc1("standard").t3} × d.`, "");
+  L.push("**Fights by CV at the book's Special multipliers** (the Bestiary's targets so far: easy 2.5 rounds / 20%, normal 3.5 / a third, hard 4.5-5 / half, deadly 6 / half to three quarters):", "", "| Encounter | a quarter | 30% | a third |", "|---|---|---|---|");
+  const CVR = {};
+  for (const [name, list] of ENCOUNTERS) L.push(`| ${name} | ${[0.25, 0.3, 0.33].map(t => { const f = FIT[`× 1 (the book)|${t}`]; at(f.rules, START1); const r = both(keys, list, f, RUNS, 17, LN); (CVR[t] ??= {})[name] = r; return cell(r); }).join(" | ")} |`);
+  L.push("");
+  log("S5. by CV");
+
+  // 6. The Hallmark Reaction's budget: Shield of Faith's size.
+  const DF = FIT["× 1 (the book)|0.25"];   // the sheet's default target (rework-r.md section 14)
+  L.push("## 6. The Hallmark Reaction: Shield of Faith's size", "", `The 4 Standards fight at the default factors (a quarter of the Health: h ${f2(DF.h)}, d ${f2(DF.d)}), every piece on; both Paladins with the Reaction named (the Archers keep Quick Draw). A block takes its dice off one NPC hit on the Paladin or an ally within 5 squares, once per NPC turn. **Worth** = what the Reaction itself did (its damage, the damage its block took off, the damage its Guard absorbed) per Paladin turn, and in AP at 5.8 DE. (A fight to the death can't price it by the party's damage: the NPCs' Health caps it; a Reaction's damage ends the fight sooner.)`, "",
+    "| Paladin's Reaction | rounds · lost · Down · won | Reactions a fight (a Paladin) | Blocked · its Guard used · its damage, a fight (a Paladin) | Worth a Paladin turn (DE · AP) |", "|---|---|---:|---|---|");
+  let g0 = 0;
+  for (const [name, edit] of [["None", x => x.replace(/^reaction .*$/m, "")], ["Opportunity Attack (the basic Reaction)", x => x], ["Shield of Faith 1d4 + [Mod]", x => x.replace(/^reaction Opportunity Attack: opportunity$/m, "reaction Shield of Faith: block 1d4+[Mod]")], ["Shield of Faith 1d6 + [Mod]", x => x.replace(/^reaction Opportunity Attack: opportunity$/m, "reaction Shield of Faith: block 1d6+[Mod]")], ["Shield of Faith 1d8 + [Mod] (today's)", sofBlock], ["Shield of Faith 2d6 + [Mod]", x => x.replace(/^reaction Opportunity Attack: opportunity$/m, "reaction Shield of Faith: block 2d6+[Mod]")], ["Shield of Faith 2d8 + [Mod]", x => x.replace(/^reaction Opportunity Attack: opportunity$/m, "reaction Shield of Faith: block 2d8+[Mod]")], ["Shield of Faith 1d8 + [Mod], the rest becomes Guard on the target", x => x.replace(/^reaction Opportunity Attack: opportunity$/m, "reaction Shield of Faith: block 1d8+[Mod] spill")], ["Shield of Faith 2d6 + [Mod], the rest becomes Guard", x => x.replace(/^reaction Opportunity Attack: opportunity$/m, "reaction Shield of Faith: block 2d6+[Mod] spill")]]) {
+    at(DF.rules, START1); const r = both(keys, [["standard", 4]], DF, RUNS, 17, { ...LN, edits: { "paladin-smite-r1": edit } });
+    const gc = byCls(r, "Paladin", "guardCredit"); if (name === "None") g0 = gc;
+    const bl = byCls(r, "Paladin", "blockCredit"), sp = Math.max(0, gc - g0), dm = byCls(r, "Paladin", "reactionDealt"), de = (bl + sp + dm) / byCls(r, "Paladin", "rounds");   // sp: Guard used over the "None" row's (Divine Surge's): the block's rest
+    L.push(`| ${name} | ${cell(r)} | ${f2(byCls(r, "Paladin", "reactions"))} | ${f1(bl)} · ${f1(sp)} · ${f1(dm)} | ${f2(de)} · ${f2(de / 5.8)} |`);
+  }
+  L.push("", "The worth includes what the other PCs gain (a blocked hit on an ally); the Archers' Quick Draw is in every row. A block can't take more than the hit: at these factors a Standard's Basic attack averages " + `${f1(6 * DF.d)} / ${f1(11 * DF.d)} and its 2 AP Special ${f1(6 * DF.d * 2.2)} / ${f1(11 * DF.d * 2.2)}` + ", so bigger dice saturate.", "");
+  log("S6. Shield of Faith");
+
+  // 7. The dice cut: two shapes.
+  L.push("## 7. The dice cut: the Encounter and Daily ceilings, or × 0.75 on everything", "", "**A. Ceilings:** an Encounter Action's dice (besides [W] and [Mod]) at most its AP on Tier 2 and its AP + 1 on Tier 3 (a Daily: one more each); in these builds only Holy Wrath moves (3 AP: 3d8 / 5d8 / 7d8 → 2d8 / 3d8 / 4d8; 2 AP: 2d6 / 3d8 / 4d8 → 1d8 / 2d8 / 3d8). **B. × 0.75:** every damage the PCs deal × 0.75 (weapon, dice, Modifier). Both at the default factors (a quarter); then h re-fitted so the fight lasts 3.5 rounds again.", "");
+  const HW = x => x + "\naction Holy Wrath 3 | ap 3 | encounter | traits divine strike weapon | vs ad | tiers [B] 1[W] + [M] 2d8 Ho / [B] 1[W] + [Mod] + [M] 3d8 Ho / [B] 1[W] + [Mod] + [M] 4d8 Ho\naction Holy Wrath 2 | ap 2 | encounter | traits divine strike weapon | vs ad | tiers [B] 1[W] + [M] 1d8 Ho / [B] 1[W] + [Mod] + [M] 2d8 Ho / [B] 1[W] + [Mod] + [M] 3d8 Ho\n";
+  const SHAPES = [["None (today's dice)", LN], ["A. Ceilings", { ...LN, edits: { "paladin-smite-r1": HW } }], ["B. × 0.75", { ...LN, dmg: 0.75 }]];
+  setRules(SHEET);
+  const pal = o => partyOf("r", o)[0], arc = o => partyOf("r", o)[2];
+  L.push("| Shape | Paladin main turn · Nova (Def 13, Esc 3) | Archer main turn | 4 Standards at the default factors | h for 3.5 rounds | 4 Standards at that h | The Nova's share of a Paladin's damage |", "|---|---|---|---|---:|---|---:|");
+  for (const [name, o] of SHAPES) {
+    const pb = pal(o), ab = arc(o), pm = S.turnDamage(pb, "main", 13).avg, pn = S.turnDamage(pb, "nova", 13).avg, am = S.turnDamage(ab, "pin", 13).avg;
+    at(DF.rules, START1); const r = both(keys, [["standard", 4]], DF, RUNS, 17, o);
+    const h = solve(x => both(keys, [["standard", 4]], { h: x, d: DF.d }, CAL, 17, o).rounds, ROUNDS, 0.4, 2);
+    const r2 = both(keys, [["standard", 4]], { h, d: DF.d }, RUNS, 17, o);
+    const nova = mean(r2.rs.map(x => mean(x.out.flatMap(f => f.pcs.filter(p => p.build.name.startsWith("Paladin")).map(p => p.st.novaDealt / Math.max(1, p.st.dealt))))));
+    L.push(`| ${name} | ${f1(pm)} · ${f1(pn)} | ${f1(am)} | ${cell(r)} | ${f2(h)} | ${cell(r2)} | ${pc(nova)} |`);
+  }
+  L.push("");
+  log("S7. the dice cut");
+
+  // 8. The Health line at levels 1, 5 and 8 (arithmetic).
+  L.push("## 8. The Health line at levels 1, 5 and 8 (arithmetic)", "", "Human, high on Vigor. **Today** = the book's thresholds with today's Attributes (they don't grow) × (Level + 17) / 16. A Standard's turn = the Bestiary's 2 Basic attacks against the PC's AD (Paladin 14, Archer 13) with today's Stage rows, before any factor; **turns to Down** = Health ÷ that.", "",
+    "| Level | Paladin today · the line | Archer today · the line | Party (2 + 2) today · the line | A Standard's turn (vs AD 14 · 13) | Standard turns to Down the Paladin · the Archer (the line) | Rally Point heal (the line: Paladin · Archer) |", "|---:|---|---|---|---|---|---|");
+  const today = (body, mind, bm, mm, sb, sm, lv) => Math.ceil(((body + 2) * bm + sb) * (lv + 17) / 16) + Math.ceil(((mind + 2) * mm + sm) * (lv + 17) / 16);
+  for (const lv of [1, 5, 8]) {
+    const pT = today(2, 1, 4, 4, 3, 4, lv), aT = today(1, 1, 3, 2.5, 3, 4, lv), pv = lineValues("Paladin", lv), av = lineValues("Archer", lv), pL = pv.vigor + pv.resolve, aL = av.vigor + av.resolve;
+    const n = S.npcOf("standard", "medium", lv), st14 = strike(n, 14) + strike(n, 14, 1), st13 = strike(n, 13) + strike(n, 13, 1);
+    L.push(`| ${lv} | ${pT} · **${pL}** (${pv.vigor} / ${pv.resolve}) | ${aT} · **${aL}** (${av.vigor} / ${av.resolve}) | ${2 * pT + 2 * aT} · ${2 * pL + 2 * aL} | ${f1(st14)} · ${f1(st13)} | ${f1(pL / st14)} · ${f1(aL / st13)} (today ${f1(pT / st14)} · ${f1(aT / st13)}) | ${Math.ceil(pL / 4)} · ${Math.ceil(aL / 4)} |`);
+  }
+  L.push("", `A Standard's Health by Stage (today's rows): ${[1, 5, 8].map(lv => S.npcOf("standard", "medium", lv).pool).join(" / ")}; its Basic attack ${[1, 5, 8].map(lv => `${S.npcOf("standard", "medium", lv).t2} / ${S.npcOf("standard", "medium", lv).t3}`).join(" → ")}.`, "");
+  // The healing and Guard cards against the pools.
+  L.push("**Healing, Guard and blocks against the pools** (level 1; average amount and its share of the Paladin's · the Archer's Health, today → the line):", "", "| Card | Average | Paladin 40 → 35 | Archer 27 → 29 |", "|---|---:|---|---|");
+  for (const [name, avg] of [["A Rally Point (a quarter of the pool; Lay On Hands spends them)", null], ["Mending Light (start of turn, [PMod] + 1)", 3], ["Divine Surge's Guard (2d6)", 7], ["Smite 3's Guard (1d8 + [PMod])", 6.5], ["Shield of Faith (block 1d8 + [PMod])", 6.5], ["Bulwark of Faith (block 9)", 9], ["Guard from 1 unspent AP (Stage 1)", 2]])
+    L.push(avg == null ? `| ${name} | 10 · 7 → 9 · 8 | 25% → 25% | 25% → 25% |` : `| ${name} | ${f1(avg)} | ${pc(avg / 40)} → ${pc(avg / 35)} | ${pc(avg / 27)} → ${pc(avg / 29)} |`);
+  L.push("");
+  // 9. The Archer's Hallmark Reaction: what makes a Weapon Attack Reaction worth 1 AP (Lucas's question on item 9).
+  L.push("## 9. The Archer's Reaction: bigger hits or a trigger that comes more often", "", `The 4 Standards fight at the default factors (h ${f2(DF.h)}, d ${f2(DF.d)}), every piece on; the Paladins keep Opportunity Attack; both Archers take the Reaction named. **Quick Draw** = a Trigger when an enemy within 5 squares moves closer (the stand-in); **Overwatch** = a Trigger after an enemy within 10 squares makes a Strike (once per NPC turn). **Worth** = the Reaction's own damage per Archer turn, and in AP (5.8 DE).`, "",
+    "| The Archer's Reaction | rounds · lost · Down · won | Reactions a fight (an Archer) | Its damage a fight (an Archer) | Worth an Archer turn (DE · AP) |", "|---|---|---:|---:|---|");
+  const QS = (tiers, extra = "") => x => x + `\naction Quick Shot | ap 1 | traits ranged shot strike weapon${extra} | vs ad | tiers ${tiers}\n`;
+  const rx = (line, act) => x => x.replace(/^reaction .*$/m, line ? `reaction ${line}` : "") + (act ? act("") : "");
+  for (const [name, edit] of [["None", rx(null)], ["Quick Draw: a Weapon Attack (1[W])", x => x], ["Quick Draw with 2[W]", rx("Quick Draw: quick-draw with Quick Shot", QS("0 / [B] 2[W] + [Mod] / [B] 2[W] + [Mod]"))], ["Quick Draw, Empowered 2 (+2 a die)", rx("Quick Draw: quick-draw with Quick Shot", QS("0 / [B] 1[W] + [Mod] + 2 / [B] 1[W] + [Mod] + 2"))], ["Quick Draw with 1 Boon", rx("Quick Draw: quick-draw with Weapon Attack (+1 boon)")], ["Overwatch: a Weapon Attack", rx("Overwatch: overwatch")], ["Overwatch with 2[W]", rx("Overwatch: overwatch with Quick Shot", QS("0 / [B] 2[W] + [Mod] / [B] 2[W] + [Mod]"))]]) {
+    at(DF.rules, START1); const r = both(keys, [["standard", 4]], DF, RUNS, 17, { ...LN, edits: { "archer-double-r1": edit, "archer-rolling-r1": edit } });
+    const de = byCls(r, "Archer", "reactionDealt") / byCls(r, "Archer", "rounds");
+    L.push(`| ${name} | ${cell(r)} | ${f2(byCls(r, "Archer", "reactions"))} | ${f1(byCls(r, "Archer", "reactionDealt"))} | ${f2(de)} · ${f2(de / 5.8)} |`);
+  }
+  L.push("", "**Action compression** (arithmetic): a Reaction that makes your next turn's first 1 AP Action cost 0 is worth 1 AP each time it fires; at Quick Draw's rate (about 1.5 fires in 3.5 turns) that is 0.43 AP a turn, a little over Quick Draw's Weapon Attack: the trigger's frequency, not the effect's kind, is what keeps a Reaction under 1 AP.", "");
+  log("S9. the Archer's Reaction");
+
+  // 10. Divine Surge and Vanish as Escalation 1 Passives (Lucas's question on item 15): every fight starts at Escalation 1, so they are on from turn 1.
+  L.push("## 10. Divine Surge and Vanish as Escalation 1 Passives", "", `The 4 Standards fight at the default factors, every piece on (every fight starts at Escalation 1, so an Escalation 1 Passive works from the first turn). Divine Surge is already in every Paladin turn (0 AP, every round): its worth is the allies' extra damage it gives plus the Guard it absorbs. Vanish (Evade 2 and +1 Defense for 1 round, 0 AP) is added at the end of each Archer turn: its worth is the damage the Archers take less (and they keep their AP). Per turn of its owner; for scale, part 1's Escalation Passives: Radiant Zeal +3.5 damage a turn, Killer's Focus +2.7, Marked Quarry +3.9, Hallowed Stance 0.8, Elusive 0.2, Font of Mercy 0.3.`, "",
+    "| | rounds · lost · Down · won | Worth a turn of its owner (DE · AP) | How |", "|---|---|---|---|");
+  { at(DF.rules, START1); const r = both(keys, [["standard", 4]], DF, RUNS, 17, LN), t = byCls(r, "Paladin", "rounds"), su = byCls(r, "Paladin", "surgeCredit"), gu = byCls(r, "Paladin", "guardCredit");
+    L.push(`| Divine Surge (Paladin) | ${cell(r)} | ${f2((su + gu) / t)} · ${f2((su + gu) / t / 5.8)} | ${f1(su)} allies' damage + ${f1(gu)} Guard used a fight |`);
+    const noS = x => x.replace(/^(turn [^:]+:) Divine Surge, /gm, "$1 ");
+    const r0 = both(keys, [["standard", 4]], DF, RUNS, 17, { ...LN, edits: { "paladin-smite-r1": noS } });
+    L.push(`| Without Divine Surge | ${cell(r0)} | | the same fight with no Divine Surge in the turns |`);
+    const vA = x => x.replace(/^(turn (?:Main|Pin|Kite|Main with the step|Main with the long roll): .*)$/gm, "$1, Vanish");
+    const r1 = both(keys, [["standard", 4]], DF, RUNS, 17, { ...LN, edits: { "archer-double-r1": vA, "archer-rolling-r1": vA } });
+    const tk0 = byCls(r, "Archer", "taken"), tk1 = byCls(r1, "Archer", "taken"), ta = byCls(r1, "Archer", "rounds");
+    L.push(`| Vanish at the end of each Archer turn | ${cell(r1)} | ${f2((tk0 - tk1) / ta)} · ${f2((tk0 - tk1) / ta / 5.8)} | an Archer takes ${f1(tk1)} a fight instead of ${f1(tk0)} |`); }
+  L.push("");
+  log("S10. the Escalation 1 Passives");
+  START = null; setRules({});
+  L.push(`(${((Date.now() - t1) / 60000).toFixed(0)} minutes.)`);
+  return L.join("\n");
+}
+
+if (process.argv[1] && fileURLToPath(import.meta.url) === fs.realpathSync(process.argv[1]) && process.argv.includes("--sheet")) {
+  const text = sheet();
+  fs.writeFileSync(HERE + "rework-sheet.md", text);
+  if (!process.argv.includes("--quiet")) console.log(text);
+  log("done");
+} else if (process.argv[1] && fileURLToPath(import.meta.url) === fs.realpathSync(process.argv[1])) {
   const text = run();
   fs.writeFileSync(HERE + "rework.md", text);
   if (!process.argv.includes("--quiet")) console.log(text);
