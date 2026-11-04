@@ -178,7 +178,7 @@
     {
      "ap": 1,
      "tiers": [
-      "[R] 1d8 Ho; Pushed 2, and Frightened of you (EoT).",
+      "[R] 1d8 Ho; Pushed 2, and Frightened of you for 1 round.",
       "[R] 1d6 Ho; Pushed 1.",
       "No effect."
      ],
@@ -277,7 +277,7 @@
     }
    },
    "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): a Burst (on a corner within 10 squares), Pushed 1 / 2 from the Burst's center on Tiers 2 and 3, Prone on a Critical.",
-   "notes": "The Burst's center is the origin of the Push."
+   "notes": "The Burst's center is the origin of the Push (see [[Forced Movement]])."
   },
   {
    "name": "Bulwark of Faith",
@@ -326,7 +326,7 @@
    "versions": [
     {
      "ap": 1,
-     "effects": "For 3 rounds, you and allies in the Aura gain +1 Defense. The first time each round an ally in the Aura is hit by a [Strike] Action, you can Evade 1 toward them.",
+     "effects": "For 3 rounds, you and allies in the Aura gain +1 Defense. The first time each round a [Strike] Action would damage an ally in the Aura, you can Evade 1 toward them, before the damage.",
      "foundry": {
       "fx": {
        "all": [
@@ -599,7 +599,7 @@
       "[V] 1[W] + [Mod] + [R] 2d8 Ho",
       "[V] 1[W] + [Mod] + [R] 3d8 Ho"
      ],
-     "effects": "You roll once and compare the result to each target's AD. Each target you hit is Pushed 1 and sheds Bright light in a 1 Emanation for 1 round. A Bloodied target is Prone instead; a Strained target also Bleeds [R] 1d6 Ho (Mi/Ap).",
+     "effects": "You roll once and compare the result to each target's AD. Each target you hit is Pushed 1 and sheds Bright light in a 1 Emanation for 1 round. A Bloodied target is Prone instead; a Strained target also gains Bleed [R] 1d6 Ho (Mi/Ap).",
      "ruler": "area 1.5"
     }
    ],

@@ -164,7 +164,7 @@ staunch you (with your Save, or its own: Skills, D3)?
 written ([B] or [M]) when it isn't the Attributes' own: "Bleed 1 ([B] Ap)" is Body damage with an Appeal Save; and **Bleed can be dice**
 ("Bleed 2d6", "Bleed 1d4+2"), flat numbers still allowed.
 
-## Bleed (the rule, decided; for the book with the first group that uses it: Conditions)
+## Bleed (the rule, decided; in the book since the conditions pass of 2026-11-04, Chapter 8; the pool is written before the value there: Bleed [V] 1 (Ap))
 
 > **Bleed X (Attributes):** at the end of each of its turns, the creature takes X damage (a number or dice, rolled each time). The damage is
 > Body for **Bo/In** and Mind for **Mi/Ap**, unless the Bleed writes its pool: **Bleed 1 ([B] Ap)**. A creature can end it with **Interact

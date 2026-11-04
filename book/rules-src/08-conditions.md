@@ -5,7 +5,7 @@ These conditions are in alphabetical order. A creature can't have the same condi
 
 ### Bleed
 
-**Bleed X (Attributes)** is damage that keeps coming: at the end of each of your turns, you take X damage, a number or dice rolled each time. It is Vigor damage when the Attributes are **Bo/In** and Resolve damage when they are **Mi/Ap**, unless the Bleed writes its pool: **Bleed 1 ([V] Ap)** is Vigor damage with an Appeal Save. A Bleed can have a subtype (Bleed 1d4 Fi).
+**Bleed X (Attributes)** is damage that keeps coming: at the end of each of your turns, you take X damage, a number or dice rolled each time. It is Vigor damage when the Attributes are **Bo/In** and Resolve damage when they are **Mi/Ap**, unless the Bleed writes its pool before the value: **Bleed [V] 1 (Ap)** is Vigor damage with an Appeal Save. A Bleed can have a subtype, written after the value: **Bleed [R] 1d6 Ho (Mi/Ap)**.
 
 You can end it with **Interact (1 AP)**, on yourself or on a bleeding creature within your Reach: the bleeding creature makes a Save with the better of the two Attributes against **DC 13**, or the DC the Bleed writes (**Bleed 1d6 (Bo/In; DC 15)**). **Tier 1:** no effect. **Tier 2:** you take half the Bleed at the end of this turn, then it ends. **Tier 3:** it ends. Healing doesn't end a Bleed; the end of the encounter does. If you would Bleed again, keep the Bleed with the higher average (see [[Stacking]]).
 
