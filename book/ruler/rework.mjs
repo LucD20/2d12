@@ -22,7 +22,7 @@ const mean = a => a.reduce((s, x) => s + x, 0) / (a.length || 1);
 const f1 = x => (Number.isFinite(x) ? x.toFixed(1) : "-"), f2 = x => (Number.isFinite(x) ? x.toFixed(2) : "-"), pc = x => (Number.isFinite(x) ? `${Math.round(x * 100)}%` : "-");
 
 /* ------------------------------------------------------------------ the rules of a run */
-const TODAY = { ap: 5, reactionAp: 0, escalation: "spent", npcAp: 5, minionAp: 3, npcReactionAp: 0, npcSpecials: 0, apGuard: 0, apGuardKeep: false, escHooks: false };
+const TODAY = { ap: 5, reactionAp: 0, escalation: "spent", npcAp: 5, minionAp: 3, npcReactionAp: 0, npcSpecials: 0, apGuard: 0, apGuardKeep: false, escHooks: false, oaDisrupt: true };
 const R_RULES = { ap: 4, reactionAp: 1, escalation: "level", npcAp: 4, minionAp: 3, npcReactionAp: 1 };
 const setRules = o => Object.assign(S.RULES, TODAY, o);
 
@@ -380,7 +380,7 @@ plan Nova | Main, Main
 
 /* ------------------------------------------------------------------ part 2: the decision sheet's numbers */
 const C = await import(new URL("../../foundry/twod12/module/calc.mjs", import.meta.url).href);
-const SHEET = { ...R_RULES, npcSpecials: 1, apGuard: 2, escHooks: true };   // the rework as decided (section 12), with the Specials at the book's multipliers
+const SHEET = { ...R_RULES, npcSpecials: 1, apGuard: 2, escHooks: true, oaDisrupt: false };   // oaDisrupt: Lucas 2026-11-04 (item 6: no Critical disrupt on the basic Opportunity Attack)   // the rework as decided (section 12), with the Specials at the book's multipliers
 const START1 = k => (k % 2 ? 1 : 2);                                         // every fight starts at Escalation 1 (Momentum: 2): half the fights with Momentum
 const LN = { line: true };
 export function sheet() {
@@ -482,15 +482,12 @@ export function sheet() {
 
   // 6. The Hallmark Reaction's budget: Shield of Faith's size.
   const DF = FIT["× 1 (the book)|0.25"];   // the sheet's default target (rework-r.md section 14)
-  L.push("## 6. The Hallmark Reaction: Shield of Faith's size", "", `The 4 Standards fight at the default factors (a quarter of the Health: h ${f2(DF.h)}, d ${f2(DF.d)}), every piece on; both Paladins with the Reaction named (the Archers keep Quick Draw). A block takes its dice off one NPC hit on the Paladin or an ally within 5 squares, once per NPC turn. Worth = damage dealt more + taken less than with no Reaction at all; per Paladin turn, and in AP at 5.8 DE.`, "",
-    "| Paladin's Reaction | rounds · lost · Down · won | Reactions a fight (a Paladin) | Blocked a fight (a Paladin) | Worth a Paladin turn (DE · AP) |", "|---|---|---:|---:|---|");
-  let none = null;
+  L.push("## 6. The Hallmark Reaction: Shield of Faith's size", "", `The 4 Standards fight at the default factors (a quarter of the Health: h ${f2(DF.h)}, d ${f2(DF.d)}), every piece on; both Paladins with the Reaction named (the Archers keep Quick Draw). A block takes its dice off one NPC hit on the Paladin or an ally within 5 squares, once per NPC turn. **Worth** = what the Reaction itself did (its damage, the damage its block took off, the damage its Guard absorbed) per Paladin turn, and in AP at 5.8 DE. (A fight to the death can't price it by the party's damage: the NPCs' Health caps it; a Reaction's damage ends the fight sooner.)`, "",
+    "| Paladin's Reaction | rounds · lost · Down · won | Reactions a fight (a Paladin) | Blocked · its Guard used · its damage, a fight (a Paladin) | Worth a Paladin turn (DE · AP) |", "|---|---|---:|---|---|");
   for (const [name, edit] of [["None", x => x.replace(/^reaction .*$/m, "")], ["Opportunity Attack (the basic Reaction)", x => x], ["Shield of Faith 1d4 + [Mod]", x => x.replace(/^reaction Opportunity Attack: opportunity$/m, "reaction Shield of Faith: block 1d4+[Mod]")], ["Shield of Faith 1d6 + [Mod]", x => x.replace(/^reaction Opportunity Attack: opportunity$/m, "reaction Shield of Faith: block 1d6+[Mod]")], ["Shield of Faith 1d8 + [Mod] (today's)", sofBlock], ["Shield of Faith 2d6 + [Mod]", x => x.replace(/^reaction Opportunity Attack: opportunity$/m, "reaction Shield of Faith: block 2d6+[Mod]")], ["Shield of Faith 2d8 + [Mod]", x => x.replace(/^reaction Opportunity Attack: opportunity$/m, "reaction Shield of Faith: block 2d8+[Mod]")], ["Shield of Faith 1d8 + [Mod], the rest becomes Guard on the target", x => x.replace(/^reaction Opportunity Attack: opportunity$/m, "reaction Shield of Faith: block 1d8+[Mod] spill")], ["Shield of Faith 2d6 + [Mod], the rest becomes Guard", x => x.replace(/^reaction Opportunity Attack: opportunity$/m, "reaction Shield of Faith: block 2d6+[Mod] spill")]]) {
     at(DF.rules, START1); const r = both(keys, [["standard", 4]], DF, RUNS, 17, { ...LN, edits: { "paladin-smite-r1": edit } });
-    const tk = taken(r), pt = byCls(r, "Paladin", "rounds") * 2;
-    none ??= { dealt: r.dealt, taken: tk };
-    const de = (r.dealt - none.dealt) + (none.taken - tk);
-    L.push(`| ${name} | ${cell(r)} | ${f2(byCls(r, "Paladin", "reactions"))} | ${f1(byCls(r, "Paladin", "blockCredit"))} | ${f2(de / pt)} · ${f2(de / pt / 5.8)} |`);
+    const bl = byCls(r, "Paladin", "blockCredit"), sp = byCls(r, "Paladin", "spillUsed"), dm = byCls(r, "Paladin", "reactionDealt"), de = (bl + sp + dm) / byCls(r, "Paladin", "rounds");
+    L.push(`| ${name} | ${cell(r)} | ${f2(byCls(r, "Paladin", "reactions"))} | ${f1(bl)} · ${f1(sp)} · ${f1(dm)} | ${f2(de)} · ${f2(de / 5.8)} |`);
   }
   L.push("", "The worth includes what the other PCs gain (a blocked hit on an ally); the Archers' Quick Draw is in every row. A block can't take more than the hit: at these factors a Standard's Basic attack averages " + `${f1(6 * DF.d)} / ${f1(11 * DF.d)} and its 2 AP Special ${f1(6 * DF.d * 2.2)} / ${f1(11 * DF.d * 2.2)}` + ", so bigger dice saturate.", "");
   log("S6. Shield of Faith");
@@ -528,6 +525,33 @@ export function sheet() {
   for (const [name, avg] of [["A Rally Point (a quarter of the pool; Lay On Hands spends them)", null], ["Mending Light (start of turn, [PMod] + 1)", 3], ["Divine Surge's Guard (2d6)", 7], ["Smite 3's Guard (1d8 + [PMod])", 6.5], ["Shield of Faith (block 1d8 + [PMod])", 6.5], ["Bulwark of Faith (block 9)", 9], ["Guard from 1 unspent AP (Stage 1)", 2]])
     L.push(avg == null ? `| ${name} | 10 · 7 → 9 · 8 | 25% → 25% | 25% → 25% |` : `| ${name} | ${f1(avg)} | ${pc(avg / 40)} → ${pc(avg / 35)} | ${pc(avg / 27)} → ${pc(avg / 29)} |`);
   L.push("");
+  // 9. The Archer's Hallmark Reaction: what makes a Weapon Attack Reaction worth 1 AP (Lucas's question on item 9).
+  L.push("## 9. The Archer's Reaction: bigger hits or a trigger that comes more often", "", `The 4 Standards fight at the default factors (h ${f2(DF.h)}, d ${f2(DF.d)}), every piece on; the Paladins keep Opportunity Attack; both Archers take the Reaction named. **Quick Draw** = a Trigger when an enemy within 5 squares moves closer (the stand-in); **Overwatch** = a Trigger after an enemy within 10 squares makes a Strike (once per NPC turn). **Worth** = the Reaction's own damage per Archer turn, and in AP (5.8 DE).`, "",
+    "| The Archer's Reaction | rounds · lost · Down · won | Reactions a fight (an Archer) | Its damage a fight (an Archer) | Worth an Archer turn (DE · AP) |", "|---|---|---:|---:|---|");
+  const QS = (tiers, extra = "") => x => x + `\naction Quick Shot | ap 1 | traits ranged shot strike weapon${extra} | vs ad | tiers ${tiers}\n`;
+  const rx = (line, act) => x => x.replace(/^reaction .*$/m, line ? `reaction ${line}` : "") + (act ? act("") : "");
+  for (const [name, edit] of [["None", rx(null)], ["Quick Draw: a Weapon Attack (1[W])", x => x], ["Quick Draw with 2[W]", rx("Quick Draw: quick-draw with Quick Shot", QS("0 / [B] 2[W] + [Mod] / [B] 2[W] + [Mod]"))], ["Quick Draw, Empowered 2 (+2 a die)", rx("Quick Draw: quick-draw with Quick Shot", QS("0 / [B] 1[W] + [Mod] + 2 / [B] 1[W] + [Mod] + 2"))], ["Quick Draw with 1 Boon", rx("Quick Draw: quick-draw with Weapon Attack (+1 boon)")], ["Overwatch: a Weapon Attack", rx("Overwatch: overwatch")], ["Overwatch with 2[W]", rx("Overwatch: overwatch with Quick Shot", QS("0 / [B] 2[W] + [Mod] / [B] 2[W] + [Mod]"))]]) {
+    at(DF.rules, START1); const r = both(keys, [["standard", 4]], DF, RUNS, 17, { ...LN, edits: { "archer-double-r1": edit, "archer-rolling-r1": edit } });
+    const de = byCls(r, "Archer", "reactionDealt") / byCls(r, "Archer", "rounds");
+    L.push(`| ${name} | ${cell(r)} | ${f2(byCls(r, "Archer", "reactions"))} | ${f1(byCls(r, "Archer", "reactionDealt"))} | ${f2(de)} · ${f2(de / 5.8)} |`);
+  }
+  L.push("", "**Action compression** (arithmetic): a Reaction that makes your next turn's first 1 AP Action cost 0 is worth 1 AP each time it fires; at Quick Draw's rate (about 1.5 fires in 3.5 turns) that is 0.43 AP a turn, a little over Quick Draw's Weapon Attack: the trigger's frequency, not the effect's kind, is what keeps a Reaction under 1 AP.", "");
+  log("S9. the Archer's Reaction");
+
+  // 10. Divine Surge and Vanish as Escalation 1 Passives (Lucas's question on item 15): every fight starts at Escalation 1, so they are on from turn 1.
+  L.push("## 10. Divine Surge and Vanish as Escalation 1 Passives", "", `The 4 Standards fight at the default factors, every piece on (every fight starts at Escalation 1, so an Escalation 1 Passive works from the first turn). Divine Surge is already in every Paladin turn (0 AP, every round): its worth is the allies' extra damage it gives plus the Guard it absorbs. Vanish (Evade 2 and +1 Defense for 1 round, 0 AP) is added at the end of each Archer turn: its worth is the damage the Archers take less (and they keep their AP). Per turn of its owner; for scale, part 1's Escalation Passives: Radiant Zeal +3.5 damage a turn, Killer's Focus +2.7, Marked Quarry +3.9, Hallowed Stance 0.8, Elusive 0.2, Font of Mercy 0.3.`, "",
+    "| | rounds · lost · Down · won | Worth a turn of its owner (DE · AP) | How |", "|---|---|---|---|");
+  { at(DF.rules, START1); const r = both(keys, [["standard", 4]], DF, RUNS, 17, LN), t = byCls(r, "Paladin", "rounds"), su = byCls(r, "Paladin", "surgeCredit"), gu = byCls(r, "Paladin", "guardCredit");
+    L.push(`| Divine Surge (Paladin) | ${cell(r)} | ${f2((su + gu) / t)} · ${f2((su + gu) / t / 5.8)} | ${f1(su)} allies' damage + ${f1(gu)} Guard used a fight |`);
+    const noS = x => x.replace(/^(turn [^:]+:) Divine Surge, /gm, "$1 ");
+    const r0 = both(keys, [["standard", 4]], DF, RUNS, 17, { ...LN, edits: { "paladin-smite-r1": noS } });
+    L.push(`| Without Divine Surge | ${cell(r0)} | | the same fight with no Divine Surge in the turns |`);
+    const vA = x => x.replace(/^(turn (?:Main|Pin|Kite|Main with the step|Main with the long roll): .*)$/gm, "$1, Vanish");
+    const r1 = both(keys, [["standard", 4]], DF, RUNS, 17, { ...LN, edits: { "archer-double-r1": vA, "archer-rolling-r1": vA } });
+    const tk0 = byCls(r, "Archer", "taken"), tk1 = byCls(r1, "Archer", "taken"), ta = byCls(r1, "Archer", "rounds");
+    L.push(`| Vanish at the end of each Archer turn | ${cell(r1)} | ${f2((tk0 - tk1) / ta)} · ${f2((tk0 - tk1) / ta / 5.8)} | an Archer takes ${f1(tk1)} a fight instead of ${f1(tk0)} |`); }
+  L.push("");
+  log("S10. the Escalation 1 Passives");
   START = null; setRules({});
   L.push(`(${((Date.now() - t1) / 60000).toFixed(0)} minutes.)`);
   return L.join("\n");

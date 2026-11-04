@@ -21,18 +21,18 @@ The CV 4 encounters (rounds · the party's Health lost · a PC goes Down · won)
 
 | Encounter | Part 1 | + the Health line | + Escalation from 1, hooks | + Guard from unspent AP | + the Specials (× 1) | the Specials × 1.25 instead |
 |---|---|---|---|---|---|---|
-| 4 Standards (4) | 3.5 r · 29% · Down 22% · won 100% | 3.5 r · 30% · Down 25% · won 100% | 3.3 r · 23% · Down 15% · won 100% | 3.3 r · 23% · Down 15% · won 100% | 3.8 r · 53% · Down 68% · won 87% | 3.9 r · 67% · Down 82% · won 68% |
-| Elite + 2 Standards (4) | 3.6 r · 29% · Down 24% · won 100% | 3.7 r · 30% · Down 29% · won 100% | 3.5 r · 24% · Down 17% · won 100% | 3.5 r · 24% · Down 17% · won 100% | 4.0 r · 46% · Down 66% · won 95% | 4.2 r · 57% · Down 81% · won 85% |
-| 2 Elites (4) | 3.7 r · 31% · Down 29% · won 100% | 3.8 r · 33% · Down 33% · won 100% | 3.6 r · 26% · Down 20% · won 100% | 3.6 r · 26% · Down 20% · won 100% | 4.0 r · 45% · Down 66% · won 97% | 4.3 r · 56% · Down 82% · won 87% |
-| 8 Grunts (4) | 3.5 r · 30% · Down 15% · won 100% | 3.5 r · 31% · Down 15% · won 100% | 3.4 r · 24% · Down 8% · won 100% | 3.4 r · 24% · Down 8% · won 100% | 3.8 r · 46% · Down 49% · won 97% | 4.1 r · 56% · Down 65% · won 90% |
-| 2 Standards + 8 Minions (4) | 3.5 r · 23% · Down 14% · won 100% | 3.4 r · 24% · Down 13% · won 100% | 3.4 r · 19% · Down 11% · won 100% | 3.4 r · 19% · Down 11% · won 100% | 3.8 r · 45% · Down 58% · won 95% | 4.0 r · 56% · Down 72% · won 87% |
+| 4 Standards (4) | 3.5 r · 29% · Down 22% · won 100% | 3.5 r · 30% · Down 25% · won 100% | 3.3 r · 23% · Down 15% · won 100% | 3.3 r · 23% · Down 15% · won 100% | 3.9 r · 54% · Down 70% · won 87% | 3.9 r · 68% · Down 84% · won 68% |
+| Elite + 2 Standards (4) | 3.6 r · 29% · Down 24% · won 100% | 3.7 r · 30% · Down 29% · won 100% | 3.5 r · 24% · Down 17% · won 100% | 3.5 r · 24% · Down 17% · won 100% | 4.0 r · 46% · Down 66% · won 95% | 4.2 r · 57% · Down 81% · won 84% |
+| 2 Elites (4) | 3.7 r · 31% · Down 29% · won 100% | 3.8 r · 33% · Down 33% · won 100% | 3.6 r · 26% · Down 20% · won 100% | 3.6 r · 26% · Down 20% · won 100% | 4.1 r · 45% · Down 67% · won 96% | 4.3 r · 57% · Down 82% · won 86% |
+| 8 Grunts (4) | 3.5 r · 30% · Down 15% · won 100% | 3.5 r · 31% · Down 15% · won 100% | 3.4 r · 24% · Down 8% · won 100% | 3.4 r · 24% · Down 8% · won 100% | 3.8 r · 45% · Down 47% · won 98% | 4.1 r · 56% · Down 65% · won 90% |
+| 2 Standards + 8 Minions (4) | 3.5 r · 23% · Down 14% · won 100% | 3.4 r · 24% · Down 13% · won 100% | 3.4 r · 19% · Down 11% · won 100% | 3.4 r · 19% · Down 11% · won 100% | 3.8 r · 45% · Down 58% · won 96% | 3.9 r · 56% · Down 72% · won 86% |
 
 The 4 Standards fight, per fight (all 4 PCs):
 
 | | Part 1 | + the Health line | + Escalation from 1, hooks | + Guard from unspent AP | + the Specials (× 1) | the Specials × 1.25 instead |
 |---|---:|---:|---:|---:|---:|---:|
-| Party damage dealt · a PC turn | 289.2 · 24.2 | 288.4 · 24.2 | 287.2 · 24.7 | 287.2 · 24.7 | 274.3 · 24.7 | 251.8 · 24.8 |
-| Damage taken (after Guard and blocks) | 45.7 | 46.5 | 34.8 | 34.8 | 88.8 | 115.8 |
+| Party damage dealt · a PC turn | 289.2 · 24.2 | 288.4 · 24.2 | 287.2 · 24.7 | 287.2 · 24.7 | 274.7 · 24.6 | 252.1 · 24.9 |
+| Damage taken (after Guard and blocks) | 45.7 | 46.5 | 34.8 | 34.8 | 90.7 | 118.1 |
 | PC turns at Escalation 0 / 1 / 2 / 3 | 0.5 / 1.0 / 0.9 / 0.6 | 0.5 / 1.0 / 0.9 / 0.6 | 0.0 / 0.5 / 0.8 / 1.7 | 0.0 / 0.5 / 0.8 / 1.7 | 0.0 / 0.4 / 0.7 / 1.7 | 0.0 / 0.4 / 0.6 / 1.5 |
 
 Guard from unspent AP changes nothing here: the plans spend every AP (section 4 prices it with turns that hold one).
@@ -43,10 +43,10 @@ The 4 Standards fight with every piece (column 5 of section 2). An Apex (Encount
 
 | Per PC | all fights | with Momentum (starts at 2) | without (starts at 1) | Part 1 (starts at 0, Momentum 1), all fights |
 |---|---:|---:|---:|---:|
-| A turn at Escalation 2 or more · such turns a fight | 91% · 2.33 | 98% · 2.79 | 84% · 1.87 | 90% · 1.51 |
-| A turn at Escalation 3 or more · such turns a fight | 82% · 1.67 | 89% · 1.89 | 75% · 1.45 | 52% · 0.61 |
+| A turn at Escalation 2 or more · such turns a fight | 91% · 2.35 | 98% · 2.80 | 84% · 1.90 | 90% · 1.51 |
+| A turn at Escalation 3 or more · such turns a fight | 81% · 1.69 | 87% · 1.90 | 75% · 1.47 | 52% · 0.61 |
 
-**The hooks, per PC a fight:** the Critical hook fires 0.05 times for a Paladin and 0.09 for an Archer (it can't fire twice); the Paladin's hook (an ally within 5 squares Bloodied or Down) 0.32; the Archer's (its Marked Quarry goes Down) 0.62. A hook is used only when it raises the Escalation (at 3 it waits), so these are raises.
+**The hooks, per PC a fight:** the Critical hook fires 0.05 times for a Paladin and 0.09 for an Archer (it can't fire twice); the Paladin's hook (an ally within 5 squares Bloodied or Down) 0.33; the Archer's (its Marked Quarry goes Down) 0.61. A hook is used only when it raises the Escalation (at 3 it waits), so these are raises.
 
 ## 4. Guard from unspent AP
 
@@ -54,12 +54,12 @@ The 4 Standards fight with every piece, NPCs as the Bestiary has them. The plans
 
 | Rule and plan | rounds · lost · Down · won | AP left a turn (Paladin · Archer) | Guard gained · used a fight (Paladin / Archer) | Reactions a fight (Paladin · Archer) | Party dealt · taken |
 |---|---|---|---|---|---|
-| Guard 2 an AP, the plans (every AP spent) | 3.8 r · 53% · Down 68% · won 87% | 0.00 · 0.00 | 0.0 · 0.0 / 0.0 · 0.0 | 0.79 · 1.47 | 274.3 · 88.8 |
-| Paladins hold an AP, no Guard (part 1's rule: the AP pays Reactions) | 4.0 r · 55% · Down 71% · won 86% | 0.00 · 0.00 | 0.0 · 0.0 / 0.0 · 0.0 | 0.82 · 1.51 | 272.5 · 91.9 |
-| Paladins hold an AP, Guard 2 (the AP is gone) | 4.0 r · 55% · Down 70% · won 87% | 0.29 · 0.00 | 1.9 · 0.8 / 0.0 · 0.0 | 0.79 · 1.50 | 272.6 · 91.2 |
-| Paladins hold, Guard 2, and the kept AP may still pay a Reaction (losing its Guard) | 4.0 r · 54% · Down 69% · won 87% | 0.29 · 0.00 | 1.9 · 0.8 / 0.0 · 0.0 | 0.80 · 1.48 | 272.9 · 90.0 |
-| Paladins hold, Guard 3 (Stage 2's value) | 4.0 r · 54% · Down 70% · won 87% | 0.29 · 0.00 | 2.9 · 1.2 / 0.0 · 0.0 | 0.79 · 1.50 | 272.6 · 90.2 |
-| Archers hold an AP, Guard 2 | 4.0 r · 57% · Down 72% · won 84% | 0.00 · 0.31 | 0.0 · 0.0 / 2.0 · 0.5 | 0.83 · 1.60 | 268.0 · 95.2 |
+| Guard 2 an AP, the plans (every AP spent) | 3.9 r · 54% · Down 70% · won 87% | 0.00 · 0.00 | 0.0 · 0.0 / 0.0 · 0.0 | 0.77 · 1.50 | 274.7 · 90.7 |
+| Paladins hold an AP, no Guard (part 1's rule: the AP pays Reactions) | 4.0 r · 56% · Down 72% · won 85% | 0.00 · 0.00 | 0.0 · 0.0 / 0.0 · 0.0 | 0.80 · 1.53 | 270.9 · 93.5 |
+| Paladins hold an AP, Guard 2 (the AP is gone) | 4.0 r · 54% · Down 67% · won 87% | 0.28 · 0.00 | 1.8 · 0.8 / 0.0 · 0.0 | 0.79 · 1.50 | 272.4 · 90.4 |
+| Paladins hold, Guard 2, and the kept AP may still pay a Reaction (losing its Guard) | 4.0 r · 53% · Down 68% · won 87% | 0.28 · 0.00 | 1.8 · 0.8 / 0.0 · 0.0 | 0.81 · 1.46 | 272.8 · 90.1 |
+| Paladins hold, Guard 3 (Stage 2's value) | 4.0 r · 54% · Down 69% · won 86% | 0.29 · 0.00 | 2.9 · 1.2 / 0.0 · 0.0 | 0.79 · 1.50 | 271.1 · 91.0 |
+| Archers hold an AP, Guard 2 | 4.0 r · 56% · Down 72% · won 84% | 0.00 · 0.31 | 0.0 · 0.0 / 2.0 · 0.5 | 0.80 · 1.61 | 269.1 · 94.3 |
 
 For scale: 1 AP is worth 5.8 DE at 4 AP (part 1, section 2), a Weapon Attack about 5.4, the second one in a turn (its At-will Bane) about 4.5.
 
@@ -69,13 +69,13 @@ Every piece on (the Health line is the PCs' and stays): the NPC Health factor **
 
 | Specials | Target | NPC Health × h | NPC damage × d | 4 Standards at these factors | Party damage taken a fight | Downs a fight: a Paladin · an Archer |
 |---|---|---:|---:|---|---:|---|
-| × 1 (the book) | 25% | 1.04 | 0.58 | 3.5 r · 25% · Down 17% · won 100% | 37.7 | 0.05 · 0.05 |
-| × 1 (the book) | 30% | 1.02 | 0.67 | 3.5 r · 30% · Down 29% · won 100% | 46.8 | 0.10 · 0.08 |
-| × 1 (the book) | 33% | 0.99 | 0.72 | 3.5 r · 32% · Down 32% · won 100% | 50.7 | 0.11 · 0.09 |
-| × 1.25 | 25% | 1.04 | 0.49 | 3.5 r · 25% · Down 17% · won 100% | 37.9 | 0.04 · 0.05 |
-| × 1.25 | 30% | 0.99 | 0.56 | 3.5 r · 30% · Down 27% · won 100% | 46.0 | 0.09 · 0.07 |
-| × 1.25 | 33% | 0.98 | 0.62 | 3.5 r · 33% · Down 33% · won 99% | 52.4 | 0.12 · 0.09 |
-| × 1 (the book) | a Down in 1 fight of 10 | 1.04 | 0.51 | 3.4 r · 21% · Down 9% · won 100% | 30.7 | 0.02 · 0.03 |
+| × 1 (the book) | 25% | 1.04 | 0.58 | 3.5 r · 25% · Down 18% · won 100% | 38.3 | 0.05 · 0.05 |
+| × 1 (the book) | 30% | 0.99 | 0.68 | 3.4 r · 30% · Down 27% · won 100% | 46.5 | 0.09 · 0.07 |
+| × 1 (the book) | 33% | 1.01 | 0.72 | 3.5 r · 33% · Down 34% · won 99% | 51.4 | 0.12 · 0.10 |
+| × 1.25 | 25% | 1.04 | 0.49 | 3.5 r · 25% · Down 17% · won 100% | 37.7 | 0.04 · 0.06 |
+| × 1.25 | 30% | 0.99 | 0.57 | 3.5 r · 30% · Down 27% · won 100% | 46.8 | 0.09 · 0.07 |
+| × 1.25 | 33% | 0.99 | 0.60 | 3.5 r · 32% · Down 33% · won 99% | 51.6 | 0.12 · 0.09 |
+| × 1 (the book) | a Down in 1 fight of 10 | 1.04 | 0.51 | 3.4 r · 21% · Down 8% · won 100% | 30.3 | 0.02 · 0.03 |
 
 With the factors, a Medium Standard has 63 × h Health and a Basic attack of 6 / 11 × d.
 
@@ -83,33 +83,33 @@ With the factors, a Medium Standard has 63 × h Health and a Basic attack of 6 /
 
 | Encounter | a quarter | 30% | a third |
 |---|---|---|---|
-| 3 Standards (CV 3, easy) | 2.7 r · 15% · Down 6% · won 100% | 2.7 r · 18% · Down 10% · won 100% | 2.6 r · 20% · Down 16% · won 100% |
-| 4 Standards (4) | 3.5 r · 25% · Down 17% · won 100% | 3.5 r · 30% · Down 29% · won 100% | 3.5 r · 32% · Down 32% · won 100% |
-| Elite + 2 Standards (4) | 3.6 r · 21% · Down 12% · won 100% | 3.6 r · 26% · Down 23% · won 100% | 3.5 r · 29% · Down 29% · won 100% |
-| 2 Elites (4) | 3.6 r · 21% · Down 11% · won 100% | 3.6 r · 26% · Down 22% · won 100% | 3.6 r · 28% · Down 28% · won 100% |
-| 8 Grunts (4) | 3.5 r · 23% · Down 7% · won 100% | 3.5 r · 28% · Down 15% · won 100% | 3.5 r · 29% · Down 17% · won 100% |
-| 2 Standards + 8 Minions (4) | 3.4 r · 21% · Down 10% · won 100% | 3.5 r · 25% · Down 18% · won 100% | 3.4 r · 27% · Down 22% · won 100% |
-| 5 Standards (5, hard) | 4.6 r · 39% · Down 41% · won 98% | 4.6 r · 48% · Down 55% · won 92% | 4.7 r · 54% · Down 64% · won 87% |
-| 6 Standards (6, deadly) | 5.7 r · 58% · Down 66% · won 84% | 5.5 r · 70% · Down 80% · won 68% | 5.2 r · 75% · Down 85% · won 57% |
-| 2 Elites + 2 Standards (6, deadly) | 5.7 r · 43% · Down 46% · won 97% | 5.9 r · 54% · Down 65% · won 87% | 5.9 r · 61% · Down 74% · won 80% |
+| 3 Standards (CV 3, easy) | 2.7 r · 15% · Down 6% · won 100% | 2.6 r · 18% · Down 12% · won 100% | 2.6 r · 20% · Down 15% · won 100% |
+| 4 Standards (4) | 3.5 r · 25% · Down 18% · won 100% | 3.4 r · 30% · Down 27% · won 100% | 3.5 r · 33% · Down 34% · won 99% |
+| Elite + 2 Standards (4) | 3.6 r · 22% · Down 14% · won 100% | 3.5 r · 26% · Down 23% · won 100% | 3.6 r · 29% · Down 28% · won 100% |
+| 2 Elites (4) | 3.6 r · 22% · Down 12% · won 100% | 3.5 r · 26% · Down 23% · won 100% | 3.7 r · 29% · Down 29% · won 100% |
+| 8 Grunts (4) | 3.5 r · 23% · Down 6% · won 100% | 3.4 r · 28% · Down 14% · won 100% | 3.5 r · 30% · Down 17% · won 100% |
+| 2 Standards + 8 Minions (4) | 3.4 r · 21% · Down 12% · won 100% | 3.4 r · 25% · Down 19% · won 100% | 3.5 r · 27% · Down 24% · won 100% |
+| 5 Standards (5, hard) | 4.5 r · 39% · Down 39% · won 98% | 4.6 r · 48% · Down 54% · won 93% | 4.7 r · 53% · Down 63% · won 88% |
+| 6 Standards (6, deadly) | 5.8 r · 58% · Down 67% · won 84% | 5.4 r · 71% · Down 81% · won 66% | 5.3 r · 76% · Down 85% · won 55% |
+| 2 Elites + 2 Standards (6, deadly) | 5.7 r · 43% · Down 47% · won 96% | 5.8 r · 55% · Down 65% · won 88% | 5.9 r · 60% · Down 73% · won 82% |
 
 ## 6. The Hallmark Reaction: Shield of Faith's size
 
-The 4 Standards fight at the default factors (a quarter of the Health: h 1.04, d 0.58), every piece on; both Paladins with the Reaction named (the Archers keep Quick Draw). A block takes its dice off one NPC hit on the Paladin or an ally within 5 squares, once per NPC turn. Worth = damage dealt more + taken less than with no Reaction at all; per Paladin turn, and in AP at 5.8 DE.
+The 4 Standards fight at the default factors (a quarter of the Health: h 1.04, d 0.58), every piece on; both Paladins with the Reaction named (the Archers keep Quick Draw). A block takes its dice off one NPC hit on the Paladin or an ally within 5 squares, once per NPC turn. **Worth** = what the Reaction itself did (its damage, the damage its block took off, the damage its Guard absorbed) per Paladin turn, and in AP at 5.8 DE. (A fight to the death can't price it by the party's damage: the NPCs' Health caps it; a Reaction's damage ends the fight sooner.)
 
-| Paladin's Reaction | rounds · lost · Down · won | Reactions a fight (a Paladin) | Blocked a fight (a Paladin) | Worth a Paladin turn (DE · AP) |
-|---|---|---:|---:|---|
-| None | 3.6 r · 27% · Down 20% · won 100% | 0.00 | 0.0 | 0.00 · 0.00 |
-| Opportunity Attack (the basic Reaction) | 3.5 r · 25% · Down 17% · won 100% | 0.88 | 0.0 | 0.50 · 0.09 |
-| Shield of Faith 1d4 + [Mod] | 3.5 r · 18% · Down 9% · won 100% | 2.45 | 10.4 | 2.48 · 0.43 |
-| Shield of Faith 1d6 + [Mod] | 3.5 r · 17% · Down 9% · won 100% | 2.43 | 12.1 | 2.54 · 0.44 |
-| Shield of Faith 1d8 + [Mod] (today's) | 3.5 r · 16% · Down 8% · won 100% | 2.42 | 13.3 | 2.81 · 0.48 |
-| Shield of Faith 2d6 + [Mod] | 3.5 r · 14% · Down 6% · won 100% | 2.41 | 16.0 | 3.54 · 0.61 |
-| Shield of Faith 2d8 + [Mod] | 3.5 r · 13% · Down 7% · won 100% | 2.41 | 17.0 | 3.53 · 0.61 |
-| Shield of Faith 1d8 + [Mod], the rest becomes Guard on the target | 3.5 r · 15% · Down 8% · won 100% | 2.42 | 13.2 | 3.01 · 0.52 |
-| Shield of Faith 2d6 + [Mod], the rest becomes Guard | 3.5 r · 13% · Down 6% · won 100% | 2.42 | 16.0 | 3.71 · 0.64 |
+| Paladin's Reaction | rounds · lost · Down · won | Reactions a fight (a Paladin) | Blocked · its Guard used · its damage, a fight (a Paladin) | Worth a Paladin turn (DE · AP) |
+|---|---|---:|---|---|
+| None | 3.6 r · 27% · Down 19% · won 100% | 0.00 | 0.0 · 0.0 · 0.0 | 0.00 · 0.00 |
+| Opportunity Attack (the basic Reaction) | 3.5 r · 25% · Down 18% · won 100% | 0.89 | 0.0 · 0.0 · 4.8 | 1.62 · 0.28 |
+| Shield of Faith 1d4 + [Mod] | 3.5 r · 18% · Down 10% · won 100% | 2.44 | 10.4 · 0.0 · 0.0 | 3.33 · 0.57 |
+| Shield of Faith 1d6 + [Mod] | 3.5 r · 17% · Down 9% · won 100% | 2.45 | 12.2 · 0.0 · 0.0 | 3.94 · 0.68 |
+| Shield of Faith 1d8 + [Mod] (today's) | 3.5 r · 16% · Down 8% · won 100% | 2.43 | 13.3 · 0.0 · 0.0 | 4.28 · 0.74 |
+| Shield of Faith 2d6 + [Mod] | 3.5 r · 14% · Down 7% · won 100% | 2.41 | 16.0 · 0.0 · 0.0 | 5.16 · 0.89 |
+| Shield of Faith 2d8 + [Mod] | 3.5 r · 13% · Down 7% · won 100% | 2.42 | 17.1 · 0.0 · 0.0 | 5.50 · 0.95 |
+| Shield of Faith 1d8 + [Mod], the rest becomes Guard on the target | 3.5 r · 15% · Down 8% · won 100% | 2.43 | 13.3 · 0.5 · 0.0 | 4.48 · 0.77 |
+| Shield of Faith 2d6 + [Mod], the rest becomes Guard | 3.5 r · 13% · Down 7% · won 100% | 2.44 | 16.2 · 1.1 · 0.0 | 5.58 · 0.96 |
 
-The worth includes what the other PCs gain (a blocked hit on an ally); the Archers' Quick Draw is in every row. A block can't take more than the hit: at these factors a Standard's Basic attack averages 3.5 / 6.3 and its 2 AP Special 7.6 / 14.0, so bigger dice saturate.
+The worth includes what the other PCs gain (a blocked hit on an ally); the Archers' Quick Draw is in every row. A block can't take more than the hit: at these factors a Standard's Basic attack averages 3.5 / 6.4 and its 2 AP Special 7.6 / 14.0, so bigger dice saturate.
 
 ## 7. The dice cut: the Encounter and Daily ceilings, or × 0.75 on everything
 
@@ -117,9 +117,9 @@ The worth includes what the other PCs gain (a blocked hit on an ally); the Arche
 
 | Shape | Paladin main turn · Nova (Def 13, Esc 3) | Archer main turn | 4 Standards at the default factors | h for 3.5 rounds | 4 Standards at that h | The Nova's share of a Paladin's damage |
 |---|---|---|---|---:|---|---:|
-| None (today's dice) | 21.4 · 32.9 | 28.2 | 3.5 r · 25% · Down 17% · won 100% | 1.05 | 3.5 r · 25% · Down 17% · won 100% | 40% |
-| A. Ceilings | 21.4 · 24.1 | 28.2 | 3.7 r · 27% · Down 19% · won 100% | 0.99 | 3.5 r · 25% · Down 17% · won 100% | 34% |
-| B. × 0.75 | 16.0 · 24.7 | 21.2 | 4.5 r · 32% · Down 28% · won 99% | 0.79 | 3.4 r · 25% · Down 16% · won 100% | 40% |
+| None (today's dice) | 21.4 · 32.9 | 28.2 | 3.5 r · 25% · Down 18% · won 100% | 1.05 | 3.5 r · 25% · Down 18% · won 100% | 40% |
+| A. Ceilings | 21.4 · 24.1 | 28.2 | 3.6 r · 27% · Down 20% · won 100% | 1.01 | 3.6 r · 27% · Down 20% · won 100% | 33% |
+| B. × 0.75 | 16.0 · 24.7 | 21.2 | 4.5 r · 32% · Down 30% · won 100% | 0.79 | 3.4 r · 25% · Down 17% · won 100% | 40% |
 
 ## 8. The Health line at levels 1, 5 and 8 (arithmetic)
 
@@ -145,4 +145,30 @@ A Standard's Health by Stage (today's rows): 63 / 71 / 96; its Basic attack 6 / 
 | Bulwark of Faith (block 9) | 9.0 | 23% → 26% | 33% → 31% |
 | Guard from 1 unspent AP (Stage 1) | 2.0 | 5% → 6% | 7% → 7% |
 
-(5 minutes.)
+## 9. The Archer's Reaction: bigger hits or a trigger that comes more often
+
+The 4 Standards fight at the default factors (h 1.04, d 0.58), every piece on; the Paladins keep Opportunity Attack; both Archers take the Reaction named. **Quick Draw** = a Trigger when an enemy within 5 squares moves closer (the stand-in); **Overwatch** = a Trigger after an enemy within 10 squares makes a Strike (once per NPC turn). **Worth** = the Reaction's own damage per Archer turn, and in AP (5.8 DE).
+
+| The Archer's Reaction | rounds · lost · Down · won | Reactions a fight (an Archer) | Its damage a fight (an Archer) | Worth an Archer turn (DE · AP) |
+|---|---|---:|---:|---|
+| None | 3.7 r · 27% · Down 19% · won 100% | 0.00 | 0.0 | 0.00 · 0.00 |
+| Quick Draw: a Weapon Attack (1[W]) | 3.5 r · 25% · Down 18% · won 100% | 1.21 | 7.8 | 2.54 · 0.44 |
+| Quick Draw with 2[W] | 3.4 r · 24% · Down 16% · won 100% | 1.16 | 12.3 | 4.14 · 0.71 |
+| Quick Draw, Empowered 2 (+2 a die) | 3.4 r · 25% · Down 16% · won 100% | 1.18 | 9.2 | 3.05 · 0.53 |
+| Quick Draw with 1 Boon | 3.5 r · 25% · Down 17% · won 100% | 1.18 | 8.2 | 2.67 · 0.46 |
+| Overwatch: a Weapon Attack | 3.3 r · 25% · Down 16% · won 100% | 2.70 | 16.2 | 5.64 · 0.97 |
+| Overwatch with 2[W] | 3.1 r · 24% · Down 16% · won 100% | 2.55 | 24.9 | 9.19 · 1.59 |
+
+**Action compression** (arithmetic): a Reaction that makes your next turn's first 1 AP Action cost 0 is worth 1 AP each time it fires; at Quick Draw's rate (about 1.5 fires in 3.5 turns) that is 0.43 AP a turn, a little over Quick Draw's Weapon Attack: the trigger's frequency, not the effect's kind, is what keeps a Reaction under 1 AP.
+
+## 10. Divine Surge and Vanish as Escalation 1 Passives
+
+The 4 Standards fight at the default factors, every piece on (every fight starts at Escalation 1, so an Escalation 1 Passive works from the first turn). Divine Surge is already in every Paladin turn (0 AP, every round): its worth is the allies' extra damage it gives plus the Guard it absorbs. Vanish (Evade 2 and +1 Defense for 1 round, 0 AP) is added at the end of each Archer turn: its worth is the damage the Archers take less (and they keep their AP). Per turn of its owner; for scale, part 1's Escalation Passives: Radiant Zeal +3.5 damage a turn, Killer's Focus +2.7, Marked Quarry +3.9, Hallowed Stance 0.8, Elusive 0.2, Font of Mercy 0.3.
+
+| | rounds · lost · Down · won | Worth a turn of its owner (DE · AP) | How |
+|---|---|---|---|
+| Divine Surge (Paladin) | 3.5 r · 25% · Down 18% · won 100% | 5.13 · 0.88 | 6.9 allies' damage + 8.5 Guard used a fight |
+| Without Divine Surge | 3.7 r · 35% · Down 29% · won 99% | | the same fight with no Divine Surge in the turns |
+| Vanish at the end of each Archer turn | 3.5 r · 24% · Down 14% · won 100% | 0.23 · 0.04 | an Archer takes 6.7 a fight instead of 7.4 |
+
+(6 minutes.)
