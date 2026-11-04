@@ -71,7 +71,7 @@ export const ON_NPC = [
   ["Dazed 2", (w, p) => S.MAPCOND(rnd(p, upFoes(w)), "Dazed 2")],
   ["Staggered (EoT)", (w, p) => S.MAPCOND(rnd(p, upFoes(w)), "Staggered (EoT)")],
   ["Blinded (EoT)", (w, p) => S.MAPCOND(rnd(p, upFoes(w)), "Blinded (EoT)")],
-  ["Frightened (EoT), its Bane only", (w, p) => S.MAPCOND(rnd(p, upFoes(w)), "Frightened (EoT)")],
+  ["Frightened (EoT)", (w, p) => S.MAPCOND(rnd(p, upFoes(w)), "Frightened (EoT)")],
   ["Taunted by the nearest Paladin (1 round)", (w, p) => { const f = rnd(p, upFoes(w)); return S.MAPCOND(f, "Taunted (1 round)", nearestPc(w, f, "Paladin")); }],
   ["Bleed 1d4 (Bo/In)", (w, p) => { const f = rnd(p, upFoes(w)); return S.MAPCOND(f, "Bleed 1d4 (Bo/In)", nearestPc(w, f)); }],   // credited to the PC that caused it
   ["Bleed 2d6 (Bo/In)", (w, p) => { const f = rnd(p, upFoes(w)); return S.MAPCOND(f, "Bleed 2d6 (Bo/In)", nearestPc(w, f)); }],

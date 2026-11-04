@@ -8,6 +8,11 @@ globalThis.Hooks ??= { on() {} }; globalThis.Combat ??= class {}; globalThis.CON
 const { parseTierFull, convertEffects } = await import("../module/gen.mjs");
 const { loadCards, isReaction, hasVersions, splitTier, isDamage, stripLinks, stripBold } = await import(new URL("../../../book/cards/load.mjs", import.meta.url).href);   // a URL, not a path: a Windows path is not a valid ESM import (v0.0.231)
 export { loadCards };
+// Pack R-classes (Lucas, 2026-11-04): the ruler's worth of each class card (book/ruler/worth.json, written by rclasses.mjs) is printed as a tiny line on the item, for the playtests.
+const { readFileSync, existsSync } = await import("node:fs");
+const WORTH_FILE = new URL("../../../book/ruler/worth.json", import.meta.url);
+export const WORTH = existsSync(WORTH_FILE) ? JSON.parse(readFileSync(WORTH_FILE, "utf8")) : {};
+const worthLine = name => (WORTH[name] ? `<p class="ruler-worth"><small><em>${WORTH[name]}</em></small></p>` : "");
 
 const FREQ = { "at-will": "atwill", turn: "turn", round: "round", encounter: "encounter", daily: "daily" };
 const TRAIT_KEY = { power: "magic" };   // the book's word -> Foundry's key (config.mjs: the key stays "magic", the label is Power)
@@ -119,7 +124,7 @@ export function cardSystem(c, resolve = s => s) {
   if (c.requirements) sys.requirements = stripLinks(c.requirements);
   if (c.prerequisites) sys.prerequisites = stripLinks(c.prerequisites);
   if (c.setup) sys.setup = resolve(fxText(c.setup, c.foundry?.appendSetup));
-  const prose = [c.rules, c.notes].filter(Boolean).map(t => `<p>${boldHtml(stripLinks(t))}</p>`).join("");
+  const prose = [c.rules, c.notes].filter(Boolean).map(t => `<p>${boldHtml(stripLinks(t))}</p>`).join("") + worthLine(c.name);
   if (prose) sys.description = prose;
   if (c.category === "Basic attack") sys.basicAttack = true;   // an NPC's Basic attack stands in for the Weapon Attack NPCs don't have
   sys.versions = versionsOf(c).map((v, i) => { const d = versionData(c, v, resolve); if (area && i > 0 && area.sizes[i] && area.sizes[i] !== area.sizes[0]) d.areaSize = area.sizes[i]; return d; });
@@ -133,7 +138,7 @@ export function featureSystem(c, resolve = s => s) {
   if (isAction(c)) throw new Error(`${c.name}: a Feature card has no versions`);
   const category = String(c.category).replace(/\s*\(Passive\)$/, "");
   const text = [boldHtml(stripLinks(c.text ?? "")), c.foundry?.append ?? ""].filter(Boolean).join(" ");
-  const sys = { category, level: c.level ?? c.foundry?.level ?? 0, description: text ? `<p>${text}</p>` : "" };
+  const sys = { category, level: c.level ?? c.foundry?.level ?? 0, description: (text ? `<p>${text}</p>` : "") + worthLine(c.name) };
   if (c.foundry?.settings) sys.settings = JSON.parse(resolve(JSON.stringify(c.foundry.settings)));
   if (c.foundry?.actions) sys.actions = c.foundry.actions.map(n => resolve(`{{action:${n}}}`));
   if (c.flavor) sys.flavor = c.flavor;

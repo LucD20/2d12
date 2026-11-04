@@ -9,6 +9,9 @@ import fs from "node:fs";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
 const S = await import(new URL("./spec.mjs", import.meta.url).href);
+const E = await import(new URL("./econ.mjs", import.meta.url).href);   // the price list's valueOf (section 7)
+const CL = await import(new URL("../cards/load.mjs", import.meta.url).href);
+const PO = await import(new URL("./positions.mjs", import.meta.url).href);   // the prices of Pushes and conditions (Rebuke's riders)
 const HERE = fileURLToPath(new URL(".", import.meta.url));
 const QUICK = process.argv.includes("--quick");
 const RUNS = QUICK ? 200 : 800;
@@ -26,6 +29,7 @@ const setRules = o => Object.assign(S.RULES, TODAY, o);
 
 /* ------------------------------------------------------------------ the PCs: the R builds with the Health line */
 const read = file => fs.readFileSync(`${HERE}rework/${file}.txt`, "utf8");
+
 const LINE = { Paladin: [[20, 10], [32, 16], [46, 23]], Archer: [[16, 8], [25, 13], [36, 19]] }, SPECIES = { human: [3, 2] };
 const stageOf = lv => (lv >= 8 ? 3 : lv >= 5 ? 2 : 1);
 function load(file, edit = x => x) {
@@ -59,6 +63,8 @@ function fights(pcsBuilds, npcs, n = RUNS, seed = 17) {
     escTurns: [0, 1, 2, 3].map(k => mean(out.flatMap(f => f.pcs.filter(p => p.build.name.startsWith("Paladin")).map(p => p.st.escTurns[k])))), sel, one, out };
 }
 const cell = r => `${f1(r.rounds)} r · ${pc(r.lost)} · Down ${pc(r.down)} · won ${pc(r.won)}`;
+const MEASURED = {};   // card name -> { ap: AP a turn, note } from the fights (Reactions, Passives), for the ledger (section 7) and Foundry's tiny texts (worth.json)
+const short = n => n.split(" (")[0];
 const STD4 = [["standard", 4]];
 
 /* ------------------------------------------------------------------ the report */
@@ -94,6 +100,9 @@ export function run() {
     const gc = r.sel("Paladin", "guardCredit"); if (name === "None") g0 = gc;
     const bl = r.sel("Paladin", "blockCredit"), sp = Math.max(0, gc - g0), dm = r.sel("Paladin", "reactionDealt"), de = (bl + sp + dm) / r.sel("Paladin", "rounds");   // Rebuke's Push and Frightened are not in its worth (positions prices them about 1 DE each)
     L.push(`| ${name} | ${cell(r)} | ${f2(r.sel("Paladin", "reactions"))} | ${f1(bl)} · ${f1(sp)} · ${f1(dm)} | ${f2(de)} · ${f2(de / AP_DE)} |`);
+    let riders = 0;   // Rebuke: its Push and Frightened by arithmetic (the positions prices), by the Save's tiers (Appeal +1 against DC 13: about 28% fail, 45% Tier 2)
+    if (/^Rebuke \(/.test(name)) { const fires = r.sel("Paladin", "reactions"), per = 0.28 * (PO.priceOf("push", "", 2) + (PO.priceOf("debuff", "Frightened (EoT)") ?? 0)) + 0.45 * PO.priceOf("push", "", 1); riders = per * fires / r.sel("Paladin", "rounds"); L.push(`| Rebuke's Push and Frightened, by arithmetic (${f1(per)} DE a fire × ${f2(fires)} fires) | | | | ${f2(riders)} · ${f2(riders / AP_DE)} |`); }
+    if (/^(Shield of Faith|Rebuke) \(/.test(name)) MEASURED[short(name)] = { ap: (de + riders) / AP_DE, kind: "reaction" };
   }
   L.push("", "A block can't take more than the hit: at this fit a Standard's Basic attack averages 3.6 / 6.6 and its 2 AP Special 7.9 / 14.5. Bulwark's Guard is the ally's Rally Point (9 for a Paladin, 8 for an Archer here: 9 in the model), before the damage, so its rest stays as Guard (Stacking: the higher value).", "");
   log("3. the Hallmark Reactions");
@@ -106,6 +115,7 @@ export function run() {
     const nm = name.split(" (")[0], o = { escalation: rung, bloodied: blood, strained: blood };
     const w = S.turnDamage(smite, "main", 13, o).avg, wo = S.turnDamage({ ...smite, passives: smite.passives.filter(p => p.name !== nm) }, "main", 13, o).avg;
     L.push(`| ${name} (${rung}) | smite | ${f1(w)} · ${f1(wo)} | ${f2(w - wo)} · ${f2((w - wo) / AP_DE)} |`);
+    MEASURED[nm] = { ap: (w - wo) / AP_DE, kind: "passive", rung };
   }
   L.push("", "| Mercy Passive (rung) | Build | Fight | rounds · lost · Down · won | What it did a fight | Worth a turn (DE · AP) | Worth a turn at its rung (DE · AP) |", "|---|---|---|---|---|---|---|");
   const swapIn = (name, rung) => x => { const lines = x.match(/^passive .*$/mg) ?? [], RUNG = { "Radiant Zeal": 1, "Divine Surge": 1, "Font of Mercy": 1, "Searing Blows": 2, "Mending Light": 2, "Reckoning": 3, "Hallowed Stance": 3 }; const at = lines.find(l => RUNG[l.replace(/^passive\s+/, "").trim()] === rung); return at ? x.replace(at, `passive ${name}`) : x + `\npassive ${name}\n`; };
@@ -115,6 +125,7 @@ export function run() {
     const got = (q, k) => (k === "reduced" ? q.one(file, "reduced") + q.one(file, "reducedGiven") : q.one(file, k));
     const did = got(r, key) - got(r0, key), turns = r.one(file, "rounds"), atRung = mean(r.out.flatMap(f => f.pcs.filter(p => p.build.file === `rework/${file}`).map(p => p.st.escTurns.slice(rung).reduce((s, x) => s + x, 0))));
     L.push(`| ${name} (${rung}) | ${file.replace("paladin-", "").replace("-r1", "")} | ${fname} | ${cell(r)} | ${f1(did)} | ${f2(did / turns)} · ${f2(did / turns / AP_DE)} | ${f2(did / atRung)} · ${f2(did / atRung / AP_DE)} |`);
+    if (fname === "4 Standards") MEASURED[name] = { ap: did / atRung / AP_DE, kind: "passive", rung };
   }
   L.push("", "Font of Mercy adds to the Rally Points used in the fight: the ruler's Lay On Hands spends one only on an ally hurt at least three quarters of what it heals, so in a normal fight it hardly fires (the Standard day's between-fight Rally Points, where it also works, are not in these numbers).", "");
   log("4. the Passives");
@@ -143,6 +154,7 @@ export function run() {
     const dm = r.sel("Archer", "reactionDealt"), vc = r.sel("Archer", "vulnCredit"), bl = r.sel("Archer", "blockCredit"), dealt = r.sel("Archer", "dealt"); if (name === "None") d0 = dealt;
     const de = (dm + vc + bl + (name.startsWith("Ready") ? Math.max(0, dealt - d0) : 0)) / r.sel("Archer", "rounds");
     L.push(`| ${name} | ${cell(r)} | ${f2(r.sel("Archer", "reactions"))} | ${f1(dm)} · ${f1(vc)} · ${f1(dealt)} | ${f2(de)} · ${f2(de / AP_DE)} |`);
+    if (/^(Overwatch|Covering Shot) \(/.test(name)) MEASURED[short(name)] = { ap: de / AP_DE, kind: "reaction" };
   }
   { const rb = load("archer-rolling-r1"), big = S.turnDamage(rb, "big", 13, { escalation: 3 }).avg, main = S.turnDamage(rb, "main", 13, { escalation: 3 }).avg, per = 2.8 / 3.7;
     L.push(`| Ready Shot by the turn tables (the 5 AP turn over the 4 AP turn at Escalation 3: ${f1(big)} − ${f1(main)}, × ${f2(per)} fires an Archer turn) | | | | ${f2((big - main) * per)} · ${f2((big - main) * per / AP_DE)} |`); }
@@ -152,6 +164,7 @@ export function run() {
   for (const [name, rung, blood] of [["Killer's Focus", 1, false], ["Hunter's Edge", 2, false], ["Finisher", 3, true]]) {
     const w = S.turnDamage(arch, "main", 13, { escalation: rung, bloodied: blood }).avg, wo = S.turnDamage({ ...arch, passives: arch.passives.filter(p => p.name !== name) }, "main", 13, { escalation: rung, bloodied: blood }).avg;
     L.push(`| ${name} (${rung}) | double | ${f1(w)} · ${f1(wo)} | ${f2(w - wo)} · ${f2((w - wo) / AP_DE)} |`);
+    MEASURED[name] = { ap: (w - wo) / AP_DE, kind: "passive", rung };
   }
   L.push("", "| Apex | Build | Fight | rounds · lost · Down · won with · without | Owner dealt a fight with · without | Its Vulnerable's extra with · without | Apex turns a fight | Worth a use (DE) · per AP |", "|---|---|---|---|---|---|---:|---|");
   for (const [fname, list] of [["4 Standards", STD4], ["6 Standards (hard)", [["standard", 6]]]]) for (const [name, file, ap] of [["Deathmark (2 AP)", "archer-double-r1", 2], ["Open Season (2 AP)", "archer-rolling-r1", 2]]) {
@@ -162,6 +175,45 @@ export function run() {
   }
   L.push("", "Deathmark's Boon against the Quarry and its chain shot on a kill are not modeled (a floor); Open Season's allies' extra [V] 1d6 Pi is not modeled either, (a floor). Hunter's Edge's Cover part (about 1.5 DE a turn: positions) is not in the turn table.", "");
   log("6. the Archer");
+
+  // 7. The ledger: every class card's worth (Lucas, 2026-11-04: "keep track of each Action's AP worth, and a tiny text on each Action in Foundry").
+  L.push("## 7. The ledger: every class card's worth under pack R", "", `Each Action priced as econ.mjs prices the price list (the damage and the effects it can price, against the level 1 Standard, Defense 13), at pack R's exchange rate: 1 AP = ${AP_DE} DE (the baseline turn / 4). **Efficiency** = DE per AP ÷ ${AP_DE}; the bands (prices.md): At-will 0.9-1.1, Round and Turn 1-1.3, Encounter 1.4-2, Daily 2-3; a Reaction's worth is per use against 1 AP; a Passive's is the fight measure above against its rung budget (rung 1 0.4-0.6 AP a turn, 2 0.6-0.8, 3 0.8-1). What the ruler can't price is named (Pushes, conditions and Bleed carry the positions prices; "not modeled" otherwise). The same numbers go to \`book/ruler/worth.json\`, which Foundry prints as a tiny line on each card (tools/cardgen.mjs), for the playtests.`, "",
+    "| Card | Version | Frequency | DE a use | DE per AP | Efficiency | Verdict | Notes |", "|---|---|---|---:|---:|---:|---|---|");
+  const r = { ...E.rates(1) }; r.perAP = r.B / 4;
+  const bands = E.A.bands, verdict = (eff, freq) => { const [lo, hi] = bands[freq] ?? bands.round; return eff < lo * 0.9 ? "under" : eff > hi * 1.1 ? "over" : eff < lo ? "a little under" : eff > hi ? "a little over" : "on target"; };
+  const worth = {};
+  const all = CL.loadCards();
+  for (const [cls, file, test] of [["Paladin", "paladin-smite-r1", c => /Paladin|Divine Power/.test(c.category ?? "")], ["Archer", "archer-double-r1", c => /Archer|Sharpshooter|Marked Quarry/.test(c.category ?? "") && c.name !== "Mark Quarry"]]) {
+    const cards = all.filter(test), names = S.cardLines(cards).filter(l => l.startsWith("action ")).map(l => l.slice(7).split("|")[0].trim());
+    const b = S.parseSpec(read(file).replace(/^health-factor .*$/m, "") + `\nhealth-factor ${HF}\n` + names.map((n, i) => `turn w${i}: ${n}`).join("\n") + "\n", `rework/${file}`);
+    L.push(`| **${cls}** | | | | | | | |`);
+    for (const c of cards) {
+      const vs = names.filter(n => n === c.name || n.startsWith(c.name + " "));
+      if (vs.length) {
+        const parts = [];
+        for (const n of vs) {
+          const a = b.actions[n.toLowerCase()], v = E.valueOf(b, a, r), freq = a.freq, ap = a.ap;
+          const m = MEASURED[c.name];
+          const eff = a.reaction ? (m ? m.ap : v.total / r.perAP) : ap ? v.total / ap / r.perAP : null;
+          const vd = a.reaction && (freq === "turn" || freq === "round") ? (eff >= 1 ? "on target" : eff >= 0.8 ? "a little under" : "under") : eff == null ? "-" : verdict(eff, freq);
+          const notes = [...v.e2.map(x => `not modeled: ${x}`), ...v.notes, ...(a.reaction && m ? ["worth: the fight measure (section 3 or 6)"] : [])].join("; ");
+          L.push(`| ${c.name} | ${n === c.name ? (a.reaction ? `${ap}R` : `${ap} AP`) : n.replace(c.name, "").trim() + " AP"} | ${freq}${a.escalation ? `, Escalation ${a.escalation}` : ""} | ${f1(v.total)} | ${ap ? f1(v.total / ap) : "-"} | ${eff == null ? "-" : f2(eff)} | ${vd} | ${notes} |`);
+          parts.push(a.reaction && (freq === "turn" || freq === "round") ? `${f2(eff)} AP a turn (the floor is 1)` : `${n === c.name ? "" : n.replace(c.name, "").trim() + " AP "}${f2(eff)}× (${vd})`);
+        }
+        worth[c.name] = `Ruler: ${parts.join(" · ")}${vs.length === 1 && !b.actions[vs[0].toLowerCase()].reaction ? `, ${b.actions[vs[0].toLowerCase()].freq} band` : ""}.`;
+      } else if (MEASURED[c.name]) {
+        const m = MEASURED[c.name], budget = { 1: "0.4-0.6", 2: "0.6-0.8", 3: "0.8-1" }[m.rung] ?? "";
+        L.push(`| ${c.name} | Passive | rung ${m.rung} | | | ${f2(m.ap)} AP a turn | ${m.ap < 0.8 * Number(budget.split("-")[0]) ? "under" : "on target"} | the fight measure (section 4 or 6) against the rung's ${budget} |`);
+        worth[c.name] = `Ruler: ${f2(m.ap)} AP a turn (rung ${m.rung}: ${budget}).`;
+      } else if (/Escalation \(Passive\)/.test(c.category ?? "")) {
+        L.push(`| ${c.name} | Passive | | | | | not modeled | positional or conditional (Vanish, Sure Step, Harrying Shots, Staggering Shot: see the Bestiary's steps) |`);
+        worth[c.name] = "Ruler: not modeled (positional).";
+      }
+    }
+  }
+  fs.writeFileSync(HERE + "worth.json", JSON.stringify(worth, null, 1) + "\n");
+  L.push("", "Hunter's Focus, Deathmark's Boon and chain shot, Open Season's allies' dice and Beacon's step are priced by the static list only once or not at all: read their rows as floors.", "The ledger is a price check, not the design: a card the ruler calls under may be carrying a Push, a condition or a trigger the open field doesn't see (Rebuke, Beacon, Sure Step).", "");
+  log("7. the ledger");
 
   setRules({});
   L.push(`(${((Date.now() - t1) / 60000).toFixed(1)} minutes.)`);

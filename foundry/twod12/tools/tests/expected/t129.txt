@@ -1,6 +1,6 @@
 Vow of Enmity 2 AP: No effect. / As 1 AP. / As Tier 2, and the target is Vulnerable 1 (EoT). || 3 AP: No effect. / As 2 AP. / As 2 AP.
 Champion's Challenge 2 AP: No effect. / As 1 AP. / As 1 AP.
-Hallowed Stance: ated.)
+Hallowed Stance: ated.)Ruler: 0.47 AP a turn (rung 3: 0.8-1).
 Vs. entries as in the book: Rebuke: Appeal Save (book WD)
 no-roll cards have no Vs.: true
 Vow of Enmity 2 AP T2: Your next [Strike] Action against them gains 1 Boon, and you increase your Empowered value by 1 for that Strike.

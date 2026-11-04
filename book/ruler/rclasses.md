@@ -43,6 +43,7 @@ For scale, the decision sheet's row with the P1 builds at the same fit (rework-s
 | Opportunity Attack (the basic Reaction) | 3.4 r · 14% · Down 20% · won 100% | 0.91 | 0.0 · 0.0 · 6.3 | 2.24 · 0.39 |
 | Shield of Faith (1R, Turn: 2d6 + [PMod]) | 3.5 r · 4% · Down 6% · won 100% | 2.30 | 15.4 · 0.0 · 0.0 | 5.05 · 0.87 |
 | Rebuke (1R, Turn, Trigger: an enemy within 5 squares Strikes an ally: Appeal Save; 1d8 Ho, Pushed 2, Frightened / 1d6 Ho, Pushed 1 / nothing) | 3.5 r · 12% · Down 17% · won 100% | 2.12 | 0.0 · 0.0 · 6.4 | 2.20 · 0.38 |
+| Rebuke's Push and Frightened, by arithmetic (0.9 DE a fire × 2.12 fires) | | | | 0.64 · 0.11 |
 | Rebuke at Reach and Round (the first draft) | 3.5 r · 12% · Down 16% · won 99% | 0.70 | 0.0 · 0.0 · 2.1 | 0.70 · 0.12 |
 | Bulwark of Faith as it was (1R, Round, ally only; an Encounter Pick since part 3) | 3.5 r · 7% · Down 10% · won 100% | 1.51 | 11.1 · 1.0 · 0.0 | 4.01 · 0.69 |
 
@@ -133,5 +134,69 @@ Ready Shot's AP is spent on a 5 AP turn (Double Shot 3 or Rolling Shot 3, Lock &
 | Open Season (2 AP) | rolling | 6 Standards (hard) | 5.4 r · 25% · Down 43% · won 91% · 5.5 r · 25% · Down 43% · won 91% | 133.4 · 137.3 | 3.4 · 0.0 | 0.96 | -2.4 · -1.2 |
 
 Deathmark's Boon against the Quarry and its chain shot on a kill are not modeled (a floor); Open Season's allies' extra [V] 1d6 Pi is not modeled either, (a floor). Hunter's Edge's Cover part (about 1.5 DE a turn: positions) is not in the turn table.
+
+## 7. The ledger: every class card's worth under pack R
+
+Each Action priced as econ.mjs prices the price list (the damage and the effects it can price, against the level 1 Standard, Defense 13), at pack R's exchange rate: 1 AP = 5.8 DE (the baseline turn / 4). **Efficiency** = DE per AP ÷ 5.8; the bands (prices.md): At-will 0.9-1.1, Round and Turn 1-1.3, Encounter 1.4-2, Daily 2-3; a Reaction's worth is per use against 1 AP; a Passive's is the fight measure above against its rung budget (rung 1 0.4-0.6 AP a turn, 2 0.6-0.8, 3 0.8-1). What the ruler can't price is named (Pushes, conditions and Bleed carry the positions prices; "not modeled" otherwise). The same numbers go to `book/ruler/worth.json`, which Foundry prints as a tiny line on each card (tools/cardgen.mjs), for the playtests.
+
+| Card | Version | Frequency | DE a use | DE per AP | Efficiency | Verdict | Notes |
+|---|---|---|---:|---:|---:|---|---|
+| **Paladin** | | | | | | | |
+| Smite | 1 AP | round | 8.2 | 8.2 | 1.40 | a little over |  |
+| Smite | 2 AP | round | 12.5 | 6.2 | 1.07 | on target |  |
+| Smite | 3 AP | round | 15.9 | 5.3 | 0.91 | a little under | Guard: only what a later hit uses (30%) |
+| Lay On Hands | 1 AP | round | 8.8 | 8.8 | 1.51 | over | uses the target's own Rally Points |
+| Lay On Hands | 2 AP | round | 14.9 | 7.4 | 1.27 | on target | uses the target's own Rally Points; new Health (no Rally Point) |
+| Lay On Hands | 3 AP | round | 23.7 | 7.9 | 1.35 | a little over | uses the target's own Rally Points; new Health (no Rally Point) |
+| Shield of Faith | 1R | turn | 8.1 | 8.1 | 0.87 | a little under | damage an ally doesn't take (one hit); worth: the fight measure (section 3 or 6) |
+| Rebuke | 1R | turn | 4.2 | 4.2 | 0.49 | under | not modeled: Frightened (EoT); Pushed 2: 1.51 (positions); Pushed 1: 1.51 (positions); worth: the fight measure (section 3 or 6) |
+| Holy Wrath | 2 AP | encounter | 14.3 | 7.2 | 1.23 | under |  |
+| Holy Wrath | 3 AP | encounter | 18.8 | 6.3 | 1.08 | under |  |
+| Word of Radiance | 2 AP | encounter | 16.3 | 8.1 | 1.40 | a little under | Pushed 1: 1.51 (positions); Pushed 2: 1.51 (positions) |
+| Word of Radiance | 3 AP | encounter | 25.4 | 8.5 | 1.45 | on target | Pushed 1: 1.51 (positions); Pushed 2: 1.51 (positions) |
+| Bulwark of Faith | 1R | encounter | 9.6 | 9.6 | 1.64 | on target | damage an ally doesn't take (one hit); Slid 1: 1.49 (positions) |
+| Beacon | 1 AP | encounter | 8.8 | 8.8 | 1.52 | on target |  |
+| Consecrated Ground | 2 AP | daily | 23.6 | 11.8 | 2.02 | on target |  |
+| Consecrated Ground | 3 AP | daily | 49.1 | 16.4 | 2.81 | on target |  |
+| Miraculous Recovery | 2 AP | daily | 24.7 | 12.4 | 2.12 | on target | ends an effect: 7.14 (the average Moderate condition on a PC, positions) |
+| Miraculous Recovery | 3 AP | daily | 33.5 | 11.2 | 1.92 | a little under | ends an effect: 7.14 (the average Moderate condition on a PC, positions) |
+| Divine Intervention | 2R | daily | 36.7 | 18.4 | 6.31 | over | a Down undone or prevented: 35 DE a use, x 97% (how often an ally goes Down in a day); Guard: only what a later hit uses (30%) |
+| Radiant Zeal | Passive | rung 1 | | | 0.60 AP a turn | on target | the fight measure (section 4 or 6) against the rung's 0.4-0.6 |
+| Divine Surge | Passive | rung 1 | | | 0.57 AP a turn | on target | the fight measure (section 4 or 6) against the rung's 0.4-0.6 |
+| Font of Mercy | Passive | rung 1 | | | 0.20 AP a turn | under | the fight measure (section 4 or 6) against the rung's 0.4-0.6 |
+| Searing Blows | Passive | rung 2 | | | 0.82 AP a turn | on target | the fight measure (section 4 or 6) against the rung's 0.6-0.8 |
+| Mending Light | Passive | rung 2 | | | 0.60 AP a turn | on target | the fight measure (section 4 or 6) against the rung's 0.6-0.8 |
+| Reckoning | Passive | rung 3 | | | 0.94 AP a turn | on target | the fight measure (section 4 or 6) against the rung's 0.8-1 |
+| Hallowed Stance | Passive | rung 3 | | | 0.47 AP a turn | under | the fight measure (section 4 or 6) against the rung's 0.8-1 |
+| Final Verdict | 2 AP | encounter, Escalation 3 | 21.5 | 10.7 | 1.84 | on target |  |
+| Hallowed Dawn | 3 AP | encounter, Escalation 3 | 22.4 | 7.5 | 1.28 | a little under | new Health (no Rally Point); Pushed 2: 1.51 (positions); ends an effect: 7.14 (the average Moderate condition on a PC, positions) |
+| **Archer** | | | | | | | |
+| Double Shot | 2 AP | round | 11.0 | 5.5 | 0.94 | a little under |  |
+| Double Shot | 3 AP | round | 13.7 | 4.6 | 0.78 | under | Evade 1: saves the step away (1 AP) on the 46% of the turns it starts Engaged |
+| Rolling Shot | 1 AP | round | 8.2 | 8.2 | 1.40 | a little over | Evade 1: saves the step away (1 AP) on the 46% of the turns it starts Engaged |
+| Rolling Shot | 2 AP | round | 10.7 | 5.3 | 0.92 | a little under | Evade 2: saves the step away (1 AP) on the 46% of the turns it starts Engaged |
+| Rolling Shot | 3 AP | round | 13.2 | 4.4 | 0.76 | under | Evade 3: saves the step away (1 AP) on the 46% of the turns it starts Engaged |
+| Overwatch | 1R | turn | 5.5 | 5.5 | 1.04 | on target | worth: the fight measure (section 3 or 6) |
+| Covering Shot | 1R | turn | 6.0 | 6.0 | 1.35 | on target | worth: the fight measure (section 3 or 6) |
+| Marksman's Shot | 2 AP | encounter | 13.4 | 6.7 | 1.15 | under |  |
+| Volley | 2 AP | encounter | 16.9 | 8.5 | 1.45 | on target | Hindered (EoT): 2.65 (positions) |
+| Covering Fire | 2 AP | encounter | 14.1 | 7.1 | 1.21 | under |  |
+| Pinning Shot | 1 AP | encounter | 12.2 | 12.2 | 2.10 | a little over | Immobilized (EoT): 9.33 (positions) |
+| Twin Shot | 1 AP | encounter | 16.0 | 16.0 | 2.76 | over |  |
+| Hunter's Focus | 1 AP | daily | 1.2 | 1.2 | 0.21 | under |  |
+| Deadeye | 1 AP | daily | 13.2 | 13.2 | 2.27 | on target | Prone: 2.82 (positions) |
+| Rain of Arrows | 2 AP | daily | 23.5 | 11.7 | 2.02 | on target | Prone: 2.82 (positions) |
+| Killer's Focus | Passive | rung 1 | | | 0.60 AP a turn | on target | the fight measure (section 4 or 6) against the rung's 0.4-0.6 |
+| Harrying Shots | Passive | | | | | not modeled | positional or conditional (Vanish, Sure Step, Harrying Shots, Staggering Shot: see the Bestiary's steps) |
+| Vanish | Passive | | | | | not modeled | positional or conditional (Vanish, Sure Step, Harrying Shots, Staggering Shot: see the Bestiary's steps) |
+| Hunter's Edge | Passive | rung 2 | | | 0.44 AP a turn | under | the fight measure (section 4 or 6) against the rung's 0.6-0.8 |
+| Sure Step | Passive | | | | | not modeled | positional or conditional (Vanish, Sure Step, Harrying Shots, Staggering Shot: see the Bestiary's steps) |
+| Finisher | Passive | rung 3 | | | 0.78 AP a turn | on target | the fight measure (section 4 or 6) against the rung's 0.8-1 |
+| Staggering Shot | Passive | | | | | not modeled | positional or conditional (Vanish, Sure Step, Harrying Shots, Staggering Shot: see the Bestiary's steps) |
+| Deathmark | 2 AP | encounter, Escalation 3 | 14.4 | 7.2 | 1.24 | under |  |
+| Open Season | 2 AP | encounter, Escalation 3 | 8.1 | 4.0 | 0.69 | under |  |
+
+Hunter's Focus, Deathmark's Boon and chain shot, Open Season's allies' dice and Beacon's step are priced by the static list only once or not at all: read their rows as floors.
+The ledger is a price check, not the design: a card the ruler calls under may be carrying a Push, a condition or a trigger the open field doesn't see (Rebuke, Beacon, Sure Step).
 
 (1.4 minutes.)

@@ -342,7 +342,7 @@ Measured with the map model (`map.mjs`; README "The map model"): the party of a 
 | Dazed 2 | 5.84 | 5.85 | 5.30 | **5.66** | 0.29 | 122% |
 | Staggered (EoT) | 0.00 | 0.00 | 0.00 | **0.00** | 0.00 | 0% |
 | Blinded (EoT) | 5.57 | 8.05 | 7.82 | **7.15** | 0.22 | 153% |
-| Frightened (EoT), its Bane only | 1.08 | 1.70 | 1.67 | **1.48** | 0.11 | 32% |
+| Frightened (EoT) | 1.08 | 1.70 | 1.67 | **1.48** | 0.11 | 32% |
 | Taunted by the nearest Paladin (1 round) | 0.69 | 0.99 | 0.85 | **0.84** | 0.08 | 18% |
 | Bleed 1d4 (Bo/In) | 4.98 | 4.78 | 4.66 | **4.81** | 0.17 | 103% |
 | Bleed 2d6 (Bo/In) | 13.64 | 13.75 | 13.69 | **13.69** | 0.19 | 294% |
