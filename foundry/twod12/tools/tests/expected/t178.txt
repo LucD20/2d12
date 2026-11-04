@@ -1,0 +1,5 @@
+tier tokens (Tier 1): 1WB,ModBH,1d6MH = old | ModBPi = old | 2d8MH = old
+read as damage: true
+inline Save: @Save[appeal|t1:1d6[mind,holy]|t2:1d4[mind,holy]|t3:0] | the same as [M]: true | [V] as [B]: true
+card colors the same: true | a Resolve tag is the brain: true
+ruler the same: true | Resolve counted as Mind: true

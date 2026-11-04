@@ -2,38 +2,6 @@
  "_about": "The Talents (the Talents document, 16-talents.md). A card with `talent` is a Talent item (its group, theme and prerequisites as data); one with Versions is an Action too (the Talent grants it); a card whose category is a Talent's name (Pummel, Leg Sweep, Rimebrand) is the Action that Talent grants. One source per card: book/cards/README.md.",
  "cards": [
   {
-   "name": "Opportunity Attack",
-   "category": "Combat Talent",
-   "level": 1,
-   "flavor": "You punish anyone who moves carelessly near you.",
-   "frequency": "At-will",
-   "target": "The triggering creature",
-   "interrupt": "A creature within 3 squares would leave a square during a Move Action or uses the Stand Action.",
-   "cost": "1R",
-   "text": "You can make a Weapon Attack (1A) against the triggering creature, as long as your weapon can target them. Used this way, out of your turn, it has a **Critical:** You disrupt the triggering Action before it happens.",
-   "foundry": {
-    "img": "icons/svg/combat.svg",
-    "folder": "Talents",
-    "automation": "silver",
-    "append": "@Use[Weapon Attack|label:Weapon Attack (1A)]"
-   },
-   "talent": {
-    "group": "combat",
-    "description": "You gain the Opportunity Attack Reaction.",
-    "modifiers": [
-     {
-      "spec": "Weapon Attack",
-      "when": "outOfTurn",
-      "critical": "You disrupt the triggering Action before it happens.",
-      "effects": ""
-     }
-    ]
-   },
-   "ruler": {
-    "line": "does Weapon Attack"
-   }
-  },
-  {
    "name": "Challenge",
    "category": "Combat Talent",
    "level": 1,

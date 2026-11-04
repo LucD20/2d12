@@ -146,7 +146,7 @@ export const TWOD12 = {
   // v0.0.198 (Lucas, 2026-10-30): the Basic Actions section of the Actions tab, 4 groups in a 2x2 grid (row 1 Attack | Control, row 2
   // Movement | Utility), each in this order. By name: the Kind traits don't separate them. The items and the compendium don't change.
   basicGroups: [
-    { key: "attack", label: "Attack", names: ["Weapon Attack", "Fists", "Charge", "Reload"] },
+    { key: "attack", label: "Attack", names: ["Weapon Attack", "Fists", "Charge", "Reload", "Opportunity Attack"] },   // pack R-core: Opportunity Attack, the basic Reaction
     { key: "control", label: "Control", names: ["Shove", "Haul", "Relocate", "Trip"] },
     { key: "movement", label: "Movement", names: ["Advance", "Evade", "Crawl", "Stand", "Break Free"] },
     { key: "utility", label: "Utility", names: ["Interact", "Release", "Regrip", "Leaning", "Steel Yourself"] }

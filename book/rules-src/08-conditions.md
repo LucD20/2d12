@@ -19,15 +19,15 @@ Exhausted always has a value, such as **Exhausted 2**. While you are Exhausted:
 
 - Your Speed is reduced by the value (to a minimum of 1).
 - All your [[Rolls]] take a penalty equal to the value.
-- Your Mind Damage Threshold is reduced by 4 times the value.
+- Your Resolve is reduced by 4 times the value.
 
-A lower Mind Damage Threshold lowers your Health Pool, but not your Rally Points: they use your Health Pool as if you weren't Exhausted.
+A lower Resolve lowers your Health Pool, but not your Rally Points: they use your Health Pool as if you weren't Exhausted. The [[Health Pool|floor]] of a third doesn't apply to it.
 
-If your Mind Damage Threshold reaches 0, you must make a **Mind Save** (DC 13). Mind Damage Threshold cannot go below 0.
+If your Resolve reaches 0, you must make a **Mind Save** (DC 13). Resolve cannot go below 0.
 
 | Tier | Result |
 |---|---|
-| **Tier 1** | You fall Unconscious and start a [[Sleep]]. You can't wake up while your Mind Damage Threshold is 0. |
+| **Tier 1** | You fall Unconscious and start a [[Sleep]]. You can't wake up while your Resolve is 0. |
 | **Tier 2** | Your Exhausted value increases by 1, and you must make this Save again in 12 hours. |
 | **Tier 3** | You must make this Save again in 12 hours. |
 
@@ -64,13 +64,13 @@ At the start of your turn you get back to safety, to a legal square next to the 
 
 ### Quickened
 
-Quickened always has a value, such as **Quickened 2**. You increase your maximum AP, and the AP you regain at the start of your turn, by the value: if you are Quickened 2, you regain 7 AP when your turn begins. You don't gain AP when you become Quickened, only when you regain AP at the start of your next turn.
+Quickened always has a value, such as **Quickened 2**. You increase your maximum AP, and the AP you regain at the start of your turn, by the value: if you are Quickened 2, you regain 6 AP when your turn begins. You don't gain AP when you become Quickened, only when you regain AP at the start of your next turn. Quickened never changes your Reaction AP, and the extra AP you don't spend become Guard like any other ([[Unspent AP]]).
 
 ### Slowed
 
-Slowed always has a value, such as **Slowed 2**. You decrease the AP you regain at the start of your turn by the value: if you are Slowed 2, you regain only 3 AP when your turn begins. You also reduce your maximum AP by the value. You don't lose AP when you become Slowed, only when you regain AP at the start of your next turn.
+Slowed always has a value, such as **Slowed 2**. You decrease the AP you regain at the start of your turn by the value: if you are Slowed 2, you regain only 2 AP when your turn begins. You also reduce your maximum AP by the value. You don't lose AP when you become Slowed, only when you regain AP at the start of your next turn. Slowed never changes your Reaction AP: a Slowed creature still has its Reaction.
 
-**Slowed and Quickened** cancel each other out, but they don't reduce each other's value: if you are Quickened 2 and Slowed 2, you regain the normal 5 AP. If one of them ends before your turn comes around (you lose Slowed 2 but are still Quickened 2), you regain 7 AP.
+**Slowed and Quickened** cancel each other out, but they don't reduce each other's value: if you are Quickened 2 and Slowed 2, you regain the normal 4 AP. If one of them ends before your turn comes around (you lose Slowed 2 but are still Quickened 2), you regain 6 AP.
 
 ### Vulnerable
 

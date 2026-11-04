@@ -109,6 +109,19 @@
       "foundry": { "basic": "leaning", "img": "icons/svg/eye.svg" }
     },
     {
+      "name": "Opportunity Attack",
+      "category": "Basic Action",
+      "_note": "Pack R-core (Lucas, 2026-11-04, decision sheet item 6): the basic Reaction every creature has; it was a Combat Talent with a Critical that disrupted the triggering Action (out of your turn): that Critical goes to a Talent later.",
+      "flavor": "You punish anyone who moves carelessly near you.",
+      "frequency": "At-will",
+      "target": "The triggering creature",
+      "interrupt": "A creature within 3 squares would leave a square during a Move Action or uses the Stand Action.",
+      "cost": "1R",
+      "text": "You can make a Weapon Attack (1A) against the triggering creature, as long as your weapon can target them. An NPC makes its Basic attack instead.",
+      "foundry": { "basic": "opportunityAttack", "img": "icons/svg/combat.svg", "automation": "silver", "append": "@Use[Weapon Attack|label:Weapon Attack (1A)]" },
+      "ruler": { "line": "does Weapon Attack" }
+    },
+    {
       "name": "Regrip",
       "category": "Basic Action",
       "flavor": "You shift your hands on the grip, and the weapon sits where you want it.",

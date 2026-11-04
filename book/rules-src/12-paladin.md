@@ -7,14 +7,16 @@
 <div class="statblock">
 <div class="sbt">The Paladin at a glance</div>
 <div class="sbr"><span class="lbl">Attributes</span><span>Body or Appeal +1, Mind or Instinct +1</span></div>
-<div class="sbr"><span class="lbl">Body Health Multiplier</span><span>×4</span></div>
-<div class="sbr"><span class="lbl">Mind Health Multiplier</span><span>×4</span></div>
+<div class="sbr"><span class="lbl">Health</span><span>high 20, low 10 (Stage 2: +12 / +6; Stage 3: +14 / +7)</span></div>
 <div class="sbr"><span class="lbl">Rally</span><span>6</span></div>
 <div class="sbr"><span class="lbl">Speed Modifier</span><span>+0</span></div>
 <div class="sbr"><span class="lbl">Weapon Modifier</span><span>Body or Appeal</span></div>
 <div class="sbr"><span class="lbl">Power Modifier</span><span>Mind or Appeal</span></div>
 <div class="sbr"><span class="lbl">Armor Training</span><span>Heavy</span></div>
 </div>
+
+> [!tbd]
+> **Pack R:** the new core rules (4 AP + 1 Reaction AP, Escalation as a level that is never spent, Hallmark Reactions, the Apex, Bloodied and Strained as hooks) are in the Core Rules; this class is rebuilt for them in pack R-classes. Until then, its Health and Rally values above are the new ones, but its level list, cards and Escalation abilities are the old ones: their AP are priced for 5 AP turns, and its Escalation Actives still say they spend Escalation.
 
 ## The Paladin by Level
 

@@ -19,6 +19,8 @@ Every creature can use these Actions.
 
 @@CARD:Leaning@@
 
+@@CARD:Opportunity Attack@@
+
 @@CARD:Regrip@@
 
 @@CARD:Release@@

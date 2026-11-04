@@ -1,13 +1,12 @@
 <!-- doc: species -->
 # Species
 
-Your species gives you Attribute changes, **Species Body Health** and **Species Mind Health** (used for your Health Pool), a **Size**, a **Speed**, a **Reach** and a **Steadiness**.
+Your species gives you Attribute changes, a **Vigor** and a **Resolve** bonus (added to your class's Health values: see [[Health Pool]]), a **Size**, a **Speed**, a **Reach** and a **Steadiness**.
 
 ## Human
 
 - **Attributes:** choose two different Attributes to gain +1.
-- **Species Body Health:** +3
-- **Species Mind Health:** +4
+- **Health:** +3 to one threshold and +2 to the other (you choose)
 - **Speed:** 5
 - **Reach:** 1
 - **Steadiness:** 0
@@ -16,8 +15,7 @@ Your species gives you Attribute changes, **Species Body Health** and **Species 
 ## Dwarf
 
 - **Attributes:** Body +1, Mind +1, Appeal -1, Instinct +1.
-- **Species Body Health:** +5
-- **Species Mind Health:** +3
+- **Health:** Vigor +4, Resolve +1
 - **Speed:** 4
 - **Reach:** 1
 - **Steadiness:** 1
@@ -26,8 +24,7 @@ Your species gives you Attribute changes, **Species Body Health** and **Species 
 ## Elf
 
 - **Attributes:** Body -1, Mind +1, Appeal +1, Instinct +1.
-- **Species Body Health:** +1
-- **Species Mind Health:** +5
+- **Health:** Resolve +4, Vigor +1
 - **Speed:** 6
 - **Reach:** 1
 - **Steadiness:** 0

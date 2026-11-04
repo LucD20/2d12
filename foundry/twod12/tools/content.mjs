@@ -355,7 +355,7 @@ function lv1Type(n) { const d = ["talent", "feature", "action"].map(t => docs.fi
 pc({ name: "Paladin 1 (Smite, Heavy Blows)", img: "icons/svg/sun.svg", species: "Human", chosen: ["body", "appeal"], cls: "Paladin", attrs: ["body", "mind"],
   picks: { pal1hall: "Smite", pal1tal: "Heavy Blows", pal1enc: "Holy Wrath", pal1pass: "Radiant Zeal", pal1act: "Divine Surge" }, weapon: "Greatsword", armor: "Heavy Armor" });
 pc({ name: "Paladin 3 (Lay On Hands, Protector)", img: "icons/svg/regen.svg", species: "Dwarf", cls: "Paladin", attrs: ["appeal", "mind"], level: 3,
-  picks: { 1: { pal1hall: "Lay On Hands", pal1tal: "Opportunity Attack", pal1enc: "Word of Radiance", pal1pass: "Mending Light", pal1act: "Shield of Faith" },
+  picks: { 1: { pal1hall: "Lay On Hands", pal1tal: "Challenge", pal1enc: "Word of Radiance", pal1pass: "Mending Light", pal1act: "Shield of Faith" },
     2: { pal2tal: "Bloodlust" }, 3: { pal3daily: "Miraculous Recovery", pal3pass: "Hallowed Stance" } }, weapon: "Greatsword", armor: "Heavy Armor" });
 pc({ name: "Archer 1 (Double Shot, Marksman)", img: "icons/svg/target.svg", species: "Elf", cls: "Archer", attrs: ["instinct", "mind"],
   picks: { arc1hall: "Double Shot", arc1tal: "Aim", arc1pass: "Killer's Focus", arc1act: "Pinning Shot" }, weapon: "Crossbow", armor: "Medium Armor" });

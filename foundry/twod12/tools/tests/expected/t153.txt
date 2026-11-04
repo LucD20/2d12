@@ -1,7 +1,6 @@
 Paladin: Repertoire Holy Wrath, Word of Radiance, Bulwark of Faith, Consecrated Ground, Miraculous Recovery, Divine Intervention | Passives Font of Mercy, Hallowed Stance, Radiant Zeal, Mending Light | Actives Aura of Protection, Divine Surge, Shield of Faith, Hand of Mercy
 Archer: Repertoire Marksman's Shot, Volley, Covering Fire, Hunter's Focus, Deadeye, Rain of Arrows | Passives Killer's Focus, Elusive, Harrying Shots | Actives Pinning Shot, Twin Shot, Vanish
-the book's Talents: 16
-  Opportunity Attack ok combat 1 | grants Opportunity Attack
+the book's Talents: 15
   Challenge          ok combat 1
   Heavy Blows        ok combat 1 | Great Weapon | settings bonusdamage
   Whirlwind          ok combat 1 | needs talent:Heavy Blows | Great Weapon | grants Whirlwind

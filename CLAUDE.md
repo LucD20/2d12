@@ -4,7 +4,7 @@ Read first, in this order: **HANDOFF.md** (state), **MASTER-PLAN.md** (the order
 
 ## What is here
 - `book/rules-src/*.md` = **the rulebook source (the only thing to edit)**. `python3 build_rules.py` (in `book/`) builds 7 HTML documents; never edit the HTML. Conventions: `book/rules-src/README.md`. Numbers: `book/ruler/` (README + scripts). Diagrams: `book/diagrams/diagrams.py`.
-- `foundry/twod12/` = the Foundry system (module/, templates/, tools/content.mjs = the compendium content, tools/tests = 174 tests; build the packs first in a fresh clone).
+- `foundry/twod12/` = the Foundry system (module/, templates/, tools/content.mjs = the compendium content, tools/tests = 176 tests; build the packs first in a fresh clone).
 - Backlogs: `book/rules-backlog.md` (rules log), `foundry/foundry-backlog.md` (what Foundry must follow). `archive/` = applied change logs.
 
 ## Commands
@@ -26,7 +26,7 @@ Read first, in this order: **HANDOFF.md** (state), **MASTER-PLAN.md** (the order
 - At the end of every pack, run python tools/knowledge.py and tell me to re-upload knowledge/ to the Project; in a cloud session skip it, I run it locally. When a pack creates a design document still in progress, add it to DESIGN_DOCS in tools/knowledge.py; when one is fully applied to rules-src, remove it.
 
 ## Book conventions that bite (details: rules-src/README.md)
-- Names in examples: only the list in the README, each used once before any repeats; he/him except Krysta and Lana; **in diagrams "you" is Y** (never O or K). Bane and Boon capitalized. Damage always writes its pool: `[B] 1[W] + [Mod]`. Write `[Strike] Action` when you mean the trait.
+- Names in examples: only the list in the README, each used once before any repeats; he/him except Krysta and Lana; **in diagrams "you" is Y** (never O or K). Bane and Boon capitalized. Damage always writes its pool: `[V] 1[W] + [Mod]` ([V] Vigor, [R] Resolve since pack R-core; the old [B] / [M] are still read, don't write them). Write `[Strike] Action` when you mean the trait.
 - Trait groups: Roll, Requires, Kind, Damage, Keywords (`GROUPS` in build_rules.py). Weapon properties have no color. Text colors come from `CLASS_TOKEN` and the CSS variables.
 - Dist for areas: an Emanation is the 1-2-1 shape (a 2 Emanation = 21 squares); a Burst is on a corner. Light uses the same shapes and only matters where the TARGET is.
 

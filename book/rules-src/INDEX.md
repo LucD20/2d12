@@ -4,21 +4,21 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 
 | File | Chapter | Document | Part | KB | Lines |
 |---|---|---|---|---|---|
-| 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 19.4 | 277 |
-| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 22.6 | 252 |
+| 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 19.8 | 279 |
+| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 25.0 | 282 |
 | 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 38.1 | 451 |
-| 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 12.2 | 244 |
-| 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 6.2 | 68 |
-| 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.4 | 39 |
+| 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 13.5 | 254 |
+| 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 7.0 | 84 |
+| 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.4 | 41 |
 | 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 5.6 | 95 |
-| 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 5.1 | 78 |
-| 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 20.7 | 170 |
-| 11-species.md | Species | species |  | 0.8 | 35 |
-| 12-paladin.md | Paladin | paladin |  | 3.0 | 101 |
-| 13-archer.md | Archer | archer |  | 2.7 | 98 |
-| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 14.7 | 277 |
+| 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 5.3 | 78 |
+| 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 22.5 | 179 |
+| 11-species.md | Species | species |  | 0.8 | 32 |
+| 12-paladin.md | Paladin | paladin |  | 3.4 | 103 |
+| 13-archer.md | Archer | archer |  | 3.2 | 100 |
+| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 15.2 | 280 |
 | 15-gear.md | Gear | gear |  | 10.1 | 182 |
-| 16-talents.md | Talents | talents |  | 2.0 | 65 |
+| 16-talents.md | Talents | talents |  | 2.1 | 63 |
 
 ## 01-roll.md: Chapter 1: The Roll
 
@@ -36,16 +36,16 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 - 123:   ### Damage on a Card
 - 127:   ### Modifier Damage [Mod]
 - 135:   ### Damage Types
-- 145:   ### Damage Subtypes
-- 159:   ### Cleave
-- 163: ## Several Targets
-- 184: ## Rounding
-- 188: ## Reading an Action
-- 224:   ### Notation
-- 247:   ### Rules Language
-- 269: ## Summary
+- 147:   ### Damage Subtypes
+- 161:   ### Cleave
+- 165: ## Several Targets
+- 186: ## Rounding
+- 190: ## Reading an Action
+- 226:   ### Notation
+- 249:   ### Rules Language
+- 271: ## Summary
 
-Open (to be decided) boxes: 156: "Resist and Weak, which use damage subtypes, are not written yet."
+Open (to be decided) boxes: 158: "Resist and Weak, which use damage subtypes, are not written yet."
 
 ## 02-turns.md: Chapter 2: Turns and Actions
 
@@ -54,35 +54,37 @@ Open (to be decided) boxes: 156: "Resist and Weak, which use damage subtypes, ar
 - 24:   ### Swapping Initiative
 - 33: ## Turns and Rounds
 - 39: ## Action Points
-- 45:   ### Losing and Gaining Action Points
-- 52: ## Reactions
-- 69:   ### Disrupting Actions
-- 79:   ### Moving Closer
-- 83: ## Actions
-- 91:   ### Setup
-- 95:   ### Targets
-- 99:   ### Willing and Unwilling
-- 103:   ### Requirements
-- 107:   ### 0 AP Actions
-- 111:   ### Linked Actions
-- 126:   ### Targets of Effects
-- 130:   ### Effect Timing
-- 140:   ### Buffs
-- 151:     #### Stacking
-- 166:   ### Frequency
-- 172:     #### At-will
-- 180:     #### Turn
-- 184:     #### Round
-- 188:     #### Encounter
-- 192:     #### Daily
-- 196: ## Versus
-- 200:   ### Defenses
-- 215: ## Rounds and Durations
-- 217:   ### Until
-- 221:   ### Your Next Action
-- 225:   ### Rounds
-- 234:   ### End of Turn
-- 242: ## Escalation
+- 43:   ### Unspent AP
+- 54:   ### Losing and Gaining Action Points
+- 61: ## Reactions
+- 79:   ### Disrupting Actions
+- 89:   ### Moving Closer
+- 93: ## Actions
+- 101:   ### Setup
+- 105:   ### Targets
+- 109:   ### Willing and Unwilling
+- 113:   ### Requirements
+- 117:   ### 0 AP Actions
+- 121:   ### Linked Actions
+- 136:   ### Targets of Effects
+- 140:   ### Effect Timing
+- 150:   ### Buffs
+- 161:     #### Stacking
+- 177:   ### Frequency
+- 183:     #### At-will
+- 191:     #### Turn
+- 195:     #### Round
+- 199:     #### Encounter
+- 203:     #### Daily
+- 207: ## Versus
+- 211:   ### Defenses
+- 226: ## Rounds and Durations
+- 228:   ### Until
+- 232:   ### Your Next Action
+- 236:   ### Rounds
+- 245:   ### End of Turn
+- 253: ## Escalation
+- 276:   ### Momentum
 
 ## 03-movement.md: Chapter 3: Movement and the Environment
 
@@ -133,45 +135,45 @@ Open (to be decided) boxes: 298: "Targeting walls and objects (and the Breach tr
 ## 04-health.md: Chapter 4: Health
 
 - 4: ## Health Pool
-- 17: ## Damage
-- 28:   ### Instances of Damage
-- 32:   ### Lethal and Nonlethal
-- 38: ## Going Down
-- 46:   ### Getting Back Up
-- 50:   ### NPCs Going Down
-- 54:   ### Dominant Damage
-- 63: ## Wounds and the Tables
-- 86: ## Rally Points
-- 102: ## Guard
-- 115: ## Recovery
-- 119:   ### Take a Breather
-- 123:   ### Sleep
-- 131:   ### Rest
-- 145: ## Health States
-- 147:   ### Bloodied
-- 151:   ### Strained
-- 155:   ### Desperate
-- 164:   ### Dying
-- 198:   ### Shattered
-- 232:   ### Unconscious
+- 22: ## Damage
+- 33:   ### Instances of Damage
+- 37:   ### Lethal and Nonlethal
+- 43: ## Going Down
+- 51:   ### Getting Back Up
+- 55:   ### NPCs Going Down
+- 59:   ### Dominant Damage
+- 68: ## Wounds and the Tables
+- 91: ## Rally Points
+- 107: ## Guard
+- 120: ## Recovery
+- 124:   ### Take a Breather
+- 128:   ### Sleep
+- 136:   ### Rest
+- 150: ## Health States
+- 152:   ### Bloodied
+- 156:   ### Strained
+- 165:   ### Desperate
+- 174:   ### Dying
+- 208:   ### Shattered
+- 242:   ### Unconscious
 
-Open (to be decided) boxes: 83: "The entries of the Dying and Shattered Tables are placeholders."
+Open (to be decided) boxes: 88: "The entries of the Dying and Shattered Tables are placeholders."
 
 ## 05-characters.md: Chapter 5: Characters
 
 - 4: ## Building a Character
-- 18: ## Classes
-- 26:   ### Class Actions, Picks and the Repertoire
-- 30:   ### Leveling Up
-- 34:   ### Stages
-- 38:   ### Distinct Choices
-- 47:   ### Weapon, Power and Signature Modifiers
-- 65:   ### Escalation Abilities
+- 15: ## Classes
+- 23:   ### Class Actions, Picks and the Repertoire
+- 35:   ### Leveling Up
+- 39:   ### Stages
+- 54:   ### Distinct Choices
+- 63:   ### Weapon, Power and Signature Modifiers
+- 81:   ### Escalation Abilities
 
 ## 06-basic-actions.md: Chapter 6: Basic Actions
 
 
-Action cards: Advance (6, Basic Action, At-will); Charge (8, Basic Action, Round); Crawl (10, Basic Action, At-will); Evade (12, Basic Action, At-will); Fists (14, Basic Action, At-will); Haul (16, Basic Action, Round); Interact (18, Basic Action, At-will); Leaning (20, Basic Action, At-will); Regrip (22, Basic Action, At-will); Release (24, Basic Action, At-will); Reload (26, Basic Action, At-will); Relocate (28, Basic Action, At-will); Shove (30, Basic Action, Round); Stand (32, Basic Action, At-will); Steel Yourself (34, Basic Action, Round); Trip (36, Basic Action, Round); Weapon Attack (38, Basic Action, At-will)
+Action cards: Advance (6, Basic Action, At-will); Charge (8, Basic Action, Round); Crawl (10, Basic Action, At-will); Evade (12, Basic Action, At-will); Fists (14, Basic Action, At-will); Haul (16, Basic Action, Round); Interact (18, Basic Action, At-will); Leaning (20, Basic Action, At-will); Opportunity Attack (22, Basic Action, At-will); Regrip (24, Basic Action, At-will); Release (26, Basic Action, At-will); Reload (28, Basic Action, At-will); Relocate (30, Basic Action, At-will); Shove (32, Basic Action, Round); Stand (34, Basic Action, At-will); Steel Yourself (36, Basic Action, Round); Trip (38, Basic Action, Round); Weapon Attack (40, Basic Action, At-will)
 
 ## 07-traits.md: Chapter 7: Traits
 
@@ -213,69 +215,75 @@ Open (to be decided) boxes: 92: "The list of Tags (Profane, Beast, Undead...) an
 ## 09-glossary.md: Chapter 9: Glossary
 
 
-Glossary entries (line: term): 6: [Mod]; 7: [W]; 8: [Trait]; 9: 0 AP; 10: 0R; 11: Action Points (AP); 12: Advance; 13: Ally; 14: Area; 15: Armor; 16: Armor Training; 17: Attribute Action; 18: At-will; 19: Aura; 20: Bane, Boon; 21: Barehanded; 22: Class Actions; 23: Pick; 24: Repertoire; 25: Basic attack; 26: Body Action, Mind Action; 27: Breather; 28: Category; 29: Check; 30: Clear; 31: Cleave; 32: Collision; 33: Combat Value (CV); 34: Corners; 35: Cover; 36: Crawl; 37: Critical; 38: Daily; 39: Dark Sight; 40: Deadly Hazard; 41: Defense; 42: Difficult Terrain; 43: Dim-light Sight; 44: Disrupted; 45: Distinct Choices; 46: Dominant Damage; 47: Doomed; 48: Doubles; 49: Down; 50: Elevation; 51: Elite; 52: Empowered; 53: Encounter; 54: Enfeebled; 55: Engaged; 56: EoT; 57: Escalation; 58: Evade; 59: Exhausted; 60: Expert; 61: Favored; 62: Firearm; 63: Fists; 64: Flanking; 65: Forced Movement; 66: Frequency; 67: General Effects; 68: Grunt; 69: Guard; 70: Gun; 71: Hallmark Action; 72: Hands; 73: Hazardous Terrain [HT]; 74: Hazardous Terrain; 75: Heal; 76: Hearing; 77: Hidden; 78: Imperiled; 79: Initiative slot; 80: Instance of damage; 81: Interact; 82: Interrupt; 83: Leaning; 84: Left your square; 85: Lethal, Nonlethal; 86: Line; 87: Line of Effect; 88: Linked Action; 89: Long; 90: Main hand, off hand; 91: Master; 92: Mastery; 93: Minion; 94: Minor enemies; 95: Move; 96: Moved; 97: Moves closer; 98: Next Action; 99: Non-threatening; 100: Obscured; 101: Origin; 102: Point of Origin; 103: Power Modifier; 104: Power roll; 105: Prerequisites; 106: Projectile; 107: Properties; 108: Pulled; 109: Pushed; 110: Quickened; 111: Rally Point; 112: Range; 113: Ranged Combat While Engaged; 114: Rating; 115: Reach; 116: Reaction; 117: Recovery; 118: Regrip; 119: Release; 120: Reload; 121: Reload Shot; 122: Reposition; 123: Requirements; 124: Rest; 125: Role; 126: Roll; 127: Round; 128: Save; 129: Save Action; 130: Sense; 131: Setup; 132: Several Targets; 133: Shot; 134: Signature Modifier; 135: Signature roll; 136: Size; 137: Slid; 138: Slowed; 139: Sleep; 140: Special Action; 141: Specific beats general; 142: Speed; 143: Split; 144: Squeezing; 145: SR; 146: Stacking; 147: Stage; 148: Standard; 149: Steadiness; 150: Steel Yourself; 151: Strike; 152: Success; 153: Tag; 154: Threatens; 155: Thrown; 156: Tier; 157: Trigger; 158: Turn; 159: Turn; 160: Unsensed; 161: Vs.; 162: Vulnerable; 163: Ward; 164: Weapon Group; 165: Weapon Modifier; 166: Weapon roll; 167: Weapon Technique; 168: Willing, Unwilling; 169: Wound
+Glossary entries (line: term): 6: [Mod]; 7: [W]; 8: [V], [R], [C]; 9: [Trait]; 10: 0 AP; 11: 0R; 12: Action Points (AP); 13: Advance; 14: Ally; 15: Apex; 16: Area; 17: Armor; 18: Armor Training; 19: Attribute Action; 20: At-will; 21: Aura; 22: Bane, Boon; 23: Bloodied, Strained; 24: Barehanded; 25: Class Actions; 26: Pick; 27: Repertoire; 28: Basic attack; 29: Body Action, Mind Action; 30: Breather; 31: Category; 32: Check; 33: Clear; 34: Cleave; 35: Collision; 36: Combat Value (CV); 37: Corners; 38: Cover; 39: Crawl; 40: Critical; 41: Daily; 42: Dark Sight; 43: Deadly Hazard; 44: Defense; 45: Difficult Terrain; 46: Dim-light Sight; 47: Disrupted; 48: Distinct Choices; 49: Dominant Damage; 50: Doomed; 51: Doubles; 52: Down; 53: Elevation; 54: Elite; 55: Empowered; 56: Encounter; 57: Enfeebled; 58: Engaged; 59: EoT; 60: Escalation; 61: Evade; 62: Exhausted; 63: Expert; 64: Favored; 65: Firearm; 66: Fists; 67: Flanking; 68: Forced Movement; 69: Frequency; 70: General Effects; 71: Grunt; 72: Guard; 73: Gun; 74: Hallmark Action; 75: Hallmark Reaction; 76: Hands; 77: Hazardous Terrain [HT]; 78: Hazardous Terrain; 79: Heal; 80: Hearing; 81: Hidden; 82: Imperiled; 83: Initiative slot; 84: Instance of damage; 85: Interact; 86: Interrupt; 87: Leaning; 88: Left your square; 89: Lethal, Nonlethal; 90: Line; 91: Line of Effect; 92: Linked Action; 93: Long; 94: Main hand, off hand; 95: Master; 96: Mastery; 97: Minion; 98: Minor enemies; 99: Momentum; 100: Move; 101: Moved; 102: Moves closer; 103: Next Action; 104: Non-threatening; 105: Obscured; 106: Origin; 107: Opportunity Attack; 108: Point of Origin; 109: Power Modifier; 110: Power roll; 111: Prerequisites; 112: Projectile; 113: Properties; 114: Pulled; 115: Pushed; 116: Quickened; 117: Rally Point; 118: Range; 119: Ranged Combat While Engaged; 120: Rating; 121: Reach; 122: Reaction; 123: Reaction AP; 124: Recovery; 125: Resolve, Vigor; 126: Regrip; 127: Release; 128: Reload; 129: Reload Shot; 130: Reposition; 131: Requirements; 132: Rest; 133: Role; 134: Roll; 135: Round; 136: Save; 137: Save Action; 138: Sense; 139: Setup; 140: Several Targets; 141: Shot; 142: Signature Modifier; 143: Signature roll; 144: Size; 145: Slid; 146: Slowed; 147: Sleep; 148: Special Action; 149: Specific beats general; 150: Speed; 151: Split; 152: Squeezing; 153: SR; 154: Stacking; 155: Stage; 156: Stage Talent; 157: Standard; 158: Steadiness; 159: Steel Yourself; 160: Strike; 161: Success; 162: Tag; 163: Threatens; 164: Thrown; 165: Tier; 166: Trigger; 167: Turn; 168: Turn; 169: Unsensed; 170: Vs.; 171: Vulnerable; 172: Ward; 173: Weapon Group; 174: Weapon Modifier; 175: Weapon roll; 176: Weapon Technique; 177: Willing, Unwilling; 178: Wound
 
 ## 11-species.md: Species
 
 - 6: ## Human
-- 16: ## Dwarf
-- 26: ## Elf
+- 15: ## Dwarf
+- 24: ## Elf
 
 ## 12-paladin.md: Paladin
 
-- 19: ## The Paladin by Level
-- 39: ## Level 1
-- 41:   ### Features
-- 49:   ### Hallmark Action Selection
-- 57:   ### Picks
-- 64: ## Paladin Repertoire
-- 66:   ### Encounter
-- 74:   ### Daily
-- 82: ## Paladin Escalation
-- 84:   ### Passives
-- 92:   ### Actives
+- 21: ## The Paladin by Level
+- 41: ## Level 1
+- 43:   ### Features
+- 51:   ### Hallmark Action Selection
+- 59:   ### Picks
+- 66: ## Paladin Repertoire
+- 68:   ### Encounter
+- 76:   ### Daily
+- 84: ## Paladin Escalation
+- 86:   ### Passives
+- 94:   ### Actives
 
-Action cards: Divine Power (45, Paladin Feature 1); Font of Mercy (47, Paladin Feature 1); Smite (53, Divine Power 1, Round); Lay On Hands (55, Divine Power 1, Round); Holy Wrath (68, Paladin Feature 1, Encounter); Word of Radiance (70, Paladin Feature 1, Encounter); Bulwark of Faith (72, Paladin Feature 1, Encounter); Consecrated Ground (76, Paladin Feature 1, Daily); Miraculous Recovery (78, Paladin Feature 1, Daily); Divine Intervention (80, Paladin Feature 1, Daily); Hallowed Stance (86, Paladin Escalation (Passive)); Radiant Zeal (88, Paladin Escalation (Passive)); Mending Light (90, Paladin Escalation (Passive)); Aura of Protection (94, Paladin Escalation, Encounter); Divine Surge (96, Paladin Escalation, Round); Shield of Faith (98, Paladin Escalation, Turn); Hand of Mercy (100, Paladin Escalation, Round)
+Action cards: Divine Power (47, Paladin Feature 1); Font of Mercy (49, Paladin Feature 1); Smite (55, Divine Power 1, Round); Lay On Hands (57, Divine Power 1, Round); Holy Wrath (70, Paladin Feature 1, Encounter); Word of Radiance (72, Paladin Feature 1, Encounter); Bulwark of Faith (74, Paladin Feature 1, Encounter); Consecrated Ground (78, Paladin Feature 1, Daily); Miraculous Recovery (80, Paladin Feature 1, Daily); Divine Intervention (82, Paladin Feature 1, Daily); Hallowed Stance (88, Paladin Escalation (Passive)); Radiant Zeal (90, Paladin Escalation (Passive)); Mending Light (92, Paladin Escalation (Passive)); Aura of Protection (96, Paladin Escalation, Encounter); Divine Surge (98, Paladin Escalation, Round); Shield of Faith (100, Paladin Escalation, Turn); Hand of Mercy (102, Paladin Escalation, Round)
+
+Open (to be decided) boxes: 18: "Pack R: the new core rules (4 AP + 1 Reaction AP, Escalation as a leve"
 
 ## 13-archer.md: Archer
 
-- 19: ## The Archer by Level
-- 39: ## Level 1
-- 41:   ### Features
-- 49:   ### Hallmark Action Selection
-- 57:   ### Picks
-- 63: ## Archer Repertoire
-- 65:   ### Encounter
-- 73:   ### Daily
-- 81: ## Archer Escalation
-- 83:   ### Passives
-- 91:   ### Actives
+- 21: ## The Archer by Level
+- 41: ## Level 1
+- 43:   ### Features
+- 51:   ### Hallmark Action Selection
+- 59:   ### Picks
+- 65: ## Archer Repertoire
+- 67:   ### Encounter
+- 75:   ### Daily
+- 83: ## Archer Escalation
+- 85:   ### Passives
+- 93:   ### Actives
 
-Action cards: Sharpshooter (45, Archer Feature 1); Marked Quarry (47, Archer Feature 1); Double Shot (53, Sharpshooter 1, Round); Rolling Shot (55, Sharpshooter 1, Round); Marksman's Shot (67, Archer Feature 1, Encounter); Volley (69, Archer Feature 1, Encounter); Covering Fire (71, Archer Feature 1, Encounter); Hunter's Focus (75, Archer Feature 1, Daily); Deadeye (77, Archer Feature 1, Daily); Rain of Arrows (79, Archer Feature 1, Daily); Killer's Focus (85, Archer Escalation (Passive)); Elusive (87, Archer Escalation (Passive)); Harrying Shots (89, Archer Escalation (Passive)); Pinning Shot (93, Archer Escalation, Round); Twin Shot (95, Archer Escalation, Round); Vanish (97, Archer Escalation, Round)
+Action cards: Sharpshooter (47, Archer Feature 1); Marked Quarry (49, Archer Feature 1); Double Shot (55, Sharpshooter 1, Round); Rolling Shot (57, Sharpshooter 1, Round); Marksman's Shot (69, Archer Feature 1, Encounter); Volley (71, Archer Feature 1, Encounter); Covering Fire (73, Archer Feature 1, Encounter); Hunter's Focus (77, Archer Feature 1, Daily); Deadeye (79, Archer Feature 1, Daily); Rain of Arrows (81, Archer Feature 1, Daily); Killer's Focus (87, Archer Escalation (Passive)); Elusive (89, Archer Escalation (Passive)); Harrying Shots (91, Archer Escalation (Passive)); Pinning Shot (95, Archer Escalation, Round); Twin Shot (97, Archer Escalation, Round); Vanish (99, Archer Escalation, Round)
+
+Open (to be decided) boxes: 18: "Pack R: the new core rules (4 AP + 1 Reaction AP, Escalation as a leve"
 
 ## 14-bestiary.md: Bestiary: Building NPCs
 
-- 6: ## The targets
-- 19:   ### Minor enemies
-- 23: ## Ratings
-- 34: ## Defenses
-- 40: ## Attributes and Modifiers
-- 44: ## Health
-- 54: ## Speed
-- 61: ## Steadiness
-- 65: ## Actions
-- 67:   ### The Basic attack
-- 73:   ### Special Actions
-- 87:   ### Conditions
-- 99:   ### Reactions
-- 107:   ### Escalation
-- 111: ## The roles
-- 113:   ### Minions
-- 145:   ### Grunts
-- 177:   ### Standards
-- 209:   ### Elites
-- 241: ## Building an encounter
-- 262: ## Example NPCs (Stage 1)
+- 9: ## The targets
+- 22:   ### Minor enemies
+- 26: ## Ratings
+- 37: ## Defenses
+- 43: ## Attributes and Modifiers
+- 47: ## Health
+- 57: ## Speed
+- 64: ## Steadiness
+- 68: ## Actions
+- 70:   ### The Basic attack
+- 76:   ### Special Actions
+- 90:   ### Conditions
+- 102:   ### Reactions
+- 110:   ### Escalation
+- 114: ## The roles
+- 116:   ### Minions
+- 148:   ### Grunts
+- 180:   ### Standards
+- 212:   ### Elites
+- 244: ## Building an encounter
+- 265: ## Example NPCs (Stage 1)
+
+Open (to be decided) boxes: 6: "Pack R: the tables below are still calibrated for 5 AP turns and the o"
 
 ## 15-gear.md: Gear
 
@@ -309,8 +317,8 @@ Open (to be decided) boxes: 149: "How classes or Talents grant Mastery beyond th
 
 - 14: ## Talents That Modify Actions
 - 18: ## Combat Talents
-- 48: ## Mobility Talents
-- 54: ## Magic Talents
-- 62: ## Class Talents
+- 46: ## Mobility Talents
+- 52: ## Magic Talents
+- 60: ## Class Talents
 
-Action cards: Opportunity Attack (22, Combat Talent 1, At-will); Challenge (24, Combat Talent 1); Heavy Blows (26, Combat Talent 1); Whirlwind (28, Combat Talent 1, Encounter); Bloodlust (30, Combat Talent 1, Encounter); Brawler (32, Combat Talent 1); Pummel (34, Brawler, At-will); Kickboxer (36, Combat Talent 1); Leg Sweep (38, Kickboxer, Round); Aim (40, Combat Talent 1, Round); Ricochet (42, Combat Talent 1); Long Draw (44, Combat Talent 1); Steady Nerves (46, Combat Talent 1); Battering Charge (50, Mobility Talent 1); Cut Through (52, Mobility Talent 1, Round); Lesser Blessing (56, Magic Talent 1); Rimebrand (Cold) (58, Lesser Blessing, Round); Sacred Weapon (60, Magic Talent 1, Round); Class Expertise (64, Combat Talent 5)
+Action cards: Challenge (22, Combat Talent 1); Heavy Blows (24, Combat Talent 1); Whirlwind (26, Combat Talent 1, Encounter); Bloodlust (28, Combat Talent 1, Encounter); Brawler (30, Combat Talent 1); Pummel (32, Brawler, At-will); Kickboxer (34, Combat Talent 1); Leg Sweep (36, Kickboxer, Round); Aim (38, Combat Talent 1, Round); Ricochet (40, Combat Talent 1); Long Draw (42, Combat Talent 1); Steady Nerves (44, Combat Talent 1); Battering Charge (48, Mobility Talent 1); Cut Through (50, Mobility Talent 1, Round); Lesser Blessing (54, Magic Talent 1); Rimebrand (Cold) (56, Lesser Blessing, Round); Sacred Weapon (58, Magic Talent 1, Round); Class Expertise (62, Combat Talent 5)

@@ -261,7 +261,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <p>A <strong><span class="kw-neg">Doomed</span></strong> roll can't produce Doubles (see <a class="xref" href="#favored-and-doomed-rolls"><span class="kw-pos">Favored</span> and <span class="kw-neg">Doomed</span> Rolls</a>).</p>
 <h2 id="critical">Critical</h2>
 <p>A result is a <strong>Critical</strong> when you roll <strong>Doubles on a result that is already Tier 3</strong>, or when your total is <strong>20 or more above the DC</strong> (33 or more against DC 13). Doubles that raise a Tier 2 to Tier 3 are not a Critical.</p>
-<p>A Critical only matters for the few Actions that have a <strong>Critical</strong> row, written under Tier 3 and above the Effects. On a Critical, you get the Tier 3 result and the Critical effect as well. For any other Action, a Critical is simply a Tier 3.</p>
+<p>A Critical matters for the few Actions that have a <strong>Critical</strong> row, written under Tier 3 and above the Effects. On a Critical, you get the Tier 3 result and the Critical effect as well. For any other Action, a Critical is simply a Tier 3. Once an encounter, a Critical on one of your Actions also raises your Escalation by 1 (see <a class="xref" href="#escalation">Escalation</a>).</p>
 <h2 id="boons-and-banes">Boons and Banes</h2>
 <ul>
 <li>Each <strong><span class="kw-boon">Boon</span></strong> adds <strong>1d3-1</strong> to your total (0, 1 or 2).</li>
@@ -386,7 +386,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <h2 id="saves">Saves</h2>
 <p>Some effects make a creature roll a <strong>Save</strong>, written like "<span class="at-appeal">Appeal</span> Save: <span class="pool-m">1d6 / 1d4 / 0 [R]</span> <span class="dmgword" style="--dc:#b8921c">Holy</span>". The creature that must save rolls the named Attribute Modifier against the DC of the effect.</p>
 <p>The DC is usually 11 + the Weapon, Power or <span class="mod-signature">Signature Modifier</span> that sets it (or 11 + ⌈Attribute ÷ 2⌉ + 1 for an Attribute-based Save); if no DC is listed, it is usually 13.</p>
-<p>The three values are what happens on its Tier 1 / Tier 2 / Tier 3 result: here 1d6 <span class="dmgword" style="--dc:#b8921c">Holy</span> <span class="at-mind">Mind</span> damage on a Tier 1, 1d4 on a Tier 2 and nothing on a Tier 3. <span class="kw-boon">Boons</span>, <span class="kw-bane">Banes</span>, Doubles, <span class="kw-pos">Favored</span> and <span class="kw-neg">Doomed</span> work on Saves like on any roll.</p>
+<p>The three values are what happens on its Tier 1 / Tier 2 / Tier 3 result: here 1d6 <span class="dmgword" style="--dc:#b8921c">Holy</span> Resolve damage on a Tier 1, 1d4 on a Tier 2 and nothing on a Tier 3. <span class="kw-boon">Boons</span>, <span class="kw-bane">Banes</span>, Doubles, <span class="kw-pos">Favored</span> and <span class="kw-neg">Doomed</span> work on Saves like on any roll.</p>
 <h3 id="save-actions">Save Actions</h3>
 <p>An Action with the <strong>Save</strong> trait doesn't roll: each target rolls the Save the card names (its Vs. line says, for example, <strong><span class="at-instinct">Instinct</span> Save</strong>). The DC comes from the Action's other traits: <strong>11 + your <span class="mod-weapon">Weapon Modifier</span></strong> for a [<span class="trhl" style="--tc:var(--g-roll)">Save</span>, <span class="trhl" style="--tc:var(--g-roll)">Weapon</span>] Action, <strong>11 + your <span class="mod-power">Power Modifier</span></strong> for a [<span class="trhl" style="--tc:var(--g-roll)">Power</span>, <span class="trhl" style="--tc:var(--g-roll)">Save</span>] Action, <strong>11 + your <span class="mod-signature">Signature Modifier</span></strong> for a [<span class="trhl" style="--tc:var(--g-roll)">Save</span>, <span class="trhl" style="--tc:var(--g-roll)">Signature</span>] Action, and for a <span class="trhl" style="--tc:var(--g-roll)">Save</span> Action that rolls an Attribute (such as [<span class="at-body">Body</span>, <span class="trhl" style="--tc:var(--g-roll)">Save</span>]), <strong>11 + ⌈Attribute ÷ 2⌉ + 1</strong>.</p>
 <p>The tiers are the target's result: <strong>Tier 1 is the worst for them</strong>. So everything that follows your result on an attack follows theirs here, reversed: a [<span class="trhl" style="--tc:var(--g-roll)">Save</span>, <span class="trhl" style="--tc:var(--g-roll)">Weapon</span>] Action deals its [Mod] on <strong>Tier 1 and 2</strong>, and its <strong>Effects</strong> row happens on <strong>Tier 1 and 2</strong>.</p>
@@ -397,16 +397,17 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <p>The damage of an Action is what its card says: it adds a Modifier or a weapon's damage only when the card writes [Mod] or [W]. A <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action writes the weapon's damage and its Modifier on the card; a <span class="trhl" style="--tc:var(--g-roll)">Power</span> Action writes its dice.</p>
 <h3 id="modifier-damage-mod">Modifier Damage [Mod]</h3>
 <p>When an Action deals damage equal to your Modifier, it is written <strong>[Mod]</strong>. The Modifier is always the one you used to roll for that Action. You never add a Modifier to the same damage twice.</p>
-<p>When a <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action adds your Modifier to its damage, the Modifier joins the <strong>weapon's damage</strong> and keeps its damage type and subtype: if the weapon deals <span class="at-mind">Mind</span> damage, so does the Modifier.</p>
+<p>When a <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action adds your Modifier to its damage, the Modifier joins the <strong>weapon's damage</strong> and keeps its damage type and subtype: if the weapon deals Resolve damage, so does the Modifier.</p>
 <p><strong><span class="trhl" style="--tc:var(--g-roll)">Power</span> Actions</strong> don't add their Modifier to damage on any Tier: their damage is the dice on the card.</p>
 <h3 id="damage-types">Damage Types</h3>
-<p>All damage a creature takes is either <span class="at-body">Body</span> or <span class="at-mind">Mind</span> damage, though each of those has different subtypes. <span class="dmgword" style="--dc:#8a8a8a">Blunt</span> damage will almost always be <span class="at-body">Body</span> damage, but not always. Damage is written this way:</p>
+<p>All damage a creature takes is either <strong>Vigor damage</strong> (wounds, bruises, broken bones) or <strong>Resolve damage</strong> (fear, pain, despair), named after the two thresholds of the <a class="xref" href="#health-pool">Health Pool</a>; each of those has different subtypes. <span class="dmgword" style="--dc:#8a8a8a">Blunt</span> damage will almost always be Vigor damage, but not always. Damage is written this way:</p>
 <ul>
-<li><strong>[V]:</strong> the damage is applied to <span class="at-body">Body</span>.</li>
-<li><strong>[R]:</strong> the damage is applied to <span class="at-mind">Mind</span>.</li>
-<li><strong>[C]:</strong> the origin chooses which type (<span class="at-body">Body</span> or <span class="at-mind">Mind</span>) the damage deals.</li>
+<li><strong>[V]:</strong> Vigor damage.</li>
+<li><strong>[R]:</strong> Resolve damage.</li>
+<li><strong>[C]:</strong> the origin chooses which type (Vigor or Resolve) the damage deals.</li>
 </ul>
-<p>Some Actions include two types of damage. For example, "<span class="pool-b">[V] 1d4+1d6+3</span> <span class="dcode" style="--dc:#8a8a8a">Sl</span>; <span class="pool-m">[R] 1d8</span> <span class="dcode" style="--dc:#c9577f">Ps</span>" means <span class="at-body">Body</span> takes 1d4+1d6+3 <span class="dmgword" style="--dc:#8a8a8a">Slash</span> damage and <span class="at-mind">Mind</span> takes 1d8 <span class="dmgword" style="--dc:#c9577f">Psychic</span> damage.</p>
+<p>Vigor and Resolve are not the <span class="at-body">Body</span> and <span class="at-mind">Mind</span> Attributes: an Action of any Attribute can deal either.</p>
+<p>Some Actions include two types of damage. For example, "<span class="pool-b">[V] 1d4+1d6+3</span> <span class="dcode" style="--dc:#8a8a8a">Sl</span>; <span class="pool-m">[R] 1d8</span> <span class="dcode" style="--dc:#c9577f">Ps</span>" deals 1d4+1d6+3 <span class="dmgword" style="--dc:#8a8a8a">Slash</span> Vigor damage and 1d8 <span class="dmgword" style="--dc:#c9577f">Psychic</span> Resolve damage.</p>
 <h3 id="damage-subtypes">Damage Subtypes</h3>
 <p>Subtypes don't have rules by themselves, but other rules use them, such as Resist and Weak. They are shortened to <strong>two letters</strong>, so they never look like the damage types [V], [R] and [C]:</p>
 <div class="tablewrap"><table>
@@ -522,7 +523,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <tbody>
 <tr>
 <td><a class="xref" href="#damage-types"><strong>[V]</strong>, <strong>[R]</strong>, <strong>[C]</strong></a></td>
-<td>The damage is applied to <span class="at-body">Body</span>, to <span class="at-mind">Mind</span>, or to the one the origin chooses. On cards in Foundry, a heart <span class="pool pool-b" role="img" aria-label="Body"><svg class="ico" viewBox="0 0 512 512" aria-hidden="true"><path fill="currentColor" d="M241 87.1l15 20.7 15-20.7C296 52.5 336.2 32 378.9 32 452.4 32 512 91.6 512 165.1l0 2.6c0 112.2-139.9 242.5-212.9 298.2-12.4 9.4-27.6 14.1-43.1 14.1s-30.8-4.6-43.1-14.1C139.9 410.2 0 279.9 0 167.7l0-2.6C0 91.6 59.6 32 133.1 32 175.8 32 216 52.5 241 87.1z"/></svg></span> stands for <span class="at-body">Body</span> and a brain <span class="pool pool-m" role="img" aria-label="Mind"><svg class="ico" viewBox="0 0 512 512" aria-hidden="true"><path fill="currentColor" d="M120 56c0-30.9 25.1-56 56-56l24 0c17.7 0 32 14.3 32 32l0 448c0 17.7-14.3 32-32 32l-32 0c-29.8 0-54.9-20.4-62-48-.7 0-1.3 0-2 0-44.2 0-80-35.8-80-80 0-18 6-34.6 16-48-19.4-14.6-32-37.8-32-64 0-30.9 17.6-57.8 43.2-71.1-7.1-12-11.2-26-11.2-40.9 0-44.2 35.8-80 80-80l0-24zm272 0l0 24c44.2 0 80 35.8 80 80 0 15-4.1 29-11.2 40.9 25.7 13.3 43.2 40.1 43.2 71.1 0 26.2-12.6 49.4-32 64 10 13.4 16 30 16 48 0 44.2-35.8 80-80 80-.7 0-1.3 0-2 0-7.1 27.6-32.2 48-62 48l-32 0c-17.7 0-32-14.3-32-32l0-448c0-17.7 14.3-32 32-32l24 0c30.9 0 56 25.1 56 56z"/></svg></span> for <span class="at-mind">Mind</span>.</td>
+<td>Vigor damage, Resolve damage, or the one the origin chooses. On cards in Foundry, a heart <span class="pool pool-b" role="img" aria-label="Body"><svg class="ico" viewBox="0 0 512 512" aria-hidden="true"><path fill="currentColor" d="M241 87.1l15 20.7 15-20.7C296 52.5 336.2 32 378.9 32 452.4 32 512 91.6 512 165.1l0 2.6c0 112.2-139.9 242.5-212.9 298.2-12.4 9.4-27.6 14.1-43.1 14.1s-30.8-4.6-43.1-14.1C139.9 410.2 0 279.9 0 167.7l0-2.6C0 91.6 59.6 32 133.1 32 175.8 32 216 52.5 241 87.1z"/></svg></span> stands for Vigor and a brain <span class="pool pool-m" role="img" aria-label="Mind"><svg class="ico" viewBox="0 0 512 512" aria-hidden="true"><path fill="currentColor" d="M120 56c0-30.9 25.1-56 56-56l24 0c17.7 0 32 14.3 32 32l0 448c0 17.7-14.3 32-32 32l-32 0c-29.8 0-54.9-20.4-62-48-.7 0-1.3 0-2 0-44.2 0-80-35.8-80-80 0-18 6-34.6 16-48-19.4-14.6-32-37.8-32-64 0-30.9 17.6-57.8 43.2-71.1-7.1-12-11.2-26-11.2-40.9 0-44.2 35.8-80 80-80l0-24zm272 0l0 24c44.2 0 80 35.8 80 80 0 15-4.1 29-11.2 40.9 25.7 13.3 43.2 40.1 43.2 71.1 0 26.2-12.6 49.4-32 64 10 13.4 16 30 16 48 0 44.2-35.8 80-80 80-.7 0-1.3 0-2 0-7.1 27.6-32.2 48-62 48l-32 0c-17.7 0-32-14.3-32-32l0-448c0-17.7 14.3-32 32-32l24 0c30.9 0 56 25.1 56 56z"/></svg></span> for Resolve.</td>
 </tr>
 <tr>
 <td><a class="xref" href="gear.html#weapon-damage-w"><strong>[W]</strong></a></td>
@@ -586,11 +587,11 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#reactions"><strong><span class="kw-ap">1R</span></strong>, <strong><span class="kw-ap">0R</span></strong></a></td>
-<td>A Reaction that uses <span class="kw-ap">1 AP</span>, or none.</td>
+<td>A Reaction that uses <span class="kw-ap">1 AP</span> (your Reaction AP or an AP you kept), or none.</td>
 </tr>
 <tr>
-<td><a class="xref" href="#escalation"><strong>1 Escalation</strong></a></td>
-<td>The Escalation an Escalation Action costs, on top of its AP.</td>
+<td><a class="xref" href="#escalation"><strong>Escalation 3</strong></a></td>
+<td>The Escalation an Action needs: you can use it only while your Escalation is at least that number. Nothing is spent.</td>
 </tr>
 </tbody>
 </table></div>
@@ -630,23 +631,31 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <h3 id="swapping-initiative">Swapping Initiative</h3>
 <p>On your turn, if you haven't taken any Actions yet and aren't <span class="kw-neg">Down</span>, you can spend <strong><span class="kw-ap">1 AP</span></strong> to swap places in the turn order with an ally who hasn't had a turn this round. The ally takes the turn now, at your place in the order, and gains its AP as normal.</p>
 <p>You act at the ally's old place. Until then, your remaining Actions are <strong>frozen</strong>: you can't use them. When your new turn arrives, you carry on with the AP you had left instead of gaining new AP. You can't swap again that round.</p>
-<div class="callout example"><div class="ctitle">Example</div><p>PC1 (first in the order) swaps with PC3 and keeps <span class="kw-ap">4 AP</span>. The order becomes PC3, NPC1, PC2, NPC2, PC1. When PC1's turn comes, PC1 has <span class="kw-ap">4 AP</span>.</p></div>
+<div class="callout example"><div class="ctitle">Example</div><p>PC1 (first in the order) swaps with PC3 and keeps <span class="kw-ap">3 AP</span>. The order becomes PC3, NPC1, PC2, NPC2, PC1. When PC1's turn comes, PC1 has <span class="kw-ap">3 AP</span>.</p></div>
 <h2 id="turns-and-rounds">Turns and Rounds</h2>
 <p>A <strong>turn</strong> is the time one creature acts, from the start of their turn to the end of it. A <strong><a class="xref" href="#rounds">round</a></strong> is one full cycle of turns. Limits that say "per turn" count each turn separately, including other creatures' turns: you can make up to 3 Strikes in your turn, and up to 3 more (as reactions) in another creature's turn.</p>
 <p>A <strong>turn-cycle</strong> is the period from the start of a creature's turn to the start of that creature's next turn. In the order "Victor, Goblin Warrior, Paul, Goblin Scoundrel, Wes", Wes's turn-cycle runs from the start of Wes's turn to the start of Wes's next turn.</p>
 <h2 id="action-points">Action Points</h2>
-<p>At the start of your turn in combat, you <strong>regain AP</strong>: you lose any AP you didn't use and gain <strong>5 Action Points (AP)</strong>. You spend AP to do things on your turn.</p>
-<p>If you end your turn without spending all your AP, you can keep the rest to use outside your turn, for Reactions.</p>
+<p>At the start of your turn in combat, you <strong>regain AP</strong>: you lose any AP you didn't use and gain <strong>4 Action Points (AP)</strong> and <strong>1 Reaction AP</strong>. You spend AP to do things on your turn. The Reaction AP pays only for <a class="xref" href="#reactions">Reactions</a>, on your turn or another creature's.</p>
+<h3 id="unspent-ap">Unspent AP</h3>
+<p>If you end your turn without spending all your AP, you keep the rest until you regain AP, and each kept AP gives you <strong><a class="xref" href="#guard">Guard</a></strong>: <strong>2</strong> per AP at Stage 1, <strong>3</strong> at Stage 2 and <strong>4</strong> at Stage 3 (see <a class="xref" href="#stages">Stages</a>).</p>
+<ul>
+<li>This Guard <strong>adds</strong> to any Guard you already have (an exception to <a class="xref" href="#stacking">Stacking</a>), and what is left of it ends when you regain AP. Damage takes it before your other Guard.</li>
+<li>A kept AP can still pay for a Reaction: your Guard from AP then drops by one AP's worth (to a minimum of 0).</li>
+<li>Your Reaction AP never becomes Guard.</li>
+</ul>
+<div class="callout example"><div class="ctitle">Example</div><p>Drak (Stage 1) has Guard 5 from a card and ends his turn with <span class="kw-ap">1 AP</span> left: he has Guard 7 until his next turn. A goblin hits him for 3: his Guard from AP takes 2 and his other Guard 1, so he has Guard 4 left. If he then spends his kept AP on a Reaction, he loses no more Guard: that AP's Guard is already gone.</p></div>
 <h3 id="losing-and-gaining-action-points">Losing and Gaining Action Points</h3>
 <p>When something gives or takes Action Points, it says whether it happens <strong>now</strong> or <strong>when you regain AP</strong>.</p>
 <ul>
-<li><strong>Now.</strong> "The target loses <span class="kw-ap">1 AP</span>" means they lose <span class="kw-ap">1 AP</span> they have right now; if they have none, it has no effect. "The target gains <span class="kw-ap">1 AP</span>" means they gain <span class="kw-ap">1 AP</span> right now. Unless otherwise stated, you can't have more than <span class="kw-ap">5 AP</span>.</li>
-<li><strong>When you regain AP.</strong> Changes to the AP you regain at the start of your turn are the <a class="xref" href="#slowed">Slowed</a> and <a class="xref" href="#quickened">Quickened</a> conditions: Slowed 1 means you regain <span class="kw-ap">1 AP</span> less, Quickened 1 means you regain <span class="kw-ap">1 AP</span> more.</li>
+<li><strong>Now.</strong> "The target loses <span class="kw-ap">1 AP</span>" means they lose <span class="kw-ap">1 AP</span> they have right now; if they have none, it has no effect. "The target gains <span class="kw-ap">1 AP</span>" means they gain <span class="kw-ap">1 AP</span> right now. Unless otherwise stated, you can't have more than <span class="kw-ap">4 AP</span>, and losing or gaining AP never changes your Reaction AP.</li>
+<li><strong>When you regain AP.</strong> Changes to the AP you regain at the start of your turn are the <a class="xref" href="#slowed">Slowed</a> and <a class="xref" href="#quickened">Quickened</a> conditions: Slowed 1 means you regain <span class="kw-ap">1 AP</span> less, Quickened 1 means you regain <span class="kw-ap">1 AP</span> more. Neither changes your Reaction AP.</li>
 </ul>
 <h2 id="reactions">Reactions</h2>
 <p>A <strong>Reaction</strong> is an Action you use in response to something another creature does. Its card has an <strong>Interrupt</strong> or a <strong>Trigger</strong> line that says what it responds to, and which of the two it is decides when it happens. Its cost is written with an R, such as <strong><span class="kw-ap">1R</span></strong>: it uses that many Action Points, but only as a response. A <strong><span class="kw-ap">0R</span></strong> Reaction uses no AP; its Frequency still limits it.</p>
 <ul>
-<li><strong>The same AP:</strong> Reactions use your Action Points: the AP you didn't spend on your turn stay available until you regain AP at the start of your next turn.</li>
+<li><strong>Paying:</strong> A Reaction is paid with your <strong>Reaction AP</strong>, with AP you kept from your turn (see <a class="xref" href="#unspent-ap">Unspent AP</a>), or with both: a <span class="kw-ap">2R</span> Reaction can use your Reaction AP and one kept AP. On your own turn, your turn's AP can pay for it too. Your Reaction AP lasts until you regain AP at the start of your next turn.</li>
+<li><strong>Opportunity Attack:</strong> Every creature has the Opportunity Attack Reaction (see <a class="xref" href="#chapter-6-basic-actions">Chapter 6</a>): it can attack a creature that moves away from it.</li>
 <li><strong>Interrupt:</strong> An Interrupt happens <strong>before</strong> the Action that triggers it. "Interrupt: A creature would Advance" means the Reaction happens before the creature uses the Advance Action.</li>
 <li><strong>Trigger:</strong> A Trigger happens <strong>after</strong> the Action that triggers it. "Trigger: A creature deals damage to you" happens after you take the triggering damage.</li>
 <li><strong>Once per triggering Action:</strong> You can react only once to the same Action, but several creatures can react to it. Some Actions, mainly Move Actions, can happen throughout different squares. It is still a single Action, and you decide when you take the Reaction: for instance, you can wait for the creature to move into a more advantageous position before taking your Reaction, instead of taking it as soon as the creature moves.</li>
@@ -657,7 +666,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <p>While the name "triggering" is similar to "Trigger", it isn't only for Trigger Reactions: it also applies to Interrupt Reactions. The <strong>triggering creature</strong> is the creature who caused the Reaction to happen; the <strong>triggering Action</strong> is the Action that caused the Reaction to happen, and so on.</p>
 <div class="callout tip"><div class="ctitle">Designer's Tip</div><p>The clarification above might make you think you need to move one square at a time during a game, but this slows the game down a lot. You can just make the full movement and let the creature reacting decide when it happens during the movement. You might need to move the token back to where the Reaction happened if the movement is disrupted (see below), but that doesn't happen often. Doing it this way removes the suspense of "When will this creature start moving? Should I use my Reaction now, or wait and see if it moves into a more favorable position, with the chance that it stops moving before I react?" The table should decide how to run it.</p></div>
 <h3 id="disrupting-actions">Disrupting Actions</h3>
-<p>When an Action is <strong>disrupted</strong>, it doesn't happen, and the resources and AP spent on it are wasted. Some Actions can disrupt another Action, usually with a Critical, for example Opportunity Attack when it is used out of your turn.</p>
+<p>When an Action is <strong>disrupted</strong>, it doesn't happen, and the resources and AP spent on it are wasted. Some Actions can disrupt another Action, usually with a Critical.</p>
 <p>An Interrupt disrupts the Action before it happens. For example, a Reaction with "Interrupt: A creature uses a Move Action" triggers when a creature uses an Action that Stands and then Advances (<span class="kw-ap">1 AP</span>): the creature doesn't Stand, and the whole Action is disrupted (because you can't Advance while Prone).</p>
 <p>A Trigger that names a Move Action fires at any point during the Move Action (after the first square it moves), but it is a single trigger: you can use the Reaction only once per Move Action, even with AP to spare. If the Action does something before moving (Stand, then Advance), the Stand happens first; the Trigger fires during the Advance.</p>
 <p>When the disrupted Action is only a Linked Action, the Action stops only if that part is necessary for it. What already happened stays, and a disrupted movement ends in the square the creature was in. For example, a Charge disrupted before the creature has moved the 3 squares it needs is cancelled, and they make no Weapon Attack. If it is disrupted after those 3 squares, the Charge ends there, and they make the Weapon Attack if there is a valid target.</p>
@@ -670,7 +679,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <h3 id="setup">Setup</h3>
 <p>Some Actions have a <strong>Setup</strong> entry before the Action. It describes what happens before the dice are rolled.</p>
 <h3 id="targets">Targets</h3>
-<p>An Action that targets something can only be used if it has a valid target. An Action with no valid target can't be used. Most Actions target creatures only, but the GM can allow one to target an unattended object, such as a barrel, a crate or a door. Usually the Action rolls against DC 13 for the object, but the GM can set a different DC depending on the circumstances.</p>
+<p>An Action that targets something can only be used if it has a valid target. An Action with no valid target can't be used. An Action that names a number of targets needs that many: "Two creatures" can't be used against one. "Up to" means any number from one to that many. Most Actions target creatures only, but the GM can allow one to target an unattended object, such as a barrel, a crate or a door. Usually the Action rolls against DC 13 for the object, but the GM can set a different DC depending on the circumstances.</p>
 <h3 id="willing-and-unwilling">Willing and Unwilling</h3>
 <p>Some Actions target a <strong>willing</strong> creature, and some rules change for an <strong>unwilling</strong> one (passing through its square, for example). A creature is <strong>willing</strong> when it accepts the effect: you choose for yourself, and each creature chooses for itself when the effect would happen. An <strong>Unconscious</strong> creature counts as willing. Any other creature that doesn't accept is <strong>unwilling</strong>. A creature doesn't have to know what the effect does to accept it.</p>
 <h3 id="requirements">Requirements</h3>
@@ -706,11 +715,12 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <p><strong>Raising Defenses.</strong> "+1 Defense" raises <strong>every</strong> Defense of the creature: Armor Defense, Ward Defense and every Vs. Attribute. "+1 AD", "+1 WD" or "+1 Defense vs <span class="at-body">Body</span>" raises only that one. A feature can narrow it further, such as "+1 Defense vs Actions that Push". These bonuses don't add up with each other (see <a class="xref" href="#stacking">Stacking</a>).</p>
 <h4 id="stacking">Stacking</h4>
 <p>The same effect never stacks with itself, and bonuses from different effects don't add up either: for each value (<span class="kw-pos">Empowered</span>, <span class="kw-neg">Enfeebled</span>, <span class="kw-neg">Vulnerable</span>, a Defense, <a class="xref" href="#guard">Guard</a>...), a creature uses only the <strong>highest bonus</strong> and the <strong>highest penalty</strong> that apply. If a creature gets the same effect again, it keeps the higher value and the longer duration: two effects that make it <span class="kw-neg">Enfeebled 1</span> do not make it <span class="kw-neg">Enfeebled 2</span>.</p>
-<p>Three things do add up:</p>
+<p>Four things do add up:</p>
 <ul>
 <li>An effect that says it <strong>increases</strong> a value: "increase your <span class="kw-neg">Enfeebled</span> value by 1" (an Action that says "increase your <span class="kw-pos">Empowered</span> value by 1" adds to the <span class="kw-pos">Empowered</span> you have).</li>
 <li><strong><span class="kw-boon">Boons</span> and <span class="kw-bane">Banes</span>.</strong></li>
 <li>An effect that <strong>increases</strong> your <a class="xref" href="#slowed">Slowed</a> value (being Desperate, Dying or Shattered).</li>
+<li>The <strong>Guard</strong> your <a class="xref" href="#unspent-ap">Unspent AP</a> give you: it adds to the Guard you have.</li>
 </ul>
 <p><strong>Equipment is not a bonus.</strong> Your armor gives your Armor value and your charm your Ward value; effects add to those. With +1 AD and +1 Defense, your Armor Defense rises by 1 (not 2) and every other Defense by 1.</p>
 <div class="callout example"><div class="ctitle">Example</div><p>Divine Surge makes the next ally who deals damage to its target deal an extra <span class="pool-m">[R] 1d8</span> <span class="dmgword" style="--dc:#b8921c">Holy</span>. If two Paladins use Divine Surge on the same creature, the next ally still deals only one extra 1d8: it is the same effect.</p></div>
@@ -777,10 +787,26 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <p>An EoT effect on yourself still ends at the end of the current turn. A duration in rounds is different: it does not count down at the end of the turn in which the effect was created, because it has to last a whole round.</p>
 <p>Each position in the turn order is an <strong>initiative slot</strong>. Effects end at the end of an initiative slot, not of a creature. If a creature swaps initiative, an EoT effect still ends at the end of the slot the creature was in when the effect was applied, and a duration in rounds still counts down at the end of the slot of its origin.</p>
 <h2 id="escalation">Escalation</h2>
-<p><strong>Escalation</strong> is a character's adrenaline: the longer a fight goes on, the more of it you have, and you spend it on your class's Escalation abilities. You start combat with <strong>0</strong> Escalation, and each creature has their own Escalation. At the start of every round after the first, if you aren't Unconscious, you gain <strong>1 Escalation</strong>, up to <strong>3</strong>. While Unconscious, you keep the Escalation you have. You can't have more than 3 Escalation at once, unless you have some feature or ability that changes that.</p>
-<p>You spend it on Escalation Actions. Their card shows the Escalation they cost on top of their AP, as in "1 Escalation". You can spend Escalation on more than one Action in the same turn. When the encounter ends, your Escalation goes back to <strong>0</strong>, and every effect that spending Escalation created ends too.</p>
-<p>Some Escalation abilities are <strong>passive</strong>: they work while your Escalation is at least the number they name ("while your Escalation is 2 or more"). Spending Escalation can turn them off until you gain it back.</p>
-<div class="callout example"><div class="ctitle">Example</div><p>Rounds 1, 2, 3 and 4 start: you have 0, 1, 2 and 3 Escalation if you spend none. On round 3 you spend 1 on Divine Surge and have 1 left; at the start of round 4 you have 2. The fight ends on round 5: your Escalation goes back to 0, and a Divine Surge you haven't used yet is lost.</p></div></div></details></section>
+<p><strong>Escalation</strong> is a character's adrenaline: a level from <strong>1 to 3</strong> that rises as a fight goes on. Each PC has their own. It is never spent: your class's Escalation abilities work while your Escalation is high enough.</p>
+<ul>
+<li><strong>Start:</strong> you start every encounter at <strong>Escalation 1</strong> (2 with <a class="xref" href="#momentum">Momentum</a>).</li>
+<li><strong>Rounds:</strong> at the start of every round after the first, if you aren't Unconscious, your Escalation increases by 1. While Unconscious, you keep the Escalation you have.</li>
+<li><strong>Critical:</strong> once an encounter, when you score a <a class="xref" href="#critical">Critical</a> on one of your Actions, your Escalation increases by 1.</li>
+<li><strong>Your class's hook:</strong> each class names one more event that, once an encounter, increases your Escalation by 1 (the Paladin: an ally within 5 squares of you becomes Bloodied or goes <span class="kw-neg">Down</span>; the Archer: your Marked Quarry goes <span class="kw-neg">Down</span>).</li>
+<li><strong>At most 3:</strong> you can't have more than 3 Escalation, unless a feature says so. A hook that happens while your Escalation is 3 isn't used up: it can still increase your Escalation later in the encounter, if something lowered it.</li>
+<li><strong>The end:</strong> when the encounter ends, your Escalation goes back to 1, and the abilities that need it stop working.</li>
+</ul>
+<p>Your class has two kinds of Escalation abilities:</p>
+<ul>
+<li><strong>Escalation Passives</strong>, one for each Escalation level (1, 2 and 3): each works while your Escalation is at least its number ("while your Escalation is 2 or more").</li>
+<li><strong>The Apex</strong>: an Encounter Action whose card says <strong>Escalation 3</strong>. You can use it only while your Escalation is 3; it spends nothing.</li>
+</ul>
+<p>An Action with an <strong>Escalation</strong> line on its card needs that much Escalation, the same way.</p>
+<div class="callout example"><div class="ctitle">Example</div><p>Nari starts a fight at Escalation 1. Round 2 starts: he is at 2, and his Escalation 2 Passive starts working. In round 2 he scores a Critical: he is at 3 and can use his Apex. Round 3 starts: he stays at 3. When the fight ends, he is back at 1.</p></div>
+<p>NPCs have no Escalation, except Elites (see the <a class="xref" href="bestiary.html#bestiary-building-npcs">Bestiary</a>).</p>
+<h3 id="momentum">Momentum</h3>
+<p>After an encounter harder than easy (more than CV 75 per PC, see the <a class="xref" href="bestiary.html#bestiary-building-npcs">Bestiary</a>), your party has <strong>Momentum</strong> until it Rests: each of you starts your next encounter at Escalation 2 instead of 1. Momentum doesn't stack.</p>
+<div class="callout tip"><div class="ctitle">Designer's Tip</div><p>The GM's valve: after a bad turn of the dice for the whole table, the GM can give every PC +1 Escalation. There is no other way to spend or buy Escalation.</p></div></div></details></section>
 <section class="chapter"><details open><summary><h1 id="chapter-3-movement-and-the-environment">Chapter 3: Movement and the Environment</h1></summary><div class="cbody">
 <h2 id="playing-on-the-grid">Playing on the Grid</h2>
 <p>Fights are played on a map divided into <strong>squares</strong>, on a table or in a virtual tabletop. Every creature is a <strong>token</strong> that stands on one or more squares, and every distance in these rules is counted in squares.</p>
@@ -1243,24 +1269,27 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <p>The GM decides how each creature perceives each other when it isn't obvious.</p></div></details></section>
 <section class="chapter"><details open><summary><h1 id="chapter-4-health">Chapter 4: Health</h1></summary><div class="cbody">
 <h2 id="health-pool">Health Pool</h2>
-<p>Your <strong>Health Pool</strong> is the sum of two thresholds:</p>
-<ul>
-<li><strong><span class="at-body">Body</span> Damage Threshold (BDT)</strong> = ((<span class="at-body">Body</span> + 2) × <span class="at-body">Body</span> Health Multiplier + Species <span class="at-body">Body</span> Health) × (Level + 17) ÷ 16</li>
-<li><strong><span class="at-mind">Mind</span> Damage Threshold (MDT)</strong> = ((<span class="at-mind">Mind</span> + 2) × <span class="at-mind">Mind</span> Health Multiplier + Species <span class="at-mind">Mind</span> Health) × (Level + 17) ÷ 16</li>
-</ul>
-<p>Round each threshold up. The Health Multipliers come from your class, and the Species Health values from your species.</p>
-<p><em>Example:</em> a level 4 Human Paladin has <span class="at-body">Body</span> +2 and <span class="at-mind">Mind</span> +1. BDT = ((2 + 2) × 4 + 3) × 21 ÷ 16 = 24.9, rounded up to <strong>25</strong>. MDT = ((1 + 2) × 4 + 4) × 21 ÷ 16 = <strong>21</strong>. Health Pool = <strong>46</strong>.</p>
-<p><span class="at-body">Body</span> and <span class="at-mind">Mind</span> are not separate pools. All damage reduces the same Health Pool. The thresholds only decide which conditions you suffer.</p>
+<p>Your <strong>Health Pool</strong> is the sum of two thresholds, <strong>Vigor</strong> and <strong>Resolve</strong>:</p>
+<ol>
+<li><strong>Your class</strong> gives a <strong>high</strong> and a <strong>low</strong> Health value. When you build your character, you assign one to Vigor and the other to Resolve; the choice can't be changed later.</li>
+<li><strong>Your species</strong> adds its bonus to each (see the <a class="xref" href="species.html#species">Species</a> document).</li>
+<li><strong>Your Stage:</strong> at Stage 2 and again at Stage 3, each threshold grows by your class's step for its value (the high step or the low step; see <a class="xref" href="#stages">Stages</a>).</li>
+<li><strong>The floor:</strong> neither threshold can be less than a third of your Health Pool (rounded up). If one is, move points from the other threshold to it until it reaches a third; the Health Pool doesn't change.</li>
+</ol>
+<p>Your Attributes don't change your Health.</p>
+<div class="callout example"><div class="ctitle">Example</div><p>A Human Paladin (high 20, low 10) puts the high value on Vigor: Vigor 20 + 3 = <strong>23</strong>, Resolve 10 + 2 = <strong>12</strong>, Health Pool <strong>35</strong>. At Stage 2 the Paladin's steps (+12 high, +6 low) make it Vigor 35, Resolve 18, Health Pool 53.</p>
+<p>Steven, an Elf Archer (high 16, low 8), puts the high value on Resolve: Vigor 8 + 1 = 9, Resolve 16 + 4 = 20, Health Pool 29. A third of 29 is 10, so 1 point moves: Vigor <strong>10</strong>, Resolve <strong>19</strong>.</p></div>
+<p>Vigor and Resolve are not separate pools. All damage reduces the same Health Pool. The thresholds only decide which states you reach.</p>
 <h2 id="damage">Damage</h2>
 <p>Record every point of damage as:</p>
 <ul>
-<li><strong><span class="at-body">Body</span></strong> or <strong><span class="at-mind">Mind</span></strong></li>
+<li><strong>Vigor</strong> or <strong>Resolve</strong> (see <a class="xref" href="#damage-types">Damage Types</a>)</li>
 <li><strong>Lethal</strong> or <strong>Nonlethal</strong></li>
 </ul>
 <p>Damage is <strong>Lethal</strong> unless an Action or effect says it is Nonlethal. Lethal and Nonlethal damage both count toward the thresholds and toward your total damage. They never cancel or convert each other. Damage keeps accumulating after you are <span class="kw-neg">Down</span>.</p>
-<p>When you have <span class="at-body">Body</span> damage <strong>equal to or more than</strong> your BDT, you are <strong>Bloodied</strong>. When you have <span class="at-mind">Mind</span> damage <strong>equal to or more than</strong> your MDT, you are <strong>Strained</strong>.</p>
+<p>When you have Vigor damage <strong>equal to or more than</strong> your Vigor, you are <strong><a class="xref" href="#bloodied">Bloodied</a></strong>. When you have Resolve damage <strong>equal to or more than</strong> your Resolve, you are <strong><a class="xref" href="#strained">Strained</a></strong>.</p>
 <h3 id="instances-of-damage">Instances of Damage</h3>
-<p>An Action's damage can come in several <strong>instances</strong>: each part with its own pool and damage type is one instance. "<span class="pool-b">[V] 1[W] + [Mod]</span> + <span class="pool-m">[R] 2d8</span> <span class="dcode" style="--dc:#b8921c">Ho</span>" deals two: the weapon's damage with your Modifier (<span class="at-body">Body</span>, the weapon's type), and 2d8 <span class="dmgword" style="--dc:#b8921c">Holy</span> (<span class="at-mind">Mind</span>). Each [W] is its own instance (2[W] is two, see the <a class="xref" href="gear.html#gear">Gear</a> document), and extra damage from another effect, such as Divine Surge's 1d8, is its own instance. Each target takes its own instances. Rules that count instances, such as Hallowed Stance ("one instance of damage per Action"), count them this way.</p>
+<p>An Action's damage can come in several <strong>instances</strong>: each part with its own pool and damage type is one instance. "<span class="pool-b">[V] 1[W] + [Mod]</span> + <span class="pool-m">[R] 2d8</span> <span class="dcode" style="--dc:#b8921c">Ho</span>" deals two: the weapon's damage with your Modifier (Vigor, the weapon's type), and 2d8 <span class="dmgword" style="--dc:#b8921c">Holy</span> (Resolve). Each [W] is its own instance (2[W] is two, see the <a class="xref" href="gear.html#gear">Gear</a> document), and extra damage from another effect, such as Divine Surge's 1d8, is its own instance. Each target takes its own instances. Rules that count instances, such as Hallowed Stance ("one instance of damage per Action"), count them this way.</p>
 <h3 id="lethal-and-nonlethal">Lethal and Nonlethal</h3>
 <p>Actions deal <strong>Lethal</strong> damage by default. Actions with the <strong>Nonlethal</strong> trait deal <strong>Nonlethal</strong> damage by default. A <span class="trhl" style="--tc:var(--g-damage)">Nonlethal</span> Action can deal Lethal damage by taking a <span class="kw-bane">Bane</span>, and a Lethal Action can deal Nonlethal damage by taking a <span class="kw-bane">Bane</span> as well.</p>
 <p>How damage is written on a card ([V], [R], [W], [Mod] and the damage types) is in <a class="xref" href="#roll-effects">Roll Effects</a>. <span class="kw-pos">Empowered</span> and <span class="kw-neg">Enfeebled</span>, which change the dice of damage, are in <a class="xref" href="#chapter-8-conditions">Conditions</a>.</p>
@@ -1276,11 +1305,11 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <h3 id="npcs-going-down">NPCs Going Down</h3>
 <p>When an NPC goes <span class="kw-neg">Down</span>, they <strong>die</strong> if they have more Lethal damage, or fall <strong>Unconscious</strong> if they have more Nonlethal damage. If they are equal, the GM chooses.</p>
 <h3 id="dominant-damage">Dominant Damage</h3>
-<p>Compare your total <span class="at-body">Body</span> damage to your total <span class="at-mind">Mind</span> damage. The higher one is your <strong>Dominant Damage</strong>. On a tie, the creature that goes <span class="kw-neg">Down</span> chooses.</p>
+<p>Compare your total Vigor damage to your total Resolve damage. The higher one is your <strong>Dominant Damage</strong>. On a tie, the creature that goes <span class="kw-neg">Down</span> chooses.</p>
 <p>Dominant Damage doesn't do anything by itself, but it determines the condition you gain when you go <span class="kw-neg">Down</span>. Some abilities might also make use of it. You know which Dominant Damage a creature has if you perceive them (Hidden is enough).</p>
 <ul>
-<li><strong><span class="at-body">Body</span></strong> is dominant: you become <strong>Dying</strong>.</li>
-<li><strong><span class="at-mind">Mind</span></strong> is dominant: you become <strong>Shattered</strong>.</li>
+<li><strong>Vigor</strong> is dominant: you become <strong>Dying</strong>.</li>
+<li><strong>Resolve</strong> is dominant: you become <strong>Shattered</strong>.</li>
 </ul>
 <h2 id="wounds-and-the-tables">Wounds and the Tables</h2>
 <p>Every result on the Dying or Shattered Table is a <strong>Wound</strong>. A Wound from the Dying Table is a <strong><span class="at-body">Body</span> Wound</strong>. A Wound from the Shattered Table is a <strong><span class="at-mind">Mind</span> Wound</strong>.</p>
@@ -1334,7 +1363,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </table></div>
 <div class="callout tbd"><div class="ctitle">To be decided</div><p>The entries of the Dying and Shattered Tables are placeholders.</p></div>
 <h2 id="rally-points">Rally Points</h2>
-<p>Each character begins with <span class="kw-rally">Rally Points</span> equal to <strong>your class's Rally value + ⌈(<span class="at-body">Body</span> + <span class="at-mind">Mind</span> + your level) ÷ 2⌉</strong>, where <span class="at-body">Body</span> and <span class="at-mind">Mind</span> are your Attributes.</p>
+<p>Each character begins with <span class="kw-rally">Rally Points</span> equal to <strong>your class's Rally value + your <a class="xref" href="#stages">Stage</a></strong> (1, 2 or 3).</p>
 <p>When a <span class="kw-rally">Rally Point</span> is used, normally with Steel Yourself, the target removes <strong>⌈their Health Pool ÷ 4⌉</strong> damage. You choose which damage to remove.</p>
 <p><strong>Heal.</strong> When a feature says a creature <strong>heals</strong> a number, it removes that much damage. The creature chooses which damage, as with a <span class="kw-rally">Rally Point</span>.</p>
 <p>If you are <a class="xref" href="#exhausted">Exhausted</a>, use your Health Pool as if you weren't: Exhausted doesn't lower your <span class="kw-rally">Rally Points</span> or the damage each one removes.</p>
@@ -1342,14 +1371,14 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <p>Nonlethal damage is removed like any other damage.</p>
 <p>Only a Rest restores <span class="kw-rally">Rally Points</span>. Sleep does not. A new encounter does not.</p>
 <h2 id="guard">Guard</h2>
-<p>Some effects give you <strong>Guard</strong>, written with a value: <strong>Guard 6</strong>. When you take damage, your Guard takes it first (<span class="at-body">Body</span> or <span class="at-mind">Mind</span> damage alike), and only the rest reaches your Health. Damage your Guard takes isn't damage you take: it doesn't count toward your thresholds or your Health Pool, and it doesn't trigger anything that happens when you take damage.</p>
+<p>Some effects give you <strong>Guard</strong>, written with a value: <strong>Guard 6</strong>. When you take damage, your Guard takes it first (Vigor or Resolve damage alike), and only the rest reaches your Health. Damage your Guard takes isn't damage you take: it doesn't count toward your thresholds or your Health Pool, and it doesn't trigger anything that happens when you take damage.</p>
 <ul>
 <li>Damage reduction (such as Hallowed Stance) applies first; Guard takes what is left.</li>
 <li>Guard isn't Health: it can't be healed, and <span class="kw-rally">Rally Points</span> don't restore it.</li>
-<li>It doesn't stack: if you gain Guard while you have some, keep the higher value (see <a class="xref" href="#stacking">Stacking</a>).</li>
+<li>It doesn't stack: if you gain Guard while you have some, keep the higher value (see <a class="xref" href="#stacking">Stacking</a>). The exception is the Guard your <a class="xref" href="#unspent-ap">Unspent AP</a> give you: it adds to your other Guard, damage takes it first, and it ends when you regain AP.</li>
 <li>It ends at the end of the encounter.</li>
 </ul>
-<div class="callout example"><div class="ctitle">Example</div><p>Zack has Guard 6 and takes 8 <span class="at-body">Body</span> damage: his Guard takes 6 and ends, and he takes 2 <span class="at-body">Body</span> damage.</p></div>
+<div class="callout example"><div class="ctitle">Example</div><p>Zack has Guard 6 and takes 8 Vigor damage: his Guard takes 6 and ends, and he takes 2 Vigor damage.</p></div>
 <h2 id="recovery">Recovery</h2>
 <p>There are three ways to recover, from shortest to longest: a Breather, a Sleep and a Rest.</p>
 <h3 id="take-a-breather">Take a Breather</h3>
@@ -1386,9 +1415,11 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </table></div>
 <h2 id="health-states">Health States</h2>
 <h3 id="bloodied">Bloodied</h3>
-<p>Your [<span class="trhl" style="--tc:var(--g-kind)">Strike</span>] and [<span class="trhl" style="--tc:var(--g-roll)">Weapon</span>] Actions take <span class="kw-bane">1 Bane</span>, and so do your <span class="at-body">Body</span> and <span class="at-instinct">Instinct</span> Saves.</p>
+<p>You are Bloodied while your Vigor damage is equal to or more than your Vigor. It has <strong>no effect by itself</strong>: Actions and features use it, such as "when an ally becomes Bloodied" or "against a Bloodied target".</p>
 <h3 id="strained">Strained</h3>
-<p>Your [<span class="trhl" style="--tc:var(--g-roll)">Power</span>] Actions take <span class="kw-bane">1 Bane</span>, and so do your <span class="at-mind">Mind</span> and <span class="at-appeal">Appeal</span> Saves.</p>
+<p>You are Strained while your Resolve damage is equal to or more than your Resolve. Like Bloodied, it has <strong>no effect by itself</strong>: Actions and features use it.</p>
+<p>Every creature knows whether a creature it perceives is Bloodied or Strained: the GM says so when an NPC becomes either.</p>
+<div class="callout tip"><div class="ctitle">Designer's Tip</div><p>A feature that cares about an <strong>enemy</strong> being Bloodied or Strained usually says <strong>"when it becomes"</strong>: an enemy is Bloodied for about a round before it goes <span class="kw-neg">Down</span>, so "while" rarely matters. A rider on your own Action can say "while" ("if the target is Strained, heal 2 more").</p></div>
 <h3 id="desperate">Desperate</h3>
 <p>You are <strong><span class="kw-neg">Down</span></strong> and still fighting. You are <a class="xref" href="#slowed">Slowed</a> 1, or increase your Slowed value by 1 (to a maximum of 3), while Desperate.</p>
 <ul>
@@ -1446,7 +1477,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tbody>
 </table></div>
 <p>After this check, you may choose to stop fighting and fall Unconscious.</p>
-<p>If you take damage while you keep fighting, make a <span class="at-body">Body</span> Check if it was <span class="at-body">Body</span> damage, or a <span class="at-mind">Mind</span> Check if it was <span class="at-mind">Mind</span> damage:</p>
+<p>If you take damage while you keep fighting, make a <span class="at-body">Body</span> Check if it was Vigor damage, or a <span class="at-mind">Mind</span> Check if it was Resolve damage:</p>
 <div class="tablewrap"><table>
 <thead>
 <tr>
@@ -1520,7 +1551,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tbody>
 </table></div>
 <p>After this check, you may choose to stop fighting and fall Unconscious.</p>
-<p>If you take damage while you keep fighting, make a <span class="at-body">Body</span> Check if it was <span class="at-body">Body</span> damage, or a <span class="at-mind">Mind</span> Check if it was <span class="at-mind">Mind</span> damage:</p>
+<p>If you take damage while you keep fighting, make a <span class="at-body">Body</span> Check if it was Vigor damage, or a <span class="at-mind">Mind</span> Check if it was Resolve damage:</p>
 <div class="tablewrap"><table>
 <thead>
 <tr>
@@ -1561,29 +1592,81 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <h2 id="building-a-character">Building a Character</h2>
 <ol>
 <li><strong>Attributes.</strong> All four Attributes (<span class="at-body">Body</span>, <span class="at-mind">Mind</span>, <span class="at-appeal">Appeal</span>, <span class="at-instinct">Instinct</span>) start at <strong>0</strong>.</li>
-<li><strong>Species.</strong> Apply your species' Attribute changes (the species are in the <a class="xref" href="species.html#species">Species</a> document). It also gives you <strong>Species <span class="at-body">Body</span> Health</strong> and <strong>Species <span class="at-mind">Mind</span> Health</strong>, a <strong>Speed</strong>, your <strong>Reach</strong> (1), your <strong>Steadiness</strong> and your <strong>Size</strong> (all current species are Medium (3)).</li>
-<li><strong>Class.</strong> Apply your class' Attribute increases. It also gives you a <strong><span class="at-body">Body</span> Health Multiplier</strong> and a <strong><span class="at-mind">Mind</span> Health Multiplier</strong>, a <strong>Rally</strong> value, a <strong>Speed Modifier</strong>, a <strong><span class="mod-weapon">Weapon Modifier</span></strong> and a <strong><span class="mod-power">Power Modifier</span></strong>. Your Speed is your species' Speed plus your class' Speed Modifier.</li>
+<li><strong>Species.</strong> Apply your species' Attribute changes (the species are in the <a class="xref" href="species.html#species">Species</a> document). It also gives you a <strong>Vigor</strong> and a <strong>Resolve</strong> bonus, a <strong>Speed</strong>, your <strong>Reach</strong> (1), your <strong>Steadiness</strong> and your <strong>Size</strong> (all current species are Medium (3)).</li>
+<li><strong>Class.</strong> Apply your class' Attribute increases. It also gives you a <strong>high</strong> and a <strong>low Health value</strong> (and the steps they grow by at each Stage), a <strong>Rally</strong> value, a <strong>Speed Modifier</strong>, a <strong><span class="mod-weapon">Weapon Modifier</span></strong> and a <strong><span class="mod-power">Power Modifier</span></strong>. Your Speed is your species' Speed plus your class' Speed Modifier.</li>
 <li><strong>Choices.</strong> When a species or class says "or", pick one. A class's choices between two Attributes must be different from each other (see <a class="xref" href="#distinct-choices">Distinct Choices</a>).</li>
-<li><strong><a class="xref" href="#health-pool">Health Pool</a>.</strong> Calculate it from your Attributes, the Health Multipliers and the Species Health values:<ul>
-<li><span class="at-body">Body</span> Damage Threshold = ((<span class="at-body">Body</span> + 2) × <span class="at-body">Body</span> Health Multiplier + Species <span class="at-body">Body</span> Health) × (Level + 17) ÷ 16</li>
-<li><span class="at-mind">Mind</span> Damage Threshold = ((<span class="at-mind">Mind</span> + 2) × <span class="at-mind">Mind</span> Health Multiplier + Species <span class="at-mind">Mind</span> Health) × (Level + 17) ÷ 16</li>
-<li>Health Pool = the two thresholds added together.</li>
-</ul>
-</li>
-<li><strong><a class="xref" href="#rally-points"><span class="kw-rally">Rally Points</span></a></strong> = your class' Rally value + ⌈(<span class="at-body">Body</span> + <span class="at-mind">Mind</span> + your level) ÷ 2⌉.</li>
-<li><strong>Features and Talents.</strong> Take the Features and Class Actions of your class for your level, the Picks its level list gives you, and the Talents they let you pick (the Talents are in the <a class="xref" href="talents.html#talents">Talents</a> document; weapons and armor in the <a class="xref" href="gear.html#gear">Gear</a> document).</li>
-<li><strong>Escalation.</strong> Choose the Escalation abilities your class's level list gives you, from its <a class="xref" href="#escalation">Escalation</a> abilities.</li>
+<li><strong><a class="xref" href="#health-pool">Health Pool</a>.</strong> Assign your class's high Health value to Vigor or to Resolve and the low one to the other, then add your species' bonuses. Your Health Pool is the two added together.</li>
+<li><strong><a class="xref" href="#rally-points"><span class="kw-rally">Rally Points</span></a></strong> = your class' Rally value + your Stage (1 at level 1).</li>
+<li><strong>Level 1.</strong> Take your class's Features, its <strong>Hallmark Action</strong> and <strong>Hallmark Reaction</strong> (a choice of two each), its <strong>Encounter Pick</strong> and a <strong>Talent</strong> (the Talents are in the <a class="xref" href="talents.html#talents">Talents</a> document; weapons and armor in the <a class="xref" href="gear.html#gear">Gear</a> document).</li>
+<li><strong>Escalation.</strong> Choose one <strong>Escalation Passive</strong> for each Escalation level (1, 2 and 3) and your <strong>Apex</strong> from your class's <a class="xref" href="#escalation">Escalation</a> abilities.</li>
 </ol>
 <h2 id="classes">Classes</h2>
-<p>Your class gives you Attribute increases, a <strong><span class="at-body">Body</span> Health Multiplier</strong> and a <strong><span class="at-mind">Mind</span> Health Multiplier</strong> (used for your Health Pool), a <strong>Rally</strong> value (used for <span class="kw-rally">Rally Points</span>), a <strong>Speed Modifier</strong>, a <strong><span class="mod-weapon">Weapon Modifier</span></strong> and a <strong><span class="mod-power">Power Modifier</span></strong>, an <strong><a class="xref" href="gear.html#armor-training">Armor Training</a></strong>, and a list of <strong>Escalation</strong> abilities. Round modifiers up. A class's <span class="mod-weapon">Weapon Modifier</span> and <span class="mod-power">Power Modifier</span> use the higher of the Attributes it lists for each, and can't use the same Attribute.</p>
+<p>Your class gives you Attribute increases, a <strong>high</strong> and a <strong>low Health value</strong> with their Stage steps (used for your Health Pool), a <strong>Rally</strong> value (used for <span class="kw-rally">Rally Points</span>), a <strong>Speed Modifier</strong>, a <strong><span class="mod-weapon">Weapon Modifier</span></strong> and a <strong><span class="mod-power">Power Modifier</span></strong>, an <strong><a class="xref" href="gear.html#armor-training">Armor Training</a></strong>, and a list of <strong>Escalation</strong> abilities. Round modifiers up. A class's <span class="mod-weapon">Weapon Modifier</span> and <span class="mod-power">Power Modifier</span> use the higher of the Attributes it lists for each, and can't use the same Attribute.</p>
 <p>When you pick your class, you choose its Attribute increases when they say "or". These choices can't be changed later.</p>
 <p>Each class is written in its own document: <a class="xref" href="paladin.html#paladin">Paladin</a> and <a class="xref" href="archer.html#archer">Archer</a>.</p>
 <h3 id="class-actions-picks-and-the-repertoire">Class Actions, Picks and the Repertoire</h3>
-<p>A class's <strong>Class Actions</strong> are the Actions it gives you at level 1. A class can give a <strong>Hallmark Action</strong> instead: a choice of two Actions that are the class's fantasy (the Paladin: Smite or Lay On Hands; the Archer: Double Shot or Rolling Shot); you take one, and the other is not yours. A Hallmark Action doesn't need the <a class="xref" href="#signature">Signature</a> trait: that trait only sets the Modifier an Action rolls (Smite has it, Double Shot makes no roll of its own). Its <strong>Repertoire</strong> is everything else it offers, listed by <a class="xref" href="#frequency">Frequency</a>: <strong>Passive</strong> (it works on its own), <strong>Turn</strong>, <strong>Round</strong>, <strong>Encounter</strong> and <strong>Daily</strong>. A <strong>Pick</strong> is one choice from the Repertoire: the level list says how many Picks you take at each level and from which list (an Encounter Pick comes from the Encounter list; a Pick "from any list" can come from any of them). Escalation abilities are chosen the same way, from the class's Escalation list.</p>
+<p>At level 1, every class gives you the same kinds of things:</p>
+<ul>
+<li>A <strong>Hallmark Action</strong>: a choice of two Actions that are the class's fantasy; you take one, and the other is not yours. A Hallmark Action doesn't need the <a class="xref" href="#signature">Signature</a> trait: that trait only sets the Modifier an Action rolls.</li>
+<li>A <strong>Hallmark Reaction</strong>: a choice of two Reactions, the same way.</li>
+<li>An <strong>Encounter Pick</strong>.</li>
+<li>The <strong>Escalation</strong> abilities: three Escalation Passives (one per Escalation level) and the Apex (see <a class="xref" href="#escalation-abilities">Escalation Abilities</a>).</li>
+<li>Its <strong>Features</strong>, and a <strong>Talent</strong>.</li>
+</ul>
+<p>A class's <strong>Class Actions</strong> are the Actions it gives you at level 1, the Hallmark Action and the Hallmark Reaction among them. Its <strong>Repertoire</strong> is everything else it offers, listed by <a class="xref" href="#frequency">Frequency</a>: <strong>Passive</strong> (it works on its own), <strong>Turn</strong>, <strong>Round</strong>, <strong>Encounter</strong> and <strong>Daily</strong>. A <strong>Pick</strong> is one choice from the Repertoire: the level list says how many Picks you take at each level and from which list (an Encounter Pick comes from the Encounter list; a Pick "from any list" can come from any of them). Two classes' lists don't need to match: each offers what fits it.</p>
 <h3 id="leveling-up">Leveling Up</h3>
-<p>Each class has a <strong>level list</strong>: what you gain at each level (Features, Class Actions, Picks and Escalation abilities). When you reach a new level, you take what its entry gives you. Your Health thresholds grow with your level too (see Building a Character, step 5).</p>
+<p>Each class has a <strong>level list</strong>: what you gain at each level (Features, Class Actions and Picks). You gain a <strong>Talent at every level</strong>. When you reach a new level, you take what its entry gives you. <strong>Levels give options; Stages change the numbers</strong> (below).</p>
 <h3 id="stages">Stages</h3>
-<p>The levels are grouped in <strong>Stages</strong>: <strong>Stage 1</strong> is levels 1 to 4, <strong>Stage 2</strong> levels 5 to 7, <strong>Stage 3</strong> levels 8 to 10. A new Stage raises your Modifiers (see <a class="xref" href="#weapon-power-and-signature-modifiers">Weapon, Power and <span class="mod-signature">Signature Modifiers</span></a>) and the NPCs of the <a class="xref" href="bestiary.html#bestiary-building-npcs">Bestiary</a> (their tables have one row per Stage).</p>
+<p>The levels are grouped in <strong>Stages</strong>: <strong>Stage 1</strong> is levels 1 to 4, <strong>Stage 2</strong> levels 5 to 7, <strong>Stage 3</strong> levels 8 to 10. Your numbers change only when you reach a new Stage, and the NPCs of the <a class="xref" href="bestiary.html#bestiary-building-npcs">Bestiary</a> follow them (their tables have one row per Stage).</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th></th>
+<th>Stage 1 (levels 1-4)</th>
+<th>Stage 2 (levels 5-7)</th>
+<th>Stage 3 (levels 8-10)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Attributes</strong></td>
+<td></td>
+<td>+1 to one Attribute of your choice</td>
+<td>+1 to one Attribute of your choice</td>
+</tr>
+<tr>
+<td><strong>Modifiers</strong></td>
+<td></td>
+<td></td>
+<td>+1 to your Weapon and <span class="mod-power">Power Modifiers</span> (never above +4)</td>
+</tr>
+<tr>
+<td><strong>Health</strong></td>
+<td>your class's values</td>
+<td>+ your class's Stage 2 steps</td>
+<td>+ your class's Stage 3 steps</td>
+</tr>
+<tr>
+<td><strong>Guard per unspent AP</strong></td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong><span class="kw-rally">Rally Points</span></strong></td>
+<td>Rally + 1</td>
+<td>Rally + 2</td>
+<td>Rally + 3</td>
+</tr>
+<tr>
+<td><strong>Talent</strong></td>
+<td>one a level</td>
+<td>a <strong>Stage Talent</strong> at level 5</td>
+<td>a <strong>Stage Talent</strong> at level 8</td>
+</tr>
+</tbody>
+</table></div>
+<p>A <strong>Stage Talent</strong> comes from a bigger list than the other Talents, and replaces the level's Talent (see the <a class="xref" href="talents.html#talents">Talents</a> document).</p>
 <h3 id="distinct-choices">Distinct Choices</h3>
 <p>When your class gives you a choice between two Attributes, you can't pick an Attribute you already picked from another choice of the same kind:</p>
 <ul>
@@ -1598,12 +1681,12 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <li><strong><span class="mod-power">Power Modifier</span></strong> = the higher of the class's two <span class="mod-power">Power Attributes</span> ÷ 2 + 1</li>
 </ul>
 <p>The Attribute a Modifier uses is your <strong><span class="mod-weapon">Weapon Attribute</span></strong> or your <strong><span class="mod-power">Power Attribute</span></strong>.</p>
-<p><strong>Your Modifiers grow with your <a class="xref" href="#stages">Stage</a>:</strong> your Weapon and <span class="mod-power">Power Modifiers</span> are <strong>+1 at level 5</strong> (Stage 2) and <strong>+2 at level 8</strong> (Stage 3), but <strong>never above +4</strong>. A Modifier of +3 at level 1 is +4 from level 5 on.</p>
+<p><strong>Your Modifiers grow with your <a class="xref" href="#stages">Stage</a>:</strong> your Weapon and <span class="mod-power">Power Modifiers</span> are <strong>+1 at Stage 3</strong> (level 8), and they also follow your Attributes, which grow at each Stage; a Modifier is <strong>never above +4</strong>. Checks and Saves use your Attribute Modifier, which only the Attribute changes.</p>
 <p>If the same Attribute is the higher one for both Modifiers, one of them uses its other Attribute instead. You choose which, and you can change that choice when you level up.</p>
 <p>Your <strong><span class="mod-signature">Signature Modifier</span></strong> is the higher of your <span class="mod-weapon">Weapon Modifier</span> and your <span class="mod-power">Power Modifier</span> (if they are equal, choose one). Its Attribute is your <strong><span class="mod-signature">Signature Attribute</span></strong>. Actions with the <span class="trhl" style="--tc:var(--g-roll)">Signature</span> trait roll it.</p>
 <div class="callout example"><div class="ctitle">Example</div><p>A Paladin with <span class="at-body">Body</span> 1, <span class="at-mind">Mind</span> 2 and <span class="at-appeal">Appeal</span> 3. Both Modifiers want <span class="at-appeal">Appeal</span>. If the <span class="mod-weapon">Weapon Modifier</span> keeps it, it is 3 (3 ÷ 2 = 1.5, rounded up to 2, + 1) and the <span class="mod-power">Power Modifier</span> uses <span class="at-mind">Mind</span>: 2 (2 ÷ 2 + 1); the <span class="mod-signature">Signature Modifier</span> is 3, from <span class="at-appeal">Appeal</span>. If the <span class="mod-power">Power Modifier</span> keeps <span class="at-appeal">Appeal</span> instead, it is 3, and the <span class="mod-weapon">Weapon Modifier</span> uses <span class="at-body">Body</span>: 2 (1 ÷ 2 = 0.5, rounded up to 1, + 1).</p></div>
 <h3 id="escalation-abilities">Escalation Abilities</h3>
-<p>Each class has a list of <strong>Escalation</strong> abilities: <strong>Passives</strong>, which work while you have enough Escalation, and <strong>Actives</strong>, Actions that cost Escalation on top of their AP. Your class's level list says how many of each you choose at every level. See <a class="xref" href="#escalation">Escalation</a> for how you gain and spend it.</p></div></details></section>
+<p>Each class has a list of <strong>Escalation</strong> abilities: <strong>Escalation Passives</strong>, which work while your Escalation is at least their number, and <strong>Apex</strong> Actions, the class's big Encounter Action that needs Escalation 3. At level 1 you choose one Passive for each Escalation level (1, 2 and 3) and one Apex. Nothing spends Escalation. See <a class="xref" href="#escalation">Escalation</a> for how it rises.</p></div></details></section>
 <div class="part">Part III: Reference</div>
 <section class="chapter"><details open><summary><h1 id="chapter-6-basic-actions">Chapter 6: Basic Actions</h1></summary><div class="cbody">
 <p>Every creature can use these Actions.</p>
@@ -1615,6 +1698,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <div class="acard" style="--fq:#185FA5;--fqt:#E6F1FB"><div class="ahead"><b>Haul</b><span class="acat">Basic Action</span><span class="afreq">Round</span><span class="aps"><span class="apmark" role="img" aria-label="1/2/3 Action Points">1/2/3AP</span></span></div><div class="abody"><div class="flavor">You snag them and drag them in.</div><div class="traits"><span class="tg" style="--tg:var(--g-roll)"><span class="tgl">Roll</span><span class="tgc"><span class="tchip">Appeal</span><span class="tchip">Body</span></span></span><span class="tg" style="--tg:var(--g-requires)"><span class="tgl">Requires</span><span class="tgc"><span class="tchip">Handle</span></span></span><span class="tg" style="--tg:var(--g-kind)"><span class="tgl">Kind</span><span class="tgc"><span class="tchip">Strike</span></span></span></div><div class="meta"><span>One creature</span></div><div class="meta"><span class="dist"><b>Distance:</b> Reach</span> <i class='sep'>&#10022;</i> <span class="vs">Vs. <span class="at-appeal">Appeal</span> or <span class="at-body">Body</span> (the one used to roll)</span></div><div class="arow"><b>Requirements:</b> Your Reach is 2 or more. The target's SR is at most 1 higher than yours and is at least 2 squares away. The target must remain within your Reach throughout the whole movement.</div><hr class="cdiv"><table class="tgrid"><tr><th class="lbl"></th><th><span class="apmark" role="img" aria-label="1 Action Points">1AP</span></th><th><span class="apmark" role="img" aria-label="2 Action Points">2AP</span></th><th><span class="apmark" role="img" aria-label="3 Action Points">3AP</span></th></tr><tr><th class="lbl">Tier 1</th><td>No effect.</td><td>No effect.</td><td><span class="kw-mv">Pulled 1</span>.</td></tr><tr><th class="lbl">Tier 2</th><td><span class="kw-mv">Pulled 1</span>.</td><td><span class="kw-mv">Pulled 2</span>.</td><td><span class="kw-mv">Pulled 3</span>.</td></tr><tr><th class="lbl">Tier 3</th><td><span class="kw-mv">Pulled 2</span>.</td><td><span class="kw-mv">Pulled 4</span>.</td><td><span class="kw-mv">Pulled 5</span>.</td></tr></table></div></div>
 <div class="acard" style="--fq:#3B6D11;--fqt:#EAF3DE"><div class="ahead"><b>Interact</b><span class="acat">Basic Action</span><span class="afreq">At-will</span><span class="aps"><span class="apmark" role="img" aria-label="1 Action Points">1AP</span></span></div><div class="abody"><div class="flavor">You pull the lever, open the door, grab what you need.</div><div class="traits"><span class="tg" style="--tg:var(--g-requires)"><span class="tgl">Requires</span><span class="tgc"><span class="tchip">Handle</span></span></span></div><div class="meta"><span class="dist"><b>Distance:</b> Reach</span></div><hr class="cdiv"><div class="eff"><div class="eh">Effects</div><div class="el"><span>You do one of the following: draw an object you carry into a free hand; stow an object you hold (put it away on your person, such as sheathing a sword); swap two objects (stow the one you hold and draw another, in the same Action); grab objects within Reach, as many as you have free hands; help a Prone creature within Reach stand up; help an Imperiled creature within Reach get to safety; wake an Unconscious creature within Reach; open a door, chest or something similar. This Action is broader than most: it can be used for similar things in the world.</span></div></div></div></div>
 <div class="acard" style="--fq:#3B6D11;--fqt:#EAF3DE"><div class="ahead"><b>Leaning</b><span class="acat">Basic Action</span><span class="afreq">At-will</span><span class="aps"><span class="apmark" role="img" aria-label="1 Action Points">1AP</span></span></div><div class="abody"><div class="flavor">You lean out from cover, just enough to see.</div><div class="traits"><span class="tg" style="--tg:var(--g-kind)"><span class="tgl">Kind</span><span class="tgc"><span class="tchip">Self</span></span></span></div><hr class="cdiv"><div class="eff"><div class="eh">Effects</div><div class="el"><span>Until the end of your turn, you calculate cover from one of your corners instead of the center of your square, and your own cover against other creatures' Actions is reduced by 1 level. You can stop Leaning at any time on your turn, at no cost.</span></div></div></div></div>
+<div class="acard" style="--fq:#3B6D11;--fqt:#EAF3DE"><div class="ahead"><b>Opportunity Attack</b><span class="acat">Basic Action</span><span class="afreq">At-will</span><span class="aps"><span class="rmark">1R</span></span></div><div class="abody"><div class="flavor">You punish anyone who moves carelessly near you.</div><div class="meta"><span>The triggering creature</span></div><hr class="cdiv"><div class="eff"><div class="eh">Effects</div><div class="el"><span><b>Interrupt:</b> A creature within 3 squares would leave a square during a Move Action or uses the Stand Action.</span></div><div class="el"><span>You can make a Weapon Attack (<span class="kw-ap">1A</span>) against the triggering creature, as long as your weapon can target them. An NPC makes its Basic attack instead.</span></div></div></div></div>
 <div class="acard" style="--fq:#3B6D11;--fqt:#EAF3DE"><div class="ahead"><b>Regrip</b><span class="acat">Basic Action</span><span class="afreq">At-will</span><span class="aps"><span class="apmark" role="img" aria-label="1 Action Points">1AP</span></span></div><div class="abody"><div class="flavor">You shift your hands on the grip, and the weapon sits where you want it.</div><div class="traits"><span class="tg" style="--tg:var(--g-kind)"><span class="tgl">Kind</span><span class="tgc"><span class="tchip">Self</span></span></span></div><hr class="cdiv"><div class="eff"><div class="eh">Effects</div><div class="el"><span>You do one of the following: hold a weapon you hold in one hand with both hands (your other hand must be free); move a weapon from one hand to the other; or swap the weapons in your two hands. Regrip doesn't have the <span class="trhl" style="--tc:var(--g-requires)">Handle</span> trait: it doesn't need a free hand.</span></div></div></div></div>
 <div class="acard" style="--fq:#3B6D11;--fqt:#EAF3DE"><div class="ahead"><b>Release</b><span class="acat">Basic Action</span><span class="afreq">At-will</span><span class="aps"><span class="apmark" role="img" aria-label="0 Action Points">0AP</span></span></div><div class="abody"><div class="flavor">You let it go.</div><div class="traits"><span class="tg" style="--tg:var(--g-kind)"><span class="tgl">Kind</span><span class="tgc"><span class="tchip">Self</span></span></span></div><hr class="cdiv"><div class="eff"><div class="eh">Effects</div><div class="el"><span>You drop an object in your square, or let go of an object you hold with one hand (a two-handed weapon is then held with one hand).</span></div></div></div></div>
 <div class="acard" style="--fq:#3B6D11;--fqt:#EAF3DE"><div class="ahead"><b>Reload</b><span class="acat">Basic Action</span><span class="afreq">At-will</span><span class="aps"><span class="apmark" role="img" aria-label="1 Action Points">1AP</span></span></div><div class="abody"><div class="flavor">You work the mechanism and seat a fresh bolt.</div><div class="traits"><span class="tg" style="--tg:var(--g-roll)"><span class="tgl">Roll</span><span class="tgc"><span class="tchip">Weapon</span></span></span><span class="tg" style="--tg:var(--g-requires)"><span class="tgl">Requires</span><span class="tgc"><span class="tchip">Handle</span></span></span></div><div class="meta"><span>One target</span></div><div class="meta"><span class="dist"><b>Distance:</b> Reach</span> <i class='sep'>&#10022;</i> <span class="vs">Vs. DC 13</span></div><div class="arow"><b>Requirements:</b> You or an ally within Reach is wielding an unloaded weapon.</div><hr class="cdiv"><table class="tgrid"><tr><th class="lbl">Tier 1</th><td>Your next Reload attempt gains <span class="kw-boon">2 Boons</span>.</td></tr><tr><th class="lbl">Tier 2</th><td>You Reload the weapon. Then you can Regrip (<span class="kw-ap">1A</span>) to hold the weapon with two hands, or the ally can.</td></tr><tr><th class="lbl">Tier 3</th><td>You Reload the weapon and its wielder can <span class="kw-mv">Evade 1</span>. Then you can Regrip (<span class="kw-ap">1A</span>) to hold the weapon with two hands, or the ally can.</td></tr></table></div></div>
@@ -1682,10 +1766,10 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <ul>
 <li>Your Speed is reduced by the value (to a minimum of 1).</li>
 <li>All your <a class="xref" href="#rolls">Rolls</a> take a penalty equal to the value.</li>
-<li>Your <span class="at-mind">Mind</span> Damage Threshold is reduced by 4 times the value.</li>
+<li>Your Resolve is reduced by 4 times the value.</li>
 </ul>
-<p>A lower <span class="at-mind">Mind</span> Damage Threshold lowers your Health Pool, but not your <span class="kw-rally">Rally Points</span>: they use your Health Pool as if you weren't Exhausted.</p>
-<p>If your <span class="at-mind">Mind</span> Damage Threshold reaches 0, you must make a <strong><span class="at-mind">Mind</span> Save</strong> (DC 13). <span class="at-mind">Mind</span> Damage Threshold cannot go below 0.</p>
+<p>A lower Resolve lowers your Health Pool, but not your <span class="kw-rally">Rally Points</span>: they use your Health Pool as if you weren't Exhausted. The <a class="xref" href="#health-pool">floor</a> of a third doesn't apply to it.</p>
+<p>If your Resolve reaches 0, you must make a <strong><span class="at-mind">Mind</span> Save</strong> (DC 13). Resolve cannot go below 0.</p>
 <div class="tablewrap"><table>
 <thead>
 <tr>
@@ -1696,7 +1780,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <tbody>
 <tr>
 <td><strong>Tier 1</strong></td>
-<td>You fall Unconscious and start a <a class="xref" href="#sleep">Sleep</a>. You can't wake up while your <span class="at-mind">Mind</span> Damage Threshold is 0.</td>
+<td>You fall Unconscious and start a <a class="xref" href="#sleep">Sleep</a>. You can't wake up while your Resolve is 0.</td>
 </tr>
 <tr>
 <td><strong>Tier 2</strong></td>
@@ -1729,10 +1813,10 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <li>The only [Move] Actions you can use are <a class="xref" href="#chapter-6-basic-actions">Crawl</a> and <a class="xref" href="#chapter-6-basic-actions">Stand</a>.</li>
 </ul>
 <h3 id="quickened">Quickened</h3>
-<p>Quickened always has a value, such as <strong>Quickened 2</strong>. You increase your maximum AP, and the AP you regain at the start of your turn, by the value: if you are Quickened 2, you regain <span class="kw-ap">7 AP</span> when your turn begins. You don't gain AP when you become Quickened, only when you regain AP at the start of your next turn.</p>
+<p>Quickened always has a value, such as <strong>Quickened 2</strong>. You increase your maximum AP, and the AP you regain at the start of your turn, by the value: if you are Quickened 2, you regain <span class="kw-ap">6 AP</span> when your turn begins. You don't gain AP when you become Quickened, only when you regain AP at the start of your next turn. Quickened never changes your Reaction AP, and the extra AP you don't spend become Guard like any other (<a class="xref" href="#unspent-ap">Unspent AP</a>).</p>
 <h3 id="slowed">Slowed</h3>
-<p>Slowed always has a value, such as <strong>Slowed 2</strong>. You decrease the AP you regain at the start of your turn by the value: if you are Slowed 2, you regain only <span class="kw-ap">3 AP</span> when your turn begins. You also reduce your maximum AP by the value. You don't lose AP when you become Slowed, only when you regain AP at the start of your next turn.</p>
-<p><strong>Slowed and Quickened</strong> cancel each other out, but they don't reduce each other's value: if you are Quickened 2 and Slowed 2, you regain the normal <span class="kw-ap">5 AP</span>. If one of them ends before your turn comes around (you lose Slowed 2 but are still Quickened 2), you regain <span class="kw-ap">7 AP</span>.</p>
+<p>Slowed always has a value, such as <strong>Slowed 2</strong>. You decrease the AP you regain at the start of your turn by the value: if you are Slowed 2, you regain only <span class="kw-ap">2 AP</span> when your turn begins. You also reduce your maximum AP by the value. You don't lose AP when you become Slowed, only when you regain AP at the start of your next turn. Slowed never changes your Reaction AP: a Slowed creature still has its Reaction.</p>
+<p><strong>Slowed and Quickened</strong> cancel each other out, but they don't reduce each other's value: if you are Quickened 2 and Slowed 2, you regain the normal <span class="kw-ap">4 AP</span>. If one of them ends before your turn comes around (you lose Slowed 2 but are still Quickened 2), you regain <span class="kw-ap">6 AP</span>.</p>
 <h3 id="vulnerable">Vulnerable</h3>
 <p><span class="kw-neg">Vulnerable</span> always has a value, such as <strong><span class="kw-neg">Vulnerable 3</span></strong>. Actions against you gain a number of <span class="kw-boon">Boons</span> equal to that value. If you would have <span class="kw-neg">Vulnerable</span> twice, only the highest value applies.</p></div></details></section>
 <section class="chapter"><details open><summary><h1 id="chapter-9-glossary">Chapter 9: Glossary</h1></summary><div class="cbody">
@@ -1753,6 +1837,10 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>The damage of your weapon, with the weapon's damage type.</td>
 </tr>
 <tr>
+<td><a class="xref" href="#damage-types"><strong>[V], [R], [C]</strong></a></td>
+<td>Vigor damage, Resolve damage, or the one the origin chooses. Vigor and Resolve are the thresholds of your Health Pool, not the <span class="at-body">Body</span> and <span class="at-mind">Mind</span> Attributes.</td>
+</tr>
+<tr>
 <td><a class="xref" href="#rules-language"><strong>[Trait]</strong></a></td>
 <td>An Action with that trait: "a [<span class="trhl" style="--tc:var(--g-kind)">Strike</span>] Action". Several traits mean all of them: "[<span class="trhl" style="--tc:var(--g-requires)">Ranged</span>, <span class="trhl" style="--tc:var(--g-roll)">Weapon</span>] Actions".</td>
 </tr>
@@ -1766,7 +1854,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#action-points"><strong>Action Points (AP)</strong></a></td>
-<td>You regain 5 at the start of your turn.</td>
+<td>You regain 4 at the start of your turn, and 1 Reaction AP. The AP you don't spend stay for Reactions and give you Guard.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#advance"><strong>Advance</strong></a></td>
@@ -1775,6 +1863,10 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <tr>
 <td><a class="xref" href="#rules-language"><strong>Ally</strong></a></td>
 <td>A creature on your side. You are never your own ally.</td>
+</tr>
+<tr>
+<td><a class="xref" href="#escalation"><strong>Apex</strong></a></td>
+<td>A class's big Encounter Action that needs Escalation 3; you choose one at level 1.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#areas"><strong>Area</strong></a></td>
@@ -1803,6 +1895,10 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <tr>
 <td><a class="xref" href="#boons-and-banes"><strong><span class="kw-bane">Bane</span>, <span class="kw-boon">Boon</span></strong></a></td>
 <td>Subtract or add 1d3-1 to a roll.</td>
+</tr>
+<tr>
+<td><a class="xref" href="#bloodied"><strong>Bloodied, Strained</strong></a></td>
+<td>You have Vigor damage at least equal to your Vigor (Bloodied), or Resolve damage at least equal to your Resolve (Strained). No effect by itself: Actions and features use them.</td>
 </tr>
 <tr>
 <td><a class="xref" href="gear.html#barehanded"><strong>Barehanded</strong></a></td>
@@ -1870,7 +1966,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#critical"><strong>Critical</strong></a></td>
-<td>Doubles on a result that is already Tier 3, or a total 20 or more above the DC. Only Actions with a Critical row use it.</td>
+<td>Doubles on a result that is already Tier 3, or a total 20 or more above the DC. Only Actions with a Critical row use it; once an encounter, it also raises your Escalation by 1.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#daily"><strong>Daily</strong></a></td>
@@ -1906,7 +2002,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#dominant-damage"><strong>Dominant Damage</strong></a></td>
-<td>Whether you have more <span class="at-body">Body</span> or <span class="at-mind">Mind</span> damage.</td>
+<td>Whether you have more Vigor or Resolve damage.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#favored-and-doomed-rolls"><strong><span class="kw-neg">Doomed</span></strong></a></td>
@@ -1950,7 +2046,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#escalation"><strong>Escalation</strong></a></td>
-<td>A PC's adrenaline: 0 at the start of an encounter, +1 at the start of every round after the first (up to 3), spent on Escalation abilities, back to 0 when the encounter ends.</td>
+<td>A PC's adrenaline, a level from 1 to 3, never spent: 1 at the start of an encounter (2 with Momentum), +1 at the start of every round after the first, +1 once an encounter on a Critical and on your class's hook. Escalation Passives and the Apex work while it is high enough.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#evade"><strong>Evade</strong></a></td>
@@ -1958,7 +2054,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#exhausted"><strong>Exhausted</strong></a></td>
-<td>A condition with a value: less Speed, a penalty on all Rolls, a lower <span class="at-mind">Mind</span> Damage Threshold.</td>
+<td>A condition with a value: less Speed, a penalty on all Rolls, a lower Resolve.</td>
 </tr>
 <tr>
 <td><a class="xref" href="gear.html#mastery"><strong>Expert</strong></a></td>
@@ -1998,7 +2094,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#guard"><strong>Guard</strong></a></td>
-<td>A buffer written Guard N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take.</td>
+<td>A buffer written Guard N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take. The Guard of unspent AP adds to it and ends when you regain AP.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#gun"><strong>Gun</strong></a></td>
@@ -2006,7 +2102,11 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#class-actions-picks-and-the-repertoire"><strong>Hallmark Action</strong></a></td>
-<td>A choice of two class Actions at level 1 (the Paladin: Smite or Lay On Hands; the Archer: Double Shot or Rolling Shot); you take one.</td>
+<td>A choice of two class Actions at level 1; you take one.</td>
+</tr>
+<tr>
+<td><a class="xref" href="#class-actions-picks-and-the-repertoire"><strong>Hallmark Reaction</strong></a></td>
+<td>A choice of two class Reactions at level 1; you take one.</td>
 </tr>
 <tr>
 <td><a class="xref" href="gear.html#hands"><strong>Hands</strong></a></td>
@@ -2101,6 +2201,10 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>Minions and Grunts (CV below 100).</td>
 </tr>
 <tr>
+<td><a class="xref" href="#momentum"><strong>Momentum</strong></a></td>
+<td>After an encounter harder than easy, your party starts its next encounter at Escalation 2 (until it Rests).</td>
+</tr>
+<tr>
 <td><a class="xref" href="#rules-language"><strong>Move</strong></a></td>
 <td>An Action with the Move trait.</td>
 </tr>
@@ -2127,6 +2231,10 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <tr>
 <td><a class="xref" href="#rules-language"><strong>Origin</strong></a></td>
 <td>The creature that uses an Action, or the Point of Origin of an Area.</td>
+</tr>
+<tr>
+<td><a class="xref" href="#chapter-6-basic-actions"><strong>Opportunity Attack</strong></a></td>
+<td>The Reaction every creature has (<span class="kw-ap">1R</span>): a Weapon Attack, or an NPC's Basic attack, against a creature within 3 squares that would leave a square during a Move Action or uses Stand.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#areas"><strong>Point of Origin</strong></a></td>
@@ -2162,7 +2270,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#quickened"><strong>Quickened</strong></a></td>
-<td>A condition with a value: you regain (and can hold) that many more AP at the start of your turn.</td>
+<td>A condition with a value: you regain (and can hold) that many more AP at the start of your turn; never more Reaction AP.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#rally-points"><strong><span class="kw-rally">Rally Point</span></strong></a></td>
@@ -2189,8 +2297,16 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>An Action used in response to an Interrupt or a Trigger, with a cost like <span class="kw-ap">1R</span> (<span class="kw-ap">0R</span> costs no AP).</td>
 </tr>
 <tr>
+<td><a class="xref" href="#action-points"><strong>Reaction AP</strong></a></td>
+<td>The <span class="kw-ap">1 AP</span> you gain at the start of your turn that pays only for Reactions. It never becomes Guard.</td>
+</tr>
+<tr>
 <td><a class="xref" href="#recovery"><strong>Recovery</strong></a></td>
 <td>The three ways to recover: a Breather, a Sleep and a Rest.</td>
+</tr>
+<tr>
+<td><a class="xref" href="#health-pool"><strong>Resolve, Vigor</strong></a></td>
+<td>The two thresholds of your Health Pool: your class's high and low Health values (you choose which is which), your species' bonuses, and the Stage steps.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#chapter-6-basic-actions"><strong>Regrip</strong></a></td>
@@ -2274,7 +2390,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#slowed"><strong>Slowed</strong></a></td>
-<td>A condition with a value: you regain that many fewer AP at the start of your turn, and your maximum AP is that much lower. Desperate, Dying and Shattered give Slowed 1 (or 1 more, to at most 3).</td>
+<td>A condition with a value: you regain that many fewer AP at the start of your turn, and your maximum AP is that much lower; your Reaction AP doesn't change. Desperate, Dying and Shattered give Slowed 1 (or 1 more, to at most 3).</td>
 </tr>
 <tr>
 <td><a class="xref" href="#sleep"><strong>Sleep</strong></a></td>
@@ -2306,11 +2422,15 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#stacking"><strong>Stacking</strong></a></td>
-<td>Bonuses don't add up: for each value (Guard included) use the highest bonus and the highest penalty. "Increase by N", <span class="kw-boon">Boons</span>, <span class="kw-bane">Banes</span> and AP losses do add up.</td>
+<td>Bonuses don't add up: for each value (Guard included) use the highest bonus and the highest penalty. "Increase by N", <span class="kw-boon">Boons</span>, <span class="kw-bane">Banes</span>, Slowed increases and the Guard of unspent AP do add up.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#stages"><strong>Stage</strong></a></td>
-<td>A group of levels: Stage 1 is levels 1-4, Stage 2 levels 5-7, Stage 3 levels 8-10. It raises your Modifiers and sets the Bestiary's row.</td>
+<td>A group of levels: Stage 1 is levels 1-4, Stage 2 levels 5-7, Stage 3 levels 8-10. Your numbers change only at a new Stage (an Attribute, Health, Guard per unspent AP, <span class="kw-rally">Rally Points</span>; Modifiers at Stage 3), and it sets the Bestiary's row.</td>
+</tr>
+<tr>
+<td><a class="xref" href="#stages"><strong>Stage Talent</strong></a></td>
+<td>The Talent of levels 5 and 8, from a bigger list.</td>
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#standards"><strong>Standard</strong></a></td>

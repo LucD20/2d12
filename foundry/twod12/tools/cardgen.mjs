@@ -171,6 +171,7 @@ export function basicEntry(c) {
   if (s.requirements) e.requirements = s.requirements;
   if (s.weaponUse) e.weaponUse = s.weaponUse;
   if (s.description) e.description = s.description;
+  if (s.reaction) Object.assign(e, { reaction: true, reactionKind: s.reactionKind, trigger: s.trigger });   // pack R-core: Opportunity Attack, the basic Reaction
   e.flavor = c.flavor ?? "";
   e.versions = s.versions;
   return e;

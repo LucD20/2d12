@@ -19,7 +19,9 @@ const data = src("module/data.mjs"), isheet = src("templates/item-sheet.hbs"), c
 console.log("Action data has no check:", !/\n\s+check: choice\(TWOD12\.checks\)/.test(data), "| the editor has no 'Other roll':", !isheet.includes("Other roll"));
 // v0.0.188 (OT): Rain of Arrows and Covering Fire have no [HT] any more (the book's cards); Covering Fire keeps its area 3 rounds.
 console.log("OT: no [HT] on Rain of Arrows and Covering Fire:", !content.includes("[HT: Entering"), "| Covering Fire kept 3 rounds:", (() => { const a = cdoc("Covering Fire").system.areaCfg; return a.withinRange === "normal" && a.targets === "all" && a.keep === true && a.rounds === 3; })());
-console.log("Opportunity Attack makes a Weapon Attack:", cdoc("Opportunity Attack").system.versions[0].effects.includes("@Use[Weapon Attack|label:Weapon Attack (1A)]") && cdoc("Opportunity Attack", "talent").system.modifiers?.[0]?.when === "outOfTurn", "| Vow of Enmity 3 AP Tier 3:", content.includes('["1d6MH", "As 2 AP."]'));
+// pack R-core: Opportunity Attack is a Basic Action (the basic Reaction every creature has), no longer a Talent; its Critical disrupt is gone.
+const BA = (await import(ROOTURL + "module/basic-data.mjs")).BASIC_ACTIONS;
+console.log("Opportunity Attack makes a Weapon Attack:", BA.opportunityAttack.versions[0].effects.includes("@Use[Weapon Attack|label:Weapon Attack (1A)]") && BA.opportunityAttack.reaction === true && BA.opportunityAttack.reactionKind === "interrupt" && !cdoc("Opportunity Attack", "talent"), "| Vow of Enmity 3 AP Tier 3:", content.includes('["1d6MH", "As 2 AP."]'));
 // v0.0.158: "Distance:" written on the third line; the weapon is checked before an area is placed; windows step aside while placing
 const act = src("module/actions.mjs"), tpl = src("module/template.mjs");
 console.log("weapon checked before anything:", act.indexOf("A Weapon Action needs its weapon before anything else happens") < act.indexOf("areaConfigOf(it)"), "| windows minimized while placing, then back:", tpl.includes("const back = await stepAside();") && tpl.includes("finally { await back(); }"), "| Volley:", !content.includes("you included"));

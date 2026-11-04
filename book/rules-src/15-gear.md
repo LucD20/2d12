@@ -10,7 +10,7 @@ Your class determines your Weapon Modifier. Each weapon belongs to a [[Weapon Gr
 
 ### Weapon Damage [W]
 
-**[W]** is the damage of your weapon. An Action that deals 1[W] adds one instance of the weapon's damage. 2[W] is two instances, including any modifier and all dice. A weapon's damage has its own type, written in its table ([V] for every weapon so far): 1[W] deals that type, whatever the rest of the Action deals. Later weapons, such as wands and staves, may deal Mind damage or both.
+**[W]** is the damage of your weapon. An Action that deals 1[W] adds one instance of the weapon's damage. 2[W] is two instances, including any modifier and all dice. A weapon's damage has its own type, written in its table ([V] for every weapon so far): 1[W] deals that type, whatever the rest of the Action deals. Later weapons, such as wands and staves, may deal Resolve damage or both.
 
 *Example:* an Action that deals 2[W] deals 0 / 2d8 / 4d6 with a Greatsword, and 0 / 2d4+4 / 2d10+4 with a Crossbow.
 

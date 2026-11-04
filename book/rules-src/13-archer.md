@@ -7,14 +7,16 @@
 <div class="statblock">
 <div class="sbt">The Archer at a glance</div>
 <div class="sbr"><span class="lbl">Attributes</span><span>Body or Instinct +1, Mind or Appeal +1</span></div>
-<div class="sbr"><span class="lbl">Body Health Multiplier</span><span>×3</span></div>
-<div class="sbr"><span class="lbl">Mind Health Multiplier</span><span>×2.5</span></div>
+<div class="sbr"><span class="lbl">Health</span><span>high 16, low 8 (Stage 2: +9 / +5; Stage 3: +11 / +6)</span></div>
 <div class="sbr"><span class="lbl">Rally</span><span>5</span></div>
 <div class="sbr"><span class="lbl">Speed Modifier</span><span>+1</span></div>
 <div class="sbr"><span class="lbl">Weapon Modifier</span><span>Instinct or Body</span></div>
 <div class="sbr"><span class="lbl">Power Modifier</span><span>Mind or Appeal</span></div>
 <div class="sbr"><span class="lbl">Armor Training</span><span>Medium</span></div>
 </div>
+
+> [!tbd]
+> **Pack R:** the new core rules (4 AP + 1 Reaction AP, Escalation as a level that is never spent, Hallmark Reactions, the Apex, Bloodied and Strained as hooks) are in the Core Rules; this class is rebuilt for them in pack R-classes. Until then, its Health and Rally values above are the new ones, but its level list, cards and Escalation abilities are the old ones: their AP are priced for 5 AP turns, and its Escalation Actives still say they spend Escalation.
 
 ## The Archer by Level
 
