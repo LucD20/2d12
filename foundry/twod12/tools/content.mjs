@@ -136,36 +136,48 @@ sp("Human", { body: 0, mind: 0, appeal: 0, instinct: 0 }, true, 3, 4, 5);
 sp("Dwarf", { body: 1, mind: 1, appeal: -1, instinct: 1 }, false, 5, 3, 4, 1);
 sp("Elf", { body: -1, mind: 1, appeal: 1, instinct: 1 }, false, 1, 5, 6);
 // v0.0.185 (pack C2): the classes' levels as sections (module/classlevels.mjs), from the book's "by Level" tables; the class window reads them.
-const U = names => names.map(n => uuidOf(/^(Font of Mercy|Divine Power|Sharpshooter|Marked Quarry|Hallowed Stance|Radiant Zeal|Mending Light|Killer's Focus|Elusive|Harrying Shots)$/.test(n) ? "features" : "actions", n));
+const U = names => names.map(n => uuidOf(/^(Font of Mercy|Divine Power|Kindled Wrath|Sharpshooter|Marked Quarry|Hallowed Stance|Radiant Zeal|Mending Light|Divine Surge|Searing Blows|Reckoning|Killer's Focus|Thrill of the Kill|Vanish|Harrying Shots|Hunter's Edge|Sure Step|Finisher|Pinned Down)$/.test(n) ? "features" : "actions", n));
 const sec = (id, title, kind, o = {}) => ({ id, title, kind, mode: o.mode ?? "choice", pick: o.pick ?? 1, items: o.items ?? [], pairs: (o.pairs ?? []).map(([a, b]) => ({ a, b })), freq: o.freq ?? "any", category: o.category ?? "" });
 // OT (book 2026-10-30): the Repertoire and Escalation lists with their options.
-const PAL_PASSIVES = ["Font of Mercy", "Hallowed Stance", "Radiant Zeal", "Mending Light"], PAL_ACTIVES = ["Aura of Protection", "Divine Surge", "Shield of Faith", "Hand of Mercy"];
+// Pack R-classes (book 2026-11-04): the Paladin rebuilt for pack R: a Hallmark Reaction (Shield of Faith or Bulwark of Faith), an Encounter Pick, one Escalation Passive per
+// level (1, 2, 3) and an Apex (an Encounter Action that needs Escalation 3) at level 1, a Talent every level; Font of Mercy is an Escalation 1 Passive, Divine Surge too,
+// Aura of Protection an Encounter Pick, Hand of Mercy a Talent. The Apexes are the class's "escActives" list (the Escalation Actions): the sheet and the class window keep working.
+const PAL_PASS1 = ["Radiant Zeal", "Divine Surge", "Font of Mercy"], PAL_PASS2 = ["Searing Blows", "Mending Light"], PAL_PASS3 = ["Reckoning", "Hallowed Stance"], PAL_APEX = ["Final Verdict", "Hallowed Dawn"];
+const PAL_PASSIVES = [...PAL_PASS1, ...PAL_PASS2, ...PAL_PASS3];
 add("classes", "class", "Paladin", "icons/svg/angel.svg", {
   description: "<p>A holy warrior.</p>", category: "Class", flavor: "Your god's strength flows through your weapon and your hands.",
   choiceA: ["body", "appeal"], choiceB: ["mind", "instinct"], bodyMult: 4, mindMult: 4, rallyMod: 6, speedMod: 0,
   weaponAttrs: ["body", "appeal"], magicAttrs: ["mind", "appeal"], armorTraining: "heavy", features: [],
-  repertoire: U(["Holy Wrath", "Word of Radiance", "Bulwark of Faith", "Consecrated Ground", "Miraculous Recovery", "Divine Intervention"]), escPassives: U(PAL_PASSIVES), escActives: U(PAL_ACTIVES),
-  // Font of Mercy is in the Escalation Passives (it is one) and granted at level 1, so the Passive Escalation Pick never offers it.
+  repertoire: U(["Holy Wrath", "Word of Radiance", "Aura of Protection", "Consecrated Ground", "Miraculous Recovery", "Divine Intervention"]), escPassives: U(PAL_PASSIVES), escActives: U(PAL_APEX),
   levels: [
-    { sections: [sec("pal1attr", "Attribute increases", "attr", { pairs: [["body", "appeal"], ["mind", "instinct"]] }), sec("pal1core", "Core Features", "items", { mode: "granted", items: U(["Divine Power", "Font of Mercy"]) }),
-      sec("pal1hall", "Hallmark Action", "items", { items: U(["Smite", "Lay On Hands"]) }), sec("pal1tal", "Talent", "talent"), sec("pal1enc", "Encounter Pick", "repertoire", { freq: "encounter" }),
-      sec("pal1pass", "Passive Escalation Pick", "items", { items: U(PAL_PASSIVES) }), sec("pal1act", "Active Escalation Pick", "items", { items: U(PAL_ACTIVES) })] },
+    { sections: [sec("pal1attr", "Attribute increases", "attr", { pairs: [["body", "appeal"], ["mind", "instinct"]] }), sec("pal1core", "Features", "items", { mode: "granted", items: U(["Divine Power", "Kindled Wrath"]) }),
+      sec("pal1hall", "Hallmark Action", "items", { items: U(["Smite", "Lay On Hands"]) }), sec("pal1react", "Hallmark Reaction", "items", { items: U(["Shield of Faith", "Bulwark of Faith"]) }),
+      sec("pal1enc", "Encounter Pick", "repertoire", { freq: "encounter" }),
+      sec("pal1pass1", "Escalation 1 Passive", "items", { items: U(PAL_PASS1) }), sec("pal1pass2", "Escalation 2 Passive", "items", { items: U(PAL_PASS2) }), sec("pal1pass3", "Escalation 3 Passive", "items", { items: U(PAL_PASS3) }),
+      sec("pal1apex", "Apex", "items", { items: U(PAL_APEX) }), sec("pal1tal", "Talent", "talent")] },
     { sections: [sec("pal2tal", "Talent", "talent")] },
-    { sections: [sec("pal3daily", "Daily Pick", "repertoire", { freq: "daily" }), sec("pal3pass", "Passive Escalation Pick", "items", { items: U(PAL_PASSIVES) })] }
+    { sections: [sec("pal3daily", "Daily Pick", "repertoire", { freq: "daily" }), sec("pal3tal", "Talent", "talent")] },
+    { sections: [sec("pal4tal", "Talent", "talent")] }
   ]
 });
-const ARC_PASSIVES = ["Killer's Focus", "Elusive", "Harrying Shots"], ARC_ACTIVES = ["Pinning Shot", "Twin Shot", "Vanish"];
+// Pack R-classes (book 2026-11-04): the Archer rebuilt for pack R, as the Paladin above: a Hallmark Reaction (Overwatch or Ready Shot), an Encounter Pick at level 1,
+// one Escalation Passive per level and an Apex; Killer's Focus is an Escalation 1 Passive, Vanish the Passive that grants the 0R Reaction, Pinning Shot and Twin Shot Encounter Picks, Elusive is gone.
+const ARC_PASS1 = ["Killer's Focus", "Vanish", "Harrying Shots"], ARC_PASS2 = ["Hunter's Edge", "Sure Step"], ARC_PASS3 = ["Finisher", "Pinned Down"], ARC_APEX = ["Deathmark", "Open Season"];
+const ARC_PASSIVES = [...ARC_PASS1, ...ARC_PASS2, ...ARC_PASS3];
 add("classes", "class", "Archer", "icons/svg/target.svg", {
   description: "<p>An Archer fights from a distance.</p>", category: "Class", flavor: "You were made for the shot no one else would take.",
   choiceA: ["body", "instinct"], choiceB: ["mind", "appeal"], bodyMult: 3, mindMult: 2.5, rallyMod: 5,
   weaponAttrs: ["instinct", "body"], magicAttrs: ["mind", "appeal"], armorTraining: "medium", speedMod: 1, features: [],
-  repertoire: U(["Marksman's Shot", "Volley", "Covering Fire", "Hunter's Focus", "Deadeye", "Rain of Arrows"]), escPassives: U(ARC_PASSIVES), escActives: U(ARC_ACTIVES),
+  repertoire: U(["Marksman's Shot", "Volley", "Covering Fire", "Pinning Shot", "Twin Shot", "Hunter's Focus", "Deadeye", "Rain of Arrows"]), escPassives: U(ARC_PASSIVES), escActives: U(ARC_APEX),
   levels: [
-    { sections: [sec("arc1attr", "Attribute increases", "attr", { pairs: [["body", "instinct"], ["mind", "appeal"]] }), sec("arc1core", "Core Features", "items", { mode: "granted", items: U(["Sharpshooter", "Marked Quarry"]) }),
-      sec("arc1hall", "Hallmark Action", "items", { items: U(["Double Shot", "Rolling Shot"]) }), sec("arc1tal", "Talent", "talent"),
-      sec("arc1pass", "Passive Escalation Pick", "items", { items: U(ARC_PASSIVES) }), sec("arc1act", "Active Escalation Pick", "items", { items: U(ARC_ACTIVES) })] },
-    { sections: [sec("arc2tal", "Talent", "talent"), sec("arc2enc", "Encounter Pick", "repertoire", { freq: "encounter" })] },
-    { sections: [sec("arc3daily", "Daily Pick", "repertoire", { freq: "daily" }), sec("arc3pass", "Passive Escalation Pick", "items", { items: U(ARC_PASSIVES) })] }
+    { sections: [sec("arc1attr", "Attribute increases", "attr", { pairs: [["body", "instinct"], ["mind", "appeal"]] }), sec("arc1core", "Features", "items", { mode: "granted", items: U(["Sharpshooter", "Marked Quarry", "Thrill of the Kill"]) }),
+      sec("arc1hall", "Hallmark Action", "items", { items: U(["Double Shot", "Rolling Shot"]) }), sec("arc1react", "Hallmark Reaction", "items", { items: U(["Overwatch", "Ready Shot"]) }),
+      sec("arc1enc", "Encounter Pick", "repertoire", { freq: "encounter" }),
+      sec("arc1pass1", "Escalation 1 Passive", "items", { items: U(ARC_PASS1) }), sec("arc1pass2", "Escalation 2 Passive", "items", { items: U(ARC_PASS2) }), sec("arc1pass3", "Escalation 3 Passive", "items", { items: U(ARC_PASS3) }),
+      sec("arc1apex", "Apex", "items", { items: U(ARC_APEX) }), sec("arc1tal", "Talent", "talent")] },
+    { sections: [sec("arc2tal", "Talent", "talent")] },
+    { sections: [sec("arc3daily", "Daily Pick", "repertoire", { freq: "daily" }), sec("arc3tal", "Talent", "talent")] },
+    { sections: [sec("arc4tal", "Talent", "talent")] }
   ]
 });
 
@@ -353,15 +365,15 @@ function lv1Type(n) { const d = ["talent", "feature", "action"].map(t => docs.fi
 // v0.0.183: the four level 1 builds of the ruler (book/ruler/classes: paladin-smite-1, paladin-hands-1, archer-double-1, archer-rolling-1), Humans all.
 // v0.0.189 (Lucas: the compendium PCs test different cards): two builds a class, one at level 1 and one at level 3, every pick different.
 pc({ name: "Paladin 1 (Smite, Heavy Blows)", img: "icons/svg/sun.svg", species: "Human", chosen: ["body", "appeal"], cls: "Paladin", attrs: ["body", "mind"],
-  picks: { pal1hall: "Smite", pal1tal: "Heavy Blows", pal1enc: "Holy Wrath", pal1pass: "Radiant Zeal", pal1act: "Divine Surge" }, weapon: "Greatsword", armor: "Heavy Armor" });
+  picks: { pal1hall: "Smite", pal1react: "Shield of Faith", pal1tal: "Heavy Blows", pal1enc: "Holy Wrath", pal1pass1: "Radiant Zeal", pal1pass2: "Searing Blows", pal1pass3: "Reckoning", pal1apex: "Final Verdict" }, weapon: "Greatsword", armor: "Heavy Armor" });
 pc({ name: "Paladin 3 (Lay On Hands, Protector)", img: "icons/svg/regen.svg", species: "Dwarf", cls: "Paladin", attrs: ["appeal", "mind"], level: 3,
-  picks: { 1: { pal1hall: "Lay On Hands", pal1tal: "Challenge", pal1enc: "Word of Radiance", pal1pass: "Mending Light", pal1act: "Shield of Faith" },
-    2: { pal2tal: "Bloodlust" }, 3: { pal3daily: "Miraculous Recovery", pal3pass: "Hallowed Stance" } }, weapon: "Greatsword", armor: "Heavy Armor" });
+  picks: { 1: { pal1hall: "Lay On Hands", pal1react: "Bulwark of Faith", pal1tal: "Challenge", pal1enc: "Word of Radiance", pal1pass1: "Font of Mercy", pal1pass2: "Mending Light", pal1pass3: "Hallowed Stance", pal1apex: "Hallowed Dawn" },
+    2: { pal2tal: "Bloodlust" }, 3: { pal3daily: "Miraculous Recovery", pal3tal: "Hand of Mercy" } }, weapon: "Greatsword", armor: "Heavy Armor" });
 pc({ name: "Archer 1 (Double Shot, Marksman)", img: "icons/svg/target.svg", species: "Elf", cls: "Archer", attrs: ["instinct", "mind"],
-  picks: { arc1hall: "Double Shot", arc1tal: "Aim", arc1pass: "Killer's Focus", arc1act: "Pinning Shot" }, weapon: "Crossbow", armor: "Medium Armor" });
+  picks: { arc1hall: "Double Shot", arc1react: "Overwatch", arc1tal: "Aim", arc1enc: "Pinning Shot", arc1pass1: "Killer's Focus", arc1pass2: "Hunter's Edge", arc1pass3: "Finisher", arc1apex: "Deathmark" }, weapon: "Crossbow", armor: "Medium Armor" });
 pc({ name: "Archer 3 (Rolling Shot, Kickboxer)", img: "icons/svg/wing.svg", species: "Human", chosen: ["body", "instinct"], cls: "Archer", attrs: ["body", "appeal"], level: 3,
-  picks: { 1: { arc1hall: "Rolling Shot", arc1tal: "Brawler", arc1pass: "Elusive", arc1act: "Twin Shot" },
-    2: { arc2tal: "Kickboxer", arc2enc: "Volley" }, 3: { arc3daily: "Rain of Arrows", arc3pass: "Harrying Shots" } }, weapon: "Crossbow", armor: "Medium Armor" });
+  picks: { 1: { arc1hall: "Rolling Shot", arc1react: "Ready Shot", arc1tal: "Brawler", arc1enc: "Volley", arc1pass1: "Vanish", arc1pass2: "Sure Step", arc1pass3: "Pinned Down", arc1apex: "Open Season" },
+    2: { arc2tal: "Kickboxer" }, 3: { arc3daily: "Rain of Arrows", arc3tal: "Steady Nerves" } }, weapon: "Crossbow", armor: "Medium Armor" });
 
 const FOLDER_OF = { species: "Species", class: "Class", feature: "Feature", talent: "Talent" };
 for (const d of docs) if ((d.pack === "classes" || d.pack === "features") && !d.folder) d.folder = FOLDER_OF[d.type] ?? null;

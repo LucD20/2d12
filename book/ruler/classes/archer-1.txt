@@ -23,8 +23,7 @@ action Marksman's Shot | ap 2 | encounter | traits ranged shot strike weapon | v
 action Twin Shot | ap 1 | round | traits ranged shot strike weapon | escalation 2 | does Weapon Attack x2 | each extra 1d6 | different     # one roll against two creatures in the book; here two rolls
 
 passive Marked Quarry
-passive Killer's Focus
-
+passive Killer's Focus: escalation 2: extra 1d6 first shot strike weapon   # the pre-R card
 turn Double Shot + Lock & Loose + attack: Double Shot 3, Lock & Loose, Weapon Attack
 turn Aimed Marksman: Precise Aim 1, Marksman's Shot, Double Shot 2
 turn Twin: Double Shot 3, Twin Shot, Lock & Loose
@@ -37,3 +36,9 @@ plan Aimed Marksman, Double Shot + Lock & Loose + attack, Twin
 turn Kite: advance, Double Shot 3, Lock & Loose
 when self below 35%: Steel
 when engaged: Kite     # the map model: it starts its turn next to an enemy, so it steps away first (Advance: 1 AP, Speed 6), then shoots with no Engaged Banes
+
+# Pack R-classes (2026-11-04): this file is the pre-R Archer (5 AP, spent Escalation). The cards below changed in book/cards/archer.json
+# (Killer's Focus is an Escalation 1 Passive with "that deals damage", Elusive is gone, Pinning Shot and Twin Shot are Encounter Picks, Vanish a
+# 0R Reaction, Marksman's Shot has the Encounter ceilings): their old lines are kept here so report.md doesn't move. The R builds are in rework/.
+action Pinning Shot | ap 1 | round | traits ranged shot strike weapon | escalation 2 | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod] | on 2+: debuff Immobilized (EoT)
+action Vanish | ap 0 | round | traits self | escalation 1 | evade 2; defense 1 self

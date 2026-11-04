@@ -1,7 +1,6 @@
 --- the cards carry settings (no code tests their names)
 Font of Mercy   Rally Points +power + 2 (allies within 5)
 Radiant Zeal    an Effect each turn
-Elusive         1 Bane (against it, with Strike) (the first matching Action each round)
 Killer's Focus  an Effect each turn
 Long Draw       ignores one of their range Banes
 Steady Nerves   ignores the Banes for a [Ranged] Action while you are Engaged
@@ -13,9 +12,9 @@ no hasFeature(name) left: true | paladin.mjs gone: true | Mark Quarry marks by i
 first: Test Focus +1d6 Pi [B] (once)
 used this turn-cycle: none | next round, before its turn: none | at its turn: Test Focus +1d6 Pi [B] (once)
 --- v0.0.187: Killer's Focus and Radiant Zeal give an Effect at the start of each turn, used up by the Action
-the Features: Killer's Focus: turnstart Escalation 2 | Escalation Passive true ; Radiant Zeal: turnstart Escalation 1 | Escalation Passive true
+the Features: Killer's Focus: turnstart Escalation 1 | Escalation Passive true ; Radiant Zeal: turnstart Escalation 1 | Escalation Passive true
 the Effects: Killer's Focus: ends after shot + strike + weapon, works at Escalation 2 ; Radiant Zeal: ends after strike, works at Escalation 1
-its turn at Escalation 1: 0 Effect(s) []
+its turn at Escalation 1: 1 Effect(s) [ "Killer's Focus" ]
 at Escalation 2: 1 | again next turn (replaced, not stacked): 1 [ "Killer's Focus" ] | from Escalation (ends with the encounter): true
 its bonus: Killer's Focus +1d6 Pi [B] | Escalation spent to 1: none 
 unticked in the dialog: the effect stays: 0 1 | used: it ends: 1 0
@@ -27,10 +26,6 @@ Tier 1 vs the Orc (Modifier +2): Marked Quarry +2 [B] | Tier 2: none | vs the Go
 Empowered vs the Orc: [{"name":"Hunter's Focus","n":1}] | vs the Goblin: []
 the mark matches a token too: true | v0.0.207 its reminders are settings: Mark Quarry | the Orc has none: 0
 [Mod] in a Bonus Damage: [Mod] -> "3" | 1d6 + [Mod] -> "1d6 + 3" | 1d4 -> "1d4" | [Mod] with -1: null "1d6 - 1"
---- Elusive: 1 Bane on the first [Strike] against it each round, Escalation 1
-a Strike against it: Elusive (Nari) 1 once | not a Strike: 0
-Nari is not mine: the GM is asked to remember it: "markOnce" 1
-the next Strike this round: none | after Nari's next turn starts: Elusive (Nari) 1 once
 --- Ignore a Bane: Long Draw, Steady Nerves (now a Talent: no Escalation), Sharpshooter
 range Bane less, a Shot: ["Long Draw"] | a thrown dagger: []
 Engaged (you), Escalation 0: ["Steady Nerves"] | Escalation 2: ["Steady Nerves"]

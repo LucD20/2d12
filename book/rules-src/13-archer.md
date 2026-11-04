@@ -13,40 +13,44 @@
 <div class="sbr"><span class="lbl">Weapon Modifier</span><span>Instinct or Body</span></div>
 <div class="sbr"><span class="lbl">Power Modifier</span><span>Mind or Appeal</span></div>
 <div class="sbr"><span class="lbl">Armor Training</span><span>Medium</span></div>
+<div class="sbr"><span class="lbl">Escalation hook</span><span>Your Marked Quarry goes Down (Thrill of the Kill)</span></div>
 </div>
-
-> [!tbd]
-> **Pack R:** the new core rules (4 AP + 1 Reaction AP, Escalation as a level that is never spent, Hallmark Reactions, the Apex, Bloodied and Strained as hooks) are in the Core Rules; this class is rebuilt for them in pack R-classes. Until then, its Health and Rally values above are the new ones, but its level list, cards and Escalation abilities are the old ones: their AP are priced for 5 AP turns, and its Escalation Actives still say they spend Escalation.
 
 ## The Archer by Level
 
 <div class="levels">
 <div class="lvl"><div class="lvn"><b>1</b><span>Level</span></div><div class="lvb">
-<div><span class="lbl">Core Features</span> Sharpshooter, Marked Quarry</div>
+<div><span class="lbl">Features</span> Sharpshooter, Marked Quarry, Thrill of the Kill</div>
 <div><span class="lbl">Hallmark Action</span> Double Shot or Rolling Shot</div>
+<div><span class="lbl">Hallmark Reaction</span> Overwatch or Ready Shot</div>
+<div><span class="lbl">Picks</span> 1 Encounter Pick</div>
+<div><span class="lbl">Escalation</span> 1 Passive for each Escalation level (1, 2 and 3), 1 Apex</div>
 <div><span class="lbl">Talents</span> 1 Talent</div>
-<div><span class="lbl">Escalation</span> 1 Passive Escalation Pick, 1 Active Escalation Pick</div>
 </div></div>
 <div class="lvl"><div class="lvn"><b>2</b><span>Level</span></div><div class="lvb">
 <div><span class="lbl">Talents</span> 1 Talent</div>
-<div><span class="lbl">Picks</span> 1 Encounter Pick</div>
 </div></div>
 <div class="lvl"><div class="lvn"><b>3</b><span>Level</span></div><div class="lvb">
 <div><span class="lbl">Picks</span> 1 Daily Pick</div>
-<div><span class="lbl">Escalation</span> 1 Passive Escalation Pick</div>
+<div><span class="lbl">Talents</span> 1 Talent</div>
 </div></div>
-<p class="lvmore">Further levels will be added here.</p>
+<div class="lvl"><div class="lvn"><b>4</b><span>Level</span></div><div class="lvb">
+<div><span class="lbl">Talents</span> 1 Talent</div>
+</div></div>
+<p class="lvmore">Level 5 begins Stage 2 (a Stage Talent and the Stage numbers: see [[Stages]]). Further levels will be added here.</p>
 </div>
 
 ## Level 1
 
 ### Features
 
-As a marksman, you gain two Features at level 1.
+As a marksman, you gain three Features at level 1. Thrill of the Kill is your class's [[Escalation]] hook.
 
 @@CARD:Sharpshooter@@
 
 @@CARD:Marked Quarry@@
+
+@@CARD:Thrill of the Kill@@
 
 ### Hallmark Action Selection
 
@@ -56,11 +60,19 @@ Choose one of the following Hallmark Actions:
 
 @@CARD:Rolling Shot@@
 
+### Hallmark Reaction Selection
+
+Choose one of the following Hallmark Reactions. Both are paid with your Reaction AP or with AP you kept from your turn (see [[Reactions]]).
+
+@@CARD:Overwatch@@
+
+@@CARD:Ready Shot@@
+
 ### Picks
 
 - You pick one Talent (the [[Talents]] document).
-- You pick one Passive Escalation ability from the [[Archer Escalation]].
-- You pick one Active Escalation ability from the [[Archer Escalation]].
+- You pick one Encounter Action from the [[Archer Repertoire]].
+- You pick one Escalation Passive for each Escalation level, and one Apex, from the [[Archer Escalation]].
 
 ## Archer Repertoire
 
@@ -72,6 +84,10 @@ Choose one of the following Hallmark Actions:
 
 @@CARD:Covering Fire@@
 
+@@CARD:Pinning Shot@@
+
+@@CARD:Twin Shot@@
+
 ### Daily
 
 @@CARD:Hunter's Focus@@
@@ -82,18 +98,30 @@ Choose one of the following Hallmark Actions:
 
 ## Archer Escalation
 
-### Passives
+Your Escalation is a level from 1 to 3 that rises as the fight goes on and is never spent (see [[Escalation]]). You choose one Passive for each level: it works while your Escalation is at least that number. The Apex is your big Encounter Action: you can use it only while your Escalation is 3.
+
+### Escalation 1 Passives
 
 @@CARD:Killer's Focus@@
 
-@@CARD:Elusive@@
+@@CARD:Vanish@@
 
 @@CARD:Harrying Shots@@
 
-### Actives
+### Escalation 2 Passives
 
-@@CARD:Pinning Shot@@
+@@CARD:Hunter's Edge@@
 
-@@CARD:Twin Shot@@
+@@CARD:Sure Step@@
 
-@@CARD:Vanish@@
+### Escalation 3 Passives
+
+@@CARD:Finisher@@
+
+@@CARD:Pinned Down@@
+
+### Apex
+
+@@CARD:Deathmark@@
+
+@@CARD:Open Season@@

@@ -1,5 +1,5 @@
 {
- "_about": "The Archer's cards (the Archer document, 13-archer.md). One source per card: book/cards/README.md.",
+ "_about": "The Archer's cards (the Archer document, 13-archer.md). One source per card: book/cards/README.md. Mark Quarry is Foundry-only. Pack R-classes (2026-11-04): the class rebuilt for 4 AP + 1 Reaction AP and Escalation as a level (book/rework-r.md sections 12 and 14).",
  "cards": [
   {
    "name": "Sharpshooter",
@@ -95,6 +95,19 @@
    },
    "ruler": {
     "passive": "boon 1 shot strike quarry"
+   }
+  },
+  {
+   "name": "Thrill of the Kill",
+   "category": "Archer Feature",
+   "level": 1,
+   "_note": "Pack R-classes (2026-11-04): the Archer's Escalation hook (rework-r.md 12.8; Core Rules, Escalation).",
+   "flavor": "The first one falls, and the rest of the world sharpens.",
+   "text": "Once an encounter, when your Marked Quarry goes Down, your [[Escalation]] increases by 1.",
+   "foundry": {
+    "img": "icons/svg/blood.svg",
+    "automation": "none",
+    "append": "(Not automated until R-Foundry: raise your Escalation by hand.)"
    }
   },
   {
@@ -197,6 +210,65 @@
    }
   },
   {
+   "name": "Overwatch",
+   "category": "Sharpshooter",
+   "level": 1,
+   "_note": "Pack R-classes: a Hallmark Reaction (decision sheet item 9, revised in 14.3: the attack Reaction on a trigger that comes every NPC turn; measured 0.96 AP a turn).",
+   "flavor": "Nothing moves in your sight without an arrow following it.",
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Turn",
+   "target": "The triggering creature",
+   "distance": "Weapon",
+   "trigger": "An enemy within 10 squares makes a [Strike] Action.",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "Make a [Ranged, Shot] Weapon Attack (1A) against the triggering creature.",
+     "foundry": {
+      "append": "@Use[Weapon Attack|label:Weapon Attack (1A)]"
+     },
+     "ruler": "does Weapon Attack"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Archer",
+    "automation": "silver",
+    "automationNote": "the Weapon Attack (the button); the trigger is by hand."
+   }
+  },
+  {
+   "name": "Ready Shot",
+   "category": "Sharpshooter",
+   "level": 1,
+   "_note": "Pack R-classes: a Hallmark Reaction (decision sheet item 9, revised in 14.3: the setup / compression Reaction on a trigger that comes every round; saving 1 AP is worth 1 AP each time it fires by arithmetic). In the ruler it measures 0.2-0.35 AP a turn: the Archer's turn is capped at 3 Strikes, so the fifth AP only upgrades a Version; in play it also pays a step, an Aim or a Reload (not modeled). A Vulnerable 1 on the Quarry when an ally damages it (\"Call the Shot\") measured 0.14: the party kills the Quarry within the round (rclasses.md section 6). A question for Lucas.",
+   "flavor": "The bolt is seated before they finish their swing.",
+   "traits": [
+    "focus"
+   ],
+   "frequency": "Round",
+   "target": "You",
+   "trigger": "An enemy within 10 squares makes a [Strike] Action.",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "Your first [Shot] Action on your next turn costs 1 AP less (a 1 AP Action costs 0 AP).",
+     "ruler": "note ready"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Archer",
+    "automation": "bronze",
+    "automationNote": "pay 1 AP less by hand on the next turn's first Shot."
+   }
+  },
+  {
    "name": "Marksman's Shot",
    "category": "Archer Feature",
    "level": 1,
@@ -216,8 +288,8 @@
      "ap": 2,
      "tiers": [
       "[V] 1[W] + 1d8 Pi",
-      "[V] 1[W] + [Mod] + 3d6 Pi",
-      "[V] 1[W] + [Mod] + 4d6 Pi; Vulnerable 2 (EoT)."
+      "[V] 1[W] + [Mod] + 2d6 Pi",
+      "[V] 1[W] + [Mod] + 3d6 Pi; Vulnerable 2 (EoT)."
      ],
      "ruler": "on 3: vulnerable 2"
     }
@@ -226,7 +298,8 @@
     "img": "icons/svg/target.svg",
     "folder": "Archer",
     "automation": "gold"
-   }
+   },
+   "_note": "Pack R-classes: the Encounter ceilings (decision sheet item 16): 3d6 / 4d6 became 2d6 / 3d6."
   },
   {
    "name": "Volley",
@@ -298,6 +371,78 @@
      "rounds": 3
     }
    }
+  },
+  {
+   "name": "Pinning Shot",
+   "category": "Archer Feature",
+   "flavor": "You pin their foot to the ground with an arrow.",
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Encounter",
+   "target": "One creature",
+   "distance": "Weapon",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "Make a [Ranged] Weapon Attack (1A). On a Tier 2 or 3, the target is Immobilized (EoT).",
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Pinning Shot}}"
+       ]
+      }
+     },
+     "ruler": "vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod] | on 2+: debuff Immobilized (EoT)"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Archer",
+    "level": 1,
+    "automation": "gold"
+   },
+   "level": 1,
+   "_note": "Pack R-classes: an Encounter Pick, no Escalation needed (decision sheet item 15; it was a Round Escalation Active worth 1 to 2 damage a fight)."
+  },
+  {
+   "name": "Twin Shot",
+   "category": "Archer Feature",
+   "flavor": "Two arrows, one motion, two answers.",
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Encounter",
+   "target": "Two creatures",
+   "distance": "Weapon",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "Make one [Ranged, Shot] Weapon Attack (1A) and compare its result to two different creatures no more than 5 squares apart. It deals an extra [V] 1d6 Pi to each of them.",
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Twin Shot}}"
+       ]
+      }
+     },
+     "ruler": "does Weapon Attack | each extra 1d6 | area 2"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Archer",
+    "level": 1,
+    "automation": "silver"
+   },
+   "level": 1,
+   "_note": "Pack R-classes: an Encounter Pick, no Escalation needed (decision sheet item 15). \"Two creatures\" needs two targets (Core Rules, Targets)."
   },
   {
    "name": "Hunter's Focus",
@@ -405,7 +550,7 @@
    "name": "Killer's Focus",
    "category": "Archer Escalation (Passive)",
    "flavor": "First blood is the only blood that matters.",
-   "text": "While your Escalation is 2 or more, your first [Shot, Strike, Weapon] Action each round deals an extra [V] 1d6 Pi.",
+   "text": "While your Escalation is 1 or more, your first [Shot, Strike, Weapon] Action each round that deals damage deals an extra [V] 1d6 Pi.",
    "foundry": {
     "img": "icons/svg/target.svg",
     "level": 1,
@@ -414,44 +559,16 @@
      {
       "type": "turnstart",
       "fxUuid": "{{fx:Killer's Focus}}",
-      "minEscalation": 2
-     }
-    ],
-    "folder": "Archer"
-   },
-   "ruler": {
-    "passive": "escalation 2: extra 1d6 first shot strike weapon"
-   }
-  },
-  {
-   "name": "Elusive",
-   "category": "Archer Escalation (Passive)",
-   "flavor": "You are never quite where they aimed.",
-   "text": "While your Escalation is 1 or more, the first [Strike] Action against you each round takes 1 Bane.",
-   "foundry": {
-    "img": "icons/svg/target.svg",
-    "level": 1,
-    "automation": "gold",
-    "settings": [
-     {
-      "type": "boonbane",
-      "against": true,
-      "boons": 0,
-      "banes": 1,
-      "all": [
-       "strike"
-      ],
-      "any": [],
-      "none": [],
-      "oncePerRound": true,
       "minEscalation": 1
      }
     ],
     "folder": "Archer"
    },
    "ruler": {
-    "passive": "escalation 1: elusive 1"
-   }
+    "passive": "escalation 1: extra 1d6 first-hit shot strike weapon"
+   },
+   "escalation": 1,
+   "_note": "Pack R-classes: the Escalation 1 wrath pick (it needed Escalation 2); \"that deals damage\" as Radiant Zeal says (rework-r.md 14.4, Lucas's answer in 14.3): about 0.5 AP a turn."
   },
   {
    "name": "Harrying Shots",
@@ -465,107 +582,156 @@
     "automationNote": "apply the Harried effect from the compendium.",
     "append": "(Apply the Harried effect from the compendium.)",
     "folder": "Archer"
-   }
-  },
-  {
-   "name": "Pinning Shot",
-   "category": "Archer Escalation",
-   "flavor": "You pin their foot to the ground with an arrow.",
-   "traits": [
-    "ranged",
-    "shot",
-    "strike",
-    "weapon"
-   ],
-   "escalation": 2,
-   "frequency": "Round",
-   "target": "One creature",
-   "distance": "Weapon",
-   "versions": [
-    {
-     "ap": 1,
-     "effects": "Make a [Ranged] Weapon Attack (1A). On a Tier 2 or 3, the target is Immobilized (EoT).",
-     "foundry": {
-      "fx": {
-       "all": [
-        "{{fx:Pinning Shot}}"
-       ]
-      }
-     },
-     "ruler": "vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod] | on 2+: debuff Immobilized (EoT)"
-    }
-   ],
-   "foundry": {
-    "img": "icons/svg/target.svg",
-    "folder": "Archer",
-    "level": 1,
-    "automation": "gold"
-   }
-  },
-  {
-   "name": "Twin Shot",
-   "category": "Archer Escalation",
-   "flavor": "Two arrows, one motion, two answers.",
-   "traits": [
-    "ranged",
-    "shot",
-    "strike",
-    "weapon"
-   ],
-   "escalation": 3,
-   "frequency": "Round",
-   "target": "Two creatures",
-   "distance": "Weapon",
-   "versions": [
-    {
-     "ap": 1,
-     "effects": "Make one [Ranged, Shot] Weapon Attack (1A) and compare its result to two different creatures no more than 5 squares apart. It deals an extra [V] 1d6 Pi to each of them.",
-     "foundry": {
-      "fx": {
-       "all": [
-        "{{fx:Twin Shot}}"
-       ]
-      }
-     },
-     "ruler": "does Weapon Attack | each extra 1d6 | area 2"
-    }
-   ],
-   "foundry": {
-    "img": "icons/svg/target.svg",
-    "folder": "Archer",
-    "level": 1,
-    "automation": "silver"
-   }
+   },
+   "escalation": 1
   },
   {
    "name": "Vanish",
-   "category": "Archer Escalation",
-   "flavor": "You were there a moment ago. You are not now.",
-   "traits": [
-    "self"
-   ],
+   "category": "Archer Escalation (Passive)",
    "escalation": 1,
-   "frequency": "Round",
+   "_note": "Pack R-classes: the 0R Reaction the rung grants (decision sheet item 15, revised in 14.3 with Chapter 3's movement words; the old Evade 2 and +1 Defense every turn are gone).",
+   "flavor": "They reach for you, and you are already somewhere else.",
+   "text": "While your Escalation is 1 or more, you have the **Vanish** Reaction (0R, Round). **Interrupt:** An enemy would enter a square adjacent to you during a Move Action. You can Evade 1.",
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "level": 1,
+    "automation": "none",
+    "append": "(Not automated until R-Foundry: use Evade by hand when it triggers.)"
+   }
+  },
+  {
+   "name": "Hunter's Edge",
+   "category": "Archer Escalation (Passive)",
+   "escalation": 2,
+   "_note": "Pack R-classes: new, the Escalation 2 wrath pick (rung budget 0.6-0.8 AP a turn): ignoring Cover is about 1.5 DE a turn for an Archer (positions: its shots carry 1.6 Banes from the map, Cover on half of them), the 1d4 about 2 (a flat +2 on every Shot against the Quarry measured 1.1 AP on a four-shot turn: rclasses.md section 6).",
+   "flavor": "You know where it will be before it does.",
+   "text": "While your Escalation is 2 or more, your [Shot] Actions against your Marked Quarry ignore Cover, and the first one each round that deals damage deals an extra [V] 1d4 Pi.",
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "level": 1,
+    "automation": "none",
+    "append": "(Not automated until R-Foundry: untick Cover and add [V] 1d4 Pi by hand.)"
+   },
+   "ruler": {
+    "passive": "escalation 2: extra 1d4 first-hit shot quarry"
+   }
+  },
+  {
+   "name": "Sure Step",
+   "category": "Archer Escalation (Passive)",
+   "escalation": 2,
+   "_note": "Pack R-classes: new, the Escalation 2 mobility pick (a free step each round: the Archer starts about half its turns Engaged, and stepping away costs it 1 AP: positions, book/ruler/README.md).",
+   "flavor": "Loose, step, and let them wonder where the next one comes from.",
+   "text": "While your Escalation is 2 or more, once a round, when you deal damage to your Marked Quarry with a [Shot] Action, you can Evade 1.",
+   "foundry": {
+    "img": "icons/svg/wing.svg",
+    "level": 1,
+    "automation": "none",
+    "append": "(Not automated until R-Foundry: use Evade by hand after the Shot.)"
+   }
+  },
+  {
+   "name": "Finisher",
+   "category": "Archer Escalation (Passive)",
+   "escalation": 3,
+   "_note": "Pack R-classes: new, the Escalation 3 wrath pick (rung budget 0.8-1 AP a turn on the turns at Escalation 3: 1d8 on the first landing Shot is about 4.5 DE, 0.8 AP; 2d6 was 1.2: rclasses.md section 6; Reckoning's twin); it pays the Bloodied / Strained hooks.",
+   "flavor": "A wounded thing runs in a straight line.",
+   "text": "While your Escalation is 3 or more, the first [Shot] Action you make each round that deals damage to a Bloodied or Strained creature deals an extra [V] 1d8 Pi.",
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "level": 1,
+    "automation": "none",
+    "append": "(Not automated until R-Foundry: add [V] 1d8 Pi by hand, once a round, against a Bloodied or Strained target.)"
+   },
+   "ruler": {
+    "passive": "escalation 3: extra 1d8 first-hit shot bloodied"
+   }
+  },
+  {
+   "name": "Pinned Down",
+   "category": "Archer Escalation (Passive)",
+   "escalation": 3,
+   "_note": "Pack R-classes: new, the Escalation 3 control pick (Immobilized (EoT) on a Standard is worth about 4.7 DE, 0.8 AP: positions, book/ruler/prices.md section 5).",
+   "flavor": "Through the foot and into the ground, every time.",
+   "text": "While your Escalation is 3 or more, the first time each round you deal damage to your Marked Quarry with a [Shot] Action, they are Immobilized (EoT).",
+   "foundry": {
+    "img": "icons/svg/net.svg",
+    "level": 1,
+    "automation": "none",
+    "append": "(Not automated until R-Foundry: drop Immobilized on the Quarry by hand.)"
+   }
+  },
+  {
+   "name": "Deathmark",
+   "category": "Archer Apex",
+   "_note": "Pack R-classes: the wrath Apex (decision sheet item 14: Encounter, Escalation 3, 2 AP at the Encounter band, within the ceilings: Holy Wrath 2's dice). An Archer's shot is already 7 to 8 DE with the Quarry's Boon, so 2d6 / 3d6 was no better than its Main turn (rclasses.md section 6). The chain on a kill pays the hook (a new Quarry, a free shot).",
+   "flavor": "One arrow, one name, and nothing left to argue.",
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Encounter",
+   "escalation": 3,
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
    "versions": [
     {
-     "ap": 0,
-     "effects": "Evade 2. You gain +1 Defense for 1 round.",
+     "ap": 2,
+     "tiers": [
+      "[V] 1[W] + 1d8 Pi",
+      "[V] 1[W] + [Mod] + 2d8 Pi",
+      "[V] 1[W] + [Mod] + 3d8 Pi"
+     ],
+     "effects": "Against your Marked Quarry, this Action has 1 Boon. If the target goes Down, you can choose a new Marked Quarry (0R) and make a [Ranged, Shot] Weapon Attack (1A) against them.",
      "foundry": {
-      "fx": {
-       "all": [
-        "{{fx:Vanish (+1 Defense)}}"
-       ]
-      }
-     },
-     "ruler": "evade 2; defense 1 self"
+      "append": "@Use[Weapon Attack|label:Weapon Attack (1A)]"
+     }
     }
    ],
    "foundry": {
     "img": "icons/svg/target.svg",
     "folder": "Archer",
     "level": 1,
-    "automation": "gold"
+    "automation": "silver",
+    "automationNote": "the Boon against the Quarry (the mark) and the Weapon Attack (the button); the new Quarry by hand."
    }
+  },
+  {
+   "name": "Open Season",
+   "category": "Archer Apex",
+   "_note": "Pack R-classes: the setup Apex (decision sheet item 14; 14.3: each class gets a setup or compression card): its own shot, then Vulnerable 2 on the Quarry for a round (about 3 attackers × 1.5 Strikes × 2 Boons) and the allies' extra dice: about 25 DE for 2 AP, the Encounter band. (Without its own shot it measured below the Main turn: rclasses.md section 6.)",
+   "flavor": "You call it, and every arrow in the party finds the mark.",
+   "traits": [
+    "focus",
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Encounter",
+   "escalation": 3,
+   "target": "Your Marked Quarry",
+   "versions": [
+    {
+     "ap": 2,
+     "effects": "Make a [Ranged, Shot] Weapon Attack (1A) against your Marked Quarry. Until the end of your next turn, they are Vulnerable 2, and [Strike] Actions your allies make against them deal an extra [V] 1d6 Pi.",
+     "ruler": "does Weapon Attack | always: vulnerable 2 round",
+     "foundry": {
+      "append": "@Use[Weapon Attack|label:Weapon Attack (1A)]"
+     }
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Archer",
+    "level": 1,
+    "automation": "bronze",
+    "automationNote": "the Weapon Attack (the button); Vulnerable 2 on the Quarry (drop the condition by hand); the allies add [V] 1d6 Pi by hand."
+   },
+   "distance": "Weapon"
   },
   {
    "name": "Mark Quarry",

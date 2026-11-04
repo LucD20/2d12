@@ -14,7 +14,7 @@ const doc = (name, type) => docs.find(d => d.name === name && d.type === type);
 let nid = 0;
 const item = (name, type) => { const d = doc(name, type), flags = { sourceUuid: uuidOf(type === "action" ? "actions" : "features", name) }; return { id: `i${++nid}`, name, type, system: { ...d.system, settings: (d.system.settings ?? []).map(x => ({ all: [], any: [], none: [], from: [], tiers: ["t1", "t2", "t3"], ...x })), traits: new Set(d.system.traits ?? []) }, getFlag: (s, k) => flags[k] }; };
 function archer(esc) {
-  const flags = {}, feats = ["Killer's Focus", "Elusive", "Hallowed Stance"].map(n => item(n, "feature")), acts = ["Pinning Shot", "Twin Shot", "Vanish", "Aim"].map(n => item(n, "action"));
+  const flags = {}, feats = ["Killer's Focus", "Vanish", "Hallowed Stance"].map(n => item(n, "feature")), acts = ["Pinning Shot", "Twin Shot", "Deathmark", "Aim"].map(n => item(n, "action"));   // pack R-classes (v0.0.235): Vanish is a Passive, Elusive is gone, the Apex needs Escalation 3
   return { name: "Lana", uuid: "Actor.Lana", type: "character", isOwner: true, statuses: new Set(), effects: [], items: [...feats, ...acts],
     itemTypes: { feature: feats, action: acts, talent: [], class: [] }, system: { escalation: esc },
     getFlag: (s, k) => flags[k], setFlag: async (s, k, v) => { flags[k] = JSON.parse(JSON.stringify(v)); } };
@@ -22,7 +22,7 @@ function archer(esc) {
 const show = m => m.rungs.map(r => `${r.n}${r.lit ? "*" : ""}: ${[...r.passives.map(p => `${p.name}[${p.tag || "grey"}]`), ...r.actives.map(a => `${a.name}{${a.useOff ? "off" : "use"} ${a.freqText}}`)].join(", ")}`).join(" | ");
 const row = i => ({ id: i.id, name: i.name, freq: i.system.frequency, freqText: { round: "Round", turn: "Turn" }[i.system.frequency] ?? "" });
 const opts = (used = []) => ({ actionRow: row, isFaded: (a, i) => (used.includes(i.name) ? { faded: true, why: "Used: available again at the start of your next turn" } : { faded: false, why: "" }) });
-console.log("thresholds:", ["Killer's Focus", "Elusive", "Hallowed Stance", "Radiant Zeal", "Mending Light"].map(n => `${n} ${X.passiveThreshold(item(n, "feature"))}`).join(", "));
+console.log("thresholds:", ["Killer's Focus", "Vanish", "Hallowed Stance", "Radiant Zeal", "Mending Light"].map(n => `${n} ${X.passiveThreshold(item(n, "feature"))}`).join(", "));
 console.log("out of combat, Escalation 0 (collapsed):", show(X.escalationModel(archer(0), opts())), "| open:", X.escalationModel(archer(0), opts()).open, "| shown:", X.escalationModel(archer(0), opts()).show);
 const a3 = archer(3);
 game.combat = { started: true, round: 3, turn: 1, turns: [{ actor: {} }, { actor: a3 }] };
@@ -34,9 +34,9 @@ a3.effects = [];
 console.log("then used, Pinning Shot used this round:", show(X.escalationModel(a3, opts(["Pinning Shot"]))));
 a3.system.escalation = 1;
 console.log("Escalation spent to 1:", show(X.escalationModel(a3, opts())));
-const elu = a3.items.find(i => i.name === "Elusive"), key = `passive-${elu.id}-1~m0`;
+const elu = a3.items.find(i => i.name === "Vanish"), key = `passive-${elu.id}-1~m0`;
 await a3.setFlag(F, "fxOnce", { [key]: [3, 1] });
-console.log("Elusive's Bane used this round:", X.passiveState(a3, elu, 1), "| next round after its turn:", (game.combat.round = 4, game.combat.turn = 1, X.passiveState(a3, elu, 1)));
+console.log("Vanish used this round:", X.passiveState(a3, elu, 1), "| next round after its turn:", (game.combat.round = 4, game.combat.turn = 1, X.passiveState(a3, elu, 1)));
 game.combat = null;
 console.log("--- Granted ticket badges");
 const fx = name => { const d = doc(name, "effect"); const fl = { bonuses: (d.system.settings ?? []).filter(x => x.type === "bonusdamage").map(x => ({ dmg: x.dmg, dmgPool: x.dmgPool, dmgSub: x.dmgSub, tiers: x.tiers ?? [], text: x.text ?? "" })) }; return { getFlag: (s, k) => fl[k] }; };

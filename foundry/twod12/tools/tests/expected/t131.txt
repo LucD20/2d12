@@ -5,18 +5,19 @@ old cards' folder: true | current cards in it: none
   Double Shot: round | shot,strike | -
   Rolling Shot: round | ranged,shot,strike,weapon | -
   Marksman's Shot: encounter | ranged,shot,strike,weapon | AD
-  Pinning Shot: round | ranged,shot,strike,weapon | - | 2 Esc.
+  Pinning Shot: encounter | ranged,shot,strike,weapon | -
   Lock & Loose: round | ranged,shot,strike,weapon | AD
   Double Shot -> 2AP: You make two [Ranged, Shot] Weapon Attacks (1A), each against a different creature. [1 effect] || 3AP: @Move[evade|distance:1], then as 2 AP. [1 effect]
   Rolling Shot -> 1AP: @Move[evade|distance:1], then make a [Ranged, Shot] Weapon Attack (1A). @Use[Weapon Attack|label:[Ranged, Shot] Weapon A || 2AP: @Move[evade|distance:2], then make a [Ranged, Shot] Weapon Attack (1A) that deals an extra [V] 1d6 Pi. @Use[Weapon Attac [1 effect] || 3AP: @Move[evade|distance:3], then make a [Ranged, Shot] Weapon Attack (1A) that deals an extra [V] 2d6 Pi. @Use[Weapon Attac [1 effect]
-  Marksman's Shot -> 2AP: 1[W]+1d8 Pi / 1[W]+3d6 Pi / 1[W]+4d6 Pi "Vulnerable 2 (EoT)."
+  Marksman's Shot -> 2AP: 1[W]+1d8 Pi / 1[W]+2d6 Pi / 1[W]+3d6 Pi "Vulnerable 2 (EoT)."
 Rolling Shot 3 AP's extra: bonusdamage 2d6 B Pi t2,t3 | ends after: strike
 Sharpshooter: Choose your Hallmark Action: Double Shot or Rolling Shot. Choose one Projectile weapon, such as a bow or a crossbow: you start with 3 Mastery with it. Your [Shot] Actions don't take the Bane for targeting a creature Engaged with a creature other than you. | no Actions: true
 Marked Quarry: At the start of each encounter, choose one enemy as your Marked Quarry. You gain 1 Boon on [Shot, Strike] Actions against them, and those Actions deal [V] [Mod] on a Tier 1. When they die or go Down, you can choose a new Marked Quarry (0R [Focus]). Once per turn, you can change your Marked Quarry during an encounter by spending 1 AP [Focus].
-Elusive: Archer Escalation | While your Escalation is 1 or more, the first [Strike] Action against you each round takes 1 Bane.
-Level 1: Attribute increases (attr) | Core Features (items granted): Sharpshooter, Marked Quarry | Hallmark Action (items): Double Shot, Rolling Shot | Talent (talent) | Passive Escalation Pick (items): Killer's Focus, Elusive, Harrying Shots | Active Escalation Pick (items): Pinning Shot, Twin Shot, Vanish
-Level 2: Talent (talent) | Encounter Pick (repertoire encounter)
-Level 3: Daily Pick (repertoire daily) | Passive Escalation Pick (items): Killer's Focus, Elusive, Harrying Shots
-Repertoire: Marksman's Shot, Volley, Covering Fire, Hunter's Focus, Deadeye, Rain of Arrows | Escalation: Killer's Focus, Elusive, Harrying Shots / Pinning Shot, Twin Shot, Vanish
+Harrying Shots: Archer Escalation | While your Escalation is 1 or more, the first time each round you deal damage to your Marked Quarry with a [Shot] Action, they take 1 Bane on [Strike] Actions until the end of their next turn. (Apply the Harried effect from the compendium.)
+Level 1: Attribute increases (attr) | Features (items granted): Sharpshooter, Marked Quarry, Thrill of the Kill | Hallmark Action (items): Double Shot, Rolling Shot | Hallmark Reaction (items): Overwatch, Ready Shot | Encounter Pick (repertoire encounter) | Escalation 1 Passive (items): Killer's Focus, Vanish, Harrying Shots | Escalation 2 Passive (items): Hunter's Edge, Sure Step | Escalation 3 Passive (items): Finisher, Pinned Down | Apex (items): Deathmark, Open Season | Talent (talent)
+Level 2: Talent (talent)
+Level 3: Daily Pick (repertoire daily) | Talent (talent)
+Level 4: Talent (talent)
+Repertoire: Marksman's Shot, Volley, Covering Fire, Pinning Shot, Twin Shot, Hunter's Focus, Deadeye, Rain of Arrows | Escalation: Killer's Focus, Vanish, Harrying Shots, Hunter's Edge, Sure Step, Finisher, Pinned Down / Deathmark, Open Season
 Shot needs a Projectile weapon: true | a Weapon Action with one is a Shot: true | old ranged weapons get Projectile once: true
 Mastery tab: no Techniques option (v0.0.213) true | Bow Mastery choice (Sharpshooter gives it) true | tab for every character true

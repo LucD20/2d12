@@ -17,7 +17,7 @@ for (const k of ["advance", "safeMovement", "crawl", "stand", "charge", "relocat
   console.log(`${BASIC_ACTIONS[k].name}:`, vs.map(v => JSON.stringify(A.pureMove(it, v, k))).join(" | "));
 }
 const card = n => C.docs.find(d => d.type === "action" && d.name === n);
-for (const n of ["Vanish", "Rolling Shot", "Double Shot"]) { const d = card(n); console.log(`${n}:`, d.system.versions.map(v => JSON.stringify(A.pureMove({ traits: traits(d.system.traits) }, v))).join(" | ")); }
+for (const n of ["Rolling Shot", "Double Shot"]) { const d = card(n); console.log(`${n}:`, d.system.versions.map(v => JSON.stringify(A.pureMove({ traits: traits(d.system.traits) }, v))).join(" | ")); }
 const src = f => fs.readFileSync(ROOT + f, "utf8"), act = src("module/actions.mjs"), mv = src("module/move.mjs");
 console.log("wired: no card when the banner takes it", act.includes("if (!bannerMove) await ChatMessage.create({"), "| the movement tag (v0.0.197)", mv.includes("if (cfg.banner && kind !== \"charge\") { showRange(c, n); moveBanner(c, kind, n, cfg.banner, { ap: cfg.bannerAp ?? 0 }); return true; }"),
   "| one Turn Log line when it ends (v0.0.200)", mv.includes('await logEvent(c, makeLine("move", name, after + ap, after,'), "| End, Advance instead (on the strip, v0.0.198)", src("module/carousel.mjs").includes('btn("endmove"') && src("module/carousel.mjs").includes('data-tc="evadeadv"'), "| closes on a turn change", mv.includes('on("combatTurnChange", () => finish(false));'));

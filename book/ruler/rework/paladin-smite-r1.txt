@@ -1,7 +1,7 @@
-# Pack R prep (2026-11-04): the P1 Smite Paladin with 4 AP turns (+1 Reaction AP: rework.mjs sets RULES.ap 4, reactionAp 1).
-# The same build as classes/paladin-smite-1.txt (Divine Power, Font of Mercy, Smite, Holy Wrath, Divine Surge, Hallowed Stance),
-# its turns cut to 4 AP, the book's Health factor (Level + 17) / 16, and a Reaction for the Reaction AP (Opportunity Attack: the basic
-# Reaction for everyone; rework.mjs swaps it for Shield of Faith as a 1R block to price the Hallmark Reaction).
+# Pack R-classes (2026-11-04): the Smite Paladin rebuilt for pack R (book/cards/paladin.json; 4 AP + 1 Reaction AP: rclasses.mjs sets RULES.ap 4, reactionAp 1).
+# Level 1: Divine Power, Kindled Wrath (the hook: rclasses.mjs sets escHook ally); the Hallmark Action Smite; the Hallmark Reaction Shield of Faith
+# (the alternative, Bulwark of Faith: rclasses.mjs swaps the reaction line); the Encounter Pick Holy Wrath; the Passives Radiant Zeal (1),
+# Searing Blows (2), Reckoning (3); the Apex Final Verdict. The Health line (Human, high on Vigor: 23 / 12) is set by rclasses.mjs.
 class Paladin (Smite)
 role tank / support
 level 1
@@ -15,18 +15,20 @@ rally 6
 targeted 1.5
 weapon Greatsword (melee, two-handed): 0 / 1d8 / 2d6
 speed 5
-reaction Opportunity Attack: opportunity
+reaction Shield of Faith: block 2d6+[Mod]
 
-passive Font of Mercy
-passive Hallowed Stance
+passive Radiant Zeal
+passive Searing Blows
+passive Reckoning
 
-turn Main: Divine Surge, Smite 2, Weapon Attack, Weapon Attack
-turn Smite 3 and one attack: Divine Surge, Smite 3, Weapon Attack
-turn Main without Escalation: Smite 2, Weapon Attack, Weapon Attack
-turn Nova: Divine Surge, Holy Wrath 3, Weapon Attack
-turn Nova with Smite: Divine Surge, Holy Wrath 2, Smite 2
+turn Main: Smite 2, Weapon Attack, Weapon Attack
+turn Smite 3 and one attack: Smite 3, Weapon Attack
+turn Nova: Holy Wrath 3, Weapon Attack
+turn Nova with Smite: Holy Wrath 2, Smite 2
+turn Apex: Final Verdict, Smite 2
 turn Two attacks: Weapon Attack, Weapon Attack
-turn Steel: Steel Yourself 2, Divine Surge, Smite 2
+turn Steel: Steel Yourself 2, Smite 2
 
 plan Nova, Main
+when escalation 3: Apex
 when self below 35%: Steel

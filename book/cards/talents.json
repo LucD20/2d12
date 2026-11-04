@@ -526,6 +526,46 @@
    }
   },
   {
+   "name": "Hand of Mercy",
+   "category": "Magic Talent",
+   "level": 1,
+   "_note": "Pack R-classes (2026-11-04): was a Paladin Escalation Active (decision sheet item 15: utility, not the combat ladder); now a Magic Talent for any character with a [Divine] Action.",
+   "flavor": "A single touch undoes what the enemy worked for.",
+   "traits": [
+    "divine",
+    "focus"
+   ],
+   "frequency": "Round",
+   "target": "One ally",
+   "distance": "5 sq.",
+   "prerequisites": "A [Divine] Action.",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "Choose one: the ally ends one effect on them that is EoT or has 1 round left; or, if the ally is Down, they can use 1 Rally Point.",
+     "ruler": "remove-effect 1"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/regen.svg",
+    "folder": "Talents",
+    "automation": "bronze",
+    "automationNote": "ending the effect (the Rally Point button works)."
+   },
+   "talent": {
+    "group": "magic",
+    "theme": "Divine",
+    "prereqs": [
+     {
+      "kind": "trait",
+      "name": "divine",
+      "value": 0
+     }
+    ],
+    "description": "You gain the Hand of Mercy Action."
+   }
+  },
+  {
    "name": "Class Expertise",
    "category": "Combat Talent",
    "level": 5,

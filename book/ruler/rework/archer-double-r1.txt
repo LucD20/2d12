@@ -1,6 +1,7 @@
-# Pack R prep (2026-11-04): the A1 Double Shot Archer with 4 AP turns (+1 Reaction AP; rework.mjs sets RULES). The same build as
-# classes/archer-double-1.txt; the Reaction is Quick Draw (the catalogue's: a Weapon Attack when an enemy within 5 squares moves closer),
-# a stand-in for the Archer's Hallmark Reaction, which pack R-classes designs.
+# Pack R-classes (2026-11-04): the Double Shot Archer rebuilt for pack R (book/cards/archer.json; 4 AP + 1 Reaction AP: rclasses.mjs sets RULES.ap 4, reactionAp 1).
+# Level 1: Sharpshooter, Marked Quarry, Thrill of the Kill (the hook: rclasses.mjs sets escHook quarry); the Hallmark Action Double Shot; the Hallmark
+# Reaction Overwatch (the alternative, Call the Shot: rclasses.mjs swaps the line); the Encounter Pick Pinning Shot; the Passives Killer's Focus (1),
+# Hunter's Edge (2), Finisher (3); the Apex Deathmark. Lock & Loose is the Crossbow's Technique (gear.json). The Health line (19 / 10) is set by rclasses.mjs.
 class Archer (Double Shot)
 role ranged damage
 level 1
@@ -14,18 +15,25 @@ rally 5
 targeted 0.75
 weapon Crossbow (ranged, projectile, reload, two-handed, range 10/20/40): 0 / 1d4+2 / 1d10+2
 speed 6
-reaction Quick Draw: quick-draw
+reaction Overwatch: overwatch
 
 passive Sharpshooter
 passive Marked Quarry
 passive Marked Quarry floor: floor [Mod] shot strike quarry
 passive Killer's Focus
+passive Hunter's Edge
+passive Finisher
 
 turn Main: Double Shot 2, Lock & Loose, Weapon Attack
+turn Big: Double Shot 3, Lock & Loose, Weapon Attack
 turn Main with the step: Double Shot 3, Lock & Loose
 turn Pin: Double Shot 2, Lock & Loose, Pinning Shot (else Weapon Attack)
+turn Apex: Deathmark, Double Shot 2
 turn Kite: Double Shot 3, Lock & Loose
 turn Steel: Steel Yourself 2, Double Shot 2
+
 plan Pin
+when escalation 3: Apex
 when self below 35%: Steel
 when engaged: Kite
+when ready: Big

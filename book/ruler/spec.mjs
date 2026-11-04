@@ -145,18 +145,18 @@ const poolOf = (dmg, rest) => (/\bmind\b/.test(rest) ? { ...dmg, mind: { w: dmg.
 function parseEffect(text) {
   const t = text.trim(), w = t.split(/\s+/), what = w[0].toLowerCase(), n = Number(w[1]);
   const rest = w.slice(2).join(" ");
-  const filter = s => { const at = s.match(/@([^,;]+)/), ws = words(s.replace(/@[^,;]+/, "")); return { name: at ? at[1].trim().toLowerCase() : "", quarry: ws.includes("quarry"), traits: ws.filter(x => !["next", "turn", "first", "first-hit", "quarry", "on"].includes(x)) }; };   // first: the first matching Action each round; first-hit: the first that deals damage (Radiant Zeal)
+  const filter = s => { const at = s.match(/@([^,;]+)/), ws = words(s.replace(/@[^,;]+/, "")); return { name: at ? at[1].trim().toLowerCase() : "", quarry: ws.includes("quarry"), traits: ws.filter(x => !["next", "turn", "first", "first-hit", "each", "bloodied", "quarry", "on"].includes(x)) }; };   // first: the first matching Action each round; first-hit: the first that deals damage (Radiant Zeal)
   if (what === "boon" || what === "bane" || what === "empowered") return { kind: what, n, scope: /\bturn\b/.test(rest) ? "turn" : /\bencounter\b/.test(rest) ? "encounter" : "next", ...filter(rest.replace(/\bencounter\b/, "")) };   // encounter: until the fight ends (Hunter's Focus)
   if (what === "favored") return { kind: "favored", scope: "next", ...filter(w.slice(1).join(" ")) };
-  if (what === "extra") return { kind: "extra", dmg: poolOf(parseDamage(w[1]), rest), scope: /\bfirst-hit\b/.test(rest) ? "first-hit" : /\bfirst\b/.test(rest) ? "first" : "next", anyTier: /\bany-tier\b/.test(rest), ...filter(rest.replace(/\bany-tier\b/, "").replace(/\bmind\b/, "")) };   // any-tier: a single-value Buff, which applies on Tier 1 too (the book, Buffs); "mind": Mind damage (Holy), else Body
+  if (what === "extra") return { kind: "extra", dmg: poolOf(parseDamage(w[1]), rest), scope: /\bfirst-hit\b/.test(rest) ? "first-hit" : /\bfirst\b/.test(rest) ? "first" : /\beach\b/.test(rest) ? "each" : "next", anyTier: /\bany-tier\b/.test(rest), bloodied: /\bbloodied\b/.test(rest), ...filter(rest.replace(/\bany-tier\b/, "").replace(/\bmind\b/, "")) };   // any-tier: a single-value Buff, which applies on Tier 1 too (the book, Buffs); "mind": Mind damage (Holy), else Body
   if (what === "heal") return { kind: "heal", n, who: /\bself\b/.test(rest) ? "self" : "ally" };
   if (what === "debuff") return { kind: "debuff", name: w.slice(1).join(" ") };   // counted for the day's report (Prone, Hindered...); no effect in the fight
   if (what === "defense") return { kind: "defense", n, who: /allies/.test(rest) ? "allies" : /self/.test(rest) ? "self" : "ally" };
   if (what === "taunt") return { kind: "taunt", n };
-  if (what === "vulnerable") return { kind: "vulnerable", n };
+  if (what === "vulnerable") return { kind: "vulnerable", n, keep: /\bround\b/.test(rest) };   // round (pack R-classes): until the giver's next turn, not EoT (Open Season)
   if (what === "area") return { kind: "area", n };
   if (what === "reload") return { kind: "reload" };
-  if (what === "reduce") return { kind: "reduce", n, adjacent: Number(rest.match(/adjacent\s+(\d+)/)?.[1] ?? 0) };   // a passive: Body damage you (and N adjacent allies) take is reduced by n (each NPC Strike)
+  if (what === "reduce") return { kind: "reduce", n, adjacent: Number(rest.match(/adjacent\s+(\d+)/)?.[1] ?? 0), always: /\balways\b/.test(rest) };   // always (pack R-classes): no "haven't left your square" clause   // a passive: Body damage you (and N adjacent allies) take is reduced by n (each NPC Strike)
   if (what === "mend") return { kind: "mend", dmg: parseDamage(w[1]), who: /\bself\b/.test(rest) ? "self" : /\bany\b/.test(rest) ? "any" : "ally" };   // new Health (not a Rally Point): ally = the most hurt ally, any = you or an ally
   if (what === "guard") return { kind: "guard", dmg: parseDamage(w[1]), who: /\bself\b/.test(rest) ? "self" : /\bany\b/.test(rest) ? "any" : "ally" };   // Guard (proposed): a buffer that takes damage first and ends with the encounter; the highest one counts
   if (what === "surge") return { kind: "surge", dmg: poolOf(parseDamage(w[1]), rest) };   // the next ally (not you) who deals damage to the target before your next turn deals this extra ("mind": Mind damage)
@@ -189,7 +189,8 @@ export function parseSpec(text, file = "spec") {
   const b = { file, name: "", role: "", level: 1, attributes: {}, weaponMod: 2, powerMod: 2, health: null, armor: 0, wdBonus: 0, rally: 0, targeted: 1,
     weapon: null, actions: {}, passives: [], turns: {}, plan: [], when: [], speed: 5, reactions: [], dmgScale: 1, keepBest: null, overcastFloor: 0, healthFactor: null };
   const pmod = (text.match(/^power-mod\s+(\d+)/m) ?? [])[1] ?? "2";
-  const lines = [...cardLinesFor().map(l => [l.replace(/\[PMod([+-]\d+)?\]/g, (m, n) => String(Number(pmod) + Number(n ?? 0))), "book/cards"]), ...text.split(/\r?\n/).map(l => [l, file])];   // [PMod], [PMod+2]: the build's power-mod
+  const pm = l => l.replace(/\[PMod(?:x(\d+))?([+-]\d+)?\]/g, (m, k, n) => String(Number(pmod) * Number(k ?? 1) + Number(n ?? 0)));   // [PMod+2], [PModx2], [PModx2+1]: the build's power-mod   // [PMod], [PMod+2]: the build's power-mod (card lines, and a file's own lines since pack R-classes)
+  const lines = [...cardLinesFor().map(l => [pm(l), "book/cards"]), ...text.split(/\r?\n/).map(l => [pm(l), file])];
   lines.forEach(([rawLine, where], i) => {
     const line = clean(rawLine);
     if (!line) return;
@@ -222,9 +223,9 @@ export function parseSpec(text, file = "spec") {
       else if (key === "overcast-floor") b.overcastFloor = Number(rest);   // once a fight, an Action that costs up to N Escalation costs N less (the round-1 floor)
       else if (key === "health-factor") b.healthFactor = Number(rest);   // the level factor of Health (the book: (level + 10) / 10)
       else if (key === "reaction") {   // reaction Opportunity Attack: opportunity  ·  reaction Quick Draw: quick-draw  (the map model uses them)
-        const m = rest.match(/^(.+?):\s*(opportunity|quick-draw|overwatch|block\s+\S+(?:\s+spill)?)(?:\s+with\s+(.+))?$/i); if (!m) fail("write reaction like: Opportunity Attack: opportunity (or quick-draw; or block 1d8+[Mod]: a Reaction that takes that much off one NPC hit on you or an ally within 5 squares)");
+        const m = rest.match(/^(.+?):\s*(opportunity|quick-draw|overwatch|callshot|ready|block\s+\S+(?:\s+(?:spill|round|ally))*)(?:\s+with\s+(.+))?$/i); if (!m) fail("write reaction like: Opportunity Attack: opportunity (or quick-draw; or block 1d8+[Mod]: a Reaction that takes that much off one NPC hit on you or an ally within 5 squares)");
         const kind = m[2].toLowerCase().split(/\s+/)[0];
-        b.reactions.push({ name: m[1].trim(), kind, action: (m[3] ?? "Weapon Attack").trim(), ...(kind === "block" ? { dmg: parseDamage(m[2].split(/\s+/)[1]), spill: /\sspill$/i.test(m[2]) } : {}) });   // spill: what the hit doesn't use becomes Guard on the target
+        b.reactions.push({ name: m[1].trim(), kind, action: (m[3] ?? "Weapon Attack").trim(), ...(kind === "block" ? { dmg: parseDamage(m[2].split(/\s+/)[1]), spill: /\sspill\b/i.test(m[2]), round: /\sround\b/i.test(m[2]), ally: /\sally\b/i.test(m[2]) } : {}) });   // spill: what the hit doesn't use becomes Guard on the target
       }
       else if (key === "action") {
         const f = rest.split("|").map(s => s.trim());
@@ -253,7 +254,7 @@ export function parseSpec(text, file = "spec") {
         b.actions[a.name.toLowerCase()] = a;
       } else if (key === "passive") {
         let full = rest;
-        if (!rest.includes(":")) { const cp = cardPassive(rest.trim()); if (!cp) fail(`"${rest.trim()}" is not a card with a ruler passive (book/cards); write the passive in full`); full = `${rest.trim()}: ${cp.replace(/\[PMod([+-]\d+)?\]/g, (m, n) => String(Number(pmod) + Number(n ?? 0)))}`; }   // pack CS: the card's line
+        if (!rest.includes(":")) { const cp = cardPassive(rest.trim()); if (!cp) fail(`"${rest.trim()}" is not a card with a ruler passive (book/cards); write the passive in full`); full = `${rest.trim()}: ${pm(cp)}`; }   // pack CS: the card's line
         const m = full.match(/^(.+?):\s*(?:escalation\s+(\d)\s*:\s*)?(.+)$/i); if (!m) fail("write passive like: Marked Quarry: boon 1 shot strike");
         b.passives = b.passives.filter(x => x.name.toLowerCase() !== m[1].trim().toLowerCase());   // a file's passive line replaces the card's (pack CS)
         b.passives.push({ name: m[1].trim(), escalation: Number(m[2] ?? 0), effect: parseEffect(m[3]) });
@@ -262,12 +263,14 @@ export function parseSpec(text, file = "spec") {
         b.turns[m[1].trim().toLowerCase()] = { name: m[1].trim(), steps: m[2].split(",").map(s => s.trim()).filter(Boolean) };
       } else if (key === "plan") b.plan = rest.replace(/^:\s*/, "").split(",").map(s => s.trim().toLowerCase()).filter(Boolean);   // "A | B": A while its Encounter and Daily Actions are unused, else B
       else if (key === "when") {
-        const m = rest.match(/^ally below (\d+)%\s*:\s*(.+)$/i), u = rest.match(/^unloaded\s*:\s*(.+)$/i), me = rest.match(/^self below (\d+)%\s*:\s*(.+)$/i), en = rest.match(/^engaged\s*:\s*(.+)$/i);
+        const m = rest.match(/^ally below (\d+)%\s*:\s*(.+)$/i), u = rest.match(/^unloaded\s*:\s*(.+)$/i), me = rest.match(/^self below (\d+)%\s*:\s*(.+)$/i), en = rest.match(/^engaged\s*:\s*(.+)$/i), es = rest.match(/^escalation (\d)\s*:\s*(.+)$/i), rd = rest.match(/^ready\s*:\s*(.+)$/i);
         if (m) b.when.push({ below: Number(m[1]) / 100, turn: m[2].trim().toLowerCase() });
+        else if (es) b.whenEsc = { esc: Number(es[1]), turn: es[2].trim().toLowerCase() };
+        else if (rd) b.whenReady = rd[1].trim().toLowerCase();   // pack R-classes: the turn it takes with the AP its "ready" Reaction gave it (Ready Shot: a 5 AP turn)   // pack R-classes: the turn it takes at that Escalation or more (the Apex turn), while its Encounter Actions are unused
         else if (me) b.whenSelf = { below: Number(me[1]) / 100, turn: me[2].trim().toLowerCase() };
         else if (u) b.unloadedTurn = u[1].trim().toLowerCase();
         else if (en) b.whenEngaged = en[1].trim().toLowerCase();   // the map model: the turn it takes when it starts its turn Engaged
-        else fail("write when like: when ally below 50%: Heal, when self below 30%: Steel, or when unloaded: Reload turn");
+        else fail("write when like: when ally below 50%: Heal, when self below 30%: Steel, when escalation 3: Apex, or when unloaded: Reload turn");
       }
       else fail(`unknown line "${head}"`);
     } catch (e) { if (/line \d+:/.test(e.message)) throw e; fail(e.message); }
@@ -291,7 +294,7 @@ export function parseSpec(text, file = "spec") {
   for (const [k, a] of Object.entries(b.actions)) if (a.fromCard && !named.has(k) && !groups.has(grp(k))) delete b.actions[k];
   // Every turn and plan entry must name things that exist.
   for (const t of Object.values(b.turns)) for (const s of t.steps) { const st = stepOf(s); if (st.kind === "action" && (!b.actions[st.name] || (st.alt && !b.actions[st.alt]))) throw new Error(`${file}: turn "${t.name}" uses "${s}", which is not an action of the file`); }
-  for (const p of [...b.plan.flatMap(x => x.split("|").map(y => y.trim())), ...b.when.map(w => w.turn), ...(b.unloadedTurn ? [b.unloadedTurn] : []), ...(b.whenSelf ? [b.whenSelf.turn] : []), ...(b.whenEngaged ? [b.whenEngaged] : [])]) if (!b.turns[p]) throw new Error(`${file}: the plan names "${p}", which is not a turn of the file`);
+  for (const p of [...b.plan.flatMap(x => x.split("|").map(y => y.trim())), ...b.when.map(w => w.turn), ...(b.unloadedTurn ? [b.unloadedTurn] : []), ...(b.whenSelf ? [b.whenSelf.turn] : []), ...(b.whenEsc ? [b.whenEsc.turn] : []), ...(b.whenReady ? [b.whenReady] : []), ...(b.whenEngaged ? [b.whenEngaged] : [])]) if (!b.turns[p]) throw new Error(`${file}: the plan names "${p}", which is not a turn of the file`);
   for (const a of Object.values(b.actions)) for (const d of [...a.does, ...a.then]) if (!b.actions[d.toLowerCase()]) throw new Error(`${file}: "${a.name}" does "${d}", which is not an action of the file`);
   return b;
 }
@@ -365,7 +368,8 @@ function npcDamage(R, npc, tier) {
 }
 
 /* ------------------------------------------------------------------ one PC's turn */
-const matches = (eff, a, traits, target, pc) => (!eff.name || a.name.toLowerCase().startsWith(eff.name)) && (eff.traits ?? []).every(t => traits.includes(t)) && (!eff.quarry || (target && target === pc.quarry));
+const matches = (eff, a, traits, target, pc) => (!eff.name || a.name.toLowerCase().startsWith(eff.name)) && (eff.traits ?? []).every(t => traits.includes(t)) && (!eff.quarry || (target && target === pc.quarry))
+  && (!eff.bloodied || (target && (target.bloodiedRound != null || target.strainedRound != null)));   // pack R-classes: "bloodied" = only against a Bloodied or Strained target (Reckoning)
 const group = name => name.toLowerCase().replace(/\s+\d+$/, "");   // "Smite 2" and "Smite 3" share their Frequency
 const hasDamage = d => d.dice.length + d.w + d.flat + d.mod > 0;
 
@@ -385,7 +389,7 @@ export function runTurn(pc, turn, ctx) {
   const apply = (e, target, a = null) => {
     if (["boon", "bane", "empowered", "favored", "extra"].includes(e.kind)) (e.scope === "turn" ? st.turnFx : e.scope === "encounter" ? (pc.encFx ??= []) : st.next).push(e);
     else if (e.kind === "heal") ctx.heal?.(pc, e.n, e.who);
-    else if (e.kind === "mend") ctx.mend?.(pc, rollDamage(R, e.dmg, { mod: b.powerMod }).total, e.who);
+    else if (e.kind === "mend") { const n = Math.round(a?.allies ?? 1); if (n > 1 && ctx.mendMany) ctx.mendMany(pc, () => rollDamage(R, e.dmg, { mod: b.powerMod }).total, e.who, n); else ctx.mend?.(pc, rollDamage(R, e.dmg, { mod: b.powerMod }).total, e.who); }   // `allies N`: the N most hurt (pack R-classes: Hallowed Dawn)
     else if (e.kind === "guard") ctx.guard?.(pc, rollDamage(R, e.dmg, { mod: a && a.vs !== "none" && a.vs !== "wd" ? b.weaponMod : b.powerMod }).total, e.who);   // [Mod] is the Action's Modifier (Smite 3's Guard: the Weapon Modifier)
     else if (e.kind === "surge" && target) target.surge = { dmg: e.dmg, by: pc };
     else if (e.kind === "banes") ctx.zone?.(pc, e, a, target);
@@ -396,7 +400,7 @@ export function runTurn(pc, turn, ctx) {
     else if (e.kind === "defense") ctx.defend?.(pc, e.n, e.who, a);
     else if (e.kind === "evade") { /* moved before the roll */ }
     else if (e.kind === "taunt" && target) target.taunt = { by: pc, n: e.n };
-    else if (e.kind === "vulnerable" && target) { if (e.n >= (target.vulnerable ?? 0)) target.vulnBy = pc; target.vulnerable = Math.max(target.vulnerable ?? 0, e.n); if (pc.st) pc.st.debuffs[`Vulnerable ${e.n}`] = (pc.st.debuffs[`Vulnerable ${e.n}`] ?? 0) + 1; }
+    else if (e.kind === "vulnerable" && target) { if (e.n >= (target.vulnerable ?? 0)) target.vulnBy = pc; target.vulnerable = Math.max(target.vulnerable ?? 0, e.n); if (e.keep) target.vulnKeep = pc; if (pc.st) pc.st.debuffs[`Vulnerable ${e.n}`] = (pc.st.debuffs[`Vulnerable ${e.n}`] ?? 0) + 1; }
     else if (e.kind === "reload") pc.unloaded = false;
   };
   const doAction = (a, opts = {}, extraTraits = [], linked = false, forced = null) => {
@@ -425,6 +429,7 @@ export function runTurn(pc, turn, ctx) {
       if (p.effect.kind === "bonus") bonus += p.effect.n;
       if (p.effect.kind === "extra" && p.effect.scope === "first" && !pc.firstThisRound.has(p.name)) { extra.push(p.effect.dmg); pc.firstThisRound.add(p.name); }
       if (p.effect.kind === "extra" && p.effect.scope === "first-hit" && !pc.firstThisRound.has(p.name)) { extra.push(p.effect.dmg); firstHit.push(p.name); }   // used up only if this Action deals damage
+      if (p.effect.kind === "extra" && p.effect.scope === "each") extra.push(p.effect.dmg);   // pack R-classes: on every matching Action (Reckoning: "each ... bloodied")
       if (p.effect.kind === "floor") floors.push(p.effect.dmg);
     }
     for (const x of [...st.turnFx, ...(pc.encFx ?? [])]) if (matches(x, a, traits, target, pc)) { if (x.kind === "empowered") emp += x.n; if (x.kind === "boon") boons += x.n; }
@@ -471,6 +476,7 @@ export function runTurn(pc, turn, ctx) {
         for (const x of extra) { const v = rollDamage(R, x, { mod, empowered: emp }).total; total += v; mindT += v * mindShare(x, b.weapon, tier, mod); }
         total = (total + bonus) * b.dmgScale; mindT *= b.dmgScale;
         land(total, mindT); res.damage += total;
+        if (total > 0) ctx.onDamage?.(pc, t, total);   // pack R-classes: Reactions to an ally's damage (Call the Shot)
         if (t === target) for (const nm of firstHit) pc.firstThisRound.add(nm);
         if (t.surge && t.surge.by !== pc) {   // Divine Surge: an ally's extra damage, credited to the Paladin who gave it (not in anyone's own damage)
           const x = rollDamage(R, t.surge.dmg, { mod }).total; land(x, x * mindShare(t.surge.dmg, b.weapon, tier, mod)); if (t.surge.by.st) t.surge.by.st.surgeCredit += x; t.surge = null;
@@ -530,12 +536,12 @@ const median = a => { const s = [...a].sort((x, y) => x - y); return s.length ? 
 const mean = a => a.reduce((s, x) => s + x, 0) / (a.length || 1);
 
 /** Expected damage of a turn against one creature with this Defense (AD and WD the same): Monte Carlo, n runs. A turn that starts with a Reload starts unloaded. */
-export function turnDamage(build, turnName, defense, { n = 20000, seed = 7, escalation = 3 } = {}) {
+export function turnDamage(build, turnName, defense, { n = 20000, seed = 7, escalation = 3, bloodied = false } = {}) {   // bloodied (pack R-classes): the target counts as Bloodied (Reckoning)
   const R = rng(seed), turn = build.turns[turnName], first = build.actions[stepOf(turn.steps[0]).name];
   const startsUnloaded = !!first?.effects.some(e => e.effect.kind === "reload");
   let sum = 0, last = null;
   for (let k = 0; k < n; k++) {
-    const target = { ad: defense, wd: defense, save: { body: 2, mind: 1, instinct: 1, appeal: 1 } }, pc = { build, quarry: target, unloaded: startsUnloaded, esc: escalation };
+    const target = { ad: defense, wd: defense, save: { body: 2, mind: 1, instinct: 1, appeal: 1 }, bloodiedRound: bloodied ? 1 : null }, pc = { build, quarry: target, unloaded: startsUnloaded, esc: escalation };
     last = runTurn(pc, turn, { R, escalation, target: () => target, others: () => [] });
     sum += last.damage;
   }
@@ -546,7 +552,9 @@ export function turnDamage(build, turnName, defense, { n = 20000, seed = 7, esca
 export function turnFor(pc, round, allies = [], engagedNow = false) {
   const b = pc.build;
   if (pc.unloaded && b.unloadedTurn) return b.unloadedTurn;
+  if (b.whenEsc && (pc.esc ?? 0) >= b.whenEsc.esc) { const t = b.turns[b.whenEsc.turn]; if (t.steps.map(stepOf).filter(x => x.kind === "action").every(x => { const a = b.actions[x.name], g = group(a.name); return !(a.freq === "encounter" || a.freq === "daily") || !pc.spent?.has(g); })) return b.whenEsc.turn; }   // pack R-classes: the Apex turn comes first (before the Engaged and ready turns)
   if (engagedNow && b.whenEngaged) return b.whenEngaged;   // the map model: it starts its turn next to an enemy
+  if (b.whenReady && pc.readyAP) return b.whenReady;   // pack R-classes: the AP a "ready" Reaction gave it
   if (b.whenSelf && pc.rallyLeft > 0 && (pc.damage ?? 0) >= (1 - b.whenSelf.below) * b.pool) return b.whenSelf.turn;
   for (const w of b.when) if (allies.some(x => x !== pc && !x.down && x.damage >= (1 - w.below) * x.build.pool)) return w.turn;
   const entry = b.plan[Math.min(round - 1, b.plan.length - 1)];
@@ -564,8 +572,8 @@ const npcAvg = (f, tier) => (tier < 2 ? 0 : tier === 2 ? f.t2 : f.t3);
  */
 const npcStrike = (R, f, t, banes, escalation = 3, pcs = [], boons = 0, block = null) => {
   // Damage reduction: its own passive, or an adjacent ally's (Hallowed Stance: "you and your adjacent allies"; the sim makes N allies adjacent for the fight).
-  let reduce = t.stanceOff ? 0 : t.build.passives.filter(p => p.effect.kind === "reduce" && escalation >= p.escalation).reduce((s, p) => Math.max(s, p.effect.n), 0), reducer = null;   // "if you haven't left your square since your last turn"
-  for (const g of pcs) if (g !== t && !g.down && !g.stanceOff && g.adjacent?.includes(t)) for (const p of g.build.passives) if (p.effect.kind === "reduce" && p.effect.adjacent && (g.esc ?? 0) >= p.escalation && p.effect.n > reduce) { reduce = p.effect.n; reducer = g; }
+  let reduce = t.build.passives.filter(p => p.effect.kind === "reduce" && escalation >= p.escalation && (!t.stanceOff || p.effect.always)).reduce((s, p) => Math.max(s, p.effect.n), 0), reducer = null;   // "if you haven't left your square since your last turn"
+  for (const g of pcs) if (g !== t && !g.down && g.adjacent?.includes(t)) for (const p of g.build.passives) if (p.effect.kind === "reduce" && p.effect.adjacent && (!g.stanceOff || p.effect.always) && (g.esc ?? 0) >= p.escalation && p.effect.n > reduce) { reduce = p.effect.n; reducer = g; }
   const zb = f.zone && f.zone.left > 0 ? f.zone.n : 0;   // Consecrated Ground: Banes on its Strikes while it stands in the area
   const def = t.build.ad + (t.defBonus ?? 0) + (t.passiveDef ?? 0);
   const u = R(), tier = pickU(u, C.tierProbs(f.mod, def, boons, banes + zb, ""));
@@ -648,12 +656,15 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     if (el) { t.elusiveRound = round; t.st.elusive = (t.st.elusive ?? 0) + 1; }   // the first Strike against it this round
     // Pack R prep: a PC with a blocking Reaction and a Reaction AP (or AP kept) takes damage off the hit (itself or an ally within 5 squares; once per NPC turn each: the Turn Frequency).
     let block = null;
-    for (const p of up()) { const rx = (p.build.reactions ?? []).find(x => x.kind === "block"); if (!rx || (p.keptAP ?? 0) < 1 || p.blockedFor === f.turnId) continue; if (M && p !== t && MP.dist(p.pos, t.pos) > 5) continue; block = { dmg: rx.dmg, spill: rx.spill, by: p, used: () => { spendReact(p); p.blockedFor = f.turnId; p.st.reactions++; } }; break; }
+    for (const p of up()) { const rx = (p.build.reactions ?? []).find(x => x.kind === "block"); if (!rx || (p.keptAP ?? 0) < 1 || p.blockedFor === f.turnId) continue; if (M && p !== t && MP.dist(p.pos, t.pos) > 5) continue;
+      if (rx.ally && p === t) continue; if (rx.round && p.blockedRound === round) continue;   // pack R-classes: `ally` (never on itself: Bulwark of Faith), `round` (once a round: the Round Frequency)
+      block = { dmg: rx.dmg, spill: rx.spill, by: p, used: () => { spendReact(p); p.blockedFor = f.turnId; p.blockedRound = round; p.st.reactions++; } }; break; }
     const bb = RULES.bloodiedBanes && f.bloodiedRound != null ? 1 : 0;   // the book's Bloodied rule on the NPC's Strikes
     const taken = npcStrike(f.R ?? R, f, t, k + taunted + banes + el + bb, t.esc, pcs, boons, block);   // At-will Banes on the 2nd and 3rd Strike
     t.damage += taken;   // an NPC's Basic attack is Body damage (a weapon)
     // Pack R prep: an "overwatch" Reaction (a Trigger: an enemy within 10 squares makes a Strike; once per NPC turn), after the Strike.
     for (const p of up()) for (const rx of p.build.reactions ?? []) if (rx.kind === "overwatch" && p.keptAP >= 1 && p.owFor !== f.turnId && !f.dead && (!M || MP.dist(p.pos, f.pos) <= 10)) { p.owFor = f.turnId; spendReact(p); p.st.oaMade++; pcReact(p, f, rx.action); }
+    for (const p of up()) for (const rx of p.build.reactions ?? []) if (rx.kind === "ready" && p.keptAP >= 1 && p.readyRound !== round && (!M || MP.dist(p.pos, f.pos) <= 10)) { p.readyRound = round; spendReact(p); p.st.reactions++; p.readyAP = 1; }   // pack R-classes: Ready Shot (1R, Round): +1 AP on its next turn
     const wasB = !!t.bloodiedRound, wasD = t.down;
     if (t.damage >= t.build.bodyHealth && !t.bloodiedRound) t.bloodiedRound = round;
     if (t.damage >= t.build.pool && !t.down) { t.down = true; t.st.downs++; if (!firstDown) firstDown = round; }
@@ -672,6 +683,9 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     heal: (who, n, kind) => useRally(kind === "self" ? who : mostHurt(up().filter(x => x.damage >= 0.75 * x.build.rallyHeal && x.rallyLeft > 0)), n, who),   // an ally's Rally Point only when it heals at least 3/4 of its value
     defend: (who, n, kind, a) => { const near = [who, ...up().filter(x => x !== who).sort((x, y) => y.build.targeted - x.build.targeted)].slice(0, Math.round(a?.allies ?? 99));
       const list = kind === "allies" ? near : kind === "self" ? [who] : [mostHurt(up().filter(x => x !== who)) ?? who]; for (const t of list) if (n >= t.defBonus) { t.defBonus = n; t.defBy = who; } },
+    // Pack R-classes: "callshot" (Call the Shot, 1R Round, Trigger: an ally deals damage to your Marked Quarry: it is Vulnerable 1 until the end of your next turn; here until its own turn ends).
+    onDamage: (who, t, total) => { for (const p of up()) for (const rx of p.build.reactions ?? []) if (rx.kind === "callshot" && p !== who && p.keptAP >= 1 && p.quarry === t && !t.dead && p.calledRound !== round) { p.calledRound = round; spendReact(p); p.st.reactions++; if (1 >= (t.vulnerable ?? 0)) t.vulnBy = p; t.vulnerable = Math.max(t.vulnerable ?? 0, 1); t.vulnKeep = p; } },
+    mendMany: (who, roll, kind, n) => { for (const t of up().filter(x => x.damage > 0 && (kind === "any" || x !== who)).sort((x, y) => y.damage - x.damage).slice(0, n)) mendOne(t, roll(), who); },
     mend: (who, amount, kind) => mendOne(kind === "self" ? who : kind === "any" ? mostHurt(up().filter(x => x.damage > 0)) : mostHurt(up().filter(x => x !== who && x.damage > 0)), amount, who),
     guard: (who, amount, kind) => { const t = kind === "self" ? who : kind === "any" ? mostHurt(up()) : mostHurt(up().filter(x => x !== who)) ?? who; if (t && amount > (t.guard ?? 0)) { t.guard = amount; t.guardBy = who; } },
     zone: (who, e, a, target) => { for (const f of [target, ...alive().filter(x => x !== target)].filter(Boolean).slice(0, Math.round(a?.area ?? 1))) f.zone = { n: e.n, left: a?.rounds ?? 1, by: who }; },
@@ -846,17 +860,23 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
         pc.stanceOff = false;   // Hallowed Stance: a new turn; moving during it turns the Stance off until the next
         pc.st.rounds++; pc.st.escTurns[Math.min(3, pc.esc)]++; if (pc.damage >= pc.build.bodyHealth) pc.st.bloodiedTurns++;   // pack R prep: turns by Escalation level, turns while Bloodied
         for (const x of pcs) if (x.defBy === pc) { x.defBonus = 0; x.defBy = null; }   // a Defense bonus lasts 1 round: until its giver's next turn
-        for (const f of foes) { if (f.surge?.by === pc) f.surge = null; if (f.zone?.by === pc) f.zone.left--; }   // Divine Surge lasts until your next turn; an area counts its rounds down on its maker's turn
+        for (const f of foes) { if (f.surge?.by === pc) f.surge = null; if (f.zone?.by === pc) f.zone.left--; if (f.vulnKeep === pc) { f.vulnKeep = null; f.vulnerable = 0; } }   // Divine Surge lasts until your next turn; an area counts its rounds down on its maker's turn
         for (const x of pcs) if (x.zoneHeal?.by === pc) x.zoneHeal.left--;
         if (pc.zoneHeal?.left > 0 && pc.damage > 0) mendOne(pc, rollDamage(pc.R ?? R, pc.zoneHeal.dmg).total, pc.zoneHeal.by);   // healing at the start of its turn (Consecrated Ground)
         if (!pc.quarry || pc.quarry.dead) pc.quarry = focus();   // Marked Quarry: the first target; a new one when it dies
+        // Pack R-classes: start-of-turn Passives: `mend` heals the most hurt of you and your allies (Mending Light), `surge` marks the focus target (Divine Surge as a Passive).
+        for (const p of pc.build.passives.filter(x => pc.esc >= x.escalation)) {
+          if (p.effect.kind === "mend") { const t = p.effect.who === "self" ? pc : mostHurt(up().filter(x => (p.effect.who === "any" || x !== pc) && x.damage > 0)); if (t) mendOne(t, rollDamage(pc.R ?? R, p.effect.dmg, { mod: pc.build.powerMod }).total, pc); }
+          if (p.effect.kind === "surge") { const t = focus(); if (t) t.surge = { dmg: p.effect.dmg, by: pc }; }
+        }
         let extra = {};
         if (M) {
-          let limit = RULES.ap - (pc.cond.slowed || 0); pc.cond.slowed = 0;   // pack R: Slowed lowers the turn's AP, not the Reaction AP (the default to confirm)
+          let limit = RULES.ap - (pc.cond.slowed || 0) + (pc.readyAP ?? 0);   // pack R-classes: Ready Shot's AP (turnFor reads it, then it is spent)   // pack R: Slowed lowers the turn's AP, not the Reaction AP (the default to confirm)
           if (pc.cond.prone) { limit--; pc.cond.prone = false; }   // Stand (1 AP)
           const eng = MP.engaged(pc, W); if (eng) pc.st.turnsEngaged++;
           if (pc.leftSquare == null || pc.leftSquare < round - 1) pc.st.stillTurns++;   // it hasn't left its square since the start of its last turn (Patient Hunter)
           const turn = pc.build.turns[turnFor(pc, round, pcs, eng)];
+          pc.readyAP = 0;
           const ap = approach(pc, turn);
           extra = { apLimit: Math.max(0, limit - ap.ap), startNext: ap.startNext, turnKey: turn };
         }
@@ -880,7 +900,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
           const t = targets.find((p, k) => (x -= w[k]) < 0) ?? targets[0];
           npcHit(f, t, s);
         }
-        f.taunt = null; f.vulnerable = 0;   // EoT effects end with its turn
+        f.taunt = null; if (!f.vulnKeep) f.vulnerable = 0;   // EoT effects end with its turn (a kept Vulnerable ends at its giver's next turn: pack R-classes)
         if (f.zone && f.zone.left <= 0) f.zone = null;
       }
     }

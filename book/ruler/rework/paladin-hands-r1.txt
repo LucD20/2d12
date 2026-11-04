@@ -1,4 +1,6 @@
-# Pack R prep (2026-11-04): the P1 Lay On Hands Paladin with 4 AP turns (see paladin-smite-r1.txt).
+# Pack R-classes (2026-11-04): the Lay On Hands Paladin rebuilt for pack R (see paladin-smite-r1.txt).
+# Level 1: the Hallmark Action Lay On Hands; the Hallmark Reaction Bulwark of Faith (the alternative, Shield of Faith: rclasses.mjs swaps the line);
+# the Encounter Pick Holy Wrath; the Passives Font of Mercy (1), Mending Light (2), Hallowed Stance (3); the Apex Hallowed Dawn.
 class Paladin (Lay On Hands)
 role tank / support
 level 1
@@ -12,15 +14,17 @@ rally 6
 targeted 1.5
 weapon Greatsword (melee, two-handed): 0 / 1d8 / 2d6
 speed 5
-reaction Opportunity Attack: opportunity
+reaction Bulwark of Faith: block 9 spill round ally
 
 passive Font of Mercy
+passive Mending Light
 passive Hallowed Stance
 
-turn Main: Divine Surge, Lay On Hands 2, Weapon Attack, Weapon Attack
-turn Main without Escalation: Lay On Hands 2, Weapon Attack, Weapon Attack
-turn Heal 1 and three attacks: Divine Surge, Lay On Hands 1, Weapon Attack, Weapon Attack, Weapon Attack
-turn Nova: Divine Surge, Lay On Hands 2, Holy Wrath 2
+turn Main: Lay On Hands 2, Weapon Attack, Weapon Attack
+turn Heal 1 and three attacks: Lay On Hands 1, Weapon Attack, Weapon Attack, Weapon Attack
+turn Nova: Lay On Hands 2, Holy Wrath 2
+turn Apex: Hallowed Dawn, Weapon Attack
 turn Two attacks: Weapon Attack, Weapon Attack
 
 plan Nova, Main
+when escalation 3: Apex

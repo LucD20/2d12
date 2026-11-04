@@ -24,8 +24,7 @@ passive Marked Quarry floor: floor [Mod] shot strike quarry   # decided: your [S
 # Signature: Double Shot (damage; 3 AP adds the step away: Evade 1)
 
 # Escalation (level 1): Killer's Focus (passive) and Pinning Shot (active: spending it turns Killer's Focus off)
-passive Killer's Focus
-
+passive Killer's Focus: escalation 2: extra 1d6 first shot strike weapon   # the pre-R card
 # Encounter Pick (level 2): Marksman's Shot (reworked to the Nova band)
 
 turn Main: Double Shot 3, Lock & Loose, Weapon Attack
@@ -36,3 +35,11 @@ turn Steel: Steel Yourself 2, Double Shot 3
 plan Nova | Pin, Pin
 when self below 35%: Steel
 when engaged: Kite
+
+# Pack R-classes (2026-11-04): this file is the pre-R Archer (5 AP, spent Escalation). The cards below changed in book/cards/archer.json
+# (Killer's Focus is an Escalation 1 Passive with "that deals damage", Elusive is gone, Pinning Shot and Twin Shot are Encounter Picks, Vanish a
+# 0R Reaction, Marksman's Shot has the Encounter ceilings): their old lines are kept here so report.md doesn't move. The R builds are in rework/.
+action Marksman's Shot | ap 2 | encounter | traits ranged shot strike weapon | vs ad | tiers [V] 1[W] + 1d8 Pi / [V] 1[W] + [Mod] + 3d6 Pi / [V] 1[W] + [Mod] + 4d6 Pi | on 3: vulnerable 2
+action Pinning Shot | ap 1 | round | traits ranged shot strike weapon | escalation 2 | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod] | on 2+: debuff Immobilized (EoT)
+action Twin Shot | ap 1 | round | traits ranged shot strike weapon | escalation 3 | does Weapon Attack | each extra 1d6 | area 2
+action Vanish | ap 0 | round | traits self | escalation 1 | evade 2; defense 1 self

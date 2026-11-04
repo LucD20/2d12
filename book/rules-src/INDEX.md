@@ -14,11 +14,11 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 5.3 | 78 |
 | 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 22.5 | 179 |
 | 11-species.md | Species | species |  | 0.8 | 32 |
-| 12-paladin.md | Paladin | paladin |  | 3.4 | 103 |
-| 13-archer.md | Archer | archer |  | 3.2 | 100 |
+| 12-paladin.md | Paladin | paladin |  | 3.9 | 122 |
+| 13-archer.md | Archer | archer |  | 3.9 | 128 |
 | 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 15.4 | 281 |
 | 15-gear.md | Gear | gear |  | 10.1 | 182 |
-| 16-talents.md | Talents | talents |  | 2.2 | 66 |
+| 16-talents.md | Talents | talents |  | 2.2 | 68 |
 
 ## 01-roll.md: Chapter 1: The Roll
 
@@ -225,39 +225,41 @@ Glossary entries (line: term): 6: [Mod]; 7: [W]; 8: [V], [R], [C]; 9: [Trait]; 1
 
 ## 12-paladin.md: Paladin
 
-- 21: ## The Paladin by Level
-- 41: ## Level 1
-- 43:   ### Features
-- 51:   ### Hallmark Action Selection
-- 59:   ### Picks
-- 66: ## Paladin Repertoire
-- 68:   ### Encounter
-- 76:   ### Daily
-- 84: ## Paladin Escalation
-- 86:   ### Passives
-- 94:   ### Actives
+- 19: ## The Paladin by Level
+- 43: ## Level 1
+- 45:   ### Features
+- 53:   ### Hallmark Action Selection
+- 61:   ### Hallmark Reaction Selection
+- 69:   ### Picks
+- 75: ## Paladin Repertoire
+- 77:   ### Encounter
+- 85:   ### Daily
+- 93: ## Paladin Escalation
+- 97:   ### Escalation 1 Passives
+- 105:   ### Escalation 2 Passives
+- 111:   ### Escalation 3 Passives
+- 117:   ### Apex
 
-Action cards: Divine Power (47, Paladin Feature 1); Font of Mercy (49, Paladin Feature 1); Smite (55, Divine Power 1, Round); Lay On Hands (57, Divine Power 1, Round); Holy Wrath (70, Paladin Feature 1, Encounter); Word of Radiance (72, Paladin Feature 1, Encounter); Bulwark of Faith (74, Paladin Feature 1, Encounter); Consecrated Ground (78, Paladin Feature 1, Daily); Miraculous Recovery (80, Paladin Feature 1, Daily); Divine Intervention (82, Paladin Feature 1, Daily); Hallowed Stance (88, Paladin Escalation (Passive)); Radiant Zeal (90, Paladin Escalation (Passive)); Mending Light (92, Paladin Escalation (Passive)); Aura of Protection (96, Paladin Escalation, Encounter); Divine Surge (98, Paladin Escalation, Round); Shield of Faith (100, Paladin Escalation, Turn); Hand of Mercy (102, Paladin Escalation, Round)
-
-Open (to be decided) boxes: 18: "Pack R: the new core rules (4 AP + 1 Reaction AP, Escalation as a leve"
+Action cards: Divine Power (49, Paladin Feature 1); Kindled Wrath (51, Paladin Feature 1); Smite (57, Divine Power 1, Round); Lay On Hands (59, Divine Power 1, Round); Shield of Faith (65, Divine Power 1, Turn); Bulwark of Faith (67, Divine Power 1, Round); Holy Wrath (79, Paladin Feature 1, Encounter); Word of Radiance (81, Paladin Feature 1, Encounter); Aura of Protection (83, Paladin Feature 1, Encounter); Consecrated Ground (87, Paladin Feature 1, Daily); Miraculous Recovery (89, Paladin Feature 1, Daily); Divine Intervention (91, Paladin Feature 1, Daily); Radiant Zeal (99, Paladin Escalation (Passive)); Divine Surge (101, Paladin Escalation (Passive)); Font of Mercy (103, Paladin Escalation (Passive)); Searing Blows (107, Paladin Escalation (Passive)); Mending Light (109, Paladin Escalation (Passive)); Reckoning (113, Paladin Escalation (Passive)); Hallowed Stance (115, Paladin Escalation (Passive)); Final Verdict (119, Paladin Apex, Encounter); Hallowed Dawn (121, Paladin Apex, Encounter)
 
 ## 13-archer.md: Archer
 
-- 21: ## The Archer by Level
-- 41: ## Level 1
-- 43:   ### Features
-- 51:   ### Hallmark Action Selection
-- 59:   ### Picks
-- 65: ## Archer Repertoire
-- 67:   ### Encounter
-- 75:   ### Daily
-- 83: ## Archer Escalation
-- 85:   ### Passives
-- 93:   ### Actives
+- 19: ## The Archer by Level
+- 43: ## Level 1
+- 45:   ### Features
+- 55:   ### Hallmark Action Selection
+- 63:   ### Hallmark Reaction Selection
+- 71:   ### Picks
+- 77: ## Archer Repertoire
+- 79:   ### Encounter
+- 91:   ### Daily
+- 99: ## Archer Escalation
+- 103:   ### Escalation 1 Passives
+- 111:   ### Escalation 2 Passives
+- 117:   ### Escalation 3 Passives
+- 123:   ### Apex
 
-Action cards: Sharpshooter (47, Archer Feature 1); Marked Quarry (49, Archer Feature 1); Double Shot (55, Sharpshooter 1, Round); Rolling Shot (57, Sharpshooter 1, Round); Marksman's Shot (69, Archer Feature 1, Encounter); Volley (71, Archer Feature 1, Encounter); Covering Fire (73, Archer Feature 1, Encounter); Hunter's Focus (77, Archer Feature 1, Daily); Deadeye (79, Archer Feature 1, Daily); Rain of Arrows (81, Archer Feature 1, Daily); Killer's Focus (87, Archer Escalation (Passive)); Elusive (89, Archer Escalation (Passive)); Harrying Shots (91, Archer Escalation (Passive)); Pinning Shot (95, Archer Escalation, Round); Twin Shot (97, Archer Escalation, Round); Vanish (99, Archer Escalation, Round)
-
-Open (to be decided) boxes: 18: "Pack R: the new core rules (4 AP + 1 Reaction AP, Escalation as a leve"
+Action cards: Sharpshooter (49, Archer Feature 1); Marked Quarry (51, Archer Feature 1); Thrill of the Kill (53, Archer Feature 1); Double Shot (59, Sharpshooter 1, Round); Rolling Shot (61, Sharpshooter 1, Round); Overwatch (67, Sharpshooter 1, Turn); Ready Shot (69, Sharpshooter 1, Round); Marksman's Shot (81, Archer Feature 1, Encounter); Volley (83, Archer Feature 1, Encounter); Covering Fire (85, Archer Feature 1, Encounter); Pinning Shot (87, Archer Feature 1, Encounter); Twin Shot (89, Archer Feature 1, Encounter); Hunter's Focus (93, Archer Feature 1, Daily); Deadeye (95, Archer Feature 1, Daily); Rain of Arrows (97, Archer Feature 1, Daily); Killer's Focus (105, Archer Escalation (Passive)); Vanish (107, Archer Escalation (Passive)); Harrying Shots (109, Archer Escalation (Passive)); Hunter's Edge (113, Archer Escalation (Passive)); Sure Step (115, Archer Escalation (Passive)); Finisher (119, Archer Escalation (Passive)); Pinned Down (121, Archer Escalation (Passive)); Deathmark (125, Archer Apex, Encounter); Open Season (127, Archer Apex, Encounter)
 
 ## 14-bestiary.md: Bestiary: Building NPCs
 
@@ -319,8 +321,8 @@ Open (to be decided) boxes: 149: "How classes or Talents grant Mastery beyond th
 - 21: ## Combat Talents
 - 49: ## Mobility Talents
 - 55: ## Magic Talents
-- 63: ## Class Talents
+- 65: ## Class Talents
 
-Action cards: Challenge (25, Combat Talent 1); Heavy Blows (27, Combat Talent 1); Whirlwind (29, Combat Talent 1, Encounter); Bloodlust (31, Combat Talent 1, Encounter); Brawler (33, Combat Talent 1); Pummel (35, Brawler, At-will); Kickboxer (37, Combat Talent 1); Leg Sweep (39, Kickboxer, Round); Aim (41, Combat Talent 1, Round); Ricochet (43, Combat Talent 1); Long Draw (45, Combat Talent 1); Steady Nerves (47, Combat Talent 1); Battering Charge (51, Mobility Talent 1); Cut Through (53, Mobility Talent 1, Round); Lesser Blessing (57, Magic Talent 1); Rimebrand (Cold) (59, Lesser Blessing, Round); Sacred Weapon (61, Magic Talent 1, Round); Class Expertise (65, Combat Talent 5)
+Action cards: Challenge (25, Combat Talent 1); Heavy Blows (27, Combat Talent 1); Whirlwind (29, Combat Talent 1, Encounter); Bloodlust (31, Combat Talent 1, Encounter); Brawler (33, Combat Talent 1); Pummel (35, Brawler, At-will); Kickboxer (37, Combat Talent 1); Leg Sweep (39, Kickboxer, Round); Aim (41, Combat Talent 1, Round); Ricochet (43, Combat Talent 1); Long Draw (45, Combat Talent 1); Steady Nerves (47, Combat Talent 1); Battering Charge (51, Mobility Talent 1); Cut Through (53, Mobility Talent 1, Round); Lesser Blessing (57, Magic Talent 1); Rimebrand (Cold) (59, Lesser Blessing, Round); Sacred Weapon (61, Magic Talent 1, Round); Hand of Mercy (63, Magic Talent 1, Round); Class Expertise (67, Combat Talent 5)
 
 Open (to be decided) boxes: 14: "The Stage Talents (levels 5 and 8) and the Talents above level 1 are n"

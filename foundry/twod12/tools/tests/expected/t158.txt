@@ -5,7 +5,6 @@ Crawl: "advance|distance:1|label:Crawl 1" | "advance|distance:3|label:Crawl 3"
 Stand: null
 Charge: null
 Relocate: null | null | null
-Vanish: null
 Rolling Shot: null | null | null
 Double Shot: null | null
 wired: no card when the banner takes it true | the movement tag (v0.0.197) true | one Turn Log line when it ends (v0.0.200) true | End, Advance instead (on the strip, v0.0.198) true | closes on a turn change true

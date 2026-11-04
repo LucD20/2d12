@@ -38,3 +38,17 @@ turn Steel: Steel Yourself 2, Divine Surge (keep 2), Smite 2, Weapon Attack
 
 plan Nova, Main
 when self below 35%: Steel
+
+# Pack R-classes (2026-11-04): this file is the pre-R Paladin (5 AP, spent Escalation). The cards below changed in book/cards/paladin.json
+# (Divine Surge and Hallowed Stance are Escalation Passives of other rungs, Holy Wrath has the Encounter ceilings, Shield of Faith and
+# Bulwark of Faith are Hallmark Reactions, Aura of Protection needs no Escalation, Hand of Mercy is a Talent): their old lines are kept here
+# so report.md doesn't move. The R builds are in rework/.
+action Holy Wrath 2 | ap 2 | encounter | traits divine strike weapon | vs ad | tiers [V] 1[W] + [R] 2d6 Ho / [V] 1[W] + [Mod] + [R] 3d8 Ho / [V] 1[W] + [Mod] + [R] 4d8 Ho
+action Holy Wrath 3 | ap 3 | encounter | traits divine strike weapon | vs ad | tiers [V] 1[W] + [R] 3d8 Ho / [V] 1[W] + [Mod] + [R] 5d8 Ho / [V] 1[W] + [Mod] + [R] 7d8 Ho
+action Bulwark of Faith 1 | ap 1 | encounter | traits divine focus | reaction | block 9
+action Bulwark of Faith 2 | ap 2 | encounter | traits divine focus | reaction | block 9; slide 2
+passive Hallowed Stance: escalation 2: reduce [PMod] adjacent 1   # the pre-R Stance (with the "haven't left your square" clause)
+action Aura of Protection | ap 0 | encounter | traits area divine | escalation 1 | allies 2.5 | rounds 2.5 | defense 1 allies
+action Divine Surge | ap 0 | round | traits divine | escalation 1 | always: surge 1d8 mind; always: guard 2d6 self
+action Shield of Faith | ap 0 | turn | traits divine focus | reaction | escalation 1 | block 1d8+[Mod]
+action Hand of Mercy | ap 1 | round | traits divine focus | escalation 1 | remove-effect 1

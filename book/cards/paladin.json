@@ -1,5 +1,5 @@
 {
- "_about": "The Paladin's cards (the Paladin document, 12-paladin.md). One source per card: book/cards/README.md.",
+ "_about": "The Paladin's cards (the Paladin document, 12-paladin.md). One source per card: book/cards/README.md. Pack R-classes (2026-11-04): the class rebuilt for 4 AP + 1 Reaction AP and Escalation as a level (book/rework-r.md sections 12 and 14).",
  "cards": [
   {
    "name": "Divine Power",
@@ -21,26 +21,16 @@
    }
   },
   {
-   "name": "Font of Mercy",
+   "name": "Kindled Wrath",
    "category": "Paladin Feature",
    "level": 1,
-   "flavor": "Where you kneel, wounds remember how to close.",
-   "text": "While your Escalation is 1 or more, when you or an ally within 5 squares of you uses a Rally Point, they heal your Power Modifier + 2 more.",
+   "_note": "Pack R-classes (2026-11-04): the Paladin's Escalation hook (rework-r.md 12.8; Core Rules, Escalation).",
+   "flavor": "Their blood on the ground is the spark your god was waiting for.",
+   "text": "Once an encounter, when an ally within 5 squares of you becomes Bloodied or goes Down, your [[Escalation]] increases by 1.",
    "foundry": {
-    "img": "icons/svg/regen.svg",
-    "automation": "gold",
-    "escalationPassive": true,
-    "settings": [
-     {
-      "type": "rally",
-      "rallyBonus": "power + 2",
-      "rallyRange": 5,
-      "minEscalation": 1
-     }
-    ]
-   },
-   "ruler": {
-    "passive": "escalation 1: rally-bonus [PMod+2]"
+    "img": "icons/svg/fire.svg",
+    "automation": "none",
+    "append": "(Not automated until R-Foundry: raise your Escalation by hand.)"
    }
   },
   {
@@ -88,7 +78,7 @@
       "[V] 1[W] + [Mod] + [R] 1d10 Ho",
       "[V] 1[W] + [Mod] + [R] 2d8 Ho"
      ],
-     "effects": "As 2 AP, and you or one ally in the light gain [[Guard]] 1d8 + [Mod]. You choose who gains the Defense and who gains the Guard separately: the same creature or two different ones.",
+     "effects": "As 2 AP, and you or one ally in the light gain [[Guard]] 1d8 + [Mod] (2d6 + [Mod] at Stage 2, 2d8 + [Mod] at Stage 3). You choose who gains the Defense and who gains the Guard separately: the same creature or two different ones.",
      "foundry": {
       "append": "@Effect[{{fx:Smite (+1 Defense)}}]{+1 Defense for 1 round} @Guard[1d8+mod]{Guard 1d8 + [Mod]}"
      },
@@ -152,9 +142,67 @@
    }
   },
   {
+   "name": "Shield of Faith",
+   "category": "Divine Power",
+   "level": 1,
+   "_note": "Pack R-classes: a Hallmark Reaction (decision sheet item 7: 1R, Turn, 2d6 + [PMod], no Escalation; measured 0.88 AP a turn). The block steps by Stage like the Health line (item 18).",
+   "flavor": "A shimmer of light holds steady between them and harm.",
+   "traits": [
+    "divine",
+    "focus"
+   ],
+   "frequency": "Turn",
+   "target": "The creature the Strike would damage (you or an ally)",
+   "distance": "5 sq.",
+   "interrupt": "A [Strike] Action would damage you or an ally within 5 squares.",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "The damage that Strike deals to the target is reduced by 2d6 + your Power Modifier (3d6 at Stage 2, 4d6 at Stage 3).",
+     "ruler": "block 2d6+[Mod]"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/shield.svg",
+    "folder": "Paladin",
+    "automation": "none"
+   }
+  },
+  {
+   "name": "Bulwark of Faith",
+   "category": "Divine Power",
+   "level": 1,
+   "_note": "Pack R-classes: a Hallmark Reaction (decision sheet item 8: 1R, Round, the Guard of a Rally Point before the damage; the 2R Slide version is gone). It covers you too (rclasses.md section 3: ally-only it is 0.73 AP a turn, on you too 0.97, Shield of Faith's 0.96).",
+   "flavor": "You step into the blow meant for them, and your god holds the line with you.",
+   "traits": [
+    "divine",
+    "focus"
+   ],
+   "frequency": "Round",
+   "target": "The creature the Strike would damage (you or an ally)",
+   "distance": "5 sq.",
+   "interrupt": "A [Strike] Action would damage you or an ally within 5 squares.",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "The target gains [[Guard]] equal to what one of their Rally Points heals, before the damage.",
+     "foundry": {
+      "append": "@Guard[rally]{Guard equal to what one of their Rally Points heals}"
+     },
+     "ruler": "block 9"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/shield.svg",
+    "folder": "Paladin",
+    "automation": "silver"
+   }
+  },
+  {
    "name": "Holy Wrath",
    "category": "Paladin Feature",
    "level": 1,
+   "_note": "Pack R-classes: the Encounter ceilings (decision sheet item 16): dice besides [W] and [Mod] at most the AP on Tier 2 and AP + 1 on Tier 3.",
    "flavor": "For one blow, your god stops holding back.",
    "traits": [
     "divine",
@@ -169,17 +217,17 @@
     {
      "ap": 2,
      "tiers": [
-      "[V] 1[W] + [R] 2d6 Ho",
-      "[V] 1[W] + [Mod] + [R] 3d8 Ho",
-      "[V] 1[W] + [Mod] + [R] 4d8 Ho"
+      "[V] 1[W] + [R] 1d8 Ho",
+      "[V] 1[W] + [Mod] + [R] 2d8 Ho",
+      "[V] 1[W] + [Mod] + [R] 3d8 Ho"
      ]
     },
     {
      "ap": 3,
      "tiers": [
-      "[V] 1[W] + [R] 3d8 Ho",
-      "[V] 1[W] + [Mod] + [R] 5d8 Ho",
-      "[V] 1[W] + [Mod] + [R] 7d8 Ho"
+      "[V] 1[W] + [R] 2d8 Ho",
+      "[V] 1[W] + [Mod] + [R] 3d8 Ho",
+      "[V] 1[W] + [Mod] + [R] 4d8 Ho"
      ]
     }
    ],
@@ -234,40 +282,36 @@
    }
   },
   {
-   "name": "Bulwark of Faith",
+   "name": "Aura of Protection",
    "category": "Paladin Feature",
    "level": 1,
-   "flavor": "You step into the blow meant for them, and your god holds the line with you.",
+   "_note": "Pack R-classes: an Encounter Pick, no Escalation needed (decision sheet item 15; it was an Escalation Active).",
+   "flavor": "You plant your feet, and light rims the shoulders of everyone near you.",
    "traits": [
-    "divine",
-    "focus"
+    "area",
+    "divine"
    ],
    "frequency": "Encounter",
-   "target": "The creature the [Strike] Action would damage (an ally)",
-   "distance": "5 sq.",
-   "interrupt": "A [Strike] Action would damage an ally within 5 squares.",
+   "target": "You and allies in the Area",
+   "area": "Aura 2",
    "versions": [
     {
-     "ap": 1,
-     "effects": "The target gains [[Guard]] equal to what one of their Rally Points heals, before the damage.",
+     "ap": 0,
+     "effects": "Until the end of the encounter, you and allies in the Aura gain +1 Defense.",
      "foundry": {
-      "append": "@Guard[rally]{Guard equal to what one of their Rally Points heals}"
+      "fx": {
+       "all": [
+        "{{fx:Aura of Protection}}"
+       ]
+      }
      },
-     "ruler": "block 9"
-    },
-    {
-     "ap": 2,
-     "effects": "As 1R, and the triggering creature is Slid 2.",
-     "foundry": {
-      "append": "@Guard[rally]{Guard equal to what one of their Rally Points heals}"
-     },
-     "ruler": "block 9; slide 2"
+     "ruler": "allies 2.5 | rounds 2.5 | defense 1 allies"
     }
    ],
    "foundry": {
-    "img": "icons/svg/shield.svg",
+    "img": "icons/svg/aura.svg",
     "folder": "Paladin",
-    "automation": "silver"
+    "automation": "gold"
    }
   },
   {
@@ -363,23 +407,9 @@
    }
   },
   {
-   "name": "Hallowed Stance",
-   "category": "Paladin Escalation (Passive)",
-   "flavor": "You do not move. Neither do those beside you.",
-   "text": "While your Escalation is 2 or more, if you haven't left your square since your last turn, you and your adjacent allies take less Vigor damage, reduced by your Power Modifier (minimum 0). This reduction applies to one instance of damage per Action; if the Action has several, the player chooses which one is reduced.",
-   "foundry": {
-    "img": "icons/svg/statue.svg",
-    "level": 1,
-    "automation": "none",
-    "append": "(Not automated.)"
-   },
-   "ruler": {
-    "passive": "escalation 2: reduce [PMod] adjacent 1"
-   }
-  },
-  {
    "name": "Radiant Zeal",
    "category": "Paladin Escalation (Passive)",
+   "escalation": 1,
    "flavor": "The longer the fight, the brighter you burn.",
    "text": "While your Escalation is 1 or more, the first [Strike] Action you make each round that deals damage deals an extra [R] 1d6 Ho.",
    "foundry": {
@@ -399,74 +429,143 @@
    }
   },
   {
+   "name": "Divine Surge",
+   "category": "Paladin Escalation (Passive)",
+   "escalation": 1,
+   "_note": "Pack R-classes: an Escalation 1 Passive (decision sheet item 15, revised in 14.3): the ally's [R] 1d8 Ho stays, the Guard 2d6 is gone (it measured 0.9 AP a turn as a 0 AP Active).",
+   "flavor": "You name the foe in your god's sight, and every blade that finds it burns.",
+   "text": "While your Escalation is 1 or more, at the start of each of your turns you can name one enemy within 5 squares of you. Until the start of your next turn, the first time an ally deals damage to them, they deal an extra [R] 1d8 Ho.",
+   "foundry": {
+    "img": "icons/svg/sun.svg",
+    "level": 1,
+    "automation": "none",
+    "append": "(Not automated until R-Foundry: say the enemy aloud; the ally adds the damage by hand.)"
+   },
+   "ruler": {
+    "passive": "escalation 1: surge 1d8 mind"
+   }
+  },
+  {
+   "name": "Font of Mercy",
+   "category": "Paladin Escalation (Passive)",
+   "escalation": 1,
+   "_note": "Pack R-classes: was a Feature every Paladin had; now one of the Escalation 1 Passives (the Lay On Hands Paladin's pick).",
+   "flavor": "Where you kneel, wounds remember how to close.",
+   "text": "While your Escalation is 1 or more, when you or an ally within 5 squares of you uses a Rally Point, they heal your Power Modifier + 2 more.",
+   "foundry": {
+    "img": "icons/svg/regen.svg",
+    "level": 1,
+    "automation": "gold",
+    "escalationPassive": true,
+    "settings": [
+     {
+      "type": "rally",
+      "rallyBonus": "power + 2",
+      "rallyRange": 5,
+      "minEscalation": 1
+     }
+    ]
+   },
+   "ruler": {
+    "passive": "escalation 1: rally-bonus [PMod+2]"
+   }
+  },
+  {
+   "name": "Searing Blows",
+   "category": "Paladin Escalation (Passive)",
+   "escalation": 2,
+   "_note": "Pack R-classes: new, the Escalation 2 wrath pick (rung budget 0.6-0.8 AP a turn: +2 on about 2.4 landing Strikes a turn is 4.8 DE, 0.83 AP on the turn table; 1d6 each was 1.4 AP: rclasses.md section 4); its Resolve damage feeds the Strained hook.",
+   "flavor": "Every blow you land leaves a little of the light behind.",
+   "text": "While your Escalation is 2 or more, your [Strike] Actions that deal damage deal an extra [R] 2 Ho.",
+   "foundry": {
+    "img": "icons/svg/sun.svg",
+    "level": 1,
+    "automation": "none",
+    "append": "(Not automated until R-Foundry: add [R] 2 Ho by hand.)"
+   },
+   "ruler": {
+    "passive": "escalation 2: extra 2 mind each strike"
+   }
+  },
+  {
    "name": "Mending Light",
    "category": "Paladin Escalation (Passive)",
+   "escalation": 2,
+   "_note": "Pack R-classes: the Escalation 2 mercy pick; the amount steps by Stage (decision sheet item 18): 5 / 6 / 9 with a Power Modifier of 2 / 2 / 3 (rclasses.md section 4: 4 a turn measured 0.5-0.6 AP, under the rung's 0.6-0.8).",
    "flavor": "Light gathers where you stand, and the hurt are drawn to it.",
-   "text": "While your Escalation is 1 or more, at the start of each of your turns, you or one ally within 5 squares of you heals your Power Modifier + 1.",
+   "text": "While your Escalation is 2 or more, at the start of each of your turns, you or one ally within 5 squares of you heals twice your Power Modifier + your Stage.",
    "foundry": {
     "img": "icons/svg/regen.svg",
     "level": 1,
     "automation": "none",
     "append": "(Not automated: heal the creature you choose by hand.)"
+   },
+   "ruler": {
+    "passive": "escalation 2: mend [PModx2+1] any"
    }
   },
   {
-   "name": "Aura of Protection",
-   "category": "Paladin Escalation",
-   "flavor": "You plant your feet, and light rims the shoulders of everyone near you.",
+   "name": "Reckoning",
+   "category": "Paladin Escalation (Passive)",
+   "escalation": 3,
+   "_note": "Pack R-classes: new, the Escalation 3 wrath pick (rung budget 0.8-1 AP a turn on the 1.7 turns a fight at Escalation 3: 1d8 on the first landing Strike is about 4.5 DE, 0.8 AP; 2d6 was 1.2, 2d6 on every Strike 2.9: rclasses.md section 4); it pays the Bloodied / Strained hooks.",
+   "flavor": "The weak point is where the light goes in.",
+   "text": "While your Escalation is 3 or more, the first [Strike] Action you make each round that deals damage to a Bloodied or Strained creature deals an extra [R] 1d8 Ho.",
+   "foundry": {
+    "img": "icons/svg/sword.svg",
+    "level": 1,
+    "automation": "none",
+    "append": "(Not automated until R-Foundry: add [R] 1d8 Ho by hand, once a round, against a Bloodied or Strained target.)"
+   },
+   "ruler": {
+    "passive": "escalation 3: extra 1d8 mind first-hit strike bloodied"
+   }
+  },
+  {
+   "name": "Hallowed Stance",
+   "category": "Paladin Escalation (Passive)",
+   "escalation": 3,
+   "_note": "Pack R-classes: the Escalation 3 mercy pick; it no longer needs you to have stayed in your square (the rung 2 version measured 0.8 DE a turn), reduces every instance and twice the Power Modifier (rclasses.md section 4: late-fight reductions find little damage left to reduce).",
+   "flavor": "Where you stand, the light holds; so do those beside you.",
+   "text": "While your Escalation is 3 or more, you and your adjacent allies take less damage from each instance, reduced by twice your Power Modifier.",
+   "foundry": {
+    "img": "icons/svg/statue.svg",
+    "level": 1,
+    "automation": "none",
+    "append": "(Not automated.)"
+   },
+   "ruler": {
+    "passive": "escalation 3: reduce [PModx2] adjacent 1 always"
+   }
+  },
+  {
+   "name": "Final Verdict",
+   "category": "Paladin Apex",
+   "_note": "Pack R-classes: the wrath Apex (decision sheet item 14: Encounter, Escalation 3, 2 or 3 AP at the Encounter band, within the ceilings: 2 AP, Tier 2 at most 2 dice, Tier 3 at most 3). One roll against every adjacent enemy (Whirlwind's shape): Holy Wrath 2's dice on each of them.",
+   "flavor": "You name every sin within reach, and the light answers all at once.",
    "traits": [
     "area",
-    "divine"
+    "divine",
+    "melee",
+    "signature",
+    "strike",
+    "weapon"
    ],
-   "escalation": 1,
    "frequency": "Encounter",
-   "target": "You and allies in the Area",
-   "area": "Aura 2",
+   "escalation": 3,
+   "target": "All enemies in the Area",
+   "area": "1 Emanation",
+   "vs": "AD",
    "versions": [
     {
-     "ap": 0,
-     "effects": "Until the end of the encounter, you and allies in the Aura gain +1 Defense.",
-     "foundry": {
-      "fx": {
-       "all": [
-        "{{fx:Aura of Protection}}"
-       ]
-      }
-     },
-     "ruler": "allies 2.5 | rounds 2.5 | defense 1 allies"
-    }
-   ],
-   "foundry": {
-    "img": "icons/svg/aura.svg",
-    "folder": "Paladin",
-    "level": 1,
-    "automation": "gold"
-   }
-  },
-  {
-   "name": "Divine Surge",
-   "category": "Paladin Escalation",
-   "flavor": "You name the foe in your god's sight, and every blade that finds it burns.",
-   "traits": [
-    "divine"
-   ],
-   "escalation": 1,
-   "frequency": "Round",
-   "target": "One enemy",
-   "distance": "5 sq.",
-   "versions": [
-    {
-     "ap": 0,
-     "effects": "For 1 round, the next time an ally deals damage to the target, they deal an extra [R] 1d8 Ho. You gain [[Guard]] 2d6.",
-     "foundry": {
-      "append": "@Guard[2d6|self:yes]{Guard 2d6}",
-      "fx": {
-       "all": [
-        "{{fx:Divine Surge}}"
-       ]
-      }
-     },
-     "ruler": "always: surge 1d8 mind; always: guard 2d6 self"
+     "ap": 2,
+     "tiers": [
+      "[V] 1[W] + [R] 1d8 Ho",
+      "[V] 1[W] + [Mod] + [R] 2d8 Ho",
+      "[V] 1[W] + [Mod] + [R] 3d8 Ho"
+     ],
+     "effects": "You roll once and compare the result to each target's AD. Each target you hit sheds Bright light in a 1 Emanation for 1 round; a target that is Bloodied or Strained when you hit them is also Prone.",
+     "ruler": "area 1.5 | on 2+: debuff Prone"
     }
    ],
    "foundry": {
@@ -474,61 +573,41 @@
     "folder": "Paladin",
     "level": 1,
     "automation": "silver",
-    "automationNote": "the ally clicks the button on the mark for the extra [R] 1d8 Ho."
+    "automationNote": "the light and Prone (drop Prone on a Bloodied or Strained target by hand).",
+    "areaCfg": {
+     "targets": "enemies"
+    }
    }
   },
   {
-   "name": "Shield of Faith",
-   "category": "Paladin Escalation",
-   "flavor": "A shimmer of light holds steady between them and harm.",
+   "name": "Hallowed Dawn",
+   "category": "Paladin Apex",
+   "_note": "Pack R-classes: the mercy Apex (decision sheet item 14): 3 AP at the Encounter band: new Health for you and your allies (the dice step by Stage like Shield of Faith's: item 18), a cleansing, and Enfeebled 1 on the enemies around you. (A version that let each ally use a Rally Point measured nothing in the ruler: allies are rarely hurt enough when Escalation 3 comes; 2d6 + [PMod] healed about 15 a hard fight: rclasses.md section 5.)",
+   "flavor": "Dawn breaks where you stand, and it chooses sides.",
    "traits": [
-    "divine",
-    "focus"
+    "area",
+    "divine"
    ],
-   "escalation": 1,
-   "frequency": "Turn",
-   "target": "The creature the Strike would damage (you or an ally)",
-   "distance": "5 sq.",
-   "interrupt": "A [Strike] Action would damage you or an ally within 5 squares.",
+   "frequency": "Encounter",
+   "escalation": 3,
+   "target": "All creatures in the Area",
+   "area": "2 Emanation",
    "versions": [
     {
-     "ap": 0,
-     "effects": "The damage that Strike deals to the target is reduced by 1d8 + your Power Modifier.",
-     "ruler": "block 1d8+[Mod]"
+     "ap": 3,
+     "effects": "You and each ally in the Area heal 3d6 + your Power Modifier (4d6 at Stage 2, 6d6 at Stage 3) and end one effect on them that is EoT or has 1 round left. Each enemy in the Area is Enfeebled 1 and sheds Bright light in a 1 Emanation until the end of your next turn.",
+     "ruler": "allies 3 | mend 3d6+[Mod] any; remove-effect 1"
     }
    ],
    "foundry": {
-    "img": "icons/svg/shield.svg",
-    "folder": "Paladin",
-    "level": 1,
-    "automation": "none"
-   }
-  },
-  {
-   "name": "Hand of Mercy",
-   "category": "Paladin Escalation",
-   "flavor": "A single touch undoes what the enemy worked for.",
-   "traits": [
-    "divine",
-    "focus"
-   ],
-   "escalation": 1,
-   "frequency": "Round",
-   "target": "One ally",
-   "distance": "5 sq.",
-   "versions": [
-    {
-     "ap": 1,
-     "effects": "Choose one: the ally ends one effect on them that is EoT or has 1 round left; or, if the ally is Down, they can use 1 Rally Point.",
-     "ruler": "remove-effect 1"
-    }
-   ],
-   "foundry": {
-    "img": "icons/svg/regen.svg",
+    "img": "icons/svg/sun.svg",
     "folder": "Paladin",
     "level": 1,
     "automation": "bronze",
-    "automationNote": "ending the effect (the Rally Point button works)."
+    "automationNote": "the healing (the button) and Enfeebled 1 on the enemies by hand.",
+    "areaCfg": {
+     "targets": "all"
+    }
    }
   }
  ]

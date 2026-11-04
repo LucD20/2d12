@@ -60,6 +60,8 @@ These Talents are for characters who fight with a weapon or with their bare hand
 
 @@CARD:Sacred Weapon@@
 
+@@CARD:Hand of Mercy@@
+
 ## Class Talents
 
 @@CARD:Class Expertise@@

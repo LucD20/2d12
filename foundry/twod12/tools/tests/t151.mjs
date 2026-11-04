@@ -38,7 +38,7 @@ const shot = T("ranged", "shot", "strike", "weapon");
 const show = list => list.map(b => `${b.effect} +${b.dmg}${b.sub ? " " + b.sub : ""} [${b.pool}]${b.once ? " (once)" : ""}`).join(", ") || "none";
 
 console.log("--- the cards carry settings (no code tests their names)");
-for (const n of ["Font of Mercy", "Radiant Zeal", "Elusive", "Killer's Focus", "Long Draw", "Steady Nerves", "Sharpshooter", "Marked Quarry", "Hunter's Focus"])
+for (const n of ["Font of Mercy", "Radiant Zeal", "Killer's Focus", "Long Draw", "Steady Nerves", "Sharpshooter", "Marked Quarry", "Hunter's Focus"])
   console.log(n.padEnd(15), (card(n)?.system.settings ?? []).map(x => FD.settingShort({ all: new Set(x.all ?? []), any: new Set(x.any ?? []), none: new Set(x.none ?? []), from: new Set(), tiers: new Set(x.tiers ?? []), ...x, ...(x.all ? { all: new Set(x.all) } : {}) })).join(" | "));
 const src = f => fs.readFileSync(ROOT + f, "utf8");
 const code = ["module/actions.mjs", "module/mark.mjs", "module/rally.mjs", "module/effects.mjs", "module/bonus.mjs"].map(src).join("\n");
@@ -88,18 +88,7 @@ console.log("Empowered vs the Orc:", JSON.stringify(E.damageSteps(lana, shot, or
 console.log("the mark matches a token too:", AU.isMarked(lana, { document: { uuid: "Scene.s.Token.Orc" } }), "| v0.0.207 its reminders are settings:", AU.messagesFor(lana, "encounter").map(m => m.action).join(","), "| the Orc has none:", AU.messagesFor(orc, "encounter").length);
 console.log("[Mod] in a Bonus Damage:", ["[Mod]", "1d6 + [Mod]", "1d4"].map(d => `${d} -> ${JSON.stringify(B.modDamage(d, 3))}`).join(" | "), "| [Mod] with -1:", JSON.stringify(B.modDamage("[Mod]", -1)), JSON.stringify(B.modDamage("1d6 + [Mod]", -1)));
 
-console.log("--- Elusive: 1 Bane on the first [Strike] against it each round, Escalation 1");
-const elu = creature("Nari", ["Elusive"], { escalation: 1, owner: false });
-const me = creature("Kai");
-const baneOn = () => E.modifierList(me, T("strike", "weapon", "melee"), [elu]).filter(m => m.banes).map(m => `${m.name} ${m.banes}${m.once ? " once" : ""}`).join(", ") || "none";
-console.log("a Strike against it:", baneOn(), "| not a Strike:", E.modifierList(me, T("self"), [elu]).filter(m => m.banes && m.match).length);
-game.combat = { started: true, round: 1, turn: 0, turns: [{ actor: me }, { actor: elu }] };
-const sel = E.modifierList(me, T("strike", "weapon", "melee"), [elu]).filter(m => m.once).map(m => m.id);
-await E.useOnceModifiers(me, T("strike", "weapon", "melee"), [elu], null, sel);
-console.log("Nari is not mine: the GM is asked to remember it:", JSON.stringify(emitted.at(-1)?.type), JSON.stringify(emitted.at(-1)?.keys?.length));
-await AU.markOnce({ ...elu, isOwner: true }, emitted.at(-1).keys);
-console.log("the next Strike this round:", baneOn(), "| after Nari's next turn starts:", (game.combat.round = 2, game.combat.turn = 1, baneOn()));
-game.combat = null;
+// Pack R-classes (v0.0.235): Elusive is gone from the Archer (its "once per round" Bane on the attacker was tested here); the once-per-round mechanic stays tested by Killer's Focus above.
 
 console.log("--- Ignore a Bane: Long Draw, Steady Nerves (now a Talent: no Escalation), Sharpshooter");
 const ign = creature("Lonny", ["Long Draw", "Steady Nerves", "Sharpshooter"], { escalation: 0 });

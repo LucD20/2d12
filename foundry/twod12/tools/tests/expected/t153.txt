@@ -1,6 +1,6 @@
-Paladin: Repertoire Holy Wrath, Word of Radiance, Bulwark of Faith, Consecrated Ground, Miraculous Recovery, Divine Intervention | Passives Font of Mercy, Hallowed Stance, Radiant Zeal, Mending Light | Actives Aura of Protection, Divine Surge, Shield of Faith, Hand of Mercy
-Archer: Repertoire Marksman's Shot, Volley, Covering Fire, Hunter's Focus, Deadeye, Rain of Arrows | Passives Killer's Focus, Elusive, Harrying Shots | Actives Pinning Shot, Twin Shot, Vanish
-the book's Talents: 15
+Paladin: Repertoire Holy Wrath, Word of Radiance, Aura of Protection, Consecrated Ground, Miraculous Recovery, Divine Intervention | Passives Radiant Zeal, Divine Surge, Font of Mercy, Searing Blows, Mending Light, Reckoning, Hallowed Stance | Actives Final Verdict, Hallowed Dawn
+Archer: Repertoire Marksman's Shot, Volley, Covering Fire, Pinning Shot, Twin Shot, Hunter's Focus, Deadeye, Rain of Arrows | Passives Killer's Focus, Vanish, Harrying Shots, Hunter's Edge, Sure Step, Finisher, Pinned Down | Actives Deathmark, Open Season
+the book's Talents: 16
   Challenge          ok combat 1
   Heavy Blows        ok combat 1 | Great Weapon | settings bonusdamage
   Whirlwind          ok combat 1 | needs talent:Heavy Blows | Great Weapon | grants Whirlwind
@@ -15,6 +15,7 @@ the book's Talents: 15
   Cut Through        ok mobility 1 | grants Cut Through
   Lesser Blessing    ok magic 1 | Divine
   Sacred Weapon      ok magic 1 | needs talent:Lesser Blessing or trait:divine | Divine | grants Sacred Weapon
+  Hand of Mercy      ok magic 1 | needs trait:divine | Divine | grants Hand of Mercy
   Class Expertise    ok combat 5 | needs level:5
 no Talent Action offered twice (an Action's category is not "Talent..."): true
 Leg Sweep: a kick true | no free hand needed true | Kickboxer grants it Leg Sweep

@@ -237,7 +237,7 @@ def card(block, markers=False):
     # Three meta-lines, always in this place: 1 Escalation; 2 Targets ✦ Area; 3 Distance ✦ Vs. (a Save is written as it is: "Instinct Save").
     sep = " <i class='sep'>&#10022;</i> "
     vs_txt = (f'<span class="vs">{"" if vsm.group(1).strip().endswith("Save") else "Vs. "}{inline(vsm.group(1))}</span>') if vsm else ''
-    l1 = [f'<span class="esc">{inline(escm.group(1))} Escalation</span>'] if escm else []
+    l1 = [f'<span class="esc">Escalation {inline(escm.group(1))}</span>'] if escm else []   # pack R: a requirement ("Escalation 3"), not a cost
     l2 = ([f'<span>{inline(target.group(1))}</span>'] if target else []) + ([f'<span class="dist"><b>Area:</b> {inline(aream.group(1))}</span>'] if aream else [])
     l3 = ([f'<span class="dist"><b>Distance:</b> {inline(distm.group(1))}</span>'] if distm and distm.group(1).strip().lower() != 'self' else []) + ([vs_txt] if vs_txt else [])
     meta_lines = [l for l in (l1, l2, l3) if l]
@@ -308,10 +308,10 @@ def sample_card():
     html = re.sub(r'(1\[W\] \+ \[Mod\] \+ \[M\] 1d4 (?:<span class="dcode"[^>]*>Ho</span>|Ho))</td>', r'\1<sup class="mk">7</sup></td>', html, count=1)
     legend = '''<ol class="legend">
 <li><b>Title bar.</b> The color of the bar is the Action's Frequency: green At-will, teal Turn, blue Round, red Encounter, purple Daily, grey for passive features with no Frequency. The italic line under the title bar is flavor: it describes the Action and never changes its rules.</li>
-<li><b>Category and level.</b> The kind of Action (Basic Action, Weapon Technique...) or the feature that gave it (Divine Power...); the number after it is the level you get it at. An Escalation Action shows its Escalation cost on the line below the title bar.</li>
+<li><b>Category and level.</b> The kind of Action (Basic Action, Weapon Technique...) or the feature that gave it (Divine Power...); the number after it is the level you get it at. An Escalation Action shows the Escalation it needs on the line below the title bar.</li>
 <li><b>Cost.</b> The AP of each <b>Version</b> of the Action: "1/2/3AP", "0AP" for one that costs nothing, or "1R" (or "0R") for a Reaction. When you use the Action, you choose a Version.</li>
 <li><b>Traits.</b> Colored by kind; Chapter 7 explains the ones with rules of their own.</li>
-<li><b>Meta-lines.</b> Always in the same place, each only when the Action has it: <b>1</b> its Escalation cost; <b>2</b> who it affects ✦ its Area; <b>3</b> how far it reaches (Reach, Weapon for your weapon's Range, a number of squares) ✦ the Defense it rolls against (Vs.), or the Save its targets roll for a Save Action ("Instinct Save"). Every Action that rolls has a Vs. entry. Requirements, Setup and Trigger/Interrupt come under these lines when the Action has them.</li>
+<li><b>Meta-lines.</b> Always in the same place, each only when the Action has it: <b>1</b> the Escalation it needs; <b>2</b> who it affects ✦ its Area; <b>3</b> how far it reaches (Reach, Weapon for your weapon's Range, a number of squares) ✦ the Defense it rolls against (Vs.), or the Save its targets roll for a Save Action ("Instinct Save"). Every Action that rolls has a Vs. entry. Requirements, Setup and Trigger/Interrupt come under these lines when the Action has them.</li>
 <li><b>Tiers.</b> What happens on a Tier 1, 2 or 3 result. Each column is a Version; Versions with the same tiers share a column. A Split Action has one column per mode instead. A <b>Critical</b> row comes under Tier 3 when the Action has one.</li>
 <li><b>Damage.</b> See the notation below.</li>
 <li><b>Effects.</b> The General Effects row: what happens on a Tier 2 or 3 result, after the damage, one line per Version.</li>
