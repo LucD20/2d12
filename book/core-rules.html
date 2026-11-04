@@ -966,7 +966,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <li>It can move a creature into <a class="xref" href="#hazardous-terrain">Hazardous Terrain</a> or a Deadly Hazard.</li>
 <li>It doesn't use the creature's Speed, and each square counts as 1, even when it is diagonal.</li>
 <li>Its value is reduced by the creature's <a class="xref" href="#steadiness">Steadiness</a>.</li>
-<li>Its value is a maximum: you can always move the creature less. Moving a creature 0 squares is no movement: nothing that happens when a creature is moved, enters or leaves a square happens. It can never make a creature end its movement inside another creature or an object: this is <a class="xref" href="#collision">Collision</a>, and it only happens when the destination you chose is blocked.</li>
+<li>Its value is a maximum: you can always move the creature less, down to 0. Moving a creature 0 squares is no movement and no Forced Movement on it: nothing that happens when a creature is moved, enters or leaves a square happens. It can never make a creature end its movement inside another creature or an object: this is <a class="xref" href="#collision">Collision</a>, and it only happens when the destination you chose is blocked.</li>
 </ul>
 <h3 id="pushed">Pushed</h3>
 <p>Being <strong>Pushed</strong> is a Forced Movement. Pushed has a value: up to that many squares you are moved. The <a class="xref" href="#rules-language">origin</a> chooses the destination. Each square you are pushed into must be farther from the origin than the previous one (measured in a straight line between the centers of the squares), and the path must stay within a cone spreading from the origin through you.</p>

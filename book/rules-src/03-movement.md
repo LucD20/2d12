@@ -102,7 +102,7 @@ Forced Movement is movement you impose on another creature, choosing where it go
 - It can move a creature into [[Hazardous Terrain]] or a Deadly Hazard.
 - It doesn't use the creature's Speed, and each square counts as 1, even when it is diagonal.
 - Its value is reduced by the creature's [[Steadiness]].
-- Its value is a maximum: you can always move the creature less. Moving a creature 0 squares is no movement: nothing that happens when a creature is moved, enters or leaves a square happens. It can never make a creature end its movement inside another creature or an object: this is [[Collision]], and it only happens when the destination you chose is blocked.
+- Its value is a maximum: you can always move the creature less, down to 0. Moving a creature 0 squares is no movement and no Forced Movement on it: nothing that happens when a creature is moved, enters or leaves a square happens. It can never make a creature end its movement inside another creature or an object: this is [[Collision]], and it only happens when the destination you chose is blocked.
 
 ### Pushed
 
