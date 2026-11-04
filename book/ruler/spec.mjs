@@ -22,8 +22,14 @@ export const MAP = MP.MAP, MAPDIST = MP.dist, MAPCOND = MP.applyCondition, MAPFO
  * ap: AP a PC regains a turn · reactionAp: AP a PC may spend only on Reactions (kept after its turn on top of what it didn't spend) ·
  * escalation: "spent" (an Active costs its Escalation) or "level" (an Active needs its Escalation and spends nothing; a passive works from its level) ·
  * npcAp / minionAp: an NPC's AP a turn (its Strikes keep 1 AP for moving) · npcReactionAp: AP an NPC may spend only on Reactions (Elites' Opportunity Attacks cost no next-turn AP with it).
+ * Pack R prep, part 2 (the decision sheet; all off by default): npcSpecials: 0 = the NPCs make their Bestiary Strikes (the calibration so far), else the
+ * scale of the Special multipliers (1 = the book's × 1.4 / 2.2 / 3.5; 1.25) and an NPC with a `kit` spends every AP left after moving on its Specials and
+ * Basic attacks (3 Strikes at most) · apGuard: Guard per turn AP left unspent at the end of a PC's turn (it adds to other Guard and ends at the start of
+ * its next turn; the Reaction AP never converts) · apGuardKeep: those AP may still pay a Reaction (each one spent loses its Guard) · escHooks: the
+ * Escalation hooks (+1 Escalation once an encounter on a Critical; the build's `escHook`: "ally" = an ally within 5 squares becomes Bloodied or goes
+ * Down, "quarry" = its Marked Quarry goes Down; each once an encounter, used only when it raises the Escalation).
  */
-export const RULES = { ap: 5, reactionAp: 0, escalation: "spent", npcAp: 5, minionAp: 3, npcReactionAp: 0 };
+export const RULES = { ap: 5, reactionAp: 0, escalation: "spent", npcAp: 5, minionAp: 3, npcReactionAp: 0, npcSpecials: 0, apGuard: 0, apGuardKeep: false, escHooks: false };
 /** An NPC's average damage on one Strike against this AD (no Banes). */
 export const npcStrikeAvg = (npc, ad) => { const p = C.tierProbs(npc.mod, ad, 0, 0, ""); return p[1] * npc.t2 + p[2] * npc.t3; };
 
@@ -214,9 +220,9 @@ export function parseSpec(text, file = "spec") {
       else if (key === "overcast-floor") b.overcastFloor = Number(rest);   // once a fight, an Action that costs up to N Escalation costs N less (the round-1 floor)
       else if (key === "health-factor") b.healthFactor = Number(rest);   // the level factor of Health (the book: (level + 10) / 10)
       else if (key === "reaction") {   // reaction Opportunity Attack: opportunity  ·  reaction Quick Draw: quick-draw  (the map model uses them)
-        const m = rest.match(/^(.+?):\s*(opportunity|quick-draw|block\s+\S+)$/i); if (!m) fail("write reaction like: Opportunity Attack: opportunity (or quick-draw; or block 1d8+[Mod]: a Reaction that takes that much off one NPC hit on you or an ally within 5 squares)");
+        const m = rest.match(/^(.+?):\s*(opportunity|quick-draw|block\s+\S+(?:\s+spill)?)$/i); if (!m) fail("write reaction like: Opportunity Attack: opportunity (or quick-draw; or block 1d8+[Mod]: a Reaction that takes that much off one NPC hit on you or an ally within 5 squares)");
         const kind = m[2].toLowerCase().split(/\s+/)[0];
-        b.reactions.push({ name: m[1].trim(), kind, ...(kind === "block" ? { dmg: parseDamage(m[2].split(/\s+/)[1]) } : {}) });
+        b.reactions.push({ name: m[1].trim(), kind, ...(kind === "block" ? { dmg: parseDamage(m[2].split(/\s+/)[1]), spill: /\sspill$/i.test(m[2]) } : {}) });   // spill: what the hit doesn't use becomes Guard on the target
       }
       else if (key === "action") {
         const f = rest.split("|").map(s => s.trim());
@@ -353,7 +359,7 @@ function npcDamage(R, npc, tier) {
   let t = npc.mod;
   if (d[1] <= 2 && d[0] === 1) t += d[1]; else for (let k = 0; k < d[0]; k++) t += die(R, d[1]);
   if (npc.exact) t += avg - npc.mod - d[2];   // pack E3: the table's average exactly (the dice's mean moved by a flat amount), not the nearest dice
-  return Math.max(0, t);
+  return Math.max(0, t) * (npc.curMult ?? 1);   // pack R prep: a Special Action deals the Basic attack's damage × its multiplier
 }
 
 /* ------------------------------------------------------------------ one PC's turn */
@@ -463,7 +469,7 @@ export function runTurn(pc, turn, ctx) {
           const x = rollDamage(R, t.surge.dmg, { mod }).total; land(x, x * mindShare(t.surge.dmg, b.weapon, tier, mod)); if (t.surge.by.st) t.surge.by.st.surgeCredit += x; t.surge = null;
         }
       }
-      if (t === target) mainTier = tier;
+      if (t === target) { mainTier = tier; if (RULES.escHooks && tier === 3 && !a.vs.startsWith("save") && R() < 1 / 12) res.crit = true; }   // pack R prep: a Critical (Doubles on a Tier 3, about 1 in 12 of them)
     }
     res.lastTier = mainTier;
     if (reloadShot) pc.unloaded = true;
@@ -559,10 +565,12 @@ const npcStrike = (R, f, t, banes, escalation = 3, pcs = [], boons = 0, block = 
   if (t.defBonus && t.defBy?.st) t.defBy.st.defCredit += npcAvg(f, pickU(u, C.tierProbs(f.mod, def - t.defBonus, boons, banes + zb, ""))) - npcAvg(f, tier);
   if (zb && f.zone.by?.st) f.zone.by.st.baneCredit += npcAvg(f, pickU(u, C.tierProbs(f.mod, def, boons, banes, ""))) - npcAvg(f, tier);
   let d = npcDamage(R, f, tier);
-  if (d > 0 && block) { const b = Math.min(d, rollDamage(R, block.dmg, { mod: block.by.build.powerMod }).total); d -= b; block.by.st.blockCredit += b; block.used(); }   // pack R prep: a blocking Reaction (Shield of Faith) on a hit that lands
+  if (d > 0 && block) { const roll = rollDamage(R, block.dmg, { mod: block.by.build.powerMod }).total, b = Math.min(d, roll); d -= b; block.by.st.blockCredit += b; block.used();
+    if (block.spill && roll > b) { t.guard = (t.guard ?? 0) + roll - b; t.guardBy = block.by; } }   // pack R prep: the rest of the block becomes Guard (it adds)   // pack R prep: a blocking Reaction (Shield of Faith) on a hit that lands
   const afterReduce = d > 0 ? Math.max(0, d - reduce) : 0;
-  const absorbed = Math.min(t.guard ?? 0, afterReduce), taken = afterReduce - absorbed;   // Guard takes the damage first
+  const absorbed = Math.min(t.guard ?? 0, afterReduce), apAbs = Math.min(t.apGuard ?? 0, afterReduce - absorbed), taken = afterReduce - absorbed - apAbs;   // Guard takes the damage first
   if (absorbed) { t.guard -= absorbed; if (t.guardBy?.st) t.guardBy.st.guardCredit += absorbed; }
+  if (apAbs) { t.apGuard -= apAbs; if (t.st) t.st.apGuardUsed += apAbs; }   // pack R prep: the Guard of unspent AP (it adds to the other Guard)
   if (t.st) { t.st.incoming += d; t.st.reduced += d - afterReduce; t.st.taken += taken; }
   if (reducer?.st) reducer.st.reducedGiven += d - taken;
   return taken;
@@ -573,7 +581,7 @@ export function npcTurn(npc, build, n = 20000) { const R = rng(5), me = { build 
 
 /** A PC's state across a day: its damage, Rally Points, and what it did (st). */
 export const pcState = b => ({ build: b, damage: 0, down: false, rallyLeft: b.rallyPoints, defBonus: 0, defBy: null,
-  st: { dealt: 0, rounds: 0, novaDealt: 0, novaTurns: 0, incoming: 0, reduced: 0, reducedGiven: 0, taken: 0, defCredit: 0, vulnCredit: 0, surgeCredit: 0, guardCredit: 0, blockCredit: 0, reactionDealt: 0, mindDealt: 0, bloodiedTurns: 0, escTurns: [0, 0, 0, 0], baneCredit: 0, healGiven: 0, mendGiven: 0, mercyGiven: 0, rpSelf: 0, rpByAlly: 0, rpBetween: 0, downs: 0, debuffs: {},
+  st: { dealt: 0, rounds: 0, novaDealt: 0, novaTurns: 0, incoming: 0, reduced: 0, reducedGiven: 0, taken: 0, defCredit: 0, vulnCredit: 0, surgeCredit: 0, guardCredit: 0, blockCredit: 0, apGuardGiven: 0, apGuardUsed: 0, apLeft: 0, hookCrit: 0, hookClass: 0, specials: 0, reactionDealt: 0, mindDealt: 0, bloodiedTurns: 0, escTurns: [0, 0, 0, 0], baneCredit: 0, healGiven: 0, mendGiven: 0, mercyGiven: 0, rpSelf: 0, rpByAlly: 0, rpBetween: 0, downs: 0, debuffs: {},
     shots: 0, engagedShots: 0, intoMelee: 0, covered: 0, coverBanes: 0, rangeBanes: 0, turnsEngaged: 0, stillTurns: 0, struck: 0, mapBanes: 0, swings: 0, flankBoons: 0, outOfReach: 0, moveAP: 0, lostAP: 0, charges: 0, reactions: 0, oaMade: 0, oaDisrupt: 0, oaTaken: 0, carefulSteps: 0, condApplied: 0, forced: 0 } });
 /** The most a PC heals more per Rally Point from a party member's passive (Font of Mercy; the best one, they don't stack), and who gives it. */
 const rallyBonus = (pcs, t, inCombat = true) => { let n = 0, by = null; for (const g of pcs) if (!g.down || g === t) for (const p of g.build.passives) if (p.effect.kind === "rallybonus" && p.effect.n > n && (inCombat ? (g.esc ?? 0) : 0) >= p.escalation) { n = p.effect.n; by = g; } return { n, by }; };   // an Escalation passive works only in a fight (Escalation is 0 between fights)
@@ -587,8 +595,8 @@ const rallyBonus = (pcs, t, inCombat = true) => { let n = 0, by = null; for (con
 export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal = false, inject = null, streams = false } = {}) {
   const M = map?.on ? map : null;
   const pcs = party.map(p => (p.build ? p : pcState(p)));
-  for (const p of pcs) { p.leftSquare = null; p.zoneHeal = null; p.guard = 0; p.guardBy = null; p.down = p.damage >= p.build.pool; p.defBonus = 0; p.defBy = null; p.spent = new Set([...(p.spent ?? [])].filter(g => p.build.actions[Object.keys(p.build.actions).find(k => group(k) === g)]?.freq === "daily")); p.quarry = null; p.unloaded = false; p.startDamage = p.damage; p.esc = p.startEsc ?? 0; p.floorUsed = false; p.elusiveRound = null; p.encFx = []; p.bloodiedRound = p.damage >= p.build.bodyHealth ? 0 : null; p.keptAP = RULES.reactionAp; p.blockedFor = null; }
-  const foes = npcs.map(n => ({ ...n, damage: 0, mindDamage: 0, dead: false, vulnerable: 0, surge: null, zone: null, bloodiedRound: null, strainedRound: null, deadRound: null, ...(immortal ? { pool: 1e9, bodyPool: 1e9, mindPool: 1e9 } : {}) }));
+  for (const p of pcs) { p.leftSquare = null; p.zoneHeal = null; p.guard = 0; p.guardBy = null; p.down = p.damage >= p.build.pool; p.defBonus = 0; p.defBy = null; p.spent = new Set([...(p.spent ?? [])].filter(g => p.build.actions[Object.keys(p.build.actions).find(k => group(k) === g)]?.freq === "daily")); p.quarry = null; p.unloaded = false; p.startDamage = p.damage; p.esc = p.startEsc ?? 0; p.floorUsed = false; p.elusiveRound = null; p.encFx = []; p.bloodiedRound = p.damage >= p.build.bodyHealth ? 0 : null; p.keptAP = RULES.reactionAp; p.blockedFor = null; p.apGuard = 0; p.turnKept = 0; p.hooked = {}; }
+  const foes = npcs.map(n => ({ ...n, damage: 0, mindDamage: 0, dead: false, vulnerable: 0, surge: null, zone: null, bloodiedRound: null, strainedRound: null, deadRound: null, encUsed: false, roundSpecial: 0, ...(immortal ? { pool: 1e9, bodyPool: 1e9, mindPool: 1e9 } : {}) }));
   // Adjacent allies (Hallowed Stance): the N allies most often in front (highest "targeted"), fixed for the fight (the map model: the allies really adjacent).
   for (const p of pcs) { const k = Math.max(0, ...p.build.passives.filter(x => x.effect.kind === "reduce").map(x => x.effect.adjacent)); p.adjacent = pcs.filter(x => x !== p).sort((x, y) => y.build.targeted - x.build.targeted).slice(0, k); p.reduceAdj = k; }
   // The map model: positions, Speed, conditions, AP kept for Reactions.
@@ -614,8 +622,12 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     }
   };
   const mendOne = (t, amount, by) => { if (!t) return; const h = Math.min(t.damage, amount); t.damage -= h; by.st.mendGiven += h; };   // new Health
+  /** Pack R prep: an Escalation hook (+1 Escalation, up to 3; each kind once an encounter). */
+  const hook = (p, kind) => { if (!RULES.escHooks || p.down || p.hooked[kind] || (p.esc ?? 0) >= 3) return; p.hooked[kind] = true; p.esc++; if (kind === "crit") p.st.hookCrit++; else p.st.hookClass++; };   // used only when it raises the Escalation
+  /** Pack R prep: a Reaction spends the Reaction AP first, then a turn AP kept (which loses its Guard). */
+  const spendReact = p => { p.keptAP--; if (p.keptAP < p.turnKept) { p.turnKept--; p.apGuard = Math.max(0, (p.apGuard ?? 0) - RULES.apGuard); } };
   const killCheck = () => { for (const f of foes) {
-    if (!f.dead && f.damage >= f.pool) { f.dead = true; f.deadRound = round; }
+    if (!f.dead && f.damage >= f.pool) { f.dead = true; f.deadRound = round; for (const p of pcs) if (p.build.escHook === "quarry" && p.quarry === f) hook(p, "class"); }
     // Pack R prep: when an NPC becomes Bloodied (Body damage at its Body threshold) and Strained (Mind damage at its Mind threshold).
     if (!f.bloodiedRound && f.damage - (f.mindDamage ?? 0) >= f.bodyPool) f.bloodiedRound = round;
     if (!f.strainedRound && (f.mindDamage ?? 0) >= f.mindPool) f.strainedRound = round;
@@ -629,11 +641,13 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     if (el) { t.elusiveRound = round; t.st.elusive = (t.st.elusive ?? 0) + 1; }   // the first Strike against it this round
     // Pack R prep: a PC with a blocking Reaction and a Reaction AP (or AP kept) takes damage off the hit (itself or an ally within 5 squares; once per NPC turn each: the Turn Frequency).
     let block = null;
-    for (const p of up()) { const rx = (p.build.reactions ?? []).find(x => x.kind === "block"); if (!rx || (p.keptAP ?? 0) < 1 || p.blockedFor === f.turnId) continue; if (M && p !== t && MP.dist(p.pos, t.pos) > 5) continue; block = { dmg: rx.dmg, by: p, used: () => { p.keptAP--; p.blockedFor = f.turnId; p.st.reactions++; } }; break; }
+    for (const p of up()) { const rx = (p.build.reactions ?? []).find(x => x.kind === "block"); if (!rx || (p.keptAP ?? 0) < 1 || p.blockedFor === f.turnId) continue; if (M && p !== t && MP.dist(p.pos, t.pos) > 5) continue; block = { dmg: rx.dmg, spill: rx.spill, by: p, used: () => { spendReact(p); p.blockedFor = f.turnId; p.st.reactions++; } }; break; }
     const taken = npcStrike(f.R ?? R, f, t, k + taunted + banes + el, t.esc, pcs, boons, block);   // At-will Banes on the 2nd and 3rd Strike
     t.damage += taken;   // an NPC's Basic attack is Body damage (a weapon)
+    const wasB = !!t.bloodiedRound, wasD = t.down;
     if (t.damage >= t.build.bodyHealth && !t.bloodiedRound) t.bloodiedRound = round;
     if (t.damage >= t.build.pool && !t.down) { t.down = true; t.st.downs++; if (!firstDown) firstDown = round; }
+    if ((!wasB && t.bloodiedRound) || (!wasD && t.down)) for (const p of up()) if (p !== t && p.build.escHook === "ally" && (!M || MP.dist(p.pos, t.pos) <= 5)) hook(p, "class");   // pack R prep: the Paladin's hook
   };
   /** A PC's turn context (the targets, heals, buffs, areas; and with the map model, its movement, Boons and Banes, conditions). */
   const ctxFor = (pc, extra = {}) => ({
@@ -678,14 +692,15 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   const pcReact = (p, f) => {
     const r = runTurn(p, { name: "Reaction", steps: ["Weapon Attack"] }, ctxFor(p, { target: () => f }));
     p.st.dealt += r.damage; p.st.reactionDealt += r.damage; p.st.reactions++; killCheck();
-    return { crit: r.lastTier === 3 && (p.R ?? R)() < 1 / 12 };   // a Critical: Doubles on a Tier 3 (about 1 in 12 of them)
+    if (r.crit) hook(p, "crit");
+    return { crit: r.crit || (r.lastTier === 3 && (p.R ?? R)() < 1 / 12) };   // a Critical: Doubles on a Tier 3 (about 1 in 12 of them)
   };
   /** An NPC leaves a square during an Advance: the PCs' Interrupts (Opportunity Attack: it leaves your reach; Quick Draw: it moves closer). */
   const npcLeave = id => (c, np) => {
     for (const p of up()) for (const rx of p.build.reactions ?? []) {
       if (p.keptAP < 1 || c.dead) continue;
-      if (rx.kind === "opportunity" && MP.threatens(p, c) && p.reacted !== id) { p.reacted = id; p.keptAP--; p.st.oaMade++; if (pcReact(p, c).crit && !c.dead) { p.st.oaDisrupt++; return false; } }
-      else if (rx.kind === "quick-draw" && p.quickRound !== `${round}:${c.name}${foes.indexOf(c)}` && MP.dist(c.pos, p.pos) <= 5 && MP.dist(np, p.pos) < MP.dist(c.pos, p.pos)) { p.quickRound = `${round}:${c.name}${foes.indexOf(c)}`; p.keptAP--; p.st.oaMade++; pcReact(p, c); }
+      if (rx.kind === "opportunity" && MP.threatens(p, c) && p.reacted !== id) { p.reacted = id; spendReact(p); p.st.oaMade++; if (pcReact(p, c).crit && !c.dead) { p.st.oaDisrupt++; return false; } }
+      else if (rx.kind === "quick-draw" && p.quickRound !== `${round}:${c.name}${foes.indexOf(c)}` && MP.dist(c.pos, p.pos) <= 5 && MP.dist(np, p.pos) < MP.dist(c.pos, p.pos)) { p.quickRound = `${round}:${c.name}${foes.indexOf(c)}`; spendReact(p); p.st.oaMade++; pcReact(p, c); }
     }
     return !c.dead;
   };
@@ -784,7 +799,17 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
       if (!n) break;
       if (!f.melee) break;   // a ranged NPC moves once
     }
-    if (!f.dead) {
+    if (!f.dead && RULES.npcSpecials && f.kit) {   // pack R prep: every AP left goes to attacks: the Encounter Special (once), the Round Special (once a round), Basic attacks (At-will Banes); 3 Strikes
+      let basics = 0;
+      for (let s = 0; s < 3 && ap > 0; s++) {
+        const enc = f.kit.enc && !f.encUsed && ap >= f.kit.enc.ap ? f.kit.enc : null, rnd = !enc && f.kit.round && f.roundSpecial !== round && ap >= f.kit.round.ap ? f.kit.round : null, sp = enc ?? rnd;
+        if (t.down || (f.melee && !MP.adj(f, t))) t = f.melee ? up().find(p => MP.adj(f, p)) : up().find(p => Number.isFinite(MP.rangeBanes(f.range, MP.dist(f.pos, p.pos))));
+        if (!t) break;
+        const m = MP.mapMods(f, t, f.melee ? "melee" : "ranged", W); if (!m) break;
+        if (sp) { ap -= sp.ap; if (enc) f.encUsed = true; else f.roundSpecial = round; f.curMult = sp.mult * RULES.npcSpecials; npcHit(f, t, 0, m.boons, m.banes); f.curMult = 1; }
+        else { ap--; npcHit(f, t, basics++, m.boons, m.banes); }
+      }
+    } else if (!f.dead) {
       const x = Math.min(f.strikes, Math.max(0, ap) / cost);
       const n = Math.floor(x + 1e-9) + (x % 1 > 1e-9 && (f.R ?? R)() < x % 1 ? 1 : 0);
       for (let k = 0; k < n; k++) {
@@ -805,6 +830,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
       if (!alive().length || !up().length) break;
       if (o.pc) {
         const pc = o.pc; if (pc.down) continue;
+        pc.apGuard = 0; pc.turnKept = 0;   // pack R prep: the Guard of unspent AP ends at the start of its next turn
         pc.st.rounds++; pc.st.escTurns[Math.min(3, pc.esc)]++; if (pc.damage >= pc.build.bodyHealth) pc.st.bloodiedTurns++;   // pack R prep: turns by Escalation level, turns while Bloodied
         for (const x of pcs) if (x.defBy === pc) { x.defBonus = 0; x.defBy = null; }   // a Defense bonus lasts 1 round: until its giver's next turn
         for (const f of foes) { if (f.surge?.by === pc) f.surge = null; if (f.zone?.by === pc) f.zone.left--; }   // Divine Surge lasts until your next turn; an area counts its rounds down on its maker's turn
@@ -823,7 +849,10 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
         }
         const turn = extra.turnKey ?? pc.build.turns[turnFor(pc, round, pcs)];
         const r = runTurn(pc, turn, ctxFor(pc, extra));
-        pc.keptAP = RULES.reactionAp + Math.max(0, (extra.apLimit ?? RULES.ap) - r.ap);   // pack R: the Reaction AP on top of what the turn left
+        const left = Math.max(0, (extra.apLimit ?? RULES.ap) - r.ap);
+        pc.keptAP = RULES.reactionAp + left;   // pack R: the Reaction AP on top of what the turn left
+        if (RULES.apGuard) { pc.apGuard = left * RULES.apGuard; pc.st.apGuardGiven += pc.apGuard; pc.st.apLeft += left; pc.turnKept = RULES.apGuardKeep ? left : 0; if (!RULES.apGuardKeep) pc.keptAP = RULES.reactionAp; }   // pack R prep: unspent AP become Guard
+        if (r.crit) hook(pc, "crit");
         if (M) { pc.st.lostAP += r.lostAP; pc.reacted = null; if (pc.cond.hindered) pc.cond.hindered = null; if (pc.cond.immob === "eot") pc.cond.immob = null; }
         pc.st.dealt += r.damage; pc.st.mindDealt += r.mind;
         if (r.nova) { pc.st.novaDealt += r.damage; pc.st.novaTurns++; }
