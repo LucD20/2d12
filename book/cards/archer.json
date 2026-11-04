@@ -228,12 +228,11 @@
    "versions": [
     {
      "ap": 1,
-     "effects": "Make a [Ranged, Shot] Weapon Attack (1A) against the triggering creature. On a Tier 2 or 3, it is Hindered (EoT).",
+     "effects": "Make a [Ranged, Shot] Weapon Attack (1A) against the triggering creature. On a Tier 2 or 3, it is Hindered (EoT); on a Critical, it is also Pushed 2.",
      "foundry": {
       "append": "@Use[Weapon Attack|label:Weapon Attack (1A)] @Condition[Hindered|eot]{Hindered (EoT)}"
      },
-     "ruler": "does Weapon Attack",
-     "critical": "The target is Pushed 2."
+     "ruler": "does Weapon Attack"
     }
    ],
    "foundry": {
