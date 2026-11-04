@@ -29,7 +29,7 @@ old cards: Vow of Enmity, Word of Radiance kept | in no level: false
 Paladin 1 (Smite, Heavy Blows): Divine Power, Kindled Wrath, Smite, Rebuke, Heavy Blows, Holy Wrath, Radiant Zeal, Searing Blows, Reckoning, Final Verdict | ids unique: true
 Paladin 3 (Lay On Hands, Protector): Divine Power, Kindled Wrath, Lay On Hands, Shield of Faith, Challenge, Word of Radiance, Font of Mercy, Mending Light, Hallowed Stance, Hallowed Dawn, Bloodlust, Bloodlust, Miraculous Recovery, Hand of Mercy, Hand of Mercy | ids unique: true
 Archer 1 (Double Shot, Marksman): Sharpshooter, Marked Quarry, Mark Quarry, Thrill of the Kill, Double Shot, Overwatch, Aim, Aim, Pinning Shot, Killer's Focus, Hunter's Edge, Finisher, Deathmark | ids unique: true
-Archer 3 (Rolling Shot, Kickboxer): Sharpshooter, Marked Quarry, Mark Quarry, Thrill of the Kill, Rolling Shot, Ready Shot, Brawler, Pummel, Volley, Vanish, Sure Step, Pinned Down, Open Season, Kickboxer, Leg Sweep, Rain of Arrows, Steady Nerves | ids unique: true
+Archer 3 (Rolling Shot, Kickboxer): Sharpshooter, Marked Quarry, Mark Quarry, Thrill of the Kill, Rolling Shot, Covering Shot, Brawler, Pummel, Volley, Vanish, Sure Step, Staggering Shot, Open Season, Kickboxer, Leg Sweep, Rain of Arrows, Steady Nerves | ids unique: true
 Bandit Thug (grunt, speed 5): Cudgel atwill, Low Blow round
 Goblin Sneak (minion, speed 7): Rusty Knife atwill, Dirty Trick round
 Ogre Chieftain (elite, speed 4): Club atwill, Ground Slam encounter, Rally the Tribe round

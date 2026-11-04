@@ -223,9 +223,9 @@ export function parseSpec(text, file = "spec") {
       else if (key === "overcast-floor") b.overcastFloor = Number(rest);   // once a fight, an Action that costs up to N Escalation costs N less (the round-1 floor)
       else if (key === "health-factor") b.healthFactor = Number(rest);   // the level factor of Health (the book: (level + 10) / 10)
       else if (key === "reaction") {   // reaction Opportunity Attack: opportunity  ·  reaction Quick Draw: quick-draw  (the map model uses them)
-        const m = rest.match(/^(.+?):\s*(opportunity|quick-draw|overwatch|callshot|ready|rebuke(?:\s+\d+)?(?:\s+turn)?|block\s+\S+(?:\s+(?:spill|round|ally))*)(?:\s+with\s+(.+))?$/i); if (!m) fail("write reaction like: Opportunity Attack: opportunity (or quick-draw; or block 1d8+[Mod]: a Reaction that takes that much off one NPC hit on you or an ally within 5 squares)");
+        const m = rest.match(/^(.+?):\s*(opportunity|quick-draw(?:\s+\d+)?|overwatch|callshot|cover|ready|rebuke(?:\s+\d+)?(?:\s+turn)?|block\s+\S+(?:\s+(?:spill|round|ally))*)(?:\s+with\s+(.+))?$/i); if (!m) fail("write reaction like: Opportunity Attack: opportunity (or quick-draw; or block 1d8+[Mod]: a Reaction that takes that much off one NPC hit on you or an ally within 5 squares)");
         const kind = m[2].toLowerCase().split(/\s+/)[0];
-        b.reactions.push({ name: m[1].trim(), kind, action: (m[3] ?? "Weapon Attack").trim(), ...(kind === "block" ? { dmg: parseDamage(m[2].split(/\s+/)[1]), spill: /\sspill\b/i.test(m[2]), round: /\sround\b/i.test(m[2]), ally: /\sally\b/i.test(m[2]) } : {}), ...(kind === "rebuke" ? { range: Number(m[2].split(/\s+/)[1] ?? 0), turn: /\bturn\b/i.test(m[2]) } : {}) });   // spill: what the hit doesn't use becomes Guard on the target
+        b.reactions.push({ name: m[1].trim(), kind, action: (m[3] ?? "Weapon Attack").trim(), ...(kind === "block" ? { dmg: parseDamage(m[2].split(/\s+/)[1]), spill: /\sspill\b/i.test(m[2]), round: /\sround\b/i.test(m[2]), ally: /\sally\b/i.test(m[2]) } : {}), ...(kind === "rebuke" ? { range: Number(m[2].split(/\s+/)[1] ?? 0), turn: /\bturn\b/i.test(m[2]) } : {}), ...(kind === "quick-draw" ? { range: Number(m[2].split(/\s+/)[1] ?? 5) } : {}) });   // spill: what the hit doesn't use becomes Guard on the target
       }
       else if (key === "action") {
         const f = rest.split("|").map(s => s.trim());
@@ -582,7 +582,8 @@ const npcStrike = (R, f, t, banes, escalation = 3, pcs = [], boons = 0, block = 
   if (t.defBonus && t.defBy?.st) t.defBy.st.defCredit += npcAvg(f, pickU(u, C.tierProbs(f.mod, def - t.defBonus, boons, banes + zb, ""))) - npcAvg(f, tier);
   if (zb && f.zone.by?.st) f.zone.by.st.baneCredit += npcAvg(f, pickU(u, C.tierProbs(f.mod, def, boons, banes, ""))) - npcAvg(f, tier);
   let d = npcDamage(R, f, tier);
-  if (d > 0 && block) { const roll = rollDamage(R, block.dmg, { mod: block.by.build.powerMod }).total, b = Math.min(d, roll); d -= b; block.by.st.blockCredit += b; block.used();
+  if (d > 0 && block?.half) { const b = Math.floor(d / 2); d -= b; block.by.st.blockCredit += b; }   // Covering Shot's Tier 3
+  else if (d > 0 && block) { const roll = rollDamage(R, block.dmg, { mod: block.by.build.powerMod }).total, b = Math.min(d, roll); d -= b; block.by.st.blockCredit += b; block.used();
     if (block.spill && roll - b > (t.guard ?? 0)) { t.guard = roll - b; t.guardBy = block.by; } }   // pack R prep: the rest of the block becomes Guard on the target (Stacking: the higher value counts)   // pack R prep: a blocking Reaction (Shield of Faith) on a hit that lands
   const afterReduce = d > 0 ? Math.max(0, d - reduce) : 0;
   const absorbed = Math.min(t.guard ?? 0, afterReduce), apAbs = Math.min(t.apGuard ?? 0, afterReduce - absorbed), taken = afterReduce - absorbed - apAbs;   // Guard takes the damage first
@@ -658,7 +659,10 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     if (el) { t.elusiveRound = round; t.st.elusive = (t.st.elusive ?? 0) + 1; }   // the first Strike against it this round
     // Pack R prep: a PC with a blocking Reaction and a Reaction AP (or AP kept) takes damage off the hit (itself or an ally within 5 squares; once per NPC turn each: the Turn Frequency).
     let block = null;
-    for (const p of up()) { const rx = (p.build.reactions ?? []).find(x => x.kind === "block"); if (!rx || (p.keptAP ?? 0) < 1 || p.cond?.staggered || p.blockedFor === f.turnId) continue; if (M && p !== t && MP.dist(p.pos, t.pos) > 5) continue;
+    // Pack R-classes, part 4: Covering Shot (1R, Turn, Interrupt: a Strike would damage an ally within 10 squares): a Weapon Attack with 1 Boon on the attacker; on a Tier 3 the ally takes half the damage.
+    for (const p of up()) { const rx = (p.build.reactions ?? []).find(x => x.kind === "cover"); if (!rx || p === t || (p.keptAP ?? 0) < 1 || p.cond?.staggered || p.coverFor === f.turnId || (M && MP.dist(p.pos, t.pos) > 10)) continue;
+      p.coverFor = f.turnId; spendReact(p); const r = pcReact(p, f, rx.action, 1); if (r.tier === 3 && !f.dead) block = { half: true, by: p, used: () => {} }; break; }
+    for (const p of up()) { if (block) break; const rx = (p.build.reactions ?? []).find(x => x.kind === "block"); if (!rx || (p.keptAP ?? 0) < 1 || p.cond?.staggered || p.blockedFor === f.turnId) continue; if (M && p !== t && MP.dist(p.pos, t.pos) > 5) continue;
       if (rx.ally && p === t) continue; if (rx.round && p.blockedRound === round) continue;   // pack R-classes: `ally` (never on itself: Bulwark of Faith), `round` (once a round: the Round Frequency)
       block = { dmg: rx.dmg, spill: rx.spill, by: p, used: () => { spendReact(p); p.blockedFor = f.turnId; p.blockedRound = round; p.st.reactions++; } }; break; }
     const bb = RULES.bloodiedBanes && f.bloodiedRound != null ? 1 : 0;   // the book's Bloodied rule on the NPC's Strikes
@@ -722,11 +726,11 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     ...extra,
   });
   /** A PC's Reaction: a Weapon Attack against f (Opportunity Attack, Quick Draw). Returns { crit }. */
-  const pcReact = (p, f, action = "Weapon Attack") => {
-    const r = runTurn(p, { name: "Reaction", steps: [action] }, ctxFor(p, { target: () => f }));
+  const pcReact = (p, f, action = "Weapon Attack", boons = 0) => {
+    const r = runTurn(p, { name: "Reaction", steps: [action] }, ctxFor(p, { target: () => f, startNext: boons ? [{ kind: "boon", n: boons, scope: "next", traits: [] }] : [] }));
     p.st.dealt += r.damage; p.st.reactionDealt += r.damage; p.st.reactions++; killCheck();
     if (r.crit) hook(p, "crit");
-    return { crit: r.crit || (r.lastTier === 3 && (p.R ?? R)() < 1 / 12) };   // a Critical: Doubles on a Tier 3 (about 1 in 12 of them)
+    return { crit: r.crit || (r.lastTier === 3 && (p.R ?? R)() < 1 / 12), tier: r.lastTier };   // a Critical: Doubles on a Tier 3 (about 1 in 12 of them)
   };
   /** An NPC uses the Stand Action: the PCs' Opportunity Attacks (the Talent's other trigger). */
   const standReact = f => { const id = ++actionId; for (const p of up()) for (const rx of p.build.reactions ?? []) if (rx.kind === "opportunity" && p.keptAP >= 1 && !p.cond?.staggered && !f.dead && MP.threatens(p, f) && p.reacted !== id) { p.reacted = id; spendReact(p); p.st.oaMade++; pcReact(p, f, rx.action); } };
@@ -735,7 +739,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     for (const p of up()) for (const rx of p.build.reactions ?? []) {
       if (p.keptAP < 1 || c.dead) continue;
       if (rx.kind === "opportunity" && MP.threatens(p, c) && p.reacted !== id) { p.reacted = id; spendReact(p); p.st.oaMade++; if (pcReact(p, c, rx.action).crit && !c.dead && RULES.oaDisrupt) { p.st.oaDisrupt++; return false; } }
-      else if (rx.kind === "quick-draw" && p.qdReacted !== id && MP.dist(c.pos, p.pos) <= 5 && MP.dist(np, p.pos) < MP.dist(c.pos, p.pos)) { p.qdReacted = id; spendReact(p); p.st.oaMade++; pcReact(p, c, rx.action); }   // once per triggering Action (the Advance)
+      else if (rx.kind === "quick-draw" && p.qdReacted !== id && MP.dist(c.pos, p.pos) <= (rx.range ?? 5) && MP.dist(np, p.pos) < MP.dist(c.pos, p.pos)) { p.qdReacted = id; spendReact(p); p.st.oaMade++; pcReact(p, c, rx.action); }   // once per triggering Action (the Advance)
     }
     return !c.dead;
   };

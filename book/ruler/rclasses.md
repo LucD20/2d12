@@ -27,9 +27,9 @@ The Apex turn is taken at Escalation 3 while the Apex is unused (`when escalatio
 
 | Fight | rounds · lost · Down · won | Party dealt · taken a fight | A Paladin's turns at Escalation 1 / 2 / 3 | Smite Paladin: dealt a fight · reactions · blocked · surge given · mend given | Lay On Hands Paladin: dealt · reactions · blocked · mend given · reduced |
 |---|---|---|---|---|---|
-| 4 Standards (normal) | 3.7 r · 8% · Down 12% · won 100% | 307.9 · 46.0 | 0.49 / 0.92 / 1.68 | 93.1 · 2.27 · 0.0 · 0.0 · 0.0 | 18.3 · 2.79 · 20.2 · 25.0 · 4.6 |
-| 6 Standards (hard) | 5.7 r · 27% · Down 45% · won 88% | 438.8 · 114.6 | 0.48 / 0.79 / 3.25 | 132.5 · 3.45 · 0.0 · 0.0 · 0.0 | 38.1 · 4.72 · 34.1 · 48.5 · 22.1 |
-| 2 Elites + 2 Standards (deadly) | 5.5 r · 15% · Down 28% · won 96% | 437.5 · 81.4 | 0.49 / 0.86 / 3.25 | 131.3 · 3.23 · 0.0 · 0.0 · 0.0 | 29.0 · 4.20 · 32.5 · 39.7 · 13.2 |
+| 4 Standards (normal) | 3.5 r · 7% · Down 10% · won 100% | 304.6 · 42.9 | 0.48 / 0.94 / 1.58 | 92.4 · 2.22 · 0.0 · 0.0 · 0.0 | 17.2 · 2.52 · 17.8 · 24.0 · 4.0 |
+| 6 Standards (hard) | 5.4 r · 25% · Down 43% · won 91% | 437.5 · 108.1 | 0.47 / 0.81 / 3.04 | 126.7 · 3.27 · 0.0 · 0.0 · 0.0 | 35.4 · 4.36 · 31.2 · 46.6 · 18.0 |
+| 2 Elites + 2 Standards (deadly) | 5.4 r · 14% · Down 28% · won 96% | 435.3 · 79.6 | 0.48 / 0.87 / 3.19 | 130.7 · 3.19 · 0.0 · 0.0 · 0.0 | 28.3 · 4.09 · 30.9 · 39.3 · 13.5 |
 
 For scale, the decision sheet's row with the P1 builds at the same fit (rework-sheet.md section 5): 3.5 r · 25% · Down 18% · won 100%.
 
@@ -39,12 +39,12 @@ For scale, the decision sheet's row with the P1 builds at the same fit (rework-s
 
 | Paladins' Reaction | rounds · lost · Down · won | Reactions a fight (a Paladin) | Blocked · Guard used · damage, a fight (a Paladin) | Worth a Paladin turn (DE · AP) |
 |---|---|---:|---|---|
-| None | 3.8 r · 15% · Down 22% · won 99% | 0.00 | 0.0 · 0.0 · 0.0 | 0.00 · 0.00 |
-| Opportunity Attack (the basic Reaction) | 3.6 r · 15% · Down 20% · won 100% | 0.93 | 0.0 · 0.0 · 6.3 | 2.16 · 0.37 |
-| Shield of Faith (1R, Turn: 2d6 + [PMod]) | 3.6 r · 5% · Down 8% · won 100% | 2.51 | 17.2 · 0.0 · 0.0 | 5.46 · 0.94 |
-| Rebuke (1R, Turn, Trigger: an enemy within 5 squares Strikes an ally: Appeal Save; 1d8 Ho, Pushed 2, Frightened / 1d6 Ho, Pushed 1 / nothing) | 3.6 r · 14% · Down 20% · won 100% | 2.17 | 0.0 · 0.0 · 6.6 | 2.17 · 0.37 |
-| Rebuke at Reach and Round (the first draft) | 3.7 r · 14% · Down 20% · won 100% | 0.76 | 0.0 · 0.0 · 2.3 | 0.75 · 0.13 |
-| Bulwark of Faith as it was (1R, Round, ally only; an Encounter Pick since part 3) | 3.7 r · 7% · Down 11% · won 100% | 1.68 | 12.5 · 1.2 · 0.0 | 4.36 · 0.75 |
+| None | 3.6 r · 14% · Down 17% · won 100% | 0.00 | 0.0 · 0.0 · 0.0 | 0.00 · 0.00 |
+| Opportunity Attack (the basic Reaction) | 3.4 r · 14% · Down 20% · won 100% | 0.91 | 0.0 · 0.0 · 6.3 | 2.24 · 0.39 |
+| Shield of Faith (1R, Turn: 2d6 + [PMod]) | 3.5 r · 4% · Down 6% · won 100% | 2.30 | 15.4 · 0.0 · 0.0 | 5.05 · 0.87 |
+| Rebuke (1R, Turn, Trigger: an enemy within 5 squares Strikes an ally: Appeal Save; 1d8 Ho, Pushed 2, Frightened / 1d6 Ho, Pushed 1 / nothing) | 3.5 r · 12% · Down 17% · won 100% | 2.12 | 0.0 · 0.0 · 6.4 | 2.20 · 0.38 |
+| Rebuke at Reach and Round (the first draft) | 3.5 r · 12% · Down 16% · won 99% | 0.70 | 0.0 · 0.0 · 2.1 | 0.70 · 0.12 |
+| Bulwark of Faith as it was (1R, Round, ally only; an Encounter Pick since part 3) | 3.5 r · 7% · Down 10% · won 100% | 1.51 | 11.1 · 1.0 · 0.0 | 4.01 · 0.69 |
 
 A block can't take more than the hit: at this fit a Standard's Basic attack averages 3.6 / 6.6 and its 2 AP Special 7.9 / 14.5. Bulwark's Guard is the ally's Rally Point (9 for a Paladin, 8 for an Archer here: 9 in the model), before the damage, so its rest stays as Guard (Stacking: the higher value).
 
@@ -60,14 +60,14 @@ A block can't take more than the hit: at this fit a Standard's Basic attack aver
 
 | Mercy Passive (rung) | Build | Fight | rounds · lost · Down · won | What it did a fight | Worth a turn (DE · AP) | Worth a turn at its rung (DE · AP) |
 |---|---|---|---|---|---|---|
-| Divine Surge (1) | smite | 4 Standards | 3.7 r · 8% · Down 13% · won 100% | 10.7 | 3.45 · 0.59 | 3.45 · 0.59 |
-| Font of Mercy (1) | hands | 4 Standards | 3.5 r · 9% · Down 13% · won 100% | 3.8 | 1.28 · 0.22 | 1.28 · 0.22 |
-| Mending Light (2) | hands | 4 Standards | 3.5 r · 9% · Down 13% · won 100% | 9.4 | 3.15 · 0.54 | 3.76 · 0.65 |
-| Hallowed Stance (3) | hands | 4 Standards | 3.5 r · 9% · Down 13% · won 100% | 4.6 | 1.53 · 0.26 | 2.88 · 0.50 |
-| Divine Surge (1) | smite | 6 Standards (hard) | 5.8 r · 28% · Down 48% · won 87% | 13.2 | 3.25 · 0.56 | 3.25 · 0.56 |
-| Font of Mercy (1) | hands | 6 Standards (hard) | 5.7 r · 30% · Down 50% · won 89% | 9.6 | 2.00 · 0.35 | 2.00 · 0.35 |
-| Mending Light (2) | hands | 6 Standards (hard) | 5.7 r · 30% · Down 50% · won 89% | 17.9 | 3.76 · 0.65 | 4.17 · 0.72 |
-| Hallowed Stance (3) | hands | 6 Standards (hard) | 5.7 r · 30% · Down 50% · won 89% | 20.6 | 4.31 · 0.74 | 5.87 · 1.01 |
+| Divine Surge (1) | smite | 4 Standards | 3.5 r · 7% · Down 11% · won 100% | 10.2 | 3.31 · 0.57 | 3.31 · 0.57 |
+| Font of Mercy (1) | hands | 4 Standards | 3.4 r · 8% · Down 12% · won 100% | 3.4 | 1.18 · 0.20 | 1.18 · 0.20 |
+| Mending Light (2) | hands | 4 Standards | 3.4 r · 8% · Down 12% · won 100% | 8.3 | 2.88 · 0.50 | 3.46 · 0.60 |
+| Hallowed Stance (3) | hands | 4 Standards | 3.4 r · 8% · Down 12% · won 100% | 4.1 | 1.40 · 0.24 | 2.74 · 0.47 |
+| Divine Surge (1) | smite | 6 Standards (hard) | 5.5 r · 26% · Down 47% · won 90% | 13.2 | 3.19 · 0.55 | 3.19 · 0.55 |
+| Font of Mercy (1) | hands | 6 Standards (hard) | 5.4 r · 28% · Down 46% · won 90% | 8.9 | 1.96 · 0.34 | 1.96 · 0.34 |
+| Mending Light (2) | hands | 6 Standards (hard) | 5.4 r · 28% · Down 46% · won 90% | 16.2 | 3.57 · 0.62 | 3.99 · 0.69 |
+| Hallowed Stance (3) | hands | 6 Standards (hard) | 5.4 r · 28% · Down 46% · won 90% | 18.9 | 4.19 · 0.72 | 5.84 · 1.01 |
 
 Font of Mercy adds to the Rally Points used in the fight: the ruler's Lay On Hands spends one only on an ally hurt at least three quarters of what it heals, so in a normal fight it hardly fires (the Standard day's between-fight Rally Points, where it also works, are not in these numbers).
 
@@ -75,10 +75,10 @@ Font of Mercy adds to the Rally Points used in the fight: the ruler's Lay On Han
 
 | Apex | Build | Fight | rounds · lost · Down · won with · without | Owner dealt a fight with · without | Party taken with · without | Apex turns a fight | Worth a use (DE) · per AP |
 |---|---|---|---|---|---|---:|---|
-| Final Verdict (2 AP) | smite | 4 Standards | 3.7 r · 8% · Down 12% · won 100% · 3.7 r · 7% · Down 12% · won 100% | 93.1 · 92.8 | 46.0 · 46.7 | 0.92 | 1.1 · 0.5 |
-| Hallowed Dawn (3 AP) | hands | 4 Standards | 3.7 r · 8% · Down 12% · won 100% · 3.5 r · 9% · Down 13% · won 100% | 18.3 · 24.4 | 46.0 · 46.1 | 0.88 | -0.6 · -0.2 |
-| Final Verdict (2 AP) | smite | 6 Standards (hard) | 5.7 r · 27% · Down 45% · won 88% · 5.7 r · 27% · Down 47% · won 88% | 132.5 · 125.7 | 114.6 · 116.7 | 0.89 | 10.0 · 5.0 |
-| Hallowed Dawn (3 AP) | hands | 6 Standards (hard) | 5.7 r · 27% · Down 45% · won 88% · 5.7 r · 30% · Down 50% · won 89% | 38.1 · 43.1 | 114.6 · 115.1 | 0.90 | 6.3 · 2.1 |
+| Final Verdict (2 AP) | smite | 4 Standards | 3.5 r · 7% · Down 10% · won 100% · 3.5 r · 7% · Down 11% · won 100% | 92.4 · 89.2 | 42.9 · 43.0 | 0.93 | 3.6 · 1.8 |
+| Hallowed Dawn (3 AP) | hands | 4 Standards | 3.5 r · 7% · Down 10% · won 100% · 3.4 r · 8% · Down 12% · won 100% | 17.2 · 23.3 | 42.9 · 42.5 | 0.86 | -1.2 · -0.4 |
+| Final Verdict (2 AP) | smite | 6 Standards (hard) | 5.4 r · 25% · Down 43% · won 91% · 5.4 r · 26% · Down 44% · won 88% | 126.7 · 125.5 | 108.1 · 109.1 | 0.88 | 2.5 · 1.2 |
+| Hallowed Dawn (3 AP) | hands | 6 Standards (hard) | 5.4 r · 25% · Down 43% · won 91% · 5.4 r · 28% · Down 46% · won 90% | 35.4 · 40.9 | 108.1 · 107.7 | 0.90 | 5.3 · 1.8 |
 
 The Encounter band is 1.4 to 2 × 5.8 = 8.1 to 11.6 DE per AP (prices.md). Hallowed Dawn's worth is its healing (new Health to the three most hurt of you and your allies, 3d6 + [PMod] each); its Enfeebled 1 on the enemies and the cleansing are not modeled.
 
@@ -110,8 +110,10 @@ The R builds of the Archer: Double Shot with Overwatch and Deathmark, Rolling Sh
 | None | 3.9 r · 7% · Down 14% · won 100% | 0.00 | 0.0 · 1.8 · 90.6 | 0.52 · 0.09 |
 | Opportunity Attack (the basic Reaction) | 3.9 r · 7% · Down 14% · won 100% | 0.00 | 0.0 · 1.8 · 90.6 | 0.52 · 0.09 |
 | Quick Draw (the sheet's stand-in: an enemy within 5 squares moves closer) | 3.7 r · 8% · Down 14% · won 100% | 1.62 | 11.4 · 1.8 · 95.8 | 3.99 · 0.69 |
-| Overwatch (1R, Turn: an enemy within 10 squares makes a Strike) | 3.4 r · 8% · Down 10% · won 100% | 3.09 | 20.3 · 1.8 · 97.4 | 7.26 · 1.25 |
-| Ready Shot (1R, Round: an enemy within 10 squares makes a Strike: 1 AP less on your next turn's first Shot) | 3.9 r · 7% · Down 12% · won 100% | 2.97 | 0.0 · 1.8 · 95.9 | 2.08 · 0.36 |
+| Overwatch (1R, Turn: an enemy within 10 squares moves closer to you; its Hindered and Critical Push not modeled) | 3.5 r · 7% · Down 10% · won 100% | 2.54 | 17.4 · 1.7 · 97.6 | 6.06 · 1.04 |
+| Overwatch on a Strike trigger (the first draft) | 3.4 r · 8% · Down 10% · won 100% | 3.09 | 20.3 · 1.8 · 97.4 | 7.26 · 1.25 |
+| Covering Shot (1R, Turn, Interrupt: a Strike would damage an ally within 10 squares: a Weapon Attack with 1 Boon; Tier 3 halves the ally's damage) | 3.4 r · 8% · Down 10% · won 100% | 2.80 | 20.2 · 1.9 · 98.0 | 7.85 · 1.35 |
+| Ready Shot (dropped: 1 AP less on your next turn's first Shot) | 3.9 r · 7% · Down 12% · won 100% | 2.97 | 0.0 · 1.8 · 95.9 | 2.08 · 0.36 |
 | Call the Shot (considered: an ally damages your Quarry: Vulnerable 1 until your next turn) | 4.0 r · 9% · Down 16% · won 100% | 1.94 | 0.0 · 3.0 · 92.0 | 0.84 · 0.15 |
 | Ready Shot by the turn tables (the 5 AP turn over the 4 AP turn at Escalation 3: 30.5 − 27.8, × 0.76 fires an Archer turn) | | | | 2.04 · 0.35 |
 
@@ -125,11 +127,11 @@ Ready Shot's AP is spent on a 5 AP turn (Double Shot 3 or Rolling Shot 3, Lock &
 
 | Apex | Build | Fight | rounds · lost · Down · won with · without | Owner dealt a fight with · without | Its Vulnerable's extra with · without | Apex turns a fight | Worth a use (DE) · per AP |
 |---|---|---|---|---|---|---:|---|
-| Deathmark (2 AP) | double | 4 Standards | 3.7 r · 8% · Down 12% · won 100% · 3.7 r · 8% · Down 14% · won 100% | 110.8 · 105.6 | 0.0 · 0.0 | 0.99 | 5.6 · 2.8 |
-| Open Season (2 AP) | rolling | 4 Standards | 3.7 r · 8% · Down 12% · won 100% · 3.6 r · 8% · Down 13% · won 100% | 85.6 · 89.2 | 3.5 · 0.0 | 0.99 | -0.1 · -0.0 |
-| Deathmark (2 AP) | double | 6 Standards (hard) | 5.7 r · 27% · Down 45% · won 88% · 5.8 r · 26% · Down 45% · won 90% | 144.9 · 145.8 | 0.0 · 0.0 | 0.93 | 0.4 · 0.2 |
-| Open Season (2 AP) | rolling | 6 Standards (hard) | 5.7 r · 27% · Down 45% · won 88% · 5.6 r · 26% · Down 45% · won 90% | 123.3 · 127.5 | 3.2 · 0.0 | 0.96 | -2.3 · -1.2 |
+| Deathmark (2 AP) | double | 4 Standards | 3.5 r · 7% · Down 10% · won 100% · 3.5 r · 7% · Down 10% · won 100% | 102.6 · 96.9 | 0.0 · 0.0 | 0.99 | 5.2 · 2.6 |
+| Open Season (2 AP) | rolling | 4 Standards | 3.5 r · 7% · Down 10% · won 100% · 3.4 r · 8% · Down 11% · won 100% | 92.4 · 94.1 | 3.3 · 0.0 | 0.98 | 1.7 · 0.9 |
+| Deathmark (2 AP) | double | 6 Standards (hard) | 5.4 r · 25% · Down 43% · won 91% · 5.4 r · 24% · Down 42% · won 91% | 142.0 · 141.8 | 0.0 · 0.0 | 0.96 | -0.0 · -0.0 |
+| Open Season (2 AP) | rolling | 6 Standards (hard) | 5.4 r · 25% · Down 43% · won 91% · 5.5 r · 25% · Down 43% · won 91% | 133.4 · 137.3 | 3.4 · 0.0 | 0.96 | -2.4 · -1.2 |
 
 Deathmark's Boon against the Quarry and its chain shot on a kill are not modeled (a floor); Open Season's allies' extra [V] 1d6 Pi is not modeled either, (a floor). Hunter's Edge's Cover part (about 1.5 DE a turn: positions) is not in the turn table.
 
-(1.3 minutes.)
+(1.4 minutes.)

@@ -1,5 +1,5 @@
 Paladin: Repertoire Holy Wrath, Word of Radiance, Bulwark of Faith, Beacon, Consecrated Ground, Miraculous Recovery, Divine Intervention | Passives Radiant Zeal, Divine Surge, Font of Mercy, Searing Blows, Mending Light, Reckoning, Hallowed Stance | Actives Final Verdict, Hallowed Dawn
-Archer: Repertoire Marksman's Shot, Volley, Covering Fire, Pinning Shot, Twin Shot, Hunter's Focus, Deadeye, Rain of Arrows | Passives Killer's Focus, Vanish, Harrying Shots, Hunter's Edge, Sure Step, Finisher, Pinned Down | Actives Deathmark, Open Season
+Archer: Repertoire Marksman's Shot, Volley, Covering Fire, Pinning Shot, Twin Shot, Hunter's Focus, Deadeye, Rain of Arrows | Passives Killer's Focus, Vanish, Harrying Shots, Hunter's Edge, Sure Step, Finisher, Staggering Shot | Actives Deathmark, Open Season
 the book's Talents: 16
   Challenge          ok combat 1
   Heavy Blows        ok combat 1 | Great Weapon | settings bonusdamage

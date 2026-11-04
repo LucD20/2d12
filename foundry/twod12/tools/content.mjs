@@ -136,7 +136,7 @@ sp("Human", { body: 0, mind: 0, appeal: 0, instinct: 0 }, true, 3, 4, 5);
 sp("Dwarf", { body: 1, mind: 1, appeal: -1, instinct: 1 }, false, 5, 3, 4, 1);
 sp("Elf", { body: -1, mind: 1, appeal: 1, instinct: 1 }, false, 1, 5, 6);
 // v0.0.185 (pack C2): the classes' levels as sections (module/classlevels.mjs), from the book's "by Level" tables; the class window reads them.
-const U = names => names.map(n => uuidOf(/^(Font of Mercy|Divine Power|Kindled Wrath|Sharpshooter|Marked Quarry|Hallowed Stance|Radiant Zeal|Mending Light|Divine Surge|Searing Blows|Reckoning|Killer's Focus|Thrill of the Kill|Vanish|Harrying Shots|Hunter's Edge|Sure Step|Finisher|Pinned Down)$/.test(n) ? "features" : "actions", n));
+const U = names => names.map(n => uuidOf(/^(Font of Mercy|Divine Power|Kindled Wrath|Sharpshooter|Marked Quarry|Hallowed Stance|Radiant Zeal|Mending Light|Divine Surge|Searing Blows|Reckoning|Killer's Focus|Thrill of the Kill|Vanish|Harrying Shots|Hunter's Edge|Sure Step|Finisher|Staggering Shot)$/.test(n) ? "features" : "actions", n));
 const sec = (id, title, kind, o = {}) => ({ id, title, kind, mode: o.mode ?? "choice", pick: o.pick ?? 1, items: o.items ?? [], pairs: (o.pairs ?? []).map(([a, b]) => ({ a, b })), freq: o.freq ?? "any", category: o.category ?? "" });
 // OT (book 2026-10-30): the Repertoire and Escalation lists with their options.
 // Pack R-classes (book 2026-11-04): the Paladin rebuilt for pack R: a Hallmark Reaction (Shield of Faith or Bulwark of Faith), an Encounter Pick, one Escalation Passive per
@@ -160,9 +160,9 @@ add("classes", "class", "Paladin", "icons/svg/angel.svg", {
     { sections: [sec("pal4tal", "Talent", "talent")] }
   ]
 });
-// Pack R-classes (book 2026-11-04): the Archer rebuilt for pack R, as the Paladin above: a Hallmark Reaction (Overwatch or Ready Shot), an Encounter Pick at level 1,
+// Pack R-classes (book 2026-11-04): the Archer rebuilt for pack R, as the Paladin above: a Hallmark Reaction (Overwatch or Covering Shot), an Encounter Pick at level 1,
 // one Escalation Passive per level and an Apex; Killer's Focus is an Escalation 1 Passive, Vanish the Passive that grants the 0R Reaction, Pinning Shot and Twin Shot Encounter Picks, Elusive is gone.
-const ARC_PASS1 = ["Killer's Focus", "Vanish", "Harrying Shots"], ARC_PASS2 = ["Hunter's Edge", "Sure Step"], ARC_PASS3 = ["Finisher", "Pinned Down"], ARC_APEX = ["Deathmark", "Open Season"];
+const ARC_PASS1 = ["Killer's Focus", "Vanish", "Harrying Shots"], ARC_PASS2 = ["Hunter's Edge", "Sure Step"], ARC_PASS3 = ["Finisher", "Staggering Shot"], ARC_APEX = ["Deathmark", "Open Season"];
 const ARC_PASSIVES = [...ARC_PASS1, ...ARC_PASS2, ...ARC_PASS3];
 add("classes", "class", "Archer", "icons/svg/target.svg", {
   description: "<p>An Archer fights from a distance.</p>", category: "Class", flavor: "You were made for the shot no one else would take.",
@@ -171,7 +171,7 @@ add("classes", "class", "Archer", "icons/svg/target.svg", {
   repertoire: U(["Marksman's Shot", "Volley", "Covering Fire", "Pinning Shot", "Twin Shot", "Hunter's Focus", "Deadeye", "Rain of Arrows"]), escPassives: U(ARC_PASSIVES), escActives: U(ARC_APEX),
   levels: [
     { sections: [sec("arc1attr", "Attribute increases", "attr", { pairs: [["body", "instinct"], ["mind", "appeal"]] }), sec("arc1core", "Features", "items", { mode: "granted", items: U(["Sharpshooter", "Marked Quarry", "Thrill of the Kill"]) }),
-      sec("arc1hall", "Hallmark Action", "items", { items: U(["Double Shot", "Rolling Shot"]) }), sec("arc1react", "Hallmark Reaction", "items", { items: U(["Overwatch", "Ready Shot"]) }),
+      sec("arc1hall", "Hallmark Action", "items", { items: U(["Double Shot", "Rolling Shot"]) }), sec("arc1react", "Hallmark Reaction", "items", { items: U(["Overwatch", "Covering Shot"]) }),
       sec("arc1enc", "Encounter Pick", "repertoire", { freq: "encounter" }),
       sec("arc1pass1", "Escalation 1 Passive", "items", { items: U(ARC_PASS1) }), sec("arc1pass2", "Escalation 2 Passive", "items", { items: U(ARC_PASS2) }), sec("arc1pass3", "Escalation 3 Passive", "items", { items: U(ARC_PASS3) }),
       sec("arc1apex", "Apex", "items", { items: U(ARC_APEX) }), sec("arc1tal", "Talent", "talent")] },
@@ -372,7 +372,7 @@ pc({ name: "Paladin 3 (Lay On Hands, Protector)", img: "icons/svg/regen.svg", sp
 pc({ name: "Archer 1 (Double Shot, Marksman)", img: "icons/svg/target.svg", species: "Elf", cls: "Archer", attrs: ["instinct", "mind"],
   picks: { arc1hall: "Double Shot", arc1react: "Overwatch", arc1tal: "Aim", arc1enc: "Pinning Shot", arc1pass1: "Killer's Focus", arc1pass2: "Hunter's Edge", arc1pass3: "Finisher", arc1apex: "Deathmark" }, weapon: "Crossbow", armor: "Medium Armor" });
 pc({ name: "Archer 3 (Rolling Shot, Kickboxer)", img: "icons/svg/wing.svg", species: "Human", chosen: ["body", "instinct"], cls: "Archer", attrs: ["body", "appeal"], level: 3,
-  picks: { 1: { arc1hall: "Rolling Shot", arc1react: "Ready Shot", arc1tal: "Brawler", arc1enc: "Volley", arc1pass1: "Vanish", arc1pass2: "Sure Step", arc1pass3: "Pinned Down", arc1apex: "Open Season" },
+  picks: { 1: { arc1hall: "Rolling Shot", arc1react: "Covering Shot", arc1tal: "Brawler", arc1enc: "Volley", arc1pass1: "Vanish", arc1pass2: "Sure Step", arc1pass3: "Staggering Shot", arc1apex: "Open Season" },
     2: { arc2tal: "Kickboxer" }, 3: { arc3daily: "Rain of Arrows", arc3tal: "Steady Nerves" } }, weapon: "Crossbow", armor: "Medium Armor" });
 
 const FOLDER_OF = { species: "Species", class: "Class", feature: "Feature", talent: "Talent" };

@@ -11,7 +11,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 7.0 | 84 |
 | 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.4 | 41 |
 | 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 5.6 | 95 |
-| 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 8.5 | 113 |
+| 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 8.6 | 113 |
 | 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 24.3 | 193 |
 | 11-species.md | Species | species |  | 0.8 | 32 |
 | 12-paladin.md | Paladin | paladin |  | 3.9 | 124 |
@@ -268,7 +268,7 @@ Action cards: Divine Power (49, Paladin Feature 1); Kindled Wrath (51, Paladin F
 - 117:   ### Escalation 3 Passives
 - 123:   ### Apex
 
-Action cards: Sharpshooter (49, Archer Feature 1); Marked Quarry (51, Archer Feature 1); Thrill of the Kill (53, Archer Feature 1); Double Shot (59, Sharpshooter 1, Round); Rolling Shot (61, Sharpshooter 1, Round); Overwatch (67, Sharpshooter 1, Turn); Ready Shot (69, Sharpshooter 1, Round); Marksman's Shot (81, Archer Feature 1, Encounter); Volley (83, Archer Feature 1, Encounter); Covering Fire (85, Archer Feature 1, Encounter); Pinning Shot (87, Archer Feature 1, Encounter); Twin Shot (89, Archer Feature 1, Encounter); Hunter's Focus (93, Archer Feature 1, Daily); Deadeye (95, Archer Feature 1, Daily); Rain of Arrows (97, Archer Feature 1, Daily); Killer's Focus (105, Archer Escalation (Passive)); Vanish (107, Archer Escalation (Passive)); Harrying Shots (109, Archer Escalation (Passive)); Hunter's Edge (113, Archer Escalation (Passive)); Sure Step (115, Archer Escalation (Passive)); Finisher (119, Archer Escalation (Passive)); Pinned Down (121, Archer Escalation (Passive)); Deathmark (125, Archer Apex, Encounter); Open Season (127, Archer Apex, Encounter)
+Action cards: Sharpshooter (49, Archer Feature 1); Marked Quarry (51, Archer Feature 1); Thrill of the Kill (53, Archer Feature 1); Double Shot (59, Sharpshooter 1, Round); Rolling Shot (61, Sharpshooter 1, Round); Overwatch (67, Sharpshooter 1, Turn); Covering Shot (69, Sharpshooter 1, Turn); Marksman's Shot (81, Archer Feature 1, Encounter); Volley (83, Archer Feature 1, Encounter); Covering Fire (85, Archer Feature 1, Encounter); Pinning Shot (87, Archer Feature 1, Encounter); Twin Shot (89, Archer Feature 1, Encounter); Hunter's Focus (93, Archer Feature 1, Daily); Deadeye (95, Archer Feature 1, Daily); Rain of Arrows (97, Archer Feature 1, Daily); Killer's Focus (105, Archer Escalation (Passive)); Vanish (107, Archer Escalation (Passive)); Harrying Shots (109, Archer Escalation (Passive)); Hunter's Edge (113, Archer Escalation (Passive)); Sure Step (115, Archer Escalation (Passive)); Finisher (119, Archer Escalation (Passive)); Staggering Shot (121, Archer Escalation (Passive)); Deathmark (125, Archer Apex, Encounter); Open Season (127, Archer Apex, Encounter)
 
 ## 14-bestiary.md: Bestiary: Building NPCs
 

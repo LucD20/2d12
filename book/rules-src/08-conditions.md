@@ -56,7 +56,7 @@ A creature within its Reach holds you: you are [[Immobilized]], and only the hol
 
 ### Hindered
 
-Your Speed is halved, rounded down.
+Your Speed is halved, rounded down. If you become Hindered while you are moving, the movement you have left is halved too, rounded down.
 
 ### Immobilized
 

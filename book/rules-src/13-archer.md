@@ -22,7 +22,7 @@
 <div class="lvl"><div class="lvn"><b>1</b><span>Level</span></div><div class="lvb">
 <div><span class="lbl">Features</span> Sharpshooter, Marked Quarry, Thrill of the Kill</div>
 <div><span class="lbl">Hallmark Action</span> Double Shot or Rolling Shot</div>
-<div><span class="lbl">Hallmark Reaction</span> Overwatch or Ready Shot</div>
+<div><span class="lbl">Hallmark Reaction</span> Overwatch or Covering Shot</div>
 <div><span class="lbl">Picks</span> 1 Encounter Pick</div>
 <div><span class="lbl">Escalation</span> 1 Passive for each Escalation level (1, 2 and 3), 1 Apex</div>
 <div><span class="lbl">Talents</span> 1 Talent</div>
@@ -66,7 +66,7 @@ Choose one of the following Hallmark Reactions. Both are paid with your Reaction
 
 @@CARD:Overwatch@@
 
-@@CARD:Ready Shot@@
+@@CARD:Covering Shot@@
 
 ### Picks
 
@@ -118,7 +118,7 @@ Your Escalation is a level from 1 to 3 that rises as the fight goes on and is ne
 
 @@CARD:Finisher@@
 
-@@CARD:Pinned Down@@
+@@CARD:Staggering Shot@@
 
 ### Apex
 

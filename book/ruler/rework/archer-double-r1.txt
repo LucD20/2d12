@@ -15,7 +15,7 @@ rally 5
 targeted 0.75
 weapon Crossbow (ranged, projectile, reload, two-handed, range 10/20/40): 0 / 1d4+2 / 1d10+2
 speed 6
-reaction Overwatch: overwatch
+reaction Overwatch: quick-draw 10
 
 passive Sharpshooter
 passive Marked Quarry

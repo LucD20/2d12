@@ -213,7 +213,7 @@
    "name": "Overwatch",
    "category": "Sharpshooter",
    "level": 1,
-   "_note": "Pack R-classes: a Hallmark Reaction (decision sheet item 9, revised in 14.3: the attack Reaction on a trigger that comes every NPC turn; measured 0.96 AP a turn).",
+   "_note": "Pack R-classes, part 4 (Lucas, 2026-11-04): the Archer's own moment, movement: \"moves closer\" (Chapter 2, Moving Closer: once per Advance, never on an Evade or Forced Movement), Hindered (EoT) on a hit (Chapter 8: halves the movement it has left), Pushed 2 on a Critical. The Strike-trigger version measured 1.2 AP a turn; this one fires less (rclasses.md section 6).",
    "flavor": "Nothing moves in your sight without an arrow following it.",
    "traits": [
     "ranged",
@@ -224,15 +224,16 @@
    "frequency": "Turn",
    "target": "The triggering creature",
    "distance": "Weapon",
-   "trigger": "An enemy within 10 squares makes a [Strike] Action.",
+   "trigger": "An enemy within 10 squares moves closer to you or to an ally.",
    "versions": [
     {
      "ap": 1,
-     "effects": "Make a [Ranged, Shot] Weapon Attack (1A) against the triggering creature.",
+     "effects": "Make a [Ranged, Shot] Weapon Attack (1A) against the triggering creature. On a Tier 2 or 3, it is Hindered (EoT).",
      "foundry": {
-      "append": "@Use[Weapon Attack|label:Weapon Attack (1A)]"
+      "append": "@Use[Weapon Attack|label:Weapon Attack (1A)] @Condition[Hindered|eot]{Hindered (EoT)}"
      },
-     "ruler": "does Weapon Attack"
+     "ruler": "does Weapon Attack",
+     "critical": "The target is Pushed 2."
     }
    ],
    "foundry": {
@@ -243,30 +244,37 @@
    }
   },
   {
-   "name": "Ready Shot",
+   "name": "Covering Shot",
    "category": "Sharpshooter",
    "level": 1,
-   "_note": "Pack R-classes: a Hallmark Reaction (decision sheet item 9, revised in 14.3: the setup / compression Reaction on a trigger that comes every round; saving 1 AP is worth 1 AP each time it fires by arithmetic). In the ruler it measures 0.2-0.35 AP a turn: the Archer's turn is capped at 3 Strikes, so the fifth AP only upgrades a Version; in play it also pays a step, an Aim or a Reload (not modeled). A Vulnerable 1 on the Quarry when an ally damages it (\"Call the Shot\") measured 0.14: the party kills the Quarry within the round (rclasses.md section 6). A question for Lucas.",
-   "flavor": "The bolt is seated before they finish their swing.",
+   "_note": "Pack R-classes, part 4 (Lucas, 2026-11-04): the Archer's mercy Reaction and its only Interrupt (Shield of Faith's moment), in Ready Shot's place (0.2-0.35 AP: the 3-Strike cap). 1 Boon on the shot to bring it to about 1 AP.",
+   "flavor": "You see the blow coming before they do, and your bolt gets there first.",
    "traits": [
-    "focus"
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
    ],
-   "frequency": "Round",
-   "target": "You",
-   "trigger": "An enemy within 10 squares makes a [Strike] Action.",
+   "frequency": "Turn",
+   "target": "The attacker",
    "versions": [
     {
      "ap": 1,
-     "effects": "Your first [Shot] Action on your next turn costs 1 AP less (a 1 AP Action costs 0 AP).",
-     "ruler": "note ready"
+     "effects": "Make a [Ranged, Shot] Weapon Attack (1A) with 1 Boon against the attacker. On a Tier 3, the ally takes half of the triggering damage.",
+     "foundry": {
+      "append": "@Use[Weapon Attack|boons:1|label:Weapon Attack (1A), 1 Boon]"
+     },
+     "ruler": "does Weapon Attack | each boon 1"
     }
    ],
    "foundry": {
     "img": "icons/svg/target.svg",
     "folder": "Archer",
-    "automation": "bronze",
-    "automationNote": "pay 1 AP less by hand on the next turn's first Shot."
-   }
+    "automation": "silver",
+    "automationNote": "the Weapon Attack with its Boon (the button); halving the ally's damage by hand."
+   },
+   "distance": "Weapon",
+   "interrupt": "A [Strike] Action would damage an ally within 10 squares."
   },
   {
    "name": "Marksman's Shot",
@@ -291,7 +299,8 @@
       "[V] 1[W] + [Mod] + 2d6 Pi",
       "[V] 1[W] + [Mod] + 3d6 Pi; Vulnerable 2 (EoT)."
      ],
-     "ruler": "on 3: vulnerable 2"
+     "ruler": "on 3: vulnerable 2",
+     "critical": "The target is Blinded (EoT)."
     }
    ],
    "foundry": {
@@ -299,7 +308,7 @@
     "folder": "Archer",
     "automation": "gold"
    },
-   "_note": "Pack R-classes: the Encounter ceilings (decision sheet item 16): 3d6 / 4d6 became 2d6 / 3d6."
+   "_note": "Pack R-classes: the Encounter ceilings (decision sheet item 16): 3d6 / 4d6 became 2d6 / 3d6. Part 4: a Critical row, Blinded (EoT) (6.7 DE on one Tier 3 in twelve)."
   },
   {
    "name": "Volley",
@@ -499,7 +508,8 @@
       "[V] 1[W] + [Mod] + 1d6 Pi",
       "[V] 1[W] + [Mod] + 2d6 Pi; Prone."
      ],
-     "ruler": "favored | on 3: debuff Prone"
+     "ruler": "favored | on 3: debuff Prone",
+     "critical": "The target is Blinded for 1 round."
     }
    ],
    "foundry": {
@@ -583,7 +593,8 @@
     "append": "(Apply the Harried effect from the compendium.)",
     "folder": "Archer"
    },
-   "escalation": 1
+   "escalation": 1,
+   "_note": "Pack R-classes, part 4 (Lucas, 2026-11-04): kept as it was (a Bane on the Quarry's Strikes); Frightened of you on every Shot, with no Save, was too strong."
   },
   {
    "name": "Vanish",
@@ -648,17 +659,17 @@
    }
   },
   {
-   "name": "Pinned Down",
+   "name": "Staggering Shot",
    "category": "Archer Escalation (Passive)",
    "escalation": 3,
-   "_note": "Pack R-classes: new, the Escalation 3 control pick (Immobilized (EoT) on a Standard is worth about 4.7 DE, 0.8 AP: positions, book/ruler/prices.md section 5).",
-   "flavor": "Through the foot and into the ground, every time.",
-   "text": "While your Escalation is 3 or more, the first time each round you deal damage to your Marked Quarry with a [Shot] Action, they are Immobilized (EoT).",
+   "_note": "Pack R-classes, part 4 (Lucas, 2026-11-04): was Pinned Down (Immobilized (EoT) each round: 7.3 DE at the refreshed prices, 1.26 AP, over the rung's 0.8-1); Dazed 1 (2.4) and Hindered (EoT) (1.5): about 0.67 AP.",
+   "flavor": "The bolt knocks the wind out of them.",
+   "text": "While your Escalation is 3 or more, the first time each round you deal damage to your Marked Quarry with a [Shot] Action, they are Dazed 1 and Hindered (EoT).",
    "foundry": {
     "img": "icons/svg/net.svg",
     "level": 1,
     "automation": "none",
-    "append": "(Not automated until R-Foundry: drop Immobilized on the Quarry by hand.)"
+    "append": "(Not automated until R-Foundry: Dazed 1 and Hindered on the Quarry by hand.)"
    }
   },
   {
