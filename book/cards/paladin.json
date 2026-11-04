@@ -74,7 +74,7 @@
       "[V] 1[W] + [Mod] + [R] 2d8 Ho",
       "[V] 1[W] + [Mod] + [R] 3d8 Ho"
      ],
-     "effects": "As 2 AP, and you or one ally in the light gain [[Guard]] 1d8 + [Mod] (2d6 + [Mod] at Stage 2, 2d8 + [Mod] at Stage 3). You can Push 1 any other creatures in the light, away from the target.",
+     "effects": "As 2 AP, and you or one ally in the light gain [[Guard]] 1d8 + [Mod] (2d6 + [Mod] at Stage 2, 2d8 + [Mod] at Stage 3). The other creatures in the light are Pushed 1, away from the target.",
      "foundry": {
       "append": "@Guard[1d8+mod]{Guard 1d8 + [Mod]}"
      },
@@ -86,7 +86,7 @@
     "folder": "Paladin",
     "automation": "gold"
    },
-   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): more damage, no +1 Defense; the 3 AP Version is an explosion: the Paladin can Push 1 the other creatures in the light, away from the target (the target is the Push's origin)."
+   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): more damage, no +1 Defense; the 3 AP Version is an explosion: the other creatures in the light are Pushed 1 away from the target (the target is the Push's origin; a Push's value is a maximum, so the Paladin moves each one 0 or 1: no \"can\" on cards, Lucas 2026-11-04)."
   },
   {
    "name": "Lay On Hands",
@@ -575,7 +575,7 @@
   {
    "name": "Final Verdict",
    "category": "Paladin Apex",
-   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): the wrath Apex with the vocabulary: you can Push 1 each hit (the ruler found a forced Push on every hit costs a melee Paladin its next turn: the enemies leave its Reach, so it is the Paladin's choice), Prone for a Bloodied target, Bleed [R] 1d6 Ho for a Strained one (Chapter 8); Self: you decide whether the Emanation affects you (Areas).",
+   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): the wrath Apex with the vocabulary: Pushed 1 on every hit (a Push's value is a maximum: 0 or 1, the Paladin's choice; the ruler found a forced Push on every hit costs a melee Paladin its next turn), Prone for a Bloodied target, Bleed [R] 1d6 Ho for a Strained one (Chapter 8); Self: you decide whether the Emanation affects you (Areas).",
    "flavor": "You name every sin within reach, and the light answers all at once.",
    "traits": [
     "area",
@@ -599,7 +599,7 @@
       "[V] 1[W] + [Mod] + [R] 2d8 Ho",
       "[V] 1[W] + [Mod] + [R] 3d8 Ho"
      ],
-     "effects": "You roll once and compare the result to each target's AD. Each target you hit sheds Bright light in a 1 Emanation for 1 round, and you can Push 1 it. A Bloodied target is Prone instead; a Strained target also Bleeds [R] 1d6 Ho (Mi/Ap).",
+     "effects": "You roll once and compare the result to each target's AD. Each target you hit is Pushed 1 and sheds Bright light in a 1 Emanation for 1 round. A Bloodied target is Prone instead; a Strained target also Bleeds [R] 1d6 Ho (Mi/Ap).",
      "ruler": "area 1.5"
     }
    ],
