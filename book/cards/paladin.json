@@ -395,7 +395,7 @@
     ]
    },
    "ruler": {
-    "passive": "escalation 1: extra 1d6 mind first strike"
+    "passive": "escalation 1: extra 1d6 mind first-hit strike"
    }
   },
   {
