@@ -456,7 +456,17 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 </tbody>
 </table></div>
-<div class="callout tbd"><div class="ctitle">To be decided</div><p>Resist and Weak, which use damage subtypes, are not written yet.</p></div>
+<h3 id="resist-weak-and-immunity">Resist, Weak and Immunity</h3>
+<p>Some creatures take less, or more, damage of a subtype. It is written on the creature, with a number: <strong>Resist 2 Fire</strong>, <strong>Weak 5 <span class="dmgword" style="--dc:#b8921c">Holy</span></strong>, <strong>Immunity Fire</strong>. A Hatchling might have Resist 2 Fire, a Young dragon Resist 5 and an Ancient one Immunity.</p>
+<ul>
+<li>Each time you take damage from one Action or effect, add up <strong>all its damage of that subtype</strong>, Vigor and Resolve together, and apply your line <strong>once</strong>: <strong>Resist N</strong> reduces the total by N (minimum 0), <strong>Weak N</strong> adds N. "<span class="pool-b">[V] 1d8</span> <span class="dcode" style="--dc:#d0583a">Fi</span> + <span class="pool-m">[R] 5</span> <span class="dcode" style="--dc:#d0583a">Fi</span>" against Resist 5 Fire is (1d8 + 5) − 5: one reduction, never one per part.</li>
+<li>When the damage is split between Vigor and Resolve, the resisting creature chooses which part it reduces first; for Weak, the origin chooses where the extra goes.</li>
+<li><strong>Immunity</strong> makes that damage 0.</li>
+<li>Damage that comes back each turn, such as <a class="xref" href="#bleed">Bleed</a>, counts each time it lands: Resist 5 Fire stops a Bleed 3 <span class="dcode" style="--dc:#d0583a">Fi</span> entirely.</li>
+<li>Two Resists or two Weaks of the same subtype don't add up: the highest applies (see <a class="xref" href="#stacking">Stacking</a>).</li>
+</ul>
+<h3 id="riders">Riders</h3>
+<p>In a tier cell, what follows the damage <strong>rides on it</strong>: "<span class="pool-b">[V] 2d8</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span>; Prone" knocks the target Prone only if the Action deals that damage, more than 0 after Resist and Immunity. <a class="xref" href="#guard">Guard</a> doesn't stop a rider: Guard takes damage that was dealt. An effect that must happen even without the damage is written on the <strong>Effects</strong> row, or in a cell of its own with no damage. A <span class="trhl" style="--tc:var(--g-roll)">Save</span> Action's cells read the same way, each on its own result.</p>
 <h3 id="cleave">Cleave</h3>
 <p>When you <strong>Cleave</strong> N, you deal the Modifier used as damage (with the same damage type and subtype as your weapon) to up to N creatures that are adjacent to the original target.</p>
 <h2 id="several-targets">Several Targets</h2>
@@ -663,6 +673,8 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <li><strong>On any turn:</strong> A Reaction can happen during any turn, including your own: if another creature's Action moves them away from you during your turn, you can react to that.</li>
 <li>You can't use an Action outside your turn unless it is a Reaction.</li>
 </ul>
+<h3 id="what-a-reaction-responds-to">What a Reaction Responds To</h3>
+<p>An Interrupt or a Trigger names a <strong>moment</strong> the rules define, and the Action that holds the moment is the triggering Action. The moments cards use: a creature would leave a square during a Move Action, or uses the Stand Action (Opportunity Attack); an enemy would enter a square adjacent to you or to an ally; an enemy ends a Move Action; a creature would be moved by <a class="xref" href="#forced-movement">Forced Movement</a>, or would fall Prone; a creature makes a [<span class="trhl" style="--tc:var(--g-kind)">Strike</span>] Action, or would damage someone; a creature would use a [<span class="trhl" style="--tc:var(--g-roll)">Power</span>] Action; a creature scores a Tier 3 or a <a class="xref" href="#critical">Critical</a>; an ally or an enemy becomes Bloodied or Strained; a creature goes <span class="kw-neg">Down</span>; a creature uses a <span class="kw-rally">Rally Point</span>; a creature Charges, or Flanks you. A card can name another moment, as long as the rules define when it happens.</p>
 <p>While the name "triggering" is similar to "Trigger", it isn't only for Trigger Reactions: it also applies to Interrupt Reactions. The <strong>triggering creature</strong> is the creature who caused the Reaction to happen; the <strong>triggering Action</strong> is the Action that caused the Reaction to happen, and so on.</p>
 <div class="callout tip"><div class="ctitle">Designer's Tip</div><p>The clarification above might make you think you need to move one square at a time during a game, but this slows the game down a lot. You can just make the full movement and let the creature reacting decide when it happens during the movement. You might need to move the token back to where the Reaction happened if the movement is disrupted (see below), but that doesn't happen often. Doing it this way removes the suspense of "When will this creature start moving? Should I use my Reaction now, or wait and see if it moves into a more favorable position, with the chance that it stops moving before I react?" The table should decide how to run it.</p></div>
 <h3 id="disrupting-actions">Disrupting Actions</h3>
@@ -1371,7 +1383,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <p>Nonlethal damage is removed like any other damage.</p>
 <p>Only a Rest restores <span class="kw-rally">Rally Points</span>. Sleep does not. A new encounter does not.</p>
 <h2 id="guard">Guard</h2>
-<p>Some effects give you <strong>Guard</strong>, written with a value: <strong>Guard 6</strong>. When you take damage, your Guard takes it first (Vigor or Resolve damage alike), and only the rest reaches your Health. Damage your Guard takes isn't damage you take: it doesn't count toward your thresholds or your Health Pool, and it doesn't trigger anything that happens when you take damage.</p>
+<p>Some effects give you <strong>Guard</strong>, written with a value: <strong>Guard 6</strong>. When you take damage, your Guard takes it first (Vigor or Resolve damage alike), and only the rest reaches your Health. Damage your Guard takes isn't damage you take: it doesn't count toward your thresholds or your Health Pool, and it doesn't trigger anything that happens when you take damage. A <a class="xref" href="#riders">rider</a> on that damage still happens: Guard takes damage that was dealt.</p>
 <ul>
 <li>Damage reduction (such as Hallowed Stance) applies first; Guard takes what is left.</li>
 <li>Guard isn't Health: it can't be healed, and <span class="kw-rally">Rally Points</span> don't restore it.</li>
@@ -1755,7 +1767,14 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <p>Creatures have <strong>Tags</strong> instead of traits: words that other rules refer to, such as <strong>Profane</strong> (the Paladin's Divine Power). A creature's Tags are listed in its stat block. Like traits with no rule of their own, a Tag does nothing by itself.</p>
 <div class="callout tbd"><div class="ctitle">To be decided</div><p>The list of Tags (Profane, Beast, Undead...) and what each one covers is not written yet.</p></div></div></details></section>
 <section class="chapter"><details open><summary><h1 id="chapter-8-conditions">Chapter 8: Conditions</h1></summary><div class="cbody">
-<p>These conditions are in alphabetical order. A creature can't have the same condition twice: if they would gain a condition they already have, keep the longer duration, and for a condition with a value, such as <span class="kw-neg">Vulnerable 3</span>, the highest value (see <a class="xref" href="#stacking">Stacking</a>). The conditions that come from damage (Bloodied, Strained, Desperate, Dying, Shattered and Unconscious) are in <a class="xref" href="#health-states">Health States</a>.</p>
+<p>These conditions are in alphabetical order. A creature can't have the same condition twice: if they would gain a condition they already have, keep the longer duration, and for a condition with a value, such as <span class="kw-neg">Vulnerable 3</span>, the highest value (see <a class="xref" href="#stacking">Stacking</a>). The effect that gives a condition says how long it lasts (EoT, a number of rounds, until a Save: see <a class="xref" href="#effect-timing">Effect Timing</a>); a condition written with no duration lasts until the end of the encounter. The conditions that come from damage (Bloodied, Strained, Desperate, Dying, Shattered and Unconscious) are in <a class="xref" href="#health-states">Health States</a>.</p>
+<h3 id="bleed">Bleed</h3>
+<p><strong>Bleed X (Attributes)</strong> is damage that keeps coming: at the end of each of your turns, you take X damage, a number or dice rolled each time. It is Vigor damage when the Attributes are <strong>Bo/In</strong> and Resolve damage when they are <strong>Mi/Ap</strong>, unless the Bleed writes its pool: <strong>Bleed 1 ([V] Ap)</strong> is Vigor damage with an <span class="at-appeal">Appeal</span> Save. A Bleed can have a subtype (Bleed 1d4 <span class="dcode" style="--dc:#d0583a">Fi</span>).</p>
+<p>You can end it with <strong>Interact (<span class="kw-ap">1 AP</span>)</strong>, on yourself or on a bleeding creature within your Reach: the bleeding creature makes a Save with the better of the two Attributes against <strong>DC 13</strong>, or the DC the Bleed writes (<strong>Bleed 1d6 (Bo/In; DC 15)</strong>). <strong>Tier 1:</strong> no effect. <strong>Tier 2:</strong> you take half the Bleed at the end of this turn, then it ends. <strong>Tier 3:</strong> it ends. Healing doesn't end a Bleed; the end of the encounter does. If you would Bleed again, keep the Bleed with the higher average (see <a class="xref" href="#stacking">Stacking</a>).</p>
+<h3 id="blinded">Blinded</h3>
+<p>You can't see: for your Sight, everything is Darkness (see <a class="xref" href="#senses">Senses</a>). Creatures you only hear are Hidden to you, so your Actions against them are <span class="kw-neg">Doomed</span>, and you can't target a creature you don't perceive. Any other Roll that needs sight is <span class="kw-neg">Doomed</span>. Actions with the Area trait still affect the creatures in their area.</p>
+<h3 id="dazed">Dazed</h3>
+<p>Dazed always has a value, such as <strong>Dazed 1</strong>. When you become Dazed, you lose that many AP right away (never your Reaction AP). If you have fewer AP than the value, you lose the AP you have, and the rest is taken from the AP you regain at the start of your next turn; then Dazed ends. Dazed is the condition that takes AP now; <a class="xref" href="#slowed">Slowed</a> takes them on your next turn.</p>
 <h3 id="empowered">Empowered</h3>
 <p><strong><span class="kw-pos">Empowered</span> N</strong> adds N to every die of the damage: with <span class="kw-pos">Empowered 1</span>, a d6 deals 1 more, and 2d6 deals 2 more. Flat numbers, and damage with no dice, don't change.</p>
 <h3 id="enfeebled">Enfeebled</h3>
@@ -1792,6 +1811,10 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 </tbody>
 </table></div>
+<h3 id="frightened">Frightened</h3>
+<p>Frightened is always <strong>of</strong> a source: a creature or an object. While you perceive the source with your Sight (it is Clear or Obscured to you: see <a class="xref" href="#senses">Senses</a>), all your <a class="xref" href="#rolls">Rolls</a> take <strong><span class="kw-bane">1 Bane</span></strong>, the Save that would end Frightened included, and you can't willingly move closer to the source (Forced Movement still can). Put a wall or Darkness between you and the source, and it is out of your Sight: the <span class="kw-bane">Bane</span> and the restriction stop until you see it again.</p>
+<h3 id="grabbed">Grabbed</h3>
+<p>A creature within its Reach holds you: you are <a class="xref" href="#immobilized">Immobilized</a>, and only the holder can <a class="xref" href="#forced-movement">Force Move</a> or <a class="xref" href="#reposition">Reposition</a> you. Grabbed ends when the holder lets go (no Action), leaves your Reach, goes <span class="kw-neg">Down</span> or is Unconscious, or when you end Immobilized (<span class="kw-ap">1 AP</span> [Move]: Break Free), against the holder's Immobilized DC when the card that grabbed you says so. The holder can't use the hand or limb that holds you for anything else.</p>
 <h3 id="hindered">Hindered</h3>
 <p>Your Speed is halved, rounded down.</p>
 <h3 id="immobilized">Immobilized</h3>
@@ -1814,9 +1837,15 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </ul>
 <h3 id="quickened">Quickened</h3>
 <p>Quickened always has a value, such as <strong>Quickened 2</strong>. You increase your maximum AP, and the AP you regain at the start of your turn, by the value: if you are Quickened 2, you regain <span class="kw-ap">6 AP</span> when your turn begins. You don't gain AP when you become Quickened, only when you regain AP at the start of your next turn. Quickened never changes your Reaction AP, and the extra AP you don't spend become Guard like any other (<a class="xref" href="#unspent-ap">Unspent AP</a>).</p>
+<h3 id="sickened">Sickened</h3>
+<p>Sickened always has a value, such as <strong>Sickened 1</strong>. Your <span class="at-body">Body</span> and <span class="at-instinct">Instinct</span> Saves take that many <span class="kw-bane">Banes</span>, and you can't eat, drink or swallow anything: no potions.</p>
 <h3 id="slowed">Slowed</h3>
 <p>Slowed always has a value, such as <strong>Slowed 2</strong>. You decrease the AP you regain at the start of your turn by the value: if you are Slowed 2, you regain only <span class="kw-ap">2 AP</span> when your turn begins. You also reduce your maximum AP by the value. You don't lose AP when you become Slowed, only when you regain AP at the start of your next turn. Slowed never changes your Reaction AP: a Slowed creature still has its Reaction.</p>
 <p><strong>Slowed and Quickened</strong> cancel each other out, but they don't reduce each other's value: if you are Quickened 2 and Slowed 2, you regain the normal <span class="kw-ap">4 AP</span>. If one of them ends before your turn comes around (you lose Slowed 2 but are still Quickened 2), you regain <span class="kw-ap">6 AP</span>.</p>
+<h3 id="staggered">Staggered</h3>
+<p>You can't use <a class="xref" href="#reactions">Reactions</a>. Your Reaction AP isn't lost: you can use it again when Staggered ends.</p>
+<h3 id="taunted">Taunted</h3>
+<p>Taunted is always <strong>by</strong> a creature. Your Actions against any creature other than it take <strong><span class="kw-bane">1 Bane</span></strong>.</p>
 <h3 id="vulnerable">Vulnerable</h3>
 <p><span class="kw-neg">Vulnerable</span> always has a value, such as <strong><span class="kw-neg">Vulnerable 3</span></strong>. Actions against you gain a number of <span class="kw-boon">Boons</span> equal to that value. If you would have <span class="kw-neg">Vulnerable</span> twice, only the highest value applies.</p></div></details></section>
 <section class="chapter"><details open><summary><h1 id="chapter-9-glossary">Chapter 9: Glossary</h1></summary><div class="cbody">
@@ -1897,6 +1926,14 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>Subtract or add 1d3-1 to a roll.</td>
 </tr>
 <tr>
+<td><a class="xref" href="#bleed"><strong>Bleed</strong></a></td>
+<td>Damage that comes back at the end of each of your turns (Vigor for Bo/In, Resolve for Mi/Ap); Interact (<span class="kw-ap">1 AP</span>) and a Save against DC 13 to end it; healing doesn't.</td>
+</tr>
+<tr>
+<td><a class="xref" href="#blinded"><strong>Blinded</strong></a></td>
+<td>You can't see: heard creatures are Hidden to you (<span class="kw-neg">Doomed</span> against them), sight Rolls are <span class="kw-neg">Doomed</span>.</td>
+</tr>
+<tr>
 <td><a class="xref" href="#bloodied"><strong>Bloodied, Strained</strong></a></td>
 <td>You have Vigor damage at least equal to your Vigor (Bloodied), or Resolve damage at least equal to your Resolve (Strained). No effect by itself: Actions and features use them.</td>
 </tr>
@@ -1907,6 +1944,30 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <tr>
 <td><a class="xref" href="#class-actions-picks-and-the-repertoire"><strong>Class Actions</strong></a></td>
 <td>The Actions your class gives you at level 1 (or a Hallmark Action: a choice of two).</td>
+</tr>
+<tr>
+<td><a class="xref" href="#dazed"><strong>Dazed</strong></a></td>
+<td>A condition with a value: you lose that many AP right away (never the Reaction AP); the rest, if any, from your next turn's AP.</td>
+</tr>
+<tr>
+<td><a class="xref" href="#frightened"><strong>Frightened</strong></a></td>
+<td>Of a source: <span class="kw-bane">1 Bane</span> on all your Rolls and you can't move closer to it, while you see it.</td>
+</tr>
+<tr>
+<td><a class="xref" href="#grabbed"><strong>Grabbed</strong></a></td>
+<td>Held by a creature within its Reach: Immobilized, and only the holder can move you; it ends when the holder lets go or you Break Free.</td>
+</tr>
+<tr>
+<td><a class="xref" href="#hindered"><strong>Hindered</strong></a></td>
+<td>Your Speed is halved.</td>
+</tr>
+<tr>
+<td><a class="xref" href="#immobilized"><strong>Immobilized</strong></a></td>
+<td>No Move Actions or Evade; <span class="kw-ap">1 AP</span> [Move] ends it; Forced Movement without a roll fails on you.</td>
+</tr>
+<tr>
+<td><a class="xref" href="#resist-weak-and-immunity"><strong>Immunity</strong></a></td>
+<td>Damage of that subtype is 0 for you.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#class-actions-picks-and-the-repertoire"><strong>Pick</strong></a></td>
@@ -2305,6 +2366,10 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>The three ways to recover: a Breather, a Sleep and a Rest.</td>
 </tr>
 <tr>
+<td><a class="xref" href="#resist-weak-and-immunity"><strong>Resist</strong></a></td>
+<td>Resist N (subtype): each Action's damage of that subtype, both pools together, is reduced by N once (minimum 0).</td>
+</tr>
+<tr>
 <td><a class="xref" href="#health-pool"><strong>Resolve, Vigor</strong></a></td>
 <td>The two thresholds of your Health Pool: your class's high and low Health values (you choose which is which), your species' bonuses, and the Stage steps.</td>
 </tr>
@@ -2335,6 +2400,10 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <tr>
 <td><a class="xref" href="#rest"><strong>Rest</strong></a></td>
 <td>A day in a safe place. It includes a Sleep.</td>
+</tr>
+<tr>
+<td><a class="xref" href="#riders"><strong>Rider</strong></a></td>
+<td>What follows the damage in a tier cell ("; Prone"): it happens only if that damage is dealt (more than 0 after Resist); Guard doesn't stop it.</td>
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#the-targets"><strong>Role</strong></a></td>
@@ -2371,6 +2440,10 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <tr>
 <td><a class="xref" href="#shot"><strong>Shot</strong></a></td>
 <td>A trait: the Action needs a Projectile weapon (a bow, a crossbow).</td>
+</tr>
+<tr>
+<td><a class="xref" href="#sickened"><strong>Sickened</strong></a></td>
+<td>A condition with a value: that many <span class="kw-bane">Banes</span> on your <span class="at-body">Body</span> and <span class="at-instinct">Instinct</span> Saves, and you can't swallow anything.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#weapon-power-and-signature-modifiers"><strong><span class="mod-signature">Signature Modifier</span></strong></a></td>
@@ -2433,6 +2506,10 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>The Talent of levels 5 and 8, from a bigger list.</td>
 </tr>
 <tr>
+<td><a class="xref" href="#staggered"><strong>Staggered</strong></a></td>
+<td>You can't use Reactions; your Reaction AP waits.</td>
+</tr>
+<tr>
 <td><a class="xref" href="bestiary.html#standards"><strong>Standard</strong></a></td>
 <td>An NPC role with CV 100: about 56 Health at Stage 1, dies to about 2 to 3 PC turns.</td>
 </tr>
@@ -2455,6 +2532,10 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <tr>
 <td><a class="xref" href="#tags"><strong>Tag</strong></a></td>
 <td>A word on a creature (not an Action) that other rules refer to, such as Profane.</td>
+</tr>
+<tr>
+<td><a class="xref" href="#taunted"><strong>Taunted</strong></a></td>
+<td>By a creature: <span class="kw-bane">1 Bane</span> on your Actions against anyone else.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#flanking"><strong>Threatens</strong></a></td>
@@ -2497,6 +2578,10 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>Ward Defense (WD) — 11 + <span class="mod-power">Power Modifier</span> + Ward value + other items + bonuses − penalties. The Defense against <span class="trhl" style="--tc:var(--g-roll)">Power</span> Actions.</td>
 </tr>
 <tr>
+<td><a class="xref" href="#resist-weak-and-immunity"><strong>Weak</strong></a></td>
+<td>Weak N (subtype): each Action's damage of that subtype, both pools together, is increased by N once.</td>
+</tr>
+<tr>
 <td><a class="xref" href="gear.html#weapon-groups"><strong>Weapon Group</strong></a></td>
 <td>Blades, Axes, Hammers, Polearms, Bows, Crossbows, Firearms, Unarmed. Your Mastery with a weapon is at least a third of your best in its group.</td>
 </tr>
@@ -2523,7 +2608,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tbody>
 </table></div></div></details></section>
 <div class="part">Appendix</div>
-<section class="chapter"><details open><summary><h1 id="open-items">Appendix: Open Items</h1></summary><div class="cbody"><p>Rules that are not decided or not written yet. They are collected from the "To be decided" boxes in the chapters.</p><ol class="openitems"><li><a href="#damage-subtypes">Damage Subtypes</a>: Resist and Weak, which use damage subtypes, are not written yet.</li><li><a href="#line-of-effect">Line of Effect</a>: Targeting walls and objects (and the Breach trait, to hit a creature behind a wall you break) is not written yet.</li><li><a href="#other-areas">Other areas</a>: Cones are not written yet (and Lines wider than 1 square).</li><li><a href="#senses">Senses</a>: Hiding and sneaking are not written yet.</li><li><a href="#wounds-and-the-tables">Wounds and the Tables</a>: The entries of the Dying and Shattered Tables are placeholders.</li><li><a href="#tags">Tags</a>: The list of Tags (Profane, Beast, Undead...) and what each one covers is not written yet.</li></ol></div></details></section><p class="credits">Icons: Font Awesome Free (CC BY 4.0). Card title font: Cinzel (SIL Open Font License).</p><p class="totop"><a href="#top">Back to top</a></p></main></div><script>
+<section class="chapter"><details open><summary><h1 id="open-items">Appendix: Open Items</h1></summary><div class="cbody"><p>Rules that are not decided or not written yet. They are collected from the "To be decided" boxes in the chapters.</p><ol class="openitems"><li><a href="#line-of-effect">Line of Effect</a>: Targeting walls and objects (and the Breach trait, to hit a creature behind a wall you break) is not written yet.</li><li><a href="#other-areas">Other areas</a>: Cones are not written yet (and Lines wider than 1 square).</li><li><a href="#senses">Senses</a>: Hiding and sneaking are not written yet.</li><li><a href="#wounds-and-the-tables">Wounds and the Tables</a>: The entries of the Dying and Shattered Tables are placeholders.</li><li><a href="#tags">Tags</a>: The list of Tags (Profane, Beast, Undead...) and what each one covers is not written yet.</li></ol></div></details></section><p class="credits">Icons: Font Awesome Free (CC BY 4.0). Card title font: Cinzel (SIL Open Font License).</p><p class="totop"><a href="#top">Back to top</a></p></main></div><script>
 function openUp(el){let d=el&&el.closest('details');while(d){d.open=true;d=d.parentElement&&d.parentElement.closest('details');}}
 document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',()=>{const t=document.getElementById(a.getAttribute('href').slice(1));openUp(t);}));
 window.addEventListener('hashchange',()=>openUp(document.getElementById(location.hash.slice(1))));

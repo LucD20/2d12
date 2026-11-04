@@ -20,9 +20,17 @@
 | [[At-will\|**At-will**]] | A Frequency: any number of uses, 1 Bane for each use after the first in a turn. |
 | [[Areas\|**Aura**]] | An area that follows its origin, written like Aura 2. You gain its effect when you enter it. |
 | [[Boons and Banes\|**Bane, Boon**]] | Subtract or add 1d3-1 to a roll. |
+| [[Bleed\|**Bleed**]] | Damage that comes back at the end of each of your turns (Vigor for Bo/In, Resolve for Mi/Ap); Interact (1 AP) and a Save against DC 13 to end it; healing doesn't. |
+| [[Blinded\|**Blinded**]] | You can't see: heard creatures are Hidden to you (Doomed against them), sight Rolls are Doomed. |
 | [[Bloodied\|**Bloodied, Strained**]] | You have Vigor damage at least equal to your Vigor (Bloodied), or Resolve damage at least equal to your Resolve (Strained). No effect by itself: Actions and features use them. |
 | [[Barehanded\|**Barehanded**]] | A weapon property: it can't be disarmed and uses no hand, but needs a free hand. |
 | [[Class Actions, Picks and the Repertoire\|**Class Actions**]] | The Actions your class gives you at level 1 (or a Hallmark Action: a choice of two). |
+| [[Dazed\|**Dazed**]] | A condition with a value: you lose that many AP right away (never the Reaction AP); the rest, if any, from your next turn's AP. |
+| [[Frightened\|**Frightened**]] | Of a source: 1 Bane on all your Rolls and you can't move closer to it, while you see it. |
+| [[Grabbed\|**Grabbed**]] | Held by a creature within its Reach: Immobilized, and only the holder can move you; it ends when the holder lets go or you Break Free. |
+| [[Hindered\|**Hindered**]] | Your Speed is halved. |
+| [[Immobilized\|**Immobilized**]] | No Move Actions or Evade; 1 AP [Move] ends it; Forced Movement without a roll fails on you. |
+| [[Resist, Weak and Immunity\|**Immunity**]] | Damage of that subtype is 0 for you. |
 | [[Class Actions, Picks and the Repertoire\|**Pick**]] | One choice from a class's Repertoire; the level list says how many you take and from which list. |
 | [[Class Actions, Picks and the Repertoire\|**Repertoire**]] | Everything a class offers beyond its Class Actions, listed by Frequency: Passive, Turn, Round, Encounter, Daily. |
 | [[The Basic attack\|**Basic attack**]] | An NPC's main attack: 1 AP, At-will, Vs. AD or WD, with the damage of its role and rating. |
@@ -122,6 +130,7 @@
 | [[Reactions\|**Reaction**]] | An Action used in response to an Interrupt or a Trigger, with a cost like 1R (0R costs no AP). |
 | [[Action Points\|**Reaction AP**]] | The 1 AP you gain at the start of your turn that pays only for Reactions. It never becomes Guard. |
 | [[Recovery\|**Recovery**]] | The three ways to recover: a Breather, a Sleep and a Rest. |
+| [[Resist, Weak and Immunity\|**Resist**]] | Resist N (subtype): each Action's damage of that subtype, both pools together, is reduced by N once (minimum 0). |
 | [[Health Pool\|**Resolve, Vigor**]] | The two thresholds of your Health Pool: your class's high and low Health values (you choose which is which), your species' bonuses, and the Stage steps. |
 | [[Chapter 6: Basic Actions\|**Regrip**]] | The Basic Action (1 AP, no Handle) to hold a weapon with both hands again, move it to the other hand or swap the weapons in your hands. |
 | [[Chapter 6: Basic Actions\|**Release**]] | 0 AP: drop an object, or let go of it with one hand. |
@@ -130,6 +139,7 @@
 | [[Reposition\|**Reposition**]] | Moving a creature along a path you choose, up to its value. Not Forced Movement: it never passes through creatures, never enters hazards, and needs Line of Effect. |
 | [[Requirements\|**Requirements**]] | What you need to use an Action. |
 | [[Rest\|**Rest**]] | A day in a safe place. It includes a Sleep. |
+| [[Riders\|**Rider**]] | What follows the damage in a tier cell ("; Prone"): it happens only if that damage is dealt (more than 0 after Resist); Guard doesn't stop it. |
 | [[The targets\|**Role**]] | What an NPC is for in a fight: Minion, Grunt, Standard or Elite. It sets the NPC's CV, AP and the tables its ratings use. |
 | [[Rolls\|**Roll**]] | Anything you roll: a Check, a Save, a Weapon, Power or Signature roll, or an Attribute Action. |
 | [[Rounds\|**Round**]] | One full cycle of turns. |
@@ -139,6 +149,7 @@
 | [[Actions\|**Setup**]] | What an Action does before its dice are rolled. |
 | [[Several Targets\|**Several Targets**]] | One roll for every target of an Action, each calculated separately. |
 | [[Shot\|**Shot**]] | A trait: the Action needs a Projectile weapon (a bow, a crossbow). |
+| [[Sickened\|**Sickened**]] | A condition with a value: that many Banes on your Body and Instinct Saves, and you can't swallow anything. |
 | [[Weapon, Power and Signature Modifiers\|**Signature Modifier**]] | The higher of your Weapon Modifier and Power Modifier. Signature Actions roll it. |
 | [[Rolls\|**Signature roll**]] | An Action with the Signature trait. |
 | [[Size\|**Size**]] | A creature's rank from 1 to 7, and how many squares it occupies. |
@@ -154,12 +165,14 @@
 | [[Stacking\|**Stacking**]] | Bonuses don't add up: for each value (Guard included) use the highest bonus and the highest penalty. "Increase by N", Boons, Banes, Slowed increases and the Guard of unspent AP do add up. |
 | [[Stages\|**Stage**]] | A group of levels: Stage 1 is levels 1-4, Stage 2 levels 5-7, Stage 3 levels 8-10. Your numbers change only at a new Stage (an Attribute, Health, Guard per unspent AP, Rally Points; Modifiers at Stage 3), and it sets the Bestiary's row. |
 | [[Stages\|**Stage Talent**]] | The Talent of levels 5 and 8, from a bigger list. |
+| [[Staggered\|**Staggered**]] | You can't use Reactions; your Reaction AP waits. |
 | [[Standards\|**Standard**]] | An NPC role with CV 100: about 56 Health at Stage 1, dies to about 2 to 3 PC turns. |
 | [[Steadiness\|**Steadiness**]] | A creature's resistance to being moved: it reduces the value of Forced Movement and Reposition. Normally 0. |
 | [[Chapter 6: Basic Actions\|**Steel Yourself**]] | The Basic Action that uses your Rally Points. |
 | [[Strike\|**Strike**]] | An Action that tries to hit a creature. At most 3 per turn. |
 | [[Outcome Tiers\|**Success**]] | A Tier 2 or 3 result. |
 | [[Tags\|**Tag**]] | A word on a creature (not an Action) that other rules refer to, such as Profane. |
+| [[Taunted\|**Taunted**]] | By a creature: 1 Bane on your Actions against anyone else. |
 | [[Flanking\|**Threatens**]] | A creature that can make a [Melee] Action that deals damage threatens every enemy within that Action's normal range (not adjacent ones with a Long weapon). |
 | [[Thrown\|**Thrown**]] | A weapon property: the weapon can be used in hand or thrown, with a Range for each. |
 | [[Outcome Tiers\|**Tier**]] | The outcome of a roll: 1, 2 or 3. |
@@ -170,6 +183,7 @@
 | [[Defenses\|**Vs.**]] | An entry that names an Attribute: the Action rolls against half of it (rounded up) instead of Armor Defense or Ward Defense. |
 | [[Vulnerable\|**Vulnerable**]] | A condition with a value: Actions against you gain that many Boons. |
 | [[Defenses\|**Ward**]] | Ward Defense (WD) — 11 + Power Modifier + Ward value + other items + bonuses − penalties. The Defense against Power Actions. |
+| [[Resist, Weak and Immunity\|**Weak**]] | Weak N (subtype): each Action's damage of that subtype, both pools together, is increased by N once. |
 | [[Weapon Groups\|**Weapon Group**]] | Blades, Axes, Hammers, Polearms, Bows, Crossbows, Firearms, Unarmed. Your Mastery with a weapon is at least a third of your best in its group. |
 | [[Weapon, Power and Signature Modifiers\|**Weapon Modifier**]] | The higher of the class's two Weapon Attributes ÷ 2 + 1. Weapon Actions roll it. |
 | [[Rolls\|**Weapon roll**]] | An Action with the Weapon trait (or a Split Action in Weapon mode). |

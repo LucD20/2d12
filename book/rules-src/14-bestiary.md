@@ -93,11 +93,11 @@ A condition is worth **steps of rating**: **Mild 1, Moderate 2, Severe 3**. An A
 
 | Severity | Examples |
 |---|---|
-| **Mild** | Hindered (EoT); 1 Bane on its next roll; Pushed, Pulled or Slid (any distance); Bright light on it (it can't hide) |
-| **Moderate** | Vulnerable 1 (EoT); Immobilized (EoT); Immobilized until it escapes; Enfeebled 1 |
-| **Severe** | Prone; Slowed 1; Vulnerable 2 (EoT); Doomed on its next roll |
+| **Mild** | Hindered (EoT); 1 Bane on its next roll; Pushed, Pulled or Slid (any distance); Bright light on it (it can't hide); Taunted (1 round); Sickened 1; Bleed 1 or 2; Staggered (EoT) on a creature whose Reaction is only Opportunity Attack |
+| **Moderate** | Vulnerable 1 (EoT); Immobilized (EoT); Immobilized until it escapes; Enfeebled 1; Dazed 1; Grabbed; Bleed 1d4 to 1d6; Frightened (EoT) of a creature it can already reach; Staggered (EoT) on a creature with a Reaction worth an AP |
+| **Severe** | Prone; Slowed 1; Vulnerable 2 (EoT); Doomed on its next roll; Blinded (EoT); Frightened (EoT) of a creature it must still approach |
 
-**Slowed 2** is one step beyond Severe (4 steps). Conditions that cost AP (Prone, Slowed) are the strongest; conditions that only move a creature are the weakest. A condition that lasts longer than EoT, or that a Save can't shake off, is one step more severe, unless the table already lists that duration. A condition on Tier 3 only costs one step less.
+**Slowed 2**, **Dazed 2** and **Bleed 2d6** are one step beyond Severe (4 steps). The measure behind the new rows (pack R-classes, 2026-11-04): a Bane is about 10% of an attack and Doomed about half of it; Dazed 1 takes a quarter of a Standard's turn (about 3 DE), Frightened's Bane alone is Mild and its movement restriction the real cost, a Bleed deals about twice its value over the rest of a fight or costs 1 AP to staunch. Conditions that cost AP (Prone, Slowed) are the strongest; conditions that only move a creature are the weakest. A condition that lasts longer than EoT, or that a Save can't shake off, is one step more severe, unless the table already lists that duration. A condition on Tier 3 only costs one step less.
 
 ### Reactions
 

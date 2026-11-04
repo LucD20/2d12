@@ -71,6 +71,10 @@ A **Reaction** is an Action you use in response to something another creature do
 - **On any turn:** A Reaction can happen during any turn, including your own: if another creature's Action moves them away from you during your turn, you can react to that.
 - You can't use an Action outside your turn unless it is a Reaction.
 
+### What a Reaction Responds To
+
+An Interrupt or a Trigger names a **moment** the rules define, and the Action that holds the moment is the triggering Action. The moments cards use: a creature would leave a square during a Move Action, or uses the Stand Action (Opportunity Attack); an enemy would enter a square adjacent to you or to an ally; an enemy ends a Move Action; a creature would be moved by [[Forced Movement]], or would fall Prone; a creature makes a [Strike] Action, or would damage someone; a creature would use a [Power] Action; a creature scores a Tier 3 or a [[Critical]]; an ally or an enemy becomes Bloodied or Strained; a creature goes Down; a creature uses a Rally Point; a creature Charges, or Flanks you. A card can name another moment, as long as the rules define when it happens.
+
 While the name "triggering" is similar to "Trigger", it isn't only for Trigger Reactions: it also applies to Interrupt Reactions. The **triggering creature** is the creature who caused the Reaction to happen; the **triggering Action** is the Action that caused the Reaction to happen, and so on.
 
 > [!tip]
