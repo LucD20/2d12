@@ -57,8 +57,8 @@ export function parseParts(str) {
     if (bare) { out.uuids.push(bare[1]); continue; }
     // The book's notation also reads: "[B] 1d8 Fi", "1d8 Fi", "1d4 Fire" (a leading [B]/[M] pool, a trailing subtype code or name).
     let p = part, pool0 = "", sub0 = "";
-    const lead = p.match(/^\[(B|M)\]\s*/i);
-    if (lead) { pool0 = lead[1].toUpperCase(); p = p.slice(lead[0].length); }
+    const lead = p.match(/^\[(B|M|V|R)\]\s*/i);
+    if (lead) { pool0 = ({ V: "B", R: "M" })[lead[1].toUpperCase()] ?? lead[1].toUpperCase(); p = p.slice(lead[0].length); }
     const tail = p.match(/\s+([A-Za-z]+)$/);
     if (tail) {
       const w = tail[1], code = w.length === 2 ? w[0].toUpperCase() + w[1].toLowerCase() : SUB[w.toLowerCase()];

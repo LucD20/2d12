@@ -62,18 +62,18 @@
     {
      "ap": 1,
      "tiers": [
-      "[B] 1[W]",
-      "[B] 1[W] + [Mod] + [M] 1d4 Ho",
-      "[B] 1[W] + [Mod] + [M] 1d6 Ho"
+      "[V] 1[W]",
+      "[V] 1[W] + [Mod] + [R] 1d4 Ho",
+      "[V] 1[W] + [Mod] + [R] 1d6 Ho"
      ],
      "effects": "The target sheds Bright light in a 1 Emanation and takes 1 Bane when they try to hide, for 1 round."
     },
     {
      "ap": 2,
      "tiers": [
-      "[B] 1[W] + [M] 1d6 Ho",
-      "[B] 1[W] + [Mod] + [M] 1d10 Ho",
-      "[B] 1[W] + [Mod] + [M] 2d8 Ho"
+      "[V] 1[W] + [R] 1d6 Ho",
+      "[V] 1[W] + [Mod] + [R] 1d10 Ho",
+      "[V] 1[W] + [Mod] + [R] 2d8 Ho"
      ],
      "effects": "As 1 AP, but a 2 Emanation. You or one ally in the light gain +1 Defense for 1 round.",
      "foundry": {
@@ -84,9 +84,9 @@
     {
      "ap": 3,
      "tiers": [
-      "[B] 1[W] + [M] 1d6 Ho",
-      "[B] 1[W] + [Mod] + [M] 1d10 Ho",
-      "[B] 1[W] + [Mod] + [M] 2d8 Ho"
+      "[V] 1[W] + [R] 1d6 Ho",
+      "[V] 1[W] + [Mod] + [R] 1d10 Ho",
+      "[V] 1[W] + [Mod] + [R] 2d8 Ho"
      ],
      "effects": "As 2 AP, and you or one ally in the light gain [[Guard]] 1d8 + [Mod]. You choose who gains the Defense and who gains the Guard separately: the same creature or two different ones.",
      "foundry": {
@@ -121,7 +121,7 @@
     },
     {
      "ap": 2,
-     "effects": "As 1 AP, and your next [Strike] Action deals an extra [M] 0/2d8/2d8 Ho.",
+     "effects": "As 1 AP, and your next [Strike] Action deals an extra [R] 0/2d8/2d8 Ho.",
      "foundry": {
       "fx": {
        "all": [
@@ -169,17 +169,17 @@
     {
      "ap": 2,
      "tiers": [
-      "[B] 1[W] + [M] 2d6 Ho",
-      "[B] 1[W] + [Mod] + [M] 3d8 Ho",
-      "[B] 1[W] + [Mod] + [M] 4d8 Ho"
+      "[V] 1[W] + [R] 2d6 Ho",
+      "[V] 1[W] + [Mod] + [R] 3d8 Ho",
+      "[V] 1[W] + [Mod] + [R] 4d8 Ho"
      ]
     },
     {
      "ap": 3,
      "tiers": [
-      "[B] 1[W] + [M] 3d8 Ho",
-      "[B] 1[W] + [Mod] + [M] 5d8 Ho",
-      "[B] 1[W] + [Mod] + [M] 7d8 Ho"
+      "[V] 1[W] + [R] 3d8 Ho",
+      "[V] 1[W] + [Mod] + [R] 5d8 Ho",
+      "[V] 1[W] + [Mod] + [R] 7d8 Ho"
      ]
     }
    ],
@@ -208,18 +208,18 @@
     {
      "ap": 2,
      "tiers": [
-      "[M] 1d10 Ho",
-      "[M] 2d8 Ho",
-      "[M] 3d6 Ho; Prone"
+      "[R] 1d10 Ho",
+      "[R] 2d8 Ho",
+      "[R] 3d6 Ho; Prone"
      ],
      "ruler": "area 2 | on 3: debuff Prone"
     },
     {
      "ap": 3,
      "tiers": [
-      "[M] 2d6 Ho",
-      "[M] 2d10 Ho",
-      "[M] 3d8 Ho; Prone"
+      "[R] 2d6 Ho",
+      "[R] 2d10 Ho",
+      "[R] 3d8 Ho; Prone"
      ],
      "ruler": "area 2.5 | on 3: debuff Prone"
     }
@@ -366,7 +366,7 @@
    "name": "Hallowed Stance",
    "category": "Paladin Escalation (Passive)",
    "flavor": "You do not move. Neither do those beside you.",
-   "text": "While your Escalation is 2 or more, if you haven't left your square since your last turn, you and your adjacent allies take less Body damage, reduced by your Power Modifier (minimum 0). This reduction applies to one instance of damage per Action; if the Action has several, the player chooses which one is reduced.",
+   "text": "While your Escalation is 2 or more, if you haven't left your square since your last turn, you and your adjacent allies take less Vigor damage, reduced by your Power Modifier (minimum 0). This reduction applies to one instance of damage per Action; if the Action has several, the player chooses which one is reduced.",
    "foundry": {
     "img": "icons/svg/statue.svg",
     "level": 1,
@@ -381,7 +381,7 @@
    "name": "Radiant Zeal",
    "category": "Paladin Escalation (Passive)",
    "flavor": "The longer the fight, the brighter you burn.",
-   "text": "While your Escalation is 1 or more, the first [Strike] Action you make each round that deals damage deals an extra [M] 1d6 Ho.",
+   "text": "While your Escalation is 1 or more, the first [Strike] Action you make each round that deals damage deals an extra [R] 1d6 Ho.",
    "foundry": {
     "img": "icons/svg/sun.svg",
     "level": 1,
@@ -457,7 +457,7 @@
    "versions": [
     {
      "ap": 0,
-     "effects": "For 1 round, the next time an ally deals damage to the target, they deal an extra [M] 1d8 Ho. You gain [[Guard]] 2d6.",
+     "effects": "For 1 round, the next time an ally deals damage to the target, they deal an extra [R] 1d8 Ho. You gain [[Guard]] 2d6.",
      "foundry": {
       "append": "@Guard[2d6|self:yes]{Guard 2d6}",
       "fx": {
@@ -474,7 +474,7 @@
     "folder": "Paladin",
     "level": 1,
     "automation": "silver",
-    "automationNote": "the ally clicks the button on the mark for the extra [M] 1d8 Ho."
+    "automationNote": "the ally clicks the button on the mark for the extra [R] 1d8 Ho."
    }
   },
   {

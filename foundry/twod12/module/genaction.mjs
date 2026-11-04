@@ -22,7 +22,7 @@ function splitTop(str, sep) {
   return out.filter(Boolean);
 }
 
-const PART = /^(?:\[([BMC])\]\s*)?(?:(\d*)\s*\[W\]|\[(?:At|Mod)\]|(\d+d\d+(?:[+-]\d+)?|\d+))(?:\s+([A-Za-z]+))?$/i;
+const PART = /^(?:\[([BMCVR])\]\s*)?(?:(\d*)\s*\[W\]|\[(?:At|Mod)\]|(\d+d\d+(?:[+-]\d+)?|\d+))(?:\s+([A-Za-z]+))?$/i;
 
 /** One damage piece written like the card ("[B] 1[W] Sl + [M] 1d6 Ho"): its Instances, or null if it isn't damage. */
 function cardDamage(piece) {
@@ -31,7 +31,7 @@ function cardDamage(piece) {
   for (const raw of piece.split(/\s\+\s/)) {
     const m = raw.trim().match(PART);
     if (!m) return null;
-    if (m[1]) pool = m[1].toUpperCase();
+    if (m[1]) pool = ({ V: "B", R: "M" })[m[1].toUpperCase()] ?? m[1].toUpperCase();   // pack R-core: [V] / [R] are the B / M pools
     const sub = m[4] ? subtypeCode(m[4]) : "";
     if (m[4] && !sub) return null;   // a word that is no damage type: not damage
     const i = { ...blank(), pool, subtype: sub };

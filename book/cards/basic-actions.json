@@ -63,7 +63,7 @@
       "vs": "AD",
       "requirements": "You have a free hand.",
       "versions": [
-        { "ap": 1, "tiers": ["0", "[B] 1[W] + [Mod]", "[B] 1[W] + [Mod]"] }
+        { "ap": 1, "tiers": ["0", "[V] 1[W] + [Mod]", "[V] 1[W] + [Mod]"] }
       ],
       "foundry": { "basic": "fists", "img": "icons/svg/combat.svg", "weaponUse": "fists" }
     },
@@ -219,7 +219,7 @@
       "requirements": "The target's SR is at most 1 higher than yours.",
       "versions": [
         { "ap": 1, "tiers": ["No effect.", "No effect.", "Prone."] },
-        { "ap": 2, "tiers": ["No effect.", "Prone.", "[B] 1d8 Bl; Prone."] }
+        { "ap": 2, "tiers": ["No effect.", "Prone.", "[V] 1d8 Bl; Prone."] }
       ],
       "foundry": { "basic": "trip", "img": "icons/svg/falling.svg" }
     },
@@ -234,7 +234,7 @@
       "vs": "AD",
       "rules": "You attack with the weapon you are wielding. Weapon Attack takes the Melee or Ranged trait of that weapon, and its Range.",
       "versions": [
-        { "ap": 1, "tiers": ["0", "[B] 1[W] + [Mod]", "[B] 1[W] + [Mod]"] }
+        { "ap": 1, "tiers": ["0", "[V] 1[W] + [Mod]", "[V] 1[W] + [Mod]"] }
       ],
       "foundry": { "basic": "basicWeaponAttack", "img": "icons/svg/sword.svg" }
     },

@@ -109,9 +109,9 @@
     {
      "ap": 2,
      "tiers": [
-      "[B] 1[W] + [Mod]",
-      "[B] 1[W] + [Mod] + 4",
-      "[B] 1[W] + [Mod] + 6"
+      "[V] 1[W] + [Mod]",
+      "[V] 1[W] + [Mod] + 4",
+      "[V] 1[W] + [Mod] + 6"
      ],
      "ruler": "area 1.5"
     }
@@ -208,9 +208,9 @@
     {
      "ap": 1,
      "tiers": [
-      "[B] [Mod] Bl",
-      "[B] 1d4 + [Mod] Bl",
-      "[B] 1d6 + [Mod] Bl"
+      "[V] [Mod] Bl",
+      "[V] 1d4 + [Mod] Bl",
+      "[V] 1d6 + [Mod] Bl"
      ]
     }
    ],
@@ -266,9 +266,9 @@
     {
      "ap": 1,
      "tiers": [
-      "[B] 1d4 Bl",
-      "[B] 1d4 + [Mod] Bl",
-      "[B] 1d6 + [Mod] Bl; Prone."
+      "[V] 1d4 Bl",
+      "[V] 1d4 + [Mod] Bl",
+      "[V] 1d6 + [Mod] Bl; Prone."
      ],
      "ruler": "on 3: debuff Prone"
     }
@@ -429,9 +429,9 @@
     {
      "ap": 2,
      "tiers": [
-      "[B] [Mod]",
-      "[B] 1[W] + [Mod]",
-      "[B] 1[W] + [Mod] + 2"
+      "[V] [Mod]",
+      "[V] 1[W] + [Mod]",
+      "[V] 1[W] + [Mod] + 2"
      ],
      "critical": "Relocate (1A) the target, ignoring the Handle trait.",
      "foundry": {
@@ -492,7 +492,7 @@
    "versions": [
     {
      "ap": 1,
-     "effects": "Until the end of your turn, your [Weapon] Actions deal an extra [M] 1d4 Co, and the first one that deals damage on a Tier 3 makes the target Hindered (EoT).",
+     "effects": "Until the end of your turn, your [Weapon] Actions deal an extra [R] 1d4 Co, and the first one that deals damage on a Tier 3 makes the target Hindered (EoT).",
      "foundry": {
       "fx": {
        "all": [

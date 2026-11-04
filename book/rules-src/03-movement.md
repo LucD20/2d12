@@ -145,7 +145,7 @@ Each square of the path must be next to the previous one, and each counts as 1 t
 
 Collision happens when something is in the way of the destination the origin chose. For Pushed and Pulled, calculate it from the center of the creature: draw a line from where the creature started to where the Forced Movement was meant to end. For Slid, follow the path the origin chose. If something is in the way, the creature stops in the **last legal square** the line or the path passes through: a square where the whole creature fits and that has no object or creature in it.
 
-A creature that stops short takes Lethal Blunt Body damage for its **unused squares**: the squares between where it stopped and the destination the origin chose.
+A creature that stops short takes Lethal Blunt Vigor damage for its **unused squares**: the squares between where it stopped and the destination the origin chose.
 
 - **An object** (a wall, a closed door, etc.): **2 damage** for each unused square.
 - **Another creature, or the origin:** **1 damage** for each unused square, to each of the two creatures.

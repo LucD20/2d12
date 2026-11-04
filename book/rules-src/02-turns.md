@@ -129,7 +129,7 @@ Unless something says otherwise, the effects of an Action, and the Actions it le
 
 ### Effect Timing
 
-Effects written in a tier happen only on that tier. **General Effects**, written on the **Effects** row at the bottom of the Action, happen on a **Tier 2 or 3** result, never on a Tier 1. An effect written directly in the Tier 1 row ("Tier 1: [B] 1d4 Ho; Prone") does happen on a Tier 1.
+Effects written in a tier happen only on that tier. **General Effects**, written on the **Effects** row at the bottom of the Action, happen on a **Tier 2 or 3** result, never on a Tier 1. An effect written directly in the Tier 1 row ("Tier 1: [V] 1d4 Ho; Prone") does happen on a Tier 1.
 
 Actions with no roll have no tiers: their effects simply happen.
 
@@ -141,9 +141,9 @@ When an effect applies only to some tiers, it says so with the tiers in parenthe
 
 A **Buff** is an effect that modifies another Action, such as Rimebrand's extra damage on your Weapon Actions.
 
-- A Buff that gives a single value ("+[M] 1d6 Co") applies on every Tier, Tier 1 included.
-- A Buff that gives a value per Tier ("+[M] 1d4/1d6/1d8 Co") applies its Tier 1 value on a Tier 1, its Tier 2 value on a Tier 2 and its Tier 3 value on a Tier 3.
-- A Buff that only applies from Tier 2 onward is written with a 0 on Tier 1: "+[M] 0/1d6/1d8 Co".
+- A Buff that gives a single value ("+[R] 1d6 Co") applies on every Tier, Tier 1 included.
+- A Buff that gives a value per Tier ("+[R] 1d4/1d6/1d8 Co") applies its Tier 1 value on a Tier 1, its Tier 2 value on a Tier 2 and its Tier 3 value on a Tier 3.
+- A Buff that only applies from Tier 2 onward is written with a 0 on Tier 1: "+[R] 0/1d6/1d8 Co".
 - On an Action with several targets, a Buff or a Debuff is rolled once per Tier, not per creature (see [[Several Targets]]).
 
 **Raising Defenses.** "+1 Defense" raises **every** Defense of the creature: Armor Defense, Ward Defense and every Vs. Attribute. "+1 AD", "+1 WD" or "+1 Defense vs Body" raises only that one. A feature can narrow it further, such as "+1 Defense vs Actions that Push". These bonuses don't add up with each other (see [[Stacking]]).
@@ -161,7 +161,7 @@ Three things do add up:
 **Equipment is not a bonus.** Your armor gives your Armor value and your charm your Ward value; effects add to those. With +1 AD and +1 Defense, your Armor Defense rises by 1 (not 2) and every other Defense by 1.
 
 > [!example]
-> Divine Surge makes the next ally who deals damage to its target deal an extra [M] 1d8 Holy. If two Paladins use Divine Surge on the same creature, the next ally still deals only one extra 1d8: it is the same effect.
+> Divine Surge makes the next ally who deals damage to its target deal an extra [R] 1d8 Holy. If two Paladins use Divine Surge on the same creature, the next ally still deals only one extra 1d8: it is the same effect.
 
 ### Frequency
 

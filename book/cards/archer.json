@@ -36,7 +36,7 @@
    "category": "Archer Feature",
    "level": 1,
    "flavor": "You pick the one, and the world narrows.",
-   "text": "At the start of each encounter, choose one enemy as your **Marked Quarry**. You gain 1 Boon on [Shot, Strike] Actions against them, and those Actions deal [B] [Mod] on a Tier 1. When they die or go Down, you can choose a new Marked Quarry (0R [Focus]). Once per turn, you can change your Marked Quarry during an encounter by spending 1 AP [Focus].",
+   "text": "At the start of each encounter, choose one enemy as your **Marked Quarry**. You gain 1 Boon on [Shot, Strike] Actions against them, and those Actions deal [V] [Mod] on a Tier 1. When they die or go Down, you can choose a new Marked Quarry (0R [Focus]). Once per turn, you can change your Marked Quarry during an encounter by spending 1 AP [Focus].",
    "foundry": {
     "img": "icons/svg/target.svg",
     "automation": "gold",
@@ -165,7 +165,7 @@
     },
     {
      "ap": 2,
-     "effects": "Evade 2, then make a [Ranged, Shot] Weapon Attack (1A) that deals an extra [B] 1d6 Pi.",
+     "effects": "Evade 2, then make a [Ranged, Shot] Weapon Attack (1A) that deals an extra [V] 1d6 Pi.",
      "foundry": {
       "append": "@Use[Weapon Attack|label:[Ranged, Shot] Weapon Attack (1A)]",
       "fx": {
@@ -178,7 +178,7 @@
     },
     {
      "ap": 3,
-     "effects": "Evade 3, then make a [Ranged, Shot] Weapon Attack (1A) that deals an extra [B] 2d6 Pi.",
+     "effects": "Evade 3, then make a [Ranged, Shot] Weapon Attack (1A) that deals an extra [V] 2d6 Pi.",
      "foundry": {
       "append": "@Use[Weapon Attack|label:[Ranged, Shot] Weapon Attack (1A)]",
       "fx": {
@@ -215,9 +215,9 @@
     {
      "ap": 2,
      "tiers": [
-      "[B] 1[W] + 1d8 Pi",
-      "[B] 1[W] + [Mod] + 3d6 Pi",
-      "[B] 1[W] + [Mod] + 4d6 Pi; Vulnerable 2 (EoT)."
+      "[V] 1[W] + 1d8 Pi",
+      "[V] 1[W] + [Mod] + 3d6 Pi",
+      "[V] 1[W] + [Mod] + 4d6 Pi; Vulnerable 2 (EoT)."
      ],
      "ruler": "on 3: vulnerable 2"
     }
@@ -249,9 +249,9 @@
     {
      "ap": 2,
      "tiers": [
-      "[B] 2d8 + [Mod] Pi; Hindered (EoT).",
-      "[B] 1d10 + [Mod] Pi",
-      "[B] 1d4 Pi"
+      "[V] 2d8 + [Mod] Pi; Hindered (EoT).",
+      "[V] 1d10 + [Mod] Pi",
+      "[V] 1d4 Pi"
      ],
      "ruler": "area 2 | on 1: debuff Hindered (EoT)"
     }
@@ -350,9 +350,9 @@
     {
      "ap": 1,
      "tiers": [
-      "[B] 1[W]",
-      "[B] 1[W] + [Mod] + 1d6 Pi",
-      "[B] 1[W] + [Mod] + 2d6 Pi; Prone."
+      "[V] 1[W]",
+      "[V] 1[W] + [Mod] + 1d6 Pi",
+      "[V] 1[W] + [Mod] + 2d6 Pi; Prone."
      ],
      "ruler": "favored | on 3: debuff Prone"
     }
@@ -385,9 +385,9 @@
     {
      "ap": 2,
      "tiers": [
-      "[B] 2d8 + [Mod] Pi; Prone.",
-      "[B] 2d6 + [Mod] Pi",
-      "[B] 1d6 Pi"
+      "[V] 2d8 + [Mod] Pi; Prone.",
+      "[V] 2d6 + [Mod] Pi",
+      "[V] 1d6 Pi"
      ],
      "ruler": "area 2.5 | on 1: debuff Prone"
     }
@@ -405,7 +405,7 @@
    "name": "Killer's Focus",
    "category": "Archer Escalation (Passive)",
    "flavor": "First blood is the only blood that matters.",
-   "text": "While your Escalation is 2 or more, your first [Shot, Strike, Weapon] Action each round deals an extra [B] 1d6 Pi.",
+   "text": "While your Escalation is 2 or more, your first [Shot, Strike, Weapon] Action each round deals an extra [V] 1d6 Pi.",
    "foundry": {
     "img": "icons/svg/target.svg",
     "level": 1,
@@ -519,7 +519,7 @@
    "versions": [
     {
      "ap": 1,
-     "effects": "Make one [Ranged, Shot] Weapon Attack (1A) and compare its result to two different creatures no more than 5 squares apart. It deals an extra [B] 1d6 Pi to each of them.",
+     "effects": "Make one [Ranged, Shot] Weapon Attack (1A) and compare its result to two different creatures no more than 5 squares apart. It deals an extra [V] 1d6 Pi to each of them.",
      "foundry": {
       "fx": {
        "all": [

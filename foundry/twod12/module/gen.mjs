@@ -72,9 +72,9 @@ export function convertEffects(text) {
   s = s.replace(/\b(uses?)\s+(\d+)\s+Rally\s+Points?\b/gi, "$1 @Rally[$2]");
   // "Appeal Save: 1d6 / 1d4 / 0 [M] Holy damage" (the pool in brackets and the type are optional)
   const V = "(\\d+d\\d+(?:[+-]\\d+)?|\\d+)";
-  s = s.replace(new RegExp(`(?:\\bDC\\s*(\\d+)\\s+)?\\b(${ATTRS})\\s+Save\\s*:\\s*${V}\\s*\\/\\s*${V}\\s*\\/\\s*${V}(?:\\s*\\[([BMC])\\])?(?:\\s+(Acid|Blunt|Cold|Electricity|Fire|Force|Holy|Pierce|Psychic|Slash|Thunder|Unholy))?(?:\\s+damage)?`, "gi"),
+  s = s.replace(new RegExp(`(?:\\bDC\\s*(\\d+)\\s+)?\\b(${ATTRS})\\s+Save\\s*:\\s*${V}\\s*\\/\\s*${V}\\s*\\/\\s*${V}(?:\\s*\\[([BMCVR])\\])?(?:\\s+(Acid|Blunt|Cold|Electricity|Fire|Force|Holy|Pierce|Psychic|Slash|Thunder|Unholy))?(?:\\s+damage)?`, "gi"),
     (m, dc, a, t1, t2, t3, pool, sub) => {
-      const p = pool ? POOL[pool.toUpperCase()] : "", st = sub ? SUB_WORDS[sub.toLowerCase()] : "";
+      const p = pool ? POOL[({ V: "B", R: "M" })[pool.toUpperCase()] ?? pool.toUpperCase()] : "", st = sub ? SUB_WORDS[sub.toLowerCase()] : "";
       return `@Save[${a.toLowerCase()}${dc ? `|dc:${dc}` : ""}|t1:${tierDmg(t1, p, st)}|t2:${tierDmg(t2, p, st)}|t3:${tierDmg(t3, p, st)}]`;
     });
   s = s.replace(new RegExp(`\\bDC\\s*(\\d+)\\s*(${ATTRS})\\s*Save\\b`, "gi"), (m, dc, a) => `@Save[${a.toLowerCase()}|dc:${dc}]`);
