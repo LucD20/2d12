@@ -53,8 +53,8 @@
      "ap": 1,
      "tiers": [
       "[V] 1[W]",
-      "[V] 1[W] + [Mod] + [R] 1d4 Ho",
-      "[V] 1[W] + [Mod] + [R] 1d6 Ho"
+      "[V] 1[W] + [Mod] + [R] 1d6 Ho",
+      "[V] 1[W] + [Mod] + [R] 1d8 Ho"
      ],
      "effects": "The target sheds Bright light in a 1 Emanation and takes 1 Bane when they try to hide, for 1 round."
     },
@@ -62,34 +62,31 @@
      "ap": 2,
      "tiers": [
       "[V] 1[W] + [R] 1d6 Ho",
-      "[V] 1[W] + [Mod] + [R] 1d10 Ho",
-      "[V] 1[W] + [Mod] + [R] 2d8 Ho"
+      "[V] 1[W] + [Mod] + [R] 2d6 Ho",
+      "[V] 1[W] + [Mod] + [R] 2d10 Ho"
      ],
-     "effects": "As 1 AP, but a 2 Emanation. You or one ally in the light gain +1 Defense for 1 round.",
-     "foundry": {
-      "append": "@Effect[{{fx:Smite (+1 Defense)}}]{+1 Defense for 1 round}"
-     },
-     "ruler": "on 2+: defense 1 ally"
+     "effects": "As 1 AP, but a 2 Emanation."
     },
     {
      "ap": 3,
      "tiers": [
-      "[V] 1[W] + [R] 1d6 Ho",
-      "[V] 1[W] + [Mod] + [R] 1d10 Ho",
-      "[V] 1[W] + [Mod] + [R] 2d8 Ho"
+      "[V] 1[W] + [R] 1d8 Ho",
+      "[V] 1[W] + [Mod] + [R] 2d8 Ho",
+      "[V] 1[W] + [Mod] + [R] 3d8 Ho"
      ],
-     "effects": "As 2 AP, and you or one ally in the light gain [[Guard]] 1d8 + [Mod] (2d6 + [Mod] at Stage 2, 2d8 + [Mod] at Stage 3). You choose who gains the Defense and who gains the Guard separately: the same creature or two different ones.",
+     "effects": "As 2 AP, and you or one ally in the light gain [[Guard]] 1d8 + [Mod] (2d6 + [Mod] at Stage 2, 2d8 + [Mod] at Stage 3). You can Push 1 any other creatures in the light, away from the target.",
      "foundry": {
-      "append": "@Effect[{{fx:Smite (+1 Defense)}}]{+1 Defense for 1 round} @Guard[1d8+mod]{Guard 1d8 + [Mod]}"
+      "append": "@Guard[1d8+mod]{Guard 1d8 + [Mod]}"
      },
-     "ruler": "on 2+: defense 1 ally; on 2+: guard 1d8+[Mod] self"
+     "ruler": "on 2+: guard 1d8+[Mod] self"
     }
    ],
    "foundry": {
     "img": "icons/svg/sun.svg",
     "folder": "Paladin",
     "automation": "gold"
-   }
+   },
+   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): more damage, no +1 Defense; the 3 AP Version is an explosion: the Paladin can Push 1 the other creatures in the light, away from the target (the target is the Push's origin)."
   },
   {
    "name": "Lay On Hands",
@@ -111,35 +108,28 @@
     },
     {
      "ap": 2,
-     "effects": "As 1 AP, and your next [Strike] Action deals an extra [R] 0/2d8/2d8 Ho.",
+     "effects": "As 1 AP, and the target heals 1d6 + your Power Modifier more.",
      "foundry": {
-      "fx": {
-       "all": [
-        "{{fx:Lay On Hands (Holy Strike)}}"
-       ]
-      },
       "append": "@Rally[1]"
      },
-     "ruler": "heal 1; always: extra 2d8 mind next strike"
+     "ruler": "heal 1; mend 1d6+[Mod] ally"
     },
     {
      "ap": 3,
-     "effects": "As 2 AP, but the target can use 2 Rally Points.",
+     "effects": "The target can use 2 Rally Points and heals 1d6 + your Power Modifier more.",
      "foundry": {
-      "fx": {
-       "all": [
-        "{{fx:Lay On Hands (Holy Strike)}}"
-       ]
-      }
+      "append": "@Rally[2]"
      },
-     "ruler": "heal 2; always: extra 2d8 mind next strike"
+     "ruler": "heal 2; mend 1d6+[Mod] ally"
     }
    ],
    "foundry": {
     "img": "icons/svg/regen.svg",
     "folder": "Paladin",
-    "automation": "gold"
-   }
+    "automation": "silver",
+    "automationNote": "the Rally Points (buttons); the extra healing by hand."
+   },
+   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): the Holy Strike rider is gone; the 2 and 3 AP Versions heal new Health on top of the Rally Points, a step above the future Heal Action (2 AP, a roll) at every AP."
   },
   {
    "name": "Shield of Faith",
@@ -169,33 +159,37 @@
    }
   },
   {
-   "name": "Bulwark of Faith",
+   "name": "Rebuke",
    "category": "Divine Power",
    "level": 1,
-   "_note": "Pack R-classes: a Hallmark Reaction (decision sheet item 8: 1R, Round, the Guard of a Rally Point before the damage; the 2R Slide version is gone). It covers you too (rclasses.md section 3: ally-only it is 0.73 AP a turn, on you too 0.97, Shield of Faith's 0.96).",
-   "flavor": "You step into the blow meant for them, and your god holds the line with you.",
+   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): the Nova Paladin's Hallmark Reaction; a Trigger, not an Interrupt (an Interrupt that could cancel an Encounter Special on a Tier 2 Save was too strong), the first Reaction with a Save, Forced Movement and Frightened.",
+   "flavor": "Strike my friends, and feel why you should not have.",
    "traits": [
     "divine",
-    "focus"
+    "power",
+    "save"
    ],
    "frequency": "Round",
-   "target": "The creature the Strike would damage (you or an ally)",
-   "distance": "5 sq.",
-   "interrupt": "A [Strike] Action would damage you or an ally within 5 squares.",
+   "target": "The triggering creature",
+   "distance": "Reach",
+   "vs": "Appeal Save",
+   "trigger": "An enemy within your Reach makes a [Strike] Action against an ally.",
    "versions": [
     {
      "ap": 1,
-     "effects": "The target gains [[Guard]] equal to what one of their Rally Points heals, before the damage.",
-     "foundry": {
-      "append": "@Guard[rally]{Guard equal to what one of their Rally Points heals}"
-     },
-     "ruler": "block 9"
+     "tiers": [
+      "[R] 1d8 Ho; Pushed 2, and Frightened of you (EoT).",
+      "[R] 1d6 Ho; Pushed 1.",
+      "No effect."
+     ],
+     "ruler": "on 1: push 2; on 1: debuff Frightened (EoT); on 2: push 1"
     }
    ],
    "foundry": {
-    "img": "icons/svg/shield.svg",
+    "img": "icons/svg/sun.svg",
     "folder": "Paladin",
-    "automation": "silver"
+    "automation": "silver",
+    "automationNote": "the Save and the damage (the card); the Push and Frightened by hand."
    }
   },
   {
@@ -249,27 +243,29 @@
    ],
    "frequency": "Encounter",
    "target": "All enemies in the Area",
-   "area": "2 / 3 Emanation",
-   "distance": "5 sq.",
+   "area": "2 / 3 Burst",
+   "distance": "10 sq.",
    "vs": "WD",
    "versions": [
     {
      "ap": 2,
      "tiers": [
       "[R] 1d10 Ho",
-      "[R] 2d8 Ho",
-      "[R] 3d6 Ho; Prone"
+      "[R] 2d8 Ho; Pushed 1.",
+      "[R] 3d6 Ho; Pushed 2."
      ],
-     "ruler": "area 2 | on 3: debuff Prone"
+     "ruler": "area 1.8 | on 2: push 1; on 3: push 2",
+     "critical": "The target is Prone."
     },
     {
      "ap": 3,
      "tiers": [
       "[R] 2d6 Ho",
-      "[R] 2d10 Ho",
-      "[R] 3d8 Ho; Prone"
+      "[R] 2d10 Ho; Pushed 1.",
+      "[R] 3d8 Ho; Pushed 2."
      ],
-     "ruler": "area 2.5 | on 3: debuff Prone"
+     "ruler": "area 2.3 | on 2: push 1; on 3: push 2",
+     "critical": "The target is Prone."
     }
    ],
    "foundry": {
@@ -279,25 +275,58 @@
     "areaCfg": {
      "targets": "enemies"
     }
+   },
+   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): a Burst (on a corner within 10 squares), Pushed 1 / 2 from the Burst's center on Tiers 2 and 3, Prone on a Critical.",
+   "notes": "The Burst's center is the origin of the Push."
+  },
+  {
+   "name": "Bulwark of Faith",
+   "category": "Paladin Feature",
+   "level": 1,
+   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): an Encounter Pick (1R, Interrupt), no longer a Hallmark Reaction (Rebuke took the slot); the ally is Slid 1 after the damage.",
+   "flavor": "You step into the blow meant for them, and your god holds the line with you.",
+   "traits": [
+    "divine",
+    "focus"
+   ],
+   "frequency": "Encounter",
+   "target": "The ally the Strike would damage",
+   "distance": "5 sq.",
+   "interrupt": "A [Strike] Action would damage an ally within 5 squares.",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "The target gains [[Guard]] equal to what one of their Rally Points heals, before the damage. After the damage, they are Slid 1.",
+     "foundry": {
+      "append": "@Guard[rally]{Guard equal to what one of their Rally Points heals}"
+     },
+     "ruler": "block 9; slide 1"
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/shield.svg",
+    "folder": "Paladin",
+    "automation": "silver"
    }
   },
   {
-   "name": "Aura of Protection",
+   "name": "Beacon",
    "category": "Paladin Feature",
    "level": 1,
-   "_note": "Pack R-classes: an Encounter Pick, no Escalation needed (decision sheet item 15; it was an Escalation Active).",
+   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): Aura of Protection reworked as an interactive Encounter Pick: 1 AP, 3 rounds, and a free step toward an ally who is hit.",
    "flavor": "You plant your feet, and light rims the shoulders of everyone near you.",
    "traits": [
     "area",
-    "divine"
+    "divine",
+    "self"
    ],
    "frequency": "Encounter",
    "target": "You and allies in the Area",
    "area": "Aura 2",
    "versions": [
     {
-     "ap": 0,
-     "effects": "Until the end of the encounter, you and allies in the Aura gain +1 Defense.",
+     "ap": 1,
+     "effects": "For 3 rounds, you and allies in the Aura gain +1 Defense. The first time each round an ally in the Aura is hit by a [Strike] Action, you can Evade 1 toward them.",
      "foundry": {
       "fx": {
        "all": [
@@ -305,13 +334,14 @@
        ]
       }
      },
-     "ruler": "allies 2.5 | rounds 2.5 | defense 1 allies"
+     "ruler": "allies 2.5 | rounds 3 | defense 1 allies"
     }
    ],
    "foundry": {
     "img": "icons/svg/aura.svg",
     "folder": "Paladin",
-    "automation": "gold"
+    "automation": "silver",
+    "automationNote": "the Defense (the effect, 3 rounds); the Evade by hand."
    }
   },
   {
@@ -396,15 +426,19 @@
    "versions": [
     {
      "ap": 2,
-     "effects": "Instead of going Down, the creature's total damage becomes 1 less than their Health Pool.",
-     "ruler": "prevent-down"
+     "effects": "Instead of going Down, the creature's total damage becomes 1 less than their Health Pool, and they gain [[Guard]] equal to what one of their Rally Points heals.",
+     "ruler": "prevent-down; guard 9 ally",
+     "foundry": {
+      "append": "@Guard[rally]{Guard equal to what one of their Rally Points heals}"
+     }
     }
    ],
    "foundry": {
     "img": "icons/svg/angel.svg",
     "folder": "Paladin",
     "automation": "none"
-   }
+   },
+   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): the saved creature also gains a Rally Point's worth of Guard."
   },
   {
    "name": "Radiant Zeal",
@@ -508,17 +542,17 @@
    "name": "Reckoning",
    "category": "Paladin Escalation (Passive)",
    "escalation": 3,
-   "_note": "Pack R-classes: new, the Escalation 3 wrath pick (rung budget 0.8-1 AP a turn on the 1.7 turns a fight at Escalation 3: 1d8 on the first landing Strike is about 4.5 DE, 0.8 AP; 2d6 was 1.2, 2d6 on every Strike 2.9: rclasses.md section 4); it pays the Bloodied / Strained hooks.",
+   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): against Strained only (the Paladin is the class that deals Resolve damage: Strained is its hook, Bloodied the Archer's), 1d10: about 5.5 DE on the turn it fires.",
    "flavor": "The weak point is where the light goes in.",
-   "text": "While your Escalation is 3 or more, the first [Strike] Action you make each round that deals damage to a Bloodied or Strained creature deals an extra [R] 1d8 Ho.",
+   "text": "While your Escalation is 3 or more, the first [Strike] Action you make each round that deals damage to a Strained creature deals an extra [R] 1d10 Ho.",
    "foundry": {
     "img": "icons/svg/sword.svg",
     "level": 1,
     "automation": "none",
-    "append": "(Not automated until R-Foundry: add [R] 1d8 Ho by hand, once a round, against a Bloodied or Strained target.)"
+    "append": "(Not automated until R-Foundry: add [R] 1d10 Ho by hand, once a round, against a Strained target.)"
    },
    "ruler": {
-    "passive": "escalation 3: extra 1d8 mind first-hit strike bloodied"
+    "passive": "escalation 3: extra 1d10 mind first-hit strike strained"
    }
   },
   {
@@ -541,12 +575,13 @@
   {
    "name": "Final Verdict",
    "category": "Paladin Apex",
-   "_note": "Pack R-classes: the wrath Apex (decision sheet item 14: Encounter, Escalation 3, 2 or 3 AP at the Encounter band, within the ceilings: 2 AP, Tier 2 at most 2 dice, Tier 3 at most 3). One roll against every adjacent enemy (Whirlwind's shape): Holy Wrath 2's dice on each of them.",
+   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): the wrath Apex with the vocabulary: you can Push 1 each hit (the ruler found a forced Push on every hit costs a melee Paladin its next turn: the enemies leave its Reach, so it is the Paladin's choice), Prone for a Bloodied target, Bleed [R] 1d6 Ho for a Strained one (Chapter 8); Self: you decide whether the Emanation affects you (Areas).",
    "flavor": "You name every sin within reach, and the light answers all at once.",
    "traits": [
     "area",
     "divine",
     "melee",
+    "self",
     "signature",
     "strike",
     "weapon"
@@ -564,8 +599,8 @@
       "[V] 1[W] + [Mod] + [R] 2d8 Ho",
       "[V] 1[W] + [Mod] + [R] 3d8 Ho"
      ],
-     "effects": "You roll once and compare the result to each target's AD. Each target you hit sheds Bright light in a 1 Emanation for 1 round; a target that is Bloodied or Strained when you hit them is also Prone.",
-     "ruler": "area 1.5 | on 2+: debuff Prone"
+     "effects": "You roll once and compare the result to each target's AD. Each target you hit sheds Bright light in a 1 Emanation for 1 round, and you can Push 1 it. A Bloodied target is Prone instead; a Strained target also Bleeds [R] 1d6 Ho (Mi/Ap).",
+     "ruler": "area 1.5"
     }
    ],
    "foundry": {
@@ -573,7 +608,7 @@
     "folder": "Paladin",
     "level": 1,
     "automation": "silver",
-    "automationNote": "the light and Prone (drop Prone on a Bloodied or Strained target by hand).",
+    "automationNote": "the Push, Prone and Bleed by hand (the light is the template).",
     "areaCfg": {
      "targets": "enemies"
     }
@@ -582,11 +617,12 @@
   {
    "name": "Hallowed Dawn",
    "category": "Paladin Apex",
-   "_note": "Pack R-classes: the mercy Apex (decision sheet item 14): 3 AP at the Encounter band: new Health for you and your allies (the dice step by Stage like Shield of Faith's: item 18), a cleansing, and Enfeebled 1 on the enemies around you. (A version that let each ally use a Rally Point measured nothing in the ruler: allies are rarely hurt enough when Escalation 3 comes; 2d6 + [PMod] healed about 15 a hard fight: rclasses.md section 5.)",
+   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): the mercy Apex: the dawn pushes the dark back (Pushed 2 away from you) and Enfeebles it; Self: you are the Emanation's target.",
    "flavor": "Dawn breaks where you stand, and it chooses sides.",
    "traits": [
     "area",
-    "divine"
+    "divine",
+    "self"
    ],
    "frequency": "Encounter",
    "escalation": 3,
@@ -595,8 +631,8 @@
    "versions": [
     {
      "ap": 3,
-     "effects": "You and each ally in the Area heal 3d6 + your Power Modifier (4d6 at Stage 2, 6d6 at Stage 3) and end one effect on them that is EoT or has 1 round left. Each enemy in the Area is Enfeebled 1 and sheds Bright light in a 1 Emanation until the end of your next turn.",
-     "ruler": "allies 3 | mend 3d6+[Mod] any; remove-effect 1"
+     "effects": "You and each ally in the Area heal 3d6 + your Power Modifier (4d6 at Stage 2, 6d6 at Stage 3) and end one effect on them that is EoT or has 1 round left. Each enemy in the Area is Pushed 2 away from you, is Enfeebled 1 and sheds Bright light in a 1 Emanation until the end of your next turn.",
+     "ruler": "allies 3 | mend 3d6+[Mod] any; push 2; remove-effect 1"
     }
    ],
    "foundry": {

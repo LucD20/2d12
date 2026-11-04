@@ -1,4 +1,4 @@
-Paladin: Repertoire Holy Wrath, Word of Radiance, Aura of Protection, Consecrated Ground, Miraculous Recovery, Divine Intervention | Passives Radiant Zeal, Divine Surge, Font of Mercy, Searing Blows, Mending Light, Reckoning, Hallowed Stance | Actives Final Verdict, Hallowed Dawn
+Paladin: Repertoire Holy Wrath, Word of Radiance, Bulwark of Faith, Beacon, Consecrated Ground, Miraculous Recovery, Divine Intervention | Passives Radiant Zeal, Divine Surge, Font of Mercy, Searing Blows, Mending Light, Reckoning, Hallowed Stance | Actives Final Verdict, Hallowed Dawn
 Archer: Repertoire Marksman's Shot, Volley, Covering Fire, Pinning Shot, Twin Shot, Hunter's Focus, Deadeye, Rain of Arrows | Passives Killer's Focus, Vanish, Harrying Shots, Hunter's Edge, Sure Step, Finisher, Pinned Down | Actives Deathmark, Open Season
 the book's Talents: 16
   Challenge          ok combat 1
@@ -19,7 +19,7 @@ the book's Talents: 16
   Class Expertise    ok combat 5 | needs level:5
 no Talent Action offered twice (an Action's category is not "Talent..."): true
 Leg Sweep: a kick true | no free hand needed true | Kickboxer grants it Leg Sweep
-old cards: Paladin Divine Vigil (Boon against Fear), Aegis, Mercy's Reward, Divine Vigil, Avenger's Oath, Vow of Enmity, Rebuke, Champion's Challenge, Divine Retribution, Call to Arms, Judgment, Sanctified Ground
+old cards: Paladin Divine Vigil (Boon against Fear), Aegis, Mercy's Reward, Divine Vigil, Avenger's Oath, Vow of Enmity, Rebuke (old), Champion's Challenge, Divine Retribution, Call to Arms, Judgment, Sanctified Ground
 old cards: Archer Precise Aim (1 Boon), Precise Aim (2 Boons), Precise Aim, Quick Draw, Wing Clip, True Shot, Suppressing Fire, Steady Aim, Perfect Shot, Bow Mastery, Patient Hunter
 lowercase Bane / Boon in the texts: none
 Rally Points written in words: none

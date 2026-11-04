@@ -2,7 +2,7 @@
 Paladin: level 1 10, level 2 1, level 3 2 | Archer: level 1 10, level 2 1, level 3 2
 Attribute increases (Details tab): Body or Appeal +1, Mind or Instinct +1 | Body or Instinct +1, Mind or Appeal +1
 --- the Paladin's level 1
-nothing chosen: 0 of 10 made, complete false | Attribute increases [Choose 2] | Features [Granted] | Hallmark Action [0 / 1] Smite/Lay On Hands | Hallmark Reaction [0 / 1] Shield of Faith/Bulwark of Faith | Encounter Pick [0 / 1] Holy Wrath/Word of Radiance/Aura of Protection | Escalation 1 Passive [0 / 1] Radiant Zeal/Divine Surge/Font of Mercy | Escalation 2 Passive [0 / 1] Searing Blows/Mending Light | Escalation 3 Passive [0 / 1] Reckoning/Hallowed Stance | Apex [0 / 1] Final Verdict/Hallowed Dawn | Talent [0 / 1] Challenge/Heavy Blows/Whirlwind/Bloodlust/Brawler/Kickboxer/Aim/Ricochet/Long Draw/Steady Nerves/Battering Charge/Cut Through/Lesser Blessing/Sacred Weapon/Hand of Mercy/Class Expertise
+nothing chosen: 0 of 10 made, complete false | Attribute increases [Choose 2] | Features [Granted] | Hallmark Action [0 / 1] Smite/Lay On Hands | Hallmark Reaction [0 / 1] Shield of Faith/Rebuke | Encounter Pick [0 / 1] Holy Wrath/Word of Radiance/Bulwark of Faith/Beacon | Escalation 1 Passive [0 / 1] Radiant Zeal/Divine Surge/Font of Mercy | Escalation 2 Passive [0 / 1] Searing Blows/Mending Light | Escalation 3 Passive [0 / 1] Reckoning/Hallowed Stance | Apex [0 / 1] Final Verdict/Hallowed Dawn | Talent [0 / 1] Challenge/Heavy Blows/Whirlwind/Bloodlust/Brawler/Kickboxer/Aim/Ricochet/Long Draw/Steady Nerves/Battering Charge/Cut Through/Lesser Blessing/Sacred Weapon/Hand of Mercy/Class Expertise
 Font of Mercy is an Escalation 1 Passive pick: true | offers: Radiant Zeal, Divine Surge, Font of Mercy | Apex: Final Verdict, Hallowed Dawn
 Pick 1: choosing Lay On Hands after Smite replaces it: Lay On Hands
 choosing it again puts it back: []
@@ -11,7 +11,7 @@ Distinct Choices: Appeal for pair 1: ["appeal"]
 Body, then Mind: ["body","mind"] | list: body, mind
 the book's example (Body or Appeal, Appeal or Instinct): Appeal moves to the second pair and the first must be chosen again: [null,"appeal"]
 an Attribute chosen at an earlier level can't be chosen: {}
-all but the Talent: 9 of 10 made, complete false | Attribute increases [Chosen] | Features [Granted] | Hallmark Action [Chosen] Smite/Lay On Hands | Hallmark Reaction [Chosen] Shield of Faith/Bulwark of Faith | Encounter Pick [Chosen] Holy Wrath/Word of Radiance/Aura of Protection | Escalation 1 Passive [Chosen] Radiant Zeal/Divine Surge/Font of Mercy | Escalation 2 Passive [Chosen] Searing Blows/Mending Light | Escalation 3 Passive [Chosen] Reckoning/Hallowed Stance | Apex [Chosen] Final Verdict/Hallowed Dawn | Talent [0 / 1] Challenge/Heavy Blows/Whirlwind/Bloodlust/Brawler/Kickboxer/Aim/Ricochet/Long Draw/Steady Nerves/Battering Charge/Cut Through/Lesser Blessing/Sacred Weapon/Hand of Mercy/Class Expertise
+all but the Talent: 9 of 10 made, complete false | Attribute increases [Chosen] | Features [Granted] | Hallmark Action [Chosen] Smite/Lay On Hands | Hallmark Reaction [Chosen] Shield of Faith/Rebuke | Encounter Pick [Chosen] Holy Wrath/Word of Radiance/Bulwark of Faith/Beacon | Escalation 1 Passive [Chosen] Radiant Zeal/Divine Surge/Font of Mercy | Escalation 2 Passive [Chosen] Searing Blows/Mending Light | Escalation 3 Passive [Chosen] Reckoning/Hallowed Stance | Apex [Chosen] Final Verdict/Hallowed Dawn | Talent [0 / 1] Challenge/Heavy Blows/Whirlwind/Bloodlust/Brawler/Kickboxer/Aim/Ricochet/Long Draw/Steady Nerves/Battering Charge/Cut Through/Lesser Blessing/Sacred Weapon/Hand of Mercy/Class Expertise
 with the Talent: complete true (10 of 10)
 what confirm gives: Divine Power (Features), Kindled Wrath (Features), Smite (Hallmark Action), Shield of Faith (Hallmark Reaction), Holy Wrath (Encounter Pick), Radiant Zeal (Escalation 1 Passive), Searing Blows (Escalation 2 Passive), Hallowed Stance (Escalation 3 Passive), Final Verdict (Apex), Heavy Blows (Talent)
 --- the same item in two sections
@@ -24,16 +24,16 @@ Paladin level 2: 0 of 1 made, complete false | Talent [0 / 1] Challenge/Whirlwin
 the level 2 Talent doesn't offer Heavy Blows (owned): true | 15 Talents offered
 Paladin level 3: 0 of 1 made, complete false | Daily Pick [0 / 1] Consecrated Ground/Miraculous Recovery/Divine Intervention | Talent [Complete] -
 Archer level 2: 0 of 1 made, complete false | Talent [0 / 1] Challenge/Heavy Blows/Whirlwind/Bloodlust/Brawler/Kickboxer/Aim/Ricochet/Long Draw/Steady Nerves/Battering Charge/Cut Through/Lesser Blessing/Sacred Weapon/Hand of Mercy/Class Expertise
-Repertoire filter: Any Holy Wrath, Word of Radiance, Aura of Protection, Consecrated Ground, Miraculous Recovery, Divine Intervention | Turn  | Passive 0
+Repertoire filter: Any Holy Wrath, Word of Radiance, Bulwark of Faith, Beacon, Consecrated Ground, Miraculous Recovery, Divine Intervention | Turn  | Passive 0
 a Feature in the Repertoire is Passive: Radiant Zeal | and in Any: true
-a Repertoire pick excludes what this level grants: 0 of 1 made, complete false | Core [Granted] | Encounter Pick [0 / 1] Word of Radiance/Aura of Protection
-and what the character owns: 0 of 1 made, complete false | Core [Granted] | Encounter Pick [0 / 1] Word of Radiance/Aura of Protection
+a Repertoire pick excludes what this level grants: 0 of 1 made, complete false | Core [Granted] | Encounter Pick [0 / 1] Word of Radiance/Bulwark of Faith/Beacon
+and what the character owns: 0 of 1 made, complete false | Core [Granted] | Encounter Pick [0 / 1] Word of Radiance/Beacon
 --- the Levels window's lines
 Attribute increases: {"text":"Body or Appeal +1 · Mind or Instinct +1","warn":false}
 Features: {"text":"Granted: Divine Power, Kindled Wrath","warn":false}
 Hallmark Action: {"text":"Choose 1 of 2","warn":false}
 Hallmark Reaction: {"text":"Choose 1 of 2","warn":false}
-Encounter Pick: {"text":"Choose 1 from the Repertoire (Encounter, 3 available)","warn":false}
+Encounter Pick: {"text":"Choose 1 from the Repertoire (Encounter, 4 available)","warn":false}
 Escalation 1 Passive: {"text":"Choose 1 of 3","warn":false}
 Escalation 2 Passive: {"text":"Choose 1 of 2","warn":false}
 Escalation 3 Passive: {"text":"Choose 1 of 2","warn":false}

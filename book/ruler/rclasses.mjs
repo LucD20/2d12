@@ -88,11 +88,11 @@ export function run() {
   L.push("## 3. The Hallmark Reactions (both Paladins with the Reaction named; the Archers keep Quick Draw)", "", "**Worth** = what the Reaction itself did a fight (its damage, what its block took off, the Guard its rest gave that was used) per Paladin turn, in DE and AP. A Turn Reaction fires once per NPC turn, a Round one once a round.", "",
     "| Paladins' Reaction | rounds · lost · Down · won | Reactions a fight (a Paladin) | Blocked · Guard used · damage, a fight (a Paladin) | Worth a Paladin turn (DE · AP) |", "|---|---|---:|---|---|");
   let g0 = 0;
-  for (const [name, line] of [["None", ""], ["Opportunity Attack (the basic Reaction)", "reaction Opportunity Attack: opportunity"], ["Shield of Faith (1R, Turn: 2d6 + [PMod])", "reaction Shield of Faith: block 2d6+[Mod]"], ["Bulwark of Faith (1R, Round: the ally's Rally Point as Guard)", "reaction Bulwark of Faith: block 9 spill round ally"], ["Bulwark of Faith on you too (not the card)", "reaction Bulwark of Faith: block 9 spill round"]]) {
+  for (const [name, line] of [["None", ""], ["Opportunity Attack (the basic Reaction)", "reaction Opportunity Attack: opportunity"], ["Shield of Faith (1R, Turn: 2d6 + [PMod])", "reaction Shield of Faith: block 2d6+[Mod]"], ["Rebuke (1R, Round, Trigger: an enemy in your Reach Strikes an ally: Appeal Save; 1d8 Ho, Pushed 2, Frightened / 1d6 Ho, Pushed 1 / nothing)", "reaction Rebuke: rebuke"], ["Rebuke with the trigger within 5 squares (not the card)", "reaction Rebuke: rebuke 5"], ["Bulwark of Faith as it was (1R, Round, ally only; an Encounter Pick since part 3)", "reaction Bulwark of Faith: block 9 spill round ally"]]) {
     const edit = x => x.replace(/^reaction .*$/m, line);
     const r = fights(party({ "paladin-smite-r1": edit, "paladin-hands-r1": edit }), enc(STD4));
     const gc = r.sel("Paladin", "guardCredit"); if (name === "None") g0 = gc;
-    const bl = r.sel("Paladin", "blockCredit"), sp = Math.max(0, gc - g0), dm = r.sel("Paladin", "reactionDealt"), de = (bl + sp + dm) / r.sel("Paladin", "rounds");
+    const bl = r.sel("Paladin", "blockCredit"), sp = Math.max(0, gc - g0), dm = r.sel("Paladin", "reactionDealt"), de = (bl + sp + dm) / r.sel("Paladin", "rounds");   // Rebuke's Push and Frightened are not in its worth (positions prices them about 1 DE each)
     L.push(`| ${name} | ${cell(r)} | ${f2(r.sel("Paladin", "reactions"))} | ${f1(bl)} · ${f1(sp)} · ${f1(dm)} | ${f2(de)} · ${f2(de / AP_DE)} |`);
   }
   L.push("", "A block can't take more than the hit: at this fit a Standard's Basic attack averages 3.6 / 6.6 and its 2 AP Special 7.9 / 14.5. Bulwark's Guard is the ally's Rally Point (9 for a Paladin, 8 for an Archer here: 9 in the model), before the damage, so its rest stays as Guard (Stacking: the higher value).", "");
@@ -102,16 +102,18 @@ export function run() {
   L.push("## 4. The Escalation Passives", "", "**The wrath Passives** (the Main turn at Defense 13 with and without the Passive, at its rung; Reckoning against a Bloodied target): the damage it adds a turn, in DE and AP. **The mercy Passives:** what each did a fight in the normal fight (4 Standards) and in a hard one (6 Standards, CV 6): the allies' extra damage (Divine Surge), the healing (Mending Light; the extra on the Rally Points used: Font of Mercy), the damage reduced (Hallowed Stance), per turn of its owner and per turn at its rung. The rung budgets (rework-r.md 14.2 item 15): rung 1 about 0.4-0.6 AP a turn, rung 2 0.6-0.8, rung 3 0.8-1; a rung 3 Passive is on for the last turn or two of a normal fight.", "",
     "| Wrath Passive (rung) | Build | Main turn with · without | Worth a turn (DE · AP) |", "|---|---|---|---|");
   const smite = load("paladin-smite-r1");
-  for (const [name, rung, blood] of [["Radiant Zeal", 1, false], ["Searing Blows", 2, false], ["Reckoning", 3, true]]) {
-    const w = S.turnDamage(smite, "main", 13, { escalation: rung, bloodied: blood }).avg, wo = S.turnDamage({ ...smite, passives: smite.passives.filter(p => p.name !== name) }, "main", 13, { escalation: rung, bloodied: blood }).avg;
+  for (const [name, rung, blood] of [["Radiant Zeal", 1, false], ["Searing Blows", 2, false], ["Reckoning (against a Strained target)", 3, true]]) {
+    const nm = name.split(" (")[0], o = { escalation: rung, bloodied: blood, strained: blood };
+    const w = S.turnDamage(smite, "main", 13, o).avg, wo = S.turnDamage({ ...smite, passives: smite.passives.filter(p => p.name !== nm) }, "main", 13, o).avg;
     L.push(`| ${name} (${rung}) | smite | ${f1(w)} · ${f1(wo)} | ${f2(w - wo)} · ${f2((w - wo) / AP_DE)} |`);
   }
   L.push("", "| Mercy Passive (rung) | Build | Fight | rounds · lost · Down · won | What it did a fight | Worth a turn (DE · AP) | Worth a turn at its rung (DE · AP) |", "|---|---|---|---|---|---|---|");
   const swapIn = (name, rung) => x => { const lines = x.match(/^passive .*$/mg) ?? [], RUNG = { "Radiant Zeal": 1, "Divine Surge": 1, "Font of Mercy": 1, "Searing Blows": 2, "Mending Light": 2, "Reckoning": 3, "Hallowed Stance": 3 }; const at = lines.find(l => RUNG[l.replace(/^passive\s+/, "").trim()] === rung); return at ? x.replace(at, `passive ${name}`) : x + `\npassive ${name}\n`; };
   const noApex = x => x.replace(/^when escalation 3: .*$/m, "");
   for (const [fname, list] of [["4 Standards", STD4], ["6 Standards (hard)", [["standard", 6]]]]) for (const [name, rung, file, key] of [["Divine Surge", 1, "paladin-smite-r1", "surgeCredit"], ["Font of Mercy", 1, "paladin-hands-r1", "mercyGiven"], ["Mending Light", 2, "paladin-hands-r1", "mendGiven"], ["Hallowed Stance", 3, "paladin-hands-r1", "reduced"]]) {
-    const r = fights(party({ [file]: x => noApex(swapIn(name, rung)(x)) }), enc(list));   // without the Apex turn: Hallowed Dawn heals too
-    const did = key === "reduced" ? r.one(file, "reduced") + r.one(file, "reducedGiven") : r.one(file, key), turns = r.one(file, "rounds"), atRung = mean(r.out.flatMap(f => f.pcs.filter(p => p.build.file === `rework/${file}`).map(p => p.st.escTurns.slice(rung).reduce((s, x) => s + x, 0))));
+    const r = fights(party({ [file]: x => noApex(swapIn(name, rung)(x)) }), enc(list)), r0 = fights(party({ [file]: x => noApex(swapIn(name, rung)(x)).replace(new RegExp(`^passive ${name}\\s*$`, "m"), "") }), enc(list));   // without the Apex turn: Hallowed Dawn heals too; r0: without the Passive (Lay On Hands heals too since part 3)
+    const got = (q, k) => (k === "reduced" ? q.one(file, "reduced") + q.one(file, "reducedGiven") : q.one(file, k));
+    const did = got(r, key) - got(r0, key), turns = r.one(file, "rounds"), atRung = mean(r.out.flatMap(f => f.pcs.filter(p => p.build.file === `rework/${file}`).map(p => p.st.escTurns.slice(rung).reduce((s, x) => s + x, 0))));
     L.push(`| ${name} (${rung}) | ${file.replace("paladin-", "").replace("-r1", "")} | ${fname} | ${cell(r)} | ${f1(did)} | ${f2(did / turns)} · ${f2(did / turns / AP_DE)} | ${f2(did / atRung)} · ${f2(did / atRung / AP_DE)} |`);
   }
   L.push("", "Font of Mercy adds to the Rally Points used in the fight: the ruler's Lay On Hands spends one only on an ally hurt at least three quarters of what it heals, so in a normal fight it hardly fires (the Standard day's between-fight Rally Points, where it also works, are not in these numbers).", "");

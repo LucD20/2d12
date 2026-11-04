@@ -145,10 +145,10 @@ const poolOf = (dmg, rest) => (/\bmind\b/.test(rest) ? { ...dmg, mind: { w: dmg.
 function parseEffect(text) {
   const t = text.trim(), w = t.split(/\s+/), what = w[0].toLowerCase(), n = Number(w[1]);
   const rest = w.slice(2).join(" ");
-  const filter = s => { const at = s.match(/@([^,;]+)/), ws = words(s.replace(/@[^,;]+/, "")); return { name: at ? at[1].trim().toLowerCase() : "", quarry: ws.includes("quarry"), traits: ws.filter(x => !["next", "turn", "first", "first-hit", "each", "bloodied", "quarry", "on"].includes(x)) }; };   // first: the first matching Action each round; first-hit: the first that deals damage (Radiant Zeal)
+  const filter = s => { const at = s.match(/@([^,;]+)/), ws = words(s.replace(/@[^,;]+/, "")); return { name: at ? at[1].trim().toLowerCase() : "", quarry: ws.includes("quarry"), traits: ws.filter(x => !["next", "turn", "first", "first-hit", "each", "bloodied", "strained", "quarry", "on"].includes(x)) }; };   // first: the first matching Action each round; first-hit: the first that deals damage (Radiant Zeal)
   if (what === "boon" || what === "bane" || what === "empowered") return { kind: what, n, scope: /\bturn\b/.test(rest) ? "turn" : /\bencounter\b/.test(rest) ? "encounter" : "next", ...filter(rest.replace(/\bencounter\b/, "")) };   // encounter: until the fight ends (Hunter's Focus)
   if (what === "favored") return { kind: "favored", scope: "next", ...filter(w.slice(1).join(" ")) };
-  if (what === "extra") return { kind: "extra", dmg: poolOf(parseDamage(w[1]), rest), scope: /\bfirst-hit\b/.test(rest) ? "first-hit" : /\bfirst\b/.test(rest) ? "first" : /\beach\b/.test(rest) ? "each" : "next", anyTier: /\bany-tier\b/.test(rest), bloodied: /\bbloodied\b/.test(rest), ...filter(rest.replace(/\bany-tier\b/, "").replace(/\bmind\b/, "")) };   // any-tier: a single-value Buff, which applies on Tier 1 too (the book, Buffs); "mind": Mind damage (Holy), else Body
+  if (what === "extra") return { kind: "extra", dmg: poolOf(parseDamage(w[1]), rest), scope: /\bfirst-hit\b/.test(rest) ? "first-hit" : /\bfirst\b/.test(rest) ? "first" : /\beach\b/.test(rest) ? "each" : "next", anyTier: /\bany-tier\b/.test(rest), bloodied: /\bbloodied\b/.test(rest), strained: /\bstrained\b/.test(rest), ...filter(rest.replace(/\bany-tier\b/, "").replace(/\bmind\b/, "")) };   // any-tier: a single-value Buff, which applies on Tier 1 too (the book, Buffs); "mind": Mind damage (Holy), else Body
   if (what === "heal") return { kind: "heal", n, who: /\bself\b/.test(rest) ? "self" : "ally" };
   if (what === "debuff") return { kind: "debuff", name: w.slice(1).join(" ") };   // counted for the day's report (Prone, Hindered...); no effect in the fight
   if (what === "defense") return { kind: "defense", n, who: /allies/.test(rest) ? "allies" : /self/.test(rest) ? "self" : "ally" };
@@ -223,9 +223,9 @@ export function parseSpec(text, file = "spec") {
       else if (key === "overcast-floor") b.overcastFloor = Number(rest);   // once a fight, an Action that costs up to N Escalation costs N less (the round-1 floor)
       else if (key === "health-factor") b.healthFactor = Number(rest);   // the level factor of Health (the book: (level + 10) / 10)
       else if (key === "reaction") {   // reaction Opportunity Attack: opportunity  ·  reaction Quick Draw: quick-draw  (the map model uses them)
-        const m = rest.match(/^(.+?):\s*(opportunity|quick-draw|overwatch|callshot|ready|block\s+\S+(?:\s+(?:spill|round|ally))*)(?:\s+with\s+(.+))?$/i); if (!m) fail("write reaction like: Opportunity Attack: opportunity (or quick-draw; or block 1d8+[Mod]: a Reaction that takes that much off one NPC hit on you or an ally within 5 squares)");
+        const m = rest.match(/^(.+?):\s*(opportunity|quick-draw|overwatch|callshot|ready|rebuke(?:\s+\d+)?|block\s+\S+(?:\s+(?:spill|round|ally))*)(?:\s+with\s+(.+))?$/i); if (!m) fail("write reaction like: Opportunity Attack: opportunity (or quick-draw; or block 1d8+[Mod]: a Reaction that takes that much off one NPC hit on you or an ally within 5 squares)");
         const kind = m[2].toLowerCase().split(/\s+/)[0];
-        b.reactions.push({ name: m[1].trim(), kind, action: (m[3] ?? "Weapon Attack").trim(), ...(kind === "block" ? { dmg: parseDamage(m[2].split(/\s+/)[1]), spill: /\sspill\b/i.test(m[2]), round: /\sround\b/i.test(m[2]), ally: /\sally\b/i.test(m[2]) } : {}) });   // spill: what the hit doesn't use becomes Guard on the target
+        b.reactions.push({ name: m[1].trim(), kind, action: (m[3] ?? "Weapon Attack").trim(), ...(kind === "block" ? { dmg: parseDamage(m[2].split(/\s+/)[1]), spill: /\sspill\b/i.test(m[2]), round: /\sround\b/i.test(m[2]), ally: /\sally\b/i.test(m[2]) } : {}), ...(kind === "rebuke" ? { range: Number(m[2].split(/\s+/)[1] ?? 0) } : {}) });   // spill: what the hit doesn't use becomes Guard on the target
       }
       else if (key === "action") {
         const f = rest.split("|").map(s => s.trim());
@@ -369,7 +369,8 @@ function npcDamage(R, npc, tier) {
 
 /* ------------------------------------------------------------------ one PC's turn */
 const matches = (eff, a, traits, target, pc) => (!eff.name || a.name.toLowerCase().startsWith(eff.name)) && (eff.traits ?? []).every(t => traits.includes(t)) && (!eff.quarry || (target && target === pc.quarry))
-  && (!eff.bloodied || (target && (target.bloodiedRound != null || target.strainedRound != null)));   // pack R-classes: "bloodied" = only against a Bloodied or Strained target (Reckoning)
+  && (!eff.bloodied || (target && (target.bloodiedRound != null || target.strainedRound != null)))   // pack R-classes: "bloodied" = only against a Bloodied or Strained target (Finisher)
+  && (!eff.strained || (target && target.strainedRound != null));   // "strained": only against a Strained target (Reckoning)
 const group = name => name.toLowerCase().replace(/\s+\d+$/, "");   // "Smite 2" and "Smite 3" share their Frequency
 const hasDamage = d => d.dice.length + d.w + d.flat + d.mod > 0;
 
@@ -536,12 +537,12 @@ const median = a => { const s = [...a].sort((x, y) => x - y); return s.length ? 
 const mean = a => a.reduce((s, x) => s + x, 0) / (a.length || 1);
 
 /** Expected damage of a turn against one creature with this Defense (AD and WD the same): Monte Carlo, n runs. A turn that starts with a Reload starts unloaded. */
-export function turnDamage(build, turnName, defense, { n = 20000, seed = 7, escalation = 3, bloodied = false } = {}) {   // bloodied (pack R-classes): the target counts as Bloodied (Reckoning)
+export function turnDamage(build, turnName, defense, { n = 20000, seed = 7, escalation = 3, bloodied = false, strained = false } = {}) {   // bloodied (pack R-classes): the target counts as Bloodied (Reckoning)
   const R = rng(seed), turn = build.turns[turnName], first = build.actions[stepOf(turn.steps[0]).name];
   const startsUnloaded = !!first?.effects.some(e => e.effect.kind === "reload");
   let sum = 0, last = null;
   for (let k = 0; k < n; k++) {
-    const target = { ad: defense, wd: defense, save: { body: 2, mind: 1, instinct: 1, appeal: 1 }, bloodiedRound: bloodied ? 1 : null }, pc = { build, quarry: target, unloaded: startsUnloaded, esc: escalation };
+    const target = { ad: defense, wd: defense, save: { body: 2, mind: 1, instinct: 1, appeal: 1 }, bloodiedRound: bloodied ? 1 : null, strainedRound: strained ? 1 : null }, pc = { build, quarry: target, unloaded: startsUnloaded, esc: escalation };
     last = runTurn(pc, turn, { R, escalation, target: () => target, others: () => [] });
     sum += last.damage;
   }
@@ -665,6 +666,13 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     t.damage += taken;   // an NPC's Basic attack is Body damage (a weapon)
     // Pack R prep: an "overwatch" Reaction (a Trigger: an enemy within 10 squares makes a Strike; once per NPC turn), after the Strike.
     for (const p of up()) for (const rx of p.build.reactions ?? []) if (rx.kind === "overwatch" && p.keptAP >= 1 && !p.cond?.staggered && p.owFor !== f.turnId && !f.dead && (!M || MP.dist(p.pos, f.pos) <= 10)) { p.owFor = f.turnId; spendReact(p); p.st.oaMade++; pcReact(p, f, rx.action); }
+    // Pack R-classes, part 3: Rebuke (1R, Round, Trigger: an enemy within your Reach makes a Strike against an ally): an Appeal Save against 11 + [PMod]; Tier 1 [R] 1d8 Ho, Pushed 2, Frightened (EoT); Tier 2 [R] 1d6 Ho, Pushed 1.
+    for (const p of up()) for (const rx of p.build.reactions ?? []) if (rx.kind === "rebuke" && p !== t && p.keptAP >= 1 && !p.cond?.staggered && p.rebukeRound !== round && !f.dead && (!M || (rx.range ? MP.dist(p.pos, f.pos) <= rx.range : MP.adj(p, f)))) {   // `rebuke 5`: within 5 squares instead of your Reach
+      p.rebukeRound = round; spendReact(p); p.st.reactions++;
+      const tier = pick(p.R ?? R, C.tierProbs(f.save?.appeal ?? 1, 11 + p.build.powerMod, 0, 0, ""));
+      if (tier <= 2) { const v = rollDamage(p.R ?? R, parseDamage(tier === 1 ? "1d8" : "1d6")).total; f.damage += v; f.mindDamage = (f.mindDamage ?? 0) + v; p.st.dealt += v; p.st.reactionDealt += v; p.st.mindDealt += v;
+        if (M) MP.force("push", p, f, tier === 1 ? 2 : 1, W); if (tier === 1) { MP.applyCondition(f, "Frightened (EoT)", p); p.st.condApplied++; } killCheck(); }
+    }
     for (const p of up()) for (const rx of p.build.reactions ?? []) if (rx.kind === "ready" && p.keptAP >= 1 && !p.cond?.staggered && p.readyRound !== round && (!M || MP.dist(p.pos, f.pos) <= 10)) { p.readyRound = round; spendReact(p); p.st.reactions++; p.readyAP = 1; }   // pack R-classes: Ready Shot (1R, Round): +1 AP on its next turn
     const wasB = !!t.bloodiedRound, wasD = t.down;
     if (t.damage >= t.build.bodyHealth && !t.bloodiedRound) t.bloodiedRound = round;

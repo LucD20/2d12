@@ -148,10 +148,10 @@ add("classes", "class", "Paladin", "icons/svg/angel.svg", {
   description: "<p>A holy warrior.</p>", category: "Class", flavor: "Your god's strength flows through your weapon and your hands.",
   choiceA: ["body", "appeal"], choiceB: ["mind", "instinct"], bodyMult: 4, mindMult: 4, rallyMod: 6, speedMod: 0,
   weaponAttrs: ["body", "appeal"], magicAttrs: ["mind", "appeal"], armorTraining: "heavy", features: [],
-  repertoire: U(["Holy Wrath", "Word of Radiance", "Aura of Protection", "Consecrated Ground", "Miraculous Recovery", "Divine Intervention"]), escPassives: U(PAL_PASSIVES), escActives: U(PAL_APEX),
+  repertoire: U(["Holy Wrath", "Word of Radiance", "Bulwark of Faith", "Beacon", "Consecrated Ground", "Miraculous Recovery", "Divine Intervention"]), escPassives: U(PAL_PASSIVES), escActives: U(PAL_APEX),
   levels: [
     { sections: [sec("pal1attr", "Attribute increases", "attr", { pairs: [["body", "appeal"], ["mind", "instinct"]] }), sec("pal1core", "Features", "items", { mode: "granted", items: U(["Divine Power", "Kindled Wrath"]) }),
-      sec("pal1hall", "Hallmark Action", "items", { items: U(["Smite", "Lay On Hands"]) }), sec("pal1react", "Hallmark Reaction", "items", { items: U(["Shield of Faith", "Bulwark of Faith"]) }),
+      sec("pal1hall", "Hallmark Action", "items", { items: U(["Smite", "Lay On Hands"]) }), sec("pal1react", "Hallmark Reaction", "items", { items: U(["Shield of Faith", "Rebuke"]) }),
       sec("pal1enc", "Encounter Pick", "repertoire", { freq: "encounter" }),
       sec("pal1pass1", "Escalation 1 Passive", "items", { items: U(PAL_PASS1) }), sec("pal1pass2", "Escalation 2 Passive", "items", { items: U(PAL_PASS2) }), sec("pal1pass3", "Escalation 3 Passive", "items", { items: U(PAL_PASS3) }),
       sec("pal1apex", "Apex", "items", { items: U(PAL_APEX) }), sec("pal1tal", "Talent", "talent")] },
@@ -255,7 +255,7 @@ add("actions", "action", "Vow of Enmity", "icons/svg/sword.svg", { category: PAL
   vt(2, [["", "No effect."], ["1d6MH", "As 1 AP."], ["1d6MH", "As Tier 2, and the target is Vulnerable 1 (EoT)."]]),
   vt(3, [["", "No effect."], ["1d6MH", "As 2 AP."], ["1d6MH", "As 2 AP."]])] }, "Paladin");
 // OT (book 2026-10-30): Shield of Faith is a 0R Escalation Active (Escalation 1), 1d8 + your Power Modifier.
-add("actions", "action", "Rebuke", "icons/svg/sun.svg", { category: PAL, level: 1, traits: ["divine", "magic"], frequency: "turn", reaction: true, reactionKind: "trigger", targets: "The triggering creature", distance: "reach", trigger: "An enemy within Reach damages an ally.", versions: [
+add("actions", "action", "Rebuke (old)", "icons/svg/sun.svg", { category: PAL, level: 1, traits: ["divine", "magic"], frequency: "turn", reaction: true, reactionKind: "trigger", targets: "The triggering creature", distance: "reach", trigger: "An enemy within Reach damages an ally.", versions: [
   vt(1, [["1d4+1MH", ""], ["1d6+1MH", ""], ["1d8+1MH", ""]], "", { critical: "The target is Vulnerable 1 (EoT)." }),
   vt(2, [["1d6+1MH", "Pushed 1."], ["1d8+1MH", "Pushed 2."], ["1d10+1MH", "Pushed 3."]], "", { critical: "The target is Vulnerable 1 for 1 round." })] }, "Paladin");
 add("actions", "action", "Champion's Challenge", "icons/svg/combat.svg", { category: PAL, level: 1, traits: ["divine", "magic"], frequency: "round", targets: "One / two creatures", distance: "5", versions: [
@@ -316,7 +316,7 @@ for (const c of CARDS) {
 
 // v0.0.185: the pick Features of v0.0.181 (Hallmark Action, Encounter Pick, Talent (Level 1)...) are gone: the classes have levels now.
 // The cards the P1 and A1 builds left out (book/paladin-old-cards.md, book/archer-old-cards.md): kept in the compendium, in folders of their own, for the Options step.
-const OLD = { "Paladin (old cards)": ["Aegis", "Mercy's Reward", "Divine Vigil", "Avenger's Oath", "Vow of Enmity", "Rebuke", "Champion's Challenge", "Divine Retribution", "Call to Arms", "Judgment", "Sanctified Ground", "Divine Vigil (Boon against Fear)"],
+const OLD = { "Paladin (old cards)": ["Aegis", "Mercy's Reward", "Divine Vigil", "Avenger's Oath", "Vow of Enmity", "Rebuke (old)", "Champion's Challenge", "Divine Retribution", "Call to Arms", "Judgment", "Sanctified Ground", "Divine Vigil (Boon against Fear)"],
   "Archer (old cards)": ["Precise Aim", "Precise Aim (1 Boon)", "Precise Aim (2 Boons)", "Quick Draw", "Wing Clip", "True Shot", "Suppressing Fire", "Steady Aim", "Perfect Shot", "Bow Mastery", "Patient Hunter"] };
 for (const [folder, names] of Object.entries(OLD)) for (const n of names) { const d = docs.filter(x => x.name === n); if (!d.length) throw new Error(`No item called ${n}`); d.forEach(x => { x.folder = folder; }); }
 
@@ -365,9 +365,9 @@ function lv1Type(n) { const d = ["talent", "feature", "action"].map(t => docs.fi
 // v0.0.183: the four level 1 builds of the ruler (book/ruler/classes: paladin-smite-1, paladin-hands-1, archer-double-1, archer-rolling-1), Humans all.
 // v0.0.189 (Lucas: the compendium PCs test different cards): two builds a class, one at level 1 and one at level 3, every pick different.
 pc({ name: "Paladin 1 (Smite, Heavy Blows)", img: "icons/svg/sun.svg", species: "Human", chosen: ["body", "appeal"], cls: "Paladin", attrs: ["body", "mind"],
-  picks: { pal1hall: "Smite", pal1react: "Shield of Faith", pal1tal: "Heavy Blows", pal1enc: "Holy Wrath", pal1pass1: "Radiant Zeal", pal1pass2: "Searing Blows", pal1pass3: "Reckoning", pal1apex: "Final Verdict" }, weapon: "Greatsword", armor: "Heavy Armor" });
+  picks: { pal1hall: "Smite", pal1react: "Rebuke", pal1tal: "Heavy Blows", pal1enc: "Holy Wrath", pal1pass1: "Radiant Zeal", pal1pass2: "Searing Blows", pal1pass3: "Reckoning", pal1apex: "Final Verdict" }, weapon: "Greatsword", armor: "Heavy Armor" });
 pc({ name: "Paladin 3 (Lay On Hands, Protector)", img: "icons/svg/regen.svg", species: "Dwarf", cls: "Paladin", attrs: ["appeal", "mind"], level: 3,
-  picks: { 1: { pal1hall: "Lay On Hands", pal1react: "Bulwark of Faith", pal1tal: "Challenge", pal1enc: "Word of Radiance", pal1pass1: "Font of Mercy", pal1pass2: "Mending Light", pal1pass3: "Hallowed Stance", pal1apex: "Hallowed Dawn" },
+  picks: { 1: { pal1hall: "Lay On Hands", pal1react: "Shield of Faith", pal1tal: "Challenge", pal1enc: "Word of Radiance", pal1pass1: "Font of Mercy", pal1pass2: "Mending Light", pal1pass3: "Hallowed Stance", pal1apex: "Hallowed Dawn" },
     2: { pal2tal: "Bloodlust" }, 3: { pal3daily: "Miraculous Recovery", pal3tal: "Hand of Mercy" } }, weapon: "Greatsword", armor: "Heavy Armor" });
 pc({ name: "Archer 1 (Double Shot, Marksman)", img: "icons/svg/target.svg", species: "Elf", cls: "Archer", attrs: ["instinct", "mind"],
   picks: { arc1hall: "Double Shot", arc1react: "Overwatch", arc1tal: "Aim", arc1enc: "Pinning Shot", arc1pass1: "Killer's Focus", arc1pass2: "Hunter's Edge", arc1pass3: "Finisher", arc1apex: "Deathmark" }, weapon: "Crossbow", armor: "Medium Armor" });
@@ -400,7 +400,7 @@ const FLAVOR = {
   "Divine Vigil": "Your watch does not end when the fighting starts.",
   "Avenger's Oath": "Every wound your friends take is written in the ledger.",
   "Vow of Enmity": "You name a foe, and your god listens.",
-  "Rebuke": "The hand that strikes the faithful is burned for its trouble.",
+  "Rebuke (old)": "The hand that strikes the faithful is burned for its trouble.",
   "Champion's Challenge": "You call them out, and they cannot look away.",
   "Divine Retribution": "They struck you. Your god strikes back.",
   "Call to Arms": "Your voice carries further than the fight.",

@@ -73,8 +73,8 @@ export const ON_NPC = [
   ["Blinded (EoT)", (w, p) => S.MAPCOND(rnd(p, upFoes(w)), "Blinded (EoT)")],
   ["Frightened (EoT), its Bane only", (w, p) => S.MAPCOND(rnd(p, upFoes(w)), "Frightened (EoT)")],
   ["Taunted by the nearest Paladin (1 round)", (w, p) => { const f = rnd(p, upFoes(w)); return S.MAPCOND(f, "Taunted (1 round)", nearestPc(w, f, "Paladin")); }],
-  ["Bleed 1d4 (Bo/In)", (w, p) => S.MAPCOND(rnd(p, upFoes(w)), "Bleed 1d4 (Bo/In)")],
-  ["Bleed 2d6 (Bo/In)", (w, p) => S.MAPCOND(rnd(p, upFoes(w)), "Bleed 2d6 (Bo/In)")],
+  ["Bleed 1d4 (Bo/In)", (w, p) => { const f = rnd(p, upFoes(w)); return S.MAPCOND(f, "Bleed 1d4 (Bo/In)", nearestPc(w, f)); }],   // credited to the PC that caused it
+  ["Bleed 2d6 (Bo/In)", (w, p) => { const f = rnd(p, upFoes(w)); return S.MAPCOND(f, "Bleed 2d6 (Bo/In)", nearestPc(w, f)); }],
   ["Pushed 1 (from the nearest PC)", (w, p) => { const f = rnd(p, upFoes(w)); const o = nearestPc(w, f); if (o) S.MAPFORCE("push", o, f, 1, w); }],
   ["Pushed 2 (from the nearest PC)", (w, p) => { const f = rnd(p, upFoes(w)); const o = nearestPc(w, f); if (o) S.MAPFORCE("push", o, f, 2, w); }],
   ["Pushed 4 (from the nearest PC)", (w, p) => { const f = rnd(p, upFoes(w)); const o = nearestPc(w, f); if (o) S.MAPFORCE("push", o, f, 4, w); }],

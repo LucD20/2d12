@@ -1,11 +1,11 @@
 the compendium Paladin's class copy: body, mind | picks: pal1hall, pal1react, pal1tal, pal1enc, pal1pass1, pal1pass2, pal1pass3, pal1apex
-Class tab, level 1: granted Divine Power, Kindled Wrath | picks Hallmark Action: Smite | Hallmark Reaction: Shield of Faith | Encounter Pick: Holy Wrath | Escalation 1 Passive: Radiant Zeal | Escalation 2 Passive: Searing Blows | Escalation 3 Passive: Reckoning | Apex: Final Verdict | not reached Talent (2), Daily Pick (3), Talent (3), Talent (4)
+Class tab, level 1: granted Divine Power, Kindled Wrath | picks Hallmark Action: Smite | Hallmark Reaction: Rebuke | Encounter Pick: Holy Wrath | Escalation 1 Passive: Radiant Zeal | Escalation 2 Passive: Searing Blows | Escalation 3 Passive: Reckoning | Apex: Final Verdict | not reached Talent (2), Daily Pick (3), Talent (3), Talent (4)
 Talent slots at level 1: [{"key":"class:1:pal1tal:0","feature":"Talent (Level 1)"}] | Heavy Blows is in it: class:1:pal1tal:0
 at level 3 (nothing chosen yet): slots Talent (Level 1), Talent (Level 2), Talent (Level 3) | not reached: 1
 hasLevels: the compendium classes Paladin true, Archer true | a class without levels: false
 --- the tiles' meta lines
 Smite: 1 / 2 / 3 AP · Round
-Bulwark of Faith: 1R · Round
+Bulwark of Faith: 1R · Encounter
 Divine Surge: Passive
 Font of Mercy: Passive
 Divine Power: Passive

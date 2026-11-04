@@ -22,7 +22,7 @@
 <div class="lvl"><div class="lvn"><b>1</b><span>Level</span></div><div class="lvb">
 <div><span class="lbl">Features</span> Divine Power, Kindled Wrath</div>
 <div><span class="lbl">Hallmark Action</span> Smite or Lay On Hands</div>
-<div><span class="lbl">Hallmark Reaction</span> Shield of Faith or Bulwark of Faith</div>
+<div><span class="lbl">Hallmark Reaction</span> Shield of Faith or Rebuke</div>
 <div><span class="lbl">Picks</span> 1 Encounter Pick</div>
 <div><span class="lbl">Escalation</span> 1 Passive for each Escalation level (1, 2 and 3), 1 Apex</div>
 <div><span class="lbl">Talents</span> 1 Talent</div>
@@ -64,7 +64,7 @@ Choose one of the following Hallmark Reactions. Both are paid with your Reaction
 
 @@CARD:Shield of Faith@@
 
-@@CARD:Bulwark of Faith@@
+@@CARD:Rebuke@@
 
 ### Picks
 
@@ -80,7 +80,9 @@ Choose one of the following Hallmark Reactions. Both are paid with your Reaction
 
 @@CARD:Word of Radiance@@
 
-@@CARD:Aura of Protection@@
+@@CARD:Bulwark of Faith@@
+
+@@CARD:Beacon@@
 
 ### Daily
 

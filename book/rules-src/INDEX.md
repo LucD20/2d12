@@ -14,9 +14,9 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 8.4 | 113 |
 | 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 24.3 | 193 |
 | 11-species.md | Species | species |  | 0.8 | 32 |
-| 12-paladin.md | Paladin | paladin |  | 3.9 | 122 |
+| 12-paladin.md | Paladin | paladin |  | 3.9 | 124 |
 | 13-archer.md | Archer | archer |  | 3.9 | 128 |
-| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 16.1 | 281 |
+| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 16.3 | 281 |
 | 15-gear.md | Gear | gear |  | 10.1 | 182 |
 | 16-talents.md | Talents | talents |  | 2.2 | 68 |
 
@@ -242,14 +242,14 @@ Glossary entries (line: term): 6: [Mod]; 7: [W]; 8: [V], [R], [C]; 9: [Trait]; 1
 - 69:   ### Picks
 - 75: ## Paladin Repertoire
 - 77:   ### Encounter
-- 85:   ### Daily
-- 93: ## Paladin Escalation
-- 97:   ### Escalation 1 Passives
-- 105:   ### Escalation 2 Passives
-- 111:   ### Escalation 3 Passives
-- 117:   ### Apex
+- 87:   ### Daily
+- 95: ## Paladin Escalation
+- 99:   ### Escalation 1 Passives
+- 107:   ### Escalation 2 Passives
+- 113:   ### Escalation 3 Passives
+- 119:   ### Apex
 
-Action cards: Divine Power (49, Paladin Feature 1); Kindled Wrath (51, Paladin Feature 1); Smite (57, Divine Power 1, Round); Lay On Hands (59, Divine Power 1, Round); Shield of Faith (65, Divine Power 1, Turn); Bulwark of Faith (67, Divine Power 1, Round); Holy Wrath (79, Paladin Feature 1, Encounter); Word of Radiance (81, Paladin Feature 1, Encounter); Aura of Protection (83, Paladin Feature 1, Encounter); Consecrated Ground (87, Paladin Feature 1, Daily); Miraculous Recovery (89, Paladin Feature 1, Daily); Divine Intervention (91, Paladin Feature 1, Daily); Radiant Zeal (99, Paladin Escalation (Passive)); Divine Surge (101, Paladin Escalation (Passive)); Font of Mercy (103, Paladin Escalation (Passive)); Searing Blows (107, Paladin Escalation (Passive)); Mending Light (109, Paladin Escalation (Passive)); Reckoning (113, Paladin Escalation (Passive)); Hallowed Stance (115, Paladin Escalation (Passive)); Final Verdict (119, Paladin Apex, Encounter); Hallowed Dawn (121, Paladin Apex, Encounter)
+Action cards: Divine Power (49, Paladin Feature 1); Kindled Wrath (51, Paladin Feature 1); Smite (57, Divine Power 1, Round); Lay On Hands (59, Divine Power 1, Round); Shield of Faith (65, Divine Power 1, Turn); Rebuke (67, Divine Power 1, Round); Holy Wrath (79, Paladin Feature 1, Encounter); Word of Radiance (81, Paladin Feature 1, Encounter); Bulwark of Faith (83, Paladin Feature 1, Encounter); Beacon (85, Paladin Feature 1, Encounter); Consecrated Ground (89, Paladin Feature 1, Daily); Miraculous Recovery (91, Paladin Feature 1, Daily); Divine Intervention (93, Paladin Feature 1, Daily); Radiant Zeal (101, Paladin Escalation (Passive)); Divine Surge (103, Paladin Escalation (Passive)); Font of Mercy (105, Paladin Escalation (Passive)); Searing Blows (109, Paladin Escalation (Passive)); Mending Light (111, Paladin Escalation (Passive)); Reckoning (115, Paladin Escalation (Passive)); Hallowed Stance (117, Paladin Escalation (Passive)); Final Verdict (121, Paladin Apex, Encounter); Hallowed Dawn (123, Paladin Apex, Encounter)
 
 ## 13-archer.md: Archer
 

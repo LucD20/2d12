@@ -1,20 +1,20 @@
-documents: 160
-references: 101 | broken: none
+documents: 161
+references: 98 | broken: none
 Paladin features:  | Divine Connection kept for testing (not in the class): true | its id is the old one: vaYnV1XM6HT1TpMP
-Level 1: Attribute increases (attr: body or appeal, mind or instinct) | Features (items, granted): Divine Power, Kindled Wrath | Hallmark Action (items, choice, pick 1): Smite, Lay On Hands | Hallmark Reaction (items, choice, pick 1): Shield of Faith, Bulwark of Faith | Encounter Pick (repertoire, encounter, pick 1) | Escalation 1 Passive (items, choice, pick 1): Radiant Zeal, Divine Surge, Font of Mercy | Escalation 2 Passive (items, choice, pick 1): Searing Blows, Mending Light | Escalation 3 Passive (items, choice, pick 1): Reckoning, Hallowed Stance | Apex (items, choice, pick 1): Final Verdict, Hallowed Dawn | Talent (talent, pick 1)
+Level 1: Attribute increases (attr: body or appeal, mind or instinct) | Features (items, granted): Divine Power, Kindled Wrath | Hallmark Action (items, choice, pick 1): Smite, Lay On Hands | Hallmark Reaction (items, choice, pick 1): Shield of Faith, Rebuke | Encounter Pick (repertoire, encounter, pick 1) | Escalation 1 Passive (items, choice, pick 1): Radiant Zeal, Divine Surge, Font of Mercy | Escalation 2 Passive (items, choice, pick 1): Searing Blows, Mending Light | Escalation 3 Passive (items, choice, pick 1): Reckoning, Hallowed Stance | Apex (items, choice, pick 1): Final Verdict, Hallowed Dawn | Talent (talent, pick 1)
 Level 2: Talent (talent, pick 1)
 Level 3: Daily Pick (repertoire, daily, pick 1) | Talent (talent, pick 1)
 Level 4: Talent (talent, pick 1)
-Repertoire: Holy Wrath, Word of Radiance, Aura of Protection, Consecrated Ground, Miraculous Recovery, Divine Intervention | Escalation: Radiant Zeal, Divine Surge, Font of Mercy, Searing Blows, Mending Light, Reckoning, Hallowed Stance / Final Verdict, Hallowed Dawn
+Repertoire: Holy Wrath, Word of Radiance, Bulwark of Faith, Beacon, Consecrated Ground, Miraculous Recovery, Divine Intervention | Escalation: Radiant Zeal, Divine Surge, Font of Mercy, Searing Blows, Mending Light, Reckoning, Hallowed Stance / Final Verdict, Hallowed Dawn
 pick Features gone: true | Mind Health x4
 --- the cards
-Smite: divine,signature,strike,weapon | 1 AP 1[W] / 1[W]+1d4 Ho / 1[W]+1d6 Ho || 2 AP 1[W]+1d6 Ho / 1[W]+1d10 Ho / 1[W]+2d8 Ho || 3 AP 1[W]+1d6 Ho / 1[W]+1d10 Ho / 1[W]+2d8 Ho
-Smite 3 AP effects: As 2 AP, and you or one ally in the light gain Guard 1d8 + [Mod] (2d6 + [Mod] at Stage 2, 2d8 + [Mod] at Stage 3). You choose who gains the Defense and who gains the Guard separately: the same creature or two different ones. @Effect[Compendium.twod12.effects.Item.G20TdfpcMVkMGcxl]{+1 Defense for 1 round} @Guard[1d8+mod]{Guard 1d8 + [Mod]}
-Lay On Hands: One willing creature | 1 AP: The target can use @Rally[1]. || 2 AP: As 1 AP, and your next [Strike] Action deals an extra [R] 0/2d8/2d8 Ho. @Rally[1] [Lay On Hands (Holy Strike)] || 3 AP: As 2 AP, but the target can use @Rally[2]. [Lay On Hands (Holy Strike)]
+Smite: divine,signature,strike,weapon | 1 AP 1[W] / 1[W]+1d6 Ho / 1[W]+1d8 Ho || 2 AP 1[W]+1d6 Ho / 1[W]+2d6 Ho / 1[W]+2d10 Ho || 3 AP 1[W]+1d8 Ho / 1[W]+2d8 Ho / 1[W]+3d8 Ho
+Smite 3 AP effects: As 2 AP, and you or one ally in the light gain Guard 1d8 + [Mod] (2d6 + [Mod] at Stage 2, 2d8 + [Mod] at Stage 3). You can Push 1 any other creatures in the light, away from the target. @Guard[1d8+mod]{Guard 1d8 + [Mod]}
+Lay On Hands: One willing creature | 1 AP: The target can use @Rally[1]. || 2 AP: As 1 AP, and the target heals 1d6 + your Power Modifier more. @Rally[1] || 3 AP: The target can use @Rally[2] and heals 1d6 + your Power Modifier more. @Rally[2]
 Holy Wrath: encounter | 2 AP 1[W]+1d8 Ho / 1[W]+2d8 Ho / 1[W]+3d8 Ho || 3 AP 1[W]+2d8 Ho / 1[W]+3d8 Ho / 1[W]+4d8 Ho
 Shield of Faith: turn interrupt | 1R | A [Strike] Action would damage you or an ally within 5 squares. | The damage that Strike deals to the target is reduced by 2d6 + your Power Modifier (3d6 at Stage 2, 4d6 at Stage 3).
-Bulwark of Faith: round interrupt | 1R | A [Strike] Action would damage you or an ally within 5 squares. | The target gains Guard equal to what one of their Rally Points heals, before the damage. @Guard[rally]{Guard equal to what one of their Rally Points heals}
-Aura of Protection: Escalation undefined encounter 0 AP -> Aura of Protection
+Bulwark of Faith: encounter interrupt | 1R | A [Strike] Action would damage an ally within 5 squares. | The target gains Guard equal to what one of their Rally Points heals, before the damage. After the damage, they are @Move[slid|distance:1]. @Guard[rally]{Guard equal to what one of their Rally Points heals}
+Beacon (was Aura of Protection): Escalation undefined encounter 1 AP -> Aura of Protection
 Final Verdict: Escalation 3 encounter 2 AP All enemies in the Area | 1 emanation (enemies) | You roll once and compare the result to each target's AD. Each target you hit sheds Bright
 Hallowed Dawn: Escalation 3 encounter 3 AP All creatures in the Area | 2 emanation (all) | You and each ally in the Area heal 3d6 + your Power Modifier (4d6 at Stage 2, 6d6 at Stage
 Consecrated Ground: For 3 rounds, enemies in the area take 1 Bane on [Weapon], [Power] and [Signature] Actions, and allies in it heal 1d4 at the start of each of their turns.
@@ -26,8 +26,8 @@ Hallowed Stance: Paladin Escalation | While your Escalation is 3 or more, you an
 the Aura: aura Aura 2 allies -> Aura of Protection (+1 Defense) | lasts: until the encounter ends (an Escalation effect)
 Lay On Hands' strike: bonusdamage 2d8 M Ho t2,t3 | ends after: strike
 old cards: Vow of Enmity, Word of Radiance kept | in no level: false
-Paladin 1 (Smite, Heavy Blows): Divine Power, Kindled Wrath, Smite, Shield of Faith, Heavy Blows, Holy Wrath, Radiant Zeal, Searing Blows, Reckoning, Final Verdict | ids unique: true
-Paladin 3 (Lay On Hands, Protector): Divine Power, Kindled Wrath, Lay On Hands, Bulwark of Faith, Challenge, Word of Radiance, Font of Mercy, Mending Light, Hallowed Stance, Hallowed Dawn, Bloodlust, Bloodlust, Miraculous Recovery, Hand of Mercy, Hand of Mercy | ids unique: true
+Paladin 1 (Smite, Heavy Blows): Divine Power, Kindled Wrath, Smite, Rebuke, Heavy Blows, Holy Wrath, Radiant Zeal, Searing Blows, Reckoning, Final Verdict | ids unique: true
+Paladin 3 (Lay On Hands, Protector): Divine Power, Kindled Wrath, Lay On Hands, Shield of Faith, Challenge, Word of Radiance, Font of Mercy, Mending Light, Hallowed Stance, Hallowed Dawn, Bloodlust, Bloodlust, Miraculous Recovery, Hand of Mercy, Hand of Mercy | ids unique: true
 Archer 1 (Double Shot, Marksman): Sharpshooter, Marked Quarry, Mark Quarry, Thrill of the Kill, Double Shot, Overwatch, Aim, Aim, Pinning Shot, Killer's Focus, Hunter's Edge, Finisher, Deathmark | ids unique: true
 Archer 3 (Rolling Shot, Kickboxer): Sharpshooter, Marked Quarry, Mark Quarry, Thrill of the Kill, Rolling Shot, Ready Shot, Brawler, Pummel, Volley, Vanish, Sure Step, Pinned Down, Open Season, Kickboxer, Leg Sweep, Rain of Arrows, Steady Nerves | ids unique: true
 Bandit Thug (grunt, speed 5): Cudgel atwill, Low Blow round

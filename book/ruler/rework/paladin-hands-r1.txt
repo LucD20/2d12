@@ -14,7 +14,7 @@ rally 6
 targeted 1.5
 weapon Greatsword (melee, two-handed): 0 / 1d8 / 2d6
 speed 5
-reaction Bulwark of Faith: block 9 spill round ally
+reaction Shield of Faith: block 2d6+[Mod]
 
 passive Font of Mercy
 passive Mending Light

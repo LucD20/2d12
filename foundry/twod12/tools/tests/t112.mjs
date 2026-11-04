@@ -33,7 +33,7 @@ console.log("Smite 3 AP effects:", txt(act("Smite").versions[2].effects));
 console.log("Lay On Hands:", act("Lay On Hands").targets, "|", act("Lay On Hands").versions.map(v => `${v.ap} AP: ${txt(v.effects)}${v.fx.all.length ? ` [${v.fx.all.map(x => nameOf(x.uuid)).join(", ")}]` : ""}`).join(" || "));
 console.log("Holy Wrath:", act("Holy Wrath").frequency, "|", act("Holy Wrath").versions.map((v, i) => `${v.ap} AP ${tiersOf("Holy Wrath", i)}`).join(" || "));
 for (const n of ["Shield of Faith", "Bulwark of Faith"]) console.log(`${n}:`, act(n).frequency, act(n).reactionKind, `| ${act(n).versions.map(v => v.ap + "R").join("/")} | ${act(n).trigger} | ${act(n).versions.map(v => txt(v.effects)).join(" || ")}`);
-console.log("Aura of Protection:", `Escalation ${act("Aura of Protection").escalation}`, act("Aura of Protection").frequency, `${act("Aura of Protection").versions[0].ap} AP`, "->", act("Aura of Protection").versions[0].fx.all.map(x => nameOf(x.uuid)).join(", "));
+console.log("Beacon (was Aura of Protection):", `Escalation ${act("Beacon").escalation}`, act("Beacon").frequency, `${act("Beacon").versions[0].ap} AP`, "->", act("Beacon").versions[0].fx.all.map(x => nameOf(x.uuid)).join(", "));
 // Pack R-classes (v0.0.235): Divine Surge is an Escalation 1 Passive (a Feature), the Apexes are Encounter Actions that need Escalation 3.
 for (const n of ["Final Verdict", "Hallowed Dawn"]) console.log(`${n}:`, `Escalation ${act(n).escalation}`, act(n).frequency, `${act(n).versions[0].ap} AP`, act(n).targets, "|", act(n).areaCfg ? `${act(n).areaCfg.size} ${act(n).areaCfg.shape} (${act(n).areaCfg.targets})` : "no area", "|", txt(act(n).versions[0].effects).slice(0, 90));
 console.log("Consecrated Ground:", txt(act("Consecrated Ground").versions[0].effects));
