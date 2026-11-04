@@ -72,9 +72,9 @@ export function convertEffects(text) {
   s = s.replace(/\b(uses?)\s+(\d+)\s+Rally\s+Points?\b/gi, "$1 @Rally[$2]");
   // "Appeal Save: 1d6 / 1d4 / 0 [M] Holy damage" (the pool in brackets and the type are optional)
   const V = "(\\d+d\\d+(?:[+-]\\d+)?|\\d+)";
-  s = s.replace(new RegExp(`(?:\\bDC\\s*(\\d+)\\s+)?\\b(${ATTRS})\\s+Save\\s*:\\s*${V}\\s*\\/\\s*${V}\\s*\\/\\s*${V}(?:\\s*\\[([BMC])\\])?(?:\\s+(Acid|Blunt|Cold|Electricity|Fire|Force|Holy|Pierce|Psychic|Slash|Thunder|Unholy))?(?:\\s+damage)?`, "gi"),
+  s = s.replace(new RegExp(`(?:\\bDC\\s*(\\d+)\\s+)?\\b(${ATTRS})\\s+Save\\s*:\\s*${V}\\s*\\/\\s*${V}\\s*\\/\\s*${V}(?:\\s*\\[([BMCVR])\\])?(?:\\s+(Acid|Blunt|Cold|Electricity|Fire|Force|Holy|Pierce|Psychic|Slash|Thunder|Unholy))?(?:\\s+damage)?`, "gi"),
     (m, dc, a, t1, t2, t3, pool, sub) => {
-      const p = pool ? POOL[pool.toUpperCase()] : "", st = sub ? SUB_WORDS[sub.toLowerCase()] : "";
+      const p = pool ? POOL[({ V: "B", R: "M" })[pool.toUpperCase()] ?? pool.toUpperCase()] : "", st = sub ? SUB_WORDS[sub.toLowerCase()] : "";
       return `@Save[${a.toLowerCase()}${dc ? `|dc:${dc}` : ""}|t1:${tierDmg(t1, p, st)}|t2:${tierDmg(t2, p, st)}|t3:${tierDmg(t3, p, st)}]`;
     });
   s = s.replace(new RegExp(`\\bDC\\s*(\\d+)\\s*(${ATTRS})\\s*Save\\b`, "gi"), (m, dc, a) => `@Save[${a.toLowerCase()}|dc:${dc}]`);
@@ -117,7 +117,7 @@ export async function openGenerator(item) {
     ${[1, 2, 3].map(n => `<div class="form-group"><label>Tier ${n}</label><input type="text" name="t${n}" value="${esc(val(find(start), `t${n}`))}" placeholder="1WB,1d4BH,1d6MH"></div>`).join("")}
     <div class="form-group"><label>Effects</label><input type="text" name="effects" value="${esc(find(start)?.effects ?? "")}" placeholder="Bright light 2Emanation 1/round"></div>
     <div class="genprev"></div>
-    <p class="hint">Damage: <code>1WB</code> = 1 [W] to Body, <code>1d4BH</code> = 1d4 Body Holy, <code>1d6MH</code> = 1d6 Mind Holy, <code>BB</code> = Body Blunt, <code>ModB</code> or <code>Modifier</code> = [Mod], <code>"text"</code> = tier effect. Effects: <code>2Emanation 1/round</code> (or <code>EoT</code>), <code>2Burst</code>, <code>Appeal Save</code>, <code>DC 14 Body Check</code>, <code>Appeal Save: 1d6 / 1d4 / 0 [M] Holy</code>, <code>Prone</code>, <code>Immobilized (EoT)</code>, <code>1d6MH</code>, <code>Pushed 5</code>, <code>Pulled 3</code>, <code>Slid 2</code>, <code>Advance 5</code>, <code>Evade 1</code>, <code>Evade Speed/2</code> (references: speed, body, mind, appeal, instinct, level, weapon, hp, rally; rounded up), <code>uses 1 Rally Point</code>, <code>use up to 2 Rally Points</code>.</p></div>`;
+    <p class="hint">Damage: <code>1WB</code> = 1 [W] to Vigor (B), <code>1d4BH</code> = 1d4 Vigor Holy, <code>1d6MH</code> = 1d6 Resolve Holy (M), <code>BB</code> = Vigor Blunt, <code>ModB</code> or <code>Modifier</code> = [Mod], <code>"text"</code> = tier effect. Effects: <code>2Emanation 1/round</code> (or <code>EoT</code>), <code>2Burst</code>, <code>Appeal Save</code>, <code>DC 14 Body Check</code>, <code>Appeal Save: 1d6 / 1d4 / 0 [R] Holy</code>, <code>Prone</code>, <code>Immobilized (EoT)</code>, <code>1d6MH</code>, <code>Pushed 5</code>, <code>Pulled 3</code>, <code>Slid 2</code>, <code>Advance 5</code>, <code>Evade 1</code>, <code>Evade Speed/2</code> (references: speed, body, mind, appeal, instinct, level, weapon, hp, rally; rounded up), <code>uses 1 Rally Point</code>, <code>use up to 2 Rally Points</code>.</p></div>`;
   const preview = el => {
     const get = n => el.querySelector(`[name=${n}]`).value;
     const rows = [1, 2, 3].map(n => {
@@ -228,7 +228,7 @@ export function weaponSummary(w) {
     w.damage ? `Damage ${[1, 2, 3].map(n => dmgText(w.damage[`t${n}`])).join(" / ")}` : ""].filter(Boolean);
   const unknown = w.problems.map(p => p.match(/^"([^"]+)"/)?.[1]).filter(Boolean);
   const missing = w.problems.filter(p => !/^"/.test(p));
-  const damage = w.damage ? `${sub ? `${titleCase(sub)} \u00b7 ` : ""}[B] ${[1, 2, 3].map(n => dmgText(w.damage[`t${n}`])).join(" / ")}` : "\u2014";
+  const damage = w.damage ? `${sub ? `${titleCase(sub)} \u00b7 ` : ""}[V] ${[1, 2, 3].map(n => dmgText(w.damage[`t${n}`])).join(" / ")}` : "\u2014";
   return { chips, unknown, missing, use: use.join(" \u00b7 ") || "\u2014", damage };
 }
 

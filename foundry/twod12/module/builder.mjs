@@ -57,7 +57,7 @@ async function openBuilderDialog() {
   const rows = [1, 2, 3, 4]
     .map(
       i =>
-        `<div class="brow"><input type="text" name="f${i}" placeholder="1d6+2"><select name="p${i}">${sel({ "": "Body (default)", body: "Body", mind: "Mind", choice: "Choice" })}</select><select name="s${i}">${sel(
+        `<div class="brow"><input type="text" name="f${i}" placeholder="1d6+2"><select name="p${i}">${sel({ "": "Vigor (default)", body: "Vigor", mind: "Resolve", choice: "Choice" })}</select><select name="s${i}">${sel(
           {
             "": "No subtype",
             ...Object.fromEntries(

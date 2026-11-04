@@ -128,7 +128,7 @@ export function rawTierLine(insts, effectText = "", addMod = false) {
     list.splice(w >= 0 ? w + 1 : list.length, 0, "[Mod]");
   }
   if (effectText) effects.push(effectText);
-  return { dmg: [...groups].map(([pool, parts]) => `[${pool}] ${parts.join(" + ")}`).join(" + "), effects };
+  return { dmg: [...groups].map(([pool, parts]) => `[${({ B: "V", M: "R" })[pool] ?? pool}] ${parts.join(" + ")}`).join(" + "), effects };
 }
 
 /** The Action as written in the rules, in the chat-card look: every Version in order, [W] and [Mod] left as they are. */

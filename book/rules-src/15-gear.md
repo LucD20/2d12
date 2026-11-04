@@ -10,7 +10,7 @@ Your class determines your Weapon Modifier. Each weapon belongs to a [[Weapon Gr
 
 ### Weapon Damage [W]
 
-**[W]** is the damage of your weapon. An Action that deals 1[W] adds one instance of the weapon's damage. 2[W] is two instances, including any modifier and all dice. A weapon's damage has its own type, written in its table ([B] for every weapon so far): 1[W] deals that type, whatever the rest of the Action deals. Later weapons, such as wands and staves, may deal Mind damage or both.
+**[W]** is the damage of your weapon. An Action that deals 1[W] adds one instance of the weapon's damage. 2[W] is two instances, including any modifier and all dice. A weapon's damage has its own type, written in its table ([V] for every weapon so far): 1[W] deals that type, whatever the rest of the Action deals. Later weapons, such as wands and staves, may deal Resolve damage or both.
 
 *Example:* an Action that deals 2[W] deals 0 / 2d8 / 4d6 with a Greatsword, and 0 / 2d4+4 / 2d10+4 with a Crossbow.
 
@@ -18,7 +18,7 @@ Your class determines your Weapon Modifier. Each weapon belongs to a [[Weapon Gr
 
 - **Group:** its [[Weapon Groups|Weapon Group]].
 - **Range:** in squares. Melee weapons have a [[Weapon Range|Range]] too: 1 for most of them. For a ranged weapon, the first number is the normal range, the second the far range (1 Bane) and the third the maximum range (2 Banes).
-- **Damage:** Tier 1 / Tier 2 / Tier 3, all [B]. Tier 1 is 0 for every weapon but Fists.
+- **Damage:** Tier 1 / Tier 2 / Tier 3, all [V]. Tier 1 is 0 for every weapon but Fists.
 - **Mastery:** the [[Mastery]] its Weapon Technique needs: 3 for common weapons, 4 for specialist ones, 5 for exotic ones.
 
 A weapon that takes both hands deals the most, a weapon that leaves a hand free a little less, and a light or Thrown weapon less again: what the weapon can do pays for the difference.
@@ -27,16 +27,16 @@ A weapon that takes both hands deals the most, a weapon that leaves a hand free 
 
 | Name | Group | Properties | Type | Range | Damage | Mastery |
 |---|---|---|---|---|---|---|
-| Dagger | Blades | Melee, Thrown | Pierce | 1, Thrown 4 / 8 / 12 | [B] 0 / 1d4 / 1d8 | 3 |
-| Longsword | Blades | Melee | Slash | 1 | [B] 0 / 1d6 / 1d10 | 3 |
-| Greatsword | Blades | Melee, Two-handed | Slash | 1 | [B] 0 / 1d8 / 2d6 | 3 |
-| Handaxe | Axes | Melee, Thrown | Slash | 1, Thrown 4 / 8 / 12 | [B] 0 / 1d4 / 1d8 | 3 |
-| Greataxe | Axes | Melee, Two-handed | Slash | 1 | [B] 0 / 1d6 / 2d8 | 4 |
-| Mace | Hammers | Melee | Blunt | 1 | [B] 0 / 1d4+1 / 1d8+1 | 3 |
-| Maul | Hammers | Melee, Two-handed | Blunt | 1 | [B] 0 / 1d4+2 / 1d10+2 | 4 |
-| Spear | Polearms | Melee, Thrown | Pierce | 1, Thrown 4 / 8 / 12 | [B] 0 / 1d4 / 1d8 | 3 |
-| Pike | Polearms | Long, Melee, Two-handed | Pierce | 3 | [B] 0 / 1d6 / 1d10 | 4 |
-| Knuckle Dagger | Unarmed | Barehanded, Melee | Pierce | 1 | [B] 0 / 1d4 / 1d6 | 5 |
+| Dagger | Blades | Melee, Thrown | Pierce | 1, Thrown 4 / 8 / 12 | [V] 0 / 1d4 / 1d8 | 3 |
+| Longsword | Blades | Melee | Slash | 1 | [V] 0 / 1d6 / 1d10 | 3 |
+| Greatsword | Blades | Melee, Two-handed | Slash | 1 | [V] 0 / 1d8 / 2d6 | 3 |
+| Handaxe | Axes | Melee, Thrown | Slash | 1, Thrown 4 / 8 / 12 | [V] 0 / 1d4 / 1d8 | 3 |
+| Greataxe | Axes | Melee, Two-handed | Slash | 1 | [V] 0 / 1d6 / 2d8 | 4 |
+| Mace | Hammers | Melee | Blunt | 1 | [V] 0 / 1d4+1 / 1d8+1 | 3 |
+| Maul | Hammers | Melee, Two-handed | Blunt | 1 | [V] 0 / 1d4+2 / 1d10+2 | 4 |
+| Spear | Polearms | Melee, Thrown | Pierce | 1, Thrown 4 / 8 / 12 | [V] 0 / 1d4 / 1d8 | 3 |
+| Pike | Polearms | Long, Melee, Two-handed | Pierce | 3 | [V] 0 / 1d6 / 1d10 | 4 |
+| Knuckle Dagger | Unarmed | Barehanded, Melee | Pierce | 1 | [V] 0 / 1d4 / 1d6 | 5 |
 
 #### Melee Weapon Techniques
 
@@ -63,12 +63,12 @@ A weapon that takes both hands deals the most, a weapon that leaves a hand free 
 
 | Name | Group | Properties | Type | Range | Damage | Mastery |
 |---|---|---|---|---|---|---|
-| Shortbow | Bows | Projectile, Ranged, Two-handed | Pierce | 8 / 16 / 32 | [B] 0 / 1d6 / 1d10 | 3 |
-| Longbow | Bows | Projectile, Ranged, Two-handed | Pierce | 15 / 30 / 60 | [B] 0 / 1d4+1 / 1d8+1 | 4 |
-| Hand Crossbow | Crossbows | Projectile, Ranged, Reload | Pierce | 6 / 12 / 24 | [B] 0 / 1d4 / 1d8 | 4 |
-| Crossbow | Crossbows | Projectile, Ranged, Reload, Two-handed | Pierce | 10 / 20 / 40 | [B] 0 / 1d4+2 / 1d10+2 | 3 |
-| Pistol | Firearms | Firearm, Ranged, Reload | Pierce | 5 / 10 / 20 | [B] 0 / 1d4 / 2d6 | 4 |
-| Musket | Firearms | Firearm, Ranged, Reload, Two-handed | Pierce | 10 / 20 / 40 | [B] 0 / 1d4 / 2d8 | 5 |
+| Shortbow | Bows | Projectile, Ranged, Two-handed | Pierce | 8 / 16 / 32 | [V] 0 / 1d6 / 1d10 | 3 |
+| Longbow | Bows | Projectile, Ranged, Two-handed | Pierce | 15 / 30 / 60 | [V] 0 / 1d4+1 / 1d8+1 | 4 |
+| Hand Crossbow | Crossbows | Projectile, Ranged, Reload | Pierce | 6 / 12 / 24 | [V] 0 / 1d4 / 1d8 | 4 |
+| Crossbow | Crossbows | Projectile, Ranged, Reload, Two-handed | Pierce | 10 / 20 / 40 | [V] 0 / 1d4+2 / 1d10+2 | 3 |
+| Pistol | Firearms | Firearm, Ranged, Reload | Pierce | 5 / 10 / 20 | [V] 0 / 1d4 / 2d6 | 4 |
+| Musket | Firearms | Firearm, Ranged, Reload, Two-handed | Pierce | 10 / 20 / 40 | [V] 0 / 1d4 / 2d8 | 5 |
 
 #### Ranged Weapon Techniques
 
@@ -155,7 +155,7 @@ Every creature counts as having **Fists**. They are a weapon like any other, wit
 
 | Name | Group | Properties | Type | Range | Damage | Mastery |
 |---|---|---|---|---|---|---|
-| Fists | Unarmed | Barehanded, Melee, Non-threatening | Blunt | 1 | [B] 0 / 1 / 1d4 | - |
+| Fists | Unarmed | Barehanded, Melee, Non-threatening | Blunt | 1 | [V] 0 / 1 / 1d4 | - |
 
 Fists are used with the [[Chapter 6: Basic Actions|Fists Basic Action]], or with any Weapon Action.
 

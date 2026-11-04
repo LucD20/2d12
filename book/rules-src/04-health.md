@@ -3,37 +3,42 @@
 
 ## Health Pool
 
-Your **Health Pool** is the sum of two thresholds:
+Your **Health Pool** is the sum of two thresholds, **Vigor** and **Resolve**:
 
-- **Body Damage Threshold (BDT)** = ((Body + 2) × Body Health Multiplier + Species Body Health) × (Level + 17) ÷ 16
-- **Mind Damage Threshold (MDT)** = ((Mind + 2) × Mind Health Multiplier + Species Mind Health) × (Level + 17) ÷ 16
+1. **Your class** gives a **high** and a **low** Health value. When you build your character, you assign one to Vigor and the other to Resolve; the choice can't be changed later.
+2. **Your species** adds its bonus to each (see the [[Species]] document).
+3. **Your Stage:** at Stage 2 and again at Stage 3, each threshold grows by your class's step for its value (the high step or the low step; see [[Stages]]).
+4. **The floor:** neither threshold can be less than a third of your Health Pool (rounded up). If one is, move points from the other threshold to it until it reaches a third; the Health Pool doesn't change.
 
-Round each threshold up. The Health Multipliers come from your class, and the Species Health values from your species.
+Your Attributes don't change your Health.
 
-*Example:* a level 4 Human Paladin has Body +2 and Mind +1. BDT = ((2 + 2) × 4 + 3) × 21 ÷ 16 = 24.9, rounded up to **25**. MDT = ((1 + 2) × 4 + 4) × 21 ÷ 16 = **21**. Health Pool = **46**.
+> [!example]
+> A Human Paladin (high 20, low 10) puts the high value on Vigor: Vigor 20 + 3 = **23**, Resolve 10 + 2 = **12**, Health Pool **35**. At Stage 2 the Paladin's steps (+12 high, +6 low) make it Vigor 35, Resolve 18, Health Pool 53.
+>
+> Steven, an Elf Archer (high 16, low 8), puts the high value on Resolve: Vigor 8 + 1 = 9, Resolve 16 + 4 = 20, Health Pool 29. A third of 29 is 10, so 1 point moves: Vigor **10**, Resolve **19**.
 
-Body and Mind are not separate pools. All damage reduces the same Health Pool. The thresholds only decide which conditions you suffer.
+Vigor and Resolve are not separate pools. All damage reduces the same Health Pool. The thresholds only decide which states you reach.
 
 ## Damage
 
 Record every point of damage as:
 
-- **Body** or **Mind**
+- **Vigor** or **Resolve** (see [[Damage Types]])
 - **Lethal** or **Nonlethal**
 
 Damage is **Lethal** unless an Action or effect says it is Nonlethal. Lethal and Nonlethal damage both count toward the thresholds and toward your total damage. They never cancel or convert each other. Damage keeps accumulating after you are Down.
 
-When you have Body damage **equal to or more than** your BDT, you are **Bloodied**. When you have Mind damage **equal to or more than** your MDT, you are **Strained**.
+When you have Vigor damage **equal to or more than** your Vigor, you are **[[Bloodied]]**. When you have Resolve damage **equal to or more than** your Resolve, you are **[[Strained]]**.
 
 ### Instances of Damage
 
-An Action's damage can come in several **instances**: each part with its own pool and damage type is one instance. "[B] 1[W] + [Mod] + [M] 2d8 Ho" deals two: the weapon's damage with your Modifier (Body, the weapon's type), and 2d8 Holy (Mind). Each [W] is its own instance (2[W] is two, see the [[Gear]] document), and extra damage from another effect, such as Divine Surge's 1d8, is its own instance. Each target takes its own instances. Rules that count instances, such as Hallowed Stance ("one instance of damage per Action"), count them this way.
+An Action's damage can come in several **instances**: each part with its own pool and damage type is one instance. "[V] 1[W] + [Mod] + [R] 2d8 Ho" deals two: the weapon's damage with your Modifier (Vigor, the weapon's type), and 2d8 Holy (Resolve). Each [W] is its own instance (2[W] is two, see the [[Gear]] document), and extra damage from another effect, such as Divine Surge's 1d8, is its own instance. Each target takes its own instances. Rules that count instances, such as Hallowed Stance ("one instance of damage per Action"), count them this way.
 
 ### Lethal and Nonlethal
 
 Actions deal **Lethal** damage by default. Actions with the **Nonlethal** trait deal **Nonlethal** damage by default. A Nonlethal Action can deal Lethal damage by taking a Bane, and a Lethal Action can deal Nonlethal damage by taking a Bane as well.
 
-How damage is written on a card ([B], [M], [W], [Mod] and the damage types) is in [[Roll Effects]]. Empowered and Enfeebled, which change the dice of damage, are in [[Chapter 8: Conditions|Conditions]].
+How damage is written on a card ([V], [R], [W], [Mod] and the damage types) is in [[Roll Effects]]. Empowered and Enfeebled, which change the dice of damage, are in [[Chapter 8: Conditions|Conditions]].
 
 ## Going Down
 
@@ -53,12 +58,12 @@ When an NPC goes Down, they **die** if they have more Lethal damage, or fall **U
 
 ### Dominant Damage
 
-Compare your total Body damage to your total Mind damage. The higher one is your **Dominant Damage**. On a tie, the creature that goes Down chooses.
+Compare your total Vigor damage to your total Resolve damage. The higher one is your **Dominant Damage**. On a tie, the creature that goes Down chooses.
 
 Dominant Damage doesn't do anything by itself, but it determines the condition you gain when you go Down. Some abilities might also make use of it. You know which Dominant Damage a creature has if you perceive them (Hidden is enough).
 
-- **Body** is dominant: you become **Dying**.
-- **Mind** is dominant: you become **Shattered**.
+- **Vigor** is dominant: you become **Dying**.
+- **Resolve** is dominant: you become **Shattered**.
 
 ## Wounds and the Tables
 
@@ -85,7 +90,7 @@ Every result on the Dying or Shattered Table is a **Wound**. A Wound from the Dy
 
 ## Rally Points
 
-Each character begins with Rally Points equal to **your class's Rally value + ⌈(Body + Mind + your level) ÷ 2⌉**, where Body and Mind are your Attributes.
+Each character begins with Rally Points equal to **your class's Rally value + your [[Stages|Stage]]** (1, 2 or 3).
 
 When a Rally Point is used, normally with Steel Yourself, the target removes **⌈their Health Pool ÷ 4⌉** damage. You choose which damage to remove.
 
@@ -101,15 +106,15 @@ Only a Rest restores Rally Points. Sleep does not. A new encounter does not.
 
 ## Guard
 
-Some effects give you **Guard**, written with a value: **Guard 6**. When you take damage, your Guard takes it first (Body or Mind damage alike), and only the rest reaches your Health. Damage your Guard takes isn't damage you take: it doesn't count toward your thresholds or your Health Pool, and it doesn't trigger anything that happens when you take damage.
+Some effects give you **Guard**, written with a value: **Guard 6**. When you take damage, your Guard takes it first (Vigor or Resolve damage alike), and only the rest reaches your Health. Damage your Guard takes isn't damage you take: it doesn't count toward your thresholds or your Health Pool, and it doesn't trigger anything that happens when you take damage.
 
 - Damage reduction (such as Hallowed Stance) applies first; Guard takes what is left.
 - Guard isn't Health: it can't be healed, and Rally Points don't restore it.
-- It doesn't stack: if you gain Guard while you have some, keep the higher value (see [[Stacking]]).
+- It doesn't stack: if you gain Guard while you have some, keep the higher value (see [[Stacking]]). The exception is the Guard your [[Unspent AP]] give you: it adds to your other Guard, damage takes it first, and it ends when you regain AP.
 - It ends at the end of the encounter.
 
 > [!example]
-> Zack has Guard 6 and takes 8 Body damage: his Guard takes 6 and ends, and he takes 2 Body damage.
+> Zack has Guard 6 and takes 8 Vigor damage: his Guard takes 6 and ends, and he takes 2 Vigor damage.
 
 
 ## Recovery
@@ -146,11 +151,16 @@ When you complete a Rest, you remove all the damage you took and you regain all 
 
 ### Bloodied
 
-Your [Strike] and [Weapon] Actions take 1 Bane, and so do your Body and Instinct Saves.
+You are Bloodied while your Vigor damage is equal to or more than your Vigor. It has **no effect by itself**: Actions and features use it, such as "when an ally becomes Bloodied" or "against a Bloodied target".
 
 ### Strained
 
-Your [Power] Actions take 1 Bane, and so do your Mind and Appeal Saves.
+You are Strained while your Resolve damage is equal to or more than your Resolve. Like Bloodied, it has **no effect by itself**: Actions and features use it.
+
+Every creature knows whether a creature it perceives is Bloodied or Strained: the GM says so when an NPC becomes either.
+
+> [!tip]
+> A feature that cares about an **enemy** being Bloodied or Strained usually says **"when it becomes"**: an enemy is Bloodied for about a round before it goes Down, so "while" rarely matters. A rider on your own Action can say "while" ("if the target is Strained, heal 2 more").
 
 ### Desperate
 
@@ -185,7 +195,7 @@ When you become Dying for the first time in an encounter, roll on the Dying Tabl
 
 After this check, you may choose to stop fighting and fall Unconscious.
 
-If you take damage while you keep fighting, make a Body Check if it was Body damage, or a Mind Check if it was Mind damage:
+If you take damage while you keep fighting, make a Body Check if it was Vigor damage, or a Mind Check if it was Resolve damage:
 
 | Roll | Result |
 |---|---|
@@ -219,7 +229,7 @@ When you become Shattered for the first time in an encounter, roll on the Shatte
 
 After this check, you may choose to stop fighting and fall Unconscious.
 
-If you take damage while you keep fighting, make a Body Check if it was Body damage, or a Mind Check if it was Mind damage:
+If you take damage while you keep fighting, make a Body Check if it was Vigor damage, or a Mind Check if it was Resolve damage:
 
 | Roll | Result |
 |---|---|

@@ -3,6 +3,9 @@
 
 You build an NPC by picking a **role**, then a **rating** for each of its numbers. **An NPC's items are flavor and loot**: its Health, Defenses and damage never come from its weapons or armor.
 
+> [!tbd]
+> **Pack R:** the tables below are still calibrated for 5 AP turns and the old Health. Pack R-bestiary re-fits them to the new core rules (4 AP + 1 Reaction AP, the PCs' new Health line, the Special Actions counted, a normal fight costing about a quarter of the party's Health) and adds Elite Escalation and Vs. WD Basic attacks. Until then, an NPC still uses its Bestiary numbers, and its Escalation Actions still spend Escalation.
+
 ## The targets
 
 Each role has a **Combat Value (CV)**: what one NPC of the role counts for in an encounter. It is lower for an NPC of an earlier [[Stages|Stage]] than the party (see [[Building an encounter]]). A typical fight is **4 PCs against enemies with a total CV of 400** (CV 100 per PC). It lasts about **3½ rounds** and costs the party about **a third of its Health**. A level 1 PC deals about 20 to 25 damage a turn to one creature, and has 27 to 40 Health.
@@ -10,11 +13,11 @@ Each role has a **Combat Value (CV)**: what one NPC of the role counts for in an
 | Role | CV | AP a turn | Takes about | Deals about (per turn, to an average PC) |
 |---|---|---|---|---|
 | **Minion** | 25 | **3** | one PC hit | 3 |
-| **Grunt** | 50 | 5 | 1 PC turn | 6 to 7 |
-| **Standard** | 100 | 5 | 2 to 3 PC turns | 10 to 11 |
-| **Elite** | 200 | 5 | 5 PC turns | 17 to 18 |
+| **Grunt** | 50 | 4 | 1 PC turn | 6 to 7 |
+| **Standard** | 100 | 4 | 2 to 3 PC turns | 10 to 11 |
+| **Elite** | 200 | 4 | 5 PC turns | 17 to 18 |
 
-**Minions have 3 AP a turn**, not 5: quick, simple creatures that move and strike, and die fast.
+**Minions have 3 AP a turn**, not 4: quick, simple creatures that move and strike, and die fast. Every NPC also gains the Reaction AP, as a PC does (see [[Action Points]]).
 
 ### Minor enemies
 
@@ -43,10 +46,10 @@ Assign the Attributes to **Body, Mind, Appeal and Instinct**. Choose a **Weapon 
 
 ## Health
 
-The same formula as a PC, with the role's numbers:
+The Bestiary's own formula (a PC's Health is in [[Health Pool]]), with the role's numbers:
 
-- **Body Damage Threshold** = (Body + 2) × Body Health Multiplier + Health Base
-- **Mind Damage Threshold** = (Mind + 2) × Mind Health Multiplier + Health Base
+- **Vigor** = (Body + 2) × Body Health Multiplier + Health Base
+- **Resolve** = (Mind + 2) × Mind Health Multiplier + Health Base
 - **Health Pool** = the two thresholds added together (round each threshold up).
 
 Bloodied, Strained and going Down work as usual (see [[NPCs Going Down]]). **A Minion has no Dying: at 0 it dies, or falls Unconscious if the GM prefers.**
@@ -98,9 +101,10 @@ A condition is worth **steps of rating**: **Mild 1, Moderate 2, Severe 3**. An A
 
 ### Reactions
 
-- **Minions and Grunts** normally have none.
+- **Every NPC** has Opportunity Attack, the basic Reaction (with its Basic attack: see [[Chapter 6: Basic Actions|Chapter 6]]).
+- **Minions and Grunts** normally have no other.
 - **Standards and Elites** may have one or more.
-- A Reaction uses AP from the NPC's next turn, as for a PC.
+- An NPC pays for a Reaction as a PC does: with its Reaction AP or the AP it kept from its turn (see [[Reactions]]).
 - **A Reaction that doesn't disrupt the triggering Action** (a Trigger, after it) should be **one rating stronger** than an Action of the same AP: it only happens when its trigger does.
 - **A Reaction that disrupts it** (an Interrupt that can stop the Action) is worth the same as an Action of the same AP: stopping the Action is its strength.
 
@@ -265,12 +269,12 @@ What the fight model gives for 4 PCs (all ratings Medium, levels 1 to 3):
 - *Rusty Knife* (Basic attack, Medium): about 3 / 5.5 (1d2 + [Mod] / 1d6 + [Mod] Pi).
 - *Dirty Trick* (Special, 1 AP, Round): Low damage + Mild condition = Medium: about 3 / 5.5, and Hindered (EoT).
 
-**Orc Warrior** (Standard, CV 100): Body High (+2), Instinct Medium (+1), Mind Medium (+1), Appeal Low (0). Weapon Modifier +2 (Body). Body Health High (×9.75), Mind Health Low (×5.75): Health 65 (Body 43, Mind 22). Armor Defense Medium (13), Ward Defense Low (12).
+**Orc Warrior** (Standard, CV 100): Body High (+2), Instinct Medium (+1), Mind Medium (+1), Appeal Low (0). Weapon Modifier +2 (Body). Body Health High (×9.75), Mind Health Low (×5.75): Health 65 (Vigor 43, Resolve 22). Armor Defense Medium (13), Ward Defense Low (12).
 - *Cleaver* (Basic attack, Medium): about 6 / 11 (1d8 + [Mod] / 2d8 + [Mod] Sl).
 - *Brutal Swing* (Special, 2 AP, Round): Terrible damage + Severe condition = High: about 9 / 13, and Prone.
 - *Hold the Line* (Reaction, Trigger: an ally within 2 squares is hit; 1 AP): the attacker takes a Medium 1 AP Special one rating up: about 10.5 / 18 Sl.
 
-**Ogre Chieftain** (Elite, CV 200): Body High (+3), Instinct Medium (+2), Mind Medium (+2), Appeal Low (+1). Weapon Modifier +3 (Body). Health Medium: 132 (Body 73, Mind 59). Armor Defense Medium (14), Ward Defense Low (13). Speed 4 (slow: High Basic attack). Escalation on.
+**Ogre Chieftain** (Elite, CV 200): Body High (+3), Instinct Medium (+2), Mind Medium (+2), Appeal Low (+1). Weapon Modifier +3 (Body). Health Medium: 132 (Vigor 73, Resolve 59). Armor Defense Medium (14), Ward Defense Low (13). Speed 4 (slow: High Basic attack). Escalation on.
 - *Club* (Basic attack, High): about 9 / 13.5 (1d10 + [Mod] / 2d10 + [Mod] Bl).
 - *Ground Slam* (Special, 3 AP, Encounter, Area 1 Emanation, a Save Action: Body Save, DC 14): half of a Medium 3 AP: about 19.5 / 12 / 0 (Tier 1 is the worst for them), and Prone on Tier 1.
 - *Rally the Tribe* (1 Escalation, 1 AP): allies within 5 squares gain 1 Boon on their next [Weapon] Action.

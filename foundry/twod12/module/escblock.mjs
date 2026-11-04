@@ -90,7 +90,7 @@ export function grantBadges(g, effect) {
   if (g.distinct) { short.push("≠ targets"); long.push("Each use needs a different target"); }
   if (g.boons) { short.push(`+${g.boons} Boon${g.boons === 1 ? "" : "s"}`); long.push(`${g.boons} Boon${g.boons === 1 ? "" : "s"} on it`); }
   for (const b of effect?.getFlag?.(F, "bonuses") ?? []) {
-    if (b.dmg) { short.push(`+${b.dmg}${b.dmgSub ? ` ${b.dmgSub}` : ""}`); long.push(`+[${b.dmgPool || "B"}] ${b.dmg}${b.dmgSub ? ` ${TWOD12.subtypes[b.dmgSub] ?? b.dmgSub}` : ""} damage${tierWord(b.tiers) ? ` on${tierWord(b.tiers)}` : ""}`); }
+    if (b.dmg) { short.push(`+${b.dmg}${b.dmgSub ? ` ${b.dmgSub}` : ""}`); long.push(`+[${({ B: "V", M: "R" })[b.dmgPool || "B"] ?? b.dmgPool}] ${b.dmg}${b.dmgSub ? ` ${TWOD12.subtypes[b.dmgSub] ?? b.dmgSub}` : ""} damage${tierWord(b.tiers) ? ` on${tierWord(b.tiers)}` : ""}`); }
     if (b.text) { short.push(`${String(b.text).replace(/\s*\((?:EoT|.*round.*)\)\s*$/i, "")}${tierWord(b.tiers)}`); long.push(`${b.text}${tierWord(b.tiers) ? ` on${tierWord(b.tiers)}` : ""}`); }
   }
   return { short, long };

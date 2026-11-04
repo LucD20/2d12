@@ -8,7 +8,7 @@ import { canPayEscalation, spendEscalation } from "./escalation.mjs";
 import { weaponUse, weaponRanges } from "./weaponrange.mjs";
 import { rollSource, rollTraits, saveDcOf } from "./rollsource.mjs";
 import { perceptionOf, perceive } from "./senses.mjs";
-import { TWOD12, expandAsText, areaButton, isTalentAction, targetsNeeded, areaConfigOf } from "./config.mjs";
+import { TWOD12, poolTag, expandAsText, areaButton, isTalentAction, targetsNeeded, areaConfigOf } from "./config.mjs";
 import { weaponsFor, hasProp, heldFirst } from "./fists.mjs";
 import { handOf, HAND_LABEL } from "./loadout.mjs";
 import { isEngaged, engagedWithOther } from "./engaged.mjs";
@@ -34,7 +34,7 @@ import { ensureFreeHand } from "./hands.mjs";
 /** v0.0.181 (P1, Smite): a Weapon Action adds the Modifier it rolls to its damage on Tier 2 or 3: a Weapon roll, or a [Signature, Weapon] Action's Signature roll. */
 const modOnWeapon = (src, traits) => src?.kind === "weapon" || (src?.kind === "signature" && !!traits?.has?.("weapon"));
 
-/** Text form of a damage instance, e.g. "[B] 1[W] + 1d4 H". */
+/** Text form of a damage instance, e.g. "[V] 1[W] + 1d4 H" (v0.0.234: the pool B / M written [V] / [R]). */
 export function instanceText(i) {
   const parts = [];
   if (i.useW) parts.push(`${i.wCount}[W]`);
@@ -43,7 +43,7 @@ export function instanceText(i) {
   if (i.useAt) rest.push("[Mod]");
   if (rest.length) parts.push(rest.join(" + ") + (i.subtype ? ` ${i.subtype}` : ""));
   let t = parts.join(" + ");
-  if (t && i.pool) t = `[${i.pool}] ${t}`;
+  if (t && i.pool) t = `[${poolTag(i.pool)}] ${t}`;
   return t;
 }
 

@@ -70,7 +70,7 @@ export const TWOD12 = {
   // The kind of a roll, for effects (Round 10): checks and saves are marked when they are rolled, and an Action that rolls an Attribute
   // directly (not a Weapon, Power or Signature roll) is an Attribute Action. Weapon, Power and Signature rolls are their traits.
   rollKinds: { __check: "Check", __save: "Save", __attr: "Attribute Action", __twohanded: "Two-handed weapon" },   // v0.0.188: Two-handed weapon (Heavy Blows)
-  pools: { "": "None", B: "Body [B]", M: "Mind [M]", C: "Choice [C]" },
+  pools: { "": "None", B: "Vigor [V]", M: "Resolve [R]", C: "Choice [C]" },   // v0.0.234 (pack R-core): the labels; the keys stay B / M
   // Damage types: one icon each (Slash also has Foundry's sword image on cards), bright colors for dark backgrounds,
   // and dark "ink" colors for the parchment cards.
   subtypeIcons: {
@@ -119,7 +119,7 @@ export const TWOD12 = {
     "Undead",
     "Unholy"
   ], // the starting list of the world setting "Tags"
-  poolNames: { B: "Body [B]", M: "Mind [M]", C: "Choice [C]", "": "Damage" },
+  poolNames: { B: "Vigor [V]", M: "Resolve [R]", C: "Choice [C]", "": "Damage" },
   traitHelp: {
     area: "These Actions target every creature in their area that they affect, ignoring Senses (no penalty against Obscured, Hidden or Unsensed creatures, and light doesn't change the roll). You need Line of Effect to the Point of Origin to place the area; Line of Effect and Cover are checked from the Point of Origin to each creature.",
     strike: "Extra rules: you can make at most three Strikes per turn.",
@@ -146,7 +146,7 @@ export const TWOD12 = {
   // v0.0.198 (Lucas, 2026-10-30): the Basic Actions section of the Actions tab, 4 groups in a 2x2 grid (row 1 Attack | Control, row 2
   // Movement | Utility), each in this order. By name: the Kind traits don't separate them. The items and the compendium don't change.
   basicGroups: [
-    { key: "attack", label: "Attack", names: ["Weapon Attack", "Fists", "Charge", "Reload"] },
+    { key: "attack", label: "Attack", names: ["Weapon Attack", "Fists", "Charge", "Reload", "Opportunity Attack"] },   // pack R-core: Opportunity Attack, the basic Reaction
     { key: "control", label: "Control", names: ["Shove", "Haul", "Relocate", "Trip"] },
     { key: "movement", label: "Movement", names: ["Advance", "Evade", "Crawl", "Stand", "Break Free"] },
     { key: "utility", label: "Utility", names: ["Interact", "Release", "Regrip", "Leaning", "Steel Yourself"] }
@@ -256,10 +256,12 @@ export const cardVars = hex => {
 // v0.0.215 (Lucas, playtest 2): the diamond's tooltip also says what is not implemented yet (the item's "By hand" note), for Bronze and Silver.
 export const autoChip = (rank, note = "") => (rank && TWOD12.automationRanks[rank] ? `<i class="fa-solid fa-diamond autodia auto-${rank}" data-tooltip="${escAttr(`${TWOD12.automationHints[rank] ?? ""}${String(note ?? "").trim() ? ` By hand: ${String(note).trim()}` : ""}`)}" aria-label="${escAttr(TWOD12.automationRanks[rank])}"></i>` : "");   // v0.0.190: a diamond (grey, bronze, silver, gold), the rank on hover
 export const cardHead = (name, cat, costHtml, freq = "", auto = "", autoNote = "") => `<div class="ahead"><b>${escAttr(name)}${autoChip(auto, autoNote)}</b><div class="aright"><span class="atop">${freq && TWOD12.frequencies[freq] ? `<span class="afreq">${escAttr(TWOD12.frequencies[freq])}</span>` : ""}${costHtml ? `<span class="aps">${costHtml}</span>` : ""}</span>${cat ? `<span class="acat">${escAttr(cat)}</span>` : ""}</div></div>`;
-/** Damage on cards: a filled heart for Body, a filled brain for Mind, and each damage type in its own color with its icon. */
-export const poolIcon = pool => pool === "M" ? '<i class="fa-solid fa-brain dt-mind" data-tooltip="Mind damage"></i>'
-  : pool === "C" ? '<span class="dt-choose" data-tooltip="Body or Mind: the origin chooses"><i class="fa-solid fa-heart dt-body"></i><i class="fa-solid fa-brain dt-mind"></i></span>'
-  : '<i class="fa-solid fa-heart dt-body" data-tooltip="Body damage"></i>';
+/** v0.0.234 (pack R-core): the book writes the pool keys B / M as [V] / [R]: the tag of a stored pool in the text Foundry writes. */
+export const poolTag = pool => ({ B: "V", M: "R" })[pool] ?? pool;
+/** Damage on cards: a filled heart for Vigor, a filled brain for Resolve, and each damage type in its own color with its icon. */
+export const poolIcon = pool => pool === "M" ? '<i class="fa-solid fa-brain dt-mind" data-tooltip="Resolve damage"></i>'
+  : pool === "C" ? '<span class="dt-choose" data-tooltip="Vigor or Resolve: the origin chooses"><i class="fa-solid fa-heart dt-body"></i><i class="fa-solid fa-brain dt-mind"></i></span>'
+  : '<i class="fa-solid fa-heart dt-body" data-tooltip="Vigor damage"></i>';
 /** A damage type's icon (on parchment cards, Slash uses Foundry's sword image). */
 export const dtypeIcon = k => (k === "Sl" ? '<img class="dt-img" src="icons/svg/sword.svg" alt="">' : `<i class="${TWOD12.subtypeIcons[k] ?? ""}"></i>`);
 export const dtypeHtml = code => {
@@ -271,11 +273,13 @@ export const dtypeHtml = code => {
 export const inkOf = code => { const k = Object.keys(TWOD12.subtypeInk ?? {}).find(x => x.toLowerCase() === String(code ?? "").toLowerCase()); return k ? TWOD12.subtypeInk[k] : ""; };
 // v0.0.179 (the book's look): a damage expression after [B] or [M] ("[B] 1[W] + [Mod]", "[M] 1d4") is in its pool's color, the damage type in its own;
 // an amount with no pool before it ("+1d6 Ho" from a bonus) keeps the type's ink as before.
-const POOL_EXPR = /\[(B|M)\](\s*)((?:\d+d\d+|\d*\[W\]|\[Mod\]|\[At\]|\d+)(?:\s*[+\-\u2212]\s*(?:\d+d\d+|\d*\[W\]|\[Mod\]|\[At\]|\d+))*)/g;
+// Pack R-core: [V] Vigor and [R] Resolve damage are the B and M pools (both spellings read until R-Foundry).
+const POOL_CSS = { B: "b", V: "b", M: "m", R: "m" }, POOL_KEY = { B: "B", V: "B", M: "M", R: "M", C: "C" };
+const POOL_EXPR = /\[(B|M|V|R)\](\s*)((?:\d+d\d+|\d*\[W\]|\[Mod\]|\[At\]|\d+)(?:\s*[+\-\u2212]\s*(?:\d+d\d+|\d*\[W\]|\[Mod\]|\[At\]|\d+))*)/g;
 export const prettyDamage = html => String(html ?? "")
-  .replace(POOL_EXPR, (m, p, sp, expr) => `${poolIcon(p)}${sp}<span class="pool-${p.toLowerCase()}">${expr}</span>`)
+  .replace(POOL_EXPR, (m, p, sp, expr) => `${poolIcon(POOL_KEY[p])}${sp}<span class="pool-${POOL_CSS[p]}">${expr}</span>`)
   .replace(/(\d*\[W\]|\[At\]|\d+d\d+(?:[+-]\d+)?|\b\d+)(\s+)(Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un)\b/g, (m, amt, sp, code) => (inkOf(code) ? `<span class="dtamt" style="color:${inkOf(code)}">${amt}</span>${sp}${code}` : m))
-  .replace(/\[(B|M|C)\]/g, (m, p) => poolIcon(p))
+  .replace(/\[(B|M|C|V|R)\]/g, (m, p) => poolIcon(POOL_KEY[p]))
   .replace(/\b(Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un)\b/g, m => dtypeHtml(m));
 
 /** The optional flavor line, under the title bar. */
@@ -353,8 +357,8 @@ const TRAIT_KEYS = [...new Set(Object.values(TWOD12.traits).map(String))].sort((
 /* ------------------------------------------------------------------ text colors (v0.0.179: the book's CLASS_TOKEN, book/build_rules.py) */
 const ATOM = String.raw`(?:\d+d\d+|\d+\[W\]|\[Mod\]|\d+)`, EXPR = String.raw`${ATOM}(?:\s*[+\-\u2212/]\s*${ATOM})*`;
 const TOKEN_RE = new RegExp([
-  String.raw`(?<slash>${ATOM}(?:\s*/\s*${ATOM})+\s*\[(?<sp>[BM])\])`,      // "1d6 / 1d4 / 0 [M]": tier values with the pool after them
-  String.raw`(?<tag>\[(?<tp>[BM])\]\s*${EXPR})`,                             // "[B] 1[W] + [Mod]", "[M] 1d6+1"
+  String.raw`(?<slash>${ATOM}(?:\s*/\s*${ATOM})+\s*\[(?<sp>[BMVR])\])`,    // "1d6 / 1d4 / 0 [R]": tier values with the pool after them
+  String.raw`(?<tag>\[(?<tp>[BMVR])\]\s*${EXPR})`,                           // "[B] 1[W] + [Mod]", "[M] 1d6+1"
   String.raw`(?<ht>\[HT(?::[^\]]*)?\])`,                                      // "[HT: Entering, Turn]"
   // v0.0.192: a bracketed list of traits, "[Ranged, Shot]" or "[Strike]", colored as one group (each trait in its group's color).
   String.raw`(?<tgrp>\[(?:${TRAIT_KEYS})(?:,\s*(?:${TRAIT_KEYS}))*\])`,
@@ -368,8 +372,8 @@ const TOKEN_RE = new RegExp([
 ].join("|"), "g");
 /** One colored token of text (the class names are the book's). */
 function colorToken(m, g) {
-  if (g.slash) return `<span class="pool-${g.sp.toLowerCase()}">${m}</span>`;
-  if (g.tag) return `<span class="pool-${g.tp.toLowerCase()}">${m}</span>`;
+  if (g.slash) return `<span class="pool-${POOL_CSS[g.sp]}">${m}</span>`;
+  if (g.tag) return `<span class="pool-${POOL_CSS[g.tp]}">${m}</span>`;
   if (g.ht) return `<span class="kw-ht">${m}</span>`;
   if (g.tgrp) return `<span class="trgrp">[${m.slice(1, -1).split(/,\s*/).map(w => `<span class="trhl" style="--tc:${famColor(TRAIT_KEY_OF[w.toLowerCase()])}">${w}</span>`).join(", ")}]</span>`;
   if (g.mod) return `<span class="mod-${m.split(/\s/)[0].toLowerCase()}">${m}</span>`;

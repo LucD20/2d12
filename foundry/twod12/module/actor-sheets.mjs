@@ -368,8 +368,8 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     }
     // Conditions: from damage first, then the effects with their duration.
     const conditions = [];
-    if (s.bloodied) conditions.push({ name: "Bloodied", img: "icons/svg/blood.svg", dur: "from damage", tip: "Body damage at or past its threshold" });
-    if (s.strained) conditions.push({ name: "Strained", img: "icons/svg/daze.svg", dur: "from damage", tip: "Mind damage at or past its threshold" });
+    if (s.bloodied) conditions.push({ name: "Bloodied", img: "icons/svg/blood.svg", dur: "from damage", tip: "Vigor damage at or past Vigor" });
+    if (s.strained) conditions.push({ name: "Strained", img: "icons/svg/daze.svg", dur: "from damage", tip: "Resolve damage at or past Resolve" });
     // The Effects tab (v0.0.134): a status (a condition) is a chip; any other applied effect is a row with what it does and where it came from.
     const fxEffects = [];
     const fxText = e => hoverOf(e.getFlag?.("twod12", "hover"), e.getFlag?.("twod12", "description") ?? e.description);
@@ -1024,7 +1024,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const pool = target.dataset.pool, d = this.actor.system.damage;
     const L = pool === "body" ? "bodyLethal" : "mindLethal", N = pool === "body" ? "bodyNonlethal" : "mindNonlethal";
     const res = await DialogV2.prompt({
-      window: { title: `${pool === "body" ? "Body" : "Mind"} damage: ${this.actor.name}` }, position: { width: 300 },
+      window: { title: `${pool === "body" ? "Vigor" : "Resolve"} damage: ${this.actor.name}` }, position: { width: 300 },
       content: `<div class="twod12"><div class="form-group"><label>Lethal</label><input type="number" min="0" name="l" value="${d[L]}" autofocus></div><div class="form-group"><label>Nonlethal</label><input type="number" min="0" name="n" value="${d[N]}"></div></div>`,
       ok: { label: "Save", callback: (ev, btn) => ({ l: Number(btn.form.elements.l.value) || 0, n: Number(btn.form.elements.n.value) || 0 }) }, rejectClose: false
     });

@@ -43,6 +43,7 @@ DCODE_RE = re.compile(r'(?<=[\d\]]) (' + '|'.join(DCODE) + r')\b')   # a code af
 def dcode_html(code): return f'<span class="dcode" style="--dc:{DTYPE[DCODE[code]]}">{code}</span>'
 def dtype_html(name): return f'<span class="dtype" style="--dc:{DTYPE[name]}">{icon_svg(name)}{name}</span>'
 def pool_html(k):
+    k = {"V": "B", "R": "M"}.get(k, k)   # pack R-core: Vigor and Resolve use the Body and Mind icons
     name = {"B": "Body", "M": "Mind"}[k]
     return f'<span class="pool pool-{k.lower()}" role="img" aria-label="{name}">{icon_svg(name)}</span>'
 
@@ -113,8 +114,8 @@ _ATOM = r'(?:\d+d\d+|\d+\[W\]|\[Mod\]|\d+)'
 _EXPR = rf'{_ATOM}(?:\s*[+\-\u2212/]\s*{_ATOM})*'
 _IMPL = r'(?:\d+\[W\]|\[Mod\])(?:\s*\+\s*(?:\d+\[W\]|\[Mod\]|\d+d\d+|\d+))*'
 CLASS_TOKEN = re.compile(
-    rf'(?P<slash>{_ATOM}(?:\s*/\s*{_ATOM})+\s*\[(?P<sp>[BM])\])'      # "1d6 / 1d4 / 0 [M]": tier values with the pool after them
-    rf'|(?P<tag>\[(?P<tp>[BM])\]\s*{_EXPR})'                             # "[B] 1[W] + [Mod]", "[M] 1d6+1"
+    rf'(?P<slash>{_ATOM}(?:\s*/\s*{_ATOM})+\s*\[(?P<sp>[BMVR])\])'    # "1d6 / 1d4 / 0 [R]": tier values with the pool after them
+    rf'|(?P<tag>\[(?P<tp>[BMVR])\]\s*{_EXPR})'                           # "[V] 1[W] + [Mod]", "[R] 1d6+1" (pack R-core; [B] / [M] still read)
     r'|(?P<ht>\[HT(?::[^\]]*)?\])'                                         # "[HT: Entering, Turn]": Hazardous Terrain
     r'|(?P<mod>\b(?:Weapon|Power|Signature)\s(?:Modifier|Attribute)s?\b)'  # the modifiers (not Weapon as gear or as a trait)
     r'|\((?P<apa>\d(?:/\d)*A)\)|(?P<ap>\b\d(?:\s*/\s*\d)*\s?AP\b)|(?P<rx>\b\d(?:/\d)*R\b)'   # "(1A)", "2 AP", "1R": costs, the color of the cost chips
@@ -122,10 +123,11 @@ CLASS_TOKEN = re.compile(
     r'|(?P<neg>\b(?:Doomed|Enfeebled|Vulnerable|Down)\b(?:\s\d+\b)?)|(?P<pos>\b(?:Favored|Empowered)\b(?:\s\d+\b)?)'
     r'|(?P<bane>\b(?:\d+\s+)?Banes?\b)|(?P<boon>\b(?:\d+\s+)?Boons?\b)|(?P<rally>\b(?:(?:up to )?\d+\s+)?Rally Points?\b)'
     r'|(?P<attr>\b(?:Body|Mind|Instinct|Appeal)\b)')
+POOL_CLASS = {'B': 'b', 'V': 'b', 'M': 'm', 'R': 'm'}   # pack R-core: [V] Vigor and [R] Resolve damage (were [B] and [M]; both read until R-Foundry)
 def _tok(m):
     t = m.group(0)
-    if m.group('slash'): return f'<span class="pool-{m.group("sp").lower()}">{t}</span>'
-    if m.group('tag'): return f'<span class="pool-{m.group("tp").lower()}">{t}</span>'
+    if m.group('slash'): return f'<span class="pool-{POOL_CLASS[m.group("sp")]}">{t}</span>'
+    if m.group('tag'): return f'<span class="pool-{POOL_CLASS[m.group("tp")]}">{t}</span>'
     if m.group('ht'): return f'<span class="kw-ht">{t}</span>'
     if m.group('mod'): return f'<span class="mod-{t.split()[0].lower()}">{t}</span>'
     if m.group('apa'): return f'(<span class="kw-ap">{m.group("apa")}</span>)'
@@ -290,10 +292,10 @@ SAMPLE = '''<div class="action" markdown="1">
 
 | | 1 AP | 2 AP | 3 AP |
 |---|---|---|---|
-| **Tier 1** | 1[W] | 1[W] + [M] 2d4 Ho | 1[W] + [M] 2d4 Ho |
-| **Tier 2** | 1[W] + [Mod] + [M] 1d4 Ho | 1[W] + [Mod] + [M] 2d6 Ho | 1[W] + [Mod] + [M] 2d6 Ho |
-| **Tier 3** | 1[W] + [Mod] + [M] 1d6 Ho | 1[W] + [Mod] + [M] 2d8 Ho | 1[W] + [Mod] + [M] 2d8 Ho |
-| **Effects** | The target sheds Bright light 1 ▣ and takes 1 bane when they try to hide, for 1 round. | The target sheds Bright light 2 ▣ and takes 1 bane when they try to hide, for 1 round. You gain 1 boon on your next Divine Action against the target. | As 2 AP, and enemies in the Bright light must make an Appeal Save: 1d6 / 1d4 / 0 [M] Holy. |
+| **Tier 1** | 1[W] | 1[W] + [R] 2d4 Ho | 1[W] + [R] 2d4 Ho |
+| **Tier 2** | 1[W] + [Mod] + [R] 1d4 Ho | 1[W] + [Mod] + [R] 2d6 Ho | 1[W] + [Mod] + [R] 2d6 Ho |
+| **Tier 3** | 1[W] + [Mod] + [R] 1d6 Ho | 1[W] + [Mod] + [R] 2d8 Ho | 1[W] + [Mod] + [R] 2d8 Ho |
+| **Effects** | The target sheds Bright light 1 ▣ and takes 1 bane when they try to hide, for 1 round. | The target sheds Bright light 2 ▣ and takes 1 bane when they try to hide, for 1 round. You gain 1 boon on your next Divine Action against the target. | As 2 AP, and enemies in the Bright light must make an Appeal Save: 1d6 / 1d4 / 0 [R] Holy. |
 
 </div>
 '''
@@ -347,7 +349,7 @@ for fn in files:
     def put(html):
         k = f'@@S{len(stash)}@@'; stash[k] = html; return k
     text = re.sub(r'\{\{dt:(\w+)\}\}', lambda m: put(dtype_html(m.group(1))), text)
-    text = re.sub(r'\{\{pool:([BM])\}\}', lambda m: put(pool_html(m.group(1))), text)
+    text = re.sub(r'\{\{pool:([BMVR])\}\}', lambda m: put(pool_html(m.group(1))), text)
     text = re.sub(r'\{\{dc:(\w\w)\}\}', lambda m: put(dcode_html(m.group(1))), text)
     # callouts, with the nearest heading for open items
     lines = text.split('\n'); out = []; last = ''; i = 0

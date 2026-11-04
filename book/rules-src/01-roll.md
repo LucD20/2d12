@@ -38,7 +38,7 @@ A **Doomed** roll can't produce Doubles (see [[Favored and Doomed Rolls]]).
 
 A result is a **Critical** when you roll **Doubles on a result that is already Tier 3**, or when your total is **20 or more above the DC** (33 or more against DC 13). Doubles that raise a Tier 2 to Tier 3 are not a Critical.
 
-A Critical only matters for the few Actions that have a **Critical** row, written under Tier 3 and above the Effects. On a Critical, you get the Tier 3 result and the Critical effect as well. For any other Action, a Critical is simply a Tier 3.
+A Critical matters for the few Actions that have a **Critical** row, written under Tier 3 and above the Effects. On a Critical, you get the Tier 3 result and the Critical effect as well. For any other Action, a Critical is simply a Tier 3. Once an encounter, a Critical on one of your Actions also raises your Escalation by 1 (see [[Escalation]]).
 
 ## Boons and Banes
 
@@ -102,11 +102,11 @@ A **Check** is a roll of one Attribute Modifier against a DC, written "Body Chec
 
 ## Saves
 
-Some effects make a creature roll a **Save**, written like "Appeal Save: 1d6 / 1d4 / 0 [M] Holy". The creature that must save rolls the named Attribute Modifier against the DC of the effect.
+Some effects make a creature roll a **Save**, written like "Appeal Save: 1d6 / 1d4 / 0 [R] Holy". The creature that must save rolls the named Attribute Modifier against the DC of the effect.
 
 The DC is usually 11 + the Weapon, Power or Signature Modifier that sets it (or 11 + ⌈Attribute ÷ 2⌉ + 1 for an Attribute-based Save); if no DC is listed, it is usually 13.
 
-The three values are what happens on its Tier 1 / Tier 2 / Tier 3 result: here 1d6 Holy Mind damage on a Tier 1, 1d4 on a Tier 2 and nothing on a Tier 3. Boons, Banes, Doubles, Favored and Doomed work on Saves like on any roll.
+The three values are what happens on its Tier 1 / Tier 2 / Tier 3 result: here 1d6 Holy Resolve damage on a Tier 1, 1d4 on a Tier 2 and nothing on a Tier 3. Boons, Banes, Doubles, Favored and Doomed work on Saves like on any roll.
 
 ### Save Actions
 
@@ -128,23 +128,25 @@ The damage of an Action is what its card says: it adds a Modifier or a weapon's 
 
 When an Action deals damage equal to your Modifier, it is written **[Mod]**. The Modifier is always the one you used to roll for that Action. You never add a Modifier to the same damage twice.
 
-When a Weapon Action adds your Modifier to its damage, the Modifier joins the **weapon's damage** and keeps its damage type and subtype: if the weapon deals Mind damage, so does the Modifier.
+When a Weapon Action adds your Modifier to its damage, the Modifier joins the **weapon's damage** and keeps its damage type and subtype: if the weapon deals Resolve damage, so does the Modifier.
 
 **Power Actions** don't add their Modifier to damage on any Tier: their damage is the dice on the card.
 
 ### Damage Types
 
-All damage a creature takes is either Body or Mind damage, though each of those has different subtypes. Blunt damage will almost always be Body damage, but not always. Damage is written this way:
+All damage a creature takes is either **Vigor damage** (wounds, bruises, broken bones) or **Resolve damage** (fear, pain, despair), named after the two thresholds of the [[Health Pool]]; each of those has different subtypes. Blunt damage will almost always be Vigor damage, but not always. Damage is written this way:
 
-- **[B]:** the damage is applied to Body.
-- **[M]:** the damage is applied to Mind.
-- **[C]:** the origin chooses which type (Body or Mind) the damage deals.
+- **[V]:** Vigor damage.
+- **[R]:** Resolve damage.
+- **[C]:** the origin chooses which type (Vigor or Resolve) the damage deals.
 
-Some Actions include two types of damage. For example, "[B] 1d4+1d6+3 Sl; [M] 1d8 Ps" means Body takes 1d4+1d6+3 Slash damage and Mind takes 1d8 Psychic damage.
+Vigor and Resolve are not the Body and Mind Attributes: an Action of any Attribute can deal either.
+
+Some Actions include two types of damage. For example, "[V] 1d4+1d6+3 Sl; [R] 1d8 Ps" deals 1d4+1d6+3 Slash Vigor damage and 1d8 Psychic Resolve damage.
 
 ### Damage Subtypes
 
-Subtypes don't have rules by themselves, but other rules use them, such as Resist and Weak. They are shortened to **two letters**, so they never look like the damage types [B], [M] and [C]:
+Subtypes don't have rules by themselves, but other rules use them, such as Resist and Weak. They are shortened to **two letters**, so they never look like the damage types [V], [R] and [C]:
 
 | Subtype | Short | Subtype | Short | Subtype | Short |
 |---|---|---|---|---|---|
@@ -171,7 +173,7 @@ When one Action affects several creatures (an Area, or a Strike that says "all c
 
 For instance, if the Action deals 1d4 / 1d6 / 1d8, and two creatures get Tier 1 and one gets Tier 2, you roll 1d4 once and apply it to the two creatures on Tier 1.
 
-All damage is rolled per die. If the Tier 2 damage of a Save is [B] 1d8 Co + [M] 1d6 Ho, the creature causing the Save rolls both 1d8 and 1d6 and deals that damage to all creatures who got a Tier 2. If the creature causing the Save is Empowered or Enfeebled, the value is added to all the damage rolls.
+All damage is rolled per die. If the Tier 2 damage of a Save is [V] 1d8 Co + [R] 1d6 Ho, the creature causing the Save rolls both 1d8 and 1d6 and deals that damage to all creatures who got a Tier 2. If the creature causing the Save is Empowered or Enfeebled, the value is added to all the damage rolls.
 
 You roll every die that any of the targets needs, and each target uses only the ones that apply to it. If any target has Favored or Doomed, roll 3d12; for a target without it, use the first two d12 you rolled.
 
@@ -216,8 +218,8 @@ Actions are written as cards. Every card has the same structure, in this order:
 > *Strike · Weapon*  
 > **One creature ✦ Weapon ✦ Vs. AD**  
 > **Tier 1:** 0  
-> **Tier 2:** [B] 1[W] + [Mod]  
-> **Tier 3:** [B] 1[W] + [Mod]
+> **Tier 2:** [V] 1[W] + [Mod]  
+> **Tier 3:** [V] 1[W] + [Mod]
 
 **Values that change between Versions.** When an entry under the traits changes from one Version to another, it has one value per Version, in the order of the costs, separated by slashes: **One / one / two creatures**, **5 / 10 sq.**, **Aura 2 / 3 / 3**. Target counts are spelled out in words; distances, areas and other mechanical values use numerals. A distance in squares is written with "sq." (**Distance: 5 sq.**).
 
@@ -225,7 +227,7 @@ Actions are written as cards. Every card has the same structure, in this order:
 
 | Written | Means |
 |---|---|
-| [[Damage Types\|**[B]**, **[M]**, **[C]**]] | The damage is applied to Body, to Mind, or to the one the origin chooses. On cards in Foundry, a heart {{pool:B}} stands for Body and a brain {{pool:M}} for Mind. |
+| [[Damage Types\|**[V]**, **[R]**, **[C]**]] | Vigor damage, Resolve damage, or the one the origin chooses. On cards in Foundry, a heart {{pool:V}} stands for Vigor and a brain {{pool:R}} for Resolve. |
 | [[Weapon Damage\|**[W]**]] | The damage of your weapon. |
 | [[Rules Language\|**[Trait]**]] | An Action with that trait: "a [Strike] Action", "[Melee] Actions". Several traits in one pair of brackets mean an Action with all of them: "[Ranged, Weapon] Actions". |
 | [[Modifier Damage\|**[Mod]**]] | Damage equal to the Modifier used on the roll: your Weapon Modifier on a Weapon roll, your Power Modifier on a Power roll, your Signature Modifier on a Signature roll, or your Attribute Modifier on an Attribute Action. |
@@ -241,8 +243,8 @@ Actions are written as cards. Every card has the same structure, in this order:
 | [[Versus\|**Vs. Body**]] | The Defense of the target. |
 | [[0 AP Actions\|**0 AP**]] | An Action that costs no AP. You can use it only on your turn. |
 | [[Linked Actions\|**Weapon Attack (1A)**, **(1A/2A)**]] | A Linked Action and the Version you use (or a choice of two). |
-| [[Reactions\|**1R**, **0R**]] | A Reaction that uses 1 AP, or none. |
-| [[Escalation\|**1 Escalation**]] | The Escalation an Escalation Action costs, on top of its AP. |
+| [[Reactions\|**1R**, **0R**]] | A Reaction that uses 1 AP, or none (which AP can pay: see [[Reactions]]). |
+| [[Escalation\|**Escalation 3**]] | The Escalation an Action needs: you can use it only while your Escalation is at least that number. Nothing is spent. |
 
 ### Rules Language
 

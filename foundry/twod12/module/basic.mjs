@@ -7,7 +7,7 @@ const F = "twod12";
 
 const toItem = (key, d) => ({
   name: d.name, type: "action", img: d.img,
-  system: { category: TWOD12.basicCategory, level: 0, flavor: d.flavor ?? "", frequency: d.frequency ?? "", distance: d.distance ?? "", requirements: d.requirements ?? "", ...(d.description ? { description: d.description } : {}), traits: d.traits, targets: d.targets, vs: d.vs, ...(d.weaponUse ? { weaponUse: d.weaponUse } : {}), versions: foundry.utils.deepClone(d.versions) },
+  system: { category: TWOD12.basicCategory, level: 0, flavor: d.flavor ?? "", frequency: d.frequency ?? "", distance: d.distance ?? "", requirements: d.requirements ?? "", ...(d.description ? { description: d.description } : {}), traits: d.traits, targets: d.targets, vs: d.vs, ...(d.weaponUse ? { weaponUse: d.weaponUse } : {}), ...(d.reaction ? { reaction: true, reactionKind: d.reactionKind, trigger: d.trigger } : {}), versions: foundry.utils.deepClone(d.versions) },
   flags: { [F]: { basic: key } }
 });
 

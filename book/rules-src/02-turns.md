@@ -28,7 +28,7 @@ On your turn, if you haven't taken any Actions yet and aren't Down, you can spen
 You act at the ally's old place. Until then, your remaining Actions are **frozen**: you can't use them. When your new turn arrives, you carry on with the AP you had left instead of gaining new AP. You can't swap again that round.
 
 > [!example]
-> PC1 (first in the order) swaps with PC3 and keeps 4 AP. The order becomes PC3, NPC1, PC2, NPC2, PC1. When PC1's turn comes, PC1 has 4 AP.
+> PC1 (first in the order) swaps with PC3 and keeps 3 AP. The order becomes PC3, NPC1, PC2, NPC2, PC1. When PC1's turn comes, PC1 has 3 AP.
 
 ## Turns and Rounds
 
@@ -38,22 +38,32 @@ A **turn-cycle** is the period from the start of a creature's turn to the start 
 
 ## Action Points
 
-At the start of your turn in combat, you **regain AP**: you lose any AP you didn't use and gain **5 Action Points (AP)**. You spend AP to do things on your turn.
+At the start of your turn in combat, you **regain AP**: you lose any AP you didn't use and gain **4 Action Points (AP)** and **1 Reaction AP**. You spend AP to do things on your turn. The Reaction AP pays only for [[Reactions]], on your turn or another creature's.
 
-If you end your turn without spending all your AP, you can keep the rest to use outside your turn, for Reactions.
+### Unspent AP
+
+If you end your turn without spending all your AP, you keep the rest until you regain AP, and each kept AP gives you **[[Guard]]**: **2** per AP at Stage 1, **3** at Stage 2 and **4** at Stage 3 (see [[Stages]]).
+
+- This Guard **adds** to any Guard you already have (an exception to [[Stacking]]), and what is left of it ends when you regain AP. Damage takes it before your other Guard.
+- A kept AP can still pay for a Reaction: your Guard from AP then drops by one AP's worth (to a minimum of 0).
+- Your Reaction AP never becomes Guard.
+
+> [!example]
+> Drak (Stage 1) has Guard 5 from a card and ends his turn with 1 AP left: he has Guard 7 until his next turn. A goblin hits him for 3: his Guard from AP takes 2 and his other Guard 1, so he has Guard 4 left. If he then spends his kept AP on a Reaction, he loses no more Guard: that AP's Guard is already gone.
 
 ### Losing and Gaining Action Points
 
 When something gives or takes Action Points, it says whether it happens **now** or **when you regain AP**.
 
-- **Now.** "The target loses 1 AP" means they lose 1 AP they have right now; if they have none, it has no effect. "The target gains 1 AP" means they gain 1 AP right now. Unless otherwise stated, you can't have more than 5 AP.
-- **When you regain AP.** Changes to the AP you regain at the start of your turn are the [[Slowed]] and [[Quickened]] conditions: Slowed 1 means you regain 1 AP less, Quickened 1 means you regain 1 AP more.
+- **Now.** "The target loses 1 AP" means they lose 1 AP they have right now; if they have none, it has no effect. "The target gains 1 AP" means they gain 1 AP right now. Unless otherwise stated, you can't have more than 4 AP, and losing or gaining AP never changes your Reaction AP.
+- **When you regain AP.** Changes to the AP you regain at the start of your turn are the [[Slowed]] and [[Quickened]] conditions: Slowed 1 means you regain 1 AP less, Quickened 1 means you regain 1 AP more. Neither changes your Reaction AP.
 
 ## Reactions
 
 A **Reaction** is an Action you use in response to something another creature does. Its card has an **Interrupt** or a **Trigger** line that says what it responds to, and which of the two it is decides when it happens. Its cost is written with an R, such as **1R**: it uses that many Action Points, but only as a response. A **0R** Reaction uses no AP; its Frequency still limits it.
 
-- **The same AP:** Reactions use your Action Points: the AP you didn't spend on your turn stay available until you regain AP at the start of your next turn.
+- **Paying:** A Reaction is paid with your **Reaction AP**, with AP you kept from your turn (see [[Unspent AP]]), or with both: a 2R Reaction can use your Reaction AP and one kept AP. On your own turn, your turn's AP can pay for it too. Your Reaction AP lasts until you regain AP at the start of your next turn.
+- **Opportunity Attack:** Every creature has the Opportunity Attack Reaction (see [[Chapter 6: Basic Actions|Chapter 6]]): it can attack a creature within 3 squares that moves with a Move Action or stands up.
 - **Interrupt:** An Interrupt happens **before** the Action that triggers it. "Interrupt: A creature would Advance" means the Reaction happens before the creature uses the Advance Action.
 - **Trigger:** A Trigger happens **after** the Action that triggers it. "Trigger: A creature deals damage to you" happens after you take the triggering damage.
 - **Once per triggering Action:** You can react only once to the same Action, but several creatures can react to it. Some Actions, mainly Move Actions, can happen throughout different squares. It is still a single Action, and you decide when you take the Reaction: for instance, you can wait for the creature to move into a more advantageous position before taking your Reaction, instead of taking it as soon as the creature moves.
@@ -68,7 +78,7 @@ While the name "triggering" is similar to "Trigger", it isn't only for Trigger R
 
 ### Disrupting Actions
 
-When an Action is **disrupted**, it doesn't happen, and the resources and AP spent on it are wasted. Some Actions can disrupt another Action, usually with a Critical, for example Opportunity Attack when it is used out of your turn.
+When an Action is **disrupted**, it doesn't happen, and the resources and AP spent on it are wasted. Some Actions can disrupt another Action, usually with a Critical.
 
 An Interrupt disrupts the Action before it happens. For example, a Reaction with "Interrupt: A creature uses a Move Action" triggers when a creature uses an Action that Stands and then Advances (1 AP): the creature doesn't Stand, and the whole Action is disrupted (because you can't Advance while Prone).
 
@@ -94,7 +104,7 @@ Some Actions have a **Setup** entry before the Action. It describes what happens
 
 ### Targets
 
-An Action that targets something can only be used if it has a valid target. An Action with no valid target can't be used. Most Actions target creatures only, but the GM can allow one to target an unattended object, such as a barrel, a crate or a door. Usually the Action rolls against DC 13 for the object, but the GM can set a different DC depending on the circumstances.
+An Action that targets something can only be used if it has a valid target. An Action with no valid target can't be used. An Action that names a number of targets needs that many: "Two creatures" can't be used against one. "Up to" means any number from one to that many. Most Actions target creatures only, but the GM can allow one to target an unattended object, such as a barrel, a crate or a door. Usually the Action rolls against DC 13 for the object, but the GM can set a different DC depending on the circumstances.
 
 ### Willing and Unwilling
 
@@ -129,7 +139,7 @@ Unless something says otherwise, the effects of an Action, and the Actions it le
 
 ### Effect Timing
 
-Effects written in a tier happen only on that tier. **General Effects**, written on the **Effects** row at the bottom of the Action, happen on a **Tier 2 or 3** result, never on a Tier 1. An effect written directly in the Tier 1 row ("Tier 1: [B] 1d4 Ho; Prone") does happen on a Tier 1.
+Effects written in a tier happen only on that tier. **General Effects**, written on the **Effects** row at the bottom of the Action, happen on a **Tier 2 or 3** result, never on a Tier 1. An effect written directly in the Tier 1 row ("Tier 1: [V] 1d4 Ho; Prone") does happen on a Tier 1.
 
 Actions with no roll have no tiers: their effects simply happen.
 
@@ -141,9 +151,9 @@ When an effect applies only to some tiers, it says so with the tiers in parenthe
 
 A **Buff** is an effect that modifies another Action, such as Rimebrand's extra damage on your Weapon Actions.
 
-- A Buff that gives a single value ("+[M] 1d6 Co") applies on every Tier, Tier 1 included.
-- A Buff that gives a value per Tier ("+[M] 1d4/1d6/1d8 Co") applies its Tier 1 value on a Tier 1, its Tier 2 value on a Tier 2 and its Tier 3 value on a Tier 3.
-- A Buff that only applies from Tier 2 onward is written with a 0 on Tier 1: "+[M] 0/1d6/1d8 Co".
+- A Buff that gives a single value ("+[R] 1d6 Co") applies on every Tier, Tier 1 included.
+- A Buff that gives a value per Tier ("+[R] 1d4/1d6/1d8 Co") applies its Tier 1 value on a Tier 1, its Tier 2 value on a Tier 2 and its Tier 3 value on a Tier 3.
+- A Buff that only applies from Tier 2 onward is written with a 0 on Tier 1: "+[R] 0/1d6/1d8 Co".
 - On an Action with several targets, a Buff or a Debuff is rolled once per Tier, not per creature (see [[Several Targets]]).
 
 **Raising Defenses.** "+1 Defense" raises **every** Defense of the creature: Armor Defense, Ward Defense and every Vs. Attribute. "+1 AD", "+1 WD" or "+1 Defense vs Body" raises only that one. A feature can narrow it further, such as "+1 Defense vs Actions that Push". These bonuses don't add up with each other (see [[Stacking]]).
@@ -152,16 +162,17 @@ A **Buff** is an effect that modifies another Action, such as Rimebrand's extra 
 
 The same effect never stacks with itself, and bonuses from different effects don't add up either: for each value (Empowered, Enfeebled, Vulnerable, a Defense, [[Guard]]...), a creature uses only the **highest bonus** and the **highest penalty** that apply. If a creature gets the same effect again, it keeps the higher value and the longer duration: two effects that make it Enfeebled 1 do not make it Enfeebled 2.
 
-Three things do add up:
+Four things do add up:
 
 - An effect that says it **increases** a value: "increase your Enfeebled value by 1" (an Action that says "increase your Empowered value by 1" adds to the Empowered you have).
 - **Boons and Banes.**
 - An effect that **increases** your [[Slowed]] value (being Desperate, Dying or Shattered).
+- The **Guard** your [[Unspent AP]] give you: it adds to the Guard you have.
 
 **Equipment is not a bonus.** Your armor gives your Armor value and your charm your Ward value; effects add to those. With +1 AD and +1 Defense, your Armor Defense rises by 1 (not 2) and every other Defense by 1.
 
 > [!example]
-> Divine Surge makes the next ally who deals damage to its target deal an extra [M] 1d8 Holy. If two Paladins use Divine Surge on the same creature, the next ally still deals only one extra 1d8: it is the same effect.
+> Divine Surge makes the next ally who deals damage to its target deal an extra [R] 1d8 Holy. If two Paladins use Divine Surge on the same creature, the next ally still deals only one extra 1d8: it is the same effect.
 
 ### Frequency
 
@@ -241,11 +252,30 @@ Each position in the turn order is an **initiative slot**. Effects end at the en
 
 ## Escalation
 
-**Escalation** is a character's adrenaline: the longer a fight goes on, the more of it you have, and you spend it on your class's Escalation abilities. You start combat with **0** Escalation, and each creature has their own Escalation. At the start of every round after the first, if you aren't Unconscious, you gain **1 Escalation**, up to **3**. While Unconscious, you keep the Escalation you have. You can't have more than 3 Escalation at once, unless you have some feature or ability that changes that.
+**Escalation** is a character's adrenaline: a level from **1 to 3** that rises as a fight goes on. Each PC has their own. It is never spent: your class's Escalation abilities work while your Escalation is high enough.
 
-You spend it on Escalation Actions. Their card shows the Escalation they cost on top of their AP, as in "1 Escalation". You can spend Escalation on more than one Action in the same turn. When the encounter ends, your Escalation goes back to **0**, and every effect that spending Escalation created ends too.
+- **Start:** you start every encounter at **Escalation 1** (2 with [[Momentum]]).
+- **Rounds:** at the start of every round after the first, if you aren't Unconscious, your Escalation increases by 1. While Unconscious, you keep the Escalation you have.
+- **Critical:** once an encounter, when you score a [[Critical]] on one of your Actions, your Escalation increases by 1.
+- **Your class's hook:** each class names one more event that, once an encounter, increases your Escalation by 1 (the Paladin: an ally within 5 squares of you becomes Bloodied or goes Down; the Archer: your Marked Quarry goes Down).
+- **At most 3:** you can't have more than 3 Escalation, unless a feature says so. A Critical or a hook that happens while your Escalation is already 3 does nothing, and it isn't used up for the encounter.
+- **The end:** when the encounter ends, your Escalation goes back to 1, and the abilities that need it stop working.
 
-Some Escalation abilities are **passive**: they work while your Escalation is at least the number they name ("while your Escalation is 2 or more"). Spending Escalation can turn them off until you gain it back.
+Your class has two kinds of Escalation abilities:
+
+- **Escalation Passives**, one for each Escalation level (1, 2 and 3): each works while your Escalation is at least its number ("while your Escalation is 2 or more").
+- **The Apex**: an Encounter Action whose card says **Escalation 3**. You can use it only while your Escalation is 3; it spends nothing.
+
+An Action with an **Escalation** line on its card needs that much Escalation, the same way.
 
 > [!example]
-> Rounds 1, 2, 3 and 4 start: you have 0, 1, 2 and 3 Escalation if you spend none. On round 3 you spend 1 on Divine Surge and have 1 left; at the start of round 4 you have 2. The fight ends on round 5: your Escalation goes back to 0, and a Divine Surge you haven't used yet is lost.
+> Nari starts a fight at Escalation 1. Round 2 starts: he is at 2, and his Escalation 2 Passive starts working. In round 2 he scores a Critical: he is at 3 and can use his Apex. Round 3 starts: he stays at 3. When the fight ends, he is back at 1.
+
+NPCs have no Escalation, except Elites (see the [[Bestiary]]).
+
+### Momentum
+
+After an encounter harder than easy (more than CV 75 per PC, see the [[Bestiary]]), your party has **Momentum**: each of you starts the next encounter at Escalation 2 instead of 1. That encounter uses it up (it can give Momentum again), and so does a Rest before it. Momentum doesn't stack.
+
+> [!tip]
+> The GM's valve: after a bad turn of the dice for the whole table, the GM can give every PC +1 Escalation. Nothing else raises it, and nothing spends it.

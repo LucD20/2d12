@@ -22,7 +22,7 @@ function splitTop(str, sep) {
   return out.filter(Boolean);
 }
 
-const PART = /^(?:\[([BMC])\]\s*)?(?:(\d*)\s*\[W\]|\[(?:At|Mod)\]|(\d+d\d+(?:[+-]\d+)?|\d+))(?:\s+([A-Za-z]+))?$/i;
+const PART = /^(?:\[([BMCVR])\]\s*)?(?:(\d*)\s*\[W\]|\[(?:At|Mod)\]|(\d+d\d+(?:[+-]\d+)?|\d+))(?:\s+([A-Za-z]+))?$/i;
 
 /** One damage piece written like the card ("[B] 1[W] Sl + [M] 1d6 Ho"): its Instances, or null if it isn't damage. */
 function cardDamage(piece) {
@@ -31,7 +31,7 @@ function cardDamage(piece) {
   for (const raw of piece.split(/\s\+\s/)) {
     const m = raw.trim().match(PART);
     if (!m) return null;
-    if (m[1]) pool = m[1].toUpperCase();
+    if (m[1]) pool = ({ V: "B", R: "M" })[m[1].toUpperCase()] ?? m[1].toUpperCase();   // pack R-core: [V] / [R] are the B / M pools
     const sub = m[4] ? subtypeCode(m[4]) : "";
     if (m[4] && !sub) return null;   // a word that is no damage type: not damage
     const i = { ...blank(), pool, subtype: sub };
@@ -102,7 +102,7 @@ export function understood(sys) {
     const tiers = [1, 2, 3].filter(n => v[`t${n}`].length || v[`x${n}`]);
     const kinds = new Set(), texts = new Map();
     for (const n of [1, 2, 3]) {
-      for (const i of v[`t${n}`]) kinds.add(`${i.useW ? "weapon " : i.useAt ? "Attribute " : ""}${i.subtype ? `${TWOD12.subtypes[i.subtype] ?? i.subtype} ` : ""}damage to ${{ B: "Body", M: "Mind", C: "Body or Mind" }[i.pool] ?? "Body"}`);
+      for (const i of v[`t${n}`]) kinds.add(`${i.useW ? "weapon " : i.useAt ? "Attribute " : ""}${i.subtype ? `${TWOD12.subtypes[i.subtype] ?? i.subtype} ` : ""}damage to ${{ B: "Vigor", M: "Resolve", C: "Vigor or Resolve" }[i.pool] ?? "Vigor"}`);
       if (v[`x${n}`]) texts.set(v[`x${n}`], [...(texts.get(v[`x${n}`]) ?? []), n]);
     }
     const tierWord = ns => (ns.length === 3 ? "every Tier" : `Tier${ns.length > 1 ? "s" : ""} ${ns.join(" and ")}`);
@@ -116,7 +116,7 @@ export function understood(sys) {
 
 const versionHtml = (v, k) => `<fieldset class="ga-ver" data-v="${k}" ${k ? "hidden" : ""}>
   <label>Cost (AP) <input type="number" name="ap" min="0" max="5" value="${esc(v.ap)}"></label>
-  ${[1, 2, 3].map(n => `<label>Tier ${n} <input type="text" name="t${n}" value="${esc(v[`t${n}`])}" placeholder="${n === 1 ? "[B] 1d8 Co" : n === 2 ? "[B] 2d8 Co; Hindered (EoT)" : "[B] 3d8 Co; Hindered (EoT)"}"></label>`).join("")}
+  ${[1, 2, 3].map(n => `<label>Tier ${n} <input type="text" name="t${n}" value="${esc(v[`t${n}`])}" placeholder="${n === 1 ? "[V] 1d8 Co" : n === 2 ? "[V] 2d8 Co; Hindered (EoT)" : "[V] 3d8 Co; Hindered (EoT)"}"></label>`).join("")}
   <label>Critical <input type="text" name="critical" value="${esc(v.critical)}" placeholder="Immobilized (EoT)"></label>
   <label>Effects (Tier 2+) <input type="text" name="effects" value="${esc(v.effects)}" placeholder="Appeal Save, Pushed 2, Pulled 1, 2Emanation 1/round"></label>
 </fieldset>`;
@@ -144,7 +144,7 @@ export async function openActionGenerator({ actor = null, item = null } = {}) {
     </div>
     <div class="ga-tabs"><span class="ga-vtabs"></span><a class="ga-add"><i class="fa-solid fa-plus"></i> add a version</a></div>
     <div class="ga-vers">${start.versions.map(versionHtml).join("")}</div>
-    <p class="hint">Write it like the card: <code>[B] 1d8 Co</code> = 1d8 Cold to Body · <code>1[W]</code> = the weapon's damage · <code>[Mod]</code> = the Modifier used on the roll · <code>[M] 2d6 Ho</code> = Mind, Holy · <code>;</code> then an effect (<code>Hindered (EoT)</code>, <code>Prone</code>, <code>Pushed 2</code>, <code>Appeal Save</code>). The short codes (<code>1WB</code>, <code>1d8MCo</code>) work too.</p>
+    <p class="hint">Write it like the card: <code>[V] 1d8 Co</code> = 1d8 Cold to Vigor · <code>1[W]</code> = the weapon's damage · <code>[Mod]</code> = the Modifier used on the roll · <code>[R] 2d6 Ho</code> = Resolve, Holy · <code>;</code> then an effect (<code>Hindered (EoT)</code>, <code>Prone</code>, <code>Pushed 2</code>, <code>Appeal Save</code>). The short codes (<code>1WB</code>, <code>1d8MCo</code>) work too.</p>
     <div class="ga-ok"></div>
     <div class="ga-no"></div>
     <div class="ga-prev"><div class="ga-ph">Live preview</div><div class="ga-card"></div></div>

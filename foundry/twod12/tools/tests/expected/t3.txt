@@ -1,7 +1,7 @@
- Paladin's Attack Damage Tier 2 &#10022; &#10022; &#10022; Modifier +2 Body 8 undefined 1d8 4 4 undefined 1d4 2 2 &#10022; Total 8 Avg 9 &middot; this total or more: 69% &middot; exactly: 12.5% Damage Half Double Block Lethal Nonlethal 
+ Paladin's Attack Damage Tier 2 &#10022; &#10022; &#10022; Modifier +2 Vigor 8 undefined 1d8 4 4 undefined 1d4 2 2 &#10022; Total 8 Avg 9 &middot; this total or more: 69% &middot; exactly: 12.5% Damage Half Double Block Lethal Nonlethal 
 [{"pool":"B","subtype":"S","total":4,"formula":"1d8"},{"pool":"B","subtype":"H","total":2,"formula":"1d4"},{"pool":"B","subtype":"S","total":2,"formula":""}]
 {
   ap: 1,
   effects: '',
-  tiers: [ '[B] 1[W]', '[B] 1[W] + 1d4 H', '[B] 1[W] + 1d8 H' ]
+  tiers: [ '[V] 1[W]', '[V] 1[W] + 1d4 H', '[V] 1[W] + 1d8 H' ]
 }

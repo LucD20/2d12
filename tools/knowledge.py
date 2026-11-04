@@ -28,7 +28,7 @@ OUT = ROOT / "knowledge"
 DESIGN_DOCS = [
     "book/playtest-2.md",       # playtest 2 and the rework it decided (pack R)
     "book/playtest-3.md",       # playtest 3, the baseline (no NPC Weapon Attack); its questions
-    "book/rework-r.md",         # pack R prep: the rework's numbers and the decision sheet (section 14, waiting for Lucas's answers)
+    "book/rework-r.md",         # pack R: the numbers and the decided sheet (section 14); R-core applied, R-classes / R-bestiary / R-Foundry to go
     "book/progression-lv.md",   # progression, Overcast and Momentum (pack R changes Overcast)
     "book/class-charter.md",    # what every class must have
 ]

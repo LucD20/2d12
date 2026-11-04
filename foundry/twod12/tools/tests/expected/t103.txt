@@ -6,7 +6,7 @@ boonbane     | 1 Boon and 1 Bane on rolls made by this creature (saves against P
 damagestep   | Every roll made by this creature deals Empowered 1 and Enfeebled 2 damage. | Empowered 1, Enfeebled 2
 damagestep   | Nothing yet on every roll made by this creature. | no damage step yet
 boonbane     | Nothing yet on every roll made by this creature. | no Boons yet
-bonusdamage  | The next action with Weapon deals +1d4 Fire damage to Body on T2 and T3. | next action with Weapon deals +1d4 Fire damage to Body on T2 and T3
+bonusdamage  | The next action with Weapon deals +1d4 Fire damage to Vigor on T2 and T3. | next action with Weapon deals +1d4 Fire damage to Vigor on T2 and T3
 bonusdamage  | The next action of any kind deals +? damage. | next action of any kind deals +? damage
 grant        | Can use Weapon Attack once for free. | Can use Weapon Attack once for free
 grant        | Can use trait:strike 2 times for 1 AP, with 1 Boon, a different target each time. | Can use trait:strike 2 times for 1 AP, with 1 Boon, a different target each time

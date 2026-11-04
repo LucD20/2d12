@@ -19,9 +19,9 @@
     {
      "ap": 1,
      "tiers": [
-      "[B] [Mod] Pi",
-      "[B] 1d4 + [Mod] Pi; you can Evade 1.",
-      "[B] 1d8 + [Mod] Pi; you can Evade 1."
+      "[V] [Mod] Pi",
+      "[V] 1d4 + [Mod] Pi; you can Evade 1.",
+      "[V] 1d8 + [Mod] Pi; you can Evade 1."
      ]
     }
    ],
@@ -48,9 +48,9 @@
     {
      "ap": 1,
      "tiers": [
-      "[B] [Mod] Sl",
-      "[B] 1d6 + [Mod] Sl",
-      "[B] 1d10 + [Mod] Sl; you gain +1 Armor Defense for 1 round."
+      "[V] [Mod] Sl",
+      "[V] 1d6 + [Mod] Sl",
+      "[V] 1d10 + [Mod] Sl; you gain +1 Armor Defense for 1 round."
      ]
     }
    ],
@@ -77,9 +77,9 @@
     {
      "ap": 1,
      "tiers": [
-      "[B] [Mod] Sl",
-      "[B] 1d10 + [Mod] Sl; Cleave 1",
-      "[B] 2d6 + [Mod] Sl; Cleave 2"
+      "[V] [Mod] Sl",
+      "[V] 1d10 + [Mod] Sl; Cleave 1",
+      "[V] 2d6 + [Mod] Sl; Cleave 2"
      ]
     }
    ],
@@ -106,9 +106,9 @@
     {
      "ap": 1,
      "tiers": [
-      "[B] [Mod] Sl",
-      "[B] 1d4 + [Mod] Sl; Pulled 1.",
-      "[B] 1d8 + [Mod] Sl; Pulled 1."
+      "[V] [Mod] Sl",
+      "[V] 1d4 + [Mod] Sl; Pulled 1.",
+      "[V] 1d8 + [Mod] Sl; Pulled 1."
      ]
     }
    ],
@@ -135,9 +135,9 @@
     {
      "ap": 1,
      "tiers": [
-      "[B] [Mod] Sl",
-      "[B] 1d6 + [Mod] Sl",
-      "[B] 2d8 + [Mod] Sl; Vulnerable 1 (EoT)."
+      "[V] [Mod] Sl",
+      "[V] 1d6 + [Mod] Sl",
+      "[V] 2d8 + [Mod] Sl; Vulnerable 1 (EoT)."
      ]
     }
    ],
@@ -164,9 +164,9 @@
     {
      "ap": 1,
      "tiers": [
-      "[B] [Mod] Bl",
-      "[B] 1d4 + 1 + [Mod] Bl",
-      "[B] 1d8 + 1 + [Mod] Bl; its next [Strike] Action before the end of its next turn takes 1 Bane."
+      "[V] [Mod] Bl",
+      "[V] 1d4 + 1 + [Mod] Bl",
+      "[V] 1d8 + 1 + [Mod] Bl; its next [Strike] Action before the end of its next turn takes 1 Bane."
      ]
     }
    ],
@@ -193,9 +193,9 @@
     {
      "ap": 1,
      "tiers": [
-      "[B] [Mod] Bl",
-      "[B] 1d4 + 2 + [Mod] Bl",
-      "[B] 1d10 + 2 + [Mod] Bl; Prone."
+      "[V] [Mod] Bl",
+      "[V] 1d4 + 2 + [Mod] Bl",
+      "[V] 1d10 + 2 + [Mod] Bl; Prone."
      ]
     }
    ],
@@ -222,9 +222,9 @@
     {
      "ap": 1,
      "tiers": [
-      "[B] [Mod] Pi",
-      "[B] 1d4 + [Mod] Pi",
-      "[B] 1d8 + [Mod] Pi; Hindered (EoT)."
+      "[V] [Mod] Pi",
+      "[V] 1d4 + [Mod] Pi",
+      "[V] 1d8 + [Mod] Pi; Hindered (EoT)."
      ]
     }
    ],
@@ -251,9 +251,9 @@
     {
      "ap": 1,
      "tiers": [
-      "[B] [Mod] Pi",
-      "[B] 1d6 + [Mod] Pi; Pushed 1.",
-      "[B] 1d10 + [Mod] Pi; Pushed 2."
+      "[V] [Mod] Pi",
+      "[V] 1d6 + [Mod] Pi; Pushed 1.",
+      "[V] 1d10 + [Mod] Pi; Pushed 2."
      ]
     }
    ],
@@ -280,9 +280,9 @@
     {
      "ap": 1,
      "tiers": [
-      "[B] [Mod] Pi",
-      "[B] 1d4 + [Mod] Pi; Hindered (EoT).",
-      "[B] 1d6 + [Mod] Pi; Hindered (EoT)."
+      "[V] [Mod] Pi",
+      "[V] 1d4 + [Mod] Pi; Hindered (EoT).",
+      "[V] 1d6 + [Mod] Pi; Hindered (EoT)."
      ]
     }
    ],
@@ -310,9 +310,9 @@
     {
      "ap": 1,
      "tiers": [
-      "[B] [Mod] Pi",
-      "[B] 1d6 + [Mod] Pi",
-      "[B] 1d10 + [Mod] Pi; you can Evade 1."
+      "[V] [Mod] Pi",
+      "[V] 1d6 + [Mod] Pi",
+      "[V] 1d10 + [Mod] Pi; you can Evade 1."
      ]
     }
    ],
@@ -340,9 +340,9 @@
     {
      "ap": 1,
      "tiers": [
-      "[B] [Mod] Pi",
-      "[B] 1d4 + 1 + [Mod] Pi",
-      "[B] 1d8 + 1 + [Mod] Pi; Vulnerable 1 (EoT)."
+      "[V] [Mod] Pi",
+      "[V] 1d4 + 1 + [Mod] Pi",
+      "[V] 1d8 + 1 + [Mod] Pi; Vulnerable 1 (EoT)."
      ]
     }
    ],
@@ -370,9 +370,9 @@
     {
      "ap": 1,
      "tiers": [
-      "[B] [Mod] Pi",
-      "[B] 1d4 + [Mod] Pi",
-      "[B] 1d8 + [Mod] Pi; Hindered (EoT)."
+      "[V] [Mod] Pi",
+      "[V] 1d4 + [Mod] Pi",
+      "[V] 1d8 + [Mod] Pi; Hindered (EoT)."
      ]
     }
    ],
@@ -400,9 +400,9 @@
     {
      "ap": 1,
      "tiers": [
-      "[B] [Mod] Pi",
-      "[B] 1d4+2+[Mod] Pi; For 1 round, the creature is Hindered until they use a Move Action.",
-      "[B] 1d10 + [Mod] Pi; Immobilized"
+      "[V] [Mod] Pi",
+      "[V] 1d4+2+[Mod] Pi; For 1 round, the creature is Hindered until they use a Move Action.",
+      "[V] 1d10 + [Mod] Pi; Immobilized"
      ],
      "foundry": {
       "x2": "For 1 round, the creature is Hindered until they use a Move Action.",
@@ -439,9 +439,9 @@
     {
      "ap": 1,
      "tiers": [
-      "[B] [Mod] Pi",
-      "[B] 1d4 + [Mod] Pi",
-      "[B] 2d6 + [Mod] Pi; Pushed 1."
+      "[V] [Mod] Pi",
+      "[V] 1d4 + [Mod] Pi",
+      "[V] 2d6 + [Mod] Pi; Pushed 1."
      ],
      "effects": "While you are Engaged, this attack takes 1 Bane for it instead of 2."
     }
@@ -470,9 +470,9 @@
     {
      "ap": 1,
      "tiers": [
-      "[B] [Mod] Pi",
-      "[B] 1d4 + [Mod] Pi",
-      "[B] 2d8 + [Mod] Pi; Prone."
+      "[V] [Mod] Pi",
+      "[V] 1d4 + [Mod] Pi",
+      "[V] 2d8 + [Mod] Pi; Prone."
      ]
     }
    ],

@@ -47,7 +47,7 @@ export function actionChanges(actor, item) {
     for (const b of flagOf(e, "bonuses") ?? []) {
       if (!matches(b, traits)) continue;
       const tiers = b.tiers?.length ? b.tiers : ["t1", "t2", "t3"];
-      const dmg = [b.dmg ? `[${b.dmgPool || "B"}] ${b.dmg}${b.dmgSub ? ` ${b.dmgSub}` : ""}` : "", b.text || ""].filter(Boolean).join("; ");
+      const dmg = [b.dmg ? `[${({ B: "V", M: "R" })[b.dmgPool || "B"] ?? b.dmgPool}] ${b.dmg}${b.dmgSub ? ` ${b.dmgSub}` : ""}` : "", b.text || ""].filter(Boolean).join("; ");
       if (!dmg) continue;
       for (const t of tiers) bonuses[Number(String(t).replace("t", ""))]?.push({ text: `+ ${dmg}`, source: name });
       add(name, `+ ${dmg}${tiersText(tiers)}`, true);

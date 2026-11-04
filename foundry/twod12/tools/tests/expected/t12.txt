@@ -11,7 +11,7 @@ FINAL CARD: {
   total: 16,
   tier: 2,
   tip: 'Appeal +2: 2d12 7 + 7, doubles = 16 vs DC 30 (30–36). Damage: 1d4 [3] = 3',
-  dmg: '3 Body; Prone',
+  dmg: '3 Vigor; Prone',
   amount: 3,
   extra: 'Prone',
   dice: {

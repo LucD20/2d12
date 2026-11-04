@@ -728,7 +728,7 @@ function choosePush(origin, target, N, mode = "push") {
       if (!r.block) return `${MOVE_LABEL[mode]} ${r.done} (${steps})`;
       const d = r.damage;
       return r.block.type === "wall"
-        ? `${r.block.corner ? "Solid corner" : "Wall"}: ${r.unused} unused, ${d.self} Body damage (${steps})`
+        ? `${r.block.corner ? "Solid corner" : "Wall"}: ${r.unused} unused, ${d.self} Vigor damage (${steps})`
         : `${r.block.token.name}${r.block.corner ? " (between two creatures)" : ""}: ${r.unused} unused, ${d.self} Body to each (${steps})`;
     };
     const hover = ev => {

@@ -57,8 +57,8 @@ export function parseParts(str) {
     if (bare) { out.uuids.push(bare[1]); continue; }
     // The book's notation also reads: "[B] 1d8 Fi", "1d8 Fi", "1d4 Fire" (a leading [B]/[M] pool, a trailing subtype code or name).
     let p = part, pool0 = "", sub0 = "";
-    const lead = p.match(/^\[(B|M)\]\s*/i);
-    if (lead) { pool0 = lead[1].toUpperCase(); p = p.slice(lead[0].length); }
+    const lead = p.match(/^\[(B|M|V|R)\]\s*/i);
+    if (lead) { pool0 = ({ V: "B", R: "M" })[lead[1].toUpperCase()] ?? lead[1].toUpperCase(); p = p.slice(lead[0].length); }
     const tail = p.match(/\s+([A-Za-z]+)$/);
     if (tail) {
       const w = tail[1], code = w.length === 2 ? w[0].toUpperCase() + w[1].toLowerCase() : SUB[w.toLowerCase()];
@@ -288,14 +288,14 @@ async function prerollTiers(cfg) {
 }
 /** A Tier's line on a Save card once its damage is rolled: the amounts, with the dice in the tooltip, then its texts and effects. */
 async function tierRolled(parts, comps) {
-  const bits = comps.map(c => `<span data-tooltip="${esc(`${c.formula}: ${(c.dice ?? []).flatMap(d => d.results ?? []).join(" + ") || c.total}`)}">${prettyDamage(esc(`[${c.pool || "B"}] ${c.total}${c.sub ? ` ${c.sub}` : ""}${c.nl ? " NL" : ""}`))}</span>`);
+  const bits = comps.map(c => `<span data-tooltip="${esc(`${c.formula}: ${(c.dice ?? []).flatMap(d => d.results ?? []).join(" + ") || c.total}`)}">${prettyDamage(esc(`[${({ B: "V", M: "R" })[c.pool || "B"] ?? c.pool}] ${c.total}${c.sub ? ` ${c.sub}` : ""}${c.nl ? " NL" : ""}`))}</span>`);
   bits.push(...parts.texts.map(t => prettyDamage(esc(t))));
   for (const u of parts.uuids) bits.push(`\u2726 ${esc((await fromUuid(u))?.name ?? "?")}`);
   return bits.join("<br>") || "&mdash;";
 }
 
 async function tierSummary(parts) {
-  const bits = parts.damage.map(p => `[${p.pool || "B"}] ${p.formula}${p.sub ? ` ${p.sub}` : ""}${p.nl ? " NL" : ""}`);
+  const bits = parts.damage.map(p => `[${({ B: "V", M: "R" })[p.pool || "B"] ?? p.pool}] ${p.formula}${p.sub ? ` ${p.sub}` : ""}${p.nl ? " NL" : ""}`);
   bits.push(...parts.texts);
   for (const u of parts.uuids) bits.push(`\u2726 ${(await fromUuid(u))?.name ?? "?"}`);
   return bits.map(b => prettyDamage(esc(b))).join("<br>") || "&mdash;";   // [M] and Ho as the brain and the colored type, like on Action cards

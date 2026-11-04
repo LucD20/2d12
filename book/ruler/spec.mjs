@@ -83,7 +83,7 @@ const cardPassive = name => { CARD_PASSIVES ??= Object.fromEntries(cardLines().f
 export function parseDamage(text) {
   // Pack R prep: the pool of each part is kept (mind: the share of the expression that is Mind damage, [M]; the rest is Body) for the Bloodied / Strained counts.
   const out = { w: 0, mod: 0, dice: [], flat: 0, mind: { w: 0, mod: 0, dice: [], flat: 0 } };
-  const t = String(text ?? "").replace(/\[(B|C)\]/g, " [B] ").replace(/\[M\]/g, " [M] ").replace(/\b(Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un)\b/g, " ").trim();
+  const t = String(text ?? "").replace(/\[(B|C|V)\]/g, " [B] ").replace(/\[(M|R)\]/g, " [M] ").replace(/\b(Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un)\b/g, " ").trim();
   if (!t || t === "-" || t === "0" || t === "[B]" || t === "[M]") return out;
   let pool = "B";
   for (const raw of t.split("+")) {

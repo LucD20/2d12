@@ -45,7 +45,7 @@ export function tierTokens(dmg, weaponAction, tier) {
   const tokens = [];
   for (let p of s.split("+").map(x => x.trim()).filter(Boolean)) {
     let m;
-    if ((m = p.match(/^\[(B|M)\]\s*(.*)$/))) { pool = m[1]; p = m[2].trim(); }
+    if ((m = p.match(/^\[(B|M|V|R)\]\s*(.*)$/))) { pool = ({ V: "B", R: "M" })[m[1]] ?? m[1]; p = m[2].trim(); }   // pack R-core: [V] Vigor / [R] Resolve are Foundry's B / M pools
     if ((m = p.match(/^(.*?)\s+(Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un)$/))) { sub = SUB[m[2]]; p = m[1].trim(); }
     if (p) tokens.push({ p, pool });
   }
@@ -171,6 +171,7 @@ export function basicEntry(c) {
   if (s.requirements) e.requirements = s.requirements;
   if (s.weaponUse) e.weaponUse = s.weaponUse;
   if (s.description) e.description = s.description;
+  if (s.reaction) Object.assign(e, { reaction: true, reactionKind: s.reactionKind, trigger: s.trigger });   // pack R-core: Opportunity Attack, the basic Reaction
   e.flavor = c.flavor ?? "";
   e.versions = s.versions;
   return e;

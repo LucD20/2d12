@@ -2,7 +2,7 @@
 Paladin: level 1 7, level 2 1, level 3 2 | Archer: level 1 6, level 2 2, level 3 2
 Attribute increases (Details tab): Body or Appeal +1, Mind or Instinct +1 | Body or Instinct +1, Mind or Appeal +1
 --- the Paladin's level 1
-nothing chosen: 0 of 7 made, complete false | Attribute increases [Choose 2] | Core Features [Granted] | Hallmark Action [0 / 1] Smite/Lay On Hands | Talent [0 / 1] Opportunity Attack/Challenge/Heavy Blows/Whirlwind/Bloodlust/Brawler/Kickboxer/Aim/Ricochet/Long Draw/Steady Nerves/Battering Charge/Cut Through/Lesser Blessing/Sacred Weapon/Class Expertise | Encounter Pick [0 / 1] Holy Wrath/Word of Radiance/Bulwark of Faith | Passive Escalation Pick [0 / 1] Hallowed Stance/Radiant Zeal/Mending Light | Active Escalation Pick [0 / 1] Aura of Protection/Divine Surge/Shield of Faith/Hand of Mercy
+nothing chosen: 0 of 7 made, complete false | Attribute increases [Choose 2] | Core Features [Granted] | Hallmark Action [0 / 1] Smite/Lay On Hands | Talent [0 / 1] Challenge/Heavy Blows/Whirlwind/Bloodlust/Brawler/Kickboxer/Aim/Ricochet/Long Draw/Steady Nerves/Battering Charge/Cut Through/Lesser Blessing/Sacred Weapon/Class Expertise | Encounter Pick [0 / 1] Holy Wrath/Word of Radiance/Bulwark of Faith | Passive Escalation Pick [0 / 1] Hallowed Stance/Radiant Zeal/Mending Light | Active Escalation Pick [0 / 1] Aura of Protection/Divine Surge/Shield of Faith/Hand of Mercy
 Font of Mercy is granted, so the Passive Escalation Pick doesn't offer it: true | offers: Hallowed Stance, Radiant Zeal, Mending Light
 Pick 1: choosing Lay On Hands after Smite replaces it: Lay On Hands
 choosing it again puts it back: []
@@ -11,7 +11,7 @@ Distinct Choices: Appeal for pair 1: ["appeal"]
 Body, then Mind: ["body","mind"] | list: body, mind
 the book's example (Body or Appeal, Appeal or Instinct): Appeal moves to the second pair and the first must be chosen again: [null,"appeal"]
 an Attribute chosen at an earlier level can't be chosen: {}
-all but the Talent: 6 of 7 made, complete false | Attribute increases [Chosen] | Core Features [Granted] | Hallmark Action [Chosen] Smite/Lay On Hands | Talent [0 / 1] Opportunity Attack/Challenge/Heavy Blows/Whirlwind/Bloodlust/Brawler/Kickboxer/Aim/Ricochet/Long Draw/Steady Nerves/Battering Charge/Cut Through/Lesser Blessing/Sacred Weapon/Class Expertise | Encounter Pick [Chosen] Holy Wrath/Word of Radiance/Bulwark of Faith | Passive Escalation Pick [Chosen] Hallowed Stance/Radiant Zeal/Mending Light | Active Escalation Pick [Chosen] Aura of Protection/Divine Surge/Shield of Faith/Hand of Mercy
+all but the Talent: 6 of 7 made, complete false | Attribute increases [Chosen] | Core Features [Granted] | Hallmark Action [Chosen] Smite/Lay On Hands | Talent [0 / 1] Challenge/Heavy Blows/Whirlwind/Bloodlust/Brawler/Kickboxer/Aim/Ricochet/Long Draw/Steady Nerves/Battering Charge/Cut Through/Lesser Blessing/Sacred Weapon/Class Expertise | Encounter Pick [Chosen] Holy Wrath/Word of Radiance/Bulwark of Faith | Passive Escalation Pick [Chosen] Hallowed Stance/Radiant Zeal/Mending Light | Active Escalation Pick [Chosen] Aura of Protection/Divine Surge/Shield of Faith/Hand of Mercy
 with the Talent: complete true (7 of 7)
 what confirm gives: Divine Power (Core Features), Font of Mercy (Core Features), Smite (Hallmark Action), Heavy Blows (Talent), Holy Wrath (Encounter Pick), Hallowed Stance (Passive Escalation Pick), Divine Surge (Active Escalation Pick)
 --- the same item in two sections
@@ -20,10 +20,10 @@ also in (Levels window): Second
 Radiant Zeal chosen in Second: 2 of 2 made, complete true | First [Chosen] Hallowed Stance | Second [Chosen] Radiant Zeal
 both owned from before: 0 of 0 made, complete true | First [Complete] - | Second [Complete] -
 --- level up: only that level's sections; what the character owns leaves the choices
-Paladin level 2: 0 of 1 made, complete false | Talent [0 / 1] Opportunity Attack/Challenge/Whirlwind/Bloodlust/Brawler/Kickboxer/Aim/Ricochet/Long Draw/Steady Nerves/Battering Charge/Cut Through/Lesser Blessing/Sacred Weapon/Class Expertise
-the level 2 Talent doesn't offer Heavy Blows (owned): true | 15 Talents offered
+Paladin level 2: 0 of 1 made, complete false | Talent [0 / 1] Challenge/Whirlwind/Bloodlust/Brawler/Kickboxer/Aim/Ricochet/Long Draw/Steady Nerves/Battering Charge/Cut Through/Lesser Blessing/Sacred Weapon/Class Expertise
+the level 2 Talent doesn't offer Heavy Blows (owned): true | 14 Talents offered
 Paladin level 3: 0 of 2 made, complete false | Daily Pick [0 / 1] Consecrated Ground/Miraculous Recovery/Divine Intervention | Passive Escalation Pick [0 / 1] Radiant Zeal/Mending Light
-Archer level 2: 0 of 2 made, complete false | Talent [0 / 1] Opportunity Attack/Challenge/Heavy Blows/Whirlwind/Bloodlust/Brawler/Kickboxer/Aim/Ricochet/Long Draw/Steady Nerves/Battering Charge/Cut Through/Lesser Blessing/Sacred Weapon/Class Expertise | Encounter Pick [0 / 1] Marksman's Shot/Volley/Covering Fire
+Archer level 2: 0 of 2 made, complete false | Talent [0 / 1] Challenge/Heavy Blows/Whirlwind/Bloodlust/Brawler/Kickboxer/Aim/Ricochet/Long Draw/Steady Nerves/Battering Charge/Cut Through/Lesser Blessing/Sacred Weapon/Class Expertise | Encounter Pick [0 / 1] Marksman's Shot/Volley/Covering Fire
 Repertoire filter: Any Holy Wrath, Word of Radiance, Bulwark of Faith, Consecrated Ground, Miraculous Recovery, Divine Intervention | Turn  | Passive 0
 a Feature in the Repertoire is Passive: Radiant Zeal | and in Any: true
 a Repertoire pick excludes what this level grants: 0 of 1 made, complete false | Core [Granted] | Encounter Pick [0 / 1] Word of Radiance/Bulwark of Faith

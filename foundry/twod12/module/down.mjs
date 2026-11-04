@@ -31,7 +31,7 @@ async function dyingKind(actor) {
   const d = actor.system.dominant;
   if (d === "Body") return "dying";
   if (d === "Mind") return "shattered";
-  return ask(actor, "Body and Mind damage are tied: which do you become?", [["dying", "Dying (Body)"], ["shattered", "Shattered (Mind)"]]);
+  return ask(actor, "Vigor and Resolve damage are tied: which do you become?", [["dying", "Dying (Vigor)"], ["shattered", "Shattered (Resolve)"]]);
 }
 
 /**

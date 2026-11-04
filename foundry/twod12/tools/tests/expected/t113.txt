@@ -1,23 +1,23 @@
 --- Human Paladin, the mockup's sample (Mind past its threshold): 26 / 35 damage, 9 to Down, states [Strained], Body slice ends at 216 deg
 donut: conic-gradient(tick 0deg 1.5deg, body 1.5deg 92.57deg, mindSpill 92.57deg 123.43deg, empty 123.43deg 216deg, tick 216deg 217.5deg, mind 217.5deg 339.43deg, mindNl 339.43deg 360deg)
-legend: Body 9 / 21 | Mind 17 / 14 | Mind past its slice 3
-bars: Body 9/21 [l 42.86%, s 14.29%] | Mind 17/14 Strained [l 85.71%, n 14.29%]
+legend: Vigor 9 / 21 | Resolve 17 / 14 | Resolve past its slice 3
+bars: Vigor 9/21 [l 42.86%, s 14.29%] | Resolve 17/14 Strained [l 85.71%, n 14.29%]
 --- unhurt: 0 / 35 damage, 35 to Down, states [], Body slice ends at 216 deg
 donut: conic-gradient(tick 0deg 1.5deg, empty 1.5deg 216deg, tick 216deg 217.5deg, empty 217.5deg 360deg)
-legend: Body 0 / 21 | Mind 0 / 14
-bars: Body 0/21 [] | Mind 0/14 []
+legend: Vigor 0 / 21 | Resolve 0 / 14
+bars: Vigor 0/21 [] | Resolve 0/14 []
 --- Body past its threshold, some Nonlethal: 28 / 35 damage, 7 to Down, states [Bloodied], Body slice ends at 216 deg
 donut: conic-gradient(tick 0deg 1.5deg, body 1.5deg 205.71deg, bodyNl 205.71deg 216deg, tick 216deg 217.5deg, mind 217.5deg 236.57deg, bodySpill 236.57deg 288deg, empty 288deg 360deg)
-legend: Body 26 / 21 | Mind 2 / 14 | Body past its slice 5
-bars: Body 26/21 Bloodied [l 95.24%, n 4.76%] | Mind 2/14 [l 14.29%, s 35.71%]
+legend: Vigor 26 / 21 | Resolve 2 / 14 | Vigor past its slice 5
+bars: Vigor 26/21 Bloodied [l 95.24%, n 4.76%] | Resolve 2/14 [l 14.29%, s 35.71%]
 --- Down (the whole pool): 28 / 25 damage, 0 to Down, states [Bloodied, Strained], Body slice ends at 259.2 deg
 donut: conic-gradient(tick 0deg 1.5deg, body 1.5deg 259.2deg, tick 259.2deg 260.7deg, mind 260.7deg 360deg)
-legend: Body 18 / 18 | Mind 10 / 7 | Mind past its slice 3
-bars: Body 18/18 Bloodied [l 100%] | Mind 10/7 Strained [l 100%]
+legend: Vigor 18 / 18 | Resolve 10 / 7 | Resolve past its slice 3
+bars: Vigor 18/18 Bloodied [l 100%] | Resolve 10/7 Strained [l 100%]
 --- no thresholds yet (no class): 0 / 1 damage, 1 to Down, states [], Body slice ends at 0 deg
 donut: empty
-legend: Body 0 / 0 | Mind 0 / 0
-bars: Body 0/0 [] | Mind 0/0 []
+legend: Vigor 0 / 0 | Resolve 0 / 0
+bars: Vigor 0/0 [] | Resolve 0/0 []
 --- a click on the donut (Body slice ends at 216 deg)
 top right    body
 right        body

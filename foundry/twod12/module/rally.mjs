@@ -5,7 +5,7 @@ import { sysCard } from "./sysmsg.mjs";
 const { DialogV2 } = foundry.applications.api;
 const warn = m => ui.notifications.warn(m);
 
-const BUCKETS = [["bodyLethal", "Body"], ["mindLethal", "Mind"], ["bodyNonlethal", "Body Nonlethal"], ["mindNonlethal", "Mind Nonlethal"]];
+const BUCKETS = [["bodyLethal", "Vigor"], ["mindLethal", "Resolve"], ["bodyNonlethal", "Vigor Nonlethal"], ["mindNonlethal", "Resolve Nonlethal"]];
 
 /** Default way to remove the damage: lethal damage first (Body, then Mind), then nonlethal. */
 export function defaultHealing(damage, total) {
