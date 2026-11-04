@@ -903,7 +903,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
           npcHit(f, t, s);
         }
         f.taunt = null; if (!f.vulnKeep) f.vulnerable = 0;   // EoT effects end with its turn (a kept Vulnerable ends at its giver's next turn: pack R-classes)
-        if (f.cond?.bleed) { const v = rollDamage(f.R ?? R, parseDamage(f.cond.bleed.dmg)).total; f.damage += v; if (f.cond.bleed.mind) f.mindDamage = (f.mindDamage ?? 0) + v; if (f.cond.bleed.by?.st) f.cond.bleed.by.st.bleedDealt += v; killCheck(); }   // Bleed at the end of its turn (pack R-classes)
+        if (f.cond?.bleed) { const v = rollDamage(f.R ?? R, parseDamage(f.cond.bleed.dmg)).total; f.damage += v; if (f.cond.bleed.mind) f.mindDamage = (f.mindDamage ?? 0) + v; if (f.cond.bleed.by?.st) { f.cond.bleed.by.st.bleedDealt += v; f.cond.bleed.by.st.dealt += v; } killCheck(); }   // Bleed at the end of its turn (pack R-classes)
         if (f.cond) { f.cond.staggered = null; f.cond.blinded = null; f.cond.frightened = null; }
         if (f.zone && f.zone.left <= 0) f.zone = null;
       }

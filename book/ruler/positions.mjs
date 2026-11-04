@@ -56,7 +56,7 @@ export function pair({ lv = 1, party, partyB = party, npcs, map = S.MAP, mapB = 
 
 const rnd = (pick, list) => list[Math.floor(pick() * list.length)];
 const upFoes = w => w.foes.filter(f => !f.dead);
-const nearestPc = (w, f, cls) => w.pcs.filter(p => !p.down && (!cls || p.build.name.startsWith(cls))).sort((x, y) => S.MAPDIST(f.pos, x.pos) - S.MAPDIST(f.pos, y.pos))[0];
+const nearestPc = (w, f, cls) => w.pcs.filter(p => !p.down && (!cls || p.build.name.startsWith(cls))).sort((x, y) => S.MAPDIST(f.pos, x.pos) - S.MAPDIST(f.pos, y.pos))[0] ?? (cls ? nearestPc(w, f) : undefined);   // no PC of that class up: any PC (pack R-classes: both Paladins can be Down in round 4)
 /** The conditions and Forced Movement priced on one Standard (the NPC prices) and on one PC (the Bestiary's severity check). */
 export const ON_NPC = [
   ["Hindered (EoT)", (w, p) => S.MAPCOND(rnd(p, upFoes(w)), "Hindered (EoT)")],
@@ -75,11 +75,11 @@ export const ON_NPC = [
   ["Taunted by the nearest Paladin (1 round)", (w, p) => { const f = rnd(p, upFoes(w)); return S.MAPCOND(f, "Taunted (1 round)", nearestPc(w, f, "Paladin")); }],
   ["Bleed 1d4 (Bo/In)", (w, p) => S.MAPCOND(rnd(p, upFoes(w)), "Bleed 1d4 (Bo/In)")],
   ["Bleed 2d6 (Bo/In)", (w, p) => S.MAPCOND(rnd(p, upFoes(w)), "Bleed 2d6 (Bo/In)")],
-  ["Pushed 1 (from the nearest PC)", (w, p) => { const f = rnd(p, upFoes(w)); S.MAPFORCE("push", nearestPc(w, f), f, 1, w); }],
-  ["Pushed 2 (from the nearest PC)", (w, p) => { const f = rnd(p, upFoes(w)); S.MAPFORCE("push", nearestPc(w, f), f, 2, w); }],
-  ["Pushed 4 (from the nearest PC)", (w, p) => { const f = rnd(p, upFoes(w)); S.MAPFORCE("push", nearestPc(w, f), f, 4, w); }],
-  ["Slid 2 (away from the PCs)", (w, p) => { const f = rnd(p, upFoes(w)); S.MAPFORCE("slide", nearestPc(w, f), f, 2, w); }],
-  ["Pulled 2 (toward the nearest Paladin)", (w, p) => { const f = rnd(p, upFoes(w)); S.MAPFORCE("pull", nearestPc(w, f, "Paladin"), f, 2, w); }],
+  ["Pushed 1 (from the nearest PC)", (w, p) => { const f = rnd(p, upFoes(w)); const o = nearestPc(w, f); if (o) S.MAPFORCE("push", o, f, 1, w); }],
+  ["Pushed 2 (from the nearest PC)", (w, p) => { const f = rnd(p, upFoes(w)); const o = nearestPc(w, f); if (o) S.MAPFORCE("push", o, f, 2, w); }],
+  ["Pushed 4 (from the nearest PC)", (w, p) => { const f = rnd(p, upFoes(w)); const o = nearestPc(w, f); if (o) S.MAPFORCE("push", o, f, 4, w); }],
+  ["Slid 2 (away from the PCs)", (w, p) => { const f = rnd(p, upFoes(w)); const o = nearestPc(w, f); if (o) S.MAPFORCE("slide", o, f, 2, w); }],
+  ["Pulled 2 (toward the nearest Paladin)", (w, p) => { const f = rnd(p, upFoes(w)); const o = nearestPc(w, f, "Paladin"); if (o) S.MAPFORCE("pull", o, f, 2, w); }],
   ["Vulnerable 1 (EoT; E1 prices it 1.23)", (w, p) => { const f = rnd(p, upFoes(w)); f.vulnerable = Math.max(f.vulnerable ?? 0, 1); }],
 ];
 const onPc = (cls, name) => (w, p) => { const list = w.pcs.filter(x => !x.down && x.build.name.startsWith(cls)); if (list.length) S.MAPCOND(rnd(p, list), name); };
