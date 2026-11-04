@@ -134,6 +134,18 @@ Rally Points carry over; Encounter Actions and Escalation start again each fight
   is lost in 27% (L1) to 45% (L2) of the days; alone, 6 Standards are lost 4% of the time. **Level 2 is harder than level 1** against the Bestiary's
   level 2 NPCs (Standard day cleared 55% against 73%): the Bestiary grows NPC Health by the best turn's growth (+14%), but in real fights the PCs' damage a turn grows 2 to 6%.
 
+## The playtest 2 rework (pack R prep, 2026-11-04): `rework.mjs`
+
+`node book/ruler/rework.mjs` (about 5 minutes; `--quick` about 2) writes **`rework.md`**; the prep document that reads it is **`book/rework-r.md`** (its numbers part; the decision sheet comes next). It runs the spec ruler with the map model under the rework's rules (book/playtest-2.md) and today's, side by side:
+the 4 AP builds of **`rework/*.txt`** (the P1 and A1 builds with their turns cut to 4 AP and a Reaction each; the files of `classes/` are untouched, so report.md doesn't move) against the Bestiary at level 1.
+
+**New in spec.mjs (all opt-in; the defaults are the book today):**
+- **`RULES`** (an exported object a script sets per run): `ap` (AP a PC regains a turn, 5), `reactionAp` (AP a PC may spend only on Reactions, kept on top of what its turn left, 0), `escalation` (`spent`: an Active costs its Escalation, the book; `level`: an Active needs its Escalation and spends nothing, a passive works from its level, `(keep N)` is ignored), `npcAp` / `minionAp` (an NPC's AP a turn, 5 / 3; its Strikes keep 1 AP for moving), `npcReactionAp` (an NPC's Reaction AP: an Elite's Opportunity Attack costs it first, then its next turn's AP).
+- **`reaction Name: block 1d8+[Mod]`** in a class file: a Reaction that takes that much off one NPC hit on the PC or an ally within 5 squares, once per NPC turn, paid with a kept AP (Shield of Faith as a 1R Reaction). `opportunity` and `quick-draw` as before.
+- **Body and Mind pools:** `parseDamage` keeps the `[M]` parts of an expression (`mindShare`); a ruler string's `extra` or `surge` can say `mind` (`extra 2d8 mind next strike`: the Paladin's Holy riders in book/cards/paladin.json say it). The fight records each creature's Mind damage, the round an NPC becomes Bloodied (Body damage at its Body threshold) or Strained and the round it dies, the round a PC becomes Bloodied (NPC Basic attacks are Body), each PC's turns by Escalation level (`st.escTurns`), its turns while Bloodied, its Reactions' damage and what its block Reaction took off (`st.blockCredit`).
+
+**What it measures** (rework.md's sections): 1 each build's turns at 5 and 4 AP; 2 the CV 4 fights rule by rule (PCs 4 + 1, NPCs 4 + 1, Escalation as a level); 3 the NPC and PC Health factors for 3.5 rounds and a third of the party's Health, and the fights by CV at them; 4 Escalation as a level: the turns at each level with and without Momentum, what each Passive and Active is worth, the Archer's Actives as Round or Encounter; 5 the Reaction AP: none, Opportunity Attack + Quick Draw, Shield of Faith as a block; 6 Overcast as the caster's Passive ladder (LV's stand-ins at levels 1 / 5 / 8); 7 Bloodied and Strained: the thresholds and when NPCs and PCs reach them; 8 Slowed priced at 5 and 4 AP, Minions at 3 and 2 AP; 9 the Standard day; 10 the Special multipliers' arithmetic. **The findings: book/rework-r.md.**
+
 ## Positions: the map model (pack E2, 2026-10-29): `map.mjs`, `positions.mjs`
 
 **Talents are left out of the class files (Lucas, 2026-10-29):** classes are compared with classes; a Talent is priced on its own (catalogue/, and
@@ -332,6 +344,7 @@ Health Pool: Human Paladin 36 / 39 / 42, Dwarf Paladin 41 / 44 / 48, Human Arche
 - `map.mjs`: the map model (pack E2): grid, movement, Banes and Boons of positions, conditions, Forced Movement; `spec.mjs` uses it (`map on`).
 - `positions.mjs`: the prices of positions (pack E2); it writes `positions.json` (econ.mjs reads it).
 - `progression.mjs`: the progression models over levels 1-10 (pack LV); it writes `progression.md`.
+- `rework.mjs` with `rework/*.txt`: the playtest 2 rework's numbers (pack R prep); it writes `rework.md`.
 
 They import the system's dice math (`foundry/twod12/module/calc.mjs`) by a relative path: run them from anywhere with `node book/ruler/<name>.mjs` or `python3 book/ruler/<name>.py`.
 - `ruler.mjs`: the PC ruler above (a level 1 PC's damage a turn against AD 12 to 14).

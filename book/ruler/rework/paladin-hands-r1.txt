@@ -1,0 +1,26 @@
+# Pack R prep (2026-11-04): the P1 Lay On Hands Paladin with 4 AP turns (see paladin-smite-r1.txt).
+class Paladin (Lay On Hands)
+role tank / support
+level 1
+attributes body 2, mind 1, instinct 0, appeal 0
+health body x4 +3, mind x4 +4
+health-factor 1.125
+armor 3
+weapon-mod 2
+power-mod 2
+rally 6
+targeted 1.5
+weapon Greatsword (melee, two-handed): 0 / 1d8 / 2d6
+speed 5
+reaction Opportunity Attack: opportunity
+
+passive Font of Mercy
+passive Hallowed Stance
+
+turn Main: Divine Surge, Lay On Hands 2, Weapon Attack, Weapon Attack
+turn Main without Escalation: Lay On Hands 2, Weapon Attack, Weapon Attack
+turn Heal 1 and three attacks: Divine Surge, Lay On Hands 1, Weapon Attack, Weapon Attack, Weapon Attack
+turn Nova: Divine Surge, Lay On Hands 2, Holy Wrath 2
+turn Two attacks: Weapon Attack, Weapon Attack
+
+plan Nova, Main

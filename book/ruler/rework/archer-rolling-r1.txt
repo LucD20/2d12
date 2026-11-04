@@ -1,0 +1,29 @@
+# Pack R prep (2026-11-04): the A1 Rolling Shot Archer with 4 AP turns (see archer-double-r1.txt).
+class Archer (Rolling Shot)
+role ranged damage
+level 1
+attributes body 1, mind 1, instinct 2, appeal 0
+health body x3 +3, mind x2.5 +4
+health-factor 1.125
+armor 2
+weapon-mod 2
+power-mod 2
+rally 5
+targeted 0.75
+weapon Crossbow (ranged, projectile, reload, two-handed, range 10/20/40): 0 / 1d4+2 / 1d10+2
+speed 6
+reaction Quick Draw: quick-draw
+
+passive Sharpshooter
+passive Marked Quarry
+passive Marked Quarry floor: floor [Mod] shot strike quarry
+passive Killer's Focus
+
+turn Main: Rolling Shot 2, Lock & Loose, Weapon Attack
+turn Main with the long roll: Rolling Shot 3, Lock & Loose
+turn Pin: Rolling Shot 2, Lock & Loose, Pinning Shot (else Weapon Attack)
+turn Kite: Rolling Shot 3, Lock & Loose
+turn Steel: Steel Yourself 2, Rolling Shot 2
+plan Pin
+when self below 35%: Steel
+when engaged: Kite

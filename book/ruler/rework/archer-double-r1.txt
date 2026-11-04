@@ -1,0 +1,31 @@
+# Pack R prep (2026-11-04): the A1 Double Shot Archer with 4 AP turns (+1 Reaction AP; rework.mjs sets RULES). The same build as
+# classes/archer-double-1.txt; the Reaction is Quick Draw (the catalogue's: a Weapon Attack when an enemy within 5 squares moves closer),
+# a stand-in for the Archer's Hallmark Reaction, which pack R-classes designs.
+class Archer (Double Shot)
+role ranged damage
+level 1
+attributes body 1, mind 1, instinct 2, appeal 0
+health body x3 +3, mind x2.5 +4
+health-factor 1.125
+armor 2
+weapon-mod 2
+power-mod 2
+rally 5
+targeted 0.75
+weapon Crossbow (ranged, projectile, reload, two-handed, range 10/20/40): 0 / 1d4+2 / 1d10+2
+speed 6
+reaction Quick Draw: quick-draw
+
+passive Sharpshooter
+passive Marked Quarry
+passive Marked Quarry floor: floor [Mod] shot strike quarry
+passive Killer's Focus
+
+turn Main: Double Shot 2, Lock & Loose, Weapon Attack
+turn Main with the step: Double Shot 3, Lock & Loose
+turn Pin: Double Shot 2, Lock & Loose, Pinning Shot (else Weapon Attack)
+turn Kite: Double Shot 3, Lock & Loose
+turn Steel: Steel Yourself 2, Double Shot 2
+plan Pin
+when self below 35%: Steel
+when engaged: Kite
