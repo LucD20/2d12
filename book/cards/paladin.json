@@ -130,7 +130,7 @@
       },
       "append": "@Rally[1]"
      },
-     "ruler": "heal 1; always: extra 2d8 next strike"
+     "ruler": "heal 1; always: extra 2d8 mind next strike"
     },
     {
      "ap": 3,
@@ -142,7 +142,7 @@
        ]
       }
      },
-     "ruler": "heal 2; always: extra 2d8 next strike"
+     "ruler": "heal 2; always: extra 2d8 mind next strike"
     }
    ],
    "foundry": {
@@ -395,7 +395,7 @@
     ]
    },
    "ruler": {
-    "passive": "escalation 1: extra 1d6 first strike"
+    "passive": "escalation 1: extra 1d6 mind first strike"
    }
   },
   {
@@ -466,7 +466,7 @@
        ]
       }
      },
-     "ruler": "always: surge 1d8; always: guard 2d6 self"
+     "ruler": "always: surge 1d8 mind; always: guard 2d6 self"
     }
    ],
    "foundry": {

@@ -1,0 +1,32 @@
+# Pack R prep (2026-11-04): the P1 Smite Paladin with 4 AP turns (+1 Reaction AP: rework.mjs sets RULES.ap 4, reactionAp 1).
+# The same build as classes/paladin-smite-1.txt (Divine Power, Font of Mercy, Smite, Holy Wrath, Divine Surge, Hallowed Stance),
+# its turns cut to 4 AP, the book's Health factor (Level + 17) / 16, and a Reaction for the Reaction AP (Opportunity Attack: the basic
+# Reaction for everyone; rework.mjs swaps it for Shield of Faith as a 1R block to price the Hallmark Reaction).
+class Paladin (Smite)
+role tank / support
+level 1
+attributes body 2, mind 1, instinct 0, appeal 0
+health body x4 +3, mind x4 +4
+health-factor 1.125
+armor 3
+weapon-mod 2
+power-mod 2
+rally 6
+targeted 1.5
+weapon Greatsword (melee, two-handed): 0 / 1d8 / 2d6
+speed 5
+reaction Opportunity Attack: opportunity
+
+passive Font of Mercy
+passive Hallowed Stance
+
+turn Main: Divine Surge, Smite 2, Weapon Attack, Weapon Attack
+turn Smite 3 and one attack: Divine Surge, Smite 3, Weapon Attack
+turn Main without Escalation: Smite 2, Weapon Attack, Weapon Attack
+turn Nova: Divine Surge, Holy Wrath 3, Weapon Attack
+turn Nova with Smite: Divine Surge, Holy Wrath 2, Smite 2
+turn Two attacks: Weapon Attack, Weapon Attack
+turn Steel: Steel Yourself 2, Divine Surge, Smite 2
+
+plan Nova, Main
+when self below 35%: Steel
