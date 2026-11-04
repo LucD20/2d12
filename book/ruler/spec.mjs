@@ -406,7 +406,7 @@ export function runTurn(pc, turn, ctx) {
     if (a.does.length) {   // Linked Actions (1A): no AP, no Frequency, no Strike, no At-will Bane
       const each = { boons: a.each.filter(e => e.kind === "boon").reduce((s, e) => s + e.n, 0), empowered: a.each.filter(e => e.kind === "empowered").reduce((s, e) => s + e.n, 0), extra: a.each.filter(e => e.kind === "extra").map(e => e.dmg) };
       const first = ctx.target(), others = a.different ? (ctx.others(a.does.length - 1) ?? []) : [];
-      // "each against a different creature" with too few enemies: the player would make Weapon Attacks instead (the same AP), so the repeat takes the At-will Bane.
+      // "Two creatures" with one enemy left: the Action can't be used (no valid target); the player would make Weapon Attacks instead (the same AP), so the repeat takes the At-will Bane.
       a.does.forEach((d, k) => { const repeat = k > 0 && a.different && !others[k - 1]; doAction(b.actions[d.toLowerCase()], { ...each, reloadShot: opts.reloadShot && k === a.does.length - 1, atWillBane: repeat }, a.gives ?? [], true, k === 0 || !a.different ? first : (others[k - 1] ?? first)); });
       for (const e of a.effects) apply(e.effect, first, a);
       return;
