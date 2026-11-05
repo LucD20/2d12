@@ -708,8 +708,17 @@ function choosePush(origin, target, N, mode = "push") {
     const prevInteractive = canvas.tokens.interactiveChildren;
     canvas.tokens.interactiveChildren = false;
     let current = null;
+    // v0.0.250 (Lucas): an origin that is not a creature on the map (an area's center) is shown while the Push is chosen: its squares in gold and a diamond on the point
+    const ghostOrigin = !canvas.tokens.get(origin.id);
+    const originMark = () => {
+      if (!ghostOrigin) return;
+      fillCells(gfx, oCells, 0xf1c84b, 0.25); outlineCells(gfx, oCells, { color: 0xf1c84b, width: 2 });
+      const pts = oCells.map(c => cellCenter(c.i, c.j)), cx = pts.reduce((a, p) => a + p.x, 0) / pts.length, cy = pts.reduce((a, p) => a + p.y, 0) / pts.length, r = canvas.grid.size * 0.22;
+      gfxLine(gfx, [{ x: cx, y: cy - r }, { x: cx + r, y: cy }, { x: cx, y: cy + r }, { x: cx - r, y: cy }, { x: cx, y: cy - r }], 0xf1c84b, 4, 0.95);
+    };
     const draw = () => {
       gfx.clear();
+      originMark();
       fillCells(gfx, covered, 0xffffff, 0.22);
       outlineCells(gfx, covered, { color: 0xffffff, width: 3 });
       if (pull) fillCells(gfx, oCells, 0xdd3333, 0.18);   // aiming at the origin's own square: a Collision
