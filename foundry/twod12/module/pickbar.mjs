@@ -24,22 +24,32 @@ export async function pickBar(o) {
     bar.className = `twod12-linebar twod12-pickbar${o.cls ? ` ${o.cls}` : ""}`;
     bar.innerHTML = pickBarHtml(o);
     document.body.append(bar);
-    let gfx = null, down = null, prevInteractive = null;
+    let gfx = null, down = null, move = null, prevInteractive = null, hovered = null;
+    // v0.0.249 (Lucas): feedback before the click: the candidate under the pointer (or whose button is hovered) lights up on the map and in the bar
+    const draw = () => {
+      if (!gfx) return;
+      gfx.clear();
+      for (const x of toks) { const cells = T.tokenCells(x.token), on = x === hovered; T.fillCells(gfx, cells, on ? 0xfff0b0 : 0xc9a24a, on ? 0.45 : 0.22); T.outlineCells(gfx, cells, { color: on ? 0xffffff : 0xc9a24a, width: on ? 4 : 3 }); }
+      bar.querySelectorAll(".lb-opt").forEach(b => b.classList.toggle("hover", !!hovered && b.dataset.id === hovered.id));
+    };
+    const hover = x => { if (x === hovered) return; hovered = x; draw(); if (gfx) canvas.app.view.style.cursor = x ? "pointer" : ""; };
     if (T) {
       gfx = new PIXI.Graphics();
       (canvas.interface ?? canvas.stage).addChild(gfx);
-      for (const x of toks) { const cells = T.tokenCells(x.token); T.fillCells(gfx, cells, 0xc9a24a, 0.22); T.outlineCells(gfx, cells, { color: 0xc9a24a, width: 3 }); }
       prevInteractive = canvas.tokens.interactiveChildren; canvas.tokens.interactiveChildren = false;
-      down = ev => {
-        if (ev.button !== 0) return;
-        const p = ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) : ev.data.getLocalPosition(canvas.stage), c = T.cellAt(p);
-        const hit = toks.find(x => T.tokenCells(x.token).some(k => k.i === c.i && k.j === c.j));
-        if (hit) finish(hit.id);
-      };
+      const at = ev => { const p = ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) : ev.data.getLocalPosition(canvas.stage), c = T.cellAt(p); return toks.find(x => T.tokenCells(x.token).some(k => k.i === c.i && k.j === c.j)) ?? null; };
+      move = ev => hover(at(ev));
+      down = ev => { if (ev.button !== 0) return; const hit = at(ev); if (hit) finish(hit.id); };
+      canvas.stage.on("pointermove", move);
       canvas.stage.on("pointerdown", down);
+      draw();
     }
+    bar.addEventListener("mouseover", ev => { const b = ev.target.closest(".lb-opt"); if (b) hover(toks.find(x => x.id === b.dataset.id) ?? null); });
+    bar.addEventListener("mouseleave", () => hover(null));
     const finish = v => {
       bar.remove(); window.removeEventListener("keydown", key, true);
+      if (gfx) canvas.app.view.style.cursor = "";
+      if (move) canvas.stage.off("pointermove", move);
       if (down) canvas.stage.off("pointerdown", down);
       if (prevInteractive !== null) canvas.tokens.interactiveChildren = prevInteractive;
       try { gfx?.destroy(); } catch (e) { /* gone */ }

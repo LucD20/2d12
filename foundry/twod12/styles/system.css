@@ -2192,6 +2192,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12-pickbar .lb-text { flex: 1 1 auto; min-width: 0; }
 .twod12-pickbar .lb-opts { flex-wrap: wrap; gap: 6px; }
 .twod12-pickbar .lb-opt.you { background: #2f6b3a; }
+.twod12-pickbar .lb-opt:hover, .twod12-pickbar .lb-opt.hover { background: #c9a24a; color: #1b1f28; font-weight: 700; }   /* v0.0.249: the hovered candidate, here and on the map */
 .twod12-pickbar .lb-go, .twod12-pickbar .lb-give { width: auto; height: 26px; line-height: 24px; padding: 0 10px; margin: 0; font-size: 13px; color: #f4e9d0; border: 1px solid #c9a24a; border-radius: 5px; cursor: pointer; white-space: nowrap; flex: 0 0 auto; }
 .twod12-pickbar .lb-go { background: #c9a24a; color: #1b1f28; font-weight: 700; }
 .twod12-pickbar .lb-give { background: #4a2420; }
