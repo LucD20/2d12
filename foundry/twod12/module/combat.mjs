@@ -388,7 +388,7 @@ export function registerCombatHooks() {
       box.className = "twod12-ap";
       box.dataset.tooltip = "Action Points";
       const canSwap = combat.started && combat.combatant?.id === c.id && c.isOwner && !c.getFlag(F, "acted") && getAP(c) >= 1;
-      box.innerHTML = `<span>AP</span><input type="number" min="0" value="${getAP(c)}" ${c.isOwner ? "" : "disabled"}><i class="hsep"></i><a class="twod12-rap${getRAP(c) ? " on" : ""}" data-tooltip="Reaction AP: ${getRAP(c) ? "ready (pays only for Reactions; click to spend it by hand)" : "spent (back at the start of its turn; click to give it back)"}"></a>${canSwap ? '<button type="button" class="twod12-swap" data-tooltip="Swap initiative with an ally (1 AP)"><i class="fa-solid fa-right-left"></i></button>' : ""}`;
+      box.innerHTML = `<span>AP</span><input type="number" min="0" value="${getAP(c)}" ${c.isOwner ? "" : "disabled"}><span class="hsep"></span><a class="twod12-rap${getRAP(c) ? " on" : ""}" data-tooltip="Reaction AP: ${getRAP(c) ? "ready (pays only for Reactions; click to spend it by hand)" : "spent (back at the start of its turn; click to give it back)"}"></a>${canSwap ? '<button type="button" class="twod12-swap" data-tooltip="Swap initiative with an ally (1 AP)"><i class="fa-solid fa-right-left"></i></button>' : ""}`;
       box.querySelector(".twod12-swap")?.addEventListener("click", () => requestSwap(combat, c));
       box.querySelector(".twod12-rap")?.addEventListener("click", () => { if (c.isOwner) setRAP(c, getRAP(c) ? 0 : REACTION_AP); });
       if (c.getFlag(F, "frozen")) box.classList.add("frozen");

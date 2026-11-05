@@ -62,7 +62,7 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
   constructor(o) {
     super({ window: { title: `Class: ${o.name}` } });
     Object.assign(this, { o, picks: {}, attrs: {}, view: null, cards: new Map(), done: false, priority: o.cls.modPriority === "power" ? "power" : "weapon" });
-    this.healthHigh = o.actor?.system?.healthHigh === "resolve" ? "resolve" : "vigor";   // v0.0.244 (pack R): where the class's high Health value goes (a level 1 choice)
+    this.healthHigh = "vigor";   // v0.0.244 (pack R): where the class's high Health value goes (a level 1 choice); v0.0.245: a dropped class starts fresh (Vigor), never from the sheet's old state
     this.tf = { q: "", cat: "", only: true, compact: false };   // v0.0.195: the Talent filter bar
     this.choiceSel = {};   // v0.0.215: a chosen Talent or Feature with a choice (Lesser Blessing's blessing): uuid -> the options picked here
   }

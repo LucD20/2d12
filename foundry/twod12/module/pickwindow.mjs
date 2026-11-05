@@ -11,8 +11,9 @@ const CHECK = '<i class="fa-solid fa-check"></i>';
 
 /** Pure: the HTML of a segmented row. */
 export function segRowHtml(row) {
-  const btn = o => `<button type="button" data-key="pick:${esc(row.key)}:${esc(o.k)}" data-row="${esc(row.key)}" data-k="${esc(o.k)}" aria-pressed="${!!o.on}"${o.off ? " disabled" : ""}${o.tip ? ` data-tooltip="${esc(o.tip)}"` : ""} class="${o.cls ?? ""}">${o.on ? `${CHECK} ` : ""}${esc(o.l)}</button>`;
-  return `<div class="cw-attr">${row.label ? `<span>${esc(row.label)}</span>` : ""}<div class="cw-seg">${row.opts.map(btn).join("")}</div></div>`;
+  // v0.0.245 (Lucas): the names are colored (the Attributes' colors, a creature's side): the label sits in a span with the option's class, as the class window does.
+  const btn = o => `<button type="button" data-key="pick:${esc(row.key)}:${esc(o.k)}" data-row="${esc(row.key)}" data-k="${esc(o.k)}" aria-pressed="${!!o.on}"${o.off ? " disabled" : ""}${o.tip ? ` data-tooltip="${esc(o.tip)}"` : ""}>${o.on ? `${CHECK} ` : ""}<span class="${esc(o.cls ?? "")}">${esc(o.l)}</span></button>`;
+  return `<div class="cw-attr">${row.label ? `<span class="${esc(row.labelCls ?? "")}">${esc(row.label)}</span>` : ""}<div class="cw-seg">${row.opts.map(btn).join("")}</div></div>`;
 }
 
 /** Pure: the whole window's HTML from a model. */

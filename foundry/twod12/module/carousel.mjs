@@ -21,7 +21,7 @@ function card(combat, c, st) {
   // v0.0.243 (pack R): the Reaction AP is the last pip (a diamond with an R); out of its turn the kept AP are Guard (the tooltip says how much).
   const pipKind = frozen ? "frozen" : (current ? "turn" : "react");
   const pipTip = { turn: `${ap} AP this turn`, react: `${ap} AP kept${apGuard ? ` (Guard ${apGuard})` : ""}: they can pay Reactions`, frozen: `${ap} AP, frozen until its new turn (it swapped initiative)` }[pipKind] + (combat.started ? `. Reaction AP ${rap ? "ready" : "spent"}` : "");
-  const pips = `<div class="tp-pips ${pipKind}" data-tooltip="${pipTip}">${Array.from({ length: max }, (_, i) => `<i class="${i < ap ? "on" : ""}"></i>`).join("")}${combat.started ? `<i class="hsep"></i><i class="rap${rap ? " on" : ""}">R</i>` : ""}</div>`;
+  const pips = `<div class="tp-pips ${pipKind}" data-tooltip="${pipTip}">${Array.from({ length: max }, (_, i) => `<i class="${i < ap ? "on" : ""}"></i>`).join("")}${combat.started ? `<span class="hsep"></span><i class="rap${rap ? " on" : ""}">R</i>` : ""}</div>`;
   // v0.0.224 (Lucas, playtest 3): the 3 Strikes of this turn as three red diamonds; each Strike (not a Linked one) empties one.
   const used = combat.started ? Math.min(3, strikesUsed(c.actor)) : 0;
   const strikes = combat.started ? `<div class="tp-strikes" data-tooltip="${3 - used} of 3 Strikes left this turn">${[0, 1, 2].map(i => `<i class="${i < 3 - used ? "on" : ""}"></i>`).join("")}</div>` : "";

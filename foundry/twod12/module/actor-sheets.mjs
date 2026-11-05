@@ -67,7 +67,7 @@ export function healthLineCtx(a) {
   const steps = stage >= 2 ? ` + Stage ${stage} steps` : "";
   const parts = [`${L.vigor} ${hl.classVigor}${hl.bonusVigor ? ` ${hl.bonusVigor >= 0 ? "+" : "\u2212"} ${Math.abs(hl.bonusVigor)}` : ""} = ${hl.vigor}`, `${L.resolve} ${hl.classResolve}${hl.bonusResolve ? ` ${hl.bonusResolve >= 0 ? "+" : "\u2212"} ${Math.abs(hl.bonusResolve)}` : ""} = ${hl.resolve}`];
   const tip = [`The class's high value (${cls?.healthHigh ?? "?"}) on ${L[hi]}, the low one (${cls?.healthLow ?? "?"}) on ${L[lo]}${steps}; the species' bonuses (${sp?.bodyMod ?? 0} / ${sp?.mindMod ?? 0}${sp?.pickHealth ? ", the bigger one where you choose" : ""}).`,
-    parts.join("; ") + ".", hl.moved ? `The floor: ${hl.moved} point${hl.moved === 1 ? "" : "s"} moved so neither threshold is under a third of the pool (${hl.floor}).` : "", "The Attributes don't change the Health. Click \u21c4 to put the high value on the other threshold."].filter(Boolean).join(" ");
+    parts.join("; ") + ".", hl.moved ? `The floor: ${hl.moved} point${hl.moved === 1 ? "" : "s"} moved so neither threshold is under a third of the pool (${hl.floor}).` : "", "The Attributes don't change the Health. The high side is chosen in the class window at level 1 (drop the class again to change it)."].filter(Boolean).join(" ");
   return { text: `High on <b>${L[hi]}</b>${hl.moved ? ` \u00b7 floor: ${hl.moved} moved` : ""}`, tip, pick: !!sp?.pickHealth,
     pickText: sp?.pickHealth ? `${spItem?.name ?? "Species"} +${Math.max(sp.bodyMod ?? 0, sp.mindMod ?? 0)} on ${s.speciesHigh ? L[s.speciesHigh] : L[hl.bonusHighSide || hi]}` : "" };
 }
@@ -95,7 +95,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       toggleFav: CharacterSheet.toggleFav, toggleDetails: CharacterSheet.toggleDetails, toggleEsc: CharacterSheet.toggleEsc, toggleEscPass: CharacterSheet.toggleEscPass, toggleGrant: CharacterSheet.toggleGrant, setFilter: CharacterSheet.setFilter, setView: CharacterSheet.setView,
       setHands: CharacterSheet.setHands, setWorn: CharacterSheet.setWorn, setEscalation: CharacterSheet.setEscalation, toggleEscalation: CharacterSheet.toggleEscalation, masteryStep: CharacterSheet.masteryStep, masteryCollapse: CharacterSheet.masteryCollapse, masteryOpen: CharacterSheet.masteryOpen, chooseStartMastery: CharacterSheet.chooseStartMastery, hpEdit: CharacterSheet.hpEdit,
       setHealthView: CharacterSheet.setHealthView, setApPip: CharacterSheet.setApPip, toggleRap: CharacterSheet.toggleRap,
-      swapHealthHigh: CharacterSheet.swapHealthHigh, openSpecies: CharacterSheet.openSpecies,   // v0.0.243 / v0.0.244 (pack R): the Health line's sides, the Species window
+      openSpecies: CharacterSheet.openSpecies,   // v0.0.244 (pack R): the Species window (the Health line's high side is chosen in the class window at level 1, v0.0.245: no swap after that)
       toggleCard: CharacterSheet.toggleCard, reloadFor: CharacterSheet.reloadFor, toggleBasic: CharacterSheet.toggleBasic,
       toggleFeat: CharacterSheet.toggleFeat, foldAll: CharacterSheet.foldAll, newGear: CharacterSheet.newGear, reloadWeapon: CharacterSheet.reloadWeapon,
       setWhere: CharacterSheet.setWhere, toggleItemFold: CharacterSheet.toggleItemFold
@@ -997,8 +997,6 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   /** Donut or Classic: how this user sees health on every sheet. */
   static async setHealthView(event, target) { await game.user.setFlag("twod12", "healthView", target.dataset.k); this.render(); }
 
-  /** v0.0.243 (pack R; book, Health Pool): the class's high Health value goes to the other threshold (the book: chosen once; the sheet lets you correct it). */
-  static async swapHealthHigh() { if (this.actor.type === "character") await this.actor.update({ "system.healthHigh": this.actor.system.healthHigh === "resolve" ? "vigor" : "resolve" }); }
   /** v0.0.244: the Species window (specieswindow.mjs): the species' choices (two Attributes, the side of the bigger Health bonus) and what it grants. */
   static async openSpecies() { const { editSpecies } = await import("./specieswindow.mjs"); await editSpecies(this.actor); }
   /** The Reaction AP by hand (spent on a Reaction done outside the system, or given back). */

@@ -6,7 +6,7 @@ import { pickWith } from "./pickwindow.mjs";
 import { esc } from "./util.mjs";
 const AN = TWOD12.attributes;
 
-/** Pure: the model from the creatures rolling ([{ id, name }]) and the state { attr, per, boons, banes, favored, doomed, perOpen }. */
+/** Pure: the model from the creatures rolling ([{ id, name, side }]: side 1 ally, -1 foe, 0 neutral) and the state { attr, per, boons, banes, favored, doomed, perOpen }. */
 export function initiativeModel(list, st) {
   const attrOpts = (on, extra = []) => [...extra, ...Object.entries(AN).map(([k, l]) => ({ k, l, on: on === k, cls: `cw-a-${k}` }))];
   const sections = [
@@ -18,7 +18,7 @@ export function initiativeModel(list, st) {
   if (list.length > 1) {
     const per = st.per ?? {}, n = Object.keys(per).length;
     sections.push({ title: "Another Attribute for some creatures", pill: n ? `${n} changed` : "Same for all", done: n > 0, sub: "A creature that rolls another Attribute than the one above.",
-      rows: list.map(c => ({ key: `per:${c.id}`, label: c.name, opts: attrOpts(per[c.id] ?? "", [{ k: "", l: "Same", on: !per[c.id] }]) })) });
+      rows: list.map(c => ({ key: `per:${c.id}`, label: c.name, labelCls: c.side > 0 ? "cw-ally" : c.side < 0 ? "cw-foe" : "cw-neutral", opts: attrOpts(per[c.id] ?? "", [{ k: "", l: "Same", on: !per[c.id] }]) })) });
   }
   return { name: "Initiative", sub: `${list.length} creature${list.length === 1 ? "" : "s"}`, icon: "fa-dice-d20", stats: [["Attribute", AN[st.attr] ?? ""], ["Rolling", list.map(c => c.name).join(", ")]], sections, complete: !!st.attr, message: `${list.map(c => esc(c.name)).join(", ")} roll${list.length === 1 ? "s" : ""} ${AN[st.attr] ?? ""}${Object.keys(st.per ?? {}).length ? " (some another Attribute)" : ""}.`, confirm: "Roll" };
 }
@@ -36,7 +36,8 @@ export const initiativeInput = (st, field, value) => (["boons", "banes"].include
 /** Ask (the window), for these combatants: { attr, per, boons, banes, favored, doomed } or null. */
 export async function askInitiative(list = []) {
   let st = { attr: "instinct", per: {}, boons: 0, banes: 0, favored: false, doomed: false };
-  const rows = list.map(c => ({ id: c.id, name: c.name }));
+  const sideOf = c => { const d = c.token?.disposition; return d === undefined || d === null ? (c.actor?.type === "character" ? 1 : -1) : d; };
+  const rows = list.map(c => ({ id: c.id, name: c.name, side: sideOf(c) }));
   return pickWith({ title: "Initiative", model: () => initiativeModel(rows, st), pick: (row, k) => { st = initiativePick(st, row, k); }, input: (f, v) => { st = initiativeInput(st, f, v); },
     result: () => ({ attr: st.attr, per: st.per, boons: st.boons, banes: st.banes, favored: !!st.favored, doomed: !!st.doomed }) });
 }

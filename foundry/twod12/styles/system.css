@@ -2168,3 +2168,9 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 .classwin .cw-num { display: inline-flex; align-items: center; gap: 4px; margin: 0; color: var(--cw-mut); } .classwin .cw-num input { width: 56px; height: 28px; background: #fff; color: var(--cw-ink); border: 1px solid var(--cw-line); border-radius: 4px; }
 .classwin .cw-hnote { color: var(--cw-mut); font-size: .85rem; }
 .twod12.sheet.ns .fsec .fsec-link { cursor: pointer; margin-left: auto; } .twod12.sheet.ns .fsec .fsec-link:hover { text-decoration: underline; }
+
+/* v0.0.245 (Lucas): the AP / Reaction AP separator is a thin vertical line (a span: no pip rule reaches it); the colored names of the pick windows */
+.twod12.sheet.ns .hpips .hsep, #twod12-carousel .tp-pips .hsep, .twod12.chat.ticker .tk-pips .hsep, .twod12-ap .hsep { display: inline-block; flex: none; width: 1px; height: 10px; border: 0; border-radius: 0; background: rgba(128, 128, 128, .6); margin: 0 4px 0 5px; align-self: center; vertical-align: middle; transform: none; }
+.twod12.chat.ticker .tk-pips .hsep { height: 8px; } .twod12.chat.ticker .tk-pips.sm .hsep { height: 6px; margin: 0 3px 0 4px; }
+.twod12-ap .hsep { height: 12px; margin: 0 2px 0 4px; }
+.classwin .cw-ally { color: #2f6b3a; } .classwin .cw-foe { color: #a8322f; } .classwin .cw-neutral { color: #6b6a60; }

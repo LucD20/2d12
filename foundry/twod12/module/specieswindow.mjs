@@ -41,7 +41,8 @@ export function speciesPick(state, row, k) {
 
 /** Open the window for a species item (the compendium's, or the character's copy) and wait: { chosen, side } or null. */
 export async function chooseSpecies({ item, actor = null, adding = true }) {
-  let state = { chosen: [...(item.system?.chosen ?? [])], side: actor?.system?.speciesHigh ?? "" };
+  // v0.0.245 (Lucas): a dropped species starts fresh (no Attributes chosen, the bigger bonus with the high value); editing from the sheet keeps the current choices.
+  let state = adding ? { chosen: [], side: "" } : { chosen: [...(item.system?.chosen ?? [])], side: actor?.system?.speciesHigh ?? "" };
   const className = actor?.itemTypes?.class?.[0]?.name ?? "";
   return pickWith({ title: `Species: ${item.name}`, model: () => speciesModel(item, state, { adding, className }), pick: (row, k) => { state = speciesPick(state, row, k); }, result: () => ({ chosen: state.chosen, side: state.side }) });
 }
