@@ -520,12 +520,12 @@ export function valuedHud(app, html) {
   return n;
 }
 
-export async function applyCondition(cond, actors, dur, origin) {
+export async function applyCondition(cond, actors, dur, origin, value = null) {
   const id = String(cond).trim().toLowerCase();
   const item = await conditionItem(id);
   for (const actor of actors) {
     if (item) {
-      await applyEffects([item.uuid], [actor.uuid], origin, dur ? { duration: dur } : null);
+      await applyEffects([item.uuid], [actor.uuid], origin, dur || value ? { ...(dur ? { duration: dur } : {}), ...(value ? { value } : {}) } : null);   // v0.0.250: a value (Enfeebled 1)
     } else if (actor.isOwner) {
       await actor.toggleStatusEffect(id, { active: true });
     } else {

@@ -6,7 +6,7 @@
    "category": "Combat Talent",
    "level": 1,
    "flavor": "You call them out, and they cannot look away.",
-   "text": "Once per round, when you deal damage to a creature with a [Melee, Strike] Action, you can challenge them: until the end of their next turn, their [Strike] Actions against creatures other than you take 1 Bane.",
+   "text": "Once per round, when you deal damage to a creature with a [Melee, Strike] Action, you can challenge them: their [Strike] Actions against creatures other than you take 1 Bane (EoT).",
    "foundry": {
     "img": "icons/svg/combat.svg",
     "automation": "bronze",

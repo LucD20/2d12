@@ -94,7 +94,7 @@ Each character begins with Rally Points equal to **your class's Rally value + yo
 
 When a Rally Point is used, normally with Steel Yourself, the target removes **⌈their Health Pool ÷ 4⌉** damage. You choose which damage to remove.
 
-**Heal.** When a feature says a creature **heals** a number, it removes that much damage. The creature chooses which damage, as with a Rally Point.
+**Heal.** When a feature says a creature **heals** a number, it removes that much damage. The creature chooses which damage, as with a Rally Point. A heal to several creatures is rolled once: each of them heals that much.
 
 If you are [[Exhausted]], use your Health Pool as if you weren't: Exhausted doesn't lower your Rally Points or the damage each one removes.
 

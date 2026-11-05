@@ -8,7 +8,7 @@
 "Instinct Save: 1d4 / 1d4 / 0"                               -> @Save[instinct|t1:1d4|t2:1d4|t3:0]
 "Bright light 2Emanation 1/round"                            -> Bright light @Template[emanation|distance:2|rounds:1]
 "Bright light [2Emanation 1/round]"                          -> Bright light @Template[emanation|distance:2|rounds:1]
-"3Burst EoT"                                                 -> @Template[burst|distance:3|expire:eot]
+"3Burst EoT"                                                 -> @Template[burst|distance:3|rounds:eot]
 "2Emanation"                                                 -> @Template[emanation|distance:2]
 "Bright light 2Emanation 1/round. 1 Bane on Hide."           -> Bright light @Template[emanation|distance:2|rounds:1]. 1 Bane on Hide.
 "As 2 AP. Enemies in the Bright Light must roll an Appeal Save: 1d6 / 1d4 / 0 [M] Holy damage." -> As 2 AP. Enemies in the Bright Light must roll an @Save[appeal|t1:1d6[mind,holy]|t2:1d4[mind,holy]|t3:0].

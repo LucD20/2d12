@@ -10,15 +10,15 @@ labels: 1 Emanation | 2 Burst | 6 Line | icons: emanation, burst, line | each an
 withMod: Guard 1d8+3 | Guard 1d8 + [Mod] | 2 to all | Pushed 1
 modForDoc: an Action card 3 | a damage card 2 | nothing null | no document null
 chips: <icon/> 2 Emanation [twod12-inline] | <icon/> 3 Burst [twod12-inline] | <icon/> 6 Line [twod12-inline]
-Guard on an Action card (Modifier 3): <i class="fa-solid fa-shield-heart"></i> Guard 1d8+3 [twod12-inline] ([Mod] is this creature's Modifier on the Action: 3) | on the sheet with no creature: <i class="fa-solid fa-shield-heart"></i> Guard 1d8 + [Mod] [twod12-inline]
+Guard on an Action card (Modifier 3): <i class="fa-solid fa-shield-heart"></i> Guard 1d8+3 [twod12-inline] (This creature's Modifiers on the Action: [Mod] 3) | on the sheet with no creature: <i class="fa-solid fa-shield-heart"></i> Guard 1d8 + [Mod] [twod12-inline]
 a book link: <i class="fa-solid fa-book-open"></i> Bright light [twod12-inline book] (Bright: a rule of the book) | <i class="fa-solid fa-book-open"></i> Guard [twod12-inline book] (Guard: a rule of the book (Core Rules))
 options: {"formula":"1d8+mod","who":"pick","area":2} {"kind":"pushed","distance":1,"pick":true,"area":2,"from":"target"} {"ref":"Bright","doc":"Core Rules"}
 --- the Smite card (book/cards/paladin.json) as Foundry data
 1 AP: The target sheds @Book[Bright]{Bright light} in a @Template[emanation|distance:1|rounds:1] and takes 1 Bane when they try to {{link:Hide|Hide}}, for 1 round. | fx: {{fx:Smite (Bright light 1)}}
 2 AP: The target sheds @Book[Bright]{Bright light} in a @Template[emanation|distance:2|rounds:1] and takes 1 Bane when they try to {{link:Hide|Hide}}, for 1 round. | fx: {{fx:Smite (Bright light 2)}}
-3 AP: The target sheds @Book[Bright]{Bright light} in a @Template[emanation|distance:2|rounds:1] and takes 1 Bane when they try to {{link:Hide|Hide}}, for 1 round. You or one ally in the Bright light gain @Guard[1d8+mod]{Guard 1d8 + [Mod]} (2d6 + [Mod] at Stage 2, 2d8 + [Mod] at Stage 3). The other creatures in the light, you excepted, are @Move[pushed|distance:1], away from the target. | fx: {{fx:Smite (Bright light 2)}} | after: @Guard[1d8+mod|who:pick|area:2] @Move[pushed|distance:1|pick:yes|area:2|from:target]
+3 AP: The target sheds @Book[Bright]{Bright light} in a @Template[emanation|distance:2|rounds:1] and takes 1 Bane when they try to {{link:Hide|Hide}}, for 1 round. You or one ally in the Bright light gain @Guard[1d8+mod|s2:2d6+mod|s3:2d8+mod]{Guard 1d8 + [Mod]} (2d6 + [Mod] at Stage 2, 2d8 + [Mod] at Stage 3). The other creatures in the light, you excepted, are @Move[pushed|distance:1], away from the target. | fx: {{fx:Smite (Bright light 2)}} | after: @Guard[1d8+mod|who:pick|area:2] @Move[pushed|distance:1|pick:yes|area:2|from:target]
 the 2 and 3 AP texts are written in full (the book says As 1 AP): As 1 AP, but a 2 Emanation. | true true
-automation: silver | the damage, the light on the target (the Damage button), then who gains the Guard and the Pushes one by one (3 AP); the Bane on Hide by hand (Hide isn't written), the Stage 2 / 3 Guard dice by hand.
+automation: mithril | the damage, the light on the target (the Damage button), then who gains the Guard (the Stage's dice) and the Pushes one by one (3 AP); the Bane on Hide by hand (Hide isn't written).
 a card in a table cell keeps a link with a label (cells of build_rules.py): true | the built book links Bright light and Hide: true true | every card an anchor: true
 --- the placeholder card (Hide) and the Smite light effects
 Hide: placeholder true | an Action: true | versions: 0 | frequency: "" | text: Not written yet. Hiding and sneaking are an open item (see @Book[Senses]{Senses}). This card holds the place, so that other cards can refer to Hide.

@@ -166,7 +166,7 @@
      "tiers": [
       "[V] [Mod] Bl",
       "[V] 1d4 + 1 + [Mod] Bl",
-      "[V] 1d8 + 1 + [Mod] Bl; its next [Strike] Action before the end of its next turn takes 1 Bane."
+      "[V] 1d8 + 1 + [Mod] Bl; its next [Strike] Action takes 1 Bane (EoT)."
      ]
     }
    ],

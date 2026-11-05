@@ -7,7 +7,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 21.2 | 290 |
 | 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 26.1 | 286 |
 | 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 38.6 | 452 |
-| 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 13.6 | 254 |
+| 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 13.7 | 254 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 7.0 | 84 |
 | 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.4 | 43 |
 | 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 5.6 | 95 |

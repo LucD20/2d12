@@ -30,6 +30,13 @@ export async function applyToActor(actor, a, { announce = true } = {}) {
 
 export function registerSocket() {
   game.socket.on(SOCKET, async data => {
+    // v0.0.250 (cards 3): prompts addressed to one user (the creature's answerer): the Heal window and the "end one effect" window
+    if (data?.userId && data.userId === game.user.id) {
+      const H = await import("./healwin.mjs"), a = await fromUuid(data.actorUuid), actor = a?.documentName === "Actor" ? a : a?.actor;
+      if (!actor) return;
+      if (data.type === "healPrompt") return H.healHere(actor, data.amount, { source: data.source, lead: data.lead });
+      if (data.type === "endEffectPrompt") return H.endEffectHere(actor, data.which, { source: data.source });
+    }
     if (!game.user.isActiveGM) return;
     if (data?.type === "applyEffects") return applyEffects(data.effectUuids, data.targetUuids, data.origin, data.over);
     if (data?.type === "applyBoon") { const a = await fromUuid(data.actorUuid); if (a) await applyBoonEffect(a, data.cfg, data.origin); return; }

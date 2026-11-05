@@ -89,6 +89,8 @@ add("effects", "effect", "Double Shot (2 Attacks)", "icons/svg/combat.svg", { se
 // P1 (book 2026-10-29; v0.0.181): Smite and Lay On Hands are the Paladin's Hallmark Action (choose one).
 // v0.0.246 (cards 1, Lucas): Smite's light is an effect the Damage button puts on the target (the card's fx): the token sheds Bright light in an
 // N Emanation (Dim light for N more: the book's Light), for 1 round, with the Bane on Hide as a note (Hide isn't written: by hand). The old +1 Defense effect is gone (R-classes).
+// v0.0.250 (cards 3, Hallowed Dawn): the enemies shed Bright light in a 1 Emanation for 1 round
+add("effects", "effect", "Hallowed Dawn (Bright light 1)", "icons/svg/light.svg", { duration: { type: "rounds", rounds: 1 }, description: "<p>The creature sheds Bright light in a 1 Emanation (Dim light 1 more) for 1 round (Hallowed Dawn).</p>", settings: [{ type: "light", bright: 1, dim: 2, color: "#ffd27a", lightAlpha: 0.2, lightAnim: "sunburst", lightSpeed: 2, lightIntensity: 3 }] }, "Paladin");
 for (const n of [1, 2]) add("effects", "effect", `Smite (Bright light ${n})`, "icons/svg/light.svg", { duration: { type: "rounds", rounds: 1 }, description: `<p>The creature sheds Bright light in a ${n} Emanation (Dim light ${n} more) and takes 1 Bane when it tries to Hide, for 1 round (Smite).</p>`, settings: [{ type: "light", bright: n, dim: 2 * n, color: "#ffd27a", lightAlpha: 0.2, lightAnim: "sunburst", lightSpeed: 2, lightIntensity: 3 }, { type: "note", title: "Smite", text: "1 Bane when it tries to Hide (by hand: Hide isn't written yet)." }] }, "Paladin");
 add("effects", "effect", "Lay On Hands (Holy Strike)", "icons/svg/regen.svg", { selfApplied: true, duration: { type: "", rounds: 1 }, expireOn: ["strike"], description: "<p>Your next [Strike] Action deals an extra [R] 0/2d8/2d8 Ho (Tier 2 and 3).</p>", settings: [{ type: "bonusdamage", dmg: "2d8", dmgPool: "M", dmgSub: "Ho", tiers: ["t2", "t3"], all: ["strike"], any: [], none: [] }] }, "Paladin");
 // A1 (book 2026-10-29; v0.0.181): Double Shot and Rolling Shot are the Archer's Hallmark Action (choose one).
@@ -110,7 +112,7 @@ add("features", "feature", "Divine Connection", "icons/svg/aura.svg", { category
 
 /* ------------------------------------------------------------------ Talents (book 16-talents.md; OT 2026-10-30): Category, Level, Prerequisites and Theme as data */
 // Combat
-add("effects", "effect", "Challenged", "icons/svg/combat.svg", { duration: { type: "eot", rounds: 1 }, description: "<p>Until the end of your next turn, your [Strike] Actions against creatures other than the one who challenged you take 1 Bane (Challenge).</p>", settings: [{ type: "boonbane", boons: 0, banes: 1, all: ["strike"], any: [], none: [] }] }, "Talents");
+add("effects", "effect", "Challenged", "icons/svg/combat.svg", { duration: { type: "eot", rounds: 1 }, description: "<p>Your [Strike] Actions against creatures other than the one who challenged you take 1 Bane (Challenge, EoT).</p>", settings: [{ type: "boonbane", boons: 0, banes: 1, all: ["strike"], any: [], none: [] }] }, "Talents");
 // Mobility
 // Magic
 // Class Talents
@@ -295,7 +297,7 @@ add("effects", "effect", "Twin Shot", "icons/svg/target.svg", { selfApplied: tru
 add("actions", "action", "Perfect Shot", "icons/svg/target.svg", {"category": "Archer Escalation", "level": 1, "traits": ["focus", "self"], "frequency": "round", "distance": "self", "escalation": 3, versions: [noRoll(0, "Your next [Shot, Strike] is Favored and Empowered 2, and ignores Cover.")] }, "Archer");
 add("features", "feature", "Bow Mastery", "icons/svg/target.svg", { category: "Archer Feature", level: 1, description: "<p>Choose one Projectile weapon, such as a bow or a crossbow. You start with **3 Mastery** with it, so its Weapon Technique is unlocked (see Mastery).</p>", settings: [sMastery("projectile", 3)] }, "Archer");
 add("features", "feature", "Patient Hunter", "icons/svg/target.svg", { category: "Archer Escalation", level: 1, description: "<p>While your Escalation is 2 or more, if you have not left your square since the start of your last turn, gain 1 Boon on [Shot, Strike] Actions until you leave your square.</p>" }, "Archer");
-add("effects", "effect", "Harried", "icons/svg/downgrade.svg", { duration: dur("eot"), description: "<p>1 Bane on [Strike] Actions until the end of your next turn (Harrying Shots).</p>", settings: [{ type: "boonbane", boons: 0, banes: 1, ...P(["strike"]) }] }, "Archer");
+add("effects", "effect", "Harried", "icons/svg/downgrade.svg", { duration: dur("eot"), description: "<p>1 Bane on [Strike] Actions (Harrying Shots, EoT).</p>", settings: [{ type: "boonbane", boons: 0, banes: 1, ...P(["strike"]) }] }, "Archer");
 add("effects", "effect", "Killer's Focus", "icons/svg/target.svg", { selfApplied: true, duration: dur(""), minEscalation: 2, expireOn: ["shot", "strike", "weapon"], expireAll: true, description: "<p>Your next [Shot, Strike, Weapon] Action deals an extra [V] 1d6 Pi (Killer's Focus, while your Escalation is 2 or more). Given again at the start of each of your turns.</p>", settings: [sBonus("1d6", "B", "Pi", P(["shot", "strike", "weapon"]))] }, "Archer");
 
 /* ------------------------------------------------------------------ the cards of book/cards/*.json (pack CS, 2026-11-03): one source for the book, Foundry and the ruler.

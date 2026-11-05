@@ -92,6 +92,8 @@ export function parseInline(kind, inner) {
       if (m) { if (m[1] === "eot") cfg.dur = "eot"; else { cfg.dur = "rounds"; cfg.rounds = Number(m[1]); } }
       else if (/^label\s*:/i.test(s)) cfg.label = s.replace(/^label\s*:\s*/i, "");
       else if (/^crit\s*:/i.test(s)) cfg.crit = yes(s.replace(/^crit\s*:\s*/i, ""));   // v0.0.249: only the targets that rolled a Critical
+      else if (/^value\s*:/i.test(s)) cfg.value = Math.max(1, Math.trunc(Number(s.replace(/^value\s*:\s*/i, ""))) || 1);   // v0.0.250: Enfeebled 1, Vulnerable 2
+      else if (/^side\s*:/i.test(s)) cfg.side = s.replace(/^side\s*:\s*/i, "").toLowerCase();
     }
     return cfg;
   }
@@ -99,6 +101,8 @@ export function parseInline(kind, inner) {
   if (kind === "Cleave") cfg.n = Math.max(1, Number(segs[0]) || 1);
   if (kind === "Boon") cfg.n = Number(segs[0]) || 0;
   if (kind === "Book") cfg.ref = segs[0].trim();   // v0.0.246: @Book[Heading]{label}: a link to the book's anchor (the Journal import comes later)
+  if (kind === "Heal") cfg.formula = segs[0].trim().toLowerCase().replace(/\s+/g, "");   // v0.0.250: @Heal[3d6+pow|s2:4d6+pow|s3:6d6+pow], @Heal[rp*2]
+  if (kind === "EndEffect") cfg.which = /^any$/i.test(segs[0].trim()) ? "any" : "eot1";   // v0.0.250: @EndEffect[eot1] / @EndEffect[any]
   if (kind === "Template") cfg.shape = segs[0].toLowerCase(); else if (kind === "Move") { const k = segs[0].toLowerCase(); cfg.kind = ["move", "walk"].includes(k) ? "advance" : k; } else if (kind === "Rally") cfg.n = Number(segs[0]) || 1; else if (kind === "Effect") cfg.uuid = segs[0].trim(); else if (kind === "Guard") cfg.formula = segs[0].trim().toLowerCase().replace(/\s+/g, "").replace(/\[mod\]/g, "mod"); else cfg.attr = segs[0].toLowerCase();
   for (const s of segs.slice(1)) {
     const k = s.indexOf(":");
@@ -123,7 +127,7 @@ export function parseInline(kind, inner) {
     else if (key === "terrain") cfg.ignoreTerrain = /^(ignore|ignores|yes|true)$/i.test(val);   // @Move[evade|distance:2|terrain:ignore]: it moves through creatures and ignores Difficult Terrain (Cut Through)
     else if (key === "upto") cfg.upto = /^(yes|true|1|y)$/i.test(val);
     else if (key === "expire") cfg.expire = val.toLowerCase();
-    else if (key === "round" || key === "rounds") cfg.rounds = Number(val) || 0;
+    else if (key === "round" || key === "rounds") { if (/^eot$/i.test(val)) cfg.expire = "eot"; else cfg.rounds = Number(val) || 0; }   // v0.0.250 (Lucas): rounds:eot reads as EoT
     else if (key === "height") cfg.height = Math.max(1, Number(val) || 1);   // v0.0.214: a Line's height in squares (1 unless the card says otherwise)
     else if (key === "ht") cfg.ht = val;   // Hazardous Terrain: ht:entering+turn (or ht:yes for the default, Entering and Turn)
     else if (key === "difficult") cfg.difficult = /^(no|false|0)$/i.test(val) ? [] : (/^(yes|true|1|y)$/i.test(val) ? ["walk"] : (val.toLowerCase() === "all" ? Object.keys(TWOD12.movementActions) : val.toLowerCase().split(",").map(x => x.trim()).filter(Boolean)));
@@ -144,6 +148,10 @@ export function parseInline(kind, inner) {
     else if (key === "from") cfg.from = val.toLowerCase();
     else if (key === "doc") cfg.doc = val;
     else if (key === "crit") cfg.crit = yes(val);   // v0.0.249: @Condition[prone|crit:yes]: only the targets that rolled a Critical
+    // v0.0.250 (cards 3): s2:/s3: the formula at Stage 2 / 3 (Guard, Heal); side:allies / side:enemies (a chain's chip for one side of the card's targets); extra: a heal added to a Rally Point (Lay On Hands)
+    else if (key === "s2" || key === "s3") (cfg.stages ??= {})[key] = val.toLowerCase().replace(/\s+/g, "");
+    else if (key === "side") cfg.side = val.toLowerCase();
+    else if (key === "extra") cfg.extra = val.toLowerCase().replace(/\s+/g, "");
   }
   // A button always has the traits of what it is: Advance and Charge are Move. (Evade and Pushed have none.) A Save has its Attribute.
   if (kind === "Move") cfg.traits = [...new Set([...(cfg.kind === "advance" || cfg.kind === "charge" ? ["move"] : []), ...(cfg.traits ?? [])])];
@@ -208,6 +216,19 @@ export function modForDoc(doc) {
   } catch (e) { /* no creature to read it from */ }
   return null;
 }
+/** v0.0.250: the creature's Power Modifier and Stage for a text (the card's creature, a damage card's origin, the item's owner). */
+export function powForDoc(doc) {
+  try { const a = doc?.documentName === "ChatMessage" ? (() => { const u = doc.getFlag?.("twod12", "action")?.actorUuid ?? doc.getFlag?.("twod12", "dmgCard")?.originUuid ?? doc.getFlag?.("twod12", "dmgMulti")?.originUuid; const d = u ? fromUuidSync(u) : null; return d?.documentName === "Actor" ? d : (d?.actor ?? null); })() : actorOfDoc(doc); const v = Number(a?.system?.powerMod); return a && Number.isFinite(v) ? v : null; } catch (e) { return null; }
+}
+export function stageForDoc(doc) {
+  try { const a = doc?.documentName === "ChatMessage" ? (() => { const u = doc.getFlag?.("twod12", "action")?.actorUuid ?? doc.getFlag?.("twod12", "dmgCard")?.originUuid ?? doc.getFlag?.("twod12", "dmgMulti")?.originUuid; const d = u ? fromUuidSync(u) : null; return d?.documentName === "Actor" ? d : (d?.actor ?? null); })() : actorOfDoc(doc); const v = Number(a?.system?.stage); return a && Number.isFinite(v) && v > 0 ? v : 1; } catch (e) { return 1; }
+}
+/** "+1d6+Pow" with the Power Modifier 3 reads "+1d6+3"; with none known, the word stays. */
+export const withPow = (label, pow) => (pow === null || pow === undefined || !/\bPow\b|\[Pow\]/.test(label) ? label : label.replace(/\s*\+\s*(?:\[Pow\]|Pow)\b/g, `+${pow}`).replace(/\[Pow\]|\bPow\b/g, String(pow)));
+/** The formula a chip uses at this Stage (s2: / s3: on the chip), else its own. */
+export const stagedFormula = (cfg, stage) => (stage >= 3 && cfg?.stages?.s3) || (stage >= 2 && cfg?.stages?.s2) || cfg?.formula || "";
+/** "3d6+pow" -> "3d6 + Pow"; "rp*2" -> "twice a Rally Point's heal"; "1d8+mod" -> "1d8 + [Mod]". */
+export const healText = f => { const s = String(f ?? ""); if (/^rp\*(\d+)$/.test(s)) { const n = Number(s.slice(3)); return `${({ 2: "twice", 3: "three times" })[n] ?? `${n} ×`} a Rally Point's heal`; } return s.replace(/\+/g, " + ").replace(/\*/g, " × ").replace(/\bpow\b/g, "Pow").replace(/\bmod\b/g, "[Mod]").replace(/\brp\b/g, "a Rally Point's heal"); };
 /** "Guard 1d8 + [Mod]" with the Modifier 3 reads "Guard 1d8+3" (Lucas's spelling); with no Modifier known, the words stay. */
 export const withMod = (label, mod) => (mod === null || mod === undefined || !/\[Mod\]/.test(label) ? label : label.replace(/\s*\+\s*\[Mod\]/g, `+${mod}`).replace(/\[Mod\]/g, String(mod)));
 
@@ -216,13 +237,15 @@ export function registerInline() {
   if (!list) return console.warn("twod12 | text enrichers are not available");
   list.push({
     id: "twod12-inline",
-    pattern: /@(Check|Damage|Save|Template|Move|Rally|Guard|Effect|Condition|Use|Cleave|Reload|Release|Regrip|Boon|Book)\[((?:[^\[\]]|\[(?:[^\[\]]|\[[^\[\]]*\])*\])*)\](?:\{([^}]+)\})?/g,
+    pattern: /@(Check|Damage|Save|Template|Move|Rally|Guard|Effect|Condition|Use|Cleave|Reload|Release|Regrip|Boon|Book|Heal|EndEffect)\[((?:[^\[\]]|\[(?:[^\[\]]|\[[^\[\]]*\])*\])*)\](?:\{([^}]+)\})?/g,
     enricher: async (match, options) => {
       const kind = match[1];
       const cfg = parseInline(kind, match[2]);
-      // v0.0.246: "[Mod]" in a chip's words becomes the number of the creature the text belongs to (the tooltip says whose).
-      const modN = modForDoc(options?.relativeTo);
-      const inlineEl = (k, c, label, icon) => { const el = mkEl(k, c, withMod(label, modN), icon); if (withMod(label, modN) !== label) el.dataset.tooltip = `[Mod] is this creature's Modifier on the Action: ${modN}`; return el; };
+      // v0.0.246: "[Mod]" in a chip's words becomes the number of the creature the text belongs to (the tooltip says whose). v0.0.250: "Pow" too (the Power Modifier), and a Stage formula.
+      const modN = modForDoc(options?.relativeTo), powN = powForDoc(options?.relativeTo), stageN = stageForDoc(options?.relativeTo);
+      const inlineEl = (k, c, label, icon) => { const l2 = withPow(withMod(label, modN), powN); const el = mkEl(k, c, l2, icon); if (l2 !== label) el.dataset.tooltip = `This creature's Modifiers on the Action: ${[modN !== null ? `[Mod] ${modN}` : "", powN !== null ? `Pow ${powN}` : ""].filter(Boolean).join(", ")}`; return el; };
+      if (kind === "Heal") return inlineEl("Heal", cfg, cfg.label ?? match[3] ?? `Heal ${healText(stagedFormula(cfg, stageN))}`, "fa-hand-holding-medical");
+      if (kind === "EndEffect") return inlineEl("EndEffect", cfg, cfg.label ?? match[3] ?? (cfg.which === "any" ? "End one effect" : "End one effect (EoT or 1 round left)"), "fa-wand-magic-sparkles");
       if (kind === "Book") {
         const el = mkEl("Book", cfg, cfg.label ?? match[3] ?? cfg.ref, "fa-book-open");
         el.classList.add("book"); el.dataset.tooltip = `${cfg.ref}: a rule of the book${cfg.doc ? ` (${cfg.doc})` : ""}`;
@@ -254,7 +277,7 @@ export function registerInline() {
       if (kind === "Condition") {
         const nm = cfg.cond.charAt(0).toUpperCase() + cfg.cond.slice(1);
         const dur = cfg.dur === "eot" ? " (EoT)" : (cfg.dur === "rounds" ? ` (${cfg.rounds} round${cfg.rounds === 1 ? "" : "s"})` : "");
-        return inlineEl("Condition", cfg, cfg.label ?? match[3] ?? `${nm}${dur}`, "fa-triangle-exclamation");
+        return inlineEl("Condition", cfg, cfg.label ?? match[3] ?? `${nm}${cfg.value ? ` ${cfg.value}` : ""}${dur}`, "fa-triangle-exclamation");
       }
       if (kind === "Use") {
         const total = cfg.count ?? 1;
@@ -269,9 +292,9 @@ export function registerInline() {
         const n = Math.abs(cfg.n), what = cfg.traits.length ? cfg.traits.map(t => TWOD12.traits[t] ?? t).join(" ") : "Roll";
         return inlineEl("Boon", cfg, cfg.label ?? match[3] ?? `${n} ${cfg.n < 0 ? "Bane" : "Boon"}${n === 1 ? "" : "s"} on the next ${what}`, cfg.n < 0 ? "fa-chevron-down" : "fa-chevron-up");
       }
-      if (kind === "Rally") return inlineEl("Rally", cfg, cfg.label ?? match[3] ?? `${cfg.n} Rally Point${cfg.n === 1 ? "" : "s"}`, "fa-heart-pulse");
+      if (kind === "Rally") return inlineEl("Rally", cfg, cfg.label ?? match[3] ?? `${cfg.n} Rally Point${cfg.n === 1 ? "" : "s"}${cfg.extra ? ` (+${healText(cfg.extra)})` : ""}`, "fa-heart-pulse");
       if (kind === "Effect") return inlineEl("Effect", cfg, cfg.label ?? match[3] ?? "Apply the effect", "fa-shield-halved");
-      if (kind === "Guard") return inlineEl("Guard", cfg, cfg.label ?? match[3] ?? `Guard ${guardText(cfg.formula)}`, "fa-shield-heart");
+      if (kind === "Guard") return inlineEl("Guard", cfg, (cfg.stages && stageN > 1 ? null : cfg.label ?? match[3]) ?? `Guard ${guardText(stagedFormula(cfg, stageN))}`, "fa-shield-heart");   // v0.0.250: the Stage's dice
       if (kind === "Move") {
         // A distance that is calculated (floor(speed/2)) shows its number for the creature whose card or sheet this is, with a calculator.
         const calc = !!cfg.distanceExpr && !cfg.label && !match[3];
@@ -469,6 +492,12 @@ async function allyRecipients(cfg, ctx, what = "the effect") {
 async function handleEffect(cfg, ctx) {
   let what = "the effect";
   try { what = (await fromUuid(cfg.uuid))?.name ?? what; } catch (e) { /* not loaded */ }
+  // v0.0.250: a chain's chip for a side (side:enemies) goes to those creatures, no question asked (Hallowed Dawn's light on the enemies)
+  if (ctx.targets?.length && (cfg.side || cfg.who === "targets")) {
+    const origin = originActor(ctx), mod = Number.isFinite(ctx.attrVal) ? ctx.attrVal : null;
+    await applyEffects([cfg.uuid], ctx.targets.map(t => t.uuid), { ...originInfo(origin?.uuid ?? ""), ...(mod !== null ? { mod } : {}) });
+    return;
+  }
   const { origin, who, cancelled } = await allyRecipients(cfg, ctx, what);
   if (cancelled) return;
   if (!who.length) return ui.notifications.warn("Select your token, or target the ally that gains the effect.");
@@ -490,11 +519,12 @@ async function handleGuard(cfg, ctx) {
   const act = ctx.message?.getFlag?.("twod12", "action");
   const origin0 = originActor(ctx);
   const mod = Number.isFinite(ctx.attrVal) ? ctx.attrVal : (Number.isFinite(Number(act?.attrVal)) && act?.attrVal !== undefined ? Number(act.attrVal) : (Number(origin0?.system?.signatureMod) || 0));
-  const { origin, who, cancelled } = await allyRecipients(cfg, ctx, `Guard ${withMod(guardText(cfg.formula), mod)}`);
+  const formula = stagedFormula(cfg, Number(origin0?.system?.stage) || 1);   // v0.0.250: the Stage's dice (s2: / s3: on the chip)
+  const { origin, who, cancelled } = await allyRecipients(cfg, ctx, `Guard ${withMod(guardText(formula), mod)}`);
   if (cancelled) return;
   if (!who.length) return ui.notifications.warn("Select your token, or target the ally that gains the Guard.");
   for (const a of who) {
-    const f = String(cfg.formula || "0").replace(/\bmod\b/g, `(${mod})`).replace(/\brally\b/g, `(${Number(a.system?.rallyHeal) || 0})`);
+    const f = String(formula || "0").replace(/\bmod\b/g, `(${mod})`).replace(/\brally\b/g, `(${Number(a.system?.rallyHeal) || 0})`);
     const roll = await new Roll(f).evaluate();
     const now = Number(a.system?.guard) || 0, next = gainGuard(now, roll.total);
     if (next !== now) {
@@ -503,7 +533,7 @@ async function handleGuard(cfg, ctx) {
     }
     // v0.0.246: a system line (the standing rule for chat messages)
     await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: origin ?? a }), rolls: /d/.test(f) ? [roll] : [],
-      content: sysLine("fa-shield-heart", `<b>${esc(a.name)}</b> ${next > now ? `gains <b>Guard ${next}</b>` : `keeps Guard ${now} (the higher; the new Guard was ${roll.total})`} <small>(${esc(withMod(guardText(cfg.formula), mod))} = ${roll.total})</small>.`, "guardmsg") });
+      content: sysLine("fa-shield-heart", `<b>${esc(a.name)}</b> ${next > now ? `gains <b>Guard ${next}</b>` : `keeps Guard ${now} (the higher; the new Guard was ${roll.total})`} <small>(${esc(withMod(guardText(formula), mod))} = ${roll.total})</small>.`, "guardmsg") });
   }
 }
 
@@ -512,14 +542,60 @@ async function handleGuard(cfg, ctx) {
  * (the Guard's "who" question, then the Pushes, one creature at a time). `text` is the Version's field: the same chips as in any text.
  * ctx: { actor, targets: [{ uuid, name }], attrVal } (the damage card's creature, targets and Modifier).
  */
-export async function runAfter(text, ctx = {}) {
+export async function runAfter(text, ctx = {}, { side = "" } = {}) {
   const re = /@(\w+)\[((?:[^\[\]]|\[(?:[^\[\]]|\[[^\[\]]*\])*\])*)\](?:\{([^}]+)\})?/g;
   let m;
   while ((m = re.exec(String(text ?? "")))) {
     const cfg = parseInline(m[1], m[2]);
     if (m[3]) cfg.label = m[3];
-    try { await handleInline(m[1], cfg, { ...ctx, message: ctx.message ?? null }); } catch (e) { console.error("twod12 | after the damage", e); }
+    // v0.0.250: a chip for one side (side:allies / side:enemies) runs with that side's creatures among the targets; an Apply button for a side runs only its chips
+    if (side && cfg.side && cfg.side !== side) continue;
+    const targets = cfg.side ? sideTargets(ctx, cfg.side) : ctx.targets;
+    if (cfg.side && !targets?.length) continue;
+    try { await handleInline(m[1], cfg, { ...ctx, targets, message: ctx.message ?? null }); } catch (e) { console.error("twod12 | after the damage", e); }
   }
+}
+/** The chain's targets on one side of the card's creature (allies: its side, the creature itself included; enemies: the other sides). */
+export function sideTargets(ctx, side) {
+  const me = tokenOfActor(originActor(ctx)), mine = me?.document?.disposition ?? 1;
+  return (ctx?.targets ?? []).filter(t => { let tok = null; try { tok = fromUuidSync(t.uuid); } catch (e) { tok = null; } const d = tok?.disposition ?? tok?.document?.disposition ?? tok?.object?.document?.disposition; if (d === undefined) return side === "allies"; return side === "allies" ? d === mine : d !== mine && d !== 0; });
+}
+
+/**
+ * v0.0.250 (cards 3): the @Heal chip. The formula (the Stage's: s2: / s3:) is rolled once for every target when it has dice (the book: a heal to
+ * several creatures is rolled once); "rp*2" is each creature's own Rally Point heal, no dice. Each creature's answerer then chooses the split
+ * in the Heal window (healwin.mjs), on their own client.
+ */
+async function handleHeal(cfg, ctx) {
+  const origin = originActor(ctx);
+  const targets = ctx.targets?.length ? ctx.targets : [...(cardTargetTokens(ctx).map(t => ({ uuid: t.document.uuid, name: t.name })))];
+  const list = targets.length ? targets : (origin ? [{ uuid: origin.uuid, name: origin.name }] : []);
+  if (!list.length) return ui.notifications.warn("Target the creatures that heal first.");
+  const formula = stagedFormula(cfg, Number(origin?.system?.stage) || 1);
+  const pow = Number(origin?.system?.powerMod) || 0, mod = Number.isFinite(ctx.attrVal) ? ctx.attrVal : (Number(origin?.system?.weaponMod) || 0);
+  const source = ctx.message?.getFlag?.("twod12", "action")?.itemId ? (origin?.items?.get(ctx.message.getFlag("twod12", "action").itemId)?.name ?? "") : (ctx.source ?? "");
+  const actors = [];
+  for (const t of list) { try { const d = await fromUuid(t.uuid); const a = d?.documentName === "Actor" ? d : d?.actor; if (a) actors.push(a); } catch (e) { /* gone */ } }
+  if (!actors.length) return;
+  const perCreature = /\brp\b/.test(formula);
+  let shared = null, roll = null;
+  if (!perCreature) { roll = await new Roll(String(formula).replace(/\bpow\b/g, `(${pow})`).replace(/\bmod\b/g, `(${mod})`)).evaluate(); shared = roll.total; }
+  const amountFor = a => (perCreature ? Math.max(0, Math.round(Function("rp", `"use strict";return (${String(formula).replace(/\bpow\b/g, `(${pow})`).replace(/\bmod\b/g, `(${mod})`).replace(/[^0-9rp+\-*/(). ]/g, "")})`)(Number(a.system?.rallyHeal) || 0))) : shared);
+  const { sysCard } = await import("./sysmsg.mjs");
+  const text = perCreature ? actors.map(a => `${esc(a.name)} ${amountFor(a)}`).join(" · ") : actors.map(a => esc(a.name)).join(", ");
+  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: origin ?? actors[0] }), rolls: roll ? [roll] : [],
+    content: sysCard({ title: source || "Heal", lead: `${esc(origin?.name ?? "")} heals ${esc(withPow(healText(formula), pow))}${shared !== null ? ` = <b>${shared}</b>` : ""}`, text: `${text}. Each creature chooses what it removes.`, cls: "healmsg" }) });
+  const { promptHeal } = await import("./healwin.mjs");
+  for (const a of actors) await promptHeal(a, amountFor(a), { source: source || "Heal", lead: `<b>${esc(a.name)}</b> heals` });
+}
+/** v0.0.250: the @EndEffect chip: each target's answerer ends one effect (eot1: EoT or 1 round left; any: every non-permanent one) in a window. */
+async function handleEndEffect(cfg, ctx) {
+  const origin = originActor(ctx);
+  const targets = ctx.targets?.length ? ctx.targets : cardTargetTokens(ctx).map(t => ({ uuid: t.document.uuid, name: t.name }));
+  if (!targets.length) return ui.notifications.warn("Target the creature first.");
+  const source = ctx.message?.getFlag?.("twod12", "action")?.itemId ? (origin?.items?.get(ctx.message.getFlag("twod12", "action").itemId)?.name ?? "") : (ctx.source ?? "");
+  const { promptEndEffect } = await import("./healwin.mjs");
+  for (const t of targets) { try { const d = await fromUuid(t.uuid); const a = d?.documentName === "Actor" ? d : d?.actor; if (a) await promptEndEffect(a, cfg.which ?? "any", { source }); } catch (e) { /* gone */ } }
 }
 
 /** v0.0.246: a book link. A Journal page named like the heading opens it (the Journal import comes later); until then, a note. */
@@ -536,10 +612,12 @@ async function openBook(cfg) {
 
 export async function handleInline(kind, cfg, ctx = {}) {
   if (kind === "Book") return openBook(cfg);
+  if (kind === "Heal") return handleHeal(cfg, ctx);
+  if (kind === "EndEffect") return handleEndEffect(cfg, ctx);
   if (kind === "Guard") return handleGuard(cfg, ctx);
   if (kind === "Effect") return handleEffect(cfg, ctx);
   if (kind === "Move") return handleMove(cfg, ctx);
-  if (kind === "Rally") return handleRally(cfg);
+  if (kind === "Rally") return handleRally(cfg, ctx);
   if (kind === "Condition") return handleCondition(cfg, ctx);
   if (kind === "Use") return handleUse(cfg, ctx);
   if (kind === "Cleave") return handleCleave(cfg, ctx);
@@ -658,8 +736,8 @@ async function handleCondition(cfg, ctx = {}) {
   if (!actors.length) return cfg.crit && ctx.targets?.length ? ui.notifications.info("No Critical: nothing to apply.") : ui.notifications.warn("Target or select a token first.");
   const src = ctx.actor ?? (f?.actorUuid ? await fromUuid(f.actorUuid) : (game.combat?.combatant?.actor ?? null));
   const dur = cfg.dur === "eot" ? { type: "eot" } : (cfg.dur === "rounds" ? { type: "rounds", rounds: cfg.rounds } : null);
-  const found = await applyCondition(cfg.cond, actors, dur, { ...originInfo(src?.uuid ?? ""), ...(Number.isFinite(f?.attrVal ?? f?.originMod) ? { mod: f.attrVal ?? f.originMod } : {}) });
-  ui.notifications.info(`${cfg.cond.charAt(0).toUpperCase() + cfg.cond.slice(1)} applied to ${actors.map(a => a.name).join(", ")}${found ? "" : " (as a status: there is no Effect item with that name)"}.`);
+  const found = await applyCondition(cfg.cond, actors, dur, { ...originInfo(src?.uuid ?? ""), ...(Number.isFinite(f?.attrVal ?? f?.originMod) ? { mod: f.attrVal ?? f.originMod } : {}) }, cfg.value ?? null);
+  ui.notifications.info(`${cfg.cond.charAt(0).toUpperCase() + cfg.cond.slice(1)}${cfg.value ? ` ${cfg.value}` : ""} applied to ${actors.map(a => a.name).join(", ")}${found ? "" : " (as a status: there is no Effect item with that name)"}.`);
 }
 
 /* ---- Save card: one row per targeted token: name | check result | damage taken ---- */

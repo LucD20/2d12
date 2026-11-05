@@ -1,0 +1,6 @@
+Cards written with Lucas (the Mithril rank in Foundry): one line per card, the session, the date. A card gets here when Lucas wrote it his way and the session
+built it (book/cards/README.md, "Writing cards with Lucas"). The automationNote on the card says what the rules leave by hand.
+
+Session 1 (2026-11-05, v0.0.246): Smite
+Session 2 (2026-11-05, v0.0.249): Rebuke, Word of Radiance, Beacon (with the inline Action Beacon's Step)
+Session 3 (2026-11-05, v0.0.250): Lay On Hands, Hallowed Dawn, Miraculous Recovery

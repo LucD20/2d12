@@ -796,7 +796,7 @@ export async function useAction(actor, item, opts = {}) {
   // An effect whose Bonus Damage was unticked stays (it wasn't used).
   { const kept = new Set(); for (const t of [1, 2, 3]) for (const b of collectBonuses(actor, rt, t, { target: rollsAtOthers ? (aimed[0]?.actor ?? null) : null, mod: src.mod })) if (bonusOff.has(bonusKey(b))) kept.add(b.effectId);
     await expireOnUse(actor, rollTraits(rollUse, src, item.name), kept); }
-  const targets = (multi ? perT.map(p => p.token) : (!rollsAtOthers ? (selfToken ? [selfToken] : []) : aimed)).map(t => ({ uuid: t.document?.uuid ?? t.uuid, name: t.name }));
+  const targets = (multi ? perT.map(p => p.token) : (!rollsAtOthers ? (selfToken ? [selfToken] : []) : aimed)).map(t => ({ uuid: t.document?.uuid ?? t.uuid, name: t.name, disposition: t.document?.disposition ?? t.disposition }));   // v0.0.250: the side, for the Apply buttons
   // v0.0.243 (pack R; book, Chapter 1): once an encounter, a Critical on one of the creature's Actions raises its Escalation by 1 (at 3: nothing, not used up).
   if (game.combat?.started && (chk?.crit || mres?.some(r => r.chk?.crit))) { try { await raiseEscalation(actor, "crit"); } catch (e) { console.warn("twod12 | Escalation on a Critical", e); } }
 
@@ -889,7 +889,7 @@ export async function useAction(actor, item, opts = {}) {
     ${bonusRows}
     ${critHtml}${effectsHtml}
     ${fxn.all.length && !effectsOff ? `<div class="fxrow">&#10022; ${esc(fxn.all.join(", "))}</div>` : ""}
-    ${btn}${isSelf && !String(it.area ?? "").trim() ? "" : targetsRowHtml([collapseNames(targets.map(t => t.name))].filter(Boolean), { retarget: true })}${it.worth ? `<div class="ac-worth">${esc(it.worth)}</div>` : ""}</div>`;
+    ${btn}${isSelf && !String(it.area ?? "").trim() ? "" : targetsRowHtml([collapseNames(targets.map(t => t.name))].filter(Boolean), { retarget: true })}${applyAfterHtml(version, targets, selfToken)}${it.worth ? `<div class="ac-worth">${esc(it.worth)}</div>` : ""}</div>`;
   // v0.0.195 (Lucas): a movement-only Action (Advance, Evade, Crawl) in combat starts its movement with the banner (squares left, Done) and
   // posts one short line when it ends, instead of a card whose button then posted the movement (two messages for one step).
   const mvInner = pureMove(it, version, basicKey);
@@ -920,6 +920,7 @@ export async function useAction(actor, item, opts = {}) {
           total: chk?.total ?? null,   // v0.0.174: the roll's result (Forced Movement against an Immobilized creature compares it with the Immobilized DC)
           results: mres ? mres.map(r => ({ uuid: r.uuid, name: r.label, tier: r.chk.tier, crit: r.chk.crit, bonuses: r.bonuses, total: r.chk.total })) : undefined,
           crit: !!chk?.crit, areaPoint: areaOutcome?.point ?? null,   // v0.0.249: the chain after the damage reads them (Prone on a Critical, a Push from the area's center)
+          after: version.after ?? "", noTiers: !!version.noTiers,   // v0.0.250: a no-damage Version's chain runs from the card's Apply buttons
           weaponId: weapon?.id ?? "",
           mode: opts.splitMode ?? "",
           attrVal: src.kind ? (Number(src.mod) || 0) : 0,   // [Mod]: the Modifier used on the roll (also Cleave's damage)
@@ -999,6 +1000,35 @@ export async function useAction(actor, item, opts = {}) {
   if (opts.grant) await consumeGrant(actor, opts.grant, targets[0]?.uuid ?? "");
   opts.onUsed?.({ targets });
   return true;
+}
+
+/**
+ * v0.0.250 (cards 3, Lucas): a Version with no damage and a chain after it (Hallowed Dawn, Miraculous Recovery) gets Apply buttons on its card:
+ * one per side when its chips name sides ("Allies: Apply Heal/Effects", "Enemies: Apply Damage/Effects"), else one; each runs its chips in order.
+ */
+export function applyAfterHtml(version, targets, selfToken) {
+  const after = String(version?.after ?? "").trim();
+  if (!after || !version?.noTiers) return "";
+  const sides = [...after.matchAll(/\|side:(allies|enemies)\b/g)].map(m => m[1]);
+  const label = chips => (/@Heal\[|@Rally\[/.test(chips) ? "Apply Heal/Effects" : /@Move\[|@Condition\[|@Damage\[/.test(chips) ? "Apply Damage/Effects" : "Apply Effects");
+  const chipsOf = side => after.split(/\s+(?=@)/).filter(c => !/\|side:/.test(c) || c.includes(`|side:${side}`)).join(" ");
+  const mine = selfToken?.document?.disposition ?? 1;
+  const names = side => (targets ?? []).filter(t => { const d = t.disposition; if (d === undefined) return side === "allies"; return side === "allies" ? d === mine : d !== mine && d !== 0; }).map(t => esc(t.name)).join(", ");
+  if (!sides.length) return `<div class="tline applyrow"><button type="button" data-twod12="applyAfter" data-side=""><i class="fa-solid fa-wand-magic-sparkles"></i> ${label(after)}</button></div>`;
+  return [...new Set(sides)].map(side => `<div class="tline applyrow"><span class="apside">${side === "allies" ? "Allies" : "Enemies"}: ${names(side) || "<i>none</i>"}</span><button type="button" data-twod12="applyAfter" data-side="${side}"><i class="fa-solid ${side === "allies" ? "fa-hand-holding-medical" : "fa-burst"}"></i> ${label(chipsOf(side))}</button></div>`).join("");
+}
+/** The Apply button of a no-damage card: the chain's chips of that side, for that side's creatures among the card's targets. */
+export async function applyAfter(msg, side = "") {
+  const f = msg.getFlag("twod12", "action");
+  if (!f?.after) return;
+  let actor = null;
+  try { actor = f.actorUuid ? await fromUuid(f.actorUuid) : null; } catch (e) { actor = null; }
+  if (actor && !actor.isOwner && !game.user.isGM) return ui.notifications.warn(`Only ${actor.name}'s owner can apply it.`);
+  const { runAfter, sideTargets } = await import("./inline.mjs");
+  const ctx = { actor, targets: (f.targets ?? []).map(t => ({ uuid: t.uuid, name: t.name })), attrVal: Number.isFinite(Number(f.attrVal)) && f.attrVal !== undefined ? Number(f.attrVal) : null, areaPoint: f.areaPoint ?? null, message: msg, source: actor?.items?.get(f.itemId)?.name ?? "" };
+  if (side) ctx.targets = sideTargets(ctx, side);
+  if (!ctx.targets.length) return ui.notifications.info(`No ${side || "target"} on the card.`);
+  await runAfter(f.after, ctx, { side });
 }
 
 /** Roll the damage for the tier rolled on an action card and post it as a new card. */

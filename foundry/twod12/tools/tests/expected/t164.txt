@@ -1,4 +1,4 @@
-cards checked: 122 | e.g. true
+cards checked: 123 | e.g. true
 card names in module/ code: none
 the scan itself: a name in code is caught, in a comment or a migration it isn't: Brawler true, Pummel false, Sharpshooter false, Elusive true
 no name list of cards (an array of card names) left: true
