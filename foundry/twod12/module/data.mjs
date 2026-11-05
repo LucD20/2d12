@@ -31,7 +31,11 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
       // Ward Defense (WD) = 11 + Power Modifier + Ward value + bonuses (v0.0.162). An NPC types both Defenses instead (NpcData armorDef, wardDef).
       armor: choice(Object.fromEntries(Object.entries(TWOD12.armors).map(([k, v]) => [k, v.label])), "unarmored"), ward: int(0, 0),
       guard: int(0, 0),   // v0.0.181: Guard N (book, Chapter 4): takes damage before the Health, the higher value kept, 0 at the end of the encounter (guard.mjs)
-      escalation: int(0, 0),   // 0 to 3: gained each round after the first, spent on Escalation Actions, back to 0 after the encounter (escalation.mjs)
+      apGuard: int(0, 0),   // v0.0.243 (pack R): the Guard of the AP kept at the end of the turn (2 / 3 / 4 each by Stage): taken first, 0 when the AP are regained
+      escalation: int(1, 0),   // v0.0.243 (pack R): a level 1 to 3, never spent: 1 at the start of an encounter (2 with Momentum), +1 a round, +1 on a Critical and on the class hook once an encounter (escalation.mjs)
+      // v0.0.243 (pack R; book, Health Pool): the class's high Health value goes to Vigor or to Resolve (the player's choice, Vigor by default); a species that lets
+      // the player choose the side of its bigger bonus (Human +3 / +2) puts it with the high value unless speciesHigh says a side.
+      healthHigh: choice({ vigor: "Vigor", resolve: "Resolve" }, "vigor"), speciesHigh: choice({ "": "With the high value", vigor: "Vigor", resolve: "Resolve" }, ""),
       tags: new SetField(new StringField({ required: true, blank: false })),   // Tags of the creature (a selection: the list is the world setting "Tags"); other rules refer to them
       // Senses beyond Sight and Hearing (see Senses): Sight Senses as switches, and other senses with a range and a condition.
       senses: new SchemaField({
@@ -68,17 +72,30 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     this.wounds = this.bodyWounds + this.mindWounds;
 
     const lv = this.level;
-    // v0.0.181 (book, Chapter 4): each threshold x (Level + 17) / 16, rounded up.
-    const thr = (at, mult, sp) => Math.max(0, Math.ceil(((at + 2) * mult + sp) * ((Number(lv) || 0) + 17) / 16 - 1e-9));
-    this.bdt = thr(a.body, cls?.system.bodyMult ?? 0, species?.system.bodyMod ?? 0);
-    const mdtFull = thr(a.mind, cls?.system.mindMult ?? 0, species?.system.mindMod ?? 0);
+    this.stage = stageOf(lv);
+    // v0.0.243 (pack R; book, Chapter 4): the Health line: the class's high and low values (the player assigns them: healthHigh), the species' Vigor and
+    // Resolve bonuses, the class's Stage steps, a floor of a third; the Attributes are out. A class from before pack R (no high value, a multiplier)
+    // keeps the old formula until it is updated from the compendium.
+    const csys = cls?.system, ssys = species?.system;
+    const hl = healthLine({ high: csys?.healthHigh ?? 0, low: csys?.healthLow ?? 0, steps: { high2: csys?.stepHigh2 ?? 0, low2: csys?.stepLow2 ?? 0, high3: csys?.stepHigh3 ?? 0, low3: csys?.stepLow3 ?? 0 },
+      stage: this.stage, highSide: this.healthHigh === "resolve" ? "resolve" : "vigor", bonus: { v: ssys?.bodyMod ?? 0, r: ssys?.mindMod ?? 0, pick: !!ssys?.pickHealth, side: this.speciesHigh || "" } });
+    let mdtFull;
+    const oldClass = !!csys && !(Number(csys.healthHigh) > 0 || Number(csys.healthLow) > 0) && (Number(csys.bodyMult) > 0 || Number(csys.mindMult) > 0);
+    if (!oldClass) { this.bdt = hl.vigor; mdtFull = hl.resolve; this.healthLine = hl; }
+    else {
+      // v0.0.181 (book before pack R): each threshold x (Level + 17) / 16, rounded up.
+      const thr = (at, mult, sp) => Math.max(0, Math.ceil(((at + 2) * mult + sp) * ((Number(lv) || 0) + 17) / 16 - 1e-9));
+      this.bdt = thr(a.body, csys.bodyMult ?? 0, ssys?.bodyMod ?? 0); mdtFull = thr(a.mind, csys.mindMult ?? 0, ssys?.mindMod ?? 0);
+      this.healthLine = { ...hl, vigor: this.bdt, resolve: mdtFull, pool: this.bdt + mdtFull, old: true };
+    }
     this.mdt = Math.max(0, mdtFull - 4 * (this.exhausted ?? 0));   // Exhausted: - 4 x value
     deriveHealth(this);
 
-    this.rallyHeal = Math.ceil((this.bdt + mdtFull) / 4);   // Rally Points use the Health Pool before Exhausted lowers the Mind Damage Threshold
-    // v0.0.176 (book, Rally Points): the class's Rally value + ceil((Body + Mind + level) / 2), Body and Mind being the Attributes.
-    this.rallyMax = Math.max(0, (cls?.system.rallyMod ?? 0) + Math.ceil(((a.body ?? 0) + (a.mind ?? 0) + (Number(lv) || 0)) / 2));
+    this.rallyHeal = Math.ceil((this.bdt + mdtFull) / 4);   // Rally Points use the Health Pool before Exhausted lowers Resolve
+    // v0.0.243 (pack R; book, Rally Points): the class's Rally value + the Stage (1, 2 or 3).
+    this.rallyMax = Math.max(0, (csys?.rallyMod ?? 0) + this.stage);
     this.rallyLeft = Math.max(0, this.rallyMax - this.rallyUsed);
+    this.apPerTurn = TWOD12.apPerTurn;
 
     // Weapon and Power Modifiers: the higher of the class's two Attributes each, never the same one (modifiers.mjs).
     // A class from before v0.0.117 that has no lists keeps the Attribute that was picked for it.
@@ -86,10 +103,9 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     const wKeys = cs ? ([...(cs.weaponAttrs ?? [])].length ? [...cs.weaponAttrs] : [cs.chosenWeapon].filter(Boolean)) : [];
     const pKeys = cs ? ([...(cs.magicAttrs ?? [])].length ? [...cs.magicAttrs] : [cs.chosenMagic].filter(Boolean)) : [];
     const cm = classModifiers(a, wKeys, pKeys, cs?.modPriority === "power" ? "power" : "weapon");
-    // v0.0.181 (book, Chapter 5): the Stage step, +1 at level 5 and +2 at level 8, never above +4; the Signature Modifier follows the higher one.
+    // v0.0.243 (book, Chapter 5, pack R): the Stage step, +1 at Stage 3 (level 8), never above +4; the Signature Modifier follows the higher one.
     cm.weapon.mod = stageMod(cm.weapon.mod, lv); cm.power.mod = stageMod(cm.power.mod, lv);
     cm.signature.mod = cm.signature.from === "power" ? cm.power.mod : cm.weapon.mod;
-    this.stage = stageOf(lv);
     this.weaponAttribute = cm.weapon.key; this.weaponAttrValue = cm.weapon.value; this.weaponMod = cm.weapon.mod;
     this.powerAttribute = cm.power.key; this.powerAttrValue = cm.power.value; this.powerMod = cm.power.mod;
     this.signatureAttribute = cm.signature.key; this.signatureAttrValue = cm.signature.value; this.signatureMod = cm.signature.mod; this.signatureFrom = cm.signature.from;
@@ -136,6 +152,34 @@ export function deriveDefenses(m, training) {   // exported for the tests (t135)
   const at = m.attributes ?? {};
   m.saveDC = { weapon: 11 + (Number(m.weaponMod) || 0), power: 11 + (Number(m.powerMod) || 0), signature: 11 + (Number(m.signatureMod) || 0),
     body: 11 + modOf(at.body), mind: 11 + modOf(at.mind), appeal: 11 + modOf(at.appeal), instinct: 11 + modOf(at.instinct) };
+}
+
+/**
+ * v0.0.243 (pack R; book, Chapter 4, Health Pool): the Health line. The class gives a high and a low value; the player puts the high one on Vigor or
+ * Resolve (highSide); each grows by the class's step for its value at Stages 2 and 3; the species adds its bonus on each side (a species with pick
+ * lets the player put the bigger bonus on a side: with the high value unless side says one); neither threshold may be under a third of the pool
+ * (rounded up): points move from the other one. Pure (the tests load it). Returns { vigor, resolve, pool, moved, highSide, bonusHighSide, parts }.
+ */
+export function healthLine({ high = 0, low = 0, steps = {}, stage = 1, highSide = "vigor", bonus = {} } = {}) {
+  const n = v => Math.max(0, Math.trunc(Number(v)) || 0), st = Math.min(3, Math.max(1, Math.trunc(Number(stage)) || 1));
+  let hi = n(high), lo = n(low);
+  if (st >= 2) { hi += n(steps.high2); lo += n(steps.low2); }
+  if (st >= 3) { hi += n(steps.high3); lo += n(steps.low3); }
+  const hv = highSide === "resolve" ? "resolve" : "vigor";
+  let bv = Math.trunc(Number(bonus.v)) || 0, br = Math.trunc(Number(bonus.r)) || 0;
+  // A species whose bigger bonus is the player's choice (Human +3 / +2): the typed Vigor bonus is the bigger one; its side follows the high value or the choice.
+  let bonusHighSide = "";
+  if (bonus.pick) {
+    const big = Math.max(bv, br), small = Math.min(bv, br);
+    bonusHighSide = bonus.side === "vigor" || bonus.side === "resolve" ? bonus.side : hv;
+    bv = bonusHighSide === "vigor" ? big : small; br = bonusHighSide === "vigor" ? small : big;
+  }
+  let vigor = (hv === "vigor" ? hi : lo) + bv, resolve = (hv === "vigor" ? lo : hi) + br;
+  const pool = vigor + resolve, floor = Math.ceil(pool / 3 - 1e-9);
+  let moved = 0;
+  if (pool > 0 && vigor < floor) { moved = Math.min(floor - vigor, resolve); vigor += moved; resolve -= moved; }
+  else if (pool > 0 && resolve < floor) { moved = Math.min(floor - resolve, vigor); resolve += moved; vigor -= moved; }
+  return { vigor, resolve, pool, moved, highSide: hv, bonusHighSide, floor: pool > 0 ? floor : 0, classVigor: hv === "vigor" ? hi : lo, classResolve: hv === "vigor" ? lo : hi, bonusVigor: bv, bonusResolve: br };
 }
 
 /** Health Pool values derived from the thresholds (bdt, mdt) and the recorded damage. Shared by characters and NPCs. */
@@ -205,7 +249,7 @@ export class NpcData extends CharacterData {
   }
 
   prepareDerivedData() {
-    // The Bestiary: Attributes, Health and Defenses come from the role and the ratings (npcBuild). AP a turn: 3 for a Minion, 5 for the others.
+    // The Bestiary: Attributes, Health and Defenses come from the role and the ratings (npcBuild). AP a turn: 3 for a Minion, 4 for the others (pack R), and the Reaction AP for every NPC.
     const nb = npcBuild(this);
     Object.assign(this.attributes, nb.attributes);
     this.bdt = Math.max(0, nb.bdt); this.mdt = Math.max(0, nb.mdt); this.armorDef = nb.armorDef; this.wardDef = nb.wardDef; this.speed = nb.speed;
@@ -241,7 +285,9 @@ export class SpeciesData extends foundry.abstract.TypeDataModel {
       description: new HTMLField(),
       attributes: new SchemaField({ body: sint(), mind: sint(), appeal: sint(), instinct: sint() }),
       pickTwo: bool(),
-      bodyMod: sint(), mindMod: sint(), speed: int(5), reach: int(1, 0), size: int(3, 1),
+      // bodyMod / mindMod: the species' Vigor and Resolve bonuses (pack R, v0.0.243: Dwarf +4 / +1, Elf +1 / +4; the keys keep their old names).
+      // pickHealth: the player chooses which threshold gets the bigger bonus (Human +3 / +2): the bigger one is typed as the Vigor bonus.
+      bodyMod: sint(), mindMod: sint(), pickHealth: bool(), speed: int(5), reach: int(1, 0), size: int(3, 1),
       steadiness: int(0, 0),   // v0.0.169: resistance to being moved (Dwarf 1, the others 0)
       chosen: attrSet()
     };
@@ -253,7 +299,10 @@ export class ClassData extends foundry.abstract.TypeDataModel {
     return {
       description: new HTMLField(),
       choiceA: attrSet(), choiceB: attrSet(),
+      // bodyMult / mindMult: the Health multipliers of a class from before pack R (kept so an old copy still computes until it is updated).
       bodyMult: new NumberField({ required: true, nullable: false, initial: 0, min: 0, step: 0.5 }), mindMult: new NumberField({ required: true, nullable: false, initial: 0, min: 0, step: 0.5 }), rallyMod: sint(), speedMod: sint(),
+      // v0.0.243 (pack R; book, Chapter 4): the class's high and low Health values and the steps each grows by at Stages 2 and 3 (Paladin 20 / 10, +12 / +6, +14 / +7).
+      healthHigh: int(0, 0), healthLow: int(0, 0), stepHigh2: int(0, 0), stepLow2: int(0, 0), stepHigh3: int(0, 0), stepLow3: int(0, 0),
       weaponAttrs: attrSet(), magicAttrs: attrSet(),
       features: new ArrayField(new SchemaField({ uuid: str(), level: int(1, 0) })),
       chosenA: str(), chosenB: str(), chosenWeapon: str(), chosenMagic: str(),   // chosenWeapon / chosenMagic: only for classes from before v0.0.117
@@ -504,7 +553,10 @@ const settingsField = () => new ArrayField(new SchemaField({
         //   mastery: choose one weapon with the trait mstTrait, it starts at mstValue Mastery (Sharpshooter, Bow Mastery).
         msgWhen: choice(TWOD12.messageWhen, "encounter"), msgTo: choice(TWOD12.messageTo, "owners"), msgAction: str(), msgAp: int(0, 0),
         wpWhich: choice(TWOD12.propWeapons, "fists"), wpProp: choice(TWOD12.removableProps, "nonthreatening"),
-        mstTrait: choice(TWOD12.weaponTraits, "projectile"), mstValue: int(3, 0)
+        mstTrait: choice(TWOD12.weaponTraits, "projectile"), mstValue: int(3, 0),
+        // v0.0.243 (pack R): eschook: the class's Escalation hook: once an encounter, when hookWhen happens (an ally within hookRange squares becomes
+        //   Bloodied or goes Down; the creature it marked goes Down), the creature's Escalation rises by 1 (Kindled Wrath, Thrill of the Kill).
+        hookWhen: choice(TWOD12.escHookWhen, "allyState"), hookRange: int(5, 0)
       }));
 
 export class EffectData extends foundry.abstract.TypeDataModel {

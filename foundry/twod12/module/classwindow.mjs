@@ -146,7 +146,7 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
     const missing = this._missingChoices(m);
     if (missing.length) m.complete = false;
     const dots = Array.from({ length: m.total }, (_, i) => `<i class="${i < m.made ? "on" : ""}"></i>`).join("");
-    const stats = [["Body Health", `×${cls.bodyMult}`], ["Mind Health", `×${cls.mindMult}`], ["Rally", cls.rallyMod], ["Speed", `${cls.speedMod >= 0 ? "+" : "−"}${Math.abs(cls.speedMod)}`], ["Armor Training", TWOD12.armorTrainings[cls.armorTraining] ?? cls.armorTraining]];
+    const stats = [["Health", cls.healthHigh ? `high ${cls.healthHigh}, low ${cls.healthLow} (Stage 2 +${cls.stepHigh2} / +${cls.stepLow2}; Stage 3 +${cls.stepHigh3} / +${cls.stepLow3})` : `Body ×${cls.bodyMult}, Mind ×${cls.mindMult} (old)`], ["Rally", `${cls.rallyMod} + Stage`], ["Speed", `${cls.speedMod >= 0 ? "+" : "−"}${Math.abs(cls.speedMod)}`], ["Armor Training", TWOD12.armorTrainings[cls.armorTraining] ?? cls.armorTraining]];
     const left = m.total - m.made, stage = stageLine(level);
     const div = document.createElement("div");
     div.className = "cw";

@@ -3,17 +3,18 @@ round 1: Kai 0 Nari 3 Lonny 1
 round 2: Kai 1 | Nari stays at 3: 3 | Lonny (Unconscious) keeps 1: 1
 the same round again gives nothing: Kai 1
 round 3: Kai 2
---- paying
-Kai pays 1: {"ok":true,"why":""}
-Kai pays 3: {"ok":false,"why":"Kai has 2 Escalation; this costs 3."}
-Lonny pays 1: {"ok":false,"why":"Lonny is Unconscious: Escalation can't be spent."}
-Goblin pays 1: {"ok":false,"why":"Goblin has no Escalation (only PCs do)."}
-Kai pays 0: {"ok":true,"why":""}
-Kai spent 2: 0
+--- the requirement (nothing is spent)
+Kai needs 1: {"ok":true,"why":""}
+Kai needs 3: {"ok":false,"why":"Kai is at Escalation 2; this needs Escalation 3."}
+Lonny needs 1: {"ok":true,"why":""}
+Goblin needs 1: {"ok":false,"why":"Goblin has no Escalation (only PCs and Elites do)."}
+Kai needs 0: {"ok":true,"why":""}
+Kai after using an Escalation 2 Action: 2 | spendEscalation gone: undefined
 --- passives (an effect with a minimum Escalation)
 min 2 at Escalation 2: on | at 1: off | no minimum: on | disabled: off | on an NPC (no Escalation): off
 --- the encounter ends
-Kai 0 Nari 0 | Kai's effects removed: ["surge"]
---- wiring: PC field: true | Action cost: true | Effect minimum: true | checked before the AP, spent after: true
+Kai 1 Nari 1 | Kai's effects removed: ["surge"]
+--- wiring: PC field starts at 1: true | Action cost: true | Effect minimum: true | checked before the AP, never spent: true
 effects it applies are marked: true | the gate in rolls, damage, bonuses, Defense, Speed: true | card shows the cost: true | sheet pips: true | dropdown colors: true
-an encounter starts: Nari 0
+an encounter starts: Nari 1 Kai 1
+with Momentum: Nari 2 | the NPC with Escalation on stays at 1: 1

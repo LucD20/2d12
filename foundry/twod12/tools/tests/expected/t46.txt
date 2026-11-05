@@ -1,4 +1,4 @@
-AP: healthy 5 | Down + Bloodied 5 | Down + both 5 | Bloodied not Down 5
+AP: healthy 4 | Down + Bloodied 4 | Down + both 4 | Bloodied not Down 4
 tie order: NPC-high, PC-high, NPC2, PC-low (NPC-high has the higher Attribute, so its group goes first)
 full tie: PC, NPC (Friendly first)
 (Rally Points can now be used while Down through other Actions; the Rally Action itself is blocked in useAction)

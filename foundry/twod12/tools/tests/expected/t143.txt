@@ -1,5 +1,5 @@
 --- Rally Points: the class's Rally value + ceil((Body + Mind + level) / 2)
-the formula: true | Paladin 6: true | Archer 5: true
+the formula (pack R: Rally + Stage): true | Paladin 6: true | Archer 5: true
 Paladin, Body +2, Mind +1, level 1     8
 Archer, Body +1, Mind +1, level 1      7
 Paladin, Body +2, Mind +1, level 3     9

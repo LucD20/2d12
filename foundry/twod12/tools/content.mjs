@@ -72,8 +72,8 @@ for (const n of [1, 2]) add("effects", "effect", `Precise Aim (${n} Boon${n === 
 
 const bloodlustFrom = ["strike", "melee", "ranged", "weapon", "magic", "divine", "focus", "handle", "move"];
 cond("Vulnerable", "icons/svg/hazard.svg", "<p>Actions against you gain as many Boons as the value of Vulnerable (Vulnerable 2: 2 Boons). Only the highest Vulnerable value applies.</p>", [{ ...against(1, 0, []), byValue: true }], { valued: true });
-cond("Slowed", "icons/svg/stoned.svg", "<p>Slowed always has a value. You regain that many fewer AP at the start of your turn (Slowed 2: you regain 3), and your most AP is lowered by the value too. You don't lose AP when you become Slowed, only when you regain AP. Desperate, Dying and Shattered make you Slowed 1, or 1 more (to at most 3), while they last. Slowed and Quickened cancel out without changing each other's value.</p>", [], { valued: true });
-cond("Quickened", "icons/svg/lightning.svg", "<p>Quickened always has a value. Your most AP, and the AP you regain at the start of your turn, rise by that much (Quickened 2: you regain 7). You don't gain AP when you become Quickened, only when you regain AP. Slowed and Quickened cancel out without changing each other's value.</p>", [], { valued: true });
+cond("Slowed", "icons/svg/stoned.svg", "<p>Slowed always has a value. You regain that many fewer AP at the start of your turn (Slowed 2: you regain 2), and your most AP is lowered by the value too. You don't lose AP when you become Slowed, only when you regain AP. Slowed never changes your Reaction AP. Desperate, Dying and Shattered make you Slowed 1, or 1 more (to at most 3), while they last. Slowed and Quickened cancel out without changing each other's value.</p>", [], { valued: true });
+cond("Quickened", "icons/svg/lightning.svg", "<p>Quickened always has a value. Your most AP, and the AP you regain at the start of your turn, rise by that much (Quickened 2: you regain 6). You don't gain AP when you become Quickened, only when you regain AP. Quickened never changes your Reaction AP, and the extra AP you don't spend become Guard like any other. Slowed and Quickened cancel out without changing each other's value.</p>", [], { valued: true });
 cond("Imperiled", "icons/svg/hazard.svg", "<p>You barely avoided a Deadly Hazard (hanging from a ledge, at the lip of a lava pit...). All your Checks and Saves are Doomed, and you are Vulnerable 3. At the start of your turn you get back to safety, to a legal square next to the hazard, and stop being Imperiled; you are Slowed 1 for that turn. A creature can help you get to safety with the Interact Action (1 AP, Handle).</p>", [], { conditions: [{ uuid: uuidOf("conditions", "Vulnerable"), name: "Vulnerable", value: 3, valued: true }] });
 cond("Squeezing", "icons/svg/net.svg", "<p>You stopped moving while squeezing through a space one rank smaller than you: you don't fit completely in the space you are in. All your Rolls are Doomed and you are Vulnerable equal to half your level (rounded up) until you move to a space where you fit completely. Each square you move while squeezing counts as Difficult Terrain. The GM applies this condition (it is not detected on the map).</p>", [], { conditions: [{ uuid: uuidOf("conditions", "Vulnerable"), name: "Vulnerable", value: 1, valued: true, mode: "halfLevel" }] });
 add("effects", "effect", "Bloodlust", "icons/svg/blood.svg", { selfApplied: true, duration: { type: "rounds", rounds: 1 }, description: "<p>For 1 round, your [Melee, Weapon] Actions are Empowered 1 and gain 2 Boons, and you take 1 Bane on Saves.</p>", settings: [
@@ -131,10 +131,11 @@ armorDoc("Medium Armor", "medium", "Armor 13 (11 + 2). Needs Medium Armor Traini
 armorDoc("Heavy Armor", "heavy", "Armor 14 (11 + 3). Rare. Needs Heavy Armor Training.");
 
 /* ------------------------------------------------------------------ Species, Classes, Archetypes */
-const sp = (name, attrs, pickTwo, bodyMod, mindMod, speed, steadiness = 0) => add("classes", "species", name, "icons/svg/mystery-man.svg", { attributes: attrs, pickTwo, bodyMod, mindMod, speed, reach: 1, steadiness });   // no Ward value since v0.0.162 (Ward Defense = 11 + Power Modifier)
-sp("Human", { body: 0, mind: 0, appeal: 0, instinct: 0 }, true, 3, 4, 5);
-sp("Dwarf", { body: 1, mind: 1, appeal: -1, instinct: 1 }, false, 5, 3, 4, 1);
-sp("Elf", { body: -1, mind: 1, appeal: 1, instinct: 1 }, false, 1, 5, 6);
+// Pack R (v0.0.243; book, Species): bodyMod / mindMod are the Vigor and Resolve bonuses (Dwarf +4 / +1, Elf +1 / +4; the Human's +3 / +2 go where the player chooses: pickHealth).
+const sp = (name, attrs, pickTwo, bodyMod, mindMod, speed, steadiness = 0, pickHealth = false) => add("classes", "species", name, "icons/svg/mystery-man.svg", { attributes: attrs, pickTwo, bodyMod, mindMod, pickHealth, speed, reach: 1, steadiness });   // no Ward value since v0.0.162 (Ward Defense = 11 + Power Modifier)
+sp("Human", { body: 0, mind: 0, appeal: 0, instinct: 0 }, true, 3, 2, 5, 0, true);
+sp("Dwarf", { body: 1, mind: 1, appeal: -1, instinct: 1 }, false, 4, 1, 4, 1);
+sp("Elf", { body: -1, mind: 1, appeal: 1, instinct: 1 }, false, 1, 4, 6);
 // v0.0.185 (pack C2): the classes' levels as sections (module/classlevels.mjs), from the book's "by Level" tables; the class window reads them.
 const U = names => names.map(n => uuidOf(/^(Font of Mercy|Divine Power|Kindled Wrath|Sharpshooter|Marked Quarry|Hallowed Stance|Radiant Zeal|Mending Light|Divine Surge|Searing Blows|Reckoning|Killer's Focus|Thrill of the Kill|Vanish|Harrying Shots|Hunter's Edge|Sure Step|Finisher|Staggering Shot)$/.test(n) ? "features" : "actions", n));
 const sec = (id, title, kind, o = {}) => ({ id, title, kind, mode: o.mode ?? "choice", pick: o.pick ?? 1, items: o.items ?? [], pairs: (o.pairs ?? []).map(([a, b]) => ({ a, b })), freq: o.freq ?? "any", category: o.category ?? "" });
@@ -146,7 +147,8 @@ const PAL_PASS1 = ["Radiant Zeal", "Divine Surge", "Font of Mercy"], PAL_PASS2 =
 const PAL_PASSIVES = [...PAL_PASS1, ...PAL_PASS2, ...PAL_PASS3];
 add("classes", "class", "Paladin", "icons/svg/angel.svg", {
   description: "<p>A holy warrior.</p>", category: "Class", flavor: "Your god's strength flows through your weapon and your hands.",
-  choiceA: ["body", "appeal"], choiceB: ["mind", "instinct"], bodyMult: 4, mindMult: 4, rallyMod: 6, speedMod: 0,
+  // Pack R (v0.0.243; book, Chapter 4 and the class stat block): high 20 / low 10, Stage 2 +12 / +6, Stage 3 +14 / +7; Rally 6 (+ the Stage).
+  choiceA: ["body", "appeal"], choiceB: ["mind", "instinct"], healthHigh: 20, healthLow: 10, stepHigh2: 12, stepLow2: 6, stepHigh3: 14, stepLow3: 7, bodyMult: 0, mindMult: 0, rallyMod: 6, speedMod: 0,
   weaponAttrs: ["body", "appeal"], magicAttrs: ["mind", "appeal"], armorTraining: "heavy", features: [],
   repertoire: U(["Holy Wrath", "Word of Radiance", "Bulwark of Faith", "Beacon", "Consecrated Ground", "Miraculous Recovery", "Divine Intervention"]), escPassives: U(PAL_PASSIVES), escActives: U(PAL_APEX),
   levels: [
@@ -166,7 +168,8 @@ const ARC_PASS1 = ["Killer's Focus", "Vanish", "Harrying Shots"], ARC_PASS2 = ["
 const ARC_PASSIVES = [...ARC_PASS1, ...ARC_PASS2, ...ARC_PASS3];
 add("classes", "class", "Archer", "icons/svg/target.svg", {
   description: "<p>An Archer fights from a distance.</p>", category: "Class", flavor: "You were made for the shot no one else would take.",
-  choiceA: ["body", "instinct"], choiceB: ["mind", "appeal"], bodyMult: 3, mindMult: 2.5, rallyMod: 5,
+  // Pack R (v0.0.243): high 16 / low 8, Stage 2 +9 / +5, Stage 3 +11 / +6; Rally 5 (+ the Stage).
+  choiceA: ["body", "instinct"], choiceB: ["mind", "appeal"], healthHigh: 16, healthLow: 8, stepHigh2: 9, stepLow2: 5, stepHigh3: 11, stepLow3: 6, bodyMult: 0, mindMult: 0, rallyMod: 5,
   weaponAttrs: ["instinct", "body"], magicAttrs: ["mind", "appeal"], armorTraining: "medium", speedMod: 1, features: [],
   repertoire: U(["Marksman's Shot", "Volley", "Covering Fire", "Pinning Shot", "Twin Shot", "Hunter's Focus", "Deadeye", "Rain of Arrows"]), escPassives: U(ARC_PASSIVES), escActives: U(ARC_APEX),
   levels: [

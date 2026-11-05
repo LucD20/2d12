@@ -1,19 +1,32 @@
-// Guard (v0.0.181; book, Chapter 4): a buffer written Guard N. It takes damage before your Health (Body or Mind alike), after any
+// Guard (v0.0.181; book, Chapter 4): a buffer written Guard N. It takes damage before your Health (Vigor or Resolve alike), after any
 // damage reduction; damage it takes isn't damage you take (no thresholds, no triggers). It doesn't stack (keep the higher), can't be
 // healed and ends with the encounter. Pure: the tests load it.
+// v0.0.243 (pack R; book, Unspent AP): each AP kept at the end of a turn is Guard 2 / 3 / 4 by Stage (system.apGuard): it adds to the other
+// Guard, damage takes it first, and it ends when the AP are regained (combat.mjs); a kept AP that pays a Reaction loses its Guard.
+import { TWOD12 } from "./config.mjs";
+
+/** The Guard one unspent AP gives at a Stage (1, 2, 3): 2 / 3 / 4. */
+export const guardPerAP = stage => TWOD12.guardPerAp[Math.min(3, Math.max(1, Math.trunc(Number(stage)) || 1)) - 1];
+/** The Guard of the AP kept at the end of a turn. */
+export const apGuardOf = (keptAp, stage) => Math.max(0, Math.trunc(Number(keptAp)) || 0) * guardPerAP(stage);
+/** A kept AP paid for a Reaction: its Guard goes (one AP's worth per AP, never under 0). */
+export const apGuardAfterReaction = (apGuard, apSpent, stage) => Math.max(0, (Math.max(0, Number(apGuard) || 0)) - Math.max(0, Math.trunc(Number(apSpent)) || 0) * guardPerAP(stage));
 
 /**
- * Damage buckets { B: {l, n}, M: {l, n} } against a Guard value: the Guard takes from them in order (Body lethal, Body nonlethal,
- * Mind lethal, Mind nonlethal). Returns { a: what is left for the Health, taken, guard: the Guard left }.
+ * Damage buckets { B: {l, n}, M: {l, n} } against a Guard value: the Guard takes from them in order (Vigor lethal, Vigor nonlethal,
+ * Resolve lethal, Resolve nonlethal). The Guard from unspent AP (apGuard) is taken before the other Guard.
+ * Returns { a: what is left for the Health, taken (both Guards together), guard: the Guard left, apGuard: the AP Guard left, takenAp }.
  */
-export function absorbGuard(guard, a) {
-  let g = Math.max(0, Math.floor(Number(guard) || 0)), taken = 0;
+export function absorbGuard(guard, a, apGuard = 0) {
+  let g = Math.max(0, Math.floor(Number(guard) || 0)), ag = Math.max(0, Math.floor(Number(apGuard) || 0)), taken = 0, takenAp = 0;
   const out = { B: { ...a.B }, M: { ...a.M } };
   for (const [p, k] of [["B", "l"], ["B", "n"], ["M", "l"], ["M", "n"]]) {
+    const fromAp = Math.min(ag, out[p][k] || 0);
+    out[p][k] = (out[p][k] || 0) - fromAp; ag -= fromAp; takenAp += fromAp;
     const n = Math.min(g, out[p][k] || 0);
     out[p][k] = (out[p][k] || 0) - n; g -= n; taken += n;
   }
-  return { a: out, taken, guard: g };
+  return { a: out, taken: taken + takenAp, takenAp, guard: g, apGuard: ag };
 }
 
 /** Gaining Guard: the higher value is kept (Stacking). */

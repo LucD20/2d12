@@ -9,7 +9,9 @@ import { solidTiles, tileConfigSolid } from "./corners.mjs";
 import { registerLightRadius } from "./lightradius.mjs";
 import { registerRegionSnap } from "./regionshape.mjs";
 import { chatChips } from "./chatchips.mjs";
-import { registerEscalationHooks } from "./escalation.mjs";
+import { registerEscalationHooks, registerMomentumSetting, escalationAll } from "./escalation.mjs";
+import { registerStateHooks } from "./states.mjs";
+import { registerMigrationR } from "./migrater.mjs";
 import { registerArmorHooks } from "./armor.mjs";
 import { registerFloatText } from "./floattext.mjs";
 import { registerEffectEditor } from "./fxeditor.mjs";
@@ -61,6 +63,9 @@ Hooks.once("init", () => {
   registerAppliedEditor();
   registerArmorHooks();
   registerEscalationHooks();
+  registerMomentumSetting();   // v0.0.243 (pack R)
+  registerStateHooks();   // v0.0.243: Bloodied / Strained announced, the Escalation hooks
+  registerMigrationR();   // v0.0.243: existing characters brought to pack R, once, by the GM
   registerAuraHooks();
   registerHazardHooks();
   registerDownHooks();
@@ -115,6 +120,8 @@ Hooks.once("init", () => {
     sliderInfo,
     refreshBasics: refreshAllBasics,
     refreshFromCompendium: (opts = {}) => (Object.keys(opts).length ? refreshFromCompendium(opts) : askRefresh()),   // v0.0.190: a macro can call it
+    escalation: (delta = 1, actors = null) => escalationAll(delta, actors),
+    migrateR: () => import("./migrater.mjs").then(m => m.migrateR()),   // v0.0.243: the pack R migration again (Health line, Escalation 1, the cards refreshed)   // v0.0.243: the GM's valve: every PC in the combat +1 Escalation (or the given creatures)
     shadowedEffects,
     rulerInfo,
     solidTiles: (on = true) => solidTiles(on),

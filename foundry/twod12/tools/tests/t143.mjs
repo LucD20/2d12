@@ -11,7 +11,7 @@ const cf = await import(ROOTURL + "module/config.mjs"), b = await import(ROOTURL
 
 console.log("--- Rally Points: the class's Rally value + ceil((Body + Mind + level) / 2)");
 const data = src("module/data.mjs"), content = src("tools/content.mjs");
-console.log("the formula:", data.includes("(cls?.system.rallyMod ?? 0) + Math.ceil(((a.body ?? 0) + (a.mind ?? 0) + (Number(lv) || 0)) / 2)"), "| Paladin 6:", content.includes("rallyMod: 6, speedMod: 0,"), "| Archer 5:", content.includes("mindMult: 2.5, rallyMod: 5,"));
+console.log("the formula (pack R: Rally + Stage):", data.includes("(csys?.rallyMod ?? 0) + this.stage"), "| Paladin 6:", content.includes("rallyMod: 6, speedMod: 0,"), "| Archer 5:", content.includes("bodyMult: 0, mindMult: 0, rallyMod: 5,"));
 for (const [label, rally, body, mind, lv] of [["Paladin, Body +2, Mind +1, level 1", 6, 2, 1, 1], ["Archer, Body +1, Mind +1, level 1", 5, 1, 1, 1], ["Paladin, Body +2, Mind +1, level 3", 6, 2, 1, 3]])
   console.log(label.padEnd(38), rally + Math.ceil((body + mind + lv) / 2));
 const cls = (name, rallyMod) => { const it = { type: "class", name, system: { rallyMod }, updated: null, async update(u) { this.updated = u; } }; return it; };

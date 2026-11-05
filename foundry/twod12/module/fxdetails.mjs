@@ -100,6 +100,8 @@ function settingSentenceOnly(x) {
       return `Choose one <b>${esc(TWOD12.weaponTraits[x.mstTrait] ?? "?")}</b> weapon: it starts at <b>${Math.max(0, Number(x.mstValue) || 0)}</b> Mastery.`;
     case "rally":
       return `Each Rally Point heals <b>${esc(x.rallyBonus || "?")}</b> more, for this creature${Number(x.rallyRange) > 0 ? ` and its allies within <b>${Number(x.rallyRange)}</b> squares` : ""}.`;
+    case "eschook":
+      return `Once an encounter, when ${x.hookWhen === "markDown" ? "<b>the creature it marked goes Down</b>" : `<b>an ally within ${Math.max(0, Number(x.hookRange) || 0)} squares becomes Bloodied or goes Down</b>`}, its Escalation rises by 1 (at 3: nothing, and the once isn't used up).`;
     case "light":
       return `The token sheds bright light out to <b>${x.bright}</b> and dim light out to <b>${x.dim}</b> squares.`;
     case "note": {
@@ -134,6 +136,7 @@ export function settingShort(x) {
     case "turnstart": return `${fxNameOf(x.fxUuid) || "an Effect"} each turn`;
     case "ignore": return `ignores ${(TWOD12.ignoreRules[x.ignoreRule] ?? "a Bane").replace(/ \(.*\)$/, "")}`;
     case "rally": return `Rally Points +${x.rallyBonus || "?"}${Number(x.rallyRange) > 0 ? ` (allies within ${Number(x.rallyRange)})` : ""}`;
+    case "eschook": return `Escalation +1 when ${x.hookWhen === "markDown" ? "its mark goes Down" : `an ally within ${Math.max(0, Number(x.hookRange) || 0)} is Bloodied or Down`}`;
     case "message": return `message ${(TWOD12.messageWhen[x.msgWhen] ?? "").replace(/^At the start of an? /, "at ").replace(/^At the start of each of its turns$/, "each turn").replace(/^When the creature it marked goes Down$/, "when its mark goes Down")}${String(x.msgAction ?? "").trim() ? ` (${x.msgAction})` : ""}`;
     case "weaponprop": return `${TWOD12.propWeapons[x.wpWhich] ?? "Fists"} not ${TWOD12.removableProps[x.wpProp] ?? "?"}`;
     case "mastery": return `${TWOD12.weaponTraits[x.mstTrait] ?? "?"} weapon at ${Math.max(0, Number(x.mstValue) || 0)} Mastery`;

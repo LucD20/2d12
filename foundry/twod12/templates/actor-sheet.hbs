@@ -140,9 +140,9 @@
       {{#if isPc}}<a data-action="rest" data-tooltip="Recovery: Take a Breather, Sleep or Rest"><i class="fa-solid fa-campground"></i></a>{{/if}}
     </div>
     <div class="hb-meters">
-      <div class="hb-meter {{#unless head.ap.inCombat}}off{{/unless}}" data-tooltip="{{head.ap.tip}}"><span>AP</span><span class="hpips">{{#each head.ap.pips}}<a class="hpip ap{{#if on}} on{{/if}}" data-action="setApPip" data-n="{{n}}"></a>{{/each}}</span></div>
+      <div class="hb-meter {{#unless head.ap.inCombat}}off{{/unless}}" data-tooltip="{{head.ap.tip}}"><span>AP</span><span class="hpips">{{#each head.ap.pips}}<a class="hpip ap{{#if on}} on{{/if}}" data-action="setApPip" data-n="{{n}}"></a>{{/each}}<a class="hpip rap{{#if head.ap.rap}} on{{/if}}" data-action="toggleRap" aria-label="Reaction AP">R</a></span></div>
       {{#if npcEsc}}<div class="hb-meter" data-tooltip="{{#if npcEscOn}}This NPC has Escalation (click the word to switch it off){{else}}NPCs have no Escalation unless you switch it on (an elite foe){{/if}}"><a class="esc-tog" data-action="toggleEscalation">Escalation{{#unless npcEscOn}}: off{{/unless}}</a>{{#if npcEscOn}}<span class="hpips">{{#each escPips}}<a class="hpip esc{{#if on}} on{{/if}}" data-action="setEscalation" data-n="{{n}}"></a>{{/each}}</span>{{/if}}</div>{{/if}}
-      {{#if isPc}}<div class="hb-meter" data-tooltip="Escalation {{escNow}} / 3: +1 at the start of every round after the first (not while Unconscious), spent on Escalation Actions, back to 0 when the encounter ends. Click a pip to correct it."><span>Escalation</span><span class="hpips">{{#each escPips}}<a class="hpip esc{{#if on}} on{{/if}}" data-action="setEscalation" data-n="{{n}}"></a>{{/each}}</span></div>
+      {{#if isPc}}<div class="hb-meter" data-tooltip="Escalation {{escNow}} / 3, a level that is never spent: 1 at the start of an encounter (2 with Momentum), +1 at the start of every round after the first (not while Unconscious), +1 once an encounter on a Critical and on your class's hook; back to 1 when the encounter ends. Your Escalation Passives work while it is at least theirs; the Apex needs 3. Click a pip to correct it."><span>Escalation</span><span class="hpips">{{#each escPips}}<a class="hpip esc{{#if on}} on{{/if}}" data-action="setEscalation" data-n="{{n}}"></a>{{/each}}</span></div>
       {{else}}<div class="hb-meter npcpool" data-tooltip="The NPC's Health Pool, from its role, its ratings and its Stage (Builder tab). {{head.cvTip}}">Health Pool <b>{{health.pool}}</b> &middot; CV {{head.cv}}</div>{{/if}}
     </div>
   </header>
@@ -152,7 +152,7 @@
       <div class="np-hh"><h3>Health</h3>
         <span class="np-seg" role="group" aria-label="Health view">{{#each health.views}}<a class="{{#if on}}on{{/if}}" data-action="setHealthView" data-k="{{k}}" aria-pressed="{{on}}">{{l}}</a>{{/each}}</span>
       </div>
-      <div class="np-guardrow{{#if health.donut}} float{{/if}}"><a class="np-guardbtn{{#if system.guard}} on{{/if}}" data-tooltip="Guard: it takes damage before your Health (Body or Mind), after any damage reduction. It doesn't stack (keep the higher), can't be healed and ends with the encounter. Click to add 1, right-click to remove 1, Ctrl: 5 at a time." aria-label="Guard"><i class="fa-solid fa-shield-halved"></i> Guard <b>{{system.guard}}</b></a></div>
+      <div class="np-guardrow{{#if health.donut}} float{{/if}}"><a class="np-guardbtn{{#if system.guard}} on{{/if}}{{#if system.apGuard}} on{{/if}}" data-tooltip="Guard: it takes damage before your Health (Vigor or Resolve), after any damage reduction. It doesn't stack (keep the higher), can't be healed and ends with the encounter. The Guard of the AP you kept at the end of your turn ({{system.apGuard}}) adds to it, is taken first and ends when you regain AP. Click to add 1, right-click to remove 1, Ctrl: 5 at a time." aria-label="Guard"><i class="fa-solid fa-shield-halved"></i> Guard <b>{{system.guard}}</b>{{#if system.apGuard}} <small class="np-apguard">+{{system.apGuard}} AP</small>{{/if}}</a></div>
       {{#if health.donut}}
       <div class="np-donutrow">
         <div class="np-donutwrap{{#if system.guard}} guarded{{/if}}">
@@ -181,7 +181,8 @@
       {{#if health.down.note}}<div class="np-note">{{health.down.note}}</div>{{/if}}
       {{/if}}
       {{#if isPc}}
-      <div class="np-rally" data-tooltip="Each Rally Point removes {{system.rallyHeal}} damage">Rally Points <b>{{system.rallyLeft}} / {{system.rallyMax}}</b> &middot; each heals {{system.rallyHeal}}</div>
+      {{#if health.line}}<div class="np-hline{{#if health.line.old}} old{{/if}}" data-tooltip="{{health.line.tip}}"><span>{{{health.line.text}}}</span>{{#unless health.line.old}}<a data-action="swapHealthHigh" data-tooltip="Put the class's high Health value on the other threshold" aria-label="Swap"><i class="fa-solid fa-right-left"></i></a>{{/unless}}{{#if health.line.pick}}<a class="np-hpick" data-action="speciesSide" data-tooltip="Where the species' bigger bonus goes: with the high value, on Vigor, or on Resolve (click to change)">{{health.line.pickText}}</a>{{/if}}</div>{{/if}}
+      <div class="np-rally" data-tooltip="Rally Points: your class's Rally value + your Stage ({{system.stage}}). Each removes {{system.rallyHeal}} damage (a quarter of the Health Pool)">Rally Points <b>{{system.rallyLeft}} / {{system.rallyMax}}</b> &middot; each heals {{system.rallyHeal}}</div>
       <div class="np-wounds">
         <div class="wrow"><span class="wl">Body Wounds</span><input type="number" min="0" name="system.bodyWounds" value="{{system.bodyWounds}}"><a class="wtab" data-action="rollTable" data-kind="dying" data-tooltip="Roll on the Dying Table"><i class="fa-solid fa-dice"></i> Dying</a></div>
         <div class="wrow"><span class="wl">Mind Wounds</span><input type="number" min="0" name="system.mindWounds" value="{{system.mindWounds}}"><a class="wtab" data-action="rollTable" data-kind="shattered" data-tooltip="Roll on the Shattered Table"><i class="fa-solid fa-dice"></i> Shattered</a></div>
@@ -446,7 +447,7 @@
           <label class="nb-field nb-inline"><span class="nb-lab">Weapon Attribute</span><select name="system.weaponAttribute">{{selectOptions weaponAttrChoices selected=system.weaponAttribute}}</select></label>
           <label class="nb-field nb-inline"><span class="nb-lab">Power Attribute</span><select name="system.powerAttribute">{{selectOptions weaponAttrChoices selected=system.powerAttribute}}</select></label>
         </div>
-        <p class="nb-hint">AP {{builder.role.ap}} a turn.{{#if builder.minionNote}} {{builder.minionNote}}{{/if}}</p>
+        <p class="nb-hint">AP {{builder.role.ap}} a turn, and the Reaction AP (it pays only for Reactions).{{#if builder.minionNote}} {{builder.minionNote}}{{/if}}</p>
         {{#if builder.levelNote}}<p class="nb-warn"><i class="fa-solid fa-triangle-exclamation"></i> {{builder.levelNote}}</p>{{/if}}
         {{#if builder.warnings.length}}<p class="nb-warn"><i class="fa-solid fa-triangle-exclamation"></i> Outside the Bestiary's tables: {{#each builder.warnings}}{{this}}{{#unless @last}}; {{/unless}}{{/each}}.</p>{{/if}}
         {{#each builder.groups}}

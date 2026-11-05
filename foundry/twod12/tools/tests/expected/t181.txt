@@ -1,0 +1,22 @@
+--- the numbers
+AP a turn: 4 | Reaction AP: 1 | roles: minion 3, grunt 4, standard 4, elite 4 | Guard an AP by Stage: 2 / 3 / 4
+regain: healthy 4 | Slowed 2 (conditionValue stub: none) Minion 3 | most AP 4
+paying a Reaction (the Reaction AP first): 1R with RAP {"fromRap":1,"fromAp":0} 1R without {"fromRap":0,"fromAp":1} 2R with RAP {"fromRap":1,"fromAp":1} 0R {"fromRap":0,"fromAp":0}
+Guard of kept AP: 1 AP at Stage 1 / 2 / 3: 2 / 3 / 4 | 2 AP at Stage 1: 4 | after a 1R paid with a kept AP (Guard 4, Stage 1): 2 | never under 0: 0
+--- the AP Guard is taken first (the book's example: Guard 5 from a card + 1 kept AP at Stage 1 = 7; a hit for 3)
+taken 3 (2 from the AP Guard), AP Guard left 0, other Guard left 4, to the Health 0
+a 10 hit against 4 + 5: taken 9 (AP 4), left 0 / 0, Health takes Vigor 0 Resolve 1
+the old call still works: {"a":{"B":{"l":2,"n":0},"M":{"l":0,"n":0}},"taken":3,"takenAp":0,"guard":0,"apGuard":0}
+--- the ticker's line: the Reaction AP as a diamond
+["+4 +R","−1R","−1R"] | <span class="tk-pips" data-tooltip="4 AP left, Reaction AP ready"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="rap on"></i></span> | <i class="rap spent" | no rap on an old line
+--- a combat (stubs): a Reaction out of turn pays with the Reaction AP, then a kept AP that loses its Guard
+1R: true | AP 1 RAP 0 AP Guard 2 (the Reaction AP paid: the Guard stays)
+another 1R: true | AP 0 RAP 0 AP Guard 0 (the kept AP paid: its Guard is gone)
+a Reaction with nothing left asks (stub says yes): true | AP 0
+--- the turn ends with 2 AP kept, then the AP are regained
+keepApGuard: 4 | actor.apGuard 4 | the line: Drak keeps 2 AP: Guard 4 until its next turn (2 an AP). A kept AP can still pay a Reaction.
+a frozen creature (it swapped) keeps its AP, no Guard: 0
+regained: AP Guard 0
+--- wiring: the turn start gives the Reaction AP and drops the AP Guard: true | the turn's end keeps the AP as Guard: true | damage takes the AP Guard first: true | the encounter's end drops it: true
+the Reaction AP pip: sheet true | strip true | tracker true | a Reaction row counts it: true | Slowed / Quickened texts (4 AP, never the Reaction AP): true
+no plain apmsg line left in combat.mjs / damage.mjs: true | warnings: 0

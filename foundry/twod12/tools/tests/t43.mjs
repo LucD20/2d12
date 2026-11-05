@@ -34,10 +34,9 @@ globalThis.__d = { "Item.imm": item, "Actor.a": actor }; game.items.push(item);
 const found = await ef.applyCondition("immobilized", [actor], { type: "eot" }, { actorUuid: "Actor.src" });
 console.log("found item:", found, "| AE:", made[0]?.name, "| statuses:", JSON.stringify(made[0]?.statuses), "| duration:", JSON.stringify(made[0]?.flags?.twod12?.duration), "| speedMods:", JSON.stringify(made[0]?.flags?.twod12?.speedMods));
 made.length = 0; const f2 = await ef.applyCondition("prone", [actor], null, null); console.log("no Effect item named Prone:", f2, JSON.stringify(made));
-// 6. derived Bloodied / Strained banes
-const bl = { effects: [], system: { bloodied: true, strained: false } };
-const ml = ef.modifierList(bl, new Set(["strike", "weapon"])); console.log("Bloodied chip:", ml.map(m => `${m.name} banes ${m.banes} match ${m.match}`).join(","), "| mind action:", ef.modifierList(bl, new Set(["mind"]))[0].match, "| resolved:", JSON.stringify(ef.resolveModifiers(bl, ["syn:bloodied"])));
-const st = { effects: [], system: { bloodied: false, strained: true } }; console.log("Strained magic:", ef.modifierList(st, new Set(["magic"]))[0].match, "| body:", ef.modifierList(st, new Set(["body"]))[0].match);
+// 6. derived Bloodied / Strained banes: gone since pack R (v0.0.243; book, Health States: no effect by themselves)
+const bl = { effects: [], system: { bloodied: true, strained: true }, itemTypes: { weapon: [] } };
+console.log("Bloodied / Strained chips on a Strike:", ef.modifierList(bl, new Set(["strike", "weapon"])).length, "| on a Magic Action:", ef.modifierList(bl, new Set(["magic"])).length, "| resolved:", JSON.stringify(ef.resolveModifiers(bl, ["syn:bloodied"])));
 console.log("range extra resolves:", JSON.stringify(ef.resolveModifiers(bl, ["syn:range"], [{ id: "syn:range", name: "Far range (14 sq)", banes: 1 }])));
 // 7. group colors
 const cf = await import(ROOTURL + "module/config.mjs");

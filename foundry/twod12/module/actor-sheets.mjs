@@ -28,7 +28,7 @@ import { resolveModifiers } from "./effects.mjs";
 import { buildRawCard, buildInfoCard, sendItemToChat } from "./preview.mjs";
 import { openWeaponGenerator } from "./gen.mjs";
 import { openActionGenerator } from "./genaction.mjs";
-import { rollActorInitiative, combatantOf, getAP, setAP, spendAP } from "./combat.mjs";
+import { rollActorInitiative, combatantOf, getAP, setAP, spendAP, getRAP, setRAP } from "./combat.mjs";
 import { healthView, donutPoolAt } from "./healthview.mjs";
 import { applySpeedMods } from "./speedmods.mjs";
 import { unloadedWeapon, costText, frequencyText, costGroup, groupRows, GROUP_BY, SORT_BY, sortKeyOf } from "./actionrows.mjs";
@@ -53,6 +53,25 @@ const scrollKey = el => (el.matches(".tab[data-tab]") ? `tab:${el.dataset.tab}` 
 const { HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
 
+
+/**
+ * v0.0.243 (pack R; book, Health Pool): the Health line as the sheet shows it: where the class's high value sits, the species' bonuses, the Stage steps,
+ * the floor of a third; its switches (the high side; a species whose bigger bonus is a choice). Null for NPCs and characters without the line.
+ */
+export function healthLineCtx(a) {
+  const s = a?.system, hl = s?.healthLine;
+  if (a?.type !== "character" || !hl) return null;
+  const cls = a.itemTypes?.class?.[0]?.system, spItem = a.itemTypes?.species?.[0], sp = spItem?.system, L = { vigor: "Vigor", resolve: "Resolve" };
+  if (hl.old) return { old: true, text: `Health from the old formula: update the class from the compendium (pack R)`, tip: "This class has no high / low Health values yet (a copy from before pack R). Update sheets from the compendium, or type them on the Class item." };
+  const stage = s.stage ?? 1, hi = hl.highSide, lo = hi === "vigor" ? "resolve" : "vigor";
+  const steps = stage >= 2 ? ` + Stage ${stage} steps` : "";
+  const parts = [`${L.vigor} ${hl.classVigor}${hl.bonusVigor ? ` ${hl.bonusVigor >= 0 ? "+" : "\u2212"} ${Math.abs(hl.bonusVigor)}` : ""} = ${hl.vigor}`, `${L.resolve} ${hl.classResolve}${hl.bonusResolve ? ` ${hl.bonusResolve >= 0 ? "+" : "\u2212"} ${Math.abs(hl.bonusResolve)}` : ""} = ${hl.resolve}`];
+  const tip = [`The class's high value (${cls?.healthHigh ?? "?"}) on ${L[hi]}, the low one (${cls?.healthLow ?? "?"}) on ${L[lo]}${steps}; the species' bonuses (${sp?.bodyMod ?? 0} / ${sp?.mindMod ?? 0}${sp?.pickHealth ? ", the bigger one where you choose" : ""}).`,
+    parts.join("; ") + ".", hl.moved ? `The floor: ${hl.moved} point${hl.moved === 1 ? "" : "s"} moved so neither threshold is under a third of the pool (${hl.floor}).` : "", "The Attributes don't change the Health. Click \u21c4 to put the high value on the other threshold."].filter(Boolean).join(" ");
+  return { text: `High on <b>${L[hi]}</b>${hl.moved ? ` \u00b7 floor: ${hl.moved} moved` : ""}`, tip, pick: !!sp?.pickHealth,
+    pickText: sp?.pickHealth ? `${spItem?.name ?? "Species"} +${Math.max(sp.bodyMod ?? 0, sp.mindMod ?? 0)} on ${s.speciesHigh ? L[s.speciesHigh] : "the high value"}` : "" };
+}
+
 export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   _activeTab = "actions";
   _filter = "all";
@@ -75,7 +94,8 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       sendItem: CharacterSheet.sendItem, toggleGroup: CharacterSheet.toggleGroup, generateWeapon: CharacterSheet.generateWeapon, toggleLoaded: CharacterSheet.toggleLoaded,
       toggleFav: CharacterSheet.toggleFav, toggleDetails: CharacterSheet.toggleDetails, toggleEsc: CharacterSheet.toggleEsc, toggleEscPass: CharacterSheet.toggleEscPass, toggleGrant: CharacterSheet.toggleGrant, setFilter: CharacterSheet.setFilter, setView: CharacterSheet.setView,
       setHands: CharacterSheet.setHands, setWorn: CharacterSheet.setWorn, setEscalation: CharacterSheet.setEscalation, toggleEscalation: CharacterSheet.toggleEscalation, masteryStep: CharacterSheet.masteryStep, masteryCollapse: CharacterSheet.masteryCollapse, masteryOpen: CharacterSheet.masteryOpen, chooseStartMastery: CharacterSheet.chooseStartMastery, hpEdit: CharacterSheet.hpEdit,
-      setHealthView: CharacterSheet.setHealthView, setApPip: CharacterSheet.setApPip,
+      setHealthView: CharacterSheet.setHealthView, setApPip: CharacterSheet.setApPip, toggleRap: CharacterSheet.toggleRap,
+      swapHealthHigh: CharacterSheet.swapHealthHigh, speciesSide: CharacterSheet.speciesSide,   // v0.0.243 (pack R): the Health line's sides
       toggleCard: CharacterSheet.toggleCard, reloadFor: CharacterSheet.reloadFor, toggleBasic: CharacterSheet.toggleBasic,
       toggleFeat: CharacterSheet.toggleFeat, foldAll: CharacterSheet.foldAll, newGear: CharacterSheet.newGear, reloadWeapon: CharacterSheet.reloadWeapon,
       setWhere: CharacterSheet.setWhere, toggleItemFold: CharacterSheet.toggleItemFold
@@ -518,17 +538,19 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       })(),
       // The header band: what the creature is, its AP in combat, and Escalation (PCs) or the Health Pool (NPCs).
       head: (() => {
-        const c = combatantOf(a), ap = c ? getAP(c) : 0;
+        const c = combatantOf(a), ap = c ? getAP(c) : 0, rap = c ? getRAP(c) : 0;
         const tags = [...(s.tags ?? [])].map(t => tagChoices()[t] ?? t).join(", ");
+        // v0.0.243 (pack R): 4 AP and the Reaction AP (the last pip, a diamond with an R: it pays only for Reactions); out of its turn the kept AP are Guard.
         return {
           size: SIZE_NAMES[s.size ?? 3] ?? "", tags, role: s.roleLabel ?? "", cv: s.cv ?? "",
           cvTip: a.type === "npc" ? cvTip(TWOD12.npcRoles[s.role] ?? TWOD12.npcRoles.standard) : "",
-          ap: { inCombat: !!c, pips: Array.from({ length: Math.max(Number(s.apPerTurn) || 5, ap) }, (_, k) => ({ n: k + 1, on: k < ap })),
-            tip: c ? `${ap} AP. Click a pip to correct it (it is said in the chat).` : "Not in combat: AP is gained at the start of each turn in combat." }
+          ap: { inCombat: !!c, pips: Array.from({ length: Math.max(Number(s.apPerTurn) || TWOD12.apPerTurn, ap) }, (_, k) => ({ n: k + 1, on: k < ap })), rap: !!rap,
+            tip: c ? `${ap} AP${s.apGuard ? ` kept (Guard ${s.apGuard})` : ""}, Reaction AP ${rap ? "ready" : "spent"}. Click a pip to correct the AP (it is said in the chat); click the R to spend or give back the Reaction AP.` : `Not in combat: ${Number(s.apPerTurn) || TWOD12.apPerTurn} AP and 1 Reaction AP are regained at the start of each turn in combat.` }
         };
       })(),
       health: {
         pool,
+        line: healthLineCtx(a),   // v0.0.243 (pack R): the Health line (the class's values, the species' bonuses, the Stage steps, the floor) and its switches
         v: healthView(s),
         donut: healthMode === "donut",
         views: [["donut", "Donut"], ["classic", "Classic"]].map(([k, l]) => ({ k, l, on: healthMode === k })),
@@ -550,7 +572,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const chips = out ? [{ text: "Unloaded", cls: "down", why: `${out.name} must be reloaded first (Reload, 1 AP)` }] : [];
     // v0.0.224 (Lucas, playtest 3): three limits, three looks: a used Frequency greys the row; too few AP dims its cost and dice; 3 Strikes made
     // this turn put a red diamond before its name.
-    const cbt = game.combat?.started ? combatantOf(a, game.combat) : null, apNow = cbt ? getAP(cbt) : null;
+    const cbt = game.combat?.started ? combatantOf(a, game.combat) : null, apNow = cbt ? getAP(cbt) + (it.reaction ? getRAP(cbt) : 0) : null;   // v0.0.243: a Reaction can use the Reaction AP
     const minCost = Math.min(...(it.versions ?? []).map(v => Number(v.ap) || 0), 99);
     const noAp = apNow !== null && minCost < 99 && minCost > apNow, strikeCap = !!f.strikeCap;
     // v0.0.182: a granted use waiting (Double Shot's Weapon Attacks): the use button turns blue and uses it.
@@ -571,7 +593,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       range: ((r => (/^\d+$/.test(r) ? `${r} sq.` : r))((areaText(it) || distanceText(it, weapon) || "\u2014"))),
       escText: Number(it.escalation) > 0 ? `${Number(it.escalation)} Esc.` : "", chips,
       faded: f.faded || !!out, fadedWhy: out ? `Unloaded: ${out.name} must be reloaded first` : (f.faded ? f.why : ""), unloaded: !!out,
-      noAp, noApWhy: noAp ? `Not enough AP: it costs ${minCost}, ${apNow} left` : "", strikeCap, strikeWhy: strikeCap ? "3 Strikes made this turn: no more Strikes until the next turn" : "",
+      noAp, noApWhy: noAp ? `Not enough AP: it costs ${minCost}${it.reaction ? "R" : ""}, ${apNow} left${it.reaction ? " (the Reaction AP and the kept AP)" : ""}` : "", strikeCap, strikeWhy: strikeCap ? "3 Strikes made this turn: no more Strikes until the next turn" : "",
       open: !!this._open?.has(i.id), minAp: aps.length ? Math.min(...aps) : 0, source: this._groupOf(i),
       strike: !!(it.traits?.has?.("strike") ?? (Array.isArray(it.traits) && it.traits.includes("strike"))),   // v0.0.165: a red line at the start of the row
       search: [i.name, ...[...(it.traits ?? [])].map(t => TWOD12.traits[t] ?? t)].join(" ").toLowerCase()
@@ -965,7 +987,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   }
 
   /** An NPC with or without Escalation (elite foes can have it). */
-  static async toggleEscalation() { if (this.actor.type === "npc") await this.actor.update({ "system.useEscalation": !this.actor.system.useEscalation, "system.escalation": 0 }); }
+  static async toggleEscalation() { if (this.actor.type === "npc") await this.actor.update({ "system.useEscalation": !this.actor.system.useEscalation, "system.escalation": 1 }); }   // v0.0.243: an Elite rests at Escalation 1
 
   static async setEscalation(event, target) {
     const n = Number(target.dataset.n) || 0, now = Number(this.actor.system.escalation) || 0;
@@ -974,6 +996,20 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   /** Donut or Classic: how this user sees health on every sheet. */
   static async setHealthView(event, target) { await game.user.setFlag("twod12", "healthView", target.dataset.k); this.render(); }
+
+  /** v0.0.243 (pack R; book, Health Pool): the class's high Health value goes to the other threshold (the book: chosen once; the sheet lets you correct it). */
+  static async swapHealthHigh() { if (this.actor.type === "character") await this.actor.update({ "system.healthHigh": this.actor.system.healthHigh === "resolve" ? "vigor" : "resolve" }); }
+  /** The species' bigger bonus (Human +3 / +2): with the high value, on Vigor, or on Resolve. */
+  static async speciesSide() {
+    const now = this.actor.system.speciesHigh || "", next = now === "" ? "vigor" : now === "vigor" ? "resolve" : "";
+    await this.actor.update({ "system.speciesHigh": next });
+  }
+  /** The Reaction AP by hand (spent on a Reaction done outside the system, or given back). */
+  static async toggleRap() {
+    const c = combatantOf(this.actor);
+    if (!c?.isOwner || !game.combat?.started) return;
+    await setRAP(c, getRAP(c) ? 0 : 1);
+  }
 
   /** Correct the AP in combat from the header pips (a click on the last lit pip lowers it by one). The chat says so, as from the tracker. */
   static async setApPip(event, target) {

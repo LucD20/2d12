@@ -1,6 +1,6 @@
 // A strip of portraits across the top of the screen while there is a combat (also while it is being prepared):
 // turn order, the creature whose turn it is, and its Action Points as dots under the portrait.
-import { getAP, setAP, apMax, endTurnFor, swapCandidates, swapWith, thawedNow } from "./combat.mjs";
+import { getAP, setAP, apMax, getRAP, endTurnFor, swapCandidates, swapWith, thawedNow } from "./combat.mjs";
 import { stripMove, endMoveFor, evadeToAdvance } from "./move.mjs";
 import { groupColor } from "./config.mjs";
 import { esc } from "./util.mjs";
@@ -15,12 +15,13 @@ export const DISP_LABEL = { 1: "Ally", 0: "Neutral", "-1": "Foe", "-2": "Secret"
 const dispOf = c => { const d = c.token?.disposition; return d === undefined || d === null ? (c.actor?.type === "character" ? 1 : -1) : d; };
 function card(combat, c, st) {
   const current = combat.started && combat.combatant?.id === c.id;
-  const ap = getAP(c), max = Math.max(apMax(c), ap, 1);
+  const ap = getAP(c), max = Math.max(apMax(c), ap, 1), rap = combat.started ? getRAP(c) : 0, apGuard = Number(c.actor?.system?.apGuard) || 0;
   const frozen = !!c.getFlag(F, "frozen");
   // v0.0.201 (Lucas): three kinds of pips, by shape as well as color: its turn (discs), out of turn (diamonds: AP for Reactions), frozen (dashed rings).
+  // v0.0.243 (pack R): the Reaction AP is the last pip (a diamond with an R); out of its turn the kept AP are Guard (the tooltip says how much).
   const pipKind = frozen ? "frozen" : (current ? "turn" : "react");
-  const pipTip = { turn: `${ap} AP this turn`, react: `${ap} AP left for Reactions`, frozen: `${ap} AP, frozen until its new turn (it swapped initiative)` }[pipKind];
-  const pips = `<div class="tp-pips ${pipKind}" data-tooltip="${pipTip}">${Array.from({ length: max }, (_, i) => `<i class="${i < ap ? "on" : ""}"></i>`).join("")}</div>`;
+  const pipTip = { turn: `${ap} AP this turn`, react: `${ap} AP kept${apGuard ? ` (Guard ${apGuard})` : ""}: they can pay Reactions`, frozen: `${ap} AP, frozen until its new turn (it swapped initiative)` }[pipKind] + (combat.started ? `. Reaction AP ${rap ? "ready" : "spent"}` : "");
+  const pips = `<div class="tp-pips ${pipKind}" data-tooltip="${pipTip}">${Array.from({ length: max }, (_, i) => `<i class="${i < ap ? "on" : ""}"></i>`).join("")}${combat.started ? `<i class="rap${rap ? " on" : ""}">R</i>` : ""}</div>`;
   // v0.0.224 (Lucas, playtest 3): the 3 Strikes of this turn as three red diamonds; each Strike (not a Linked one) empties one.
   const used = combat.started ? Math.min(3, strikesUsed(c.actor)) : 0;
   const strikes = combat.started ? `<div class="tp-strikes" data-tooltip="${3 - used} of 3 Strikes left this turn">${[0, 1, 2].map(i => `<i class="${i < 3 - used ? "on" : ""}"></i>`).join("")}</div>` : "";

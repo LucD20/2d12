@@ -34,5 +34,7 @@ export function appliedFlags(s, source) {
   // v0.0.207: chat messages at a moment (Marked Quarry's reminders) and weapon properties this creature's weapons lose (Brawler).
   const messages = s.settings.filter(x => x.type === "message" && (String(x.text ?? "").trim() || String(x.msgAction ?? "").trim())).map(x => ({ when: x.msgWhen || "encounter", to: x.msgTo || "owners", text: String(x.text ?? "").trim(), action: String(x.msgAction ?? "").trim(), ap: Math.max(0, Math.trunc(Number(x.msgAp)) || 0) }));
   const propLoss = s.settings.filter(x => x.type === "weaponprop" && x.wpProp).map(x => ({ which: x.wpWhich || "fists", prop: x.wpProp }));
-  return { description: s.description, hover: s.hover ?? "", notes, modifiers, bonuses, grants, speedMods, defenses, auras, triggers, ignores, rallies, turnStarts, messages, propLoss, minEscalation: Math.max(0, Number(s.minEscalation) || 0), expireOn: [...s.expireOn], expireAll: s.expireAll, source };
+  // v0.0.243 (pack R): the class's Escalation hook: once an encounter, +1 Escalation when the moment happens (Kindled Wrath: an ally within 5 squares becomes Bloodied or goes Down; Thrill of the Kill: its mark goes Down).
+  const escHooks = s.settings.filter(x => x.type === "eschook").map(x => ({ when: x.hookWhen || "allyState", range: Math.max(0, Math.trunc(Number(x.hookRange)) || 0) }));
+  return { description: s.description, hover: s.hover ?? "", notes, modifiers, bonuses, grants, speedMods, defenses, auras, triggers, ignores, rallies, turnStarts, messages, propLoss, escHooks, minEscalation: Math.max(0, Number(s.minEscalation) || 0), expireOn: [...s.expireOn], expireAll: s.expireAll, source };
 }

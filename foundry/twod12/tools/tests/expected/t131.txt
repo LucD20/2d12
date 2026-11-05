@@ -1,5 +1,5 @@
 Projectile is a weapon property: Projectile | Shot and Save are Action traits: Shot Save | Crossbow: projectile, ranged, reload, twohanded
-Archer: Body x3, Mind x2.5, Rally +5, Speed +1, medium armor | features: 
+Archer: Health high 16 / low 8 (Stage 2 +9 / +5; Stage 3 +11 / +6), Rally 5 + Stage, Speed +1, medium armor | features: 
 cards: all 18 | features: true | Talents: true | Field Training gone: true
 old cards' folder: true | current cards in it: none
   Double Shot: round | shot,strike | -

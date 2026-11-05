@@ -7,4 +7,4 @@ const { parseInline } = await import(ROOTURL + "module/inline.mjs");
 for (const t of ["-1|trait:strike|rounds:eot", "2|traits:ranged,weapon|rounds:2|self:yes", "-2"]) { const c = parseInline("Boon", t); console.log(t.padEnd(42), JSON.stringify({ n: c.n, traits: c.traits, rounds: c.rounds, self: !!c.self })); }
 const { derivedMods } = await import(ROOTURL + "module/effects.mjs");
 const m = derivedMods({ system: { bloodied: true, strained: true }, itemTypes: { weapon: [] } });
-console.log("Bloodied matches:", m[0].any, "| Strained matches:", m[1].any);
+console.log("Bloodied / Strained Banes (none since pack R, v0.0.243):", m.length);

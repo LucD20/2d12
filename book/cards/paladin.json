@@ -29,8 +29,15 @@
    "text": "Once an encounter, when an ally within 5 squares of you becomes Bloodied or goes Down, your [[Escalation]] increases by 1.",
    "foundry": {
     "img": "icons/svg/fire.svg",
-    "automation": "none",
-    "append": "(Not automated until R-Foundry: raise your Escalation by hand.)"
+    "automation": "gold",
+    "settings": [
+     {
+      "type": "eschook",
+      "hookWhen": "allyState",
+      "hookRange": 5
+     }
+    ],
+    "_note": "Pack R-Foundry 1 (v0.0.243): the Escalation hook setting; the system raises the Escalation and says so in the chat."
    }
   },
   {

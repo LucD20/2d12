@@ -142,7 +142,9 @@ export const TWOD12 = {
     nonthreatening: "Doesn't threaten: you can't flank with it, unless a feature says otherwise (Fists have it; Brawler removes it).",
     move: "You must have a Speed of at least 1."
   },
-  effectSettings: { boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", speed: "Speed", light: "Token Light", note: "Note", ignore: "Ignore a Bane", rally: "Rally Points", turnstart: "Effect each turn", message: "Chat message", weaponprop: "Weapon property", mastery: "Starting Mastery" },
+  effectSettings: { boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", speed: "Speed", light: "Token Light", note: "Note", ignore: "Ignore a Bane", rally: "Rally Points", turnstart: "Effect each turn", message: "Chat message", weaponprop: "Weapon property", mastery: "Starting Mastery", eschook: "Escalation hook" },
+  // v0.0.243 (pack R): the moments a class's Escalation hook names (once an encounter, +1 Escalation): Kindled Wrath, Thrill of the Kill.
+  escHookWhen: { allyState: "An ally within N squares becomes Bloodied or goes Down", markDown: "The creature it marked goes Down" },
   // v0.0.198 (Lucas, 2026-10-30): the Basic Actions section of the Actions tab, 4 groups in a 2x2 grid (row 1 Attack | Control, row 2
   // Movement | Utility), each in this order. By name: the Kind traits don't separate them. The items and the compendium don't change.
   basicGroups: [
@@ -184,13 +186,13 @@ export const TWOD12 = {
     minion: { label: "Minion", cv: [25, 20, 15], ap: 3, attr: 0, hb: 1, defense: 12, extreme: false, deals: "5", takes: "one PC hit",
       hm: [[0, 0.75, 1, 1.25], [0, 1, 1.25, 1.5], [0, 1.5, 2, 2.75]],
       basic: [[[1, 2.5], [1.5, 3.5], [2, 4], [2.5, 5]], [[1.5, 3.5], [2, 5], [3, 5.5], [3.5, 7]], [[2, 5], [3, 7], [4, 8], [5, 10]]] },
-    grunt: { label: "Grunt", cv: [50, 40, 30], ap: 5, attr: 0, hb: 3, defense: 13, extreme: true, deals: "8", takes: "1 PC turn",
+    grunt: { label: "Grunt", cv: [50, 40, 30], ap: 4, attr: 0, hb: 3, defense: 13, extreme: true, deals: "8", takes: "1 PC turn",
       hm: [[2, 3, 4.25, 5.25, 6.25], [2.5, 3.75, 4.75, 6, 7.25], [4, 6, 8, 10, 12]],
       basic: [[[2, 3], [2.5, 3.5], [3, 4], [4, 5.5], [4.5, 6.5]], [[3, 4], [3.5, 5], [4, 6.5], [5.5, 8], [6.5, 10]], [[4, 6.5], [5, 7], [6.5, 9], [8, 11], [9, 14]]] },
-    standard: { label: "Standard", cv: [100, 80, 65], ap: 5, attr: 1, hb: 4, defense: 13, extreme: true, deals: "12", takes: "2 PC turns",
+    standard: { label: "Standard", cv: [100, 80, 65], ap: 4, attr: 1, hb: 4, defense: 13, extreme: true, deals: "12", takes: "2 PC turns",
       hm: [[3.75, 5.75, 7.75, 9.75, 11.5], [4.5, 6.75, 9, 11.25, 13.5], [7.5, 11, 15, 18.5, 22.5]],
       basic: [[[3, 4], [3.5, 6], [4, 7.5], [5.5, 9], [6.5, 11]], [[4, 6.5], [5, 8.5], [6.5, 11.5], [8, 13.5], [10, 16.5]], [[6.5, 9], [7, 12], [9, 16.5], [11, 19], [14, 23]]] },
-    elite: { label: "Elite", cv: [200, 160, 130], ap: 5, attr: 2, hb: 6, defense: 14, extreme: true, deals: "17", takes: "4 PC turns",
+    elite: { label: "Elite", cv: [200, 160, 130], ap: 4, attr: 2, hb: 6, defense: 14, extreme: true, deals: "17", takes: "4 PC turns",
       hm: [[6.5, 10, 13.25, 16.5, 19.75], [7.75, 11.5, 15.5, 19.25, 23.25], [13, 19.25, 25.5, 32, 38.5]],
       basic: [[[3, 4], [4, 6.5], [5, 7.5], [6.5, 9.5], [7.5, 11]], [[4, 6.5], [6, 9], [7.5, 11.5], [9, 14], [10.5, 16]], [[6, 9], [8.5, 12.5], [10.5, 15.5], [12.5, 19.5], [15, 22.5]]] }
   },
@@ -204,8 +206,13 @@ export const TWOD12 = {
   },
   // Stages (book, Chapter 5): levels 1-4, 5-7, 8-10 (a level above 10 counts as Stage 3, level 0 as Stage 1).
   stages: [{ n: 1, from: 1, to: 4 }, { n: 2, from: 5, to: 7 }, { n: 3, from: 8, to: 10 }],
-  // A PC's Weapon and Power Modifiers by Stage (book, Chapter 5): +1 at Stage 2, +2 at Stage 3, never above +4 (NPCs: no step).
-  stageModStep: [0, 1, 2], modCap: 4,
+  // A PC's Weapon and Power Modifiers by Stage (book, Chapter 5; pack R, v0.0.243): +1 at Stage 3 only, never above +4 (NPCs: no step).
+  stageModStep: [0, 0, 1], modCap: 4,
+  // Pack R (v0.0.243; book, Chapter 2): 4 AP a turn and 1 Reaction AP (the Reaction AP pays only for Reactions; Slowed and Quickened change the 4 only);
+  // each AP kept at the end of the turn is Guard 2 / 3 / 4 by Stage until the AP are regained (guard.mjs).
+  apPerTurn: 4, reactionAp: 1, guardPerAp: [2, 3, 4],
+  // Escalation (book, Chapter 2): a level from 1 to 3, never spent; 1 at the start of an encounter (2 with Momentum), +1 a round, +1 once an encounter on a Critical and on the class's hook.
+  escalation: { min: 1, max: 3, momentum: 2 },
   npcSpeeds: [3, 4, 5, 6, 7],   // the Builder's Speed choices (5 by default); any other Speed is Custom
   npcSpecial: [{ key: "basic", label: "Basic attack", sub: "1 AP, At-will", x: 1 }, { key: "s1", label: "Special, 1 AP", sub: "Round", x: 1.4 }, { key: "s2", label: "Special, 2 AP", sub: "Round", x: 2.2 }, { key: "s3", label: "Special, 3 AP", sub: "Encounter (not Minions)", x: 3.5 }],
   // A Stage 1 PC's damage a turn against a Defense (ruler: book/ruler/defense.mjs, mean of the Paladin's and the Archer's turn), for the Builder's check.

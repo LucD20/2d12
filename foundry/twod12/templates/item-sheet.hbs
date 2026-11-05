@@ -23,8 +23,9 @@
     </div>
     <label class="inline"><input type="checkbox" name="system.pickTwo" {{#if system.pickTwo}}checked{{/if}}> Select 2 choices for +1</label>
     <div class="grid3">
-      <label>Species Body Health <input type="number" name="system.bodyMod" value="{{system.bodyMod}}"></label>
-      <label>Species Mind Health <input type="number" name="system.mindMod" value="{{system.mindMod}}"></label>
+      <label>Vigor bonus <input type="number" name="system.bodyMod" value="{{system.bodyMod}}"></label>
+      <label>Resolve bonus <input type="number" name="system.mindMod" value="{{system.mindMod}}"></label>
+      <label class="inline" data-tooltip="Human: +3 to one threshold and +2 to the other, the player chooses. Type the bigger bonus as the Vigor bonus."><input type="checkbox" name="system.pickHealth" {{#if system.pickHealth}}checked{{/if}}> The player chooses the side of the bigger bonus</label>
       <label>Speed <input type="number" min="0" name="system.speed" value="{{system.speed}}"></label>
       <label>Reach <input type="number" min="0" name="system.reach" value="{{system.reach}}"></label>
       <label>Size (SR) <input type="number" min="1" max="7" name="system.size" value="{{system.size}}"></label>
@@ -43,12 +44,19 @@
       <div class="ro"><span>Shown as</span><b>{{item.name}}</b></div>
     </div>
     <label>Flavor <input type="text" name="system.flavor" value="{{system.flavor}}" placeholder="Your god's strength flows through your weapon and your hands."></label>
-    <div class="grid4">
-      <label>Body Health Multiplier <input type="number" min="0" step="0.5" name="system.bodyMult" value="{{system.bodyMult}}"></label>
-      <label>Mind Health Multiplier <input type="number" min="0" step="0.5" name="system.mindMult" value="{{system.mindMult}}"></label>
+    <div class="grid4" data-tooltip="Pack R (book, Chapter 4): the class gives a high and a low Health value; the player puts the high one on Vigor or Resolve. Each grows by its step at Stage 2 and again at Stage 3.">
+      <label>High Health value <input type="number" min="0" name="system.healthHigh" value="{{system.healthHigh}}"></label>
+      <label>Low Health value <input type="number" min="0" name="system.healthLow" value="{{system.healthLow}}"></label>
       <label>Rally <input type="number" name="system.rallyMod" value="{{system.rallyMod}}"></label>
       <label>Speed Modifier <input type="number" name="system.speedMod" value="{{system.speedMod}}"></label>
     </div>
+    <div class="grid4">
+      <label>Stage 2 step, high <input type="number" min="0" name="system.stepHigh2" value="{{system.stepHigh2}}"></label>
+      <label>Stage 2 step, low <input type="number" min="0" name="system.stepLow2" value="{{system.stepLow2}}"></label>
+      <label>Stage 3 step, high <input type="number" min="0" name="system.stepHigh3" value="{{system.stepHigh3}}"></label>
+      <label>Stage 3 step, low <input type="number" min="0" name="system.stepLow3" value="{{system.stepLow3}}"></label>
+    </div>
+    {{#if system.bodyMult}}<p class="hint">Old Health multipliers (before pack R): Body ×{{system.bodyMult}}, Mind ×{{system.mindMult}}. They are used only while the high value above is 0.</p>{{/if}}
     <div class="grid4">
       <label>Weapon Modifier uses <select data-modsel="weaponAttrs" data-side="0">{{selectOptions attrChoices selected=cls.weapon.[0]}}</select></label>
       <label>or <select data-modsel="weaponAttrs" data-side="1">{{selectOptions attrChoices selected=cls.weapon.[1]}}</select></label>

@@ -52,6 +52,10 @@
         <div class="fx-drop" data-sfx="{{i}}">{{#if fxName}}At the start of each of its turns, the creature gains <b>{{fxName}}</b> (drop another Effect to replace it){{else}}Drop the Effect the creature gains at the start of each of its turns{{/if}}</div>
         <p class="fxd-help">Killer's Focus, Radiant Zeal: the Effect holds the Bonus Damage and ends after the Action that uses it ("Ends" on the Effect). A new copy replaces the old one each turn, only while this setting works (its "It works..."); it ends with the encounter. In play it is an ordinary applied effect: remove it, or untick its chip in the roll dialog.</p>
         {{/if}}
+        {{#if isEscHook}}
+        <div class="fxd-s">Once an encounter, when <select class="fxd-f" data-sfield="{{i}}" data-field="hookWhen">{{selectOptions hookWhens selected=hookWhen}}</select>, N = <input type="number" min="0" class="fxd-f n" data-sfield="{{i}}" data-field="hookRange" value="{{hookRange}}"> squares: the creature's Escalation rises by 1.</div>
+        <p class="fxd-help">The class's Escalation hook (book, Chapter 2: Escalation): Kindled Wrath (an ally within 5 squares becomes Bloodied or goes Down), Thrill of the Kill (the Marked Quarry goes Down). Once an encounter; at Escalation 3 nothing happens and the once isn't used up. The system raises it and says so in the chat.</p>
+        {{/if}}
         {{#if isMessage}}
         <div class="fxd-s"><select class="fxd-f" data-sfield="{{i}}" data-field="msgWhen">{{selectOptions msgWhens selected=msgWhen}}</select>, post to <select class="fxd-f" data-sfield="{{i}}" data-field="msgTo">{{selectOptions msgTos selected=msgTo}}</select>:</div>
         <input type="text" class="fxd-f wide" data-sfield="{{i}}" data-field="text" value="{{text}}" placeholder="choose a creature to mark. Target it and use your marking Action.">

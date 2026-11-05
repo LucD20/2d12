@@ -106,8 +106,14 @@
    "text": "Once an encounter, when your Marked Quarry goes Down, your [[Escalation]] increases by 1.",
    "foundry": {
     "img": "icons/svg/blood.svg",
-    "automation": "none",
-    "append": "(Not automated until R-Foundry: raise your Escalation by hand.)"
+    "automation": "gold",
+    "settings": [
+     {
+      "type": "eschook",
+      "hookWhen": "markDown"
+     }
+    ],
+    "_note": "Pack R-Foundry 1 (v0.0.243): the Escalation hook setting; the system raises the Escalation and says so in the chat."
    }
   },
   {

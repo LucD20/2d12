@@ -34,13 +34,13 @@ console.log("Builder at level 6:", ctx.stageLabel, "| CV", ctx.cv, "| basic:", c
 const tpl = src("templates/actor-sheet.hbs");
 console.log("sheet: CV tooltips from the role:", (tpl.match(/\{\{(head|builder)\.cvTip\}\}/g) ?? []).length, "| the Stage under the Level:", tpl.includes("{{builder.stageLabel}}"));
 
-console.log("--- PCs: Health x (Level + 17) / 16, rounded up (the book's example: a level 4 Human Paladin, Body 2 Mind 1: 25 + 21 = 46)");
+console.log("--- PCs (pack R): the Health line by Stage (the book: a Human Paladin, high on Vigor: 23 / 12 = 35; Stage 2: 35 / 18 = 53); the Modifiers +1 at Stage 3 only");
 const mk = (type, system, name = "x") => ({ type, system, name });
 const pcAt = (lv, mods = {}) => {
   const s = Object.create(CharacterData.prototype);
   s.level = lv; s.damage = { bodyLethal: 0, bodyNonlethal: 0, mindLethal: 0, mindNonlethal: 0 }; s.rallyUsed = 0; s.exhausted = 0; s.bodyWounds = 0; s.mindWounds = 0;
-  s.parent = { items: [mk("species", { attributes: { body: 0, mind: 0, appeal: 0, instinct: 0 }, pickTwo: true, chosen: ["body", "appeal"], bodyMod: 3, mindMod: 4, speed: 5 }, "Human"),
-    mk("class", { chosenA: "body", chosenB: "mind", bodyMult: 4, mindMult: 4, rallyMod: 6, weaponAttrs: new Set(["body", "appeal"]), magicAttrs: new Set(["mind", "appeal"]), ...mods }, "Paladin")] };
+  s.parent = { items: [mk("species", { attributes: { body: 0, mind: 0, appeal: 0, instinct: 0 }, pickTwo: true, chosen: ["body", "appeal"], bodyMod: 3, mindMod: 2, pickHealth: true, speed: 5 }, "Human"),
+    mk("class", { chosenA: "body", chosenB: "mind", healthHigh: 20, healthLow: 10, stepHigh2: 12, stepLow2: 6, stepHigh3: 14, stepLow3: 7, rallyMod: 6, weaponAttrs: new Set(["body", "appeal"]), magicAttrs: new Set(["mind", "appeal"]), ...mods }, "Paladin")] };   // pack R: the Health line
   s.parent.itemTypes = { species: [s.parent.items[0]], class: [s.parent.items[1]], feature: [], weapon: [], armor: [] };
   s.prepareDerivedData(); return s;
 };
@@ -53,7 +53,7 @@ const dm = (bl, bn, ml, mn) => ({ B: { l: bl, n: bn }, M: { l: ml, n: mn } });
 for (const [g, a] of [[6, dm(8, 0, 0, 0)], [10, dm(4, 0, 3, 0)], [5, dm(0, 2, 6, 1)], [0, dm(3, 0, 0, 0)]]) { const r = G.absorbGuard(g, a); console.log(`Guard ${g} vs ${JSON.stringify(a)} -> takes ${r.taken}, Guard ${r.guard} left, Health gets ${JSON.stringify(r.a)}`); }
 console.log("keep the higher:", G.gainGuard(6, 4), G.gainGuard(3, 7.6), G.gainGuard(0, -2));
 const dmg = src("module/damage.mjs"), esc = src("module/escalation.mjs"), inl = src("module/inline.mjs");
-console.log("damage goes through the Guard first:", dmg.includes("const g = absorbGuard(actor.system.guard, a);"), "| each target its own:", dmg.includes("const mine = { B: { ...a.B }, M: { ...a.M } };"), "| ends with the encounter:", esc.includes('if (a?.system?.guard > 0) await a.update({ "system.guard": 0 });'), "| @Guard and @Effect buttons:", inl.includes("|Guard|Effect|"), "| on the sheet:", tpl.includes('class="np-guardbtn'));
+console.log("damage goes through the Guard first:", dmg.includes("const g = absorbGuard(actor.system.guard, a, actor.system.apGuard);"), "| each target its own:", dmg.includes("const mine = { B: { ...a.B }, M: { ...a.M } };"), "| ends with the encounter:", esc.includes('if (a.system?.guard > 0) g["system.guard"] = 0;'), "| @Guard and @Effect buttons:", inl.includes("|Guard|Effect|"), "| on the sheet:", tpl.includes('class="np-guardbtn'));
 
 console.log("--- the Archer (A1) and the Paladin (P1) in code");
 // v0.0.186: Marked Quarry's Tier 1 and Sharpshooter are settings on their cards now (automation.mjs; tested in t151).

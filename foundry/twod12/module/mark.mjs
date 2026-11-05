@@ -73,6 +73,11 @@ export function registerMarkHooks() {
       if (!q || !uuids.has(q.uuid)) continue;
       await marker.unsetFlag(F, "quarry");
       await postMessages(marker, "markDown", { mark: q.name });
+      // v0.0.243 (pack R): the class hook "the creature it marked goes Down" (Thrill of the Kill): once an encounter, +1 Escalation.
+      try {
+        const { escHooksOf } = await import("./states.mjs"), { raiseEscalation } = await import("./escalation.mjs");
+        for (const h of escHooksOf(marker)) if (h.when === "markDown" && game.combat?.started) await raiseEscalation(marker, "hook", { label: `${h.source} (${q.name} goes Down)` });
+      } catch (e) { console.warn("twod12 | Escalation hook (mark)", e); }
     }
   });
   // v0.0.224 (Lucas: the mark stayed after the combat): the combat ends (deleted): every mark of its creatures ends.

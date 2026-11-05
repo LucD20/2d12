@@ -3,7 +3,8 @@
 //   Granted: one ticket per granted use (an effect's Grant setting: Double Shot, Pinning Shot, Twin Shot): uses left, cost, source and
 //     duration, what it adds (different targets, Boons, the source's Bonus Damage and riders).
 //   Escalation: a ladder of rungs 3, 2, 1. Each rung lists the Escalation Passives whose threshold is that number (Active, Ready, Used,
-//     greyed below it) and the Escalation Actions whose cost is that number (greyed when they can't be paid or their Frequency is used).
+//     greyed below it) and the Escalation Actions (the Apex) that need that level (greyed until the level is reached or while their Frequency is used;
+//     nothing is spent since pack R, v0.0.243).
 import { passiveSources } from "./passives.mjs";
 import { escalationOf } from "./escalation.mjs";
 import { onceKey, onceBlocked, tsKey } from "./automation.mjs";
@@ -53,7 +54,7 @@ export const PASSIVE_TAG = { active: "Active", ready: "Ready", used: "Used", off
 
 /**
  * The ladder: { show, now, open, rungs: [{ n, lit, passives: [{ id, name, state, tag, tip }], actives: [rows] }] }.
- * actionRow(item) gives the sheet's own Action row; an Active that can't be paid now (Escalation, Unconscious) or whose Frequency is used
+ * actionRow(item) gives the sheet's own Action row; an Apex whose Escalation isn't reached (nothing is spent: pack R), while Unconscious, or whose Frequency is used
  * is greyed and its Use button off; a used Round / Turn / Encounter Action reads "Round 0/1".
  */
 export function escalationModel(actor, { actionRow, isFaded, open = null, openPass = null } = {}) {
@@ -74,7 +75,7 @@ export function escalationModel(actor, { actionRow, isFaded, open = null, openPa
       const f = isFaded ? isFaded(actor, i) : { faded: false };
       const used = f.faded && /used/i.test(f.why ?? "");
       const off = now < n || down || f.faded;
-      return { ...row, faded: off, useOff: off, fadedWhy: down ? "Unconscious: Escalation can't be spent" : (f.faded ? f.why : ""), freqText: used ? `${TWOD12.frequencies[row.freq] ?? row.freqText} 0/1` : row.freqText, inLadder: true };
+      return { ...row, faded: off, useOff: off, fadedWhy: down ? "Unconscious" : (now < n ? `Needs Escalation ${n} (now ${now})` : (f.faded ? f.why : "")), freqText: used ? `${TWOD12.frequencies[row.freq] ?? row.freqText} 0/1` : row.freqText, inLadder: true };
     })
   })).map(r => ({ ...r, any: r.passives.length + r.actives.length > 0 }));
   const show = passives.length + actives.length > 0;

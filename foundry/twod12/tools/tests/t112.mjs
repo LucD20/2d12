@@ -23,7 +23,7 @@ const featLv = n => byName("features", n).system.level;
 const secLine = x => `${x.title} (${x.kind}${x.kind === "items" ? `, ${x.mode}` : ""}${x.kind === "repertoire" ? `, ${x.freq}` : ""}${x.kind === "attr" ? `: ${x.pairs.map(p => `${p.a} or ${p.b}`).join(", ")}` : x.mode === "granted" ? "" : `, pick ${x.pick}`})${x.items.length ? `: ${x.items.map(nameOf).join(", ")}` : ""}`;
 paladin.levels.forEach((l, i) => console.log(`Level ${i + 1}:`, l.sections.map(secLine).join(" | ")));
 console.log("Repertoire:", paladin.repertoire.map(nameOf).join(", "), "| Escalation:", paladin.escPassives.map(nameOf).join(", "), "/", paladin.escActives.map(nameOf).join(", "));
-console.log("pick Features gone:", !["Hallmark Action", "Encounter Pick", "Talent (Level 1)", "Talent (Level 2)"].some(n => docs.some(d => d.name === n)), "| Mind Health x" + paladin.mindMult);
+console.log("pick Features gone:", !["Hallmark Action", "Encounter Pick", "Talent (Level 1)", "Talent (Level 2)"].some(n => docs.some(d => d.name === n)), "| Health high " + paladin.healthHigh + " / low " + paladin.healthLow + " (Stage 2 +" + paladin.stepHigh2 + " / +" + paladin.stepLow2 + ")");
 console.log("--- the cards");
 const act = n => byName("actions", n).system;
 const tiersOf = (n, i) => ["t1", "t2", "t3"].map(t => act(n).versions[i][t].map(x => (x.useW ? "1[W]" : "") + (x.dice ? `${x.useW ? "+" : ""}${x.dice}${x.subtype ? " " + x.subtype : ""}` : "")).join("+") || "-").join(" / ");

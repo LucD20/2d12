@@ -88,17 +88,12 @@ export async function applyBoonEffect(actor, cfg, origin) {
 /** Effects are often named "Effect: Name" in the world; cards and dialogs show just "Name". */
 export const shortName = n => String(n ?? "").replace(/^\s*Effect:\s*/i, "");
 
-/** Banes from the creature's own state. Bloodied: [Strike] and [Weapon] Actions, Body and Instinct Saves. Strained: [Magic] Actions, Mind and Appeal Saves. */
+/**
+ * Banes from the creature's own state. v0.0.243 (pack R; book, Health States): Bloodied and Strained have no effect by themselves any more (they are
+ * hooks other cards use: "when an ally becomes Bloodied", "against a Strained target"); their Banes are gone.
+ */
 export function derivedMods(actor) {
-  const s = actor?.system, out = [];
-  if (s?.bloodied) {
-    out.push({ id: "syn:bloodied", name: "Bloodied", boons: 0, banes: 1, all: ["__action"], any: ["strike", "weapon"], none: [] });
-    out.push({ id: "syn:bloodied-save", name: "Bloodied", boons: 0, banes: 1, all: ["__save"], any: ["body", "instinct"], none: [] });
-  }
-  if (s?.strained) {
-    out.push({ id: "syn:strained", name: "Strained", boons: 0, banes: 1, all: ["__action"], any: ["magic"], none: [] });
-    out.push({ id: "syn:strained-save", name: "Strained", boons: 0, banes: 1, all: ["__save"], any: ["mind", "appeal"], none: [] });
-  }
+  const out = [];
   // A two-handed weapon held with one hand: 3 banes on [Strike, Weapon] Actions with that weapon (v0.0.212, Lucas: not the other hand's weapon or Fists).
   if ((actor?.itemTypes?.weapon ?? []).some(w => w.system.wielded && w.system.traits?.has?.("twohanded") && (w.system.hands ?? 1) < 2)) out.push({ id: "syn:onehand", name: "Two-handed weapon in one hand", boons: 0, banes: 3, all: ["strike", "weapon", "__twohanded"], any: [], none: [] });
   return out;

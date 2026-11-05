@@ -1,10 +1,10 @@
-Weapon Attack (Instinct weapon)  Bloodied
-Trip (Body)                      Bloodied
+Weapon Attack (Instinct weapon)  -
+Trip (Body)                      -
 Steel Yourself                   -
-Rimebrand (Magic)                Strained
-Body Save                        Bloodied
-Instinct Save                    Bloodied
-Mind Save                        Strained
-Appeal Save                      Strained
+Rimebrand (Magic)                -
+Body Save                        -
+Instinct Save                    -
+Mind Save                        -
+Appeal Save                      -
 Body Check                       -
 Mind Check                       -

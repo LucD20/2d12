@@ -6,7 +6,7 @@ Level 2: Talent (talent, pick 1)
 Level 3: Daily Pick (repertoire, daily, pick 1) | Talent (talent, pick 1)
 Level 4: Talent (talent, pick 1)
 Repertoire: Holy Wrath, Word of Radiance, Bulwark of Faith, Beacon, Consecrated Ground, Miraculous Recovery, Divine Intervention | Escalation: Radiant Zeal, Divine Surge, Font of Mercy, Searing Blows, Mending Light, Reckoning, Hallowed Stance / Final Verdict, Hallowed Dawn
-pick Features gone: true | Mind Health x4
+pick Features gone: true | Health high 20 / low 10 (Stage 2 +12 / +6)
 --- the cards
 Smite: divine,signature,strike,weapon | 1 AP 1[W] / 1[W]+1d6 Ho / 1[W]+1d8 Ho || 2 AP 1[W]+1d6 Ho / 1[W]+2d6 Ho / 1[W]+2d10 Ho || 3 AP 1[W]+1d8 Ho / 1[W]+2d8 Ho / 1[W]+3d8 Ho
 Smite 3 AP effects: As 2 AP, and you or one ally in the light gain Guard 1d8 + [Mod] (2d6 + [Mod] at Stage 2, 2d8 + [Mod] at Stage 3). The other creatures in the light are @Move[pushed|distance:1], away from the target. @Guard[1d8+mod]{Guard 1d8 + [Mod]}

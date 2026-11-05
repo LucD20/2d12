@@ -1,4 +1,4 @@
 -1|trait:strike|rounds:eot                 {"n":-1,"traits":["strike"],"rounds":"eot","self":false}
 2|traits:ranged,weapon|rounds:2|self:yes   {"n":2,"traits":["ranged","weapon"],"rounds":2,"self":true}
 -2                                         {"n":-2,"traits":[],"self":false}
-Bloodied matches: [ 'strike', 'weapon' ] | Strained matches: [ 'body', 'instinct' ]
+Bloodied / Strained Banes (none since pack R, v0.0.243): 0

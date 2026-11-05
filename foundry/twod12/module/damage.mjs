@@ -4,6 +4,7 @@ import { targetLine } from "./actions.mjs";
 import { esc } from "./roll.mjs";
 import { applyEffects, originInfo, applyCondition, applyBoonEffect } from "./effects.mjs";
 import { absorbGuard, guardBefore, guardAfter } from "./guard.mjs";
+import { sysLine } from "./sysmsg.mjs";
 const { DialogV2 } = foundry.applications.api;
 const SOCKET = "system.twod12";
 
@@ -15,11 +16,12 @@ const SOCKET = "system.twod12";
 export async function applyToActor(actor, a, { announce = true } = {}) {
   if (!actor) return 0;
   const d = actor.system.damage, upd = {};
-  const g = absorbGuard(actor.system.guard, a);
-  if (g.taken) { a.B = g.a.B; a.M = g.a.M; upd["system.guard"] = g.guard; a.guardLeft = g.guard; }
+  // v0.0.243 (pack R): the Guard of the kept AP (system.apGuard) is taken before the other Guard; both are one "Guard N" on the line.
+  const g = absorbGuard(actor.system.guard, a, actor.system.apGuard);
+  if (g.taken) { a.B = g.a.B; a.M = g.a.M; upd["system.guard"] = g.guard; upd["system.apGuard"] = g.apGuard; a.guardLeft = g.guard + g.apGuard; }
   const add = (k, amt) => { if (amt) upd[`system.damage.${k}`] = (upd[`system.damage.${k}`] ?? d[k]) + amt; };
   add("bodyLethal", a.B.l); add("bodyNonlethal", a.B.n); add("mindLethal", a.M.l); add("mindNonlethal", a.M.n);
-  if (g.taken && announce) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: `<div class="twod12 chat apmsg"><b>${esc(actor.name)}</b>'s Guard takes <b>${g.taken}</b> damage${g.guard ? ` (Guard ${g.guard} left)` : " and ends"}.</div>` });
+  if (g.taken && announce) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-halved", `<b>${esc(actor.name)}</b>'s Guard takes <b>${g.taken}</b> damage${g.takenAp ? ` (${g.takenAp} from the kept AP)` : ""}${a.guardLeft ? ` (Guard ${a.guardLeft} left)` : " and ends"}.`) });
   if (!Object.keys(upd).length) return g.taken;
   if (actor.isOwner) await actor.update(upd);
   else game.socket.emit(SOCKET, { type: "applyDamage", actorUuid: actor.uuid, upd });
@@ -34,9 +36,10 @@ export function registerSocket() {
     if (data?.type === "applyCondition") { const a = await fromUuid(data.actorUuid); if (a) await applyCondition(data.cond, [a], data.dur, data.origin); return; }
     if (data?.type === "markOnce") { const a = await fromUuid(data.actorUuid); if (a) await (await import("./automation.mjs")).markOnce(a, data.keys); return; }   // v0.0.186
     if (data?.type === "applyGuard") { const a = await fromUuid(data.actorUuid); if (a) await a.update({ "system.guard": Math.max(0, Number(data.value) || 0) }); return; }
+    if (data?.type === "applyApGuard") { const a = await fromUuid(data.actorUuid); if (a) await a.update({ "system.apGuard": Math.max(0, Number(data.value) || 0) }); return; }   // v0.0.243: a kept AP paid a Reaction
     if (data?.type !== "applyDamage") return;
     const actor = await fromUuid(data.actorUuid);
-    const upd = Object.fromEntries(Object.entries(data.upd).filter(([k]) => k.startsWith("system.damage.") || k === "system.guard"));
+    const upd = Object.fromEntries(Object.entries(data.upd).filter(([k]) => k.startsWith("system.damage.") || k === "system.guard" || k === "system.apGuard"));
     if (actor && Object.keys(upd).length) await actor.update(upd);
   });
 }
@@ -58,7 +61,7 @@ export async function dealDamage(actor, comps) {
 async function chooseChoicePool(amount) {
   return DialogV2.prompt({
     window: { title: "Choice damage" },
-    content: `<p>Apply ${amount} Choice [C] damage to:</p><label><input type="radio" name="p" value="B" checked> Body</label> <label><input type="radio" name="p" value="M"> Mind</label>`,
+    content: `<p>Apply ${amount} Choice [C] damage to:</p><label><input type="radio" name="p" value="B" checked> Vigor</label> <label><input type="radio" name="p" value="M"> Resolve</label>`,
     ok: { label: "Apply", callback: (ev, btn) => new FormData(btn.form).get("p") }, rejectClose: false
   });
 }

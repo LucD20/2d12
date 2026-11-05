@@ -2128,3 +2128,25 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 /* v0.0.239: the ruler's worth of a card (book/ruler/worth.json), bottom right of the Action card, the chat card, the info card and a Passive's text */
 .twod12 .ac-worth { text-align: right; font-size: 11px; line-height: 1.2; opacity: 0.72; font-style: normal; margin-top: 4px; }
 .twod12.acard .ac-worth { align-self: flex-end; margin-top: 0; }
+
+/* v0.0.243 (pack R): the Reaction AP pip (a diamond with an R) on the sheet header, the strip and the ticker; the Guard of the kept AP; the Health line */
+.twod12.sheet.ns .hpip.rap { border-radius: 2px; transform: rotate(45deg) scale(.8); border-color: var(--np-teal, #2fb3a6); font-size: 0; margin-left: 3px; }
+.twod12.sheet.ns .hpip.rap.on { background: var(--np-teal, #2fb3a6); }
+.twod12.sheet.ns .np-apguard { font-size: 10px; opacity: .85; margin-left: 2px; }
+.twod12.sheet.ns .np-hline { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--np-dim); margin: 0 0 4px; flex-wrap: wrap; }
+.twod12.sheet.ns .np-hline b { color: var(--np-text); }
+.twod12.sheet.ns .np-hline a { cursor: pointer; opacity: .8; } .twod12.sheet.ns .np-hline a:hover { opacity: 1; }
+.twod12.sheet.ns .np-hline .np-hpick { border: 1px solid var(--np-dim, #6b7a90); border-radius: 8px; padding: 0 6px; }
+.twod12.sheet.ns .np-hline.old { color: #d9a441; }
+#twod12-carousel .tp-pips i.rap { border-radius: 2px; transform: rotate(45deg) scale(.8); font-size: 0; margin-left: 3px; border-color: var(--tp-teal); }
+#twod12-carousel .tp-pips i.rap.on { background: var(--tp-teal); border-color: var(--tp-teal); }
+#twod12-carousel .tp-pips.react i.rap { transform: rotate(45deg) scale(.8); }
+.twod12.chat.ticker .tk-pips i.rap { border-radius: 2px; transform: rotate(45deg) scale(.78); margin-left: 3px; background: rgba(47, 179, 166, .25); }
+.twod12.chat.ticker .tk-pips i.rap.on { background: #2fb3a6; }
+.twod12.chat.ticker .tk-pips i.rap.spent { background: transparent; border: 1.5px solid var(--c-bane); }
+.twod12-ap .twod12-rap { display: inline-block; width: 8px; height: 8px; border: 1.5px solid #2fb3a6; border-radius: 2px; transform: rotate(45deg); margin: 0 4px; cursor: pointer; box-sizing: border-box; }
+.twod12-ap .twod12-rap.on { background: #2fb3a6; }
+.twod12.chat.sysline.escmsg > i { color: #c2521f; }
+.twod12.chat.sysline.apguard > i { color: #2f6fb3; }
+.twod12.chat.sysline.statemsg > i { color: #a32d2d; }
+#combat .twod12-momentum { margin-left: 4px; } #combat .twod12-momentum.on { color: #c2521f; border-color: #c2521f; }

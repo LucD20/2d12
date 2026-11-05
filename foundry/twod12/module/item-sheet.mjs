@@ -159,6 +159,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
                 msgWhens: TWOD12.messageWhen, msgTos: TWOD12.messageTo,
                 isWeaponProp: x.type === "weaponprop", wpWhich: x.wpWhich, wpProp: x.wpProp, wpWhiches: TWOD12.propWeapons, wpProps: TWOD12.removableProps,
                 isMastery: x.type === "mastery", mstTrait: x.mstTrait, mstValue: x.mstValue, mstTraits: TWOD12.weaponTraits,
+                isEscHook: x.type === "eschook", hookWhen: x.hookWhen, hookRange: x.hookRange, hookWhens: TWOD12.escHookWhen,   // v0.0.243 (pack R)
                 ignoreRule: x.ignoreRule,
                 ignoreRules: TWOD12.ignoreRules,
                 rallyBonus: x.rallyBonus,

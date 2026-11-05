@@ -4,7 +4,7 @@ import { setQuarry } from "./mark.mjs";
 import { pickTargets, needsTargets } from "./targeting.mjs";
 import { ignoredBy, markOnce } from "./automation.mjs";
 import { splitModes, splitView, SPLIT_LABEL } from "./split.mjs";
-import { canPayEscalation, spendEscalation } from "./escalation.mjs";
+import { canPayEscalation, raiseEscalation } from "./escalation.mjs";
 import { weaponUse, weaponRanges } from "./weaponrange.mjs";
 import { rollSource, rollTraits, saveDcOf } from "./rollsource.mjs";
 import { perceptionOf, perceive } from "./senses.mjs";
@@ -701,7 +701,7 @@ export async function useAction(actor, item, opts = {}) {
   const version = applyTalentMods(versions.find(v => v.ap === Number(data.ap)), talentMods);
   if (basicKey === "crawl" && version.ap >= 2 && Number(s.moveSpeed ?? s.speed ?? 0) < 5) return ui.notifications.warn(`${actor.name}'s Speed is under 5: Crawl moves 3 squares only with Speed 5 or higher (use the 1 AP version).`);
   const apCost = opts.free ? (opts.ap ?? 0) : version.ap;
-  // An Escalation Action: its Escalation is checked before the AP is spent, and spent after it.
+  // An Escalation Action (the Apex): its Escalation is a requirement, checked before the AP is spent; nothing is spent (pack R, v0.0.243).
   const escCost = opts.free ? 0 : Math.max(0, Number(it.escalation) || 0);
   if (escCost) { const pay = canPayEscalation(actor, escCost); if (!pay.ok) return ui.notifications.warn(pay.why); }
   // v0.0.197: a movement-only Action in combat says its AP in its own chat line (the movement tag's), not in an AP line.
@@ -715,7 +715,6 @@ export async function useAction(actor, item, opts = {}) {
     }
   }
   if (apCost > 0 && !(await spendAP(actor, apCost, item.name, { quiet: moveQuiet, reaction: !!it.reaction }))) return;
-  if (escCost) await spendEscalation(actor, escCost);
   const isWeapon = it.traits.has("weapon");
 
   let attrKey = null, mod = null, weapon = null, title = "", chip = "";
@@ -799,6 +798,8 @@ export async function useAction(actor, item, opts = {}) {
   { const kept = new Set(); for (const t of [1, 2, 3]) for (const b of collectBonuses(actor, rt, t, { target: rollsAtOthers ? (aimed[0]?.actor ?? null) : null, mod: src.mod })) if (bonusOff.has(bonusKey(b))) kept.add(b.effectId);
     await expireOnUse(actor, rollTraits(rollUse, src, item.name), kept); }
   const targets = (multi ? perT.map(p => p.token) : (!rollsAtOthers ? (selfToken ? [selfToken] : []) : aimed)).map(t => ({ uuid: t.document?.uuid ?? t.uuid, name: t.name }));
+  // v0.0.243 (pack R; book, Chapter 1): once an encounter, a Critical on one of the creature's Actions raises its Escalation by 1 (at 3: nothing, not used up).
+  if (game.combat?.started && (chk?.crit || mres?.some(r => r.chk?.crit))) { try { await raiseEscalation(actor, "crit"); } catch (e) { console.warn("twod12 | Escalation on a Critical", e); } }
 
   const dcSet = mres ? new Set(mres.map(r => r.chk.dc)) : null;
   const dc = mres ? (dcSet.size === 1 ? [...dcSet][0] : undefined) : chk?.dc;

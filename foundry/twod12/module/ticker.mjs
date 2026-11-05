@@ -9,19 +9,24 @@ const F = "twod12";
 export const ICON = { start: "◆", move: "➤", act: "✦", react: "↺" };   // ◆ ➤ ✦ ↺
 
 /** Pure: a log line. kind start | move | act | react; before / after: the AP around it; max: how many pips. */
-export function makeLine(kind, name, before, after, max) {
+export function makeLine(kind, name, before, after, max, rap = null) {
   const b = Math.max(0, Math.round(Number(before) || 0)), a = Math.max(0, Math.round(Number(after) || 0));
   const m = Math.max(1, Math.round(Number(max) || 0), b, a);
   const spent = Math.max(0, b - a);
-  const cost = kind === "start" ? `+${Math.max(0, a - b)}` : (kind === "react" ? `−${spent}R` : `−${spent} AP`);
-  return { k: kind, n: String(name ?? ""), c: cost, b, a, s: kind === "start" ? 0 : spent, m };
+  // v0.0.243 (pack R): the Reaction AP on the line (rb / ra: before and after); a Reaction's cost counts what the Reaction AP paid too.
+  const rb = rap ? Math.max(0, Math.round(Number(rap.b) || 0)) : undefined, ra = rap ? Math.max(0, Math.round(Number(rap.a) || 0)) : undefined;
+  const rSpent = rap ? Math.max(0, rb - ra) : 0;
+  const cost = kind === "start" ? `+${Math.max(0, a - b)}${rap && ra > rb ? " +R" : ""}` : (kind === "react" ? `−${spent + rSpent}R` : `−${spent} AP`);
+  return { k: kind, n: String(name ?? ""), c: cost, b, a, s: kind === "start" ? 0 : spent, m, ...(rap ? { rb, ra } : {}) };
 }
 
-/** Pure: the pips of a line: filled = AP left after it, a red ring = spent on this line, grey = spent before it (or not there). */
+/** Pure: the pips of a line: filled = AP left after it, a red ring = spent on this line, grey = spent before it (or not there); then the Reaction AP as a diamond. */
 export function pipsHtml(line, small = false) {
   const out = [];
   for (let i = 0; i < line.m; i++) out.push(i < line.a ? '<i class="on"></i>' : (i < line.a + line.s ? '<i class="spent"></i>' : "<i></i>"));
-  return `<span class="tk-pips${small ? " sm" : ""}${line.m > 5 ? " many" : ""}" data-tooltip="${line.a} AP left">${out.join("")}</span>`;
+  if (line.ra !== undefined) out.push(`<i class="rap${line.ra ? " on" : ((line.rb ?? 0) > line.ra ? " spent" : "")}"></i>`);
+  const tip = `${line.a} AP left${line.ra !== undefined ? `, Reaction AP ${line.ra ? "ready" : "spent"}` : ""}`;
+  return `<span class="tk-pips${small ? " sm" : ""}${line.m > 5 ? " many" : ""}" data-tooltip="${tip}">${out.join("")}</span>`;
 }
 
 /** Pure: the ticker of the last line of `lines` (the snapshot), with the Turn Log of all of them inside. */

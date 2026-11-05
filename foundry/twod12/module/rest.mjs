@@ -25,6 +25,7 @@ export async function completeRest(actor) {
     blocks.push(`${checkHtml(`${label} Wounds`, r, [`Modifier ${sgn(mod)}`, "DC 13"], { showTier: true })}<div>Removes <b>${removed}</b> Wound${removed === 1 ? "" : "s"} (${wounds - removed} left).</div>`);
   }
   await actor.update(upd);
+  try { const { hasMomentum, setMomentum } = await import("./escalation.mjs"); if (game.user.isGM && hasMomentum()) await setMomentum(false); } catch (e) { /* no setting */ }   // v0.0.243: a Rest uses up the party's Momentum
   const slept = await sleepEffects(actor);   // a Rest includes a Sleep
   const all = combineRolls(rolls);
   await ChatMessage.create({

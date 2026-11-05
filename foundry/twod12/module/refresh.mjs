@@ -128,6 +128,7 @@ export function registerRefresh() {
     try { await refreshWorth(); } catch (e) { console.warn("twod12 | worth", e); }   // v0.0.241: the worth lines, always
     const v = game.system.version, asked = game.settings.get(F, "refreshAskedFor");
     if (asked === v) return;
+    try { const { needsMigrationR } = await import("./migrater.mjs"); if (needsMigrationR()) return; } catch (e) { /* none */ }   // v0.0.243: the pack R migration asks and runs the refresh itself
     await game.settings.set(F, "refreshAskedFor", v);
     if (!asked && !(game.actors?.size || game.items?.size)) return;   // a new, empty world: nothing to update
     await askRefresh(`The 2d12 system was updated to v${v}.`);

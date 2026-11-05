@@ -8,7 +8,7 @@ const C = await import(ROOTURL + "tools/content.mjs");
 const get = n => C.docs.find(d => d.name === n && d.type !== "effect") ?? C.docs.find(d => d.name === n);   // v0.0.189: Pinning Shot is also an Effect
 console.log("Projectile is a weapon property:", G.TWOD12.weaponTraits.projectile, "| Shot and Save are Action traits:", G.TWOD12.traits.shot, G.TWOD12.traits.save, "| Crossbow:", [...get("Crossbow").system.traits].sort().join(", "));
 const cls = get("Archer").system;
-console.log("Archer:", `Body x${cls.bodyMult}, Mind x${cls.mindMult}, Rally +${cls.rallyMod}, Speed +${cls.speedMod}, ${cls.armorTraining} armor`, "| features:", cls.features.map(f => C.docs.find(d => d.type === "feature" && C.uuidOf("features", d.name) === f.uuid)?.name ?? "?").join(", "));
+console.log("Archer:", `Health high ${cls.healthHigh} / low ${cls.healthLow} (Stage 2 +${cls.stepHigh2} / +${cls.stepLow2}; Stage 3 +${cls.stepHigh3} / +${cls.stepLow3}), Rally ${cls.rallyMod} + Stage, Speed +${cls.speedMod}, ${cls.armorTraining} armor`, "| features:", cls.features.map(f => C.docs.find(d => d.type === "feature" && C.uuidOf("features", d.name) === f.uuid)?.name ?? "?").join(", "));
 // v0.0.181 (A1): the book's Archer: the A1 cards, the level list in today's structure, the old cards kept in a folder of their own.
 // v0.0.188 (pack C-b, OT): the Repertoire and Escalation options are current cards; Long Draw and Steady Nerves are Talents.
 const cards = ["Double Shot", "Rolling Shot", "Marksman's Shot", "Hunter's Focus", "Pinning Shot", "Volley", "Covering Fire", "Rain of Arrows", "Deadeye", "Vanish", "Twin Shot", "Precise Aim", "Quick Draw", "Wing Clip", "True Shot", "Suppressing Fire", "Steady Aim", "Perfect Shot"];
