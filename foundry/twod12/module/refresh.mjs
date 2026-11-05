@@ -76,6 +76,25 @@ export async function refreshFromCompendium({ byName = true, basics = true } = {
   return { items, actors };
 }
 
+/**
+ * v0.0.241 (Lucas: the worth lines didn't show on his characters): the ruler's worth (v0.0.239) is a line of the compendium card, not a change the copy
+ * made, so every Action and Feature on a sheet or in the world takes the compendium item's worth of the same type and name when it has none or an old
+ * one (the ledger reruns at every card pass). Silent, at ready, by the active GM; nothing else of the copy moves. Returns how many items changed.
+ */
+export async function refreshWorth() {
+  const map = new Map();
+  for (const key of ["twod12.actions", "twod12.features"]) {
+    const pack = game.packs.get(key); if (!pack) continue;
+    for (const e of await pack.getIndex({ fields: ["system.worth"] })) if (e.system?.worth) map.set(`${e.type}:${e.name}`, e.system.worth);
+  }
+  let n = 0;
+  const fix = async it => { const w = map.get(`${it.type}:${it.name}`); if (w && it.system?.worth !== w) { await it.update({ "system.worth": w }); n++; } };
+  for (const it of game.items ?? []) { try { await fix(it); } catch (e) { console.warn("twod12 | worth", it.name, e); } }
+  for (const a of allActors()) for (const it of [...a.items]) { try { await fix(it); } catch (e) { console.warn("twod12 | worth", a.name, it.name, e); } }
+  if (n) console.log(`twod12 | the ruler's worth refreshed on ${n} item${n === 1 ? "" : "s"}`);
+  return n;
+}
+
 /** The question, with its options. */
 export async function askRefresh(reason = "") {
   if (!game.user.isGM) return null;
@@ -106,6 +125,7 @@ export function registerRefresh() {
   // After a system update: asked once per version, by the active GM.
   Hooks.once("ready", async () => {
     if (!game.user.isActiveGM) return;
+    try { await refreshWorth(); } catch (e) { console.warn("twod12 | worth", e); }   // v0.0.241: the worth lines, always
     const v = game.system.version, asked = game.settings.get(F, "refreshAskedFor");
     if (asked === v) return;
     await game.settings.set(F, "refreshAskedFor", v);
