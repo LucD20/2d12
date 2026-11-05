@@ -69,6 +69,7 @@ export async function buildActionCard(item, { actor = null } = {}) {
   const setup = it.setup ? `<div class="trow setuprow"><b>Setup:</b> ${await enrich(it.setup, item)}</div>` : "";
   // v0.0.229 (pack CS): the card's prose (the book's text before and after the table: Weapon Attack, Steel Yourself) is the item's description, shown on the card.
   const notes = it.description && String(it.description).replace(/<[^>]+>/g, "").trim() ? `<div class="ac-notes">${await enrich(it.description, item)}</div>` : "";
+  const worth = it.worth ? `<div class="ac-worth">${esc(it.worth)}</div>` : "";   // v0.0.239: the ruler's worth, bottom right
   const meta = metaRowHtml({ escalation: it.escalation ?? 0, frequency: "", targetText: it.targets, distance: distanceText(it, weapon), area: areaText(it), vs: vsText(it, { src: actor?.system?.attributes ? rollSource(actor.system, it) : null, fists: item.getFlag?.("twod12", "basic") === "fists" }), requirements: it.requirements, trigger: it.trigger, reactionKind: it.reactionKind, self: it.traits?.has?.("self") });
   const cat = categoryText(it);
   return `<div class="twod12 acard" style="--fqc:${color}">
@@ -79,6 +80,6 @@ export async function buildActionCard(item, { actor = null } = {}) {
       ${meta}${area}${setup}
       ${it.prerequisites ? `<div class="trow"><b>Prerequisites:</b> ${esc(it.prerequisites)}</div>` : ""}
       ${notes}
-      ${grid}${changed}${effects}${modifierBlocks(it).join("")}
+      ${grid}${changed}${effects}${modifierBlocks(it).join("")}${worth}
     </div></div>`;
 }

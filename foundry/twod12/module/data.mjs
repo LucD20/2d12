@@ -277,6 +277,7 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       description: new HTMLField(), hover: str(), flavor: str(), actions: new ArrayField(str()),
+      worth: str(),   // v0.0.239: the ruler's worth of the card (book/ruler/worth.json), a tiny line on the card for the playtests
       // A choice: when the item is granted, the player picks "choiceCount" of these (Actions, Features or Talents).
       choiceLabel: str(), choiceCount: int(1, 1), choiceOptions: new ArrayField(str()),
       category: str(), level: int(1, 0),
@@ -436,6 +437,7 @@ export class TalentData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       description: new HTMLField(), hover: str(), flavor: str(), category: str(), level: int(1, 0), frequency: choice(TWOD12.frequencies),
+      worth: str(),   // v0.0.239: the ruler's worth of the card (book/ruler/worth.json), a tiny line on the card and the chat card for the playtests
       traits: traitsField(TWOD12.actionTraits), requirements: str(), actions: new ArrayField(str()),
       // A choice: when the item is granted, the player picks "choiceCount" of these (Actions, Features or Talents).
       choiceLabel: str(), choiceCount: int(1, 1), choiceOptions: new ArrayField(str()),

@@ -216,7 +216,7 @@ export async function buildInfoCard(item) {
   const s = item.system, cat = categoryText(s);
   const load = async list => (await Promise.all((list ?? []).filter(Boolean).map(async u => { try { return await fromUuid(u); } catch (e) { return null; } }))).filter(Boolean);
   if (item.type === "talent" && actionOnlyTalent(s)) { const [a] = await load(s.actions); if (a?.type === "action") return buildRawCard(a); }
-  const body = await foundry.applications.ux.TextEditor.implementation.enrichHTML(s.description ?? "", { relativeTo: item });
+  const body = await foundry.applications.ux.TextEditor.implementation.enrichHTML(s.description ?? "", { relativeTo: item }) + (s.worth ? `<div class="ac-worth">${esc(s.worth)}</div>` : "");   // v0.0.239: the ruler's worth
   const ef = effectiveFrequency(s), freq = ef ? TWOD12.frequencies[ef] : "";
   const kid = d => `<div class="ikid">${d.type === "action" ? apLabel(d.system.versions.map(v => v.ap), d.system.reaction) : ""}<span>${esc(d.name)}</span></div>`;
   // v0.0.215 (Lucas): what it grants is shown in full (the Action's card), not only its name; a choice's options too, folded.

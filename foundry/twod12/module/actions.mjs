@@ -889,7 +889,7 @@ export async function useAction(actor, item, opts = {}) {
     ${bonusRows}
     ${critHtml}${effectsHtml}
     ${fxn.all.length && !effectsOff ? `<div class="fxrow">&#10022; ${esc(fxn.all.join(", "))}</div>` : ""}
-    ${btn}${isSelf && !String(it.area ?? "").trim() ? "" : targetsRowHtml([collapseNames(targets.map(t => t.name))].filter(Boolean), { retarget: true })}</div>`;
+    ${btn}${isSelf && !String(it.area ?? "").trim() ? "" : targetsRowHtml([collapseNames(targets.map(t => t.name))].filter(Boolean), { retarget: true })}${it.worth ? `<div class="ac-worth">${esc(it.worth)}</div>` : ""}</div>`;
   // v0.0.195 (Lucas): a movement-only Action (Advance, Evade, Crawl) in combat starts its movement with the banner (squares left, Done) and
   // posts one short line when it ends, instead of a card whose button then posted the movement (two messages for one step).
   const mvInner = pureMove(it, version, basicKey);

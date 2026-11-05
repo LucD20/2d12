@@ -67,7 +67,7 @@ export function escalationModel(actor, { actionRow, isFaded, open = null, openPa
       const state = passiveState(actor, p, now);
       // v0.0.215 (Lucas, playtest 2): clicking a Passive shows its description under it (desc), instead of opening the Feature window.
       return { id: p.id, name: p.name, state, tag: PASSIVE_TAG[state], tip: `${p.name} · Escalation ${n}+: ${String(p.system?.hover || p.system?.description || "").replace(/<[^>]+>/g, "").trim()}`,
-        desc: String(p.system?.description || p.system?.hover || "").trim() || "<p><em>No description.</em></p>", open: !!openPass?.has?.(p.id) };
+        desc: (String(p.system?.description || p.system?.hover || "").trim() || "<p><em>No description.</em></p>") + (p.system?.worth ? `<div class="ac-worth">${p.system.worth}</div>` : ""), open: !!openPass?.has?.(p.id) };
     }),
     actives: actives.filter(i => Math.min(3, Number(i.system.escalation)) === n).map(i => {
       const row = actionRow ? actionRow(i) : { id: i.id, name: i.name };

@@ -20,9 +20,9 @@ Hallowed Dawn: Escalation 3 encounter 3 AP All creatures in the Area | 2 emanati
 Consecrated Ground: For 3 rounds, enemies in the area take 1 Bane on [Weapon], [Power] and [Signature] Actions, and allies in it heal 1d4 at the start of each of their turns.
 --- the passives and effects
 Divine Power: ondamage Ho Profane -> Divine Power (Enfeebled) | that effect: damagestep Enfeebled 1 eot | Profane Judgment gone: true
-Font of Mercy: Paladin Escalation | While your Escalation is 1 or more, when you or an ally within 5 squares of you uses a Rally Point, they heal your Power Modifier + 2 more.Ruler: 0.20 AP a turn (rung 1: 0.4-0.6).
-Radiant Zeal: Paladin Escalation | While your Escalation is 1 or more, the first [Strike] Action you make each round that deals damage deals an extra [R] 1d6 Ho.Ruler: 0.60 AP a turn (rung 1: 0.4-0.6).
-Hallowed Stance: Paladin Escalation | While your Escalation is 3 or more, you and your adjacent allies take less damage from each instance, reduced by twice your Power Modifier. (Not automated.)Ruler: 0.47 AP a turn (rung 3: 0.8-1).
+Font of Mercy: Paladin Escalation | While your Escalation is 1 or more, when you or an ally within 5 squares of you uses a Rally Point, they heal your Power Modifier + 2 more.
+Radiant Zeal: Paladin Escalation | While your Escalation is 1 or more, the first [Strike] Action you make each round that deals damage deals an extra [R] 1d6 Ho.
+Hallowed Stance: Paladin Escalation | While your Escalation is 3 or more, you and your adjacent allies take less damage from each instance, reduced by twice your Power Modifier. (Not automated.)
 the Aura: aura Aura 2 allies -> Aura of Protection (+1 Defense) | lasts: until the encounter ends (an Escalation effect)
 Lay On Hands' strike: bonusdamage 2d8 M Ho t2,t3 | ends after: strike
 old cards: Vow of Enmity, Word of Radiance kept | in no level: false
