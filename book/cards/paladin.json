@@ -96,9 +96,9 @@
       "[V] 1[W] + [Mod] + [R] 2d8 Ho",
       "[V] 1[W] + [Mod] + [R] 3d8 Ho"
      ],
-     "effects": "As 2 AP, and you or one ally in the Bright light gain [[Guard]] 1d8 + [Mod] (2d6 + [Mod] at Stage 2, 2d8 + [Mod] at Stage 3). The other creatures in the light are Pushed 1, away from the target.",
+     "effects": "As 2 AP, and you or one ally in the Bright light gain [[Guard]] 1d8 + [Mod] (2d6 + [Mod] at Stage 2, 2d8 + [Mod] at Stage 3). The other creatures in the light, you excepted, are Pushed 1, away from the target.",
      "foundry": {
-      "text": "The target sheds [[Bright|Bright light]] in a 2 Emanation and takes 1 Bane when they try to [[Hide]], for 1 round. You or one ally in the Bright light gain [[Guard]] 1d8 + [Mod] (2d6 + [Mod] at Stage 2, 2d8 + [Mod] at Stage 3). The other creatures in the light are Pushed 1, away from the target.",
+      "text": "The target sheds [[Bright|Bright light]] in a 2 Emanation and takes 1 Bane when they try to [[Hide]], for 1 round. You or one ally in the Bright light gain [[Guard]] 1d8 + [Mod] (2d6 + [Mod] at Stage 2, 2d8 + [Mod] at Stage 3). The other creatures in the light, you excepted, are Pushed 1, away from the target.",
       "fx": {
        "all": [
         "{{fx:Smite (Bright light 2)}}"

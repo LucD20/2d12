@@ -455,8 +455,8 @@ async function allyRecipients(cfg, ctx, what = "the effect") {
   if (cands.length <= 1) return { origin, who: cands };
   // v0.0.247 (Lucas): the question is a bar at the bottom (pickbar.mjs), not a Foundry window
   const { pickBar } = await import("./pickbar.mjs");
-  const pick = await pickBar({ icon: "fa-shield-heart", text: `Who gains <b>${esc(what)}</b>? ${cfg.area > 0 ? `You, or an ally within ${cfg.area} of the target.` : "You, or one ally."}`,
-    options: cands.map((a, n) => ({ id: String(n), label: a === origin ? `You (${a.name})` : a.name, cls: a === origin ? "you" : "" })) });
+  const pick = await pickBar({ icon: "fa-shield-heart", text: `Who gains <b>${esc(what)}</b>? ${cfg.area > 0 ? `You, or an ally within ${cfg.area} of the target` : "You, or one ally"} (click here or the token).`,
+    options: cands.map((a, n) => ({ id: String(n), label: a === origin ? `You (${a.name})` : a.name, cls: a === origin ? "you" : "", token: tokenOfActor(a) })) });   // v0.0.248: the token on the map can be clicked too
   if (pick == null || pick === "done") return { origin, who: [], cancelled: true };
   return { origin, who: [cands[Number(pick)]] };
 }

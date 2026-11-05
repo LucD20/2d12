@@ -998,14 +998,15 @@ async function pushPicker(cfg, ctx, mode, origin, N) {
   const label = MOVE_LABEL[mode];
   const cardTargets = targetTokens(ctx);
   let list = cfg.area > 0 ? tokensInEmanation(cardTargets, cfg.area) : cardTargets;
-  list = list.filter(t => t.id !== origin.id);
+  const me = tokenOf(contextActor(ctx));
+  list = list.filter(t => t.id !== origin.id && (cfg.self || t.id !== me?.id));   // v0.0.248 (Lucas): never yourself, unless self:yes
   if (!list.length) return warn(`${label} ${N}: no creature ${cfg.area > 0 ? `within ${cfg.area} of the target` : "among the targets"} to move.`);
   const moved = [], by = cfg.from === "target" ? tokenOf(contextActor(ctx)) : null;
   const { pickBar } = await import("./pickbar.mjs");   // v0.0.247 (Lucas): the list is a bar at the bottom, in the Line bar's look, not a Foundry window
   while (list.length) {
     const pick = await pickBar({ icon: "fa-hand", done: "Done", cancel: "Stop",
-      text: `<b>${label} ${N}</b>${by ? ` away from <b>${esc(origin.name)}</b>` : ""}: click a creature to move it.${moved.length ? ` <small>Moved: ${moved.map(esc).join(", ")}.</small>` : ""}`,
-      options: list.map((t, n) => ({ id: String(n), label: t.name })) });
+      text: `<b>${label} ${N}</b>${by ? ` away from <b>${esc(origin.name)}</b>` : ""}: click a creature (here or its token) to move it.${moved.length ? ` <small>Moved: ${moved.map(esc).join(", ")}.</small>` : ""}`,
+      options: list.map((t, n) => ({ id: String(n), label: t.name, token: t })) });   // v0.0.248: its token on the map can be clicked too
     if (pick == null || pick === "done") break;
     const t = list[Number(pick)];
     if (!t) break;
