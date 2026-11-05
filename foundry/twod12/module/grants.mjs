@@ -122,15 +122,15 @@ async function grantWeapon(actor, weapon) {
 }
 
 async function dropSpecies(actor, item) {
-  let chosen = [];
-  if (item.system.pickTwo) {
-    chosen = await chooseDialog(item.name, "Choose 2 attributes to gain +1.", TWOD12.attributes, 2);
-    if (!chosen) return;
-  }
+  // v0.0.244: the Species window (specieswindow.mjs), in the class window's format: the two Attributes, the side of the bigger Health bonus, what it grants.
+  const { chooseSpecies } = await import("./specieswindow.mjs");
+  const res = await chooseSpecies({ item, actor, adding: true });
+  if (!res) return;
   for (const old of actor.itemTypes.species) await old.delete();
   const d = copyData(item, { sourceUuid: item.uuid });
-  d.system.chosen = chosen;
+  d.system.chosen = res.chosen;
   await actor.createEmbeddedDocuments("Item", [d]);
+  if (actor.type === "character" && (actor.system.speciesHigh ?? "") !== res.side) await actor.update({ "system.speciesHigh": res.side });
 }
 
 async function dropClass(actor, item) {

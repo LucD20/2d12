@@ -2150,3 +2150,21 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 .twod12.chat.sysline.apguard > i { color: #2f6fb3; }
 .twod12.chat.sysline.statemsg > i { color: #a32d2d; }
 #combat .twod12-momentum { margin-left: 4px; } #combat .twod12-momentum.on { color: #c2521f; border-color: #c2521f; }
+
+/* v0.0.244 (Lucas): the Reaction AP pip is teal everywhere, in your turn too, with a thin divider before it; the pick windows (Species, Initiative) in the class window's look */
+.twod12.sheet.ns .hpip.rap, .twod12.sheet.ns .hpip.rap.on { border-color: #43b3a8; } .twod12.sheet.ns .hpip.rap.on { background: #43b3a8; }
+.twod12.sheet.ns .hpip.rap { margin-left: 0; }
+.twod12.sheet.ns .hpips .hsep, #twod12-carousel .tp-pips .hsep, .twod12.chat.ticker .tk-pips .hsep, .twod12-ap .hsep { display: inline-block; width: 0; height: 10px; border-left: 1px solid rgba(128, 128, 128, .55); margin: 0 3px 0 4px; border-radius: 0; background: none; transform: none; align-self: center; }
+.twod12.chat.ticker .tk-pips .hsep { height: 8px; } .twod12.chat.ticker .tk-pips.sm .hsep { height: 6px; margin: 0 2px 0 3px; }
+#twod12-carousel .tp-pips i.rap, #twod12-carousel .tp-pips.turn i.rap, #twod12-carousel .tp.act .tp-pips i.rap { border-color: var(--tp-teal); background: transparent; margin-left: 0; }
+#twod12-carousel .tp-pips i.rap.on, #twod12-carousel .tp-pips.turn i.rap.on, #twod12-carousel .tp.act .tp-pips.turn i.rap.on, #twod12-carousel .tp.act .tp-pips i.rap.on { background: var(--tp-teal); border-color: var(--tp-teal); }
+.twod12.chat.ticker .tk-pips i.rap { margin-left: 0; border: 1.5px solid #43b3a8; background: transparent; } .twod12.chat.ticker .tk-pips i.rap.on { background: #43b3a8; }
+.twod12-ap .twod12-rap { margin: 0 4px 0 0; border-color: #43b3a8; } .twod12-ap .twod12-rap.on { background: #43b3a8; }
+.application.pickwin .cw-body { display: block; overflow-y: auto; }
+.application.pickwin .cw-slots { border-right: 0; }
+.classwin .cw-ttl .cw-icon { width: 44px; height: 44px; border-radius: 8px; border: 1px solid #3a4c6b; background: var(--cw-navy2); display: inline-flex; align-items: center; justify-content: center; color: #fff; font-size: 22px; }
+.classwin .cw-grant { display: flex; flex-wrap: wrap; gap: 6px 10px; padding: 6px 10px; border: 1px solid var(--cw-line); border-radius: 5px; background: var(--cw-card); }
+.classwin .cw-grant span { white-space: nowrap; } .classwin .cw-grant b { font-weight: 600; }
+.classwin .cw-num { display: inline-flex; align-items: center; gap: 4px; margin: 0; color: var(--cw-mut); } .classwin .cw-num input { width: 56px; height: 28px; background: #fff; color: var(--cw-ink); border: 1px solid var(--cw-line); border-radius: 4px; }
+.classwin .cw-hnote { color: var(--cw-mut); font-size: .85rem; }
+.twod12.sheet.ns .fsec .fsec-link { cursor: pointer; margin-left: auto; } .twod12.sheet.ns .fsec .fsec-link:hover { text-decoration: underline; }

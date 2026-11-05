@@ -62,6 +62,7 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
   constructor(o) {
     super({ window: { title: `Class: ${o.name}` } });
     Object.assign(this, { o, picks: {}, attrs: {}, view: null, cards: new Map(), done: false, priority: o.cls.modPriority === "power" ? "power" : "weapon" });
+    this.healthHigh = o.actor?.system?.healthHigh === "resolve" ? "resolve" : "vigor";   // v0.0.244 (pack R): where the class's high Health value goes (a level 1 choice)
     this.tf = { q: "", cat: "", only: true, compact: false };   // v0.0.195: the Talent filter bar
     this.choiceSel = {};   // v0.0.215: a chosen Talent or Feature with a choice (Lesser Blessing's blessing): uuid -> the options picked here
   }
@@ -122,18 +123,22 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
       return `<div class="cw-tile${on ? " chosen" : ""}${vw ? " viewing" : ""}${tal && !tal.ok ? " cant" : ""}"${tal ? ` data-q="${esc(tal.q)}" data-cat="${tal.cat}" data-ok="${tal.ok ? 1 : 0}"${tal.ok ? "" : ` data-tooltip="${esc(`Not yet: ${tal.reasons.join("; ")}`)}"`}` : ""}><button type="button" class="cw-view" data-key="view:${x.s.id}:${u}" data-view="${u}" data-sec="${x.s.id}"><span class="nm">${esc(i?.name ?? "(missing item)")}</span><span class="mt">${esc(i?.meta ?? "")}</span></button><div class="cw-act">${act}</div></div>`;
     };
     const shared = level === 1 ? [...(cls.weaponAttrs ?? [])].filter(k => [...(cls.magicAttrs ?? [])].includes(k)) : [];
+    // v0.0.244 (Lucas): the Health line's choice as a selection like the Attributes: the high value on Vigor or Resolve (book, Chapter 4; chosen once).
+    const healthRow = level === 1 && Number(cls.healthHigh) > 0 ? `<div class="cw-attr"><span>High Health value (${Number(cls.healthHigh)}) on</span><div class="cw-seg">${[["vigor", "Vigor"], ["resolve", "Resolve"]].map(([k, l]) => `<button type="button" data-key="hhigh:${k}" data-hhigh="${k}" aria-pressed="${this.healthHigh === k}">${this.healthHigh === k ? `${CHECK} ` : ""}${l}</button>`).join("")}</div><span class="cw-hnote">the low value (${Number(cls.healthLow)}) on the other</span></div>` : "";
+    let healthPlaced = !healthRow;
     const secs = m.sections.map(x => {
       const pill = `<span class="cw-pill${x.done && x.kind !== "granted" ? " done" : ""}">${esc(x.pill)}</span>`;
       let body = "";
       if (x.kind === "attr") {
         body = x.pairs.map(p => `<div class="cw-attr"><span>${p.opts.map(k => AN[k]).join(" or ")} +1</span><div class="cw-seg">${p.opts.map(k => `<button type="button" data-key="attr:${x.s.id}:${p.i}:${k}" data-attr="${x.s.id}" data-pair="${p.i}" data-k="${k}" aria-pressed="${p.chosen === k}"${p.free.includes(k) ? "" : ' disabled data-tooltip="Chosen at an earlier level"'}><span class="${ATTR_CLS[k] ?? ""}">${AN[k]}</span> +1</button>`).join("")}</div></div>`).join("");
+        if (!healthPlaced) { body += healthRow; healthPlaced = true; }
         if (shared.length) body += `<div class="cw-attr"><span>If ${shared.map(k => AN[k]).join(" or ")} is the higher for both Modifiers</span><div class="cw-seg">${[["weapon", "Weapon Modifier keeps it"], ["power", "Power Modifier keeps it"]].map(([k, l]) => `<button type="button" data-key="prio:${k}" data-prio="${k}" aria-pressed="${this.priority === k}">${l}</button>`).join("")}</div></div>`;
       } else {
         const bar = x.s.kind === "talent" ? this._filterBar(x.s.id) : "";
         body = `${x.empty ? '<div class="cw-empty">Everything here is already yours.</div>' : ""}${bar}<div class="cw-tiles${x.s.kind === "talent" && this.tf.compact ? " compact" : ""}" data-sec="${x.s.id}">${x.list.map(u => tile(x, u)).join("")}</div>${x.s.kind === "talent" ? '<p class="cw-none" hidden>No Talent matches the filter.</p>' : ""}`;
       }
       return `<section class="cw-sec"><h2>${esc(x.s.title)} ${pill}</h2><p class="cw-sub">${esc(x.sub)}</p>${body}</section>`;
-    }).join("") || '<p class="cw-empty">Nothing to choose at this level.</p>';
+    }).join("") + (healthPlaced ? "" : `<section class="cw-sec"><h2>Health <span class="cw-pill done">Chosen</span></h2><p class="cw-sub">The class gives a high and a low Health value: you assign them.</p>${healthRow}</section>`) || '<p class="cw-empty">Nothing to choose at this level.</p>';
     // The card being read.
     let detail = '<p class="cw-empty">Click a name to read it.</p>';
     if (this.view) {
@@ -146,7 +151,8 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
     const missing = this._missingChoices(m);
     if (missing.length) m.complete = false;
     const dots = Array.from({ length: m.total }, (_, i) => `<i class="${i < m.made ? "on" : ""}"></i>`).join("");
-    const stats = [["Health", cls.healthHigh ? `high ${cls.healthHigh}, low ${cls.healthLow} (Stage 2 +${cls.stepHigh2} / +${cls.stepLow2}; Stage 3 +${cls.stepHigh3} / +${cls.stepLow3})` : `Body ×${cls.bodyMult}, Mind ×${cls.mindMult} (old)`], ["Rally", `${cls.rallyMod} + Stage`], ["Speed", `${cls.speedMod >= 0 ? "+" : "−"}${Math.abs(cls.speedMod)}`], ["Armor Training", TWOD12.armorTrainings[cls.armorTraining] ?? cls.armorTraining]];
+    const hv = this.healthHigh === "resolve" ? ["Resolve", "Vigor"] : ["Vigor", "Resolve"];
+    const stats = [["Health", cls.healthHigh ? `${hv[0]} ${cls.healthHigh}, ${hv[1]} ${cls.healthLow} (Stage 2 +${cls.stepHigh2} / +${cls.stepLow2}; Stage 3 +${cls.stepHigh3} / +${cls.stepLow3})` : `Body ×${cls.bodyMult}, Mind ×${cls.mindMult} (old)`], ["Rally", `${cls.rallyMod} + Stage`], ["Speed", `${cls.speedMod >= 0 ? "+" : "−"}${Math.abs(cls.speedMod)}`], ["Armor Training", TWOD12.armorTrainings[cls.armorTraining] ?? cls.armorTraining]];
     const left = m.total - m.made, stage = stageLine(level);
     const div = document.createElement("div");
     div.className = "cw";
@@ -154,7 +160,7 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
         <div class="cw-progress"><span class="cw-dots">${dots}</span><span>${m.made} of ${m.total} choices made</span></div></div>
         <div class="cw-stats">${stats.map(([k, v]) => `<span>${k}<b>${esc(v)}</b></span>`).join("")}</div>${stage ? `<div class="cw-stage">${esc(stage)}</div>` : ""}</header>
       <div class="cw-body"><div class="cw-col cw-slots">${secs}</div><div class="cw-col cw-detail">${detail}</div></div>
-      <footer class="cw-foot"><span class="cw-msg">${left > 0 ? `${left} left to choose.` : missing.length ? `Choose for ${esc(missing.join(", "))} (under its card).` : "Everything is chosen. Attribute choices can't be changed later."}</span>
+      <footer class="cw-foot"><span class="cw-msg">${left > 0 ? `${left} left to choose.` : missing.length ? `Choose for ${esc(missing.join(", "))} (under its card).` : "Everything is chosen. Attribute and Health choices can't be changed later."}</span>
         <span class="cw-btns"><button type="button" class="cw-btn" data-key="cancel" data-cancel>Cancel</button><button type="button" class="cw-btn primary" data-key="confirm" data-confirm${m.complete ? "" : " disabled"}>${adding ? `Add ${esc(name)} to sheet` : `Level up to ${level}`}</button></span></footer>`;
     return div;
   }
@@ -220,6 +226,7 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
     else if (b.dataset.pick) { const s = sec(b.dataset.pick); if (s) { this.picks = togglePick(this.picks, s, b.dataset.uuid); this.view = { uuid: b.dataset.uuid, sec: s.id }; } }
     else if (b.dataset.attr) this.attrs = setAttr(this.attrs, sectionsAt(this.o.cls, this.o.level), b.dataset.attr, Number(b.dataset.pair), b.dataset.k, this.o.priorAttrs);
     else if (b.dataset.prio) this.priority = b.dataset.prio;
+    else if (b.dataset.hhigh) this.healthHigh = b.dataset.hhigh;
     else if (b.dataset.choice) {
       const u = b.dataset.choice, d = this.o.data.docs.get(u), count = Math.max(1, d?.system?.choiceCount || 1), cur = this._choicesFor(u);
       this.choiceSel[u] = cur.includes(b.dataset.opt) ? cur.filter(x => x !== b.dataset.opt) : [...cur, b.dataset.opt].slice(-count);
@@ -229,7 +236,7 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
     else if (b.hasAttribute("data-confirm")) {
       if (!m.complete || this._missingChoices(m).length) return;
       this.done = true;
-      this.o.resolve({ grant: levelPlan(this.o.cls, this.o.level, m), attrs: attrList(this.o.cls, this.o.level, this.attrs), attrMap: this.attrs, picks: this.picks, priority: this.priority, choices: this.choiceSel });
+      this.o.resolve({ grant: levelPlan(this.o.cls, this.o.level, m), attrs: attrList(this.o.cls, this.o.level, this.attrs), attrMap: this.attrs, picks: this.picks, priority: this.priority, choices: this.choiceSel, healthHigh: this.healthHigh });
       return this.close();
     } else return;
     this.render();
@@ -285,6 +292,7 @@ async function applyLevel(actor, level, res) {
   const upd = { "system.chosenAttrs": all, "system.chosenA": all[0] ?? "", "system.chosenB": all[1] ?? "", [`flags.${F}.classPicks.${level}`]: res.picks, [`flags.${F}.classAttrs.${level}`]: res.attrs };
   if (level === 1) upd["system.modPriority"] = res.priority;
   await cls.update(upd);
+  if (level === 1 && res.healthHigh && actor.type === "character" && actor.system.healthHigh !== res.healthHigh) await actor.update({ "system.healthHigh": res.healthHigh });   // v0.0.244: the Health line's side
 }
 
 /** The Level field changed on the sheet (or the class was dropped on a character above level 1): each new level in turn. */

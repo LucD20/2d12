@@ -2,6 +2,7 @@ import { logEvent, makeLine } from "./ticker.mjs";
 import { swapCardHtml, thawLineHtml, sysLine, apText } from "./sysmsg.mjs";
 import { apGuardOf, apGuardAfterReaction, guardPerAP } from "./guard.mjs";
 import { hasMomentum, setMomentum } from "./escalation.mjs";
+import { askInitiative } from "./initwindow.mjs";
 import { initCardData, initCardHtml } from "./initcard.mjs";
 import { groupColor } from "./config.mjs";
 // Combat: attribute-roll Initiative for everyone, "zipper" turn order between the two sides,
@@ -157,28 +158,7 @@ export function zipper(list) {
   return out;
 }
 
-/**
- * The initiative dialog: the Attribute (Instinct unless the GM calls another), v0.0.206: another Attribute for some creatures,
- * and Boons, Banes, Favored or Doomed for this roll. Returns { attr, per: { id: attr }, boons, banes, favored, doomed } or null.
- */
-async function askInitiativeAttr(list = []) {
-  const opts = sel => Object.entries(TWOD12.attributes).map(([k, l]) => `<option value="${k}"${k === sel ? " selected" : ""}>${l}</option>`).join("");
-  const per = list.length > 1 ? `<details class="init-per"><summary>Another Attribute for some creatures</summary>${list.map(c => `<div class="form-group"><label>${esc(c.name)}</label><select name="per-${c.id}"><option value="">Same as above</option>${opts("")}</select></div>`).join("")}</details>` : "";
-  return DialogV2.prompt({
-    window: { title: "Initiative" },
-    content: `<p>Initiative is an Attribute Check. Roll with:</p>${Object.entries(TWOD12.attributes).map(([k, l]) => `<label class="pick"><input type="radio" name="attr" value="${k}" ${k === "instinct" ? "checked" : ""}> ${l}</label>`).join("<br>")}${per}
-      <div class="form-group"><label>Boons</label><input type="number" name="boons" value="0" min="0" step="1"></div>
-      <div class="form-group"><label>Banes</label><input type="number" name="banes" value="0" min="0" step="1"></div>
-      <div class="form-group"><label><input type="checkbox" name="favored"> Favored</label><label><input type="checkbox" name="doomed"> Doomed</label></div>`,
-    ok: { label: "Roll", callback: (ev, btn) => {
-      const f = new FormData(btn.form);
-      const p = {};
-      for (const c of list) { const v = f.get(`per-${c.id}`); if (v) p[c.id] = v; }
-      return { attr: f.get("attr"), per: p, boons: Math.max(0, Math.trunc(Number(f.get("boons"))) || 0), banes: Math.max(0, Math.trunc(Number(f.get("banes"))) || 0), favored: !!f.get("favored"), doomed: !!f.get("doomed") };
-    } }, rejectClose: false
-  });
-}
-
+// v0.0.244: the Initiative window (initwindow.mjs) replaced the dialog; it answers the same { attr, per, boons, banes, favored, doomed }.
 export class TwoD12Combat extends Combat {
   /** An encounter can't end while a creature is Dying or Shattered: every creature must be unharmed, stabilized or dead. */
   async endCombat() {
@@ -206,7 +186,7 @@ export class TwoD12Combat extends Combat {
     ids = typeof ids === "string" ? [ids] : [...ids];
     const list = ids.map(id => this.combatants.get(id)).filter(c => c?.isOwner && c.actor);
     if (!list.length) return this;
-    const ask = await askInitiativeAttr(list);
+    const ask = await askInitiative(list);
     if (!ask?.attr) return this;
     const curId = this.started ? this.combatant?.id : null;
     const rows = [], rolls = [], updates = [];
@@ -408,7 +388,7 @@ export function registerCombatHooks() {
       box.className = "twod12-ap";
       box.dataset.tooltip = "Action Points";
       const canSwap = combat.started && combat.combatant?.id === c.id && c.isOwner && !c.getFlag(F, "acted") && getAP(c) >= 1;
-      box.innerHTML = `<span>AP</span><input type="number" min="0" value="${getAP(c)}" ${c.isOwner ? "" : "disabled"}><a class="twod12-rap${getRAP(c) ? " on" : ""}" data-tooltip="Reaction AP: ${getRAP(c) ? "ready (pays only for Reactions; click to spend it by hand)" : "spent (back at the start of its turn; click to give it back)"}"></a>${canSwap ? '<button type="button" class="twod12-swap" data-tooltip="Swap initiative with an ally (1 AP)"><i class="fa-solid fa-right-left"></i></button>' : ""}`;
+      box.innerHTML = `<span>AP</span><input type="number" min="0" value="${getAP(c)}" ${c.isOwner ? "" : "disabled"}><i class="hsep"></i><a class="twod12-rap${getRAP(c) ? " on" : ""}" data-tooltip="Reaction AP: ${getRAP(c) ? "ready (pays only for Reactions; click to spend it by hand)" : "spent (back at the start of its turn; click to give it back)"}"></a>${canSwap ? '<button type="button" class="twod12-swap" data-tooltip="Swap initiative with an ally (1 AP)"><i class="fa-solid fa-right-left"></i></button>' : ""}`;
       box.querySelector(".twod12-swap")?.addEventListener("click", () => requestSwap(combat, c));
       box.querySelector(".twod12-rap")?.addEventListener("click", () => { if (c.isOwner) setRAP(c, getRAP(c) ? 0 : REACTION_AP); });
       if (c.getFlag(F, "frozen")) box.classList.add("frozen");

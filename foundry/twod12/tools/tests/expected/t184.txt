@@ -1,0 +1,17 @@
+--- the Species window: a Human (two Attributes and the side of the +3 to choose)
+sections: Attributes [0 / 2] | Health [Chosen] | What it grants [Granted] | complete: false | message: 2 Attributes left to choose. | confirm: Add Human to sheet
+stats: Speed 5, Reach 1, Size Medium (3), Steadiness 0, Health +3 / +2, your choice
+Body then Mind: ["body","mind"] | a third replaces the oldest: ["mind","appeal"] | clicking a chosen one removes it: ["mind"]
+complete: true | the Attribute row: Body* Mind* Appeal (off) Instinct (off) | the Health row: the Paladin's high value* / Vigor / Resolve
++3 on Resolve: {"chosen":["body","mind"],"side":"resolve"} | back to the high value: true
+--- a Dwarf: everything granted
+sections: Attributes [Granted]: Body +1 Mind +1 Appeal −1 Instinct +1 | Health [Granted]: Vigor +4 Resolve +1 | What it grants [Granted]: Speed 4 Reach 1 Size Medium (3) Steadiness 1 | complete: true | confirm: Save choices
+--- the Initiative window
+sections: Roll with [Instinct] | This roll [Plain] | Another Attribute for some creatures [Same for all] | message: Nari, Goblin roll Instinct. | icon: fa-dice-d20
+after the clicks: {"attr":"body","per":{"b":"mind"},"boons":2,"banes":0,"favored":true,"doomed":false} | Favored again toggles off: false | Same clears the creature's own: {}
+pills: Body | 2 Boons · Favored | 1 changed | the per row for the Goblin: Mind
+--- the window's HTML (pure)
+header, stats, 3 sections, footer: true true 3 true | a pressed button: true | the Boons input: true | disabled confirm when incomplete: true
+--- wiring: a dropped species opens the window: true | the sheet opens it (Species: Choices, the Health line): true | Initiative uses it: true
+the class window's high side: a selection at level 1: true | the sheet's swap is the GM's correction: true
+the Reaction AP pip: teal in the turn too, a divider before it: true | strip, ticker, tracker: true
