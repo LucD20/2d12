@@ -1,0 +1,17 @@
+{
+ "_about": "Placeholder cards (cards 1, Lucas, 2026-11-05): Actions the book hasn't written yet, so that links to them resolve ([[Hide]] in Smite). Each is a card with `placeholder: true` and a short text: the book shows it where its chapter places it, Foundry builds an Action item with no Versions that a link opens to read, the ruler ignores it. When the Action is written, its card moves to its chapter's file and leaves this one.",
+ "cards": [
+  {
+   "name": "Hide",
+   "category": "Basic Action",
+   "placeholder": true,
+   "text": "**Not written yet.** Hiding and sneaking are an open item (see [[Senses]]). This card holds the place, so that other cards can refer to Hide.",
+   "foundry": {
+    "img": "icons/svg/mystery-man.svg",
+    "folder": "Basic Actions",
+    "automation": "none",
+    "automationNote": "a placeholder: nothing to automate until Hide is written."
+   }
+  }
+ ]
+}

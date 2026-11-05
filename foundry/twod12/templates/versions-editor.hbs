@@ -55,6 +55,7 @@
     </div>
     <label>Critical <textarea data-v="{{vi}}" data-field="critical" placeholder="Only on Doubles with a Tier 3 result (leave empty if the Action has no Critical)">{{critical}}</textarea></label>
     <label>Effects <textarea data-v="{{vi}}" data-field="effects">{{effects}}</textarea></label>
+    <label data-tooltip="Chips that run one after the other once this Version's damage is applied (Tier 2 or 3), each asking its question: @Guard[1d8+mod|who:pick|area:2] asks who gains the Guard (you or an ally within 2 of the target); @Move[pushed|distance:1|pick:yes|area:2|from:target] lists the creatures within 2 of the target and moves them one at a time, away from it.">After the damage <textarea data-v="{{vi}}" data-field="after" placeholder="@Guard[1d8+mod|who:pick|area:2] @Move[pushed|distance:1|pick:yes|area:2|from:target]">{{after}}</textarea></label>
   </details>
   {{else}}<p class="hint">No versions yet. Add one for each AP cost.</p>{{/each}}
 </div>

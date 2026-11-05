@@ -11,7 +11,7 @@ import fs from "node:fs";
 import { spawnSync } from "node:child_process";
 const { loadCards, cardSystem, featureSystem, talentSystem, basicEntry, isAction } = await import(ROOTURL + "tools/cardgen.mjs");
 const { actors } = await import(ROOTURL + "tools/content.mjs");
-const { docs, uuidOf, CARDS } = await import(ROOTURL + "tools/content.mjs");
+const { docs, uuidOf, CARDS, resolveRefs } = await import(ROOTURL + "tools/content.mjs");
 const { BASIC_ACTIONS } = await import(ROOTURL + "module/basic-data.mjs");
 const S = await import(ROOTURL + "../../book/ruler/spec.mjs");
 
@@ -40,7 +40,6 @@ console.log("a card the book does not show (book: false):", cards.filter(c => c.
 
 const problemsEarly = [];
 console.log("--- the compendium items are the cards (content.mjs reads book/cards)");
-const resolveRefs = s => s.replace(/\{\{fx:([^}]+)\}\}/g, (m, n) => uuidOf("effects", n)).replace(/\{\{action:([^}]+)\}\}/g, (m, n) => uuidOf("actions", n));
 const compendium = cards.filter(c => !c.foundry?.basic);
 const bad = [];
 const same = (have, mine, what) => { const a = { ...have }, b = { ...mine }; delete a.escalationPassive; delete b.escalationPassive; if (JSON.stringify(a) !== JSON.stringify(b)) bad.push(what); };

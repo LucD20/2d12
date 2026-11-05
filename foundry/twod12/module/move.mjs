@@ -5,7 +5,7 @@ import { tokenDistance, lightAt, seenLight, regionHasPoint, verticalSquares, wit
 import { esc } from "./roll.mjs";
 import { sysCard, sysLine, apText } from "./sysmsg.mjs";
 import { logMove, logPush, voidLastAction } from "./enclog.mjs";   // v0.0.223: the Encounter Log
-import { tokenCells, fillCells, outlineCells, cellCenter, cellAt, emanationCells } from "./template.mjs";
+import { tokenCells, fillCells, outlineCells, cellCenter, cellAt, emanationCells, tokensInEmanation } from "./template.mjs";
 import { TWOD12 } from "./config.mjs";
 import { applyToActor } from "./damage.mjs";
 import { getAP, setAP, combatantOf, apMax } from "./combat.mjs";
@@ -656,7 +656,8 @@ const tokenOf = actor => actor?.token?.object ?? actor?.getActiveTokens?.()[0] ?
 
 function targetTokens(ctx) {
   const f = ctx?.message?.getFlag(F, "action");
-  const fromCard = (f?.targets ?? []).map(t => { try { return fromUuidSync(t.uuid)?.object; } catch (e) { return null; } }).filter(Boolean);
+  const list = ctx?.targets ?? f?.targets ?? [];   // v0.0.246: the after-damage chain names the targets itself
+  const fromCard = list.map(t => { try { return fromUuidSync(t.uuid)?.object; } catch (e) { return null; } }).filter(Boolean);
   return fromCard.length ? fromCard : [...game.user.targets];
 }
 
@@ -957,8 +958,11 @@ async function pushFlow(cfg, ctx, mode = "push") {
   if (!canvas.ready || !canvas.grid?.isSquare) return warn(`${MOVE_LABEL[mode]} needs a scene with a square grid.`);
   const actor0 = contextActor(ctx);
   const N = Math.max(1, moveDistance(cfg, actor0) ?? 0);
-  const actor = actor0, origin = tokenOf(actor) ?? canvas.tokens.controlled[0];
+  const actor = actor0;
+  // v0.0.246: from:target: the card's (first) target is the origin of the movement (a Push away from the creature that was hit)
+  const origin = (cfg.from === "target" ? targetTokens(ctx)[0] : null) ?? tokenOf(actor) ?? canvas.tokens.controlled[0];
   if (!origin) return warn(`Select the token that is the origin of the ${MOVE_LABEL[mode]}.`);
+  if (cfg.pick) return pushPicker(cfg, ctx, mode, origin, N);
   const targets = targetTokens(ctx).filter(t => t.id !== origin.id);
   if (!targets.length) return warn("Target the creature to move first.");
   // Immobilized (v0.0.174): checked before Steadiness. The card says whether the Action rolled (its result, per target) or is a Save Action
@@ -979,6 +983,33 @@ async function pushFlow(cfg, ctx, mode = "push") {
       await post(`<b>${esc(t.name)}</b> is Immobilized, but ${out.why}: it can be moved.`);
     }
     await pushOne(origin, t, N, mode, { withinReach: !!cfg.withinReach });
+  }
+}
+
+/**
+ * v0.0.246 (cards 1, Smite 3 AP: "the other creatures in the light are Pushed 1, away from the target"): pick:yes lists the creatures the movement
+ * can reach (area:N: those in an N Emanation around the card's target, the target left out; else the card's targets) and moves them one at a time:
+ * click a name, place it, and the list comes back without it, until Done. from:target makes the card's target the origin (the Push goes away from it).
+ */
+async function pushPicker(cfg, ctx, mode, origin, N) {
+  const label = MOVE_LABEL[mode];
+  const cardTargets = targetTokens(ctx);
+  let list = cfg.area > 0 ? tokensInEmanation(cardTargets, cfg.area) : cardTargets;
+  list = list.filter(t => t.id !== origin.id);
+  if (!list.length) return warn(`${label} ${N}: no creature ${cfg.area > 0 ? `within ${cfg.area} of the target` : "among the targets"} to move.`);
+  const moved = [];
+  while (list.length) {
+    const pick = await foundry.applications.api.DialogV2.wait({
+      window: { title: `${label} ${N}` }, rejectClose: false,
+      content: `<p><b>${label} ${N}</b>${cfg.from === "target" ? ` away from <b>${esc(origin.name)}</b>` : ""}: choose a creature to move, or Done.${moved.length ? ` <small>Moved: ${moved.map(esc).join(", ")}.</small>` : ""}</p>`,
+      buttons: [...list.map((t, n) => ({ action: String(n), label: t.name, default: n === 0 })), { action: "done", label: "Done", icon: "fa-solid fa-check" }]
+    });
+    if (pick == null || pick === false || pick === "done") break;
+    const t = list[Number(pick)];
+    if (!t) break;
+    await pushOne(origin, t, N, mode, { withinReach: !!cfg.withinReach });
+    moved.push(t.name);
+    list = list.filter(x => x.id !== t.id);
   }
 }
 

@@ -63,7 +63,14 @@
       "[V] 1[W] + [Mod] + [R] 1d6 Ho",
       "[V] 1[W] + [Mod] + [R] 1d8 Ho"
      ],
-     "effects": "The target sheds Bright light in a 1 Emanation and takes 1 Bane when they try to hide, for 1 round."
+     "effects": "The target sheds [[Bright|Bright light]] in a 1 Emanation and takes 1 Bane when they try to [[Hide]], for 1 round.",
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Smite (Bright light 1)}}"
+       ]
+      }
+     }
     },
     {
      "ap": 2,
@@ -72,7 +79,15 @@
       "[V] 1[W] + [Mod] + [R] 2d6 Ho",
       "[V] 1[W] + [Mod] + [R] 2d10 Ho"
      ],
-     "effects": "As 1 AP, but a 2 Emanation."
+     "effects": "As 1 AP, but a 2 Emanation.",
+     "foundry": {
+      "text": "The target sheds [[Bright|Bright light]] in a 2 Emanation and takes 1 Bane when they try to [[Hide]], for 1 round.",
+      "fx": {
+       "all": [
+        "{{fx:Smite (Bright light 2)}}"
+       ]
+      }
+     }
     },
     {
      "ap": 3,
@@ -81,9 +96,15 @@
       "[V] 1[W] + [Mod] + [R] 2d8 Ho",
       "[V] 1[W] + [Mod] + [R] 3d8 Ho"
      ],
-     "effects": "As 2 AP, and you or one ally in the light gain [[Guard]] 1d8 + [Mod] (2d6 + [Mod] at Stage 2, 2d8 + [Mod] at Stage 3). The other creatures in the light are Pushed 1, away from the target.",
+     "effects": "As 2 AP, and you or one ally in the Bright light gain [[Guard]] 1d8 + [Mod] (2d6 + [Mod] at Stage 2, 2d8 + [Mod] at Stage 3). The other creatures in the light are Pushed 1, away from the target.",
      "foundry": {
-      "append": "@Guard[1d8+mod]{Guard 1d8 + [Mod]}"
+      "text": "The target sheds [[Bright|Bright light]] in a 2 Emanation and takes 1 Bane when they try to [[Hide]], for 1 round. You or one ally in the Bright light gain [[Guard]] 1d8 + [Mod] (2d6 + [Mod] at Stage 2, 2d8 + [Mod] at Stage 3). The other creatures in the light are Pushed 1, away from the target.",
+      "fx": {
+       "all": [
+        "{{fx:Smite (Bright light 2)}}"
+       ]
+      },
+      "after": "@Guard[1d8+mod|who:pick|area:2] @Move[pushed|distance:1|pick:yes|area:2|from:target]"
      },
      "ruler": "on 2+: guard 1d8+[Mod] self"
     }
@@ -91,9 +112,10 @@
    "foundry": {
     "img": "icons/svg/sun.svg",
     "folder": "Paladin",
-    "automation": "gold"
+    "automation": "silver",
+    "automationNote": "the damage, the light on the target (the Damage button), then who gains the Guard and the Pushes one by one (3 AP); the Bane on Hide by hand (Hide isn't written), the Stage 2 / 3 Guard dice by hand."
    },
-   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): more damage, no +1 Defense; the 3 AP Version is an explosion: the other creatures in the light are Pushed 1 away from the target (the target is the Push's origin; a Push's value is a maximum, so the Paladin moves each one 0 or 1: no \"can\" on cards, Lucas 2026-11-04)."
+   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): more damage, no +1 Defense; the 3 AP Version is an explosion: the other creatures in the light are Pushed 1 away from the target (the target is the Push's origin; a Push's value is a maximum, so the Paladin moves each one 0 or 1: no \"can\" on cards, Lucas 2026-11-04). Cards 1 (Lucas, 2026-11-05): the first card written his way: book links (Bright light, Hide), the 2 and 3 AP texts written in full for Foundry (foundry.text), the light as an effect the Damage button applies (fx), the Guard's who-picker with the Modifier as a number and the Push picker after the damage (foundry.after)."
   },
   {
    "name": "Lay On Hands",

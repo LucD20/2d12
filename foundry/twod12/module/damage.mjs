@@ -121,6 +121,16 @@ async function apply(msg, button, factor) {
   try { await msg.setFlag("twod12", "collapsed", true); } catch (e) { /* not the author */ }
   const auto = (f.fx ?? []).filter(x => x.mode === "auto").map(x => x.uuid);
   if (auto.length) await applyEffects(auto, targets.map(t => t.uuid), { ...originInfo(f.originUuid), escalation: !!f.escalation, ...(Number.isFinite(f.originMod) ? { mod: f.originMod } : {}) });
+  // v0.0.246 (cards 1): the Version's "After the damage" chips, one after the other (Smite 3 AP: who gains the Guard, then the Pushes)
+  if (f.after) await runAfterDamage(f, targets);
+}
+
+/** The after-damage chain of a damage card: the chips run for the card's creature, with its targets and its Modifier. */
+async function runAfterDamage(f, targets) {
+  let actor = null;
+  try { actor = f.originUuid ? await fromUuid(f.originUuid) : null; } catch (e) { /* not loaded */ }
+  const { runAfter } = await import("./inline.mjs");
+  await runAfter(f.after, { actor: actor?.documentName === "Actor" ? actor : (actor?.actor ?? null), targets: (targets ?? []).map(t => ({ uuid: t.uuid, name: t.name })), attrVal: Number.isFinite(f.originMod) ? f.originMod : null });
 }
 
 async function applyConditional(msg) {
@@ -175,14 +185,15 @@ const kindOf = button => (button.closest(".dmg")?.querySelector(".kind")?.value 
 async function multiApply(msg, button, factor, only = null) {
   const f = msg.getFlag("twod12", "dmgMulti");
   if (!f) return;
-  const kind = kindOf(button), rows = f.rows.map(r => ({ ...r }));
+  const kind = kindOf(button), rows = f.rows.map(r => ({ ...r })), done = [];
   for (const [i, r] of rows.entries()) {
     if (only != null && i !== only) continue;
     if (r.applied || (only == null && r.blocked)) continue;
     const res = await applyRow(f, r, factor, kind === "nonlethal");
-    if (res) r.applied = res.text;
+    if (res) { r.applied = res.text; if (r.tier >= 2) done.push(r); }
   }
   await updateMulti(msg, f, rows, kind);
+  if (f.after && done.length) await runAfterDamage(f, done);   // v0.0.246: once, for the creatures just damaged on Tier 2 or 3
 }
 
 async function multiBlock(msg, button) {

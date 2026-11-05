@@ -11,7 +11,8 @@ import { askRoll, enrich, adjLabelOf } from "./actions.mjs";
 import { resolveModifiers, applyEffects, applyCondition, originInfo, applyBoonEffect, damageSteps } from "./effects.mjs";
 import { dealDamage } from "./damage.mjs";
 import { postDamageCard } from "./dmgcard.mjs";
-import { startTemplate } from "./template.mjs";
+import { startTemplate, tokensInEmanation } from "./template.mjs";
+import { sysLine } from "./sysmsg.mjs";
 import { handleMove, moveDistance } from "./move.mjs";
 import { handleRally } from "./rally.mjs";
 import { gainGuard } from "./guard.mjs";
@@ -96,6 +97,7 @@ export function parseInline(kind, inner) {
   if (kind === "Use") cfg.target = segs[0].trim();
   if (kind === "Cleave") cfg.n = Math.max(1, Number(segs[0]) || 1);
   if (kind === "Boon") cfg.n = Number(segs[0]) || 0;
+  if (kind === "Book") cfg.ref = segs[0].trim();   // v0.0.246: @Book[Heading]{label}: a link to the book's anchor (the Journal import comes later)
   if (kind === "Template") cfg.shape = segs[0].toLowerCase(); else if (kind === "Move") { const k = segs[0].toLowerCase(); cfg.kind = ["move", "walk"].includes(k) ? "advance" : k; } else if (kind === "Rally") cfg.n = Number(segs[0]) || 1; else if (kind === "Effect") cfg.uuid = segs[0].trim(); else if (kind === "Guard") cfg.formula = segs[0].trim().toLowerCase().replace(/\s+/g, "").replace(/\[mod\]/g, "mod"); else cfg.attr = segs[0].toLowerCase();
   for (const s of segs.slice(1)) {
     const k = s.indexOf(":");
@@ -133,6 +135,13 @@ export function parseInline(kind, inner) {
     else if (key === "source") cfg.source = val;
     else if (key === "quick") cfg.quick = yes(val);
     else if (key === "reach") cfg.withinReach = yes(val);   // v0.0.174: a Reposition whose target must remain within your Reach (Relocate)
+    // v0.0.246 (cards 1, Smite): who:pick asks "you or one ally" (a picker); area:N looks in an N Emanation around the card's target; pick:yes on a
+    // Pushed / Pulled / Slid lists the creatures to move one by one; from:target makes the card's target the origin of the Forced Movement.
+    else if (key === "who") cfg.who = val.toLowerCase();
+    else if (key === "area") cfg.area = Math.max(0, Number(val) || 0);
+    else if (key === "pick") cfg.pick = yes(val);
+    else if (key === "from") cfg.from = val.toLowerCase();
+    else if (key === "doc") cfg.doc = val;
   }
   // A button always has the traits of what it is: Advance and Charge are Move. (Evade and Pushed have none.) A Save has its Attribute.
   if (kind === "Move") cfg.traits = [...new Set([...(cfg.kind === "advance" || cfg.kind === "charge" ? ["move"] : []), ...(cfg.traits ?? [])])];
@@ -161,24 +170,66 @@ export function actorOfDoc(doc) {
   } catch (e) { return null; }
 }
 
-function inlineEl(kind, cfg, label, icon) {
+function mkEl(kind, cfg, label, icon) {
   const a = document.createElement("a");
   a.classList.add("twod12-inline");
   a.dataset.twod12Inline = kind;
   a.dataset.cfg = JSON.stringify(cfg);
-  a.innerHTML = `<i class="fa-solid ${icon}"></i> ${esc(label)}`;
+  a.innerHTML = `${icon.startsWith("<svg") ? icon : `<i class="fa-solid ${icon}"></i>`} ${esc(label)}`;
   return a;
 }
+
+/**
+ * v0.0.246 (Lucas, mockup "Chosen" row): the area chips' icons, each the shape's footprint: an Emanation is the creature's square (faded, with a dot)
+ * and its ring; a Burst a circle with a crosshair and a center ring (it sits on a corner); a Line is you (faded), two squares and an arrow.
+ */
+const SQ = (x, y, faded = false) => `<rect x="${x}" y="${y}" width="9" height="9" rx="1.2" fill="currentColor"${faded ? ' fill-opacity="0.28"' : ""}/>`;
+export const AREA_ICONS = {
+  emanation: `<svg class="areaic" viewBox="0 0 30 30" aria-hidden="true">${[[0.5, 0.5], [0.5, 10.5], [0.5, 20.5], [10.5, 0.5], [10.5, 20.5], [20.5, 0.5], [20.5, 10.5], [20.5, 20.5]].map(([x, y]) => SQ(x, y)).join("")}${SQ(10.5, 10.5, true)}<circle cx="15" cy="15" r="2.3" fill="currentColor"/></svg>`,
+  burst: `<svg class="areaic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.2" stroke-opacity="0.6" fill="none"/><circle cx="12" cy="12" r="2.8" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>`,
+  line: `<svg class="areaic wide" viewBox="0 0 38 10" aria-hidden="true">${SQ(10.5, 0.5)}${SQ(20.5, 0.5)}${SQ(0.5, 0.5, true)}<circle cx="5" cy="5" r="2.3" fill="currentColor"/><polygon points="31,0.5 38,5 31,9.5" fill="currentColor"/></svg>`
+};
+/** The chip's words for an area, the book's order: "1 Emanation", "2 Burst", "6 Line". */
+export const areaLabel = (shape, n) => `${n} ${shape === "burst" ? "Burst" : shape === "line" ? "Line" : "Emanation"}`;
+
+/**
+ * v0.0.246 (Lucas): the Modifier of the creature whose card, sheet or damage this text belongs to, so that a chip's "[Mod]" can show the number
+ * ("Guard 1d8+3"): the Action card's roll, a damage card's origin, or the roll the Action would make from the sheet. null when there is none.
+ */
+export function modForDoc(doc) {
+  try {
+    if (!doc) return null;
+    if (doc.documentName === "ChatMessage") {
+      const a = doc.getFlag?.("twod12", "action");
+      if (a && a.attrVal !== undefined && Number.isFinite(Number(a.attrVal))) return Number(a.attrVal);
+      const d = doc.getFlag?.("twod12", "dmgCard");
+      return Number.isFinite(d?.originMod) ? d.originMod : null;
+    }
+    const actor = actorOfDoc(doc);
+    if (doc.documentName === "Item" && actor?.system?.attributes && doc.system?.versions) { const src = rollSource(actor.system, doc.system); return src.kind ? (Number(src.mod) || 0) : null; }
+  } catch (e) { /* no creature to read it from */ }
+  return null;
+}
+/** "Guard 1d8 + [Mod]" with the Modifier 3 reads "Guard 1d8+3" (Lucas's spelling); with no Modifier known, the words stay. */
+export const withMod = (label, mod) => (mod === null || mod === undefined || !/\[Mod\]/.test(label) ? label : label.replace(/\s*\+\s*\[Mod\]/g, `+${mod}`).replace(/\[Mod\]/g, String(mod)));
 
 export function registerInline() {
   const list = CONFIG.TextEditor?.enrichers ?? CONFIG.ux?.TextEditor?.enrichers;
   if (!list) return console.warn("twod12 | text enrichers are not available");
   list.push({
     id: "twod12-inline",
-    pattern: /@(Check|Damage|Save|Template|Move|Rally|Guard|Effect|Condition|Use|Cleave|Reload|Release|Regrip|Boon)\[((?:[^\[\]]|\[(?:[^\[\]]|\[[^\[\]]*\])*\])*)\](?:\{([^}]+)\})?/g,
+    pattern: /@(Check|Damage|Save|Template|Move|Rally|Guard|Effect|Condition|Use|Cleave|Reload|Release|Regrip|Boon|Book)\[((?:[^\[\]]|\[(?:[^\[\]]|\[[^\[\]]*\])*\])*)\](?:\{([^}]+)\})?/g,
     enricher: async (match, options) => {
       const kind = match[1];
       const cfg = parseInline(kind, match[2]);
+      // v0.0.246: "[Mod]" in a chip's words becomes the number of the creature the text belongs to (the tooltip says whose).
+      const modN = modForDoc(options?.relativeTo);
+      const inlineEl = (k, c, label, icon) => { const el = mkEl(k, c, withMod(label, modN), icon); if (withMod(label, modN) !== label) el.dataset.tooltip = `[Mod] is this creature's Modifier on the Action: ${modN}`; return el; };
+      if (kind === "Book") {
+        const el = mkEl("Book", cfg, cfg.label ?? match[3] ?? cfg.ref, "fa-book-open");
+        el.classList.add("book"); el.dataset.tooltip = `${cfg.ref}: a rule of the book${cfg.doc ? ` (${cfg.doc})` : ""}`;
+        return el;
+      }
       if (kind === "Check" || kind === "Save") {
         const a = TWOD12.attributes[cfg.attr];
         if (!a) return null;
@@ -233,8 +284,9 @@ export function registerInline() {
         if (calc) { const c = document.createElement("i"); c.className = "fa-solid fa-calculator calc"; c.dataset.tooltip = value ? `Calculated from your stats: ${cfg.distanceExpr} = ${value}` : `Calculated: ${cfg.distanceExpr}`; el.append(" ", c); }
         return el;
       }
-      const burst = cfg.shape === "burst", isLine = cfg.shape === "line";   // v0.0.214: a Line ("Line 10")
-      return inlineEl(kind, cfg, cfg.label ?? match[3] ?? (isLine ? `Line ${cfg.distance || 1}` : String(cfg.distance || 1)), burst ? "fa-burst" : isLine ? "fa-arrow-right-long" : "fa-vector-square");
+      // v0.0.246 (Lucas): an area chip reads "1 Emanation", "2 Burst", "6 Line", with the shape's footprint as its icon (AREA_ICONS).
+      const shape = ["burst", "line"].includes(cfg.shape) ? cfg.shape : "emanation";
+      return inlineEl(kind, cfg, cfg.label ?? match[3] ?? areaLabel(shape, cfg.distance || 1), AREA_ICONS[shape]);
     }
   });
 }
@@ -375,25 +427,56 @@ async function doDamage(cfg) {
   });
 }
 
+/** The creature a button acts for: the one the after-damage chain names, the card's creature, the selected token or your character. */
+export const originActor = ctx => ctx?.actor ?? actorOfDoc(ctx?.message) ?? canvas.tokens?.controlled[0]?.actor ?? game.user.character ?? null;
+const tokenOfActor = a => a?.token?.object ?? a?.getActiveTokens?.()[0] ?? null;
+/** The tokens of the card's targets: the chain's, the Action card's, or a damage card's. */
+export function cardTargetTokens(ctx) {
+  const list = ctx?.targets ?? ctx?.message?.getFlag?.("twod12", "action")?.targets ?? ctx?.message?.getFlag?.("twod12", "dmgCard")?.targets ?? [];
+  return list.map(t => { try { return fromUuidSync(t.uuid)?.object ?? null; } catch (e) { return null; } }).filter(Boolean);
+}
+
 /**
  * Who a "you or one ally" button (@Guard, @Effect) is for (v0.0.181): the targeted creatures on the card's creature's side;
  * with none, the card's creature itself (self:yes: always the card's creature). The enemy you just hit is never chosen by accident.
+ * v0.0.246 (cards 1, Smite): area:N looks for the allies in an N Emanation around the card's target ("in the light"); who:pick asks which one
+ * creature gains it, you first (no question when you are the only one); who:all gives it to every ally found.
  */
-function allyRecipients(cfg, ctx) {
-  const origin = actorOfDoc(ctx.message) ?? canvas.tokens?.controlled[0]?.actor ?? game.user.character ?? null;
-  if (cfg.self) return { origin, who: [origin].filter(Boolean) };
-  const side = (origin?.getActiveTokens?.()[0]?.document?.disposition) ?? canvas.tokens?.controlled[0]?.document?.disposition ?? 1;
-  const allies = [...game.user.targets].filter(t => t.document?.disposition === side).map(t => t.actor).filter(Boolean);
-  return { origin, who: allies.length ? allies : [origin].filter(Boolean) };
+async function allyRecipients(cfg, ctx, what = "the effect") {
+  const origin = originActor(ctx);
+  if (cfg.self || cfg.who === "self") return { origin, who: [origin].filter(Boolean) };
+  const me = tokenOfActor(origin);
+  const side = me?.document?.disposition ?? canvas.tokens?.controlled[0]?.document?.disposition ?? 1;
+  const mine = t => t.actor && t.document?.disposition === side && t.id !== me?.id;
+  let allies;
+  if (cfg.area > 0) allies = tokensInEmanation(cardTargetTokens(ctx), cfg.area).filter(mine).map(t => t.actor);
+  else {
+    const fromCard = cardTargetTokens(ctx).filter(mine);
+    allies = (fromCard.length ? fromCard : [...game.user.targets].filter(mine)).map(t => t.actor);
+  }
+  if (cfg.who !== "pick") return { origin, who: allies.length ? allies : [origin].filter(Boolean) };
+  const cands = [...(origin ? [origin] : []), ...allies.filter(a => a !== origin)];
+  if (cands.length <= 1) return { origin, who: cands };
+  const pick = await foundry.applications.api.DialogV2.wait({
+    window: { title: `Who gains ${what}?` }, rejectClose: false,
+    content: `<p>Who gains <b>${esc(what)}</b>? ${cfg.area > 0 ? `(You, or an ally within ${cfg.area} of the target.)` : "(You, or one ally.)"}</p>`,
+    buttons: cands.map((a, n) => ({ action: String(n), label: a === origin ? `You (${a.name})` : a.name, default: n === 0 }))
+  });
+  if (pick == null || pick === false) return { origin, who: [], cancelled: true };
+  return { origin, who: [cands[Number(pick)]] };
 }
 
 /** The @Effect[uuid] button (v0.0.181): applies an Effect item to you or the targeted allies ("you or one ally gain +1 Defense"). */
 async function handleEffect(cfg, ctx) {
-  const { origin, who } = allyRecipients(cfg, ctx);
+  let what = "the effect";
+  try { what = (await fromUuid(cfg.uuid))?.name ?? what; } catch (e) { /* not loaded */ }
+  const { origin, who, cancelled } = await allyRecipients(cfg, ctx, what);
+  if (cancelled) return;
   if (!who.length) return ui.notifications.warn("Select your token, or target the ally that gains the effect.");
   const act = ctx.message?.getFlag?.("twod12", "action");
+  const mod = Number.isFinite(ctx.attrVal) ? ctx.attrVal : (Number.isFinite(act?.attrVal) ? act.attrVal : null);
   const uuids = who.map(a => a.getActiveTokens?.()[0]?.document?.uuid ?? a.uuid);
-  await applyEffects([cfg.uuid], uuids, { ...originInfo(origin?.uuid ?? ""), ...(Number.isFinite(act?.attrVal) ? { mod: act.attrVal } : {}) });
+  await applyEffects([cfg.uuid], uuids, { ...originInfo(origin?.uuid ?? ""), ...(mod !== null ? { mod } : {}) });
 }
 
 /** "1d8+mod" -> "1d8 + [Mod]"; "rally" -> "a Rally Point's heal". */
@@ -405,9 +488,11 @@ export const guardText = f => String(f ?? "").replace(/\+/g, " + ").replace(/\bm
  * Each creature keeps the higher of its Guard and the new value.
  */
 async function handleGuard(cfg, ctx) {
-  const { origin, who } = allyRecipients(cfg, ctx);
   const act = ctx.message?.getFlag?.("twod12", "action");
-  const mod = Number.isFinite(Number(act?.attrVal)) && act?.attrVal !== undefined ? Number(act.attrVal) : (Number(origin?.system?.signatureMod) || 0);
+  const origin0 = originActor(ctx);
+  const mod = Number.isFinite(ctx.attrVal) ? ctx.attrVal : (Number.isFinite(Number(act?.attrVal)) && act?.attrVal !== undefined ? Number(act.attrVal) : (Number(origin0?.system?.signatureMod) || 0));
+  const { origin, who, cancelled } = await allyRecipients(cfg, ctx, `Guard ${withMod(guardText(cfg.formula), mod)}`);
+  if (cancelled) return;
   if (!who.length) return ui.notifications.warn("Select your token, or target the ally that gains the Guard.");
   for (const a of who) {
     const f = String(cfg.formula || "0").replace(/\bmod\b/g, `(${mod})`).replace(/\brally\b/g, `(${Number(a.system?.rallyHeal) || 0})`);
@@ -417,12 +502,41 @@ async function handleGuard(cfg, ctx) {
       if (a.isOwner) await a.update({ "system.guard": next });
       else game.socket.emit("system.twod12", { type: "applyGuard", actorUuid: a.uuid, value: next });
     }
+    // v0.0.246: a system line (the standing rule for chat messages)
     await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: origin ?? a }), rolls: /d/.test(f) ? [roll] : [],
-      content: `<div class="twod12 chat apmsg"><b>${esc(a.name)}</b> ${next > now ? `gains <b>Guard ${next}</b>` : `keeps Guard ${now} (the higher; the new Guard was ${roll.total})`} <small>(${esc(guardText(cfg.formula))} = ${roll.total})</small>.</div>` });
+      content: sysLine("fa-shield-heart", `<b>${esc(a.name)}</b> ${next > now ? `gains <b>Guard ${next}</b>` : `keeps Guard ${now} (the higher; the new Guard was ${roll.total})`} <small>(${esc(withMod(guardText(cfg.formula), mod))} = ${roll.total})</small>.`, "guardmsg") });
   }
 }
 
+/**
+ * v0.0.246 (cards 1, Smite 3 AP): the chips an Action's Version lists under "After the damage" run one after the other once the damage is applied
+ * (the Guard's "who" question, then the Pushes, one creature at a time). `text` is the Version's field: the same chips as in any text.
+ * ctx: { actor, targets: [{ uuid, name }], attrVal } (the damage card's creature, targets and Modifier).
+ */
+export async function runAfter(text, ctx = {}) {
+  const re = /@(\w+)\[((?:[^\[\]]|\[(?:[^\[\]]|\[[^\[\]]*\])*\])*)\](?:\{([^}]+)\})?/g;
+  let m;
+  while ((m = re.exec(String(text ?? "")))) {
+    const cfg = parseInline(m[1], m[2]);
+    if (m[3]) cfg.label = m[3];
+    try { await handleInline(m[1], cfg, { ...ctx, message: ctx.message ?? null }); } catch (e) { console.error("twod12 | after the damage", e); }
+  }
+}
+
+/** v0.0.246: a book link. A Journal page named like the heading opens it (the Journal import comes later); until then, a note. */
+async function openBook(cfg) {
+  const ref = String(cfg.ref ?? "").trim();
+  if (!ref) return;
+  for (const j of game.journal ?? []) {
+    const page = j.pages?.find?.(p => String(p.name ?? "").toLowerCase() === ref.toLowerCase());
+    if (page) return j.sheet.render(true, { pageId: page.id });
+  }
+  await foundry.applications.api.DialogV2.prompt({ window: { title: ref }, rejectClose: false, ok: { label: "Close" },
+    content: `<p><b>${esc(ref)}</b> is a rule of the book${cfg.doc ? ` (${esc(cfg.doc)})` : ""}: read it there. When the book is imported into Foundry as a Journal, this link opens its page.</p>` });
+}
+
 export async function handleInline(kind, cfg, ctx = {}) {
+  if (kind === "Book") return openBook(cfg);
   if (kind === "Guard") return handleGuard(cfg, ctx);
   if (kind === "Effect") return handleEffect(cfg, ctx);
   if (kind === "Move") return handleMove(cfg, ctx);

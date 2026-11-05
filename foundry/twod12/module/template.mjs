@@ -161,6 +161,18 @@ function dashedCells(g, cells, color = 0xf3c9ee) {
 
 const tokensAt = c => canvas.tokens.placeables.filter(t => tokenCells(t).some(x => x.i === c.i && x.j === c.j));
 const tokensIn = cells => { const set = new Set(cells.map(key)); return canvas.tokens.placeables.filter(t => tokenCells(t).some(c => set.has(key(c)))); };
+/**
+ * v0.0.246 (cards 1, Smite): the creatures in an N Emanation around these tokens (the book's 1-2-1 shape from every square of their spaces: the squares
+ * a light of size N reaches), the tokens themselves left out. Hidden tokens and tokens with no creature are left out too.
+ */
+export function tokensInEmanation(tokens, n) {
+  const list = (tokens ?? []).filter(Boolean);
+  if (!list.length || !(Number(n) > 0)) return [];
+  const cells = new Map();
+  for (const t of list) for (const c of emanationCells(tokenCells(t), Number(n))) cells.set(key(c), c);
+  const ids = new Set(list.map(t => t.id));
+  return tokensIn([...cells.values()]).filter(t => !ids.has(t.id) && t.actor && !t.document?.hidden);
+}
 
 function compute(shape, n, pos, { user = null, side = "left" } = {}) {
   if (shape === "line") return lineCompute(user, n, pos, side);
@@ -250,7 +262,7 @@ function place(shape, n, { within = 0, user = null } = {}) {
     canvas.stage.on("pointermove", move);
     canvas.stage.on("pointerdown", down);
     window.addEventListener("keydown", key_, true);
-    if (!isLine) ui.notifications.info(`${shape === "burst" ? "Burst" : "Emanation"} ${n}${within ? ` (within ${within} sq.)` : ""}: click to place, right-click or Esc to cancel.`);
+    if (!isLine) ui.notifications.info(`${n} ${shape === "burst" ? "Burst" : "Emanation"}${within ? ` (within ${within} sq.)` : ""}: click to place, right-click or Esc to cancel.`);   // v0.0.246: the book's order (a 2 Emanation)
     else showBar();
   });
 }

@@ -92,9 +92,13 @@ export function convertEffects(text) {
   // "Prone", "Immobilized (EoT)", "Hindered (2 rounds)": a condition button (with the duration)
   // v0.0.227: only a condition that ends its clause ("Prone.", "Hindered (EoT);") is a button: "a Prone creature" and "no longer Prone" are words.
   s = s.replace(/(?<!\b(?:no longer|not|a|an|the|any|every|while|being)\s)\b(Hindered|Immobilized|Prone)\b(?:\s*\((EoT|\d+\s*rounds?)\))?(?=\s*(?:[.;,()]|$))/g, (m, c, d) => `@Condition[${c.toLowerCase()}${d ? (/eot/i.test(d) ? "|eot" : `|rounds:${parseInt(d, 10)}`) : ""}]`);
-  // "2Emanation 1/round" and "[2Burst EoT]": the area, and how long it stays
-  s = s.replace(/\[?\b(\d+)\s*(emanation|burst)\b(?:\s+(?:(\d+)\s*\/\s*rounds?|(EoT)))?\]?/gi, (m, n, shape, rounds, eot) =>
+  // v0.0.246 (cards 1, Lucas): "Guard 1d8 + [Mod]" is a Guard button (the chip shows the Modifier as a number on a creature's card); a [[Guard]] link
+  // written before the dice becomes the chip (the chip is the Guard). "Guard equal to..." and a bare "Guard" stay words.
+  s = s.replace(/(?:@Book\[Guard\]\{Guard\}|\bGuard)\s+((?:\d+d\d+|\d+)(?:\s*\+\s*(?:\[Mod\]|\d+d\d+|\d+))*)(?![\w\[])/g, (m, f) => `@Guard[${f.replace(/\s+/g, "").replace(/\[Mod\]/g, "mod").toLowerCase()}]{Guard ${f.replace(/\s+/g, " ")}}`);
+  // "2Emanation 1/round" and "[2Burst EoT]": the area, and how long it stays. v0.0.246: "1 Line" and the book's "Line 6" too (the chip reads "6 Line").
+  s = s.replace(/\[?\b(\d+)\s*(emanation|burst|line)\b(?:\s+(?:(\d+)\s*\/\s*rounds?|(EoT)))?\]?/gi, (m, n, shape, rounds, eot) =>
     `@Template[${shape.toLowerCase()}|distance:${n}${rounds ? `|rounds:${rounds}` : (eot ? "|expire:eot" : "")}]`);
+  s = s.replace(/\bLine\s+(\d+)\b(?!\s*(?:\/|rounds?))/g, "@Template[line|distance:$1]");
   s = s.replace(new RegExp(`\\b(\\d+d\\d+(?:[+-]\\d+)?)([BMC])(${SUBCODES}|[BCHMPS])?\\b`, "g"), (m, dice, p, sub) => `@Damage[${dice}[${POOL[p]}${sub ? "," + TWOD12.subtypes[subtypeCode(sub)].toLowerCase() : ""}]]`);
   // v0.0.230 (pack CS): "...in a 2 Emanation ..., for 1 round." -> the template lasts that long (the book writes the duration in the sentence)
   s = s.replace(/(@Template\[emanation\|distance:\d+)(\])([^.]*?\bfor (\d+) rounds?\b)/g, (m, a, b, rest, n) => `${a}|rounds:${n}${b}${rest}`);

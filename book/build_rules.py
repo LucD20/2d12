@@ -98,7 +98,10 @@ def chevrons(keys):
         out.append(f'<span class="tg" style="--tg:var(--g-{g})"><span class="tgl">{title}</span><span class="tgc">{chips}</span></span>')
     return ''.join(out)
 
-def cells(line): return [c.strip() for c in line.strip().strip('|').split('|')]
+def cells(line):
+    """The cells of a table row. A `|` inside a [[link|label]] is not a separator (cards 1, 2026-11-05: Smite's [[Bright|Bright light]])."""
+    keep = re.sub(r'\[\[([^\]]*?)\]\]', lambda m: '[[' + m.group(1).replace('|', '\x00') + ']]', line.strip().strip('|'))
+    return [c.strip().replace('\x00', '|') for c in keep.split('|')]
 def inline(t): return hl(re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', e(t)))
 
 # ---------------------------------------------------------------- action cards
@@ -269,7 +272,8 @@ def card(block, markers=False):
     body = ((f'<div class="flavor">{inline(flav.group(1))}</div>' if flav else '') + head
             + ('<hr class="cdiv">' if head and rest else '') + rest)
     tag_, head_ = ('details', 'summary') if CLASSY['on'] else ('div', 'div')   # the class style: a card opens and closes
-    return (f'<{tag_} class="acard{" passive" if passive else ""}" style="--fq:{col};--fqt:{txt}"><{head_} class="ahead"><b>{name}{mk(1)}</b>'
+    cid = 'card-' + re.sub(r'[^a-z0-9]+', '-', re.sub(r'<[^>]+>', '', name).lower()).strip('-')   # cards 1 (2026-11-05): every card is an anchor, so [[Hide]] links to the card
+    return (f'<{tag_} class="acard{" passive" if passive else ""}" id="{cid}" style="--fq:{col};--fqt:{txt}"><{head_} class="ahead"><b>{name}{mk(1)}</b>'
             + (f'<span class="acat">{e(cat)}{mk(2)}</span>' if cat else '')
             + (f'<span class="afreq">{inline(freq.group(1))}</span>' if freq else '')
             + (f'<span class="aps">{cost}{mk(3)}</span>' if cost else '') + f'</{head_}>'
@@ -381,6 +385,7 @@ for fn in files:
     h1 = re.search(r'<h1 id="([^"]+)">(.*?)</h1>', body)
     h2s = re.findall(r'<h2 id="([^"]+)">(.*?)</h2>', body)
     for m in re.finditer(r'<h([1-4]) id="([^"]+)">(.*?)</h\1>', body): headings.setdefault(norm(m.group(3)), []).append((doc, m.group(2)))   # when titles repeat, [[Title]] goes to the one in its own document, else the first
+    for m in re.finditer(r'<(?:details|div) class="acard[^"]*" id="(card-[^"]+)"[^>]*><(?:summary|div) class="ahead"><b>(.*?)</b>', body): headings.setdefault(norm(m.group(2)), []).append((doc, m.group(1)))   # cards 1: a card is an anchor too (a heading of the same name comes first)
     chapters.append(dict(part=part, body=body, h1=h1.groups(), h2=h2s, fn=fn, doc=doc, style=style))
 
 def ref_id(title, doc):

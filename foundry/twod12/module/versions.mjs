@@ -91,6 +91,7 @@ export class VersionsEditor extends HandlebarsApplicationMixin(ApplicationV2) {
         areaSize: v.areaSize ?? 0,
         critical: v.critical,
         effects: v.effects,
+        after: v.after ?? "",
         collapsed: this.collapsed.has(vi),
         summary: v.noTiers ? "No tiers" : versionRow(v).tiers.join(" / "),
         tiers,

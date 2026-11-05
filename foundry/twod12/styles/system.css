@@ -2174,3 +2174,9 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 .twod12.chat.ticker .tk-pips .hsep { height: 8px; } .twod12.chat.ticker .tk-pips.sm .hsep { height: 6px; margin: 0 3px 0 4px; }
 .twod12-ap .hsep { height: 12px; margin: 0 2px 0 4px; }
 .classwin .cw-ally { color: #2f6b3a; } .classwin .cw-foe { color: #a8322f; } .classwin .cw-neutral { color: #6b6a60; }
+/* v0.0.246 (cards 1, Lucas): the area chips' footprint icons (an Emanation, a Burst on a corner, a Line), the book links (a rule of the book: the Journal import comes later) */
+a.twod12-inline svg.areaic { display: inline-block; width: 1em; height: 1em; vertical-align: -0.15em; }
+a.twod12-inline svg.areaic.wide { width: 1.9em; height: 0.5em; vertical-align: 0; }
+a.twod12-inline.book { border-style: dashed; background: transparent; font-weight: 600; }
+.twod12.chat a.twod12-inline.book { background: transparent; border-color: #a08a5c; }
+a.twod12-inline.book i { font-size: .85em; opacity: .8; }

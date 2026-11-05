@@ -13,6 +13,15 @@ const { readFileSync, existsSync } = await import("node:fs");
 const WORTH_FILE = new URL("../../../book/ruler/worth.json", import.meta.url);
 export const WORTH = existsSync(WORTH_FILE) ? JSON.parse(readFileSync(WORTH_FILE, "utf8")) : {};
 const worthOf = name => WORTH[name] ?? "";
+// v0.0.246 (cards 1, Lucas): the book's [[links]] stay links in Foundry. A link to a card of the compendium opens that item (anyone can read it: Hide);
+// any other link is a book link (@Book[Heading]{label}: the book's anchor; the Journal import comes later). A Basic Action has no compendium item: a book link.
+const CARD_BY_NAME = new Map(loadCards().map(c => [c.name.toLowerCase(), c]));
+export function foundryLinks(text) {
+  return String(text ?? "").replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (m, ref, label) => {
+    const r = ref.trim(), l = (label ?? r).trim(), c = CARD_BY_NAME.get(r.toLowerCase());
+    return c && !c.foundry?.basic ? `{{link:${c.name}|${l}}}` : `@Book[${r}]{${l}}`;
+  });
+}
 
 const FREQ = { "at-will": "atwill", turn: "turn", round: "round", encounter: "encounter", daily: "daily" };
 const TRAIT_KEY = { power: "magic" };   // the book's word -> Foundry's key (config.mjs: the key stays "magic", the label is Power)
@@ -67,8 +76,8 @@ export function tierTokens(dmg, weaponAction, tier) {
   return out.map(x => x.t).join(",");
 }
 
-/** The Foundry text of a book text: links and bold stripped, the buttons convertEffects derives, then the Foundry-only append. */
-const fxText = (book, append) => [convertEffects(stripBold(stripLinks(book ?? ""))).replace(/^(@\w+\[[^\]]*\](?:\{[^}]*\})?)\.$/, "$1"), append ?? ""].filter(Boolean).join(" ");   // a cell that is one button keeps no final period
+/** The Foundry text of a book text: bold stripped, the links kept (foundryLinks), the buttons convertEffects derives, then the Foundry-only append. */
+const fxText = (book, append) => [convertEffects(stripBold(foundryLinks(book ?? ""))).replace(/^(@\w+\[[^\]]*\](?:\{[^}]*\})?)\.$/, "$1"), append ?? ""].filter(Boolean).join(" ");   // a cell that is one button keeps no final period
 const appendOf = (v, key) => { const a = v.foundry?.append; if (!a) return ""; if (typeof a === "string") return key === "effects" ? a : ""; return a[key] ?? ""; };
 
 /** One Version of a card as the item's version data. */
@@ -76,7 +85,9 @@ export function versionData(c, v, resolve = s => s) {
   const weaponAction = (c.traits ?? []).includes("weapon") && !(c.traits ?? []).includes("save");   // a Save Action's tiers are the target's result: its [Mod] stays explicit
   const fx = { all: [], t1: [], t2: [], t3: [] };
   for (const [k, list] of Object.entries(v.foundry?.fx ?? {})) fx[k] = list.map(u => ({ uuid: resolve(u), mode: "auto" }));
-  const out = { ap: v.ap, noTiers: !v.tiers, t1: [], t2: [], t3: [], x1: "", x2: "", x3: "", effects: resolve(fxText(v.effects, appendOf(v, "effects"))), fx };
+  // v0.0.246 (Lucas): a Version's `foundry.text` is its Foundry text written in full ("As 1 AP, but..." is the book's; Foundry says it all); `foundry.after` the chips that run after the damage.
+  const out = { ap: v.ap, noTiers: !v.tiers, t1: [], t2: [], t3: [], x1: "", x2: "", x3: "", effects: resolve(fxText(v.foundry?.text ?? v.effects, appendOf(v, "effects"))), fx };
+  if (v.foundry?.after) out.after = resolve(v.foundry.after);
   if (v.tiers) {
     if (v.tiers.length !== 3) throw new Error(`${c.name}: a Version needs three tiers`);
     v.tiers.forEach((cell, i) => {
@@ -111,11 +122,12 @@ export function areaOf(c) {
 /** The item's system data of a card (an Action). `resolve` turns {{fx:Name}} into the Effect's uuid (content.mjs). */
 /** A costed card with no table ("1R" and prose: Opportunity Attack) reads as one Version whose text is the card's text. */
 export const versionsOf = c => (hasVersions(c) ? c.versions : c.cost ? [{ ap: Number(String(c.cost).match(/\d+/)?.[0] ?? 0), effects: c.text ?? "", foundry: c.foundry?.append ? { append: c.foundry.append } : undefined, ruler: c.ruler?.line }] : []);
-export const isAction = c => hasVersions(c) || Boolean(c.cost);
+/** v0.0.246: a placeholder card (`placeholder: true`: an Action the book hasn't written yet, Hide) is an Action item with no Versions, so links to it open something to read. */
+export const isAction = c => hasVersions(c) || Boolean(c.cost) || Boolean(c.placeholder);
 export function cardSystem(c, resolve = s => s) {
   if (!isAction(c)) throw new Error(`${c.name}: an Action card needs versions`);
   const area = areaOf(c);
-  const sys = { category: c.category, level: c.level ?? c.foundry?.level ?? 0, traits: traitKeys(c.traits), targets: stripLinks(c.target ?? ""), distance: area ? undefined : (/^Aura \d+$/i.test(c.area ?? "") ? c.area.trim() : distanceKey(c)), frequency: frequencyKey(c.frequency) };
+  const sys = { category: c.category, level: c.level ?? c.foundry?.level ?? 0, traits: traitKeys(c.traits), targets: stripLinks(c.target ?? ""), distance: area ? undefined : (/^Aura \d+$/i.test(c.area ?? "") ? c.area.trim() : distanceKey(c)), frequency: c.placeholder && !c.frequency ? "" : frequencyKey(c.frequency) };
   if (sys.distance === undefined) delete sys.distance;   // an Action with an Area places it from its areaCfg (within or the weapon's range)
   if (area) sys.areaCfg = area.cfg;
   const vs = vsKey(c.vs); if (vs) sys.vs = vs;
@@ -124,8 +136,8 @@ export function cardSystem(c, resolve = s => s) {
   if (c.requirements) sys.requirements = stripLinks(c.requirements);
   if (c.prerequisites) sys.prerequisites = stripLinks(c.prerequisites);
   if (c.setup) sys.setup = resolve(fxText(c.setup, c.foundry?.appendSetup));
-  const prose = [c.rules, c.notes].filter(Boolean).map(t => `<p>${boldHtml(stripLinks(t))}</p>`).join("");
-  if (prose) sys.description = prose;
+  const prose = [c.rules, c.notes, ...(c.placeholder ? [c.text] : [])].filter(Boolean).map(t => `<p>${boldHtml(foundryLinks(t))}</p>`).join("");
+  if (prose) sys.description = resolve(prose);
   if (worthOf(c.name)) sys.worth = worthOf(c.name);
   if (c.category === "Basic attack") sys.basicAttack = true;   // an NPC's Basic attack stands in for the Weapon Attack NPCs don't have
   sys.versions = versionsOf(c).map((v, i) => { const d = versionData(c, v, resolve); if (area && i > 0 && area.sizes[i] && area.sizes[i] !== area.sizes[0]) d.areaSize = area.sizes[i]; return d; });
@@ -138,8 +150,8 @@ export function cardSystem(c, resolve = s => s) {
 export function featureSystem(c, resolve = s => s) {
   if (isAction(c)) throw new Error(`${c.name}: a Feature card has no versions`);
   const category = String(c.category).replace(/\s*\(Passive\)$/, "");
-  const text = [boldHtml(stripLinks(c.text ?? "")), c.foundry?.append ?? ""].filter(Boolean).join(" ");
-  const sys = { category, level: c.level ?? c.foundry?.level ?? 0, description: text ? `<p>${text}</p>` : "" };
+  const text = [boldHtml(foundryLinks(c.text ?? "")), c.foundry?.append ?? ""].filter(Boolean).join(" ");
+  const sys = { category, level: c.level ?? c.foundry?.level ?? 0, description: text ? resolve(`<p>${text}</p>`) : "" };
   if (worthOf(c.name)) sys.worth = worthOf(c.name);
   if (c.foundry?.settings) sys.settings = JSON.parse(resolve(JSON.stringify(c.foundry.settings)));
   if (c.foundry?.actions) sys.actions = c.foundry.actions.map(n => resolve(`{{action:${n}}}`));
@@ -158,8 +170,8 @@ export function talentSystem(c, resolve = s => s) {
   if (t.traits) sys.traits = t.traits.map(x => TRAIT_KEY[x] ?? x);
   if (t.prereqs) sys.prereqs = t.prereqs;
   if (t.prereqMode) sys.prereqMode = t.prereqMode;
-  const text = isAction(c) ? (t.description ?? "") : [boldHtml(stripLinks(c.text ?? "")), c.foundry?.append ?? ""].filter(Boolean).join(" ");
-  if (text) sys.description = `<p>${text}</p>`;
+  const text = isAction(c) ? (t.description ?? "") : [boldHtml(foundryLinks(c.text ?? "")), c.foundry?.append ?? ""].filter(Boolean).join(" ");
+  if (text) sys.description = resolve(`<p>${text}</p>`);
   const actions = [...(isAction(c) ? [c.name] : []), ...(c.foundry?.actions ?? [])];
   if (actions.length) sys.actions = actions.map(n => resolve(`{{action:${n}}}`));
   if (t.modifiers) sys.modifiers = t.modifiers;

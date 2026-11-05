@@ -87,10 +87,10 @@ add("effects", "effect", "Double Shot (2 Attacks)", "icons/svg/combat.svg", { se
 
 /* ------------------------------------------------------------------ Actions */
 // P1 (book 2026-10-29; v0.0.181): Smite and Lay On Hands are the Paladin's Hallmark Action (choose one).
-add("effects", "effect", "Smite (+1 Defense)", "icons/svg/shield.svg", { duration: { type: "rounds", rounds: 1 }, description: "<p>+1 Defense for 1 round (Smite).</p>", settings: [{ type: "defense", defKind: "all", defValue: 1 }] }, "Paladin");
+// v0.0.246 (cards 1, Lucas): Smite's light is an effect the Damage button puts on the target (the card's fx): the token sheds Bright light in an
+// N Emanation (Dim light for N more: the book's Light), for 1 round, with the Bane on Hide as a note (Hide isn't written: by hand). The old +1 Defense effect is gone (R-classes).
+for (const n of [1, 2]) add("effects", "effect", `Smite (Bright light ${n})`, "icons/svg/light.svg", { duration: { type: "rounds", rounds: 1 }, description: `<p>The creature sheds Bright light in a ${n} Emanation (Dim light ${n} more) and takes 1 Bane when it tries to Hide, for 1 round (Smite).</p>`, settings: [{ type: "light", bright: n, dim: 2 * n, color: "#ffd27a" }, { type: "note", title: "Smite", text: "1 Bane when it tries to Hide (by hand: Hide isn't written yet)." }] }, "Paladin");
 add("effects", "effect", "Lay On Hands (Holy Strike)", "icons/svg/regen.svg", { selfApplied: true, duration: { type: "", rounds: 1 }, expireOn: ["strike"], description: "<p>Your next [Strike] Action deals an extra [R] 0/2d8/2d8 Ho (Tier 2 and 3).</p>", settings: [{ type: "bonusdamage", dmg: "2d8", dmgPool: "M", dmgSub: "Ho", tiers: ["t2", "t3"], all: ["strike"], any: [], none: [] }] }, "Paladin");
-const smiteLight = n => `The target sheds Bright light in a [${n}Emanation 1/round] and takes 1 Bane when they try to hide, for 1 round.`;
-const smiteDef = `You or one ally in the light gain @Effect[${uuidOf("effects", "Smite (+1 Defense)")}]{+1 Defense for 1 round}.`;
 // A1 (book 2026-10-29; v0.0.181): Double Shot and Rolling Shot are the Archer's Hallmark Action (choose one).
 for (const [n, d] of [[2, "1d6"], [3, "2d6"]]) add("effects", "effect", `Rolling Shot (+${d} Pi)`, "icons/svg/target.svg", { selfApplied: true, duration: { type: "eot", rounds: 1 }, expireOn: ["strike"], description: `<p>Your next [Ranged, Shot] Weapon Attack this turn deals an extra [V] ${d} Pi (Rolling Shot, ${n} AP).</p>`, settings: [{ type: "bonusdamage", dmg: d, dmgPool: "B", dmgSub: "Pi", tiers: ["t2", "t3"], all: ["ranged", "shot", "strike"], any: [], none: [] }] }, "Archer");
 const wa = "@Use[Weapon Attack|label:[Ranged, Shot] Weapon Attack (1A)]";
@@ -302,7 +302,9 @@ add("effects", "effect", "Killer's Focus", "icons/svg/target.svg", { selfApplied
    A card with Versions is an Action item, one without is a Feature; {{fx:Name}} and {{action:Name}} in a card are the compendium uuids. The Basic Actions
    come through module/basic-data.mjs (tools/gen-basic.mjs); the Techniques (weapon) and the NPC Actions (npc) follow in CS-3. The format: book/cards/README.md. */
 const { loadCards, cardSystem, featureSystem, talentSystem, isAction } = await import("./cardgen.mjs");
-const resolveRefs = s => s.replace(/\{\{fx:([^}]+)\}\}/g, (m, n) => uuidOf("effects", n)).replace(/\{\{action:([^}]+)\}\}/g, (m, n) => uuidOf("actions", n));
+// v0.0.246: {{link:Name|label}} (a book link to a card) is Foundry's link to the compendium item, which opens it to read (an Action, else a Feature or Talent).
+export const resolveRefs = s => s.replace(/\{\{fx:([^}]+)\}\}/g, (m, n) => uuidOf("effects", n)).replace(/\{\{action:([^}]+)\}\}/g, (m, n) => uuidOf("actions", n))
+  .replace(/\{\{link:([^}|]+)\|([^}]+)\}\}/g, (m, n, label) => { const c = CARDS.find(x => x.name === n); return `@UUID[${uuidOf(c && isAction(c) ? "actions" : "features", n)}]{${label}}`; });
 export const CARDS = loadCards();
 for (const c of CARDS) {
   if (c.foundry?.basic) continue;
@@ -432,7 +434,7 @@ for (const d of docs) if (["action", "talent", "feature"].includes(d.type) && FL
 const AUTO = {
   gold: ["Rain of Arrows",
     "Steady Nerves",
-    "Rimebrand", "Lay On Hands (Holy Strike)", "Smite (+1 Defense)", "Vanish (+1 Defense)"],
+    "Rimebrand", "Lay On Hands (Holy Strike)", "Smite (Bright light 1)", "Smite (Bright light 2)", "Vanish (+1 Defense)"],
   silver: ["Cut Through"],
   bronze: ["Harried", "Challenged"],
   none: ["Class Expertise"]

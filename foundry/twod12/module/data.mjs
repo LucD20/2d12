@@ -431,6 +431,7 @@ export class ActionData extends foundry.abstract.TypeDataModel {
           x3: str(),
           critical: str(),
           effects: str(),
+          after: str(),   // v0.0.246 (cards 1): chips run one after the other once the damage is applied (Smite 3 AP: the Guard's "who", then the Pushes)
           fx: new SchemaField({ all: fxList(), t1: fxList(), t2: fxList(), t3: fxList() })
         })
       )
