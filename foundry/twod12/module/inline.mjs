@@ -91,6 +91,7 @@ export function parseInline(kind, inner) {
       const m = s.trim().toLowerCase().match(/^(?:(?:rounds?|duration)\s*:\s*)?(eot|\d+)$/);
       if (m) { if (m[1] === "eot") cfg.dur = "eot"; else { cfg.dur = "rounds"; cfg.rounds = Number(m[1]); } }
       else if (/^label\s*:/i.test(s)) cfg.label = s.replace(/^label\s*:\s*/i, "");
+      else if (/^crit\s*:/i.test(s)) cfg.crit = yes(s.replace(/^crit\s*:\s*/i, ""));   // v0.0.249: only the targets that rolled a Critical
     }
     return cfg;
   }
@@ -142,6 +143,7 @@ export function parseInline(kind, inner) {
     else if (key === "pick") cfg.pick = yes(val);
     else if (key === "from") cfg.from = val.toLowerCase();
     else if (key === "doc") cfg.doc = val;
+    else if (key === "crit") cfg.crit = yes(val);   // v0.0.249: @Condition[prone|crit:yes]: only the targets that rolled a Critical
   }
   // A button always has the traits of what it is: Advance and Charge are Move. (Evade and Pushed have none.) A Save has its Attribute.
   if (kind === "Move") cfg.traits = [...new Set([...(cfg.kind === "advance" || cfg.kind === "charge" ? ["move"] : []), ...(cfg.traits ?? [])])];
@@ -426,6 +428,8 @@ async function doDamage(cfg) {
 /** The creature a button acts for: the one the after-damage chain names, the card's creature, the selected token or your character. */
 export const originActor = ctx => ctx?.actor ?? actorOfDoc(ctx?.message) ?? canvas.tokens?.controlled[0]?.actor ?? game.user.character ?? null;
 const tokenOfActor = a => a?.token?.object ?? a?.getActiveTokens?.()[0] ?? null;
+/** v0.0.249: a Move chip's distance for a creature on this Tier (t2:1|t3:2 on the chip: Word of Radiance's Pushed 1 / 2), else the chip's distance. */
+export const tierDistance = (cfg, tier) => { const v = cfg?.tiers?.[`t${tier}`]; return v !== undefined && /^\d+$/.test(String(v)) ? Number(v) : null; };
 /** The tokens of the card's targets: the chain's, the Action card's, or a damage card's. */
 export function cardTargetTokens(ctx) {
   const list = ctx?.targets ?? ctx?.message?.getFlag?.("twod12", "action")?.targets ?? ctx?.message?.getFlag?.("twod12", "dmgCard")?.targets ?? [];
@@ -646,12 +650,13 @@ async function handleCondition(cfg, ctx = {}) {
   let actors = [];
   const toActor = async uuid => { const d = await fromUuid(uuid); return d?.documentName === "Actor" ? d : d?.actor; };
   if (f?.self && f.actorUuid) actors = [await toActor(f.actorUuid)];
+  else if (ctx.targets?.length) actors = await Promise.all(ctx.targets.filter(t => !cfg.crit || t.crit).map(t => toActor(t.uuid)));   // v0.0.249: the chain's targets (crit:yes: the Criticals only)
   else if (f?.targets?.length) actors = await Promise.all(f.targets.map(t => toActor(t.uuid)));
   else if (game.user.targets.size) actors = [...game.user.targets].map(t => t.actor);
   else actors = (canvas.tokens?.controlled ?? []).map(t => t.actor);
   actors = actors.filter(Boolean);
-  if (!actors.length) return ui.notifications.warn("Target or select a token first.");
-  const src = f?.actorUuid ? await fromUuid(f.actorUuid) : (game.combat?.combatant?.actor ?? null);
+  if (!actors.length) return cfg.crit && ctx.targets?.length ? ui.notifications.info("No Critical: nothing to apply.") : ui.notifications.warn("Target or select a token first.");
+  const src = ctx.actor ?? (f?.actorUuid ? await fromUuid(f.actorUuid) : (game.combat?.combatant?.actor ?? null));
   const dur = cfg.dur === "eot" ? { type: "eot" } : (cfg.dur === "rounds" ? { type: "rounds", rounds: cfg.rounds } : null);
   const found = await applyCondition(cfg.cond, actors, dur, { ...originInfo(src?.uuid ?? ""), ...(Number.isFinite(f?.attrVal ?? f?.originMod) ? { mod: f.attrVal ?? f.originMod } : {}) });
   ui.notifications.info(`${cfg.cond.charAt(0).toUpperCase() + cfg.cond.slice(1)} applied to ${actors.map(a => a.name).join(", ")}${found ? "" : " (as a status: there is no Effect item with that name)"}.`);
@@ -675,9 +680,9 @@ const diceRowHtml = (d, tier = 0) => {
 /** What a creature took, in the Save card's last column: just the total damage, and (small) any other effect. Cards from before keep their text. */
 const dmgCellHtml = res => {
   if (!("amount" in res)) return esc(res.dmg || "\u2014");
-  const main = res.amount != null ? `<b class="samt">${res.amount}</b>` : "", extra = res.extra ? `<small class="sextra">${prettyDamage(esc(res.extra))}</small>` : "";
-  return main + extra || "\u2014";
+  return (res.amount != null ? `<b class="samt">${res.amount}</b>` : "") || "\u2014";   // v0.0.249: the texts go on their own line under the row (they broke the columns)
 };
+const extraLineHtml = res => (res && "amount" in res && res.extra ? `<div class="sextraline">${prettyDamage(esc(res.extra))}</div>` : "");
 
 async function saveCardHtml(st) {
   const cfg = st.cfg, dc = cfg.dc, attr = TWOD12.attributes[cfg.attr];
@@ -691,7 +696,7 @@ async function saveCardHtml(st) {
   const targets = st.rows.map((r, i) => {
     const res = r.result;
     const mid = res ? `<span class="shield small ${res.total >= dc ? "win" : "lose"}" data-tooltip="${esc(res.tip)}"><b class="rtotal">${res.total}</b><small class="vsdc">DC ${dc}</small></span>` : `<button type="button" data-twod12="saveRoll" data-idx="${i}">${esc(attr)}</button>`;
-    return `<div class="srow"><span class="sname"><i class="fa-solid fa-crosshairs"></i> ${esc(r.name)}</span>${mid}<span class="sdmg ${res ? `t${res.tier}` : ""}">${res ? dmgCellHtml(res) : ""}</span></div>${res ? diceRowHtml(res.dice, res.tier) : ""}`;
+    return `<div class="srow"><span class="sname"><i class="fa-solid fa-crosshairs"></i> ${esc(r.name)}</span>${mid}<span class="sdmg ${res ? `t${res.tier}` : ""}">${res ? dmgCellHtml(res) : ""}</span></div>${extraLineHtml(res)}${res ? diceRowHtml(res.dice, res.tier) : ""}`;
   }).join('<hr class="sep">');
   return `<div class="twod12 chat action savecard" style="${st.color ? cardVars(st.color) : ""}">${cardHead(`${attr} Save`, "", `<span class="apmark">DC ${dc}</span>`)}${traits}
     <div class="orn">&#10022; &#10022; &#10022;</div><table class="tiers">${rows.join("")}</table><div class="orn">&#10022;</div><div class="stargets"><div class="srow sthead"><span class="sname"><button type="button" class="tgt" data-twod12="retargetSave" data-tooltip="Retarget"><i class="fa-solid fa-bullseye"></i></button> Name</span><span class="scol">Save</span><span class="scol r">Damage</span></div>${targets || "<i>No targets</i>"}</div></div>`;

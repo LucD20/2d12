@@ -246,7 +246,7 @@ FX("Aura of Protection (+1 Defense)", "icons/svg/shield.svg", { duration: dur(""
 FX("Divine Vigil (Boon against Fear)", "icons/svg/aura.svg", { duration: dur(""), description: "<p>1 Boon on Saves against [Fear] Actions, while you are inside Divine Vigil's Aura.</p>", settings: [{ type: "boonbane", boons: 1, banes: 0, all: ["__save"], any: [], none: [], from: ["fear"] }] });
 // P1 (v0.0.181): Divine Surge marks an enemy (the ally's extra damage is a button on the mark); Aura of Protection lasts the encounter.
 FX("Divine Surge", "icons/svg/sun.svg", { duration: dur("rounds"), description: "<p>For 1 round, the next time an ally deals damage to this creature, they deal an extra @Damage[1d8[mind,holy]]{[R] 1d8 Ho} (Divine Surge). Then remove this mark.</p>", settings: [] });
-FX("Aura of Protection", "icons/svg/aura.svg", { selfApplied: true, duration: dur(""), description: "<p>An Aura 2 around you until the end of the encounter: you and allies inside gain +1 Defense.</p>", settings: [{ type: "aura", auraSize: 2, auraWho: "allies", auraSelf: true, auraOutline: "#3fb68b", auraFill: "#3fb68b", fxUuid: uuidOf("effects", "Aura of Protection (+1 Defense)") }] });
+FX("Aura of Protection", "icons/svg/aura.svg", { selfApplied: true, duration: dur(""), description: "<p>An Aura 2 around you until the end of the encounter: you and allies inside gain +1 Defense. While it lasts you have Beacon's Step (0R, Round: Evade 1 toward an ally in the Aura who takes damage).</p>", settings: [{ type: "aura", auraSize: 2, auraWho: "allies", auraSelf: true, auraOutline: "#3fb68b", auraFill: "#3fb68b", fxUuid: uuidOf("effects", "Aura of Protection (+1 Defense)") }, { type: "inline", inlineAction: uuidOf("actions", "Beacon's Step") }] });
 
 // Features: the Paladin's core features, the passives of the picks, and the choices
 // v0.0.187 (Lucas): the Escalation passives that add damage once a round give an Effect each turn, used up by the Action (switch it off in the roll dialog).
@@ -301,7 +301,7 @@ add("effects", "effect", "Killer's Focus", "icons/svg/target.svg", { selfApplied
 /* ------------------------------------------------------------------ the cards of book/cards/*.json (pack CS, 2026-11-03): one source for the book, Foundry and the ruler.
    A card with Versions is an Action item, one without is a Feature; {{fx:Name}} and {{action:Name}} in a card are the compendium uuids. The Basic Actions
    come through module/basic-data.mjs (tools/gen-basic.mjs); the Techniques (weapon) and the NPC Actions (npc) follow in CS-3. The format: book/cards/README.md. */
-const { loadCards, cardSystem, featureSystem, talentSystem, isAction } = await import("./cardgen.mjs");
+const { loadCards, cardSystem, featureSystem, talentSystem, isAction, inlineCards } = await import("./cardgen.mjs");
 // v0.0.246: {{link:Name|label}} (a book link to a card) is Foundry's link to the compendium item, which opens it to read (an Action, else a Feature or Talent).
 export const resolveRefs = s => s.replace(/\{\{fx:([^}]+)\}\}/g, (m, n) => uuidOf("effects", n)).replace(/\{\{action:([^}]+)\}\}/g, (m, n) => uuidOf("actions", n))
   .replace(/\{\{link:([^}|]+)\|([^}]+)\}\}/g, (m, n, label) => { const c = CARDS.find(x => x.name === n); return `@UUID[${uuidOf(c && isAction(c) ? "actions" : "features", n)}]{${label}}`; });
@@ -322,6 +322,7 @@ for (const c of CARDS) {
   if (c.talent) add("features", "talent", c.name, img, talentSystem(c, resolveRefs), null);   // a Talent (and, with Versions, the Action it grants, above)
   else if (!isAction(c)) add("features", "feature", c.name, img, featureSystem(c, resolveRefs), folder);
   if (c.weapon) { const w = docs.find(d => d.type === "weapon" && d.name.toLowerCase() === c.weapon.toLowerCase()); if (w) (w.system.actions ??= []).push(uuidOf("actions", c.name)); }   // a Technique on its weapon (when the weapon is in the compendium)
+  for (const a of inlineCards(c)) add("actions", "action", a.name, a.foundry.img ?? "icons/svg/sword.svg", cardSystem(a, resolveRefs), "Inline");   // v0.0.249: the card's inline Actions (Beacon's Step)
 }
 
 // v0.0.185: the pick Features of v0.0.181 (Hallmark Action, Encounter Pick, Talent (Level 1)...) are gone: the classes have levels now.

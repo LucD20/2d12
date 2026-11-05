@@ -142,7 +142,7 @@ export const TWOD12 = {
     nonthreatening: "Doesn't threaten: you can't flank with it, unless a feature says otherwise (Fists have it; Brawler removes it).",
     move: "You must have a Speed of at least 1."
   },
-  effectSettings: { boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", speed: "Speed", light: "Token Light", note: "Note", ignore: "Ignore a Bane", rally: "Rally Points", turnstart: "Effect each turn", message: "Chat message", weaponprop: "Weapon property", mastery: "Starting Mastery", eschook: "Escalation hook" },
+  effectSettings: { inline: "Grants an Action while active", boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", speed: "Speed", light: "Token Light", note: "Note", ignore: "Ignore a Bane", rally: "Rally Points", turnstart: "Effect each turn", message: "Chat message", weaponprop: "Weapon property", mastery: "Starting Mastery", eschook: "Escalation hook" },
   // v0.0.243 (pack R): the moments a class's Escalation hook names (once an encounter, +1 Escalation): Kindled Wrath, Thrill of the Kill.
   escHookWhen: { allyState: "An ally within N squares becomes Bloodied or goes Down", markDown: "The creature it marked goes Down" },
   // v0.0.198 (Lucas, 2026-10-30): the Basic Actions section of the Actions tab, 4 groups in a 2x2 grid (row 1 Attack | Control, row 2
@@ -433,12 +433,14 @@ export function metaRowHtml({ frequency = "", targetText = "", distance = "", ar
   // The Frequency is in the title bar (cardHead). The Self trait already says it targets you, so Self is left out.
   // v0.0.176: the Area (line 2, with the Targets) and the Distance (line 3) are separate; an older caller may still pass "Area: ..." as the distance.
   if (!areaLine && /^Area: /.test(distance)) { areaLine = distance.slice(6); distance = ""; }
+  // v0.0.249 (Lucas): "Targets:" is labeled, and the meta texts are colored like the rules text (a [Strike] in a Trigger is a trait chip, the Attribute of "Appeal Save" has its color)
+  const hl = t => { try { return highlightText(escAttr(t)); } catch (e) { return escAttr(t); } };
   const l1 = Number(escalation) > 0 ? [`<span class="esc">${Number(escalation)} Escalation</span>`] : [];
-  const l2 = [(!self || areaLine) && targetText ? `<span class="tgt">${escAttr(targetText)}</span>` : "", areaLine ? `<span class="dist"><b>Area:</b> ${escAttr(areaLine)}</span>` : ""].filter(Boolean);
-  const l3 = [distance && distance.toLowerCase() !== "self" ? `<span class="dist"><b>Distance:</b> ${escAttr(distance)}</span>` : "", vs ? `<span class="vs">${/save$/i.test(String(vs).trim()) ? "" : "Vs. "}${escAttr(vs)}</span>` : ""].filter(Boolean);
+  const l2 = [(!self || areaLine) && targetText ? `<span class="tgt"><b>Targets:</b> ${hl(targetText)}</span>` : "", areaLine ? `<span class="dist"><b>Area:</b> ${hl(areaLine)}</span>` : ""].filter(Boolean);
+  const l3 = [distance && distance.toLowerCase() !== "self" ? `<span class="dist"><b>Distance:</b> ${hl(distance)}</span>` : "", vs ? `<span class="vs">${/save$/i.test(String(vs).trim()) ? "" : "Vs. "}${hl(vs)}</span>` : ""].filter(Boolean);
   const row = [l1, l2, l3].filter(l => l.length).map(l => `<div class="trow"><span>${l.join(sep)}</span></div>`).join("");
-  const req = requirements ? `<div class="trow reqrow"><span><b>Requirements:</b> ${escAttr(requirements)}</span></div>` : "";
-  const trg = trigger ? `<div class="trow trgrow"><span><b>${reactionKind === "interrupt" ? "Interrupt" : "Trigger"}:</b> ${escAttr(trigger)}</span></div>` : "";
+  const req = requirements ? `<div class="trow reqrow"><span><b>Requirements:</b> ${hl(requirements)}</span></div>` : "";
+  const trg = trigger ? `<div class="trow trgrow"><span><b>${reactionKind === "interrupt" ? "Interrupt" : "Trigger"}:</b> ${hl(trigger)}</span></div>` : "";
   return row + req + trg;
 }
 

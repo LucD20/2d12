@@ -130,7 +130,7 @@ async function runAfterDamage(f, targets) {
   let actor = null;
   try { actor = f.originUuid ? await fromUuid(f.originUuid) : null; } catch (e) { /* not loaded */ }
   const { runAfter } = await import("./inline.mjs");
-  await runAfter(f.after, { actor: actor?.documentName === "Actor" ? actor : (actor?.actor ?? null), targets: (targets ?? []).map(t => ({ uuid: t.uuid, name: t.name })), attrVal: Number.isFinite(f.originMod) ? f.originMod : null });
+  await runAfter(f.after, { actor: actor?.documentName === "Actor" ? actor : (actor?.actor ?? null), targets: (targets ?? []).map(t => ({ uuid: t.uuid, name: t.name, tier: t.tier, crit: !!t.crit })), attrVal: Number.isFinite(f.originMod) ? f.originMod : null, areaPoint: f.areaPoint ?? null });
 }
 
 async function applyConditional(msg) {
@@ -176,7 +176,7 @@ async function updateMulti(msg, f, rows, kind) {
   const { multiDamageHtml } = await import("./dmgcard.mjs");
   try {
     await msg.update({ content: multiDamageHtml({ title: f.name, rows, color: f.color, defaultNl: f.defaultNl, kind }), "flags.twod12.dmgMulti.rows": rows, "flags.twod12.dmgMulti.kind": kind });
-    if (rows.every(r => r.applied || r.blocked)) await msg.setFlag("twod12", "collapsed", true);
+    // v0.0.249 (Lucas): the card stays open once every row is applied (the selector goes instead)
   } catch (e) { ui.notifications.warn("Only the author of this card or the GM can change it."); }
 }
 

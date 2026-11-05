@@ -69,6 +69,8 @@ function settingSentenceOnly(x) {
       const pool = x.dmgPool ? ` to ${esc((TWOD12.pools[x.dmgPool] ?? "").replace(/\s*\[.*\]/, ""))}` : "";
       return `The next action${predicateText(x) || " of any kind"} deals <b>+${esc(x.dmg || "?")}${x.dmgSub ? " " + esc(TWOD12.subtypes[x.dmgSub]) : ""}</b> damage${pool}${on}.`;
     }
+    case "inline":
+      return `Has the Action <b>${esc(fxNameOf(x.inlineAction) || x.inlineAction || "?")}</b> while this lasts.`;
     case "grant":
       return `Can use <b>${esc(x.grantAction || "?")}</b> ${x.grantCount === 1 ? "once" : `${x.grantCount} times`} for <b>${x.grantAp ? `${x.grantAp} AP` : "free"}</b>${x.boons ? `, with ${plural(x.boons, "Boon")}` : ""}${x.grantDistinct ? ", a different target each time" : ""}.`;
     case "aura": {

@@ -3,5 +3,5 @@ dialog chips: Prone (Orc) +1/-0 match=true | Prone (Orc) +0/-1 match=false
 resolved melee: {"boons":1,"banes":0,"sources":[{"name":"Prone","boons":1,"banes":0}]}
 ranged matches: false,true
 "Reach" "Self" "10 / 20 / 40" "10/20/40" ""
-|One creature|Distance:| Reach|
+|Targets:| One creature|Distance:| Reach|
 "" | none: ""

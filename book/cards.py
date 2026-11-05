@@ -55,6 +55,13 @@ def block(c):
         L.append('')
     elif c.get('text'): L += [c['text'], '']
     if c.get('notes'): L += [c['notes'], '']
+    # cards 2 (Lucas, 2026-11-05): an inline Action, one line in his format: Name — cost | Frequency | [traits] | Interrupt: ... | Effects: ...
+    for a in c.get('inline', []):
+        parts = [a.get('cost', ''), a.get('frequency', '')]
+        if a.get('traits'): parts.append('[%s]' % ', '.join(cap(t) for t in a['traits']))
+        for k in ('interrupt', 'trigger', 'target', 'requirements', 'effects'):
+            if a.get(k): parts.append('%s: %s' % (cap(k), a[k]))
+        L += ['**Inline:** %s \u2014 %s' % (a['name'], ' | '.join(p for p in parts if p)), '']
     for m in c.get('modifies', []): L += [m, '']
     L.append('</div>')
     return '\n'.join(L)

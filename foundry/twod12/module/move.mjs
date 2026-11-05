@@ -6,6 +6,7 @@ import { esc } from "./roll.mjs";
 import { sysCard, sysLine, apText } from "./sysmsg.mjs";
 import { logMove, logPush, voidLastAction } from "./enclog.mjs";   // v0.0.223: the Encounter Log
 import { tokenCells, fillCells, outlineCells, cellCenter, cellAt, emanationCells, tokensInEmanation } from "./template.mjs";
+import { tierDistance } from "./inline.mjs";
 import { TWOD12 } from "./config.mjs";
 import { applyToActor } from "./damage.mjs";
 import { getAP, setAP, combatantOf, apMax } from "./combat.mjs";
@@ -962,10 +963,10 @@ async function pushFlow(cfg, ctx, mode = "push") {
   const N = Math.max(1, moveDistance(cfg, actor0) ?? 0);
   const actor = actor0;
   // v0.0.246: from:target: the card's (first) target is the origin of the movement (a Push away from the creature that was hit)
-  const origin = (cfg.from === "target" ? targetTokens(ctx)[0] : null) ?? tokenOf(actor) ?? canvas.tokens.controlled[0];
+  const origin = (cfg.from === "target" ? targetTokens(ctx)[0] : cfg.from === "area" ? areaOrigin(ctx) : null) ?? tokenOf(actor) ?? canvas.tokens.controlled[0];
   if (!origin) return warn(`Select the token that is the origin of the ${MOVE_LABEL[mode]}.`);
   if (cfg.pick) return pushPicker(cfg, ctx, mode, origin, N);
-  const by = cfg.from === "target" ? tokenOf(actor) : null;
+  const by = cfg.from === "target" || cfg.from === "area" ? tokenOf(actor) : null;
   const targets = targetTokens(ctx).filter(t => t.id !== origin.id);
   if (!targets.length) return warn("Target the creature to move first.");
   // Immobilized (v0.0.174): checked before Steadiness. The card says whether the Action rolled (its result, per target) or is a Save Action
@@ -985,8 +986,24 @@ async function pushFlow(cfg, ctx, mode = "push") {
       if (!out.moved) { await post(`<b>${esc(t.name)}</b> is Immobilized and isn't moved: ${out.why}.`); continue; }
       await post(`<b>${esc(t.name)}</b> is Immobilized, but ${out.why}: it can be moved.`);
     }
-    await pushOne(origin, t, N, mode, { withinReach: !!cfg.withinReach, by });
+    await pushOne(origin, t, distanceFor(cfg, ctx, t, N), mode, { withinReach: !!cfg.withinReach, by });
   }
+}
+
+/** v0.0.249: the chip's distance for this creature: its Tier's (t2:1|t3:2 on the chip, read from the damage card's rows) or the chip's. */
+function distanceFor(cfg, ctx, token, N) {
+  const row = (ctx?.targets ?? []).find(t => { try { return fromUuidSync(t.uuid)?.object?.id === token.id; } catch (e) { return false; } });
+  const d = row?.tier ? tierDistance(cfg, row.tier) : null;
+  return d ?? N;
+}
+/** v0.0.249 (Word of Radiance): the placed area's Point of Origin as the origin of a Forced Movement: a stand-in token on the squares around the point (a Burst sits on a corner). */
+function areaOrigin(ctx) {
+  const p = ctx?.areaPoint ?? ctx?.message?.getFlag?.(F, "action")?.areaPoint ?? ctx?.message?.getFlag?.(F, "dmgCard")?.areaPoint ?? ctx?.message?.getFlag?.(F, "dmgMulti")?.areaPoint;
+  if (!p || !canvas?.grid) return null;
+  const s = canvas.grid.size, tl = canvas.grid.getTopLeftPoint({ x: p.x - 1, y: p.y - 1 });
+  const onCorner = Math.abs(p.x - Math.round(p.x / s) * s) < 2 && Math.abs(p.y - Math.round(p.y / s) * s) < 2;
+  return onCorner ? { id: "__area", name: "the area's center", actor: null, document: { id: "__area", x: p.x - s, y: p.y - s, width: 2, height: 2, disposition: 0, flags: {} } }
+    : { id: "__area", name: "the area's center", actor: null, document: { id: "__area", x: tl.x, y: tl.y, width: 1, height: 1, disposition: 0, flags: {} } };
 }
 
 /**
@@ -1001,16 +1018,16 @@ async function pushPicker(cfg, ctx, mode, origin, N) {
   const me = tokenOf(contextActor(ctx));
   list = list.filter(t => t.id !== origin.id && (cfg.self || t.id !== me?.id));   // v0.0.248 (Lucas): never yourself, unless self:yes
   if (!list.length) return warn(`${label} ${N}: no creature ${cfg.area > 0 ? `within ${cfg.area} of the target` : "among the targets"} to move.`);
-  const moved = [], by = cfg.from === "target" ? tokenOf(contextActor(ctx)) : null;
+  const moved = [], by = cfg.from === "target" || cfg.from === "area" ? tokenOf(contextActor(ctx)) : null;
   const { pickBar } = await import("./pickbar.mjs");   // v0.0.247 (Lucas): the list is a bar at the bottom, in the Line bar's look, not a Foundry window
   while (list.length) {
     const pick = await pickBar({ icon: "fa-hand", done: "Done", cancel: "Stop",
       text: `<b>${label} ${N}</b>${by ? ` away from <b>${esc(origin.name)}</b>` : ""}: click a creature (here or its token) to move it.${moved.length ? ` <small>Moved: ${moved.map(esc).join(", ")}.</small>` : ""}`,
-      options: list.map((t, n) => ({ id: String(n), label: t.name, token: t })) });   // v0.0.248: its token on the map can be clicked too
+      options: list.map((t, n) => { const d = distanceFor(cfg, ctx, t, N); return { id: String(n), label: d === N ? t.name : `${t.name} (${label} ${d})`, token: t }; }) });   // v0.0.248: its token on the map can be clicked too; v0.0.249: its own distance by Tier
     if (pick == null || pick === "done") break;
     const t = list[Number(pick)];
     if (!t) break;
-    await pushOne(origin, t, N, mode, { withinReach: !!cfg.withinReach, by });
+    await pushOne(origin, t, distanceFor(cfg, ctx, t, N), mode, { withinReach: !!cfg.withinReach, by });
     moved.push(t.name);
     list = list.filter(x => x.id !== t.id);
   }

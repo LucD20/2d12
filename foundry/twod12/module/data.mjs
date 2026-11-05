@@ -532,6 +532,7 @@ const settingsField = () => new ArrayField(new SchemaField({
         speedMode: choice({ override: "Override", add: "Add" }, "add"), speedFormula: str(),
         // Grant: lets the creature use an Action (a name, "category:Weapon Technique" or "trait:strike") a number of times, for this AP cost.
         grantAction: str(), grantCount: int(1, 1), grantAp: int(0, 0), grantDistinct: bool(),
+        inlineAction: str(),   // v0.0.249 (Lucas, inline Actions): the Action (a uuid or a name) the creature has while the effect lasts (Beacon's Step)
         // Defense: +N (or -N) to every Defense, Armor, Ward or one Vs. Attribute. Bonuses don't add up: the highest bonus and the highest penalty count.
         defKind: choice(TWOD12.defenseKinds, "all"), defValue: sint(1),
         // A passive's own Escalation minimum (0: always); an Effect ignores it.

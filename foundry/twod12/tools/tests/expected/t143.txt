@@ -28,7 +28,7 @@ Word of Radiance (Area settings): Area "2 Emanation" | Distance "5 sq."
 Volley (weapon range):            Area "2 Emanation" | Distance "Your weapon's normal range"
 an older text with 'within':      Area "1 Emanation" | Distance "10 sq."
 an Action with no Area:           Area "" | Distance "Reach"
-the card: All enemies in the Area ✦ Area: 2 EmanationDistance: 5 sq.
+the card: Targets: All enemies in the Area ✦ Area: 2 EmanationDistance: 5 sq.
 --- Dying and Shattered: the Table the first time each, in an encounter
 dying rolls | dying no roll | shattered rolls | shattered no roll | dying rolls | an older flag (the combat's id): no roll
 --- Waking with Interact (not a creature that is Down)

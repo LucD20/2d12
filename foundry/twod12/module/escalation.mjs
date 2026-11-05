@@ -69,6 +69,7 @@ export async function raiseEscalation(actor, why = "gm", { combat = globalThis.g
   const upd = { "system.escalation": to };
   if (once && combat?.id) upd[`flags.${F}.escUsed.${why}`] = combat.id;
   await actor.update(upd);
+  try { await Hooks.callAll?.("twod12.escalationChanged", actor); } catch (e) { console.warn("twod12 | the rung's effects", e); }   // v0.0.249: the rung's effects (twod12.mjs listens)
   try {
     const { sysLine } = await import("./sysmsg.mjs");
     const { esc } = await import("./util.mjs");
@@ -108,6 +109,7 @@ export async function startAtOne(combat, { momentum = hasMomentum() } = {}) {
     if (escalationOf(a) !== to) upd["system.escalation"] = to;
     if (a.getFlag?.(F, "escUsed")) upd[`flags.${F}.-=escUsed`] = null;
     if (Object.keys(upd).length) await a.update(upd);
+    try { await Hooks.callAll?.("twod12.escalationChanged", a); } catch (e) { console.warn("twod12 | the rung's effects", e); }   // v0.0.249: Radiant Zeal at Escalation 1 from the start (twod12.mjs listens)
   }
   if (momentum) {
     await setMomentum(false);

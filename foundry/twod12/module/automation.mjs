@@ -123,6 +123,28 @@ export async function applyTurnStartEffects(actor) {
   }
   return n;
 }
+/**
+ * v0.0.249 (Lucas): a rung Passive's effect comes as soon as the Escalation reaches its rung, not only at the start of the creature's turn:
+ * the "Effect each turn" settings whose minimum is met now and whose Effect the creature doesn't carry yet are given (in an encounter only).
+ */
+export async function applyReachedEffects(actor) {
+  if (!actor || !globalThis.game?.combat?.started) return 0;
+  const { createEffect, originInfo } = await import("./effects.mjs");
+  const has = u => actor.effects.some(x => x.getFlag(F, "effectUuid") === u);
+  let n = 0;
+  for (const e of allEffects(actor)) {
+    const min = Number(e.getFlag?.(F, "minEscalation") ?? e.flags?.[F]?.minEscalation) || 0;
+    if (!min || effectOff(actor, e)) continue;
+    for (const t of e.getFlag(F, "turnStarts") ?? []) {
+      if (has(t.fxUuid)) continue;
+      const item = await fromUuid(t.fxUuid);
+      if (item?.type !== "effect") continue;
+      await createEffect(actor, item, { ...originInfo(actor.uuid), escalation: true }, null, { turnStart: true });
+      n++;
+    }
+  }
+  return n;
+}
 export const tsKey = uuid => String(uuid).replace(/\./g, "_");
 
 /* ------------------------------------------------------------------ v0.0.207: Chat message */

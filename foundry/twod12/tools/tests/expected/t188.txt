@@ -1,0 +1,17 @@
+--- the meta lines, the tier text, the cards
+Targets labeled and the meta texts colored: true | the book labels it too: true
+a tier's effect after its damage with '; ': true | the area button stays on the chat card: true | the placement outline: true
+the merged card: no collapse, the selector gone when done: true | the Save card's text line: true
+--- a rung's effect when the Escalation reaches it
+applyReachedEffects (only in an encounter, only once per Effect): true | the hook on a rise and at the start: true
+--- inline Actions
+the setting and its lifecycle: true true true | in the Class group: true
+Beacon's Step from the card: Beacon's Step | Inline Action | 0R Round | An ally in the Aura takes damage. | You Evade 1 toward the ally. | as an item: interrupt round 0 AP, You @Move[evade|distance:1] toward the ally. | flavor: A step into the light, before the blow lands.
+in the compendium: actions/action in Inline | the Aura of Protection effect carries it: true | the aura setting still first: aura
+Beacon: Area "Aura 2" | distance "" | text: For 3 rounds, you and allies in the @Book[Aura]{Aura} gain +1 Defense. While the Beacon is active, you gain the following Action:
+the book: a nested card with its own Frequency color, the Interrupt and the Effects: true true
+--- Word of Radiance's chain
+after: 2 AP: @Move[pushed|distance:1|t3:2|pick:yes|from:area] @Condition[prone|crit:yes] | 3 AP: @Move[pushed|distance:1|t3:2|pick:yes|from:area] @Condition[prone|crit:yes] | no notes line: true
+the chip options: {"from":"area","pick":true,"t3":"2"} | the distance by Tier: null 2 | Prone on the Criticals only: true
+move.mjs: the area's center as the origin, the distance per creature, the pusher named: true | the cards keep the point and the Critical: true
+Rebuke's note: the Save, the damage and Frightened (the card; Frightened as a status until R-Foundry 2's conditions); the Push by click.

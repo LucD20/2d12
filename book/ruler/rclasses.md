@@ -199,4 +199,4 @@ Each Action priced as econ.mjs prices the price list (the damage and the effects
 Hunter's Focus, Deathmark's Boon and chain shot, Open Season's allies' dice and Beacon's step are priced by the static list only once or not at all: read their rows as floors.
 The ledger is a price check, not the design: a card the ruler calls under may be carrying a Push, a condition or a trigger the open field doesn't see (Rebuke, Beacon, Sure Step).
 
-(1.5 minutes.)
+(1.4 minutes.)

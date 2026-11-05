@@ -141,6 +141,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
                 defValue: x.defValue,
                 defKinds: TWOD12.defenseKinds,
                 isGrant: x.type === "grant",
+                isInline: x.type === "inline", inlineAction: x.inlineAction ?? "",
                 grantAction: x.grantAction,
                 grantCount: x.grantCount,
                 grantAp: x.grantAp,

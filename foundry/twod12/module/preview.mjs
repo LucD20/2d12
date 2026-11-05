@@ -35,7 +35,8 @@ export async function tierLines(insts, tier, ctx, effectText = "") {
   }
   const dmg = insts;
   if (tier >= attrFromTier(ctx) && dmg.length && !dmg.some(i => i.useAt)) lines.push(`+ ${ctx.attrVal} <small>${esc(ctx.attrLabel)}</small>`);
-  if (effectText) lines.push(await enrich(effectText, ctx?.item));
+  // v0.0.249 (Lucas): the effect rides on the damage with "; " as the book writes it ("[R] 1d8 Ho; Pushed 2"), on its own only when the tier deals no damage
+  if (effectText) { const e = await enrich(effectText, ctx?.item); if (lines.length) lines[lines.length - 1] += `; ${e}`; else lines.push(e); }
   return lines;
 }
 

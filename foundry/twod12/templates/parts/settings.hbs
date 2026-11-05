@@ -70,6 +70,10 @@
         <div class="fxd-s">Choose one weapon with the property <select class="fxd-f" data-sfield="{{i}}" data-field="mstTrait">{{selectOptions mstTraits selected=mstTrait}}</select>: it starts at <input type="number" min="0" class="fxd-f n" data-sfield="{{i}}" data-field="mstValue" value="{{mstValue}}"> Mastery.</div>
         <p class="fxd-help">On a Feature or Talent of a character: the Mastery tab asks the player to choose the weapon (Sharpshooter: a Projectile weapon, 3 Mastery, so its Weapon Technique is unlocked). The Mastery never goes below that number when chosen; it can still grow.</p>
         {{/if}}
+        {{#if isInline}}
+        <div class="fxd-s">Has the Action <input type="text" class="fxd-f wide" data-sfield="{{i}}" data-field="inlineAction" value="{{inlineAction}}" placeholder="Beacon's Step, or an Action's uuid"> while this lasts.</div>
+        <p class="fxd-help">An inline Action (a card's own small Action: Beacon's Step). The Action is put on the creature when the effect is applied and taken away when it ends. A name is looked up on the creature, in the world, then in the compendium.</p>
+        {{/if}}
         {{#if isGrant}}
         <div class="fxd-s">Can use <input type="text" class="fxd-f wide" data-sfield="{{i}}" data-field="grantAction" value="{{grantAction}}" placeholder="Weapon Attack / category:Weapon Technique / trait:strike"> <input type="number" min="1" class="fxd-f n" data-sfield="{{i}}" data-field="grantCount" value="{{grantCount}}"> {{timesWord}} for <input type="number" min="0" class="fxd-f n" data-sfield="{{i}}" data-field="grantAp" value="{{grantAp}}"> AP, with <input type="number" min="0" class="fxd-f n" data-sfield="{{i}}" data-field="boons" value="{{boons}}"> {{boonWord}}.</div>
         <label class="fxd-inl"><input type="checkbox" data-sfield="{{i}}" data-field="grantDistinct" {{#if grantDistinct}}checked{{/if}}> Each use needs a different target</label>

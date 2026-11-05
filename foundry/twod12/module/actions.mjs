@@ -463,7 +463,7 @@ export async function useAction(actor, item, opts = {}) {
   const isSelf = it.traits.has("self");
   const selfToken = actor.token?.object ?? actor.getActiveTokens?.()[0] ?? null;
   // An Action with an Area and a roll: the area is placed first, so the roll is made once for the creatures in it.
-  let areaPlaced = false, areaOutcome = null;
+  let areaOutcome = null;
   const areaSet = String(it.area ?? "").trim() ? areaConfigOf(it) : null;
   // v0.0.215: versions with their own Area size (Word of Radiance: 2 / 3 Emanation): the version is chosen before the area is placed, and the roll keeps it.
   if (areaSet && canvas.ready && canvas.grid?.isSquare && src.kind && new Set(versions.map(v => v.areaSize || areaSet.distance)).size > 1) {
@@ -487,7 +487,6 @@ export async function useAction(actor, item, opts = {}) {
     const damaging = versions.some(v => ["t1", "t2", "t3"].some(t => (v[t] ?? []).length));
     await startTemplate({ ...areaSet, self: areaSet.self && !damaging, quick: true, within, htSave: saveAct }, { token: selfToken, outcome });
     if (!outcome.ok) return;
-    areaPlaced = true;
     if (!outcome.count) ui.notifications.info("No creature is in the area.");
   }
   const rollsAtOthers = !isSelf || !!String(it.area ?? "").trim();
@@ -873,7 +872,7 @@ export async function useAction(actor, item, opts = {}) {
     ? `<div class="dmgbtn"><button type="button" data-twod12="rollDamage"><i class="fa-solid fa-dice"></i> Roll Damage${mres ? " (per Tier)" : ""}</button></div>` : "";
   const color = cardColorFor(it);
   const trow = metaRowHtml({ escalation: it.escalation ?? 0, frequency: effectiveFrequency(it), targetText: it.targets, distance: distanceText(it, weapon), area: areaText(it), vs: vsText(it, { src, fists: item.getFlag?.("twod12", "basic") === "fists", rolls: !version.noTiers }), requirements: it.requirements, trigger: it.trigger, reactionKind: it.reactionKind, self: isSelf });
-  const areaRow = areaButton(it) && !areaPlaced ? `<div class="trow arearow">${await enrich(areaButton(it), item)}</div>` : "";
+  const areaRow = areaButton(it) ? `<div class="trow arearow">${await enrich(areaButton(it), item)}</div>` : "";   // v0.0.249 (Lucas): on the chat card even once placed, to place it again and retarget
   const setupRow = it.setup ? `<div class="trow setuprow"><b>Setup:</b> ${await enrich(setupFor(it.setup, setupDone), item)}</div>` : "";
   const html = `<div class="twod12 chat action" style="${cardVars(color)}">
     ${cardHead(item.name, categoryText(it), apIcon(version.ap, it.reaction), effectiveFrequency(it), it.automation, it.automationNote)}
@@ -920,6 +919,7 @@ export async function useAction(actor, item, opts = {}) {
           tier,
           total: chk?.total ?? null,   // v0.0.174: the roll's result (Forced Movement against an Immobilized creature compares it with the Immobilized DC)
           results: mres ? mres.map(r => ({ uuid: r.uuid, name: r.label, tier: r.chk.tier, crit: r.chk.crit, bonuses: r.bonuses, total: r.chk.total })) : undefined,
+          crit: !!chk?.crit, areaPoint: areaOutcome?.point ?? null,   // v0.0.249: the chain after the damage reads them (Prone on a Critical, a Push from the area's center)
           weaponId: weapon?.id ?? "",
           mode: opts.splitMode ?? "",
           attrVal: src.kind ? (Number(src.mod) || 0) : 0,   // [Mod]: the Modifier used on the roll (also Cleave's damage)
@@ -1042,13 +1042,13 @@ export async function rollDamage(message) {
       if (!(r.tier >= 1)) continue;
       if (!byTier.has(r.tier)) { const d = await rollFor(r.tier, r.bonuses ?? [], [{ uuid: r.uuid, name: r.name }], r.name); byTier.set(r.tier, d); all.push(...d.rolls); }
       const d = byTier.get(r.tier);
-      rows.push({ uuid: r.uuid, name: r.name, tier: r.tier, comps: d.comps.map(c => ({ ...c })), fx: d.fx });
+      rows.push({ uuid: r.uuid, name: r.name, tier: r.tier, crit: !!r.crit, comps: d.comps.map(c => ({ ...c })), fx: d.fx });
     }
-    if (rows.length) await postMultiDamageCard({ actor, title: item.name, rows, rolls: all, color: f.color, defaultNl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: rows.some(r => r.tier >= 2) ? (version.after ?? "") : "" });
+    if (rows.length) await postMultiDamageCard({ actor, title: item.name, rows, rolls: all, color: f.color, defaultNl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: rows.some(r => r.tier >= 2) ? (version.after ?? "") : "", areaPoint: f.areaPoint ?? null });
   } else {
     const d = await rollFor(f.tier, f.bonuses ?? [], f.targets ?? [], "");
     // v0.0.246: the Version's "After the damage" chips run once the damage is applied (an Effects row: on Tier 2 or 3)
-    await postDamageCard({ actor, title: item.name, subtitle: `Damage \u2022 Tier ${f.tier}`, comps: d.comps, fx: d.fx, targets: f.targets ?? [], originUuid: f.actorUuid, chip: d.chip, rolls: d.rolls, color: f.color, defaultNl: !!f.nl, originMod: f.attrVal, after: f.tier >= 2 ? (version.after ?? "") : "" });
+    await postDamageCard({ actor, title: item.name, subtitle: `Damage \u2022 Tier ${f.tier}`, comps: d.comps, fx: d.fx, targets: (f.targets ?? []).map(t => ({ ...t, tier: f.tier, crit: !!f.crit })), originUuid: f.actorUuid, chip: d.chip, rolls: d.rolls, color: f.color, defaultNl: !!f.nl, originMod: f.attrVal, after: f.tier >= 2 ? (version.after ?? "") : "", areaPoint: f.areaPoint ?? null });
   }
   try { await message.setFlag("twod12", "collapsed", true); } catch (e) { /* not the author */ }
 }

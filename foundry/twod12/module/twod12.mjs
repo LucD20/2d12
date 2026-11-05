@@ -242,6 +242,8 @@ function collapsibleCards(msg, html) {
   head?.addEventListener("click", () => root.classList.toggle("collapsed"));
 }
 Hooks.on("renderChatMessageHTML", collapsibleCards);
+// v0.0.249 (Lucas): a rung Passive's effect comes as soon as the Escalation reaches its rung (the encounter's start, a Critical, the hook, the GM's valve)
+Hooks.on("twod12.escalationChanged", async actor => { if (!game.user.isActiveGM) return; try { const { applyReachedEffects } = await import("./automation.mjs"); await applyReachedEffects(actor); } catch (e) { console.warn("twod12 | the rung's effects", e); } });
 Hooks.on("renderChatMessageHTML", bindInitCard);   // v0.0.206: the Initiative card's rows open on click
 Hooks.on("renderChatMessageHTML", chatChips);   // v0.0.180: no line between trait groups at the start or end of a wrapped row
 // v0.0.177: a light of size N reaches an N Emanation (the half square Foundry leaves out is added), and Regions snap to whole squares.

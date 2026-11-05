@@ -37,6 +37,7 @@ Finished: Phase 1 (Q, M1, M2, R, F), D0, T, E1, CH, E2, P1, LV, A1 (it was D1, t
 | X | After the design sessions: Mastery and Gear (D2's list for X: foundry-backlog.md), Skills, Magic in the system | XL | D2 (done), D3, D4 |
 | W | **DONE: v0.0.208 (to test).** Fewer clicks for weapons: a button per hand (mockup foundry/mockups/weapon-hands-W.html) | M | - |
 | K | **DONE: v0.0.221.** Shortcuts (Shift+A/W/R/Q, Alt+1..9 Favorites) | S | - |
+| RX | **The Reactions pass** (after two or three card sessions): each Reaction names its moment and range as a setting; the damage, Strike and movement code watch the moments and offer the Reaction on a bar ("Rebuke, 1R: Use / Pass"); Beacon's Step's Interrupt first | M | the cards' moments |
 | CL | **Code cleanup** (foundry-backlog: system messages to sysmsg.mjs, dead code; CSS only with a visual check) | S | best after X |
 
 ## 3. The order

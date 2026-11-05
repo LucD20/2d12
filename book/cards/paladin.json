@@ -218,7 +218,7 @@
     "img": "icons/svg/sun.svg",
     "folder": "Paladin",
     "automation": "silver",
-    "automationNote": "the Save and the damage (the card); the Push and Frightened by hand."
+    "automationNote": "the Save, the damage and Frightened (the card; Frightened as a status until R-Foundry 2's conditions); the Push by click."
    }
   },
   {
@@ -284,7 +284,10 @@
       "[R] 3d6 Ho; Pushed 2."
      ],
      "ruler": "area 1.8 | on 2: push 1; on 3: push 2",
-     "critical": "The target is Prone."
+     "critical": "The target is Prone.",
+     "foundry": {
+      "after": "@Move[pushed|distance:1|t3:2|pick:yes|from:area] @Condition[prone|crit:yes]"
+     }
     },
     {
      "ap": 3,
@@ -294,7 +297,10 @@
       "[R] 3d8 Ho; Pushed 2."
      ],
      "ruler": "area 2.3 | on 2: push 1; on 3: push 2",
-     "critical": "The target is Prone."
+     "critical": "The target is Prone.",
+     "foundry": {
+      "after": "@Move[pushed|distance:1|t3:2|pick:yes|from:area] @Condition[prone|crit:yes]"
+     }
     }
    ],
    "foundry": {
@@ -303,10 +309,10 @@
     "automation": "gold",
     "areaCfg": {
      "targets": "enemies"
-    }
+    },
+    "automationNote": "the Burst, the damage per target, then the Pushes one by one from the Burst's center (1 on Tier 2, 2 on Tier 3) and Prone on the Criticals (after the damage)."
    },
-   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): a Burst (on a corner within 10 squares), Pushed 1 / 2 from the Burst's center on Tiers 2 and 3, Prone on a Critical.",
-   "notes": "The Burst's center is the origin of the Push (see [[Forced Movement]])."
+   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): a Burst (on a corner within 10 squares), Pushed 1 / 2 from the Burst's center on Tiers 2 and 3, Prone on a Critical. Cards 2 (Lucas, 2026-11-05): the Pushes and Prone run after the damage (foundry.after); the notes line about the Burst's center dropped (it is in the rules)."
   },
   {
    "name": "Bulwark of Faith",
@@ -342,7 +348,7 @@
    "name": "Beacon",
    "category": "Paladin Feature",
    "level": 1,
-   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): Aura of Protection reworked as an interactive Encounter Pick: 1 AP, 3 rounds, and a free step toward an ally who is hit.",
+   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): Aura of Protection reworked as an interactive Encounter Pick: 1 AP, 3 rounds, and a free step toward an ally who is hit. Cards 2 (Lucas, 2026-11-05): the step is an inline Action, Beacon's Step (0R, Round, Interrupt), the first of its kind; the Aura links to the book once.",
    "flavor": "You plant your feet, and light rims the shoulders of everyone near you.",
    "traits": [
     "area",
@@ -355,7 +361,7 @@
    "versions": [
     {
      "ap": 1,
-     "effects": "For 3 rounds, you and allies in the Aura gain +1 Defense. The first time each round a [Strike] Action would damage an ally in the Aura, you can Evade 1 toward them, before the damage.",
+     "effects": "For 3 rounds, you and allies in the [[Aura]] gain +1 Defense. While the Beacon is active, you gain the following Action:",
      "foundry": {
       "fx": {
        "all": [
@@ -370,8 +376,20 @@
     "img": "icons/svg/aura.svg",
     "folder": "Paladin",
     "automation": "silver",
-    "automationNote": "the Defense (the effect, 3 rounds); the Evade by hand."
-   }
+    "automationNote": "the Defense (the effect) and Beacon's Step (on the sheet while the Beacon lasts); the Step's moment by hand (the Reactions pass)."
+   },
+   "inline": [
+    {
+     "name": "Beacon's Step",
+     "cost": "0R",
+     "frequency": "Round",
+     "flavor": "A step into the light, before the blow lands.",
+     "interrupt": "An ally in the Aura takes damage.",
+     "effects": "You Evade 1 toward the ally.",
+     "automation": "silver",
+     "automationNote": "the Evade (the button); its moment by hand (the Reactions pass)."
+    }
+   ]
   },
   {
    "name": "Consecrated Ground",

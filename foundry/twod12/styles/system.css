@@ -2197,3 +2197,5 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12-pickbar .lb-go { background: #c9a24a; color: #1b1f28; font-weight: 700; }
 .twod12-pickbar .lb-give { background: #4a2420; }
 .twod12-pickbar .lb-give:hover { background: #6a3028; }
+/* v0.0.249 (Lucas): the Save card's result texts on their own line under the row (they broke the columns); an inline Action's row on the sheet */
+.twod12.chat.savecard .sextraline { padding: 0 8px 3px 26px; font-size: 11px; line-height: 1.3; opacity: .9; }

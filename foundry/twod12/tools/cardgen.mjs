@@ -127,9 +127,11 @@ export const isAction = c => hasVersions(c) || Boolean(c.cost) || Boolean(c.plac
 export function cardSystem(c, resolve = s => s) {
   if (!isAction(c)) throw new Error(`${c.name}: an Action card needs versions`);
   const area = areaOf(c);
-  const sys = { category: c.category, level: c.level ?? c.foundry?.level ?? 0, traits: traitKeys(c.traits), targets: stripLinks(c.target ?? ""), distance: area ? undefined : (/^Aura \d+$/i.test(c.area ?? "") ? c.area.trim() : distanceKey(c)), frequency: c.placeholder && !c.frequency ? "" : frequencyKey(c.frequency) };
+  const aura = /^Aura \d+$/i.test(c.area ?? "");   // v0.0.249 (Lucas): an Aura is the Area line ("Area: Aura 2"), not a Distance
+  const sys = { category: c.category, level: c.level ?? c.foundry?.level ?? 0, traits: traitKeys(c.traits), targets: stripLinks(c.target ?? ""), distance: area ? undefined : distanceKey(c), frequency: c.placeholder && !c.frequency ? "" : frequencyKey(c.frequency) };
   if (sys.distance === undefined) delete sys.distance;   // an Action with an Area places it from its areaCfg (within or the weapon's range)
   if (area) sys.areaCfg = area.cfg;
+  if (aura) sys.area = c.area.trim();
   const vs = vsKey(c.vs); if (vs) sys.vs = vs;
   if (c.escalation) sys.escalation = c.escalation;
   if (isReaction(c)) { sys.reaction = true; sys.reactionKind = c.interrupt ? "interrupt" : "trigger"; sys.trigger = stripLinks(c.interrupt ?? c.trigger); }
@@ -146,6 +148,11 @@ export function cardSystem(c, resolve = s => s) {
   return sys;
 }
 
+/**
+ * v0.0.249 (Lucas, inline Actions): a card's `inline` list, each as a card of its own (an Action item in the "Inline" folder; the parent's effect
+ * carries it with the "inline" setting while it lasts). Written by Lucas as one line: Name — cost | Frequency | [traits] | Interrupt: ... | Effects: ...
+ */
+export const inlineCards = c => (c.inline ?? []).map(a => ({ name: a.name, category: "Inline Action", flavor: a.flavor, traits: a.traits ?? [], frequency: a.frequency, target: a.target, cost: a.cost, interrupt: a.interrupt, trigger: a.trigger, requirements: a.requirements, text: a.effects, foundry: { img: c.foundry?.img, folder: "Inline", automation: a.automation ?? c.foundry?.automation, automationNote: a.automationNote, append: a.append, inlineOf: c.name }, _file: c._file }));
 /** The item's system data of a Feature or Talent card (no Versions): its text is the description (plus the Foundry-only `append`), its automation is settings. */
 export function featureSystem(c, resolve = s => s) {
   if (isAction(c)) throw new Error(`${c.name}: a Feature card has no versions`);

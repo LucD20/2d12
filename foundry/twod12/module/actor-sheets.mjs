@@ -582,7 +582,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   }
 
   _groupLabels = ["Class", "Talents", "Items", "Other", "Basic"];
-  _groupOf(i) { return i.getFlag("twod12", "talentId") || isTalentAction(i) ? "Talents" : i.getFlag("twod12", "basic") ? "Basic" : i.getFlag("twod12", "weaponId") ? "Items" : (i.getFlag("twod12", "featureId") || i.getFlag("twod12", "classLevel") ? "Class" : "Other"); }
+  _groupOf(i) { return i.getFlag("twod12", "talentId") || isTalentAction(i) ? "Talents" : i.getFlag("twod12", "basic") ? "Basic" : i.getFlag("twod12", "weaponId") ? "Items" : (i.getFlag("twod12", "featureId") || i.getFlag("twod12", "classLevel") || i.getFlag("twod12", "inlineOf") ? "Class" : "Other"); }
 
   async _classTab() {
     const cls = this.actor.itemTypes.class[0];

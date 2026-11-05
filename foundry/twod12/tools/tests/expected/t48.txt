@@ -1,6 +1,6 @@
 codes: S->Sl c->Co Sl->Sl holy->Ho Psychic->Ps Fire->Fi fo->Fo X->?
 requirements: "needs a Speed of at least 3" "" ""
-|The triggering creature|Requirements:| You have at least Speed 3|Trigger:| A creature within 3 squares uses a Move Action|
+|Targets:| The triggering creature|Requirements:| You have at least Speed 3|Trigger:| A creature within 3 squares uses a Move Action|
 Vs. Body DC for Body -1..3: 13, 13, 14, 14, 15 (13,13,14,14,15)
 tokens: B:1d4:Ho | M:1d4:Ho | B:At:Sl | B:At:Sl | B:1d6:Co | C:1d6: | B:2d6:Fi
 @Damage[1d6[mind,holy]] and @Damage[2d4[body,fire]] and @Save[appeal|t1:1d6[mind,psychic]|t2:1d4[mind,psychic]|t3:0]

@@ -229,6 +229,41 @@ export async function createEffect(actor, item, origin, over = null, extra = {})
   }]))?.[0];
   if (made) await createLinked(actor, item, made, origin, d);
   if (made) await createRiders(actor, item, made, origin, d);
+  if (made) await createInlineActions(actor, item, made);
+}
+
+/** v0.0.249 (Lucas, inline Actions): an Action by uuid or by name: the creature's own, the world's, then the compendium's. */
+export async function findAction(spec, actor = null) {
+  const s = String(spec ?? "").trim();
+  if (!s) return null;
+  if (/^(Item|Actor|Compendium)\./.test(s)) { try { const d = await fromUuid(s); return d?.type === "action" ? d : null; } catch (e) { return null; } }
+  const low = s.toLowerCase();
+  const own = actor?.items?.find(i => i.type === "action" && i.name.toLowerCase() === low && !i.getFlag(F, "inlineOf"));
+  if (own) return own;
+  const world = game.items?.find(i => i.type === "action" && i.name.toLowerCase() === low);
+  if (world) return world;
+  for (const pack of game.packs ?? []) {
+    if (pack.documentName !== "Item") continue;
+    const hit = pack.index.find(e => e.type === "action" && String(e.name).toLowerCase() === low);
+    if (hit) { try { return await pack.getDocument(hit._id); } catch (e) { /* next pack */ } }
+  }
+  return null;
+}
+/** The effect's inline Actions go on the creature (flagged with the effect's id), and leave with it (registerEffectHooks). */
+async function createInlineActions(actor, item, effect) {
+  const specs = (item.system.settings ?? []).filter(x => x.type === "inline" && String(x.inlineAction ?? "").trim()).map(x => String(x.inlineAction).trim());
+  if (!specs.length) return;
+  const data = [];
+  for (const spec of specs) {
+    const act = await findAction(spec, actor);
+    if (!act) { ui.notifications?.warn?.(`${item.name}: no Action called ${spec}.`); continue; }
+    const d = act.toObject(); delete d._id;
+    foundry.utils.setProperty(d, `flags.${F}.inlineOf`, effect.id);
+    foundry.utils.setProperty(d, `flags.${F}.sourceName`, item.name);
+    foundry.utils.setProperty(d, `flags.${F}.sourceUuid`, act.uuid);
+    data.push(d);
+  }
+  if (data.length) await actor.createEmbeddedDocuments("Item", data);
 }
 
 /** The conditions an Effect applies with it (its Conditions list, each with a value): they end with it. One the creature already has keeps the higher value. */
@@ -300,6 +335,9 @@ export function registerEffectHooks() {
       if (userId !== game.user?.id || !fx.parent?.effects) return;
       const ids = fx.parent.effects.filter(x => x.getFlag?.(F, "linkedTo") === fx.id).map(x => x.id);
       if (ids.length) fx.parent.deleteEmbeddedDocuments("ActiveEffect", ids).catch(() => {});
+      // v0.0.249: its inline Actions leave with it
+      const acts = (fx.parent.items ?? []).filter(i => i.getFlag?.(F, "inlineOf") === fx.id).map(i => i.id);
+      if (acts.length) fx.parent.deleteEmbeddedDocuments("Item", acts).catch(() => {});
     } catch (err) { console.warn("twod12 | linked conditions", err); }
   });
   // Drag an Effect item from the sidebar onto a token to apply it.

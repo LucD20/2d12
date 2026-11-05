@@ -228,9 +228,11 @@ function place(shape, n, { within = 0, user = null } = {}) {
     };
     // "Within N sq.": the Point of Origin can be at most that far from the creature using the Action (a spot that is too far is shown in red).
     const tooFar = c => !!(within && user && c && placementDistance(user, c) > within);
+    const limit = within && user ? emanationCells(tokenCells(user), within) : [];   // v0.0.249 (Lucas): the reach of the placement, outlined in gold like a Charge's
     const draw = () => {
       gfx.clear();
       showBar();
+      if (limit.length) outlineCells(gfx, limit, { color: 0xf1c84b, width: 2 });
       if (!current) return;
       const far = tooFar(current);
       fillCells(gfx, current.cells, far ? 0xc0392b : COLOR, far ? 0.35 : 0.5);
