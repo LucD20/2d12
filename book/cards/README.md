@@ -52,7 +52,18 @@ A rule change is **one edit in one file**. The design and its decisions: `book/c
 
 An extra never repeats a core field (a tier, a cost, a trait, the Frequency): test t177 fails on it.
 
+## Cards with Lucas (planned, 2026-11-05)
+Lucas writes a few cards at a time, in prose or in this format, saying on each what Foundry should automate; the session completes them (the `foundry` block above) and prices them, and the first ones are kept here as worked examples ("How Lucas writes a card"). Until then, Smite (settings on the item), Divine Surge (an Effect the ally's button uses) and Overwatch (a Reaction with a Trigger) are the cards to copy. MASTER-PLAN section 1, item 6.
+
 ## After editing a card
 1. `cd book && python3 build_rules.py` (the card check lists a marker with no card, a card no chapter places, a block still written by hand).
 2. `cd foundry/twod12 && node tools/gen-basic.mjs` when the card is a Basic Action (then the compendium: `node tools/build-packs.mjs`), and `node tools/tests/run.mjs`.
 3. The ruler reads the files when it runs: nothing to do.
+
+## Writing cards with Lucas (2026-11-05: the rules are his, learned card by card)
+
+Lucas makes cards a few at a time, with Claude, and writes each in his own way so that Claude learns how he wants them, automation included. This section holds that way: every correction he makes to a generated card becomes a rule here, with the card as the example. Read it before writing any card. Until the first cards: the format above, Lucas's automation rule (a card is automated with general settings he can see and edit on the item, never with code that looks for its name; what needs no automation stays text), concise text, and a Flavor line written by Claude.
+
+**How a card session goes:** Lucas writes two to four cards (the dice, the effect, what Foundry should do by itself and what stays by hand); Claude writes each as a card here, its Foundry item (the compendium build) and its worth line (the ruler), and gives a checklist; Lucas corrects; the corrections are written below as rules.
+
+**Rules so far:** none yet.

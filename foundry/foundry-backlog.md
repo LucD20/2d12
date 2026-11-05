@@ -4,6 +4,7 @@ Current version: **v0.0.242**. Tests: `node tools/tests/run.mjs` (177 tests, see
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 ## Asked by Lucas, not built
+- [ ] **Cards with Lucas (2026-11-05): a few cards at a time, written his way, to teach the automation he wants** (MASTER-PLAN section 1, item 6). Where it goes: a card's automation lives on the card in `book/cards/*.json` (the `foundry` block: `settings`, `fx`, `automation`, `automationNote`; the format: book/cards/README.md), never in module code (the standing rule: general settings he can see on the item). The first cards he writes become the worked examples in the cards README. After R-Foundry 1.
 - [ ] **A clearer way to see what an Action targets (Lucas, 2026-11-05, after v0.0.240): AD or WD on the card at a glance, maybe colored** (an AD color and a WD color on the Vs. line and the roll dialog, as the trait words are colored; the NPC Builder's Vs. WD row too). With R-Foundry's cards pass.
 - [ ] **A card's description shows under the Action card in the preview (Lucas, 2026-11-04: Deadeye's "Your roll is Favored" sits below the card instead of in it):** fix in R-Foundry (the description belongs inside the card, above the table).
 - [ ] **The class window shows a card's Critical row faded (Lucas, 2026-11-04, on Word of Radiance's new Critical row):** fix in R-Foundry (the row should read like the tiers).
