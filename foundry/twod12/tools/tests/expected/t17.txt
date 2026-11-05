@@ -27,13 +27,13 @@ Defenses: Armor Defense 13 [Medium] (Medium, Standard: 13) | Ward Defense 12 [Lo
 Speed: Speed 5 [5] (Every NPC has Speed 5 unless it says otherwise)
 Steadiness: Steadiness 0 [0] (Forced Movement and Reposition move it fully (a big or heavy creature can have 1 or more))
 chips of Body: Terrible −1, Low +0, Medium +1, High +2, Extreme +3
-Basic attack    Terrible 4 / 6 [2 + [Mod] / 1d6 + [Mod]] | Low 5 / 8.5 [1d4 + [Mod] / 1d12 + [Mod]] | Medium 6 / 11 [1d6 + [Mod] / 2d8 + [Mod]] | High 7.5 / 13 [1d10 + [Mod] / 2d10 + [Mod]] | Extreme 9.5 / 16 [2d6 + [Mod] / 3d8 + [Mod]]
-Special, 1 AP   Terrible 5.5 / 8.5 [1d6 + [Mod] / 1d12 + [Mod]] | Low 7 / 12 [1d8 + [Mod] / 2d8 + [Mod]] | Medium 8.5 / 15.5 [1d12 + [Mod] / 3d8 + [Mod]] | High 10.5 / 18 [2d8 + [Mod] / 3d10 + [Mod]] | Extreme 13.5 / 22.5 [2d10 + [Mod] / 3d12 + [Mod]]
-Special, 2 AP   Terrible 9 / 13 [2d6 + [Mod] / 2d10 + [Mod]] | Low 11 / 18.5 [2d8 + [Mod] / 3d10 + [Mod]] | Medium 13 / 24 [2d10 + [Mod] / 4d10 + [Mod]] | High 16.5 / 28.5 [3d8 + [Mod] / 4d12 + [Mod]] | Extreme 21 / 35 [3d12 + [Mod] / 5d12 + [Mod]]
-Special, 3 AP   Terrible 14 / 21 [2d10 + [Mod] / 3d12 + [Mod]] | Low 17.5 / 30 [3d10 + [Mod] / 5d10 + [Mod]] | Medium 21 / 38.5 [3d12 + [Mod] / 6d12 + [Mod]] | High 26.5 / 45.5 [4d12 + [Mod] / 7d12 + [Mod]] | Extreme 33.5 / 56 [5d12 + [Mod] / 7d12 + [Mod]]
+Basic attack    Terrible 3 / 4 [1 + [Mod] / 2 + [Mod]] | Low 3.5 / 6 [1 + [Mod] / 1d6 + [Mod]] | Medium 4 / 7.5 [2 + [Mod] / 1d10 + [Mod]] | High 5.5 / 9 [1d6 + [Mod] / 2d6 + [Mod]] | Extreme 6.5 / 11 [1d8 + [Mod] / 2d8 + [Mod]]
+Special, 1 AP   Terrible 4 / 5.5 [2 + [Mod] / 1d6 + [Mod]] | Low 5 / 8.5 [1d4 + [Mod] / 1d12 + [Mod]] | Medium 5.5 / 10.5 [1d6 + [Mod] / 2d8 + [Mod]] | High 7.5 / 12.5 [1d10 + [Mod] / 2d10 + [Mod]] | Extreme 9 / 15.5 [2d6 + [Mod] / 3d8 + [Mod]]
+Special, 2 AP   Terrible 6.5 / 9 [1d8 + [Mod] / 2d6 + [Mod]] | Low 7.5 / 13 [1d10 + [Mod] / 2d10 + [Mod]] | Medium 9 / 16.5 [2d6 + [Mod] / 3d8 + [Mod]] | High 12 / 20 [2d8 + [Mod] / 3d10 + [Mod]] | Extreme 14.5 / 24 [2d12 + [Mod] / 4d10 + [Mod]]
+Special, 3 AP   Terrible 10.5 / 14 [2d8 + [Mod] / 2d10 + [Mod]] | Low 12.5 / 21 [2d10 + [Mod] / 3d12 + [Mod]] | Medium 14 / 26.5 [2d10 + [Mod] / 4d12 + [Mod]] | High 19.5 / 31.5 [3d10 + [Mod] / 5d10 + [Mod]] | Extreme 23 / 38.5 [4d10 + [Mod] / 6d12 + [Mod]]
 check: Health: 65 (Body 43 + Mind 22)
-check: Down in about: 2.7 PC turns (A Stage 1 PC deals about 24.3 a turn against AD 13 and WD 12. Target for a Standard: 2 to 3 PC turns)
-check: Should deal: about 10 to 11 (a turn to an average PC: the book's target, to check its Actions against)
+check: Down in about: 2.7 PC turns (A Stage 1 PC deals about 24.3 a turn against AD 13 and WD 12. Target for a Standard: 2 PC turns)
+check: Should deal: about 12 (a turn to an average PC: the book's target, to check its Actions against)
 check: Ratings average: Medium (No Custom numbers)
 roles: Minion CV 25, Grunt CV 50, Standard CV 100 (on), Elite CV 200 | CV: 100 | level note: ""
 a Minion's tab: Basic attack, Special, 1 AP, Special, 2 AP | 

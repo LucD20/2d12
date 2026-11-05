@@ -12,11 +12,11 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.4 | 41 |
 | 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 5.6 | 95 |
 | 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 8.6 | 113 |
-| 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 24.3 | 193 |
+| 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 24.4 | 193 |
 | 11-species.md | Species | species |  | 0.8 | 32 |
 | 12-paladin.md | Paladin | paladin |  | 3.9 | 124 |
 | 13-archer.md | Archer | archer |  | 3.9 | 128 |
-| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 16.3 | 281 |
+| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 20.0 | 304 |
 | 15-gear.md | Gear | gear |  | 10.1 | 182 |
 | 16-talents.md | Talents | talents |  | 2.2 | 68 |
 
@@ -272,29 +272,28 @@ Action cards: Sharpshooter (49, Archer Feature 1); Marked Quarry (51, Archer Fea
 
 ## 14-bestiary.md: Bestiary: Building NPCs
 
-- 9: ## The targets
-- 22:   ### Minor enemies
-- 26: ## Ratings
-- 37: ## Defenses
-- 43: ## Attributes and Modifiers
-- 47: ## Health
-- 57: ## Speed
-- 64: ## Steadiness
-- 68: ## Actions
-- 70:   ### The Basic attack
-- 76:   ### Special Actions
-- 90:   ### Conditions
-- 102:   ### Reactions
-- 111:   ### Escalation
-- 115: ## The roles
-- 117:   ### Minions
-- 149:   ### Grunts
-- 181:   ### Standards
-- 213:   ### Elites
-- 245: ## Building an encounter
-- 266: ## Example NPCs (Stage 1)
-
-Open (to be decided) boxes: 6: "Pack R: the tables below are still calibrated for 5 AP turns and the o"
+- 6: ## The targets
+- 21:   ### Minor enemies
+- 25: ## Ratings
+- 36: ## Defenses
+- 42:   ### Attacking Ward Defense
+- 46: ## Attributes and Modifiers
+- 50: ## Health
+- 60: ## Speed
+- 67: ## Steadiness
+- 71: ## Actions
+- 73:   ### The Basic attack
+- 79:   ### Special Actions
+- 93:   ### Conditions
+- 105:   ### Reactions
+- 114:   ### Elite Escalation
+- 132: ## The roles
+- 134:   ### Minions
+- 166:   ### Grunts
+- 198:   ### Standards
+- 230:   ### Elites
+- 264: ## Building an encounter
+- 285: ## Example NPCs (Stage 1)
 
 ## 15-gear.md: Gear
 

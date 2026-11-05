@@ -1,5 +1,5 @@
 {
- "_about": "The example NPCs' Actions (the Bestiary document writes them as bullets with their average damage: no card in the book). `npc` names the actor; Foundry embeds the Action on it, `foundry.npcWeapon` is the weapon in its hands. One source per card: book/cards/README.md.",
+ "_about": "The example NPCs' Actions (the Bestiary document writes them as bullets with their average damage: no card in the book). `npc` names the actor; Foundry embeds the Action on it, `foundry.npcWeapon` is the weapon in its hands. One source per card: book/cards/README.md. Pack R-bestiary (2026-11-05): the dice follow the re-fitted tables (book/ruler/rbestiary.md); the Grave Wisp attacks Ward Defense only ([R]).",
  "cards": [
   {
    "name": "Rusty Knife",
@@ -21,8 +21,8 @@
      "ap": 1,
      "tiers": [
       "0",
-      "[V] 1d2 Pi",
-      "[V] 1d6 Pi"
+      "[V] [Mod] Pi",
+      "[V] 1d4 Pi"
      ]
     }
    ],
@@ -52,7 +52,7 @@
      "ap": 1,
      "tiers": [
       "0",
-      "[V] 1d2 Pi",
+      "[V] [Mod] Pi",
       "[V] 1d6 Pi"
      ],
      "effects": "Hindered (EoT)."
@@ -84,8 +84,8 @@
      "ap": 1,
      "tiers": [
       "0",
-      "[V] 1d3 Bl",
-      "[V] 1d6 Bl"
+      "[V] 1d2 Bl",
+      "[V] 1d4 Bl"
      ]
     }
    ],
@@ -115,8 +115,8 @@
      "ap": 2,
      "tiers": [
       "0",
-      "[V] 2d6 Bl",
-      "[V] 2d10 Bl"
+      "[V] 1d8 Bl",
+      "[V] 2d6 Bl"
      ]
     }
    ],
@@ -146,8 +146,8 @@
      "ap": 1,
      "tiers": [
       "0",
-      "[V] 1d8 Sl",
-      "[V] 2d8 Sl"
+      "[V] 1d4 Sl",
+      "[V] 1d10 Sl"
      ]
     }
    ],
@@ -177,8 +177,8 @@
      "ap": 2,
      "tiers": [
       "0",
-      "[V] 2d6 Sl",
-      "[V] 2d10 Sl"
+      "[V] 1d8 Sl",
+      "[V] 2d6 Sl"
      ],
      "effects": "Prone."
     }
@@ -210,14 +210,76 @@
      "ap": 1,
      "tiers": [
       "0",
-      "[V] 2d8 Sl",
-      "[V] 3d10 Sl"
+      "[V] 1d10 Sl",
+      "[V] 3d6 Sl"
      ]
     }
    ],
    "foundry": {
     "img": "icons/svg/shield.svg",
     "npcWeapon": "Cleaver"
+   },
+   "ruler": false
+  },
+  {
+   "name": "Chilling Touch",
+   "category": "Basic attack",
+   "book": false,
+   "npc": "Grave Wisp",
+   "flavor": "Fingers of fog, and the cold goes straight to the heart.",
+   "traits": [
+    "melee",
+    "power",
+    "strike"
+   ],
+   "frequency": "At-will",
+   "target": "One creature",
+   "distance": "Reach",
+   "vs": "WD",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "0",
+      "[R] 1d4 + [Mod] Co",
+      "[R] 1d10 + [Mod] Co"
+     ]
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/frozen.svg"
+   },
+   "ruler": false
+  },
+  {
+   "name": "Dread Whisper",
+   "category": "Special Action",
+   "book": false,
+   "npc": "Grave Wisp",
+   "flavor": "It knows your name, and it says what you fear most.",
+   "traits": [
+    "melee",
+    "power",
+    "strike",
+    "fear"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Reach",
+   "vs": "WD",
+   "versions": [
+    {
+     "ap": 2,
+     "tiers": [
+      "0",
+      "[R] 1d10 + [Mod] Ps",
+      "[R] 3d6 + [Mod] Ps"
+     ],
+     "effects": "Frightened of the Grave Wisp (EoT)."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/terror.svg"
    },
    "ruler": false
   },
@@ -241,8 +303,8 @@
      "ap": 1,
      "tiers": [
       "0",
-      "[V] 1d10 Bl",
-      "[V] 2d10 Bl"
+      "[V] 1d6 Bl",
+      "[V] 2d6 Bl"
      ]
     }
    ],
@@ -271,8 +333,8 @@
     {
      "ap": 3,
      "tiers": [
-      "[V] 3d10 + [Mod] Bl; Prone.",
-      "[V] 2d8 + [Mod] Bl",
+      "[V] 3d6 + [Mod] Bl; Prone.",
+      "[V] 1d10 + [Mod] Bl",
       "No effect."
      ]
     }
@@ -294,7 +356,7 @@
    "traits": [
     "focus"
    ],
-   "escalation": 1,
+   "escalation": 2,
    "frequency": "Round",
    "target": "Allies within 5 squares",
    "distance": "5 sq.",

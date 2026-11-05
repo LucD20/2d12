@@ -175,24 +175,24 @@ export const TWOD12 = {
     { key: "damage", label: "Damage", traits: ["nonlethal"] },
     { key: "keywords", label: "Keywords", traits: ["divine", "focus", "fear"] }
   ],
-  // The Bestiary (book: bestiary.html; v0.0.163, refit by E3 in v0.0.181): an NPC is a role plus a rating for each number.
+  // The Bestiary (book: bestiary.html; v0.0.163, refit by E3 in v0.0.181, re-fitted to pack R by R-bestiary in v0.0.240: book/ruler/bestiary-r.json): an NPC is a role plus a rating for each number.
   //   attr: the Medium Attribute; hb: the Health Base; defense: the Medium Defense; cv: the Combat Value at the party's Stage, one Stage below, two Stages below
-  //   (a normal fight is CV 100 a PC); deals / takes: the book's targets (a turn to an average PC; the PC turns it lasts).
+  //   (a normal fight is CV 100 a PC); deals / takes: the book's targets (a whole turn with its Specials against AD 13, before the party's Guard and blocks; the PC turns it lasts).
   //   hm and basic: the Health Multiplier and the Basic attack averages (Tier 2 / Tier 3, [Mod] included) by Stage (1, 2, 3), one per rating
   //   (Terrible, Low, Medium, High, Extreme; a Minion has no Extreme). Exactly the book's tables: nothing is computed from them.
   npcRoles: {
-    minion: { label: "Minion", cv: [25, 20, 15], ap: 3, attr: 0, hb: 1, defense: 12, extreme: false, deals: "3", takes: "one PC hit",
-      hm: [[0, 0.75, 1, 1.25], [0, 1, 1.25, 1.5], [0, 1.25, 1.75, 2.25]],
-      basic: [[[1.5, 3.5], [2, 5], [3, 5.5], [3.5, 7]], [[1.5, 4], [2.5, 6], [3.5, 6.5], [4, 8.5]], [[2, 5], [3, 6.5], [4, 7.5], [5, 9.5]]] },
-    grunt: { label: "Grunt", cv: [50, 40, 30], ap: 5, attr: 0, hb: 3, defense: 13, extreme: true, deals: "6 to 7", takes: "1 PC turn",
-      hm: [[2, 3, 4.25, 5.25, 6.25], [2.5, 3.75, 4.75, 6, 7.25], [3.25, 5, 6.75, 8.25, 10]],
-      basic: [[[3, 4], [3.5, 5], [4, 6], [5.5, 7.5], [6, 9.5]], [[3.5, 5], [4, 6], [5, 7.5], [6.5, 9.5], [7.5, 12]], [[4, 6], [5, 6.5], [6, 8.5], [7.5, 10.5], [8.5, 13.5]]] },
-    standard: { label: "Standard", cv: [100, 80, 65], ap: 5, attr: 1, hb: 4, defense: 13, extreme: true, deals: "10 to 11", takes: "2 to 3 PC turns",
-      hm: [[3.75, 5.75, 7.75, 9.75, 11.5], [4.5, 6.75, 9, 11.25, 13.5], [6.25, 9.25, 12.5, 15.5, 18.75]],
-      basic: [[[4, 6], [5, 8.5], [6, 11], [7.5, 13], [9.5, 16]], [[5, 7.5], [6, 10], [7.5, 13.5], [9.5, 16], [12, 19.5]], [[6, 8.5], [6.5, 11.5], [8.5, 15.5], [10.5, 18], [13.5, 22]]] },
-    elite: { label: "Elite", cv: [200, 160, 130], ap: 5, attr: 2, hb: 6, defense: 14, extreme: true, deals: "17 to 18", takes: "5 PC turns",
-      hm: [[6.5, 10, 13.25, 16.5, 19.75], [7.75, 11.5, 15.5, 19.25, 23.25], [10.75, 16, 21.25, 26.75, 32]],
-      basic: [[[4, 6], [5.5, 9], [7, 11], [9, 13.5], [10.5, 15.5]], [[5, 7.5], [7, 11], [9, 13.5], [11, 16.5], [12.5, 19]], [[5.5, 8.5], [8, 12], [10, 15], [12, 18.5], [14.5, 21.5]]] }
+    minion: { label: "Minion", cv: [25, 20, 15], ap: 3, attr: 0, hb: 1, defense: 12, extreme: false, deals: "5", takes: "one PC hit",
+      hm: [[0, 0.75, 1, 1.25], [0, 1, 1.25, 1.5], [0, 1.5, 2, 2.75]],
+      basic: [[[1, 2.5], [1.5, 3.5], [2, 4], [2.5, 5]], [[1.5, 3.5], [2, 5], [3, 5.5], [3.5, 7]], [[2, 5], [3, 7], [4, 8], [5, 10]]] },
+    grunt: { label: "Grunt", cv: [50, 40, 30], ap: 5, attr: 0, hb: 3, defense: 13, extreme: true, deals: "8", takes: "1 PC turn",
+      hm: [[2, 3, 4.25, 5.25, 6.25], [2.5, 3.75, 4.75, 6, 7.25], [4, 6, 8, 10, 12]],
+      basic: [[[2, 3], [2.5, 3.5], [3, 4], [4, 5.5], [4.5, 6.5]], [[3, 4], [3.5, 5], [4, 6.5], [5.5, 8], [6.5, 10]], [[4, 6.5], [5, 7], [6.5, 9], [8, 11], [9, 14]]] },
+    standard: { label: "Standard", cv: [100, 80, 65], ap: 5, attr: 1, hb: 4, defense: 13, extreme: true, deals: "12", takes: "2 PC turns",
+      hm: [[3.75, 5.75, 7.75, 9.75, 11.5], [4.5, 6.75, 9, 11.25, 13.5], [7.5, 11, 15, 18.5, 22.5]],
+      basic: [[[3, 4], [3.5, 6], [4, 7.5], [5.5, 9], [6.5, 11]], [[4, 6.5], [5, 8.5], [6.5, 11.5], [8, 13.5], [10, 16.5]], [[6.5, 9], [7, 12], [9, 16.5], [11, 19], [14, 23]]] },
+    elite: { label: "Elite", cv: [200, 160, 130], ap: 5, attr: 2, hb: 6, defense: 14, extreme: true, deals: "17", takes: "4 PC turns",
+      hm: [[6.5, 10, 13.25, 16.5, 19.75], [7.75, 11.5, 15.5, 19.25, 23.25], [13, 19.25, 25.5, 32, 38.5]],
+      basic: [[[3, 4], [4, 6.5], [5, 7.5], [6.5, 9.5], [7.5, 11]], [[4, 6.5], [6, 9], [7.5, 11.5], [9, 14], [10.5, 16]], [[6, 9], [8.5, 12.5], [10.5, 15.5], [12.5, 19.5], [15, 22.5]]] }
   },
   //   off: Attribute and Defense steps; score: for "the ratings average" (-2 to +2); i: the column of the role tables.
   npcRatings: {

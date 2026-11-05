@@ -59,7 +59,7 @@
 | [[Doubles\|**Doubles**]] | Both d12s match: the tier goes up. |
 | [[Going Down\|**Down**]] | Your total damage equals or goes above your Health Pool. |
 | [[Playing on the Grid\|**Elevation**]] | Squares up or down count like a diagonal: the larger count plus half the smaller one. A creature is as tall as it is wide. |
-| [[Elites\|**Elite**]] | An NPC role with CV 200: about 118 Health at Stage 1, 3 Strikes a turn, and it can have Escalation. |
+| [[Elites\|**Elite**]] | An NPC role with CV 200: about 118 Health at Stage 1, and the only NPC with Escalation (Elite Escalation: a ladder of its own, +1 a round and at each phase). |
 | [[Empowered\|**Empowered**]] | Adds its value to every damage die (Empowered 1: 1 more per die). |
 | [[Frequency\|**Encounter**]] | A fight or similar scene, from Initiative until the GM ends it. |
 | [[Enfeebled\|**Enfeebled**]] | Subtracts its value from every damage die; each die still deals at least 1. |

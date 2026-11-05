@@ -7,6 +7,7 @@ the Line's bar: the banner look, Left and Right buttons: true
 NPC's Basic attack box: true
   Bandit Thug: Basic attack box on Cudgel
   Goblin Sneak: Basic attack box on Rusty Knife
+  Grave Wisp: Basic attack box on Chilling Touch
   Ogre Chieftain: Basic attack box on Club
   Orc Warrior: Basic attack box on Cleaver
 v0.0.217: remove a target by right-click or the x (one capturing listener on the dialog): true

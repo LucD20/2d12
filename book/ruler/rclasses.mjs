@@ -1,7 +1,7 @@
 // Pack R-classes (2026-11-04): the rebuilt classes measured under pack R's rules (book/rework-r.md sections 12 and 14, all decided):
 // 4 AP + 1 Reaction AP for PCs and NPCs, Escalation as a level from 1 (Momentum 2 in half the fights) with the Critical and class hooks,
 // Guard from unspent AP (2 an AP, it can still pay a Reaction), the NPC Specials, Opportunity Attack without the disrupt, the Stage Health
-// line (Human, high on Vigor) and the decision sheet's fit (NPC Health × 1, the Basic attack tables × 0.6: item 3). The builds: rework/*.txt
+// line (Human, high on Vigor) and the Bestiary of pack R-bestiary (the live tables of config.mjs; before 2026-11-05: the decision sheet's fit, the pre-R tables × 0.6). The builds: rework/*.txt
 // (the R builds). Writes book/ruler/rclasses.md. Nothing here changes report.md: the rules it moves are spec.mjs RULES, set per run.
 //   node book/ruler/rclasses.mjs           writes rclasses.md and prints it (a few minutes)
 //   node book/ruler/rclasses.mjs --quick   fewer runs
@@ -23,8 +23,8 @@ const f1 = x => (Number.isFinite(x) ? x.toFixed(1) : "-"), f2 = x => (Number.isF
 
 /* ------------------------------------------------------------------ the rules and the fit */
 const TODAY = { ap: 5, reactionAp: 0, escalation: "spent", npcAp: 5, minionAp: 3, npcReactionAp: 0, npcSpecials: 0, apGuard: 0, apGuardKeep: false, escHooks: false, oaDisrupt: true, bloodiedBanes: false };
-const R = { ap: 4, reactionAp: 1, escalation: "level", npcAp: 4, minionAp: 3, npcReactionAp: 1, npcSpecials: 1, apGuard: 2, apGuardKeep: true, escHooks: true, oaDisrupt: false, bloodiedBanes: false };
-const FIT = { h: 1, d: 0.6 };   // decision sheet item 3
+const R = { ap: 4, reactionAp: 1, escalation: "level", npcAp: 4, minionAp: 3, npcReactionAp: 1, npcSpecials: 1, apGuard: 2, apGuardKeep: true, escHooks: true, oaDisrupt: false, bloodiedBanes: false, bestiary: "r", eliteEsc: true, elitePhases: true };
+const FIT = { h: 1, d: 1 };   // pack R-bestiary (2026-11-05): the live tables of config.mjs carry the fit (today's × 0.7 at Stage 1: rbestiary.md); before it, the decision sheet's d 0.6 on the pre-R tables
 const setRules = o => Object.assign(S.RULES, TODAY, o);
 
 /* ------------------------------------------------------------------ the PCs: the R builds with the Health line */
@@ -72,7 +72,7 @@ export function run() {
   const L = [];
   L.push("# Pack R-classes: the rebuilt Paladin and Archer under pack R's rules", "",
     "Written by `node book/ruler/rclasses.mjs`; don't edit, run it again. Read by `book/rules-backlog.md` (pack R-classes) and the class documents' design notes.", "",
-    `Runs: ${RUNS} fights a measurement. **The party:** the R builds of \`rework/\` (a Smite Paladin, a Lay On Hands Paladin, a Double Shot Archer, a Rolling Shot Archer), level 1, Human, high on Vigor (the Paladin 23 / 12 = 35 Health, the Archer 19 / 10 = 29; Rally Points = Rally + 1). **The rules:** every piece of the rework as decided (rework-r.md section 14): 4 + 1 AP, Escalation as a level from 1 (Momentum 2 in half the fights) with the Critical hook and the class hooks (the Paladin's Kindled Wrath: an ally within 5 squares becomes Bloodied or goes Down), Guard 2 per unspent AP (it can still pay a Reaction), the NPC Specials (a Standard's 2 AP Special × 2.2 once a round), Opportunity Attack without the disrupt, and the fit of item 3 (NPC Health × 1, the Basic attack tables × 0.6). **The fight:** 4 Standards (CV 4, the "normal" fight: the target is about a quarter of the party's Health in 3.5 rounds, a Down in about 1 fight of 9). 1 AP = ${AP_DE} DE.`, "");
+    `Runs: ${RUNS} fights a measurement. **The party:** the R builds of \`rework/\` (a Smite Paladin, a Lay On Hands Paladin, a Double Shot Archer, a Rolling Shot Archer), level 1, Human, high on Vigor (the Paladin 23 / 12 = 35 Health, the Archer 19 / 10 = 29; Rally Points = Rally + 1). **The rules:** every piece of the rework as decided (rework-r.md section 14): 4 + 1 AP, Escalation as a level from 1 (Momentum 2 in half the fights) with the Critical hook and the class hooks (the Paladin's Kindled Wrath: an ally within 5 squares becomes Bloodied or goes Down), Guard 2 per unspent AP (it can still pay a Reaction), the NPC Specials (a Standard's 2 AP Special × 2.2 once a round), Opportunity Attack without the disrupt, and the Bestiary of pack R-bestiary (config.mjs's tables: today's × 0.7 at Stage 1, with Elite Escalation and the phases; rbestiary.md). **The fight:** 4 Standards (CV 4, the "normal" fight: about a fifth of the party's Health with the Rally Points it spends, a Down in about 1 fight of 5; before R-bestiary the pre-R tables × 0.6). 1 AP = ${AP_DE} DE.`, "");
   setRules(R);
   const t1 = Date.now();
 

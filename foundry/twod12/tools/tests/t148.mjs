@@ -14,10 +14,10 @@ const src = f => fs.readFileSync(ROOT + f, "utf8");
 
 console.log("--- Stages (levels 1-4, 5-7, 8-10)");
 console.log([0, 1, 4, 5, 7, 8, 10, 12].map(l => `${l}:${cf.stageOf(l)}`).join(" "), "|", [1, 2, 3].map(stageLabel).join(" | "));
-console.log("--- every rating Medium, by Stage (the book: Minion 6/8/10, Grunt 24/26/34, Standard 56/62/84, Elite 118/136/182)");
+console.log("--- every rating Medium, by Stage (the book since pack R-bestiary: Minion 6/8/10, Grunt 24/26/38, Standard 56/62/98, Elite 118/136/216)");
 const all = r => ({ body: r, mind: r, appeal: r, instinct: r, bodyHm: r, mindHm: r, ad: r, wd: r });
 for (const role of Object.keys(TWOD12.npcRoles)) console.log(role.padEnd(9), [1, 5, 8].map(level => { const b = npcBuild({ role, level, ratings: all("medium") }); return b.bdt + b.mdt; }).join(" / "));
-console.log("the same at every level of a Stage:", [1, 2, 3, 4].every(level => npcBuild({ role: "standard", level, ratings: all("medium") }).bdt === 28), "| above level 10: Stage 3:", npcBuild({ role: "elite", level: 14, ratings: all("medium") }).bdt === 91);
+console.log("the same at every level of a Stage:", [1, 2, 3, 4].every(level => npcBuild({ role: "standard", level, ratings: all("medium") }).bdt === 28), "| above level 10: Stage 3:", npcBuild({ role: "elite", level: 14, ratings: all("medium") }).bdt === 108);
 console.log("--- every row of the book's tables (Health Multiplier; Basic attack Tier 2 / Tier 3)");
 for (const [role, r] of Object.entries(TWOD12.npcRoles)) for (const st of [1, 2, 3]) {
   const lv = [1, 5, 8][st - 1], ks = r.extreme ? ["terrible", "low", "medium", "high", "extreme"] : ["terrible", "low", "medium", "high"];

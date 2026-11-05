@@ -1,4 +1,4 @@
-documents: 161
+documents: 162
 references: 98 | broken: none
 Paladin features:  | Divine Connection kept for testing (not in the class): true | its id is the old one: vaYnV1XM6HT1TpMP
 Level 1: Attribute increases (attr: body or appeal, mind or instinct) | Features (items, granted): Divine Power, Kindled Wrath | Hallmark Action (items, choice, pick 1): Smite, Lay On Hands | Hallmark Reaction (items, choice, pick 1): Shield of Faith, Rebuke | Encounter Pick (repertoire, encounter, pick 1) | Escalation 1 Passive (items, choice, pick 1): Radiant Zeal, Divine Surge, Font of Mercy | Escalation 2 Passive (items, choice, pick 1): Searing Blows, Mending Light | Escalation 3 Passive (items, choice, pick 1): Reckoning, Hallowed Stance | Apex (items, choice, pick 1): Final Verdict, Hallowed Dawn | Talent (talent, pick 1)
@@ -32,7 +32,8 @@ Archer 1 (Double Shot, Marksman): Sharpshooter, Marked Quarry, Mark Quarry, Thri
 Archer 3 (Rolling Shot, Kickboxer): Sharpshooter, Marked Quarry, Mark Quarry, Thrill of the Kill, Rolling Shot, Covering Shot, Brawler, Pummel, Volley, Vanish, Sure Step, Staggering Shot, Open Season, Kickboxer, Leg Sweep, Rain of Arrows, Steady Nerves | ids unique: true
 Bandit Thug (grunt, speed 5): Cudgel atwill, Low Blow round
 Goblin Sneak (minion, speed 7): Rusty Knife atwill, Dirty Trick round
+Grave Wisp (standard, speed 5): Chilling Touch atwill, Dread Whisper round
 Ogre Chieftain (elite, speed 4): Club atwill, Ground Slam encounter, Rally the Tribe round
 Orc Warrior (standard, speed 5): Cleaver atwill, Brutal Swing round, Hold the Line round reaction
 keys unique in each pack (embedded Items too): yes
-NPC Speed as a rating: Bandit Thug 5, Goblin Sneak 7, Ogre Chieftain 4, Orc Warrior 5
+NPC Speed as a rating: Bandit Thug 5, Goblin Sneak 7, Grave Wisp 5, Ogre Chieftain 4, Orc Warrior 5
