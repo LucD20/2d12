@@ -27,14 +27,14 @@ console.log(G.foundryLinks("try to [[Hide]], gain [[Guard]] 1d8, use [[Evade]] o
 console.log("resolved by content.mjs:", C.resolveRefs("{{link:Hide|Hide}} {{link:Radiant Zeal|the Passive}}").replace(/Item\.\w+/g, "Item.<id>"));
 
 console.log("--- the area chips and [Mod] as a number (inline.mjs)");
-console.log("labels:", I.areaLabel("emanation", 1), "|", I.areaLabel("burst", 2), "|", I.areaLabel("line", 6), "| icons:", Object.keys(I.AREA_ICONS).join(", "), "| each an svg with a footprint:", Object.values(I.AREA_ICONS).every(x => x.startsWith("<svg") && x.includes("currentColor")));
+console.log("labels:", I.areaLabel("emanation", 1), "|", I.areaLabel("burst", 2), "|", I.areaLabel("line", 6), "| icons:", Object.keys(I.AREA_ICONS).join(", "), "| each an <i> masked with the shape's SVG file (v0.0.247):", Object.values(I.AREA_ICONS).every(x => /^<i class="areaic \w+"><\/i>$/.test(x)));
 console.log("withMod:", I.withMod("Guard 1d8 + [Mod]", 3), "|", I.withMod("Guard 1d8 + [Mod]", null), "|", I.withMod("[Mod] to all", 2), "|", I.withMod("Pushed 1", 4));
 const msg = flags => ({ documentName: "ChatMessage", getFlag: (s, k) => flags[k] });
 console.log("modForDoc: an Action card", I.modForDoc(msg({ action: { attrVal: 3 } })), "| a damage card", I.modForDoc(msg({ dmgCard: { originMod: 2 } })), "| nothing", I.modForDoc(msg({})), "| no document", I.modForDoc(null));
 CONFIG.TextEditor = { enrichers: [] };   // content.mjs replaces CONFIG when it loads
 I.registerInline();
 const enr = CONFIG.TextEditor.enrichers[0];
-const chip = async (text, relativeTo = null) => { const m = [...text.matchAll(enr.pattern)][0]; const el = await enr.enricher(m, { relativeTo }); return `${el.html.replace(/<svg[\s\S]*?<\/svg>/, "<svg/>")}${el.classes.length ? ` [${el.classes.join(" ")}]` : ""}${el.dataset.tooltip ? ` (${el.dataset.tooltip})` : ""}`; };
+const chip = async (text, relativeTo = null) => { const m = [...text.matchAll(enr.pattern)][0]; const el = await enr.enricher(m, { relativeTo }); return `${el.html.replace(/<i class="areaic \w+"><\/i>/, "<icon/>")}${el.classes.length ? ` [${el.classes.join(" ")}]` : ""}${el.dataset.tooltip ? ` (${el.dataset.tooltip})` : ""}`; };
 console.log("chips:", await chip("@Template[emanation|distance:2|rounds:1]"), "|", await chip("@Template[burst|distance:3]"), "|", await chip("@Template[line|distance:6]"));
 console.log("Guard on an Action card (Modifier 3):", await chip("@Guard[1d8+mod]{Guard 1d8 + [Mod]}", msg({ action: { attrVal: 3 } })), "| on the sheet with no creature:", await chip("@Guard[1d8+mod]{Guard 1d8 + [Mod]}"));
 console.log("a book link:", await chip("@Book[Bright]{Bright light}"), "|", await chip("@Book[Guard|doc:Core Rules]"));

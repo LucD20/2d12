@@ -935,7 +935,9 @@ async function pushOne(origin, target, N0, mode = "push", opts = {}) {
   const { result } = pick, f = result.final;
   if (pathTool) await moveAlong(target.document, pick.path.slice(0, result.done + 1));   // one movement along the path (v0.0.175)
   else if (f.di || f.dj) await moveToken(target.document, f.dj, f.di);
-  const lines = [`<b>${esc(target.name)}</b> is ${mode === "reposition" ? "Repositioned" : label} ${N0}${st.applied ? ` (Steadiness ${st.steady}: ${N})` : ""} by <b>${esc(origin.name)}</b> and moves ${result.done} square${result.done === 1 ? "" : "s"}.`];
+  // v0.0.247 (Lucas): when the origin is another creature (a Push away from the target), the line names who pushes and whom it is away from
+  const who = opts.by && opts.by.id !== origin.id ? `<b>${esc(opts.by.name)}</b>, away from <b>${esc(origin.name)}</b>,` : `<b>${esc(origin.name)}</b>`;
+  const lines = [`<b>${esc(target.name)}</b> is ${mode === "reposition" ? "Repositioned" : label} ${N0}${st.applied ? ` (Steadiness ${st.steady}: ${N})` : ""} by ${who} and moves ${result.done} square${result.done === 1 ? "" : "s"}.`];
   if (result.block?.type === "loe") lines.push(`It stops: <b>${esc(origin.name)}</b> would lose Line of Effect to it (no damage).`);
   else if (result.block && mode === "reposition") lines.push(`It stops short: ${result.block.type === "wall" ? (result.block.corner ? "a solid corner" : "a wall") : `<b>${esc(result.block.token.name)}</b>`} is in the way.`);
   else if (result.block) {
@@ -963,6 +965,7 @@ async function pushFlow(cfg, ctx, mode = "push") {
   const origin = (cfg.from === "target" ? targetTokens(ctx)[0] : null) ?? tokenOf(actor) ?? canvas.tokens.controlled[0];
   if (!origin) return warn(`Select the token that is the origin of the ${MOVE_LABEL[mode]}.`);
   if (cfg.pick) return pushPicker(cfg, ctx, mode, origin, N);
+  const by = cfg.from === "target" ? tokenOf(actor) : null;
   const targets = targetTokens(ctx).filter(t => t.id !== origin.id);
   if (!targets.length) return warn("Target the creature to move first.");
   // Immobilized (v0.0.174): checked before Steadiness. The card says whether the Action rolled (its result, per target) or is a Save Action
@@ -982,7 +985,7 @@ async function pushFlow(cfg, ctx, mode = "push") {
       if (!out.moved) { await post(`<b>${esc(t.name)}</b> is Immobilized and isn't moved: ${out.why}.`); continue; }
       await post(`<b>${esc(t.name)}</b> is Immobilized, but ${out.why}: it can be moved.`);
     }
-    await pushOne(origin, t, N, mode, { withinReach: !!cfg.withinReach });
+    await pushOne(origin, t, N, mode, { withinReach: !!cfg.withinReach, by });
   }
 }
 
@@ -997,17 +1000,16 @@ async function pushPicker(cfg, ctx, mode, origin, N) {
   let list = cfg.area > 0 ? tokensInEmanation(cardTargets, cfg.area) : cardTargets;
   list = list.filter(t => t.id !== origin.id);
   if (!list.length) return warn(`${label} ${N}: no creature ${cfg.area > 0 ? `within ${cfg.area} of the target` : "among the targets"} to move.`);
-  const moved = [];
+  const moved = [], by = cfg.from === "target" ? tokenOf(contextActor(ctx)) : null;
+  const { pickBar } = await import("./pickbar.mjs");   // v0.0.247 (Lucas): the list is a bar at the bottom, in the Line bar's look, not a Foundry window
   while (list.length) {
-    const pick = await foundry.applications.api.DialogV2.wait({
-      window: { title: `${label} ${N}` }, rejectClose: false,
-      content: `<p><b>${label} ${N}</b>${cfg.from === "target" ? ` away from <b>${esc(origin.name)}</b>` : ""}: choose a creature to move, or Done.${moved.length ? ` <small>Moved: ${moved.map(esc).join(", ")}.</small>` : ""}</p>`,
-      buttons: [...list.map((t, n) => ({ action: String(n), label: t.name, default: n === 0 })), { action: "done", label: "Done", icon: "fa-solid fa-check" }]
-    });
-    if (pick == null || pick === false || pick === "done") break;
+    const pick = await pickBar({ icon: "fa-hand", done: "Done", cancel: "Stop",
+      text: `<b>${label} ${N}</b>${by ? ` away from <b>${esc(origin.name)}</b>` : ""}: click a creature to move it.${moved.length ? ` <small>Moved: ${moved.map(esc).join(", ")}.</small>` : ""}`,
+      options: list.map((t, n) => ({ id: String(n), label: t.name })) });
+    if (pick == null || pick === "done") break;
     const t = list[Number(pick)];
     if (!t) break;
-    await pushOne(origin, t, N, mode, { withinReach: !!cfg.withinReach });
+    await pushOne(origin, t, N, mode, { withinReach: !!cfg.withinReach, by });
     moved.push(t.name);
     list = list.filter(x => x.id !== t.id);
   }

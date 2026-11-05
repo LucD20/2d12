@@ -1,0 +1,10 @@
+--- the pick bar's HTML
+<i class="fa-solid fa-shield-heart lb-ic"></i><span class="lb-text">Who gains <b>Guard 1d8+3</b>?</span><span class="lb-side lb-opts"><button type="button" class="lb-opt you" data-id="0">You (Krysta)</button><button type="button" class="lb-opt" data-id="1">Lana</button></span><button type="button" class="lb-give" data-id="__cancel">Cancel</button>
+<i class="fa-solid fa-hand lb-ic"></i><span class="lb-text">Pushed 1</span><span class="lb-side lb-opts"><button type="button" class="lb-opt" data-id="0" data-tooltip="within 2">Goblin &lt;Boss&gt;</button></span><button type="button" class="lb-go" data-id="__done"><i class="fa-solid fa-check"></i> Done</button><button type="button" class="lb-give" data-id="__cancel">Stop</button>
+the who picker and the Push picker use the bar, not DialogV2: true true
+--- the light setting
+schema fields: lightAlpha true, lightAnim true, lightSpeed true, lightIntensity true | applied and restored: true | editable: true | a new setting starts at Foundry's defaults: true
+Smite's lights: Smite (Bright light 1): 1/2, intensity 0.2, sunburst 2/3 | Smite (Bright light 2): 2/4, intensity 0.2, sunburst 2/3
+--- the Push line and the icons
+the line names who pushes, away from whom: true | from:target passes the user: true
+icon files: emanation true, burst true, line true | masked in the CSS: true

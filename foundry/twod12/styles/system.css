@@ -2180,3 +2180,17 @@ a.twod12-inline svg.areaic.wide { width: 1.9em; height: 0.5em; vertical-align: 0
 a.twod12-inline.book { border-style: dashed; background: transparent; font-weight: 600; }
 .twod12.chat a.twod12-inline.book { background: transparent; border-color: #a08a5c; }
 a.twod12-inline.book i { font-size: .85em; opacity: .8; }
+/* v0.0.247 (Lucas): the area chips' icons are masked SVG files (an inline <svg> is stripped from a chat card), so they show in the chat, the sheet and a description alike; the pick bar (a choice on the map: the Line bar's look) */
+a.twod12-inline svg.areaic { display: none; }
+a.twod12-inline i.areaic { display: inline-block; width: 1em; height: 1em; vertical-align: -0.15em; background: currentColor; -webkit-mask: url(../icons/area-emanation.svg) center / contain no-repeat; mask: url(../icons/area-emanation.svg) center / contain no-repeat; }
+a.twod12-inline i.areaic.burst { -webkit-mask-image: url(../icons/area-burst.svg); mask-image: url(../icons/area-burst.svg); }
+a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.05em; -webkit-mask-image: url(../icons/area-line.svg); mask-image: url(../icons/area-line.svg); }
+.twod12-linebar.twod12-pickbar { width: min(860px, calc(100vw - 340px)); max-width: none; box-sizing: border-box; }
+.twod12-pickbar .lb-ic { color: #c9a24a; flex: 0 0 auto; }
+.twod12-pickbar .lb-text { flex: 1 1 auto; min-width: 0; }
+.twod12-pickbar .lb-opts { flex-wrap: wrap; gap: 6px; }
+.twod12-pickbar .lb-opt.you { background: #2f6b3a; }
+.twod12-pickbar .lb-go, .twod12-pickbar .lb-give { width: auto; height: 26px; line-height: 24px; padding: 0 10px; margin: 0; font-size: 13px; color: #f4e9d0; border: 1px solid #c9a24a; border-radius: 5px; cursor: pointer; white-space: nowrap; flex: 0 0 auto; }
+.twod12-pickbar .lb-go { background: #c9a24a; color: #1b1f28; font-weight: 700; }
+.twod12-pickbar .lb-give { background: #4a2420; }
+.twod12-pickbar .lb-give:hover { background: #6a3028; }

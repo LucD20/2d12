@@ -187,9 +187,11 @@ async function applyLight(actor, light) {
   const dist = canvas.scene?.grid?.distance ?? 1;
   const backup = [];
   for (const td of actor.getActiveTokens(false, true)) {
-    backup.push({ uuid: td.uuid, bright: td.light.bright, dim: td.light.dim, color: td.light.color ?? null });
+    backup.push({ uuid: td.uuid, bright: td.light.bright, dim: td.light.dim, color: td.light.color ?? null, alpha: td.light.alpha, animation: { type: td.light.animation?.type ?? null, speed: td.light.animation?.speed ?? 5, intensity: td.light.animation?.intensity ?? 5 } });
     // v0.0.177: the token's light gets the book's size (N); lightradius.mjs adds half the token's width when the light is drawn (v0.0.176 wrote N + 0.5 here).
-    await td.update({ "light.bright": light.bright * dist, "light.dim": light.dim * dist, "light.color": light.color || null });
+    // v0.0.247: its intensity (alpha) and animation come from the setting too (Lucas: v0.0.246's light was far too bright).
+    const alpha = Number.isFinite(Number(light.lightAlpha)) ? Math.min(1, Math.max(0, Number(light.lightAlpha))) : 0.5;
+    await td.update({ "light.bright": light.bright * dist, "light.dim": light.dim * dist, "light.color": light.color || null, "light.alpha": alpha, "light.animation.type": light.lightAnim || null, "light.animation.speed": Number(light.lightSpeed) || 5, "light.animation.intensity": Number(light.lightIntensity) || 5 });
   }
   return backup;
 }
@@ -285,7 +287,7 @@ async function restoreLight(effect) {
   for (const v of b) {
     try {
       const td = await fromUuid(v.uuid);
-      if (td) await td.update({ "light.bright": v.bright, "light.dim": v.dim, "light.color": v.color });
+      if (td) await td.update({ "light.bright": v.bright, "light.dim": v.dim, "light.color": v.color, ...(v.alpha !== undefined ? { "light.alpha": v.alpha } : {}), ...(v.animation ? { "light.animation.type": v.animation.type, "light.animation.speed": v.animation.speed, "light.animation.intensity": v.animation.intensity } : {}) });
     } catch (err) { console.warn("twod12 | could not restore token light", v.uuid, err); }
   }
 }

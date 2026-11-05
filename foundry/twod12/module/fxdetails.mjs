@@ -103,7 +103,7 @@ function settingSentenceOnly(x) {
     case "eschook":
       return `Once an encounter, when ${x.hookWhen === "markDown" ? "<b>the creature it marked goes Down</b>" : `<b>an ally within ${Math.max(0, Number(x.hookRange) || 0)} squares becomes Bloodied or goes Down</b>`}, its Escalation rises by 1 (at 3: nothing, and the once isn't used up).`;
     case "light":
-      return `The token sheds bright light out to <b>${x.bright}</b> and dim light out to <b>${x.dim}</b> squares.`;
+      return `The token sheds bright light out to <b>${x.bright}</b> and dim light out to <b>${x.dim}</b> squares${Number.isFinite(Number(x.lightAlpha)) && Number(x.lightAlpha) !== 0.5 ? `, intensity ${Number(x.lightAlpha)}` : ""}${x.lightAnim ? `, animated (${esc(x.lightAnim)} ${x.lightSpeed ?? 5} / ${x.lightIntensity ?? 5})` : ""}.`;
     case "note": {
       const attrs = keys(x.attrs).map(k => TWOD12.attributes[k] ?? k);
       return `Shows the note <b>${esc(x.title || "(no title)")}</b> in ${attrs.length ? `${wordList(attrs, "and")} rolls` : "every roll"}.`;

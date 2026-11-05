@@ -37,7 +37,7 @@ export function appliedUpdate(fx, system, source, name, img) {
 
 
 /** A blank setting with every field (the Effect item's defaults). */
-const blankSetting = type => ({ type, attrs: [], title: "", text: "", bright: 0, dim: 0, color: "", boons: 0, banes: 0, empowered: 0, enfeebled: 0, byValue: false, predicate: "", all: [], any: [], none: [], from: [],
+const blankSetting = type => ({ type, attrs: [], title: "", text: "", bright: 0, dim: 0, color: "", lightAlpha: 0.5, lightAnim: "", lightSpeed: 5, lightIntensity: 5, boons: 0, banes: 0, empowered: 0, enfeebled: 0, byValue: false, predicate: "", all: [], any: [], none: [], from: [],
   dmg: "", dmgPool: "B", dmgSub: "", tiers: ["t1", "t2", "t3"], fxUuid: "", against: false, speedMode: "add", speedFormula: "", grantAction: "", grantCount: 1, grantAp: 0, grantDistinct: false, defKind: "all", defValue: 1, minEscalation: 0, auraSize: 1, auraWho: "allies", auraSelf: false, auraOutline: "", auraFill: "", trigSub: "", trigTag: "", oncePerRound: false, vsMarked: false, ignoreRule: "rangeBane", rallyBonus: "", rallyRange: 0 });
 
 /**

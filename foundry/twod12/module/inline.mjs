@@ -175,20 +175,16 @@ function mkEl(kind, cfg, label, icon) {
   a.classList.add("twod12-inline");
   a.dataset.twod12Inline = kind;
   a.dataset.cfg = JSON.stringify(cfg);
-  a.innerHTML = `${icon.startsWith("<svg") ? icon : `<i class="fa-solid ${icon}"></i>`} ${esc(label)}`;
+  a.innerHTML = `${icon.startsWith("<") ? icon : `<i class="fa-solid ${icon}"></i>`} ${esc(label)}`;
   return a;
 }
 
 /**
  * v0.0.246 (Lucas, mockup "Chosen" row): the area chips' icons, each the shape's footprint: an Emanation is the creature's square (faded, with a dot)
  * and its ring; a Burst a circle with a crosshair and a center ring (it sits on a corner); a Line is you (faded), two squares and an arrow.
+ * v0.0.247: an <i> masked with the SVG file (icons/area-*.svg, system.css): an inline <svg> is stripped from a chat card, an <i> is not.
  */
-const SQ = (x, y, faded = false) => `<rect x="${x}" y="${y}" width="9" height="9" rx="1.2" fill="currentColor"${faded ? ' fill-opacity="0.28"' : ""}/>`;
-export const AREA_ICONS = {
-  emanation: `<svg class="areaic" viewBox="0 0 30 30" aria-hidden="true">${[[0.5, 0.5], [0.5, 10.5], [0.5, 20.5], [10.5, 0.5], [10.5, 20.5], [20.5, 0.5], [20.5, 10.5], [20.5, 20.5]].map(([x, y]) => SQ(x, y)).join("")}${SQ(10.5, 10.5, true)}<circle cx="15" cy="15" r="2.3" fill="currentColor"/></svg>`,
-  burst: `<svg class="areaic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.2" stroke-opacity="0.6" fill="none"/><circle cx="12" cy="12" r="2.8" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>`,
-  line: `<svg class="areaic wide" viewBox="0 0 38 10" aria-hidden="true">${SQ(10.5, 0.5)}${SQ(20.5, 0.5)}${SQ(0.5, 0.5, true)}<circle cx="5" cy="5" r="2.3" fill="currentColor"/><polygon points="31,0.5 38,5 31,9.5" fill="currentColor"/></svg>`
-};
+export const AREA_ICONS = { emanation: '<i class="areaic emanation"></i>', burst: '<i class="areaic burst"></i>', line: '<i class="areaic line"></i>' };
 /** The chip's words for an area, the book's order: "1 Emanation", "2 Burst", "6 Line". */
 export const areaLabel = (shape, n) => `${n} ${shape === "burst" ? "Burst" : shape === "line" ? "Line" : "Emanation"}`;
 
@@ -457,12 +453,11 @@ async function allyRecipients(cfg, ctx, what = "the effect") {
   if (cfg.who !== "pick") return { origin, who: allies.length ? allies : [origin].filter(Boolean) };
   const cands = [...(origin ? [origin] : []), ...allies.filter(a => a !== origin)];
   if (cands.length <= 1) return { origin, who: cands };
-  const pick = await foundry.applications.api.DialogV2.wait({
-    window: { title: `Who gains ${what}?` }, rejectClose: false,
-    content: `<p>Who gains <b>${esc(what)}</b>? ${cfg.area > 0 ? `(You, or an ally within ${cfg.area} of the target.)` : "(You, or one ally.)"}</p>`,
-    buttons: cands.map((a, n) => ({ action: String(n), label: a === origin ? `You (${a.name})` : a.name, default: n === 0 }))
-  });
-  if (pick == null || pick === false) return { origin, who: [], cancelled: true };
+  // v0.0.247 (Lucas): the question is a bar at the bottom (pickbar.mjs), not a Foundry window
+  const { pickBar } = await import("./pickbar.mjs");
+  const pick = await pickBar({ icon: "fa-shield-heart", text: `Who gains <b>${esc(what)}</b>? ${cfg.area > 0 ? `You, or an ally within ${cfg.area} of the target.` : "You, or one ally."}`,
+    options: cands.map((a, n) => ({ id: String(n), label: a === origin ? `You (${a.name})` : a.name, cls: a === origin ? "you" : "" })) });
+  if (pick == null || pick === "done") return { origin, who: [], cancelled: true };
   return { origin, who: [cands[Number(pick)]] };
 }
 

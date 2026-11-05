@@ -192,6 +192,8 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
                 bright: x.bright,
                 dim: x.dim,
                 color: x.color,
+                lightAlpha: x.lightAlpha ?? 0.5, lightSpeed: x.lightSpeed ?? 5, lightIntensity: x.lightIntensity ?? 5,   // v0.0.247: the light's intensity and animation
+                lightAnims: [{ key: "", label: "None", on: !x.lightAnim }, ...Object.entries(CONFIG.Canvas?.lightAnimations ?? {}).map(([key, v]) => ({ key, label: (typeof v?.label === "string" && game.i18n?.localize?.(v.label)) || key, on: x.lightAnim === key }))],
                 attrs: Object.entries(TWOD12.attributes).map(([key, label]) => ({ key, label, checked: x.attrs.has(key) }))
               };
             })

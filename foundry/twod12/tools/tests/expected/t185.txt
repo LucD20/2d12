@@ -6,10 +6,10 @@ A @Template[line|distance:6] of fire, a @Template[line|distance:2], Line of Effe
 try to {{link:Hide|Hide}}, gain @Book[Guard]{Guard} 1d8, use @Book[Evade]{Evade} or @Book[Straight Line]{a straight line}; {{link:Smite|Smite}} again
 resolved by content.mjs: @UUID[Compendium.twod12.actions.Item.<id>]{Hide} @UUID[Compendium.twod12.features.Item.<id>]{the Passive}
 --- the area chips and [Mod] as a number (inline.mjs)
-labels: 1 Emanation | 2 Burst | 6 Line | icons: emanation, burst, line | each an svg with a footprint: true
+labels: 1 Emanation | 2 Burst | 6 Line | icons: emanation, burst, line | each an <i> masked with the shape's SVG file (v0.0.247): true
 withMod: Guard 1d8+3 | Guard 1d8 + [Mod] | 2 to all | Pushed 1
 modForDoc: an Action card 3 | a damage card 2 | nothing null | no document null
-chips: <svg/> 2 Emanation [twod12-inline] | <svg/> 3 Burst [twod12-inline] | <svg/> 6 Line [twod12-inline]
+chips: <icon/> 2 Emanation [twod12-inline] | <icon/> 3 Burst [twod12-inline] | <icon/> 6 Line [twod12-inline]
 Guard on an Action card (Modifier 3): <i class="fa-solid fa-shield-heart"></i> Guard 1d8+3 [twod12-inline] ([Mod] is this creature's Modifier on the Action: 3) | on the sheet with no creature: <i class="fa-solid fa-shield-heart"></i> Guard 1d8 + [Mod] [twod12-inline]
 a book link: <i class="fa-solid fa-book-open"></i> Bright light [twod12-inline book] (Bright: a rule of the book) | <i class="fa-solid fa-book-open"></i> Guard [twod12-inline book] (Guard: a rule of the book (Core Rules))
 options: {"formula":"1d8+mod","who":"pick","area":2} {"kind":"pushed","distance":1,"pick":true,"area":2,"from":"target"} {"ref":"Bright","doc":"Core Rules"}
