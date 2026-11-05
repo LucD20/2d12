@@ -1,6 +1,6 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.241**. Tests: `node tools/tests/run.mjs` (176 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.242**. Tests: `node tools/tests/run.mjs` (177 tests, see the README). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 ## Asked by Lucas, not built

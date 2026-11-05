@@ -335,6 +335,7 @@ export class ActionData extends foundry.abstract.TypeDataModel {
       description: new HTMLField(),
       category: str(),
       level: int(0, 0),
+      worth: str(),   // v0.0.242: the ruler's worth of the card (book/ruler/worth.json): v0.0.239 put it on Features and Talents only, so an Action dropped it on load (Lucas: "still not showing")
       traits: traitsField(TWOD12.actionTraits),
       targets: str(),
       distance: str(),
