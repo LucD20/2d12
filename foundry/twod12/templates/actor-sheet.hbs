@@ -181,7 +181,6 @@
       {{#if health.down.note}}<div class="np-note">{{health.down.note}}</div>{{/if}}
       {{/if}}
       {{#if isPc}}
-      {{#if health.line}}<div class="np-hline{{#if health.line.old}} old{{/if}}" data-tooltip="{{health.line.tip}}"><span>{{{health.line.text}}}</span>{{#if health.line.pick}}<a class="np-hpick" data-action="openSpecies" data-tooltip="Where the species' bigger bonus goes: chosen in the Species window (click to open it)">{{health.line.pickText}}</a>{{/if}}</div>{{/if}}
       <div class="np-rally" data-tooltip="Rally Points: your class's Rally value + your Stage ({{system.stage}}). Each removes {{system.rallyHeal}} damage (a quarter of the Health Pool)">Rally Points <b>{{system.rallyLeft}} / {{system.rallyMax}}</b> &middot; each heals {{system.rallyHeal}}</div>
       <div class="np-wounds">
         <div class="wrow"><span class="wl">Body Wounds</span><input type="number" min="0" name="system.bodyWounds" value="{{system.bodyWounds}}"><a class="wtab" data-action="rollTable" data-kind="dying" data-tooltip="Roll on the Dying Table"><i class="fa-solid fa-dice"></i> Dying</a></div>

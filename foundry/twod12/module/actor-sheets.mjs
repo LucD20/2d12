@@ -54,24 +54,6 @@ const { HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
 
 
-/**
- * v0.0.243 (pack R; book, Health Pool): the Health line as the sheet shows it: where the class's high value sits, the species' bonuses, the Stage steps,
- * the floor of a third; its switches (the high side; a species whose bigger bonus is a choice). Null for NPCs and characters without the line.
- */
-export function healthLineCtx(a) {
-  const s = a?.system, hl = s?.healthLine;
-  if (a?.type !== "character" || !hl) return null;
-  const cls = a.itemTypes?.class?.[0]?.system, spItem = a.itemTypes?.species?.[0], sp = spItem?.system, L = { vigor: "Vigor", resolve: "Resolve" };
-  if (hl.old) return { old: true, text: `Health from the old formula: update the class from the compendium (pack R)`, tip: "This class has no high / low Health values yet (a copy from before pack R). Update sheets from the compendium, or type them on the Class item." };
-  const stage = s.stage ?? 1, hi = hl.highSide, lo = hi === "vigor" ? "resolve" : "vigor";
-  const steps = stage >= 2 ? ` + Stage ${stage} steps` : "";
-  const parts = [`${L.vigor} ${hl.classVigor}${hl.bonusVigor ? ` ${hl.bonusVigor >= 0 ? "+" : "\u2212"} ${Math.abs(hl.bonusVigor)}` : ""} = ${hl.vigor}`, `${L.resolve} ${hl.classResolve}${hl.bonusResolve ? ` ${hl.bonusResolve >= 0 ? "+" : "\u2212"} ${Math.abs(hl.bonusResolve)}` : ""} = ${hl.resolve}`];
-  const tip = [`The class's high value (${cls?.healthHigh ?? "?"}) on ${L[hi]}, the low one (${cls?.healthLow ?? "?"}) on ${L[lo]}${steps}; the species' bonuses (${sp?.bodyMod ?? 0} / ${sp?.mindMod ?? 0}${sp?.pickHealth ? ", the bigger one where you choose" : ""}).`,
-    parts.join("; ") + ".", hl.moved ? `The floor: ${hl.moved} point${hl.moved === 1 ? "" : "s"} moved so neither threshold is under a third of the pool (${hl.floor}).` : "", "The Attributes don't change the Health. The high side is chosen in the class window at level 1 (drop the class again to change it)."].filter(Boolean).join(" ");
-  return { text: `High on <b>${L[hi]}</b>${hl.moved ? ` \u00b7 floor: ${hl.moved} moved` : ""}`, tip, pick: !!sp?.pickHealth,
-    pickText: sp?.pickHealth ? `${spItem?.name ?? "Species"} +${Math.max(sp.bodyMod ?? 0, sp.mindMod ?? 0)} on ${s.speciesHigh ? L[s.speciesHigh] : L[hl.bonusHighSide || hi]}` : "" };
-}
-
 export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   _activeTab = "actions";
   _filter = "all";
@@ -550,7 +532,6 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       })(),
       health: {
         pool,
-        line: healthLineCtx(a),   // v0.0.243 (pack R): the Health line (the class's values, the species' bonuses, the Stage steps, the floor) and its switches
         v: healthView(s),
         donut: healthMode === "donut",
         views: [["donut", "Donut"], ["classic", "Classic"]].map(([k, l]) => ({ k, l, on: healthMode === k })),

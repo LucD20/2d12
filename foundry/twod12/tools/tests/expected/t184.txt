@@ -12,7 +12,7 @@ after the clicks: {"attr":"body","per":{"b":"mind"},"boons":2,"banes":0,"favored
 pills: Body | 2 Boons · Favored | 1 changed | the per row for the Goblin: Mind
 --- the window's HTML (pure)
 header, stats, 3 sections, footer: true true 3 true | a pressed button: true | the Boons input: true | disabled confirm when incomplete: true
---- wiring: a dropped species opens the window: true | the sheet opens it (Species: Choices, the Health line): true | Initiative uses it: true
+--- wiring: a dropped species opens the window: true | the sheet opens it (Species: Choices): true | Initiative uses it: true
 the class window's high side: a selection at level 1: true | no swap on the sheet (v0.0.245: chosen once), a dropped class starts on Vigor: true | a dropped species starts fresh: true
 the Reaction AP pip: teal in the turn too, a divider before it: true | strip, ticker, tracker: true | a 1px line, a span: true
 colored names: Attributes in the rows: true | the creatures by side: true
