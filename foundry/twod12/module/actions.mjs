@@ -16,6 +16,7 @@ import { flankingMod } from "./flanking.mjs";
 import { offerWake } from "./down.mjs";
 import { performCheck, performMultiCheck, multiCheckHtml, collapseNames, uniqueLabels, checkHtml, esc, sgn } from "./roll.mjs";
 import { fxTipHtml, hoverOf, tipAttrs } from "./util.mjs";   // v0.0.253: the effects' hover cards
+import { effectWhat } from "./fxdetails.mjs";   // v0.0.267: the hover card says what the effect does (its settings)
 import { postDamageCard, postMultiDamageCard } from "./dmgcard.mjs";
 import { cardVars, cardHead, flavorHtml, apIcon, traitChevrons, categoryText, highlightText, metaRowHtml, effectiveFrequency, distanceText, areaText, cardColorFor, vsText, targetsRowHtml, targetEntries, requirementProblem, doomStatus } from "./config.mjs";
 import { collectBonuses, expireOnUse } from "./bonus.mjs";
@@ -537,6 +538,7 @@ export async function useAction(actor, item, opts = {}) {
   if (saveAct) preview.noOdds = true;   // a Save Action: you don't roll, so no odds in the dialog (its targets roll)
   // A ranged weapon: the distance to the target decides the banes (far range 1, maximum range 2).
   let extraMods = [];
+  const coverNotices = [];   // v0.0.267 (Lucas): a cover level the Action ignores is a notice (the small chip), not a chip to untick
   // v0.0.186, the "Ignore a Bane" settings of the creature's effects and passives (Long Draw, Steady Nerves, Sharpshooter): the names of what ignores each rule.
   const lessRange = ignoredBy(actor, "rangeBane", useTraits), noEngagedTarget = ignoredBy(actor, "engagedTarget", useTraits);
   const rw = previewWeapon?.system;
@@ -557,7 +559,7 @@ export async function useAction(actor, item, opts = {}) {
       const cov = areaOutcome?.cover?.[tk.id] ?? (selfToken && String(it.targets ?? "").trim() ? coverBetween(selfToken, tk) : null);   // an area: cover from its Point of Origin
       if (cov?.noLoE) { skipped.push(`${tk.name}: no Line of Effect`); continue; }
       const covIgn = cov?.banes ? coverIgnored(actor, ["", "low", "medium", "high"][cov.banes] ?? "", useTraits) : [];   // v0.0.266 (Aim): a cover level the Action ignores
-      if (cov?.banes && covIgn.length) extraMods.push({ id: `syn:cover|${a.uuid}`, name: `${cov.label} ignored (${tk.name})`, boons: 0, banes: 0, match: true, predicate: `${covIgn.join(", ")}: ${cov.label} doesn't count against ${tk.name}` });
+      if (cov?.banes && covIgn.length) coverNotices.push({ text: `${cov.label} ignored`, icon: "fa-shield-halved", why: `${covIgn.join(", ")}: ${cov.label} gives no Bane against ${tk.name}`, for: a.uuid });
       else if (cov?.banes) extraMods.push({ id: `syn:cover|${a.uuid}`, name: `${cov.label} (${tk.name})`, boons: 0, banes: cov.banes, match: true, predicate: `Against ${tk.name}: ${coverWhy(cov)}` });
       if (!it.area && selfToken) {
         const pv = perceive(selfToken, tk, { loe: !cov?.noLoE }), seenT = pv.level === "clear" ? "" : pv.level;
@@ -602,7 +604,7 @@ export async function useAction(actor, item, opts = {}) {
       if (!ok) return;
     } else if (cov?.banes) {
       const covIgn = coverIgnored(actor, ["", "low", "medium", "high"][cov.banes] ?? "", useTraits);   // v0.0.266 (Aim)
-      if (covIgn.length) extraMods.push({ id: "syn:cover", name: `${cov.label} ignored`, boons: 0, banes: 0, match: true, predicate: `${covIgn.join(", ")}: ${cov.label} doesn't count` });
+      if (covIgn.length) coverNotices.push({ text: `${cov.label} ignored`, icon: "fa-shield-halved", why: `${covIgn.join(", ")}: ${cov.label} gives no Bane` });
       else extraMods.push({ id: "syn:cover", name: cov.label, boons: 0, banes: cov.banes, match: true, predicate: coverWhy(cov) });
     }
     if (!it.area) { const pv = perceive(selfToken, targetToken, { loe: !cov?.noLoE }); seen = pv.level === "clear" ? "" : pv.level; seenWhy = pv.why; }
@@ -660,7 +662,8 @@ export async function useAction(actor, item, opts = {}) {
   for (const { b } of bonusSeen.values()) if (b.sub) dmgSubs.add(b.sub);
   const bonusChips = [...bonusSeen.entries()].map(([key, { b, tiers }]) => ({ key, text: `${b.effect}: ${b.dmg ? `+${b.dmg}${b.sub ? ` ${TWOD12.subtypes[b.sub] ?? ""}` : ""}` : b.text}${tiers.length < 3 ? ` (Tier ${tiers.join(", ")})` : ""}`, why: `${b.hover || "This effect adds to the damage of this roll."} Untick it to leave it out (its effect isn't used up).` }));
   const extraNotices = [
-    ...triggerNotices(actor, multi ? perT.map(p => p.actor) : rollsAtOthers && targetToken?.actor ? [targetToken.actor] : [], dmgSubs)
+    ...triggerNotices(actor, multi ? perT.map(p => p.actor) : rollsAtOthers && targetToken?.actor ? [targetToken.actor] : [], dmgSubs),
+    ...coverNotices
   ];
   // v0.0.196: a shortcut (the Evade key) uses a no-roll version at once, without the dialog.
   const quick = opts.quickAp != null && versions.find(v => v.ap === Number(opts.quickAp))?.noTiers;
@@ -692,7 +695,7 @@ export async function useAction(actor, item, opts = {}) {
     targetActors: multi ? perT.map(p => p.actor) : rollsAtOthers && targetToken?.actor ? [targetToken.actor] : [],
     targetTiles: multi ? perT.map(p => ({ uuid: p.actorUuid, name: p.label, img: p.token.document?.texture?.src ?? p.actor.img ?? "", dc: p.dcInfo.dc })) : [],
     extraMods,
-    notices: [...(opts.grant ? [{ text: `Granted use: ${String(opts.grant.effect?.name ?? opts.label ?? "").replace(/\s*\(.*\)\s*$/, "")}, ${opts.grant.grant?.ap ? `${opts.grant.grant.ap} AP` : "free"} (${Math.max(0, (opts.grant.grant?.left ?? 1) - 1)} left after this)`, icon: "fa-gift", why: "A use another Action gave you: it doesn't count toward this Action's Frequency or the 3 Strikes of your turn. For a normal use, close this and Shift-click the use button." }] : []), ...extraNotices, ...(opts.splitMode ? [{ text: `Split: ${SPLIT_LABEL[opts.splitMode]}`, icon: "fa-code-branch", why: "A Split Action is used as an Action of the mode you chose (Weapon or Power)." }] : []), ...(wUse?.thrown && wUse.mode === "ranged" ? [{ text: `Thrown: Ranged, Range ${wUse.range.split("/").join(" / ")}`, icon: "fa-person-rifle", why: `${previewWeapon?.name} is thrown: a Ranged Action with its Thrown Range (the target is beyond its melee Range, or the Action is Ranged). It leaves your hand.` }] : [])],
+    notices: [...(opts.grant ? [{ text: `Granted use: ${String(opts.grant.effect?.name ?? opts.label ?? "").replace(/\s*\(.*\)\s*$/, "")}, ${opts.grant.grant?.ap ? `${opts.grant.grant.ap} AP` : "free"}${opts.grant.grant?.boons ? `, ${opts.grant.grant.boons} Boon${opts.grant.grant.boons === 1 ? "" : "s"}` : ""}${opts.grant.grant?.banes ? `, ${opts.grant.grant.banes} Bane${opts.grant.grant.banes === 1 ? "" : "s"}` : ""} (${Math.max(0, (opts.grant.grant?.left ?? 1) - 1)} left after this)`, icon: "fa-gift", why: "A use another Action gave you: it doesn't count toward this Action's Frequency or the 3 Strikes of your turn. For a normal use, close this and Shift-click the use button." }] : []), ...extraNotices, ...(opts.splitMode ? [{ text: `Split: ${SPLIT_LABEL[opts.splitMode]}`, icon: "fa-code-branch", why: "A Split Action is used as an Action of the mode you chose (Weapon or Power)." }] : []), ...(wUse?.thrown && wUse.mode === "ranged" ? [{ text: `Thrown: Ranged, Range ${wUse.range.split("/").join(" / ")}`, icon: "fa-person-rifle", why: `${previewWeapon?.name} is thrown: a Ranged Action with its Thrown Range (the target is beyond its melee Range, or the Action is Ranged). It leaves your hand.` }] : [])],
     withDamage: true,
     withReload: usesReload,
     bonusChips
@@ -823,7 +826,7 @@ export async function useAction(actor, item, opts = {}) {
   const dbl = !!chk?.doubles && !chk?.crit;
   const rolledTier = chk ? (chk.forced ? tier : chk.base) : 0;
   // v0.0.253 (Lucas): each effect's name on the card carries its hover card (the description, the duration, how it is applied)
-  const fxName = async k => Promise.all((version.fx?.[k] ?? []).map(async x => { const it = await fromUuid(x.uuid); const d = it?.system?.duration; return { name: it?.name ?? "?", tip: it ? fxTipHtml({ name: it.name, dur: d?.type === "eot" ? "EoT" : d?.type === "rounds" ? `${d.rounds} round${d.rounds === 1 ? "" : "s"}` : "until removed", text: hoverOf(it.system?.hover, it.system?.description), controls: x.mode === "auto" ? "Applied with the damage." : "Applied with the Effects button." }) : "" }; }));
+  const fxName = async k => Promise.all((version.fx?.[k] ?? []).map(async x => { const it = await fromUuid(x.uuid); const d = it?.system?.duration; return { name: it?.name ?? "?", tip: it ? fxTipHtml({ name: it.name, dur: d?.type === "eot" ? "EoT" : d?.type === "rounds" ? `${d.rounds} round${d.rounds === 1 ? "" : "s"}` : "until removed", text: hoverOf(it.system?.hover, it.system?.description), what: effectWhat(it), controls: x.mode === "auto" ? "Applied with the damage." : "Applied with the Effects button." }) : "" }; }));
   const fxn = { all: await fxName("all"), t1: await fxName("t1"), t2: await fxName("t2"), t3: await fxName("t3") };
   const fxNames = list => list.map(x => `<span class="fxname"${x.tip ? ` ${tipAttrs(x.tip)}` : ""}>${esc(x.name)}</span>`).join(", ");
   const cardCtx = { item, weapon: weapon ?? previewWeapon ?? null, isWeapon: modOnWeapon(src, useTraits) && !saveAct, attrMode: saveAct ? "none" : src.attrMode, attrVal: src.kind ? (Number(src.mod) || 0) : 0,

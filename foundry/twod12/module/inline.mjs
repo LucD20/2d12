@@ -92,6 +92,7 @@ export function parseInline(kind, inner) {
       if (m) { if (m[1] === "eot") cfg.dur = "eot"; else { cfg.dur = "rounds"; cfg.rounds = Number(m[1]); } }
       else if (/^label\s*:/i.test(s)) cfg.label = s.replace(/^label\s*:\s*/i, "");
       else if (/^crit\s*:/i.test(s)) cfg.crit = yes(s.replace(/^crit\s*:\s*/i, ""));   // v0.0.249: only the targets that rolled a Critical
+      else if (/^tier\s*:/i.test(s)) cfg.tier = Math.max(0, Number(s.replace(/^tier\s*:\s*/i, "")) || 0);   // v0.0.267: only the targets that rolled that Tier or more
       else if (/^value\s*:/i.test(s)) cfg.value = Math.max(1, Math.trunc(Number(s.replace(/^value\s*:\s*/i, ""))) || 1);   // v0.0.250: Enfeebled 1, Vulnerable 2
       else if (/^side\s*:/i.test(s)) cfg.side = s.replace(/^side\s*:\s*/i, "").toLowerCase();
       else if (/^quiet\s*:/i.test(s)) cfg.quiet = yes(s.replace(/^quiet\s*:\s*/i, ""));   // v0.0.252: the label shows no duration (the sentence says it)
@@ -150,6 +151,7 @@ export function parseInline(kind, inner) {
     else if (key === "from") cfg.from = val.toLowerCase();
     else if (key === "doc") cfg.doc = val;
     else if (key === "crit") cfg.crit = yes(val);   // v0.0.249: @Condition[prone|crit:yes]: only the targets that rolled a Critical
+    else if (key === "tier") cfg.tier = Math.max(0, Number(val) || 0);   // v0.0.267: tier:2: only the targets that rolled that Tier or more (a Grant's line on the Tier rows)
     // v0.0.250 (cards 3): s2:/s3: the formula at Stage 2 / 3 (Guard, Heal); side:allies / side:enemies (a chain's chip for one side of the card's targets); extra: a heal added to a Rally Point (Lay On Hands)
     else if (key === "s2" || key === "s3") (cfg.stages ??= {})[key] = val.toLowerCase().replace(/\s+/g, "");
     else if (key === "side") cfg.side = val.toLowerCase();
@@ -614,8 +616,10 @@ export async function runAfter(text, ctx = {}, { side = "" } = {}) {
     if (m[3]) cfg.label = m[3];
     // v0.0.250: a chip for one side (side:allies / side:enemies) runs with that side's creatures among the targets; an Apply button for a side runs only its chips
     if (side && cfg.side && cfg.side !== side) continue;
-    const targets = cfg.side ? sideTargets(ctx, cfg.side) : ctx.targets;
+    let targets = cfg.side ? sideTargets(ctx, cfg.side) : ctx.targets;
     if (cfg.side && !targets?.length) continue;
+    // v0.0.267: a chip for a Tier (tier:2) or a Critical (crit:yes) runs for the targets that rolled it; a target without a result (a click by hand) passes
+    if (cfg.tier || cfg.crit) { targets = (targets ?? []).filter(t => t.tier === undefined ? true : (!cfg.tier || (Number(t.tier) || 0) >= cfg.tier) && (!cfg.crit || t.crit)); if (!targets.length) continue; }
     try { await handleInline(m[1], cfg, { ...ctx, targets, message: ctx.message ?? null }); } catch (e) { console.error("twod12 | after the damage", e); }
   }
 }

@@ -105,6 +105,10 @@ export function withGrantLine(version, grant) {
     if (o === "crit") add("critical");
     else if (v.noTiers) add("effects");
     else for (const n of [1, 2, 3]) if (o === "all" || n >= (Number(o.slice(1)) || 1)) add(`x${n}`);
+    // v0.0.267 (Lucas, Overwatch): the line's chips also run by themselves after the damage, for the targets that rolled that result (the chain)
+    const gate = o === "crit" ? "crit:yes" : /^t[23]$/.test(o) ? `tier:${o.slice(1)}` : "";
+    const chips = (t.match(/@\w+\[[^\]]*\](?:\{[^}]*\})?/g) ?? []).map(c => (gate ? c.replace(/\]/, `|${gate}]`) : c));
+    if (chips.length && !v.noTiers) v.after = [v.after, ...chips].filter(Boolean).join(" ");
   }
   return v;
 }

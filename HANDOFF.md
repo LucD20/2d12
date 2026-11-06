@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.266, 203 tests; READ THIS FIRST)
+## Where we are now (v0.0.267, 204 tests; READ THIS FIRST)
+- **v0.0.267 (2026-11-06, branch `pack-cards-1`): Lucas tested v0.0.266 (all works but three things, fixed):** a Grant's line applies by itself after the damage (the chain, `tier:N` / `crit:yes` gates), the hover card's "what it does" line, the cover ignored as a notice. Test t206 (**the next new test is t207**). Not tested by Lucas yet. **NEXT: the Reactions pass (RX)**, before the playtest.
 - **v0.0.266 (2026-11-06, branch `pack-cards-1`): Lucas tested v0.0.265 (all works but five things, fixed):** the ticket badge, a Grant's second result line (Overwatch), the uses' targets as a choice, the fx mode "when the target is Down" (Deathmark), Marked Quarry links, the "Ignores cover" setting (Aim). Test t205 (**the next new test is t206**). Not tested by Lucas yet. **NEXT: the Reactions pass (RX)**, before the playtest.
 - **v0.0.265 (2026-11-06, branch `pack-cards-1`): Lucas's "do 1 and 3":** Overwatch, Deathmark, Open Season and Aim are granted uses (no Use button); Covering Fire is a Zone. Charge and Cut Through keep their Use chips (see the changelog). Test t204 (**the next new test is t205**). Not tested by Lucas yet. **NEXT: the Reactions pass (MASTER-PLAN RX, Lucas's design): he wants it before the playtest**, so the moments aren't missed in play.
 - **v0.0.264 (2026-11-06, branch `pack-cards-1`): Lucas, after v0.0.263:** the Grant's line is "On [a result], [what happens]" (the target's next damage halved, or a line the card says on those rows). Test t203 (**the next new test is t204**). Not tested by Lucas yet.
@@ -93,7 +94,7 @@ Python needs `markdown`. Node 18+ for the tests.
 
 ## Commands
 - Book: `cd book && python3 build_rules.py` ("unresolved refs: 0" is the goal). `python3 build_rules.py --where Flanking`.
-- System tests: **in a fresh clone (a cloud session) first build the packs** (below): about 10 tests read packs/_source and fail with ENOENT without it. Then `cd foundry/twod12 && node tools/tests/run.mjs` (203 tests; each has an expected output in tools/tests/expected; accept a meant change with `node tools/tests/run.mjs --update t84`). **Test numbers have gaps (t1, t6, t21, t31; also t12b, t37b): the next new one is t196.** Lint: `npx eslint@8 --no-eslintrc -c tools/eslint.json --ext .mjs module`.
+- System tests: **in a fresh clone (a cloud session) first build the packs** (below): about 10 tests read packs/_source and fail with ENOENT without it. Then `cd foundry/twod12 && node tools/tests/run.mjs` (204 tests; each has an expected output in tools/tests/expected; accept a meant change with `node tools/tests/run.mjs --update t84`). **Test numbers have gaps (t1, t6, t21, t31; also t12b, t37b): the next new one is t196.** Lint: `npx eslint@8 --no-eslintrc -c tools/eslint.json --ext .mjs module`.
 - Compendiums: the content is in `tools/content.mjs`; in foundry/ run `npm install @foundryvtt/foundryvtt-cli` (node_modules and package files: never commit them), then `node twod12/tools/build-packs.mjs`.
 - A version: bump `version` in system.json, add the changelog entry to docs/reference.md (copy it to foundry/reference.md), run the tests, give Lucas a short test checklist; commit on a `pack-...` branch (Update Foundry.cmd finds it). No zips.
 

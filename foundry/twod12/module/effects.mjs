@@ -4,6 +4,7 @@ import { effectOff } from "./escalation.mjs";
 import { openEffectSheet } from "./fxopen.mjs";
 import { bumpExhausted, isExhaustedFx, exhaustedClick, heldModifiers } from "./sleep.mjs";
 import { fxTipHtml, hoverOf } from "./util.mjs";   // v0.0.254: the HUD's hover cards
+import { effectWhat } from "./fxdetails.mjs";   // v0.0.267
 import { TWOD12 } from "./config.mjs";
 import { combatantOf } from "./combat.mjs";
 import { onceKey, onceBlocked, isMarked } from "./automation.mjs";
@@ -421,7 +422,7 @@ export function panelCardHtml(e, actor, { dur = "", note = "" } = {}) {
   const name = valued ? `${baseNameOf(e)} ${Number(e.getFlag(F, "value")) || 1}` : counter && actor.system.exhausted > 0 ? `${e.name} ${actor.system.exhausted}` : e.name;
   const text = hoverOf(e.getFlag(F, "hover"), e.getFlag(F, "description") ?? e.description);
   const by = e.origin && e.origin !== actor?.uuid ? (fromUuidSync(e.origin)?.name ?? "") : "";
-  return fxTipHtml({ name, dur: dur || "until removed", text: [text, note].filter(Boolean).join(" "), source: by ? `From ${by}` : "",
+  return fxTipHtml({ name, dur: dur || "until removed", text: [text, note].filter(Boolean).join(" "), what: effectWhat(e), source: by ? `From ${by}` : "",
     controls: valued || counter ? "Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove" : "Click: open · Right-click: remove" });
 }
 /** The attributes that show an HTML card on hover, to the left: Foundry 13 reads data-tooltip-html (its data-tooltip is text), older versions data-tooltip. */
@@ -543,7 +544,7 @@ export function valuedHud(app, html) {
     const fx = actor.effects.find(x => x.statuses?.has?.(id));
     if (!fx) return "";
     const valued = isValued(fx);
-    return fxTipHtml({ name: valued ? `${baseNameOf(fx)} ${Number(fx.getFlag(F, "value")) || 1}` : fx.name, dur: durationText(fx.getFlag(F, "duration")) || "until removed", text: hoverOf(fx.getFlag(F, "hover"), fx.getFlag(F, "description") ?? fx.description), controls: valued ? "Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove" : "Click: remove · Right-click: overlay" });
+    return fxTipHtml({ name: valued ? `${baseNameOf(fx)} ${Number(fx.getFlag(F, "value")) || 1}` : fx.name, dur: durationText(fx.getFlag(F, "duration")) || "until removed", text: hoverOf(fx.getFlag(F, "hover"), fx.getFlag(F, "description") ?? fx.description), what: effectWhat(fx), controls: valued ? "Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove" : "Click: remove · Right-click: overlay" });
   };
   // v0.0.256: Foundry 13 reads data-tooltip-html (data-tooltip is text there); both are written, and the manager is given the card as an element on hover
   const mark = markTip;

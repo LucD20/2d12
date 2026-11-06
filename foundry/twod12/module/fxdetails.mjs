@@ -191,6 +191,16 @@ export function effectSummary(s) {
   return out.charAt(0).toUpperCase() + out.slice(1) + ".";
 }
 
+/** v0.0.267 (Lucas): what an effect does, in a line, for its hover card: an Effect item's settings, or the item an applied effect came from. "" when it has none. */
+export function effectWhat(doc) {
+  try {
+    let it = doc;
+    if (doc?.documentName === "ActiveEffect") { const u = doc.getFlag?.("twod12", "effectUuid"); it = u ? fromUuidSync(u) : null; }
+    const s = it?.system;
+    if (!s || !((s.settings ?? []).length || (s.conditions ?? []).length || s.linked)) return "";
+    return effectSummary(s).replace(/\.$/, "");
+  } catch (e) { return ""; }
+}
 /** The chip rows of one setting: the fields that have traits, plus the ones the user opened (shown is a Set of field names). */
 export function predRows(x, shown = new Set(), fields = ["all", "any", "none", "from"], everyLabel = "every roll") {
   // The roll kinds first (Check, Save, Attribute Action), then the traits in order.

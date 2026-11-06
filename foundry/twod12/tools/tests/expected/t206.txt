@@ -1,0 +1,7 @@
+the chain: @Condition[hindered|rounds:eot|tier:2]{Hindered (EoT)} @Move[pushed|distance:2|crit:yes]{Pushed 2}
+a Tier 1 line adds no gate: @Condition[prone] | any result: @Condition[prone] | a no-tier Version keeps no chain: 
+tier:2 parsed: 2 | crit: true
+the chain filters its targets by the Tier and the Critical: true
+the hover card's what line: <div class="twod12 fxtip"><div class="ft-head"><b>Aim (Weapon Attack, 1 Boon)</b></div><div class="ft-what">grants Weapon Attack ×1, free, 1 Boon · ignores Low cover</div></div>
+the cover notice and the Boons on the granted-use notice: true
+the hover sites pass what: true

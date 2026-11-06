@@ -40,6 +40,7 @@ import { addBasicActions, missingBasic } from "./basic.mjs";
 import { openEffectSheet } from "./fxopen.mjs";
 import { applyTab, durationText, dragData } from "./sheet-common.mjs";
 import { hoverOf, fxTipHtml, tipAttrs } from "./util.mjs";
+import { effectWhat } from "./fxdetails.mjs";   // v0.0.267
 import { WEAPON_WHERE, ARMOR_WHERE, weaponWhere, armorWhere, weaponMove, armorMove, handsFor, tierBoxes, handSlots, whereButtons, freeHandFor, useButtons, handOf, HAND_LABEL, handButtonsFor, freeHandButtons, oneHandedTwoHander } from "./loadout.mjs";
 import { ensureHandsFor, releaseOptions, applyRelease, applyRegrip } from "./hands.mjs";
 import { passiveSources } from "./passives.mjs";
@@ -392,7 +393,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         const counter = isExhaustedFx(e) && a.type === "character", by = e.origin && e.origin !== a.uuid ? (fromUuidSync(e.origin)?.name ?? "") : "";
         const linkedTo = e.getFlag?.("twod12", "linkedTo") ?? "", parent = linkedTo ? a.effects.get(linkedTo) : null;   // v0.0.255 (Lucas): a condition another effect brought is shown chained to it
         conditions.push({ id: e.id, name: e.name.replace(/\s*\(.*\)\s*$/, ""), img: e.img ?? "icons/svg/aura.svg", dur: durationText(e), counter, linkedTo, linkedName: parent?.name?.replace(/\s*\(.*\)\s*$/, "") ?? "",
-          tip: fxTipHtml({ name: e.name, dur: durationText(e) || "until removed", text: fxText(e), source: by ? `From ${by}` : "", controls: counter ? "Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove" : "Click the name: open · ×: remove" }) });
+          tip: fxTipHtml({ name: e.name, dur: durationText(e) || "until removed", text: fxText(e), what: effectWhat(e), source: by ? `From ${by}` : "", controls: counter ? "Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove" : "Click the name: open · ×: remove" }) });
         continue;
       }
       const by = e.origin && e.origin !== a.uuid ? (fromUuidSync(e.origin)?.name ?? "") : "";

@@ -14,9 +14,9 @@ export const shortText = (text, max = 260) => {
   const cut = t.slice(0, max), end = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("; "));
   return (end > max * 0.4 ? cut.slice(0, end + 1) : cut.replace(/\s+\S*$/, "") + "\u2026").trim();
 };
-export const fxTipHtml = ({ name, dur = "", text = "", source = "", controls = "" }) => {
+export const fxTipHtml = ({ name, dur = "", text = "", what = "", source = "", controls = "" }) => {   // v0.0.267: what (the effect's settings in a line)
   const e = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-  return `<div class="twod12 fxtip"><div class="ft-head"><b>${e(name)}</b>${dur ? `<span class="ft-dur">${e(dur)}</span>` : ""}</div>${text ? `<div class="ft-text">${e(shortText(text))}</div>` : ""}${source ? `<div class="ft-src">${e(source)}</div>` : ""}${controls ? `<div class="ft-ctl">${e(controls)}</div>` : ""}</div>`;
+  return `<div class="twod12 fxtip"><div class="ft-head"><b>${e(name)}</b>${dur ? `<span class="ft-dur">${e(dur)}</span>` : ""}</div>${text ? `<div class="ft-text">${e(shortText(text))}</div>` : ""}${what ? `<div class="ft-what">${e(shortText(what, 200))}</div>` : ""}${source ? `<div class="ft-src">${e(source)}</div>` : ""}${controls ? `<div class="ft-ctl">${e(controls)}</div>` : ""}</div>`;
 };
 /** v0.0.256: the attributes that make an element show an HTML card on hover: Foundry 13 reads data-tooltip-html, older versions data-tooltip (both are written). */
 export const tipAttrs = html => { const e = String(html ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); return html ? `data-tooltip-html="${e}" data-tooltip="${e}"` : ""; };

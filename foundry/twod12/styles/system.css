@@ -2312,3 +2312,5 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.sheet.ns .gtk-ads { flex: 0 1 auto; min-width: 0; overflow: hidden; }
 .twod12.sheet.ns .gtk-ad { max-width: 180px; overflow: hidden; text-overflow: ellipsis; }
 .twod12.sheet.ns .gtk-line .ar-use { flex: none; }
+/* v0.0.267 (Lucas): the hover card's "what it does" line (the effect's settings). */
+.twod12.fxtip .ft-what { margin-top: 3px; font-size: 11px; font-style: italic; opacity: .9; }
