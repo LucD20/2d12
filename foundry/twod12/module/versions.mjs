@@ -125,6 +125,8 @@ export class VersionsEditor extends HandlebarsApplicationMixin(ApplicationV2) {
         });
       });
     });
+    // v0.0.263 (Lucas): click an effect's name to open it, to see it inside the Action
+    this.element.querySelectorAll(".fxline .iname").forEach(el => el.addEventListener("click", async ev => { const uuid = ev.target.closest(".fxline")?.dataset.uuid; const doc = uuid ? await fromUuid(uuid) : null; doc?.sheet?.render(true); }));
     this.element.querySelectorAll("[data-fx-mode]").forEach(el =>
       el.addEventListener("change", () => {
         this._mutate(vs => {

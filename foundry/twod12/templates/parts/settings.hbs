@@ -82,7 +82,7 @@
         {{#if isGrant}}
         <div class="fxd-s">Can use <input type="text" class="fxd-f wide" data-sfield="{{i}}" data-field="grantAction" value="{{grantAction}}" placeholder="Weapon Attack / category:Weapon Technique / trait:strike"> <input type="number" min="1" class="fxd-f n" data-sfield="{{i}}" data-field="grantCount" value="{{grantCount}}"> {{timesWord}} for <input type="number" min="0" class="fxd-f n" data-sfield="{{i}}" data-field="grantAp" value="{{grantAp}}"> AP, with <input type="number" min="0" class="fxd-f n" data-sfield="{{i}}" data-field="boons" value="{{boons}}"> {{boonWord}}.</div>
         <label class="fxd-inl"><input type="checkbox" data-sfield="{{i}}" data-field="grantDistinct" {{#if grantDistinct}}checked{{/if}}> Each use needs a different target</label>
-        <label class="fxd-inl"><input type="checkbox" data-sfield="{{i}}" data-field="halfT3" {{#if halfT3}}checked{{/if}}> On a Tier 3, the target's next damage is halved (its Half button lit; Covering Shot)</label>
+        <div class="fxd-s">On <select class="fxd-f" data-sfield="{{i}}" data-field="halfOn">{{selectOptions halfOnChoices selected=halfOn}}</select>, the target's next damage is halved (its Half button lit; Covering Shot: a Tier 3). Its card's Critical row: <input type="text" class="fxd-f wide" data-sfield="{{i}}" data-field="grantCritical" value="{{grantCritical}}" placeholder="(empty: none) The target is Pushed 2."></div>
         <p class="fxd-help">0 AP = free. The uses don't count toward the Action's Frequency or the 3 Strikes, and the Action is not faded on the sheet. Using the Action offers the granted use first.</p>
         {{/if}}
         {{#if isDefense}}

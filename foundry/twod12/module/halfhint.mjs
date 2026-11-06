@@ -4,6 +4,15 @@
 import { sysLine } from "./sysmsg.mjs";
 import { esc } from "./roll.mjs";
 const F = "twod12", SOCKET = "system.twod12";
+/** Pure: does this result (the tier, a Critical) meet a Grant's "On a Tier X" (t1: 1 or more, t2: 2 or more, t3: 3, crit: a Critical, all: any result)? */
+export const halfHits = (halfOn, tier = 0, crit = false) => {
+  const h = String(halfOn ?? "");
+  if (!h) return false;
+  if (h === "all") return true;
+  if (h === "crit") return !!crit;
+  const n = Number(h.slice(1)) || 0;
+  return (Number(tier) || 0) >= n;
+};
 const actorOf = doc => (doc?.documentName === "Actor" ? doc : doc?.actor ?? null);
 
 /** The target (a token or actor uuid) gets the hint, and the chat says it. */

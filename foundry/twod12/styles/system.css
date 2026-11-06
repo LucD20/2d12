@@ -2306,3 +2306,5 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat.dmg button.hinted { background: #FAEEDA; border-color: #BA7517; color: #633806; font-weight: 700; box-shadow: 0 0 0 2px rgba(186, 117, 23, .35); }
 .twod12.chat.dmg .halfhint { display: flex; align-items: center; gap: 6px; margin: 4px 8px 0; padding: 3px 8px; border: 1px solid #BA7517; border-radius: 4px; background: #FAEEDA; color: #633806; font-size: 12px; font-weight: 600; }
 .twod12.chat.dmg .halfhint i { color: #854F0B; }
+/* v0.0.263 (Lucas): in the Versions editor an effect's name opens it. */
+.twod12 .fxline .iname { cursor: pointer; } .twod12 .fxline .iname:hover { text-decoration: underline dotted; }

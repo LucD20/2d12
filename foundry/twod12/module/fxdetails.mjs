@@ -72,7 +72,7 @@ function settingSentenceOnly(x) {
     case "inline":
       return `Has the Action <b>${esc(fxNameOf(x.inlineAction) || x.inlineAction || "?")}</b> while this lasts.`;
     case "grant":
-      return `Can use <b>${esc(x.grantAction || "?")}</b> ${x.grantCount === 1 ? "once" : `${x.grantCount} times`} for <b>${x.grantAp ? `${x.grantAp} AP` : "free"}</b>${x.boons ? `, with ${plural(x.boons, "Boon")}` : ""}${x.grantDistinct ? ", a different target each time" : ""}${x.halfT3 ? "; on a Tier 3, the target's next damage is halved" : ""}.`;
+      return `Can use <b>${esc(x.grantAction || "?")}</b> ${x.grantCount === 1 ? "once" : `${x.grantCount} times`} for <b>${x.grantAp ? `${x.grantAp} AP` : "free"}</b>${x.boons ? `, with ${plural(x.boons, "Boon")}` : ""}${x.grantDistinct ? ", a different target each time" : ""}${(x.halfOn || (x.halfT3 ? "t3" : "")) ? `; on ${TWOD12.halfOnChoices[x.halfOn || "t3"] ?? "a Tier 3"}, the target's next damage is halved` : ""}${String(x.grantCritical ?? "").trim() ? `; its card's Critical row: "${esc(String(x.grantCritical).trim())}"` : ""}.`;
     case "zone": {
       const who = { allies: "Allies", enemies: "Enemies", all: "Creatures" }[x.zoneWho] ?? "Allies", fx = fxNameOf(x.fxUuid), heal = String(x.zoneHeal ?? "").trim();
       return `<b>${who}</b> in the placed area${fx ? ` gain <b>${esc(fx)}</b> while inside` : ""}${fx && heal ? " and" : ""}${heal ? ` heal <b>${esc(heal)}</b> at the start of each of their turns` : ""}${!fx && !heal ? " (drop an Effect, or write a heal)" : ""}.`;

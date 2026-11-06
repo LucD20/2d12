@@ -1,0 +1,5 @@
+halfHits t3: nnny | t2: nnyy | t1: nyyy | crit: n y | all: y | never: n n
+the old halfT3 reads as t3; the Critical text is kept: true
+the editor: a choice and the Critical text: true
+the granted use's card gets the Critical row: true
+the Versions editor opens an effect by its name: true
