@@ -92,6 +92,17 @@ function grantName(msg) {
 // After a use from the card, with uses left, a short card repeats the buttons (the Action's own card is long and pushes this one up).
 const cleanName = n => String(n ?? "").replace(/\s*\(.*\)\s*$/, "");
 const escT = t => String(t ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+/** v0.0.264 (Lucas): pure: a Grant's "On [a result], the card says [line]" written on the granted use's Version: the Critical row for a Critical,
+ *  the Tier rows from that Tier up (a Version with no tiers: its text), every row for "any result". Other Grants leave the Version as it is. */
+export function withGrantLine(version, grant) {
+  const on = String(grant?.on ?? ""), text = String(grant?.text ?? "").trim();
+  if (!version || !on || !text || (grant?.does ?? "half") !== "text") return version;
+  const v = { ...version }, add = k => { v[k] = [v[k], text].filter(Boolean).join(" "); };
+  if (on === "crit") add("critical");
+  else if (v.noTiers) add("effects");
+  else for (const n of [1, 2, 3]) if (on === "all" || n >= (Number(on.slice(1)) || 1)) add(`x${n}`);
+  return v;
+}
 /** The rows of a grant card: one per grant, with its buttons; the live effect says what is left (gone: all spent). */
 export function grantRowsHtml(actor, card) {
   return (card?.effects ?? []).map(g => {

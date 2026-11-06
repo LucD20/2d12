@@ -5,6 +5,12 @@ import { esc } from "./util.mjs";
 
 const keys = s => (s ? [...s] : []);
 /** The name of an Effect by its UUID (empty when it can't be looked up: tests, or an Effect that no longer exists). */
+/** v0.0.264: a Grant's "On [a result], [what happens]" as text ("" when it has none). */
+const grantOnText = x => {
+  const on = x.grantOn || x.halfOn || (x.halfT3 ? "t3" : ""), does = x.grantDo || "half", text = String(x.grantText ?? "").trim();
+  if (!on || (does === "text" && !text)) return "";
+  return `; on ${TWOD12.grantOnChoices[on] ?? on}, ${does === "text" ? `the card says "${esc(text)}"` : "the target's next damage is halved"}`;
+};
 const fxNameOf = uuid => { try { return uuid && typeof fromUuidSync === "function" ? (fromUuidSync(uuid)?.name ?? "") : ""; } catch (e) { return ""; } };
 const traitName = k => TWOD12.traits[k] ?? TWOD12.rollKinds?.[k] ?? (String(k).startsWith("__name:") ? `${String(k).slice(7).replace(/-/g, " ")} (by name)` : k);
 const plural = (n, w) => `${n} ${w}${n === 1 ? "" : "s"}`;
@@ -72,7 +78,7 @@ function settingSentenceOnly(x) {
     case "inline":
       return `Has the Action <b>${esc(fxNameOf(x.inlineAction) || x.inlineAction || "?")}</b> while this lasts.`;
     case "grant":
-      return `Can use <b>${esc(x.grantAction || "?")}</b> ${x.grantCount === 1 ? "once" : `${x.grantCount} times`} for <b>${x.grantAp ? `${x.grantAp} AP` : "free"}</b>${x.boons ? `, with ${plural(x.boons, "Boon")}` : ""}${x.grantDistinct ? ", a different target each time" : ""}${(x.halfOn || (x.halfT3 ? "t3" : "")) ? `; on ${TWOD12.halfOnChoices[x.halfOn || "t3"] ?? "a Tier 3"}, the target's next damage is halved` : ""}${String(x.grantCritical ?? "").trim() ? `; its card's Critical row: "${esc(String(x.grantCritical).trim())}"` : ""}.`;
+      return `Can use <b>${esc(x.grantAction || "?")}</b> ${x.grantCount === 1 ? "once" : `${x.grantCount} times`} for <b>${x.grantAp ? `${x.grantAp} AP` : "free"}</b>${x.boons ? `, with ${plural(x.boons, "Boon")}` : ""}${x.grantDistinct ? ", a different target each time" : ""}${grantOnText(x)}.`;
     case "zone": {
       const who = { allies: "Allies", enemies: "Enemies", all: "Creatures" }[x.zoneWho] ?? "Allies", fx = fxNameOf(x.fxUuid), heal = String(x.zoneHeal ?? "").trim();
       return `<b>${who}</b> in the placed area${fx ? ` gain <b>${esc(fx)}</b> while inside` : ""}${fx && heal ? " and" : ""}${heal ? ` heal <b>${esc(heal)}</b> at the start of each of their turns` : ""}${!fx && !heal ? " (drop an Effect, or write a heal)" : ""}.`;

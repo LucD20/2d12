@@ -144,8 +144,9 @@ export const TWOD12 = {
   },
   // v0.0.261 (Lucas, Divine Intervention): the moment a Reaction watches for by itself ("would go Down": asked before the damage lands)
   moments: { "": "None", wouldDown: "A creature would go Down" },
-  // v0.0.263 (Lucas): a Grant's "On a Tier X, the target's next damage is halved": the result that does it
-  halfOnChoices: { "": "never", t1: "a Tier 1 or more", t2: "a Tier 2 or more", t3: "a Tier 3", crit: "a Critical", all: "any result" },
+  // v0.0.264 (Lucas): a Grant's "On [a result], [what happens]": the result, and what happens (the target's next damage halved, or a line on the card)
+  grantOnChoices: { "": "never", t1: "a Tier 1 or more", t2: "a Tier 2 or more", t3: "a Tier 3", crit: "a Critical", all: "any result" },
+  grantDoChoices: { half: "the target's next damage is halved", text: "the card says" },
   effectSettings: { inline: "Grants an Action while active", boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", zone: "Zone (the placed area)", speed: "Speed", light: "Token Light", note: "Note", ignore: "Ignore a Bane", rally: "Rally Points", turnstart: "Effect each turn", message: "Chat message", weaponprop: "Weapon property", mastery: "Starting Mastery", eschook: "Escalation hook" },
   // v0.0.243 (pack R): the moments a class's Escalation hook names (once an encounter, +1 Escalation): Kindled Wrath, Thrill of the Kill.
   escHookWhen: { allyState: "An ally within N squares becomes Bloodied or goes Down", markDown: "The creature it marked goes Down" },

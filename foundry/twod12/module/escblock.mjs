@@ -90,8 +90,11 @@ export function grantBadges(g, effect) {
   const short = [], long = [];
   if (g.distinct) { short.push("≠ targets"); long.push("Each use needs a different target"); }
   if (g.boons) { short.push(`+${g.boons} Boon${g.boons === 1 ? "" : "s"}`); long.push(`${g.boons} Boon${g.boons === 1 ? "" : "s"} on it`); }
-  if (g.halfOn) { const w = TWOD12.halfOnChoices?.[g.halfOn] ?? g.halfOn; short.push(`half on ${w.replace(/^a /, "").replace(" or more", "+")}`); long.push(`On ${w}, the target's next damage is halved`); }   // v0.0.263
-  if (g.critical) { short.push("Critical row"); long.push(`Critical: ${g.critical}`); }
+  if (g.on && (g.does !== "text" || g.text)) {   // v0.0.264: "On [a result], [what happens]"
+    const w = TWOD12.grantOnChoices?.[g.on] ?? g.on, when = w.replace(/^a /, "").replace(" or more", "+");
+    if (g.does === "text") { short.push(`on ${when}: ${g.text}`); long.push(`On ${w}, the card says "${g.text}"`); }
+    else { short.push(`half on ${when}`); long.push(`On ${w}, the target's next damage is halved`); }
+  }
   for (const b of effect?.getFlag?.(F, "bonuses") ?? []) {
     if (b.dmg) { short.push(`+${b.dmg}${b.dmgSub ? ` ${b.dmgSub}` : ""}`); long.push(`+[${({ B: "V", M: "R" })[b.dmgPool || "B"] ?? b.dmgPool}] ${b.dmg}${b.dmgSub ? ` ${TWOD12.subtypes[b.dmgSub] ?? b.dmgSub}` : ""} damage${tierWord(b.tiers) ? ` on${tierWord(b.tiers)}` : ""}`); }
     if (b.text) { short.push(`${String(b.text).replace(/\s*\((?:EoT|.*round.*)\)\s*$/i, "")}${tierWord(b.tiers)}`); long.push(`${b.text}${tierWord(b.tiers) ? ` on${tierWord(b.tiers)}` : ""}`); }

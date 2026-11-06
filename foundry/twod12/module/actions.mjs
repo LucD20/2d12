@@ -27,7 +27,7 @@ import { tierProbs, perDieDelta, topStep } from "./calc.mjs";
 import { squaresBetween, rangeBand } from "./move.mjs";
 import { setupFor } from "./setup.mjs";
 import { coverBetween, coverWhy } from "./cover.mjs";
-import { consumeGrant, attachGrantCard } from "./freeuse.mjs";
+import { consumeGrant, attachGrantCard, withGrantLine } from "./freeuse.mjs";
 import { zoneOf } from "./zone.mjs";   // v0.0.261 (Consecrated Ground): the zone a Version's effects describe goes on the placed area
 import { setHalfHint, halfHits } from "./halfhint.mjs";   // v0.0.261 (Covering Shot): on a Tier 3, the target's next damage card lights its Half button
 import { buildPreviews, updateOdds, applyTalentMods, tierLines, liveAvg } from "./preview.mjs";
@@ -708,8 +708,8 @@ export async function useAction(actor, item, opts = {}) {
   const damageStep = Math.max(Math.max(0, Math.trunc(Number(data.empowered)) || 0), reloadShot ? 2 : 0) - Math.max(0, Math.trunc(Number(data.enfeebled)) || 0);
   const talentMods = talentModsFor(actor, item);
   let version = applyTalentMods(versions.find(v => v.ap === Number(data.ap)), talentMods);
-  // v0.0.263 (Lucas): a granted use can bring a Critical row to its card (the Grant's "Critical" text)
-  if (opts.grant?.grant?.critical) version = { ...version, critical: [version.critical, opts.grant.grant.critical].filter(Boolean).join(" ") };
+  // v0.0.264 (Lucas): a Grant's "On [a result], the card says [line]" goes on the granted use's card rows (freeuse.mjs withGrantLine)
+  if (opts.grant?.grant) version = withGrantLine(version, opts.grant.grant);
   if (basicKey === "crawl" && version.ap >= 2 && Number(s.moveSpeed ?? s.speed ?? 0) < 5) return ui.notifications.warn(`${actor.name}'s Speed is under 5: Crawl moves 3 squares only with Speed 5 or higher (use the 1 AP version).`);
   const apCost = opts.free ? (opts.ap ?? 0) : version.ap;
   // An Escalation Action (the Apex): its Escalation is a requirement, checked before the AP is spent; nothing is spent (pack R, v0.0.243).
@@ -1020,7 +1020,7 @@ export async function useAction(actor, item, opts = {}) {
   if (data.reloadshot === "on") { const w = weapon ?? previewWeapon; if (w) await w.update({ "system.unloaded": true }); }
   if (opts.grant) await consumeGrant(actor, opts.grant, targets[0]?.uuid ?? "");
   // v0.0.261 (Lucas, Covering Shot): a granted use that halves the target's next damage on a Tier 3: the target's next damage card lights its Half button
-  if (halfHits(opts.grant?.grant?.halfOn, tier ?? 0, !!chk?.crit) && targets[0]?.uuid) { try { await setHalfHint(targets[0].uuid, { source: String(opts.grant.effect?.name ?? item.name).replace(/\s*\(.*\)\s*$/, ""), by: actor.name }); } catch (e) { console.warn("twod12 | half hint", e); } }
+  if (opts.grant?.grant?.does === "half" && halfHits(opts.grant.grant.on, tier ?? 0, !!chk?.crit) && targets[0]?.uuid) { try { await setHalfHint(targets[0].uuid, { source: String(opts.grant.effect?.name ?? item.name).replace(/\s*\(.*\)\s*$/, ""), by: actor.name }); } catch (e) { console.warn("twod12 | half hint", e); } }
   opts.onUsed?.({ targets });
   return true;
 }

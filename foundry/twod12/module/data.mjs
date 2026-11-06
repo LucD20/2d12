@@ -536,7 +536,8 @@ const settingsField = () => new ArrayField(new SchemaField({
         speedMode: choice({ override: "Override", add: "Add" }, "add"), speedFormula: str(),
         // Grant: lets the creature use an Action (a name, "category:Weapon Technique" or "trait:strike") a number of times, for this AP cost.
         grantAction: str(), grantCount: int(1, 1), grantAp: int(0, 0), grantDistinct: bool(), halfT3: bool(),   // v0.0.261 (Covering Shot): on a Tier 3, the target's next damage is halved (the Half button lit); v0.0.263: halfOn says on which result (halfT3 is read as "t3")
-        halfOn: choice(TWOD12.halfOnChoices, ""), grantCritical: str(),   // v0.0.263 (Lucas): the result that halves the target's next damage; a Critical row for the granted use's card
+        // v0.0.264 (Lucas): "On [grantOn], [grantDo]": the target's next damage halved (Covering Shot), or a line (grantText) on the granted use's card for those results. halfOn: v0.0.263's field, read as grantOn.
+        grantOn: choice(TWOD12.grantOnChoices, ""), grantDo: choice(TWOD12.grantDoChoices, "half"), grantText: str(), halfOn: choice(TWOD12.grantOnChoices, ""),
         // v0.0.261 (Consecrated Ground): Zone: the placed area holds it; who is inside gains the Effect (fxUuid) while inside, or heals this at the start of each of their turns
         zoneWho: choice({ allies: "Allies", enemies: "Enemies", all: "Everyone" }, "allies"), zoneHeal: str(),
         inlineAction: str(),   // v0.0.249 (Lucas, inline Actions): the Action (a uuid or a name) the creature has while the effect lasts (Beacon's Step)

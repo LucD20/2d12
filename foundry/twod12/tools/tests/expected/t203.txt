@@ -1,0 +1,5 @@
+on a Critical: {"x1":"","x2":"Prone.","x3":"","critical":"Pushed 2.","effects":"A shot."}
+on a Tier 2 or more: {"x1":"","x2":"Prone. Pushed 2.","x3":"Pushed 2.","critical":"","effects":"A shot."}
+on any result: {"x1":"Pushed 2.","x2":"Prone. Pushed 2.","x3":"Pushed 2.","critical":"","effects":"A shot."}
+a no-tier Version: {"x1":"","x2":"Prone.","x3":"","critical":"","effects":"A shot. Pushed 2."}
+the half, or no line, leaves it: true
