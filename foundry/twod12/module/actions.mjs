@@ -17,7 +17,7 @@ import { offerWake } from "./down.mjs";
 import { performCheck, performMultiCheck, multiCheckHtml, collapseNames, uniqueLabels, checkHtml, esc, sgn } from "./roll.mjs";
 import { fxTipHtml, hoverOf, tipAttrs } from "./util.mjs";   // v0.0.253: the effects' hover cards
 import { postDamageCard, postMultiDamageCard } from "./dmgcard.mjs";
-import { cardVars, cardHead, flavorHtml, apIcon, traitChevrons, categoryText, highlightText, metaRowHtml, effectiveFrequency, distanceText, areaText, cardColorFor, vsText, targetsRowHtml, targetSide, requirementProblem, doomStatus } from "./config.mjs";
+import { cardVars, cardHead, flavorHtml, apIcon, traitChevrons, categoryText, highlightText, metaRowHtml, effectiveFrequency, distanceText, areaText, cardColorFor, vsText, targetsRowHtml, targetEntries, requirementProblem, doomStatus } from "./config.mjs";
 import { collectBonuses, expireOnUse } from "./bonus.mjs";
 import { notesFor, useOnceModifiers, resolveModifiers, applyEffects, originInfo, damageSteps, modifierList } from "./effects.mjs";
 import { spendAP, combatantOf } from "./combat.mjs";
@@ -893,7 +893,7 @@ export async function useAction(actor, item, opts = {}) {
     ${bonusRows}
     ${critHtml}${effectsHtml}
     ${fxn.all.length && !effectsOff ? `<div class="fxrow">&#10022; ${fxNames(fxn.all)}</div>` : ""}
-    ${btn}${isSelf && !String(it.area ?? "").trim() ? "" : targetsRowHtml([collapseNames(targets.map(t => t.name))].filter(Boolean), { retarget: true, side: targetSide(targets, selfToken?.document?.disposition ?? 1) })}${applyAfterHtml(version, targets, selfToken)}${it.worth ? `<div class="ac-worth">${esc(it.worth)}</div>` : ""}</div>`;
+    ${btn}${isSelf && !String(it.area ?? "").trim() ? "" : targetsRowHtml(targetEntries(targets, selfToken?.document?.disposition ?? 1), { retarget: true })}${applyAfterHtml(version, targets, selfToken)}${it.worth ? `<div class="ac-worth">${esc(it.worth)}</div>` : ""}</div>`;
   // v0.0.195 (Lucas): a movement-only Action (Advance, Evade, Crawl) in combat starts its movement with the banner (squares left, Done) and
   // posts one short line when it ends, instead of a card whose button then posted the movement (two messages for one step).
   const mvInner = pureMove(it, version, basicKey);
@@ -1030,7 +1030,10 @@ export function applyAfterHtml(version, targets, selfToken) {
     const text = st.chips.join(" "), sides = [...new Set([...text.matchAll(/\|side:(allies|enemies)\b/g)].map(m => m[1]))], prefix = st.label ? `${esc(st.label)}: ` : "";
     if (!sides.length) return `<div class="tline applyrow">${st.label ? `<span class="apside">${esc(st.label)}</span>` : ""}${btn(text, "", k, st.label ? "" : prefix)}</div>`;
     // v0.0.252 (Lucas): just "Allies" / "Enemies", a click opens the list of the creatures (a bullet each)
-    return sides.map(side => { const ns = names(side), chips = st.chips.filter(c => !/\|side:/.test(c) || c.includes(`|side:${side}`)).join(" "); return `<div class="tline applyrow"><details class="apside"><summary>${prefix}${side === "allies" ? "Allies" : "Enemies"} <small>(${ns.length})</small></summary>${ns.length ? `<ul>${ns.map(n => `<li>${n}</li>`).join("")}</ul>` : "<ul><li><i>none</i></li></ul>"}</details>${btn(chips, side, k)}</div>`; }).join("");
+    // v0.0.259 (Lucas): the side and its button on one line; one creature's name beside the side, several as a small list under it (the whole width)
+    return sides.map(side => { const ns = names(side), chips = st.chips.filter(c => !/\|side:/.test(c) || c.includes(`|side:${side}`)).join(" "), word = side === "allies" ? "Allies" : "Enemies";
+      const head = ns.length === 1 ? `${prefix}${word}: <b>${ns[0]}</b>` : `${prefix}${word} <small>(${ns.length || "none"})</small>`;
+      return `<div class="tline applyrow${ns.length > 1 ? " many" : ""}"><span class="apside">${head}</span>${btn(chips, side, k)}${ns.length > 1 ? `<ul class="aplist ${side}">${ns.map(n => `<li>${n}</li>`).join("")}</ul>` : ""}</div>`; }).join("");
   }).join("");
 }
 /** The Apply button of a no-damage card: the chain's chips of that side, for that side's creatures among the card's targets. */
@@ -1107,7 +1110,7 @@ export async function retargetAction(msg) {
   if (!toks.length) return ui.notifications.warn("Target or select a token first.");
   const targets = toks.map(t => ({ uuid: t.document.uuid, name: t.name, disposition: t.document.disposition }));
   const mine = canvas.tokens?.get(msg.speaker?.token)?.document.disposition ?? game.actors.get(msg.speaker?.actor)?.getActiveTokens?.()[0]?.document.disposition ?? 1;
-  let content = msg.content.replace(/<div class="tline cardtargets">[\s\S]*?<\/div>/, targetsRowHtml(targets.map(t => t.name), { retarget: true, side: targetSide(targets, mine) }));
+  let content = msg.content.replace(/<div class="tline cardtargets">[\s\S]*?<\/div>/, targetsRowHtml(targetEntries(targets, mine), { retarget: true }));
   // v0.0.251 (Lucas): the Apply rows of a no-damage card follow the new targets
   const f = msg.getFlag("twod12", "action");
   if (f?.after && f.noTiers) {

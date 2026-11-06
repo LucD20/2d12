@@ -453,10 +453,29 @@ export const targetSide = (targets, mine = 1) => {
   if (ds.every(d => d !== mine)) return "enemy";
   return "";
 };
-export const targetsRowHtml = (tokens, { retarget = false, side = "" } = {}) =>
-  tokens?.length || retarget
-    ? `<div class="tline cardtargets"><span class="tname${tokens?.length ? (side ? ` ${side}` : "") : " none"}"><i class="fa-solid fa-crosshairs"></i>${tokens?.length ? tokens.map(escAttr).join(", ") : "No target"}</span>${retarget ? `<button type="button" class="tgt" data-twod12="retargetAction" data-tooltip="Target the selected tokens"><i class="fa-solid fa-bullseye"></i></button>` : ""}</div>`
-    : "";
+/** v0.0.259 (Lucas): the card's targets as entries for the target line, each name once ("NPC ×2") with its side ("ally" / "enemy" / ""). */
+export const targetEntries = (targets, mine = 1) => {
+  const out = [];
+  for (const t of targets ?? []) {
+    const name = String(t?.name ?? "").trim(); if (!name) continue;
+    const d = t?.disposition, side = d === undefined || d === null ? "" : d === mine ? "ally" : "enemy";
+    const have = out.find(e => e.name === name && e.side === side);
+    if (have) have.n++; else out.push({ name, side, n: 1 });
+  }
+  return out;
+};
+const entryOf = t => (typeof t === "string" ? { name: t, side: "", n: 1 } : { name: String(t?.name ?? ""), side: t?.side ?? "", n: Number(t?.n) || 1 });
+/** The target line of a card: one target is a tag (colored by its side); several are a tag with the count and a small list under it, a dot per side. */
+export const targetsRowHtml = (tokens, { retarget = false, side = "" } = {}) => {
+  if (!tokens?.length && !retarget) return "";
+  const es = (tokens ?? []).map(entryOf), total = es.reduce((a, e) => a + e.n, 0);
+  const btn = retarget ? `<button type="button" class="tgt" data-twod12="retargetAction" data-tooltip="Target the selected tokens"><i class="fa-solid fa-bullseye"></i></button>` : "";
+  const one = n => `${escAttr(n.name)}${n.n > 1 ? ` \u00d7${n.n}` : ""}`;
+  if (!es.length) return `<div class="tline cardtargets"><span class="tname none"><i class="fa-solid fa-crosshairs"></i>No target</span>${btn}</div>`;
+  const sd = side || (es.every(e => e.side === "ally") ? "ally" : es.every(e => e.side === "enemy") ? "enemy" : "");
+  if (es.length === 1) return `<div class="tline cardtargets"><span class="tname${sd ? ` ${sd}` : ""}"><i class="fa-solid fa-crosshairs"></i>${one(es[0])}</span>${btn}</div>`;
+  return `<div class="tline cardtargets many"><span class="tname${sd ? ` ${sd}` : ""}"><i class="fa-solid fa-crosshairs"></i>${total} targets</span>${btn}<ul class="tlist">${es.map(e => `<li${e.side ? ` class="${e.side}"` : ""}>${one(e)}</li>`).join("")}</ul></div>`;
+};
 
 /** "Speed 3" in Requirements: the creature needs at least that Speed. Returns a reason it can't, or "". */
 /** Hands in use: every wielded weapon uses its hands, except Barehanded weapons (they use no hand). */

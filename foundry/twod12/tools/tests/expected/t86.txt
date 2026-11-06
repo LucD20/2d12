@@ -1,7 +1,7 @@
 targets chosen by the area: Goblin, Lonny, Nari
 notes: (none)
 chips offered in the dialog: Actor.Nari|pr:0* syn:cover|Actor.Lonny*
-card: Whirlwind Encounter 2AP Talent 1 Weapon Melee Area Self Strike Targets: All creatures in the Area Area: 5 Emanation Vs. AD @Template[emanation|distance:5|targets:all|self:no|at:self|quick:yes|label:Apply Area] &#10022; &#10022; &#10022; Weapon Modifier • Body 6 + 7 + 1 0 1 Weapon Modifier +2 Nari 16 AD 11 Tier 2 Prone T1 12% · T2 44% · T3 43% Lonny 14 AD 11 Tier 2 Medium cover T1 28% · T2 44% · T3 27% Goblin 15 AD 11 Tier 2 T1 17% · T2 47% · T3 37% &#10022; ≤ 10 2 Weapon Modifier 11–17 0 Greatsword + 2 Weapon Modifier Nari, Lonny, Goblin ≥ 18 0 Greatsword + 1d6 + 2 Weapon Modifier &#10022; Roll Damage (per Tier) Nari, Lonny, Goblin
+card: Whirlwind Encounter 2AP Talent 1 Weapon Melee Area Self Strike Targets: All creatures in the Area Area: 5 Emanation Vs. AD @Template[emanation|distance:5|targets:all|self:no|at:self|quick:yes|label:Apply Area] &#10022; &#10022; &#10022; Weapon Modifier • Body 6 + 7 + 1 0 1 Weapon Modifier +2 Nari 16 AD 11 Tier 2 Prone T1 12% · T2 44% · T3 43% Lonny 14 AD 11 Tier 2 Medium cover T1 28% · T2 44% · T3 27% Goblin 15 AD 11 Tier 2 T1 17% · T2 47% · T3 37% &#10022; ≤ 10 2 Weapon Modifier 11–17 0 Greatsword + 2 Weapon Modifier Nari, Lonny, Goblin ≥ 18 0 Greatsword + 1d6 + 2 Weapon Modifier &#10022; Roll Damage (per Tier) 3 targets Nari Lonny Goblin
 flags: tier 2 | results: ["Nari: tier 2","Lonny: tier 2","Goblin: tier 2"] | targets: ["Nari","Lonny","Goblin"]
 dice in the message: 4
 shared dice shown: boon dice 1 | bane dice 0,1
@@ -33,7 +33,7 @@ rows on the card: 1 | Skeleton Captain ×6 15 Bo 13 Tier 2 T1 28% · T2 45% · T
 tier row names: ≤ 12 2 Weapon Modifier 13–19 0 Greatsword + 2 Weapon Modifier Skeleton Captain ×6 ≥ 20 0 Greatsword + 1d6 + 2 Weapon Mod
 targets line: Skeleton Captain ×6
 damage: one card with 6 rows, named: Skeleton Captain 1, Skeleton Captain 2, Skeleton Captain 3, Skeleton Captain 4, Skeleton Captain 5, Skeleton Captain 6 | All bar: true
-size of the roll card: about 4346 characters for 6 creatures (one row), against 5211 for 3
+size of the roll card: about 4346 characters for 6 creatures (one row), against 5313 for 3
 gridless scene: Whirlwind still rolls: true 
 dots: "" | g g r | capped at 5 each: 5 5 | never negative: ""
 captions: {"name":"Skeleton Captain 2","detail":"DC 13 · 2 Banes"} {"name":"Nari","detail":"DC 17 · 1 Boon"} {"name":"Goblin","detail":"DC 20"} {"name":"Lonny","detail":"DC 15 · 3 Boons · 1 Bane"}

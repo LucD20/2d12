@@ -14,7 +14,7 @@ console.log("enemy row:", cf.targetsRowHtml(["Goblin ×2"], { retarget: true, si
 console.log("ally row:", cf.targetsRowHtml(["Nari"], { retarget: true, side: "ally" }));
 console.log("no target keeps its own class:", cf.targetsRowHtml([], { retarget: true, side: "ally" }).includes('class="tname none"'));
 const a = src("module/actions.mjs");
-console.log("the card and the retarget pass the side:", a.includes("side: targetSide(targets, selfToken?.document?.disposition ?? 1)") && a.includes("side: targetSide(targets, mine)"));
+console.log("the card and the retarget pass the side:", a.includes("targetEntries(targets, selfToken?.document?.disposition ?? 1)") && a.includes("targetEntries(targets, mine)"));   // v0.0.259: as entries, each with its side
 const e = src("module/effects.mjs");
 console.log("the panel orders a linked condition under its effect with a chain:", e.includes('link.className = "fx-chain"') && e.includes('order.push(e, ...shown.filter(c => c.getFlag(F, "linkedTo") === e.id))'));
 const css = src("styles/system.css");

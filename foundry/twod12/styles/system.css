@@ -2270,3 +2270,21 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat .cardtargets .tgt { border-radius: 3px; width: 24px; height: 22px; }
 #twod12-effects .fx-chain { width: 36px; height: 12px; margin: -8px 0; display: flex; justify-content: center; align-items: center; position: relative; z-index: 2; pointer-events: auto; }
 #twod12-effects .fx-chain i { width: 14px; height: 14px; border-radius: 7px; background: #1e1b16; border: 1px solid #c8b48a; color: #e0c98a; font-size: 8px; line-height: 12px; text-align: center; transform: rotate(90deg); }
+/* v0.0.259 (Lucas): one target is a tag, several are "N targets" with a small list under it (a dot per side); the Apply rows' names under the side, the whole width; the panel's chain clearer. */
+.twod12.chat .cardtargets { flex-wrap: wrap; row-gap: 2px; }
+.twod12.chat .cardtargets .tname { white-space: normal; overflow: visible; text-overflow: clip; text-align: center; }
+.twod12.chat .cardtargets .tlist { flex: 1 1 100%; order: 9; margin: 2px 0 0; padding: 0 0 0 14px; list-style: none; font-size: 11px; font-weight: 500; line-height: 15px; color: #2c2a26; }
+.twod12.chat .cardtargets .tlist li { position: relative; }
+.twod12.chat .cardtargets .tlist li::before { content: ""; position: absolute; left: -11px; top: 5px; width: 6px; height: 6px; border-radius: 3px; background: #a8a08e; }
+.twod12.chat .cardtargets .tlist li.ally::before { background: #3B6D11; } .twod12.chat .cardtargets .tlist li.enemy::before { background: #A32D2D; }
+.twod12.chat .applyrow { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 8px; }
+.twod12.chat .applyrow > .apside { flex: 1 1 auto; min-width: 0; white-space: normal; }
+.twod12.chat .applyrow > button { flex: 0 0 auto; width: auto; min-width: 150px; white-space: nowrap; }
+.twod12.chat .applyrow > .aplist { flex: 1 1 100%; margin: 0; padding: 0 0 0 14px; list-style: none; font-size: 11px; font-weight: 500; line-height: 15px; columns: 2; column-gap: 10px; }
+.twod12.chat .applyrow > .aplist li { position: relative; break-inside: avoid; }
+.twod12.chat .applyrow > .aplist li::before { content: ""; position: absolute; left: -11px; top: 5px; width: 6px; height: 6px; border-radius: 3px; background: #a8a08e; }
+.twod12.chat .applyrow > .aplist.allies li::before { background: #3B6D11; } .twod12.chat .applyrow > .aplist.enemies li::before { background: #A32D2D; }
+#twod12-effects .fx-chain { height: 14px; margin: 0; }
+#twod12-effects .fx-chain .fx-chainline { position: absolute; left: 50%; top: -2px; bottom: -2px; width: 2px; margin-left: -1px; background: #c8b48a; }
+#twod12-effects .fx-chain i { position: relative; width: 18px; height: 18px; border-radius: 9px; font-size: 10px; line-height: 16px; color: #f0dca8; background: #2a241a; border-color: #e0c98a; }
+#twod12-effects .fx-icon.fx-linked { border-color: #c8b48a; border-style: dashed; }

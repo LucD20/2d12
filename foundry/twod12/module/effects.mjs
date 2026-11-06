@@ -443,14 +443,14 @@ function renderPanel() {
       if (e.getFlag(F, "linkedTo") && shown.some(p => p.id === e.getFlag(F, "linkedTo"))) {
         const link = document.createElement("div");
         link.className = "fx-chain";
-        link.innerHTML = `<i class="fa-solid fa-link"></i>`;
+        link.innerHTML = `<span class="fx-chainline"></span><i class="fa-solid fa-link"></i>`;
         link.dataset.tooltip = `Brought by ${shown.find(p => p.id === e.getFlag(F, "linkedTo")).name}: it leaves with it`;
         panel.appendChild(link);
       }
       const dur = durationText(e.getFlag(F, "duration"));
       const note = (e.getFlag(F, "notes") ?? []).map(n => n.text).filter(Boolean).join(" ");
       const el = document.createElement("div");
-      el.className = "fx-icon";
+      el.className = `fx-icon${e.getFlag(F, "linkedTo") && shown.some(p => p.id === e.getFlag(F, "linkedTo")) ? " fx-linked" : ""}`;
       el.dataset.effectId = e.id;
       el.innerHTML = `<img src="${e.img}" alt="">${isExhaustedFx(e) && actor.type === "character" && actor.system.exhausted > 0 ? `<span class="fx-val">${actor.system.exhausted}</span>` : ""}`;
       if (isValued(e)) el.innerHTML = `<img src="${e.img}" alt=""><span class="fx-val">${Number(e.getFlag(F, "value")) || 1}</span>`;

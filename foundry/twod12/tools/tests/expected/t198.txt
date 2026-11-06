@@ -1,0 +1,8 @@
+entries: [{"name":"Paladin 1","side":"ally","n":1},{"name":"NPC","side":"enemy","n":2}]
+three targets, mixed: <div class="tline cardtargets many"><span class="tname"><i class="fa-solid fa-crosshairs"></i>3 targets</span><button type="button" class="tgt" data-twod12="retargetAction" data-tooltip="Target the selected tokens"><i class="fa-solid fa-bullseye"></i></button><ul class="tlist"><li class="ally">Paladin 1</li><li class="enemy">NPC ×2</li></ul></div>
+two of a name: <div class="tline cardtargets"><span class="tname enemy"><i class="fa-solid fa-crosshairs"></i>NPC ×2</span><button type="button" class="tgt" data-twod12="retargetAction" data-tooltip="Target the selected tokens"><i class="fa-solid fa-bullseye"></i></button></div>
+two allies: <div class="tline cardtargets many"><span class="tname ally"><i class="fa-solid fa-crosshairs"></i>2 targets</span><ul class="tlist"><li class="ally">Nari</li><li class="ally">Lonny</li></ul></div>
+a name only (the old way): <div class="tline cardtargets"><span class="tname"><i class="fa-solid fa-crosshairs"></i>Goblin</span><button type="button" class="tgt" data-twod12="retargetAction" data-tooltip="Target the selected tokens"><i class="fa-solid fa-bullseye"></i></button></div>
+the card and the retarget pass entries: true
+the Apply rows: the name beside the side, or a list under it: true
+the styles and the chain: true
