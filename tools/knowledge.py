@@ -31,6 +31,7 @@ DESIGN_DOCS = [
     "book/rework-r.md",         # pack R: the numbers and the decided sheet (section 14); R-core, R-classes and R-bestiary applied, R-Foundry to go
     "book/progression-lv.md",   # progression, Overcast and Momentum (pack R changes Overcast)
     "book/class-charter.md",    # what every class must have
+    "book/items-economy.md",    # items, loot, money, carrying (designed 2026-11-06, logged part by part)
 ]
 # Topic sets: added only when named on the command line (they are big; the core set stays small).
 TOPICS = {
