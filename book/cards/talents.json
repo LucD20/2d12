@@ -267,7 +267,11 @@
      "ap": 1,
      "effects": "Make a [Ranged] Weapon Attack (1A) with 1 Boon. It ignores Low Cover.",
      "foundry": {
-      "append": "@Use[Weapon Attack|boons:1|label:[Ranged] Weapon Attack (1A) with 1 Boon]"
+      "fx": {
+       "all": [
+        "{{fx:Aim (Weapon Attack, 1 Boon)}}"
+       ]
+      }
      },
      "ruler": "does Weapon Attack | each boon 1 | cover"
     }
@@ -275,8 +279,8 @@
    "foundry": {
     "img": "icons/svg/target.svg",
     "folder": "Talents",
-    "automation": "silver",
-    "automationNote": "ignoring Low Cover (untick the Low cover chip in the roll dialog)."
+    "automation": "gold",
+    "automationNote": "the Weapon Attack with its Boon as a granted use (the card's button); ignoring Low Cover by hand (untick the Low cover chip in the roll dialog)."
    },
    "talent": {
     "group": "combat",

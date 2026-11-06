@@ -84,7 +84,8 @@ const appendOf = (v, key) => { const a = v.foundry?.append; if (!a) return ""; i
 export function versionData(c, v, resolve = s => s) {
   const weaponAction = (c.traits ?? []).includes("weapon") && !(c.traits ?? []).includes("save");   // a Save Action's tiers are the target's result: its [Mod] stays explicit
   const fx = { all: [], t1: [], t2: [], t3: [] };
-  for (const [k, list] of Object.entries(v.foundry?.fx ?? {})) fx[k] = list.map(u => ({ uuid: resolve(u), mode: "auto" }));
+  // v0.0.265: an entry can be { "uuid": "{{fx:X}}", "mode": "conditional" } (the damage card's Effects button applies it: Deathmark's shot when the target goes Down)
+  for (const [k, list] of Object.entries(v.foundry?.fx ?? {})) fx[k] = list.map(u => (typeof u === "object" && u ? { uuid: resolve(u.uuid), mode: u.mode || "auto" } : { uuid: resolve(u), mode: "auto" }));
   // v0.0.246 (Lucas): a Version's `foundry.text` is its Foundry text written in full ("As 1 AP, but..." is the book's; Foundry says it all); `foundry.after` the chips that run after the damage.
   const out = { ap: v.ap, noTiers: !v.tiers, t1: [], t2: [], t3: [], x1: "", x2: "", x3: "", effects: resolve(fxText(v.foundry?.text ?? v.effects, appendOf(v, "effects"))), fx };
   if (v.foundry?.after) out.after = resolve(v.foundry.after);

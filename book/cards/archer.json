@@ -239,7 +239,11 @@
      "ap": 1,
      "effects": "Make a [Ranged, Shot] Weapon Attack (1A) against the triggering creature. On a Tier 2 or 3, it is Hindered (EoT); on a Critical, it is also Pushed 2.",
      "foundry": {
-      "append": "@Use[Weapon Attack|label:Weapon Attack (1A)] @Condition[Hindered|eot]{Hindered (EoT)}"
+      "fx": {
+       "all": [
+        "{{fx:Overwatch (Weapon Attack)}}"
+       ]
+      }
      },
      "ruler": "does Weapon Attack"
     }
@@ -247,8 +251,8 @@
    "foundry": {
     "img": "icons/svg/target.svg",
     "folder": "Archer",
-    "automation": "silver",
-    "automationNote": "the Weapon Attack (the button); the trigger is by hand."
+    "automation": "gold",
+    "automationNote": "the Weapon Attack as a granted use (the card's button); its Tier 2 and 3 rows carry the Hindered and Pushed chips. The trigger is by hand until the Reactions pass."
    }
   },
   {
@@ -378,14 +382,21 @@
     {
      "ap": 2,
      "effects": "For 3 rounds (the area doesn't move), enemies in the area take 1 Bane on [Strike] Actions, and allies in it gain +1 Defense.",
-     "ruler": "rounds 3 | area 2 | allies 2 | banes 1 strike; defense 1 allies"
+     "ruler": "rounds 3 | area 2 | allies 2 | banes 1 strike; defense 1 allies",
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Covering Fire}}"
+       ]
+      }
+     }
     }
    ],
    "foundry": {
     "img": "icons/svg/target.svg",
     "folder": "Archer",
-    "automation": "bronze",
-    "automationNote": "the Bane and +1 Defense for creatures in the area (the area is placed and kept for 3 rounds).",
+    "automation": "gold",
+    "automationNote": "the area is a Zone kept 3 rounds: enemies inside carry the Bane, allies inside the +1 Defense, both only while inside.",
     "areaCfg": {
      "targets": "all",
      "keep": true,
@@ -710,7 +721,14 @@
      ],
      "effects": "Against your Marked Quarry, this Action has 1 Boon. If the target goes Down, you can choose a new Marked Quarry (0R) and make a [Ranged, Shot] Weapon Attack (1A) against them.",
      "foundry": {
-      "append": "@Use[Weapon Attack|label:Weapon Attack (1A)]"
+      "fx": {
+       "all": [
+        {
+         "uuid": "{{fx:Deathmark (Weapon Attack)}}",
+         "mode": "conditional"
+        }
+       ]
+      }
      }
     }
    ],
@@ -718,8 +736,8 @@
     "img": "icons/svg/target.svg",
     "folder": "Archer",
     "level": 1,
-    "automation": "silver",
-    "automationNote": "the Boon against the Quarry (the mark) and the Weapon Attack (the button); the new Quarry by hand."
+    "automation": "gold",
+    "automationNote": "the Boon against the Quarry (the mark); when the target goes Down, the damage card's Effects button grants the Weapon Attack (the sheet's ticket); the new Quarry by hand."
    }
   },
   {
@@ -743,7 +761,11 @@
      "effects": "Make a [Ranged, Shot] Weapon Attack (1A) against your Marked Quarry. For 1 round, they are Vulnerable 2, and [Strike] Actions your allies make against them deal an extra [V] 1d6 Pi.",
      "ruler": "does Weapon Attack | always: vulnerable 2 round",
      "foundry": {
-      "append": "@Use[Weapon Attack|label:Weapon Attack (1A)]"
+      "fx": {
+       "all": [
+        "{{fx:Open Season (Weapon Attack)}}"
+       ]
+      }
      }
     }
    ],
@@ -751,8 +773,8 @@
     "img": "icons/svg/target.svg",
     "folder": "Archer",
     "level": 1,
-    "automation": "bronze",
-    "automationNote": "the Weapon Attack (the button); Vulnerable 2 on the Quarry (drop the condition by hand); the allies add [V] 1d6 Pi by hand."
+    "automation": "silver",
+    "automationNote": "the Weapon Attack as a granted use (the card's button); Vulnerable 2 on the Quarry (drop the condition by hand); the allies add [V] 1d6 Pi by hand."
    },
    "distance": "Weapon"
   },
