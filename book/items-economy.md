@@ -171,11 +171,41 @@ About 14 CV fought per PC per level × 2 lots per CV × (treasure ÷ 100) = abou
 
 With a typical mix (Salvage and Hides common, Valuables and Arcana rarer) a lot averages ×1 in value and about 3 squares.
 13. **[agreed]** **The GM shifts the mix** to fit the monster: a beast with no Valuables but a rich hide, a cultist with Idols.
-14. *Suggestion (Claude, from how peddlers worked: they carried little coin and had to haul what they bought):* **a travelling merchant** buys everything at ×½ (Valuables at ×1) and has a **purse**: it can buy only so much (for example 10 lots) before it runs out of coin. A convenience, never the best deal.
+14. *Suggestion (Claude, from how peddlers worked: they carried little coin and had to haul what they bought):* **a travelling merchant** buys everything at ×½ (Valuables at ×1) and has a small **Purse** (the town block below, item 24). A convenience, never the best deal.
 
 ### Towns
 15. **[agreed]** **Each town has a sell multiplier per type** (×2, ×1.5 or ×½: a mage city pays ×2 for Arcana, a forge town ×1.5 for Salvage). Every town buys everything at ×½ at least; **Valuables sell at ×1 everywhere** (the safe coin).
-16. **[agreed]** Each town also has a **market level** (Part 1) and a **Supplies multiplier** (frontier prices: an outpost ×3, the capital ×1).
+16. **[Lucas]** **No Supplies multiplier** (dropped: at 1 SC a day, ×2 or ×3 barely matters past level 1). Instead, availability: every town sells Supplies at 1 SC a day unless it has the **No Supplies** tag (a besieged town, a famine, a hostile outpost): you leave with what you have or Forage.
+
+### The town stat block (logged 2026-11-06)
+Short and to the point (Lucas). What players say about settlement rules (a search, 2026-11-06): PF1e's Base Value and Purchase Limit were constantly misread (a per-item limit read as a total budget) and its "75% chance an item is in stock" was argued over; shopping can eat a session (the advice: a short procedure with a clear payoff, or a summary); tactical games often abstract money away (Draw Steel's Wealth score), which the optional quick-sell covers for tables that want it.
+
+> **Kelvah** · Level 5 · Town
+> **Tags:** Idols+, Hides · **Poor:** Arcana
+> **Purse** 250 SC · **Safe**
+> **Services:** crafter, sage, stable, temple
+> **Special Wares** (optional): Owl-eye Lenses, a Lesser Wand of Grasping Roots
+> *A pilgrim town on the river; the shrine buys every relic it can find.*
+
+17. **[Lucas]** **Level** = the market level: the town sells items up to that level. **[Lucas]** **Availability is never random:** every Common item up to its Level, and every Regional item of its tags, is always on sale (no "75% chance").
+18. **[Lucas / agreed]** **Tags** are loot types: a tag (*Idols*) means the town sells Regional Idol items and buys Idols lots at ×1.5; a **+** (*Idols+*) is a specialty, ×2. **Poor** types sell at ×½. Every other type sells at ×1, Valuables always at ×1. Other tags: **No Supplies**.
+19. **[Lucas]** **Purse:** how much the town can spend buying from you, **in total, per week**: loot lots and items alike (the rules say "in total" plainly; the block just says Purse). It stops "dump the whole dungeon in the first village" and makes the trip to the city a choice. *Alternative name if Purse reads unclear: Coffers.*
+20. **[agreed]** **Safe:** you can Rest there (a town with unrest might not be).
+21. **[agreed]** **Services** (one word each): **crafter** (moves enchantments; Repair later), **sage** (identifies items), **stable** (mules), **temple** (a safe Rest even when the town isn't Safe), **stash** (storage; base building later).
+22. **[Lucas]** **Special Wares (optional, for the GM):** items **outside the rules' band** that this town happens to have: above its Level, Regional items of another region, a Rare find. **It never limits** what the town sells (the Level and the tags do): "Stock" was dropped because it reads like the whole stock.
+23. **[agreed]** **Sizes, a guide:**
+
+| Size | Level | Purse |
+|---|---|---|
+| Hamlet | 1-2 | 10-50 SC |
+| Village | 3 | 100 SC |
+| Town | 4-6 | 150-350 SC |
+| City | 7-8 | 500-650 SC |
+| Capital | 9-10 | 800-1000 SC |
+
+24. **[agreed]** **The travelling merchant** in the same block: Level 2-4 (the GM's pick), no tags, buys everything at ×½ (Valuables ×1), Purse 50 SC, no Services ("sells a little of everything, pays badly, and is gone tomorrow").
+25. **[Lucas]** **The Town Visit:** a short checklist in the book, everyone at once, with Foundry buttons: **sell, buy, Supplies, pay Upkeep, Rest, Services.** A town visit takes minutes, not half a session.
+26. Left out on purpose: a population number (the size word is enough); skilled work by town size (PF2e's Earn Income is capped by settlement level; a Talent could later earn more than 1 SC a day in bigger towns).
 
 ### Selling
 17. **[Lucas]** **Quick-sell (optional rule):** sell everything anywhere at ¾, ignoring the multipliers (for players who don't want the trading game). GM note: grant more treasure from time to time to make up for it.
