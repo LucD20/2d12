@@ -1,0 +1,30 @@
+// Run with: node tools/tests/run.mjs (or node tools/tests/t199.mjs)
+// v0.0.260 (Lucas's test of v0.0.259): the retarget on a card with several targets (its row's class "many"); the enemy red a brick red;
+// the granted uses an Action's effect brings as buttons on its card (Double Shot), bound to the effect's grants, grayed when spent.
+import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
+import fs from "node:fs";
+globalThis.Combat = class {}; globalThis.CONFIG = {};
+globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: {} } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
+globalThis.Hooks = { on() {} }; globalThis.game = { settings: { get: () => true }, user: { id: "u1" }, messages: { contents: [] } };
+const src = f => fs.readFileSync(ROOT + f, "utf8");
+const fu = await import(ROOTURL + "module/freeuse.mjs");
+const grants = [{ spec: "Weapon Attack", count: 2, left: 2, ap: 0, distinct: true }];
+const fx = { id: "fx1", name: "Double Shot (2 Attacks)", getFlag: (ns, k) => ({ effectUuid: "Item.ds", grants }[k]) };
+const wa = { id: "wa", name: "Weapon Attack", system: { category: "Basic", traits: new Set(["weapon"]) } };
+const actor = { uuid: "Actor.a", effects: { get: id => (id === "fx1" ? fx : null), [Symbol.iterator]: function* () { yield fx; } }, itemTypes: { action: [wa] } };
+let updated = null;
+const msg = { content: '<div class="twod12 chat action"><div class="tline cardtargets"><span class="tname">x</span></div></div>', update: async d => { updated = d; } };
+await fu.attachGrantCard(msg, actor, ["Item.ds"]);
+console.log("the card's flag:", JSON.stringify(updated?.["flags.twod12.grantCard"]));
+console.log("the rows:", updated?.content.slice(updated.content.indexOf('<div class="tline grantrow">')));
+grants[0].left = 1;
+console.log("one spent:", fu.grantRowsHtml(actor, updated["flags.twod12.grantCard"]).replace(/^[\s\S]*?<div class="gbtns">/, ""));
+grants[0].left = 0;
+console.log("all spent:", /spent<\/small>/.test(fu.grantRowsHtml(actor, updated["flags.twod12.grantCard"])) && !/fa-bolt/.test(fu.grantRowsHtml(actor, updated["flags.twod12.grantCard"])));
+console.log("no grants, nothing:", await fu.attachGrantCard({ content: "<div></div>", update: async () => { throw new Error("should not update"); } }, actor, ["Item.other"]) === undefined);
+const a = src("module/actions.mjs");
+console.log("the retarget takes a row with several targets:", a.includes('/<div class="tline cardtargets(?: many)?">[\\s\\S]*?<\\/div>/') && a.includes("if (auto.length && cmsg) await attachGrantCard(cmsg, actor, auto);"));
+const t = src("module/twod12.mjs");
+console.log("the button and the hooks are wired:", t.includes('b.dataset.twod12 === "useGrant"') && t.includes("registerGrantCardHooks();"));
+const css = src("styles/system.css");
+console.log("the brick red and the grant row styles:", css.includes(".twod12.chat .cardtargets .tname.enemy { background: #F3DDD8;") && css.includes(".twod12.chat .grantrow .gbtns button.spent,"));

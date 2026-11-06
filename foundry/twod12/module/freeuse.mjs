@@ -5,7 +5,8 @@ import { evalExpr } from "./refs.mjs";
 //   @Use[trait:strike]                                    any Action with that trait
 // An Action used because of another Action or a Talent does not count toward its Frequency or toward the 3 Strikes of the turn.
 import { useAction } from "./actions.mjs";
-import { grantMatches } from "./usage.mjs";
+import { grantMatches, activeGrants } from "./usage.mjs";
+import { sysCard } from "./sysmsg.mjs";
 const { DialogV2 } = foundry.applications.api;
 const F = "twod12";
 
@@ -84,4 +85,66 @@ export function updateUseButtons(msg, html) {
 /** The name of the Action whose card granted this use ("Charge"), for the roll dialog's chip. */
 function grantName(msg) {
   try { const a = msg?.getFlag?.("twod12", "action"); return a?.actorUuid && a?.itemId ? fromUuidSync(a.actorUuid)?.items?.get?.(a.itemId)?.name ?? "" : ""; } catch (e) { return ""; }
+}
+
+// v0.0.260 (Lucas, Double Shot): the granted uses an Action's effect brings are buttons on its card, one per use, bound to the effect's grants:
+// a click uses the Action with that granted use (the sheet's ticket drops too), the button then grays; a use from the sheet grays it as well.
+// After a use from the card, with uses left, a short card repeats the buttons (the Action's own card is long and pushes this one up).
+const cleanName = n => String(n ?? "").replace(/\s*\(.*\)\s*$/, "");
+const escT = t => String(t ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+/** The rows of a grant card: one per grant, with its buttons; the live effect says what is left (gone: all spent). */
+export function grantRowsHtml(actor, card) {
+  return (card?.effects ?? []).map(g => {
+    const e = actor?.effects?.get?.(g.id), grant = e?.getFlag?.(F, "grants")?.[g.index], left = grant ? Math.max(0, grant.left) : 0, count = Math.max(g.count, left);
+    const btns = Array.from({ length: count }, (_, k) => { const spent = k < count - left; return `<button type="button" data-twod12="useGrant" data-effect-id="${g.id}" data-index="${g.index}"${spent ? ' class="spent" disabled' : ""}><i class="fa-solid ${spent ? "fa-check" : "fa-bolt"}"></i> ${escT(g.actionName)} ${k + 1}</button>`; }).join("");
+    return `<div class="tline grantrow"><span class="apside"><i class="fa-solid fa-ticket"></i> ${escT(g.name)}: <b>${escT(g.actionName)}</b> <small>${left ? `${left} of ${count} left${g.ap ? ` · ${g.ap} AP each` : " · free"}` : "spent"}</small></span><div class="gbtns">${btns}</div></div>`;
+  }).join("");
+}
+/** After an Action's card applied its effects: the grants those effects brought become rows on the card (nothing when they brought none). */
+export async function attachGrantCard(msg, actor, effectUuids) {
+  const effects = [];
+  for (const e of actor?.effects ?? []) {
+    if (!effectUuids.includes(e.getFlag(F, "effectUuid"))) continue;
+    (e.getFlag(F, "grants") ?? []).forEach((g, index) => { if (g.left > 0) effects.push({ id: e.id, index, name: cleanName(e.name), spec: g.spec, count: g.count ?? g.left, ap: g.ap ?? 0, actionName: actionsFor(actor, g.spec)[0]?.name ?? String(g.spec).replace(/^(category|trait):/i, "") }); });
+  }
+  if (!effects.length) return;
+  const card = { actorUuid: actor.uuid, effects };
+  const content = String(msg.content).replace(/<\/div>\s*$/, `${grantRowsHtml(actor, card)}</div>`);
+  try { await msg.update({ content, [`flags.${F}.grantCard`]: card }); } catch (e) { /* not the author */ }
+}
+/** A button of a grant row: the Action is used with that granted use (useAction takes the waiting grant by itself). */
+export async function useGrant(msg, effectId, index = 0) {
+  const card = msg?.getFlag?.(F, "grantCard"), g = card?.effects?.find(x => x.id === effectId && x.index === Number(index)) ?? card?.effects?.[0];
+  let actor = null;
+  try { actor = card?.actorUuid ? await fromUuid(card.actorUuid) : null; } catch (e) { actor = null; }
+  if (!actor || !g) return;
+  if (!actor.isOwner) return ui.notifications.warn(`You don't own ${actor.name}.`);
+  const e = actor.effects.get(g.id), grant = e?.getFlag(F, "grants")?.[g.index];
+  if (!grant || !(grant.left > 0)) { await refreshGrantCards(actor); return ui.notifications.warn(`No ${g.actionName} left from ${g.name}.`); }
+  const item = actionsFor(actor, g.spec).find(i => activeGrants(actor, i).some(x => x.effect.id === g.id)) ?? actionsFor(actor, g.spec)[0];
+  if (!item) return ui.notifications.warn(`${actor.name} has no Action called "${g.spec}".`);
+  const ok = await useAction(actor, item, {});
+  if (!ok) return;
+  const after = actor.effects.get(g.id)?.getFlag(F, "grants")?.[g.index];
+  if (after && after.left > 0 && msg.id !== game.messages.contents.at(-1)?.id) {   // the Action's card came after: repeat the buttons under it
+    const n = after.left, word = n === 1 ? "use" : "uses";
+    const lead = `<b>${n}</b> ${word} of <b>${escT(g.actionName)}</b> left`;
+    await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: `${sysCard({ title: g.name, lead })}`.replace(/<\/div>\s*$/, `${grantRowsHtml(actor, card)}</div>`), flags: { [F]: { grantCard: card } } });
+  }
+}
+/** The grant cards of this creature follow its grants: a use from the sheet grays the card's button, the spent effect grays them all. */
+export async function refreshGrantCards(actor, effectId = "") {
+  if (!actor) return;
+  for (const msg of game.messages.contents.slice(-80)) {
+    const card = msg.getFlag?.(F, "grantCard");
+    if (!card || card.actorUuid !== actor.uuid || (effectId && !card.effects.some(x => x.id === effectId))) continue;
+    const mine = msg.author?.id === game.user.id, doer = msg.author?.active ? mine : game.user.isActiveGM;
+    if (!doer) continue;
+    const content = String(msg.content).replace(/(?:<div class="tline grantrow">[\s\S]*?<\/div><\/div>)+/, grantRowsHtml(actor, card));
+    if (content !== msg.content) { try { await msg.update({ content }); } catch (e) { /* not ours */ } }
+  }
+}
+export function registerGrantCardHooks() {
+  Hooks.on("updateActiveEffect", (fx, changes) => { if (changes?.flags?.[F]?.grants && fx.parent?.documentName === "Actor") refreshGrantCards(fx.parent, fx.id); });
+  Hooks.on("deleteActiveEffect", fx => { if ((fx.getFlag?.(F, "grants") ?? []).length && fx.parent?.documentName === "Actor") refreshGrantCards(fx.parent, fx.id); });
 }

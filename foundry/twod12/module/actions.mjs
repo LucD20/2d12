@@ -27,7 +27,7 @@ import { tierProbs, perDieDelta, topStep } from "./calc.mjs";
 import { squaresBetween, rangeBand } from "./move.mjs";
 import { setupFor } from "./setup.mjs";
 import { coverBetween, coverWhy } from "./cover.mjs";
-import { consumeGrant } from "./freeuse.mjs";
+import { consumeGrant, attachGrantCard } from "./freeuse.mjs";
 import { buildPreviews, updateOdds, applyTalentMods, tierLines, liveAvg } from "./preview.mjs";
 const { DialogV2 } = foundry.applications.api;
 import { ensureFreeHand } from "./hands.mjs";
@@ -903,7 +903,7 @@ export async function useAction(actor, item, opts = {}) {
     const cfg = parseInline("Move", mvInner);
     bannerMove = (await handleMove({ ...cfg, traits: [...new Set([...(cfg.traits ?? []), "self"])], banner: item.name, bannerAp: apCost }, { actor, token: selfToken })) === true;
   }
-  if (!bannerMove) await ChatMessage.create({
+  const cmsg = bannerMove ? null : await ChatMessage.create({
     speaker: ChatMessage.getSpeaker({ actor }),
     content: html,
     rolls: mres ? multiRoll.rolls : (chk?.rolls ?? []),
@@ -944,6 +944,8 @@ export async function useAction(actor, item, opts = {}) {
   if (version.noTiers && (version.fx?.all ?? []).length) {
     const auto = version.fx.all.filter(x => x.mode === "auto").map(x => x.uuid);
     if (auto.length) await applyEffects(auto, isSelf ? [actor.uuid] : targets.map(t => t.uuid), { ...originInfo(actor.uuid), escalation: escCost > 0, ...(src.kind ? { mod: Number(src.mod) || 0 } : {}) });
+    // v0.0.260 (Lucas, Double Shot): the granted uses an applied effect brings are buttons on the card, one per use (freeuse.mjs)
+    if (auto.length && cmsg) await attachGrantCard(cmsg, actor, auto);
   }
   // A Save Action: a Save card for the creatures in the area (each player rolls their own), and the area remembers it for [HT] (v0.0.159).
   if (saveAct && !version.noTiers) {
@@ -1110,14 +1112,15 @@ export async function retargetAction(msg) {
   if (!toks.length) return ui.notifications.warn("Target or select a token first.");
   const targets = toks.map(t => ({ uuid: t.document.uuid, name: t.name, disposition: t.document.disposition }));
   const mine = canvas.tokens?.get(msg.speaker?.token)?.document.disposition ?? game.actors.get(msg.speaker?.actor)?.getActiveTokens?.()[0]?.document.disposition ?? 1;
-  let content = msg.content.replace(/<div class="tline cardtargets">[\s\S]*?<\/div>/, targetsRowHtml(targetEntries(targets, mine), { retarget: true }));
+  // v0.0.260 (Lucas): a card with several targets has the class "many" on its row (v0.0.259): the pattern takes it, or the retarget changed nothing
+  let content = msg.content.replace(/<div class="tline cardtargets(?: many)?">[\s\S]*?<\/div>/, targetsRowHtml(targetEntries(targets, mine), { retarget: true }));
   // v0.0.251 (Lucas): the Apply rows of a no-damage card follow the new targets
   const f = msg.getFlag("twod12", "action");
   if (f?.after && f.noTiers) {
     let me = null; try { const a = f.actorUuid ? fromUuidSync(f.actorUuid) : null; me = a?.token?.object ?? a?.getActiveTokens?.()[0] ?? null; } catch (e) { me = null; }
     const rows = applyAfterHtml({ after: f.after, noTiers: true }, targets, me);
-    content = content.replace(/(?:<div class="tline applyrow">[\s\S]*?<\/div>)+/, rows) ;
-    if (!content.includes('class="tline applyrow"') && rows) content = content.replace(/(<div class="tline cardtargets">[\s\S]*?<\/div>)/, `$1${rows}`);
+    content = content.replace(/(?:<div class="tline applyrow(?: many)?">[\s\S]*?<\/div>)+/, rows);
+    if (!content.includes('class="tline applyrow') && rows) content = content.replace(/(<div class="tline cardtargets(?: many)?">[\s\S]*?<\/div>)/, `$1${rows}`);
   }
   try { await msg.update({ content, "flags.twod12.action.targets": targets }); }
   catch (e) { ui.notifications.warn("Only the author of this card or the GM can change its targets."); }

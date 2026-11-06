@@ -2288,3 +2288,17 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 #twod12-effects .fx-chain .fx-chainline { position: absolute; left: 50%; top: -2px; bottom: -2px; width: 2px; margin-left: -1px; background: #c8b48a; }
 #twod12-effects .fx-chain i { position: relative; width: 18px; height: 18px; border-radius: 9px; font-size: 10px; line-height: 16px; color: #f0dca8; background: #2a241a; border-color: #e0c98a; }
 #twod12-effects .fx-icon.fx-linked { border-color: #c8b48a; border-style: dashed; }
+/* v0.0.260 (Lucas): the enemy red less pink (a brick red); the grant rows on a card (Double Shot): a ticket line and one button per granted use, the spent ones grayed. */
+.twod12.chat .cardtargets .tname.enemy { background: #F3DDD8; border-color: #C9736A; color: #6E1F1F; }
+.twod12.chat .cardtargets .tname.enemy i.fa-crosshairs { color: #9E2B2B; }
+.twod12.chat .cardtargets:has(.tname.enemy)::before, .twod12.chat .cardtargets:has(.tname.enemy)::after { background: #C9736A; }
+.twod12.chat .cardtargets .tlist li.enemy::before, .twod12.chat .applyrow > .aplist.enemies li::before { background: #9E2B2B; }
+.twod12.chat .grantrow { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin: 4px 8px 0; padding: 4px 8px; border: 1px solid #c8b48a; border-radius: 5px; background: #f4ecdc; color: #2c2a26; font-size: 12px; }
+.twod12.chat .grantrow > .apside { flex: 1 1 100%; min-width: 0; font-weight: 600; } .twod12.chat .grantrow > .apside small { font-weight: 400; opacity: .7; } .twod12.chat .grantrow > .apside i { color: #854F0B; }
+.twod12.chat .grantrow .gbtns { display: flex; flex-wrap: wrap; gap: 6px; flex: 1 1 100%; }
+.twod12.chat .grantrow .gbtns button { flex: 1 1 0; min-width: 120px; width: auto; height: 24px; line-height: 22px; padding: 0 10px; margin: 0; font-size: 12px; font-weight: 600; border: 1px solid #8a7650; border-radius: 4px; background: #fbf7ee; color: #2c2c2a; white-space: nowrap; }
+.twod12.chat .grantrow .gbtns button i { color: #854F0B; }
+.twod12.chat .grantrow .gbtns button:hover { background: #FAEEDA; border-color: #BA7517; }
+.twod12.chat .grantrow .gbtns button.spent, .twod12.chat .grantrow .gbtns button:disabled { opacity: .45; text-decoration: line-through; cursor: default; background: #efe7d6; }
+.twod12.chat .grantrow .gbtns button.spent i { color: #3B6D11; }
+.twod12.chat.sysmsg .grantrow { margin-top: 6px; }

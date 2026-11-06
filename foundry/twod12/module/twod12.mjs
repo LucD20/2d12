@@ -42,7 +42,7 @@ import { lightInfo } from "./sightgate.mjs";
 import { registerLightLabel, registerLightTool, sliderInfo } from "./lightlabel.mjs";
 import { registerDamageReport, toggleDamageReport } from "./damagelog.mjs";
 import { registerEncounterLog, toggleEncounterLog } from "./enclog.mjs";
-import { updateUseButtons } from "./freeuse.mjs";
+import { updateUseButtons, useGrant, registerGrantCardHooks } from "./freeuse.mjs";
 import { registerVersionTabs } from "./preview.mjs";
 import { registerCarousel, renderCarousel } from "./carousel.mjs";
 import { bindInitCard } from "./initcard.mjs";
@@ -275,6 +275,7 @@ Hooks.once("ready", async () => {
     if (b.dataset.twod12 === "saveRoll") await saveRoll(msg, Number(b.dataset.idx));
     else if (b.dataset.twod12 === "retargetSave") await retargetSave(msg);
     else if (b.dataset.twod12 === "retargetAction") await retargetAction(msg);
+    else if (b.dataset.twod12 === "useGrant") await useGrant(msg, b.dataset.effectId, Number(b.dataset.index) || 0);   // v0.0.260: a granted use from the card
     else if (b.dataset.twod12 === "rollDamage") await rollDamage(msg);
     else if (b.dataset.twod12 === "applyAfter") { const { applyAfter } = await import("./actions.mjs"); await applyAfter(msg, b.dataset.side ?? "", Number(b.dataset.step) || 0); }   // v0.0.250; v0.0.254: the step
     else await damageButton(b.dataset.twod12, b, msg);
@@ -315,6 +316,7 @@ Hooks.once("ready", async () => {
   registerCarousel();
   registerDragCopy();
   registerUsageHooks();
+  registerGrantCardHooks();
   registerDeadHooks();
   registerDamageReport();
   registerEncounterLog();   // v0.0.223

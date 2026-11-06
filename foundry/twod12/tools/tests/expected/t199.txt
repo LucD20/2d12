@@ -1,0 +1,8 @@
+the card's flag: {"actorUuid":"Actor.a","effects":[{"id":"fx1","index":0,"name":"Double Shot","spec":"Weapon Attack","count":2,"ap":0,"actionName":"Weapon Attack"}]}
+the rows: <div class="tline grantrow"><span class="apside"><i class="fa-solid fa-ticket"></i> Double Shot: <b>Weapon Attack</b> <small>2 of 2 left · free</small></span><div class="gbtns"><button type="button" data-twod12="useGrant" data-effect-id="fx1" data-index="0"><i class="fa-solid fa-bolt"></i> Weapon Attack 1</button><button type="button" data-twod12="useGrant" data-effect-id="fx1" data-index="0"><i class="fa-solid fa-bolt"></i> Weapon Attack 2</button></div></div></div>
+one spent: <button type="button" data-twod12="useGrant" data-effect-id="fx1" data-index="0" class="spent" disabled><i class="fa-solid fa-check"></i> Weapon Attack 1</button><button type="button" data-twod12="useGrant" data-effect-id="fx1" data-index="0"><i class="fa-solid fa-bolt"></i> Weapon Attack 2</button></div></div>
+all spent: true
+no grants, nothing: true
+the retarget takes a row with several targets: true
+the button and the hooks are wired: true
+the brick red and the grant row styles: true
