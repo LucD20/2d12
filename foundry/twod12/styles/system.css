@@ -2228,3 +2228,11 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat .applyrow details.apside summary::before { content: "\25B8"; display: inline-block; width: 12px; font-size: 10px; opacity: .7; } .twod12.chat .applyrow details.apside[open] summary::before { content: "\25BE"; }
 .twod12.chat .applyrow details.apside summary small { font-weight: 400; opacity: .7; }
 .twod12.chat .applyrow details.apside ul { margin: 2px 0 0 14px; padding: 0 0 0 10px; font-weight: 400; } .twod12.chat .applyrow details.apside li { margin: 0; }
+/* v0.0.253 (Lucas): the hover card of an effect or condition (a tooltip): the name and duration, a short description, the source, the controls in small */
+.twod12.fxtip { min-width: 220px; max-width: 320px; font-size: 12px; line-height: 1.45; text-align: left; }
+.twod12.fxtip .ft-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; font-size: 13px; }
+.twod12.fxtip .ft-dur { font-size: 11px; opacity: .8; white-space: nowrap; }
+.twod12.fxtip .ft-text { margin-top: 3px; }
+.twod12.fxtip .ft-src { margin-top: 3px; font-size: 11px; opacity: .8; }
+.twod12.fxtip .ft-ctl { margin-top: 5px; padding-top: 4px; border-top: 1px solid rgba(128, 128, 128, .4); font-size: 10.5px; opacity: .75; }
+.twod12.chat .fxrow .fxname { cursor: help; border-bottom: 1px dotted currentColor; }

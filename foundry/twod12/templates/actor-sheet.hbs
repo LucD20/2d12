@@ -401,7 +401,7 @@
       <div class="fsec"><span>Conditions</span></div>
       <div class="cchips">
         {{#each fx.conditions}}
-        <span class="cchip" {{#if id}}data-effect-id="{{id}}"{{/if}}{{#if counter}} data-counter="1"{{/if}} data-tooltip="{{#if counter}}Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove{{else}}{{tip}}{{/if}}">
+        <span class="cchip" {{#if id}}data-effect-id="{{id}}"{{/if}}{{#if counter}} data-counter="1"{{/if}} data-tooltip="{{tip}}">
           <img src="{{img}}" alt=""><a class="cc-name" {{#if id}}data-action="openEffect"{{/if}}>{{name}}</a>{{#if dur}}<span class="cc-dur">{{dur}}</span>{{/if}}
           {{#if counter}}<a class="cadj" data-action="exhaustedDown" aria-label="Exhausted −1">&minus;</a><a class="cadj" data-action="exhaustedUp" aria-label="Exhausted +1">+</a>{{/if}}
           {{#if id}}<a class="rm" data-action="deleteEffect" aria-label="Remove {{name}}">&times;</a>{{/if}}

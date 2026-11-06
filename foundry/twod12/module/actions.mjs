@@ -15,6 +15,7 @@ import { isEngaged, engagedWithOther } from "./engaged.mjs";
 import { flankingMod } from "./flanking.mjs";
 import { offerWake } from "./down.mjs";
 import { performCheck, performMultiCheck, multiCheckHtml, collapseNames, uniqueLabels, checkHtml, esc, sgn } from "./roll.mjs";
+import { fxTipHtml, hoverOf } from "./util.mjs";   // v0.0.253: the effects' hover cards
 import { postDamageCard, postMultiDamageCard } from "./dmgcard.mjs";
 import { cardVars, cardHead, flavorHtml, apIcon, traitChevrons, categoryText, highlightText, metaRowHtml, effectiveFrequency, distanceText, areaText, cardColorFor, vsText, targetsRowHtml, requirementProblem, doomStatus } from "./config.mjs";
 import { collectBonuses, expireOnUse } from "./bonus.mjs";
@@ -807,8 +808,10 @@ export async function useAction(actor, item, opts = {}) {
   // The tier rolled is green ("Rolled"); a better tier reached with Doubles is blue ("Doubles") and the rolled tier keeps its green.
   const dbl = !!chk?.doubles && !chk?.crit;
   const rolledTier = chk ? (chk.forced ? tier : chk.base) : 0;
-  const fxName = async k => Promise.all((version.fx?.[k] ?? []).map(async x => `${(await fromUuid(x.uuid))?.name ?? "?"}`));
+  // v0.0.253 (Lucas): each effect's name on the card carries its hover card (the description, the duration, how it is applied)
+  const fxName = async k => Promise.all((version.fx?.[k] ?? []).map(async x => { const it = await fromUuid(x.uuid); const d = it?.system?.duration; return { name: it?.name ?? "?", tip: it ? fxTipHtml({ name: it.name, dur: d?.type === "eot" ? "EoT" : d?.type === "rounds" ? `${d.rounds} round${d.rounds === 1 ? "" : "s"}` : "until removed", text: hoverOf(it.system?.hover, it.system?.description), controls: x.mode === "auto" ? "Applied with the damage." : "Applied with the Effects button." }) : "" }; }));
   const fxn = { all: await fxName("all"), t1: await fxName("t1"), t2: await fxName("t2"), t3: await fxName("t3") };
+  const fxNames = list => list.map(x => `<span class="fxname"${x.tip ? ` data-tooltip="${esc(x.tip)}"` : ""}>${esc(x.name)}</span>`).join(", ");
   const cardCtx = { item, weapon: weapon ?? previewWeapon ?? null, isWeapon: modOnWeapon(src, useTraits) && !saveAct, attrMode: saveAct ? "none" : src.attrMode, attrVal: src.kind ? (Number(src.mod) || 0) : 0,
     attrLabel: src.kind === "attribute" ? (TWOD12.attributes[src.attrKey] ?? "") : (src.chip ?? "") };
   const rowParts = [];
@@ -835,7 +838,7 @@ export async function useAction(actor, item, opts = {}) {
     // The weapon's real dice and the Modifier, like the roll dialog's preview (the sheet keeps the book's 1[W]).
     const lines = await tierLines(version[k], n, cardCtx, expandAsText(version[`x${n}`], item.system.versions, version, n));   // "As 1 AP" written out
     const txt = lines.length ? lines.join("<br>") : "&mdash;";
-    rowParts.push(`<tr class="${cls}"><th data-tooltip="Tier ${n}">${ranges[i] || `Tier ${n}`}</th><td><div class="tcell"><div class="ttxt">${txt}${fxn[k].length ? `<div class="fxrow">&#10022; ${esc(fxn[k].join(", "))}</div>` : ""}</div>${tag}</div></td></tr>`);
+    rowParts.push(`<tr class="${cls}"><th data-tooltip="Tier ${n}">${ranges[i] || `Tier ${n}`}</th><td><div class="tcell"><div class="ttxt">${txt}${fxn[k].length ? `<div class="fxrow">&#10022; ${fxNames(fxn[k])}</div>` : ""}</div>${tag}</div></td></tr>`);
   }
   // Critical: a row under Tier 3, gold when it happened (Doubles on a Tier 3, or 20 above the DC), dimmed otherwise.
   if (!version.noTiers && version.critical) {
@@ -889,7 +892,7 @@ export async function useAction(actor, item, opts = {}) {
     ${chk && rows && showOdds() ? oddsRow(chk) : (chk && showOdds() && !rows ? oddsRow(chk) : "")}
     ${bonusRows}
     ${critHtml}${effectsHtml}
-    ${fxn.all.length && !effectsOff ? `<div class="fxrow">&#10022; ${esc(fxn.all.join(", "))}</div>` : ""}
+    ${fxn.all.length && !effectsOff ? `<div class="fxrow">&#10022; ${fxNames(fxn.all)}</div>` : ""}
     ${btn}${isSelf && !String(it.area ?? "").trim() ? "" : targetsRowHtml([collapseNames(targets.map(t => t.name))].filter(Boolean), { retarget: true })}${applyAfterHtml(version, targets, selfToken)}${it.worth ? `<div class="ac-worth">${esc(it.worth)}</div>` : ""}</div>`;
   // v0.0.195 (Lucas): a movement-only Action (Advance, Evade, Crawl) in combat starts its movement with the banner (squares left, Done) and
   // posts one short line when it ends, instead of a card whose button then posted the movement (two messages for one step).

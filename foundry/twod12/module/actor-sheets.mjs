@@ -39,7 +39,7 @@ import { chooseRecovery } from "./rest.mjs";
 import { addBasicActions, missingBasic } from "./basic.mjs";
 import { openEffectSheet } from "./fxopen.mjs";
 import { applyTab, durationText, dragData } from "./sheet-common.mjs";
-import { hoverOf } from "./util.mjs";
+import { hoverOf, fxTipHtml } from "./util.mjs";
 import { WEAPON_WHERE, ARMOR_WHERE, weaponWhere, armorWhere, weaponMove, armorMove, handsFor, tierBoxes, handSlots, whereButtons, freeHandFor, useButtons, handOf, HAND_LABEL, handButtonsFor, freeHandButtons, oneHandedTwoHander } from "./loadout.mjs";
 import { ensureHandsFor, releaseOptions, applyRelease, applyRegrip } from "./hands.mjs";
 import { passiveSources } from "./passives.mjs";
@@ -370,14 +370,20 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     }
     // Conditions: from damage first, then the effects with their duration.
     const conditions = [];
-    if (s.bloodied) conditions.push({ name: "Bloodied", img: "icons/svg/blood.svg", dur: "from damage", tip: "Vigor damage at or past Vigor" });
-    if (s.strained) conditions.push({ name: "Strained", img: "icons/svg/daze.svg", dur: "from damage", tip: "Resolve damage at or past Resolve" });
+    // v0.0.253 (Lucas): the chips' tooltip is a hover card (the name and duration, a short description, the controls in small)
+    if (s.bloodied) conditions.push({ name: "Bloodied", img: "icons/svg/blood.svg", dur: "from damage", tip: fxTipHtml({ name: "Bloodied", dur: "from damage", text: "Your Vigor damage is at or past your Vigor threshold. No effect by itself: the Escalation hooks and some cards read it.", controls: "It ends when the damage drops below the threshold." }) });
+    if (s.strained) conditions.push({ name: "Strained", img: "icons/svg/daze.svg", dur: "from damage", tip: fxTipHtml({ name: "Strained", dur: "from damage", text: "Your Resolve damage is at or past your Resolve threshold. No effect by itself: the Escalation hooks and some cards read it.", controls: "It ends when the damage drops below the threshold." }) });
     // The Effects tab (v0.0.134): a status (a condition) is a chip; any other applied effect is a row with what it does and where it came from.
     const fxEffects = [];
     const fxText = e => hoverOf(e.getFlag?.("twod12", "hover"), e.getFlag?.("twod12", "description") ?? e.description);
     for (const e of a.effects) {
       if ((s.bloodied && e.statuses?.has("bloodied")) || (s.strained && e.statuses?.has("strained"))) continue;   // already listed, from damage
-      if (e.statuses?.size) { conditions.push({ id: e.id, name: e.name.replace(/\s*\(.*\)\s*$/, ""), img: e.img ?? "icons/svg/aura.svg", dur: durationText(e), counter: isExhaustedFx(e) && a.type === "character", tip: fxText(e) }); continue; }
+      if (e.statuses?.size) {
+        const counter = isExhaustedFx(e) && a.type === "character", by = e.origin && e.origin !== a.uuid ? (fromUuidSync(e.origin)?.name ?? "") : "";
+        conditions.push({ id: e.id, name: e.name.replace(/\s*\(.*\)\s*$/, ""), img: e.img ?? "icons/svg/aura.svg", dur: durationText(e), counter,
+          tip: fxTipHtml({ name: e.name, dur: durationText(e) || "until removed", text: fxText(e), source: by ? `From ${by}` : "", controls: counter ? "Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove" : "Click the name: open · ×: remove" }) });
+        continue;
+      }
       const by = e.origin && e.origin !== a.uuid ? (fromUuidSync(e.origin)?.name ?? "") : "";
       fxEffects.push({ id: e.id, name: e.name.replace(/\s*\(.*\)\s*$/, ""), img: e.img ?? "icons/svg/aura.svg", dur: durationText(e) || "until removed", text: fxText(e), source: by ? `From ${by}` : (e.origin && e.origin === a.uuid ? "From yourself" : ""), off: !!e.disabled });
     }
