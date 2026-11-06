@@ -670,7 +670,7 @@
   {
    "name": "Hallowed Dawn",
    "category": "Paladin Apex",
-   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): the mercy Apex: the dawn pushes the dark back (Pushed 2 away from you) and Enfeebles it; Self: you are the Emanation's target. Cards 3 (Lucas, 2026-11-05): the light lasts 1 round (was until the end of your next turn); the Allies / Enemies Apply buttons run the chain (foundry.after).",
+   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): the mercy Apex: the dawn pushes the dark back (Pushed 2 away from you) and Enfeebles it; Self: you are the Emanation's target. Cards 3 (Lucas, 2026-11-05): the light lasts 1 round (was until the end of your next turn); the Allies / Enemies Apply buttons run the chain (foundry.after). v0.0.251 (Lucas's test): the Emanation is shown before the card (you included by default: areaCfg.center), Enfeebled 1 lasts the round.",
    "flavor": "Dawn breaks where you stand, and it chooses sides.",
    "traits": [
     "area",
@@ -687,7 +687,7 @@
      "effects": "You and each ally in the Area heal 3d6 + your Power Modifier (4d6 at Stage 2, 6d6 at Stage 3) and end one effect on them that is EoT or has 1 round left. Each enemy in the Area is Pushed 2 away from you, is Enfeebled 1 and sheds Bright light in a 1 Emanation for 1 round.",
      "ruler": "allies 3 | mend 3d6+[Mod] any; push 2; remove-effect 1",
      "foundry": {
-      "after": "@Heal[3d6+pow|s2:4d6+pow|s3:6d6+pow|side:allies] @EndEffect[eot1|side:allies] @Move[pushed|distance:2|pick:yes|side:enemies] @Condition[enfeebled|value:1|side:enemies] @Effect[{{fx:Hallowed Dawn (Bright light 1)}}|side:enemies]"
+      "after": "@Heal[3d6+pow|s2:4d6+pow|s3:6d6+pow|side:allies] @EndEffect[eot1|side:allies] @Move[pushed|distance:2|pick:yes|side:enemies] @Condition[enfeebled|value:1|rounds:1|side:enemies] @Effect[{{fx:Hallowed Dawn (Bright light 1)}}|side:enemies]"
      }
     }
    ],
@@ -698,7 +698,8 @@
     "automation": "mithril",
     "automationNote": "the Apply buttons do it all: the heal (rolled once, each ally chooses the split) and the effect each ally ends; the Pushes one by one, Enfeebled 1 and the light on the enemies.",
     "areaCfg": {
-     "targets": "all"
+     "targets": "all",
+     "center": true
     }
    }
   }

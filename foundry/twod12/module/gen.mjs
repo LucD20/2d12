@@ -112,6 +112,8 @@ export function convertEffects(text) {
   // v0.0.230 (pack CS): "...in a 2 Emanation ..., for 1 round." -> the template lasts that long (the book writes the duration in the sentence); v0.0.250: "(EoT)" too
   s = s.replace(/(@Template\[emanation\|distance:\d+)(\])([^.]*?\bfor (\d+) rounds?\b)/g, (m, a, b, rest, n) => `${a}|rounds:${n}${b}${rest}`);
   s = s.replace(/(@Template\[emanation\|distance:\d+)(\])(\s*\(EoT\))/g, (m, a, b, rest) => `${a}|rounds:eot${b}${rest}`);
+  // v0.0.251 (Lucas, Hallowed Dawn): a condition with no duration of its own in a sentence that ends "for N rounds" lasts that long ("is Enfeebled 1 and sheds Bright light ... for 1 round")
+  s = s.replace(/(@Condition\[[a-z]+(?:\|value:\d+)?)(\])([^.;]*?\bfor (\d+) rounds?\b)/g, (m, a, b, rest, n) => `${a}|rounds:${n}${b}${rest}`);
   // v0.0.232 (pack CS): a movement in a text that says "you ignore Difficult Terrain" ignores it (Cut Through's Setup).
   if (/ignores? Difficult Terrain/i.test(s)) s = s.replace(/@Move\[(advance|evade|charge)\|([^\]]*)\]/g, (m, k, rest) => (rest.includes("terrain:") ? m : `@Move[${k}|${rest}|terrain:ignore]`));
   return s;

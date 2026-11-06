@@ -283,8 +283,10 @@ export async function startTemplate(cfg, ctx = {}) {
   // at:self: an Emanation centered on the user (a Self Action), no placing needed.
   let placed, preview = null;
   const dropPreview = () => { try { preview?.destroy(); } catch (e) { /* gone */ } preview = null; };
+  let back0 = async () => {};
   if (cfg.at === "self") {
     if (!user) return ui.notifications.warn("Select your token first.");
+    back0 = await stepAside();   // v0.0.251 (Lucas): the windows step aside while the area is shown, as when one is placed
     const base = tokenCells(user);
     placed = { cells: emanationCells(base, n), origin: user, baseCells: base, point: spaceCenter(user) };
     // Show it on the map before applying, so everyone sees what it covers.
@@ -355,7 +357,7 @@ export async function startTemplate(cfg, ctx = {}) {
         },
         rejectClose: false
       });
-  if (!data) { dropPreview(); return; }
+  if (!data) { dropPreview(); await back0(); return; }
 
   // The origin is the creature using the Action: allies and enemies are judged from its side.
   const origin = user ?? placed.origin ?? null;
@@ -379,16 +381,15 @@ export async function startTemplate(cfg, ctx = {}) {
     const actName = (() => { try { const f = ctx?.message?.getFlag?.("twod12", "action"); return fromUuidSync(f?.actorUuid)?.items?.get?.(f?.itemId)?.name ?? ""; } catch (e) { return ""; } })();
     const names = tokens.filter(t => t.id !== centerTok?.id).map(t => escT(t.name)).join(", ") || "nobody";
     // v0.0.215 (Lucas, playtest 2: Ground Slam): an Emanation around its user is only shown; this window asks whether the user is affected too, and confirms.
-    const selfBox = centerTok ? `<div class="form-group"><label><input type="checkbox" name="self" ${data.self ? "checked" : ""}> Affect ${escT(centerTok.name)} too (the creature it is around)</label></div>` : "";
-    const res = await DialogV2.wait({
-      window: { title: actName || "Apply Area" },
-      content: `<p>Apply ${escT(actName || "the area")}'s area (shown on the map)?</p><p>Targets: <b>${names}</b></p>${selfBox}${noLoE.length ? `<p>No Line of Effect from the Point of Origin: <b>${noLoE.map(escT).join(", ")}</b></p>` : ""}`,
-      buttons: [{ action: "yes", label: "Apply", icon: "fa-solid fa-check", default: true, callback: (ev, btn) => ({ self: !!btn.form?.elements?.self?.checked }) }, { action: "no", label: "Cancel", icon: "fa-solid fa-xmark" }],
-      rejectClose: false
-    });
+    // v0.0.251 (Lucas): the question is a bar at the bottom, in the system's style; "you too" follows the Action's Area setting (the item sheet: "Affect the creature it is around") and is a click away
+    const { pickBar } = await import("./pickbar.mjs");
+    const withMe = { id: "me", label: `Apply, ${escT(centerTok?.name ?? "you")} too` }, withoutMe = { id: "others", label: centerTok ? `Apply, not ${escT(centerTok.name)}` : "Apply" };
+    const res = await pickBar({ icon: "fa-vector-square", aside: false, text: `<b>${escT(actName || "the area")}</b>: apply the area shown on the map? Targets: <b>${names}</b>.${noLoE.length ? ` No Line of Effect: ${noLoE.map(escT).join(", ")}.` : ""}`,
+      options: centerTok ? (data.self ? [withMe, withoutMe] : [withoutMe, withMe]) : [withoutMe] });
     dropPreview();
-    if (!res || res === "no") return;
-    if (centerTok) tokens = res.self ? [...new Set([...tokens, centerTok])] : tokens.filter(t => t.id !== centerTok.id);
+    await back0();
+    if (res == null) return;
+    if (centerTok) tokens = res === "me" ? [...new Set([...tokens, centerTok])] : tokens.filter(t => t.id !== centerTok.id);
   }
   // Restart the targeting: release every current target, then target the tokens in the area.
   for (const t of [...game.user.targets]) t.setTarget(false, { releaseOthers: false, groupSelection: true });

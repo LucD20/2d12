@@ -466,14 +466,15 @@ export async function useAction(actor, item, opts = {}) {
   let areaOutcome = null;
   const areaSet = String(it.area ?? "").trim() ? areaConfigOf(it) : null;
   // v0.0.215: versions with their own Area size (Word of Radiance: 2 / 3 Emanation): the version is chosen before the area is placed, and the roll keeps it.
-  if (areaSet && canvas.ready && canvas.grid?.isSquare && src.kind && new Set(versions.map(v => v.areaSize || areaSet.distance)).size > 1) {
-    const pickAp = await DialogV2.wait({ window: { title: item.name }, content: `<p>Which version? The Area depends on it.</p>`, rejectClose: false,
-      buttons: versions.map(v => ({ action: String(v.ap), label: `${v.ap} AP: ${v.areaSize || areaSet.distance} ${areaSet.shape === "burst" ? "Burst" : areaSet.shape === "line" ? "Line" : "Emanation"}` })) });
+  // v0.0.251 (Lucas): the area is shown and placed for an Action with no roll too (Hallowed Dawn), and the version is picked on a bar
+  if (areaSet && canvas.ready && canvas.grid?.isSquare && new Set(versions.map(v => v.areaSize || areaSet.distance)).size > 1) {
+    const { pickBar } = await import("./pickbar.mjs");
+    const pickAp = await pickBar({ icon: "fa-vector-square", text: `<b>${esc(item.name)}</b>: which version? The Area depends on it.`, options: versions.map(v => ({ id: String(v.ap), label: `${v.ap} AP: ${v.areaSize || areaSet.distance} ${areaSet.shape === "burst" ? "Burst" : areaSet.shape === "line" ? "Line" : "Emanation"}` })) });
     if (pickAp == null) return;
     versions = versions.filter(v => v.ap === Number(pickAp));
     areaSet.distance = versions[0].areaSize || areaSet.distance;
   }
-  if (areaSet && canvas.ready && canvas.grid?.isSquare && src.kind) {   // no square grid: no placing, rolled as before
+  if (areaSet && canvas.ready && canvas.grid?.isSquare) {   // no square grid: no placing, rolled as before
     const { startTemplate } = await import("./template.mjs");
     const outcome = {}; areaOutcome = outcome;
     // "within your weapon's maximum range": the range of the weapon it will be used with (v0.0.159).
@@ -1087,8 +1088,16 @@ export async function rollDamage(message) {
 export async function retargetAction(msg) {
   const toks = game.user.targets.size ? [...game.user.targets] : (canvas.tokens?.controlled ?? []);
   if (!toks.length) return ui.notifications.warn("Target or select a token first.");
-  const targets = toks.map(t => ({ uuid: t.document.uuid, name: t.name }));
-  const content = msg.content.replace(/<div class="tline cardtargets">[\s\S]*?<\/div>/, targetsRowHtml(targets.map(t => t.name), { retarget: true }));
+  const targets = toks.map(t => ({ uuid: t.document.uuid, name: t.name, disposition: t.document.disposition }));
+  let content = msg.content.replace(/<div class="tline cardtargets">[\s\S]*?<\/div>/, targetsRowHtml(targets.map(t => t.name), { retarget: true }));
+  // v0.0.251 (Lucas): the Apply rows of a no-damage card follow the new targets
+  const f = msg.getFlag("twod12", "action");
+  if (f?.after && f.noTiers) {
+    let me = null; try { const a = f.actorUuid ? fromUuidSync(f.actorUuid) : null; me = a?.token?.object ?? a?.getActiveTokens?.()[0] ?? null; } catch (e) { me = null; }
+    const rows = applyAfterHtml({ after: f.after, noTiers: true }, targets, me);
+    content = content.replace(/(?:<div class="tline applyrow">[\s\S]*?<\/div>)+/, rows) ;
+    if (!content.includes('class="tline applyrow"') && rows) content = content.replace(/(<div class="tline cardtargets">[\s\S]*?<\/div>)/, `$1${rows}`);
+  }
   try { await msg.update({ content, "flags.twod12.action.targets": targets }); }
   catch (e) { ui.notifications.warn("Only the author of this card or the GM can change its targets."); }
 }

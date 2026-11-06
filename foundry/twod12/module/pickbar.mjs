@@ -14,6 +14,7 @@ export function pickBarHtml(o) {
  * v0.0.248 (Lucas): an option with a `token` can be picked by clicking that token on the map too; the candidates are outlined in gold meanwhile.
  */
 export async function pickBar(o) {
+  if (typeof document === "undefined") return o.options?.[0]?.id ?? (o.done ? "done" : null);   // no DOM (the tests): the first option
   let back = async () => {};
   if (o.aside !== false) { try { back = await (await import("./template.mjs")).stepAside(); } catch (e) { /* nothing to minimize */ } }
   const toks = (o.options ?? []).filter(x => x.token);

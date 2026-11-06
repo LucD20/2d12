@@ -727,8 +727,8 @@ async function handleCondition(cfg, ctx = {}) {
   const f = msg?.getFlag?.("twod12", "action") ?? msg?.getFlag?.("twod12", "dmgCard");
   let actors = [];
   const toActor = async uuid => { const d = await fromUuid(uuid); return d?.documentName === "Actor" ? d : d?.actor; };
-  if (f?.self && f.actorUuid) actors = [await toActor(f.actorUuid)];
-  else if (ctx.targets?.length) actors = await Promise.all(ctx.targets.filter(t => !cfg.crit || t.crit).map(t => toActor(t.uuid)));   // v0.0.249: the chain's targets (crit:yes: the Criticals only)
+  if (ctx.targets?.length) actors = await Promise.all(ctx.targets.filter(t => !cfg.crit || t.crit).map(t => toActor(t.uuid)));   // v0.0.249: the chain's targets (crit:yes: the Criticals only); v0.0.251: before the card's Self (Hallowed Dawn's Enfeebled went to the Paladin)
+  else if (f?.self && f.actorUuid) actors = [await toActor(f.actorUuid)];
   else if (f?.targets?.length) actors = await Promise.all(f.targets.map(t => toActor(t.uuid)));
   else if (game.user.targets.size) actors = [...game.user.targets].map(t => t.actor);
   else actors = (canvas.tokens?.controlled ?? []).map(t => t.actor);

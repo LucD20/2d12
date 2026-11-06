@@ -1,0 +1,8 @@
+the rows: now, after, minus and plus, what is left: true | plus disabled at the damage: true | over: true
+the area is placed for an Action with no roll (no src.kind gate): true | the version pick is a bar: true
+the confirm is a bar, you-too from the setting first, the windows aside: true
+a retarget rebuilds the Apply rows with the targets' side: true
+a chain's Condition goes to the chain's targets before the card's Self: true
+Each enemy in the Area is @Move[pushed|distance:2] away from you, is @Condition[enfeebled|value:1|rounds:1] and sheds Bright light in a @Template[emanation|distance:1|rounds:1] for 1 round. @Condition[vulnerable|value:2|eot] and @Condition[hindered].
+Hallowed Dawn: you too by default: true | Enfeebled lasts the round in the chain: true | in the text chip: true
+the Mithril sheen: true | the Apply rows styled: true

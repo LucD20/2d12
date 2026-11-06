@@ -37,7 +37,10 @@ export function planHealing(values, damage, total) {
 export function healModel(o, st) {
   const d = o.damage, assigned = BUCKETS.reduce((s, [k]) => s + (Number(st.values[k]) || 0), 0), total = o.total;
   const all = BUCKETS.reduce((s, [k]) => s + (d[k] ?? 0), 0);
-  const rows = BUCKETS.filter(([k]) => (d[k] ?? 0) > 0).map(([k, l]) => `<div class="hw-row"><span class="hw-lbl ${k.startsWith("body") ? "hw-v" : "hw-r"}">${l}</span><span class="hw-dmg">${d[k]} damage</span><input type="number" class="hw-in" data-field="${k}" min="0" max="${Math.min(d[k], total)}" value="${Number(st.values[k]) || 0}"></div>`).join("");
+  // v0.0.251 (Lucas): each row shows the damage now and after the healing, with minus and plus buttons (the pick window's row clicks), in fixed columns; a line says what is left to give
+  const left = total - assigned;
+  const rows = `<div class="hw-head"><span>Damage</span><span>Now</span><span></span><span>After</span><span>Heal</span></div>` + BUCKETS.filter(([k]) => (d[k] ?? 0) > 0).map(([k, l]) => { const n = Number(st.values[k]) || 0, after = Math.max(0, d[k] - n); return `<div class="hw-row"><span class="hw-lbl ${k.startsWith("body") ? "hw-v" : "hw-r"}">${l}</span><span class="hw-now">${d[k]}</span><span class="hw-arrow">&rarr;</span><span class="hw-after${n ? " changed" : ""}">${after}</span><span class="hw-ctl"><button type="button" data-key="pick:${k}:-1" data-row="${k}" data-k="-1"${n <= 0 ? " disabled" : ""} aria-label="less">&minus;</button><span class="hw-n">${n}</span><button type="button" data-key="pick:${k}:+1" data-row="${k}" data-k="+1"${n >= d[k] || left <= 0 ? " disabled" : ""} aria-label="more">+</button></span></div>`; }).join("")
+    + `<div class="hw-left${left < 0 ? " over" : ""}">${left > 0 ? `${left} left to give` : left === 0 ? "All of it given" : `${-left} too many`}</div>`;
   const stats = [["Heal", String(total)], ["Vigor", `${(d.bodyLethal ?? 0) + (d.bodyNonlethal ?? 0)} / ${o.thresholds?.vigor ?? "?"}`], ["Resolve", `${(d.mindLethal ?? 0) + (d.mindNonlethal ?? 0)} / ${o.thresholds?.resolve ?? "?"}`]];
   if (o.rally) stats.push(["Rally Points", `${o.rally.left} of ${o.rally.max} left after`]);
   const over = assigned > total, none = all === 0;
@@ -57,7 +60,7 @@ export async function healWindow(o) {
   const res = await pickWith({
     title: o.rally ? `Rally: ${o.name}` : `Heal: ${o.name}`,
     model: () => healModel(o, st),
-    pick: () => {},
+    pick: (row, k) => { if (row in st.values) { const n = st.values[row] + (Number(k) || 0); st.values[row] = Math.max(0, Math.min(o.damage[row] ?? 0, n)); } },
     input: (field, value) => { if (field in st.values) st.values[field] = Math.max(0, Math.floor(Number(value) || 0)); },
     result: () => planHealing(st.values, o.damage, o.total)
   });
