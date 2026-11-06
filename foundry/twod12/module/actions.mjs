@@ -1038,6 +1038,8 @@ export async function useAction(actor, item, opts = {}) {
  * one per side when its chips name sides ("Allies: Apply Heal/Effects", "Enemies: Apply Damage/Effects"), else one; each runs its chips in order.
  */
 /** v0.0.254: a chain's steps: the chips split at every @Pause[label] (the label names the next step: "After the damage"). */
+/** v0.0.268 (Lucas: Overwatch's Hindered didn't land): the chain of a card is the one its flags carry (a Grant's line adds to it at use time, which the item's Version doesn't have); the item's is the fallback. */
+export const chainOf = (f, version) => String(f?.after ?? version?.after ?? "").trim();
 export function chainSteps(after) {
   const steps = [{ label: "", chips: [] }];
   for (const c of String(after ?? "").trim().split(/\s+(?=@)/).filter(Boolean)) {
@@ -1122,11 +1124,11 @@ export async function rollDamage(message) {
       const d = byTier.get(r.tier);
       rows.push({ uuid: r.uuid, name: r.name, tier: r.tier, crit: !!r.crit, comps: d.comps.map(c => ({ ...c })), fx: d.fx });
     }
-    if (rows.length) await postMultiDamageCard({ actor, title: item.name, rows, rolls: all, color: f.color, defaultNl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: rows.some(r => r.tier >= 2) ? (version.after ?? "") : "", areaPoint: f.areaPoint ?? null });
+    if (rows.length) await postMultiDamageCard({ actor, title: item.name, rows, rolls: all, color: f.color, defaultNl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: rows.some(r => r.tier >= 2) ? chainOf(f, version) : "", areaPoint: f.areaPoint ?? null });
   } else {
     const d = await rollFor(f.tier, f.bonuses ?? [], f.targets ?? [], "");
     // v0.0.246: the Version's "After the damage" chips run once the damage is applied (an Effects row: on Tier 2 or 3)
-    await postDamageCard({ actor, title: item.name, subtitle: `Damage \u2022 Tier ${f.tier}`, comps: d.comps, fx: d.fx, targets: (f.targets ?? []).map(t => ({ ...t, tier: f.tier, crit: !!f.crit })), originUuid: f.actorUuid, chip: d.chip, rolls: d.rolls, color: f.color, defaultNl: !!f.nl, originMod: f.attrVal, after: f.tier >= 2 ? (version.after ?? "") : "", areaPoint: f.areaPoint ?? null });
+    await postDamageCard({ actor, title: item.name, subtitle: `Damage \u2022 Tier ${f.tier}`, comps: d.comps, fx: d.fx, targets: (f.targets ?? []).map(t => ({ ...t, tier: f.tier, crit: !!f.crit })), originUuid: f.actorUuid, chip: d.chip, rolls: d.rolls, color: f.color, defaultNl: !!f.nl, originMod: f.attrVal, after: f.tier >= 2 ? chainOf(f, version) : "", areaPoint: f.areaPoint ?? null });
   }
   try { await message.setFlag("twod12", "collapsed", true); } catch (e) { /* not the author */ }
 }

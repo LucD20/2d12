@@ -5,3 +5,4 @@ the chain filters its targets by the Tier and the Critical: true
 the hover card's what line: <div class="twod12 fxtip"><div class="ft-head"><b>Aim (Weapon Attack, 1 Boon)</b></div><div class="ft-what">grants Weapon Attack ×1, free, 1 Boon · ignores Low cover</div></div>
 the cover notice and the Boons on the granted-use notice: true
 the hover sites pass what: true
+the damage card's chain is the card's: true

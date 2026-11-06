@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.267, 204 tests; READ THIS FIRST)
+## Where we are now (v0.0.268, 204 tests; READ THIS FIRST)
+- **v0.0.268 (2026-11-06, branch `pack-cards-1`): Lucas tested v0.0.267:** the damage card's chain comes from the card's flags (the Grant's line lives there), so Overwatch's Hindered lands. Not tested by Lucas yet. **NEXT: the Reactions pass (RX)**, before the playtest.
 - **v0.0.267 (2026-11-06, branch `pack-cards-1`): Lucas tested v0.0.266 (all works but three things, fixed):** a Grant's line applies by itself after the damage (the chain, `tier:N` / `crit:yes` gates), the hover card's "what it does" line, the cover ignored as a notice. Test t206 (**the next new test is t207**). Not tested by Lucas yet. **NEXT: the Reactions pass (RX)**, before the playtest.
 - **v0.0.266 (2026-11-06, branch `pack-cards-1`): Lucas tested v0.0.265 (all works but five things, fixed):** the ticket badge, a Grant's second result line (Overwatch), the uses' targets as a choice, the fx mode "when the target is Down" (Deathmark), Marked Quarry links, the "Ignores cover" setting (Aim). Test t205 (**the next new test is t206**). Not tested by Lucas yet. **NEXT: the Reactions pass (RX)**, before the playtest.
 - **v0.0.265 (2026-11-06, branch `pack-cards-1`): Lucas's "do 1 and 3":** Overwatch, Deathmark, Open Season and Aim are granted uses (no Use button); Covering Fire is a Zone. Charge and Cut Through keep their Use chips (see the changelog). Test t204 (**the next new test is t205**). Not tested by Lucas yet. **NEXT: the Reactions pass (MASTER-PLAN RX, Lucas's design): he wants it before the playtest**, so the moments aren't missed in play.
