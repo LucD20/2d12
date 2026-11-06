@@ -131,13 +131,17 @@ if (-not $pick) {
         [void](G rev-parse --verify --quiet "refs/remotes/origin/$cur")
         if ($GitExit -ne 0) { $merged = $true } else { [void](G merge-base --is-ancestor "origin/$cur" origin/main); $merged = ($GitExit -eq 0) }
     }
-    if (-not $merged) {
+    # 3c (2026-11-06): on main already, and main moved on GitHub (a pack merged from a cloud session) or this commit of main was never
+    # synced here (the state file says so): pull, test and rebuild like a pack. Before this, the window said "Already up to date" on an old main.
+    $mainHash = @(G rev-parse origin/main)[0]
+    $mainAhead = $false
+    if ($cur -eq "main") { $mainAhead = ((@(G rev-parse HEAD)[0] -ne $mainHash) -or (-not $state) -or ($state.hash -ne $mainHash)) }
+    if (-not $merged -and -not $mainAhead) {
         if ($DryRun) { Log "nothing to sync (no new unmerged origin/pack-* or origin/claude/pack-* branch; on $cur)" }
         if ($Interactive) { Notify "Already up to date" "on $cur, v$((Get-Content (Join-Path $Repo 'foundry\twod12\system.json') -Raw | ConvertFrom-Json).version); no newer pack branch" }
         exit 0
     }
     if ($Interactive) { WaitForFoundryClosed }
-    $mainHash = @(G rev-parse origin/main)[0]
     if (Get-Process -Name $FoundryProcess -ErrorAction SilentlyContinue) {
         if (-not ($state -and $state.waitingHash -eq "main:$mainHash")) {
             Notify "2d12 sync" "$cur was merged: close Foundry to go back to main"
@@ -147,13 +151,14 @@ if (-not $pick) {
     }
     $before = @(G rev-parse HEAD)[0]
     $changedMain = @(G diff --name-only $before origin/main)
-    $needMain = ($changedMain -contains "foundry/twod12/tools/content.mjs") -or ($changedMain -contains "foundry/twod12/system.json") -or -not (Test-Path (Join-Path $Repo "foundry\twod12\packs\actions"))
-    if ($DryRun) { Log "would: go back to main ($cur was merged), git pull --ff-only, test, $(if ($needMain) { 'REBUILD' } else { 'NOT rebuild' }) the packs, notify"; exit 0 }
+    $needMain = ($changedMain -contains "foundry/twod12/tools/content.mjs") -or ($changedMain -contains "foundry/twod12/system.json") -or -not (Test-Path (Join-Path $Repo "foundry\twod12\packs\actions")) -or (-not $state) -or ($state.hash -ne $mainHash)   # never built this main here: rebuild
+    $why = if ($mainAhead) { "main moved on GitHub" } else { "$cur was merged" }
+    if ($DryRun) { Log "would: go back to main ($why), git pull --ff-only, test, $(if ($needMain) { 'REBUILD' } else { 'NOT rebuild' }) the packs, notify"; exit 0 }
     [void](G checkout main)
     if ($GitExit -ne 0) { Log "checkout of main failed, stopping"; exit 1 }
     [void](G pull --ff-only)
     if ($GitExit -ne 0) { Log "git pull of main failed, stopping"; exit 1 }
-    Log "back on main @ $((G rev-parse --short HEAD)) ($cur was merged)"
+    Log "back on main @ $((G rev-parse --short HEAD)) ($why)"
     $r = TestAndBuild $needMain
     $v = (Get-Content (Join-Path $Repo "foundry\twod12\system.json") -Raw | ConvertFrom-Json).version
     SaveState @{ branch = "main"; hash = $mainHash; waitingHash = "" }
