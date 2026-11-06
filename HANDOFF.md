@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.270, 206 tests; READ THIS FIRST)
+## Where we are now (v0.0.271, 206 tests; READ THIS FIRST)
+- **v0.0.271 (2026-11-06, branch `pack-cards-1`, merged to main): the pack's last version.** Overwatch, Deathmark, Open Season, Aim and Covering Fire are Mithril (19 Mithril cards). Lucas's answers for the Reactions pass are in MASTER-PLAN RX. **NEXT: the Reactions pass (RX) on branch `pack-rx`, before the playtest.**
 - **v0.0.270 (2026-11-06, branch `pack-cards-1`): Lucas tested v0.0.269:** a Zone's effect leaves with the token (the movement's destination read; a console line says what the zones give and take), a grant effect's other settings count for its own use only (Aim's cover). Test t208 (**the next new test is t209**). Not tested by Lucas yet. **NEXT: the Reactions pass (RX)**, before the playtest.
 - **v0.0.269 (2026-11-06, branch `pack-cards-1`): Lucas tested v0.0.268:** a ticket's button and a card's granted-use button use their own grant (not the first waiting). Test t207 (**the next new test is t208**). Not tested by Lucas yet. **NEXT: the Reactions pass (RX)**, before the playtest.
 - **v0.0.268 (2026-11-06, branch `pack-cards-1`): Lucas tested v0.0.267:** the damage card's chain comes from the card's flags (the Grant's line lives there), so Overwatch's Hindered lands. Not tested by Lucas yet. **NEXT: the Reactions pass (RX)**, before the playtest.

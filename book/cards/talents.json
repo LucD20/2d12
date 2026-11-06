@@ -279,7 +279,7 @@
    "foundry": {
     "img": "icons/svg/target.svg",
     "folder": "Talents",
-    "automation": "gold",
+    "automation": "mithril",
     "automationNote": "the Weapon Attack with its Boon as a granted use (the card's button); Low cover gives it no Bane (the effect's Ignores cover setting)."
    },
    "talent": {

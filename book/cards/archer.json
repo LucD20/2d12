@@ -251,7 +251,7 @@
    "foundry": {
     "img": "icons/svg/target.svg",
     "folder": "Archer",
-    "automation": "gold",
+    "automation": "mithril",
     "automationNote": "the Weapon Attack as a granted use (the card's button); its Tier 2 and 3 rows carry the Hindered and Pushed chips. The trigger is by hand until the Reactions pass."
    }
   },
@@ -395,7 +395,7 @@
    "foundry": {
     "img": "icons/svg/target.svg",
     "folder": "Archer",
-    "automation": "gold",
+    "automation": "mithril",
     "automationNote": "the area is a Zone kept 3 rounds: enemies inside carry the Bane, allies inside the +1 Defense, both only while inside.",
     "areaCfg": {
      "targets": "all",
@@ -736,7 +736,7 @@
     "img": "icons/svg/target.svg",
     "folder": "Archer",
     "level": 1,
-    "automation": "gold",
+    "automation": "mithril",
     "automationNote": "the Boon against the Quarry (the mark); when the damage puts the target Down, the Weapon Attack is granted by itself (the sheet's ticket; the damage card's Effects button for a miss-click); the new Quarry by hand."
    }
   },
@@ -773,7 +773,7 @@
     "img": "icons/svg/target.svg",
     "folder": "Archer",
     "level": 1,
-    "automation": "silver",
+    "automation": "mithril",
     "automationNote": "the Weapon Attack as a granted use (the card's button); Vulnerable 2 on the Quarry (drop the condition by hand); the allies add [V] 1d6 Pi by hand."
    },
    "distance": "Weapon"
