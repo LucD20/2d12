@@ -44,6 +44,7 @@ Dropped on the way: a "dregs" heal for any potion (it would get around the one-p
 ### Upkeep
 18. **[agreed]** **A bound Bind item costs 5 CC a day per 100 SC of its price** (Rimebite 2 SC a day, Wayfarer's Boots 2.5 CC). **[Lucas]** **Paid on each Sleep**, from your coin, with Supplies (Part 4). *Assumption (Claude):* only bound Bind items have Upkeep; an item in your pack and a non-Bind item cost nothing. *Assumption:* if you can't pay a Sleep's Upkeep, you choose which bound item goes unpaid.
 19. **[Lucas]** **An unpaid item becomes Dulled:** it stops working, and you must **Repair** it or pay someone to (a future mechanic: Repair).
+19a. **[Lucas]** **The Upkeep counter** (a grace period, 2026-11-06): each Sleep adds your bound items' Upkeep to the counter; you pay it off from your coin whenever you have it (Foundry: automatically at each Sleep). Owing Upkeep is being **in debt**. Your items become **Dulled** if you **complete a Rest while in debt**, or after **4 Sleeps in debt** (so "I never Rest" doesn't dodge it). A Rest comes after a few Sleeps, so the PC has time to recover. *Proposed (Claude), for Lucas to confirm:* **once an item is Dulled, its Upkeep stops** (nothing maintains it, and Dulled is already the penalty): the debt freezes and never spirals, and Repairing it pays the frozen debt (plus what Repair costs). Lucas's alternatives, not chosen yet: the counter keeps growing by a fixed amount per level after the items are Dulled; or no debt at all (0 coin with no penalty).
 20. Why Upkeep and not a per-level price for Supplies: bread doesn't cost more because you are famous, but enchanted steel needs oils and runes re-inked. Upkeep grows with what you own, so the money sink grows with wealth by itself (about 6% of the treasure at every level with Supplies: Part 3).
 
 ### Saving for big items
@@ -223,14 +224,14 @@ What a PC carries in the middle of an adventuring day (Stage 1, after 2 fights o
 
 ### Stash, home base and Retreat
 20. **[Lucas]** **A stash or home base** (a rented room, then a house; storage there ignores Load and costs Upkeep): **later, as base building**, which many players welcome. A high-level money sink.
-21. **[Lucas]** **Retreat** (a trend he wants): it prevents a total party kill and saves even Downed PCs, if the player is willing (a meta choice). Retreating costs Supplies, Momentum and the like, and a roll on a consequence table (in the spirit of Warhammer: The Old World). **You drop all the loot lots you carry**, but good results can change that: or a roll where the tier sets the share you keep (for example Tier 1 nothing, Tier 2 half, Tier 3 all). The table and the costs: later.
+21. **[Lucas]** **Retreat** (a trend he wants): it prevents a total party kill and saves even Downed PCs, if the player is willing (a meta choice). **Its cost (decided 2026-11-06): the loot.** You drop all the loot lots you carry, and you roll on a **consequence table** (in the spirit of Warhammer: The Old World) whose results can also remove Supplies (and Momentum, and the like). If that leaves a PC at 0 Supplies, the next Sleep is a Rough Day. The table: later.
 
 ### Foundry
 22. **[Lucas]** **The ledger and the inventory, mostly in Foundry:** the paper doll, the Belt row, the pack as a grid of Load squares (colored by loot type; squares past the Load in red, with a sysLine warning), a Supplies field spent by the Sleep button (a warning at 0, the Rough Day count).
 
 ## Open, for later sessions
 - **The surprise round** (Part 2, item 4) and Talents for surprise (Sudden Strike).
-- **Repair** (Dulled items), **crafting with loot**, **Exalted weapons**, **base building**, **Retreat's consequence table**.
+- **Repair** (Dulled items; the Upkeep counter's open choice, Part 1 item 19a), **when you can bind or unbind an item** (at a Rest? on a Breather?), **crafting with loot**, **Exalted weapons**, **base building**, **Retreat's consequence table**.
 - **The mundane price list** (weapons, armor, mounts, services, Kit extras) and the **Rough Day table**.
 - **The rare-drop table** (optional rule) and the **unidentified** item type.
 - **Talents:** haggling (sell for +X), the Bandolier as a Talent, Sudden Strike.
