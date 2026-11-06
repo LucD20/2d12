@@ -436,8 +436,17 @@ function renderPanel() {
   const actor = currentActor();
   panel.innerHTML = "";
   if (actor) {
-    for (const e of actor.effects) {
-      if (e.disabled) continue;
+    // v0.0.258 (Lucas): a condition another effect brought (linkedTo) sits right under that effect, a chain between the two icons
+    const shown = actor.effects.filter(e => !e.disabled), order = [];
+    for (const e of shown) if (!e.getFlag(F, "linkedTo") || !shown.some(p => p.id === e.getFlag(F, "linkedTo"))) order.push(e, ...shown.filter(c => c.getFlag(F, "linkedTo") === e.id));
+    for (const e of order) {
+      if (e.getFlag(F, "linkedTo") && shown.some(p => p.id === e.getFlag(F, "linkedTo"))) {
+        const link = document.createElement("div");
+        link.className = "fx-chain";
+        link.innerHTML = `<i class="fa-solid fa-link"></i>`;
+        link.dataset.tooltip = `Brought by ${shown.find(p => p.id === e.getFlag(F, "linkedTo")).name}: it leaves with it`;
+        panel.appendChild(link);
+      }
       const dur = durationText(e.getFlag(F, "duration"));
       const note = (e.getFlag(F, "notes") ?? []).map(n => n.text).filter(Boolean).join(" ");
       const el = document.createElement("div");

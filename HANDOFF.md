@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.257, 194 tests; READ THIS FIRST)
+## Where we are now (v0.0.258, 195 tests; READ THIS FIRST)
+- **v0.0.258 (2026-11-06, branch `pack-cards-1`): Lucas chose the target line's style** (a mix of the suggestions: colored by side, thin rules on both sides, squared edges) **and said what the chain means to him:** the effect panel joins a condition to the effect that brought it with a chain between the two icons. Test t197 (**the next new test is t198**). Not tested by Lucas yet.
 - **v0.0.257 (2026-11-06, branch `pack-cards-1`): Lucas tested v0.0.256:** the hover card on the effect panel beside the chat (`#twod12-effects`: it only had a text tooltip), the card's target name centered in a parchment tag, the retarget button restyled. Test t196 (**the next new test is t197**). Not tested by Lucas yet. Open for Lucas: more styling of the target line (suggestions in the session report), the chain icon's meaning.
 - **v0.0.256 (2026-11-06, branch `pack-cards-1`): Lucas tested v0.0.255:** the hover cards through `data-tooltip-html` (Foundry 13) as well as `data-tooltip`, the HUD's card handed to the tooltip manager; the Apply rows in two columns; the card's target name bigger. Test t195 (**the next new test is t196**). Open: the chain icon (it marks a condition another effect brought: what did Lucas hover?). Not tested by Lucas yet.
 - **v0.0.255 (2026-11-06, branch `pack-cards-1`): Lucas tested v0.0.254 (six things, fixed):** the HUD hover card through the tooltip manager, linked conditions chained on the sheet, the reduction on the damage line, Guard RP as a number, **a picker uses the card's targets first** (no question when the card has them), Beacon's Step as a Granted ticket. Test t194 (**the next new test is t195**). Not tested by Lucas yet.
@@ -84,7 +85,7 @@ Python needs `markdown`. Node 18+ for the tests.
 
 ## Commands
 - Book: `cd book && python3 build_rules.py` ("unresolved refs: 0" is the goal). `python3 build_rules.py --where Flanking`.
-- System tests: **in a fresh clone (a cloud session) first build the packs** (below): about 10 tests read packs/_source and fail with ENOENT without it. Then `cd foundry/twod12 && node tools/tests/run.mjs` (194 tests; each has an expected output in tools/tests/expected; accept a meant change with `node tools/tests/run.mjs --update t84`). **Test numbers have gaps (t1, t6, t21, t31; also t12b, t37b): the next new one is t196.** Lint: `npx eslint@8 --no-eslintrc -c tools/eslint.json --ext .mjs module`.
+- System tests: **in a fresh clone (a cloud session) first build the packs** (below): about 10 tests read packs/_source and fail with ENOENT without it. Then `cd foundry/twod12 && node tools/tests/run.mjs` (195 tests; each has an expected output in tools/tests/expected; accept a meant change with `node tools/tests/run.mjs --update t84`). **Test numbers have gaps (t1, t6, t21, t31; also t12b, t37b): the next new one is t196.** Lint: `npx eslint@8 --no-eslintrc -c tools/eslint.json --ext .mjs module`.
 - Compendiums: the content is in `tools/content.mjs`; in foundry/ run `npm install @foundryvtt/foundryvtt-cli` (node_modules and package files: never commit them), then `node twod12/tools/build-packs.mjs`.
 - A version: bump `version` in system.json, add the changelog entry to docs/reference.md (copy it to foundry/reference.md), run the tests, give Lucas a short test checklist; commit on a `pack-...` branch (Update Foundry.cmd finds it). No zips.
 

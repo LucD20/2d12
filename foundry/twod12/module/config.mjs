@@ -445,9 +445,17 @@ export function metaRowHtml({ frequency = "", targetText = "", distance = "", ar
 }
 
 /** The targeted tokens, shown at the bottom of an Action card (like the damage card). */
-export const targetsRowHtml = (tokens, { retarget = false } = {}) =>
+/** v0.0.258 (Lucas): the side of a card's targets, for the color of the target line: "ally" when all are on your side, "enemy" when none is, "" when mixed or unknown. */
+export const targetSide = (targets, mine = 1) => {
+  const ds = (targets ?? []).map(t => t?.disposition).filter(d => d !== undefined && d !== null);
+  if (!ds.length) return "";
+  if (ds.every(d => d === mine)) return "ally";
+  if (ds.every(d => d !== mine)) return "enemy";
+  return "";
+};
+export const targetsRowHtml = (tokens, { retarget = false, side = "" } = {}) =>
   tokens?.length || retarget
-    ? `<div class="tline cardtargets"><span class="tname${tokens?.length ? "" : " none"}"><i class="fa-solid fa-crosshairs"></i>${tokens?.length ? tokens.map(escAttr).join(", ") : "No target"}</span>${retarget ? `<button type="button" class="tgt" data-twod12="retargetAction" data-tooltip="Target the selected tokens"><i class="fa-solid fa-bullseye"></i></button>` : ""}</div>`
+    ? `<div class="tline cardtargets"><span class="tname${tokens?.length ? (side ? ` ${side}` : "") : " none"}"><i class="fa-solid fa-crosshairs"></i>${tokens?.length ? tokens.map(escAttr).join(", ") : "No target"}</span>${retarget ? `<button type="button" class="tgt" data-twod12="retargetAction" data-tooltip="Target the selected tokens"><i class="fa-solid fa-bullseye"></i></button>` : ""}</div>`
     : "";
 
 /** "Speed 3" in Requirements: the creature needs at least that Speed. Returns a reason it can't, or "". */

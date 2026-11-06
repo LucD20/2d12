@@ -2257,3 +2257,16 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat .cardtargets .tgt i { color: #854F0B; margin: 0; }
 .twod12.chat .cardtargets .tgt:hover { background: #FAEEDA; border-color: #BA7517; color: #633806; }
 #twod12-effects .fx-icon:hover { border-color: #c8b48a; box-shadow: 0 0 0 1px rgba(200, 180, 138, .6); }
+/* v0.0.258 (Lucas): the target line squared, with thin rules on both sides, colored by side (allies green, enemies red); the panel's chain between an effect and the condition it brought. */
+.twod12.chat .cardtargets { gap: 8px; padding: 0 32px 0 0; }
+.twod12.chat .cardtargets::before, .twod12.chat .cardtargets::after { content: ""; flex: 1 1 0; height: 1px; background: #c8b48a; }
+.twod12.chat .cardtargets .tname { flex: 0 1 auto; border-radius: 2px; padding: 1px 10px; }
+.twod12.chat .cardtargets .tname.ally { background: #EAF3DE; border-color: #97C459; color: #27500A; }
+.twod12.chat .cardtargets .tname.ally i.fa-crosshairs { color: #3B6D11; }
+.twod12.chat .cardtargets .tname.enemy { background: #FCEBEB; border-color: #F09595; color: #791F1F; }
+.twod12.chat .cardtargets .tname.enemy i.fa-crosshairs { color: #A32D2D; }
+.twod12.chat .cardtargets:has(.tname.ally)::before, .twod12.chat .cardtargets:has(.tname.ally)::after { background: #97C459; }
+.twod12.chat .cardtargets:has(.tname.enemy)::before, .twod12.chat .cardtargets:has(.tname.enemy)::after { background: #F09595; }
+.twod12.chat .cardtargets .tgt { border-radius: 3px; width: 24px; height: 22px; }
+#twod12-effects .fx-chain { width: 36px; height: 12px; margin: -8px 0; display: flex; justify-content: center; align-items: center; position: relative; z-index: 2; pointer-events: auto; }
+#twod12-effects .fx-chain i { width: 14px; height: 14px; border-radius: 7px; background: #1e1b16; border: 1px solid #c8b48a; color: #e0c98a; font-size: 8px; line-height: 12px; text-align: center; transform: rotate(90deg); }
