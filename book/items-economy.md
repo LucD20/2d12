@@ -19,6 +19,7 @@ Parts: 1 Items (below), 2 Actions Out of Combat, 3 Loot and Money, 4 Carrying an
 
 ### Bind
 8. **[Lucas]** **Items that must be bound have the Bind trait.** A Bind item works only while bound; an item without the trait works without binding (so non-Bind items can still exist). **[agreed]** A creature can have **Stage + 1** Bind items bound (2 at Stage 1, 3 at Stage 2, 4 at Stage 3).
+8a. **[Lucas]** **You bind and unbind items when you complete a Sleep** (the same moment you will prepare spells and choose Actions, for later systems). So a broke PC unbinds an item at the next Sleep to stop its Upkeep.
 9. **[agreed]** **An effect that lasts all day is a Bind item:** the slot is its real cost, more than its price (Wayfarer's Boots: +1 Speed is worth 0.0 DE in combat, so its price is the minimum and the slot is what it costs).
 
 ### Consumables
@@ -231,7 +232,7 @@ What a PC carries in the middle of an adventuring day (Stage 1, after 2 fights o
 
 ## Open, for later sessions
 - **The surprise round** (Part 2, item 4) and Talents for surprise (Sudden Strike).
-- **Repair** (Dulled items; the Upkeep counter's open choice, Part 1 item 19a), **when you can bind or unbind an item** (at a Rest? on a Breather?), **crafting with loot**, **Exalted weapons**, **base building**, **Retreat's consequence table**.
+- **Repair** (Dulled items; the Upkeep counter's open choice, Part 1 item 19a), **crafting with loot**, **Exalted weapons**, **base building**, **Retreat's consequence table**.
 - **The mundane price list** (weapons, armor, mounts, services, Kit extras) and the **Rough Day table**.
 - **The rare-drop table** (optional rule) and the **unidentified** item type.
 - **Talents:** haggling (sell for +X), the Bandolier as a Talent, Sudden Strike.
