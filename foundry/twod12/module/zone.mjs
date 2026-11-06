@@ -6,6 +6,7 @@ import { tokenCells } from "./template.mjs";
 const F = "twod12";
 const key = c => `${c.i},${c.j}`;
 let timer = null, running = false, again = false;
+const landing = new Map();   // v0.0.270 (Lucas: the Bane stayed after moving out): where a moving token ends (the movement's destination), read on the next refresh
 
 /** The Zone a Version's effects describe (their "zone" settings), for the area about to be placed: { zone: { name, rules }, uuids } or null. */
 export async function zoneOf(versions) {
@@ -48,7 +49,8 @@ export async function refreshZones() {
   try {
     const { createEffect, originInfo } = await import("./effects.mjs");
     const regions = zonesOf(canvas.scene).map(r => ({ id: r.id, zone: r.getFlag(F, "zone") }));
-    const toks = (canvas.scene.tokens ?? []).filter(td => td.actor).map(td => ({ id: td.id, doc: td, disposition: td.disposition, cells: tokenCells(td) }));
+    const toks = (canvas.scene.tokens ?? []).filter(td => td.actor).map(td => ({ id: td.id, doc: td, disposition: td.disposition, cells: tokenCells(landing.get(td.id) ?? td) }));
+    landing.clear();
     const want = zonePlan(regions, toks);
     const done = new Set();
     for (const t of toks) {
@@ -58,17 +60,17 @@ export async function refreshZones() {
       const mine = want.get(t.id) ?? new Map();
       const have = actor.effects.filter(e => e.getFlag(F, "zoneFrom"));
       const stale = have.filter(e => !mine.has(e.getFlag(F, "zoneFrom"))).map(e => e.id);
-      if (stale.length) await actor.deleteEmbeddedDocuments("ActiveEffect", stale);
+      if (stale.length) { console.log(`twod12 | zones: ${actor.name} leaves ${stale.length} zone effect(s)`); await actor.deleteEmbeddedDocuments("ActiveEffect", stale); }
       for (const [k, w] of mine) {
         if (have.some(e => e.getFlag(F, "zoneFrom") === k)) continue;
         let item = null; try { item = await fromUuid(w.rule.fxUuid); } catch (e) { item = null; }
-        if (item) await createEffect(actor, item, originInfo(w.zone.originUuid || actor.uuid), null, { zoneFrom: k });
+        if (item) { console.log(`twod12 | zones: ${actor.name} gains ${item.name} (${w.zone.name})`); await createEffect(actor, item, originInfo(w.zone.originUuid || actor.uuid), null, { zoneFrom: k }); }
       }
     }
   } catch (e) { console.warn("twod12 | zones", e); }
   finally { running = false; if (again) { again = false; scheduleZoneRefresh(); } }
 }
-export function scheduleZoneRefresh() { clearTimeout(timer); timer = setTimeout(refreshZones, 200); }
+export function scheduleZoneRefresh() { clearTimeout(timer); timer = setTimeout(refreshZones, 250); }
 /** At the start of a creature's turn: the heals of the Zones it stands in (rolled, said in the chat, then its Heal window). */
 export async function zoneTurnStart(combatant) {
   const td = combatant?.token, actor = td?.actor;
@@ -95,6 +97,9 @@ export async function zoneTurnStart(combatant) {
 export function registerZoneHooks() {
   const sched = () => scheduleZoneRefresh();
   for (const h of ["canvasReady", "createToken", "deleteToken", "createRegion", "deleteRegion", "updateRegion"]) Hooks.on(h, sched);
-  Hooks.on("updateToken", (doc, changes) => { if ("x" in changes || "y" in changes || "width" in changes || "height" in changes || "disposition" in changes) sched(); });
-  Hooks.on("moveToken", sched);
+  Hooks.on("updateToken", sched);
+  // Foundry V13+: a movement says where it ends; the document can still be on its way when the hook fires (the hazards read it the same way)
+  Hooks.on("moveToken", (doc, movement) => { const d = movement?.destination; if (d && Number.isFinite(d.x) && Number.isFinite(d.y)) landing.set(doc.id, { x: d.x, y: d.y, width: doc.width, height: doc.height, flags: doc.flags }); sched(); });
+  Hooks.on("combatTurnChange", sched);
+  Hooks.on("updateCombat", sched);
 }

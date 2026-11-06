@@ -56,10 +56,12 @@ export function ignoredBy(actor, rule, traits) {
 }
 
 /** v0.0.266 (Lucas, Aim): the names of what lets the creature's matching Actions ignore this cover level ("low", "medium", "high"). */
-export function coverIgnored(actor, level, traits) {
+export function coverIgnored(actor, level, traits, grantEffectId = null) {
   const out = [];
   for (const e of allEffects(actor)) {
     if (effectOff(actor, e)) continue;
+    // v0.0.270 (Lucas, Aim): an effect that grants a use keeps its other settings for that use: on another roll they don't count
+    if ((e.getFlag(F, "grants") ?? []).some(g => g.left > 0) && e.id !== grantEffectId) continue;
     if ((e.getFlag(F, "covers") ?? []).some(x => x.levels?.includes(level) && matches(x, traits))) out.push(String(e.name ?? "").replace(/^\s*Effect:\s*/i, ""));
   }
   return out;
