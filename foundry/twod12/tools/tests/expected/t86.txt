@@ -33,7 +33,7 @@ rows on the card: 1 | Skeleton Captain ×6 15 Bo 13 Tier 2 T1 28% · T2 45% · T
 tier row names: ≤ 12 2 Weapon Modifier 13–19 0 Greatsword + 2 Weapon Modifier Skeleton Captain ×6 ≥ 20 0 Greatsword + 1d6 + 2 Weapon Mod
 targets line: Skeleton Captain ×6
 damage: one card with 6 rows, named: Skeleton Captain 1, Skeleton Captain 2, Skeleton Captain 3, Skeleton Captain 4, Skeleton Captain 5, Skeleton Captain 6 | All bar: true
-size of the roll card: about 4288 characters for 6 creatures (one row), against 5153 for 3
+size of the roll card: about 4340 characters for 6 creatures (one row), against 5205 for 3
 gridless scene: Whirlwind still rolls: true 
 dots: "" | g g r | capped at 5 each: 5 5 | never negative: ""
 captions: {"name":"Skeleton Captain 2","detail":"DC 13 · 2 Banes"} {"name":"Nari","detail":"DC 17 · 1 Boon"} {"name":"Goblin","detail":"DC 20"} {"name":"Lonny","detail":"DC 15 · 3 Boons · 1 Bane"}

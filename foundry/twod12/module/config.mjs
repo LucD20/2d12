@@ -447,7 +447,7 @@ export function metaRowHtml({ frequency = "", targetText = "", distance = "", ar
 /** The targeted tokens, shown at the bottom of an Action card (like the damage card). */
 export const targetsRowHtml = (tokens, { retarget = false } = {}) =>
   tokens?.length || retarget
-    ? `<div class="tline cardtargets">${retarget ? `<button type="button" class="tgt" data-twod12="retargetAction" data-tooltip="Target the selected tokens"><i class="fa-solid fa-bullseye"></i></button>` : `<i class="fa-solid fa-crosshairs"></i>`}<span>${tokens?.length ? tokens.map(escAttr).join(", ") : "No target"}</span></div>`
+    ? `<div class="tline cardtargets"><span class="tname${tokens?.length ? "" : " none"}"><i class="fa-solid fa-crosshairs"></i>${tokens?.length ? tokens.map(escAttr).join(", ") : "No target"}</span>${retarget ? `<button type="button" class="tgt" data-twod12="retargetAction" data-tooltip="Target the selected tokens"><i class="fa-solid fa-bullseye"></i></button>` : ""}</div>`
     : "";
 
 /** "Speed 3" in Requirements: the creature needs at least that Speed. Returns a reason it can't, or "". */

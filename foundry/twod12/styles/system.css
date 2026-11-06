@@ -2247,3 +2247,13 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat .applyrow:has(> button:only-child) { grid-template-columns: 1fr; }
 .twod12.chat .cardtargets { font-size: 14px; font-weight: 700; }
 .twod12.chat .cardtargets i.fa-crosshairs { color: #a8322f; }
+/* v0.0.257 (Lucas): the card's target name centered in a parchment tag (the crosshair red), the retarget button a small parchment button at the right edge; the effect panel's hover card. */
+.twod12.chat .cardtargets { position: relative; justify-content: center; margin: 8px 12px 0; padding: 0 30px; opacity: 1; }
+.twod12.chat .cardtargets .tname { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; padding: 2px 12px; border: 1px solid #c8b48a; border-radius: 12px; background: #f4ecdc; color: #2c2a26; font-size: 13px; font-weight: 700; line-height: 18px; letter-spacing: .01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.twod12.chat .cardtargets .tname.none { color: #7a6f60; font-weight: 600; font-style: italic; }
+.twod12.chat .cardtargets .tname i.fa-crosshairs { color: #a8322f; font-size: 12px; }
+.twod12.chat .cardtargets .tname.none i.fa-crosshairs { color: #b09a78; }
+.twod12.chat .cardtargets .tgt { position: absolute; right: 0; top: 50%; transform: translateY(-50%); width: 24px; height: 24px; margin: 0; border: 1px solid #8a7650; border-radius: 12px; background: #fbf7ee; color: #854F0B; font-size: 12px; box-shadow: none; }
+.twod12.chat .cardtargets .tgt i { color: #854F0B; margin: 0; }
+.twod12.chat .cardtargets .tgt:hover { background: #FAEEDA; border-color: #BA7517; color: #633806; }
+#twod12-effects .fx-icon:hover { border-color: #c8b48a; box-shadow: 0 0 0 1px rgba(200, 180, 138, .6); }

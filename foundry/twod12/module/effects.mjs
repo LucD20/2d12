@@ -3,7 +3,6 @@ import { appliedFlags } from "./appliedflags.mjs";
 import { effectOff } from "./escalation.mjs";
 import { openEffectSheet } from "./fxopen.mjs";
 import { bumpExhausted, isExhaustedFx, exhaustedClick, heldModifiers } from "./sleep.mjs";
-import { esc } from "./roll.mjs";
 import { fxTipHtml, hoverOf } from "./util.mjs";   // v0.0.254: the HUD's hover cards
 import { TWOD12 } from "./config.mjs";
 import { combatantOf } from "./combat.mjs";
@@ -416,6 +415,22 @@ function positionPanel() {
   panel.style.right = `${Math.max(8, window.innerWidth - r.left + 8)}px`;
   panel.style.top = `${Math.max(8, r.top + 8)}px`;
 }
+/** v0.0.257 (Lucas): the hover card of an icon of the panel beside the chat (the sheet's and the HUD's card, with the panel's own controls). */
+export function panelCardHtml(e, actor, { dur = "", note = "" } = {}) {
+  const counter = isExhaustedFx(e) && actor?.type === "character", valued = isValued(e);
+  const name = valued ? `${baseNameOf(e)} ${Number(e.getFlag(F, "value")) || 1}` : counter && actor.system.exhausted > 0 ? `${e.name} ${actor.system.exhausted}` : e.name;
+  const text = hoverOf(e.getFlag(F, "hover"), e.getFlag(F, "description") ?? e.description);
+  const by = e.origin && e.origin !== actor?.uuid ? (fromUuidSync(e.origin)?.name ?? "") : "";
+  return fxTipHtml({ name, dur: dur || "until removed", text: [text, note].filter(Boolean).join(" "), source: by ? `From ${by}` : "",
+    controls: valued || counter ? "Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove" : "Click: open · Right-click: remove" });
+}
+/** The attributes that show an HTML card on hover, to the left: Foundry 13 reads data-tooltip-html (its data-tooltip is text), older versions data-tooltip. */
+const markTip = (el, html) => { el.dataset.tooltipHtml = html; el.dataset.tooltip = html; el.dataset.tooltipDirection = "LEFT"; };
+/** On hover the card is also handed to the tooltip manager as an element (the HUD's way, v0.0.256), in case the attribute is read as text. */
+function activateTip(el) {
+  const html = el?.dataset?.tooltipHtml; if (!html) return;
+  try { const box = document.createElement("div"); box.innerHTML = html; game.tooltip?.activate?.(el, { content: box, direction: "LEFT" }); } catch (e) { /* the attributes stay */ }
+}
 function renderPanel() {
   if (!panel) return;
   const actor = currentActor();
@@ -428,13 +443,9 @@ function renderPanel() {
       const el = document.createElement("div");
       el.className = "fx-icon";
       el.dataset.effectId = e.id;
-      el.dataset.tooltip = esc(`${e.name}${dur ? ` (${dur})` : ""}${note ? `: ${note}` : ""}${isExhaustedFx(e) && actor.type === "character" ? " · Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove" : ""}`);
       el.innerHTML = `<img src="${e.img}" alt="">${isExhaustedFx(e) && actor.type === "character" && actor.system.exhausted > 0 ? `<span class="fx-val">${actor.system.exhausted}</span>` : ""}`;
-      if (isValued(e)) {
-        const v = Number(e.getFlag(F, "value")) || 1;
-        el.innerHTML = `<img src="${e.img}" alt=""><span class="fx-val">${v}</span>`;
-        el.dataset.tooltip = esc(`${baseNameOf(e)} ${v}${dur ? ` (${dur})` : ""} · Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove`);
-      }
+      if (isValued(e)) el.innerHTML = `<img src="${e.img}" alt=""><span class="fx-val">${Number(e.getFlag(F, "value")) || 1}</span>`;
+      markTip(el, panelCardHtml(e, actor, { dur, note }));   // v0.0.257 (Lucas): the hover card here too, to the left of the panel (away from the chat)
       panel.appendChild(el);
     }
   }
@@ -448,6 +459,7 @@ export function setupPanel() {
   window.addEventListener("resize", positionPanel);
   const sb = document.getElementById("sidebar");
   if (sb && window.ResizeObserver) new ResizeObserver(positionPanel).observe(sb);
+  panel.addEventListener("pointerover", ev => activateTip(ev.target.closest("[data-effect-id]")), true);   // v0.0.257: the hover card
   panel.addEventListener("contextmenu", async ev => {
     const el = ev.target.closest("[data-effect-id]");
     if (!el) return;
@@ -525,7 +537,7 @@ export function valuedHud(app, html) {
     return fxTipHtml({ name: valued ? `${baseNameOf(fx)} ${Number(fx.getFlag(F, "value")) || 1}` : fx.name, dur: durationText(fx.getFlag(F, "duration")) || "until removed", text: hoverOf(fx.getFlag(F, "hover"), fx.getFlag(F, "description") ?? fx.description), controls: valued ? "Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove" : "Click: remove · Right-click: overlay" });
   };
   // v0.0.256: Foundry 13 reads data-tooltip-html (data-tooltip is text there); both are written, and the manager is given the card as an element on hover
-  const mark = (el, html) => { el.dataset.tooltipHtml = html; el.dataset.tooltip = html; el.dataset.tooltipDirection = "LEFT"; };
+  const mark = markTip;
   for (const el of root.querySelectorAll("[data-status-id]")) { const html = cardOf(el.dataset.statusId); if (html) { mark(el, html); n++; } }
   if (root.dataset && root.addEventListener && !root.dataset.twod12Hud) {
     root.dataset.twod12Hud = "1";
