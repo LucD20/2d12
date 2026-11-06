@@ -91,6 +91,15 @@ Dropped on the way: a "dregs" heal for any potion (it would get around the one-p
 
 What a magic +1 does to the fights, for the record (the ruler, 2000 fights, every PC with the item; Health taken a fight, normal / hard / deadly): none 50 / 128 / 114; +1 weapon 43 / 109 / 99; +1 armor 43 / 110 / 100; both 37 / 94 / 86; +2 and +2 27 / 68 / 65. Each +1 cuts about 14%, both about 25% (a difficulty step): why item 4 keeps numbers out.
 
+### Rarity (logged 2026-11-06, after a search on PF2e's rarity)
+What players say about PF2e's rarity: the main complaint is that **one label mixes three meanings** (rare in the world, too strong, disruptive to a campaign), so asking for an Uncommon item "because of lore" feels like gatekeeping; GMs swing to the extremes (ban all Uncommon and Rare, or allow all); what works is "Common = no permission" and Rare = GM-placed treasure. On campaign-breaking items, the known advice (the Alexandrian on Zone of Truth): a truth effect breaks a mystery only when it skips the investigation. 2d12 is written by one designer, so it can keep the meanings apart.
+
+32. **[Lucas]** **Availability (lore and economy, never power), one word on the card:** **Common** (sold in any market up to its market level), **Regional** (sold only in towns with the matching tag: Part 3's town block), **Rare** (never sold: GM-placed treasure). **Unique** for one-of-a-kind treasure (Exalted weapons).
+33. **[Lucas]** **Power is never a rarity:** an item too strong for its price is re-priced by the ruler or rewritten (not made "rare because strong", PF2e's confusion).
+34. **[Lucas]** **The Disruptive trait names what the item bends**, with a parameter like Resist: **Disruptive (Mystery)**. The list (short and fixed): **Mystery** (investigations: Potion of Truth, speak with the dead, detect lies), **Darkness** (dark campaigns: Owl-eye Lenses, Dark Sight potions), **Travel** (distance and isolation: teleportation, long flight), **Survival** (the Supplies and Forage system: endless food or water, create shelter), **Stealth** (infiltration: long invisibility, perfect disguise), **Social** (intrigue: charm, compulsion), **Death** (stakes: resurrection, undoing a Down). Most items have no tag.
+35. **[Lucas]** **How the GM uses it:** at session zero the GM names the campaign's themes ("Mystery and Darkness"); items tagged with those themes become Rare for that campaign, the rest stay as written. Transparent (a powergamer can read why the Potion of Truth isn't for sale: the rules back the GM), and the GM limits only what breaks this campaign (a dungeon crawl can sell Potions of Truth freely).
+36. **[Lucas]** **Design the item well first, tag it second:** a Disruptive item narrows, it doesn't close (a Potion of Truth: 3 yes-or-no questions, and the target can choose silence).
+
 ## Part 2: Actions Out of Combat
 
 A new section of the book, **"Actions Out of Combat"**: most of these rules go there.
