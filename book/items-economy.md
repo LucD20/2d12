@@ -116,3 +116,58 @@ A new section of the book, **"Actions Out of Combat"**: most of these rules go t
 ### Preparation
 15. **[agreed]** **Preparation is allowed:** positioning, Hiding, picking Cover, scouting, setting up an ambush, filling your Belt. Real tactics with no number attached: the line between preparing and prebuffing.
 16. **[Lucas]** **Preparation bonus ideas (before combat), for some circumstances:** when you know what you are about to face, you start the encounter with +1 Escalation (as Momentum does; they don't stack). **Rule or Designer's Note:** walking a dungeon expecting danger behind every door doesn't give it. **You must know what you will face** to gain any preparation bonus.
+
+## Part 3: Loot and Money
+
+### Coins
+1. **[Lucas]** **Silver is the main coin**, written **CC, SC, GC** (not cp / sp / gp).
+2. **[agreed]** 10 CC = 1 SC, 10 SC = 1 GC. Gold is rare, mostly a treasure coin. A commoner's day of work pays 1 SC.
+
+### Treasure per level
+3. **[Lucas]** **An estimate of SC per level**, and the book says where it can come from: **enemy loot**, **items and caches found** while exploring (NPCs can use items; most just don't have them), and **rewards** (quests, talking to NPCs, interacting, games). His example: 1000 SC at level 6 = 300 in found items + 400 in rewards + 300 in enemy loot.
+4. **[agreed]** The table, per PC (a PC starts with **100 SC**):
+
+| Level | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Treasure gained in the level | 150 | 200 | 250 | 300 | 400 | 500 | 600 | 800 | 1000 | 1200 SC |
+
+5. **[agreed]** **Default split: 30% enemy loot, 30% found, 40% rewards;** the GM shifts it (a treasure-hunt arc gives more to found). Found items count at their sell price (½). So avoiding a fight never cuts the income by much.
+6. **[agreed]** **The fit** (an estimate: 7 days a level, half of what was earned in Bind items): Supplies + Upkeep cost **about 6% of the treasure at every level** (Supplies fall from 5% to under 1%, Upkeep grows from 1 to 75 SC a level): a steady drip; the big spending stays on items, mules and property. Refilling the Belt every adventure day (3 consumables at 30 / 50 / 80 SC by Stage, 3.5 adventure days a level) would cost about **70-210% of a level's treasure**: consumables are never bought "because you can". A centerpiece item costs about one level's treasure (Rimebite 400 SC at level 5).
+
+### Monster loot
+7. **[Lucas]** **Each monster has a set amount of sellable loot**, and its **level means something**: low-level monsters give copper.
+8. **[agreed]** **Lots by role:** Minion ½ (a group shares them), Grunt 1, Standard 2, Elite 4 (twice its CV).
+9. **[agreed]** **The value of 1 lot follows the monster's level** (that level's treasure ÷ 100):
+
+| Monster level | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 1 lot | 15 CC | 2 SC | 25 CC | 3 SC | 4 SC | 5 SC | 6 SC | 8 SC | 1 GC | 12 SC |
+
+About 14 CV fought per PC per level × 2 lots per CV × (treasure ÷ 100) = about 30% of the treasure: the enemy share.
+10. **[Lucas]** **The monster's level sets its lot value, not the party's:** a level 2 goblin pays level 2 loot even to a level 6 party (farming weak monsters doesn't pay).
+
+### Loot types
+11. **[Lucas]** **Loot can only be sold in towns, or to travelling merchants and the like.** It comes in **types**, a monster can carry a mix, and some vendors or towns pay more or less for some types. **Valuable loot is light and worth more; poor loot is heavy and worth less: weight is the lever.**
+12. **[Lucas / agreed]** The five types (one word each; Lucas named Valuables, asked for a resources word for scraps and something like Idol for relics):
+
+| Type | What it is | Weight (squares) | Value |
+|---|---|---|---|
+| **Valuables** | coin, gems, jewelry | 1 | ×1.5 |
+| **Arcana** | reagents, cores, essences | 1 | ×1.5 |
+| **Idols** | effigies, holy and unholy objects | 2 | ×1 |
+| **Hides** | pelts, bone, horn | 3 | ×1 |
+| **Salvage** | wood, axe heads, blades, armor scraps | 5 | ×½ |
+
+With a typical mix (Salvage and Hides common, Valuables and Arcana rarer) a lot averages ×1 in value and about 3 squares.
+13. **[agreed]** **The GM shifts the mix** to fit the monster: a beast with no Valuables but a rich hide, a cultist with Idols.
+14. *Suggestion (Claude, from how peddlers worked: they carried little coin and had to haul what they bought):* **a travelling merchant** buys everything at ×½ (Valuables at ×1) and has a **purse**: it can buy only so much (for example 10 lots) before it runs out of coin. A convenience, never the best deal.
+
+### Towns
+15. **[agreed]** **Each town has a sell multiplier per type** (×2, ×1.5 or ×½: a mage city pays ×2 for Arcana, a forge town ×1.5 for Salvage). Every town buys everything at ×½ at least; **Valuables sell at ×1 everywhere** (the safe coin).
+16. **[agreed]** Each town also has a **market level** (Part 1) and a **Supplies multiplier** (frontier prices: an outpost ×3, the capital ×1).
+
+### Selling
+17. **[Lucas]** **Quick-sell (optional rule):** sell everything anywhere at ¾, ignoring the multipliers (for players who don't want the trading game). GM note: grant more treasure from time to time to make up for it.
+18. **[Lucas]** **Haggling: no general rule.** A **Designer's Note** says how a GM can run it, and warns that it can turn into a tired Appeal roll to see if the price goes up. Better prices come from **Talents** ("you sell for +X").
+19. **[Lucas]** **Rare drops (optional rule):** roll 1d12 for each Elite and the boss; on a 12 it explodes into a rare drop. GM note: it makes the players wealthier.
+20. **[Lucas]** **A loot ledger**, mostly in Foundry.
