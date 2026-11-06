@@ -911,7 +911,7 @@ export async function useAction(actor, item, opts = {}) {
     ${bonusRows}
     ${critHtml}${effectsHtml}
     ${fxn.all.length && !effectsOff ? `<div class="fxrow">&#10022; ${fxNames(fxn.all)}</div>` : ""}
-    ${btn}${isSelf && !String(it.area ?? "").trim() ? "" : targetsRowHtml(targetEntries(targets, selfToken?.document?.disposition ?? 1), { retarget: true })}${it.moment ? "" : applyAfterHtml(version, targets, selfToken)}${it.worth ? `<div class="ac-worth">${esc(it.worth)}</div>` : ""}</div>`;
+    ${btn}${isSelf && !String(it.area ?? "").trim() ? "" : targetsRowHtml(targetEntries(targets, selfToken?.document?.disposition ?? 1), { retarget: true })}${applyAfterHtml(version, targets, selfToken, it.moment ? 1 : 0)}${it.worth ? `<div class="ac-worth">${esc(it.worth)}</div>` : ""}</div>`;
   // v0.0.195 (Lucas): a movement-only Action (Advance, Evade, Crawl) in combat starts its movement with the banner (squares left, Done) and
   // posts one short line when it ends, instead of a card whose button then posted the movement (two messages for one step).
   const mvInner = pureMove(it, version, basicKey);
@@ -968,7 +968,8 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.261 (Lucas, Divine Intervention): a Reaction with a moment runs its chain by itself on the creature it answered for (no Apply button)
   if (it.moment && version.noTiers && String(version.after ?? "").trim() && targets.length) {
     const { runAfter } = await import("./inline.mjs");
-    try { await runAfter(version.after, { actor, targets: targets.map(t => ({ uuid: t.uuid, name: t.name })), attrVal: src.kind ? (Number(src.mod) || 0) : null, message: cmsg, source: item.name }); } catch (e) { console.warn("twod12 | moment chain", e); }
+    // v0.0.272 (pack RX): only its first step: the steps after a @Pause ("After the damage") stay buttons on the card (applyAfterHtml from step 1)
+    try { await runAfter(chainSteps(version.after)[0]?.chips.join(" ") ?? "", { actor, targets: targets.map(t => ({ uuid: t.uuid, name: t.name })), attrVal: src.kind ? (Number(src.mod) || 0) : null, message: cmsg, source: item.name }); } catch (e) { console.warn("twod12 | moment chain", e); }
   }
   // A Save Action: a Save card for the creatures in the area (each player rolls their own), and the area remembers it for [HT] (v0.0.159).
   if (saveAct && !version.noTiers) {
@@ -1031,6 +1032,12 @@ export async function useAction(actor, item, opts = {}) {
   const gg = opts.grant?.grant, halves = gg && ((gg.does === "half" && halfHits(gg.on, tier ?? 0, !!chk?.crit)) || (gg.does2 === "half" && halfHits(gg.on2, tier ?? 0, !!chk?.crit)));   // v0.0.266: either line
   if (halves && targets[0]?.uuid) { try { await setHalfHint(targets[0].uuid, { source: String(opts.grant.effect?.name ?? item.name).replace(/\s*\(.*\)\s*$/, ""), by: actor.name }); } catch (e) { console.warn("twod12 | half hint", e); } }
   opts.onUsed?.({ targets });
+  // v0.0.272 (pack RX): the moments an Action brings: "a Strike is made against an ally" (a Trigger: offered after its card), "an enemy stands up"
+  try {
+    const M = await import("./moment.mjs");
+    if (useTraits.has("strike") && targets.length && rollsAtOthers) M.strikeMoment(actor, targets);
+    if (basicKey === "stand" && selfToken?.document) M.moveMoment(selfToken.document, null, null, { stand: true });
+  } catch (e) { console.warn("twod12 | Reactions", e); }
   return true;
 }
 
@@ -1049,7 +1056,7 @@ export function chainSteps(after) {
   }
   return steps.filter(s => s.chips.length);
 }
-export function applyAfterHtml(version, targets, selfToken) {
+export function applyAfterHtml(version, targets, selfToken, from = 0) {   // v0.0.272: from: the first step that gets a button (a moment's Reaction ran step 0 by itself)
   const after = String(version?.after ?? "").trim();
   if (!after || !version?.noTiers) return "";
   const label = chips => (/@Heal\[|@Rally\[|@Guard\[|@Reduce\[/.test(chips) ? "Apply Heal/Effects" : /@Move\[|@Condition\[|@Damage\[/.test(chips) ? "Apply Damage/Effects" : "Apply Effects");
@@ -1057,6 +1064,7 @@ export function applyAfterHtml(version, targets, selfToken) {
   const names = side => (targets ?? []).filter(t => { const d = t.disposition; if (d === undefined) return side === "allies"; return side === "allies" ? d === mine : d !== mine && d !== 0; }).map(t => esc(t.name));
   const btn = (chips, side, step, prefix = "") => `<button type="button" data-twod12="applyAfter" data-side="${side}" data-step="${step}"><i class="fa-solid ${side === "enemies" ? "fa-burst" : side === "allies" ? "fa-hand-holding-medical" : "fa-wand-magic-sparkles"}"></i> ${prefix}${label(chips)}</button>`;
   return chainSteps(after).map((st, k) => {
+    if (k < from) return "";
     const text = st.chips.join(" "), sides = [...new Set([...text.matchAll(/\|side:(allies|enemies)\b/g)].map(m => m[1]))], prefix = st.label ? `${esc(st.label)}: ` : "";
     if (!sides.length) return `<div class="tline applyrow">${st.label ? `<span class="apside">${esc(st.label)}</span>` : ""}${btn(text, "", k, st.label ? "" : prefix)}</div>`;
     // v0.0.252 (Lucas): just "Allies" / "Enemies", a click opens the list of the creatures (a bullet each)
@@ -1125,11 +1133,11 @@ export async function rollDamage(message) {
       const d = byTier.get(r.tier);
       rows.push({ uuid: r.uuid, name: r.name, tier: r.tier, crit: !!r.crit, comps: d.comps.map(c => ({ ...c })), fx: d.fx });
     }
-    if (rows.length) await postMultiDamageCard({ actor, title: item.name, rows, rolls: all, color: f.color, defaultNl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: rows.some(r => r.tier >= 2) ? chainOf(f, version) : "", areaPoint: f.areaPoint ?? null });
+    if (rows.length) await postMultiDamageCard({ actor, title: item.name, rows, rolls: all, color: f.color, defaultNl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: rows.some(r => r.tier >= 2) ? chainOf(f, version) : "", areaPoint: f.areaPoint ?? null, strike: (f.traits ?? []).includes("strike") });
   } else {
     const d = await rollFor(f.tier, f.bonuses ?? [], f.targets ?? [], "");
     // v0.0.246: the Version's "After the damage" chips run once the damage is applied (an Effects row: on Tier 2 or 3)
-    await postDamageCard({ actor, title: item.name, subtitle: `Damage \u2022 Tier ${f.tier}`, comps: d.comps, fx: d.fx, targets: (f.targets ?? []).map(t => ({ ...t, tier: f.tier, crit: !!f.crit })), originUuid: f.actorUuid, chip: d.chip, rolls: d.rolls, color: f.color, defaultNl: !!f.nl, originMod: f.attrVal, after: f.tier >= 2 ? chainOf(f, version) : "", areaPoint: f.areaPoint ?? null });
+    await postDamageCard({ actor, title: item.name, subtitle: `Damage \u2022 Tier ${f.tier}`, comps: d.comps, fx: d.fx, targets: (f.targets ?? []).map(t => ({ ...t, tier: f.tier, crit: !!f.crit })), originUuid: f.actorUuid, chip: d.chip, rolls: d.rolls, color: f.color, defaultNl: !!f.nl, originMod: f.attrVal, after: f.tier >= 2 ? chainOf(f, version) : "", areaPoint: f.areaPoint ?? null, strike: (f.traits ?? []).includes("strike") });   // v0.0.272: a Strike's damage (the "would damage an ally" moment)
   }
   try { await message.setFlag("twod12", "collapsed", true); } catch (e) { /* not the author */ }
 }

@@ -148,7 +148,7 @@ export function cardSystem(c, resolve = s => s) {
   if (c.category === "Basic attack") sys.basicAttack = true;   // an NPC's Basic attack stands in for the Weapon Attack NPCs don't have
   sys.versions = versionsOf(c).map((v, i) => { const d = versionData(c, v, resolve); if (area && i > 0 && area.sizes[i] && area.sizes[i] !== area.sizes[0]) d.areaSize = area.sizes[i]; return d; });
   if (c.flavor) sys.flavor = c.flavor;
-  for (const k of ["weaponUse", "automation", "automationNote", "marksTarget", "basicAttack", "modifiers", "moment", "momentRange"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];   // v0.0.261: moment, momentRange (Divine Intervention)
+  for (const k of ["weaponUse", "automation", "automationNote", "marksTarget", "basicAttack", "modifiers", "moment", "momentRange", "momentSelf", "momentTarget"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];   // v0.0.261: moment, momentRange (Divine Intervention); v0.0.272: momentSelf, momentTarget
   return sys;
 }
 
@@ -156,7 +156,7 @@ export function cardSystem(c, resolve = s => s) {
  * v0.0.249 (Lucas, inline Actions): a card's `inline` list, each as a card of its own (an Action item in the "Inline" folder; the parent's effect
  * carries it with the "inline" setting while it lasts). Written by Lucas as one line: Name — cost | Frequency | [traits] | Interrupt: ... | Effects: ...
  */
-export const inlineCards = c => (c.inline ?? []).map(a => ({ name: a.name, category: "Inline Action", flavor: a.flavor, traits: a.traits ?? [], frequency: a.frequency, target: a.target, cost: a.cost, interrupt: a.interrupt, trigger: a.trigger, requirements: a.requirements, text: a.effects, foundry: { img: c.foundry?.img, folder: "Inline", automation: a.automation ?? c.foundry?.automation, automationNote: a.automationNote, append: a.append, inlineOf: c.name }, _file: c._file }));
+export const inlineCards = c => (c.inline ?? []).map(a => ({ name: a.name, category: "Inline Action", flavor: a.flavor, traits: a.traits ?? [], frequency: a.frequency, target: a.target, cost: a.cost, interrupt: a.interrupt, trigger: a.trigger, requirements: a.requirements, text: a.effects, foundry: { img: c.foundry?.img, folder: "Inline", automation: a.automation ?? c.foundry?.automation, automationNote: a.automationNote, append: a.append, inlineOf: c.name, ...Object.fromEntries(["moment", "momentRange", "momentSelf", "momentTarget"].filter(k => a[k] !== undefined).map(k => [k, a[k]])) }, _file: c._file }));
 /** The item's system data of a Feature or Talent card (no Versions): its text is the description (plus the Foundry-only `append`), its automation is settings. */
 export function featureSystem(c, resolve = s => s) {
   if (isAction(c)) throw new Error(`${c.name}: a Feature card has no versions`);
@@ -202,6 +202,7 @@ export function basicEntry(c) {
   if (s.weaponUse) e.weaponUse = s.weaponUse;
   if (s.description) e.description = s.description;
   if (s.reaction) Object.assign(e, { reaction: true, reactionKind: s.reactionKind, trigger: s.trigger });   // pack R-core: Opportunity Attack, the basic Reaction
+  for (const k of ["moment", "momentRange", "momentSelf", "momentTarget"]) if (s[k] !== undefined) e[k] = s[k];   // v0.0.272 (pack RX): its moment
   e.flavor = c.flavor ?? "";
   e.versions = s.versions;
   return e;

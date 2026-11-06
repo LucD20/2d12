@@ -72,6 +72,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       freqChoices: TWOD12.frequencies,
       reactionKinds: { interrupt: "Interrupt", trigger: "Trigger" },
       moments: TWOD12.moments,   // v0.0.261
+      momentUsedOn: TWOD12.momentTargets,   // v0.0.272 (named so: the template test reads "Targets" as the Targets field)
       condRows: (s.conditions ?? []).map((c, i) => ({ i, name: c.name, value: c.value, valued: !!c.valued, mode: c.mode || "set" })),
       riderModes: { set: "the highest counts", increase: "increase the value" },
       isTalent: t === "talent",

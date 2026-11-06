@@ -118,7 +118,7 @@
       "interrupt": "A creature within 3 squares would leave a square during a Move Action or uses the Stand Action.",
       "cost": "1R",
       "text": "You can make a Weapon Attack (1A) against the triggering creature, as long as your weapon can target them. An NPC makes its Basic attack instead.",
-      "foundry": { "basic": "opportunityAttack", "img": "icons/svg/combat.svg", "automation": "silver", "append": "@Use[Weapon Attack|label:Weapon Attack (1A)]" },
+      "foundry": { "basic": "opportunityAttack", "img": "icons/svg/combat.svg", "automation": "silver", "append": "@Use[Weapon Attack|label:Weapon Attack (1A)]", "moment": "enemyMoves", "momentRange": 3, "automationNote": "offered by itself in the Reactions message when an enemy within 3 squares moves (not an Evade or a Forced Movement) or stands up; the movement is not held (Foundry moves the token first), the Weapon Attack is the card's button." },
       "ruler": { "line": "does Weapon Attack" }
     },
     {

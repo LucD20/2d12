@@ -252,7 +252,9 @@
     "img": "icons/svg/target.svg",
     "folder": "Archer",
     "automation": "mithril",
-    "automationNote": "the Weapon Attack as a granted use (the card's button); its Tier 2 and 3 rows carry the Hindered and Pushed chips. The trigger is by hand until the Reactions pass."
+    "automationNote": "offered by itself in the Reactions message after an enemy within 10 squares moves closer to you or an ally (once a turn per Reaction; not an Evade or a Forced Movement); Use makes the granted Weapon Attack against it at once, its Tier 2 and 3 rows carry the Hindered and Pushed chips.",
+    "moment": "enemyCloser",
+    "momentRange": 10
    }
   },
   {
@@ -287,7 +289,10 @@
     "img": "icons/svg/target.svg",
     "folder": "Archer",
     "automation": "mithril",
-    "automationNote": "the granted Weapon Attack with its Boon (the card's button); on a Tier 3 the attacker's next damage card lights its Half button, and the ally's player clicks it."
+    "automationNote": "offered by itself in the Reactions message when a Strike would damage an ally within 10 squares (the damage waits); Use makes the granted Weapon Attack with its Boon against the attacker at once, and on a Tier 3 the held damage lands halved.",
+    "moment": "strikeDamage",
+    "momentRange": 10,
+    "momentTarget": "source"
    },
    "distance": "Weapon",
    "interrupt": "A [Strike] Action would damage an ally within 10 squares."

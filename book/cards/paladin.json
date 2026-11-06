@@ -184,7 +184,10 @@
     "img": "icons/svg/shield.svg",
     "folder": "Paladin",
     "automation": "mithril",
-    "automationNote": "the Reaction's moment by hand (the Reactions pass); the Apply button sets the reduction on the card's target (or asks: you or an ally within 5), taken from that creature's next damage."
+    "automationNote": "offered by itself in the Reactions message when a Strike would damage you or an ally within 5 squares (the damage waits); Use sets the reduction on that creature, taken from the held damage when it lands.",
+    "moment": "strikeDamage",
+    "momentRange": 5,
+    "momentSelf": true
    }
   },
   {
@@ -218,7 +221,10 @@
     "img": "icons/svg/sun.svg",
     "folder": "Paladin",
     "automation": "mithril",
-    "automationNote": "the Save, the damage and Frightened (the card; Frightened as a status until R-Foundry 2's conditions); the Push by click."
+    "automationNote": "offered by itself in the Reactions message after an enemy within 5 squares (its Distance) makes a Strike against an ally; Use makes the Save Action against that enemy (the Save, the damage and Frightened: the card; Frightened as a status until R-Foundry 2's conditions); the Push by click.",
+    "moment": "strikeAgainst",
+    "momentRange": 0,
+    "momentTarget": "source"
    }
   },
   {
@@ -341,7 +347,9 @@
     "img": "icons/svg/shield.svg",
     "folder": "Paladin",
     "automation": "mithril",
-    "automationNote": "the Reaction's moment by hand (the Reactions pass); the Apply button gives the Guard to the card's target (or asks: an ally within 5), then a second button, after the damage, Slides them 1."
+    "automationNote": "offered by itself in the Reactions message when a Strike would damage an ally within 5 squares (the damage waits); Use gives the Guard to that ally before the held damage lands, then a second button, after the damage, Slides them 1.",
+    "moment": "strikeDamage",
+    "momentRange": 5
    }
   },
   {
@@ -376,7 +384,7 @@
     "img": "icons/svg/aura.svg",
     "folder": "Paladin",
     "automation": "mithril",
-    "automationNote": "the Beacon effect (the aura for 3 rounds, +1 Defense inside, Beacon's Step on the sheet while it lasts); the Step's moment by hand (the Reactions pass)."
+    "automationNote": "the Beacon effect (the aura for 3 rounds, +1 Defense inside, Beacon's Step on the sheet while it lasts); the Step is offered by itself when an ally in the Aura takes damage (the Reactions message)."
    },
    "inline": [
     {
@@ -387,7 +395,9 @@
      "interrupt": "An ally in the Aura takes damage.",
      "effects": "You Evade 1 toward the ally.",
      "automation": "mithril",
-     "automationNote": "the Evade (the button); its moment by hand (the Reactions pass)."
+     "automationNote": "offered by itself in the Reactions message when an ally within 2 squares (the Aura) takes damage (the damage waits); the Evade is the card's button.",
+     "moment": "allyDamage",
+     "momentRange": 2
     }
    ]
   },
@@ -509,9 +519,10 @@
     "img": "icons/svg/angel.svg",
     "folder": "Paladin",
     "automation": "mithril",
-    "automationNote": "offered by itself when you or an ally within 5 squares would go Down (your owner is asked before the damage lands); used, the damage stops 1 under the Health Pool and the Guard is applied. Nothing by hand.",
+    "automationNote": "offered by itself in the Reactions message when you or an ally within 5 squares would go Down (Use / Pass for its owner; the damage waits for the answer); used, the damage stops 1 under the Health Pool and the Guard is applied. Nothing by hand.",
     "moment": "wouldDown",
-    "momentRange": 5
+    "momentRange": 5,
+    "momentSelf": true
    },
    "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): the saved creature also gains a Rally Point's worth of Guard. Cards session 5 (2026-11-06, Lucas): no Distance (the Interrupt says it), Targets the triggering creature, no button: the Reaction watches for the moment."
   },

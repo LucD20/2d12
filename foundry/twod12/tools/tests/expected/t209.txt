@@ -1,0 +1,46 @@
+--- the moments are settings
+the moments: wouldDown, strikeDamage, strikeAgainst, enemyCloser, allyDamage, enemyMoves | each has its rules: true
+used on: subject, source | the data model: true
+the item sheet: Moment, Within, You too, Used on: true
+--- pure pieces
+sides: an ally true | an enemy as an ally false | you without You too false | with true | an enemy true | a neutral is no enemy false | you are never the enemy false
+a Distance in squares: 5 0 0 | the clock: 10:00 1:02 0:00
+Use twice (row 1 then row 0): resolves 0 then 1 | a second answer refused: true | all answered: false
+Skip all others: skipped 2 | the GM's own row waits: skip,wait,skip | the timer skips the rest: 1 skip,skip,skip
+half of the held damage: taken off 5 {"B":{"l":4,"n":1},"M":{"l":2,"n":0}} | came closer: true false
+--- the message
+the system's card: true | title Reactions: true | rows: 3
+the stack's places: 2nd, 1st | the order line:  Last in, first out: 1. Lana's Shot, 2. Nari's Shield
+Use / Pass only on the waiting row: 1 1 | the timer: 10:00 | Skip all others: true
+answered: no buttons, no timer: true | Answered: the damage lands.
+--- who is offered (tokens on the map)
+a Strike would damage Krysta: Nari's Shield on Krysta (2 sq); Lana's Shot on Bandit (9 sq) | the enemy's own Reaction is not offered: true
+a Strike would damage Nari herself: You too Nari's Shield; Lana's Shot
+a Strike against Krysta: Rebuke on Bandit | from far away (its Distance 5 sq.): 0
+Krysta would go Down, the Reaction used today: rows 0 | blocked: Interv (Used today: renews after a Sleep or a Rest)
+nobody can react: one line true | Krysta would go Down: nobody can react (Nari's Interv: Used today: renews after a Sleep or a Rest). | whispered to gm, p1
+--- the flow: answers, the stack, the held damage
+the message: rows Nari/Shield/p1/Krysta ; Lana/Shot/p2/Bandit | the timer at 10 minutes: 10
+someone else's row can't be answered: Lana's row wait
+all answered: the first to resolve is the last in: p1:sof | on Krysta
+then the next: p2:cs | on Bandit
+resolved: sof used, cs used (half) | the message says: Answered: the damage lands.
+a player can't Skip all others: pass,wait
+the GM can: pass,skip | nothing used: 0
+the damage moment's message: Bandit's Strike would damage Krysta | Interrupt: the 9 damage waits until every Reaction is answered.
+the held damage is halved: {"half":true,"halfBy":"Shot"}
+--- the eight cards' moments (book texts unchanged)
+Divine Intervention: wouldDown 5 +you (interrupt)
+Shield of Faith: strikeDamage 5 +you (interrupt)
+Bulwark of Faith: strikeDamage 5 (interrupt)
+Covering Shot: strikeDamage 10 on the attacker (interrupt)
+Rebuke: strikeAgainst 0 on the attacker (trigger)
+Overwatch: enemyCloser 10 (trigger)
+Opportunity Attack: enemyMoves 3 (interrupt)
+Beacon's Step: allyDamage 2 (interrupt)
+the Basic Action's data carries it: enemyMoves 3
+--- wired
+the damage waits for the Interrupts: true | a Strike's damage card says so: true | the Triggers after it lands: true | no second click while held: true
+a Strike and a Stand bring their moments: true | a Reaction's step after a @Pause stays a button: true
+the chat and the socket: true | the settings at init: true | no Foundry window and no pick window in it: true
+the timer setting: on by default, 10 minutes: true

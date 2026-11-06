@@ -14,6 +14,8 @@ export const halfHits = (halfOn, tier = 0, crit = false) => {
   return (Number(tier) || 0) >= n;
 };
 const actorOf = doc => (doc?.documentName === "Actor" ? doc : doc?.actor ?? null);
+/** v0.0.272 (pack RX): while a Reaction runs for a held damage (moment.mjs), the half is applied to that damage when it lands: the last hint set is kept here. */
+export const halfCtx = { held: false, last: null };
 
 /** The target (a token or actor uuid) gets the hint, and the chat says it. */
 export async function setHalfHint(targetUuid, { source = "", by = "" } = {}) {
@@ -21,6 +23,8 @@ export async function setHalfHint(targetUuid, { source = "", by = "" } = {}) {
   const actor = actorOf(doc);
   if (!actor) return;
   const info = { source, by, at: Date.now() };
+  halfCtx.last = { targetUuid, source, at: info.at };
+  if (halfCtx.held) { await ChatMessage.create({ content: sysLine("fa-shield-halved", `<b>${esc(source || "The Reaction")}</b>, Tier 3: the ally takes <b>half</b> of <b>${esc(actor.name)}</b>'s held damage when it lands.`, "fxm") }); return; }
   if (actor.isOwner) await actor.setFlag(F, "halfHint", info); else game.socket.emit(SOCKET, { type: "halfHint", actorUuid: actor.uuid, info });
   await ChatMessage.create({ content: sysLine("fa-shield-halved", `<b>${esc(source || "The Reaction")}</b>, Tier 3: the ally takes <b>half</b> of <b>${esc(actor.name)}</b>'s triggering damage (its Half button is lit).`, "fxm") });
 }

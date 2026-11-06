@@ -143,7 +143,10 @@ export const TWOD12 = {
     move: "You must have a Speed of at least 1."
   },
   // v0.0.261 (Lucas, Divine Intervention): the moment a Reaction watches for by itself ("would go Down": asked before the damage lands)
-  moments: { "": "None", wouldDown: "A creature would go Down" },
+  // v0.0.272 (pack RX, Lucas): the first set of moments. "Within N" is measured to the creature the moment is about (the ally, the enemy who moves).
+  moments: { "": "None", wouldDown: "A creature would go Down", strikeDamage: "A Strike would damage an ally within N", strikeAgainst: "A Strike is made against an ally within N", enemyCloser: "An enemy within N moves closer (to you or an ally)", allyDamage: "An ally within N takes damage", enemyMoves: "An enemy within N moves or stands up" },
+  // v0.0.272: whom the Reaction is used on when its moment comes ("the triggering creature" of the card)
+  momentTargets: { subject: "The creature of the moment (the ally, the enemy who moves)", source: "The creature that caused it (the attacker)" },
   // v0.0.264 (Lucas): a Grant's "On [a result], [what happens]": the result, and what happens (the target's next damage halved, or a line on the card)
   grantOnChoices: { "": "never", t1: "a Tier 1 or more", t2: "a Tier 2 or more", t3: "a Tier 3", crit: "a Critical", all: "any result" },
   grantDoChoices: { half: "the target's next damage is halved", text: "the card says" },

@@ -3,6 +3,7 @@ import { registerHazardHooks, registerHazardBehavior } from "./hazard.mjs";
 import { registerDownHooks } from "./down.mjs";
 import { registerZoneHooks } from "./zone.mjs";   // v0.0.261 (Consecrated Ground)
 import { markHalfHint } from "./halfhint.mjs";   // v0.0.261 (Covering Shot)
+import { rxRender, rxClick, registerReactionSettings, registerMomentHooks, closeStale } from "./moment.mjs";   // v0.0.272 (pack RX): the Reactions message
 import { registerLeanHooks } from "./lean.mjs";
 import { registerMasteryHooks } from "./mastery.mjs";
 import { registerMarkHooks } from "./mark.mjs";
@@ -54,6 +55,7 @@ import { registerDragCopy } from "./drag.mjs";
 import { registerUsageHooks } from "./usage.mjs";
 
 Hooks.once("init", () => {
+  registerReactionSettings();   // v0.0.272 (pack RX): the Reactions message's auto-skip timer
   // v0.0.202 (Lucas): tooltips wait a little longer before they show (Foundry's own wait is 0.5 s); a client setting.
   const tipDelay = v => { const TM = foundry.helpers?.interaction?.TooltipManager ?? globalThis.TooltipManager; if (TM) TM.TOOLTIP_ACTIVATION_MS = Math.max(0, Number(v) || 0); };
   game.settings.register("twod12", "tooltipDelay", { name: "Tooltip delay (ms)", hint: "How long the pointer rests on something before its tooltip shows. Foundry's own is 500.", scope: "client", config: true, type: Number, default: 900, range: { min: 0, max: 3000, step: 100 }, onChange: tipDelay });
@@ -256,9 +258,11 @@ registerRegionSnap();   // v0.0.178: a Region drawn by hand is snapped to whole 
 Hooks.on("renderTileConfig", (app, html) => { try { tileConfigSolid(app, html); } catch (e) { console.warn("twod12 | Tile settings", e); } });
 Hooks.on("renderChatMessageHTML", updateUseButtons);
 Hooks.on("renderChatMessageHTML", markHalfHint);
+Hooks.on("renderChatMessageHTML", rxRender);   // v0.0.272: Use / Pass for the row's owner, Skip all others for the GM, the timer
 Hooks.once("ready", registerVersionTabs);
 Hooks.on("renderChatMessage", updateUseButtons);
 Hooks.on("renderChatMessage", markHalfHint);
+Hooks.on("renderChatMessage", rxRender);
 Hooks.on("renderChatMessage", collapsibleCards);
 
 // "Roll Damage" buttons on action cards (delegated so it works regardless of chat re-rendering).
@@ -282,6 +286,7 @@ Hooks.once("ready", async () => {
     else if (b.dataset.twod12 === "retargetAction") await retargetAction(msg);
     else if (b.dataset.twod12 === "useGrant") await useGrant(msg, b.dataset.effectId, Number(b.dataset.index) || 0);   // v0.0.260: a granted use from the card
     else if (b.dataset.twod12 === "rollDamage") await rollDamage(msg);
+    else if (["rxUse", "rxPass", "rxSkip"].includes(b.dataset.twod12)) await rxClick(msg, b);   // v0.0.272: the Reactions message
     else if (b.dataset.twod12 === "applyAfter") { const { applyAfter } = await import("./actions.mjs"); await applyAfter(msg, b.dataset.side ?? "", Number(b.dataset.step) || 0); }   // v0.0.250; v0.0.254: the step
     else await damageButton(b.dataset.twod12, b, msg);
   });
@@ -322,6 +327,8 @@ Hooks.once("ready", async () => {
   registerDragCopy();
   registerUsageHooks();
   registerGrantCardHooks();
+  registerMomentHooks();   // v0.0.272 (pack RX): the movement moments
+  closeStale().catch(e => console.warn("twod12 | Reactions", e));
   registerDeadHooks();
   registerDamageReport();
   registerEncounterLog();   // v0.0.223

@@ -2314,3 +2314,23 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.sheet.ns .gtk-line .ar-use { flex: none; }
 /* v0.0.267 (Lucas): the hover card's "what it does" line (the effect's settings). */
 .twod12.fxtip .ft-what { margin-top: 3px; font-size: 11px; font-style: italic; opacity: .9; }
+
+/* v0.0.272 (pack RX): the Reactions message (moment.mjs): the system's card with a row per creature and Reaction (the grant rows' look),
+   its state on the right, Use / Pass for its owner, the stack's order, the auto-skip timer and the GM's Skip all others. */
+.twod12.chat.rxmsg .rx { margin-top: 4px; }
+.twod12.chat.rxmsg .rxrow > .apside { display: block; }
+.twod12.chat.rxmsg .rxrow .rx-state { float: right; margin-left: 6px; font-size: 11px; font-weight: 700; padding: 0 6px; border-radius: 3px; background: #e8dcc2; color: #5b4a2a; white-space: nowrap; }
+.twod12.chat.rxmsg .rxrow.s-use .rx-state { background: #dfe9d4; color: #2f5a14; }
+.twod12.chat.rxmsg .rxrow.s-pass, .twod12.chat.rxmsg .rxrow.s-skip { opacity: .6; }
+.twod12.chat.rxmsg .rxrow.s-skip .rx-state { background: #eee; color: #666; }
+.twod12.chat.rxmsg .rxrow .gbtns button { min-width: 80px; }
+.twod12.chat.rxmsg .rxrow .gbtns button.rx-pass i { color: #6b5a3a; }
+.twod12.chat.rxmsg .rx-order { margin: 6px 8px 0; font-size: 12px; color: #2c2a26; }
+.twod12.chat.rxmsg .rx-order > i { color: #854F0B; margin-right: 3px; }
+.twod12.chat.rxmsg .rx-foot { display: flex; align-items: center; gap: 8px; margin: 6px 8px 0; font-size: 12px; color: #4a4030; }
+.twod12.chat.rxmsg .rx-foot .rx-timer { flex: 1; }
+.twod12.chat.rxmsg .rx-foot .rx-left { font-variant-numeric: tabular-nums; font-weight: 700; }
+.twod12.chat.rxmsg .rx-foot button.rx-gm { width: auto; flex: none; height: 22px; line-height: 20px; padding: 0 8px; margin: 0; font-size: 11.5px; border: 1px solid #8a7650; border-radius: 4px; background: #fbf7ee; color: #2c2c2a; }
+.twod12.chat.rxmsg .rx-foot button.rx-gm:hover { background: #FAEEDA; border-color: #BA7517; }
+.twod12.chat.rxmsg .rx-foot.rx-done > i { color: #2f5a14; }
+.twod12.chat.sysline.rxnote > i { color: #8a7650; }

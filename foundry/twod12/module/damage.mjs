@@ -14,40 +14,65 @@ const SOCKET = "system.twod12";
  * v0.0.181: the actor's Guard takes the damage first (guard.mjs); the buckets are changed in place to what reached the Health,
  * so the callers count, log and trigger only that. Returns what the Guard took.
  */
-export async function applyToActor(actor, a, { announce = true } = {}) {
+export async function applyToActor(actor, a, { announce = true, from = null } = {}) {
   if (!actor) return 0;
-  const d = actor.system.damage, upd = {};
+  let M = null;
+  try { M = await import("./moment.mjs"); } catch (e) { M = null; }
+  // v0.0.272 (pack RX): before anything lands, the Interrupts of "a Strike would damage an ally" (from: a Strike's damage card) and "an ally takes
+  // damage" (some of it would reach the Health) hold it until every row of the Reactions message is answered; what they did (a Guard, a reduction)
+  // is read below, and a Tier 3's half halves it here.
+  if (M && a.B.l + a.B.n + a.M.l + a.M.n > 0) {
+    try {
+      const r = await M.damageMoment(actor, a, from, reachesHealth(actor, a));
+      if (r.half) { const off = M.halveHeld(a); if (off) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-halved", `<b>${esc(actor.name)}</b> takes <b>half</b> of the damage${r.halfBy ? ` (${esc(r.halfBy)})` : ""}: <b>${off}</b> turned away.`, "fxm") }); }
+    } catch (e) { console.warn("twod12 | moment", e); }
+  }
+  const d = actor.system.damage, upd = {}, early = {};
   // v0.0.243 (pack R): the Guard of the kept AP (system.apGuard) is taken before the other Guard; both are one "Guard N" on the line.
   // v0.0.254 (Shield of Faith): a reduction waiting on the creature takes from this damage first, then it is spent whatever is left of it
   const red = Math.max(0, Math.floor(Number(actor.system.reduceNext) || 0));
-  if (red) { const r = absorbGuard(red, a, 0); a.B = r.a.B; a.M = r.a.M; a.reduced = r.taken; a.reduceLeft = 0; upd["system.reduceNext"] = 0; if (r.taken && announce) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-halved", `<b>${esc(actor.name)}</b>'s damage is reduced by <b>${r.taken}</b>${red > r.taken ? ` (of ${red}; the rest is spent)` : ""}.`, "guardmsg") }); }
+  if (red) { const r = absorbGuard(red, a, 0); a.B = r.a.B; a.M = r.a.M; a.reduced = r.taken; a.reduceLeft = 0; early["system.reduceNext"] = 0; if (r.taken && announce) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-halved", `<b>${esc(actor.name)}</b>'s damage is reduced by <b>${r.taken}</b>${red > r.taken ? ` (of ${red}; the rest is spent)` : ""}.`, "guardmsg") }); }
   const g = absorbGuard(actor.system.guard, a, actor.system.apGuard);
-  if (g.taken) { a.B = g.a.B; a.M = g.a.M; upd["system.guard"] = g.guard; upd["system.apGuard"] = g.apGuard; a.guardLeft = g.guard + g.apGuard; }
-  // v0.0.261 (Lucas, Divine Intervention): a creature that would go Down: a Reaction that watches for that moment is offered first (its owner answers);
-  // used, the damage stops 1 under the Health Pool. Nothing is applied until the answer comes.
+  if (g.taken) { a.B = g.a.B; a.M = g.a.M; early["system.guard"] = g.guard; early["system.apGuard"] = g.apGuard; a.guardLeft = g.guard + g.apGuard; }
+  // v0.0.272: the Guard and the reduction this damage used are written first, so a Guard a "would go Down" Reaction gives is not overwritten
+  if (Object.keys(early).length) await writeDamage(actor, early);
+  // v0.0.261 (Lucas, Divine Intervention): a creature that would go Down: the Reactions that watch for that moment are offered first (v0.0.272:
+  // the Reactions message); used, the damage stops 1 under the Health Pool. Nothing is applied until the answers come.
+  let downing = false;
   try {
-    const M = await import("./moment.mjs");
-    if (M.wouldGoDown(actor, a) && await M.offerMoment(actor, "wouldDown", { incoming: a.B.l + a.B.n + a.M.l + a.M.n })) { const cut = M.capAtPool(actor, a); if (cut && announce !== null) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-hand-holding-heart", `<b>${esc(actor.name)}</b> stays up: <b>${cut}</b> damage turned away, 1 under the Health Pool.`, "fxm") }); }
+    downing = !!M?.wouldGoDown(actor, a);
+    if (downing && await M.downMoment(actor, a, from)) { downing = false; const cut = M.capAtPool(actor, a); if (cut && announce !== null) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-hand-holding-heart", `<b>${esc(actor.name)}</b> stays up: <b>${cut}</b> damage turned away, 1 under the Health Pool.`, "fxm") }); }
   } catch (e) { console.warn("twod12 | moment", e); }
   const add = (k, amt) => { if (amt) upd[`system.damage.${k}`] = (upd[`system.damage.${k}`] ?? d[k]) + amt; };
   add("bodyLethal", a.B.l); add("bodyNonlethal", a.B.n); add("mindLethal", a.M.l); add("mindNonlethal", a.M.n);
   if (g.taken && announce) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-halved", `<b>${esc(actor.name)}</b>'s Guard takes <b>${g.taken}</b> damage${g.takenAp ? ` (${g.takenAp} from the kept AP)` : ""}${a.guardLeft ? ` (Guard ${a.guardLeft} left)` : " and ends"}.`) });
-  if (!Object.keys(upd).length) return g.taken;
+  if (Object.keys(upd).length) await writeDamage(actor, upd);
+  // v0.0.272: the damage landed: the Triggers of these moments are offered now (they hold nothing)
+  try { M?.landedMoment(actor, a.B.l + a.B.n + a.M.l + a.M.n, from, downing); } catch (e) { console.warn("twod12 | moment", e); }
+  return g.taken;
+}
+/** The actor's update, through the GM when this user doesn't own it. */
+async function writeDamage(actor, upd) {
   if (actor.isOwner) await actor.update(upd);
   else game.socket.emit(SOCKET, { type: "applyDamage", actorUuid: actor.uuid, upd });
-  return g.taken;
+}
+/** Pure: would some of this damage reach the Health (after a waiting reduction and the Guard)? */
+export function reachesHealth(actor, a) {
+  const c = { B: { ...a.B }, M: { ...a.M } }, red = Math.max(0, Math.floor(Number(actor?.system?.reduceNext) || 0));
+  let left = red ? absorbGuard(red, c, 0).a : c;
+  left = absorbGuard(actor?.system?.guard, left, actor?.system?.apGuard).a;
+  return left.B.l + left.B.n + left.M.l + left.M.n > 0;
 }
 
 export function registerSocket() {
   game.socket.on(SOCKET, async data => {
     // v0.0.250 (cards 3): prompts addressed to one user (the creature's answerer): the Heal window and the "end one effect" window
     if (data?.userId && data.userId === game.user.id) {
+      if (String(data.type).startsWith("rx")) return (await import("./moment.mjs")).onSocket(data);   // v0.0.272 (pack RX): the Reactions message (an answer, a Reaction to run, its result)
       const H = await import("./healwin.mjs"), a = await fromUuid(data.actorUuid), actor = a?.documentName === "Actor" ? a : a?.actor;
       if (!actor) return;
       if (data.type === "healPrompt") return H.healHere(actor, data.amount, { source: data.source, lead: data.lead });
       if (data.type === "endEffectPrompt") return H.endEffectHere(actor, data.which, { source: data.source });
-      if (data.type === "momentAsk") return (await import("./moment.mjs")).answerHere(data);   // v0.0.261: "X would go Down: use Divine Intervention?" asked to its owner
-      if (data.type === "momentAnswer") return (await import("./moment.mjs")).receiveAnswer(data);
     }
     if (!game.user.isActiveGM) return;
     if (data?.type === "applyEffects") return applyEffects(data.effectUuids, data.targetUuids, data.origin, data.over);
@@ -118,7 +143,7 @@ async function apply(msg, button, factor) {
         const actor = (await fromUuid(t.uuid))?.actor;
         if (!actor) continue;
         const mine = { B: { ...a.B }, M: { ...a.M } };   // each target's Guard takes its own share (v0.0.181)
-        const before = mine.B.l + mine.B.n + mine.M.l + mine.M.n, taken = await applyToActor(actor, mine, { announce: false });
+        const before = mine.B.l + mine.B.n + mine.M.l + mine.M.n, taken = await applyToActor(actor, mine, { announce: false, from: { uuid: f.originUuid ?? "", strike: !!f.strike } });
         const dealt = mine.B.l + mine.B.n + mine.M.l + mine.M.n;
         // v0.0.182: one line per creature, the Guard in it: "12 − Guard 5 = 7 Body"
         lines.push(`${esc(t.name)} takes ${guardBefore(before, taken, mine.reduced)}<b>${summaryText(mine) || "no damage"}</b>${guardAfter(taken, mine.guardLeft, mine.reduced, mine.reduceLeft)}`);
@@ -185,7 +210,7 @@ async function applyRow(f, row, factor, selNl) {
   const actor = (await fromUuid(row.uuid))?.actor;
   if (!actor) return null;
   const before = a.B.l + a.B.n + a.M.l + a.M.n;
-  const taken = before > 0 ? await applyToActor(actor, a, { announce: false }) : 0;   // v0.0.181: the Guard takes its part first, a is what is left
+  const taken = before > 0 ? await applyToActor(actor, a, { announce: false, from: { uuid: f.originUuid ?? "", strike: !!f.strike } }) : 0;   // v0.0.181: the Guard takes its part first, a is what is left
   const dealt = a.B.l + a.B.n + a.M.l + a.M.n;
   if (dealt > 0) {
     const src = f.originUuid ? await fromUuid(f.originUuid) : null;
@@ -240,7 +265,17 @@ async function multiFx(msg, button) {
   if (uuids.length) await applyEffects(uuids, [r.uuid], { ...originInfo(f.originUuid), escalation: !!f.escalation, ...(Number.isFinite(f.originMod) ? { mod: f.originMod } : {}) });
 }
 
+// v0.0.272 (pack RX): while a damage card's damage waits for a Reactions message, its buttons do nothing (no second click lands it twice)
+const holding = new Set();
 export async function damageButton(kind, button, msg) {
+  if (["rowApply", "allApply", "applyDouble", "applyDamage", "applyHalf"].includes(kind)) {
+    if (holding.has(msg.id)) return ui.notifications.info("This damage waits for the Reactions message: answer it (or skip it) first.");
+    holding.add(msg.id);
+    try { return await damageClick(kind, button, msg); } finally { holding.delete(msg.id); }
+  }
+  return damageClick(kind, button, msg);
+}
+async function damageClick(kind, button, msg) {
   if (kind === "rowApply") return multiApply(msg, button, Number(button.dataset.factor) || 1, Number(button.dataset.row));
   if (kind === "allApply") return multiApply(msg, button, Number(button.dataset.factor) || 1);
   if (kind === "rowBlock") return multiBlock(msg, button);
