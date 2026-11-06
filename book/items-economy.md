@@ -171,3 +171,68 @@ With a typical mix (Salvage and Hides common, Valuables and Arcana rarer) a lot 
 18. **[Lucas]** **Haggling: no general rule.** A **Designer's Note** says how a GM can run it, and warns that it can turn into a tired Appeal roll to see if the price goes up. Better prices come from **Talents** ("you sell for +X").
 19. **[Lucas]** **Rare drops (optional rule):** roll 1d12 for each Elite and the boss; on a 12 it explodes into a rare drop. GM note: it makes the players wealthier.
 20. **[Lucas]** **A loot ledger**, mostly in Foundry.
+
+## Part 4: Carrying and Expenses
+
+### The inventory
+1. **[Lucas]** **The pack is a grid of squares**, Diablo-style: simple to explain ("each item fills that many squares"), and it can look great in Foundry.
+2. **[agreed]** The book counts squares only, no item shapes (Tetris shapes are fun but make the paper rules fiddly).
+3. **[Lucas / agreed]** **The paper doll** (no squares): **1 worn armor**; **up to 4 weapons and shields on your body, the ones in your hands included** (a sword and a shield in hand plus a bow and a dagger stowed on your belt or back); your bound Bind items. A fifth weapon goes in the pack.
+4. **[agreed]** **The Belt** (3 consumables, Part 1): no squares.
+5. **[agreed]** **The pack holds your Load in squares:**
+
+| In the pack | Squares |
+|---|---|
+| A loot lot | 1 to 5 (Part 3) |
+| A spare consumable | 1 |
+| A spare one-handed weapon or a shield | 1 |
+| A spare two-handed weapon | 2 |
+| Carried armor (Light / Medium / Heavy) | 2 / 4 / 6 |
+| Each Supply beyond the first 7 (1 Supply = 1 day of food and lodging) | 1 |
+
+**Drawing a weapon from the pack takes +1 AP** over a normal draw (as Usage does for consumables).
+6. **[Lucas / agreed]** **Load = 10 + 2 × Body** (Body −1 to +4: 8, 10, 12, 14, 16, 18). The base is high and Body is an edge, not a requirement (Lucas: it must not be a burden for non-martial classes, and Body must not become king): on a normal day everyone carries a third of their share of the loot, a strong PC about 1 lot more.
+7. **[agreed]** **Over your Load:** Speed −2 in encounters.
+8. **[agreed]** **A mule:** 25 SC, +20 squares, 5 CC a Sleep for its feed. A whole day's loot (about 24 squares a PC) always needs a mule or a cart.
+
+What a PC carries in the middle of an adventuring day (Stage 1, after 2 fights of 4; the day's loot is about 8 lots a PC, a lot about 3 squares): a Body +2 Paladin (Heavy armor, Greatsword) fills about 12 of 14 squares with Hides ×2, Salvage, Valuables; a Body +1 Archer about 9 of 12 with Arcana ×2, Idols, Hides, Valuables and a spare Draught; a Body 0 caster about 9 of 10. The second Salvage lot and a drake hide stay on the cave floor: the choice the weight lever is for.
+
+### The Kit
+9. **[Lucas]** **The Kit is always available and weighs nothing:** torches, rope, bedroll, waterskin, flint, chalk, crowbar and the like. **Weapons, armor and shields are never Kit.**
+10. **[Lucas]** **The Kit wears down on Rough Days** (a short "Rough Day table" in the book, a note for the GM): at 0 Supplies you still have the whole Kit; after a Rough Day you have only **1d4 torches** left, the rest is still there, and the GM keeps track of the wear: the bedroll starts to wear out, rope that is used isn't replenished, and so on. Buying Supplies again restores the Kit.
+
+### Supplies
+11. **[Lucas]** **A regular expense abstracts rations, lodging and animals,** and it must not be exploitable by "I never go to town", "I lost my money this week" or "I'll just forage, even in town".
+12. **[agreed]** **Supplies are prepaid, per PC: 1 SC a day, flat at every level, and each Sleep spends 1** (Sleep is already at most once every 16 hours and needed for Daily Actions and against Exhausted: nobody skips it, and there is nothing to count by the week). Bought anywhere a vendor exists (the town's Supplies multiplier applies). The first 7 Supplies weigh nothing. Supplies already bought can't be lost with your purse.
+13. **[agreed]** **In town** a Sleep spends a Supply, or you pay for the day directly. Broke, you sleep rough: a **Rough Day**.
+14. **[agreed]** **Forage:** wilderness only, as the day's activity (never in a town, a dungeon or a desert unless the GM says the land feeds you). It costs half of the day's travel (or the GM makes an extra encounter check). An Instinct Check: Tier 2, tonight's Supply; Tier 3, tonight's Supply for you and an ally. Foraged food never stockpiles.
+15. **[agreed]** **Work (in town):** a day of labor earns 1 SC: enough to eat, never enough for an adventurer's life.
+16. **[Lucas / agreed]** **A Rough Day** (named so it isn't read as a "short rest") is a Sleep without a Supply, Forage or payment: at your next Rest you regain **1 fewer Rally Point per Rough Day** (at least 1); from the **3rd Rough Day in a row, Exhausted 1**; and the Kit wears down (item 10).
+17. **[agreed]** **Per PC by default** (it works for split parties and players who come and go). Anyone can buy Supplies for anyone. Table option: **a shared purse** (one party number; each Sleep spends 1 per PC present).
+18. **[Lucas]** Upkeep for bound Bind items is paid on each Sleep, with the Supplies (Part 1).
+
+### No Attribute is king
+19. **[Lucas]** No Attribute is king and none is worth dumping (why the game has 4 Attributes and the Weapon and Power Modifiers; Body no longer feeds Health). **[agreed]** Each Attribute gets one job in the economy, none of them big alone:
+
+| Attribute | Its job |
+|---|---|
+| Body | Load |
+| Mind | identifying rare items; crafting later |
+| Appeal | selling (the haggling Talents), hiring porters and retainers, reward negotiations |
+| Instinct | Forage; travel and finding caches later |
+
+### Stash, home base and Retreat
+20. **[Lucas]** **A stash or home base** (a rented room, then a house; storage there ignores Load and costs Upkeep): **later, as base building**, which many players welcome. A high-level money sink.
+21. **[Lucas]** **Retreat** (a trend he wants): it prevents a total party kill and saves even Downed PCs, if the player is willing (a meta choice). Retreating costs Supplies, Momentum and the like, and a roll on a consequence table (in the spirit of Warhammer: The Old World). **You drop all the loot lots you carry**, but good results can change that: or a roll where the tier sets the share you keep (for example Tier 1 nothing, Tier 2 half, Tier 3 all). The table and the costs: later.
+
+### Foundry
+22. **[Lucas]** **The ledger and the inventory, mostly in Foundry:** the paper doll, the Belt row, the pack as a grid of Load squares (colored by loot type; squares past the Load in red, with a sysLine warning), a Supplies field spent by the Sleep button (a warning at 0, the Rough Day count).
+
+## Open, for later sessions
+- **The surprise round** (Part 2, item 4) and Talents for surprise (Sudden Strike).
+- **Repair** (Dulled items), **crafting with loot**, **Exalted weapons**, **base building**, **Retreat's consequence table**.
+- **The mundane price list** (weapons, armor, mounts, services, Kit extras) and the **Rough Day table**.
+- **The rare-drop table** (optional rule) and the **unidentified** item type.
+- **Talents:** haggling (sell for +X), the Bandolier as a Talent, Sudden Strike.
+- **The example items as cards**, written Lucas's way (book/cards/README.md), priced by the ruler (econ.mjs: a worth line per item; the AP check).
+- **Where it goes in the book:** a Treasure and Items chapter (or Gear sections), "Actions Out of Combat", the Bestiary's Loot line and lot table, towns in the GM chapter. Then the Foundry pack (foundry-backlog.md).
