@@ -226,6 +226,18 @@ export function powForDoc(doc) {
 export function stageForDoc(doc) {
   try { const a = doc?.documentName === "ChatMessage" ? (() => { const u = doc.getFlag?.("twod12", "action")?.actorUuid ?? doc.getFlag?.("twod12", "dmgCard")?.originUuid ?? doc.getFlag?.("twod12", "dmgMulti")?.originUuid; const d = u ? fromUuidSync(u) : null; return d?.documentName === "Actor" ? d : (d?.actor ?? null); })() : actorOfDoc(doc); const v = Number(a?.system?.stage); return a && Number.isFinite(v) && v > 0 ? v : 1; } catch (e) { return 1; }
 }
+/** v0.0.255: what a Rally Point heals, for a Guard RP chip: the card's first target's, else the creature's own; null when unknown. */
+export function rallyForDoc(doc) {
+  try {
+    if (doc?.documentName === "ChatMessage") {
+      const t = (doc.getFlag?.("twod12", "action")?.targets ?? doc.getFlag?.("twod12", "dmgCard")?.targets ?? [])[0];
+      const d = t?.uuid ? fromUuidSync(t.uuid) : null, a = d?.documentName === "Actor" ? d : (d?.actor ?? null);
+      if (a) return Number(a.system?.rallyHeal) || 0;
+    }
+    const a = doc?.documentName === "ChatMessage" ? (() => { const u = doc.getFlag?.("twod12", "action")?.actorUuid; const d = u ? fromUuidSync(u) : null; return d?.documentName === "Actor" ? d : (d?.actor ?? null); })() : actorOfDoc(doc);
+    return a ? (Number(a.system?.rallyHeal) || 0) : null;
+  } catch (e) { return null; }
+}
 /** "+1d6+Pow" with the Power Modifier 3 reads "+1d6+3"; with none known, the word stays. */
 export const withPow = (label, pow) => (pow === null || pow === undefined || !/\bPow\b|\[Pow\]/.test(label) ? label : label.replace(/\s*\+\s*(?:\[Pow\]|Pow)\b/g, `+${pow}`).replace(/\[Pow\]|\bPow\b/g, String(pow)));
 /** The formula a chip uses at this Stage (s2: / s3: on the chip), else its own. */
@@ -301,7 +313,15 @@ export function registerInline() {
       }
       if (kind === "Rally") return inlineEl("Rally", cfg, cfg.label ?? match[3] ?? `${cfg.n} Rally Point${cfg.n === 1 ? "" : "s"}${cfg.extra ? ` (+${healText(cfg.extra)})` : ""}`, "fa-heart-pulse");
       if (kind === "Effect") return inlineEl("Effect", cfg, cfg.label ?? match[3] ?? "Apply the effect", "fa-shield-halved");
-      if (kind === "Guard") return inlineEl("Guard", cfg, (cfg.stages && stageN > 1 ? null : cfg.label ?? match[3]) ?? `Guard ${guardText(stagedFormula(cfg, stageN))}`, "fa-shield-heart");   // v0.0.250: the Stage's dice
+      if (kind === "Guard") {
+        // v0.0.255 (Lucas): "Guard RP" shows the number: the card's target's Rally Point heal (the first target), else this creature's own
+        const rp = /\brally\b/.test(cfg.formula) ? rallyForDoc(options?.relativeTo) : null;
+        const lbl = cfg.stages && stageN > 1 ? null : cfg.label ?? match[3];
+        const text = rp !== null && (lbl === undefined || lbl === null || /\bRP\b/.test(lbl)) ? (lbl ? lbl.replace(/\bRP\b/, String(rp)) : `Guard ${rp}`) : lbl ?? `Guard ${guardText(stagedFormula(cfg, stageN))}`;
+        const el = inlineEl("Guard", cfg, text, "fa-shield-heart");
+        if (rp !== null) el.dataset.tooltip = "Guard equal to what one of their Rally Points heals";
+        return el;
+      }
       if (kind === "Move") {
         // A distance that is calculated (floor(speed/2)) shows its number for the creature whose card or sheet this is, with a calculator.
         const calc = !!cfg.distanceExpr && !cfg.label && !match[3];
@@ -487,6 +507,12 @@ export function handTargetTokens(ctx) {
 async function allyRecipients(cfg, ctx, what = "the effect") {
   const origin = originActor(ctx);
   if (cfg.self || cfg.who === "self") return { origin, who: [origin].filter(Boolean) };
+  // v0.0.255 (Lucas): the card's targets are the recipients when it has them (no question asked); the picker only when it has none
+  if (ctx.targets?.length && cfg.who !== "self") {
+    const list = [];
+    for (const t of ctx.targets) { try { const d = await fromUuid(t.uuid); const a = d?.documentName === "Actor" ? d : d?.actor; if (a) list.push(a); } catch (e) { /* gone */ } }
+    if (list.length) return { origin, who: list };
+  }
   const me = tokenOfActor(origin);
   const side = me?.document?.disposition ?? canvas.tokens?.controlled[0]?.document?.disposition ?? 1;
   const mine = t => t.actor && t.document?.disposition === side && t.id !== me?.id;

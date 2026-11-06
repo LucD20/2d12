@@ -324,13 +324,20 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const actRow = i => this._actionRow(i);
     // v0.0.194: Escalation Actions live only in the Escalation block (escblock.mjs), not in the list or the Favorites.
     const isEscAct = i => Number(i.system?.escalation) > 0;
-    const tableRows = actions.filter(i => !i.getFlag("twod12", "basic") && !isEscAct(i)).map(actRow);
+    const tableRows = actions.filter(i => !i.getFlag("twod12", "basic") && !isEscAct(i) && !i.getFlag("twod12", "inlineOf")).map(actRow);   // v0.0.255: an inline Action sits in the Granted area
     const escOpen = (game.user.getFlag("twod12", "escOpen") ?? {})[a.id];
     const esc = isPc || a.system?.useEscalation ? escalationModel(a, { actionRow: i => this._actionRow(i), isFaded, open: escOpen ?? null, openPass: this._escPass }) : { show: false };
     const actGroups = groupRows(tableRows, { groupBy, sort: sortBy, order, sourceLabels: this._groupLabels.filter(l => l !== "Basic") })
       .map(g => ({ ...g, collapsed: !!g.label && collapsed.has(g.label) }));
     // Granted: Actions an effect lets you use for free, with the uses left and where they came from.
     const granted = [];
+    // v0.0.255 (Lucas): an inline Action (Beacon's Step) is a Granted ticket too, with its own icon, for as long as its effect lasts
+    for (const it of actions.filter(i => i.getFlag("twod12", "inlineOf"))) {
+      const e = a.effects.get(it.getFlag("twod12", "inlineOf")), dur = e ? durationText(e) : "", source = it.getFlag("twod12", "sourceName") || e?.name?.replace(/\s*\(.*\)\s*$/, "") || "";
+      const tr = orderTraits(it.system.traits).map(t => TWOD12.traits[t] ?? t), row = this._actionRow(it), v = it.system.versions?.[0], cost = v ? `${v.ap}${it.system.reaction ? "R" : " AP"}` : "";
+      granted.push({ key: `inline:${it.id}`, actionId: it.id, name: it.name, img: it.img, inline: true, apsHtml: "", cost, free: v?.ap === 0, traitShort: tr.slice(0, 3).join(" \u00b7 "), source, dur, left: 0, count: 0, badges: [], adds: [], range: row?.range ?? "", traits: tr.join(" \u00b7 "), open: !!this._openGrant?.has(`inline:${it.id}`),
+        tip: [`From ${source}${dur ? ` · ${dur}` : ""}`, it.system.trigger ? `${it.system.reactionKind === "interrupt" ? "Interrupt" : "Trigger"}: ${it.system.trigger}` : ""].filter(Boolean).join(" · "), boxes: [] });
+    }
     for (const e of a.effects) {
       for (const g of e.getFlag("twod12", "grants") ?? []) {
         if (!(g.left > 0)) continue;
@@ -374,13 +381,16 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     if (s.bloodied) conditions.push({ name: "Bloodied", img: "icons/svg/blood.svg", dur: "from damage", tip: fxTipHtml({ name: "Bloodied", dur: "from damage", text: "Your Vigor damage is at or past your Vigor threshold. No effect by itself: the Escalation hooks and some cards read it.", controls: "It ends when the damage drops below the threshold." }) });
     if (s.strained) conditions.push({ name: "Strained", img: "icons/svg/daze.svg", dur: "from damage", tip: fxTipHtml({ name: "Strained", dur: "from damage", text: "Your Resolve damage is at or past your Resolve threshold. No effect by itself: the Escalation hooks and some cards read it.", controls: "It ends when the damage drops below the threshold." }) });
     // The Effects tab (v0.0.134): a status (a condition) is a chip; any other applied effect is a row with what it does and where it came from.
+    // v0.0.255: a linked condition sits right after the effect that brought it (its chain icon points at it)
+    conditions.sort((x, y) => (conditions.findIndex(c => c.id === (x.linkedTo || x.id)) - conditions.findIndex(c => c.id === (y.linkedTo || y.id))) || ((x.linkedTo ? 1 : 0) - (y.linkedTo ? 1 : 0)));
     const fxEffects = [];
     const fxText = e => hoverOf(e.getFlag?.("twod12", "hover"), e.getFlag?.("twod12", "description") ?? e.description);
     for (const e of a.effects) {
       if ((s.bloodied && e.statuses?.has("bloodied")) || (s.strained && e.statuses?.has("strained"))) continue;   // already listed, from damage
       if (e.statuses?.size) {
         const counter = isExhaustedFx(e) && a.type === "character", by = e.origin && e.origin !== a.uuid ? (fromUuidSync(e.origin)?.name ?? "") : "";
-        conditions.push({ id: e.id, name: e.name.replace(/\s*\(.*\)\s*$/, ""), img: e.img ?? "icons/svg/aura.svg", dur: durationText(e), counter,
+        const linkedTo = e.getFlag?.("twod12", "linkedTo") ?? "", parent = linkedTo ? a.effects.get(linkedTo) : null;   // v0.0.255 (Lucas): a condition another effect brought is shown chained to it
+        conditions.push({ id: e.id, name: e.name.replace(/\s*\(.*\)\s*$/, ""), img: e.img ?? "icons/svg/aura.svg", dur: durationText(e), counter, linkedTo, linkedName: parent?.name?.replace(/\s*\(.*\)\s*$/, "") ?? "",
           tip: fxTipHtml({ name: e.name, dur: durationText(e) || "until removed", text: fxText(e), source: by ? `From ${by}` : "", controls: counter ? "Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove" : "Click the name: open · ×: remove" }) });
         continue;
       }

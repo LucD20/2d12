@@ -184,7 +184,7 @@
     "img": "icons/svg/shield.svg",
     "folder": "Paladin",
     "automation": "mithril",
-    "automationNote": "the Reaction's moment by hand (the Reactions pass); the Apply button asks who is shielded (you or an ally within 5) and sets the reduction, taken from that creature's next damage."
+    "automationNote": "the Reaction's moment by hand (the Reactions pass); the Apply button sets the reduction on the card's target (or asks: you or an ally within 5), taken from that creature's next damage."
    }
   },
   {
@@ -333,7 +333,7 @@
      "effects": "The target gains [[Guard]] equal to what one of their Rally Points heals, before the damage. After the damage, they are Slid 1.",
      "ruler": "block 9; slide 1",
      "foundry": {
-      "after": "@Guard[rally|who:pick|near:5] @Pause[After the damage] @Move[slid|distance:1|pick:yes|near:5]"
+      "after": "@Guard[rally|who:pick|near:5] @Pause[After the damage] @Move[slid|distance:1]"
      }
     }
    ],
@@ -341,7 +341,7 @@
     "img": "icons/svg/shield.svg",
     "folder": "Paladin",
     "automation": "mithril",
-    "automationNote": "the Reaction's moment by hand (the Reactions pass); the Apply button asks who gains the Guard (an ally within 5), then a second button, after the damage, lists the allies to Slide."
+    "automationNote": "the Reaction's moment by hand (the Reactions pass); the Apply button gives the Guard to the card's target (or asks: an ally within 5), then a second button, after the damage, Slides them 1."
    }
   },
   {

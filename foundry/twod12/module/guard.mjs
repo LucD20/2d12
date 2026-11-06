@@ -33,5 +33,6 @@ export function absorbGuard(guard, a, apGuard = 0) {
 export const gainGuard = (current, value) => Math.max(Math.max(0, Number(current) || 0), Math.max(0, Math.floor(Number(value) || 0)));
 
 /** v0.0.182: what the Guard did, for the damage line: "12 − Guard 5 = " before the damage, and "(Guard 3 left)" after it. */
-export const guardBefore = (total, taken) => (taken ? `${total} \u2212 Guard ${taken} = ` : "");
-export const guardAfter = (taken, left) => (taken ? ` <small>(${left ? `Guard ${left} left` : "the Guard ends"})</small>` : "");
+// v0.0.255 (Lucas): a reduction (Shield of Faith) shows on the line like the Guard: "12 − reduction 7 − Guard 5 = 0"
+export const guardBefore = (total, taken, reduced = 0) => (taken || reduced ? `${total}${reduced ? ` \u2212 reduction ${reduced}` : ""}${taken ? ` \u2212 Guard ${taken}` : ""} = ` : "");
+export const guardAfter = (taken, left, reduced = 0, reduceLeft = 0) => (taken || reduced ? ` <small>(${[reduced ? (reduceLeft ? `reduction ${reduceLeft} left` : "the reduction is spent") : "", taken ? (left ? `Guard ${left} left` : "the Guard ends") : ""].filter(Boolean).join("; ")})</small>` : "");

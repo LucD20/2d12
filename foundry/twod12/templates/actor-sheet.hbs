@@ -49,16 +49,16 @@
   {{#each granted}}
   <div class="gtk{{#if open}} open{{/if}}" data-key="{{key}}" data-item-id="{{actionId}}" data-tooltip="{{tip}}" data-tooltip-direction="LEFT">
     <div class="gtk-line" data-action="toggleGrant">
-      <span class="gtk-stub"><b>{{left}}/{{count}}</b><small>LEFT</small></span>
+      <span class="gtk-stub">{{#if inline}}<b>{{cost}}</b><small>GRANTED</small>{{else}}<b>{{left}}/{{count}}</b><small>LEFT</small>{{/if}}</span>
       <span class="gtk-nm">{{name}}</span>
       <span class="gtk-cost{{#if free}} free{{/if}}">{{cost}}</span>
       <span class="gtk-src">&larr; {{source}}{{#if dur}} &middot; {{dur}}{{/if}}</span>
       <span class="gtk-ads">{{#each badges}}<span class="gtk-ad">{{this}}</span>{{/each}}</span>
-      <a class="ar-use granted" data-action="useAction" aria-label="Use {{name}} (granted)"><i class="fa-solid fa-gift"></i></a>
+      <a class="ar-use granted" data-action="useAction" aria-label="Use {{name}} (granted)"><i class="fa-solid {{#if inline}}fa-scroll{{else}}fa-gift{{/if}}"></i></a>
     </div>
     <div class="gtk-body">
       <div><span class="k">From</span> {{source}}{{#if dur}} &middot; {{dur}}{{/if}}</div>
-      <div><span class="k">Uses</span> {{left}} of {{count}} left</div>
+      {{#unless inline}}<div><span class="k">Uses</span> {{left}} of {{count}} left</div>{{/unless}}
       {{#if adds.length}}<div><span class="k">Adds</span> {{#each adds}}{{this}}{{#unless @last}}; {{/unless}}{{/each}}</div>{{/if}}
       {{#if badges.length}}<div class="gtk-ads-body">{{#each badges}}<span class="gtk-ad">{{this}}</span>{{/each}}</div>{{/if}}
       <div><span class="k">Action</span> {{#if range}}{{range}} &middot; {{/if}}{{traits}}</div>
@@ -401,7 +401,7 @@
       <div class="fsec"><span>Conditions</span></div>
       <div class="cchips">
         {{#each fx.conditions}}
-        <span class="cchip" {{#if id}}data-effect-id="{{id}}"{{/if}}{{#if counter}} data-counter="1"{{/if}} data-tooltip="{{tip}}">
+        <span class="cchip{{#if linkedTo}} linked{{/if}}" {{#if id}}data-effect-id="{{id}}"{{/if}}{{#if counter}} data-counter="1"{{/if}} data-tooltip="{{tip}}">{{#if linkedTo}}<i class="fa-solid fa-link cc-link" data-tooltip="Brought by {{linkedName}}: it leaves with it"></i>{{/if}}
           <img src="{{img}}" alt=""><a class="cc-name" {{#if id}}data-action="openEffect"{{/if}}>{{name}}</a>{{#if dur}}<span class="cc-dur">{{dur}}</span>{{/if}}
           {{#if counter}}<a class="cadj" data-action="exhaustedDown" aria-label="Exhausted −1">&minus;</a><a class="cadj" data-action="exhaustedUp" aria-label="Exhausted +1">+</a>{{/if}}
           {{#if id}}<a class="rm" data-action="deleteEffect" aria-label="Remove {{name}}">&times;</a>{{/if}}

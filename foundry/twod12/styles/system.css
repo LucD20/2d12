@@ -2236,3 +2236,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.fxtip .ft-src { margin-top: 3px; font-size: 11px; opacity: .8; }
 .twod12.fxtip .ft-ctl { margin-top: 5px; padding-top: 4px; border-top: 1px solid rgba(128, 128, 128, .4); font-size: 10.5px; opacity: .75; }
 .twod12.chat .fxrow .fxname { cursor: help; border-bottom: 1px dotted currentColor; }
+/* v0.0.255 (Lucas): a linked condition (brought by another effect) wears a chain, and sits just after it; the Granted area's inline Actions */
+.twod12.sheet.ns .cchip.linked { margin-left: -2px; border-style: dashed; }
+.twod12.sheet.ns .cchip .cc-link { font-size: 9px; opacity: .7; margin-right: -2px; }
+.twod12.sheet.ns .gtk-stub small { letter-spacing: .04em; }

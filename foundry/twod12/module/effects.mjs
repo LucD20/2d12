@@ -516,14 +516,22 @@ export function valuedHud(app, html) {
   const actor = (app?.document ?? app?.object)?.actor;
   if (!root?.querySelectorAll || !actor) return 0;
   let n = 0;
-  // v0.0.254 (Lucas): the hover card on the token HUD's statuses too, shown to the left (away from the chat)
-  for (const el of root.querySelectorAll("[data-status-id]")) {
-    const fx = actor.effects.find(x => x.statuses?.has?.(el.dataset.statusId));
-    if (!fx) continue;
+  // v0.0.254 (Lucas): the hover card on the token HUD's statuses too, shown to the left (away from the chat). v0.0.255: through the tooltip manager on hover,
+  // delegated from the HUD's root (the statuses are drawn after the render, so a tooltip written at render is lost).
+  const cardOf = id => {
+    const fx = actor.effects.find(x => x.statuses?.has?.(id));
+    if (!fx) return "";
     const valued = isValued(fx);
-    el.dataset.tooltip = fxTipHtml({ name: valued ? `${baseNameOf(fx)} ${Number(fx.getFlag(F, "value")) || 1}` : fx.name, dur: durationText(fx.getFlag(F, "duration")) || "until removed", text: hoverOf(fx.getFlag(F, "hover"), fx.getFlag(F, "description") ?? fx.description), controls: valued ? "Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove" : "Click: remove · Right-click: overlay" });
-    el.dataset.tooltipDirection = "LEFT";
-    n++;
+    return fxTipHtml({ name: valued ? `${baseNameOf(fx)} ${Number(fx.getFlag(F, "value")) || 1}` : fx.name, dur: durationText(fx.getFlag(F, "duration")) || "until removed", text: hoverOf(fx.getFlag(F, "hover"), fx.getFlag(F, "description") ?? fx.description), controls: valued ? "Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove" : "Click: remove · Right-click: overlay" });
+  };
+  for (const el of root.querySelectorAll("[data-status-id]")) { const html = cardOf(el.dataset.statusId); if (html) { el.dataset.tooltip = html; el.dataset.tooltipDirection = "LEFT"; n++; } }
+  if (root.dataset && root.addEventListener && !root.dataset.twod12Hud) {
+    root.dataset.twod12Hud = "1";
+    root.addEventListener("mouseover", ev => {
+      const el = ev.target?.closest?.("[data-status-id]"); if (!el) return;
+      const html = cardOf(el.dataset.statusId); if (!html) return;
+      try { game.tooltip?.activate?.(el, { html, direction: "LEFT" }); } catch (e) { el.dataset.tooltip = html; el.dataset.tooltipDirection = "LEFT"; }
+    });
   }
   return n;
 }

@@ -19,7 +19,7 @@ export async function applyToActor(actor, a, { announce = true } = {}) {
   // v0.0.243 (pack R): the Guard of the kept AP (system.apGuard) is taken before the other Guard; both are one "Guard N" on the line.
   // v0.0.254 (Shield of Faith): a reduction waiting on the creature takes from this damage first, then it is spent whatever is left of it
   const red = Math.max(0, Math.floor(Number(actor.system.reduceNext) || 0));
-  if (red) { const r = absorbGuard(red, a, 0); a.B = r.a.B; a.M = r.a.M; upd["system.reduceNext"] = 0; if (r.taken && announce) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-halved", `<b>${esc(actor.name)}</b>'s damage is reduced by <b>${r.taken}</b>${red > r.taken ? ` (of ${red})` : ""}.`, "guardmsg") }); }
+  if (red) { const r = absorbGuard(red, a, 0); a.B = r.a.B; a.M = r.a.M; a.reduced = r.taken; a.reduceLeft = 0; upd["system.reduceNext"] = 0; if (r.taken && announce) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-halved", `<b>${esc(actor.name)}</b>'s damage is reduced by <b>${r.taken}</b>${red > r.taken ? ` (of ${red}; the rest is spent)` : ""}.`, "guardmsg") }); }
   const g = absorbGuard(actor.system.guard, a, actor.system.apGuard);
   if (g.taken) { a.B = g.a.B; a.M = g.a.M; upd["system.guard"] = g.guard; upd["system.apGuard"] = g.apGuard; a.guardLeft = g.guard + g.apGuard; }
   const add = (k, amt) => { if (amt) upd[`system.damage.${k}`] = (upd[`system.damage.${k}`] ?? d[k]) + amt; };
@@ -111,7 +111,7 @@ async function apply(msg, button, factor) {
         const before = mine.B.l + mine.B.n + mine.M.l + mine.M.n, taken = await applyToActor(actor, mine, { announce: false });
         const dealt = mine.B.l + mine.B.n + mine.M.l + mine.M.n;
         // v0.0.182: one line per creature, the Guard in it: "12 − Guard 5 = 7 Body"
-        lines.push(`${esc(t.name)} takes ${guardBefore(before, taken)}<b>${summaryText(mine) || "no damage"}</b>${guardAfter(taken, mine.guardLeft)}`);
+        lines.push(`${esc(t.name)} takes ${guardBefore(before, taken, mine.reduced)}<b>${summaryText(mine) || "no damage"}</b>${guardAfter(taken, mine.guardLeft, mine.reduced, mine.reduceLeft)}`);
         const src = f.originUuid ? await fromUuid(f.originUuid) : null;
         await logDamage({ originUuid: f.originUuid ?? "", originName: src?.name ?? f.name ?? "", targetName: t.name, amount: dealt });
         if (dealt > 0) await runDamageTriggers(src, actor, t.uuid, f.comps ?? []);   // "When you deal Holy damage to a Profane creature..." (triggers.mjs)
@@ -177,7 +177,7 @@ async function applyRow(f, row, factor, selNl) {
   if (auto.length) await applyEffects(auto, [row.uuid], { ...originInfo(f.originUuid), escalation: !!f.escalation, ...(Number.isFinite(f.originMod) ? { mod: f.originMod } : {}) });
   const parts = [[a.B.l, "Vigor"], [a.B.n, "Vigor Nonlethal"], [a.M.l, "Resolve"], [a.M.n, "Resolve Nonlethal"]].filter(([n]) => n).map(([n, l]) => `${n} ${l}`).join(", ");
   const mult = factor === 0.5 ? " (half)" : factor === 2 ? " (double)" : "";
-  if (taken) return { dealt, text: `${guardBefore(before, taken)}<b>${esc(parts) || "no damage"}</b>${mult}${guardAfter(taken, a.guardLeft)}` };   // v0.0.182
+  if (taken || a.reduced) return { dealt, text: `${guardBefore(before, taken, a.reduced)}<b>${esc(parts) || "no damage"}</b>${mult}${guardAfter(taken, a.guardLeft, a.reduced, a.reduceLeft)}` };   // v0.0.182; v0.0.255: the reduction too
   return { dealt, text: dealt > 0 ? `<b>${esc(parts)}</b>${mult}` : "No damage" };
 }
 

@@ -4,7 +4,7 @@ Reduce: 2d6+pow {"s2":"3d6+pow","s3":"4d6+pow"} pick 5 | the Stage's: 3d6+pow | 
 the steps of a chain: ["(first): 1","After the damage: 1"]
 two Apply buttons, the second named by the Pause: true
 Shield of Faith: Targets The triggering creature | Distance "" | A [Strike] Action would damage you or an ally within 5 squares. | The damage that Strike deals to the target is reduced by @Reduce[2d6+pow|s2:3d6+pow|s3:4d6+pow]{2d6 + Pow} (3d6 at Stage 2, 4d6 at Stage 3). | after: @Reduce[2d6+pow|s2:3d6+pow|s3:4d6+pow|who:pick|near:5] | mithril
-Bulwark of Faith: Targets The triggering creature | Distance "" | A [Strike] Action would damage an ally within 5 squares. | The target gains @Guard[rally]{Guard RP}, before the damage. After the damage, they are @Move[slid|distance:1]. | after: @Guard[rally|who:pick|near:5] @Pause[After the damage] @Move[slid|distance:1|pick:yes|near:5] | mithril
+Bulwark of Faith: Targets The triggering creature | Distance "" | A [Strike] Action would damage an ally within 5 squares. | The target gains @Guard[rally]{Guard RP}, before the damage. After the damage, they are @Move[slid|distance:1]. | after: @Guard[rally|who:pick|near:5] @Pause[After the damage] @Move[slid|distance:1] | mithril
 the Beacon effect: 3 rounds, the aura, the inline Action: rounds 3 aura,inline | the card applies it: Beacon | no Aura of Protection left: true
 the inline Action on the parent's text: true
 the Interrupt / Trigger line first: true
