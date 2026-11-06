@@ -15,7 +15,7 @@ import { isEngaged, engagedWithOther } from "./engaged.mjs";
 import { flankingMod } from "./flanking.mjs";
 import { offerWake } from "./down.mjs";
 import { performCheck, performMultiCheck, multiCheckHtml, collapseNames, uniqueLabels, checkHtml, esc, sgn } from "./roll.mjs";
-import { fxTipHtml, hoverOf } from "./util.mjs";   // v0.0.253: the effects' hover cards
+import { fxTipHtml, hoverOf, tipAttrs } from "./util.mjs";   // v0.0.253: the effects' hover cards
 import { postDamageCard, postMultiDamageCard } from "./dmgcard.mjs";
 import { cardVars, cardHead, flavorHtml, apIcon, traitChevrons, categoryText, highlightText, metaRowHtml, effectiveFrequency, distanceText, areaText, cardColorFor, vsText, targetsRowHtml, requirementProblem, doomStatus } from "./config.mjs";
 import { collectBonuses, expireOnUse } from "./bonus.mjs";
@@ -811,7 +811,7 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.253 (Lucas): each effect's name on the card carries its hover card (the description, the duration, how it is applied)
   const fxName = async k => Promise.all((version.fx?.[k] ?? []).map(async x => { const it = await fromUuid(x.uuid); const d = it?.system?.duration; return { name: it?.name ?? "?", tip: it ? fxTipHtml({ name: it.name, dur: d?.type === "eot" ? "EoT" : d?.type === "rounds" ? `${d.rounds} round${d.rounds === 1 ? "" : "s"}` : "until removed", text: hoverOf(it.system?.hover, it.system?.description), controls: x.mode === "auto" ? "Applied with the damage." : "Applied with the Effects button." }) : "" }; }));
   const fxn = { all: await fxName("all"), t1: await fxName("t1"), t2: await fxName("t2"), t3: await fxName("t3") };
-  const fxNames = list => list.map(x => `<span class="fxname"${x.tip ? ` data-tooltip="${esc(x.tip)}"` : ""}>${esc(x.name)}</span>`).join(", ");
+  const fxNames = list => list.map(x => `<span class="fxname"${x.tip ? ` ${tipAttrs(x.tip)}` : ""}>${esc(x.name)}</span>`).join(", ");
   const cardCtx = { item, weapon: weapon ?? previewWeapon ?? null, isWeapon: modOnWeapon(src, useTraits) && !saveAct, attrMode: saveAct ? "none" : src.attrMode, attrVal: src.kind ? (Number(src.mod) || 0) : 0,
     attrLabel: src.kind === "attribute" ? (TWOD12.attributes[src.attrKey] ?? "") : (src.chip ?? "") };
   const rowParts = [];

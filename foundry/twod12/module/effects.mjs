@@ -524,14 +524,17 @@ export function valuedHud(app, html) {
     const valued = isValued(fx);
     return fxTipHtml({ name: valued ? `${baseNameOf(fx)} ${Number(fx.getFlag(F, "value")) || 1}` : fx.name, dur: durationText(fx.getFlag(F, "duration")) || "until removed", text: hoverOf(fx.getFlag(F, "hover"), fx.getFlag(F, "description") ?? fx.description), controls: valued ? "Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove" : "Click: remove · Right-click: overlay" });
   };
-  for (const el of root.querySelectorAll("[data-status-id]")) { const html = cardOf(el.dataset.statusId); if (html) { el.dataset.tooltip = html; el.dataset.tooltipDirection = "LEFT"; n++; } }
+  // v0.0.256: Foundry 13 reads data-tooltip-html (data-tooltip is text there); both are written, and the manager is given the card as an element on hover
+  const mark = (el, html) => { el.dataset.tooltipHtml = html; el.dataset.tooltip = html; el.dataset.tooltipDirection = "LEFT"; };
+  for (const el of root.querySelectorAll("[data-status-id]")) { const html = cardOf(el.dataset.statusId); if (html) { mark(el, html); n++; } }
   if (root.dataset && root.addEventListener && !root.dataset.twod12Hud) {
     root.dataset.twod12Hud = "1";
-    root.addEventListener("mouseover", ev => {
+    root.addEventListener("pointerover", ev => {
       const el = ev.target?.closest?.("[data-status-id]"); if (!el) return;
       const html = cardOf(el.dataset.statusId); if (!html) return;
-      try { game.tooltip?.activate?.(el, { html, direction: "LEFT" }); } catch (e) { el.dataset.tooltip = html; el.dataset.tooltipDirection = "LEFT"; }
-    });
+      mark(el, html);
+      try { const box = document.createElement("div"); box.innerHTML = html; game.tooltip?.activate?.(el, { content: box, direction: "LEFT" }); } catch (e) { /* the attributes stay */ }
+    }, true);
   }
   return n;
 }

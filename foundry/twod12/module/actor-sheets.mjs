@@ -39,7 +39,7 @@ import { chooseRecovery } from "./rest.mjs";
 import { addBasicActions, missingBasic } from "./basic.mjs";
 import { openEffectSheet } from "./fxopen.mjs";
 import { applyTab, durationText, dragData } from "./sheet-common.mjs";
-import { hoverOf, fxTipHtml } from "./util.mjs";
+import { hoverOf, fxTipHtml, tipAttrs } from "./util.mjs";
 import { WEAPON_WHERE, ARMOR_WHERE, weaponWhere, armorWhere, weaponMove, armorMove, handsFor, tierBoxes, handSlots, whereButtons, freeHandFor, useButtons, handOf, HAND_LABEL, handButtonsFor, freeHandButtons, oneHandedTwoHander } from "./loadout.mjs";
 import { ensureHandsFor, releaseOptions, applyRelease, applyRegrip } from "./hands.mjs";
 import { passiveSources } from "./passives.mjs";
@@ -382,6 +382,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     if (s.strained) conditions.push({ name: "Strained", img: "icons/svg/daze.svg", dur: "from damage", tip: fxTipHtml({ name: "Strained", dur: "from damage", text: "Your Resolve damage is at or past your Resolve threshold. No effect by itself: the Escalation hooks and some cards read it.", controls: "It ends when the damage drops below the threshold." }) });
     // The Effects tab (v0.0.134): a status (a condition) is a chip; any other applied effect is a row with what it does and where it came from.
     // v0.0.255: a linked condition sits right after the effect that brought it (its chain icon points at it)
+    for (const c of conditions) c.tipAttrs = tipAttrs(c.tip);   // v0.0.256: the card through data-tooltip-html (Foundry 13) and data-tooltip
     conditions.sort((x, y) => (conditions.findIndex(c => c.id === (x.linkedTo || x.id)) - conditions.findIndex(c => c.id === (y.linkedTo || y.id))) || ((x.linkedTo ? 1 : 0) - (y.linkedTo ? 1 : 0)));
     const fxEffects = [];
     const fxText = e => hoverOf(e.getFlag?.("twod12", "hover"), e.getFlag?.("twod12", "description") ?? e.description);

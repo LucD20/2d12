@@ -2240,3 +2240,10 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.sheet.ns .cchip.linked { margin-left: -2px; border-style: dashed; }
 .twod12.sheet.ns .cchip .cc-link { font-size: 9px; opacity: .7; margin-right: -2px; }
 .twod12.sheet.ns .gtk-stub small { letter-spacing: .04em; }
+/* v0.0.256 (Lucas): the Apply rows: the label wraps, the buttons share one width; the card's target name draws the eye */
+.twod12.chat .applyrow { display: grid; grid-template-columns: minmax(0, 1fr) 196px; align-items: center; }
+.twod12.chat .applyrow > .apside, .twod12.chat .applyrow > details.apside { white-space: normal; overflow: visible; text-overflow: clip; }
+.twod12.chat .applyrow > button { width: 100%; justify-self: stretch; white-space: nowrap; }
+.twod12.chat .applyrow:has(> button:only-child) { grid-template-columns: 1fr; }
+.twod12.chat .cardtargets { font-size: 14px; font-weight: 700; }
+.twod12.chat .cardtargets i.fa-crosshairs { color: #a8322f; }
