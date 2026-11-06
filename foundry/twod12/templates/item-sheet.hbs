@@ -210,9 +210,11 @@
     <label>Traits {{formInput fields.traits value=system.traits name="system.traits" options=traitPicker.options groups=traitPicker.groups}}</label>
     <label>Flavor <input type="text" name="system.flavor" value="{{system.flavor}}" placeholder="Your weapon blazes with holy light."></label>
     <label class="autosel" data-tooltip="How much Foundry does for this card, shown as a chip on it (Not implemented, Bronze, Silver, Gold)">Automation <select name="system.automation">{{selectOptions autoRanks selected=system.automation}}</select></label> <label class="autosel autonote" data-tooltip="What Foundry doesn't do yet for this card (shown on the diamond's tooltip). Mostly for Bronze and Silver">By hand <input type="text" name="system.automationNote" value="{{system.automationNote}}" placeholder="What the players do themselves"></label>
-    <div class="grid3 rx">
+    <div class="grid4 rx">
       <label class="inline"><input type="checkbox" name="system.reaction" {{#if system.reaction}}checked{{/if}}> Reaction</label>
       <label>Kind <select name="system.reactionKind" {{#unless system.reaction}}disabled{{/unless}}>{{selectOptions reactionKinds selected=system.reactionKind}}</select></label>
+      <label data-tooltip="A Reaction with a moment is offered by itself when the moment comes: 'would go Down' asks its owner before the damage lands">Moment <select name="system.moment" {{#unless system.reaction}}disabled{{/unless}}>{{selectOptions moments selected=system.moment}}</select></label>
+      <label data-tooltip="How far (squares) the creature of the moment can be; 0: anywhere">Within <input type="number" min="0" name="system.momentRange" value="{{system.momentRange}}" {{#unless system.reaction}}disabled{{/unless}}></label>
     </div>
     <div class="grid4">
       <label>Category <input type="text" name="system.category" value="{{system.category}}" placeholder="Paladin Feature"></label>

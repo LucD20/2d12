@@ -78,6 +78,7 @@ export function convertEffects(text) {
   // v0.0.254 (cards 4): "reduced by 2d6 + your Power Modifier (3d6 at Stage 2, 4d6 at Stage 3)" -> a Reduce chip with the Stage dice (Shield of Faith); "Guard equal to what one of their Rally Points heals" -> @Guard[rally]{Guard RP} (Bulwark of Faith)
   s = s.replace(new RegExp(`\\breduced\\s+by\\s+(\\d+d\\d+)\\s*\\+\\s*${POW}(\\s*\\((\\d+d\\d+)\\s+at\\s+Stage\\s+2,\\s*(\\d+d\\d+)\\s+at\\s+Stage\\s+3\\))?`, "gi"), (m, dice, paren, d2, d3) => `reduced by @Reduce[${dice}+pow${d2 ? `|s2:${d2}+pow` : ""}${d3 ? `|s3:${d3}+pow` : ""}]{${dice} + Pow}${paren ?? ""}`);
   s = s.replace(/(?:@Book\[Guard\]\{Guard\}|\bGuard)\s+equal\s+to\s+what\s+one\s+of\s+their\s+Rally\s+Points\s+heals\b/g, "@Guard[rally]{Guard RP}");
+  s = s.replace(/\bheals?\s+(\d+d\d+)\b(?!\s*[+|\]])/gi, (m, dice) => `heal @Heal[${dice}]{Heal ${dice}}`);   // v0.0.261 (Consecrated Ground): "heal 1d4" is a Heal chip
   s = s.replace(/\bheals?\s+(twice|three times|four times)\s+what\s+1\s+Rally\s+Point\s+would\s+heal\b/gi, (m, w) => { const n = { twice: 2, "three times": 3, "four times": 4 }[w.toLowerCase()]; return `heals @Heal[rp*${n}]{${w.toLowerCase()} a Rally Point's heal}`; });
   // "Appeal Save: 1d6 / 1d4 / 0 [M] Holy damage" (the pool in brackets and the type are optional)
   const V = "(\\d+d\\d+(?:[+-]\\d+)?|\\d+)";

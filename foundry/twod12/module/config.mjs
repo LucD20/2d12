@@ -142,7 +142,9 @@ export const TWOD12 = {
     nonthreatening: "Doesn't threaten: you can't flank with it, unless a feature says otherwise (Fists have it; Brawler removes it).",
     move: "You must have a Speed of at least 1."
   },
-  effectSettings: { inline: "Grants an Action while active", boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", speed: "Speed", light: "Token Light", note: "Note", ignore: "Ignore a Bane", rally: "Rally Points", turnstart: "Effect each turn", message: "Chat message", weaponprop: "Weapon property", mastery: "Starting Mastery", eschook: "Escalation hook" },
+  // v0.0.261 (Lucas, Divine Intervention): the moment a Reaction watches for by itself ("would go Down": asked before the damage lands)
+  moments: { "": "None", wouldDown: "A creature would go Down" },
+  effectSettings: { inline: "Grants an Action while active", boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", zone: "Zone (the placed area)", speed: "Speed", light: "Token Light", note: "Note", ignore: "Ignore a Bane", rally: "Rally Points", turnstart: "Effect each turn", message: "Chat message", weaponprop: "Weapon property", mastery: "Starting Mastery", eschook: "Escalation hook" },
   // v0.0.243 (pack R): the moments a class's Escalation hook names (once an encounter, +1 Escalation): Kindled Wrath, Thrill of the Kill.
   escHookWhen: { allyState: "An ally within N squares becomes Bloodied or goes Down", markDown: "The creature it marked goes Down" },
   // v0.0.198 (Lucas, 2026-10-30): the Basic Actions section of the Actions tab, 4 groups in a 2x2 grid (row 1 Attack | Control, row 2
@@ -377,12 +379,14 @@ const TOKEN_RE = new RegExp([
   String.raw`(?<attr>\b(?:Body|Mind|Instinct|Appeal)\b)`,
   `(?<word>\\b(?:${[...Object.keys(TRAIT_WORDS), ...Object.keys(DAMAGE_WORDS)].sort((a, b) => b.length - a.length).join("|")})\\b(?!\\s+(?:Attack|Technique)))`
 ].join("|"), "g");
+const traitTip = k => (TWOD12.traitHelp[k] ? ` data-tooltip="${escAttr(TWOD12.traitHelp[k])}"` : "");
 /** One colored token of text (the class names are the book's). */
 function colorToken(m, g) {
   if (g.slash) return `<span class="pool-${POOL_CSS[g.sp]}">${m}</span>`;
   if (g.tag) return `<span class="pool-${POOL_CSS[g.tp]}">${m}</span>`;
   if (g.ht) return `<span class="kw-ht">${m}</span>`;
-  if (g.tgrp) return `<span class="trgrp">[${m.slice(1, -1).split(/,\s*/).map(w => `<span class="trhl" style="--tc:${famColor(TRAIT_KEY_OF[w.toLowerCase()])}">${w}</span>`).join(", ")}]</span>`;
+  // v0.0.261 (Lucas, Rolling Shot): a trait in a text carries its tooltip, like the chips of the Traits line
+  if (g.tgrp) return `<span class="trgrp">[${m.slice(1, -1).split(/,\s*/).map(w => `<span class="trhl" style="--tc:${famColor(TRAIT_KEY_OF[w.toLowerCase()])}"${traitTip(TRAIT_KEY_OF[w.toLowerCase()])}>${w}</span>`).join(", ")}]</span>`;
   if (g.mod) return `<span class="mod-${m.split(/\s/)[0].toLowerCase()}">${m}</span>`;
   if (g.apa) return `(<span class="kw-ap">${g.apa}</span>)`;
   if (g.ap || g.rx) return `<span class="kw-ap">${m}</span>`;
@@ -393,7 +397,7 @@ function colorToken(m, g) {
   if (g.boon) return `<span class="kw-boon">${m}</span>`;
   if (g.rally) return `<span class="kw-rally">${m}</span>`;
   if (g.attr) return `<span class="at-${m.toLowerCase()}">${m}</span>`;
-  return TRAIT_WORDS[m] ? `<span class="trhl" style="--tc:${famColor(TRAIT_WORDS[m])}">${m}</span>` : `<span class="dmgword" style="--dc:${TWOD12.subtypeColors[DAMAGE_WORDS[m]]}">${m}</span>`;
+  return TRAIT_WORDS[m] ? `<span class="trhl" style="--tc:${famColor(TRAIT_WORDS[m])}"${traitTip(TRAIT_WORDS[m])}>${m}</span>` : `<span class="dmgword" style="--dc:${TWOD12.subtypeColors[DAMAGE_WORDS[m]]}">${m}</span>`;
 }
 // Never inside: links, buttons, headings, scripts, SVG, and chips or marks that already have their own look.
 const SKIP_TAG = /^(a|button|h[1-6]|script|style|svg|summary|code)$/i;

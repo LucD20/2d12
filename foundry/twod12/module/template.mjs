@@ -400,7 +400,8 @@ export async function startTemplate(cfg, ctx = {}) {
   const timed = data.expire === "eot" || data.rounds > 0;
   const difficult = data.difficult && data.dtypes.length;
   const hazard = (data.ht ?? []).length > 0;
-  if (data.keep || timed || difficult || hazard) {
+  const zone = cfg.zone ?? null;   // v0.0.261 (Consecrated Ground): the area is a Zone: its rules on the region, the creatures inside get them (zone.mjs)
+  if (data.keep || timed || difficult || hazard || zone) {
     const comb = game.combat?.combatants.find(c => c.tokenId === origin?.id);
     const cur = game.combat?.combatant;
     const flags = { twod12: { template: true, ...(placed.line ? { line: placed.line } : {}) } };   // a Line keeps { origin, target, value, side }: lineCellsFromFlag rebuilds it
@@ -408,6 +409,7 @@ export async function startTemplate(cfg, ctx = {}) {
       const actName = (() => { try { const f = ctx?.message?.getFlag?.("twod12", "action"); return fromUuidSync(f?.actorUuid)?.items?.get?.(f?.itemId)?.name ?? ""; } catch (e) { return ""; } })();
       flags.twod12.ht = { patterns: data.ht, text: data.httext ?? "", originUuid: origin?.actor?.uuid ?? "", name: actName || cfg.source || "", cells: placed.cells.map(key), hits: {}, appearHandled: !!cfg.htSave };   // a Save Action makes the creatures inside save itself
     }
+    if (zone) flags.twod12.zone = { ...zone, cells: placed.cells.map(key), originUuid: origin?.actor?.uuid ?? "", originDisposition: Number(origin?.document?.disposition ?? 1) };
     // The area starts when it is placed (reactions included); see registerEffectHooks for the countdown.
     if (timed) Object.assign(flags.twod12, {
       duration: { type: data.expire === "eot" ? "eot" : "rounds", rounds: data.rounds, expire: data.expire === "eot" ? "eot" : "" },
@@ -417,7 +419,7 @@ export async function startTemplate(cfg, ctx = {}) {
     });
     const difficulties = Object.fromEntries(data.dtypes.map(a => [a, 2]));
     const base = {
-      name: hazard && flags.twod12.ht.name ? `${flags.twod12.ht.name} [HT: ${patternText(data.ht)}]` : `${hazard ? "[HT] " : ""}${difficult ? "Difficult " : ""}${areaName(shape, n)}`, color: hazard ? "#c0502a" : difficult ? "#8a6a3a" : "#b05aa0",
+      name: zone ? `${zone.name}${timed && data.rounds ? ` (${data.rounds} round${data.rounds === 1 ? "" : "s"})` : ""}` : hazard && flags.twod12.ht.name ? `${flags.twod12.ht.name} [HT: ${patternText(data.ht)}]` : `${hazard ? "[HT] " : ""}${difficult ? "Difficult " : ""}${areaName(shape, n)}`, color: zone ? "#c9a227" : hazard ? "#c0502a" : difficult ? "#8a6a3a" : "#b05aa0",
       visibility: CONST.REGION_VISIBILITY?.ALWAYS ?? 2, flags
     };
     const core = { type: "modifyMovementCost", name: "Difficult Terrain", system: { difficulties } };

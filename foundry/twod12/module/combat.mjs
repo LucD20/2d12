@@ -231,6 +231,9 @@ async function startTurn(combat) {
     try { const { applyTurnStartEffects } = await import("./automation.mjs"); await applyTurnStartEffects(c.actor); } catch (e) { console.warn("twod12 | Effect each turn", e); }
     // v0.0.207: its "At the start of each of its turns" Chat message settings.
     try { const { postMessages } = await import("./automation.mjs"); await postMessages(c.actor, "turn"); } catch (e) { console.warn("twod12 | turn messages", e); }
+    // v0.0.261 (Consecrated Ground): the heals of the Zones it stands in; the lit Half of a Covering Shot ends with its new turn
+    try { const { zoneTurnStart } = await import("./zone.mjs"); await zoneTurnStart(c); } catch (e) { console.warn("twod12 | zone turn", e); }
+    try { const { clearHalfHint } = await import("./halfhint.mjs"); if (c.actor) await clearHalfHint(c.actor.uuid); } catch (e) { /* no hint */ }
   }
   await takeSnapshot(combat);
 }

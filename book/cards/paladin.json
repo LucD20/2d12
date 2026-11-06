@@ -257,7 +257,7 @@
    "foundry": {
     "img": "icons/svg/sun.svg",
     "folder": "Paladin",
-    "automation": "gold"
+    "automation": "mithril"
    }
   },
   {
@@ -408,19 +408,35 @@
     {
      "ap": 2,
      "effects": "For 3 rounds, enemies in the area take 1 Bane on [Weapon], [Power] and [Signature] Actions, and allies in it heal 1d4 at the start of each of their turns.",
-     "ruler": "rounds 3 | area 2 | allies 2 | banes 1 strike power; heal-dice 1d4"
+     "ruler": "rounds 3 | area 2 | allies 2 | banes 1 strike power; heal-dice 1d4",
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Consecrated Ground}}"
+       ]
+      }
+     }
     },
     {
      "ap": 3,
      "effects": "As 2 AP, but for 5 rounds.",
-     "ruler": "rounds 5 | area 2.5 | allies 2.5 | banes 1 strike power; heal-dice 1d4"
+     "ruler": "rounds 5 | area 2.5 | allies 2.5 | banes 1 strike power; heal-dice 1d4",
+     "foundry": {
+      "text": "For 5 rounds, enemies in the area take 1 Bane on [Weapon], [Power] and [Signature] Actions, and allies in it heal 1d4 at the start of each of their turns.",
+      "areaRounds": 5,
+      "fx": {
+       "all": [
+        "{{fx:Consecrated Ground}}"
+       ]
+      }
+     }
     }
    ],
    "foundry": {
     "img": "icons/svg/sun.svg",
     "folder": "Paladin",
-    "automation": "bronze",
-    "automationNote": "the Banes and the 1d4 healing for creatures in the area (the area is placed and kept).",
+    "automation": "mithril",
+    "automationNote": "the area is a Zone: enemies inside carry the Bane while inside, allies inside roll the 1d4 at the start of their turns and get their Heal window; the area ends after its rounds. The Heal chip on the card is for a heal by hand.",
     "areaCfg": {
      "targets": "all",
      "keep": true,
@@ -476,8 +492,7 @@
     "divine"
    ],
    "frequency": "Daily",
-   "target": "One creature",
-   "distance": "5 sq.",
+   "target": "The triggering creature",
    "interrupt": "You or an ally within 5 squares would go Down.",
    "versions": [
     {
@@ -485,16 +500,20 @@
      "effects": "Instead of going Down, the creature's total damage becomes 1 less than their Health Pool, and they gain [[Guard]] equal to what one of their Rally Points heals.",
      "ruler": "prevent-down; guard 9 ally",
      "foundry": {
-      "append": "@Guard[rally]{Guard equal to what one of their Rally Points heals}"
+      "text": "Instead of going Down, the creature's total damage becomes 1 less than their Health Pool, and they gain [[Guard]] equal to a Rally Point's healing.",
+      "after": "@Guard[rally]"
      }
     }
    ],
    "foundry": {
     "img": "icons/svg/angel.svg",
     "folder": "Paladin",
-    "automation": "none"
+    "automation": "mithril",
+    "automationNote": "offered by itself when you or an ally within 5 squares would go Down (your owner is asked before the damage lands); used, the damage stops 1 under the Health Pool and the Guard is applied. Nothing by hand.",
+    "moment": "wouldDown",
+    "momentRange": 5
    },
-   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): the saved creature also gains a Rally Point's worth of Guard."
+   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): the saved creature also gains a Rally Point's worth of Guard. Cards session 5 (2026-11-06, Lucas): no Distance (the Interrupt says it), Targets the triggering creature, no button: the Reaction watches for the moment."
   },
   {
    "name": "Radiant Zeal",

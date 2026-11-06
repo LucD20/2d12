@@ -8,7 +8,7 @@ old cards' folder: true | current cards in it: none
   Pinning Shot: encounter | ranged,shot,strike,weapon | -
   Lock & Loose: round | ranged,shot,strike,weapon | AD
   Double Shot -> 2AP: You make two [Ranged, Shot] Weapon Attacks (1A), each against a different creature. [1 effect] || 3AP: @Move[evade|distance:1], then as 2 AP. [1 effect]
-  Rolling Shot -> 1AP: @Move[evade|distance:1], then make a [Ranged, Shot] Weapon Attack (1A). @Use[Weapon Attack|label:[Ranged, Shot] Weapon A || 2AP: @Move[evade|distance:2], then make a [Ranged, Shot] Weapon Attack (1A) that deals an extra [V] 1d6 Pi. @Use[Weapon Attac [1 effect] || 3AP: @Move[evade|distance:3], then make a [Ranged, Shot] Weapon Attack (1A) that deals an extra [V] 2d6 Pi. @Use[Weapon Attac [1 effect]
+  Rolling Shot -> 1AP: @Move[evade|distance:1], then make a [Ranged, Shot] Weapon Attack (1A). [1 effect] || 2AP: @Move[evade|distance:2], then make a [Ranged, Shot] Weapon Attack (1A) that deals an extra [V] 1d6 Pi. [1 effect] || 3AP: @Move[evade|distance:3], then make a [Ranged, Shot] Weapon Attack (1A) that deals an extra [V] 2d6 Pi. [1 effect]
   Marksman's Shot -> 2AP: 1[W]+1d8 Pi / 1[W]+2d6 Pi / 1[W]+3d6 Pi "@Condition[vulnerable|value:2|eot]"
 Rolling Shot 3 AP's extra: bonusdamage 2d6 B Pi t2,t3 | ends after: strike
 Sharpshooter: Choose your Hallmark Action: Double Shot or Rolling Shot. Choose one @Book[Projectile]{Projectile} weapon, such as a bow or a crossbow: you start with 3 Mastery with it. Your [Shot] Actions don't take the Bane for targeting a creature Engaged with a creature other than you. | no Actions: true

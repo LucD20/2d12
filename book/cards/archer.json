@@ -178,7 +178,11 @@
      "ap": 1,
      "effects": "Evade 1, then make a [Ranged, Shot] Weapon Attack (1A).",
      "foundry": {
-      "append": "@Use[Weapon Attack|label:[Ranged, Shot] Weapon Attack (1A)]"
+      "fx": {
+       "all": [
+        "{{fx:Rolling Shot (Weapon Attack)}}"
+       ]
+      }
      },
      "ruler": "does Weapon Attack | evade 1"
     },
@@ -186,7 +190,6 @@
      "ap": 2,
      "effects": "Evade 2, then make a [Ranged, Shot] Weapon Attack (1A) that deals an extra [V] 1d6 Pi.",
      "foundry": {
-      "append": "@Use[Weapon Attack|label:[Ranged, Shot] Weapon Attack (1A)]",
       "fx": {
        "all": [
         "{{fx:Rolling Shot (+1d6 Pi)}}"
@@ -199,7 +202,6 @@
      "ap": 3,
      "effects": "Evade 3, then make a [Ranged, Shot] Weapon Attack (1A) that deals an extra [V] 2d6 Pi.",
      "foundry": {
-      "append": "@Use[Weapon Attack|label:[Ranged, Shot] Weapon Attack (1A)]",
       "fx": {
        "all": [
         "{{fx:Rolling Shot (+2d6 Pi)}}"
@@ -212,7 +214,8 @@
    "foundry": {
     "img": "icons/svg/target.svg",
     "folder": "Archer",
-    "automation": "gold"
+    "automation": "mithril",
+    "automationNote": "the Evade chip, then the granted Weapon Attack (the card's button or the sheet's ticket); at 2 / 3 AP the extra damage rides only on that attack."
    }
   },
   {
@@ -267,7 +270,11 @@
      "ap": 1,
      "effects": "Make a [Ranged, Shot] Weapon Attack (1A) with 1 Boon against the attacker. On a Tier 3, the ally takes half of the triggering damage.",
      "foundry": {
-      "append": "@Use[Weapon Attack|boons:1|label:Weapon Attack (1A), 1 Boon]"
+      "fx": {
+       "all": [
+        "{{fx:Covering Shot (Weapon Attack, 1 Boon)}}"
+       ]
+      }
      },
      "ruler": "does Weapon Attack | each boon 1"
     }
@@ -275,8 +282,8 @@
    "foundry": {
     "img": "icons/svg/target.svg",
     "folder": "Archer",
-    "automation": "silver",
-    "automationNote": "the Weapon Attack with its Boon (the button); halving the ally's damage by hand."
+    "automation": "mithril",
+    "automationNote": "the granted Weapon Attack with its Boon (the card's button); on a Tier 3 the attacker's next damage card lights its Half button, and the ally's player clicks it."
    },
    "distance": "Weapon",
    "interrupt": "A [Strike] Action would damage an ally within 10 squares."

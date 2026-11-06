@@ -1,6 +1,8 @@
 import { registerAuraHooks } from "./aura.mjs";
 import { registerHazardHooks, registerHazardBehavior } from "./hazard.mjs";
 import { registerDownHooks } from "./down.mjs";
+import { registerZoneHooks } from "./zone.mjs";   // v0.0.261 (Consecrated Ground)
+import { markHalfHint } from "./halfhint.mjs";   // v0.0.261 (Covering Shot)
 import { registerLeanHooks } from "./lean.mjs";
 import { registerMasteryHooks } from "./mastery.mjs";
 import { registerMarkHooks } from "./mark.mjs";
@@ -69,6 +71,7 @@ Hooks.once("init", () => {
   registerAuraHooks();
   registerHazardHooks();
   registerDownHooks();
+  registerZoneHooks();
   registerLeanHooks();
   registerMasteryHooks();
   registerMarkHooks();
@@ -252,8 +255,10 @@ registerRegionSnap();   // v0.0.178: a Region drawn by hand is snapped to whole 
 // Corners (v0.0.170): a "Solid" checkbox in the Tile settings (a solid Tile blocks the corners it covers).
 Hooks.on("renderTileConfig", (app, html) => { try { tileConfigSolid(app, html); } catch (e) { console.warn("twod12 | Tile settings", e); } });
 Hooks.on("renderChatMessageHTML", updateUseButtons);
+Hooks.on("renderChatMessageHTML", markHalfHint);
 Hooks.once("ready", registerVersionTabs);
 Hooks.on("renderChatMessage", updateUseButtons);
+Hooks.on("renderChatMessage", markHalfHint);
 Hooks.on("renderChatMessage", collapsibleCards);
 
 // "Roll Damage" buttons on action cards (delegated so it works regardless of chat re-rendering).

@@ -28,6 +28,8 @@ import { squaresBetween, rangeBand } from "./move.mjs";
 import { setupFor } from "./setup.mjs";
 import { coverBetween, coverWhy } from "./cover.mjs";
 import { consumeGrant, attachGrantCard } from "./freeuse.mjs";
+import { zoneOf } from "./zone.mjs";   // v0.0.261 (Consecrated Ground): the zone a Version's effects describe goes on the placed area
+import { setHalfHint } from "./halfhint.mjs";   // v0.0.261 (Covering Shot): on a Tier 3, the target's next damage card lights its Half button
 import { buildPreviews, updateOdds, applyTalentMods, tierLines, liveAvg } from "./preview.mjs";
 const { DialogV2 } = foundry.applications.api;
 import { ensureFreeHand } from "./hands.mjs";
@@ -468,13 +470,19 @@ export async function useAction(actor, item, opts = {}) {
   const areaSet = String(it.area ?? "").trim() ? areaConfigOf(it) : null;
   // v0.0.215: versions with their own Area size (Word of Radiance: 2 / 3 Emanation): the version is chosen before the area is placed, and the roll keeps it.
   // v0.0.251 (Lucas): the area is shown and placed for an Action with no roll too (Hallowed Dawn), and the version is picked on a bar
-  if (areaSet && canvas.ready && canvas.grid?.isSquare && new Set(versions.map(v => v.areaSize || areaSet.distance)).size > 1) {
+  // v0.0.261 (Consecrated Ground): the rounds of a kept area can be the version's too (3 rounds at 2 AP, 5 at 3 AP)
+  if (areaSet && canvas.ready && canvas.grid?.isSquare && new Set(versions.map(v => `${v.areaSize || areaSet.distance}|${v.areaRounds || areaSet.rounds}`)).size > 1) {
     const { pickBar } = await import("./pickbar.mjs");
-    const pickAp = await pickBar({ icon: "fa-vector-square", text: `<b>${esc(item.name)}</b>: which version? The Area depends on it.`, options: versions.map(v => ({ id: String(v.ap), label: `${v.ap} AP: ${v.areaSize || areaSet.distance} ${areaSet.shape === "burst" ? "Burst" : areaSet.shape === "line" ? "Line" : "Emanation"}` })) });
+    const roundsOf = v => (v.areaRounds || areaSet.rounds ? ` · ${v.areaRounds || areaSet.rounds} round${(v.areaRounds || areaSet.rounds) === 1 ? "" : "s"}` : "");
+    const pickAp = await pickBar({ icon: "fa-vector-square", text: `<b>${esc(item.name)}</b>: which version? The Area depends on it.`, options: versions.map(v => ({ id: String(v.ap), label: `${v.ap} AP: ${v.areaSize || areaSet.distance} ${areaSet.shape === "burst" ? "Burst" : areaSet.shape === "line" ? "Line" : "Emanation"}${roundsOf(v)}` })) });
     if (pickAp == null) return;
     versions = versions.filter(v => v.ap === Number(pickAp));
     areaSet.distance = versions[0].areaSize || areaSet.distance;
+    areaSet.rounds = versions[0].areaRounds || areaSet.rounds;
   }
+  // v0.0.261 (Consecrated Ground): the Zone settings of the Version's effects go on the placed area (its region); those effects are not applied to creatures
+  let zoneSkip = new Set();
+  if (areaSet) { const zn = await zoneOf(versions); if (zn) { areaSet.zone = zn.zone; areaSet.keep = true; zoneSkip = zn.uuids; } }
   if (areaSet && canvas.ready && canvas.grid?.isSquare) {   // no square grid: no placing, rolled as before
     const { startTemplate } = await import("./template.mjs");
     const outcome = {}; areaOutcome = outcome;
@@ -893,7 +901,7 @@ export async function useAction(actor, item, opts = {}) {
     ${bonusRows}
     ${critHtml}${effectsHtml}
     ${fxn.all.length && !effectsOff ? `<div class="fxrow">&#10022; ${fxNames(fxn.all)}</div>` : ""}
-    ${btn}${isSelf && !String(it.area ?? "").trim() ? "" : targetsRowHtml(targetEntries(targets, selfToken?.document?.disposition ?? 1), { retarget: true })}${applyAfterHtml(version, targets, selfToken)}${it.worth ? `<div class="ac-worth">${esc(it.worth)}</div>` : ""}</div>`;
+    ${btn}${isSelf && !String(it.area ?? "").trim() ? "" : targetsRowHtml(targetEntries(targets, selfToken?.document?.disposition ?? 1), { retarget: true })}${it.moment ? "" : applyAfterHtml(version, targets, selfToken)}${it.worth ? `<div class="ac-worth">${esc(it.worth)}</div>` : ""}</div>`;
   // v0.0.195 (Lucas): a movement-only Action (Advance, Evade, Crawl) in combat starts its movement with the banner (squares left, Done) and
   // posts one short line when it ends, instead of a card whose button then posted the movement (two messages for one step).
   const mvInner = pureMove(it, version, basicKey);
@@ -942,10 +950,15 @@ export async function useAction(actor, item, opts = {}) {
   });
   // A version with no roll has no Damage button: its automatic effects are applied now (to the targets, or to you for Self Actions).
   if (version.noTiers && (version.fx?.all ?? []).length) {
-    const auto = version.fx.all.filter(x => x.mode === "auto").map(x => x.uuid);
+    const auto = version.fx.all.filter(x => x.mode === "auto" && !zoneSkip.has(x.uuid)).map(x => x.uuid);
     if (auto.length) await applyEffects(auto, isSelf ? [actor.uuid] : targets.map(t => t.uuid), { ...originInfo(actor.uuid), escalation: escCost > 0, ...(src.kind ? { mod: Number(src.mod) || 0 } : {}) });
     // v0.0.260 (Lucas, Double Shot): the granted uses an applied effect brings are buttons on the card, one per use (freeuse.mjs)
     if (auto.length && cmsg) await attachGrantCard(cmsg, actor, auto);
+  }
+  // v0.0.261 (Lucas, Divine Intervention): a Reaction with a moment runs its chain by itself on the creature it answered for (no Apply button)
+  if (it.moment && version.noTiers && String(version.after ?? "").trim() && targets.length) {
+    const { runAfter } = await import("./inline.mjs");
+    try { await runAfter(version.after, { actor, targets: targets.map(t => ({ uuid: t.uuid, name: t.name })), attrVal: src.kind ? (Number(src.mod) || 0) : null, message: cmsg, source: item.name }); } catch (e) { console.warn("twod12 | moment chain", e); }
   }
   // A Save Action: a Save card for the creatures in the area (each player rolls their own), and the area remembers it for [HT] (v0.0.159).
   if (saveAct && !version.noTiers) {
@@ -1004,6 +1017,8 @@ export async function useAction(actor, item, opts = {}) {
   }
   if (data.reloadshot === "on") { const w = weapon ?? previewWeapon; if (w) await w.update({ "system.unloaded": true }); }
   if (opts.grant) await consumeGrant(actor, opts.grant, targets[0]?.uuid ?? "");
+  // v0.0.261 (Lucas, Covering Shot): a granted use that halves the target's next damage on a Tier 3: the target's next damage card lights its Half button
+  if (opts.grant?.grant?.halfT3 && (tier ?? 0) >= 3 && targets[0]?.uuid) { try { await setHalfHint(targets[0].uuid, { source: String(opts.grant.effect?.name ?? item.name).replace(/\s*\(.*\)\s*$/, ""), by: actor.name }); } catch (e) { console.warn("twod12 | half hint", e); } }
   opts.onUsed?.({ targets });
   return true;
 }

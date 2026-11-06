@@ -72,7 +72,11 @@ function settingSentenceOnly(x) {
     case "inline":
       return `Has the Action <b>${esc(fxNameOf(x.inlineAction) || x.inlineAction || "?")}</b> while this lasts.`;
     case "grant":
-      return `Can use <b>${esc(x.grantAction || "?")}</b> ${x.grantCount === 1 ? "once" : `${x.grantCount} times`} for <b>${x.grantAp ? `${x.grantAp} AP` : "free"}</b>${x.boons ? `, with ${plural(x.boons, "Boon")}` : ""}${x.grantDistinct ? ", a different target each time" : ""}.`;
+      return `Can use <b>${esc(x.grantAction || "?")}</b> ${x.grantCount === 1 ? "once" : `${x.grantCount} times`} for <b>${x.grantAp ? `${x.grantAp} AP` : "free"}</b>${x.boons ? `, with ${plural(x.boons, "Boon")}` : ""}${x.grantDistinct ? ", a different target each time" : ""}${x.halfT3 ? "; on a Tier 3, the target's next damage is halved" : ""}.`;
+    case "zone": {
+      const who = { allies: "Allies", enemies: "Enemies", all: "Creatures" }[x.zoneWho] ?? "Allies", fx = fxNameOf(x.fxUuid), heal = String(x.zoneHeal ?? "").trim();
+      return `<b>${who}</b> in the placed area${fx ? ` gain <b>${esc(fx)}</b> while inside` : ""}${fx && heal ? " and" : ""}${heal ? ` heal <b>${esc(heal)}</b> at the start of each of their turns` : ""}${!fx && !heal ? " (drop an Effect, or write a heal)" : ""}.`;
+    }
     case "aura": {
       const fx = fxNameOf(x.fxUuid), who = { allies: "allies", enemies: "enemies", all: "creatures" }[x.auraWho] ?? "allies";
       return `An <b>Aura ${Math.max(1, Number(x.auraSize) || 1)}</b> around the creature: ${who}${x.auraSelf ? " and the creature itself" : ""} inside gain <b>${esc(fx) || "(drop an Effect)"}</b>.`;
@@ -131,6 +135,7 @@ export function settingShort(x) {
       return `${dmg}${p ? ` (${p})` : ""}${strip(limitText(x))}`;
     }
     case "aura": return `Aura ${Math.max(1, Number(x.auraSize) || 1)}: ${fxNameOf(x.fxUuid) || "no Effect yet"}`;
+    case "zone": return `zone: ${x.zoneWho ?? "allies"} ${fxNameOf(x.fxUuid) || (String(x.zoneHeal ?? "").trim() ? `heal ${String(x.zoneHeal).trim()}` : "?")}`;
     case "ondamage": return `${fxNameOf(x.fxUuid) || "an Effect"} on ${TWOD12.subtypes[x.trigSub] ?? "any"} damage${x.trigTag ? ` to ${x.trigTag}` : ""}`;
     case "defense": { const n = Math.trunc(Number(x.defValue)) || 0; return `${n >= 0 ? "+" : "\u2212"}${Math.abs(n)} ${x.defKind === "all" ? "Defense" : (TWOD12.defenseKinds[x.defKind] ?? "Defense")}`; }
     case "speed": return x.speedMode === "override" ? `Speed becomes ${x.speedFormula || "?"}` : `Speed ${/^[-+]/.test(x.speedFormula ?? "") ? "" : "+"}${x.speedFormula || "?"}`;

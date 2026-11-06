@@ -5,6 +5,7 @@ import { esc } from "./roll.mjs";
 import { applyEffects, originInfo, applyCondition, applyBoonEffect } from "./effects.mjs";
 import { absorbGuard, guardBefore, guardAfter } from "./guard.mjs";
 import { sysLine } from "./sysmsg.mjs";
+import { clearHalfHint } from "./halfhint.mjs";   // v0.0.261 (Covering Shot)
 const { DialogV2 } = foundry.applications.api;
 const SOCKET = "system.twod12";
 
@@ -22,6 +23,12 @@ export async function applyToActor(actor, a, { announce = true } = {}) {
   if (red) { const r = absorbGuard(red, a, 0); a.B = r.a.B; a.M = r.a.M; a.reduced = r.taken; a.reduceLeft = 0; upd["system.reduceNext"] = 0; if (r.taken && announce) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-halved", `<b>${esc(actor.name)}</b>'s damage is reduced by <b>${r.taken}</b>${red > r.taken ? ` (of ${red}; the rest is spent)` : ""}.`, "guardmsg") }); }
   const g = absorbGuard(actor.system.guard, a, actor.system.apGuard);
   if (g.taken) { a.B = g.a.B; a.M = g.a.M; upd["system.guard"] = g.guard; upd["system.apGuard"] = g.apGuard; a.guardLeft = g.guard + g.apGuard; }
+  // v0.0.261 (Lucas, Divine Intervention): a creature that would go Down: a Reaction that watches for that moment is offered first (its owner answers);
+  // used, the damage stops 1 under the Health Pool. Nothing is applied until the answer comes.
+  try {
+    const M = await import("./moment.mjs");
+    if (M.wouldGoDown(actor, a) && await M.offerMoment(actor, "wouldDown", { incoming: a.B.l + a.B.n + a.M.l + a.M.n })) { const cut = M.capAtPool(actor, a); if (cut && announce !== null) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-hand-holding-heart", `<b>${esc(actor.name)}</b> stays up: <b>${cut}</b> damage turned away, 1 under the Health Pool.`, "fxm") }); }
+  } catch (e) { console.warn("twod12 | moment", e); }
   const add = (k, amt) => { if (amt) upd[`system.damage.${k}`] = (upd[`system.damage.${k}`] ?? d[k]) + amt; };
   add("bodyLethal", a.B.l); add("bodyNonlethal", a.B.n); add("mindLethal", a.M.l); add("mindNonlethal", a.M.n);
   if (g.taken && announce) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-halved", `<b>${esc(actor.name)}</b>'s Guard takes <b>${g.taken}</b> damage${g.takenAp ? ` (${g.takenAp} from the kept AP)` : ""}${a.guardLeft ? ` (Guard ${a.guardLeft} left)` : " and ends"}.`) });
@@ -39,6 +46,8 @@ export function registerSocket() {
       if (!actor) return;
       if (data.type === "healPrompt") return H.healHere(actor, data.amount, { source: data.source, lead: data.lead });
       if (data.type === "endEffectPrompt") return H.endEffectHere(actor, data.which, { source: data.source });
+      if (data.type === "momentAsk") return (await import("./moment.mjs")).answerHere(data);   // v0.0.261: "X would go Down: use Divine Intervention?" asked to its owner
+      if (data.type === "momentAnswer") return (await import("./moment.mjs")).receiveAnswer(data);
     }
     if (!game.user.isActiveGM) return;
     if (data?.type === "applyEffects") return applyEffects(data.effectUuids, data.targetUuids, data.origin, data.over);
@@ -46,6 +55,7 @@ export function registerSocket() {
     if (data?.type === "applyCondition") { const a = await fromUuid(data.actorUuid); if (a) await applyCondition(data.cond, [a], data.dur, data.origin); return; }
     if (data?.type === "markOnce") { const a = await fromUuid(data.actorUuid); if (a) await (await import("./automation.mjs")).markOnce(a, data.keys); return; }   // v0.0.186
     if (data?.type === "applyGuard") { const a = await fromUuid(data.actorUuid); if (a) await a.update({ "system.guard": Math.max(0, Number(data.value) || 0) }); return; }
+    if (data?.type === "halfHint") { const a = await fromUuid(data.actorUuid); const actor = a?.documentName === "Actor" ? a : a?.actor; if (actor) await (data.info ? actor.setFlag("twod12", "halfHint", data.info) : actor.unsetFlag("twod12", "halfHint")); return; }   // v0.0.261 (Covering Shot)
     if (data?.type === "applyApGuard") { const a = await fromUuid(data.actorUuid); if (a) await a.update({ "system.apGuard": Math.max(0, Number(data.value) || 0) }); return; }   // v0.0.243: a kept AP paid a Reaction
     if (data?.type !== "applyDamage") return;
     const actor = await fromUuid(data.actorUuid);
@@ -114,6 +124,7 @@ async function apply(msg, button, factor) {
         lines.push(`${esc(t.name)} takes ${guardBefore(before, taken, mine.reduced)}<b>${summaryText(mine) || "no damage"}</b>${guardAfter(taken, mine.guardLeft, mine.reduced, mine.reduceLeft)}`);
         const src = f.originUuid ? await fromUuid(f.originUuid) : null;
         await logDamage({ originUuid: f.originUuid ?? "", originName: src?.name ?? f.name ?? "", targetName: t.name, amount: dealt });
+        clearHalfHint(f.originUuid);   // v0.0.261 (Covering Shot): the lit Half was for this damage
         if (dealt > 0) await runDamageTriggers(src, actor, t.uuid, f.comps ?? []);   // "When you deal Holy damage to a Profane creature..." (triggers.mjs)
       }
       // v0.0.183: the result goes on the damage card itself, under its target line (a new message only when this user can't change the card).
@@ -171,6 +182,7 @@ async function applyRow(f, row, factor, selNl) {
   if (dealt > 0) {
     const src = f.originUuid ? await fromUuid(f.originUuid) : null;
     await logDamage({ originUuid: f.originUuid ?? "", originName: src?.name ?? f.name ?? "", targetName: row.name, amount: dealt });
+    clearHalfHint(f.originUuid);   // v0.0.261 (Covering Shot)
     await runDamageTriggers(src, actor, row.uuid, row.comps ?? []);   // "When you deal Holy damage to a Profane creature..." (triggers.mjs)
   }
   const auto = (row.fx ?? []).filter(x => x.mode === "auto").map(x => x.uuid);

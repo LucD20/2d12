@@ -393,6 +393,8 @@ export class ActionData extends foundry.abstract.TypeDataModel {
       trigger: str(),
       reaction: bool(),
       reactionKind: choice({ interrupt: "Interrupt", trigger: "Trigger" }, "trigger"),
+      // v0.0.261 (Lucas, Divine Intervention): a Reaction with a moment is offered by itself when the moment comes (within this many squares; 0: anywhere)
+      moment: choice(TWOD12.moments, ""), momentRange: int(0, 0),
       flavor: str(),
       area: str(),
       setup: str(),
@@ -424,6 +426,7 @@ export class ActionData extends foundry.abstract.TypeDataModel {
           mode: choice({ weapon: "Weapon mode", power: "Power mode" }),   // a Split Action's versions: "" for the others
           noTiers: bool(),
           areaSize: int(0, 0),   // v0.0.215: this version's Area size (0: the Action's); Word of Radiance is "2 / 3 Emanation"
+          areaRounds: int(0, 0),   // v0.0.261 (Consecrated Ground): this version's rounds for the kept area (0: the Action's)
           t1: tier(),
           t2: tier(),
           t3: tier(),
@@ -532,7 +535,9 @@ const settingsField = () => new ArrayField(new SchemaField({
         // Speed: "override" replaces it with the formula, "add" adds the formula to it.
         speedMode: choice({ override: "Override", add: "Add" }, "add"), speedFormula: str(),
         // Grant: lets the creature use an Action (a name, "category:Weapon Technique" or "trait:strike") a number of times, for this AP cost.
-        grantAction: str(), grantCount: int(1, 1), grantAp: int(0, 0), grantDistinct: bool(),
+        grantAction: str(), grantCount: int(1, 1), grantAp: int(0, 0), grantDistinct: bool(), halfT3: bool(),   // v0.0.261 (Covering Shot): on a Tier 3, the target's next damage is halved (the Half button lit)
+        // v0.0.261 (Consecrated Ground): Zone: the placed area holds it; who is inside gains the Effect (fxUuid) while inside, or heals this at the start of each of their turns
+        zoneWho: choice({ allies: "Allies", enemies: "Enemies", all: "Everyone" }, "allies"), zoneHeal: str(),
         inlineAction: str(),   // v0.0.249 (Lucas, inline Actions): the Action (a uuid or a name) the creature has while the effect lasts (Beacon's Step)
         // Defense: +N (or -N) to every Defense, Armor, Ward or one Vs. Attribute. Bonuses don't add up: the highest bonus and the highest penalty count.
         defKind: choice(TWOD12.defenseKinds, "all"), defValue: sint(1),
