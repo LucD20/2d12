@@ -88,3 +88,31 @@ Dropped on the way: a "dregs" heal for any potion (it would get around the one-p
 | Owl-eye Lenses | 2 | worn, Bind | Dark Sight | large: Hidden in Darkness makes you Doomed; about 9 DE a fight if 1 fight in 4 is dark | 900 SC (the item you save for) |
 
 What a magic +1 does to the fights, for the record (the ruler, 2000 fights, every PC with the item; Health taken a fight, normal / hard / deadly): none 50 / 128 / 114; +1 weapon 43 / 109 / 99; +1 armor 43 / 110 / 100; both 37 / 94 / 86; +2 and +2 27 / 68 / 65. Each +1 cuts about 14%, both about 25% (a difficulty step): why item 4 keeps numbers out.
+
+## Part 2: Actions Out of Combat
+
+A new section of the book, **"Actions Out of Combat"**: most of these rules go there.
+
+### Starting a fight
+1. **[Lucas]** **When a creature *attempts* a hostile Action against a creature that is aware of it, roll Initiative before the Action happens.** A lie doesn't skip it ("I am just casting a healing spell"… then a fireball; "GM, can I roll to lie?" doesn't suffice), and neither does "while we are talking, I attack!".
+2. **[agreed]** **Surprise comes from the Senses rules, not a new roll:** a creature is **Surprised** if, when Initiative is rolled, every enemy acting against it is Hidden or Unsensed to it. An ambush from Hiding works; a betrayal in the middle of a conversation doesn't (the target perceives the traitor). What decides surprise is a known pain in the TTRPG community: this keeps it on rules the book already has.
+3. **[Lucas]** **Some leeway, in very niche cases:** a GM note (a target that is charmed, asleep, or fully distracted by something else). **Talents make it mechanical**, for example *Sudden Strike*: during a conversation, before Initiative, an Appeal Check against the target's Instinct; on a Tier 3 it is Surprised.
+4. **[Lucas]** **The surprise round (still in the works):** no Escalation is gained; only creatures that aren't Surprised regain AP, 2 AP + 1R (or 3 AP and no 1R); a Boon against Surprised targets.
+
+### Durations
+5. **[Lucas]** **Outside an encounter, effects with a duration in turns or rounds (EoT included), or that last until the end of the encounter, don't work, and abilities that mention "during the encounter" can't be used.**
+6. **[agreed]** **Why:** combat effects feed on Escalation, which only exists in an encounter.
+7. **[agreed]** **Conditions follow how they end.** One that ends by an Action or an event lasts until that happens (Prone until you stand, which costs nothing out of combat; stuck in a web until you break free); one with its own timer is unchanged (Exhausted, Wounds, Sickened from a poison). **Examples:** you slip and fall, then enemies attack: Initiative is rolled with you Prone. You get stuck in a spider's web, then the spider comes: Initiative is rolled with you stuck (Immobilized or Hindered, as the web says).
+8. **[agreed]** Guard already ends at the end of an encounter: the rule covers it.
+9. **[Lucas]** **Every "next" effect gets EoT** ("1 Boon on your next [Weapon] Action (EoT)"), so it can't be gained in town and saved for the first swing. Rally the Tribe (Bestiary) needs it.
+10. **[agreed]** **An Encounter Action used between fights stays spent through the next encounter** (the rule already says it resets when an encounter ends).
+11. **[Lucas]** **Round and Turn Actions can be used out of combat** (Lay On Hands is Round): the resource they spend is the limit (Lay On Hands spends Rally Points).
+12. **[Lucas]** **Designer's Note, the bag of rats:** an encounter is a scene with real stakes, and the GM says when one starts. A fight against harmless creatures started to reset Encounter abilities (a bag of rats, a chicken) isn't an encounter: it doesn't reset them, doesn't trigger Escalation hooks and doesn't count for Momentum.
+
+### Utility
+13. **[agreed]** **Effects with long durations** (Truespeech, Message, Light, Water-breathing) last as written: the duration rule doesn't touch them.
+14. **[Lucas]** **A long-duration effect never grants a combat bonus** (a Buff, a bonus to rolls, Defenses or damage, Guard, Empowered, Boons, Favored), except for extreme, unique cases. It can change the *circumstances* of a fight (Light, Senses), not its *numbers*.
+
+### Preparation
+15. **[agreed]** **Preparation is allowed:** positioning, Hiding, picking Cover, scouting, setting up an ambush, filling your Belt. Real tactics with no number attached: the line between preparing and prebuffing.
+16. **[Lucas]** **Preparation bonus ideas (before combat), for some circumstances:** when you know what you are about to face, you start the encounter with +1 Escalation (as Momentum does; they don't stack). **Rule or Designer's Note:** walking a dungeon expecting danger behind every door doesn't give it. **You must know what you will face** to gain any preparation bonus.
