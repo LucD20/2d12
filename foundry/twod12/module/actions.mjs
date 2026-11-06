@@ -1014,9 +1014,10 @@ export function applyAfterHtml(version, targets, selfToken) {
   const label = chips => (/@Heal\[|@Rally\[/.test(chips) ? "Apply Heal/Effects" : /@Move\[|@Condition\[|@Damage\[/.test(chips) ? "Apply Damage/Effects" : "Apply Effects");
   const chipsOf = side => after.split(/\s+(?=@)/).filter(c => !/\|side:/.test(c) || c.includes(`|side:${side}`)).join(" ");
   const mine = selfToken?.document?.disposition ?? 1;
-  const names = side => (targets ?? []).filter(t => { const d = t.disposition; if (d === undefined) return side === "allies"; return side === "allies" ? d === mine : d !== mine && d !== 0; }).map(t => esc(t.name)).join(", ");
+  const names = side => (targets ?? []).filter(t => { const d = t.disposition; if (d === undefined) return side === "allies"; return side === "allies" ? d === mine : d !== mine && d !== 0; }).map(t => esc(t.name));
   if (!sides.length) return `<div class="tline applyrow"><button type="button" data-twod12="applyAfter" data-side=""><i class="fa-solid fa-wand-magic-sparkles"></i> ${label(after)}</button></div>`;
-  return [...new Set(sides)].map(side => `<div class="tline applyrow"><span class="apside">${side === "allies" ? "Allies" : "Enemies"}: ${names(side) || "<i>none</i>"}</span><button type="button" data-twod12="applyAfter" data-side="${side}"><i class="fa-solid ${side === "allies" ? "fa-hand-holding-medical" : "fa-burst"}"></i> ${label(chipsOf(side))}</button></div>`).join("");
+  // v0.0.252 (Lucas): just "Allies" / "Enemies", a click opens the list of the creatures (a bullet each)
+  return [...new Set(sides)].map(side => { const ns = names(side); return `<div class="tline applyrow"><details class="apside"><summary>${side === "allies" ? "Allies" : "Enemies"} <small>(${ns.length})</small></summary>${ns.length ? `<ul>${ns.map(n => `<li>${n}</li>`).join("")}</ul>` : "<ul><li><i>none</i></li></ul>"}</details><button type="button" data-twod12="applyAfter" data-side="${side}"><i class="fa-solid ${side === "allies" ? "fa-hand-holding-medical" : "fa-burst"}"></i> ${label(chipsOf(side))}</button></div>`; }).join("");
 }
 /** The Apply button of a no-damage card: the chain's chips of that side, for that side's creatures among the card's targets. */
 export async function applyAfter(msg, side = "") {

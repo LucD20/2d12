@@ -16,7 +16,9 @@ export const durationText = d => (d?.type === "eot" ? "EoT" : (d?.type === "roun
 export function originInfo(actorUuid) {
   const c = game.combat;
   const comb = c?.combatants.find(x => x.actor?.uuid === actorUuid);
-  return { actorUuid, combatantId: comb?.id ?? "", slot: comb?.initiative ?? null, round: c?.round ?? null, turn: c?.turn ?? null };
+  // v0.0.252 (Lucas; book, Chapter 2): a duration in rounds counts down at the end of the slot in which the effect was applied (the current combatant's), not the origin's
+  const cur = c?.combatant ?? null;
+  return { actorUuid, combatantId: comb?.id ?? "", slot: comb?.initiative ?? null, anchorCombatantId: cur?.id ?? comb?.id ?? "", anchorSlot: cur?.initiative ?? comb?.initiative ?? null, round: c?.round ?? null, turn: c?.turn ?? null };
 }
 
 /** Notes of the actor's effects that apply to rolls with this attribute. */
@@ -75,7 +77,7 @@ export async function applyBoonEffect(actor, cfg, origin) {
     name, img: n < 0 ? "icons/svg/downgrade.svg" : "icons/svg/upgrade.svg", origin: origin?.actorUuid ?? null, showIcon: 2,
     flags: { [F]: {
       duration: d, remaining: d.rounds, slotInit: own?.initiative ?? null, originSlot: origin?.slot ?? null,
-      originCombatantId: origin?.combatantId ?? "", appliedRound: origin?.round ?? null, appliedTurn: origin?.turn ?? null,
+      originCombatantId: origin?.combatantId ?? "", anchorSlot: origin?.anchorSlot ?? null, anchorCombatantId: origin?.anchorCombatantId ?? "", appliedRound: origin?.round ?? null, appliedTurn: origin?.turn ?? null,
       description: "", notes: [], bonuses: [], grants: [],
       modifiers: [{ against: false, boons: n > 0 ? n : 0, banes: n < 0 ? -n : 0, empowered: 0, enfeebled: 0, all: traits, any: [], none: [], from: [] }],
       // "the next ...": it is used up by the next roll with all those traits (with no traits it lasts its duration)
@@ -221,7 +223,7 @@ export async function createEffect(actor, item, origin, over = null, extra = {})
     flags: { [F]: {
       ...extra, effectUuid: item.uuid, duration: d, remaining: d.rounds, ...(value !== undefined ? { value, baseName: item.name } : {}),
       slotInit, originSlot: origin?.slot ?? null,
-      originCombatantId: origin?.combatantId ?? "", appliedRound: origin?.round ?? null, appliedTurn: origin?.turn ?? null,
+      originCombatantId: origin?.combatantId ?? "", anchorSlot: origin?.anchorSlot ?? null, anchorCombatantId: origin?.anchorCombatantId ?? "", appliedRound: origin?.round ?? null, appliedTurn: origin?.turn ?? null,
       ...appliedFlags(s, item.toObject().system), lightBackup, fromEscalation: !!origin?.escalation,
       // Immobilized (v0.0.174): its DC, 11 + the Modifier its origin used (13 without an origin or a Modifier). Forced Movement and Reposition read it.
       ...(statuses.includes("immobilized") ? { immobileDc: origin?.actorUuid && Number.isFinite(origin?.mod) ? 11 + origin.mod : TWOD12.baseDC } : {})
@@ -372,8 +374,10 @@ export function registerEffectHooks() {
           if (hit) await e.delete();
           continue;
         }
-        const oslot = e.getFlag(F, "originSlot");
-        const mine = oslot !== null && oslot !== undefined ? ended?.initiative === oslot : e.getFlag(F, "originCombatantId") === ended?.id;
+        // v0.0.252: the slot in which it was applied (anchor); older effects: the origin's
+        const aslot = e.getFlag(F, "anchorSlot"), aid = e.getFlag(F, "anchorCombatantId");
+        const oslot = aslot !== null && aslot !== undefined ? aslot : e.getFlag(F, "originSlot");
+        const mine = oslot !== null && oslot !== undefined ? ended?.initiative === oslot : (aid || e.getFlag(F, "originCombatantId")) === ended?.id;
         if (!ended || !mine) continue;
         if (e.getFlag(F, "appliedRound") === prior.round && e.getFlag(F, "appliedTurn") === prior.turn) continue;
         if (e.getFlag(F, "lastTick") === prior.round) continue;

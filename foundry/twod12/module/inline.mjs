@@ -94,6 +94,7 @@ export function parseInline(kind, inner) {
       else if (/^crit\s*:/i.test(s)) cfg.crit = yes(s.replace(/^crit\s*:\s*/i, ""));   // v0.0.249: only the targets that rolled a Critical
       else if (/^value\s*:/i.test(s)) cfg.value = Math.max(1, Math.trunc(Number(s.replace(/^value\s*:\s*/i, ""))) || 1);   // v0.0.250: Enfeebled 1, Vulnerable 2
       else if (/^side\s*:/i.test(s)) cfg.side = s.replace(/^side\s*:\s*/i, "").toLowerCase();
+      else if (/^quiet\s*:/i.test(s)) cfg.quiet = yes(s.replace(/^quiet\s*:\s*/i, ""));   // v0.0.252: the label shows no duration (the sentence says it)
     }
     return cfg;
   }
@@ -277,7 +278,9 @@ export function registerInline() {
       if (kind === "Condition") {
         const nm = cfg.cond.charAt(0).toUpperCase() + cfg.cond.slice(1);
         const dur = cfg.dur === "eot" ? " (EoT)" : (cfg.dur === "rounds" ? ` (${cfg.rounds} round${cfg.rounds === 1 ? "" : "s"})` : "");
-        return inlineEl("Condition", cfg, cfg.label ?? match[3] ?? `${nm}${cfg.value ? ` ${cfg.value}` : ""}${dur}`, "fa-triangle-exclamation");
+        const el = inlineEl("Condition", cfg, cfg.label ?? match[3] ?? `${nm}${cfg.value ? ` ${cfg.value}` : ""}${cfg.quiet ? "" : dur}`, "fa-triangle-exclamation");
+        if (cfg.quiet && dur) el.dataset.tooltip = `${nm}${dur}`;
+        return el;
       }
       if (kind === "Use") {
         const total = cfg.count ?? 1;
@@ -444,7 +447,7 @@ async function doDamage(cfg) {
   await postDamageCard({
     title: "Damage", comps, rolls, texts: await Promise.all(cfg.parts.texts.map(t => enrich(t))),
     fx: cfg.parts.uuids.map(u => ({ uuid: u, mode: "auto" })),
-    targets: [...game.user.targets].map(t => ({ uuid: t.document.uuid, name: t.name }))
+    targets: handTargetTokens({}).map(t => ({ uuid: t.document.uuid, name: t.name }))   // v0.0.252: the selected tokens first
   });
 }
 
@@ -457,6 +460,18 @@ export const tierDistance = (cfg, tier) => { const v = cfg?.tiers?.[`t${tier}`];
 export function cardTargetTokens(ctx) {
   const list = ctx?.targets ?? ctx?.message?.getFlag?.("twod12", "action")?.targets ?? ctx?.message?.getFlag?.("twod12", "dmgCard")?.targets ?? [];
   return list.map(t => { try { return fromUuidSync(t.uuid)?.object ?? null; } catch (e) { return null; } }).filter(Boolean);
+}
+/**
+ * v0.0.252 (Lucas): a chip clicked by hand on a card goes to the tokens you have selected; with none selected, to the tokens you target; with none,
+ * to the card's targets. A chain (the Apply buttons, after the damage) brings its own targets and is not touched.
+ */
+export function handTargetTokens(ctx) {
+  if (ctx?.targets) return cardTargetTokens(ctx);
+  const sel = (canvas.tokens?.controlled ?? []).filter(t => t.actor);
+  if (sel.length) return sel;
+  const tg = [...(game.user?.targets ?? [])].filter(t => t.actor);
+  if (tg.length) return tg;
+  return cardTargetTokens(ctx);
 }
 
 /**
@@ -473,10 +488,7 @@ async function allyRecipients(cfg, ctx, what = "the effect") {
   const mine = t => t.actor && t.document?.disposition === side && t.id !== me?.id;
   let allies;
   if (cfg.area > 0) allies = tokensInEmanation(cardTargetTokens(ctx), cfg.area).filter(mine).map(t => t.actor);
-  else {
-    const fromCard = cardTargetTokens(ctx).filter(mine);
-    allies = (fromCard.length ? fromCard : [...game.user.targets].filter(mine)).map(t => t.actor);
-  }
+  else allies = handTargetTokens(ctx).filter(mine).map(t => t.actor);   // v0.0.252: the selected tokens first (a hand click), the chain's own otherwise
   if (cfg.who !== "pick") return { origin, who: allies.length ? allies : [origin].filter(Boolean) };
   const cands = [...(origin ? [origin] : []), ...allies.filter(a => a !== origin)];
   if (cands.length <= 1) return { origin, who: cands };
@@ -568,7 +580,7 @@ export function sideTargets(ctx, side) {
  */
 async function handleHeal(cfg, ctx) {
   const origin = originActor(ctx);
-  const targets = ctx.targets?.length ? ctx.targets : [...(cardTargetTokens(ctx).map(t => ({ uuid: t.document.uuid, name: t.name })))];
+  const targets = ctx.targets?.length ? ctx.targets : handTargetTokens(ctx).map(t => ({ uuid: t.document.uuid, name: t.name }));
   const list = targets.length ? targets : (origin ? [{ uuid: origin.uuid, name: origin.name }] : []);
   if (!list.length) return ui.notifications.warn("Target the creatures that heal first.");
   const formula = stagedFormula(cfg, Number(origin?.system?.stage) || 1);
@@ -591,7 +603,7 @@ async function handleHeal(cfg, ctx) {
 /** v0.0.250: the @EndEffect chip: each target's answerer ends one effect (eot1: EoT or 1 round left; any: every non-permanent one) in a window. */
 async function handleEndEffect(cfg, ctx) {
   const origin = originActor(ctx);
-  const targets = ctx.targets?.length ? ctx.targets : cardTargetTokens(ctx).map(t => ({ uuid: t.document.uuid, name: t.name }));
+  const targets = ctx.targets?.length ? ctx.targets : handTargetTokens(ctx).map(t => ({ uuid: t.document.uuid, name: t.name }));
   if (!targets.length) return ui.notifications.warn("Target the creature first.");
   const source = ctx.message?.getFlag?.("twod12", "action")?.itemId ? (origin?.items?.get(ctx.message.getFlag("twod12", "action").itemId)?.name ?? "") : (ctx.source ?? "");
   const { promptEndEffect } = await import("./healwin.mjs");
@@ -727,11 +739,8 @@ async function handleCondition(cfg, ctx = {}) {
   const f = msg?.getFlag?.("twod12", "action") ?? msg?.getFlag?.("twod12", "dmgCard");
   let actors = [];
   const toActor = async uuid => { const d = await fromUuid(uuid); return d?.documentName === "Actor" ? d : d?.actor; };
-  if (ctx.targets?.length) actors = await Promise.all(ctx.targets.filter(t => !cfg.crit || t.crit).map(t => toActor(t.uuid)));   // v0.0.249: the chain's targets (crit:yes: the Criticals only); v0.0.251: before the card's Self (Hallowed Dawn's Enfeebled went to the Paladin)
-  else if (f?.self && f.actorUuid) actors = [await toActor(f.actorUuid)];
-  else if (f?.targets?.length) actors = await Promise.all(f.targets.map(t => toActor(t.uuid)));
-  else if (game.user.targets.size) actors = [...game.user.targets].map(t => t.actor);
-  else actors = (canvas.tokens?.controlled ?? []).map(t => t.actor);
+  if (ctx.targets?.length) actors = await Promise.all(ctx.targets.filter(t => !cfg.crit || t.crit).map(t => toActor(t.uuid)));   // v0.0.249: the chain's targets (crit:yes: the Criticals only)
+  else actors = handTargetTokens(ctx).map(t => t.actor);   // v0.0.252 (Lucas): a hand click goes to the selected tokens, else the targeted, else the card's (the card's Self no longer wins)
   actors = actors.filter(Boolean);
   if (!actors.length) return cfg.crit && ctx.targets?.length ? ui.notifications.info("No Critical: nothing to apply.") : ui.notifications.warn("Target or select a token first.");
   const src = ctx.actor ?? (f?.actorUuid ? await fromUuid(f.actorUuid) : (game.combat?.combatant?.actor ?? null));

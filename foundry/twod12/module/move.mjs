@@ -657,6 +657,11 @@ const tokenOf = actor => actor?.token?.object ?? actor?.getActiveTokens?.()[0] ?
 
 function targetTokens(ctx) {
   const f = ctx?.message?.getFlag(F, "action");
+  if (!ctx?.targets) {   // v0.0.252 (Lucas): a chip clicked by hand goes to the selected tokens, else the targeted, else the card's
+    const sel = (canvas.tokens?.controlled ?? []).filter(t => t.actor);
+    if (sel.length) return sel;
+    if (game.user.targets.size) return [...game.user.targets];
+  }
   const list = ctx?.targets ?? f?.targets ?? [];   // v0.0.246: the after-damage chain names the targets itself
   const fromCard = list.map(t => { try { return fromUuidSync(t.uuid)?.object; } catch (e) { return null; } }).filter(Boolean);
   return fromCard.length ? fromCard : [...game.user.targets];

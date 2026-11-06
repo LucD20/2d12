@@ -252,7 +252,7 @@ When an effect lasts until the end of the turn of the affected creature, it is m
 
 An EoT effect on yourself still ends at the end of the current turn. A duration in rounds is different: it does not count down at the end of the turn in which the effect was created, because it has to last a whole round.
 
-Each position in the turn order is an **initiative slot**. Effects end at the end of an initiative slot, not of a creature. If a creature swaps initiative, an EoT effect still ends at the end of the slot the creature was in when the effect was applied, and a duration in rounds still counts down at the end of the slot of its origin.
+Each position in the turn order is an **initiative slot**. Effects end at the end of an initiative slot, not of a creature. If a creature swaps initiative, an EoT effect still ends at the end of the slot the creature was in when the effect was applied, and a duration in rounds counts down at the end of the slot in which the effect was applied (the origin's own slot when it was applied on its turn, the current slot when it was applied as a Reaction or out of turn).
 
 ## Escalation
 

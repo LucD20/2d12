@@ -1,0 +1,7 @@
+hand targets: the selected first: Sel | then the targeted: Tgt | then the card's: Card | a chain keeps its own: Chain
+Condition, Heal, EndEffect, Damage, the ally picker and the Push use the hand targets: true | the card's Self no longer wins a Condition: true
+the countdown at the applied slot (anchor), the origin's for older effects: true | the book says so: true
+is @Condition[enfeebled|value:1|rounds:1|quiet:yes] and sheds Bright light in a @Template[emanation|distance:1|rounds:1] for 1 round. @Condition[hindered|eot].
+quiet: no duration in the label: true | the enricher keeps it in the tooltip: true
+the Allies / Enemies rows are lists: true
+the styles: true
