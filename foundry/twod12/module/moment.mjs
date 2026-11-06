@@ -75,6 +75,18 @@ export function answerRow(rows, i, choice) {
   return true;
 }
 
+/** v0.0.273 (Lucas): pure: a used row resolves one place earlier ("up") or later ("down"): it swaps its stack number with its neighbour's. */
+export function moveInStack(rows, i, dir) {
+  const stack = stackOrder(rows), k = stack.findIndex(r => r.i === i), j = k + (dir === "up" ? -1 : 1);
+  if (k < 0 || j < 0 || j >= stack.length) return false;
+  [stack[k].order, stack[j].order] = [stack[j].order, stack[k].order];
+  return true;
+}
+/** Pure: may this user change the order, pause the timer or resolve: the GM, or one who answers a row of the message. */
+export const mayManage = (st, user) => !!user && (user.isGM || st.rows.some(r => r.answerer === user.id));
+/** Pure: the time left on the message (paused: what was left when it was paused). */
+export const timeLeft = (st, now = Date.now()) => (st.paused ? st.left ?? 0 : (st.deadline || 0) - now);
+
 const STATE = { wait: "Waiting", use: "Use", pass: "Passed", skip: "Skipped" };
 const ordinal = n => `${n}${n % 10 === 1 && n % 100 !== 11 ? "st" : n % 10 === 2 && n % 100 !== 12 ? "nd" : n % 10 === 3 && n % 100 !== 13 ? "rd" : "th"}`;
 /** Pure: the message's HTML from its state: the card, a row per creature and Reaction, the stack's order, the timer and the GM's button. */
@@ -83,14 +95,22 @@ export function rxCardHtml(st) {
   const rows = st.rows.map(r => {
     const res = r.result === "done" ? ' <i class="fa-solid fa-check"></i>' : r.result === "failed" ? " (not used)" : r.result === "run" ? ' <i class="fa-solid fa-hourglass-half"></i>' : "";
     const tag = r.state === "use" ? `Resolves ${ordinal(place.get(r.i))}${res}` : STATE[r.state] ?? r.state;
+    // v0.0.273 (Lucas): the order can be changed before the stack resolves (up: sooner)
+    const k = place.get(r.i), live = !st.done && !st.resolving;
+    const arrows = r.state === "use" && live && stack.length > 1 ? `<span class="rx-move">${k > 1 ? `<button type="button" data-twod12="rxUp" data-row="${r.i}" data-tooltip="Resolve it sooner"><i class="fa-solid fa-chevron-up"></i></button>` : ""}${k < stack.length ? `<button type="button" data-twod12="rxDown" data-row="${r.i}" data-tooltip="Resolve it later"><i class="fa-solid fa-chevron-down"></i></button>` : ""}</span>` : "";
     const btns = r.state === "wait" && !st.done ? `<div class="gbtns"><button type="button" data-twod12="rxUse" data-row="${r.i}" data-answerer="${esc(r.answerer)}"><i class="fa-solid fa-bolt"></i> Use</button><button type="button" class="rx-pass" data-twod12="rxPass" data-row="${r.i}" data-answerer="${esc(r.answerer)}"><i class="fa-solid fa-forward"></i> Pass</button></div>` : "";
-    return `<div class="tline grantrow rxrow s-${r.state}" data-row="${r.i}"><span class="apside"><i class="fa-solid ${r.kind === "interrupt" ? "fa-hand" : "fa-bolt-lightning"}"></i> <b>${esc(r.name)}</b>: ${esc(r.itemName)} <small>${esc(r.ap)}R · ${r.kind === "interrupt" ? "Interrupt" : "Trigger"} · on ${esc(r.targetName)}</small><span class="rx-state">${tag}</span></span>${btns}</div>`;
+    return `<div class="tline grantrow rxrow s-${r.state}" data-row="${r.i}"><span class="apside"><i class="fa-solid ${r.kind === "interrupt" ? "fa-hand" : "fa-bolt-lightning"}"></i> <b>${esc(r.name)}</b>: <a class="rx-open" data-twod12="rxOpen" data-row="${r.i}" data-tooltip="Open the Action">${esc(r.itemName)}</a> <small>${esc(r.ap)}R · ${r.kind === "interrupt" ? "Interrupt" : "Trigger"} · on ${esc(r.targetName)}</small><span class="rx-state">${tag}</span>${arrows}</span>${btns}</div>`;
   }).join("");
-  const order = stack.length > 1 ? `<div class="rx-order"><i class="fa-solid fa-layer-group"></i> Last in, first out: ${stack.map((r, k) => `<b>${k + 1}.</b> ${esc(r.name)}'s ${esc(r.itemName)}`).join(", ")}</div>` : "";
+  const order = stack.length > 1 ? `<div class="rx-order"><i class="fa-solid fa-layer-group"></i> ${st.ready && !st.resolving && !st.done ? "Every row is answered. Change the order if needed, then Resolve: " : "Last in, first out: "}${stack.map((r, k) => `<b>${k + 1}.</b> ${esc(r.name)}'s ${esc(r.itemName)}`).join(", ")}</div>` : "";
+  // v0.0.273 (Lucas): a movement moment can take the mover back to where its movement started (its squares refunded)
+  const b = st.back, back = b ? `<div class="rx-back">${b.used ? `<i class="fa-solid fa-rotate-left"></i> ${esc(b.name)} went back to where its movement started (${b.squares} sq.); its movement is refunded.` : `<button type="button" data-twod12="rxBack" data-tooltip="Back to the square it left (the trigger), the movement refunded"><i class="fa-solid fa-rotate-left"></i> Move ${esc(b.name)} back (${b.squares} sq.)</button>`}</div>` : "";
+  const left = timeLeft(st, st.now ?? Date.now());
+  const timer = st.deadline || st.paused ? `<span class="rx-timer${st.paused ? " paused" : ""}" data-twod12="rxPause"${st.paused ? "" : ` data-deadline="${st.deadline}"`} data-tooltip="${st.paused ? "Paused: click to go on" : "Click to pause the countdown"}"><i class="fa-regular ${st.paused ? "fa-circle-pause" : "fa-clock"}"></i> ${st.paused ? "Paused" : "Auto-skip in"} <span class="rx-left">${clockText(left)}</span></span>` : "";
+  const gm = st.ready ? `<button type="button" class="rx-go" data-twod12="rxResolve"><i class="fa-solid fa-play"></i> Resolve</button>` : `<button type="button" class="rx-gm" data-twod12="rxSkip"><i class="fa-solid fa-forward-fast"></i> Skip all others</button>`;
   const foot = st.done
     ? `<div class="rx-foot rx-done"><i class="fa-solid fa-flag-checkered"></i> ${esc(st.closed || (st.hold ? "Answered: the damage lands." : "Answered."))}</div>`
-    : `<div class="rx-foot">${st.deadline ? `<span class="rx-timer" data-deadline="${st.deadline}"><i class="fa-regular fa-clock"></i> Auto-skip in <span class="rx-left">${clockText(st.deadline - (st.now ?? Date.now()))}</span></span>` : ""}${st.resolving ? '<span class="rx-run">Resolving...</span>' : `<button type="button" class="rx-gm" data-twod12="rxSkip"><i class="fa-solid fa-forward-fast"></i> Skip all others</button>`}</div>`;
-  return sysCard({ title: "Reactions", lead: st.lead ? `<span>${st.lead}</span>` : "", text: st.text, cls: "rxmsg" }).replace(/<\/div>\s*$/, `<div class="rx">${rows}${order}${foot}</div></div>`);
+    : `<div class="rx-foot">${timer}${st.resolving ? '<span class="rx-run">Resolving...</span>' : gm}</div>`;
+  return sysCard({ title: "Reactions", lead: st.lead ? `<span>${st.lead}</span>` : "", text: st.text, cls: "rxmsg" }).replace(/<\/div>\s*$/, `<div class="rx">${rows}${order}${foot}${back}</div></div>`);
 }
 
 /* ------------------------------------------------------------------ the creatures and their Reactions */
@@ -160,11 +180,11 @@ export async function collectReactions(ev) {
 const live = new Map();   // moment id -> { st, msg, resolve, timer }
 const pendingRuns = new Map();
 export const timerMinutes = () => {
-  try { if (!game.settings.get(F, "reactionTimerOn")) return 0; return Math.max(1, Number(game.settings.get(F, "reactionTimer")) || 10); } catch (e) { return 10; }
+  try { if (!game.settings.get(F, "reactionTimerOn")) return 0; return Math.max(1, Number(game.settings.get(F, "reactionTimer")) || 1); } catch (e) { return 1; }
 };
 export function registerReactionSettings() {
   game.settings.register(F, "reactionTimerOn", { name: "Reactions: auto-skip timer", hint: "A Reactions message skips the rows nobody answered when its timer runs out (the time is counted down on the message). The GM can also click Skip all others.", scope: "world", config: true, type: Boolean, default: true });
-  game.settings.register(F, "reactionTimer", { name: "Reactions: auto-skip after (minutes)", hint: "How long a Reactions message waits for its answers before it skips the rows still waiting.", scope: "world", config: true, type: Number, default: 10, range: { min: 1, max: 60, step: 1 } });
+  game.settings.register(F, "reactionTimer", { name: "Reactions: auto-skip after (minutes)", hint: "How long a Reactions message waits for its answers before it skips the rows still waiting (anyone in it can pause the countdown by clicking the clock).", scope: "world", config: true, type: Number, default: 1, range: { min: 1, max: 60, step: 1 } });
 }
 
 /** The note when Reactions watch the moment but none can answer: whispered to the GM and those Reactions' owners. */
@@ -185,7 +205,7 @@ export async function openMoment(ev) {
   if (!rows.length) { if (blocked.length) await postNobody(ev.plain ?? ev.lead, blocked); return { used: [] }; }
   const minutes = timerMinutes(), id = foundry.utils.randomID();
   const st = {
-    id, host: game.user.id, hold: !!ev.hold, lead: ev.lead, text: ev.text, done: false, resolving: false, deadline: minutes ? Date.now() + minutes * 60000 : 0,
+    id, host: game.user.id, hold: !!ev.hold, lead: ev.lead, text: ev.text, done: false, resolving: false, ready: false, paused: false, back: ev.back ?? null, deadline: minutes ? Date.now() + minutes * 60000 : 0,
     rows: rows.map((r, i) => ({
       i, moment: r.moment, actorUuid: r.actor.uuid, name: r.actor.name, itemId: r.item.id, itemName: r.item.name, kind: r.kind,
       ap: Math.min(...(r.item.system.versions ?? [{ ap: 0 }]).map(v => Number(v.ap) || 0)),
@@ -196,8 +216,8 @@ export async function openMoment(ev) {
   const msg = await ChatMessage.create({ content: rxCardHtml(st), flags: { [F]: { rx: st } } });
   return new Promise(resolve => {
     const L = { st, msg, resolve, timer: null };
-    if (st.deadline) L.timer = setTimeout(() => hostAnswer(id, -1, "timeout", game.user.id), st.deadline - Date.now());
     live.set(id, L);
+    arm(L);
   });
 }
 async function redraw(L) {
@@ -207,18 +227,30 @@ async function redraw(L) {
 export async function hostAnswer(id, i, choice, fromId) {
   const L = live.get(id);
   if (!L || L.st.done || L.st.resolving) return;
-  const from = game.users?.get?.(fromId);
-  if (choice === "timeout") skipAll(L.st.rows);
-  else if (choice === "skipAll") { if (!from?.isGM) return; skipOthers(L.st.rows, fromId); }
-  else {
-    const r = L.st.rows[i];
+  const st = L.st, from = game.users?.get?.(fromId);
+  if (choice === "timeout") skipAll(st.rows);
+  else if (choice === "skipAll") { if (!from?.isGM) return; skipOthers(st.rows, fromId); }
+  // v0.0.273 (Lucas): the order, the clock and the Resolve button: the GM or anyone who answers a row here
+  else if (["up", "down", "pause", "resolve"].includes(choice)) {
+    if (!mayManage(st, from)) return;
+    if (choice === "pause") { if (st.paused) { st.paused = false; st.deadline = Date.now() + Math.max(1000, st.left ?? 0); arm(L); } else if (st.deadline) { st.paused = true; st.left = Math.max(0, st.deadline - Date.now()); if (L.timer) clearTimeout(L.timer); L.timer = null; } return redraw(L); }
+    if (choice !== "resolve") { if (moveInStack(st.rows, i, choice)) await redraw(L); return; }
+    if (!allAnswered(st.rows)) return;
+  } else {
+    const r = st.rows[i];
     if (!r) return;
     const mayAnswer = fromId === r.answerer || (from?.isGM && !game.users.get(r.answerer)?.active);   // its owner (the GM for one who left)
-    if (!mayAnswer || !answerRow(L.st.rows, i, choice)) return;
+    if (!mayAnswer || !answerRow(st.rows, i, choice)) return;
   }
-  if (!allAnswered(L.st.rows)) return redraw(L);
+  if (!allAnswered(st.rows)) return redraw(L);
+  // v0.0.273 (Lucas): with two Reactions or more on the stack, it waits for Resolve (the order can be changed first; the timer resolves it too)
+  if (stackOrder(st.rows).length > 1 && !st.ready && choice !== "timeout" && choice !== "resolve") { st.ready = true; return redraw(L); }
   if (L.timer) clearTimeout(L.timer);
   await resolveStack(L);
+}
+function arm(L) {
+  if (L.timer) clearTimeout(L.timer);
+  L.timer = L.st.deadline && !L.st.paused ? setTimeout(() => hostAnswer(L.st.id, -1, "timeout", game.user.id), Math.max(0, L.st.deadline - Date.now())) : null;
 }
 /** Every row answered: the used ones resolve last in, first out, each on its owner's client, then the moment's caller goes on. */
 async function resolveStack(L) {
@@ -237,6 +269,8 @@ async function resolveStack(L) {
   st.resolving = false; st.done = true;
   await redraw(L);
   live.delete(st.id);
+  // v0.0.273 (Lucas): the Reactions' cards pushed the message up: it is posted again under them, answered (its Move back button too)
+  if (used.length) { try { await ChatMessage.create({ content: rxCardHtml(st), flags: { [F]: { rx: { ...st, again: true } } } }); } catch (e) { console.warn("twod12 | Reactions message", e); } }
   // what a Reaction set on another creature (a Guard, a reduction) comes back through the GM: a moment for it to arrive before the damage lands
   if (used.some(u => u.ok)) await new Promise(r => setTimeout(r, 500));
   L.resolve({ used });
@@ -277,20 +311,59 @@ export async function runHere(data) {
 /** The socket (damage.mjs routes the rx messages here). */
 export async function onSocket(data) {
   if (data.type === "rxAnswer") return hostAnswer(data.id, data.row, data.choice, data.from);
+  if (data.type === "rxBackMark") return markBack(data.msgId);
   if (data.type === "rxRun") { let res = { ok: false }; try { res = await runHere(data.data); } catch (e) { console.warn("twod12 | Reaction", e); } game.socket.emit(SOCKET, { type: "rxRunDone", userId: data.from, reqId: data.reqId, ok: res.ok, half: res.half }); return; }
   if (data.type === "rxRunDone") { const r = pendingRuns.get(data.reqId); if (r) { pendingRuns.delete(data.reqId); r({ ok: !!data.ok, half: data.half ?? null }); } }
 }
-/** A click on the message: Use, Pass (the row's owner), Skip all others (the GM); sent to the client that holds the moment. */
+/** A click on the message: Use, Pass (the row's owner), Skip all others (the GM), the order, the clock and Resolve (the GM or one who answers
+ *  a row): sent to the client that holds the moment. The Action's name opens its sheet; Move back is done by the clicker. */
 export async function rxClick(msg, b) {
   const st = msg?.getFlag?.(F, "rx");
-  if (!st || st.done) return;
-  const choice = { rxUse: "use", rxPass: "pass", rxSkip: "skipAll" }[b.dataset.twod12];
+  if (!st) return;
+  const k = b.dataset.twod12, row = Number(b.dataset.row ?? -1);
+  if (k === "rxOpen") return openRowItem(st.rows[row]);
+  if (k === "rxBack") return moveBack(msg, st);
+  if (st.done) return;
+  const choice = { rxUse: "use", rxPass: "pass", rxSkip: "skipAll", rxUp: "up", rxDown: "down", rxPause: "pause", rxResolve: "resolve" }[k];
   if (!choice) return;
-  const row = Number(b.dataset.row ?? -1);
   if (st.host === game.user.id) return hostAnswer(st.id, row, choice, game.user.id);
   if (!game.users.get(st.host)?.active) return ui.notifications.warn("The one who brought this moment has left: it can't be answered any more.");
   game.socket.emit(SOCKET, { type: "rxAnswer", userId: st.host, id: st.id, row, choice, from: game.user.id });
-  b.disabled = true;
+  if (b.tagName === "BUTTON") b.disabled = true;
+}
+/** v0.0.273 (Lucas): the Action's name on a row opens its sheet. */
+async function openRowItem(r) {
+  if (!r) return;
+  let actor = null; try { actor = actorOf(await fromUuid(r.actorUuid)); } catch (e) { actor = null; }
+  const item = actor?.items?.get(r.itemId);
+  if (!item) return ui.notifications.warn("That Action is gone.");
+  if (!item.testUserPermission?.(game.user, "LIMITED") && !game.user.isGM) return ui.notifications.warn(`You can't see ${actor.name}'s Actions.`);
+  item.sheet.render(true);
+}
+/** v0.0.273 (Lucas): Move back: the mover goes back to the square its movement left (the trigger), its movement as it was before (refunded). */
+async function moveBack(msg, st) {
+  const b = st.back;
+  if (!b || b.used) return;
+  let doc = null; try { doc = await fromUuid(b.tokenUuid); } catch (e) { doc = null; }
+  if (!doc) return ui.notifications.warn("That token is gone.");
+  if (!doc.isOwner) return ui.notifications.warn(`Only ${doc.name}'s owner or the GM can move it back.`);
+  await doc.update({ x: b.x, y: b.y }, { twod12Forced: true, animate: true });
+  const c = game.combat?.combatants?.get?.(b.combatantId);
+  if (c && b.flags) { try { await c.update(Object.fromEntries(Object.entries(b.flags).map(([k, v]) => [`flags.${F}.${k}`, v]))); } catch (e) { console.warn("twod12 | movement refund", e); } }
+  await markBack(msg.id);
+}
+/** The messages of that moment (the first and the one posted again) say the mover went back: their author writes it; through the socket otherwise. */
+async function markBack(msgId) {
+  const st0 = game.messages?.get?.(msgId)?.getFlag?.(F, "rx");
+  if (!st0?.back) return;
+  const L = live.get(st0.id);
+  if (L) L.st.back = { ...L.st.back, used: true };
+  for (const m of game.messages?.contents?.slice(-60) ?? []) {
+    const st = m.getFlag?.(F, "rx");
+    if (st?.id !== st0.id || !st.back || st.back.used) continue;
+    if (m.isAuthor || (game.user.isGM && !m.author?.active)) { const nst = { ...st, back: { ...st.back, used: true } }; try { await m.update({ content: rxCardHtml(nst), [`flags.${F}.rx`]: nst }); } catch (e) { /* not ours */ } }
+    else if (m.author?.id) game.socket.emit(SOCKET, { type: "rxBackMark", userId: m.author.id, msgId: m.id });
+  }
 }
 /** Chat hook: Use and Pass only for the row's owner (the GM for one who left), Skip all others only for the GM; the timer ticks. */
 export function rxRender(msg, html) {
@@ -304,6 +377,9 @@ export function rxRender(msg, html) {
   });
   el.querySelectorAll(".rxrow .gbtns").forEach(g => { if (!g.children.length) g.remove(); });
   if (!game.user.isGM) el.querySelectorAll(".rx-gm").forEach(b => b.remove());
+  // v0.0.273: the order, Resolve and the clock for the GM and those who answer a row; Move back for the mover's owner
+  if (!mayManage(st, game.user)) { el.querySelectorAll(".rx-move, .rx-go").forEach(b => b.remove()); el.querySelectorAll(".rx-timer").forEach(t => { delete t.dataset.twod12; delete t.dataset.tooltip; }); }
+  if (st.back && !st.back.used) { let doc = null; try { doc = fromUuidSync(st.back.tokenUuid); } catch (e) { doc = null; } if (!doc?.isOwner) el.querySelectorAll('[data-twod12="rxBack"]').forEach(b => b.remove()); }
   ticker();
 }
 let ticking = null;
@@ -378,7 +454,7 @@ export function strikeMoment(actor, targets) {
 export const cameCloser = pairs => pairs.some(p => p.to < p.from);
 const offered = new Set();   // "once per Advance": a Reaction is offered once a turn for the same mover
 /** A creature moved (not an Evade, not a Forced Movement): "an enemy moves closer" and "an enemy moves (or stands up)". */
-export function moveMoment(doc, origin, dest, { stand = false } = {}) {
+export function moveMoment(doc, origin, dest, { stand = false, before = null } = {}) {
   (async () => {
     const actor = doc?.actor;
     if (!actor || !game.combat?.started) return;
@@ -395,7 +471,9 @@ export function moveMoment(doc, origin, dest, { stand = false } = {}) {
     const keep = new Set([...rows, ...blocked].filter(fresh).map(r => `${r.actor.uuid}|${r.item.id}`));
     if (!keep.size) return;
     const name = esc(doc.name ?? actor.name), plain = stand ? `<b>${name}</b> stands up` : `<b>${name}</b> moves`;
-    await openMoment({ ...ev, filter: keep, plain, lead: plain, text: "The movement is made: nothing waits (Foundry moves the token first, so an Interrupt is made from where it stands now)." });
+    // v0.0.273 (Lucas): Move back: to where this movement started, with the movement it had then (the squares since are refunded)
+    const back = !stand && origin ? { tokenUuid: doc.uuid, x: fromAt.x, y: fromAt.y, combatantId: before?.combatantId ?? "", flags: before?.flags ?? null, squares: tokenDistance(fromAt, toAt), name: doc.name ?? actor.name, used: false } : null;
+    await openMoment({ ...ev, filter: keep, back, plain, lead: plain, text: "The movement is made: nothing waits (Foundry moves the token first, so an Interrupt is made from where it stands now)." });
   })().catch(e => console.warn("twod12 | Reactions", e));
 }
 const moving = new Map();   // token id -> { forced, evading }, on the client that moves it
@@ -404,7 +482,9 @@ export function registerMomentHooks() {
     try {
       if (operation?.twod12Lean || movement?.method === "undo") return;
       const c = game.combat?.combatants?.find?.(x => x.tokenId === doc.id);
-      moving.set(doc.id, { forced: !!operation?.twod12Forced, evading: Number(c?.getFlag?.(F, "evadeMove")) > 0 });
+      // v0.0.273: the movement it has before this move (Move back refunds it)
+      const flags = c ? { freeMove: Number(c.getFlag(F, "freeMove")) || 0, evadeMove: Number(c.getFlag(F, "evadeMove")) || 0, moveLeft: Number(c.getFlag(F, "moveLeft")) || 0 } : null;
+      moving.set(doc.id, { forced: !!operation?.twod12Forced, evading: Number(c?.getFlag?.(F, "evadeMove")) > 0, before: c ? { combatantId: c.id, flags } : null });
     } catch (e) { /* not tracked */ }
   });
   Hooks.on("moveToken", (doc, movement) => {
@@ -412,6 +492,6 @@ export function registerMomentHooks() {
     if (!m) return;   // moved by another client: that client offers the moment
     moving.delete(doc.id);
     if (m.forced || m.evading || !movement?.origin || !movement?.destination) return;
-    moveMoment(doc, movement.origin, movement.destination);
+    moveMoment(doc, movement.origin, movement.destination, { before: m.before });
   });
 }

@@ -10,7 +10,7 @@ globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class
 const emitted = [], created = [];
 const users = [{ id: "gm", isGM: true, active: true }, { id: "p1", isGM: false, active: true }, { id: "p2", isGM: false, active: true }];
 globalThis.Hooks = { on() {} };
-globalThis.game = { settings: { get: (ns, k) => ({ reactionTimerOn: true, reactionTimer: 10 }[k] ?? true) }, user: users[0], users: Object.assign([...users], { get: id => users.find(u => u.id === id) }), socket: { emit: (ch, d) => emitted.push(d) }, combat: null, messages: { contents: [] } };
+globalThis.game = { settings: { get: (ns, k) => ({ reactionTimerOn: true, reactionTimer: 1 }[k] ?? true) }, user: users[0], users: Object.assign([...users], { get: id => users.find(u => u.id === id) }), socket: { emit: (ch, d) => emitted.push(d) }, combat: null, messages: { contents: [] } };
 globalThis.ChatMessage = { create: async d => { const m = { ...d, id: `m${created.length}`, flags: d.flags, update: async u => { if (u.content) m.content = u.content; }, getFlag: (ns, k) => m.flags?.[ns]?.[k] }; created.push(m); return m; } };
 const src = f => fs.readFileSync(ROOT + f, "utf8");
 const M = await import(ROOTURL + "module/moment.mjs");
@@ -63,7 +63,7 @@ out = await M.collectReactions({ kinds: ["strikeDamage"], subjects: [P(paladin)]
 console.log("a Strike would damage Nari herself: You too", out.rows.map(r => `${r.actor.name}'s ${r.item.name}`).join("; "));
 out = await M.collectReactions({ kinds: ["strikeAgainst"], subjects: [P(ally)], source: P(bandit) });
 console.log("a Strike against Krysta: Rebuke on", out.rows.map(r => r.target.token.name).join(", "), "| from far away (its Distance 5 sq.):", (await M.collectReactions({ kinds: ["strikeAgainst"], subjects: [P(ally)], source: P(farBandit) })).rows.length);
-game.settings.get = (ns, k) => ({ reactionTimerOn: true, reactionTimer: 10 }[k] ?? true);
+game.settings.get = (ns, k) => ({ reactionTimerOn: true, reactionTimer: 1 }[k] ?? true);
 paladin.actor.getFlag = (ns, k) => (k === "dailyUsed" ? ["di"] : undefined);
 out = await M.collectReactions({ kinds: ["wouldDown"], subjects: [P(ally)], source: null, only: "interrupt" });
 console.log("Krysta would go Down, the Reaction used today: rows", out.rows.length, "| blocked:", out.blocked.map(b => `${b.item.name} (${b.why})`).join(", "));
@@ -77,21 +77,33 @@ emitted.length = 0;
 const wait = M.openMoment({ kinds: ["strikeDamage"], subjects: [P(ally)], source: P(bandit), only: "interrupt", hold: true, plain: "p", lead: "<b>Bandit</b>'s Strike would damage <b>Krysta</b>", text: "Interrupt" });
 await new Promise(r => setTimeout(r, 20));
 const msg = created.at(-1), rx = msg.flags.twod12.rx;
-console.log("the message: rows", rx.rows.map(r => `${r.name}/${r.itemName}/${r.answerer}/${r.targetName}`).join(" ; "), "| the timer at 10 minutes:", Math.round((rx.deadline - Date.now()) / 60000));
+console.log("the message: rows", rx.rows.map(r => `${r.name}/${r.itemName}/${r.answerer}/${r.targetName}`).join(" ; "), "| the timer at 1 minute:", Math.round((rx.deadline - Date.now()) / 60000));
 await M.hostAnswer(rx.id, 1, "use", "p1");
 console.log("someone else's row can't be answered: Lana's row", rx.rows[1].state);
 await M.hostAnswer(rx.id, 1, "use", "p2");
-M.hostAnswer(rx.id, 0, "use", "p1");   // the last answer: the stack resolves (each run waits for its owner's client)
+await M.hostAnswer(rx.id, 0, "use", "p1");   // every row answered, two on the stack: it waits for Resolve (v0.0.273)
+console.log("two on the stack wait for Resolve:", rx.ready, "| nothing run yet:", emitted.filter(e => e.type === "rxRun").length, "| Resolve and the arrows on the message:", msg.content.includes('data-twod12="rxResolve"'), (msg.content.match(/data-twod12="rx(Up|Down)"/g) ?? []).length);
+await M.hostAnswer(rx.id, 1, "up", "nobody");
+console.log("one who isn't in it can't change the order: first", M.stackOrder(rx.rows)[0].itemName);
+await M.hostAnswer(rx.id, 1, "up", "p2");
+console.log("Lana's row moved up: first", M.stackOrder(rx.rows)[0].itemName, "| the line:", msg.content.match(/<div class="rx-order">[\s\S]*?<\/div>/)?.[0].replace(/<[^>]+>/g, "").trim());
+await M.hostAnswer(rx.id, -1, "pause", "p1");
+console.log("the clock paused:", rx.paused, msg.content.includes("rx-timer paused"), "| no countdown while paused:", !/rx-timer paused" data-twod12="rxPause" data-deadline/.test(msg.content));
+await M.hostAnswer(rx.id, -1, "pause", "p1");
+console.log("and going on:", !rx.paused, "| about a minute left:", Math.round((rx.deadline - Date.now()) / 60000));
+M.hostAnswer(rx.id, -1, "resolve", "p1");   // the stack resolves (each run waits for its owner's client)
 await new Promise(r => setTimeout(r, 20));
 const runs = emitted.filter(e => e.type === "rxRun");
-console.log("all answered: the first to resolve is the last in:", runs.map(r => `${r.userId}:${r.data.itemId}`).join(" "), "| on", runs[0]?.data.targetName);
-M.onSocket({ type: "rxRunDone", reqId: runs[0].reqId, ok: true });
+console.log("Resolve: the first to resolve:", runs.map(r => `${r.userId}:${r.data.itemId}`).join(" "), "| on", runs[0]?.data.targetName);
+M.onSocket({ type: "rxRunDone", reqId: runs[0].reqId, ok: true, half: { targetUuid: "Scene.s.Token.ban", source: "Shot", at: Date.now() } });
 await new Promise(r => setTimeout(r, 20));
 const runs2 = emitted.filter(e => e.type === "rxRun");
 console.log("then the next:", runs2.slice(1).map(r => `${r.userId}:${r.data.itemId}`).join(" "), "| on", runs2[1]?.data.targetName);
-M.onSocket({ type: "rxRunDone", reqId: runs2[1].reqId, ok: true, half: { targetUuid: "Scene.s.Token.ban", source: "Shot", at: Date.now() } });
+M.onSocket({ type: "rxRunDone", reqId: runs2[1].reqId, ok: true });
 const res = await wait;
 console.log("resolved:", res.used.map(u => `${u.itemId} ${u.ok ? "used" : "failed"}${u.half ? " (half)" : ""}`).join(", "), "| the message says:", msg.content.match(/rx-done"><[^>]+><\/i> ([^<]*)/)?.[1]);
+const again = created.at(-1);
+console.log("posted again under the Reactions' cards:", again !== msg && again.flags.twod12.rx.again === true && again.flags.twod12.rx.id === rx.id && /rx-done/.test(again.content));
 // the GM's Skip all others and the Pass
 const wait2 = M.openMoment({ kinds: ["strikeDamage"], subjects: [P(ally)], source: P(bandit), only: "interrupt", hold: true, plain: "p", lead: "l", text: "t" });
 await new Promise(r => setTimeout(r, 20));
@@ -115,6 +127,21 @@ await new Promise(r => setTimeout(r, 20));
 M.onSocket({ type: "rxRunDone", reqId: emitted.find(e => e.type === "rxRun").reqId, ok: true, half: { targetUuid: "Scene.s.Token.ban", source: "Shot", at: Date.now() } });
 console.log("the held damage is halved:", JSON.stringify(await dm));
 
+console.log("--- v0.0.273: the order, the clock, Move back, the Action's link");
+const rr = [{ i: 0, state: "use", order: 1 }, { i: 1, state: "use", order: 2 }, { i: 2, state: "use", order: 3 }];
+console.log("resolves:", M.stackOrder(rr).map(r => r.i).join(","), "| 0 sooner:", M.moveInStack(rr, 0, "up"), M.stackOrder(rr).map(r => r.i).join(","), "| the first can't go sooner:", M.moveInStack(rr, 2, "up"), "| the last can't go later:", M.moveInStack(rr, M.stackOrder(rr).at(-1).i, "down"));
+console.log("who manages:", M.mayManage({ rows: [{ answerer: "p1" }] }, { id: "p1" }), M.mayManage({ rows: [{ answerer: "p1" }] }, { id: "p2" }), M.mayManage({ rows: [] }, { id: "gm", isGM: true }), "| time left paused:", M.timeLeft({ paused: true, left: 41000 }), M.timeLeft({ deadline: 5000 }, 2000));
+const bk = M.rxCardHtml({ rows: [], lead: "l", text: "t", deadline: 0, back: { name: "Orc", squares: 4, used: false } }), bkUsed = M.rxCardHtml({ rows: [], lead: "l", text: "t", deadline: 0, back: { name: "Orc", squares: 4, used: true } });
+console.log("Move back:", bk.match(/data-twod12="rxBack"[^>]*><i[^>]*><\/i> ([^<]*)/)?.[1], "| used:", bkUsed.match(/rx-back"><i[^>]*><\/i> ([^<]*)/)?.[1]);
+console.log("the Action's name opens it:", html.includes('data-twod12="rxOpen" data-row="0"'), "| the item sheet's section:", hbs.includes('<legend><i class="fa-solid fa-bolt-lightning"></i> Reaction moment</legend>'));
+const mo2 = src("module/moment.mjs");
+console.log("the move's movement kept before it (refunded on Move back):", mo2.includes("const flags = c ? { freeMove: Number(c.getFlag(F, \"freeMove\")) || 0") && mo2.includes("await doc.update({ x: b.x, y: b.y }, { twod12Forced: true, animate: true });"));
+const cb = src("module/combat.mjs"), car = src("module/carousel.mjs");
+const { initSkipped: skipped } = await import(ROOTURL + "module/combat.mjs");
+const cbt = (init, owner, flag) => ({ initiative: init, hasPlayerOwner: owner, getFlag: () => flag });
+console.log("Initiative: a player's creature is left out by default:", skipped(cbt(null, true)), "| an NPC is left out:", skipped(cbt(null, false)), "| the chip overrides:", skipped(cbt(null, true, false)), skipped(cbt(null, false, true)));
+console.log("the strip's button and the tracker's roll only the ones still to roll:", car.includes('if (k === "init") return rollPendingInitiative(combat);') && cb.includes("btn.addEventListener(\"click\", () => rollPendingInitiative(combat));") && cb.includes("(c.initiative === null || c.initiative === undefined) && !initSkipped(c)"), "| the chip:", car.includes('data-tc="initskip"') && car.includes('if (k === "initskip" && c) return toggleInitSkip(c);'));
+
 console.log("--- the eight cards' moments (book texts unchanged)");
 const CG = await import(ROOTURL + "tools/cardgen.mjs");
 const cards = f => JSON.parse(fs.readFileSync(ROOT + "../../book/cards/" + f, "utf8")).cards;
@@ -130,5 +157,5 @@ console.log("--- wired");
 const dmg = src("module/damage.mjs"), act = src("module/actions.mjs"), tw = src("module/twod12.mjs"), mo = src("module/moment.mjs");
 console.log("the damage waits for the Interrupts:", dmg.includes("const r = await M.damageMoment(actor, a, from, reachesHealth(actor, a));"), "| a Strike's damage card says so:", dmg.includes("from: { uuid: f.originUuid ?? \"\", strike: !!f.strike }"), "| the Triggers after it lands:", dmg.includes("M?.landedMoment(actor, a.B.l + a.B.n + a.M.l + a.M.n, from, downing);"), "| no second click while held:", dmg.includes("holding.has(msg.id)"));
 console.log("a Strike and a Stand bring their moments:", act.includes("M.strikeMoment(actor, targets)") && act.includes("M.moveMoment(selfToken.document, null, null, { stand: true })"), "| a Reaction's step after a @Pause stays a button:", act.includes("applyAfterHtml(version, targets, selfToken, it.moment ? 1 : 0)"));
-console.log("the chat and the socket:", tw.includes('["rxUse", "rxPass", "rxSkip"].includes(b.dataset.twod12)') && tw.includes('Hooks.on("renderChatMessageHTML", rxRender)') && dmg.includes('String(data.type).startsWith("rx")'), "| the settings at init:", tw.includes("registerReactionSettings();"), "| no Foundry window and no pick window in it:", !/DialogV2|pickWith|Dialog\./.test(mo));
-console.log("the timer setting: on by default, 10 minutes:", /reactionTimerOn", \{[^}]*default: true/.test(mo) && /"reactionTimer", \{[^}]*default: 10/.test(mo));
+console.log("the chat and the socket:", tw.includes("else if (/^rx[A-Z]/.test(b.dataset.twod12)) await rxClick(msg, b);") && tw.includes('Hooks.on("renderChatMessageHTML", rxRender)') && dmg.includes('String(data.type).startsWith("rx")'), "| the settings at init:", tw.includes("registerReactionSettings();"), "| no Foundry window and no pick window in it:", !/DialogV2|pickWith|Dialog\./.test(mo));
+console.log("the timer setting: on by default, 1 minute (v0.0.273):", /reactionTimerOn", \{[^}]*default: true/.test(mo) && /"reactionTimer", \{[^}]*default: 1,/.test(mo));

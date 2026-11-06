@@ -1,6 +1,6 @@
 // A strip of portraits across the top of the screen while there is a combat (also while it is being prepared):
 // turn order, the creature whose turn it is, and its Action Points as dots under the portrait.
-import { getAP, setAP, apMax, getRAP, endTurnFor, swapCandidates, swapWith, thawedNow } from "./combat.mjs";
+import { getAP, setAP, apMax, getRAP, endTurnFor, swapCandidates, swapWith, thawedNow, initSkipped, rollPendingInitiative, toggleInitSkip } from "./combat.mjs";
 import { stripMove, endMoveFor, evadeToAdvance } from "./move.mjs";
 import { groupColor } from "./config.mjs";
 import { esc } from "./util.mjs";
@@ -39,12 +39,15 @@ function card(combat, c, st) {
     extra = move + swap;
   }
   // v0.0.201 (Lucas): no tooltip on the creature whose turn it is (its plate says it all); the others name themselves.
+  // v0.0.273 (Lucas): before the combat, the GM's chip on a creature that hasn't rolled: the Initiative button rolls it, or leaves it out (players by default)
+  const skip = initSkipped(c);
+  const skipChip = st.gm && !combat.started && noInit ? `<button type="button" class="tp-initskip${skip ? " off" : ""}" data-tc="initskip" data-id="${c.id}" data-tooltip="${skip ? "Left out: the Initiative button doesn't roll it (its player clicks the portrait). Click to include it" : "The Initiative button rolls it. Click to leave it out"}"><i class="fa-solid ${skip ? "fa-ban" : "fa-dice-d20"}"></i> ${skip ? "Skips" : "Rolls"}</button>` : "";
   const tip = current ? "" : `${noInit ? "Click to roll initiative · " : ""}${swapOk ? "Click to swap with this ally · " : ""}${esc(c.name)}`;
   return `<div class="tp ${current ? "act" : ""} d${d < 0 ? "m" : ""}${Math.abs(d)} ${noInit ? "noinit" : ""} ${c.isDefeated ? "defeated" : ""} ${frozen ? "frozen" : ""} ${swapOk ? "swapok" : ""}" data-combatant-id="${c.id}" style="--tcc:${groupColor(c)}"${tip ? ` data-tooltip="${tip}"` : ""}>
     <div class="tp-band">${band}</div>
     <div class="tp-por"><img src="${img}" alt="">${noInit ? "" : `<span class="tp-seal">${Math.round(c.initiative)}</span>`}${swapOk ? '<span class="tp-swapb"><i class="fa-solid fa-right-left"></i></span>' : ""}</div>
     <div class="tp-name">${esc(c.name)}</div>
-    ${pips}${strikes}${extra}</div>`;
+    ${skipChip}${pips}${strikes}${extra}</div>`;
 }
 
 /** v0.0.199: why the active creature can't swap now ("" when it can): Swapping Initiative, Core Rules Chapter 2. Pure. */
@@ -90,7 +93,7 @@ export function renderCarousel() {
   if (swapping && (swapping !== cur?.id || swapWhy)) swapping = null;
   const st = { swapWhy, swapping: !!swapping, swapIds: new Set(swapping ? cands.map(x => x.id) : []), canAct: mine || gm, gm };
   const btn = (k, icon, label, tip, off = false) => `<button type="button" class="tc-btn" data-tc="${k}" data-tooltip="${tip}"${off ? " disabled" : ""}><i class="fa-solid ${icon}"></i>${label ? ` ${label}` : ""}</button>`;
-  const left = gm ? (started ? btn("prev", "fa-backward-step", "Previous turn", "Go back one turn") : btn("init", "fa-dice-d20", "Initiative", "Roll initiative for everyone")) : "";
+  const left = gm ? (started ? btn("prev", "fa-backward-step", "Previous turn", "Go back one turn") : btn("init", "fa-dice-d20", "Initiative", "Roll initiative for the creatures that haven't rolled (not the ones left out: their chip)")) : "";
   const middle = started ? `<span class="tc-round">Round <b>${combat.round}</b></span>` : '<span class="tc-round tc-prep">Preparing the encounter</span>';
   const moving = cur ? stripMove(cur).n > 0 : false;
   const right = [
@@ -122,7 +125,8 @@ export function renderCarousel() {
     if (k === "next") return endTurnFor(combat);
     if (k === "prev") return combat.previousTurn();
     if (k === "swap" && cur) { swapping = swapping ? null : cur.id; return renderCarousel(); }
-    if (k === "init") return combat.rollInitiative(combat.combatants.map(x => x.id));
+    if (k === "init") return rollPendingInitiative(combat);   // v0.0.273: only the ones still to roll, not left out
+    if (k === "initskip" && c) return toggleInitSkip(c);
     if (k === "begin") return combat.startCombat();
     if (k === "end") return combat.endCombat();   // Foundry asks for confirmation itself
     if (k === "applus" && c) return setAP(c, getAP(c) + 1, "edited");

@@ -112,7 +112,7 @@
 | [[Non-threatening\|**Non-threatening**]] | A weapon property: the weapon doesn't threaten, so you can't flank with it, unless a feature says otherwise (Brawler). Fists have it. |
 | [[Senses\|**Obscured**]] | Your Actions against the creature take 1 Bane; its Actions against you gain 1 Boon. |
 | [[Rules Language\|**Origin**]] | The creature that uses an Action, or the Point of Origin of an Area. |
-| [[Chapter 6: Basic Actions\|**Opportunity Attack**]] | The Reaction every creature has (1R): a Weapon Attack, or an NPC's Basic attack, against a creature within 3 squares that would leave a square during a Move Action or uses Stand. |
+| [[Chapter 6: Basic Actions\|**Opportunity Attack**]] | The Reaction every creature has (1R): a Weapon Attack, or an NPC's Basic attack, against a creature within 1 square that would leave a square during a Move Action or uses Stand. |
 | [[Areas\|**Point of Origin**]] | The place an area spreads from: an Emanation's target, your square for a Line, the tip of a cone. Line of Effect and Cover for the area are checked from it. |
 | [[Weapon, Power and Signature Modifiers\|**Power Modifier**]] | The higher of the class's two Power Attributes ÷ 2 + 1. Power Actions roll it. |
 | [[Rolls\|**Power roll**]] | An Action with the Power trait (or a Split Action in Power mode). |

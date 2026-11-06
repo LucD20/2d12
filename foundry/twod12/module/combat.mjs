@@ -57,6 +57,17 @@ export async function climbUp(c) {
 }
 export const getAP = c => Number(c?.getFlag(F, "ap")) || 0;
 
+/** v0.0.273 (Lucas): the Initiative button rolls only the creatures that haven't rolled and aren't left out. A creature is left out with its
+ *  chip on the combat strip (the flag twod12.initSkip); a player's creature is left out by default (its player rolls it). Pure. */
+export const initSkipped = c => { const f = c?.getFlag?.(F, "initSkip"); return typeof f === "boolean" ? f : !!c?.hasPlayerOwner; };
+export const initRollIds = combat => [...(combat?.combatants ?? [])].filter(c => (c.initiative === null || c.initiative === undefined) && !initSkipped(c)).map(c => c.id);
+/** The Initiative button: the ones still to roll (a line when there is none). */
+export async function rollPendingInitiative(combat) {
+  const ids = initRollIds(combat);
+  if (!ids.length) return ui.notifications.info("Every creature the Initiative button rolls for has rolled (the ones left out roll by clicking their portrait).");
+  return combat.rollInitiative(ids);
+}
+export async function toggleInitSkip(c) { if (c) await c.setFlag(F, "initSkip", !initSkipped(c)); }
 export function combatantOf(actor, combat = game.combat) {
   if (!combat || !actor) return null;
   // A token of an unlinked NPC: its own combatant (several tokens can share one actor id, so the id alone is not enough).
@@ -415,7 +426,7 @@ export function registerCombatHooks() {
       const btn = document.createElement("button");
       btn.type = "button"; btn.className = "twod12-init";
       btn.innerHTML = '<i class="fa-solid fa-dice-d20"></i> Initiative';
-      btn.addEventListener("click", () => combat.rollInitiative(combat.combatants.map(c => c.id)));
+      btn.addEventListener("click", () => rollPendingInitiative(combat));   // v0.0.273: only the ones still to roll, not left out
       (el.querySelector("header") ?? el).append(btn);
       // v0.0.243 (book, Momentum): the GM's switch: the party starts this encounter at Escalation 2 (used up when it starts).
       if (game.user.isGM) {

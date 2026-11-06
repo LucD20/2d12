@@ -2334,3 +2334,20 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat.rxmsg .rx-foot button.rx-gm:hover { background: #FAEEDA; border-color: #BA7517; }
 .twod12.chat.rxmsg .rx-foot.rx-done > i { color: #2f5a14; }
 .twod12.chat.sysline.rxnote > i { color: #8a7650; }
+
+/* v0.0.273 (Lucas, after v0.0.272): the Action sheet's "Reaction moment" section; the combat strip's Initiative chip; the Reactions
+   message's order arrows, Resolve, the clock that pauses, Move back, the Action's name as a link. */
+.application.twod12-styled fieldset.rx-moment { margin: 6px 0 8px; padding: 4px 8px 6px; border: 1px solid #c8b48a; border-radius: 5px; }
+.application.twod12-styled fieldset.rx-moment > legend { padding: 0 4px; font-weight: 700; font-size: 12px; }
+.application.twod12-styled fieldset.rx-moment.off { opacity: .6; }
+.application.twod12-styled fieldset.rx-moment .hint { margin: 0 0 4px; }
+#twod12-carousel .tp-initskip { display: inline-flex; align-items: center; gap: 3px; width: auto; height: 16px; line-height: 14px; margin: 2px auto 0; padding: 0 6px; font-size: 10px; font-weight: 700; border: 1px solid var(--tp-gold, #c9a24a); border-radius: 8px; background: rgba(0, 0, 0, .35); color: #f2e6c4; cursor: pointer; }
+#twod12-carousel .tp-initskip.off { border-color: #777; color: #aaa; text-decoration: line-through; }
+.twod12.chat.rxmsg .rxrow a.rx-open { color: inherit; text-decoration: underline dotted; cursor: pointer; }
+.twod12.chat.rxmsg .rxrow .rx-move { float: right; display: inline-flex; gap: 2px; }
+.twod12.chat.rxmsg .rxrow .rx-move button { width: 18px; height: 16px; line-height: 14px; padding: 0; margin: 0; font-size: 9px; border: 1px solid #8a7650; border-radius: 3px; background: #fbf7ee; }
+.twod12.chat.rxmsg .rx-foot .rx-timer[data-twod12] { cursor: pointer; }
+.twod12.chat.rxmsg .rx-foot .rx-timer.paused { color: #8a4b0b; }
+.twod12.chat.rxmsg .rx-foot button.rx-go { width: auto; flex: none; height: 22px; line-height: 20px; padding: 0 10px; margin: 0; font-size: 11.5px; font-weight: 700; border: 1px solid #3B6D11; border-radius: 4px; background: #e9f2df; color: #24410c; }
+.twod12.chat.rxmsg .rx-back { margin: 6px 8px 0; font-size: 12px; }
+.twod12.chat.rxmsg .rx-back button { width: 100%; height: 24px; line-height: 22px; margin: 0; font-size: 12px; font-weight: 600; border: 1px solid #8a7650; border-radius: 4px; background: #fbf7ee; color: #2c2c2a; }
