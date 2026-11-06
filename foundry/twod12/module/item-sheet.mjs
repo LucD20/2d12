@@ -146,7 +146,9 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
                 grantAction: x.grantAction,
                 grantCount: x.grantCount,
                 grantAp: x.grantAp,
-                grantDistinct: x.grantDistinct,
+                grantDistinct: x.grantDistinct, grantDistinctStr: x.grantDistinct ? "true" : "false", distinctChoices: { "false": "to any creature", "true": "to a different creature each time" },   // v0.0.266
+                grantOn2: x.grantOn2 || "", grantDo2: x.grantDo2 || "text", grantText2: x.grantText2 ?? "",
+                isCover: x.type === "cover", coverBoxes: Object.entries(TWOD12.coverLevels).map(([key, label]) => ({ key, label, checked: x.coverLevels?.has?.(key) || [...(x.coverLevels ?? [])].includes(key) })),
                 against: x.against,
                 againstVal: String(!!x.against),
                 speedMode: x.speedMode,

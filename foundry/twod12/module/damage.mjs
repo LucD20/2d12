@@ -125,6 +125,7 @@ async function apply(msg, button, factor) {
         const src = f.originUuid ? await fromUuid(f.originUuid) : null;
         await logDamage({ originUuid: f.originUuid ?? "", originName: src?.name ?? f.name ?? "", targetName: t.name, amount: dealt });
         clearHalfHint(f.originUuid);   // v0.0.261 (Covering Shot): the lit Half was for this damage
+        await applyDownEffects(f, actor, t.uuid);   // v0.0.266 (Deathmark): the effects that come when the target goes Down
         if (dealt > 0) await runDamageTriggers(src, actor, t.uuid, f.comps ?? []);   // "When you deal Holy damage to a Profane creature..." (triggers.mjs)
       }
       // v0.0.183: the result goes on the damage card itself, under its target line (a new message only when this user can't change the card).
@@ -154,9 +155,16 @@ async function runAfterDamage(f, targets) {
   await runAfter(f.after, { actor: actor?.documentName === "Actor" ? actor : (actor?.actor ?? null), targets: (targets ?? []).map(t => ({ uuid: t.uuid, name: t.name, tier: t.tier, crit: !!t.crit })), attrVal: Number.isFinite(f.originMod) ? f.originMod : null, areaPoint: f.areaPoint ?? null });
 }
 
+/** v0.0.266 (Lucas, Deathmark): a Version's effects with the mode "when the target is Down" come by themselves once the damage put it at its Pool (the Effects button stays, for a miss-click). */
+async function applyDownEffects(f, actor, targetUuid) {
+  const uuids = (f?.fx ?? []).filter(x => x.mode === "down").map(x => x.uuid);
+  if (!uuids.length || !actor?.system?.atZero) return;
+  await applyEffects(uuids, [targetUuid], { ...originInfo(f.originUuid), escalation: !!f.escalation, ...(Number.isFinite(f.originMod) ? { mod: f.originMod } : {}) });
+}
+const isConditional = x => x.mode === "conditional" || x.mode === "down";   // v0.0.266: a "when Down" effect is on the Effects button too
 async function applyConditional(msg) {
   const f = msg.getFlag("twod12", "dmgCard");
-  const uuids = (f?.fx ?? []).filter(x => x.mode === "conditional").map(x => x.uuid);
+  const uuids = (f?.fx ?? []).filter(isConditional).map(x => x.uuid);
   if (uuids.length) await applyEffects(uuids, (f.targets ?? []).map(t => t.uuid), { ...originInfo(f.originUuid), escalation: !!f.escalation, ...(Number.isFinite(f.originMod) ? { mod: f.originMod } : {}) });
 }
 
@@ -183,6 +191,7 @@ async function applyRow(f, row, factor, selNl) {
     const src = f.originUuid ? await fromUuid(f.originUuid) : null;
     await logDamage({ originUuid: f.originUuid ?? "", originName: src?.name ?? f.name ?? "", targetName: row.name, amount: dealt });
     clearHalfHint(f.originUuid);   // v0.0.261 (Covering Shot)
+    await applyDownEffects({ ...f, fx: row.fx }, actor, row.uuid);   // v0.0.266 (Deathmark)
     await runDamageTriggers(src, actor, row.uuid, row.comps ?? []);   // "When you deal Holy damage to a Profane creature..." (triggers.mjs)
   }
   const auto = (row.fx ?? []).filter(x => x.mode === "auto").map(x => x.uuid);
@@ -227,7 +236,7 @@ async function multiBlock(msg, button) {
 
 async function multiFx(msg, button) {
   const f = msg.getFlag("twod12", "dmgMulti"), r = f?.rows?.[Number(button.dataset.row)];
-  const uuids = (r?.fx ?? []).filter(x => x.mode === "conditional").map(x => x.uuid);
+  const uuids = (r?.fx ?? []).filter(isConditional).map(x => x.uuid);
   if (uuids.length) await applyEffects(uuids, [r.uuid], { ...originInfo(f.originUuid), escalation: !!f.escalation, ...(Number.isFinite(f.originMod) ? { mod: f.originMod } : {}) });
 }
 

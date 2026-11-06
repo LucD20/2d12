@@ -52,7 +52,7 @@ export async function postDamageCard({ actor = null, title, subtitle = "", comps
         <button type="button" data-twod12="applyHalf">Half</button>
         <button type="button" data-twod12="applyDouble">Double</button>
         <button type="button" class="blk" data-twod12="block" data-tooltip="Toggle (no mechanics yet)">Block</button>
-        ${fx.some(x => x.mode === "conditional") ? '<button type="button" data-twod12="applyFx">Effects</button>' : ""}
+        ${fx.some(x => x.mode === "conditional" || x.mode === "down") ? '<button type="button" data-twod12="applyFx">Effects</button>' : ""}
         <select class="kind"><option value="lethal" ${defaultNl ? "" : "selected"}>Lethal</option><option value="nonlethal" ${defaultNl ? "selected" : ""}>Nonlethal</option></select>
       </div>`;
   const content = `<div class="twod12 chat dmg" style="${color ? cardVars(color) : ""}">${dmgHead(title, subtitle)}<div class="orn">&#10022; &#10022; &#10022;</div>${chip}${boxes || "<div class='hint'>No damage.</div>"}${texts.length ? `<div class="dtexts">${texts.join("")}</div>` : ""}
@@ -90,7 +90,7 @@ export function multiDamageHtml({ title, rows, color = TWOD12.cardColors.default
     `<div class="mdrow${r.blocked ? " blocked" : ""}${r.applied ? " done" : ""}" data-row="${i}"><div class="mdtop"><b class="mdname" data-tooltip="${esc(r.name)}">${esc(r.name)}</b><span class="rtag rolled${r.tier === 1 ? " fail" : ""}">Tier ${r.tier}</span><span class="mdsum">${damageSummary(r.comps)}</span></div>` +
     (r.applied
       ? `<div class="applied">${r.applied}</div>`
-      : `<div class="dbtns">${btn("rowApply", i, 1, "Damage")}${btn("rowApply", i, 0.5, "Half")}${btn("rowApply", i, 2, "Double")}<button type="button" class="blk${r.blocked ? " active" : ""}" data-twod12="rowBlock" data-row="${i}" data-tooltip="Toggle (no mechanics yet). Blocked rows are skipped by the All buttons.">Block</button>${(r.fx ?? []).some(x => x.mode === "conditional") ? `<button type="button" data-twod12="rowFx" data-row="${i}">Effects</button>` : ""}</div>`) +
+      : `<div class="dbtns">${btn("rowApply", i, 1, "Damage")}${btn("rowApply", i, 0.5, "Half")}${btn("rowApply", i, 2, "Double")}<button type="button" class="blk${r.blocked ? " active" : ""}" data-twod12="rowBlock" data-row="${i}" data-tooltip="Toggle (no mechanics yet). Blocked rows are skipped by the All buttons.">Block</button>${(r.fx ?? []).some(x => x.mode === "conditional" || x.mode === "down") ? `<button type="button" data-twod12="rowFx" data-row="${i}">Effects</button>` : ""}</div>`) +
     `</div>`;
   const pending = rows.some(r => !r.applied && !r.blocked);
   return `<div class="twod12 chat dmg multi" style="${color ? cardVars(color) : ""}">${dmgHead(title, "Damage \u2022 Each target")}<div class="orn">&#10022; &#10022; &#10022;</div>`

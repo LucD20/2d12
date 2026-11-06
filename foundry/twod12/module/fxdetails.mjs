@@ -7,9 +7,8 @@ const keys = s => (s ? [...s] : []);
 /** The name of an Effect by its UUID (empty when it can't be looked up: tests, or an Effect that no longer exists). */
 /** v0.0.264: a Grant's "On [a result], [what happens]" as text ("" when it has none). */
 const grantOnText = x => {
-  const on = x.grantOn || x.halfOn || (x.halfT3 ? "t3" : ""), does = x.grantDo || "half", text = String(x.grantText ?? "").trim();
-  if (!on || (does === "text" && !text)) return "";
-  return `; on ${TWOD12.grantOnChoices[on] ?? on}, ${does === "text" ? `the card says "${esc(text)}"` : "the target's next damage is halved"}`;
+  const one = (on, does, text) => (!on || (does === "text" && !text) ? "" : `; on ${TWOD12.grantOnChoices[on] ?? on}, ${does === "text" ? `the card says "${esc(text)}"` : "the target's next damage is halved"}`);
+  return one(x.grantOn || x.halfOn || (x.halfT3 ? "t3" : ""), x.grantDo || "half", String(x.grantText ?? "").trim()) + one(x.grantOn2 || "", x.grantDo2 || "text", String(x.grantText2 ?? "").trim());   // v0.0.266: two lines
 };
 const fxNameOf = uuid => { try { return uuid && typeof fromUuidSync === "function" ? (fromUuidSync(uuid)?.name ?? "") : ""; } catch (e) { return ""; } };
 const traitName = k => TWOD12.traits[k] ?? TWOD12.rollKinds?.[k] ?? (String(k).startsWith("__name:") ? `${String(k).slice(7).replace(/-/g, " ")} (by name)` : k);
@@ -79,6 +78,10 @@ function settingSentenceOnly(x) {
       return `Has the Action <b>${esc(fxNameOf(x.inlineAction) || x.inlineAction || "?")}</b> while this lasts.`;
     case "grant":
       return `Can use <b>${esc(x.grantAction || "?")}</b> ${x.grantCount === 1 ? "once" : `${x.grantCount} times`} for <b>${x.grantAp ? `${x.grantAp} AP` : "free"}</b>${x.boons ? `, with ${plural(x.boons, "Boon")}` : ""}${x.grantDistinct ? ", a different target each time" : ""}${grantOnText(x)}.`;
+    case "cover": {   // v0.0.266 (Aim)
+      const lv = [...(x.coverLevels ?? [])].map(k => TWOD12.coverLevels[k] ?? k);
+      return `Its Actions${predicateText(x) || ""} ignore <b>${lv.length ? lv.join(", ") : "(pick the levels)"}</b> cover: no Banes from it.`;
+    }
     case "zone": {
       const who = { allies: "Allies", enemies: "Enemies", all: "Creatures" }[x.zoneWho] ?? "Allies", fx = fxNameOf(x.fxUuid), heal = String(x.zoneHeal ?? "").trim();
       return `<b>${who}</b> in the placed area${fx ? ` gain <b>${esc(fx)}</b> while inside` : ""}${fx && heal ? " and" : ""}${heal ? ` heal <b>${esc(heal)}</b> at the start of each of their turns` : ""}${!fx && !heal ? " (drop an Effect, or write a heal)" : ""}.`;
@@ -141,6 +144,7 @@ export function settingShort(x) {
       return `${dmg}${p ? ` (${p})` : ""}${strip(limitText(x))}`;
     }
     case "aura": return `Aura ${Math.max(1, Number(x.auraSize) || 1)}: ${fxNameOf(x.fxUuid) || "no Effect yet"}`;
+    case "cover": return `ignores ${[...(x.coverLevels ?? [])].map(k => TWOD12.coverLevels[k] ?? k).join(", ") || "?"} cover`;
     case "zone": return `zone: ${x.zoneWho ?? "allies"} ${fxNameOf(x.fxUuid) || (String(x.zoneHeal ?? "").trim() ? `heal ${String(x.zoneHeal).trim()}` : "?")}`;
     case "ondamage": return `${fxNameOf(x.fxUuid) || "an Effect"} on ${TWOD12.subtypes[x.trigSub] ?? "any"} damage${x.trigTag ? ` to ${x.trigTag}` : ""}`;
     case "defense": { const n = Math.trunc(Number(x.defValue)) || 0; return `${n >= 0 ? "+" : "\u2212"}${Math.abs(n)} ${x.defKind === "all" ? "Defense" : (TWOD12.defenseKinds[x.defKind] ?? "Defense")}`; }

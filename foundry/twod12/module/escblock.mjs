@@ -90,9 +90,12 @@ export function grantBadges(g, effect) {
   const short = [], long = [];
   if (g.distinct) { short.push("≠ targets"); long.push("Each use needs a different target"); }
   if (g.boons) { short.push(`+${g.boons} Boon${g.boons === 1 ? "" : "s"}`); long.push(`${g.boons} Boon${g.boons === 1 ? "" : "s"} on it`); }
-  if (g.on && (g.does !== "text" || g.text)) {   // v0.0.264: "On [a result], [what happens]"
-    const w = TWOD12.grantOnChoices?.[g.on] ?? g.on, when = w.replace(/^a /, "").replace(" or more", "+");
-    if (g.does === "text") { short.push(`on ${when}: ${g.text}`); long.push(`On ${w}, the card says "${g.text}"`); }
+  // v0.0.264: "On [a result], [what happens]"; v0.0.266: both lines, the badge short (the chips as their labels, cut), the whole line in the body
+  const plain = t => String(t ?? "").replace(/@\w+\[[^\]]*\]\{([^}]*)\}/g, "$1").replace(/@(\w+)\[[^\]]*\]/g, "$1").replace(/\s+/g, " ").trim();
+  for (const [on, does, text] of [[g.on, g.does, g.text], [g.on2, g.does2 ?? "text", g.text2]]) {
+    if (!on || (does === "text" && !text)) continue;
+    const w = TWOD12.grantOnChoices?.[on] ?? on, when = w.replace(/^a /, "").replace(" or more", "+");
+    if (does === "text") { const p = plain(text); short.push(`${when}: ${p.length > 28 ? `${p.slice(0, 27).trim()}…` : p}`); long.push(`On ${w}, the card says "${p}"`); }
     else { short.push(`half on ${when}`); long.push(`On ${w}, the target's next damage is halved`); }
   }
   for (const b of effect?.getFlag?.(F, "bonuses") ?? []) {

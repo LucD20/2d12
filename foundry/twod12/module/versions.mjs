@@ -69,7 +69,7 @@ export class VersionsEditor extends HandlebarsApplicationMixin(ApplicationV2) {
       for (const [ti, t] of ["t1", "t2", "t3"].entries()) {
         const fx = [];
         for (const [i, x] of (v.fx?.[t] ?? []).entries())
-          fx.push({ i, uuid: x.uuid, name: (await fromUuid(x.uuid))?.name ?? "(missing)", auto: x.mode === "auto" });
+          fx.push({ i, uuid: x.uuid, name: (await fromUuid(x.uuid))?.name ?? "(missing)", auto: x.mode === "auto", conditional: x.mode === "conditional", down: x.mode === "down" });
         tiers.push({
           key: t,
           xkey: `x${ti + 1}`,
@@ -81,7 +81,7 @@ export class VersionsEditor extends HandlebarsApplicationMixin(ApplicationV2) {
       }
       const allFx = [];
       for (const [i, x] of (v.fx?.all ?? []).entries())
-        allFx.push({ i, uuid: x.uuid, name: (await fromUuid(x.uuid))?.name ?? "(missing)", auto: x.mode === "auto" });
+        allFx.push({ i, uuid: x.uuid, name: (await fromUuid(x.uuid))?.name ?? "(missing)", auto: x.mode === "auto", conditional: x.mode === "conditional", down: x.mode === "down" });
       vs.push({
         vi,
         ap: v.ap,

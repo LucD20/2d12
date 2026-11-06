@@ -719,13 +719,13 @@
       "[V] 1[W] + [Mod] + 2d8 Pi",
       "[V] 1[W] + [Mod] + 3d8 Pi"
      ],
-     "effects": "Against your Marked Quarry, this Action has 1 Boon. If the target goes Down, you can choose a new Marked Quarry (0R) and make a [Ranged, Shot] Weapon Attack (1A) against them.",
+     "effects": "Against your [[Marked Quarry]], this Action has 1 Boon. If the target goes Down, you can choose a new Marked Quarry (0R) and make a [Ranged, Shot] Weapon Attack (1A) against them.",
      "foundry": {
       "fx": {
        "all": [
         {
          "uuid": "{{fx:Deathmark (Weapon Attack)}}",
-         "mode": "conditional"
+         "mode": "down"
         }
        ]
       }
@@ -737,7 +737,7 @@
     "folder": "Archer",
     "level": 1,
     "automation": "gold",
-    "automationNote": "the Boon against the Quarry (the mark); when the target goes Down, the damage card's Effects button grants the Weapon Attack (the sheet's ticket); the new Quarry by hand."
+    "automationNote": "the Boon against the Quarry (the mark); when the damage puts the target Down, the Weapon Attack is granted by itself (the sheet's ticket; the damage card's Effects button for a miss-click); the new Quarry by hand."
    }
   },
   {
@@ -758,7 +758,7 @@
    "versions": [
     {
      "ap": 2,
-     "effects": "Make a [Ranged, Shot] Weapon Attack (1A) against your Marked Quarry. For 1 round, they are Vulnerable 2, and [Strike] Actions your allies make against them deal an extra [V] 1d6 Pi.",
+     "effects": "Make a [Ranged, Shot] Weapon Attack (1A) against your [[Marked Quarry]]. For 1 round, they are Vulnerable 2, and [Strike] Actions your allies make against them deal an extra [V] 1d6 Pi.",
      "ruler": "does Weapon Attack | always: vulnerable 2 round",
      "foundry": {
       "fx": {

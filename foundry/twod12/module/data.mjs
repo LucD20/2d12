@@ -355,7 +355,7 @@ const instance = () => new SchemaField({
   useAt: bool(), subtype: choice(TWOD12.subtypes)
 });
 const tier = () => new ArrayField(instance());
-const fxList = () => new ArrayField(new SchemaField({ uuid: str(), mode: choice({ auto: "Automatically applied", conditional: "Conditional" }, "auto") }));
+const fxList = () => new ArrayField(new SchemaField({ uuid: str(), mode: choice({ auto: "Automatically applied", conditional: "Conditional", down: "After the damage, when the target is Down" }, "auto") }));   // v0.0.266: down (Deathmark)
 
 export class ActionData extends foundry.abstract.TypeDataModel {
   /** v0.0.186: Mark Quarry marked by its category before; now by its "Marks the target" box. */
@@ -538,6 +538,8 @@ const settingsField = () => new ArrayField(new SchemaField({
         grantAction: str(), grantCount: int(1, 1), grantAp: int(0, 0), grantDistinct: bool(), halfT3: bool(),   // v0.0.261 (Covering Shot): on a Tier 3, the target's next damage is halved (the Half button lit); v0.0.263: halfOn says on which result (halfT3 is read as "t3")
         // v0.0.264 (Lucas): "On [grantOn], [grantDo]": the target's next damage halved (Covering Shot), or a line (grantText) on the granted use's card for those results. halfOn: v0.0.263's field, read as grantOn.
         grantOn: choice(TWOD12.grantOnChoices, ""), grantDo: choice(TWOD12.grantDoChoices, "half"), grantText: str(), halfOn: choice(TWOD12.grantOnChoices, ""),
+        grantOn2: choice(TWOD12.grantOnChoices, ""), grantDo2: choice(TWOD12.grantDoChoices, "text"), grantText2: str(),   // v0.0.266 (Lucas, Overwatch): a second "and on [a result], ..." line
+        coverLevels: new SetField(new StringField({ choices: ["low", "medium", "high"] })),   // v0.0.266 (Lucas, Aim): the cover levels the creature's matching Actions ignore
         // v0.0.261 (Consecrated Ground): Zone: the placed area holds it; who is inside gains the Effect (fxUuid) while inside, or heals this at the start of each of their turns
         zoneWho: choice({ allies: "Allies", enemies: "Enemies", all: "Everyone" }, "allies"), zoneHeal: str(),
         inlineAction: str(),   // v0.0.249 (Lucas, inline Actions): the Action (a uuid or a name) the creature has while the effect lasts (Beacon's Step)

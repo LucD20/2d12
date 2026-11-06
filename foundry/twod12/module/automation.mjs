@@ -55,6 +55,16 @@ export function ignoredBy(actor, rule, traits) {
   return out;
 }
 
+/** v0.0.266 (Lucas, Aim): the names of what lets the creature's matching Actions ignore this cover level ("low", "medium", "high"). */
+export function coverIgnored(actor, level, traits) {
+  const out = [];
+  for (const e of allEffects(actor)) {
+    if (effectOff(actor, e)) continue;
+    if ((e.getFlag(F, "covers") ?? []).some(x => x.levels?.includes(level) && matches(x, traits))) out.push(String(e.name ?? "").replace(/^\s*Effect:\s*/i, ""));
+  }
+  return out;
+}
+
 /* ------------------------------------------------------------------ Rally Points */
 /** A number from a formula with the creature's Modifiers: "power + 2", "signature", "ceil(level/2)". null when it can't be read. */
 export function evalStat(formula, actor) {

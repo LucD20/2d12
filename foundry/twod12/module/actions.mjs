@@ -2,7 +2,7 @@ import { triggerNotices } from "./triggers.mjs";
 import { techniqueLock, TECHNIQUE_AT, masteryAfterRoll, techniqueState } from "./mastery.mjs";
 import { setQuarry } from "./mark.mjs";
 import { pickTargets, needsTargets } from "./targeting.mjs";
-import { ignoredBy, markOnce } from "./automation.mjs";
+import { ignoredBy, markOnce, coverIgnored } from "./automation.mjs";
 import { splitModes, splitView, SPLIT_LABEL } from "./split.mjs";
 import { canPayEscalation, raiseEscalation } from "./escalation.mjs";
 import { weaponUse, weaponRanges } from "./weaponrange.mjs";
@@ -556,7 +556,9 @@ export async function useAction(actor, item, opts = {}) {
       if (row.dcInfo.untrained) { row.favored = true; row.note.push({ text: "Untrained armor", cls: "boon" }); }   // its armor is beyond its training: Actions against its Armor or Ward are Favored
       const cov = areaOutcome?.cover?.[tk.id] ?? (selfToken && String(it.targets ?? "").trim() ? coverBetween(selfToken, tk) : null);   // an area: cover from its Point of Origin
       if (cov?.noLoE) { skipped.push(`${tk.name}: no Line of Effect`); continue; }
-      if (cov?.banes) extraMods.push({ id: `syn:cover|${a.uuid}`, name: `${cov.label} (${tk.name})`, boons: 0, banes: cov.banes, match: true, predicate: `Against ${tk.name}: ${coverWhy(cov)}` });
+      const covIgn = cov?.banes ? coverIgnored(actor, ["", "low", "medium", "high"][cov.banes] ?? "", useTraits) : [];   // v0.0.266 (Aim): a cover level the Action ignores
+      if (cov?.banes && covIgn.length) extraMods.push({ id: `syn:cover|${a.uuid}`, name: `${cov.label} ignored (${tk.name})`, boons: 0, banes: 0, match: true, predicate: `${covIgn.join(", ")}: ${cov.label} doesn't count against ${tk.name}` });
+      else if (cov?.banes) extraMods.push({ id: `syn:cover|${a.uuid}`, name: `${cov.label} (${tk.name})`, boons: 0, banes: cov.banes, match: true, predicate: `Against ${tk.name}: ${coverWhy(cov)}` });
       if (!it.area && selfToken) {
         const pv = perceive(selfToken, tk, { loe: !cov?.noLoE }), seenT = pv.level === "clear" ? "" : pv.level;
         if (seenT === "unsensed") { skipped.push(`${tk.name}: Unsensed`); continue; }
@@ -599,7 +601,9 @@ export async function useAction(actor, item, opts = {}) {
       const ok = await DialogV2.confirm({ window: { title: item.name }, content: `<p>No Line of Effect to <b>${esc(targetToken.name)}</b>: all four corners are blocked.</p><p>Use ${esc(item.name)} anyway?</p>`, rejectClose: false });
       if (!ok) return;
     } else if (cov?.banes) {
-      extraMods.push({ id: "syn:cover", name: cov.label, boons: 0, banes: cov.banes, match: true, predicate: coverWhy(cov) });
+      const covIgn = coverIgnored(actor, ["", "low", "medium", "high"][cov.banes] ?? "", useTraits);   // v0.0.266 (Aim)
+      if (covIgn.length) extraMods.push({ id: "syn:cover", name: `${cov.label} ignored`, boons: 0, banes: 0, match: true, predicate: `${covIgn.join(", ")}: ${cov.label} doesn't count` });
+      else extraMods.push({ id: "syn:cover", name: cov.label, boons: 0, banes: cov.banes, match: true, predicate: coverWhy(cov) });
     }
     if (!it.area) { const pv = perceive(selfToken, targetToken, { loe: !cov?.noLoE }); seen = pv.level === "clear" ? "" : pv.level; seenWhy = pv.why; }
     if (seen === "unsensed") {
@@ -1020,7 +1024,8 @@ export async function useAction(actor, item, opts = {}) {
   if (data.reloadshot === "on") { const w = weapon ?? previewWeapon; if (w) await w.update({ "system.unloaded": true }); }
   if (opts.grant) await consumeGrant(actor, opts.grant, targets[0]?.uuid ?? "");
   // v0.0.261 (Lucas, Covering Shot): a granted use that halves the target's next damage on a Tier 3: the target's next damage card lights its Half button
-  if (opts.grant?.grant?.does === "half" && halfHits(opts.grant.grant.on, tier ?? 0, !!chk?.crit) && targets[0]?.uuid) { try { await setHalfHint(targets[0].uuid, { source: String(opts.grant.effect?.name ?? item.name).replace(/\s*\(.*\)\s*$/, ""), by: actor.name }); } catch (e) { console.warn("twod12 | half hint", e); } }
+  const gg = opts.grant?.grant, halves = gg && ((gg.does === "half" && halfHits(gg.on, tier ?? 0, !!chk?.crit)) || (gg.does2 === "half" && halfHits(gg.on2, tier ?? 0, !!chk?.crit)));   // v0.0.266: either line
+  if (halves && targets[0]?.uuid) { try { await setHalfHint(targets[0].uuid, { source: String(opts.grant.effect?.name ?? item.name).replace(/\s*\(.*\)\s*$/, ""), by: actor.name }); } catch (e) { console.warn("twod12 | half hint", e); } }
   opts.onUsed?.({ targets });
   return true;
 }

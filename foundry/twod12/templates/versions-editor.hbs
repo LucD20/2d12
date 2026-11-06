@@ -35,7 +35,8 @@
       <div class="fxline" draggable="true" data-uuid="{{uuid}}"><span class="iname">&#10022; {{name}}</span>
         <select data-fx-mode data-v="{{../../vi}}" data-t="{{../key}}" data-i="{{i}}">
           <option value="auto" {{#if auto}}selected{{/if}}>Automatically applied</option>
-          <option value="conditional" {{#unless auto}}selected{{/unless}}>Conditional</option>
+          <option value="conditional" {{#if conditional}}selected{{/if}}>Conditional</option>
+          <option value="down" {{#if down}}selected{{/if}}>After the damage, when the target is Down</option>
         </select>
         <button type="button" data-action="delFx" data-v="{{../../vi}}" data-t="{{../key}}" data-i="{{i}}">&times;</button></div>
       {{/each}}
@@ -49,7 +50,8 @@
       <div class="fxline" draggable="true" data-uuid="{{uuid}}"><span class="iname">&#10022; {{name}}</span>
         <select data-fx-mode data-v="{{../vi}}" data-t="all" data-i="{{i}}">
           <option value="auto" {{#if auto}}selected{{/if}}>Automatically applied</option>
-          <option value="conditional" {{#unless auto}}selected{{/unless}}>Conditional</option>
+          <option value="conditional" {{#if conditional}}selected{{/if}}>Conditional</option>
+          <option value="down" {{#if down}}selected{{/if}}>After the damage, when the target is Down</option>
         </select>
         <button type="button" data-action="delFx" data-v="{{../vi}}" data-t="all" data-i="{{i}}">&times;</button></div>
       {{/each}}
