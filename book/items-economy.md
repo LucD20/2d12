@@ -208,10 +208,10 @@ Short and to the point (Lucas). What players say about settlement rules (a searc
 26. Left out on purpose: a population number (the size word is enough); skilled work by town size (PF2e's Earn Income is capped by settlement level; a Talent could later earn more than 1 SC a day in bigger towns).
 
 ### Selling
-17. **[Lucas]** **Quick-sell (optional rule):** sell everything anywhere at ¾, ignoring the multipliers (for players who don't want the trading game). GM note: grant more treasure from time to time to make up for it.
-18. **[Lucas]** **Haggling: no general rule.** A **Designer's Note** says how a GM can run it, and warns that it can turn into a tired Appeal roll to see if the price goes up. Better prices come from **Talents** ("you sell for +X").
-19. **[Lucas]** **Rare drops (optional rule):** roll 1d12 for each Elite and the boss; on a 12 it explodes into a rare drop. GM note: it makes the players wealthier.
-20. **[Lucas]** **A loot ledger**, mostly in Foundry.
+27. **[Lucas]** **Quick-sell (optional rule):** sell everything anywhere at ¾, ignoring the multipliers (for players who don't want the trading game). GM note: grant more treasure from time to time to make up for it.
+28. **[Lucas]** **Haggling: no general rule.** A **Designer's Note** says how a GM can run it, and warns that it can turn into a tired Appeal roll to see if the price goes up. Better prices come from **Talents** ("you sell for +X").
+29. **[Lucas]** **Rare drops (optional rule):** roll 1d12 for each Elite and the boss; on a 12 it explodes into a rare drop. GM note: it makes the players wealthier.
+30. **[Lucas]** **A loot ledger**, mostly in Foundry.
 
 ## Part 4: Carrying and Expenses
 
