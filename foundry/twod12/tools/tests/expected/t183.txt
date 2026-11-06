@@ -5,4 +5,4 @@ Slowed: Slowed always has a value. You regain that many fewer AP at the start of
 migration updates: an old character: {"system.escalation":1} | high on Resolve, mid-encounter 2: {"system.healthHigh":"resolve","system.apGuard":0} | already there: {}
 asked once, after a backup reminder, with the existing refresh: true | nothing deleted: true | the refresh question waits for it: true | registered and a console tool: true
 the schema has the new fields: true | the setting type in the editor: true
-the version: 0.0.268 | changelog entry: true | the copy matches: true
+the version: 0.0.269 | changelog entry: true | the copy matches: true

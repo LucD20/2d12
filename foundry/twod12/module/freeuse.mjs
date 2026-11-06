@@ -143,7 +143,7 @@ export async function useGrant(msg, effectId, index = 0) {
   if (!grant || !(grant.left > 0)) { await refreshGrantCards(actor); return ui.notifications.warn(`No ${g.actionName} left from ${g.name}.`); }
   const item = actionsFor(actor, g.spec).find(i => activeGrants(actor, i).some(x => x.effect.id === g.id)) ?? actionsFor(actor, g.spec)[0];
   if (!item) return ui.notifications.warn(`${actor.name} has no Action called "${g.spec}".`);
-  const ok = await useAction(actor, item, {});
+  const ok = await useAction(actor, item, { grantKey: { effectId: g.id, index: g.index } });   // v0.0.269: this grant, not the first waiting
   if (!ok) return;
   const after = actor.effects.get(g.id)?.getFlag(F, "grants")?.[g.index];
   if (after && after.left > 0 && msg.id !== game.messages.contents.at(-1)?.id) {   // the Action's card came after: repeat the buttons under it

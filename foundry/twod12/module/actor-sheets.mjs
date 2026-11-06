@@ -340,7 +340,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         tip: [`From ${source}${dur ? ` · ${dur}` : ""}`, it.system.trigger ? `${it.system.reactionKind === "interrupt" ? "Interrupt" : "Trigger"}: ${it.system.trigger}` : ""].filter(Boolean).join(" · "), boxes: [] });
     }
     for (const e of a.effects) {
-      for (const g of e.getFlag("twod12", "grants") ?? []) {
+      for (const [gi, g] of (e.getFlag("twod12", "grants") ?? []).entries()) {
         if (!(g.left > 0)) continue;
         const act = actions.find(i => grantMatches(g.spec, i));
         const count = Math.max(g.count ?? g.left, g.left);
@@ -350,6 +350,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         const source = e.name.replace(/\s*\(.*\)\s*$/, ""), dur = durationText(e);
         granted.push({
           key: `${e.id}:${granted.length}`, actionId: act?.id ?? "", name: act?.name ?? g.spec.replace(/^(category|trait):/i, ""), img: act?.img ?? e.img,
+          effectId: e.id, grantIndex: gi,   // v0.0.269: the ticket's button uses this very grant
           apsHtml: g.ap ? apLabel([g.ap]) : `<span class="apmark free" data-tooltip="A free use">Free</span>`, cost: g.ap ? `${g.ap} AP` : "Free", free: !g.ap,
           traitShort: tr.slice(0, 3).join(" \u00b7 "), source, dur, left: g.left, count, badges: bd.short, adds: bd.long,
           range: row?.range ?? "", traits: tr.join(" \u00b7 "), open: !!this._openGrant?.has(`${e.id}:${granted.length}`),
@@ -1193,7 +1194,10 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     }
   }
   static async rollTable(event, target) { await rollTable(this.actor, target.dataset.kind); }
-  static async useAction(event, target) { await useAction(this.actor, this._item(target), event?.shiftKey ? { noGrant: true } : {}); }
+  static async useAction(event, target) {
+    const gk = target?.dataset?.grantEffect ? { grantKey: { effectId: target.dataset.grantEffect, index: Number(target.dataset.grantIndex) || 0 } } : {};   // v0.0.269: a ticket's button names its grant
+    await useAction(this.actor, this._item(target), event?.shiftKey ? { noGrant: true } : gk);
+  }
   /** v0.0.208 (W): a hand button: the Action with the weapon in that hand (no "Which weapon?" window). */
   static async useWith(event, target) {
     const w = this.actor.items.get(target.dataset.weaponId);

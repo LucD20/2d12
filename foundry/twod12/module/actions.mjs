@@ -428,7 +428,8 @@ export async function useAction(actor, item, opts = {}) {
   // A granted use (from an Effect such as Double Shot) is free and does not count. v0.0.182: it is used without asking (the roll dialog says so
   // at the top); a normal use with one waiting: Shift-click the use button (opts.noGrant).
   if (!opts.free && !opts.noGrant) {
-    const g = activeGrants(actor, item)[0];
+    // v0.0.269 (Lucas): a ticket or a card's button names its own grant (opts.grantKey); the Action's plain use button takes the first waiting
+    const all = activeGrants(actor, item), g = opts.grantKey ? (all.find(x => x.effect.id === opts.grantKey.effectId && x.index === Number(opts.grantKey.index)) ?? all[0]) : all[0];
     if (g) opts = { ...opts, free: true, ap: g.grant.ap, boons: g.grant.boons, banes: g.grant.banes, label: g.effect.name, grant: g, excludeTargets: g.grant.distinct ? (g.grant.used ?? []) : [] };
   }
   // An Action that needs a free hand (Handle, "free hand" in its Requirements, such as Reload): with both hands full, offer Release first (v0.0.138).

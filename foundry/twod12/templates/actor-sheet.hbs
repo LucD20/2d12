@@ -54,7 +54,7 @@
       <span class="gtk-cost{{#if free}} free{{/if}}">{{cost}}</span>
       <span class="gtk-src">&larr; {{source}}{{#if dur}} &middot; {{dur}}{{/if}}</span>
       <span class="gtk-ads">{{#each badges}}<span class="gtk-ad">{{this}}</span>{{/each}}</span>
-      <a class="ar-use granted" data-action="useAction" aria-label="Use {{name}} (granted)"><i class="fa-solid {{#if inline}}fa-scroll{{else}}fa-gift{{/if}}"></i></a>
+      <a class="ar-use granted" data-action="useAction" {{#if effectId}}data-grant-effect="{{effectId}}" data-grant-index="{{grantIndex}}"{{/if}} aria-label="Use {{name}} (granted)"><i class="fa-solid {{#if inline}}fa-scroll{{else}}fa-gift{{/if}}"></i></a>
     </div>
     <div class="gtk-body">
       <div><span class="k">From</span> {{source}}{{#if dur}} &middot; {{dur}}{{/if}}</div>

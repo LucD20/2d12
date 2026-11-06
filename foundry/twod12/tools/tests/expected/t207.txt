@@ -1,0 +1,3 @@
+useAction takes the named grant, else the first: true
+the card's button names its grant: true
+the ticket names its grant: true
