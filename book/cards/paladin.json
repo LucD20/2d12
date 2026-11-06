@@ -161,27 +161,30 @@
    "name": "Shield of Faith",
    "category": "Divine Power",
    "level": 1,
-   "_note": "Pack R-classes: a Hallmark Reaction (decision sheet item 7: 1R, Turn, 2d6 + [PMod], no Escalation; measured 0.88 AP a turn). The block steps by Stage like the Health line (item 18).",
+   "_note": "Cards 4 (Lucas, 2026-11-06): Targets the triggering creature, no Distance (the Interrupt says it); the reduction is a chip with the Stage dice; the Reaction's moment waits for the Reactions pass.",
    "flavor": "A shimmer of light holds steady between them and harm.",
    "traits": [
     "divine",
     "focus"
    ],
    "frequency": "Turn",
-   "target": "The creature the Strike would damage (you or an ally)",
-   "distance": "5 sq.",
+   "target": "The triggering creature",
    "interrupt": "A [Strike] Action would damage you or an ally within 5 squares.",
    "versions": [
     {
      "ap": 1,
      "effects": "The damage that Strike deals to the target is reduced by 2d6 + your Power Modifier (3d6 at Stage 2, 4d6 at Stage 3).",
-     "ruler": "block 2d6+[Mod]"
+     "ruler": "block 2d6+[Mod]",
+     "foundry": {
+      "after": "@Reduce[2d6+pow|s2:3d6+pow|s3:4d6+pow|who:pick|near:5]"
+     }
     }
    ],
    "foundry": {
     "img": "icons/svg/shield.svg",
     "folder": "Paladin",
-    "automation": "none"
+    "automation": "mithril",
+    "automationNote": "the Reaction's moment by hand (the Reactions pass); the Apply button asks who is shielded (you or an ally within 5) and sets the reduction, taken from that creature's next damage."
    }
   },
   {
@@ -315,30 +318,30 @@
    "name": "Bulwark of Faith",
    "category": "Paladin Feature",
    "level": 1,
-   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): an Encounter Pick (1R, Interrupt), no longer a Hallmark Reaction (Rebuke took the slot); the ally is Slid 1 after the damage.",
+   "_note": "Cards 4 (Lucas, 2026-11-06): Targets the triggering creature, no Distance; the Guard chip reads Guard RP (a Rally Point's heal, the recipient's); the Slid comes on a second button after the damage (@Pause). The 'would damage' Interrupt stays: the Reactions pass can ask before the damage roll.",
    "flavor": "You step into the blow meant for them, and your god holds the line with you.",
    "traits": [
     "divine",
     "focus"
    ],
    "frequency": "Encounter",
-   "target": "The ally the Strike would damage",
-   "distance": "5 sq.",
+   "target": "The triggering creature",
    "interrupt": "A [Strike] Action would damage an ally within 5 squares.",
    "versions": [
     {
      "ap": 1,
      "effects": "The target gains [[Guard]] equal to what one of their Rally Points heals, before the damage. After the damage, they are Slid 1.",
+     "ruler": "block 9; slide 1",
      "foundry": {
-      "append": "@Guard[rally]{Guard equal to what one of their Rally Points heals}"
-     },
-     "ruler": "block 9; slide 1"
+      "after": "@Guard[rally|who:pick|near:5] @Pause[After the damage] @Move[slid|distance:1|pick:yes|near:5]"
+     }
     }
    ],
    "foundry": {
     "img": "icons/svg/shield.svg",
     "folder": "Paladin",
-    "automation": "silver"
+    "automation": "mithril",
+    "automationNote": "the Reaction's moment by hand (the Reactions pass); the Apply button asks who gains the Guard (an ally within 5), then a second button, after the damage, lists the allies to Slide."
    }
   },
   {
@@ -362,7 +365,7 @@
      "foundry": {
       "fx": {
        "all": [
-        "{{fx:Aura of Protection}}"
+        "{{fx:Beacon}}"
        ]
       }
      },
@@ -373,7 +376,7 @@
     "img": "icons/svg/aura.svg",
     "folder": "Paladin",
     "automation": "mithril",
-    "automationNote": "the Defense (the effect) and Beacon's Step (on the sheet while the Beacon lasts); the Step's moment by hand (the Reactions pass)."
+    "automationNote": "the Beacon effect (the aura for 3 rounds, +1 Defense inside, Beacon's Step on the sheet while it lasts); the Step's moment by hand (the Reactions pass)."
    },
    "inline": [
     {

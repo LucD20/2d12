@@ -441,7 +441,7 @@ export function metaRowHtml({ frequency = "", targetText = "", distance = "", ar
   const row = [l1, l2, l3].filter(l => l.length).map(l => `<div class="trow"><span>${l.join(sep)}</span></div>`).join("");
   const req = requirements ? `<div class="trow reqrow"><span><b>Requirements:</b> ${hl(requirements)}</span></div>` : "";
   const trg = trigger ? `<div class="trow trgrow"><span><b>${reactionKind === "interrupt" ? "Interrupt" : "Trigger"}:</b> ${hl(trigger)}</span></div>` : "";
-  return row + req + trg;
+  return trg + row + req;   // v0.0.254 (Lucas): a Reaction's Interrupt / Trigger line comes first, it is what the player reads first
 }
 
 /** The targeted tokens, shown at the bottom of an Action card (like the damage card). */

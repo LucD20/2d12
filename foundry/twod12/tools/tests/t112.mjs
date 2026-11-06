@@ -42,8 +42,8 @@ const feat = n => byName("features", n).system, fx = n => byName("effects", n).s
 const pj = feat("Divine Power").settings[0];
 console.log("Divine Power:", pj.type, pj.trigSub, pj.trigTag, "->", nameOf(pj.fxUuid), "| that effect:", fx("Divine Power (Enfeebled)").settings[0].type, "Enfeebled", fx("Divine Power (Enfeebled)").settings[0].enfeebled, fx("Divine Power (Enfeebled)").duration.type, "| Profane Judgment gone:", !byName("features", "Profane Judgment"));
 for (const n of ["Font of Mercy", "Radiant Zeal", "Hallowed Stance"]) console.log(`${n}: ${feat(n).category} | ${txt(feat(n).description)}`);
-const ap = fx("Aura of Protection").settings[0];
-console.log("the Aura:", ap.type, `Aura ${ap.auraSize}`, ap.auraWho, "->", nameOf(ap.fxUuid), "| lasts:", fx("Aura of Protection").duration.type || "until the encounter ends (an Escalation effect)");
+const ap = fx("Beacon").settings[0];
+console.log("the Aura:", ap.type, `Aura ${ap.auraSize}`, ap.auraWho, "->", nameOf(ap.fxUuid), "| lasts:", fx("Beacon").duration.type || "until the encounter ends (an Escalation effect)");
 const lh = fx("Lay On Hands (Holy Strike)").settings[0];
 console.log("Lay On Hands' strike:", lh.type, lh.dmg, lh.dmgPool, lh.dmgSub, lh.tiers.join(","), "| ends after:", fx("Lay On Hands (Holy Strike)").expireOn.join(","));
 console.log("old cards:", docs.filter(d => d.name === "Vow of Enmity" || d.name === "Word of Radiance").map(d => d.name).join(", "), "kept | in no level:", !paladin.levels.some(l => l.sections.some(x => x.items.map(nameOf).some(n => ["Vow of Enmity", "Word of Radiance", "Call to Arms"].includes(n)))) && !paladin.repertoire.map(nameOf).some(n => ["Word of Radiance", "Call to Arms"].includes(n)));

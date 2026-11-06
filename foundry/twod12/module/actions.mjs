@@ -1010,30 +1010,43 @@ export async function useAction(actor, item, opts = {}) {
  * v0.0.250 (cards 3, Lucas): a Version with no damage and a chain after it (Hallowed Dawn, Miraculous Recovery) gets Apply buttons on its card:
  * one per side when its chips name sides ("Allies: Apply Heal/Effects", "Enemies: Apply Damage/Effects"), else one; each runs its chips in order.
  */
+/** v0.0.254: a chain's steps: the chips split at every @Pause[label] (the label names the next step: "After the damage"). */
+export function chainSteps(after) {
+  const steps = [{ label: "", chips: [] }];
+  for (const c of String(after ?? "").trim().split(/\s+(?=@)/).filter(Boolean)) {
+    const m = c.match(/^@Pause\[([^\]]*)\]/);
+    if (m) steps.push({ label: m[1].trim() || "Then", chips: [] }); else steps[steps.length - 1].chips.push(c);
+  }
+  return steps.filter(s => s.chips.length);
+}
 export function applyAfterHtml(version, targets, selfToken) {
   const after = String(version?.after ?? "").trim();
   if (!after || !version?.noTiers) return "";
-  const sides = [...after.matchAll(/\|side:(allies|enemies)\b/g)].map(m => m[1]);
-  const label = chips => (/@Heal\[|@Rally\[/.test(chips) ? "Apply Heal/Effects" : /@Move\[|@Condition\[|@Damage\[/.test(chips) ? "Apply Damage/Effects" : "Apply Effects");
-  const chipsOf = side => after.split(/\s+(?=@)/).filter(c => !/\|side:/.test(c) || c.includes(`|side:${side}`)).join(" ");
+  const label = chips => (/@Heal\[|@Rally\[|@Guard\[|@Reduce\[/.test(chips) ? "Apply Heal/Effects" : /@Move\[|@Condition\[|@Damage\[/.test(chips) ? "Apply Damage/Effects" : "Apply Effects");
   const mine = selfToken?.document?.disposition ?? 1;
   const names = side => (targets ?? []).filter(t => { const d = t.disposition; if (d === undefined) return side === "allies"; return side === "allies" ? d === mine : d !== mine && d !== 0; }).map(t => esc(t.name));
-  if (!sides.length) return `<div class="tline applyrow"><button type="button" data-twod12="applyAfter" data-side=""><i class="fa-solid fa-wand-magic-sparkles"></i> ${label(after)}</button></div>`;
-  // v0.0.252 (Lucas): just "Allies" / "Enemies", a click opens the list of the creatures (a bullet each)
-  return [...new Set(sides)].map(side => { const ns = names(side); return `<div class="tline applyrow"><details class="apside"><summary>${side === "allies" ? "Allies" : "Enemies"} <small>(${ns.length})</small></summary>${ns.length ? `<ul>${ns.map(n => `<li>${n}</li>`).join("")}</ul>` : "<ul><li><i>none</i></li></ul>"}</details><button type="button" data-twod12="applyAfter" data-side="${side}"><i class="fa-solid ${side === "allies" ? "fa-hand-holding-medical" : "fa-burst"}"></i> ${label(chipsOf(side))}</button></div>`; }).join("");
+  const btn = (chips, side, step, prefix = "") => `<button type="button" data-twod12="applyAfter" data-side="${side}" data-step="${step}"><i class="fa-solid ${side === "enemies" ? "fa-burst" : side === "allies" ? "fa-hand-holding-medical" : "fa-wand-magic-sparkles"}"></i> ${prefix}${label(chips)}</button>`;
+  return chainSteps(after).map((st, k) => {
+    const text = st.chips.join(" "), sides = [...new Set([...text.matchAll(/\|side:(allies|enemies)\b/g)].map(m => m[1]))], prefix = st.label ? `${esc(st.label)}: ` : "";
+    if (!sides.length) return `<div class="tline applyrow">${st.label ? `<span class="apside">${esc(st.label)}</span>` : ""}${btn(text, "", k, st.label ? "" : prefix)}</div>`;
+    // v0.0.252 (Lucas): just "Allies" / "Enemies", a click opens the list of the creatures (a bullet each)
+    return sides.map(side => { const ns = names(side), chips = st.chips.filter(c => !/\|side:/.test(c) || c.includes(`|side:${side}`)).join(" "); return `<div class="tline applyrow"><details class="apside"><summary>${prefix}${side === "allies" ? "Allies" : "Enemies"} <small>(${ns.length})</small></summary>${ns.length ? `<ul>${ns.map(n => `<li>${n}</li>`).join("")}</ul>` : "<ul><li><i>none</i></li></ul>"}</details>${btn(chips, side, k)}</div>`; }).join("");
+  }).join("");
 }
 /** The Apply button of a no-damage card: the chain's chips of that side, for that side's creatures among the card's targets. */
-export async function applyAfter(msg, side = "") {
+export async function applyAfter(msg, side = "", step = 0) {
   const f = msg.getFlag("twod12", "action");
   if (!f?.after) return;
+  const steps = chainSteps(f.after), chips = steps[Number(step) || 0]?.chips.join(" ") ?? "";   // v0.0.254: one step of the chain (@Pause splits them)
+  if (!chips) return;
   let actor = null;
   try { actor = f.actorUuid ? await fromUuid(f.actorUuid) : null; } catch (e) { actor = null; }
   if (actor && !actor.isOwner && !game.user.isGM) return ui.notifications.warn(`Only ${actor.name}'s owner can apply it.`);
   const { runAfter, sideTargets } = await import("./inline.mjs");
   const ctx = { actor, targets: (f.targets ?? []).map(t => ({ uuid: t.uuid, name: t.name })), attrVal: Number.isFinite(Number(f.attrVal)) && f.attrVal !== undefined ? Number(f.attrVal) : null, areaPoint: f.areaPoint ?? null, message: msg, source: actor?.items?.get(f.itemId)?.name ?? "" };
   if (side) ctx.targets = sideTargets(ctx, side);
-  if (!ctx.targets.length) return ui.notifications.info(`No ${side || "target"} on the card.`);
-  await runAfter(f.after, ctx, { side });
+  if (!ctx.targets.length && !/\|(?:near|who):/.test(chips)) return ui.notifications.info(`No ${side || "target"} on the card.`);
+  await runAfter(chips, ctx, { side });
 }
 
 /** Roll the damage for the tier rolled on an action card and post it as a new card. */

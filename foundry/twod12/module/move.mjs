@@ -1028,7 +1028,8 @@ function areaOrigin(ctx) {
 async function pushPicker(cfg, ctx, mode, origin, N) {
   const label = MOVE_LABEL[mode];
   const cardTargets = targetTokens(ctx);
-  let list = cfg.area > 0 ? tokensInEmanation(cardTargets, cfg.area) : cardTargets;
+  const meTok = tokenOf(contextActor(ctx));
+  let list = cfg.area > 0 ? tokensInEmanation(cardTargets, cfg.area) : cfg.near > 0 && meTok ? tokensInEmanation([meTok], cfg.near).filter(t => t.document.disposition === meTok.document.disposition) : cardTargets;   // v0.0.254: near:N: the allies within N of you
   const me = tokenOf(contextActor(ctx));
   list = list.filter(t => t.id !== origin.id && (cfg.self || t.id !== me?.id));   // v0.0.248 (Lucas): never yourself, unless self:yes
   if (!list.length) return warn(`${label} ${N}: no creature ${cfg.area > 0 ? `within ${cfg.area} of the target` : "among the targets"} to move.`);

@@ -4,6 +4,7 @@ import { effectOff } from "./escalation.mjs";
 import { openEffectSheet } from "./fxopen.mjs";
 import { bumpExhausted, isExhaustedFx, exhaustedClick, heldModifiers } from "./sleep.mjs";
 import { esc } from "./roll.mjs";
+import { fxTipHtml, hoverOf } from "./util.mjs";   // v0.0.254: the HUD's hover cards
 import { TWOD12 } from "./config.mjs";
 import { combatantOf } from "./combat.mjs";
 import { onceKey, onceBlocked, isMarked } from "./automation.mjs";
@@ -515,10 +516,13 @@ export function valuedHud(app, html) {
   const actor = (app?.document ?? app?.object)?.actor;
   if (!root?.querySelectorAll || !actor) return 0;
   let n = 0;
+  // v0.0.254 (Lucas): the hover card on the token HUD's statuses too, shown to the left (away from the chat)
   for (const el of root.querySelectorAll("[data-status-id]")) {
-    const fx = actor.effects.find(x => x.statuses?.has?.(el.dataset.statusId) && isValued(x));
+    const fx = actor.effects.find(x => x.statuses?.has?.(el.dataset.statusId));
     if (!fx) continue;
-    el.dataset.tooltip = `${baseNameOf(fx)} ${Number(fx.getFlag(F, "value")) || 1} · Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove`;
+    const valued = isValued(fx);
+    el.dataset.tooltip = fxTipHtml({ name: valued ? `${baseNameOf(fx)} ${Number(fx.getFlag(F, "value")) || 1}` : fx.name, dur: durationText(fx.getFlag(F, "duration")) || "until removed", text: hoverOf(fx.getFlag(F, "hover"), fx.getFlag(F, "description") ?? fx.description), controls: valued ? "Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove" : "Click: remove · Right-click: overlay" });
+    el.dataset.tooltipDirection = "LEFT";
     n++;
   }
   return n;

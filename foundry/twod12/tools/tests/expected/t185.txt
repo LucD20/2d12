@@ -1,6 +1,6 @@
 --- convertEffects: the Guard chip and the Line areas
 you or one ally in the light gain @Guard[1d8+mod]{Guard 1d8 + [Mod]} (2d6 + [Mod] at Stage 2). The other creatures are @Move[pushed|distance:1].
-@Guard[2d6+3]{Guard 2d6 + 3} for 1 round; The target gains Guard equal to what one of their Rally Points heals.
+@Guard[2d6+3]{Guard 2d6 + 3} for 1 round; The target gains @Guard[rally]{Guard RP}.
 A @Template[line|distance:6] of fire, a @Template[line|distance:2], Line of Effect is needed, Bright light in a @Template[emanation|distance:2|rounds:1] for 1 round, a @Template[burst|distance:3].
 --- the book's links in Foundry
 try to {{link:Hide|Hide}}, gain @Book[Guard]{Guard} 1d8, use @Book[Evade]{Evade} or @Book[Straight Line]{a straight line}; {{link:Smite|Smite}} again

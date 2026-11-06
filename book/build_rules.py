@@ -107,7 +107,7 @@ def inline(t): return hl(re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', e(t)))
 # ---------------------------------------------------------------- action cards
 FREQ_COL = {'at-will': ('#3B6D11', '#EAF3DE'), 'turn': ('#0F6E6E', '#E1F3F2'), 'round': ('#185FA5', '#E6F1FB'), 'encounter': ('#A32D2D', '#FCEBEB'), 'daily': ('#5B3FA6', '#EEEDFE')}
 GREY_COL = ('#5F5E5A', '#F1EFE8')
-KNOWN = ('Frequency', 'Target', 'Distance', 'Area', 'Vs', 'Requirements', 'Prerequisites', 'Trigger', 'Flavor', 'Setup', 'Escalation', 'Split', 'Inline')
+KNOWN = ('Frequency', 'Target', 'Distance', 'Area', 'Vs', 'Requirements', 'Prerequisites', 'Trigger', 'Interrupt', 'Flavor', 'Setup', 'Escalation', 'Split', 'Inline')
 
 # A chapter written in the class style (first line "<!-- style: class -->"): its Action cards open and close, and its text is colored: a damage expression
 # (the [B] or [M] tag with its dice and numbers; [W] and [Mod] expressions for Body) in the color of its pool, Bane, Boon and Rally Point (with their
@@ -160,6 +160,7 @@ def card(block, markers=False):
     traits = [t.strip().lower().replace('-', '') for t in tm.group(1).split('•')] if tm else []
     get = lambda key: re.search(r'^\*\*' + key + r':\*\*\s*(.+)$', block, re.M)
     target, freq, distm, vsm, reqm, trgm, flav = get('Target'), get('Frequency'), get('Distance'), get('Vs'), get('Requirements'), get('Trigger'), get('Flavor')
+    intm = get('Interrupt')   # cards 4: an Interrupt line, shown first like a Trigger (it was a note paragraph before)
     aream, prem, escm, splitm = get('Area'), get('Prerequisites'), get('Escalation'), get('Split')
     setups = re.findall(r'^\*\*(Setup[^*]*):\*\*\s*(.+)$', block, re.M)
     inlines = re.findall(r'^\*\*Inline:\*\*\s*(.+)$', block, re.M)   # cards 2: inline Actions (Name — cost | Frequency | ... | Effects: ...)
@@ -247,10 +248,11 @@ def card(block, markers=False):
     meta_lines = [l for l in (l1, l2, l3) if l]
     meta = meta_lines
     head = ((f'<div class="traits">{chevrons(traits)}{mk(4)}</div>' if traits else '')
+            + (f'<div class="arow trg"><b>Interrupt:</b> {inline(intm.group(1))}</div>' if intm else '')   # cards 4 (Lucas, 2026-11-06): a Reaction's Interrupt / Trigger line comes first
+            + (f'<div class="arow trg"><b>Trigger:</b> {inline(trgm.group(1))}</div>' if trgm else '')
             + ''.join(f'<div class="meta">{sep.join(l)}{mk(5) if k == len(meta) - 1 else ""}</div>' for k, l in enumerate(meta))
             + (f'<div class="arow"><b>Prerequisites:</b> {inline(prem.group(1))}</div>' if prem else '')
             + (f'<div class="arow"><b>Requirements:</b> {inline(reqm.group(1))}</div>' if reqm else '')
-            + (f'<div class="arow"><b>Trigger:</b> {inline(trgm.group(1))}</div>' if trgm else '')
             + (f'<div class="arow"><b>Split:</b> {inline(splitm.group(1))}</div>' if splitm else '')
             + ''.join(f'<div class="arow"><b>{e(k)}:</b> {inline(t)}</div>' for k, t in setups))
     is_action = bool(versions or costm or free)

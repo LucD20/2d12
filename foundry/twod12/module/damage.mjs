@@ -17,6 +17,9 @@ export async function applyToActor(actor, a, { announce = true } = {}) {
   if (!actor) return 0;
   const d = actor.system.damage, upd = {};
   // v0.0.243 (pack R): the Guard of the kept AP (system.apGuard) is taken before the other Guard; both are one "Guard N" on the line.
+  // v0.0.254 (Shield of Faith): a reduction waiting on the creature takes from this damage first, then it is spent whatever is left of it
+  const red = Math.max(0, Math.floor(Number(actor.system.reduceNext) || 0));
+  if (red) { const r = absorbGuard(red, a, 0); a.B = r.a.B; a.M = r.a.M; upd["system.reduceNext"] = 0; if (r.taken && announce) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-halved", `<b>${esc(actor.name)}</b>'s damage is reduced by <b>${r.taken}</b>${red > r.taken ? ` (of ${red})` : ""}.`, "guardmsg") }); }
   const g = absorbGuard(actor.system.guard, a, actor.system.apGuard);
   if (g.taken) { a.B = g.a.B; a.M = g.a.M; upd["system.guard"] = g.guard; upd["system.apGuard"] = g.apGuard; a.guardLeft = g.guard + g.apGuard; }
   const add = (k, amt) => { if (amt) upd[`system.damage.${k}`] = (upd[`system.damage.${k}`] ?? d[k]) + amt; };
@@ -46,7 +49,7 @@ export function registerSocket() {
     if (data?.type === "applyApGuard") { const a = await fromUuid(data.actorUuid); if (a) await a.update({ "system.apGuard": Math.max(0, Number(data.value) || 0) }); return; }   // v0.0.243: a kept AP paid a Reaction
     if (data?.type !== "applyDamage") return;
     const actor = await fromUuid(data.actorUuid);
-    const upd = Object.fromEntries(Object.entries(data.upd).filter(([k]) => k.startsWith("system.damage.") || k === "system.guard" || k === "system.apGuard"));
+    const upd = Object.fromEntries(Object.entries(data.upd).filter(([k]) => k.startsWith("system.damage.") || k === "system.guard" || k === "system.apGuard" || k === "system.reduceNext"));
     if (actor && Object.keys(upd).length) await actor.update(upd);
   });
 }

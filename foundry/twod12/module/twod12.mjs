@@ -276,7 +276,7 @@ Hooks.once("ready", async () => {
     else if (b.dataset.twod12 === "retargetSave") await retargetSave(msg);
     else if (b.dataset.twod12 === "retargetAction") await retargetAction(msg);
     else if (b.dataset.twod12 === "rollDamage") await rollDamage(msg);
-    else if (b.dataset.twod12 === "applyAfter") { const { applyAfter } = await import("./actions.mjs"); await applyAfter(msg, b.dataset.side ?? ""); }   // v0.0.250
+    else if (b.dataset.twod12 === "applyAfter") { const { applyAfter } = await import("./actions.mjs"); await applyAfter(msg, b.dataset.side ?? "", Number(b.dataset.step) || 0); }   // v0.0.250; v0.0.254: the step
     else await damageButton(b.dataset.twod12, b, msg);
   });
   registerSocket();

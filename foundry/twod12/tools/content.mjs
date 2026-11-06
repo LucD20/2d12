@@ -244,11 +244,11 @@ const dur = (type, rounds = 1) => ({ type, rounds });
 
 // Effects the Paladin's cards apply
 FX("Divine Power (Enfeebled)", "icons/svg/degen.svg", { duration: dur("eot"), description: "<p>Enfeebled 1 (EoT): subtract 1 from every die of your damage.</p>", settings: [{ type: "damagestep", enfeebled: 1, ...nod }] });
-FX("Aura of Protection (+1 Defense)", "icons/svg/shield.svg", { duration: dur(""), description: "<p>+1 Defense while you are inside the Aura of Protection.</p>", settings: [{ type: "defense", defKind: "all", defValue: 1 }] });
+FX("Beacon (+1 Defense)", "icons/svg/shield.svg", { duration: dur(""), description: "<p>+1 Defense while you are inside the Beacon's Aura.</p>", settings: [{ type: "defense", defKind: "all", defValue: 1 }] });
 FX("Divine Vigil (Boon against Fear)", "icons/svg/aura.svg", { duration: dur(""), description: "<p>1 Boon on Saves against [Fear] Actions, while you are inside Divine Vigil's Aura.</p>", settings: [{ type: "boonbane", boons: 1, banes: 0, all: ["__save"], any: [], none: [], from: ["fear"] }] });
-// P1 (v0.0.181): Divine Surge marks an enemy (the ally's extra damage is a button on the mark); Aura of Protection lasts the encounter.
+// P1 (v0.0.181): Divine Surge marks an enemy (the ally's extra damage is a button on the mark); the Beacon (was Aura of Protection) lasts 3 rounds (v0.0.254).
 FX("Divine Surge", "icons/svg/sun.svg", { duration: dur("rounds"), description: "<p>For 1 round, the next time an ally deals damage to this creature, they deal an extra @Damage[1d8[mind,holy]]{[R] 1d8 Ho} (Divine Surge). Then remove this mark.</p>", settings: [] });
-FX("Aura of Protection", "icons/svg/aura.svg", { selfApplied: true, duration: dur(""), description: "<p>An Aura 2 around you until the end of the encounter: you and allies inside gain +1 Defense. While it lasts you have Beacon's Step (0R, Round: Evade 1 toward an ally in the Aura who takes damage).</p>", settings: [{ type: "aura", auraSize: 2, auraWho: "allies", auraSelf: true, auraOutline: "#3fb68b", auraFill: "#3fb68b", fxUuid: uuidOf("effects", "Aura of Protection (+1 Defense)") }, { type: "inline", inlineAction: uuidOf("actions", "Beacon's Step") }] });
+FX("Beacon", "icons/svg/aura.svg", { selfApplied: true, duration: { type: "rounds", rounds: 3 }, description: "<p>Your Beacon: an Aura 2 around you for 3 rounds. You and allies inside gain +1 Defense, and you have Beacon's Step while it lasts (0R, Round: Evade 1 toward an ally in the Aura who takes damage).</p>", settings: [{ type: "aura", auraSize: 2, auraWho: "allies", auraSelf: true, auraOutline: "#3fb68b", auraFill: "#3fb68b", fxUuid: uuidOf("effects", "Beacon (+1 Defense)") }, { type: "inline", inlineAction: uuidOf("actions", "Beacon's Step") }] });
 
 // Features: the Paladin's core features, the passives of the picks, and the choices
 // v0.0.187 (Lucas): the Escalation passives that add damage once a round give an Effect each turn, used up by the Action (switch it off in the roll dialog).
@@ -306,7 +306,7 @@ add("effects", "effect", "Killer's Focus", "icons/svg/target.svg", { selfApplied
 const { loadCards, cardSystem, featureSystem, talentSystem, isAction, inlineCards } = await import("./cardgen.mjs");
 // v0.0.246: {{link:Name|label}} (a book link to a card) is Foundry's link to the compendium item, which opens it to read (an Action, else a Feature or Talent).
 export const resolveRefs = s => s.replace(/\{\{fx:([^}]+)\}\}/g, (m, n) => uuidOf("effects", n)).replace(/\{\{action:([^}]+)\}\}/g, (m, n) => uuidOf("actions", n))
-  .replace(/\{\{link:([^}|]+)\|([^}]+)\}\}/g, (m, n, label) => { const c = CARDS.find(x => x.name === n); return `@UUID[${uuidOf(c && isAction(c) ? "actions" : "features", n)}]{${label}}`; });
+  .replace(/\{\{link:([^}|]+)\|([^}]+)\}\}/g, (m, n, label) => { const c = CARDS.find(x => x.name === n) ?? CARDS.flatMap(x => inlineCards(x)).find(x => x.name === n); return `@UUID[${uuidOf(c && isAction(c) ? "actions" : "features", n)}]{${label}}`; });   // v0.0.254: an inline Action links to its item too
 export const CARDS = loadCards();
 for (const c of CARDS) {
   if (c.foundry?.basic) continue;

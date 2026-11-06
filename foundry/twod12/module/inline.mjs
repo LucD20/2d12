@@ -102,7 +102,8 @@ export function parseInline(kind, inner) {
   if (kind === "Cleave") cfg.n = Math.max(1, Number(segs[0]) || 1);
   if (kind === "Boon") cfg.n = Number(segs[0]) || 0;
   if (kind === "Book") cfg.ref = segs[0].trim();   // v0.0.246: @Book[Heading]{label}: a link to the book's anchor (the Journal import comes later)
-  if (kind === "Heal") cfg.formula = segs[0].trim().toLowerCase().replace(/\s+/g, "");   // v0.0.250: @Heal[3d6+pow|s2:4d6+pow|s3:6d6+pow], @Heal[rp*2]
+  if (kind === "Heal" || kind === "Reduce") cfg.formula = segs[0].trim().toLowerCase().replace(/\s+/g, "");   // v0.0.250: @Heal[3d6+pow|s2:4d6+pow|s3:6d6+pow], @Heal[rp*2]; v0.0.254: @Reduce[2d6+pow|s2:3d6+pow] (the next damage is reduced)
+  if (kind === "Pause") cfg.label = segs[0].trim();   // v0.0.254: @Pause[After the damage]: the chain stops here; the rest is the next Apply button
   if (kind === "EndEffect") cfg.which = /^any$/i.test(segs[0].trim()) ? "any" : "eot1";   // v0.0.250: @EndEffect[eot1] / @EndEffect[any]
   if (kind === "Template") cfg.shape = segs[0].toLowerCase(); else if (kind === "Move") { const k = segs[0].toLowerCase(); cfg.kind = ["move", "walk"].includes(k) ? "advance" : k; } else if (kind === "Rally") cfg.n = Number(segs[0]) || 1; else if (kind === "Effect") cfg.uuid = segs[0].trim(); else if (kind === "Guard") cfg.formula = segs[0].trim().toLowerCase().replace(/\s+/g, "").replace(/\[mod\]/g, "mod"); else cfg.attr = segs[0].toLowerCase();
   for (const s of segs.slice(1)) {
@@ -153,6 +154,7 @@ export function parseInline(kind, inner) {
     else if (key === "s2" || key === "s3") (cfg.stages ??= {})[key] = val.toLowerCase().replace(/\s+/g, "");
     else if (key === "side") cfg.side = val.toLowerCase();
     else if (key === "extra") cfg.extra = val.toLowerCase().replace(/\s+/g, "");
+    else if (key === "near") cfg.near = Math.max(0, Number(val) || 0);   // v0.0.254: the candidates within N squares of you (a Reaction's "an ally within 5 squares")
   }
   // A button always has the traits of what it is: Advance and Charge are Move. (Evade and Pushed have none.) A Save has its Attribute.
   if (kind === "Move") cfg.traits = [...new Set([...(cfg.kind === "advance" || cfg.kind === "charge" ? ["move"] : []), ...(cfg.traits ?? [])])];
@@ -238,7 +240,7 @@ export function registerInline() {
   if (!list) return console.warn("twod12 | text enrichers are not available");
   list.push({
     id: "twod12-inline",
-    pattern: /@(Check|Damage|Save|Template|Move|Rally|Guard|Effect|Condition|Use|Cleave|Reload|Release|Regrip|Boon|Book|Heal|EndEffect)\[((?:[^\[\]]|\[(?:[^\[\]]|\[[^\[\]]*\])*\])*)\](?:\{([^}]+)\})?/g,
+    pattern: /@(Check|Damage|Save|Template|Move|Rally|Guard|Effect|Condition|Use|Cleave|Reload|Release|Regrip|Boon|Book|Heal|EndEffect|Reduce|Pause)\[((?:[^\[\]]|\[(?:[^\[\]]|\[[^\[\]]*\])*\])*)\](?:\{([^}]+)\})?/g,
     enricher: async (match, options) => {
       const kind = match[1];
       const cfg = parseInline(kind, match[2]);
@@ -246,6 +248,8 @@ export function registerInline() {
       const modN = modForDoc(options?.relativeTo), powN = powForDoc(options?.relativeTo), stageN = stageForDoc(options?.relativeTo);
       const inlineEl = (k, c, label, icon) => { const l2 = withPow(withMod(label, modN), powN); const el = mkEl(k, c, l2, icon); if (l2 !== label) el.dataset.tooltip = `This creature's Modifiers on the Action: ${[modN !== null ? `[Mod] ${modN}` : "", powN !== null ? `Pow ${powN}` : ""].filter(Boolean).join(", ")}`; return el; };
       if (kind === "Heal") return inlineEl("Heal", cfg, cfg.label ?? match[3] ?? `Heal ${healText(stagedFormula(cfg, stageN))}`, "fa-hand-holding-medical");
+      if (kind === "Reduce") return inlineEl("Reduce", cfg, (cfg.stages && stageN > 1 ? null : cfg.label ?? match[3]) ?? `reduced by ${healText(stagedFormula(cfg, stageN))}`, "fa-shield-halved");
+      if (kind === "Pause") return inlineEl("Pause", cfg, cfg.label || "After the damage", "fa-pause");
       if (kind === "EndEffect") return inlineEl("EndEffect", cfg, cfg.label ?? match[3] ?? (cfg.which === "any" ? "End one effect" : "End one effect (EoT or 1 round left)"), "fa-wand-magic-sparkles");
       if (kind === "Book") {
         const el = mkEl("Book", cfg, cfg.label ?? match[3] ?? cfg.ref, "fa-book-open");
@@ -488,6 +492,7 @@ async function allyRecipients(cfg, ctx, what = "the effect") {
   const mine = t => t.actor && t.document?.disposition === side && t.id !== me?.id;
   let allies;
   if (cfg.area > 0) allies = tokensInEmanation(cardTargetTokens(ctx), cfg.area).filter(mine).map(t => t.actor);
+  else if (cfg.near > 0 && me) allies = tokensInEmanation([me], cfg.near).filter(mine).map(t => t.actor);   // v0.0.254: within N squares of you (Shield of Faith, Bulwark of Faith)
   else allies = handTargetTokens(ctx).filter(mine).map(t => t.actor);   // v0.0.252: the selected tokens first (a hand click), the chain's own otherwise
   if (cfg.who !== "pick") return { origin, who: allies.length ? allies : [origin].filter(Boolean) };
   const cands = [...(origin ? [origin] : []), ...allies.filter(a => a !== origin)];
@@ -546,6 +551,27 @@ async function handleGuard(cfg, ctx) {
     // v0.0.246: a system line (the standing rule for chat messages)
     await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: origin ?? a }), rolls: /d/.test(f) ? [roll] : [],
       content: sysLine("fa-shield-heart", `<b>${esc(a.name)}</b> ${next > now ? `gains <b>Guard ${next}</b>` : `keeps Guard ${now} (the higher; the new Guard was ${roll.total})`} <small>(${esc(withMod(guardText(formula), mod))} = ${roll.total})</small>.`, "guardmsg") });
+  }
+}
+
+/**
+ * v0.0.254 (cards 4, Shield of Faith): the @Reduce chip: the next damage the creature takes is reduced by the formula (rolled now, the Stage's dice);
+ * it waits on the creature (system.reduceNext, the higher kept) and is spent by that damage. Who: as a Guard (you or one ally, who:pick, near:N).
+ */
+async function handleReduce(cfg, ctx) {
+  const origin0 = originActor(ctx);
+  const mod = Number.isFinite(ctx.attrVal) ? ctx.attrVal : (Number(origin0?.system?.weaponMod) || 0), pow = Number(origin0?.system?.powerMod) || 0;
+  const formula = stagedFormula(cfg, Number(origin0?.system?.stage) || 1);
+  const { origin, who, cancelled } = await allyRecipients(cfg, ctx, `a reduction of ${withPow(healText(formula), pow)}`);
+  if (cancelled) return;
+  if (!who.length) return ui.notifications.warn("Select your token, or target the ally whose damage is reduced.");
+  for (const a of who) {
+    const f = String(formula || "0").replace(/\bpow\b/g, `(${pow})`).replace(/\bmod\b/g, `(${mod})`).replace(/\brp\b/g, `(${Number(a.system?.rallyHeal) || 0})`);
+    const roll = await new Roll(f).evaluate();
+    const now = Number(a.system?.reduceNext) || 0, next = Math.max(now, roll.total);
+    if (next !== now) { if (a.isOwner) await a.update({ "system.reduceNext": next }); else game.socket.emit("system.twod12", { type: "applyDamage", actorUuid: a.uuid, upd: { "system.reduceNext": next } }); }
+    await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: origin ?? a }), rolls: /d/.test(f) ? [roll] : [],
+      content: sysLine("fa-shield-halved", `The next damage <b>${esc(a.name)}</b> takes is reduced by <b>${next}</b> <small>(${esc(withPow(healText(formula), pow))} = ${roll.total}${next !== roll.total ? `; the higher kept` : ""})</small>.`, "guardmsg") });
   }
 }
 
@@ -625,6 +651,8 @@ async function openBook(cfg) {
 export async function handleInline(kind, cfg, ctx = {}) {
   if (kind === "Book") return openBook(cfg);
   if (kind === "Heal") return handleHeal(cfg, ctx);
+  if (kind === "Reduce") return handleReduce(cfg, ctx);
+  if (kind === "Pause") return;   // a marker between the steps of a chain (actions.mjs applyAfter runs one step at a time)
   if (kind === "EndEffect") return handleEndEffect(cfg, ctx);
   if (kind === "Guard") return handleGuard(cfg, ctx);
   if (kind === "Effect") return handleEffect(cfg, ctx);
