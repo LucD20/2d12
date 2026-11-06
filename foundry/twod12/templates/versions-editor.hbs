@@ -14,6 +14,7 @@
     </summary>
     <label>Action Points <input type="number" min="0" max="5" data-v="{{vi}}" data-field="ap" value="{{ap}}"></label>
     <label data-tooltip="This version's Area size (0: the Action's Area size). Word of Radiance: 2 at 2 AP, 3 at 3 AP">Area size <input type="number" min="0" data-v="{{vi}}" data-field="areaSize" value="{{areaSize}}"></label>
+    <label data-tooltip="This version's rounds for the kept area (0: the Action's Area rounds). Consecrated Ground: 3 at 2 AP, 5 at 3 AP">Area rounds <input type="number" min="0" data-v="{{vi}}" data-field="areaRounds" value="{{areaRounds}}"></label>
     <label>Mode <select data-v="{{vi}}" data-field="mode">{{selectOptions ../modeChoices selected=mode blank="(none: a normal version)"}}</select></label>
     <div class="opts"><label class="inline"><input type="checkbox" data-v="{{vi}}" data-field="noTiers" {{#if noTiers}}checked{{/if}}> No Tiers</label></div>
     {{#unless noTiers}}

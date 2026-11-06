@@ -156,6 +156,8 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
                 isIgnore: x.type === "ignore",
                 isRally: x.type === "rally",
                 isTurnStart: x.type === "turnstart",
+                isZone: x.type === "zone", zoneWho: x.zoneWho ?? "allies", zoneHeal: x.zoneHeal ?? "", zoneWhoChoices: { allies: "allies", enemies: "enemies", all: "everyone" },   // v0.0.262 (Lucas: every setting editable)
+                halfT3: !!x.halfT3,
                 // v0.0.207: Chat message, Weapon property, Starting Mastery
                 isMessage: x.type === "message", msgWhen: x.msgWhen, msgTo: x.msgTo, msgAction: x.msgAction, msgAp: x.msgAp,
                 msgWhens: TWOD12.messageWhen, msgTos: TWOD12.messageTo,

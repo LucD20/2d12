@@ -1,0 +1,5 @@
+the Zone block: true
+the sheet gives it its fields: true
+the Grant's Tier 3 box: true
+the Version's Area rounds: true
+the setting is offered: true

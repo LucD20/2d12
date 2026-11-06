@@ -89,6 +89,7 @@ export class VersionsEditor extends HandlebarsApplicationMixin(ApplicationV2) {
         modeLabel: v.mode === "weapon" ? "Weapon mode" : v.mode === "power" ? "Power mode" : "",
         noTiers: !!v.noTiers,
         areaSize: v.areaSize ?? 0,
+        areaRounds: v.areaRounds ?? 0,   // v0.0.262 (Lucas: every setting editable)
         critical: v.critical,
         effects: v.effects,
         after: v.after ?? "",
@@ -135,7 +136,7 @@ export class VersionsEditor extends HandlebarsApplicationMixin(ApplicationV2) {
       el.addEventListener("change", () => {
         const vi = Number(el.dataset.v),
           f = el.dataset.field;
-        const val = el.type === "checkbox" ? el.checked : f === "ap" ? Math.min(5, Math.max(0, Number.isFinite(parseInt(el.value)) ? parseInt(el.value) : 1)) : f === "areaSize" ? Math.max(0, parseInt(el.value) || 0) : el.value;
+        const val = el.type === "checkbox" ? el.checked : f === "ap" ? Math.min(5, Math.max(0, Number.isFinite(parseInt(el.value)) ? parseInt(el.value) : 1)) : f === "areaSize" || f === "areaRounds" ? Math.max(0, parseInt(el.value) || 0) : el.value;
         this._mutate(vs => {
           vs[vi][f] = val;
         });
