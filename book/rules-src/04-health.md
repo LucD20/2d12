@@ -110,7 +110,7 @@ Some effects give you **Guard**, written with a value: **Guard 6**. When you tak
 
 - Damage reduction (such as Hallowed Stance) applies first; Guard takes what is left.
 - Guard isn't Health: it can't be healed, and Rally Points don't restore it.
-- It doesn't stack: if you gain Guard while you have some, keep the higher value (see [[Stacking]]). The exception is the Guard your [[Unspent AP]] give you: it adds to your other Guard, damage takes it first, and it ends when you regain AP.
+- It doesn't stack: if you gain Guard while you have some, keep the higher value (see [[Stacking]]). The exception is the Guard your [[Unspent AP]] give you: it adds to your other Guard, damage takes it first, and it lasts 1 round (from the start of your turn until you regain AP again).
 - It ends at the end of the encounter.
 
 > [!example]

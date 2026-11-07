@@ -17,6 +17,7 @@ import { lineSteps } from "./linearea.mjs";
 import { coverFromPoint } from "./cover.mjs";
 import { hazardIn } from "./hazard.mjs";
 import { steadinessOf } from "./defense.mjs";
+import { newMoveAction } from "./moveseq.mjs";   // v0.0.274
 const F = "twod12", SOCKET = "system.twod12";
 const warn = m => ui.notifications.warn(m);
 const refuse = m => { warn(m); return false; };   // a refusal that says no
@@ -224,6 +225,7 @@ export async function chargeMovement(c, cost, dest = null, { par = 0, logMode = 
     if (walk <= 0) warn(`${c.name} has no Speed.`);
     else { while (need > left + 1e-9) { left += walk; spent++; } left -= need; }
   }
+  if (spent && !useEvade) newMoveAction(c.id);   // v0.0.274: a drag that spends AP is a new Advance (a new Move Action for the Reactions); before any await
   await c.update({ [`flags.${F}.evadeMove`]: evade, [`flags.${F}.freeMove`]: free, [`flags.${F}.moveLeft`]: Math.round(left * 100) / 100, ...(useEvade > 0 && evade <= 0 ? { [`flags.${F}.-=ignoreTerrain`]: null } : {}), ...(useEvade > 0 ? { [`flags.${F}.diagPar`]: evade > 0 ? par : 0 } : {}) });
   clearRange();
   // "Until it uses a Move Action": the effect lasts through this move and ends once it is resolved (an Evade is not a Move Action).
@@ -462,6 +464,7 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
   if (!n) return refuse(`Could not work out the distance "${cfg.distanceExpr}".`);
   if (!inCombat) { await looseMove(token, n, kind, cfg); return true; }
   const key = kind === "evade" ? "evadeMove" : "freeMove";
+  if (kind !== "evade") newMoveAction(c.id);   // v0.0.274: a Move Action's movement (Advance, Charge, Crawl): a new one for the Reactions
   await c.setFlag(F, key, num(c.getFlag(F, key)) + n);
   if (kind === "evade") await c.setFlag(F, "diagPar", 0);   // v0.0.183: a new Evade starts its diagonals from 0
   if (cfg.ignoreTerrain) await c.setFlag(F, "ignoreTerrain", true);

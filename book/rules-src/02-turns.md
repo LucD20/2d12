@@ -42,14 +42,14 @@ At the start of your turn in combat, you **regain AP**: you lose any AP you didn
 
 ### Unspent AP
 
-If you end your turn without spending all your AP, you keep the rest until you regain AP, and each kept AP gives you **[[Guard]]**: **2** per AP at Stage 1, **3** at Stage 2 and **4** at Stage 3 (see [[Stages]]).
+If you end your turn without spending all your AP, you keep the rest until your next turn starts: nothing else happens then, and those AP can still pay for [[Reactions]]. When you regain AP at the start of your next turn, each AP you still had unused gives you **[[Guard]]** for 1 round: **2** per AP at Stage 1, **3** at Stage 2 and **4** at Stage 3 (see [[Stages]]).
 
-- This Guard **adds** to any Guard you already have (an exception to [[Stacking]]), and what is left of it ends when you regain AP. Damage takes it before your other Guard.
-- A kept AP can still pay for a Reaction: your Guard from AP then drops by one AP's worth (to a minimum of 0).
-- Your Reaction AP never becomes Guard.
+- This Guard **adds** to any Guard you already have (an exception to [[Stacking]]), and what is left of it ends 1 round later, when you regain AP again. Damage takes it before your other Guard.
+- A kept AP you spend on a Reaction is one AP less when your turn starts, so it gives no Guard.
+- Your Reaction AP never becomes Guard, and your first turn of an encounter has no unused AP.
 
 > [!example]
-> Drak (Stage 1) has Guard 5 from a card and ends his turn with 1 AP left: he has Guard 7 until his next turn. A goblin hits him for 3: his Guard from AP takes 2 and his other Guard 1, so he has Guard 4 left. If he then spends his kept AP on a Reaction, he loses no more Guard: that AP's Guard is already gone.
+> Drak (Stage 1) has Guard 5 from a card and ends his turn with 1 AP left: nothing changes until his next turn (he could still spend that AP on a Reaction). When his next turn starts, he regains his AP and gains Guard 2 for 1 round, on top of his Guard 5: Guard 7. A goblin then hits him for 3: his Guard from AP takes 2 and his other Guard 1, so he has Guard 4 left.
 
 ### Losing and Gaining Action Points
 

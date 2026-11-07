@@ -29,7 +29,7 @@ const rows = [0, 1, 2].map(i => ({ i, state: "wait", order: 0, answerer: ["p1", 
 M.answerRow(rows, 1, "use"); M.answerRow(rows, 0, "use");
 console.log("Use twice (row 1 then row 0): resolves", M.stackOrder(rows).map(r => r.i).join(" then "), "| a second answer refused:", M.answerRow(rows, 1, "pass") === false, "| all answered:", M.allAnswered(rows));
 const r2 = [0, 1, 2].map(i => ({ i, state: "wait", order: 0, answerer: ["p1", "gm", "p2"][i] }));
-console.log("Skip all others: skipped", M.skipOthers(r2, "gm"), "| the GM's own row waits:", r2.map(r => r.state).join(","), "| the timer skips the rest:", M.skipAll(r2), r2.map(r => r.state).join(","));
+console.log("Skip all others: skipped", M.skipOthers(r2), "| the GM's own row too (v0.0.274):", r2.map(r => r.state).join(","), "| the timer has nothing left:", M.skipAll(r2));
 const held = { B: { l: 7, n: 2 }, M: { l: 3, n: 0 } };
 console.log("half of the held damage: taken off", M.halveHeld(held), JSON.stringify(held), "| came closer:", M.cameCloser([{ from: 5, to: 6 }, { from: 4, to: 3 }]), M.cameCloser([{ from: 2, to: 2 }]));
 
@@ -108,7 +108,8 @@ console.log("posted again under the Reactions' cards:", again !== msg && again.f
 const wait2 = M.openMoment({ kinds: ["strikeDamage"], subjects: [P(ally)], source: P(bandit), only: "interrupt", hold: true, plain: "p", lead: "l", text: "t" });
 await new Promise(r => setTimeout(r, 20));
 const rx2 = created.at(-1).flags.twod12.rx;
-await M.hostAnswer(rx2.id, 0, "pass", "p1");
+await M.hostAnswer(rx2.id, 0, "pass", "gm");
+console.log("v0.0.274: the GM answers a player's row:", rx2.rows[0].state, "| a player can't answer another's:", (await M.hostAnswer(rx2.id, 1, "pass", "p1"), rx2.rows[1].state));
 await M.hostAnswer(rx2.id, -1, "skipAll", "p2");
 console.log("a player can't Skip all others:", rx2.rows.map(r => r.state).join(","));
 await M.hostAnswer(rx2.id, -1, "skipAll", "gm");
@@ -139,8 +140,18 @@ console.log("the move's movement kept before it (refunded on Move back):", mo2.i
 const cb = src("module/combat.mjs"), car = src("module/carousel.mjs");
 const { initSkipped: skipped } = await import(ROOTURL + "module/combat.mjs");
 const cbt = (init, owner, flag) => ({ initiative: init, hasPlayerOwner: owner, getFlag: () => flag });
-console.log("Initiative: a player's creature is left out by default:", skipped(cbt(null, true)), "| an NPC is left out:", skipped(cbt(null, false)), "| the chip overrides:", skipped(cbt(null, true, false)), skipped(cbt(null, false, true)));
-console.log("the strip's button and the tracker's roll only the ones still to roll:", car.includes('if (k === "init") return rollPendingInitiative(combat);') && cb.includes("btn.addEventListener(\"click\", () => rollPendingInitiative(combat));") && cb.includes("(c.initiative === null || c.initiative === undefined) && !initSkipped(c)"), "| the chip:", car.includes('data-tc="initskip"') && car.includes('if (k === "initskip" && c) return toggleInitSkip(c);'));
+console.log("Initiative: a player's creature skips by default:", skipped(cbt(null, true)), "| an NPC is left out:", skipped(cbt(null, false)), "| the chip overrides:", skipped(cbt(null, true, false)), skipped(cbt(null, false, true)));
+const IW = await import(ROOTURL + "module/initwindow.mjs");
+const iwList = [{ id: "a", name: "Nari", side: 1 }, { id: "b", name: "Orc", side: -1 }];
+const iw0 = { attr: "instinct", per: {}, boons: 0, banes: 0, skip: ["a"] };
+const iwm = IW.initiativeModel(iwList, iw0), iwSec = iwm.sections.find(x => x.rows?.some(r => r.key === "per:a"));
+console.log("v0.0.274: Rolls / Skips in the Initiative window, beside another Attribute:", iwSec.title, "|", iwSec.rows.map(r => `${r.label}: ${r.opts[0].l}`).join(", "), "| rolling:", iwm.stats.find(x => x[0] === "Rolling")[1]);
+const iw1 = IW.initiativePick(iw0, "per:a", "__roll"), iw2 = IW.initiativePick(iw1, "per:b", "__roll");
+console.log("a click includes Nari:", JSON.stringify(iw1.skip), "| and leaves out the Orc:", JSON.stringify(iw2.skip), "| nobody rolling can't confirm:", IW.initiativeModel(iwList, { ...iw0, skip: ["a", "b"] }).complete, "| a portrait's roll has no chips:", !IW.initiativeModel(iwList, { ...iw0, skip: null }).sections.some(x => x.rows?.some(r => r.opts?.[0]?.k === "__roll")));
+console.log("the strip's button and the tracker's roll the ones still to roll, the window says who skips:", car.includes('if (k === "init") return rollPendingInitiative(combat);') && cb.includes("btn.addEventListener(\"click\", () => rollPendingInitiative(combat));") && cb.includes("return combat.rollInitiative(ids, { chooseWho: true });"), "| no chip on the strip any more:", !car.includes('data-tc="initskip"'));
+const MS = await import(ROOTURL + "module/moveseq.mjs");
+MS.newMoveAction("c1"); const k1 = MS.moveActionOf("c1"); MS.newMoveAction("c1");
+console.log("v0.0.274: a new Move Action, a new key (Opportunity Attack again after a second Advance):", k1, MS.moveActionOf("c1"), "| counted by move.mjs:", src("module/move.mjs").includes("if (spent && !useEvade) newMoveAction(c.id);") && src("module/move.mjs").includes('if (kind !== "evade") newMoveAction(c.id);'), "| the moment's key:", src("module/moment.mjs").includes("|${moveActionOf(cbt?.id)}`;"));
 
 console.log("--- the eight cards' moments (book texts unchanged)");
 const CG = await import(ROOTURL + "tools/cardgen.mjs");

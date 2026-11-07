@@ -6,7 +6,7 @@ the item sheet: Moment, Within, You too, Used on: true
 sides: an ally true | an enemy as an ally false | you without You too false | with true | an enemy true | a neutral is no enemy false | you are never the enemy false
 a Distance in squares: 5 0 0 | the clock: 10:00 1:02 0:00
 Use twice (row 1 then row 0): resolves 0 then 1 | a second answer refused: true | all answered: false
-Skip all others: skipped 2 | the GM's own row waits: skip,wait,skip | the timer skips the rest: 1 skip,skip,skip
+Skip all others: skipped 3 | the GM's own row too (v0.0.274): skip,skip,skip | the timer has nothing left: 0
 half of the held damage: taken off 5 {"B":{"l":4,"n":1},"M":{"l":2,"n":0}} | came closer: true false
 --- the message
 the system's card: true | title Reactions: true | rows: 3
@@ -31,6 +31,7 @@ Resolve: the first to resolve: p2:cs | on Bandit
 then the next: p1:sof | on Krysta
 resolved: cs used (half), sof used | the message says: Answered: the damage lands.
 posted again under the Reactions' cards: true
+v0.0.274: the GM answers a player's row: pass | a player can't answer another's: wait
 a player can't Skip all others: pass,wait
 the GM can: pass,skip | nothing used: 0
 the damage moment's message: Bandit's Strike would damage Krysta | Interrupt: the 9 damage waits until every Reaction is answered.
@@ -41,8 +42,11 @@ who manages: true false true | time left paused: 41000 3000
 Move back: Move Orc back (4 sq.) | used: Orc went back to where its movement started (4 sq.); its movement is refunded.
 the Action's name opens it: true | the item sheet's section: true
 the move's movement kept before it (refunded on Move back): true
-Initiative: a player's creature is left out by default: true | an NPC is left out: false | the chip overrides: false true
-the strip's button and the tracker's roll only the ones still to roll: true | the chip: true
+Initiative: a player's creature skips by default: true | an NPC is left out: false | the chip overrides: false true
+v0.0.274: Rolls / Skips in the Initiative window, beside another Attribute: Who rolls, and another Attribute for some | Nari: Skips, Orc: Rolls | rolling: Orc
+a click includes Nari: [] | and leaves out the Orc: ["b"] | nobody rolling can't confirm: false | a portrait's roll has no chips: true
+the strip's button and the tracker's roll the ones still to roll, the window says who skips: true | no chip on the strip any more: true
+v0.0.274: a new Move Action, a new key (Opportunity Attack again after a second Advance): 1 2 | counted by move.mjs: true | the moment's key: true
 --- the eight cards' moments (book texts unchanged)
 Divine Intervention: wouldDown 5 +you (interrupt)
 Shield of Faith: strikeDamage 5 +you (interrupt)

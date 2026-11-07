@@ -1,7 +1,7 @@
 // v0.0.261 (Lucas, cards session 5): a Reaction with a moment (system.moment) is offered by itself when the moment comes.
 // v0.0.272 (pack RX, Lucas's design): the Reactions pass. When a moment comes (a damage about to land, a Strike, a movement), ONE chat message
 // lists every Reaction it triggered: a row per creature and Reaction, with Use / Pass for its owner (the system's card, sysCard). The GM has
-// "Skip all others"; an auto-skip timer (a world setting, on by default, 10 minutes) counts down on the message. Nothing lands until every row
+// "Skip all others"; an auto-skip timer (a world setting, on by default, 1 minute since v0.0.273, paused with a click on the clock) counts down on the message. Nothing lands until every row
 // is answered or skipped. The rows used form a stack: they resolve last in, first out (the message shows the order); each is run by its owner's
 // client as its card runs today, against the triggering creature. An Interrupt holds the damage until answered; a Trigger is offered after the
 // moment and holds nothing. A moment that Reactions watch but none can answer (spent, no AP, Down) posts a one-line note.
@@ -11,6 +11,7 @@ import { isFaded } from "./usage.mjs";
 import { answererFor } from "./healwin.mjs";
 import { sysCard, sysLine } from "./sysmsg.mjs";
 import { esc } from "./util.mjs";
+import { moveActionOf } from "./moveseq.mjs";   // v0.0.274: once per Move Action
 const F = "twod12", SOCKET = "system.twod12";
 
 /** The moments. who: the side of the creature the moment is about, seen from the Reaction's owner. */
@@ -59,12 +60,8 @@ export const stackOrder = rows => rows.filter(r => r.state === "use").sort((x, y
 export const allAnswered = rows => rows.every(r => r.state !== "wait");
 /** Pure: "9:41" for the time left. */
 export const clockText = ms => { const s = Math.max(0, Math.ceil(ms / 1000)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; };
-/** Pure: Skip all others: the rows still waiting whose answerer is not the GM who clicked are skipped (the GM answers their own). */
-export function skipOthers(rows, gmId) {
-  let n = 0;
-  for (const r of rows) if (r.state === "wait" && r.answerer !== gmId) { r.state = "skip"; n++; }
-  return n;
-}
+/** Pure: Skip all others: every row still waiting is skipped (v0.0.274, Lucas: the GM's own rows too; v0.0.272 kept them waiting). */
+export function skipOthers(rows) { return skipAll(rows); }
 /** Pure: the timer ran out: every row still waiting is skipped. */
 export function skipAll(rows) { let n = 0; for (const r of rows) if (r.state === "wait") { r.state = "skip"; n++; } return n; }
 /** Pure: a row is answered (Use puts it on the stack: its place is the next number). false when it can't be (not waiting). */
@@ -229,7 +226,7 @@ export async function hostAnswer(id, i, choice, fromId) {
   if (!L || L.st.done || L.st.resolving) return;
   const st = L.st, from = game.users?.get?.(fromId);
   if (choice === "timeout") skipAll(st.rows);
-  else if (choice === "skipAll") { if (!from?.isGM) return; skipOthers(st.rows, fromId); }
+  else if (choice === "skipAll") { if (!from?.isGM) return; skipOthers(st.rows); }
   // v0.0.273 (Lucas): the order, the clock and the Resolve button: the GM or anyone who answers a row here
   else if (["up", "down", "pause", "resolve"].includes(choice)) {
     if (!mayManage(st, from)) return;
@@ -239,7 +236,7 @@ export async function hostAnswer(id, i, choice, fromId) {
   } else {
     const r = st.rows[i];
     if (!r) return;
-    const mayAnswer = fromId === r.answerer || (from?.isGM && !game.users.get(r.answerer)?.active);   // its owner (the GM for one who left)
+    const mayAnswer = fromId === r.answerer || !!from?.isGM;   // its owner; v0.0.274 (Lucas): the GM can answer any row
     if (!mayAnswer || !answerRow(st.rows, i, choice)) return;
   }
   if (!allAnswered(st.rows)) return redraw(L);
@@ -372,7 +369,7 @@ export function rxRender(msg, html) {
   const el = html instanceof HTMLElement ? html : html?.[0];
   if (!el?.querySelectorAll) return;
   el.querySelectorAll('button[data-twod12="rxUse"], button[data-twod12="rxPass"]').forEach(b => {
-    const r = st.rows[Number(b.dataset.row)], mine = r && (r.answerer === game.user.id || (game.user.isGM && !game.users.get(r.answerer)?.active));
+    const r = st.rows[Number(b.dataset.row)], mine = r && (r.answerer === game.user.id || game.user.isGM);   // v0.0.274: the GM answers any row
     if (!mine) b.remove();
   });
   el.querySelectorAll(".rxrow .gbtns").forEach(g => { if (!g.children.length) g.remove(); });
@@ -452,7 +449,7 @@ export function strikeMoment(actor, targets) {
 }
 /** Pure: did the mover come closer to any of these creatures (each { from, to }: its distance before and after)? */
 export const cameCloser = pairs => pairs.some(p => p.to < p.from);
-const offered = new Set();   // "once per Advance": a Reaction is offered once a turn for the same mover
+const offered = new Set();   // once per Move Action: a Reaction is offered once for each Move Action of the same mover
 /** A creature moved (not an Evade, not a Forced Movement): "an enemy moves closer" and "an enemy moves (or stands up)". */
 export function moveMoment(doc, origin, dest, { stand = false, before = null } = {}) {
   (async () => {
@@ -460,7 +457,9 @@ export function moveMoment(doc, origin, dest, { stand = false, before = null } =
     if (!actor || !game.combat?.started) return;
     const size = { width: doc.width, height: doc.height, elevation: doc.elevation };
     const fromAt = { ...size, x: origin?.x ?? doc.x, y: origin?.y ?? doc.y }, toAt = { ...size, x: dest?.x ?? doc.x, y: dest?.y ?? doc.y };
-    const turn = `${doc.id}|${game.combat.round}|${game.combat.turn}`;
+    // v0.0.274 (Lucas; the book: "You can react only once to the same Action"): once per Reaction for each Move Action (a new Advance offers again)
+    const cbt = game.combat.combatants?.find?.(x => x.tokenId === doc.id);
+    const turn = `${doc.id}|${game.combat.round}|${game.combat.turn}|${moveActionOf(cbt?.id)}`;
     const sideToks = disp => (canvas.tokens?.placeables ?? []).filter(t => t.actor && !t.document.hidden && Number(t.document.disposition ?? 0) === Number(disp ?? 0) && t.document.id !== doc.id);
     const ev = {
       kinds: stand ? ["enemyMoves"] : ["enemyCloser", "enemyMoves"], subjects: [party(actor, toAt)], source: null, at: { enemyMoves: fromAt, enemyCloser: toAt },

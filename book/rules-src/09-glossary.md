@@ -77,7 +77,7 @@
 | [[Frequency\|**Frequency**]] | How often an Action can be used. |
 | [[Effect Timing\|**General Effects**]] | The Effects row of an Action. They happen on a Tier 2 or 3 result. |
 | [[Grunts\|**Grunt**]] | An NPC role with CV 50: about 24 Health at Stage 1, dies to about 1 PC turn. |
-| [[Guard\|**Guard**]] | A buffer written Guard N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take. The Guard of unspent AP adds to it and ends when you regain AP. |
+| [[Guard\|**Guard**]] | A buffer written Guard N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take. The Guard of unspent AP adds to it and lasts 1 round. |
 | [[Gun\|**Gun**]] | A trait: the Action needs a Firearm (a pistol, a musket). |
 | [[Class Actions, Picks and the Repertoire\|**Hallmark Action**]] | A choice of two class Actions at level 1; you take one. |
 | [[Class Actions, Picks and the Repertoire\|**Hallmark Reaction**]] | A choice of two class Reactions at level 1; you take one. |
