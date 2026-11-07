@@ -161,6 +161,22 @@ export function targetLineHtml(m, view = FULL_VIEW, { locked = false } = {}) {
   const btn = view.author && !locked && t.retarget !== false ? `<button type="button" class="cc-icon" data-twod12="${esc(t.retargetKind ?? "retargetAction")}" aria-label="Target the selected tokens" title="Target the selected tokens"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i></button>` : "";
   return `<div class="cc-tline"><span>${bits}${bits ? " " : ""}<span aria-hidden="true">→</span> <b>${names}</b></span>${btn}</div>`;
 }
+/**
+ * v0.0.285 (Lucas, after v0.0.284): the attack card's target goes to the bottom, beside its buttons, as on the damage message: the top keeps
+ * "Targets ✦ Distance" (the area button for an Area Action); the bottom row has the retarget button, "→ the target" and Damage / Card.
+ */
+export function metaLineHtml(m) {
+  const t = m.tline ?? {}, star = '<span class="cc-star" aria-hidden="true">\u2726</span>';
+  const bits = [t.area ? t.area : t.targets ? esc(t.targets) : "", t.dist ? esc(t.dist) : ""].filter(Boolean).join(` ${star} `);
+  return bits ? `<div class="cc-tline meta"><span>${bits}</span></div>` : "";
+}
+export function footHtml(m, view = FULL_VIEW) {
+  const t = m.tline ?? {}, n = t.names ?? [];
+  const names = n.length === 1 ? `<b class="cc-tname">${esc(n[0])}</b>` : n.length ? `<b class="cc-tname" title="${esc(n.join(", "))}">${n.length} targets</b>` : '<span class="cc-muted">No target</span>';
+  const re = view.author && !m.locked && t.retarget !== false ? `<button type="button" class="cc-icon" data-twod12="${esc(t.retargetKind ?? "retargetAction")}" aria-label="Target the selected tokens" title="Target the selected tokens"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i></button>` : "";
+  const dmg = m.hasDamage ? '<button type="button" class="cc-btn small primary" data-twod12="rollDamage"><i class="fa-solid fa-dice" aria-hidden="true"></i> Damage</button>' : "";
+  return `<hr class="cc-hr"><div class="cc-foot">${re}<span class="cc-ftgt"><span aria-hidden="true">\u2192</span> ${names}</span>${dmg}<button type="button" class="cc-btn small" data-twod12="ccCard">Card</button></div>`;
+}
 const designerFoot = (lines, view) => (view.designer && lines.filter(Boolean).length ? `<div class="cc-designer">${lines.filter(Boolean).join("<br>")}</div>` : "");
 const playerFoot = txt => `<div class="cc-pfoot">${esc(txt)}</div>`;
 
@@ -184,12 +200,12 @@ const critLine = (m, rows, hide) => {
 };
 export function attackCardHtml(m, view = FULL_VIEW) {
   const hide = view.hideDef, rows = m.rows ?? [], one = rows.length <= 1;
-  const btns = `<div class="cc-btns">${m.hasDamage ? '<button type="button" class="cc-btn primary" data-twod12="rollDamage"><i class="fa-solid fa-dice" aria-hidden="true"></i> Damage</button>' : ""}<button type="button" class="cc-btn" data-twod12="ccCard">Card</button></div>`;
+  const btns = footHtml(m, view);
   const effects = m.effectsHtml && rows.some(r => r.tier >= (m.effectsFrom ?? 2)) ? `${divider(1)}<div class="cc-effect">${m.effectsHtml}</div>` : "";
   const flavor = m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "";
   const des = designerFoot([...(m.designer?.odds ?? []).map(o => `Odds${o.name ? ` (${esc(o.name)})` : ""}: ${esc(o.text)}`), m.designer?.ruler ? `Ruler: ${esc(m.designer.ruler)}` : "", m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
   const pf = hide ? playerFoot("Player view · enemy Defenses hidden by the GM") : "";
-  const head = `${headHtml(m)}${targetLineHtml(m, view, { locked: m.locked })}${m.setupHtml ?? ""}`;
+  const head = `${headHtml(m)}${metaLineHtml(m)}${m.setupHtml ?? ""}`;
   if (one) {
     const r = rows[0];
     const body = `<div class="cc-body">${stampHtml(r, { hide })}<div class="cc-main">${ladderHtml(r, { hide, id: "r0" })}${breakdownHtml(r, { hide, id: "r0" })}<div class="cc-outcome">${outcomeHtml(m.outcomes?.[r.tier])}</div>${critLine(m, rows, hide)}${effects}</div></div>`;
@@ -360,7 +376,8 @@ export function damageCardHtml(m, view = FULL_VIEW) {
     if (ht) return `<div class="cc-trow"><span class="cc-cname">${esc(r.name)}</span><span class="cc-rmods">${r.applied ? stateChip(r.applied.state) : ""}</span><span class="cc-muted">${r.applied ? "✓ Applied" : "Waiting for the GM"}</span></div>`;
     if (r.applied) {
       const f = r.applied.factor ?? 1, adj = ["1", "0.5", "2"].map((k, j) => `<button type="button" class="cc-adj${String(f) === k ? " on" : ""}" data-twod12="ccAdjust" data-row="${i}" data-factor="${k}">${["Full", "Half", "Double"][j]}</button>`).join("");
-      return `<div class="cc-trow done"><span class="cc-cname">${esc(r.name)}</span><span class="cc-took">${tookTxt(r.applied.took ?? {})}</span>${stateChip(r.applied.state)}${view.author ? `<button type="button" class="cc-btn small" data-twod12="ccUndo" data-row="${i}">✓ Undo</button>` : ""}${view.author ? `<div class="cc-adjrow">${adj}</div>` : ""}</div>`;
+      // v0.0.285 (Lucas): the applied row as compact as a pending one: "Took …" under the name, Full / Half / Double on demand
+      return `<div class="cc-trow done"><span class="cc-nblk"><span class="cc-cname">${esc(r.name)}</span><span class="cc-took">${tookTxt(r.applied.took ?? {})} ${stateChip(r.applied.state)}</span></span>${view.author ? `<button type="button" class="cc-icon small" data-cc-more="${i}" aria-expanded="false" aria-label="Full, Half or Double" title="Full, Half or Double"><i class="fa-solid fa-sliders" aria-hidden="true"></i></button><button type="button" class="cc-btn small" data-twod12="ccUndo" data-row="${i}">✓ Undo</button><div class="cc-adjrow ondemand">${adj}</div>` : ""}</div>`;
     }
     const mods = (r.mods ?? []).map(x => (x.kind === "immune" ? `<span class="cc-minus">${esc(x.label)}</span>` : modTxt(x.v, x.label))).join(" ");
     const adj = view.author ? `<div class="cc-adjrow ondemand">${["1", "0.5", "2"].map((k, j) => `<button type="button" class="cc-adj${k === "1" ? " on" : ""}" data-twod12="ccApply" data-row="${i}" data-factor="${k}">${["Full", "Half", "Double"][j]}</button>`).join("")}</div>` : "";
@@ -379,7 +396,7 @@ export function damageCardHtml(m, view = FULL_VIEW) {
   const all = view.author && !ht && pending > 1 ? `<div class="cc-applyall"><button type="button" class="cc-btn primary" data-twod12="ccApplyAll">Apply all</button>${rows.some(r => !r.applied && r.choice) ? '<span class="cc-muted">skips rows with a choice</span>' : ""}</div>` : "";
   const des = designerFoot([m.designer ? `Avg ${m.designer.avg} · this total or more: ${m.designer.atLeast}%` : ""], view);
   const pf = ht ? playerFoot("Player view · target details hidden by the GM") : "";
-  return `<div class="cc-card cc-dmg"><div class="cc-body">${stamp}<div class="cc-main"><div class="cc-dhead"><b class="cc-name">${esc(m.name)}</b><span class="cc-muted">Damage</span><span class="cc-nl${m.nl ? " on" : ""}">${m.nl ? "Nonlethal" : "Lethal"}</span></div>${body}${all}${noTgt}</div></div>${des}${pf}</div>`;
+  return `<div class="cc-card cc-dmg"><div class="cc-body">${stamp}<div class="cc-main"><div class="cc-dhead"><b class="cc-name">${esc(m.name)}</b><span class="cc-dtags"><span class="cc-muted">Damage</span><span class="cc-nl${m.nl ? " on" : ""}">${m.nl ? "Nonlethal" : "Lethal"}</span></span></div>${body}${all}${noTgt}</div></div>${des}${pf}</div>`;
 }
 const poolLinesSummary = comps => {
   const by = new Map();

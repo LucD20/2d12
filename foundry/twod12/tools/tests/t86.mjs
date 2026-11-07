@@ -161,7 +161,7 @@ whirl.system.vs = "body"; whirl.system.areaCfg.size = 5; whirl.system.area = "5 
 const cardC = await run("six Skeleton Captains, dice 6 and 7", [6, 7]);
 console.log("dialog tiles:", [...dialogContent.matchAll(/class="ttile[^"]*" data-tg="[^"]+" data-name="([^"]+)"/g)].map(m => m[1]).join(" | "), "| numbers on the tiles:", [...dialogContent.matchAll(/class="tnum">(\d+)</g)].map(m => m[1]).join(","), "| a dots holder on each:", (dialogContent.match(/class="tdots"/g) || []).length, "| a caption:", /class="tcap"/.test(dialogContent), "| the old per-tile name and DC text is gone:", !/class="tn"/.test(dialogContent));
 console.log("rows on the card (one per creature):", (cardC.content.match(/class="cc-crow"/g) || []).length, "| Tier groups:", strip((cardC.content.match(/<div class="cc-groups">[\s\S]*?<\/div><\/div>/) ?? [""])[0]).slice(0, 120));
-console.log("targets line:", strip((cardC.content.match(/<div class="cc-tline">[\s\S]*?<\/div>/) ?? [""])[0]));
+console.log("targets line (v0.0.285: at the bottom, beside the buttons):", strip((cardC.content.match(/<div class="cc-foot">[\s\S]*?<\/div>/) ?? [""])[0]), "| the top keeps the area:", strip((cardC.content.match(/<div class="cc-tline meta">[\s\S]*?<\/div>/) ?? [""])[0]));
 chat.length = 0; script = [];
 await A.rollDamage({ getFlag: (s, k) => cardC.flags[s][k], setFlag: async () => {} });
 const dcC = chat.find(m => m.flags?.twod12?.ccDmg);

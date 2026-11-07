@@ -2673,3 +2673,16 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat.cc .cc-nchip { font-size: 11px; font-weight: 600; background: #fbf7ee; border: 1px solid var(--cc-line); border-radius: 10px; padding: 0 7px; white-space: nowrap; }
 /* v0.0.284: Foundry gives every button a fixed height: the cards' block buttons (pool lines, the Save's result row, the ladder, the stamp) take their content's */
 .twod12.chat.cc .cc-card :is(.cc-pools, .cc-srow, .cc-ladder, .cc-stamp) { height: auto; line-height: 1.35; }
+/* v0.0.285 (Lucas tested v0.0.284): the attack card's target at the bottom beside its buttons; compact applied rows; the damage header on one line */
+.twod12.chat.cc .cc-tline.meta { grid-template-columns: 1fr; }
+.twod12.chat.cc .cc-hr { border: 0; border-top: 1px solid var(--cc-line); margin: 7px 0 5px; height: 0; }
+.twod12.chat.cc .cc-foot { display: flex; align-items: center; gap: 6px; }
+.twod12.chat.cc .cc-ftgt { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.twod12.chat.cc .cc-foot .cc-btn { flex: none; min-height: 26px; height: 26px; }
+.twod12.chat.cc .cc-trow.done { flex-wrap: wrap; }
+.twod12.chat.cc .cc-nblk { display: flex; flex-direction: column; flex: 1 1 auto; min-width: 0; }
+.twod12.chat.cc .cc-nblk .cc-took { font-size: 11px; color: var(--cc-mute); display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.twod12.chat.cc .cc-dhead { display: flex; align-items: flex-start; gap: 6px; }
+.twod12.chat.cc .cc-dhead .cc-name { flex: 1 1 auto; min-width: 0; white-space: normal; }
+.twod12.chat.cc .cc-dtags { flex: none; display: flex; align-items: center; gap: 5px; white-space: nowrap; margin-top: 2px; }
+.twod12.chat.cc .cc-dtags .cc-nl { margin-left: 0; }

@@ -1,7 +1,7 @@
 targets chosen by the area: Goblin, Lonny, Nari
 notes: (none)
 chips offered in the dialog: Actor.Nari|pr:0* syn:cover|Actor.Lonny*
-card: Whirlwind Encounter · 2 AP Weapon Melee Area Self Strike @Template[emanation|distance:5|targets:all|self:no|at:self|quick:yes] → 3 targets 2d12 6 7 +2 Modifier 2 Nari AD 11 · 1 Boon 16 ≤10 11–17 18+ 2d12 6 7 Boon · Bane 2 +1 Boon · Prone Modifiers +2 Weapon 16 vs AD 11 Tier 2 2 Lonny AD 11 · 2 Banes 14 ≤10 11–17 18+ 2d12 6 7 Boon · Bane 1 +0 Bane · Medium cover 2 −1 Bane · Medium cover Modifiers +2 Weapon 14 vs AD 11 Tier 2 2 Goblin AD 11 15 ≤10 11–17 18+ 2d12 6 7 Modifiers +2 Weapon 15 vs AD 11 Tier 2 Tier 2 Nari Lonny Goblin Vigor 2 Sl Damage Card
+card: Whirlwind Encounter · 2 AP Weapon Melee Area Self Strike @Template[emanation|distance:5|targets:all|self:no|at:self|quick:yes] 2d12 6 7 +2 Modifier 2 Nari AD 11 · 1 Boon 16 ≤10 11–17 18+ 2d12 6 7 Boon · Bane 2 +1 Boon · Prone Modifiers +2 Weapon 16 vs AD 11 Tier 2 2 Lonny AD 11 · 2 Banes 14 ≤10 11–17 18+ 2d12 6 7 Boon · Bane 1 +0 Bane · Medium cover 2 −1 Bane · Medium cover Modifiers +2 Weapon 14 vs AD 11 Tier 2 2 Goblin AD 11 15 ≤10 11–17 18+ 2d12 6 7 Modifiers +2 Weapon 15 vs AD 11 Tier 2 Tier 2 Nari Lonny Goblin Vigor 2 Sl → 3 targets Damage Card
 flags: tier 2 | results: ["Nari: tier 2","Lonny: tier 2","Goblin: tier 2"] | targets: ["Nari","Lonny","Goblin"]
 dice in the message: 4
 shared dice shown: boon dice - | bane dice -
@@ -32,9 +32,9 @@ no target: rows per creature: 0 | one stamp and one ladder (one target): true | 
 --- six Skeleton Captains, dice 6 and 7: boon dice -, bane dice -
 dialog tiles: Yours | Skeleton Captain 1 | Skeleton Captain 2 | Skeleton Captain 3 | Skeleton Captain 4 | Skeleton Captain 5 | Skeleton Captain 6 | numbers on the tiles: 1,2,3,4,5,6 | a dots holder on each: 7 | a caption: true | the old per-tile name and DC text is gone: true
 rows on the card (one per creature): 6 | Tier groups: Tier 2 Skeleton Captain 1 Skeleton Captain 2 Skeleton Captain 3 Skeleton Captain 4 Skeleton Captain 5 Skeleton Captain 6
-targets line: @Template[emanation|distance:5|targets:all|self:no|at:self|quick:yes] → 6 targets
+targets line (v0.0.285: at the bottom, beside the buttons): → 6 targets Damage Card | the top keeps the area: @Template[emanation|distance:5|targets:all|self:no|at:self|quick:yes]
 damage: one card with 6 rows, named: Skeleton Captain 1, Skeleton Captain 2, Skeleton Captain 3, Skeleton Captain 4, Skeleton Captain 5, Skeleton Captain 6 | Apply all: true
-size of the roll card: about 9734 characters for 6 creatures (one row), against 7450 for 3
+size of the roll card: about 9929 characters for 6 creatures (one row), against 7558 for 3
 gridless scene: Whirlwind still rolls: true 
 dots: "" | g g r | capped at 5 each: 5 5 | never negative: ""
 captions: {"name":"Skeleton Captain 2","detail":"DC 13 · 2 Banes"} {"name":"Nari","detail":"DC 17 · 1 Boon"} {"name":"Goblin","detail":"DC 20"} {"name":"Lonny","detail":"DC 15 · 3 Boons · 1 Bane"}
