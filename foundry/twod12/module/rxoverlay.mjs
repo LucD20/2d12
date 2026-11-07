@@ -88,7 +88,7 @@ function pin(n, size) {
 }
 export function draw() {
   if (!globalThis.canvas?.ready || !globalThis.PIXI) return;
-  if (!layer || layer.destroyed) { layer = new PIXI.Container(); layer.name = "twod12-rxoverlay"; layer.eventMode = "none"; (canvas.interface ?? canvas.stage).addChild(layer); }
+  if (!layer || layer.destroyed) { layer = new PIXI.Container(); layer.name = "twod12-rxoverlay"; layer.eventMode = "none"; layer.zIndex = 9000; const host = canvas.interface ?? canvas.stage; host.sortableChildren = true; host.addChild(layer); }   // v0.0.278 (Lucas: under some tokens' frames): drawn above the tokens' layer
   for (const c of layer.removeChildren()) c.destroy?.({ children: true });
   if (!overlayOn() || !shown.size) return;
   const gs = canvas.grid?.size ?? 100, fs = Math.max(13, Math.round(gs * 0.2));

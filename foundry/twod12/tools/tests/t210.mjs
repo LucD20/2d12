@@ -11,9 +11,9 @@ globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class
 const emitted = [], created = [], settings = [];
 const users = [{ id: "gm", isGM: true, active: true }, { id: "p1", isGM: false, active: true }, { id: "p2", isGM: false, active: true }];
 globalThis.Hooks = { on() {} };
-globalThis.game = { settings: { get: (ns, k) => ({ reactionTimerOn: true, reactionTimer: 1 }[k] ?? true), register: (ns, k, d) => settings.push([k, d]) }, user: users[0], users: Object.assign([...users], { get: id => users.find(u => u.id === id) }), socket: { emit: (ch, d) => emitted.push(d) }, combat: null, messages: { contents: [] } };
+globalThis.game = { settings: { get: (ns, k) => ({ reactionTimerOn: true, reactionTimer: 1 }[k] ?? true), register: (ns, k, d) => settings.push([k, d]) }, user: users[0], users: Object.assign([...users], { get: id => users.find(u => u.id === id) }), socket: { emit: (ch, d) => emitted.push(d) }, combat: null, messages: { get contents() { return created; } } };
 let updates = 0;
-globalThis.ChatMessage = { create: async d => { const m = { ...d, id: `m${created.length}`, flags: d.flags, update: async u => { updates++; if (u.content) m.content = u.content; }, getFlag: (ns, k) => m.flags?.[ns]?.[k] }; created.push(m); return m; } };
+globalThis.ChatMessage = { create: async d => { const m = { ...d, id: `m${created.length}`, flags: d.flags, update: async u => { updates++; if (u.content) m.content = u.content; }, delete: async () => { const k = created.indexOf(m); if (k >= 0) created.splice(k, 1); m.deleted = true; }, getFlag: (ns, k) => m.flags?.[ns]?.[k] }; created.push(m); return m; } };
 const src = f => fs.readFileSync(ROOT + f, "utf8");
 const M = await import(ROOTURL + "module/moment.mjs");
 const O = await import(ROOTURL + "module/rxoverlay.mjs");
@@ -125,12 +125,16 @@ await tick();
 run = emitted.find(e => e.type === "rxRun");
 console.log("Covering Shot resolves first:", run.data.itemId);
 ban.actor.system.atZero = true;   // its shot took the Bandit Down
+await ChatMessage.create({ content: "the shot's roll card", flags: {} });   // a card lands under the live message (v0.0.278)
 M.onSocket({ type: "rxRunDone", reqId: run.reqId, ok: true, tier: 3 });
 await tick();
 run = emitted.filter(e => e.type === "rxRun")[1];
 console.log("Shield of Faith only pays its AP:", run.data.spend === true, run.data.itemId);
 M.onSocket({ type: "rxRunDone", reqId: run.reqId, ok: true });
 const res2 = await wait2;
+const moved = created.find(m => m.flags?.twod12?.rx?.id === rx2.id);
+console.log("v0.0.278: resolved under the card: a new message at the bottom", moved !== msg2 && created.at(-1) === moved, "| the live one deleted:", !!msg2.deleted, "| one message for the moment:", created.filter(m => m.flags?.twod12?.rx?.id === rx2.id).length);
+msg2.content = moved.content;
 console.log("the damage never lands:", res2.never, "| the chips:", [...msg2.content.matchAll(/rx-out (\w+)">([^<]*(?:<s>[^<]*<\/s>[^<]*)?)/g)].map(m => `${m[1]}:${txt(m[2])}`).join(" ; "), "| struck through:", (msg2.content.match(/<s>/g) ?? []).length >= 2);
 const dm = src("module/damage.mjs");
 console.log("damage.mjs: never lands empties the damage:", dm.includes("if (r.never) { for (const p of [\"B\", \"M\"]) for (const k of [\"l\", \"n\"]) a[p][k] = 0; await M.noteLanded(rxIds, { never: true, final: 0 }); return 0; }"), "| the final damage and the protection written back:", dm.includes("await M.noteLanded(rxIds[0], { final, blocked: Math.min(rxGained, (Number(a.reduced) || 0) + (Number(g.taken) || 0)) });"));
@@ -181,3 +185,8 @@ delete globalThis.foundry.data;
 const T = await import(ROOTURL + "module/ticker.mjs");
 game.combats = { has: id => id === "live" };
 console.log("a Turn Log line for a deleted combat is skipped:", await T.logEvent({ parent: { id: "gone" }, getFlag: () => [] }, { k: "move" }), "| ticker.mjs checks it:", src("module/ticker.mjs").includes("!game.combats.has(c.parent.id)) return null;"));
+
+console.log("--- v0.0.278 (Lucas tested v0.0.277)");
+console.log("the snapshot's positions are a list (a uuid key would be split by Foundry's flags):", Array.isArray(rx.snap.pos), rx.snap.pos.map(p => p.u.split(".").at(-1)).join(","), "| drawn from it:", (M.snapshotSvg(rx).match(/<circle /g) ?? []).length, "circles");
+const mo3 = src("module/moment.mjs"), ov = src("module/rxoverlay.mjs");
+console.log("resolved: posted again at the bottom (the live copy deleted):", mo3.includes("L.msg = await toBottom(L.msg, st);") && mo3.includes("await msg.delete();"), "| again under a late roll card:", mo3.includes("F2.msg = await toBottom(F2.msg, F2.st);"), "| the overlay above the tokens:", ov.includes("layer.zIndex = 9000;"));

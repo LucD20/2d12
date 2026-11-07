@@ -38,6 +38,7 @@ the frozen stack: 1 NA Bulwark of Faith → Krysta −5 | 2 LA Covering Shot →
 --- the edge case: the attacker drops before the rest resolve
 Covering Shot resolves first: cs
 Shield of Faith only pays its AP: true sof
+v0.0.278: resolved under the card: a new message at the bottom true | the live one deleted: true | one message for the moment: 1
 the damage never lands: true | the chips: never:never lands ; hit:Down ; spent:1R spent ; never:never lands | struck through: true
 damage.mjs: never lands empties the damage: true | the final damage and the protection written back: true
 --- result chips
@@ -61,3 +62,6 @@ the movement moment uses the path: true | closer on any square entered: true | a
 removing a key: the old syntax without Foundry: {"flags.twod12.-=ignoreTerrain":null}
 with V14's ForcedDeletion: flags.twod12.ignoreTerrain FD | no "-=" left in module/: true
 a Turn Log line for a deleted combat is skipped: null | ticker.mjs checks it: true
+--- v0.0.278 (Lucas tested v0.0.277)
+the snapshot's positions are a list (a uuid key would be split by Foundry's flags): true pal,kry,arc,ban | drawn from it: 8 circles
+resolved: posted again at the bottom (the live copy deleted): true | again under a late roll card: true | the overlay above the tokens: true

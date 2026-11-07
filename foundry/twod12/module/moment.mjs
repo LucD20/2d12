@@ -205,7 +205,9 @@ function liveHtml(st) {
 
 /** Pure: the snapshot's layout (about 258 × 110): the tokens, the lines and the labels, from the positions frozen when it resolved. */
 export function snapshotLayout(st, W = 258, H = 110) {
-  const pos = st.snap?.pos ?? {}, gs = st.snap?.gs || 100, pts = Object.values(pos);
+  // v0.0.278 (Lucas: the snapshot was empty): the positions are a list ([{ u, x, y }]): a uuid as an object key ("Scene.x.Token.y") is split
+  // into nested objects when Foundry saves the flags. An object (tests, older states) is still read.
+  const raw = st.snap?.pos ?? {}, pos = Array.isArray(raw) ? Object.fromEntries(raw.map(p => [p.u, p])) : raw, gs = st.snap?.gs || 100, pts = Object.values(pos).filter(p => Number.isFinite(p?.x) && Number.isFinite(p?.y));
   if (!pts.length) return null;
   const minX = Math.min(...pts.map(p => p.x)) - gs * 0.7, maxX = Math.max(...pts.map(p => p.x)) + gs * 0.7, minY = Math.min(...pts.map(p => p.y)) - gs * 0.7, maxY = Math.max(...pts.map(p => p.y)) + gs * 0.7;
   const k = Math.min(W / Math.max(1, maxX - minX), H / Math.max(1, maxY - minY), 0.4), ox = (W - (maxX - minX) * k) / 2, oy = (H - (maxY - minY) * k) / 2;
@@ -415,7 +417,7 @@ function freezePositions(st) {
   put(st.base?.face?.uuid); put(st.base?.target?.uuid);
   const s = st.base?.start, gs = globalThis.canvas?.grid?.size ?? 100;
   if (s) { pos.start = { x: Math.round(s.x + (s.w ?? 1) * gs / 2), y: Math.round(s.y + (s.h ?? 1) * gs / 2) }; st.base.startUuid = "start"; }
-  st.snap = { pos, gs, scene: globalThis.canvas?.scene?.id ?? "" };
+  st.snap = { pos: Object.entries(pos).map(([u, p]) => ({ u, x: p.x, y: p.y })), gs, scene: globalThis.canvas?.scene?.id ?? "" };
 }
 /** Every row answered: the used ones resolve last in, first out, each on its owner's client, then the moment's caller goes on. */
 async function resolveStack(L) {
@@ -445,7 +447,9 @@ async function resolveStack(L) {
   if (st.hold && st.base?.face?.actorUuid && sourceDown(st)) st.base.never = true;
   st.resolving = false; st.done = true; st.resolvedAt = Date.now();
   freezePositions(st);
-  await redraw(L);   // v0.0.275 (Lucas): the same message, edited in place (no second post): one line that unfolds
+  // v0.0.278 (Lucas: "after its resolve, put the chat message at the bottom"): the resolved line is posted again under the Reactions' cards
+  // and the live message is removed (still one message for the moment)
+  L.msg = await toBottom(L.msg, st);
   live.delete(st.id);
   finished.set(st.id, { st, msg: L.msg });
   if (finished.size > 20) finished.delete(finished.keys().next().value);
@@ -491,6 +495,17 @@ export function lateTier(st, card, now = Date.now()) {
   }
   return hits;
 }
+/** v0.0.278: the message posted again at the bottom of the chat (its old copy deleted); in place when it is already the last one. */
+async function toBottom(msg, st) {
+  const last = game.messages?.contents?.at?.(-1);
+  if (!msg || last?.id === msg.id) { try { await msg?.update({ content: rxCardHtml(st), [`flags.${F}.rx`]: st }); } catch (e) { console.warn("twod12 | Reactions message", e); } return msg; }
+  let nmsg = msg;
+  try {
+    nmsg = await ChatMessage.create({ content: rxCardHtml(st), flags: { [F]: { rx: st } } });
+    await msg.delete();
+  } catch (e) { console.warn("twod12 | Reactions message", e); try { await msg.update({ content: rxCardHtml(st), [`flags.${F}.rx`]: st }); } catch (x) { /* */ } return msg; }
+  return nmsg ?? msg;
+}
 async function rewrite(F2) { try { await F2.msg.update({ content: rxCardHtml(F2.st), [`flags.${F}.rx`]: F2.st }); } catch (e) { console.warn("twod12 | Reactions message", e); } }
 export function registerLateResults() {
   Hooks.on("createChatMessage", msg => {
@@ -499,7 +514,8 @@ export function registerLateResults() {
       const hits = lateTier(F2.st, msg);
       if (!hits.length) continue;
       for (const h of hits) { h.r.out = { ...(h.r.out ?? {}), tier: h.tier, crit: h.crit }; if (h.r.result === "failed") h.r.result = "done"; }
-      rewrite(F2);
+      // v0.0.278: under the roll card that gave the result
+      setTimeout(async () => { F2.msg = await toBottom(F2.msg, F2.st); }, 300);
       return;
     }
   });

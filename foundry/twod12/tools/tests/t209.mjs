@@ -10,8 +10,8 @@ globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class
 const emitted = [], created = [];
 const users = [{ id: "gm", isGM: true, active: true }, { id: "p1", isGM: false, active: true }, { id: "p2", isGM: false, active: true }];
 globalThis.Hooks = { on() {} };
-globalThis.game = { settings: { get: (ns, k) => ({ reactionTimerOn: true, reactionTimer: 1 }[k] ?? true) }, user: users[0], users: Object.assign([...users], { get: id => users.find(u => u.id === id) }), socket: { emit: (ch, d) => emitted.push(d) }, combat: null, messages: { contents: [] } };
-globalThis.ChatMessage = { create: async d => { const m = { ...d, id: `m${created.length}`, flags: d.flags, update: async u => { if (u.content) m.content = u.content; }, getFlag: (ns, k) => m.flags?.[ns]?.[k] }; created.push(m); return m; } };
+globalThis.game = { settings: { get: (ns, k) => ({ reactionTimerOn: true, reactionTimer: 1 }[k] ?? true) }, user: users[0], users: Object.assign([...users], { get: id => users.find(u => u.id === id) }), socket: { emit: (ch, d) => emitted.push(d) }, combat: null, messages: { get contents() { return created; } } };
+globalThis.ChatMessage = { create: async d => { const m = { ...d, id: `m${created.length}`, flags: d.flags, update: async u => { if (u.content) m.content = u.content; }, delete: async () => { const k = created.indexOf(m); if (k >= 0) created.splice(k, 1); m.deleted = true; }, getFlag: (ns, k) => m.flags?.[ns]?.[k] }; created.push(m); return m; } };
 const src = f => fs.readFileSync(ROOT + f, "utf8");
 const M = await import(ROOTURL + "module/moment.mjs");
 const { TWOD12 } = await import(ROOTURL + "module/config.mjs");
