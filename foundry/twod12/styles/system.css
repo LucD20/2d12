@@ -2694,3 +2694,17 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat.cc .cc-card .cc-sres .cc-stotal { font-size: 15px; }
 .twod12.chat.cc .cc-srow.many .cc-who { margin-bottom: 2px; }
 .twod12.chat.cc .cc-srow.t3 .cc-nchip, .twod12.chat.cc .cc-srow.t1.hit .cc-nchip { color: var(--cc-ink); }
+/* v0.0.287 (Lucas tested v0.0.286): the pills and the Frequency chip squared like the trait chips; the damage stamp with a band per Tier */
+.twod12.chat.cc .cc-pill, .twod12.chat.cc .cc-cost, .twod12.chat.cc .cc-nchip, .twod12.chat.cc .cc-stotal, .twod12.chat.cc .cc-tag, .twod12.chat.cc .cc-state { border-radius: 3px; }
+.twod12.chat.cc .cc-pill { min-width: 24px; height: 20px; padding: 0 5px; font-size: 11px; }
+.twod12.chat.cc .cc-pill.word { height: auto; }
+.twod12.chat.cc .cc-cost { padding: 1px 6px; font-size: 10.5px; }
+.twod12.chat.cc .cc-card .cc-stamp.dmg.multi { background: #e8dec8; color: var(--cc-ink); padding: 3px; gap: 3px; justify-content: flex-start; }
+.twod12.chat.cc .cc-card .cc-stamp.dmg.multi:hover { background: #dfd2b6; color: var(--cc-ink); }
+.twod12.chat.cc .cc-stamp.multi .cc-shd { margin-top: 2px; }
+.twod12.chat.cc .cc-sband { flex: 1 1 0; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 3px; padding: 3px 0; }
+.twod12.chat.cc .cc-sband b { font-size: 24px; }
+.twod12.chat.cc .cc-sband.t1 { background: var(--cc-t1); color: #fff; } .twod12.chat.cc .cc-sband.t2 { background: var(--cc-t2); color: var(--cc-t2i); }
+.twod12.chat.cc .cc-sband.t3 { background: var(--cc-t3); color: #fff; } .twod12.chat.cc .cc-sband.crit { background: var(--cc-crit); color: #fff; }
+.twod12.chat.cc .cc-sarrow { font-size: 11px; }
+.twod12.chat.cc .cc-save .cc-foot .cc-btn.primary { flex: none; }

@@ -77,7 +77,7 @@ export function stampHtml(r, { hide = false } = {}) {
   return `<div class="cc-stamp ${tierCls(r.tier, r.crit)}"><small>${r.crit ? "CRIT" : "TIER"}</small><b>${r.tier}</b>${line ? `<small class="cc-stl">${esc(line)}</small>` : ""}</div>`;
 }
 /** A small Tier pill (22px, the numeral) or a word pill ("Tier 2"). */
-export const tierPill = (tier, crit = false, word = false) => `<span class="cc-pill ${tierCls(tier, crit)}${word ? " word" : ""}">${word ? (crit ? "Critical" : `Tier ${tier}`) : tier}</span>`;
+export const tierPill = (tier, crit = false, word = false) => `<span class="cc-pill ${tierCls(tier, crit)}${word ? " word" : ""}">${word ? (crit ? "Critical" : `Tier ${tier}`) : `T${tier}`}</span>`;   // v0.0.287 (Lucas): "T1", squared like the trait chips
 
 /* ------------------------------------------------------------------ the roll breakdown */
 /** The Boon and Bane dice of a roll, one per line, each with its source ("Boon · Flanking"). r: { boonFaces, baneFaces, sources, manualBoons, manualBanes }. */
@@ -170,11 +170,11 @@ export function metaLineHtml(m) {
   const bits = [t.area ? t.area : t.targets ? esc(t.targets) : "", t.dist ? esc(t.dist) : ""].filter(Boolean).join(` ${star} `);
   return bits ? `<div class="cc-tline meta"><span>${bits}</span></div>` : "";
 }
-export function footHtml(m, view = FULL_VIEW) {
+export function footHtml(m, view = FULL_VIEW, { damage = "rollDamage", hasDamage = m.hasDamage, locked = m.locked } = {}) {   // v0.0.287: the Save card's too
   const t = m.tline ?? {}, n = t.names ?? [];
   const names = n.length === 1 ? `<b class="cc-tname">${esc(n[0])}</b>` : n.length ? `<b class="cc-tname" title="${esc(n.join(", "))}">${n.length} targets</b>` : '<span class="cc-muted">No target</span>';
-  const re = view.author && !m.locked && t.retarget !== false ? `<button type="button" class="cc-icon" data-twod12="${esc(t.retargetKind ?? "retargetAction")}" aria-label="Target the selected tokens" title="Target the selected tokens"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i></button>` : "";
-  const dmg = m.hasDamage ? '<button type="button" class="cc-btn small primary" data-twod12="rollDamage"><i class="fa-solid fa-dice" aria-hidden="true"></i> Damage</button>' : "";
+  const re = view.author && !locked && t.retarget !== false ? `<button type="button" class="cc-icon" data-twod12="${esc(t.retargetKind ?? "retargetAction")}" aria-label="Target the selected tokens" title="Target the selected tokens"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i></button>` : "";
+  const dmg = hasDamage ? `<button type="button" class="cc-btn small primary" data-twod12="${damage}"><i class="fa-solid fa-dice" aria-hidden="true"></i> Damage</button>` : "";
   return `<hr class="cc-hr"><div class="cc-foot">${re}<span class="cc-ftgt"><span aria-hidden="true">\u2192</span> ${names}</span>${dmg}<button type="button" class="cc-btn small" data-twod12="ccCard">Card</button></div>`;
 }
 const designerFoot = (lines, view) => (view.designer && lines.filter(Boolean).length ? `<div class="cc-designer">${lines.filter(Boolean).join("<br>")}</div>` : "");
@@ -244,14 +244,13 @@ export function saveCardHtml(m, view = FULL_VIEW) {
   const crows = one ? "" : `<div class="cc-crows">${cs.map((c, i) => `<div class="cc-crow save"><span class="cc-cname">${esc(c.name)}</span>${c.result
     ? `<button type="button" class="cc-sres t${c.result.tier}" data-cc-toggle="s${i}" aria-expanded="false" aria-label="${esc(`${c.name}: their Tier ${c.result.tier}, total ${c.result.total}. Show the roll`)}">${tierPill(c.result.tier)}<span class="cc-stotal">${c.result.total}</span></button>${breakdownHtml(c.result, { save: true, id: `s${i}` })}`
     : view.owns(c.uuid) ? rollBtn(i) : '<span class="cc-muted">Waiting\u2026</span>'}</div>`).join("")}</div>`;
-  const dmgBtn = '<div class="cc-btns"><button type="button" class="cc-btn primary" data-twod12="ccSaveDamage"><i class="fa-solid fa-dice" aria-hidden="true"></i> Damage</button></div>';
-  const action = one
-    ? (r ? (cs[0].hasDamage && !cs[0].damageDone ? dmgBtn : "") : view.owns(cs[0]?.uuid) ? `<div class="cc-btns">${rollBtn(0)}</div>` : `<div class="cc-muted cc-wait">Waiting for ${esc(cs[0]?.name ?? "the target")}'s ${esc(m.saveName)}\u2026</div>`)
-    : (cs.some(c => c.result && c.hasDamage && !c.damageDone) ? dmgBtn : "");
+  // v0.0.287 (Lucas): the target row at the bottom, with the Damage button, as on the attack card
+  const saveDmg = cs.some(c => c.result && c.hasDamage && !c.damageDone);
+  const action = one && !r ? (view.owns(cs[0]?.uuid) ? `<div class="cc-btns">${rollBtn(0)}</div>` : `<div class="cc-muted cc-wait">Waiting for ${esc(cs[0]?.name ?? "the target")}'s ${esc(m.saveName)}\u2026</div>`) : "";
   const trig = m.triggerHtml ? `${divider(1)}<div class="cc-trigger"><b>${esc(m.triggerLabel || "Trigger")}:</b> ${m.triggerHtml}</div>` : "";
   const flavor = m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "";
   const des = designerFoot([m.designer?.ruler ? `Ruler: ${esc(m.designer.ruler)}` : "", m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
-  return `<div class="cc-card cc-save${one ? "" : " many"}">${headHtml(m)}${targetLineHtml(m, view, { locked: anyRolled })}<div class="cc-savehead"><b>${esc(m.saveName)}</b><span class="cc-rule" aria-hidden="true"></span><span class="cc-badge">DC ${m.dc}</span></div><div class="cc-srows">${rows}</div>${crows}${trig}${flavor}${action}${des}</div>`;
+  return `<div class="cc-card cc-save${one ? "" : " many"}">${headHtml(m)}${metaLineHtml(m)}<div class="cc-savehead"><b>${esc(m.saveName)}</b><span class="cc-rule" aria-hidden="true"></span><span class="cc-badge">DC ${m.dc}</span></div><div class="cc-srows">${rows}</div>${crows}${action}${trig}${flavor}${footHtml(m, view, { damage: "ccSaveDamage", hasDamage: saveDmg, locked: anyRolled })}${des}</div>`;
 }
 
 /* ------------------------------------------------------------------ the damage arithmetic */
@@ -378,7 +377,10 @@ export const diceSummary = comps => [...new Set((comps ?? []).map(c => `${c.form
 export function damageCardHtml(m, view = FULL_VIEW) {
   const groups = m.groups ?? [], rows = m.rows ?? [], top = groups[0] ?? { tier: 0, comps: [] };
   const sum = cs => (cs ?? []).reduce((a, c) => a + (Number(c.total) || 0), 0);
-  const stamp = `<button type="button" class="cc-stamp dmg ${tierCls(top.tier || 1, top.crit)}" data-twod12="ccOpenSrc" aria-label="Open its roll card"><small>DAMAGE</small><b>${sum(top.comps)}</b>${top.tier ? `<small class="cc-stl">Tier ${top.tier} ↗</small>` : ""}</button>`;
+  // v0.0.287 (Lucas: several Tiers showed only the top one): the stamp holds every Tier's total, a band each in its Tier's color
+  const stamp = groups.length > 1
+    ? `<button type="button" class="cc-stamp dmg multi" data-twod12="ccOpenSrc" aria-label="Open its roll card"><small class="cc-shd">DAMAGE</small>${groups.map(g => `<span class="cc-sband ${tierCls(g.tier || 1, g.crit)}"><b>${sum(g.comps)}</b><small class="cc-stl">Tier ${g.tier}</small></span>`).join("")}<small class="cc-stl cc-sarrow">\u2197</small></button>`
+    : `<button type="button" class="cc-stamp dmg ${tierCls(top.tier || 1, top.crit)}" data-twod12="ccOpenSrc" aria-label="Open its roll card"><small>DAMAGE</small><b>${sum(top.comps)}</b>${top.tier ? `<small class="cc-stl">Tier ${top.tier} \u2197</small>` : ""}</button>`;
   const ht = view.hideTgt;
   const rowHtml = i => {
     const r = rows[i];

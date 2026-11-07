@@ -1,9 +1,10 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.286**. Tests: `node tools/tests/run.mjs` (209 tests, see the README; the next new test is t212). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.287**. Tests: `node tools/tests/run.mjs` (209 tests, see the README; the next new test is t212). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 ## Asked by Lucas, not built
+- [x] **v0.0.287 (Lucas tested v0.0.286):** the Save card's target row at the bottom, the stamp's Tier bands, squared chips (the changelog).
 - [x] **v0.0.286 (Lucas tested v0.0.285):** the Defense badge per creature; the new Save card with several creatures (Area Saves now included: gap (b) of v0.0.283 closed, except an [HT] area's repeated Save, which keeps the old card).
 - [x] **v0.0.285 (Lucas tested v0.0.284):** the attack card's target row at the bottom, compact applied damage rows, the damage header (the changelog).
 - [x] **v0.0.284 (Lucas tested v0.0.283):** the Critical row, riders, name chips, no "targeting" chat line, hover colors, pool totals, the breakdown's rows, the Modifier's subtype, the stamp's height (the changelog). **Not tried in Foundry:** the hover colors against Foundry's own button styles (checked against a stand-in only).
