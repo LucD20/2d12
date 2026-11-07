@@ -299,7 +299,8 @@ export async function collectReactions(ev) {
         const isSelf = sj.actor.uuid === actor.uuid;
         if (!sideOk(def.who, tk.document?.disposition, sj.token?.document?.disposition ?? sj.disposition, isSelf, item.system.momentSelf)) continue;
         const where = (def.move && ev.at?.[k]) || sj.at || sj.token;
-        const dist = isSelf ? 0 : where ? tokenDistance(tk, where) : Infinity;
+        // v0.0.277 (Lucas: a movement's Reaction sometimes wasn't offered): a movement is measured on every square of its path (an array)
+        const dist = isSelf ? 0 : Array.isArray(where) ? Math.min(Infinity, ...where.map(w => tokenDistance(tk, w))) : where ? tokenDistance(tk, where) : Infinity;
         if (range && dist > range) continue;
         if (!hit || dist < hit.dist) hit = { sj, dist };
       }
@@ -632,7 +633,8 @@ async function markBack(msgId) {
   else if (m.author?.id) game.socket.emit(SOCKET, { type: "rxBackMark", userId: m.author.id, msgId: m.id });
 }
 /** Pure: may this user answer this row from the card (its owner; the GM for a creature whose player has left). */
-export const answersHere = (st, r, user, isActive = id => true) => !!user && !!r && (r.answerer === user.id || (!!user.isGM && !isActive(r.answerer)));
+// v0.0.277 (Lucas: "the GM should not get deciding…, the GM should be able to pick"): the GM answers every row (as v0.0.274)
+export const answersHere = (st, r, user) => !!user && !!r && (r.answerer === user.id || !!user.isGM);
 /** Chat hook: Use and Pass only for the row's owner (the others see "deciding…"), Skip all others, the grips and Resolve only for the GM;
  *  the hover previews the line on the map, the GM drags the slabs; the timer ticks; the map overlay follows the message. */
 export function rxRender(msg, html) {
@@ -651,10 +653,9 @@ export function rxRender(msg, html) {
     if (st.base?.back && !st.base.back.used) { const doc = docSync(st.base.back.tokenUuid); if (!doc?.isOwner) el.querySelectorAll('[data-twod12="rxBack"]').forEach(b => b.remove()); }
     return;
   }
-  const active = id => !!game.users?.get?.(id)?.active;
   el.querySelectorAll(".rx-ctl, .rx-chs").forEach(c => {
     const r = st.rows.find(x => x.answerer === c.dataset.answerer) ?? { answerer: c.dataset.answerer };
-    if (answersHere(st, r, game.user, active)) c.querySelectorAll(".rx-deciding").forEach(d => d.remove());
+    if (answersHere(st, r, game.user)) c.querySelectorAll(".rx-deciding").forEach(d => d.remove());
     else { c.querySelectorAll("button").forEach(b => b.remove()); if (c.classList.contains("rx-chs")) c.remove(); }
   });
   el.querySelectorAll(".rx-grp").forEach(g => g.classList.toggle("mine", !!g.querySelector(".rx-chs")));
@@ -793,6 +794,8 @@ export function pathSquares(points, gs, w = 1, h = 1) {
   }
   return out;
 }
+/** v0.0.277: pure: the places of a movement's squares (as tokenDistance reads them: x, y in pixels and the token's size). */
+export const movePlaces = (points, gs, size = {}) => pathSquares(points, gs, size.width || 1, size.height || 1).map(p => ({ x: p.x, y: p.y, width: size.width || 1, height: size.height || 1, elevation: size.elevation ?? 0 }));
 const offered = new Set();   // once per Move Action: a Reaction is offered once for each Move Action of the same mover
 /** A creature moved (not an Evade, not a Forced Movement): "an enemy moves closer" and "an enemy moves (or stands up)". */
 export function moveMoment(doc, origin, dest, { stand = false, before = null, waypoints = null } = {}) {
@@ -805,9 +808,15 @@ export function moveMoment(doc, origin, dest, { stand = false, before = null, wa
     const cbt = game.combat.combatants?.find?.(x => x.tokenId === doc.id);
     const turn = `${doc.id}|${game.combat.round}|${game.combat.turn}|${moveActionOf(cbt?.id)}`;
     const sideToks = disp => (canvas.tokens?.placeables ?? []).filter(t => t.actor && !t.document.hidden && Number(t.document.disposition ?? 0) === Number(disp ?? 0) && t.document.id !== doc.id);
+    // v0.0.277 (Lucas: the trigger "didn't happen" when the mover walked past and away): the squares it left (Opportunity Attack: "would leave a
+    // square") and the squares it entered (Overwatch: "moves closer": any square nearer than where it started) along its whole path, not only
+    // where it started and stopped
+    const gsz = globalThis.canvas?.grid?.size ?? 100;
+    const sqs = movePlaces(waypoints?.length ? waypoints : [fromAt, toAt], gsz, size);
+    const left = stand ? [fromAt] : (sqs.length > 1 ? sqs.slice(0, -1) : [fromAt]), entered = sqs.length > 1 ? sqs.slice(1) : [toAt];
     const ev = {
-      kinds: stand ? ["enemyMoves"] : ["enemyCloser", "enemyMoves"], subjects: [party(actor, toAt)], source: null, at: { enemyMoves: fromAt, enemyCloser: toAt },
-      closer: tk => cameCloser(sideToks(tk.document.disposition).map(s => ({ from: tokenDistance(fromAt, s), to: tokenDistance(toAt, s) })))
+      kinds: stand ? ["enemyMoves"] : ["enemyCloser", "enemyMoves"], subjects: [party(actor, toAt)], source: null, at: { enemyMoves: left, enemyCloser: entered },
+      closer: tk => cameCloser(sideToks(tk.document.disposition).map(s => ({ from: tokenDistance(fromAt, s), to: Math.min(...entered.map(e => tokenDistance(e, s))) })))
     };
     const { rows, blocked } = await collectReactions(ev);
     const fresh = r => { const k = `${turn}|${r.actor.uuid}|${r.item.id}`; if (!stand && offered.has(k)) return false; offered.add(k); return true; };
@@ -838,7 +847,8 @@ export function registerMomentHooks() {
   Hooks.on("moveToken", (doc, movement) => {
     const m = moving.get(doc.id);
     if (!m) return;   // moved by another client: that client offers the moment
-    moving.delete(doc.id);
+    // v0.0.277: a movement Foundry splits into several updates (waypoints still pending) keeps its entry for the next part
+    if (!movement?.pending?.waypoints?.length) moving.delete(doc.id);
     if (m.forced || m.evading || !movement?.origin || !movement?.destination) return;
     const wp = movement.passed?.waypoints ?? null;
     moveMoment(doc, movement.origin, movement.destination, { before: m.before, waypoints: wp?.length ? [movement.origin, ...wp] : null });

@@ -6,6 +6,7 @@
 //   Action with Escalation 3) can be used while it is 3 and spends nothing. NPCs have none, except an Elite (the NPC sheet's switch: it starts at 1 and
 //   gains 1 a round like a PC; its phases, Bloodied and Strained, are by hand until R-Foundry 2).
 import { TWOD12 } from "./config.mjs";
+import { unset } from "./util.mjs";   // v0.0.277: removing a key without the legacy "-=" syntax
 const F = "twod12";
 export const ESC_MAX = TWOD12.escalation.max, ESC_MIN = TWOD12.escalation.min, ESC_MOMENTUM = TWOD12.escalation.momentum;
 
@@ -107,7 +108,7 @@ export async function startAtOne(combat, { momentum = hasMomentum() } = {}) {
     const to = a.type === "npc" ? ESC_MIN : lv;   // an Elite has no Momentum
     const upd = {};
     if (escalationOf(a) !== to) upd["system.escalation"] = to;
-    if (a.getFlag?.(F, "escUsed")) upd[`flags.${F}.-=escUsed`] = null;
+    if (a.getFlag?.(F, "escUsed")) Object.assign(upd, unset(`flags.${F}.escUsed`));
     if (Object.keys(upd).length) await a.update(upd);
     try { await Hooks.callAll?.("twod12.escalationChanged", a); } catch (e) { console.warn("twod12 | the rung's effects", e); }   // v0.0.249: Radiant Zeal at Escalation 1 from the start (twod12.mjs listens)
   }

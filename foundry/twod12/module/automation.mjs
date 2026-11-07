@@ -9,6 +9,7 @@ import { allEffects } from "./passives.mjs";
 import { effectOff } from "./escalation.mjs";
 import { matches } from "./effects.mjs";
 import { turnCycleBlocked } from "./usage.mjs";
+import { unset } from "./util.mjs";   // v0.0.277: removing a key without the legacy "-=" syntax
 const F = "twod12";
 
 /* ------------------------------------------------------------------ once per round */
@@ -267,15 +268,15 @@ export async function giveSettingsV207(items, actors, source = null) {
     if (it.type === "action") {
       const use = fl.fistsOnly || fl.basic === "fists" || it.name === "Pummel" ? "fists" : (fl.kick || it.name === "Leg Sweep" ? "kick" : "");
       if (use && !it.system?.weaponUse) upd["system.weaponUse"] = use;
-      if ("fistsOnly" in fl) upd["flags.twod12.-=fistsOnly"] = null;
-      if ("kick" in fl) upd["flags.twod12.-=kick"] = null;
+      if ("fistsOnly" in fl) Object.assign(upd, unset("flags.twod12.fistsOnly"));
+      if ("kick" in fl) Object.assign(upd, unset("flags.twod12.kick"));
     } else if (["feature", "talent"].includes(it.type)) {
       const have = (it.system?.toObject?.().settings ?? foundry.utils.deepClone(it.system?.settings ?? []));
       const add = (src.get(it.name) ?? []).filter(x => !have.some(h => h.type === x.type && (x.type !== "message" || h.msgWhen === x.msgWhen)));
       if ((fl.fistsThreaten || fl.fistsWeapon) && !have.some(h => h.type === "weaponprop") && !add.some(x => x.type === "weaponprop")) add.push(PROP);
       if (add.length) upd["system.settings"] = [...have, ...foundry.utils.deepClone(add)];
-      if ("fistsThreaten" in fl) upd["flags.twod12.-=fistsThreaten"] = null;
-      if ("fistsWeapon" in fl) upd["flags.twod12.-=fistsWeapon"] = null;
+      if ("fistsThreaten" in fl) Object.assign(upd, unset("flags.twod12.fistsThreaten"));
+      if ("fistsWeapon" in fl) Object.assign(upd, unset("flags.twod12.fistsWeapon"));
     }
     if (!Object.keys(upd).length) return;
     try { await it.update(upd); n++; } catch (e) { console.warn("twod12 | v0.0.207 settings for", it.name, e); }
@@ -288,7 +289,7 @@ export async function giveSettingsV207(items, actors, source = null) {
     if (bow === undefined) continue;
     const { startMasteryOf } = await import("./mastery.mjs");
     const first = startMasteryOf(a)[0];
-    const upd = { "flags.twod12.-=bowMastery": null };
+    const upd = { ...unset("flags.twod12.bowMastery") };
     if (first && bow && !first.chosen) upd[`flags.twod12.startMastery.${first.itemId}`] = bow;
     try { await a.update(upd); n++; } catch (e) { console.warn("twod12 | v0.0.207 Bow Mastery of", a.name, e); }
   }

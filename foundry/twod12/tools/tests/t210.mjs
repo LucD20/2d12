@@ -58,7 +58,7 @@ h = M.rxCardHtml(live(r3));
 console.log("Paladin passed: gone from the card (no \"Passed\" line):", !/rx-grp|Passed/.test(h), "| no Can react section left:", !h.includes("Can react"), "| Skip all others gone once all answered:", !h.includes("rxSkip"));
 const mixed = [R(0, "arc", "Archer 1", "Shot", { kind: "trigger" }), R(1, "pal", "Paladin 1", "Shield")];
 console.log("mixed kinds: a tag on each row:", (M.rxCardHtml(live(mixed)).match(/rx-tag/g) ?? []).length);
-console.log("who sees Use / Pass: the owner", M.answersHere({}, { answerer: "p1" }, users[1]), "| another player", M.answersHere({}, { answerer: "p1" }, users[2]), "| the GM, for a player's creature (deciding...)", M.answersHere({}, { answerer: "p1" }, users[0], () => true), "| the GM, for one whose player left", M.answersHere({}, { answerer: "p1" }, users[0], () => false), "| the GM's own", M.answersHere({}, { answerer: "gm" }, users[0]));
+console.log("who sees Use / Pass: the owner", M.answersHere({}, { answerer: "p1" }, users[1]), "| another player", M.answersHere({}, { answerer: "p1" }, users[2]), "| the GM, for a player's creature (v0.0.277: the GM picks too)", M.answersHere({}, { answerer: "p1" }, users[0]), "| the GM's own", M.answersHere({}, { answerer: "gm" }, users[0]));
 
 console.log("--- all answered: the GM's drag and the map's pins");
 const two = [R(0, "arc", "Archer 1", "Covering Shot", { state: "use", order: 1, color: "#f0b54a", role: "attack" }), R(1, "pal", "Paladin 1", "Shield of Faith", { state: "use", order: 2, color: "#5fc4c0" })];
@@ -158,3 +158,26 @@ const card = (actorUuid, tier) => ({ flags: { twod12: { action: { actorUuid, tie
 console.log("its Weapon Attack card later: answers", M.lateTier(oa, card("Actor.pal", 2), 2000).map(h => `row ${h.r.i} T${h.tier}`).join(), "| another's card:", M.lateTier(oa, card("Actor.kry", 3), 2000).length, "| a card with no tier:", M.lateTier(oa, card("Actor.pal", 0), 2000).length, "| too late (5 min):", M.lateTier(oa, card("Actor.pal", 2), 1000 + 5 * 60000 + 1).length);
 oa.rows[0].out.tier = 2; oa.rows[1].out.tier = 1;
 console.log("both known: the chip", JSON.stringify(M.baseChip(oa)), "| wired:", src("module/moment.mjs").includes("registerLateResults();"));
+
+console.log("--- v0.0.277 (Lucas tested v0.0.276)");
+console.log("the GM picks on every row (no \"deciding...\"):", M.answersHere({}, { answerer: "p1" }, users[0]), "| a player still only on his own:", M.answersHere({}, { answerer: "p1" }, users[2]));
+// a movement that walks past the Paladin and away: start and end far from it, one square of the path next to it
+const opp = mkTok("opp", "Watcher", 5, 1, [mkItem("oa", "Opportunity Attack", { moment: "enemyMoves", momentRange: 1 })], "p1");
+const walker = mkTok("wlk", "Walker", 2, -1, []);
+opp.document.y = 0; walker.document.y = 100;
+canvas.tokens.placeables = [opp, walker];
+const path = M.movePlaces([{ x: 200, y: 100 }, { x: 900, y: 100 }], 100, { width: 1, height: 1 });
+console.log("the path's squares:", path.length, "| left:", path.slice(0, -1).map(p => p.x / 100).join(","));
+const evMove = (left) => ({ kinds: ["enemyMoves"], subjects: [{ actor: walker.actor, token: walker, at: path.at(-1) }], source: null, at: { enemyMoves: left } });
+console.log("measured only where it started: offered", (await M.collectReactions(evMove({ x: 200, y: 100, width: 1, height: 1 }))).rows.length, "| on every square it left:", (await M.collectReactions(evMove(path.slice(0, -1)))).rows.map(r => `${r.actor.name}'s ${r.item.name} (${r.dist} sq)`).join(", "));
+const mm = src("module/moment.mjs");
+console.log("the movement moment uses the path:", mm.includes("at: { enemyMoves: left, enemyCloser: entered }"), "| closer on any square entered:", mm.includes("to: Math.min(...entered.map(e => tokenDistance(e, s)))"), "| a split movement keeps listening:", mm.includes("if (!movement?.pending?.waypoints?.length) moving.delete(doc.id);"));
+const U = await import(ROOTURL + "module/util.mjs");
+console.log("removing a key: the old syntax without Foundry:", JSON.stringify(U.unset("flags.twod12.ignoreTerrain")));
+globalThis.foundry.data = { operators: { ForcedDeletion: class FD {} } };
+const un = U.unset("flags.twod12.ignoreTerrain");
+console.log("with V14's ForcedDeletion:", Object.keys(un).join(), un["flags.twod12.ignoreTerrain"]?.constructor?.name, "| no \"-=\" left in module/:", !fs.readdirSync(ROOT + "module").filter(f => f !== "util.mjs" && f !== "mark.mjs").some(f => /-=[a-zA-Z]/.test(src("module/" + f))));
+delete globalThis.foundry.data;
+const T = await import(ROOTURL + "module/ticker.mjs");
+game.combats = { has: id => id === "live" };
+console.log("a Turn Log line for a deleted combat is skipped:", await T.logEvent({ parent: { id: "gone" }, getFlag: () => [] }, { k: "move" }), "| ticker.mjs checks it:", src("module/ticker.mjs").includes("!game.combats.has(c.parent.id)) return null;"));

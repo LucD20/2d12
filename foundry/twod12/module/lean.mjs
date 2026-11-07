@@ -4,6 +4,7 @@
 // (with none chosen: from the best corner, as before). The token's square for everything else (movement, Engaged, areas, [HT], light, auras)
 // stays the square it is in: flags.twod12.lean = { corner, home: { x, y } } remembers it (homePos). The nudge is not a move (options.twod12Lean).
 // It ends with the Leaning condition, when the token really moves, or when you click the chosen corner again (back to the best corner).
+import { unset } from "./util.mjs";   // v0.0.277: removing a key without the legacy "-=" syntax
 const F = "twod12";
 export const LEAN_NUDGE = 0.4;   // the fallback: toward the corner but still inside its own square (when walls don't allow more)
 export const LEAN_OVER = 0.1;   // how far PAST the corner the viewpoint goes (in squares), so you can see around a wall that ends at the corner
@@ -93,7 +94,7 @@ async function goHome(doc) {
   const cur = leanOf(doc);
   if (!cur?.home) return;
   await walk(doc, leanRoute(cur, cur.home, null));
-  await doc.update({ [`flags.${F}.-=lean`]: null }, { twod12Lean: true });
+  await doc.update({ ...unset(`flags.${F}.lean`) }, { twod12Lean: true });
 }
 export function leanHome(doc) { return leanOf(doc)?.home ? queue(doc, () => goHome(doc)) : Promise.resolve(); }
 
@@ -148,7 +149,7 @@ export function registerLeanHooks() {
   Hooks.on("preUpdateToken", (doc, changes, options) => {
     if (isLeanMove(options) || !("x" in changes || "y" in changes) || !leanOf(doc)) return;
     changes.flags ??= {};
-    (changes.flags[F] ??= {})["-=lean"] = null;
+    Object.assign(changes.flags[F] ??= {}, unset("lean"));
   });
   // After a reload: a token still nudged whose creature is no longer Leaning goes back.
   Hooks.on("canvasReady", async () => {

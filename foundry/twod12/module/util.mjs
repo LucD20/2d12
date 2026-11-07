@@ -1,5 +1,17 @@
 // Small helpers shared by every module (no Foundry needed, so the tests can load them).
 
+/**
+ * v0.0.277 (Lucas: "forced deletion key -=ignoreTerrain using legacy syntax" on every turn start): removes a key in an update.
+ * unset("flags.twod12.lean") is { "flags.twod12.lean": ForcedDeletion } where Foundry has it (V14), else the old { "flags.twod12.-=lean": null }.
+ */
+export function unset(path) {
+  const FD = globalThis.foundry?.data?.operators?.ForcedDeletion;
+  if (FD) return { [path]: new FD() };
+  const k = String(path).split(".");
+  k[k.length - 1] = `-=${k[k.length - 1]}`;
+  return { [k.join(".")]: null };
+}
+
 /** Escape text for HTML (text and double-quoted attributes). */
 export const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 

@@ -10,6 +10,7 @@ import { groupColor } from "./config.mjs";
 import { performCheck, esc, combineRolls } from "./roll.mjs";
 import { TWOD12 } from "./config.mjs";
 import { forgetRestored } from "./effects.mjs";
+import { unset } from "./util.mjs";   // v0.0.277: removing a key without the legacy "-=" syntax
 const { DialogV2 } = foundry.applications.api;
 const F = "twod12";
 const warn = m => ui.notifications.warn(m);
@@ -132,7 +133,7 @@ export async function spendAP(actor, cost, label = "", { quiet = false, reaction
     if (!ok) return false;
   }
   await c.setFlag(F, "acted", true);
-  if (Number(c.getFlag(F, "evadeMove")) > 0) await c.update({ [`flags.${F}.evadeMove`]: 0, [`flags.${F}.-=ignoreTerrain`]: null });   // v0.0.182: an Evade left unused ends when another Action is used
+  if (Number(c.getFlag(F, "evadeMove")) > 0) await c.update({ [`flags.${F}.evadeMove`]: 0, ...unset(`flags.${F}.ignoreTerrain`) });   // v0.0.182: an Evade left unused ends when another Action is used
   // v0.0.200: a movement still under way is written to the Turn Log before this Action (its line comes first).
   try { const { closeMoveLine } = await import("./move.mjs"); await closeMoveLine(c); } catch (e) { /* none */ }
   if (pay.fromRap) await setRAP(c, rap - pay.fromRap);
@@ -230,7 +231,7 @@ async function startTurn(combat) {
   // v0.0.204: a creature that swapped had its turn start this round already; its new slot is a new start (it thaws), so frozen skips this check.
   if (c.getFlag(F, "apTurn") === key && !c.getFlag(F, "frozen")) return;
   const hadTurn = !!c.getFlag(F, "apTurn"), apLeft = getAP(c);   // v0.0.274: the AP its last turn left unused (none on its first turn)
-  const fresh = { [`flags.${F}.apTurn`]: key, [`flags.${F}.acted`]: false, [`flags.${F}.moveLeft`]: 0, [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, [`flags.${F}.-=ignoreTerrain`]: null };
+  const fresh = { [`flags.${F}.apTurn`]: key, [`flags.${F}.acted`]: false, [`flags.${F}.moveLeft`]: 0, [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...unset(`flags.${F}.ignoreTerrain`) };
   if (c.getFlag(F, "frozen")) {
     // It swapped initiative earlier: it carries on with the AP it had left.
     await c.update({ ...fresh, [`flags.${F}.frozen`]: false, [`flags.${F}.thawed`]: key });   // v0.0.205: a thawed turn can't swap again
@@ -345,7 +346,7 @@ export async function performSwap(combat, aId, bId, userId = null) {
   await A.update({ [`flags.${F}.frozen`]: true });
   await setAP(A, left - 1, `swap with ${B.name}`, { kind: "act" });   // its own turn, though the turn has already moved to B
   const bHad = !!B.getFlag(F, "apTurn"), bLeft = getAP(B);   // v0.0.274: B's unused AP from its last turn
-  await B.update({ [`flags.${F}.apTurn`]: `${combat.round}:${B.id}`, [`flags.${F}.acted`]: false, [`flags.${F}.frozen`]: false, [`flags.${F}.moveLeft`]: 0, [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, [`flags.${F}.-=ignoreTerrain`]: null, [`flags.${F}.rap`]: REACTION_AP });
+  await B.update({ [`flags.${F}.apTurn`]: `${combat.round}:${B.id}`, [`flags.${F}.acted`]: false, [`flags.${F}.frozen`]: false, [`flags.${F}.moveLeft`]: 0, [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...unset(`flags.${F}.ignoreTerrain`), [`flags.${F}.rap`]: REACTION_AP });
   await setAP(B, apPerTurn(B), "swapped in: start of turn", { rap: { b: 0, a: REACTION_AP } });
   await setUnusedApGuard(B, bHad, bLeft);
   await climbUp(B);

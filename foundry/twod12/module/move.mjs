@@ -18,6 +18,7 @@ import { coverFromPoint } from "./cover.mjs";
 import { hazardIn } from "./hazard.mjs";
 import { steadinessOf } from "./defense.mjs";
 import { newMoveAction } from "./moveseq.mjs";   // v0.0.274
+import { unset } from "./util.mjs";   // v0.0.277: removing a key without the legacy "-=" syntax
 const F = "twod12", SOCKET = "system.twod12";
 const warn = m => ui.notifications.warn(m);
 const refuse = m => { warn(m); return false; };   // a refusal that says no
@@ -226,7 +227,7 @@ export async function chargeMovement(c, cost, dest = null, { par = 0, logMode = 
     else { while (need > left + 1e-9) { left += walk; spent++; } left -= need; }
   }
   if (spent && !useEvade) newMoveAction(c.id);   // v0.0.274: a drag that spends AP is a new Advance (a new Move Action for the Reactions); before any await
-  await c.update({ [`flags.${F}.evadeMove`]: evade, [`flags.${F}.freeMove`]: free, [`flags.${F}.moveLeft`]: Math.round(left * 100) / 100, ...(useEvade > 0 && evade <= 0 ? { [`flags.${F}.-=ignoreTerrain`]: null } : {}), ...(useEvade > 0 ? { [`flags.${F}.diagPar`]: evade > 0 ? par : 0 } : {}) });
+  await c.update({ [`flags.${F}.evadeMove`]: evade, [`flags.${F}.freeMove`]: free, [`flags.${F}.moveLeft`]: Math.round(left * 100) / 100, ...(useEvade > 0 && evade <= 0 ? { ...unset(`flags.${F}.ignoreTerrain`) } : {}), ...(useEvade > 0 ? { [`flags.${F}.diagPar`]: evade > 0 ? par : 0 } : {}) });
   clearRange();
   // "Until it uses a Move Action": the effect lasts through this move and ends once it is resolved (an Evade is not a Move Action).
   if (!useEvade) await expireOnUse(c.actor, new Set(["move"])).catch(() => {});
@@ -534,7 +535,7 @@ export async function evadeAsAdvance(combatantId, { quiet = false } = {}) {
   if (!c?.isOwner) return warn("Only the owner can change this movement.");
   const n = num(c.getFlag(F, "evadeMove"));
   if (!n) return warn("There is no Evade movement left.");
-  await c.update({ [`flags.${F}.evadeMove`]: 0, [`flags.${F}.freeMove`]: num(c.getFlag(F, "freeMove")) + n, [`flags.${F}.-=ignoreTerrain`]: null });
+  await c.update({ [`flags.${F}.evadeMove`]: 0, [`flags.${F}.freeMove`]: num(c.getFlag(F, "freeMove")) + n, ...unset(`flags.${F}.ignoreTerrain`) });
   if (!quiet) await post(`<b>${esc(c.name)}</b> uses the movement as an Advance of up to ${n} square${n === 1 ? "" : "s"} instead of an Evade.`);
   showRange(c, n);
 }
@@ -588,7 +589,7 @@ export function moveBanner(c, kind, granted, name, { drag = false, ap = 0 } = {}
     lastBar = { id: c.id, until: Date.now() + 2500 };
     for (const [h, id] of hooks) Hooks.off(h, id);
     const l = left();
-    if (drop && l > 0 && c.isOwner && game.combat?.combatants?.has?.(c.id)) await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...(drag ? { [`flags.${F}.moveLeft`]: 0 } : {}), [`flags.${F}.-=ignoreTerrain`]: null });
+    if (drop && l > 0 && c.isOwner && game.combat?.combatants?.has?.(c.id)) await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...(drag ? { [`flags.${F}.moveLeft`]: 0 } : {}), ...unset(`flags.${F}.ignoreTerrain`) });
     clearRange();
     await writeLine();
   };
@@ -610,7 +611,7 @@ export async function endMoveFor(combatantId) {
   if (moveBar?.c?.id === combatantId) return moveBar.finish(true);
   if (c.getFlag(F, "charge")) return endMovement(combatantId);
   if (!c.isOwner) return warn("Only the owner can end this movement.");
-  await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, [`flags.${F}.moveLeft`]: 0, [`flags.${F}.-=ignoreTerrain`]: null });
+  await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, [`flags.${F}.moveLeft`]: 0, ...unset(`flags.${F}.ignoreTerrain`) });
   clearRange();
 }
 /** v0.0.198: the strip's Advance instead (an Evade becomes an Advance; the movement's line says Advanced). */
@@ -628,7 +629,7 @@ export async function endMovement(combatantId) {
   if (!c.isOwner) return warn("Only the owner can end this movement.");
   const left = num(c.getFlag(F, "freeMove")) + num(c.getFlag(F, "evadeMove"));
   const charging = c.getFlag(F, "charge");
-  await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, [`flags.${F}.-=charge`]: null, [`flags.${F}.-=ignoreTerrain`]: null });
+  await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...unset(`flags.${F}.charge`), ...unset(`flags.${F}.ignoreTerrain`) });
   clearRange();
   // v0.0.219 (Lucas): giving up a Charge before it moves takes it back: its AP are refunded.
   if (charging) {

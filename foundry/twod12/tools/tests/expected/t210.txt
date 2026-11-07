@@ -15,7 +15,7 @@ the stack: only the base slab: 1 | BT Strike → Character 9 held
 Archer used: its row left Can react: true | a slab on top, its color: #f0b54a | A1 Covering Shot → Bandit Thug
 Paladin passed: gone from the card (no "Passed" line): true | no Can react section left: true | Skip all others gone once all answered: true
 mixed kinds: a tag on each row: 2
-who sees Use / Pass: the owner true | another player false | the GM, for a player's creature (deciding...) false | the GM, for one whose player left true | the GM's own true
+who sees Use / Pass: the owner true | another player false | the GM, for a player's creature (v0.0.277: the GM picks too) true | the GM's own true
 --- all answered: the GM's drag and the map's pins
 the subtitle: true | grips: 2 | numbers: 1,2 | Resolve (GM only): true
 the pins:  row 1: 1, row 0: 2 | while the GM drags the Archer on top: row 0: 1, row 1: 2 | a wrong list is ignored: 1:1,0:2
@@ -53,3 +53,11 @@ no <svg> in any card: true | the snapshot box is empty in the content: true
 Opportunity Attack before its Weapon Attack: no chip (not "0 hits"): null | no slab chip: null
 its Weapon Attack card later: answers row 0 T2 | another's card: 0 | a card with no tier: 0 | too late (5 min): 0
 both known: the chip {"cls":"hit","html":"1 hit","short":"1 hit"} | wired: true
+--- v0.0.277 (Lucas tested v0.0.276)
+the GM picks on every row (no "deciding..."): true | a player still only on his own: false
+the path's squares: 8 | left: 2,3,4,5,6,7,8
+measured only where it started: offered 0 | on every square it left: Watcher's Opportunity Attack (1 sq)
+the movement moment uses the path: true | closer on any square entered: true | a split movement keeps listening: true
+removing a key: the old syntax without Foundry: {"flags.twod12.-=ignoreTerrain":null}
+with V14's ForcedDeletion: flags.twod12.ignoreTerrain FD | no "-=" left in module/: true
+a Turn Log line for a deleted combat is skipped: null | ticker.mjs checks it: true
