@@ -405,10 +405,13 @@ export function damageCardHtml(m, view = FULL_VIEW) {
   }).join("");
   const noTgt = !rows.length && view.author ? '<div class="cc-btns"><button type="button" class="cc-btn" data-twod12="ccDmgTarget"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i> Target the selected tokens</button></div>' : "";
   const pending = rows.filter(r => !r.applied).length;
-  const all = view.author && !ht && pending > 1 ? `<div class="cc-applyall"><button type="button" class="cc-btn primary" data-twod12="ccApplyAll">Apply all</button>${rows.some(r => !r.applied && r.choice) ? '<span class="cc-muted">skips rows with a choice</span>' : ""}</div>` : "";
+  // v0.0.288 (Lucas): no "Damage" word in the header; the Lethal / Nonlethal tag at the bottom, beside Apply all
+  const nlTag = `<span class="cc-nl${m.nl ? " on" : ""}">${m.nl ? "Nonlethal" : "Lethal"}</span>`;
+  const allBtn = view.author && !ht && pending > 1 ? `<button type="button" class="cc-btn primary" data-twod12="ccApplyAll">Apply all</button>${rows.some(r => !r.applied && r.choice) ? '<span class="cc-muted">skips rows with a choice</span>' : ""}` : "";
+  const all = `<div class="cc-applyall">${allBtn}${nlTag}</div>`;
   const des = designerFoot([m.designer ? `Avg ${m.designer.avg} · this total or more: ${m.designer.atLeast}%` : ""], view);
   const pf = ht ? playerFoot("Player view · target details hidden by the GM") : "";
-  return `<div class="cc-card cc-dmg"><div class="cc-body">${stamp}<div class="cc-main"><div class="cc-dhead"><b class="cc-name">${esc(m.name)}</b><span class="cc-dtags"><span class="cc-muted">Damage</span><span class="cc-nl${m.nl ? " on" : ""}">${m.nl ? "Nonlethal" : "Lethal"}</span></span></div>${body}${all}${noTgt}</div></div>${des}${pf}</div>`;
+  return `<div class="cc-card cc-dmg"><div class="cc-body">${stamp}<div class="cc-main"><div class="cc-dhead"><b class="cc-name">${esc(m.name)}</b></div>${body}${all}${noTgt}</div></div>${des}${pf}</div>`;
 }
 const poolLinesSummary = comps => {
   const by = new Map();

@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.287, 209 tests; READ THIS FIRST)
+## Where we are now (v0.0.288, 209 tests; READ THIS FIRST)
+- **v0.0.288 (2026-11-07, branch `pack-chat-cards`): Lucas:** the damage message's header is its title alone; the Lethal tag beside Apply all. Not tested by Lucas yet. **NEXT:** Lucas's test, then AU.
 - **v0.0.287 (2026-11-07, branch `pack-chat-cards`): Lucas tested v0.0.286:** the Save card's target row at the bottom, the damage stamp with a band per Tier, the pills "T1" and every chip squared like the trait chips. Not tested by Lucas yet. **NEXT:** Lucas's test, then AU.
 - **v0.0.286 (2026-11-07, branch `pack-chat-cards`): Lucas tested v0.0.285:** the Defense as a framed badge on each creature's row; the new Save card handles several creatures (a row each). Not tested by Lucas yet. **NEXT:** Lucas's test, then AU.
 - **v0.0.285 (2026-11-07, branch `pack-chat-cards`): Lucas tested v0.0.284 ("almost all good"):** the attack card's target row at the bottom beside Damage / Card, compact applied damage rows, the damage header on one line. Not tested by Lucas yet. **NEXT:** Lucas's test, then AU.

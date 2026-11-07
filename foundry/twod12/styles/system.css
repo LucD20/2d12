@@ -2708,3 +2708,5 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat.cc .cc-sband.t3 { background: var(--cc-t3); color: #fff; } .twod12.chat.cc .cc-sband.crit { background: var(--cc-crit); color: #fff; }
 .twod12.chat.cc .cc-sarrow { font-size: 11px; }
 .twod12.chat.cc .cc-save .cc-foot .cc-btn.primary { flex: none; }
+/* v0.0.288 (Lucas): the damage message's title alone in its header; the Lethal / Nonlethal tag at the bottom right, beside Apply all */
+.twod12.chat.cc .cc-applyall .cc-nl { margin-left: auto; }

@@ -115,7 +115,7 @@ const dh = CC.damageCardHtml(dm, CC.viewOf({ gm: true }));
 console.log("stamp:", txt(dh.match(/<button type="button" class="cc-stamp[\s\S]*?<\/button>/)[0]), "| the tag:", txt(dh.match(/class="cc-nl[^"]*">[^<]*/)[0].replace(/^class="[^"]*">/, "")), "| pools:", txt(dh.match(/<button type="button" class="cc-pools"[\s\S]*?<\/button>/)[0]));
 console.log("the instance with its Weapon Modifier as a line:", txt(dh.match(/<div class="cc-inst">[\s\S]*?Total[\s\S]*?<\/b>/)[0]));
 console.log("rows:", [...dh.matchAll(/<div class="cc-trow[^"]*">[\s\S]*?(?=<div class="cc-trow|<\/div><\/div><\/div>)/g)].map(m => txt(m[0])).join(" || "));
-console.log("Apply all says it skips the rows with a choice:", /Apply all[\s\S]*skips rows with a choice/.test(txt(dh)) === false ? txt(dh.match(/<div class="cc-applyall">[\s\S]*?<\/div>/)?.[0] ?? "(only one row left)") : "?");
+console.log("v0.0.288: the header is the title alone:", txt(dh.match(/<div class="cc-dhead">[\s\S]*?<\/div>/)[0]), "| the bottom row (one row left: no Apply all, the tag alone):", txt(dh.match(/<div class="cc-applyall">[\s\S]*?<\/div>/)?.[0]));
 console.log("removed: no Avg line, Lethal selector, Block, None:", !/Avg|class="kind"|Block|>None</.test(dh), "| Designer mode adds the average:", txt(CC.damageCardHtml(dm, CC.viewOf({ gm: true, designer: true })).match(/<div class="cc-designer">[\s\S]*?<\/div>/)?.[0]));
 const hp = CC.damageCardHtml(dm, CC.viewOf({ gm: false, hideTgt: true }));
 console.log("target details hidden: no Guard / Weak / Took:", !/Guard|Weak|Took/.test(hp), "| names and state kept:", txt(hp.match(/<div class="cc-trows">[\s\S]*?<\/div><\/div>/)?.[0]), "| Bloodied stays:", hp.includes("Bloodied"), "| footer:", txt(hp.match(/<div class="cc-pfoot">[\s\S]*?<\/div>/)?.[0]));
