@@ -63,4 +63,4 @@ the Basic Action's data carries it: enemyMoves 1
 the damage waits for the Interrupts: true | a Strike's damage card says so: true | the Triggers after it lands: true | no second click while held: true
 a Strike and a Stand bring their moments: true | a Reaction's step after a @Pause stays a button: true
 the chat and the socket: true | the settings at init: true | no Foundry window and no pick window in it: true
-the timer setting: on by default, 1 minute (v0.0.273): true
+the timer setting: off by default (v0.0.282), 1 minute when on (v0.0.273): true

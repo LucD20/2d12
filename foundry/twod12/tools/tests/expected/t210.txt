@@ -83,3 +83,10 @@ a result not read yet: an ellipsis pill: true
 the overlay: no name on the lines, a pin on the reactor, the name on hover: true | the map button replays the moment where everyone stood: true
 the frozen positions read back: pal,kry,arc,ban | an old object form too: 1
 a Reaction that posted its card counts as used: true
+--- v0.0.282 (Lucas: no timer by default; a Cancel for the whole thing; deleting the message cancels it)
+the timer is off by default: false
+the GM's Cancel in the header: true | a player can't cancel: false
+confirmed, before Resolve: true | the Cancel still there: true
+the GM cancels: nothing resolved: 0 | the damage goes on as if nobody reacted: {"half":false,"halfBy":"","id":"","gained":0,"never":false} | the message: BA KR · cancelled 9
+a click after it does nothing: 0
+its message deleted: the moment is cancelled, no timer left to resolve it: {"half":false,"halfBy":"","id":"","gained":0,"never":false} | wired to the delete hook: true

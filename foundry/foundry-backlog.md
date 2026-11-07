@@ -1,9 +1,10 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.281**. Tests: `node tools/tests/run.mjs` (208 tests, see the README; the next new test is t211). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.282**. Tests: `node tools/tests/run.mjs` (208 tests, see the README; the next new test is t211). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 ## Asked by Lucas, not built
+- [x] **v0.0.282 (Lucas after v0.0.281; branch `pack-rw`):** the timer off by default, the GM's Cancel, a deleted live message cancels its moment (on the client that holds it; a moment held by a client that left can't be cancelled from another: its message is closed when that client reloads, as before).
 - [x] **v0.0.281 (Lucas tested v0.0.280; branch `pack-rw`):** the resolved rows (ally · result vs target, click opens the Action), the map replay instead of the chat snapshot, the overlay's pins and hover names. **Not tried in Foundry:** the replay drawing (PIXI, from the frozen positions; only on the scene it happened on).
 - [x] **Pick the square a movement Reaction comes on (Lucas, 2026-11-07): DONE v0.0.280, the bottom bar** (Move back lists the possible squares, the last first, then the start; hover lights the square; a click on the map picks it). **Not tried in Foundry:** the square highlight and the map click with a token bigger than 1 square.
 - [x] **v0.0.279 (Lucas tested v0.0.278; branch `pack-rw`):** the snapshot cleaner, a Pass re-offers a movement Reaction on the next squares, Move back to the last possible square with a partial refund. **Not tried in Foundry:** the partial refund on a real Advance (the share is per kind: freeMove / evadeMove / moveLeft).

@@ -112,7 +112,7 @@ export const ICON = {
   check: fa("fa-solid fa-check"), x: fa("fa-solid fa-xmark"), clock: fa("fa-regular fa-clock"), pause: fa("fa-solid fa-pause"),
   skip: fa("fa-solid fa-forward-fast"), grip: fa("fa-solid fa-grip-vertical"), play: fa("fa-solid fa-play"), down: fa("fa-solid fa-chevron-down"),
   up: fa("fa-solid fa-chevron-up"), sword: fa("fa-solid fa-burst"), move: fa("fa-solid fa-person-running"), shield: fa("fa-solid fa-shield-halved"),
-  arrow: fa("fa-solid fa-crosshairs"), map: fa("fa-solid fa-map-location-dot"), hand: fa("fa-solid fa-hand"), back: fa("fa-solid fa-rotate-left"), spin: fa("fa-solid fa-spinner", "fa-spin")
+  arrow: fa("fa-solid fa-crosshairs"), ban: fa("fa-solid fa-ban"), map: fa("fa-solid fa-map-location-dot"), hand: fa("fa-solid fa-hand"), back: fa("fa-solid fa-rotate-left"), spin: fa("fa-solid fa-spinner", "fa-spin")
 };
 const roleIcon = role => (role === "attack" ? ICON.arrow() : role === "protect" ? ICON.shield() : ICON.hand());
 /** Pure: a face (the token's image in a circle, the initials under it; the name on hover). size: "" (22 px), "s" (16 px), "m" (20 px). */
@@ -165,6 +165,7 @@ export function outChip(r) {
 /** Pure: the base slab's chip: the held damage struck and the final one, "never lands", the hits of the stack (a movement), or the damage dealt. */
 export function baseChip(st) {
   const b = st.base ?? {};
+  if (st.cancelled) return st.hold && b.held ? { cls: "dmg", html: `${b.held}`, short: `${b.held}` } : null;   // v0.0.282: it lands as it was
   if (b.never) return { cls: "never", html: "never lands", short: "never lands" };
   if (st.hold && b.held) {
     if (b.final === undefined || b.final === null) return { cls: "dmg", html: `${b.held} held`, short: `${b.held} held` };
@@ -199,9 +200,11 @@ function liveHtml(st) {
   const base = `<div class="rx-it rx-base" data-rx-hover="base"${b.face?.actorUuid ? ` data-actor="${esc(b.face.actorUuid)}"` : ""}><span class="rx-sw" style="background:${b.kind === "move" || b.kind === "stand" ? "#ecdcae" : "#e0553b"}"></span>${faceHtml(b.face, "s")}<span class="rx-bw">${baseWords(b)}</span>${bc ? pill(bc.cls, bc.html) : ""}${backBtn(b)}</div>`;
   const left = timeLeft(st, st.now ?? Date.now());
   const clock = st.deadline || st.paused ? `<span class="rx-tm${st.paused ? " paused" : ""}" data-twod12="rxPause"${st.paused ? "" : ` data-deadline="${st.deadline}"`} data-tooltip="${st.paused ? "Paused: click to go on" : "Auto-skip: click to pause"}">${st.paused ? ICON.pause() : ICON.clock()}<span class="rx-left">${clockText(left)}</span></span>` : "";
+  // v0.0.282 (Lucas: "a button to cancel the whole thing, just in case"): the GM's Cancel, until it resolves
+  const cancel = !st.resolving ? `<button type="button" class="rx-hb rx-gm rx-cancel" data-twod12="rxCancel" data-tooltip="Cancel these Reactions: none resolves, the triggering Action goes on as if nobody reacted" aria-label="Cancel the Reactions">${ICON.ban()}</button>` : "";
   const skip = !allAnswered(st.rows) ? `<button type="button" class="rx-hb rx-gm" data-twod12="rxSkip" data-tooltip="Skip all others" aria-label="Skip all others">${ICON.skip()}</button>` : "";
   const foot = ready ? `<div class="rx-ft rx-gmonly"><button type="button" class="rx-btn rx-pri" data-twod12="rxResolve">${ICON.play()} Resolve</button></div>` : st.resolving ? `<div class="rx-ft rx-busy">${ICON.spin()} Resolving…</div>` : "";
-  return `<div class="twod12 chat rx2" data-rx="${esc(st.id)}"><div class="rx-hd"><span class="rx-ttl">Reactions</span>${clock}${skip}</div>${can ? `<div class="rx-sec">Can react${one && waiting.length ? ` ${kindTag(waiting[0].kind)}` : ""}</div>${can}` : ""}<div class="rx-sec">Stack${st.ready ? '<span class="rx-sub">· top resolves first</span>' : ""}</div><div class="rx-stk">${slabs}${base}</div>${foot}</div>`;
+  return `<div class="twod12 chat rx2" data-rx="${esc(st.id)}"><div class="rx-hd"><span class="rx-ttl">Reactions</span>${clock}${skip}${cancel}</div>${can ? `<div class="rx-sec">Can react${one && waiting.length ? ` ${kindTag(waiting[0].kind)}` : ""}</div>${can}` : ""}<div class="rx-sec">Stack${st.ready ? '<span class="rx-sub">· top resolves first</span>' : ""}</div><div class="rx-stk">${slabs}${base}</div>${foot}</div>`;
 }
 
 /** Pure: the snapshot's layout (about 258 × 110): the tokens, the lines and the labels, from the positions frozen when it resolved. */
@@ -245,7 +248,7 @@ export function snapshotSvg(st) {
 const tgtFace = (r, size = "s") => (r.targetImg !== undefined ? faceHtml({ name: r.targetName, img: r.targetImg, ini: initials(r.targetName), disp: r.targetDisp }, size) : `<span class="rx-tg">${esc(r.targetName)}</span>`);
 function doneHtml(st) {
   const stack = stackOrder(st.rows), b = st.base ?? {}, bc = baseChip(st);
-  const line = `<div class="rx-line" data-twod12="rxFold" data-tooltip="Unfold"><span class="rx-okc">${ICON.check()}</span>${faceHtml(b.face, "m")}<span class="rx-ic">${baseIcon(b)}</span>${b.target?.name && b.kind !== "move" && b.kind !== "stand" ? faceHtml(b.target, "m") : ""}<span class="rx-dot">·</span>${stack.length ? stack.map(r => `${faceHtml(faceOfRow(r), "m")}<span class="rx-ic${r.out?.spent ? " gone" : ""}">${roleIcon(r.role)}</span>`).join("") : `<span class="rx-tg">${esc(st.closed ? "closed" : "no Reactions")}</span>`}${bc ? pill(bc.cls, bc.html) : ""}<button type="button" class="rx-ib rx-fold" data-twod12="rxFold" aria-label="Unfold">${ICON.down()}</button></div>`;
+  const line = `<div class="rx-line" data-twod12="rxFold" data-tooltip="Unfold"><span class="rx-okc">${ICON.check()}</span>${faceHtml(b.face, "m")}<span class="rx-ic">${baseIcon(b)}</span>${b.target?.name && b.kind !== "move" && b.kind !== "stand" ? faceHtml(b.target, "m") : ""}<span class="rx-dot">·</span>${st.cancelled ? `<span class="rx-tg">${ICON.ban()} cancelled</span>` : stack.length ? stack.map(r => `${faceHtml(faceOfRow(r), "m")}<span class="rx-ic${r.out?.spent ? " gone" : ""}">${roleIcon(r.role)}</span>`).join("") : `<span class="rx-tg">${esc(st.closed ? "closed" : "no Reactions")}</span>`}${bc ? pill(bc.cls, bc.html) : ""}<button type="button" class="rx-ib rx-fold" data-twod12="rxFold" aria-label="Unfold">${ICON.down()}</button></div>`;
   // v0.0.281 (Lucas: "just Ally T1/2/3/not used vs Target is enough, clicking opens the Action that was used"): one short row per slab
   const slabs = stack.map((r, k) => { const c = outChip(r), gone = !!r.out?.spent; return `<div class="rx-it rx-res${gone ? " gone" : ""}" data-row="${r.i}" data-actor="${esc(r.actorUuid)}" data-twod12="rxOpen" data-tooltip="${esc(r.itemName)}: open the Action"><span class="rx-num" style="background:${esc(r.color || "#2f6b3a")}">${k + 1}</span>${faceHtml(faceOfRow(r), "m")}${pill(c?.cls ?? "none", esc(c?.short ?? "\u2026"))}<span class="rx-vs">vs</span>${tgtFace(r, "m")}</div>`; }).join("");
   const base = `<div class="rx-it rx-base${b.never ? " gone" : ""}">${faceHtml(b.face, "m")}<span class="rx-bw">${b.never ? `<s>${baseWords(b).replace(/<\/?b>/g, "")}</s>` : baseWords(b)}</span>${bc ? pill(bc.cls, bc.html) : ""}${backBtn(b)}</div>`;
@@ -334,7 +337,7 @@ export const timerMinutes = () => {
   try { if (!game.settings.get(F, "reactionTimerOn")) return 0; return Math.max(1, Number(game.settings.get(F, "reactionTimer")) || 1); } catch (e) { return 1; }
 };
 export function registerReactionSettings() {
-  game.settings.register(F, "reactionTimerOn", { name: "Reactions: auto-skip timer", hint: "A Reactions message skips the rows nobody answered when its timer runs out (the time is counted down on the message). The GM can also click Skip all others.", scope: "world", config: true, type: Boolean, default: true });
+  game.settings.register(F, "reactionTimerOn", { name: "Reactions: auto-skip timer", hint: "Off by default (v0.0.282, Lucas): the Reactions message waits until every row is answered or the GM skips. On: the rows nobody answered are skipped when its timer runs out (counted down on the message).", scope: "world", config: true, type: Boolean, default: false });
   game.settings.register(F, "reactionTimer", { name: "Reactions: auto-skip after (minutes)", hint: "How long a Reactions message waits for its answers before it skips the rows still waiting (anyone in it can pause the countdown by clicking the clock).", scope: "world", config: true, type: Number, default: 1, range: { min: 1, max: 60, step: 1 } });
   try { O.registerOverlaySetting(); } catch (e) { console.warn("twod12 | Reaction overlay", e); }   // v0.0.275: "Reaction map overlay" (client)
 }
@@ -386,6 +389,7 @@ export async function hostAnswer(id, i, choice, fromId, extra = {}) {
   const L = live.get(id);
   if (!L || L.st.done || L.st.resolving) return;
   const st = L.st, from = game.users?.get?.(fromId);
+  if (choice === "cancel" || choice === "deleted") { if (choice === "cancel" ? !from?.isGM : fromId !== game.user.id) return; return cancelMoment(L, choice === "deleted"); }
   if (choice === "timeout") skipAll(st.rows);
   else if (choice === "skipAll") { if (!from?.isGM) return; skipOthers(st.rows); }
   else if (choice === "pause") {   // v0.0.273: the GM or anyone who answers a row here
@@ -409,6 +413,21 @@ export async function hostAnswer(id, i, choice, fromId, extra = {}) {
   if (stackOrder(st.rows).length > 1 && !st.ready && choice !== "timeout" && choice !== "resolve") { st.ready = true; return redraw(L); }
   if (L.timer) clearTimeout(L.timer);
   await resolveStack(L);
+}
+/**
+ * v0.0.282 (Lucas): the whole moment is called off (the GM's Cancel, or its message deleted: it went on resolving when the timer ran out):
+ * nothing resolves, the triggering Action goes on as if nobody reacted (a held damage lands as it was). The message says so (unless deleted).
+ */
+async function cancelMoment(L, deleted = false) {
+  const st = L.st;
+  if (L.timer) clearTimeout(L.timer);
+  L.timer = null;
+  skipAll(st.rows);
+  st.done = true; st.cancelled = true; st.resolving = false; st.closed = "Cancelled by the GM: no Reaction resolved.";
+  live.delete(st.id);
+  try { O.dropOverlay(st.id); } catch (e) { /* no canvas */ }
+  if (!deleted) await redraw(L);
+  L.resolve({ id: "", used: [], cancelled: true });
 }
 function arm(L) {
   if (L.timer) clearTimeout(L.timer);
@@ -515,6 +534,11 @@ async function toBottom(msg, st) {
 }
 async function rewrite(F2) { try { await F2.msg.update({ content: rxCardHtml(F2.st), [`flags.${F}.rx`]: F2.st }); } catch (e) { console.warn("twod12 | Reactions message", e); } }
 export function registerLateResults() {
+  // v0.0.282 (Lucas: "deleting the message does nothing, after the countdown it resolves even if deleted"): deleting it cancels the moment
+  Hooks.on("deleteChatMessage", msg => {
+    const st = msg?.getFlag?.(F, "rx"), L = st?.id ? live.get(st.id) : null;
+    if (L && L.msg?.id === msg.id && !L.st.resolving && !L.st.done) hostAnswer(st.id, -1, "deleted", game.user.id);   // not the copy deleted when it moves to the bottom
+  });
   Hooks.on("createChatMessage", msg => {
     if (!finished.size || !msg?.getFlag?.(F, "action")) return;
     for (const F2 of finished.values()) {
@@ -613,7 +637,7 @@ export async function rxClick(msg, b, ev = null) {
   if (k === "rxOpen") return openRowItem(st.rows[row]);
   if (k === "rxBack") return moveBack(msg, st, !!(ev ?? globalThis.event)?.shiftKey);
   if (st.done) return;
-  const choice = { rxUse: "use", rxPass: "pass", rxSkip: "skipAll", rxUp: "up", rxDown: "down", rxPause: "pause", rxResolve: "resolve" }[k];
+  const choice = { rxCancel: "cancel", rxUse: "use", rxPass: "pass", rxSkip: "skipAll", rxUp: "up", rxDown: "down", rxPause: "pause", rxResolve: "resolve" }[k];
   if (!choice) return;
   await send(st, choice, row);
   if (b.tagName === "BUTTON") b.disabled = true;
