@@ -3,6 +3,7 @@
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
 ## Where we are now (v0.0.288, 209 tests; READ THIS FIRST)
+- **The Project's knowledge files, automated (2026-11-07, Lucas: "do both"):** `knowledge/` is committed now; every pack runs `python tools/knowledge.py` at its end (cloud sessions too) and commits it, and the claude.ai Project reads it from GitHub (press Sync). `Update Foundry.cmd` also rebuilds an untracked copy in `knowledge-upload/` and opens it, for a hand upload; it throws away any local change to `knowledge/` so it never stops the sync.
 - **Pack CC (Chat Cards) closed and merged to main (2026-11-07, v0.0.283 to v0.0.288; Lucas: "ok, merge").** **NEXT: AU, the rest of the automations** (MASTER-PLAN AU), then playtest 4. Left from CC (foundry-backlog): Linked Actions keep their old rows, an [HT] area's repeated Save keeps the old Save card, two [Q] in rules-backlog.md.
 - **v0.0.288 (2026-11-07, branch `pack-chat-cards`): Lucas:** the damage message's header is its title alone; the Lethal tag beside Apply all. Not tested by Lucas yet. **NEXT:** Lucas's test, then AU.
 - **v0.0.287 (2026-11-07, branch `pack-chat-cards`): Lucas tested v0.0.286:** the Save card's target row at the bottom, the damage stamp with a band per Tier, the pills "T1" and every chip squared like the trait chips. Not tested by Lucas yet. **NEXT:** Lucas's test, then AU.

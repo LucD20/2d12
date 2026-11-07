@@ -2,7 +2,10 @@
 
 Run from anywhere: python tools/knowledge.py            (the core set: rules, open items, the current design documents)
                    python tools/knowledge.py weapons    (the core set + the weapon design documents, for weapon chats)
-Then, in the Project: delete every old knowledge file and upload everything in knowledge/ (replace, don't add copies).
+                   python tools/knowledge.py --out DIR  (into another folder; Update Foundry.cmd builds knowledge-upload/ this way)
+knowledge/ is committed (2026-11-07, Lucas: "do both"): every pack runs this at its end, in a cloud session too, and commits knowledge/.
+The Project reads that folder from GitHub: press its sync button after a pack. By hand instead: delete every old knowledge file in the
+Project and upload everything in knowledge-upload/ (Update Foundry.cmd rebuilds it and opens it), replacing, not adding copies.
 
 The set is for DESIGN conversations and is kept small on purpose, so the Project can hold all of it at once instead of
 searching it (a large set is only searched in pieces, and the chat then misses rules):
@@ -87,7 +90,12 @@ def commit() -> str:
         return "unknown"
 
 
-topics = sys.argv[1:]
+args = sys.argv[1:]
+if "--out" in args:   # 2026-11-07: Update Foundry.cmd builds an untracked copy, so the committed knowledge/ never changes locally
+    k = args.index("--out")
+    OUT = Path(args[k + 1]).resolve() if k + 1 < len(args) else OUT
+    del args[k:k + 2]
+topics = args
 for t in topics:
     if t not in TOPICS:
         raise SystemExit(f"unknown topic {t!r}; known: {', '.join(TOPICS)}")

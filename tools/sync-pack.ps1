@@ -92,6 +92,24 @@ function TestAndBuild([bool]$needBuild) {
     @{ ok = $ok; summary = $(if ($lines.Count) { $lines -join "`n" } else { "no test output" }); build = $build }
 }
 
+# The Project's knowledge files for a hand upload: knowledge-upload/, opened in Explorer from the window (2026-11-07, Lucas).
+# The committed knowledge/ is what the Project's GitHub sync reads; this copy is built from the commit just synced.
+function BuildKnowledge {
+    if ($DryRun) { Log "would build knowledge-upload/ (python tools/knowledge.py --out knowledge-upload)"; return }
+    Set-Location $Repo
+    $py = if (Get-Command python -ErrorAction SilentlyContinue) { "python" } elseif (Get-Command py -ErrorAction SilentlyContinue) { "py" } else { $null }
+    if (-not $py) { Log "knowledge: no python found, skipped"; return }
+    $out = Run "knowledge.py" { & $py tools/knowledge.py --out knowledge-upload }
+    if ($script:RunExit -eq 0) {
+        Log "knowledge: $(($out | Select-Object -Last 1))"
+        if ($Interactive) {
+            Write-Host ""
+            Write-Host "Project knowledge rebuilt in knowledge-upload\ (opening it). In the Project: press Sync on the GitHub files, or replace the files by hand with these." -ForegroundColor Cyan
+            Start-Process explorer.exe (Join-Path $Repo "knowledge-upload")
+        }
+    }
+}
+
 if ($TestNotify) { Notify "2d12 sync test" "If you see this, notifications work."; exit 0 }
 
 Set-Location $Repo
@@ -99,6 +117,12 @@ if ($DryRun) { Log "DRY RUN: nothing will be checked out, built, written or noti
 
 $state = if (Test-Path $StateFile) { Get-Content $StateFile -Raw | ConvertFrom-Json } else { $null }
 
+# 1b. (2026-11-07) knowledge/ is generated and committed by each pack: a local change to it (an old untracked copy, a run of
+# knowledge.py by hand) is thrown away, so it never stops the sync. The upload copy is knowledge-upload/ (gitignored).
+if (-not $DryRun) {
+    [void](G checkout -- knowledge 2>$null)
+    [void](G clean -fdq -- knowledge)
+}
 # 2. uncommitted changes other than notes.txt (and the sync's own files, which a pack branch does not gitignore)
 $dirty = @(G status --porcelain | Where-Object { $_ -and $_.Substring(3).Trim('"') -notmatch '^(notes\.txt|sync\.log|\.sync-state|pack-sync/)$' })
 if ($dirty.Count) {
@@ -162,6 +186,7 @@ if (-not $pick) {
     $r = TestAndBuild $needMain
     $v = (Get-Content (Join-Path $Repo "foundry\twod12\system.json") -Raw | ConvertFrom-Json).version
     SaveState @{ branch = "main"; hash = $mainHash; waitingHash = "" }
+    BuildKnowledge
     $msg = "Back on main v$v (packs: $($r.build)): $(if ($needMain) { 'restart Foundry' } else { 'reload Foundry (F5)' })"
     if (-not $r.ok) { $msg += " (tests FAILED, see sync.log)" }
     Notify "2d12 sync" $msg
@@ -241,6 +266,7 @@ $entry
 
 @{ branch = $branch; hash = $pick.hash; waitingHash = "" } | ConvertTo-Json | Set-Content $StateFile -Encoding UTF8
 Log "wrote pack-sync\latest.md and .sync-state"
+BuildKnowledge
 if ($Interactive) { Write-Host ""; Write-Host "What this version changed (test it with this):" -ForegroundColor Cyan; Write-Host $entry }
 $msg = "$branch v$version is ready: $(if ($needBuild) { 'start Foundry (the packs were rebuilt)' } else { 'reload Foundry (F5)' }) and test"
 if (-not $testsOk) { $msg += " (tests FAILED, see pack-sync\latest.md)" }
