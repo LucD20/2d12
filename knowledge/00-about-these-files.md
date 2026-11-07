@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-07 from the repository at: a0c8a02 2026-11-07 HANDOFF and MASTER-PLAN: pack CC (Chat Cards) closed, v0.0.288; next AU
+Built by tools/knowledge.py on 2026-11-07 from the repository at: d59857d 2026-11-07 Merge remote-tracking branch 'origin/main' into claude/cool-cannon-13fi8t
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,9 +14,9 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (57 KB)
+- HANDOFF.md (58 KB)
 - MASTER-PLAN.md (15 KB)
-- open-design-items.md (40 KB)
+- open-design-items.md (77 KB)
 - rules-01-roll.md (21 KB)
 - rules-02-turns.md (27 KB)
 - rules-03-movement.md (39 KB)
@@ -36,3 +36,6 @@ Files:
 - design-rework-r.md (57 KB)
 - design-progression-lv.md (13 KB)
 - design-class-charter.md (10 KB)
+- design-base-building.md (7 KB)
+- design-roleplay-skills.md (6 KB)
+- design-items-economy.md (32 KB)
