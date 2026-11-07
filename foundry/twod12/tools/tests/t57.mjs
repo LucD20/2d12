@@ -15,6 +15,6 @@ let posted; globalThis.ChatMessage = { getSpeaker: () => ({}), create: async d =
 globalThis.ui = { notifications: {} };
 await dm.postDamageCard({ title: "Reaping Sweep", subtitle: "Damage \u2022 Tier 3", color: "#185FA5", comps: [{ pool: "B", sub: "Sl", kind: "D", formula: "2d6", total: 4, dice: [{ faces: 6, results: [3, 1] }] }], chip: '<div class="chips"><span>Body +2</span></div>', targets: [] });
 const c = posted.content;
-console.log("damage head:", c.match(/<div class="ahead">.*?<\/div><\/div>/)[0].replace(/<[^>]+>/g, "|").replace(/\|+/g, "|"), "| comp color var:", /--sc:#/.test(c), "| buttons kept:", ["applyDamage", "applyHalf", "block", "retarget"].every(k => c.includes(k)), "| lethal select:", c.includes('class="kind"'));
+console.log("v0.0.283 the damage message:", posted.content.includes('class="cc-card cc-dmg"'), "| stamp opens the roll card:", posted.content.includes('data-twod12="ccOpenSrc"'), "| tag:", /class="cc-nl[^"]*">([^<]*)/.exec(posted.content)?.[1], "| no target: a target button:", posted.content.includes("ccDmgTarget"), "| no Lethal selector, no Block:", !posted.content.includes('class="kind"') && !posted.content.includes("Block"));
 await dm.postDamageCard({ title: "Cleave", subtitle: "Cleave 2", color: "#185FA5", comps: [{ pool: "B", sub: "Sl", kind: "A", formula: "2", total: 2, dice: [] }], targets: [] });
-console.log("cleave head:", posted.content.match(/<div class="ahead">.*?<\/div><\/div>/)[0].replace(/<[^>]+>/g, "|").replace(/\|+/g, "|"));
+console.log("cleave: the Modifier as damage, its pool line:", posted.content.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").match(/Vigor · [^ ]+ \w+ \d+/)?.[0]);

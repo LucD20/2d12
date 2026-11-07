@@ -53,7 +53,7 @@ const dm = (bl, bn, ml, mn) => ({ B: { l: bl, n: bn }, M: { l: ml, n: mn } });
 for (const [g, a] of [[6, dm(8, 0, 0, 0)], [10, dm(4, 0, 3, 0)], [5, dm(0, 2, 6, 1)], [0, dm(3, 0, 0, 0)]]) { const r = G.absorbGuard(g, a); console.log(`Guard ${g} vs ${JSON.stringify(a)} -> takes ${r.taken}, Guard ${r.guard} left, Health gets ${JSON.stringify(r.a)}`); }
 console.log("keep the higher:", G.gainGuard(6, 4), G.gainGuard(3, 7.6), G.gainGuard(0, -2));
 const dmg = src("module/damage.mjs"), esc = src("module/escalation.mjs"), inl = src("module/inline.mjs");
-console.log("damage goes through the Guard first:", dmg.includes("const g = absorbGuard(actor.system.guard, a, actor.system.apGuard);"), "| each target its own:", dmg.includes("const mine = { B: { ...a.B }, M: { ...a.M } };"), "| ends with the encounter:", esc.includes('if (a.system?.guard > 0) g["system.guard"] = 0;'), "| @Guard and @Effect buttons:", inl.includes("|Guard|Effect|"), "| on the sheet:", tpl.includes('class="np-guardbtn'));
+console.log("damage goes through the Guard first:", dmg.includes("const g = absorbGuard(actor.system.guard, a, actor.system.apGuard"), "| each target its own:", dmg.includes("const mine = { B: { ...a.B }, M: { ...a.M } };"), "| ends with the encounter:", esc.includes('if (a.system?.guard > 0) g["system.guard"] = 0;'), "| @Guard and @Effect buttons:", inl.includes("|Guard|Effect|"), "| on the sheet:", tpl.includes('class="np-guardbtn'));
 
 console.log("--- the Archer (A1) and the Paladin (P1) in code");
 // v0.0.186: Marked Quarry's Tier 1 and Sharpshooter are settings on their cards now (automation.mjs; tested in t151).

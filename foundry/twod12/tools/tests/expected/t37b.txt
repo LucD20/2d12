@@ -1,3 +1,3 @@
-comps stored: [{"pool":"B","sub":"S","total":2}] | targets: 1
-card has Damage button: true | total shown: 2
+comps stored: [{"pool":"B","sub":"S","total":2,"formula":"2","dice":[],"kind":"D","src":"","emp":0,"label":""}] | targets: 1
+card has Damage button: false | total shown: undefined
 applied buckets: {"B":{"l":2,"n":0},"M":{"l":0,"n":0},"C":{"l":0,"n":0}}

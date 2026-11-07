@@ -2456,3 +2456,257 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat.rx2 .rx-out.none { background: #e5dcc4; color: #5e513b; }
 .twod12.chat.rx2 .rx-vs { color: #5e513b; font-size: 11px; font-style: italic; }
 .twod12.chat.rx2 .rx-hd button.rx-replay { margin-left: 2px; }
+/* ============================================================================================================================================
+   v0.0.283 (pack chat-cards, Lucas's design 2026-11-07; brief: foundry/mockups/chat-cards-brief.md): the attack roll card, the Save card and the
+   damage message (module/chatcards.mjs draws them). One block, its own tokens; the older card rules above are untouched.
+   Frequency colors: the system's own (FREQ_COLORS in config.mjs), not the brief's (Round #185FA5, Encounter #A32D2D, Turn #0F6E6E, At-will #3B6D11).
+   ============================================================================================================================================ */
+.twod12.chat.cc {
+  --cc-bg: #f4ede0; --cc-line: #bfae8c; --cc-ink: #2a241d; --cc-mute: #5d5446; --cc-panel: #e8dec8; --cc-gold: #b07a12; --cc-gline: #cdb88a;
+  --cc-t1: #a8261c; --cc-t1p: #f2cdc7; --cc-t1i: #8a1c13; --cc-t2: #cfe3c2; --cc-t2i: #234d27; --cc-t3: #2b5a2f; --cc-crit: #1d5a9e; --cc-critp: rgba(29,90,158,.35); --cc-criti: #1d3f6b;
+  --cc-plus: #1d4f8f; --cc-minus: #a8261c; --cc-vig: #9b2c2c; --cc-res: #2c4a9b; --cc-btn: #3b3128; --cc-btn2: #8c7d63;
+  --cc-title: "Cinzel", "Palatino Linotype", Georgia, serif;
+  padding: 0; background: none; border: 0; color: var(--cc-ink);
+}
+.twod12.chat.cc .cc-card { background: #f4ede0; border: 1px solid var(--cc-line); border-radius: 5px; padding: 7px 8px 6px; color: var(--cc-ink); font-family: var(--font-primary, "Signika", sans-serif); font-size: 12.5px; line-height: 1.35; overflow: hidden; }
+.twod12.chat.cc .cc-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.twod12.chat.cc button { font-family: inherit; line-height: 1.2; margin: 0; box-shadow: none; }
+.twod12.chat.cc button:focus-visible { outline: 2px solid var(--cc-crit); outline-offset: 1px; }
+/* the header */
+.twod12.chat.cc .cc-head { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.twod12.chat.cc .cc-name { font-family: var(--cc-title); font-weight: 700; font-size: 14px; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex: 1 1 auto; color: var(--cc-ink); }
+.twod12.chat.cc .cc-cost { flex: none; font-size: 11px; font-weight: 700; color: #fff; padding: 2px 7px; border-radius: 10px; background: #5F5E5A; white-space: nowrap; }
+.twod12.chat.cc .cc-cost.f-round { background: #185FA5; } .twod12.chat.cc .cc-cost.f-encounter { background: #A32D2D; }
+.twod12.chat.cc .cc-cost.f-turn { background: #0F6E6E; } .twod12.chat.cc .cc-cost.f-atwill { background: #3B6D11; } .twod12.chat.cc .cc-cost.f-daily { background: #5B3FA6; }
+.twod12.chat.cc .cc-traits { margin: 4px 0 2px; }
+.twod12.chat.cc .cc-traits .tchip { border: 0; padding: 1px 6px; border-radius: 3px; font-size: 10.5px; font-weight: 600; }
+.twod12.chat.cc .cc-traits .tg-roll { background: #d5ebe6; color: #1d5a53; } .twod12.chat.cc .cc-traits .tg-requires { background: #dbe5f2; color: #24467a; }
+.twod12.chat.cc .cc-traits .tg-kind { background: #f4ddd5; color: #8a3324; } .twod12.chat.cc .cc-traits .tg-keywords, .twod12.chat.cc .cc-traits .tg-damage { background: #e5e0d6; color: #4a443b; }
+.twod12.chat.cc .cc-traits .tsep { display: inline-block; width: 1px; height: 12px; background: #b8a988; margin: 0 4px; vertical-align: middle; }
+.twod12.chat.cc .cc-tline { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 6px; margin: 3px 0 5px; color: var(--cc-ink); }
+.twod12.chat.cc .cc-star { color: var(--cc-gold); }
+.twod12.chat.cc .cc-icon { width: 26px; height: 26px; min-height: 26px; padding: 0; border: 1px solid var(--cc-btn2); border-radius: 4px; background: transparent; color: var(--cc-ink); display: inline-flex; align-items: center; justify-content: center; }
+.twod12.chat.cc .cc-icon.small { width: 24px; height: 24px; min-height: 24px; }
+.twod12.chat.cc .cc-tline a.inline-roll, .twod12.chat.cc .cc-tline a[data-twod12-inline] { border: 1px solid var(--cc-btn2); border-radius: 4px; padding: 2px 6px; background: transparent; color: var(--cc-ink); }
+/* the body: the stamp on the left, the content on the right */
+.twod12.chat.cc .cc-body { display: grid; grid-template-columns: 60px minmax(0, 1fr); gap: 8px; align-items: stretch; }
+.twod12.chat.cc .cc-main { min-width: 0; }
+.twod12.chat.cc .cc-stamp { display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 4px; padding: 4px 2px; text-align: center; border: 0; min-height: 64px; }
+.twod12.chat.cc .cc-stamp small { font-size: 9px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; }
+.twod12.chat.cc .cc-stamp b { font-family: var(--cc-title); font-size: 32px; line-height: 1; font-weight: 700; }
+.twod12.chat.cc .cc-stamp .cc-stl { text-transform: none; letter-spacing: 0; font-size: 10px; font-weight: 600; margin-top: 2px; }
+.twod12.chat.cc .cc-stamp.dmg b { font-size: 30px; }
+.twod12.chat.cc .cc-stamp.dmg { cursor: pointer; width: 100%; }
+.twod12.chat.cc .t1:is(.cc-stamp, .cc-pill) { background: var(--cc-t1); color: #fff; }
+.twod12.chat.cc .t2:is(.cc-stamp, .cc-pill) { background: var(--cc-t2); color: var(--cc-t2i); }
+.twod12.chat.cc .t3:is(.cc-stamp, .cc-pill) { background: var(--cc-t3); color: #fff; }
+.twod12.chat.cc .crit:is(.cc-stamp, .cc-pill) { background: var(--cc-crit); color: #fff; }
+.twod12.chat.cc .cc-pill { display: inline-flex; align-items: center; justify-content: center; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 11px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+.twod12.chat.cc .cc-pill.word { height: auto; padding: 2px 8px; }
+/* the Tier ladder (a button) */
+.twod12.chat.cc .cc-ladder { display: block; width: 100%; padding: 16px 0 0; border: 0; background: transparent; cursor: pointer; position: relative; text-align: left; min-height: 26px; }
+.twod12.chat.cc .cc-ladder.thin { padding-top: 14px; grid-column: 1 / -1; }
+.twod12.chat.cc .cc-arrows { position: absolute; left: 0; right: 0; top: 0; height: 16px; }
+.twod12.chat.cc .cc-arrow { position: absolute; top: 0; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; color: var(--cc-ink); }
+.twod12.chat.cc .cc-arrow b { font-family: var(--cc-title); font-size: 11px; line-height: 11px; }
+.twod12.chat.cc .cc-arrow i { width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 5px solid var(--cc-ink); }
+.twod12.chat.cc .cc-arrow.faded { opacity: .35; }
+.twod12.chat.cc .cc-bar { display: grid; grid-template-columns: 1fr 1fr 1fr; border-radius: 3px; overflow: hidden; border: 1px solid rgba(42,36,29,.25); }
+.twod12.chat.cc .cc-seg { position: relative; text-align: center; font-size: 10.5px; padding: 3px 1px; overflow: hidden; }
+.twod12.chat.cc .cc-ladder.thin .cc-seg { font-size: 10px; padding: 2px 1px; }
+.twod12.chat.cc .cc-seg.lit { font-weight: 700; }
+/* the unlit segments at 45%: only their fill fades, so their labels keep a 4.5:1 contrast (brief section 8) */
+.twod12.chat.cc .cc-seg.s1 { background: rgba(242,205,199,.45); color: var(--cc-t1i); } .twod12.chat.cc .cc-seg.s1.lit { background: var(--cc-t1p); }
+.twod12.chat.cc .cc-seg.s2 { background: rgba(207,227,194,.45); color: var(--cc-t2i); } .twod12.chat.cc .cc-seg.s2.lit { background: var(--cc-t2); }
+.twod12.chat.cc .cc-seg.s3 { background: rgba(43,90,47,.45); color: #1c3a1f; } .twod12.chat.cc .cc-seg.s3.lit { background: var(--cc-t3); color: #fff; }
+.twod12.chat.cc .cc-sl { position: relative; z-index: 1; }
+.twod12.chat.cc .cc-czone { position: absolute; top: 0; bottom: 0; right: 0; width: 30%; font-size: 8px; font-weight: 700; display: flex; align-items: center; justify-content: center; color: var(--cc-criti); background: var(--cc-critp); }
+.twod12.chat.cc .cc-czone.solid { background: var(--cc-crit); color: #fff; }
+.twod12.chat.cc .cc-czone + .cc-sl { margin-right: 30%; display: inline-block; }
+/* the breakdown panel (opens under its ladder) */
+.twod12.chat.cc .cc-break { display: none; grid-template-columns: 62px minmax(0, 1fr); gap: 3px 6px; background: var(--cc-panel); border-radius: 4px; padding: 6px; margin: 4px 0; align-items: center; }
+.twod12.chat.cc .cc-break.open { display: grid; }
+.twod12.chat.cc .cc-bl { font-size: 9.5px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: var(--cc-mute); }
+.twod12.chat.cc .cc-bv { display: flex; flex-wrap: wrap; align-items: center; gap: 3px 6px; min-width: 0; }
+.twod12.chat.cc .cc-btot { grid-column: 1 / -1; display: flex; align-items: center; flex-wrap: wrap; gap: 5px; border-top: 1px solid var(--cc-line); padding-top: 4px; margin-top: 2px; }
+.twod12.chat.cc .cc-total { font-family: var(--cc-title); font-size: 18px; font-weight: 700; }
+.twod12.chat.cc .cc-btot small { color: var(--cc-mute); }
+.twod12.chat.cc .cc-badge { font-family: var(--cc-title); font-weight: 700; font-size: 11.5px; border: 1.5px solid var(--cc-ink); border-radius: 4px; padding: 0 5px; white-space: nowrap; }
+.twod12.chat.cc .cc-chips { margin-left: auto; display: flex; flex-wrap: wrap; gap: 3px; }
+.twod12.chat.cc .cc-dicerow { gap: 4px; }
+.twod12.chat.cc .cc-dg { display: inline-flex; gap: 6px; padding: 0 3px; }
+.twod12.chat.cc .cc-die { display: inline-flex; width: 18px; height: 18px; align-items: center; justify-content: center; transform: rotate(45deg); border: 1.3px solid var(--cc-ink); background: #fff; margin: 4px 3px; flex: none; }
+.twod12.chat.cc .cc-die b { transform: rotate(-45deg); font-size: 11px; font-weight: 700; color: var(--cc-ink); }
+.twod12.chat.cc .cc-die.boom { background: var(--cc-ink); } .twod12.chat.cc .cc-die.boom b { color: #f4ede0; }
+.twod12.chat.cc .cc-dbl { display: inline-flex; gap: 2px; border: 1.5px solid var(--cc-t3); border-radius: 4px; padding: 0 1px; }
+.twod12.chat.cc .cc-dbl.crit { border-color: var(--cc-crit); }
+.twod12.chat.cc .cc-dropped { opacity: .45; }
+.twod12.chat.cc .cc-tag { font-size: 10px; font-weight: 700; color: #fff; background: var(--cc-t3); border-radius: 3px; padding: 1px 5px; }
+.twod12.chat.cc .cc-tag.crit { background: var(--cc-crit); }
+.twod12.chat.cc .cc-bbl { display: flex; align-items: center; gap: 5px; width: 100%; }
+.twod12.chat.cc .cc-d3 { display: inline-flex; width: 18px; height: 16px; align-items: flex-end; justify-content: center; clip-path: polygon(50% 0, 100% 100%, 0 100%); color: #fff; font-size: 9.5px; font-weight: 700; padding-bottom: 1px; flex: none; }
+.twod12.chat.cc .cc-d3.boon { background: #1d5a9e; } .twod12.chat.cc .cc-d3.bane { background: #a8261c; }
+.twod12.chat.cc .cc-plus { color: var(--cc-plus); font-weight: 700; } .twod12.chat.cc .cc-minus { color: var(--cc-minus); font-weight: 700; }
+.twod12.chat.cc .cc-muted { color: var(--cc-mute); font-size: 11px; }
+/* the outcome */
+.twod12.chat.cc .cc-outcome { margin-top: 5px; }
+.twod12.chat.cc .cc-dmgline { font-weight: 600; }
+.twod12.chat.cc .cc-pv { color: var(--cc-vig); } .twod12.chat.cc .cc-pr { color: var(--cc-res); }
+.twod12.chat.cc .cc-sub { font-weight: 700; }
+.twod12.chat.cc .cc-dot { color: var(--cc-mute); }
+.twod12.chat.cc .cc-rider { margin: 2px 0 0 4px; }
+.twod12.chat.cc .cc-rchip { display: inline-block; border: 1px solid var(--cc-btn2); border-radius: 3px; padding: 0 5px; font-size: 11.5px; }
+.twod12.chat.cc .cc-none { color: var(--cc-mute); font-style: italic; }
+.twod12.chat.cc .cc-div { display: flex; align-items: center; gap: 6px; margin: 6px 0 4px; color: var(--cc-gold); }
+.twod12.chat.cc .cc-div span { flex: 1; height: 1px; background: var(--cc-gline); }
+.twod12.chat.cc .cc-div i { font-style: normal; font-size: 7px; letter-spacing: 3px; }
+.twod12.chat.cc .cc-effect { font-size: 12px; }
+.twod12.chat.cc .cc-critline { margin-top: 4px; font-size: 11.5px; color: var(--cc-criti); }
+.twod12.chat.cc .cc-critbox { margin-top: 4px; font-size: 12px; background: rgba(29,90,158,.12); border: 1px solid var(--cc-crit); border-radius: 4px; padding: 3px 6px; color: var(--cc-criti); }
+.twod12.chat.cc .cc-flavor { font-style: italic; color: var(--cc-mute); font-size: 11.5px; }
+.twod12.chat.cc .cc-btns { display: flex; gap: 6px; margin-top: 7px; }
+.twod12.chat.cc .cc-btn { min-height: 26px; padding: 3px 10px; border-radius: 4px; border: 1px solid var(--cc-btn2); background: transparent; color: var(--cc-ink); font-size: 12px; font-weight: 600; cursor: pointer; width: auto; }
+.twod12.chat.cc .cc-btn.primary { background: var(--cc-btn); border-color: var(--cc-btn); color: #f4ede0; flex: 1; }
+.twod12.chat.cc .cc-btn.small { min-height: 24px; padding: 2px 8px; font-size: 11px; flex: none; }
+.twod12.chat.cc .cc-designer { margin-top: 6px; border: 1px dashed var(--cc-btn2); border-radius: 4px; padding: 3px 6px; font-size: 10.5px; color: var(--cc-mute); }
+.twod12.chat.cc .cc-pfoot { margin-top: 5px; font-size: 10px; color: var(--cc-mute); text-align: center; }
+/* several targets */
+.twod12.chat.cc .cc-shared { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; margin-bottom: 4px; }
+.twod12.chat.cc .cc-crow { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 2px 6px; padding: 4px 0; border-top: 1px solid rgba(191,174,140,.6); }
+.twod12.chat.cc .cc-crow > .cc-break, .twod12.chat.cc .cc-crow > .cc-kept { grid-column: 1 / -1; }
+.twod12.chat.cc .cc-cname { font-weight: 700; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.twod12.chat.cc .cc-cdef { font-size: 11px; color: var(--cc-mute); text-align: right; }
+.twod12.chat.cc .cc-tgroup { margin-top: 6px; }
+.twod12.chat.cc .cc-who { font-weight: 600; }
+/* the Save card */
+.twod12.chat.cc .cc-savehead { display: flex; align-items: center; gap: 6px; margin: 2px 0 5px; }
+.twod12.chat.cc .cc-savehead > b { font-family: var(--cc-title); font-size: 14px; }
+.twod12.chat.cc .cc-rule { flex: 1; height: 1px; background: var(--cc-line); }
+.twod12.chat.cc .cc-srows { display: flex; flex-direction: column; gap: 3px; }
+.twod12.chat.cc .cc-srow { box-sizing: border-box; margin: 0; display: grid; grid-template-columns: 50px minmax(0, 1fr) auto; align-items: center; gap: 6px; border-radius: 4px; padding: 3px 6px 3px 0; border: 2px solid transparent; text-align: left; width: 100%; font-size: inherit; }
+.twod12.chat.cc .cc-srow.t1 { background: var(--cc-t1p); color: var(--cc-t1i); }
+.twod12.chat.cc .cc-srow.t2 { background: var(--cc-t2); color: var(--cc-t2i); }
+.twod12.chat.cc .cc-srow.t3 { background: var(--cc-t3); color: #fff; }
+.twod12.chat.cc .cc-srow.t3 :is(.cc-pv, .cc-pr, .cc-sub, .cc-dot) { color: #fff !important; }
+.twod12.chat.cc .cc-srow.t3 .cc-rchip { border-color: rgba(255,255,255,.6); }
+.twod12.chat.cc .cc-srow.t3 .cc-none, .twod12.chat.cc .cc-srow.t1.hit .cc-none { color: #fff; }
+.twod12.chat.cc .cc-card *, .twod12.chat.cc .cc-card *::before { box-sizing: border-box; }
+.twod12.chat.cc .cc-srow.hit { border-color: var(--cc-ink); cursor: pointer; }
+.twod12.chat.cc .cc-srow.t1.hit { background: var(--cc-t1); color: #fff; }
+.twod12.chat.cc .cc-srow.t1.hit :is(.cc-pv, .cc-pr, .cc-sub, .cc-dot) { color: #fff !important; }
+.twod12.chat.cc .cc-srow.dim { opacity: .6; }
+.twod12.chat.cc .cc-scell { display: flex; flex-direction: column; align-items: center; line-height: 1.1; }
+.twod12.chat.cc .cc-scell b { font-family: var(--cc-title); font-size: 13px; } .twod12.chat.cc .cc-scell small { font-size: 10px; }
+.twod12.chat.cc .cc-stotal { font-family: var(--cc-title); font-weight: 700; font-size: 18px; background: var(--cc-ink); color: #f4ede0; border-radius: 10px; padding: 0 8px; }
+.twod12.chat.cc .cc-trigger { font-size: 12px; }
+.twod12.chat.cc .cc-wait { margin-top: 7px; font-style: italic; }
+/* the damage message */
+.twod12.chat.cc .cc-dhead { display: flex; align-items: baseline; gap: 6px; }
+.twod12.chat.cc .cc-dhead .cc-name { flex: 0 1 auto; }
+.twod12.chat.cc .cc-nl { margin-left: auto; font-size: 10.5px; border: 1px solid var(--cc-btn2); border-radius: 3px; padding: 0 5px; color: var(--cc-mute); }
+.twod12.chat.cc .cc-nl.on { font-weight: 700; color: var(--cc-ink); }
+.twod12.chat.cc .cc-pools { display: flex; flex-direction: column; gap: 2px; width: 100%; background: var(--cc-panel); border: 0; border-radius: 4px; padding: 4px 6px; margin-top: 4px; cursor: pointer; text-align: left; min-height: 26px; }
+.twod12.chat.cc .cc-poolrow { display: grid; grid-template-columns: 16px minmax(0, 1fr) auto; align-items: center; gap: 4px; }
+.twod12.chat.cc .cc-poolrow b { font-family: var(--cc-title); font-size: 14px; }
+.twod12.chat.cc .cc-break.dmg { grid-template-columns: 1fr; }
+.twod12.chat.cc .cc-inst { display: grid; grid-template-columns: 62px minmax(0, 1fr); gap: 2px 6px; align-items: center; }
+.twod12.chat.cc .cc-inst + .cc-inst { border-top: 1px solid var(--cc-line); padding-top: 4px; }
+.twod12.chat.cc .cc-ititle { grid-column: 1 / -1; font-size: 11.5px; }
+.twod12.chat.cc .cc-ddie { display: inline-flex; min-width: 17px; height: 17px; align-items: center; justify-content: center; border: 1.3px solid var(--cc-ink); border-radius: 3px; background: #fff; font-size: 10.5px; font-weight: 700; margin-right: 2px; }
+.twod12.chat.cc .cc-ghead { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 6px; align-items: center; margin-top: 6px; }
+.twod12.chat.cc .cc-ghead b { font-family: var(--cc-title); font-size: 14px; }
+.twod12.chat.cc .cc-trows { margin-top: 3px; }
+.twod12.chat.cc .cc-trow { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; padding: 3px 0; border-top: 1px solid rgba(191,174,140,.6); }
+.twod12.chat.cc .cc-trow .cc-cname { flex: 1 1 auto; }
+.twod12.chat.cc .cc-rmods { display: flex; flex-wrap: wrap; gap: 4px; font-size: 11px; }
+.twod12.chat.cc .cc-took { font-size: 12px; }
+.twod12.chat.cc .cc-state { font-size: 10.5px; font-weight: 700; color: #fff; border-radius: 3px; padding: 1px 5px; }
+.twod12.chat.cc .cc-state.bloodied { background: #a8261c; } .twod12.chat.cc .cc-state.strained { background: #1d5a9e; }
+.twod12.chat.cc .cc-adjrow { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; width: 100%; }
+.twod12.chat.cc .cc-adjrow.ondemand { display: none; }
+.twod12.chat.cc .cc-adjrow.ondemand.open, .twod12.chat.cc .cc-adjrow.ondemand:has(.hinted) { display: grid; }
+.twod12.chat.cc .cc-adj { min-height: 26px; border: 1px solid var(--cc-btn2); border-radius: 4px; background: transparent; color: var(--cc-ink); font-size: 11.5px; cursor: pointer; }
+.twod12.chat.cc .cc-adj.on { background: var(--cc-panel); font-weight: 700; }
+.twod12.chat.cc .cc-adj.hinted { border-color: #1f6b3a; box-shadow: 0 0 0 1px #1f6b3a inset; }
+.twod12.chat.cc .cc-applyall { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+.twod12.chat.cc .cc-applyall .cc-btn { flex: none; }
+.twod12.chat.cc .fxname { text-decoration: underline dotted; }
+#chat-log .chat-message.cc-flash, .chat-log .chat-message.cc-flash { box-shadow: 0 0 0 2px #b07a12 inset; transition: box-shadow .3s; }
+.twod12.cc-window .cc-srcs { margin-top: 8px; } .twod12.cc-window .cc-srcs ul { margin: 4px 0 0 16px; padding: 0; }
+/* v0.0.284 (Lucas tested v0.0.283): the chat cards, tidied. */
+/* Foundry's own button look (a light text and a background on hover) never reaches the cards' buttons */
+.twod12.chat.cc .cc-card button:hover, .twod12.chat.cc .cc-card button:focus { color: var(--cc-ink); background-color: transparent; text-shadow: none; box-shadow: none; }
+.twod12.chat.cc .cc-card .cc-pools:hover { background: #dfd2b6; }
+.twod12.chat.cc .cc-card .cc-ladder:hover .cc-bar { box-shadow: 0 0 0 1px var(--cc-ink); }
+.twod12.chat.cc .cc-card .cc-btn.primary:hover { background: #2a231c; color: #f4ede0; }
+.twod12.chat.cc .cc-card .cc-adj:hover, .twod12.chat.cc .cc-card .cc-icon:hover, .twod12.chat.cc .cc-card .cc-btn:not(.primary):hover { background: var(--cc-panel); }
+.twod12.chat.cc .cc-card .cc-srow.hit:hover { filter: brightness(1.06); }
+.twod12.chat.cc .cc-card .cc-srow.t3:hover, .twod12.chat.cc .cc-card .cc-srow.t1.hit:hover { color: #fff; }
+.twod12.chat.cc .cc-card .cc-srow.t1.hit:hover { background: var(--cc-t1); } .twod12.chat.cc .cc-card .cc-srow.t3.hit:hover { background: var(--cc-t3); }
+.twod12.chat.cc .cc-card .cc-srow.t2.hit:hover { background: var(--cc-t2); color: var(--cc-t2i); }
+/* the damage stamp fills the card's height (a button: Foundry gives buttons a fixed height) */
+.twod12.chat.cc .cc-dmg .cc-body { align-items: stretch; }
+.twod12.chat.cc .cc-card .cc-stamp.dmg { height: auto; min-height: 100%; align-self: stretch; margin: 0; }
+.twod12.chat.cc .cc-card .cc-stamp.dmg:hover { color: inherit; filter: brightness(1.05); }
+.twod12.chat.cc .cc-card .cc-stamp.dmg.t1:hover, .twod12.chat.cc .cc-card .cc-stamp.dmg.t3:hover, .twod12.chat.cc .cc-card .cc-stamp.dmg.crit:hover { color: #fff; }
+.twod12.chat.cc .cc-card .cc-stamp.dmg.t2:hover { color: var(--cc-t2i); }
+.twod12.chat.cc .cc-card .cc-stamp.dmg.t1:hover { background: var(--cc-t1); } .twod12.chat.cc .cc-card .cc-stamp.dmg.t2:hover { background: var(--cc-t2); }
+.twod12.chat.cc .cc-card .cc-stamp.dmg.t3:hover { background: var(--cc-t3); } .twod12.chat.cc .cc-card .cc-stamp.dmg.crit:hover { background: var(--cc-crit); }
+/* the pool totals: a column of their own at the right, a little bigger */
+.twod12.chat.cc .cc-poolrow { grid-template-columns: 16px minmax(0, 1fr) 34px; }
+.twod12.chat.cc .cc-poolrow .cc-ptot { font-size: 17px; text-align: right; border-left: 1px solid var(--cc-line); padding-left: 6px; }
+.twod12.chat.cc .cc-ghead b { font-size: 16px; }
+/* a rider that is already a chip (an inline button, an effect's name) gets no second box */
+.twod12.chat.cc .cc-rchip:has(a, .fxname, [data-twod12-inline]) { border: 0; padding: 0; background: none; }
+.twod12.chat.cc .cc-rider a[data-twod12-inline], .twod12.chat.cc .cc-crittxt a[data-twod12-inline] { background: #fbf7ee; border: 1px solid var(--cc-btn2); border-radius: 3px; color: var(--cc-ink); padding: 0 5px; box-shadow: none; }
+.twod12.chat.cc .cc-srow.t3 .cc-rider a[data-twod12-inline], .twod12.chat.cc .cc-srow.t1.hit .cc-rider a[data-twod12-inline] { background: rgba(255,255,255,.92); }
+/* the Critical row: a label, the threshold, the text, readable */
+.twod12.chat.cc .cc-critline, .twod12.chat.cc .cc-critbox { display: flex; flex-wrap: wrap; align-items: center; gap: 3px 6px; font-size: 12px; color: var(--cc-ink); }
+.twod12.chat.cc .cc-critline { background: rgba(29,90,158,.07); border: 1px dashed rgba(29,90,158,.55); border-radius: 4px; padding: 3px 6px; }
+.twod12.chat.cc .cc-critlbl { font-size: 10px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--cc-crit); border: 1px solid var(--cc-crit); border-radius: 3px; padding: 0 4px; background: #fff; }
+.twod12.chat.cc .cc-critlbl.on { background: var(--cc-crit); color: #fff; }
+.twod12.chat.cc .cc-critline small { color: var(--cc-criti); font-size: 11px; }
+.twod12.chat.cc .cc-crittxt { flex: 1 1 100%; }
+/* several targets: who got each Tier, as name chips */
+.twod12.chat.cc .cc-ghd { display: flex; align-items: flex-start; gap: 6px; margin-bottom: 2px; }
+.twod12.chat.cc .cc-who { display: flex; flex-wrap: wrap; gap: 3px; }
+.twod12.chat.cc .cc-nchip { font-size: 11px; font-weight: 600; background: #fbf7ee; border: 1px solid var(--cc-line); border-radius: 10px; padding: 0 7px; white-space: nowrap; }
+/* v0.0.284: Foundry gives every button a fixed height: the cards' block buttons (pool lines, the Save's result row, the ladder, the stamp) take their content's */
+.twod12.chat.cc .cc-card :is(.cc-pools, .cc-srow, .cc-ladder, .cc-stamp) { height: auto; line-height: 1.35; }
+/* v0.0.285 (Lucas tested v0.0.284): the attack card's target at the bottom beside its buttons; compact applied rows; the damage header on one line */
+.twod12.chat.cc .cc-tline.meta { grid-template-columns: 1fr; }
+.twod12.chat.cc .cc-hr { border: 0; border-top: 1px solid var(--cc-line); margin: 7px 0 5px; height: 0; }
+.twod12.chat.cc .cc-foot { display: flex; align-items: center; gap: 6px; }
+.twod12.chat.cc .cc-ftgt { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.twod12.chat.cc .cc-foot .cc-btn { flex: none; min-height: 26px; height: 26px; }
+.twod12.chat.cc .cc-trow.done { flex-wrap: wrap; }
+.twod12.chat.cc .cc-nblk { display: flex; flex-direction: column; flex: 1 1 auto; min-width: 0; }
+.twod12.chat.cc .cc-nblk .cc-took { font-size: 11px; color: var(--cc-mute); display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.twod12.chat.cc .cc-dhead { display: flex; align-items: flex-start; gap: 6px; }
+.twod12.chat.cc .cc-dhead .cc-name { flex: 1 1 auto; min-width: 0; white-space: normal; }
+.twod12.chat.cc .cc-dtags { flex: none; display: flex; align-items: center; gap: 5px; white-space: nowrap; margin-top: 2px; }
+.twod12.chat.cc .cc-dtags .cc-nl { margin-left: 0; }
+/* v0.0.286 (Lucas tested v0.0.285): each creature's Defense as the Save card's framed badge; the Save card with several creatures (a row each) */
+.twod12.chat.cc .cc-cdef { display: inline-flex; align-items: center; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
+.twod12.chat.cc .cc-cdef .cc-badge { color: var(--cc-ink); font-size: 11px; }
+.twod12.chat.cc .cc-crow.save { grid-template-columns: minmax(0, 1fr) auto; }
+.twod12.chat.cc .cc-card .cc-sres { display: inline-flex; align-items: center; gap: 5px; height: auto; padding: 1px 2px; border: 0; background: transparent; cursor: pointer; }
+.twod12.chat.cc .cc-card .cc-sres .cc-stotal { font-size: 15px; }
+.twod12.chat.cc .cc-srow.many .cc-who { margin-bottom: 2px; }
+.twod12.chat.cc .cc-srow.t3 .cc-nchip, .twod12.chat.cc .cc-srow.t1.hit .cc-nchip { color: var(--cc-ink); }
+/* v0.0.287 (Lucas tested v0.0.286): the pills and the Frequency chip squared like the trait chips; the damage stamp with a band per Tier */
+.twod12.chat.cc .cc-pill, .twod12.chat.cc .cc-cost, .twod12.chat.cc .cc-nchip, .twod12.chat.cc .cc-stotal, .twod12.chat.cc .cc-tag, .twod12.chat.cc .cc-state { border-radius: 3px; }
+.twod12.chat.cc .cc-pill { min-width: 24px; height: 20px; padding: 0 5px; font-size: 11px; }
+.twod12.chat.cc .cc-pill.word { height: auto; }
+.twod12.chat.cc .cc-cost { padding: 1px 6px; font-size: 10.5px; }
+.twod12.chat.cc .cc-card .cc-stamp.dmg.multi { background: #e8dec8; color: var(--cc-ink); padding: 3px; gap: 3px; justify-content: flex-start; }
+.twod12.chat.cc .cc-card .cc-stamp.dmg.multi:hover { background: #dfd2b6; color: var(--cc-ink); }
+.twod12.chat.cc .cc-stamp.multi .cc-shd { margin-top: 2px; }
+.twod12.chat.cc .cc-sband { flex: 1 1 0; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 3px; padding: 3px 0; }
+.twod12.chat.cc .cc-sband b { font-size: 24px; }
+.twod12.chat.cc .cc-sband.t1 { background: var(--cc-t1); color: #fff; } .twod12.chat.cc .cc-sband.t2 { background: var(--cc-t2); color: var(--cc-t2i); }
+.twod12.chat.cc .cc-sband.t3 { background: var(--cc-t3); color: #fff; } .twod12.chat.cc .cc-sband.crit { background: var(--cc-crit); color: #fff; }
+.twod12.chat.cc .cc-sarrow { font-size: 11px; }
+.twod12.chat.cc .cc-save .cc-foot .cc-btn.primary { flex: none; }
+/* v0.0.288 (Lucas): the damage message's title alone in its header; the Lethal / Nonlethal tag at the bottom right, beside Apply all */
+.twod12.chat.cc .cc-applyall .cc-nl { margin-left: auto; }

@@ -445,6 +445,7 @@ export async function startTemplate(cfg, ctx = {}) {
       if (ctx?.outcome) ctx.outcome.region = made;
     } catch (e) { console.warn("twod12 | could not create the region", e); ui.notifications.warn("Could not keep the area on the map (permissions?)."); }
   }
-  const lineNote = placed.line ? ` (${placed.cells.length} square${placed.cells.length === 1 ? "" : "s"}${placed.hasTie ? `, ties ${placed.line.side}` : ""}${placed.cut ? ", stopped by a wall" : ""})` : "";
-  await ChatMessage.create({ content: `<div class="twod12 chat"><b>${areaName(shape, n)}</b>${lineNote}: ${tokens.length ? "targeting " + tokens.map(t => t.name).join(", ") : "no targets"}.${noLoE.length ? ` No Line of Effect: ${noLoE.join(", ")}.` : ""}</div>` });
+  // v0.0.284 (Lucas: "it's sending 'targeting x, y, z' as plain text"): no chat line any more (the Action's card lists its targets); only what the map can't show is a notification
+  if (noLoE.length) ui.notifications.info(`${areaName(shape, n)}: no Line of Effect to ${noLoE.join(", ")}.`);
+  if (placed.cut) ui.notifications.info(`${areaName(shape, n)}: the Line is stopped by a wall (${placed.cells.length} square${placed.cells.length === 1 ? "" : "s"}).`);
 }
