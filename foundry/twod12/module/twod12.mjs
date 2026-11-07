@@ -26,6 +26,7 @@ import { registerLightOverlay } from "./lightoverlay.mjs";
 import { CharacterData, NpcData, SpeciesData, ClassData, FeatureData, ActionData, WeaponData, EffectData, TalentData, ArmorData, GearData } from "./data.mjs";
 import { registerEffectHooks, setupPanel, wrapConditions, shadowedEffects } from "./effects.mjs";
 import { registerHealthBar } from "./healthbar.mjs";
+import * as CC from "./chatcards.mjs";   // v0.0.283 (pack chat-cards)
 import { registerInline, handleInline, saveRoll, retargetSave, registerInlineSocket } from "./inline.mjs";
 import { openBuilder } from "./builder.mjs";
 import { CharacterSheet, NpcSheet, TwoD12ItemSheet, registerSheetHooks } from "./sheets.mjs";
@@ -163,7 +164,11 @@ Hooks.once("init", () => {
     default: false
   });
   game.settings.register("twod12", "regionSnapCorners", { name: "Regions snap to whole squares", hint: "A Region drawn by hand is put on whole squares when it is created: a circle becomes the 2d12 area of its size (an Emanation on a square, a Burst on a corner; draw 2 for a 2 Emanation), a rectangle or a polygon snaps its corners to the grid.", scope: "world", config: true, type: Boolean, default: true });
-  game.settings.register("twod12", "showOdds", { name: "Show the odds on cards", hint: "For testing: action cards show the chance of each tier, and damage cards the average and the chance of that total.", scope: "client", config: true, type: Boolean, default: true });
+  game.settings.register("twod12", "showOdds", { scope: "client", config: false, type: Boolean, default: false });   // v0.0.283: replaced by Designer mode (kept so old worlds read it)
+  // v0.0.283 (pack chat-cards, brief section 5): the chat message settings of the new cards
+  game.settings.register("twod12", "designerMode", { name: "Designer mode", hint: "For designing and testing: cards show the odds of each Tier, the Ruler line and the automation mark (Mithril), and damage messages the average and the chance of that total. Off: none of these appear in the chat.", scope: "client", config: true, type: Boolean, default: false });
+  game.settings.register("twod12", "hideEnemyDefenses", { name: "Hide enemy Defenses from players", hint: "Players see the Tier of their rolls but not the Defense numbers: the ladder reads Tier 1 / Tier 2 / Tier 3, the arrow sits in the middle of its Tier, no Critical threshold. The GM always sees everything.", scope: "world", config: true, type: Boolean, default: false });
+  game.settings.register("twod12", "hideTargetDetails", { name: "Hide target details from players", hint: "On damage messages, players see only each target's name and whether it was applied (no Weak, Resist, Immunity, Guard or what it took). Bloodied and Strained stay visible: they are public.", scope: "world", config: true, type: Boolean, default: false });
   game.settings.register("twod12", "highlightTraits", { name: "Highlight traits and damage types in rules text", hint: "The book's text colors on cards (Attributes, Modifiers, Banes and Boons, Rally Points, costs, movement, damage), a light background behind trait names (Strike, Divine...) and colored damage types (Cold, Holy...).", scope: "client", config: true, type: Boolean, default: true });
   CONFIG.Actor.dataModels = { character: CharacterData, npc: NpcData };
   CONFIG.Item.dataModels = { species: SpeciesData, class: ClassData, feature: FeatureData, action: ActionData, weapon: WeaponData, armor: ArmorData, gear: GearData, effect: EffectData, talent: TalentData };
@@ -247,6 +252,22 @@ function collapsibleCards(msg, html) {
   head?.addEventListener("click", () => root.classList.toggle("collapsed"));
 }
 Hooks.on("renderChatMessageHTML", collapsibleCards);
+// v0.0.283 (pack chat-cards): the new cards are drawn for each viewer from their model (chatcards.mjs); Designer mode's marks on the older cards
+function ccRender(msg, html) {
+  const el = html instanceof HTMLElement ? html : html?.[0];
+  if (!el) return;
+  let designer = false, hideDef = false, hideTgt = false;
+  try { designer = game.settings.get("twod12", "designerMode") === true; hideDef = game.settings.get("twod12", "hideEnemyDefenses") === true; hideTgt = game.settings.get("twod12", "hideTargetDetails") === true; } catch (e) { /* not registered yet */ }
+  if (!designer) el.querySelectorAll(".twod12.chat .autodia, .twod12.chat .ac-worth").forEach(x => x.remove());
+  const m = msg.getFlag?.("twod12", "cc"), card = el.querySelector(".cc-card");
+  if (!m || !card) return;
+  const owns = uuid => { try { const d = fromUuidSync(uuid); const a = d?.documentName === "Actor" ? d : d?.actor; return !!a?.isOwner; } catch (e) { return game.user.isGM; } };
+  const view = CC.viewOf({ gm: game.user.isGM, hideDef, hideTgt, designer, author: msg.isAuthor, owns });
+  const tmp = document.createElement("div");
+  tmp.innerHTML = CC.renderCard(msg.getFlag("twod12", "ccApplied") ? { ...m, locked: true } : m, view);
+  if (tmp.firstElementChild) card.replaceWith(tmp.firstElementChild);
+}
+Hooks.on("renderChatMessageHTML", ccRender);
 // v0.0.249 (Lucas): a rung Passive's effect comes as soon as the Escalation reaches its rung (the encounter's start, a Critical, the hook, the GM's valve)
 Hooks.on("twod12.escalationChanged", async actor => { if (!game.user.isActiveGM) return; try { const { applyReachedEffects } = await import("./automation.mjs"); await applyReachedEffects(actor); } catch (e) { console.warn("twod12 | the rung's effects", e); } });
 Hooks.on("renderChatMessageHTML", bindInitCard);   // v0.0.206: the Initiative card's rows open on click
@@ -274,6 +295,16 @@ Hooks.once("ready", async () => {
       try { await handleInline(inl.dataset.twod12Inline, JSON.parse(inl.dataset.cfg), { message: game.messages.get(inl.closest("[data-message-id]")?.dataset.messageId) ?? null }); } catch (err) { console.error("twod12 | inline roll failed", err); }
       return;
     }
+    // v0.0.283: a new card's ladder, result row and pool lines open their breakdown (a class: chat content drops the hidden attribute)
+    const tg = ev.target.closest?.("[data-cc-toggle], [data-cc-more]");
+    if (tg) {
+      ev.preventDefault();
+      const card = tg.closest(".cc-card"), id = tg.dataset.ccToggle;
+      const panel = id !== undefined ? card?.querySelector(`[data-cc-panel="${CSS.escape(id)}"]`) : tg.closest(".cc-trow")?.querySelector(".cc-adjrow");
+      const open = !panel?.classList.contains("open");
+      panel?.classList.toggle("open", open); tg.setAttribute("aria-expanded", String(open));
+      return;
+    }
     const b = ev.target.closest?.("[data-twod12]");
     if (!b) return;
     const msg = game.messages.get(b.closest("[data-message-id]")?.dataset.messageId);
@@ -286,12 +317,17 @@ Hooks.once("ready", async () => {
     else if (b.dataset.twod12 === "retargetAction") await retargetAction(msg);
     else if (b.dataset.twod12 === "useGrant") await useGrant(msg, b.dataset.effectId, Number(b.dataset.index) || 0);   // v0.0.260: a granted use from the card
     else if (b.dataset.twod12 === "rollDamage") await rollDamage(msg);
+    else if (/^cc(Apply|ApplyAll|Undo|Adjust|DmgTarget)$/.test(b.dataset.twod12)) await (await import("./ccdamage.mjs")).ccDamageClick(b.dataset.twod12, b, msg);   // v0.0.283
+    else if (b.dataset.twod12 === "ccCard") await (await import("./ccdamage.mjs")).openCardWindow(msg);
+    else if (b.dataset.twod12 === "ccOpenSrc") (await import("./ccdamage.mjs")).openSource(msg);
+    else if (b.dataset.twod12 === "ccSaveDamage") await (await import("./inline.mjs")).saveDamage(msg);
     else if (/^rx[A-Z]/.test(b.dataset.twod12)) await rxClick(msg, b, ev);   // v0.0.272: the Reactions message (v0.0.273: its order, clock, Resolve, Move back, the Action's sheet)
     else if (b.dataset.twod12 === "applyAfter") { const { applyAfter } = await import("./actions.mjs"); await applyAfter(msg, b.dataset.side ?? "", Number(b.dataset.step) || 0); }   // v0.0.250; v0.0.254: the step
     else await damageButton(b.dataset.twod12, b, msg);
   });
   registerSocket();
   registerInlineSocket();
+  try { (await import("./ccdamage.mjs")).registerCcSocket(); } catch (e) { console.warn("twod12 | chat cards socket", e); }
   // Default diagonal rule: alternating 1/2/1 (applied once, GM only).
   // v0.0.146: the Weapon trait no longer means Round. Actions that had no Frequency and the Weapon trait (they were Round) are set to Round, once.
   // v0.0.156: Shot Actions need a Projectile weapon. Once, every ranged weapon that isn't Thrown gets the property (the old rule: "ranged, not thrown").

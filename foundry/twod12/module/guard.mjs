@@ -17,10 +17,11 @@ export const apGuardAfterReaction = (apGuard, apSpent, stage) => Math.max(0, (Ma
  * Resolve lethal, Resolve nonlethal). The Guard from unspent AP (apGuard) is taken before the other Guard.
  * Returns { a: what is left for the Health, taken (both Guards together), guard: the Guard left, apGuard: the AP Guard left, takenAp }.
  */
-export function absorbGuard(guard, a, apGuard = 0) {
+export function absorbGuard(guard, a, apGuard = 0, first = "B") {   // v0.0.283: first: the pool the Guard takes first (the damaged creature's choice, Ch. 4)
   let g = Math.max(0, Math.floor(Number(guard) || 0)), ag = Math.max(0, Math.floor(Number(apGuard) || 0)), taken = 0, takenAp = 0;
   const out = { B: { ...a.B }, M: { ...a.M } };
-  for (const [p, k] of [["B", "l"], ["B", "n"], ["M", "l"], ["M", "n"]]) {
+  const order = first === "M" ? [["M", "l"], ["M", "n"], ["B", "l"], ["B", "n"]] : [["B", "l"], ["B", "n"], ["M", "l"], ["M", "n"]];
+  for (const [p, k] of order) {
     const fromAp = Math.min(ag, out[p][k] || 0);
     out[p][k] = (out[p][k] || 0) - fromAp; ag -= fromAp; takenAp += fromAp;
     const n = Math.min(g, out[p][k] || 0);

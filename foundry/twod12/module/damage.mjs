@@ -14,7 +14,8 @@ const SOCKET = "system.twod12";
  * v0.0.181: the actor's Guard takes the damage first (guard.mjs); the buckets are changed in place to what reached the Health,
  * so the callers count, log and trigger only that. Returns what the Guard took.
  */
-export async function applyToActor(actor, a, { announce = true, from = null } = {}) {
+export async function applyToActor(actor, a, opts = {}) {
+  const { announce = true, from = null } = opts;
   if (!actor) return 0;
   let M = null;
   try { M = await import("./moment.mjs"); } catch (e) { M = null; }
@@ -38,7 +39,7 @@ export async function applyToActor(actor, a, { announce = true, from = null } = 
   // v0.0.254 (Shield of Faith): a reduction waiting on the creature takes from this damage first, then it is spent whatever is left of it
   const red = Math.max(0, Math.floor(Number(actor.system.reduceNext) || 0));
   if (red) { const r = absorbGuard(red, a, 0); a.B = r.a.B; a.M = r.a.M; a.reduced = r.taken; a.reduceLeft = 0; early["system.reduceNext"] = 0; if (r.taken && announce) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-halved", `<b>${esc(actor.name)}</b>'s damage is reduced by <b>${r.taken}</b>${red > r.taken ? ` (of ${red}; the rest is spent)` : ""}.`, "guardmsg") }); }
-  const g = absorbGuard(actor.system.guard, a, actor.system.apGuard);
+  const g = absorbGuard(actor.system.guard, a, actor.system.apGuard, opts.guardFirst === "M" ? "M" : "B");   // v0.0.283: the creature's choice of pool
   if (g.taken) { a.B = g.a.B; a.M = g.a.M; early["system.guard"] = g.guard; early["system.apGuard"] = g.apGuard; a.guardLeft = g.guard + g.apGuard; }
   // v0.0.272: the Guard and the reduction this damage used are written first, so a Guard a "would go Down" Reaction gives is not overwritten
   if (Object.keys(early).length) await writeDamage(actor, early);
@@ -62,7 +63,7 @@ export async function applyToActor(actor, a, { announce = true, from = null } = 
   return g.taken;
 }
 /** The actor's update, through the GM when this user doesn't own it. */
-async function writeDamage(actor, upd) {
+export async function writeDamage(actor, upd) {
   if (actor.isOwner) await actor.update(upd);
   else game.socket.emit(SOCKET, { type: "applyDamage", actorUuid: actor.uuid, upd });
 }
@@ -191,7 +192,7 @@ async function runAfterDamage(f, targets) {
 }
 
 /** v0.0.266 (Lucas, Deathmark): a Version's effects with the mode "when the target is Down" come by themselves once the damage put it at its Pool (the Effects button stays, for a miss-click). */
-async function applyDownEffects(f, actor, targetUuid) {
+export async function applyDownEffects(f, actor, targetUuid) {
   const uuids = (f?.fx ?? []).filter(x => x.mode === "down").map(x => x.uuid);
   if (!uuids.length || !actor?.system?.atZero) return;
   await applyEffects(uuids, [targetUuid], { ...originInfo(f.originUuid), escalation: !!f.escalation, ...(Number.isFinite(f.originMod) ? { mod: f.originMod } : {}) });

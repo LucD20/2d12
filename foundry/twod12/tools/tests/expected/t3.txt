@@ -1,4 +1,4 @@
- Paladin's Attack Damage Tier 2 &#10022; &#10022; &#10022; Modifier +2 Vigor 8 undefined 1d8 4 4 undefined 1d4 2 2 &#10022; Total 8 Avg 9 &middot; this total or more: 69% &middot; exactly: 12.5% Damage Half Double Block Lethal Nonlethal 
+ DAMAGE 8 Tier 2 ↗ Paladin's Attack Damage Lethal Vigor · 6 S + 2 H 8 Vigor · S (Greatsword) Dice 4 Modifiers +2 Modifier Total 6 Vigor · H Dice 2 Total 2 Target the selected tokens 
 [{"pool":"B","subtype":"S","total":4,"formula":"1d8"},{"pool":"B","subtype":"H","total":2,"formula":"1d4"},{"pool":"B","subtype":"S","total":2,"formula":""}]
 {
   ap: 1,

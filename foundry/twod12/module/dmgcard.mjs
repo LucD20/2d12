@@ -25,6 +25,12 @@ const dmgHead = (title, subtitle) => {
 };
 
 export async function postDamageCard({ actor = null, title, subtitle = "", comps: allComps, texts = [], fx = [], targets = [], originUuid = "", chip = "", rolls = [], applied = "", color = TWOD12.cardColors.default, defaultNl = false, originMod = null, after = "", areaPoint = null, strike = false }) {
+  // v0.0.283 (pack chat-cards): every damage card that isn't already applied is the new damage message (ccdamage.mjs)
+  if (!applied) {
+    const { postCcDamage } = await import("./ccdamage.mjs");
+    const t0 = targets[0]?.tier ?? (/Tier (\d)/.exec(subtitle)?.[1] ? Number(/Tier (\d)/.exec(subtitle)[1]) : 0);
+    return postCcDamage({ actor, title, groups: [{ tier: t0, crit: !!targets[0]?.crit, comps: allComps, fx, riders: texts }], targets: targets.map(t => ({ ...t, tier: t.tier ?? t0, g: 0 })), rolls, nl: defaultNl, originUuid, originMod, after, areaPoint, strike });
+  }
   const comps = allComps;
   const pools = {};
   for (const c of comps) (pools[c.pool || ""] ??= []).push(c);
@@ -37,7 +43,7 @@ export async function postDamageCard({ actor = null, title, subtitle = "", comps
   }).join("");
   const odds = (() => {
     try {
-      if (game.settings.get("twod12", "showOdds") === false) return "";
+      if (game.settings.get("twod12", "designerMode") !== true) return "";   // v0.0.283: only in Designer mode
     } catch (e) {
       /* default on */
     }

@@ -1,39 +1,40 @@
 targets chosen by the area: Goblin, Lonny, Nari
 notes: (none)
 chips offered in the dialog: Actor.Nari|pr:0* syn:cover|Actor.Lonny*
-card: Whirlwind Encounter 2AP Talent 1 Weapon Melee Area Self Strike Targets: All creatures in the Area Area: 5 Emanation Vs. AD @Template[emanation|distance:5|targets:all|self:no|at:self|quick:yes|label:Apply Area] &#10022; &#10022; &#10022; Weapon Modifier • Body 6 + 7 + 1 0 1 Weapon Modifier +2 Nari 16 AD 11 Tier 2 Prone T1 12% · T2 44% · T3 43% Lonny 14 AD 11 Tier 2 Medium cover T1 28% · T2 44% · T3 27% Goblin 15 AD 11 Tier 2 T1 17% · T2 47% · T3 37% &#10022; ≤ 10 2 Weapon Modifier 11–17 0 Greatsword + 2 Weapon Modifier Nari, Lonny, Goblin ≥ 18 0 Greatsword + 1d6 + 2 Weapon Modifier &#10022; Roll Damage (per Tier) 3 targets Nari Lonny Goblin
+card: Whirlwind Encounter · 2 AP Weapon Melee Area Self Strike @Template[emanation|distance:5|targets:all|self:no|at:self|quick:yes] → 3 targets 2d12 6 7 +2 Modifier 2 Nari AD 11 · 1 Boon 16 ≤10 11–17 18+ 2d12 6 7 Boon · Bane 2 +1 Boon · Prone Modifiers +2 Weapon 16 vs AD 11 Tier 2 2 Lonny AD 11 · 2 Banes 14 ≤10 11–17 18+ 2d12 6 7 Boon · Bane 1 +0 Bane · Medium cover 2 −1 Bane · Medium cover Modifiers +2 Weapon 14 vs AD 11 Tier 2 2 Goblin AD 11 15 ≤10 11–17 18+ 2d12 6 7 Modifiers +2 Weapon 15 vs AD 11 Tier 2 Tier 2 Nari, Lonny, Goblin Vigor 2 Sl Damage Card
 flags: tier 2 | results: ["Nari: tier 2","Lonny: tier 2","Goblin: tier 2"] | targets: ["Nari","Lonny","Goblin"]
 dice in the message: 4
-shared dice shown: boon dice 1 | bane dice 0,1
---- three DCs (13, 17, 23), dice 9 and 11: boon dice 1, bane dice 0,1
-tier rows show who landed where: Tier 1 2 Weapon Modifier Goblin Tier 2 0 Greatsword + 2 Weapon Modifier Lonny Tier 3 0 Greatsword + 1d6 + 2 Weapon Modifier Nari
+shared dice shown: boon dice - | bane dice -
+--- three DCs (13, 17, 23), dice 9 and 11: boon dice -, bane dice -
+the outcome grouped by Tier, who landed where: Tier 3 Nari Vigor 2 Sl + 1d6 Tier 2 Lonny Vigor 2 Sl Tier 1 Goblin Vigor 2
+each creature's own Defense on its row: Nari: Bo 13 · 1 Boon | Lonny: Bo 17 · 2 Banes | Goblin: Bo 23
 DC ranges in the tier column are generic when the DCs differ: true
 flags: ["Nari T3","Lonny T2","Goblin T1"] | highest tier on the card: 3
---- Favored for all: 3d12 (4, 12→8, 6) keeps the two highest: boon dice 1, bane dice 0,1
-a third die was rolled: true | dice line has a third group: true
+--- Favored for all: 3d12 (4, 12→8, 6) keeps the two highest: boon dice -, bane dice -
+a third die was rolled: true | dice line has a third group: false
 dialog tiles: all Actor.Nari* Actor.Lonny Actor.Goblin | groups: all, Actor.Nari (shown), Actor.Lonny, Actor.Goblin
 Nari's tile holds: Actor.Nari|pr:0 | Lonny's: syn:cover|Actor.Lonny | Goblin's: (none)
 the chips carry their boons and banes (for the dots): Lonny's cover 2 banes | Nari's Prone 1 boon
-odds on each row: 3 | T1 22% · T2 46% · T3 32%
-damage cards posted: 1 | merged card rows: 3 | buttons on a row: Damage/Half/Double | All buttons: 3
-rows: Nari tier 3 total 5 | Lonny tier 2 total 2 | Goblin tier 1 total 2
+odds: not in the stored card: true | in Designer mode, one line per creature: 3
+damage messages posted: 1 | groups (Tiers): Tier 3: 5 | Tier 2: 2 | Tier 1: 2 | rows: Nari (group 0), Lonny (group 1), Goblin (group 2)
+Apply buttons: 3 | Apply all: true | no Lethal selector, no Block: true
 before: Nari 0 Lonny 0 Goblin 0
-Damage on Nari's row: Nari 5 | the row says: 5 Vigor
+Apply on Nari's row: Nari 5 of 5 | the row says: Took 5
 Half on Lonny's row: Lonny 1 (full would be 2, half rounded up 1)
-Block on Goblin's row: true | the card shows it: true
-All: Goblin (blocked) untouched: true | Nari and Lonny not hit twice: true
-Unblock, then Double on Goblin's row: Goblin 4 | all rows done: true | the All bar is gone: true
+Apply all: Goblin 2 of 2 | Nari not hit twice: true | all rows applied: true
+Undo on Goblin's row: Goblin 0 | the row waits again: true
+Double on Goblin's row: Goblin 4 (double 4)
+Then Half on the applied row: Goblin 1 (half 1)
 applying a row twice does nothing: true
-one target (Nari): rows per creature: 0 | single roll line with a shield: true | results in the flags: none | tier 2
-two targets (Nari, Lonny): rows per creature: 2 | single roll line with a shield: false | results in the flags: 2 | tier 2
-no target: rows per creature: 0 | single roll line with a shield: true | results in the flags: none | tier 2
+one target (Nari): rows per creature: 0 | one stamp and one ladder (one target): true | results in the flags: none | tier 2
+two targets (Nari, Lonny): rows per creature: 2 | one stamp and one ladder (one target): false | results in the flags: 2 | tier 2
+no target: rows per creature: 0 | one stamp and one ladder (one target): true | results in the flags: none | tier 2
 --- six Skeleton Captains, dice 6 and 7: boon dice -, bane dice -
 dialog tiles: Yours | Skeleton Captain 1 | Skeleton Captain 2 | Skeleton Captain 3 | Skeleton Captain 4 | Skeleton Captain 5 | Skeleton Captain 6 | numbers on the tiles: 1,2,3,4,5,6 | a dots holder on each: 7 | a caption: true | the old per-tile name and DC text is gone: true
-rows on the card: 1 | Skeleton Captain ×6 15 Bo 13 Tier 2 T1 28% · T2 45% · T3 27%
-tier row names: ≤ 12 2 Weapon Modifier 13–19 0 Greatsword + 2 Weapon Modifier Skeleton Captain ×6 ≥ 20 0 Greatsword + 1d6 + 2 Weapon Mod
-targets line: Skeleton Captain ×6
-damage: one card with 6 rows, named: Skeleton Captain 1, Skeleton Captain 2, Skeleton Captain 3, Skeleton Captain 4, Skeleton Captain 5, Skeleton Captain 6 | All bar: true
-size of the roll card: about 4346 characters for 6 creatures (one row), against 5313 for 3
+rows on the card (one per creature): 6 | Tier groups: Tier 2 Skeleton Captain 1, Skeleton Captain 2, Skeleton Captain 3, Skeleton Captain 4, Skeleton Captain 5, Skeleton Capt
+targets line: @Template[emanation|distance:5|targets:all|self:no|at:self|quick:yes] → 6 targets
+damage: one card with 6 rows, named: Skeleton Captain 1, Skeleton Captain 2, Skeleton Captain 3, Skeleton Captain 4, Skeleton Captain 5, Skeleton Captain 6 | Apply all: true
+size of the roll card: about 9539 characters for 6 creatures (one row), against 7285 for 3
 gridless scene: Whirlwind still rolls: true 
 dots: "" | g g r | capped at 5 each: 5 5 | never negative: ""
 captions: {"name":"Skeleton Captain 2","detail":"DC 13 · 2 Banes"} {"name":"Nari","detail":"DC 17 · 1 Boon"} {"name":"Goblin","detail":"DC 20"} {"name":"Lonny","detail":"DC 15 · 3 Boons · 1 Bane"}

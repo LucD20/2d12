@@ -102,10 +102,10 @@ const act = async (label, item, targets, dice, extra = {}) => {
   if (e?.error) { console.log(label, "FAILED:", e.error.stack.split("\n").slice(0, 3).join(" | ")); return null; }
   const chips = [...dialogContent.matchAll(/name="fx" value="([^"]+)" data-b="(\d)" data-n="(\d)"([^>]*)>/g)].map(m => `${m[1]}${/checked/.test(m[4]) ? "*" : ""}(${m[2]}b/${m[3]}n)`).join(" ");
   const c = chat.find(m => m.content.includes(item.name));
-  const rows = c ? [...c.content.matchAll(/<div class="mrow t(\d)"><span class="mname"[^>]*>([^<]+)<\/span>[\s\S]*?<b class="rtotal">(\d+)</g)].map(m => `${m[2]} ${m[3]}`) : [];
+  const rows = c ? [...c.content.matchAll(/<div class="cc-crow">[\s\S]*?class="cc-cname">([^<]+)<\/span>[\s\S]*?<b class="cc-total">(\d+)</g)].map(m => `${m[1]} ${m[2]}`) : [];
   const single = c ? /class="shield (win|lose)"/.exec(c.content) : null;
-  const total = c ? (c.content.match(/<b class="rtotal">(\d+)<\/b>/) ?? [])[1] : null;
-  const banes = c ? [...c.content.matchAll(/class="die d3 bane">(\d)</g)].map(m => m[1]).join(",") : "";
+  const total = c ? (c.content.match(/<b class="cc-total">(\d+)<\/b>/) ?? [])[1] : null;
+  const banes = c ? [...(c.content.match(/<div class="cc-break[\s\S]*?<\/div>/)?.[0] ?? "").matchAll(/class="cc-d3 bane"[^>]*><b>(\d)</g)].map(m => Number(m[1]) - 1).join(",") : "";
   console.log(`${label.padEnd(48)} ${c ? "card" : "no card"} | chips: ${chips || "(none)"} | bane dice ${banes || "-"} | ${rows.length ? "rows " + rows.join("; ") : "total " + total}${notes.length ? " | " + notes.join("; ") : ""}`);
   return c;
 };

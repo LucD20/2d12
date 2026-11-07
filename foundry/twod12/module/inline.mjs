@@ -7,7 +7,9 @@ import { coverFromPoint } from "./cover.mjs";
 import { TWOD12, unconsciousDoom, doomStatus, cardVars, cardHead, prettyDamage, poolIcon, dtypeIcon } from "./config.mjs";
 import { performCheck, checkHtml, esc, sgn, showDice, combineRolls } from "./roll.mjs";
 import { traitChevrons } from "./config.mjs";
-import { askRoll, enrich, adjLabelOf } from "./actions.mjs";
+import { askRoll, enrich, adjLabelOf, ccRowOf } from "./actions.mjs";
+import * as CC from "./chatcards.mjs";   // v0.0.283 (pack chat-cards): the one-target Save card
+import { perDieDelta } from "./calc.mjs";
 import { resolveModifiers, applyEffects, applyCondition, originInfo, applyBoonEffect, damageSteps } from "./effects.mjs";
 import { dealDamage } from "./damage.mjs";
 import { postDamageCard } from "./dmgcard.mjs";
@@ -381,7 +383,8 @@ async function prerollTiers(cfg) {
     if (!parts.damage.length) continue;
     const { comps, rolls } = await rollParts(parts.damage, cfg.nonlethal);
     // The Save Action's user is Empowered or Enfeebled: the value goes to every damage roll, per die (Several Targets in the rules).
-    if (step) for (const c of comps) { const k = (c.dice ?? []).reduce((a, d) => a + (d.results?.length ?? 0), 0); if (k) { c.total = Math.max(0, c.total + step * k); c.formula = `${c.formula} ${step > 0 ? "+" : "\u2212"}${Math.abs(step)}/die`; } }
+    // v0.0.283 (Ch. 8): per die, and Enfeebled leaves each die at least 1
+    if (step) for (const c of comps) { const res = (c.dice ?? []).flatMap(d => d.results ?? []); if (res.length) { const delta = perDieDelta(res, step); c.total = Math.max(0, c.total + delta); c.emp = delta; c.formula = `${c.formula} ${step > 0 ? "+" : "\u2212"}${Math.abs(step)}/die`; } }
     if (comps.length) out[`t${n}`] = comps;
     all.push(...rolls);
   }
@@ -910,7 +913,45 @@ export async function postSaveCard(cfg, ctx = {}) {
 }
 
 async function writeSaveCard(msg, st) {
+  if (st.cc) {   // v0.0.283: the new Save card lives on the Save Action's own card
+    const old = msg.getFlag("twod12", "cc"), m = foundry.utils.deepClone(old), row = st.rows[0], res = row?.result;
+    m.result = res?.row ?? null; m.damageDone = !!st.damageDone; m.target = { uuid: row?.uuid, name: row?.name }; m.tline.names = row ? [row.name] : [];
+    m.hasDamage = !!res && !!(res.ccComps ?? []).length;
+    return msg.update({ content: CC.replaceCard(msg.content, old, m), "flags.twod12.saveCard": st, "flags.twod12.cc": m });
+  }
   await msg.update({ content: await saveCardHtml(st), "flags.twod12.saveCard": st });
+}
+/** v0.0.283: each Tier of a Save as the card shows it: one line per pool, then its riders (its texts, its effects' names). */
+export async function saveTierOutcomes(cfg) {
+  const out = {};
+  for (const n of [1, 2, 3]) {
+    const p = parseParts(cfg.tiers?.[`t${n}`]);
+    const riders = [...await Promise.all(p.texts.map(t => enrich(t)))];
+    for (const u of p.uuids) riders.push(`<span class="fxname">${esc((await fromUuid(u).catch(() => null))?.name ?? "?")}</span>`);
+    out[n] = { parts: p.damage.map(d => ({ pool: d.pool || "B", t: d.formula, sub: d.sub })), riders };
+  }
+  return out;
+}
+/** v0.0.283: a one-target Save Action: its own card becomes the Save card (the target's owner rolls on it); the Tier's damage waits for the Damage button. */
+export async function ccSaveOnCard(msg, cfg, target, { model, point = null }) {
+  const doc = await fromUuid(target.uuid).catch(() => null), mods = saveRowMods(doc, point);
+  const st = { cfg, color: "", cc: true, rows: [{ uuid: target.uuid, name: target.name, result: null, boon: mods.boon, bane: mods.bane, why: mods.why.join(", ") }], tierDmg: await prerollTiers(cfg) };
+  const m = { ...model, kind: "save", saveName: `${TWOD12.attributes[cfg.attr] ?? cfg.attr} Save`, dc: cfg.dc, tiers: await saveTierOutcomes(cfg), target: { uuid: target.uuid, name: target.name }, result: null, hasDamage: false };
+  m.tline = { ...m.tline, names: [target.name], retargetKind: "retargetSave" };
+  await msg.update({ content: CC.cardContent(m), "flags.twod12.cc": m, "flags.twod12.saveCard": st });
+}
+/** v0.0.283: the Save card's Damage button: the target's Tier as a damage message (its effects ride on the damage). */
+export async function saveDamage(msg) {
+  const st = foundry.utils.deepClone(msg.getFlag("twod12", "saveCard")), row = st?.rows?.[0], res = row?.result;
+  if (!res || st.damageDone) return;
+  if (!msg.isAuthor && !game.user.isGM) return ui.notifications.warn("Only the author of this card or the GM can roll its damage.");
+  const cfg = st.cfg, parts = parseParts(cfg.tiers[`t${res.tier}`]), comps = res.ccComps ?? [];
+  const m = msg.getFlag("twod12", "cc");
+  let actor = null; try { actor = cfg.actorUuid ? await fromUuid(cfg.actorUuid) : null; } catch (e) { actor = null; }
+  const { postCdmg } = { postCdmg: (await import("./ccdamage.mjs")).postCcDamage };
+  await postCdmg({ actor, title: cfg.source || m?.name || "Save", groups: [{ tier: res.tier, crit: false, comps, fx: parts.uuids.map(u => ({ uuid: u, mode: "auto", rider: true })), riders: m?.tiers?.[res.tier]?.riders ?? [] }], targets: [{ uuid: row.uuid, name: row.name, tier: res.tier, g: 0 }], nl: !!cfg.nonlethal, originUuid: cfg.actorUuid ?? "", srcId: msg.id });
+  st.damageDone = true;
+  await writeSaveCard(msg, st);
 }
 
 async function storeSaveResult(messageId, idx, result) {
@@ -930,7 +971,8 @@ export async function retargetSave(msg) {
   const toks = game.user.targets.size ? [...game.user.targets] : (canvas.tokens?.controlled ?? []);
   if (!toks.length) return ui.notifications.warn("Select or target a token first.");
   const old = new Map(st.rows.map(r => [r.uuid, r]));
-  st.rows = toks.map(t => old.get(t.document.uuid) ?? { uuid: t.document.uuid, name: t.name, result: null });
+  if (st.cc && st.rows.some(r => r.result)) return ui.notifications.warn("The Save was rolled: its target can't change now.");
+  st.rows = (st.cc ? toks.slice(0, 1) : toks).map(t => old.get(t.document.uuid) ?? { uuid: t.document.uuid, name: t.name, result: null });   // v0.0.283: the one-target card keeps one
   try { await writeSaveCard(msg, st); } catch (e) { ui.notifications.warn("Only the author of this card or the GM can change its targets."); }
 }
 
@@ -959,6 +1001,15 @@ export async function saveRoll(msg, idx) {
   const shared = st.tierDmg?.[`t${chk.tier}`] ?? null;
   const { comps, rolls } = shared ? { comps: shared.map(c => ({ ...c })), rolls: [] } : await rollParts(parts.damage, cfg.nonlethal);
   await showDice([...chk.rolls, ...rolls]);
+  if (st.cc) {   // v0.0.283: the new Save card: the result is drawn on the card; the damage waits for its Damage button (effects with no damage land now)
+    chk.dcLabel = "DC";
+    const r = ccRowOf(chk, actor.name, row.uuid, TWOD12.attributes[key]);
+    if (!comps.length && parts.uuids.length) await applyEffects(parts.uuids, [actor.uuid], originInfo(cfg.actorUuid ?? ""));
+    const result = { total: chk.total, tier: chk.tier, row: r, ccComps: comps.map(c => ({ pool: c.pool, sub: c.sub, nl: c.nl, total: c.total, formula: c.formula, dice: c.dice, kind: c.kind ?? "D" })), tierDmg: shared ? null : comps };
+    if (game.user.isGM || msg.isAuthor) await storeSaveResult(msg.id, idx, result);
+    else game.socket.emit("system.twod12", { type: "saveResult", messageId: msg.id, idx, result });
+    return;
+  }
   const bits = [], extras = [];
   let amount = null;
   if (comps.length) { bits.push(await dealDamage(actor, comps)); amount = comps.reduce((s, c) => s + c.total, 0); }
