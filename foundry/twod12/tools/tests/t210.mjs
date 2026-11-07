@@ -111,7 +111,7 @@ const line = msg.content.match(/<div class="rx-line"[\s\S]*?<\/button><\/div>/)?
 console.log("the collapsed line:", txt(line), "| faces in resolve order:", [...line.matchAll(/data-tooltip="([^"]*)" aria-label/g)].map(m => m[1]).join(", "), "| icons (Font Awesome, v0.0.276):", [...line.matchAll(/class="rx-i (fa-\w+ fa-[\w-]+)/g)].map(m => m[1].split(" ")[1]).join(" "), "| no <svg> in the content:", !msg.content.includes("<svg"));
 console.log("the result chip: struck held, final:", line.match(/rx-out dmg">(.*?)<\/span>/)?.[1]);
 const full = msg.content.match(/<div class="rx-full">[\s\S]*$/)?.[0] ?? "";
-console.log("unfolded: header", txt(full.match(/<div class="rx-hd">[\s\S]*?<\/div>/)?.[0]), "| the snapshot (pans the map):", full.includes('class="rx-mini" data-twod12="rxPan"'), "| its labels (drawn on each client, v0.0.276):", [...M.snapshotSvg(rx).matchAll(/font-weight="700" fill="[^"]*">([^<]*)<\/text><\/g>/g)].map(m => m[1]).filter(s => s.includes("·") || s.includes("→")).join(" ; "));
+console.log("unfolded: header", txt(full.match(/<div class="rx-hd">[\s\S]*?<\/div>/)?.[0]), "| the map button (v0.0.281, replaces the snapshot):", full.includes('class="rx-hb rx-replay" data-twod12="rxPan"'), "| its labels (drawn on each client, v0.0.276):", [...M.snapshotSvg(rx).matchAll(/font-weight="700" fill="[^"]*">([^<]*)<\/text><\/g>/g)].map(m => m[1]).filter(s => s.includes("·") || s.includes("→")).join(" ; "));
 console.log("the frozen stack:", [...full.matchAll(/<div class="rx-it[^"]*"[\s\S]*?<\/div>/g)].map(m => txt(m[0])).join(" | "), "| no grips:", !full.includes("rx-grip"));
 
 console.log("--- the edge case: the attacker drops before the rest resolve");
@@ -155,7 +155,7 @@ console.log("no second post:", !mo.includes("again: true"), "| no Foundry window
 
 console.log("--- v0.0.276 (Lucas tested v0.0.275)");
 console.log("names without the build:", M.cleanName("Archer 1 (Double Shot, Marksman)"), "|", M.cleanName("Bandit Thug"), "|", M.cleanName("(odd)"));
-console.log("no <svg> in any card:", ![M.rxCardHtml(live(r3)), M.rxCardHtml(rs), M.rxCardHtml(mv), msg.content, msg2.content].some(h => h.includes("<svg")), "| the snapshot box is empty in the content:", msg.content.includes('<div class="rx-mini" data-twod12="rxPan" data-tooltip="Show this spot on the map"></div>'));
+console.log("no <svg> in any card:", ![M.rxCardHtml(live(r3)), M.rxCardHtml(rs), M.rxCardHtml(mv), msg.content, msg2.content].some(h => h.includes("<svg")), "| no snapshot box any more (v0.0.281):", !msg.content.includes("rx-mini"));
 const oa = { v: 2, done: true, resolvedAt: 1000, hold: false, base: { kind: "move" }, rows: [{ i: 0, state: "use", role: "attack", actorUuid: "Actor.pal", targetUuid: "Scene.s.Token.ban", result: "done", out: { tier: 0 } }, { i: 1, state: "use", role: "attack", actorUuid: "Actor.arc", targetUuid: "Scene.s.Token.ban", result: "done", out: { tier: 0 } }] };
 console.log("Opportunity Attack before its Weapon Attack: no chip (not \"0 hits\"):", M.baseChip(oa), "| no slab chip:", M.outChip(oa.rows[0]));
 const card = (actorUuid, tier) => ({ flags: { twod12: { action: { actorUuid, tier, results: undefined } } } });
@@ -195,7 +195,7 @@ console.log("--- v0.0.279 (Lucas tested v0.0.278)");
 const svg279 = M.snapshotSvg(rx);
 console.log("the snapshot: no labels on the lines, a numbered pin on each reactor:", [...svg279.matchAll(/<title>(\d\.[^<]*)<\/title>/g)].map(m => m[1]).join(" ; "), "| the damage stays over the target:", /9 → 4/.test(svg279));
 console.log("closer in: a token's radius", M.snapshotLayout({ snap: { gs: 70, pos: [{ u: "a", x: 0, y: 0 }, { u: "b", x: 70, y: 70 }] } }).r, "(was 11 at most)");
-console.log("the frozen stack shows the target's face:", /→<\/span><span class="rx-av rx-av-s"[^>]*data-tooltip="Krysta"/.test(msg.content));
+console.log("the frozen stack shows the target's face:", /rx-vs">vs<\/span><span class="rx-av rx-av-m"[^>]*data-tooltip="Krysta"/.test(msg.content));
 // Move back to the last possible square: a path of 6 squares along a row, a watcher next to square 3 (range 1), another far
 const P6 = [0, 1, 2, 3, 4, 5].map(x => ({ x: x * 100, y: 0 }));
 const d = (r, sq) => Math.max(Math.abs(r.at.x - sq.x), Math.abs(r.at.y - sq.y)) / 100;
@@ -211,3 +211,12 @@ const ch = M.backChoices({ total: 5, start: { x: 0, y: 0 }, squaresAt: [{ idx: 4
 console.log("the bar's choices:", ch.map(c => `${c.id}: ${c.label} (${c.steps} refunded)`).join(" ; "), "| the start square is not listed twice:", ch.filter(c => c.idx === 0).length);
 const pb = src("module/pickbar.mjs"), mo5 = src("module/moment.mjs");
 console.log("the bottom bar takes squares as well as tokens (clicked on the map too):", pb.includes("const toks = (o.options ?? []).filter(x => x.token || x.cells?.length);") && pb.includes("const cellsOf = x => x.cells ?? T.tokenCells(x.token);"), "| Move back opens it when there is a choice:", mo5.includes("if (!toStart && b.start && choices.length > 2)") && mo5.includes('const { pickBar } = await import("./pickbar.mjs");'), "| no Foundry window:", !/DialogV2|Dialog\./.test(mo5));
+
+console.log("--- v0.0.281 (Lucas: \"Ally T1/2/3/not used vs Target\", drop the chat's grid, the overlay's labels overlapped)");
+const rows281 = [...msg.content.matchAll(/<div class="rx-it rx-res[^"]*"[^>]*data-twod12="rxOpen" data-tooltip="([^"]*)">([\s\S]*?)<\/div>/g)];
+console.log("the resolved rows:", rows281.map(m => txt(m[2])).join(" | "), "| a click opens the Action:", rows281.map(m => m[1]).join(" ; "));
+console.log("a result not read yet: an ellipsis pill:", M.rxCardHtml({ v: 2, id: "q", done: true, base: { kind: "move" }, rows: [{ i: 0, state: "use", order: 1, role: "attack", itemName: "OA", targetName: "X", targetImg: "", ap: 1, result: "done", out: {} }] }).includes('rx-out none">\u2026'));
+const ov281 = src("module/rxoverlay.mjs"), mo281 = src("module/moment.mjs");
+console.log("the overlay: no name on the lines, a pin on the reactor, the name on hover:", !ov281.includes("const lb = tag(r.itemName, r.color, NAVY, Math.round(fs * 0.85));\n    const shift") && ov281.includes("if (on) { const lb = tag(r.itemName"), "| the map button replays the moment where everyone stood:", mo281.includes("if (O.replayOverlay(st, { label: baseChip(st)?.short ?? \"\" }))"));
+console.log("the frozen positions read back:", [...O.frozenPos(rx)].map(([u]) => u.split(".").at(-1)).join(","), "| an old object form too:", [...O.frozenPos({ snap: { pos: { a: { x: 1, y: 2 } } } })].length);
+console.log("a Reaction that posted its card counts as used:", mo281.includes("if (!ok && fresh.some(m => (m.getFlag?.(F, \"action\") ?? m.flags?.[F]?.action)?.actorUuid === actor.uuid)) ok = true;"));

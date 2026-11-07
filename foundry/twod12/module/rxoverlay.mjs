@@ -78,21 +78,26 @@ function tag(text, color, fg, size) {
   box.addChild(bg, t);
   return box;
 }
-function pin(n, size) {
-  const box = new PIXI.Container(), g = new PIXI.Graphics(), r = size * 0.75;
-  g.lineStyle(2, PARCH, 1).beginFill(PIN, 1).drawCircle(0, 0, r).endFill();
-  const PT = globalThis.foundry?.canvas?.containers?.PreciseText ?? globalThis.PreciseText ?? PIXI.Text, t = new PT(String(n), { fontFamily: "Signika, sans-serif", fontSize: size, fontWeight: "700", fill: 0xffffff });
-  t.anchor?.set?.(0.5);
-  box.addChild(g, t);
+/** A pin: a circle in the slab's color (v0.0.281) with its place in the stack, or a plain dot before the order is known. */
+function pin(n, size, color = PIN) {
+  const box = new PIXI.Container(), g = new PIXI.Graphics(), r = size * 0.8;
+  g.lineStyle(2, NAVY, 1).beginFill(hex(color), 1).drawCircle(0, 0, n ? r : r * 0.6).endFill();
+  box.addChild(g);
+  if (n) {
+    const PT = globalThis.foundry?.canvas?.containers?.PreciseText ?? globalThis.PreciseText ?? PIXI.Text, t = new PT(String(n), { fontFamily: "Signika, sans-serif", fontSize: size, fontWeight: "700", fill: NAVY });
+    t.anchor?.set?.(0.5);
+    box.addChild(t);
+  }
   return box;
 }
 export function draw() {
   if (!globalThis.canvas?.ready || !globalThis.PIXI) return;
   if (!layer || layer.destroyed) { layer = new PIXI.Container(); layer.name = "twod12-rxoverlay"; layer.eventMode = "none"; layer.zIndex = 9000; const host = canvas.interface ?? canvas.stage; host.sortableChildren = true; host.addChild(layer); }   // v0.0.278 (Lucas: under some tokens' frames): drawn above the tokens' layer
   for (const c of layer.removeChildren()) c.destroy?.({ children: true });
-  if (!overlayOn() || !shown.size) return;
+  if (!overlayOn() || (!shown.size && !replays.size)) return;
   const gs = canvas.grid?.size ?? 100, fs = Math.max(13, Math.round(gs * 0.2));
   for (const st of shown.values()) drawOne(st, gs, fs);
+  for (const R of replays.values()) if (R.until > Date.now() && (!R.st.snap?.scene || R.st.snap.scene === canvas.scene?.id)) drawReplay(R, gs, fs);
 }
 function drawOne(st, gs, fs) {
   const b = st.base ?? {}, g = new PIXI.Graphics(), labels = new PIXI.Container();
@@ -129,16 +134,56 @@ function drawOne(st, gs, fs) {
       continue;
     }
     if (r.state !== "use") continue;
-    const t = tokenAt(r.targetUuid), col = hex(r.color), a = centerOf(me);
-    g.lineStyle(3, col, 1).drawCircle(a.x, a.y, me.w * 0.55);
+    // v0.0.281 (Lucas: the labels still overlapped): no text on the lines; the reactor carries a pin in its color at its top right (its place in
+    // the stack once all are answered), the line goes from its ring to the target's, and the Reaction's name shows only while it is hovered
+    // (its slab in the chat, or its token), under the reactor
+    const t = tokenAt(r.targetUuid), col = hex(r.color), a = centerOf(me), on = hov === r.i;
+    g.lineStyle(on ? 5 : 3, col, 1).drawCircle(a.x, a.y, me.w * 0.55);
+    const p = pin(pins?.get(r.i) ?? "", Math.round(fs * 0.85), r.color);
+    p.position.set(me.x + me.w * 0.92, me.y + me.h * 0.08);
+    labels.addChild(p);
+    if (on) { const lb = tag(r.itemName, r.color, NAVY, Math.round(fs * 0.85)); lb.position.set(a.x, me.y + me.h + fs * 0.7); labels.addChild(lb); }
     if (!t || t === me) continue;
-    const z = shortOf(a, centerOf(t), t.w * 0.45), mid = { x: (a.x + z.x) / 2, y: (a.y + z.y) / 2 };
-    g.lineStyle(hov === r.i ? 8 : 4.5, col, 1).moveTo(a.x, a.y).lineTo(z.x, z.y);
-    arrowHead(g, a, z, col, fs);
-    const lb = tag(r.itemName, r.color, NAVY, Math.round(fs * 0.85));
-    const shift = pins ? fs * 0.8 : 0;   // the pin sits just left of the label
-    lb.position.set(mid.x + shift, mid.y - fs * 0.9);
-    labels.addChild(lb);
-    if (pins?.has(r.i)) { const p = pin(pins.get(r.i), Math.round(fs * 0.85)); p.position.set(mid.x + shift - lb.width / 2 - fs * 0.7, mid.y - fs * 0.9); labels.addChild(p); }
+    const c = centerOf(t), s0 = shortOf(c, a, me.w * 0.55), z = shortOf(a, c, t.w * 0.5);
+    g.lineStyle(on ? 7 : 4, col, 1).moveTo(s0.x, s0.y).lineTo(z.x, z.y);
+    arrowHead(g, s0, z, col, fs);
   }
+}
+
+/* ------------------------------------------------------------------ v0.0.281: the replay of a resolved moment (its message's map button) */
+const replays = new Map();   // moment id -> { st, label, until }
+/** Draws a resolved moment on the map from where the tokens stood when it resolved, for a few seconds (a second click clears it). */
+export function replayOverlay(st, { label = "", ms = 6000 } = {}) {
+  if (!st?.id) return false;
+  if (replays.has(st.id)) { replays.delete(st.id); queue(); return false; }
+  replays.set(st.id, { st, label, until: Date.now() + ms });
+  setTimeout(() => { const R = replays.get(st.id); if (R && R.until <= Date.now()) { replays.delete(st.id); queue(); } }, ms + 50);
+  queue();
+  return true;
+}
+export const replaying = id => replays.has(id);
+/** Pure: the frozen positions as a map (uuid -> { x, y }); a list since v0.0.278. */
+export const frozenPos = st => { const raw = st?.snap?.pos ?? []; return new Map((Array.isArray(raw) ? raw : Object.entries(raw).map(([u, p]) => ({ u, ...p }))).filter(p => Number.isFinite(p?.x)).map(p => [p.u, { x: p.x, y: p.y }])); };
+function drawReplay(R, gs, fs) {
+  const st = R.st, pos = frozenPos(st), b = st.base ?? {}, g = new PIXI.Graphics(), labels = new PIXI.Container(), rad = gs * 0.45;
+  layer.addChild(g, labels);
+  const at = u => pos.get(u) ?? null;
+  const ring = (p, color, w = 3) => { if (p) g.lineStyle(w, hex(color), 1).drawCircle(p.x, p.y, rad); };
+  if (b.kind === "move") { const s = at("start"), z = at(b.face?.uuid); if (s && z) { g.lineStyle(3, BEIGE, 0.9); dashLine(g, s, z, 10, 7); g.lineStyle(2, BEIGE, 0.9).beginFill(BEIGE, 0.2).drawCircle(s.x, s.y, rad * 0.9).endFill(); } ring(z, "#ecdcae"); }
+  else { const s = at(b.face?.uuid), z = at(b.target?.uuid); if (s && z) { g.lineStyle(5, RED, b.never ? 0.45 : 1).moveTo(s.x, s.y).lineTo(shortOf(s, z, rad).x, shortOf(s, z, rad).y); arrowHead(g, s, shortOf(s, z, rad), RED, fs * 1.1); } ring(s, "#e0553b"); }
+  const used = st.rows.filter(r => r.state === "use").sort((x, y) => y.order - x.order);
+  used.forEach((r, k) => {
+    const a = at(r.tokenUuid), z = at(r.targetUuid);
+    if (!a) return;
+    ring(a, r.color);
+    const p = pin(k + 1, Math.round(fs * 0.85), r.out?.spent ? "#6b5d45" : r.color);
+    p.position.set(a.x + rad * 0.8, a.y - rad * 0.8);
+    labels.addChild(p);
+    if (!z || z === a) return;
+    const s0 = shortOf(z, a, rad), e = shortOf(a, z, rad);
+    g.lineStyle(4, hex(r.color), r.out?.spent ? 0.45 : 1).moveTo(s0.x, s0.y).lineTo(e.x, e.y);
+    arrowHead(g, s0, e, hex(r.color), fs);
+  });
+  const tgt = at(b.kind === "move" ? b.face?.uuid : b.target?.uuid);
+  if (tgt && R.label) { const bub = tag(R.label, b.never ? "#3b4559" : "#b8432f", 0xffffff, fs); bub.position.set(tgt.x, tgt.y - rad - fs); labels.addChild(bub); }
 }

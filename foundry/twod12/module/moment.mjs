@@ -112,7 +112,7 @@ export const ICON = {
   check: fa("fa-solid fa-check"), x: fa("fa-solid fa-xmark"), clock: fa("fa-regular fa-clock"), pause: fa("fa-solid fa-pause"),
   skip: fa("fa-solid fa-forward-fast"), grip: fa("fa-solid fa-grip-vertical"), play: fa("fa-solid fa-play"), down: fa("fa-solid fa-chevron-down"),
   up: fa("fa-solid fa-chevron-up"), sword: fa("fa-solid fa-burst"), move: fa("fa-solid fa-person-running"), shield: fa("fa-solid fa-shield-halved"),
-  arrow: fa("fa-solid fa-crosshairs"), hand: fa("fa-solid fa-hand"), back: fa("fa-solid fa-rotate-left"), spin: fa("fa-solid fa-spinner", "fa-spin")
+  arrow: fa("fa-solid fa-crosshairs"), map: fa("fa-solid fa-map-location-dot"), hand: fa("fa-solid fa-hand"), back: fa("fa-solid fa-rotate-left"), spin: fa("fa-solid fa-spinner", "fa-spin")
 };
 const roleIcon = role => (role === "attack" ? ICON.arrow() : role === "protect" ? ICON.shield() : ICON.hand());
 /** Pure: a face (the token's image in a circle, the initials under it; the name on hover). size: "" (22 px), "s" (16 px), "m" (20 px). */
@@ -159,6 +159,7 @@ export function outChip(r) {
   }
   if (o.blocked > 0) return { cls: "blk", text: `−${o.blocked}`, short: `−${o.blocked}` };
   if (o.tier && r.role !== "protect") return { cls: "hit", text: `T${o.tier}`, short: `T${o.tier}` };
+  if (o.tier && r.role === "protect") return { cls: "blk", text: `T${o.tier}`, short: `T${o.tier}` };
   return null;
 }
 /** Pure: the base slab's chip: the held damage struck and the final one, "never lands", the hits of the stack (a movement), or the damage dealt. */
@@ -241,14 +242,15 @@ export function snapshotSvg(st) {
   return `<svg width="${L.W}" height="${L.H}" viewBox="0 0 ${L.W} ${L.H}" aria-hidden="true">${lines.join("")}${parts.join("")}${pinSvg}${lab}</svg>`;
 }
 /** v0.0.279: the target as a small face in the frozen stack (its name on hover; the name was cut off beside a chip); older rows keep the name. */
-const tgtFace = r => (r.targetImg !== undefined ? faceHtml({ name: r.targetName, img: r.targetImg, ini: initials(r.targetName), disp: r.targetDisp }, "s") : `<span class="rx-tg">${esc(r.targetName)}</span>`);
+const tgtFace = (r, size = "s") => (r.targetImg !== undefined ? faceHtml({ name: r.targetName, img: r.targetImg, ini: initials(r.targetName), disp: r.targetDisp }, size) : `<span class="rx-tg">${esc(r.targetName)}</span>`);
 function doneHtml(st) {
   const stack = stackOrder(st.rows), b = st.base ?? {}, bc = baseChip(st);
   const line = `<div class="rx-line" data-twod12="rxFold" data-tooltip="Unfold"><span class="rx-okc">${ICON.check()}</span>${faceHtml(b.face, "m")}<span class="rx-ic">${baseIcon(b)}</span>${b.target?.name && b.kind !== "move" && b.kind !== "stand" ? faceHtml(b.target, "m") : ""}<span class="rx-dot">·</span>${stack.length ? stack.map(r => `${faceHtml(faceOfRow(r), "m")}<span class="rx-ic${r.out?.spent ? " gone" : ""}">${roleIcon(r.role)}</span>`).join("") : `<span class="rx-tg">${esc(st.closed ? "closed" : "no Reactions")}</span>`}${bc ? pill(bc.cls, bc.html) : ""}<button type="button" class="rx-ib rx-fold" data-twod12="rxFold" aria-label="Unfold">${ICON.down()}</button></div>`;
-  const slabs = stack.map((r, k) => { const c = outChip(r), gone = !!r.out?.spent; return `<div class="rx-it${gone ? " gone" : ""}" data-row="${r.i}" data-actor="${esc(r.actorUuid)}"><span class="rx-num"${gone ? ' style="background:#6b5d45"' : ""}>${k + 1}</span>${faceHtml(faceOfRow(r), "m")}<span class="rx-ic">${roleIcon(r.role)}</span>${gone ? `<s>${esc(r.itemName)}</s>` : `<b>${esc(r.itemName)}</b>`} <span class="rx-tg">→</span>${tgtFace(r)}${c ? pill(c.cls, c.text) : ""}</div>`; }).join("");
+  // v0.0.281 (Lucas: "just Ally T1/2/3/not used vs Target is enough, clicking opens the Action that was used"): one short row per slab
+  const slabs = stack.map((r, k) => { const c = outChip(r), gone = !!r.out?.spent; return `<div class="rx-it rx-res${gone ? " gone" : ""}" data-row="${r.i}" data-actor="${esc(r.actorUuid)}" data-twod12="rxOpen" data-tooltip="${esc(r.itemName)}: open the Action"><span class="rx-num" style="background:${esc(r.color || "#2f6b3a")}">${k + 1}</span>${faceHtml(faceOfRow(r), "m")}${pill(c?.cls ?? "none", esc(c?.short ?? "\u2026"))}<span class="rx-vs">vs</span>${tgtFace(r, "m")}</div>`; }).join("");
   const base = `<div class="rx-it rx-base${b.never ? " gone" : ""}">${faceHtml(b.face, "m")}<span class="rx-bw">${b.never ? `<s>${baseWords(b).replace(/<\/?b>/g, "")}</s>` : baseWords(b)}</span>${bc ? pill(bc.cls, bc.html) : ""}${backBtn(b)}</div>`;
   const note = st.closed ? `<div class="rx-note">${esc(st.closed)}</div>` : "";
-  return `<div class="twod12 chat rx2 rx-done" data-rx="${esc(st.id)}">${line}<div class="rx-full"><div class="rx-hd"><span class="rx-ttl">Reactions</span><span class="rx-okh">${ICON.check(12)} Resolved</span><button type="button" class="rx-hb rx-fold" data-twod12="rxFold" aria-label="Fold">${ICON.up()}</button></div>${snapshotLayout(st) ? '<div class="rx-mini" data-twod12="rxPan" data-tooltip="Show this spot on the map"></div>' : ""}<div class="rx-stk">${slabs}${base}</div>${note}</div></div>`;
+  return `<div class="twod12 chat rx2 rx-done" data-rx="${esc(st.id)}">${line}<div class="rx-full"><div class="rx-hd"><span class="rx-ttl">Reactions</span><span class="rx-okh">${ICON.check(12)} Resolved</span>${snapshotLayout(st) ? `<button type="button" class="rx-hb rx-replay" data-twod12="rxPan" data-tooltip="Show it on the map (where everyone stood; a few seconds)" aria-label="Show it on the map">${ICON.map()}</button>` : ""}<button type="button" class="rx-hb rx-fold" data-twod12="rxFold" aria-label="Fold">${ICON.up()}</button></div><div class="rx-stk">${slabs}${base}</div>${note}</div></div>`;
 }
 /** Pure: the message's HTML from its state: the live stack card, or (resolved) the one line that unfolds. */
 export function rxCardHtml(st) { return st.done ? doneHtml(st) : liveHtml(st); }
@@ -581,6 +583,8 @@ export async function runHere(data) {
   } finally { H.halfCtx.held = false; }
   const half = H.halfCtx.last && H.halfCtx.last.at >= t0 ? { ...H.halfCtx.last } : null;
   const fresh = (game.messages?.contents ?? []).slice(-12).filter(m => !before.has(m.id));
+  // v0.0.281 (Lucas: two Opportunity Attacks read "not used"): its card was posted, so it was used, whatever useAction returned
+  if (!ok && fresh.some(m => (m.getFlag?.(F, "action") ?? m.flags?.[F]?.action)?.actorUuid === actor.uuid)) ok = true;
   const { tier, crit } = tierFromCards(fresh, actor.uuid, tdoc?.uuid ?? "");
   return { ok, half, tier, crit };
 }
@@ -619,7 +623,8 @@ function panTo(st) {
   const c = snapshotLayout(st)?.center;
   if (!c || !globalThis.canvas?.ready) return;
   if (st.snap?.scene && canvas.scene?.id !== st.snap.scene) return ui.notifications.info("That happened on another scene.");
-  canvas.animatePan({ x: c.x, y: c.y, duration: 400 });
+  // v0.0.281 (Lucas: drop the chat's grid): the moment is drawn again on the real map, where everyone stood when it resolved
+  if (O.replayOverlay(st, { label: baseChip(st)?.short ?? "" })) canvas.animatePan({ x: c.x, y: c.y, duration: 400 });
 }
 /** v0.0.273 (Lucas): the Action's name on a row opens its sheet. */
 async function openRowItem(r) {
@@ -688,7 +693,7 @@ export function rxRender(msg, html) {
   if (st.done) {
     const card = el.querySelector(".rx2");
     if (card && unfolded.has(msg.id)) card.classList.add("open");
-    const mini = el.querySelector(".rx-mini");   // v0.0.276: the snapshot is drawn here (the chat content can't hold an SVG)
+    const mini = el.querySelector(".rx-mini");   // a message from v0.0.276 to v0.0.280: its snapshot box (v0.0.281: the map button replaces it)
     if (mini && !mini.firstElementChild) { try { mini.innerHTML = snapshotSvg(st); } catch (e) { console.warn("twod12 | Reactions snapshot", e); } }
     if (st.base?.back && !st.base.back.used) { const doc = docSync(st.base.back.tokenUuid); if (!doc?.isOwner) el.querySelectorAll('[data-twod12="rxBack"]').forEach(b => b.remove()); }
     return;

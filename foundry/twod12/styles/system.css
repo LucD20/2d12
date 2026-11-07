@@ -2448,3 +2448,11 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 /* v0.0.279 (Lucas: the resolved message's target name was cut off): the frozen stack shows the target's face after the arrow. */
 .twod12.chat.rx2.rx-done .rx-it > .rx-tg { flex: none; }
 .twod12.chat.rx2.rx-done .rx-it > .rx-av-s:last-of-type { flex: none; }
+/* v0.0.281 (Lucas): the resolved stack's rows are "n · Ally · result vs Target" (a click opens the Action used); the map button replaces the snapshot. */
+.twod12.chat.rx2 .rx-it.rx-res { cursor: pointer; gap: 7px; }
+.twod12.chat.rx2 .rx-it.rx-res:hover { border-color: #7a540f; }
+.twod12.chat.rx2 .rx-it.rx-res .rx-num { color: #1d2738; box-shadow: 0 0 0 1px #1d2738 inset; }
+.twod12.chat.rx2 .rx-it.rx-res .rx-out { margin-left: 0; min-width: 34px; text-align: center; }
+.twod12.chat.rx2 .rx-out.none { background: #e5dcc4; color: #5e513b; }
+.twod12.chat.rx2 .rx-vs { color: #5e513b; font-size: 11px; font-style: italic; }
+.twod12.chat.rx2 .rx-hd button.rx-replay { margin-left: 2px; }
