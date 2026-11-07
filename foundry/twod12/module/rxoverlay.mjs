@@ -102,6 +102,8 @@ function drawOne(st, gs, fs) {
   if (b.kind === "move" || b.kind === "stand") {
     g.lineStyle(2, BEIGE, 0.8);
     for (const sq of b.path ?? []) { const a = { x: sq.x, y: sq.y }; const w = sq.w ?? gs, h = sq.h ?? gs; dashLine(g, a, { x: a.x + w, y: a.y }, 8, 6); dashLine(g, { x: a.x + w, y: a.y }, { x: a.x + w, y: a.y + h }, 8, 6); dashLine(g, { x: a.x + w, y: a.y + h }, { x: a.x, y: a.y + h }, 8, 6); dashLine(g, { x: a.x, y: a.y + h }, a, 8, 6); }
+    // v0.0.279: the square Move back goes to (the last one where a Reaction could come), outlined in amber
+    if (b.backAt) { g.lineStyle(4, AMBER, 1).beginFill(AMBER, 0.18).drawRect(b.backAt.x + 2, b.backAt.y + 2, (b.backAt.w ?? gs) - 4, (b.backAt.h ?? gs) - 4).endFill(); }
     if (b.start && b.face?.img) {
       try { const sp = PIXI.Sprite.from(b.face.img); sp.alpha = 0.35; sp.width = (b.start.w ?? 1) * gs; sp.height = (b.start.h ?? 1) * gs; sp.position.set(b.start.x, b.start.y); layer.addChildAt(sp, 0); } catch (e) { /* no image */ }
     }

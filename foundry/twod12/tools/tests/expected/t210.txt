@@ -33,8 +33,8 @@ the moment's answer: {"half":false,"halfBy":"","id":true,"gained":0,"never":fals
 edited in place, no new message: true true | no overlay for it any more (done): true
 the collapsed line: BA KR · NA LA 9 4 | faces in resolve order: Bandit, Krysta, Nari, Lana | icons (Font Awesome, v0.0.276): fa-check fa-burst fa-shield-halved fa-crosshairs fa-chevron-down | no <svg> in the content: true
 the result chip: struck held, final: <s>9</s> 4
-unfolded: header Reactions Resolved | the snapshot (pans the map): true | its labels (drawn on each client, v0.0.276): 1 · −5 ; 2 · T3 ; 9 → 4
-the frozen stack: 1 NA Bulwark of Faith → Krysta −5 | 2 LA Covering Shot → Bandit T3 hit | BA Strike → Krysta 9 4 | no grips: true
+unfolded: header Reactions Resolved | the snapshot (pans the map): true | its labels (drawn on each client, v0.0.276): 9 → 4
+the frozen stack: 1 NA Bulwark of Faith → KR −5 | 2 LA Covering Shot → BA T3 hit | BA Strike → Krysta 9 4 | no grips: true
 --- the edge case: the attacker drops before the rest resolve
 Covering Shot resolves first: cs
 Shield of Faith only pays its AP: true sof
@@ -63,5 +63,13 @@ removing a key: the old syntax without Foundry: {"flags.twod12.-=ignoreTerrain":
 with V14's ForcedDeletion: flags.twod12.ignoreTerrain FD | no "-=" left in module/: true
 a Turn Log line for a deleted combat is skipped: null | ticker.mjs checks it: true
 --- v0.0.278 (Lucas tested v0.0.277)
-the snapshot's positions are a list (a uuid key would be split by Foundry's flags): true pal,kry,arc,ban | drawn from it: 8 circles
+the snapshot's positions are a list (a uuid key would be split by Foundry's flags): true pal,kry,arc,ban | drawn from it: 10 circles
 resolved: posted again at the bottom (the live copy deleted): true | again under a late roll card: true | the overlay above the tokens: true
+--- v0.0.279 (Lucas tested v0.0.278)
+the snapshot: no labels on the lines, a numbered pin on each reactor: 1. Bulwark of Faith: −5 ; 2. Covering Shot: T3 | the damage stays over the target: true
+closer in: a token's radius 14 (was 11 at most)
+the frozen stack shows the target's face: true
+Opportunity Attack (would leave a square): the last square left within 1: 4 | two watchers, the later wins: 4 | the last square is never left: 0
+Overwatch (moves closer): the last square entered within reach and nearer: 3 | none: back to the start 0
+the refund for part of the way (2 of 5 squares back): {"moveLeft":2,"freeMove":0} | all the way: {"moveLeft":5}
+a Pass offers it again on the next square (only a Use blocks the Move Action): true | Shift+click goes back to the start: true | the square marked on the map: true

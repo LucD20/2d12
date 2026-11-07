@@ -178,7 +178,7 @@ export function baseChip(st) {
 /** The base slab's words: "Strike → Krysta", "Moves 4 sq.", "Stands up". */
 const baseWords = b => (b.kind === "move" ? `<b>Moves</b> ${Number(b.squares) || 0} sq.` : b.kind === "stand" ? "<b>Stands up</b>" : `<b>${esc(b.label || "Strike")}</b>${b.target?.name ? ` → ${esc(b.target.name)}` : ""}`);
 const baseIcon = b => (b.kind === "move" || b.kind === "stand" ? ICON.move() : ICON.sword());
-const backBtn = b => (b?.back && !b.back.used ? `<button type="button" class="rx-hb rx-backbtn" data-twod12="rxBack" data-tooltip="Move ${esc(b.back.name)} back to the square it left (${b.back.squares} sq.), the movement refunded" aria-label="Move ${esc(b.back.name)} back">${ICON.back()}</button>` : b?.back?.used ? `<span class="rx-backed" data-tooltip="${esc(b.back.name)} went back to where its movement started; its movement is refunded">${ICON.back()}</span>` : "");
+const backBtn = b => (b?.back && !b.back.used ? `<button type="button" class="rx-hb rx-backbtn" data-twod12="rxBack" data-tooltip="${b.back.start && b.back.steps < b.back.total ? `Move ${esc(b.back.name)} back ${b.back.steps} sq., to the last square where the Reaction could come (marked on the map), those squares refunded. Shift+click: back to where this movement started` : `Move ${esc(b.back.name)} back to the square it left (${b.back.squares} sq.), the movement refunded`}" aria-label="Move ${esc(b.back.name)} back">${ICON.back()}</button>` : b?.back?.used ? `<span class="rx-backed" data-tooltip="${esc(b.back.name)} went back to where its movement started; its movement is refunded">${ICON.back()}</span>` : "");
 
 function liveHtml(st) {
   const groups = waitingGroups(st.rows), waiting = groups.flat(), kinds = new Set(waiting.map(r => r.kind)), one = kinds.size === 1;
@@ -209,16 +209,17 @@ export function snapshotLayout(st, W = 258, H = 110) {
   // into nested objects when Foundry saves the flags. An object (tests, older states) is still read.
   const raw = st.snap?.pos ?? {}, pos = Array.isArray(raw) ? Object.fromEntries(raw.map(p => [p.u, p])) : raw, gs = st.snap?.gs || 100, pts = Object.values(pos).filter(p => Number.isFinite(p?.x) && Number.isFinite(p?.y));
   if (!pts.length) return null;
-  const minX = Math.min(...pts.map(p => p.x)) - gs * 0.7, maxX = Math.max(...pts.map(p => p.x)) + gs * 0.7, minY = Math.min(...pts.map(p => p.y)) - gs * 0.7, maxY = Math.max(...pts.map(p => p.y)) + gs * 0.7;
-  const k = Math.min(W / Math.max(1, maxX - minX), H / Math.max(1, maxY - minY), 0.4), ox = (W - (maxX - minX) * k) / 2, oy = (H - (maxY - minY) * k) / 2;
+  // v0.0.279 (Lucas: "the chat image is still off"): closer in (adjacent tokens were tiny and their labels piled up)
+  const minX = Math.min(...pts.map(p => p.x)) - gs * 0.6, maxX = Math.max(...pts.map(p => p.x)) + gs * 0.6, minY = Math.min(...pts.map(p => p.y)) - gs * 0.6, maxY = Math.max(...pts.map(p => p.y)) + gs * 0.6;
+  const k = Math.min(W / Math.max(1, maxX - minX), H / Math.max(1, maxY - minY), 0.6), ox = (W - (maxX - minX) * k) / 2, oy = (H - (maxY - minY) * k) / 2;
   const at = uuid => (pos[uuid] ? { x: Math.round(ox + (pos[uuid].x - minX) * k), y: Math.round(oy + (pos[uuid].y - minY) * k) } : null);
-  const r = Math.max(7, Math.min(11, gs * k * 0.45));
+  const r = Math.max(7, Math.min(14, gs * k * 0.42));
   return { W, H, r, at, k, center: { x: (minX + maxX) / 2, y: (minY + maxY) / 2 } };
 }
 export function snapshotSvg(st) {
   const L = snapshotLayout(st);
   if (!L) return "";
-  const b = st.base ?? {}, stack = stackOrder(st.rows), drawn = new Map(), parts = [], labels = [];
+  const b = st.base ?? {}, stack = stackOrder(st.rows), drawn = new Map(), parts = [], labels = [], pins = [];
   const tok = (f, dim = false) => { if (!f?.uuid || drawn.has(f.uuid)) return; const p = L.at(f.uuid); if (!p) return; drawn.set(f.uuid, p); const id = `c${drawn.size}${String(st.id).slice(-4)}`; parts.push(`<g${dim ? ' opacity=".6"' : ""}><circle cx="${p.x}" cy="${p.y}" r="${L.r}" fill="${dim ? "#3a3a3a" : (FACE_BG[String(f.disp ?? 0)] ?? FACE_BG[0])}" stroke="#f4eddc" stroke-width="1.5"/><text x="${p.x}" y="${p.y + 3}" text-anchor="middle" font-size="8" font-weight="700" fill="#fff">${esc(f.ini ?? initials(f.name))}</text>${f.img ? `<clipPath id="${id}"><circle cx="${p.x}" cy="${p.y}" r="${L.r - 1}"/></clipPath><image href="${esc(f.img)}" x="${p.x - L.r}" y="${p.y - L.r}" width="${L.r * 2}" height="${L.r * 2}" clip-path="url(#${id})" preserveAspectRatio="xMidYMid slice"/>` : ""}<title>${esc(f.name ?? "")}</title></g>`); };
   const lines = [];
   if (b.kind !== "move" && b.kind !== "stand" && b.face?.uuid && b.target?.uuid) { const a = L.at(b.face.uuid), z = L.at(b.target.uuid); if (a && z) lines.push(`<path d="M${a.x} ${a.y} Q${Math.round((a.x + z.x) / 2)} ${Math.round(Math.min(a.y, z.y) - 14)} ${z.x} ${z.y}" stroke="#e0553b" stroke-width="3" fill="none"${b.never ? ' stroke-dasharray="3 3" opacity=".6"' : ""}/>`); }
@@ -228,19 +229,23 @@ export function snapshotSvg(st) {
     if (!a || !z) return;
     const spent = !!r.out?.spent;
     lines.push(`<path d="M${a.x} ${a.y} L${z.x} ${z.y}" stroke="${esc(r.color)}" stroke-width="${spent ? 2 : 3}" fill="none"${spent ? ' stroke-dasharray="3 3" opacity=".6"' : ""}/>`);
-    if (!spent) labels.push({ x: Math.round((a.x + z.x) / 2), y: Math.round((a.y + z.y) / 2) - 6, bg: r.color, fg: "#1d2738", text: `${k + 1}${c ? ` · ${c.short}` : ""}` });
+    pins.push({ uuid: r.tokenUuid, n: k + 1, color: spent ? "#6b5d45" : r.color, tip: `${k + 1}. ${r.itemName}${c ? `: ${c.short}` : ""}` });
   });
   for (const r of stack) tok({ uuid: r.tokenUuid, ...faceOfRow(r) });
   tok(b.target); tok(b.face, !!(b.never && b.face));
+  // v0.0.279: each reactor carries its place in the stack (a numbered pin in its slab's color at its top right); the results are in the slabs below
+  const pinSvg = pins.map(q => { const p = drawn.get(q.uuid) ?? L.at(q.uuid); if (!p) return ""; const x = p.x + L.r * 0.8, y = p.y - L.r * 0.8; return `<g><title>${esc(q.tip)}</title><circle cx="${x}" cy="${y}" r="6.5" fill="${esc(q.color)}" stroke="#1d2738" stroke-width="1"/><text x="${x}" y="${y + 3}" text-anchor="middle" font-size="9" font-weight="700" fill="#1d2738">${q.n}</text></g>`; }).join("");
   const bc = baseChip(st);
   if (bc && b.target?.uuid && st.hold) { const z = L.at(b.target.uuid); if (z) labels.push({ x: z.x, y: Math.max(8, z.y - L.r - 8), bg: bc.cls === "never" ? "#3b4559" : "#b8432f", fg: bc.cls === "never" ? "#ecdcae" : "#fff", text: bc.short }); }
   const lab = labels.map(l => { const w = Math.round(String(l.text).length * 5.6 + 10); return `<g><rect x="${l.x - w / 2}" y="${l.y - 7}" width="${w}" height="14" rx="7" fill="${esc(l.bg)}"/><text x="${l.x}" y="${l.y + 3}" text-anchor="middle" font-size="10" font-weight="700" fill="${l.fg}">${esc(l.text)}</text></g>`; }).join("");
-  return `<svg width="${L.W}" height="${L.H}" viewBox="0 0 ${L.W} ${L.H}" aria-hidden="true">${lines.join("")}${parts.join("")}${lab}</svg>`;
+  return `<svg width="${L.W}" height="${L.H}" viewBox="0 0 ${L.W} ${L.H}" aria-hidden="true">${lines.join("")}${parts.join("")}${pinSvg}${lab}</svg>`;
 }
+/** v0.0.279: the target as a small face in the frozen stack (its name on hover; the name was cut off beside a chip); older rows keep the name. */
+const tgtFace = r => (r.targetImg !== undefined ? faceHtml({ name: r.targetName, img: r.targetImg, ini: initials(r.targetName), disp: r.targetDisp }, "s") : `<span class="rx-tg">${esc(r.targetName)}</span>`);
 function doneHtml(st) {
   const stack = stackOrder(st.rows), b = st.base ?? {}, bc = baseChip(st);
   const line = `<div class="rx-line" data-twod12="rxFold" data-tooltip="Unfold"><span class="rx-okc">${ICON.check()}</span>${faceHtml(b.face, "m")}<span class="rx-ic">${baseIcon(b)}</span>${b.target?.name && b.kind !== "move" && b.kind !== "stand" ? faceHtml(b.target, "m") : ""}<span class="rx-dot">·</span>${stack.length ? stack.map(r => `${faceHtml(faceOfRow(r), "m")}<span class="rx-ic${r.out?.spent ? " gone" : ""}">${roleIcon(r.role)}</span>`).join("") : `<span class="rx-tg">${esc(st.closed ? "closed" : "no Reactions")}</span>`}${bc ? pill(bc.cls, bc.html) : ""}<button type="button" class="rx-ib rx-fold" data-twod12="rxFold" aria-label="Unfold">${ICON.down()}</button></div>`;
-  const slabs = stack.map((r, k) => { const c = outChip(r), gone = !!r.out?.spent; return `<div class="rx-it${gone ? " gone" : ""}" data-row="${r.i}" data-actor="${esc(r.actorUuid)}"><span class="rx-num"${gone ? ' style="background:#6b5d45"' : ""}>${k + 1}</span>${faceHtml(faceOfRow(r), "m")}<span class="rx-ic">${roleIcon(r.role)}</span>${gone ? `<s>${esc(r.itemName)}</s>` : `<b>${esc(r.itemName)}</b>`} <span class="rx-tg">→ ${esc(r.targetName)}</span>${c ? pill(c.cls, c.text) : ""}</div>`; }).join("");
+  const slabs = stack.map((r, k) => { const c = outChip(r), gone = !!r.out?.spent; return `<div class="rx-it${gone ? " gone" : ""}" data-row="${r.i}" data-actor="${esc(r.actorUuid)}"><span class="rx-num"${gone ? ' style="background:#6b5d45"' : ""}>${k + 1}</span>${faceHtml(faceOfRow(r), "m")}<span class="rx-ic">${roleIcon(r.role)}</span>${gone ? `<s>${esc(r.itemName)}</s>` : `<b>${esc(r.itemName)}</b>`} <span class="rx-tg">→</span>${tgtFace(r)}${c ? pill(c.cls, c.text) : ""}</div>`; }).join("");
   const base = `<div class="rx-it rx-base${b.never ? " gone" : ""}">${faceHtml(b.face, "m")}<span class="rx-bw">${b.never ? `<s>${baseWords(b).replace(/<\/?b>/g, "")}</s>` : baseWords(b)}</span>${bc ? pill(bc.cls, bc.html) : ""}${backBtn(b)}</div>`;
   const note = st.closed ? `<div class="rx-note">${esc(st.closed)}</div>` : "";
   return `<div class="twod12 chat rx2 rx-done" data-rx="${esc(st.id)}">${line}<div class="rx-full"><div class="rx-hd"><span class="rx-ttl">Reactions</span><span class="rx-okh">${ICON.check(12)} Resolved</span><button type="button" class="rx-hb rx-fold" data-twod12="rxFold" aria-label="Fold">${ICON.up()}</button></div>${snapshotLayout(st) ? '<div class="rx-mini" data-twod12="rxPan" data-tooltip="Show this spot on the map"></div>' : ""}<div class="rx-stk">${slabs}${base}</div>${note}</div></div>`;
@@ -354,12 +359,12 @@ export async function openMoment(ev) {
     v: 2, id, host: game.user.id, hold: !!ev.hold, lead: ev.lead, done: false, resolving: false, ready: false, paused: false,
     base: { ...(ev.base ?? {}), back: ev.back ?? null }, deadline: minutes ? Date.now() + minutes * 60000 : 0,
     rows: rows.map((r, i) => {
-      const f = faceOf({ actor: r.actor, token: r.token }) ?? {};
+      const f = faceOf({ actor: r.actor, token: r.token }) ?? {}, tf = faceOf(r.target) ?? {};
       return {
         i, moment: r.moment, actorUuid: r.actor.uuid, name: f.name ?? r.actor.name, img: f.img ?? "", ini: f.ini ?? initials(r.actor.name), disp: f.disp ?? 0, tokenUuid: f.uuid ?? "",
         itemId: r.item.id, itemName: r.item.name, kind: r.kind, role: r.role ?? "other",
         ap: Math.min(...(r.item.system.versions ?? [{ ap: 0 }]).map(v => Number(v.ap) || 0)),
-        targetUuid: r.target.token?.document?.uuid ?? r.target.actor.uuid, targetName: cleanName(r.target.token?.name ?? r.target.actor.name),
+        targetUuid: r.target.token?.document?.uuid ?? r.target.actor.uuid, targetName: cleanName(r.target.token?.name ?? r.target.actor.name), targetImg: tf.img ?? "", targetDisp: tf.disp ?? 0,
         answerer: answererFor(r.actor)?.id ?? game.user.id, state: "wait", order: 0, result: "", color: "", out: null
       };
     })
@@ -595,14 +600,14 @@ function send(st, choice, row = -1, extra = {}) {
 const unfolded = new Set();   // v0.0.275: the resolved messages this client unfolded (per viewer, never saved)
 /** A click on the message: Use, Pass (the row's owner), Skip all others and Resolve (the GM), the clock (the GM or one who answers a row):
  *  sent to the client that holds the moment. The Action's name opens its sheet; Move back is done by the clicker; the fold and the snapshot are local. */
-export async function rxClick(msg, b) {
+export async function rxClick(msg, b, ev = null) {
   const st = msg?.getFlag?.(F, "rx");
   if (!st) return;
   const k = b.dataset.twod12, row = Number(b.dataset.row ?? -1);
   if (k === "rxFold") { const el = b.closest(".rx2"); const open = !unfolded.has(msg.id); if (open) unfolded.add(msg.id); else unfolded.delete(msg.id); el?.classList.toggle("open", open); return; }
   if (k === "rxPan") return panTo(st);
   if (k === "rxOpen") return openRowItem(st.rows[row]);
-  if (k === "rxBack") return moveBack(msg, st);
+  if (k === "rxBack") return moveBack(msg, st, !!(ev ?? globalThis.event)?.shiftKey);
   if (st.done) return;
   const choice = { rxUse: "use", rxPass: "pass", rxSkip: "skipAll", rxUp: "up", rxDown: "down", rxPause: "pause", rxResolve: "resolve" }[k];
   if (!choice) return;
@@ -626,15 +631,21 @@ async function openRowItem(r) {
   item.sheet.render(true);
 }
 /** v0.0.273 (Lucas): Move back: the mover goes back to the square its movement left (the trigger), its movement as it was before (refunded). */
-async function moveBack(msg, st) {
+async function moveBack(msg, st, toStart = false) {
   const b = st.base?.back ?? st.back;
   if (!b || b.used) return;
   let doc = null; try { doc = await fromUuid(b.tokenUuid); } catch (e) { doc = null; }
   if (!doc) return ui.notifications.warn("That token is gone.");
   if (!doc.isOwner) return ui.notifications.warn(`Only ${doc.name}'s owner or the GM can move it back.`);
-  await doc.update({ x: b.x, y: b.y }, { twod12Forced: true, animate: true });
+  const whole = toStart || !b.start || !b.total || b.steps >= b.total;   // v0.0.279: the last possible square, or (Shift+click) where it started
+  const to = whole ? (b.start ?? { x: b.x, y: b.y }) : { x: b.x, y: b.y };
+  await doc.update({ x: to.x, y: to.y }, { twod12Forced: true, animate: true });
   const c = game.combat?.combatants?.get?.(b.combatantId);
-  if (c && b.flags) { try { await c.update(Object.fromEntries(Object.entries(b.flags).map(([k, v]) => [`flags.${F}.${k}`, v]))); } catch (e) { console.warn("twod12 | movement refund", e); } }
+  if (c && b.flags) {
+    const now = Object.fromEntries(Object.keys(b.flags).map(k => [k, Number(c.getFlag(F, k)) || 0]));
+    const flags = whole ? b.flags : partialRefund(b.flags, now, b.steps / b.total);
+    try { await c.update(Object.fromEntries(Object.entries(flags).map(([k, v]) => [`flags.${F}.${k}`, v]))); } catch (e) { console.warn("twod12 | movement refund", e); }
+  }
   await markBack(msg.id);
 }
 /** The message of that moment says the mover went back: its author writes it; through the socket otherwise (v0.0.275: one message, edited in place). */
@@ -812,7 +823,30 @@ export function pathSquares(points, gs, w = 1, h = 1) {
 }
 /** v0.0.277: pure: the places of a movement's squares (as tokenDistance reads them: x, y in pixels and the token's size). */
 export const movePlaces = (points, gs, size = {}) => pathSquares(points, gs, size.width || 1, size.height || 1).map(p => ({ x: p.x, y: p.y, width: size.width || 1, height: size.height || 1, elevation: size.elevation ?? 0 }));
-const offered = new Set();   // once per Move Action: a Reaction is offered once for each Move Action of the same mover
+/**
+ * v0.0.279 (Lucas: "if I refuse a reaction after one square, it doesn't trigger again on other squares"; "make it trigger on the last possible
+ * square"): pure: the square of the path where the Reaction comes, the last one it could: an "enemy moves" Reaction (would leave a square) on
+ * the last square the mover left within its reach, a "moves closer" one on the last square it entered that is within reach and nearer.
+ * rows: [{ moment, range (0: any) }]; dist(row, square), nearer(row, square). Returns an index into path (0: where it started).
+ */
+export function backSquareIndex(path, rows, dist, nearer = () => true) {
+  let best = 0;
+  for (const r of rows) {
+    const range = Number(r.range) || Infinity;
+    if (r.moment === "enemyMoves") for (let i = 0; i < path.length - 1; i++) { if (dist(r, path[i]) <= range) best = Math.max(best, i); }
+    if (r.moment === "enemyCloser") for (let i = 1; i < path.length; i++) { if (dist(r, path[i]) <= range && nearer(r, path[i])) best = Math.max(best, i); }
+  }
+  return best;
+}
+/** v0.0.279: pure: Move back's refund when the mover goes back only part of the way: each kind of movement gets back its share of what this move spent. */
+export function partialRefund(before, now, part) {
+  const out = {};
+  for (const k of Object.keys(before ?? {})) { const b = Number(before[k]) || 0, n = Number(now?.[k]) || 0; out[k] = b > n ? Math.round((n + (b - n) * part) * 100) / 100 : n; }
+  return out;
+}
+const offered = new Set();   // a Reaction that couldn't answer (blocked) is noted once per Move Action
+const usedOn = new Set();    // v0.0.279: once per triggering Action means once USED: a Pass offers it again on the next square of the same Move Action
+const pendingOn = new Set(); // v0.0.279: a Reaction already waiting on an open message isn't offered twice   // once per Move Action: a Reaction is offered once for each Move Action of the same mover
 /** A creature moved (not an Evade, not a Forced Movement): "an enemy moves closer" and "an enemy moves (or stands up)". */
 export function moveMoment(doc, origin, dest, { stand = false, before = null, waypoints = null } = {}) {
   (async () => {
@@ -835,16 +869,26 @@ export function moveMoment(doc, origin, dest, { stand = false, before = null, wa
       closer: tk => cameCloser(sideToks(tk.document.disposition).map(s => ({ from: tokenDistance(fromAt, s), to: Math.min(...entered.map(e => tokenDistance(e, s))) })))
     };
     const { rows, blocked } = await collectReactions(ev);
-    const fresh = r => { const k = `${turn}|${r.actor.uuid}|${r.item.id}`; if (!stand && offered.has(k)) return false; offered.add(k); return true; };
-    const keep = new Set([...rows, ...blocked].filter(fresh).map(r => `${r.actor.uuid}|${r.item.id}`));
-    if (!keep.size) return;
+    const keyOf = r => `${turn}|${r.actor.uuid}|${r.item.id}`;
+    const fresh = r => { const k = keyOf(r); if (!stand && (usedOn.has(k) || pendingOn.has(k))) return false; pendingOn.add(k); return true; };
+    const freshBlocked = r => { const k = keyOf(r); if (!stand && (usedOn.has(k) || offered.has(k))) return false; offered.add(k); return true; };
+    const open = rows.filter(fresh), keep = new Set([...open, ...blocked.filter(freshBlocked)].map(r => `${r.actor.uuid}|${r.item.id}`));
+    if (!keep.size) { for (const r of open) pendingOn.delete(keyOf(r)); return; }
     const name = esc(cleanName(doc.name ?? actor.name)), plain = stand ? `<b>${name}</b> stands up` : `<b>${name}</b> moves`;
     // v0.0.273 (Lucas): Move back: to where this movement started, with the movement it had then (the squares since are refunded)
-    const back = !stand && origin ? { tokenUuid: doc.uuid, x: fromAt.x, y: fromAt.y, combatantId: before?.combatantId ?? "", flags: before?.flags ?? null, squares: tokenDistance(fromAt, toAt), name: cleanName(doc.name ?? actor.name), used: false } : null;
+    // v0.0.279 (Lucas): to the last square where a Reaction offered could come (Shift+click: where this movement started), its share refunded
+    const nearer = (r, sq) => sideToks(r.token.document.disposition).some(s => tokenDistance(sq, s) < tokenDistance(fromAt, s));
+    const idx = stand || sqs.length < 2 ? 0 : backSquareIndex(sqs, open.map(r => ({ moment: r.moment, range: Number(r.item.system.momentRange) || 0, token: r.token })), (r, sq) => tokenDistance(r.token, sq), nearer);
+    const at = sqs[idx] ?? fromAt, steps = Math.max(0, sqs.length - 1 - idx), total = Math.max(1, sqs.length - 1);
+    const back = !stand && origin ? { tokenUuid: doc.uuid, x: at.x, y: at.y, start: { x: fromAt.x, y: fromAt.y }, steps, total, combatantId: before?.combatantId ?? "", flags: before?.flags ?? null, squares: idx ? steps : tokenDistance(fromAt, toAt), name: cleanName(doc.name ?? actor.name), used: false } : null;
     // v0.0.275: the base slab ("Moves N sq.", Move back on it) and the path for the map overlay (the squares, the ghost where it started)
     const gs = globalThis.canvas?.grid?.size ?? 100, face = faceOf({ actor, token: doc.object ?? tokenOf(actor) }) ?? {};
     const base = stand ? { kind: "stand", face } : { kind: "move", face: { ...face, uuid: doc.uuid }, squares: tokenDistance(fromAt, toAt), path: pathSquares(waypoints?.length ? waypoints : [fromAt, toAt], gs, doc.width || 1, doc.height || 1), start: { x: fromAt.x, y: fromAt.y, w: doc.width || 1, h: doc.height || 1 } };
-    await openMoment({ ...ev, filter: keep, back, plain, lead: plain, base });
+    if (back && idx) base.backAt = { x: at.x, y: at.y, w: (doc.width || 1) * gs, h: (doc.height || 1) * gs };
+    let res = { used: [] };
+    try { res = await openMoment({ ...ev, filter: keep, back, plain, lead: plain, base }); }
+    finally { for (const r of open) pendingOn.delete(keyOf(r)); }
+    for (const u of res.used ?? []) if (u.ok || u.spent) usedOn.add(`${turn}|${u.actorUuid}|${u.itemId}`);
   })().catch(e => console.warn("twod12 | Reactions", e));
 }
 const moving = new Map();   // token id -> { forced, evading }, on the client that moves it

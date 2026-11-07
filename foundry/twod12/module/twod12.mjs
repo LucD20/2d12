@@ -286,7 +286,7 @@ Hooks.once("ready", async () => {
     else if (b.dataset.twod12 === "retargetAction") await retargetAction(msg);
     else if (b.dataset.twod12 === "useGrant") await useGrant(msg, b.dataset.effectId, Number(b.dataset.index) || 0);   // v0.0.260: a granted use from the card
     else if (b.dataset.twod12 === "rollDamage") await rollDamage(msg);
-    else if (/^rx[A-Z]/.test(b.dataset.twod12)) await rxClick(msg, b);   // v0.0.272: the Reactions message (v0.0.273: its order, clock, Resolve, Move back, the Action's sheet)
+    else if (/^rx[A-Z]/.test(b.dataset.twod12)) await rxClick(msg, b, ev);   // v0.0.272: the Reactions message (v0.0.273: its order, clock, Resolve, Move back, the Action's sheet)
     else if (b.dataset.twod12 === "applyAfter") { const { applyAfter } = await import("./actions.mjs"); await applyAfter(msg, b.dataset.side ?? "", Number(b.dataset.step) || 0); }   // v0.0.250; v0.0.254: the step
     else await damageButton(b.dataset.twod12, b, msg);
   });

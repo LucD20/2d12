@@ -190,3 +190,17 @@ console.log("--- v0.0.278 (Lucas tested v0.0.277)");
 console.log("the snapshot's positions are a list (a uuid key would be split by Foundry's flags):", Array.isArray(rx.snap.pos), rx.snap.pos.map(p => p.u.split(".").at(-1)).join(","), "| drawn from it:", (M.snapshotSvg(rx).match(/<circle /g) ?? []).length, "circles");
 const mo3 = src("module/moment.mjs"), ov = src("module/rxoverlay.mjs");
 console.log("resolved: posted again at the bottom (the live copy deleted):", mo3.includes("L.msg = await toBottom(L.msg, st);") && mo3.includes("await msg.delete();"), "| again under a late roll card:", mo3.includes("F2.msg = await toBottom(F2.msg, F2.st);"), "| the overlay above the tokens:", ov.includes("layer.zIndex = 9000;"));
+
+console.log("--- v0.0.279 (Lucas tested v0.0.278)");
+const svg279 = M.snapshotSvg(rx);
+console.log("the snapshot: no labels on the lines, a numbered pin on each reactor:", [...svg279.matchAll(/<title>(\d\.[^<]*)<\/title>/g)].map(m => m[1]).join(" ; "), "| the damage stays over the target:", /9 → 4/.test(svg279));
+console.log("closer in: a token's radius", M.snapshotLayout({ snap: { gs: 70, pos: [{ u: "a", x: 0, y: 0 }, { u: "b", x: 70, y: 70 }] } }).r, "(was 11 at most)");
+console.log("the frozen stack shows the target's face:", /→<\/span><span class="rx-av rx-av-s"[^>]*data-tooltip="Krysta"/.test(msg.content));
+// Move back to the last possible square: a path of 6 squares along a row, a watcher next to square 3 (range 1), another far
+const P6 = [0, 1, 2, 3, 4, 5].map(x => ({ x: x * 100, y: 0 }));
+const d = (r, sq) => Math.max(Math.abs(r.at.x - sq.x), Math.abs(r.at.y - sq.y)) / 100;
+console.log("Opportunity Attack (would leave a square): the last square left within 1:", M.backSquareIndex(P6, [{ moment: "enemyMoves", range: 1, at: { x: 300, y: 100 } }], d), "| two watchers, the later wins:", M.backSquareIndex(P6, [{ moment: "enemyMoves", range: 1, at: { x: 100, y: 100 } }, { moment: "enemyMoves", range: 1, at: { x: 400, y: 100 } }], d), "| the last square is never left:", M.backSquareIndex(P6, [{ moment: "enemyMoves", range: 1, at: { x: 600, y: 100 } }], d));
+console.log("Overwatch (moves closer): the last square entered within reach and nearer:", M.backSquareIndex(P6, [{ moment: "enemyCloser", range: 10, at: { x: 0, y: 500 } }], d, (r, sq) => sq.x <= 300), "| none: back to the start", M.backSquareIndex(P6, [{ moment: "enemyCloser", range: 1, at: { x: 0, y: 900 } }], d));
+console.log("the refund for part of the way (2 of 5 squares back):", JSON.stringify(M.partialRefund({ moveLeft: 5, freeMove: 0 }, { moveLeft: 0, freeMove: 0 }, 2 / 5)), "| all the way:", JSON.stringify(M.partialRefund({ moveLeft: 5 }, { moveLeft: 0 }, 1)));
+const mo4 = src("module/moment.mjs");
+console.log("a Pass offers it again on the next square (only a Use blocks the Move Action):", mo4.includes("if (!stand && (usedOn.has(k) || pendingOn.has(k))) return false;") && mo4.includes("if (u.ok || u.spent) usedOn.add("), "| Shift+click goes back to the start:", mo4.includes("moveBack(msg, st, !!(ev ?? globalThis.event)?.shiftKey)"), "| the square marked on the map:", src("module/rxoverlay.mjs").includes("if (b.backAt)"));

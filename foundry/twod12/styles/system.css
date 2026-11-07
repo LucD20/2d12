@@ -2445,3 +2445,6 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat.rx2 button.rx-ib i.rx-i { font-size: 13px; }
 .twod12.chat.rx2 .rx-hd i.rx-i { font-size: 11px; }
 .twod12.chat.rx2 .rx-line .rx-ic i.rx-i, .twod12.chat.rx2 .rx-it .rx-ic i.rx-i { font-size: 11px; }
+/* v0.0.279 (Lucas: the resolved message's target name was cut off): the frozen stack shows the target's face after the arrow. */
+.twod12.chat.rx2.rx-done .rx-it > .rx-tg { flex: none; }
+.twod12.chat.rx2.rx-done .rx-it > .rx-av-s:last-of-type { flex: none; }
