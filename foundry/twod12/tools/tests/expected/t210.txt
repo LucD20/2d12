@@ -73,3 +73,7 @@ Opportunity Attack (would leave a square): the last square left within 1: 4 | tw
 Overwatch (moves closer): the last square entered within reach and nearer: 3 | none: back to the start 0
 the refund for part of the way (2 of 5 squares back): {"moveLeft":2,"freeMove":0} | all the way: {"moveLeft":5}
 a Pass offers it again on the next square (only a Use blocks the Move Action): true | Shift+click goes back to the start: true | the square marked on the map: true
+--- v0.0.280 (Lucas: pick the square in the bottom bar)
+every square where a Reaction could come, the last first: 4,3,2,1,0 | the default is still the last: 2
+the bar's choices: i4: 1 sq. back (1 refunded) ; i2: 3 sq. back (3 refunded) ; start: Where it started (5 refunded) | the start square is not listed twice: 1
+the bottom bar takes squares as well as tokens (clicked on the map too): true | Move back opens it when there is a choice: true | no Foundry window: true

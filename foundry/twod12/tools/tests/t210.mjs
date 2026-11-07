@@ -204,3 +204,10 @@ console.log("Overwatch (moves closer): the last square entered within reach and 
 console.log("the refund for part of the way (2 of 5 squares back):", JSON.stringify(M.partialRefund({ moveLeft: 5, freeMove: 0 }, { moveLeft: 0, freeMove: 0 }, 2 / 5)), "| all the way:", JSON.stringify(M.partialRefund({ moveLeft: 5 }, { moveLeft: 0 }, 1)));
 const mo4 = src("module/moment.mjs");
 console.log("a Pass offers it again on the next square (only a Use blocks the Move Action):", mo4.includes("if (!stand && (usedOn.has(k) || pendingOn.has(k))) return false;") && mo4.includes("if (u.ok || u.spent) usedOn.add("), "| Shift+click goes back to the start:", mo4.includes("moveBack(msg, st, !!(ev ?? globalThis.event)?.shiftKey)"), "| the square marked on the map:", src("module/rxoverlay.mjs").includes("if (b.backAt)"));
+
+console.log("--- v0.0.280 (Lucas: pick the square in the bottom bar)");
+console.log("every square where a Reaction could come, the last first:", M.backSquareIndices(P6, [{ moment: "enemyMoves", range: 1, at: { x: 100, y: 100 } }, { moment: "enemyMoves", range: 1, at: { x: 400, y: 100 } }], d).join(","), "| the default is still the last:", M.backSquareIndex(P6, [{ moment: "enemyMoves", range: 1, at: { x: 100, y: 100 } }], d));
+const ch = M.backChoices({ total: 5, start: { x: 0, y: 0 }, squaresAt: [{ idx: 4, x: 400, y: 0 }, { idx: 2, x: 200, y: 0 }, { idx: 0, x: 0, y: 0 }] });
+console.log("the bar's choices:", ch.map(c => `${c.id}: ${c.label} (${c.steps} refunded)`).join(" ; "), "| the start square is not listed twice:", ch.filter(c => c.idx === 0).length);
+const pb = src("module/pickbar.mjs"), mo5 = src("module/moment.mjs");
+console.log("the bottom bar takes squares as well as tokens (clicked on the map too):", pb.includes("const toks = (o.options ?? []).filter(x => x.token || x.cells?.length);") && pb.includes("const cellsOf = x => x.cells ?? T.tokenCells(x.token);"), "| Move back opens it when there is a choice:", mo5.includes("if (!toStart && b.start && choices.length > 2)") && mo5.includes('const { pickBar } = await import("./pickbar.mjs");'), "| no Foundry window:", !/DialogV2|Dialog\./.test(mo5));

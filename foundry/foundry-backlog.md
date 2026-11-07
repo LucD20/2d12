@@ -1,10 +1,10 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.279**. Tests: `node tools/tests/run.mjs` (208 tests, see the README; the next new test is t211). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.280**. Tests: `node tools/tests/run.mjs` (208 tests, see the README; the next new test is t211). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 ## Asked by Lucas, not built
-- [ ] **Pick the square a movement Reaction comes on (Lucas, 2026-11-07, "if possible"):** v0.0.279 moves back to the last possible square (Shift+click: the start). A choice could be the bottom bar (pickbar.mjs) listing the path's possible squares, or clicking a square of the overlay's path (the overlay is not interactive today). Waits for Lucas's word on which.
+- [x] **Pick the square a movement Reaction comes on (Lucas, 2026-11-07): DONE v0.0.280, the bottom bar** (Move back lists the possible squares, the last first, then the start; hover lights the square; a click on the map picks it). **Not tried in Foundry:** the square highlight and the map click with a token bigger than 1 square.
 - [x] **v0.0.279 (Lucas tested v0.0.278; branch `pack-rw`):** the snapshot cleaner, a Pass re-offers a movement Reaction on the next squares, Move back to the last possible square with a partial refund. **Not tried in Foundry:** the partial refund on a real Advance (the share is per kind: freeMove / evadeMove / moveLeft).
 - [x] **v0.0.278 (Lucas tested v0.0.277; branch `pack-rw`):** the resolved message reposted at the bottom, the snapshot's positions as a list, the overlay at zIndex 9000 on `canvas.interface`. **Gotcha:** never use a uuid (or any dotted string) as an object key inside flags: Foundry expands it into nested objects.
 - [x] **v0.0.277 (Lucas tested v0.0.276; branch `pack-rw`):** the GM picks on every row; movement Reactions along the whole path; `unset()` for flag removal (V14 ForcedDeletion); no Turn Log line for a deleted combat. **Not tried in Foundry:** `movement.passed.waypoints` / `movement.pending` on a multi-waypoint drag (if the trigger still misses sometimes, the console line `twod12 | Reactions` or a note of how the token was moved helps: drag, ruler waypoints, keyboard). **Gotcha:** remove keys with `unset()` from util.mjs, never `-=`.

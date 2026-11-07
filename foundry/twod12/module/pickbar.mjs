@@ -17,7 +17,8 @@ export async function pickBar(o) {
   if (typeof document === "undefined") return o.options?.[0]?.id ?? (o.done ? "done" : null);   // no DOM (the tests): the first option
   let back = async () => {};
   if (o.aside !== false) { try { back = await (await import("./template.mjs")).stepAside(); } catch (e) { /* nothing to minimize */ } }
-  const toks = (o.options ?? []).filter(x => x.token);
+  // v0.0.280: an option can be a set of squares too (cells: [{ i, j }]), picked by clicking one of them (Move back's squares)
+  const toks = (o.options ?? []).filter(x => x.token || x.cells?.length);
   let T = null;
   if (toks.length && globalThis.canvas?.ready) { try { T = await import("./template.mjs"); } catch (e) { T = null; } }
   const res = await new Promise(resolve => {
@@ -26,11 +27,12 @@ export async function pickBar(o) {
     bar.innerHTML = pickBarHtml(o);
     document.body.append(bar);
     let gfx = null, down = null, move = null, prevInteractive = null, hovered = null;
+    const cellsOf = x => x.cells ?? T.tokenCells(x.token);
     // v0.0.249 (Lucas): feedback before the click: the candidate under the pointer (or whose button is hovered) lights up on the map and in the bar
     const draw = () => {
       if (!gfx) return;
       gfx.clear();
-      for (const x of toks) { const cells = T.tokenCells(x.token), on = x === hovered; T.fillCells(gfx, cells, on ? 0xfff0b0 : 0xc9a24a, on ? 0.45 : 0.22); T.outlineCells(gfx, cells, { color: on ? 0xffffff : 0xc9a24a, width: on ? 4 : 3 }); }
+      for (const x of toks) { const cells = cellsOf(x), on = x === hovered; T.fillCells(gfx, cells, on ? 0xfff0b0 : 0xc9a24a, on ? 0.45 : 0.22); T.outlineCells(gfx, cells, { color: on ? 0xffffff : 0xc9a24a, width: on ? 4 : 3 }); }
       bar.querySelectorAll(".lb-opt").forEach(b => b.classList.toggle("hover", !!hovered && b.dataset.id === hovered.id));
     };
     const hover = x => { if (x === hovered) return; hovered = x; draw(); if (gfx) canvas.app.view.style.cursor = x ? "pointer" : ""; };
@@ -38,7 +40,7 @@ export async function pickBar(o) {
       gfx = new PIXI.Graphics();
       (canvas.interface ?? canvas.stage).addChild(gfx);
       prevInteractive = canvas.tokens.interactiveChildren; canvas.tokens.interactiveChildren = false;
-      const at = ev => { const p = ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) : ev.data.getLocalPosition(canvas.stage), c = T.cellAt(p); return toks.find(x => T.tokenCells(x.token).some(k => k.i === c.i && k.j === c.j)) ?? null; };
+      const at = ev => { const p = ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) : ev.data.getLocalPosition(canvas.stage), c = T.cellAt(p); return toks.find(x => cellsOf(x).some(k => k.i === c.i && k.j === c.j)) ?? null; };
       move = ev => hover(at(ev));
       down = ev => { if (ev.button !== 0) return; const hit = at(ev); if (hit) finish(hit.id); };
       canvas.stage.on("pointermove", move);

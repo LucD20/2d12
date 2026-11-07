@@ -178,7 +178,7 @@ export function baseChip(st) {
 /** The base slab's words: "Strike → Krysta", "Moves 4 sq.", "Stands up". */
 const baseWords = b => (b.kind === "move" ? `<b>Moves</b> ${Number(b.squares) || 0} sq.` : b.kind === "stand" ? "<b>Stands up</b>" : `<b>${esc(b.label || "Strike")}</b>${b.target?.name ? ` → ${esc(b.target.name)}` : ""}`);
 const baseIcon = b => (b.kind === "move" || b.kind === "stand" ? ICON.move() : ICON.sword());
-const backBtn = b => (b?.back && !b.back.used ? `<button type="button" class="rx-hb rx-backbtn" data-twod12="rxBack" data-tooltip="${b.back.start && b.back.steps < b.back.total ? `Move ${esc(b.back.name)} back ${b.back.steps} sq., to the last square where the Reaction could come (marked on the map), those squares refunded. Shift+click: back to where this movement started` : `Move ${esc(b.back.name)} back to the square it left (${b.back.squares} sq.), the movement refunded`}" aria-label="Move ${esc(b.back.name)} back">${ICON.back()}</button>` : b?.back?.used ? `<span class="rx-backed" data-tooltip="${esc(b.back.name)} went back to where its movement started; its movement is refunded">${ICON.back()}</span>` : "");
+const backBtn = b => (b?.back && !b.back.used ? `<button type="button" class="rx-hb rx-backbtn" data-twod12="rxBack" data-tooltip="${b.back.start && b.back.steps < b.back.total ? `Move ${esc(b.back.name)} back to a square where the Reaction could come (the bottom bar lists them, the last first; marked on the map), those squares refunded. Shift+click: back to where this movement started` : `Move ${esc(b.back.name)} back to the square it left (${b.back.squares} sq.), the movement refunded`}" aria-label="Move ${esc(b.back.name)} back">${ICON.back()}</button>` : b?.back?.used ? `<span class="rx-backed" data-tooltip="${esc(b.back.name)} went back to where its movement started; its movement is refunded">${ICON.back()}</span>` : "");
 
 function liveHtml(st) {
   const groups = waitingGroups(st.rows), waiting = groups.flat(), kinds = new Set(waiting.map(r => r.kind)), one = kinds.size === 1;
@@ -637,13 +637,26 @@ async function moveBack(msg, st, toStart = false) {
   let doc = null; try { doc = await fromUuid(b.tokenUuid); } catch (e) { doc = null; }
   if (!doc) return ui.notifications.warn("That token is gone.");
   if (!doc.isOwner) return ui.notifications.warn(`Only ${doc.name}'s owner or the GM can move it back.`);
-  const whole = toStart || !b.start || !b.total || b.steps >= b.total;   // v0.0.279: the last possible square, or (Shift+click) where it started
-  const to = whole ? (b.start ?? { x: b.x, y: b.y }) : { x: b.x, y: b.y };
+  // v0.0.280 (Lucas): the square is picked in the bottom bar (or on the map): every square where the Reaction could come, the last first, and
+  // where it started; Shift+click goes straight to the start. A single possible square needs no bar.
+  let pick = null;
+  const choices = backChoices(b);
+  if (!toStart && b.start && choices.length > 2) {
+    let T = null; try { T = await import("./template.mjs"); } catch (e) { T = null; }
+    const cellsAt = c => { if (!T?.cellAt || !Number.isFinite(c.x)) return null; const tl = T.cellAt({ x: c.x + 2, y: c.y + 2 }), out = []; for (let a = 0; a < Math.max(1, Math.round(doc.height || 1)); a++) for (let k = 0; k < Math.max(1, Math.round(doc.width || 1)); k++) out.push({ i: tl.i + a, j: tl.j + k }); return out; };
+    const { pickBar } = await import("./pickbar.mjs");
+    const id = await pickBar({ icon: "fa-rotate-left", text: `<b>${esc(b.name)}</b>: back to which square? Where the Reaction could come (click it here or on the map).`, options: choices.map(c => ({ id: c.id, label: c.label, tip: c.tip, cells: cellsAt(c) ?? undefined })) });
+    if (!id) return;
+    pick = choices.find(c => c.id === id) ?? null;
+  }
+  const chosen = toStart ? choices.at(-1) : (pick ?? null);
+  const steps = chosen ? chosen.steps : b.steps, whole = toStart || !b.start || !b.total || steps >= b.total;
+  const to = whole ? (b.start ?? { x: b.x, y: b.y }) : (chosen ? { x: chosen.x, y: chosen.y } : { x: b.x, y: b.y });
   await doc.update({ x: to.x, y: to.y }, { twod12Forced: true, animate: true });
   const c = game.combat?.combatants?.get?.(b.combatantId);
   if (c && b.flags) {
     const now = Object.fromEntries(Object.keys(b.flags).map(k => [k, Number(c.getFlag(F, k)) || 0]));
-    const flags = whole ? b.flags : partialRefund(b.flags, now, b.steps / b.total);
+    const flags = whole ? b.flags : partialRefund(b.flags, now, steps / b.total);
     try { await c.update(Object.fromEntries(Object.entries(flags).map(([k, v]) => [`flags.${F}.${k}`, v]))); } catch (e) { console.warn("twod12 | movement refund", e); }
   }
   await markBack(msg.id);
@@ -830,13 +843,24 @@ export const movePlaces = (points, gs, size = {}) => pathSquares(points, gs, siz
  * rows: [{ moment, range (0: any) }]; dist(row, square), nearer(row, square). Returns an index into path (0: where it started).
  */
 export function backSquareIndex(path, rows, dist, nearer = () => true) {
-  let best = 0;
+  return Math.max(0, ...backSquareIndices(path, rows, dist, nearer));
+}
+/** v0.0.280 (Lucas: pick the square in the bottom bar): pure: every square of the path where one of the Reactions could come (path indices, last first). */
+export function backSquareIndices(path, rows, dist, nearer = () => true) {
+  const out = new Set();
   for (const r of rows) {
     const range = Number(r.range) || Infinity;
-    if (r.moment === "enemyMoves") for (let i = 0; i < path.length - 1; i++) { if (dist(r, path[i]) <= range) best = Math.max(best, i); }
-    if (r.moment === "enemyCloser") for (let i = 1; i < path.length; i++) { if (dist(r, path[i]) <= range && nearer(r, path[i])) best = Math.max(best, i); }
+    if (r.moment === "enemyMoves") for (let i = 0; i < path.length - 1; i++) { if (dist(r, path[i]) <= range) out.add(i); }
+    if (r.moment === "enemyCloser") for (let i = 1; i < path.length; i++) { if (dist(r, path[i]) <= range && nearer(r, path[i])) out.add(i); }
   }
-  return best;
+  return [...out].sort((a, b) => b - a);
+}
+/** v0.0.280: pure: the bottom bar's choices for Move back: each possible square (the last one first), then where the movement started. */
+export function backChoices(back) {
+  const total = Math.max(1, Number(back?.total) || 1), list = (back?.squaresAt ?? []).filter(s => s.idx > 0 && s.idx < total + 1);
+  const opts = list.map(s => ({ id: `i${s.idx}`, idx: s.idx, x: s.x, y: s.y, steps: total - s.idx, label: `${total - s.idx} sq. back`, tip: `Back to this square (the Reaction comes here): ${total - s.idx} sq. refunded` }));
+  opts.push({ id: "start", idx: 0, x: back?.start?.x, y: back?.start?.y, steps: total, label: "Where it started", tip: `Back to where this movement started: all ${total} sq. refunded` });
+  return opts;
 }
 /** v0.0.279: pure: Move back's refund when the mover goes back only part of the way: each kind of movement gets back its share of what this move spent. */
 export function partialRefund(before, now, part) {
@@ -878,9 +902,10 @@ export function moveMoment(doc, origin, dest, { stand = false, before = null, wa
     // v0.0.273 (Lucas): Move back: to where this movement started, with the movement it had then (the squares since are refunded)
     // v0.0.279 (Lucas): to the last square where a Reaction offered could come (Shift+click: where this movement started), its share refunded
     const nearer = (r, sq) => sideToks(r.token.document.disposition).some(s => tokenDistance(sq, s) < tokenDistance(fromAt, s));
-    const idx = stand || sqs.length < 2 ? 0 : backSquareIndex(sqs, open.map(r => ({ moment: r.moment, range: Number(r.item.system.momentRange) || 0, token: r.token })), (r, sq) => tokenDistance(r.token, sq), nearer);
+    const idxs = stand || sqs.length < 2 ? [] : backSquareIndices(sqs, open.map(r => ({ moment: r.moment, range: Number(r.item.system.momentRange) || 0, token: r.token })), (r, sq) => tokenDistance(r.token, sq), nearer);
+    const idx = idxs[0] ?? 0;
     const at = sqs[idx] ?? fromAt, steps = Math.max(0, sqs.length - 1 - idx), total = Math.max(1, sqs.length - 1);
-    const back = !stand && origin ? { tokenUuid: doc.uuid, x: at.x, y: at.y, start: { x: fromAt.x, y: fromAt.y }, steps, total, combatantId: before?.combatantId ?? "", flags: before?.flags ?? null, squares: idx ? steps : tokenDistance(fromAt, toAt), name: cleanName(doc.name ?? actor.name), used: false } : null;
+    const back = !stand && origin ? { tokenUuid: doc.uuid, x: at.x, y: at.y, start: { x: fromAt.x, y: fromAt.y }, steps, total, combatantId: before?.combatantId ?? "", flags: before?.flags ?? null, squares: idx ? steps : tokenDistance(fromAt, toAt), squaresAt: idxs.slice(0, 12).map(i => ({ idx: i, x: sqs[i].x, y: sqs[i].y })), name: cleanName(doc.name ?? actor.name), used: false } : null;
     // v0.0.275: the base slab ("Moves N sq.", Move back on it) and the path for the map overlay (the squares, the ghost where it started)
     const gs = globalThis.canvas?.grid?.size ?? 100, face = faceOf({ actor, token: doc.object ?? tokenOf(actor) }) ?? {};
     const base = stand ? { kind: "stand", face } : { kind: "move", face: { ...face, uuid: doc.uuid }, squares: tokenDistance(fromAt, toAt), path: pathSquares(waypoints?.length ? waypoints : [fromAt, toAt], gs, doc.width || 1, doc.height || 1), start: { x: fromAt.x, y: fromAt.y, w: doc.width || 1, h: doc.height || 1 } };
