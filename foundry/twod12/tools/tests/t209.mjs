@@ -33,18 +33,18 @@ console.log("Skip all others: skipped", M.skipOthers(r2), "| the GM's own row to
 const held = { B: { l: 7, n: 2 }, M: { l: 3, n: 0 } };
 console.log("half of the held damage: taken off", M.halveHeld(held), JSON.stringify(held), "| came closer:", M.cameCloser([{ from: 5, to: 6 }, { from: 4, to: 3 }]), M.cameCloser([{ from: 2, to: 2 }]));
 
-console.log("--- the message");
-const st = { id: "x", hold: true, lead: "<b>Bandit</b>'s Strike would damage <b>Krysta</b>", text: "Interrupt: the <b>9</b> damage waits.", deadline: 600000, now: 0, done: false, rows: [
-  { i: 0, name: "Nari", itemName: "Shield", ap: 1, kind: "interrupt", targetName: "Krysta", answerer: "p1", state: "use", order: 1, result: "" },
-  { i: 1, name: "Lana", itemName: "Shot", ap: 1, kind: "interrupt", targetName: "Bandit", answerer: "p2", state: "use", order: 2, result: "" },
-  { i: 2, name: "Orc", itemName: "Spite", ap: 1, kind: "trigger", targetName: "Krysta", answerer: "gm", state: "wait", order: 0, result: "" }] };
+console.log("--- the message (v0.0.275: the stack card; details in t210)");
+const st = { v: 2, id: "x", hold: true, deadline: 600000, now: 0, done: false, base: { kind: "strike", label: "Strike", face: { name: "Bandit" }, target: { name: "Krysta" }, held: 9 }, rows: [
+  { i: 0, actorUuid: "A.n", name: "Nari", itemName: "Shield", ap: 1, kind: "interrupt", targetName: "Krysta", answerer: "p1", state: "use", order: 1, result: "", color: "#f0b54a" },
+  { i: 1, actorUuid: "A.l", name: "Lana", itemName: "Shot", ap: 1, kind: "interrupt", targetName: "Bandit", answerer: "p2", state: "use", order: 2, result: "", color: "#5fc4c0" },
+  { i: 2, actorUuid: "A.o", name: "Orc", itemName: "Spite", ap: 1, kind: "trigger", targetName: "Krysta", answerer: "gm", state: "wait", order: 0, result: "" }] };
 const html = M.rxCardHtml(st);
-console.log("the system's card:", html.startsWith('<div class="twod12 chat action sysmsg rxmsg"'), "| title Reactions:", html.includes("<b>Reactions</b>") || html.includes(">Reactions<"), "| rows:", (html.match(/class="tline grantrow rxrow/g) ?? []).length);
-console.log("the stack's places:", [...html.matchAll(/Resolves (\d\w\w)/g)].map(m => m[1]).join(", "), "| the order line:", html.match(/<div class="rx-order">[\s\S]*?<\/div>/)?.[0].replace(/<[^>]+>/g, ""));
-console.log("Use / Pass only on the waiting row:", (html.match(/data-twod12="rxUse"/g) ?? []).length, (html.match(/data-twod12="rxPass"/g) ?? []).length, "| the timer:", html.match(/Auto-skip in <span class="rx-left">([^<]*)/)?.[1], "| Skip all others:", html.includes('data-twod12="rxSkip"'));
+console.log("the card:", html.startsWith('<div class="twod12 chat rx2"'), "| title Reactions:", html.includes('<span class="rx-ttl">Reactions</span>'), "| waiting rows:", (html.match(/class="rx-dl"/g) ?? []).length, "| slabs:", (html.match(/class="rx-it[ "]/g) ?? []).length);
+console.log("the stack, top first:", [...html.matchAll(/<b>(Shield|Shot)<\/b>/g)].map(m => m[1]).join(", "), "| the base:", html.match(/rx-bw">(.*?)<\/span>/)?.[1].replace(/<[^>]+>/g, ""), "|", html.match(/rx-out dmg">([^<]*)/)?.[1]);
+console.log("Use / Pass only on the waiting row:", (html.match(/data-twod12="rxUse"/g) ?? []).length, (html.match(/data-twod12="rxPass"/g) ?? []).length, "| the timer:", html.match(/rx-left">([^<]*)/)?.[1], "| Skip all others:", html.includes('data-twod12="rxSkip"'));
 st.done = true;
 const done = M.rxCardHtml(st);
-console.log("answered: no buttons, no timer:", !/rxUse|rxSkip|rx-timer/.test(done), "|", done.match(/rx-done"><[^>]+><\/i> ([^<]*)/)?.[1]);
+console.log("answered: no buttons, no timer:", !/rxUse|rxSkip|rx-tm/.test(done), "| one line that unfolds:", done.includes('class="rx-line" data-twod12="rxFold"'));
 
 console.log("--- who is offered (tokens on the map)");
 globalThis.canvas = { ready: true, grid: { size: 100, isSquare: true }, tokens: { placeables: [] } };
@@ -82,16 +82,20 @@ await M.hostAnswer(rx.id, 1, "use", "p1");
 console.log("someone else's row can't be answered: Lana's row", rx.rows[1].state);
 await M.hostAnswer(rx.id, 1, "use", "p2");
 await M.hostAnswer(rx.id, 0, "use", "p1");   // every row answered, two on the stack: it waits for Resolve (v0.0.273)
-console.log("two on the stack wait for Resolve:", rx.ready, "| nothing run yet:", emitted.filter(e => e.type === "rxRun").length, "| Resolve and the arrows on the message:", msg.content.includes('data-twod12="rxResolve"'), (msg.content.match(/data-twod12="rx(Up|Down)"/g) ?? []).length);
+console.log("two on the stack wait for Resolve:", rx.ready, "| nothing run yet:", emitted.filter(e => e.type === "rxRun").length, "| Resolve and the grips on the message:", msg.content.includes('data-twod12="rxResolve"'), (msg.content.match(/class="rx-grip"/g) ?? []).length);
 await M.hostAnswer(rx.id, 1, "up", "nobody");
 console.log("one who isn't in it can't change the order: first", M.stackOrder(rx.rows)[0].itemName);
 await M.hostAnswer(rx.id, 1, "up", "p2");
-console.log("Lana's row moved up: first", M.stackOrder(rx.rows)[0].itemName, "| the line:", msg.content.match(/<div class="rx-order">[\s\S]*?<\/div>/)?.[0].replace(/<[^>]+>/g, "").trim());
+console.log("v0.0.275: a reactor can't change the order (the GM drags): first", M.stackOrder(rx.rows)[0].itemName);
+await M.hostAnswer(rx.id, 1, "up", "gm");
+console.log("the GM moved Lana's row up: first", M.stackOrder(rx.rows)[0].itemName, "| the numbers on the slabs:", [...msg.content.matchAll(/rx-num">(\d)<\/span><span class="rx-sw"[^>]*><\/span>.*?<b>(Sh\w+)<\/b>/g)].map(m => `${m[1]}.${m[2]}`).join(" "));
 await M.hostAnswer(rx.id, -1, "pause", "p1");
-console.log("the clock paused:", rx.paused, msg.content.includes("rx-timer paused"), "| no countdown while paused:", !/rx-timer paused" data-twod12="rxPause" data-deadline/.test(msg.content));
+console.log("the clock paused:", rx.paused, msg.content.includes("rx-tm paused"), "| no countdown while paused:", !/rx-tm paused" data-twod12="rxPause" data-deadline/.test(msg.content));
 await M.hostAnswer(rx.id, -1, "pause", "p1");
 console.log("and going on:", !rx.paused, "| about a minute left:", Math.round((rx.deadline - Date.now()) / 60000));
-M.hostAnswer(rx.id, -1, "resolve", "p1");   // the stack resolves (each run waits for its owner's client)
+await M.hostAnswer(rx.id, -1, "resolve", "p1");
+console.log("v0.0.275: a reactor can't Resolve:", emitted.filter(e => e.type === "rxRun").length);
+M.hostAnswer(rx.id, -1, "resolve", "gm");   // the stack resolves (each run waits for its owner's client)
 await new Promise(r => setTimeout(r, 20));
 const runs = emitted.filter(e => e.type === "rxRun");
 console.log("Resolve: the first to resolve:", runs.map(r => `${r.userId}:${r.data.itemId}`).join(" "), "| on", runs[0]?.data.targetName);
@@ -101,9 +105,8 @@ const runs2 = emitted.filter(e => e.type === "rxRun");
 console.log("then the next:", runs2.slice(1).map(r => `${r.userId}:${r.data.itemId}`).join(" "), "| on", runs2[1]?.data.targetName);
 M.onSocket({ type: "rxRunDone", reqId: runs2[1].reqId, ok: true });
 const res = await wait;
-console.log("resolved:", res.used.map(u => `${u.itemId} ${u.ok ? "used" : "failed"}${u.half ? " (half)" : ""}`).join(", "), "| the message says:", msg.content.match(/rx-done"><[^>]+><\/i> ([^<]*)/)?.[1]);
-const again = created.at(-1);
-console.log("posted again under the Reactions' cards:", again !== msg && again.flags.twod12.rx.again === true && again.flags.twod12.rx.id === rx.id && /rx-done/.test(again.content));
+console.log("resolved:", res.used.map(u => `${u.itemId} ${u.ok ? "used" : "failed"}${u.half ? " (half)" : ""}`).join(", "), "| the message is resolved in place:", msg.content.includes("rx2 rx-done"));
+console.log("v0.0.275: not posted again (edited in place):", created.at(-1) === msg);
 // the GM's Skip all others and the Pass
 const wait2 = M.openMoment({ kinds: ["strikeDamage"], subjects: [P(ally)], source: P(bandit), only: "interrupt", hold: true, plain: "p", lead: "l", text: "t" });
 await new Promise(r => setTimeout(r, 20));
@@ -120,7 +123,7 @@ globalThis.fromUuid = async u => ({ "Actor.ban": bandit.actor }[u] ?? null);
 const dm = M.damageMoment(ally.actor, { B: { l: 9, n: 0 }, M: { l: 0, n: 0 } }, { uuid: "Actor.ban", strike: true }, true);
 await new Promise(r => setTimeout(r, 20));
 const rx3 = created.at(-1).flags.twod12.rx;
-console.log("the damage moment's message:", created.at(-1).content.match(/sm-lead">(.*?)<\/div>/)?.[1].replace(/<[^>]+>/g, ""), "|", created.at(-1).content.match(/sm-text">(.*?)<\/div>/)?.[1].replace(/<[^>]+>/g, ""));
+console.log("the damage moment's message: the base slab", created.at(-1).content.match(/rx-bw">(.*?)<\/span><span class="rx-out dmg">([^<]*)/)?.slice(1).map(s => s.replace(/<[^>]+>/g, "")).join(" | "), "| its face:", rx3.base.face.name, "| the Interrupt tag:", created.at(-1).content.includes('Can react <span class="rx-tag">INTERRUPT</span>'));
 emitted.length = 0;
 await M.hostAnswer(rx3.id, 0, "pass", "p1");
 M.hostAnswer(rx3.id, 1, "use", "p2");
@@ -132,9 +135,9 @@ console.log("--- v0.0.273: the order, the clock, Move back, the Action's link");
 const rr = [{ i: 0, state: "use", order: 1 }, { i: 1, state: "use", order: 2 }, { i: 2, state: "use", order: 3 }];
 console.log("resolves:", M.stackOrder(rr).map(r => r.i).join(","), "| 0 sooner:", M.moveInStack(rr, 0, "up"), M.stackOrder(rr).map(r => r.i).join(","), "| the first can't go sooner:", M.moveInStack(rr, 2, "up"), "| the last can't go later:", M.moveInStack(rr, M.stackOrder(rr).at(-1).i, "down"));
 console.log("who manages:", M.mayManage({ rows: [{ answerer: "p1" }] }, { id: "p1" }), M.mayManage({ rows: [{ answerer: "p1" }] }, { id: "p2" }), M.mayManage({ rows: [] }, { id: "gm", isGM: true }), "| time left paused:", M.timeLeft({ paused: true, left: 41000 }), M.timeLeft({ deadline: 5000 }, 2000));
-const bk = M.rxCardHtml({ rows: [], lead: "l", text: "t", deadline: 0, back: { name: "Orc", squares: 4, used: false } }), bkUsed = M.rxCardHtml({ rows: [], lead: "l", text: "t", deadline: 0, back: { name: "Orc", squares: 4, used: true } });
-console.log("Move back:", bk.match(/data-twod12="rxBack"[^>]*><i[^>]*><\/i> ([^<]*)/)?.[1], "| used:", bkUsed.match(/rx-back"><i[^>]*><\/i> ([^<]*)/)?.[1]);
-console.log("the Action's name opens it:", html.includes('data-twod12="rxOpen" data-row="0"'), "| the item sheet's section:", hbs.includes('<legend><i class="fa-solid fa-bolt-lightning"></i> Reaction moment</legend>'));
+const bk = M.rxCardHtml({ v: 2, rows: [], deadline: 0, base: { kind: "move", squares: 4, back: { name: "Orc", squares: 4, used: false } } }), bkUsed = M.rxCardHtml({ v: 2, rows: [], deadline: 0, base: { kind: "move", squares: 4, back: { name: "Orc", squares: 4, used: true } } });
+console.log("Move back (v0.0.275: on the base slab):", bk.match(/data-twod12="rxBack" data-tooltip="([^"]*)"/)?.[1], "| used:", bkUsed.match(/rx-backed" data-tooltip="([^"]*)"/)?.[1]);
+console.log("the Action's name opens it:", html.includes('data-twod12="rxOpen" data-row="2"'), "| the item sheet's section:", hbs.includes('<legend><i class="fa-solid fa-bolt-lightning"></i> Reaction moment</legend>'));
 const mo2 = src("module/moment.mjs");
 console.log("the move's movement kept before it (refunded on Move back):", mo2.includes("const flags = c ? { freeMove: Number(c.getFlag(F, \"freeMove\")) || 0") && mo2.includes("await doc.update({ x: b.x, y: b.y }, { twod12Forced: true, animate: true });"));
 const cb = src("module/combat.mjs"), car = src("module/carousel.mjs");

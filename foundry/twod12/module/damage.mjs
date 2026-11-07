@@ -21,9 +21,15 @@ export async function applyToActor(actor, a, { announce = true, from = null } = 
   // v0.0.272 (pack RX): before anything lands, the Interrupts of "a Strike would damage an ally" (from: a Strike's damage card) and "an ally takes
   // damage" (some of it would reach the Health) hold it until every row of the Reactions message is answered; what they did (a Guard, a reduction)
   // is read below, and a Tier 3's half halves it here.
+  // v0.0.275 (pack RX-2): the Reactions message's ids, so the result (the final damage, what the protection took off) is written into it
+  const rxIds = [];
+  let rxGained = 0;
   if (M && a.B.l + a.B.n + a.M.l + a.M.n > 0) {
     try {
       const r = await M.damageMoment(actor, a, from, reachesHealth(actor, a));
+      rxIds[0] = r.id || ""; rxGained = r.gained || 0;
+      // v0.0.275 (the book, Chapter 2: an invalid target): the attacker dropped before its Strike landed: the held damage never lands
+      if (r.never) { for (const p of ["B", "M"]) for (const k of ["l", "n"]) a[p][k] = 0; await M.noteLanded(rxIds, { never: true, final: 0 }); return 0; }
       if (r.half) { const off = M.halveHeld(a); if (off) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-halved", `<b>${esc(actor.name)}</b> takes <b>half</b> of the damage${r.halfBy ? ` (${esc(r.halfBy)})` : ""}: <b>${off}</b> turned away.`, "fxm") }); }
     } catch (e) { console.warn("twod12 | moment", e); }
   }
@@ -41,12 +47,16 @@ export async function applyToActor(actor, a, { announce = true, from = null } = 
   let downing = false;
   try {
     downing = !!M?.wouldGoDown(actor, a);
-    if (downing && await M.downMoment(actor, a, from)) { downing = false; const cut = M.capAtPool(actor, a); if (cut && announce !== null) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-hand-holding-heart", `<b>${esc(actor.name)}</b> stays up: <b>${cut}</b> damage turned away, 1 under the Health Pool.`, "fxm") }); }
+    const dm = downing ? await M.downMoment(actor, a, from) : null;
+    if (dm?.id) rxIds[1] = dm.id;
+    if (dm?.saved) { downing = false; const cut = M.capAtPool(actor, a); if (cut && announce !== null) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-hand-holding-heart", `<b>${esc(actor.name)}</b> stays up: <b>${cut}</b> damage turned away, 1 under the Health Pool.`, "fxm") }); }
   } catch (e) { console.warn("twod12 | moment", e); }
   const add = (k, amt) => { if (amt) upd[`system.damage.${k}`] = (upd[`system.damage.${k}`] ?? d[k]) + amt; };
   add("bodyLethal", a.B.l); add("bodyNonlethal", a.B.n); add("mindLethal", a.M.l); add("mindNonlethal", a.M.n);
   if (g.taken && announce) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-halved", `<b>${esc(actor.name)}</b>'s Guard takes <b>${g.taken}</b> damage${g.takenAp ? ` (${g.takenAp} from the kept AP)` : ""}${a.guardLeft ? ` (Guard ${a.guardLeft} left)` : " and ends"}.`) });
   if (Object.keys(upd).length) await writeDamage(actor, upd);
+  // v0.0.275: the result into the Reactions message(s): the final damage, and what the Reactions' protection took off (a reduction, a Guard)
+  if (rxIds.some(Boolean)) { try { const final = a.B.l + a.B.n + a.M.l + a.M.n; await M.noteLanded(rxIds[0], { final, blocked: Math.min(rxGained, (Number(a.reduced) || 0) + (Number(g.taken) || 0)) }); if (rxIds[1]) await M.noteLanded(rxIds[1], { final, cut: a.momentCut || 0 }); } catch (e) { console.warn("twod12 | moment", e); } }
   // v0.0.272: the damage landed: the Triggers of these moments are offered now (they hold nothing)
   try { M?.landedMoment(actor, a.B.l + a.B.n + a.M.l + a.M.n, from, downing); } catch (e) { console.warn("twod12 | moment", e); }
   return g.taken;

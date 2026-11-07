@@ -8,11 +8,11 @@ a Distance in squares: 5 0 0 | the clock: 10:00 1:02 0:00
 Use twice (row 1 then row 0): resolves 0 then 1 | a second answer refused: true | all answered: false
 Skip all others: skipped 3 | the GM's own row too (v0.0.274): skip,skip,skip | the timer has nothing left: 0
 half of the held damage: taken off 5 {"B":{"l":4,"n":1},"M":{"l":2,"n":0}} | came closer: true false
---- the message
-the system's card: true | title Reactions: true | rows: 3
-the stack's places: 2nd, 1st | the order line:  Last in, first out: 1. Lana's Shot, 2. Nari's Shield
+--- the message (v0.0.275: the stack card; details in t210)
+the card: true | title Reactions: true | waiting rows: 1 | slabs: 3
+the stack, top first: Shot, Shield | the base: Strike → Krysta | 9 held
 Use / Pass only on the waiting row: 1 1 | the timer: 10:00 | Skip all others: true
-answered: no buttons, no timer: true | Answered: the damage lands.
+answered: no buttons, no timer: true | one line that unfolds: true
 --- who is offered (tokens on the map)
 a Strike would damage Krysta: Nari's Shield on Krysta (2 sq); Lana's Shot on Bandit (9 sq) | the enemy's own Reaction is not offered: true
 a Strike would damage Nari herself: You too Nari's Shield; Lana's Shot
@@ -22,24 +22,26 @@ nobody can react: one line true | Krysta would go Down: nobody can react (Nari's
 --- the flow: answers, the stack, the held damage
 the message: rows Nari/Shield/p1/Krysta ; Lana/Shot/p2/Bandit | the timer at 1 minute: 1
 someone else's row can't be answered: Lana's row wait
-two on the stack wait for Resolve: true | nothing run yet: 0 | Resolve and the arrows on the message: true 2
+two on the stack wait for Resolve: true | nothing run yet: 0 | Resolve and the grips on the message: true 2
 one who isn't in it can't change the order: first Shield
-Lana's row moved up: first Shot | the line: Every row is answered. Change the order if needed, then Resolve: 1. Lana's Shot, 2. Nari's Shield
+v0.0.275: a reactor can't change the order (the GM drags): first Shield
+the GM moved Lana's row up: first Shot | the numbers on the slabs: 1.Shot 2.Shield
 the clock paused: true true | no countdown while paused: true
 and going on: true | about a minute left: 1
+v0.0.275: a reactor can't Resolve: 0
 Resolve: the first to resolve: p2:cs | on Bandit
 then the next: p1:sof | on Krysta
-resolved: cs used (half), sof used | the message says: Answered: the damage lands.
-posted again under the Reactions' cards: true
+resolved: cs used (half), sof used | the message is resolved in place: true
+v0.0.275: not posted again (edited in place): true
 v0.0.274: the GM answers a player's row: pass | a player can't answer another's: wait
 a player can't Skip all others: pass,wait
 the GM can: pass,skip | nothing used: 0
-the damage moment's message: Bandit's Strike would damage Krysta | Interrupt: the 9 damage waits until every Reaction is answered.
-the held damage is halved: {"half":true,"halfBy":"Shot"}
+the damage moment's message: the base slab Strike → Krysta | 9 held | its face: Bandit | the Interrupt tag: true
+the held damage is halved: {"half":true,"halfBy":"Shot","id":"id5","gained":0,"never":false}
 --- v0.0.273: the order, the clock, Move back, the Action's link
 resolves: 2,1,0 | 0 sooner: true 2,0,1 | the first can't go sooner: false | the last can't go later: false
 who manages: true false true | time left paused: 41000 3000
-Move back: Move Orc back (4 sq.) | used: Orc went back to where its movement started (4 sq.); its movement is refunded.
+Move back (v0.0.275: on the base slab): Move Orc back to the square it left (4 sq.), the movement refunded | used: Orc went back to where its movement started; its movement is refunded
 the Action's name opens it: true | the item sheet's section: true
 the move's movement kept before it (refunded on Move back): true
 Initiative: a player's creature skips by default: true | an NPC is left out: false | the chip overrides: false true

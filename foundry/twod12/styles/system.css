@@ -2353,3 +2353,90 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat.rxmsg .rx-back button { width: 100%; height: 24px; line-height: 22px; margin: 0; font-size: 12px; font-weight: 600; border: 1px solid #8a7650; border-radius: 4px; background: #fbf7ee; color: #2c2c2a; }
 /* v0.0.274 (Lucas): the Initiative window's Rolls / Skips chip per creature (beside "another Attribute"). */
 .classwin .cw-roll { color: #2f6b3a; font-weight: 700; } .classwin .cw-skip { color: #8a7650; text-decoration: line-through; }
+
+/* v0.0.275 (pack RX-2, Lucas's design 2026-11-07, mockups "2d12 Reactions message mockups"): the Reactions message as a stack card
+   (parchment, a navy header with the clock and the GM's skip; "Can react" rows with faces; "pick one" groups; the Stack's slabs in their
+   map colors over the dark base slab; drag grips and Resolve for the GM), and once resolved one line that unfolds (a snapshot, the frozen stack). */
+.twod12.chat.rx2 { background: #f4eddc; border: 1px solid #bfae86; border-radius: 6px; overflow: hidden; color: #2b2216; font-family: "Signika", sans-serif; font-size: 13px; line-height: 1.25; }
+.twod12.chat.rx2 .rx-i { display: block; flex: none; }
+.twod12.chat.rx2 .rx-hd { background: #1d2738; color: #ecdcae; display: flex; align-items: center; gap: 8px; min-height: 28px; padding: 3px 8px 3px 10px; font-variant: small-caps; font-weight: 600; letter-spacing: .04em; font-size: 14px; }
+.twod12.chat.rx2 .rx-hd .rx-ttl { flex: 1; }
+.twod12.chat.rx2 .rx-tm { font-variant: normal; font-size: 12px; display: inline-flex; gap: 4px; align-items: center; font-variant-numeric: tabular-nums; color: #ecdcae; }
+.twod12.chat.rx2 .rx-tm[data-twod12] { cursor: pointer; }
+.twod12.chat.rx2 .rx-tm.paused { color: #e6b866; }
+.twod12.chat.rx2 button.rx-hb { width: 22px; height: 22px; min-width: 0; flex: none; margin: 0; padding: 0; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #44516a; border-radius: 4px; background: #2a364b; color: #ecdcae; line-height: 1; }
+.twod12.chat.rx2 button.rx-hb:hover { background: #3a4a66; }
+.twod12.chat.rx2 .rx-sec { font-size: 10px; font-weight: 700; letter-spacing: .08em; color: #5e513b; padding: 7px 10px 3px; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+.twod12.chat.rx2 .rx-sub { text-transform: none; letter-spacing: 0; font-weight: 600; }
+.twod12.chat.rx2 .rx-tag { font-size: 9px; font-weight: 700; letter-spacing: .06em; padding: 1px 4px; border-radius: 3px; background: #7a3b1d; color: #fff; text-transform: uppercase; }
+.twod12.chat.rx2 .rx-av { position: relative; width: 22px; height: 22px; border-radius: 50%; overflow: hidden; flex: none; display: inline-flex; align-items: center; justify-content: center; color: #fff; font-size: 9px; font-weight: 700; box-shadow: 0 0 0 1px #bfae86; }
+.twod12.chat.rx2 .rx-av b { font-weight: 700; }
+.twod12.chat.rx2 .rx-av img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border: 0; margin: 0; max-width: none; }
+.twod12.chat.rx2 .rx-av-s { width: 16px; height: 16px; font-size: 7px; }
+.twod12.chat.rx2 .rx-av-m { width: 20px; height: 20px; font-size: 8px; }
+.twod12.chat.rx2 .rx-dl { display: flex; align-items: center; gap: 7px; min-height: 28px; padding: 1px 10px; }
+.twod12.chat.rx2 .rx-nm { flex: 1; min-width: 0; font-size: 12px; line-height: 1.25; }
+.twod12.chat.rx2 .rx-nm a.rx-open { color: #2b2216; font-weight: 700; text-decoration: none; cursor: pointer; }
+.twod12.chat.rx2 .rx-nm a.rx-open:hover { color: #7a540f; text-decoration: underline dotted; }
+.twod12.chat.rx2 .rx-tg { color: #5e513b; }
+.twod12.chat.rx2 .rx-ctl { display: inline-flex; align-items: center; gap: 4px; flex: none; }
+.twod12.chat.rx2 .rx-deciding { font-size: 11px; color: #5e4a1a; font-style: italic; }
+.twod12.chat.rx2 button.rx-ib { width: 26px; height: 26px; min-width: 0; flex: none; margin: 0; padding: 0; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #bfae86; border-radius: 4px; background: #fbf6ea; color: #2b2216; line-height: 1; }
+.twod12.chat.rx2 button.rx-use { color: #2f6b3a; }
+.twod12.chat.rx2 button.rx-use:hover { background: #e3efdc; border-color: #2f6b3a; }
+.twod12.chat.rx2 button.rx-pass { color: #7a3b1d; }
+.twod12.chat.rx2 button.rx-pass:hover { background: #f4e0d6; border-color: #7a3b1d; }
+.twod12.chat.rx2 .rx-grp { margin: 3px 10px; border: 1px dashed #bfae86; border-radius: 5px; padding: 4px 6px; display: flex; flex-direction: column; gap: 4px; }
+.twod12.chat.rx2 .rx-gh { display: flex; align-items: center; gap: 7px; }
+.twod12.chat.rx2 .rx-grp.mine .rx-oth, .twod12.chat.rx2 .rx-grp:not(.mine) .rx-own { display: none; }
+.twod12.chat.rx2 .rx-chs { display: flex; gap: 4px; }
+.twod12.chat.rx2 button.rx-ch { flex: 1; height: 26px; min-width: 0; margin: 0; padding: 0 4px; border: 1px solid #bfae86; border-radius: 4px; background: #fbf6ea; font-family: inherit; font-size: 11px; font-weight: 600; color: #2b2216; line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.twod12.chat.rx2 button.rx-ch:hover { border: 2px solid #5fc4c0; background: #e6f4f2; }
+.twod12.chat.rx2 .rx-stk { padding: 3px 10px 9px; display: flex; flex-direction: column; gap: 4px; }
+.twod12.chat.rx2 .rx-it { display: flex; align-items: center; gap: 6px; min-height: 26px; box-sizing: border-box; background: #fbf6ea; border: 1px solid #bfae86; border-radius: 4px; padding: 3px 7px; font-size: 12px; box-shadow: 0 2px 0 #d8cba8; }
+.twod12.chat.rx2 .rx-it.top { border-color: #2f6b3a; box-shadow: 0 2px 0 #2f6b3a; }
+.twod12.chat.rx2 .rx-it.rx-base { background: #1d2738; color: #ecdcae; border-color: #1d2738; box-shadow: none; }
+.twod12.chat.rx2 .rx-it.rx-base .rx-bw { flex: 1; min-width: 0; }
+.twod12.chat.rx2 .rx-it.rx-base .rx-bw b { color: #ecdcae; }
+.twod12.chat.rx2 .rx-it[draggable="true"] { cursor: grab; }
+.twod12.chat.rx2 .rx-it.rx-drag { opacity: .5; }
+.twod12.chat.rx2 .rx-it.rx-hl, .twod12.chat.rx2 .rx-dl.rx-hl, .twod12.chat.rx2 .rx-grp.rx-hl { outline: 2px solid #f0b54a; outline-offset: 1px; }
+.twod12.chat.rx2 .rx-it.gone { opacity: .55; }
+.twod12.chat.rx2 .rx-grip { color: #8a7c5e; display: inline-flex; }
+.twod12.chat.rx2 .rx-num { width: 16px; height: 16px; border-radius: 50%; background: #2f6b3a; color: #fff; font-size: 10px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.twod12.chat.rx2 .rx-sw { width: 9px; height: 9px; border-radius: 2px; flex: none; }
+.twod12.chat.rx2 .rx-run, .twod12.chat.rx2 .rx-ok { margin-left: auto; display: inline-flex; color: #2f6b3a; }
+.twod12.chat.rx2 .rx-run .rx-i, .twod12.chat.rx2 .rx-ft.rx-busy .rx-i { animation: rx-spin 1s linear infinite; }
+@keyframes rx-spin { to { transform: rotate(360deg); } }
+.twod12.chat.rx2 .rx-out { margin-left: auto; font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 9px; white-space: nowrap; }
+.twod12.chat.rx2 .rx-out s { opacity: .75; }
+.twod12.chat.rx2 .rx-out.dmg { background: #b8432f; color: #fff; }
+.twod12.chat.rx2 .rx-out.blk { background: #d7ece9; color: #1f5a56; }
+.twod12.chat.rx2 .rx-out.hit { background: #f6e3bd; color: #6b4610; }
+.twod12.chat.rx2 .rx-out.spent { background: #e5dcc4; color: #5e513b; }
+.twod12.chat.rx2 .rx-out.never { background: #3b4559; color: #ecdcae; }
+.twod12.chat.rx2 .rx-it.rx-base > button.rx-hb, .twod12.chat.rx2 .rx-it.rx-base > .rx-backed { margin-left: auto; }
+.twod12.chat.rx2 .rx-it.rx-base > .rx-out + button.rx-hb, .twod12.chat.rx2 .rx-it.rx-base > .rx-out + .rx-backed { margin-left: 4px; }
+.twod12.chat.rx2 .rx-backed { display: inline-flex; color: #9fd3a6; }
+.twod12.chat.rx2 .rx-ft { display: flex; gap: 6px; padding: 6px 10px; border-top: 1px solid #e2d6b8; background: #efe6cf; font-size: 12px; align-items: center; }
+.twod12.chat.rx2 .rx-ft.rx-busy { color: #2f6b3a; font-weight: 600; }
+.twod12.chat.rx2 button.rx-btn { flex: 1; height: 28px; margin: 0; border: 1px solid #bfae86; background: #fbf6ea; border-radius: 4px; font-family: inherit; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 5px; color: #2b2216; font-weight: 600; }
+.twod12.chat.rx2 button.rx-btn.rx-pri { background: #2f6b3a; color: #fff; border-color: #24542d; }
+.twod12.chat.rx2 button.rx-btn.rx-pri:hover { background: #24542d; }
+/* resolved: one line; unfolded: the header, the snapshot, the frozen stack */
+.twod12.chat.rx2.rx-done .rx-full { display: none; }
+.twod12.chat.rx2.rx-done.open .rx-full { display: block; }
+.twod12.chat.rx2.rx-done.open .rx-line { display: none; }
+.twod12.chat.rx2 .rx-line { display: flex; align-items: center; gap: 5px; padding: 6px 8px; cursor: pointer; min-height: 28px; box-sizing: border-box; }
+.twod12.chat.rx2 .rx-line .rx-out { margin-left: 3px; }
+.twod12.chat.rx2 .rx-line button.rx-fold { margin-left: auto; width: 22px; height: 22px; }
+.twod12.chat.rx2 .rx-okc { color: #2f6b3a; display: inline-flex; }
+.twod12.chat.rx2 .rx-ic { display: inline-flex; color: #5e513b; }
+.twod12.chat.rx2 .rx-ic.gone { opacity: .5; }
+.twod12.chat.rx2 .rx-dot { color: #8a7c5e; padding: 0 1px; }
+.twod12.chat.rx2 .rx-okh { font-variant: normal; font-size: 12px; color: #9fd3a6; display: inline-flex; align-items: center; gap: 4px; }
+.twod12.chat.rx2 .rx-mini { position: relative; width: 258px; max-width: calc(100% - 20px); height: 110px; margin: 9px 10px 4px; border-radius: 4px; overflow: hidden; cursor: pointer; background-color: #4a5240; background-image: linear-gradient(rgba(0,0,0,.2) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,.2) 1px, transparent 1px); background-size: 26px 26px; }
+.twod12.chat.rx2 .rx-mini svg { display: block; }
+.twod12.chat.rx2 .rx-note { padding: 0 10px 8px; font-size: 11px; color: #5e513b; }
+.twod12.chat.rx2 .rx-it > b, .twod12.chat.rx2 .rx-it > s { white-space: nowrap; flex: none; }
+.twod12.chat.rx2 .rx-it > .rx-tg, .twod12.chat.rx2 .rx-it > .rx-bw { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
