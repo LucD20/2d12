@@ -18,8 +18,8 @@ the dialog's DC doesn't override each target's Defense (useAction keeps each dcI
 --- the attack card
 Tier 2: stamp TIER 2 vs AD 11 | outcome: Vigor 1d8 Sl · Resolve 2d6 + 1d6 Ho | the effect (no label): true | no Critical row on a Tier 2: true
 Tier 1: a pool with 0 is left out: Resolve 1d6 Ho | no effect text, and no "No Effects" line: true
-Doubles raise: stamp TIER 3 Doubles ↑ | chip: Tier 2 → Tier 3 · Doubles | the Critical row muted: Critical (Doubles, or 31+): the target is Prone. | a rider: ↳ Pushed 2
-a Critical by total: stamp CRIT 3 Critical | the box: Critical: the target is Prone. | explosion chain: 11 + 11 + 7 · 5 | total row: 36 vs AD 13 Tier 3 → Critical · 33+
+Doubles raise: stamp TIER 3 Doubles ↑ | chip: Tier 2 → Tier 3 · Doubles | the Critical row muted: Critical Doubles, or 31+ the target is Prone. | a rider: ↳ Pushed 2
+a Critical by total: stamp CRIT 3 Critical | the box: Critical the target is Prone. | explosion chain: 11 + 11 + 7 · 5 | total row: 36 vs AD 13 Tier 3 → Critical · 33+
 Boon / Bane lines: Boon · Bane 3 +2 Boon · Flanking 2 −1 Bane · Frightened 1 +0 Bane · Dim light  | the modifiers colored: 1 1
 every clickable thing is a button with aria-expanded where it toggles: true | the retarget has a label: true | decorative icons hidden: true
 --- settings: Designer mode, hidden Defenses (players), the GM always sees everything
@@ -30,7 +30,7 @@ retarget: only for the author and the GM, gone once locked: false true false
 the retarget is refused after damage was applied (actions.mjs): true | the damage message locks its roll card: true
 --- several targets on the card
 shared roll: 3d12 9 7 7 +2 Modifier | a row per creature: 3 | defenses: WD 13 | WD 13 · Favored | WD 14 · Doomed
-grouped by Tier: Tier 3 Grave Wisp Vigor 2d6 + 2 Sl · Resolve 2d10 Ho ↳ Pushed 2 Critical (Doubles, or 33+): the target is Prone. Tier 2 Bandit Thug, Ogre Ch
+grouped by Tier: Tier 3 Grave Wisp Vigor 2d6 + 2 Sl · Resolve 2d10 Ho ↳ Pushed 2 Critical Doubles, or 33+ the target is Prone. Tier 2 Bandit Thug Ogre Chieft
 player view: no WD labels: true
 --- the Save card
 Tier 3 on top: T3 20+ | T2 13–19 | T1 ≤12 | the DC: Appeal Save DC 13 | no effect on Tier 3: true
@@ -59,3 +59,9 @@ Apply all says it skips the rows with a choice: (only one row left)
 removed: no Avg line, Lethal selector, Block, None: true | Designer mode adds the average: Avg 14.5 · this total or more: 38%
 target details hidden: no Guard / Weak / Took: true | names and state kept: Bandit Thug Waiting for the GM Fire Imp Bloodied ✓ Applied | Bloodied stays: true | footer: Player view · target details hidden by the GM
 the roller's own pools stay: true | a player who isn't the author has no Apply: true
+--- v0.0.284 (Lucas tested v0.0.283)
+a Modifier with the damage's subtype folds in: one block: 1 | Vigor · Blunt Dice 1 Modifiers +2 Weapon Total 3
+a flat amount alone: its label: 2 Weapon | no "Dice: none", no Total: true
+an untyped bonus folds into its pool's first instance: [["Sl",10,"Heavy Blows"]]
+the pool total in its own column: true | the Tier group names as chips: 3
+no "targeting x, y" chat line after placing an area: true

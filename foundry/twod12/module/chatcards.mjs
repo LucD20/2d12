@@ -177,9 +177,10 @@ const defText = (r, hide) => [hide ? "" : `${r.dcLabel ?? "DC"} ${r.dc}`, r.bane
 const critLine = (m, rows, hide) => {
   if (!m.critHtml || !rows.some(r => r.tier === 3)) return "";
   const any = rows.some(r => r.crit);
-  if (any) return `<div class="cc-critbox"><b>Critical:</b> ${m.critHtml}</div>`;
+  if (any) return `<div class="cc-critbox"><span class="cc-critlbl on">Critical</span><span class="cc-crittxt">${m.critHtml}</span></div>`;
   const dc = rows[0]?.dc ?? 13;
-  return `<div class="cc-critline"><b>Critical</b>${hide ? "" : ` (Doubles, or ${rows.length === 1 ? dc + 20 : "DC + 20"}+)`}: ${m.critHtml}</div>`;
+  const why = hide ? "" : rows.length === 1 || rows.every(r => r.dc === dc) ? `Doubles, or ${dc + 20}+` : "Doubles, or 20 over its Defense";
+  return `<div class="cc-critline"><span class="cc-critlbl">Critical</span>${why ? `<small>${why}</small>` : ""}<span class="cc-crittxt">${m.critHtml}</span></div>`;
 };
 export function attackCardHtml(m, view = FULL_VIEW) {
   const hide = view.hideDef, rows = m.rows ?? [], one = rows.length <= 1;
@@ -202,7 +203,7 @@ export function attackCardHtml(m, view = FULL_VIEW) {
     const who = rows.filter(r => r.tier === t);
     if (!who.length) return "";
     const out = outcomeHtml(m.outcomes?.[t]);
-    return `<div class="cc-tgroup">${tierPill(t, false, true)} <span class="cc-who">${esc(who.map(r => r.name).join(", "))}</span>${out}${t === 3 ? critLine(m, who, hide) : ""}</div>`;
+    return `<div class="cc-tgroup"><div class="cc-ghd">${tierPill(t, false, true)}<span class="cc-who">${who.map(r => `<span class="cc-nchip">${esc(r.name)}</span>`).join("")}</span></div>${out}${t === 3 ? critLine(m, who, hide) : ""}</div>`;
   }).join("");
   return `<div class="cc-card cc-attack many">${head}${shared}<div class="cc-crows">${crows}</div><div class="cc-groups">${groups}</div>${effects}${flavor}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
 }
@@ -314,12 +315,13 @@ export function instancesOf(comps) {
   for (const c of comps ?? []) {
     const dice = (c.dice ?? []).flatMap(d => d.results ?? []);
     if (!dice.length && list.length) {
-      const host = list.find(x => x.pool === (c.pool || "B") && x.sub === (c.sub || "")) ?? null;
+      // v0.0.284: an untyped flat bonus (Heavy Blows +2) folds into the first instance of its pool
+      const host = list.find(x => x.pool === (c.pool || "B") && x.sub === (c.sub || "")) ?? (!c.sub ? list.find(x => x.pool === (c.pool || "B")) : null) ?? null;
       if (host) { host.mods.push({ v: Number(c.total) || 0, label: c.label || c.src || (c.kind === "A" ? "Modifier" : "") }); host.total += Number(c.total) || 0; continue; }
     }
     const emp = Number(c.emp) || 0, flat = (Number(c.total) || 0) - dice.reduce((a, b) => a + b, 0) - emp;
     const mods = [];
-    if (flat) mods.push({ v: flat, label: c.flatLabel || "" });
+    if (flat) mods.push({ v: flat, label: c.flatLabel || (dice.length ? "" : c.label || c.src || (c.kind === "A" ? "Modifier" : "")) });
     if (emp) mods.push({ v: emp, label: emp > 0 ? "Empowered" : "Enfeebled" });
     list.push({ pool: c.pool || "B", sub: c.sub || "", src: c.src || c.weapon || "", dice: c.dice ?? [], mods, total: Number(c.total) || 0, formula: c.formula ?? "" });
   }
@@ -331,13 +333,14 @@ export function poolBlock(comps) {
   for (const c of comps ?? []) { const p = by[c.pool] ? c.pool : "B"; by[p][c.sub || ""] = (by[p][c.sub || ""] ?? 0) + (Number(c.total) || 0); }
   return ["B", "M", "C"].filter(p => Object.keys(by[p]).length).map(p => {
     const subs = Object.entries(by[p]), tot = subs.reduce((a, [, n]) => a + n, 0);
-    return `<span class="cc-poolrow">${poolIc(p)}<span>${POOL[p]} · ${subs.map(([s, n]) => `${n}${s ? ` ${subCode(s)}` : ""}`).join(" + ")}</span><b>${tot}</b></span>`;
+    return `<span class="cc-poolrow">${poolIc(p)}<span>${POOL[p]} · ${subs.map(([s, n]) => `${n}${s ? ` ${subCode(s)}` : ""}`).join(" + ")}</span><b class="cc-ptot">${tot}</b></span>`;
   }).join("");
 }
 const instBlock = x => `<div class="cc-inst"><div class="cc-ititle">${poolIc(x.pool)} ${POOL[x.pool] ?? "Vigor"} · <b style="color:${subInk(x.sub)}">${esc(subName(x.sub))}</b>${x.src ? ` (${esc(x.src)})` : ""}</div>`
-  + `<span class="cc-bl">Dice</span><span class="cc-bv">${x.dice.length ? x.dice.map(d => (d.results ?? []).map(v => `<span class="cc-ddie">${v}</span>`).join("")).join("") : '<span class="cc-muted">none</span>'}</span>`
+  // v0.0.284 (Lucas): no "Dice: none" for a flat amount, and a Total only for a dice expression
+  + (x.dice.some(d => (d.results ?? []).length) ? `<span class="cc-bl">Dice</span><span class="cc-bv">${x.dice.map(d => (d.results ?? []).map(v => `<span class="cc-ddie">${v}</span>`).join("")).join("")}</span>` : "")
   + (x.mods.length ? `<span class="cc-bl">Modifiers</span><span class="cc-bv">${x.mods.map(m => modTxt(m.v, m.label)).join(" ")}</span>` : "")
-  + `<span class="cc-bl">Total</span><span class="cc-bv"><b>${x.total}</b></span></div>`;
+  + (x.dice.some(d => (d.results ?? []).length) ? `<span class="cc-bl">Total</span><span class="cc-bv"><b>${x.total}</b></span>` : "") + "</div>";
 const tookTxt = t => { const bits = [t.B ? `${poolIc("B")} ${t.B}` : "", t.M ? `${poolIc("M")} ${t.M}` : ""].filter(Boolean); return bits.length ? `Took ${bits.join(" · ")}` : "Took <b>No damage</b>"; };
 const stateChip = s => (s === "bloodied" ? '<span class="cc-state bloodied">Bloodied</span>' : s === "strained" ? '<span class="cc-state strained">Strained</span>' : s === "both" ? '<span class="cc-state bloodied">Bloodied</span><span class="cc-state strained">Strained</span>' : "");
 /** A dice summary for a Tier's group: "3d8 Ho". */

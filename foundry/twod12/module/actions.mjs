@@ -1217,7 +1217,7 @@ export async function rollDamage(message) {
     if (tier >= attrFrom && !insts.some(i => i.useAt) && dmgRes.length) {
       const wInst = (f.attrMode === "all" ? null : dmgRes.find(r => r.inst.useW)) ?? dmgRes.find(r => r.comps.length) ?? dmgRes[0];
       const pool = wInst.inst.pool || "B";
-      const sub = wInst.inst.useW ? (weapon?.system?.subtype ?? "") : (f.attrMode === "all" ? (wInst.inst.subtype ?? "") : "");
+      const sub = wInst.inst.useW ? (weapon?.system?.subtype ?? "") : (wInst.inst.subtype ?? "");   // v0.0.284: the Modifier keeps the damage's subtype (Ch. 1), whatever its attrMode
       comps.push({ pool, sub, kind: "A", formula: "", total: f.attrVal, dice: [], hidden: true, label: String(f.attrLabel || "Modifier").replace(/\s*Modifier$/i, "") || "Modifier" });   // v0.0.283: a visible line of the damage breakdown
       chip = `<div class="chips"><span class="chip">${esc(f.attrLabel || "Modifier")} +${f.attrVal}</span></div>`;
     }

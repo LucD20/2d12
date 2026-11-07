@@ -2633,3 +2633,43 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat.cc .fxname { text-decoration: underline dotted; }
 #chat-log .chat-message.cc-flash, .chat-log .chat-message.cc-flash { box-shadow: 0 0 0 2px #b07a12 inset; transition: box-shadow .3s; }
 .twod12.cc-window .cc-srcs { margin-top: 8px; } .twod12.cc-window .cc-srcs ul { margin: 4px 0 0 16px; padding: 0; }
+/* v0.0.284 (Lucas tested v0.0.283): the chat cards, tidied. */
+/* Foundry's own button look (a light text and a background on hover) never reaches the cards' buttons */
+.twod12.chat.cc .cc-card button:hover, .twod12.chat.cc .cc-card button:focus { color: var(--cc-ink); background-color: transparent; text-shadow: none; box-shadow: none; }
+.twod12.chat.cc .cc-card .cc-pools:hover { background: #dfd2b6; }
+.twod12.chat.cc .cc-card .cc-ladder:hover .cc-bar { box-shadow: 0 0 0 1px var(--cc-ink); }
+.twod12.chat.cc .cc-card .cc-btn.primary:hover { background: #2a231c; color: #f4ede0; }
+.twod12.chat.cc .cc-card .cc-adj:hover, .twod12.chat.cc .cc-card .cc-icon:hover, .twod12.chat.cc .cc-card .cc-btn:not(.primary):hover { background: var(--cc-panel); }
+.twod12.chat.cc .cc-card .cc-srow.hit:hover { filter: brightness(1.06); }
+.twod12.chat.cc .cc-card .cc-srow.t3:hover, .twod12.chat.cc .cc-card .cc-srow.t1.hit:hover { color: #fff; }
+.twod12.chat.cc .cc-card .cc-srow.t1.hit:hover { background: var(--cc-t1); } .twod12.chat.cc .cc-card .cc-srow.t3.hit:hover { background: var(--cc-t3); }
+.twod12.chat.cc .cc-card .cc-srow.t2.hit:hover { background: var(--cc-t2); color: var(--cc-t2i); }
+/* the damage stamp fills the card's height (a button: Foundry gives buttons a fixed height) */
+.twod12.chat.cc .cc-dmg .cc-body { align-items: stretch; }
+.twod12.chat.cc .cc-card .cc-stamp.dmg { height: auto; min-height: 100%; align-self: stretch; margin: 0; }
+.twod12.chat.cc .cc-card .cc-stamp.dmg:hover { color: inherit; filter: brightness(1.05); }
+.twod12.chat.cc .cc-card .cc-stamp.dmg.t1:hover, .twod12.chat.cc .cc-card .cc-stamp.dmg.t3:hover, .twod12.chat.cc .cc-card .cc-stamp.dmg.crit:hover { color: #fff; }
+.twod12.chat.cc .cc-card .cc-stamp.dmg.t2:hover { color: var(--cc-t2i); }
+.twod12.chat.cc .cc-card .cc-stamp.dmg.t1:hover { background: var(--cc-t1); } .twod12.chat.cc .cc-card .cc-stamp.dmg.t2:hover { background: var(--cc-t2); }
+.twod12.chat.cc .cc-card .cc-stamp.dmg.t3:hover { background: var(--cc-t3); } .twod12.chat.cc .cc-card .cc-stamp.dmg.crit:hover { background: var(--cc-crit); }
+/* the pool totals: a column of their own at the right, a little bigger */
+.twod12.chat.cc .cc-poolrow { grid-template-columns: 16px minmax(0, 1fr) 34px; }
+.twod12.chat.cc .cc-poolrow .cc-ptot { font-size: 17px; text-align: right; border-left: 1px solid var(--cc-line); padding-left: 6px; }
+.twod12.chat.cc .cc-ghead b { font-size: 16px; }
+/* a rider that is already a chip (an inline button, an effect's name) gets no second box */
+.twod12.chat.cc .cc-rchip:has(a, .fxname, [data-twod12-inline]) { border: 0; padding: 0; background: none; }
+.twod12.chat.cc .cc-rider a[data-twod12-inline], .twod12.chat.cc .cc-crittxt a[data-twod12-inline] { background: #fbf7ee; border: 1px solid var(--cc-btn2); border-radius: 3px; color: var(--cc-ink); padding: 0 5px; box-shadow: none; }
+.twod12.chat.cc .cc-srow.t3 .cc-rider a[data-twod12-inline], .twod12.chat.cc .cc-srow.t1.hit .cc-rider a[data-twod12-inline] { background: rgba(255,255,255,.92); }
+/* the Critical row: a label, the threshold, the text, readable */
+.twod12.chat.cc .cc-critline, .twod12.chat.cc .cc-critbox { display: flex; flex-wrap: wrap; align-items: center; gap: 3px 6px; font-size: 12px; color: var(--cc-ink); }
+.twod12.chat.cc .cc-critline { background: rgba(29,90,158,.07); border: 1px dashed rgba(29,90,158,.55); border-radius: 4px; padding: 3px 6px; }
+.twod12.chat.cc .cc-critlbl { font-size: 10px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--cc-crit); border: 1px solid var(--cc-crit); border-radius: 3px; padding: 0 4px; background: #fff; }
+.twod12.chat.cc .cc-critlbl.on { background: var(--cc-crit); color: #fff; }
+.twod12.chat.cc .cc-critline small { color: var(--cc-criti); font-size: 11px; }
+.twod12.chat.cc .cc-crittxt { flex: 1 1 100%; }
+/* several targets: who got each Tier, as name chips */
+.twod12.chat.cc .cc-ghd { display: flex; align-items: flex-start; gap: 6px; margin-bottom: 2px; }
+.twod12.chat.cc .cc-who { display: flex; flex-wrap: wrap; gap: 3px; }
+.twod12.chat.cc .cc-nchip { font-size: 11px; font-weight: 600; background: #fbf7ee; border: 1px solid var(--cc-line); border-radius: 10px; padding: 0 7px; white-space: nowrap; }
+/* v0.0.284: Foundry gives every button a fixed height: the cards' block buttons (pool lines, the Save's result row, the ladder, the stamp) take their content's */
+.twod12.chat.cc .cc-card :is(.cc-pools, .cc-srow, .cc-ladder, .cc-stamp) { height: auto; line-height: 1.35; }

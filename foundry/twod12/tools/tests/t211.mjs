@@ -120,3 +120,12 @@ console.log("removed: no Avg line, Lethal selector, Block, None:", !/Avg|class="
 const hp = CC.damageCardHtml(dm, CC.viewOf({ gm: false, hideTgt: true }));
 console.log("target details hidden: no Guard / Weak / Took:", !/Guard|Weak|Took/.test(hp), "| names and state kept:", txt(hp.match(/<div class="cc-trows">[\s\S]*?<\/div><\/div>/)?.[0]), "| Bloodied stays:", hp.includes("Bloodied"), "| footer:", txt(hp.match(/<div class="cc-pfoot">[\s\S]*?<\/div>/)?.[0]));
 console.log("the roller's own pools stay:", hp.includes("cc-pools"), "| a player who isn't the author has no Apply:", !CC.damageCardHtml(dm, CC.viewOf({ gm: false })).includes("ccApply"));
+
+console.log("--- v0.0.284 (Lucas tested v0.0.283)");
+const flat = CC.damageCardHtml({ kind: "dmg", name: "Cudgel", groups: [{ tier: 2, comps: [{ pool: "B", sub: "Bl", total: 1, formula: "1d4", dice: [{ faces: 4, results: [1] }] }, { pool: "B", sub: "Bl", total: 2, kind: "A", dice: [], label: "Weapon" }], rows: [] }], rows: [] });
+console.log("a Modifier with the damage's subtype folds in: one block:", (flat.match(/class="cc-inst"/g) ?? []).length, "|", txt(flat.match(/<div class="cc-inst">[\s\S]*?<\/div><\/div>/)?.[0] ?? flat.match(/<div class="cc-inst">[\s\S]*$/)[0]).slice(0, 80));
+const only = CC.instancesOf([{ pool: "B", sub: "Sl", total: 2, kind: "A", dice: [], label: "Weapon" }]), onlyH = CC.damageCardHtml({ kind: "dmg", name: "Cleave", groups: [{ tier: 2, comps: [{ pool: "B", sub: "Sl", total: 2, kind: "A", dice: [], label: "Weapon" }], rows: [] }], rows: [] });
+console.log("a flat amount alone: its label:", only[0].mods.map(m => `${m.v} ${m.label}`).join(), "| no \"Dice: none\", no Total:", !/>Dice<|none<|>Total</.test(onlyH.match(/<div class="cc-break dmg"[\s\S]*$/)[0]));
+console.log("an untyped bonus folds into its pool's first instance:", JSON.stringify(CC.instancesOf([{ pool: "B", sub: "Sl", total: 8, dice: [{ faces: 6, results: [3, 5] }] }, { pool: "B", sub: "", total: 2, dice: [], label: "Heavy Blows" }]).map(x => [x.sub, x.total, x.mods.map(m => m.label).join()])));
+console.log("the pool total in its own column:", /class="cc-ptot">3</.test(flat), "| the Tier group names as chips:", (many.match(/class="cc-nchip"/g) ?? []).length);
+console.log("no \"targeting x, y\" chat line after placing an area:", !src("module/template.mjs").includes('"targeting " + tokens.map'));
