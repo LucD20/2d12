@@ -108,10 +108,10 @@ console.log("the moment's answer:", JSON.stringify({ ...res, id: !!res.id }));
 console.log("edited in place, no new message:", created.length === nMsgs, msg.content.startsWith('<div class="twod12 chat rx2 rx-done"'), "| no overlay for it any more (done):", rx.done);
 await M.noteLanded(res.id, { final: 4, blocked: 5 });
 const line = msg.content.match(/<div class="rx-line"[\s\S]*?<\/button><\/div>/)?.[0] ?? "";
-console.log("the collapsed line:", txt(line), "| faces in resolve order:", [...line.matchAll(/data-tooltip="([^"]*)" aria-label/g)].map(m => m[1]).join(", "), "| icons (sword, shield, arrow):", (line.match(/rx-i/g) ?? []).length);
+console.log("the collapsed line:", txt(line), "| faces in resolve order:", [...line.matchAll(/data-tooltip="([^"]*)" aria-label/g)].map(m => m[1]).join(", "), "| icons (Font Awesome, v0.0.276):", [...line.matchAll(/class="rx-i (fa-\w+ fa-[\w-]+)/g)].map(m => m[1].split(" ")[1]).join(" "), "| no <svg> in the content:", !msg.content.includes("<svg"));
 console.log("the result chip: struck held, final:", line.match(/rx-out dmg">(.*?)<\/span>/)?.[1]);
 const full = msg.content.match(/<div class="rx-full">[\s\S]*$/)?.[0] ?? "";
-console.log("unfolded: header", txt(full.match(/<div class="rx-hd">[\s\S]*?<\/div>/)?.[0]), "| the snapshot (pans the map):", full.includes('class="rx-mini" data-twod12="rxPan"'), "| its labels:", [...full.matchAll(/font-weight="700" fill="[^"]*">([^<]*)<\/text><\/g>/g)].map(m => m[1]).filter(s => s.includes("·") || s.includes("→")).join(" ; "));
+console.log("unfolded: header", txt(full.match(/<div class="rx-hd">[\s\S]*?<\/div>/)?.[0]), "| the snapshot (pans the map):", full.includes('class="rx-mini" data-twod12="rxPan"'), "| its labels (drawn on each client, v0.0.276):", [...M.snapshotSvg(rx).matchAll(/font-weight="700" fill="[^"]*">([^<]*)<\/text><\/g>/g)].map(m => m[1]).filter(s => s.includes("·") || s.includes("→")).join(" ; "));
 console.log("the frozen stack:", [...full.matchAll(/<div class="rx-it[^"]*"[\s\S]*?<\/div>/g)].map(m => txt(m[0])).join(" | "), "| no grips:", !full.includes("rx-grip"));
 
 console.log("--- the edge case: the attacker drops before the rest resolve");
@@ -148,3 +148,13 @@ console.log("--- wired");
 const tw = src("module/twod12.mjs"), mo = src("module/moment.mjs"), css = src("styles/system.css");
 console.log("the overlay's hooks with the moment's:", mo.includes("O.registerOverlayHooks()"), "| the message syncs it:", mo.includes("O.syncOverlay(st)"), "| the old messages keep their look:", mo.includes("if (st.v !== 2) return oldRender(st, el);"), "| the chat hooks:", tw.includes('Hooks.on("renderChatMessageHTML", rxRender)'));
 console.log("no second post:", !mo.includes("again: true"), "| no Foundry window:", !/DialogV2|Dialog\./.test(mo + src("module/rxoverlay.mjs")), "| the CSS block:", css.includes("/* v0.0.275 (pack RX-2, Lucas's design 2026-11-07"), "| no explanation paragraph or \"Every row is answered\":", !mo.includes("Every row is answered") && !mo.includes("nothing waits (Foundry moves the token first"));
+
+console.log("--- v0.0.276 (Lucas tested v0.0.275)");
+console.log("names without the build:", M.cleanName("Archer 1 (Double Shot, Marksman)"), "|", M.cleanName("Bandit Thug"), "|", M.cleanName("(odd)"));
+console.log("no <svg> in any card:", ![M.rxCardHtml(live(r3)), M.rxCardHtml(rs), M.rxCardHtml(mv), msg.content, msg2.content].some(h => h.includes("<svg")), "| the snapshot box is empty in the content:", msg.content.includes('<div class="rx-mini" data-twod12="rxPan" data-tooltip="Show this spot on the map"></div>'));
+const oa = { v: 2, done: true, resolvedAt: 1000, hold: false, base: { kind: "move" }, rows: [{ i: 0, state: "use", role: "attack", actorUuid: "Actor.pal", targetUuid: "Scene.s.Token.ban", result: "done", out: { tier: 0 } }, { i: 1, state: "use", role: "attack", actorUuid: "Actor.arc", targetUuid: "Scene.s.Token.ban", result: "done", out: { tier: 0 } }] };
+console.log("Opportunity Attack before its Weapon Attack: no chip (not \"0 hits\"):", M.baseChip(oa), "| no slab chip:", M.outChip(oa.rows[0]));
+const card = (actorUuid, tier) => ({ flags: { twod12: { action: { actorUuid, tier, results: undefined } } } });
+console.log("its Weapon Attack card later: answers", M.lateTier(oa, card("Actor.pal", 2), 2000).map(h => `row ${h.r.i} T${h.tier}`).join(), "| another's card:", M.lateTier(oa, card("Actor.kry", 3), 2000).length, "| a card with no tier:", M.lateTier(oa, card("Actor.pal", 0), 2000).length, "| too late (5 min):", M.lateTier(oa, card("Actor.pal", 2), 1000 + 5 * 60000 + 1).length);
+oa.rows[0].out.tier = 2; oa.rows[1].out.tier = 1;
+console.log("both known: the chip", JSON.stringify(M.baseChip(oa)), "| wired:", src("module/moment.mjs").includes("registerLateResults();"));

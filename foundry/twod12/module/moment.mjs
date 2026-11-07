@@ -95,6 +95,8 @@ export const PALETTE = ["#f0b54a", "#5fc4c0", "#b48ce0", "#7fc97f"];
 /** Pure: the color of the n-th Reaction used (in the order they were used). */
 export const colorFor = n => PALETTE[((n % PALETTE.length) + PALETTE.length) % PALETTE.length];
 /** Pure: two letters for a face with no image ("Bandit Thug" BT, "Nari" NA). */
+/** v0.0.276 (Lucas): pure: a token's name without the build in parentheses ("Archer 1 (Double Shot, Marksman)" is "Archer 1"). */
+export const cleanName = n => String(n ?? "").replace(/\s*\([^()]*\)\s*$/, "").trim() || String(n ?? "");
 export const initials = name => { const w = String(name ?? "").trim().split(/\s+/).filter(Boolean); return (w.length > 1 ? w[0][0] + w[1][0] : (w[0] ?? "?").slice(0, 2)).toUpperCase(); };
 const FACE_BG = { "-1": "#8a2f22", "0": "#6b5d45", "1": "#2d5d7a", "-2": "#3a3a3a" };
 /** Pure: what a Reaction does, from its own data: an attack (a Strike, or used on the attacker or an enemy), a protection (used on an ally), else a hand. */
@@ -104,24 +106,13 @@ export function roleOf(item, def) {
   if (def?.who === "ally") return "protect";
   return "other";
 }
-const svg = (d, { fill = false, w = 12, sw = 2.6 } = {}) => `<svg class="rx-i" width="${w}" height="${w}" viewBox="0 0 24 24" ${fill ? 'fill="currentColor" stroke="none"' : `fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round"`} aria-hidden="true">${d}</svg>`;
+// v0.0.276 (Lucas: the icon buttons were empty): Foundry cleans a chat message's content and drops <svg>, so the icons are Font Awesome
+const fa = (name, extra = "") => () => `<i class="rx-i ${name}${extra ? ` ${extra}` : ""}" aria-hidden="true"></i>`;
 export const ICON = {
-  check: (w = 14) => svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>', { w, sw: 3 }),
-  x: (w = 13) => svg('<path d="M6 6l12 12M18 6L6 18"/>', { w, sw: 3 }),
-  clock: () => svg('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>', { w: 13, sw: 2.4 }),
-  pause: () => svg('<path d="M9 6v12M15 6v12"/>', { w: 13 }),
-  skip: () => svg('<path d="M4 6l7 6-7 6zM12 6l7 6-7 6z"/><path d="M20 6v12"/>', { w: 13, sw: 2 }),
-  grip: () => svg('<circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/>', { fill: true }),
-  play: () => svg('<path d="M7 5l12 7-12 7z"/>', { fill: true }),
-  down: () => svg('<path d="M6 9l6 6 6-6"/>', { w: 13 }),
-  up: () => svg('<path d="M6 15l6-6 6 6"/>', { w: 13 }),
-  sword: () => svg('<path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6M16 16l4 4M19 21l2-2"/>', { w: 13, sw: 2 }),
-  move: () => svg('<path d="M4 12h14M13 6l6 6-6 6"/>', { w: 13 }),
-  shield: () => svg('<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/>', { w: 13, sw: 2.2 }),
-  arrow: () => svg('<path d="M4 20L18 6M12 5h7v7"/><path d="M4 20l2.5-6M4 20l6-2.5"/>', { w: 13, sw: 2.2 }),
-  hand: () => svg('<path d="M8 13V6.5a1.5 1.5 0 013 0V12M11 11V5a1.5 1.5 0 013 0v6M14 11V6.5a1.5 1.5 0 013 0V14c0 4-2.5 7-6 7-2.5 0-4-1.5-5.5-4L4 13.5a1.5 1.5 0 012.5-1.5L8 14"/>', { w: 13, sw: 1.8 }),
-  back: () => svg('<path d="M4 9h11a5 5 0 010 10H9"/><path d="M8 5L4 9l4 4"/>', { w: 13, sw: 2.4 }),
-  spin: () => svg('<path d="M12 3a9 9 0 109 9"/>', { w: 12, sw: 2.6 })
+  check: fa("fa-solid fa-check"), x: fa("fa-solid fa-xmark"), clock: fa("fa-regular fa-clock"), pause: fa("fa-solid fa-pause"),
+  skip: fa("fa-solid fa-forward-fast"), grip: fa("fa-solid fa-grip-vertical"), play: fa("fa-solid fa-play"), down: fa("fa-solid fa-chevron-down"),
+  up: fa("fa-solid fa-chevron-up"), sword: fa("fa-solid fa-burst"), move: fa("fa-solid fa-person-running"), shield: fa("fa-solid fa-shield-halved"),
+  arrow: fa("fa-solid fa-crosshairs"), hand: fa("fa-solid fa-hand"), back: fa("fa-solid fa-rotate-left"), spin: fa("fa-solid fa-spinner", "fa-spin")
 };
 const roleIcon = role => (role === "attack" ? ICON.arrow() : role === "protect" ? ICON.shield() : ICON.hand());
 /** Pure: a face (the token's image in a circle, the initials under it; the name on hover). size: "" (22 px), "s" (16 px), "m" (20 px). */
@@ -178,8 +169,9 @@ export function baseChip(st) {
     if (b.final === undefined || b.final === null) return { cls: "dmg", html: `${b.held} held`, short: `${b.held} held` };
     return b.final === b.held ? { cls: "dmg", html: `${b.final}`, short: `${b.final}` } : { cls: "dmg", html: `<s>${b.held}</s> ${b.final}`, short: `${b.held} → ${b.final}` };
   }
-  const atk = st.rows.filter(r => r.state === "use" && r.role === "attack");
-  if (atk.length && st.done) { const n = atk.filter(r => r.out?.down || (r.out?.tier ?? 0) >= 2).length; return { cls: "hit", html: `${n} hit${n === 1 ? "" : "s"}`, short: `${n} hit${n === 1 ? "" : "s"}` }; }
+  const atk = st.rows.filter(r => r.state === "use" && r.role === "attack" && !r.out?.spent && r.result !== "failed");
+  // v0.0.276: "N hits" only once every attack's result is known (an Opportunity Attack's Weapon Attack is clicked after its slab resolves)
+  if (atk.length && st.done && atk.every(r => r.out?.down || r.out?.tier)) { const n = atk.filter(r => r.out?.down || (r.out?.tier ?? 0) >= 2).length; return { cls: "hit", html: `${n} hit${n === 1 ? "" : "s"}`, short: `${n} hit${n === 1 ? "" : "s"}` }; }
   if (b.dealt) return { cls: "dmg", html: `${b.dealt} dealt`, short: `${b.dealt} dealt` };
   return null;
 }
@@ -221,7 +213,7 @@ export function snapshotLayout(st, W = 258, H = 110) {
   const r = Math.max(7, Math.min(11, gs * k * 0.45));
   return { W, H, r, at, k, center: { x: (minX + maxX) / 2, y: (minY + maxY) / 2 } };
 }
-function snapshotSvg(st) {
+export function snapshotSvg(st) {
   const L = snapshotLayout(st);
   if (!L) return "";
   const b = st.base ?? {}, stack = stackOrder(st.rows), drawn = new Map(), parts = [], labels = [];
@@ -241,7 +233,7 @@ function snapshotSvg(st) {
   const bc = baseChip(st);
   if (bc && b.target?.uuid && st.hold) { const z = L.at(b.target.uuid); if (z) labels.push({ x: z.x, y: Math.max(8, z.y - L.r - 8), bg: bc.cls === "never" ? "#3b4559" : "#b8432f", fg: bc.cls === "never" ? "#ecdcae" : "#fff", text: bc.short }); }
   const lab = labels.map(l => { const w = Math.round(String(l.text).length * 5.6 + 10); return `<g><rect x="${l.x - w / 2}" y="${l.y - 7}" width="${w}" height="14" rx="7" fill="${esc(l.bg)}"/><text x="${l.x}" y="${l.y + 3}" text-anchor="middle" font-size="10" font-weight="700" fill="${l.fg}">${esc(l.text)}</text></g>`; }).join("");
-  return `<div class="rx-mini" data-twod12="rxPan" data-tooltip="Show this spot on the map"><svg width="${L.W}" height="${L.H}" viewBox="0 0 ${L.W} ${L.H}" aria-hidden="true">${lines.join("")}${parts.join("")}${lab}</svg></div>`;
+  return `<svg width="${L.W}" height="${L.H}" viewBox="0 0 ${L.W} ${L.H}" aria-hidden="true">${lines.join("")}${parts.join("")}${lab}</svg>`;
 }
 function doneHtml(st) {
   const stack = stackOrder(st.rows), b = st.base ?? {}, bc = baseChip(st);
@@ -249,7 +241,7 @@ function doneHtml(st) {
   const slabs = stack.map((r, k) => { const c = outChip(r), gone = !!r.out?.spent; return `<div class="rx-it${gone ? " gone" : ""}" data-row="${r.i}" data-actor="${esc(r.actorUuid)}"><span class="rx-num"${gone ? ' style="background:#6b5d45"' : ""}>${k + 1}</span>${faceHtml(faceOfRow(r), "m")}<span class="rx-ic">${roleIcon(r.role)}</span>${gone ? `<s>${esc(r.itemName)}</s>` : `<b>${esc(r.itemName)}</b>`} <span class="rx-tg">→ ${esc(r.targetName)}</span>${c ? pill(c.cls, c.text) : ""}</div>`; }).join("");
   const base = `<div class="rx-it rx-base${b.never ? " gone" : ""}">${faceHtml(b.face, "m")}<span class="rx-bw">${b.never ? `<s>${baseWords(b).replace(/<\/?b>/g, "")}</s>` : baseWords(b)}</span>${bc ? pill(bc.cls, bc.html) : ""}${backBtn(b)}</div>`;
   const note = st.closed ? `<div class="rx-note">${esc(st.closed)}</div>` : "";
-  return `<div class="twod12 chat rx2 rx-done" data-rx="${esc(st.id)}">${line}<div class="rx-full"><div class="rx-hd"><span class="rx-ttl">Reactions</span><span class="rx-okh">${ICON.check(12)} Resolved</span><button type="button" class="rx-hb rx-fold" data-twod12="rxFold" aria-label="Fold">${ICON.up()}</button></div>${snapshotSvg(st)}<div class="rx-stk">${slabs}${base}</div>${note}</div></div>`;
+  return `<div class="twod12 chat rx2 rx-done" data-rx="${esc(st.id)}">${line}<div class="rx-full"><div class="rx-hd"><span class="rx-ttl">Reactions</span><span class="rx-okh">${ICON.check(12)} Resolved</span><button type="button" class="rx-hb rx-fold" data-twod12="rxFold" aria-label="Fold">${ICON.up()}</button></div>${snapshotLayout(st) ? '<div class="rx-mini" data-twod12="rxPan" data-tooltip="Show this spot on the map"></div>' : ""}<div class="rx-stk">${slabs}${base}</div>${note}</div></div>`;
 }
 /** Pure: the message's HTML from its state: the live stack card, or (resolved) the one line that unfolds. */
 export function rxCardHtml(st) { return st.done ? doneHtml(st) : liveHtml(st); }
@@ -262,7 +254,7 @@ const party = (actor, at = null) => (actor ? { actor, token: tokenOf(actor), at:
 /** v0.0.275: a face for the message: the token's name and image, its side (the face's color), the token's uuid (the map overlay). */
 export const faceOf = p => {
   if (!p?.actor && !p?.token) return null;
-  const t = p.token, d = t?.document, name = t?.name ?? p.actor?.name ?? "";
+  const t = p.token, d = t?.document, name = cleanName(t?.name ?? p.actor?.name ?? "");
   return { name, ini: initials(name), img: d?.texture?.src ?? p.actor?.img ?? "", disp: Number(d?.disposition ?? 0), uuid: d?.uuid ?? p.actor?.uuid ?? "", actorUuid: p.actor?.uuid ?? "" };
 };
 const isDown = actor => !!(actor?.system?.atZero || actor?.statuses?.has?.("unconscious") || actor?.statuses?.has?.("dead"));
@@ -364,7 +356,7 @@ export async function openMoment(ev) {
         i, moment: r.moment, actorUuid: r.actor.uuid, name: f.name ?? r.actor.name, img: f.img ?? "", ini: f.ini ?? initials(r.actor.name), disp: f.disp ?? 0, tokenUuid: f.uuid ?? "",
         itemId: r.item.id, itemName: r.item.name, kind: r.kind, role: r.role ?? "other",
         ap: Math.min(...(r.item.system.versions ?? [{ ap: 0 }]).map(v => Number(v.ap) || 0)),
-        targetUuid: r.target.token?.document?.uuid ?? r.target.actor.uuid, targetName: r.target.token?.name ?? r.target.actor.name,
+        targetUuid: r.target.token?.document?.uuid ?? r.target.actor.uuid, targetName: cleanName(r.target.token?.name ?? r.target.actor.name),
         answerer: answererFor(r.actor)?.id ?? game.user.id, state: "wait", order: 0, result: "", color: "", out: null
       };
     })
@@ -450,7 +442,7 @@ async function resolveStack(L) {
     used.push({ moment: r.moment, actorUuid: r.actorUuid, itemId: r.itemId, ok: !!res.ok, half: res.half ?? null });
   }
   if (st.hold && st.base?.face?.actorUuid && sourceDown(st)) st.base.never = true;
-  st.resolving = false; st.done = true;
+  st.resolving = false; st.done = true; st.resolvedAt = Date.now();
   freezePositions(st);
   await redraw(L);   // v0.0.275 (Lucas): the same message, edited in place (no second post): one line that unfolds
   live.delete(st.id);
@@ -478,6 +470,46 @@ export async function noteLanded(ids, info = {}) {
     for (const r of st.rows) if (r.state === "use" && r.role === "attack" && r.out && !r.out.spent && isDown(actorOf(docSync(r.targetUuid)))) r.out.down = true;
     try { await F2.msg.update({ content: rxCardHtml(st), [`flags.${F}.rx`]: st }); } catch (e) { console.warn("twod12 | Reactions message", e); }
   }
+}
+/**
+ * v0.0.276 (Lucas: Opportunity Attack's hits weren't logged): a Reaction whose card only offers its attack (a Weapon Attack button) rolls after
+ * its slab resolved. On the client that holds the resolved message, a later roll card of that creature (within a few minutes) gives the
+ * slab its tier, and a target that goes Down gives it "Down"; the message is edited again. Pure part: which rows a card answers.
+ */
+export function lateTier(st, card, now = Date.now()) {
+  const a = card?.flags?.[F]?.action ?? card?.getFlag?.(F, "action");
+  if (!a || !st?.done || now - (st.resolvedAt ?? 0) > 5 * 60000) return [];
+  const tier = Number(a.tier) || 0;
+  if (!tier && !(a.results ?? []).some(x => x.tier)) return [];
+  const hits = [];
+  for (const r of st.rows) {
+    if (r.state !== "use" || r.role !== "attack" || r.out?.spent || r.out?.tier || r.actorUuid !== a.actorUuid) continue;
+    const row = (a.results ?? []).find(x => x.uuid === r.targetUuid);
+    hits.push({ r, tier: Number(row?.tier ?? tier) || 0, crit: !!(row?.crit ?? a.crit) });
+    break;   // one card answers one slab
+  }
+  return hits;
+}
+async function rewrite(F2) { try { await F2.msg.update({ content: rxCardHtml(F2.st), [`flags.${F}.rx`]: F2.st }); } catch (e) { console.warn("twod12 | Reactions message", e); } }
+export function registerLateResults() {
+  Hooks.on("createChatMessage", msg => {
+    if (!finished.size || !msg?.getFlag?.(F, "action")) return;
+    for (const F2 of finished.values()) {
+      const hits = lateTier(F2.st, msg);
+      if (!hits.length) continue;
+      for (const h of hits) { h.r.out = { ...(h.r.out ?? {}), tier: h.tier, crit: h.crit }; if (h.r.result === "failed") h.r.result = "done"; }
+      rewrite(F2);
+      return;
+    }
+  });
+  Hooks.on("updateActor", actor => {
+    if (!finished.size || !isDown(actor)) return;
+    for (const F2 of finished.values()) {
+      let changed = false;
+      for (const r of F2.st.rows) if (r.state === "use" && r.role === "attack" && !r.out?.spent && !r.out?.down && actorOf(docSync(r.targetUuid))?.uuid === actor.uuid) { r.out = { ...(r.out ?? {}), down: true }; changed = true; }
+      if (changed) rewrite(F2);
+    }
+  });
 }
 function runRemote(userId, data) {
   const reqId = foundry.utils.randomID();
@@ -614,6 +646,8 @@ export function rxRender(msg, html) {
   if (st.done) {
     const card = el.querySelector(".rx2");
     if (card && unfolded.has(msg.id)) card.classList.add("open");
+    const mini = el.querySelector(".rx-mini");   // v0.0.276: the snapshot is drawn here (the chat content can't hold an SVG)
+    if (mini && !mini.firstElementChild) { try { mini.innerHTML = snapshotSvg(st); } catch (e) { console.warn("twod12 | Reactions snapshot", e); } }
     if (st.base?.back && !st.base.back.used) { const doc = docSync(st.base.back.tokenUuid); if (!doc?.isOwner) el.querySelectorAll('[data-twod12="rxBack"]').forEach(b => b.remove()); }
     return;
   }
@@ -693,7 +727,7 @@ export async function closeStale() {
 
 /* ------------------------------------------------------------------ the moments themselves */
 const bTotal = a => a.B.l + a.B.n + a.M.l + a.M.n;
-const nameOf = p => esc(p?.token?.name ?? p?.actor?.name ?? "");
+const nameOf = p => esc(cleanName(p?.token?.name ?? p?.actor?.name ?? ""));
 async function sourceOf(from) {
   if (!from?.uuid) return null;
   let d = null; try { d = await fromUuid(from.uuid); } catch (e) { d = null; }
@@ -742,7 +776,7 @@ export function strikeMoment(actor, targets) {
     for (const t of targets ?? []) { let d = null; try { d = await fromUuid(t.uuid); } catch (e) { d = null; } const p = party(actorOf(d)); if (p && p.actor.uuid !== actor.uuid) subjects.push(p); }
     if (!subjects.length) return;
     const source = party(actor), plain = `<b>${nameOf(source)}</b> makes a Strike against <b>${subjects.map(nameOf).join(", ")}</b>`;
-    const tf = faceOf(subjects[0]), base = { kind: "against", label: "Strike", face: faceOf(source), target: subjects.length > 1 ? { ...tf, name: subjects.map(s => s.token?.name ?? s.actor.name).join(", ") } : tf };
+    const tf = faceOf(subjects[0]), base = { kind: "against", label: "Strike", face: faceOf(source), target: subjects.length > 1 ? { ...tf, name: subjects.map(s => cleanName(s.token?.name ?? s.actor.name)).join(", ") } : tf };
     await openMoment({ kinds: ["strikeAgainst"], subjects, source, plain, lead: plain, base });
   })().catch(e => console.warn("twod12 | Reactions", e));
 }
@@ -779,9 +813,9 @@ export function moveMoment(doc, origin, dest, { stand = false, before = null, wa
     const fresh = r => { const k = `${turn}|${r.actor.uuid}|${r.item.id}`; if (!stand && offered.has(k)) return false; offered.add(k); return true; };
     const keep = new Set([...rows, ...blocked].filter(fresh).map(r => `${r.actor.uuid}|${r.item.id}`));
     if (!keep.size) return;
-    const name = esc(doc.name ?? actor.name), plain = stand ? `<b>${name}</b> stands up` : `<b>${name}</b> moves`;
+    const name = esc(cleanName(doc.name ?? actor.name)), plain = stand ? `<b>${name}</b> stands up` : `<b>${name}</b> moves`;
     // v0.0.273 (Lucas): Move back: to where this movement started, with the movement it had then (the squares since are refunded)
-    const back = !stand && origin ? { tokenUuid: doc.uuid, x: fromAt.x, y: fromAt.y, combatantId: before?.combatantId ?? "", flags: before?.flags ?? null, squares: tokenDistance(fromAt, toAt), name: doc.name ?? actor.name, used: false } : null;
+    const back = !stand && origin ? { tokenUuid: doc.uuid, x: fromAt.x, y: fromAt.y, combatantId: before?.combatantId ?? "", flags: before?.flags ?? null, squares: tokenDistance(fromAt, toAt), name: cleanName(doc.name ?? actor.name), used: false } : null;
     // v0.0.275: the base slab ("Moves N sq.", Move back on it) and the path for the map overlay (the squares, the ghost where it started)
     const gs = globalThis.canvas?.grid?.size ?? 100, face = faceOf({ actor, token: doc.object ?? tokenOf(actor) }) ?? {};
     const base = stand ? { kind: "stand", face } : { kind: "move", face: { ...face, uuid: doc.uuid }, squares: tokenDistance(fromAt, toAt), path: pathSquares(waypoints?.length ? waypoints : [fromAt, toAt], gs, doc.width || 1, doc.height || 1), start: { x: fromAt.x, y: fromAt.y, w: doc.width || 1, h: doc.height || 1 } };
@@ -791,6 +825,7 @@ export function moveMoment(doc, origin, dest, { stand = false, before = null, wa
 const moving = new Map();   // token id -> { forced, evading }, on the client that moves it
 export function registerMomentHooks() {
   try { O.registerOverlayHooks(); } catch (e) { console.warn("twod12 | Reaction overlay", e); }   // v0.0.275: the map overlay
+  registerLateResults();   // v0.0.276: an attack rolled after its slab resolved (Opportunity Attack's Weapon Attack) still gets its chip
   Hooks.on("preMoveToken", (doc, movement, operation) => {
     try {
       if (operation?.twod12Lean || movement?.method === "undo") return;

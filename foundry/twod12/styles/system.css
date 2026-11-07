@@ -2440,3 +2440,8 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat.rx2 .rx-note { padding: 0 10px 8px; font-size: 11px; color: #5e513b; }
 .twod12.chat.rx2 .rx-it > b, .twod12.chat.rx2 .rx-it > s { white-space: nowrap; flex: none; }
 .twod12.chat.rx2 .rx-it > .rx-tg, .twod12.chat.rx2 .rx-it > .rx-bw { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* v0.0.276 (Lucas tested v0.0.275: the icon buttons were empty, Foundry drops an <svg> from chat content): the Reactions message's icons are Font Awesome. */
+.twod12.chat.rx2 i.rx-i { font-size: 12px; line-height: 1; width: auto; text-align: center; }
+.twod12.chat.rx2 button.rx-ib i.rx-i { font-size: 13px; }
+.twod12.chat.rx2 .rx-hd i.rx-i { font-size: 11px; }
+.twod12.chat.rx2 .rx-line .rx-ic i.rx-i, .twod12.chat.rx2 .rx-it .rx-ic i.rx-i { font-size: 11px; }

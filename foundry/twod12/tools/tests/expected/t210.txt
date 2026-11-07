@@ -31,9 +31,9 @@ first to resolve: bof on Krysta
 then: cs on Bandit
 the moment's answer: {"half":false,"halfBy":"","id":true,"gained":0,"never":false}
 edited in place, no new message: true true | no overlay for it any more (done): true
-the collapsed line: BA KR · NA LA 9 4 | faces in resolve order: Bandit, Krysta, Nari, Lana | icons (sword, shield, arrow): 9
+the collapsed line: BA KR · NA LA 9 4 | faces in resolve order: Bandit, Krysta, Nari, Lana | icons (Font Awesome, v0.0.276): fa-check fa-burst fa-shield-halved fa-crosshairs fa-chevron-down | no <svg> in the content: true
 the result chip: struck held, final: <s>9</s> 4
-unfolded: header Reactions Resolved | the snapshot (pans the map): true | its labels: 1 · −5 ; 2 · T3 ; 9 → 4
+unfolded: header Reactions Resolved | the snapshot (pans the map): true | its labels (drawn on each client, v0.0.276): 1 · −5 ; 2 · T3 ; 9 → 4
 the frozen stack: 1 NA Bulwark of Faith → Krysta −5 | 2 LA Covering Shot → Bandit T3 hit | BA Strike → Krysta 9 4 | no grips: true
 --- the edge case: the attacker drops before the rest resolve
 Covering Shot resolves first: cs
@@ -47,3 +47,9 @@ movement: N hits {"cls":"hit","html":"2 hits","short":"2 hits"} | one {"cls":"hi
 --- wired
 the overlay's hooks with the moment's: true | the message syncs it: true | the old messages keep their look: true | the chat hooks: true
 no second post: true | no Foundry window: true | the CSS block: true | no explanation paragraph or "Every row is answered": true
+--- v0.0.276 (Lucas tested v0.0.275)
+names without the build: Archer 1 | Bandit Thug | (odd)
+no <svg> in any card: true | the snapshot box is empty in the content: true
+Opportunity Attack before its Weapon Attack: no chip (not "0 hits"): null | no slab chip: null
+its Weapon Attack card later: answers row 0 T2 | another's card: 0 | a card with no tier: 0 | too late (5 min): 0
+both known: the chip {"cls":"hit","html":"1 hit","short":"1 hit"} | wired: true
