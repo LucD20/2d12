@@ -1065,14 +1065,14 @@ export async function useAction(actor, item, opts = {}) {
       const { postSaveFor, saveActionCfg } = await import("./inline.mjs");
       const cfg = saveActionCfg(actor, item, version, src);
       const point = areaOutcome?.point ?? null;
-      // v0.0.283 (pack chat-cards): one target: this card becomes the Save card; several (an Area Save) keep the Save card of before
-      if (targets.length === 1 && cmsg) {
+      // v0.0.283 (pack chat-cards): this card becomes the Save card (v0.0.286: several targets too, a row each; an [HT] area's repeat keeps the old card)
+      if (targets.length >= 1 && cmsg) {
         const { ccSaveOnCard } = await import("./inline.mjs");
         const model = { name: item.name, freq: effectiveFrequency(it), cost: it.reaction ? `${version.ap}R` : `${version.ap} AP`, traitsHtml: useTraits.size ? traitsHtml(useTraits) : "",
           tline: { targets: it.targets ?? "", dist: sqText(distanceText(it, weapon ?? previewWeapon ?? null)), area: "", names: [targets[0].name] },
           triggerHtml: it.trigger ? await enrich(esc(it.trigger), item) : "", triggerLabel: it.reactionKind === "interrupt" ? "Interrupt" : "Trigger", flavor: it.flavor ?? "",
           designer: { ruler: it.worth ?? "", mithril: it.automation ? `${TWOD12.automationRanks[it.automation] ?? it.automation}` : "" } };
-        await ccSaveOnCard(cmsg, cfg, targets[0], { model, point });
+        await ccSaveOnCard(cmsg, cfg, targets, { model, point });
       } else await postSaveFor(cfg, targets, { point, source: item.name });
       const region = areaOutcome?.region;
       if (region?.getFlag?.("twod12", "ht")) {

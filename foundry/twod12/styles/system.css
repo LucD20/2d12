@@ -2686,3 +2686,11 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat.cc .cc-dhead .cc-name { flex: 1 1 auto; min-width: 0; white-space: normal; }
 .twod12.chat.cc .cc-dtags { flex: none; display: flex; align-items: center; gap: 5px; white-space: nowrap; margin-top: 2px; }
 .twod12.chat.cc .cc-dtags .cc-nl { margin-left: 0; }
+/* v0.0.286 (Lucas tested v0.0.285): each creature's Defense as the Save card's framed badge; the Save card with several creatures (a row each) */
+.twod12.chat.cc .cc-cdef { display: inline-flex; align-items: center; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
+.twod12.chat.cc .cc-cdef .cc-badge { color: var(--cc-ink); font-size: 11px; }
+.twod12.chat.cc .cc-crow.save { grid-template-columns: minmax(0, 1fr) auto; }
+.twod12.chat.cc .cc-card .cc-sres { display: inline-flex; align-items: center; gap: 5px; height: auto; padding: 1px 2px; border: 0; background: transparent; cursor: pointer; }
+.twod12.chat.cc .cc-card .cc-sres .cc-stotal { font-size: 15px; }
+.twod12.chat.cc .cc-srow.many .cc-who { margin-bottom: 2px; }
+.twod12.chat.cc .cc-srow.t3 .cc-nchip, .twod12.chat.cc .cc-srow.t1.hit .cc-nchip { color: var(--cc-ink); }

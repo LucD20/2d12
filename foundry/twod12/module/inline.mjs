@@ -914,9 +914,11 @@ export async function postSaveCard(cfg, ctx = {}) {
 
 async function writeSaveCard(msg, st) {
   if (st.cc) {   // v0.0.283: the new Save card lives on the Save Action's own card
-    const old = msg.getFlag("twod12", "cc"), m = foundry.utils.deepClone(old), row = st.rows[0], res = row?.result;
-    m.result = res?.row ?? null; m.damageDone = !!st.damageDone; m.target = { uuid: row?.uuid, name: row?.name }; m.tline.names = row ? [row.name] : [];
-    m.hasDamage = !!res && !!(res.ccComps ?? []).length;
+    const old = msg.getFlag("twod12", "cc"), m = foundry.utils.deepClone(old);
+    // v0.0.286: one row per creature (several targets: each rolls its own Save on the same card)
+    m.creatures = st.rows.map(r => ({ uuid: r.uuid, name: r.name, result: r.result?.row ?? null, damageDone: !!(r.damageDone || st.damageDone), hasDamage: !!r.result && !!(r.result.ccComps ?? []).length }));
+    delete m.target; delete m.result; delete m.damageDone; delete m.hasDamage;
+    m.tline.names = st.rows.map(r => r.name);
     return msg.update({ content: CC.replaceCard(msg.content, old, m), "flags.twod12.saveCard": st, "flags.twod12.cc": m });
   }
   await msg.update({ content: await saveCardHtml(st), "flags.twod12.saveCard": st });
@@ -933,24 +935,30 @@ export async function saveTierOutcomes(cfg) {
   return out;
 }
 /** v0.0.283: a one-target Save Action: its own card becomes the Save card (the target's owner rolls on it); the Tier's damage waits for the Damage button. */
-export async function ccSaveOnCard(msg, cfg, target, { model, point = null }) {
-  const doc = await fromUuid(target.uuid).catch(() => null), mods = saveRowMods(doc, point);
-  const st = { cfg, color: "", cc: true, rows: [{ uuid: target.uuid, name: target.name, result: null, boon: mods.boon, bane: mods.bane, why: mods.why.join(", ") }], tierDmg: await prerollTiers(cfg) };
-  const m = { ...model, kind: "save", saveName: `${TWOD12.attributes[cfg.attr] ?? cfg.attr} Save`, dc: cfg.dc, tiers: await saveTierOutcomes(cfg), target: { uuid: target.uuid, name: target.name }, result: null, hasDamage: false };
-  m.tline = { ...m.tline, names: [target.name], retargetKind: "retargetSave" };
+export async function ccSaveOnCard(msg, cfg, targets, { model, point = null }) {
+  targets = [].concat(targets);   // v0.0.286: one creature or several, a row each
+  const rows = [];
+  for (const t of targets) { const doc = await fromUuid(t.uuid).catch(() => null), mods = saveRowMods(doc, point); rows.push({ uuid: t.uuid, name: t.name, result: null, boon: mods.boon, bane: mods.bane, why: mods.why.join(", ") }); }
+  const st = { cfg, color: "", cc: true, rows, tierDmg: await prerollTiers(cfg) };
+  const m = { ...model, kind: "save", saveName: `${TWOD12.attributes[cfg.attr] ?? cfg.attr} Save`, dc: cfg.dc, tiers: await saveTierOutcomes(cfg), creatures: rows.map(r => ({ uuid: r.uuid, name: r.name, result: null, damageDone: false, hasDamage: false })) };
+  m.tline = { ...m.tline, names: rows.map(r => r.name), retargetKind: "retargetSave" };
   await msg.update({ content: CC.cardContent(m), "flags.twod12.cc": m, "flags.twod12.saveCard": st });
 }
 /** v0.0.283: the Save card's Damage button: the target's Tier as a damage message (its effects ride on the damage). */
 export async function saveDamage(msg) {
-  const st = foundry.utils.deepClone(msg.getFlag("twod12", "saveCard")), row = st?.rows?.[0], res = row?.result;
-  if (!res || st.damageDone) return;
+  const st = foundry.utils.deepClone(msg.getFlag("twod12", "saveCard"));
+  // v0.0.286: every creature that rolled and whose damage wasn't posted yet, one group per Tier (rolled once per Tier: Several Targets)
+  const ready = (st?.rows ?? []).map((r, i) => ({ r, i })).filter(({ r }) => r.result && !r.damageDone && !st.damageDone && (r.result.ccComps ?? []).length);
+  if (!ready.length) return;
   if (!msg.isAuthor && !game.user.isGM) return ui.notifications.warn("Only the author of this card or the GM can roll its damage.");
-  const cfg = st.cfg, parts = parseParts(cfg.tiers[`t${res.tier}`]), comps = res.ccComps ?? [];
-  const m = msg.getFlag("twod12", "cc");
+  const cfg = st.cfg, m = msg.getFlag("twod12", "cc");
+  const tiers = [...new Set(ready.map(x => x.r.result.tier))].sort((a, b) => a - b);
+  const groups = tiers.map(t => { const parts = parseParts(cfg.tiers[`t${t}`]), first = ready.find(x => x.r.result.tier === t).r.result;
+    return { tier: t, crit: false, comps: (st.tierDmg?.[`t${t}`] ?? first.ccComps ?? []).map(c => ({ pool: c.pool, sub: c.sub, nl: c.nl, total: c.total, formula: c.formula, dice: c.dice, kind: c.kind ?? "D" })), fx: parts.uuids.map(u => ({ uuid: u, mode: "auto", rider: true })), riders: m?.tiers?.[t]?.riders ?? [] }; });
   let actor = null; try { actor = cfg.actorUuid ? await fromUuid(cfg.actorUuid) : null; } catch (e) { actor = null; }
-  const { postCdmg } = { postCdmg: (await import("./ccdamage.mjs")).postCcDamage };
-  await postCdmg({ actor, title: cfg.source || m?.name || "Save", groups: [{ tier: res.tier, crit: false, comps, fx: parts.uuids.map(u => ({ uuid: u, mode: "auto", rider: true })), riders: m?.tiers?.[res.tier]?.riders ?? [] }], targets: [{ uuid: row.uuid, name: row.name, tier: res.tier, g: 0 }], nl: !!cfg.nonlethal, originUuid: cfg.actorUuid ?? "", srcId: msg.id });
-  st.damageDone = true;
+  const { postCcDamage } = await import("./ccdamage.mjs");
+  await postCcDamage({ actor, title: cfg.source || m?.name || "Save", groups, targets: ready.map(({ r }) => ({ uuid: r.uuid, name: r.name, tier: r.result.tier, g: tiers.indexOf(r.result.tier) })), nl: !!cfg.nonlethal, originUuid: cfg.actorUuid ?? "", srcId: msg.id });
+  for (const { i } of ready) st.rows[i].damageDone = true;
   await writeSaveCard(msg, st);
 }
 
@@ -972,7 +980,7 @@ export async function retargetSave(msg) {
   if (!toks.length) return ui.notifications.warn("Select or target a token first.");
   const old = new Map(st.rows.map(r => [r.uuid, r]));
   if (st.cc && st.rows.some(r => r.result)) return ui.notifications.warn("The Save was rolled: its target can't change now.");
-  st.rows = (st.cc ? toks.slice(0, 1) : toks).map(t => old.get(t.document.uuid) ?? { uuid: t.document.uuid, name: t.name, result: null });   // v0.0.283: the one-target card keeps one
+  st.rows = toks.map(t => old.get(t.document.uuid) ?? { uuid: t.document.uuid, name: t.name, result: null });
   try { await writeSaveCard(msg, st); } catch (e) { ui.notifications.warn("Only the author of this card or the GM can change its targets."); }
 }
 

@@ -71,7 +71,7 @@ console.log("the retarget is refused after damage was applied (actions.mjs):", s
 
 console.log("--- several targets on the card");
 const many = CC.attackCardHtml({ ...smite, name: "Word of Radiance", shared: { d: [[9], [7], [7]], mod: 2 }, rows: rows.map(r => CC.FULL_VIEW && { ...r.chk, name: r.name, uuid: r.uuid, boons: 0, banes: 0, mods: [{ v: 2, label: "Power" }] }) });
-console.log("shared roll:", txt(many.match(/<div class="cc-shared">[\s\S]*?<\/div>/)[0]), "| a row per creature:", (many.match(/class="cc-crow"/g) ?? []).length, "| defenses:", [...many.matchAll(/cc-cdef">([^<]*)/g)].map(m => m[1]).join(" | "));
+console.log("shared roll:", txt(many.match(/<div class="cc-shared">[\s\S]*?<\/div>/)[0]), "| a row per creature:", (many.match(/class="cc-crow"/g) ?? []).length, "| defenses:", [...many.matchAll(/cc-cdef">([\s\S]*?)<\/span><button/g)].map(m => txt(m[1])).join(" | "));
 console.log("grouped by Tier:", txt(many.match(/<div class="cc-groups">[\s\S]*$/)[0]).slice(0, 140));
 const pmany = CC.attackCardHtml({ ...smite, shared: { d: [[9], [7], [7]], mod: 2 }, rows: rows.map(r => ({ ...r.chk, name: r.name, uuid: r.uuid, mods: [] })) }, CC.viewOf({ hideDef: true }));
 console.log("player view: no WD labels:", !/WD 1\d/.test(pmany));
@@ -129,3 +129,11 @@ console.log("a flat amount alone: its label:", only[0].mods.map(m => `${m.v} ${m
 console.log("an untyped bonus folds into its pool's first instance:", JSON.stringify(CC.instancesOf([{ pool: "B", sub: "Sl", total: 8, dice: [{ faces: 6, results: [3, 5] }] }, { pool: "B", sub: "", total: 2, dice: [], label: "Heavy Blows" }]).map(x => [x.sub, x.total, x.mods.map(m => m.label).join()])));
 console.log("the pool total in its own column:", /class="cc-ptot">3</.test(flat), "| the Tier group names as chips:", (many.match(/class="cc-nchip"/g) ?? []).length);
 console.log("no \"targeting x, y\" chat line after placing an area:", !src("module/template.mjs").includes('"targeting " + tokens.map'));
+
+console.log("--- v0.0.286 (Lucas tested v0.0.285)");
+console.log("each creature's Defense as a framed badge:", [...many.matchAll(/class="cc-cdef"><span class="cc-badge">([^<]*)<\/span>/g)].map(m => m[1]).join(" | "), "| hidden for players:", !/cc-cdef"><span class="cc-badge">/.test(pmany));
+const ms = { ...save, target: undefined, creatures: [{ uuid: "a", name: "Bandit Thug", result: chk, hasDamage: true }, { uuid: "b", name: "Grave Wisp", result: { ...chk, total: 15, tier: 2, base: 2 }, hasDamage: true }, { uuid: "c", name: "Ogre Chieftain", result: null }] };
+const msGM = CC.saveCardHtml(ms, CC.viewOf({ gm: true })), msP = CC.saveCardHtml(ms, CC.viewOf({ gm: false, owns: () => false }));
+console.log("a Save on three creatures: a row each:", (msGM.match(/class="cc-crow save"/g) ?? []).length, "| who got each Tier:", [...msGM.matchAll(/<b>T(\d)<\/b>[\s\S]*?<span class="cc-sbody">(<span class="cc-who">[\s\S]*?<\/span><\/span>)?/g)].map(m => `T${m[1]}: ${txt(m[2] ?? "") || "-"}`).join(" | "));
+console.log("the owner rolls on their row, the others wait:", (msGM.match(/data-twod12="saveRoll" data-idx="2"/g) ?? []).length, (msP.match(/Waiting/g) ?? []).length, "| Damage once someone rolled:", msGM.includes("ccSaveDamage"), "| a one-target card of v0.0.283 still reads:", CC.saveCreatures({ target: { uuid: "x", name: "X" }, result: null }).length);
+console.log("Save Actions use the new card with several targets (actions.mjs):", src("module/actions.mjs").includes("if (targets.length >= 1 && cmsg) {"));

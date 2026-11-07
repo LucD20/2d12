@@ -214,7 +214,7 @@ export function attackCardHtml(m, view = FULL_VIEW) {
   // several targets: one shared roll, a row per creature, the outcome grouped by Tier
   const sh = m.shared ?? {};
   const shared = `<div class="cc-shared"><span class="cc-bl">${(sh.d ?? []).length}d12</span>${(sh.d ?? []).map(dieGroup).join("")}${sh.mod ? ` ${modTxt(sh.mod, "Modifier")}` : ""}</div>`;
-  const crows = rows.map((r, i) => `<div class="cc-crow">${tierPill(r.tier, r.crit)}<span class="cc-cname">${esc(r.name)}</span><span class="cc-cdef">${esc(defText(r, hide))}</span>${ladderHtml(r, { hide, thin: true, id: `r${i}` })}${keptNote(r) ? `<div class="cc-muted cc-kept">${esc(keptNote(r))}</div>` : ""}${breakdownHtml(r, { hide, id: `r${i}` })}</div>`).join("");
+  const crows = rows.map((r, i) => `<div class="cc-crow">${tierPill(r.tier, r.crit)}<span class="cc-cname">${esc(r.name)}</span><span class="cc-cdef">${hide ? "" : `<span class="cc-badge">${esc(r.dcLabel ?? "DC")} ${r.dc}</span>`}${defText(r, true) ? `<span>${esc(defText(r, true))}</span>` : ""}</span>${ladderHtml(r, { hide, thin: true, id: `r${i}` })}${keptNote(r) ? `<div class="cc-muted cc-kept">${esc(keptNote(r))}</div>` : ""}${breakdownHtml(r, { hide, id: `r${i}` })}</div>`).join("");
   const groups = [3, 2, 1].map(t => {
     const who = rows.filter(r => r.tier === t);
     if (!who.length) return "";
@@ -227,21 +227,31 @@ export function attackCardHtml(m, view = FULL_VIEW) {
 /* ------------------------------------------------------------------ the Save card */
 /** The Save's three ranges, as the target's totals: Tier 3 "20+", Tier 2 "13–19", Tier 1 "≤12" for DC 13. */
 export const saveRanges = dc => ({ 3: `${dc + 7}+`, 2: `${dc}–${dc + 6}`, 1: `≤${dc - 1}` });
+/** The creatures of a Save card: [{ uuid, name, result, damageDone, hasDamage }] (a one-target card of v0.0.283 kept its target and result alone). */
+export const saveCreatures = m => m.creatures ?? (m.target ? [{ uuid: m.target.uuid, name: m.target.name, result: m.result ?? null, damageDone: !!m.damageDone, hasDamage: !!m.hasDamage }] : []);
 export function saveCardHtml(m, view = FULL_VIEW) {
-  const r = m.result, rg = saveRanges(m.dc);
+  const rg = saveRanges(m.dc), cs = saveCreatures(m), one = cs.length <= 1, r = one ? cs[0]?.result ?? null : null;
+  const anyRolled = cs.some(c => c.result);
   const rows = [3, 2, 1].map(t => {
-    const hit = r && r.tier === t, cls = `cc-srow t${t}${r ? (hit ? " hit" : " dim") : ""}`;
-    const inner = `<span class="cc-scell"><b>T${t}</b><small>${esc(rg[t])}</small></span><span class="cc-sbody">${outcomeHtml(m.tiers?.[t], { none: t === 3 ? "No effect." : "" })}</span>${hit ? `<span class="cc-stotal">${r.total}</span>` : ""}`;
-    return hit ? `<button type="button" class="${cls}" data-cc-toggle="save" aria-expanded="false" aria-label="${esc(`Their Tier ${t}: total ${r.total}. Show the roll`)}">${inner}</button>${breakdownHtml(r, { save: true, id: "save" })}` : `<div class="${cls}">${inner}</div>`;
+    const who = cs.filter(c => c.result?.tier === t), hit = one ? !!r && r.tier === t : who.length > 0;
+    const cls = `cc-srow t${t}${anyRolled ? (hit ? " hit" : " dim") : ""}${one ? "" : " many"}`;
+    const names = !one && who.length ? `<span class="cc-who">${who.map(c => `<span class="cc-nchip">${esc(c.name)}</span>`).join("")}</span>` : "";
+    const inner = `<span class="cc-scell"><b>T${t}</b><small>${esc(rg[t])}</small></span><span class="cc-sbody">${names}${outcomeHtml(m.tiers?.[t], { none: t === 3 ? "No effect." : "" })}</span>${one && hit ? `<span class="cc-stotal">${r.total}</span>` : ""}`;
+    return one && hit ? `<button type="button" class="${cls}" data-cc-toggle="save" aria-expanded="false" aria-label="${esc(`Their Tier ${t}: total ${r.total}. Show the roll`)}">${inner}</button>${breakdownHtml(r, { save: true, id: "save" })}` : `<div class="${cls}">${inner}</div>`;
   }).join("");
-  const owner = view.owns(m.target?.uuid);
-  const action = r ? (m.hasDamage && !m.damageDone ? '<div class="cc-btns"><button type="button" class="cc-btn primary" data-twod12="ccSaveDamage"><i class="fa-solid fa-dice" aria-hidden="true"></i> Damage</button></div>' : "")
-    : owner ? `<div class="cc-btns"><button type="button" class="cc-btn primary" data-twod12="saveRoll" data-idx="0">Roll ${esc(m.saveName)}</button></div>`
-      : `<div class="cc-muted cc-wait">Waiting for ${esc(m.target?.name ?? "the target")}'s ${esc(m.saveName)}…</div>`;
+  const rollBtn = i => `<button type="button" class="cc-btn${one ? " primary" : " small primary"}" data-twod12="saveRoll" data-idx="${i}">Roll ${esc(m.saveName)}</button>`;
+  // v0.0.286 (Lucas: Rebuke on three targets gave the old cards): several creatures, a row each; each rolls its own Save
+  const crows = one ? "" : `<div class="cc-crows">${cs.map((c, i) => `<div class="cc-crow save"><span class="cc-cname">${esc(c.name)}</span>${c.result
+    ? `<button type="button" class="cc-sres t${c.result.tier}" data-cc-toggle="s${i}" aria-expanded="false" aria-label="${esc(`${c.name}: their Tier ${c.result.tier}, total ${c.result.total}. Show the roll`)}">${tierPill(c.result.tier)}<span class="cc-stotal">${c.result.total}</span></button>${breakdownHtml(c.result, { save: true, id: `s${i}` })}`
+    : view.owns(c.uuid) ? rollBtn(i) : '<span class="cc-muted">Waiting\u2026</span>'}</div>`).join("")}</div>`;
+  const dmgBtn = '<div class="cc-btns"><button type="button" class="cc-btn primary" data-twod12="ccSaveDamage"><i class="fa-solid fa-dice" aria-hidden="true"></i> Damage</button></div>';
+  const action = one
+    ? (r ? (cs[0].hasDamage && !cs[0].damageDone ? dmgBtn : "") : view.owns(cs[0]?.uuid) ? `<div class="cc-btns">${rollBtn(0)}</div>` : `<div class="cc-muted cc-wait">Waiting for ${esc(cs[0]?.name ?? "the target")}'s ${esc(m.saveName)}\u2026</div>`)
+    : (cs.some(c => c.result && c.hasDamage && !c.damageDone) ? dmgBtn : "");
   const trig = m.triggerHtml ? `${divider(1)}<div class="cc-trigger"><b>${esc(m.triggerLabel || "Trigger")}:</b> ${m.triggerHtml}</div>` : "";
   const flavor = m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "";
   const des = designerFoot([m.designer?.ruler ? `Ruler: ${esc(m.designer.ruler)}` : "", m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
-  return `<div class="cc-card cc-save">${headHtml(m)}${targetLineHtml(m, view, { locked: !!r })}<div class="cc-savehead"><b>${esc(m.saveName)}</b><span class="cc-rule" aria-hidden="true"></span><span class="cc-badge">DC ${m.dc}</span></div><div class="cc-srows">${rows}</div>${trig}${flavor}${action}${des}</div>`;
+  return `<div class="cc-card cc-save${one ? "" : " many"}">${headHtml(m)}${targetLineHtml(m, view, { locked: anyRolled })}<div class="cc-savehead"><b>${esc(m.saveName)}</b><span class="cc-rule" aria-hidden="true"></span><span class="cc-badge">DC ${m.dc}</span></div><div class="cc-srows">${rows}</div>${crows}${trig}${flavor}${action}${des}</div>`;
 }
 
 /* ------------------------------------------------------------------ the damage arithmetic */

@@ -93,7 +93,7 @@ const run = async (label, dice, extra = {}) => {
 whirl.system.vs = "body"; lonny.system.attributes.body = 8; goblin.system.attributes.body = 20; nari.system.attributes.body = 0;
 const card2 = await run("three DCs (13, 17, 23), dice 9 and 11", [9, 11, 2, 1, 2]);
 console.log("the outcome grouped by Tier, who landed where:", strip((card2.content.match(/<div class="cc-groups">[\s\S]*?<\/div><\/div><\/div>/) ?? [""])[0]));
-console.log("each creature's own Defense on its row:", [...card2.content.matchAll(/class="cc-cname">([^<]*)<\/span><span class="cc-cdef">([^<]*)</g)].map(m => `${m[1]}: ${m[2]}`).join(" | "));
+console.log("each creature's own Defense on its row:", [...card2.content.matchAll(/class="cc-cname">([^<]*)<\/span><span class="cc-cdef">([\s\S]*?)<\/span><button/g)].map(m => `${m[1]}: ${strip(m[2])}`).join(" | "));
 console.log("DC ranges in the tier column are generic when the DCs differ:", !/≤ \d+/.test(card2.content));
 console.log("flags:", JSON.stringify(card2.flags.twod12.action.results.map(r => `${r.name} T${r.tier}${r.crit ? " crit" : ""}`)), "| highest tier on the card:", card2.flags.twod12.action.tier);
 // Favored for everyone (the dialog's toggle): a third die, each keeps the two highest

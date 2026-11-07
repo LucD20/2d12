@@ -29,7 +29,7 @@ the GM with the same setting sees the Defense: true
 retarget: only for the author and the GM, gone once locked: false true false
 the retarget is refused after damage was applied (actions.mjs): true | the damage message locks its roll card: true
 --- several targets on the card
-shared roll: 3d12 9 7 7 +2 Modifier | a row per creature: 3 | defenses: WD 13 | WD 13 · Favored | WD 14 · Doomed
+shared roll: 3d12 9 7 7 +2 Modifier | a row per creature: 3 | defenses: WD 13 | WD 13 Favored | WD 14 Doomed
 grouped by Tier: Tier 3 Grave Wisp Vigor 2d6 + 2 Sl · Resolve 2d10 Ho ↳ Pushed 2 Critical Doubles, or 33+ the target is Prone. Tier 2 Bandit Thug Ogre Chieft
 player view: no WD labels: true
 --- the Save card
@@ -65,3 +65,8 @@ a flat amount alone: its label: 2 Weapon | no "Dice: none", no Total: true
 an untyped bonus folds into its pool's first instance: [["Sl",10,"Heavy Blows"]]
 the pool total in its own column: true | the Tier group names as chips: 3
 no "targeting x, y" chat line after placing an area: true
+--- v0.0.286 (Lucas tested v0.0.285)
+each creature's Defense as a framed badge: WD 13 | WD 13 | WD 14 | hidden for players: true
+a Save on three creatures: a row each: 3 | who got each Tier: T3: - | T2: Grave Wisp | T1: Bandit Thug
+the owner rolls on their row, the others wait: 1 1 | Damage once someone rolled: true | a one-target card of v0.0.283 still reads: 1
+Save Actions use the new card with several targets (actions.mjs): true
