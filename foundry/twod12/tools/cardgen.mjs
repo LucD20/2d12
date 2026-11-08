@@ -148,7 +148,7 @@ export function cardSystem(c, resolve = s => s) {
   if (c.category === "Basic attack") sys.basicAttack = true;   // an NPC's Basic attack stands in for the Weapon Attack NPCs don't have
   sys.versions = versionsOf(c).map((v, i) => { const d = versionData(c, v, resolve); if (area && i > 0 && area.sizes[i] && area.sizes[i] !== area.sizes[0]) d.areaSize = area.sizes[i]; return d; });
   if (c.flavor) sys.flavor = c.flavor;
-  for (const k of ["weaponUse", "automation", "automationNote", "marksTarget", "basicAttack", "modifiers", "moment", "momentRange", "momentSelf", "momentTarget"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];   // v0.0.261: moment, momentRange (Divine Intervention); v0.0.272: momentSelf, momentTarget
+  for (const k of ["weaponUse", "automation", "automationNote", "marksTarget", "basicAttack", "basicRating", "modifiers", "moment", "momentRange", "momentSelf", "momentTarget"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];   // v0.0.261: moment, momentRange (Divine Intervention); v0.0.272: momentSelf, momentTarget
   return sys;
 }
 

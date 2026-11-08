@@ -7,8 +7,8 @@
 {{else}}<button type="button" class="ps-use{{#if reaction}} rx{{/if}}" data-action="useAction" data-tooltip="{{useTip}}" aria-label="{{useTip}}">Use</button>{{/if}}
 {{/inline}}
 {{#*inline "srow"}}
-<div class="ar ps-row{{#if off}} off{{/if}}{{#if open}} open{{/if}}" data-item-id="{{id}}">
-  <div class="ps-line" data-action="toggleCard" data-tooltip="Open the Action" data-tooltip-direction="UP">
+<div class="ar ps-row{{#if off}} off{{/if}}{{#if open}} open{{/if}}{{#if lines.strike}} strike{{/if}}" data-item-id="{{id}}">
+  <div class="ps-line" data-action="toggleCard">
     <span class="ps-name"><a class="ps-nm" role="button" tabindex="0" aria-expanded="{{#if open}}true{{else}}false{{/if}}">{{name}}</a>{{#if sub}}<span class="ps-sub">{{sub}}</span>{{/if}}{{#if fav}}<i class="fa-solid fa-star ps-fav" data-tooltip="Favorite (right-click the row to change)" aria-label="Favorite"></i>{{/if}}</span>
     <span class="ps-c"><span class="ps-pill{{#if outline}} line{{/if}}" style="--fc:{{fc}}">{{cost}}</span></span>
     <span class="ps-c ps-dist">{{dist}}</span>
@@ -24,9 +24,10 @@
   <div class="atable" data-list="{{list}}">{{#each rows}}{{> srow}}{{/each}}</div>
 </div>
 {{/inline}}
+{{#*inline "senses"}}<span class="ps-senses">{{#each pc.strip.senses}}<span class="ps-sense" data-tooltip="{{tip}}">{{label}}</span>{{/each}}</span>{{/inline}}
 {{#*inline "brow"}}
 <div class="ar ps-brw{{#if open}} open{{/if}}" data-item-id="{{id}}">
-<div class="ps-brow" {{#if id}}data-action="toggleCard" data-tooltip="Open the card" data-tooltip-direction="UP"{{/if}}>
+<div class="ps-brow" {{#if id}}data-action="toggleCard"{{/if}}>
   <span class="ps-slot">{{slot}}</span>
   <span class="ps-bname">{{#if id}}<i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i>{{/if}}<b class="ps-nm" {{#if id}}role="button" tabindex="0"{{/if}}>{{name}}</b>{{#if id}}<span class="ps-bctl"><a data-action="openItem" data-tooltip="Edit" aria-label="Edit {{name}}"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete" data-tooltip="Remove" aria-label="Remove {{name}}"><i class="fa-solid fa-xmark"></i></a></span>{{/if}}</span>
   <span>{{#if cost}}<span class="ps-pill" style="--fc:{{fc}}">{{cost}}</span>{{/if}}</span>
@@ -35,20 +36,22 @@
 <div class="ar-card"></div>
 </div>
 {{/inline}}
-<div class="twod12 sheet pcs{{#if pc.down.down}} isdown{{/if}}">
+<div class="twod12 sheet pcs{{#if pc.npc}} npcs{{#if pc.strip.elite}} elite{{/if}}{{/if}}{{#if pc.down.down}} isdown{{/if}}">
   <header class="ps-head">
     <img class="ps-portrait" src="{{actor.img}}" data-edit="img" data-action="editImage" alt="Portrait of {{actor.name}}" data-tooltip="Change the portrait">
     <div class="ps-id">
-      <input class="ps-nameinput" type="text" name="name" value="{{actor.name}}" placeholder="Name" aria-label="Name">
-      <div class="ps-line1">
+      <div class="ps-nameline"><input class="ps-nameinput" type="text" name="name" value="{{actor.name}}" placeholder="Name" aria-label="Name">{{#if pc.npc}}<span class="ps-role r-{{pc.head.roleKey}}">{{pc.head.role}}</span>{{/if}}</div>
+      {{#if pc.npc}}<div class="ps-line1"><span>Level {{system.level}}</span><span>&middot;</span><b class="ps-stage">Stage {{system.stage}}</b><span>&middot;</span><span>{{pc.head.size}}</span><span>&middot;</span><span data-tooltip="{{npcCvTip}}">CV <b class="ps-stage">{{pc.head.cv}}</b></span></div>
+      {{else}}<div class="ps-line1">
         <span>Level {{system.level}}</span>
         <span>&middot;</span><b class="ps-stage">Stage {{system.stage}}</b>
         <span>&middot;</span>{{#if pc.head.species}}<a data-action="openItem" data-item-id="{{pc.head.species.id}}" data-tooltip="Open the species">{{pc.head.species.name}}</a>{{else}}<em>No species</em>{{/if}}
         {{#if pc.head.cls}}<a data-action="openItem" data-item-id="{{pc.head.cls.id}}" data-tooltip="Open the class">{{pc.head.cls.name}}</a>{{else}}<em>No class</em>{{/if}}
         <span>&middot;</span><span>{{pc.head.size}}</span>
-      </div>
+      </div>{{/if}}
     </div>
     <div class="ps-htools">
+      {{#if pc.npc}}{{#if pc.head.isGM}}<button type="button" class="ps-btn3" data-action="postStatBlock" data-tooltip="Post the stat block to the chat (GM only)">Post stat block</button>{{/if}}{{/if}}
       <button type="button" class="ps-icon" data-action="editSenses" data-tooltip="Senses: Sight, Hearing and special senses" aria-label="Senses"><i class="fa-solid fa-eye"></i></button>
       {{#if (eq pc.head.combat.mode "roll")}}<button type="button" class="ps-init" data-action="rollInitiative" data-tooltip="Roll Initiative (the system's Initiative)">Roll Initiative</button>
       {{else if (eq pc.head.combat.mode "status")}}<span class="ps-incombat">{{pc.head.combat.text}}</span>
@@ -68,6 +71,18 @@
       <a class="ps-big np-guardbtn" role="button" data-tooltip="{{pc.strip.guard.tip}}" aria-label="Guard {{pc.strip.guard.total}}">{{pc.strip.guard.total}}</a>
       <span class="ps-s">+{{pc.strip.guard.per}} per kept AP</span>
     </div>
+    {{#if pc.npc}}
+    {{#if pc.strip.elite}}<div class="ps-cell">
+      <span class="ps-k">Elite Escalation {{pc.strip.esc.n}}</span>
+      <span class="ps-rungs">{{#each pc.strip.eliteRungs}}<a class="rung{{#if lit}} lit{{/if}}" data-action="setEscalation" data-n="{{n}}" role="button" data-tooltip="{{tip}} Click to correct the level.">{{label}}</a>{{/each}}</span>
+      <span class="ps-s">{{pc.strip.phases}}</span>
+    </div>{{/if}}
+    <div class="ps-cell">
+      <span class="ps-k">This turn</span>
+      <span class="ps-strk" data-tooltip="Strikes left this turn: {{pc.strip.strikesLeft}} of 3"><span>Strikes</span>{{#each pc.strip.strikePips}}<i class="{{#if this}}on{{/if}}"></i>{{/each}}</span>
+      {{#if pc.strip.nextBane}}<span class="ps-s bane">{{pc.strip.nextBane}}</span>{{/if}}
+    </div>
+    {{else}}
     <div class="ps-cell">
       <span class="ps-k">Escalation {{pc.strip.esc.n}}{{#if pc.strip.esc.momentum}} <span class="ps-mom" data-tooltip="This encounter started at Escalation 2 (Momentum)">Momentum</span>{{/if}}</span>
       <span class="ps-rungs">{{#each pc.strip.esc.rungs}}<a class="rung{{#if lit}} lit{{/if}}" data-action="setEscalation" data-n="{{n}}" role="button" data-tooltip="Escalation {{n}}: click to correct the level">{{label}}</a>{{/each}}</span>
@@ -78,19 +93,21 @@
       <span class="ps-tiles">{{#each pc.hands.tiles}}<button type="button" class="ps-tile{{#if wide}} wide{{/if}}{{#if free}} free{{/if}}{{#if warn}} warn{{/if}}" data-hand-tile="{{hand}}" data-tooltip="{{tip}}" aria-label="{{tip}}"><span>{{name}}</span><b>{{grip}}</b></button>{{/each}}</span>
       <span class="ps-s">{{pc.strip.strikes}}</span>
     </div>
+    {{/if}}
+    <div class="ps-cell"><span class="ps-k">Senses</span>{{> senses}}</div>
   </div>
   {{else}}
-  <div class="ps-strip out">
-    <div class="ps-cell row"><span class="ps-k">Out of combat</span><span>AP, Guard and Escalation appear when Initiative is rolled</span></div>
-    <div class="ps-cell">
+  <div class="ps-strip out{{#if pc.npc}} npc{{/if}}">
+    <div class="ps-cell row"><span class="ps-k">Out of combat</span><span>AP, Guard and Escalation appear when {{#if pc.npc}}it joins a combat{{else}}Initiative is rolled{{/if}}</span><span class="ps-right"><span class="ps-k">Senses</span> {{> senses}}</span></div>
+    {{#unless pc.npc}}<div class="ps-cell">
       <span class="ps-k">Hands</span>
       <span class="ps-tiles">{{#each pc.hands.tiles}}<button type="button" class="ps-tile{{#if wide}} wide{{/if}}{{#if free}} free{{/if}}{{#if warn}} warn{{/if}}" data-hand-tile="{{hand}}" data-tooltip="{{tip}}" aria-label="{{tip}}"><span>{{name}}</span><b>{{grip}}</b></button>{{/each}}</span>
-    </div>
+    </div>{{/unless}}
   </div>
   {{/if}}
 
   <div class="ps-onyou edrop-zone">
-    <span class="ps-k">On you</span>
+    <span class="ps-k">{{#if pc.npc}}On it{{else}}On you{{/if}}</span>
     {{#each pc.chips}}<button type="button" class="ps-chip {{cls}}" {{#if effectId}}data-effect-id="{{effectId}}" data-action="openEffect"{{else if itemId}}data-item-id="{{itemId}}" data-action="openItem"{{else if tab}}data-action="switchTab" data-tab-target="{{tab}}"{{/if}} {{{tipAttrs}}} aria-label="{{label}}: open the effect">{{label}}</button>{{else}}<span class="ps-none">drop a condition or effect here</span>{{/each}}
   </div>
 
@@ -118,14 +135,14 @@
           <div class="ps-track np-track" data-pool="{{pool}}" data-tooltip="{{tip}}"><span class="sl" style="width:{{seg.lethal}}%;background:{{solid}}"></span><span class="sn" style="width:{{seg.nonlethal}}%;--a:{{solid}};--b:{{dark}}"></span></div>
         </div>
         {{/each}}
-        <div class="ps-foot">{{#if down.down}}Dominant: <b style="color:{{domColor}}">{{dominant}}</b> &rarr; {{down.title}}{{else}}Solid = lethal &middot; striped = nonlethal &middot; Dominant: <b style="color:{{domColor}}">{{dominant}}</b>{{/if}}</div>
+        {{#unless ../pc.npc}}<div class="ps-foot">{{#if down.down}}Dominant: <b style="color:{{domColor}}">{{dominant}}</b> &rarr; {{down.title}}{{else}}Solid = lethal &middot; striped = nonlethal &middot; Dominant: <b style="color:{{domColor}}">{{dominant}}</b>{{/if}}</div>{{/unless}}
         {{/with}}
       </section>
 
-      <section class="ps-sec line">
+      {{#unless pc.npc}}<section class="ps-sec line">
         <div class="ps-hh"><span class="ps-k">Rally</span><span class="ps-rally">{{pc.rally.left}} / {{pc.rally.max}} &middot; each heals {{pc.rally.heal}}</span></div>
         <span class="ps-rpips" data-tooltip="Rally Points: your class's Rally value + your Stage. Each removes {{pc.rally.heal}} damage (a quarter of your Health Pool, rounded up). Only a Rest restores them.">{{#each pc.rally.pips}}<i class="{{#if this}}on{{/if}}"></i>{{/each}}</span>
-      </section>
+      </section>{{/unless}}
 
       <section class="ps-sec line">
         <span class="ps-k">Defenses</span>
@@ -144,12 +161,12 @@
       </section>
 
       <section class="ps-sec line">
-        <span class="ps-k">Modifiers &middot; Save DC</span>
+        <span class="ps-k">{{#if pc.npc}}Modifier{{else}}Modifiers{{/if}} &middot; Save DC</span>
         <div class="ps-mods">{{#each pc.mods}}<span data-tooltip="{{tip}}">{{label}} <span class="ps-mut">{{attr}}</span></span><b>{{value}}</b><span class="ps-dc">{{dc}}</span>{{/each}}</div>
         {{#if pc.modConflict}}<span class="ps-mut small">{{pc.modConflict}}</span>{{/if}}
       </section>
 
-      <section class="ps-wounds">
+      {{#unless pc.npc}}<section class="ps-wounds">
         {{#each pc.wounds}}
         <div class="ps-wb {{key}}">
           <div class="ps-wh"><span>{{label}}</span><input type="number" min="0" name="system.{{key}}Wounds" value="{{count}}" aria-label="{{label}}" data-tooltip="{{label}}: each one adds 1d6 to its Table"></div>
@@ -157,7 +174,7 @@
           <button type="button" class="ps-wroll" data-action="rollTable" data-kind="{{table}}" data-tooltip="Roll on the {{tableName}} Table">Roll {{tableName}}</button>
         </div>
         {{/each}}
-      </section>
+      </section>{{/unless}}
     </aside>
 
     <section class="ps-main mn">
@@ -175,21 +192,22 @@
       </div>
 
       <div class="tab" data-tab="actions">
+        {{#if pc.npc}}<div class="ps-ih tools"><span class="ps-ibtns"><button type="button" class="ps-btn2" data-action="generateAction"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Action</button><button type="button" class="ps-btn2" data-action="browseCompendium"><i class="fa-solid fa-book-open"></i> Browse compendium</button><button type="button" class="ps-btn2" data-action="newAction"><i class="fa-solid fa-plus"></i> New Action</button></span></div>{{/if}}
         <div class="ps-colh"><span>Action</span><span>Cost</span><span>Distance</span><span>Vs.</span><span></span></div>
         <div class="ps-stack">
           {{#each pc.sections}}{{> sect list="actions"}}{{else}}<div class="ps-empty">No Actions yet. Drag Actions, Features, Talents or Weapons onto this sheet.</div>{{/each}}
         </div>
         <div class="ps-basic">
-          <div class="ps-basich"><span class="ps-h2">Basic Actions</span><span class="ps-legend"><i style="color:#4c7a2e">&#9679;</i> At-will <i style="color:#2c5d9e">&#9679;</i> Once per round</span>
+          <div class="ps-basich"><span class="ps-h2">Basic Actions</span>{{#unless pc.npc}}<span class="ps-legend"><i class="sw" style="--lnf:#4c7a2e"></i> At-will <i class="sw" style="--lnf:#2c5d9e"></i> Once per round <i class="sw" style="--lnf:#d14b3f"></i> Strike</span>{{/unless}}
             <a class="ps-upd" data-action="addBasic" data-tooltip="Replace the Basic Actions with the compendium's current versions (adds the missing ones)">{{#if missingBasic}}Add{{else}}Update{{/if}} Basic Actions</a></div>
           <div class="ps-bgrid">
             {{#each pc.basic}}
             <div class="ps-bcol"><span class="ps-bgh">{{label}}</span>
               {{#each rows}}
               <div class="ar ps-bx{{#if off}} off{{/if}}{{#if open}} open{{/if}}" data-item-id="{{id}}">
-                <button type="button" class="ps-bxbtn" {{#if off}}aria-disabled="true" data-tooltip="{{offWhy}}"{{else}}{{#if weaponId}}data-action="useWith" data-weapon-id="{{weaponId}}"{{else}}data-action="useAction"{{/if}} data-tooltip="{{tip}}"{{/if}} aria-label="{{name}}{{#if off}}: {{offWhy}}{{/if}}">
-                  <span class="ps-bxl"><span class="ps-bxn">{{#unless off}}<i class="ps-fd" style="color:{{fc}}">&#9679;</i> {{/unless}}{{name}}</span>{{#if next}}<span class="ps-bxnext">{{next}}</span>{{/if}}{{#if off}}<span class="ps-bxwhy">{{offWhy}}</span>{{/if}}</span>
-                  {{#if off}}<i class="fa-solid fa-ban ps-bxno" aria-hidden="true"></i>{{else}}<b>{{cost}}</b>{{/if}}
+                <button type="button" class="ps-bxbtn {{lines.cls}}" style="{{lines.style}}" {{#if off}}aria-disabled="true" data-tooltip="{{offWhy}}"{{else}}{{#if weaponId}}data-action="useWith" data-weapon-id="{{weaponId}}"{{else}}data-action="useAction"{{/if}} data-tooltip="{{tip}}"{{/if}} aria-label="{{name}}{{#if off}}: {{offWhy}}{{/if}}">
+                  <span class="ps-bxl"><span class="ps-bxn">{{name}}</span>{{#if next}}<span class="ps-bxnext">{{next}}</span>{{/if}}{{#if off}}<span class="ps-bxwhy">{{offWhy}}</span>{{/if}}</span>
+                  {{#if off}}<span class="ps-bxno" aria-hidden="true">&#8856;</span>{{else}}<b>{{cost}}</b>{{/if}}
                 </button>
                 <div class="ar-card"></div>
               </div>
@@ -352,6 +370,71 @@
           </div>
         </div>
       </div>
+
+      {{#if pc.npc}}
+      <div class="tab" data-tab="builder">
+        {{#with pc.builder}}
+        <div class="ps-stack nbld">
+          <div class="nb-top">
+            <div class="ps-roleseg" role="group" aria-label="Role">{{#each roles}}<button type="button" class="{{#if on}}on{{/if}}" data-action="setRole" data-role="{{key}}" aria-pressed="{{#if on}}true{{else}}false{{/if}}">{{label}}</button>{{/each}}</div>
+            {{#if elite}}<label class="ps-esctog"><input type="checkbox" name="system.useEscalation" {{#if escOn}}checked{{/if}} data-tooltip="Elite Escalation: on for an Elite (the Bestiary)"> Escalation</label>{{/if}}
+            <span class="ps-right"></span>
+            <label class="nb-stat"><span>Level</span><input type="number" min="0" name="system.level" value="{{level}}" aria-label="Level"></label>
+            <div class="nb-stat dark" data-tooltip="Levels 1-4: Stage 1; 5-7: Stage 2; 8-10: Stage 3"><span>Stage</span><b>{{stage}}</b></div>
+            <div class="nb-stat dark" data-tooltip="{{@root.npcCvTip}}"><span>CV</span><b>{{cv}}</b></div>
+            <div class="nb-stat"><span>AP</span><b>{{ap}}</b></div>
+          </div>
+          <div class="nb-sum">{{#each summary}}<div><span>{{k}}</span><b>{{v}}</b></div>{{/each}}</div>
+          <div class="nb-cols">
+            {{#each cols}}
+            <div class="nb-col">
+              {{#each this}}
+              <div class="ps-block nb-blk" style="flex: {{grow}} 0 auto"><div class="ps-bh"><b>{{title}}</b></div>
+                {{#each rows}}
+                <div class="nb-row" style="--fc:{{color}}">
+                  <div class="nb-rh"><b class="nb-nm">{{name}}</b><span class="nb-rt">{{ratingName}}</span><b class="nb-val">{{value}}</b></div>
+                  <div class="nb-steps">{{#each steps}}<button type="button" class="{{#if on}}on{{/if}}" data-action="{{../act}}" data-key="{{../key}}" data-rating="{{r}}" data-v="{{r}}" data-tooltip="{{tip}}" aria-label="{{../name}}: {{tip}}" aria-pressed="{{#if sel}}true{{else}}false{{/if}}"></button>{{/each}}</div>
+                  <div class="nb-vals">{{#each steps}}<span class="{{#if sel}}sel{{/if}}">{{v}}</span>{{/each}}</div>
+                </div>
+                {{/each}}
+              </div>
+              {{/each}}
+            </div>
+            {{/each}}
+          </div>
+          <div class="ps-block"><div class="ps-bh"><b>Attacks</b><span class="ps-bsub">Tier 2 / Tier 3</span></div>
+            <table class="nb-atk"><thead><tr><th></th>{{#each heads}}<th style="color:{{color}}"{{#if med}} class="med"{{/if}}>{{label}}</th>{{/each}}</tr></thead>
+              <tbody>{{#each attacks}}<tr{{#if alt}} class="alt"{{/if}}><td><b>{{label}}</b><br><small>{{sub}}</small></td>{{#each cells}}<td{{#if med}} class="med"{{/if}}>{{v}}</td>{{/each}}</tr>{{/each}}</tbody></table>
+            <div class="nb-rules"><b>Area Save Actions:</b> about half the damage to each creature in the area (DC 11 + the Modifier). <b>Conditions</b> lower the damage rating: Mild 1 step, Moderate 2, Severe 3. <b>Reactions:</b> a Trigger is one rating stronger than an Action of the same AP; an Interrupt is worth the same.</div>
+          </div>
+        </div>
+        {{/with}}
+        <div class="ps-block nb-more"><div class="ps-bh"><b>Stat block</b></div>
+          <div class="nb-form">
+            <label>Weapon Attribute <select name="system.weaponAttribute">{{selectOptions weaponAttrChoices selected=system.weaponAttribute}}</select></label>
+            <label>Power Attribute <select name="system.powerAttribute">{{selectOptions weaponAttrChoices selected=system.powerAttribute}}</select></label>
+            <label>Armor type <select name="system.armor">{{selectOptions armorTypeChoices selected=system.armor}}</select></label>
+            <label>Reach <input type="number" min="1" name="system.reachBase" value="{{system.reachBase}}"></label>
+            <label>Size <input type="number" min="1" max="7" name="system.size" value="{{system.size}}"></label>
+            <label class="wide" data-tooltip="Resist, Weak and Immunity, separated by commas">Resist / Weak <input type="text" name="system.dmgMods" value="{{system.dmgMods}}" placeholder="Resist 5 Fire, Weak 2 Holy"></label>
+            <div class="wide nb-tags"><span>Tags</span>{{#each npcTags.have}}<span class="ps-sense dark">{{label}}<a data-action="removeTag" data-tag="{{key}}" aria-label="Remove {{label}}">&times;</a></span>{{/each}}{{#if npcTags.add.length}}<select class="tagadd" aria-label="Add a tag"><option value="">+ tag</option>{{#each npcTags.add}}<option value="{{key}}">{{label}}</option>{{/each}}</select>{{/if}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab" data-tab="loot">
+        <div class="ps-stack">
+          <span class="ps-mut">An NPC's items are flavor and loot: they never change its Health, Defenses or damage.</span>
+          <div class="ps-block"><div class="nb-lh"><span>Item</span><span>Qty</span><span></span></div>
+            <div class="olist" data-order-flag="itemOrder">
+            {{#each pc.loot}}<div class="nb-loot lrow" data-item-id="{{id}}"><span><a data-action="openItem" class="ps-nm">{{name}}</a> <small class="ps-mut">{{note}}</small></span><span>{{qty}}</span><button type="button" class="ps-btn2" data-action="giveLoot" data-tooltip="Move {{name}} to a PC">Give to a PC</button></div>
+            {{else}}<div class="nb-loot none">No items.</div>{{/each}}
+            </div>
+          </div>
+          <div class="ps-drop">Drag items here</div>
+        </div>
+      </div>
+      {{/if}}
 
       <div class="tab" data-tab="notes">
         <div class="ps-stack notes">

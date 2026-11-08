@@ -310,7 +310,8 @@
    ],
    "foundry": {
     "img": "icons/svg/hammer.svg",
-    "npcWeapon": "Great Club"
+    "npcWeapon": "Great Club",
+    "basicRating": "high"
    },
    "ruler": false
   },

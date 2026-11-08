@@ -130,8 +130,9 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         missingBasic: missingBasic(a),
         ...this._talentSlots(),
         ...(await this._sheetModel())
-      }) && Object.assign(ctx, { tf: this._tfModel(ctx) }) && Object.assign(ctx, { feat: a.type === "character" ? null : await this._featModel(ctx) })
-      && Object.assign(ctx, { pc: (this._pcLast = a.type === "character" ? await pcModel(this, ctx) : null) })
+      }) && Object.assign(ctx, { tf: this._tfModel(ctx), feat: null })
+      // v0.0.291 (PACK NPC-SHEET): the NPC sheet uses the character sheet's template and model too
+      && Object.assign(ctx, { pc: (this._pcLast = await pcModel(this, ctx)), npcCvTip: a.type === "npc" ? cvTip(TWOD12.npcRoles[s.role] ?? TWOD12.npcRoles.standard) : "" })
     );
   }
 
@@ -1346,8 +1347,8 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
 
 export class NpcSheet extends CharacterSheet {
-  static DEFAULT_OPTIONS = { position: { width: 800, height: 820 }, actions: { newAction: NpcSheet.newAction, newWeapon: NpcSheet.newWeapon, setRole: NpcSheet.setRole, setRating: NpcSheet.setRating, setSteadiness: NpcSheet.setSteadiness, levelStep: NpcSheet.levelStep, removeTag: NpcSheet.removeTag, generateAction: NpcSheet.generateAction, browseCompendium: NpcSheet.browseCompendium } };
-  static PARTS = { main: { template: "systems/twod12/templates/actor-sheet.hbs" } };
+  static DEFAULT_OPTIONS = { position: { width: 900, height: 1100 }, actions: { postStatBlock: NpcSheet.postStatBlock, giveLoot: NpcSheet.giveLoot, newAction: NpcSheet.newAction, newWeapon: NpcSheet.newWeapon, setRole: NpcSheet.setRole, setRating: NpcSheet.setRating, setSteadiness: NpcSheet.setSteadiness, levelStep: NpcSheet.levelStep, removeTag: NpcSheet.removeTag, generateAction: NpcSheet.generateAction, browseCompendium: NpcSheet.browseCompendium } };
+  static PARTS = { main: { template: "systems/twod12/templates/actor-sheet-pc.hbs" } };   // v0.0.291 (PACK NPC-SHEET): one template for both sheets
   _groupLabels = ["Actions", "Features", "Items", "Basic"];
   _groupOf(i) {
     if (i.getFlag("twod12", "basic")) return "Basic";
@@ -1402,7 +1403,36 @@ export class NpcSheet extends CharacterSheet {
     w?.sheet.render(true);
   }
   /** The Builder tab: the role buttons and the rating chips. A chip set to Custom keeps the number it showed. */
-  static async setRole(event, target) { await this.actor.update({ "system.role": target.dataset.role }); }
+  /** v0.0.291: the role switch; ratings above the new role's last step are clamped to it (a Minion has no Extreme). */
+  static async setRole(event, target) {
+    const role = TWOD12.npcRoles[target.dataset.role];
+    if (!role) return;
+    const { clampRatings } = await import("./sheetmodel.mjs");
+    const r = clampRatings({ ...(this.actor.system.ratings ?? {}) }, role, TWOD12.npcRatings);
+    await this.actor.update({ "system.role": target.dataset.role, ...Object.fromEntries(Object.entries(r).map(([k, v]) => [`system.ratings.${k}`, v])) });
+  }
+  /** v0.0.291: Post stat block (GM): a system card with the NPC's numbers and its Actions in one line each. */
+  static async postStatBlock() {
+    if (!game.user.isGM) return;
+    const { statBlockHtml } = await import("./pcsheet.mjs"), { sysCard } = await import("./sysmsg.mjs");
+    await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: this.actor }), content: statBlockHtml(this.actor, sysCard) });
+  }
+  /** v0.0.291: the Loot tab's Give to a PC: pick the character (the system's window); the item moves to it. */
+  static async giveLoot(event, target) {
+    const item = this._item(target);
+    if (!item) return;
+    const pcs = game.actors.filter(x => x.type === "character");
+    if (!pcs.length) return ui.notifications.warn("There is no character to give it to.");
+    const { pickOne } = await import("./pickwindow.mjs");
+    const id = await pickOne({ title: `Give ${item.name}`, name: `Give ${item.name}`, sub: "to a PC", icon: "fa-hand-holding", options: pcs.map(x => ({ k: x.id, l: x.name })), confirm: "Give" });
+    const pc = id ? game.actors.get(id) : null;
+    if (!pc) return;
+    const data = item.toObject(); delete data._id;
+    if (data.system) { if ("wielded" in data.system) data.system.wielded = false; if ("worn" in data.system) data.system.worn = false; }
+    await pc.createEmbeddedDocuments("Item", [data]);
+    await item.delete();
+    await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: this.actor }), content: sysLine("fa-hand-holding", `<b>${esc(pc.name)}</b> takes <b>${esc(item.name)}</b> from ${esc(this.actor.name)}.`) });
+  }
   static async setRating(event, target) { await this.actor.update(ratingUpdate(this.actor, target.dataset.key, target.dataset.rating)); }
   /** A Steadiness button of the Builder tab: a number, or "custom" (clicking the button that is on): then the number is typed (v0.0.172). */
   static async setSteadiness(event, target) {

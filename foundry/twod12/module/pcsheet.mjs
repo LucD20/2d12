@@ -17,7 +17,8 @@ import { firstTimeThisEncounter } from "./down.mjs";
 import { hoursText } from "./sleep.mjs";
 import {
   SHEET_FREQ, SECTION_ORDER, actionSection, vsDefenses, saveDCs, strikesLine, costPill, vsShort, distanceShort, basicUnavailable, nextBanes,
-  healthTags, toDown, downState, dominantPool, barSegments, apPips, escRungs, hooksLeft, slotLabel, escSectionRank, slotless, nextLevels, plainEnrichers
+  healthTags, toDown, downState, dominantPool, barSegments, apPips, escRungs, hooksLeft, slotLabel, escSectionRank, slotless, nextLevels, plainEnrichers,
+  rowLines, senseChips, strikePips, ELITE_RUNGS, ratingKeys, npcRow, specialAvg, ratingsAverage, downIn
 } from "./sheetmodel.mjs";
 const F = "twod12";
 const sg = v => (v >= 0 ? `+${v}` : `−${Math.abs(v)}`);
@@ -79,7 +80,9 @@ export function handMenu(weapons, hand, inCombat) {
 }
 
 export async function pcModel(sheet, ctx) {
-  const a = sheet.actor, s = a.system, d = s.damage ?? {};
+  const a = sheet.actor, s = a.system, d = s.damage ?? {}, npc = a.type === "npc";   // v0.0.291 (PACK NPC-SHEET): the NPC sheet uses this model too
+  const role = npc ? (TWOD12.npcRoles[s.role] ?? TWOD12.npcRoles.standard) : null, elite = npc && (s.role === "elite" || !!s.useEscalation);
+  const basicAtk = npc ? (a.itemTypes.action.find(i => i.system?.basicAttack) ?? null) : null;
   const combat = game.combat, cbt = combatantOf(a, combat), inCombat = !!cbt;
   const statuses = a.statuses ?? new Set(), unconscious = statuses.has("unconscious");
   const cls = a.itemTypes.class[0] ?? null, sp = a.itemTypes.species[0] ?? null;
@@ -90,6 +93,7 @@ export async function pcModel(sheet, ctx) {
 
   // ---- header
   const head = {
+    npc, role: role?.label ?? "", roleKey: s.role ?? "", cv: npc ? (s.cv ?? role.cv[0]) : "", isGM: !!game.user?.isGM,
     species: sp ? { id: sp.id, name: sp.name } : null, cls: cls ? { id: cls.id, name: cls.name } : null, size: SIZE_NAMES[s.size ?? 3] ?? "",
     combat: !combat ? { mode: "none" } : (!cbt || cbt.initiative === null || cbt.initiative === undefined) ? { mode: "roll" } : { mode: "status", text: combat.started ? `In combat · Round ${combat.round}` : "In combat · not started" }
   };
@@ -112,12 +116,18 @@ export async function pcModel(sheet, ctx) {
       tip: `Guard ${Number(s.guard) || 0}${s.apGuard ? ` + ${s.apGuard} from the AP your last turn kept (taken first, 1 round)` : ""}. It takes damage before your Health, can't be healed and ends with the encounter. Click +1, right-click −1, Ctrl: 5.` },
     esc: { n: escNow, rungs: escRungs(escNow, rungNames, apex), hooks: hooksLeft(hookNames, { crit: !!combat && used.crit === combat.id, hook: !!combat && used.hook === combat.id }).join(" · "),
       momentum: !!combat?.getFlag?.(F, "momentumStart") },
-    strikes: strikesLine(strikesUsed(a))
+    strikes: strikesLine(strikesUsed(a)),
+    // v0.0.291: the Senses cell (both sheets), the NPC's Strikes diamonds and next Bane, the Elite's ladder
+    senses: senseChips(s.senses ?? {}), strikePips: strikePips(strikesUsed(a)), strikesLeft: Math.max(0, 3 - strikesUsed(a)),
+    nextBane: basicAtk && combat?.started ? nextBanes(atWillUses(a, basicAtk)).replace(/^next: /, "Basic attack: next +") : "",
+    elite, eliteRungs: ELITE_RUNGS.map(r => ({ ...r, lit: escNow >= r.n })),
+    phases: `Phases: Bloodied +1 ${s.bloodied ? "\u2713" : "not yet"} \u00b7 Strained +1 ${s.strained ? "\u2713" : "not yet"}`
   };
   const hands = { tiles: handTiles(weapons, inCombat) };
 
   // ---- health
   const down = downState(s, statuses), tags = healthTags(s);
+  if (down.down && npc) Object.assign(down, { kind: "", check: "", state: s.lethal > s.nonlethal ? "Dead" : s.nonlethal > s.lethal ? "Unconscious" : "Dead or Unconscious", note: s.zeroState || "" });
   if (down.down) {
     const kind = down.kind, choice = a.getFlag(F, "downChoice");
     down.title = down.state.toUpperCase();
@@ -162,7 +172,11 @@ export async function pcModel(sheet, ctx) {
   ];
   const dcs = saveDCs({ weapon: s.weaponMod, power: s.powerMod, signature: s.signatureMod });
   const L = TWOD12.attributes;
-  const mods = [
+  const usesPower = a.itemTypes.action.some(i => ["magic", "power"].some(t => i.system?.traits?.has?.(t)));
+  const mods = npc ? [
+    { label: "Weapon", attr: L[s.weaponAttribute] ?? "\u2014", value: sg(s.weaponMod), dc: `DC ${dcs.weapon}`, tip: `Weapon Modifier, from ${L[s.weaponAttribute] ?? "\u2014"} (half, rounded up, + 1). Save DC 11 + it (@weapon.dc)` },
+    ...(usesPower ? [{ label: "Power", attr: L[s.powerAttribute] ?? "\u2014", value: sg(s.powerMod), dc: `DC ${dcs.power}`, tip: `Power Modifier, from ${L[s.powerAttribute] ?? "\u2014"}. Save DC 11 + it (@power.dc)` }] : [])
+  ] : [
     { label: "Weapon", attr: L[s.weaponAttribute] ?? "—", value: s.weaponAttribute ? sg(s.weaponMod) : "—", dc: `DC ${dcs.weapon}`, tip: `Weapon Modifier, from ${L[s.weaponAttribute] ?? "—"}. Save DC 11 + it (@weapon.dc)` },
     { label: "Power", attr: L[s.powerAttribute] ?? "—", value: s.powerAttribute ? sg(s.powerMod) : "—", dc: `DC ${dcs.power}`, tip: `Power Modifier, from ${L[s.powerAttribute] ?? "—"}. Save DC 11 + it (@power.dc)` },
     { label: "Signature", attr: s.signatureFrom === "power" ? "Power" : "Weapon", value: s.signatureAttribute ? sg(s.signatureMod) : "—", dc: `DC ${dcs.signature}`, tip: `Signature Modifier: the higher of your Weapon and Power Modifiers (${L[s.signatureAttribute] ?? "—"}). Save DC 11 + it (@signature.dc)` }
@@ -212,12 +226,18 @@ export async function pcModel(sheet, ctx) {
     const area = areaText(it), dist = distanceText(it, r.weapon) || (reaction && Number(it.momentRange) > 0 ? String(it.momentRange) : "");   // a Reaction with no Distance: its moment's range (Opportunity Attack: 1)
     const sec = extra.section ?? actionSection({ basic: !!i.getFlag(F, "basic"), basicKey: i.getFlag(F, "basic"), reaction, escalation: esc, frequency: effectiveFrequency(it) });
     const fists = it.weaponUse === "fists" || i.getFlag(F, "basic") === "fists";
+    const subs = [];
+    if (npc && it.basicAttack) { const rr = it.basicRating || "medium"; subs.push(`Basic attack \u00b7 ${TWOD12.npcRatings[rr]?.label ?? rr} \u00b7 ~${npcRow(role, TWOD12.npcRatings, rr, s.stage).basic.join(" / ")}`); if (elite && atk && escNow >= 1) subs.push("+1 Boon on its first attack this round"); }
+    if (npc && i.getFlag(F, "basic") === "opportunityAttack" && basicAtk) subs.push(`with ${basicAtk.name}`);
+    if (npc && elite && effectiveFrequency(it) === "encounter" && !esc) subs.push("back once at Escalation 3");
+    if (area) subs.push(`Area: ${area}`);
+    const aps = (it.versions ?? []).map(v => v.ap), pillTxt = costPill(aps, reaction);
     return {
-      id: i.id, name: i.name, sub: area ? `Area: ${area}` : "", fav: favs.includes(i.id), section: sec,
-      cost: costPill((it.versions ?? []).map(v => v.ap), reaction), fc: (SHEET_FREQ[reaction ? "reaction" : sec] ?? SHEET_FREQ.atwill).color,
+      id: i.id, name: i.name, sub: subs.join(" \u00b7 "), fav: favs.includes(i.id), section: sec, lines: rowLines({ frequency: effectiveFrequency(it), reaction, strike: !!it.traits?.has?.("strike") || i.getFlag(F, "basic") === "opportunityAttack" }),   // Opportunity Attack makes a Weapon Attack: a Strike
+      cost: npc && pillTxt && !reaction ? `${pillTxt} AP` : pillTxt, fc: (SHEET_FREQ[reaction ? "reaction" : sec] ?? SHEET_FREQ[effectiveFrequency(it)] ?? SHEET_FREQ.atwill).color,
       dist: area ? (String(it.areaDistance ?? "").trim() ? distanceShort(dist) : "—") : distanceShort(dist), vs: vsShort(vsText(it, { fists })),
-      off: !!why, offWhy: why, weapon: r.isWeapon, grip: handBtns?.[0]?.grip ?? "", unloaded: r.unloaded, reaction,
-      grant: r.grant ? { tip: r.grant.tip } : null, handBtns: why ? null : handBtns, useTip: r.useTip || `Use ${i.name}`, open: r.open
+      off: !!why, offWhy: why, weapon: r.isWeapon && !npc, grip: handBtns?.[0]?.grip ?? "", unloaded: r.unloaded, reaction,
+      grant: r.grant ? { tip: r.grant.tip } : null, handBtns: why || npc ? null : handBtns,   // v0.0.291: no Hands for NPCs (a plain Use) useTip: r.useTip || `Use ${i.name}`, open: r.open
     };
   };
   const actions = a.itemTypes.action.filter(i => techniqueState(a, i) !== "locked");
@@ -245,24 +265,29 @@ export async function pcModel(sheet, ctx) {
     encounter: { title: SHEET_FREQ.encounter.label, dot: SHEET_FREQ.encounter.color }, daily: { title: SHEET_FREQ.daily.label, dot: SHEET_FREQ.daily.color },
     atwill: { title: SHEET_FREQ.atwill.label, dot: SHEET_FREQ.atwill.color }, reaction: { title: SHEET_FREQ.reaction.label, dot: SHEET_FREQ.reaction.color }
   };
+  if (npc) { const lv = Math.max(0, ...secRows.apex.map(r => Number(a.items.get(r.id)?.system?.escalation) || 0)); SEC_META.apex = { ...SEC_META.apex, title: `Escalation ${lv || 1}` }; if (!elite) secRows.apex.length = 0; }
   const sections = SECTION_ORDER.filter(k => secRows[k].length && (inCombat || (k !== "granted" && k !== "apex"))).map(k => ({ key: k, ...SEC_META[k], rows: secRows[k] }));
 
   // Basic Actions: the four columns (config basicGroups), each button with its reason when it can't be used.
   const held = weapons.filter(w => w.system?.wielded && !w.system?.traits?.has?.("barehanded"));
   const bctx = {
     freeHand: handSlots(weapons).some(x => x.free), reloadWeapon: held.some(w => w.system?.traits?.has?.("reload")), prone: statuses.has("prone"), immobilized: statuses.has("immobilized"),
-    speed: speedNow, reach: s.reach ?? 1, down: down.down || unconscious, rallyLeft: s.rallyLeft
+    speed: speedNow, reach: s.reach ?? 1, down: down.down || unconscious, rallyLeft: s.rallyLeft, npc
   };
   const basics = actions.filter(i => i.getFlag(F, "basic") && i.getFlag(F, "basic") !== "opportunityAttack");
   const bRow = i => {
     const r = sheet._actionRow(i), key = i.getFlag(F, "basic"), f = effectiveFrequency(i.system);
     const why = basicUnavailable(key, bctx) || (unconscious ? "Unconscious" : "") || r.fadedWhy || r.noApWhy || (r.strikeCap ? "Three Strikes this turn" : "");
     const one = r.hands?.filter(h => !h.off) ?? [];
-    return { id: i.id, name: i.name, cost: costPill((i.system.versions ?? []).map(v => v.ap)), fc: f === "round" ? SHEET_FREQ.round.color : SHEET_FREQ.atwill.color,
+    const c = costPill((i.system.versions ?? []).map(v => v.ap));
+    return { id: i.id, name: i.name, cost: npc && c ? `${c} AP` : c, fc: f === "round" ? SHEET_FREQ.round.color : SHEET_FREQ.atwill.color, lines: rowLines({ frequency: f, strike: !!i.system?.traits?.has?.("strike"), off: !!why }),
       off: !!why, offWhy: why, next: key === "basicWeaponAttack" && atk ? nextBanes(atWillUses(a, i)) : "", open: r.open,
       weaponId: one.length === 1 ? one[0].id : (r.solo?.id ?? ""), tip: `${i.name}: ${r.useTip || "use it"}` };
   };
   const used2 = new Set();
+  // v0.0.291: an NPC has no Weapon Attack, Fists, Reload, Regrip or Release (its Basic attack is its weapon); Charge alone under Attack
+  const NPC_HIDE = new Set(["basicWeaponAttack", "fists", "reload", "regrip", "release"]);
+  if (npc) for (let k = basics.length - 1; k >= 0; k--) if (NPC_HIDE.has(basics[k].getFlag(F, "basic"))) basics.splice(k, 1);
   const basic = TWOD12.basicGroups.map(g => ({ key: g.key, label: g.label, rows: g.names.map(n => basics.find(i => i.name === n)).filter(Boolean).map(i => { used2.add(i.id); return bRow(i); }) })).filter(g => g.rows.length);
   const restB = basics.filter(i => !used2.has(i.id)).map(bRow);
   if (restB.length) basic.push({ key: "other", label: "Other", rows: restB });
@@ -390,9 +415,11 @@ export async function pcModel(sheet, ctx) {
     ]
   };
 
-  const tabs = [["actions", "Actions"], ["effects", "Effects", conditions.length + effects.length], ["items", "Items"], ["build", "Build", bad.length], ["mastery", "Mastery"], ["upkeep", "Upkeep"], ["notes", "Notes"]]
+  const tabs = (npc ? [["actions", "Actions"], ["effects", "Effects", conditions.length + effects.length], ["builder", "Builder"], ["loot", "Loot"], ["notes", "GM notes"]]
+    : [["actions", "Actions"], ["effects", "Effects", conditions.length + effects.length], ["items", "Items"], ["build", "Build", bad.length], ["mastery", "Mastery"], ["upkeep", "Upkeep"], ["notes", "Notes"]])
     .map(([k, l, n]) => ({ k, l, n: n || 0 }));
   return {
+    npc, builder: npc ? npcBuilderModel(a) : null, loot: npc ? lootRows(a) : null,
     head, strip, hands, chips, health, rally, defs, attrs, move, mods, wounds, sections, basic, favRows, tabs, untrained,
     effects: { conditions, effects }, weapons: weaponRows, armor: armorRows, build, mastery, upkeep, down,
     modConflict: s.modConflict ? `Both Modifiers wanted the same Attribute: the ${csys?.modPriority === "power" ? "Power" : "Weapon"} Modifier kept it.` : ""
@@ -419,4 +446,60 @@ export async function applyHandPick(actor, weapons, key, { spendAP, applyRegrip,
     return true;
   }
   return false;
+}
+
+/* ---------------------------------------------------------------- v0.0.291 (PACK NPC-SHEET): the Builder tab (Lucas's layout F2) and the Loot tab */
+/** The book's feature colors (book/rules.css, light page): Body, Mind, Appeal, Instinct; Vigor and Resolve as Body and Mind; AD the Weapon Modifier's, WD the Power Modifier's. */
+export const FEATURE_COLORS = { body: "#7a1626", mind: "#17327a", appeal: "#6b4e00", instinct: "#14532d", ad: "#9a4a00", wd: "#5b3a9e", move: "#1b2433" };
+export const RATING_COLORS = { terrible: "#6b665a", low: "#8a7a5a", medium: "#1b2433", high: "#8a5a12", extreme: "#a8322d" };
+const fmtN = n => String(Math.round(n * 100) / 100);
+
+export function npcBuilderModel(a) {
+  const s = a.system, R = TWOD12.npcRatings, role = TWOD12.npcRoles[s.role] ?? TWOD12.npcRoles.standard, stage = Number(s.stage) || 1;
+  const keys = ratingKeys(role, R), rating = k => { const r = s.ratings?.[k] || "medium"; return r === "custom" || keys.includes(r) ? r : keys[keys.length - 1]; };
+  const row = (key, name, color, valOf, value) => {
+    const cur = rating(key), at = keys.indexOf(cur);
+    return { key, name, color, act: "setRating", ratingName: cur === "custom" ? "Custom" : R[cur].label, value,
+      steps: keys.map((k, i) => ({ r: k, on: at >= 0 && i <= at, sel: i === at, v: valOf(k), tip: `${R[k].label}: ${valOf(k)}` })) };
+  };
+  const sg2 = v => (v >= 0 ? `+${v}` : `\u2212${Math.abs(v)}`);
+  const attrs = [["body", "Body"], ["mind", "Mind"], ["appeal", "Appeal"], ["instinct", "Instinct"]].map(([k, n]) => row(k, n, FEATURE_COLORS[k], x => sg2(npcRow(role, R, x, stage).attr), sg2(s.attributes?.[k] ?? 0)));
+  const health = [["bodyHm", "Vigor", "body", s.bdt], ["mindHm", "Resolve", "mind", s.mdt]].map(([k, n, c, v]) => row(k, n, FEATURE_COLORS[c], x => `\u00d7${fmtN(npcRow(role, R, x, stage).hm)}`, v));
+  const defs = [["ad", "Armor Defense", s.armorDC], ["wd", "Ward Defense", s.wardDC]].map(([k, n, v]) => row(k, n, FEATURE_COLORS[k], x => npcRow(role, R, x, stage).def, v));
+  const SPD = ["Slow", "Slow", "Default", "Fast", "Fast"], spNow = Number(s.speed) || 5, stNow = Math.max(0, Number(s.steadiness) || 0);
+  const speed = { key: "speed", name: "Speed", color: FEATURE_COLORS.move, act: "setRating", ratingName: SPD[[3, 4, 5, 6, 7].indexOf(spNow)] ?? "Custom", value: spNow,
+    steps: [3, 4, 5, 6, 7].map((v, i) => ({ r: String(v), on: v <= spNow, sel: v === spNow, v, tip: `${SPD[i]}: ${v}` })) };
+  const steady = { key: "steadiness", name: "Steadiness", color: FEATURE_COLORS.move, act: "setSteadiness", ratingName: stNow === 0 ? "Default" : "", value: stNow,
+    steps: [0, 1, 2, 3, 4].map(v => ({ r: String(v), dv: v, on: v <= stNow, sel: v === stNow, v, tip: v === 0 ? "Default: 0" : `${v}` })) };
+  // the summary: "Down in about" uses the PC damage a turn against a Medium Defense (13) at this Stage (the ruler's numbers, config pcDamageVsDefense)
+  const sh = TWOD12.npcRoles.standard.hm, pcDmg = TWOD12.pcDamageVsDefense[13] * (sh[stage - 1][2] / sh[0][2]);
+  const pool = (Number(s.bdt) || 0) + (Number(s.mdt) || 0);
+  const avg = ratingsAverage(["body", "mind", "appeal", "instinct", "bodyHm", "mindHm", "ad", "wd"].map(rating), R);
+  const specials = [["Basic attack", "1 AP \u00b7 At-will", 1], ["Special, 1 AP", "Round \u00b7 \u00d71.4", 1.4], ["Special, 2 AP", "Round \u00b7 \u00d72.2", 2.2], ...(s.role === "minion" ? [] : [["Special, 3 AP", "Encounter \u00b7 \u00d73.5", 3.5]])];
+  return {
+    roles: Object.entries(TWOD12.npcRoles).map(([k, v]) => ({ key: k, label: v.label, on: (s.role || "standard") === k })),
+    level: s.level, stage, cv: s.cv ?? role.cv[0], ap: role.ap, elite: s.role === "elite", escOn: !!s.useEscalation,
+    summary: [{ k: "Health", v: pool }, { k: "Down in about", v: `${downIn(pool, pcDmg)} PC turns` }, { k: "Should deal", v: `about ${role.deals}` }, { k: "Ratings average", v: avg }],
+    cols: [[{ title: "Attributes", rows: attrs, grow: 4 }, { title: "Movement", rows: [speed, steady], grow: 2 }], [{ title: "Health", rows: health, grow: 3 }, { title: "Defenses", rows: defs, grow: 3 }]],
+    heads: keys.map(k => ({ label: R[k].label, color: RATING_COLORS[k], med: k === "medium" })),
+    attacks: specials.map(([label, sub, x], n) => ({ label, sub, alt: n % 2 === 1, cells: keys.map(k => ({ v: specialAvg(npcRow(role, R, k, stage).basic, x).join(" / "), med: k === "medium" })) }))
+  };
+}
+
+/** The Loot tab: the NPC's items (flavor and loot). */
+export function lootRows(a) {
+  return [...(a.itemTypes.weapon ?? []), ...(a.itemTypes.armor ?? []), ...(a.itemTypes.gear ?? [])].filter(i => !i.system?.traits?.has?.("barehanded"))
+    .map(i => ({ id: i.id, name: i.name, qty: i.type === "gear" ? (Number(i.system.quantity) || 1) : 1, note: i.type === "gear" ? (i.system.cost ? `${i.system.cost} each` : "") : "flavor" }));
+}
+
+/** The "Post stat block" card (GM): name, role, CV, Stage, Health, Defenses, Speed, Senses, each Action in one line. */
+export function statBlockHtml(a, sysCard) {
+  const s = a.system, chips = senseChips(s.senses ?? {}).map(c => c.label).join(", ");
+  const acts = a.itemTypes.action.filter(i => !i.getFlag(F, "basic") || i.getFlag(F, "basic") === "opportunityAttack").map(i => {
+    const f = effectiveFrequency(i.system), cost = costPill((i.system.versions ?? []).map(v => v.ap), !!i.system.reaction);
+    const line = plainEnrichers(hoverOf(i.system.hover, i.system.description ?? i.system.versions?.[0]?.effects ?? "")).slice(0, 110);
+    return `<b>${esc(i.name)}</b> (${esc(cost && !i.system.reaction ? `${cost} AP` : cost)}${f ? `, ${esc(TWOD12.frequencies[f])}` : ""})${line ? `: ${esc(line)}` : ""}`;
+  });
+  return sysCard({ title: a.name, lead: `${esc(s.roleLabel ?? "")} \u00b7 CV ${esc(s.cv ?? "")} \u00b7 Stage ${esc(s.stage ?? 1)}`,
+    text: [`Health ${s.pool} (Vigor ${s.bdt}, Resolve ${s.mdt}) \u00b7 AD ${s.armorDC} \u00b7 WD ${s.wardDC} \u00b7 Speed ${s.moveSpeed ?? s.speed}`, `Senses: ${esc(chips)}`, ...acts].join("<br>") });
 }

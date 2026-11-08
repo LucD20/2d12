@@ -78,7 +78,7 @@ export function basicUnavailable(key, c = {}) {
     case "breakFree": return c.immobilized ? "" : "Not Immobilized";
     case "charge": return (Number(c.speed) || 0) >= 3 ? "" : "Speed under 3";
     case "haul": return (Number(c.reach) || 0) >= 2 ? "" : "Reach under 2";
-    case "rally": return c.down ? "Not while Down" : ((Number(c.rallyLeft) || 0) > 0 ? "" : "No Rally Points left");
+    case "rally": return c.npc ? "No Rally Points" : c.down ? "Not while Down" : ((Number(c.rallyLeft) || 0) > 0 ? "" : "No Rally Points left");
     default: return "";
   }
 }
@@ -226,3 +226,77 @@ export function plainEnrichers(text) {
     .replace(/@\w+\[[^\]]*\|label:([^\]|]*)[^\]]*\]/g, "$1")
     .replace(/@\w+\[([^\]|]*)[^\]]*\]/g, "$1");
 }
+
+/* ---------------------------------------------------------------- PACK NPC-SHEET (v0.0.291): the NPC sheet and the shared row lines */
+
+/** The rating keys a role uses, in order (a Minion has no Extreme). R: TWOD12.npcRatings. */
+export const ratingKeys = (role, R) => Object.keys(R).filter(k => role?.extreme !== false || k !== "extreme");
+/** A rating kept within the role's steps (a Minion's Extreme becomes High); "custom" stays. */
+export const clampRating = (r, role, R) => { if (r === "custom") return r; const keys = ratingKeys(role, R); return keys.includes(r) ? r : keys[keys.length - 1]; };
+/** Every rating of an NPC clamped to a role (the role switch writes these). */
+export function clampRatings(ratings = {}, role, R) {
+  return Object.fromEntries(Object.entries(ratings).map(([k, v]) => [k, k === "speed" ? v : clampRating(v, role, R)]));
+}
+/** The table values of a role at a Stage (1..3) for a rating. */
+export function npcRow(role, R, rating, stage = 1) {
+  const st = Math.min(3, Math.max(1, Math.trunc(Number(stage)) || 1)) - 1, keys = ratingKeys(role, R), r = clampRating(rating, role, R), col = Math.min(role.hm[st].length - 1, R[r]?.i ?? 2);
+  return { attr: role.attr + (R[r]?.off ?? 0), hm: role.hm[st][col], def: Math.max(11, role.defense + (R[r]?.off ?? 0)), basic: role.basic[st][col], keys, rating: r };
+}
+/** A threshold from the Bestiary: (Attribute + 2) x multiplier + Health Base, rounded up. */
+export const npcThreshold = (attr, hm, hb) => Math.max(0, Math.ceil((Number(attr) + 2) * Number(hm) + Number(hb) - 1e-9));
+/** An NPC's numbers from its ratings (one source of truth). ratings: { body, mind, appeal, instinct, bodyHm, mindHm, ad, wd }. */
+export function npcNumbers(role, R, ratings = {}, stage = 1) {
+  const at = k => npcRow(role, R, ratings[k] ?? "medium", stage).attr;
+  const attributes = { body: at("body"), mind: at("mind"), appeal: at("appeal"), instinct: at("instinct") };
+  const vigor = npcThreshold(attributes.body, npcRow(role, R, ratings.bodyHm ?? "medium", stage).hm, role.hb);
+  const resolve = npcThreshold(attributes.mind, npcRow(role, R, ratings.mindHm ?? "medium", stage).hm, role.hb);
+  return { attributes, vigor, resolve, pool: vigor + resolve, ad: npcRow(role, R, ratings.ad ?? "medium", stage).def, wd: npcRow(role, R, ratings.wd ?? "medium", stage).def };
+}
+/** The Attacks reference: a Basic attack average [T2, T3] times the Special's multiplier, rounded to the nearest .5. */
+export const specialAvg = (basic, x = 1) => (basic ?? [0, 0]).map(v => Math.round(Number(v) * x * 2) / 2);
+/** The ratings average as a rating name (the eight choices; Custom ones are left out). */
+export function ratingsAverage(list = [], R) {
+  const scored = list.filter(r => r && r !== "custom" && R[r]);
+  const avg = scored.length ? scored.reduce((t, r) => t + R[r].score, 0) / scored.length : 0;
+  return Object.values(R).reduce((b, x) => (Math.abs(x.score - avg) < Math.abs(b.score - avg) ? x : b)).label;
+}
+/** "Down in about": Health / the PC damage a turn, to one decimal. */
+export const downIn = (pool, pcDamage) => (pcDamage > 0 ? Math.round((Number(pool) / pcDamage) * 10) / 10 : 0);
+
+/** The left-edge lines of an Action row or button: its Frequency color and the [Strike] line. { freq, strike, cls, style }. */
+export function rowLines({ frequency = "", reaction = false, strike = false, off = false } = {}) {
+  const f = reaction ? "reaction" : (["round", "turn", "encounter", "daily", "atwill"].includes(frequency) ? frequency : "atwill");
+  const freq = off ? "#b5ad9c" : SHEET_FREQ[f].color, st = !!strike && !off;
+  return { freq, strike: st, cls: `ln${st ? " ln-strike" : ""}`, style: `--lnf:${freq}` };
+}
+
+/** Book, Chapter 3: the Senses chips. senses: the actor's system.senses ({ hearing, dimlight, darksight, list: [{ name, range }] }). */
+export const SENSE_RULES = {
+  sight: "Sight: creatures in Bright light are Clear, in Dim light Obscured; none in Darkness or without Line of Effect.",
+  dimlight: "Dim-light Sight: for your Sight, Dim light counts as Bright.",
+  darksight: "Dark Sight: for your Sight, Dim light and Darkness count as Bright.",
+  hearing: n => `Hearing: creatures that make noise within ${n} squares are Hidden to you, even through walls.`,
+  heatsight: "Heatsight: creatures within range that give off heat (or are much colder) are Clear to you.",
+  "lesser heatsight": "Lesser Heatsight: creatures within range that give off heat (or are much colder) are Obscured to you.",
+  tremorsense: "Tremorsense: creatures within range that touch the same ground, with no thick wall between, are Clear to you."
+};
+export function senseChips(senses = {}) {
+  const out = [];
+  if (senses.darksight) out.push({ label: "Dark Sight", tip: SENSE_RULES.darksight });
+  else if (senses.dimlight) out.push({ label: "Dim-light Sight", tip: SENSE_RULES.dimlight });
+  else out.push({ label: "Sight", tip: SENSE_RULES.sight });
+  const h = Number.isFinite(Number(senses.hearing)) && senses.hearing !== "" && senses.hearing !== null && senses.hearing !== undefined ? Math.max(0, Number(senses.hearing)) : 10;
+  out.push(h ? { label: `Hearing ${h}`, tip: SENSE_RULES.hearing(h) } : { label: "Deaf", tip: "No Hearing." });
+  for (const x of senses.list ?? []) if (x?.name) out.push({ label: `${x.name}${Number(x.range) ? ` ${x.range}` : ""}`, tip: SENSE_RULES[String(x.name).toLowerCase()] ?? `${x.name}: within ${x.range} squares.` });
+  return out;
+}
+
+/** The Strikes pips of the NPC strip: three diamonds, filled = Strikes left this turn. */
+export const strikePips = used => Array.from({ length: 3 }, (_, k) => k < Math.max(0, 3 - (Math.trunc(Number(used)) || 0)));
+
+/** The Elite's default Escalation effects (Bestiary, Elite Escalation). */
+export const ELITE_RUNGS = [
+  { n: 1, label: "1 · first attack +1 Boon", tip: "Escalation 1: 1 Boon on its first attack each round." },
+  { n: 2, label: "2 · Round Special ×2", tip: "Escalation 2: it can use its Round Special Action twice a round." },
+  { n: 3, label: "3 · Encounter Special back", tip: "Escalation 3: it gets its Encounter Special Action back, once." }
+];

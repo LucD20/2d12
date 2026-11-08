@@ -1,6 +1,6 @@
 // The item sheet (every item type; the Details tab of an Effect is written as sentences: fxdetails.mjs).
 import { rollSource } from "./rollsource.mjs";
-import { tagChoices, TWOD12, categoryText, traitPicker } from "./config.mjs";
+import { tagChoices, TWOD12, categoryText, traitPicker, npcDamage } from "./config.mjs";
 import { versionRow } from "./actions.mjs";
 import { versionStats, fmt } from "./calc.mjs";
 import { buildRawCard, buildWeaponCard } from "./preview.mjs";
@@ -58,6 +58,9 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       system: s,
       fields: s.schema.fields,
       traitPicker: traitPicker(),   // v0.0.179: the Traits drop-down grouped Roll, Requires, Kind, Damage, Keywords
+      // v0.0.291 (PACK NPC-SHEET): the Basic attack's rating and the average it suggests (the NPC's role and Stage)
+      basicRatings: Object.fromEntries(Object.entries(TWOD12.npcRatings).filter(([k]) => it.parent?.system?.role !== "minion" || k !== "extreme").map(([k, v]) => [k, v.label])),
+      basicSuggest: t === "action" && it.parent?.type === "npc" ? npcDamage(it.parent.system.role, s.basicRating || "medium", it.parent.system.level).join(" / ") : "",
       // v0.0.172: the help tips (the grey hints) of the Action and Talent sheets can be hidden, like the Effect's (one choice per user, for both sheets).
       helpable: t === "action" || t === "talent" || t === "class",
       sheetHelp: (() => { try { return game.settings.get("twod12", "sheetHelp") !== false; } catch (e) { return true; } })(),
