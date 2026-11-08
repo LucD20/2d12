@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-08 from the repository at: 7e6143d 2026-11-08 HANDOFF, MASTER-PLAN, backlog: PACK ROLL-DIALOG merged (v0.0.292 to v0.0.296); next AU
+Built by tools/knowledge.py on 2026-11-08 from the repository at: ae273b4 2026-11-08 v0.0.297: PACK ACTION-PREVIEW, the sheet's open Action card redesigned (D2)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (65 KB)
+- HANDOFF.md (66 KB)
 - MASTER-PLAN.md (17 KB)
 - open-design-items.md (79 KB)
 - rules-01-roll.md (21 KB)

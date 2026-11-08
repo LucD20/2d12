@@ -3355,20 +3355,15 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 /* ==== v0.0.297 PACK ACTION-PREVIEW: the Action card that opens in place on the sheets, Lucas's design D2 "Ink and gold, book order"
    (foundry/mockups/action-preview-prototype.html; module/actioncard.mjs draws it, cardview.mjs the pure pieces). The open row is the card's head
    (navy, the name in gold Cinzel, a gold Use); the card hangs from it: parchment, a navy frame with no top, an inner gold rule. ==== */
-/* the open row */
-.twod12.sheet.pcs .ar.open > .ps-line, .twod12.sheet.pcs .ar.open > .ps-brow, .twod12.sheet.pcs .ar.open > .ps-line[data-action="toggleCard"]:hover, .twod12.sheet.pcs .ar.open > .ps-brow[data-action="toggleCard"]:hover { background: #1b2433; color: #f3efe6; }
-.twod12.sheet.pcs .ps-row.open, .twod12.sheet.pcs .ps-brw.open { border-top-color: #1b2433; }
-.twod12.sheet.pcs .ar.open > .ps-line .ps-nm, .twod12.sheet.pcs .ar.open > .ps-brow .ps-nm { font-family: "Cinzel", serif; font-weight: 700; font-size: 15px; color: #f3d39c; text-decoration: none; }
-.twod12.sheet.pcs .ar.open > .ps-line .ps-sub { color: #c9cfda; }
-.twod12.sheet.pcs .ar.open > .ps-line .ps-dist, .twod12.sheet.pcs .ar.open > .ps-brow .ps-slot, .twod12.sheet.pcs .ar.open > .ps-brow .ps-bfreq { color: #f3efe6; }
-.twod12.sheet.pcs .ar.open > .ps-line .ps-vs { color: #f3d39c; border-color: #d9902f; }
-.twod12.sheet.pcs .ar.open > .ps-line .ps-use:not(.dis) { background: #d9902f; color: #1b2433; box-shadow: 0 2px 0 #7a4f12; }
-.twod12.sheet.pcs .ar.open > .ps-line .ps-use.dis { color: #c9cfda; border-color: #5d6b85; }
+/* the open row: v0.0.298 (Lucas tested v0.0.297): the navy head and the ▸ / ▾ chevron only on the Build tab; an open Action row keeps the sheet's light look */
+.twod12.sheet.pcs .ar.open > .ps-brow, .twod12.sheet.pcs .ar.open > .ps-brow[data-action="toggleCard"]:hover { background: #1b2433; color: #f3efe6; }
+.twod12.sheet.pcs .ps-brw.open { border-top-color: #1b2433; }
+.twod12.sheet.pcs .ar.open > .ps-brow .ps-nm { font-family: "Cinzel", serif; font-weight: 700; font-size: 15px; color: #f3d39c; text-decoration: none; }
+.twod12.sheet.pcs .ar.open > .ps-brow .ps-slot, .twod12.sheet.pcs .ar.open > .ps-brow .ps-bfreq { color: #f3efe6; }
 .twod12.sheet.pcs .ar.open > .ps-brow .ps-bctl a { color: #f3d39c; }
-/* the chevron before the name: ▸ closed, ▾ open (gold) */
-.twod12.sheet.pcs .ps-row > .ps-line .ps-nm::before, .twod12.sheet.pcs .ps-brw > .ps-brow .ps-nm::before { content: "\25B8"; display: inline-block; width: 12px; margin-right: 4px; font-family: var(--font-primary, Signika, sans-serif); font-size: 12px; font-weight: 400; color: #6b665a; }
-.twod12.sheet.pcs .ps-row.open > .ps-line .ps-nm::before, .twod12.sheet.pcs .ps-brw.open > .ps-brow .ps-nm::before { content: "\25BE"; color: #d9902f; }
-.twod12.sheet.pcs .ps-row > .ps-line .ps-sub { padding-left: 16px; }
+.twod12.sheet.pcs .ps-brw > .ps-brow .ps-nm::before { content: "\25B8"; display: inline-block; width: 12px; margin-right: 4px; font-family: var(--font-primary, Signika, sans-serif); font-size: 12px; font-weight: 400; color: #6b665a; }
+.twod12.sheet.pcs .ps-brw.open > .ps-brow .ps-nm::before { content: "\25BE"; color: #d9902f; }
+.twod12.sheet.pcs .ar.open > .ps-line .ps-nm { font-weight: 700; }
 /* the frame */
 .twod12.sheet.pcs .ar > .ar-card { padding: 0 8px 10px; }
 .twod12.acard.d2 { display: flex; flex-direction: column; gap: 9px; padding: 12px 14px; background: #fbf6ea; color: #26241f; border: 1px solid #1b2433; border-top: 0; border-radius: 0 0 4px 4px; outline: 1px solid #d9b26a; outline-offset: -5px; overflow: visible;
@@ -3475,3 +3470,29 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.acard.d2 > .trow { color: #26241f; font-size: 13px; }
 .twod12.acard.d2 .iblock { border-top: 1px dashed #d9b26a; }
 .twod12.acard.d2 .ac-changed { font-size: 12px; }
+
+/* ==== v0.0.298 (Lucas tested v0.0.297): the Action card follows the sheet's own look: under a light open row its frame is the sheet's line color;
+   the Tier table's head is a parchment panel (the roll dialog's), the Version buttons and AP badges are the sheet's navy Use button; links never break
+   inside a word; Features and Talents use the same card (actioncard.mjs buildFeatureCard) ==== */
+.twod12.sheet.pcs .ps-row > .ar-card > .acard.d2, .twod12.sheet.pcs .ps-bx > .ar-card > .acard.d2 { border-color: #c9bfab; }
+.twod12.acard.d2 table.ap-tt thead th { background: #efe7d6; color: #3a3329; border-bottom: 1px solid #d9b26a; padding: 5px 9px; }
+.twod12.acard.d2 table.ap-tt thead th + th { border-left: 1px dotted #d9b26a; }
+.twod12.acard.d2 .ap-vbtn { background: #1b2433; color: #fff; box-shadow: 0 2px 0 #05080e; border-radius: 6px; min-height: 26px; padding: 0 12px; }
+.twod12.acard.d2 .ap-vbtn:hover { background: #2a3548; }
+.twod12.acard.d2 .ap-vbtn.no { background: transparent; color: #8f8774; border: 1px dashed #a99f8a; box-shadow: none; font-weight: 500; }
+.twod12.acard.d2 .ap-vcost { color: #3a3329; }
+.twod12.acard.d2 .ap-mode { color: #6b665a; }
+.twod12.acard.d2 .ap-ap { background: #1b2433; color: #fff; }
+.twod12.acard.d2 a.content-link, .twod12.acard.d2 a.twod12-inline.book { word-break: normal; overflow-wrap: normal; white-space: nowrap; }
+.twod12.acard.d2 .ap-fxt, .twod12.acard.d2 .ap-meta, .twod12.acard.d2 table.ap-tt td { word-break: normal; overflow-wrap: break-word; }
+/* a Feature's card: its text, what it grants (each Action's card under its name and cost), a choice folded */
+.twod12.acard.d2 .ap-prose p { margin: 0 0 4px; } .twod12.acard.d2 .ap-prose p:last-child { margin-bottom: 0; }
+.twod12.acard.d2 .ap-grant { display: flex; flex-direction: column; }
+.twod12.acard.d2 .ap-ghead { display: flex; align-items: center; gap: 8px; padding: 5px 10px; background: #efe7d6; border: 1px solid #c9bfab; border-radius: 4px 4px 0 0; }
+.twod12.acard.d2 .ap-ghead b { font-size: 13.5px; color: #26241f; }
+.twod12.acard.d2 .ap-gcost { margin-left: auto; font-size: 11px; font-weight: 700; color: #fff; background: #1b2433; border-radius: 3px; padding: 1px 7px; }
+.twod12.acard.d2 .ap-gcost.kind { background: transparent; color: #5d5446; font-weight: 600; }
+.twod12.acard.d2 .ap-grant > .acard.d2 { border-color: #c9bfab; outline: none; padding: 10px 12px; }
+.twod12.acard.d2 details.ap-choice > summary { list-style: none; cursor: pointer; }
+.twod12.acard.d2 details.ap-choice > summary::-webkit-details-marker { display: none; }
+.twod12.acard.d2 details.ap-choice:not([open]) > summary .ap-ghead { border-radius: 4px; }

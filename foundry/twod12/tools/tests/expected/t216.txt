@@ -28,3 +28,6 @@ the Build tab (no Use): costs, not buttons: 3 | no actor (Generate Action): true
 out of combat with 0 AP: nothing struck: true
 --- the sheet
 the Version button's action: true | the row's AP check shared: true | the roll dialog's too: true | CSS block: true
+--- v0.0.298 (Lucas tested v0.0.297)
+an NPC's cost once (costPill writes AP): 2/3 AP | true | navy head and chevron only on the Build tab: true | links don't break inside a word: true
+a Feature's card, in the Action card's look: true | category: Paladin Feature 1 | Effects: Effects | text: When you deal Holy damage to a creature with the Profane Tag | flavor last: true | no title bar: true

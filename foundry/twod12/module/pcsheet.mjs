@@ -234,7 +234,7 @@ export async function pcModel(sheet, ctx) {
     const aps = (it.versions ?? []).map(v => v.ap), pillTxt = costPill(aps, reaction);
     return {
       id: i.id, name: i.name, sub: subs.join(" \u00b7 "), fav: favs.includes(i.id), section: sec, lines: rowLines({ frequency: effectiveFrequency(it), reaction, strike: !!it.traits?.has?.("strike") || i.getFlag(F, "basic") === "opportunityAttack" }),   // Opportunity Attack makes a Weapon Attack: a Strike
-      cost: npc && pillTxt && !reaction ? `${pillTxt} AP` : pillTxt, fc: (SHEET_FREQ[reaction ? "reaction" : sec] ?? SHEET_FREQ[effectiveFrequency(it)] ?? SHEET_FREQ.atwill).color,
+      cost: pillTxt,   // v0.0.298: costPill already writes "AP" (an NPC's read "2 AP AP") fc: (SHEET_FREQ[reaction ? "reaction" : sec] ?? SHEET_FREQ[effectiveFrequency(it)] ?? SHEET_FREQ.atwill).color,
       dist: area ? (String(it.areaDistance ?? "").trim() ? distanceShort(dist) : "—") : distanceShort(dist), vs: vsShort(vsText(it, { fists })),
       off: !!why, offWhy: why, weapon: r.isWeapon && !npc, grip: handBtns?.[0]?.grip ?? "", unloaded: r.unloaded, reaction,
       grant: r.grant ? { tip: r.grant.tip } : null, handBtns: why || npc ? null : handBtns,   // v0.0.291: no Hands for NPCs (a plain Use) useTip: r.useTip || `Use ${i.name}`, open: r.open
@@ -280,7 +280,7 @@ export async function pcModel(sheet, ctx) {
     const why = basicUnavailable(key, bctx) || (unconscious ? "Unconscious" : "") || r.fadedWhy || r.noApWhy || (r.strikeCap ? "Three Strikes this turn" : "");
     const one = r.hands?.filter(h => !h.off) ?? [];
     const c = costPill((i.system.versions ?? []).map(v => v.ap));
-    return { id: i.id, name: i.name, cost: npc && c ? `${c} AP` : c, fc: f === "round" ? SHEET_FREQ.round.color : SHEET_FREQ.atwill.color, lines: rowLines({ frequency: f, strike: !!i.system?.traits?.has?.("strike"), off: !!why }),
+    return { id: i.id, name: i.name, cost: c, fc: f === "round" ? SHEET_FREQ.round.color : SHEET_FREQ.atwill.color, lines: rowLines({ frequency: f, strike: !!i.system?.traits?.has?.("strike"), off: !!why }),
       off: !!why, offWhy: why, next: key === "basicWeaponAttack" && atk ? nextBanes(atWillUses(a, i)) : "", open: r.open,
       weaponId: one.length === 1 ? one[0].id : (r.solo?.id ?? ""), tip: `${i.name}: ${r.useTip || "use it"}` };
   };
@@ -498,7 +498,7 @@ export function statBlockHtml(a, sysCard) {
   const acts = a.itemTypes.action.filter(i => !i.getFlag(F, "basic") || i.getFlag(F, "basic") === "opportunityAttack").map(i => {
     const f = effectiveFrequency(i.system), cost = costPill((i.system.versions ?? []).map(v => v.ap), !!i.system.reaction);
     const line = plainEnrichers(hoverOf(i.system.hover, i.system.description ?? i.system.versions?.[0]?.effects ?? "")).slice(0, 110);
-    return `<b>${esc(i.name)}</b> (${esc(cost && !i.system.reaction ? `${cost} AP` : cost)}${f ? `, ${esc(TWOD12.frequencies[f])}` : ""})${line ? `: ${esc(line)}` : ""}`;
+    return `<b>${esc(i.name)}</b> (${esc(cost)}${f ? `, ${esc(TWOD12.frequencies[f])}` : ""})${line ? `: ${esc(line)}` : ""}`;
   });
   return sysCard({ title: a.name, lead: `${esc(s.roleLabel ?? "")} \u00b7 CV ${esc(s.cv ?? "")} \u00b7 Stage ${esc(s.stage ?? 1)}`,
     text: [`Health ${s.pool} (Vigor ${s.bdt}, Resolve ${s.mdt}) \u00b7 AD ${s.armorDC} \u00b7 WD ${s.wardDC} \u00b7 Speed ${s.moveSpeed ?? s.speed}`, `Senses: ${esc(chips)}`, ...acts].join("<br>") });

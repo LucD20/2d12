@@ -78,3 +78,12 @@ console.log("--- the sheet");
 const sh = src("module/actor-sheets.mjs"), css = src("styles/system.css");
 console.log("the Version button's action:", sh.includes("useVersion: CharacterSheet.useVersion") && sh.includes("rdState: { ap: Number(target.dataset.ap) || 0 }"), "| the row's AP check shared:", sh.includes("!!versionCant(minCost, getAP(cbt)"), "| the roll dialog's too:", src("module/rollinput.mjs").includes("versionButtons([v.ap]"),
   "| CSS block:", css.includes("v0.0.297 PACK ACTION-PREVIEW") && css.includes(".twod12.sheet.pcs .ar.open > .ps-line .ps-nm"));
+console.log("--- v0.0.298 (Lucas tested v0.0.297)");
+const ps = src("module/pcsheet.mjs");
+console.log("an NPC's cost once (costPill writes AP):", S.costPill([2, 3]), "|", !ps.includes("`${pillTxt} AP`") && !ps.includes("`${c} AP`"), "| navy head and chevron only on the Build tab:", !css.includes(".twod12.sheet.pcs .ps-row > .ps-line .ps-nm::before") && css.includes(".twod12.sheet.pcs .ps-brw > .ps-brow .ps-nm::before"),
+  "| links don't break inside a word:", css.includes(".twod12.acard.d2 a.content-link, .twod12.acard.d2 a.twod12-inline.book { word-break: normal; overflow-wrap: normal; white-space: nowrap; }"));
+globalThis.fromUuid = async () => null;
+const { buildFeatureCard } = await import(ROOTURL + "module/actioncard.mjs");
+const dp = asItem(load("pcs/paladin-1-smite-heavy-blows.pc.json").items.find(i => i.name === "Divine Power"));
+const fc = await buildFeatureCard(dp, { actor });
+console.log("a Feature's card, in the Action card's look:", /acard d2 feat/.test(fc), "| category:", txt(fc.match(/<span class="ap-cat">[\s\S]*?<\/span>/)?.[0]), "| Effects:", txt(fc.match(/<div class="ap-fxh">[^<]*/)?.[0]), "| text:", txt(fc.match(/ap-prose">([\s\S]*?)<\/div>/)?.[1]).slice(0, 60), "| flavor last:", fc.indexOf("ap-flav") > fc.indexOf("ap-prose"), "| no title bar:", !/ahead|ac-head/.test(fc));

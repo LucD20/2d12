@@ -33,7 +33,7 @@ import { rollActorInitiative, combatantOf, getAP, setAP, spendAP, getRAP, setRAP
 import { healthView, donutPoolAt } from "./healthview.mjs";
 import { applySpeedMods } from "./speedmods.mjs";
 import { unloadedWeapon, costText, frequencyText, costGroup, groupRows, GROUP_BY, SORT_BY, sortKeyOf } from "./actionrows.mjs";
-import { buildActionCard } from "./actioncard.mjs";
+import { buildActionCard, buildFeatureCard } from "./actioncard.mjs";
 import { versionCant } from "./sheetmodel.mjs";
 import { enableDragging, dropEffect } from "./drag.mjs";
 import { isFaded, grantMatches, activeGrants } from "./usage.mjs";
@@ -775,7 +775,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const box = row.querySelector(":scope > .ar-card"), item = this.actor.items.get(row.dataset.itemId);
     if (!box || !item || box.dataset.loaded) return;
     // v0.0.297 (PACK ACTION-PREVIEW): a Build tab row has no Use: its card shows the Versions' costs, not their Use buttons
-    try { box.innerHTML = item.type === "action" ? await buildActionCard(item, { actor: this.actor, use: !row.classList.contains("ps-brw") }) : await buildInfoCard(item); box.dataset.loaded = "1"; }
+    try { box.innerHTML = item.type === "action" ? await buildActionCard(item, { actor: this.actor, use: !row.classList.contains("ps-brw") }) : await buildFeatureCard(item, { actor: this.actor }); box.dataset.loaded = "1"; }   // v0.0.298: Features and Talents in the same look
     catch (e) { console.warn("twod12 | could not show the card", e); box.innerHTML = `<div class="tferr">Could not show this card (${esc(String(e.message ?? e).slice(0, 80))}).</div>`; }
   }
 

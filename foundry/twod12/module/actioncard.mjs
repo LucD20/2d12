@@ -11,13 +11,14 @@
 // With actor: what effects add inside the cells in green or red (as before), the strip, the Version buttons. The pure pieces: cardview.mjs.
 // The chat cards are unchanged (chatcards.mjs, preview.mjs).
 import { TWOD12, traitGroupOf, highlightText, metaRowHtml, effectiveFrequency, distanceText, areaText, vsText, areaButton, prettyDamage, categoryText, doomStatus } from "./config.mjs";
-import { rawTierLine, modifierBlocks } from "./preview.mjs";
+import { rawTierLine, modifierBlocks, actionOnlyTalent } from "./preview.mjs";
+import { prereqLine } from "./talents.mjs";
 import { actionChanges, unloadedWeapon, traitsFor } from "./actionrows.mjs";
 import { rollSource } from "./rollsource.mjs";
 import { modifierList, damageSteps } from "./effects.mjs";
 import { collectBonuses, bonusesNotNow } from "./bonus.mjs";
 import { versionButtons, tierLabel, rollStripChips, modText, rulerText, effectLines, rollsItself } from "./cardview.mjs";
-import { distanceShort } from "./sheetmodel.mjs";
+import { distanceShort, costPill } from "./sheetmodel.mjs";
 import { esc } from "./util.mjs";
 
 const enrich = async (txt, doc = null) => highlightText(await foundry.applications.ux.TextEditor.implementation.enrichHTML(txt ?? "", doc ? { relativeTo: doc } : {}));
@@ -161,6 +162,40 @@ export async function buildActionCard(item, { actor = null, use = true } = {}) {
     ${it.prerequisites ? `<div class="trow"><b>Prerequisites:</b> ${esc(it.prerequisites)}</div>` : ""}
     ${notes}
     ${grid}${effects}${modifierBlocks(it).join("")}${strip}${flavor}
+    ${ruler ? `<div class="ap-ruler"><b>Ruler</b> ${esc(ruler)}</div>` : ""}
+  </div>`;
+}
+
+/**
+ * v0.0.298 (Lucas tested v0.0.297: "Features should look similar to cards like Opportunity Attack"): a Feature's or Talent's card on the sheets
+ * in the same look as an Action with no table: the trait line (traits, category, Frequency chip), the meta lines (Prerequisites, Requirements),
+ * "◆ Effects" and its text, what it grants (each Action as its card, a choice folded), the Talent slots and "Modifies", the Flavor at the bottom,
+ * the ruler in Designer mode. A Talent that is only its Action shows that Action's card. The chat keeps buildInfoCard (preview.mjs).
+ */
+export async function buildFeatureCard(item, { actor = null } = {}) {
+  const s = item.system ?? {};
+  const load = async list => (await Promise.all((list ?? []).filter(Boolean).map(async u => { try { return await fromUuid(u); } catch (e) { return null; } }))).filter(Boolean);
+  if (item.type === "talent" && actionOnlyTalent(s)) { const [a] = await load(s.actions); if (a?.type === "action") return buildActionCard(a, { actor, use: false }); }
+  const f = effectiveFrequency(s), fl = f && TWOD12.frequencies[f] && !["none", ""].includes(f) ? TWOD12.frequencies[f] : "";
+  const cat = categoryText(s), traits = s.traits?.size ? traitLine(s.traits) : "";
+  const pre = prereqLine(s), req = String(s.requirements ?? "").trim();
+  const meta = [pre ? `<div class="trow"><span><b>Prerequisites:</b> ${esc(pre)}</span></div>` : "", req ? `<div class="trow"><span><b>Requirements:</b> ${highlightText(esc(req))}</span></div>` : ""].join("");
+  const body = String(s.description ?? "").replace(/<[^>]*>/g, "").trim() ? await enrich(s.description, item) : "";
+  // what it grants: each Action as its card under a small head (its name and cost), a choice's options folded
+  const head = d => `<div class="ap-ghead"><b>${esc(d.name)}</b>${d.type === "action" ? `<span class="ap-gcost">${esc(costPill((d.system.versions ?? []).map(v => v.ap), !!d.system.reaction))}</span>` : `<span class="ap-gcost kind">${esc(categoryText(d.system ?? {}) || d.type)}</span>`}</div>`;
+  const full = async d => { try { return d.type === "action" ? await buildActionCard(d, { actor, use: false }) : await buildFeatureCard(d, { actor }); } catch (e) { return ""; } };
+  const blocks = [];
+  const grants = await load(s.actions), options = await load(s.choiceOptions);
+  if (grants.length) blocks.push(`<div class="ap-fxh">Grants</div>${(await Promise.all(grants.map(async d => `<div class="ap-grant">${head(d)}${await full(d)}</div>`))).join("")}`);
+  if (options.length) blocks.push(`<div class="ap-fxh">${esc(s.choiceLabel || "Choose")} ${Math.max(1, s.choiceCount || 1)}</div>${(await Promise.all(options.map(async d => `<details class="ap-grant ap-choice"><summary>${head(d)}</summary>${await full(d)}</details>`))).join("")}`);
+  if (s.talents) blocks.push(`<div class="ap-fxh">Talent slots</div><div class="ap-fxt one">${esc(String(s.talents))}</div>`);
+  const ruler = rulerText(s.worth, setting("designerMode"));
+  const flavor = s.flavor ? `<div class="ap-flav"><div class="dv" aria-hidden="true">◆ ◆ ◆</div>${esc(s.flavor)}</div>` : "";
+  return `<div class="twod12 acard d2 feat" data-card-item="${esc(item.id ?? "")}">
+    ${traits || cat || fl ? `<div class="ap-trow">${traits}<span class="ap-cat">${cat ? esc(cat) : ""}${fl ? ` <span class="ap-freq" style="background:${FREQ_CHIP[f] ?? "#5f5e5a"}">${esc(fl)}</span>` : ""}</span></div>` : ""}
+    ${meta ? `<div class="ap-meta">${meta}</div>` : ""}
+    ${body ? `<div class="ap-fxh">Effects</div><div class="ap-fxl plain"><div class="ap-fxt one ap-prose">${body}</div></div>` : ""}
+    ${blocks.join("")}${modifierBlocks(s).join("")}${flavor}
     ${ruler ? `<div class="ap-ruler"><b>Ruler</b> ${esc(ruler)}</div>` : ""}
   </div>`;
 }
