@@ -3346,3 +3346,8 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat.cc .cc-noroll .cc-trigger p:last-child, .twod12.chat.cc .cc-noroll .cc-effect > p:last-child { margin-bottom: 0; }
 .twod12 .vs .vsv, .twod12.rolldlg .vsv { font-weight: 700; }
 .twod12.rolldlg .rd-tiers td { border-left: 1px solid #cdb88a !important; }
+/* ==== v0.0.296 (Lucas tested v0.0.295): the roll dialog's Tier rows read as one table (no gap between the Tiers, a thin line between rows) ==== */
+.twod12.rolldlg .rd-tiers { border-spacing: 0 !important; border: 1px solid #d6c8a8 !important; border-radius: 3px; overflow: hidden; background: var(--rd-box) !important; }
+.twod12.rolldlg .rd-tiers th, .twod12.rolldlg .rd-tiers td { border: 0 !important; border-top: 1px solid #e0d4ba !important; border-radius: 0 !important; }
+.twod12.rolldlg .rd-tiers td { border-left: 1px solid #cdb88a !important; background: var(--rd-box); }
+.twod12.rolldlg .rd-tiers tr:first-child th, .twod12.rolldlg .rd-tiers tr:first-child td { border-top: 0 !important; }

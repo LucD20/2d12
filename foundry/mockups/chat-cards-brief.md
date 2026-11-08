@@ -344,7 +344,7 @@ Run the lint as CLAUDE.md says.
 - A Reaction's Trigger or Interrupt line goes right UNDER THE META LINES and ABOVE everything else.
 - Card order: 1) name + "Frequency · cost" chip; 2) trait chips; 3) the target line "Targets ✦ Distance → target" + retarget; 4) on a Save card only, the "<Attribute> Save ——— [DC N]" line; 5) "**Trigger:** …" or "**Interrupt:** …" in plain text, no background, no "(X → Y)" context; 6) a one-diamond divider; 7) the rest (Save: the Tier rows; non-roll: the effect text).
 - This REPLACES section 4.6's "Trigger sits right under the Tier rows".
-- *(Lucas, 2026-11-08: "Yes": the target line with the retarget is at the top of every card, attack, Save and non-roll; applied in v0.0.295. It replaces v0.0.285 / v0.0.287's bottom row.)*
+- *(Lucas, 2026-11-08, final: "the target should be kept at the bottom". Item 3 here, and section 13 item 3, are overridden: the top line is "Targets ✦ Distance" only; "→ target" and the retarget stay on the bottom row beside the buttons (v0.0.285 / v0.0.287; v0.0.296).)*
 
 ## 13. Non-roll cards (an Action that makes no roll: Opportunity Attack, Bulwark of Faith, Aim, and every other)
 Today they show a category line, a boxed "Effects" block with a left bar, a target tag and a crosshair icon at the bottom, and buttons like "After the damage: Apply Damage/Effects" or "Aim: Weapon Attack · 1 of 1 left · free". Replace with:
