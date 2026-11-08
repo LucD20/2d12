@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-08 from the repository at: f05bfbd 2026-11-08 HANDOFF and MASTER-PLAN: PACK SHEET and PACK NPC-SHEET merged (v0.0.291); next ROLL-DIALOG
+Built by tools/knowledge.py on 2026-11-08 from the repository at: 6d28725 2026-11-08 HANDOFF, MASTER-PLAN, backlog, README: v0.0.291 and the merge of PACK SHEET / NPC-SHEET; next ROLL-DIALOG
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (60 KB)
+- HANDOFF.md (61 KB)
 - MASTER-PLAN.md (16 KB)
 - open-design-items.md (77 KB)
 - rules-01-roll.md (21 KB)

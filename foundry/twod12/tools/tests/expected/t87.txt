@@ -107,3 +107,10 @@ things it must refuse: null null null null null null null
 Evade in the Basic Actions: @Move[evade|distance:1] || @Move[evade|distance:floor(speed/2)] | traits: self
 
 the Prone effect: Melee Actions against you gain 1 Boon, and Ranged Actions against you suffer 1 Bane. You can't Evade. The only [Move] Actions you can use are Crawl and Stand. | Hindered linked: "" | settings: boonbane 1b 0n, boonbane 0b 1n
+
+--- the new roll dialog (v0.0.292): the same rolls through it, and its named sources on the card
+OLD Shoot Nari (the same world, the old dialog)  card | chips: syn:cover*(0b/1n) syn:engaged*(0b/2n) syn:engaged-target*(0b/1n) | bane dice 0,1,2,0 | total 12
+NEW Shoot Nari (the new dialog)                  card | chips: (none) | bane dice 0,1,2,0 | total 12
+   chips: Low cover[Nari] You are Engaged ×2[you] Target is Engaged[Nari] Nonlethal[you, off] | creatures: Nari AD 11 | dice line: {"versions":"1 AP","roll":{"mod":2,"name":"Weapon"},"multi":false}
+NEW Shoot Nari: +1 Bane, +1, Engaged off         card | chips: (none) | bane dice 1,2,2 | total 11
+   breakdown: 2d12 6 7 Boon · Bane 2 −1 Bane · Low cover 3 −2 Bane · Target is Engaged 3 −2 Bane · Situational Modifiers +2 Weapon +1 Situational 11 vs AD 11 Tier 2 Vigor 2 Pi | flags rd banes: [{"name":"Situational","n":1,"scope":"shared"}] | flat: [{"name":"Situational","v":1}]

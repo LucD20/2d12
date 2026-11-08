@@ -206,7 +206,7 @@ Actions are written as cards. Every card has the same structure, in this order:
 *Flavor*  
 **Traits**  
 **Meta-line 1** — Escalation  
-**Meta-line 2** — Targets ✦ Area  
+**Meta-line 2** — Targets: X ✦ Area  
 **Meta-line 3** — Distance: X ✦ Vs. X (a Save: "Instinct Save")  
 **Requirements**  
 **Setup**  
@@ -227,7 +227,7 @@ Actions are written as cards. Every card has the same structure, in this order:
 > **Weapon Attack** | At-will | 1AP  
 > *You strike with the weapon in your hands.*  
 > *Strike · Weapon*  
-> **One creature ✦ Weapon ✦ Vs. AD**  
+> **Targets: One creature ✦ Weapon ✦ Vs. AD**  
 > **Tier 1:** 0  
 > **Tier 2:** [V] 1[W] + [Mod]  
 > **Tier 3:** [V] 1[W] + [Mod]
