@@ -13,7 +13,7 @@
 // }
 // state: { ap, toggled: { id: bool }, manual: { scope: { boon, bane, plus, minus, emp, enf, fav, doom } }, fold: { "scope|row|off": bool }, open: { uuid: bool },
 //   removed: [uuid], rollMode, forceTier }
-import { esc } from "./util.mjs";
+import { esc, vsColored } from "./util.mjs";
 import { tierProbs } from "./calc.mjs";
 
 /* ------------------------------------------------------------------ chips */
@@ -359,7 +359,7 @@ function metaHtml(inp, v) {
   // v0.0.294 (Lucas): the book's format (Ch. 1, Reading an Action): Targets (✦ the Area) on one line, "Distance: X ✦ Vs. X" on the next, the
   // Trigger / Interrupt after the meta lines (the chat cards' order too, brief section 12)
   const l1 = [m.targets ? `<b>Targets:</b> ${esc(m.targets)}` : "", inp.area ? `<button type="button" class="rd-area" data-act="place" data-tooltip="${inp.area.placed ? "Place the area again" : "Place the area"}"><span aria-hidden="true">◇</span> ${esc(inp.area.label)}</button>` : ""].filter(Boolean);
-  const l2 = [m.dist && !/^self$/i.test(m.dist) ? `<b>Distance:</b> ${esc(m.dist)}` : "", m.vs ? `${/save$/i.test(m.vs) ? "" : "Vs. "}${esc(m.vs)}` : ""].filter(Boolean);
+  const l2 = [m.dist && !/^self$/i.test(m.dist) ? `<b>Distance:</b> ${esc(m.dist)}` : "", m.vs ? `${/save$/i.test(m.vs) ? "" : "<b>Vs.</b> "}${vsColored(m.vs)}` : ""].filter(Boolean);
   const out = [];
   if (Number(m.escalation) > 0) out.push(`<div class="rd-meta">${Number(m.escalation)} Escalation</div>`);
   if (l1.length) out.push(`<div class="rd-meta">${l1.join(sep)}</div>`);

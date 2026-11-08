@@ -78,7 +78,7 @@ export function updateUseButtons(msg, html) {
     const total = cfg.count ?? 1, left = total - (uses[cfg.target] ?? 0);
     const label = cfg.label ?? `${cfg.target.replace(/^(category|trait):/i, "")}${total > 1 ? ` \u00d7${Math.max(0, left)}` : ""}`;
     // v0.0.294 (brief section 13): on a non-roll card's "Granted Action:" row: the name alone ("Weapon Attack"), then a green "✓ Used"
-    if (a.closest?.(".cc-grant")) a.innerHTML = left <= 0 ? '<i class="fa-solid fa-check"></i> Used' : `<i class="fa-solid fa-bolt"></i> ${foundry.utils.escapeHTML?.(cleanName(label)) ?? cleanName(label)}`;
+    if (a.closest?.(".cc-grant")) a.innerHTML = left <= 0 ? '<i class="fa-solid fa-check"></i> Used' : `${grantIcon(cleanName(label))} ${foundry.utils.escapeHTML?.(cleanName(label)) ?? cleanName(label)}`;
     else a.innerHTML = `<i class="fa-solid fa-bolt"></i> ${foundry.utils.escapeHTML?.(label) ?? label}`;
     a.classList.toggle("spent", left <= 0);
   });
@@ -120,10 +120,12 @@ export function grantRowsHtml(actor, card) {
   // green "✓ Used"; no sublines (no "1 of 1 left · free", no source name). Several uses: a button each.
   return (card?.effects ?? []).map(g => {
     const e = actor?.effects?.get?.(g.id), grant = e?.getFlag?.(F, "grants")?.[g.index], left = grant ? Math.max(0, grant.left) : 0, count = Math.max(g.count, left);
-    const btns = Array.from({ length: count }, (_, k) => { const spent = k < count - left; return spent ? `<span class="cc-used"><i class="fa-solid fa-check"></i> Used</span>` : `<button type="button" class="cc-gbtn" data-twod12="useGrant" data-effect-id="${g.id}" data-index="${g.index}"><i class="fa-solid fa-bolt"></i> ${escT(g.actionName)}</button>`; }).join("");
+    const btns = Array.from({ length: count }, (_, k) => { const spent = k < count - left; return spent ? `<span class="cc-used"><i class="fa-solid fa-check"></i> Used</span>` : `<button type="button" class="cc-gbtn" data-twod12="useGrant" data-effect-id="${g.id}" data-index="${g.index}">${grantIcon(g.actionName)} ${escT(g.actionName)}</button>`; }).join("");
     return `<div class="tline grantrow"><span class="apside">Granted Action: <b>${escT(g.actionName)}</b></span><div class="gbtns">${btns}</div></div>`;
   }).join("");
 }
+/** v0.0.295 (Lucas): a Weapon Attack (or an NPC's Basic attack) gets a sword (Foundry's own icon), the other granted Actions the bolt. */
+export const grantIcon = name => (/weapon attack|basic attack/i.test(String(name ?? "")) ? '<img class="cc-gico" src="icons/svg/sword.svg" alt="" aria-hidden="true">' : '<i class="fa-solid fa-bolt" aria-hidden="true"></i>');
 /** v0.0.294: pure: what a granted use brings to the Action (useAction's opts): free, its AP, its Boons and Banes, the source's name, the creatures it can't take again. */
 export const grantOpts = (g, label = "") => ({ free: true, ap: g?.grant?.ap ?? 0, boons: g?.grant?.boons ?? 0, banes: g?.grant?.banes ?? 0, label: label || g?.effect?.name || "Granted use", grant: g, excludeTargets: g?.grant?.distinct ? (g.grant.used ?? []) : [] });
 /** After an Action's card applied its effects: the grants those effects brought become rows on the card (nothing when they brought none). */

@@ -85,3 +85,11 @@ hand-added chips carry data-manual (right-click): 3 | an auto chip doesn't: true
 Rebuke: their roll line: Their roll Appeal Save vs DC 13 · each target rolls; the Tiers are their result | quick buttons: emp,enf | creature badge: true | no ladder: true | button: Use | averages: Avg 5.5 | Avg 4.5
 Opportunity Attack: Effects row: true | no roll panel: true | target line: → Bandit Thug | button: Use | can use: "" | no target needed: ""
 contrast #7a6f5f on #f4ede0: 4.23 | #6b6152 (used): 5.22 | #5d5446 on #e8dec8: 5.57 | #625a4e n/a on #e8dec8: 5.08 | #7a5400 on #f4ede0: 5.83 | #8a1c13 on #f4ede0: 7.99
+--- v0.0.295: the Vs. value in its color, "Vs." bold
+"AD" → <span class="vsv"[#9a4a00]>AD</span>
+"WD" → <span class="vsv"[#5b3a9e]>WD</span>
+"Appeal Save" → <span class="vsv"[#6b4e00]>Appeal Save</span>
+"Body or Instinct" → <span class="vsv"[#7a1626]>Body</span> or <span class="vsv"[#14532d]>Instinct</span>
+"AD (Weapon mode) or WD (Power mode)" → <span class="vsv"[#9a4a00]>AD</span> (Weapon mode) or <span class="vsv"[#5b3a9e]>WD</span> (Power mode)
+"DC 13" → DC 13
+the dialog's meta line: true

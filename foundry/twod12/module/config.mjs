@@ -1,4 +1,5 @@
 import { weaponRanges } from "./weaponrange.mjs";
+import { vsColored } from "./util.mjs";   // v0.0.295: the Vs. value in its color
 const sortObj = o => Object.fromEntries(Object.entries(o).sort((a, b) => a[1].localeCompare(b[1])));
 const actionTraits = sortObj({
   area: "Area",
@@ -449,7 +450,7 @@ export function metaRowHtml({ frequency = "", targetText = "", distance = "", ar
   const hl = t => { try { return highlightText(escAttr(t)); } catch (e) { return escAttr(t); } };
   const l1 = Number(escalation) > 0 ? [`<span class="esc">${Number(escalation)} Escalation</span>`] : [];
   const l2 = [(!self || areaLine) && targetText ? `<span class="tgt"><b>Targets:</b> ${hl(targetText)}</span>` : "", areaLine ? `<span class="dist"><b>Area:</b> ${hl(areaLine)}</span>` : ""].filter(Boolean);
-  const l3 = [distance && distance.toLowerCase() !== "self" ? `<span class="dist"><b>Distance:</b> ${hl(distance)}</span>` : "", vs ? `<span class="vs">${/save$/i.test(String(vs).trim()) ? "" : "Vs. "}${hl(vs)}</span>` : ""].filter(Boolean);
+  const l3 = [distance && distance.toLowerCase() !== "self" ? `<span class="dist"><b>Distance:</b> ${hl(distance)}</span>` : "", vs ? `<span class="vs">${/save$/i.test(String(vs).trim()) ? "" : "<b>Vs.</b> "}${vsColored(vs)}</span>` : ""   /* v0.0.295 (Lucas): Vs. bold, the value colored */].filter(Boolean);
   const row = [l1, l2, l3].filter(l => l.length).map(l => `<div class="trow"><span>${l.join(sep)}</span></div>`).join("");
   const req = requirements ? `<div class="trow reqrow"><span><b>Requirements:</b> ${hl(requirements)}</span></div>` : "";
   const trg = trigger ? `<div class="trow trgrow"><span><b>${reactionKind === "interrupt" ? "Interrupt" : "Trigger"}:</b> ${hl(trigger)}</span></div>` : "";

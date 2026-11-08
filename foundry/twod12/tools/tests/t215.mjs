@@ -43,9 +43,9 @@ const base = { kind: "noroll", name: "Opportunity Attack", freq: "atwill", cost:
   triggerHtml: "A creature within 1 square would leave a square during a Move Action or uses the Stand Action.", triggerLabel: "Interrupt", effectHtml: u.html, useHtml: u.anchor, useName: "Weapon Attack", flavor: "You punish anyone who moves carelessly near you." };
 const h = CC.renderCard(base, CC.viewOf({ gm: true }));
 const at = k => h.indexOf(k);
-console.log("order: name, meta, Interrupt, diamond, text, Granted Action, Flavor:", at("cc-name") < at("cc-tline meta") && at("cc-tline meta") < at("cc-trigger plain") && at("cc-trigger plain") < at("cc-div") && at("cc-div") < at("cc-effect full") && at("cc-effect full") < at("cc-grant") && at("cc-grant") < at("cc-flavor"));
-console.log("head:", txt(h.match(/<div class="cc-head">[\s\S]*?<\/div>/)?.[0]), "| meta:", txt(h.match(/<div class="cc-tline meta">[\s\S]*?<\/div>/)?.[0]), "| Interrupt:", txt(h.match(/<div class="cc-trigger plain">[\s\S]*?<\/div>/)?.[0]).slice(0, 40), "…");
-console.log("granted row:", txt(h.match(/<div class="tline grantrow cc-grant">[\s\S]*?<\/div><\/div>/)?.[0]), "| no category line, no Effects box, no stamp or ladder:", !/Basic Action|class="effects|cc-stamp|cc-ladder/.test(h));
+console.log("order: name, meta, Interrupt, diamond, text, Granted Action, Flavor:", at("cc-name") < at("cc-tline") && at("cc-tline") < at("cc-trigger plain") && at("cc-trigger plain") < at("cc-div") && at("cc-div") < at("cc-effect full") && at("cc-effect full") < at("cc-grant") && at("cc-grant") < at("cc-flavor"));
+console.log("head:", txt(h.match(/<div class="cc-head">[\s\S]*?<\/div>/)?.[0]), "| target line (v0.0.295: at the top, with the target):", txt(h.match(/<div class="cc-tline">[\s\S]*?<\/div>/)?.[0]), "| Interrupt:", txt(h.match(/<div class="cc-trigger plain">[\s\S]*?<\/div>/)?.[0]).slice(0, 40), "…");
+console.log("granted row:", txt(h.match(/<div class="tline grantrow cc-grant[^"]*">[\s\S]*?<\/div><\/div>/)?.[0]), "| a sword for a Weapon Attack:", /cc-grant sword/.test(h), "| no category line, no Effects box, no stamp or ladder:", !/Basic Action|class="effects|cc-stamp|cc-ladder/.test(h));
 const npc = CC.renderCard({ ...base, useName: "Basic attack" }, CC.viewOf({ gm: true }));
 console.log("an NPC's:", txt(npc.match(/<span class="apside">[\s\S]*?<\/span>/)?.[0]));
 const far = CC.renderCard({ ...base, useOff: "Bandit Thug is 3 sq. away: Greatsword reaches 1 sq." }, CC.viewOf({ gm: true }));

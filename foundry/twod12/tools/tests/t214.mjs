@@ -213,3 +213,8 @@ if (process.env.RD_OUT) try {
   const s2 = RD.newState(wor); RD.addManual(s2, "wisp", "fav"); RD.addManual(s2, "ogre", "doom"); s2.open.ogre = true;
   fs.writeFileSync(new URL("rolldlg-examples.json", out), JSON.stringify({ smite: RD.dialogHtml(smite, s1), area: RD.dialogHtml(wor, s2), hidden: RD.dialogHtml({ ...smite, hideDef: true }, RD.newState(smite)), designer: RD.dialogHtml({ ...wor, designer: true }, s2) }));
 } catch (e) { /* no write access: fine */ }
+
+console.log("--- v0.0.295: the Vs. value in its color, \"Vs.\" bold");
+const U = await import(ROOTURL + "module/util.mjs");
+for (const v of ["AD", "WD", "Appeal Save", "Body or Instinct", "AD (Weapon mode) or WD (Power mode)", "DC 13"]) console.log(JSON.stringify(v), "→", U.vsColored(v).replace(/ style="color:(#\w+);font-weight:700"/g, "[$1]"));
+console.log("the dialog's meta line:", (RD.dialogHtml(smite, RD.newState(smite)).match(/<b>Vs\.<\/b> <span class="vsv" style="color:#9a4a00/) ?? []).length === 1);

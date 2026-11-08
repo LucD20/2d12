@@ -3329,3 +3329,20 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat.cc .cc-slot:empty { display: none; }
 .twod12.chat.cc .tline.grantrow { flex-wrap: nowrap; justify-content: space-between; }
 .twod12.chat.cc .tline.grantrow .apside { width: auto; min-width: 0; }
+/* ==== v0.0.295 (Lucas tested v0.0.294): a line between the Tier's label and its dice (the roll dialog); the target line at the top of every card;
+   the Granted Action's icon light on its dark button (a sword for a Weapon Attack); no empty space under the non-roll card's target line ==== */
+.twod12.rolldlg .rd-tiers tr.t1 th { box-shadow: inset 4px 0 0 #a8261c, inset -1px 0 0 #e2c7c0; }
+.twod12.rolldlg .rd-tiers tr.t2 th { box-shadow: inset 4px 0 0 #9cbf8c, inset -1px 0 0 #c9dcbf; }
+.twod12.rolldlg .rd-tiers tr.t3 th { box-shadow: inset 4px 0 0 #2b5a2f, inset -1px 0 0 #b9cdb5; }
+.twod12.rolldlg .rd-tiers tr.crit th { box-shadow: inset 4px 0 0 #1d5a9e, inset -1px 0 0 #b9cbe2; }
+.twod12.rolldlg .rd-tiers tr.rd-eff th { box-shadow: inset 4px 0 0 #8c7d63, inset -1px 0 0 #d6c8a8; }
+.twod12.rolldlg .rd-tiers td { padding-left: 10px; }
+.twod12.chat.cc .cc-foot .cc-ftgt { flex: 1 1 auto; }
+.twod12.chat.cc .tline.grantrow .cc-gbtn i, .twod12.chat.cc .cc-grant a[data-twod12-inline="Use"] i { color: #f4ede0; }
+.twod12.chat.cc .cc-gico { width: 14px; height: 14px; border: 0; vertical-align: -2px; filter: brightness(0) invert(94%) sepia(6%) saturate(400%); }
+.twod12.chat.cc .cc-noroll { gap: 4px; }
+.twod12.chat.cc .cc-noroll > .cc-tline, .twod12.chat.cc .cc-noroll > .cc-trigger { margin: 0; }
+.twod12.chat.cc .cc-noroll .cc-trigger p, .twod12.chat.cc .cc-noroll .cc-effect > p:first-child { margin-top: 0; }
+.twod12.chat.cc .cc-noroll .cc-trigger p:last-child, .twod12.chat.cc .cc-noroll .cc-effect > p:last-child { margin-bottom: 0; }
+.twod12 .vs .vsv, .twod12.rolldlg .vsv { font-weight: 700; }
+.twod12.rolldlg .rd-tiers td { border-left: 1px solid #cdb88a !important; }

@@ -170,7 +170,9 @@ export function metaLineHtml(m) {
   const bits = [t.area ? t.area : t.targets ? esc(t.targets) : "", t.dist ? esc(t.dist) : ""].filter(Boolean).join(` ${star} `);
   return bits ? `<div class="cc-tline meta"><span>${bits}</span></div>` : "";
 }
-export function footHtml(m, view = FULL_VIEW, { damage = "rollDamage", hasDamage = m.hasDamage, locked = m.locked } = {}) {   // v0.0.287: the Save card's too
+export function footHtml(m, view = FULL_VIEW, { damage = "rollDamage", hasDamage = m.hasDamage, locked = m.locked, target = false } = {}) {   // v0.0.287: the Save card's too
+  // v0.0.295 (Lucas: "Yes", the chat cards addendum section 12 item 3): the target and the retarget are on the top line; the bottom keeps the buttons
+  if (!target) return `<hr class="cc-hr"><div class="cc-foot">${hasDamage ? `<button type="button" class="cc-btn small primary" data-twod12="${damage}"><i class="fa-solid fa-dice" aria-hidden="true"></i> Damage</button>` : ""}<span class="cc-ftgt"></span><button type="button" class="cc-btn small" data-twod12="ccCard">Card</button></div>`;
   const t = m.tline ?? {}, n = t.names ?? [];
   const names = n.length === 1 ? `<b class="cc-tname">${esc(n[0])}</b>` : n.length ? `<b class="cc-tname" title="${esc(n.join(", "))}">${n.length} targets</b>` : '<span class="cc-muted">No target</span>';
   const re = view.author && !locked && t.retarget !== false ? `<button type="button" class="cc-icon" data-twod12="${esc(t.retargetKind ?? "retargetAction")}" aria-label="Target the selected tokens" title="Target the selected tokens"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i></button>` : "";
@@ -205,7 +207,7 @@ export function attackCardHtml(m, view = FULL_VIEW) {
   const flavor = m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "";
   const des = designerFoot([...(m.designer?.odds ?? []).map(o => `Odds${o.name ? ` (${esc(o.name)})` : ""}: ${esc(o.text)}`), m.designer?.ruler ? `Ruler: ${esc(m.designer.ruler)}` : "", m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
   const pf = hide ? playerFoot("Player view · enemy Defenses hidden by the GM") : "";
-  const head = `${headHtml(m)}${metaLineHtml(m)}${m.setupHtml ?? ""}`;
+  const head = `${headHtml(m)}${targetLineHtml(m, view, { locked: m.locked })}${m.setupHtml ?? ""}`;
   if (one) {
     const r = rows[0];
     const body = `<div class="cc-body">${stampHtml(r, { hide })}<div class="cc-main">${ladderHtml(r, { hide, id: "r0" })}${breakdownHtml(r, { hide, id: "r0" })}<div class="cc-outcome">${outcomeHtml(m.outcomes?.[r.tier])}</div>${critLine(m, rows, hide)}${effects}</div></div>`;
@@ -251,7 +253,7 @@ export function saveCardHtml(m, view = FULL_VIEW) {
   const trig = triggerLineHtml(m);
   const flavor = m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "";
   const des = designerFoot([m.designer?.ruler ? `Ruler: ${esc(m.designer.ruler)}` : "", m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
-  return `<div class="cc-card cc-save${one ? "" : " many"}">${headHtml(m)}${metaLineHtml(m)}<div class="cc-savehead"><b>${esc(m.saveName)}</b><span class="cc-rule" aria-hidden="true"></span><span class="cc-badge">DC ${m.dc}</span></div>${trig}<div class="cc-srows">${rows}</div>${crows}${action}${flavor}${footHtml(m, view, { damage: "ccSaveDamage", hasDamage: saveDmg, locked: anyRolled })}${des}</div>`;
+  return `<div class="cc-card cc-save${one ? "" : " many"}">${headHtml(m)}${targetLineHtml(m, view, { locked: anyRolled })}<div class="cc-savehead"><b>${esc(m.saveName)}</b><span class="cc-rule" aria-hidden="true"></span><span class="cc-badge">DC ${m.dc}</span></div>${trig}<div class="cc-srows">${rows}</div>${crows}${action}${flavor}${footHtml(m, view, { damage: "ccSaveDamage", hasDamage: saveDmg, locked: anyRolled })}${des}</div>`;
 }
 
 /* ------------------------------------------------------------------ the Trigger line, the non-roll card (brief sections 12 and 13) */
@@ -279,7 +281,7 @@ function nextHtml(m, view) {
       : view.author ? `<button type="button" class="cc-btn small primary" data-twod12="applyAfter" data-step="${st.k}" data-side="${esc(st.side ?? "")}"${s.state === "wait" ? ` disabled aria-disabled="true" data-tooltip="${esc(s.why)}"` : ""}>${esc(st.btn)}</button>` : "";
     return `<div class="cc-step ${s.state}"><span class="cc-snum" aria-hidden="true">${i + 1}</span><b class="cc-slabel">${esc(st.label)}</b>${btn}</div>`;
   }).join("");
-  const grant = m.useHtml ? `<div class="tline grantrow cc-grant"><span class="apside">Granted Action: <b>${esc(m.useName ?? "")}</b></span><div class="gbtns">${m.useOff ? `<span class="cc-gwhy" data-tooltip="${esc(m.useOff)}"><i class="fa-solid fa-ban" aria-hidden="true"></i> ${esc(m.useName ?? "")}</span>` : m.useHtml}</div></div>` : "";
+  const grant = m.useHtml ? `<div class="tline grantrow cc-grant${/attack/i.test(m.useName ?? "") ? " sword" : ""}"><span class="apside">Granted Action: <b>${esc(m.useName ?? "")}</b></span><div class="gbtns">${m.useOff ? `<span class="cc-gwhy" data-tooltip="${esc(m.useOff)}"><i class="fa-solid fa-ban" aria-hidden="true"></i> ${esc(m.useName ?? "")}</span>` : m.useHtml}</div></div>` : "";
   return `${steps ? `<div class="cc-steps">${steps}</div>` : ""}<div class="cc-slot">${grant}</div>`;
 }
 /** v0.0.294 (brief section 13): an Action that makes no roll (Opportunity Attack, Bulwark of Faith, Aim): no stamp, no ladder, no category line, no Effects box. */
@@ -287,7 +289,7 @@ export function nonRollCardHtml(m, view = FULL_VIEW) {
   const flavor = m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "";
   const des = designerFoot([m.designer?.ruler ? `Ruler: ${esc(m.designer.ruler)}` : "", m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
   const effect = m.effectHtml ? `${m.triggerHtml ? "" : divider(1)}<div class="cc-effect full">${m.effectHtml}</div>` : "";
-  return `<div class="cc-card cc-noroll">${headHtml(m)}${metaLineHtml(m)}${triggerLineHtml(m)}${effect}${nextHtml(m, view)}${flavor}${footHtml(m, view, { hasDamage: false })}${des}</div>`;
+  return `<div class="cc-card cc-noroll">${headHtml(m)}${targetLineHtml(m, view)}${triggerLineHtml(m)}${effect}${nextHtml(m, view)}${flavor}${footHtml(m, view, { hasDamage: false })}${des}</div>`;
 }
 
 /* ------------------------------------------------------------------ the damage arithmetic */

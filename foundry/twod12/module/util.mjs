@@ -13,6 +13,12 @@ export function unset(path) {
 }
 
 /** Escape text for HTML (text and double-quoted attributes). */
+/** v0.0.295 (Lucas): the Vs. value in its color: AD and WD as the NPC Builder (the Weapon / Power Modifier's), an Attribute (or its Save) in the Attribute's. */
+export const VS_COLORS = { ad: "#9a4a00", wd: "#5b3a9e", body: "#7a1626", mind: "#17327a", appeal: "#6b4e00", instinct: "#14532d" };
+export function vsColored(vs) {
+  const e = String(vs ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  return e.replace(/\b(AD|WD)\b|\b(Body|Mind|Appeal|Instinct)( Save)?\b/g, (m, d, a) => `<span class="vsv" style="color:${VS_COLORS[(d ?? a).toLowerCase()]};font-weight:700">${m}</span>`);
+}
 export const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
 /** The hover text of an effect or ability: its own "Hover text" if it has one, else the start of its description (plain text). */
