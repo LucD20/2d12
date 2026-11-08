@@ -1,13 +1,13 @@
 # Boons and Banes, Favored's Doubles: the draft for review
 
-**Status (2026-11-08): a draft for Lucas to review. Nothing is in rules-src, Foundry or the ruler yet.** The decisions are in `rules-backlog.md`, "MODIFIERS, FLAT BOONS, FAVORED'S DOUBLES". Answer by number ("3: fine; 5: change X").
+**Status (2026-11-08): a draft for Lucas to review (round 2: his first review applied). Nothing is in rules-src, Foundry or the ruler yet.** The decisions are in `rules-backlog.md`, "MODIFIERS, FLAT BOONS, FAVORED'S DOUBLES". Answer by number ("3: fine; 5: change X").
 Not in this draft: Weapon and Power Modifiers as class values (decided, drafted separately). It changes the "Body Rolls" table of Chapter 1 (section 2b), so that table is left as it is here.
 
 ## What the draft does
 
 1. Boons and Banes are a flat +1 / -1 and cancel each other.
-2. Three **names** carry a limit: **Field**, **Pressure** and **Support**. Boons with the same name add up to 2, and so do Banes with the same name. Unnamed ones always add up. A condition's value is its own limit.
-3. A name exists only where several sources share a limit. Engaged (2 Banes) and the At-will Bane are one rule each, so they have no name.
+2. Three **names** carry a limit: **Field**, **Pressure** and **Support**. Boons with the same name add up to 2, and so do Banes with the same name. Unnamed ones always add up (a condition's Boons and Banes are unnamed).
+3. A name exists only where several sources share a limit. Engaged (2 Banes) and the At-will Bane are one rule each, so they have no name. **Range Banes have no name** (Lucas, round 2): they stack with Cover.
 4. Cover is 1 / 2 Field Banes, and **High cover makes the roll Doomed, with no Field Banes from the Cover**. Flanking gives up to 2.
 5. Favored: any two matching faces of the three dice are Doubles. Three of a kind is a Critical.
 
@@ -48,20 +48,11 @@ No change in this draft. The Modifiers decision rewrites it, because "1 Boon on 
 >
 > | Name | Where it comes from | For example |
 > |---|---|---|
-> | **Field** | Where you and the target are, and how well you see it | Range, [[Cover]], [[Flanking]], [[Prone]], [[Senses\|Obscured]], a [[Long]] weapon against an adjacent creature, shooting into a melee |
+> | **Field** | Where you and the target are, and how well you see it | [[Cover]], [[Flanking]], [[Prone]], [[Senses\|Obscured]], a [[Long]] weapon against an adjacent creature, shooting into a melee |
 > | **Pressure** | Banes an effect of another creature puts on you | A zone that hinders your Strikes, a blow that leaves you reeling |
 > | **Support** | Boons an effect gives several allies at once | A war cry for every ally within 5 squares |
 >
 > Apply the limit to each side first, then cancel: 3 Field Banes and 1 Field Boon are 2 Banes and 1 Boon, so 1 Bane.
->
-> **No name:**
->
-> - A Boon one creature gives **one ally** with its own Action has no name: helping a friend always pays off.
-> - A Bane you **take by choice** to change an Action (such as dealing Lethal damage with a Nonlethal Action) has no name and always applies.
-> - A **condition with a value** gives its full value, whatever the limit: Vulnerable 3 is 3 Boons on Actions against you.
->
-> > [!example]
-> > Zack shoots a goblin at far range (1 Field Bane). The goblin is behind Medium cover (2 Field Banes) and Prone (1 Field Bane against Ranged Actions). That is 4 Field Banes, but only 2 count. Zack is also Engaged (2 Banes, no name), so he takes 4 Banes in total. If the goblin is also Vulnerable 1, Zack gains 1 Boon: 3 Banes.
 
 ## 4. Chapter 1, Favored and Doomed Rolls (replaces the section, its examples and its procedure)
 
@@ -90,9 +81,9 @@ No change in this draft. The Modifiers decision rewrites it, because "1 Boon on 
 
 ## 5. Chapter 1, Saves (the Save Actions paragraph)
 
-**Draft** (only the last sentence changes):
+**Draft** ("and it is not a Strike" removed, Lucas round 2: a future Save Action may be one; the last sentence changes):
 
-> A Save Action has no Critical, and it is not a Strike. Boons and Banes on your own rolls don't apply to it; effects on the target's Saves do. **Vulnerable** gives the target that many Banes on the Save. **Cover** gives it Field Boons (1 for Low cover, 2 for Medium), and **High cover makes its Save Favored**, counted from the center of the area's Point of Origin to the target.
+> A Save Action has no Critical. Boons and Banes on your own rolls don't apply to it; effects on the target's Saves do. **Vulnerable** gives the target that many Banes on the Save. **Cover** gives it Field Boons (1 for Low cover, 2 for Medium), and **High cover makes its Save Favored**, counted from the center of the area's Point of Origin to the target.
 
 ## 6. Chapter 1, Several Targets
 
@@ -126,16 +117,15 @@ No change. The At-will Bane stays unnamed: one rule, and the 3 Strikes of a turn
 
 ## 10. Chapter 3, Weapon Range (`03-movement.md`)
 
-**Draft** (the first and third bullets):
+The range Banes stay unnamed (Lucas, round 2: they stack with Cover). Only the third bullet changes:
 
-> - **How it is written.** A Range is written like the ranges of ranged weapons: normal / far (1 Field Bane) / maximum (2 Field Banes). A single number is a normal range with no far or maximum range. Most melee weapons have Range 1; a lance has Range 1 / 2.
 > - **Long.** A weapon with the [[Long]] property takes 1 Field Bane against adjacent creatures. A pike with Range 3 and Long is at its best 2 or 3 squares away.
 
 ## 11. Chapter 3, Ranged Combat While Engaged
 
 **Draft:**
 
-> Using a [Ranged] Action while you are [[Engaged]] is hard: you suffer **2 Banes**. They have no name: they come from you, and you can step away first.
+> Using a [Ranged] Action while you are [[Engaged]] is hard: you suffer **2 Banes**.
 >
 > When you use a [Ranged] Action against a creature that is Engaged with a creature other than yourself, you suffer **1 Field Bane**.
 
@@ -150,7 +140,7 @@ No change. The At-will Bane stays unnamed: one rule, and the 3 Strikes of a turn
 > **Example 3: Four or more.** A fourth ally adds no Boon, but it still counts for cancelling: if an ally of the goblin threatens one of the flankers, that flanker keeps 2 (3 minus 1, then the limit).
 
 The diagram `flanking1` shows "3" on the fourth example: it becomes 2 (`diagrams/diagrams.py`).
-Example 3's cancelling sentence is my reading: count the other flankers, subtract the cancels, then apply the limit of 2. The other order (limit first, then cancel) would give 1. **Question A** below.
+Example 3's cancelling sentence follows Lucas's answer A: count the other flankers, subtract the cancels, then apply the limit of 2.
 
 ## 13. Chapter 3, Cover
 
@@ -165,15 +155,13 @@ Example 3's cancelling sentence is my reading: count the other flankers, subtrac
 > | 4 | Total | No Line of Effect: you can't target them |
 >
 > - **Creatures in the way.** If another creature is on the line from the center of your square to the center of the target's space, the target has **Low cover** (1 Field Bane). Creatures never count as blocked corners, and cover doesn't add up: you take the highest cover that applies.
-> - **Cover and the rest.** Cover applies to melee and ranged Actions alike. Its Field Banes count with your other Field Banes (2 at most). High cover gives no Field Banes, only Doomed; your other Field Banes still apply (range, Prone, Obscured). A target that is Hidden and behind High cover is still only Doomed once.
+> - **Cover and the rest.** Cover applies to melee and ranged Actions alike. Its Field Banes count with your other Field Banes. High cover gives no Field Banes, only Doomed; your other Field Banes still apply (Prone, Obscured). A target that is Hidden and behind High cover is still only Doomed once.
 
 The sentence "The number of Banes is the number of blocked corners" is deleted.
 
 ## 14. Chapter 3, the Line area
 
-**Draft** (the third bullet):
-
-> - **No range Banes.** The Line's value is its reach, so a weapon's far or maximum range adds no Field Banes inside it. Other Banes still apply: Engaged for a [Ranged] Action, Cover from walls.
+No change (range Banes stay unnamed).
 
 ## 15. Chapter 3, Senses
 
@@ -183,7 +171,7 @@ The sentence "The number of Banes is the number of blocked corners" is deleted.
 
 ## 16. Chapter 7, Ranged (`07-traits.md`)
 
-**Draft:** "...normal / far / maximum, with 1 Field Bane at far range and 2 at maximum."
+No change (range Banes stay unnamed).
 
 ## 17. Chapter 8, Prone (`08-conditions.md`)
 
@@ -191,11 +179,11 @@ The sentence "The number of Banes is the number of blocked corners" is deleted.
 
 > - Melee Actions against you gain 1 Field Boon, and Ranged Actions against you suffer 1 Field Bane.
 
-Frightened, Sickened, Taunted and Vulnerable don't change: they are conditions, and their value is their limit. One sentence is added under the conditions' opening rule: "A condition's Boons and Banes have no name: they always count in full (see [[Named Boons and Banes]])."
+Frightened, Sickened, Taunted and Vulnerable don't change: their Boons and Banes are unnamed, so they stack.
 
 ## 18. Gear (`15-gear.md`)
 
-- Ranges (line 20): "the far range (1 Field Bane) and the third the maximum range (2 Field Banes)".
+- Ranges (line 20): no change.
 - Long (line 108): "you take **1 Field Bane** on Weapon Actions with it against adjacent creatures".
 - **Two-handed in one hand: no change.** It stays 3 Banes, unnamed, so the limit doesn't apply to it.
 - Ringing Blow (card): "its next [Strike] Action takes 1 Pressure Bane (EoT)".
@@ -213,38 +201,37 @@ Frightened, Sickened, Taunted and Vulnerable don't change: they are conditions, 
 | Term | Draft |
 |---|---|
 | **Bane, Boon** | Subtract or add 1 to a roll; they cancel each other. Named ones count up to 2 of each name. |
-| **Field** (new) | A named Boon or Bane from position and sight: range, Cover, Flanking, Prone, Obscured, Long, shooting into a melee. Up to 2. |
+| **Field** (new) | A named Boon or Bane from position and sight: Cover, Flanking, Prone, Obscured, Long, shooting into a melee. Up to 2. |
 | **Pressure** (new) | A named Bane another creature's effect puts on you. Up to 2. |
 | **Support** (new) | A named Boon an effect gives several allies at once. Up to 2. |
-| **Named Boons and Banes** (new) | Field, Pressure and Support: up to 2 Boons and 2 Banes of each name. Unnamed ones and conditions always count. |
+| **Named Boons and Banes** (new) | Field, Pressure and Support: up to 2 Boons and 2 Banes of each name. Unnamed ones always add up. |
 | **Cover** | How well a target is protected: 1 Field Bane for each blocked corner, up to 2; three blocked corners make the roll Doomed. |
 | **Flanking** | ...each gets 1 Field Boon on [Melee] Actions against it for each other flanker, up to 2, minus 1 for each ally of the enemy that threatens it. |
 | **Favored** | 3d12, keep the two highest; any pair among the three is Doubles, three of a kind a Critical. |
-| **Obscured, Long, Range, Ranged Combat While Engaged** | "Bane" becomes "Field Bane" where the rule is Field (Engaged's 2 stay unnamed). |
+| **Obscured, Long, Ranged Combat While Engaged** | "Bane" becomes "Field Bane" where the rule is Field (Engaged's 2 and the range Banes stay unnamed). |
 | **Stacking** | "...Boons and Banes (up to the limit of their name)..." |
 
 ## 21. A writing rule for cards (`book/cards/README.md`, `rules-src/README.md`)
 
 > - Give a Boon or Bane a **name** only when several sources must share a limit. A Bane an effect puts on enemies is **Pressure**; a Boon an effect gives several allies at once (an aura, a zone, "allies within N") is **Support**; one from position or sight is **Field**.
-> - A Boon a creature gives one ally with its own Action, a Boon on your own Action, and a Bane you take by choice have no name.
 > - An unnamed Boon or Bane is 1, rarely 2, never "1 for each X": anything that scales gets a name, so it gets a limit.
 
 ## 22. Outside this draft (to do when it is applied)
 
 - **Class cards** (card by card with Lucas): Consecrated Ground, Covering Fire and Harrying Shots become Pressure. Marked Quarry and Hunter's Focus stay unnamed (2 Boons against the quarry). Covering Shot (one ally) stays unnamed. Talents later.
 - **Foundry:** calc.mjs (flat b/b, the names and their limit, any pair on Favored, three of a kind), rolls.keepDice, the roll dialog's b/b inputs (a field per name), the roll's tooltip (for example "Field 2 (3, limit 2)"), flanking.mjs (limit 2), cover (High is Doomed), the dice tests (t42 and the rest).
-- **Ruler:** calc.mjs is shared with Foundry. spec.mjs and map.mjs (Field limit, flankBoons up to 2, High cover Doomed), then re-run report.md, rclasses.md and rbestiary.md.
+- **Ruler:** calc.mjs is shared with Foundry. spec.mjs and map.mjs (Field limit without the range Banes, flankBoons up to 2, High cover Doomed), then re-run report.md, rclasses.md and rbestiary.md.
 - **Diagrams:** flanking1 (3 becomes 2), cover (High cover's label).
 
-## Questions
+## Decided in round 2 (Lucas, 2026-11-08)
 
-- **A. Flanking's order:** subtract the cancels first, then apply the limit of 2 (my draft: 3 flankers minus 1 still gives 2), or apply the limit first, then cancel (2 minus 1 = 1)?
-- **B. High cover on a Save:** the draft makes the Save Favored, the mirror of Doomed on attacks. Or should High cover give 2 Field Boons on Saves?
-- **C. Pressure on Saves and Checks:** the draft lets Pressure apply to any roll the effect names (the Mild row says "its next roll"). Fine?
+- **A. Flanking:** subtract the cancels first, then apply the limit of 2.
+- **B. High cover on a Save:** the Save is Favored.
+- **C. Pressure** applies to any roll the effect names (Saves and Checks included).
+- Range Banes are unnamed (they stack with Cover); the "No name" list and the Zack example are cut (unnamed b/b stack, nothing more needs saying); "and it is not a Strike" removed from Save Actions; Engaged's "they have no name" sentence and Cover's "(2 at most)" removed (don't repeat a rule that is already in place; "see Chapter N" when needed).
 
 ## Assumptions I made
 
-- With High cover, the target's other Field b/b (range, Prone, Obscured) still apply.
+- With High cover, the target's other Field b/b (Prone, Obscured) and the range Banes still apply.
 - The limit is applied to each side before cancelling (3 Field Banes + 1 Field Boon = 1 Bane).
 - A roll can't be Favored twice or Doomed twice (new sentence; it was implied before).
-- The example uses Zack (the next unused name in the README's list).
