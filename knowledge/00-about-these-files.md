@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-08 from the repository at: a48388b 2026-11-08 PACK NPC-SHEET (v0.0.291): the NPC sheet on the character sheet's layout, the Builder F2, and the shared Strike / frequency lines, 3px corners and Senses
+Built by tools/knowledge.py on 2026-11-08 from the repository at: 74f1ff7 2026-11-08 Project knowledge: rebuilt after PACK NPC-SHEET
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
