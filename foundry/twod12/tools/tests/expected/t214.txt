@@ -54,7 +54,8 @@ the last target removed: No target: target a creature
 --- Versions: switching updates the Tier table and the meta line
 2 AP has 2d10: true | 1 AP has 2d10: false | 1 AP has 1d4: true | Effects row only at 2 AP: true true
 3 AP button struck through, can be chosen, its reason on hover: true | aria-pressed on 2 AP: true
-meta line: Targets: One creature ✦ Weapon ✦ Vs. AD
+meta lines (v0.0.294: the book's format): Targets: One creature / Distance: Weapon ✦ Vs. AD
+the order: Escalation, Targets, Distance ✦ Vs., Requirements, Trigger: 2 Escalation / Targets: The triggering creature / Distance: 5 sq. ✦ Appeal Save / Requirements: A free hand / Trigger: An enemy attacks
 no Tier prefix in Effects, no T1 "0" line: true true
 --- the player view (Hide enemy Defenses on) and Designer mode
 badge 'AD' only: true | ladder: false | footer: true | Tier table stays: true | counts stay: true
@@ -71,9 +72,12 @@ expressions: 2d6 + 2 = 9 | 1d10+2 Enfeebled 1 = 6.6
 Smite 2 AP averages (Radiant Zeal and Heavy Blows on, net 0): 7 | 15 | 23.5
 Radiant Zeal off: 3.5 | 11.5 | 20
 Empowered 2 by hand (net 1): 9 | 19 | 28.5
-lines under the Tiers: Avg 7 · 23% | Avg 15 · 45% | Avg 23.5 · 32%
+lines under the Tiers: Avg 7 | Avg 15 | Avg 23.5
 setting off: no lines: true | player with hidden Defenses: averages only: Avg 7 | Avg 15 | Avg 23.5
-Word of Radiance, each creature: Avg 7 · Bandit Thug 35% · Grave Wisp 8% · Ogre Chieftain 77% | Avg 11 · Bandit Thug 42% · Grave Wisp 43% · Ogre Chieftain 21% | Avg 13.5 · Bandit Thug 19% · Grave Wisp 39% · Ogre Chieftain 2% | Bandit Thug 4% · Grave Wisp 11% · Ogre Chieftain 0%
+Smite's ladder with its chances: Tier 1 · ≤ 10 23% Tier 2 · 11–17 45% Tier 3 · 18+ 32% | the ≤ in its own span: true
+no chances in the ladder when the setting hides them: true
+Word of Radiance, the expanded creatures' ladders: Tier 1 · ≤ 12 8% Tier 2 · 13–19 43% Tier 3 · 20–32 39% Crit · 33+ 11% || Tier 1 · ≤ 13 77% Tier 2 · 14–20 21% Tier 3 · 21–33 2% Crit · 34+ 0%
+Word of Radiance, under each Tier: Avg 7 | Avg 11 | Avg 13.5
 --- v0.0.293: Favored / Doomed as a d12, right-click a hand-added chip
 Favored chip: d12 F: true | Doomed: d12 D: true | Boon keeps the triangle: true | quick buttons too: true
 hand-added chips carry data-manual (right-click): 3 | an auto chip doesn't: true

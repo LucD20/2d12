@@ -8,7 +8,7 @@ Body +2 Mind +1 Appeal +1 Instinct +0: {"body":14,"mind":14,"appeal":14,"instinc
 Save DCs (Weapon +2, Power +2, Signature +3): {"weapon":13,"power":13,"signature":14} | no Modifier: 11
 --- the Strikes counter, the cost pill and the Vs. column
 Strikes this turn 2 / 3 | Strikes this turn 0 / 3 | Strikes this turn 0 / 3
-pills: 1/2/3 , 2/3 , 1R , 0 , 2 , ""
+pills: 1/2/3 AP , 2/3 AP , 1R , 0 AP , 2 AP , ""
 Vs.: "AD" "WD" "App Save" "Inst Save" "Body Save" "" "" "Body or Inst" "AD/WD" ""
 distance: 5 sq. | Self | — | 10/20/40
 --- why a Basic Action can't be used

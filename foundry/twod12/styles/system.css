@@ -3293,3 +3293,39 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.rolldlg .rd-vers button.cant { cursor: pointer; }
 .twod12.rolldlg .rd-warn { flex: 0 0 auto; margin: 0 14px 4px; padding: 4px 8px; border: 1px solid #d9a39c; border-radius: 4px; background: #f8e4df; color: #8a1c13; font-size: 12px; }
 .twod12.rolldlg .rd-tline { margin-top: 8px; font-size: 13px; font-weight: 600; }
+/* ==== v0.0.294 (Lucas tested v0.0.293): the roll dialog's Tier labels (a tinted cell with a colored bar on the left, "Tier 1" in Cinzel),
+   the ladder with each creature's chances, the "≤" in a font that draws it ==== */
+.twod12.rolldlg .rd-tiers th { width: 78px; text-align: left; padding: 4px 6px 4px 10px !important; font-size: 13px; letter-spacing: .02em; border-radius: 2px 0 0 2px; }
+.twod12.rolldlg .rd-tiers tr.t1 th { background: #fbeceb !important; color: #8a1c13; box-shadow: inset 4px 0 0 #a8261c; }
+.twod12.rolldlg .rd-tiers tr.t2 th { background: #eef4ea !important; color: #234d27; box-shadow: inset 4px 0 0 #9cbf8c; }
+.twod12.rolldlg .rd-tiers tr.t3 th { background: #e4ece2 !important; color: #2b5a2f; box-shadow: inset 4px 0 0 #2b5a2f; }
+.twod12.rolldlg .rd-tiers tr.crit th { background: #e3ebf5 !important; color: #1d3f6b; box-shadow: inset 4px 0 0 #1d5a9e; }
+.twod12.rolldlg .rd-tiers tr.rd-eff th { background: #f1ece2 !important; color: #4a443b; box-shadow: inset 4px 0 0 #8c7d63; font-family: var(--cc-title); }
+.twod12.rolldlg .rd-lseg { display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.2; padding: 3px 2px; }
+.twod12.rolldlg .rd-lpct { font-size: 12.5px; font-weight: 800; }
+.twod12.rolldlg .rd-le { font-family: "Segoe UI", Arial, "Helvetica Neue", sans-serif; font-weight: 600; text-decoration: none; }
+/* ==== v0.0.294 (chat cards addendum, brief sections 12 and 13): the Trigger line in plain text; the non-roll card (no stamp, no ladder, no category
+   line, no Effects box), its numbered steps and the "Granted Action:" row. The cards' tokens (.twod12.chat.cc). ==== */
+.twod12.chat.cc .cc-trigger.plain { background: none; border: 0; padding: 0; margin: 4px 0 0; font-size: 12px; }
+.twod12.chat.cc .cc-noroll { display: flex; flex-direction: column; gap: 6px; padding: 8px 10px; }
+.twod12.chat.cc .cc-noroll .cc-head { flex-wrap: nowrap; }
+.twod12.chat.cc .cc-noroll .cc-cost { white-space: nowrap; }
+.twod12.chat.cc .cc-noroll .cc-div { margin: 0; }
+.twod12.chat.cc .cc-effect.full { font-size: 12.5px; line-height: 1.45; }
+.twod12.chat.cc .cc-steps { display: flex; flex-direction: column; }
+.twod12.chat.cc .cc-step { display: flex; align-items: center; gap: 7px; padding: 5px 0; border-top: 1px solid #e0d4ba; font-size: 12px; }
+.twod12.chat.cc .cc-snum { flex: 0 0 18px; width: 18px; height: 18px; border-radius: 50%; background: var(--cc-ink); color: #f4ede0; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
+.twod12.chat.cc .cc-slabel { flex: 1 1 auto; }
+.twod12.chat.cc .cc-step .cc-btn { flex: 0 0 auto; }
+.twod12.chat.cc .cc-step .cc-btn[disabled] { opacity: .5; cursor: not-allowed; }
+.twod12.chat.cc .cc-done, .twod12.chat.cc .cc-used { color: #2b5a2f; font-weight: 700; font-size: 12px; white-space: nowrap; }
+.twod12.chat.cc .tline.grantrow { display: flex; align-items: center; gap: 8px; margin: 0; padding: 6px 8px; background: #efe7d6; border: 0; border-radius: 4px; }
+.twod12.chat.cc .tline.grantrow .apside { flex: 1 1 auto; color: var(--cc-mute); font-size: 12px; }
+.twod12.chat.cc .tline.grantrow .apside b { color: var(--cc-ink); }
+.twod12.chat.cc .tline.grantrow .gbtns { display: flex; gap: 4px; flex: 0 0 auto; }
+.twod12.chat.cc .tline.grantrow .cc-gbtn, .twod12.chat.cc .cc-grant a[data-twod12-inline="Use"] { display: inline-flex; align-items: center; gap: 4px; min-height: 26px; padding: 2px 10px; border: 0; border-radius: 4px; background: var(--cc-btn); color: #f4ede0; font-size: 12px; font-weight: 700; cursor: pointer; width: auto; text-decoration: none; }
+.twod12.chat.cc .cc-grant a[data-twod12-inline="Use"].spent { background: none; color: #2b5a2f; pointer-events: none; padding: 0; }
+.twod12.chat.cc .cc-gwhy { color: var(--cc-mute); font-size: 11.5px; opacity: .7; cursor: help; }
+.twod12.chat.cc .cc-slot:empty { display: none; }
+.twod12.chat.cc .tline.grantrow { flex-wrap: nowrap; justify-content: space-between; }
+.twod12.chat.cc .tline.grantrow .apside { width: auto; min-width: 0; }

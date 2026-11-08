@@ -268,6 +268,9 @@ function ccRender(msg, html) {
   const tmp = document.createElement("div");
   tmp.innerHTML = CC.renderCard(msg.getFlag("twod12", "ccApplied") ? { ...m, locked: true } : m, view);
   if (tmp.firstElementChild) card.replaceWith(tmp.firstElementChild);
+  // v0.0.294 (brief section 13): the granted uses' rows (appended after the card by freeuse.mjs) go into the non-roll card's slot, before the Flavor
+  const slot = el.querySelector(".cc-card .cc-slot");
+  if (slot) el.querySelectorAll(".twod12.chat.cc > .tline.grantrow").forEach(r => slot.append(r));
 }
 Hooks.on("renderChatMessageHTML", ccRender);
 // v0.0.249 (Lucas): a rung Passive's effect comes as soon as the Escalation reaches its rung (the encounter's start, a Critical, the hook, the GM's valve)
@@ -365,6 +368,7 @@ Hooks.once("ready", async () => {
   registerDragCopy();
   registerUsageHooks();
   registerGrantCardHooks();
+  import("./noroll.mjs").then(m => m.registerNoRollHooks()).catch(e => console.warn("twod12 | non-roll cards", e));   // v0.0.294
   registerMomentHooks();   // v0.0.272 (pack RX): the movement moments
   closeStale().catch(e => console.warn("twod12 | Reactions", e));
   registerDeadHooks();

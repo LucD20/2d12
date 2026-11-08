@@ -141,7 +141,9 @@ st = RD.newState(smite);
 const h2 = RD.dialogHtml(smite, st); st.ap = 1; const h1 = RD.dialogHtml(smite, st);
 console.log("2 AP has 2d10:", h2.includes("2d10"), "| 1 AP has 2d10:", h1.includes("2d10"), "| 1 AP has 1d4:", h1.includes("1d4"), "| Effects row only at 2 AP:", h2.includes("rd-tiers") && h2.includes("Bright light"), !h1.includes("Bright light"));
 console.log("3 AP button struck through, can be chosen, its reason on hover:", /data-ap="3"[^>]*data-tooltip="You have 2 AP left" class="cant"/.test(h2) && !/data-ap="3"[^>]*disabled/.test(h2), "| aria-pressed on 2 AP:", /data-ap="2" aria-pressed="true"/.test(h2));
-console.log("meta line:", (h2.match(/<div class="rd-meta">(.*?)<\/div>/) ?? [])[1].replace(/<[^>]+>/g, ""));
+console.log("meta lines (v0.0.294: the book's format):", [...h2.matchAll(/<div class="rd-meta">(.*?)<\/div>/g)].map(m => m[1].replace(/<[^>]+>/g, "")).join(" / "));
+{ const r = { name: "R", versions: [{ ap: 1, cost: "1R", traits: [], meta: { escalation: 2, targets: "The triggering creature", dist: "5 sq.", vs: "Appeal Save", requirements: "A free hand", trigger: "An enemy attacks", triggerKind: "trigger" }, tiers: {} }], roll: { mod: 0 }, chips: [], creatures: [] };
+  console.log("the order: Escalation, Targets, Distance ✦ Vs., Requirements, Trigger:", [...RD.dialogHtml(r, RD.newState(r)).matchAll(/<div class="rd-meta">(.*?)<\/div>/g)].map(m => m[1].replace(/<[^>]+>/g, "")).join(" / ")); }
 console.log("no Tier prefix in Effects, no T1 \"0\" line:", !/T2, T3/.test(h2), !/>0 <b class="rd-sub"/.test(h2));
 
 console.log("--- the player view (Hide enemy Defenses on) and Designer mode");
@@ -174,8 +176,12 @@ st = RD.newState(smite);
 const hs = RD.dialogHtml(sOn, st);
 console.log("lines under the Tiers:", (hs.match(/<div class="rd-stat">[^<]*<\/div>/g) ?? []).map(x => x.replace(/<[^>]+>/g, "")).join(" | "));
 console.log("setting off: no lines:", !RD.dialogHtml(smite, st).includes("rd-stat"), "| player with hidden Defenses: averages only:", (RD.dialogHtml({ ...sOn, hideDef: true }, st).match(/<div class="rd-stat">[^<]*<\/div>/g) ?? []).map(x => x.replace(/<[^>]+>/g, "")).join(" | "));
+console.log("Smite's ladder with its chances:", (hs.match(/<div class="rd-ladder[\s\S]*?<\/div>/) ?? [""])[0].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim(), "| the ≤ in its own span:", hs.includes('<span class="rd-le">≤</span>'));
+console.log("no chances in the ladder when the setting hides them:", !RD.dialogHtml(smite, st).includes("rd-lpct"));
 const w2 = RD.newState(wor); RD.addManual(w2, "wisp", "fav"); RD.addManual(w2, "ogre", "doom");
-console.log("Word of Radiance, each creature:", (RD.dialogHtml({ ...wor, showAvg: true, showOdds: true }, w2).match(/<div class="rd-stat">[^<]*<\/div>/g) ?? []).map(x => x.replace(/<[^>]+>/g, "")).join(" | "));
+w2.open.ogre = true; w2.open.wisp = true;
+console.log("Word of Radiance, the expanded creatures' ladders:", [...RD.dialogHtml({ ...wor, showAvg: true, showOdds: true }, w2).matchAll(/<div class="rd-ladder[\s\S]*?<\/div>/g)].map(m => m[0].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim()).join(" || "));
+console.log("Word of Radiance, under each Tier:", (RD.dialogHtml({ ...wor, showAvg: true, showOdds: true }, w2).match(/<div class="rd-stat">[^<]*<\/div>/g) ?? []).map(x => x.replace(/<[^>]+>/g, "")).join(" | "));
 
 console.log("--- v0.0.293: Favored / Doomed as a d12, right-click a hand-added chip");
 st = RD.newState(smite); RD.addManual(st, "shared", "fav"); RD.addManual(st, "shared", "doom"); RD.addManual(st, "shared", "boon");

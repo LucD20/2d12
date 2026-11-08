@@ -36,7 +36,7 @@ player view: no WD labels: true
 Tier 3 on top: T3 20+ | T2 13–19 | T1 ≤12 | the DC: Appeal Save DC 13 | no effect on Tier 3: true
 before the roll: the owner rolls: true | the others wait: Waiting for Ogre Chieftain's Appeal Save… | no row lit: true
 after: the result row is a button: true | its total: 8 | the others dim: 2 | Their Tier: Their Tier 1 | Damage at the bottom: true
-the Trigger under the Tiers, then the Flavor: true | Trigger: An enemy within 5 squares makes a [Strike] Action against an ally.
+v0.0.294 (brief section 12): the Trigger under the Save line, above the Tier rows, then one diamond: true | Trigger: An enemy within 5 squares makes a [Strike] Action against an ally.
 --- Resist / Weak / Immunity: once per subtype per Action, across both pools; Resist capped at what that subtype dealt
 parsed: {"resist":{"Fi":5},"weak":{"Ho":2},"immune":["Co"]}
 Fire Imp: ♥ 6 Sl + 4 Fi, 🧠 10 Ho: -4 Resist Fire, +2 Weak Holy → {"B":6,"M":12}

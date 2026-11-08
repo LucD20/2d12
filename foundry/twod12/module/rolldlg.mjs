@@ -317,7 +317,10 @@ export function rowsHtml(chips, st, scope, rows = ROWS) {
     return `<div class="rd-row"><span class="rd-rlabel">${esc(label)}</span><span class="rd-chips">${f.shown.map(c => chipHtml(c, st)).join("")}${offBtn}${naBtn}</span></div>`;
   }).join("");
 }
-const ladderHtml = (dc, crit) => `<div class="rd-ladder${crit ? " crit" : ""}" data-tooltip="${esc(LADDER_TIP)}">${ladder(dc, crit).map(s => `<span class="rd-lseg ${s.k}">${esc(s.label)}</span>`).join("")}</div>`;
+/** v0.0.294 (Lucas): the ladder carries the creature's chance of each Tier (when the setting shows them); the "≤" in a font that draws it well. */
+const ladderHtml = (dc, crit, odds = null) => `<div class="rd-ladder${crit ? " crit" : ""}" data-tooltip="${esc(LADDER_TIP)}">${ladder(dc, crit).map((s, i) => `<span class="rd-lseg ${s.k}"><span>${esc(s.label).replace("≤", '<span class="rd-le">≤</span>')}</span>${odds ? `<b class="rd-lpct">${odds[i]}%</b>` : ""}</span>`).join("")}</div>`;
+/** A creature's chances for its ladder: null when the setting hides them (or the player view hides the Defenses: no ladder then anyway). */
+const ladderOdds = (inp, st, c, crit) => (inp.showOdds && !inp.hideDef && !inp.save ? oddsOf(creatureCalc(inp, st, c.uuid), crit) : null);
 const defBadge = (c, hide) => `<span class="rd-def" ${hide ? 'data-tooltip="Hidden by the GM"' : ""}>${esc(c.def ?? "DC")}${hide ? "" : ` ${Number(c.dc) || 13}`}</span>`;
 const counts = (b, n) => `<span class="rd-cnt"><span class="up" aria-label="${b} Boons">▲${b}</span> <span class="down" aria-label="${n} Banes">▼${n}</span></span>`;
 
@@ -331,20 +334,21 @@ export function tierStats(inp, st, v) {
   out.crit = { avg: 0, odds: crit ? odds.map(x => ({ name: x.name, p: x.o[3] })) : [] };
   return out;
 }
-const statLine = (x, one) => { const bits = [x.avg ? `Avg ${x.avg}` : "", ...x.odds.map(o => (one ? `${o.p}%` : `${o.name} ${o.p}%`))].filter(Boolean); return bits.length ? `<div class="rd-stat">${esc(bits.join(" · "))}</div>` : ""; };
+// v0.0.294: the line under each Tier is the average only; the chances moved to each creature's ladder
+const statLine = x => (x.avg ? `<div class="rd-stat">Avg ${x.avg}</div>` : "");
 
 function tierTableHtml(inp, st, v) {
   if (!v) return "";
   if (v.noTiers) return v.effects ? `<table class="rd-tiers"><tr class="rd-eff"><th scope="row">Effects</th><td>${v.effects}</td></tr></table>` : "";
-  const stats = tierStats(inp, st, v), one = liveCreatures(inp, st).length <= 1;
+  const stats = tierStats(inp, st, v);
   const cell = n => {
     const lines = poolLines(v.tiers?.[n], tierTags(inp, st, n).map(c => ({ pool: c.pool, tag: c.tag })));
     const dmg = lines.map(l => `<span class="rd-pool">${poolIcon(l.pool)} ${l.segs.map(s => `${esc(s.t)}${s.sub ? ` <b class="rd-sub" style="color:${SUB_INK[s.sub] ?? "#4a443b"}">${esc(s.sub)}</b>` : ""}`).join(" + ")}${l.tags.map(g => ` <span class="rd-ptag">${esc(g)}</span>`).join("")}</span>`).join('<span class="rd-dot" aria-hidden="true"> · </span>');
     const riders = (v.tiers?.[n]?.riders ?? []).map(r => `<div class="rd-rider">↳ ${r}</div>`).join("");
-    return (dmg || riders ? `${dmg ? `<div>${dmg}</div>` : ""}${riders}` : "&mdash;") + statLine(stats[n], one);
+    return (dmg || riders ? `${dmg ? `<div>${dmg}</div>` : ""}${riders}` : "&mdash;") + statLine(stats[n]);
   };
-  const rows = [1, 2, 3].map(n => `<tr class="t${n}"><th scope="row">T${n}</th><td>${cell(n)}</td></tr>`);
-  if (v.crit) rows.push(`<tr class="crit"><th scope="row">Crit</th><td>${v.crit}${statLine(stats.crit, one)}</td></tr>`);
+  const rows = [1, 2, 3].map(n => `<tr class="t${n}"><th scope="row">Tier ${n}</th><td>${cell(n)}</td></tr>`);
+  if (v.crit) rows.push(`<tr class="crit"><th scope="row">Critical</th><td>${v.crit}</td></tr>`);
   if (v.effects) rows.push(`<tr class="rd-eff"><th scope="row">Effects<small>(T${v.effectsFrom ?? 2}+)</small></th><td>${v.effects}</td></tr>`);
   const net = stepNet(inp, st);
   return `<table class="rd-tiers">${rows.join("")}</table>${net.line ? `<div class="rd-step">${esc(net.line)}</div>` : ""}`;
@@ -352,14 +356,17 @@ function tierTableHtml(inp, st, v) {
 
 function metaHtml(inp, v) {
   const m = v?.meta ?? {}, sep = '<span class="rd-star" aria-hidden="true"> ✦ </span>';
-  const line = [m.targets ? `<b>Targets:</b> ${esc(m.targets)}` : "", inp.area ? `<button type="button" class="rd-area" data-act="place" data-tooltip="${inp.area.placed ? "Place the area again" : "Place the area"}"><span aria-hidden="true">◇</span> ${esc(inp.area.label)}</button>` : "",
-    m.dist ? (/^(weapon|reach|self)$/i.test(m.dist) ? esc(m.dist) : `Distance: ${esc(m.dist)}`) : "", m.vs ? `${/save$/i.test(m.vs) ? "" : "Vs. "}${esc(m.vs)}` : ""].filter(Boolean);
+  // v0.0.294 (Lucas): the book's format (Ch. 1, Reading an Action): Targets (✦ the Area) on one line, "Distance: X ✦ Vs. X" on the next, the
+  // Trigger / Interrupt after the meta lines (the chat cards' order too, brief section 12)
+  const l1 = [m.targets ? `<b>Targets:</b> ${esc(m.targets)}` : "", inp.area ? `<button type="button" class="rd-area" data-act="place" data-tooltip="${inp.area.placed ? "Place the area again" : "Place the area"}"><span aria-hidden="true">◇</span> ${esc(inp.area.label)}</button>` : ""].filter(Boolean);
+  const l2 = [m.dist && !/^self$/i.test(m.dist) ? `<b>Distance:</b> ${esc(m.dist)}` : "", m.vs ? `${/save$/i.test(m.vs) ? "" : "Vs. "}${esc(m.vs)}` : ""].filter(Boolean);
   const out = [];
-  if (m.trigger) out.push(`<div class="rd-meta"><b>${m.triggerKind === "interrupt" ? "Interrupt" : "Trigger"}:</b> ${esc(m.trigger)}</div>`);
   if (Number(m.escalation) > 0) out.push(`<div class="rd-meta">${Number(m.escalation)} Escalation</div>`);
-  if (line.length) out.push(`<div class="rd-meta">${line.join(sep)}</div>`);
+  if (l1.length) out.push(`<div class="rd-meta">${l1.join(sep)}</div>`);
+  if (l2.length) out.push(`<div class="rd-meta">${l2.join(sep)}</div>`);
   if (m.requirements) out.push(`<div class="rd-meta"><b>Requirements:</b> ${esc(m.requirements)}</div>`);
   if (m.setup) out.push(`<div class="rd-meta"><b>Setup:</b> ${m.setup}</div>`);
+  if (m.trigger) out.push(`<div class="rd-meta"><b>${m.triggerKind === "interrupt" ? "Interrupt" : "Trigger"}:</b> ${esc(m.trigger)}</div>`);
   return out.join("");
 }
 
@@ -378,7 +385,7 @@ function creaturesHtml(inp, st, v) {
   if (!live.length) return `<div class="rd-none">${inp.area && !inp.area.placed ? "Place the area to choose the creatures." : "No target. Target a creature on the map."}</div>`;
   if (!inp.multi) {
     const c = live[0], own = chipsOf(inp, st, c.uuid);
-    return `<div class="rd-cbox"><div class="rd-cname"><b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}${defBadge(c, hide)}</div>${rowsHtml(own, st, c.uuid, ROWS.filter(r => r[0] !== "passives" && r[0] !== "damage"))}${hide ? "" : ladderHtml(c.dc, crit)}</div>`;
+    return `<div class="rd-cbox"><div class="rd-cname"><b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}${defBadge(c, hide)}</div>${rowsHtml(own, st, c.uuid, ROWS.filter(r => r[0] !== "passives" && r[0] !== "damage"))}${hide ? "" : ladderHtml(c.dc, crit, ladderOdds(inp, st, c, crit))}</div>`;
   }
   const three = anyThree(inp, st);
   return live.map(c => {
@@ -386,7 +393,7 @@ function creaturesHtml(inp, st, v) {
     const head = `<div class="rd-cline"><button type="button" class="rd-copen" data-act="open" data-uuid="${esc(c.uuid)}" aria-expanded="${open}"><span class="rd-chev" aria-hidden="true">${open ? "▾" : "▸"}</span><b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}<span class="rd-cdice">${esc(creatureDice(k, three))}</span><span class="rd-cmod">${k.mod >= 0 ? "+" : "−"}${Math.abs(k.mod)}</span>${counts(k.boons, k.banes)}</button>${defBadge(c, hide)}<button type="button" class="rd-cx rm" data-act="untarget" data-uuid="${esc(c.uuid)}" aria-label="Remove ${esc(c.name)}" data-tooltip="Remove ${esc(c.name)} from the targets (or right-click its line)">×</button></div>`;
     if (!open) return `<div class="rd-cbox multi" data-uuid="${esc(c.uuid)}">${head}</div>`;
     const add = `<div class="rd-row"><span class="rd-rlabel">Add here:</span><span class="rd-chips">${["boon", "bane", "fav", "doom"].map(kd => `<button type="button" class="rd-addhere" data-act="quick" data-scope="${esc(c.uuid)}" data-k="${kd}">${pip({ kind: kd })}${QUICK_LABEL[kd]}</button>`).join("")}</span></div>`;
-    return `<div class="rd-cbox multi open" data-uuid="${esc(c.uuid)}">${head}${rowsHtml(own, st, c.uuid, ROWS.filter(r => r[0] !== "passives" && r[0] !== "damage"))}${add}${hide ? "" : ladderHtml(c.dc, crit)}</div>`;
+    return `<div class="rd-cbox multi open" data-uuid="${esc(c.uuid)}">${head}${rowsHtml(own, st, c.uuid, ROWS.filter(r => r[0] !== "passives" && r[0] !== "damage"))}${add}${hide ? "" : ladderHtml(c.dc, crit, ladderOdds(inp, st, c, crit))}</div>`;
   }).join("");
 }
 

@@ -492,7 +492,7 @@ export async function useAction(actor, item, opts = {}) {
   if (!opts.free && !opts.noGrant) {
     // v0.0.269 (Lucas): a ticket or a card's button names its own grant (opts.grantKey); the Action's plain use button takes the first waiting
     const all = activeGrants(actor, item), g = opts.grantKey ? (all.find(x => x.effect.id === opts.grantKey.effectId && x.index === Number(opts.grantKey.index)) ?? all[0]) : all[0];
-    if (g) opts = { ...opts, free: true, ap: g.grant.ap, boons: g.grant.boons, banes: g.grant.banes, label: g.effect.name, grant: g, excludeTargets: g.grant.distinct ? (g.grant.used ?? []) : [] };
+    if (g) { const { grantOpts } = await import("./freeuse.mjs"); opts = { ...opts, ...grantOpts(g) }; }   // v0.0.294: one pure source (tested)
   }
   // An Action that needs a free hand (Handle, "free hand" in its Requirements, such as Reload): with both hands full, offer Release first (v0.0.138).
   if (!opts.noHandle && !(await ensureFreeHand(actor, item))) return;
@@ -1022,6 +1022,34 @@ export async function useAction(actor, item, opts = {}) {
       mod, adj: Number(data.mod) || 0, adjLabel: adjLabelOf(data), manualBoons: manB, manualBanes: manN, favored: data.favored === "on" || data.reloadshot === "on", doomed: data.doomed === "on",
       general: resolveModifiers(actor, (data.fx ?? []).filter(id => CC_GENERAL(String(id))), extraMods).sources, attrKey, srcKind: src.kind, forced: forcedTier || 0, chip: src.chip };
   }
+  // v0.0.294 (chat cards addendum, brief section 13): an Action that makes no roll gets the new card too: no category line, no Effects box,
+  // the Trigger under the meta lines, the granted Action's row, the numbered steps of its chain, the Flavor at the foot
+  if (!ccModel && version.noTiers && !saveAct) {
+    const NR = await import("./noroll.mjs"), { halfCtx } = await import("./halfhint.mjs");
+    const use = NR.splitUse(version.effects ? await enrich(version.effects, item) : "");
+    const tActor = u => { try { const d = fromUuidSync(u); return d?.documentName === "Actor" ? d : d?.actor ?? null; } catch (e) { return null; } };
+    const first = targets[0] ? tActor(targets[0].uuid) : null;
+    const after = String(version.after ?? "").trim(), from = it.moment && after && targets.length ? 1 : 0;
+    const steps = after ? NR.stepsOf(after, { guard: /@Guard\[rally/i.test(after) && first ? (Number(first.system?.rallyHeal) || null) : null }) : [];
+    // the granted Action: a PC's weapon must reach the triggering creature (Opportunity Attack); an NPC makes its Basic attack
+    let useOff = "", useName = use.name;
+    if (use.anchor && actor.type === "npc" && /^weapon attack$/i.test(use.name)) useName = "Basic attack";
+    else if (use.anchor && /^weapon attack$/i.test(use.name) && selfToken && targets.length === 1) {
+      const tok = (() => { try { return fromUuidSync(targets[0].uuid)?.object ?? null; } catch (e) { return null; } })();
+      const reaches = (actor.itemTypes?.weapon ?? []).filter(w => w.system.wielded).map(w => { const r = weaponRanges(w, s.reach ?? 1); return { name: w.name, max: Math.max(0, ...`${r.melee ?? ""}/${r.ranged ?? ""}`.split("/").map(Number).filter(n => n > 0)) }; });
+      if (tok && tok !== selfToken) useOff = NR.reachProblem(reaches, squaresBetween(selfToken, tok), tok.name);
+    }
+    ccModel = {
+      v: 1, kind: "noroll", name: item.name, freq: effectiveFrequency(it), cost: it.reaction ? `${version.ap}R` : `${version.ap} AP`, traitsHtml: useTraits.size ? traitsHtml(useTraits) : "",
+      tline: { targets: it.targets ?? "", dist: sqText(distanceText(it, weapon ?? previewWeapon ?? null)) || (it.reaction && Number(it.momentRange) > 0 ? `${Number(it.momentRange)} sq.` : ""), area: "", names: targets.map(t => t.name) },
+      triggerHtml: it.trigger ? await enrich(esc(it.trigger), item) : "", triggerLabel: it.reactionKind === "interrupt" ? "Interrupt" : "Trigger",
+      effectHtml: use.html, useHtml: use.anchor, useName, useOff,
+      steps, afterDone: from ? steps.filter(x => x.k === 0).map(x => `0|${x.side}`) : [],
+      // used while a Strike's damage is held (the Reactions message): its "After the damage" step waits for that damage to land
+      afterWait: halfCtx.held && NR.waitsForDamage(after) && first ? { actor: first.uuid, token: targets[0].uuid } : null,
+      flavor: it.flavor ?? "", designer: { ruler: it.worth ?? "", mithril: it.automation ? `${TWOD12.automationRanks[it.automation] ?? it.automation}${it.automationNote ? ` (by hand: ${it.automationNote})` : ""}` : "" }
+    };
+  }
   const html = ccModel ? CC.cardContent(ccModel) : `<div class="twod12 chat action" style="${cardVars(color)}">
     ${cardHead(item.name, categoryText(it), apIcon(version.ap, it.reaction), effectiveFrequency(it), it.automation, it.automationNote)}
     ${flavorHtml(it)}
@@ -1229,7 +1257,16 @@ export async function applyAfter(msg, side = "", step = 0) {
   const ctx = { actor, targets: (f.targets ?? []).map(t => ({ uuid: t.uuid, name: t.name })), attrVal: Number.isFinite(Number(f.attrVal)) && f.attrVal !== undefined ? Number(f.attrVal) : null, areaPoint: f.areaPoint ?? null, message: msg, source: actor?.items?.get(f.itemId)?.name ?? "" };
   if (side) ctx.targets = sideTargets(ctx, side);
   if (!ctx.targets.length && !/\|(?:near|who):/.test(chips)) return ui.notifications.info(`No ${side || "target"} on the card.`);
+  // v0.0.294 (brief section 13): a step not possible yet is refused (the button is disabled too): the one before first, "After the damage" once it landed
+  const cc = msg.getFlag("twod12", "cc");
+  if (cc?.kind === "noroll") {
+    const i = (cc.steps ?? []).findIndex(x => x.k === (Number(step) || 0) && (x.side ?? "") === (side ?? ""));
+    const st = i >= 0 ? CC.stepState(cc, i) : { state: "ready" };
+    if (st.state === "wait") return ui.notifications.warn(`${cc.steps[i].label}: ${st.why}.`);
+    if (st.state === "done") return ui.notifications.info(`${cc.steps[i].label}: already done.`);
+  }
   await runAfter(chips, ctx, { side });
+  if (cc?.kind === "noroll") { const { markStepDone } = await import("./noroll.mjs"); await markStepDone(msg, step, side); }
 }
 
 /** Roll the damage for the tier rolled on an action card and post it as a new card. */
@@ -1301,6 +1338,12 @@ export async function retargetAction(msg) {
   const toks = game.user.targets.size ? [...game.user.targets] : (canvas.tokens?.controlled ?? []);
   if (!toks.length) return ui.notifications.warn("Target or select a token first.");
   if (msg.getFlag("twod12", "cc")?.kind === "attack") return retargetCc(msg, toks);
+  if (msg.getFlag("twod12", "cc")?.kind === "noroll") {   // v0.0.294: the non-roll card: its target line and the targets its steps apply to
+    const m = foundry.utils.deepClone(msg.getFlag("twod12", "cc")), targets = toks.map(t => ({ uuid: t.document.uuid, name: t.name, disposition: t.document.disposition }));
+    m.tline = { ...(m.tline ?? {}), names: targets.map(t => t.name) };
+    try { await msg.update({ content: CC.cardContent(m), "flags.twod12.cc": m, "flags.twod12.action.targets": targets }); } catch (e) { ui.notifications.warn("Only the author of this card or the GM can change its targets."); }
+    return;
+  }
   const targets = toks.map(t => ({ uuid: t.document.uuid, name: t.name, disposition: t.document.disposition }));
   const mine = canvas.tokens?.get(msg.speaker?.token)?.document.disposition ?? game.actors.get(msg.speaker?.actor)?.getActiveTokens?.()[0]?.document.disposition ?? 1;
   // v0.0.260 (Lucas): a card with several targets has the class "many" on its row (v0.0.259): the pattern takes it, or the retarget changed nothing

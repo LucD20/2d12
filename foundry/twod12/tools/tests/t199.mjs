@@ -20,7 +20,7 @@ console.log("the rows:", updated?.content.slice(updated.content.indexOf('<div cl
 grants[0].left = 1;
 console.log("one spent:", fu.grantRowsHtml(actor, updated["flags.twod12.grantCard"]).replace(/^[\s\S]*?<div class="gbtns">/, ""));
 grants[0].left = 0;
-console.log("all spent:", /spent<\/small>/.test(fu.grantRowsHtml(actor, updated["flags.twod12.grantCard"])) && !/fa-bolt/.test(fu.grantRowsHtml(actor, updated["flags.twod12.grantCard"])));
+console.log("all spent (v0.0.294: \"✓ Used\", no button):", /class="cc-used"/.test(fu.grantRowsHtml(actor, updated["flags.twod12.grantCard"])) && !/fa-bolt/.test(fu.grantRowsHtml(actor, updated["flags.twod12.grantCard"])));
 console.log("no grants, nothing:", await fu.attachGrantCard({ content: "<div></div>", update: async () => { throw new Error("should not update"); } }, actor, ["Item.other"]) === undefined);
 const a = src("module/actions.mjs");
 console.log("the retarget takes a row with several targets:", a.includes('/<div class="tline cardtargets(?: many)?">[\\s\\S]*?<\\/div>/') && a.includes("if (auto.length && cmsg) await attachGrantCard(cmsg, actor, auto);"));

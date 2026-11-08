@@ -60,6 +60,8 @@ export async function applyToActor(actor, a, opts = {}) {
   if (rxIds.some(Boolean)) { try { const final = a.B.l + a.B.n + a.M.l + a.M.n; await M.noteLanded(rxIds[0], { final, blocked: Math.min(rxGained, (Number(a.reduced) || 0) + (Number(g.taken) || 0)) }); if (rxIds[1]) await M.noteLanded(rxIds[1], { final, cut: a.momentCut || 0 }); } catch (e) { console.warn("twod12 | moment", e); } }
   // v0.0.272: the damage landed: the Triggers of these moments are offered now (they hold nothing)
   try { M?.landedMoment(actor, a.B.l + a.B.n + a.M.l + a.M.n, from, downing); } catch (e) { console.warn("twod12 | moment", e); }
+  // v0.0.294 (brief section 13): a held damage landed: the Reactions' cards on this creature unlock their "After the damage" step (Bulwark of Faith's Slide)
+  if (rxIds[0]) { try { const { afterLanded } = await import("./noroll.mjs"); await afterLanded(actor); } catch (e) { console.warn("twod12 | After the damage", e); } }
   return g.taken;
 }
 /** The actor's update, through the GM when this user doesn't own it. */

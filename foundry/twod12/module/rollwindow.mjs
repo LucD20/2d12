@@ -34,6 +34,9 @@ export class RollWindow extends (ApplicationV2 ?? class {}) {
     el.addEventListener("click", ev => this._click(ev));
     el.addEventListener("contextmenu", ev => {
       // v0.0.293 (Lucas): a right-click on a chip added by hand is one step less (Situational ×2 → Situational); its × removes it
+      // v0.0.294 (Lucas): a right-click on the quick button (or an "Add here:" button) that adds a chip takes one step off it too
+      const qb = ev.target.closest('button[data-act="quick"]');
+      if (qb) { ev.preventDefault(); ev.stopPropagation(); RD.stepManual(this.st, qb.dataset.scope, qb.dataset.k); this.render(); return; }
       const man = ev.target.closest("[data-manual]");
       if (man) { ev.preventDefault(); ev.stopPropagation(); const [, scope, kind] = /^man:(.*):([a-z]+)$/.exec(man.dataset.manual) ?? []; if (kind) { RD.stepManual(this.st, scope, kind); this.render(); } return; }
       const line = ev.target.closest(".rd-cbox.multi");   // v0.0.217 kept: a right-click on a creature removes it from the roll
