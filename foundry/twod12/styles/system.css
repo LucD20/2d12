@@ -3503,3 +3503,8 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.acard.d2 .ap-fxh.withcat::after { content: none; }
 .twod12.acard.d2 .ap-fxh .ap-fxr { flex: 1; height: 1px; background: #d9b26a; }
 .twod12.acard.d2 .ap-fxh .ap-cat { margin-left: 0; font-family: var(--font-primary, Signika, sans-serif); letter-spacing: 0; font-weight: 400; min-height: 0; }
+/* ==== v0.0.300 (Lucas tested v0.0.299: the Use buttons looked bevelled next to the flat sheet): flat Use buttons, no drop shadow, 4px corners, a lighter
+   navy on hover; the struck ones keep their dashed outline ==== */
+.twod12.sheet.pcs .ps-use, .twod12.acard.d2 .ap-vbtn { box-shadow: none; border-radius: 4px; }
+.twod12.sheet.pcs .ps-use:not(.dis):hover, .twod12.acard.d2 .ap-vbtn:not(.no):hover { background: #2f3d57; }
+.twod12.sheet.pcs .ps-use.rx:not(.dis):hover { background: #1f7a72; }
