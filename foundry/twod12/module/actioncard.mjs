@@ -191,10 +191,13 @@ export async function buildFeatureCard(item, { actor = null } = {}) {
   if (s.talents) blocks.push(`<div class="ap-fxh">Talent slots</div><div class="ap-fxt one">${esc(String(s.talents))}</div>`);
   const ruler = rulerText(s.worth, setting("designerMode"));
   const flavor = s.flavor ? `<div class="ap-flav"><div class="dv" aria-hidden="true">◆ ◆ ◆</div>${esc(s.flavor)}</div>` : "";
+  // v0.0.299 (Lucas): the text is the "Description"; the category and the Frequency chip sit on its heading line (less height); a trait line only with traits
+  const catHtml = cat || fl ? `<span class="ap-cat">${cat ? esc(cat) : ""}${fl ? ` <span class="ap-freq" style="background:${FREQ_CHIP[f] ?? "#5f5e5a"}">${esc(fl)}</span>` : ""}</span>` : "";
+  const onHead = !!body && !traits;
   return `<div class="twod12 acard d2 feat" data-card-item="${esc(item.id ?? "")}">
-    ${traits || cat || fl ? `<div class="ap-trow">${traits}<span class="ap-cat">${cat ? esc(cat) : ""}${fl ? ` <span class="ap-freq" style="background:${FREQ_CHIP[f] ?? "#5f5e5a"}">${esc(fl)}</span>` : ""}</span></div>` : ""}
+    ${traits || (catHtml && !onHead) ? `<div class="ap-trow">${traits}${catHtml}</div>` : ""}
     ${meta ? `<div class="ap-meta">${meta}</div>` : ""}
-    ${body ? `<div class="ap-fxh">Effects</div><div class="ap-fxl plain"><div class="ap-fxt one ap-prose">${body}</div></div>` : ""}
+    ${body ? `<div class="ap-fxh${onHead ? " withcat" : ""}">Description${onHead ? `<span class="ap-fxr" aria-hidden="true"></span>${catHtml}` : ""}</div><div class="ap-fxl plain"><div class="ap-fxt one ap-prose">${body}</div></div>` : ""}
     ${blocks.join("")}${modifierBlocks(s).join("")}${flavor}
     ${ruler ? `<div class="ap-ruler"><b>Ruler</b> ${esc(ruler)}</div>` : ""}
   </div>`;

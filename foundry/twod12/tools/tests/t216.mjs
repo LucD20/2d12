@@ -86,4 +86,4 @@ globalThis.fromUuid = async () => null;
 const { buildFeatureCard } = await import(ROOTURL + "module/actioncard.mjs");
 const dp = asItem(load("pcs/paladin-1-smite-heavy-blows.pc.json").items.find(i => i.name === "Divine Power"));
 const fc = await buildFeatureCard(dp, { actor });
-console.log("a Feature's card, in the Action card's look:", /acard d2 feat/.test(fc), "| category:", txt(fc.match(/<span class="ap-cat">[\s\S]*?<\/span>/)?.[0]), "| Effects:", txt(fc.match(/<div class="ap-fxh">[^<]*/)?.[0]), "| text:", txt(fc.match(/ap-prose">([\s\S]*?)<\/div>/)?.[1]).slice(0, 60), "| flavor last:", fc.indexOf("ap-flav") > fc.indexOf("ap-prose"), "| no title bar:", !/ahead|ac-head/.test(fc));
+console.log("a Feature's card, in the Action card's look:", /acard d2 feat/.test(fc), "| heading (v0.0.299):", txt(fc.match(/<div class="ap-fxh withcat">[\s\S]*?<\/span><\/div>/)?.[0]), "| no trait line:", !fc.includes("ap-trow"), "| text:", txt(fc.match(/ap-prose">([\s\S]*?)<\/div>/)?.[1]).slice(0, 60), "| flavor last:", fc.indexOf("ap-flav") > fc.indexOf("ap-prose"), "| no title bar:", !/ahead|ac-head/.test(fc));

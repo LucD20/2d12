@@ -3496,3 +3496,10 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.acard.d2 details.ap-choice > summary { list-style: none; cursor: pointer; }
 .twod12.acard.d2 details.ap-choice > summary::-webkit-details-marker { display: none; }
 .twod12.acard.d2 details.ap-choice:not([open]) > summary .ap-ghead { border-radius: 4px; }
+
+/* ==== v0.0.299 (Lucas tested v0.0.298): the Use buttons (the rows' and the card's "Use · N AP") in the sheet cards' title font, Cinzel; a Feature's
+   "Description" heading carries its category and Frequency chip on the same line ==== */
+.twod12.sheet.pcs .ps-use, .twod12.acard.d2 .ap-vbtn { font-family: "Cinzel", serif; font-weight: 700; letter-spacing: .02em; }
+.twod12.acard.d2 .ap-fxh.withcat::after { content: none; }
+.twod12.acard.d2 .ap-fxh .ap-fxr { flex: 1; height: 1px; background: #d9b26a; }
+.twod12.acard.d2 .ap-fxh .ap-cat { margin-left: 0; font-family: var(--font-primary, Signika, sans-serif); letter-spacing: 0; font-weight: 400; min-height: 0; }
