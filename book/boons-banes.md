@@ -232,7 +232,7 @@ Frightened, Sickened, Taunted and Vulnerable don't change: they are conditions, 
 ## 22. Outside this draft (to do when it is applied)
 
 - **Class cards** (card by card with Lucas): Consecrated Ground, Covering Fire and Harrying Shots become Pressure. Marked Quarry and Hunter's Focus stay unnamed (2 Boons against the quarry). Covering Shot (one ally) stays unnamed. Talents later.
-- **Foundry:** calc.mjs (flat b/b, the names and their limit, any pair on Favored, three of a kind), rolls.keepDice, the roll dialog's b/b inputs (a field per name), the roll's tooltip ("Field 2 of 3"), flanking.mjs (limit 2), cover (High is Doomed), the dice tests (t42 and the rest).
+- **Foundry:** calc.mjs (flat b/b, the names and their limit, any pair on Favored, three of a kind), rolls.keepDice, the roll dialog's b/b inputs (a field per name), the roll's tooltip (for example "Field 2 (3, limit 2)"), flanking.mjs (limit 2), cover (High is Doomed), the dice tests (t42 and the rest).
 - **Ruler:** calc.mjs is shared with Foundry. spec.mjs and map.mjs (Field limit, flankBoons up to 2, High cover Doomed), then re-run report.md, rclasses.md and rbestiary.md.
 - **Diagrams:** flanking1 (3 becomes 2), cover (High cover's label).
 
