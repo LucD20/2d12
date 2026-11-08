@@ -5,7 +5,7 @@ T3 pools: [{"pool":"B","segs":[{"sub":"Sl","t":"2d6"}],"tags":["+2"]},{"pool":"M
 T1 pools (no 0 line): [{"pool":"M","segs":[{"sub":"Ho","t":"1d6"}],"tags":["+1d6 Ho"]}]
 Heavy Blows only on T3: Radiant Zeal | Radiant Zeal | Radiant Zeal+Heavy Blows
 ladder DC 11: Tier 1 · ≤10 | Tier 2 · 11–17 | Tier 3 · 18+
-3 AP disabled: true You have 2 AP left | blocked at 3 AP: You have 2 AP left
+3 AP disabled: true You have 2 AP left | v0.0.293: not blocked at 3 AP: "" | a warning: You have 2 AP left
 odds (2d12 + 2, 1 Boon, 1 Bane vs 11): T1 17% · T2 45% · T3 37% | with a Crit row: T1 17% · T2 45% · T3 31% · Crit 6%
 result: {"ap":"2","fx":["fr:0","syn:flanking"],"bonusOn":["rz","hb"],"boons":0,"banes":0,"mod":-1,"adjLabel":"Exhausted 1","dc":11,"empowered":1,"enfeebled":1}
 flags (shared): {"passives":[{"name":"Radiant Zeal","adds":"+1d6 Ho","tiers":[1,2,3]},{"name":"Heavy Blows","adds":"+2","tiers":[3]}],"boons":[],"banes":[{"name":"Frightened","n":1,"scope":"shared"}],"flat":[{"name":"Exhausted 1","v":-1}],"empowered":1,"enfeebled":1,"net":0,"favored":[],"doomed":[],"lethal":"lethal"}
@@ -22,8 +22,9 @@ manual chips: Situational ×2 | Situational +1 | Empowered 2 | Favored
 Exhausted 1 + Situational +1 = flat 0 | dice line mod: 2 | Empowered 2 manual + Empowered 1 auto: net 1 (2 - 1)
 Favored: 3d12, best Tier
 Favored + Doomed: 2d12 (Favored and Doomed cancel)
-× on Situational ×2: Situational
+right-click on Situational ×2: Situational
 result: boons 1 | favored on | doomed on | flags Situational: [{"name":"Situational","n":1,"scope":"shared"}]
+× on Situational ×3 removes it all: true
 net 0 shows no line: ""
 Doomed alone: 3d12, lowest 2
 --- Word of Radiance, 3 AP, three creatures (brief 13)
@@ -43,16 +44,16 @@ fx sent (no n/a, no off): ["fr:0","wisp|vul:0","syn:cover|ogre"] | shared favore
 flags creatures: [{"name":"Bandit Thug","banes":[],"favored":["Situational"],"doomed":["Situational"],"dice":"2d12, they cancel"},{"name":"Grave Wisp","banes":[],"favored":["Situational"],"doomed":[],"dice":"3d12, best Tier"},{"name":"Ogre Chieftain","banes":[{"name":"Cover (Low)","n":1,"scope":"ogre"}],"favored":[],"doomed":["Situational"],"dice":"3d12, lowest 2"}]
 only Favored on one, Doomed on another, Thug cancels: anyThree true
 a lone cancelling pair is not 3d12: {"dice":"2d12","note":""}
---- blocked Roll
+--- blocked Roll, and (v0.0.293) what is only a warning
 no target: No target: target a creature
-Frequency spent: Used: available again at the start of your next turn
-out of range: Bandit Thug: out of range (12 sq., the maximum is 10)
+Frequency spent (warning): "" Used: available again at the start of your next turn | shown: true
+out of range (warning): "" Bandit Thug: out of range (12 sq., the maximum is 10)
 area not placed: Place the area first
 can roll: ""
 the last target removed: No target: target a creature
 --- Versions: switching updates the Tier table and the meta line
 2 AP has 2d10: true | 1 AP has 2d10: false | 1 AP has 1d4: true | Effects row only at 2 AP: true true
-3 AP button disabled with its reason: true | aria-pressed on 2 AP: true
+3 AP button struck through, can be chosen, its reason on hover: true | aria-pressed on 2 AP: true
 meta line: Targets: One creature ✦ Weapon ✦ Vs. AD
 no Tier prefix in Effects, no T1 "0" line: true true
 --- the player view (Hide enemy Defenses on) and Designer mode
@@ -63,4 +64,20 @@ forced Tier 3 sent: 3
 chip body aria-pressed: true | fold aria-expanded: true | no div with data-act: true
 creature lines aria-expanded: 3 | remove labels: true | n/a body disabled: true
 no radius above 6px in the block: true
+one tooltip only (no title attributes): true
+--- v0.0.293: averages and chances under each Tier (the setting: everyone / GM only / hidden)
+die averages: d6 3.5 | d6 Empowered 1 4.5 | d4 Enfeebled 1 (at least 1): 1.75 | d4 Enfeebled 3: 1
+expressions: 2d6 + 2 = 9 | 1d10+2 Enfeebled 1 = 6.6
+Smite 2 AP averages (Radiant Zeal and Heavy Blows on, net 0): 7 | 15 | 23.5
+Radiant Zeal off: 3.5 | 11.5 | 20
+Empowered 2 by hand (net 1): 9 | 19 | 28.5
+lines under the Tiers: Avg 7 · 23% | Avg 15 · 45% | Avg 23.5 · 32%
+setting off: no lines: true | player with hidden Defenses: averages only: Avg 7 | Avg 15 | Avg 23.5
+Word of Radiance, each creature: Avg 7 · Bandit Thug 35% · Grave Wisp 8% · Ogre Chieftain 77% | Avg 11 · Bandit Thug 42% · Grave Wisp 43% · Ogre Chieftain 21% | Avg 13.5 · Bandit Thug 19% · Grave Wisp 39% · Ogre Chieftain 2% | Bandit Thug 4% · Grave Wisp 11% · Ogre Chieftain 0%
+--- v0.0.293: Favored / Doomed as a d12, right-click a hand-added chip
+Favored chip: d12 F: true | Doomed: d12 D: true | Boon keeps the triangle: true | quick buttons too: true
+hand-added chips carry data-manual (right-click): 3 | an auto chip doesn't: true
+--- v0.0.293: a Save Action (Rebuke) and a Version with no roll (Opportunity Attack) in the new dialog
+Rebuke: their roll line: Their roll Appeal Save vs DC 13 · each target rolls; the Tiers are their result | quick buttons: emp,enf | creature badge: true | no ladder: true | button: Use | averages: Avg 5.5 | Avg 4.5
+Opportunity Attack: Effects row: true | no roll panel: true | target line: → Bandit Thug | button: Use | can use: "" | no target needed: ""
 contrast #7a6f5f on #f4ede0: 4.23 | #6b6152 (used): 5.22 | #5d5446 on #e8dec8: 5.57 | #625a4e n/a on #e8dec8: 5.08 | #7a5400 on #f4ede0: 5.83 | #8a1c13 on #f4ede0: 7.99

@@ -114,3 +114,4 @@ NEW Shoot Nari (the new dialog)                  card | chips: (none) | bane dic
    chips: Low cover[Nari] You are Engaged ×2[you] Target is Engaged[Nari] Nonlethal[you, off] | creatures: Nari AD 11 | dice line: {"versions":"1 AP","roll":{"mod":2,"name":"Weapon"},"multi":false}
 NEW Shoot Nari: +1 Bane, +1, Engaged off         card | chips: (none) | bane dice 1,2,2 | total 11
    breakdown: 2d12 6 7 Boon · Bane 2 −1 Bane · Low cover 3 −2 Bane · Target is Engaged 3 −2 Bane · Situational Modifiers +2 Weapon +1 Situational 11 vs AD 11 Tier 2 Vigor 2 Pi | flags rd banes: [{"name":"Situational","n":1,"scope":"shared"}] | flat: [{"name":"Situational","v":1}]
+NEW Crawl: the dialog: true | no roll: 1 AP no roll, 2 AP no roll | card posted: true | no warning

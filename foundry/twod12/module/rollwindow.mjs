@@ -10,7 +10,7 @@ export class RollWindow extends (ApplicationV2 ?? class {}) {
 
   /** o: { inp, state, resolve, card(), live (listen to the map's targeting) } */
   constructor(o) {
-    super({ window: { title: `Roll · ${o.inp.name}` } });
+    super({ window: { title: `${o.inp.save || (o.inp.versions ?? []).every(v => v.noTiers) ? "Use" : "Roll"} \u00b7 ${o.inp.name}` } });   // v0.0.293: "Use · Opportunity Attack"
     this.o = o; this.inp = o.inp; this.st = RD.newState(o.inp, o.state); this.done = false;
   }
 
@@ -32,8 +32,11 @@ export class RollWindow extends (ApplicationV2 ?? class {}) {
     super._onFirstRender?.(context, options);
     const el = this.element;
     el.addEventListener("click", ev => this._click(ev));
-    el.addEventListener("contextmenu", ev => {   // v0.0.217 kept: a right-click on a creature removes it from the roll
-      const line = ev.target.closest(".rd-cbox.multi");
+    el.addEventListener("contextmenu", ev => {
+      // v0.0.293 (Lucas): a right-click on a chip added by hand is one step less (Situational ×2 → Situational); its × removes it
+      const man = ev.target.closest("[data-manual]");
+      if (man) { ev.preventDefault(); ev.stopPropagation(); const [, scope, kind] = /^man:(.*):([a-z]+)$/.exec(man.dataset.manual) ?? []; if (kind) { RD.stepManual(this.st, scope, kind); this.render(); } return; }
+      const line = ev.target.closest(".rd-cbox.multi");   // v0.0.217 kept: a right-click on a creature removes it from the roll
       if (!line) return;
       ev.preventDefault(); this._untarget(line.dataset.uuid);
     });

@@ -1,7 +1,7 @@
 {{!-- PACK SHEET (v0.0.289): the character sheet, Lucas's approved design (foundry/mockups/sheet-prototype.html). The NPC sheet keeps actor-sheet.hbs. --}}
 {{#*inline "usebtn"}}
 {{#if unloaded}}<button type="button" class="ps-use" data-action="reloadFor" data-tooltip="Unloaded: Reload first (1 AP)" aria-label="Reload"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i></button>
-{{else if off}}<button type="button" class="ps-use dis" aria-disabled="true" data-tooltip="{{offWhy}}" aria-label="{{name}}: {{offWhy}}">{{#if weapon}}<i class="fa-solid fa-khanda" aria-hidden="true"></i><small>{{grip}}</small>{{else}}Use{{/if}}</button>
+{{else if off}}<button type="button" class="ps-use dis" data-action="useAction" data-off="{{offWhy}}" data-tooltip="{{offWhy}} (click to use it anyway)" aria-label="{{name}}: {{offWhy}}. Use it anyway">{{#if weapon}}<i class="fa-solid fa-khanda" aria-hidden="true"></i><small>{{grip}}</small>{{else}}Use{{/if}}</button>
 {{else if grant}}<button type="button" class="ps-use{{#if reaction}} rx{{/if}}" data-action="useAction" {{#if grant.effectId}}data-grant-effect="{{grant.effectId}}" data-grant-index="{{grant.index}}"{{/if}} data-tooltip="{{grant.tip}}" aria-label="Use {{name}} (granted)">Use</button>
 {{else if handBtns}}<span class="ps-hands">{{#each handBtns}}{{#if off}}<button type="button" class="ps-use dis" data-action="handBlocked" data-weapon-id="{{id}}" data-hand="{{hand}}" data-tooltip="{{tip}}" aria-label="{{tip}}"><i class="fa-solid fa-khanda" aria-hidden="true"></i><small>{{grip}}</small></button>{{else}}<button type="button" class="ps-use wpn{{#if ../reaction}} rx{{/if}}{{#if warn}} warn{{/if}}" data-action="useWith" data-weapon-id="{{id}}" data-tooltip="{{tip}}" aria-label="{{tip}}"><i class="fa-solid fa-khanda" aria-hidden="true"></i><small>{{grip}}</small></button>{{/if}}{{/each}}</span>
 {{else}}<button type="button" class="ps-use{{#if reaction}} rx{{/if}}" data-action="useAction" data-tooltip="{{useTip}}" aria-label="{{useTip}}">Use</button>{{/if}}
@@ -205,7 +205,7 @@
             <div class="ps-bcol"><span class="ps-bgh">{{label}}</span>
               {{#each rows}}
               <div class="ar ps-bx{{#if off}} off{{/if}}{{#if open}} open{{/if}}" data-item-id="{{id}}">
-                <button type="button" class="ps-bxbtn {{lines.cls}}" style="{{lines.style}}" {{#if off}}aria-disabled="true" data-tooltip="{{offWhy}}"{{else}}{{#if weaponId}}data-action="useWith" data-weapon-id="{{weaponId}}"{{else}}data-action="useAction"{{/if}} data-tooltip="{{tip}}"{{/if}} aria-label="{{name}}{{#if off}}: {{offWhy}}{{/if}}">
+                <button type="button" class="ps-bxbtn {{lines.cls}}" style="{{lines.style}}" {{#if off}}data-action="useAction" data-off="{{offWhy}}" data-tooltip="{{offWhy}} (click to use it anyway)"{{else}}{{#if weaponId}}data-action="useWith" data-weapon-id="{{weaponId}}"{{else}}data-action="useAction"{{/if}} data-tooltip="{{tip}}"{{/if}} aria-label="{{name}}{{#if off}}: {{offWhy}}{{/if}}">
                   <span class="ps-bxl"><span class="ps-bxn">{{name}}</span>{{#if next}}<span class="ps-bxnext">{{next}}</span>{{/if}}{{#if off}}<span class="ps-bxwhy">{{offWhy}}</span>{{/if}}</span>
                   {{#if off}}<span class="ps-bxno" aria-hidden="true">&#8856;</span>{{else}}<b>{{cost}}</b>{{/if}}
                 </button>

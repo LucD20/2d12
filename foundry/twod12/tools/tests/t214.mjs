@@ -40,7 +40,7 @@ console.log("T3 pools:", JSON.stringify(RD.poolLines(smite.versions[1].tiers[3],
 console.log("T1 pools (no 0 line):", JSON.stringify(RD.poolLines(smite.versions[1].tiers[1], RD.tierTags(smite, st, 1).map(c => ({ pool: c.pool, tag: c.tag })))));
 console.log("Heavy Blows only on T3:", [1, 2, 3].map(n => RD.tierTags(smite, st, n).map(c => c.label).join("+")).join(" | "));
 console.log("ladder DC 11:", RD.ladder(11).map(s => s.label).join(" | "));
-console.log("3 AP disabled:", smite.versions[2].disabled, smite.versions[2].why, "| blocked at 3 AP:", RD.blockedReason(smite, { ...st, ap: 3 }));
+console.log("3 AP disabled:", smite.versions[2].disabled, smite.versions[2].why, "| v0.0.293: not blocked at 3 AP:", JSON.stringify(RD.blockedReason(smite, { ...st, ap: 3 })), "| a warning:", RD.warnings(smite, { ...st, ap: 3 }).join(" / "));
 const odds = RD.oddsOf({ mod: 2, dc: 11, boons: 1, banes: 1, state: "" }, false), oddsC = RD.oddsOf({ mod: 2, dc: 11, boons: 1, banes: 1, state: "" }, true);
 console.log("odds (2d12 + 2, 1 Boon, 1 Bane vs 11):", RD.oddsLine(odds), "| with a Crit row:", RD.oddsLine(oddsC));
 let r = RD.result(smite, st);
@@ -78,11 +78,12 @@ console.log("Exhausted 1 + Situational +1 = flat", RD.tally(RD.chipsOf(smite, st
 console.log("Favored:", RD.diceLine(smite, st).dice);
 RD.addManual(st, "shared", "doom");
 console.log("Favored + Doomed:", RD.diceLine(smite, st).dice);
-RD.removeManual(st, "shared", "boon");
-console.log("× on Situational ×2:", RD.manualChips(st, "shared").find(c => c.kind === "boon").label);
+RD.stepManual(st, "shared", "boon");
+console.log("right-click on Situational \u00d72:", RD.manualChips(st, "shared").find(c => c.kind === "boon").label);
 r = RD.result(smite, st);
 console.log("result: boons", r.boons, "| favored", r.favored, "| doomed", r.doomed, "| flags Situational:", JSON.stringify(r.rd.shared.boons));
-RD.removeManual(st, "shared", "doom"); RD.removeManual(st, "shared", "emp"); RD.removeManual(st, "shared", "emp");
+RD.removeManual(st, "shared", "doom"); RD.removeManual(st, "shared", "emp");
+{ const s3 = RD.newState(smite); RD.addManual(s3, "shared", "bane"); RD.addManual(s3, "shared", "bane"); RD.addManual(s3, "shared", "bane"); RD.removeManual(s3, "shared", "bane"); console.log("\u00d7 on Situational \u00d73 removes it all:", RD.manualChips(s3, "shared").length === 0); }
 console.log("net 0 shows no line:", JSON.stringify(RD.stepNet(smite, RD.newState(smite)).line));
 console.log("Doomed alone:", RD.diceLine(smite, (() => { const s = RD.newState(smite); RD.addManual(s, "shared", "doom"); return s; })()).dice);
 
@@ -125,10 +126,11 @@ console.log("only Favored on one, Doomed on another, Thug cancels: anyThree", RD
 const st2 = RD.newState(wor); RD.addManual(st2, "thug", "fav"); RD.addManual(st2, "thug", "doom");
 console.log("a lone cancelling pair is not 3d12:", JSON.stringify(RD.diceText(wor, st2)));
 
-console.log("--- blocked Roll");
+console.log("--- blocked Roll, and (v0.0.293) what is only a warning");
 console.log("no target:", RD.blockedReason({ ...smite, creatures: [] }, RD.newState(smite)));
-console.log("Frequency spent:", RD.blockedReason({ ...smite, blocked: ["Used: available again at the start of your next turn"] }, RD.newState(smite)));
-console.log("out of range:", RD.blockedReason({ ...smite, creatures: [{ ...smite.creatures[0], blocked: "out of range (12 sq., the maximum is 10)" }] }, RD.newState(smite)));
+const spent = { ...smite, blocked: ["Used: available again at the start of your next turn"] }, far = { ...smite, creatures: [{ ...smite.creatures[0], blocked: "out of range (12 sq., the maximum is 10)" }] };
+console.log("Frequency spent (warning):", JSON.stringify(RD.blockedReason(spent, RD.newState(smite))), RD.warnings(spent, RD.newState(smite)).join(""), "| shown:", RD.dialogHtml(spent, RD.newState(smite)).includes('class="rd-warn"'));
+console.log("out of range (warning):", JSON.stringify(RD.blockedReason(far, RD.newState(smite))), RD.warnings(far, RD.newState(smite)).join(""));
 console.log("area not placed:", RD.blockedReason({ ...wor, area: { label: "3 Burst", placed: false } }, RD.newState(wor)));
 console.log("can roll:", JSON.stringify(RD.blockedReason(smite, RD.newState(smite))));
 st = RD.newState(smite); st.removed = ["thug"];
@@ -138,7 +140,7 @@ console.log("--- Versions: switching updates the Tier table and the meta line");
 st = RD.newState(smite);
 const h2 = RD.dialogHtml(smite, st); st.ap = 1; const h1 = RD.dialogHtml(smite, st);
 console.log("2 AP has 2d10:", h2.includes("2d10"), "| 1 AP has 2d10:", h1.includes("2d10"), "| 1 AP has 1d4:", h1.includes("1d4"), "| Effects row only at 2 AP:", h2.includes("rd-tiers") && h2.includes("Bright light"), !h1.includes("Bright light"));
-console.log("3 AP button disabled with its reason:", /data-ap="3"[^>]*disabled title="You have 2 AP left"/.test(h2), "| aria-pressed on 2 AP:", /data-ap="2" aria-pressed="true"/.test(h2));
+console.log("3 AP button struck through, can be chosen, its reason on hover:", /data-ap="3"[^>]*data-tooltip="You have 2 AP left" class="cant"/.test(h2) && !/data-ap="3"[^>]*disabled/.test(h2), "| aria-pressed on 2 AP:", /data-ap="2" aria-pressed="true"/.test(h2));
 console.log("meta line:", (h2.match(/<div class="rd-meta">(.*?)<\/div>/) ?? [])[1].replace(/<[^>]+>/g, ""));
 console.log("no Tier prefix in Effects, no T1 \"0\" line:", !/T2, T3/.test(h2), !/>0 <b class="rd-sub"/.test(h2));
 
@@ -154,8 +156,45 @@ console.log("--- accessibility: real buttons, aria");
 console.log("chip body aria-pressed:", /class="rd-cbody" data-act="chip" data-id="fr:0" aria-pressed="true"/.test(nd), "| fold aria-expanded:", /data-act="fold"[^>]*aria-expanded="false">\+1 off/.test(nd), "| no div with data-act:", !/<(div|span)[^>]*data-act=/.test(nd));
 const wst = RD.newState(wor); wst.fold["shared|passives|na"] = true;
 const wv = RD.dialogHtml(wor, wst);
-console.log("creature lines aria-expanded:", (wv.match(/data-act="open"[^>]*aria-expanded="false"/g) ?? []).length, "| remove labels:", /aria-label="Remove Bandit Thug"/.test(wv), "| n/a body disabled:", /data-id="passna:Radiant Zeal" disabled/.test(wv));
+console.log("creature lines aria-expanded:", (wv.match(/data-act="open"[^>]*aria-expanded="false"/g) ?? []).length, "| remove labels:", /aria-label="Remove Bandit Thug"/.test(wv), "| n/a body disabled:", /data-id="passna:Radiant Zeal" aria-disabled="true"/.test(wv));
 console.log("no radius above 6px in the block:", (() => { const css = fs.readFileSync(new URL("../../styles/system.css", import.meta.url), "utf8"); const blk = css.slice(css.indexOf("v0.0.292 PACK ROLL-DIALOG")); return !/border-radius:\s*(?:[7-9]|\d{2,})px/.test(blk); })());
+console.log("one tooltip only (no title attributes):", !/ title="/.test(nd + wv + dv + hv));
+
+console.log("--- v0.0.293: averages and chances under each Tier (the setting: everyone / GM only / hidden)");
+console.log("die averages: d6", RD.dieAvg(6), "| d6 Empowered 1", RD.dieAvg(6, 1), "| d4 Enfeebled 1 (at least 1):", RD.dieAvg(4, -1), "| d4 Enfeebled 3:", RD.dieAvg(4, -3));
+console.log("expressions: 2d6 + 2 =", RD.exprAvg("2d6 + 2"), "| 1d10+2 Enfeebled 1 =", RD.exprAvg("1d10+2", -1));
+st = RD.newState(smite);
+const sOn = { ...smite, showAvg: true, showOdds: true };
+console.log("Smite 2 AP averages (Radiant Zeal and Heavy Blows on, net 0):", [1, 2, 3].map(n => RD.tierStats(sOn, st, sOn.versions[1])[n].avg).join(" | "));
+RD.toggleChip(st, smite.chips[0]);
+console.log("Radiant Zeal off:", [1, 2, 3].map(n => RD.tierStats(sOn, st, sOn.versions[1])[n].avg).join(" | "));
+RD.toggleChip(st, smite.chips[0]); RD.addManual(st, "shared", "emp"); RD.addManual(st, "shared", "emp");
+console.log("Empowered 2 by hand (net 1):", [1, 2, 3].map(n => RD.tierStats(sOn, st, sOn.versions[1])[n].avg).join(" | "));
+st = RD.newState(smite);
+const hs = RD.dialogHtml(sOn, st);
+console.log("lines under the Tiers:", (hs.match(/<div class="rd-stat">[^<]*<\/div>/g) ?? []).map(x => x.replace(/<[^>]+>/g, "")).join(" | "));
+console.log("setting off: no lines:", !RD.dialogHtml(smite, st).includes("rd-stat"), "| player with hidden Defenses: averages only:", (RD.dialogHtml({ ...sOn, hideDef: true }, st).match(/<div class="rd-stat">[^<]*<\/div>/g) ?? []).map(x => x.replace(/<[^>]+>/g, "")).join(" | "));
+const w2 = RD.newState(wor); RD.addManual(w2, "wisp", "fav"); RD.addManual(w2, "ogre", "doom");
+console.log("Word of Radiance, each creature:", (RD.dialogHtml({ ...wor, showAvg: true, showOdds: true }, w2).match(/<div class="rd-stat">[^<]*<\/div>/g) ?? []).map(x => x.replace(/<[^>]+>/g, "")).join(" | "));
+
+console.log("--- v0.0.293: Favored / Doomed as a d12, right-click a hand-added chip");
+st = RD.newState(smite); RD.addManual(st, "shared", "fav"); RD.addManual(st, "shared", "doom"); RD.addManual(st, "shared", "boon");
+const hp = RD.dialogHtml(smite, st);
+console.log("Favored chip: d12 F:", /data-id="man:shared:fav"[^>]*><svg class="rd-pip d12 fav"[\s\S]*?>F<\/text>/.test(hp), "| Doomed: d12 D:", /data-id="man:shared:doom"[^>]*><svg class="rd-pip d12 doom"/.test(hp), "| Boon keeps the triangle:", /data-id="man:shared:boon"[^>]*><span class="rd-pip up"/.test(hp), "| quick buttons too:", /data-k="fav"><svg/.test(hp));
+console.log("hand-added chips carry data-manual (right-click):", (hp.match(/data-manual="/g) ?? []).length, "| an auto chip doesn't:", !/data-manual="fr:0"/.test(hp));
+
+console.log("--- v0.0.293: a Save Action (Rebuke) and a Version with no roll (Opportunity Attack) in the new dialog");
+const rebuke = { name: "Rebuke", freqLabel: "Turn", ap: 1, reaction: true, save: { label: "Appeal Save", dc: 13 }, showAvg: true, showOdds: true,
+  versions: [{ ap: 1, cost: "1R", traits: [tr("power", "roll", "Power"), tr("save", "roll", "Save"), tr("divine", "keywords", "Divine")], meta: { targets: "The triggering creature", dist: "5 sq.", vs: "Appeal Save", trigger: "An enemy within 5 squares makes a [Strike] Action against an ally." },
+    tiers: { 1: { parts: [{ pool: "M", t: "1d8", sub: "Ho" }], riders: ["Pushed 2, and Frightened of you for 1 round"] }, 2: { parts: [{ pool: "M", t: "1d6", sub: "Ho" }], riders: ["Pushed 1"] }, 3: { parts: [] } } }],
+  roll: { mod: 2, name: "Power" }, chips: [{ id: "syn:emp:0", scope: "shared", row: "damage", kind: "emp", n: 1, label: "Empowered 1", start: "on" }], creatures: [{ uuid: "thug", name: "Bandit Thug", def: "DC", dc: 13 }] };
+const hr = RD.dialogHtml(rebuke, RD.newState(rebuke));
+console.log("Rebuke: their roll line:", (hr.match(/<div class="rd-dice">([\s\S]*?)<\/div>/) ?? [])[1].replace(/<[^>]+>/g, ""), "| quick buttons:", (hr.match(/data-act="quick"[^>]*data-k="\w+"/g) ?? []).map(x => x.match(/data-k="(\w+)"/)[1]).join(","), "| creature badge:", /<span class="rd-def">Appeal Save 13<\/span>/.test(hr), "| no ladder:", !hr.includes("rd-ladder"), "| button:", (hr.match(/data-act="roll"[^>]*>(\w+)</) ?? [])[1], "| averages:", (hr.match(/<div class="rd-stat">[^<]*<\/div>/g) ?? []).map(x => x.replace(/<[^>]+>/g, "")).join(" | "));
+const oa = { name: "Opportunity Attack", freqLabel: "At-will", ap: 1, reaction: true, versions: [{ ap: 1, cost: "1R", noTiers: true, traits: [], meta: { targets: "The triggering creature", trigger: "A creature within 1 square would leave a square during a Move Action.", triggerKind: "interrupt" }, effects: "You can make a Weapon Attack (1A) against the triggering creature." }],
+  roll: { mod: 0, name: "" }, chips: [], creatures: [{ uuid: "thug", name: "Bandit Thug", def: "AD", dc: 11 }] };
+const ho = RD.dialogHtml(oa, RD.newState(oa));
+console.log("Opportunity Attack: Effects row:", /<tr class="rd-eff"><th scope="row">Effects<\/th><td>You can make/.test(ho), "| no roll panel:", !ho.includes("rd-roll"), "| target line:", (ho.match(/<div class="rd-tline">([^<]*)<\/div>/) ?? [])[1], "| button:", (ho.match(/data-act="roll"[^>]*>(\w+)</) ?? [])[1], "| can use:", JSON.stringify(RD.blockedReason(oa, RD.newState(oa))), "| no target needed:", JSON.stringify(RD.blockedReason({ ...oa, creatures: [] }, RD.newState(oa))));
+
 // contrast of the muted texts on the parchment (WCAG: 4.5:1)
 const lum = h => { const c = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255).map(v => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4)); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; };
 const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return Math.round(((x + 0.05) / (y + 0.05)) * 100) / 100; };

@@ -268,6 +268,10 @@ console.log("\n--- the new roll dialog (v0.0.292): the same rolls through it, an
   const br = c ? strip((c.content.match(/<div class="cc-break[\s\S]*?<\/div>\s*<\/div>/)?.[0] ?? "")) : "";
   console.log("   breakdown:", br.slice(0, 260), "| flags rd banes:", JSON.stringify(c?.flags?.twod12?.rd?.shared?.banes), "| flat:", JSON.stringify(c?.flags?.twod12?.rd?.shared?.flat));
   tweak = null;
+  // v0.0.293: a Version with no roll opens the new dialog too (Lucas: Opportunity Attack and the Reactions had the old window)
+  chat.length = 0; notes.length = 0; seenInp = null;
+  await A.useAction(kai, crawl).catch(e => console.log("Crawl FAILED", e.message));
+  console.log("NEW Crawl: the dialog:", !!seenInp, "| no roll:", seenInp?.versions.map(v => `${v.cost} ${v.noTiers ? "no roll" : "roll"}`).join(", "), "| card posted:", chat.some(m => m.content.includes("Crawl")), "|", notes.join(" | ") || "no warning");
 }
 function RD_line(inp) { return { versions: inp.versions.map(v => v.cost).join("/"), roll: inp.roll, multi: inp.multi }; }
 delete globalThis.__twod12RollDialog;

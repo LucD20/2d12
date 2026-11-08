@@ -439,9 +439,12 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
 export async function useAction(actor, item, opts = {}) {
   // A Weapon Technique stays locked until 3 Mastery with its weapon (mastery.mjs).
   const lock = techniqueLock(actor, item);
-  if (lock.locked) return ui.notifications.warn(`${item.name} is locked: ${TECHNIQUE_AT} ${lock.group} Mastery unlocks it (${actor.name} has ${lock.value}).`);
+  // v0.0.293 (Lucas: "allow use of actions even if they aren't normally allowed"): from a faded row of the sheet (opts.override) a rule
+  // that would refuse the Action is only a warning; true = stop here
+  const refuse = msg => { ui.notifications.warn(opts.override ? `${msg} Used anyway.` : msg); return !opts.override; };
+  if (lock.locked && refuse(`${item.name} is locked: ${TECHNIQUE_AT} ${lock.group} Mastery unlocks it (${actor.name} has ${lock.value}).`)) return;
   // v0.0.213 (Lucas): a Weapon Technique is used only with its own weapon, in hand (a Favorite or a macro can still call it).
-  if (techniqueState(actor, item) === "unwielded") return ui.notifications.warn(`${item.name} is ${actor.items.get(item.getFlag("twod12", "weaponId"))?.name ?? "its weapon"}'s Weapon Technique: wield it first.`);
+  if (techniqueState(actor, item) === "unwielded" && refuse(`${item.name} is ${actor.items.get(item.getFlag("twod12", "weaponId"))?.name ?? "its weapon"}'s Weapon Technique: wield it first.`)) return;
   // A Split Action has two modes: choose one (Weapon needs a weapon, Power doesn't), then it is used as an Action of that mode (split.mjs).
   if (item.system.traits?.has?.("split") && !opts.splitMode) {
     const modes = splitModes(item);
@@ -502,19 +505,19 @@ export async function useAction(actor, item, opts = {}) {
   const reqOpts = { skipHands: true };   // hands: checked above
   if (reqTarget && reqUser) reqOpts.distance = squaresBetween(reqUser, reqTarget);   // Haul: "at least 2 squares away"
   const reqProblem = requirementProblem(it, actor, reqTarget?.actor ?? null, reqOpts);
-  if (reqProblem) return ui.notifications.warn(`${actor.name} can't use ${item.name}: it ${reqProblem}.`);
+  if ((reqProblem) && refuse(`${actor.name} can't use ${item.name}: it ${reqProblem}.`)) return;
   // An Action that needs several different creatures (Double Shot: "Two creatures") can't be made against fewer: its Linked Actions would be disrupted.
   const needed = targetsNeeded(it.targets);
   if (needed > 1 && new Set([...game.user.targets].map(t => t.document?.uuid ?? t.id)).size < needed) return ui.notifications.warn(`${item.name} needs ${needed} different creatures as targets. Target them first.`);
   // v0.0.224: Break Free is the one Move Action an Immobilized creature can use (and only then).
-  if (basicKey === "breakFree" && !actor.statuses?.has?.("immobilized")) return ui.notifications.warn(`${actor.name} is not Immobilized.`);
-  if ((it.traits.has("move") || basicKey === "safeMovement") && basicKey !== "breakFree" && actor.statuses?.has?.("immobilized")) return ui.notifications.warn(`${actor.name} is Immobilized and can't move: Break Free (1 AP) first.`);
+  if ((basicKey === "breakFree" && !actor.statuses?.has?.("immobilized")) && refuse(`${actor.name} is not Immobilized.`)) return;
+  if (((it.traits.has("move") || basicKey === "safeMovement") && basicKey !== "breakFree" && actor.statuses?.has?.("immobilized")) && refuse(`${actor.name} is Immobilized and can't move: Break Free (1 AP) first.`)) return;
   // Prone: you can't Evade, and the only Move Actions you can use are Crawl and Stand.
   if (actor.statuses?.has?.("prone")) {
-    if (basicKey === "safeMovement") return ui.notifications.warn(`${actor.name} is Prone and can't Evade.`);
-    if (it.traits.has("move") && !["crawl", "stand"].includes(basicKey)) return ui.notifications.warn(`${actor.name} is Prone: the only Move Actions it can use are Crawl and Stand.`);
+    if ((basicKey === "safeMovement") && refuse(`${actor.name} is Prone and can't Evade.`)) return;
+    if ((it.traits.has("move") && !["crawl", "stand"].includes(basicKey)) && refuse(`${actor.name} is Prone: the only Move Actions it can use are Crawl and Stand.`)) return;
   }
-  if (basicKey === "rally" && (s.atZero || actor.statuses?.has?.("unconscious"))) return ui.notifications.warn(`${actor.name} can't use Steel Yourself while Down or Unconscious.`);
+  if ((basicKey === "rally" && (s.atZero || actor.statuses?.has?.("unconscious"))) && refuse(`${actor.name} can't use Steel Yourself while Down or Unconscious.`)) return;
   if (basicKey === "interact") await offerWake(actor, [...game.user.targets]);   // v0.0.176: waking an Unconscious creature (not one that is Down)
   // Setup: what happens before the dice are rolled. Its movement is made first, so the range, cover and Engaged of the roll come from where the creature ends.
   let setupDone = false;
@@ -739,7 +742,8 @@ export async function useAction(actor, item, opts = {}) {
   const quick = opts.quickAp != null && versions.find(v => v.ap === Number(opts.quickAp))?.noTiers;
   // v0.0.292 (PACK ROLL-DIALOG; brief foundry/mockups/roll-dialog-brief.md): an Action that rolls against a Defense opens the new roll dialog
   // (rollwindow.mjs); a Save Action and an Action with no roll keep the old one (known gap: Checks, Saves, Linked Actions).
-  const rdUse = !quick && !saveAct && previewMod !== null && versions.some(v => !v.noTiers)
+  // v0.0.293 (Lucas: Reactions and Opportunity Attack still had the old window): every Action used here opens it, Save Actions and Versions with no roll too
+  const rdUse = !quick
     && (typeof globalThis.__twod12RollDialog === "function" || typeof foundry.applications?.api?.ApplicationV2?.prototype?.render === "function");   // (the tests answer it through __twod12RollDialog)
   let rdData = null;
   if (rdUse) {
@@ -825,7 +829,7 @@ export async function useAction(actor, item, opts = {}) {
       if (!ok) return;
     }
   }
-  if (apCost > 0 && !(await spendAP(actor, apCost, item.name, { quiet: moveQuiet, reaction: !!it.reaction }))) return;
+  if (apCost > 0 && !(await spendAP(actor, apCost, item.name, { quiet: moveQuiet, reaction: !!it.reaction, force: !!rdData }))) return;   // v0.0.293: the roll dialog already warned about the AP
   const isWeapon = it.traits.has("weapon");
 
   let attrKey = null, mod = null, weapon = null, title = "", chip = "";

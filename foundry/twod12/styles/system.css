@@ -3274,3 +3274,22 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.rolldlg .rd-why { flex: 0 0 auto; padding: 0 14px 6px; text-align: right; font-size: 12px; color: #8a1c13; }
 .twod12.rolldlg .rd-pview { flex: 0 0 auto; padding: 4px 14px 7px; font-size: 11.5px; color: var(--cc-mute); font-style: italic; text-align: center; border-top: 1px dashed var(--cc-line); }
 .twod12.rolldlg button:focus-visible { outline: 2px solid #1d5a9e; outline-offset: 1px; }
+
+/* ==== v0.0.293 (Lucas tested v0.0.292): the roll dialog's follow-ups; a faded Action on the sheet can be used anyway ==== */
+.twod12.sheet.pcs .dis[data-off] { cursor: pointer; }
+/* the Tier table: Foundry's own table rules drew thick lines between the rows */
+.twod12.rolldlg .rd-tiers, .twod12.rolldlg .rd-tiers tbody, .twod12.rolldlg .rd-tiers tr { border: 0 !important; background: none !important; box-shadow: none; }
+.twod12.rolldlg .rd-tiers tr:nth-child(odd), .twod12.rolldlg .rd-tiers tr:nth-child(even) { background: none !important; }
+.twod12.rolldlg .rd-tiers th { border: 0 !important; }
+.twod12.rolldlg .rd-tiers td { border: 1px solid var(--rd-boxline) !important; border-left: 0 !important; }
+.twod12.rolldlg .rd-stat { margin-top: 1px; font-size: 11px; color: var(--cc-mute); }
+/* Favored / Doomed: a d12 face (pentagon) with its letter, blue / red */
+.twod12.rolldlg .rd-pip.d12 { width: 14px; height: 14px; flex: 0 0 auto; }
+.twod12.rolldlg .rd-pip.d12 polygon { stroke: none; }
+.twod12.rolldlg .rd-pip.d12.fav polygon { fill: #1d5a9e; } .twod12.rolldlg .rd-pip.d12.doom polygon { fill: #a8261c; }
+.twod12.rolldlg .rd-pip.d12 text { fill: #fff; font: 700 10px "Signika", sans-serif; }
+.twod12.rolldlg .rd-chip.off .rd-pip.d12, .twod12.rolldlg .rd-chip.na .rd-pip.d12 { opacity: .45; }
+.twod12.rolldlg .rd-chip.na .rd-cbody[aria-disabled="true"] { cursor: not-allowed; }
+.twod12.rolldlg .rd-vers button.cant { cursor: pointer; }
+.twod12.rolldlg .rd-warn { flex: 0 0 auto; margin: 0 14px 4px; padding: 4px 8px; border: 1px solid #d9a39c; border-radius: 4px; background: #f8e4df; color: #8a1c13; font-size: 12px; }
+.twod12.rolldlg .rd-tline { margin-top: 8px; font-size: 13px; font-weight: 600; }

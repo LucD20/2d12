@@ -50,13 +50,15 @@ export function addManual(st, scope, kind) {
   return st;
 }
 /** The × of a manual chip: one step less. */
-export function removeManual(st, scope, kind) {
+export function stepManual(st, scope, kind) {
   const m = st.manual[scope];
   if (!m) return st;
   if (kind === "fav" || kind === "doom" || (Number(m[kind]) || 0) <= 1) delete m[kind];
   else m[kind] -= 1;
   return st;
 }
+/** v0.0.293 (Lucas): the × removes the chip whatever its number (a right-click is one step less: stepManual). */
+export function removeManual(st, scope, kind) { const m = st.manual[scope]; if (m) delete m[kind]; return st; }
 /** The manual chips of one scope. */
 export function manualChips(st, scope) {
   const m = st.manual?.[scope] ?? {}, out = [];
@@ -178,13 +180,41 @@ export const versionOf = (inp, st) => (inp.versions ?? []).find(v => Number(v.ap
 /** Why Roll can't be pressed now ("" when it can). */
 export function blockedReason(inp, st) {
   const v = versionOf(inp, st);
-  if (v?.disabled) return v.why || "You can't afford this Version";
-  if (inp.blocked?.length) return inp.blocked[0];
   if (inp.area && !inp.area.placed) return "Place the area first";
-  if (!liveCreatures(inp, st).length && !inp.self) return "No target: target a creature";
-  const bad = liveCreatures(inp, st).find(c => c.blocked);
-  if (bad) return `${bad.name}: ${bad.blocked}`;
+  if (v && !v.noTiers && !liveCreatures(inp, st).length && !inp.self) return "No target: target a creature";
   return "";
+}
+/**
+ * v0.0.293 (Lucas: "allow use of actions even if they aren't normally allowed ... with just a warning"): what isn't allowed but doesn't stop
+ * the Roll: a Version that costs more AP than you have, a spent Frequency, a target out of range. Shown above the bottom bar.
+ */
+export function warnings(inp, st) {
+  const v = versionOf(inp, st), out = [];
+  if (v?.disabled) out.push(v.why || "Not enough AP for this Version");
+  out.push(...(inp.blocked ?? []));
+  for (const c of liveCreatures(inp, st)) if (c.blocked) out.push(`${c.name}: ${c.blocked}`);
+  return out;
+}
+
+/* ------------------------------------------------------------------ damage averages */
+/** The average of one die with Empowered (+s) or Enfeebled (−s, each die at least 1; Ch. 8). */
+export const dieAvg = (faces, s = 0) => { const m = Number(faces) || 0; if (!m) return 0; if (s >= 0) return (m + 1) / 2 + s; let t = 0; for (let k = 1; k <= m; k++) t += Math.max(1, k + s); return t / m; };
+/** The average of "2d6 + 2" with a step on every die. */
+export function exprAvg(expr, s = 0) {
+  let total = 0;
+  for (const term of String(expr ?? "").replace(/\s+/g, "").replace(/−/g, "-").match(/[+-]?[^+-]+/g) ?? []) {
+    const sign = term.startsWith("-") ? -1 : 1, body = term.replace(/^[+-]/, ""), d = /^(\d*)d(\d+)$/i.exec(body);
+    if (d) total += sign * (Number(d[1] || 1) * dieAvg(d[2], s));
+    else if (/^\d+(\.\d+)?$/.test(body)) total += sign * Number(body);
+  }
+  return total;
+}
+/** One Tier's average damage: its parts, the Passives' tags that are on ("+1d6 Ho", "+2") and the Empowered / Enfeebled net on every die. */
+export function tierAvg(tier, tags = [], net = 0) {
+  let a = 0;
+  for (const p of tier?.parts ?? []) a += exprAvg(p.t, net);
+  for (const g of tags) a += exprAvg(String(g.tag ?? g).replace(/^\+/, "").split(" ")[0], net);
+  return Math.round(a * 10) / 10;
 }
 
 /* ------------------------------------------------------------------ the Tier table */
@@ -258,20 +288,24 @@ export function result(inp, st) {
 const SUB_INK = { Fi: "#a0521a", Ho: "#7d5400", Co: "#2c6f8f" };
 const poolIcon = p => (p === "M" ? '<i class="fa-solid fa-brain rd-pr" aria-hidden="true"></i><span class="rd-sr">Resolve</span>' : '<i class="fa-solid fa-heart rd-pv" aria-hidden="true"></i><span class="rd-sr">Vigor</span>');
 const sgn = n => (n >= 0 ? `+ ${n}` : `− ${Math.abs(n)}`);
+/** v0.0.293 (Lucas): Favored and Doomed are a d12 (a pentagon face) in blue / red with its letter, not the Boon / Bane triangles. */
+const d12 = (cls, letter) => `<svg class="rd-pip d12 ${cls}" viewBox="0 0 20 20" aria-hidden="true"><polygon points="10,1 19,7.6 15.6,18.5 4.4,18.5 1,7.6"/><text x="10" y="14.2" text-anchor="middle">${letter}</text></svg>`;
 const pip = c => {
-  if (c.kind === "boon" || c.kind === "fav" || c.special === "reload") return '<span class="rd-pip up" aria-hidden="true"></span>';
-  if (c.kind === "bane" || c.kind === "doom") return '<span class="rd-pip down" aria-hidden="true"></span>';
+  if (c.kind === "fav" || c.special === "reload") return d12("fav", "F");
+  if (c.kind === "doom") return d12("doom", "D");
+  if (c.kind === "boon") return '<span class="rd-pip up" aria-hidden="true"></span>';
+  if (c.kind === "bane") return '<span class="rd-pip down" aria-hidden="true"></span>';
   return `<span class="rd-pip sq ${isBuff(c) ? "plus" : "minus"}" aria-hidden="true">${isBuff(c) ? "+" : "−"}</span>`;
 };
 /** One chip: [pip] Label | × | i. */
 export function chipHtml(c, st) {
   const on = chipOn(c, st), na = c.start === "na";
   const cls = `rd-chip ${isBuff(c) ? "buff" : "debuff"}${na ? " na" : on ? " on" : " off"}`;
-  const tip = na ? `Not this time: ${c.why || "it doesn't apply"}` : (c.tip ?? "");
-  const body = `<button type="button" class="rd-cbody" data-act="chip" data-id="${esc(c.id)}"${na ? ' disabled aria-disabled="true"' : ` aria-pressed="${on}"`}${tip ? ` data-tooltip="${esc(tip)}" title="${esc(tip)}"` : ""}>${pip(c)}<span class="rd-clabel">${esc(c.label)}</span></button>`;
-  const x = c.manual ? `<button type="button" class="rd-cx" data-act="rm" data-id="${esc(c.id)}" aria-label="Remove ${esc(c.label)}" title="Remove one step">×</button>` : "";
-  const i = c.rule?.uuid ? `<button type="button" class="rd-ci" data-act="rule" data-uuid="${esc(c.rule.uuid)}" aria-label="Open the rule: ${esc(c.rule.label ?? c.label)}" title="Open the rule: ${esc(c.rule.label ?? c.label)}">i</button>` : "";
-  return `<span class="${cls}">${body}${x}${i}</span>`;
+  const tip = na ? `Not this time: ${c.why || "it doesn't apply"}` : [c.tip ?? "", c.manual ? "Right-click: one less" : ""].filter(Boolean).join(". ");
+  const body = `<button type="button" class="rd-cbody" data-act="chip" data-id="${esc(c.id)}"${na ? ' aria-disabled="true"' : ` aria-pressed="${on}"`}${tip ? ` data-tooltip="${esc(tip)}"` : ""}>${pip(c)}<span class="rd-clabel">${esc(c.label)}</span></button>`;
+  const x = c.manual ? `<button type="button" class="rd-cx" data-act="rm" data-id="${esc(c.id)}" aria-label="Remove ${esc(c.label)}" data-tooltip="Remove">×</button>` : "";
+  const i = c.rule?.uuid ? `<button type="button" class="rd-ci" data-act="rule" data-uuid="${esc(c.rule.uuid)}" aria-label="Open the rule: ${esc(c.rule.label ?? c.label)}" data-tooltip="Open ${esc(c.rule.label ?? c.label)}">i</button>` : "";
+  return `<span class="${cls}"${c.manual ? ` data-manual="${esc(c.id)}"` : ""}>${body}${x}${i}</span>`;
 }
 /** A panel's rows (the shared panel, or one creature's). */
 export function rowsHtml(chips, st, scope, rows = ROWS) {
@@ -283,20 +317,34 @@ export function rowsHtml(chips, st, scope, rows = ROWS) {
     return `<div class="rd-row"><span class="rd-rlabel">${esc(label)}</span><span class="rd-chips">${f.shown.map(c => chipHtml(c, st)).join("")}${offBtn}${naBtn}</span></div>`;
   }).join("");
 }
-const ladderHtml = (dc, crit) => `<div class="rd-ladder${crit ? " crit" : ""}" data-tooltip="${esc(LADDER_TIP)}" title="${esc(LADDER_TIP)}">${ladder(dc, crit).map(s => `<span class="rd-lseg ${s.k}">${esc(s.label)}</span>`).join("")}</div>`;
-const defBadge = (c, hide) => `<span class="rd-def" ${hide ? 'title="Hidden by the GM"' : ""}>${esc(c.def ?? "DC")}${hide ? "" : ` ${Number(c.dc) || 13}`}</span>`;
+const ladderHtml = (dc, crit) => `<div class="rd-ladder${crit ? " crit" : ""}" data-tooltip="${esc(LADDER_TIP)}">${ladder(dc, crit).map(s => `<span class="rd-lseg ${s.k}">${esc(s.label)}</span>`).join("")}</div>`;
+const defBadge = (c, hide) => `<span class="rd-def" ${hide ? 'data-tooltip="Hidden by the GM"' : ""}>${esc(c.def ?? "DC")}${hide ? "" : ` ${Number(c.dc) || 13}`}</span>`;
 const counts = (b, n) => `<span class="rd-cnt"><span class="up" aria-label="${b} Boons">▲${b}</span> <span class="down" aria-label="${n} Banes">▼${n}</span></span>`;
 
+/** v0.0.293 (Lucas): the small line under each Tier: its average damage (with everything that is on) and each creature's chance of it. */
+export function tierStats(inp, st, v) {
+  const net = stepNet(inp, st).net, live = liveCreatures(inp, st), crit = !!v?.crit;
+  const pct = inp.showOdds && !inp.hideDef && !inp.save && !v?.noTiers;
+  const odds = pct ? live.map(c => ({ name: c.name, o: oddsOf(creatureCalc(inp, st, c.uuid), crit) })) : [];
+  const out = {};
+  for (const n of [1, 2, 3]) out[n] = { avg: inp.showAvg ? tierAvg(v?.tiers?.[n], tierTags(inp, st, n), net) : 0, odds: odds.map(x => ({ name: x.name, p: x.o[n - 1] })) };
+  out.crit = { avg: 0, odds: crit ? odds.map(x => ({ name: x.name, p: x.o[3] })) : [] };
+  return out;
+}
+const statLine = (x, one) => { const bits = [x.avg ? `Avg ${x.avg}` : "", ...x.odds.map(o => (one ? `${o.p}%` : `${o.name} ${o.p}%`))].filter(Boolean); return bits.length ? `<div class="rd-stat">${esc(bits.join(" · "))}</div>` : ""; };
+
 function tierTableHtml(inp, st, v) {
-  if (!v || v.noTiers) return "";
+  if (!v) return "";
+  if (v.noTiers) return v.effects ? `<table class="rd-tiers"><tr class="rd-eff"><th scope="row">Effects</th><td>${v.effects}</td></tr></table>` : "";
+  const stats = tierStats(inp, st, v), one = liveCreatures(inp, st).length <= 1;
   const cell = n => {
     const lines = poolLines(v.tiers?.[n], tierTags(inp, st, n).map(c => ({ pool: c.pool, tag: c.tag })));
     const dmg = lines.map(l => `<span class="rd-pool">${poolIcon(l.pool)} ${l.segs.map(s => `${esc(s.t)}${s.sub ? ` <b class="rd-sub" style="color:${SUB_INK[s.sub] ?? "#4a443b"}">${esc(s.sub)}</b>` : ""}`).join(" + ")}${l.tags.map(g => ` <span class="rd-ptag">${esc(g)}</span>`).join("")}</span>`).join('<span class="rd-dot" aria-hidden="true"> · </span>');
     const riders = (v.tiers?.[n]?.riders ?? []).map(r => `<div class="rd-rider">↳ ${r}</div>`).join("");
-    return dmg || riders ? `${dmg ? `<div>${dmg}</div>` : ""}${riders}` : "&mdash;";
+    return (dmg || riders ? `${dmg ? `<div>${dmg}</div>` : ""}${riders}` : "&mdash;") + statLine(stats[n], one);
   };
   const rows = [1, 2, 3].map(n => `<tr class="t${n}"><th scope="row">T${n}</th><td>${cell(n)}</td></tr>`);
-  if (v.crit) rows.push(`<tr class="crit"><th scope="row">Crit</th><td>${v.crit}</td></tr>`);
+  if (v.crit) rows.push(`<tr class="crit"><th scope="row">Crit</th><td>${v.crit}${statLine(stats.crit, one)}</td></tr>`);
   if (v.effects) rows.push(`<tr class="rd-eff"><th scope="row">Effects<small>(T${v.effectsFrom ?? 2}+)</small></th><td>${v.effects}</td></tr>`);
   const net = stepNet(inp, st);
   return `<table class="rd-tiers">${rows.join("")}</table>${net.line ? `<div class="rd-step">${esc(net.line)}</div>` : ""}`;
@@ -304,7 +352,7 @@ function tierTableHtml(inp, st, v) {
 
 function metaHtml(inp, v) {
   const m = v?.meta ?? {}, sep = '<span class="rd-star" aria-hidden="true"> ✦ </span>';
-  const line = [m.targets ? `<b>Targets:</b> ${esc(m.targets)}` : "", inp.area ? `<button type="button" class="rd-area" data-act="place" title="${inp.area.placed ? "Place the area again" : "Place the area"}"><span aria-hidden="true">◇</span> ${esc(inp.area.label)}</button>` : "",
+  const line = [m.targets ? `<b>Targets:</b> ${esc(m.targets)}` : "", inp.area ? `<button type="button" class="rd-area" data-act="place" data-tooltip="${inp.area.placed ? "Place the area again" : "Place the area"}"><span aria-hidden="true">◇</span> ${esc(inp.area.label)}</button>` : "",
     m.dist ? (/^(weapon|reach|self)$/i.test(m.dist) ? esc(m.dist) : `Distance: ${esc(m.dist)}`) : "", m.vs ? `${/save$/i.test(m.vs) ? "" : "Vs. "}${esc(m.vs)}` : ""].filter(Boolean);
   const out = [];
   if (m.trigger) out.push(`<div class="rd-meta"><b>${m.triggerKind === "interrupt" ? "Interrupt" : "Trigger"}:</b> ${esc(m.trigger)}</div>`);
@@ -325,6 +373,8 @@ function traitsHtml(inp, v) {
 
 function creaturesHtml(inp, st, v) {
   const live = liveCreatures(inp, st), crit = !!v?.crit, hide = !!inp.hideDef;
+  // v0.0.293: a Save Action: each creature with your Save DC (they roll; nothing of theirs to switch here)
+  if (inp.save) return live.filter(c => c.uuid !== "none" && c.uuid !== "self").map(c => `<div class="rd-cbox"><div class="rd-cname"><b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}<span class="rd-def">${esc(inp.save.label)} ${inp.save.dc}</span></div></div>`).join("") || `<div class="rd-none">No target. Target a creature on the map.</div>`;
   if (!live.length) return `<div class="rd-none">${inp.area && !inp.area.placed ? "Place the area to choose the creatures." : "No target. Target a creature on the map."}</div>`;
   if (!inp.multi) {
     const c = live[0], own = chipsOf(inp, st, c.uuid);
@@ -333,7 +383,7 @@ function creaturesHtml(inp, st, v) {
   const three = anyThree(inp, st);
   return live.map(c => {
     const k = creatureCalc(inp, st, c.uuid), open = !!st.open?.[c.uuid], own = chipsOf(inp, st, c.uuid);
-    const head = `<div class="rd-cline"><button type="button" class="rd-copen" data-act="open" data-uuid="${esc(c.uuid)}" aria-expanded="${open}"><span class="rd-chev" aria-hidden="true">${open ? "▾" : "▸"}</span><b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}<span class="rd-cdice">${esc(creatureDice(k, three))}</span><span class="rd-cmod">${k.mod >= 0 ? "+" : "−"}${Math.abs(k.mod)}</span>${counts(k.boons, k.banes)}</button>${defBadge(c, hide)}<button type="button" class="rd-cx rm" data-act="untarget" data-uuid="${esc(c.uuid)}" aria-label="Remove ${esc(c.name)}" title="Remove ${esc(c.name)} from the targets (or right-click its line)">×</button></div>`;
+    const head = `<div class="rd-cline"><button type="button" class="rd-copen" data-act="open" data-uuid="${esc(c.uuid)}" aria-expanded="${open}"><span class="rd-chev" aria-hidden="true">${open ? "▾" : "▸"}</span><b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}<span class="rd-cdice">${esc(creatureDice(k, three))}</span><span class="rd-cmod">${k.mod >= 0 ? "+" : "−"}${Math.abs(k.mod)}</span>${counts(k.boons, k.banes)}</button>${defBadge(c, hide)}<button type="button" class="rd-cx rm" data-act="untarget" data-uuid="${esc(c.uuid)}" aria-label="Remove ${esc(c.name)}" data-tooltip="Remove ${esc(c.name)} from the targets (or right-click its line)">×</button></div>`;
     if (!open) return `<div class="rd-cbox multi" data-uuid="${esc(c.uuid)}">${head}</div>`;
     const add = `<div class="rd-row"><span class="rd-rlabel">Add here:</span><span class="rd-chips">${["boon", "bane", "fav", "doom"].map(kd => `<button type="button" class="rd-addhere" data-act="quick" data-scope="${esc(c.uuid)}" data-k="${kd}">${pip({ kind: kd })}${QUICK_LABEL[kd]}</button>`).join("")}</span></div>`;
     return `<div class="rd-cbox multi open" data-uuid="${esc(c.uuid)}">${head}${rowsHtml(own, st, c.uuid, ROWS.filter(r => r[0] !== "passives" && r[0] !== "damage"))}${add}${hide ? "" : ladderHtml(c.dc, crit)}</div>`;
@@ -342,17 +392,24 @@ function creaturesHtml(inp, st, v) {
 
 /** The whole dialog's inner HTML: header (fixed), body (scrolls), Designer footer, bottom bar (fixed). */
 export function dialogHtml(inp, st) {
-  const v = versionOf(inp, st), dl = diceLine(inp, st), why = blockedReason(inp, st);
-  const vers = (inp.versions ?? []).length > 1 ? `<div class="rd-vers" role="group" aria-label="Version">${inp.versions.map(x => `<button type="button" data-act="ver" data-ap="${x.ap}" aria-pressed="${Number(x.ap) === Number(v?.ap)}"${x.disabled ? ` disabled title="${esc(x.why ?? "")}" data-tooltip="${esc(x.why ?? "")}" class="cant"` : ""}>${esc(x.cost)}</button>`).join("")}</div>` : "";
-  const quick = `<div class="rd-quick">${quickKinds(inp.multi).map(k => `<button type="button" class="rd-qb" data-act="quick" data-scope="shared" data-k="${k}">${pip({ kind: k })}${QUICK_LABEL[k]}</button>`).join("")}</div>`;
-  const notices = (inp.notices ?? []).length ? `<div class="rd-notes">${inp.notices.map(n => `<span class="rd-note"${n.why ? ` data-tooltip="${esc(n.why)}" title="${esc(n.why)}"` : ""}>${esc(n.text)}</span>`).join("")}</div>` : "";
-  const panel = `<section class="rd-roll"><div class="rd-dice"><b class="rd-dtxt">${esc(dl.dice)}</b> <b>${sgn(dl.mod)}</b> <i class="rd-dnames">${esc(dl.names.join(", "))}</i> ${counts(dl.boons, dl.banes)}${dl.note ? ` <span class="rd-dnote">· ${esc(dl.note)}</span>` : ""}</div>
-    <div class="rd-mhead"><span>${inp.multi ? "Modifiers · every target" : "Modifiers"}</span></div>${quick}${notices}${rowsHtml(chipsOf(inp, st, "shared"), st, "shared")}
+  const v = versionOf(inp, st), dl = diceLine(inp, st), why = blockedReason(inp, st), warn = warnings(inp, st), noRoll = !!v?.noTiers;
+  // v0.0.293 (Lucas: allow it with a warning): a Version you can't afford is struck through but can be chosen
+  const vers = (inp.versions ?? []).length > 1 ? `<div class="rd-vers" role="group" aria-label="Version">${inp.versions.map(x => `<button type="button" data-act="ver" data-ap="${x.ap}" aria-pressed="${Number(x.ap) === Number(v?.ap)}"${x.disabled ? ` data-tooltip="${esc(x.why ?? "")}" class="cant"` : ""}>${esc(x.cost)}</button>`).join("")}</div>` : "";
+  const quick = `<div class="rd-quick">${(inp.save ? ["emp", "enf"] : quickKinds(inp.multi)).map(k => `<button type="button" class="rd-qb" data-act="quick" data-scope="shared" data-k="${k}">${pip({ kind: k })}${QUICK_LABEL[k]}</button>`).join("")}</div>`;
+  const notices = (inp.notices ?? []).length ? `<div class="rd-notes">${inp.notices.map(n => `<span class="rd-note"${n.why ? ` data-tooltip="${esc(n.why)}"` : ""}>${esc(n.text)}</span>`).join("")}</div>` : "";
+  const head = inp.save ? `<div class="rd-dice"><b class="rd-dtxt">Their roll</b> <i class="rd-dnames">${esc(inp.save.label)} vs DC ${inp.save.dc}</i> <span class="rd-dnote">· each target rolls; the Tiers are their result</span></div>`
+    : `<div class="rd-dice"><b class="rd-dtxt">${esc(dl.dice)}</b> <b>${sgn(dl.mod)}</b> <i class="rd-dnames">${esc(dl.names.join(", "))}</i> ${counts(dl.boons, dl.banes)}${dl.note ? ` <span class="rd-dnote">· ${esc(dl.note)}</span>` : ""}</div>`;
+  // v0.0.293 (Lucas: Reactions and Opportunity Attack still had the old window): a Version with no roll shows the card and its targets; Use
+  const named = liveCreatures(inp, st).filter(c => !["self", "none"].includes(c.uuid));
+  const panel = noRoll ? (named.length ? `<div class="rd-tline">→ ${esc(named.map(c => c.name).join(", "))}</div>` : "")
+    : `<section class="rd-roll">${head}
+    <div class="rd-mhead"><span>${inp.multi && !inp.save ? "Modifiers · every target" : "Modifiers"}</span></div>${quick}${notices}${rowsHtml(chipsOf(inp, st, "shared"), st, "shared", inp.save ? ROWS.filter(r => ["passives", "damage"].includes(r[0])) : ROWS)}
     <div class="rd-creatures">${creaturesHtml(inp, st, v)}</div></section>`;
   const flavor = inp.flavor ? `<div class="rd-div" aria-hidden="true"><span></span><i>◆ ◆ ◆</i><span></span></div><p class="rd-flavor">${esc(inp.flavor)}</p>` : "";
-  const designer = inp.designer && v && !v.noTiers ? `<div class="rd-designer"><div>${liveCreatures(inp, st).map(c => `<div><b>${esc(c.name)}</b>: ${oddsLine(oddsOf(creatureCalc(inp, st, c.uuid), !!v.crit))}</div>`).join("")}</div><div class="rd-force" role="group" aria-label="Force a Tier">Force a Tier: ${[1, 2, 3].map(n => `<button type="button" data-act="force" data-t="${n}" aria-pressed="${Number(st.forceTier) === n}">T${n}</button>`).join("")}</div></div>` : "";
+  const designer = inp.designer && v && !v.noTiers && !inp.save ? `<div class="rd-designer"><div>${inp.showOdds && !inp.hideDef ? "" : liveCreatures(inp, st).map(c => `<div><b>${esc(c.name)}</b>: ${oddsLine(oddsOf(creatureCalc(inp, st, c.uuid), !!v.crit))}</div>`).join("")}</div><div class="rd-force" role="group" aria-label="Force a Tier">Force a Tier: ${[1, 2, 3].map(n => `<button type="button" data-act="force" data-t="${n}" aria-pressed="${Number(st.forceTier) === n}">T${n}</button>`).join("")}</div></div>` : "";
   const modes = (inp.rollModes ?? []).length ? `<select class="rd-mode" data-field="rollMode" aria-label="Roll mode">${inp.rollModes.map(([k, l]) => `<option value="${esc(k)}"${k === st.rollMode ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>` : "";
-  const bar = `<footer class="rd-bar">${modes}<button type="button" class="rd-btn2" data-act="card">Card</button><button type="button" class="rd-go" data-act="roll"${why ? ` disabled title="${esc(why)}"` : ""}>Roll</button></footer>${why ? `<div class="rd-why" role="status">${esc(why)}</div>` : ""}${inp.hideDef ? '<div class="rd-pview">Player view · enemy Defenses hidden by the GM</div>' : ""}`;
+  const bar = `<footer class="rd-bar">${modes}<button type="button" class="rd-btn2" data-act="card">Card</button><button type="button" class="rd-go" data-act="roll"${why ? " disabled" : ""}>${noRoll || inp.save ? "Use" : "Roll"}</button></footer>${why ? `<div class="rd-why" role="status">${esc(why)}</div>` : ""}${inp.hideDef ? '<div class="rd-pview">Player view · enemy Defenses hidden by the GM</div>' : ""}`;
+  const warnHtml = warn.length ? `<div class="rd-warn" role="status"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> ${esc(warn.join(" · "))}. You can still use it.</div>` : "";
   return `<header class="rd-head"><div class="rd-nameline"><h1 class="rd-name">${esc(inp.name)}</h1>${vers}</div>${traitsHtml(inp, v)}</header>
-    <div class="rd-body">${metaHtml(inp, v)}${tierTableHtml(inp, st, v)}${panel}${flavor}</div>${designer}${bar}`;
+    <div class="rd-body">${metaHtml(inp, v)}${tierTableHtml(inp, st, v)}${panel}${flavor}</div>${designer}${warnHtml}${bar}`;
 }

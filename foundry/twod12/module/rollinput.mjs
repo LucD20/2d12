@@ -8,6 +8,7 @@ import { isFaded } from "./usage.mjs";
 import { combatantOf, getAP, getRAP, payReaction } from "./combat.mjs";
 import { applyTalentMods } from "./preview.mjs";
 import { esc } from "./util.mjs";
+import { saveDcOf } from "./rollsource.mjs";
 
 /** The kinds of synthetic modifiers that are about one target (the creature's box), not about you (the shared panel). */
 const TARGET_SYN = new Set(["cover", "obscured", "obscured-you", "range", "long", "engaged-target", "flanking", "hidden-na", "obscured-na"]);
@@ -68,7 +69,7 @@ export async function rollDialogInput(c) {
   const chips = [];
   const targetActors = c.multi ? c.perT.map(p => p.actor) : c.rollsAtOthers && c.targetToken?.actor ? [c.targetToken.actor] : [];
   // Boons and Banes: your effects, the effects on the targets, and what the map gives (Flanking, Cover, range, Engaged, Obscured...)
-  for (const m of [...modifierList(actor, c.dlgTraits, targetActors, null), ...c.extraMods]) {
+  for (const m of c.saveAct ? [] : [...modifierList(actor, c.dlgTraits, targetActors, null), ...c.extraMods]) {
     if (m.info || !(m.boons || m.banes)) continue;
     const scope = scopeOf(m.id), boon = (m.boons ?? 0) >= (m.banes ?? 0) && m.boons > 0, n = boon ? m.boons : m.banes;
     const label0 = cleanLabel(m.name, scope !== "shared" ? tgtName(scope) : "");
@@ -77,18 +78,18 @@ export async function rollDialogInput(c) {
   }
   // Favored and Doomed the roll already knows: your own (armor beyond your training, Unconscious) and the target's (Hidden, Hidden to it, untrained armor)
   const doom = doomStatus(actor) || (actor?.system?.armorUntrained ? "Untrained armor" : "");
-  if (doom) chips.push({ id: "syn:doom", scope: "shared", row: "banes", kind: "doom", n: 1, label: doom, start: "on", tip: `${doom}: all your Rolls are Doomed` });
-  if (!c.multi && single && c.rollsAtOthers) {
+  if (doom && !c.saveAct) chips.push({ id: "syn:doom", scope: "shared", row: "banes", kind: "doom", n: 1, label: doom, start: "on", tip: `${doom}: all your Rolls are Doomed` });
+  if (!c.multi && single && c.rollsAtOthers && !c.saveAct) {
     const hidden = c.seen === "hidden" || c.seen === "unsensed";
     if (hidden) chips.push({ id: "syn:tdoom", scope: single, row: "banes", kind: "doom", n: 1, label: c.seen === "hidden" ? "Hidden" : "Unsensed", start: "on", tip: c.seen === "hidden" ? `Hidden: you only perceive the target by ${c.seenWhy}` : "Unsensed: you don't perceive the target" });
     if (c.unseenYou) chips.push({ id: "syn:tfav", scope: single, row: "boons", kind: "fav", n: 1, label: c.mine === "hidden" ? "Hidden to it" : "Unsensed to it", start: "on", tip: "Your target doesn't perceive you: Favored" });
     if (c.untrainedTarget) chips.push({ id: "syn:tfav2", scope: single, row: "boons", kind: "fav", n: 1, label: "Untrained armor", start: "on", tip: "The target's armor is beyond its training: Favored" });
   }
-  if (c.multi) for (const p of c.perT) (p.note ?? []).forEach((nt, k) => chips.push({ id: `syn:pnote|${p.actorUuid}|${k}`, scope: p.actorUuid, row: nt.cls === "boon" ? "boons" : "banes", kind: nt.cls === "boon" ? "fav" : "doom", n: 1, label: nt.text, start: "on",
+  if (c.multi && !c.saveAct) for (const p of c.perT) (p.note ?? []).forEach((nt, k) => chips.push({ id: `syn:pnote|${p.actorUuid}|${k}`, scope: p.actorUuid, row: nt.cls === "boon" ? "boons" : "banes", kind: nt.cls === "boon" ? "fav" : "doom", n: 1, label: nt.text, start: "on",
     tip: nt.cls === "boon" ? `${nt.text}: Favored against ${p.name}` : `${nt.text}: Doomed against ${p.name}` }));
   // Flat: Exhausted N is a penalty of N on all your Rolls (Ch. 8), not a Bane
   const exh = Number(actor?.system?.exhausted ?? 0);
-  if (exh > 0) chips.push({ id: "syn:exh", scope: "shared", row: "flat", kind: "minus", n: exh, label: `Exhausted ${exh} −${exh}`, srcName: `Exhausted ${exh}`, start: "on", tip: `Exhausted ${exh}: −${exh} on all your Rolls (Ch. 8)` });
+  if (exh > 0 && !c.saveAct) chips.push({ id: "syn:exh", scope: "shared", row: "flat", kind: "minus", n: exh, label: `Exhausted ${exh} −${exh}`, srcName: `Exhausted ${exh}`, start: "on", tip: `Exhausted ${exh}: −${exh} on all your Rolls (Ch. 8)` });
   // Damage: each Empowered and Enfeebled source by name (the highest of each counts, then the net)
   c.steps.empowered.forEach((x, k) => chips.push({ id: `syn:emp:${k}`, scope: "shared", row: "damage", kind: "emp", n: x.n, label: `Empowered ${x.n}`, srcName: x.name, start: "on", tip: `${x.name}: +${x.n} on every damage die` }));
   c.steps.enfeebled.forEach((x, k) => chips.push({ id: `syn:enf:${k}`, scope: "shared", row: "damage", kind: "enf", n: x.n, label: `Enfeebled ${x.n}`, srcName: x.name, start: "on", tip: `${x.name}: −${x.n} on every damage die (each die still deals at least 1)` }));
@@ -108,8 +109,9 @@ export async function rollDialogInput(c) {
   const blocked = [];
   const fd = c.opts.free ? null : isFaded(actor, item);
   if (fd?.faded) blocked.push(fd.why);
-  let hideDef = false, designer = false;
-  try { hideDef = !game.user.isGM && game.settings.get("twod12", "hideEnemyDefenses") === true; designer = game.settings.get("twod12", "designerMode") === true; } catch (e) { /* settings not ready */ }
+  let hideDef = false, designer = false, stats = "all";
+  try { hideDef = !game.user.isGM && game.settings.get("twod12", "hideEnemyDefenses") === true; designer = game.settings.get("twod12", "designerMode") === true; stats = game.settings.get("twod12", "rollDialogStats") ?? "all"; } catch (e) { /* settings not ready */ }
+  const showStats = stats === "all" || (stats === "gm" && !!game.user?.isGM);
   if (hideDef && creatures.every(x => x.owned)) hideDef = false;   // your own creatures' Defenses are yours to see
   const rm = rollModes();
   const fl = TWOD12.frequencies?.[freq] ?? "";
@@ -118,7 +120,9 @@ export async function rollDialogInput(c) {
     versions, ap: c.opts.rdState?.ap ?? versions.find(v => !v.disabled)?.ap ?? versions[0]?.ap,
     roll: { mod: Number(src.mod) || 0, name: String(src.chip ?? "").replace(/\s*Modifier$/i, "") || "Modifier" },
     multi: !!c.multi, self: !c.rollsAtOthers, area: c.areaSet ? { label: `${c.areaSet.distance} ${c.areaSet.shape === "burst" ? "Burst" : c.areaSet.shape === "line" ? "Line" : "Emanation"}`, placed: !!c.areaOutcome?.ok } : null,
-    nonlethalAction: it.traits.has("nonlethal"), chips, creatures, hideDef, designer, blocked, rollMode: rm.cur, rollModes: rm.list,
+    nonlethalAction: it.traits.has("nonlethal"), chips, creatures, hideDef, designer, blocked, rollMode: rm.cur, rollModes: rm.list, showAvg: showStats, showOdds: showStats,
+    // v0.0.293: a Save Action: the targets roll the Save named on its Vs. line against your DC (11 + your Modifier)
+    save: c.saveAct ? { label: vsText(it, { src, rolls: true }) || "Save", dc: saveDcOf(src, actor.system?.attributes) } : null,
     notices: (c.notices ?? []).filter(n => !n.for).map(n => ({ text: n.text, why: n.why ?? "" }))
   };
 }
