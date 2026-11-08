@@ -8,8 +8,8 @@
 {{/inline}}
 {{#*inline "srow"}}
 <div class="ar ps-row{{#if off}} off{{/if}}{{#if open}} open{{/if}}" data-item-id="{{id}}">
-  <div class="ps-line">
-    <span class="ps-name"><a class="ps-nm" data-action="toggleCard" data-tooltip="Open the Action" role="button" tabindex="0">{{name}}</a>{{#if sub}}<span class="ps-sub">{{sub}}</span>{{/if}}{{#if fav}}<i class="fa-solid fa-star ps-fav" data-tooltip="Favorite (right-click the row to change)" aria-label="Favorite"></i>{{/if}}</span>
+  <div class="ps-line" data-action="toggleCard" data-tooltip="Open the Action" data-tooltip-direction="UP">
+    <span class="ps-name"><a class="ps-nm" role="button" tabindex="0" aria-expanded="{{#if open}}true{{else}}false{{/if}}">{{name}}</a>{{#if sub}}<span class="ps-sub">{{sub}}</span>{{/if}}{{#if fav}}<i class="fa-solid fa-star ps-fav" data-tooltip="Favorite (right-click the row to change)" aria-label="Favorite"></i>{{/if}}</span>
     <span class="ps-c"><span class="ps-pill{{#if outline}} line{{/if}}" style="--fc:{{fc}}">{{cost}}</span></span>
     <span class="ps-c ps-dist">{{dist}}</span>
     <span class="ps-c">{{#if vs}}<span class="ps-vs">{{vs}}</span>{{/if}}</span>
@@ -25,11 +25,14 @@
 </div>
 {{/inline}}
 {{#*inline "brow"}}
-<div class="ps-brow" data-item-id="{{id}}" {{{tip}}}>
+<div class="ar ps-brw{{#if open}} open{{/if}}" data-item-id="{{id}}">
+<div class="ps-brow" {{#if id}}data-action="toggleCard" data-tooltip="Open the card" data-tooltip-direction="UP"{{/if}}>
   <span class="ps-slot">{{slot}}</span>
-  <span class="ps-bname">{{#if id}}<i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i>{{/if}}<b>{{name}}</b>{{#if id}}<span class="ps-bctl"><a data-action="openItem" data-tooltip="Edit" aria-label="Edit {{name}}"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete" data-tooltip="Remove" aria-label="Remove {{name}}"><i class="fa-solid fa-xmark"></i></a></span>{{/if}}</span>
+  <span class="ps-bname">{{#if id}}<i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i>{{/if}}<b class="ps-nm" {{#if id}}role="button" tabindex="0"{{/if}}>{{name}}</b>{{#if id}}<span class="ps-bctl"><a data-action="openItem" data-tooltip="Edit" aria-label="Edit {{name}}"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete" data-tooltip="Remove" aria-label="Remove {{name}}"><i class="fa-solid fa-xmark"></i></a></span>{{/if}}</span>
   <span>{{#if cost}}<span class="ps-pill" style="--fc:{{fc}}">{{cost}}</span>{{/if}}</span>
   <span class="ps-bfreq">{{freq}}</span>
+</div>
+<div class="ar-card"></div>
 </div>
 {{/inline}}
 <div class="twod12 sheet pcs{{#if pc.down.down}} isdown{{/if}}">
@@ -38,7 +41,7 @@
     <div class="ps-id">
       <input class="ps-nameinput" type="text" name="name" value="{{actor.name}}" placeholder="Name" aria-label="Name">
       <div class="ps-line1">
-        <label class="ps-lvl">Level <input type="number" min="0" name="system.level" value="{{system.level}}" aria-label="Level"></label>
+        <span>Level {{system.level}}</span>
         <span>&middot;</span><b class="ps-stage">Stage {{system.stage}}</b>
         <span>&middot;</span>{{#if pc.head.species}}<a data-action="openItem" data-item-id="{{pc.head.species.id}}" data-tooltip="Open the species">{{pc.head.species.name}}</a>{{else}}<em>No species</em>{{/if}}
         {{#if pc.head.cls}}<a data-action="openItem" data-item-id="{{pc.head.cls.id}}" data-tooltip="Open the class">{{pc.head.cls.name}}</a>{{else}}<em>No class</em>{{/if}}
@@ -267,6 +270,7 @@
       <div class="tab" data-tab="build">
         <div class="ps-stack">
           {{#if pc.build.banner}}<div class="ps-banner"><b>{{pc.build.banner.count}} card{{#unless pc.build.banner.one}}s{{/unless}} fill no slot:</b><span>{{pc.build.banner.names}}</span><button type="button" data-action="reviewSlots">Review</button></div>{{/if}}
+          <div class="ps-lvlbar"><label class="ps-lvl">Level <input type="number" min="0" name="system.level" value="{{system.level}}" aria-label="Level" data-tooltip="Your level: raising it opens the class window for the new level's choices"></label><span class="ps-mut">Stage {{system.stage}}</span></div>
           <div class="ps-g2 wide">
             {{#each pc.build.cards}}
             <div class="ps-bcard">

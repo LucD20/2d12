@@ -698,7 +698,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     this._bindActionTable();
     this._bindHandTiles();
     // v0.0.289: the Action names are keyboard links (Enter or Space opens the card)
-    this.element.querySelectorAll(".ps-nm[tabindex], .tabbtn[tabindex]").forEach(el => el.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); el.click(); } }));
+    this.element.querySelectorAll(".ps-nm[tabindex], .tabbtn[tabindex]").forEach(el => el.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); (el.closest("[data-action='toggleCard']") ?? el).click(); } }));
     this.element.querySelectorAll("[data-opt]").forEach(el => {
       el.addEventListener("change", () => { this.rollOpts[el.dataset.opt] = Number(el.value) || 0; });
     });
@@ -837,7 +837,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   /** Dragging a row onto another row of the same list puts it there (Custom order, or the Favorites order). */
   _bindReorder() {
-    this.element.querySelectorAll(".fcard[data-item-id], .lrow[data-item-id], .icard[data-item-id], .grow[data-item-id], .ar[data-item-id], .arow[data-item-id], .bbtn[data-item-id], .wcard[data-item-id], .ps-brow[data-item-id]:not([data-item-id=\"\"]), .ps-erow[data-effect-id], details.tfitem[data-item-id]:not([data-item-id=\"\"])").forEach(el => el.setAttribute("draggable", "true"));
+    this.element.querySelectorAll(".fcard[data-item-id], .lrow[data-item-id], .icard[data-item-id], .grow[data-item-id], .ar[data-item-id], .arow[data-item-id], .bbtn[data-item-id], .wcard[data-item-id], .ps-brw[data-item-id]:not([data-item-id=\"\"]), .ps-erow[data-effect-id], details.tfitem[data-item-id]:not([data-item-id=\"\"])").forEach(el => el.setAttribute("draggable", "true"));
     this.element.querySelectorAll(".alist, .atable[data-list=\"actions\"], .atable[data-list=\"favorites\"]").forEach(list => {
       list.addEventListener("dragover", ev => { if (ev.target.closest(".arow, .ar")) ev.preventDefault(); });
       list.addEventListener("drop", async ev => {

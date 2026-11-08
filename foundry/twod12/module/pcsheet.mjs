@@ -14,7 +14,6 @@ import { masteryRows, masteryValue, groupOf, TECHNIQUE_AT, techniqueState } from
 import { hoverOf, fxTipHtml, tipAttrs, esc } from "./util.mjs";
 import { durationText } from "./sheet-common.mjs";
 import { firstTimeThisEncounter } from "./down.mjs";
-import { buildRawCard, buildInfoCard } from "./preview.mjs";
 import { hoursText } from "./sleep.mjs";
 import {
   SHEET_FREQ, SECTION_ORDER, actionSection, vsDefenses, saveDCs, strikesLine, costPill, vsShort, distanceShort, basicUnavailable, nextBanes,
@@ -40,17 +39,6 @@ async function conditionTexts() {
   return condTexts;
 }
 
-/** The hover card of an item (its card as the chat shows it), for the Build tab's names. */
-const tipCache = new WeakMap();   // the cards are built once per item version (the sheet is drawn again often in combat)
-async function cardTip(item) {
-  const stamp = `${item._stats?.modifiedTime ?? ""}:${item.parent?.system?.level ?? ""}`, hit = tipCache.get(item);
-  if (hit?.stamp === stamp) return hit.html;
-  let html;
-  try { html = tipAttrs(item.type === "action" ? await buildRawCard(item) : await buildInfoCard(item)); }
-  catch (e) { html = tipAttrs(fxTipHtml({ name: item.name, text: plainEnrichers(hoverOf(item.system?.hover, item.system?.description)) })); }
-  tipCache.set(item, { stamp, html });
-  return html;
-}
 
 /** The Escalation rung of a Passive: the class section it was picked in ("Escalation 2 Passive"), else its settings / text (escblock.mjs). */
 export const passiveRung = (it, cls) => passiveThreshold(it, cls);
@@ -331,7 +319,7 @@ export async function pcModel(sheet, ctx) {
   const brow = async (it, slot) => {
     const isA = it.type === "action", f = effectiveFrequency(it.system ?? {});
     return { id: it.id, slot, name: it.name, cost: isA ? costPill((it.system.versions ?? []).map(v => v.ap), !!it.system.reaction) : "", fc: (SHEET_FREQ[it.system?.reaction ? "reaction" : f] ?? SHEET_FREQ.atwill).color,
-      freq: isA && f ? TWOD12.frequencies[f] : "—", tip: await cardTip(it) };
+      freq: isA && f ? TWOD12.frequencies[f] : "—", open: !!sheet._open?.has(it.id) };   // v0.0.290 (Lucas): the row opens its card in place (no hover card)
   };
   const placed = new Set(), levelBlocks = [], escRows = [];
   for (let L2 = 1; L2 <= lv; L2++) {

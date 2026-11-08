@@ -3025,3 +3025,13 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.sheet.pcs .ps-irow.a { grid-template-columns: minmax(0, 1fr) 210px 200px; }
 .twod12.sheet.pcs .ps-lvl, .twod12.sheet.pcs .ps-ih label { flex-direction: row; white-space: nowrap; }
 .twod12.sheet.pcs .ps-lvl input, .twod12.sheet.pcs .ps-ih label input { flex: none; }
+/* v0.0.290 (Lucas tested v0.0.289): a click anywhere on an Action or Build row opens its card; the Level is edited on the Build tab */
+.twod12.sheet.pcs .ps-line[data-action="toggleCard"], .twod12.sheet.pcs .ps-brow[data-action="toggleCard"] { cursor: pointer; }
+.twod12.sheet.pcs .ps-line[data-action="toggleCard"]:hover, .twod12.sheet.pcs .ps-brow[data-action="toggleCard"]:hover { background: #f6f2ea; }
+.twod12.sheet.pcs .ps-line:hover .ps-nm, .twod12.sheet.pcs .ps-brow:hover .ps-nm { text-decoration: underline; }
+.twod12.sheet.pcs .ps-brw { border-top: 1px solid #e3dccd; }
+.twod12.sheet.pcs .ps-brw > .ps-brow { border-top: none; }
+.twod12.sheet.pcs .ar.open > .ps-line, .twod12.sheet.pcs .ar.open > .ps-brow { background: #f3efe6; }
+.twod12.sheet.pcs .ps-lvlbar { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--ps-ink); }
+.twod12.sheet.pcs .ps-lvlbar .ps-lvl { font-family: "Cinzel", serif; font-weight: 700; font-size: 15px; color: #4a463d; }
+.twod12.sheet.pcs .ps-lvlbar .ps-lvl input { width: 3.2em; height: 26px; text-align: center; color: var(--ps-ink); background: #fff; border: 1px solid var(--ps-cline); border-radius: 4px; font-family: var(--font-primary, Signika, sans-serif); font-size: 14px; }
