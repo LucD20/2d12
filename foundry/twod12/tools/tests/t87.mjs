@@ -250,3 +250,28 @@ console.log("Evade in the Basic Actions:", BASIC_ACTIONS.safeMovement.versions.m
 const fs = await import("node:fs");
 const prone = JSON.parse(fs.readFileSync(ROOT + "packs/_source/conditions/" + fs.readdirSync(ROOT + "packs/_source/conditions").find(f => /Prone/i.test(f) && /\.json$/.test(f)), "utf8"));
 console.log("\nthe Prone effect:", strip(prone.system.description), "| Hindered linked:", JSON.stringify(prone.system.linked ?? ""), "| settings:", prone.system.settings.map(x => `${x.type} ${x.boons ?? 0}b ${x.banes ?? 0}n`).join(", "));
+// ------------------------------------------------------------------------------------------------ v0.0.292 (PACK ROLL-DIALOG): the new roll dialog
+console.log("\n--- the new roll dialog (v0.0.292): the same rolls through it, and its named sources on the card");
+{
+  // the test answers the dialog: its default choices, plus what `tweak` clicks (rolldlg.mjs), and remembers what it showed
+  let seenInp = null, tweak = null;
+  globalThis.__twod12RollDialog = (inp, RD) => { seenInp = inp; const st = RD.newState(inp); tweak?.(st, RD, inp); return RD.result(inp, st); };
+  const show = () => seenInp.chips.map(c => `${c.label}[${c.scope === "shared" ? "you" : (seenInp.creatures.find(x => x.uuid === c.scope)?.name ?? c.scope)}${c.start === "on" ? "" : `, ${c.start}`}]`).join(" ");
+  goblin.statuses = new Set(); ally.statuses = new Set();
+  const hook = globalThis.__twod12RollDialog; delete globalThis.__twod12RollDialog;
+  await act("OLD Shoot Nari (the same world, the old dialog)", shoot, [nariTok], [6, 7, 1, 2, 3, 1]);
+  globalThis.__twod12RollDialog = hook;
+  let c = await act("NEW Shoot Nari (the new dialog)", shoot, [nariTok], [6, 7, 1, 2, 3, 1]);
+  console.log("   chips:", show(), "| creatures:", seenInp.creatures.map(x => `${x.name} ${x.def} ${x.dc}`).join(", "), "| dice line:", JSON.stringify(RD_line(seenInp)));
+  tweak = (st, RD) => { RD.addManual(st, "shared", "bane"); RD.addManual(st, "shared", "plus"); RD.toggleChip(st, seenInp.chips.find(x => x.id === "syn:engaged")); };
+  c = await act("NEW Shoot Nari: +1 Bane, +1, Engaged off", shoot, [nariTok], [6, 7, 2, 3]);
+  const br = c ? strip((c.content.match(/<div class="cc-break[\s\S]*?<\/div>\s*<\/div>/)?.[0] ?? "")) : "";
+  console.log("   breakdown:", br.slice(0, 260), "| flags rd banes:", JSON.stringify(c?.flags?.twod12?.rd?.shared?.banes), "| flat:", JSON.stringify(c?.flags?.twod12?.rd?.shared?.flat));
+  tweak = null;
+  // v0.0.293: a Version with no roll opens the new dialog too (Lucas: Opportunity Attack and the Reactions had the old window)
+  chat.length = 0; notes.length = 0; seenInp = null;
+  await A.useAction(kai, crawl).catch(e => console.log("Crawl FAILED", e.message));
+  console.log("NEW Crawl: the dialog:", !!seenInp, "| no roll:", seenInp?.versions.map(v => `${v.cost} ${v.noTiers ? "no roll" : "roll"}`).join(", "), "| card posted:", chat.some(m => m.content.includes("Crawl")), "|", notes.join(" | ") || "no warning");
+}
+function RD_line(inp) { return { versions: inp.versions.map(v => v.cost).join("/"), roll: inp.roll, multi: inp.multi }; }
+delete globalThis.__twod12RollDialog;

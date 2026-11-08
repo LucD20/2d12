@@ -48,7 +48,7 @@ export const strikesLine = n => `Strikes this turn ${Math.max(0, Math.trunc(Numb
 export function costPill(aps = [], reaction = false) {
   const list = [...new Set((aps ?? []).map(v => Math.max(0, Math.trunc(Number(v)) || 0)))].sort((x, y) => x - y);
   if (!list.length) return "";
-  return `${list.join("/")}${reaction ? "R" : ""}`;
+  return `${list.join("/")}${reaction ? "R" : " AP"}`;   // v0.0.294 (Lucas): "1/2/3 AP" (a Reaction keeps "1R")
 }
 
 /** The Vs. column: a Defense or a Save in short form ("AD", "WD", "Body", "App Save"); nothing for DC 13 or no roll. */

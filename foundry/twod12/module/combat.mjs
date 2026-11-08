@@ -119,7 +119,7 @@ export async function setUnusedApGuard(c, hadTurn, apLeft) {
 }
 
 /** Pay the AP of an action. Returns false when the player decides not to go ahead. Does nothing outside combat. */
-export async function spendAP(actor, cost, label = "", { quiet = false, reaction = false } = {}) {
+export async function spendAP(actor, cost, label = "", { quiet = false, reaction = false, force = false } = {}) {   // force (v0.0.293): no "Not enough AP" question (the roll dialog warned)
   const c = combatantOf(actor);
   if (!c || !game.combat?.started) return true;
   // v0.0.243 (book, Reactions): a Reaction is paid with the Reaction AP first, then with AP (kept from the turn, or the turn's own on its own turn).
@@ -128,7 +128,7 @@ export async function spendAP(actor, cost, label = "", { quiet = false, reaction
     const ok = await DialogV2.confirm({ window: { title: "Frozen" }, content: `<p><b>${esc(c.name)}</b> swapped initiative, so its remaining actions are frozen until its turn. Use ${esc(label)} anyway?</p>`, rejectClose: false });
     if (!ok) return false;
   }
-  if (have < pay.fromAp) {
+  if (have < pay.fromAp && !force) {
     const ok = await DialogV2.confirm({ window: { title: "Not enough AP" }, content: `<p><b>${esc(c.name)}</b> has ${have} AP${reaction ? ` and ${rap} Reaction AP` : ""} and ${esc(label)} costs ${cost}${reaction ? "R" : ""}. Use it anyway?</p>`, rejectClose: false });
     if (!ok) return false;
   }

@@ -1,0 +1,24 @@
+--- Bulwark of Faith: the numbered steps
+1 · Before the damage · [Give Guard 9] | 2 · After the damage · [Slide 1] | waits for the damage: true
+buttons: Push 2 | Apply Prone | Heal | Deal the damage | Give Guard | sides: Apply · Allies [Heal] | Apply · Enemies [Apply Prone]
+while the damage is held: step 1 done | step 2 {"state":"wait","why":"After the damage: it hasn't been applied yet"}
+after the damage landed: step 2 ready
+used by hand (no held damage): step 2 before step 1: {"state":"wait","why":"First: Before the damage"} | then: ready
+step 2 done: done
+--- the granted Action
+Opportunity Attack: the text keeps: "You can make a Weapon Attack (1A) against the triggering creature, as long as your weapon can target them. An NPC makes its Basic attack instead." | the row: Weapon Attack | target: Weapon Attack | its button kept: true
+no @Use: unchanged: true
+the weapon reaches: Greatsword 1 sq., 1 away: "" | 3 away: Bandit Thug is 3 sq. away: Greatsword reaches 1 sq. | a Longbow too: ""
+Aim's grant carries: free true | AP 0 | Boons 1 | the source Aim (Weapon Attack, 1 Boon) | its effect (for Ignores cover) fxAim
+the row before: Granted Action: Weapon Attack Weapon Attack | a button: true
+used once, then: Granted Action: Weapon Attack Used | no button: true | no sublines: true
+--- the non-roll card
+order: name, meta, Interrupt, diamond, text, Granted Action, Flavor: true
+head: Opportunity Attack At-will · 1R | meta line: The triggering creature ✦ 1 sq. | the target at the bottom (v0.0.296): → Bandit Thug Card | Interrupt: Interrupt: A creature within 1 square wo …
+granted row: Granted Action: Weapon Attack Weapon Attack (1A) | a sword for a Weapon Attack: true | no category line, no Effects box, no stamp or ladder: true
+an NPC's: Granted Action: Basic attack
+out of reach: no button, the reason: true | Bandit Thug is 3 sq. away: Greatsword reaches 1 sq.
+Bulwark's steps: done: 1 Before the damage Done | wait: 2 After the damage Slide 1 | step 2 disabled with why: true
+a player who isn't the author sees no buttons: true
+--- the Save card: the Trigger above the Tier rows (section 12)
+Save line, Trigger, diamond, Tier rows: true

@@ -1237,7 +1237,10 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static async rollTable(event, target) { await rollTable(this.actor, target.dataset.kind); }
   static async useAction(event, target) {
     const gk = target?.dataset?.grantEffect ? { grantKey: { effectId: target.dataset.grantEffect, index: Number(target.dataset.grantIndex) || 0 } } : {};   // v0.0.269: a ticket's button names its grant
-    await useAction(this.actor, this._item(target), event?.shiftKey ? { noGrant: true } : gk);
+    // v0.0.293 (Lucas): a faded Action stays faded but can be used: a warning at the top says why it isn't normally allowed
+    const off = target?.dataset?.off ? { override: true } : {};
+    if (off.override) ui.notifications.warn(`${this._item(target)?.name ?? "This Action"}: ${target.dataset.off}. Used anyway.`);
+    await useAction(this.actor, this._item(target), { ...(event?.shiftKey ? { noGrant: true } : gk), ...off });
   }
   /** v0.0.208 (W): a hand button: the Action with the weapon in that hand (no "Which weapon?" window). */
   static async useWith(event, target) {

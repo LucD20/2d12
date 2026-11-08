@@ -170,7 +170,9 @@ export function metaLineHtml(m) {
   const bits = [t.area ? t.area : t.targets ? esc(t.targets) : "", t.dist ? esc(t.dist) : ""].filter(Boolean).join(` ${star} `);
   return bits ? `<div class="cc-tline meta"><span>${bits}</span></div>` : "";
 }
-export function footHtml(m, view = FULL_VIEW, { damage = "rollDamage", hasDamage = m.hasDamage, locked = m.locked } = {}) {   // v0.0.287: the Save card's too
+export function footHtml(m, view = FULL_VIEW, { damage = "rollDamage", hasDamage = m.hasDamage, locked = m.locked, target = true } = {}) {   // v0.0.287: the Save card's too
+  // v0.0.296 (Lucas: "the target should be kept at the bottom"): the target and the retarget stay on the bottom row (v0.0.285 / v0.0.287); target: false = buttons only
+  if (!target) return `<hr class="cc-hr"><div class="cc-foot">${hasDamage ? `<button type="button" class="cc-btn small primary" data-twod12="${damage}"><i class="fa-solid fa-dice" aria-hidden="true"></i> Damage</button>` : ""}<span class="cc-ftgt"></span><button type="button" class="cc-btn small" data-twod12="ccCard">Card</button></div>`;
   const t = m.tline ?? {}, n = t.names ?? [];
   const names = n.length === 1 ? `<b class="cc-tname">${esc(n[0])}</b>` : n.length ? `<b class="cc-tname" title="${esc(n.join(", "))}">${n.length} targets</b>` : '<span class="cc-muted">No target</span>';
   const re = view.author && !locked && t.retarget !== false ? `<button type="button" class="cc-icon" data-twod12="${esc(t.retargetKind ?? "retargetAction")}" aria-label="Target the selected tokens" title="Target the selected tokens"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i></button>` : "";
@@ -247,10 +249,47 @@ export function saveCardHtml(m, view = FULL_VIEW) {
   // v0.0.287 (Lucas): the target row at the bottom, with the Damage button, as on the attack card
   const saveDmg = cs.some(c => c.result && c.hasDamage && !c.damageDone);
   const action = one && !r ? (view.owns(cs[0]?.uuid) ? `<div class="cc-btns">${rollBtn(0)}</div>` : `<div class="cc-muted cc-wait">Waiting for ${esc(cs[0]?.name ?? "the target")}'s ${esc(m.saveName)}\u2026</div>`) : "";
-  const trig = m.triggerHtml ? `${divider(1)}<div class="cc-trigger"><b>${esc(m.triggerLabel || "Trigger")}:</b> ${m.triggerHtml}</div>` : "";
+  // v0.0.294 (brief section 12): the Trigger / Interrupt under the meta lines and the Save line, above the Tier rows, then one diamond
+  const trig = triggerLineHtml(m);
   const flavor = m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "";
   const des = designerFoot([m.designer?.ruler ? `Ruler: ${esc(m.designer.ruler)}` : "", m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
-  return `<div class="cc-card cc-save${one ? "" : " many"}">${headHtml(m)}${metaLineHtml(m)}<div class="cc-savehead"><b>${esc(m.saveName)}</b><span class="cc-rule" aria-hidden="true"></span><span class="cc-badge">DC ${m.dc}</span></div><div class="cc-srows">${rows}</div>${crows}${action}${trig}${flavor}${footHtml(m, view, { damage: "ccSaveDamage", hasDamage: saveDmg, locked: anyRolled })}${des}</div>`;
+  return `<div class="cc-card cc-save${one ? "" : " many"}">${headHtml(m)}${metaLineHtml(m)}<div class="cc-savehead"><b>${esc(m.saveName)}</b><span class="cc-rule" aria-hidden="true"></span><span class="cc-badge">DC ${m.dc}</span></div>${trig}<div class="cc-srows">${rows}</div>${crows}${action}${flavor}${footHtml(m, view, { damage: "ccSaveDamage", hasDamage: saveDmg, locked: anyRolled })}${des}</div>`;
+}
+
+/* ------------------------------------------------------------------ the Trigger line, the non-roll card (brief sections 12 and 13) */
+/** "Trigger: …" / "Interrupt: …" in plain text, then a one-diamond divider (nothing when the Action has none). */
+export const triggerLineHtml = m => (m.triggerHtml ? `<div class="cc-trigger plain"><b>${esc(m.triggerLabel || "Trigger")}:</b> ${m.triggerHtml}</div>${divider(1)}` : "");
+/**
+ * A step of a non-roll card (Bulwark of Faith: "1 · Before the damage · [Give Guard 9]", "2 · After the damage · [Slide 1]"). Pure.
+ * m.steps: [{ k (the chain's step), side, label, btn }]; m.afterDone: ["k|side"]; m.afterWait: { actor, token } while the triggering damage is held.
+ * { state: "done" | "ready" | "wait", why }: a step waits for the one before it, and an "After the damage" step for the damage to land.
+ */
+export function stepState(m, i) {
+  const st = (m.steps ?? [])[i];
+  if (!st) return { state: "wait", why: "No such step" };
+  const done = new Set(m.afterDone ?? []), key = s => `${s.k}|${s.side ?? ""}`;
+  if (done.has(key(st))) return { state: "done", why: "" };
+  const prev = (m.steps ?? []).slice(0, i).filter(x => x.k < st.k);
+  if (prev.length && !prev.some(x => done.has(key(x)))) return { state: "wait", why: `First: ${prev.at(-1).label || "the step before"}` };
+  if (m.afterWait && /after the damage/i.test(st.label ?? "")) return { state: "wait", why: "After the damage: it hasn't been applied yet" };
+  return { state: "ready", why: "" };
+}
+/** The next step of a non-roll card: numbered steps (their buttons wait until their moment), or the slot the granted Action's row goes in. */
+function nextHtml(m, view) {
+  const steps = (m.steps ?? []).map((st, i) => {
+    const s = stepState(m, i), btn = s.state === "done" ? '<span class="cc-done"><i class="fa-solid fa-check" aria-hidden="true"></i> Done</span>'
+      : view.author ? `<button type="button" class="cc-btn small primary" data-twod12="applyAfter" data-step="${st.k}" data-side="${esc(st.side ?? "")}"${s.state === "wait" ? ` disabled aria-disabled="true" data-tooltip="${esc(s.why)}"` : ""}>${esc(st.btn)}</button>` : "";
+    return `<div class="cc-step ${s.state}"><span class="cc-snum" aria-hidden="true">${i + 1}</span><b class="cc-slabel">${esc(st.label)}</b>${btn}</div>`;
+  }).join("");
+  const grant = m.useHtml ? `<div class="tline grantrow cc-grant${/attack/i.test(m.useName ?? "") ? " sword" : ""}"><span class="apside">Granted Action: <b>${esc(m.useName ?? "")}</b></span><div class="gbtns">${m.useOff ? `<span class="cc-gwhy" data-tooltip="${esc(m.useOff)}"><i class="fa-solid fa-ban" aria-hidden="true"></i> ${esc(m.useName ?? "")}</span>` : m.useHtml}</div></div>` : "";
+  return `${steps ? `<div class="cc-steps">${steps}</div>` : ""}<div class="cc-slot">${grant}</div>`;
+}
+/** v0.0.294 (brief section 13): an Action that makes no roll (Opportunity Attack, Bulwark of Faith, Aim): no stamp, no ladder, no category line, no Effects box. */
+export function nonRollCardHtml(m, view = FULL_VIEW) {
+  const flavor = m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "";
+  const des = designerFoot([m.designer?.ruler ? `Ruler: ${esc(m.designer.ruler)}` : "", m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
+  const effect = m.effectHtml ? `${m.triggerHtml ? "" : divider(1)}<div class="cc-effect full">${m.effectHtml}</div>` : "";
+  return `<div class="cc-card cc-noroll">${headHtml(m)}${metaLineHtml(m)}${triggerLineHtml(m)}${effect}${nextHtml(m, view)}${flavor}${footHtml(m, view, { hasDamage: false })}${des}</div>`;
 }
 
 /* ------------------------------------------------------------------ the damage arithmetic */
@@ -425,6 +464,7 @@ export function renderCard(m, view = FULL_VIEW) {
   if (m.kind === "attack") return attackCardHtml(m, view);
   if (m.kind === "save") return saveCardHtml(m, view);
   if (m.kind === "dmg") return damageCardHtml(m, view);
+  if (m.kind === "noroll") return nonRollCardHtml(m, view);
   return "";
 }
 /** The message content: the card inside the system's chat wrapper (later rows, such as granted-use buttons, can be appended after .cc-card). */

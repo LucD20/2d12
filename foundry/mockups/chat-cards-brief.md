@@ -335,3 +335,37 @@ Run the lint as CLAUDE.md says.
 - **Damage examples.**
   - Weapon Attack Tier 3: ♥ 13 Sl (4 + 5, +2 Weapon, +2 Heavy Blows), 🧠 3 Ho (Radiant Zeal). Bandit Thug with Guard 8 over both pools: the owner chooses. After Apply: Took ♥ 5 · 🧠 3, Bloodied.
   - Fire Imp hit by ♥ 6 Sl + 4 Fi and 🧠 10 Ho, with Resist 5 Fire and Weak 2 Holy: −4 Fire, +2 Holy → Took ♥ 6 · 🧠 12.
+
+---
+
+*Addendum (decided 2026-11-08 in the design Project; applied in v0.0.294). Same tokens, dividers, buttons and rules as above.*
+
+## 12. Trigger / Interrupt placement (all cards: Save cards and non-roll cards)
+- A Reaction's Trigger or Interrupt line goes right UNDER THE META LINES and ABOVE everything else.
+- Card order: 1) name + "Frequency · cost" chip; 2) trait chips; 3) the target line "Targets ✦ Distance → target" + retarget; 4) on a Save card only, the "<Attribute> Save ——— [DC N]" line; 5) "**Trigger:** …" or "**Interrupt:** …" in plain text, no background, no "(X → Y)" context; 6) a one-diamond divider; 7) the rest (Save: the Tier rows; non-roll: the effect text).
+- This REPLACES section 4.6's "Trigger sits right under the Tier rows".
+- *(Lucas, 2026-11-08, final: "the target should be kept at the bottom". Item 3 here, and section 13 item 3, are overridden: the top line is "Targets ✦ Distance" only; "→ target" and the retarget stay on the bottom row beside the buttons (v0.0.285 / v0.0.287; v0.0.296).)*
+
+## 13. Non-roll cards (an Action that makes no roll: Opportunity Attack, Bulwark of Faith, Aim, and every other)
+Today they show a category line, a boxed "Effects" block with a left bar, a target tag and a crosshair icon at the bottom, and buttons like "After the damage: Apply Damage/Effects" or "Aim: Weapon Attack · 1 of 1 left · free". Replace with:
+
+Layout: the same card as the roll cards but with NO stamp and NO ladder (full width, padding 8px 10px, gap 6px).
+1. Name + "Frequency · cost" chip (e.g. "At-will · 1R", "Encounter · 1R", "Round · 1 AP"), never wrapping. No category line (no "Basic Action", "Paladin Feature 1", "Combat Talent 1").
+2. Trait chips by group with dividers (skip the row if the Action has none).
+3. Target line "Targets ✦ Distance → target" + retarget (author and GM only). "Opportunity Attack": "The triggering creature ✦ 1 sq."; "Aim": "One creature ✦ 10 / 20 / 40 sq.". Distances always with "sq.".
+4. Trigger / Interrupt line (section 12), when the Action has one.
+5. One-diamond divider, then the effect text in full, 12.5px, NO "Effects" label, no boxed block. Inline items keep their look: conditions and movement as small outlined chips (with their icon: "Guard 9" with the shield, "Slid 1"), a Boon count in blue bold ("1 Boon"), a rule term as a dotted link ("Low cover"), a trait as its trait chip ("[Ranged]", "[Strike]"). Keep the card's text as written (e.g. "(1A)").
+6. The next step, one of:
+   a) A GRANTED ACTION (Aim's Weapon Attack, Opportunity Attack's Weapon Attack, an NPC's Basic attack): one row on a tinted block (#efe7d6, radius 4px): left "Granted Action:" (muted) + the Action's name (bold); right a primary button with a bolt icon and the name ("⚡ Weapon Attack"). Clicking it starts that Action with what the card grants (free, the Boon, ignoring Low cover, the triggering creature as target). When used: the button becomes a green "✓ Used". No sublines (no weapon name, no "free · 1 Boon …", no "1 of 1 left"). An NPC's Opportunity Attack offers "Granted Action: Basic attack".
+   b) NUMBERED STEPS when the order matters (Bulwark of Faith): one row per step, a thin top border #e0d4ba, a dark number circle (18px), the label in bold, the button at the right: "1 · Before the damage · [Give Guard 9]", "2 · After the damage · [Slide 1]". A step not possible yet has its button disabled (opacity .5, aria-disabled / disabled) until its moment comes (step 2 until the triggering damage has been applied). A finished step shows a green "✓ Done" instead of the button. No notes under the steps. This replaces "After the damage: Apply Damage/Effects".
+   c) Nothing, if the Action has no follow-up.
+7. Three-diamond divider and the Flavor line (italic, muted).
+Removed: the boxed "Effects" block, the "✦ Aim (Weapon Attack, 1 Boon)" source footnote, the bottom target tag and crosshair icon (the target line and retarget replace them), the category line.
+
+Behavior to check:
+- Granted Actions are used from the card's button (also keep any existing way to use them from the sheet, if there is one).
+- The Opportunity Attack's granted Weapon Attack uses the attacker's wielded weapon against the triggering creature; if the weapon can't target them, the button is disabled with a tooltip saying why.
+- Bulwark of Faith: step 1 gives the Guard to the target before the damage; step 2 opens the Slide picker after the damage.
+- Bulwark of Faith's card says "Targets: The triggering creature" (in an Interrupt, that reads as the attacker) while the effect gives "the target" Guard 9: the Guard should go to the ally the Strike would damage. Don't change the card text: log a [Q] in rules-backlog.md ("Bulwark of Faith Targets should read 'The ally'? default yes") and make Foundry give the Guard and the Slide to that ally.
+
+Tests (logic only): a granted Action carries its grants (Boon count, ignore Low cover, free) and can be used once; step 2 of Bulwark of Faith is refused before the triggering damage is applied; the Trigger line renders above the Tier rows on a Save card.

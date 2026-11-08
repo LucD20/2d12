@@ -1,7 +1,7 @@
 the card's flag: {"actorUuid":"Actor.a","effects":[{"id":"fx1","index":0,"name":"Double Shot","spec":"Weapon Attack","count":2,"ap":0,"actionName":"Weapon Attack"}]}
-the rows: <div class="tline grantrow"><span class="apside"><i class="fa-solid fa-ticket"></i> Double Shot: <b>Weapon Attack</b> <small>2 of 2 left · free</small></span><div class="gbtns"><button type="button" data-twod12="useGrant" data-effect-id="fx1" data-index="0"><i class="fa-solid fa-bolt"></i> Weapon Attack 1</button><button type="button" data-twod12="useGrant" data-effect-id="fx1" data-index="0"><i class="fa-solid fa-bolt"></i> Weapon Attack 2</button></div></div></div>
-one spent: <button type="button" data-twod12="useGrant" data-effect-id="fx1" data-index="0" class="spent" disabled><i class="fa-solid fa-check"></i> Weapon Attack 1</button><button type="button" data-twod12="useGrant" data-effect-id="fx1" data-index="0"><i class="fa-solid fa-bolt"></i> Weapon Attack 2</button></div></div>
-all spent: true
+the rows: <div class="tline grantrow"><span class="apside">Granted Action: <b>Weapon Attack</b></span><div class="gbtns"><button type="button" class="cc-gbtn" data-twod12="useGrant" data-effect-id="fx1" data-index="0"><img class="cc-gico" src="icons/svg/sword.svg" alt="" aria-hidden="true"> Weapon Attack</button><button type="button" class="cc-gbtn" data-twod12="useGrant" data-effect-id="fx1" data-index="0"><img class="cc-gico" src="icons/svg/sword.svg" alt="" aria-hidden="true"> Weapon Attack</button></div></div></div>
+one spent: <span class="cc-used"><i class="fa-solid fa-check"></i> Used</span><button type="button" class="cc-gbtn" data-twod12="useGrant" data-effect-id="fx1" data-index="0"><img class="cc-gico" src="icons/svg/sword.svg" alt="" aria-hidden="true"> Weapon Attack</button></div></div>
+all spent (v0.0.294: "✓ Used", no button): true
 no grants, nothing: true
 the retarget takes a row with several targets: true
 the button and the hooks are wired: true

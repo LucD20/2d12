@@ -32,6 +32,32 @@ export function collectBonuses(actor, traits, tier, opts = {}) {
   return out;
 }
 
+/**
+ * v0.0.292 (PACK ROLL-DIALOG): the Bonus Damage of the creature's effects and Passives that does NOT apply to this roll, with the reason, for the
+ * roll dialog's "n/a" chips ("Not this time: Word of Radiance is not a Strike") and its "already used this round" chips (off).
+ * label(k): a trait's name. [{ effect, why, used, dmg, sub, pool, tiers, srcUuid }]
+ */
+export function bonusesNotNow(actor, traits, { label = k => k, name = "this Action" } = {}) {
+  const out = [];
+  const tl = k => (k === "__twohanded" ? "Two-handed weapon" : label(k));
+  for (const e of allEffects(actor)) {
+    if (effectOff(actor, e)) continue;
+    (e.getFlag(F, "bonuses") ?? []).forEach((m, i) => {
+      const miss = (m.all ?? []).filter(t => !traits.has(t)), anyMiss = m.any?.length && !m.any.some(t => traits.has(t)), bad = (m.none ?? []).filter(t => traits.has(t));
+      const base = { effect: String(e.name ?? "").replace(/^\s*Effect:\s*/i, ""), dmg: m.dmg || "", sub: m.dmgSub || "", pool: m.dmgPool || "B", tiers: (m.tiers?.length ? m.tiers : ["t1", "t2", "t3"]).map(t => Number(String(t).slice(1))), srcUuid: e.srcUuid || e.getFlag(F, "effectUuid") || e.uuid || "" };
+      if (miss.length || anyMiss || bad.length) {
+        const why = miss.includes("__twohanded") ? "it needs a Two-handed weapon"
+          : miss.length ? `${name} is not ${miss.filter(t => !String(t).startsWith("__")).map(t => `a ${tl(t)}`).join(" or ") || "the right kind of Action"}`
+            : anyMiss ? `${name} is not ${m.any.map(t => `a ${tl(t)}`).join(" or ")}` : `${name} is a ${bad.map(tl).join(", ")}`;
+        return out.push({ ...base, why });
+      }
+      const once = m.oncePerRound ? onceKey(e, "b", i) : "";
+      if (once && onceBlocked(actor, once)) out.push({ ...base, used: true, why: "already used this round" });
+    });
+  }
+  return out;
+}
+
 /** "[Mod]" in a Bonus Damage is the Action's Modifier: "[Mod]" with +3 is "3", "1d6 + [Mod]" is "1d6 + 3". null: it is only [Mod] and the Modifier is 0 or less (no damage). */
 export function modDamage(dmg, mod) {
   const s = String(dmg ?? "");

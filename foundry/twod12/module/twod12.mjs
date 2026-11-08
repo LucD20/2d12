@@ -168,6 +168,8 @@ Hooks.once("init", () => {
   // v0.0.283 (pack chat-cards, brief section 5): the chat message settings of the new cards
   game.settings.register("twod12", "designerMode", { name: "Designer mode", hint: "For designing and testing: cards show the odds of each Tier, the Ruler line and the automation mark (Mithril), and damage messages the average and the chance of that total. Off: none of these appear in the chat.", scope: "client", config: true, type: Boolean, default: false });
   game.settings.register("twod12", "hideEnemyDefenses", { name: "Hide enemy Defenses from players", hint: "Players see the Tier of their rolls but not the Defense numbers: the ladder reads Tier 1 / Tier 2 / Tier 3, the arrow sits in the middle of its Tier, no Critical threshold. The GM always sees everything.", scope: "world", config: true, type: Boolean, default: false });
+  // v0.0.293 (Lucas): the roll dialog's average damage and chance of each Tier, under each Tier
+  game.settings.register("twod12", "rollDialogStats", { name: "Roll dialog: averages and chances", hint: "Under each Tier of the roll dialog: the average damage (with every bonus and penalty that is on) and each target's chance of that Tier. Everyone, the GM only, or no one. With \"Hide enemy Defenses\" on, players see the averages but not the chances.", scope: "world", config: true, type: String, choices: { all: "Everyone", gm: "GM only", none: "Hidden" }, default: "all" });
   game.settings.register("twod12", "hideTargetDetails", { name: "Hide target details from players", hint: "On damage messages, players see only each target's name and whether it was applied (no Weak, Resist, Immunity, Guard or what it took). Bloodied and Strained stay visible: they are public.", scope: "world", config: true, type: Boolean, default: false });
   game.settings.register("twod12", "highlightTraits", { name: "Highlight traits and damage types in rules text", hint: "The book's text colors on cards (Attributes, Modifiers, Banes and Boons, Rally Points, costs, movement, damage), a light background behind trait names (Strike, Divine...) and colored damage types (Cold, Holy...).", scope: "client", config: true, type: Boolean, default: true });
   CONFIG.Actor.dataModels = { character: CharacterData, npc: NpcData };
@@ -266,6 +268,9 @@ function ccRender(msg, html) {
   const tmp = document.createElement("div");
   tmp.innerHTML = CC.renderCard(msg.getFlag("twod12", "ccApplied") ? { ...m, locked: true } : m, view);
   if (tmp.firstElementChild) card.replaceWith(tmp.firstElementChild);
+  // v0.0.294 (brief section 13): the granted uses' rows (appended after the card by freeuse.mjs) go into the non-roll card's slot, before the Flavor
+  const slot = el.querySelector(".cc-card .cc-slot");
+  if (slot) el.querySelectorAll(".twod12.chat.cc > .tline.grantrow").forEach(r => slot.append(r));
 }
 Hooks.on("renderChatMessageHTML", ccRender);
 // v0.0.249 (Lucas): a rung Passive's effect comes as soon as the Escalation reaches its rung (the encounter's start, a Critical, the hook, the GM's valve)
@@ -363,6 +368,7 @@ Hooks.once("ready", async () => {
   registerDragCopy();
   registerUsageHooks();
   registerGrantCardHooks();
+  import("./noroll.mjs").then(m => m.registerNoRollHooks()).catch(e => console.warn("twod12 | non-roll cards", e));   // v0.0.294
   registerMomentHooks();   // v0.0.272 (pack RX): the movement moments
   closeStale().catch(e => console.warn("twod12 | Reactions", e));
   registerDeadHooks();

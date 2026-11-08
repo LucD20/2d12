@@ -32,7 +32,7 @@ no target: rows per creature: 0 | one stamp and one ladder (one target): true | 
 --- six Skeleton Captains, dice 6 and 7: boon dice -, bane dice -
 dialog tiles: Yours | Skeleton Captain 1 | Skeleton Captain 2 | Skeleton Captain 3 | Skeleton Captain 4 | Skeleton Captain 5 | Skeleton Captain 6 | numbers on the tiles: 1,2,3,4,5,6 | a dots holder on each: 7 | a caption: true | the old per-tile name and DC text is gone: true
 rows on the card (one per creature): 6 | Tier groups: Tier 2 Skeleton Captain 1 Skeleton Captain 2 Skeleton Captain 3 Skeleton Captain 4 Skeleton Captain 5 Skeleton Captain 6
-targets line (v0.0.285: at the bottom, beside the buttons): → 6 targets Damage Card | the top keeps the area: @Template[emanation|distance:5|targets:all|self:no|at:self|quick:yes]
+targets line (v0.0.285, kept in v0.0.296: at the bottom, beside the buttons): → 6 targets Damage Card | the top keeps the area: @Template[emanation|distance:5|targets:all|self:no|at:self|quick:yes]
 damage: one card with 6 rows, named: Skeleton Captain 1, Skeleton Captain 2, Skeleton Captain 3, Skeleton Captain 4, Skeleton Captain 5, Skeleton Captain 6 | Apply all: true
 size of the roll card: about 10115 characters for 6 creatures (one row), against 7671 for 3
 gridless scene: Whirlwind still rolls: true 

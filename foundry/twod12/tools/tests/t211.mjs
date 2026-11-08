@@ -86,7 +86,7 @@ console.log("before the roll: the owner rolls:", owner.includes("Roll Appeal Sav
 const chk = { name: "Ogre Chieftain", uuid: "ogre", total: 8, dc: 13, dcLabel: "DC", tier: 1, base: 1, crit: false, doubles: false, d1: [4], d2: [5], boonFaces: [], baneFaces: [1, 1], sources: [{ name: "Vulnerable 1", banes: 2 }], mods: [{ v: 1, label: "Appeal" }] };
 const after = CC.saveCardHtml({ ...save, result: chk, hasDamage: true }, CC.viewOf({ gm: true }));
 console.log("after: the result row is a button:", /<button type="button" class="cc-srow t1 hit"/.test(after), "| its total:", txt(after.match(/<span class="cc-stotal">[^<]*/)?.[0]), "| the others dim:", (after.match(/cc-srow t\d dim/g) ?? []).length, "| Their Tier:", txt(after.match(/Their Tier \d/)?.[0]), "| Damage at the bottom:", after.includes("ccSaveDamage"));
-console.log("the Trigger under the Tiers, then the Flavor:", after.indexOf("cc-srows") < after.indexOf("cc-trigger") && after.indexOf("cc-trigger") < after.indexOf("cc-flavor"), "|", txt(after.match(/<div class="cc-trigger">[\s\S]*?<\/div>/)?.[0]));
+console.log("v0.0.294 (brief section 12): the Trigger under the Save line, above the Tier rows, then one diamond:", after.indexOf("cc-savehead") < after.indexOf("cc-trigger") && after.indexOf("cc-trigger") < after.indexOf("cc-div") && after.indexOf("cc-div") < after.indexOf("cc-srows") && after.indexOf("cc-srows") < after.indexOf("cc-flavor"), "|", txt(after.match(/<div class="cc-trigger plain">[\s\S]*?<\/div>/)?.[0]));
 
 console.log("--- Resist / Weak / Immunity: once per subtype per Action, across both pools; Resist capped at what that subtype dealt");
 const mods = CC.parseDmgMods("Resist 5 Fire, Weak 2 Holy, Immunity Cold, Resist Fire 3");
