@@ -236,7 +236,7 @@ Every weapon has a **Range**, melee weapons included. An Action whose distance i
 
 - **How it is written.** A Range is written like the ranges of ranged weapons: normal / far (1 Bane) / maximum (2 Banes). A single number is a normal range with no far or maximum range. Most melee weapons have Range 1; a lance has Range 1 / 2.
 - **Reach above 1.** Your Reach above 1 adds to every number of the Range of your melee weapons: with Reach 2, a lance attacks at 2 / 3. It doesn't change the Range of a ranged or thrown attack.
-- **Long.** A weapon with the [[Long]] property takes 1 Bane against adjacent creatures. A pike with Range 3 and Long is at its best 2 or 3 squares away.
+- **Long.** A weapon with the [[Long]] property takes 1 Field Bane against adjacent creatures. A pike with Range 3 and Long is at its best 2 or 3 squares away.
 
 ### Weapon Actions and Your Weapon
 
@@ -256,7 +256,7 @@ By itself, being Engaged does nothing. Other rules use the word, such as [[Range
 
 Using a [Ranged] Action while you are [[Engaged]] is hard: you suffer **2 Banes**.
 
-When you use a [Ranged] Action against a creature that is Engaged with a creature other than yourself, you suffer **1 Bane**.
+When you use a [Ranged] Action against a creature that is Engaged with a creature other than yourself, you suffer **1 Field Bane**.
 
 ## Flanking
 
@@ -264,15 +264,15 @@ A creature **threatens** every enemy within the **normal range** of a Melee weap
 
 Like [[Engaged]], threatening does not depend on what you perceive, but it uses range and not adjacency: a creature with a Range 2 weapon threatens an enemy 2 squares away, which is not Engaged with it.
 
-Creatures that threaten the same enemy **flank** it. A creature that flanks an enemy gains **1 Boon** on its [Melee] Actions against that enemy for **each other creature** that flanks it, up to **3 Boons**. But each **ally of that enemy that threatens the flanker** cancels 1 of those Boons, and a creature never gains fewer than 0.
+Creatures that threaten the same enemy **flank** it. A creature that flanks an enemy gains **1 Field Boon** on its [Melee] Actions against that enemy for **each other creature** that flanks it. But each **ally of that enemy that threatens the flanker** cancels 1 of those Boons, and a creature never gains fewer than 0.
 
 Blue tokens are allies and red-brown tokens are enemies. A badge is the Boons that creature gets on [Melee] Actions against the creature in the middle (G, John in the fifth picture) or against D in the last one.
 
 **Example 1: Two flankers.** Philip and John both threaten a goblin: each has 1 Boon on [Melee] Actions against it.
 
-**Example 2: Three flankers.** A third ally threatens it too: 2 Boons each.
+**Example 2: Three flankers.** A third ally threatens it too: 2 Field Boons each, which is the limit.
 
-**Example 3: Four or more.** A fourth ally: 3 Boons each, which is the limit. A fifth adds nothing.
+**Example 3: Four or more.** A fourth ally adds no Boon, but it still counts for cancelling: if an ally of the goblin threatens one of the flankers, that flanker keeps 2 (3 minus 1, then the limit).
 
 @@DIAGRAM:flanking1@@
 
@@ -306,15 +306,13 @@ A line that only touches the end of a wall isn't blocked.
 | Blocked corners | Cover | Effect on your Actions against it |
 |---|---|---|
 | 0 | None | None |
-| 1 | Low | 1 Bane |
-| 2 | Medium | 2 Banes |
-| 3 | High | 3 Banes |
+| 1 | Low | 1 Field Bane |
+| 2 | Medium | 2 Field Banes |
+| 3 | High | **Doomed** (and no Field Banes from the Cover) |
 | 4 | Total | No Line of Effect: you can't target them |
 
-The number of Banes is the number of blocked corners.
-
-- **Creatures in the way.** If another creature is on the line from the center of your square to the center of the target's space, the target has **Low cover** (1 Bane). Creatures never count as blocked corners, and cover doesn't add up: you take the highest cover that applies.
-- **Cover and the rest.** Cover applies to melee and ranged Actions alike. Its Banes add to other Banes, and to the penalties of Obscured and Hidden creatures.
+- **Creatures in the way.** If another creature is on the line from the center of your square to the center of the target's space, the target has **Low cover** (1 Field Bane). Creatures never count as blocked corners, and cover doesn't add up: you take the highest cover that applies.
+- **Cover and the rest.** Cover applies to melee and ranged Actions alike. Its Field Banes count with your other Field Banes. High cover gives no Field Banes, only Doomed; your other Field Banes still apply (Prone, Obscured). A target that is Hidden and behind High cover is still only Doomed once.
 
 @@DIAGRAM:cover@@
 
@@ -406,7 +404,7 @@ You perceive creatures through your **senses**. Each sense lets you perceive som
 | Perception | Your Actions against it | Its Actions against you |
 |---|---|---|
 | **Clear** | Normal. | Normal. |
-| **Obscured** | 1 Bane. | 1 Boon. |
+| **Obscured** | 1 Field Bane. | 1 Field Boon. |
 | **Hidden** | **Doomed**. | **[[Favored and Doomed Rolls\|Favored]]**. |
 | **Unsensed** | You can't target it. | **[[Favored and Doomed Rolls\|Favored]]**. |
 

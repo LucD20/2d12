@@ -63,6 +63,9 @@ Lucas writes a few cards at a time, in prose or in this format, saying on each w
 
 ## Writing cards with Lucas (2026-11-05: the rules are his, learned card by card)
 
+**Named Boons and Banes (2026-11-08):** the name is part of the text, never deduced: an Action gives a Field, Pressure or Support Boon or Bane only when it writes the name ("1 Pressure Bane"), and then it always is one. Give a name only when several sources must share a limit: a Bane an effect puts on enemies is **Pressure**, a Boon an effect gives several allies at once (an aura, a zone, "allies within N") is **Support**, one from position or sight is **Field**. An unnamed Boon or Bane is 1, rarely 2, never "1 for each X" (anything that scales gets a name, so it gets a limit). The rule: Chapter 1, Named Boons and Banes.
+
+
 Lucas makes cards a few at a time, with Claude, and writes each in his own way so that Claude learns how he wants them, automation included. This section holds that way: every correction he makes to a generated card becomes a rule here, with the card as the example. Read it before writing any card. Until the first cards: the format above, Lucas's automation rule (a card is automated with general settings he can see and edit on the item, never with code that looks for its name; what needs no automation stays text), concise text, and a Flavor line written by Claude.
 
 **How a card session goes:** Lucas writes two to four cards (the dice, the effect, what Foundry should do by itself and what stays by hand); Claude writes each as a card here, its Foundry item (the compendium build) and its worth line (the ruler), and gives a checklist; Lucas corrects; the corrections are written below as rules.

@@ -364,7 +364,7 @@
    "versions": [
     {
      "ap": 1,
-     "effects": "Allies within 5 squares gain 1 Boon on their next [Weapon] Action."
+     "effects": "Allies within 5 squares gain 1 Support Boon on their next [Weapon] Action."
     }
    ],
    "foundry": {

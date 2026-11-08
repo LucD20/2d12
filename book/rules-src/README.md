@@ -50,6 +50,8 @@ The first line says which Part it belongs to. Headings (`##`, `###`) are the tar
 - `[[Heading title]]` links to the heading with that title; `[[Heading title|label]]` shows another label. The match ignores case and punctuation, and a title that only starts the same also works.
 - If two headings have the same title, the link goes to the **first** one in the book. Use a different title for a heading you need to link to.
 - Inside a table, a pipe in a link must be written `\|`: `[[Areas\|**Area**]]`.
+- **Don't repeat a rule that is already in place (Lucas, 2026-11-08).** Say it once, where it belongs; elsewhere add "(see [[Chapter N]])" only when it helps. No reminders of why a rule doesn't apply, and no lists of exceptions that could limit future Actions.
+- **Named Boons and Banes (2026-11-08):** the name is part of the text, never deduced: an Action gives a Field, Pressure or Support Boon or Bane only when it writes the name ("1 Pressure Bane"), and then it always is one. Give a name only when several sources must share a limit: a Bane an effect puts on enemies is **Pressure**, a Boon an effect gives several allies at once (an aura, a zone, "allies within N") is **Support**, one from position or sight is **Field**. An unnamed Boon or Bane is 1, rarely 2, never "1 for each X" (anything that scales gets a name, so it gets a limit). The rule: Chapter 1, Named Boons and Banes.
 
 ## Boxes
 ```

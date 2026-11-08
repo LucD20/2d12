@@ -32,38 +32,55 @@ When a d12 shows a **12**, it **explodes**: count that die as **11**, then roll 
 
 If both d12s show the **same number** (before explosions), the result moves **up one tier**: Failure becomes Marginal Success, and Marginal Success becomes Full Success. Full Success can't go higher: it becomes a **Critical** instead (see below).
 
-A **Doomed** roll can't produce Doubles (see [[Favored and Doomed Rolls]]).
+A **Doomed** roll can't produce Doubles. On a **Favored** roll, any two of the three dice that match are Doubles (see [[Favored and Doomed Rolls]]).
 
 ## Critical
 
-A result is a **Critical** when you roll **Doubles on a result that is already Tier 3**, or when your total is **20 or more above the DC** (33 or more against DC 13). Doubles that raise a Tier 2 to Tier 3 are not a Critical.
+A result is a **Critical** when you roll **Doubles on a result that is already Tier 3**, when your total is **20 or more above the DC** (33 or more against DC 13), or when a **Favored** roll shows **the same number on all three dice**. Doubles that raise a Tier 2 to Tier 3 are not a Critical.
 
 A Critical matters for the few Actions that have a **Critical** row, written under Tier 3 and above the Effects. On a Critical, you get the Tier 3 result and the Critical effect as well. For any other Action, a Critical is simply a Tier 3. Once an encounter, a Critical on one of your Actions also raises your Escalation by 1 (see [[Escalation]]).
 
 ## Boons and Banes
 
-- Each **Boon** adds **1d3-1** to your total (0, 1 or 2).
-- Each **Bane** subtracts **1d3-1** from your total.
-- Boons and Banes **don't cancel each other**. Roll all of them.
+- Each **Boon** adds **1** to your total, and each **Bane** subtracts **1**.
+- Boons and Banes **cancel each other**: 3 Boons and 1 Bane add 2 to your total.
+
+### Named Boons and Banes
+
+Some Boons and Banes have a **name**: **Field**, **Pressure** or **Support**. The rule or Action that gives them writes the name ("1 Field Bane", "1 Support Boon"); a Boon or Bane written without a name has none. **Boons with the same name add up to 2, and so do Banes with the same name.** Any more of that name add nothing. Boons and Banes without a name always add up.
+
+| Name | What it is | For example |
+|---|---|---|
+| **Field** | Where you and the target are, and how well you see it | [[Cover]], [[Flanking]], [[Prone]], [[Senses\|Obscured]], a [[Long]] weapon against an adjacent creature, shooting into a melee |
+| **Pressure** | Banes an effect of another creature puts on you | A zone that hinders your Strikes, a blow that leaves you reeling |
+| **Support** | Boons an effect gives several allies at once | A war cry for every ally within 5 squares |
+
+Apply the limit to each side first, then cancel: 3 Field Banes and 1 Field Boon are 2 Banes and 1 Boon, so 1 Bane.
+
+### Five Boons or Banes
+
+After the limits and the cancelling, if you still have **5 or more Boons**, you don't add them: the roll is **Favored** instead. With **5 or more Banes**, the roll is **Doomed** instead. 8 Boons and 3 Banes leave 5 Boons: the roll is Favored. 6 Boons and 2 Banes leave 4 Boons: add 4.
 
 ## Favored and Doomed Rolls
 
-When a roll is **Favored**, you roll **3d12** and keep the **highest Tier possible**: usually that's the two highest die results, but sometimes it can be a Double (see below). When a roll is **Doomed**, you roll **3d12** and keep the **two lowest**. A roll that is both Favored and Doomed is a normal roll.
+When a roll is **Favored**, you roll **3d12** and keep the **two highest**. If **any two** of the three dice show the same number (before explosions), you have **Doubles**, even when one of them is not kept. If all three show the same number, the result is a **Critical**, whatever the total.
+
+When a roll is **Doomed**, you roll **3d12** and keep the **two lowest**. A Doomed roll can't produce Doubles.
+
+A roll that is both Favored and Doomed is a normal roll. A roll can't be Favored or Doomed twice.
 
 Roll three dice, then see if there are any explosions, calculated per die.
 
 > [!example]
-> You are Doomed and roll three different-colored dice: 10 (blue), 12 (green) and 12 (red). You reroll the two 12s and get 10 (green) and 5 (red): green is 11 + 10 = 21 and red is 11 + 5 = 16. You keep the two lowest, blue and red, so your result is **26** (10 + 16).
-
-For Favored rolls you calculate the same way, but if keeping a lower die would give you a higher Tier, the Favored creature chooses which dice to keep.
+> You are Doomed and roll three different-colored dice: 10 (blue), 12 (green) and 12 (red). You reroll the two 12s and get 10 (green) and 5 (red): green is 11 + 10 = 21 and red is 11 + 5 = 16. You keep the two lowest, blue and red, so your result is **26** (10 + 16), with no Doubles.
 
 > [!example]
-> You are Favored and roll 1 (blue), 1 (green) and 5 (red). The two highest are a 1 and the 5, but keeping the two 1s gives you Doubles, which can be the better result. You choose which two to keep.
+> You are Favored and roll 1 (blue), 1 (green) and 5 (red). You keep the two highest, a 1 and the 5 (**6**), and the two 1s are Doubles: the result moves up one tier.
 
 1. Roll 3d12.
 2. Each die explodes on its own (a 12 counts as 11 and is rolled again; further 12s explode again). After all explosions, each die has its own total.
-3. Keep the two highest totals (Favored) or the two lowest totals (Doomed). A Favored creature can instead keep lower totals if they give a higher Tier.
-4. Favored only: for Doubles, compare the faces the two kept dice showed before exploding. A Doomed roll can't produce Doubles.
+3. Keep the two highest totals (Favored) or the two lowest totals (Doomed).
+4. Favored only: if any two of the three dice showed the same face before exploding, you have Doubles; if all three did, a Critical.
 
 ## Rolls
 
@@ -114,7 +131,7 @@ An Action with the **Save** trait doesn't roll: each target rolls the Save the c
 
 The tiers are the target's result: **Tier 1 is the worst for them**. So everything that follows your result on an attack follows theirs here, reversed: a [Save, Weapon] Action deals its [Mod] on **Tier 1 and 2**, and its **Effects** row happens on **Tier 1 and 2**.
 
-A Save Action has no Critical, and it is not a Strike. Boons and Banes on your own rolls don't apply to it; effects on the target's Saves do. **Vulnerable** gives the target that many Banes on the Save, and **Cover** gives them Boons, counted from the center of the area's Point of Origin to the target.
+A Save Action has no Critical. Boons and Banes on your own rolls don't apply to it; effects on the target's Saves do. **Vulnerable** gives the target that many Banes on the Save. **Cover** gives it Field Boons (1 for Low cover, 2 for Medium), and **High cover makes its Save Favored**, counted from the center of the area's Point of Origin to the target.
 
 ## Roll Effects
 
@@ -186,13 +203,13 @@ For instance, if the Action deals 1d4 / 1d6 / 1d8, and two creatures get Tier 1 
 
 All damage is rolled per die. If the Tier 2 damage of a Save is [V] 1d8 Co + [R] 1d6 Ho, the creature causing the Save rolls both 1d8 and 1d6 and deals that damage to all creatures who got a Tier 2. If the creature causing the Save is Empowered or Enfeebled, the value is added to all the damage rolls.
 
-You roll every die that any of the targets needs, and each target uses only the ones that apply to it. If any target has Favored or Doomed, roll 3d12; for a target without it, use the first two d12 you rolled.
+You roll every die that any of the targets needs, and each target uses only the ones that apply to it. If any target has Favored or Doomed, roll 3d12: a Favored target keeps the two highest and has Doubles if any two of the three dice match, a Doomed target keeps the two lowest, and any other target uses the first two d12 you rolled.
 
 > [!example]
-> You attack Peter and Will with one Action. You have 1 Boon against Will but not against Peter. You roll 2d12 and 1 Boon: the Boon is only added to the total you compare with Will's DC.
+> You attack Peter and Will with one Action. You have 1 Boon against Will but not against Peter. You roll 2d12 once: Will's total gets +1 and Peter's doesn't.
 
 > [!example]
-> You attack one Favored target and one non-Favored target with the same Action. You roll 3d12 (Favored) and keep the two highest for the Favored target; for the non-Favored target, use the first two d12 in the order rolled. Each target checks its own kept dice for Doubles.
+> You attack one Favored target and one non-Favored target with the same Action. You roll 3d12. For the Favored target you keep the two highest, and any pair among the three dice is Doubles. For the other target you use the first two d12 in the order rolled, and only those two can be Doubles.
 
 ## Rounding
 
@@ -283,7 +300,7 @@ When a rule names a trait before the word "Action," it means an Action with that
 
 1. Roll **2d12** and add the relevant Modifier.
 2. Any **12** counts as 11 and is rolled again, adding the result.
-3. Add **Boons** (1d3-1 each) and subtract **Banes** (1d3-1 each).
+3. Add **1 for each Boon** and subtract **1 for each Bane**. Named ones (Field, Pressure, Support) count up to 2 of each name. If 5 or more Boons are left after cancelling, the roll is Favored instead; 5 or more Banes, Doomed.
 4. Compare to the **DC**: below it is a Failure, from the DC up to DC + 6 is a Marginal Success, and DC + 7 or more is a Full Success.
 5. If both d12s match, move the result **up one tier**.
-6. A **Favored** roll is 3d12, keeping the two highest. A **Doomed** roll is 3d12, keeping the two lowest.
+6. A **Favored** roll is 3d12: keep the two highest, and any pair among the three is Doubles. A **Doomed** roll is 3d12: keep the two lowest, with no Doubles.

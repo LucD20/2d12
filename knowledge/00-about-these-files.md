@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-08 from the repository at: da0da2b 2026-11-08 v0.0.296: target back at the bottom of the cards; Tier rows as one table
+Built by tools/knowledge.py on 2026-11-08 from the repository at: fbd63b9 2026-11-08 Merge main (pack ROLL-DIALOG, v0.0.296) into this branch
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,10 +14,10 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (64 KB)
-- MASTER-PLAN.md (16 KB)
-- open-design-items.md (78 KB)
-- rules-01-roll.md (21 KB)
+- HANDOFF.md (65 KB)
+- MASTER-PLAN.md (17 KB)
+- open-design-items.md (85 KB)
+- rules-01-roll.md (23 KB)
 - rules-02-turns.md (27 KB)
 - rules-03-movement.md (39 KB)
 - rules-04-health.md (13 KB)

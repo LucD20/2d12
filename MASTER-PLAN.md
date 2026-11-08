@@ -29,6 +29,8 @@ Finished: Phase 1 (Q, M1, M2, R, F), D0, T, E1, CH, E2, P1, LV, A1 (it was D1, t
 | B2 | Rules still to write: Hide; [HT] as notation (and the Archer's Rain of Arrows and Covering Fire); Slowed and Quickened (idea); Escalation while Unconscious; Resist and Weak; Minor enemies; falling with Forced Movement; Hooked, Grab, Pummel and Brawler | L | D4 for some |
 | B3 | The 9 "to be decided" boxes, the Bestiary's level 4 and up, the example NPCs' dice | S | after B2 |
 | B4 | A plain build for drafting and printing (no colors, no folding) | S | nothing |
+| BB | **DONE in the book (2026-11-08): the new Boons and Banes** (flat, Field / Pressure / Support up to 2, 5 = Favored / Doomed, Favored's any pair, High cover Doomed; `book/boons-banes.md`). **Foundry:** one version (foundry-backlog "B/B"), with or before AU; the ruler follows calc.mjs; the class cards card by card | S (Foundry M) | - |
+| MOD | **Weapon and Power Modifiers as class values** (decided 2026-11-08: track A2, WD stays 11 + Power Modifier, the Paladin +2 / +1 either way, the Archer Weapon +2 / Power +1): a draft for review, then the book, the classes, the Bestiary, Foundry's builder and the ruler; with it **the Attributes and Skills chapter** (D3) | M | - |
 | CS | **One source for every card** (proposed 2026-11-03: `book/card-source-proposal.md`; the proof: `book/card-source-proof/`): the ~85 cards in `book/cards/*.json`, the book card, the Foundry item and the ruler line generated from them, a test when one is missing | 3 × M | **DONE (v0.0.232)** |
 
 ### Foundry
