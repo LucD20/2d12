@@ -10,6 +10,7 @@ Not in this draft: Weapon and Power Modifiers as class values (decided, drafted 
 3. A name exists only where several sources share a limit. Engaged (2 Banes) and the At-will Bane are one rule each, so they have no name. **Range Banes have no name** (Lucas, round 2): they stack with Cover.
 4. Cover is 1 / 2 Field Banes, and **High cover makes the roll Doomed, with no Field Banes from the Cover**. Flanking gives up to 2.
 5. Favored: any two matching faces of the three dice are Doubles. Three of a kind is a Critical.
+6. **Five b/b:** 5 or more Boons left after cancelling make the roll Favored instead, 5 or more Banes Doomed (a flat cap of 4). Favored and Doomed from their own sources stay separate from b/b (Lucas, "for now").
 
 ---
 
@@ -53,6 +54,10 @@ No change in this draft. The Modifiers decision rewrites it, because "1 Boon on 
 > | **Support** | Boons an effect gives several allies at once | A war cry for every ally within 5 squares |
 >
 > Apply the limit to each side first, then cancel: 3 Field Banes and 1 Field Boon are 2 Banes and 1 Boon, so 1 Bane.
+>
+> ### Five Boons or Banes
+>
+> After the limits and the cancelling, if you still have **5 or more Boons**, you don't add them: the roll is **Favored** instead. With **5 or more Banes**, the roll is **Doomed** instead. 8 Boons and 3 Banes leave 5 Boons: the roll is Favored. 6 Boons and 2 Banes leave 4 Boons: add 4.
 
 ## 4. Chapter 1, Favored and Doomed Rolls (replaces the section, its examples and its procedure)
 
@@ -101,7 +106,7 @@ No change in this draft. The Modifiers decision rewrites it, because "1 Boon on 
 
 **Draft** (steps 3, 5 and 6):
 
-> 3. Add **1 for each Boon** and subtract **1 for each Bane**. Named ones (Field, Pressure, Support) count up to 2 of each name.
+> 3. Add **1 for each Boon** and subtract **1 for each Bane**. Named ones (Field, Pressure, Support) count up to 2 of each name. If 5 or more Boons are left after cancelling, the roll is Favored instead; 5 or more Banes, Doomed.
 > 5. If both d12s match, move the result **up one tier**.
 > 6. A **Favored** roll is 3d12: keep the two highest, and any pair among the three is Doubles. A **Doomed** roll is 3d12: keep the two lowest, with no Doubles.
 
@@ -200,7 +205,7 @@ Frightened, Sickened, Taunted and Vulnerable don't change: their Boons and Banes
 
 | Term | Draft |
 |---|---|
-| **Bane, Boon** | Subtract or add 1 to a roll; they cancel each other. Named ones count up to 2 of each name. |
+| **Bane, Boon** | Subtract or add 1 to a roll; they cancel each other. Named ones count up to 2 of each name. 5 or more left make the roll Favored (Boons) or Doomed (Banes) instead. |
 | **Field** (new) | A named Boon or Bane from position and sight: Cover, Flanking, Prone, Obscured, Long, shooting into a melee. Up to 2. |
 | **Pressure** (new) | A named Bane another creature's effect puts on you. Up to 2. |
 | **Support** (new) | A named Boon an effect gives several allies at once. Up to 2. |
@@ -232,6 +237,8 @@ Frightened, Sickened, Taunted and Vulnerable don't change: their Boons and Banes
 - Range Banes are unnamed (they stack with Cover); the "No name" list and the Zack example are cut (unnamed b/b stack, nothing more needs saying); "and it is not a Strike" removed from Save Actions; Engaged's "they have no name" sentence and Cover's "(2 at most)" removed (don't repeat a rule that is already in place; "see Chapter N" when needed).
 
 ## Assumptions I made
+
+- Five b/b: the roll's other Favored or Doomed still applies with the 5 (Favored from 5 Boons and Doomed from High cover make a normal roll; Favored twice is still Favored).
 
 - With High cover, the target's other Field b/b (Prone, Obscured) and the range Banes still apply.
 - The limit is applied to each side before cancelling (3 Field Banes + 1 Field Boon = 1 Bane).
