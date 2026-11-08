@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-08 from the repository at: 517a08b 2026-11-08 v0.0.295: Vs. bold and colored, target line at the top of every card
+Built by tools/knowledge.py on 2026-11-08 from the repository at: da0da2b 2026-11-08 v0.0.296: target back at the bottom of the cards; Tier rows as one table
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (63 KB)
+- HANDOFF.md (64 KB)
 - MASTER-PLAN.md (16 KB)
 - open-design-items.md (78 KB)
 - rules-01-roll.md (21 KB)
