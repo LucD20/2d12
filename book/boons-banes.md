@@ -44,9 +44,9 @@ No change in this draft. The Modifiers decision rewrites it, because "1 Boon on 
 >
 > ### Named Boons and Banes
 >
-> Some Boons and Banes have a **name**: **Field**, **Pressure** or **Support**. **Boons with the same name add up to 2, and so do Banes with the same name.** Any more of that name add nothing. Boons and Banes without a name always add up.
+> Some Boons and Banes have a **name**: **Field**, **Pressure** or **Support**. The rule or Action that gives them writes the name ("1 Field Bane", "1 Support Boon"); a Boon or Bane written without a name has none. **Boons with the same name add up to 2, and so do Banes with the same name.** Any more of that name add nothing. Boons and Banes without a name always add up.
 >
-> | Name | Where it comes from | For example |
+> | Name | What it is | For example |
 > |---|---|---|
 > | **Field** | Where you and the target are, and how well you see it | [[Cover]], [[Flanking]], [[Prone]], [[Senses\|Obscured]], a [[Long]] weapon against an adjacent creature, shooting into a melee |
 > | **Pressure** | Banes an effect of another creature puts on you | A zone that hinders your Strikes, a blow that leaves you reeling |
@@ -213,6 +213,7 @@ Frightened, Sickened, Taunted and Vulnerable don't change: their Boons and Banes
 
 ## 21. A writing rule for cards (`book/cards/README.md`, `rules-src/README.md`)
 
+> - **The name is part of the text, never deduced** (Lucas, 2026-11-08): an Action gives a Field, Pressure or Support Boon or Bane only when it writes that name, and it always is one.
 > - Give a Boon or Bane a **name** only when several sources must share a limit. A Bane an effect puts on enemies is **Pressure**; a Boon an effect gives several allies at once (an aura, a zone, "allies within N") is **Support**; one from position or sight is **Field**.
 > - An unnamed Boon or Bane is 1, rarely 2, never "1 for each X": anything that scales gets a name, so it gets a limit.
 
