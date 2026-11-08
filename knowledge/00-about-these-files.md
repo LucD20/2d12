@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-07 from the repository at: d59857d 2026-11-07 Merge remote-tracking branch 'origin/main' into claude/cool-cannon-13fi8t
+Built by tools/knowledge.py on 2026-11-08 from the repository at: 3be2261 2026-11-07 Project knowledge: rebuilt after merging the chapter reviews and design notes
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (58 KB)
+- HANDOFF.md (59 KB)
 - MASTER-PLAN.md (15 KB)
 - open-design-items.md (77 KB)
 - rules-01-roll.md (21 KB)

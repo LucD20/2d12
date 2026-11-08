@@ -19,7 +19,12 @@ export function isEscPassive(it, cls = null) {
   return !!it.system?.escalationPassive || /escalation/i.test(String(it.system?.category ?? "")) || (cls?.system?.escPassives ?? []).includes(it.getFlag?.(F, "sourceUuid"));
 }
 /** The Escalation a passive needs: its settings' lowest minimum, or "Escalation is N or more" in its text (Hallowed Stance), or 1. At most 3. */
-export function passiveThreshold(it) {
+export function passiveThreshold(it, cls = null) {
+  // v0.0.289 (PACK SHEET, Lucas: Searing Blows and Reckoning read "always on"): the class section it was picked in says its rung ("Escalation 2 Passive")
+  const k = cls ?? it?.parent?.itemTypes?.class?.[0] ?? null, secId = it?.getFlag?.(F, "classSection");
+  const sec = secId ? (k?.system?.levels ?? []).flatMap(l => l.sections ?? []).find(x => x.id === secId) : null;
+  const rung = Number(String(sec?.title ?? "").match(/^Escalation\s+(\d)/i)?.[1]) || 0;
+  if (rung) return Math.min(3, rung);
   const mins = (it?.system?.settings ?? []).map(x => Math.trunc(Number(x.minEscalation)) || 0).filter(n => n > 0);
   if (mins.length) return Math.min(3, ...mins);
   const m = String(it?.system?.description ?? "").match(/Escalation is (\d) or more/i);
@@ -64,7 +69,7 @@ export function escalationModel(actor, { actionRow, isFaded, open = null, openPa
   const down = !!actor.statuses?.has?.("unconscious");
   const rungs = [3, 2, 1].map(n => ({
     n, lit: now >= n,
-    passives: passives.filter(p => passiveThreshold(p) === n).map(p => {
+    passives: passives.filter(p => passiveThreshold(p, cls) === n).map(p => {
       const state = passiveState(actor, p, now);
       // v0.0.215 (Lucas, playtest 2): clicking a Passive shows its description under it (desc), instead of opening the Feature window.
       return { id: p.id, name: p.name, state, tag: PASSIVE_TAG[state], tip: `${p.name} · Escalation ${n}+: ${String(p.system?.hover || p.system?.description || "").replace(/<[^>]+>/g, "").trim()}`,

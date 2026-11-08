@@ -1,11 +1,11 @@
-weapon dropped [Dropped] / Worn / 1H / 2H
-weapon worn    Dropped / [Worn] / 1H / 2H
-weapon 1h      Dropped / Worn / [1H] / 2H
-weapon 2h      Dropped / Worn / 1H / [2H]
+weapon dropped [Dropped] / On you / 1H / 2H
+weapon worn    Dropped / [On you] / 1H / 2H
+weapon 1h      Dropped / On you / [1H] / 2H
+weapon 2h      Dropped / On you / 1H / [2H]
 armor  dropped [Dropped] / Carried / Worn
 armor  carried Dropped / [Carried] / Worn
 armor  worn    Dropped / Carried / [Worn]
-tips: Dropped=On the ground | Worn=On you, ready to draw | 1H=In one hand | 2H=In both hands | only Dropped is red: dropped
+tips: Dropped=On the ground | On you=On you, ready to draw | 1H=In one hand | 2H=In both hands | only Dropped is red: dropped
 slot warnings are an icon with a hover: true | no warning lines: true
 rows: buttons, no dropdown: true | Fists not listed: true | clicking the current one does nothing: true
 right-click menus fixed: 4 | any not fixed: false

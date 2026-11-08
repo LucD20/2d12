@@ -57,18 +57,19 @@ export async function sleepEffects(actor) {
 }
 
 /** The Sleep option of the Recovery button. At most once every 16 hours (anyone can still confirm). */
-export async function completeSleep(actor, { force = false } = {}) {
+export async function completeSleep(actor, { force = false, ask = false } = {}) {
   const last = actor.getFlag(F, "lastSleep");
+  // v0.0.289 (PACK SHEET): the confirmations in the system's window (pickwindow.mjs)
+  const { pickConfirm } = await import("./pickwindow.mjs");
   if (!force && last != null && now() - last < 16 * HOUR) {
-    const ok = await foundry.applications.api.DialogV2.confirm({
-      window: { title: `Sleep: ${actor.name}` },
-      content: `<p>${esc(actor.name)}'s last Sleep ended ${hoursText(now() - last)} ago. A Sleep can be completed at most once every 16 hours.</p><p>Complete a Sleep anyway?</p>`,
-      rejectClose: false
-    });
+    const ok = await pickConfirm({ title: `Sleep: ${actor.name}`, name: "Sleep anyway?", sub: "once every 16 hours", icon: "fa-bed", confirm: "Sleep",
+      text: `${esc(actor.name)}'s last Sleep ended ${hoursText(now() - last)} ago. A Sleep can be completed at most once every 16 hours. Complete a Sleep anyway?` });
     if (!ok) return false;
-  }
+  } else if (ask && !(await pickConfirm({ title: `Sleep: ${actor.name}`, name: "Sleep", sub: "8 hours", icon: "fa-bed", confirm: "Sleep",
+    text: "8 hours of sleep or quiet watch: your Daily Actions return and Exhausted goes down by 2. Complete a Sleep?" }))) return false;
   const { before, after } = await sleepEffects(actor);
-  await post(actor, `<b>${esc(actor.name)}</b> completes a Sleep: Daily Actions are renewed${before ? `, and Exhausted goes from ${before} to ${after}` : ""}.`);
+  const { sysCard } = await import("./sysmsg.mjs");
+  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysCard({ title: "Sleep", lead: `${esc(actor.name)} completes a Sleep`, text: `Daily Actions are renewed${before ? `, and Exhausted goes from ${before} to ${after}` : ""}.` }) });
   return true;
 }
 

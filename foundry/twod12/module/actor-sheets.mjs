@@ -6,7 +6,8 @@ import { escalationModel, grantBadges } from "./escblock.mjs";
 export function basicGroupsOf(rows) {
   const used = new Set(), out = [];
   for (const g of TWOD12.basicGroups) {
-    const list = g.names.map(n => rows.find(r => r.name === n)).filter(Boolean);
+    // v0.0.289: the character sheet shows Opportunity Attack with the Reactions; the NPC sheet keeps it with the Attack group
+    const list = [...g.names, ...(g.key === "attack" ? ["Opportunity Attack"] : [])].map(n => rows.find(r => r.name === n)).filter(Boolean);
     list.forEach(r => used.add(r));
     if (list.length) out.push({ key: g.key, label: g.label, rows: list });
   }
@@ -47,11 +48,14 @@ import { passiveSources } from "./passives.mjs";
 import { weaponsFor, weaponCandidates, heldFirst, fistsOf, hasProp } from "./fists.mjs";
 import { effectOff } from "./escalation.mjs";
 import { npcBuilderContext, ratingUpdate, cvTip } from "./npcbuilder.mjs";
+import { pcModel, handMenu, applyHandPick } from "./pcsheet.mjs";   // v0.0.289 (PACK SHEET): the character sheet's new layout
+import { pickConfirm, pickKeepRemove } from "./pickwindow.mjs";
+import { sysLine } from "./sysmsg.mjs";
 // What keeps its scroll position when the sheet is drawn again (v0.0.165): the window, the side panel, the main pane and each tab.
 // (v0.0.164's "scrollable" parts were not enough: the tab is shown after Foundry puts the position back, and a hidden element can't be scrolled.)
-const SCROLL_SEL = ".window-content, .np, .mn, .tab[data-tab]";
-const scrollKey = el => (el.matches(".tab[data-tab]") ? `tab:${el.dataset.tab}` : el.classList.contains("np") ? "np" : el.classList.contains("mn") ? "mn" : "window");
-const { HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
+const SCROLL_SEL = ".window-content, .np, .mn, .ps-scroll, .tab[data-tab]";   // v0.0.289: .ps-scroll, the character sheet's tab pane
+const scrollKey = el => (el.matches(".tab[data-tab]") ? `tab:${el.dataset.tab}` : el.classList.contains("np") ? "np" : el.classList.contains("ps-scroll") ? `ps:${el.querySelector(".tab.active")?.dataset.tab ?? ""}` : el.classList.contains("mn") ? "mn" : "window");
+const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
 
 
@@ -65,7 +69,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   static DEFAULT_OPTIONS = {
     classes: ["twod12", "twod12-actor"],
-    position: { width: 800, height: 820 },
+    position: { width: 900, height: 1100 },   // v0.0.289 (PACK SHEET): Lucas's design size
     window: { resizable: true },
     form: { submitOnChange: true },
     actions: {
@@ -81,10 +85,12 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       openSpecies: CharacterSheet.openSpecies,   // v0.0.244 (pack R): the Species window (the Health line's high side is chosen in the class window at level 1, v0.0.245: no swap after that)
       toggleCard: CharacterSheet.toggleCard, reloadFor: CharacterSheet.reloadFor, toggleBasic: CharacterSheet.toggleBasic,
       toggleFeat: CharacterSheet.toggleFeat, foldAll: CharacterSheet.foldAll, newGear: CharacterSheet.newGear, reloadWeapon: CharacterSheet.reloadWeapon,
-      setWhere: CharacterSheet.setWhere, toggleItemFold: CharacterSheet.toggleItemFold
+      setWhere: CharacterSheet.setWhere, toggleItemFold: CharacterSheet.toggleItemFold,
+      // v0.0.289 (PACK SHEET): Down mode's buttons, the Upkeep tab's Recovery, the Build tab's Review and the class card's Choices
+      downChoice: CharacterSheet.downChoice, downCheck: CharacterSheet.downCheck, recover: CharacterSheet.recover, reviewSlots: CharacterSheet.reviewSlots, openClass: CharacterSheet.openClass
     }
   };
-  static PARTS = { main: { template: "systems/twod12/templates/actor-sheet.hbs" } };
+  static PARTS = { main: { template: "systems/twod12/templates/actor-sheet-pc.hbs" } };   // v0.0.289 (PACK SHEET); the NPC sheet keeps actor-sheet.hbs
 
   async _prepareContext(options) {
     const ctx = await super._prepareContext(options);
@@ -124,7 +130,8 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         missingBasic: missingBasic(a),
         ...this._talentSlots(),
         ...(await this._sheetModel())
-      }) && Object.assign(ctx, { tf: this._tfModel(ctx) }) && Object.assign(ctx, { feat: await this._featModel(ctx) })
+      }) && Object.assign(ctx, { tf: this._tfModel(ctx) }) && Object.assign(ctx, { feat: a.type === "character" ? null : await this._featModel(ctx) })
+      && Object.assign(ctx, { pc: (this._pcLast = a.type === "character" ? await pcModel(this, ctx) : null) })
     );
   }
 
@@ -182,7 +189,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const escCard = async it => {
       const cost = Number(it.system?.escalation) || 0, min = Math.min(...(it.system?.settings ?? []).map(x => Number(x.minEscalation) || 0).filter(n => n > 0), 99);
       const at = it.type === "action" ? cost : (min < 99 ? min : 0);
-      const detail = it.type === "action" ? `costs ${cost} Escalation` : (at ? `works at Escalation ${at}+` : "always on");
+      const detail = it.type === "action" ? `needs Escalation ${cost}` : (at ? `works at Escalation ${at}+` : "always on");   // v0.0.289: nothing spends Escalation
       const c = await card(it, { kind: it.type === "action" ? "Active" : "Passive", detail, rows: it.type === "action" ? [it, ...kidsOf(it)] : undefined });
       return { ...c, kcls: `${c.kcls} esc${at && escNow >= at ? " esc-on" : ""}` };
     };
@@ -566,7 +573,9 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   /** One row of the Actions table (also the rows under a Feature): cost, range, Frequency, faded and why, Unloaded. */
   _actionRow(i) {
     const a = this.actor, it = i.system, f = isFaded(a, i), out = unloadedWeapon(a, i);
-    const weapon = a.items.get(i.getFlag("twod12", "weaponId")) ?? (it.traits?.has?.("weapon") ? (weaponsFor(a, i)[0] ?? null) : null);
+    // v0.0.289 (PACK SHEET): the Fists' Distance is the Fists' own Range (it said "Weapon")
+    const fistsRow = it.weaponUse === "fists" || i.getFlag("twod12", "basic") === "fists";
+    const weapon = a.items.get(i.getFlag("twod12", "weaponId")) ?? (fistsRow ? fistsOf(a) : null) ?? (it.traits?.has?.("weapon") ? (weaponsFor(a, i)[0] ?? null) : null);
     const aps = (it.versions ?? []).map(v => Number(v.ap) || 0);
     // On the row only Unloaded; what effects change shows on the card when the row is opened (v0.0.132).
     const chips = out ? [{ text: "Unloaded", cls: "down", why: `${out.name} must be reloaded first (Reload, 1 AP)` }] : [];
@@ -586,12 +595,13 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const hands = !isW ? null : linkedId ? handButtonsFor(ordered, linkedId) : fistsUse ? freeHandButtons(ordered, fistsOf(a)?.id) : picks ? useButtons(ordered, new Set(picks.map(w => w.id))) : null;
     const useTip = picks?.length === 1 ? `Use ${i.name} with ${picks[0].name}${(h => (h ? ` (${HAND_LABEL[h].toLowerCase()})` : ""))(handOf(ordered, picks[0].id))}` : `Use ${i.name}`;
     const grant = g ? { tip: `Granted by ${g.effect.name.replace(/\s*\(.*\)\s*$/, "")}: ${g.grant.left} use${g.grant.left === 1 ? "" : "s"} left, ${g.grant.ap ? `${g.grant.ap} AP` : "free"}. Click to use it; Shift-click for a normal use.` } : null;
+    const solo = !hands && picks?.length === 1 ? { id: picks[0].id, name: picks[0].name, hand: handOf(ordered, picks[0].id) } : null;   // v0.0.289: one weapon that fits
     return {
-      grant, hands, useTip,
+      grant, hands, useTip, solo, isWeapon: isW, weapon,
       id: i.id, name: i.name, costLabel: costText(i), cost: costGroup(i), fq: cardColorFor(it), freq: effectiveFrequency(it), freqText: frequencyText(i, (a.getFlag("twod12", "dailyUsed") ?? []).includes(i.id)),
       // v0.0.168: a number reads as squares ("5 sq."); words (Weapon, Reach, Self) and bands (10/20/40) stay
       range: ((r => (/^\d+$/.test(r) ? `${r} sq.` : r))((areaText(it) || distanceText(it, weapon) || "\u2014"))),
-      escText: Number(it.escalation) > 0 ? `${Number(it.escalation)} Esc.` : "", chips,
+      escText: Number(it.escalation) > 0 ? `Esc. ${Number(it.escalation)}+` : "", chips,   // v0.0.289: a requirement, never a cost
       faded: f.faded || !!out, fadedWhy: out ? `Unloaded: ${out.name} must be reloaded first` : (f.faded ? f.why : ""), unloaded: !!out,
       noAp, noApWhy: noAp ? `Not enough AP: it costs ${minCost}${it.reaction ? "R" : ""}, ${apNow} left${it.reaction ? " (the Reaction AP and the kept AP)" : ""}` : "", strikeCap, strikeWhy: strikeCap ? "3 Strikes made this turn: no more Strikes until the next turn" : "",
       open: !!this._open?.has(i.id), minAp: aps.length ? Math.min(...aps) : 0, source: this._groupOf(i),
@@ -686,6 +696,9 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     }));
     this.element.querySelector("select.sortsel")?.addEventListener("change", async ev => { await game.user.setFlag("twod12", "sheetSort", ev.target.value); this.render(); });
     this._bindActionTable();
+    this._bindHandTiles();
+    // v0.0.289: the Action names are keyboard links (Enter or Space opens the card)
+    this.element.querySelectorAll(".ps-nm[tabindex], .tabbtn[tabindex]").forEach(el => el.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); el.click(); } }));
     this.element.querySelectorAll("[data-opt]").forEach(el => {
       el.addEventListener("change", () => { this.rollOpts[el.dataset.opt] = Number(el.value) || 0; });
     });
@@ -721,8 +734,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       t.addEventListener("contextmenu", ev => change(ev, t.dataset.pool, -1));
     });
     // v0.0.183: the Guard button works like the health view: click +1, right-click -1, Ctrl 5 at a time.
-    const gb = this.element.querySelector(".np-guardbtn");
-    if (gb) for (const [evName, sign] of [["click", 1], ["contextmenu", -1]]) gb.addEventListener(evName, async ev => {
+    for (const gb of this.element.querySelectorAll(".np-guardbtn")) for (const [evName, sign] of [["click", 1], ["contextmenu", -1]]) gb.addEventListener(evName, async ev => {
       ev.preventDefault();
       if (!this.isEditable) return;
       await this.actor.update({ "system.guard": Math.max(0, (Number(this.actor.system.guard) || 0) + (ev.ctrlKey || ev.metaKey ? 5 : 1) * sign) });
@@ -825,7 +837,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   /** Dragging a row onto another row of the same list puts it there (Custom order, or the Favorites order). */
   _bindReorder() {
-    this.element.querySelectorAll(".fcard[data-item-id], .lrow[data-item-id], .icard[data-item-id], .grow[data-item-id], .ar[data-item-id], .arow[data-item-id], .bbtn[data-item-id], .wcard[data-item-id], details.tfitem[data-item-id]:not([data-item-id=\"\"])").forEach(el => el.setAttribute("draggable", "true"));
+    this.element.querySelectorAll(".fcard[data-item-id], .lrow[data-item-id], .icard[data-item-id], .grow[data-item-id], .ar[data-item-id], .arow[data-item-id], .bbtn[data-item-id], .wcard[data-item-id], .ps-brow[data-item-id]:not([data-item-id=\"\"]), .ps-erow[data-effect-id], details.tfitem[data-item-id]:not([data-item-id=\"\"])").forEach(el => el.setAttribute("draggable", "true"));
     this.element.querySelectorAll(".alist, .atable[data-list=\"actions\"], .atable[data-list=\"favorites\"]").forEach(list => {
       list.addEventListener("dragover", ev => { if (ev.target.closest(".arow, .ar")) ev.preventDefault(); });
       list.addEventListener("drop", async ev => {
@@ -890,6 +902,34 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     }
     const extras = talents.filter(t => !used.has(t.id)).map(row).sort((x, y) => x.name.localeCompare(y.name));
     return { talentSlots: slots, talents: extras };
+  }
+
+  /** v0.0.289 (PACK SHEET, the decided Hands widget): a click on a hand tile opens a small menu (Regrip, Release, Interact; the cost on each line). */
+  _bindHandTiles() {
+    const root = this.element;
+    root.querySelectorAll("[data-hand-tile]").forEach(tile => tile.addEventListener("click", ev => {
+      ev.preventDefault(); ev.stopPropagation();
+      root.querySelector(".ps-menu")?.remove();
+      if (!this.isEditable) return;
+      const inCombat = !!combatantOf(this.actor), items = handMenu(this._weaponsInOrder(), tile.dataset.handTile, inCombat);
+      const menu = document.createElement("div");
+      menu.className = "ps-menu"; menu.setAttribute("role", "menu");
+      menu.innerHTML = items.map(o => `<button type="button" role="menuitem" data-k="${esc(o.key)}"${o.key ? "" : " disabled"}><span>${esc(o.label)}</span><b>${esc(o.cost)}</b></button>`).join("");
+      const box = root.querySelector(".twod12.sheet") ?? root, r = tile.getBoundingClientRect(), b = box.getBoundingClientRect();
+      Object.assign(menu.style, { top: `${r.bottom - b.top + 4}px`, left: `${Math.max(4, Math.min(r.left - b.left, b.width - 280))}px` });
+      box.appendChild(menu);
+      menu.querySelector("button:not([disabled])")?.focus();
+      const close = () => { menu.remove(); document.removeEventListener("pointerdown", away, true); };
+      const away = e => { if (!menu.contains(e.target)) close(); };
+      document.addEventListener("pointerdown", away, true);
+      menu.addEventListener("keydown", e => { if (e.key === "Escape") { close(); tile.focus(); } });
+      menu.addEventListener("click", async e => {
+        const k = e.target.closest("button[data-k]")?.dataset.k;
+        if (!k) return;
+        close();
+        await applyHandPick(this.actor, this._weaponsInOrder(), k, { spendAP, applyRegrip, applyRelease, sysLine });
+      });
+    }));
   }
 
   _item(target) { return this.actor.items.get(target.closest("[data-item-id]")?.dataset.itemId); }
@@ -1054,25 +1094,25 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static async hpEdit(event, target) {
     const pool = target.dataset.pool, d = this.actor.system.damage;
     const L = pool === "body" ? "bodyLethal" : "mindLethal", N = pool === "body" ? "bodyNonlethal" : "mindNonlethal";
-    const res = await DialogV2.prompt({
-      window: { title: `${pool === "body" ? "Vigor" : "Resolve"} damage: ${this.actor.name}` }, position: { width: 300 },
-      content: `<div class="twod12"><div class="form-group"><label>Lethal</label><input type="number" min="0" name="l" value="${d[L]}" autofocus></div><div class="form-group"><label>Nonlethal</label><input type="number" min="0" name="n" value="${d[N]}"></div></div>`,
-      ok: { label: "Save", callback: (ev, btn) => ({ l: Number(btn.form.elements.l.value) || 0, n: Number(btn.form.elements.n.value) || 0 }) }, rejectClose: false
-    });
+    // v0.0.289 (PACK SHEET): the system's window (no DialogV2)
+    const { pickWith } = await import("./pickwindow.mjs"), label = pool === "body" ? "Vigor" : "Resolve", v = { l: d[L], n: d[N] };
+    const res = await pickWith({ title: `${label} damage: ${this.actor.name}`, input: (f, val) => { v[f] = Math.max(0, Math.trunc(Number(val)) || 0); }, result: () => v,
+      model: () => ({ name: `${label} damage`, sub: this.actor.name, icon: "fa-heart-crack", confirm: "Save",
+        sections: [{ title: "", html: `<div class="pw-nums"><label>Lethal <input type="number" min="0" data-field="l" value="${v.l}"></label><label>Nonlethal <input type="number" min="0" data-field="n" value="${v.n}"></label></div>` }] }) });
     if (res) await this.actor.update({ [`system.damage.${L}`]: Math.max(0, res.l), [`system.damage.${N}`]: Math.max(0, res.n) });
   }
   static switchTab(event, target) { this._activeTab = target.dataset.tabTarget; applyTab(this); }
   static async rollAttr(event, target) {
     if (event?.target?.closest?.("input")) return;
-    const key = target.dataset.key;
+    const key = target.dataset.key, kind = event?.shiftKey ? "Save" : "Check";   // v0.0.289 (PACK SHEET): Shift-click rolls the Save
     const mod = this.actor.system.attributes[key];
     const doomed = unconsciousDoom(this.actor, key);
-    const data = await askRoll(this.actor, { title: `${TWOD12.attributes[key]} Check`, attrKey: key, defaults: { doomed, doomedWhy: `${doomStatus(this.actor) || "Unconscious"}: all your Rolls are Doomed`, doomedLabel: `${doomStatus(this.actor) || "Unconscious"} (Doomed)` } });
+    const data = await askRoll(this.actor, { title: `${TWOD12.attributes[key]} ${kind}`, attrKey: key, defaults: { doomed, doomedWhy: `${doomStatus(this.actor) || "Unconscious"}: all your Rolls are Doomed`, doomedLabel: `${doomStatus(this.actor) || "Unconscious"} (Doomed)` } });
     if (!data) return;
     const fxm = resolveModifiers(this.actor, data.fx);
     const manB = Number(data.boons) || 0, manN = Number(data.banes) || 0;
     await rollCheck({
-      actor: this.actor, label: `${TWOD12.attributes[key]} Check`, mod, chips: [`${TWOD12.attributes[key]} ${sgn(mod)}`],
+      actor: this.actor, label: `${TWOD12.attributes[key]} ${kind}`, mod, chips: [`${TWOD12.attributes[key]} ${sgn(mod)}`],
       dc: Number(data.dc) || 13, boons: fxm.boons + manB, banes: fxm.banes + manN, adj: Number(data.mod) || 0, adjLabel: adjLabelOf(data),
       sources: fxm.sources, manualBoons: manB, manualBanes: manN, favored: data.favored === "on", doomed: data.doomed === "on"
     });
@@ -1116,7 +1156,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         { name: "Edit", icon: '<i class="fa-solid fa-pen"></i>', callback: li => item(li)?.sheet.render(true) },
         { name: "Send to chat", icon: '<i class="fa-solid fa-comment"></i>', callback: li => { const i = item(li); if (i) sendItemToChat(i, this.actor); } },
         { name: "Drop", icon: '<i class="fa-solid fa-arrow-down"></i>', condition: li => !item(li)?.system?.dropped && !item(li)?.system?.traits?.has?.("barehanded"), callback: li => this._moveItem(item(li), "dropped") },
-        { name: "Remove", icon: '<i class="fa-solid fa-trash"></i>', callback: async li => { const i = item(li); if (i && await DialogV2.confirm({ window: { title: `Remove ${i.name}` }, content: `<p>Remove <b>${esc(i.name)}</b> from ${esc(this.actor.name)}?</p>`, rejectClose: false })) await i.delete(); } }
+        { name: "Remove", icon: '<i class="fa-solid fa-trash"></i>', callback: async li => { const i = item(li); if (i && await pickConfirm({ title: `Remove ${i.name}`, name: `Remove ${i.name}`, icon: "fa-trash", confirm: "Remove", text: `Remove <b>${esc(i.name)}</b> from ${esc(this.actor.name)}?` })) await i.delete(); } }
       ], { jQuery: false, fixed: true });
       new CM(this.element, ".ar[data-item-id]", [
         { name: "Favorite", icon: '<i class="fa-regular fa-star"></i>', condition: li => !isFav(li), callback: li => CharacterSheet.toggleFav.call(this, null, li) },
@@ -1124,7 +1164,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         { name: "Send to chat", icon: '<i class="fa-solid fa-comment"></i>', callback: li => { const i = item(li); if (i) sendItemToChat(i, this.actor); } },
         { name: "Edit", icon: '<i class="fa-solid fa-pen"></i>', callback: li => item(li)?.sheet.render(true) },
         // v0.0.224 (Lucas: no way to delete a custom Action): Remove for every Action, with a confirmation (it was offered only on Basic Actions).
-        { name: "Remove", icon: '<i class="fa-solid fa-trash"></i>', callback: async li => { const i = item(li); if (i && await DialogV2.confirm({ window: { title: `Remove ${i.name}` }, content: `<p>Remove <b>${esc(i.name)}</b> from ${esc(this.actor.name)}?</p>${i.getFlag("twod12", "basic") ? "<p>A Basic Action comes back with Update Basic Actions.</p>" : ""}`, rejectClose: false })) await i.delete(); } }
+        { name: "Remove", icon: '<i class="fa-solid fa-trash"></i>', callback: async li => { const i = item(li); if (i && await pickConfirm({ title: `Remove ${i.name}`, name: `Remove ${i.name}`, icon: "fa-trash", confirm: "Remove", text: `Remove <b>${esc(i.name)}</b> from ${esc(this.actor.name)}?${i.getFlag("twod12", "basic") ? " A Basic Action comes back with Update Basic Actions." : ""}` })) await i.delete(); } }
       ], { jQuery: false, fixed: true });
       new CM(this.element, ".arow", [
         { name: "Favorite", icon: '<i class="fa-regular fa-star"></i>', condition: li => !isFav(li), callback: li => CharacterSheet.toggleFav.call(this, null, li) },
@@ -1209,13 +1249,14 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         ? releaseOptions({ itemTypes: { weapon: others } }).filter(o => o.action.startsWith("drop:")).map(o => ({ action: `rel|${o.action}`, label: `${o.label} (Release, 0 AP), then Regrip (1 AP)`, icon: "fa-solid fa-hands" }))
         : [{ action: "regrip", label: `Regrip (1 AP): ${w.name} in both hands`, icon: "fa-solid fa-hands" }];
       buttons.push({ action: "anyway", label: "Use it in one hand (3 Banes)", icon: "fa-solid fa-hand" }, { action: "cancel", label: "Cancel", icon: "fa-solid fa-xmark" });
-      const pick = await DialogV2.wait({ window: { title: `${w.name}: one hand` }, content: `<p><b>${esc(w.name)}</b> is Two-handed and held in one hand: 3 Banes on [Strike, Weapon] Actions.</p>`, buttons, rejectClose: false });
+      const { pickOne } = await import("./pickwindow.mjs");   // v0.0.289: the system's window (no DialogV2)
+      const pick = await pickOne({ title: `${w.name}: one hand`, name: w.name, sub: "one hand", icon: "fa-hand", text: `${w.name} is Two-handed and held in one hand: 3 Banes on [Strike, Weapon] Actions.`, options: buttons.filter(b => b.action !== "cancel").map(b => ({ k: b.action, l: b.label })), confirm: "Go" });
       if (!pick || pick === "cancel") return;
       if (pick !== "anyway") {
         if (pick.startsWith("rel|")) await applyRelease(this.actor, pick.slice(4));
         if (!(await spendAP(this.actor, 1, "Regrip"))) return;
         const text = await applyRegrip(this.actor, this._weaponsInOrder(), `two:${w.id}`);
-        if (text) await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: this.actor }), content: `<div class="twod12 chat note"><i class="fa-solid fa-hands"></i> <b>Regrip</b> (1 AP): ${esc(this.actor.name)} ${text}.</div>` });
+        if (text) await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: this.actor }), content: sysLine("fa-hands", `<b>Regrip</b> (1 AP): ${esc(this.actor.name)} ${text}.`) });
       }
     }
     await useAction(this.actor, this._item(target), { weaponId: target.dataset.weaponId, ...(event?.shiftKey ? { noGrant: true } : {}) });
@@ -1225,7 +1266,8 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const item = this._item(target), fistsUse = item?.system?.weaponUse === "fists" || item?.getFlag?.("twod12", "basic") === "fists";
     if (!fistsUse) return ui.notifications.info(target.dataset.tooltip || "That hand's weapon can't be used for this Action.");
     const buttons = [...releaseOptions(this.actor).map(o => ({ ...o, label: `${o.label} (Release, 0 AP)` })), { action: "cancel", label: "Cancel", icon: "fa-solid fa-xmark" }];
-    const pick = await DialogV2.wait({ window: { title: `${item.name}: no free hand` }, content: `<p><b>${esc(this.actor.name)}</b> needs a free hand for <b>${esc(item.name)}</b>. Release one first?</p>`, buttons, rejectClose: false });
+    const { pickOne } = await import("./pickwindow.mjs");   // v0.0.289: the system's window (no DialogV2)
+    const pick = await pickOne({ title: `${item.name}: no free hand`, name: item.name, sub: "no free hand", icon: "fa-hand", text: `${this.actor.name} needs a free hand for ${item.name}. Release one first (0 AP)?`, options: buttons.filter(b => b.action !== "cancel").map(b => ({ k: b.action, l: b.label })), confirm: "Release" });
     if (!pick || pick === "cancel") return;
     await applyRelease(this.actor, pick);
   }
@@ -1237,11 +1279,44 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     await this.actor.updateEmbeddedDocuments("Item", slots.map(s => ({ _id: s.id, "system.hand": s.hand === "main" ? "off" : "main" })));
   }   // v0.0.182: Shift: a normal use, even with a granted use waiting
   static openItem(event, target) { this._item(target)?.sheet.render(true); }
+
+  /** v0.0.289 (PACK SHEET): Down mode's Keep fighting / Collapse (Give up for Shattered): the choice of down.mjs, collapsing asks first. */
+  static async downChoice(event, target) {
+    if (!this.isEditable || target.getAttribute("aria-disabled") === "true") return;
+    const { setDownChoice } = await import("./down.mjs");
+    await setDownChoice(this.actor, target.dataset.choice === "fight" ? "fight" : "collapse");
+  }
+  /** v0.0.289: the end-of-turn Body or Mind Check of Dying or Shattered, by hand (it also runs when the turn ends). */
+  static async downCheck() {
+    if (!this.isEditable) return;
+    const { endOfTurn } = await import("./down.mjs");
+    await endOfTurn(this.actor, { force: true });
+  }
+  /** v0.0.289: the Upkeep tab's Breather, Sleep and Rest (each asks to confirm in the system's window, then posts a chat card). */
+  static async recover(event, target) {
+    if (!this.isEditable || target.getAttribute("aria-disabled") === "true") return;
+    const { takeBreather, completeRest } = await import("./rest.mjs"), { completeSleep } = await import("./sleep.mjs");
+    const k = target.dataset.k;
+    if (k === "breather") return takeBreather(this.actor, { ask: true });
+    if (k === "sleep") return completeSleep(this.actor, { ask: true });
+    if (k === "rest") return completeRest(this.actor);
+  }
+  /** v0.0.289: the Build tab's validator: Keep or Remove each card that fills no slot (the system's window). */
+  static async reviewSlots() {
+    const ids = (this._pcLast?.build?.other ?? []).filter(r => r.bad).map(r => r.id);
+    const rows = ids.map(id => this.actor.items.get(id)).filter(Boolean).map(i => ({ key: i.id, label: i.name }));
+    if (!rows.length) return;
+    const gone = await pickKeepRemove({ title: `Review: ${this.actor.name}`, name: "Cards that fill no slot", icon: "fa-list-check",
+      text: "Each card must fill a slot: the species, the class's level table, a Talent slot or the GM's extra Talent. Remove the leftovers (a card from an older version, a pick changed later).", rows });
+    if (gone?.length) await this.actor.deleteEmbeddedDocuments("Item", gone.filter(id => this.actor.items.has(id)));
+  }
+  /** v0.0.289: the class card's Choices: the class (its levels, lists and choices) in its own window. */
+  static openClass() { this.actor.itemTypes.class[0]?.sheet.render(true); }
   static async deleteItem(event, target) { await this._item(target)?.delete(); }
   static async confirmDelete(event, target) {
     const item = this._item(target);
     if (!item) return;
-    const ok = await DialogV2.confirm({ window: { title: `Remove ${item.name}` }, content: `<p>Remove <b>${esc(item.name)}</b> from this character?</p>`, rejectClose: false });
+    const ok = await pickConfirm({ title: `Remove ${item.name}`, name: `Remove ${item.name}`, icon: "fa-trash", text: `Remove <b>${esc(item.name)}</b> from ${esc(this.actor.name)}?`, confirm: "Remove" });   // v0.0.289: the system's window
     if (ok) await item.delete();
   }
   static openEffect(event, target) {
@@ -1271,7 +1346,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
 
 export class NpcSheet extends CharacterSheet {
-  static DEFAULT_OPTIONS = { actions: { newAction: NpcSheet.newAction, newWeapon: NpcSheet.newWeapon, setRole: NpcSheet.setRole, setRating: NpcSheet.setRating, setSteadiness: NpcSheet.setSteadiness, levelStep: NpcSheet.levelStep, removeTag: NpcSheet.removeTag, generateAction: NpcSheet.generateAction, browseCompendium: NpcSheet.browseCompendium } };
+  static DEFAULT_OPTIONS = { position: { width: 800, height: 820 }, actions: { newAction: NpcSheet.newAction, newWeapon: NpcSheet.newWeapon, setRole: NpcSheet.setRole, setRating: NpcSheet.setRating, setSteadiness: NpcSheet.setSteadiness, levelStep: NpcSheet.levelStep, removeTag: NpcSheet.removeTag, generateAction: NpcSheet.generateAction, browseCompendium: NpcSheet.browseCompendium } };
   static PARTS = { main: { template: "systems/twod12/templates/actor-sheet.hbs" } };
   _groupLabels = ["Actions", "Features", "Items", "Basic"];
   _groupOf(i) {
@@ -1340,7 +1415,10 @@ export class NpcSheet extends CharacterSheet {
 /** The header's AP pips follow the combat: a sheet is drawn again when its creature's AP changes or it joins or leaves a combat. */
 export function registerSheetHooks() {
   const redraw = c => { const sh = c?.actor?.sheet; if (sh?.rendered) sh.render(); };
-  Hooks.on("updateCombatant", (c, ch) => { if (foundry.utils.hasProperty(ch ?? {}, "flags.twod12.ap")) redraw(c); });
+  Hooks.on("updateCombatant", (c, ch) => { if (foundry.utils.hasProperty(ch ?? {}, "flags.twod12") || "initiative" in (ch ?? {})) redraw(c); });   // v0.0.289: AP, the Reaction AP, the Initiative
+  // v0.0.289 (PACK SHEET): the strip, the Granted and Escalation 3 sections and the header follow the round and the turn
+  Hooks.on("updateCombat", (combat, ch) => { if (["round", "turn", "started", "active"].some(k => k in (ch ?? {})) || foundry.utils.hasProperty(ch ?? {}, "flags.twod12")) combat.combatants.forEach(redraw); });
+  Hooks.on("createCombat", () => game.actors?.forEach(a => { if (a.sheet?.rendered && a.type === "character") a.sheet.render(); }));
   Hooks.on("createCombatant", redraw);
   Hooks.on("deleteCombatant", redraw);
   Hooks.on("deleteCombat", combat => combat.combatants.forEach(redraw));

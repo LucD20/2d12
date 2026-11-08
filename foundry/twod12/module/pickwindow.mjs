@@ -77,3 +77,39 @@ export class PickWindow extends (ApplicationV2 ?? class {}) {
 
 /** Open a pick window and wait for its result (null: Cancel or closed). */
 export const pickWith = o => new Promise(resolve => new PickWindow({ ...o, resolve }).render({ force: true }));
+
+/**
+ * PACK SHEET (v0.0.289): a confirmation in the pick window's style (the standing rule: no Foundry default windows). Resolves true on Confirm,
+ * false on Cancel or close. o: { title, name, sub, icon, img, text (HTML, escaped by the caller), confirm, stats }
+ */
+export const pickConfirm = o => pickWith({
+  title: o.title ?? o.name,
+  model: () => ({ name: o.name, sub: o.sub ?? "", icon: o.icon, img: o.img, stats: o.stats ?? [], sections: [{ title: o.heading ?? "", html: `<div class="cw-sub pw-text">${o.text ?? ""}</div>` }], message: o.message ?? "", confirm: o.confirm ?? "Confirm" }),
+  result: () => true
+}).then(r => !!r);
+
+/**
+ * A choice in the pick window's style: one option per row's button, then Confirm. o: { title, name, sub, icon, text, options: [{ k, l, tip }],
+ * confirm, preset }. Resolves the chosen key, or null.
+ */
+export function pickOne(o) {
+  let chosen = o.preset ?? null;
+  return pickWith({
+    title: o.title ?? o.name,
+    model: () => ({ name: o.name, sub: o.sub ?? "", icon: o.icon, sections: [{ title: o.heading ?? "", sub: o.text ?? "", rows: [{ key: "one", label: "", opts: o.options.map(x => ({ k: x.k, l: x.l, tip: x.tip, on: x.k === chosen, off: !!x.off })) }] }], complete: chosen !== null, message: chosen === null ? "Choose one." : "", confirm: o.confirm ?? "Confirm" }),
+    pick: (row, k) => { chosen = k; },
+    result: () => chosen
+  });
+}
+
+/** Several rows with Keep / Remove each (the Build tab's Review). rows: [{ key, label }]. Resolves the keys set to Remove ([]: none), or null. */
+export function pickKeepRemove(o) {
+  const st = Object.fromEntries(o.rows.map(r => [r.key, "keep"]));
+  return pickWith({
+    title: o.title ?? o.name,
+    model: () => ({ name: o.name, sub: o.sub ?? "", icon: o.icon, sections: [{ title: o.heading ?? "", sub: o.text ?? "", rows: o.rows.map(r => ({ key: r.key, label: r.label, opts: [{ k: "keep", l: "Keep", on: st[r.key] === "keep" }, { k: "remove", l: "Remove", on: st[r.key] === "remove", cls: "neg" }] })) }],
+      message: `${Object.values(st).filter(v => v === "remove").length} to remove`, confirm: o.confirm ?? "Apply" }),
+    pick: (row, k) => { st[row] = k; },
+    result: () => Object.entries(st).filter(([, v]) => v === "remove").map(([k]) => k)
+  });
+}

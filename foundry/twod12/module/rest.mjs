@@ -2,15 +2,15 @@ import { completeSleep, sleepEffects, setExhausted, hoursText } from "./sleep.mj
 import { clockText } from "./clock.mjs";
 // Recovery (see Resting in the rules): Take a Breather (10 minutes), Sleep (8 hours) or Rest (24 hours in a safe place).
 import { performCheck, checkHtml, combineRolls, sgn, esc } from "./roll.mjs";
+import { sysCard } from "./sysmsg.mjs";
+import { pickConfirm } from "./pickwindow.mjs";
 const { DialogV2 } = foundry.applications.api;
 
 export async function completeRest(actor) {
   const s = actor.system;
-  const ok = await DialogV2.confirm({
-    window: { title: "Rest" },
-    content: "<p>A rest is a day (24 hours) in a safe place. Remove all damage, regain all Rally Points, and roll to remove Wounds. Complete the rest?</p>",
-    rejectClose: false
-  });
+  // v0.0.289 (PACK SHEET): the confirmation in the system's window; the chat as a system card
+  const ok = await pickConfirm({ title: `Rest: ${actor.name}`, name: "Rest", sub: "24 hours, safe place", icon: "fa-campground", confirm: "Rest",
+    text: "A Rest is a day (24 hours) in a safe place. Remove all damage, regain all Rally Points, and roll a Body Check and a Mind Check for your Wounds. A Rest includes a Sleep. Complete the Rest?" });
   if (!ok) return false;
   const upd = { "system.damage": { bodyLethal: 0, bodyNonlethal: 0, mindLethal: 0, mindNonlethal: 0 }, "system.rallyUsed": 0 };
   const rolls = [], blocks = [];
@@ -31,7 +31,7 @@ export async function completeRest(actor) {
   await ChatMessage.create({
     speaker: ChatMessage.getSpeaker({ actor }),
     rolls: all ? [all] : [],
-    content: `<div class="twod12 chat"><div class="apmsg"><b>${esc(actor.name)}</b> completes a Rest (which includes a Sleep): all damage is removed, all Rally Points are back, and Daily Actions are renewed${slept.before ? `; Exhausted goes from ${slept.before} to ${slept.after}` : ""}.</div>${blocks.join("")}</div>`
+    content: `${sysCard({ title: "Rest", lead: `${esc(actor.name)} completes a Rest`, text: `All damage is removed, all Rally Points are back, and Daily Actions are renewed (a Rest includes a Sleep)${slept.before ? `; Exhausted goes from ${slept.before} to ${slept.after}` : ""}.` })}${blocks.length ? `<div class="twod12 chat">${blocks.join("")}</div>` : ""}`
   });
   return true;
 }
@@ -62,11 +62,14 @@ export async function chooseRecovery(actor) {
   return false;
 }
 
-export async function takeBreather(actor) {
+export async function takeBreather(actor, { ask = false } = {}) {
   const d = actor.system.damage ?? {};
   const removed = (d.bodyNonlethal ?? 0) + (d.mindNonlethal ?? 0);
+  // v0.0.289 (PACK SHEET): the Upkeep tab asks first (the system's window); the chat as a system card
+  if (ask && !(await pickConfirm({ title: `Breather: ${actor.name}`, name: "Take a Breather", sub: "10 minutes", icon: "fa-mug-hot", confirm: "Take a Breather",
+    text: `10 minutes of rest: remove all your Nonlethal damage (${removed ? `${removed} now` : "none now"}). It is not a Rest.` }))) return false;
   await actor.update({ "system.damage.bodyNonlethal": 0, "system.damage.mindNonlethal": 0 });
-  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: `<div class="twod12 chat"><div class="apmsg"><b>${esc(actor.name)}</b> takes a Breather: ${removed ? `<b>${removed}</b> Nonlethal damage removed` : "no Nonlethal damage to remove"}.</div></div>` });
+  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysCard({ title: "Breather", lead: `${esc(actor.name)} takes a Breather`, text: removed ? `${removed} Nonlethal damage removed.` : "No Nonlethal damage to remove." }) });
   return true;
 }
 

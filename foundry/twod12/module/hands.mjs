@@ -22,7 +22,8 @@ export async function applyRelease(actor, pick) {
   if (!w) return false;
   if (kind === "one") await w.update({ "system.hands": 1 }); else await w.update({ "system.wielded": false, "system.dropped": true });   // dropped on the ground (v0.0.139)
   const text = kind === "one" ? `holds <b>${esc(w.name)}</b> with one hand` : `drops <b>${esc(w.name)}</b>`;
-  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: `<div class="twod12 chat note"><i class="fa-solid fa-hand"></i> <b>Release</b> (0 AP): ${esc(actor.name)} ${text}.</div>` });
+  const { sysLine } = await import("./sysmsg.mjs");   // v0.0.289: the system's line (touched by the Hands tiles)
+  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-hand", `<b>Release</b> (0 AP): ${esc(actor.name)} ${text}.`) });
   return true;
 }
 

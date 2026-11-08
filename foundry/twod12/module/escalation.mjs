@@ -113,6 +113,7 @@ export async function startAtOne(combat, { momentum = hasMomentum() } = {}) {
     try { await Hooks.callAll?.("twod12.escalationChanged", a); } catch (e) { console.warn("twod12 | the rung's effects", e); }   // v0.0.249: Radiant Zeal at Escalation 1 from the start (twod12.mjs listens)
   }
   if (momentum) {
+    await combat?.setFlag?.(F, "momentumStart", true);   // v0.0.289 (PACK SHEET): the strip's Momentum badge
     await setMomentum(false);
     try {
       const { sysLine } = await import("./sysmsg.mjs");

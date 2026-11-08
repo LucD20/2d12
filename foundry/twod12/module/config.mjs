@@ -157,10 +157,11 @@ export const TWOD12 = {
   // v0.0.198 (Lucas, 2026-10-30): the Basic Actions section of the Actions tab, 4 groups in a 2x2 grid (row 1 Attack | Control, row 2
   // Movement | Utility), each in this order. By name: the Kind traits don't separate them. The items and the compendium don't change.
   basicGroups: [
-    { key: "attack", label: "Attack", names: ["Weapon Attack", "Fists", "Charge", "Reload", "Opportunity Attack"] },   // pack R-core: Opportunity Attack, the basic Reaction
-    { key: "control", label: "Control", names: ["Shove", "Haul", "Relocate", "Trip"] },
+    // v0.0.289 (PACK SHEET, Lucas's design): four columns, Attack | Movement | Control | Utility; Opportunity Attack is in the Reactions section
+    { key: "attack", label: "Attack", names: ["Weapon Attack", "Charge", "Fists", "Reload"] },
     { key: "movement", label: "Movement", names: ["Advance", "Evade", "Crawl", "Stand", "Break Free"] },
-    { key: "utility", label: "Utility", names: ["Interact", "Release", "Regrip", "Leaning", "Steel Yourself"] }
+    { key: "control", label: "Control", names: ["Shove", "Trip", "Haul", "Relocate"] },
+    { key: "utility", label: "Utility", names: ["Steel Yourself", "Interact", "Regrip", "Release", "Leaning"] }
   ],
   // v0.0.189 (Lucas, after Draw Steel's Codex): how much of a card Foundry does for you, as a chip on the card. "" shows nothing.
   automationRanks: { "": "(not set)", none: "Not implemented", bronze: "Bronze", silver: "Silver", gold: "Gold", mithril: "Mithril" },   // v0.0.250 (Lucas): Mithril, a card written with him (book/cards/with-lucas.txt)
