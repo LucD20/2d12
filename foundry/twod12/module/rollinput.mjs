@@ -5,20 +5,16 @@ import { TWOD12, traitGroupOf, orderTraits, effectiveFrequency, FREQ_COLORS, dis
 import { modifierList } from "./effects.mjs";
 import { bonusesNotNow } from "./bonus.mjs";
 import { isFaded } from "./usage.mjs";
-import { combatantOf, getAP, getRAP, payReaction } from "./combat.mjs";
+import { combatantOf, getAP, getRAP } from "./combat.mjs";
 import { applyTalentMods } from "./preview.mjs";
 import { esc } from "./util.mjs";
 import { saveDcOf } from "./rollsource.mjs";
+import { cleanLabel, versionButtons } from "./cardview.mjs";
+export { cleanLabel };
 
 /** The kinds of synthetic modifiers that are about one target (the creature's box), not about you (the shared panel). */
 const TARGET_SYN = new Set(["cover", "obscured", "obscured-you", "range", "long", "engaged-target", "flanking", "hidden-na", "obscured-na"]);
-const reEsc = s => String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-/** A chip's label is the name only: "Flanking (Bandit, 2 Boons)" → "Flanking", "Target is Obscured (1 Bane)" → "Target is Obscured". */
-export const cleanLabel = (name, targetName = "") => {
-  let s = String(name ?? "");
-  if (targetName) s = s.replace(new RegExp(`\\s*\\(${reEsc(targetName)}(,[^)]*)?\\)`), "");
-  return s.replace(/\s*\(\d+\s+(?:Boons?|Banes?)\)\s*$/i, "").trim();
-};
+// v0.0.297: cleanLabel moved to cardview.mjs (pure: the sheet card's "Your roll" strip uses it too); re-exported here
 const dcWord = info => (info?.defense === "armor" ? "AD" : info?.defense === "ward" ? "WD" : info?.defense === "vs" ? ({ body: "Bo", mind: "Mi", appeal: "Ap", instinct: "In" })[info.vs] ?? "DC" : "DC");
 
 /** The roll modes Foundry offers, [[key, label]], and the chat's current one. */
@@ -47,9 +43,8 @@ export async function rollDialogInput(c) {
   for (const v0 of c.versions) {
     const v = c.talentMods ? applyTalentMods(v0, c.talentMods) : v0;
     const parts = await c.partsFor(v);
-    const fromAp = cbt && !c.opts.free ? payReaction(v.ap, have, rap).fromAp : 0;
-    const cant = cbt && !c.opts.free && fromAp > have;
-    versions.push({ ap: v.ap, cost: it.reaction ? `${v.ap}R` : `${v.ap} AP`, disabled: cant, why: cant ? `You have ${have} AP left${it.reaction ? ` and ${rap} Reaction AP` : ""}` : "", traits, meta: { ...meta, setup: parts.setup ?? "" }, tiers: parts.tiers, crit: parts.crit, effects: parts.effects, effectsFrom: 2, noTiers: !!v.noTiers });
+    const vb = versionButtons([v.ap], { reaction: !!it.reaction, inCombat: !!cbt, ap: have, rap, free: !!c.opts.free })[0];   // v0.0.297: the sheet card's check
+    versions.push({ ap: v.ap, cost: vb.cost, disabled: vb.off, why: vb.why, traits, meta: { ...meta, setup: parts.setup ?? "" }, tiers: parts.tiers, crit: parts.crit, effects: parts.effects, effectsFrom: 2, noTiers: !!v.noTiers });
   }
   // the creatures (several: each its own Defense; one: the target, or the DC of an Action with no target)
   let creatures;

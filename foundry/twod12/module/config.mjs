@@ -440,8 +440,9 @@ export function highlightText(html) {
  * The line under the traits: the Frequency (only when it matters) and the Target text, separated by a sparkle.
  * Then, on its own line, the tokens that are targeted.
  */
-export function metaRowHtml({ frequency = "", targetText = "", distance = "", area: areaLine = "", vs = "", requirements = "", trigger = "", reactionKind = "", self = false, escalation = 0 } = {}) {
-  const sep = ' <i class="fa-solid fa-sparkle sep"></i> ';
+export function metaRowHtml({ frequency = "", targetText = "", distance = "", area: areaLine = "", vs = "", requirements = "", trigger = "", reactionKind = "", self = false, escalation = 0, areaHtml = "", sepHtml = "" } = {}) {
+  // v0.0.297 (PACK ACTION-PREVIEW): the sheet card passes its own separator (a gold ✦) and its Area chip (the Place Area button) as areaHtml
+  const sep = sepHtml || ' <i class="fa-solid fa-sparkle sep"></i> ';
   // Three lines, always in the same place (v0.0.157): 1 Escalation; 2 Targets ✦ Area; 3 Distance ✦ Vs. (a Save: "Instinct Save").
   // The Frequency is in the title bar (cardHead). The Self trait already says it targets you, so Self is left out.
   // v0.0.176: the Area (line 2, with the Targets) and the Distance (line 3) are separate; an older caller may still pass "Area: ..." as the distance.
@@ -449,7 +450,7 @@ export function metaRowHtml({ frequency = "", targetText = "", distance = "", ar
   // v0.0.249 (Lucas): "Targets:" is labeled, and the meta texts are colored like the rules text (a [Strike] in a Trigger is a trait chip, the Attribute of "Appeal Save" has its color)
   const hl = t => { try { return highlightText(escAttr(t)); } catch (e) { return escAttr(t); } };
   const l1 = Number(escalation) > 0 ? [`<span class="esc">${Number(escalation)} Escalation</span>`] : [];
-  const l2 = [(!self || areaLine) && targetText ? `<span class="tgt"><b>Targets:</b> ${hl(targetText)}</span>` : "", areaLine ? `<span class="dist"><b>Area:</b> ${hl(areaLine)}</span>` : ""].filter(Boolean);
+  const l2 = [(!self || areaLine) && targetText ? `<span class="tgt"><b>Targets:</b> ${hl(targetText)}</span>` : "", areaLine ? `<span class="dist"><b>Area:</b> ${areaHtml || hl(areaLine)}</span>` : ""].filter(Boolean);
   const l3 = [distance && distance.toLowerCase() !== "self" ? `<span class="dist"><b>Distance:</b> ${hl(distance)}</span>` : "", vs ? `<span class="vs">${/save$/i.test(String(vs).trim()) ? "" : "<b>Vs.</b> "}${vsColored(vs)}</span>` : ""   /* v0.0.295 (Lucas): Vs. bold, the value colored */].filter(Boolean);
   const row = [l1, l2, l3].filter(l => l.length).map(l => `<div class="trow"><span>${l.join(sep)}</span></div>`).join("");
   const req = requirements ? `<div class="trow reqrow"><span><b>Requirements:</b> ${hl(requirements)}</span></div>` : "";

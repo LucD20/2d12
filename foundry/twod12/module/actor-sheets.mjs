@@ -34,6 +34,7 @@ import { healthView, donutPoolAt } from "./healthview.mjs";
 import { applySpeedMods } from "./speedmods.mjs";
 import { unloadedWeapon, costText, frequencyText, costGroup, groupRows, GROUP_BY, SORT_BY, sortKeyOf } from "./actionrows.mjs";
 import { buildActionCard } from "./actioncard.mjs";
+import { versionCant } from "./sheetmodel.mjs";
 import { enableDragging, dropEffect } from "./drag.mjs";
 import { isFaded, grantMatches, activeGrants } from "./usage.mjs";
 import { chooseRecovery } from "./rest.mjs";
@@ -83,7 +84,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       setHands: CharacterSheet.setHands, setWorn: CharacterSheet.setWorn, setEscalation: CharacterSheet.setEscalation, toggleEscalation: CharacterSheet.toggleEscalation, masteryStep: CharacterSheet.masteryStep, masteryCollapse: CharacterSheet.masteryCollapse, masteryOpen: CharacterSheet.masteryOpen, chooseStartMastery: CharacterSheet.chooseStartMastery, hpEdit: CharacterSheet.hpEdit,
       setHealthView: CharacterSheet.setHealthView, setApPip: CharacterSheet.setApPip, toggleRap: CharacterSheet.toggleRap,
       openSpecies: CharacterSheet.openSpecies,   // v0.0.244 (pack R): the Species window (the Health line's high side is chosen in the class window at level 1, v0.0.245: no swap after that)
-      toggleCard: CharacterSheet.toggleCard, reloadFor: CharacterSheet.reloadFor, toggleBasic: CharacterSheet.toggleBasic,
+      toggleCard: CharacterSheet.toggleCard, useVersion: CharacterSheet.useVersion, reloadFor: CharacterSheet.reloadFor, toggleBasic: CharacterSheet.toggleBasic,
       toggleFeat: CharacterSheet.toggleFeat, foldAll: CharacterSheet.foldAll, newGear: CharacterSheet.newGear, reloadWeapon: CharacterSheet.reloadWeapon,
       setWhere: CharacterSheet.setWhere, toggleItemFold: CharacterSheet.toggleItemFold,
       // v0.0.289 (PACK SHEET): Down mode's buttons, the Upkeep tab's Recovery, the Build tab's Review and the class card's Choices
@@ -584,7 +585,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     // this turn put a red diamond before its name.
     const cbt = game.combat?.started ? combatantOf(a, game.combat) : null, apNow = cbt ? getAP(cbt) + (it.reaction ? getRAP(cbt) : 0) : null;   // v0.0.243: a Reaction can use the Reaction AP
     const minCost = Math.min(...(it.versions ?? []).map(v => Number(v.ap) || 0), 99);
-    const noAp = apNow !== null && minCost < 99 && minCost > apNow, strikeCap = !!f.strikeCap;
+    const noAp = apNow !== null && minCost < 99 && !!versionCant(minCost, getAP(cbt), it.reaction ? getRAP(cbt) : 0, !!it.reaction), strikeCap = !!f.strikeCap;   // v0.0.297: the card's Version buttons use the same check
     // v0.0.182: a granted use waiting (Double Shot's Weapon Attacks): the use button turns blue and uses it.
     const g = activeGrants(a, i)[0];
     // v0.0.208 (W): a [Weapon] Action that picks its weapon gets a button per hand (2H, or M and O); one weapon that fits: its name on the tooltip.
@@ -773,7 +774,8 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   async _loadCard(row) {
     const box = row.querySelector(":scope > .ar-card"), item = this.actor.items.get(row.dataset.itemId);
     if (!box || !item || box.dataset.loaded) return;
-    try { box.innerHTML = item.type === "action" ? await buildActionCard(item, { actor: this.actor }) : await buildInfoCard(item); box.dataset.loaded = "1"; }
+    // v0.0.297 (PACK ACTION-PREVIEW): a Build tab row has no Use: its card shows the Versions' costs, not their Use buttons
+    try { box.innerHTML = item.type === "action" ? await buildActionCard(item, { actor: this.actor, use: !row.classList.contains("ps-brw") }) : await buildInfoCard(item); box.dataset.loaded = "1"; }
     catch (e) { console.warn("twod12 | could not show the card", e); box.innerHTML = `<div class="tferr">Could not show this card (${esc(String(e.message ?? e).slice(0, 80))}).</div>`; }
   }
 
@@ -1241,6 +1243,13 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const off = target?.dataset?.off ? { override: true } : {};
     if (off.override) ui.notifications.warn(`${this._item(target)?.name ?? "This Action"}: ${target.dataset.off}. Used anyway.`);
     await useAction(this.actor, this._item(target), { ...(event?.shiftKey ? { noGrant: true } : gk), ...off });
+  }
+  /** v0.0.297 (PACK ACTION-PREVIEW): a "Use · N AP" button of the open card: the row's Use with that Version chosen in the roll dialog. */
+  static async useVersion(event, target) {
+    event?.stopPropagation?.();
+    const item = this.actor.items.get(target.closest("[data-card-item]")?.dataset.cardItem) ?? this._item(target);
+    if (!item || target.disabled) return;
+    await useAction(this.actor, item, { rdState: { ap: Number(target.dataset.ap) || 0 }, ...(event?.shiftKey ? { noGrant: true } : {}) });
   }
   /** v0.0.208 (W): a hand button: the Action with the weapon in that hand (no "Which weapon?" window). */
   static async useWith(event, target) {

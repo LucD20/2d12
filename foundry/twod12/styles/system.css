@@ -3351,3 +3351,127 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.rolldlg .rd-tiers th, .twod12.rolldlg .rd-tiers td { border: 0 !important; border-top: 1px solid #e0d4ba !important; border-radius: 0 !important; }
 .twod12.rolldlg .rd-tiers td { border-left: 1px solid #cdb88a !important; background: var(--rd-box); }
 .twod12.rolldlg .rd-tiers tr:first-child th, .twod12.rolldlg .rd-tiers tr:first-child td { border-top: 0 !important; }
+
+/* ==== v0.0.297 PACK ACTION-PREVIEW: the Action card that opens in place on the sheets, Lucas's design D2 "Ink and gold, book order"
+   (foundry/mockups/action-preview-prototype.html; module/actioncard.mjs draws it, cardview.mjs the pure pieces). The open row is the card's head
+   (navy, the name in gold Cinzel, a gold Use); the card hangs from it: parchment, a navy frame with no top, an inner gold rule. ==== */
+/* the open row */
+.twod12.sheet.pcs .ar.open > .ps-line, .twod12.sheet.pcs .ar.open > .ps-brow, .twod12.sheet.pcs .ar.open > .ps-line[data-action="toggleCard"]:hover, .twod12.sheet.pcs .ar.open > .ps-brow[data-action="toggleCard"]:hover { background: #1b2433; color: #f3efe6; }
+.twod12.sheet.pcs .ps-row.open, .twod12.sheet.pcs .ps-brw.open { border-top-color: #1b2433; }
+.twod12.sheet.pcs .ar.open > .ps-line .ps-nm, .twod12.sheet.pcs .ar.open > .ps-brow .ps-nm { font-family: "Cinzel", serif; font-weight: 700; font-size: 15px; color: #f3d39c; text-decoration: none; }
+.twod12.sheet.pcs .ar.open > .ps-line .ps-sub { color: #c9cfda; }
+.twod12.sheet.pcs .ar.open > .ps-line .ps-dist, .twod12.sheet.pcs .ar.open > .ps-brow .ps-slot, .twod12.sheet.pcs .ar.open > .ps-brow .ps-bfreq { color: #f3efe6; }
+.twod12.sheet.pcs .ar.open > .ps-line .ps-vs { color: #f3d39c; border-color: #d9902f; }
+.twod12.sheet.pcs .ar.open > .ps-line .ps-use:not(.dis) { background: #d9902f; color: #1b2433; box-shadow: 0 2px 0 #7a4f12; }
+.twod12.sheet.pcs .ar.open > .ps-line .ps-use.dis { color: #c9cfda; border-color: #5d6b85; }
+.twod12.sheet.pcs .ar.open > .ps-brow .ps-bctl a { color: #f3d39c; }
+/* the chevron before the name: ▸ closed, ▾ open (gold) */
+.twod12.sheet.pcs .ps-row > .ps-line .ps-nm::before, .twod12.sheet.pcs .ps-brw > .ps-brow .ps-nm::before { content: "\25B8"; display: inline-block; width: 12px; margin-right: 4px; font-family: var(--font-primary, Signika, sans-serif); font-size: 12px; font-weight: 400; color: #6b665a; }
+.twod12.sheet.pcs .ps-row.open > .ps-line .ps-nm::before, .twod12.sheet.pcs .ps-brw.open > .ps-brow .ps-nm::before { content: "\25BE"; color: #d9902f; }
+.twod12.sheet.pcs .ps-row > .ps-line .ps-sub { padding-left: 16px; }
+/* the frame */
+.twod12.sheet.pcs .ar > .ar-card { padding: 0 8px 10px; }
+.twod12.acard.d2 { display: flex; flex-direction: column; gap: 9px; padding: 12px 14px; background: #fbf6ea; color: #26241f; border: 1px solid #1b2433; border-top: 0; border-radius: 0 0 4px 4px; outline: 1px solid #d9b26a; outline-offset: -5px; overflow: visible;
+  font-family: var(--font-primary, Signika, "Segoe UI", sans-serif); font-size: 13px; line-height: 1.4; }
+.twod12.acard.d2 > :empty:not(td):not(th) { display: none; }
+/* 1. the trait line */
+.twod12.acard.d2 .ap-trow { display: flex; align-items: flex-start; gap: 6px; flex-wrap: wrap; }
+.twod12.acard.d2 .ap-tg { display: flex; flex-direction: column; align-items: center; gap: 1px; }
+.twod12.acard.d2 .ap-cs { display: flex; gap: 4px; flex-wrap: wrap; }
+.twod12.acard.d2 .ap-tg > i { font-size: 10px; font-style: normal; letter-spacing: .04em; color: #5d5446; }
+.twod12.acard.d2 .ap-chip { display: inline-flex; align-items: center; height: 20px; padding: 0 7px; border-radius: 3px; font-size: 11.5px; font-weight: 600; white-space: nowrap; border: 1px solid; }
+.twod12.acard.d2 .ap-chip.g-roll { background: #d5ebe6; color: #1d5a53; border-color: #a9cfc7; }
+.twod12.acard.d2 .ap-chip.g-requires { background: #dbe5f2; color: #24467a; border-color: #b3c5df; }
+.twod12.acard.d2 .ap-chip.g-kind { background: #f4ddd5; color: #8a3324; border-color: #e2b8aa; }
+.twod12.acard.d2 .ap-chip.g-damage { background: #f2e6d0; color: #6b4410; border-color: #dcc7a0; }
+.twod12.acard.d2 .ap-chip.g-keywords { background: #e5e0d6; color: #4a443b; border-color: #cfc6b5; }
+.twod12.acard.d2 .ap-gdiv { width: 1px; height: 20px; background: #b8a988; margin-top: 1px; flex: none; }
+.twod12.acard.d2 .ap-cat { margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: #3a3329; min-height: 20px; }
+.twod12.acard.d2 .ap-freq { font-size: 11px; font-weight: 700; color: #fff; border-radius: 3px; padding: 2px 7px; line-height: 1.2; }
+/* 2. the meta lines: one gold rule above and one below, none between */
+.twod12.acard.d2 .ap-meta { display: flex; flex-direction: column; font-size: 13px; padding: 2px 0; border-top: 1px solid #d9b26a; border-bottom: 1px solid #d9b26a; }
+.twod12.acard.d2 .ap-meta .trow { padding: 3px 0; line-height: 1.5; color: #26241f; }
+.twod12.acard.d2 .ap-meta .trow:first-child { padding-top: 5px; } .twod12.acard.d2 .ap-meta .trow:last-child { padding-bottom: 5px; }
+.twod12.acard.d2 .ap-meta .trow b { font-weight: 700; color: #1b2433; }
+.twod12.acard.d2 .ap-st { color: #d9902f; margin: 0 6px; font-size: 11px; }
+.twod12.acard.d2 .ap-meta .trhl { background: #e3eef1; border: 1px solid #b6d0d6; color: #1d4f5a; border-radius: 3px; padding: 0 6px; font-size: 12px; font-weight: 600; }
+/* the inline pieces (meta, cells, Effects): an area chip (the Place Area button), a button, an Action button, book links, Bane */
+.twod12.acard.d2 a.twod12-inline { display: inline-flex; align-items: center; gap: 4px; min-height: 20px; padding: 0 6px; border: 1px solid #6b6152; border-radius: 3px; background: #efe6d3; color: #2a241d; font: 600 11.5px var(--font-primary, Signika, sans-serif); line-height: 1.2; vertical-align: 1px; text-decoration: none; white-space: nowrap; }
+.twod12.acard.d2 a.twod12-inline i { color: inherit; font-size: 10px; }
+.twod12.acard.d2 a.twod12-inline i.areaic { font-size: 11px; width: 11px; height: 11px; }
+.twod12.acard.d2 a.twod12-inline[data-twod12-inline="Template"] { background: #fff; }
+.twod12.acard.d2 a.twod12-inline[data-twod12-inline="Use"] { background: #fff3df; border-color: #d9902f; }
+.twod12.acard.d2 a.twod12-inline:hover { background: #fff3df; border-color: #d9902f; }
+.twod12.acard.d2 a.twod12-inline.book, .twod12.acard.d2 a.content-link { display: inline; min-height: 0; padding: 0; border: 0; border-bottom: 1px dashed #b07a12; border-radius: 0; background: none; color: #6b4410; font: inherit; font-weight: 600; white-space: normal; vertical-align: baseline; }
+.twod12.acard.d2 a.twod12-inline.book i, .twod12.acard.d2 a.content-link i { display: none; }
+.twod12.acard.d2 .kw-bane { color: #a8261c; font-weight: 700; }
+/* 3. the Tier table */
+.twod12.acard.d2 .ap-ttw { max-width: 100%; overflow-x: auto; }   /* the cells wrap: it only scrolls when the sheet is too narrow for the words */
+.twod12.acard.d2 table.ap-tt { width: 100%; margin: 0; border-collapse: collapse; border: none; background: none; font-size: 13px; table-layout: auto; }
+.twod12.acard.d2 table.ap-tt thead th { background: #1b2433; padding: 5px 8px; text-align: left; border: none; color: #f3d39c; font-weight: 700; white-space: nowrap; }
+.twod12.acard.d2 table.ap-tt thead th:first-child { border-radius: 3px 0 0 0; width: 64px; }
+.twod12.acard.d2 table.ap-tt thead th:last-child { border-radius: 0 3px 0 0; }
+.twod12.acard.d2 table.ap-tt tr { background: none; }
+.twod12.acard.d2 table.ap-tt td { padding: 6px 9px; border: none; border-bottom: 1px solid #e6d6b2; vertical-align: top; line-height: 1.5; background: none; color: #26241f; text-align: left; }
+.twod12.acard.d2 table.ap-tt td + td { border-left: 1px dotted #d9b26a; }
+.twod12.acard.d2 table.ap-tt td.tl { background: var(--bg); color: var(--c); font-family: "Cinzel", serif; font-weight: 700; font-size: 12px; box-shadow: inset 5px 0 0 var(--n, var(--c)); padding-left: 11px; white-space: nowrap; vertical-align: middle; }
+.twod12.acard.d2 table.ap-tt tr.t1 { --c: #a8261c; --bg: #fbefed; }
+.twod12.acard.d2 table.ap-tt tr.t2 { --n: #7fae6c; --c: #3f6e31; --bg: #f1f7ec; }
+.twod12.acard.d2 table.ap-tt tr.t3, .twod12.acard.d2 table.ap-tt tr.tall { --c: #2b5a2f; --bg: #e8f1e3; }
+.twod12.acard.d2 table.ap-tt tr.crit { --c: #1d5a9e; --bg: #e6eef8; }
+.twod12.acard.d2 table.ap-tt tr.crit td:not(.tl) { background: #eef3fa; }
+.twod12.acard.d2 table.ap-tt td.dim { color: #8f8774; }
+.twod12.acard.d2 table.ap-tt td.dim .dt-body, .twod12.acard.d2 table.ap-tt td.dim .dt-mind { opacity: .45; }
+/* the head's Version buttons */
+.twod12.acard.d2 .ap-vbtn { display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 4px; height: auto; min-height: 26px; width: auto; padding: 0 10px; margin: 0; font: 700 12px var(--font-primary, Signika, sans-serif); line-height: 1.2; background: #d9902f; color: #1b2433; box-shadow: 0 2px 0 #7a4f12; cursor: pointer; }
+.twod12.acard.d2 .ap-vbtn:hover { background: #e8a345; }
+.twod12.acard.d2 .ap-vbtn.no { background: transparent; color: #9aa6ba; box-shadow: none; border: 1px dashed #5d6b85; text-decoration: line-through; cursor: not-allowed; pointer-events: none; }
+.twod12.acard.d2 .ap-vwrap { display: inline-block; cursor: not-allowed; }
+.twod12.acard.d2 .ap-vcost { display: inline-block; font-size: 12px; font-weight: 700; color: #f3d39c; }
+.twod12.acard.d2 .ap-mode { font-size: 10.5px; font-weight: 600; color: #c9cfda; margin-left: 4px; }
+/* the damage: the pool's icon (Vigor heart red, Resolve brain blue), the dice, the damage type's word in brown */
+.twod12.acard.d2 table.ap-tt .dt-body { color: #9b2226; } .twod12.acard.d2 table.ap-tt .dt-mind { color: #2c4a9b; }
+.twod12.acard.d2 table.ap-tt i.dt-body, .twod12.acard.d2 table.ap-tt i.dt-mind { font-size: 12px; vertical-align: -1px; }
+.twod12.acard.d2 table.ap-tt .pool-b, .twod12.acard.d2 table.ap-tt .pool-m, .twod12.acard.d2 table.ap-tt .dtamt { color: inherit !important; font-weight: 600; }
+.twod12.acard.d2 table.ap-tt .dtype { color: #7d5400 !important; font-weight: 700; }
+.twod12.acard.d2 table.ap-tt td.dim .dtype { color: #8f8774 !important; }
+.twod12.acard.d2 table.ap-tt .dtype i, .twod12.acard.d2 table.ap-tt .dtype img { display: none; }
+/* a rider on its own line after ↳, in a dashed box; a condition of the Critical row in the same box */
+.twod12.acard.d2 .ap-rid { display: block; font-size: 12px; margin-top: 2px; }
+.twod12.acard.d2 .ap-rid .arr { color: #8c7d63; }
+.twod12.acard.d2 .ap-mv, .twod12.acard.d2 table.ap-tt tr.crit a.twod12-inline { display: inline-block; border: 1px dashed #8c7d63; border-radius: 3px; padding: 0 5px; font-size: 12px; font-weight: 400; background: #fff; color: #26241f; min-height: 0; }
+.twod12.acard.d2 .ap-mv a.twod12-inline { display: inline; border: 0; padding: 0; background: none; min-height: 0; font-weight: 400; font-size: 12px; }
+.twod12.acard.d2 .ap-mv a.twod12-inline i, .twod12.acard.d2 table.ap-tt tr.crit a.twod12-inline i { display: none; }
+.twod12.acard.d2 table.ap-tt .chg { font-size: 11.5px; }
+/* 4. the Effects block: a heading with ◆ and a gold rule; one line per Version with its AP badge */
+.twod12.acard.d2 .ap-fxh { display: flex; align-items: center; gap: 8px; font-family: "Cinzel", serif; font-size: 11.5px; letter-spacing: .06em; color: #1b2433; font-weight: 700; }
+.twod12.acard.d2 .ap-fxh::before { content: "\25C6"; color: #d9902f; font-size: 8px; }
+.twod12.acard.d2 .ap-fxh::after { content: ""; flex: 1; height: 1px; background: #d9b26a; }
+.twod12.acard.d2 .ap-fxl { display: grid; grid-template-columns: 52px minmax(0, 1fr); column-gap: 10px; font-size: 13px; line-height: 1.6; margin-top: -4px; }
+.twod12.acard.d2 .ap-fxl > * { padding: 5px 0; border-bottom: 1px solid #e6d6b2; }
+.twod12.acard.d2 .ap-fxl.plain { display: block; }
+.twod12.acard.d2 .ap-fxl.plain > * { display: block; border-bottom: 0; padding: 0; }
+.twod12.acard.d2 .ap-ap { align-self: start; margin-top: 6px; padding: 1px 0; text-align: center; border: 0; border-radius: 3px; background: #1b2433; color: #f3d39c; font-size: 11px; font-weight: 700; }
+.twod12.acard.d2 .ap-ap.no { background: transparent; border: 1px dashed #a99f8a; color: #8f8774; text-decoration: line-through; }
+.twod12.acard.d2 .ap-fxt.dim { color: #8f8774; }
+/* 5. Your roll (read-only) */
+.twod12.acard.d2 .ap-strip { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12.5px; border: 1px solid #d9b26a; border-radius: 4px; padding: 6px 10px; background: #fff; }
+.twod12.acard.d2 .ap-strip .lab { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #5d5446; font-weight: 700; }
+.twod12.acard.d2 .ap-rmod { color: #1d4f8f; }
+.twod12.acard.d2 .ap-ac { display: inline-flex; align-items: center; gap: 5px; border: 1px solid #9cbf8c; background: #fbf7ef; border-radius: 4px; padding: 0 7px; min-height: 22px; font-size: 12px; color: #26241f; }
+.twod12.acard.d2 .ap-ac.bad { border-color: #d9a39c; }
+.twod12.acard.d2 .ap-ac.na { border-style: dashed; color: #7a6f5f; text-decoration: line-through; }
+.twod12.acard.d2 .ap-ac .tri { width: 10px; height: 9px; display: inline-block; flex: none; background: #a8261c; clip-path: polygon(0 0, 100% 0, 50% 100%); }
+.twod12.acard.d2 .ap-ac .pg { width: 13px; height: 13px; border-radius: 2px; color: #fff; font: 700 11px/13px var(--font-primary, Signika, sans-serif); text-align: center; background: #2b5a2f; display: inline-block; flex: none; }
+.twod12.acard.d2 .ap-ac.na .tri, .twod12.acard.d2 .ap-ac.na .pg { opacity: .55; }
+/* 6. the Flavor, at the bottom under ◆ ◆ ◆ */
+.twod12.acard.d2 .ap-flav { font-style: italic; font-size: 12.5px; text-align: center; display: flex; flex-direction: column; gap: 3px; color: #5d5446; }
+.twod12.acard.d2 .ap-flav .dv { display: flex; align-items: center; gap: 6px; font-size: 9px; font-style: normal; color: #d9902f; }
+.twod12.acard.d2 .ap-flav .dv::before, .twod12.acard.d2 .ap-flav .dv::after { content: ""; flex: 1; height: 1px; background: #d9b26a; }
+/* 7. the ruler line (Designer mode only) */
+.twod12.acard.d2 .ap-ruler { border-top: 1px dashed #a99f8a; padding-top: 5px; font-size: 11.5px; color: #5d5446; }
+.twod12.acard.d2 .ap-ruler b { color: #3a3329; margin-right: 4px; }
+/* the older pieces kept on the card (Setup, Prerequisites, prose, "Modifies", the line of an Action with no roll) */
+.twod12.acard.d2 > .trow { color: #26241f; font-size: 13px; }
+.twod12.acard.d2 .iblock { border-top: 1px dashed #d9b26a; }
+.twod12.acard.d2 .ac-changed { font-size: 12px; }

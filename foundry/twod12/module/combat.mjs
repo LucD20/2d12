@@ -11,6 +11,7 @@ import { performCheck, esc, combineRolls } from "./roll.mjs";
 import { TWOD12 } from "./config.mjs";
 import { forgetRestored } from "./effects.mjs";
 import { unset } from "./util.mjs";   // v0.0.277: removing a key without the legacy "-=" syntax
+import { payReaction } from "./sheetmodel.mjs";
 const { DialogV2 } = foundry.applications.api;
 const F = "twod12";
 const warn = m => ui.notifications.warn(m);
@@ -45,7 +46,7 @@ export const apPerTurn = combatant => {
 /** The Reaction AP a creature has (0 or 1): regained with its AP, spent only on Reactions. */
 export const getRAP = c => Math.max(0, Math.min(REACTION_AP, Math.trunc(Number(c?.getFlag(F, "rap"))) || 0));
 /** Pure: how a Reaction's cost is paid: the Reaction AP first, then AP (kept from the turn, or the turn's own). { fromRap, fromAp } */
-export const payReaction = (cost, ap, rap) => { const fromRap = Math.min(Math.max(0, rap), Math.max(0, cost)); return { fromRap, fromAp: Math.max(0, cost - fromRap) }; };
+export { payReaction };   // v0.0.297: the one AP rule lives in sheetmodel.mjs (pure), with versionCant
 /** The Stage of a combatant's creature (for the Guard an unspent AP gives). */
 const stageOfC = c => Math.max(1, Math.min(3, Number(c?.actor?.system?.stage) || 1));
 

@@ -137,7 +137,18 @@ export function apPips(ap, regained, slowed = 0) {
   return [...Array.from({ length: a }, () => ({ k: "on" })), ...Array.from({ length: r - a }, () => ({ k: "spent" })), ...Array.from({ length: s }, () => ({ k: "slowed" }))];
 }
 
-/** The Escalation rungs: "1 · <passive>", "2 · <passive>", "3 · <passive> + Apex"; lit up to the level. names: { 1: [...], 2: [...], 3: [...] }. */
+/** How a Reaction's cost is paid: the Reaction AP first, the rest from the AP (moved here from combat.mjs in v0.0.297; combat.mjs re-exports it). */
+export const payReaction = (cost, ap, rap) => { const fromRap = Math.min(Math.max(0, rap), Math.max(0, cost)); return { fromRap, fromAp: Math.max(0, cost - fromRap) }; };
+/**
+ * v0.0.297 (PACK ACTION-PREVIEW): why a cost can't be paid now ("" = it can): the one AP check of the sheet's rows, the card's Version buttons
+ * and the roll dialog. ap: the AP left; rap: the Reaction AP (a Reaction only).
+ */
+export function versionCant(cost, ap, rap = 0, reaction = false) {
+  const have = Math.max(0, Number(ap) || 0), r = reaction ? Math.max(0, Number(rap) || 0) : 0;
+  return payReaction(Math.max(0, Number(cost) || 0), have, r).fromAp > have ? `Not enough AP: ${have} left${reaction ? ` and ${r} Reaction AP` : ""}` : "";
+}
+
+/** The Escalation rungs: "1 · <passive>","2 · <passive>", "3 · <passive> + Apex"; lit up to the level. names: { 1: [...], 2: [...], 3: [...] }. */
 export function escRungs(level, names = {}, apex = false) {
   const now = Math.max(0, Math.trunc(Number(level)) || 0);
   return [1, 2, 3].map(n => {

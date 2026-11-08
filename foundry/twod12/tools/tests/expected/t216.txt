@@ -1,0 +1,30 @@
+--- the Version buttons (one AP check with the row and the roll dialog: sheetmodel.mjs versionCant)
+Smite, 2 AP left: Use · 1 AP | Use · 2 AP | Use · 3 AP [struck: Not enough AP: 2 left]
+Smite, out of combat: Use · 1 AP | Use · 2 AP | Use · 3 AP | a free use: Use · 3 AP
+a 1R Reaction, 0 AP and 1 Reaction AP: Use · 1R | 2R: Use · 2R [struck: Not enough AP: 0 left and 1 Reaction AP]
+payReaction kept (combat.mjs re-exports it): {"fromRap":1,"fromAp":1} true
+--- labels, Effects lines, the ruler
+Tier labels in full: Tier 1 | Tier 2 | Tier 3 | Critical | Tiers 1–3
+ruler: Designer on: "2 AP 1.40× · 3 AP 1.45×." | off: "" | no worth: ""
+Effects: three Versions: ["1*","2*","3*"] | the same text twice: {"title":"Effects (Tier 2+)","lines":[{"ap":2,"text":"A","badge":false}]} | no Tiers: Effects
+Modifier: Signature +2 | Power −1 | the strip: Smite true a Save Action false no Tiers false
+reasons: Not this Action: not a Strike | Not now: already used this round | cleanLabel: Flanking
+--- Your roll (the roll dialog's own sources, about you only)
+Smite: Signature +2 | Frightened (bane) | Radiant Zeal (pass)
+Word of Radiance: Power +2 | Frightened (bane) | Radiant Zeal (pass, struck: Not this Action: not a Strike)
+a target's chip is left out: true
+--- the card
+no title bar, no Place Area button, no old badge: true
+trait line: Signature Weapon Roll Strike Kind Divine Keywords Divine Power 1 Round
+meta: Targets: One creature / Distance: Weapon ✦ Vs. AD
+head buttons: 2 live, 1 struck: Not enough AP: 2 left | dimmed cells: 3 | struck Effects badge: true | a button uses its Version: true
+labels: Tier 1, Tier 2, Tier 3
+order: traits, meta, table, Effects, Your roll, Flavor: true
+strip: Your roll Signature +2 Frightened + Radiant Zeal | flavor: ◆ ◆ ◆ Your weapon blazes with holy light. | ruler (Designer off): false
+Word of Radiance: the Area is the chip: Area: 2 / 3 Burst true | riders: 4 | Critical row: true | ruler (Designer on): Ruler 2 AP 1.40× (a little under) · 3 AP 1.45× (on target).
+its strip: Your roll Power +2 Frightened + Radiant Zeal | Radiant Zeal struck: true
+Opportunity Attack: meta: Interrupt: A creature within 1 square would leave a square during a Move Action or uses the Stand Action. / Targets: The triggering creature | no table, no strip, no traits: true | Effects: Effects | no AP badge: true | category and Frequency: Basic Action At-will
+the Build tab (no Use): costs, not buttons: 3 | no actor (Generate Action): true
+out of combat with 0 AP: nothing struck: true
+--- the sheet
+the Version button's action: true | the row's AP check shared: true | the roll dialog's too: true | CSS block: true
