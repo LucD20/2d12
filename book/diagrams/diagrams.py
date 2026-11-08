@@ -71,14 +71,14 @@ class Svg:
 # ------------------------------------------------------------------ Flanking (see Flanking in the book)
 def flank_state(tokens):
     """tokens: {name: dict(cell, side, reach)}. A creature threatens the enemies within its Reach (diagonals count 1, 2, 1, 2...).
-    Boons of an attacker against a defender it threatens: 1 for each other creature that threatens the defender (up to 3), minus 1 for each ally of the defender that threatens the attacker (never below 0)."""
+    Boons of an attacker against a defender it threatens: 1 for each other creature that threatens the defender minus 1 for each ally of the defender that threatens the attacker (never below 0), then at most 2."""
     names = list(tokens)
     threat = {a: {b for b in names if tokens[b]['side'] != tokens[a]['side'] and dist(tokens[a]['cell'], tokens[b]['cell']) <= tokens[a].get('reach', 1)} for a in names}
     def boons(a, d):
         if d not in threat[a]: return 0
         others = [x for x in names if x != a and d in threat[x]]
         cancel = [y for y in names if y != d and a in threat[y]]
-        return max(0, min(3, len(others) - len(cancel)))
+        return max(0, min(2, len(others) - len(cancel)))   # the cancels first, then the limit of 2 Field Boons (2026-11-08)
     return dict(threat=threat, boons=boons)
 
 def flank_panel(tokens, rows, cols, caption, S=44, reach_of=None, target=None):
@@ -106,11 +106,11 @@ def flanking_diagrams():
     facts = {}
     # Philip (P) and John (J) are the two allies of the examples; the other allies are "a third ally", "a fourth ally", "a fifth ally": tokens 3, 4, 5
     A = {'John': T((2, 1), 'a', 'J'), 'Philip': T((2, 3), 'a', 'P'), 'G': T((2, 2), 'b', 'G')}
-    g, st = flank_panel(A, 5, 5, 'Two flankers: 1 Boon each', target='G'); out.append(g.figure()); facts['two'] = boons_of(st, A, 'G')
+    g, st = flank_panel(A, 5, 5, 'Two flankers: 1 Field Boon each', target='G'); out.append(g.figure()); facts['two'] = boons_of(st, A, 'G')
     B = {'John': T((2, 1), 'a', 'J'), 'Philip': T((2, 3), 'a', 'P'), 'a3': T((1, 2), 'a', '3'), 'G': T((2, 2), 'b', 'G')}
-    g, st = flank_panel(B, 5, 5, 'Three flankers: 2 Boons each', target='G'); out.append(g.figure()); facts['three'] = boons_of(st, B, 'G')
+    g, st = flank_panel(B, 5, 5, 'Three flankers: 2 Field Boons each (the limit)', target='G'); out.append(g.figure()); facts['three'] = boons_of(st, B, 'G')
     C = dict(B); C['a4'] = T((3, 2), 'a', '4'); C['a5'] = T((3, 3), 'a', '5')
-    g, st = flank_panel(C, 5, 5, 'Four or more: 3 Boons each (the limit)', target='G'); out.append(g.figure()); facts['five'] = boons_of(st, C, 'G')
+    g, st = flank_panel(C, 5, 5, 'Four or more: still 2 Field Boons each', target='G'); out.append(g.figure()); facts['five'] = boons_of(st, C, 'G')
     D = {'John': T((2, 1), 'a', 'J'), 'Philip': T((2, 4), 'a', 'P', 2), 'G': T((2, 2), 'b', 'G')}
     g, st = flank_panel(D, 5, 7, 'Range 2: a weapon with Range 2 flanks from 2 squares away', target='G', reach_of='Philip'); out.append(g.figure()); facts['reach'] = boons_of(st, D, 'G')
     # an ally of the defender next to an attacker cancels a Boon (the picture that led to this rule)
@@ -141,7 +141,7 @@ def cover_panel(origin, att_cell, tgt, walls, S=24, rows=8, cols=9, caption=None
         g.token(creature[0], creature[1], 'X', 'neutral')
     g.token(att_cell[0], att_cell[1], 'A', 'ally')
     g.token(tgt[0], tgt[1], 'T', 'enemy')
-    g.caption = caption or f'{n} blocked corner{"s" if n != 1 else ""}: {cover_name(n)} cover' + (f' ({n} bane{"s" if n != 1 else ""})' if 0 < n < 4 else (' (no Line of Effect)' if n == 4 else ''))
+    g.caption = caption or f'{n} blocked corner{"s" if n != 1 else ""}: {cover_name(n)} cover' + (f' ({n} Field Bane{"s" if n != 1 else ""})' if 0 < n < 3 else (' (Doomed)' if n == 3 else (' (no Line of Effect)' if n == 4 else '')))   # High cover: Doomed (2026-11-08)
     return g, n
 
 def cover_diagrams():
@@ -156,7 +156,7 @@ def cover_diagrams():
     for c in corners(tgt): g.line(o2, c, 'glok'); g.mark(c[0], c[1], 'ok')
     g.line(o2, center(tgt), 'gcenter')
     g.token(mid[0], mid[1], 'X', 'neutral'); g.token(att[0], att[1], 'A', 'ally'); g.token(tgt[0], tgt[1], 'T', 'enemy')
-    g.caption = 'A creature on the line between the centers: Low cover (1 bane), though no corner is blocked'; out.append(g.figure()); facts['creature'] = len(blocked)
+    g.caption = 'A creature on the line between the centers: Low cover (1 Field Bane), though no corner is blocked'; out.append(g.figure()); facts['creature'] = len(blocked)
     # leaning: from a corner of your own square
     att, tgt = (2, 1), (4, 3)
     wall = ((2, 2), (2, 6))

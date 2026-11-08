@@ -1,6 +1,6 @@
 # Boons and Banes, Favored's Doubles: the draft for review
 
-**Status (2026-11-08): a draft for Lucas to review (round 2: his first review applied). Nothing is in rules-src, Foundry or the ruler yet.** The decisions are in `rules-backlog.md`, "MODIFIERS, FLAT BOONS, FAVORED'S DOUBLES". Answer by number ("3: fine; 5: change X").
+**Status: APPLIED to rules-src on 2026-11-08** (after two review rounds; the record of what changed and why). Foundry and the ruler: not yet (foundry-backlog.md "B/B", rules-backlog.md "B/B APPLIED"). The decisions are in `rules-backlog.md`, "MODIFIERS, FLAT BOONS, FAVORED'S DOUBLES". Answer by number ("3: fine; 5: change X").
 Not in this draft: Weapon and Power Modifiers as class values (decided, drafted separately). It changes the "Body Rolls" table of Chapter 1 (section 2b), so that table is left as it is here.
 
 ## What the draft does

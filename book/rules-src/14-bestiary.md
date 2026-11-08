@@ -96,7 +96,7 @@ A condition is worth **steps of rating**: **Mild 1, Moderate 2, Severe 3**. An A
 
 | Severity | Examples |
 |---|---|
-| **Mild** | Hindered (EoT); 1 Bane on its next roll; Pushed, Pulled or Slid (any distance); Bright light on it (it can't hide); Taunted (1 round); Sickened 1; Bleed 1 or 2; Staggered (EoT) on a creature whose Reaction is only Opportunity Attack |
+| **Mild** | Hindered (EoT); 1 Pressure Bane on its next roll; Pushed, Pulled or Slid (any distance); Bright light on it (it can't hide); Taunted (1 round); Sickened 1; Bleed 1 or 2; Staggered (EoT) on a creature whose Reaction is only Opportunity Attack |
 | **Moderate** | Vulnerable 1 (EoT); Immobilized (EoT); Immobilized until it escapes; Enfeebled 1; Dazed 1; Grabbed; Bleed 1d4 to 1d6; Frightened (EoT) of a creature it can already reach; Staggered (EoT) on a creature with a Reaction worth an AP |
 | **Severe** | Prone; Slowed 1; Vulnerable 2 (EoT); Doomed on its next roll; Blinded (EoT); Frightened (EoT) of a creature it must still approach |
 

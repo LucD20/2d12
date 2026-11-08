@@ -78,7 +78,7 @@ At the start of your turn you get back to safety, to a legal square next to the 
 
 ### Prone
 
-- Melee Actions against you gain 1 Boon, and Ranged Actions against you suffer 1 Bane.
+- Melee Actions against you gain 1 Field Boon, and Ranged Actions against you suffer 1 Field Bane.
 - You can't [[Evade]].
 - The only [Move] Actions you can use are [[Chapter 6: Basic Actions|Crawl]] and [[Chapter 6: Basic Actions|Stand]].
 

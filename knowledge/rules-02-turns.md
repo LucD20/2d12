@@ -168,7 +168,7 @@ The same effect never stacks with itself, and bonuses from different effects don
 Four things do add up:
 
 - An effect that says it **increases** a value: "increase your Enfeebled value by 1" (an Action that says "increase your Empowered value by 1" adds to the Empowered you have).
-- **Boons and Banes.**
+- **Boons and Banes**, up to the limit of their name (see [[Named Boons and Banes]]).
 - An effect that **increases** your [[Slowed]] value (being Desperate, Dying or Shattered).
 - The **Guard** your [[Unspent AP]] give you: it adds to the Guard you have.
 
