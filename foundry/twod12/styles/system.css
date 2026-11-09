@@ -3535,3 +3535,38 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.sheet.pcs .autodia.auto-mithril, .twod12.acard.d2 .autodia.auto-mithril, .twod12.chat.cc .autodia.auto-mithril { -webkit-text-stroke: 1.2px #1b2433; filter: saturate(1.5) drop-shadow(0 0 1px rgba(27, 36, 51, .5)); }
 .twod12.acard.d2 .ap-cat .autodia { margin-left: 0; }
 .twod12.sheet.pcs .ps-nm .autodia { display: inline-block; }
+
+/* ==== v0.0.308 (Lucas): the NPC Builder tab. A rating's whole step (pip and number) is one button; the Tags bar above the tables; the Frame rows
+   (Armor type, Reach, Size; the old Stat block); Resist and Weak as chips added by type and number; the Attack damage table with dice. ==== */
+.twod12.sheet.pcs .nb-steps2 { display: flex; gap: 3px; }
+.twod12.sheet.pcs .nb-step { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: stretch; gap: 3px; padding: 3px 0 2px; margin: 0; border: none; border-radius: 3px; background: transparent; cursor: pointer; line-height: 1; box-shadow: none; }
+.twod12.sheet.pcs .nb-step .nb-pip { display: block; height: 8px; border-radius: 2px; background: #e3dccd; }
+.twod12.sheet.pcs .nb-step.on .nb-pip { background: var(--fc); }
+.twod12.sheet.pcs .nb-step span { font-size: 10px; color: #9a9384; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.twod12.sheet.pcs .nb-step.sel span { color: var(--fc); font-weight: 700; }
+.twod12.sheet.pcs .nb-step:hover { background: #f1ece1; }
+.twod12.sheet.pcs .nb-step:hover .nb-pip { outline: 1px solid var(--fc); }
+.twod12.sheet.pcs .nb-step:focus-visible { outline: 2px solid var(--fc); outline-offset: 1px; }
+.twod12.sheet.pcs .nb-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 8px 10px; }
+.twod12.sheet.pcs .nb-chip { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; padding: 2px 4px 2px 8px; border-radius: 3px; background: #1b2433; color: #e6e9ef; white-space: nowrap; }
+.twod12.sheet.pcs .nb-chip.resist { background: #2c5b3f; }
+.twod12.sheet.pcs .nb-chip.weak { background: #8a3a24; }
+.twod12.sheet.pcs .nb-chip.immune { background: #4a463d; }
+.twod12.sheet.pcs .nb-chip a { color: inherit; opacity: 0.75; padding: 0 3px; cursor: pointer; }
+.twod12.sheet.pcs .nb-chip a:hover { opacity: 1; }
+.twod12.sheet.pcs select.nb-add { width: auto; height: 22px; font-size: 11px; color: var(--ps-ink); background: #fff; border: 1px dashed #c9bfab; }
+.twod12.sheet.pcs .nb-tagbar, .twod12.sheet.pcs .nb-frame, .twod12.sheet.pcs .nb-rw, .twod12.sheet.pcs .nb-atkblk { margin-top: 10px; }
+.twod12.sheet.pcs .nb-frows { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.twod12.sheet.pcs .nb-frows .nb-row + .nb-row { border-left: 1px solid #e3dccd; }
+.twod12.sheet.pcs .nb-rwadd { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 0 10px 10px; }
+.twod12.sheet.pcs .nb-rwadd select, .twod12.sheet.pcs .nb-rwadd input { width: auto; height: 24px; color: var(--ps-ink); background: #fff; border: 1px solid #c9bfab; }
+.twod12.sheet.pcs .nb-rwadd input { width: 56px; }
+.twod12.sheet.pcs .nb-rwadd button { flex: none; width: auto; height: 24px; line-height: 22px; padding: 0 10px; font-size: 11px; color: #f4efe4; background: #1b2433; border: none; border-radius: 3px; box-shadow: none; }
+.twod12.sheet.pcs .nb-rwadd button:hover { background: #2a3548; }
+.twod12.sheet.pcs .nb-how { margin: 0; padding: 8px 10px; font-size: 11.5px; line-height: 1.5; color: #4a463d; border-top: 1px solid #e3dccd; }
+.twod12.sheet.pcs .nb-atk td .nb-avg { display: block; font-size: 12px; }
+.twod12.sheet.pcs .nb-atk td .nb-dice { display: block; font-size: 10px; color: var(--ps-mut); white-space: nowrap; }
+.twod12.sheet.pcs .nb-atk th.med, .twod12.sheet.pcs .nb-atk td.med { background: #f3ecdc; }
+.twod12.sheet.pcs .nb-atk tr.alt td.med { background: #ece3cf; }
+.twod12.sheet.pcs ul.nb-rules { margin: 0; padding: 8px 10px 8px 26px; }
+.twod12.sheet.pcs ul.nb-rules li { margin: 2px 0; }

@@ -8,13 +8,8 @@ import { npcBuild } from "./data.mjs";
 const sg = v => (v >= 0 ? `+${v}` : `\u2212${Math.abs(v)}`);
 const fmt = n => String(Math.round(n * 100) / 100);
 
-/** Dice (and flat numbers) that come close to an average, the Modifier taken out: 2.5 -> "1d4". "" when the Modifier alone is enough. */
-const DICE = [["", 0], ["1", 1], ["2", 2], ["1d4", 2.5], ["1d6", 3.5], ["1d8", 4.5], ["1d10", 5.5], ["1d12", 6.5], ["2d6", 7], ["2d8", 9], ["2d10", 11], ["2d12", 13], ["3d8", 13.5], ["3d10", 16.5], ["3d12", 19.5], ["4d10", 22], ["4d12", 26], ["5d10", 27.5], ["5d12", 32.5], ["6d12", 39], ["7d12", 45.5]];
-export function diceFor(avg) {
-  let best = DICE[0];
-  for (const d of DICE) if (Math.abs(d[1] - avg) < Math.abs(best[1] - avg) - 1e-9) best = d;
-  return best[0];
-}
+import { diceFor } from "./sheetmodel.mjs";   // v0.0.308: moved to sheetmodel.mjs (pure; the Builder tab uses it too)
+export { diceFor };
 const withMod = d => (d ? `${d} + [Mod]` : "[Mod]");
 
 /** "Stage 2 (levels 5-7)". */

@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-09 from the repository at: 98e82d1 2026-11-09 v0.0.306: the class window's Modifiers section under the Attribute increases (Lucas); the linear Attribute Defenses idea logged
+Built by tools/knowledge.py on 2026-11-09 from the repository at: ba3803b 2026-11-09 v0.0.307: Vs. an Attribute = 12 + the Attribute (book and Foundry); the Archer's Modifiers in the class window; NPC Weapon / Power Modifier ratings (Bestiary and the Builder)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (73 KB)
+- HANDOFF.md (74 KB)
 - MASTER-PLAN.md (18 KB)
 - open-design-items.md (86 KB)
 - rules-01-roll.md (23 KB)

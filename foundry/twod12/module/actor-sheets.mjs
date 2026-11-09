@@ -34,7 +34,8 @@ import { healthView, donutPoolAt } from "./healthview.mjs";
 import { applySpeedMods } from "./speedmods.mjs";
 import { unloadedWeapon, costText, frequencyText, costGroup, groupRows, GROUP_BY, SORT_BY, sortKeyOf } from "./actionrows.mjs";
 import { buildActionCard, buildFeatureCard } from "./actioncard.mjs";
-import { versionCant } from "./sheetmodel.mjs";
+import { versionCant, dmgModsEdit, dmgModsText } from "./sheetmodel.mjs";
+import { parseDmgMods, SUBS } from "./chatcards.mjs";
 import { enableDragging, dropEffect } from "./drag.mjs";
 import { isFaded, grantMatches, activeGrants } from "./usage.mjs";
 import { chooseRecovery } from "./rest.mjs";
@@ -1360,7 +1361,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
 
 export class NpcSheet extends CharacterSheet {
-  static DEFAULT_OPTIONS = { position: { width: 900, height: 1100 }, actions: { postStatBlock: NpcSheet.postStatBlock, giveLoot: NpcSheet.giveLoot, newAction: NpcSheet.newAction, newWeapon: NpcSheet.newWeapon, setRole: NpcSheet.setRole, setRating: NpcSheet.setRating, setSteadiness: NpcSheet.setSteadiness, levelStep: NpcSheet.levelStep, removeTag: NpcSheet.removeTag, generateAction: NpcSheet.generateAction, browseCompendium: NpcSheet.browseCompendium } };
+  static DEFAULT_OPTIONS = { position: { width: 900, height: 1100 }, actions: { postStatBlock: NpcSheet.postStatBlock, giveLoot: NpcSheet.giveLoot, newAction: NpcSheet.newAction, newWeapon: NpcSheet.newWeapon, setRole: NpcSheet.setRole, setRating: NpcSheet.setRating, setSteadiness: NpcSheet.setSteadiness, levelStep: NpcSheet.levelStep, removeTag: NpcSheet.removeTag, setFrame: NpcSheet.setFrame, addDmgMod: NpcSheet.addDmgMod, removeDmgMod: NpcSheet.removeDmgMod, generateAction: NpcSheet.generateAction, browseCompendium: NpcSheet.browseCompendium } };
   static PARTS = { main: { template: "systems/twod12/templates/actor-sheet-pc.hbs" } };   // v0.0.291 (PACK NPC-SHEET): one template for both sheets
   _groupLabels = ["Actions", "Features", "Items", "Basic"];
   _groupOf(i) {
@@ -1385,6 +1386,28 @@ export class NpcSheet extends CharacterSheet {
     const tags = new Set(this.actor.system.tags ?? []);
     tags.delete(target.dataset.tag);
     await this.actor.update({ "system.tags": [...tags] });
+  }
+
+  /** v0.0.308 (Lucas): the Frame rows (Armor type, Reach, Size) of the Builder tab. */
+  static async setFrame(event, target) {
+    const k = target.dataset.key, v = target.dataset.v;
+    if (k === "armor" && v in TWOD12.armors) return this.actor.update({ "system.armor": v });
+    if (k === "reachBase" || k === "size") return this.actor.update({ [`system.${k}`]: Math.max(1, Number(v) || 1) });
+  }
+
+  /** v0.0.308 (Lucas): Resist / Weak / Immunity from the Builder's row: the damage type and the number beside the button. */
+  static async addDmgMod(event, target) {
+    const row = target.closest(".nb-rwadd"), sub = row?.querySelector(".nb-rwtype")?.value, n = Number(row?.querySelector(".nb-rwn")?.value) || 0, kind = target.dataset.kind;
+    if (!sub || !(sub in SUBS)) return;
+    if (kind !== "immune" && n < 1) return ui.notifications.warn("Type a number of 1 or more.");
+    const next = dmgModsEdit(parseDmgMods(this.actor.system.dmgMods ?? ""), kind, sub, kind === "immune" ? 1 : n);
+    await this.actor.update({ "system.dmgMods": dmgModsText(next, SUBS) });
+  }
+
+  /** A Resist / Weak / Immunity chip's ×. */
+  static async removeDmgMod(event, target) {
+    const next = dmgModsEdit(parseDmgMods(this.actor.system.dmgMods ?? ""), target.dataset.kind, target.dataset.sub, null);
+    await this.actor.update({ "system.dmgMods": dmgModsText(next, SUBS) });
   }
 
   /** Generate Action: a whole Action written like its card, created on this NPC. */

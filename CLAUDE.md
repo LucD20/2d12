@@ -28,7 +28,7 @@ Read first, in this order: **HANDOFF.md** (state), **MASTER-PLAN.md** (the order
 - At the end of every pack, run `python tools/knowledge.py` (in a cloud session too) and **commit knowledge/** with the pack; tell me to press Sync on the Project's GitHub files (or to upload `knowledge-upload/`, which `Update Foundry.cmd` rebuilds and opens). Never edit knowledge/ by hand. When a pack creates a design document still in progress, add it to DESIGN_DOCS in tools/knowledge.py; when one is fully applied to rules-src, remove it.
 
 ## Book conventions that bite (details: rules-src/README.md)
-- Lucas writes **b/b** for "Boons and Banes" (chat and notes only; the book writes the words).
+- Lucas writes **b/b** for "Boons and Banes" and **r/w** for "Resist and Weak" (chat and notes only; the book writes the words).
 - Names in examples: only the list in the README, each used once before any repeats; he/him except Krysta and Lana; **in diagrams "you" is Y** (never O or K). Bane and Boon capitalized. Damage always writes its pool: `[V] 1[W] + [Mod]` ([V] Vigor, [R] Resolve since pack R-core; the old [B] / [M] are still read, don't write them). Write `[Strike] Action` when you mean the trait.
 - Trait groups: Roll, Requires, Kind, Damage, Keywords (`GROUPS` in build_rules.py). Weapon properties have no color. Text colors come from `CLASS_TOKEN` and the CSS variables.
 - Dist for areas: an Emanation is the 1-2-1 shape (a 2 Emanation = 21 squares); a Burst is on a corner. Light uses the same shapes and only matters where the TARGET is.

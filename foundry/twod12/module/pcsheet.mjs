@@ -18,8 +18,9 @@ import { hoursText } from "./sleep.mjs";
 import {
   SHEET_FREQ, SECTION_ORDER, actionSection, vsDefenses, saveDCs, strikesLine, costPill, vsShort, distanceShort, basicUnavailable, nextBanes,
   healthTags, toDown, downState, dominantPool, barSegments, apPips, escRungs, hooksLeft, slotLabel, escSectionRank, slotless, nextLevels, plainEnrichers,
-  rowLines, senseChips, strikePips, ELITE_RUNGS, ratingKeys, npcRow, specialAvg, ratingsAverage, downIn
+  rowLines, senseChips, strikePips, ELITE_RUNGS, ratingKeys, npcRow, specialAvg, ratingsAverage, downIn, diceFor, dmgModChips
 } from "./sheetmodel.mjs";
+import { parseDmgMods, SUBS } from "./chatcards.mjs";
 const F = "twod12";
 const sg = v => (v >= 0 ? `+${v}` : `−${Math.abs(v)}`);
 const clean = n => String(n ?? "").replace(/\s*\(.*\)\s*$/, "");
@@ -493,6 +494,17 @@ export function npcBuilderModel(a) {
     steps: [3, 4, 5, 6, 7].map((v, i) => ({ r: String(v), on: v <= spNow, sel: v === spNow, v, tip: `${SPD[i]}: ${v}` })) };
   const steady = { key: "steadiness", name: "Steadiness", color: FEATURE_COLORS.move, act: "setSteadiness", ratingName: stNow === 0 ? "Default" : "", value: stNow,
     steps: [0, 1, 2, 3, 4].map(v => ({ r: String(v), dv: v, on: v <= stNow, sel: v === stNow, v, tip: v === 0 ? "Default: 0" : `${v}` })) };
+  // v0.0.308 (Lucas): the Frame (the old Stat block) as rows like the others: Armor type, Reach, Size.
+  const ARM = Object.entries(TWOD12.armors), armNow = s.armor || "medium", reachNow = Math.max(1, Number(s.reachBase) || 1), sizeNow = Number(s.size) || 3;
+  const frameRow = (key, name, list, now, ratingName, value) => ({ key, name, color: FEATURE_COLORS.move, ratingName, value,
+    steps: list.map(([v, lab, tip], i) => ({ r: String(v), on: list.findIndex(x => String(x[0]) === String(now)) >= i, sel: String(v) === String(now), v: lab, tip })) });
+  const frame = [
+    frameRow("armor", "Armor type", ARM.map(([k, a]) => [k, a.label, `${a.label} armor`]), armNow, "", TWOD12.armors[armNow]?.label ?? ""),
+    frameRow("reachBase", "Reach", [1, 2, 3, 4].map(v => [v, String(v), `Reach ${v}`]), reachNow, reachNow === 1 ? "Default" : "", reachNow),
+    frameRow("size", "Size", [1, 2, 3, 4, 5, 6, 7].map(v => [v, String(v), `${SIZE_NAMES[v]} (${v})`]), sizeNow, SIZE_NAMES[sizeNow] ?? "", sizeNow)
+  ];
+  // v0.0.308 (Lucas): Resist and Weak as chips; added by damage type and number
+  const rw = { chips: dmgModChips(parseDmgMods(s.dmgMods ?? ""), SUBS), types: Object.entries(SUBS).map(([key, v]) => ({ key, label: v[0] })) };
   // the summary: "Down in about" uses the PC damage a turn against a Medium Defense (13) at this Stage (the ruler's numbers, config pcDamageVsDefense)
   const sh = TWOD12.npcRoles.standard.hm, pcDmg = TWOD12.pcDamageVsDefense[13] * (sh[stage - 1][2] / sh[0][2]);
   const pool = (Number(s.bdt) || 0) + (Number(s.mdt) || 0);
@@ -505,7 +517,14 @@ export function npcBuilderModel(a) {
     cols: [[{ title: "Attributes", rows: attrs, grow: 4 }, { title: "Movement", rows: [speed, steady], grow: 2 }, { title: "Weapon Mod", rows: [wmod], grow: 1 }],
       [{ title: "Health", rows: health, grow: 3 }, { title: "Defenses", rows: defs, grow: 3 }, { title: "Power Mod", rows: [pmod], grow: 1 }]],   // v0.0.307 (Lucas): Weapon under Movement, Power under Defenses
     heads: keys.map(k => ({ label: R[k].label, color: RATING_COLORS[k], med: k === "medium" })),
-    attacks: specials.map(([label, sub, x], n) => ({ label, sub, alt: n % 2 === 1, cells: keys.map(k => ({ v: specialAvg(npcRow(role, R, k, stage).basic, x).join(" / "), med: k === "medium" })) }))
+    // v0.0.308 (Lucas: "more intuitive"): each cell gives the average and the dice to write with this creature's Weapon Modifier ([Mod] taken out),
+    // the tooltip the Power Modifier's for a Vs. WD attack
+    frame, rw, roleLabel: role.label, modLabel: `Weapon Modifier (${sg2(Number(s.weaponMod) || 0)})`, powerMod: sg2(Number(s.powerMod) || 0),
+    attacks: specials.map(([label, sub, x], n) => ({ label, sub, alt: n % 2 === 1, cells: keys.map(k => {
+      const avg = specialAvg(npcRow(role, R, k, stage).basic, x), wm = Number(s.weaponMod) || 0, pm = Number(s.powerMod) || 0;
+      const dice = m => avg.map(v => { const d = diceFor(v - m); return !d ? `${m}` : /^\d+$/.test(d) ? `${Number(d) + m}` : `${d}+${m}`; }).join(" / ");
+      return { v: avg.join(" / "), dice: dice(wm), med: k === "medium", tip: `${R[k].label} ${label}: average ${avg.join(" / ")} (Tier 2 / Tier 3). With the Weapon Modifier: ${dice(wm)}. Vs. WD, with the Power Modifier: ${dice(pm)}.` };
+    }) }))
   };
 }
 

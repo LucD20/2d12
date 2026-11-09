@@ -20,6 +20,6 @@ Strikes left (0, 1, 3 used): ◆◆◆ ◆◆◇ ◇◇◇
 senses: ["Sight","Hearing 10"] ["Dark Sight","Hearing 10"] ["Dim-light Sight","Deaf","Tremorsense 6"]
 the Elite's ladder: 1 · first attack +1 Boon | 2 · Round Special ×2 | 3 · Encounter Special back
 --- the template and the CSS
-NPC tabs: true | the Builder's steps: true | Post stat block (GM): true | Give to a PC: true
+NPC tabs: true | the Builder's steps (v0.0.308: pip and number one button): true | Post stat block (GM): true | Give to a PC: true
 the Strike line on rows: true | two lines on a Basic button: true | 3px corners: true | no row tooltips: true
 the Basic attack rating on the Action: true true

@@ -385,6 +385,11 @@
             <div class="nb-stat"><span>AP</span><b>{{ap}}</b></div>
           </div>
           <div class="nb-sum">{{#each summary}}<div><span>{{k}}</span><b>{{v}}</b></div>{{/each}}</div>
+          {{!-- v0.0.308 (Lucas): the Tags first, above every table (some Tags will change the numbers) --}}
+          <div class="ps-block nb-tagbar"><div class="ps-bh"><b>Tags</b><span class="ps-bsub">what the creature is (Profane, Undead...): Actions and rules can ask for them</span></div>
+            <div class="nb-chips">{{#each @root.npcTags.have}}<span class="nb-chip">{{label}}<a data-action="removeTag" data-tag="{{key}}" aria-label="Remove {{label}}" data-tooltip="Remove">&times;</a></span>{{else}}<span class="ps-mut">No Tags.</span>{{/each}}
+              {{#if @root.npcTags.add.length}}<select class="tagadd nb-add" aria-label="Add a Tag"><option value="">+ Tag</option>{{#each @root.npcTags.add}}<option value="{{key}}">{{label}}</option>{{/each}}</select>{{/if}}</div>
+          </div>
           <div class="nb-cols">
             {{#each cols}}
             <div class="nb-col">
@@ -393,8 +398,7 @@
                 {{#each rows}}
                 <div class="nb-row" style="--fc:{{color}}">
                   <div class="nb-rh"><b class="nb-nm">{{name}}</b><span class="nb-rt">{{ratingName}}</span><b class="nb-val">{{value}}</b></div>
-                  <div class="nb-steps">{{#each steps}}<button type="button" class="{{#if on}}on{{/if}}" data-action="{{../act}}" data-key="{{../key}}" data-rating="{{r}}" data-v="{{r}}" data-tooltip="{{tip}}" aria-label="{{../name}}: {{tip}}" aria-pressed="{{#if sel}}true{{else}}false{{/if}}"></button>{{/each}}</div>
-                  <div class="nb-vals">{{#each steps}}<span class="{{#if sel}}sel{{/if}}">{{v}}</span>{{/each}}</div>
+                  <div class="nb-steps2">{{#each steps}}<button type="button" class="nb-step{{#if on}} on{{/if}}{{#if sel}} sel{{/if}}" data-action="{{../act}}" data-key="{{../key}}" data-rating="{{r}}" data-v="{{r}}" data-tooltip="{{tip}}" aria-label="{{../name}}: {{tip}}" aria-pressed="{{#if sel}}true{{else}}false{{/if}}"><i class="nb-pip"></i><span>{{v}}</span></button>{{/each}}</div>
                 </div>
                 {{/each}}
               </div>
@@ -402,22 +406,29 @@
             </div>
             {{/each}}
           </div>
-          <div class="ps-block"><div class="ps-bh"><b>Attacks</b><span class="ps-bsub">Tier 2 / Tier 3</span></div>
-            <table class="nb-atk"><thead><tr><th></th>{{#each heads}}<th style="color:{{color}}"{{#if med}} class="med"{{/if}}>{{label}}</th>{{/each}}</tr></thead>
-              <tbody>{{#each attacks}}<tr{{#if alt}} class="alt"{{/if}}><td><b>{{label}}</b><br><small>{{sub}}</small></td>{{#each cells}}<td{{#if med}} class="med"{{/if}}>{{v}}</td>{{/each}}</tr>{{/each}}</tbody></table>
-            <div class="nb-rules"><b>Area Save Actions:</b> about half the damage to each creature in the area (DC 11 + the Modifier). <b>Conditions</b> lower the damage rating: Mild 1 step, Moderate 2, Severe 3. <b>Reactions:</b> a Trigger is one rating stronger than an Action of the same AP; an Interrupt is worth the same.</div>
+          {{!-- v0.0.308 (Lucas): the old Stat block as rows like the others; Resist and Weak as chips --}}
+          <div class="ps-block nb-frame"><div class="ps-bh"><b>Frame</b><span class="ps-bsub">for rules and Talents that ask; never its Defenses (those come from the ratings)</span></div>
+            <div class="nb-frows">{{#each frame}}
+              <div class="nb-row" style="--fc:{{color}}">
+                <div class="nb-rh"><b class="nb-nm">{{name}}</b><span class="nb-rt">{{ratingName}}</span><b class="nb-val">{{value}}</b></div>
+                <div class="nb-steps2">{{#each steps}}<button type="button" class="nb-step{{#if on}} on{{/if}}{{#if sel}} sel{{/if}}" data-action="setFrame" data-key="{{../key}}" data-v="{{r}}" data-tooltip="{{tip}}" aria-label="{{../name}}: {{tip}}" aria-pressed="{{#if sel}}true{{else}}false{{/if}}"><i class="nb-pip"></i><span>{{v}}</span></button>{{/each}}</div>
+              </div>{{/each}}
+            </div>
+          </div>
+          <div class="ps-block nb-rw"><div class="ps-bh"><b>Resist and Weak</b><span class="ps-bsub">Resist lowers that type's damage by its number, Weak raises it; Immunity ignores it</span></div>
+            <div class="nb-chips">{{#each rw.chips}}<span class="nb-chip {{kind}}">{{label}}<a data-action="removeDmgMod" data-kind="{{kind}}" data-sub="{{sub}}" aria-label="Remove {{label}}" data-tooltip="Remove">&times;</a></span>{{else}}<span class="ps-mut">None.</span>{{/each}}</div>
+            <div class="nb-rwadd"><select class="nb-rwtype" aria-label="Damage type">{{#each rw.types}}<option value="{{key}}">{{label}}</option>{{/each}}</select>
+              <input type="number" class="nb-rwn" min="1" max="20" value="5" aria-label="Amount">
+              <button type="button" data-action="addDmgMod" data-kind="resist">+ Resist</button><button type="button" data-action="addDmgMod" data-kind="weak">+ Weak</button><button type="button" data-action="addDmgMod" data-kind="immune" data-tooltip="Immunity takes no number">+ Immunity</button></div>
+          </div>
+          <div class="ps-block nb-atkblk"><div class="ps-bh"><b>Attack damage</b><span class="ps-bsub">what to write on its Actions</span></div>
+            <p class="nb-how">Find the row of the Action's <b>AP</b>, then the column of <b>how hard it hits</b> (<b>Medium</b> is normal for a {{roleLabel}}). Each cell is the average damage on <b>Tier 2 / Tier 3</b>, and below it dice that give it with this creature's {{modLabel}}: write those on the Action.</p>
+            <table class="nb-atk"><thead><tr><th>Action</th>{{#each heads}}<th style="color:{{color}}"{{#if med}} class="med"{{/if}}>{{label}}</th>{{/each}}</tr></thead>
+              <tbody>{{#each attacks}}<tr{{#if alt}} class="alt"{{/if}}><td><b>{{label}}</b><br><small>{{sub}}</small></td>{{#each cells}}<td{{#if med}} class="med"{{/if}} data-tooltip="{{tip}}"><b class="nb-avg">{{v}}</b><small class="nb-dice">{{dice}}</small></td>{{/each}}</tr>{{/each}}</tbody></table>
+            <ul class="nb-rules"><li><b>Vs. WD:</b> the same table; the dice use the Power Modifier ({{powerMod}}) instead.</li><li><b>Conditions</b> cost damage: a Mild one takes the column 1 step to the left, Moderate 2, Severe 3.</li><li><b>Area Save Actions:</b> about half the damage, to each creature in the area (DC 11 + the Modifier).</li><li><b>Reactions:</b> a Trigger deals one column more than an Action of the same AP; an Interrupt the same.</li></ul>
           </div>
         </div>
         {{/with}}
-        <div class="ps-block nb-more"><div class="ps-bh"><b>Stat block</b></div>
-          <div class="nb-form">
-            <label>Armor type <select name="system.armor">{{selectOptions armorTypeChoices selected=system.armor}}</select></label>
-            <label>Reach <input type="number" min="1" name="system.reachBase" value="{{system.reachBase}}"></label>
-            <label>Size <input type="number" min="1" max="7" name="system.size" value="{{system.size}}"></label>
-            <label class="wide" data-tooltip="Resist, Weak and Immunity, separated by commas">Resist / Weak <input type="text" name="system.dmgMods" value="{{system.dmgMods}}" placeholder="Resist 5 Fire, Weak 2 Holy"></label>
-            <div class="wide nb-tags"><span>Tags</span>{{#each npcTags.have}}<span class="ps-sense dark">{{label}}<a data-action="removeTag" data-tag="{{key}}" aria-label="Remove {{label}}">&times;</a></span>{{/each}}{{#if npcTags.add.length}}<select class="tagadd" aria-label="Add a tag"><option value="">+ tag</option>{{#each npcTags.add}}<option value="{{key}}">{{label}}</option>{{/each}}</select>{{/if}}</div>
-          </div>
-        </div>
       </div>
 
       <div class="tab" data-tab="loot">

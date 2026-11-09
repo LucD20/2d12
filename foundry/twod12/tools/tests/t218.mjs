@@ -76,3 +76,19 @@ console.log("--- wiring: the class window's picks", src("module/classwindow.mjs"
   "| the Builder's Weapon Mod / Power Mod rows", src("module/pcsheet.mjs").includes('{ title: "Weapon Mod", rows: [wmod]') && src("module/pcsheet.mjs").includes('{ title: "Power Mod", rows: [pmod]'),
   "| the Archer's fixed row", src("module/classwindow.mjs").includes("const fixedRow = level === 1"),
   "| 12 + Attribute in defense.mjs", src("module/defense.mjs").includes("dc = vb + attr;"), "| no DialogV2 in the migration", !src("module/migrater.mjs").split("export async function migrateMod")[1].includes("DialogV2"));
+
+console.log("--- v0.0.308: the Builder tab (Lucas)");
+const SM = await import(ROOTURL + "module/sheetmodel.mjs");
+const CCm = await import(ROOTURL + "module/chatcards.mjs");
+let rw = CCm.parseDmgMods("Resist 5 Fire, Weak 2 Holy");
+console.log("chips:", JSON.stringify(SM.dmgModChips(rw, CCm.SUBS)));
+rw = SM.dmgModsEdit(rw, "resist", "Fi", 3); rw = SM.dmgModsEdit(rw, "weak", "Co", 4); rw = SM.dmgModsEdit(rw, "immune", "Ps", 1);
+console.log("Resist Fire 3 replaces 5, + Weak 4 Cold, + Immunity Psychic:", SM.dmgModsText(rw, CCm.SUBS));
+rw = SM.dmgModsEdit(rw, "weak", "Ho", null); rw = SM.dmgModsEdit(rw, "immune", "Ps", null);
+const back = SM.dmgModsText(rw, CCm.SUBS);
+console.log("Weak Holy and Immunity removed:", back, "| read back the same:", SM.dmgModsText(CCm.parseDmgMods(back), CCm.SUBS) === back);
+console.log("dice for an average, [Mod] out:", [[4, 2], [7.5, 2], [13, 3], [2, 2]].map(([a, m]) => `${a} with +${m}: ${SM.diceFor(a - m) || "-"}`).join(" | "));
+const tpl8 = src("templates/actor-sheet-pc.hbs"), sh8 = src("module/actor-sheets.mjs");
+console.log("Tags above the tables:", tpl8.indexOf("nb-tagbar") > 0 && tpl8.indexOf("nb-tagbar") < tpl8.indexOf('<div class="nb-cols">'), "| the old Stat block gone:", !tpl8.includes("nb-more"),
+  "| Frame rows:", tpl8.includes('data-action="setFrame"') && sh8.includes("static async setFrame"), "| Resist / Weak add and remove:", sh8.includes("static async addDmgMod") && sh8.includes("static async removeDmgMod"),
+  "| the attack cells carry dice:", tpl8.includes('<small class="nb-dice">{{dice}}</small>'));

@@ -311,3 +311,32 @@ export const ELITE_RUNGS = [
   { n: 2, label: "2 · Round Special ×2", tip: "Escalation 2: it can use its Round Special Action twice a round." },
   { n: 3, label: "3 · Encounter Special back", tip: "Escalation 3: it gets its Encounter Special Action back, once." }
 ];
+
+/** Dice (and flat numbers) that come close to an average, the Modifier taken out: 2.5 -> "1d4". "" when the Modifier alone is enough. */
+const DICE = [["", 0], ["1", 1], ["2", 2], ["1d4", 2.5], ["1d6", 3.5], ["1d8", 4.5], ["1d10", 5.5], ["1d12", 6.5], ["2d6", 7], ["2d8", 9], ["2d10", 11], ["2d12", 13], ["3d8", 13.5], ["3d10", 16.5], ["3d12", 19.5], ["4d10", 22], ["4d12", 26], ["5d10", 27.5], ["5d12", 32.5], ["6d12", 39], ["7d12", 45.5]];
+export function diceFor(avg) {
+  let best = DICE[0];
+  for (const d of DICE) if (Math.abs(d[1] - avg) < Math.abs(best[1] - avg) - 1e-9) best = d;
+  return best[0];
+}
+
+/* v0.0.308 (Lucas): Resist and Weak on the Builder tab as chips. The text field stays the source ("Resist 5 Fire, Weak 2 Holy, Immunity Cold";
+ * chatcards.mjs parseDmgMods reads it). parsed: parseDmgMods' { resist, weak, immune }; subs: chatcards SUBS (code -> [name, ink]). */
+export function dmgModsText(parsed, subs) {
+  const nm = c => subs?.[c]?.[0] ?? c;
+  return [...Object.entries(parsed?.resist ?? {}).map(([c, n]) => `Resist ${n} ${nm(c)}`), ...Object.entries(parsed?.weak ?? {}).map(([c, n]) => `Weak ${n} ${nm(c)}`),
+    ...(parsed?.immune ?? []).map(c => `Immunity ${nm(c)}`)].join(", ");
+}
+export function dmgModChips(parsed, subs) {
+  const nm = c => subs?.[c]?.[0] ?? c;
+  return [...Object.entries(parsed?.resist ?? {}).map(([c, n]) => ({ kind: "resist", sub: c, label: `Resist ${n} ${nm(c)}` })),
+    ...Object.entries(parsed?.weak ?? {}).map(([c, n]) => ({ kind: "weak", sub: c, label: `Weak ${n} ${nm(c)}` })),
+    ...(parsed?.immune ?? []).map(c => ({ kind: "immune", sub: c, label: `Immunity ${nm(c)}` }))];
+}
+/** Adds (n > 0) or removes (n = null) one entry; a new Resist or Weak of a type replaces the old one. Returns a new parsed object. */
+export function dmgModsEdit(parsed, kind, sub, n = null) {
+  const out = { resist: { ...(parsed?.resist ?? {}) }, weak: { ...(parsed?.weak ?? {}) }, immune: [...(parsed?.immune ?? [])] };
+  if (kind === "immune") { out.immune = out.immune.filter(c => c !== sub); if (n !== null) out.immune.push(sub); }
+  else if (kind === "resist" || kind === "weak") { delete out[kind][sub]; if (n !== null && Number(n) > 0) out[kind][sub] = Math.trunc(Number(n)); }
+  return out;
+}
