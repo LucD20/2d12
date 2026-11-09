@@ -23,7 +23,7 @@ import { notesFor, useOnceModifiers, resolveModifiers, applyEffects, originInfo,
 import { spendAP, combatantOf } from "./combat.mjs";
 import { computeDC } from "./defense.mjs";
 import { markUsed, activeGrants, atWillUses, grantMatches } from "./usage.mjs";   // (markAtWill: imported where used)
-import { tierProbs, perDieDelta, topStep } from "./calc.mjs";
+import { tierProbs, perDieDelta, topStep, bbCount } from "./calc.mjs";
 import { squaresBetween, rangeBand } from "./move.mjs";
 import { setupFor } from "./setup.mjs";
 import { coverBetween, coverWhy } from "./cover.mjs";
@@ -129,7 +129,8 @@ async function pickWeapon(actor, item, candidates = null, chosenId = "") {
 const showOdds = () => { try { return game.settings.get("twod12", "designerMode") === true; } catch (e) { return false; } };   // v0.0.283: the odds only in Designer mode
 /** For testing: the chances of each tier for the roll that was just made (with its boons, banes and Favored / Doomed). */
 const oddsText = chk => {
-  const p = tierProbs(chk.mod + chk.adj, chk.dc, (chk.manualBoons ?? 0) + (chk.sources ?? []).reduce((s, x) => s + (x.boons ?? 0), 0), (chk.manualBanes ?? 0) + (chk.sources ?? []).reduce((s, x) => s + (x.banes ?? 0), 0), chk.state ?? "");
+  // v0.0.301 (PACK BB): the roll's own count (after the limits and the five) and its state
+  const p = tierProbs(chk.mod + chk.adj + (chk.bo ?? 0) - (chk.ba ?? 0), chk.dc, 0, 0, chk.state ?? "");
   const pct = x => `${Math.round(x * 100)}%`;
   return { p, text: `T1 ${pct(p[0])} \u00b7 T2 ${pct(p[1])} \u00b7 T3 ${pct(p[2])}`, html: `T1 ${pct(p[0])} &middot; T2 ${pct(p[1])} &middot; <b>T3 ${pct(p[2])}</b>` };
 };
@@ -160,8 +161,8 @@ export const sqText = d => (/^\d+$/.test(String(d ?? "").trim()) ? `${String(d).
 /** One creature's row of the card from a check. */
 export function ccRowOf(c, name, uuid, chip = "") {
   return {
-    name, uuid, total: c.total, dc: c.dc, dcLabel: c.dcLabel ?? "DC", tier: c.tier, base: c.base ?? c.tier, crit: !!c.crit, doubles: !!c.doubles, state: c.state ?? "", forced: !!c.forced,
-    d1: c.d1, d2: c.d2, dropped: c.dropped ?? null, boonFaces: c.boonFaces ?? [], baneFaces: c.baneFaces ?? [], sources: (c.sources ?? []).map(x => ({ name: x.name, boons: x.boons ?? 0, banes: x.banes ?? 0 })),
+    name, uuid, total: c.total, dc: c.dc, dcLabel: c.dcLabel ?? "DC", tier: c.tier, base: c.base ?? c.tier, crit: !!c.crit, doubles: !!c.doubles, state: c.state ?? "", forced: !!c.forced, triple: !!c.triple, five: c.five ?? "",
+    d1: c.d1, d2: c.d2, dropped: c.dropped ?? null, boonFaces: c.boonFaces ?? [], baneFaces: c.baneFaces ?? [], sources: (c.sources ?? []).map(x => ({ name: x.name, boons: x.boons ?? 0, banes: x.banes ?? 0, bb: x.bb ?? "" })),
     boons: (c.boonFaces ?? []).length, banes: (c.baneFaces ?? []).length,
     mods: [{ v: Number(c.mod) || 0, label: String(chip ?? "").replace(/\s*Modifier$/i, "") || "Modifier" }, { v: Number(c.adj) || 0, label: c.adjLabel || "Situational" }]
   };
@@ -258,7 +259,7 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
   const bb = (kind, label, icon, n) =>
     `<button type="button" class="bbchip ${kind === "boons" ? "boon" : "bane"} ${n ? "on" : ""}" data-bb="${kind}" data-tooltip="Left-click: +1. Right-click: \u22121."><i class="fa-solid fa-chevron-${icon}"></i><span>${label}</span><b>${n}</b></button><input type="hidden" name="${kind}" value="${n}">`;
   const state = (name, label, cls, icon) =>
-    `<label class="fxchip ${cls}" data-tooltip="${name === "favored" ? "Roll 3d12 and keep the two highest" : (defaults.doomedWhy ?? "Roll 3d12 and keep the two lowest")}"><input type="checkbox" name="${name}" ${(name === "doomed" && defaults.doomed) || (name === "favored" && defaults.favored) ? "checked" : ""}><i class="fa-solid fa-chevron-${icon}"></i><span>${label}</span></label>`;
+    `<label class="fxchip ${cls}" data-tooltip="${name === "favored" ? "Roll 3d12 and keep the two highest; any pair of the three is Doubles, three of a kind a Critical" : (defaults.doomedWhy ?? "Roll 3d12 and keep the two lowest")}"><input type="checkbox" name="${name}" ${(name === "doomed" && defaults.doomed) || (name === "favored" && defaults.favored) ? "checked" : ""}><i class="fa-solid fa-chevron-${icon}"></i><span>${label}</span></label>`;
   const stepChip = (name, label, icon, cls, n) =>
     `<button type="button" class="bbchip ${cls} ${n ? "on" : ""}" data-bb="${name}" data-tooltip="Left-click: +1. Right-click: \u22121. ${name === "empowered" ? "Empowered N adds N to every damage die." : "Enfeebled N subtracts N from every damage die (each die still deals at least 1)."}${defaults.empowerWhy ? ` \u2014 ${defaults.empowerWhy}` : ""}"><i class="fa-solid fa-chevron-${icon}"></i><span>${label}</span><b>${n}</b></button><input type="hidden" name="${name}" value="${n}">`;
   // v0.0.187: Bonus Damage from effects and passives (Killer's Focus) is a chip: unticked, it isn't added and its effect isn't used up.
@@ -626,19 +627,21 @@ export async function useAction(actor, item, opts = {}) {
       if (cov?.noLoE) { skipped.push(`${tk.name}: no Line of Effect`); continue; }
       const covIgn = cov?.banes ? coverIgnored(actor, ["", "low", "medium", "high"][cov.banes] ?? "", useTraits, opts.grant?.effect?.id ?? null) : [];   // v0.0.266 (Aim): a cover level the Action ignores; v0.0.270: a grant's own use only
       if (cov?.banes && covIgn.length) coverNotices.push({ text: `${cov.label} ignored`, icon: "fa-shield-halved", why: `${covIgn.join(", ")}: ${cov.label} gives no Bane against ${tk.name}`, for: a.uuid });
-      else if (cov?.banes) extraMods.push({ id: `syn:cover|${a.uuid}`, name: `${cov.label} (${tk.name})`, boons: 0, banes: cov.banes, match: true, predicate: `Against ${tk.name}: ${coverWhy(cov)}` });
+      // v0.0.301 (PACK BB; Ch. 3 Cover): Low 1 and Medium 2 Field Banes; High cover makes the roll Doomed (and gives no Field Banes)
+      else if (cov?.banes >= 3) { row.doomed = true; row.note.push({ text: "High cover", cls: "bane" }); }
+      else if (cov?.banes) extraMods.push({ id: `syn:cover|${a.uuid}`, name: `${cov.label} (${tk.name})`, boons: 0, banes: cov.banes, bb: "field", match: true, predicate: `Against ${tk.name}: ${coverWhy(cov)}` });
       if (it.area && selfToken) {   // v0.0.292 (PACK ROLL-DIALOG): an Area ignores Senses (Ch. 7): Hidden and Obscured show as n/a
         const pv = perceive(selfToken, tk, { loe: !cov?.noLoE }), lv = pv.level === "clear" ? "" : pv.level;
         if (lv === "hidden" || lv === "unsensed") extraMods.push({ id: `syn:hidden-na|${a.uuid}`, name: lv === "hidden" ? "Hidden" : "Unsensed", boons: 0, banes: 1, match: false, naWhy: "an Area ignores Senses", predicate: `You perceive ${tk.name} as ${lv === "hidden" ? "Hidden" : "Unsensed"}` });
-        else if (lv === "obscured") extraMods.push({ id: `syn:obscured-na|${a.uuid}`, name: "Obscured", boons: 0, banes: 1, match: false, naWhy: "an Area ignores Senses", predicate: `You perceive ${tk.name} as Obscured` });
+        else if (lv === "obscured") extraMods.push({ id: `syn:obscured-na|${a.uuid}`, name: "Obscured", boons: 0, banes: 1, bb: "field", match: false, naWhy: "an Area ignores Senses", predicate: `You perceive ${tk.name} as Obscured` });
       }
       if (!it.area && selfToken) {
         const pv = perceive(selfToken, tk, { loe: !cov?.noLoE }), seenT = pv.level === "clear" ? "" : pv.level;
         if (seenT === "unsensed") { skipped.push(`${tk.name}: Unsensed`); continue; }
-        if (seenT === "obscured") extraMods.push({ id: `syn:obscured|${a.uuid}`, name: `Obscured (${tk.name})`, boons: 0, banes: 1, match: true, predicate: `You perceive ${tk.name} as Obscured: ${pv.why}` });
+        if (seenT === "obscured") extraMods.push({ id: `syn:obscured|${a.uuid}`, name: `Obscured (${tk.name})`, boons: 0, banes: 1, bb: "field", match: true, predicate: `You perceive ${tk.name} as Obscured: ${pv.why}` });
         if (seenT === "hidden") { row.doomed = true; row.note.push({ text: "Hidden", cls: "bane" }); }
         const pm = perceive(tk, selfToken, { loe: !coverBetween(tk, selfToken)?.noLoE }), mineT = pm.level === "clear" ? "" : pm.level;
-        if (mineT === "obscured") extraMods.push({ id: `syn:obscured-you|${a.uuid}`, name: `Obscured by ${tk.name} (1 Boon)`, boons: 1, banes: 0, match: true, predicate: `${tk.name} perceives you as Obscured: ${pm.why}` });
+        if (mineT === "obscured") extraMods.push({ id: `syn:obscured-you|${a.uuid}`, name: `Obscured by ${tk.name} (1 Field Boon)`, boons: 1, banes: 0, bb: "field", match: true, predicate: `${tk.name} perceives you as Obscured: ${pm.why}` });
         if (mineT === "hidden" || mineT === "unsensed") { row.favored = true; row.note.push({ text: `${mineT === "hidden" ? "Hidden" : "Unsensed"} to it`, cls: "boon" }); }
       }
       if (wUse?.range && selfToken && !isAreaAction) {
@@ -646,15 +649,16 @@ export async function useAction(actor, item, opts = {}) {
         if (band?.out) { skipped.push(`${tk.name}: out of range (${band.squares} squares, maximum ${band.max})`); continue; }
         const rb = band?.banes ? Math.max(0, band.banes - (lessRange.length ? 1 : 0)) : 0;   // "Ignore a Bane: one range Bane less" (Long Draw): far range 0, maximum range 1
         if (rb) extraMods.push({ id: `syn:range|${a.uuid}`, name: `${band.label} (${tk.name})${rb < band.banes ? `, ${lessRange[0]}` : ""}`, boons: 0, banes: rb, match: true, predicate: `${previewWeapon.name}: Range ${wUse.range}` });
-        if (wUse.long && band?.squares <= 1) extraMods.push({ id: `syn:long|${a.uuid}`, name: `Long weapon, adjacent (${tk.name})`, boons: 0, banes: 1, match: true, predicate: `${previewWeapon.name} is Long: 1 bane against adjacent creatures` });
+        if (wUse.long && band?.squares <= 1) extraMods.push({ id: `syn:long|${a.uuid}`, name: `Long weapon, adjacent (${tk.name})`, boons: 0, banes: 1, bb: "field", match: true, predicate: `${previewWeapon.name} is Long: 1 Field Bane against adjacent creatures` });
       }
       if (useTraits.has("melee") && selfToken) { const fm = flankingMod(selfToken, tk, { tag: a.uuid }); if (fm) extraMods.push(fm); }
       if (useTraits.has("weapon") && useTraits.has("ranged") && !noEngagedTarget.length && engagedWithOther(tk, selfToken))
         extraMods.push({
           id: `syn:engaged-target|${a.uuid}`,
-          name: `Engaged (${tk.name}, 1 Bane)`,
+          name: `Engaged (${tk.name}, 1 Field Bane)`,
           boons: 0,
           banes: 1,
+          bb: "field",
           match: true,
           predicate: `${tk.name} is Engaged with a creature other than you: shooting at it is harder`
         });
@@ -676,17 +680,19 @@ export async function useAction(actor, item, opts = {}) {
     } else if (cov?.banes) {
       const covIgn = coverIgnored(actor, ["", "low", "medium", "high"][cov.banes] ?? "", useTraits, opts.grant?.effect?.id ?? null);   // v0.0.266 (Aim); v0.0.270: a grant's own use only
       if (covIgn.length) coverNotices.push({ text: `${cov.label} ignored`, icon: "fa-shield-halved", why: `${covIgn.join(", ")}: ${cov.label} gives no Bane` });
-      else extraMods.push({ id: "syn:cover", name: cov.label, boons: 0, banes: cov.banes, match: true, predicate: coverWhy(cov) });
+      // v0.0.301 (PACK BB): High cover is Doomed and no Field Banes; Low 1, Medium 2 Field Banes
+      else if (cov.banes >= 3) extraMods.push({ id: "syn:cover", name: "High cover (Doomed)", boons: 0, banes: 0, doomed: true, bb: "field", match: true, predicate: `${coverWhy(cov)}: High cover makes the roll Doomed (and gives no Field Banes)` });
+      else extraMods.push({ id: "syn:cover", name: cov.label, boons: 0, banes: cov.banes, bb: "field", match: true, predicate: coverWhy(cov) });
     }
     if (!it.area) { const pv = perceive(selfToken, targetToken, { loe: !cov?.noLoE }); seen = pv.level === "clear" ? "" : pv.level; seenWhy = pv.why; }
     else { const pv = perceive(selfToken, targetToken, { loe: !cov?.noLoE }), lv = pv.level === "clear" ? "" : pv.level;   // v0.0.292: an Area ignores Senses (n/a)
-      if (lv && lv !== "clear") extraMods.push({ id: `syn:${lv === "obscured" ? "obscured" : "hidden"}-na`, name: lv === "hidden" ? "Hidden" : lv === "unsensed" ? "Unsensed" : "Obscured", boons: 0, banes: 1, match: false, naWhy: "an Area ignores Senses", predicate: `You perceive ${targetToken.name} as ${lv}` }); }
+      if (lv && lv !== "clear") extraMods.push({ id: `syn:${lv === "obscured" ? "obscured" : "hidden"}-na`, name: lv === "hidden" ? "Hidden" : lv === "unsensed" ? "Unsensed" : "Obscured", boons: 0, banes: 1, ...(lv === "obscured" ? { bb: "field" } : {}), match: false, naWhy: "an Area ignores Senses", predicate: `You perceive ${targetToken.name} as ${lv}` }); }
     if (seen === "unsensed") {
       if (!game.user.isGM) return ui.notifications.warn(`${targetToken.name} is Unsensed: you can't target it.`);
       const ok = await DialogV2.confirm({ window: { title: item.name }, content: `<p><b>${esc(targetToken.name)}</b> is Unsensed: it can't be targeted.</p><p>Use ${esc(item.name)} anyway (the roll is Doomed)?</p>`, rejectClose: false });
       if (!ok) return;
     }
-    if (seen === "obscured") extraMods.push({ id: "syn:obscured", name: "Target is Obscured (1 Bane)", full: true, boons: 0, banes: 1, match: true, predicate: `You perceive the target as Obscured: ${seenWhy}` });
+    if (seen === "obscured") extraMods.push({ id: "syn:obscured", name: "Target is Obscured (1 Field Bane)", full: true, boons: 0, banes: 1, bb: "field", match: true, predicate: `You perceive the target as Obscured: ${seenWhy}` });
   }
   // How your target perceives you: Obscured gives 1 boon; Hidden or Unsensed make the Action Empowered.
   let mine = "", mineWhy = "";
@@ -694,27 +700,28 @@ export async function useAction(actor, item, opts = {}) {
     if (selfToken) { const pv = perceive(targetToken, selfToken, { loe: !coverBetween(targetToken, selfToken)?.noLoE }); mine = pv.level === "clear" ? "" : pv.level; mineWhy = pv.why; }
     else mine = perceptionOf(actor);
   }
-  if (mine === "obscured" && seen !== "hidden") extraMods.push({ id: "syn:obscured-you", name: "Obscured (1 Boon)", full: true, boons: 1, banes: 0, match: true, predicate: `Your target perceives you as Obscured: ${mineWhy || "status"}` });
+  if (mine === "obscured" && seen !== "hidden") extraMods.push({ id: "syn:obscured-you", name: "Obscured (1 Field Boon)", full: true, boons: 1, banes: 0, bb: "field", match: true, predicate: `Your target perceives you as Obscured: ${mineWhy || "status"}` });
   const unseenYou = (mine === "hidden" || mine === "unsensed") && seen !== "hidden";   // you gain no Favored or boon from its poor perception of you if you perceive it as Hidden (Doomed only)
   const untrainedTarget = !multi && rollsAtOthers && !!dcInfo.untrained;   // the target wears armor beyond its training: Favored
   if (wUse?.range && selfToken && targetToken && !multi && rollsAtOthers && !isAreaAction) {
     const band = rangeBand(squaresBetween(selfToken, targetToken), wUse.range);
     if (band?.out) { outOfRange = `out of range (${band.squares} sq., the maximum is ${band.max}${wUse.thrown ? ", thrown" : ""})`; ui.notifications.warn(`${targetToken.name} is out of range: ${band.squares} squares away, the maximum is ${band.max}${wUse.thrown ? " (thrown)" : ""}.`); }
     else if (band?.banes) { const rb = Math.max(0, band.banes - (lessRange.length ? 1 : 0)); if (rb) extraMods.push({ id: "syn:range", name: `${band.label}${rb < band.banes ? `, ${lessRange[0]}` : ""}`, boons: 0, banes: rb, match: true, predicate: `${previewWeapon.name}: Range ${wUse.range}` }); }
-    if (wUse.long && band && band.squares <= 1) extraMods.push({ id: "syn:long", name: "Long weapon, adjacent", boons: 0, banes: 1, match: true, predicate: `${previewWeapon.name} is Long: 1 bane against adjacent creatures` });
+    if (wUse.long && band && band.squares <= 1) extraMods.push({ id: "syn:long", name: "Long weapon, adjacent", boons: 0, banes: 1, bb: "field", match: true, predicate: `${previewWeapon.name} is Long: 1 Field Bane against adjacent creatures` });
   }
   // Ranged Combat While Engaged: a [Ranged] Action (a ranged Weapon Action, or any Action with the Ranged trait) while you are Engaged has 2 banes; against an Engaged creature, 1 bane (v0.0.169).
   const rangedWeapon = useTraits.has("ranged");
-  // Flanking: [Melee] Actions gain a boon for each other ally that flanks the target (up to 3).
+  // Flanking: [Melee] Actions gain a Field Boon for each other ally that flanks the target (the cancels first, then up to 2).
   if (useTraits.has("melee") && !multi && rollsAtOthers && selfToken && targetToken) { const fm = flankingMod(selfToken, targetToken); if (fm) extraMods.push(fm); }
   if (rangedWeapon && selfToken) {
     if (isEngaged(selfToken) && !ignoredBy(actor, "engagedSelf", useTraits).length) extraMods.push({ id: "syn:engaged", name: "You are Engaged (2 Banes)", boons: 0, banes: 2, match: true, predicate: "Using a [Ranged] Action while you are Engaged is hard" });
     if (!multi && rollsAtOthers && targetToken && !noEngagedTarget.length && engagedWithOther(targetToken, selfToken))   // "Ignore a Bane" (Sharpshooter: [Shot] Actions)
       extraMods.push({
         id: "syn:engaged-target",
-        name: "Target is Engaged (1 Bane)",
+        name: "Target is Engaged (1 Field Bane)",
         boons: 0,
         banes: 1,
+        bb: "field",
         match: true,
         predicate: `${targetToken.name} is Engaged with a creature other than you: shooting at it is harder`
       });
@@ -867,8 +874,8 @@ export async function useAction(actor, item, opts = {}) {
         dc: dcOverride ?? p.dcInfo.dc,
         boons: fxm.boons + manB + ownB,
         banes: fxm.banes + manN + ownN,
-        favored: globalFavored || (pt ? !!pt.favored : p.favored),
-        doomed: globalDoomed || (pt ? !!pt.doomed : p.doomed),
+        favored: globalFavored || (pt ? !!pt.favored : p.favored) || fxm.favored,   // v0.0.301: a source that makes the roll Favored / Doomed (High cover)
+        doomed: globalDoomed || (pt ? !!pt.doomed : p.doomed) || fxm.doomed,
         sources: [...fxm.sources, ...situational(manB + ownB, manN + ownN)],
         manualBoons: manB + ownB,
         manualBanes: manN + ownN
@@ -888,8 +895,8 @@ export async function useAction(actor, item, opts = {}) {
       dc: Number(data.dc) || 13,
       adj: Number(data.mod) || 0,
       adjLabel: adjLabelOf(data),
-      favored: data.favored === "on" || data.reloadshot === "on",
-      doomed: data.doomed === "on",
+      favored: data.favored === "on" || data.reloadshot === "on" || fxm.favored,
+      doomed: data.doomed === "on" || fxm.doomed,   // v0.0.301 (PACK BB): High cover (an old-dialog chip; the roll dialog sends it as Doomed)
       sources: [...fxm.sources, ...situational(manB, manN)],
       manualBoons: manB,
       manualBanes: manN
@@ -1377,13 +1384,12 @@ async function retargetCc(msg, toks) {
     const info = computeDC(item, t.actor, roll.attrKey, src), own = [];
     for (const m of modifierList(actor, traits, [t.actor])) { const id = String(m.id), owner = id.startsWith("syn:") ? (id.split("|")[1] ?? null) : (id.includes("|") ? id.split("|")[0] : null); if (m.match && owner === t.actor?.uuid) own.push(m); }
     if (traits.has("melee") && selfToken) { const fm = flankingMod(selfToken, t); if (fm) own.push(fm); }
-    const sources = [...(roll.general ?? []), ...own.map(m => ({ name: m.name, boons: m.boons ?? 0, banes: m.banes ?? 0 }))];
-    return { name: t.name, uuid: t.document.uuid, dc: info.dc, dcLabel: label(info), boons: sources.reduce((a, x) => a + (x.boons ?? 0), 0) + (roll.manualBoons || 0), banes: sources.reduce((a, x) => a + (x.banes ?? 0), 0) + (roll.manualBanes || 0), sources, favored: !!info.untrained, doomed: false };
+    const sources = [...(roll.general ?? []), ...own.map(m => ({ name: m.name, boons: m.boons ?? 0, banes: m.banes ?? 0, bb: m.bb ?? "" }))];
+    const n = bbCount(sources);   // v0.0.301 (PACK BB): the limit of 2 per name; the ones added by hand have no name
+    return { name: t.name, uuid: t.document.uuid, dc: info.dc, dcLabel: label(info), boons: n.boons + (roll.manualBoons || 0), banes: n.banes + (roll.manualBanes || 0), sources, favored: !!info.untrained, doomed: false };
   });
   const need = CC.missingDice(roll, specs), more = [];
   if (need.d12) { const faces = []; for (let i = 0; i < 15; i++) { const r = await new Roll("1d12").evaluate(); more.push(r); faces.push(r.total); if (r.total !== 12) break; } roll.dice.d.push({ faces, total: CC.dieValue(faces), first: faces[0] }); }
-  if (need.boon) { const r = await new Roll(`${need.boon}d3-${need.boon}`).evaluate(); more.push(r); roll.dice.boonFaces.push(...r.dice.flatMap(d => d.results.map(x => x.result - 1))); }
-  if (need.bane) { const r = await new Roll(`${need.bane}d3-${need.bane}`).evaluate(); more.push(r); roll.dice.baneFaces.push(...r.dice.flatMap(d => d.results.map(x => x.result - 1))); }
   if (more.length) { try { const { showDice } = await import("./roll.mjs"); await showDice(more); } catch (e) { /* no dice to show */ } }
   const { resolveShared } = await import("./roll.mjs");
   const res = CC.recheckRows(roll, specs, resolveShared);

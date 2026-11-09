@@ -51,10 +51,11 @@ const chainHtml = faces => faces.map((f, i) => `${i ? '<i class="fa-solid fa-lin
 
 /** The dice line of one row. */
 export function diceLineHtml(x) {
-  const tag = x.state ? `<span class="ic-pill ${x.state === "favored" ? "boon" : "bane"}" data-tooltip="${x.state === "favored" ? "3d12, the best two kept" : "3d12, the lowest two kept"}">${x.state === "favored" ? "Favored" : "Doomed"}</span>` : "";
+  const tag = x.state ? `<span class="ic-pill ${x.state === "favored" ? "boon" : "bane"}" data-tooltip="${x.state === "favored" ? "3d12, the two highest kept" : "3d12, the lowest two kept"}">${x.state === "favored" ? "Favored" : "Doomed"}</span>` : "";
   const dropped = x.dropped ? `<span class="dgroup ic-drop" data-tooltip="Dropped die">${chainHtml(x.dropped)}</span>` : "";
-  const boon = x.boons ? `<span class="ic-pill boon" data-tooltip="${x.boons} Boon${x.boons === 1 ? "" : "s"} (1d3−1 each): ${x.boonFaces.join(" + ")}">Boon${x.boons === 1 ? "" : `s ×${x.boons}`} +${x.bo}</span>` : "";
-  const bane = x.banes ? `<span class="ic-pill bane" data-tooltip="${x.banes} Bane${x.banes === 1 ? "" : "s"} (1d3−1 each): ${x.baneFaces.join(" + ")}">Bane${x.banes === 1 ? "" : `s ×${x.banes}`} −${x.ba}</span>` : "";
+  // v0.0.301 (PACK BB): +1 / -1 each, they cancel
+  const boon = x.boons ? `<span class="ic-pill boon" data-tooltip="${x.boons} Boon${x.boons === 1 ? "" : "s"}: +1 each">Boon${x.boons === 1 ? "" : `s ×${x.boons}`} +${x.bo}</span>` : "";
+  const bane = x.banes ? `<span class="ic-pill bane" data-tooltip="${x.banes} Bane${x.banes === 1 ? "" : "s"}: −1 each">Bane${x.banes === 1 ? "" : `s ×${x.banes}`} −${x.ba}</span>` : "";
   return `${tag}<span class="dgroup">${chainHtml(x.d1)}</span><span class="plus">+</span><span class="dgroup">${chainHtml(x.d2)}</span>${dropped}<span class="plus ic-mod" data-tooltip="${esc(ATTR_NAME[x.attr] ?? "")} Modifier">${sgn(x.mod)}</span>${boon}${bane}`;
 }
 

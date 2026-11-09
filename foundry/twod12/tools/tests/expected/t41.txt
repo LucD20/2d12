@@ -1,6 +1,6 @@
 Hindered floor(speed/2) on 5: 2 | on 1: 0 | add 2: 7 | Hindered then +2: 4 | disabled: 5 | bad formula: 5 | -10 add: 0
 dialog chips: Prone (Orc) +1/-0 match=true | Prone (Orc) +0/-1 match=false
-resolved melee: {"boons":1,"banes":0,"sources":[{"name":"Prone","boons":1,"banes":0}]}
+resolved melee: {"boons":1,"banes":0,"sources":[{"name":"Prone","boons":1,"banes":0,"bb":"field"}],"groups":{"field":{"boons":1,"banes":0,"keptBoons":1,"keptBanes":0}},"favored":false,"doomed":false,"favBy":[],"doomBy":[]}
 ranged matches: false,true
 "Reach" "Self" "10 / 20 / 40" "10/20/40" ""
 |Targets:| One creature|Distance:| Reach|

@@ -4,6 +4,7 @@
 // the enemy Defenses or the target details hidden by the GM; Designer mode (a client setting) adds the odds, the Ruler line and the Mithril mark.
 // The message's stored content is the GM's view without Designer mode (the fallback when the hook can't run).
 import { esc } from "./util.mjs";
+import { bbKey, BB_LIMIT, BB_NAMES } from "./calc.mjs";
 
 /* ------------------------------------------------------------------ small pieces */
 /** The subtypes' names and the card's ink for them (brief section 3; the others keep the system's ink). */
@@ -80,25 +81,31 @@ export function stampHtml(r, { hide = false } = {}) {
 export const tierPill = (tier, crit = false, word = false) => `<span class="cc-pill ${tierCls(tier, crit)}${word ? " word" : ""}">${word ? (crit ? "Critical" : `Tier ${tier}`) : `T${tier}`}</span>`;   // v0.0.287 (Lucas): "T1", squared like the trait chips
 
 /* ------------------------------------------------------------------ the roll breakdown */
-/** The Boon and Bane dice of a roll, one per line, each with its source ("Boon · Flanking"). r: { boonFaces, baneFaces, sources, manualBoons, manualBanes }. */
+/**
+ * The Boons and Banes of a roll, one per line, each with its source and its name ("Boon · Flanking · Field"). v0.0.301 (PACK BB): each is +1 / -1;
+ * one past the limit of its name (2) is +0 ("over the Field limit"); the ones with no source line (added by hand) have no name.
+ * r: { boonFaces, baneFaces (a 1 for each that counts), sources: [{ name, boons, banes, bb }], five }.
+ */
 export function boonBaneLines(r) {
-  const names = (kind) => {
-    const out = [];
-    for (const s of r.sources ?? []) for (let i = 0; i < (s[kind] ?? 0); i++) out.push(String(s.name ?? "").replace(/\s*\([^)]*\)\s*$/, ""));
-    return out;
-  };
-  const bn = names("boons"), bb = names("banes");
-  return [
-    ...(r.boonFaces ?? []).map((v, i) => ({ kind: "boon", face: v + 1, val: v, name: bn[i] ?? "" })),
-    ...(r.baneFaces ?? []).map((v, i) => ({ kind: "bane", face: v + 1, val: -v, name: bb[i] ?? "" }))
-  ];
+  const out = [];
+  for (const [kind, key, faces, sign] of [["boon", "boons", r.boonFaces, 1], ["bane", "banes", r.baneFaces, -1]]) {
+    const used = {};
+    let kept = 0;
+    for (const s of r.sources ?? []) for (let i = 0; i < (Number(s[key]) || 0); i++) {
+      const k = bbKey(s.bb), over = !!k && (used[k] = (used[k] ?? 0) + 1) > BB_LIMIT;
+      out.push({ kind, val: over || r.five ? 0 : sign, name: String(s.name ?? "").replace(/\s*\([^)]*\)\s*$/, ""), bb: k ? BB_NAMES[k] : "", over });
+      if (!over) kept++;
+    }
+    if (!r.five) for (let i = kept; i < (faces ?? []).length; i++) out.push({ kind, val: sign, name: "", bb: "", over: false });
+  }
+  return out;
 }
 /** The result chips of a breakdown's Total row. */
 export function resultChips(r, { save = false, hide = false } = {}) {
   if (save) return `<span class="cc-pill word ${tierCls(r.tier, false)}">Their Tier ${r.tier}</span>`;
   const base = r.base ?? r.tier;
   if (r.crit) {
-    const why = r.doubles && base === 3 ? "Doubles" : hide ? "" : `${r.dc + 20}+`;
+    const why = r.triple ? "three of a kind" : r.doubles && base === 3 ? "Doubles" : hide ? "" : `${r.dc + 20}+`;
     return `<span class="cc-pill word crit">Tier 3 → Critical${why ? ` · ${why}` : ""}</span>`;
   }
   if (r.tier > base) return `<span class="cc-pill word ${tierCls(r.tier, false)}">Tier ${base} → Tier ${r.tier} · Doubles</span>`;
@@ -117,7 +124,10 @@ export function breakdownHtml(r, { hide = false, save = false, id = "", open = f
   const dblTag = r.doubles ? `<span class="cc-tag ${dblCls}">Doubles · ${dblCls === "crit" ? "Critical" : "+1 Tier"}</span>` : "";
   const rows = [`<span class="cc-bl">2d12</span><span class="cc-bv cc-dicerow">${dice}${chainTxt}${dblTag}</span>`];
   const bb = boonBaneLines(r);
-  if (bb.length) rows.push(`<span class="cc-bl">Boon · Bane</span><span class="cc-bv">${bb.map(x => `<span class="cc-bbl" title="${esc(`${x.kind === "boon" ? "Boon" : "Bane"}${x.name ? `: ${x.name}` : ""}`)}"><span class="cc-d3 ${x.kind}" aria-hidden="true"><b>${x.face}</b></span>${modTxt(x.val, "")}<span>${x.kind === "boon" ? "Boon" : "Bane"}${x.name ? ` · ${esc(x.name)}` : ""}</span></span>`).join("")}</span>`);
+  // v0.0.301 (PACK BB): +1 / -1 each (no dice); over a name's limit: +0; 5 or more left: the roll is Favored / Doomed instead
+  const bbTip = x => `${x.bb ? `${x.bb} ` : ""}${x.kind === "boon" ? "Boon" : "Bane"}${x.name ? `: ${x.name}` : ""}${x.over ? ` (over the ${x.bb} limit of 2: +0)` : ""}`;
+  const five = r.five ? `<span class="cc-bbl five"><span class="cc-tag ${r.five === "favored" ? "up" : "down"}">5 or more ${r.five === "favored" ? "Boons" : "Banes"} left: ${r.five === "favored" ? "Favored" : "Doomed"} instead</span></span>` : "";
+  if (bb.length) rows.push(`<span class="cc-bl">Boon · Bane</span><span class="cc-bv">${bb.map(x => `<span class="cc-bbl${x.over ? " over" : ""}" title="${esc(bbTip(x))}"><span class="cc-d3 ${x.kind}" aria-hidden="true"></span>${modTxt(x.val, "")}<span>${x.kind === "boon" ? "Boon" : "Bane"}${x.name ? ` · ${esc(x.name)}` : ""}${x.bb ? ` <small class="cc-bbn">${esc(x.bb)}</small>` : ""}${x.over ? ' <small class="cc-muted">over the limit</small>' : ""}</span></span>`).join("")}${five}</span>`);
   const mods = (r.mods ?? []).filter(m => m && Number(m.v));
   if (mods.length) rows.push(`<span class="cc-bl">Modifiers</span><span class="cc-bv">${mods.map(m => modTxt(Number(m.v), m.label)).join(" ")}</span>`);
   const badge = `${esc(r.dcLabel ?? "DC")}${hide && !save ? "" : ` ${r.dc}`}`;
@@ -188,7 +198,7 @@ export function keptNote(r) {
   if (!r.dropped) return "";
   const kept = `${dieValue(r.d1)} · ${dieValue(r.d2)}`;
   if (r.state === "doomed") return `Doomed: the two lowest, ${kept}, no Doubles`;
-  if (r.state === "favored") return r.doubles ? `Favored: keeps ${kept} for Doubles${r.tier > r.base ? `, Tier ${r.base} ↑ Tier ${r.tier}` : ""}` : `Favored: the two highest, ${kept}`;
+  if (r.state === "favored") return r.triple ? `Favored: three of a kind, a Critical` : r.doubles ? `Favored: the two highest, ${kept}, and a pair: Doubles${r.tier > r.base ? `, Tier ${r.base} ↑ Tier ${r.tier}` : ""}` : `Favored: the two highest, ${kept}`;
   return `Normal: the first two, ${kept}`;
 }
 const defText = (r, hide) => [hide ? "" : `${r.dcLabel ?? "DC"} ${r.dc}`, r.banes ? `${r.banes} Bane${r.banes === 1 ? "" : "s"}` : "", r.boons ? `${r.boons} Boon${r.boons === 1 ? "" : "s"}` : "", r.state === "favored" ? "Favored" : r.state === "doomed" ? "Doomed" : ""].filter(Boolean).join(" · ");
@@ -491,8 +501,8 @@ export function recheckRows(roll, specs, resolveShared) {
   });
 }
 /** The dice a set of specs needs beyond the ones kept: { d12: 0 | 1, boon: n, bane: n }. */
+// v0.0.301 (PACK BB): Boons and Banes have no dice; a third d12 when a target is now Favored or Doomed (its own, or 5 b/b left)
 export const missingDice = (roll, specs) => ({
-  d12: specs.some(sp => (roll.favored || sp.favored) !== (roll.doomed || sp.doomed)) && roll.dice.d.length < 3 ? 1 : 0,
-  boon: Math.max(0, Math.max(0, ...specs.map(sp => sp.boons || 0)) - roll.dice.boonFaces.length),
-  bane: Math.max(0, Math.max(0, ...specs.map(sp => sp.banes || 0)) - roll.dice.baneFaces.length)
+  d12: specs.some(sp => { const net = (Number(sp.boons) || 0) - (Number(sp.banes) || 0), f = !!(roll.favored || sp.favored) || net >= 5, d = !!(roll.doomed || sp.doomed) || net <= -5; return f !== d; }) && roll.dice.d.length < 3 ? 1 : 0,
+  boon: 0, bane: 0
 });

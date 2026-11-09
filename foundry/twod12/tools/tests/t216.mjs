@@ -3,7 +3,8 @@
 // The pure pieces (module/cardview.mjs, sheetmodel.mjs versionCant) and the card built from the real Smite, Word of Radiance and Opportunity Attack
 // with Frightened and Radiant Zeal on the creature, 2 AP left in a started combat.
 import fs from "node:fs";
-const ROOTURL = new URL("../../", import.meta.url).href, ROOT = new URL("../../", import.meta.url).pathname;
+import { fileURLToPath } from "node:url";
+const ROOTURL = new URL("../../", import.meta.url).href, ROOT = fileURLToPath(new URL("../../", import.meta.url));
 let designer = false;
 const enrichHTML = async t => String(t ?? "")
   .replace(/@UUID\[[^\]]*\]\{([^}]*)\}/g, '<a class="content-link">$1</a>')

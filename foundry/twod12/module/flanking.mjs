@@ -2,8 +2,8 @@
 //  - A creature threatens every enemy within the NORMAL Range of its melee weapon (Reach above 1 added; a Long weapon not adjacent ones) for as long as it
 //    can make a [Melee] Action that deals damage (a Melee weapon in hand, Fists only with Brawler: they are Non-threatening, or a natural attack).
 //    An Unconscious creature threatens no one.
-//  - Creatures that threaten the same enemy flank it. Each flanker gains 1 boon on its [Melee] Actions against that enemy for each other flanker, up to 3,
-//    minus 1 for each ally of that enemy that threatens the flanker (never below 0).
+//  - Creatures that threaten the same enemy flank it. Each flanker gains 1 Field Boon on its [Melee] Actions against that enemy for each other flanker,
+//    minus 1 for each ally of that enemy that threatens the flanker (never below 0), then the limit of Field Boons, 2 (v0.0.301, PACK BB: the cancels first).
 import { tokenDistance } from "./light.mjs";
 import { activeWeapons, hasProp, weaponThreatens } from "./fists.mjs";
 import { weaponRanges, rangeEnds } from "./weaponrange.mjs";
@@ -46,7 +46,8 @@ export function threatReach(actor) {
 
 /**
  * Flanking for one attack: how many boons the attacker's [Melee] Actions gain against the target.
- * 1 boon for each OTHER creature that threatens the target (up to 3), minus 1 for each ally of the target that threatens the attacker (never below 0). The attacker must threaten the target.
+ * 1 Field Boon for each OTHER creature that threatens the target, minus 1 for each ally of the target that threatens the attacker (never below 0), then at
+ * most 2 (the limit of Field Boons; v0.0.301). The attacker must threaten the target.
  * Returns { boons, flankers (the other creatures that threaten the target), cancelledBy (the target's allies that threaten the attacker), threatenedBy (every creature that threatens the target) }.
  */
 export function flankingFor(attacker, target, tokens = canvas.tokens?.placeables ?? []) {
@@ -59,7 +60,7 @@ export function flankingFor(attacker, target, tokens = canvas.tokens?.placeables
   if (!attacker || !threatens(attacker, target)) return { boons: 0, flankers: [], cancelledBy: [], threatenedBy: all.map(t => t.name) };
   const others = all.filter(a => a.id !== attacker.id);
   const cancelledBy = live.filter(y => y.id !== target.id && threatens(y, attacker));
-  return { boons: Math.max(0, Math.min(3, others.length - cancelledBy.length)), flankers: others.map(t => t.name), cancelledBy: cancelledBy.map(t => t.name), threatenedBy: all.map(t => t.name) };
+  return { boons: Math.min(2, Math.max(0, others.length - cancelledBy.length)), flankers: others.map(t => t.name), cancelledBy: cancelledBy.map(t => t.name), threatenedBy: all.map(t => t.name) };
 }
 
 /** The roll modifier for it (null when there is none). `tag` makes the id and the name specific to one target of a roll made at several. */
@@ -67,6 +68,6 @@ export function flankingMod(attacker, target, { tag = "" } = {}) {
   const f = flankingFor(attacker, target);
   if (!f.boons) return null;
   const n = f.boons, c = f.cancelledBy;
-  return { id: tag ? `syn:flanking|${tag}` : "syn:flanking", name: `Flanking${tag ? ` (${target.name}, ` : " ("}${n} Boon${n === 1 ? "" : "s"})`, boons: n, banes: 0, match: true,
-    predicate: `${target.name} is also threatened by ${f.flankers.join(", ")}: a Boon for each, up to 3${c.length ? `; ${c.join(", ")} ${c.length === 1 ? "is an ally" : "are allies"} of ${target.name} that threaten${c.length === 1 ? "s" : ""} you: one boon cancelled for each` : ""}` };
+  return { id: tag ? `syn:flanking|${tag}` : "syn:flanking", name: `Flanking${tag ? ` (${target.name}, ` : " ("}${n} Field Boon${n === 1 ? "" : "s"})`, boons: n, banes: 0, bb: "field", match: true,
+    predicate: `${target.name} is also threatened by ${f.flankers.join(", ")}: a Field Boon for each, up to 2${c.length ? `; ${c.join(", ")} ${c.length === 1 ? "is an ally" : "are allies"} of ${target.name} that threaten${c.length === 1 ? "s" : ""} you: one boon cancelled for each` : ""}` };
 }

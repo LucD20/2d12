@@ -158,6 +158,7 @@ export function parseInline(kind, inner) {
     else if (key === "s2" || key === "s3") (cfg.stages ??= {})[key] = val.toLowerCase().replace(/\s+/g, "");
     else if (key === "side") cfg.side = val.toLowerCase();
     else if (key === "extra") cfg.extra = val.toLowerCase().replace(/\s+/g, "");
+    else if (key === "bb") cfg.bb = ({ field: "field", pressure: "pressure", support: "support" })[val.toLowerCase()] ?? "";   // v0.0.301 (PACK BB): @Boon[-1|bb:pressure] = 1 Pressure Bane
     else if (key === "near") cfg.near = Math.max(0, Number(val) || 0);   // v0.0.254: the candidates within N squares of you (a Reaction's "an ally within 5 squares")
   }
   // A button always has the traits of what it is: Advance and Charge are Move. (Evade and Pushed have none.) A Save has its Attribute.
@@ -313,7 +314,8 @@ export function registerInline() {
       if (kind === "Boon") {
         if (match[3]) cfg.name = match[3];
         const n = Math.abs(cfg.n), what = cfg.traits.length ? cfg.traits.map(t => TWOD12.traits[t] ?? t).join(" ") : "Roll";
-        return inlineEl("Boon", cfg, cfg.label ?? match[3] ?? `${n} ${cfg.n < 0 ? "Bane" : "Boon"}${n === 1 ? "" : "s"} on the next ${what}`, cfg.n < 0 ? "fa-chevron-down" : "fa-chevron-up");
+        const nm = ({ field: "Field ", pressure: "Pressure ", support: "Support " })[cfg.bb] ?? "";
+        return inlineEl("Boon", cfg, cfg.label ?? match[3] ?? `${n} ${nm}${cfg.n < 0 ? "Bane" : "Boon"}${n === 1 ? "" : "s"} on the next ${what}`, cfg.n < 0 ? "fa-chevron-down" : "fa-chevron-up");
       }
       if (kind === "Rally") return inlineEl("Rally", cfg, cfg.label ?? match[3] ?? `${cfg.n} Rally Point${cfg.n === 1 ? "" : "s"}${cfg.extra ? ` (+${healText(cfg.extra)})` : ""}`, "fa-heart-pulse");
       if (kind === "Effect") return inlineEl("Effect", cfg, cfg.label ?? match[3] ?? "Apply the effect", "fa-shield-halved");
@@ -872,9 +874,12 @@ export function saveActionCfg(actor, item, version, src) {
   return { attr: it.vs && it.vs !== "roll" ? it.vs : "body", dc: saveDcOf(src, actor.system?.attributes), adj: 0, boon: 0, bane: 0, traits: [], tiers: { t1: tier(1), t2: tier(2), t3: tier(3) }, saveAction: true, source: item.name, actorUuid: actor.uuid, actionTraits: [...(it.traits ?? [])] };
 }
 
-/** The banes and boons a creature takes on a Save Action's Save: Vulnerable N gives N banes; Cover from the area's center gives boons (Save Actions). */
+/**
+ * The banes and boons a creature takes on a Save Action's Save: Vulnerable N gives N banes; Cover from the area's center gives Field Boons (Low 1,
+ * Medium 2), and High cover makes the Save Favored (v0.0.301, PACK BB; book Ch. 1, Saves).
+ */
 function saveRowMods(tokenDoc, point) {
-  const out = { boon: 0, bane: 0, why: [] };
+  const out = { boon: 0, bane: 0, favored: false, why: [] };
   const a = tokenDoc?.actor;
   let v = 0;
   for (const e of a?.effects ?? []) if (!e.disabled && e.statuses?.has?.("vulnerable")) v = Math.max(v, Math.max(1, Math.trunc(Number(e.getFlag?.("twod12", "value"))) || 1));
@@ -882,7 +887,8 @@ function saveRowMods(tokenDoc, point) {
   try {
     if (point && tokenDoc?.object && canvas?.grid) {
       const c = coverFromPoint(point, tokenDoc.object);   // counted from the center of the area (its Point of Origin)
-      if (c?.level > 0) { const n = Math.min(3, c.level); out.boon += n; out.why.push(`${c.label} (${n} Boon${n === 1 ? "" : "s"})`); }
+      if (c?.level >= 3 && !c.noLoE) { out.favored = true; out.why.push(`${c.label} (Favored)`); }
+      else if (c?.level > 0 && !c.noLoE) { const n = Math.min(2, c.level); out.boon += n; out.why.push(`${c.label} (${n} Field Boon${n === 1 ? "" : "s"})`); }
     }
   } catch (e) { console.warn("twod12 | cover from the area", e); }
   return out;
@@ -894,7 +900,7 @@ export async function postSaveFor(cfg, targets, { point = null, source = "", not
   for (const t of targets) {
     const doc = await fromUuid(t.uuid).catch(() => null);
     const m = saveRowMods(doc, point);
-    rows.push({ uuid: t.uuid, name: t.name, result: null, boon: m.boon, bane: m.bane, why: m.why.join(", ") });
+    rows.push({ uuid: t.uuid, name: t.name, result: null, boon: m.boon, bane: m.bane, favored: m.favored, why: m.why.join(", ") });
   }
   const head = `<div class="twod12 chat"><b>${esc(source || cfg.source || "Save")}</b>: ${note ? `${note} ` : ""}${rows.length ? `${rows.map(r => esc(r.name)).join(", ")} roll${rows.length === 1 ? "s" : ""} a DC ${cfg.dc} ${esc(TWOD12.attributes[cfg.attr] ?? cfg.attr)} Save.` : "no creature is in the area."}</div>`;
   if (!rows.length) return ChatMessage.create({ content: head });
@@ -938,7 +944,7 @@ export async function saveTierOutcomes(cfg) {
 export async function ccSaveOnCard(msg, cfg, targets, { model, point = null }) {
   targets = [].concat(targets);   // v0.0.286: one creature or several, a row each
   const rows = [];
-  for (const t of targets) { const doc = await fromUuid(t.uuid).catch(() => null), mods = saveRowMods(doc, point); rows.push({ uuid: t.uuid, name: t.name, result: null, boon: mods.boon, bane: mods.bane, why: mods.why.join(", ") }); }
+  for (const t of targets) { const doc = await fromUuid(t.uuid).catch(() => null), mods = saveRowMods(doc, point); rows.push({ uuid: t.uuid, name: t.name, result: null, boon: mods.boon, bane: mods.bane, favored: mods.favored, why: mods.why.join(", ") }); }
   const st = { cfg, color: "", cc: true, rows, tierDmg: await prerollTiers(cfg) };
   const m = { ...model, kind: "save", saveName: `${TWOD12.attributes[cfg.attr] ?? cfg.attr} Save`, dc: cfg.dc, tiers: await saveTierOutcomes(cfg), creatures: rows.map(r => ({ uuid: r.uuid, name: r.name, result: null, damageDone: false, hasDamage: false })) };
   m.tline = { ...m.tline, names: rows.map(r => r.name), retargetKind: "retargetSave" };
@@ -998,7 +1004,7 @@ export async function saveRoll(msg, idx) {
   if (!actor?.isOwner) return ui.notifications.warn("Only the owner of that token can roll its save.");
   const cfg = st.cfg, key = cfg.attr, mod = actor.system.attributes[key] ?? 0;
   // A Save Action's row carries its target's own banes and boons (Vulnerable, Cover from the area): they start in the dialog (v0.0.159).
-  const data = await askRoll(actor, { title: `${TWOD12.attributes[key]} Save: ${actor.name}${row.why ? ` (${row.why})` : ""}`, attrKey: key, traits: new Set([...(cfg.traits ?? []), key, "__save"]), defaults: { dc: cfg.dc, mod: cfg.adj, boons: (cfg.boon || 0) + (row.boon || 0), banes: (cfg.bane || 0) + (row.bane || 0) } });
+  const data = await askRoll(actor, { title: `${TWOD12.attributes[key]} Save: ${actor.name}${row.why ? ` (${row.why})` : ""}`, attrKey: key, traits: new Set([...(cfg.traits ?? []), key, "__save"]), defaults: { dc: cfg.dc, mod: cfg.adj, boons: (cfg.boon || 0) + (row.boon || 0), banes: (cfg.bane || 0) + (row.bane || 0), ...(row.favored ? { favored: true, favoredLabel: "High cover (Favored)" } : {}) } });
   if (!data) return;
   const fxm = resolveModifiers(actor, data.fx);
   const manB = Number(data.boons) || 0, manN = Number(data.banes) || 0, dc = Number(data.dc) || cfg.dc;
@@ -1026,7 +1032,7 @@ export async function saveRoll(msg, idx) {
     await applyEffects(parts.uuids, [actor.uuid], originInfo(""));
     for (const u of parts.uuids) { const b = `\u2726 ${(await fromUuid(u))?.name ?? "?"}`; bits.push(b); extras.push(b); }
   }
-  const tip = `${TWOD12.attributes[key]} ${sgn(mod)}${chk.adj ? `, modifier ${sgn(chk.adj)}` : ""}: 2d12 ${chk.d1.join("+")} + ${chk.d2.join("+")}${chk.boonFaces.length ? `, boons ${chk.boonFaces.join("+")}` : ""}${chk.baneFaces.length ? `, banes ${chk.baneFaces.join("+")}` : ""}${chk.doubles ? ", doubles" : ""} = ${chk.total} vs DC ${dc} (${saveLabels(dc)[chk.tier - 1]})${comps.length ? `. Damage: ${comps.map(c => `${c.formula} [${c.dice.map(d => d.results.join("+")).join(" ")}] = ${c.total}`).join("; ")}` : ""}`;
+  const tip = `${TWOD12.attributes[key]} ${sgn(mod)}${chk.adj ? `, modifier ${sgn(chk.adj)}` : ""}: 2d12 ${chk.d1.join("+")} + ${chk.d2.join("+")}${chk.bo ? `, +${chk.bo} Boon${chk.bo === 1 ? "" : "s"}` : ""}${chk.ba ? `, \u2212${chk.ba} Bane${chk.ba === 1 ? "" : "s"}` : ""}${chk.five ? `, 5 b/b: ${chk.five === "favored" ? "Favored" : "Doomed"}` : ""}${chk.doubles ? ", doubles" : ""} = ${chk.total} vs DC ${dc} (${saveLabels(dc)[chk.tier - 1]})${comps.length ? `. Damage: ${comps.map(c => `${c.formula} [${c.dice.map(d => d.results.join("+")).join(" ")}] = ${c.total}`).join("; ")}` : ""}`;
   const result = {
     total: chk.total, tier: chk.tier, tip, dmg: bits.join("; "), amount, extra: extras.join("; "), tierDmg: shared ? null : comps,
     dice: { d1: chk.d1, d2: chk.d2, boon: chk.boonFaces, bane: chk.baneFaces, doubles: chk.doubles, dmg: comps.flatMap(c => c.dice.map(d => ({ d: d.faces, faces: d.results, formula: c.formula, pool: c.pool, sub: c.sub }))) }

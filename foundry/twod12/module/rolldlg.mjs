@@ -7,14 +7,14 @@
 //     meta: { escalation, targets, dist, vs, requirements, setup, trigger, triggerKind }, tiers: { 1: { parts: [{ pool, t, sub }], riders: [html] }, 2, 3 },
 //     crit (html), effects (html), effectsFrom (2), noTiers }],
 //   ap (the Version open first), roll: { mod, name ("Signature") }, multi, area: { label, placed } | null,
-//   chips: [{ id, scope ("shared" | a creature's uuid), row, kind, label, n, start ("on" | "off" | "na"), tip, why, rule: { uuid, label }, fx, bonusKey,
+//   chips: [{ id, scope ("shared" | a creature's uuid), row, kind, label, n, bb ("field" | "pressure" | "support" | ""; v0.0.301), start ("on" | "off" | "na"), tip, why, rule: { uuid, label }, fx, bonusKey,
 //     special ("nl" | "reload"), tiers: [1, 2, 3], tag ("+1d6 Ho"), pool ("B" | "M") }],
 //   creatures: [{ uuid, name, size, def ("AD"), dc }], hideDef (the player view), designer, blocked: [reasons], rollMode, rollModes: [[key, label]], notices: [{ text, why }]
 // }
 // state: { ap, toggled: { id: bool }, manual: { scope: { boon, bane, plus, minus, emp, enf, fav, doom } }, fold: { "scope|row|off": bool }, open: { uuid: bool },
 //   removed: [uuid], rollMode, forceTier }
 import { esc, vsColored } from "./util.mjs";
-import { tierProbs } from "./calc.mjs";
+import { tierProbs, bbCount, bbFive, rollState, BB_NAMES, BB_LIMIT } from "./calc.mjs";
 
 /* ------------------------------------------------------------------ chips */
 /** The rows of the Modifiers panel, in their order, with their labels (the brief: Passives, Boons, Banes, Flat, Damage). */
@@ -67,7 +67,7 @@ export function manualChips(st, scope) {
     if (!v) continue;
     const n = v === true ? 1 : Number(v) || 0;
     out.push({ id: `man:${scope}:${kind}`, scope, row: MANUAL[kind].row, kind, n, label: MANUAL[kind].label(n), start: "on", manual: true,
-      tip: kind === "fav" ? "Added by hand: roll 3d12 and keep the best Tier" : kind === "doom" ? "Added by hand: roll 3d12 and keep the two lowest" : "Added by hand" });
+      tip: kind === "fav" ? "Added by hand: roll 3d12 and keep the two highest (any pair is Doubles)" : kind === "doom" ? "Added by hand: roll 3d12 and keep the two lowest" : kind === "boon" || kind === "bane" ? "Added by hand: no name, so it always adds up" : "Added by hand" });
   }
   return out;
 }
@@ -78,14 +78,28 @@ export const chipOn = (c, st) => (c.start === "na" ? false : (st.toggled?.[c.id]
 /** A chip's toggle: n/a chips can't be toggled. */
 export function toggleChip(st, c) { if (c && c.start !== "na") st.toggled[c.id] = !chipOn(c, st); return st; }
 
-/** The sum of the chips that are on: { boons, banes, flat, fav, doom, emp, enf, names } (Ch. 1, Ch. 8: Boons and Banes don't cancel; Empowered and Enfeebled: the highest of each). */
+/**
+ * v0.0.301 (PACK BB; Ch. 1): the Boons and Banes of a tally after the limits of their names (2 of each name and side): boons, banes, and
+ * capped: [{ name ("Field"), side ("Boons"), raw, kept }] for the names past their limit.
+ */
+function bbFinish(t) {
+  const n = bbCount([...t.boonSrc.map(x => ({ boons: x.n, bb: x.bb })), ...t.baneSrc.map(x => ({ banes: x.n, bb: x.bb }))]);
+  t.boons = n.boons; t.banes = n.banes; t.rawBoons = n.rawBoons; t.rawBanes = n.rawBanes;
+  t.capped = [];
+  for (const [k, g] of Object.entries(n.groups)) {
+    if (g.boons > BB_LIMIT) t.capped.push({ name: BB_NAMES[k], side: "Boons", raw: g.boons, kept: g.keptBoons });
+    if (g.banes > BB_LIMIT) t.capped.push({ name: BB_NAMES[k], side: "Banes", raw: g.banes, kept: g.keptBanes });
+  }
+  return t;
+}
+/** The sum of the chips that are on: { boons, banes, flat, fav, doom, emp, enf, names } (Ch. 1: Boons and Banes cancel, named ones up to 2; Ch. 8: Empowered and Enfeebled, the highest of each). */
 export function tally(chips, st) {
   const t = { boons: 0, banes: 0, flat: 0, fav: false, doom: false, emp: 0, enf: 0, boonSrc: [], baneSrc: [], flatSrc: [], favBy: [], doomBy: [], empSrc: [], enfSrc: [] };
   for (const c of chips) {
     if (!chipOn(c, st)) continue;
     const n = Number(c.n) || 0, name = c.manual ? "Situational" : c.label;
-    if (c.kind === "boon") { t.boons += n; t.boonSrc.push({ name, n, scope: c.scope ?? "shared" }); }
-    else if (c.kind === "bane") { t.banes += n; t.baneSrc.push({ name, n, scope: c.scope ?? "shared" }); }
+    if (c.kind === "boon") t.boonSrc.push({ name, n, scope: c.scope ?? "shared", bb: c.bb ?? "" });
+    else if (c.kind === "bane") t.baneSrc.push({ name, n, scope: c.scope ?? "shared", bb: c.bb ?? "" });
     else if (c.kind === "plus") { t.flat += n; t.flatSrc.push({ name, v: n }); }
     else if (c.kind === "minus") { t.flat -= n; t.flatSrc.push({ name: c.manual ? "Situational" : (c.srcName ?? c.label), v: -n }); }
     else if (c.kind === "emp") { t.emp = Math.max(t.emp, n); t.empSrc.push({ name: c.srcName ?? c.label, n }); }
@@ -93,47 +107,57 @@ export function tally(chips, st) {
     else if (c.kind === "fav") { t.fav = true; t.favBy.push(name === "Favored" ? "Situational" : name); if (c.special === "reload") { t.emp = Math.max(t.emp, 2); t.empSrc.push({ name, n: 2 }); } }
     else if (c.kind === "doom") { t.doom = true; t.doomBy.push(name === "Doomed" ? "Situational" : name); }
   }
-  return t;
+  return bbFinish(t);
 }
 /** Two tallies added (the shared panel and one creature's own). */
-const plus = (a, b) => ({ boons: a.boons + b.boons, banes: a.banes + b.banes, flat: a.flat + b.flat, fav: a.fav || b.fav, doom: a.doom || b.doom, emp: Math.max(a.emp, b.emp), enf: Math.max(a.enf, b.enf),
+const plus = (a, b) => bbFinish({ boons: 0, banes: 0, flat: a.flat + b.flat, fav: a.fav || b.fav, doom: a.doom || b.doom, emp: Math.max(a.emp, b.emp), enf: Math.max(a.enf, b.enf),
   boonSrc: [...a.boonSrc, ...b.boonSrc], baneSrc: [...a.baneSrc, ...b.baneSrc], flatSrc: [...a.flatSrc, ...b.flatSrc], favBy: [...a.favBy, ...b.favBy], doomBy: [...a.doomBy, ...b.doomBy], empSrc: [...a.empSrc, ...b.empSrc], enfSrc: [...a.enfSrc, ...b.enfSrc] });
 
 /** Favored and Doomed: either one is 3d12, both together a normal roll (Ch. 1). */
 export const stateOf = (fav, doom) => (fav && doom ? "" : fav ? "favored" : doom ? "doomed" : "");
 /** The creatures still in the roll. */
 export const liveCreatures = (inp, st) => (inp.creatures ?? []).filter(c => !(st.removed ?? []).includes(c.uuid));
-/** One creature's numbers: its Defense, its Boons and Banes (shared + its own), its Flat, Favored / Doomed, the dice it keeps. */
+/** v0.0.301 (PACK BB): a tally's state and what its Boons and Banes add: 5 or more left make it Favored / Doomed instead (Ch. 1). */
+export function bbState(t) {
+  const f = bbFive(t.boons, t.banes), fav = t.fav || f.five === "favored", doom = t.doom || f.five === "doomed";
+  return { state: rollState(t.fav, t.doom, f.five), five: f.five, add: f.add, cancel: fav && doom };
+}
+/** One creature's numbers: its Defense, its Boons and Banes (shared + its own, named ones up to 2), its Flat, Favored / Doomed (and the five), the dice it keeps. */
 export function creatureCalc(inp, st, uuid) {
   const cr = (inp.creatures ?? []).find(c => c.uuid === uuid) ?? { uuid, dc: 13 };
   const sh = tally(chipsOf(inp, st, "shared"), st), own = tally(chipsOf(inp, st, uuid), st), t = plus(sh, own);
-  const state = stateOf(t.fav, t.doom);
-  return { ...t, uuid, name: cr.name, dc: Number(cr.dc) || 13, def: cr.def ?? "DC", state, cancel: t.fav && t.doom, mod: (Number(inp.roll?.mod) || 0) + t.flat, own };
+  const b = bbState(t);
+  return { ...t, uuid, name: cr.name, dc: Number(cr.dc) || 13, def: cr.def ?? "DC", state: b.state, five: b.five, bbAdd: b.add, cancel: b.cancel, mod: (Number(inp.roll?.mod) || 0) + t.flat, own };
 }
 /** Several targets: any creature Favored or Doomed (not both) makes it 3d12 (Ch. 1, Several Targets). */
 export const anyThree = (inp, st) => liveCreatures(inp, st).some(c => creatureCalc(inp, st, c.uuid).state !== "");
 /** A creature's dice label on its line (several targets). */
 export function creatureDice(calc, three) {
   if (calc.cancel) return "2d12, they cancel";
-  if (calc.state === "favored") return "3d12, best Tier";
+  if (calc.state === "favored") return "3d12, two highest";
   if (calc.state === "doomed") return "3d12, lowest 2";
   return three ? "first 2 d12" : "2d12";
 }
 /** The dice line's dice text. */
 export function diceText(inp, st) {
   if (inp.multi) return anyThree(inp, st) ? { dice: "3d12", note: "3d12: a target is Favored or Doomed" } : { dice: "2d12", note: "" };
-  const c = liveCreatures(inp, st)[0], calc = c ? creatureCalc(inp, st, c.uuid) : (() => { const t = tally(chipsOf(inp, st, "shared"), st); return { ...t, state: stateOf(t.fav, t.doom), cancel: t.fav && t.doom }; })();
+  const c = liveCreatures(inp, st)[0], calc = c ? creatureCalc(inp, st, c.uuid) : (() => { const t = tally(chipsOf(inp, st, "shared"), st); return { ...t, ...bbState(t) }; })();
   if (calc.cancel) return { dice: "2d12 (Favored and Doomed cancel)", note: "" };
-  return { dice: calc.state === "favored" ? "3d12, best Tier" : calc.state === "doomed" ? "3d12, lowest 2" : "2d12", note: "" };
+  return { dice: calc.state === "favored" ? "3d12, two highest" : calc.state === "doomed" ? "3d12, lowest 2" : "2d12", note: "" };
 }
-/** The dice line: "2d12 + 1 Signature, Flat ▲1 ▼1". One target: its own Boons and Banes count too; several: the shared ones. */
+/**
+ * The dice line: "2d12 + 1 Signature, Flat ▲1 ▼1". One target: its own Boons and Banes count too; several: the shared ones.
+ * v0.0.301 (PACK BB): ▲ / ▼ are the counts after the limits of their names; bbNotes: "Field Banes 3, limit 2", "5 Boons left: Favored instead".
+ */
 export function diceLine(inp, st) {
   const sh = tally(chipsOf(inp, st, "shared"), st), c = !inp.multi ? liveCreatures(inp, st)[0] : null;
-  const t = c ? creatureCalc(inp, st, c.uuid) : sh;
+  const t = c ? creatureCalc(inp, st, c.uuid) : { ...sh, ...bbState(sh) };
   const flat = inp.multi ? sh.flat : t.flat, mod = (Number(inp.roll?.mod) || 0) + flat;
   const names = [inp.roll?.name, flat || (inp.multi ? sh : t).flatSrc.length ? "Flat" : ""].filter(Boolean);
-  return { ...diceText(inp, st), mod, names, boons: t.boons, banes: t.banes };
+  return { ...diceText(inp, st), mod, names, boons: t.boons, banes: t.banes, bbNotes: bbNotes(t) };
 }
+/** The notes for the names past their limit and the five: ["Field Banes 3, limit 2", "5 Boons left: Favored instead"]. */
+export const bbNotes = t => [...(t.capped ?? []).map(x => `${x.name} ${x.side} ${x.raw}, limit ${x.kept}`), ...(t.five ? [`${Math.abs((t.boons ?? 0) - (t.banes ?? 0))} ${t.five === "favored" ? "Boons" : "Banes"} left: ${t.five === "favored" ? "Favored" : "Doomed"} instead`] : [])];
 /** Empowered and Enfeebled: the highest of each, then the net on every damage die (Ch. 8). line: "" when the net is 0. */
 export function stepNet(inp, st) {
   const t = tally(chipsOf(inp, st, "shared"), st), net = t.emp - t.enf;
@@ -165,11 +189,13 @@ export function ladder(dc, crit = false) {
   if (!crit) return [{ k: "t1", label: `Tier 1 · ≤${d - 1}` }, { k: "t2", label: `Tier 2 · ${d}–${d + 6}` }, { k: "t3", label: `Tier 3 · ${d + 7}+` }];
   return [{ k: "t1", label: `Tier 1 · ≤${d - 1}` }, { k: "t2", label: `Tier 2 · ${d}–${d + 6}` }, { k: "t3", label: `Tier 3 · ${d + 7}–${d + 19}` }, { k: "crit", label: `Crit · ${d + 20}+` }];
 }
-export const LADDER_TIP = "Doubles raise one Tier; Doubles on a Tier 3 are a Critical. A Doomed roll has no Doubles.";
+export const LADDER_TIP = "Doubles raise one Tier; Doubles on a Tier 3 are a Critical. A Favored roll: any pair of the three dice is Doubles, three of a kind a Critical. A Doomed roll has no Doubles.";
 /** A creature's odds (Designer mode): [T1, T2, T3, Crit] in percent; the Critical only for an Action with a Critical row. */
 export function oddsOf(calc, crit = false) {
-  const p = tierProbs(calc.mod, calc.dc, calc.boons, calc.banes, calc.state);
-  const c = crit ? tierProbs(calc.mod, calc.dc, calc.boons, calc.banes, calc.state, true)[2] : 0;
+  // v0.0.301: the state already holds the five b/b; the Boons and Banes left are a flat number
+  const add = calc.bbAdd ?? ((calc.boons ?? 0) - (calc.banes ?? 0)), m = calc.mod + add;
+  const p = tierProbs(m, calc.dc, 0, 0, calc.state);
+  const c = crit ? tierProbs(m, calc.dc, 0, 0, calc.state, true)[2] : 0;
   const pct = x => Math.round(x * 100);
   return crit ? [pct(p[0]), pct(p[1]), pct(p[2] - c), pct(c)] : [pct(p[0]), pct(p[1]), pct(p[2])];
 }
@@ -302,7 +328,7 @@ export function chipHtml(c, st) {
   const on = chipOn(c, st), na = c.start === "na";
   const cls = `rd-chip ${isBuff(c) ? "buff" : "debuff"}${na ? " na" : on ? " on" : " off"}`;
   const tip = na ? `Not this time: ${c.why || "it doesn't apply"}` : [c.tip ?? "", c.manual ? "Right-click: one less" : ""].filter(Boolean).join(". ");
-  const body = `<button type="button" class="rd-cbody" data-act="chip" data-id="${esc(c.id)}"${na ? ' aria-disabled="true"' : ` aria-pressed="${on}"`}${tip ? ` data-tooltip="${esc(tip)}"` : ""}>${pip(c)}<span class="rd-clabel">${esc(c.label)}</span></button>`;
+  const body = `<button type="button" class="rd-cbody" data-act="chip" data-id="${esc(c.id)}"${na ? ' aria-disabled="true"' : ` aria-pressed="${on}"`}${tip ? ` data-tooltip="${esc(tip)}"` : ""}>${pip(c)}<span class="rd-clabel">${esc(c.label)}</span>${c.bb && BB_NAMES[c.bb] ? `<small class="rd-bbn">${esc(BB_NAMES[c.bb])}</small>` : ""}</button>`;
   const x = c.manual ? `<button type="button" class="rd-cx" data-act="rm" data-id="${esc(c.id)}" aria-label="Remove ${esc(c.label)}" data-tooltip="Remove">×</button>` : "";
   const i = c.rule?.uuid ? `<button type="button" class="rd-ci" data-act="rule" data-uuid="${esc(c.rule.uuid)}" aria-label="Open the rule: ${esc(c.rule.label ?? c.label)}" data-tooltip="Open ${esc(c.rule.label ?? c.label)}">i</button>` : "";
   return `<span class="${cls}"${c.manual ? ` data-manual="${esc(c.id)}"` : ""}>${body}${x}${i}</span>`;
@@ -390,7 +416,7 @@ function creaturesHtml(inp, st, v) {
   const three = anyThree(inp, st);
   return live.map(c => {
     const k = creatureCalc(inp, st, c.uuid), open = !!st.open?.[c.uuid], own = chipsOf(inp, st, c.uuid);
-    const head = `<div class="rd-cline"><button type="button" class="rd-copen" data-act="open" data-uuid="${esc(c.uuid)}" aria-expanded="${open}"><span class="rd-chev" aria-hidden="true">${open ? "▾" : "▸"}</span><b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}<span class="rd-cdice">${esc(creatureDice(k, three))}</span><span class="rd-cmod">${k.mod >= 0 ? "+" : "−"}${Math.abs(k.mod)}</span>${counts(k.boons, k.banes)}</button>${defBadge(c, hide)}<button type="button" class="rd-cx rm" data-act="untarget" data-uuid="${esc(c.uuid)}" aria-label="Remove ${esc(c.name)}" data-tooltip="Remove ${esc(c.name)} from the targets (or right-click its line)">×</button></div>`;
+    const head = `<div class="rd-cline"><button type="button" class="rd-copen" data-act="open" data-uuid="${esc(c.uuid)}" aria-expanded="${open}"><span class="rd-chev" aria-hidden="true">${open ? "▾" : "▸"}</span><b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}<span class="rd-cdice">${esc(creatureDice(k, three))}</span><span class="rd-cmod">${k.mod >= 0 ? "+" : "−"}${Math.abs(k.mod)}</span>${counts(k.boons, k.banes)}${bbNotes(k).length ? `<span class="rd-dnote rd-bbcap">${esc(bbNotes(k).join(" · "))}</span>` : ""}</button>${defBadge(c, hide)}<button type="button" class="rd-cx rm" data-act="untarget" data-uuid="${esc(c.uuid)}" aria-label="Remove ${esc(c.name)}" data-tooltip="Remove ${esc(c.name)} from the targets (or right-click its line)">×</button></div>`;
     if (!open) return `<div class="rd-cbox multi" data-uuid="${esc(c.uuid)}">${head}</div>`;
     const add = `<div class="rd-row"><span class="rd-rlabel">Add here:</span><span class="rd-chips">${["boon", "bane", "fav", "doom"].map(kd => `<button type="button" class="rd-addhere" data-act="quick" data-scope="${esc(c.uuid)}" data-k="${kd}">${pip({ kind: kd })}${QUICK_LABEL[kd]}</button>`).join("")}</span></div>`;
     return `<div class="rd-cbox multi open" data-uuid="${esc(c.uuid)}">${head}${rowsHtml(own, st, c.uuid, ROWS.filter(r => r[0] !== "passives" && r[0] !== "damage"))}${add}${hide ? "" : ladderHtml(c.dc, crit, ladderOdds(inp, st, c, crit))}</div>`;
@@ -405,7 +431,7 @@ export function dialogHtml(inp, st) {
   const quick = `<div class="rd-quick">${(inp.save ? ["emp", "enf"] : quickKinds(inp.multi)).map(k => `<button type="button" class="rd-qb" data-act="quick" data-scope="shared" data-k="${k}">${pip({ kind: k })}${QUICK_LABEL[k]}</button>`).join("")}</div>`;
   const notices = (inp.notices ?? []).length ? `<div class="rd-notes">${inp.notices.map(n => `<span class="rd-note"${n.why ? ` data-tooltip="${esc(n.why)}"` : ""}>${esc(n.text)}</span>`).join("")}</div>` : "";
   const head = inp.save ? `<div class="rd-dice"><b class="rd-dtxt">Their roll</b> <i class="rd-dnames">${esc(inp.save.label)} vs DC ${inp.save.dc}</i> <span class="rd-dnote">· each target rolls; the Tiers are their result</span></div>`
-    : `<div class="rd-dice"><b class="rd-dtxt">${esc(dl.dice)}</b> <b>${sgn(dl.mod)}</b> <i class="rd-dnames">${esc(dl.names.join(", "))}</i> ${counts(dl.boons, dl.banes)}${dl.note ? ` <span class="rd-dnote">· ${esc(dl.note)}</span>` : ""}</div>`;
+    : `<div class="rd-dice"><b class="rd-dtxt">${esc(dl.dice)}</b> <b>${sgn(dl.mod)}</b> <i class="rd-dnames">${esc(dl.names.join(", "))}</i> ${counts(dl.boons, dl.banes)}${dl.note ? ` <span class="rd-dnote">· ${esc(dl.note)}</span>` : ""}${(dl.bbNotes ?? []).map(x => ` <span class="rd-dnote rd-bbcap">· ${esc(x)}</span>`).join("")}</div>`;
   // v0.0.293 (Lucas: Reactions and Opportunity Attack still had the old window): a Version with no roll shows the card and its targets; Use
   const named = liveCreatures(inp, st).filter(c => !["self", "none"].includes(c.uuid));
   const panel = noRoll ? (named.length ? `<div class="rd-tline">→ ${esc(named.map(c => c.name).join(", "))}</div>` : "")

@@ -59,7 +59,8 @@ function settingSentenceOnly(x) {
       const pred = predicateText(x), every = !pred;   // no traits: every roll
       const rolls = `${every ? "every roll" : "rolls"} made ${x.against ? "<b>against</b> this creature" : "by this creature"}${pred}`;
       if (!gains) return `Nothing yet on ${rolls}.`;
-      return `<b>${gains}</b>${x.byValue ? " (times the condition's value)" : ""} on ${rolls}.`;
+      const nm = { field: "Field ", pressure: "Pressure ", support: "Support " }[x.bbName] ?? "";   // v0.0.301: "1 Pressure Bane"
+      return `<b>${nm ? gains.replace(/(\d+) (Boons?|Banes?)/g, `$1 ${nm}$2`) : gains}</b>${x.byValue ? " (times the condition's value)" : ""} on ${rolls}.`;
     }
     case "damagestep": {
       const dmg = [x.empowered ? `Empowered ${x.empowered}` : "", x.enfeebled ? `Enfeebled ${x.enfeebled}` : ""].filter(Boolean).join(" and ");

@@ -21,7 +21,7 @@ let G, K, N, M, R, T;
 G = tok("G", 2, 2, -1); K = tok("Kai", 2, 1, 1); N = tok("Nari", 2, 3, 1);
 row("two flankers", [["Kai", K, G], ["Nari", N, G]]);
 M = tok("Mara", 1, 2, 1); row("three flankers", [["Kai", K, G], ["Nari", N, G], ["Mara", M, G]]);
-R = tok("Rin", 3, 2, 1); T = tok("Tor", 3, 3, 1); row("five flankers (3 is the limit)", [["Kai", K, G], ["Nari", N, G], ["Mara", M, G], ["Rin", R, G], ["Tor", T, G]]);
+R = tok("Rin", 3, 2, 1); T = tok("Tor", 3, 3, 1); row("five flankers (2 is the limit, v0.0.301)", [["Kai", K, G], ["Nari", N, G], ["Mara", M, G], ["Rin", R, G], ["Tor", T, G]]);
 clear(); G = tok("G", 2, 2, -1); K = tok("Kai", 2, 1, 1); N = tok("Nari", 2, 4, 1, { weapons: [weapon(1)] });
 row("a Reach 2 weapon flanks from 2 squares (Nari is 2 away)", [["Kai", K, G], ["Nari", N, G]]);
 clear(); G = tok("G", 2, 2, -1); K = tok("Kai", 2, 1, 1); N = tok("Nari", 2, 5, 1, { weapons: [weapon(1)] });
@@ -39,7 +39,7 @@ const bow = W.actor.itemTypes.weapon; W.actor.itemTypes.weapon = [weapon(0, ["ra
 tokens.splice(tokens.indexOf(W), 1); W = tok("Nari", 2, 7, 1); row("Nari is far away", [["A", A, P], ["B", B, P], ["C", C, P]]);
 clear(); P = tok("Kai", 2, 2, 1); A = tok("Goblin A", 1, 1, -1); B = tok("Goblin B", 1, 3, -1); C = tok("Goblin C", 3, 3, -1);
 row("three goblins on a lone hero (no ally of his near)", [["A", A, P], ["B", B, P], ["C", C, P]]);
-const g4 = tok("Goblin D", 3, 1, -1), g5 = tok("Goblin E", 2, 3, -1); row("five goblins on a lone hero (3 is the limit)", [["A", A, P], ["B", B, P], ["C", C, P], ["D", g4, P], ["E", g5, P]]);
+const g4 = tok("Goblin D", 3, 1, -1), g5 = tok("Goblin E", 2, 3, -1); row("five goblins on a lone hero (2 is the limit, v0.0.301)", [["A", A, P], ["B", B, P], ["C", C, P], ["D", g4, P], ["E", g5, P]]);
 console.log("--- formations");
 clear(); const a1 = tok("Ann", 1, 1, 1), a2 = tok("Ben", 1, 2, 1), e1 = tok("Orc", 2, 1, -1), e2 = tok("Imp", 2, 2, -1);
 row("two against two, all next to each other", [["Ann at Orc", a1, e1], ["Ann at Imp", a1, e2], ["Ben at Orc", a2, e1], ["Orc at Ann", e1, a1], ["Imp at Ben", e2, a2]]);

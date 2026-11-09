@@ -8,6 +8,7 @@ import { effectWhat } from "./fxdetails.mjs";   // v0.0.267
 import { TWOD12 } from "./config.mjs";
 import { combatantOf } from "./combat.mjs";
 import { onceKey, onceBlocked, isMarked } from "./automation.mjs";
+import { bbCount, bbKey } from "./calc.mjs";
 const SOCKET = "system.twod12";
 const F = "twod12";
 
@@ -71,7 +72,8 @@ export async function applyBoonEffect(actor, cfg, origin) {
   if (!n) return;
   const traits = cfg.traits ?? [];
   const what = traits.length ? traits.map(t => TWOD12.traits[t] ?? t).join(" ") : "Roll";
-  const name = cfg.name || `${Math.abs(n)} ${n < 0 ? "Bane" : "Boon"}${Math.abs(n) === 1 ? "" : "s"} on the next ${what}`;
+  const bb = bbKey(cfg.bb), nm = bb ? `${BBW[bb]} ` : "";   // v0.0.301 (PACK BB): a named one ("1 Pressure Bane")
+  const name = cfg.name || `${Math.abs(n)} ${nm}${n < 0 ? "Bane" : "Boon"}${Math.abs(n) === 1 ? "" : "s"} on the next ${what}`;
   const d = Number(cfg.rounds) > 0 ? { type: "rounds", rounds: Number(cfg.rounds) } : { type: "eot", rounds: 1 };
   const own = combatantOf(actor);
   await actor.createEmbeddedDocuments("ActiveEffect", [{
@@ -80,7 +82,7 @@ export async function applyBoonEffect(actor, cfg, origin) {
       duration: d, remaining: d.rounds, slotInit: own?.initiative ?? null, originSlot: origin?.slot ?? null,
       originCombatantId: origin?.combatantId ?? "", anchorSlot: origin?.anchorSlot ?? null, anchorCombatantId: origin?.anchorCombatantId ?? "", appliedRound: origin?.round ?? null, appliedTurn: origin?.turn ?? null,
       description: "", notes: [], bonuses: [], grants: [],
-      modifiers: [{ against: false, boons: n > 0 ? n : 0, banes: n < 0 ? -n : 0, empowered: 0, enfeebled: 0, all: traits, any: [], none: [], from: [] }],
+      modifiers: [{ against: false, boons: n > 0 ? n : 0, banes: n < 0 ? -n : 0, bb, empowered: 0, enfeebled: 0, all: traits, any: [], none: [], from: [] }],
       // "the next ...": it is used up by the next roll with all those traits (with no traits it lasts its duration)
       expireOn: traits, expireAll: true
     } }
@@ -103,6 +105,13 @@ export function derivedMods(actor) {
 }
 
 const onceText = m => (m.oncePerRound ? " (the first one each round)" : "");
+/**
+ * v0.0.301 (PACK BB): the name of a modifier's Boons and Banes ("field", "pressure", "support" or ""): the setting's own; an applied Prone made before
+ * v0.0.301 has none, and Prone's are Field (book, Ch. 8).
+ */
+export const bbOf = (m, e) => bbKey(m?.bb) || (e?.statuses?.has?.("prone") || /^prone$/i.test(shortName(e?.getFlag?.(F, "baseName") ?? e?.name ?? "").trim()) ? "field" : "");
+const BBW = { field: "Field", pressure: "Pressure", support: "Support" };
+const bbText = (m, e) => { const k = bbOf(m, e); return k ? ` (${BBW[k]})` : ""; };
 /** How many times a modifier counts: one that is "by value" (a condition with a value) counts as many times as the value (Vulnerable 2: 2 boons). */
 const kOf = (m, e) => (m.byValue ? Math.max(1, Number(e.getFlag(F, "value")) || 1) : 1);
 /** The value of a Vulnerable effect: the condition with a value, or an older effect named "Vulnerable 2". 0 for anything else. */
@@ -114,7 +123,7 @@ const vulnerableOf = e => {
 
 export function modifierList(actor, traits, targetActors = [], from = null) {
   const out = [];
-  for (const m of derivedMods(actor)) out.push({ id: m.id, name: m.name, boons: m.boons, banes: m.banes, match: matches(m, traits, from), predicate: predText(m) });
+  for (const m of derivedMods(actor)) out.push({ id: m.id, name: m.name, boons: m.boons, banes: m.banes, bb: bbKey(m.bb), match: matches(m, traits, from), predicate: predText(m) });
   for (const e of allEffects(actor)) {
     if (effectOff(actor, e)) continue;
     (e.getFlag(F, "modifiers") ?? []).forEach((m, i) => {
@@ -122,7 +131,7 @@ export function modifierList(actor, traits, targetActors = [], from = null) {
       // v0.0.186: once per round (used: not offered) and only against the marked target (one chip for that target).
       const once = m.oncePerRound ? onceKey(e, "m", i) : "";
       if (once && onceBlocked(actor, once)) return;
-      const base = { name: shortName(e.name), boons: m.boons * kOf(m, e), banes: m.banes * kOf(m, e), match: matches(m, traits, from), predicate: predText(m) + onceText(m), ...(once ? { once, onceActor: actor.uuid } : {}) };
+      const base = { name: shortName(e.name), boons: m.boons * kOf(m, e), banes: m.banes * kOf(m, e), bb: bbOf(m, e), match: matches(m, traits, from), predicate: predText(m) + onceText(m) + bbText(m, e), ...(once ? { once, onceActor: actor.uuid } : {}) };
       if (!m.vsMarked) return out.push({ id: `${e.id}:${i}`, ...base });
       for (const t of targetActors) if (isMarked(actor, t)) out.push({ ...base, id: `${t.uuid}|${e.id}:${i}`, name: `${base.name} (${t.name})`, predicate: `Against your marked target, ${t.name}: ${base.predicate}` });
     });
@@ -140,7 +149,7 @@ export function modifierList(actor, traits, targetActors = [], from = null) {
         if (!m.against || !(m.boons || m.banes)) return;
         const once = m.oncePerRound ? onceKey(e, "m", i) : "";   // v0.0.186: the first matching Action against it each round (Elusive)
         if (once && onceBlocked(t, once)) return;
-        out.push({ id: `${t.uuid}|${e.id}:${i}`, name: `${shortName(e.name)} (${t.name})`, boons: m.boons * kOf(m, e), banes: m.banes * kOf(m, e), match: matches(m, traits), predicate: `Against ${t.name}: ${predText(m)}${onceText(m)}`, ...(once ? { once, onceActor: t.uuid } : {}) });
+        out.push({ id: `${t.uuid}|${e.id}:${i}`, name: `${shortName(e.name)} (${t.name})`, boons: m.boons * kOf(m, e), banes: m.banes * kOf(m, e), bb: bbOf(m, e), match: matches(m, traits), predicate: `Against ${t.name}: ${predText(m)}${onceText(m)}${bbText(m, e)}`, ...(once ? { once, onceActor: t.uuid } : {}) });
       });
     }
   }
@@ -162,12 +171,19 @@ export async function useOnceModifiers(actor, traits, targetActors = [], from = 
 
 /** Sum of the chosen modifiers ("effectId:index" ids). */
 export function resolveModifiers(actor, ids, extra = []) {
-  let boons = 0, banes = 0;
+  // v0.0.301 (PACK BB): each source keeps its name (Field, Pressure, Support); the totals have the limit of 2 per name (calc.mjs bbCount).
+  // A source can also make the roll Favored or Doomed (High cover: Doomed, and no Field Banes).
   const sources = [];
+  let favored = false, doomed = false;
+  const favBy = [], doomBy = [];
   for (const id of ids ?? []) {
     if (String(id).startsWith("syn:")) {
       const m = [...derivedMods(actor), ...extra].find(x => x.id === id);
-      if (m) { boons += m.boons ?? 0; banes += m.banes ?? 0; sources.push({ name: m.name, boons: m.boons ?? 0, banes: m.banes ?? 0 }); }
+      if (m) {
+        sources.push({ name: m.name, boons: m.boons ?? 0, banes: m.banes ?? 0, bb: bbKey(m.bb) });
+        if (m.favored) { favored = true; favBy.push(m.name); }
+        if (m.doomed) { doomed = true; doomBy.push(m.name); }
+      }
       continue;
     }
     const [owner, rest] = id.includes("|") ? id.split("|") : [null, id];
@@ -177,10 +193,10 @@ export function resolveModifiers(actor, ids, extra = []) {
     const m = e?.getFlag(F, "modifiers")?.[Number(idx)];
     if (!m) continue;
     const k = kOf(m, e);
-    boons += m.boons * k; banes += m.banes * k;
-    sources.push({ name: shortName(e.name), boons: m.boons * k, banes: m.banes * k });
+    sources.push({ name: shortName(e.name), boons: m.boons * k, banes: m.banes * k, bb: bbOf(m, e) });
   }
-  return { boons, banes, sources };
+  const n = bbCount(sources);
+  return { boons: n.boons, banes: n.banes, sources, groups: n.groups, favored, doomed, favBy, doomBy };
 }
 
 /** The radius (in squares, from the token's center) of a light of size N around a creature whose token is `half` squares wide from its center (lightradius.mjs draws it so). */

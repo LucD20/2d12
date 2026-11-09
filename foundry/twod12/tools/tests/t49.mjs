@@ -5,15 +5,15 @@ globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class
 globalThis.Hooks = { on() {} }; globalThis.game = { settings: { get: () => true } };
 const { tierProbs } = await import(ROOTURL + "module/calc.mjs");
 const pc = r => r.map(x => Math.round(x * 100)).join("/"), succ = r => Math.round((r[1] + r[2]) * 100);
-console.log("exact odds +0 vs 13: none", pc(tierProbs(0, 13, 0, 0)), succ(tierProbs(0, 13, 0, 0)) + "%", "| 1 boon", pc(tierProbs(0, 13, 1, 0)), succ(tierProbs(0, 13, 1, 0)) + "%", "| 2 boons", succ(tierProbs(0, 13, 2, 0)) + "%", "| 3 boons", succ(tierProbs(0, 13, 3, 0)) + "%", "(simulation: 58 / 65 / 72 / 77)");
+console.log("exact odds +0 vs 13: none", pc(tierProbs(0, 13, 0, 0)), succ(tierProbs(0, 13, 0, 0)) + "%", "| 1 boon", pc(tierProbs(0, 13, 1, 0)), succ(tierProbs(0, 13, 1, 0)) + "%", "| 2 boons", succ(tierProbs(0, 13, 2, 0)) + "%", "| 3 boons", succ(tierProbs(0, 13, 3, 0)) + "%", "(v0.0.301: flat, a Boon is +1 Modifier)");
 console.log("+2: none", succ(tierProbs(2, 13, 0, 0)) + "%", "| 1 boon", succ(tierProbs(2, 13, 1, 0)) + "%", "| 3 boons", succ(tierProbs(2, 13, 3, 0)) + "%", "| 1 bane", succ(tierProbs(2, 13, 0, 1)) + "%", "| boon+bane", pc(tierProbs(2, 13, 1, 1)), "vs none", pc(tierProbs(2, 13, 0, 0)));
-// the roll: boons are 1d3-1, Critical is Doubles on a result that is already Tier 3
+// the roll: v0.0.301, a Boon is +1 and a Bane -1 (no dice); Critical is Doubles on a result that is already Tier 3
 let seq = [];
 globalThis.Roll = class { constructor(f) { this.f = f; } async evaluate() { const n = Number(this.f.match(/^(\d+)d3/)?.[1] ?? 0); const faces = seq.shift?.() ?? Array(n).fill(2); this.dice = [{ results: faces.map(result => ({ result })) }]; this.total = faces.reduce((a, b) => a + b, 0) - n; this.formula = this.f; return this; } };
 const rl = await import(ROOTURL + "module/roll.mjs");
 const rd = vals => { let i = 0; globalThis.Roll = class { constructor(f) { this.f = f; } async evaluate() { const n = Number(this.f.match(/^(\d+)d(\d+)/)?.[1] ?? 0), d = Number(this.f.match(/^\d+d(\d+)/)?.[1]); if (d === 3) { const faces = [3, 1, 2].slice(0, n); this.dice = [{ results: faces.map(result => ({ result })) }]; this.total = faces.reduce((a, b) => a + b, 0) - n; } else { const v = vals[i++]; this.dice = [{ results: [{ result: v }] }]; this.total = v; } return this; } }; };
 rd([9, 9]);  let r = await rl.performCheck({ mod: 3, boons: 2, banes: 0, dc: 13 });
-console.log("9+9+3 = 21 with doubles (Tier 3 already): crit", r.crit, "tier", r.tier, "| boons", r.boonFaces, "bonus", r.bo, "total", r.total, "(boon dice 3,1 -> 2 and 0 = +2)");
+console.log("9+9+3 = 21 with doubles (Tier 3 already): crit", r.crit, "tier", r.tier, "| boons", r.boonFaces, "bonus", r.bo, "total", r.total, "(2 Boons: +1 each)");
 rd([5, 5]);  r = await rl.performCheck({ mod: 0, boons: 0, banes: 0, dc: 13 });
 console.log("5+5+0 = 10, doubles on a Tier 1: crit", r.crit, "tier", r.tier);
 rd([8, 8]);  r = await rl.performCheck({ mod: 0, boons: 0, banes: 0, dc: 13 });

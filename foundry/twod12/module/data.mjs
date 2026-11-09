@@ -531,7 +531,7 @@ const settingsField = () => new ArrayField(new SchemaField({
         bright: int(0), dim: int(0), color: str(),
         // v0.0.247 (Lucas: Smite's light was far too bright): the light's intensity (Foundry's alpha, 0 to 1; 0.5 is Foundry's default) and animation
         lightAlpha: new NumberField({ required: true, nullable: false, initial: 0.5, min: 0, max: 1 }), lightAnim: str(), lightSpeed: int(5, 0), lightIntensity: int(5, 0),
-        boons: int(0), banes: int(0), empowered: int(0), enfeebled: int(0), byValue: bool(), predicate: str(), all: predSet(), any: predSet(), none: predSet(), from: traitSet(),
+        boons: int(0), banes: int(0), bbName: choice({ "": "", field: "Field", pressure: "Pressure", support: "Support" }, ""), empowered: int(0), enfeebled: int(0), byValue: bool(), predicate: str(), all: predSet(), any: predSet(), none: predSet(), from: traitSet(),
         // Bonus Damage: an instance added to the damage of the next matching action, on the listed tiers (none = all).
         dmg: str(), dmgPool: choice(TWOD12.pools, "B"), dmgSub: choice(TWOD12.subtypes), tiers: new SetField(new StringField({ choices: ["t1", "t2", "t3"] })), fxUuid: str(),
         // Boons and banes that apply to rolls made AGAINST the creature with the effect (Prone).

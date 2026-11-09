@@ -13,6 +13,7 @@ export function appliedFlags(s, source) {
       against: x.type === "boonbane" && !!x.against,
       boons: x.boons,
       banes: x.banes,
+      bb: x.type === "boonbane" ? (x.bbName || "") : "",   // v0.0.301 (PACK BB): Field, Pressure, Support or none
       empowered: Math.max(0, Math.trunc(Number(x.empowered)) || 0),
       enfeebled: Math.max(0, Math.trunc(Number(x.enfeebled)) || 0),
       byValue: !!x.byValue,

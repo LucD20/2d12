@@ -181,6 +181,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
                 isBonus: x.type === "bonusdamage",
                 boons: x.boons,
                 banes: x.banes,
+                bbName: x.bbName ?? "", bbChoices: TWOD12.bbNames,   // v0.0.301 (PACK BB)
                 empowered: x.empowered,
                 enfeebled: x.enfeebled,
                 byValue: x.byValue,

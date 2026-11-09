@@ -45,7 +45,7 @@ const tiered = (v, fx) => ({ ...v, fx: { all: [], t1: [], t2: [], t3: [], ...Obj
 
 /* ------------------------------------------------------------------ Effects and Conditions */
 const speedSetting = (mode, formula) => ({ type: "speed", speedMode: mode, speedFormula: formula });
-const against = (boons, banes, any) => ({ type: "boonbane", against: true, boons, banes, all: [], any, none: [] });
+const against = (boons, banes, any, bbName = "") => ({ type: "boonbane", against: true, boons, banes, bbName, all: [], any, none: [] });   // v0.0.301: bbName, the Boons' and Banes' name (Field...)
 // v0.0.186 (pack C-a): the general settings that replaced the code that tested card names (automation.mjs).
 const P = (all = [], any = [], none = []) => ({ all, any, none });
 const sBoon = (boons, pred, extra = {}) => ({ type: "boonbane", boons, banes: 0, ...pred, ...extra });
@@ -60,7 +60,7 @@ cond("Enfeebled", "icons/svg/degen.svg", "<p>Enfeebled N subtracts N from every 
 cond("Hindered", "icons/svg/downgrade.svg", "<p>Your Speed is halved, rounded down.</p>", [speedSetting("override", "floor(speed/2)")]);
 cond("Immobilized", "icons/svg/net.svg", "<p>You can't use Move Actions or Evade. Unless otherwise specified, you can remove Immobilized by spending 1 AP [Move]: the one Move Action you can use while Immobilized (the Break Free Basic Action).</p>", [speedSetting("override", "0")]);
 cond("Leaning", "icons/svg/eye.svg", "<p>You calculate cover from one of your corners instead of the center, and your own cover is reduced by 1 level (Total → High → Medium → Low → none: leaning out of Total cover, you can be targeted). Click a corner of your square on the map to lean toward it: your token peeks out a little past it, unless a wall is in the way. It ends at the end of your turn, or when you stop Leaning (at any time on your turn, at no cost).</p>", []);
-cond("Prone", "icons/svg/falling.svg", "<p>Melee Actions against you gain 1 Boon, and Ranged Actions against you suffer 1 Bane. You can't Evade. The only [Move] Actions you can use are Crawl and Stand.</p>", [against(1, 0, ["melee"]), against(0, 1, ["ranged"])]);
+cond("Prone", "icons/svg/falling.svg", "<p>Melee Actions against you gain 1 Field Boon, and Ranged Actions against you suffer 1 Field Bane. You can't Evade. The only [Move] Actions you can use are Crawl and Stand.</p>", [against(1, 0, ["melee"], "field"), against(0, 1, ["ranged"], "field")]);
 
 add("effects", "effect", "Hindered (until Move)", "icons/svg/downgrade.svg", { duration: { type: "rounds", rounds: 1 }, expireOn: ["move"], description: "<p>For 1 round, the creature is Hindered until they use a Move Action. The effect lasts through that Move Action and ends once it is resolved.</p>", settings: [speedSetting("override", "floor(speed/2)")] }, "Conditions");
 const coldSetting = (dmg, tiers, text = "", fxUuid = "") => ({ type: "bonusdamage", dmg, dmgPool: "M", dmgSub: "Co", tiers, text, fxUuid, all: ["weapon"], any: [], none: [] });

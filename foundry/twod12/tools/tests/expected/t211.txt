@@ -9,18 +9,18 @@ hidden Defenses: labels Tier 1 · Tier 2 · Tier 3 | the arrow in the middle of 
 12→12→7 and 5 + 2 vs 13 = 36 (DC + 20: a Critical): total 36 base 3 tier 3 crit true
 --- several targets, one roll: each its own Defense, Boons, Banes, Favored, Doomed
 Bandit Thug     total 18 base 2 tier 2 crit false | kept 9 · 7 | 
-Grave Wisp      total 16 base 2 tier 3 crit false | kept 7 · 7 | Favored: keeps 7 · 7 for Doubles, Tier 2 ↑ Tier 3
+Grave Wisp      total 18 base 2 tier 3 crit false | kept 9 · 7 | Favored: the two highest, 9 · 7, and a pair: Doubles, Tier 2 ↑ Tier 3
 Ogre Chieftain  total 16 base 2 tier 2 crit false | kept 7 · 7 | Doomed: the two lowest, 7 · 7, no Doubles
-a Boon on one, a Bane and another DC on the other: Bandit Thug 20 vs 13: Tier 3 | Other 17 vs 17: Tier 2
-Boon · Bane lines name their source: boon 2 Flanking | bane -1 Frightened
-dice still needed: a Favored target on a 2d12 roll: {"d12":1,"boon":0,"bane":0} | 3 Boons with 1 rolled: {"d12":0,"boon":2,"bane":0}
+a Boon on one, a Bane and another DC on the other: Bandit Thug 19 vs 13: Tier 2 | Other 17 vs 17: Tier 2
+Boon · Bane lines name their source: boon 1 Flanking | bane -1 Frightened
+dice still needed: a Favored target on a 2d12 roll: {"d12":1,"boon":0,"bane":0} | 3 Boons with 1 rolled: {"d12":0,"boon":0,"bane":0}
 the dialog's DC doesn't override each target's Defense (useAction keeps each dcInfo): true
 --- the attack card
 Tier 2: stamp TIER 2 vs AD 11 | outcome: Vigor 1d8 Sl · Resolve 2d6 + 1d6 Ho | the effect (no label): true | no Critical row on a Tier 2: true
 Tier 1: a pool with 0 is left out: Resolve 1d6 Ho | no effect text, and no "No Effects" line: true
 Doubles raise: stamp TIER 3 Doubles ↑ | chip: Tier 2 → Tier 3 · Doubles | the Critical row muted: Critical Doubles, or 31+ the target is Prone. | a rider: ↳ Pushed 2
 a Critical by total: stamp CRIT 3 Critical | the box: Critical the target is Prone. | explosion chain: 11 + 11 + 7 · 5 | total row: 36 vs AD 13 Tier 3 → Critical · 33+
-Boon / Bane lines: Boon · Bane 3 +2 Boon · Flanking 2 −1 Bane · Frightened 1 +0 Bane · Dim light  | the modifiers colored: 1 1
+Boon / Bane lines: Boon · Bane +1 Boon · Flanking −1 Bane · Frightened −1 Bane · Dim light  | the modifiers colored: 1 1
 every clickable thing is a button with aria-expanded where it toggles: true | the retarget has a label: true | decorative icons hidden: true
 --- settings: Designer mode, hidden Defenses (players), the GM always sees everything
 Designer mode off: no odds, Ruler or automation anywhere: true | on: Odds: T1 20% · T2 50% · T3 30% Ruler: worth 2.1 AP Automation: Mithril

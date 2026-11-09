@@ -15,26 +15,26 @@ the Ogre moved to rows 1-2, next to Kai: Goblin, Ogre
 friendly and friendly never engage: false | hostile and hostile: false | friendly and hostile: true | neutral: false
 
 --- Ranged Combat
-Shoot Nari: Kai and Nari both Engaged            card | chips: syn:engaged*(0b/2n) syn:engaged-target*(0b/1n) | bane dice 0,1,2 | total 12
-Shoot Nari: her Ally is Unsensed (to everyone)   card | chips: syn:engaged*(0b/2n) syn:engaged-target*(0b/1n) | bane dice 0,1,2 | total 12
-Shoot Nari: the Goblin next to us is Unsensed    card | chips: syn:engaged*(0b/2n) syn:engaged-target*(0b/1n) | bane dice 0,1,2 | total 12
-Shoot Nari: the Goblin is Unconscious            card | chips: syn:engaged-target*(0b/1n) | bane dice 1 | total 14
+Shoot Nari: Kai and Nari both Engaged            card | chips: syn:engaged*(0b/2n) syn:engaged-target*(0b/1n) | bane dice - | total 12
+Shoot Nari: her Ally is Unsensed (to everyone)   card | chips: syn:engaged*(0b/2n) syn:engaged-target*(0b/1n) | bane dice - | total 12
+Shoot Nari: the Goblin next to us is Unsensed    card | chips: syn:engaged*(0b/2n) syn:engaged-target*(0b/1n) | bane dice - | total 12
+Shoot Nari: the Goblin is Unconscious            card | chips: syn:engaged-target*(0b/1n) | bane dice - | total 14
 Shoot Nari: nobody is Engaged                    card | chips: (none) | bane dice - | total 15
 Strike (melee) while Engaged: no banes           card | chips: (none) | bane dice - | total 15
-Shoot the Goblin: Engaged only with you          card | chips: syn:engaged*(0b/2n) | bane dice 0,1 | total 14
-Shoot the Goblin: an Ally is next to it too      card | chips: syn:engaged*(0b/2n) syn:engaged-target*(0b/1n) | bane dice 0,1,2 | total 12
-Shoot Lonny (alone) while Kai is Engaged         card | chips: syn:engaged*(0b/2n) | bane dice 0,1 | total 14
+Shoot the Goblin: Engaged only with you          card | chips: syn:engaged*(0b/2n) | bane dice - | total 13
+Shoot the Goblin: an Ally is next to it too      card | chips: syn:engaged*(0b/2n) syn:engaged-target*(0b/1n) | bane dice - | total 12
+Shoot Lonny (alone) while Kai is Engaged         card | chips: syn:engaged*(0b/2n) | bane dice - | total 13
 
 --- Ranged Combat against several creatures
-Shoot Nari (Engaged) and Lonny (not)             card | chips: syn:engaged*(0b/2n) syn:engaged-target|Actor.Nari*(0b/1n) | bane dice 0,1,2 | rows Nari 12; Lonny 14
+Shoot Nari (Engaged) and Lonny (not)             card | chips: syn:engaged*(0b/2n) syn:engaged-target|Actor.Nari*(0b/1n) | bane dice - | rows Nari 12; Lonny 13
 
 --- Flanking: a Melee Action gains a boon for each other ally that flanks its target
-Strike the Goblin: the Ally and Kai both threaten it card | chips: syn:flanking*(1b/0n) | bane dice - | total 17
+Strike the Goblin: the Ally and Kai both threaten it card | chips: syn:flanking*(1b/0n) | bane dice - | total 16
 ... the Ally is Unconscious: nobody flanks       card | chips: (none) | bane dice - | total 15
 ... the Ally holds a bow: it does not threaten   card | chips: (none) | bane dice - | total 15
-Shoot the Goblin: a Ranged Action gets no Flanking card | chips: syn:engaged*(0b/2n) syn:engaged-target*(0b/1n) | bane dice 0,1,2 | total 12
+Shoot the Goblin: a Ranged Action gets no Flanking card | chips: syn:engaged*(0b/2n) syn:engaged-target*(0b/1n) | bane dice - | total 12
 Strike the Goblin: the Ally is far away          card | chips: (none) | bane dice - | total 15
-Strike the Goblin and Nari (several targets): the chip is the Goblin's card | chips: syn:flanking|Actor.Goblin*(1b/0n) | bane dice - | total 17 | warn: Not affected: Nari: out of range (5 squares, maximum 1).
+Strike the Goblin and Nari (several targets): the chip is the Goblin's card | chips: syn:flanking|Actor.Goblin*(1b/0n) | bane dice - | total 16 | warn: Not affected: Nari: out of range (5 squares, maximum 1).
 
 --- Empowered and Enfeebled: the two chips in the dialog (the player can change them) and the step the damage will use
 no effects, the chips left alone                             chips: Empowered 0, Enfeebled 0 | the damage uses step 0
@@ -106,12 +106,12 @@ Charge's expression: 7 | the Evade button: 2
 things it must refuse: null null null null null null null
 Evade in the Basic Actions: @Move[evade|distance:1] || @Move[evade|distance:floor(speed/2)] | traits: self
 
-the Prone effect: Melee Actions against you gain 1 Boon, and Ranged Actions against you suffer 1 Bane. You can't Evade. The only [Move] Actions you can use are Crawl and Stand. | Hindered linked: "" | settings: boonbane 1b 0n, boonbane 0b 1n
+the Prone effect: Melee Actions against you gain 1 Field Boon, and Ranged Actions against you suffer 1 Field Bane. You can't Evade. The only [Move] Actions you can use are Crawl and Stand. | Hindered linked: "" | settings: boonbane 1b 0n, boonbane 0b 1n
 
 --- the new roll dialog (v0.0.292): the same rolls through it, and its named sources on the card
-OLD Shoot Nari (the same world, the old dialog)  card | chips: syn:cover*(0b/1n) syn:engaged*(0b/2n) syn:engaged-target*(0b/1n) | bane dice 0,1,2,0 | total 12
-NEW Shoot Nari (the new dialog)                  card | chips: (none) | bane dice 0,1,2,0 | total 12
-   chips: Low cover[Nari] You are Engaged ×2[you] Target is Engaged[Nari] Nonlethal[you, off] | creatures: Nari AD 11 | dice line: {"versions":"1 AP","roll":{"mod":2,"name":"Weapon"},"multi":false}
-NEW Shoot Nari: +1 Bane, +1, Engaged off         card | chips: (none) | bane dice 1,2,2 | total 11
-   breakdown: 2d12 6 7 Boon · Bane 2 −1 Bane · Low cover 3 −2 Bane · Target is Engaged 3 −2 Bane · Situational Modifiers +2 Weapon +1 Situational 11 vs AD 11 Tier 2 Vigor 2 Pi | flags rd banes: [{"name":"Situational","n":1,"scope":"shared"}] | flat: [{"name":"Situational","v":1}]
+OLD Shoot Nari (the same world, the old dialog)  card | chips: syn:cover*(0b/1n) syn:engaged*(0b/2n) syn:engaged-target*(0b/1n) | bane dice - | total 11
+NEW Shoot Nari (the new dialog)                  card | chips: (none) | bane dice - | total 11
+   chips: Low cover[Nari] You are Engaged ×2[you] Target is Engaged (1 Field Bane)[Nari] Nonlethal[you, off] | creatures: Nari AD 11 | dice line: {"versions":"1 AP","roll":{"mod":2,"name":"Weapon"},"multi":false}
+NEW Shoot Nari: +1 Bane, +1, Engaged off         card | chips: (none) | bane dice - | total 13
+   breakdown: 2d12 6 7 Boon · Bane −1 Bane · Low cover Field −1 Bane · Target is Engaged Field −1 Bane · Situational Modifiers +2 Weapon +1 Situational 13 vs AD 11 Tier 2 Vigor 2 Pi | flags rd banes: [{"name":"Situational","n":1,"scope":"shared","bb":""}] | flat: [{"name":"Situational","v":1}]
 NEW Crawl: the dialog: true | no roll: 1 AP no roll, 2 AP no roll | card posted: true | no warning

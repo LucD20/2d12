@@ -11,8 +11,8 @@
 @Condition[prone]. @Condition[immobilized|eot]. @Condition[hindered|rounds:2]. Next Move is @Condition[hindered|eot]. @Move[advance|distance:2].
 found item: true | AE: Effect: Immobilized | statuses: ["immobilized"] | duration: {"type":"eot","rounds":1} | speedMods: [{"mode":"override","formula":"0"}]
 no Effect item named Prone: false [{"status":"prone","active":true}]
-Bloodied / Strained chips on a Strike: 0 | on a Magic Action: 0 | resolved: {"boons":0,"banes":0,"sources":[]}
-range extra resolves: {"boons":0,"banes":1,"sources":[{"name":"Far range (14 sq)","boons":0,"banes":1}]}
+Bloodied / Strained chips on a Strike: 0 | on a Magic Action: 0 | resolved: {"boons":0,"banes":0,"sources":[],"groups":{},"favored":false,"doomed":false,"favBy":[],"doomBy":[]}
+range extra resolves: {"boons":0,"banes":1,"sources":[{"name":"Far range (14 sq)","boons":0,"banes":1,"bb":""}],"groups":{},"favored":false,"doomed":false,"favBy":[],"doomBy":[]}
 group colors: #4caf50 #d9534f #4caf50 true true
 card colors: #5F5E5A #5F5E5A #5F5E5A
 distance with a ranged weapon: 10 / 20 / 40 | melee weapon: 1 | non weapon: Reach

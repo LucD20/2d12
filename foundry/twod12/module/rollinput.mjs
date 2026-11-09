@@ -65,11 +65,17 @@ export async function rollDialogInput(c) {
   const targetActors = c.multi ? c.perT.map(p => p.actor) : c.rollsAtOthers && c.targetToken?.actor ? [c.targetToken.actor] : [];
   // Boons and Banes: your effects, the effects on the targets, and what the map gives (Flanking, Cover, range, Engaged, Obscured...)
   for (const m of c.saveAct ? [] : [...modifierList(actor, c.dlgTraits, targetActors, null), ...c.extraMods]) {
+    // v0.0.301 (PACK BB): a source that makes the roll Doomed or Favored (High cover: Doomed, and no Field Banes)
+    if (!m.info && (m.doomed || m.favored) && !(m.boons || m.banes)) {
+      const scope = scopeOf(m.id), label = cleanLabel(m.name, scope !== "shared" ? tgtName(scope) : "");
+      chips.push({ id: m.id, scope, row: m.doomed ? "banes" : "boons", kind: m.doomed ? "doom" : "fav", n: 1, label, start: m.match ? "on" : "na", why: m.naWhy || m.predicate || "", tip: m.predicate ?? "", rule: m.rule ?? null });
+      continue;
+    }
     if (m.info || !(m.boons || m.banes)) continue;
     const scope = scopeOf(m.id), boon = (m.boons ?? 0) >= (m.banes ?? 0) && m.boons > 0, n = boon ? m.boons : m.banes;
     const label0 = cleanLabel(m.name, scope !== "shared" ? tgtName(scope) : "");
     const label = n > 1 && !/\d/.test(label0) ? `${label0} ×${n}` : label0;
-    chips.push({ id: m.id, fx: m.id, scope, row: boon ? "boons" : "banes", kind: boon ? "boon" : "bane", n, label, start: m.match ? "on" : "na", why: m.naWhy || m.predicate || "", tip: m.predicate ?? "", rule: m.rule ?? null });
+    chips.push({ id: m.id, fx: m.id, scope, row: boon ? "boons" : "banes", kind: boon ? "boon" : "bane", n, bb: m.bb ?? "", label, start: m.match ? "on" : "na", why: m.naWhy || m.predicate || "", tip: m.predicate ?? "", rule: m.rule ?? null });
   }
   // Favored and Doomed the roll already knows: your own (armor beyond your training, Unconscious) and the target's (Hidden, Hidden to it, untrained armor)
   const doom = doomStatus(actor) || (actor?.system?.armorUntrained ? "Untrained armor" : "");

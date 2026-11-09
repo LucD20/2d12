@@ -152,6 +152,8 @@ export const TWOD12 = {
   grantOnChoices: { "": "never", t1: "a Tier 1 or more", t2: "a Tier 2 or more", t3: "a Tier 3", crit: "a Critical", all: "any result" },
   grantDoChoices: { half: "the target's next damage is halved", text: "the card says" },
   coverLevels: { low: "Low", medium: "Medium", high: "High" },   // v0.0.266 (Lucas, Aim): the "Ignores cover" setting's levels
+  // v0.0.301 (PACK BB; book Ch. 1, Named Boons and Banes): the names that carry a limit of 2 (none: they always add up)
+  bbNames: { "": "no name", field: "Field", pressure: "Pressure", support: "Support" },
   effectSettings: { inline: "Grants an Action while active", boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", zone: "Zone (the placed area)", cover: "Ignores cover", speed: "Speed", light: "Token Light", note: "Note", ignore: "Ignore a Bane", rally: "Rally Points", turnstart: "Effect each turn", message: "Chat message", weaponprop: "Weapon property", mastery: "Starting Mastery", eschook: "Escalation hook" },
   // v0.0.243 (pack R): the moments a class's Escalation hook names (once an encounter, +1 Escalation): Kindled Wrath, Thrill of the Kill.
   escHookWhen: { allyState: "An ally within N squares becomes Bloodied or goes Down", markDown: "The creature it marked goes Down" },
