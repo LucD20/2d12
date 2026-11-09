@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-09 from the repository at: 9de73c0 2026-11-09 Pack MOD in the book: Weapon and Power Modifiers are class values (Lucas: "All defaults")
+Built by tools/knowledge.py on 2026-11-09 from the repository at: e1e0941 2026-11-09 v0.0.305: PACK MOD in Foundry: Weapon and Power Modifiers are class values
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -16,7 +16,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 Files:
 - HANDOFF.md (73 KB)
 - MASTER-PLAN.md (18 KB)
-- open-design-items.md (86 KB)
+- open-design-items.md (88 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (27 KB)
 - rules-03-movement.md (39 KB)

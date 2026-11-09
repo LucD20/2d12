@@ -138,6 +138,7 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
     const s2Row = level === 5 && hasVals
       ? `<div class="cw-attr"><span>Stage 2: +1 to</span><div class="cw-seg">${[["weapon", `Weapon Modifier (Weapon ${sgv(t1.weapon + 1)}, Power ${sgv(t1.power)})`], ["power", `Power Modifier (Weapon ${sgv(t1.weapon)}, Power ${sgv(t1.power + 1)})`]].map(([k, l]) => segBtn("s2", k, s2now === k, l)).join("")}</div></div>` : "";
     const modSec = orderRow || s2Row ? `<section class="cw-sec"><h2>Modifiers <span class="cw-pill done">Chosen</span></h2><p class="cw-sub">${orderRow ? "Your class gives two Modifier values: choose which is your Weapon Modifier (Weapon Actions) and which your Power Modifier (Power Actions and Ward Defense). It can't be changed later." : "Stage 2 adds +1 to one of your Modifiers (never above +4). It can't be changed later."}</p>${orderRow}${s2Row}</section>` : "";
+    let modPlaced = !modSec;   // v0.0.306 (Lucas): the Modifiers section right under the Attribute increases, above the Features
     const secs = m.sections.map(x => {
       const pill = `<span class="cw-pill${x.done && x.kind !== "granted" ? " done" : ""}">${esc(x.pill)}</span>`;
       let body = "";
@@ -149,8 +150,11 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
         const bar = x.s.kind === "talent" ? this._filterBar(x.s.id) : "";
         body = `${x.empty ? '<div class="cw-empty">Everything here is already yours.</div>' : ""}${bar}<div class="cw-tiles${x.s.kind === "talent" && this.tf.compact ? " compact" : ""}" data-sec="${x.s.id}">${x.list.map(u => tile(x, u)).join("")}</div>${x.s.kind === "talent" ? '<p class="cw-none" hidden>No Talent matches the filter.</p>' : ""}`;
       }
-      return `<section class="cw-sec"><h2>${esc(x.s.title)} ${pill}</h2><p class="cw-sub">${esc(x.sub)}</p>${body}</section>`;
-    }).join("") + modSec + (healthPlaced ? "" : `<section class="cw-sec"><h2>Health <span class="cw-pill done">Chosen</span></h2><p class="cw-sub">The class gives a high and a low Health value: you assign them.</p>${healthRow}</section>`) || '<p class="cw-empty">Nothing to choose at this level.</p>';
+      const html = `<section class="cw-sec"><h2>${esc(x.s.title)} ${pill}</h2><p class="cw-sub">${esc(x.sub)}</p>${body}</section>`;
+      if (x.kind === "attr" && !modPlaced) { modPlaced = true; return html + modSec; }
+      return html;
+    }).join("");
+    const secsAll = (modPlaced ? "" : modSec) + secs + (healthPlaced ? "" : `<section class="cw-sec"><h2>Health <span class="cw-pill done">Chosen</span></h2><p class="cw-sub">The class gives a high and a low Health value: you assign them.</p>${healthRow}</section>`) || '<p class="cw-empty">Nothing to choose at this level.</p>';
     // The card being read.
     let detail = '<p class="cw-empty">Click a name to read it.</p>';
     if (this.view) {
@@ -171,7 +175,7 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
     div.innerHTML = `<header class="cw-head"><div class="cw-top"><div class="cw-ttl"><img src="${esc(img)}" alt=""><h1>${esc(name)} <small>Level ${level}</small></h1></div>
         <div class="cw-progress"><span class="cw-dots">${dots}</span><span>${m.made} of ${m.total} choices made</span></div></div>
         <div class="cw-stats">${stats.map(([k, v]) => `<span>${k}<b>${esc(v)}</b></span>`).join("")}</div>${stage ? `<div class="cw-stage">${esc(stage)}</div>` : ""}</header>
-      <div class="cw-body"><div class="cw-col cw-slots">${secs}</div><div class="cw-col cw-detail">${detail}</div></div>
+      <div class="cw-body"><div class="cw-col cw-slots">${secsAll}</div><div class="cw-col cw-detail">${detail}</div></div>
       <footer class="cw-foot"><span class="cw-msg">${left > 0 ? `${left} left to choose.` : missing.length ? `Choose for ${esc(missing.join(", "))} (under its card).` : "Everything is chosen. Attribute and Health choices can't be changed later."}</span>
         <span class="cw-btns"><button type="button" class="cw-btn" data-key="cancel" data-cancel>Cancel</button><button type="button" class="cw-btn primary" data-key="confirm" data-confirm${m.complete ? "" : " disabled"}>${adding ? `Add ${esc(name)} to sheet` : `Level up to ${level}`}</button></span></footer>`;
     return div;

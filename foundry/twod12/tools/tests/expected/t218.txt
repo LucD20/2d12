@@ -39,4 +39,4 @@ Body 2, Mind 1, Appeal 0: old copy weapon | already updated (no lists) weapon
 Body 0, Mind 1, Appeal 2 (Weapon kept Appeal): old copy weapon | already updated (no lists) weapon
 Body 0, Mind 2, Appeal 2: old copy weapon | already updated (no lists) weapon
 Body 1, Mind 3, Appeal 0: old copy power | already updated (no lists) power
---- wiring: the class window's picks true | refresh keeps modStage2 true | the migration registered true | the NPC's Leads with true | no DialogV2 in the migration true
+--- wiring: the class window's picks true | under the Attribute increases (v0.0.306) true | refresh keeps modStage2 true | the migration registered true | the NPC's Leads with true | no DialogV2 in the migration true

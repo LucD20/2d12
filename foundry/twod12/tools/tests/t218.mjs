@@ -66,5 +66,6 @@ for (const [label, attrs, prio] of [["Body 2, Mind 1, Appeal 0", { body: 2, mind
 }
 const src = n => fs.readFileSync(ROOT + n, "utf8");
 console.log("--- wiring: the class window's picks", src("module/classwindow.mjs").includes('segBtn("prio"') && src("module/classwindow.mjs").includes('segBtn("s2"') && src("module/classwindow.mjs").includes('upd["system.modStage2"]'),
+  "| under the Attribute increases (v0.0.306)", src("module/classwindow.mjs").includes('if (x.kind === "attr" && !modPlaced) { modPlaced = true; return html + modSec; }'),
   "| refresh keeps modStage2", src("module/refresh.mjs").includes('"modStage2"'), "| the migration registered", src("module/twod12.mjs").includes("registerMigrationMod()"),
   "| the NPC's Leads with", src("templates/actor-sheet-pc.hbs").includes('name="system.modLead"'), "| no DialogV2 in the migration", !src("module/migrater.mjs").split("export async function migrateMod")[1].includes("DialogV2"));

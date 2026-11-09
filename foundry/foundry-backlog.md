@@ -1,9 +1,10 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.305**. Tests: `node tools/tests/run.mjs` (216 tests, see the README; the next new test is t219). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.306**. Tests: `node tools/tests/run.mjs` (216 tests, see the README; the next new test is t219). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 ## Asked by Lucas, not built
+- [ ] **v0.0.306 (Lucas on v0.0.305):** the class window's Modifiers section under the Attribute increases, above the Features (first at a level without Attribute increases).
 - [x] **v0.0.305: PACK MOD DONE (2026-11-09, branch `pack-mod`; not tested by Lucas yet; the changelog has the detail): Weapon and Power Modifiers as class values.** The class's two values and order, the class window's picks (order at level 1, the Stage 2 +1 at level 5), the class's Details tab, rolls without an Attribute ("Body Rolls" no longer reach Weapon / Power / Signature rolls), the sheet tiles, NPC Modifiers by role with "Leads with", the migration (the order kept, one GM card). Packs rebuilt.
   - **Not tried in Foundry (I can't run it):** the class window's Modifiers section (level 1 Paladin; level 5 for both classes); the migration card on an existing world, and the values arriving after "Update from the compendium"; the class Details tab's new fields on the sidebar copy and on a character's copy; the NPC Builder's "Leads with" select; a roll card's label ("Weapon Modifier", no Attribute); a "Body Rolls" effect no longer adding to a Weapon Attack.
   - [NOTE] An old class copy (both values 0) keeps the Attribute formula until it is updated; the old drop dialog for a class without levels (`grants.mjs` `classChoices`, a DialogV2) still talks about Attributes: pack CL.
