@@ -24,21 +24,21 @@ export function dmgModel(s) {
   const top = s.groups?.[0];
   let designer = null;
   try { const o = top ? damageOdds(top.comps) : null; if (o?.hasDice) designer = { avg: Math.round(o.avg * 10) / 10, atLeast: Math.round(o.atLeast * 100) }; } catch (e) { designer = null; }
-  return { kind: "dmg", name: s.name, nl: !!s.nl, groups: (s.groups ?? []).map(g => ({ tier: g.tier, crit: g.crit, comps: g.comps, riders: g.riders ?? [], rows: g.rows ?? [] })), rows: s.rows ?? [], designer };
+  return { kind: "dmg", name: s.name, nl: !!s.nl, groups: (s.groups ?? []).map(g => ({ tier: g.tier, crit: g.crit, comps: g.comps, riders: g.riders ?? [], rows: g.rows ?? [] })), rows: s.rows ?? [], designer, note: s.note ?? "", noNl: !!s.noNl };
 }
 
 /**
  * Post a damage message. groups: [{ tier, crit, comps, fx, riders (HTML) }]; targets: [{ uuid, name, tier, crit, g (its group) }].
  * comps: [{ pool, sub, nl, total, formula, dice, kind, src, emp, label }]. The old flags (dmgCard / damage) stay for the modules that read them.
  */
-export async function postCcDamage({ actor = null, title, groups, targets = [], nl = false, originUuid = "", originMod = null, after = "", areaPoint = null, strike = false, srcId = "", rolls = [], escalation = false }) {
+export async function postCcDamage({ actor = null, title, groups, targets = [], nl = false, originUuid = "", originMod = null, after = "", areaPoint = null, strike = false, srcId = "", rolls = [], escalation = false, note = "", noNl = false }) {   // v0.0.315: note (a short line, no ↳ box: Bleed's Save), noNl (no Lethal tag)
   const rows = targets.map(t => {
     const g = Number.isInteger(t.g) ? t.g : Math.max(0, groups.findIndex(x => x.tier === t.tier));
     const p = rowPreview(groups[g]?.comps ?? [], actorOf(t.uuid));
     return { uuid: t.uuid, name: t.name, tier: t.tier ?? groups[g]?.tier ?? 0, crit: !!t.crit, g, mods: p.mods, choice: p.choice, applied: null };
   });
   const gs = groups.map((g, i) => ({ tier: g.tier ?? 0, crit: !!g.crit, comps: g.comps.map(c => ({ pool: c.pool || "B", sub: c.sub ?? "", nl: c.nl, total: Number(c.total) || 0, formula: c.formula ?? "", dice: c.dice ?? [], kind: c.kind ?? "", src: c.src ?? "", emp: c.emp ?? 0, label: c.label ?? "" })), fx: g.fx ?? [], riders: g.riders ?? [], rows: rows.map((r, k) => (r.g === i ? k : -1)).filter(k => k >= 0) }));
-  const state = { name: title, nl: !!nl, groups: gs, rows, originUuid, originMod, after, areaPoint, strike: !!strike, srcId, escalation: !!escalation };
+  const state = { name: title, nl: !!nl, groups: gs, rows, originUuid, originMod, after, areaPoint, strike: !!strike, srcId, escalation: !!escalation, note, noNl: !!noNl };
   const first = gs[0];
   return ChatMessage.create({
     speaker: ChatMessage.getSpeaker(actor ? { actor } : {}), rolls, content: CC.cardContent(dmgModel(state)),

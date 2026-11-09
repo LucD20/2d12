@@ -9,7 +9,7 @@ import { TWOD12 } from "./config.mjs";
 import { combatantOf } from "./combat.mjs";
 import { onceKey, onceBlocked, isMarked } from "./automation.mjs";
 import { bbCount, bbKey } from "./calc.mjs";
-import { originOk, attrsOk, bleedOf, bleedText } from "./condrules.mjs";   // v0.0.314 (pack AU)
+import { originOk, attrsOk, bleedOf, bleedText, needsOrigin, hasBleed } from "./condrules.mjs";   // v0.0.314 (pack AU)
 const SOCKET = "system.twod12";
 const F = "twod12";
 
@@ -222,6 +222,17 @@ async function applyLight(actor, light) {
 
 export { appliedFlags };
 
+/**
+ * v0.0.315 (Lucas: "all effects need to be editable / seen"): a card's own Bleed (its dice, pool, type, Attributes, DC) goes INTO the applied effect's
+ * Bleed setting (its copy of the settings and the flags the turn reads), so the effect's Details tab shows it and can change it.
+ */
+export function withBleed(af, b) {
+  if (!b) return af;
+  const set = { ...(b.dmg ? { dmg: String(b.dmg) } : {}), ...(b.pool ? { dmgPool: b.pool } : {}), ...(b.sub ? { dmgSub: b.sub } : {}), ...(b.attrs?.length ? { attrs: [...b.attrs] } : {}), ...(Number(b.dc) ? { bleedDc: Number(b.dc) } : {}) };
+  const settings = (af.source?.settings ?? []).map(x => (x.type === "bleed" ? { ...x, ...set } : x));
+  const bleeds = (af.bleeds?.length ? af.bleeds : [{ dmg: "1", pool: "", sub: "", attrs: ["body", "instinct"], dc: 13 }]).map((x, i) => (i ? x : { ...x, ...(set.dmg ? { dmg: set.dmg } : {}), ...(set.dmgPool ? { pool: set.dmgPool } : {}), ...(set.dmgSub ? { sub: set.dmgSub } : {}), ...(set.attrs ? { attrs: set.attrs } : {}), ...(set.bleedDc ? { dc: set.bleedDc } : {}) }));
+  return { ...af, bleeds, ...(af.source ? { source: { ...af.source, settings } } : {}) };
+}
 export async function createEffect(actor, item, origin, over = null, extra = {}) {
   const s = item.system;
   const olds = actor.effects.filter(e => e.getFlag(F, "effectUuid") === item.uuid), old = olds.map(e => e.id);
@@ -246,8 +257,7 @@ export async function createEffect(actor, item, origin, over = null, extra = {})
       ...extra, effectUuid: item.uuid, duration: d, remaining: d.rounds, ...(value !== undefined ? { value, baseName: item.name } : {}),
       slotInit, originSlot: origin?.slot ?? null,
       originCombatantId: origin?.combatantId ?? "", anchorSlot: origin?.anchorSlot ?? null, anchorCombatantId: origin?.anchorCombatantId ?? "", appliedRound: origin?.round ?? null, appliedTurn: origin?.turn ?? null,
-      ...appliedFlags(s, item.toObject().system), lightBackup, fromEscalation: !!origin?.escalation,
-      ...(over?.bleed ? { bleed: over.bleed } : {}),   // v0.0.314 (pack AU): the card's own Bleed (its dice, pool, type, Attributes, DC)
+      ...withBleed(appliedFlags(s, item.toObject().system), over?.bleed), lightBackup, fromEscalation: !!origin?.escalation,
       // Immobilized (v0.0.174): its DC, 11 + the Modifier its origin used (13 without an origin or a Modifier). Forced Movement and Reposition read it.
       ...(statuses.includes("immobilized") ? { immobileDc: origin?.actorUuid && Number.isFinite(origin?.mod) ? 11 + origin.mod : TWOD12.baseDC } : {})
     } }
@@ -623,7 +633,12 @@ export function wrapConditions(proto, deps = {}) {
     const item = await find(statusId);
     if (!item) return inner.call(this, statusId, options);                 // no Effect with that name: just the status
     if (item.system?.valued && options?.overlay) return false;             // a right-click on a condition it doesn't have: nothing to lower
-    await apply([item.uuid], [this.uuid], originInfo(this.uuid), item.system?.valued ? { value: 1 } : null);   // a condition with a value starts at 1
+    // v0.0.315 (Lucas): Frightened, Taunted, Grabbed ask their origin (a token on the map); Bleed asks its damage (a window). Cancel: nothing.
+    const ask = deps.ask ?? (async (it, a) => (await import("./conditions.mjs")).askApply(it, a));
+    const asked = (needsOrigin(item.system) || hasBleed(item.system)) ? await ask(item, this) : { origin: null, over: {} };
+    if (!asked) return false;
+    const over = { ...(item.system?.valued ? { value: 1 } : {}), ...(asked.over ?? {}) };
+    await apply([item.uuid], [this.uuid], originInfo(asked.origin ?? this.uuid), Object.keys(over).length ? over : null);   // a condition with a value starts at 1
     return this.effects.find(x => x.statuses?.has?.(statusId)) ?? false;
   };
   wrapped.twod12Conditions = true;

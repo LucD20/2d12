@@ -7,3 +7,9 @@ Session 3 (2026-11-05, v0.0.250): Lay On Hands, Hallowed Dawn, Miraculous Recove
 Session 4 (2026-11-06, v0.0.254): Shield of Faith, Bulwark of Faith; Beacon and Beacon's Step revisited
 Session 5 (2026-11-06, v0.0.261): Holy Wrath (confirmed as written), Rolling Shot, Covering Shot, Consecrated Ground, Divine Intervention
 Session 5b (2026-11-06, v0.0.265 to v0.0.271, done by hand from Lucas's picks and tested by him): Overwatch, Deathmark, Open Season, Aim, Covering Fire
+
+Diamond (Lucas, 2026-11-09): a Mithril card that a later pack changed, even only its text or its buttons, becomes Diamond (automation: "diamond")
+until Lucas revises it (then Mithril again). Each one, with what changed:
+- Rebuke (v0.0.314 / v0.0.315, pack AU): Frightened is the condition item (its Bane only while the enemy sees the Paladin), and only the word
+  "Frightened" is its button ("of you for 1 round" is text). The automationNote says so.
+

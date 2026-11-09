@@ -220,7 +220,7 @@
    "foundry": {
     "img": "icons/svg/sun.svg",
     "folder": "Paladin",
-    "automation": "mithril",
+    "automation": "diamond",
     "automationNote": "offered by itself in the Reactions message after an enemy within 5 squares (its Distance) makes a Strike against an ally; Use makes the Save Action against that enemy (the Save, the damage and Frightened: the card; Frightened is the condition item since v0.0.314, its Bane only while the enemy sees the Paladin); the Push by click.",
     "moment": "strikeAgainst",
     "momentRange": 0,

@@ -7,6 +7,8 @@ import { createRiders, isValued, setValued, baseNameOf } from "./effects.mjs";
 import { appliedUpdate, sourceFromFlags } from "./fxsync.mjs";
 import { isExhaustedFx, setExhausted } from "./sleep.mjs";
 import { setEffectOpener } from "./fxopen.mjs";
+import { needsOrigin, originView } from "./condrules.mjs";
+
 
 const F = "twod12";
 const open = new Map();   // applied effect uuid -> its editor
@@ -32,11 +34,26 @@ export class AppliedEffectSheet extends TwoD12ItemSheet {
     const fx = this.fx, d = fx.getFlag(F, "duration") ?? {}, left = Number(fx.getFlag(F, "remaining")) || 0;
     const exh = isExhaustedFx(fx) && fx.parent?.type === "character";
     ctx.applied = { actor: fx.parent?.name ?? "?", exhausted: exh, valued: exh || isValued(fx), value: exh ? Number(fx.parent.system.exhausted) || 0 : Number(fx.getFlag(F, "value")) || 1, isRounds: d.type === "rounds", left, leftWord: left === 1 ? "round" : "rounds" };
+    // v0.0.315 (Lucas: "all effects need to be editable / seen"): its origin, by name and token, and a button to change it (Frightened of whom...)
+    ctx.applied.origin = originView(fx.origin);
+    ctx.applied.needsOrigin = needsOrigin(this.document.system) || !!fx.origin;
     return ctx;
   }
 
   _onRender(context, options) {
     super._onRender(context, options);
+    this.element.querySelector("[data-aporigin]")?.addEventListener("click", async () => {
+      const { pickBar } = await import("./pickbar.mjs");
+      const mine = new Set((this.fx.parent?.getActiveTokens?.() ?? []).map(t => t.id));
+      const toks = (canvas?.tokens?.placeables ?? []).filter(t => t.actor && !mine.has(t.id));
+      if (!toks.length) return ui.notifications.warn("No other token on the map.");
+      const id = await pickBar({ icon: "fa-crosshairs", text: `<b>${foundry.utils.escapeHTML?.(this.fx.name) ?? this.fx.name}</b>: its new origin? Click its token.`, options: toks.map(t => ({ id: t.id, label: t.name, token: t })) });
+      const t = toks.find(x => x.id === id);
+      if (!t) return;
+      await this.fx.update({ origin: t.actor.uuid });
+      try { (await import("./conditions.mjs")).forgetSeen(); } catch (e) { /* no cache */ }
+      this.render();
+    });
     this.element.querySelector("[data-apvalue]")?.addEventListener("change", async ev => {
       if (isExhaustedFx(this.fx) && this.fx.parent?.type === "character") { await setExhausted(this.fx.parent, Math.max(0, Math.trunc(Number(ev.target.value)) || 0)); if (this.fx.parent?.effects.get(this.fx.id)) this.render(); return; }   // 0 removes it (and closes this)
       const v = Math.max(1, Math.trunc(Number(ev.target.value)) || 1);

@@ -346,6 +346,7 @@
       {{#if applied}}
       <h3>Applied</h3>
       <div class="fxd-s">On <b>{{applied.actor}}</b>{{#if applied.valued}}, with a value of <input type="number" min="{{#if applied.exhausted}}0{{else}}1{{/if}}" class="fxd-f n" data-apvalue value="{{applied.value}}">{{/if}}{{#if applied.isRounds}}, with <input type="number" min="0" class="fxd-f n" data-apleft value="{{applied.left}}"> {{applied.leftWord}} left{{/if}}. <a class="fxd-raw" data-action="openRaw">Foundry's effect window</a></div>
+      {{#if applied.needsOrigin}}<div class="fxd-s" data-tooltip="{{applied.origin.uuid}}">Its origin: {{#if applied.origin.uuid}}<b>{{applied.origin.name}}</b>{{#if applied.origin.token}} (token {{applied.origin.token}}){{/if}}{{else}}<b>none</b> (it can't work without one){{/if}}. <button type="button" class="fxd-orbtn" data-aporigin><i class="fa-solid fa-crosshairs"></i> Change: click a token</button></div>{{/if}}
       <p class="fxd-help">Changes apply to this creature only: the Effect it came from isn't changed. Applying the Effect again replaces this copy.</p>
       {{#if applied.exhausted}}<p class="fxd-help">Exhausted's own rules (Speed, the penalty on Rolls, the Mind Damage Threshold) come from its value; 0 removes it. Settings added here come on top of them.</p>{{/if}}
       {{else}}

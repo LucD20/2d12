@@ -60,3 +60,18 @@ export function parseAttrs(s) {
   const map = { bo: "body", mi: "mind", ap: "appeal", in: "instinct", body: "body", mind: "mind", appeal: "appeal", instinct: "instinct" };
   return String(s ?? "").toLowerCase().split(/[\/,\s]+/).map(x => map[x]).filter(Boolean);
 }
+
+/** v0.0.315 (Lucas): does an Effect need an origin to work (Frightened, Taunted, Grabbed: "of", "by", "held by")? Its rules or a setting say so. */
+export const needsOrigin = sys => !!(sys?.whileSeen || sys?.endsWithOrigin || (sys?.settings ?? []).some(x => x?.vsOrigin));
+/** v0.0.315: does an Effect have a Bleed setting (the HUD asks its damage)? */
+export const hasBleed = sys => (sys?.settings ?? []).some(x => x?.type === "bleed");
+
+/** v0.0.315: an effect's origin as the Details tab shows it: the creature's name and its token's id (an unlinked token's actor names its token). */
+export function originView(uuid) {
+  const u = String(uuid ?? "");
+  if (!u) return { name: "", token: "", uuid: "" };
+  let doc = null; try { doc = globalThis.fromUuidSync?.(u) ?? null; } catch (e) { doc = null; }
+  const actor = doc?.documentName === "Actor" ? doc : doc?.actor ?? null;
+  const tok = /Token\.([A-Za-z0-9]+)/.exec(u)?.[1] ?? actor?.getActiveTokens?.()[0]?.id ?? "";
+  return { name: actor?.name ?? doc?.name ?? "(not found)", token: tok, uuid: u };
+}

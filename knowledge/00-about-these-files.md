@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-09 from the repository at: 5038ac9 2026-11-09 HANDOFF, MASTER-PLAN: PACK MOD and PACK INITIATIVE merged (v0.0.305 to v0.0.313); next AU
+Built by tools/knowledge.py on 2026-11-09 from the repository at: 01c7ba5 2026-11-09 v0.0.314: PACK AU part 1: the conditions as items, the Elite's phases, Vs. WD and the AD / WD colors
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,8 +14,8 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (77 KB)
-- MASTER-PLAN.md (18 KB)
+- HANDOFF.md (78 KB)
+- MASTER-PLAN.md (19 KB)
 - open-design-items.md (87 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (27 KB)

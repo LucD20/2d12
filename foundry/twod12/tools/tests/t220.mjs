@@ -88,3 +88,17 @@ console.log(["AD", "WD", "AD 13", "WD 14", "AD/WD", "Body Save", "App Save", "In
 const CC = await import(ROOTURL + "module/chatcards.mjs");
 const html = CC.breakdownHtml({ d1: [6], d2: [7], total: 15, dc: 13, dcLabel: "WD", tier: 2, base: 2, boonFaces: [], baneFaces: [], sources: [] }, { id: "x" });
 console.log("the roll's badge:", (html.match(/<span class="cc-badge[^"]*">[^<]*<\/span>/) ?? ["none"])[0]);
+
+console.log("--- v0.0.315 (Lucas on v0.0.314)");
+console.log("needs an origin (the HUD asks):", want.map(n => `${n} ${R.needsOrigin(conds.find(x => x.name === n)?.system)}`).join(", "));
+console.log("asks its damage (Bleed's window):", want.filter(n => R.hasBleed(conds.find(x => x.name === n)?.system)).join(", "));
+const CD = await import(ROOTURL + "module/conditions.mjs");
+const bm = CD.bleedModel({ dmg: "1d6", pool: "", sub: "Ho", attrs: ["mind", "appeal"], dc: 13 }, "Goblin");
+console.log("Bleed's window:", bm.name, "|", bm.sub, "|", JSON.stringify(bm.stats), "| rows:", bm.sections[1].rows.map(r => `${r.label}: ${r.opts.map(o => `${o.l}${o.on ? "*" : ""}`).join("/")}`).join("; "), "| confirm:", bm.confirm, bm.complete, "| empty:", CD.bleedModel({ dmg: "", pool: "", sub: "", attrs: ["body"], dc: 13 }).complete);
+const af = appliedFlags(item("Bleed"), conds.find(x => x.name === "Bleed").system);
+const wb = E.withBleed(af, { dmg: "1d6", pool: "M", sub: "Ho", attrs: ["mind", "appeal"], dc: 15 });
+console.log("a card's Bleed goes into the applied effect's own setting (seen and editable):", JSON.stringify(wb.source.settings.find(x => x.type === "bleed")), "| the turn reads:", JSON.stringify(wb.bleeds[0]));
+const dm = CC.damageCardHtml({ name: "Bleed [V] 1 (Bo/In)", nl: false, noNl: true, note: "Ends with Interact (1 AP) and a Bo/In Save, DC 13.", groups: [{ tier: 0, comps: [{ pool: "B", total: 1, formula: "1" }], riders: [], rows: [0] }], rows: [{ uuid: "x", name: "Grave Wisp" }] });
+console.log("Bleed's card: no ↳ box:", !/cc-rider/.test(dm), "| no Lethal tag:", !/cc-nl/.test(dm), "| the note:", (dm.match(/<div class="cc-dnote">([^<]*)<\/div>/) ?? [])[1]);
+globalThis.fromUuidSync = u => (u.includes("AjaXvWGAPxEypR0a") ? { documentName: "Actor", name: "Grave Wisp" } : null);
+console.log("an origin on the Details tab:", JSON.stringify(R.originView("Scene.s1.Token.AjaXvWGAPxEypR0a.Actor.a1")), "| none:", JSON.stringify(R.originView("")));

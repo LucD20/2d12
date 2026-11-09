@@ -42,8 +42,7 @@ export function registerSenses() {
     class HearingMode extends Base {
       static getDetectionFilter() { return this._detectionFilter ??= Outline.create({ outlineColor: [1, 1, 1, 1], knockout: true, wave: true }); }
       _canDetect(visionSource, target) {
-        const src = visionSource?.object?.document;
-        if (src?.hasStatusEffect?.(CONFIG.specialStatusEffects?.BLIND)) return false;
+        // v0.0.315 (Lucas): a Blinded creature still hears (the ripple stays); only its Sight is gone
         const actor = target?.document?.actor ?? target?.actor;
         if (actor?.statuses?.has?.("unsensed")) return false;   // nobody perceives it: not even by its noise
         if (actor?.statuses?.has?.("hidden")) return true;   // the GM's Hidden status
