@@ -91,6 +91,6 @@ console.log("a lone attacker next to a defender gets no chip:", F.flankingMod(A,
 console.log("a boon that is fully cancelled gives no chip (Kai at goblin B):", F.flankingMod(P, B));
 // ------------------------------------------------------------------ where the roll uses it
 const code = fs.readFileSync(ROOT + "module/actions.mjs", "utf8");
-const single = code.indexOf("flankingMod(selfToken, targetToken)"), multiPath = code.indexOf("flankingMod(selfToken, tk, { tag: a.uuid })");
+const single = code.indexOf("flankingMod(selfToken, targetToken, { na: true })"), multiPath = code.indexOf("flankingMod(selfToken, tk, { tag: a.uuid, na: true })");   // v0.0.302: na, the n/a chip that says why
 console.log("--- the roll dialog");
 console.log("single target:", single > 0, "| several targets (one chip for each):", multiPath > 0, "| only for [Melee] Actions:", code.slice(single - 160, single).includes('useTraits.has("melee")') && code.slice(multiPath - 160, multiPath).includes('useTraits.has("melee")'), "| the multi path comes before the ranged Engaged chip of its target:", multiPath < code.indexOf("syn:engaged-target|"));

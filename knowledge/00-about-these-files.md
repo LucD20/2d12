@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-09 from the repository at: 56a7463 2026-11-09 Merge main (the book's new Boons and Banes) into pack-action-preview; PACK ACTION-PREVIEW merged
+Built by tools/knowledge.py on 2026-11-09 from the repository at: 9637948 2026-11-09 v0.0.301: PACK BB, the new Boons and Banes in Foundry
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (68 KB)
+- HANDOFF.md (69 KB)
 - MASTER-PLAN.md (18 KB)
 - open-design-items.md (86 KB)
 - rules-01-roll.md (23 KB)

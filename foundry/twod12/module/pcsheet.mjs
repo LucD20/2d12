@@ -234,10 +234,14 @@ export async function pcModel(sheet, ctx) {
     const aps = (it.versions ?? []).map(v => v.ap), pillTxt = costPill(aps, reaction);
     return {
       id: i.id, name: i.name, sub: subs.join(" \u00b7 "), fav: favs.includes(i.id), section: sec, lines: rowLines({ frequency: effectiveFrequency(it), reaction, strike: !!it.traits?.has?.("strike") || i.getFlag(F, "basic") === "opportunityAttack" }),   // Opportunity Attack makes a Weapon Attack: a Strike
-      cost: pillTxt,   // v0.0.298: costPill already writes "AP" (an NPC's read "2 AP AP") fc: (SHEET_FREQ[reaction ? "reaction" : sec] ?? SHEET_FREQ[effectiveFrequency(it)] ?? SHEET_FREQ.atwill).color,
+      cost: pillTxt,   // v0.0.298: costPill already writes "AP" (an NPC's read "2 AP AP")
+      fc: (SHEET_FREQ[reaction ? "reaction" : sec] ?? SHEET_FREQ[effectiveFrequency(it)] ?? SHEET_FREQ.atwill).color,   // v0.0.302: this line had been joined into the comment above (v0.0.298), so the pills had no color
       dist: area ? (String(it.areaDistance ?? "").trim() ? distanceShort(dist) : "—") : distanceShort(dist), vs: vsShort(vsText(it, { fists })),
       off: !!why, offWhy: why, weapon: r.isWeapon && !npc, grip: handBtns?.[0]?.grip ?? "", unloaded: r.unloaded, reaction,
-      grant: r.grant ? { tip: r.grant.tip } : null, handBtns: why || npc ? null : handBtns,   // v0.0.291: no Hands for NPCs (a plain Use) useTip: r.useTip || `Use ${i.name}`, open: r.open
+      grant: r.grant ? { tip: r.grant.tip } : null, handBtns: why || npc ? null : handBtns,   // v0.0.291: no Hands for NPCs (a plain Use)
+      useTip: r.useTip || `Use ${i.name}`, open: r.open,   // v0.0.302: back out of the comment (lost in v0.0.291)
+      // v0.0.302 (Lucas): a Reaction's row carries its Frequency line (Round, Encounter...), as the Basic Actions' buttons do
+      freqLine: reaction ? rowLines({ frequency: effectiveFrequency(it), strike: !!it.traits?.has?.("strike") || i.getFlag(F, "basic") === "opportunityAttack" }) : null
     };
   };
   const actions = a.itemTypes.action.filter(i => techniqueState(a, i) !== "locked");

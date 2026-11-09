@@ -3518,3 +3518,9 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat.cc .cc-bbl.over { opacity: .55; }
 .twod12.chat.cc .cc-bbl.five .cc-tag.up { background: #1d5a9e; }
 .twod12.chat.cc .cc-bbl.five .cc-tag.down { background: #a8261c; }
+
+/* ==== v0.0.302 (Lucas tested v0.0.301): a Reaction's row on the Actions tab carries its Frequency line (the Basic Actions' buttons' 4px line),
+   then the red Strike line beside it for a Strike (Opportunity Attack) ==== */
+.twod12.sheet.pcs .ps-row.lnfreq > .ps-line { box-shadow: inset 4px 0 0 var(--lnf); padding-left: 14px; }
+.twod12.sheet.pcs .ps-row.lnfreq.strike > .ps-line { box-shadow: inset 4px 0 0 var(--lnf), inset 8px 0 0 #d14b3f; padding-left: 18px; }
+.twod12.sheet.pcs .ps-row.lnfreq.off > .ps-line { box-shadow: inset 4px 0 0 #b5ad9c; }

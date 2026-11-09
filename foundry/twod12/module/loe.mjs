@@ -1,13 +1,16 @@
-// The Line of Effect button (v0.0.165), on the token HUD of your own token. It draws the lines your cover is counted with: from the center of your
+// The Line of Effect lines (v0.0.165; a token-controls toggle since v0.0.302, it was on the token HUD). They are the lines your cover is counted with: from the center of your
 // square (or your best square, or your Leaning corner) to the four corners of each creature you target. Green: nothing blocks the line. Red: blocked.
 // At the target: the cover and how many corners are blocked ("Medium cover: 2 blocked"). The lines stay until you click the button again, follow the
 // tokens and your targets, and only you see them. Same test as the roll's cover (cover.mjs coverBetween).
 import { coverBetween } from "./cover.mjs";
 import { HeightCover } from "./heightcover.mjs";
+import { toggleFlanking, flankingShown } from "./flankoverlay.mjs";
+// v0.0.302 (Lucas tested v0.0.301): the buttons moved from the token HUD to the token controls (the left toolbar): Line of Effect (a toggle that follows
+// your selected token), Cover height calculation (a button) and Show flanking (a toggle, flankoverlay.mjs). The shortcuts (Shift+L, Shift+H) stay.
 
 const NAME = "twod12-loe";
 const GREEN = 0x2fa84f, RED = 0xd23b2f;
-let state = null;   // { tokenId } while the lines are on
+let state = null;   // { tokenId } while the lines are on for one token (the shortcut), { follow: true } for the toolbar's toggle (your selected token)
 let queued = false;
 
 /** The text over a target: its cover and why. */
@@ -24,8 +27,9 @@ function draw() {
   queued = false;
   clear();
   if (!state || !canvas?.ready) return;
-  const src = canvas.tokens?.get(state.tokenId);
-  if (!src) { state = null; return; }
+  const mine = (canvas.tokens?.controlled ?? []).filter(x => x.isOwner);
+  const src = state.follow ? (mine.length === 1 ? mine[0] : null) : canvas.tokens?.get(state.tokenId);
+  if (!src) { if (!state.follow) state = null; return; }
   const box = new PIXI.Container();
   box.name = NAME; box.eventMode = "none";
   for (const t of game.user.targets) {
@@ -79,35 +83,36 @@ export function heightShortcut() {
   return true;
 }
 
+/** v0.0.302: the toolbar's Line of Effect toggle: the lines from your selected token (whichever it is) to your targets. */
+export function setLoEFollow(v) {
+  if (!v) { state = null; clear(); return false; }
+  if (!canvas?.grid?.isSquare) { ui.notifications.warn("Line of Effect is drawn on square grids only."); return false; }
+  state = { follow: true };
+  if (!game.user.targets.size) ui.notifications.info("Line of Effect is on: select your token and target a creature to see the lines to it.");
+  draw();
+  return true;
+}
+
+/** The token controls' tools (V12: an array of controls; V13+: objects keyed by name). */
+function addTools(controls) {
+  const tools = [
+    { name: "twod12-loe", title: "Line of Effect: the lines your cover is counted with, from your selected token to each creature you target (green clear, red blocked)", icon: "fa-solid fa-bezier-curve", toggle: true, active: !!state, change: (ev, active) => setLoEFollow(active) },
+    { name: "twod12-height", title: "Cover height calculation: a side view of your selected token and your target", icon: "fa-solid fa-mountain", button: true, change: () => heightShortcut() },
+    { name: "twod12-flank", title: "Show flanking: who flanks whom, the Field Boons each gets, and who cancels them", icon: "fa-solid fa-people-arrows", toggle: true, active: flankingShown(), change: (ev, active) => toggleFlanking(active) }
+  ];
+  if (Array.isArray(controls)) {
+    const tc = controls.find(c => c.name === "token");
+    for (const t of tools) if (tc && !tc.tools.some(x => x.name === t.name)) tc.tools.push({ ...t, onClick: v => t.change(null, t.toggle ? v : true) });
+    return;
+  }
+  const tc = controls.tokens ?? controls.token;
+  if (!tc?.tools) return;
+  for (const t of tools) { const { change, ...rest } = t; tc.tools[t.name] = { ...rest, order: Object.keys(tc.tools).length + 1, visible: true, onChange: (ev, active) => change(ev, active) }; }
+}
+
 export function registerLoE() {
-  Hooks.on("renderTokenHUD", (hud, html) => {
-    const root = html instanceof HTMLElement ? html : html?.[0];
-    const token = hud.object;
-    if (!root || !token?.isOwner) return;
-    const col = root.querySelector(".col.left") ?? root.querySelector(".left");
-    if (!col || col.querySelector(".twod12-loe")) return;
-    const b = document.createElement("button");
-    b.type = "button"; b.className = `control-icon twod12-loe${loeOn(token) ? " active" : ""}`;
-    b.dataset.tooltip = "Line of Effect: the lines your cover is counted with, to each creature you target (green clear, red blocked). Click again to hide them.";
-    b.setAttribute("aria-label", "Line of Effect");
-    b.innerHTML = '<i class="fa-solid fa-bezier-curve"></i>';
-    b.addEventListener("click", ev => { ev.preventDefault(); ev.stopPropagation(); b.classList.toggle("active", toggleLoE(token)); });
-    col.appendChild(b);
-    // v0.0.166: Cover height calculation, a side view of you and your (first) target (heightcover.mjs).
-    const h = document.createElement("button");
-    h.type = "button"; h.className = "control-icon twod12-height";
-    h.dataset.tooltip = "Cover height calculation: a side view of you and your target, to work out cover through heights by hand.";
-    h.setAttribute("aria-label", "Cover height calculation");
-    h.innerHTML = '<i class="fa-solid fa-mountain"></i>';
-    h.addEventListener("click", ev => {
-      ev.preventDefault(); ev.stopPropagation();
-      const targets = [...game.user.targets].filter(t => t.id !== token.id);
-      if (!targets.length) return ui.notifications.warn("Target a creature first: the side view shows you and your target.");
-      if (targets.length > 1) ui.notifications.info(`Side view with your first target, ${targets[0].name}.`);
-      HeightCover.open(token, targets[0]);
-    });
-    col.appendChild(h);
-  });
+  Hooks.on("getSceneControlButtons", controls => { try { addTools(controls); } catch (e) { console.warn("twod12 | token controls", e); } });
+  Hooks.on("controlToken", () => { if (state?.follow) redraw(); });
   Hooks.on("targetToken", user => { if (user === game.user) redraw(); });
   Hooks.on("refreshToken", redraw);
   for (const h of ["createWall", "updateWall", "deleteWall", "updateToken"]) Hooks.on(h, redraw);

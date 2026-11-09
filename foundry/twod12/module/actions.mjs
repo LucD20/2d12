@@ -651,7 +651,7 @@ export async function useAction(actor, item, opts = {}) {
         if (rb) extraMods.push({ id: `syn:range|${a.uuid}`, name: `${band.label} (${tk.name})${rb < band.banes ? `, ${lessRange[0]}` : ""}`, boons: 0, banes: rb, match: true, predicate: `${previewWeapon.name}: Range ${wUse.range}` });
         if (wUse.long && band?.squares <= 1) extraMods.push({ id: `syn:long|${a.uuid}`, name: `Long weapon, adjacent (${tk.name})`, boons: 0, banes: 1, bb: "field", match: true, predicate: `${previewWeapon.name} is Long: 1 Field Bane against adjacent creatures` });
       }
-      if (useTraits.has("melee") && selfToken) { const fm = flankingMod(selfToken, tk, { tag: a.uuid }); if (fm) extraMods.push(fm); }
+      if (useTraits.has("melee") && selfToken) { const fm = flankingMod(selfToken, tk, { tag: a.uuid, na: true }); if (fm) extraMods.push(fm); }   // v0.0.302: no Flanking shows why (n/a)
       if (useTraits.has("weapon") && useTraits.has("ranged") && !noEngagedTarget.length && engagedWithOther(tk, selfToken))
         extraMods.push({
           id: `syn:engaged-target|${a.uuid}`,
@@ -712,7 +712,7 @@ export async function useAction(actor, item, opts = {}) {
   // Ranged Combat While Engaged: a [Ranged] Action (a ranged Weapon Action, or any Action with the Ranged trait) while you are Engaged has 2 banes; against an Engaged creature, 1 bane (v0.0.169).
   const rangedWeapon = useTraits.has("ranged");
   // Flanking: [Melee] Actions gain a Field Boon for each other ally that flanks the target (the cancels first, then up to 2).
-  if (useTraits.has("melee") && !multi && rollsAtOthers && selfToken && targetToken) { const fm = flankingMod(selfToken, targetToken); if (fm) extraMods.push(fm); }
+  if (useTraits.has("melee") && !multi && rollsAtOthers && selfToken && targetToken) { const fm = flankingMod(selfToken, targetToken, { na: true }); if (fm) extraMods.push(fm); }   // v0.0.302: no Flanking shows why (n/a)
   if (rangedWeapon && selfToken) {
     if (isEngaged(selfToken) && !ignoredBy(actor, "engagedSelf", useTraits).length) extraMods.push({ id: "syn:engaged", name: "You are Engaged (2 Banes)", boons: 0, banes: 2, match: true, predicate: "Using a [Ranged] Action while you are Engaged is hard" });
     if (!multi && rollsAtOthers && targetToken && !noEngagedTarget.length && engagedWithOther(targetToken, selfToken))   // "Ignore a Bane" (Sharpshooter: [Shot] Actions)

@@ -273,5 +273,16 @@ console.log("\n--- the new roll dialog (v0.0.292): the same rolls through it, an
   await A.useAction(kai, crawl).catch(e => console.log("Crawl FAILED", e.message));
   console.log("NEW Crawl: the dialog:", !!seenInp, "| no roll:", seenInp?.versions.map(v => `${v.cost} ${v.noTiers ? "no roll" : "roll"}`).join(", "), "| card posted:", chat.some(m => m.content.includes("Crawl")), "|", notes.join(" | ") || "no warning");
 }
+{
+  // v0.0.302 (Lucas tested v0.0.301: "Flank is not showing up at all in the roll dialog"): the same Strike as above, through the new dialog
+  let seenInp = null;
+  globalThis.__twod12RollDialog = (inp, RD) => { seenInp = inp; const st = RD.newState(inp); globalThis.__rdHtml = RD.dialogHtml(inp, st); return RD.result(inp, st); };
+  ally.statuses = new Set(); ally.itemTypes.weapon = [spear]; goblin.statuses = new Set();
+  place(goblinTok, 1, -1); place(allyTok, 2, -1);
+  const c = await act("NEW Strike the Goblin: the Ally flanks it", stab, [goblinTok], [6, 7]);
+  console.log("   chips:", (seenInp?.chips ?? []).filter(x => /flank/i.test(x.id)).map(x => `${x.id} ${x.label} [${x.scope}] ${x.start}`).join(" | ") || "NO FLANKING CHIP", "| in the dialog:", /Flanking/.test(globalThis.__rdHtml ?? ""), "| card total", c ? "" : "(no card)");
+  place(allyTok, 4, 3);
+  delete globalThis.__twod12RollDialog;
+}
 function RD_line(inp) { return { versions: inp.versions.map(v => v.cost).join("/"), roll: inp.roll, multi: inp.multi }; }
 delete globalThis.__twod12RollDialog;

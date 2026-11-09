@@ -1,6 +1,6 @@
 targets chosen by the area: Goblin, Lonny, Nari
 notes: (none)
-chips offered in the dialog: Actor.Nari|pr:0* syn:cover|Actor.Lonny*
+chips offered in the dialog: Actor.Nari|pr:0* syn:flanking|Actor.Nari syn:cover|Actor.Lonny* syn:flanking|Actor.Lonny syn:flanking|Actor.Goblin
 card: Whirlwind Encounter · 2 AP Weapon Melee Area Self Strike @Template[emanation|distance:5|targets:all|self:no|at:self|quick:yes] 2d12 6 7 +2 Modifier T2 Nari AD 11 1 Boon 16 ≤10 11–17 18+ 2d12 6 7 Boon · Bane +1 Boon · Prone Field Modifiers +2 Weapon 16 vs AD 11 Tier 2 T2 Lonny AD 11 2 Banes 13 ≤10 11–17 18+ 2d12 6 7 Boon · Bane −1 Bane · Medium cover Field −1 Bane · Medium cover Field Modifiers +2 Weapon 13 vs AD 11 Tier 2 T2 Goblin AD 11 15 ≤10 11–17 18+ 2d12 6 7 Modifiers +2 Weapon 15 vs AD 11 Tier 2 Tier 2 Nari Lonny Goblin Vigor 2 Sl → 3 targets Damage Card
 flags: tier 2 | results: ["Nari: tier 2","Lonny: tier 2","Goblin: tier 2"] | targets: ["Nari","Lonny","Goblin"]
 dice in the message: 2
@@ -13,7 +13,7 @@ flags: ["Nari T3","Lonny T2","Goblin T1"] | highest tier on the card: 3
 --- Favored for all: 3d12 (4, 12→8, 6) keeps the two highest: boon dice -, bane dice -
 a third die was rolled: true | dice line has a third group: false
 dialog tiles: all Actor.Nari* Actor.Lonny Actor.Goblin | groups: all, Actor.Nari (shown), Actor.Lonny, Actor.Goblin
-Nari's tile holds: Actor.Nari|pr:0 | Lonny's: syn:cover|Actor.Lonny | Goblin's: (none)
+Nari's tile holds: Actor.Nari|pr:0 syn:flanking|Actor.Nari | Lonny's: syn:cover|Actor.Lonny syn:flanking|Actor.Lonny | Goblin's: syn:flanking|Actor.Goblin
 the chips carry their boons and banes (for the dots): Lonny's cover 2 banes | Nari's Prone 1 boon
 odds: not in the stored card: true | in Designer mode, one line per creature: 3
 damage messages posted: 1 | groups (Tiers): Tier 3: 5 | Tier 2: 2 | Tier 1: 2 | rows: Nari (group 0), Lonny (group 1), Goblin (group 2)

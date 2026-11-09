@@ -8,6 +8,7 @@ import { registerLeanHooks } from "./lean.mjs";
 import { registerMasteryHooks } from "./mastery.mjs";
 import { registerMarkHooks } from "./mark.mjs";
 import { registerLoE } from "./loe.mjs";
+import { registerFlankOverlay } from "./flankoverlay.mjs";
 import { solidTiles, tileConfigSolid } from "./corners.mjs";
 import { registerLightRadius } from "./lightradius.mjs";
 import { registerRegionSnap } from "./regionshape.mjs";
@@ -78,7 +79,8 @@ Hooks.once("init", () => {
   registerLeanHooks();
   registerMasteryHooks();
   registerMarkHooks();
-  registerLoE();   // the Line of Effect button on the token HUD (v0.0.165)
+  registerLoE();   // Line of Effect, Cover height and Show flanking in the token controls (v0.0.165; moved from the token HUD in v0.0.302)
+  registerFlankOverlay();   // v0.0.302
   // Template parts used by more than one sheet (the settings of an Effect and of a passive).
   (foundry.applications?.handlebars?.loadTemplates ?? globalThis.loadTemplates)?.(["systems/twod12/templates/parts/settings.hbs", "systems/twod12/templates/parts/preds.hbs"]);
   game.settings.register("twod12", "sheetHelp", { name: "Action and Talent sheets: show help", hint: "The grey explanations on the Details tab of Action and Talent sheets. Also switched with the Show help box on the tab.", scope: "client", config: false, type: Boolean, default: true });
@@ -110,10 +112,10 @@ Hooks.once("init", () => {
     } });
   for (let n = 1; n <= 9; n++) game.keybindings.register("twod12", `favorite${n}`, { name: `Favorite ${n}`, hint: `Uses Favorite ${n} of your selected token (the Favorites' order on its sheet).`, editable: [{ key: `Digit${n}`, modifiers: ["Alt"] }],
     onDown: () => { import("./actions.mjs").then(m => m.quickFavorite(n)); return true; } });
-  // v0.0.215 (Lucas, playtest 2): the token HUD's two buttons as shortcuts, for speed in play.
-  game.keybindings.register("twod12", "lineOfEffect", { name: "Line of Effect", hint: "Shows or hides the Line of Effect lines of your selected token (the token HUD's button).", editable: [{ key: "KeyL", modifiers: ["Shift"] }],
+  // v0.0.215 (Lucas, playtest 2): the two buttons (the token controls since v0.0.302) as shortcuts, for speed in play.
+  game.keybindings.register("twod12", "lineOfEffect", { name: "Line of Effect", hint: "Shows or hides the Line of Effect lines of your selected token (the token controls' button; v0.0.302).", editable: [{ key: "KeyL", modifiers: ["Shift"] }],
     onDown: () => { import("./loe.mjs").then(m => m.loeShortcut()); return true; } });
-  game.keybindings.register("twod12", "coverHeight", { name: "Cover height calculation", hint: "Opens the side view of your selected token and its first target (the token HUD's button).", editable: [{ key: "KeyH", modifiers: ["Shift"] }],
+  game.keybindings.register("twod12", "coverHeight", { name: "Cover height calculation", hint: "Opens the side view of your selected token and its first target (the token controls' button; v0.0.302).", editable: [{ key: "KeyH", modifiers: ["Shift"] }],
     onDown: () => { import("./loe.mjs").then(m => m.heightShortcut()); return true; } });
   CONFIG.Combat.documentClass = TwoD12Combat;
   game.twod12 = {

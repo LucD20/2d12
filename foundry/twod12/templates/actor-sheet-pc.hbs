@@ -7,7 +7,7 @@
 {{else}}<button type="button" class="ps-use{{#if reaction}} rx{{/if}}" data-action="useAction" data-tooltip="{{useTip}}" aria-label="{{useTip}}">Use</button>{{/if}}
 {{/inline}}
 {{#*inline "srow"}}
-<div class="ar ps-row{{#if off}} off{{/if}}{{#if open}} open{{/if}}{{#if lines.strike}} strike{{/if}}" data-item-id="{{id}}">
+<div class="ar ps-row{{#if off}} off{{/if}}{{#if open}} open{{/if}}{{#if lines.strike}} strike{{/if}}{{#if freqLine}} lnfreq{{/if}}" data-item-id="{{id}}"{{#if freqLine}} style="{{freqLine.style}}"{{/if}}>
   <div class="ps-line" data-action="toggleCard">
     <span class="ps-name"><a class="ps-nm" role="button" tabindex="0" aria-expanded="{{#if open}}true{{else}}false{{/if}}">{{name}}</a>{{#if sub}}<span class="ps-sub">{{sub}}</span>{{/if}}{{#if fav}}<i class="fa-solid fa-star ps-fav" data-tooltip="Favorite (right-click the row to change)" aria-label="Favorite"></i>{{/if}}</span>
     <span class="ps-c"><span class="ps-pill{{#if outline}} line{{/if}}" style="--fc:{{fc}}">{{cost}}</span></span>

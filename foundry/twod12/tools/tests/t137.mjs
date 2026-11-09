@@ -35,4 +35,4 @@ console.log("flat squares apart:", [[0, 0, 4, 0], [0, 0, 4, 4], [0, 0, 1, 1], [0
 const html = H.heightHtml({ ...base, nameA: "Hero", nameT: "Skull", blocks: { "3,0": 2, "3,2": 1 } });
 console.log("html: cells", (html.match(/data-cell=/g) ?? []).length, "| full blocks", (html.match(/hc-block full/g) ?? []).length, "| half", (html.match(/hc-block half/g) ?? []).length, "| corners", (html.match(/data-corner=/g) ?? []).length, "| lines", (html.match(/<line class="hc-line/g) ?? []).length);
 const loe = fs.readFileSync(ROOT + "module/loe.mjs", "utf8");
-console.log("HUD button next to Line of Effect:", loe.includes("HeightCover.open(token, targets[0])") && loe.includes("control-icon twod12-height"));
+console.log("v0.0.302: a token-controls button next to Line of Effect (not on the HUD):", loe.includes("HeightCover.open(token, targets[0])") && loe.includes('name: "twod12-height"') && loe.includes("change: () => heightShortcut()") && !loe.includes("control-icon twod12-height"));
