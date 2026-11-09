@@ -63,7 +63,7 @@ console.log("--- settings: Designer mode, hidden Defenses (players), the GM alwa
 const des = CC.attackCardHtml({ ...smite, rows: [row([3], [6], 11, 11)] }, CC.viewOf({ gm: true, designer: true }));
 console.log("Designer mode off: no odds, Ruler or automation anywhere:", !/Odds|Ruler|Mithril/.test(t2), "| on:", txt(des.match(/<div class="cc-designer">[\s\S]*?<\/div>/)?.[0]));
 const pv = CC.attackCardHtml({ ...smite, rows: [row([9], [9], 20, 11)] }, CC.viewOf({ gm: false, hideDef: true }));
-console.log("player, Defenses hidden: no AD number:", !/AD 11|vs AD/.test(pv), "| no ranges:", !/≤10|11–17|18\+/.test(pv), "| no threshold:", !/31\+|33\+|Doubles, or/.test(pv), "| the badge:", txt(pv.match(/<span class="cc-badge">[^<]*<\/span>/)?.[0]), "| the footer:", txt(pv.match(/<div class="cc-pfoot">[\s\S]*?<\/div>/)?.[0]));
+console.log("player, Defenses hidden: no AD number:", !/AD 11|vs AD/.test(pv), "| no ranges:", !/≤10|11–17|18\+/.test(pv), "| no threshold:", !/31\+|33\+|Doubles, or/.test(pv), "| the badge:", txt(pv.match(/<span class="cc-badge(?: vsk-\w+)?">[^<]*<\/span>/)?.[0]), "| the footer:", txt(pv.match(/<div class="cc-pfoot">[\s\S]*?<\/div>/)?.[0]));
 const gmv = CC.attackCardHtml({ ...smite, rows: [row([9], [9], 20, 11)] }, CC.viewOf({ gm: true, hideDef: true }));
 console.log("the GM with the same setting sees the Defense:", /AD 11/.test(gmv) && !gmv.includes("cc-pfoot"));
 console.log("retarget: only for the author and the GM, gone once locked:", CC.attackCardHtml({ ...smite, rows: [row([3], [6], 11, 11)] }, CC.viewOf({ gm: false })).includes("retargetAction"), CC.attackCardHtml({ ...smite, rows: [row([3], [6], 11, 11)] }, CC.viewOf({ gm: false, author: true })).includes("retargetAction"), CC.attackCardHtml({ ...smite, locked: true, rows: [row([3], [6], 11, 11)] }).includes("retargetAction"));
@@ -131,7 +131,7 @@ console.log("the pool total in its own column:", /class="cc-ptot">3</.test(flat)
 console.log("no \"targeting x, y\" chat line after placing an area:", !src("module/template.mjs").includes('"targeting " + tokens.map'));
 
 console.log("--- v0.0.286 (Lucas tested v0.0.285)");
-console.log("each creature's Defense as a framed badge:", [...many.matchAll(/class="cc-cdef"><span class="cc-badge">([^<]*)<\/span>/g)].map(m => m[1]).join(" | "), "| hidden for players:", !/cc-cdef"><span class="cc-badge">/.test(pmany));
+console.log("each creature's Defense as a framed badge:", [...many.matchAll(/class="cc-cdef"><span class="cc-badge(?: vsk-\w+)?">([^<]*)<\/span>/g)].map(m => m[1]).join(" | "), "| hidden for players:", !/cc-cdef"><span class="cc-badge/.test(pmany));
 const ms = { ...save, target: undefined, creatures: [{ uuid: "a", name: "Bandit Thug", result: chk, hasDamage: true }, { uuid: "b", name: "Grave Wisp", result: { ...chk, total: 15, tier: 2, base: 2 }, hasDamage: true }, { uuid: "c", name: "Ogre Chieftain", result: null }] };
 const msGM = CC.saveCardHtml(ms, CC.viewOf({ gm: true })), msP = CC.saveCardHtml(ms, CC.viewOf({ gm: false, owns: () => false }));
 console.log("a Save on three creatures: a row each:", (msGM.match(/class="cc-crow save"/g) ?? []).length, "| who got each Tier:", [...msGM.matchAll(/<b>T(\d)<\/b>[\s\S]*?<span class="cc-sbody">(<span class="cc-who">[\s\S]*?<\/span><\/span>)?/g)].map(m => `T${m[1]}: ${txt(m[2] ?? "") || "-"}`).join(" | "));

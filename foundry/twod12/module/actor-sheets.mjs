@@ -1361,7 +1361,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
 
 export class NpcSheet extends CharacterSheet {
-  static DEFAULT_OPTIONS = { position: { width: 900, height: 1100 }, actions: { postStatBlock: NpcSheet.postStatBlock, giveLoot: NpcSheet.giveLoot, newAction: NpcSheet.newAction, newWeapon: NpcSheet.newWeapon, setRole: NpcSheet.setRole, setRating: NpcSheet.setRating, setSteadiness: NpcSheet.setSteadiness, levelStep: NpcSheet.levelStep, removeTag: NpcSheet.removeTag, setFrame: NpcSheet.setFrame, addDmgMod: NpcSheet.addDmgMod, removeDmgMod: NpcSheet.removeDmgMod, generateAction: NpcSheet.generateAction, browseCompendium: NpcSheet.browseCompendium } };
+  static DEFAULT_OPTIONS = { position: { width: 900, height: 1100 }, actions: { postStatBlock: NpcSheet.postStatBlock, giveLoot: NpcSheet.giveLoot, newAction: NpcSheet.newAction, newWeapon: NpcSheet.newWeapon, setRole: NpcSheet.setRole, setRating: NpcSheet.setRating, setSteadiness: NpcSheet.setSteadiness, levelStep: NpcSheet.levelStep, removeTag: NpcSheet.removeTag, setFrame: NpcSheet.setFrame, addDmgMod: NpcSheet.addDmgMod, setNbVs: NpcSheet.setNbVs, removeDmgMod: NpcSheet.removeDmgMod, generateAction: NpcSheet.generateAction, browseCompendium: NpcSheet.browseCompendium } };
   static PARTS = { main: { template: "systems/twod12/templates/actor-sheet-pc.hbs" } };   // v0.0.291 (PACK NPC-SHEET): one template for both sheets
   _groupLabels = ["Actions", "Features", "Items", "Basic"];
   _groupOf(i) {
@@ -1396,6 +1396,8 @@ export class NpcSheet extends CharacterSheet {
   }
 
   /** v0.0.308 (Lucas): Resist / Weak / Immunity from the Builder's row: the damage type and the number beside the button. */
+  /** v0.0.314 (pack AU, Vs. WD): the Builder's Attack damage table for a Vs. AD or a Vs. WD attack (a view: nothing else reads it). */
+  static async setNbVs(event, target) { await this.document.setFlag("twod12", "nbVs", target.dataset.vs === "wd" ? "wd" : "ad"); }
   static async addDmgMod(event, target) {
     const row = target.closest(".nb-rwadd"), sub = row?.querySelector(".nb-rwtype")?.value, n = Number(row?.querySelector(".nb-rwn")?.value) || 0, kind = target.dataset.kind;
     if (!sub || !(sub in SUBS)) return;

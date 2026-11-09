@@ -353,6 +353,12 @@
       <label class="autosel" data-tooltip="How much Foundry does for this card, shown as a chip on it (Not implemented, Bronze, Silver, Gold)">Automation <select name="system.automation">{{selectOptions autoRanks selected=system.automation}}</select></label> <label class="autosel autonote" data-tooltip="What Foundry doesn't do yet for this card (shown on the diamond's tooltip). Mostly for Bronze and Silver">By hand <input type="text" name="system.automationNote" value="{{system.automationNote}}" placeholder="What the players do themselves"></label>
       <div class="fxd-s">This is <select class="fxd-f" data-fxkind>{{selectOptions kindChoices selected=kindVal}}</select> placed on <select class="fxd-f" data-fxself>{{selectOptions selfChoices selected=selfVal}}</select>.
         {{#if system.isCondition}}<label class="fxd-inl"><input type="checkbox" name="system.valued" {{#if system.valued}}checked{{/if}}> It has a value (like Empowered 2)</label>{{/if}}</div>
+      {{!-- v0.0.314 (pack AU, the conditions as items): rules a condition (or any Effect) can have --}}
+      <div class="fxd-s">Rules:
+        <label class="fxd-inl" data-tooltip="Frightened: its settings work only while the creature sees the one that applied it"><input type="checkbox" name="system.whileSeen" {{#if system.whileSeen}}checked{{/if}}> Only while it sees its origin</label>
+        <label class="fxd-inl" data-tooltip="Staggered: the Reaction AP waits until it ends"><input type="checkbox" name="system.noReactions" {{#if system.noReactions}}checked{{/if}}> No Reactions</label>
+        <label class="fxd-inl" data-tooltip="Dazed: the value in AP, now; the rest from the AP of the next turn; then it ends"><input type="checkbox" name="system.loseAp" {{#if system.loseAp}}checked{{/if}}> Loses its value in AP</label>
+        <label class="fxd-inl" data-tooltip="Grabbed: when the holder goes Down or is Unconscious"><input type="checkbox" name="system.endsWithOrigin" {{#if system.endsWithOrigin}}checked{{/if}}> Ends when its origin goes Down</label></div>
       <p class="fxd-help">An effect is a bundle of the settings below. A condition is a named state from the book (Prone, Empowered); one with a value keeps it on the creature, and clicking its icon raises it. "The user" is the creature that used the Action.</p>
       {{/if}}
 

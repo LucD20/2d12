@@ -43,7 +43,10 @@ export function predicateText(x) {
 
 /** v0.0.186: " (the first matching Action each round), only against the creature it marked" (empty when neither is set). */
 export function limitText(x) {
-  const bits = [x.oncePerRound ? "the first matching Action each round" : "", x.vsMarked && !x.against ? "only against the creature it marked" : ""].filter(Boolean);
+  const attrs = [...(x.attrs ?? [])].map(a => TWOD12.attributes[a] ?? a);
+  const bits = [x.oncePerRound ? "the first matching Action each round" : "", x.vsMarked && !x.against ? "only against the creature it marked" : "",
+    // v0.0.314 (pack AU): Taunted's "only against creatures other than its origin"; Sickened's Attributes
+    x.type === "boonbane" && x.vsOrigin && !x.against ? (TWOD12.vsOriginChoices?.[x.vsOrigin] ?? "") : "", x.type === "boonbane" && attrs.length ? `only ${attrs.join(" or ")} rolls` : ""].filter(Boolean);
   return bits.length ? ` <i class="fxd-lim">(${bits.join("; ")})</i>` : "";
 }
 
@@ -74,6 +77,11 @@ function settingSentenceOnly(x) {
       const on = tiers.length && tiers.length < 3 ? ` on ${wordList(tiers.map(t => t.toUpperCase()), "and")}` : "";
       const pool = x.dmgPool ? ` to ${esc((TWOD12.pools[x.dmgPool] ?? "").replace(/\s*\[.*\]/, ""))}` : "";
       return `The next action${predicateText(x) || " of any kind"} deals <b>+${esc(x.dmg || "?")}${x.dmgSub ? " " + esc(TWOD12.subtypes[x.dmgSub]) : ""}</b> damage${pool}${on}.`;
+    }
+    case "bleed": {   // v0.0.314 (pack AU)
+      const attrs = [...(x.attrs ?? [])].map(a => TWOD12.attributes[a] ?? a).join(" or ") || "Body or Instinct";
+      const pool = x.dmgPool === "M" ? "Resolve" : (x.dmgPool === "B" ? "Vigor" : "Vigor or Resolve by the Attributes");
+      return `At the end of each of its turns, the creature takes <b>${esc(x.dmg || "?")}${x.dmgSub ? " " + esc(TWOD12.subtypes[x.dmgSub]) : ""}</b> damage (${pool}); Interact and a Save with the better of ${attrs} against DC ${Math.max(0, Number(x.bleedDc) || 13)} end it.`;
     }
     case "inline":
       return `Has the Action <b>${esc(fxNameOf(x.inlineAction) || x.inlineAction || "?")}</b> while this lasts.`;

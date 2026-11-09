@@ -8,6 +8,7 @@
 // The moments are settings of each Reaction (Moment, Within, You too, Used on): no code here names a card.
 // v0.0.275 (pack RX-2, Lucas's design): the message is a stack card (faces, "pick one" groups, slabs in their map colors), a map overlay shows
 // it while it is open (rxoverlay.mjs), and once resolved the same message is edited in place into one line that unfolds (a snapshot, the frozen stack).
+import { reactionsOff } from "./condrules.mjs";   // v0.0.314 (pack AU): Staggered
 import { tokenDistance } from "./light.mjs";
 import { threatProfile } from "./flanking.mjs";   // v0.0.303: "a creature you threaten" (Opportunity Attack)
 import { isFaded } from "./usage.mjs";
@@ -277,6 +278,7 @@ export async function blockedWhy(actor, item) {
   const f = isFaded(actor, item);
   if (f?.faded) return f.why || "spent";
   if (isDown(actor)) return "Down";
+  if (reactionsOff(actor)) return "Staggered: no Reactions";   // v0.0.314 (pack AU; book, Ch. 8): the Reaction AP waits
   try {
     const C = await import("./combat.mjs"), c = game.combat?.started ? C.combatantOf(actor, game.combat) : null;
     if (c) {

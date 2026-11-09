@@ -76,6 +76,21 @@ cond("Slowed", "icons/svg/stoned.svg", "<p>Slowed always has a value. You regain
 cond("Quickened", "icons/svg/lightning.svg", "<p>Quickened always has a value. Your most AP, and the AP you regain at the start of your turn, rise by that much (Quickened 2: you regain 6). You don't gain AP when you become Quickened, only when you regain AP. Quickened never changes your Reaction AP, and the extra AP you don't spend become Guard like any other. Slowed and Quickened cancel out without changing each other's value.</p>", [], { valued: true });
 cond("Imperiled", "icons/svg/hazard.svg", "<p>You barely avoided a Deadly Hazard (hanging from a ledge, at the lip of a lava pit...). All your Checks and Saves are Doomed, and you are Vulnerable 3. At the start of your turn you get back to safety, to a legal square next to the hazard, and stop being Imperiled; you are Slowed 1 for that turn. A creature can help you get to safety with the Interact Action (1 AP, Handle).</p>", [], { conditions: [{ uuid: uuidOf("conditions", "Vulnerable"), name: "Vulnerable", value: 3, valued: true }] });
 cond("Squeezing", "icons/svg/net.svg", "<p>You stopped moving while squeezing through a space one rank smaller than you: you don't fit completely in the space you are in. All your Rolls are Doomed and you are Vulnerable equal to half your level (rounded up) until you move to a space where you fit completely. Each square you move while squeezing counts as Difficult Terrain. The GM applies this condition (it is not detected on the map).</p>", [], { conditions: [{ uuid: uuidOf("conditions", "Vulnerable"), name: "Vulnerable", value: 1, valued: true, mode: "halfLevel" }] });
+// v0.0.314 (pack AU; book, Chapter 8, the conditions pass): the eight conditions as items, each with general rules (data.mjs EffectData):
+// Frightened works only while its creature sees the origin; Taunted's Bane counts only against creatures other than the origin; Sickened N's
+// Banes are on Body and Instinct Saves; Staggered blocks Reactions; Dazed N takes AP now; Grabbed brings Immobilized and ends when the holder
+// goes Down; Bleed is damage at the end of each turn (a card's own dice: @Condition[bleed|dmg:1d6|pool:R|sub:Ho|attrs:mi/ap]); Blinded is
+// Foundry's blind status (no sight: twod12.mjs CONFIG.specialStatusEffects).
+const bb1 = (banes, extra = {}) => ({ type: "boonbane", boons: 0, banes, all: [], any: [], none: [], ...extra });
+cond("Frightened", "icons/svg/terror.svg", "<p>Frightened is always <b>of</b> a source (the creature or object that applied it). While you see the source (Clear or Obscured to you), all your Rolls take 1 Bane, the Save that would end Frightened included, and you can't willingly move closer to it (Forced Movement still can). Out of your Sight (a wall, Darkness), the Bane and the restriction stop until you see it again.</p>", [bb1(1)], { whileSeen: true, hover: "1 Bane on all your Rolls while you see its source; you can't willingly move closer to it." });
+cond("Taunted", "icons/svg/target.svg", "<p>Taunted is always <b>by</b> a creature (the one that applied it). Your Actions against any creature other than it take 1 Bane.</p>", [bb1(1, { vsOrigin: "not" })], { hover: "1 Bane on your Actions against anyone but the creature that taunted you." });
+cond("Sickened", "icons/svg/poison.svg", "<p>Sickened always has a value, such as Sickened 1. Your Body and Instinct Saves take that many Banes, and you can't eat, drink or swallow anything: no potions.</p>", [bb1(1, { all: ["__save"], attrs: ["body", "instinct"], byValue: true })], { valued: true });
+cond("Staggered", "icons/svg/paralysis.svg", "<p>You can't use Reactions. Your Reaction AP isn't lost: you can use it again when Staggered ends.</p>", [], { noReactions: true });
+cond("Dazed", "icons/svg/daze.svg", "<p>Dazed always has a value, such as Dazed 1. When you become Dazed, you lose that many AP right away (never your Reaction AP). If you have fewer AP than the value, you lose the AP you have, and the rest is taken from the AP you regain at the start of your next turn; then Dazed ends.</p>", [], { valued: true, loseAp: true });
+cond("Grabbed", "icons/svg/padlock.svg", "<p>A creature within its Reach holds you (the one that applied it): you are Immobilized, and only the holder can Force Move or Reposition you. Grabbed ends when the holder lets go (no Action), leaves your Reach, goes Down or is Unconscious, or when you end Immobilized (1 AP [Move]: Break Free). The holder can't use the hand or limb that holds you for anything else.</p>", [], { endsWithOrigin: true, linked: "Immobilized" });
+cond("Blinded", "icons/svg/blind.svg", "<p>You can't see: for your Sight, everything is Darkness. Creatures you only hear are Hidden to you, so your Actions against them are Doomed, and you can't target a creature you don't perceive. Any other Roll that needs sight is Doomed. Actions with the Area trait still affect the creatures in their area.</p>", []);
+cond("Bleed", "icons/svg/blood.svg", "<p><b>Bleed X (Attributes)</b> is damage that keeps coming: at the end of each of your turns, you take X damage, rolled each time. It is Vigor damage when the Attributes are Bo/In and Resolve damage when they are Mi/Ap, unless the Bleed writes its pool. You can end it with Interact (1 AP), on yourself or on a bleeding creature within your Reach: a Save with the better of the two Attributes against DC 13 (or the Bleed's DC). Tier 1: no effect. Tier 2: you take half the Bleed at the end of this turn, then it ends. Tier 3: it ends. Healing doesn't end a Bleed; the end of the encounter does.</p>", [{ type: "bleed", dmg: "1", dmgPool: "", dmgSub: "", attrs: ["body", "instinct"], bleedDc: 13 }], { hover: "Damage at the end of each of your turns; Interact (1 AP) and a Save end it." });
+
 add("effects", "effect", "Bloodlust", "icons/svg/blood.svg", { selfApplied: true, duration: { type: "rounds", rounds: 1 }, description: "<p>For 1 round, your [Melee, Weapon] Actions are Empowered 1 and gain 2 Boons, and you take 1 Bane on Saves.</p>", settings: [
   { type: "boonbane", boons: 2, banes: 0, all: ["melee", "weapon"], any: [], none: [] },
   { type: "damagestep", empowered: 1, all: ["melee", "weapon"], any: [], none: [] },
@@ -129,7 +144,7 @@ add("features", "feature", "Divine Connection", "icons/svg/aura.svg", { category
 
 /* ------------------------------------------------------------------ Talents (book 16-talents.md; OT 2026-10-30): Category, Level, Prerequisites and Theme as data */
 // Combat
-add("effects", "effect", "Challenged", "icons/svg/combat.svg", { duration: { type: "eot", rounds: 1 }, description: "<p>Your [Strike] Actions against creatures other than the one who challenged you take 1 Bane (Challenge, EoT).</p>", settings: [{ type: "boonbane", boons: 0, banes: 1, all: ["strike"], any: [], none: [] }] }, "Talents");
+add("effects", "effect", "Challenged", "icons/svg/combat.svg", { duration: { type: "eot", rounds: 1 }, description: "<p>Your [Strike] Actions against creatures other than the one who challenged you take 1 Bane (Challenge, EoT).</p>", settings: [{ type: "boonbane", boons: 0, banes: 1, all: ["strike"], any: [], none: [], vsOrigin: "not" }] }, "Talents");   // v0.0.314: only against others (vsOrigin)
 // Mobility
 // Magic
 // Class Talents
@@ -461,14 +476,13 @@ for (const d of docs) if (["action", "talent", "feature"].includes(d.type) && FL
 const AUTO = {
   gold: ["Rain of Arrows",
     "Steady Nerves",
-    "Rimebrand", "Lay On Hands (Holy Strike)", "Smite (Bright light 1)", "Smite (Bright light 2)", "Vanish (+1 Defense)"],
+    "Rimebrand", "Challenged", "Lay On Hands (Holy Strike)", "Smite (Bright light 1)", "Smite (Bright light 2)", "Vanish (+1 Defense)"],
   silver: ["Cut Through"],
-  bronze: ["Harried", "Challenged"],
+  bronze: ["Harried"],
   none: ["Class Expertise"]
 };
 // v0.0.215 (Lucas, playtest 2): what each Bronze and Silver card still leaves to the players (the diamond's tooltip, "By hand" on the item).
 const AUTO_NOTE = {
-  "Challenged": "the attacker unticks the Bane when it attacks the creature that challenged it."
 };
 for (const c of CARDS) for (const d of docs) if (d.type === "effect" && d.name === c.name && c.foundry?.automation) { d.system.automation = c.foundry.automation; if (c.foundry.automationNote) d.system.automationNote = c.foundry.automationNote; }   // an Effect named like a card (Divine Surge, Pinning Shot) shows the card's rank
 for (const [rank, list] of Object.entries(AUTO)) for (const d of docs) if (list.includes(d.name) && ["action", "feature", "talent", "effect"].includes(d.type) && !/old cards/.test(d.folder ?? "") && !d.system.automation) { d.system.automation = rank; if (AUTO_NOTE[d.name] && ["bronze", "silver"].includes(rank)) d.system.automationNote = AUTO_NOTE[d.name]; }

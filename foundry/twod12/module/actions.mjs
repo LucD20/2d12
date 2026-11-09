@@ -27,6 +27,7 @@ import { tierProbs, perDieDelta, topStep, bbCount } from "./calc.mjs";
 import { squaresBetween, rangeBand } from "./move.mjs";
 import { setupFor } from "./setup.mjs";
 import { coverBetween, coverWhy } from "./cover.mjs";
+import { reactionsOff } from "./condrules.mjs";   // v0.0.314 (pack AU): Staggered
 import { consumeGrant, attachGrantCard, withGrantLine } from "./freeuse.mjs";
 import { zoneOf } from "./zone.mjs";   // v0.0.261 (Consecrated Ground): the zone a Version's effects describe goes on the placed area
 import { setHalfHint, halfHits } from "./halfhint.mjs";   // v0.0.261 (Covering Shot): on a Tier 3, the target's next damage card lights its Half button
@@ -443,6 +444,8 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.293 (Lucas: "allow use of actions even if they aren't normally allowed"): from a faded row of the sheet (opts.override) a rule
   // that would refuse the Action is only a warning; true = stop here
   const refuse = msg => { ui.notifications.warn(opts.override ? `${msg} Used anyway.` : msg); return !opts.override; };
+  // v0.0.314 (pack AU; book, Ch. 8): a Staggered creature can't use Reactions (its Reaction AP waits until Staggered ends)
+  if (item.system?.reaction && reactionsOff(actor) && refuse(`${actor.name} is Staggered: no Reactions until it ends.`)) return;
   if (lock.locked && refuse(`${item.name} is locked: ${TECHNIQUE_AT} ${lock.group} Mastery unlocks it (${actor.name} has ${lock.value}).`)) return;
   // v0.0.213 (Lucas): a Weapon Technique is used only with its own weapon, in hand (a Favorite or a macro can still call it).
   if (techniqueState(actor, item) === "unwielded" && refuse(`${item.name} is ${actor.items.get(item.getFlag("twod12", "weaponId"))?.name ?? "its weapon"}'s Weapon Technique: wield it first.`)) return;

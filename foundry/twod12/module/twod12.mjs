@@ -1,6 +1,7 @@
 import { registerAuraHooks } from "./aura.mjs";
 import { registerHazardHooks, registerHazardBehavior } from "./hazard.mjs";
 import { registerDownHooks } from "./down.mjs";
+import { registerConditionRules } from "./conditions.mjs";   // v0.0.314 (pack AU): Frightened, Dazed, Bleed, Grabbed
 import { registerZoneHooks } from "./zone.mjs";   // v0.0.261 (Consecrated Ground)
 import { markHalfHint } from "./halfhint.mjs";   // v0.0.261 (Covering Shot)
 import { rxRender, rxClick, registerReactionSettings, registerMomentHooks, closeStale } from "./moment.mjs";   // v0.0.272 (pack RX): the Reactions message
@@ -244,8 +245,19 @@ Hooks.once("init", () => {
     ["squeezing", "icons/svg/net.svg"],
     ["slowed", "icons/svg/stoned.svg"],
     ["quickened", "icons/svg/lightning.svg"],
+    // v0.0.314 (pack AU, the conditions as items): the conditions pass's eight (book, Chapter 8); the HUD applies their Effect items (wrapConditions)
+    ["bleed", "icons/svg/blood.svg"],
+    ["blinded", "icons/svg/blind.svg"],
+    ["dazed", "icons/svg/daze.svg"],
+    ["frightened", "icons/svg/terror.svg"],
+    ["grabbed", "icons/svg/padlock.svg"],
+    ["sickened", "icons/svg/poison.svg"],
+    ["staggered", "icons/svg/paralysis.svg"],
+    ["taunted", "icons/svg/target.svg"],
     ["dead", "icons/svg/skull.svg"]
   ].map(([id, img]) => ({ id, name: id[0].toUpperCase() + id.slice(1), img }));
+  // v0.0.314: Blinded is Foundry's blind status: the token sees nothing, and the Senses (senses.mjs perceive) leave it only its other senses
+  CONFIG.specialStatusEffects = { ...(CONFIG.specialStatusEffects ?? {}), BLIND: "blinded" };
 });
 
 /** Cards that are finished (damage rolled / applied) are shown short: title, result and effects. Clicking the title shows the whole card again. */
@@ -368,6 +380,7 @@ Hooks.once("ready", async () => {
     } catch (err) { console.warn("twod12 | could not set the default grid diagonals", err); }
   }
   registerEffectHooks();
+  registerConditionRules();
   registerCombatHooks();
   registerMovement();
   registerBasicHooks();

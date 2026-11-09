@@ -3,7 +3,9 @@
 // The card is drawn for each viewer (the render hook in twod12.mjs calls render with that viewer's view): the GM sees everything; a player may have
 // the enemy Defenses or the target details hidden by the GM; Designer mode (a client setting) adds the odds, the Ruler line and the Mithril mark.
 // The message's stored content is the GM's view without Designer mode (the fallback when the hook can't run).
-import { esc } from "./util.mjs";
+import { esc, vsKind } from "./util.mjs";
+/** v0.0.314 (pack AU): an AD / WD (or an Attribute's) badge in its color: the Vs. line's colors (util.mjs VS_COLORS). */
+const vsk = label => { const k = vsKind(label); return k ? ` vsk-${k}` : ""; };
 import { bbKey, BB_LIMIT, BB_NAMES } from "./calc.mjs";
 
 /* ------------------------------------------------------------------ small pieces */
@@ -131,7 +133,7 @@ export function breakdownHtml(r, { hide = false, save = false, id = "", open = f
   const mods = (r.mods ?? []).filter(m => m && Number(m.v));
   if (mods.length) rows.push(`<span class="cc-bl">Modifiers</span><span class="cc-bv">${mods.map(m => modTxt(Number(m.v), m.label)).join(" ")}</span>`);
   const badge = `${esc(r.dcLabel ?? "DC")}${hide && !save ? "" : ` ${r.dc}`}`;
-  rows.push(`<span class="cc-btot"><b class="cc-total">${r.total}</b><small>vs</small><span class="cc-badge">${badge}</span><span class="cc-chips">${resultChips(r, { save, hide })}</span></span>`);
+  rows.push(`<span class="cc-btot"><b class="cc-total">${r.total}</b><small>vs</small><span class="cc-badge${vsk(r.dcLabel)}">${badge}</span><span class="cc-chips">${resultChips(r, { save, hide })}</span></span>`);
   return `<div class="cc-break${open ? " open" : ""}" data-cc-panel="${esc(id)}">${rows.join("")}</div>`;
 }
 
@@ -227,7 +229,7 @@ export function attackCardHtml(m, view = FULL_VIEW) {
   // several targets: one shared roll, a row per creature, the outcome grouped by Tier
   const sh = m.shared ?? {};
   const shared = `<div class="cc-shared"><span class="cc-bl">${(sh.d ?? []).length}d12</span>${(sh.d ?? []).map(dieGroup).join("")}${sh.mod ? ` ${modTxt(sh.mod, "Modifier")}` : ""}</div>`;
-  const crows = rows.map((r, i) => `<div class="cc-crow">${tierPill(r.tier, r.crit)}<span class="cc-cname">${esc(r.name)}</span><span class="cc-cdef">${hide ? "" : `<span class="cc-badge">${esc(r.dcLabel ?? "DC")} ${r.dc}</span>`}${defText(r, true) ? `<span>${esc(defText(r, true))}</span>` : ""}</span>${ladderHtml(r, { hide, thin: true, id: `r${i}` })}${keptNote(r) ? `<div class="cc-muted cc-kept">${esc(keptNote(r))}</div>` : ""}${breakdownHtml(r, { hide, id: `r${i}` })}</div>`).join("");
+  const crows = rows.map((r, i) => `<div class="cc-crow">${tierPill(r.tier, r.crit)}<span class="cc-cname">${esc(r.name)}</span><span class="cc-cdef">${hide ? "" : `<span class="cc-badge${vsk(r.dcLabel)}">${esc(r.dcLabel ?? "DC")} ${r.dc}</span>`}${defText(r, true) ? `<span>${esc(defText(r, true))}</span>` : ""}</span>${ladderHtml(r, { hide, thin: true, id: `r${i}` })}${keptNote(r) ? `<div class="cc-muted cc-kept">${esc(keptNote(r))}</div>` : ""}${breakdownHtml(r, { hide, id: `r${i}` })}</div>`).join("");
   const groups = [3, 2, 1].map(t => {
     const who = rows.filter(r => r.tier === t);
     if (!who.length) return "";

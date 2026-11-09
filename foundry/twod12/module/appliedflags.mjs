@@ -21,7 +21,9 @@ export function appliedFlags(s, source) {
       any: [...x.any],
       none: [...x.none],
       from: [...(x.from ?? [])],
-      oncePerRound: !!x.oncePerRound, vsMarked: !!x.vsMarked
+      oncePerRound: !!x.oncePerRound, vsMarked: !!x.vsMarked,
+      // v0.0.314 (pack AU): only on rolls with one of these Attributes (Sickened: Body and Instinct Saves); against its origin or not (Taunted)
+      attrs: x.type === "boonbane" ? [...(x.attrs ?? [])] : [], vsOrigin: x.type === "boonbane" ? (x.vsOrigin || "") : ""
     }));
   const bonuses = s.settings.filter(x => x.type === "bonusdamage").map(x => ({ dmg: x.dmg, dmgPool: x.dmgPool, dmgSub: x.dmgSub, tiers: [...x.tiers], text: x.text, fxUuid: x.fxUuid, all: [...x.all, ...(x.predicate ? [x.predicate] : [])], any: [...x.any], none: [...x.none], oncePerRound: !!x.oncePerRound, vsMarked: !!x.vsMarked }));
   const inlines = s.settings.filter(x => x.type === "inline" && String(x.inlineAction ?? "").trim()).map(x => String(x.inlineAction).trim());   // v0.0.249: inline Actions
@@ -39,5 +41,8 @@ export function appliedFlags(s, source) {
   const propLoss = s.settings.filter(x => x.type === "weaponprop" && x.wpProp).map(x => ({ which: x.wpWhich || "fists", prop: x.wpProp }));
   // v0.0.243 (pack R): the class's Escalation hook: once an encounter, +1 Escalation when the moment happens (Kindled Wrath: an ally within 5 squares becomes Bloodied or goes Down; Thrill of the Kill: its mark goes Down).
   const escHooks = s.settings.filter(x => x.type === "eschook").map(x => ({ when: x.hookWhen || "allyState", range: Math.max(0, Math.trunc(Number(x.hookRange)) || 0) }));
-  return { description: s.description, hover: s.hover ?? "", notes, modifiers, bonuses, inlines, grants, covers, speedMods, defenses, auras, triggers, ignores, rallies, turnStarts, messages, propLoss, escHooks, minEscalation: Math.max(0, Number(s.minEscalation) || 0), expireOn: [...s.expireOn], expireAll: s.expireAll, source };
+  // v0.0.314 (pack AU): Bleed, damage at the end of each of the creature's turns (the pool from the Save's Attributes when none is written: Bo/In Vigor, Mi/Ap Resolve)
+  const bleeds = s.settings.filter(x => x.type === "bleed" && String(x.dmg ?? "").trim()).map(x => ({ dmg: String(x.dmg).trim(), pool: x.dmgPool || "", sub: x.dmgSub || "", attrs: [...(x.attrs ?? [])], dc: Math.max(0, Math.trunc(Number(x.bleedDc)) || 13) }));
+  const rules = { whileSeen: !!s.whileSeen, noReactions: !!s.noReactions, loseAp: !!s.loseAp, endsWithOrigin: !!s.endsWithOrigin };
+  return { ...rules, bleeds, description: s.description, hover: s.hover ?? "", notes, modifiers, bonuses, inlines, grants, covers, speedMods, defenses, auras, triggers, ignores, rallies, turnStarts, messages, propLoss, escHooks, minEscalation: Math.max(0, Number(s.minEscalation) || 0), expireOn: [...s.expireOn], expireAll: s.expireAll, source };
 }

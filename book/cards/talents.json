@@ -11,7 +11,7 @@
     "img": "icons/svg/combat.svg",
     "automation": "bronze",
     "automationNote": "apply the Challenged effect from the compendium.",
-    "append": "(Apply the Challenged effect from the compendium; its Bane is a chip the attacker unticks when they attack you.)"
+    "append": "(Apply the Challenged effect from the compendium; its Bane counts only on Strikes against creatures other than you.)"
    },
    "talent": {
     "group": "combat"

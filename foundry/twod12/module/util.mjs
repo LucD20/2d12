@@ -19,6 +19,15 @@ export function vsColored(vs) {
   const e = String(vs ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   return e.replace(/\b(AD|WD)\b|\b(Body|Mind|Appeal|Instinct)( Save)?\b/g, (m, d, a) => `<span class="vsv" style="color:${VS_COLORS[(d ?? a).toLowerCase()]};font-weight:700">${m}</span>`);
 }
+/** v0.0.314 (pack AU, the AD / WD coloring): the kind of a Vs. word for its color class ("ad", "wd", "adwd", an Attribute, or ""): "AD", "WD 13", "AD/WD", "Bo", "App Save". */
+export function vsKind(label) {
+  const t = String(label ?? "").trim();
+  if (/^AD\b.*\bWD\b/i.test(t)) return "adwd";
+  if (/^AD\b/.test(t)) return "ad";
+  if (/^WD\b/.test(t)) return "wd";
+  const a = t.match(/^(Bo|Mi|Ap|In)/i);
+  return a ? ({ bo: "body", mi: "mind", ap: "appeal", in: "instinct" })[a[1].toLowerCase()] : "";
+}
 export const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
 /** The hover text of an effect or ability: its own "Hover text" if it has one, else the start of its description (plain text). */

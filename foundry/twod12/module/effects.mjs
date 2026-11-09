@@ -9,6 +9,7 @@ import { TWOD12 } from "./config.mjs";
 import { combatantOf } from "./combat.mjs";
 import { onceKey, onceBlocked, isMarked } from "./automation.mjs";
 import { bbCount, bbKey } from "./calc.mjs";
+import { originOk, attrsOk, bleedOf, bleedText } from "./condrules.mjs";   // v0.0.314 (pack AU)
 const SOCKET = "system.twod12";
 const F = "twod12";
 
@@ -37,7 +38,8 @@ export function notesFor(actor, attrKey) {
 export const matches = (m, traits, from = null) => (m.all ?? []).every(t => traits.has(t))
   && (!(m.any?.length) || m.any.some(t => traits.has(t)))
   && !(m.none ?? []).some(t => traits.has(t))
-  && (!(m.from?.length) || (!!from && m.from.some(t => from.has(t))));   // "from": traits of the Action that caused a Save
+  && (!(m.from?.length) || (!!from && m.from.some(t => from.has(t))))   // "from": traits of the Action that caused a Save
+  && attrsOk(m, traits);   // v0.0.314 (pack AU): only rolls with one of its Attributes (Sickened: Body and Instinct Saves)
 
 // __action marks every Action and stays hidden; the roll kinds a player can pick (Check, Save, Attribute Action) are shown by name.
 const vis = list => (list ?? []).filter(t => !String(t).startsWith("__") || t in TWOD12.rollKinds);
@@ -46,7 +48,9 @@ const predText = m0 => { const m = { ...m0, all: vis(m0.all), any: vis(m0.any), 
   m.all?.length ? m.all.map(tname).join(" and ") : "",
   m.any?.length ? `any of ${m.any.map(tname).join(", ")}` : "",
   m.none?.length ? `not ${m.none.map(tname).join(", ")}` : "",
-  m.from?.length ? `Saves against ${m.from.map(tname).join(" or ")} Actions` : ""
+  m.from?.length ? `Saves against ${m.from.map(tname).join(" or ")} Actions` : "",
+  m.attrs?.length ? `${m.attrs.map(a => TWOD12.attributes[a] ?? a).join(" or ")} rolls` : "",
+  m.vsOrigin === "not" ? "Actions against a creature other than its origin" : (m.vsOrigin === "only" ? "Actions against its origin" : "")
 ].filter(Boolean).join("; ") || "Any roll"; };
 
 /** The Empowered and Enfeebled values that a creature's effects give to the damage of an Action with these traits: { empowered: [{ name, n }], enfeebled: [{ name, n }] } (Bloodlust: Empowered 1). */
@@ -131,6 +135,7 @@ export function modifierList(actor, traits, targetActors = [], from = null) {
       // v0.0.186: once per round (used: not offered) and only against the marked target (one chip for that target).
       const once = m.oncePerRound ? onceKey(e, "m", i) : "";
       if (once && onceBlocked(actor, once)) return;
+      if (m.vsOrigin && !originOk(m, e.origin ?? "", targetActors.map(t => t?.uuid))) return;   // v0.0.314 (pack AU): Taunted, against a creature other than its origin
       const base = { name: shortName(e.name), boons: m.boons * kOf(m, e), banes: m.banes * kOf(m, e), bb: bbOf(m, e), match: matches(m, traits, from), predicate: predText(m) + onceText(m) + bbText(m, e), ...(once ? { once, onceActor: actor.uuid } : {}) };
       if (!m.vsMarked) return out.push({ id: `${e.id}:${i}`, ...base });
       for (const t of targetActors) if (isMarked(actor, t)) out.push({ ...base, id: `${t.uuid}|${e.id}:${i}`, name: `${base.name} (${t.name})`, predicate: `Against your marked target, ${t.name}: ${base.predicate}` });
@@ -236,12 +241,13 @@ export async function createEffect(actor, item, origin, over = null, extra = {})
   const own = combatantOf(actor);
   const slotInit = own?.initiative ?? null;
   const made = (await actor.createEmbeddedDocuments("ActiveEffect", [{
-    name: value !== undefined ? `${item.name} ${value}` : item.name, img: item.img, origin: origin?.actorUuid ?? null, showIcon: 2, statuses,
+    name: value !== undefined ? `${item.name} ${value}` : (over?.bleed ? bleedText(bleedOf({ flags: { [F]: { bleeds: appliedFlags(s, {}).bleeds, bleed: over.bleed } } })) : item.name), img: item.img, origin: origin?.actorUuid ?? null, showIcon: 2, statuses,
     flags: { [F]: {
       ...extra, effectUuid: item.uuid, duration: d, remaining: d.rounds, ...(value !== undefined ? { value, baseName: item.name } : {}),
       slotInit, originSlot: origin?.slot ?? null,
       originCombatantId: origin?.combatantId ?? "", anchorSlot: origin?.anchorSlot ?? null, anchorCombatantId: origin?.anchorCombatantId ?? "", appliedRound: origin?.round ?? null, appliedTurn: origin?.turn ?? null,
       ...appliedFlags(s, item.toObject().system), lightBackup, fromEscalation: !!origin?.escalation,
+      ...(over?.bleed ? { bleed: over.bleed } : {}),   // v0.0.314 (pack AU): the card's own Bleed (its dice, pool, type, Attributes, DC)
       // Immobilized (v0.0.174): its DC, 11 + the Modifier its origin used (13 without an origin or a Modifier). Forced Movement and Reposition read it.
       ...(statuses.includes("immobilized") ? { immobileDc: origin?.actorUuid && Number.isFinite(origin?.mod) ? 11 + origin.mod : TWOD12.baseDC } : {})
     } }
@@ -577,12 +583,12 @@ export function valuedHud(app, html) {
   return n;
 }
 
-export async function applyCondition(cond, actors, dur, origin, value = null) {
+export async function applyCondition(cond, actors, dur, origin, value = null, extra = {}) {   // extra (v0.0.314): { bleed } (a card's Bleed values)
   const id = String(cond).trim().toLowerCase();
   const item = await conditionItem(id);
   for (const actor of actors) {
     if (item) {
-      await applyEffects([item.uuid], [actor.uuid], origin, dur || value ? { ...(dur ? { duration: dur } : {}), ...(value ? { value } : {}) } : null);   // v0.0.250: a value (Enfeebled 1)
+      await applyEffects([item.uuid], [actor.uuid], origin, dur || value || extra?.bleed ? { ...(dur ? { duration: dur } : {}), ...(value ? { value } : {}), ...(extra?.bleed ? { bleed: extra.bleed } : {}) } : null);   // v0.0.250: a value (Enfeebled 1)
     } else if (actor.isOwner) {
       await actor.toggleStatusEffect(id, { active: true });
     } else {

@@ -11,6 +11,7 @@ import { askRoll, enrich, adjLabelOf, ccRowOf } from "./actions.mjs";
 import * as CC from "./chatcards.mjs";   // v0.0.283 (pack chat-cards): the one-target Save card
 import { perDieDelta } from "./calc.mjs";
 import { resolveModifiers, applyEffects, applyCondition, originInfo, applyBoonEffect, damageSteps } from "./effects.mjs";
+import { parseAttrs } from "./condrules.mjs";   // v0.0.314 (pack AU): Bleed's Attributes
 import { dealDamage } from "./damage.mjs";
 import { postDamageCard } from "./dmgcard.mjs";
 import { startTemplate, tokensInEmanation } from "./template.mjs";
@@ -97,7 +98,17 @@ export function parseInline(kind, inner) {
       else if (/^tier\s*:/i.test(s)) cfg.tier = Math.max(0, Number(s.replace(/^tier\s*:\s*/i, "")) || 0);   // v0.0.267: only the targets that rolled that Tier or more
       else if (/^value\s*:/i.test(s)) cfg.value = Math.max(1, Math.trunc(Number(s.replace(/^value\s*:\s*/i, ""))) || 1);   // v0.0.250: Enfeebled 1, Vulnerable 2
       else if (/^side\s*:/i.test(s)) cfg.side = s.replace(/^side\s*:\s*/i, "").toLowerCase();
-      else if (/^quiet\s*:/i.test(s)) cfg.quiet = yes(s.replace(/^quiet\s*:\s*/i, ""));   // v0.0.252: the label shows no duration (the sentence says it)
+      else if (/^quiet\s*:/i.test(s)) cfg.quiet = yes(s.replace(/^quiet\s*:\s*/i, ""));
+      // v0.0.314 (pack AU): Bleed's own values, @Condition[bleed|dmg:1d6|pool:R|sub:Ho|attrs:mi/ap|dc:15] (the condition's setting fills the rest)
+      else if (/^(dmg|pool|sub|attrs|dc)\s*:/i.test(s)) {
+        const [k, ...v] = s.split(":"), key = k.trim().toLowerCase(), val = v.join(":").trim();
+        cfg.bleed ??= {};
+        if (key === "dmg") cfg.bleed.dmg = val;
+        else if (key === "pool") cfg.bleed.pool = ({ V: "B", R: "M", B: "B", M: "M" })[val.toUpperCase()] ?? "";
+        else if (key === "sub") cfg.bleed.sub = val.length === 2 ? val[0].toUpperCase() + val[1].toLowerCase() : val;
+        else if (key === "attrs") cfg.bleed.attrs = parseAttrs(val);
+        else if (key === "dc") cfg.bleed.dc = Math.max(0, Number(val) || 13);
+      }   // v0.0.252: the label shows no duration (the sentence says it)
     }
     return cfg;
   }
@@ -353,7 +364,7 @@ function rollers() {
   return [{ actor: a, token: a.getActiveTokens()[0] ?? null }];
 }
 
-async function rollParts(list, nonlethalAll) {
+export async function rollParts(list, nonlethalAll) {
   const comps = [], rolls = [];
   for (const p of list) {
     try {
@@ -808,7 +819,7 @@ async function handleCondition(cfg, ctx = {}) {
   if (!actors.length) return cfg.crit && ctx.targets?.length ? ui.notifications.info("No Critical: nothing to apply.") : ui.notifications.warn("Target or select a token first.");
   const src = ctx.actor ?? (f?.actorUuid ? await fromUuid(f.actorUuid) : (game.combat?.combatant?.actor ?? null));
   const dur = cfg.dur === "eot" ? { type: "eot" } : (cfg.dur === "rounds" ? { type: "rounds", rounds: cfg.rounds } : null);
-  const found = await applyCondition(cfg.cond, actors, dur, { ...originInfo(src?.uuid ?? ""), ...(Number.isFinite(f?.attrVal ?? f?.originMod) ? { mod: f.attrVal ?? f.originMod } : {}) }, cfg.value ?? null);
+  const found = await applyCondition(cfg.cond, actors, dur, { ...originInfo(src?.uuid ?? ""), ...(Number.isFinite(f?.attrVal ?? f?.originMod) ? { mod: f.attrVal ?? f.originMod } : {}) }, cfg.value ?? null, cfg.bleed ? { bleed: cfg.bleed } : {});
   ui.notifications.info(`${cfg.cond.charAt(0).toUpperCase() + cfg.cond.slice(1)}${cfg.value ? ` ${cfg.value}` : ""} applied to ${actors.map(a => a.name).join(", ")}${found ? "" : " (as a status: there is no Effect item with that name)"}.`);
 }
 

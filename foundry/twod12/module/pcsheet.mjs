@@ -11,7 +11,7 @@ import { isEscPassive, passiveThreshold } from "./escblock.mjs";
 import { escHooksOf } from "./states.mjs";
 import { handSlots, oneHandedTwoHander, weaponWhere, weaponMove } from "./loadout.mjs";
 import { masteryRows, masteryValue, groupOf, TECHNIQUE_AT, techniqueState } from "./mastery.mjs";
-import { hoverOf, fxTipHtml, tipAttrs, esc } from "./util.mjs";
+import { hoverOf, fxTipHtml, tipAttrs, esc, vsKind } from "./util.mjs";
 import { durationText } from "./sheet-common.mjs";
 import { firstTimeThisEncounter } from "./down.mjs";
 import { hoursText } from "./sleep.mjs";
@@ -242,7 +242,7 @@ export async function pcModel(sheet, ctx) {
       id: i.id, name: i.name, sub: subs.join(" \u00b7 "), fav: favs.includes(i.id), section: sec, lines: rowLines({ frequency: effectiveFrequency(it), reaction, strike: !!it.traits?.has?.("strike") || i.getFlag(F, "basic") === "opportunityAttack" }),   // Opportunity Attack makes a Weapon Attack: a Strike
       cost: pillTxt,   // v0.0.298: costPill already writes "AP" (an NPC's read "2 AP AP")
       fc: (SHEET_FREQ[reaction ? "reaction" : sec] ?? SHEET_FREQ[effectiveFrequency(it)] ?? SHEET_FREQ.atwill).color,   // v0.0.302: this line had been joined into the comment above (v0.0.298), so the pills had no color
-      dist: area ? (String(it.areaDistance ?? "").trim() ? distanceShort(dist) : "—") : distanceShort(dist), vs: vsShort(vsText(it, { fists })),
+      dist: area ? (String(it.areaDistance ?? "").trim() ? distanceShort(dist) : "—") : distanceShort(dist), vs: vsShort(vsText(it, { fists })), vsKind: vsKind(vsShort(vsText(it, { fists }))),   // v0.0.314: its color
       off: !!why, offWhy: why, weapon: r.isWeapon && !npc, grip: handBtns?.[0]?.grip ?? "", unloaded: r.unloaded, reaction,
       grant: r.grant ? { tip: r.grant.tip } : null, handBtns: why || npc ? null : handBtns,   // v0.0.291: no Hands for NPCs (a plain Use)
       useTip: r.useTip || `Use ${i.name}`, open: r.open,   // v0.0.302: back out of the comment (lost in v0.0.291)
@@ -469,6 +469,7 @@ export const RATING_COLORS = { terrible: "#6b665a", low: "#8a7a5a", medium: "#1b
 const fmtN = n => String(Math.round(n * 100) / 100);
 
 export function npcBuilderModel(a) {
+  const vsWd = a?.getFlag?.("twod12", "nbVs") === "wd";   // v0.0.314: the Attack damage table's Vs. switch (the Builder's own view, nothing else reads it)
   const s = a.system, R = TWOD12.npcRatings, role = TWOD12.npcRoles[s.role] ?? TWOD12.npcRoles.standard, stage = Number(s.stage) || 1;
   const keys = ratingKeys(role, R), rating = k => { const r = s.ratings?.[k] || "medium"; return r === "custom" || keys.includes(r) ? r : keys[keys.length - 1]; };
   const row = (key, name, color, valOf, value) => {
@@ -519,11 +520,14 @@ export function npcBuilderModel(a) {
     heads: keys.map(k => ({ label: R[k].label, color: RATING_COLORS[k], med: k === "medium" })),
     // v0.0.308 (Lucas: "more intuitive"): each cell gives the average and the dice to write with this creature's Weapon Modifier ([Mod] taken out),
     // the tooltip the Power Modifier's for a Vs. WD attack
-    frame, rw, roleLabel: role.label, modLabel: `Weapon Modifier (${sg2(Number(s.weaponMod) || 0)})`, powerMod: sg2(Number(s.powerMod) || 0),
+    frame, rw, roleLabel: role.label, modLabel: vsWd ? `Power Modifier (${sg2(Number(s.powerMod) || 0)}), to [R] Resolve` : `Weapon Modifier (${sg2(Number(s.weaponMod) || 0)})`, powerMod: sg2(Number(s.powerMod) || 0),
+    // v0.0.314 (pack AU, Vs. WD): the table for a Vs. AD attack (the Weapon Modifier, [V]) or a Vs. WD one (the Power Modifier, [R] by default: the Grave Wisp's)
+    vsWd, vsToggle: [{ key: "ad", label: "Vs. AD", sub: "Weapon Mod · [V]", on: !vsWd }, { key: "wd", label: "Vs. WD", sub: "Power Mod · [R]", on: vsWd }],
     attacks: specials.map(([label, sub, x], n) => ({ label, sub, alt: n % 2 === 1, cells: keys.map(k => {
       const avg = specialAvg(npcRow(role, R, k, stage).basic, x), wm = Number(s.weaponMod) || 0, pm = Number(s.powerMod) || 0;
       const dice = m => avg.map(v => { const d = diceFor(v - m); return !d ? `${m}` : /^\d+$/.test(d) ? `${Number(d) + m}` : `${d}+${m}`; }).join(" / ");
-      return { v: avg.join(" / "), dice: dice(wm), med: k === "medium", color: RATING_COLORS[k], tip: `${R[k].label} ${label}: average ${avg.join(" / ")} (Tier 2 / Tier 3). With the Weapon Modifier: ${dice(wm)}. Vs. WD, with the Power Modifier: ${dice(pm)}.` };
+      const mine = vsWd ? `[R] ${dice(pm)}` : dice(wm);
+      return { v: avg.join(" / "), dice: mine, med: k === "medium", color: RATING_COLORS[k], tip: `${R[k].label} ${label}: average ${avg.join(" / ")} (Tier 2 / Tier 3). Vs. AD, with the Weapon Modifier: [V] ${dice(wm)}. Vs. WD, with the Power Modifier: [R] ${dice(pm)}.` };
     }) }))
   };
 }

@@ -3,7 +3,7 @@
 // setting on a Feature (Kindled Wrath: an ally within 5 squares becomes Bloodied or goes Down; Thrill of the Kill: the mark goes Down, mark.mjs).
 // The active GM's client does it after a damage update.
 import { allEffects } from "./passives.mjs";
-import { effectOff, raiseEscalation } from "./escalation.mjs";
+import { effectOff, raiseEscalation, escalationOf, elitePhases } from "./escalation.mjs";
 import { tokenDistance } from "./light.mjs";
 import { areEnemies } from "./engaged.mjs";
 import { sysLine } from "./sysmsg.mjs";
@@ -48,8 +48,12 @@ export async function onStateChange(actor, words) {
   if (!words.length) return;
   const name = esc(actor.name);
   await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-heart-crack", `<b>${name}</b> is <b>${words.join("</b> and <b>")}</b>.${words.includes("Down") ? "" : " (No effect by itself: a hook for cards.)"}`, "statemsg") });
+  // v0.0.314: Grabbed (an effect that ends with its origin) ends when the holder goes Down
+  if (words.includes("Down")) { try { const { endHeldBy } = await import("./conditions.mjs"); await endHeldBy(actor); } catch (e) { console.warn("twod12 | Grabbed", e); } }
   const combat = game.combat;
   if (!combat?.started) return;
+  // v0.0.314 (pack AU; book, Elite Escalation): an Elite's phases, +1 Escalation when it becomes Bloodied and when it becomes Strained (once each)
+  if (actor.type === "npc" && escalationOf(actor) !== null) for (const ph of elitePhases(words)) await raiseEscalation(actor, ph, { combat, label: `${actor.name} becomes ${ph === "bloodied" ? "Bloodied" : "Strained"} (Elite phase)` });
   for (const c of combat.combatants) {
     const a = c.actor;
     if (!a || a === actor) continue;

@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-09 from the repository at: b0484d1 2026-11-09 v0.0.313: the Initiative window's Side line fixed against Foundry's label and select styles (Lucas)
+Built by tools/knowledge.py on 2026-11-09 from the repository at: 5038ac9 2026-11-09 HANDOFF, MASTER-PLAN: PACK MOD and PACK INITIATIVE merged (v0.0.305 to v0.0.313); next AU
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,9 +14,9 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (76 KB)
+- HANDOFF.md (77 KB)
 - MASTER-PLAN.md (18 KB)
-- open-design-items.md (86 KB)
+- open-design-items.md (87 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (27 KB)
 - rules-03-movement.md (39 KB)

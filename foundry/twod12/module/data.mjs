@@ -616,7 +616,10 @@ const settingsField = () => new ArrayField(new SchemaField({
         mstTrait: choice(TWOD12.weaponTraits, "projectile"), mstValue: int(3, 0),
         // v0.0.243 (pack R): eschook: the class's Escalation hook: once an encounter, when hookWhen happens (an ally within hookRange squares becomes
         //   Bloodied or goes Down; the creature it marked goes Down), the creature's Escalation rises by 1 (Kindled Wrath, Thrill of the Kill).
-        hookWhen: choice(TWOD12.escHookWhen, "allyState"), hookRange: int(5, 0)
+        hookWhen: choice(TWOD12.escHookWhen, "allyState"), hookRange: int(5, 0),
+        // v0.0.314 (pack AU): Boons and Banes only against creatures other than the effect's origin (Taunted), or only against it;
+        //   bleed: damage at the end of each of the creature's turns (dmg, dmgPool, dmgSub; attrs: the Save's Attributes; bleedDc: its DC).
+        vsOrigin: choice(TWOD12.vsOriginChoices, ""), bleedDc: int(13, 0)
       }));
 
 export class EffectData extends foundry.abstract.TypeDataModel {
@@ -631,6 +634,11 @@ export class EffectData extends foundry.abstract.TypeDataModel {
       automation: choice(TWOD12.automationRanks, ""), automationNote: str(),   // v0.0.215: what is done by hand (the diamond tooltip)
         // v0.0.189
       minEscalation: int(0, 0),   // a passive that works only while its owner's Escalation is at least this (0: always)
+      // v0.0.314 (pack AU, the conditions as items): general rules a condition can have.
+      //   whileSeen: it works only while the creature sees its origin (Frightened); noReactions: the creature can't use Reactions (Staggered);
+      //   loseAp: when applied, the creature loses its value in AP (the rest from its next regain), then it ends (Dazed);
+      //   endsWithOrigin: it ends when its origin goes Down or Unconscious (Grabbed).
+      whileSeen: bool(), noReactions: bool(), loseAp: bool(), endsWithOrigin: bool(),
       linked: str(),   // other conditions this one brings with it, by name ("Hindered"); they end when this one does
       conditions: new ArrayField(new SchemaField({ uuid: str(), name: str(), value: int(1, 0), valued: bool(), mode: choice({ set: "The highest counts", increase: "Increase the value", halfLevel: "Half the creature's level, rounded up (Squeezing)" }, "set") })),   // conditions this effect applies, each with its value; they end when this one does
       duration: new SchemaField({ type: choice(TWOD12.durationTypes, ""), rounds: int(1, 1) }),

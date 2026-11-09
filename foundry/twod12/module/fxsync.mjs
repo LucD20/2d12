@@ -37,7 +37,7 @@ export function appliedUpdate(fx, system, source, name, img) {
 
 
 /** A blank setting with every field (the Effect item's defaults). */
-const blankSetting = type => ({ type, attrs: [], title: "", text: "", bright: 0, dim: 0, color: "", lightAlpha: 0.5, lightAnim: "", lightSpeed: 5, lightIntensity: 5, boons: 0, banes: 0, empowered: 0, enfeebled: 0, byValue: false, predicate: "", all: [], any: [], none: [], from: [],
+const blankSetting = type => ({ type, vsOrigin: "", bleedDc: 13, attrs: [], title: "", text: "", bright: 0, dim: 0, color: "", lightAlpha: 0.5, lightAnim: "", lightSpeed: 5, lightIntensity: 5, boons: 0, banes: 0, empowered: 0, enfeebled: 0, byValue: false, predicate: "", all: [], any: [], none: [], from: [],
   dmg: "", dmgPool: "B", dmgSub: "", tiers: ["t1", "t2", "t3"], fxUuid: "", against: false, speedMode: "add", speedFormula: "", inlineAction: "", grantAction: "", grantCount: 1, grantAp: 0, grantDistinct: false, defKind: "all", defValue: 1, minEscalation: 0, auraSize: 1, auraWho: "allies", auraSelf: false, auraOutline: "", auraFill: "", trigSub: "", trigTag: "", oncePerRound: false, vsMarked: false, ignoreRule: "rangeBane", rallyBonus: "", rallyRange: 0 });
 
 /**
@@ -54,7 +54,7 @@ export function sourceFromFlags(fx) {
       const base = { all: traits(m.all), any: traits(m.any), none: traits(m.none), from: traits(m.from), predicate: (m.all ?? []).find(k => !known(k)) ?? "" };
       const emp = Number(m.empowered) || 0, enf = Number(m.enfeebled) || 0, boons = Number(m.boons) || 0, banes = Number(m.banes) || 0;
       const out = [];
-      if (boons || banes || (!emp && !enf)) out.push({ ...blankSetting("boonbane"), ...base, boons, banes, byValue: !!m.byValue, against: !!m.against, oncePerRound: !!m.oncePerRound, vsMarked: !!m.vsMarked });
+      if (boons || banes || (!emp && !enf)) out.push({ ...blankSetting("boonbane"), ...base, boons, banes, byValue: !!m.byValue, against: !!m.against, oncePerRound: !!m.oncePerRound, vsMarked: !!m.vsMarked, vsOrigin: m.vsOrigin || "", attrs: [...(m.attrs ?? [])] });
       if ((emp || enf) && !m.against) out.push({ ...blankSetting("damagestep"), ...base, from: [], empowered: emp, enfeebled: enf, vsMarked: !!m.vsMarked });
       return out;
     }),

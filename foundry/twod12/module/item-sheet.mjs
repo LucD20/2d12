@@ -179,6 +179,8 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
                 rallyRange: x.rallyRange,
                 oncePerRound: x.oncePerRound,
                 vsMarked: x.vsMarked,
+                vsOrigin: x.vsOrigin ?? "", vsOriginChoices: TWOD12.vsOriginChoices,   // v0.0.314 (pack AU): Taunted
+                isBleed: x.type === "bleed", bleedDc: x.bleedDc ?? 13,   // v0.0.314: Bleed
                 showOnce: ["boonbane", "bonusdamage"].includes(x.type),
                 showMarked: ["bonusdamage", "damagestep"].includes(x.type) || (x.type === "boonbane" && !x.against),
                 isBonus: x.type === "bonusdamage",

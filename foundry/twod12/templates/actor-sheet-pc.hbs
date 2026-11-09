@@ -12,7 +12,7 @@
     <span class="ps-name"><a class="ps-nm" role="button" tabindex="0" aria-expanded="{{#if open}}true{{else}}false{{/if}}">{{name}}{{{auto}}}</a>{{#if sub}}<span class="ps-sub">{{sub}}</span>{{/if}}{{#if fav}}<i class="fa-solid fa-star ps-fav" data-tooltip="Favorite (right-click the row to change)" aria-label="Favorite"></i>{{/if}}</span>
     <span class="ps-c"><span class="ps-pill{{#if outline}} line{{/if}}" style="--fc:{{fc}}">{{cost}}</span></span>
     <span class="ps-c ps-dist">{{dist}}</span>
-    <span class="ps-c">{{#if vs}}<span class="ps-vs">{{vs}}</span>{{/if}}</span>
+    <span class="ps-c">{{#if vs}}<span class="ps-vs{{#if vsKind}} vsk-{{vsKind}}{{/if}}">{{vs}}</span>{{/if}}</span>
     <span class="ps-c">{{> usebtn}}</span>
   </div>
   <div class="ar-card"></div>
@@ -421,14 +421,14 @@
               <input type="number" class="nb-rwn" min="1" max="20" value="5" aria-label="Amount">
               <button type="button" data-action="addDmgMod" data-kind="resist">+ Resist</button><button type="button" data-action="addDmgMod" data-kind="weak">+ Weak</button><button type="button" data-action="addDmgMod" data-kind="immune" data-tooltip="Immunity takes no number">+ Immunity</button></div>
           </div>
-          <div class="ps-block nb-atkblk"><div class="ps-bh"><b>Attack damage</b><span class="ps-bsub">Tier 2 / Tier 3 average, and the dice to write</span></div>
+          <div class="ps-block nb-atkblk{{#if vsWd}} nb-vswd{{/if}}"><div class="ps-bh"><b>Attack damage</b><span class="ps-bsub">Tier 2 / Tier 3 average, and the dice to write</span><span class="nb-vsw">{{#each vsToggle}}<button type="button" class="nb-vsb vsk-{{key}}{{#if on}} on{{/if}}" data-action="setNbVs" data-vs="{{key}}" data-tooltip="{{sub}}">{{label}}</button>{{/each}}</span></div>
             <p class="nb-how">Find the row of the Action's <b>AP</b>, then the column of <b>how hard it hits</b> (<b>Medium</b> is normal for a {{roleLabel}}). Each cell is the average damage on <b>Tier 2 / Tier 3</b>, and below it dice that give it with this creature's {{modLabel}}: write those on the Action.</p>
             {{!-- v0.0.309 (Lucas): the sheet's own look (tiles with the rating's color, like the pips), not a table --}}
             <div class="nb-dmg" style="--cols:{{heads.length}}">
               <div class="nb-dh"><span class="nb-dl">AP</span>{{#each heads}}<span class="nb-dhc{{#if med}} med{{/if}}" style="--rc:{{color}}">{{label}}</span>{{/each}}</div>
               {{#each attacks}}<div class="nb-dr"><div class="nb-dl"><b>{{label}}</b><small>{{sub}}</small></div>{{#each cells}}<div class="nb-dc{{#if med}} med{{/if}}" style="--rc:{{color}}" data-tooltip="{{tip}}"><b>{{v}}</b><small>{{dice}}</small></div>{{/each}}</div>{{/each}}
             </div>
-            <ul class="nb-rules"><li><b>Vs. WD:</b> the same table; the dice use the Power Modifier ({{powerMod}}) instead.</li><li><b>Conditions</b> cost damage: a Mild one takes the column 1 step to the left, Moderate 2, Severe 3.</li><li><b>Area Save Actions:</b> about half the damage, to each creature in the area (DC 11 + the Modifier).</li><li><b>Reactions:</b> a Trigger deals one column more than an Action of the same AP; an Interrupt the same.</li></ul>
+            <ul class="nb-rules"><li><b>Vs. WD:</b> the same table; the dice use the Power Modifier ({{powerMod}}) instead, to [R] Resolve unless the Action writes [V] (the switch above shows them).</li><li><b>Conditions</b> cost damage: a Mild one takes the column 1 step to the left, Moderate 2, Severe 3.</li><li><b>Area Save Actions:</b> about half the damage, to each creature in the area (DC 11 + the Modifier).</li><li><b>Reactions:</b> a Trigger deals one column more than an Action of the same AP; an Interrupt the same.</li></ul>
           </div>
         </div>
         {{/with}}

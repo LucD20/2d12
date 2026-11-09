@@ -227,6 +227,7 @@ async function startTurn(combat) {
     await c.update({ ...fresh, [`flags.${F}.rap`]: REACTION_AP });   // v0.0.243: the Reaction AP comes back with the AP
     await setAP(c, apPerTurn(c), "start of turn", { rap: { b: 0, a: REACTION_AP } });
     await setUnusedApGuard(c, hadTurn, apLeft);   // v0.0.274: its unused AP are Guard for 1 round (the one before ends)
+    try { const { dazeAtTurnStart } = await import("./conditions.mjs"); await dazeAtTurnStart(c); } catch (e) { console.warn("twod12 | Dazed", e); }   // v0.0.314: the rest of a Dazed
     await climbUp(c);
     // v0.0.187: the Effects its Features give at the start of each turn (Killer's Focus, Radiant Zeal); not when it carries on after a swap.
     try { const { applyTurnStartEffects } = await import("./automation.mjs"); await applyTurnStartEffects(c.actor); } catch (e) { console.warn("twod12 | Effect each turn", e); }
