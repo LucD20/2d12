@@ -43,8 +43,8 @@ import { TwoD12Combat, registerCombatHooks } from "./combat.mjs";
 import { registerMovement, endMovement, evadeAsAdvance, clearLooseMove, rulerInfo } from "./move.mjs";
 import { registerBasicHooks, refreshAllBasics } from "./basic.mjs";
 import { catalog } from "./catalog.mjs";
-import { registerSenses, giveHearing, addHearing } from "./senses.mjs";
-import { modeList } from "./modes.mjs";
+import { registerSenses, giveHearing, addHearing, hearingOnPrepare } from "./senses.mjs";
+import { withMode } from "./modes.mjs";
 import { giveVision, syncVision, globalLight, visionInfo } from "./vision.mjs";
 import { lightInfo } from "./sightgate.mjs";
 import { hearInfo } from "./senses.mjs";   // v0.0.317: why a token hears (or not)
@@ -67,6 +67,7 @@ Hooks.once("init", () => {
   game.settings.register("twod12", "tooltipDelay", { name: "Tooltip delay (ms)", hint: "How long the pointer rests on something before its tooltip shows. Foundry's own is 500.", scope: "client", config: true, type: Number, default: 900, range: { min: 0, max: 3000, step: 100 }, onChange: tipDelay });
   tipDelay(game.settings.get("twod12", "tooltipDelay"));
   registerSenses();
+  try { hearingOnPrepare(); } catch (e) { console.warn("twod12 | Hearing on every token", e); }   // v0.0.319: every token hears (in memory)
   registerSleep();
   registerClock();
   registerEffectEditor();
@@ -216,7 +217,7 @@ Hooks.once("init", () => {
   game.settings.register("twod12", "weaponRoundApplied", { scope: "world", config: false, type: Boolean, default: false });
   game.settings.register("twod12", "projectileApplied", { scope: "world", config: false, type: Boolean, default: false });
   game.settings.register("twod12", "unlockPacks", { name: "Unlock the system compendiums", hint: "Keep the 2d12 compendiums unlocked, so their items can be opened and edited without unlocking them first (only the GM and Assistants can edit; a system update rebuilds them, so edits there are lost).", scope: "world", config: true, type: Boolean, default: true, onChange: () => import("./basic.mjs").then(m => m.unlockSystemPacks()) });   // v0.0.191
-  game.settings.register("twod12", "hearingAllV318", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.318: Hearing on every creature's token, once
+  game.settings.register("twod12", "hearingAllV319", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.318/319: Hearing on every creature's token, once
   game.settings.register("twod12", "tokenDefaultsV215", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.215: core token rotation off, once
   game.settings.register("twod12", "settingsV207", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.207: the editability sweep's settings and fields (automation.mjs)
   game.settings.register("twod12", "settingsV187", { scope: "world", config: false, type: Boolean, default: false });   // Killer's Focus and Radiant Zeal: an Effect each turn
@@ -475,16 +476,16 @@ Hooks.on("preCreateActor", actor => {
 Hooks.on("preCreateToken", doc => {
   try {
     if (!["character", "npc"].includes(doc.actor?.type)) return;
-    const modes = modeList(doc.toObject().detectionModes);
-    if (!modes.some(m => m.id === "hearing")) doc.updateSource({ detectionModes: [...modes, { id: "hearing", enabled: true, range: null }] });
+    const w = withMode(doc.toObject().detectionModes, "hearing");   // v0.0.319: in the shape this Foundry stores
+    if (w.changed) doc.updateSource({ detectionModes: w.value });
   } catch (e) { console.warn("twod12 | Hearing on a new token", e); }
 });
 // v0.0.318 (Lucas: a Blinded NPC showed no ripples: its token had no Hearing): every creature and token gets it once per world
 Hooks.once("ready", async () => {
   try {
-    if (!game.user.isActiveGM || game.settings.get("twod12", "hearingAllV318")) return;
+    if (!game.user.isActiveGM || game.settings.get("twod12", "hearingAllV319")) return;
     await addHearing({ quiet: true });
-    await game.settings.set("twod12", "hearingAllV318", true);
+    await game.settings.set("twod12", "hearingAllV319", true);
   } catch (e) { console.warn("twod12 | Hearing for every creature", e); }
 });
 

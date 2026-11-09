@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.318, 218 tests; READ THIS FIRST)
+## Where we are now (v0.0.319, 218 tests; READ THIS FIRST)
+- **v0.0.319 (2026-11-09, branch `pack-au`): Lucas on v0.0.318 (no ripples in combat; the token still had no Hearing):** Hearing added to every token in memory at data preparation, the writes in V14's stored shape, a fuller `hearInfo`. **NEXT:** Lucas's test (and `hearInfo` again if it fails); then AU part 2.
 - **v0.0.318 (2026-11-09, branch `pack-au`): Lucas on v0.0.317:** every creature hears (NPC tokens had no Hearing mode: the Blinded Grave Wisp); the ripples need a started combat (the book). The rider wraps only because it doesn't fit the chat column. **NEXT:** Lucas's test of v0.0.318; then AU part 2.
 - **v0.0.317 (2026-11-09, branch `pack-au`): Lucas on v0.0.316:** the rider sentence (new markup), the no-target Save on the new card, "Frightened (Ogre)" names, `game.twod12.hearInfo()` for the Blinded ripples (still open: waiting for its console lines). **NEXT:** Lucas's test of v0.0.317 and the hearInfo lines; then AU part 2.
 - **v0.0.316 (2026-11-09, branch `pack-au`): Lucas on v0.0.315 ("rest works"):** the rider sentence flows after ↳, Blinded is the system's own status (the Hearing ripple stays), the Diamond's blue sheen, Frightened / Taunted / Grabbed always ask their origin unless their Effect's "Its origin is the creature that used the Action" is on and an Action is behind the chip. **NEXT:** Lucas's test of v0.0.316; then AU part 2.

@@ -66,3 +66,7 @@ a Blinded observer sees no creature by sight (Hearing is another mode): false
 a rider with buttons flows after the arrow: <div class="cc-rider cc-rflow"><span class="cc-rtext"><span class="cc-rarrow" aria-hidden="true">↳</span> [Pushed 2], and [Frightened] of you for 1 round.</span></div> | plain words keep the chip: <div class="cc-rider"><span aria-hidden="true">↳</span> <span class="cc-rchip">Pushed 2</span></div>
 a Save card with no target says so: No target yet: target the creatures, then press the target button below.
 the name with its origin: Frightened (Ogre) | no origin: Frightened | its own: Frightened | Prone (needs none): Prone
+--- v0.0.319 (Lucas: the Blinded Grave Wisp still had no Hearing mode)
+Hearing added to a list: [{"id":"basicSight","enabled":true,"range":0},{"id":"hearing","enabled":true,"range":null}] | to a record: {"basicSight":{"enabled":true,"range":0},"hearing":{"id":"hearing","enabled":true,"range":null}} | to nothing: [{"id":"hearing","enabled":true,"range":null}] | already there: false false
+the token's data preparation wrapped: _prepareDetectionModes
+an NPC token, a list: basicSight, hearing | a record: basicSight, hearing | the original ran: true

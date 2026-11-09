@@ -116,3 +116,14 @@ console.log("a Save card with no target says so:", (empty.match(/cc-wait">([^<]*
 globalThis.fromUuidSync = u => (u === "Actor.Ogre" ? { name: "Ogre" } : null);
 const fr = conds.find(x => x.name === "Frightened").system;
 console.log("the name with its origin:", E.withOriginName("Frightened", fr, "Actor.Ogre", { uuid: "Actor.Kai" }), "| no origin:", E.withOriginName("Frightened", fr, "", null), "| its own:", E.withOriginName("Frightened", fr, "Actor.Ogre", { uuid: "Actor.Ogre" }), "| Prone (needs none):", E.withOriginName("Prone", { settings: [] }, "Actor.Ogre", null));
+
+console.log("--- v0.0.319 (Lucas: the Blinded Grave Wisp still had no Hearing mode)");
+const MD = await import(ROOTURL + "module/modes.mjs");
+console.log("Hearing added to a list:", JSON.stringify(MD.withMode([{ id: "basicSight", enabled: true, range: 0 }], "hearing").value), "| to a record:", JSON.stringify(MD.withMode({ basicSight: { enabled: true, range: 0 } }, "hearing").value), "| to nothing:", JSON.stringify(MD.withMode(undefined, "hearing").value), "| already there:", MD.withMode([{ id: "hearing" }], "hearing").changed, MD.withMode({ hearing: { enabled: true } }, "hearing").changed);
+globalThis.CONFIG.Token = { documentClass: class { _prepareDetectionModes() { this.prepared = true; } } };
+const SN = await import(ROOTURL + "module/senses.mjs");
+console.log("the token's data preparation wrapped:", SN.hearingOnPrepare());
+const T = globalThis.CONFIG.Token.documentClass;
+const npcTok = Object.assign(new T(), { actor: { type: "npc" }, detectionModes: [{ id: "basicSight", enabled: true, range: 0 }] }); npcTok._prepareDetectionModes();
+const recTok = Object.assign(new T(), { actor: { type: "npc" }, detectionModes: { basicSight: { enabled: true } } }); recTok._prepareDetectionModes();
+console.log("an NPC token, a list:", npcTok.detectionModes.map(m => m.id).join(", "), "| a record:", Object.keys(recTok.detectionModes).join(", "), "| the original ran:", npcTok.prepared);
