@@ -3528,3 +3528,10 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 /* ==== v0.0.303 (Lucas tested v0.0.302): the NPC's Basic attack row: a wide gold strip (then the red Strike line) and a faint gold wash, so it stands out ==== */
 .twod12.sheet.pcs .ps-row.basicatk > .ps-line { box-shadow: inset 10px 0 0 #c9a227, inset 14px 0 0 #d14b3f; padding-left: 22px; background: linear-gradient(90deg, rgba(201,162,39,.16), rgba(201,162,39,0) 70%); }
 .twod12.sheet.pcs .ps-row.basicatk.off > .ps-line { box-shadow: inset 10px 0 0 #b5ad9c; }
+
+/* ==== v0.0.304 (Lucas: "diamonds don't show in any card"): the diamond's colors were made for the old dark card heads; on the new light parchment
+   (the sheet's rows, the open card, the chat cards) silver, gold and Mithril's pale rainbow vanish. A navy outline and a touch bigger there. ==== */
+.twod12.sheet.pcs .autodia, .twod12.acard.d2 .autodia, .twod12.chat.cc .autodia { font-size: 12px; margin-left: 5px; vertical-align: 0; width: auto; -webkit-text-stroke: 1.2px #1b2433; paint-order: stroke fill; filter: drop-shadow(0 0 1px rgba(27, 36, 51, .45)); }
+.twod12.sheet.pcs .autodia.auto-mithril, .twod12.acard.d2 .autodia.auto-mithril, .twod12.chat.cc .autodia.auto-mithril { -webkit-text-stroke: 1.2px #1b2433; filter: saturate(1.5) drop-shadow(0 0 1px rgba(27, 36, 51, .5)); }
+.twod12.acard.d2 .ap-cat .autodia { margin-left: 0; }
+.twod12.sheet.pcs .ps-nm .autodia { display: inline-block; }

@@ -242,7 +242,7 @@ export async function pcModel(sheet, ctx) {
       useTip: r.useTip || `Use ${i.name}`, open: r.open,   // v0.0.302: back out of the comment (lost in v0.0.291)
       // v0.0.302 (Lucas): a Reaction's row carries its Frequency line (Round, Encounter...), as the Basic Actions' buttons do
       basicAtk: !!(npc && it.basicAttack),
-      auto: autoChip(it.automation, it.automationNote),   // v0.0.303 (Lucas): the automation diamond beside the name   // v0.0.303 (Lucas): the NPC's Basic attack row has a wide gold strip
+      auto: autoChip(it.automation, it.automationNote),   // v0.0.303 (Lucas): the automation diamond beside the name
       freqLine: reaction ? rowLines({ frequency: effectiveFrequency(it), strike: !!it.traits?.has?.("strike") || i.getFlag(F, "basic") === "opportunityAttack" }) : null
     };
   };
