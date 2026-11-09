@@ -220,7 +220,7 @@ An Action against a creature rolls against one of its **Defenses**. A creature h
 |---|---|
 | **Armor Defense (AD)** | the creature's Armor Defense |
 | **Ward Defense (WD)** | the creature's Ward Defense |
-| **Vs. an Attribute** | 13 + half the target's Attribute, rounded up (−1 and 0 give +0, 1 and 2 give +1, 3 gives +2) |
+| **Vs. an Attribute** | 12 + the target's Attribute |
 | **Vs. DC** | A set DC, such as "Vs. DC 13": some Actions have a set DC, and others target something that has no Defenses, such as a stationary object. |
 
 - **Armor value** is the value provided by the [[Armor|armor]] a creature wears. **Armor Defense** is 11 + Armor value + other items + bonuses − penalties.

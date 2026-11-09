@@ -1,6 +1,6 @@
 import { TWOD12, migrateTags, npcHm, npcCv, stageOf, stageMod } from "./config.mjs";
 import { migrateSettings } from "./settingsmigrate.mjs";
-import { classModifiers, modOf, classTrack, npcMods } from "./modifiers.mjs";
+import { classModifiers, modOf, classTrack } from "./modifiers.mjs";
 
 import { applySpeedMods } from "./speedmods.mjs";
 const { SchemaField, NumberField, StringField, BooleanField, ArrayField, SetField, HTMLField } = foundry.data.fields;
@@ -251,18 +251,32 @@ export function npcLead(sys) {
   return p > w ? "power" : "weapon";
 }
 
+/** v0.0.307 (Lucas; the Bestiary): an NPC's Weapon and Power Modifier ratings. A rating left at "" is the default: the lead Modifier
+ *  (npcLead) Medium, the other Low (a Standard's Medium too). Returns { weapon, power } rating keys. */
+export function npcModRatings(sys) {
+  const lead = npcLead(sys), other = sys?.role === "standard" ? "medium" : "low", r = sys?.ratings ?? {};
+  return { weapon: r.wmod || (lead === "weapon" ? "medium" : other), power: r.pmod || (lead === "power" ? "medium" : other) };
+}
+/** The Modifier of a rating for a role (the book's table; a Minion's Extreme is its High). */
+export function npcModValue(roleKey, rating) {
+  const role = TWOD12.npcRoles[roleKey] ?? TWOD12.npcRoles.standard, i = TWOD12.npcRatings[rating]?.i ?? 2;
+  return Math.min(TWOD12.modCap, role.modBy[Math.min(i, role.modBy.length - 1)]);
+}
+
 export class NpcData extends CharacterData {
   static defineSchema() {
     return {
       ...super.defineSchema(),
       attributes: new SchemaField({ body: sint(), mind: sint(), appeal: sint(), instinct: sint() }),
       speed: int(5), weaponAttribute: choice(TWOD12.attributes, "body"), powerAttribute: choice(TWOD12.attributes, "mind"),   // before pack MOD: only read when modLead is ""
-      modLead: choice({ weapon: "Weapon Modifier", power: "Power Modifier" }, ""),   // v0.0.305 (pack MOD): which of the role's Modifiers is the higher one
+      modLead: choice({ "": "Default", weapon: "Weapon Modifier", power: "Power Modifier" }, ""),   // v0.0.307: only read for a rating left at its default   // v0.0.305 (pack MOD): which of the role's Modifiers is the higher one
       // The Bestiary (v0.0.163): its role and a rating for each number ("custom": the typed number below is used).
       role: choice(Object.fromEntries(Object.entries(TWOD12.npcRoles).map(([k, v]) => [k, v.label])), "standard"),
       ratings: new SchemaField(Object.fromEntries([["body", "high"], ["mind", "medium"], ["appeal", "low"], ["instinct", "medium"], ["bodyHm", "medium"], ["mindHm", "medium"], ["ad", "medium"], ["wd", "medium"]]
         .map(([k, d]) => [k, choice({ terrible: "Terrible", low: "Low", medium: "Medium", high: "High", extreme: "Extreme", custom: "Custom" }, d)])
-        .concat([["speed", choice({ 3: "3", 4: "4", 5: "5", 6: "6", 7: "7", custom: "Custom" }, "5")]]))),   // speed: Custom uses system.speed
+        .concat([["speed", choice({ 3: "3", 4: "4", 5: "5", 6: "6", 7: "7", custom: "Custom" }, "5")]])
+        // v0.0.307 (Lucas): the Weapon and Power Modifiers as ratings ("" = the default: npcModRatings)
+        .concat(["wmod", "pmod"].map(k => [k, choice({ "": "Default", terrible: "Terrible", low: "Low", medium: "Medium", high: "High", extreme: "Extreme" }, "")])))),   // speed: Custom uses system.speed
       custom: new SchemaField({ body: sint(), mind: sint(), appeal: sint(), instinct: sint(), bodyHealth: sint(10), mindHealth: sint(10) }),
       armor: choice(Object.fromEntries(Object.entries(TWOD12.armors).map(([k, v]) => [k, v.label])), "medium"),   // its Armor type (for rules and Talents that ask); medium: a typical enemy
       armorDef: sint(13), wardDef: sint(13),   // its typed Armor Defense and Ward Defense, used when that rating is Custom (any number)
@@ -288,11 +302,14 @@ export class NpcData extends CharacterData {
     this.rallyHeal = 0; this.rallyMax = 0; this.rallyLeft = 0;
     // v0.0.305 (pack MOD; the Bestiary, Attributes and Modifiers): the role's two Modifiers (Minion and Grunt +2 / +1, Standard +2 / +2, Elite +3 / +2),
     // the lead one chosen (modLead; "" = the old Weapon / Power Attribute that is higher, Weapon on a tie). No Stage step; Signature: the higher.
+    // v0.0.307 (Lucas): each Modifier is a rating of the role's table (npcModRatings, npcModValue).
     this.modLeadKey = npcLead(this);
-    const nm = npcMods(nb.role.mods, this.modLeadKey);
+    const mr = npcModRatings(this);
+    this.modRatings = mr;
     this.modSource = "role";
-    this.weaponAttrValue = 0; this.weaponMod = nm.weapon; this.powerAttrValue = 0; this.powerMod = nm.power;
-    this.signatureAttribute = ""; this.signatureAttrValue = 0; this.signatureMod = nm.signature; this.signatureFrom = nm.from;
+    this.weaponAttrValue = 0; this.weaponMod = npcModValue(this.role, mr.weapon); this.powerAttrValue = 0; this.powerMod = npcModValue(this.role, mr.power);
+    const sigP = this.powerMod > this.weaponMod;
+    this.signatureAttribute = ""; this.signatureAttrValue = 0; this.signatureMod = sigP ? this.powerMod : this.weaponMod; this.signatureFrom = sigP ? "power" : "weapon";
     this.modConflict = false;
     this.armorTraining = "heavy";   // NPCs wear what their stat block says
     deriveDefenses(this, this.armorTraining);
@@ -332,7 +349,7 @@ export class ClassData extends foundry.abstract.TypeDataModel {
       // v0.0.305 (pack MOD; book, Chapter 5): the class's two Modifier values (Paladin +2 / +1 either way; Archer Weapon +2, Power +1). 0 / 0: a class
       // from before keeps the Attribute formula until it is updated from the compendium. modStage2: the Modifier the player raised at Stage 2 ("" = the lead one).
       modHigh: sint(0), modLow: sint(0), modOrder: choice({ either: "Either way (the player chooses)", weapon: "Weapon Modifier first", power: "Power Modifier first" }, "either"),
-      modStage2: choice({ weapon: "Weapon Modifier", power: "Power Modifier" }, ""),
+      modStage2: choice({ "": "The higher one", weapon: "Weapon Modifier", power: "Power Modifier" }, ""),
       armorTraining: choice(TWOD12.armorTrainings, "light"),
       // v0.0.185 (pack C2): the class sheet's new fields, the Repertoire and Escalation lists, and the levels as sections (classlevels.mjs).
       category: new StringField({ required: true, blank: true, initial: "Class" }), flavor: str(),

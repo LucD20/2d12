@@ -28,6 +28,7 @@ Each role has tables (below) with five **ratings**: **Terrible, Low, Medium, Hig
 - **Attributes**: by default one **High**, two **Medium** and one **Low**.
 - **Health**: a rating for the **Body Health Multiplier** and one for the **Mind Health Multiplier**, Medium by default. A brute might have High Body and Low Mind; a ghost, Terrible Body and High Mind.
 - **Defenses**: a rating for **Armor Defense** and one for **Ward Defense** (see Defenses below).
+- **Modifiers**: a rating for the **Weapon Modifier** and one for the **Power Modifier** (see Attributes and Modifiers below).
 - **Basic attack**: a rating for its damage (Medium by default).
 
 **The ratings are guidance, not a rule: choose any rating for any number.** As a suggestion, if one number is High, a Low somewhere else usually makes sense (High Armor Defense and Low Health, for example). A creature whose ratings average out to Medium is balanced for its role.
@@ -44,16 +45,16 @@ An NPC has an **Armor Defense** and a **Ward Defense**. Each one is a rating fro
 
 ## Attributes and Modifiers
 
-Assign the Attributes to **Body, Mind, Appeal and Instinct**. Its Vs. Attributes are 13 + half, as for anyone.
+Assign the Attributes to **Body, Mind, Appeal and Instinct**. Its Vs. Attributes are 12 + the Attribute, as for anyone.
 
-An NPC's **Modifiers** are its role's: choose which is its Weapon Modifier and which its Power Modifier (a creature that attacks Ward Defense usually leads with Power). They don't come from its Attributes and don't grow with its Stage (its Health and damage tables do).
+An NPC's **Weapon Modifier** and **Power Modifier** are each a rating of its role's table. They don't come from its Attributes and don't grow with its Stage (its Health and damage tables do). By default the Weapon Modifier is **Medium** and the Power Modifier **Low** (a Standard's is Medium too); a creature that attacks Ward Defense usually swaps them. A Modifier is never above +4.
 
-| Role | Modifiers |
-|---|---|
-| **Minion** | +2 and +1 |
-| **Grunt** | +2 and +1 |
-| **Standard** | +2 and +2 |
-| **Elite** | +3 and +2 |
+| Role | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
+|---|---|---|---|---|---|
+| **Minion** | +0 | +1 | +2 | +3 | — |
+| **Grunt** | +0 | +1 | +2 | +3 | +4 |
+| **Standard** | +0 | +1 | +2 | +3 | +4 |
+| **Elite** | +1 | +2 | +3 | +4 | +4 |
 
 ## Health
 
@@ -292,20 +293,20 @@ What the fight model gives for 4 PCs (all ratings Medium, Stage 1; the cost coun
 
 ## Example NPCs (Stage 1)
 
-**Goblin Sneak** (Minion, CV 25, 3 AP): Instinct High (+1), Body Medium (0), Mind Medium (0), Appeal Low (−1). Modifiers: Weapon +2, Power +1. Body and Mind Health Low (×0.75): Health 6 (3 + 3). Armor Defense Medium (12), Ward Defense Low (11). **Speed 7** (fast: its Health is Low).
+**Goblin Sneak** (Minion, CV 25, 3 AP): Instinct High (+1), Body Medium (0), Mind Medium (0), Appeal Low (−1). Weapon Modifier Medium (+2), Power Modifier Low (+1). Body and Mind Health Low (×0.75): Health 6 (3 + 3). Armor Defense Medium (12), Ward Defense Low (11). **Speed 7** (fast: its Health is Low).
 - *Rusty Knife* (Basic attack, Medium): about 2 / 4 ([Mod] / 1d4 + [Mod] Pi).
 - *Dirty Trick* (Special, 1 AP, Round): Low damage + Mild condition = Medium: about 2 / 5 ([Mod] / 1d6 + [Mod] Pi), and Hindered (EoT).
 
-**Orc Warrior** (Standard, CV 100): Body High (+2), Instinct Medium (+1), Mind Medium (+1), Appeal Low (0). Modifiers: Weapon +2, Power +2. Body Health High (×9.75), Mind Health Low (×5.75): Health 65 (Vigor 43, Resolve 22). Armor Defense Medium (13), Ward Defense Low (12).
+**Orc Warrior** (Standard, CV 100): Body High (+2), Instinct Medium (+1), Mind Medium (+1), Appeal Low (0). Weapon Modifier Medium (+2), Power Modifier Medium (+2). Body Health High (×9.75), Mind Health Low (×5.75): Health 65 (Vigor 43, Resolve 22). Armor Defense Medium (13), Ward Defense Low (12).
 - *Cleaver* (Basic attack, Medium): about 4 / 7.5 (1d4 + [Mod] / 1d10 + [Mod] Sl).
 - *Brutal Swing* (Special, 2 AP, Round): Terrible damage + Severe condition = High: about 6.5 / 9 (1d8 + [Mod] / 2d6 + [Mod] Sl), and Prone.
 - *Hold the Line* (Reaction, 1R, Trigger: an ally within 2 squares is hit): the attacker takes a Medium 1 AP Special one rating up: about 7.5 / 12.5 (1d10 + [Mod] / 3d6 + [Mod] Sl).
 
-**Grave Wisp** (Standard, CV 100): Mind High (+2), Appeal Medium (+1), Instinct Medium (+1), Body Low (0). Modifiers: Power +2, Weapon +2; it attacks only Ward Defense. Body Health Terrible (×3.75), Mind Health High (×9.75): Health 55 (Vigor 12, Resolve 43). Armor Defense Low (12), Ward Defense High (14). Speed 5, flies (a fast creature: its Vigor is Terrible).
+**Grave Wisp** (Standard, CV 100): Mind High (+2), Appeal Medium (+1), Instinct Medium (+1), Body Low (0). Power Modifier Medium (+2), Weapon Modifier Medium (+2); it attacks only Ward Defense. Body Health Terrible (×3.75), Mind Health High (×9.75): Health 55 (Vigor 12, Resolve 43). Armor Defense Low (12), Ward Defense High (14). Speed 5, flies (a fast creature: its Vigor is Terrible).
 - *Chilling Touch* (Basic attack, Medium, Vs. WD): about 4 / 7.5 ([R] 1d4 + [Mod] / 1d10 + [Mod] Co).
 - *Dread Whisper* (Special, 2 AP, Round, Vs. WD, [Fear]): Low damage + Moderate condition = High: about 7.5 / 13 ([R] 1d10 + [Mod] / 3d6 + [Mod] Ps), and Frightened of it (EoT).
 
-**Ogre Chieftain** (Elite, CV 200): Body High (+3), Instinct Medium (+2), Mind Medium (+2), Appeal Low (+1). Modifiers: Weapon +3, Power +2. Health Medium: 132 (Vigor 73, Resolve 59). Armor Defense Medium (14), Ward Defense Low (13). Speed 4 (slow: High Basic attack). Elite Escalation (the ladder above).
+**Ogre Chieftain** (Elite, CV 200): Body High (+3), Instinct Medium (+2), Mind Medium (+2), Appeal Low (+1). Weapon Modifier Medium (+3), Power Modifier Low (+2). Health Medium: 132 (Vigor 73, Resolve 59). Armor Defense Medium (14), Ward Defense Low (13). Speed 4 (slow: High Basic attack). Elite Escalation (the ladder above).
 - *Club* (Basic attack, High): about 6.5 / 9.5 (1d6 + [Mod] / 2d6 + [Mod] Bl).
 - *Ground Slam* (Special, 3 AP, Encounter, Area 1 Emanation, a Save Action: Body Save, DC 14): half of a Medium 3 AP: about 13 / 8.5 / 0 (Tier 1 is the worst for them: 3d6 + [Mod] / 1d10 + [Mod] Bl), and Prone on Tier 1. At Escalation 3 it comes back once.
 - *Rally the Tribe* (Escalation 2, 1 AP, Round): allies within 5 squares gain 1 Boon on their next [Weapon] Action.

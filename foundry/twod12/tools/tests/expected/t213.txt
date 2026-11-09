@@ -2,9 +2,9 @@
 Standard Medium, Stage 1: {"attr":1,"hm":7.75,"def":13,"basic":[4,7.5],"keys":["terrible","low","medium","high","extreme"],"rating":"medium"} | Stage 2 Health x: 9
 Minion steps: terrible low medium high | Elite steps: 5 | a Minion's Extreme reads as: high
 --- Vigor / Resolve, Health, to Down, AD / WD, vs Attributes (the Bestiary's examples)
-Goblin Sneak: Vigor 3 / Resolve 3, Health 6, to Down after 20: 0, AD 12 / WD 11, vs {"body":13,"mind":13,"appeal":13,"instinct":14}
-Orc Warrior: Vigor 43 / Resolve 22, Health 65, to Down after 20: 45, AD 13 / WD 12, vs {"body":14,"mind":14,"appeal":13,"instinct":14}
-Ogre Chieftain: Vigor 73 / Resolve 59, Health 132, to Down after 20: 112, AD 14 / WD 13, vs {"body":15,"mind":14,"appeal":14,"instinct":14}
+Goblin Sneak: Vigor 3 / Resolve 3, Health 6, to Down after 20: 0, AD 12 / WD 11, vs {"body":12,"mind":12,"appeal":11,"instinct":13}
+Orc Warrior: Vigor 43 / Resolve 22, Health 65, to Down after 20: 45, AD 13 / WD 12, vs {"body":14,"mind":13,"appeal":12,"instinct":13}
+Ogre Chieftain: Vigor 73 / Resolve 59, Health 132, to Down after 20: 112, AD 14 / WD 13, vs {"body":15,"mind":14,"appeal":13,"instinct":14}
 --- the Attacks reference (rounded to .5), the ratings average, Down in about
 Standard Medium: 4 / 7.5 | 5.5 / 10.5 | 9 / 16.5 | 14 / 26.5
 ratings average: Medium | High | Terrible

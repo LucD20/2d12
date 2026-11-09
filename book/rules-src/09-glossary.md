@@ -49,7 +49,7 @@
 | [[Daily\|**Daily**]] | Once per Sleep. |
 | [[Sight Senses\|**Dark Sight**]] | A Sight Sense: Dim light and Darkness count as Bright for you. |
 | [[Deadly Hazards\|**Deadly Hazard**]] | A hazard that kills Minor enemies at once and leaves anyone else Imperiled. |
-| [[Defenses\|**Defense**]] | Armor Defense (11 + Armor value + items + bonuses − penalties), Ward Defense (11 + Power Modifier + Ward value + items + bonuses − penalties), or a Vs. Attribute (13 + half). "+1 Defense" raises all of them. |
+| [[Defenses\|**Defense**]] | Armor Defense (11 + Armor value + items + bonuses − penalties), Ward Defense (11 + Power Modifier + Ward value + items + bonuses − penalties), or a Vs. Attribute (12 + the Attribute). "+1 Defense" raises all of them. |
 | [[Difficult Terrain\|**Difficult Terrain**]] | Each square counts double. |
 | [[Sight Senses\|**Dim-light Sight**]] | A Sight Sense: Dim light counts as Bright for you. |
 | [[Disrupting Actions\|**Disrupted**]] | A disrupted Action doesn't happen, and its AP and resources are wasted. |

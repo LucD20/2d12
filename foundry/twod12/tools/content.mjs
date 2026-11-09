@@ -242,7 +242,7 @@ const npc = ({ name, img, role, weaponAttribute, powerAttribute = "mind", modLea
 // v0.0.240 (pack R-bestiary): a Standard that attacks Ward Defense only (its Actions are Power Actions dealing [R]); no weapon in its hands.
 {
   npc({ name: "Grave Wisp", img: "icons/svg/mystery-man.svg", role: "standard", weaponAttribute: "instinct", powerAttribute: "mind", modLead: "power",
-    ratings: { body: "low", mind: "high", appeal: "medium", instinct: "medium", bodyHm: "terrible", mindHm: "high", ad: "low", wd: "high" } });
+    ratings: { body: "low", mind: "high", appeal: "medium", instinct: "medium", bodyHm: "terrible", mindHm: "high", ad: "low", wd: "high", wmod: "medium", pmod: "medium" } });
 }
 {
   const n = "Ogre Chieftain", club = npcWeapon(n, "great club: two-handed, melee, blunt, 0/1d10/2d10", "icons/svg/hammer.svg");

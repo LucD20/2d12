@@ -133,11 +133,18 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
     const segBtn = (data, k, on, l) => `<button type="button" data-key="${data}:${k}" data-${data}="${k}" aria-pressed="${on}">${on ? `${CHECK} ` : ""}${esc(l)}</button>`;
     const orderRow = level === 1 && hasVals && (cls.modOrder || "either") === "either"
       ? `<div class="cw-attr"><span>Your Modifiers</span><div class="cw-seg">${[["weapon", `Weapon ${sgv(mh)}, Power ${sgv(ml)}`], ["power", `Power ${sgv(mh)}, Weapon ${sgv(ml)}`]].map(([k, l]) => segBtn("prio", k, this.priority === k, l)).join("")}</div></div>` : "";
+    // v0.0.307 (Lucas): a class that fixes the order (the Archer) still shows its Modifiers at level 1, as a decided choice.
+    const fixedFirst = cls.modOrder === "power" ? "power" : "weapon";
+    const fixedRow = level === 1 && hasVals && (cls.modOrder || "either") !== "either"
+      ? `<div class="cw-attr"><span>Your Modifiers</span><div class="cw-seg"><button type="button" aria-pressed="true" disabled data-tooltip="Set by the class">${CHECK} ${esc(fixedFirst === "power" ? `Power ${sgv(mh)}, Weapon ${sgv(ml)}` : `Weapon ${sgv(mh)}, Power ${sgv(ml)}`)}</button></div></div>` : "";
     const t1 = hasVals ? classTrack({ high: mh, low: ml, order: cls.modOrder, lead: this.priority, stage: 1 }) : null;
     const s2now = this.stage2 || (t1?.weaponFirst ? "weapon" : "power");
     const s2Row = level === 5 && hasVals
       ? `<div class="cw-attr"><span>Stage 2: +1 to</span><div class="cw-seg">${[["weapon", `Weapon Modifier (Weapon ${sgv(t1.weapon + 1)}, Power ${sgv(t1.power)})`], ["power", `Power Modifier (Weapon ${sgv(t1.weapon)}, Power ${sgv(t1.power + 1)})`]].map(([k, l]) => segBtn("s2", k, s2now === k, l)).join("")}</div></div>` : "";
-    const modSec = orderRow || s2Row ? `<section class="cw-sec"><h2>Modifiers <span class="cw-pill done">Chosen</span></h2><p class="cw-sub">${orderRow ? "Your class gives two Modifier values: choose which is your Weapon Modifier (Weapon Actions) and which your Power Modifier (Power Actions and Ward Defense). It can't be changed later." : "Stage 2 adds +1 to one of your Modifiers (never above +4). It can't be changed later."}</p>${orderRow}${s2Row}</section>` : "";
+    const modSub = orderRow ? "Your class gives two Modifier values: choose which is your Weapon Modifier (Weapon Actions) and which your Power Modifier (Power Actions and Ward Defense). It can't be changed later."
+      : fixedRow ? "Your class sets your Weapon Modifier (Weapon Actions) and your Power Modifier (Power Actions and Ward Defense). Stage 2 adds +1 to the one you choose, Stage 3 +1 to both."
+      : "Stage 2 adds +1 to one of your Modifiers (never above +4). It can't be changed later.";
+    const modSec = orderRow || fixedRow || s2Row ? `<section class="cw-sec"><h2>Modifiers <span class="cw-pill done">${orderRow || s2Row ? "Chosen" : "Set by the class"}</span></h2><p class="cw-sub">${modSub}</p>${orderRow}${fixedRow}${s2Row}</section>` : "";
     let modPlaced = !modSec;   // v0.0.306 (Lucas): the Modifiers section right under the Attribute increases, above the Features
     const secs = m.sections.map(x => {
       const pill = `<span class="cw-pill${x.done && x.kind !== "granted" ? " done" : ""}">${esc(x.pill)}</span>`;

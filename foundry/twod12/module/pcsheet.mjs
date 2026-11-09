@@ -159,7 +159,7 @@ export async function pcModel(sheet, ctx) {
       { label: "AD", value: adNow, cls: cmp(adNow, adRef), tip: `Armor Defense: ${(s.armorParts ?? []).join(" ")}${adNow !== s.armorDC ? ` and bonuses (${adNow})` : ""}. Against Weapon Actions and Fists.` },
       { label: "WD", value: wdNow, cls: cmp(wdNow, wdRef), tip: `Ward Defense: ${(s.wardParts ?? []).join(" ")}${wdNow !== s.wardDC ? ` and bonuses (${wdNow})` : ""}. Against Power Actions.` }
     ],
-    vs: [["body", "vs Body"], ["mind", "vs Mind"], ["appeal", "vs Appeal"], ["instinct", "vs Inst."]].map(([k, l]) => ({ label: l, value: vs[k], tip: `Vs. ${TWOD12.attributes[k]}: 13 + half your ${TWOD12.attributes[k]} (${sg(s.attributes?.[k] ?? 0)}), rounded up${vsB[k] ? ` ${sg(vsB[k])} bonus` : ""}.` }))
+    vs: [["body", "vs Body"], ["mind", "vs Mind"], ["appeal", "vs Appeal"], ["instinct", "vs Inst."]].map(([k, l]) => ({ label: l, value: vs[k], tip: `Vs. ${TWOD12.attributes[k]}: 12 + your ${TWOD12.attributes[k]} (${sg(s.attributes?.[k] ?? 0)})${vsB[k] ? ` ${sg(vsB[k])} bonus` : ""}.` }))
   };
   const attrs = Object.entries(TWOD12.attributes).map(([key, label]) => ({ key, label, value: sg(s.attributes?.[key] ?? 0) }));
   const speedNow = s.moveSpeed ?? s.speed ?? 0, speedRef = s.speed === undefined ? speedNow : applySpeedMods(a, s.speed, { baseOnly: true });
@@ -479,6 +479,15 @@ export function npcBuilderModel(a) {
   const attrs = [["body", "Body"], ["mind", "Mind"], ["appeal", "Appeal"], ["instinct", "Instinct"]].map(([k, n]) => row(k, n, FEATURE_COLORS[k], x => sg2(npcRow(role, R, x, stage).attr), sg2(s.attributes?.[k] ?? 0)));
   const health = [["bodyHm", "Vigor", "body", s.bdt], ["mindHm", "Resolve", "mind", s.mdt]].map(([k, n, c, v]) => row(k, n, FEATURE_COLORS[c], x => `\u00d7${fmtN(npcRow(role, R, x, stage).hm)}`, v));
   const defs = [["ad", "Armor Defense", s.armorDC], ["wd", "Ward Defense", s.wardDC]].map(([k, n, v]) => row(k, n, FEATURE_COLORS[k], x => npcRow(role, R, x, stage).def, v));
+  // v0.0.307 (Lucas): the Weapon and Power Modifiers as rated rows (the role's table; a rating left at its default shows it).
+  const mr = s.modRatings ?? { weapon: "medium", power: "low" };
+  const modRow = (key, name, color, cur, value) => {
+    const at = keys.indexOf(cur), mv = k => sg2(Math.min(TWOD12.modCap, role.modBy[Math.min(R[k].i, role.modBy.length - 1)]));
+    return { key, name, color, act: "setRating", ratingName: R[cur]?.label ?? "", value: sg2(value),
+      steps: keys.map((k, i) => ({ r: k, on: at >= 0 && i <= at, sel: i === at, v: mv(k), tip: `${R[k].label}: ${mv(k)}` })) };
+  };
+  const wmod = modRow("wmod", "Weapon Modifier", FEATURE_COLORS.ad, mr.weapon, Number(s.weaponMod) || 0);
+  const pmod = modRow("pmod", "Power Modifier", FEATURE_COLORS.wd, mr.power, Number(s.powerMod) || 0);
   const SPD = ["Slow", "Slow", "Default", "Fast", "Fast"], spNow = Number(s.speed) || 5, stNow = Math.max(0, Number(s.steadiness) || 0);
   const speed = { key: "speed", name: "Speed", color: FEATURE_COLORS.move, act: "setRating", ratingName: SPD[[3, 4, 5, 6, 7].indexOf(spNow)] ?? "Custom", value: spNow,
     steps: [3, 4, 5, 6, 7].map((v, i) => ({ r: String(v), on: v <= spNow, sel: v === spNow, v, tip: `${SPD[i]}: ${v}` })) };
@@ -493,7 +502,8 @@ export function npcBuilderModel(a) {
     roles: Object.entries(TWOD12.npcRoles).map(([k, v]) => ({ key: k, label: v.label, on: (s.role || "standard") === k })),
     level: s.level, stage, cv: s.cv ?? role.cv[0], ap: role.ap, elite: s.role === "elite", escOn: !!s.useEscalation, escAny: true,   // v0.0.303: any role can switch Escalation on (it was the Elite's only)
     summary: [{ k: "Health", v: pool }, { k: "Down in about", v: `${downIn(pool, pcDmg)} PC turns` }, { k: "Should deal", v: `about ${role.deals}` }, { k: "Ratings average", v: avg }],
-    cols: [[{ title: "Attributes", rows: attrs, grow: 4 }, { title: "Movement", rows: [speed, steady], grow: 2 }], [{ title: "Health", rows: health, grow: 3 }, { title: "Defenses", rows: defs, grow: 3 }]],
+    cols: [[{ title: "Attributes", rows: attrs, grow: 4 }, { title: "Movement", rows: [speed, steady], grow: 2 }, { title: "Weapon Mod", rows: [wmod], grow: 1 }],
+      [{ title: "Health", rows: health, grow: 3 }, { title: "Defenses", rows: defs, grow: 3 }, { title: "Power Mod", rows: [pmod], grow: 1 }]],   // v0.0.307 (Lucas): Weapon under Movement, Power under Defenses
     heads: keys.map(k => ({ label: R[k].label, color: RATING_COLORS[k], med: k === "medium" })),
     attacks: specials.map(([label, sub, x], n) => ({ label, sub, alt: n % 2 === 1, cells: keys.map(k => ({ v: specialAvg(npcRow(role, R, k, stage).basic, x).join(" / "), med: k === "medium" })) }))
   };

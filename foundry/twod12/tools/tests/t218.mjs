@@ -10,7 +10,7 @@ class F { constructor(o) { this.o = o; } }
 globalThis.foundry = { abstract: { TypeDataModel: class { static migrateData(s) { return s; } } }, data: { fields: { SchemaField: F, NumberField: F, StringField: F, BooleanField: F, ArrayField: F, SetField: F, HTMLField: F } }, utils: {}, applications: { api: { DialogV2: {} } } };
 globalThis.Hooks = { on() {}, once() {} }; globalThis.CONFIG = {};
 const { classTrack, npcMods, classModifiers } = await import(ROOTURL + "module/modifiers.mjs");
-const { CharacterData, npcLead } = await import(ROOTURL + "module/data.mjs");
+const { CharacterData, npcLead, npcModRatings, npcModValue } = await import(ROOTURL + "module/data.mjs");
 const { rollSource, rollTraits } = await import(ROOTURL + "module/rollsource.mjs");
 const { modLeadOf } = await import(ROOTURL + "module/migrater.mjs");
 const { TWOD12 } = await import(ROOTURL + "module/config.mjs");
@@ -48,6 +48,11 @@ console.log("a class copy from before (values 0): the Attribute formula until up
 console.log("--- NPCs (the role's values)");
 for (const r of ["minion", "grunt", "standard", "elite"]) console.log(`${TWOD12.npcRoles[r].label}: ${TWOD12.npcRoles[r].mods.join(" and ")} | lead Weapon: ${JSON.stringify(npcMods(TWOD12.npcRoles[r].mods, "weapon"))} | lead Power: ${JSON.stringify(npcMods(TWOD12.npcRoles[r].mods, "power"))}`);
 console.log("npcLead: set", npcLead({ modLead: "power" }), "| an NPC from before, Mind High as its Power Attribute:", npcLead({ modLead: "", attributes: { body: 0, mind: 2 }, weaponAttribute: "body", powerAttribute: "mind" }), "| a tie:", npcLead({ modLead: "", attributes: { body: 1, mind: 1 }, weaponAttribute: "body", powerAttribute: "mind" }));
+console.log("--- v0.0.307: NPC Modifier ratings (Terrible / Low / Medium / High / Extreme)");
+for (const r of ["minion", "grunt", "standard", "elite"]) console.log(`${TWOD12.npcRoles[r].label}: ${["terrible", "low", "medium", "high", "extreme"].map(k => sg(npcModValue(r, k))).join(" / ")} | defaults: ${JSON.stringify(npcModRatings({ role: r, modLead: "weapon" }))} | leading with Power: ${JSON.stringify(npcModRatings({ role: r, modLead: "power" }))}`);
+console.log("a rating set by the GM wins:", JSON.stringify(npcModRatings({ role: "elite", modLead: "weapon", ratings: { wmod: "high", pmod: "terrible" } })));
+const { vsAttribute } = await import(ROOTURL + "module/sheetmodel.mjs");
+console.log("--- v0.0.307: Vs. an Attribute = 12 + the Attribute:", [-1, 0, 1, 2, 3, 4].map(v => `${v} -> ${vsAttribute(v)}`).join(", "), "| with a +1 bonus:", vsAttribute(2, 1));
 const npcs = C.actors ?? [];
 for (const a of npcs.filter(x => ["Grave Wisp"].includes(x.name) || /Goblin|Orc|Ogre/.test(x.name))) console.log(`${a.name}: role ${a.system.role}, leads with ${a.system.modLead}`);
 
@@ -68,4 +73,6 @@ const src = n => fs.readFileSync(ROOT + n, "utf8");
 console.log("--- wiring: the class window's picks", src("module/classwindow.mjs").includes('segBtn("prio"') && src("module/classwindow.mjs").includes('segBtn("s2"') && src("module/classwindow.mjs").includes('upd["system.modStage2"]'),
   "| under the Attribute increases (v0.0.306)", src("module/classwindow.mjs").includes('if (x.kind === "attr" && !modPlaced) { modPlaced = true; return html + modSec; }'),
   "| refresh keeps modStage2", src("module/refresh.mjs").includes('"modStage2"'), "| the migration registered", src("module/twod12.mjs").includes("registerMigrationMod()"),
-  "| the NPC's Leads with", src("templates/actor-sheet-pc.hbs").includes('name="system.modLead"'), "| no DialogV2 in the migration", !src("module/migrater.mjs").split("export async function migrateMod")[1].includes("DialogV2"));
+  "| the Builder's Weapon Mod / Power Mod rows", src("module/pcsheet.mjs").includes('{ title: "Weapon Mod", rows: [wmod]') && src("module/pcsheet.mjs").includes('{ title: "Power Mod", rows: [pmod]'),
+  "| the Archer's fixed row", src("module/classwindow.mjs").includes("const fixedRow = level === 1"),
+  "| 12 + Attribute in defense.mjs", src("module/defense.mjs").includes("dc = vb + attr;"), "| no DialogV2 in the migration", !src("module/migrater.mjs").split("export async function migrateMod")[1].includes("DialogV2"));

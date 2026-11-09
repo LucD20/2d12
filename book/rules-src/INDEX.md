@@ -5,7 +5,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | File | Chapter | Document | Part | KB | Lines |
 |---|---|---|---|---|---|
 | 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 22.6 | 305 |
-| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 26.6 | 286 |
+| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 26.5 | 286 |
 | 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 38.9 | 450 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 13.7 | 254 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 6.7 | 74 |
@@ -16,7 +16,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 11-species.md | Species | species |  | 0.8 | 32 |
 | 12-paladin.md | Paladin | paladin |  | 3.8 | 123 |
 | 13-archer.md | Archer | archer |  | 3.8 | 127 |
-| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 20.1 | 313 |
+| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 20.6 | 314 |
 | 15-gear.md | Gear | gear |  | 10.1 | 182 |
 | 16-talents.md | Talents | talents |  | 2.2 | 68 |
 
@@ -277,25 +277,25 @@ Action cards: Sharpshooter (48, Archer Feature 1); Marked Quarry (50, Archer Fea
 - 6: ## The targets
 - 21:   ### Minor enemies
 - 25: ## Ratings
-- 36: ## Defenses
-- 42:   ### Attacking Ward Defense
-- 46: ## Attributes and Modifiers
-- 59: ## Health
-- 69: ## Speed
-- 76: ## Steadiness
-- 80: ## Actions
-- 82:   ### The Basic attack
-- 88:   ### Special Actions
-- 102:   ### Conditions
-- 114:   ### Reactions
-- 123:   ### Elite Escalation
-- 141: ## The roles
-- 143:   ### Minions
-- 175:   ### Grunts
-- 207:   ### Standards
-- 239:   ### Elites
-- 273: ## Building an encounter
-- 294: ## Example NPCs (Stage 1)
+- 37: ## Defenses
+- 43:   ### Attacking Ward Defense
+- 47: ## Attributes and Modifiers
+- 60: ## Health
+- 70: ## Speed
+- 77: ## Steadiness
+- 81: ## Actions
+- 83:   ### The Basic attack
+- 89:   ### Special Actions
+- 103:   ### Conditions
+- 115:   ### Reactions
+- 124:   ### Elite Escalation
+- 142: ## The roles
+- 144:   ### Minions
+- 176:   ### Grunts
+- 208:   ### Standards
+- 240:   ### Elites
+- 274: ## Building an encounter
+- 295: ## Example NPCs (Stage 1)
 
 ## 15-gear.md: Gear
 

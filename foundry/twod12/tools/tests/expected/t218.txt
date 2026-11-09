@@ -24,6 +24,13 @@ Grunt: 2 and 1 | lead Weapon: {"weapon":2,"power":1,"signature":2,"from":"weapon
 Standard: 2 and 2 | lead Weapon: {"weapon":2,"power":2,"signature":2,"from":"weapon"} | lead Power: {"weapon":2,"power":2,"signature":2,"from":"weapon"}
 Elite: 3 and 2 | lead Weapon: {"weapon":3,"power":2,"signature":3,"from":"weapon"} | lead Power: {"weapon":2,"power":3,"signature":3,"from":"power"}
 npcLead: set power | an NPC from before, Mind High as its Power Attribute: power | a tie: weapon
+--- v0.0.307: NPC Modifier ratings (Terrible / Low / Medium / High / Extreme)
+Minion: +0 / +1 / +2 / +3 / +3 | defaults: {"weapon":"medium","power":"low"} | leading with Power: {"weapon":"low","power":"medium"}
+Grunt: +0 / +1 / +2 / +3 / +4 | defaults: {"weapon":"medium","power":"low"} | leading with Power: {"weapon":"low","power":"medium"}
+Standard: +0 / +1 / +2 / +3 / +4 | defaults: {"weapon":"medium","power":"medium"} | leading with Power: {"weapon":"medium","power":"medium"}
+Elite: +1 / +2 / +3 / +4 / +4 | defaults: {"weapon":"medium","power":"low"} | leading with Power: {"weapon":"low","power":"medium"}
+a rating set by the GM wins: {"weapon":"high","power":"terrible"}
+--- v0.0.307: Vs. an Attribute = 12 + the Attribute: -1 -> 11, 0 -> 12, 1 -> 13, 2 -> 14, 3 -> 15, 4 -> 16 | with a +1 bonus: 15
 Goblin Sneak: role minion, leads with weapon
 Orc Warrior: role standard, leads with weapon
 Grave Wisp: role standard, leads with power
@@ -39,4 +46,4 @@ Body 2, Mind 1, Appeal 0: old copy weapon | already updated (no lists) weapon
 Body 0, Mind 1, Appeal 2 (Weapon kept Appeal): old copy weapon | already updated (no lists) weapon
 Body 0, Mind 2, Appeal 2: old copy weapon | already updated (no lists) weapon
 Body 1, Mind 3, Appeal 0: old copy power | already updated (no lists) power
---- wiring: the class window's picks true | under the Attribute increases (v0.0.306) true | refresh keeps modStage2 true | the migration registered true | the NPC's Leads with true | no DialogV2 in the migration true
+--- wiring: the class window's picks true | under the Attribute increases (v0.0.306) true | refresh keeps modStage2 true | the migration registered true | the Builder's Weapon Mod / Power Mod rows true | the Archer's fixed row true | 12 + Attribute in defense.mjs true | no DialogV2 in the migration true

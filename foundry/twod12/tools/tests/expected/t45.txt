@@ -1,7 +1,7 @@
 Trip body 2 / instinct 1: body | body 0 / instinct 3: instinct | tie: body | no attrs: body | Shove: body
 vsText: Body or Instinct | Body | ""
-DC vs the rolled attribute: rolled body -> 14 | rolled instinct -> 15 | Vs. Instinct (Orc): 13 + 2 (half Instinct 3) = 15
-Shove vs Body: 14 | no target (roll): Vs. Body: no target, using DC 13
+DC vs the rolled attribute: rolled body -> 13 | rolled instinct -> 15 | Vs. Instinct (Orc): 12 + 3 (Instinct) = 15
+Shove vs Body: 13 | no target (roll): Vs. Body: no target, using DC 13
 meta line: |Targets:| One creature|Distance:| Reach| * |Vs.| |Body| or |Instinct|
 banes for uses 1,2,3: 0,1,2 | faded after 3 (Strike limit): false Three Strikes this turn
 next turn resets: 0 | faded: false

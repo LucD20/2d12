@@ -411,7 +411,6 @@
         {{/with}}
         <div class="ps-block nb-more"><div class="ps-bh"><b>Stat block</b></div>
           <div class="nb-form">
-            <label data-tooltip="The role's Modifiers (the Bestiary): which one is the higher. A creature that attacks Ward Defense usually leads with Power">Leads with <select name="system.modLead">{{selectOptions modLeadChoices selected=system.modLeadKey}}</select></label>
             <label>Armor type <select name="system.armor">{{selectOptions armorTypeChoices selected=system.armor}}</select></label>
             <label>Reach <input type="number" min="1" name="system.reachBase" value="{{system.reachBase}}"></label>
             <label>Size <input type="number" min="1" max="7" name="system.size" value="{{system.size}}"></label>

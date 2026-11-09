@@ -1,6 +1,6 @@
-no vs: 13 | vs body: Vs. Body (Orc): 13 + 1 (half Body 1) = 14
-vs body + pushed action: Vs. Body (Orc): 13 + 1 (half Body 1) = 14
-vs mind (negative): Vs. Mind (Orc): 13 + 0 (half Mind -1) = 13 | no target: Vs. Body: no target, using DC 13
+no vs: 13 | vs body: Vs. Body (Orc): 12 + 1 (Body) = 13
+vs body + pushed action: Vs. Body (Orc): 12 + 1 (Body) = 13
+vs mind (negative): Vs. Mind (Orc): 12 − 1 (Mind) = 11 | no target: Vs. Body: no target, using DC 13
 tags: attack
 move 3: {"ap":5,"freeMove":0,"moveLeft":0,"evadeMove":0} | Orc: Advance 3 sq
 move 4: {"ap":5,"freeMove":0,"moveLeft":0,"evadeMove":0} | Orc: Advance 4 sq

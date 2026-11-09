@@ -1,7 +1,7 @@
 // Defenses. An Action against a creature rolls against one of them:
 //   Armor Defense, AD (Weapon Actions, and Fists): 11 + Armor value + bonuses;  Ward Defense, WD (Power Actions): 11 + Power Modifier + Ward value + bonuses;
 //   an NPC's AD and WD are typed values (the Bestiary).
-//   Vs. an Attribute (an Action with a Vs. entry, which replaces Armor and Ward): 13 + half the Attribute, rounded up.
+//   Vs. an Attribute (an Action with a Vs. entry, which replaces Armor and Ward): 12 + the Attribute (v0.0.307, Lucas; was 13 + half, rounded up).
 // A Signature Action uses Armor or Ward by the Modifier it rolls. An Action that faces none of these has DC 13.
 // Defense bonuses (Features and effects) don't add up: for each Defense, the highest bonus and the highest penalty count.
 import { allEffects, isBaseSource } from "./passives.mjs";
@@ -98,8 +98,8 @@ export function computeDC(item, targetActor, rolledAttr = "", src = null) {
   const t = targetActor.system ?? {}, tags = actionTags(item);
   let dc, bits;
   if (def.type === "vs") {
-    const attr = t.attributes?.[def.key] ?? 0, value = Math.ceil(attr / 2) || 0;   // half the Attribute, rounded up
-    dc = base + value; bits = [`${base}`, `${sign(value)} (half ${TWOD12.attributes[def.key]} ${attr})`];
+    const attr = Math.trunc(Number(t.attributes?.[def.key]) || 0), vb = TWOD12.vsBase;   // v0.0.307 (Lucas; book, Chapter 2, Defenses): 12 + the Attribute
+    dc = vb + attr; bits = [`${vb}`, `${sign(attr)} (${TWOD12.attributes[def.key]})`];
   } else {
     const derived = def.type === "armor" ? t.armorDC : t.wardDC;
     if (Number.isFinite(derived)) { dc = derived; bits = [...(def.type === "armor" ? t.armorParts : t.wardParts) ?? [`${derived}`]]; }   // the actor's own Defense (data.deriveDefenses)

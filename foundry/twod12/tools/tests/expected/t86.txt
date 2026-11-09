@@ -7,7 +7,7 @@ dice in the message: 2
 shared dice shown: boon dice - | bane dice -
 --- three DCs (13, 17, 23), dice 9 and 11: boon dice -, bane dice -
 the outcome grouped by Tier, who landed where: Tier 3 Nari Vigor 2 Sl + 1d6 Tier 2 Lonny Vigor 2 Sl Tier 1 Goblin Vigor 2
-each creature's own Defense on its row: Nari: Bo 13 1 Boon | Lonny: Bo 17 2 Banes | Goblin: Bo 23
+each creature's own Defense on its row: Nari: Bo 12 1 Boon | Lonny: Bo 20 2 Banes | Goblin: Bo 32
 DC ranges in the tier column are generic when the DCs differ: true
 flags: ["Nari T3","Lonny T2","Goblin T1"] | highest tier on the card: 3
 --- Favored for all: 3d12 (4, 12→8, 6) keeps the two highest: boon dice -, bane dice -
@@ -26,15 +26,15 @@ Undo on Goblin's row: Goblin 0 | the row waits again: true
 Double on Goblin's row: Goblin 4 (double 4)
 Then Half on the applied row: Goblin 1 (half 1)
 applying a row twice does nothing: true
-one target (Nari): rows per creature: 0 | one stamp and one ladder (one target): true | results in the flags: none | tier 2
-two targets (Nari, Lonny): rows per creature: 2 | one stamp and one ladder (one target): false | results in the flags: 2 | tier 2
+one target (Nari): rows per creature: 0 | one stamp and one ladder (one target): true | results in the flags: none | tier 3
+two targets (Nari, Lonny): rows per creature: 2 | one stamp and one ladder (one target): false | results in the flags: 2 | tier 3
 no target: rows per creature: 0 | one stamp and one ladder (one target): true | results in the flags: none | tier 2
 --- six Skeleton Captains, dice 6 and 7: boon dice -, bane dice -
 dialog tiles: Yours | Skeleton Captain 1 | Skeleton Captain 2 | Skeleton Captain 3 | Skeleton Captain 4 | Skeleton Captain 5 | Skeleton Captain 6 | numbers on the tiles: 1,2,3,4,5,6 | a dots holder on each: 7 | a caption: true | the old per-tile name and DC text is gone: true
 rows on the card (one per creature): 6 | Tier groups: Tier 2 Skeleton Captain 1 Skeleton Captain 2 Skeleton Captain 3 Skeleton Captain 4 Skeleton Captain 5 Skeleton Captain 6
 targets line (v0.0.285, kept in v0.0.296: at the bottom, beside the buttons): → 6 targets Damage Card | the top keeps the area: @Template[emanation|distance:5|targets:all|self:no|at:self|quick:yes]
 damage: one card with 6 rows, named: Skeleton Captain 1, Skeleton Captain 2, Skeleton Captain 3, Skeleton Captain 4, Skeleton Captain 5, Skeleton Captain 6 | Apply all: true
-size of the roll card: about 10115 characters for 6 creatures (one row), against 7774 for 3
+size of the roll card: about 10115 characters for 6 creatures (one row), against 7773 for 3
 gridless scene: Whirlwind still rolls: true 
 dots: "" | g g r | capped at 5 each: 5 5 | never negative: ""
 captions: {"name":"Skeleton Captain 2","detail":"DC 13 · 2 Banes"} {"name":"Nari","detail":"DC 17 · 1 Boon"} {"name":"Goblin","detail":"DC 20"} {"name":"Lonny","detail":"DC 15 · 3 Boons · 1 Bane"}
