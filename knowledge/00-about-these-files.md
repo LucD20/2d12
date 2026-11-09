@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-09 from the repository at: 926c857 2026-11-09 v0.0.309: the NPC Builder's Attack damage grid in the sheet's look; Unarmored in a smaller font
+Built by tools/knowledge.py on 2026-11-09 from the repository at: a456329 2026-11-09 v0.0.310: the Initiative windows rebuilt, GM and players (Lucas's design)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

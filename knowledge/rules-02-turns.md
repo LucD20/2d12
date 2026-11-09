@@ -9,7 +9,7 @@ An **encounter** is a fight or a similar scene: it starts when Initiative is rol
 
 ## Initiative
 
-At the start of combat, **every creature rolls Initiative**. Initiative is a Check, normally an Instinct Check, but the GM can call for a different Attribute. The total is the creature's initiative.
+At the start of combat, **every creature rolls Initiative**. Initiative is a Check, normally an Instinct Check, but the GM can call for a different Attribute, for everyone or for some creatures only. The total is the creature's initiative.
 
 Initiative is a **zipper**. The creatures are split into however many different **groups** exist. Usually it is the PCs against a single group of enemies, but three-way combat is possible. Each group puts its creatures in order from the highest result to the lowest. The group with the highest single result goes first. Then the groups take turns, one creature at a time, in the order of their highest result, each taking its highest remaining creature. A group with no creatures left is skipped.
 
