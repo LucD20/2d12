@@ -130,3 +130,26 @@ export function perceive(observer, target, { loe = true } = {}) {
   if (st && RANK[st] < RANK[best[0]]) best = [st, `${CAP[st]} (status)`];
   return { level: best[0], why: best[1], name: CAP[best[0]] };
 }
+
+/**
+ * v0.0.317 (Lucas: a Blinded token shows no ripples): game.twod12.hearInfo(): for each controlled token, whether it can hear and what it hears.
+ * A ripple needs: the Hearing mode on the observer's token (enabled), a started combat with the target in it (a creature makes noise only in
+ * combat) or the GM's Hidden status on the target, and the target within the Hearing range. Prints a line per creature and returns it.
+ */
+export function hearInfo() {
+  const sel = canvas?.tokens?.controlled ?? [];
+  if (!sel.length) { ui.notifications.warn("Select the token that should hear (the Blinded one)."); return []; }
+  const out = [];
+  for (const o of sel) {
+    const modes = o.document?.detectionModes ?? [], hm = modes.find?.(m => m.id === MODE_ID);
+    const head = `${o.name}: Hearing mode ${hm ? (hm.enabled === false ? "OFF on the token" : `on (range ${hm.range ?? "none"})`) : "MISSING on the token (Add Hearing)"}; Blinded ${!!o.actor?.statuses?.has?.("blinded")}; combat started ${!!game.combat?.started}; hearing range ${hearingRange(o.actor)} sq.`;
+    out.push(head);
+    for (const t of canvas.tokens.placeables) {
+      if (t === o || !t.actor) continue;
+      out.push(`  ${t.name}: makes noise ${makesNoise(t)} (in the combat: ${!!game.combat?.combatants?.find?.(c => c.tokenId === t.id)}), GM Hidden ${!!t.actor.statuses?.has?.("hidden")}, Unsensed ${!!t.actor.statuses?.has?.("unsensed")}, ${Math.round(tokenDistance(o, t) * 10) / 10} sq. away -> heard ${hears(o, t) || !!t.actor.statuses?.has?.("hidden")}; shown now ${t.visible}`);
+    }
+  }
+  console.log(out.join("\n"));
+  ui.notifications.info("Hearing: the details are in the console (F12).");
+  return out;
+}

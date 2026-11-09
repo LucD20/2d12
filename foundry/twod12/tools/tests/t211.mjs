@@ -136,7 +136,7 @@ const ms = { ...save, target: undefined, creatures: [{ uuid: "a", name: "Bandit 
 const msGM = CC.saveCardHtml(ms, CC.viewOf({ gm: true })), msP = CC.saveCardHtml(ms, CC.viewOf({ gm: false, owns: () => false }));
 console.log("a Save on three creatures: a row each:", (msGM.match(/class="cc-crow save"/g) ?? []).length, "| who got each Tier:", [...msGM.matchAll(/<b>T(\d)<\/b>[\s\S]*?<span class="cc-sbody">(<span class="cc-who">[\s\S]*?<\/span><\/span>)?/g)].map(m => `T${m[1]}: ${txt(m[2] ?? "") || "-"}`).join(" | "));
 console.log("the owner rolls on their row, the others wait:", (msGM.match(/data-twod12="saveRoll" data-idx="2"/g) ?? []).length, (msP.match(/Waiting/g) ?? []).length, "| Damage once someone rolled:", msGM.includes("ccSaveDamage"), "| a one-target card of v0.0.283 still reads:", CC.saveCreatures({ target: { uuid: "x", name: "X" }, result: null }).length);
-console.log("Save Actions use the new card with several targets (actions.mjs):", src("module/actions.mjs").includes("if (targets.length >= 1 && cmsg) {"));
+console.log("Save Actions use the new card with several targets (actions.mjs):", src("module/actions.mjs").includes("if (cmsg) {"), "| and with none (v0.0.317):", !src("module/actions.mjs").includes("if (targets.length >= 1 && cmsg) {"));
 
 console.log("--- v0.0.287 (Lucas tested v0.0.286)");
 const twoT = CC.damageCardHtml({ kind: "dmg", name: "Word of Radiance", groups: [{ tier: 2, comps: [{ pool: "M", sub: "Ho", total: 16, formula: "2d10", dice: [{ faces: 10, results: [7, 9] }] }], rows: [0] }, { tier: 1, comps: [{ pool: "M", sub: "Ho", total: 7, formula: "2d6", dice: [{ faces: 6, results: [3, 4] }] }], rows: [1] }], rows: [{ name: "Grave Wisp", mods: [] }, { name: "Bandit Thug", mods: [] }] });

@@ -3761,3 +3761,8 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12 .autodia.auto-diamond { background: linear-gradient(135deg, #e8fbff 0%, #7fd6ff 30%, #2f7fd8 55%, #9fe8ff 78%, #ffffff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-stroke: 1.1px #1d5f9e; filter: saturate(1.4) drop-shadow(0 0 2px #5cc8ff); }
 .twod12.sheet.pcs .autodia.auto-diamond, .twod12.acard.d2 .autodia.auto-diamond, .twod12.chat.cc .autodia.auto-diamond { -webkit-text-stroke: 1.2px #12365c; filter: saturate(1.6) drop-shadow(0 0 2px #4fb8ff); }
 .twod12 .autochip.auto-diamond { background: linear-gradient(135deg, #f2fcff 0%, #bfeaff 30%, #8fc8ff 55%, #d6f4ff 80%, #f2fcff 100%); color: #12365c; }
+/* ==== v0.0.317 (Lucas: Frightened still on its own line): a rider with buttons is plain inline text after the ↳ (cc-rtext), no box, so the
+   sentence wraps word by word; its buttons stay whole. ==== */
+.twod12.chat.cc .cc-rider.cc-rflow { display: block; }
+.twod12.chat.cc .cc-rtext { display: inline; font-size: 11.5px; line-height: 1.6; }
+.twod12.chat.cc .cc-rtext a[data-twod12-inline] { white-space: nowrap; }

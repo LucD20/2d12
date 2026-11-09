@@ -46,6 +46,7 @@ import { catalog } from "./catalog.mjs";
 import { registerSenses, giveHearing, addHearing } from "./senses.mjs";
 import { giveVision, syncVision, globalLight, visionInfo } from "./vision.mjs";
 import { lightInfo } from "./sightgate.mjs";
+import { hearInfo } from "./senses.mjs";   // v0.0.317: why a token hears (or not)
 import { registerLightLabel, registerLightTool, sliderInfo } from "./lightlabel.mjs";
 import { registerDamageReport, toggleDamageReport } from "./damagelog.mjs";
 import { registerEncounterLog, toggleEncounterLog } from "./enclog.mjs";
@@ -128,7 +129,7 @@ Hooks.once("init", () => {
     syncVision,
     globalLight,
     visionInfo,
-    lightInfo,
+    lightInfo, hearInfo,
     sliderInfo,
     refreshBasics: refreshAllBasics,
     refreshFromCompendium: (opts = {}) => (Object.keys(opts).length ? refreshFromCompendium(opts) : askRefresh()),   // v0.0.190: a macro can call it

@@ -222,6 +222,12 @@ async function applyLight(actor, light) {
 
 export { appliedFlags };
 
+/** v0.0.317 (Lucas): an effect that needs an origin is named with it, "Frightened (Ogre)": the HUD's card, the sheet and the chips say of whom. */
+export function withOriginName(name, sys, originUuid, actor = null) {
+  if (!needsOrigin(sys) || !originUuid || originUuid === actor?.uuid) return name;
+  let who = ""; try { who = globalThis.fromUuidSync?.(originUuid)?.name ?? ""; } catch (e) { who = ""; }
+  return who ? `${name} (${who})` : name;
+}
 /**
  * v0.0.315 (Lucas: "all effects need to be editable / seen"): a card's own Bleed (its dice, pool, type, Attributes, DC) goes INTO the applied effect's
  * Bleed setting (its copy of the settings and the flags the turn reads), so the effect's Details tab shows it and can change it.
@@ -252,7 +258,7 @@ export async function createEffect(actor, item, origin, over = null, extra = {})
   const own = combatantOf(actor);
   const slotInit = own?.initiative ?? null;
   const made = (await actor.createEmbeddedDocuments("ActiveEffect", [{
-    name: value !== undefined ? `${item.name} ${value}` : (over?.bleed ? bleedText(bleedOf({ flags: { [F]: { bleeds: appliedFlags(s, {}).bleeds, bleed: over.bleed } } })) : item.name), img: item.img, origin: origin?.actorUuid ?? null, showIcon: 2, statuses,
+    name: value !== undefined ? `${item.name} ${value}` : (over?.bleed ? bleedText(bleedOf({ flags: { [F]: { bleeds: appliedFlags(s, {}).bleeds, bleed: over.bleed } } })) : withOriginName(item.name, s, origin?.actorUuid, actor)), img: item.img, origin: origin?.actorUuid ?? null, showIcon: 2, statuses,
     flags: { [F]: {
       ...extra, effectUuid: item.uuid, duration: d, remaining: d.rounds, ...(value !== undefined ? { value, baseName: item.name } : {}),
       slotInit, originSlot: origin?.slot ?? null,

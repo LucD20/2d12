@@ -50,7 +50,7 @@ export class AppliedEffectSheet extends TwoD12ItemSheet {
       const id = await pickBar({ icon: "fa-crosshairs", text: `<b>${foundry.utils.escapeHTML?.(this.fx.name) ?? this.fx.name}</b>: its new origin? Click its token.`, options: toks.map(t => ({ id: t.id, label: t.name, token: t })) });
       const t = toks.find(x => x.id === id);
       if (!t) return;
-      await this.fx.update({ origin: t.actor.uuid });
+      await this.fx.update({ origin: t.actor.uuid, name: `${String(this.fx.name).replace(/\s*\([^)]*\)\s*$/, "")} (${t.name})` });   // v0.0.317: "Frightened (Ogre)"
       try { (await import("./conditions.mjs")).forgetSeen(); } catch (e) { /* no cache */ }
       this.render();
     });

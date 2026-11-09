@@ -1148,10 +1148,11 @@ export async function useAction(actor, item, opts = {}) {
       const cfg = saveActionCfg(actor, item, version, src);
       const point = areaOutcome?.point ?? null;
       // v0.0.283 (pack chat-cards): this card becomes the Save card (v0.0.286: several targets too, a row each; an [HT] area's repeat keeps the old card)
-      if (targets.length >= 1 && cmsg) {
+      // v0.0.317 (Lucas: "without a target (setting the DC) it uses the old card"): no target is the new card too, empty, with its target button
+      if (cmsg) {
         const { ccSaveOnCard } = await import("./inline.mjs");
         const model = { name: item.name, auto: autoChip(it.automation, it.automationNote), freq: effectiveFrequency(it), cost: it.reaction ? `${version.ap}R` : `${version.ap} AP`, traitsHtml: useTraits.size ? traitsHtml(useTraits) : "",
-          tline: { targets: it.targets ?? "", dist: sqText(distanceText(it, weapon ?? previewWeapon ?? null)), area: "", names: [targets[0].name] },
+          tline: { targets: it.targets ?? "", dist: sqText(distanceText(it, weapon ?? previewWeapon ?? null)), area: "", names: targets.length ? [targets[0].name] : [] },
           triggerHtml: it.trigger ? await enrich(esc(it.trigger), item) : "", triggerLabel: it.reactionKind === "interrupt" ? "Interrupt" : "Trigger", flavor: it.flavor ?? "",
           designer: { ruler: it.worth ?? "", mithril: it.automation ? `${TWOD12.automationRanks[it.automation] ?? it.automation}` : "" } };
         await ccSaveOnCard(cmsg, cfg, targets, { model, point });

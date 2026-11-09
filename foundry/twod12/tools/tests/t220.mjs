@@ -108,3 +108,11 @@ console.log("the origin is the Action's user (else it asks):", want.filter(n => 
 const SG = await import(ROOTURL + "module/sightgate.mjs").catch(e => ({ err: e.message }));
 const tk = (id, st = []) => ({ id, actor: { statuses: new Set(st), system: { senses: {} } } });
 console.log("a Blinded observer sees no creature by sight (Hearing is another mode):", SG.canSeeByRules ? SG.canSeeByRules(tk("a", ["blinded"]), tk("b")) : SG.err);
+
+console.log("--- v0.0.317 (Lucas on v0.0.316)");
+console.log("a rider with buttons flows after the arrow:", CC.riderHtml('<a data-twod12-inline="Move">Pushed 2</a>, and <a data-twod12-inline="Condition">Frightened</a> of you for 1 round.').replace(/<a[^>]*>([^<]*)<\/a>/g, "[$1]"), "| plain words keep the chip:", CC.riderHtml("Pushed 2"));
+const empty = CC.saveCardHtml({ kind: "save", name: "Rebuke", saveName: "Appeal Save", dc: 15, creatures: [], tiers: { 1: { parts: [], riders: [] }, 2: { parts: [], riders: [] }, 3: { parts: [], riders: [] } }, tline: { names: [] } }, { ...CC.FULL_VIEW, owns: () => false });
+console.log("a Save card with no target says so:", (empty.match(/cc-wait">([^<]*)</) ?? [])[1]);
+globalThis.fromUuidSync = u => (u === "Actor.Ogre" ? { name: "Ogre" } : null);
+const fr = conds.find(x => x.name === "Frightened").system;
+console.log("the name with its origin:", E.withOriginName("Frightened", fr, "Actor.Ogre", { uuid: "Actor.Kai" }), "| no origin:", E.withOriginName("Frightened", fr, "", null), "| its own:", E.withOriginName("Frightened", fr, "Actor.Ogre", { uuid: "Actor.Ogre" }), "| Prone (needs none):", E.withOriginName("Prone", { settings: [] }, "Actor.Ogre", null));

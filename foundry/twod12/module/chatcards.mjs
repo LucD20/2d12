@@ -151,10 +151,17 @@ export function poolLines(parts) {
     return `<span class="cc-pl">${poolIc(k)}${poolSr(k)} ${bits.join(" + ")}</span>`;
   }).join('<span class="cc-dot" aria-hidden="true"> · </span>');
 }
+/**
+ * v0.0.317 (Lucas: "Frightened could fit next to 'and' but goes into a new paragraph"): a rider with buttons in it is one sentence that flows on
+ * from the ↳ (cc-rtext, inline, no box); a rider of plain words keeps its framed chip.
+ */
+export const riderHtml = h => (/<a\b|class="fxname"|data-twod12-inline/.test(h)
+  ? `<div class="cc-rider cc-rflow"><span class="cc-rtext"><span class="cc-rarrow" aria-hidden="true">↳</span> ${h}</span></div>`
+  : `<div class="cc-rider"><span aria-hidden="true">↳</span> <span class="cc-rchip">${h}</span></div>`);
 /** The outcome of one Tier: the damage line, then each rider on its own line ("↳ Pushed 2"). o: { parts, riders: [html] } */
 export function outcomeHtml(o, { none = "" } = {}) {
   const dmg = poolLines(o?.parts);
-  const riders = (o?.riders ?? []).filter(Boolean).map(h => `<div class="cc-rider"><span aria-hidden="true">↳</span> <span class="cc-rchip">${h}</span></div>`).join("");
+  const riders = (o?.riders ?? []).filter(Boolean).map(riderHtml).join("");
   if (!dmg && !riders) return none ? `<div class="cc-none">${esc(none)}</div>` : "";
   return `${dmg ? `<div class="cc-dmgline">${dmg}</div>` : ""}${riders}`;
 }
@@ -261,7 +268,7 @@ export function saveCardHtml(m, view = FULL_VIEW) {
     : view.owns(c.uuid) ? rollBtn(i) : '<span class="cc-muted">Waiting\u2026</span>'}</div>`).join("")}</div>`;
   // v0.0.287 (Lucas): the target row at the bottom, with the Damage button, as on the attack card
   const saveDmg = cs.some(c => c.result && c.hasDamage && !c.damageDone);
-  const action = one && !r ? (view.owns(cs[0]?.uuid) ? `<div class="cc-btns">${rollBtn(0)}</div>` : `<div class="cc-muted cc-wait">Waiting for ${esc(cs[0]?.name ?? "the target")}'s ${esc(m.saveName)}\u2026</div>`) : "";
+  const action = !cs.length ? '<div class="cc-muted cc-wait">No target yet: target the creatures, then press the target button below.</div>' : one && !r ? (view.owns(cs[0]?.uuid) ? `<div class="cc-btns">${rollBtn(0)}</div>` : `<div class="cc-muted cc-wait">Waiting for ${esc(cs[0]?.name ?? "the target")}'s ${esc(m.saveName)}\u2026</div>`) : "";
   // v0.0.294 (brief section 12): the Trigger / Interrupt under the meta lines and the Save line, above the Tier rows, then one diamond
   const trig = triggerLineHtml(m);
   const flavor = m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "";
@@ -452,7 +459,7 @@ export function damageCardHtml(m, view = FULL_VIEW) {
     const insts = instancesOf(g.comps), id = `g${gi}`;
     const pools = `<button type="button" class="cc-pools" data-cc-toggle="${id}" aria-expanded="false" aria-label="Show the damage dice">${poolBlock(g.comps) || '<span class="cc-muted">No damage.</span>'}</button><div class="cc-break dmg" data-cc-panel="${id}">${insts.map(instBlock).join("")}</div>`;
     const head = many ? `<div class="cc-ghead">${tierPill(g.tier, g.crit, true)}<span>${poolLinesSummary(g.comps)}</span><b>${sum(g.comps)}</b></div>` : "";
-    const riders = (g.riders ?? []).filter(Boolean).map(h => `<div class="cc-rider"><span aria-hidden="true">↳</span> <span class="cc-rchip">${h}</span></div>`).join("");
+    const riders = (g.riders ?? []).filter(Boolean).map(riderHtml).join("");
     return `<div class="cc-dgroup">${head}${pools}${riders}<div class="cc-trows">${(g.rows ?? []).map(rowHtml).join("")}</div></div>`;
   }).join("");
   const noTgt = !rows.length && view.author ? '<div class="cc-btns"><button type="button" class="cc-btn" data-twod12="ccDmgTarget"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i> Target the selected tokens</button></div>' : "";
