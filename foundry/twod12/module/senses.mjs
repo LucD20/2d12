@@ -64,23 +64,24 @@ export function giveHearing(actor) {
   } catch (e) { console.warn("twod12 | could not add Hearing", e); }
 }
 
-/** game.twod12.addHearing(): give the Hearing detection mode to every existing character (prototype token and placed tokens). */
-export async function addHearing() {
+/** game.twod12.addHearing(): give the Hearing detection mode to every existing creature (prototype token and placed tokens); v0.0.318: NPCs too. */
+export async function addHearing({ quiet = false } = {}) {   // v0.0.318: every creature (NPCs too), not only characters
   let n = 0;
-  for (const actor of game.actors.filter(a => a.type === "character")) {
+  for (const actor of game.actors.filter(a => a.type === "character" || a.type === "npc")) {
     const modes = modeList(actor.prototypeToken.toObject().detectionModes);
     if (!modes.some(m => m.id === MODE_ID)) { await actor.update({ "prototypeToken.detectionModes": [...modes, { id: MODE_ID, enabled: true, range: null }] }); n++; }
   }
   for (const scene of game.scenes) {
     const updates = [];
     for (const t of scene.tokens) {
-      if (t.actor?.type !== "character") continue;
+      if (!["character", "npc"].includes(t.actor?.type)) continue;
       const modes = modeList(t.toObject().detectionModes);
       if (!modes.some(m => m.id === MODE_ID)) updates.push({ _id: t.id, detectionModes: [...modes, { id: MODE_ID, enabled: true, range: null }] });
     }
     if (updates.length) await scene.updateEmbeddedDocuments("Token", updates);
   }
-  ui.notifications.info(`Hearing added to ${n} character${n === 1 ? "" : "s"} and their tokens.`);
+  if (!quiet) ui.notifications.info(`Hearing added to ${n} creature${n === 1 ? "" : "s"} and their tokens.`);
+  return n;
 }
 
 /** How a creature is perceived by the other side, from the GM's statuses: "unsensed", "hidden", "obscured" or "" (Clear). */
