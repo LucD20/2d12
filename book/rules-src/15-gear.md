@@ -105,7 +105,7 @@ A **Firearm** shoots with powder, such as a pistol or a musket. It is not a Proj
 
 #### Long
 
-A weapon with the **Long** property is made to keep enemies at a distance: you take **1 Bane** on Weapon Actions with it against adjacent creatures, and it doesn't threaten them (see [[Flanking]]). A Pike has Range 3 and Long.
+A weapon with the **Long** property is made to keep enemies at a distance: you take **1 Field Bane** on Weapon Actions with it against adjacent creatures, and it doesn't threaten them (see [[Flanking]]). A Pike has Range 3 and Long.
 
 #### Projectile
 
