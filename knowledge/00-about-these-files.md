@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-09 from the repository at: cbc912b 2026-11-09 v0.0.312: every Initiative row the same height (Lucas)
+Built by tools/knowledge.py on 2026-11-09 from the repository at: b0484d1 2026-11-09 v0.0.313: the Initiative window's Side line fixed against Foundry's label and select styles (Lucas)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (75 KB)
+- HANDOFF.md (76 KB)
 - MASTER-PLAN.md (18 KB)
 - open-design-items.md (86 KB)
 - rules-01-roll.md (23 KB)

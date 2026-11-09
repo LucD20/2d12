@@ -3,6 +3,7 @@
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
 ## Where we are now (v0.0.313, 217 tests; READ THIS FIRST)
+- **PACK MOD and PACK INITIATIVE merged to main (2026-11-09, v0.0.305 to v0.0.313; Lucas: "All works now"; a fast-forward, no conflicts).** In: Weapon and Power Modifiers as class values (book and Foundry), Vs. an Attribute = 12 + the Attribute, NPC Modifier ratings, the NPC Builder tab reworked, the Initiative windows (GM and players). Left: the ruler's Stage builds and `rbestiary.mjs` on the new Modifiers (rules-backlog "MOD APPLIED"); the Attribute Save DC and the Attributes and Skills chapter (D3). **NEXT: AU, the rest of the automations** (MASTER-PLAN AU), then playtest 4.
 - **v0.0.313 (2026-11-09, branch `pack-initiative`): Lucas on v0.0.312:** the ⇄ Side line fixed. **NEXT:** Lucas's test, the merges of `pack-mod` and `pack-initiative`, then AU.
 - **v0.0.312 (2026-11-09, branch `pack-initiative`): Lucas on v0.0.311:** every Initiative row the same height. **NEXT:** Lucas's test, the merges of `pack-mod` and `pack-initiative`, then AU.
 - **v0.0.311 (2026-11-09, branch `pack-initiative`): Lucas tested v0.0.310 ("Mostly works"):** the Initiative rows no longer shift when a note appears; the Check dropdown centered. **NEXT:** Lucas's test, the merges of `pack-mod` and `pack-initiative`, then AU.
