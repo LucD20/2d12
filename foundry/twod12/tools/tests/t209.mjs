@@ -141,17 +141,7 @@ console.log("the Action's name opens it:", html.includes('data-twod12="rxOpen" d
 const mo2 = src("module/moment.mjs");
 console.log("the move's movement kept before it (refunded on Move back):", mo2.includes("const flags = c ? { freeMove: Number(c.getFlag(F, \"freeMove\")) || 0") && mo2.includes("await doc.update({ x: to.x, y: to.y }, { twod12Forced: true, animate: true });"));
 const cb = src("module/combat.mjs"), car = src("module/carousel.mjs");
-const { initSkipped: skipped } = await import(ROOTURL + "module/combat.mjs");
-const cbt = (init, owner, flag) => ({ initiative: init, hasPlayerOwner: owner, getFlag: () => flag });
-console.log("Initiative: a player's creature skips by default:", skipped(cbt(null, true)), "| an NPC is left out:", skipped(cbt(null, false)), "| the chip overrides:", skipped(cbt(null, true, false)), skipped(cbt(null, false, true)));
-const IW = await import(ROOTURL + "module/initwindow.mjs");
-const iwList = [{ id: "a", name: "Nari", side: 1 }, { id: "b", name: "Orc", side: -1 }];
-const iw0 = { attr: "instinct", per: {}, boons: 0, banes: 0, skip: ["a"] };
-const iwm = IW.initiativeModel(iwList, iw0), iwSec = iwm.sections.find(x => x.rows?.some(r => r.key === "per:a"));
-console.log("v0.0.274: Rolls / Skips in the Initiative window, beside another Attribute:", iwSec.title, "|", iwSec.rows.map(r => `${r.label}: ${r.opts[0].l}`).join(", "), "| rolling:", iwm.stats.find(x => x[0] === "Rolling")[1]);
-const iw1 = IW.initiativePick(iw0, "per:a", "__roll"), iw2 = IW.initiativePick(iw1, "per:b", "__roll");
-console.log("a click includes Nari:", JSON.stringify(iw1.skip), "| and leaves out the Orc:", JSON.stringify(iw2.skip), "| nobody rolling can't confirm:", IW.initiativeModel(iwList, { ...iw0, skip: ["a", "b"] }).complete, "| a portrait's roll has no chips:", !IW.initiativeModel(iwList, { ...iw0, skip: null }).sections.some(x => x.rows?.some(r => r.opts?.[0]?.k === "__roll")));
-console.log("the strip's button and the tracker's roll the ones still to roll, the window says who skips:", car.includes('if (k === "init") return rollPendingInitiative(combat);') && cb.includes("btn.addEventListener(\"click\", () => rollPendingInitiative(combat));") && cb.includes("return combat.rollInitiative(ids, { chooseWho: true });"), "| no chip on the strip any more:", !car.includes('data-tc="initskip"'));
+console.log("v0.0.310: the Initiative button: the GM opens the Initiative window, a player rolls their own:", car.includes('if (k === "init") return rollPendingInitiative(combat);') && cb.includes("btn.addEventListener(\"click\", () => rollPendingInitiative(combat));") && cb.includes("return openInitiative(combat);") && cb.includes("return combat.rollInitiative(ids);"), "| no chip on the strip any more:", !car.includes('data-tc="initskip"'));
 const MS = await import(ROOTURL + "module/moveseq.mjs");
 MS.newMoveAction("c1"); const k1 = MS.moveActionOf("c1"); MS.newMoveAction("c1");
 console.log("v0.0.274: a new Move Action, a new key (Opportunity Attack again after a second Advance):", k1, MS.moveActionOf("c1"), "| counted by move.mjs:", src("module/move.mjs").includes("if (spent && !useEvade) newMoveAction(c.id);") && src("module/move.mjs").includes('if (kind !== "evade") newMoveAction(c.id);'), "| the moment's key:", src("module/moment.mjs").includes("|${moveActionOf(cbt?.id)}`;"));

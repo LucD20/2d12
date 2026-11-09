@@ -16,6 +16,7 @@ import { chatChips } from "./chatchips.mjs";
 import { registerEscalationHooks, registerMomentumSetting, escalationAll } from "./escalation.mjs";
 import { registerStateHooks } from "./states.mjs";
 import { registerMigrationR, registerMigrationMod } from "./migrater.mjs";
+import { registerInitiativeSettings, registerInitiativeSocket } from "./initwindow.mjs";
 import { registerArmorHooks } from "./armor.mjs";
 import { registerFloatText } from "./floattext.mjs";
 import { registerEffectEditor } from "./fxeditor.mjs";
@@ -71,6 +72,7 @@ Hooks.once("init", () => {
   registerEscalationHooks();
   registerMomentumSetting();   // v0.0.243 (pack R)
   registerStateHooks();   // v0.0.243: Bloodied / Strained announced, the Escalation hooks
+  registerInitiativeSettings();   // v0.0.310: Initiative opens for the players; NPCs in the players' window
   registerMigrationMod();   // v0.0.305 (pack MOD): each character keeps the order of its Modifiers, once (before the R migration may refresh the classes)
   registerMigrationR();   // v0.0.243: existing characters brought to pack R, once, by the GM
   registerAuraHooks();
@@ -296,6 +298,7 @@ Hooks.on("renderChatMessage", rxRender);
 Hooks.on("renderChatMessage", collapsibleCards);
 
 // "Roll Damage" buttons on action cards (delegated so it works regardless of chat re-rendering).
+Hooks.once("ready", () => { try { registerInitiativeSocket(); } catch (e) { console.warn("twod12 | initiative socket", e); } });   // v0.0.310: the players' Initiative windows
 Hooks.once("ready", async () => {
   document.addEventListener("click", async ev => {
     const inl = ev.target.closest?.("[data-twod12-inline]");

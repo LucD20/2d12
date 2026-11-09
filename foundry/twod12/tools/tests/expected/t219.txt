@@ -1,0 +1,97 @@
+--- 9 enemies (one hidden, Secret): stacks on
+Instinct Check · 13 creatures · 2 sides · ties: higher Modifier, then Friendly
+Open for the players too: Krysta (waiting) · Dave (GM rolls) · stacks on: more than 5 enemies
+== ▾ Heroes (Friendly · wins ties) 3 creatures
+Paladin | Player: Krysta | who wait (Waiting · your settings go to Krysta) | instinct fav false doom false boons 1 banes 0 | changed
+Archer | Player: Dave | who gm | instinct fav true doom false boons 0 banes 0 | changed
+Town Guard | GM · ally | Dying | Goes last | who gm | instinct fav false doom false boons 0 banes 0 | plain
+== ▾ Enemies (Hostile) 10 creatures
+Bandit Thug | GM | Exhausted 1: −1 | who gm | instinct fav false doom false boons 0 banes 0 | plain
+Goblin Minion [×6 ▾ show each] | GM | Exhausted 1: −1 (4) | who gm | instinct fav false doom false boons 0 banes 0 | plain
+Grave Wisp | GM | who gm | mind* fav false doom false boons 0 banes 0 | changed
+Ogre Chieftain | GM | who gm | rolled 15 with Instinct  | quiet
+Lurking Shade | GM | who gm | instinct fav false doom false boons 0 banes 0 | plain
+GM rolls now: Archer, Bandit Thug, Goblin Minion ×6, Grave Wisp (Mind), Lurking Shade
+Their player rolls: Paladin · Wait: nobody
+Kept: Ogre Chieftain 15 · Goes last: Town Guard
+[Roll 10 · 1 player pending]
+--- the Goblin stack expanded, the Bandit Thug's side folded? (Enemies stays open), Heroes folded
+Instinct Check · 13 creatures · 2 sides · ties: higher Modifier, then Friendly
+Open for the players too: Krysta (waiting) · Dave (GM rolls) · stacks on: more than 5 enemies
+== ▸ Heroes (Friendly · wins ties) 3 creatures
+Paladin | Player: Krysta | who wait (Waiting · your settings go to Krysta) | instinct fav false doom false boons 1 banes 0 | changed
+Archer | Player: Dave | who gm | instinct fav true doom false boons 0 banes 0 | changed
+Town Guard | GM · ally | Dying | Goes last | who gm | instinct fav false doom false boons 0 banes 0 | plain
+== ▾ Enemies (Hostile) 10 creatures
+Bandit Thug | GM | Exhausted 1: −1 | who gm | instinct fav false doom false boons 0 banes 0 | plain
+Goblin Minion [×6 ▴ hide each] | GM | Exhausted 1: −1 (4) | who gm | instinct fav false doom false boons 0 banes 0 | plain
+  └ Goblin Minion 1 | GM | who gm | instinct fav false doom false boons 0 banes 0 | plain
+  └ Goblin Minion 2 | GM | who gm | instinct fav false doom false boons 0 banes 0 | plain
+  └ Goblin Minion 3 | GM | who gm | instinct fav false doom false boons 0 banes 0 | plain
+  └ Goblin Minion 4 | GM | Exhausted 1: −1 | who gm | instinct fav false doom false boons 0 banes 0 | plain
+  └ Goblin Minion 5 | GM | who gm | instinct fav false doom false boons 0 banes 0 | plain
+  └ Goblin Minion 6 | GM | who gm | instinct fav false doom false boons 0 banes 0 | plain
+Grave Wisp | GM | who gm | mind* fav false doom false boons 0 banes 0 | changed
+Ogre Chieftain | GM | who gm | rolled 15 with Instinct  | quiet
+Lurking Shade | GM | who gm | instinct fav false doom false boons 0 banes 0 | plain
+GM rolls now: Archer, Bandit Thug, Goblin Minion ×6, Grave Wisp (Mind), Lurking Shade
+Their player rolls: Paladin · Wait: nobody
+Kept: Ogre Chieftain 15 · Goes last: Town Guard
+[Roll 10 · 1 player pending]
+--- exactly 5 enemies: no stacks
+Instinct Check · 8 creatures · 2 sides · ties: higher Modifier, then Friendly
+Open for the players too: Krysta (waiting) · Dave (GM rolls) · no stacks: 5 enemies or fewer
+== ▾ Heroes (Friendly · wins ties) 3 creatures
+Paladin | Player: Krysta | who wait (Waiting · your settings go to Krysta) | instinct fav false doom false boons 1 banes 0 | changed
+Archer | Player: Dave | who gm | instinct fav true doom false boons 0 banes 0 | changed
+Town Guard | GM · ally | Dying | Goes last | who gm | instinct fav false doom false boons 0 banes 0 | plain
+== ▾ Enemies (Hostile) 5 creatures
+Goblin Minion 1 | GM | who gm | instinct fav false doom false boons 0 banes 0 | plain
+Goblin Minion 2 | GM | who gm | instinct fav false doom false boons 0 banes 0 | plain
+Goblin Minion 3 | GM | who gm | instinct fav false doom false boons 0 banes 0 | plain
+Bandit Thug 1 | GM | who gm | instinct fav false doom false boons 0 banes 0 | plain
+Bandit Thug 2 | GM | who gm | instinct fav false doom false boons 0 banes 0 | plain
+GM rolls now: Archer, Goblin Minion 1, Goblin Minion 2, Goblin Minion 3, Bandit Thug 1, Bandit Thug 2
+Their player rolls: Paladin · Wait: nobody
+Kept: nobody · Goes last: Town Guard
+[Roll 6 · 1 player pending]
+6 enemies stack, 5 don't: true false | Secret is Hostile: hostile | Neutral: neutral
+--- the GM's clicks (the combatant flags they write)
+stack Boons +: {"gob1":{"boons":1},"gob2":{"boons":1},"gob3":{"boons":1},"gob4":{"boons":1},"gob5":{"boons":1},"gob6":{"boons":1}}
+a member differs: the stack shows ·: · | its Check is mixed when one member changes it: true
+the Check back to the called one clears it: {"pal":{"boons":1,"attr":""}} | another one is kept: {"pal":{"boons":1,"attr":"body"}}
+Favored and Doomed toggle: {"pal":{"boons":1,"fav":true}} {"pal":{"fav":false}}
+to a Fourth side: {"thg":{"side":"fourth"}} | Goes last: {"thg":{"last":true}} | GM rolls all (the rolled Ogre untouched): 12 of 13
+a Fourth side appears: Heroes (Friendly · wins ties) | Enemies (Hostile) | Fourth side (moved by the GM)
+Boons can't go under the GM's own (an effect's stay): {"pal":{"boons":0}}
+--- the roll's pieces (performCheck)
+Favored and Doomed: {"attr":"instinct","mod":0,"boons":0,"banes":0,"manualBoons":0,"manualBanes":0,"favored":true,"doomed":true,"adj":0,"adjLabel":""} | the row says: true
+Exhausted 1 and an effect's Boon with the GM's: {"attr":"instinct","mod":1,"boons":2,"banes":0,"manualBoons":1,"manualBanes":0,"favored":false,"doomed":false,"adj":-1,"adjLabel":"Exhausted 1"}
+an effect's Favored lights the toggle (locked): {"fav":true,"favFx":true,"favBy":"Bless"}
+the Wisp rolls Mind: {"attr":"mind","mod":3,"boons":0,"banes":0,"manualBoons":0,"manualBanes":0,"favored":false,"doomed":false,"adj":0,"adjLabel":""}
+the header changes: rows without their own follow it: body | the Wisp keeps Mind: mind
+--- Goes last: no roll, after everyone, by the tie rule
+b > c > a | not in the GM's roll: true
+--- the players' window (Krysta)
+Instinct Check, called by the GM
+YOUR ROLL: Paladin | Instinct +0 | 1 Boon · from the GM | Roll | The GM set your Check and Boons. Your own effects are already in the roll.
+Heroes: Archer (the GM rolls), Town Guard (goes last)
+Enemies: Bandit Thug (waiting), Goblin Minion ×6 (waiting), Grave Wisp (waiting), Ogre Chieftain (rolled)
+NPCs until combat starts: Enemies: Shown when combat starts | after: Enemies: 4 lines
+no number for NPCs, the hidden Shade never listed: true true
+the GM rolls this one: true false
+--- the HTML (pure)
+header Check buttons: 4 | Instinct pressed: true | GM rolls all: true | column labels: true
+the stack button and 6 member rows: true 6 | ⇄ and ⤓ buttons: 14 14
+the orange row (Paladin: 1 Boon) and the overridden Check border: true true | Reroll on the Ogre: true | Roll is the only iw-go: 1
+no old pieces (This roll, Same, Rolls/Skips): true | footer hint: true
+player window: Roll button, the GM's chip, the tracker line: true true true | no setting controls: true
+text: Initiative Instinct Check, called by the GM Paladin Instinct +0 1 Boon · from the GM Roll The GM set your Check and Boons. Your own effects are already in the roll. Heroes Archer the GM rolls Town Guard goes last Enemies Bandit Thug waiting Goblin Minion ×6 wa
+--- wiring
+the GM's roll opens the window, a player's rolls at once: true
+Goes last after the zipper, by the tie rule: true | the side flag and Secret as Hostile in the order: true
+the roll: performCheck with the effects and Exhausted: true
+the socket and the settings: true
+Dying or Shattered: Goes last on when the window opens (once): true | live updates: true | Enter and Esc: true
+no DialogV2 in the Initiative windows: true | the old window's model gone: true
+Known limits: initiative no longer skips Exhausted: true

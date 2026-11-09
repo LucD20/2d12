@@ -2,12 +2,11 @@ import { logEvent, makeLine } from "./ticker.mjs";
 import { swapCardHtml, thawLineHtml, sysLine } from "./sysmsg.mjs";
 import { apGuardOf } from "./guard.mjs";
 import { hasMomentum, setMomentum } from "./escalation.mjs";
-import { askInitiative } from "./initwindow.mjs";
-import { initCardData, initCardHtml } from "./initcard.mjs";
+import { sideDisp, lastOrder } from "./initmodel.mjs";   // v0.0.310: the Initiative windows (initwindow.mjs, loaded when used)
 import { groupColor } from "./config.mjs";
 // Combat: attribute-roll Initiative for everyone, "zipper" turn order between the two sides,
 // and an Action Points counter per combatant (shown and editable in the tracker, changes sent to the chat).
-import { performCheck, esc, combineRolls } from "./roll.mjs";
+import { esc } from "./roll.mjs";
 import { TWOD12 } from "./config.mjs";
 import { forgetRestored } from "./effects.mjs";
 import { unset } from "./util.mjs";   // v0.0.277: removing a key without the legacy "-=" syntax
@@ -60,16 +59,14 @@ export async function climbUp(c) {
 }
 export const getAP = c => Number(c?.getFlag(F, "ap")) || 0;
 
-/** v0.0.273 (Lucas): the Initiative button rolls only the creatures that haven't rolled. v0.0.274 (Lucas): who rolls is chosen in the
- *  Initiative window (a Rolls / Skips chip per creature, beside "another Attribute"); a player's creature skips by default (its player rolls
- *  it), and the window remembers the choice (the flag twod12.initSkip). Pure. */
-export const initSkipped = c => { const f = c?.getFlag?.(F, "initSkip"); return typeof f === "boolean" ? f : !!c?.hasPlayerOwner; };
 export const initRollIds = combat => [...(combat?.combatants ?? [])].filter(c => c.initiative === null || c.initiative === undefined).map(c => c.id);
-/** The Initiative button: the ones still to roll (a line when there is none); the window says who skips. */
+/** v0.0.310 (Lucas): the Initiative button. The GM opens the Initiative window (who rolls is chosen there); a player rolls their own creatures still to roll. */
 export async function rollPendingInitiative(combat) {
-  const ids = initRollIds(combat);
-  if (!ids.length) return ui.notifications.info("Every creature has rolled its initiative.");
-  return combat.rollInitiative(ids, { chooseWho: true });
+  if (!combat) return;
+  if (game.user.isGM) { const { openInitiative } = await import("./initwindow.mjs"); return openInitiative(combat); }
+  const ids = initRollIds(combat).filter(id => combat.combatants.get(id)?.isOwner);
+  if (!ids.length) return ui.notifications.info("Your creatures have rolled their initiative.");
+  return combat.rollInitiative(ids);
 }
 export function combatantOf(actor, combat = game.combat) {
   if (!combat || !actor) return null;
@@ -144,11 +141,15 @@ export async function spendAP(actor, cost, label = "", { quiet = false, reaction
 }
 
 /* ---- Zipper order ---- */
-/** Creatures are grouped by token disposition (Friendly, Neutral, Hostile, Secret): usually the PCs against one group of enemies, but a three-way fight works too. */
+/** Creatures are grouped by token disposition (Friendly, Neutral, Hostile): usually the PCs against one group of enemies, but a three-way fight works too.
+ *  v0.0.310 (Lucas, the Initiative window): a side the GM chose in the window (the combatant flag twod12.init.side: a Fourth side too) comes first,
+ *  and Secret counts as Hostile (it was a side of its own), so the order matches the window's sides. */
 const sideOf = c => {
+  const own = c.getFlag?.(F, "init")?.side;
+  if (own) return sideDisp(own);
   const d = c.token?.disposition;
-  if (d !== undefined && d !== null) return d;
-  return c.actor?.type === "character" ? CONST.TOKEN_DISPOSITIONS.FRIENDLY : CONST.TOKEN_DISPOSITIONS.HOSTILE;
+  if (d !== undefined && d !== null) return d < -1 ? -1 : d;
+  return c.actor?.type === "character" ? 1 : -1;
 };
 
 /**
@@ -179,46 +180,31 @@ export class TwoD12Combat extends Combat {
 
   setupTurns() {
     const tieAttr = c => Number(c.getFlag?.(F, "initAttr")) || 0;
-    const disp = c => c.token?.disposition ?? (c.actor?.type === "character" ? 1 : -1);
-    const base = [...super.setupTurns()].sort((a, b) => ((b.initiative ?? -Infinity) - (a.initiative ?? -Infinity)) || (tieAttr(b) - tieAttr(a)) || (disp(b) - disp(a)));
-    const ordered = zipper([...base]);
+    const all = [...super.setupTurns()].sort((a, b) => ((b.initiative ?? -Infinity) - (a.initiative ?? -Infinity)) || (tieAttr(b) - tieAttr(a)) || (sideOf(b) - sideOf(a)));
+    // v0.0.310 (Lucas): a creature that goes last (Dying or Shattered before the encounter) doesn't roll and is placed after everyone,
+    // several of them by the tie rule (the higher Attribute Modifier for the called Check, then Friendly)
+    const isLast = c => !!c.getFlag?.(F, "init")?.last;
+    const call = { attr: this.getFlag?.(F, "initCall")?.attr || "instinct" };
+    const lastC = all.filter(isLast), base = all.filter(c => !isLast(c));
+    const lastIds = lastOrder(lastC.map(c => ({ id: c.id, mods: c.actor?.system?.attributes ?? {}, set: c.getFlag?.(F, "init") ?? {}, disp: sideOf(c) })), call).map(x => x.id);
+    const ordered = [...zipper([...base]), ...lastIds.map(id => lastC.find(c => c.id === id))];
     this.turns = ordered;
     const c = ordered[this.turn];
     if (this.current) { this.current.combatantId = c?.id ?? null; this.current.tokenId = c?.tokenId ?? null; }
     return ordered;
   }
 
-  /** Everyone rolls the same Attribute Check (asked once). */
+  /**
+   * v0.0.310 (Lucas): the GM's roll opens the Initiative window (initwindow.mjs: who rolls, each creature's Check, Favored, Doomed, Boons and
+   * Banes); a player's roll (portrait, tracker, sheet) rolls their own creatures at once with the GM's settings and their own effects.
+   * options.direct: roll these now, without the window (the GM too).
+   */
   async rollInitiative(ids, options = {}) {
     ids = typeof ids === "string" ? [ids] : [...ids];
-    let list = ids.map(id => this.combatants.get(id)).filter(c => c?.isOwner && c.actor);
-    if (!list.length) return this;
-    const ask = await askInitiative(list, { skip: options.chooseWho ? list.filter(c => initSkipped(c)).map(c => c.id) : null });
-    if (!ask?.attr) return this;
-    // v0.0.274 (Lucas): the creatures the window left out don't roll; the window remembers the choice for the next time
-    if (options.chooseWho) {
-      const skip = new Set(ask.skip ?? []);
-      for (const c of list) if (initSkipped(c) !== skip.has(c.id)) await c.setFlag(F, "initSkip", skip.has(c.id));
-      list = list.filter(c => !skip.has(c.id));
-      if (!list.length) return this;
-    }
-    const curId = this.started ? this.combatant?.id : null;
-    const rows = [], rolls = [], updates = [];
-    for (const c of list) {
-      const attr = ask.per?.[c.id] || ask.attr;
-      const mod = c.actor.system.attributes?.[attr] ?? 0;
-      const r = await performCheck({ mod, boons: ask.boons, banes: ask.banes, manualBoons: ask.boons, manualBanes: ask.banes, favored: ask.favored, doomed: ask.doomed, noDoubles: true });
-      rolls.push(...r.rolls);
-      updates.push({ _id: c.id, initiative: r.total, [`flags.${F}.initAttr`]: mod });
-      rows.push({ id: c.id, name: c.name, side: sideOf(c), attr, mod, r });
-    }
-    await this.updateEmbeddedDocuments("Combatant", updates);
-    const all = combineRolls(rolls);
-    // v0.0.206 (Lucas, B4): the card lists them in the turn order the tracker now has (setupTurns: the zipper).
-    const data = initCardData(rows, (this.turns ?? []).map(c => c.id));
-    await ChatMessage.create({ rolls: all ? [all] : [], content: initCardHtml(data), flags: { [F]: { initiative: rows.map(x => ({ id: x.id, attr: x.attr, mod: x.mod, total: x.r.total })) } } });
-    // Keep the creature whose turn it is as the current one when the order changes.
-    if (curId) { const idx = this.turns.findIndex(c => c.id === curId); if (idx >= 0 && idx !== this.turn) await this.update({ turn: idx }); }
+    const W = await import("./initwindow.mjs");
+    if (game.user.isGM && !options.direct) { await W.openInitiative(this); return this; }
+    if (game.user.isGM) await W.rollCreatures(this, ids, "GM");
+    else await W.playerRoll(this, ids);
     return this;
   }
 }

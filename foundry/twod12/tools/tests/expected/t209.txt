@@ -44,10 +44,7 @@ who manages: true false true | time left paused: 41000 3000
 Move back (v0.0.275: on the base slab): Move Orc back to the square it left (4 sq.), the movement refunded | used: Orc went back to where its movement started; its movement is refunded
 the Action's name opens it: true | the item sheet's section: true
 the move's movement kept before it (refunded on Move back): true
-Initiative: a player's creature skips by default: true | an NPC is left out: false | the chip overrides: false true
-v0.0.274: Rolls / Skips in the Initiative window, beside another Attribute: Who rolls, and another Attribute for some | Nari: Skips, Orc: Rolls | rolling: Orc
-a click includes Nari: [] | and leaves out the Orc: ["b"] | nobody rolling can't confirm: false | a portrait's roll has no chips: true
-the strip's button and the tracker's roll the ones still to roll, the window says who skips: true | no chip on the strip any more: true
+v0.0.310: the Initiative button: the GM opens the Initiative window, a player rolls their own: true | no chip on the strip any more: true
 v0.0.274: a new Move Action, a new key (Opportunity Attack again after a second Advance): 1 2 | counted by move.mjs: true | the moment's key: true
 --- the eight cards' moments (book texts unchanged)
 Divine Intervention: wouldDown 5 +you (interrupt)
