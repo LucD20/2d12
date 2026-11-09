@@ -168,7 +168,8 @@ add("classes", "class", "Paladin", "icons/svg/angel.svg", {
   description: "<p>A holy warrior.</p>", category: "Class", flavor: "Your god's strength flows through your weapon and your hands.",
   // Pack R (v0.0.243; book, Chapter 4 and the class stat block): high 20 / low 10, Stage 2 +12 / +6, Stage 3 +14 / +7; Rally 6 (+ the Stage).
   choiceA: ["body", "appeal"], choiceB: ["mind", "instinct"], healthHigh: 20, healthLow: 10, stepHigh2: 12, stepLow2: 6, stepHigh3: 14, stepLow3: 7, bodyMult: 0, mindMult: 0, rallyMod: 6, speedMod: 0,
-  weaponAttrs: ["body", "appeal"], magicAttrs: ["mind", "appeal"], armorTraining: "heavy", features: [],
+  // v0.0.305 (pack MOD; book, the Paladin's stat box): the Modifiers are +2 and +1, the player chooses which is the Weapon Modifier (no Attribute lists).
+  modHigh: 2, modLow: 1, modOrder: "either", armorTraining: "heavy", features: [],
   repertoire: U(["Holy Wrath", "Word of Radiance", "Bulwark of Faith", "Beacon", "Consecrated Ground", "Miraculous Recovery", "Divine Intervention"]), escPassives: U(PAL_PASSIVES), escActives: U(PAL_APEX),
   levels: [
     { sections: [sec("pal1attr", "Attribute increases", "attr", { pairs: [["body", "appeal"], ["mind", "instinct"]] }), sec("pal1core", "Features", "items", { mode: "granted", items: U(["Divine Power", "Kindled Wrath"]) }),
@@ -189,7 +190,8 @@ add("classes", "class", "Archer", "icons/svg/target.svg", {
   description: "<p>An Archer fights from a distance.</p>", category: "Class", flavor: "You were made for the shot no one else would take.",
   // Pack R (v0.0.243): high 16 / low 8, Stage 2 +9 / +5, Stage 3 +11 / +6; Rally 5 (+ the Stage).
   choiceA: ["body", "instinct"], choiceB: ["mind", "appeal"], healthHigh: 16, healthLow: 8, stepHigh2: 9, stepLow2: 5, stepHigh3: 11, stepLow3: 6, bodyMult: 0, mindMult: 0, rallyMod: 5,
-  weaponAttrs: ["instinct", "body"], magicAttrs: ["mind", "appeal"], armorTraining: "medium", speedMod: 1, features: [],
+  // v0.0.305 (pack MOD; book, the Archer's stat box): Weapon +2, Power +1, fixed.
+  modHigh: 2, modLow: 1, modOrder: "weapon", armorTraining: "medium", speedMod: 1, features: [],
   repertoire: U(["Marksman's Shot", "Volley", "Covering Fire", "Pinning Shot", "Twin Shot", "Hunter's Focus", "Deadeye", "Rain of Arrows"]), escPassives: U(ARC_PASSIVES), escActives: U(ARC_APEX),
   levels: [
     { sections: [sec("arc1attr", "Attribute increases", "attr", { pairs: [["body", "instinct"], ["mind", "appeal"]] }), sec("arc1core", "Features", "items", { mode: "granted", items: U(["Sharpshooter", "Marked Quarry", "Thrill of the Kill"]) }),
@@ -212,12 +214,12 @@ const embedded = (actorName, type, name, img, system, flags = {}) => ({ _id: idO
 const npcWeapon = (actorName, text, img) => { const w = parseWeaponText(text); if (w.problems.length) throw new Error(`${text}: ${w.problems.join("; ")}`); return embedded(actorName, "weapon", w.name, img, { ...weaponSystemData(w), wielded: true }); };
 const npcAction = (actorName, name, img, system, flags = {}) => embedded(actorName, "action", name, img, system, flags);
 // The Bestiary (v0.0.163): a role and ratings. By default its Weapon Attribute is High, the others Medium, Appeal Low (Appeal Medium when Appeal is its Weapon Attribute).
-const npc = ({ name, img, role, weaponAttribute, powerAttribute = "mind", ratings = {}, speed = 5, extra = [] }) => {
+const npc = ({ name, img, role, weaponAttribute, powerAttribute = "mind", modLead = "weapon", ratings = {}, speed = 5, extra = [] }) => {
   const r = { body: "medium", mind: "medium", appeal: "low", instinct: "medium", bodyHm: "medium", mindHm: "medium", ad: "medium", wd: "medium", [weaponAttribute]: "high", ...ratings };
   const basics = Object.keys(BASIC_ACTIONS).filter(k => wanted({ type: "npc" }, k)).map(k => { const d = basicItemData(k); return embedded(name, "action", d.name, d.img, d.system, d.flags); });
   // v0.0.184: the Speed is a rating (3 to 7, or Custom with system.speed), as the Builder sets it
   r.speed = [3, 4, 5, 6, 7].includes(speed) ? String(speed) : "custom";
-  actors.push({ name, img, system: { level: 1, role, speed, weaponAttribute, powerAttribute, ratings: r, useEscalation: role === "elite" }, items: [...extra, ...basics, (() => { const f = fistsItemData(), e = embedded(name, "weapon", f.name, f.img, f.system, f.flags); e._id = idOf("Item", `${name}:weapon:Fists`); return e; })()] });
+  actors.push({ name, img, system: { level: 1, role, speed, weaponAttribute, powerAttribute, modLead, ratings: r, useEscalation: role === "elite" }, items: [...extra, ...basics, (() => { const f = fistsItemData(), e = embedded(name, "weapon", f.name, f.img, f.system, f.flags); e._id = idOf("Item", `${name}:weapon:Fists`); return e; })()] });
 };
 // v0.0.183 (Lucas: a complete rebuild, simple NPCs to test with): one NPC for each role, at Stage 1 (level 1). The Minion, the Standard and
 // the Elite are the Bestiary's own examples (book: Example NPCs; the Grave Wisp since pack R-bestiary); the Grunt follows the same recipe. Damage is the book's average for the
@@ -239,7 +241,7 @@ const npc = ({ name, img, role, weaponAttribute, powerAttribute = "mind", rating
 }
 // v0.0.240 (pack R-bestiary): a Standard that attacks Ward Defense only (its Actions are Power Actions dealing [R]); no weapon in its hands.
 {
-  npc({ name: "Grave Wisp", img: "icons/svg/mystery-man.svg", role: "standard", weaponAttribute: "instinct", powerAttribute: "mind",
+  npc({ name: "Grave Wisp", img: "icons/svg/mystery-man.svg", role: "standard", weaponAttribute: "instinct", powerAttribute: "mind", modLead: "power",
     ratings: { body: "low", mind: "high", appeal: "medium", instinct: "medium", bodyHm: "terrible", mindHm: "high", ad: "low", wd: "high" } });
 }
 {
@@ -367,13 +369,13 @@ const pcs = [];
 // v0.0.185: built as the class window would: the class copy records the choices of level 1 (flags classPicks / classAttrs, chosenAttrs) and
 // every item the class gave carries classLevel and classSection (a Talent also its slot), so levelling and re-dropping the class work on them.
 // v0.0.189 (Lucas: "too similar"): picks by level ({ 1: {...}, 2: {...}, 3: {...} }), so a PC can be built at level 3 as the class window would.
-const pc = ({ name, img, species, chosen, cls, attrs, picks, level = 1, weapon, armor = "", extras = [] }) => {
+const pc = ({ name, img, species, chosen, cls, attrs, picks, level = 1, lead = "weapon", weapon, armor = "", extras = [] }) => {
   const c = docOf("class", cls), lv1 = c.system.levels[0].sections, attrSec = lv1.find(x => x.kind === "attr");
   const byLevel = typeof Object.values(picks)[0] === "string" ? { 1: picks } : picks;
   const pickedAt = L => Object.fromEntries(Object.entries(byLevel[L] ?? {}).map(([id, n]) => [id, [uuidOf(PACK_OF[docOf(lv1Type(n), n).type], n)]]));
   const classPicks = Object.fromEntries(Array.from({ length: level }, (_, i) => [i + 1, pickedAt(i + 1)]));
   const items = [copyDoc(name, "species", species, {}, chosen ? { chosen } : {}),
-    copyDoc(name, "class", cls, { classPicks, classAttrs: { 1: attrs } }, { chosenA: attrs[0], chosenB: attrs[1], chosenAttrs: attrs, chosenWeapon: "", chosenMagic: "", modPriority: "weapon" })];
+    copyDoc(name, "class", cls, { classPicks, classAttrs: { 1: attrs } }, { chosenA: attrs[0], chosenB: attrs[1], chosenAttrs: attrs, chosenWeapon: "", chosenMagic: "", modPriority: lead })];
   if (!attrSec) throw new Error(`${cls}: no Attribute section at level 1`);
   const give = (n, section, kind, L) => {
     const type = lv1Type(n), it = copyDoc(name, type, n, { classLevel: L, classSection: section, ...(type === "feature" ? { grantedBy: "class", level: L } : {}), ...(kind === "talent" ? { slot: `class:${L}:${section}:0` } : {}) });
@@ -401,7 +403,7 @@ function lv1Type(n) { const d = ["talent", "feature", "action"].map(t => docs.fi
 // v0.0.189 (Lucas: the compendium PCs test different cards): two builds a class, one at level 1 and one at level 3, every pick different.
 pc({ name: "Paladin 1 (Smite, Heavy Blows)", img: "icons/svg/sun.svg", species: "Human", chosen: ["body", "appeal"], cls: "Paladin", attrs: ["body", "mind"],
   picks: { pal1hall: "Smite", pal1react: "Rebuke", pal1tal: "Heavy Blows", pal1enc: "Holy Wrath", pal1pass1: "Radiant Zeal", pal1pass2: "Searing Blows", pal1pass3: "Reckoning", pal1apex: "Final Verdict" }, weapon: "Greatsword", armor: "Heavy Armor" });
-pc({ name: "Paladin 3 (Lay On Hands, Protector)", img: "icons/svg/regen.svg", species: "Dwarf", cls: "Paladin", attrs: ["appeal", "mind"], level: 3,
+pc({ name: "Paladin 3 (Lay On Hands, Protector)", img: "icons/svg/regen.svg", species: "Dwarf", cls: "Paladin", attrs: ["appeal", "mind"], level: 3, lead: "power",
   picks: { 1: { pal1hall: "Lay On Hands", pal1react: "Shield of Faith", pal1tal: "Challenge", pal1enc: "Word of Radiance", pal1pass1: "Font of Mercy", pal1pass2: "Mending Light", pal1pass3: "Hallowed Stance", pal1apex: "Hallowed Dawn" },
     2: { pal2tal: "Bloodlust" }, 3: { pal3daily: "Miraculous Recovery", pal3tal: "Hand of Mercy" } }, weapon: "Greatsword", armor: "Heavy Armor" });
 pc({ name: "Archer 1 (Double Shot, Marksman)", img: "icons/svg/target.svg", species: "Elf", cls: "Archer", attrs: ["instinct", "mind"],

@@ -40,7 +40,7 @@ export function npcBuilderContext(actor) {
   // Attributes
   const attrRows = Object.entries(TWOD12.attributes).map(([k, label]) => {
     const r = nb.rating(k), v = nb.attributes[k];
-    const sub = [k === s.weaponAttribute ? "Weapon Attribute" : "", k === s.powerAttribute ? "Power Attribute" : ""].filter(Boolean).join(" \u00b7 ");
+    const sub = "";   // pack MOD (v0.0.305): no Weapon / Power Attribute (the role gives the Modifiers)
     const how = r === "custom" ? "Your number. Click a rating to use the table again" : `${R[r].label}, ${role.label}: ${sg(v)}`;
     return row(k, label, sub, x => sg(role.attr + R[x].off), sg(v), how, { name: `system.custom.${k}`, value: Number(s.custom?.[k]) || 0 },
       [v, role.attr + R[lo].off, role.attr + R[hi].off, sg]);
@@ -79,7 +79,7 @@ export function npcBuilderContext(actor) {
       return { key: "steadiness", r: String(v), label: String(v), value: v === 0 ? "default" : "", on, click: on ? "custom" : String(v), act: "setSteadiness", tip: on ? "Click again to clear it and type your own Steadiness" : "" }; }),
     how: stCustom ? "Your number. Click a button to use one of these again" : st ? `Forced Movement and Reposition against it are reduced by ${st}` : "Forced Movement and Reposition move it fully (a big or heavy creature can have 1 or more)" };
   const groups = [
-    { title: "Attributes", note: `Default: one High, two Medium, one Low. Weapon Modifier ${sg(s.weaponMod ?? 0)}, Power Modifier ${sg(s.powerMod ?? 0)}`, rows: attrRows },
+    { title: "Attributes", note: `Default: one High, two Medium, one Low. Modifiers (the role's, not the Attributes): Weapon ${sg(s.weaponMod ?? 0)}, Power ${sg(s.powerMod ?? 0)}`, rows: attrRows },
     { title: "Health", note: "(Attribute + 2) \u00d7 Multiplier + Base, each threshold rounded up", rows: [healthRow("body", "body", "Body Health"), healthRow("mind", "mind", "Mind Health")] },
     { title: "Defenses", note: "Picked independently", rows: [defRow("ad", "Armor Defense", "AD, against Weapon Actions", nb.armorDef, "system.armorDef"), defRow("wd", "Ward Defense", "WD, against Power Actions", nb.wardDef, "system.wardDef")] },
     { title: "Speed", note: "Speed is free, but strong: balance a fast or slow creature with the rest", rows: [speedRow] },

@@ -13,8 +13,8 @@ no class yet: Vigor 3 / Resolve 2 = 5 | nothing: Vigor 0 / Resolve 0 = 0
 --- the character data (stubs)
 level 1 (Stage 1): Vigor 23 Resolve 12 Pool 35 | Rally Points 7 (6 + Stage), each heals 9 | Weapon Modifier 2 | AP a turn 4
 level 4 (Stage 1): Vigor 23 Resolve 12 Pool 35 | Rally Points 7 (6 + Stage), each heals 9 | Weapon Modifier 2 | AP a turn 4
-level 5 (Stage 2): Vigor 35 Resolve 18 Pool 53 | Rally Points 8 (6 + Stage), each heals 14 | Weapon Modifier 2 | AP a turn 4
-level 8 (Stage 3): Vigor 49 Resolve 25 Pool 74 | Rally Points 9 (6 + Stage), each heals 19 | Weapon Modifier 3 | AP a turn 4
+level 5 (Stage 2): Vigor 35 Resolve 18 Pool 53 | Rally Points 8 (6 + Stage), each heals 14 | Weapon Modifier 3 | AP a turn 4
+level 8 (Stage 3): Vigor 49 Resolve 25 Pool 74 | Rally Points 9 (6 + Stage), each heals 19 | Weapon Modifier 4 | AP a turn 4
 high on Resolve: Vigor 12 Resolve 23 | healthLine: {"highSide":"resolve","bonusHighSide":"resolve","moved":0}
 Exhausted 2 lowers Resolve by 8: Resolve 4 (Rally heal still 9)
 an old class (multipliers, no high value) keeps the old formula until updated: Vigor 22 Resolve 16 | flagged old: true

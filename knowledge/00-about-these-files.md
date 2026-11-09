@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-09 from the repository at: d786475 2026-11-09 Pack MOD: the draft for review of Weapon and Power Modifiers as class values (book/modifiers-mod.md; nothing applied)
+Built by tools/knowledge.py on 2026-11-09 from the repository at: 9de73c0 2026-11-09 Pack MOD in the book: Weapon and Power Modifiers are class values (Lucas: "All defaults")
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (72 KB)
+- HANDOFF.md (73 KB)
 - MASTER-PLAN.md (18 KB)
 - open-design-items.md (86 KB)
 - rules-01-roll.md (23 KB)

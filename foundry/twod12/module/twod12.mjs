@@ -15,7 +15,7 @@ import { registerRegionSnap } from "./regionshape.mjs";
 import { chatChips } from "./chatchips.mjs";
 import { registerEscalationHooks, registerMomentumSetting, escalationAll } from "./escalation.mjs";
 import { registerStateHooks } from "./states.mjs";
-import { registerMigrationR } from "./migrater.mjs";
+import { registerMigrationR, registerMigrationMod } from "./migrater.mjs";
 import { registerArmorHooks } from "./armor.mjs";
 import { registerFloatText } from "./floattext.mjs";
 import { registerEffectEditor } from "./fxeditor.mjs";
@@ -71,6 +71,7 @@ Hooks.once("init", () => {
   registerEscalationHooks();
   registerMomentumSetting();   // v0.0.243 (pack R)
   registerStateHooks();   // v0.0.243: Bloodied / Strained announced, the Escalation hooks
+  registerMigrationMod();   // v0.0.305 (pack MOD): each character keeps the order of its Modifiers, once (before the R migration may refresh the classes)
   registerMigrationR();   // v0.0.243: existing characters brought to pack R, once, by the GM
   registerAuraHooks();
   registerHazardHooks();
@@ -129,6 +130,7 @@ Hooks.once("init", () => {
     refreshBasics: refreshAllBasics,
     refreshFromCompendium: (opts = {}) => (Object.keys(opts).length ? refreshFromCompendium(opts) : askRefresh()),   // v0.0.190: a macro can call it
     escalation: (delta = 1, actors = null) => escalationAll(delta, actors),
+    migrateMod: () => import("./migrater.mjs").then(m => m.migrateMod()),   // v0.0.305: the pack MOD migration again
     migrateR: () => import("./migrater.mjs").then(m => m.migrateR()),   // v0.0.243: the pack R migration again (Health line, Escalation 1, the cards refreshed)   // v0.0.243: the GM's valve: every PC in the combat +1 Escalation (or the given creatures)
     shadowedEffects,
     rulerInfo,

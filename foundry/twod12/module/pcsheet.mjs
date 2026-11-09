@@ -173,13 +173,18 @@ export async function pcModel(sheet, ctx) {
   const dcs = saveDCs({ weapon: s.weaponMod, power: s.powerMod, signature: s.signatureMod });
   const L = TWOD12.attributes;
   const usesPower = a.itemTypes.action.some(i => ["magic", "power"].some(t => i.system?.traits?.has?.(t)));
+  // v0.0.305 (pack MOD): the Modifiers are class values (a PC) or the role's (an NPC); a class copy from before keeps the Attribute it reads.
+  const vals = s.modSource === "class" || s.modSource === "role", whence = npc ? "its role" : "your class";
+  const from = k => (vals ? (npc ? "Role" : "Class") : (L[k] ?? "—"));
+  const fromTip = k => (vals ? `from ${whence}` : `from ${L[k] ?? "—"}`);
+  const has = k => vals || !!k;
   const mods = npc ? [
-    { label: "Weapon", attr: L[s.weaponAttribute] ?? "\u2014", value: sg(s.weaponMod), dc: `DC ${dcs.weapon}`, tip: `Weapon Modifier, from ${L[s.weaponAttribute] ?? "\u2014"} (half, rounded up, + 1). Save DC 11 + it (@weapon.dc)` },
-    ...(usesPower ? [{ label: "Power", attr: L[s.powerAttribute] ?? "\u2014", value: sg(s.powerMod), dc: `DC ${dcs.power}`, tip: `Power Modifier, from ${L[s.powerAttribute] ?? "\u2014"}. Save DC 11 + it (@power.dc)` }] : [])
+    { label: "Weapon", attr: from(s.weaponAttribute), value: sg(s.weaponMod), dc: `DC ${dcs.weapon}`, tip: `Weapon Modifier, ${fromTip(s.weaponAttribute)}. Save DC 11 + it (@weapon.dc)` },
+    ...(usesPower ? [{ label: "Power", attr: from(s.powerAttribute), value: sg(s.powerMod), dc: `DC ${dcs.power}`, tip: `Power Modifier, ${fromTip(s.powerAttribute)}. Save DC 11 + it (@power.dc)` }] : [])
   ] : [
-    { label: "Weapon", attr: L[s.weaponAttribute] ?? "—", value: s.weaponAttribute ? sg(s.weaponMod) : "—", dc: `DC ${dcs.weapon}`, tip: `Weapon Modifier, from ${L[s.weaponAttribute] ?? "—"}. Save DC 11 + it (@weapon.dc)` },
-    { label: "Power", attr: L[s.powerAttribute] ?? "—", value: s.powerAttribute ? sg(s.powerMod) : "—", dc: `DC ${dcs.power}`, tip: `Power Modifier, from ${L[s.powerAttribute] ?? "—"}. Save DC 11 + it (@power.dc)` },
-    { label: "Signature", attr: s.signatureFrom === "power" ? "Power" : "Weapon", value: s.signatureAttribute ? sg(s.signatureMod) : "—", dc: `DC ${dcs.signature}`, tip: `Signature Modifier: the higher of your Weapon and Power Modifiers (${L[s.signatureAttribute] ?? "—"}). Save DC 11 + it (@signature.dc)` }
+    { label: "Weapon", attr: from(s.weaponAttribute), value: has(s.weaponAttribute) ? sg(s.weaponMod) : "—", dc: `DC ${dcs.weapon}`, tip: `Weapon Modifier, ${fromTip(s.weaponAttribute)}. Save DC 11 + it (@weapon.dc)` },
+    { label: "Power", attr: from(s.powerAttribute), value: has(s.powerAttribute) ? sg(s.powerMod) : "—", dc: `DC ${dcs.power}`, tip: `Power Modifier, ${fromTip(s.powerAttribute)}; Ward Defense adds it. Save DC 11 + it (@power.dc)` },
+    { label: "Signature", attr: s.signatureFrom === "power" ? "Power" : "Weapon", value: has(s.signatureAttribute) ? sg(s.signatureMod) : "—", dc: `DC ${dcs.signature}`, tip: `Signature Modifier: the higher of your Weapon and Power Modifiers (${s.signatureFrom === "power" ? "Power" : "Weapon"}). Save DC 11 + it (@signature.dc)` }
   ];
 
   // ---- Wounds (a named Wound is an effect with the flag twod12.wound: "body" or "mind")
@@ -389,7 +394,7 @@ export async function pcModel(sheet, ctx) {
       stats: [{ v: ssys.speed, l: "Speed" }, { v: ssys.reach, l: "Reach" }, { v: SIZE_NAMES[ssys.size ?? s.size ?? 3] ?? "", l: "Size" }, { v: Number(ssys.steadiness) || 0, l: "Steady" }] }] : []),
     ...(cls ? [{ kind: "CLASS", name: `${cls.name} ${lv}`, choices: "openClass", choicesTip: "Open the class (its levels, choices and lists)",
       chips: [...chosen.map(k => ({ t: `${L[k]} +1` })), { t: `Vigor ${hl.classVigor ?? 0}`, cls: "v" }, { t: `Resolve ${hl.classResolve ?? 0}`, cls: "r" }],
-      stats: [{ v: L[s.weaponAttribute] ?? "—", l: "Weapon" }, { v: L[s.powerAttribute] ?? "—", l: "Power" }, { v: csys.rallyMod ?? 0, l: "Rally" }, { v: TWOD12.armorTrainings[s.armorTraining] ?? "—", l: "Armor" }] }] : [])
+      stats: [{ v: vals ? sg(s.weaponMod) : (L[s.weaponAttribute] ?? "—"), l: "Weapon" }, { v: vals ? sg(s.powerMod) : (L[s.powerAttribute] ?? "—"), l: "Power" }, { v: csys.rallyMod ?? 0, l: "Rally" }, { v: TWOD12.armorTrainings[s.armorTraining] ?? "—", l: "Armor" }] }] : [])
   ];
   const stNext = TWOD12.stages.find(x => x.n === (Number(s.stage) || 1) + 1);
   const next = cls ? nextLevels(lv, levels, stNext ? { at: stNext.from, n: stNext.n, health: [csys[`stepHigh${stNext.n}`] ?? 0, csys[`stepLow${stNext.n}`] ?? 0], guard: TWOD12.guardPerAp[stNext.n - 1], modifiers: (TWOD12.stageModStep[stNext.n - 1] ?? 0) > 0 } : null) : [];

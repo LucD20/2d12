@@ -12,9 +12,13 @@ export function rollSource(s, it) {
   const traits = it?.traits ?? new Set(), has = k => traits.has?.(k) ?? false;
   const ca = checkAttr(it, s?.attributes ?? null);
   const L = k => TWOD12.attributes[k] ?? "?";
-  if (has("signature")) return { kind: "signature", attrKey: s.signatureAttribute ?? "", mod: s.signatureAttribute ? s.signatureMod : 0, label: `Signature Modifier \u2022 ${L(s.signatureAttribute)}`, chip: "Signature Modifier", attrMode: "none", from: s.signatureFrom === "power" ? "power" : "weapon" };
-  if (has("weapon")) return { kind: "weapon", attrKey: s.weaponAttribute ?? "", mod: s.weaponAttribute ? s.weaponMod : 0, label: `Weapon Modifier \u2022 ${L(s.weaponAttribute)}`, chip: "Weapon Modifier", attrMode: "t2" };
-  if (has("magic")) return { kind: "power", attrKey: s.powerAttribute ?? s.magicAttribute ?? "", mod: (s.powerAttribute ?? s.magicAttribute) ? (s.powerMod ?? s.magicMod) : 0, label: `Power Modifier \u2022 ${L(s.powerAttribute ?? s.magicAttribute)}`, chip: "Power Modifier", attrMode: "none" };
+  // v0.0.305 (pack MOD): a class's or a role's Modifiers come from no Attribute (modSource "class" / "role"): no attrKey, so "Body Rolls" don't reach them.
+  const vals = s?.modSource === "class" || s?.modSource === "role";
+  const pAttr = s?.powerAttribute ?? s?.magicAttribute ?? "";
+  const pick = (key, mod) => vals ? { attrKey: "", mod: Number(mod) || 0, tail: "" } : { attrKey: key ?? "", mod: key ? mod : 0, tail: ` • ${L(key)}` };
+  if (has("signature")) { const x = pick(s.signatureAttribute, s.signatureMod); return { kind: "signature", attrKey: x.attrKey, mod: x.mod, label: `Signature Modifier${x.tail}`, chip: "Signature Modifier", attrMode: "none", from: s.signatureFrom === "power" ? "power" : "weapon" }; }
+  if (has("weapon")) { const x = pick(s.weaponAttribute, s.weaponMod); return { kind: "weapon", attrKey: x.attrKey, mod: x.mod, label: `Weapon Modifier${x.tail}`, chip: "Weapon Modifier", attrMode: "t2" }; }
+  if (has("magic")) { const x = pick(pAttr, s.powerMod ?? s.magicMod); return { kind: "power", attrKey: x.attrKey, mod: x.mod, label: `Power Modifier${x.tail}`, chip: "Power Modifier", attrMode: "none" }; }
   if (ca) return { kind: "attribute", attrKey: ca, mod: s?.attributes?.[ca] ?? 0, label: `${L(ca)} Check`, chip: L(ca), attrMode: "none" };
   return { kind: null, attrKey: "", mod: null, label: "", chip: "", attrMode: "none" };
 }
@@ -22,7 +26,8 @@ export function rollSource(s, it) {
 /** The lowest Tier on which the Attribute is added to the damage (Infinity: never). Old cards and callers pass isWeapon. */
 export const attrFromTier = ctx => (ctx?.attrMode === "all" ? 1 : ctx?.attrMode === "t2" ? 2 : ctx?.attrMode === "none" ? Infinity : (ctx?.isWeapon ? 2 : Infinity));
 
-/** The traits effects see for a roll: the Action's traits, the Attribute behind its Modifier ("Body Rolls"), and what kind of roll it is. */
+/** The traits effects see for a roll: the Action's traits, the Attribute it rolls ("Body Rolls": Checks, Saves and Attribute Actions; pack MOD: not a Weapon,
+ *  Power or Signature roll, which has no attrKey), and what kind of roll it is. */
 export const nameKey = name => `__name:${String(name ?? "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}`;
 export function rollTraits(useTraits, src, name = "") {
   const out = new Set([...useTraits, "__action"]);

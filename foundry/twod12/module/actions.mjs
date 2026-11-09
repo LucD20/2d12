@@ -600,7 +600,7 @@ export async function useAction(actor, item, opts = {}) {
   const preview = await buildPreviews({ setupDone, talentMods: talentModsFor(actor, item), bonusByTier: pvBonus, step: pvStep,
     item, actor, isSelf, weapon: previewWeapon, isWeapon: modOnWeapon(src, useTraits), attrMode: src.attrMode, mod: previewMod, dc: dcInfo.dc, dcNote: dcInfo.note,
     attrVal: src.kind ? (Number(src.mod) || 0) : 0, attrLabel: src.kind === "attribute" ? (TWOD12.attributes[attrKeyForPreview] ?? "") : (src.chip ?? ""),   // [Mod]: the Modifier used on the roll
-    checkLabel: (src.kind === "attribute" || !src.kind ? `${TWOD12.attributes[src.attrKey] ?? ""} Check` : `${src.chip} (${TWOD12.attributes[src.attrKey] ?? "?"})`) + (it.vs ? ` vs. ${vsText(it)}` : "")
+    checkLabel: (src.kind === "attribute" || !src.kind ? `${TWOD12.attributes[src.attrKey] ?? ""} Check` : (src.attrKey ? `${src.chip} (${TWOD12.attributes[src.attrKey] ?? "?"})` : src.chip)) + (it.vs ? ` vs. ${vsText(it)}` : "")
   });
   if (saveAct) preview.noOdds = true;   // a Save Action: you don't roll, so no odds in the dialog (its targets roll)
   // A ranged weapon: the distance to the target decides the banes (far range 1, maximum range 2).
@@ -843,7 +843,7 @@ export async function useAction(actor, item, opts = {}) {
   if (isWeapon) weapon = await pickWeapon(actor, item, candidates, opts.weaponId);
   if (src.kind) {
     attrKey = src.attrKey; mod = src.mod; title = src.label; chip = `${src.chip} ${sgn(mod)}`;
-    if (!attrKey && src.kind !== "attribute") ui.notifications.warn(`No ${src.chip} Attribute: add a Class to this character.`);
+    if (!attrKey && src.kind !== "attribute" && !["class", "role"].includes(actor.system?.modSource)) ui.notifications.warn(`No ${src.chip}: add a Class to this character.`);
   }
 
   if (title && it.vs) title += ` vs. ${it.vs === "roll" ? (TWOD12.attributes[attrKey] ?? "") : TWOD12.attributes[it.vs]}`;

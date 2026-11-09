@@ -109,6 +109,9 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       defenseKindChoices: TWOD12.defenseKinds,
       armorTrainingChoices: TWOD12.armorTrainings,
       modPriorityChoices: { weapon: "the Weapon Modifier keeps it", power: "the Power Modifier keeps it" },
+      modOrderChoices: { either: "Either way (the player chooses)", weapon: "Weapon Modifier is the high one", power: "Power Modifier is the high one" },   // v0.0.305 (pack MOD)
+      modLeadChoices: { weapon: "Weapon Modifier", power: "Power Modifier" },
+      modStage2Choices: { "": "the higher one (default)", weapon: "Weapon Modifier", power: "Power Modifier" },
       isFeature: t === "feature",
       isEffect: t === "effect",
       styled: t !== "species",   // v0.0.168: the sheet's look (parchment, dark text); v0.0.185: Class too, Species keeps the old one until it is redone
@@ -272,6 +275,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     const shared = w.filter(k => p.includes(k)).map(k => TWOD12.attributes[k]);
     return {
       weapon: [w[0] ?? "body", w[1] ?? w[0] ?? "body"], power: [p[0] ?? "mind", p[1] ?? p[0] ?? "mind"], attrLine: attrLine(s, 1), shared: shared.join(" or "),
+      oldMods: !(Number(s.modHigh) > 0 || Number(s.modLow) > 0) && (w.length || p.length) ? `${w.map(k => TWOD12.attributes[k]).join(" or ") || "-"} (Weapon) and ${p.map(k => TWOD12.attributes[k]).join(" or ") || "-"} (Power)` : "",
       levels: (s.levels ?? []).map((l, i) => { const c = choicesToMake(s, i + 1, info); return { n: i + 1, sections: l.sections.length, one: l.sections.length === 1, choices: c, oneChoice: c === 1 }; }),
       rep: repGroups,
       esc: [{ key: "escPassives", label: "Passives", list: (s.escPassives ?? []).map(chip) }, { key: "escActives", label: "Actives", list: (s.escActives ?? []).map(chip) }]
@@ -552,7 +556,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       }
       if (src.kind) {
         ctx.attrVal = Number(src.mod) || 0;   // [Mod]: the Modifier used on the roll
-        ctx.mod = src.kind === "attribute" ? ctx.attrVal : (src.attrKey ? src.mod : null);
+        ctx.mod = src.kind === "attribute" ? ctx.attrVal : (src.attrKey || ["class", "role"].includes(actor.system?.modSource) ? src.mod : null);   // pack MOD: a class value has no Attribute
         ctx.attrMode = src.attrMode;
       }
     }

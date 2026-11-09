@@ -1,10 +1,13 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.300**. Tests: `node tools/tests/run.mjs` (214 tests, see the README; the next new test is t217). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.305**. Tests: `node tools/tests/run.mjs` (216 tests, see the README; the next new test is t219). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 ## Asked by Lucas, not built
-- [ ] **MOD: Weapon and Power Modifiers as class values (in the book 2026-11-09; Foundry still derives them from the Attributes, ÷ 2 + 1).** One version (branch `pack-mod`): the list is `book/modifiers-mod.md` section 11 (the class item's two values and its "either order" switch, the actor's level 1 order and Stage 2 pick in pick windows, `data.mjs` / `modifiers.mjs`, no `attrKey` on Weapon / Power / Signature rolls, the sheet tiles, NPC Modifiers as role values (Minion and Grunt +2 / +1, Standard +2 / +2, Elite +3 / +2), the migration, the tests).
+- [x] **v0.0.305: PACK MOD DONE (2026-11-09, branch `pack-mod`; not tested by Lucas yet; the changelog has the detail): Weapon and Power Modifiers as class values.** The class's two values and order, the class window's picks (order at level 1, the Stage 2 +1 at level 5), the class's Details tab, rolls without an Attribute ("Body Rolls" no longer reach Weapon / Power / Signature rolls), the sheet tiles, NPC Modifiers by role with "Leads with", the migration (the order kept, one GM card). Packs rebuilt.
+  - **Not tried in Foundry (I can't run it):** the class window's Modifiers section (level 1 Paladin; level 5 for both classes); the migration card on an existing world, and the values arriving after "Update from the compendium"; the class Details tab's new fields on the sidebar copy and on a character's copy; the NPC Builder's "Leads with" select; a roll card's label ("Weapon Modifier", no Attribute); a "Body Rolls" effect no longer adding to a Weapon Attack.
+  - [NOTE] An old class copy (both values 0) keeps the Attribute formula until it is updated; the old drop dialog for a class without levels (`grants.mjs` `classChoices`, a DialogV2) still talks about Attributes: pack CL.
+  - [NOTE] `templates/actor-sheet.hbs` (unused) still has the NPC's Weapon / Power Attribute selects: removed with that file in pack CL.
 - [x] **PACK ACTION-PREVIEW merged to main (2026-11-09, v0.0.297 to v0.0.300).** Open: the two [Q] (category line, Opportunity Attack's traits).
 - [ ] **v0.0.300 (Lucas tested v0.0.299):** flat Use buttons (no drop shadow, 4px corners).
 - [ ] **v0.0.299 (Lucas tested v0.0.298):** Use buttons in Cinzel (my reading of "the sheet's cards font": the title font of the sheet's cards; revert to Signika if he meant the text font); a Feature's "Description" heading with its category and Frequency on the same line.

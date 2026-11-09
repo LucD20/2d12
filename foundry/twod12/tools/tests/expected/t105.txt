@@ -29,4 +29,4 @@ a new round, same turn number: {"faded":false,"why":""}
 --- the data and the sheets
 a Version can cost 0: true | the class has modPriority: true | effect settings accept roll kinds: true
 class dialog: different increases: true | no Weapon/Magic pick: true | sheet shows Power and Signature: true
-compendium Paladin Power: mind, appeal | Archer Weapon: instinct, body
+compendium Paladin Modifiers: 2 1 either | Archer: 2 1 weapon

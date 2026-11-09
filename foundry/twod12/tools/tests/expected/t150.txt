@@ -17,4 +17,4 @@ the Level before a change is kept: true | the window runs on a change, the old g
 Cancel on a level up puts the Level back: true | a lower Level asks, then removes what the higher levels gave: true | No keeps the Level: true
 nothing applied before confirm (drop): true | confirm disabled until complete: true | buttons: true
 the sheet reads the sections: true
-Class Details: the Levels button true | Repertoire and Escalation drop zones true | Modifier selects true | the old Features list only when there is one true
+Class Details: the Levels button true | Repertoire and Escalation drop zones true | Modifier values and order (pack MOD) true | the old Features list only when there is one true

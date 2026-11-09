@@ -30,3 +30,28 @@ export function classModifiers(attrs, weaponKeys, powerKeys, prefer = "weapon") 
   const sig = fromPower ? power : weapon;
   return { weapon, power, signature: { ...sig, from: fromPower ? "power" : "weapon" }, conflict };
 }
+
+/**
+ * Pack MOD (v0.0.305; book, Chapter 5, Weapon, Power and Signature Modifiers): the Modifiers are class values, not Attributes.
+ * high / low: the class's two values (+2 and +1); order: "either" (the player chooses: lead), "weapon" or "power" (the class fixes it);
+ * lead: the player's choice for an "either" class, and the side a tie of the Signature Modifier goes to; stage2: the Modifier that took
+ * Stage 2's +1 ("" = the lead one); stage: 1 to 3 (Stage 2 +1 to one, Stage 3 +1 to both, never above cap).
+ * Returns { weapon, power, signature, from, weaponFirst }.
+ */
+export function classTrack({ high = 2, low = 1, order = "either", lead = "weapon", stage2 = "", stage = 1, cap = 4 } = {}) {
+  const weaponFirst = order === "weapon" || (order !== "power" && lead !== "power");
+  let w = Number(weaponFirst ? high : low) || 0, p = Number(weaponFirst ? low : high) || 0;
+  if (stage >= 2) { if ((stage2 || (weaponFirst ? "weapon" : "power")) === "power") p += 1; else w += 1; }
+  if (stage >= 3) { w += 1; p += 1; }
+  w = Math.min(cap, w); p = Math.min(cap, p);
+  const from = p > w || (p === w && lead === "power") ? "power" : "weapon";
+  return { weapon: w, power: p, signature: from === "power" ? p : w, from, weaponFirst };
+}
+
+/** The Bestiary (pack MOD): an NPC's Modifiers are its role's, [lead, other]; lead: "weapon" or "power". */
+export function npcMods(pair, lead = "weapon") {
+  const [hi, lo] = (pair ?? [2, 1]).map(n => Number(n) || 0);
+  const w = lead === "power" ? lo : hi, p = lead === "power" ? hi : lo;
+  const from = p > w ? "power" : "weapon";
+  return { weapon: w, power: p, signature: Math.max(w, p), from };
+}

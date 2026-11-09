@@ -159,4 +159,4 @@ export function playerSees(cls, level, sec, info = () => null) {
 }
 
 /** The Stage a level starts (5: Stage 2, 8: Stage 3), for the window's header. */
-export const stageLine = level => level === 5 ? "Stage 2: your Weapon and Power Modifiers +1 (never above +4)." : level === 8 ? "Stage 3: your Weapon and Power Modifiers +2 (never above +4)." : "";
+export const stageLine = level => level === 5 ? "Stage 2: +1 to your Weapon or Power Modifier (never above +4)." : level === 8 ? "Stage 3: your Weapon and Power Modifiers +1 (never above +4)." : "";   // pack MOD (v0.0.305)

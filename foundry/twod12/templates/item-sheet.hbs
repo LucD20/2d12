@@ -57,17 +57,19 @@
       <label>Stage 3 step, low <input type="number" min="0" name="system.stepLow3" value="{{system.stepLow3}}"></label>
     </div>
     {{#if system.bodyMult}}<p class="hint">Old Health multipliers (before pack R): Body ×{{system.bodyMult}}, Mind ×{{system.mindMult}}. They are used only while the high value above is 0.</p>{{/if}}
-    <div class="grid4">
-      <label>Weapon Modifier uses <select data-modsel="weaponAttrs" data-side="0">{{selectOptions attrChoices selected=cls.weapon.[0]}}</select></label>
-      <label>or <select data-modsel="weaponAttrs" data-side="1">{{selectOptions attrChoices selected=cls.weapon.[1]}}</select></label>
-      <label>Power Modifier uses <select data-modsel="magicAttrs" data-side="0">{{selectOptions attrChoices selected=cls.power.[0]}}</select></label>
-      <label>or <select data-modsel="magicAttrs" data-side="1">{{selectOptions attrChoices selected=cls.power.[1]}}</select></label>
+    {{!-- v0.0.305 (pack MOD; book, Chapter 5): the class's two Modifier values and their order; on a character, its own choices. --}}
+    <div class="grid3">
+      <label>Modifier, high <input type="number" min="0" max="4" name="system.modHigh" value="{{system.modHigh}}"></label>
+      <label>Modifier, low <input type="number" min="0" max="4" name="system.modLow" value="{{system.modLow}}"></label>
+      <label>Order <select name="system.modOrder">{{selectOptions modOrderChoices selected=system.modOrder}}</select></label>
     </div>
     <div class="grid3">
       <div class="ro"><span>Attribute increases</span><b>{{#if cls.attrLine}}{{cls.attrLine}}{{else}}none (set them on level 1){{/if}}</b></div>
-      {{#if cls.shared}}<label>If {{cls.shared}} is the higher for both <select name="system.modPriority">{{selectOptions modPriorityChoices selected=system.modPriority}}</select></label>{{/if}}
+      {{#if onActor}}<label data-tooltip="Which value is the Weapon Modifier (a class that lets the player choose), and where a tie of the Signature Modifier goes">Leads with <select name="system.modPriority">{{selectOptions modLeadChoices selected=system.modPriority}}</select></label>
+      <label data-tooltip="Stage 2 (level 5): +1 to one Modifier">Stage 2 +1 to <select name="system.modStage2">{{selectOptions modStage2Choices selected=system.modStage2}}</select></label>{{/if}}
     </div>
-    <p class="hint">Each Modifier uses the higher of its two Attributes. The two Modifiers can't use the same Attribute: when one Attribute is the higher for both, the Modifier chosen above keeps it (the player can change it in the class window). The Attribute increases are set on level 1, in the Levels window.</p>
+    {{#if cls.oldMods}}<p class="hint">This copy is from before the Modifiers were class values (both values are 0): it still uses the higher of {{cls.oldMods}}. Set the values above, or update it from the compendium.</p>{{/if}}
+    <p class="hint">The class gives two Modifier values (+2 and +1 at level 1). "Either way": the player chooses which is the Weapon Modifier in the class window; otherwise the class fixes it. Stage 2 adds +1 to the one the player chooses, Stage 3 +1 to both, never above +4. The Attribute increases are set on level 1, in the Levels window.</p>
     <h3 class="cls-h">Levels <button type="button" data-action="editLevels"><i class="fa-solid fa-layer-group"></i> Edit levels&hellip;</button></h3>
     <p class="hint">What the player gets at each level (Features, the Hallmark Action, Picks, Talents, Attribute choices) is set up in the Levels window. It opens wider than this sheet.</p>
     <div class="cls-levels">

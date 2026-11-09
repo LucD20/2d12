@@ -21,7 +21,7 @@ head buttons: 2 live, 1 struck: Not enough AP: 2 left | dimmed cells: 3 | struck
 labels: Tier 1, Tier 2, Tier 3
 order: traits, meta, table, Effects, Your roll, Flavor: true
 strip: Your roll Signature +2 Frightened + Radiant Zeal | flavor: ◆ ◆ ◆ Your weapon blazes with holy light. | ruler (Designer off): false
-Word of Radiance: the Area is the chip: Area: 2 / 3 Burst true | riders: 4 | Critical row: true | ruler (Designer on): Ruler 2 AP 1.40× (a little under) · 3 AP 1.45× (on target).
+Word of Radiance: the Area is the chip: Area: 2 / 3 Burst true | riders: 4 | Critical row: true | ruler (Designer on): Ruler 2 AP 1.34× (a little under) · 3 AP 1.40× (a little under).
 its strip: Your roll Power +2 Frightened + Radiant Zeal | Radiant Zeal struck: true
 Opportunity Attack: meta: Interrupt: A creature you threaten would leave a square during a Move Action or uses the Stand Action. / Targets: The triggering creature | no table, no strip, no traits: false | Effects: Effects | no AP badge: true | category and Frequency: Basic Action At-will
 the Build tab (no Use): costs, not buttons: 3 | no actor (Generate Action): true

@@ -1,6 +1,6 @@
 import { TWOD12, migrateTags, npcHm, npcCv, stageOf, stageMod } from "./config.mjs";
 import { migrateSettings } from "./settingsmigrate.mjs";
-import { classModifiers, modOf } from "./modifiers.mjs";
+import { classModifiers, modOf, classTrack, npcMods } from "./modifiers.mjs";
 
 import { applySpeedMods } from "./speedmods.mjs";
 const { SchemaField, NumberField, StringField, BooleanField, ArrayField, SetField, HTMLField } = foundry.data.fields;
@@ -99,9 +99,23 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     this.rallyLeft = Math.max(0, this.rallyMax - this.rallyUsed);
     this.apPerTurn = TWOD12.apPerTurn;
 
-    // Weapon and Power Modifiers: the higher of the class's two Attributes each, never the same one (modifiers.mjs).
-    // A class from before v0.0.117 that has no lists keeps the Attribute that was picked for it.
     const cs = cls?.system;
+    if (cs && (Number(cs.modHigh) > 0 || Number(cs.modLow) > 0)) {
+      // v0.0.305 (pack MOD; book, Chapter 5): the class's two values, in the order the class fixes or the player chose, + the Stage steps (modifiers.mjs classTrack).
+      const t = classTrack({ high: cs.modHigh, low: cs.modLow, order: cs.modOrder, lead: cs.modPriority === "power" ? "power" : "weapon", stage2: cs.modStage2, stage: this.stage, cap: TWOD12.modCap });
+      this.modSource = "class"; this.modWeaponFirst = t.weaponFirst;
+      this.weaponAttribute = ""; this.weaponAttrValue = 0; this.weaponMod = t.weapon;
+      this.powerAttribute = ""; this.powerAttrValue = 0; this.powerMod = t.power;
+      this.signatureAttribute = ""; this.signatureAttrValue = 0; this.signatureMod = t.signature; this.signatureFrom = t.from;
+      this.modConflict = false;
+      this.armorTraining = cs.armorTraining || "light";
+      deriveDefenses(this, this.armorTraining);
+      this.magicAttribute = ""; this.magicAttrValue = 0; this.magicMod = this.powerMod;
+      return;
+    }
+    // Before pack MOD (a class copy not yet updated from the compendium): the higher of the class's two Attributes each, never the same one (modifiers.mjs).
+    // A class from before v0.0.117 that has no lists keeps the Attribute that was picked for it.
+    this.modSource = cs ? "attrs" : "";
     const wKeys = cs ? ([...(cs.weaponAttrs ?? [])].length ? [...cs.weaponAttrs] : [cs.chosenWeapon].filter(Boolean)) : [];
     const pKeys = cs ? ([...(cs.magicAttrs ?? [])].length ? [...cs.magicAttrs] : [cs.chosenMagic].filter(Boolean)) : [];
     const cm = classModifiers(a, wKeys, pKeys, cs?.modPriority === "power" ? "power" : "weapon");
@@ -230,12 +244,20 @@ export function npcBuild(sys) {
   return { role, rating, attributes, bodyHm: b.hm, mindHm: m.hm, bdt: b.v, mdt: m.v, armorDef: def("ad", sys.armorDef), wardDef: def("wd", sys.wardDef), speed, speedCustom: sr === "custom" };
 }
 
+/** Pack MOD: an NPC's lead Modifier: its modLead, or, for an NPC from before (""), the old Weapon / Power Attribute that is higher (Weapon on a tie). */
+export function npcLead(sys) {
+  if (sys?.modLead === "weapon" || sys?.modLead === "power") return sys.modLead;
+  const at = sys?.attributes ?? {}, w = Number(at[sys?.weaponAttribute ?? "body"]) || 0, p = Number(at[sys?.powerAttribute ?? "mind"]) || 0;
+  return p > w ? "power" : "weapon";
+}
+
 export class NpcData extends CharacterData {
   static defineSchema() {
     return {
       ...super.defineSchema(),
       attributes: new SchemaField({ body: sint(), mind: sint(), appeal: sint(), instinct: sint() }),
-      speed: int(5), weaponAttribute: choice(TWOD12.attributes, "body"), powerAttribute: choice(TWOD12.attributes, "mind"),
+      speed: int(5), weaponAttribute: choice(TWOD12.attributes, "body"), powerAttribute: choice(TWOD12.attributes, "mind"),   // before pack MOD: only read when modLead is ""
+      modLead: choice({ weapon: "Weapon Modifier", power: "Power Modifier" }, ""),   // v0.0.305 (pack MOD): which of the role's Modifiers is the higher one
       // The Bestiary (v0.0.163): its role and a rating for each number ("custom": the typed number below is used).
       role: choice(Object.fromEntries(Object.entries(TWOD12.npcRoles).map(([k, v]) => [k, v.label])), "standard"),
       ratings: new SchemaField(Object.fromEntries([["body", "high"], ["mind", "medium"], ["appeal", "low"], ["instinct", "medium"], ["bodyHm", "medium"], ["mindHm", "medium"], ["ad", "medium"], ["wd", "medium"]]
@@ -264,15 +286,13 @@ export class NpcData extends CharacterData {
     // NPCs do not use the Dying and Shattered tables: at 0 HP they die with more lethal damage, or fall unconscious with more nonlethal.
     if (this.atZero) this.zeroState = this.lethal > this.nonlethal ? "Dead (more Lethal damage)" : (this.nonlethal > this.lethal ? "Unconscious (more Nonlethal damage)" : "Dead or Unconscious (the GM chooses)");
     this.rallyHeal = 0; this.rallyMax = 0; this.rallyLeft = 0;
-    // Weapon and Power Attributes (the Bestiary): each Modifier is half the Attribute, rounded up, + 1; Signature uses the higher (Weapon on a tie).
-    // v0.0.181: no Stage step for NPCs, and never above +4 (a Custom Attribute could go higher).
-    this.weaponAttrValue = this.attributes[this.weaponAttribute] ?? 0;
-    this.weaponMod = Math.min(TWOD12.modCap, Math.ceil(this.weaponAttrValue / 2 + 1));
-    this.powerAttrValue = this.attributes[this.powerAttribute] ?? 0;
-    this.powerMod = Math.min(TWOD12.modCap, Math.ceil(this.powerAttrValue / 2 + 1));
-    const sigP = this.powerMod > this.weaponMod;
-    this.signatureAttribute = sigP ? this.powerAttribute : this.weaponAttribute; this.signatureAttrValue = sigP ? this.powerAttrValue : this.weaponAttrValue;
-    this.signatureMod = sigP ? this.powerMod : this.weaponMod; this.signatureFrom = sigP ? "power" : "weapon";
+    // v0.0.305 (pack MOD; the Bestiary, Attributes and Modifiers): the role's two Modifiers (Minion and Grunt +2 / +1, Standard +2 / +2, Elite +3 / +2),
+    // the lead one chosen (modLead; "" = the old Weapon / Power Attribute that is higher, Weapon on a tie). No Stage step; Signature: the higher.
+    this.modLeadKey = npcLead(this);
+    const nm = npcMods(nb.role.mods, this.modLeadKey);
+    this.modSource = "role";
+    this.weaponAttrValue = 0; this.weaponMod = nm.weapon; this.powerAttrValue = 0; this.powerMod = nm.power;
+    this.signatureAttribute = ""; this.signatureAttrValue = 0; this.signatureMod = nm.signature; this.signatureFrom = nm.from;
     this.modConflict = false;
     this.armorTraining = "heavy";   // NPCs wear what their stat block says
     deriveDefenses(this, this.armorTraining);
@@ -308,7 +328,11 @@ export class ClassData extends foundry.abstract.TypeDataModel {
       weaponAttrs: attrSet(), magicAttrs: attrSet(),
       features: new ArrayField(new SchemaField({ uuid: str(), level: int(1, 0) })),
       chosenA: str(), chosenB: str(), chosenWeapon: str(), chosenMagic: str(),   // chosenWeapon / chosenMagic: only for classes from before v0.0.117
-      modPriority: choice({ weapon: "Weapon Modifier", power: "Power Modifier" }, "weapon"),   // which Modifier keeps an Attribute both would use
+      modPriority: choice({ weapon: "Weapon Modifier", power: "Power Modifier" }, "weapon"),   // pack MOD: which Modifier leads (an "either" class) and takes a Signature tie; before: which kept an Attribute both would use
+      // v0.0.305 (pack MOD; book, Chapter 5): the class's two Modifier values (Paladin +2 / +1 either way; Archer Weapon +2, Power +1). 0 / 0: a class
+      // from before keeps the Attribute formula until it is updated from the compendium. modStage2: the Modifier the player raised at Stage 2 ("" = the lead one).
+      modHigh: sint(0), modLow: sint(0), modOrder: choice({ either: "Either way (the player chooses)", weapon: "Weapon Modifier first", power: "Power Modifier first" }, "either"),
+      modStage2: choice({ weapon: "Weapon Modifier", power: "Power Modifier" }, ""),
       armorTraining: choice(TWOD12.armorTrainings, "light"),
       // v0.0.185 (pack C2): the class sheet's new fields, the Repertoire and Escalation lists, and the levels as sections (classlevels.mjs).
       category: new StringField({ required: true, blank: true, initial: "Class" }), flavor: str(),
