@@ -13,8 +13,10 @@ function rowHtml(r) {
   const chips = r.chips.map(t => `<span class="iw-fx">${esc(t)}</span>`).join("") + (r.last ? '<span class="iw-lastb">Goes last</span>' : "");
   const stackBtn = r.stack ? `<button type="button" class="iw-stackbtn" data-act="stack" data-key="${esc(r.stack)}" aria-expanded="${r.expanded}">${esc(r.stackLabel)}</button>` : "";
   const side = r.moving ? `<div class="iw-side"><label>Side <select class="iw-sel" data-act="side" ${d} aria-label="Side of ${esc(r.name)}">${[["friendly", "Heroes"], ["hostile", "Enemies"], ["neutral", "Third side"], ["fourth", "Fourth side"]].map(([v, l]) => `<option value="${v}"${v === r.side ? " selected" : ""}>${l}</option>`).join("")}</select></label></div>` : "";
+  // v0.0.312 (Lucas): one row height always: while moving, the Side dropdown takes the second line's place (it no longer adds a line)
+  const subTip = [r.owner, ...r.chips, ...(r.last ? ["Goes last"] : [])].join(" · ");
   const name = `<div class="iw-cr${r.member ? " member" : ""}">${portrait(r.img, r.member)}<div class="iw-crt"><div class="iw-nm" data-tooltip="${esc(r.name)}">${esc(r.name)}</div>
-    <div class="iw-sub">${stackBtn}<span class="iw-own">${esc(r.owner)}</span>${chips}</div>${side}</div>
+    ${r.moving ? side : `<div class="iw-sub" data-tooltip="${esc(subTip)}">${stackBtn}<span class="iw-own">${esc(r.owner)}</span>${chips}</div>`}</div>
     <div class="iw-ico"><button type="button" class="iw-ib" data-act="move" ${d} data-tooltip="Move to another side" aria-label="Move ${esc(r.name)} to another side">&#8644;</button>
     <button type="button" class="iw-ib${r.last ? " on" : ""}" data-act="last" ${d} ${pressed(r.last)} data-tooltip="Goes last (Dying or Shattered before the encounter)" aria-label="${esc(r.name)} goes last">&#10515;</button></div></div>`;
   if (r.rolled) {
