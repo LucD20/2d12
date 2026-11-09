@@ -1,9 +1,10 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.308**. Tests: `node tools/tests/run.mjs` (216 tests, see the README; the next new test is t219). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.309**. Tests: `node tools/tests/run.mjs` (216 tests, see the README; the next new test is t219). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 ## Asked by Lucas, not built
+- [ ] **v0.0.309 (Lucas on v0.0.308):** the Attack damage grid in the sheet's look (tiles with the rating's color, no table), "Unarmored" in a smaller font. Checked in a browser with the real CSS on sample markup (not in Foundry).
 - [ ] **v0.0.308 (Lucas): the NPC Builder tab reworked:** whole-step buttons (pip and number), the Tags bar above the tables, Frame rows (Armor type, Reach, Size) in place of the Stat block, Resist and Weak chips (type + number + "+ Resist" / "+ Weak" / "+ Immunity"), the Attack damage table with dice and a how-to line. **Not tried in Foundry:** the whole tab's look (CSS block `v0.0.308`: the three Frame rows side by side, the chips' colors, the add row), clicking a step's number, adding and removing Resist / Weak (the damage message should apply them as before), the Tags bar's "+ Tag". [NOTE] An unparseable part of an old Resist / Weak text is dropped the first time a chip is added or removed (the text field is gone from the tab).
 - [ ] **v0.0.307 (Lucas):** Vs. an Attribute 12 + the Attribute; the Archer's Modifiers shown in the class window ("Set by the class"); the NPC Builder's Weapon Mod (under Movement) and Power Mod (under Defenses) rated rows, "Leads with" removed. Not tried in Foundry: the Builder's two rows (clicking a rating), the Archer's row, a Shove's DC on the roll card (12 + Body).
 - [ ] **v0.0.306 (Lucas on v0.0.305):** the class window's Modifiers section under the Attribute increases, above the Features (first at a level without Attribute increases).

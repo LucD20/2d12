@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-09 from the repository at: ba3803b 2026-11-09 v0.0.307: Vs. an Attribute = 12 + the Attribute (book and Foundry); the Archer's Modifiers in the class window; NPC Weapon / Power Modifier ratings (Bestiary and the Builder)
+Built by tools/knowledge.py on 2026-11-09 from the repository at: ceeaf46 2026-11-09 v0.0.308: the NPC Builder tab reworked (whole-step buttons, Tags first, Frame rows, Resist and Weak chips, Attack damage with dice)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

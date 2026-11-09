@@ -3570,3 +3570,20 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.sheet.pcs .nb-atk tr.alt td.med { background: #ece3cf; }
 .twod12.sheet.pcs ul.nb-rules { margin: 0; padding: 8px 10px 8px 26px; }
 .twod12.sheet.pcs ul.nb-rules li { margin: 2px 0; }
+
+/* ==== v0.0.309 (Lucas): the Attack damage grid in the sheet's look (no table: Foundry's dark table head is gone). Each cell a parchment tile with
+   its rating's color on top, like the rating pips; Medium framed. A long Frame label ("Unarmored") in a smaller font. ==== */
+.twod12.sheet.pcs .nb-dmg { display: flex; flex-direction: column; gap: 4px; padding: 6px 10px 10px; }
+.twod12.sheet.pcs .nb-dh, .twod12.sheet.pcs .nb-dr { display: grid; grid-template-columns: 112px repeat(var(--cols, 5), minmax(0, 1fr)); gap: 4px; align-items: stretch; }
+.twod12.sheet.pcs .nb-dh > span { font-family: "Cinzel", serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; text-align: center; color: var(--rc, #6b665a); padding: 2px 0; }
+.twod12.sheet.pcs .nb-dh > span.nb-dl { text-align: left; color: #9a9384; }
+.twod12.sheet.pcs .nb-dl { display: flex; flex-direction: column; justify-content: center; gap: 1px; min-width: 0; }
+.twod12.sheet.pcs .nb-dl b { font-size: 12px; color: var(--ps-ink); }
+.twod12.sheet.pcs .nb-dl small { font-size: 10px; color: var(--ps-mut); }
+.twod12.sheet.pcs .nb-dc { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-width: 0; padding: 5px 2px 4px;
+  background: #fbf8f1; border: 1px solid #e3dccd; border-top: 3px solid var(--rc, #e3dccd); border-radius: 3px; }
+.twod12.sheet.pcs .nb-dc b { font-size: 12.5px; color: var(--ps-ink); white-space: nowrap; }
+.twod12.sheet.pcs .nb-dc small { font-size: 10px; color: #7a7466; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.twod12.sheet.pcs .nb-dc.med { background: #fff; border-color: #1b2433; border-top-color: var(--rc, #1b2433); box-shadow: 0 1px 0 rgba(27, 36, 51, 0.12); }
+.twod12.sheet.pcs .nb-dc:hover { border-color: var(--rc, #c9bfab); }
+.twod12.sheet.pcs .nb-step.small span { font-size: 8.5px; letter-spacing: -0.01em; }

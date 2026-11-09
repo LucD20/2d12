@@ -52,4 +52,4 @@ chips: [{"kind":"resist","sub":"Fi","label":"Resist 5 Fire"},{"kind":"weak","sub
 Resist Fire 3 replaces 5, + Weak 4 Cold, + Immunity Psychic: Resist 3 Fire, Weak 2 Holy, Weak 4 Cold, Immunity Psychic
 Weak Holy and Immunity removed: Resist 3 Fire, Weak 4 Cold | read back the same: true
 dice for an average, [Mod] out: 4 with +2: 2 | 7.5 with +2: 1d10 | 13 with +3: 2d8 | 2 with +2: -
-Tags above the tables: true | the old Stat block gone: true | Frame rows: true | Resist / Weak add and remove: true | the attack cells carry dice: true
+Tags above the tables: true | the old Stat block gone: true | Frame rows: true | Resist / Weak add and remove: true | the attack cells carry dice (v0.0.309: tiles, no table): true | a long Frame label smaller: true

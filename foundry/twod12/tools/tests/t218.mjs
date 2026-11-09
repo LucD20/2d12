@@ -91,4 +91,4 @@ console.log("dice for an average, [Mod] out:", [[4, 2], [7.5, 2], [13, 3], [2, 2
 const tpl8 = src("templates/actor-sheet-pc.hbs"), sh8 = src("module/actor-sheets.mjs");
 console.log("Tags above the tables:", tpl8.indexOf("nb-tagbar") > 0 && tpl8.indexOf("nb-tagbar") < tpl8.indexOf('<div class="nb-cols">'), "| the old Stat block gone:", !tpl8.includes("nb-more"),
   "| Frame rows:", tpl8.includes('data-action="setFrame"') && sh8.includes("static async setFrame"), "| Resist / Weak add and remove:", sh8.includes("static async addDmgMod") && sh8.includes("static async removeDmgMod"),
-  "| the attack cells carry dice:", tpl8.includes('<small class="nb-dice">{{dice}}</small>'));
+  "| the attack cells carry dice (v0.0.309: tiles, no table):", tpl8.includes('<b>{{v}}</b><small>{{dice}}</small>') && !tpl8.includes('class="nb-atk"'), "| a long Frame label smaller:", tpl8.includes("{{#if small}} small{{/if}}"));

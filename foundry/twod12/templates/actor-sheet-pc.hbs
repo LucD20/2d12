@@ -411,7 +411,7 @@
             <div class="nb-frows">{{#each frame}}
               <div class="nb-row" style="--fc:{{color}}">
                 <div class="nb-rh"><b class="nb-nm">{{name}}</b><span class="nb-rt">{{ratingName}}</span><b class="nb-val">{{value}}</b></div>
-                <div class="nb-steps2">{{#each steps}}<button type="button" class="nb-step{{#if on}} on{{/if}}{{#if sel}} sel{{/if}}" data-action="setFrame" data-key="{{../key}}" data-v="{{r}}" data-tooltip="{{tip}}" aria-label="{{../name}}: {{tip}}" aria-pressed="{{#if sel}}true{{else}}false{{/if}}"><i class="nb-pip"></i><span>{{v}}</span></button>{{/each}}</div>
+                <div class="nb-steps2">{{#each steps}}<button type="button" class="nb-step{{#if on}} on{{/if}}{{#if sel}} sel{{/if}}{{#if small}} small{{/if}}" data-action="setFrame" data-key="{{../key}}" data-v="{{r}}" data-tooltip="{{tip}}" aria-label="{{../name}}: {{tip}}" aria-pressed="{{#if sel}}true{{else}}false{{/if}}"><i class="nb-pip"></i><span>{{v}}</span></button>{{/each}}</div>
               </div>{{/each}}
             </div>
           </div>
@@ -421,10 +421,13 @@
               <input type="number" class="nb-rwn" min="1" max="20" value="5" aria-label="Amount">
               <button type="button" data-action="addDmgMod" data-kind="resist">+ Resist</button><button type="button" data-action="addDmgMod" data-kind="weak">+ Weak</button><button type="button" data-action="addDmgMod" data-kind="immune" data-tooltip="Immunity takes no number">+ Immunity</button></div>
           </div>
-          <div class="ps-block nb-atkblk"><div class="ps-bh"><b>Attack damage</b><span class="ps-bsub">what to write on its Actions</span></div>
+          <div class="ps-block nb-atkblk"><div class="ps-bh"><b>Attack damage</b><span class="ps-bsub">Tier 2 / Tier 3 average, and the dice to write</span></div>
             <p class="nb-how">Find the row of the Action's <b>AP</b>, then the column of <b>how hard it hits</b> (<b>Medium</b> is normal for a {{roleLabel}}). Each cell is the average damage on <b>Tier 2 / Tier 3</b>, and below it dice that give it with this creature's {{modLabel}}: write those on the Action.</p>
-            <table class="nb-atk"><thead><tr><th>Action</th>{{#each heads}}<th style="color:{{color}}"{{#if med}} class="med"{{/if}}>{{label}}</th>{{/each}}</tr></thead>
-              <tbody>{{#each attacks}}<tr{{#if alt}} class="alt"{{/if}}><td><b>{{label}}</b><br><small>{{sub}}</small></td>{{#each cells}}<td{{#if med}} class="med"{{/if}} data-tooltip="{{tip}}"><b class="nb-avg">{{v}}</b><small class="nb-dice">{{dice}}</small></td>{{/each}}</tr>{{/each}}</tbody></table>
+            {{!-- v0.0.309 (Lucas): the sheet's own look (tiles with the rating's color, like the pips), not a table --}}
+            <div class="nb-dmg" style="--cols:{{heads.length}}">
+              <div class="nb-dh"><span class="nb-dl">AP</span>{{#each heads}}<span class="nb-dhc{{#if med}} med{{/if}}" style="--rc:{{color}}">{{label}}</span>{{/each}}</div>
+              {{#each attacks}}<div class="nb-dr"><div class="nb-dl"><b>{{label}}</b><small>{{sub}}</small></div>{{#each cells}}<div class="nb-dc{{#if med}} med{{/if}}" style="--rc:{{color}}" data-tooltip="{{tip}}"><b>{{v}}</b><small>{{dice}}</small></div>{{/each}}</div>{{/each}}
+            </div>
             <ul class="nb-rules"><li><b>Vs. WD:</b> the same table; the dice use the Power Modifier ({{powerMod}}) instead.</li><li><b>Conditions</b> cost damage: a Mild one takes the column 1 step to the left, Moderate 2, Severe 3.</li><li><b>Area Save Actions:</b> about half the damage, to each creature in the area (DC 11 + the Modifier).</li><li><b>Reactions:</b> a Trigger deals one column more than an Action of the same AP; an Interrupt the same.</li></ul>
           </div>
         </div>

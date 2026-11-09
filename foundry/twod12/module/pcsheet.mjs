@@ -497,7 +497,7 @@ export function npcBuilderModel(a) {
   // v0.0.308 (Lucas): the Frame (the old Stat block) as rows like the others: Armor type, Reach, Size.
   const ARM = Object.entries(TWOD12.armors), armNow = s.armor || "medium", reachNow = Math.max(1, Number(s.reachBase) || 1), sizeNow = Number(s.size) || 3;
   const frameRow = (key, name, list, now, ratingName, value) => ({ key, name, color: FEATURE_COLORS.move, ratingName, value,
-    steps: list.map(([v, lab, tip], i) => ({ r: String(v), on: list.findIndex(x => String(x[0]) === String(now)) >= i, sel: String(v) === String(now), v: lab, tip })) });
+    steps: list.map(([v, lab, tip], i) => ({ r: String(v), on: list.findIndex(x => String(x[0]) === String(now)) >= i, sel: String(v) === String(now), v: lab, tip, small: String(lab).length > 7 })) });   // v0.0.309: "Unarmored" in a smaller font
   const frame = [
     frameRow("armor", "Armor type", ARM.map(([k, a]) => [k, a.label, `${a.label} armor`]), armNow, "", TWOD12.armors[armNow]?.label ?? ""),
     frameRow("reachBase", "Reach", [1, 2, 3, 4].map(v => [v, String(v), `Reach ${v}`]), reachNow, reachNow === 1 ? "Default" : "", reachNow),
@@ -523,7 +523,7 @@ export function npcBuilderModel(a) {
     attacks: specials.map(([label, sub, x], n) => ({ label, sub, alt: n % 2 === 1, cells: keys.map(k => {
       const avg = specialAvg(npcRow(role, R, k, stage).basic, x), wm = Number(s.weaponMod) || 0, pm = Number(s.powerMod) || 0;
       const dice = m => avg.map(v => { const d = diceFor(v - m); return !d ? `${m}` : /^\d+$/.test(d) ? `${Number(d) + m}` : `${d}+${m}`; }).join(" / ");
-      return { v: avg.join(" / "), dice: dice(wm), med: k === "medium", tip: `${R[k].label} ${label}: average ${avg.join(" / ")} (Tier 2 / Tier 3). With the Weapon Modifier: ${dice(wm)}. Vs. WD, with the Power Modifier: ${dice(pm)}.` };
+      return { v: avg.join(" / "), dice: dice(wm), med: k === "medium", color: RATING_COLORS[k], tip: `${R[k].label} ${label}: average ${avg.join(" / ")} (Tier 2 / Tier 3). With the Weapon Modifier: ${dice(wm)}. Vs. WD, with the Power Modifier: ${dice(pm)}.` };
     }) }))
   };
 }
