@@ -3694,3 +3694,15 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.iwin .iw-pl .iw-nm { flex: 1; font-size: 13px; font-weight: 600; }
 .twod12.iwin .iw-pl .iw-st { font-size: 11.5px; color: #5f5244; }
 .twod12.iwin .iw.pl .iw-foot .iw-hint { font-size: 12px; }
+
+/* ==== v0.0.311 (Lucas on v0.0.310): the Initiative rows. A note under a control ("Waiting for ...", "both: a normal roll") no longer moves the buttons:
+   the row's cells sit at the top (the controls nudged to line up with the portrait) and a note only adds height below. The Check dropdown's text
+   centered (Foundry's own select line height pushed it off); no Foundry focus glow on the buttons (the outline stays for the keyboard). ==== */
+.twod12.iwin .iw-row { align-items: start; }
+.twod12.iwin .iw-row > div:not(.iw-cr) { padding-top: 4px; }
+.twod12.iwin .iw-row.member > div:not(.iw-cr) { padding-top: 1px; }
+.twod12.iwin .iw-row > .iw-note { padding-top: 10px; }
+.twod12.iwin .iw .iw-sel { line-height: 26px; padding-top: 0; padding-bottom: 0; text-align: left; vertical-align: middle; box-sizing: border-box; }
+.twod12.iwin .iw .iw-sel.over { line-height: 24px; }
+.twod12.iwin .iw button:focus { box-shadow: none; outline: none; }
+.twod12.iwin .iw button:focus-visible { outline: 2px solid #1d2a44; outline-offset: 1px; }

@@ -1,9 +1,10 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.310**. Tests: `node tools/tests/run.mjs` (217 tests, see the README; the next new test is t220). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.311**. Tests: `node tools/tests/run.mjs` (217 tests, see the README; the next new test is t220). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 ## Asked by Lucas, not built
+- [ ] **v0.0.311 (Lucas on v0.0.310: "Mostly works"):** the Initiative rows: a note no longer moves the buttons; the Check dropdown's text centered; no focus glow on the buttons.
 - [ ] **v0.0.310: PACK INITIATIVE (Lucas's design, the "FAB · GM window" mockup; branch `pack-initiative`, built on `pack-mod`; not tested by Lucas yet): the Initiative windows rebuilt, GM and players.** `initmodel.mjs` (pure model), `initview.mjs` (HTML), `initwindow.mjs` (the windows, the rolls, the socket, the settings), `combat.mjs` (the GM's roll opens the window; Goes last after the zipper; the side flag; Secret as Hostile). The changelog has the detail.
   - **Not tried in Foundry (I can't run it):** the two windows in a real world (the look was checked in a browser with the real HTML and CSS on the mockup's encounter); the socket opening the players' windows; a player's roll updating the GM's window live; a player updating their combatant's flags (by, rolledAttr) with player permissions; the effects read for the row (modifierList / resolveModifiers on an Attribute Check); Foundry's own tracker buttons (Roll All, Roll NPCs) now opening the window; the window's focus after a click (keyOf).
   - [NOTE] A creature that goes last keeps no initiative (the tracker shows its die): a player clicking it gets "goes last: no roll". The flag `initSkip` (v0.0.274) is no longer read.

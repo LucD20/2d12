@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.310, 217 tests; READ THIS FIRST)
+## Where we are now (v0.0.311, 217 tests; READ THIS FIRST)
+- **v0.0.311 (2026-11-09, branch `pack-initiative`): Lucas tested v0.0.310 ("Mostly works"):** the Initiative rows no longer shift when a note appears; the Check dropdown centered. **NEXT:** Lucas's test, the merges of `pack-mod` and `pack-initiative`, then AU.
 - **v0.0.310 (2026-11-09, branch `pack-initiative`, built on `pack-mod`): the Initiative windows rebuilt (Lucas's design, the "FAB · GM window" mockup).** The GM's window (sides, per-row Who rolls / Check / Favored / Doomed / Boons / Banes, stacks over 5 enemies, ⇄ and Goes last, live rows) and the players' read-only window (socket), two world settings, Exhausted now applied to initiative. New test t219 (**the next new test is t220**). Not tested by Lucas; what couldn't be tried: foundry-backlog.md (v0.0.310). The book's Initiative wording applied (the GM's different Attribute can be for some creatures only). **NEXT:** Lucas's tests of `pack-mod` (v0.0.305 to v0.0.309) and `pack-initiative` (v0.0.310), the merges, then AU.
 - **v0.0.309 (2026-11-09, branch `pack-mod`): Lucas on v0.0.308: the Attack damage grid in the sheet's look; "Unarmored" smaller.** **NEXT:** Lucas's test of v0.0.305 to v0.0.309, then merge `pack-mod` and AU.
 - **v0.0.308 (2026-11-09, branch `pack-mod`): Lucas: the NPC Builder tab reworked** (whole-step buttons, Tags first, Frame rows instead of the Stat block, Resist and Weak chips, the Attack damage table with dice). Lucas writes "r/w" for Resist and Weak (CLAUDE.md). **NEXT:** Lucas's test of v0.0.305 to v0.0.308, then merge `pack-mod` and AU.
