@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-09 from the repository at: a65d8d8 2026-11-09 t216: Opportunity Attack's card now has the Strike trait (v0.0.303)
+Built by tools/knowledge.py on 2026-11-09 from the repository at: 730fc38 2026-11-09 HANDOFF, MASTER-PLAN: PACK BB merged (v0.0.301 to v0.0.304); next AU
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (70 KB)
+- HANDOFF.md (71 KB)
 - MASTER-PLAN.md (18 KB)
 - open-design-items.md (86 KB)
 - rules-01-roll.md (23 KB)
@@ -38,4 +38,5 @@ Files:
 - design-class-charter.md (10 KB)
 - design-base-building.md (7 KB)
 - design-roleplay-skills.md (6 KB)
+- design-modifiers-mod.md (16 KB)
 - design-items-economy.md (32 KB)
