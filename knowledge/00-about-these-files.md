@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-09 from the repository at: 7697ee7 2026-11-09 v0.0.311: the Initiative rows don't shift when a note appears; the Check dropdown centered (Lucas)
+Built by tools/knowledge.py on 2026-11-09 from the repository at: cbc912b 2026-11-09 v0.0.312: every Initiative row the same height (Lucas)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

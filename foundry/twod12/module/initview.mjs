@@ -12,7 +12,7 @@ function rowHtml(r) {
   const d = `data-row="${k}" data-ids="${ids}"`;
   const chips = r.chips.map(t => `<span class="iw-fx">${esc(t)}</span>`).join("") + (r.last ? '<span class="iw-lastb">Goes last</span>' : "");
   const stackBtn = r.stack ? `<button type="button" class="iw-stackbtn" data-act="stack" data-key="${esc(r.stack)}" aria-expanded="${r.expanded}">${esc(r.stackLabel)}</button>` : "";
-  const side = r.moving ? `<div class="iw-side"><label>Side <select class="iw-sel" data-act="side" ${d} aria-label="Side of ${esc(r.name)}">${[["friendly", "Heroes"], ["hostile", "Enemies"], ["neutral", "Third side"], ["fourth", "Fourth side"]].map(([v, l]) => `<option value="${v}"${v === r.side ? " selected" : ""}>${l}</option>`).join("")}</select></label></div>` : "";
+  const side = r.moving ? `<div class="iw-side"><span class="iw-sidel">Side</span><select class="iw-sel iw-sidesel" data-act="side" ${d} aria-label="Side of ${esc(r.name)}">${[["friendly", "Heroes"], ["hostile", "Enemies"], ["neutral", "Third side"], ["fourth", "Fourth side"]].map(([v, l]) => `<option value="${v}"${v === r.side ? " selected" : ""}>${l}</option>`).join("")}</select></div>` : "";   // v0.0.313: no <label> (Foundry's label style broke the line)
   // v0.0.312 (Lucas): one row height always: while moving, the Side dropdown takes the second line's place (it no longer adds a line)
   const subTip = [r.owner, ...r.chips, ...(r.last ? ["Goes last"] : [])].join(" · ");
   const name = `<div class="iw-cr${r.member ? " member" : ""}">${portrait(r.img, r.member)}<div class="iw-crt"><div class="iw-nm" data-tooltip="${esc(r.name)}">${esc(r.name)}</div>

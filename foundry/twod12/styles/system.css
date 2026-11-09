@@ -3723,3 +3723,10 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.iwin .iw .iw-side .iw-sel { height: 20px; line-height: 18px; font-size: 11.5px; }
 .twod12.iwin .iw-ico { flex-direction: row; gap: 3px; align-self: center; }
 .twod12.iwin .iw-live { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 12px; }
+
+/* ==== v0.0.313 (Lucas on v0.0.312: "the swap is completely broken"): the Side line while moving a creature. Foundry's label and select styles
+   (a block label, a select's minimum height and full width) pushed "Side" above the dropdown and over the name: no label element any more, and the
+   dropdown's size pinned. ==== */
+.twod12.iwin .iw .iw-side { display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center; gap: 6px; height: 20px; margin: 0; }
+.twod12.iwin .iw .iw-sidel { flex: none; font-size: 11px; line-height: 20px; color: #5f5244; }
+.twod12.iwin .iw .iw-side .iw-sidesel { flex: none; width: 112px; height: 20px; min-height: 0; max-height: 20px; margin: 0; padding: 0 20px 0 6px; line-height: 18px; font-size: 11.5px; font-weight: 400; color: #2a2320; box-sizing: border-box; }
