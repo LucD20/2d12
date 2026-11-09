@@ -256,8 +256,8 @@ Hooks.once("init", () => {
     ["taunted", "icons/svg/target.svg"],
     ["dead", "icons/svg/skull.svg"]
   ].map(([id, img]) => ({ id, name: id[0].toUpperCase() + id.slice(1), img }));
-  // v0.0.314: Blinded is Foundry's blind status: the token sees nothing, and the Senses (senses.mjs perceive) leave it only its other senses
-  CONFIG.specialStatusEffects = { ...(CONFIG.specialStatusEffects ?? {}), BLIND: "blinded" };
+  // v0.0.314: Blinded took Foundry's blind status; v0.0.316 (Lucas: the Hearing ripple went with it): it is the system's own status, and the sight
+  // gate (sightgate.mjs) and the Senses (senses.mjs perceive) read it, so only Sight is gone
 });
 
 /** Cards that are finished (damage rolled / applied) are shown short: title, result and effects. Clicking the title shows the whole card again. */

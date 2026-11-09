@@ -107,7 +107,7 @@ export function perceive(observer, target, { loe = true } = {}) {
   const os = o?.system?.senses ?? {};
   if (o?.statuses?.has?.("unconscious")) return { level: "unsensed", why: "Unconscious: every creature is Unsensed to you", name: CAP.unsensed };   // the Unconscious rule
   const options = [];
-  const blind = !!o?.statuses?.has?.(CONFIG.specialStatusEffects?.BLIND ?? "blind");
+  const blind = !!o?.statuses?.has?.("blinded") || !!o?.statuses?.has?.(CONFIG.specialStatusEffects?.BLIND ?? "blind");   // v0.0.316: the system's Blinded
   if (loe && !blind && target) {
     const raw = tokenLight(target), light = seenLight(raw, os);
     const how = light === raw ? `Sight, ${LIGHT_NAMES[raw]} light` : `Sight (${os.darksight ? "Dark Sight" : "Dim-light Sight"}), ${LIGHT_NAMES[raw]} light`;

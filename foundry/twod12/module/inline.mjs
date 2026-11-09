@@ -10,8 +10,8 @@ import { traitChevrons } from "./config.mjs";
 import { askRoll, enrich, adjLabelOf, ccRowOf } from "./actions.mjs";
 import * as CC from "./chatcards.mjs";   // v0.0.283 (pack chat-cards): the one-target Save card
 import { perDieDelta } from "./calc.mjs";
-import { resolveModifiers, applyEffects, applyCondition, originInfo, applyBoonEffect, damageSteps } from "./effects.mjs";
-import { parseAttrs } from "./condrules.mjs";   // v0.0.314 (pack AU): Bleed's Attributes
+import { resolveModifiers, applyEffects, applyCondition, originInfo, applyBoonEffect, damageSteps, conditionItem } from "./effects.mjs";
+import { parseAttrs, needsOrigin } from "./condrules.mjs";   // v0.0.314 (pack AU): Bleed's Attributes
 import { dealDamage } from "./damage.mjs";
 import { postDamageCard } from "./dmgcard.mjs";
 import { startTemplate, tokensInEmanation } from "./template.mjs";
@@ -817,7 +817,20 @@ async function handleCondition(cfg, ctx = {}) {
   else actors = handTargetTokens(ctx).map(t => t.actor);   // v0.0.252 (Lucas): a hand click goes to the selected tokens, else the targeted, else the card's (the card's Self no longer wins)
   actors = actors.filter(Boolean);
   if (!actors.length) return cfg.crit && ctx.targets?.length ? ui.notifications.info("No Critical: nothing to apply.") : ui.notifications.warn("Target or select a token first.");
-  const src = ctx.actor ?? (f?.actorUuid ? await fromUuid(f.actorUuid) : (game.combat?.combatant?.actor ?? null));
+  let src = ctx.actor ?? (f?.actorUuid ? await fromUuid(f.actorUuid) : (game.combat?.combatant?.actor ?? null));
+  // v0.0.316 (Lucas): a condition that needs an origin (Frightened, Taunted, Grabbed) takes the Action's user only when its Effect says so and an
+  // Action is behind the chip; otherwise it always asks (click a token)
+  const condIt = await conditionItem(cfg.cond);
+  if (condIt && needsOrigin(condIt.system)) {
+    const user = ctx.actor ?? (f?.actorUuid ? await fromUuid(f.actorUuid) : null);
+    if (condIt.system.originFromUser && user) src = user;
+    else {
+      const { askOrigin } = await import("./conditions.mjs");
+      const u = await askOrigin(condIt, actors);
+      if (!u) return;
+      src = await fromUuid(u);
+    }
+  }
   const dur = cfg.dur === "eot" ? { type: "eot" } : (cfg.dur === "rounds" ? { type: "rounds", rounds: cfg.rounds } : null);
   const found = await applyCondition(cfg.cond, actors, dur, { ...originInfo(src?.uuid ?? ""), ...(Number.isFinite(f?.attrVal ?? f?.originMod) ? { mod: f.attrVal ?? f.originMod } : {}) }, cfg.value ?? null, cfg.bleed ? { bleed: cfg.bleed } : {});
   ui.notifications.info(`${cfg.cond.charAt(0).toUpperCase() + cfg.cond.slice(1)}${cfg.value ? ` ${cfg.value}` : ""} applied to ${actors.map(a => a.name).join(", ")}${found ? "" : " (as a status: there is no Effect item with that name)"}.`);

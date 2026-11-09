@@ -142,14 +142,8 @@ export async function askApply(item, actor) {
   const out = { origin: null, over: {} };
   const sys = item?.system ?? {};
   if (needsOrigin(sys)) {
-    const { pickBar } = await import("./pickbar.mjs");
-    const mine = new Set((actor?.getActiveTokens?.() ?? []).map(t => t.id));
-    const toks = (canvas?.tokens?.placeables ?? []).filter(t => t.actor && !mine.has(t.id) && t.visible !== false);
-    if (!toks.length) { ui.notifications.warn(`${item.name} needs a source: no other token on the map.`); return null; }
-    const word = { Frightened: "of whom", Taunted: "by whom", Grabbed: "held by whom" }[item.name] ?? "from whom";
-    const id = await pickBar({ icon: "fa-crosshairs", text: `<b>${esc(item.name)}</b> on ${esc(actor?.name ?? "")}: ${word}? Click its token.`, options: toks.map(t => ({ id: t.id, label: t.name, token: t })) });
-    if (!id || id === "done") return null;
-    out.origin = toks.find(t => t.id === id)?.actor?.uuid ?? null;
+    out.origin = await askOrigin(item, [actor]);
+    if (!out.origin) return null;
   }
   if (hasBleed(sys)) {
     const b = await bleedWindow(item, actor);
@@ -157,6 +151,18 @@ export async function askApply(item, actor) {
     out.over.bleed = b;
   }
   return out;
+}
+
+/** v0.0.316 (Lucas): who is the origin of this condition (Frightened of whom...)? The bar at the bottom: click its token. Resolves an actor uuid, or null. */
+export async function askOrigin(item, actors = []) {
+  const { pickBar } = await import("./pickbar.mjs");
+  const mine = new Set(actors.flatMap(a => a?.getActiveTokens?.() ?? []).map(t => t.id));
+  const toks = (canvas?.tokens?.placeables ?? []).filter(t => t.actor && !mine.has(t.id) && t.visible !== false);
+  if (!toks.length) { ui.notifications.warn(`${item.name} needs an origin: no other token on the map.`); return null; }
+  const word = { Frightened: "of whom", Taunted: "by whom", Grabbed: "held by whom" }[item.name] ?? "from whom";
+  const id = await pickBar({ icon: "fa-crosshairs", text: `<b>${esc(item.name)}</b> on ${esc(actors.map(a => a?.name).filter(Boolean).join(", "))}: ${word}? Click its token.`, options: toks.map(t => ({ id: t.id, label: t.name, token: t })) });
+  if (!id || id === "done") return null;
+  return toks.find(t => t.id === id)?.actor?.uuid ?? null;
 }
 
 /** Pure: Bleed's window (the pick window's model) from its state. */

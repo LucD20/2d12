@@ -639,6 +639,8 @@ export class EffectData extends foundry.abstract.TypeDataModel {
       //   loseAp: when applied, the creature loses its value in AP (the rest from its next regain), then it ends (Dazed);
       //   endsWithOrigin: it ends when its origin goes Down or Unconscious (Grabbed).
       whileSeen: bool(), noReactions: bool(), loseAp: bool(), endsWithOrigin: bool(),
+      // v0.0.316 (Lucas): its origin is the creature that used the Action (a card's chip); off, or with no Action behind it, it asks (a token on the map)
+      originFromUser: bool(),
       linked: str(),   // other conditions this one brings with it, by name ("Hindered"); they end when this one does
       conditions: new ArrayField(new SchemaField({ uuid: str(), name: str(), value: int(1, 0), valued: bool(), mode: choice({ set: "The highest counts", increase: "Increase the value", halfLevel: "Half the creature's level, rounded up (Squeezing)" }, "set") })),   // conditions this effect applies, each with its value; they end when this one does
       duration: new SchemaField({ type: choice(TWOD12.durationTypes, ""), rounds: int(1, 1) }),

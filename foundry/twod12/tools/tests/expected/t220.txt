@@ -59,3 +59,6 @@ Bleed's window: Bleed | Goblin | [["At the end of each turn","Bleed [R] 1d6 Ho (
 a card's Bleed goes into the applied effect's own setting (seen and editable): {"type":"bleed","dmg":"1d6","dmgPool":"M","dmgSub":"Ho","attrs":["mind","appeal"],"bleedDc":15} | the turn reads: {"dmg":"1d6","pool":"M","sub":"Ho","attrs":["mind","appeal"],"dc":15}
 Bleed's card: no ↳ box: true | no Lethal tag: true | the note: Ends with Interact (1 AP) and a Bo/In Save, DC 13.
 an origin on the Details tab: {"name":"Grave Wisp","token":"AjaXvWGAPxEypR0a","uuid":"Scene.s1.Token.AjaXvWGAPxEypR0a.Actor.a1"} | none: {"name":"","token":"","uuid":""}
+--- v0.0.316 (Lucas on v0.0.315)
+the origin is the Action's user (else it asks): Frightened true, Grabbed true, Taunted true
+a Blinded observer sees no creature by sight (Hearing is another mode): false

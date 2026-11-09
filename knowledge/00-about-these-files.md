@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-09 from the repository at: 01c7ba5 2026-11-09 v0.0.314: PACK AU part 1: the conditions as items, the Elite's phases, Vs. WD and the AD / WD colors
+Built by tools/knowledge.py on 2026-11-09 from the repository at: f248a9f 2026-11-09 v0.0.315: Lucas on v0.0.314: Frightened's speed, name-only chips, the Diamond rank, the HUD's origin and Bleed prompts
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

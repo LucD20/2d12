@@ -359,7 +359,8 @@
         <label class="fxd-inl" data-tooltip="Frightened: its settings work only while the creature sees the one that applied it"><input type="checkbox" name="system.whileSeen" {{#if system.whileSeen}}checked{{/if}}> Only while it sees its origin</label>
         <label class="fxd-inl" data-tooltip="Staggered: the Reaction AP waits until it ends"><input type="checkbox" name="system.noReactions" {{#if system.noReactions}}checked{{/if}}> No Reactions</label>
         <label class="fxd-inl" data-tooltip="Dazed: the value in AP, now; the rest from the AP of the next turn; then it ends"><input type="checkbox" name="system.loseAp" {{#if system.loseAp}}checked{{/if}}> Loses its value in AP</label>
-        <label class="fxd-inl" data-tooltip="Grabbed: when the holder goes Down or is Unconscious"><input type="checkbox" name="system.endsWithOrigin" {{#if system.endsWithOrigin}}checked{{/if}}> Ends when its origin goes Down</label></div>
+        <label class="fxd-inl" data-tooltip="Grabbed: when the holder goes Down or is Unconscious"><input type="checkbox" name="system.endsWithOrigin" {{#if system.endsWithOrigin}}checked{{/if}}> Ends when its origin goes Down</label>
+        <label class="fxd-inl" data-tooltip="On: from an Action's card, its origin is the creature that used the Action. Off, or with no Action behind it (the HUD, a chip clicked by hand): it asks, click a token"><input type="checkbox" name="system.originFromUser" {{#if system.originFromUser}}checked{{/if}}> Its origin is the creature that used the Action</label></div>
       <p class="fxd-help">An effect is a bundle of the settings below. A condition is a named state from the book (Prone, Empowered); one with a value keeps it on the creature, and clicking its icon raises it. "The user" is the creature that used the Action.</p>
       {{/if}}
 

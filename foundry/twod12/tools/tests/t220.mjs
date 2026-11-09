@@ -102,3 +102,9 @@ const dm = CC.damageCardHtml({ name: "Bleed [V] 1 (Bo/In)", nl: false, noNl: tru
 console.log("Bleed's card: no ↳ box:", !/cc-rider/.test(dm), "| no Lethal tag:", !/cc-nl/.test(dm), "| the note:", (dm.match(/<div class="cc-dnote">([^<]*)<\/div>/) ?? [])[1]);
 globalThis.fromUuidSync = u => (u.includes("AjaXvWGAPxEypR0a") ? { documentName: "Actor", name: "Grave Wisp" } : null);
 console.log("an origin on the Details tab:", JSON.stringify(R.originView("Scene.s1.Token.AjaXvWGAPxEypR0a.Actor.a1")), "| none:", JSON.stringify(R.originView("")));
+
+console.log("--- v0.0.316 (Lucas on v0.0.315)");
+console.log("the origin is the Action's user (else it asks):", want.filter(n => R.needsOrigin(conds.find(x => x.name === n)?.system)).map(n => `${n} ${!!conds.find(x => x.name === n).system.originFromUser}`).join(", "));
+const SG = await import(ROOTURL + "module/sightgate.mjs").catch(e => ({ err: e.message }));
+const tk = (id, st = []) => ({ id, actor: { statuses: new Set(st), system: { senses: {} } } });
+console.log("a Blinded observer sees no creature by sight (Hearing is another mode):", SG.canSeeByRules ? SG.canSeeByRules(tk("a", ["blinded"]), tk("b")) : SG.err);
