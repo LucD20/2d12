@@ -124,6 +124,7 @@ export function flankingMod(attacker, target, { tag = "", na = false } = {}) {
   if (!f.boons && na) { const why = flankingWhyNot(attacker, target); return { id: tag ? `syn:flanking|${tag}` : "syn:flanking", name: tag ? `Flanking (${target.name})` : "Flanking", boons: 1, banes: 0, bb: "field", match: false, naWhy: why, predicate: `No Flanking: ${why}` }; }
   if (!f.boons) return null;
   const n = f.boons, c = f.cancelledBy;
-  return { id: tag ? `syn:flanking|${tag}` : "syn:flanking", name: `Flanking${tag ? ` (${target.name}, ` : " ("}${n} Field Boon${n === 1 ? "" : "s"})`, boons: n, banes: 0, bb: "field", match: true,
+  return { id: tag ? `syn:flanking|${tag}` : "syn:flanking", name: `Flanking ${n}${tag ? ` (${target.name})` : ""}`, boons: n,   // v0.0.303 (Lucas): "Flanking 2"; the chip's Field tag says the rest
+    banes: 0, bb: "field", match: true,
     predicate: `${target.name} is also threatened by ${f.flankers.join(", ")}: a Field Boon for each, up to 2${c.length ? `; ${c.join(", ")} ${c.length === 1 ? "is an ally" : "are allies"} of ${target.name} that threaten${c.length === 1 ? "s" : ""} you: one boon cancelled for each` : ""}` };
 }

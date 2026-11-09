@@ -9,6 +9,7 @@
 // v0.0.275 (pack RX-2, Lucas's design): the message is a stack card (faces, "pick one" groups, slabs in their map colors), a map overlay shows
 // it while it is open (rxoverlay.mjs), and once resolved the same message is edited in place into one line that unfolds (a snapshot, the frozen stack).
 import { tokenDistance } from "./light.mjs";
+import { threatProfile } from "./flanking.mjs";   // v0.0.303: "a creature you threaten" (Opportunity Attack)
 import { isFaded } from "./usage.mjs";
 import { answererFor } from "./healwin.mjs";
 import { sysLine } from "./sysmsg.mjs";
@@ -305,6 +306,9 @@ export async function collectReactions(ev) {
       if (ev.filter && !ev.filter.has(`${actor.uuid}|${item.id}`)) continue;
       if (def.closer && ev.closer && !ev.closer(tk)) continue;
       const range = Number(item.system.momentRange) || 0;
+      // v0.0.303 (Lucas; book, Opportunity Attack): "a creature you threaten": within your threat (your melee weapon's Range, not the adjacent squares of a Long one)
+      const thr = item.system.momentThreat ? threatProfile(actor) : null;
+      if (thr && thr.max <= 0) continue;
       let hit = null;
       for (const sj of ev.subjects ?? []) {
         if (!sj?.actor) continue;
@@ -314,6 +318,7 @@ export async function collectReactions(ev) {
         // v0.0.277 (Lucas: a movement's Reaction sometimes wasn't offered): a movement is measured on every square of its path (an array)
         const dist = isSelf ? 0 : Array.isArray(where) ? Math.min(Infinity, ...where.map(w => tokenDistance(tk, w))) : where ? tokenDistance(tk, where) : Infinity;
         if (range && dist > range) continue;
+        if (thr) { const ds = isSelf ? [] : (Array.isArray(where) ? where : where ? [where] : []).map(w => tokenDistance(tk, w)).filter(d => d >= thr.min && d <= thr.max); if (!ds.length) continue; }
         if (!hit || dist < hit.dist) hit = { sj, dist };
       }
       if (!hit) continue;
@@ -878,8 +883,8 @@ export function backSquareIndex(path, rows, dist, nearer = () => true) {
 export function backSquareIndices(path, rows, dist, nearer = () => true) {
   const out = new Set();
   for (const r of rows) {
-    const range = Number(r.range) || Infinity;
-    if (r.moment === "enemyMoves") for (let i = 0; i < path.length - 1; i++) { if (dist(r, path[i]) <= range) out.add(i); }
+    const range = Number(r.range) || Infinity, min = Number(r.min) || 0;   // v0.0.303: min, a threat that doesn't reach adjacent squares (a Long weapon)
+    if (r.moment === "enemyMoves") for (let i = 0; i < path.length - 1; i++) { const d = dist(r, path[i]); if (d <= range && d >= min) out.add(i); }
     if (r.moment === "enemyCloser") for (let i = 1; i < path.length; i++) { if (dist(r, path[i]) <= range && nearer(r, path[i])) out.add(i); }
   }
   return [...out].sort((a, b) => b - a);
@@ -931,7 +936,7 @@ export function moveMoment(doc, origin, dest, { stand = false, before = null, wa
     // v0.0.273 (Lucas): Move back: to where this movement started, with the movement it had then (the squares since are refunded)
     // v0.0.279 (Lucas): to the last square where a Reaction offered could come (Shift+click: where this movement started), its share refunded
     const nearer = (r, sq) => sideToks(r.token.document.disposition).some(s => tokenDistance(sq, s) < tokenDistance(fromAt, s));
-    const idxs = stand || sqs.length < 2 ? [] : backSquareIndices(sqs, open.map(r => ({ moment: r.moment, range: Number(r.item.system.momentRange) || 0, token: r.token })), (r, sq) => tokenDistance(r.token, sq), nearer);
+    const idxs = stand || sqs.length < 2 ? [] : backSquareIndices(sqs, open.map(r => { const t = r.item.system.momentThreat ? threatProfile(r.actor) : null; return { moment: r.moment, range: t ? t.max : (Number(r.item.system.momentRange) || 0), min: t ? t.min : 0, token: r.token }; }), (r, sq) => tokenDistance(r.token, sq), nearer);
     const idx = idxs[0] ?? 0;
     const at = sqs[idx] ?? fromAt, steps = Math.max(0, sqs.length - 1 - idx), total = Math.max(1, sqs.length - 1);
     const back = !stand && origin ? { tokenUuid: doc.uuid, x: at.x, y: at.y, start: { x: fromAt.x, y: fromAt.y }, steps, total, combatantId: before?.combatantId ?? "", flags: before?.flags ?? null, squares: idx ? steps : tokenDistance(fromAt, toAt), squaresAt: idxs.slice(0, 12).map(i => ({ idx: i, x: sqs[i].x, y: sqs[i].y })), name: cleanName(doc.name ?? actor.name), used: false } : null;

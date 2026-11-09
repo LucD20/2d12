@@ -27,7 +27,7 @@ const reEsc = s => String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 export const cleanLabel = (name, targetName = "") => {
   let s = String(name ?? "");
   if (targetName) s = s.replace(new RegExp(`\\s*\\(${reEsc(targetName)}(,[^)]*)?\\)`), "");
-  return s.replace(/\s*\(\d+\s+(?:Boons?|Banes?)\)\s*$/i, "").trim();
+  return s.replace(/\s*\(\d+\s+(?:(?:Field|Pressure|Support)\s+)?(?:Boons?|Banes?)\)\s*$/i, "").trim();   // v0.0.303: "(1 Field Bane)" too: the chip's name tag says it
 };
 
 /** "Word of Radiance is not a Strike" (bonus.mjs bonusesNotNow) → "Not this Action: not a Strike". */

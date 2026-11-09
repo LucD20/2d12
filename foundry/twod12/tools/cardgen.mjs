@@ -148,7 +148,7 @@ export function cardSystem(c, resolve = s => s) {
   if (c.category === "Basic attack") sys.basicAttack = true;   // an NPC's Basic attack stands in for the Weapon Attack NPCs don't have
   sys.versions = versionsOf(c).map((v, i) => { const d = versionData(c, v, resolve); if (area && i > 0 && area.sizes[i] && area.sizes[i] !== area.sizes[0]) d.areaSize = area.sizes[i]; return d; });
   if (c.flavor) sys.flavor = c.flavor;
-  for (const k of ["weaponUse", "automation", "automationNote", "marksTarget", "basicAttack", "basicRating", "modifiers", "moment", "momentRange", "momentSelf", "momentTarget"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];   // v0.0.261: moment, momentRange (Divine Intervention); v0.0.272: momentSelf, momentTarget
+  for (const k of ["weaponUse", "automation", "automationNote", "marksTarget", "basicAttack", "basicRating", "modifiers", "moment", "momentRange", "momentSelf", "momentTarget", "momentThreat"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];   // v0.0.261: moment, momentRange (Divine Intervention); v0.0.272: momentSelf, momentTarget
   return sys;
 }
 
@@ -202,7 +202,7 @@ export function basicEntry(c) {
   if (s.weaponUse) e.weaponUse = s.weaponUse;
   if (s.description) e.description = s.description;
   if (s.reaction) Object.assign(e, { reaction: true, reactionKind: s.reactionKind, trigger: s.trigger });   // pack R-core: Opportunity Attack, the basic Reaction
-  for (const k of ["moment", "momentRange", "momentSelf", "momentTarget"]) if (s[k] !== undefined) e[k] = s[k];   // v0.0.272 (pack RX): its moment
+  for (const k of ["moment", "momentRange", "momentSelf", "momentTarget", "momentThreat"]) if (s[k] !== undefined) e[k] = s[k];   // v0.0.272 (pack RX): its moment
   e.flavor = c.flavor ?? "";
   e.versions = s.versions;
   return e;

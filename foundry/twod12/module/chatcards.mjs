@@ -161,7 +161,8 @@ export function outcomeHtml(o, { none = "" } = {}) {
 const FREQ = { round: "Round", encounter: "Encounter", turn: "Turn", atwill: "At-will", daily: "Daily" };
 export function headHtml(m) {
   const chip = [FREQ[m.freq] ?? "", m.cost].filter(Boolean).join(" · ");
-  return `<div class="cc-head"><b class="cc-name">${esc(m.name)}</b>${chip ? `<span class="cc-cost f-${esc(m.freq || "none")}">${esc(chip)}</span>` : ""}</div>${m.traitsHtml ? `<div class="cc-traits">${m.traitsHtml}</div>` : ""}`;
+  // v0.0.303 (Lucas): the automation diamond beside the name (config.mjs autoChip; its rank and what is done by hand on hover)
+  return `<div class="cc-head"><b class="cc-name">${esc(m.name)}${m.auto ?? ""}</b>${chip ? `<span class="cc-cost f-${esc(m.freq || "none")}">${esc(chip)}</span>` : ""}</div>${m.traitsHtml ? `<div class="cc-traits">${m.traitsHtml}</div>` : ""}`;
 }
 /** "Targets ✦ Distance → target", the area button first for an Area Action, the retarget button at the right. */
 export function targetLineHtml(m, view = FULL_VIEW, { locked = false } = {}) {

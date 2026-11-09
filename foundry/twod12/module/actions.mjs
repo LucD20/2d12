@@ -8,7 +8,7 @@ import { canPayEscalation, raiseEscalation } from "./escalation.mjs";
 import { weaponUse, weaponRanges } from "./weaponrange.mjs";
 import { rollSource, rollTraits, saveDcOf } from "./rollsource.mjs";
 import { perceptionOf, perceive } from "./senses.mjs";
-import { parseArea, TWOD12, poolTag, expandAsText, areaButton, isTalentAction, targetsNeeded, areaConfigOf } from "./config.mjs";
+import { parseArea, TWOD12, poolTag, expandAsText, areaButton, isTalentAction, targetsNeeded, areaConfigOf, autoChip } from "./config.mjs";
 import { weaponsFor, hasProp, heldFirst } from "./fists.mjs";
 import { handOf, HAND_LABEL } from "./loadout.mjs";
 import { isEngaged, engagedWithOther } from "./engaged.mjs";
@@ -1015,7 +1015,7 @@ export async function useAction(actor, item, opts = {}) {
     if (mres) for (const r of mres) mk.outcomes[r.chk.tier] = mk.outcomeFor(r.chk.tier, r.bonuses ?? []);
     else if (tier) mk.outcomes[tier] = mk.outcomeFor(tier, bonuses);
     ccModel = {
-      v: 1, kind: "attack", name: item.name, freq: effectiveFrequency(it), cost: it.reaction ? `${version.ap}R` : `${version.ap} AP`, traitsHtml: useTraits.size ? traitsHtml(useTraits) : "",
+      v: 1, kind: "attack", name: item.name, auto: autoChip(it.automation, it.automationNote), freq: effectiveFrequency(it), cost: it.reaction ? `${version.ap}R` : `${version.ap} AP`, traitsHtml: useTraits.size ? traitsHtml(useTraits) : "",
       tline: { targets: it.targets ?? "", dist: mk.dist, area: mk.areaHtml, names: targets.map(t => t.name) },
       rows: rowsM, outcomes: mk.outcomes, effectsHtml: mk.effectsHtml, effectsFrom: 2, critHtml: version.critical ? await enrich(version.critical, item) : "", flavor: it.flavor ?? "",
       setupHtml: setupRow, hasDamage: !!btn,
@@ -1047,7 +1047,7 @@ export async function useAction(actor, item, opts = {}) {
       if (tok && tok !== selfToken) useOff = NR.reachProblem(reaches, squaresBetween(selfToken, tok), tok.name);
     }
     ccModel = {
-      v: 1, kind: "noroll", name: item.name, freq: effectiveFrequency(it), cost: it.reaction ? `${version.ap}R` : `${version.ap} AP`, traitsHtml: useTraits.size ? traitsHtml(useTraits) : "",
+      v: 1, kind: "noroll", name: item.name, auto: autoChip(it.automation, it.automationNote), freq: effectiveFrequency(it), cost: it.reaction ? `${version.ap}R` : `${version.ap} AP`, traitsHtml: useTraits.size ? traitsHtml(useTraits) : "",
       tline: { targets: it.targets ?? "", dist: sqText(distanceText(it, weapon ?? previewWeapon ?? null)) || (it.reaction && Number(it.momentRange) > 0 ? `${Number(it.momentRange)} sq.` : ""), area: "", names: targets.map(t => t.name) },
       triggerHtml: it.trigger ? await enrich(esc(it.trigger), item) : "", triggerLabel: it.reactionKind === "interrupt" ? "Interrupt" : "Trigger",
       effectHtml: use.html, useHtml: use.anchor, useName, useOff,
@@ -1147,7 +1147,7 @@ export async function useAction(actor, item, opts = {}) {
       // v0.0.283 (pack chat-cards): this card becomes the Save card (v0.0.286: several targets too, a row each; an [HT] area's repeat keeps the old card)
       if (targets.length >= 1 && cmsg) {
         const { ccSaveOnCard } = await import("./inline.mjs");
-        const model = { name: item.name, freq: effectiveFrequency(it), cost: it.reaction ? `${version.ap}R` : `${version.ap} AP`, traitsHtml: useTraits.size ? traitsHtml(useTraits) : "",
+        const model = { name: item.name, auto: autoChip(it.automation, it.automationNote), freq: effectiveFrequency(it), cost: it.reaction ? `${version.ap}R` : `${version.ap} AP`, traitsHtml: useTraits.size ? traitsHtml(useTraits) : "",
           tline: { targets: it.targets ?? "", dist: sqText(distanceText(it, weapon ?? previewWeapon ?? null)), area: "", names: [targets[0].name] },
           triggerHtml: it.trigger ? await enrich(esc(it.trigger), item) : "", triggerLabel: it.reactionKind === "interrupt" ? "Interrupt" : "Trigger", flavor: it.flavor ?? "",
           designer: { ruler: it.worth ?? "", mithril: it.automation ? `${TWOD12.automationRanks[it.automation] ?? it.automation}` : "" } };

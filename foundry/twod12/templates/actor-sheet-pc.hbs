@@ -7,9 +7,9 @@
 {{else}}<button type="button" class="ps-use{{#if reaction}} rx{{/if}}" data-action="useAction" data-tooltip="{{useTip}}" aria-label="{{useTip}}">Use</button>{{/if}}
 {{/inline}}
 {{#*inline "srow"}}
-<div class="ar ps-row{{#if off}} off{{/if}}{{#if open}} open{{/if}}{{#if lines.strike}} strike{{/if}}{{#if freqLine}} lnfreq{{/if}}" data-item-id="{{id}}"{{#if freqLine}} style="{{freqLine.style}}"{{/if}}>
+<div class="ar ps-row{{#if off}} off{{/if}}{{#if open}} open{{/if}}{{#if lines.strike}} strike{{/if}}{{#if freqLine}} lnfreq{{/if}}{{#if basicAtk}} basicatk{{/if}}" data-item-id="{{id}}"{{#if freqLine}} style="{{freqLine.style}}"{{/if}}>
   <div class="ps-line" data-action="toggleCard">
-    <span class="ps-name"><a class="ps-nm" role="button" tabindex="0" aria-expanded="{{#if open}}true{{else}}false{{/if}}">{{name}}</a>{{#if sub}}<span class="ps-sub">{{sub}}</span>{{/if}}{{#if fav}}<i class="fa-solid fa-star ps-fav" data-tooltip="Favorite (right-click the row to change)" aria-label="Favorite"></i>{{/if}}</span>
+    <span class="ps-name"><a class="ps-nm" role="button" tabindex="0" aria-expanded="{{#if open}}true{{else}}false{{/if}}">{{name}}</a>{{{auto}}}{{#if sub}}<span class="ps-sub">{{sub}}</span>{{/if}}{{#if fav}}<i class="fa-solid fa-star ps-fav" data-tooltip="Favorite (right-click the row to change)" aria-label="Favorite"></i>{{/if}}</span>
     <span class="ps-c"><span class="ps-pill{{#if outline}} line{{/if}}" style="--fc:{{fc}}">{{cost}}</span></span>
     <span class="ps-c ps-dist">{{dist}}</span>
     <span class="ps-c">{{#if vs}}<span class="ps-vs">{{vs}}</span>{{/if}}</span>
@@ -377,7 +377,7 @@
         <div class="ps-stack nbld">
           <div class="nb-top">
             <div class="ps-roleseg" role="group" aria-label="Role">{{#each roles}}<button type="button" class="{{#if on}}on{{/if}}" data-action="setRole" data-role="{{key}}" aria-pressed="{{#if on}}true{{else}}false{{/if}}">{{label}}</button>{{/each}}</div>
-            {{#if elite}}<label class="ps-esctog"><input type="checkbox" name="system.useEscalation" {{#if escOn}}checked{{/if}} data-tooltip="Elite Escalation: on for an Elite (the Bestiary)"> Escalation</label>{{/if}}
+            {{#if escAny}}<label class="ps-esctog"><input type="checkbox" name="system.useEscalation" {{#if escOn}}checked{{/if}} data-tooltip="Elite Escalation: on for an Elite (the Bestiary)"> Escalation</label>{{/if}}
             <span class="ps-right"></span>
             <label class="nb-stat"><span>Level</span><input type="number" min="0" name="system.level" value="{{level}}" aria-label="Level"></label>
             <div class="nb-stat dark" data-tooltip="Levels 1-4: Stage 1; 5-7: Stage 2; 8-10: Stage 3"><span>Stage</span><b>{{stage}}</b></div>

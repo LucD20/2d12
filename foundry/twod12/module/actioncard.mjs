@@ -10,7 +10,7 @@
 //   the Flavor at the bottom under ◆ ◆ ◆; the ruler line in Designer mode only.
 // With actor: what effects add inside the cells in green or red (as before), the strip, the Version buttons. The pure pieces: cardview.mjs.
 // The chat cards are unchanged (chatcards.mjs, preview.mjs).
-import { TWOD12, traitGroupOf, highlightText, metaRowHtml, effectiveFrequency, distanceText, areaText, vsText, areaButton, prettyDamage, categoryText, doomStatus } from "./config.mjs";
+import { autoChip, TWOD12, traitGroupOf, highlightText, metaRowHtml, effectiveFrequency, distanceText, areaText, vsText, areaButton, prettyDamage, categoryText, doomStatus } from "./config.mjs";
 import { rawTierLine, modifierBlocks, actionOnlyTalent } from "./preview.mjs";
 import { prereqLine } from "./talents.mjs";
 import { actionChanges, unloadedWeapon, traitsFor } from "./actionrows.mjs";
@@ -157,7 +157,7 @@ export async function buildActionCard(item, { actor = null, use = true } = {}) {
   const ruler = rulerText(it.worth, setting("designerMode"));
   const flavor = it.flavor ? `<div class="ap-flav"><div class="dv" aria-hidden="true">◆ ◆ ◆</div>${esc(it.flavor)}</div>` : "";
   return `<div class="twod12 acard d2" data-card-item="${esc(item.id ?? "")}">
-    <div class="ap-trow">${traits}<span class="ap-cat">${cat ? esc(cat) : ""}${fl ? ` <span class="ap-freq" style="background:${FREQ_CHIP[f] ?? "#5f5e5a"}">${esc(fl)}</span>` : ""}</span></div>
+    <div class="ap-trow">${traits}<span class="ap-cat">${autoChip(it.automation, it.automationNote)}${cat ? ` ${esc(cat)}` : ""}${fl ? ` <span class="ap-freq" style="background:${FREQ_CHIP[f] ?? "#5f5e5a"}">${esc(fl)}</span>` : ""}</span></div>
     ${meta ? `<div class="ap-meta">${meta}</div>` : ""}${areaRow}${setup}
     ${it.prerequisites ? `<div class="trow"><b>Prerequisites:</b> ${esc(it.prerequisites)}</div>` : ""}
     ${notes}
@@ -192,7 +192,7 @@ export async function buildFeatureCard(item, { actor = null } = {}) {
   const ruler = rulerText(s.worth, setting("designerMode"));
   const flavor = s.flavor ? `<div class="ap-flav"><div class="dv" aria-hidden="true">◆ ◆ ◆</div>${esc(s.flavor)}</div>` : "";
   // v0.0.299 (Lucas): the text is the "Description"; the category and the Frequency chip sit on its heading line (less height); a trait line only with traits
-  const catHtml = cat || fl ? `<span class="ap-cat">${cat ? esc(cat) : ""}${fl ? ` <span class="ap-freq" style="background:${FREQ_CHIP[f] ?? "#5f5e5a"}">${esc(fl)}</span>` : ""}</span>` : "";
+  const catHtml = cat || fl || s.automation ? `<span class="ap-cat">${autoChip(s.automation, s.automationNote)}${cat ? ` ${esc(cat)}` : ""}${fl ? ` <span class="ap-freq" style="background:${FREQ_CHIP[f] ?? "#5f5e5a"}">${esc(fl)}</span>` : ""}</span>` : "";
   const onHead = !!body && !traits;
   return `<div class="twod12 acard d2 feat" data-card-item="${esc(item.id ?? "")}">
     ${traits || (catHtml && !onHead) ? `<div class="ap-trow">${traits}${catHtml}</div>` : ""}

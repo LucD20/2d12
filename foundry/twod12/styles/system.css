@@ -3524,3 +3524,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.sheet.pcs .ps-row.lnfreq > .ps-line { box-shadow: inset 4px 0 0 var(--lnf); padding-left: 14px; }
 .twod12.sheet.pcs .ps-row.lnfreq.strike > .ps-line { box-shadow: inset 4px 0 0 var(--lnf), inset 8px 0 0 #d14b3f; padding-left: 18px; }
 .twod12.sheet.pcs .ps-row.lnfreq.off > .ps-line { box-shadow: inset 4px 0 0 #b5ad9c; }
+
+/* ==== v0.0.303 (Lucas tested v0.0.302): the NPC's Basic attack row: a wide gold strip (then the red Strike line) and a faint gold wash, so it stands out ==== */
+.twod12.sheet.pcs .ps-row.basicatk > .ps-line { box-shadow: inset 10px 0 0 #c9a227, inset 14px 0 0 #d14b3f; padding-left: 22px; background: linear-gradient(90deg, rgba(201,162,39,.16), rgba(201,162,39,0) 70%); }
+.twod12.sheet.pcs .ps-row.basicatk.off > .ps-line { box-shadow: inset 10px 0 0 #b5ad9c; }

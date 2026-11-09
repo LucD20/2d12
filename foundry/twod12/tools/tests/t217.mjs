@@ -136,3 +136,16 @@ const loeSrc = src("module/loe.mjs");
 console.log("the token controls: Line of Effect, Cover height, Show flanking:", ["twod12-loe", "twod12-height", "twod12-flank"].every(n => loeSrc.includes(`name: "${n}"`)), "| no HUD buttons any more:", !loeSrc.includes("renderTokenHUD"));
 const pcs = src("module/pcsheet.mjs");
 console.log("the sheet's rows have their color again (v0.0.298 had it in a comment):", /\n\s+fc: \(SHEET_FREQ\[reaction \? "reaction" : sec\]/.test(pcs), "| Use's tooltip and the open card:", /\n\s+useTip: r\.useTip \|\| `Use \$\{i\.name\}`, open: r\.open,/.test(pcs), "| a Reaction's Frequency line:", pcs.includes("freqLine: reaction ? rowLines("));
+
+console.log("--- v0.0.303 (Lucas tested v0.0.302)");
+const CV = await import(ROOTURL + "module/cardview.mjs");
+console.log("chip names, the tag says the rest:", ["Flanking 2", "Target is Engaged (1 Field Bane)", "Obscured by Orc (1 Field Boon)", "Medium cover (2 Banes)"].map(n => CV.cleanLabel(n)).join(" | "));
+const BD = await import(ROOTURL + "module/basic-data.mjs"), oa = BD.BASIC_ACTIONS.opportunityAttack;
+console.log("Opportunity Attack:", JSON.stringify(oa.traits), "|", oa.trigger, "| only a creature you threaten:", oa.momentThreat === true, "range", oa.momentRange);
+const MO = src("module/moment.mjs");
+console.log("the Reactions message checks the threat (a Long weapon's min too):", MO.includes("const thr = item.system.momentThreat ? threatProfile(actor) : null;") && MO.includes("d >= thr.min && d <= thr.max"));
+const { backSquareIndices } = await import(ROOTURL + "module/moment.mjs").catch(() => ({}));
+if (backSquareIndices) console.log("Move back with a Long weapon (threatens 2 only): squares", JSON.stringify(backSquareIndices([0, 1, 2, 3], [{ moment: "enemyMoves", range: 2, min: 2 }], (r, sq) => [1, 2, 3, 4][sq])));
+const pcs2 = src("module/pcsheet.mjs"), tpl = src("templates/actor-sheet-pc.hbs");
+console.log("NPC rows: no \"back once at Escalation 3\":", !pcs2.includes('subs.push("back once at Escalation 3")'), "| the Basic attack strip:", pcs2.includes("basicAtk: !!(npc && it.basicAttack)") && tpl.includes("{{#if basicAtk}} basicatk{{/if}}"), "| an NPC's Escalation Actions listed out of combat:", pcs2.includes('(inCombat || npc || k !== "apex")'));
+console.log("the automation diamond: rows", tpl.includes("{{name}}</a>{{{auto}}}"), "| the open card", src("module/actioncard.mjs").includes("autoChip(it.automation, it.automationNote)"), "| the chat card", CC.headHtml({ name: "Smite", auto: '<i class="autodia auto-mithril"></i>' }).includes('Smite<i class="autodia auto-mithril"></i>'));

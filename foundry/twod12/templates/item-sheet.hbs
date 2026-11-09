@@ -221,6 +221,7 @@
       <div class="grid4 rx">
         <label data-tooltip="The moment this Reaction watches for. None: it is used by hand">Moment <select name="system.moment" {{#unless system.reaction}}disabled{{/unless}}>{{selectOptions moments selected=system.moment}}</select></label>
         <label data-tooltip="How far (squares) the creature of the moment can be from you (the ally, the enemy who moves); 0: anywhere. A range in squares on the card (5 sq.) also limits how far its target can be">Within <input type="number" min="0" name="system.momentRange" value="{{system.momentRange}}" {{#unless system.reaction}}disabled{{/unless}}></label>
+        <label class="inline" data-tooltip="Only a creature you threaten (your melee weapon's Range; a Long weapon not adjacent ones): Opportunity Attack. Within is then ignored"><input type="checkbox" name="system.momentThreat" {{#if system.momentThreat}}checked{{/if}} {{#unless system.reaction}}disabled{{/unless}}> You threaten it</label>
         <label class="inline" data-tooltip="You count as the creature of the moment too ('you or an ally within 5 squares')"><input type="checkbox" name="system.momentSelf" {{#if system.momentSelf}}checked{{/if}} {{#unless system.reaction}}disabled{{/unless}}> You too</label>
         <label data-tooltip="Whom Use is made against: the creature of the moment, or the one that caused it (the attacker)">Used on <select name="system.momentTarget" {{#unless system.reaction}}disabled{{/unless}}>{{selectOptions momentUsedOn selected=system.momentTarget}}</select></label>
       </div>

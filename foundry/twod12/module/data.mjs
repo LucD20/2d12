@@ -395,7 +395,8 @@ export class ActionData extends foundry.abstract.TypeDataModel {
       reaction: bool(),
       reactionKind: choice({ interrupt: "Interrupt", trigger: "Trigger" }, "trigger"),
       // v0.0.261 (Lucas, Divine Intervention): a Reaction with a moment is offered by itself when the moment comes (within this many squares; 0: anywhere)
-      moment: choice(TWOD12.moments, ""), momentRange: int(0, 0),
+      moment: choice(TWOD12.moments, ""), momentRange: int(0, 0), momentThreat: bool(),   // v0.0.303: only a creature you threaten (Opportunity Attack)
+     
       // v0.0.272 (pack RX): the Reaction's owner counts as the creature of the moment too ("you or an ally"); whom the Reaction is used on
       momentSelf: bool(), momentTarget: choice(TWOD12.momentTargets, "subject"),
       flavor: str(),

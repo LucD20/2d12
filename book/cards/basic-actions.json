@@ -115,10 +115,11 @@
       "flavor": "You punish anyone who moves carelessly near you.",
       "frequency": "At-will",
       "target": "The triggering creature",
-      "interrupt": "A creature within 1 square would leave a square during a Move Action or uses the Stand Action.",
+      "traits": ["strike"],
+      "interrupt": "A creature you threaten would leave a square during a Move Action or uses the Stand Action.",
       "cost": "1R",
       "text": "You can make a Weapon Attack (1A) against the triggering creature, as long as your weapon can target them. An NPC makes its Basic attack instead.",
-      "foundry": { "basic": "opportunityAttack", "img": "icons/svg/combat.svg", "automation": "silver", "append": "@Use[Weapon Attack|label:Weapon Attack (1A)]", "moment": "enemyMoves", "momentRange": 1, "automationNote": "offered by itself in the Reactions message when an enemy within 1 square moves (not an Evade or a Forced Movement) or stands up; the movement is not held (Foundry moves the token first), the Weapon Attack is the card's button." },
+      "foundry": { "basic": "opportunityAttack", "img": "icons/svg/combat.svg", "automation": "silver", "append": "@Use[Weapon Attack|label:Weapon Attack (1A)]", "moment": "enemyMoves", "momentRange": 0, "momentThreat": true, "automationNote": "offered by itself in the Reactions message when an enemy you threaten moves (not an Evade or a Forced Movement) or stands up; the movement is not held (Foundry moves the token first), the Weapon Attack is the card's button." },
       "ruler": { "line": "does Weapon Attack" }
     },
     {

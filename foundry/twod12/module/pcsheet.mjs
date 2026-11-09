@@ -1,7 +1,7 @@
 // PACK SHEET (v0.0.289, Lucas's approved design: foundry/mockups/sheet-prototype.html): the data of the character sheet's new layout.
 // pcModel(sheet, ctx) reads the actor and the context the sheet already built (_sheetModel: granted tickets, conditions, effects, gear) and returns
 // the template's `pc` object. The pure rules (sections, Defenses, Save DCs, Down state...) are in sheetmodel.mjs (tests t212).
-import { TWOD12, SIZE_NAMES, effectiveFrequency, distanceText, areaText, vsText, isTalentAction } from "./config.mjs";
+import { TWOD12, SIZE_NAMES, effectiveFrequency, distanceText, areaText, vsText, isTalentAction, autoChip } from "./config.mjs";
 import { combatantOf, getAP, getRAP, slowedOf, apPerTurn, quickenedOf, baseAP } from "./combat.mjs";
 import { guardPerAP } from "./guard.mjs";
 import { defenseBonus, steadinessOf } from "./defense.mjs";
@@ -229,7 +229,7 @@ export async function pcModel(sheet, ctx) {
     const subs = [];
     if (npc && it.basicAttack) { const rr = it.basicRating || "medium"; subs.push(`Basic attack \u00b7 ${TWOD12.npcRatings[rr]?.label ?? rr} \u00b7 ~${npcRow(role, TWOD12.npcRatings, rr, s.stage).basic.join(" / ")}`); if (elite && atk && escNow >= 1) subs.push("+1 Boon on its first attack this round"); }
     if (npc && i.getFlag(F, "basic") === "opportunityAttack" && basicAtk) subs.push(`with ${basicAtk.name}`);
-    if (npc && elite && effectiveFrequency(it) === "encounter" && !esc) subs.push("back once at Escalation 3");
+    // v0.0.303 (Lucas): no "back once at Escalation 3" on the row (the Elite Escalation strip says it)
     if (area) subs.push(`Area: ${area}`);
     const aps = (it.versions ?? []).map(v => v.ap), pillTxt = costPill(aps, reaction);
     return {
@@ -241,6 +241,8 @@ export async function pcModel(sheet, ctx) {
       grant: r.grant ? { tip: r.grant.tip } : null, handBtns: why || npc ? null : handBtns,   // v0.0.291: no Hands for NPCs (a plain Use)
       useTip: r.useTip || `Use ${i.name}`, open: r.open,   // v0.0.302: back out of the comment (lost in v0.0.291)
       // v0.0.302 (Lucas): a Reaction's row carries its Frequency line (Round, Encounter...), as the Basic Actions' buttons do
+      basicAtk: !!(npc && it.basicAttack),
+      auto: autoChip(it.automation, it.automationNote),   // v0.0.303 (Lucas): the automation diamond beside the name   // v0.0.303 (Lucas): the NPC's Basic attack row has a wide gold strip
       freqLine: reaction ? rowLines({ frequency: effectiveFrequency(it), strike: !!it.traits?.has?.("strike") || i.getFlag(F, "basic") === "opportunityAttack" }) : null
     };
   };
@@ -269,8 +271,10 @@ export async function pcModel(sheet, ctx) {
     encounter: { title: SHEET_FREQ.encounter.label, dot: SHEET_FREQ.encounter.color }, daily: { title: SHEET_FREQ.daily.label, dot: SHEET_FREQ.daily.color },
     atwill: { title: SHEET_FREQ.atwill.label, dot: SHEET_FREQ.atwill.color }, reaction: { title: SHEET_FREQ.reaction.label, dot: SHEET_FREQ.reaction.color }
   };
-  if (npc) { const lv = Math.max(0, ...secRows.apex.map(r => Number(a.items.get(r.id)?.system?.escalation) || 0)); SEC_META.apex = { ...SEC_META.apex, title: `Escalation ${lv || 1}` }; if (!elite) secRows.apex.length = 0; }
-  const sections = SECTION_ORDER.filter(k => secRows[k].length && (inCombat || (k !== "granted" && k !== "apex"))).map(k => ({ key: k, ...SEC_META[k], rows: secRows[k] }));
+  if (npc) { const lv = Math.max(0, ...secRows.apex.map(r => Number(a.items.get(r.id)?.system?.escalation) || 0)); SEC_META.apex = { ...SEC_META.apex, title: `Escalation ${lv || 1}` }; }
+  // v0.0.303 (Lucas: "I can't edit the Escalation things from NPCs"): an NPC's Escalation Actions are always listed (out of combat too, and on a non-Elite),
+  // so they can be built and edited; a PC's stay in combat only (its Build tab lists them)
+  const sections = SECTION_ORDER.filter(k => secRows[k].length && (inCombat || k !== "granted") && (inCombat || npc || k !== "apex")).map(k => ({ key: k, ...SEC_META[k], rows: secRows[k] }));
 
   // Basic Actions: the four columns (config basicGroups), each button with its reason when it can't be used.
   const held = weapons.filter(w => w.system?.wielded && !w.system?.traits?.has?.("barehanded"));
@@ -482,7 +486,7 @@ export function npcBuilderModel(a) {
   const specials = [["Basic attack", "1 AP \u00b7 At-will", 1], ["Special, 1 AP", "Round \u00b7 \u00d71.4", 1.4], ["Special, 2 AP", "Round \u00b7 \u00d72.2", 2.2], ...(s.role === "minion" ? [] : [["Special, 3 AP", "Encounter \u00b7 \u00d73.5", 3.5]])];
   return {
     roles: Object.entries(TWOD12.npcRoles).map(([k, v]) => ({ key: k, label: v.label, on: (s.role || "standard") === k })),
-    level: s.level, stage, cv: s.cv ?? role.cv[0], ap: role.ap, elite: s.role === "elite", escOn: !!s.useEscalation,
+    level: s.level, stage, cv: s.cv ?? role.cv[0], ap: role.ap, elite: s.role === "elite", escOn: !!s.useEscalation, escAny: true,   // v0.0.303: any role can switch Escalation on (it was the Elite's only)
     summary: [{ k: "Health", v: pool }, { k: "Down in about", v: `${downIn(pool, pcDmg)} PC turns` }, { k: "Should deal", v: `about ${role.deals}` }, { k: "Ratings average", v: avg }],
     cols: [[{ title: "Attributes", rows: attrs, grow: 4 }, { title: "Movement", rows: [speed, steady], grow: 2 }], [{ title: "Health", rows: health, grow: 3 }, { title: "Defenses", rows: defs, grow: 3 }]],
     heads: keys.map(k => ({ label: R[k].label, color: RATING_COLORS[k], med: k === "medium" })),
