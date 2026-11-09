@@ -6,7 +6,7 @@
 Your class determines your Weapon Modifier. Each weapon belongs to a [[Weapon Groups|Weapon Group]] and has its own **Weapon Technique**, which you unlock with [[Mastery]]. A Weapon Technique can only be used with the weapon it belongs to, while you wield it: its Weapon Actions use that weapon, never another one.
 
 > [!example]
-> A Paladin whose Weapon Modifier uses Body deals 1d8 + Body slash damage on Tier 2 with a Greatsword Weapon Attack.
+> A Paladin with a Weapon Modifier of +2 deals 1d8 + 2 Slashing damage on Tier 2 with a Greatsword Weapon Attack.
 
 ### Weapon Damage [W]
 

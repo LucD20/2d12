@@ -1,6 +1,6 @@
 # Weapon and Power Modifiers as class values: the draft for review (pack MOD)
 
-**Status: DRAFT for review (2026-11-09). Nothing in rules-src, Foundry or the ruler is changed yet.** The decisions are in `rules-backlog.md`, "MODIFIERS, FLAT BOONS, FAVORED'S DOUBLES" (decided 2026-11-08: track A2, Ward Defense stays 11 + Power Modifier, the Paladin +2 / +1 either way, the Archer Weapon +2 / Power +1). Answer by number ("all defaults except 3"; "5: change X"). The questions and their defaults are in section 12.
+**Status: APPLIED to rules-src on 2026-11-09 (Lucas: "All defaults": the 7 questions of section 12 as written; the ruler's builds too). Foundry: not yet** (foundry-backlog.md "MOD"; the list is section 11). This file is the record of what changed and why. The decisions are in `rules-backlog.md`, "MODIFIERS, FLAT BOONS, FAVORED'S DOUBLES" (decided 2026-11-08: track A2, Ward Defense stays 11 + Power Modifier, the Paladin +2 / +1 either way, the Archer Weapon +2 / Power +1). Answer by number ("all defaults except 3"; "5: change X"). The questions and their defaults are in section 12.
 **Not in this draft:** the Attributes and Skills chapter (D3). This draft only takes the Modifiers off the Attributes; what the Attributes still do is said in one line (section 4) and written in full by that chapter. The Save DC of an Attribute (11 + ⌈Attribute ÷ 2⌉ + 1) is left as it is (section 12, question 7).
 
 ## What the draft does

@@ -355,18 +355,17 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </table></div>
 <p>If an Action has multiple traits that reference the type of roll, such as the Trip Basic Action that has both <span class="at-body">Body</span> and <span class="at-instinct">Instinct</span> traits, it is both a <span class="at-body">Body</span> and <span class="at-instinct">Instinct</span> Action, even though you only use one Attribute.</p>
 <p>A <span class="trhl" style="--tc:var(--g-roll)">Split</span> Action is a Weapon roll or a Power roll, depending on the mode you choose when you use it.</p>
-<p>An effect on Actions names their <strong>trait</strong>: "<span class="kw-boon">1 Boon</span> on [<span class="trhl" style="--tc:var(--g-roll)">Weapon</span>] Actions" helps every Action with the <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> trait, whatever Modifier it rolls (a [<span class="trhl" style="--tc:var(--g-roll)">Signature</span>, <span class="trhl" style="--tc:var(--g-roll)">Weapon</span>] Action too), and doesn't help a <span class="at-body">Body</span> roll, even if your <span class="mod-weapon">Weapon Modifier</span> uses your <span class="at-body">Body</span> Attribute in its calculation when you picked your class. An effect that names a Check or a Save applies only to that kind. An effect that names an Attribute and "Rolls" applies to every kind that uses that Attribute (for a Weapon, Power or Signature roll, the Attribute behind its Modifier). "Your Rolls" means all of them.</p>
-<p>Like the previous example, if you actually got "<span class="kw-boon">1 Boon</span> on <span class="at-body">Body</span> Rolls", it would apply to your Weapon rolls, since they use your <span class="at-body">Body</span>.</p>
+<p>An effect on Actions names their <strong>trait</strong>: "<span class="kw-boon">1 Boon</span> on [<span class="trhl" style="--tc:var(--g-roll)">Weapon</span>] Actions" helps every Action with the <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> trait, whatever Modifier it rolls (a [<span class="trhl" style="--tc:var(--g-roll)">Signature</span>, <span class="trhl" style="--tc:var(--g-roll)">Weapon</span>] Action too). An effect that names a Check or a Save applies only to that kind. An effect that names an Attribute and "Rolls" applies to every kind that rolls that Attribute: its Checks, its Saves and its Attribute Actions. Weapon, Power and Signature rolls use no Attribute. "Your Rolls" means all of them.</p>
 <div class="tablewrap"><table>
 <thead>
 <tr>
 <th>The effect says</th>
 <th>Attribute* Check</th>
 <th>Attribute* Save</th>
-<th>Weapon roll (Attribute*)</th>
-<th>Power roll (Attribute*)</th>
-<th>Signature roll (Attribute*)</th>
 <th>Attribute* Action</th>
+<th>Weapon roll</th>
+<th>Power roll</th>
+<th>Signature roll</th>
 </tr>
 </thead>
 <tbody>
@@ -389,31 +388,31 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>—</td>
 </tr>
 <tr>
+<td><span class="kw-boon">1 Boon</span> on Attribute* Rolls</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
 <td><span class="kw-boon">1 Boon</span> on [<span class="trhl" style="--tc:var(--g-roll)">Weapon</span>] Actions</td>
+<td>—</td>
 <td>—</td>
 <td>—</td>
 <td>✔</td>
 <td>—</td>
 <td>✔ if it has the <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> trait</td>
-<td>—</td>
 </tr>
 <tr>
 <td><span class="kw-boon">1 Boon</span> on [<span class="trhl" style="--tc:var(--g-roll)">Power</span>] Actions</td>
 <td>—</td>
 <td>—</td>
 <td>—</td>
+<td>—</td>
 <td>✔</td>
 <td>✔ if it has the <span class="trhl" style="--tc:var(--g-roll)">Power</span> trait</td>
-<td>—</td>
-</tr>
-<tr>
-<td><span class="kw-boon">1 Boon</span> on Attribute* Rolls</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
 </tr>
 </tbody>
 </table></div>
@@ -1643,15 +1642,15 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <li><strong>Attributes.</strong> All four Attributes (<span class="at-body">Body</span>, <span class="at-mind">Mind</span>, <span class="at-appeal">Appeal</span>, <span class="at-instinct">Instinct</span>) start at <strong>0</strong>.</li>
 <li><strong>Species.</strong> Apply your species' Attribute changes (the species are in the <a class="xref" href="species.html#species">Species</a> document). It also gives you a <strong>Vigor</strong> and a <strong>Resolve</strong> bonus, a <strong>Speed</strong>, your <strong>Reach</strong> (1), your <strong>Steadiness</strong> and your <strong>Size</strong> (all current species are Medium (3)).</li>
 <li><strong>Class.</strong> Apply your class' Attribute increases. It also gives you a <strong>high</strong> and a <strong>low Health value</strong> (and the steps they grow by at each Stage), a <strong>Rally</strong> value, a <strong>Speed Modifier</strong>, a <strong><span class="mod-weapon">Weapon Modifier</span></strong> and a <strong><span class="mod-power">Power Modifier</span></strong>. Your Speed is your species' Speed plus your class' Speed Modifier.</li>
-<li><strong>Choices.</strong> When a species or class says "or", pick one. A class's choices between two Attributes must be different from each other (see <a class="xref" href="#distinct-choices">Distinct Choices</a>).</li>
+<li><strong>Choices.</strong> When a species or class says "or", pick one. A class's choices between two Attributes must be different from each other (see <a class="xref" href="#distinct-choices">Distinct Choices</a>). If your class lets you, choose which of its two Modifier values is your <span class="mod-weapon">Weapon Modifier</span> and which your <span class="mod-power">Power Modifier</span> (see <a class="xref" href="#weapon-power-and-signature-modifiers">Weapon, Power and <span class="mod-signature">Signature Modifiers</span></a>).</li>
 <li><strong><a class="xref" href="#health-pool">Health Pool</a>.</strong> Assign your class's high Health value to Vigor or to Resolve and the low one to the other, then add your species' bonuses (neither can be under a third of the total). Your Health Pool is the two added together.</li>
 <li><strong><a class="xref" href="#rally-points"><span class="kw-rally">Rally Points</span></a></strong> = your class' Rally value + your Stage (1 at level 1).</li>
 <li><strong>Level 1.</strong> Take your class's Features, its <strong>Hallmark Action</strong> and <strong>Hallmark Reaction</strong> (a choice of two each), its <strong>Encounter Pick</strong> and a <strong>Talent</strong> (the Talents are in the <a class="xref" href="talents.html#talents">Talents</a> document; weapons and armor in the <a class="xref" href="gear.html#gear">Gear</a> document).</li>
 <li><strong>Escalation.</strong> Choose one <strong>Escalation Passive</strong> for each Escalation level (1, 2 and 3) and your <strong>Apex</strong> from your class's <a class="xref" href="#escalation">Escalation</a> abilities.</li>
 </ol>
 <h2 id="classes">Classes</h2>
-<p>Your class gives you Attribute increases, a <strong>high</strong> and a <strong>low Health value</strong> with their Stage steps (used for your Health Pool), a <strong>Rally</strong> value (used for <span class="kw-rally">Rally Points</span>), a <strong>Speed Modifier</strong>, a <strong><span class="mod-weapon">Weapon Modifier</span></strong> and a <strong><span class="mod-power">Power Modifier</span></strong>, an <strong><a class="xref" href="gear.html#armor-training">Armor Training</a></strong>, and a list of <strong>Escalation</strong> abilities. Round modifiers up. A class's <span class="mod-weapon">Weapon Modifier</span> and <span class="mod-power">Power Modifier</span> use the higher of the Attributes it lists for each, and can't use the same Attribute.</p>
-<p>When you pick your class, you choose its Attribute increases when they say "or". These choices can't be changed later.</p>
+<p>Your class gives you Attribute increases, a <strong>high</strong> and a <strong>low Health value</strong> with their Stage steps (used for your Health Pool), a <strong>Rally</strong> value (used for <span class="kw-rally">Rally Points</span>), a <strong>Speed Modifier</strong>, a <strong><span class="mod-weapon">Weapon Modifier</span></strong> and a <strong><span class="mod-power">Power Modifier</span></strong>, an <strong><a class="xref" href="gear.html#armor-training">Armor Training</a></strong>, and a list of <strong>Escalation</strong> abilities.</p>
+<p>When you pick your class, you choose its Attribute increases when they say "or", and the order of its Modifiers if it lets you. These choices can't be changed later.</p>
 <p>Each class is written in its own document: <a class="xref" href="paladin.html#paladin">Paladin</a> and <a class="xref" href="archer.html#archer">Archer</a>.</p>
 <h3 id="class-actions-picks-and-the-repertoire">Class Actions, Picks and the Repertoire</h3>
 <p>At level 1, every class gives you the same kinds of things:</p>
@@ -1685,9 +1684,9 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><strong>Modifiers</strong></td>
-<td></td>
-<td></td>
-<td>+1 to your Weapon and <span class="mod-power">Power Modifiers</span> (never above +4)</td>
+<td>your class's values</td>
+<td>+1 to your Weapon or <span class="mod-power">Power Modifier</span></td>
+<td>+1 to your Weapon and <span class="mod-power">Power Modifiers</span></td>
 </tr>
 <tr>
 <td><strong>Health</strong></td>
@@ -1715,25 +1714,15 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 </tbody>
 </table></div>
-<p>A <strong>Stage Talent</strong> comes from a bigger list than the other Talents, and replaces the level's Talent (see the <a class="xref" href="talents.html#talents">Talents</a> document).</p>
+<p>A <strong>Stage Talent</strong> comes from a bigger list than the other Talents, and replaces the level's Talent (see the <a class="xref" href="talents.html#talents">Talents</a> document). A Modifier is never above +4. Your choice at Stage 2 can't be changed later.</p>
 <h3 id="distinct-choices">Distinct Choices</h3>
-<p>When your class gives you a choice between two Attributes, you can't pick an Attribute you already picked from another choice of the same kind:</p>
-<ul>
-<li><strong>Attribute increases.</strong> Each one goes to a different Attribute. If a class offers "<span class="at-body">Body</span> or <span class="at-appeal">Appeal</span> +1" and "<span class="at-appeal">Appeal</span> or <span class="at-instinct">Instinct</span> +1" and you pick <span class="at-appeal">Appeal</span> for the first, you must pick <span class="at-instinct">Instinct</span> for the second.</li>
-<li><strong>Weapon and <span class="mod-power">Power Modifiers</span>.</strong> They never use the same Attribute (see below).</li>
-</ul>
-<p>The two kinds don't limit each other: a Paladin who adds +1 to <span class="at-body">Body</span> can still use <span class="at-body">Body</span> for the <span class="mod-weapon">Weapon Modifier</span>.</p>
+<p>When your class gives you a choice between two Attributes, you can't pick an Attribute you already picked from another of its choices: each Attribute increase goes to a different Attribute. If a class offers "<span class="at-body">Body</span> or <span class="at-appeal">Appeal</span> +1" and "<span class="at-appeal">Appeal</span> or <span class="at-instinct">Instinct</span> +1" and you pick <span class="at-appeal">Appeal</span> for the first, you must pick <span class="at-instinct">Instinct</span> for the second.</p>
 <h3 id="weapon-power-and-signature-modifiers">Weapon, Power and Signature Modifiers</h3>
-<p>Each class lists two Attributes for its <strong><span class="mod-weapon">Weapon Modifier</span></strong> and two for its <strong><span class="mod-power">Power Modifier</span></strong>. Each Modifier uses the <strong>higher</strong> of its two Attributes; you never add them together:</p>
-<ul>
-<li><strong><span class="mod-weapon">Weapon Modifier</span></strong> = the higher of the class's two <span class="mod-weapon">Weapon Attributes</span> ÷ 2 + 1</li>
-<li><strong><span class="mod-power">Power Modifier</span></strong> = the higher of the class's two <span class="mod-power">Power Attributes</span> ÷ 2 + 1</li>
-</ul>
-<p>The Attribute a Modifier uses is your <strong><span class="mod-weapon">Weapon Attribute</span></strong> or your <strong><span class="mod-power">Power Attribute</span></strong>.</p>
-<p><strong>Your Modifiers grow with your <a class="xref" href="#stages">Stage</a>:</strong> your Weapon and <span class="mod-power">Power Modifiers</span> are <strong>+1 at Stage 3</strong> (level 8), and they also follow your Attributes, which grow at each Stage; a Modifier is <strong>never above +4</strong>. Checks and Saves use your Attribute Modifier, which only the Attribute changes.</p>
-<p>If the same Attribute is the higher one for both Modifiers, one of them uses its other Attribute instead. You choose which, and you can change that choice when you level up.</p>
-<p>Your <strong><span class="mod-signature">Signature Modifier</span></strong> is the higher of your <span class="mod-weapon">Weapon Modifier</span> and your <span class="mod-power">Power Modifier</span> (if they are equal, choose one). Its Attribute is your <strong><span class="mod-signature">Signature Attribute</span></strong>. Actions with the <span class="trhl" style="--tc:var(--g-roll)">Signature</span> trait roll it.</p>
-<div class="callout example"><div class="ctitle">Example</div><p>A Paladin with <span class="at-body">Body</span> 1, <span class="at-mind">Mind</span> 2 and <span class="at-appeal">Appeal</span> 3. Both Modifiers want <span class="at-appeal">Appeal</span>. If the <span class="mod-weapon">Weapon Modifier</span> keeps it, it is 3 (3 ÷ 2 = 1.5, rounded up to 2, + 1) and the <span class="mod-power">Power Modifier</span> uses <span class="at-mind">Mind</span>: 2 (2 ÷ 2 + 1); the <span class="mod-signature">Signature Modifier</span> is 3, from <span class="at-appeal">Appeal</span>. If the <span class="mod-power">Power Modifier</span> keeps <span class="at-appeal">Appeal</span> instead, it is 3, and the <span class="mod-weapon">Weapon Modifier</span> uses <span class="at-body">Body</span>: 2 (1 ÷ 2 = 0.5, rounded up to 1, + 1).</p></div>
+<p>Your class gives you two <strong>Modifier values</strong>: <strong>+2 and +1</strong> at level 1. One is your <strong><span class="mod-weapon">Weapon Modifier</span></strong>, which <a class="xref" href="#weapon">Weapon</a> Actions roll; the other is your <strong><span class="mod-power">Power Modifier</span></strong>, which <a class="xref" href="#power">Power</a> Actions roll and which sets your <a class="xref" href="#defenses">Ward Defense</a>. Your class says which is which, or lets you choose. They don't come from your Attributes, and your Attributes don't change them.</p>
+<p>They grow with your <a class="xref" href="#stages">Stage</a>: at <strong>Stage 2</strong> add +1 to the one you choose, at <strong>Stage 3</strong> +1 to both. A Modifier is never above +4.</p>
+<p>Your <strong><span class="mod-signature">Signature Modifier</span></strong> is the higher of your <span class="mod-weapon">Weapon Modifier</span> and your <span class="mod-power">Power Modifier</span> (if they are equal, choose one). Actions with the <a class="xref" href="#signature">Signature</a> trait roll it.</p>
+<p>Your <strong>Attributes</strong> set your Checks (Initiative is one), your Saves, your Defenses against an Attribute, your rolls on the Dying and Shattered Tables and the Attribute Actions, such as Shove and Trip (see <a class="xref" href="#rolls">Rolls</a>).</p>
+<div class="callout example"><div class="ctitle">Example</div><p>Lonny's Paladin leads with the sword: <span class="mod-weapon">Weapon Modifier</span> +2, <span class="mod-power">Power Modifier</span> +1 (Ward Defense 12; his <span class="mod-signature">Signature Modifier</span> is +2, from his <span class="mod-weapon">Weapon Modifier</span>). At level 5 he adds +1 to his <span class="mod-power">Power Modifier</span>: +2 / +2, Ward Defense 13. At level 8 both rise: +3 / +3.</p></div>
 <h3 id="escalation-abilities">Escalation Abilities</h3>
 <p>Each class has a list of <strong>Escalation</strong> abilities: <strong>Escalation Passives</strong>, which work while your Escalation is at least their number, and <strong>Apex</strong> Actions, the class's big Encounter Action that needs Escalation 3. At level 1 you choose one Passive for each Escalation level (1, 2 and 3) and one Apex. Nothing spends Escalation. See <a class="xref" href="#escalation">Escalation</a> for how it rises.</p></div></details></section>
 <div class="part">Part III: Reference</div>
@@ -2097,7 +2086,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#distinct-choices"><strong>Distinct Choices</strong></a></td>
-<td>A class's choices between two Attributes can't repeat an Attribute: Attribute increases among themselves, Weapon and <span class="mod-power">Power Modifiers</span> between themselves.</td>
+<td>A class's Attribute increases go to different Attributes.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#dominant-damage"><strong>Dominant Damage</strong></a></td>
@@ -2349,7 +2338,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#weapon-power-and-signature-modifiers"><strong><span class="mod-power">Power Modifier</span></strong></a></td>
-<td>The higher of the class's two <span class="mod-power">Power Attributes</span> ÷ 2 + 1. <span class="trhl" style="--tc:var(--g-roll)">Power</span> Actions roll it.</td>
+<td>One of your class's two Modifier values (+2 or +1 at level 1; it grows by Stage). <span class="trhl" style="--tc:var(--g-roll)">Power</span> Actions roll it; Ward Defense adds it.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#rolls"><strong>Power roll</strong></a></td>
@@ -2641,7 +2630,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#weapon-power-and-signature-modifiers"><strong><span class="mod-weapon">Weapon Modifier</span></strong></a></td>
-<td>The higher of the class's two <span class="mod-weapon">Weapon Attributes</span> ÷ 2 + 1. <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Actions roll it.</td>
+<td>One of your class's two Modifier values (+2 or +1 at level 1; it grows by Stage). <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Actions roll it.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#rolls"><strong>Weapon roll</strong></a></td>

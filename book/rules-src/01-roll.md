@@ -99,17 +99,15 @@ If an Action has multiple traits that reference the type of roll, such as the Tr
 
 A Split Action is a Weapon roll or a Power roll, depending on the mode you choose when you use it.
 
-An effect on Actions names their **trait**: "1 Boon on [Weapon] Actions" helps every Action with the Weapon trait, whatever Modifier it rolls (a [Signature, Weapon] Action too), and doesn't help a Body roll, even if your Weapon Modifier uses your Body Attribute in its calculation when you picked your class. An effect that names a Check or a Save applies only to that kind. An effect that names an Attribute and "Rolls" applies to every kind that uses that Attribute (for a Weapon, Power or Signature roll, the Attribute behind its Modifier). "Your Rolls" means all of them.
+An effect on Actions names their **trait**: "1 Boon on [Weapon] Actions" helps every Action with the Weapon trait, whatever Modifier it rolls (a [Signature, Weapon] Action too). An effect that names a Check or a Save applies only to that kind. An effect that names an Attribute and "Rolls" applies to every kind that rolls that Attribute: its Checks, its Saves and its Attribute Actions. Weapon, Power and Signature rolls use no Attribute. "Your Rolls" means all of them.
 
-Like the previous example, if you actually got "1 Boon on Body Rolls", it would apply to your Weapon rolls, since they use your Body.
-
-| The effect says | Attribute\* Check | Attribute\* Save | Weapon roll (Attribute\*) | Power roll (Attribute\*) | Signature roll (Attribute\*) | Attribute\* Action |
+| The effect says | Attribute\* Check | Attribute\* Save | Attribute\* Action | Weapon roll | Power roll | Signature roll |
 |---|---|---|---|---|---|---|
 | 1 Boon on Attribute\* Checks | ✔ | — | — | — | — | — |
 | 1 Boon on Attribute\* Saves | — | ✔ | — | — | — | — |
-| 1 Boon on [Weapon] Actions | — | — | ✔ | — | ✔ if it has the Weapon trait | — |
-| 1 Boon on [Power] Actions | — | — | — | ✔ | ✔ if it has the Power trait | — |
-| 1 Boon on Attribute\* Rolls | ✔ | ✔ | ✔ | ✔ | ✔ | ✔ |
+| 1 Boon on Attribute\* Rolls | ✔ | ✔ | ✔ | — | — | — |
+| 1 Boon on [Weapon] Actions | — | — | — | ✔ | — | ✔ if it has the Weapon trait |
+| 1 Boon on [Power] Actions | — | — | — | — | ✔ | ✔ if it has the Power trait |
 
 \*Body, Mind, Appeal or Instinct (the same one in each row and column).
 

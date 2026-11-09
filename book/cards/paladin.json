@@ -611,7 +611,7 @@
    "name": "Mending Light",
    "category": "Paladin Escalation (Passive)",
    "escalation": 2,
-   "_note": "Pack R-classes: the Escalation 2 mercy pick; the amount steps by Stage (decision sheet item 18): 5 / 6 / 9 with a Power Modifier of 2 / 2 / 3 (rclasses.md section 4: 4 a turn measured 0.5-0.6 AP, under the rung's 0.6-0.8).",
+   "_note": "Pack R-classes: the Escalation 2 mercy pick; the amount steps by Stage (decision sheet item 18): 5 / 6 / 9 with a Power Modifier of 2 / 2 / 3 (pack MOD, 2026-11-09: the Power Modifier is now 2 / 3 / 4 for a faith-first Paladin, 1 less sword-first) (rclasses.md section 4: 4 a turn measured 0.5-0.6 AP, under the rung's 0.6-0.8).",
    "flavor": "Light gathers where you stand, and the hurt are drawn to it.",
    "text": "While your Escalation is 2 or more, at the start of each of your turns, you or one ally within 5 squares of you heals twice your Power Modifier + your Stage.",
    "foundry": {

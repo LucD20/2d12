@@ -12,9 +12,7 @@ Rally: 5
 
 Speed Modifier: +1
 
-Weapon Modifier: Instinct or Body
-
-Power Modifier: Mind or Appeal
+Modifiers: Weapon +2, Power +1
 
 Armor Training: Medium
 

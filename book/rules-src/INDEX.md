@@ -4,19 +4,19 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 
 | File | Chapter | Document | Part | KB | Lines |
 |---|---|---|---|---|---|
-| 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 22.9 | 307 |
+| 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 22.6 | 305 |
 | 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 26.6 | 286 |
 | 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 38.9 | 450 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 13.7 | 254 |
-| 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 7.0 | 84 |
+| 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 6.7 | 74 |
 | 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.4 | 43 |
 | 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 5.6 | 95 |
 | 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 8.6 | 113 |
-| 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 25.2 | 197 |
+| 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 25.1 | 197 |
 | 11-species.md | Species | species |  | 0.8 | 32 |
-| 12-paladin.md | Paladin | paladin |  | 3.9 | 124 |
-| 13-archer.md | Archer | archer |  | 3.9 | 128 |
-| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 20.0 | 304 |
+| 12-paladin.md | Paladin | paladin |  | 3.8 | 123 |
+| 13-archer.md | Archer | archer |  | 3.8 | 127 |
+| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 20.1 | 313 |
 | 15-gear.md | Gear | gear |  | 10.1 | 182 |
 | 16-talents.md | Talents | talents |  | 2.2 | 68 |
 
@@ -31,23 +31,23 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 - 60:   ### Five Boons or Banes
 - 64: ## Favored and Doomed Rolls
 - 85: ## Rolls
-- 116: ## Checks
-- 120: ## Saves
-- 128:   ### Save Actions
-- 136: ## Roll Effects
-- 140:   ### Damage on a Card
-- 144:   ### Modifier Damage [Mod]
-- 152:   ### Damage Types
-- 164:   ### Damage Subtypes
-- 175:   ### Resist, Weak and Immunity
-- 185:   ### Riders
-- 189:   ### Cleave
-- 193: ## Several Targets
-- 214: ## Rounding
-- 218: ## Reading an Action
-- 254:   ### Notation
-- 277:   ### Rules Language
-- 299: ## Summary
+- 114: ## Checks
+- 118: ## Saves
+- 126:   ### Save Actions
+- 134: ## Roll Effects
+- 138:   ### Damage on a Card
+- 142:   ### Modifier Damage [Mod]
+- 150:   ### Damage Types
+- 162:   ### Damage Subtypes
+- 173:   ### Resist, Weak and Immunity
+- 183:   ### Riders
+- 187:   ### Cleave
+- 191: ## Several Targets
+- 212: ## Rounding
+- 216: ## Reading an Action
+- 252:   ### Notation
+- 275:   ### Rules Language
+- 297: ## Summary
 
 ## 02-turns.md: Chapter 2: Turns and Actions
 
@@ -170,8 +170,8 @@ Open (to be decided) boxes: 88: "The entries of the Dying and Shattered Tables a
 - 35:   ### Leveling Up
 - 39:   ### Stages
 - 54:   ### Distinct Choices
-- 63:   ### Weapon, Power and Signature Modifiers
-- 81:   ### Escalation Abilities
+- 58:   ### Weapon, Power and Signature Modifiers
+- 71:   ### Escalation Abilities
 
 ## 06-basic-actions.md: Chapter 6: Basic Actions
 
@@ -236,41 +236,41 @@ Glossary entries (line: term): 6: [Mod]; 7: [W]; 8: [V], [R], [C]; 9: [Trait]; 1
 
 ## 12-paladin.md: Paladin
 
-- 19: ## The Paladin by Level
-- 43: ## Level 1
-- 45:   ### Features
-- 53:   ### Hallmark Action Selection
-- 61:   ### Hallmark Reaction Selection
-- 69:   ### Picks
-- 75: ## Paladin Repertoire
-- 77:   ### Encounter
-- 87:   ### Daily
-- 95: ## Paladin Escalation
-- 99:   ### Escalation 1 Passives
-- 107:   ### Escalation 2 Passives
-- 113:   ### Escalation 3 Passives
-- 119:   ### Apex
+- 18: ## The Paladin by Level
+- 42: ## Level 1
+- 44:   ### Features
+- 52:   ### Hallmark Action Selection
+- 60:   ### Hallmark Reaction Selection
+- 68:   ### Picks
+- 74: ## Paladin Repertoire
+- 76:   ### Encounter
+- 86:   ### Daily
+- 94: ## Paladin Escalation
+- 98:   ### Escalation 1 Passives
+- 106:   ### Escalation 2 Passives
+- 112:   ### Escalation 3 Passives
+- 118:   ### Apex
 
-Action cards: Divine Power (49, Paladin Feature 1); Kindled Wrath (51, Paladin Feature 1); Smite (57, Divine Power 1, Round); Lay On Hands (59, Divine Power 1, Round); Shield of Faith (65, Divine Power 1, Turn); Rebuke (67, Divine Power 1, Turn); Holy Wrath (79, Paladin Feature 1, Encounter); Word of Radiance (81, Paladin Feature 1, Encounter); Bulwark of Faith (83, Paladin Feature 1, Encounter); Beacon (85, Paladin Feature 1, Encounter); Consecrated Ground (89, Paladin Feature 1, Daily); Miraculous Recovery (91, Paladin Feature 1, Daily); Divine Intervention (93, Paladin Feature 1, Daily); Radiant Zeal (101, Paladin Escalation (Passive)); Divine Surge (103, Paladin Escalation (Passive)); Font of Mercy (105, Paladin Escalation (Passive)); Searing Blows (109, Paladin Escalation (Passive)); Mending Light (111, Paladin Escalation (Passive)); Reckoning (115, Paladin Escalation (Passive)); Hallowed Stance (117, Paladin Escalation (Passive)); Final Verdict (121, Paladin Apex, Encounter); Hallowed Dawn (123, Paladin Apex, Encounter)
+Action cards: Divine Power (48, Paladin Feature 1); Kindled Wrath (50, Paladin Feature 1); Smite (56, Divine Power 1, Round); Lay On Hands (58, Divine Power 1, Round); Shield of Faith (64, Divine Power 1, Turn); Rebuke (66, Divine Power 1, Turn); Holy Wrath (78, Paladin Feature 1, Encounter); Word of Radiance (80, Paladin Feature 1, Encounter); Bulwark of Faith (82, Paladin Feature 1, Encounter); Beacon (84, Paladin Feature 1, Encounter); Consecrated Ground (88, Paladin Feature 1, Daily); Miraculous Recovery (90, Paladin Feature 1, Daily); Divine Intervention (92, Paladin Feature 1, Daily); Radiant Zeal (100, Paladin Escalation (Passive)); Divine Surge (102, Paladin Escalation (Passive)); Font of Mercy (104, Paladin Escalation (Passive)); Searing Blows (108, Paladin Escalation (Passive)); Mending Light (110, Paladin Escalation (Passive)); Reckoning (114, Paladin Escalation (Passive)); Hallowed Stance (116, Paladin Escalation (Passive)); Final Verdict (120, Paladin Apex, Encounter); Hallowed Dawn (122, Paladin Apex, Encounter)
 
 ## 13-archer.md: Archer
 
-- 19: ## The Archer by Level
-- 43: ## Level 1
-- 45:   ### Features
-- 55:   ### Hallmark Action Selection
-- 63:   ### Hallmark Reaction Selection
-- 71:   ### Picks
-- 77: ## Archer Repertoire
-- 79:   ### Encounter
-- 91:   ### Daily
-- 99: ## Archer Escalation
-- 103:   ### Escalation 1 Passives
-- 111:   ### Escalation 2 Passives
-- 117:   ### Escalation 3 Passives
-- 123:   ### Apex
+- 18: ## The Archer by Level
+- 42: ## Level 1
+- 44:   ### Features
+- 54:   ### Hallmark Action Selection
+- 62:   ### Hallmark Reaction Selection
+- 70:   ### Picks
+- 76: ## Archer Repertoire
+- 78:   ### Encounter
+- 90:   ### Daily
+- 98: ## Archer Escalation
+- 102:   ### Escalation 1 Passives
+- 110:   ### Escalation 2 Passives
+- 116:   ### Escalation 3 Passives
+- 122:   ### Apex
 
-Action cards: Sharpshooter (49, Archer Feature 1); Marked Quarry (51, Archer Feature 1); Thrill of the Kill (53, Archer Feature 1); Double Shot (59, Sharpshooter 1, Round); Rolling Shot (61, Sharpshooter 1, Round); Overwatch (67, Sharpshooter 1, Turn); Covering Shot (69, Sharpshooter 1, Turn); Marksman's Shot (81, Archer Feature 1, Encounter); Volley (83, Archer Feature 1, Encounter); Covering Fire (85, Archer Feature 1, Encounter); Pinning Shot (87, Archer Feature 1, Encounter); Twin Shot (89, Archer Feature 1, Encounter); Hunter's Focus (93, Archer Feature 1, Daily); Deadeye (95, Archer Feature 1, Daily); Rain of Arrows (97, Archer Feature 1, Daily); Killer's Focus (105, Archer Escalation (Passive)); Vanish (107, Archer Escalation (Passive)); Harrying Shots (109, Archer Escalation (Passive)); Hunter's Edge (113, Archer Escalation (Passive)); Sure Step (115, Archer Escalation (Passive)); Finisher (119, Archer Escalation (Passive)); Staggering Shot (121, Archer Escalation (Passive)); Deathmark (125, Archer Apex, Encounter); Open Season (127, Archer Apex, Encounter)
+Action cards: Sharpshooter (48, Archer Feature 1); Marked Quarry (50, Archer Feature 1); Thrill of the Kill (52, Archer Feature 1); Double Shot (58, Sharpshooter 1, Round); Rolling Shot (60, Sharpshooter 1, Round); Overwatch (66, Sharpshooter 1, Turn); Covering Shot (68, Sharpshooter 1, Turn); Marksman's Shot (80, Archer Feature 1, Encounter); Volley (82, Archer Feature 1, Encounter); Covering Fire (84, Archer Feature 1, Encounter); Pinning Shot (86, Archer Feature 1, Encounter); Twin Shot (88, Archer Feature 1, Encounter); Hunter's Focus (92, Archer Feature 1, Daily); Deadeye (94, Archer Feature 1, Daily); Rain of Arrows (96, Archer Feature 1, Daily); Killer's Focus (104, Archer Escalation (Passive)); Vanish (106, Archer Escalation (Passive)); Harrying Shots (108, Archer Escalation (Passive)); Hunter's Edge (112, Archer Escalation (Passive)); Sure Step (114, Archer Escalation (Passive)); Finisher (118, Archer Escalation (Passive)); Staggering Shot (120, Archer Escalation (Passive)); Deathmark (124, Archer Apex, Encounter); Open Season (126, Archer Apex, Encounter)
 
 ## 14-bestiary.md: Bestiary: Building NPCs
 
@@ -280,22 +280,22 @@ Action cards: Sharpshooter (49, Archer Feature 1); Marked Quarry (51, Archer Fea
 - 36: ## Defenses
 - 42:   ### Attacking Ward Defense
 - 46: ## Attributes and Modifiers
-- 50: ## Health
-- 60: ## Speed
-- 67: ## Steadiness
-- 71: ## Actions
-- 73:   ### The Basic attack
-- 79:   ### Special Actions
-- 93:   ### Conditions
-- 105:   ### Reactions
-- 114:   ### Elite Escalation
-- 132: ## The roles
-- 134:   ### Minions
-- 166:   ### Grunts
-- 198:   ### Standards
-- 230:   ### Elites
-- 264: ## Building an encounter
-- 285: ## Example NPCs (Stage 1)
+- 59: ## Health
+- 69: ## Speed
+- 76: ## Steadiness
+- 80: ## Actions
+- 82:   ### The Basic attack
+- 88:   ### Special Actions
+- 102:   ### Conditions
+- 114:   ### Reactions
+- 123:   ### Elite Escalation
+- 141: ## The roles
+- 143:   ### Minions
+- 175:   ### Grunts
+- 207:   ### Standards
+- 239:   ### Elites
+- 273: ## Building an encounter
+- 294: ## Example NPCs (Stage 1)
 
 ## 15-gear.md: Gear
 

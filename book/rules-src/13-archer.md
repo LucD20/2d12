@@ -10,8 +10,7 @@
 <div class="sbr"><span class="lbl">Health</span><span>high 16, low 8 (Stage 2: +9 / +5; Stage 3: +11 / +6)</span></div>
 <div class="sbr"><span class="lbl">Rally</span><span>5</span></div>
 <div class="sbr"><span class="lbl">Speed Modifier</span><span>+1</span></div>
-<div class="sbr"><span class="lbl">Weapon Modifier</span><span>Instinct or Body</span></div>
-<div class="sbr"><span class="lbl">Power Modifier</span><span>Mind or Appeal</span></div>
+<div class="sbr"><span class="lbl">Modifiers</span><span>Weapon +2, Power +1</span></div>
 <div class="sbr"><span class="lbl">Armor Training</span><span>Medium</span></div>
 <div class="sbr"><span class="lbl">Escalation hook</span><span>Your Marked Quarry goes Down (Thrill of the Kill)</span></div>
 </div>

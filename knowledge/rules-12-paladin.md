@@ -12,9 +12,7 @@ Rally: 6
 
 Speed Modifier: +0
 
-Weapon Modifier: Body or Appeal
-
-Power Modifier: Mind or Appeal
+Modifiers: +2 and +1: you choose which is your Weapon Modifier
 
 Armor Training: Heavy
 

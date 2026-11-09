@@ -4,6 +4,7 @@ Current version: **v0.0.300**. Tests: `node tools/tests/run.mjs` (214 tests, see
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 ## Asked by Lucas, not built
+- [ ] **MOD: Weapon and Power Modifiers as class values (in the book 2026-11-09; Foundry still derives them from the Attributes, ÷ 2 + 1).** One version (branch `pack-mod`): the list is `book/modifiers-mod.md` section 11 (the class item's two values and its "either order" switch, the actor's level 1 order and Stage 2 pick in pick windows, `data.mjs` / `modifiers.mjs`, no `attrKey` on Weapon / Power / Signature rolls, the sheet tiles, NPC Modifiers as role values (Minion and Grunt +2 / +1, Standard +2 / +2, Elite +3 / +2), the migration, the tests).
 - [x] **PACK ACTION-PREVIEW merged to main (2026-11-09, v0.0.297 to v0.0.300).** Open: the two [Q] (category line, Opportunity Attack's traits).
 - [ ] **v0.0.300 (Lucas tested v0.0.299):** flat Use buttons (no drop shadow, 4px corners).
 - [ ] **v0.0.299 (Lucas tested v0.0.298):** Use buttons in Cinzel (my reading of "the sheet's cards font": the title font of the sheet's cards; revert to Signika if he meant the text font); a Feature's "Description" heading with its category and Frequency on the same line.

@@ -53,7 +53,7 @@
 | [[Difficult Terrain\|**Difficult Terrain**]] | Each square counts double. |
 | [[Sight Senses\|**Dim-light Sight**]] | A Sight Sense: Dim light counts as Bright for you. |
 | [[Disrupting Actions\|**Disrupted**]] | A disrupted Action doesn't happen, and its AP and resources are wasted. |
-| [[Distinct Choices\|**Distinct Choices**]] | A class's choices between two Attributes can't repeat an Attribute: Attribute increases among themselves, Weapon and Power Modifiers between themselves. |
+| [[Distinct Choices\|**Distinct Choices**]] | A class's Attribute increases go to different Attributes. |
 | [[Dominant Damage\|**Dominant Damage**]] | Whether you have more Vigor or Resolve damage. |
 | [[Favored and Doomed Rolls\|**Doomed**]] | A roll of 3d12, keeping the two lowest. |
 | [[Doubles\|**Doubles**]] | Both d12s match: the tier goes up. |
@@ -116,7 +116,7 @@
 | [[Rules Language\|**Origin**]] | The creature that uses an Action, or the Point of Origin of an Area. |
 | [[Chapter 6: Basic Actions\|**Opportunity Attack**]] | The Reaction every creature has (1R): a Weapon Attack, or an NPC's Basic attack, against a creature you threaten that would leave a square during a Move Action or uses Stand. A Strike. |
 | [[Areas\|**Point of Origin**]] | The place an area spreads from: an Emanation's target, your square for a Line, the tip of a cone. Line of Effect and Cover for the area are checked from it. |
-| [[Weapon, Power and Signature Modifiers\|**Power Modifier**]] | The higher of the class's two Power Attributes ÷ 2 + 1. Power Actions roll it. |
+| [[Weapon, Power and Signature Modifiers\|**Power Modifier**]] | One of your class's two Modifier values (+2 or +1 at level 1; it grows by Stage). Power Actions roll it; Ward Defense adds it. |
 | [[Rolls\|**Power roll**]] | An Action with the Power trait (or a Split Action in Power mode). |
 | [[Talents\|**Prerequisites**]] | What you need to choose a Talent. |
 | [[Named Boons and Banes\|**Pressure**]] | A named Bane an effect of another creature puts on you. Up to 2. |
@@ -189,7 +189,7 @@
 | [[Defenses\|**Ward**]] | Ward Defense (WD) — 11 + Power Modifier + Ward value + other items + bonuses − penalties. The Defense against Power Actions. |
 | [[Resist, Weak and Immunity\|**Weak**]] | Weak N (subtype): each Action's damage of that subtype, both pools together, is increased by N once. |
 | [[Weapon Groups\|**Weapon Group**]] | Blades, Axes, Hammers, Polearms, Bows, Crossbows, Firearms, Unarmed. Your Mastery with a weapon is at least a third of your best in its group. |
-| [[Weapon, Power and Signature Modifiers\|**Weapon Modifier**]] | The higher of the class's two Weapon Attributes ÷ 2 + 1. Weapon Actions roll it. |
+| [[Weapon, Power and Signature Modifiers\|**Weapon Modifier**]] | One of your class's two Modifier values (+2 or +1 at level 1; it grows by Stage). Weapon Actions roll it. |
 | [[Rolls\|**Weapon roll**]] | An Action with the Weapon trait (or a Split Action in Weapon mode). |
 | [[Weapons\|**Weapon Technique**]] | A weapon's own Action, unlocked with Mastery; used only with that weapon, while you wield it. |
 | [[Willing and Unwilling\|**Willing, Unwilling**]] | Willing: a creature that accepts the effect (an Unconscious creature counts as willing). Unwilling: one that doesn't. |

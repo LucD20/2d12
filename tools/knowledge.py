@@ -36,7 +36,6 @@ DESIGN_DOCS = [
     "book/class-charter.md",    # what every class must have
     "book/base-building.md",    # base building: proposals for much later (2026-11-07)
     "book/roleplay-skills.md",  # roleplay and skills: proposals (2026-11-07), Lucas reviews later
-    "book/modifiers-mod.md",    # pack MOD: Weapon and Power Modifiers as class values, the draft for review (2026-11-09)
     "book/items-economy.md",    # items, loot, money, carrying (designed 2026-11-06, logged part by part)
 ]
 # Topic sets: added only when named on the command line (they are big; the core set stays small).

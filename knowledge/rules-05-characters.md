@@ -5,7 +5,7 @@
 1. **Attributes.** All four Attributes (Body, Mind, Appeal, Instinct) start at **0**.
 2. **Species.** Apply your species' Attribute changes (the species are in the [[Species]] document). It also gives you a **Vigor** and a **Resolve** bonus, a **Speed**, your **Reach** (1), your **Steadiness** and your **Size** (all current species are Medium (3)).
 3. **Class.** Apply your class' Attribute increases. It also gives you a **high** and a **low Health value** (and the steps they grow by at each Stage), a **Rally** value, a **Speed Modifier**, a **Weapon Modifier** and a **Power Modifier**. Your Speed is your species' Speed plus your class' Speed Modifier.
-4. **Choices.** When a species or class says "or", pick one. A class's choices between two Attributes must be different from each other (see [[Distinct Choices]]).
+4. **Choices.** When a species or class says "or", pick one. A class's choices between two Attributes must be different from each other (see [[Distinct Choices]]). If your class lets you, choose which of its two Modifier values is your Weapon Modifier and which your Power Modifier (see [[Weapon, Power and Signature Modifiers]]).
 5. **[[Health Pool]].** Assign your class's high Health value to Vigor or to Resolve and the low one to the other, then add your species' bonuses (neither can be under a third of the total). Your Health Pool is the two added together.
 6. **[[Rally Points]]** = your class' Rally value + your Stage (1 at level 1).
 7. **Level 1.** Take your class's Features, its **Hallmark Action** and **Hallmark Reaction** (a choice of two each), its **Encounter Pick** and a **Talent** (the Talents are in the [[Talents]] document; weapons and armor in the [[Gear]] document).
@@ -13,9 +13,9 @@
 
 ## Classes
 
-Your class gives you Attribute increases, a **high** and a **low Health value** with their Stage steps (used for your Health Pool), a **Rally** value (used for Rally Points), a **Speed Modifier**, a **Weapon Modifier** and a **Power Modifier**, an **[[Armor Training]]**, and a list of **Escalation** abilities. Round modifiers up. A class's Weapon Modifier and Power Modifier use the higher of the Attributes it lists for each, and can't use the same Attribute.
+Your class gives you Attribute increases, a **high** and a **low Health value** with their Stage steps (used for your Health Pool), a **Rally** value (used for Rally Points), a **Speed Modifier**, a **Weapon Modifier** and a **Power Modifier**, an **[[Armor Training]]**, and a list of **Escalation** abilities.
 
-When you pick your class, you choose its Attribute increases when they say "or". These choices can't be changed later.
+When you pick your class, you choose its Attribute increases when they say "or", and the order of its Modifiers if it lets you. These choices can't be changed later.
 
 Each class is written in its own document: [[Paladin]] and [[Archer]].
 
@@ -42,40 +42,30 @@ The levels are grouped in **Stages**: **Stage 1** is levels 1 to 4, **Stage 2** 
 | | Stage 1 (levels 1-4) | Stage 2 (levels 5-7) | Stage 3 (levels 8-10) |
 |---|---|---|---|
 | **Attributes** | | +1 to one Attribute of your choice | +1 to one Attribute of your choice |
-| **Modifiers** | | | +1 to your Weapon and Power Modifiers (never above +4) |
+| **Modifiers** | your class's values | +1 to your Weapon or Power Modifier | +1 to your Weapon and Power Modifiers |
 | **Health** | your class's values | + your class's Stage 2 steps | + your class's Stage 3 steps |
 | **Guard per unspent AP** | 2 | 3 | 4 |
 | **Rally Points** | Rally + 1 | Rally + 2 | Rally + 3 |
 | **Talent** | one a level | a **Stage Talent** at level 5 | a **Stage Talent** at level 8 |
 
-A **Stage Talent** comes from a bigger list than the other Talents, and replaces the level's Talent (see the [[Talents]] document).
+A **Stage Talent** comes from a bigger list than the other Talents, and replaces the level's Talent (see the [[Talents]] document). A Modifier is never above +4. Your choice at Stage 2 can't be changed later.
 
 ### Distinct Choices
 
-When your class gives you a choice between two Attributes, you can't pick an Attribute you already picked from another choice of the same kind:
-
-- **Attribute increases.** Each one goes to a different Attribute. If a class offers "Body or Appeal +1" and "Appeal or Instinct +1" and you pick Appeal for the first, you must pick Instinct for the second.
-- **Weapon and Power Modifiers.** They never use the same Attribute (see below).
-
-The two kinds don't limit each other: a Paladin who adds +1 to Body can still use Body for the Weapon Modifier.
+When your class gives you a choice between two Attributes, you can't pick an Attribute you already picked from another of its choices: each Attribute increase goes to a different Attribute. If a class offers "Body or Appeal +1" and "Appeal or Instinct +1" and you pick Appeal for the first, you must pick Instinct for the second.
 
 ### Weapon, Power and Signature Modifiers
 
-Each class lists two Attributes for its **Weapon Modifier** and two for its **Power Modifier**. Each Modifier uses the **higher** of its two Attributes; you never add them together:
+Your class gives you two **Modifier values**: **+2 and +1** at level 1. One is your **Weapon Modifier**, which [[Weapon]] Actions roll; the other is your **Power Modifier**, which [[Power]] Actions roll and which sets your [[Defenses|Ward Defense]]. Your class says which is which, or lets you choose. They don't come from your Attributes, and your Attributes don't change them.
 
-- **Weapon Modifier** = the higher of the class's two Weapon Attributes ÷ 2 + 1
-- **Power Modifier** = the higher of the class's two Power Attributes ÷ 2 + 1
+They grow with your [[Stages|Stage]]: at **Stage 2** add +1 to the one you choose, at **Stage 3** +1 to both. A Modifier is never above +4.
 
-The Attribute a Modifier uses is your **Weapon Attribute** or your **Power Attribute**.
+Your **Signature Modifier** is the higher of your Weapon Modifier and your Power Modifier (if they are equal, choose one). Actions with the [[Signature]] trait roll it.
 
-**Your Modifiers grow with your [[Stages|Stage]]:** your Weapon and Power Modifiers are **+1 at Stage 3** (level 8), and they also follow your Attributes, which grow at each Stage; a Modifier is **never above +4**. Checks and Saves use your Attribute Modifier, which only the Attribute changes.
-
-If the same Attribute is the higher one for both Modifiers, one of them uses its other Attribute instead. You choose which, and you can change that choice when you level up.
-
-Your **Signature Modifier** is the higher of your Weapon Modifier and your Power Modifier (if they are equal, choose one). Its Attribute is your **Signature Attribute**. Actions with the Signature trait roll it.
+Your **Attributes** set your Checks (Initiative is one), your Saves, your Defenses against an Attribute, your rolls on the Dying and Shattered Tables and the Attribute Actions, such as Shove and Trip (see [[Rolls]]).
 
 > [!example]
-> A Paladin with Body 1, Mind 2 and Appeal 3. Both Modifiers want Appeal. If the Weapon Modifier keeps it, it is 3 (3 ÷ 2 = 1.5, rounded up to 2, + 1) and the Power Modifier uses Mind: 2 (2 ÷ 2 + 1); the Signature Modifier is 3, from Appeal. If the Power Modifier keeps Appeal instead, it is 3, and the Weapon Modifier uses Body: 2 (1 ÷ 2 = 0.5, rounded up to 1, + 1).
+> Lonny's Paladin leads with the sword: Weapon Modifier +2, Power Modifier +1 (Ward Defense 12; his Signature Modifier is +2, from his Weapon Modifier). At level 5 he adds +1 to his Power Modifier: +2 / +2, Ward Defense 13. At level 8 both rise: +3 / +3.
 
 ### Escalation Abilities
 
