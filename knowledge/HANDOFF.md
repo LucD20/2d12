@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.341, 230 tests; READ THIS FIRST)
+## Where we are now (v0.0.342, 230 tests; READ THIS FIRST)
+- **v0.0.342 (2026-11-10, branch `pack-rwi`):** the CRIT zone in a narrow chat, the Critical line only when rolled, the Save card's "No effect." colour, no Card button in the roll window. **NEXT:** Lucas's test; merge `pack-rwi`; ACTION-SHEET.
 - **v0.0.341 (2026-11-10, branch `pack-rwi`):** normal buttons again (Lucas: "the buttons aware isn't necessary"); 6 Paladin cards Mithril again, 5 Diamond to revise (Rebuke, Skirmish Shot, Heartseeker, Marksman's Shot, Open Season). **NEXT:** Lucas's test; merge `pack-rwi`; ACTION-SHEET.
 - **v0.0.340 (2026-11-10, branch `pack-rwi`):** chain-aware buttons (11 Diamond cards for Lucas to look at), an area Action rolled against a DC, an NPC's Rally Point (book Ch. 4: 9 / 13 / 17), Send to chat as the new card. New test t232 (**the next new test is t233**). **NEXT:** Lucas looks at the buttons; then ACTION-SHEET.
 - **v0.0.339 (2026-11-10, branch `pack-rwi`): the review's fixes** (Lucas: "run these fixes, except 5"): one way per thing after the damage (book words where the chain acts), 8 Diamond cards to revise, Open Season's Vulnerable in its chain, Beacon's Step's range from its Aura. New test t231 (**the next new test is t232**). **NEXT:** Lucas revises the 8 Diamond cards and tests; then the ACTION-SHEET redesign (its UI half of the review).

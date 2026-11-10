@@ -18,7 +18,7 @@ the dialog's DC doesn't override each target's Defense (useAction keeps each dcI
 --- the attack card
 Tier 2: stamp TIER 2 vs AD 11 | outcome: Vigor 1d8 Sl · Resolve 2d6 + 1d6 Ho | the effect (no label): true | no Critical row on a Tier 2: true
 Tier 1: a pool with 0 is left out: Resolve 1d6 Ho | no effect text, and no "No Effects" line: true
-Doubles raise: stamp TIER 3 Doubles ↑ | chip: Tier 2 → Tier 3 · Doubles | the Critical row muted: Critical Doubles, or 31+ the target is Prone. | a rider: ↳ Pushed 2
+Doubles raise: stamp TIER 3 Doubles ↑ | chip: Tier 2 → Tier 3 · Doubles | the Critical row muted:  | a rider: ↳ Pushed 2
 a Critical by total: stamp CRIT 3 Critical | the box: Critical the target is Prone. | explosion chain: 11 + 11 + 7 · 5 | total row: 36 vs AD 13 Tier 3 → Critical · 33+
 Boon / Bane lines: Boon · Bane +1 Boon · Flanking −1 Bane · Frightened −1 Bane · Dim light  | the modifiers colored: 1 1
 every clickable thing is a button with aria-expanded where it toggles: true | the retarget has a label: true | decorative icons hidden: true
@@ -30,7 +30,7 @@ retarget: only for the author and the GM, gone once locked: false true false
 the retarget is refused after damage was applied (actions.mjs): true | the damage message locks its roll card: true
 --- several targets on the card
 shared roll: 3d12 9 7 7 +2 Modifier | a row per creature: 3 | defenses: WD 13 | WD 13 Favored | WD 14 Doomed
-grouped by Tier: Tier 3 Grave Wisp Vigor 2d6 + 2 Sl · Resolve 2d10 Ho ↳ Pushed 2 Critical Doubles, or 33+ the target is Prone. Tier 2 Bandit Thug Ogre Chieft
+grouped by Tier: Tier 3 Grave Wisp Vigor 2d6 + 2 Sl · Resolve 2d10 Ho ↳ Pushed 2 Tier 2 Bandit Thug Ogre Chieftain Vigor 1d8 Sl · Resolve 2d6 + 1d6 Ho ◆ Brig
 player view: no WD labels: true
 --- the Save card
 Tier 1 on top (v0.0.335, the Action preview's order): T1 ≤12 | T2 13–19 | T3 20+ | the DC: Appeal Save DC 13 | no effect on Tier 3: true

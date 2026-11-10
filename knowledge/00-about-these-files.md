@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-10 from the repository at: d987688 2026-11-10 v0.0.340: chain-aware buttons (waiting, done, by hand), an area Action rolled against a DC, an NPC's Rally Point (book Ch. 4), Send to chat as the new card; t232
+Built by tools/knowledge.py on 2026-11-10 from the repository at: 2f64aa3 2026-11-10 v0.0.341: normal buttons again (the chain-aware buttons removed); six Paladin cards Mithril again, Rebuke, Skirmish Shot, Heartseeker, Marksman's Shot, Open Season Diamond
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (91 KB)
+- HANDOFF.md (92 KB)
 - MASTER-PLAN.md (23 KB)
 - open-design-items.md (96 KB)
 - rules-01-roll.md (23 KB)

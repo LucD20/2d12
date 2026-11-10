@@ -216,9 +216,7 @@ const critLine = (m, rows, hide) => {
   if (!m.critHtml || !rows.some(r => r.tier === 3)) return "";
   const any = rows.some(r => r.crit);
   if (any) return `<div class="cc-critbox"><span class="cc-critlbl on">Critical</span><span class="cc-crittxt">${m.critHtml}</span></div>`;
-  const dc = rows[0]?.dc ?? 13;
-  const why = hide ? "" : rows.length === 1 || rows.every(r => r.dc === dc) ? `Doubles, or ${dc + 20}+` : "Doubles, or 20 over its Defense";
-  return `<div class="cc-critline"><span class="cc-critlbl">Critical</span>${why ? `<small>${why}</small>` : ""}<span class="cc-crittxt">${m.critHtml}</span></div>`;
+  return "";   // v0.0.342 (Lucas: "the Critical should only show if it has been rolled"); was: the Critical's line with how to get one ("Doubles, or 33+")
 };
 export function attackCardHtml(m, view = FULL_VIEW) {
   const hide = view.hideDef, rows = m.rows ?? [], one = rows.length <= 1;

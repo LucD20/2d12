@@ -4037,3 +4037,9 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12-grantbar .lb-grant img.cc-gico { width: 14px; height: 14px; border: 0; vertical-align: -2px; filter: brightness(0) invert(94%) sepia(6%) saturate(400%); }
 .twod12.chat .cc-critl { color: #1d5a9e; }
 .twod12.rolldlg .rd-dcin { margin-left: auto; font-size: 12px; font-weight: 700; } .twod12.rolldlg .rd-dcin input { width: 4em; margin-left: 4px; }
+/* v0.0.342 (Lucas: "the crit ladder broke"): in a narrow chat the Critical zone (30% of Tier 3) clipped its label: at least 30px */
+.twod12.chat.cc .cc-czone { width: max(30%, 30px); }
+.twod12.chat.cc .cc-czone + .cc-sl { margin-right: max(30%, 30px); }
+/* v0.0.342 (Lucas): the Save card's "No effect." in the row's ink (it was white from the old dark Tier 3 row); the roll window's Use fills the bar */
+.twod12.chat.cc .cc-srow.t3 .cc-none, .twod12.chat.cc .cc-srow.t1.hit .cc-none, .twod12.chat.cc .cc-srow .cc-none { color: #6f6a5c; }
+.twod12.rolldlg .rd-bar .rd-go { flex: 1 1 auto; }
