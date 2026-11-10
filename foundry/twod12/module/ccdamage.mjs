@@ -6,11 +6,22 @@
 import * as CC from "./chatcards.mjs";
 import { esc } from "./util.mjs";
 import { damageOdds } from "./calc.mjs";
+import { allEffects } from "./passives.mjs";
+import { effectOff } from "./escalation.mjs";
 const F = "twod12", SOCKET = "system.twod12";
 
 const actorOf = uuid => { try { const d = fromUuidSync(uuid); return d?.documentName === "Actor" ? d : d?.actor ?? null; } catch (e) { return null; } };
 const guardOf = a => (Number(a?.system?.guard) || 0) + (Number(a?.system?.apGuard) || 0) + (Number(a?.system?.reduceNext) || 0);
-const modsOf = a => CC.parseDmgMods(a?.system?.dmgMods ?? "");
+/**
+ * v0.0.320 (pack AU part 2): the creature's Resist / Weak / Immunity: its own line (system.dmgMods, the Builder's chips) and the "Resist, Weak or Immunity"
+ * settings of its effects, Features and Talents that work now (an Escalation minimum, Only while it sees its origin); the highest of each counts.
+ */
+export function dmgModsOf(a) {
+  const extra = [];
+  for (const e of allEffects(a)) { if (effectOff(a, e)) continue; extra.push(...(e.getFlag?.(F, "dmgMods") ?? e.flags?.[F]?.dmgMods ?? [])); }
+  return CC.mergeDmgMods(CC.parseDmgMods(a?.system?.dmgMods ?? ""), extra);
+}
+const modsOf = dmgModsOf;
 
 /** The preview of one row (what changes the damage for that creature) and its choice, from the creature as it is now. */
 export function rowPreview(comps, actor) {
@@ -101,7 +112,10 @@ async function applyRow(s, i, factor = 1, { ask = true, rerun = false } = {}) {
   if (choice && !ask) return false;
   const choices = {};
   for (const x of CC.dmgModsFor(comps, dm).filter(x => x.split)) choices[x.sub] = await askOwner(actor, `<b>${esc(actor.name)}</b>: Resist ${esc(CC.subName(x.sub))} reduces which part first?`, POOLS);
-  const a = CC.afterResist(comps, dm, { factor, choices });
+  // v0.0.320 (book, Ch. 1): Weak's extra over both pools goes where the origin chooses
+  const weakTo = {}, src0 = actorOf(s.originUuid ?? "");
+  for (const sub of src0 ? CC.weakSplits(comps, dm) : []) weakTo[sub] = await askOwner(src0, `<b>${esc(src0.name)}</b>: Weak ${esc(CC.subName(sub))} on <b>${esc(actor.name)}</b>: the extra damage goes to`, [{ id: "B", label: "Vigor" }, { id: "M", label: "Resolve" }]);
+  const a = CC.afterResist(comps, dm, { factor, choices, weakTo });
   let guardFirst = "B";
   if (guardOf(actor) > 0 && a.B > 0 && a.M > 0 && guardOf(actor) < a.B + a.M) guardFirst = await askOwner(actor, `<b>${esc(actor.name)}</b>: the Guard takes which damage first?`, POOLS);
   // Lethal / Nonlethal: a component's own, else the card's

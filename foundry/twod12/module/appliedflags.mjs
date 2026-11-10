@@ -43,6 +43,9 @@ export function appliedFlags(s, source) {
   const escHooks = s.settings.filter(x => x.type === "eschook").map(x => ({ when: x.hookWhen || "allyState", range: Math.max(0, Math.trunc(Number(x.hookRange)) || 0) }));
   // v0.0.314 (pack AU): Bleed, damage at the end of each of the creature's turns (the pool from the Save's Attributes when none is written: Bo/In Vigor, Mi/Ap Resolve)
   const bleeds = s.settings.filter(x => x.type === "bleed" && String(x.dmg ?? "").trim()).map(x => ({ dmg: String(x.dmg).trim(), pool: x.dmgPool || "", sub: x.dmgSub || "", attrs: [...(x.attrs ?? [])], dc: Math.max(0, Math.trunc(Number(x.bleedDc)) || 13) }));
+  // v0.0.320 (pack AU part 2): Resist / Weak / Immunity (a subtype each; the damage message merges them with the creature's own line) and more Frequency uses
+  const dmgMods = s.settings.filter(x => x.type === "resist" && x.dmgSub && (x.rwKind === "immune" || Number(x.rwValue) > 0)).map(x => ({ kind: x.rwKind || "resist", sub: x.dmgSub, n: x.rwKind === "immune" ? 0 : Math.trunc(Number(x.rwValue)) }));
+  const freqMore = [...new Set(s.settings.filter(x => x.type === "freqmore").map(x => x.fmWhich || "round"))];
   const rules = { whileSeen: !!s.whileSeen, noReactions: !!s.noReactions, loseAp: !!s.loseAp, endsWithOrigin: !!s.endsWithOrigin };
-  return { ...rules, bleeds, description: s.description, hover: s.hover ?? "", notes, modifiers, bonuses, inlines, grants, covers, speedMods, defenses, auras, triggers, ignores, rallies, turnStarts, messages, propLoss, escHooks, minEscalation: Math.max(0, Number(s.minEscalation) || 0), expireOn: [...s.expireOn], expireAll: s.expireAll, source };
+  return { ...rules, bleeds, dmgMods, freqMore, description: s.description, hover: s.hover ?? "", notes, modifiers, bonuses, inlines, grants, covers, speedMods, defenses, auras, triggers, ignores, rallies, turnStarts, messages, propLoss, escHooks, minEscalation: Math.max(0, Number(s.minEscalation) || 0), expireOn: [...s.expireOn], expireAll: s.expireAll, source };
 }

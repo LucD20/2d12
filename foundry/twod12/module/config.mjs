@@ -70,7 +70,7 @@ export const TWOD12 = {
   frequencies: { "": "Default", none: "None", atwill: "At-will", turn: "Turn", round: "Round", encounter: "Encounter", daily: "Daily" },
   // The kind of a roll, for effects (Round 10): checks and saves are marked when they are rolled, and an Action that rolls an Attribute
   // directly (not a Weapon, Power or Signature roll) is an Attribute Action. Weapon, Power and Signature rolls are their traits.
-  rollKinds: { __check: "Check", __save: "Save", __attr: "Attribute Action", __twohanded: "Two-handed weapon" },   // v0.0.188: Two-handed weapon (Heavy Blows)
+  rollKinds: { __check: "Check", __save: "Save", __attr: "Attribute Action", __twohanded: "Two-handed weapon", __attack: "Attack" },   // v0.0.320: Attack = an Action that rolls against another creature (the Elite ladder's first attack)   // v0.0.188: Two-handed weapon (Heavy Blows)
   pools: { "": "None", B: "Vigor [V]", M: "Resolve [R]", C: "Choice [C]" },   // v0.0.234 (pack R-core): the labels; the keys stay B / M
   // Damage types: one icon each (Slash also has Foundry's sword image on cards), bright colors for dark backgrounds,
   // and dark "ink" colors for the parchment cards.
@@ -154,10 +154,14 @@ export const TWOD12 = {
   coverLevels: { low: "Low", medium: "Medium", high: "High" },   // v0.0.266 (Lucas, Aim): the "Ignores cover" setting's levels
   // v0.0.301 (PACK BB; book Ch. 1, Named Boons and Banes): the names that carry a limit of 2 (none: they always add up)
   bbNames: { "": "no name", field: "Field", pressure: "Pressure", support: "Support" },
-  effectSettings: { inline: "Grants an Action while active", boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", zone: "Zone (the placed area)", cover: "Ignores cover", speed: "Speed", light: "Token Light", note: "Note", ignore: "Ignore a Bane", rally: "Rally Points", turnstart: "Effect each turn", message: "Chat message", weaponprop: "Weapon property", mastery: "Starting Mastery", eschook: "Escalation hook", bleed: "Bleed (damage each turn)" },
+  effectSettings: { inline: "Grants an Action while active", boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", zone: "Zone (the placed area)", cover: "Ignores cover", speed: "Speed", light: "Token Light", note: "Note", ignore: "Ignore a Bane", rally: "Rally Points", turnstart: "Effect each turn", message: "Chat message", weaponprop: "Weapon property", mastery: "Starting Mastery", eschook: "Escalation hook", bleed: "Bleed (damage each turn)", resist: "Resist, Weak or Immunity", freqmore: "More uses of a Frequency" },
   // v0.0.314 (pack AU): a Boons and Banes setting can count only against creatures other than the effect's origin (Taunted), or only against it
   vsOriginChoices: { "": "against any creature", not: "only against creatures other than its origin", only: "only against its origin" },
   // v0.0.243 (pack R): the moments a class's Escalation hook names (once an encounter, +1 Escalation): Kindled Wrath, Thrill of the Kill.
+  // v0.0.320 (pack AU part 2; book, Chapter 1 Resist, Weak and Immunity; Bestiary, Elite Escalation): the kinds of a Resist setting, and the extra uses
+  //   a "More uses of a Frequency" setting gives (the Elite ladder's rungs 2 and 3; Special Actions: not the Basic Actions).
+  rwKinds: { resist: "Resist", weak: "Weak", immune: "Immunity" },
+  freqMore: { round: "its Round Special Actions can be used twice a round", encounter: "its Encounter Special Actions can be used a second time" },
   escHookWhen: { allyState: "An ally within N squares becomes Bloodied or goes Down", markDown: "The creature it marked goes Down" },
   // v0.0.198 (Lucas, 2026-10-30): the Basic Actions section of the Actions tab, 4 groups in a 2x2 grid (row 1 Attack | Control, row 2
   // Movement | Utility), each in this order. By name: the Kind traits don't separate them. The items and the compendium don't change.

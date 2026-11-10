@@ -121,7 +121,7 @@ export async function pcModel(sheet, ctx) {
     // v0.0.291: the Senses cell (both sheets), the NPC's Strikes diamonds and next Bane, the Elite's ladder
     senses: senseChips(s.senses ?? {}), strikePips: strikePips(strikesUsed(a)), strikesLeft: Math.max(0, 3 - strikesUsed(a)),
     nextBane: basicAtk && combat?.started ? nextBanes(atWillUses(a, basicAtk)).replace(/^next: /, "Basic attack: next +") : "",
-    elite, eliteRungs: ELITE_RUNGS.map(r => ({ ...r, lit: escNow >= r.n })),
+    elite, eliteRungs: ELITE_RUNGS.map(r => ({ ...r, lit: escNow >= r.n, tip: `${r.tip}${s.eliteLadder !== false ? " Automated (the Builder's Default ladder)." : " By hand: the Builder's Default ladder is off (its entry says otherwise)."}` })),   // v0.0.320
     phases: `Phases: Bloodied +1 ${s.bloodied ? "\u2713" : "not yet"} \u00b7 Strained +1 ${s.strained ? "\u2713" : "not yet"}`
   };
   const hands = { tiles: handTiles(weapons, inCombat) };
@@ -513,7 +513,7 @@ export function npcBuilderModel(a) {
   const specials = [["Basic attack", "1 AP \u00b7 At-will", 1], ["Special, 1 AP", "Round \u00b7 \u00d71.4", 1.4], ["Special, 2 AP", "Round \u00b7 \u00d72.2", 2.2], ...(s.role === "minion" ? [] : [["Special, 3 AP", "Encounter \u00b7 \u00d73.5", 3.5]])];
   return {
     roles: Object.entries(TWOD12.npcRoles).map(([k, v]) => ({ key: k, label: v.label, on: (s.role || "standard") === k })),
-    level: s.level, stage, cv: s.cv ?? role.cv[0], ap: role.ap, elite: s.role === "elite", escOn: !!s.useEscalation, escAny: true,   // v0.0.303: any role can switch Escalation on (it was the Elite's only)
+    level: s.level, stage, cv: s.cv ?? role.cv[0], ap: role.ap, elite: s.role === "elite", escOn: !!s.useEscalation, ladderOn: s.eliteLadder !== false, escAny: true,   // v0.0.303: any role can switch Escalation on (it was the Elite's only)
     summary: [{ k: "Health", v: pool }, { k: "Down in about", v: `${downIn(pool, pcDmg)} PC turns` }, { k: "Should deal", v: `about ${role.deals}` }, { k: "Ratings average", v: avg }],
     cols: [[{ title: "Attributes", rows: attrs, grow: 4 }, { title: "Movement", rows: [speed, steady], grow: 2 }, { title: "Weapon Mod", rows: [wmod], grow: 1 }],
       [{ title: "Health", rows: health, grow: 3 }, { title: "Defenses", rows: defs, grow: 3 }, { title: "Power Mod", rows: [pmod], grow: 1 }]],   // v0.0.307 (Lucas): Weapon under Movement, Power under Defenses

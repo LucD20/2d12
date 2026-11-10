@@ -83,6 +83,12 @@ function settingSentenceOnly(x) {
       const pool = x.dmgPool === "M" ? "Resolve" : (x.dmgPool === "B" ? "Vigor" : "Vigor or Resolve by the Attributes");
       return `At the end of each of its turns, the creature takes <b>${esc(x.dmg || "?")}${x.dmgSub ? " " + esc(TWOD12.subtypes[x.dmgSub]) : ""}</b> damage (${pool}); Interact and a Save with the better of ${attrs} against DC ${Math.max(0, Number(x.bleedDc) || 13)} end it.`;
     }
+    case "resist": {   // v0.0.320 (pack AU part 2)
+      const sub = TWOD12.subtypes[x.dmgSub] || "?";
+      return x.rwKind === "immune" ? `The creature has <b>Immunity ${esc(sub)}</b>.` : `The creature has <b>${x.rwKind === "weak" ? "Weak" : "Resist"} ${Math.max(0, Number(x.rwValue) || 0)} ${esc(sub)}</b>.`;
+    }
+    case "freqmore":
+      return `While this works, ${esc(TWOD12.freqMore[x.fmWhich] ?? TWOD12.freqMore.round)}.`;
     case "inline":
       return `Has the Action <b>${esc(fxNameOf(x.inlineAction) || x.inlineAction || "?")}</b> while this lasts.`;
     case "grant":
@@ -167,6 +173,8 @@ export function settingShort(x) {
     case "weaponprop": return `${TWOD12.propWeapons[x.wpWhich] ?? "Fists"} not ${TWOD12.removableProps[x.wpProp] ?? "?"}`;
     case "mastery": return `${TWOD12.weaponTraits[x.mstTrait] ?? "?"} weapon at ${Math.max(0, Number(x.mstValue) || 0)} Mastery`;
     case "note": return `note "${x.title || "(no title)"}"`;
+    case "resist": return x.rwKind === "immune" ? `Immunity ${TWOD12.subtypes[x.dmgSub] || "?"}` : `${x.rwKind === "weak" ? "Weak" : "Resist"} ${Math.max(0, Number(x.rwValue) || 0)} ${TWOD12.subtypes[x.dmgSub] || "?"}`;   // v0.0.320
+    case "freqmore": return x.fmWhich === "encounter" ? "Encounter Specials a second time" : "Round Specials twice a round";
     default: return strip(settingSentence(x)).replace(/\.$/, "").replace(/^The next action/, "next action");
   }
 }

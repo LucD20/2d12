@@ -37,7 +37,7 @@ export function appliedUpdate(fx, system, source, name, img) {
 
 
 /** A blank setting with every field (the Effect item's defaults). */
-const blankSetting = type => ({ type, vsOrigin: "", bleedDc: 13, attrs: [], title: "", text: "", bright: 0, dim: 0, color: "", lightAlpha: 0.5, lightAnim: "", lightSpeed: 5, lightIntensity: 5, boons: 0, banes: 0, empowered: 0, enfeebled: 0, byValue: false, predicate: "", all: [], any: [], none: [], from: [],
+const blankSetting = type => ({ type, vsOrigin: "", bleedDc: 13, rwKind: "resist", rwValue: 1, fmWhich: "round", attrs: [], title: "", text: "", bright: 0, dim: 0, color: "", lightAlpha: 0.5, lightAnim: "", lightSpeed: 5, lightIntensity: 5, boons: 0, banes: 0, empowered: 0, enfeebled: 0, byValue: false, predicate: "", all: [], any: [], none: [], from: [],
   dmg: "", dmgPool: "B", dmgSub: "", tiers: ["t1", "t2", "t3"], fxUuid: "", against: false, speedMode: "add", speedFormula: "", inlineAction: "", grantAction: "", grantCount: 1, grantAp: 0, grantDistinct: false, defKind: "all", defValue: 1, minEscalation: 0, auraSize: 1, auraWho: "allies", auraSelf: false, auraOutline: "", auraFill: "", trigSub: "", trigTag: "", oncePerRound: false, vsMarked: false, ignoreRule: "rangeBane", rallyBonus: "", rallyRange: 0 });
 
 /**
@@ -87,6 +87,8 @@ export function sourceFromFlags(fx) {
     ...(f.auras ?? []).map(a => ({ ...blankSetting("aura"), auraSize: Math.max(1, Number(a.size) || 1), auraWho: a.who || "allies", auraSelf: !!a.self, auraOutline: a.outline ?? "", auraFill: a.fill ?? "", fxUuid: a.fxUuid ?? "" })),
     ...(f.triggers ?? []).map(t => ({ ...blankSetting("ondamage"), trigSub: t.sub ?? "", trigTag: t.tag ?? "", fxUuid: t.fxUuid ?? "" })),
     ...(f.defenses ?? []).map(d => ({ ...blankSetting("defense"), defKind: d.kind in TWOD12.defenseKinds ? d.kind : "all", defValue: Math.trunc(Number(d.bonus)) || 0 })),
+    ...(f.dmgMods ?? []).map(m => ({ ...blankSetting("resist"), rwKind: m.kind in TWOD12.rwKinds ? m.kind : "resist", dmgSub: m.sub ?? "", rwValue: Math.max(0, Math.trunc(Number(m.n)) || 0) })),   // v0.0.320
+    ...(f.freqMore ?? []).map(w => ({ ...blankSetting("freqmore"), fmWhich: w in TWOD12.freqMore ? w : "round" })),
     ...(f.notes ?? []).map(n => ({
       ...blankSetting("note"),
       attrs: (n.attrs ?? []).filter(a => a in TWOD12.attributes),

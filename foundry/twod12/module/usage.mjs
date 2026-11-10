@@ -3,6 +3,8 @@
 // and the Strikes of its turn (three Strikes is the limit). The sheets show used actions faded.
 import { techniqueLock, techniqueState, TECHNIQUE_AT } from "./mastery.mjs";
 import { effectiveFrequency } from "./config.mjs";
+import { allEffects } from "./passives.mjs";
+import { effectOff } from "./escalation.mjs";
 const F = "twod12";
 
 /** Does a grant spec ("Weapon Attack", "category:Weapon Technique", "trait:strike") name this Action? */
@@ -45,12 +47,28 @@ const state = actor => {
     roundAt,   // id -> [round, turn] when it was used (the latest of the actor's and the combatant's)
     turnUsed: mine && u.turnUsedKey === `${combat.round}:${combat.turn}` ? (u.turnUsed ?? []) : [],
     encounter: [...new Set([...(mine ? (u.encounter ?? []) : []), ...(bm ? (b.encounter ?? []) : [])])],
+    // v0.0.320: the use before the last one of a Round Action (a second use in one turn-cycle) and the Encounter Actions used a second time
+    roundPrev: { ...(bm ? (b.roundPrev ?? {}) : {}), ...(mine ? (u.roundPrev ?? {}) : {}) },
+    encounter2: [...new Set([...(mine ? (u.encounter2 ?? []) : []), ...(bm ? (b.encounter2 ?? []) : [])])],
     strikes: mine && u.turnKey === `${combat.round}:${combat.turn}` ? (u.strikes ?? 0) : 0,
     // v0.0.215 (Lucas, playtest 2): a list, not an object. setFlag merges objects, so last turn's counts (an object keyed by item id) stayed in
     // the flag and a first use this turn got "At-will use 2". A list is replaced whole.
     atwill: mine && u.atwillKey === `${combat.round}:${combat.turn}` ? Object.fromEntries(u.atwillList ?? []) : {}
   };
 };
+
+/**
+ * v0.0.320 (pack AU part 2; book, Bestiary, Elite Escalation): the extra uses this creature's settings give right now ("More uses of a Frequency":
+ * "round" = its Round Special Actions twice a round, "encounter" = its Encounter Special Actions a second time). Special = not a Basic Action.
+ */
+export function freqMoreOf(actor) {
+  const out = new Set();
+  for (const e of allEffects(actor)) { if (effectOff(actor, e)) continue; for (const w of e.getFlag?.(F, "freqMore") ?? e.flags?.[F]?.freqMore ?? []) out.add(w); }
+  return out;
+}
+const isSpecial = item => !(item?.getFlag?.(F, "basic") ?? item?.flags?.[F]?.basic);
+/** Pure: how many uses this Frequency allows in its span (a turn-cycle for Round, the encounter for Encounter). */
+export const usesAllowed = (freq, more, special) => (special && ((freq === "round" && more.has("round")) || (freq === "encounter" && more.has("encounter"))) ? 2 : 1);
 
 /** Is this Action unavailable right now? { faded, why } */
 export function isFaded(actor, item) {
@@ -63,8 +81,9 @@ export function isFaded(actor, item) {
   if (activeGrants(actor, item).length) return { faded: false, why: "" };   // a granted use is free: the Action is available
   const f = effectiveFrequency(item.system);
   if (f === "turn" && s.turnUsed.includes(item.id)) return { faded: true, why: "Used this turn" };
-  if (f === "round" && (s.roundUsed.includes(item.id) || roundBlocked(actor, s.combat, s.roundAt[item.id]))) return { faded: true, why: "Used: available again at the start of your next turn" };
-  if (f === "encounter" && s.encounter.includes(item.id)) return { faded: true, why: "Used this encounter" };
+  const twice = (f === "round" || f === "encounter") && usesAllowed(f, freqMoreOf(actor), isSpecial(item)) > 1;   // v0.0.320: the Elite ladder
+  if (f === "round" && (s.roundUsed.includes(item.id) || roundBlocked(actor, s.combat, s.roundAt[item.id])) && (!twice || roundBlocked(actor, s.combat, s.roundPrev[item.id]))) return { faded: true, why: twice ? "Used twice: available again at the start of your next turn" : "Used: available again at the start of your next turn" };
+  if (f === "encounter" && s.encounter.includes(item.id) && (!twice || s.encounter2.includes(item.id))) return { faded: true, why: twice ? "Used twice this encounter" : "Used this encounter" };
   // v0.0.224 (Lucas): the 3 Strikes are not greyed like a used Frequency: the row gets its own marker (strikeCap).
   if (item.system.traits.has("strike") && s.strikes >= 3) return { faded: false, strikeCap: true, why: "Three Strikes this turn" };
   return { faded: false, why: "" };
@@ -117,8 +136,8 @@ export async function markUsed(actor, item) {
     if (u.turnUsedKey !== k) { u.turnUsedKey = k; u.turnUsed = []; }
     if (!u.turnUsed.includes(item.id)) u.turnUsed.push(item.id);
   }
-  if (f === "round") (u.roundAt ??= {})[item.id] = [combat.round, combat.turn];
-  if (f === "encounter" && !(u.encounter ??= []).includes(item.id)) u.encounter.push(item.id);
+  if (f === "round") { if (u.roundAt?.[item.id]) (u.roundPrev ??= {})[item.id] = u.roundAt[item.id]; (u.roundAt ??= {})[item.id] = [combat.round, combat.turn]; }   // v0.0.320: the use before is kept (twice a round)
+  if (f === "encounter") { if (!(u.encounter ??= []).includes(item.id)) u.encounter.push(item.id); else if (!(u.encounter2 ??= []).includes(item.id)) u.encounter2.push(item.id); }
   if (f === "atwill") {
     const k = `${combat.round}:${combat.turn}`;
     const counts = u.atwillKey === k ? Object.fromEntries(u.atwillList ?? []) : {};
@@ -137,7 +156,8 @@ export async function markUsed(actor, item) {
     try {
       const c = combatantOf(combat, actor);
       const old = c?.getFlag?.(F, "usedHere"), same = old?.combatId === combat.id;
-      if (c?.isOwner) await c.setFlag(F, "usedHere", { combatId: combat.id, encounter: [...new Set([...(same ? old.encounter ?? [] : []), ...(u.encounter ?? [])])], roundAt: { ...(same ? old.roundAt ?? {} : {}), ...(u.roundAt ?? {}) } });
+      if (c?.isOwner) await c.setFlag(F, "usedHere", { combatId: combat.id, encounter: [...new Set([...(same ? old.encounter ?? [] : []), ...(u.encounter ?? [])])], roundAt: { ...(same ? old.roundAt ?? {} : {}), ...(u.roundAt ?? {}) },
+        roundPrev: { ...(same ? old.roundPrev ?? {} : {}), ...(u.roundPrev ?? {}) }, encounter2: [...new Set([...(same ? old.encounter2 ?? [] : []), ...(u.encounter2 ?? [])])] });   // v0.0.320
     } catch (e) { console.warn("twod12 | keeping the uses on the combatant", e); }
   }
 }
@@ -161,9 +181,11 @@ export async function unmarkUsed(actor, item) {
   const u = foundry.utils.deepClone(actor.getFlag(F, "usage") ?? {});
   const id = item.id;
   if (u.combatId === combat.id) {
-    if (u.roundAt?.[id]) u.roundAt[id] = [-1, -1];   // an object merges: overwrite the entry rather than delete it
+    // an object merges: overwrite the entry rather than delete it; v0.0.320: a second use taken back leaves the first one
+    if (u.roundAt?.[id]) { u.roundAt[id] = u.roundPrev?.[id] ?? [-1, -1]; if (u.roundPrev?.[id]) u.roundPrev[id] = [-1, -1]; }
     u.turnUsed = (u.turnUsed ?? []).filter(x => x !== id);
-    u.encounter = (u.encounter ?? []).filter(x => x !== id);
+    if ((u.encounter2 ?? []).includes(id)) u.encounter2 = u.encounter2.filter(x => x !== id);
+    else u.encounter = (u.encounter ?? []).filter(x => x !== id);
     u.roundUsed = (u.roundUsed ?? []).filter(x => x !== id);
     if (u.atwillKey === `${combat.round}:${combat.turn}`) u.atwillList = (u.atwillList ?? []).map(([k, n]) => [k, k === id ? Math.max(0, n - 1) : n]);
     if (item.system?.traits?.has?.("strike") && u.turnKey === `${combat.round}:${combat.turn}`) u.strikes = Math.max(0, (u.strikes ?? 0) - 1);
@@ -171,7 +193,11 @@ export async function unmarkUsed(actor, item) {
   }
   try {   // the combatant's copy too, even when the actor had no record (v0.0.221)
     const c = combatantOf(combat, actor), old = c?.getFlag?.(F, "usedHere");
-    if (c?.isOwner && old?.combatId === combat.id) await c.setFlag(F, "usedHere", { combatId: combat.id, encounter: (old.encounter ?? []).filter(x => x !== id), roundAt: { ...(old.roundAt ?? {}), ...(old.roundAt?.[id] ? { [id]: [-1, -1] } : {}) } });
+    if (c?.isOwner && old?.combatId === combat.id) {
+      const second = (old.encounter2 ?? []).includes(id);   // v0.0.320: a second use taken back leaves the first one
+      await c.setFlag(F, "usedHere", { combatId: combat.id, encounter: second ? (old.encounter ?? []) : (old.encounter ?? []).filter(x => x !== id), encounter2: (old.encounter2 ?? []).filter(x => x !== id),
+        roundAt: { ...(old.roundAt ?? {}), ...(old.roundAt?.[id] ? { [id]: old.roundPrev?.[id] ?? [-1, -1] } : {}) }, roundPrev: { ...(old.roundPrev ?? {}), ...(old.roundPrev?.[id] ? { [id]: [-1, -1] } : {}) } });
+    }
   } catch (e) { /* the combatant's copy stays */ }
 }
 

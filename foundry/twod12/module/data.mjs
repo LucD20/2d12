@@ -281,6 +281,7 @@ export class NpcData extends CharacterData {
       armor: choice(Object.fromEntries(Object.entries(TWOD12.armors).map(([k, v]) => [k, v.label])), "medium"),   // its Armor type (for rules and Talents that ask); medium: a typical enemy
       armorDef: sint(13), wardDef: sint(13),   // its typed Armor Defense and Ward Defense, used when that rating is Custom (any number)
       useEscalation: bool(false),   // an NPC can have Escalation too (an elite foe): off by default
+      eliteLadder: bool(true),   // v0.0.320 (pack AU part 2): with Escalation on, the Bestiary's default Elite ladder works by itself (passives.mjs); off: its entry says otherwise (its own Features)
       reachBase: int(1, 1),   // the creature's Reach (most are 1; a big creature or a long-limbed one more)
       steadiness: int(0, 0)   // v0.0.169: resistance to being moved: 0 unless its description says otherwise (Builder tab: 0 to 4)
     };
@@ -619,7 +620,10 @@ const settingsField = () => new ArrayField(new SchemaField({
         hookWhen: choice(TWOD12.escHookWhen, "allyState"), hookRange: int(5, 0),
         // v0.0.314 (pack AU): Boons and Banes only against creatures other than the effect's origin (Taunted), or only against it;
         //   bleed: damage at the end of each of the creature's turns (dmg, dmgPool, dmgSub; attrs: the Save's Attributes; bleedDc: its DC).
-        vsOrigin: choice(TWOD12.vsOriginChoices, ""), bleedDc: int(13, 0)
+        vsOrigin: choice(TWOD12.vsOriginChoices, ""), bleedDc: int(13, 0),
+        // v0.0.320 (pack AU part 2): resist: Resist N / Weak N / Immunity of a subtype (dmgSub) while it is on the creature (the highest of each counts);
+        //   freqmore: more uses of a Frequency (the Elite ladder: Round Specials twice a round, Encounter Specials a second time).
+        rwKind: choice(TWOD12.rwKinds, "resist"), rwValue: int(1, 0), fmWhich: choice(TWOD12.freqMore, "round")
       }));
 
 export class EffectData extends foundry.abstract.TypeDataModel {

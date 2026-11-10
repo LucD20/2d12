@@ -194,7 +194,10 @@ export function resolveModifiers(actor, ids, extra = []) {
     const [owner, rest] = id.includes("|") ? id.split("|") : [null, id];
     const [eid, idx] = rest.split(":");
     const holder = owner ? fromUuidSync(owner) : actor;
-    const e = holder?.effects?.get(eid);
+    // v0.0.320 (two fixes): a Feature's or Talent's passive (id "passive-...") is not in the creature's effects: look among its passives too; and a
+    // modifier "only against the creature it marked" is the roller's own, with the target's uuid in front of its id: look in the roller's own too.
+    const findIn = a => a?.effects?.get?.(eid) ?? (String(eid).startsWith("passive-") ? allEffects(a).find(x => x.id === eid) : null);
+    const e = findIn(holder) ?? (owner ? findIn(actor) : null);
     const m = e?.getFlag(F, "modifiers")?.[Number(idx)];
     if (!m) continue;
     const k = kOf(m, e);

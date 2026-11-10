@@ -1,0 +1,39 @@
+--- the setting: what it becomes on the creature (appliedFlags)
+dmgMods [{"kind":"resist","sub":"Fi","n":3},{"kind":"weak","sub":"Ho","n":2},{"kind":"immune","sub":"Co","n":0}] | freqMore ["encounter"] (no subtype or a 0 Resist: nothing)
+The creature has Resist 3 Fire. | Resist 3 Fire
+The creature has Weak 2 Holy. | Weak 2 Holy
+The creature has Immunity Cold. | Immunity Cold
+While this works, its Round Special Actions can be used twice a round. | Round Specials twice a round
+While this works, its Encounter Special Actions can be used a second time. | Encounter Specials a second time
+--- merged with the creature's own line: the highest of each counts (Ch. 1, Stacking)
+{"resist":{"Fi":5},"weak":{"Ho":1},"immune":["Ps"]}
+a lower one doesn't replace a higher one: {"resist":{"Fi":5},"weak":{},"immune":[]}
+--- dmgModsOf: the line, an applied effect, a Talent, an effect that is off
+Escalation 1: {"resist":{"Fi":4,"Ho":2},"weak":{},"immune":[]}
+Escalation 3 (the Talent's Immunity works): {"resist":{"Fi":4,"Ho":2},"weak":{},"immune":["Co"]}
+--- the damage after it
+6 Fire [V] (Resist 4):                                 {"B":2,"M":0} | mods Resist Fire -4
+3 Fire [V] + 3 Fire [R] (one Resist for both pools):   {"B":0,"M":2} | mods Resist Fire -4
+2 Holy + 5 untyped:                                    {"B":5,"M":0} | mods Resist Holy -2
+Weak over both pools needs the origin's choice: ["Ho"] | one pool only: []
+Weak 3 Holy, 2 [V] + 4 [R] (default: more of it):      {"B":2,"M":7} | mods Weak Holy 3
+the same, the origin chose Vigor:                      {"B":5,"M":4} | mods Weak Holy 3
+--- the old Save card path (an Area Save): dealDamageEx
+Immunity Fire, 7 Fire: {"text":"no damage (Immunity Fire)","landed":false,"mods":["Immunity Fire"]} (landed false: the Tier's effects don't happen)
+--- the Elite ladder (passives.mjs)
+Escalation 1: working passive-elite-1 | more uses []
+Escalation 2: working passive-elite-1, passive-elite-2 | more uses ["round"]
+Escalation 3: working passive-elite-1, passive-elite-2, passive-elite-3 | more uses ["round","encounter"]
+Default ladder off: 0 sources | a Standard (no Escalation): 0
+an attack: Elite Escalation 1 Boon, match true, once true | a Check: match false
+it counts on the roll: 1
+uses allowed: Round Special with 'round' 2 | a Basic Action 1 | Encounter without 'encounter' 1 | with 2
+--- the uses in a combat (usage.mjs isFaded / markUsed)
+Escalation 1, a Round Special: free -> faded (Used: available again at the start of your next turn) -> faded (Used: available again at the start of your next turn)
+Escalation 2, a Round Special: free -> free -> faded (Used twice: available again at the start of your next turn)
+Escalation 2, Charge (a Basic Action): free -> faded (Used: available again at the start of your next turn)
+Escalation 2, an Encounter Special: free -> faded (Used this encounter)
+Escalation 3, an Encounter Special: free -> free -> faded (Used twice this encounter)
+--- resolveModifiers: a Feature's passive Boon, and one only against the marked creature (both were left out before v0.0.320)
+Actor.Gob|m1:0: 1 | passive-F1-0:0: 1 | Actor.Gob|passive-F1-0:1: 2
+Boons on the roll: 4 from Vow 1, Steady Hand 1, Steady Hand 2

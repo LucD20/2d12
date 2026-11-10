@@ -12,7 +12,7 @@ import * as CC from "./chatcards.mjs";   // v0.0.283 (pack chat-cards): the one-
 import { perDieDelta } from "./calc.mjs";
 import { resolveModifiers, applyEffects, applyCondition, originInfo, applyBoonEffect, damageSteps, conditionItem } from "./effects.mjs";
 import { parseAttrs, needsOrigin } from "./condrules.mjs";   // v0.0.314 (pack AU): Bleed's Attributes
-import { dealDamage } from "./damage.mjs";
+import { dealDamageEx } from "./damage.mjs";
 import { postDamageCard } from "./dmgcard.mjs";
 import { startTemplate, tokensInEmanation } from "./template.mjs";
 import { sysLine } from "./sysmsg.mjs";
@@ -424,13 +424,15 @@ async function resolveSaveTier(actor, title, subtitle, cfg, tier, pre = null) {
   const parts = parseParts(cfg.tiers[`t${tier}`]);
   if (!parts.damage.length && !parts.texts.length && !parts.uuids.length) return;
   const { comps, rolls } = pre ?? await rollParts(parts.damage, cfg.nonlethal);
-  const summary = comps.length ? await dealDamage(actor, comps) : "";
+  // v0.0.320 (book, Ch. 1 Riders): after Resist and Immunity, a damaging Tier's effects happen only if its damage landed
+  const dealt = comps.length ? await dealDamageEx(actor, comps) : null, summary = dealt?.text ?? "";
   const names = [];
-  if (parts.uuids.length) {
+  if (parts.uuids.length && (!dealt || dealt.landed)) {
     await applyEffects(parts.uuids, [actor.uuid], originInfo(""));
     for (const u of parts.uuids) names.push((await fromUuid(u))?.name ?? "?");
   }
-  const applied = `${esc(actor.name)}${summary ? ` takes <b>${summary}</b> damage` : ""}${names.length ? `${summary ? "; " : " gains "}${esc(names.join(", "))}` : ""}.`;
+  const applied = dealt && !dealt.landed ? `${esc(actor.name)} takes <b>${esc(summary)}</b>: the rest of this Tier doesn't happen.`
+    : `${esc(actor.name)}${summary ? ` takes <b>${summary}</b> damage` : ""}${names.length ? `${summary ? "; " : " gains "}${esc(names.join(", "))}` : ""}.`;
   await postDamageCard({ actor, title, subtitle, comps, rolls: pre ? [] : rolls, texts: await Promise.all(parts.texts.map(t => enrich(t))), applied });
 }
 
@@ -1050,9 +1052,11 @@ export async function saveRoll(msg, idx) {
   }
   const bits = [], extras = [];
   let amount = null;
-  if (comps.length) { bits.push(await dealDamage(actor, comps)); amount = comps.reduce((s, c) => s + c.total, 0); }
+  let dealt = null;   // v0.0.320: Resist / Weak / Immunity, and the riders only if the damage landed (Ch. 1 Riders)
+  if (comps.length) { dealt = await dealDamageEx(actor, comps); bits.push(dealt.text); amount = comps.reduce((s, c) => s + c.total, 0); }
   bits.push(...parts.texts); extras.push(...parts.texts);
-  if (parts.uuids.length) {
+  if (dealt && !dealt.landed && (parts.texts.length || parts.uuids.length)) bits.push("No damage landed: the rest of this Tier doesn't happen.");
+  if (parts.uuids.length && (!dealt || dealt.landed)) {
     await applyEffects(parts.uuids, [actor.uuid], originInfo(""));
     for (const u of parts.uuids) { const b = `\u2726 ${(await fromUuid(u))?.name ?? "?"}`; bits.push(b); extras.push(b); }
   }

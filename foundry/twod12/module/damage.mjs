@@ -105,15 +105,33 @@ export function registerSocket() {
 export const summaryText = a => [[a.B.l, "Vigor"], [a.B.n, "Vigor Nonlethal"], [a.M.l, "Resolve"], [a.M.n, "Resolve Nonlethal"]].filter(([n]) => n).map(([n, l]) => `${n} ${l}`).join(", ");
 
 /** Apply a list of damage components (pool, nl, total) to an actor right away; returns a text summary. */
-export async function dealDamage(actor, comps) {
-  const b = { B: { l: 0, n: 0 }, M: { l: 0, n: 0 }, C: { l: 0, n: 0 } };
-  for (const c of comps) { const k = b[c.pool] ? c.pool : "B"; b[k][c.nl ? "n" : "l"] += c.total; }
-  const a = { B: { ...b.B }, M: { ...b.M } };
-  const cTot = b.C.l + b.C.n;
-  if (cTot) { const p = (await chooseChoicePool(cTot)) ?? "B"; a[p].l += b.C.l; a[p].n += b.C.n; }
-  const total = a.B.l + a.B.n + a.M.l + a.M.n, taken = await applyToActor(actor, a, { announce: false });
+export async function dealDamage(actor, comps) { return (await dealDamageEx(actor, comps)).text; }
+
+/**
+ * v0.0.320 (pack AU part 2; book, Ch. 1): the Save cards that still deal their damage at once (an Area Save's rows) apply Resist / Weak / Immunity too
+ * (once per subtype, both pools together), and say whether the damage landed: its riders (the Tier's effects) happen only if it did.
+ * Returns { text, landed, mods: ["Resist 2 Fire"] }.
+ */
+export async function dealDamageEx(actor, comps) {
+  const list = [];
+  let cTot = 0;
+  for (const c of comps ?? []) { if (c.pool === "C") cTot += Number(c.total) || 0; else list.push(c); }
+  if (cTot) { const p = (await chooseChoicePool(cTot)) ?? "B"; for (const c of comps) if (c.pool === "C") list.push({ ...c, pool: p }); }
+  const CC = await import("./chatcards.mjs");
+  let dm = { resist: {}, weak: {}, immune: [] };
+  try { dm = (await import("./ccdamage.mjs")).dmgModsOf(actor); } catch (e) { console.warn("twod12 | Resist", e); }
+  const mods = CC.dmgModsFor(list, dm).map(x => x.label), after = CC.afterResist(list, dm);
+  // Lethal and Nonlethal keep their share of each pool
+  const share = p => { const all = list.filter(c => (c.pool === "M" ? "M" : "B") === p), tot = all.reduce((x, c) => x + (Number(c.total) || 0), 0), n = all.filter(c => c.nl).reduce((x, c) => x + (Number(c.total) || 0), 0); return tot ? n / tot : 0; };
+  const cut = (n, p) => { const k = Math.round(n * share(p)); return { l: n - k, n: k }; };
+  const a = { B: cut(after.B, "B"), M: cut(after.M, "M") };
+  const total = after.B + after.M, landed = total > 0;
+  const tail = mods.length ? ` (${mods.join(", ")})` : "";
+  if (!landed) return { text: `no damage${tail}`, landed, mods };
+  const taken = await applyToActor(actor, a, { announce: false });
   // plain text: the Save cards escape it
-  return taken ? `${guardBefore(total, taken)}${summaryText(a) || "no damage"} (${a.guardLeft ? `Guard ${a.guardLeft} left` : "the Guard ends"})` : summaryText(a);
+  const text = taken ? `${guardBefore(total, taken)}${summaryText(a) || "no damage"} (${a.guardLeft ? `Guard ${a.guardLeft} left` : "the Guard ends"})${tail}` : `${summaryText(a)}${tail}`;
+  return { text, landed, mods };
 }
 
 async function chooseChoicePool(amount) {

@@ -594,7 +594,8 @@ export async function useAction(actor, item, opts = {}) {
   const wUse = it.traits.has("weapon") && previewWeapon ? weaponUse(previewWeapon, it.traits, s.reach ?? 1, wpnSquares) : null;
   const useTraits = new Set([...it.traits, ...(wUse?.mode ? [wUse.mode] : []), ...(wUse?.mode === "ranged" && !wUse.thrown && hasProp(previewWeapon, "projectile") ? ["shot"] : []), ...(wUse?.mode === "ranged" && !wUse.thrown && hasProp(previewWeapon, "firearm") ? ["gun"] : [])]);   // v0.0.208: with a Firearm, a Gun Action   // a Weapon Action with a Projectile weapon is a Shot
   // v0.0.188: a Weapon Action with a Two-handed weapon also matches "Two-handed weapon" in settings (Heavy Blows); not shown as a trait.
-  const rollUse = new Set([...useTraits, ...(it.traits.has("weapon") && hasProp(previewWeapon, "twohanded") ? ["__twohanded"] : [])]);
+  // v0.0.320 (pack AU part 2): "Attack" in settings = an Action that rolls against another creature (the Elite ladder's 1 Boon on its first attack each round)
+  const rollUse = new Set([...useTraits, ...(it.traits.has("weapon") && hasProp(previewWeapon, "twohanded") ? ["__twohanded"] : []), ...(rollsAtOthers && src.kind ? ["__attack"] : [])]);
   const attrKeyForPreview = src.attrKey;
   // v0.0.193 (Lucas): the preview's Avg counts the Bonus Damage of each Tier and the Empowered / Enfeebled step the effects give.
   const pvTarget = rollsAtOthers ? (aimed[0]?.actor ?? null) : null, pvTraits = rollTraits(rollUse, src, item.name);

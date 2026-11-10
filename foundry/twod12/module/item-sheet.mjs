@@ -181,6 +181,8 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
                 vsMarked: x.vsMarked,
                 vsOrigin: x.vsOrigin ?? "", vsOriginChoices: TWOD12.vsOriginChoices,   // v0.0.314 (pack AU): Taunted
                 isBleed: x.type === "bleed", bleedDc: x.bleedDc ?? 13,   // v0.0.314: Bleed
+                isResist: x.type === "resist", rwKind: x.rwKind || "resist", rwValue: x.rwValue ?? 1, rwKinds: TWOD12.rwKinds, rwNum: (x.rwKind || "resist") !== "immune",   // v0.0.320 (pack AU part 2)
+                isFreqMore: x.type === "freqmore", fmWhich: x.fmWhich || "round", fmChoices: TWOD12.freqMore,
                 showOnce: ["boonbane", "bonusdamage"].includes(x.type),
                 showMarked: ["bonusdamage", "damagestep"].includes(x.type) || (x.type === "boonbane" && !x.against),
                 isBonus: x.type === "bonusdamage",

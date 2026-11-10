@@ -330,6 +330,25 @@ export function parseDmgMods(text) {
   }
   return out;
 }
+/**
+ * v0.0.320 (pack AU part 2): the creature's own line merged with what its effects, Features and Talents give ([{ kind, sub, n }]: the "Resist, Weak or
+ * Immunity" setting). Two of the same kind and subtype don't add up: the highest applies (Ch. 1; Stacking). Returns a new { resist, weak, immune }.
+ */
+export function mergeDmgMods(base, extra = []) {
+  const out = { resist: { ...(base?.resist ?? {}) }, weak: { ...(base?.weak ?? {}) }, immune: [...(base?.immune ?? [])] };
+  for (const m of extra ?? []) {
+    if (!m?.sub || !(m.sub in SUBS)) continue;
+    if (m.kind === "immune") { if (!out.immune.includes(m.sub)) out.immune.push(m.sub); continue; }
+    const k = m.kind === "weak" ? "weak" : "resist", n = Math.max(0, Math.trunc(Number(m.n)) || 0);
+    if (n > 0) out[k][m.sub] = Math.max(out[k][m.sub] ?? 0, n);
+  }
+  return out;
+}
+/** v0.0.320: the subtypes whose Weak extra needs the origin's choice (Ch. 1: "for Weak, the origin chooses where the extra goes"): both pools carry that subtype. */
+export function weakSplits(comps, mods) {
+  const st = subTotals(comps);
+  return Object.entries(st).filter(([s, t]) => s && !mods.immune?.includes(s) && (mods.weak?.[s] ?? 0) > 0 && t.B > 0 && t.M > 0).map(([s]) => s);
+}
 /** The damage per subtype, both pools together: { Fi: { B: 6, M: 4, total: 10 } } (untyped damage under ""). comps: [{ pool, sub, total }]. */
 export function subTotals(comps) {
   const out = {};
@@ -353,9 +372,10 @@ export function dmgModsFor(comps, mods) {
 }
 /**
  * The damage per pool after Resist / Weak / Immunity: { B, M } (the factor (Half, Double) first, rounded up). choices: { [sub]: "B" | "M" } the pool
- * the resisting creature reduces first (default: the pool with more of that subtype... Vigor on a tie); Weak's extra goes to the pool with more of it.
+ * the resisting creature reduces first (default: the pool with more of that subtype... Vigor on a tie); Weak's extra goes to the pool the origin chose
+ * (weakTo: { [sub]: "B" | "M" }, v0.0.320), else to the pool with more of it.
  */
-export function afterResist(comps, mods, { factor = 1, choices = {} } = {}) {
+export function afterResist(comps, mods, { factor = 1, choices = {}, weakTo = {} } = {}) {
   const scaled = (comps ?? []).map(c => ({ ...c, total: factor === 1 ? Number(c.total) || 0 : Math.ceil((Number(c.total) || 0) * factor) }));
   const st = subTotals(scaled), out = { B: 0, M: 0 };
   for (const [s, t] of Object.entries(st)) {
@@ -366,7 +386,7 @@ export function afterResist(comps, mods, { factor = 1, choices = {} } = {}) {
       const first = choices[s] ?? (M > B ? "M" : "B");
       for (const p of [first, first === "B" ? "M" : "B"]) { const n = Math.min(r, p === "B" ? B : M); if (p === "B") B -= n; else M -= n; r -= n; }
       const w = mods.weak?.[s] ?? 0;
-      if (w) { if (M > B) M += w; else B += w; }
+      if (w) { const to = weakTo[s] ?? (M > B ? "M" : "B"); if (to === "M") M += w; else B += w; }
     }
     out.B += B; out.M += M;
   }

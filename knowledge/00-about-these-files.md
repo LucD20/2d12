@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-10 from the repository at: 5faf443 2026-11-10 Bring in the unmerged branches' work: the Archer's Armor Training, the expedition loop, two candidates, pack HP's plan
+Built by tools/knowledge.py on 2026-11-10 from the repository at: 135ccae 2026-11-10 HANDOFF: the obsolete branches are still on GitHub (not deleted from the cloud session)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,9 +14,9 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (81 KB)
-- MASTER-PLAN.md (20 KB)
-- open-design-items.md (94 KB)
+- HANDOFF.md (82 KB)
+- MASTER-PLAN.md (22 KB)
+- open-design-items.md (95 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (27 KB)
 - rules-03-movement.md (39 KB)
