@@ -442,24 +442,27 @@ function lv1Type(n) { const d = ["talent", "feature", "action"].map(t => docs.fi
 // optimization"): four level 4 characters (the book's last level), each Hallmark, Reaction, Pick, Escalation Passive, Apex and weapon different
 // from the other of its class, the 15 Talents spread with one repeat (Aim); the reasons: docs/reference.md (v0.0.331) and the foundry-backlog.
 const ART = n => `systems/twod12/art/pcs/${n}`;
+// v0.0.332 (Lucas: "make level 1 versions, at least one using a shortbow and another a greatsword"): each build at level 4 and at level 1
+// (its level 1 picks only: the first Talent, no Daily Pick), named "..., level 1)"; Aveline's Greatsword and Kaela's Shortbow are among them.
+const pcBoth = o => { pc(o); pc({ ...o, name: o.name.replace(/\)$/, ", level 1)"), level: 1, picks: { 1: o.picks[1] } }); };
 // The wrath Paladin: Smite and the Greatsword (Weapon Modifier +2), the damage ladder (Radiant Zeal, Searing Blows, Reckoning, Final Verdict),
 // Holy Wrath for the opening turn, Consecrated Ground to hold a room; Heavy Blows and Whirlwind on the Greatsword, Bloodlust, Cut Through to reach the back line.
-pc({ name: "Aveline (Human Paladin, Smite)", token: "Aveline", img: ART("aveline.png"), species: "Human", chosen: ["body", "appeal"], cls: "Paladin", attrs: ["body", "instinct"], level: 4, lead: "weapon", health: "vigor",
+pcBoth({ name: "Aveline (Human Paladin, Smite)", token: "Aveline", img: ART("aveline.png"), species: "Human", chosen: ["body", "appeal"], cls: "Paladin", attrs: ["body", "instinct"], level: 4, lead: "weapon", health: "vigor",
   picks: { 1: { pal1hall: "Smite", pal1react: "Rebuke", pal1tal: "Heavy Blows", pal1enc: "Holy Wrath", pal1pass1: "Radiant Zeal", pal1pass2: "Searing Blows", pal1pass3: "Reckoning", pal1apex: "Final Verdict" },
     2: { pal2tal: "Whirlwind" }, 3: { pal3daily: "Consecrated Ground", pal3tal: "Bloodlust" }, 4: { pal4tal: "Cut Through" } }, weapon: "Greatsword", armor: "Heavy Armor" });
 // The mercy Paladin: Lay On Hands and the Pike (Power Modifier +2: the heals, Mending Light, Hallowed Stance and the Ward Defense), Range 3 to
 // guard the allies in front of him; Shield of Faith, Beacon, Divine Intervention; Challenge, Sacred Weapon, Hand of Mercy, Battering Charge (Speed 4).
-pc({ name: "Durgan (Dwarf Paladin, Lay On Hands)", token: "Durgan", img: ART("durgan.png"), species: "Dwarf", cls: "Paladin", attrs: ["body", "instinct"], level: 4, lead: "power", health: "vigor",
+pcBoth({ name: "Durgan (Dwarf Paladin, Lay On Hands)", token: "Durgan", img: ART("durgan.png"), species: "Dwarf", cls: "Paladin", attrs: ["body", "instinct"], level: 4, lead: "power", health: "vigor",
   picks: { 1: { pal1hall: "Lay On Hands", pal1react: "Shield of Faith", pal1tal: "Challenge", pal1enc: "Beacon", pal1pass1: "Font of Mercy", pal1pass2: "Mending Light", pal1pass3: "Hallowed Stance", pal1apex: "Hallowed Dawn" },
     2: { pal2tal: "Sacred Weapon" }, 3: { pal3daily: "Divine Intervention", pal3tal: "Hand of Mercy" }, 4: { pal4tal: "Battering Charge" } }, weapon: "Pike", armor: "Heavy Armor" });
 // The far Archer: Double Shot and the Longbow (range 15, 30 with Long Draw and no Bane), the Quarry damage ladder (Killer's Focus, Hunter's Edge,
 // Finisher, Deathmark), Overwatch, Marksman's Shot, Hunter's Focus; Aim, Ricochet, Long Draw, Lesser Blessing (Rimebrand on a Double Shot turn).
-pc({ name: "Sylwen (Elf Archer, Double Shot)", token: "Sylwen", img: ART("sylwen.webp"), species: "Elf", cls: "Archer", attrs: ["instinct", "mind"], level: 4, health: "vigor", start: "Sharpshooter",
+pcBoth({ name: "Sylwen (Elf Archer, Double Shot)", token: "Sylwen", img: ART("sylwen.webp"), species: "Elf", cls: "Archer", attrs: ["instinct", "mind"], level: 4, health: "vigor", start: "Sharpshooter",
   picks: { 1: { arc1hall: "Double Shot", arc1react: "Overwatch", arc1tal: "Aim", arc1enc: "Marksman's Shot", arc1pass1: "Killer's Focus", arc1pass2: "Hunter's Edge", arc1pass3: "Finisher", arc1apex: "Deathmark" },
     2: { arc2tal: "Ricochet" }, 3: { arc3daily: "Hunter's Focus", arc3tal: "Long Draw" }, 4: { arc4tal: "Lesser Blessing" } }, choices: { "Lesser Blessing": "Rimebrand (Cold)" }, weapon: "Longbow", armor: "Medium Armor" });
 // The close Archer: Rolling Shot and the Shortbow (its Technique, Skirmish Shot, unlocked at 3: an Evade on a Tier 3), the mobile ladder (Vanish,
 // Sure Step, Staggering Shot, Open Season), Covering Shot, Covering Fire (a Zone), Rain of Arrows; Brawler, Kickboxer, Steady Nerves, Aim.
-pc({ name: "Kaela (Human Archer, Rolling Shot)", token: "Kaela", img: ART("kaela.webp"), species: "Human", chosen: ["body", "instinct"], cls: "Archer", attrs: ["instinct", "appeal"], level: 4, health: "vigor", start: "Sharpshooter",
+pcBoth({ name: "Kaela (Human Archer, Rolling Shot)", token: "Kaela", img: ART("kaela.webp"), species: "Human", chosen: ["body", "instinct"], cls: "Archer", attrs: ["instinct", "appeal"], level: 4, health: "vigor", start: "Sharpshooter",
   picks: { 1: { arc1hall: "Rolling Shot", arc1react: "Covering Shot", arc1tal: "Brawler", arc1enc: "Covering Fire", arc1pass1: "Vanish", arc1pass2: "Sure Step", arc1pass3: "Staggering Shot", arc1apex: "Open Season" },
     2: { arc2tal: "Kickboxer" }, 3: { arc3daily: "Rain of Arrows", arc3tal: "Steady Nerves" }, 4: { arc4tal: "Aim" } }, weapon: "Shortbow", armor: "Medium Armor" });
 

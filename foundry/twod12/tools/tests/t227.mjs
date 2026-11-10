@@ -28,4 +28,7 @@ for (const a of C.pcs) {
   console.log(`${a.token}: ${a.img} | ${names("weapon")[0]} (Mastery ${m?.value}: ${m?.value >= 3 ? "Technique open" : "Technique locked"}) | Talents: ${names("talent").join(", ")}${lb ? ` | Lesser Blessing chose ${a.items.find(i => i.flags?.twod12?.talentId === lb._id && i.flags.twod12.choice)?.name}` : ""}`);
 }
 const picks = a => new Set(a.items.filter(i => ["action", "feature", "talent", "weapon"].includes(i.type) && !i.flags?.twod12?.basic && !/^(Fists|Weapon Attack|Mark Quarry)$/.test(i.name) && !["Divine Power", "Kindled Wrath", "Sharpshooter", "Marked Quarry", "Thrill of the Kill"].includes(i.name)).map(i => i.name));
-for (const [x, y] of [[0, 1], [2, 3]]) { const A = picks(C.pcs[x]), B = picks(C.pcs[y]); console.log(`${C.pcs[x].token} and ${C.pcs[y].token} share:`, [...A].filter(n => B.has(n)).join(", ") || "nothing"); }
+// v0.0.332: a level 4 and a level 1 version of each build: the pairs compared are the level 4 ones; the level 1 ones hold their level 1 picks only
+const L4 = C.pcs.filter(p => p.system.level === 4), L1 = C.pcs.filter(p => p.system.level === 1);
+console.log("level 1 versions:", L1.map(p => `${p.name}: ${p.items.filter(i => i.type === "talent").map(i => i.name).join(", ")}; Daily: ${p.items.some(i => i.flags?.twod12?.classSection?.endsWith("daily")) ? "yes" : "none"}; ${p.items.find(i => i.type === "weapon" && i.name !== "Fists")?.name}`).join(" | "));
+for (const [x, y] of [[0, 1], [2, 3]]) { const A = picks(L4[x]), B = picks(L4[y]); console.log(`${L4[x].token} and ${L4[y].token} share:`, [...A].filter(n => B.has(n)).join(", ") || "nothing"); }

@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-10 from the repository at: b58b076 2026-11-10 MASTER-PLAN, HANDOFF: ZONE, EFFECT-SHEET and AU part 2 merged
+Built by tools/knowledge.py on 2026-11-10 from the repository at: bdcb503 2026-11-10 v0.0.331: four new compendium PCs with Lucas's portraits (Aveline, Durgan, Sylwen, Kaela; level 4, every pair of a class different) and the book's other 14 weapons; t227 checks each sheet
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
