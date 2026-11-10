@@ -334,7 +334,7 @@
    "foundry": {
     "img": "icons/svg/target.svg",
     "folder": "Archer",
-    "automation": "gold"
+    "automation": "mithril"
    },
    "_note": "Pack R-classes: the Encounter ceilings (decision sheet item 16): 3d6 / 4d6 became 2d6 / 3d6. Part 4: a Critical row, Blinded (EoT) (6.7 DE on one Tier 3 in twelve)."
   },

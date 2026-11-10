@@ -3,6 +3,7 @@
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
 ## Where we are now (v0.0.338, 228 tests; READ THIS FIRST)
+- **2026-11-10 (after v0.0.338, no new version): the review of the Mithril cards' options** for ACTION-SHEET: `foundry/mockups/action-props-review.md` (Lucas: "all should be good now"; he starts the redesign next). Heartseeker and Marksman's Shot are Mithril (compendium rebuilt).
 - **v0.0.338 (2026-11-10, branch `pack-rwi`):** Marksman's Shot's Critical (Blinded) after the damage; the damage message shows the Critical's line. **NEXT:** Lucas's test.
 - **v0.0.337 (2026-11-10, branch `pack-rwi`):** the Actions tab broken in v0.0.336 (a comment cut off the sections' line): fixed; t230 checks it. **NEXT:** Lucas's test of v0.0.336 on v0.0.337.
 - **v0.0.336 (2026-11-10, branch `pack-rwi`): Lucas on v0.0.335** (Granted Action fixes, the granted uses' bar, Heartseeker / Marksman's Shot Vulnerable after the damage, Brawler Mithril). New test t230 (**the next new test is t231**). **NEXT:** Lucas's test; merge `pack-rwi`.
