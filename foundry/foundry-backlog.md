@@ -1,9 +1,10 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.327**. Tests: `node tools/tests/run.mjs` (223 tests, see the README; the next new test is t226). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.328**. Tests: `node tools/tests/run.mjs` (224 tests, see the README; the next new test is t227). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 ## Asked by Lucas, not built
+- [x] **v0.0.328 (Lucas on v0.0.327: "I can't open effects anymore"):** fixed (`_fxTab` read `zoneAction` before declaring it); t226 renders every rules tab.
 - [ ] **v0.0.327 PACK ZONE (to test, branch `pack-zone`, from `pack-effect-sheet`).** An Effect can be placed on the map (Where it is: On the map), the shared "What it does inside" rows (Carries, Heals, Hazard, Difficult Terrain, each with its Who), the Zone's Ends, the migration of the old Zone and the old Aura, the runtime in `areafx.mjs`.
   - **Not tried in Foundry** (I cannot run it): everything at runtime. Placing from Consecrated Ground's Place Area and by hand (Place on the map); the Region's colors and hidden outline (On the map off); the carried Effect gained and lost on entering and leaving; the heal at the start of a turn (the Heal window); the Hazard's damage cards and the turn-cycle limit on a real combat; Difficult Terrain for one side in the movement cost (the drag ruler and the Charge's check); the "End it" button paying AP; the end on Down and at the encounter's end; a Zone placed by v0.0.261 read with its old rules. Diagnostic: `game.twod12` has no new command; in the console, `canvas.scene.regions.filter(r => r.flags.twod12?.zone).map(r => r.flags.twod12.zone)` shows each placed Zone's rows and ends.
   - **Left:** a hover card on the Region itself (the chat card stands in for it); the Line and Burst previews follow the book's footprints but the placed template is Foundry's own; a Darkness or Obscured Zone (rules-backlog [IDEA], the book first).

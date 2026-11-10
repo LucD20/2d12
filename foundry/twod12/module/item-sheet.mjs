@@ -345,9 +345,9 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     const anims = [["", "None"], ...Object.entries(CONFIG.Canvas?.lightAnimations ?? {}).map(([k, v]) => [k, (typeof v?.label === "string" && game.i18n?.localize?.(v.label)) || k])];
     const extra = this._fxExtra?.() ?? {};
     this._fr ??= { sel: "", own: false, names: {} };
-    this._fr.zoneAction = zoneAction;   // v0.0.327: a save writes the Action's Area line into the hover text
     const onMap = host === "effect" && s.where === "map";
     const zoneAction = onMap ? await actionPlacing(it.getFlag?.("twod12", "effectUuid") || it.getFlag?.("core", "sourceId") || it._stats?.compendiumSource || it.uuid) : null;
+    this._fr.zoneAction = zoneAction;   // v0.0.327: a save writes the Action's Area line into the hover text (v0.0.328: after it is declared; before, every rules window failed to open)
     return fxTabHtml({
       where: onMap ? "map" : "creature", zone, zoneAction, canPlace: onMap && !!canvas?.ready && game.user.isGM,
       host, name: it.name, rules, ends: s.ends ?? {}, sel: this._fr.sel, own: this._fr.own, names: { ...this._fr.names, ...(extra.names ?? {}) }, items,

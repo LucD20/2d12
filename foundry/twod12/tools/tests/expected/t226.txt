@@ -1,0 +1,2 @@
+the rules tab renders: effect 55, feature 26, talent 16 | failures: none
+an Effect on the map (Set here): true | Consecrated Ground on the map: true
