@@ -419,13 +419,13 @@ export function instancesOf(comps) {
   for (const c of comps ?? []) {
     const dice = (c.dice ?? []).flatMap(d => d.results ?? []);
     if (!dice.length && list.length) {
-      // v0.0.284: an untyped flat bonus (Heavy Blows +2) folds into the first instance of its pool
+      // v0.0.284: an untyped flat bonus (Heavy Blows +2) folds into the first instance of its pool (v0.0.326: named, never a bare "+2")
       const host = list.find(x => x.pool === (c.pool || "B") && x.sub === (c.sub || "")) ?? (!c.sub ? list.find(x => x.pool === (c.pool || "B")) : null) ?? null;
-      if (host) { host.mods.push({ v: Number(c.total) || 0, label: c.label || c.src || (c.kind === "A" ? "Modifier" : "") }); host.total += Number(c.total) || 0; continue; }
+      if (host) { host.mods.push({ v: Number(c.total) || 0, label: c.label || c.src || (c.kind === "A" ? "Modifier" : "Flat") }); host.total += Number(c.total) || 0; continue; }
     }
     const emp = Number(c.emp) || 0, flat = (Number(c.total) || 0) - dice.reduce((a, b) => a + b, 0) - emp;
     const mods = [];
-    if (flat) mods.push({ v: flat, label: c.flatLabel || (dice.length ? "" : c.label || c.src || (c.kind === "A" ? "Modifier" : "")) });
+    if (flat) mods.push({ v: flat, label: c.flatLabel || (dice.length ? "Flat" : c.label || c.src || (c.kind === "A" ? "Modifier" : "")) });   // v0.0.326 (Lucas: "+3 Empowered +2" read as +5 from Empowered): the dice's own flat part is named
     if (emp) mods.push({ v: emp, label: emp > 0 ? "Empowered" : "Enfeebled" });
     list.push({ pool: c.pool || "B", sub: c.sub || "", src: c.src || c.weapon || "", dice: c.dice ?? [], mods, total: Number(c.total) || 0, formula: c.formula ?? "" });
   }

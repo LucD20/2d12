@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-10 from the repository at: 8847ccf 2026-11-10 v0.0.324: Lucas on v0.0.323: formulas for Defense and Resist, the names at hand
+Built by tools/knowledge.py on 2026-11-10 from the repository at: aae69c8 2026-11-10 v0.0.325: Lucas on v0.0.324: the formula list, the amount field, formulas in words
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

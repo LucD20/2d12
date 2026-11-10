@@ -92,7 +92,7 @@ export async function resolveInstance(inst, ctx) {
     const res = await evalFormula(f, ctx.rolls, ctx.empowered);
     // v0.0.321 (Lucas: Smite's "[W] + 2 Sl" didn't count as Slash): a written [Mod] (or dice) in a [W] term with no subtype of its own is the
     // weapon's damage, so it has the weapon's subtype (Ch. 1: the subtype written covers the whole expression), as the card shows it
-    comps.push({ kind: "D", formula: res.shown, total: res.total, dice: res.dice, emp: res.emp ?? 0, sub: inst.subtype || (inst.useW ? (ctx.weapon?.system?.subtype ?? "") : "") });
+    comps.push({ kind: "D", formula: res.shown, total: res.total, dice: res.dice, emp: res.emp ?? 0, sub: inst.subtype || (inst.useW ? (ctx.weapon?.system?.subtype ?? "") : ""), ...(!inst.dice && inst.useAt ? { label: "Modifier" } : {}) });   // v0.0.326: a written [Mod] is named on the card
   }
   return { inst, comps };
 }
@@ -1306,7 +1306,7 @@ export async function rollDamage(message) {
     const resolved = [];
     for (const inst of insts) resolved.push(await resolveInstance(inst, ctx));
     const comps = [];
-    for (const r of resolved) for (const c of r.comps) comps.push({ pool: r.inst.pool || "B", sub: c.sub, kind: c.kind, formula: c.formula, total: c.total, dice: c.dice, emp: c.emp ?? 0, ...(c.src ? { src: c.src } : {}), ...(r.inst.source ? { src: r.inst.source, srcUuid: r.inst.srcUuid, label: r.inst.source } : {}) });   // v0.0.189: bonus damage names its source
+    for (const r of resolved) for (const c of r.comps) comps.push({ pool: r.inst.pool || "B", sub: c.sub, kind: c.kind, formula: c.formula, total: c.total, dice: c.dice, emp: c.emp ?? 0, ...(c.label ? { label: c.label } : {}), ...(c.src ? { src: c.src } : {}), ...(r.inst.source ? { src: r.inst.source, srcUuid: r.inst.srcUuid, label: r.inst.source } : {}) });   // v0.0.189: bonus damage names its source
     let chip = "";
     const dmgRes = resolved;
     // [Mod]: the Weapon Modifier on Tiers 2 and 3 (to the weapon's damage), the Signature Modifier for a [Signature, Weapon] Action (v0.0.181); nothing for Power, Signature and Attribute Actions. Old cards: isWeapon / attrMode "all".
