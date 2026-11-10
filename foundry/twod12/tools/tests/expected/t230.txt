@@ -3,3 +3,5 @@ it follows the controlled token and its effects: true | the Granted section out 
 Heartseeker: Tier 3 "Vulnerable 1 (EoT)." | after: @Condition[vulnerable|value:1|eot|tier:3] | Critical: -
 Marksman's Shot: Tier 3 "Vulnerable 2 (EoT)." | after: @Condition[vulnerable|value:2|eot|tier:3] | Critical: The target is @Condition[blinded|eot]{Blinded (EoT)}.
 Brawler: mithril
+the Actions tab's sections are built: true
+code cut off by a comment on the same line: none

@@ -17,3 +17,9 @@ console.log("it follows the controlled token and its effects:", src("module/free
 const C = await import(ROOTURL + "tools/content.mjs");
 for (const n of ["Heartseeker", "Marksman's Shot"]) { const v = C.docs.find(d => d.type === "action" && d.name === n).system.versions[0]; console.log(`${n}: Tier 3 "${v.x3}" | after: ${v.after} | Critical: ${v.critical ?? "-"}`); }
 console.log("Brawler:", C.docs.find(d => d.name === "Brawler").system.automation);
+// v0.0.337 (Lucas: "the Actions tab completely broke"): a comment had been inserted mid-line in pcsheet.mjs and cut off the sections' .map (they
+// rendered as empty boxes). The sections are objects again, and no module has code left after a // comment on the same line.
+console.log("the Actions tab's sections are built:", /const sections = SECTION_ORDER\.filter\([^\n]*\)\.map\(k => \(\{ key: k, \.\.\.SEC_META\[k\], rows: secRows\[k\] \}\)\);/.test(src("module/pcsheet.mjs")));
+const cut = fs.readdirSync(ROOT + "module").filter(f => f.endsWith(".mjs")).flatMap(f => src(`module/${f}`).split("\n").map((l, i) => ({ f, i: i + 1, l })))
+  .filter(x => /\/\/[^\n]*[a-zA-Z)]\.(map|filter|find|reduce)\((\w+|\([^)]*\)) =>/.test(x.l));
+console.log("code cut off by a comment on the same line:", cut.length ? cut.map(x => `${x.f}:${x.i}`).join(", ") : "none");
