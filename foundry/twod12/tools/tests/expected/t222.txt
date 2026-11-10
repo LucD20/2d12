@@ -1,0 +1,13 @@
+--- the icons after "Took" (one per kind, the numbers in the tooltip)
+[icon: +2 Weak Holy][icon: −3 Resist Fire][icon: Immune Cold]
+none: ""
+--- a damage message: one row waiting, one applied
+waiting: Ogre −2 Guard Apply Full Half Double Lethal
+applied: Imp Took 2[icon: −3 Resist Fire] ✓ Undo Full Half Double Lethal
+Apply and Undo share the class cc-rbtn: true | the Lethal tag only in the rows: true
+a card with no target keeps the tag at the bottom: true
+--- a written [Mod] in a [W] term takes the weapon's subtype (Smite: [V] 1[W] + [Mod])
+W 3 Sl + D 2 Sl
+[R] 1d6 Ho keeps its own: D 3 Ho
+a [W] term with its own subtype (Fi) keeps it on the [Mod]: W Sl + D Fi
+Resist 4 Slash on 3 + 2 Slash: {"B":1,"M":0}

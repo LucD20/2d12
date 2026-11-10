@@ -424,7 +424,7 @@ async function resolveSaveTier(actor, title, subtitle, cfg, tier, pre = null) {
   const parts = parseParts(cfg.tiers[`t${tier}`]);
   if (!parts.damage.length && !parts.texts.length && !parts.uuids.length) return;
   const { comps, rolls } = pre ?? await rollParts(parts.damage, cfg.nonlethal);
-  // v0.0.320 (book, Ch. 1 Riders): after Resist and Immunity, a damaging Tier's effects happen only if its damage landed
+  // v0.0.320 (book, Ch. 1 Riders): after Resist and Immune, a damaging Tier's effects happen only if its damage landed
   const dealt = comps.length ? await dealDamageEx(actor, comps) : null, summary = dealt?.text ?? "";
   const names = [];
   if (parts.uuids.length && (!dealt || dealt.landed)) {
@@ -1052,7 +1052,7 @@ export async function saveRoll(msg, idx) {
   }
   const bits = [], extras = [];
   let amount = null;
-  let dealt = null;   // v0.0.320: Resist / Weak / Immunity, and the riders only if the damage landed (Ch. 1 Riders)
+  let dealt = null;   // v0.0.320: Resist / Weak / Immune, and the riders only if the damage landed (Ch. 1 Riders)
   if (comps.length) { dealt = await dealDamageEx(actor, comps); bits.push(dealt.text); amount = comps.reduce((s, c) => s + c.total, 0); }
   bits.push(...parts.texts); extras.push(...parts.texts);
   if (dealt && !dealt.landed && (parts.texts.length || parts.uuids.length)) bits.push("No damage landed: the rest of this Tier doesn't happen.");

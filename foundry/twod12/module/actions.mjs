@@ -90,7 +90,9 @@ export async function resolveInstance(inst, ctx) {
   if (inst.dice || inst.useAt) {
     const f = [inst.dice, inst.useAt ? String(ctx.attrVal) : ""].filter(Boolean).join(" + ");
     const res = await evalFormula(f, ctx.rolls, ctx.empowered);
-    comps.push({ kind: "D", formula: res.shown, total: res.total, dice: res.dice, emp: res.emp ?? 0, sub: inst.subtype });
+    // v0.0.321 (Lucas: Smite's "[W] + 2 Sl" didn't count as Slash): a written [Mod] (or dice) in a [W] term with no subtype of its own is the
+    // weapon's damage, so it has the weapon's subtype (Ch. 1: the subtype written covers the whole expression), as the card shows it
+    comps.push({ kind: "D", formula: res.shown, total: res.total, dice: res.dice, emp: res.emp ?? 0, sub: inst.subtype || (inst.useW ? (ctx.weapon?.system?.subtype ?? "") : "") });
   }
   return { inst, comps };
 }

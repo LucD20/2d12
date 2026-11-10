@@ -313,7 +313,7 @@ export function nonRollCardHtml(m, view = FULL_VIEW) {
 }
 
 /* ------------------------------------------------------------------ the damage arithmetic */
-/** "Resist 5 Fire, Weak 2 Holy, Immunity Holy" (names or codes; "Resist Fire 5" too) → { resist: { Fi: 5 }, weak: { Ho: 2 }, immune: ["Ho"] }. The highest of each counts. */
+/** "Resist 5 Fire, Weak 2 Holy, Immune Holy" (names or codes; "Resist Fire 5" too) → { resist: { Fi: 5 }, weak: { Ho: 2 }, immune: ["Ho"] }. The highest of each counts. */
 export function parseDmgMods(text) {
   const out = { resist: {}, weak: {}, immune: [] };
   const code = w => { const s = String(w ?? "").trim().toLowerCase(); return Object.keys(SUBS).find(k => k.toLowerCase() === s || SUBS[k][0].toLowerCase() === s) ?? ""; };
@@ -332,7 +332,7 @@ export function parseDmgMods(text) {
 }
 /**
  * v0.0.320 (pack AU part 2): the creature's own line merged with what its effects, Features and Talents give ([{ kind, sub, n }]: the "Resist, Weak or
- * Immunity" setting). Two of the same kind and subtype don't add up: the highest applies (Ch. 1; Stacking). Returns a new { resist, weak, immune }.
+ * Immune" setting). Two of the same kind and subtype don't add up: the highest applies (Ch. 1; Stacking). Returns a new { resist, weak, immune }.
  */
 export function mergeDmgMods(base, extra = []) {
   const out = { resist: { ...(base?.resist ?? {}) }, weak: { ...(base?.weak ?? {}) }, immune: [...(base?.immune ?? [])] };
@@ -357,13 +357,13 @@ export function subTotals(comps) {
 }
 /**
  * What changes this damage for one creature, once per subtype per Action (Ch. 1): [{ v, label, sub, kind }] ("+2 Weak Holy", "−4 Resist Fire",
- * "Immunity Holy" with v = −all). Resist only removes what that subtype dealt (4 Fire with Resist 5 Fire is −4).
+ * "Immune Holy" with v = −all). Resist only removes what that subtype dealt (4 Fire with Resist 5 Fire is −4).
  */
 export function dmgModsFor(comps, mods) {
   const st = subTotals(comps), out = [];
   for (const [s, t] of Object.entries(st)) {
     if (!s || t.total <= 0) continue;
-    if (mods.immune?.includes(s)) { out.push({ v: -t.total, label: `Immunity ${subName(s)}`, sub: s, kind: "immune" }); continue; }
+    if (mods.immune?.includes(s)) { out.push({ v: -t.total, label: `Immune ${subName(s)}`, sub: s, kind: "immune" }); continue; }
     const r = Math.min(t.total, mods.resist?.[s] ?? 0), w = mods.weak?.[s] ?? 0;
     if (r) out.push({ v: -r, label: `Resist ${subName(s)}`, sub: s, kind: "resist", split: t.B > 0 && t.M > 0 && r < t.total });
     if (w) out.push({ v: w, label: `Weak ${subName(s)}`, sub: s, kind: "weak" });
@@ -371,7 +371,7 @@ export function dmgModsFor(comps, mods) {
   return out;
 }
 /**
- * The damage per pool after Resist / Weak / Immunity: { B, M } (the factor (Half, Double) first, rounded up). choices: { [sub]: "B" | "M" } the pool
+ * The damage per pool after Resist / Weak / Immune: { B, M } (the factor (Half, Double) first, rounded up). choices: { [sub]: "B" | "M" } the pool
  * the resisting creature reduces first (default: the pool with more of that subtype... Vigor on a tie); Weak's extra goes to the pool the origin chose
  * (weakTo: { [sub]: "B" | "M" }, v0.0.320), else to the pool with more of it.
  */
@@ -407,7 +407,7 @@ export function guardSplit(a, guard, first = "B") {
   out.left = g;
   return out;
 }
-/** A rider lands when its damage does: more than 0 after Resist and Immunity (the book, Ch. 1 Riders: Guard doesn't stop a rider). */
+/** A rider lands when its damage does: more than 0 after Resist and Immune (the book, Ch. 1 Riders: Guard doesn't stop a rider). */
 export const riderLands = afterResistTotal => Number(afterResistTotal) > 0;
 /** The rows Apply all applies: every row not applied yet whose damage needs no choice. */
 export const applyAllRows = rows => (rows ?? []).map((r, i) => ({ r, i })).filter(({ r }) => !r.applied && !r.choice).map(({ i }) => i);
@@ -445,7 +445,18 @@ const instBlock = x => `<div class="cc-inst"><div class="cc-ititle">${poolIc(x.p
   + (x.dice.some(d => (d.results ?? []).length) ? `<span class="cc-bl">Dice</span><span class="cc-bv">${x.dice.map(d => (d.results ?? []).map(v => `<span class="cc-ddie">${v}</span>`).join("")).join("")}</span>` : "")
   + (x.mods.length ? `<span class="cc-bl">Modifiers</span><span class="cc-bv">${x.mods.map(m => modTxt(m.v, m.label)).join(" ")}</span>` : "")
   + (x.dice.some(d => (d.results ?? []).length) ? `<span class="cc-bl">Total</span><span class="cc-bv"><b>${x.total}</b></span>` : "") + "</div>";
-const tookTxt = t => { const bits = [t.B ? `${poolIc("B")} ${t.B}` : "", t.M ? `${poolIc("M")} ${t.M}` : ""].filter(Boolean); return bits.length ? `Took ${bits.join(" · ")}` : "Took <b>No damage</b>"; };
+/**
+ * v0.0.321 (Lucas: Resist / Weak / Immune only after Apply, and not loud): a small icon per kind after "Took …", what it did in its tooltip.
+ * mods: [{ kind: "resist" | "weak" | "immune", label, v }].
+ */
+const RWI = { weak: ["fa-fire-flame-curved", "Weak"], resist: ["fa-shield-halved", "Resist"], immune: ["fa-ban", "Immune"] };
+export const rwIcons = (mods = []) => Object.entries(RWI).map(([k, [ic, word]]) => {
+  const list = (mods ?? []).filter(x => x?.kind === k);
+  if (!list.length) return "";
+  const tip = list.map(x => (k === "immune" ? x.label : `${x.v > 0 ? "+" : "\u2212"}${Math.abs(Number(x.v) || 0)} ${x.label}`)).join(", ");
+  return `<i class="fa-solid ${ic} cc-rwi ${k}" data-tooltip="${esc(tip)}" aria-label="${esc(`${word}: ${tip}`)}"></i>`;
+}).join("");
+const tookTxt = (t, mods = []) => { const bits = [t.B ? `${poolIc("B")} ${t.B}` : "", t.M ? `${poolIc("M")} ${t.M}` : ""].filter(Boolean); return `${bits.length ? `Took ${bits.join(" · ")}` : "Took <b>No damage</b>"}${rwIcons(mods)}`; };
 const stateChip = s => (s === "bloodied" ? '<span class="cc-state bloodied">Bloodied</span>' : s === "strained" ? '<span class="cc-state strained">Strained</span>' : s === "both" ? '<span class="cc-state bloodied">Bloodied</span><span class="cc-state strained">Strained</span>' : "");
 /** A dice summary for a Tier's group: "3d8 Ho". */
 export const diceSummary = comps => [...new Set((comps ?? []).map(c => `${c.formula ?? ""}`.replace(/\s.*$/, "")).filter(Boolean))].join(" + ");
@@ -461,6 +472,9 @@ export function damageCardHtml(m, view = FULL_VIEW) {
     ? `<button type="button" class="cc-stamp dmg multi" data-twod12="ccOpenSrc" aria-label="Open its roll card"><small class="cc-shd">DAMAGE</small>${groups.map(g => `<span class="cc-sband ${tierCls(g.tier || 1, g.crit)}"><b>${sum(g.comps)}</b><small class="cc-stl">Tier ${g.tier}</small></span>`).join("")}<small class="cc-stl cc-sarrow">\u2197</small></button>`
     : `<button type="button" class="cc-stamp dmg ${tierCls(top.tier || 1, top.crit)}" data-twod12="ccOpenSrc" aria-label="Open its roll card"><small>DAMAGE</small><b>${sum(top.comps)}</b>${top.tier ? `<small class="cc-stl">Tier ${top.tier} \u2197</small>` : ""}</button>`;
   const ht = view.hideTgt;
+  // v0.0.288: the Lethal / Nonlethal tag (none on a Bleed's card, v0.0.315); v0.0.321 (Lucas: it made the card taller): in each row's on-demand
+  // row (the sliders button), and at the bottom only on a card with no target yet
+  const nlTag = m.noNl ? "" : `<span class="cc-nl${m.nl ? " on" : ""}">${m.nl ? "Nonlethal" : "Lethal"}</span>`;
   const rowHtml = i => {
     const r = rows[i];
     if (!r) return "";
@@ -468,11 +482,13 @@ export function damageCardHtml(m, view = FULL_VIEW) {
     if (r.applied) {
       const f = r.applied.factor ?? 1, adj = ["1", "0.5", "2"].map((k, j) => `<button type="button" class="cc-adj${String(f) === k ? " on" : ""}" data-twod12="ccAdjust" data-row="${i}" data-factor="${k}">${["Full", "Half", "Double"][j]}</button>`).join("");
       // v0.0.285 (Lucas): the applied row as compact as a pending one: "Took …" under the name, Full / Half / Double on demand
-      return `<div class="cc-trow done"><span class="cc-nblk"><span class="cc-cname">${esc(r.name)}</span><span class="cc-took">${tookTxt(r.applied.took ?? {})} ${stateChip(r.applied.state)}</span></span>${view.author ? `<button type="button" class="cc-icon small" data-cc-more="${i}" aria-expanded="false" aria-label="Full, Half or Double" title="Full, Half or Double"><i class="fa-solid fa-sliders" aria-hidden="true"></i></button><button type="button" class="cc-btn small" data-twod12="ccUndo" data-row="${i}">✓ Undo</button><div class="cc-adjrow ondemand">${adj}</div>` : ""}</div>`;
+      // v0.0.321 (Lucas): Undo in Apply's place (the far right, the same width); the Lethal tag in the on-demand row
+      return `<div class="cc-trow done"><span class="cc-nblk"><span class="cc-cname">${esc(r.name)}</span><span class="cc-took">${tookTxt(r.applied.took ?? {}, r.applied.mods)} ${stateChip(r.applied.state)}</span></span>${view.author ? `<button type="button" class="cc-icon small" data-cc-more="${i}" aria-expanded="false" aria-label="Full, Half or Double" title="Full, Half or Double"><i class="fa-solid fa-sliders" aria-hidden="true"></i></button><button type="button" class="cc-btn small cc-rbtn" data-twod12="ccUndo" data-row="${i}">✓ Undo</button><div class="cc-adjrow ondemand">${adj}${nlTag}</div>` : ""}</div>`;
     }
-    const mods = (r.mods ?? []).map(x => (x.kind === "immune" ? `<span class="cc-minus">${esc(x.label)}</span>` : modTxt(x.v, x.label))).join(" ");
-    const adj = view.author ? `<div class="cc-adjrow ondemand">${["1", "0.5", "2"].map((k, j) => `<button type="button" class="cc-adj${k === "1" ? " on" : ""}" data-twod12="ccApply" data-row="${i}" data-factor="${k}">${["Full", "Half", "Double"][j]}</button>`).join("")}</div>` : "";
-    return `<div class="cc-trow"><span class="cc-cname">${esc(r.name)}</span><span class="cc-rmods">${mods}</span>${view.author ? `<button type="button" class="cc-icon small" data-cc-more="${i}" aria-expanded="false" aria-label="Half or Double" title="Half or Double"><i class="fa-solid fa-sliders" aria-hidden="true"></i></button><button type="button" class="cc-btn small primary" data-twod12="ccApply" data-row="${i}" data-factor="1">Apply</button>` : ""}${adj}</div>`;
+    // v0.0.321 (Lucas): Resist / Weak / Immune show only once applied (an icon after "Took"); the Guard stays
+    const mods = (r.mods ?? []).filter(x => x.kind === "guard").map(x => modTxt(x.v, x.label)).join(" ");
+    const adj = view.author ? `<div class="cc-adjrow ondemand">${["1", "0.5", "2"].map((k, j) => `<button type="button" class="cc-adj${k === "1" ? " on" : ""}" data-twod12="ccApply" data-row="${i}" data-factor="${k}">${["Full", "Half", "Double"][j]}</button>`).join("")}${nlTag}</div>` : "";
+    return `<div class="cc-trow"><span class="cc-cname">${esc(r.name)}</span>${mods ? `<span class="cc-rmods">${mods}</span>` : ""}${view.author ? `<button type="button" class="cc-icon small" data-cc-more="${i}" aria-expanded="false" aria-label="Half or Double" title="Half or Double"><i class="fa-solid fa-sliders" aria-hidden="true"></i></button><button type="button" class="cc-btn small primary cc-rbtn" data-twod12="ccApply" data-row="${i}" data-factor="1">Apply</button>` : ""}${adj}</div>`;
   };
   const many = groups.length > 1 || rows.length > 1;
   const body = groups.map((g, gi) => {
@@ -484,10 +500,9 @@ export function damageCardHtml(m, view = FULL_VIEW) {
   }).join("");
   const noTgt = !rows.length && view.author ? '<div class="cc-btns"><button type="button" class="cc-btn" data-twod12="ccDmgTarget"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i> Target the selected tokens</button></div>' : "";
   const pending = rows.filter(r => !r.applied).length;
-  // v0.0.288 (Lucas): no "Damage" word in the header; the Lethal / Nonlethal tag at the bottom, beside Apply all
-  const nlTag = m.noNl ? "" : `<span class="cc-nl${m.nl ? " on" : ""}">${m.nl ? "Nonlethal" : "Lethal"}</span>`;   // v0.0.315: none on a Bleed's card
   const allBtn = view.author && !ht && pending > 1 ? `<button type="button" class="cc-btn primary" data-twod12="ccApplyAll">Apply all</button>${rows.some(r => !r.applied && r.choice) ? '<span class="cc-muted">skips rows with a choice</span>' : ""}` : "";
-  const all = allBtn || nlTag ? `<div class="cc-applyall">${allBtn}${nlTag}</div>` : "";
+  const tagHere = rows.length ? "" : nlTag;
+  const all = allBtn || tagHere ? `<div class="cc-applyall">${allBtn}${tagHere}</div>` : "";
   const note = m.note ? `<div class="cc-dnote">${m.note}</div>` : "";   // v0.0.315 (Lucas, Bleed's card): a short line, no ↳ box
   const des = designerFoot([m.designer ? `Avg ${m.designer.avg} · this total or more: ${m.designer.atLeast}%` : ""], view);
   const pf = ht ? playerFoot("Player view · target details hidden by the GM") : "";

@@ -3766,3 +3766,13 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat.cc .cc-rider.cc-rflow { display: block; }
 .twod12.chat.cc .cc-rtext { display: inline; font-size: 11.5px; line-height: 1.6; }
 .twod12.chat.cc .cc-rtext a[data-twod12-inline] { white-space: nowrap; }
+
+/* v0.0.321 (Lucas on v0.0.320): Apply and Undo in the same place (the row's far right, one width); the Lethal tag in the on-demand row;
+   Resist / Weak / Immune as small icons after "Took" (their numbers in the tooltip) */
+.twod12.chat.cc .cc-trow .cc-rbtn { flex: 0 0 64px; margin-left: auto; justify-content: center; text-align: center; }
+.twod12.chat.cc .cc-trow .cc-icon + .cc-rbtn { margin-left: 0; }
+.twod12.chat.cc .cc-adjrow { grid-template-columns: 1fr 1fr 1fr auto; align-items: center; }
+.twod12.chat.cc .cc-adjrow .cc-nl { margin-left: 2px; }
+.twod12.chat.cc .cc-rwi { font-size: 10px; margin-left: 4px; color: var(--cc-mute); cursor: help; }
+.twod12.chat.cc .cc-rwi.weak { color: #b5532a; }
+.twod12.chat.cc .cc-rwi.resist { color: #3f6b8f; }

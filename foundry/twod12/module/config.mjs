@@ -154,13 +154,13 @@ export const TWOD12 = {
   coverLevels: { low: "Low", medium: "Medium", high: "High" },   // v0.0.266 (Lucas, Aim): the "Ignores cover" setting's levels
   // v0.0.301 (PACK BB; book Ch. 1, Named Boons and Banes): the names that carry a limit of 2 (none: they always add up)
   bbNames: { "": "no name", field: "Field", pressure: "Pressure", support: "Support" },
-  effectSettings: { inline: "Grants an Action while active", boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", zone: "Zone (the placed area)", cover: "Ignores cover", speed: "Speed", light: "Token Light", note: "Note", ignore: "Ignore a Bane", rally: "Rally Points", turnstart: "Effect each turn", message: "Chat message", weaponprop: "Weapon property", mastery: "Starting Mastery", eschook: "Escalation hook", bleed: "Bleed (damage each turn)", resist: "Resist, Weak or Immunity", freqmore: "More uses of a Frequency" },
+  effectSettings: { inline: "Grants an Action while active", boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", zone: "Zone (the placed area)", cover: "Ignores cover", speed: "Speed", light: "Token Light", note: "Note", ignore: "Ignore a Bane", rally: "Rally Points", turnstart: "Effect each turn", message: "Chat message", weaponprop: "Weapon property", mastery: "Starting Mastery", eschook: "Escalation hook", bleed: "Bleed (damage each turn)", resist: "Resist, Weak or Immune", freqmore: "More uses of a Frequency" },
   // v0.0.314 (pack AU): a Boons and Banes setting can count only against creatures other than the effect's origin (Taunted), or only against it
   vsOriginChoices: { "": "against any creature", not: "only against creatures other than its origin", only: "only against its origin" },
   // v0.0.243 (pack R): the moments a class's Escalation hook names (once an encounter, +1 Escalation): Kindled Wrath, Thrill of the Kill.
-  // v0.0.320 (pack AU part 2; book, Chapter 1 Resist, Weak and Immunity; Bestiary, Elite Escalation): the kinds of a Resist setting, and the extra uses
+  // v0.0.320 (pack AU part 2; book, Chapter 1 Resist, Weak and Immune; Bestiary, Elite Escalation): the kinds of a Resist setting, and the extra uses
   //   a "More uses of a Frequency" setting gives (the Elite ladder's rungs 2 and 3; Special Actions: not the Basic Actions).
-  rwKinds: { resist: "Resist", weak: "Weak", immune: "Immunity" },
+  rwKinds: { resist: "Resist", weak: "Weak", immune: "Immune" },
   freqMore: { round: "its Round Special Actions can be used twice a round", encounter: "its Encounter Special Actions can be used a second time" },
   escHookWhen: { allyState: "An ally within N squares becomes Bloodied or goes Down", markDown: "The creature it marked goes Down" },
   // v0.0.198 (Lucas, 2026-10-30): the Basic Actions section of the Actions tab, 4 groups in a 2x2 grid (row 1 Attack | Control, row 2

@@ -170,19 +170,19 @@ Subtypes don't have rules by themselves, but other rules use them, such as Resis
 | {{dt:Cold}} | {{dc:Co}} | {{dt:Holy}} | {{dc:Ho}} | {{dt:Thunder}} | {{dc:Th}} |
 | {{dt:Electricity}} | {{dc:El}} | {{dt:Pierce}} | {{dc:Pi}} | {{dt:Unholy}} | {{dc:Un}} |
 
-### Resist, Weak and Immunity
+### Resist, Weak and Immune
 
-Some creatures take less, or more, damage of a subtype. It is written on the creature, with a number: **Resist 2 Fire**, **Weak 5 Holy**, **Immunity Fire**. A Hatchling might have Resist 2 Fire, a Young dragon Resist 5 and an Ancient one Immunity.
+Some creatures take less, or more, damage of a subtype. It is written on the creature, with a number: **Resist 2 Fire**, **Weak 5 Holy**, **Immune Fire**. A Hatchling might have Resist 2 Fire, a Young dragon Resist 5 and an Ancient one Immune Fire.
 
 - Each time you take damage from one Action or effect, add up **all its damage of that subtype**, Vigor and Resolve together, and apply your line **once**: **Resist N** reduces the total by N (minimum 0), **Weak N** adds N. "[V] 1d8 Fi + [R] 5 Fi" against Resist 5 Fire is (1d8 + 5) − 5: one reduction, never one per part.
 - When the damage is split between Vigor and Resolve, the resisting creature chooses which part it reduces first; for Weak, the origin chooses where the extra goes.
-- **Immunity** makes that damage 0.
+- **Immune** makes that damage 0.
 - Damage that comes back each turn, such as [[Bleed]], counts each time it lands: Resist 5 Fire stops a Bleed 3 Fi entirely.
 - Two Resists or two Weaks of the same subtype don't add up: the highest applies (see [[Stacking]]).
 
 ### Riders
 
-In a tier cell, what follows the damage **rides on it**: "[V] 2d8 Pi; Prone" knocks the target Prone only if the Action deals that damage, more than 0 after Resist and Immunity. [[Guard]] doesn't stop a rider: Guard takes damage that was dealt. An effect that must happen even without the damage is written on the **Effects** row, or in a cell of its own with no damage. A Save Action's cells read the same way, each on its own result.
+In a tier cell, what follows the damage **rides on it**: "[V] 2d8 Pi; Prone" knocks the target Prone only if the Action deals that damage, more than 0 once Resist and Immune are applied. [[Guard]] doesn't stop a rider: Guard takes damage that was dealt. An effect that must happen even without the damage is written on the **Effects** row, or in a cell of its own with no damage. A Save Action's cells read the same way, each on its own result.
 
 ### Cleave
 

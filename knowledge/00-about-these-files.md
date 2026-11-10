@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-10 from the repository at: 135ccae 2026-11-10 HANDOFF: the obsolete branches are still on GitHub (not deleted from the cloud session)
+Built by tools/knowledge.py on 2026-11-10 from the repository at: a9f5460 2026-11-10 v0.0.320: PACK AU part 2: Resist / Weak / Immunity, Riders, the Elite ladder as settings
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (82 KB)
+- HANDOFF.md (83 KB)
 - MASTER-PLAN.md (22 KB)
 - open-design-items.md (95 KB)
 - rules-01-roll.md (23 KB)

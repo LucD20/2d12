@@ -30,7 +30,7 @@
 | [[Grabbed\|**Grabbed**]] | Held by a creature within its Reach: Immobilized, and only the holder can move you; it ends when the holder lets go or you Break Free. |
 | [[Hindered\|**Hindered**]] | Your Speed is halved. |
 | [[Immobilized\|**Immobilized**]] | No Move Actions or Evade; 1 AP [Move] ends it; Forced Movement without a roll fails on you. |
-| [[Resist, Weak and Immunity\|**Immunity**]] | Damage of that subtype is 0 for you. |
+| [[Resist, Weak and Immune\|**Immune**]] | Damage of that subtype is 0 for you. |
 | [[Class Actions, Picks and the Repertoire\|**Pick**]] | One choice from a class's Repertoire; the level list says how many you take and from which list. |
 | [[Class Actions, Picks and the Repertoire\|**Repertoire**]] | Everything a class offers beyond its Class Actions, listed by Frequency: Passive, Turn, Round, Encounter, Daily. |
 | [[The Basic attack\|**Basic attack**]] | An NPC's main attack: 1 AP, At-will, Vs. AD or WD, with the damage of its role and rating. |
@@ -133,7 +133,7 @@
 | [[Reactions\|**Reaction**]] | An Action used in response to an Interrupt or a Trigger, with a cost like 1R (0R costs no AP). |
 | [[Action Points\|**Reaction AP**]] | The 1 AP you gain at the start of your turn that pays only for Reactions. It never becomes Guard. |
 | [[Recovery\|**Recovery**]] | The three ways to recover: a Breather, a Sleep and a Rest. |
-| [[Resist, Weak and Immunity\|**Resist**]] | Resist N (subtype): each Action's damage of that subtype, both pools together, is reduced by N once (minimum 0). |
+| [[Resist, Weak and Immune\|**Resist**]] | Resist N (subtype): each Action's damage of that subtype, both pools together, is reduced by N once (minimum 0). |
 | [[Health Pool\|**Resolve, Vigor**]] | The two thresholds of your Health Pool: your class's high and low Health values (you choose which is which), your species' bonuses, and the Stage steps. |
 | [[Chapter 6: Basic Actions\|**Regrip**]] | The Basic Action (1 AP, no Handle) to hold a weapon with both hands again, move it to the other hand or swap the weapons in your hands. |
 | [[Chapter 6: Basic Actions\|**Release**]] | 0 AP: drop an object, or let go of it with one hand. |
@@ -187,7 +187,7 @@
 | [[Defenses\|**Vs.**]] | An entry that names an Attribute: the Action rolls against half of it (rounded up) instead of Armor Defense or Ward Defense. |
 | [[Vulnerable\|**Vulnerable**]] | A condition with a value: Actions against you gain that many Boons. |
 | [[Defenses\|**Ward**]] | Ward Defense (WD) — 11 + Power Modifier + Ward value + other items + bonuses − penalties. The Defense against Power Actions. |
-| [[Resist, Weak and Immunity\|**Weak**]] | Weak N (subtype): each Action's damage of that subtype, both pools together, is increased by N once. |
+| [[Resist, Weak and Immune\|**Weak**]] | Weak N (subtype): each Action's damage of that subtype, both pools together, is increased by N once. |
 | [[Weapon Groups\|**Weapon Group**]] | Blades, Axes, Hammers, Polearms, Bows, Crossbows, Firearms, Unarmed. Your Mastery with a weapon is at least a third of your best in its group. |
 | [[Weapon, Power and Signature Modifiers\|**Weapon Modifier**]] | One of your class's two Modifier values (+2 or +1 at level 1; it grows by Stage). Weapon Actions roll it. |
 | [[Rolls\|**Weapon roll**]] | An Action with the Weapon trait (or a Split Action in Weapon mode). |

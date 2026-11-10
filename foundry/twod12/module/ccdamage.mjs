@@ -1,8 +1,8 @@
 // v0.0.283 (pack chat-cards; brief: foundry/mockups/chat-cards-brief.md, section 4.7): the damage message. Posting it, Apply (one row, or Apply all,
 // which skips the rows with a choice), Undo, Full / Half / Double, and the choices the damaged creature makes (Ch. 4 Guard over both pools,
 // Ch. 1 a Resist split across both pools), asked of its owner. The card itself is drawn by chatcards.mjs.
-// Order per creature: the damage per subtype, then Resist / Weak / Immunity (once per subtype per Action), then Guard, then Health.
-// A rider (a Tier's own effects, the "After the damage" chain) lands only if the damage did: more than 0 after Resist and Immunity (Ch. 1 Riders).
+// Order per creature: the damage per subtype, then Resist / Weak / Immune (once per subtype per Action), then Guard, then Health.
+// A rider (a Tier's own effects, the "After the damage" chain) lands only if the damage did: more than 0 after Resist and Immune (Ch. 1 Riders).
 import * as CC from "./chatcards.mjs";
 import { esc } from "./util.mjs";
 import { damageOdds } from "./calc.mjs";
@@ -13,7 +13,7 @@ const F = "twod12", SOCKET = "system.twod12";
 const actorOf = uuid => { try { const d = fromUuidSync(uuid); return d?.documentName === "Actor" ? d : d?.actor ?? null; } catch (e) { return null; } };
 const guardOf = a => (Number(a?.system?.guard) || 0) + (Number(a?.system?.apGuard) || 0) + (Number(a?.system?.reduceNext) || 0);
 /**
- * v0.0.320 (pack AU part 2): the creature's Resist / Weak / Immunity: its own line (system.dmgMods, the Builder's chips) and the "Resist, Weak or Immunity"
+ * v0.0.320 (pack AU part 2): the creature's Resist / Weak / Immune: its own line (system.dmgMods, the Builder's chips) and the "Resist, Weak or Immune"
  * settings of its effects, Features and Talents that work now (an Escalation minimum, Only while it sees its origin); the highest of each counts.
  */
 export function dmgModsOf(a) {
@@ -143,7 +143,8 @@ async function applyRow(s, i, factor = 1, { ask = true, rerun = false } = {}) {
     const auto = (g.fx ?? []).filter(x => x.mode === "auto" && (!x.rider || landed)).map(x => x.uuid);
     if (auto.length) await E.applyEffects(auto, [r.uuid], origin);
   }
-  r.applied = { took, state: bl && st ? "both" : bl ? "bloodied" : st ? "strained" : "", factor, undo, landed, ridersDone: true, chainDone: r.applied?.chainDone ?? false };
+  const rwi = CC.dmgModsFor(comps, dm).map(x => ({ kind: x.kind, label: x.label, v: x.v }));   // v0.0.321: shown as icons after "Took"
+  r.applied = { took, mods: rwi, state: bl && st ? "both" : bl ? "bloodied" : st ? "strained" : "", factor, undo, landed, ridersDone: true, chainDone: r.applied?.chainDone ?? false };
   return true;
 }
 /** The "After the damage" chain, once, for the rows just applied whose damage landed on a Tier 2 or 3 (Ch. 1 Riders). */

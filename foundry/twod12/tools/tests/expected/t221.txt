@@ -2,7 +2,7 @@
 dmgMods [{"kind":"resist","sub":"Fi","n":3},{"kind":"weak","sub":"Ho","n":2},{"kind":"immune","sub":"Co","n":0}] | freqMore ["encounter"] (no subtype or a 0 Resist: nothing)
 The creature has Resist 3 Fire. | Resist 3 Fire
 The creature has Weak 2 Holy. | Weak 2 Holy
-The creature has Immunity Cold. | Immunity Cold
+The creature has Immune Cold. | Immune Cold
 While this works, its Round Special Actions can be used twice a round. | Round Specials twice a round
 While this works, its Encounter Special Actions can be used a second time. | Encounter Specials a second time
 --- merged with the creature's own line: the highest of each counts (Ch. 1, Stacking)
@@ -19,7 +19,7 @@ Weak over both pools needs the origin's choice: ["Ho"] | one pool only: []
 Weak 3 Holy, 2 [V] + 4 [R] (default: more of it):      {"B":2,"M":7} | mods Weak Holy 3
 the same, the origin chose Vigor:                      {"B":5,"M":4} | mods Weak Holy 3
 --- the old Save card path (an Area Save): dealDamageEx
-Immunity Fire, 7 Fire: {"text":"no damage (Immunity Fire)","landed":false,"mods":["Immunity Fire"]} (landed false: the Tier's effects don't happen)
+Immunity Fire, 7 Fire: {"text":"no damage (Immune Fire)","landed":false,"mods":["Immune Fire"]} (landed false: the Tier's effects don't happen)
 --- the Elite ladder (passives.mjs)
 Escalation 1: working passive-elite-1 | more uses []
 Escalation 2: working passive-elite-1, passive-elite-2 | more uses ["round"]

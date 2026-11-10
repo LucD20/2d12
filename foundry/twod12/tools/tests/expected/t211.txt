@@ -54,8 +54,8 @@ the Save's damage per die too (inline.mjs no longer adds the step to the total):
 --- the damage message
 stamp: DAMAGE 16 Tier 3 ↗ | the tag: Lethal | pools: Vigor · 13 Sl 13 Resolve · 3 Ho 3
 the instance with its Weapon Modifier as a line: Vigor · Slash (Greatsword) Dice 4 5 Modifiers +2 Weapon +2 Heavy Blows Total 13
-rows:  || Bandit Thug −8 Guard Apply Full Half Double || Fire Imp Took 5 · 3 Bloodied ✓ Undo Full Half Double
-v0.0.288: the header is the title alone: Weapon Attack | the bottom row (one row left: no Apply all, the tag alone): Lethal
+rows:  || Bandit Thug −8 Guard Apply Full Half Double Lethal || Fire Imp Took 5 · 3 Bloodied ✓ Undo Full Half Double Lethal
+v0.0.288: the header is the title alone: Weapon Attack | the bottom row (one row left: no Apply all, the tag alone): 
 removed: no Avg line, Lethal selector, Block, None: true | Designer mode adds the average: Avg 14.5 · this total or more: 38%
 target details hidden: no Guard / Weak / Took: true | names and state kept: Bandit Thug Waiting for the GM Fire Imp Bloodied ✓ Applied | Bloodied stays: true | footer: Player view · target details hidden by the GM
 the roller's own pools stay: true | a player who isn't the author has no Apply: true

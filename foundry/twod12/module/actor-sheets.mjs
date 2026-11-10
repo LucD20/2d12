@@ -1395,7 +1395,7 @@ export class NpcSheet extends CharacterSheet {
     if (k === "reachBase" || k === "size") return this.actor.update({ [`system.${k}`]: Math.max(1, Number(v) || 1) });
   }
 
-  /** v0.0.308 (Lucas): Resist / Weak / Immunity from the Builder's row: the damage type and the number beside the button. */
+  /** v0.0.308 (Lucas): Resist / Weak / Immune from the Builder's row: the damage type and the number beside the button. */
   /** v0.0.314 (pack AU, Vs. WD): the Builder's Attack damage table for a Vs. AD or a Vs. WD attack (a view: nothing else reads it). */
   static async setNbVs(event, target) { await this.document.setFlag("twod12", "nbVs", target.dataset.vs === "wd" ? "wd" : "ad"); }
   static async addDmgMod(event, target) {
@@ -1406,7 +1406,7 @@ export class NpcSheet extends CharacterSheet {
     await this.actor.update({ "system.dmgMods": dmgModsText(next, SUBS) });
   }
 
-  /** A Resist / Weak / Immunity chip's ×. */
+  /** A Resist / Weak / Immune chip's ×. */
   static async removeDmgMod(event, target) {
     const next = dmgModsEdit(parseDmgMods(this.actor.system.dmgMods ?? ""), target.dataset.kind, target.dataset.sub, null);
     await this.actor.update({ "system.dmgMods": dmgModsText(next, SUBS) });

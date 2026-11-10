@@ -110,9 +110,9 @@
         <p class="fxd-help">Bleed (book, Chapter 8): the damage card is posted at the end of each of the creature's turns, targeting it. Pool "None": Vigor for Body / Instinct, Resolve for Mind / Appeal. A card's chip can set its own dice, pool, type, Attributes and DC (<code>@Condition[bleed|dmg:1d6|pool:R|sub:Ho|attrs:mi/ap]</code>).</p>
         {{/if}}
         {{#if isResist}}
-        {{!-- v0.0.320 (pack AU part 2; book, Chapter 1 Resist, Weak and Immunity) --}}
+        {{!-- v0.0.320 (pack AU part 2; book, Chapter 1 Resist, Weak and Immune) --}}
         <div class="fxd-s">The creature has <select class="fxd-f" data-sfield="{{i}}" data-field="rwKind">{{selectOptions rwKinds selected=rwKind}}</select>{{#if rwNum}} <input type="number" min="1" class="fxd-f n" data-sfield="{{i}}" data-field="rwValue" value="{{rwValue}}">{{/if}} <select class="fxd-f" data-sfield="{{i}}" data-field="dmgSub">{{selectOptions subOpts selected=dmgSub}}</select>.</div>
-        <p class="fxd-help">Book, Chapter 1: once per Action or effect, on all its damage of that subtype, Vigor and Resolve together. Resist N reduces it by N, Weak N adds N (the origin chooses the pool when both have that subtype), Immunity makes it 0. Two of the same kind and subtype don't add up: the highest counts, with the creature's own line (the NPC Builder's chips) too. The damage message applies it.</p>
+        <p class="fxd-help">Book, Chapter 1: once per Action or effect, on all its damage of that subtype, Vigor and Resolve together. Resist N reduces it by N, Weak N adds N (the origin chooses the pool when both have that subtype), Immune makes it 0. Two of the same kind and subtype don't add up: the highest counts, with the creature's own line (the NPC Builder's chips) too. The damage message applies it.</p>
         {{/if}}
         {{#if isFreqMore}}
         <div class="fxd-s">While this works, <select class="fxd-f" data-sfield="{{i}}" data-field="fmWhich">{{selectOptions fmChoices selected=fmWhich}}</select>.</div>

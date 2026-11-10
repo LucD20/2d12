@@ -31,7 +31,7 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
       // Ward Defense (WD) = 11 + Power Modifier + Ward value + bonuses (v0.0.162). An NPC types both Defenses instead (NpcData armorDef, wardDef).
       armor: choice(Object.fromEntries(Object.entries(TWOD12.armors).map(([k, v]) => [k, v.label])), "unarmored"), ward: int(0, 0),
       guard: int(0, 0),   // v0.0.181: Guard N (book, Chapter 4): takes damage before the Health, the higher value kept, 0 at the end of the encounter (guard.mjs)
-      dmgMods: str(""),   // v0.0.283 (pack chat-cards): "Resist 5 Fire, Weak 2 Holy, Immunity Cold" (book, Chapter 1), read by the damage message
+      dmgMods: str(""),   // v0.0.283 (pack chat-cards): "Resist 5 Fire, Weak 2 Holy, Immune Cold" (book, Chapter 1), read by the damage message
       reduceNext: int(0, 0),   // v0.0.254 (cards 4, Shield of Faith): the next damage this creature takes is reduced by this much, then it is 0
       apGuard: int(0, 0),   // v0.0.243 (pack R): the Guard of the AP kept at the end of the turn (2 / 3 / 4 each by Stage): taken first, 0 when the AP are regained
       escalation: int(1, 0),   // v0.0.243 (pack R): a level 1 to 3, never spent: 1 at the start of an encounter (2 with Momentum), +1 a round, +1 on a Critical and on the class hook once an encounter (escalation.mjs)
@@ -621,7 +621,7 @@ const settingsField = () => new ArrayField(new SchemaField({
         // v0.0.314 (pack AU): Boons and Banes only against creatures other than the effect's origin (Taunted), or only against it;
         //   bleed: damage at the end of each of the creature's turns (dmg, dmgPool, dmgSub; attrs: the Save's Attributes; bleedDc: its DC).
         vsOrigin: choice(TWOD12.vsOriginChoices, ""), bleedDc: int(13, 0),
-        // v0.0.320 (pack AU part 2): resist: Resist N / Weak N / Immunity of a subtype (dmgSub) while it is on the creature (the highest of each counts);
+        // v0.0.320 (pack AU part 2): resist: Resist N / Weak N / Immune of a subtype (dmgSub) while it is on the creature (the highest of each counts);
         //   freqmore: more uses of a Frequency (the Elite ladder: Round Specials twice a round, Encounter Specials a second time).
         rwKind: choice(TWOD12.rwKinds, "resist"), rwValue: int(1, 0), fmWhich: choice(TWOD12.freqMore, "round")
       }));

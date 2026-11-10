@@ -194,7 +194,7 @@
       <h3>Stat block</h3>
       <div class="sbk">
         <label>Armor type <select name="system.armor">{{selectOptions armorTypeChoices selected=system.armor}}</select></label>
-        <label class="sbk-dmods" data-tooltip="Resist, Weak and Immunity (book, Chapter 1), separated by commas: Resist 5 Fire, Weak 2 Holy, Immunity Cold. The damage message applies them once per subtype per Action.">Resist / Weak <input type="text" name="system.dmgMods" value="{{system.dmgMods}}" placeholder="Resist 5 Fire, Weak 2 Holy"></label>
+        <label class="sbk-dmods" data-tooltip="Resist, Weak and Immune (book, Chapter 1), separated by commas: Resist 5 Fire, Weak 2 Holy, Immune Cold. The damage message applies them once per subtype per Action.">Resist / Weak <input type="text" name="system.dmgMods" value="{{system.dmgMods}}" placeholder="Resist 5 Fire, Weak 2 Holy"></label>
         <div class="sbk-tags"><span>Tags</span><span class="tchips">{{#each npcTags.have}}<span class="tchip">{{label}}<a data-action="removeTag" data-tag="{{key}}" aria-label="Remove {{label}}">&times;</a></span>{{/each}}{{#if npcTags.add.length}}<select class="tagadd" aria-label="Add a tag"><option value="">+</option>{{#each npcTags.add}}<option value="{{key}}">{{label}}</option>{{/each}}</select>{{/if}}</span></div>
       </div>
     </section>

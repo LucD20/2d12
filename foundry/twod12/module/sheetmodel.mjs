@@ -320,18 +320,18 @@ export function diceFor(avg) {
   return best[0];
 }
 
-/* v0.0.308 (Lucas): Resist and Weak on the Builder tab as chips. The text field stays the source ("Resist 5 Fire, Weak 2 Holy, Immunity Cold";
+/* v0.0.308 (Lucas): Resist and Weak on the Builder tab as chips. The text field stays the source ("Resist 5 Fire, Weak 2 Holy, Immune Cold";
  * chatcards.mjs parseDmgMods reads it). parsed: parseDmgMods' { resist, weak, immune }; subs: chatcards SUBS (code -> [name, ink]). */
 export function dmgModsText(parsed, subs) {
   const nm = c => subs?.[c]?.[0] ?? c;
   return [...Object.entries(parsed?.resist ?? {}).map(([c, n]) => `Resist ${n} ${nm(c)}`), ...Object.entries(parsed?.weak ?? {}).map(([c, n]) => `Weak ${n} ${nm(c)}`),
-    ...(parsed?.immune ?? []).map(c => `Immunity ${nm(c)}`)].join(", ");
+    ...(parsed?.immune ?? []).map(c => `Immune ${nm(c)}`)].join(", ");
 }
 export function dmgModChips(parsed, subs) {
   const nm = c => subs?.[c]?.[0] ?? c;
   return [...Object.entries(parsed?.resist ?? {}).map(([c, n]) => ({ kind: "resist", sub: c, label: `Resist ${n} ${nm(c)}` })),
     ...Object.entries(parsed?.weak ?? {}).map(([c, n]) => ({ kind: "weak", sub: c, label: `Weak ${n} ${nm(c)}` })),
-    ...(parsed?.immune ?? []).map(c => ({ kind: "immune", sub: c, label: `Immunity ${nm(c)}` }))];
+    ...(parsed?.immune ?? []).map(c => ({ kind: "immune", sub: c, label: `Immune ${nm(c)}` }))];
 }
 /** Adds (n > 0) or removes (n = null) one entry; a new Resist or Weak of a type replaces the old one. Returns a new parsed object. */
 export function dmgModsEdit(parsed, kind, sub, n = null) {

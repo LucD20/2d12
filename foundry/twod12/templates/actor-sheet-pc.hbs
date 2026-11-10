@@ -416,11 +416,11 @@
               </div>{{/each}}
             </div>
           </div>
-          <div class="ps-block nb-rw"><div class="ps-bh"><b>Resist and Weak</b><span class="ps-bsub">Resist lowers that type's damage by its number, Weak raises it; Immunity ignores it</span></div>
+          <div class="ps-block nb-rw"><div class="ps-bh"><b>Resist and Weak</b><span class="ps-bsub">Resist lowers that type's damage by its number, Weak raises it; Immune ignores it</span></div>
             <div class="nb-chips">{{#each rw.chips}}<span class="nb-chip {{kind}}">{{label}}<a data-action="removeDmgMod" data-kind="{{kind}}" data-sub="{{sub}}" aria-label="Remove {{label}}" data-tooltip="Remove">&times;</a></span>{{else}}<span class="ps-mut">None.</span>{{/each}}</div>
             <div class="nb-rwadd"><select class="nb-rwtype" aria-label="Damage type">{{#each rw.types}}<option value="{{key}}">{{label}}</option>{{/each}}</select>
               <input type="number" class="nb-rwn" min="1" max="20" value="5" aria-label="Amount">
-              <button type="button" data-action="addDmgMod" data-kind="resist">+ Resist</button><button type="button" data-action="addDmgMod" data-kind="weak">+ Weak</button><button type="button" data-action="addDmgMod" data-kind="immune" data-tooltip="Immunity takes no number">+ Immunity</button></div>
+              <button type="button" data-action="addDmgMod" data-kind="resist">+ Resist</button><button type="button" data-action="addDmgMod" data-kind="weak">+ Weak</button><button type="button" data-action="addDmgMod" data-kind="immune" data-tooltip="Immune takes no number">+ Immune</button></div>
           </div>
           <div class="ps-block nb-atkblk{{#if vsWd}} nb-vswd{{/if}}"><div class="ps-bh"><b>Attack damage</b><span class="ps-bsub">Tier 2 / Tier 3 average, and the dice to write</span><span class="nb-vsw">{{#each vsToggle}}<button type="button" class="nb-vsb vsk-{{key}}{{#if on}} on{{/if}}" data-action="setNbVs" data-vs="{{key}}" data-tooltip="{{sub}}">{{label}}</button>{{/each}}</span></div>
             <p class="nb-how">Find the row of the Action's <b>AP</b>, then the column of <b>how hard it hits</b> (<b>Medium</b> is normal for a {{roleLabel}}). Each cell is the average damage on <b>Tier 2 / Tier 3</b>, and below it dice that give it with this creature's {{modLabel}}: write those on the Action.</p>

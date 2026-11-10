@@ -49,7 +49,7 @@ Body 1, Mind 3, Appeal 0: old copy power | already updated (no lists) power
 --- wiring: the class window's picks true | under the Attribute increases (v0.0.306) true | refresh keeps modStage2 true | the migration registered true | the Builder's Weapon Mod / Power Mod rows true | the Archer's fixed row true | 12 + Attribute in defense.mjs true | no DialogV2 in the migration true
 --- v0.0.308: the Builder tab (Lucas)
 chips: [{"kind":"resist","sub":"Fi","label":"Resist 5 Fire"},{"kind":"weak","sub":"Ho","label":"Weak 2 Holy"}]
-Resist Fire 3 replaces 5, + Weak 4 Cold, + Immunity Psychic: Resist 3 Fire, Weak 2 Holy, Weak 4 Cold, Immunity Psychic
+Resist Fire 3 replaces 5, + Weak 4 Cold, + Immunity Psychic: Resist 3 Fire, Weak 2 Holy, Weak 4 Cold, Immune Psychic
 Weak Holy and Immunity removed: Resist 3 Fire, Weak 4 Cold | read back the same: true
 dice for an average, [Mod] out: 4 with +2: 2 | 7.5 with +2: 1d10 | 13 with +3: 2d8 | 2 with +2: -
 Tags above the tables: true | the old Stat block gone: true | Frame rows: true | Resist / Weak add and remove: true | the attack cells carry dice (v0.0.309: tiles, no table): true | a long Frame label smaller: true
