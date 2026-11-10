@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.330, 224 tests; READ THIS FIRST)
+## Where we are now (v0.0.331, 225 tests; READ THIS FIRST)
+- **v0.0.331 (2026-11-10, branch `pack-pcs`): Lucas's four PCs with his portraits** (Aveline Human Paladin Smite, Durgan Dwarf Paladin Lay On Hands, Sylwen Elf Archer Double Shot, Kaela Human Archer Rolling Shot; level 4) and the book's other 14 weapons in the compendium. New test t227 (**the next new test is t228**). **NEXT:** Lucas's look at the sheets; then the AU card sessions.
 - **v0.0.330 (2026-11-10, branch `pack-zone`): Lucas on v0.0.329:** double-clicking a Zone opens its Effect (edits reach the placed Zones); a test Action "Fire Patch (test)" (folder Testing) places a Zone that deals [V] 1d6 Fire on Entering. **Merged into main (Lucas: "Ok, merge"), with `pack-effect-sheet` and `pack-au2`.** **NEXT:** AU's card sessions (MASTER-PLAN AU "Left"), then playtest 4; ACTION-SHEET waits for Lucas's mockup.
 - **v0.0.329 (2026-11-10, branch `pack-zone`): Lucas on v0.0.328 ("effects can't be placed on the map"; "a bit confused with this Zone"; "All rest works"):** a Zone Effect is placed by dragging it onto the map, by Place on the map (either choice), or by its Action (any tier). **NEXT:** Lucas's test, and his answer on whether the Zone should be simpler.
 - **v0.0.328 (2026-11-10, branch `pack-zone`): Lucas on v0.0.327 ("I can't open effects anymore"):** `_fxTab` read the Zone's Action before declaring it; fixed. New test t226 renders every rules tab (**the next new test is t227**). **NEXT:** Lucas's test of v0.0.327's checklist on v0.0.328.

@@ -40,7 +40,7 @@ const load = n => JSON.parse(src("packs/_source/" + n));
 const asItem = d => ({ id: d._id, name: d.name, type: d.type, getFlag: (s, k) => d.flags?.twod12?.[k],
   system: { ...d.system, traits: new Set(d.system.traits ?? []), versions: d.system.versions ?? [], areaDistance: d.system.areaCfg?.within ? String(d.system.areaCfg.within) : "", area: d.system.areaCfg ? `${d.system.areaCfg.size} / 3 Burst` : "" } });
 const smite = asItem(load("actions/smite.action.json")), wor = asItem(load("actions/word-of-radiance.action.json"));
-const oa = asItem(load("pcs/paladin-1-smite-heavy-blows.pc.json").items.find(i => i.name === "Opportunity Attack"));
+const oa = asItem(load("pcs/aveline-human-paladin-smite.pc.json").items.find(i => i.name === "Opportunity Attack"));
 const blank = { attrs: [], all: [], any: [], none: [], from: [], tiers: [] };
 const fx = (name, flags) => ({ id: name, name, disabled: false, statuses: new Set(), flags: { twod12: flags }, getFlag: (s, k) => flags[k] });
 const actor = { id: "pal", uuid: "Actor.pal", name: "Paladin", type: "character", items: { get: () => null }, itemTypes: { weapon: [], feature: [], talent: [], action: [] }, statuses: new Set(), getFlag: () => undefined,
@@ -85,6 +85,6 @@ console.log("an NPC's cost once (costPill writes AP):", S.costPill([2, 3]), "|",
   "| links don't break inside a word:", css.includes(".twod12.acard.d2 a.content-link, .twod12.acard.d2 a.twod12-inline.book { word-break: normal; overflow-wrap: normal; white-space: nowrap; }"));
 globalThis.fromUuid = async () => null;
 const { buildFeatureCard } = await import(ROOTURL + "module/actioncard.mjs");
-const dp = asItem(load("pcs/paladin-1-smite-heavy-blows.pc.json").items.find(i => i.name === "Divine Power"));
+const dp = asItem(load("pcs/aveline-human-paladin-smite.pc.json").items.find(i => i.name === "Divine Power"));
 const fc = await buildFeatureCard(dp, { actor });
 console.log("a Feature's card, in the Action card's look:", /acard d2 feat/.test(fc), "| heading (v0.0.299):", txt(fc.match(/<div class="ap-fxh withcat">[\s\S]*?<\/span><\/div>/)?.[0]), "| no trait line:", !fc.includes("ap-trow"), "| text:", txt(fc.match(/ap-prose">([\s\S]*?)<\/div>/)?.[1]).slice(0, 60), "| flavor last:", fc.indexOf("ap-flav") > fc.indexOf("ap-prose"), "| no title bar:", !/ahead|ac-head/.test(fc));

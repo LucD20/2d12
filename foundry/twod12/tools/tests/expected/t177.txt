@@ -10,7 +10,7 @@ cards of the files still written by hand in a chapter: none
 a card the book does not show (book: false): Mark Quarry, Break Free, Rusty Knife, Dirty Trick, Cudgel, Low Blow, Cleaver, Brutal Swing, Hold the Line, Chilling Touch, Dread Whisper, Club, Ground Slam, Rally the Tribe
 --- the compendium items are the cards (content.mjs reads book/cards)
 compendium cards: 95 | one item each, equal to the card: all | CARDS exported: true
-Techniques whose weapon is not in the compendium yet (information, for pack X): 14 (Stick and Slip (Dagger), Guarded Cut (Longsword), Hooking Chop (Handaxe)...)
+Techniques whose weapon is not in the compendium yet (information, for pack X): 0 
 --- every card reads for Foundry and the ruler
 ruler lines: 83 | they parse: true
 problems: none

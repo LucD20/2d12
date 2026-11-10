@@ -12,7 +12,7 @@ wired: true
 swap shown with no ally left (the click warns): true | a creature added mid-combat is shown: true | Mastery only in combat: true
 --- cards
 Pinning Shot and Twin Shot grant the Weapon Attack: true true | Vanish for 1 round: <p>+1 Defense for 1 round (Vanish).</p>
-Paladin 1 (Smite, Heavy Blows) (level 1): Divine Power, Kindled Wrath, Smite, Rebuke, Heavy Blows, Holy Wrath, Radiant Zeal, Searing Blows, Reckoning, Final Verdict
-Paladin 3 (Lay On Hands, Protector) (level 3): Divine Power, Kindled Wrath, Lay On Hands, Shield of Faith, Challenge, Word of Radiance, Font of Mercy, Mending Light, Hallowed Stance, Hallowed Dawn, Bloodlust, Miraculous Recovery, Hand of Mercy
-Archer 1 (Double Shot, Marksman) (level 1): Sharpshooter, Marked Quarry, Thrill of the Kill, Double Shot, Overwatch, Aim, Pinning Shot, Killer's Focus, Hunter's Edge, Finisher, Deathmark
-Archer 3 (Rolling Shot, Kickboxer) (level 3): Sharpshooter, Marked Quarry, Thrill of the Kill, Rolling Shot, Covering Shot, Brawler, Volley, Vanish, Sure Step, Staggering Shot, Open Season, Kickboxer, Rain of Arrows, Steady Nerves
+Aveline (Human Paladin, Smite) (level 4): Divine Power, Kindled Wrath, Smite, Rebuke, Heavy Blows, Holy Wrath, Radiant Zeal, Searing Blows, Reckoning, Final Verdict, Whirlwind, Consecrated Ground, Bloodlust, Cut Through
+Durgan (Dwarf Paladin, Lay On Hands) (level 4): Divine Power, Kindled Wrath, Lay On Hands, Shield of Faith, Challenge, Beacon, Font of Mercy, Mending Light, Hallowed Stance, Hallowed Dawn, Sacred Weapon, Divine Intervention, Hand of Mercy, Battering Charge
+Sylwen (Elf Archer, Double Shot) (level 4): Sharpshooter, Marked Quarry, Thrill of the Kill, Double Shot, Overwatch, Aim, Marksman's Shot, Killer's Focus, Hunter's Edge, Finisher, Deathmark, Ricochet, Hunter's Focus, Long Draw, Lesser Blessing
+Kaela (Human Archer, Rolling Shot) (level 4): Sharpshooter, Marked Quarry, Thrill of the Kill, Rolling Shot, Covering Shot, Brawler, Covering Fire, Vanish, Sure Step, Staggering Shot, Open Season, Kickboxer, Rain of Arrows, Steady Nerves, Aim

@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-10 from the repository at: fc87b18 2026-11-10 t112: the compendium count with the two test items (Fire Patch)
+Built by tools/knowledge.py on 2026-11-10 from the repository at: b58b076 2026-11-10 MASTER-PLAN, HANDOFF: ZONE, EFFECT-SHEET and AU part 2 merged
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (87 KB)
+- HANDOFF.md (88 KB)
 - MASTER-PLAN.md (23 KB)
 - open-design-items.md (96 KB)
 - rules-01-roll.md (23 KB)

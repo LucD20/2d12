@@ -157,6 +157,16 @@ const weapon = (text, img, actions = []) => {
 };
 weapon("greatsword: two-handed, melee, slash, 0/1d8/2d6", "icons/svg/sword.svg");
 weapon("crossbow: projectile, reload, two-handed, pierce, ranges 10/20/40, 0/1d4+2/1d10+2", "icons/svg/target.svg");
+// v0.0.331 (Lucas: the four PCs "as different as you can"): the rest of the book's weapons (15-gear.md, Melee and Ranged); each gets its Weapon Technique (cardgen)
+for (const [text, img] of [
+  ["dagger: melee, pierce, thrown 4/8/12, 0/1d4/1d8", "icons/svg/sword.svg"], ["longsword: melee, slash, 0/1d6/1d10", "icons/svg/sword.svg"],
+  ["handaxe: melee, slash, thrown 4/8/12, 0/1d4/1d8", "icons/svg/sword.svg"], ["greataxe: melee, two-handed, slash, 0/1d6/2d8", "icons/svg/sword.svg"],
+  ["mace: melee, blunt, 0/1d4+1/1d8+1", "icons/svg/sword.svg"], ["maul: melee, two-handed, blunt, 0/1d4+2/1d10+2", "icons/svg/sword.svg"],
+  ["spear: melee, pierce, thrown 4/8/12, 0/1d4/1d8", "icons/svg/sword.svg"], ["pike: long, melee, two-handed, pierce, range 3, 0/1d6/1d10", "icons/svg/sword.svg"],
+  ["knuckle dagger: barehanded, melee, pierce, 0/1d4/1d6", "icons/svg/combat.svg"],
+  ["shortbow: projectile, two-handed, pierce, ranges 8/16/32, 0/1d6/1d10", "icons/svg/target.svg"], ["longbow: projectile, two-handed, pierce, ranges 15/30/60, 0/1d4+1/1d8+1", "icons/svg/target.svg"],
+  ["hand crossbow: projectile, reload, pierce, ranges 6/12/24, 0/1d4/1d8", "icons/svg/target.svg"],
+  ["pistol: firearm, reload, pierce, ranges 5/10/20, 0/1d4/2d6", "icons/svg/target.svg"], ["musket: firearm, reload, two-handed, pierce, ranges 10/20/40, 0/1d4/2d8", "icons/svg/target.svg"]]) weapon(text, img);
 
 /* ------------------------------------------------------------------ Armor (generic for now: named armors and properties are still open in the book) */
 const armorDoc = (name, category, description) => add("weapons", "armor", name, "icons/svg/shield.svg", { description: `<p>${description}</p>`, category, bonus: 0, ward: 0, properties: "", worn: false }, "Armor");
@@ -392,7 +402,7 @@ const pcs = [];
 // v0.0.185: built as the class window would: the class copy records the choices of level 1 (flags classPicks / classAttrs, chosenAttrs) and
 // every item the class gave carries classLevel and classSection (a Talent also its slot), so levelling and re-dropping the class work on them.
 // v0.0.189 (Lucas: "too similar"): picks by level ({ 1: {...}, 2: {...}, 3: {...} }), so a PC can be built at level 3 as the class window would.
-const pc = ({ name, img, species, chosen, cls, attrs, picks, level = 1, lead = "weapon", weapon, armor = "", extras = [] }) => {
+const pc = ({ name, token = "", img, species, chosen, cls, attrs, picks, level = 1, lead = "weapon", weapon, armor = "", extras = [], health = "", start = "", choices = {} }) => {
   const c = docOf("class", cls), lv1 = c.system.levels[0].sections, attrSec = lv1.find(x => x.kind === "attr");
   const byLevel = typeof Object.values(picks)[0] === "string" ? { 1: picks } : picks;
   const pickedAt = L => Object.fromEntries(Object.entries(byLevel[L] ?? {}).map(([id, n]) => [id, [uuidOf(PACK_OF[docOf(lv1Type(n), n).type], n)]]));
@@ -403,6 +413,8 @@ const pc = ({ name, img, species, chosen, cls, attrs, picks, level = 1, lead = "
   const give = (n, section, kind, L) => {
     const type = lv1Type(n), it = copyDoc(name, type, n, { classLevel: L, classSection: section, ...(type === "feature" ? { grantedBy: "class", level: L } : {}), ...(kind === "talent" ? { slot: `class:${L}:${section}:0` } : {}) });
     items.push(it);
+    // v0.0.331: a Talent with a choice (Lesser Blessing): the chosen Action, as grants.mjs grantChoices adds it
+    if (choices[n]) { const a = docOf("action", choices[n]); it.flags.twod12.choices = [uuidOf("actions", a.name)]; items.push(copyDoc(name, "action", a.name, { talentId: it._id, choice: true })); }
     for (const u of (it.system.actions ?? [])) { const a = byUuid(u); if (a) items.push(copyDoc(name, "action", a.name, { [type === "talent" ? "talentId" : "featureId"]: it._id })); }
   };
   for (let L = 1; L <= level; L++) {
@@ -417,23 +429,39 @@ const pc = ({ name, img, species, chosen, cls, attrs, picks, level = 1, lead = "
   for (const k of Object.keys(BASIC_ACTIONS)) { const d = basicItemData(k); items.push({ _id: idOf("Item", `${name}:basic:${d.name}`), name: d.name, type: "action", img: d.img, system: d.system, flags: d.flags, effects: [], folder: null, sort: 0, ownership: { default: 0 } }); }
   { const f = fistsItemData(); items.push({ _id: idOf("Item", `${name}:Fists`), name: f.name, type: "weapon", img: f.img, system: f.system, flags: f.flags, effects: [], folder: null, sort: 0, ownership: { default: 0 } }); }
   if (armor) items.push(copyDoc(name, "armor", armor, {}, { worn: true }));
-  pcs.push({ name, img, system: { level }, items });
+  // v0.0.331: the Mastery tab's entry for the weapon (mastery.mjs: flags twod12.mastery by kind), and a Starting Mastery already chosen (Sharpshooter: 3)
+  const mkey = String(weapon).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const flags = { twod12: { mastery: { [mkey]: { name: weapon, value: start ? 3 : 0 } }, ...(start ? { startMastery: { [idOf("Item", `${name}:feature:${start}`)]: weapon } } : {}) } };
+  // the class's high Health value on Vigor or Resolve (the character's healthHigh; a Human's +3 goes with it: speciesHigh "")
+  pcs.push({ name, token, img, system: { level, ...(health ? { healthHigh: health, speciesHigh: "" } : {}) }, items, flags });
 };
 // The type of an item by its name (a Feature, a Talent or an Action), for the picks above.
 // v0.0.188: a Talent before the Action it grants (Aim).
 function lv1Type(n) { const d = ["talent", "feature", "action"].map(t => docs.find(x => x.name === n && x.type === t)).find(Boolean); if (!d) throw new Error(`No item called ${n}`); return d.type; }
-// v0.0.183: the four level 1 builds of the ruler (book/ruler/classes: paladin-smite-1, paladin-hands-1, archer-double-1, archer-rolling-1), Humans all.
-// v0.0.189 (Lucas: the compendium PCs test different cards): two builds a class, one at level 1 and one at level 3, every pick different.
-pc({ name: "Paladin 1 (Smite, Heavy Blows)", img: "icons/svg/sun.svg", species: "Human", chosen: ["body", "appeal"], cls: "Paladin", attrs: ["body", "mind"],
-  picks: { pal1hall: "Smite", pal1react: "Rebuke", pal1tal: "Heavy Blows", pal1enc: "Holy Wrath", pal1pass1: "Radiant Zeal", pal1pass2: "Searing Blows", pal1pass3: "Reckoning", pal1apex: "Final Verdict" }, weapon: "Greatsword", armor: "Heavy Armor" });
-pc({ name: "Paladin 3 (Lay On Hands, Protector)", img: "icons/svg/regen.svg", species: "Dwarf", cls: "Paladin", attrs: ["appeal", "mind"], level: 3, lead: "power",
-  picks: { 1: { pal1hall: "Lay On Hands", pal1react: "Shield of Faith", pal1tal: "Challenge", pal1enc: "Word of Radiance", pal1pass1: "Font of Mercy", pal1pass2: "Mending Light", pal1pass3: "Hallowed Stance", pal1apex: "Hallowed Dawn" },
-    2: { pal2tal: "Bloodlust" }, 3: { pal3daily: "Miraculous Recovery", pal3tal: "Hand of Mercy" } }, weapon: "Greatsword", armor: "Heavy Armor" });
-pc({ name: "Archer 1 (Double Shot, Marksman)", img: "icons/svg/target.svg", species: "Elf", cls: "Archer", attrs: ["instinct", "mind"],
-  picks: { arc1hall: "Double Shot", arc1react: "Overwatch", arc1tal: "Aim", arc1enc: "Pinning Shot", arc1pass1: "Killer's Focus", arc1pass2: "Hunter's Edge", arc1pass3: "Finisher", arc1apex: "Deathmark" }, weapon: "Crossbow", armor: "Medium Armor" });
-pc({ name: "Archer 3 (Rolling Shot, Kickboxer)", img: "icons/svg/wing.svg", species: "Human", chosen: ["body", "instinct"], cls: "Archer", attrs: ["body", "appeal"], level: 3,
-  picks: { 1: { arc1hall: "Rolling Shot", arc1react: "Covering Shot", arc1tal: "Brawler", arc1enc: "Volley", arc1pass1: "Vanish", arc1pass2: "Sure Step", arc1pass3: "Staggering Shot", arc1apex: "Open Season" },
-    2: { arc2tal: "Kickboxer" }, 3: { arc3daily: "Rain of Arrows", arc3tal: "Steady Nerves" } }, weapon: "Crossbow", armor: "Medium Armor" });
+// v0.0.331 (Lucas, with their portraits: "a paladin dwarf, a paladin human, an archer elf and an archer human, as different as you can, focused on
+// optimization"): four level 4 characters (the book's last level), each Hallmark, Reaction, Pick, Escalation Passive, Apex and weapon different
+// from the other of its class, the 15 Talents spread with one repeat (Aim); the reasons: docs/reference.md (v0.0.331) and the foundry-backlog.
+const ART = n => `systems/twod12/art/pcs/${n}`;
+// The wrath Paladin: Smite and the Greatsword (Weapon Modifier +2), the damage ladder (Radiant Zeal, Searing Blows, Reckoning, Final Verdict),
+// Holy Wrath for the opening turn, Consecrated Ground to hold a room; Heavy Blows and Whirlwind on the Greatsword, Bloodlust, Cut Through to reach the back line.
+pc({ name: "Aveline (Human Paladin, Smite)", token: "Aveline", img: ART("aveline.png"), species: "Human", chosen: ["body", "appeal"], cls: "Paladin", attrs: ["body", "instinct"], level: 4, lead: "weapon", health: "vigor",
+  picks: { 1: { pal1hall: "Smite", pal1react: "Rebuke", pal1tal: "Heavy Blows", pal1enc: "Holy Wrath", pal1pass1: "Radiant Zeal", pal1pass2: "Searing Blows", pal1pass3: "Reckoning", pal1apex: "Final Verdict" },
+    2: { pal2tal: "Whirlwind" }, 3: { pal3daily: "Consecrated Ground", pal3tal: "Bloodlust" }, 4: { pal4tal: "Cut Through" } }, weapon: "Greatsword", armor: "Heavy Armor" });
+// The mercy Paladin: Lay On Hands and the Pike (Power Modifier +2: the heals, Mending Light, Hallowed Stance and the Ward Defense), Range 3 to
+// guard the allies in front of him; Shield of Faith, Beacon, Divine Intervention; Challenge, Sacred Weapon, Hand of Mercy, Battering Charge (Speed 4).
+pc({ name: "Durgan (Dwarf Paladin, Lay On Hands)", token: "Durgan", img: ART("durgan.png"), species: "Dwarf", cls: "Paladin", attrs: ["body", "instinct"], level: 4, lead: "power", health: "vigor",
+  picks: { 1: { pal1hall: "Lay On Hands", pal1react: "Shield of Faith", pal1tal: "Challenge", pal1enc: "Beacon", pal1pass1: "Font of Mercy", pal1pass2: "Mending Light", pal1pass3: "Hallowed Stance", pal1apex: "Hallowed Dawn" },
+    2: { pal2tal: "Sacred Weapon" }, 3: { pal3daily: "Divine Intervention", pal3tal: "Hand of Mercy" }, 4: { pal4tal: "Battering Charge" } }, weapon: "Pike", armor: "Heavy Armor" });
+// The far Archer: Double Shot and the Longbow (range 15, 30 with Long Draw and no Bane), the Quarry damage ladder (Killer's Focus, Hunter's Edge,
+// Finisher, Deathmark), Overwatch, Marksman's Shot, Hunter's Focus; Aim, Ricochet, Long Draw, Lesser Blessing (Rimebrand on a Double Shot turn).
+pc({ name: "Sylwen (Elf Archer, Double Shot)", token: "Sylwen", img: ART("sylwen.webp"), species: "Elf", cls: "Archer", attrs: ["instinct", "mind"], level: 4, health: "vigor", start: "Sharpshooter",
+  picks: { 1: { arc1hall: "Double Shot", arc1react: "Overwatch", arc1tal: "Aim", arc1enc: "Marksman's Shot", arc1pass1: "Killer's Focus", arc1pass2: "Hunter's Edge", arc1pass3: "Finisher", arc1apex: "Deathmark" },
+    2: { arc2tal: "Ricochet" }, 3: { arc3daily: "Hunter's Focus", arc3tal: "Long Draw" }, 4: { arc4tal: "Lesser Blessing" } }, choices: { "Lesser Blessing": "Rimebrand (Cold)" }, weapon: "Longbow", armor: "Medium Armor" });
+// The close Archer: Rolling Shot and the Shortbow (its Technique, Skirmish Shot, unlocked at 3: an Evade on a Tier 3), the mobile ladder (Vanish,
+// Sure Step, Staggering Shot, Open Season), Covering Shot, Covering Fire (a Zone), Rain of Arrows; Brawler, Kickboxer, Steady Nerves, Aim.
+pc({ name: "Kaela (Human Archer, Rolling Shot)", token: "Kaela", img: ART("kaela.webp"), species: "Human", chosen: ["body", "instinct"], cls: "Archer", attrs: ["instinct", "appeal"], level: 4, health: "vigor", start: "Sharpshooter",
+  picks: { 1: { arc1hall: "Rolling Shot", arc1react: "Covering Shot", arc1tal: "Brawler", arc1enc: "Covering Fire", arc1pass1: "Vanish", arc1pass2: "Sure Step", arc1pass3: "Staggering Shot", arc1apex: "Open Season" },
+    2: { arc2tal: "Kickboxer" }, 3: { arc3daily: "Rain of Arrows", arc3tal: "Steady Nerves" }, 4: { arc4tal: "Aim" } }, weapon: "Shortbow", armor: "Medium Armor" });
 
 const FOLDER_OF = { species: "Species", class: "Class", feature: "Feature", talent: "Talent" };
 for (const d of docs) if ((d.pack === "classes" || d.pack === "features") && !d.folder) d.folder = FOLDER_OF[d.type] ?? null;

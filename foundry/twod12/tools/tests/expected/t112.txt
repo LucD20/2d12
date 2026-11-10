@@ -1,5 +1,5 @@
-documents: 187
-references: 134 | broken: none
+documents: 201
+references: 148 | broken: none
 Paladin features:  | Divine Connection kept for testing (not in the class): true | its id is the old one: vaYnV1XM6HT1TpMP
 Level 1: Attribute increases (attr: body or appeal, mind or instinct) | Features (items, granted): Divine Power, Kindled Wrath | Hallmark Action (items, choice, pick 1): Smite, Lay On Hands | Hallmark Reaction (items, choice, pick 1): Shield of Faith, Rebuke | Encounter Pick (repertoire, encounter, pick 1) | Escalation 1 Passive (items, choice, pick 1): Radiant Zeal, Divine Surge, Font of Mercy | Escalation 2 Passive (items, choice, pick 1): Searing Blows, Mending Light | Escalation 3 Passive (items, choice, pick 1): Reckoning, Hallowed Stance | Apex (items, choice, pick 1): Final Verdict, Hallowed Dawn | Talent (talent, pick 1)
 Level 2: Talent (talent, pick 1)
@@ -26,10 +26,10 @@ Hallowed Stance: Paladin Escalation | While your Escalation is 3 or more, you an
 the Aura: aura Aura 2 allies -> Beacon (+1 Defense) | lasts: rounds
 Lay On Hands' strike: bonusdamage 2d8 M Ho t2,t3 | ends after: strike
 old cards: Vow of Enmity, Word of Radiance kept | in no level: false
-Paladin 1 (Smite, Heavy Blows): Divine Power, Kindled Wrath, Smite, Rebuke, Heavy Blows, Holy Wrath, Radiant Zeal, Searing Blows, Reckoning, Final Verdict | ids unique: true
-Paladin 3 (Lay On Hands, Protector): Divine Power, Kindled Wrath, Lay On Hands, Shield of Faith, Challenge, Word of Radiance, Font of Mercy, Mending Light, Hallowed Stance, Hallowed Dawn, Bloodlust, Bloodlust, Miraculous Recovery, Hand of Mercy, Hand of Mercy | ids unique: true
-Archer 1 (Double Shot, Marksman): Sharpshooter, Marked Quarry, Mark Quarry, Thrill of the Kill, Double Shot, Overwatch, Aim, Aim, Pinning Shot, Killer's Focus, Hunter's Edge, Finisher, Deathmark | ids unique: true
-Archer 3 (Rolling Shot, Kickboxer): Sharpshooter, Marked Quarry, Mark Quarry, Thrill of the Kill, Rolling Shot, Covering Shot, Brawler, Pummel, Volley, Vanish, Sure Step, Staggering Shot, Open Season, Kickboxer, Leg Sweep, Rain of Arrows, Steady Nerves | ids unique: true
+Aveline (Human Paladin, Smite): Divine Power, Kindled Wrath, Smite, Rebuke, Heavy Blows, Holy Wrath, Radiant Zeal, Searing Blows, Reckoning, Final Verdict, Whirlwind, Whirlwind, Consecrated Ground, Bloodlust, Bloodlust, Cut Through, Cut Through | ids unique: true
+Durgan (Dwarf Paladin, Lay On Hands): Divine Power, Kindled Wrath, Lay On Hands, Shield of Faith, Challenge, Beacon, Font of Mercy, Mending Light, Hallowed Stance, Hallowed Dawn, Sacred Weapon, Sacred Weapon, Divine Intervention, Hand of Mercy, Hand of Mercy, Battering Charge, Keep Them Off | ids unique: true
+Sylwen (Elf Archer, Double Shot): Sharpshooter, Marked Quarry, Mark Quarry, Thrill of the Kill, Double Shot, Overwatch, Aim, Aim, Marksman's Shot, Killer's Focus, Hunter's Edge, Finisher, Deathmark, Ricochet, Hunter's Focus, Long Draw, Lesser Blessing, Rimebrand (Cold), Heartseeker | ids unique: true
+Kaela (Human Archer, Rolling Shot): Sharpshooter, Marked Quarry, Mark Quarry, Thrill of the Kill, Rolling Shot, Covering Shot, Brawler, Pummel, Covering Fire, Vanish, Sure Step, Staggering Shot, Open Season, Kickboxer, Leg Sweep, Rain of Arrows, Steady Nerves, Aim, Aim, Skirmish Shot | ids unique: true
 Bandit Thug (grunt, speed 5): Cudgel atwill, Low Blow round
 Goblin Sneak (minion, speed 7): Rusty Knife atwill, Dirty Trick round
 Grave Wisp (standard, speed 5): Chilling Touch atwill, Dread Whisper round

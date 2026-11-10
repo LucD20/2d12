@@ -48,7 +48,7 @@ const lh = fx("Lay On Hands (Holy Strike)").settings[0];
 console.log("Lay On Hands' strike:", lh.type, lh.dmg, lh.dmgPool, lh.dmgSub, lh.tiers.join(","), "| ends after:", fx("Lay On Hands (Holy Strike)").expireOn.join(","));
 console.log("old cards:", docs.filter(d => d.name === "Vow of Enmity" || d.name === "Word of Radiance").map(d => d.name).join(", "), "kept | in no level:", !paladin.levels.some(l => l.sections.some(x => x.items.map(nameOf).some(n => ["Vow of Enmity", "Word of Radiance", "Call to Arms"].includes(n)))) && !paladin.repertoire.map(nameOf).some(n => ["Word of Radiance", "Call to Arms"].includes(n)));
 // v0.0.183: the four builds of the ruler, and one NPC per role (the Bestiary's examples)
-for (const f of ["paladin-1-smite-heavy-blows", "paladin-3-lay-on-hands-protector", "archer-1-double-shot-marksman", "archer-3-rolling-shot-kickboxer"]) {
+for (const f of ["aveline-human-paladin-smite", "durgan-dwarf-paladin-lay-on-hands", "sylwen-elf-archer-double-shot", "kaela-human-archer-rolling-shot"]) {
   const pc = JSON.parse(fs.readFileSync(path.join(SRC, `pcs/${f}.pc.json`), "utf8")), ids = pc.items.map(i => i._id);
   console.log(`${pc.name}:`, pc.items.filter(i => ["feature", "action", "talent"].includes(i.type) && !i.flags?.twod12?.basic && !/^(Fists|Lock & Loose|Reaping Sweep)$/.test(i.name)).map(i => i.name).join(", "), "| ids unique:", new Set(ids).size === ids.length);
 }
