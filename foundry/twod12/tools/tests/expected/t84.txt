@@ -19,7 +19,7 @@ Rage (Empowered 2): empowered 2, enfeebled 0
 Dread (Enfeebled 3): empowered 0, enfeebled 3
 an older effect that stored true: empowered 1, enfeebled 0
 negative and garbage values are cleaned: empowered 0, enfeebled 0
-damageSteps for a [Melee] Action: {"empowered":[{"name":"Rage (4 rounds)","n":2}],"enfeebled":[{"name":"Dread","n":1}]} | for a [Ranged] one: {"empowered":[],"enfeebled":[]} | nobody: {"empowered":[],"enfeebled":[]}
+damageSteps for a [Melee] Action: {"empowered":[{"name":"Rage (4 rounds)","n":2,"inc":false}],"enfeebled":[{"name":"Dread","n":1,"inc":false}]} | for a [Ranged] one: {"empowered":[],"enfeebled":[]} | nobody: {"empowered":[],"enfeebled":[]}
 
 --- conditions with a value, and an effect that applies conditions
 Empowered applied without a value: Empowered 1 1 [empowered]

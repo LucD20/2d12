@@ -763,13 +763,15 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <p><strong>Raising Defenses.</strong> "+1 Defense" raises <strong>every</strong> Defense of the creature: Armor Defense, Ward Defense and every Vs. Attribute. "+1 AD", "+1 WD" or "+1 Defense vs <span class="at-body">Body</span>" raises only that one. A feature can narrow it further, such as "+1 Defense vs Actions that Push". These bonuses don't add up with each other (see <a class="xref" href="#stacking">Stacking</a>).</p>
 <h4 id="stacking">Stacking</h4>
 <p>The same effect never stacks with itself, and bonuses from different effects don't add up either: for each value (<span class="kw-pos">Empowered</span>, <span class="kw-neg">Enfeebled</span>, <span class="kw-neg">Vulnerable</span>, a Defense, <a class="xref" href="#guard">Guard</a>...), a creature uses only the <strong>highest bonus</strong> and the <strong>highest penalty</strong> that apply. If a creature gets the same effect again, it keeps the higher value and the longer duration: two effects that make it <span class="kw-neg">Enfeebled 1</span> do not make it <span class="kw-neg">Enfeebled 2</span>.</p>
-<p>Four things do add up:</p>
+<p>Five things do add up:</p>
 <ul>
 <li>An effect that says it <strong>increases</strong> a value: "increase your <span class="kw-neg">Enfeebled</span> value by 1" (an Action that says "increase your <span class="kw-pos">Empowered</span> value by 1" adds to the <span class="kw-pos">Empowered</span> you have).</li>
 <li><strong><span class="kw-boon">Boons</span> and <span class="kw-bane">Banes</span></strong>, up to the limit of their name (see <a class="xref" href="#named-boons-and-banes">Named <span class="kw-boon">Boons</span> and <span class="kw-bane">Banes</span></a>).</li>
+<li><strong>Named bonuses.</strong> A bonus to a value such as a Defense or a Speed can have a name, as <span class="kw-boon">Boons</span> and <span class="kw-bane">Banes</span> do: Field, Pressure or Support. Bonuses with different names add up; with the same name, only the highest counts. An unnamed bonus never adds to another bonus: it counts only when it is higher than the named ones together.</li>
 <li>An effect that <strong>increases</strong> your <a class="xref" href="#slowed">Slowed</a> value (being Desperate, Dying or Shattered).</li>
 <li>The <strong>Guard</strong> your <a class="xref" href="#unspent-ap">Unspent AP</a> give you: it adds to the Guard you have.</li>
 </ul>
+<p>For example, Jacob has a +1 Support bonus to every Defense and a +1 Field bonus to Armor Defense: his Armor Defense rises by 2. A second +1 Support bonus changes nothing, and an unnamed +1 bonus doesn't add to them either: he keeps +2.</p>
 <p><strong>Equipment is not a bonus.</strong> Your armor gives your Armor value and your charm your Ward value; effects add to those. With +1 AD and +1 Defense, your Armor Defense rises by 1 (not 2) and every other Defense by 1.</p>
 <div class="callout example"><div class="ctitle">Example</div><p>Divine Surge makes the next ally who deals damage to its target deal an extra <span class="pool-m">[R] 1d8</span> <span class="dmgword" style="--dc:#b8921c">Holy</span>. If two Paladins use Divine Surge on the same creature, the next ally still deals only one extra 1d8: it is the same effect.</p></div>
 <h3 id="frequency">Frequency</h3>
@@ -2534,7 +2536,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#stacking"><strong>Stacking</strong></a></td>
-<td>Bonuses don't add up: for each value (Guard included) use the highest bonus and the highest penalty. "Increase by N", <span class="kw-boon">Boons</span> and <span class="kw-bane">Banes</span> (up to the limit of their name), Slowed increases and the Guard of unspent AP do add up.</td>
+<td>Bonuses don't add up: for each value (Guard included) use the highest bonus and the highest penalty. "Increase by N", <span class="kw-boon">Boons</span> and <span class="kw-bane">Banes</span> (up to the limit of their name), named bonuses (Field, Pressure, Support: different names add, the same name keeps the highest), Slowed increases and the Guard of unspent AP do add up.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#stages"><strong>Stage</strong></a></td>

@@ -1,7 +1,7 @@
 // Effects that add to the next matching action: Bonus Damage settings and "expires after an action with trait X is used".
 
 import { hoverOf } from "./util.mjs";
-import { effectOff } from "./escalation.mjs";
+import { effectOff, seesOrigin, isSpent } from "./escalation.mjs";
 import { allEffects } from "./passives.mjs";
 import { onceKey, onceBlocked, isMarked } from "./automation.mjs";
 const F = "twod12";
@@ -24,9 +24,10 @@ export function collectBonuses(actor, traits, tier, opts = {}) {
       if (m.vsMarked && !isMarked(actor, opts.target ?? null)) return;
       const once = m.oncePerRound ? onceKey(e, "b", i) : "";
       if (once && onceBlocked(actor, once)) return;
+      if ((m.seen && !seesOrigin(actor, e)) || isSpent(e, m)) return;   // v0.0.323 (PACK EFFECT-SHEET)
       const dmg = modDamage(m.dmg || "", opts.mod);
       if (dmg === null) return;
-      out.push({ effectId: e.id, effect: String(e.name ?? "").replace(/^\s*Effect:\s*/i, ""), dmg, pool: m.dmgPool || "B", sub: m.dmgSub || "", text: m.text || "", fxUuid: m.fxUuid || "", hover: hoverOf(e.getFlag(F, "hover"), e.getFlag(F, "description")), srcUuid: e.srcUuid || e.getFlag(F, "effectUuid") || e.uuid || "", ...(once ? { once } : {}) });
+      out.push({ ...(m.spend && m.ruleId ? { spend: `${e.id}|${m.ruleId}` } : {}), effectId: e.id, effect: String(e.name ?? "").replace(/^\s*Effect:\s*/i, ""), dmg, pool: m.dmgPool || "B", sub: m.dmgSub || "", text: m.text || "", fxUuid: m.fxUuid || "", hover: hoverOf(e.getFlag(F, "hover"), e.getFlag(F, "description")), srcUuid: e.srcUuid || e.getFlag(F, "effectUuid") || e.uuid || "", ...(once ? { once } : {}) });
     });
   }
   return out;

@@ -42,7 +42,8 @@ const problemsEarly = [];
 console.log("--- the compendium items are the cards (content.mjs reads book/cards)");
 const compendium = cards.filter(c => !c.foundry?.basic);
 const bad = [];
-const same = (have, mine, what) => { const a = { ...have }, b = { ...mine }; delete a.escalationPassive; delete b.escalationPassive; if (JSON.stringify(a) !== JSON.stringify(b)) bad.push(what); };
+const same = (have, mine, what) => { const a = { ...have }, b = { ...mine }; delete a.escalationPassive; delete b.escalationPassive; for (const k of ["rules", "rulesOn", "ends", "autoHover"]) { delete a[k]; delete b[k]; }   // v0.0.323: the rules are read from the settings (content.mjs)
+  if (JSON.stringify(a) !== JSON.stringify(b)) bad.push(what); };
 const one = (c, type, mine) => { const have = docs.filter(d => d.name === c.name && d.type === type); if (have.length !== 1) bad.push(`${c.name}: ${have.length} ${type} items`); else same(have[0].system, mine, `${c.name}: the ${type} item differs from the card`); };
 for (const c of compendium) {
   if (c.npc) { const a = actors.find(x => x.name === c.npc), it = a?.items.filter(i => i.name === c.name && i.type === "action") ?? []; if (it.length !== 1) bad.push(`${c.name}: ${it.length} on ${c.npc}`); else same(it[0].system, cardSystem(c, resolveRefs), `${c.name}: the NPC's item differs from the card`); continue; }

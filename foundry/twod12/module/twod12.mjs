@@ -17,6 +17,7 @@ import { chatChips } from "./chatchips.mjs";
 import { registerEscalationHooks, registerMomentumSetting, escalationAll } from "./escalation.mjs";
 import { registerStateHooks } from "./states.mjs";
 import { registerMigrationR, registerMigrationMod } from "./migrater.mjs";
+import { registerMigrationFx } from "./fxmigrate.mjs";   // v0.0.323
 import { registerInitiativeSettings, registerInitiativeSocket } from "./initwindow.mjs";
 import { registerArmorHooks } from "./armor.mjs";
 import { registerFloatText } from "./floattext.mjs";
@@ -77,7 +78,7 @@ Hooks.once("init", () => {
   registerMomentumSetting();   // v0.0.243 (pack R)
   registerStateHooks();   // v0.0.243: Bloodied / Strained announced, the Escalation hooks
   registerInitiativeSettings();   // v0.0.310: Initiative opens for the players; NPCs in the players' window
-  registerMigrationMod();   // v0.0.305 (pack MOD): each character keeps the order of its Modifiers, once (before the R migration may refresh the classes)
+  registerMigrationMod(); registerMigrationFx();   // v0.0.305 (pack MOD): each character keeps the order of its Modifiers, once (before the R migration may refresh the classes)
   registerMigrationR();   // v0.0.243: existing characters brought to pack R, once, by the GM
   registerAuraHooks();
   registerHazardHooks();
@@ -136,7 +137,8 @@ Hooks.once("init", () => {
     refreshBasics: refreshAllBasics,
     refreshFromCompendium: (opts = {}) => (Object.keys(opts).length ? refreshFromCompendium(opts) : askRefresh()),   // v0.0.190: a macro can call it
     escalation: (delta = 1, actors = null) => escalationAll(delta, actors),
-    migrateMod: () => import("./migrater.mjs").then(m => m.migrateMod()),   // v0.0.305: the pack MOD migration again
+    migrateMod: () => import("./migrater.mjs").then(m => m.migrateMod()),
+    migrateEffects: (o = {}) => import("./fxmigrate.mjs").then(m => m.migrateEffects(o)),   // v0.0.323 (PACK EFFECT-SHEET): store the effects' rules (write: false only reports)   // v0.0.305: the pack MOD migration again
     migrateR: () => import("./migrater.mjs").then(m => m.migrateR()),   // v0.0.243: the pack R migration again (Health line, Escalation 1, the cards refreshed)   // v0.0.243: the GM's valve: every PC in the combat +1 Escalation (or the given creatures)
     shadowedEffects,
     rulerInfo,
@@ -347,6 +349,7 @@ Hooks.once("ready", async () => {
     else if (b.dataset.twod12 === "rollDamage") await rollDamage(msg);
     else if (/^cc(Apply|ApplyAll|Undo|Adjust|DmgTarget)$/.test(b.dataset.twod12)) await (await import("./ccdamage.mjs")).ccDamageClick(b.dataset.twod12, b, msg);   // v0.0.283
     else if (b.dataset.twod12 === "ccCard") await (await import("./ccdamage.mjs")).openCardWindow(msg);
+    else if (b.dataset.twod12 === "fxEnd") { const fx = await fromUuid(b.dataset.fx); if (!fx) ui.notifications.info("It has already ended."); else if (fx.isOwner) await fx.delete(); else ui.notifications.warn("Only its owner or the GM can end it."); }   // v0.0.323: Ends, a Save
     else if (b.dataset.twod12 === "ccOpenSrc") (await import("./ccdamage.mjs")).openSource(msg);
     else if (b.dataset.twod12 === "ccSaveDamage") await (await import("./inline.mjs")).saveDamage(msg);
     else if (/^rx[A-Z]/.test(b.dataset.twod12)) await rxClick(msg, b, ev);   // v0.0.272: the Reactions message (v0.0.273: its order, clock, Resolve, Move back, the Action's sheet)

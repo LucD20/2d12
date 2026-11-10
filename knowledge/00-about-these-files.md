@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-10 from the repository at: 0f63919 2026-11-10 v0.0.321: Lucas on v0.0.320: the damage rows, "Immune", Smite's [Mod] subtype
+Built by tools/knowledge.py on 2026-11-10 from the repository at: f6d31de 2026-11-10 v0.0.322: the new Action card everywhere an Action is read
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,9 +14,9 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (83 KB)
+- HANDOFF.md (85 KB)
 - MASTER-PLAN.md (22 KB)
-- open-design-items.md (95 KB)
+- open-design-items.md (96 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (27 KB)
 - rules-03-movement.md (39 KB)

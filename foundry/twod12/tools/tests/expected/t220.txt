@@ -2,7 +2,7 @@
 Bleed       item | valued: false | rules: - | linked: - | settings: bleed[body/instinct]
 Blinded     item | valued: false | rules: - | linked: - | settings: -
 Dazed       item | valued: true | rules: loseAp | linked: - | settings: -
-Frightened  item | valued: false | rules: whileSeen | linked: - | settings: boonbane
+Frightened  item | valued: false | rules: whileSeen | linked: - | settings: boonbane, move
 Grabbed     item | valued: false | rules: endsWithOrigin | linked: Immobilized | settings: -
 Sickened    item | valued: true | rules: - | linked: - | settings: boonbane[body/instinct]
 Staggered   item | valued: false | rules: noReactions | linked: - | settings: -

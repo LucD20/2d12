@@ -48,7 +48,7 @@ export const fxTipHtml = ({ name, dur = "", text = "", what = "", source = "", c
 /** v0.0.256: the attributes that make an element show an HTML card on hover: Foundry 13 reads data-tooltip-html, older versions data-tooltip (both are written). */
 export const tipAttrs = html => { const e = String(html ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); return html ? `data-tooltip-html="${e}" data-tooltip="${e}"` : ""; };
 export const hoverOf = (hover, description) => {
-  const h = String(hover ?? "").trim();
+  const h = String(hover ?? "").trim().replace(/\{origin\}/g, "its origin");   // v0.0.323: the built text of an effect with no origin yet
   if (h) return h;
   return String(description ?? "").replace(/<[^>]+>/g, " ").replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim().slice(0, 240);
 };

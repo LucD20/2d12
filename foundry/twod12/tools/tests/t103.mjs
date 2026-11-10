@@ -40,7 +40,9 @@ console.log("hidden:", F.hiddenPreds(x).map(h => h.label).join(", "), "| once An
 console.log("bonus damage has no Saves against:", F.hiddenPreds({ ...blank }, S(), ["all", "any", "none"]).map(h => h.field).join(","));
 console.log("--- the template");
 const t = (fs.readFileSync(ROOT + "templates/item-sheet.hbs", "utf8") + fs.readFileSync(ROOT + "templates/parts/settings.hbs", "utf8") + fs.readFileSync(ROOT + "templates/parts/preds.hbs", "utf8")), sh = fs.readFileSync(ROOT + "module/item-sheet.mjs", "utf8");
-for (const k of ["data-fxhelp", "data-fxkind", "data-fxself", "data-fxadd", "data-padd", "data-prem", "data-pshow", "data-eadd", "data-erem", "data-expireall", 'data-list="conditions"', 'name="system.duration.type"', 'name="system.linked"', 'name="system.valued"', "fxd-help"])
+// v0.0.323 (PACK EFFECT-SHEET): the help toggle, the kind, the placement and the Add menu moved into the new tab (fxsheet.mjs): the ?, @isCondition, @selfApplied, data-fr-add
+{ const fxs = fs.readFileSync(ROOT + "module/fxsheet.mjs", "utf8"); for (const k of ["data-fr-q", "@isCondition", "@selfApplied", "data-fr-add"]) console.log(k.padEnd(26), "new tab:", (t + fxs).includes(k), "| listened:", (sh + fxs).includes(k.startsWith("@") ? "ITEM_FIELDS" : `[${k}]`)); }
+for (const k of ["data-padd", "data-prem", "data-pshow", "data-eadd", "data-erem", "data-expireall", 'data-list="conditions"', 'name="system.duration.type"', 'name="system.linked"', 'name="system.valued"', "fxd-help"])
   console.log(k.padEnd(26), "template:", t.includes(k), "| sheet listens:", k.startsWith("data-") && !k.includes("=") ? sh.includes(`[${k}]`) : "-");
 console.log("no old 88-checkbox predicate grid:", !t.includes("Predicate: applies to rolls whose traits match"), "| no old Add setting button:", !t.includes('id="add-setting"'));
 console.log("help setting registered:", fs.readFileSync(ROOT + "module/twod12.mjs", "utf8").includes('"effectHelp"'));

@@ -84,6 +84,7 @@ export function registerMarkHooks() {
   Hooks.on("deleteCombat", async combat => {
     if (!game.user.isActiveGM) return;
     for (const c of combat.combatants) { const a = c.actor; if (a && quarryOf(a)) await a.unsetFlag(F, "quarry"); }
+    try { await (await import("./automation.mjs")).endEncounterEffects(combat); } catch (e) { console.warn("twod12 | encounter effects", e); }   // v0.0.323: "This encounter"
     redrawQuarryMarks();
   });
   // An encounter starts: every mark ends, then each creature's "At the start of an encounter" messages are posted.
@@ -94,6 +95,7 @@ export function registerMarkHooks() {
       if (!a) continue;
       if (quarryOf(a)) await a.unsetFlag(F, "quarry");
       await postMessages(a, "encounter");
+      try { await (await import("./automation.mjs")).applyEncounterStartEffects(a); } catch (e) { console.warn("twod12 | encounter effects", e); }   // v0.0.323
     }
   });
 }

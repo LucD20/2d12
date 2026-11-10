@@ -11,7 +11,7 @@ const C = await import(ROOTURL + "tools/content.mjs");
 const src = f => fs.readFileSync(ROOT + f, "utf8");
 console.log("--- the automation chip");
 console.log(["gold", "silver", "bronze", "none", ""].map(r => `${r || "(none)"}: ${cfg.autoChip(r).replace(/ data-tooltip="[^"]*"/, "") || "-"}`).join(" | "));
-console.log("on the card head:", cfg.cardHead("Smite", "Divine Power 1", "", "", "gold").includes('autodia auto-gold'), "| the Features tab:", src("templates/actor-sheet.hbs").includes("{{name}}</span>{{{auto}}}"), "| the item sheets' select:", (src("templates/item-sheet.hbs").match(/name="system.automation"/g) ?? []).length);
+console.log("on the card head:", cfg.cardHead("Smite", "Divine Power 1", "", "", "gold").includes('autodia auto-gold'), "| the Features tab:", src("templates/actor-sheet.hbs").includes("{{name}}</span>{{{auto}}}"), "| the item sheets' select:", (src("templates/item-sheet.hbs").match(/name="system.automation"/g) ?? []).length + (src("module/fxsheet.mjs").includes('"@automation"') ? 1 : 0));   // v0.0.323: the Effect's is in the new tab
 const count = {}; for (const d of C.docs) if (d.system.automation) count[d.system.automation] = (count[d.system.automation] ?? 0) + 1;
 console.log("compendium ranks:", JSON.stringify(count), "| old cards have none:", !C.docs.some(d => /old cards/.test(d.folder ?? "") && d.system.automation));
 console.log("--- bonus damage named by its source");

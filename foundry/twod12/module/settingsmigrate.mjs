@@ -1,4 +1,5 @@
 // Migrations of an Effect's, Feature's or Talent's settings (pure: the tests load it).
+import { migrate } from "./fxrules.mjs";
 //  v0.0.126: Empowered and Enfeebled are their own setting ("damagestep"), no longer part of Boons and Banes; a passive's Escalation minimum
 //  belongs to each setting (minEscalation), no longer to the whole Feature or Talent (passiveEscalation).
 export function migrateSettings(source) {
@@ -18,5 +19,16 @@ export function migrateSettings(source) {
     out.push(x);
   }
   source.settings = out;
+  return source;
+}
+
+/**
+ * v0.0.323 (PACK EFFECT-SHEET): an item whose rules aren't stored yet (rulesOn off) reads its old settings as rules, in memory, on every load (stable ids):
+ * the new Details tab shows them, and the first save from it stores the rules with the settings compiled from them. Only a whole source (with its settings)
+ * is migrated, never a partial update. host: "effect", "feature", "talent".
+ */
+export function migrateRules(source, host = "effect") {
+  if (!source || source.rulesOn || !Array.isArray(source.settings) || (Array.isArray(source.rules) && source.rules.length)) return source;
+  try { const m = migrate(source, host); source.rules = m.rules; if (host === "effect") source.ends = m.ends; } catch (e) { console.warn("twod12 | effect rules", e); }
   return source;
 }

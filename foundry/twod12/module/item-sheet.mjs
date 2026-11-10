@@ -71,6 +71,10 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       attrChoices: TWOD12.attributes,
       defensesList: t === "feature" ? s.defenses.map((d, i) => ({ i, attr: d.attr, bonus: d.bonus, tags: d.tags })) : [],
       ...(t === "effect" ? this._effectContext(s) : ["feature", "talent"].includes(t) ? this._passiveContext() : {}),
+      // v0.0.323 (PACK EFFECT-SHEET): the new Details tab (fxsheet.mjs), and the ? on the tab bar
+      fxHost: ["effect", "feature", "talent"].includes(t),
+      fxTab: ["effect", "feature", "talent"].includes(t) ? await this._fxTab() : "",
+      fxHeadLine: t === "effect" ? (this._fxExtra?.()?.headLine ?? "") : "",
       isPassiveHost: ["feature", "talent"].includes(t),
       freqChoices: TWOD12.frequencies,
       reactionKinds: { interrupt: "Interrupt", trigger: "Trigger" },
@@ -287,6 +291,39 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
   }
 
   /** A Feature's or Talent's passive: the same sentences as an Effect's settings. */
+  /** v0.0.323 (PACK EFFECT-SHEET): the model of the new Details tab: the rules, the names and details of what was dropped, the origin, the help. */
+  async _fxTab() {
+    const it = this.item, s = it.system, host = it.type;
+    const { fxTabHtml, dropInfo } = await import("./fxsheet.mjs");
+    const plain = r => (typeof r?.toObject === "function" ? r.toObject() : r);
+    const rules = (s.rules ?? []).map(plain);
+    const refs = new Set();
+    for (const r of rules) {
+      if (r?.item) refs.add(r.item);
+      if (r?.carry?.fx) refs.add(r.carry.fx);
+      for (const d of r?.dmg?.list ?? []) if (d.fx) refs.add(d.fx);
+      if (r?.setting?.fxUuid) refs.add(r.setting.fxUuid);
+    }
+    const items = {};
+    for (const u of refs) { try { const d = /^(Compendium|Item|Actor|Scene)\./.test(u) ? await fromUuid(u) : null; const inf = await dropInfo(d); if (inf) items[u] = inf; } catch (e) { /* gone */ } }
+    // a granted Action given by name (an older setting): find it on the creature or in the world for its card line
+    for (const r of rules) if (r?.kind === "grant" && !r.item && r.itemName && !items[`name:${r.itemName}`]) {
+      const d = it.parent?.items?.getName?.(r.itemName) ?? game.items?.getName?.(r.itemName);
+      if (d) { const inf = await dropInfo(d); if (inf) items[`name:${r.itemName}`] = inf; }
+    }
+    let help = false;
+    try { help = !!game.settings.get("twod12", "effectHelp"); } catch (e) { /* not registered */ }
+    const anims = [["", "None"], ...Object.entries(CONFIG.Canvas?.lightAnimations ?? {}).map(([k, v]) => [k, (typeof v?.label === "string" && game.i18n?.localize?.(v.label)) || k])];
+    const extra = this._fxExtra?.() ?? {};
+    this._fr ??= { sel: "", own: false, names: {} };
+    return fxTabHtml({
+      host, name: it.name, rules, ends: s.ends ?? {}, sel: this._fr.sel, own: this._fr.own, names: { ...this._fr.names, ...(extra.names ?? {}) }, items,
+      originName: extra.originName ?? "", applied: extra.applied ?? null, hover: s.hover ?? "", help, lightAnims: anims, valuedHost: !!s.valued,
+      auto: { rank: s.automation ?? "", note: s.automationNote ?? "", ranks: Object.entries(TWOD12.automationRanks ?? {}) },
+      adv: { isCondition: !!s.isCondition, valued: !!s.valued, selfApplied: !!s.selfApplied, originFromUser: !!s.originFromUser }
+    });
+  }
+
   _passiveContext() {
     let help = false;
     try { help = !!game.settings.get("twod12", "effectHelp"); } catch (e) { /* not registered yet */ }
@@ -339,6 +376,16 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       })
     );
     this._effectListeners();
+    // v0.0.323 (PACK EFFECT-SHEET): the new Details tab, and the ? that shows its help texts
+    const frTab = this.element.querySelector(".fr-tab");
+    if (frTab) import("./fxsheet.mjs").then(m => m.wireFxTab(this, this.element));
+    this.element.querySelector("[data-fr-q]")?.addEventListener("click", async ev => {
+      ev.preventDefault();
+      const on = !this.element.querySelector(".fr-tab")?.classList.contains("fr-helpon");
+      this.element.querySelector(".fr-tab")?.classList.toggle("fr-helpon", on);
+      ev.currentTarget.classList.toggle("on", on); ev.currentTarget.setAttribute("aria-pressed", String(on));
+      try { await game.settings.set("twod12", "effectHelp", on); } catch (e) { /* not registered */ }
+    });
     // v0.0.185: the Class's Weapon and Power Modifier selects ("uses X or Y") write the two-Attribute lists.
     this.element.querySelectorAll("[data-modsel]").forEach(el => el.addEventListener("change", async () => {
       const key = el.dataset.modsel, pair = [...this.element.querySelectorAll(`[data-modsel="${key}"]`)].map(x => x.value);

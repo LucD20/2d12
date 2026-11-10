@@ -68,7 +68,7 @@ console.log("Aura 1 around one square:\n" + draw({ x: 0, y: 0, width: 1, height:
 console.log("Aura 2 around one square:\n" + draw({ x: 0, y: 0, width: 1, height: 1 }, 2));
 console.log("Aura 1 around a 2x2 creature:\n" + draw({ x: 0, y: 0, width: 2, height: 2 }, 1));
 const acts3 = fs.readFileSync(ROOT + "module/actions.mjs", "utf8"), tpl3 = fs.readFileSync(ROOT + "templates/item-sheet.hbs", "utf8"), aur = fs.readFileSync(ROOT + "module/aura.mjs", "utf8");
-console.log("several targets: a trigger chip in its creature's tile:", acts3.includes("const infoMods = notices.filter(n => n.for && perCreature)") && acts3.includes("const chipOf = m => m.info ?"), "| the sheet has a Hover text on effects and on passives:", (tpl3.match(/name="system.hover"/g) || []).length === 2, "| hovering a token shows its Aura:", aur.includes('Hooks.on("hoverToken"'));
+console.log("several targets: a trigger chip in its creature's tile:", acts3.includes("const infoMods = notices.filter(n => n.for && perCreature)") && acts3.includes("const chipOf = m => m.info ?"), "| the sheet has a Hover text on effects and on passives (v0.0.323: Write it yourself, in the shared tab):", (tpl3.match(/\{\{\{fxTab\}\}\}/g) || []).length === 2 && fs.readFileSync(ROOT + "module/fxsheet.mjs", "utf8").includes('"@hover"'), "| hovering a token shows its Aura:", aur.includes('Hooks.on("hoverToken"'));
 console.log("--- v0.0.129: the outline, and a color for each Aura");
 const edges = (cells) => AU.outlineSegments(cells, 100).length;
 const ring = (token, size) => AU.auraCells(token, size, 100, tokenDistance);

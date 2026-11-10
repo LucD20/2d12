@@ -189,7 +189,8 @@ export function netStep(empowered = [], enfeebled = []) {
 }
 
 /** The highest value of a list of { n } (the same effect doesn't stack). */
-export const topStep = list => (list ?? []).reduce((m, x) => Math.max(m, Number(x.n) || 0), 0);
+/** Empowered / Enfeebled from several sources: the highest "Set to" (Stacking) plus every "Increase by" (v0.0.323, PACK EFFECT-SHEET: Vow of Enmity). */
+export const topStep = list => (list ?? []).reduce((m, x) => (x.inc ? m : Math.max(m, Number(x.n) || 0)), 0) + (list ?? []).reduce((s, x) => s + (x.inc ? Number(x.n) || 0 : 0), 0);
 
 /** "Empowered 2", "Enfeebled 1", or "" for no step. */
 export const stepLabel = n => (n > 0 ? `Empowered ${n}` : n < 0 ? `Enfeebled ${-n}` : "");

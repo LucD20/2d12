@@ -61,8 +61,8 @@ export function rollStripChips({ mods = [], doom = "", exhausted = 0, steps = {}
   if (doom) out.push({ kind: "doom", label: doom, applies: true, why: `${doom}: all your Rolls are Doomed` });
   const exh = Math.max(0, Math.trunc(Number(exhausted)) || 0);
   if (exh) out.push({ kind: "flat", label: `Exhausted ${exh}`, applies: true, why: `Exhausted ${exh}: −${exh} on all your Rolls` });
-  for (const x of steps.empowered ?? []) out.push({ kind: "emp", label: `Empowered ${x.n}`, applies: true, why: `${x.name}: +${x.n} on every damage die` });
-  for (const x of steps.enfeebled ?? []) out.push({ kind: "enf", label: `Enfeebled ${x.n}`, applies: true, why: `${x.name}: −${x.n} on every damage die` });
+  for (const x of steps.empowered ?? []) out.push({ kind: "emp", label: `Empowered ${x.inc ? "+" : ""}${x.n}`, applies: true, why: `${x.name}: +${x.n} on every damage die` });
+  for (const x of steps.enfeebled ?? []) out.push({ kind: "enf", label: `Enfeebled ${x.inc ? "+" : ""}${x.n}`, applies: true, why: `${x.name}: −${x.n} on every damage die` });
   const seen = new Set();
   for (const b of bonuses) {
     if (seen.has(b.effect)) continue;

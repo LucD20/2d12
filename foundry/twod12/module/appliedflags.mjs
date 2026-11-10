@@ -23,17 +23,19 @@ export function appliedFlags(s, source) {
       from: [...(x.from ?? [])],
       oncePerRound: !!x.oncePerRound, vsMarked: !!x.vsMarked,
       // v0.0.314 (pack AU): only on rolls with one of these Attributes (Sickened: Body and Instinct Saves); against its origin or not (Taunted)
-      attrs: x.type === "boonbane" ? [...(x.attrs ?? [])] : [], vsOrigin: x.type === "boonbane" ? (x.vsOrigin || "") : ""
+      attrs: x.type === "boonbane" ? [...(x.attrs ?? [])] : [], vsOrigin: x.type === "boonbane" ? (x.vsOrigin || "") : "",
+      // v0.0.323 (PACK EFFECT-SHEET): its rule, "Next one only", its own "While they see the origin", Empowered "Increase by"
+      ruleId: x.ruleId || "", spend: !!x.spend, seen: !!x.seen, empMode: x.empMode === "inc" ? "inc" : "set"
     }));
-  const bonuses = s.settings.filter(x => x.type === "bonusdamage").map(x => ({ dmg: x.dmg, dmgPool: x.dmgPool, dmgSub: x.dmgSub, tiers: [...x.tiers], text: x.text, fxUuid: x.fxUuid, all: [...x.all, ...(x.predicate ? [x.predicate] : [])], any: [...x.any], none: [...x.none], oncePerRound: !!x.oncePerRound, vsMarked: !!x.vsMarked }));
+  const bonuses = s.settings.filter(x => x.type === "bonusdamage").map(x => ({ dmg: x.dmg, dmgPool: x.dmgPool, dmgSub: x.dmgSub, tiers: [...x.tiers], text: x.text, fxUuid: x.fxUuid, all: [...x.all, ...(x.predicate ? [x.predicate] : [])], any: [...x.any], none: [...x.none], oncePerRound: !!x.oncePerRound, vsMarked: !!x.vsMarked, ruleId: x.ruleId || "", spend: !!x.spend, seen: !!x.seen }));
   const inlines = s.settings.filter(x => x.type === "inline" && String(x.inlineAction ?? "").trim()).map(x => String(x.inlineAction).trim());   // v0.0.249: inline Actions
   const grants = s.settings.filter(x => x.type === "grant" && x.grantAction).map(x => ({ spec: x.grantAction, count: x.grantCount, left: x.grantCount, ap: x.grantAp, boons: x.boons, banes: x.banes, distinct: x.grantDistinct, on: x.grantOn || x.halfOn || (x.halfT3 ? "t3" : ""), does: x.grantDo || "half", text: String(x.grantText ?? "").trim(), on2: x.grantOn2 || "", does2: x.grantDo2 || "text", text2: String(x.grantText2 ?? "").trim(), used: [] }));   // v0.0.264: "On [on], [does]"; v0.0.266: a second line
   const covers = s.settings.filter(x => x.type === "cover" && (x.coverLevels?.size ?? x.coverLevels?.length)).map(x => ({ levels: [...x.coverLevels], all: [...(x.all ?? [])], any: [...(x.any ?? [])], none: [...(x.none ?? [])] }));   // v0.0.266 (Aim)
-  const speedMods = s.settings.filter(x => x.type === "speed").map(x => ({ mode: x.speedMode, formula: x.speedFormula }));
-  const defenses = s.settings.filter(x => x.type === "defense" && Number(x.defValue)).map(x => ({ kind: x.defKind || "all", bonus: Math.trunc(Number(x.defValue)) || 0 }));
-  const auras = s.settings.filter(x => x.type === "aura" && x.fxUuid).map(x => ({ size: Math.max(1, Math.trunc(Number(x.auraSize)) || 1), who: x.auraWho || "allies", self: !!x.auraSelf, fxUuid: x.fxUuid, outline: x.auraOutline || "", fill: x.auraFill || "" }));
-  const triggers = s.settings.filter(x => x.type === "ondamage" && x.fxUuid).map(x => ({ sub: x.trigSub || "", tag: String(x.trigTag ?? "").trim(), fxUuid: x.fxUuid }));
-  const ignores = s.settings.filter(x => x.type === "ignore" && x.ignoreRule).map(x => ({ rule: x.ignoreRule, all: [...(x.all ?? [])], any: [...(x.any ?? [])], none: [...(x.none ?? [])] }));   // v0.0.186
+  const speedMods = s.settings.filter(x => x.type === "speed").map(x => ({ mode: x.speedMode, formula: x.speedFormula, ...(x.defMode === "bonus" && x.speedMode !== "override" ? { kind: "bonus", name: x.defName || "" } : {}), ...(x.seen ? { seen: true } : {}) }));   // v0.0.323: a named or unnamed bonus (the book's Stacking)
+  const defenses = s.settings.filter(x => x.type === "defense" && Number(x.defValue)).map(x => ({ kind: x.defKind || "all", bonus: Math.trunc(Number(x.defValue)) || 0, mode: x.defMode || "bonus", name: x.defName || "", seen: !!x.seen }));   // v0.0.323: named bonuses, increases, set
+  const auras = s.settings.filter(x => x.type === "aura" && x.fxUuid).map(x => ({ size: Math.max(1, Math.trunc(Number(x.auraSize)) || 1), who: x.auraWho || "allies", self: !!x.auraSelf, fxUuid: x.fxUuid, outline: x.auraOutline || "", fill: x.auraFill || "", formula: x.sizeFormula || "", show: x.auraShow !== false }));
+  const triggers = s.settings.filter(x => x.type === "ondamage" && x.fxUuid).map(x => ({ sub: x.trigSub || "", tag: String(x.trigTag ?? "").trim(), fxUuid: x.fxUuid, pool: x.trigPool || "" }));
+  const ignores = s.settings.filter(x => x.type === "ignore" && x.ignoreRule).map(x => ({ rule: x.ignoreRule, rangeAll: !!x.rangeAll, all: [...(x.all ?? [])], any: [...(x.any ?? [])], none: [...(x.none ?? [])] }));   // v0.0.186
   const rallies = s.settings.filter(x => x.type === "rally" && String(x.rallyBonus ?? "").trim()).map(x => ({ bonus: String(x.rallyBonus).trim(), range: Math.max(0, Math.trunc(Number(x.rallyRange)) || 0) }));
   const turnStarts = s.settings.filter(x => x.type === "turnstart" && x.fxUuid).map(x => ({ fxUuid: x.fxUuid }));   // v0.0.187: gains this Effect at the start of each of its turns
   // v0.0.207: chat messages at a moment (Marked Quarry's reminders) and weapon properties this creature's weapons lose (Brawler).
@@ -46,6 +48,10 @@ export function appliedFlags(s, source) {
   // v0.0.320 (pack AU part 2): Resist / Weak / Immune (a subtype each; the damage message merges them with the creature's own line) and more Frequency uses
   const dmgMods = s.settings.filter(x => x.type === "resist" && x.dmgSub && (x.rwKind === "immune" || Number(x.rwValue) > 0)).map(x => ({ kind: x.rwKind || "resist", sub: x.dmgSub, n: x.rwKind === "immune" ? 0 : Math.trunc(Number(x.rwValue)) }));
   const freqMore = [...new Set(s.settings.filter(x => x.type === "freqmore").map(x => x.fmWhich || "round"))];
+  // v0.0.323 (PACK EFFECT-SHEET): an Effect gained at the start of each encounter; Movement limits; the rules that "Next one only" can spend
+  const encStarts = s.settings.filter(x => x.type === "encstart" && x.fxUuid).map(x => ({ fxUuid: x.fxUuid }));
+  const moveLimits = s.settings.filter(x => x.type === "move").map(x => ({ dir: x.text === "away" ? "away" : "closer", seen: !!x.seen, ruleId: x.ruleId || "" }));
+  const spendable = [...new Set(s.settings.filter(x => x.spend && x.ruleId).map(x => x.ruleId))];
   const rules = { whileSeen: !!s.whileSeen, noReactions: !!s.noReactions, loseAp: !!s.loseAp, endsWithOrigin: !!s.endsWithOrigin };
-  return { ...rules, bleeds, dmgMods, freqMore, description: s.description, hover: s.hover ?? "", notes, modifiers, bonuses, inlines, grants, covers, speedMods, defenses, auras, triggers, ignores, rallies, turnStarts, messages, propLoss, escHooks, minEscalation: Math.max(0, Number(s.minEscalation) || 0), expireOn: [...s.expireOn], expireAll: s.expireAll, source };
+  return { ...rules, bleeds, dmgMods, freqMore, encStarts, moveLimits, spendable, spent: [], saveEnd: s.saveEnd?.on ? { ...s.saveEnd } : null, description: s.description, hover: String(s.hover ?? "").trim() || s.autoHover || "", notes, modifiers, bonuses, inlines, grants, covers, speedMods, defenses, auras, triggers, ignores, rallies, turnStarts, messages, propLoss, escHooks, minEscalation: Math.max(0, Number(s.minEscalation) || 0), expireOn: [...s.expireOn], expireAll: s.expireAll, source };
 }

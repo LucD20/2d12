@@ -1,4 +1,5 @@
 import { allEffects } from "./passives.mjs";
+import { seesOrigin, isSpent } from "./escalation.mjs";
 import { appliedFlags } from "./appliedflags.mjs";
 import { effectOff } from "./escalation.mjs";
 import { openEffectSheet } from "./fxopen.mjs";
@@ -59,9 +60,11 @@ export function damageSteps(actor, traits, target = null) {
   for (const e of allEffects(actor)) for (const m of (effectOff(actor, e) ? [] : e.getFlag(F, "modifiers") ?? [])) {
     if (m.against || !matches(m, traits)) continue;
     if (m.vsMarked && !isMarked(actor, target)) continue;   // v0.0.186: only against the creature it marked (Hunter's Focus)
+    if ((m.seen && !seesOrigin(actor, e)) || isSpent(e, m)) continue;   // v0.0.323: its own "While they see the origin"; "Next one only" already used
     const emp = m.empowered === true ? 1 : Math.trunc(Number(m.empowered)) || 0, enf = Math.trunc(Number(m.enfeebled)) || 0;   // (older effects stored true for Empowered)
-    if (emp > 0) out.empowered.push({ name: shortName(e.name), n: emp });
-    if (enf > 0) out.enfeebled.push({ name: shortName(e.name), n: enf });
+    const inc = m.empMode === "inc", sp = m.spend && m.ruleId ? { spend: `${e.id}|${m.ruleId}` } : {};   // v0.0.323: "Increase by" adds to the value they have
+    if (emp > 0) out.empowered.push({ name: shortName(e.name), n: emp, inc, ...sp });
+    if (enf > 0) out.enfeebled.push({ name: shortName(e.name), n: enf, inc, ...sp });
   }
   for (const e of actor?.effects ?? []) for (const id of ["empowered", "enfeebled"]) {   // the conditions Empowered N and Enfeebled N
     if (e.statuses?.has?.(id)) out[id].push({ name: baseNameOf(e), n: Math.max(1, Math.trunc(Number(e.getFlag(F, "value"))) || 1) });
@@ -136,7 +139,8 @@ export function modifierList(actor, traits, targetActors = [], from = null) {
       const once = m.oncePerRound ? onceKey(e, "m", i) : "";
       if (once && onceBlocked(actor, once)) return;
       if (m.vsOrigin && !originOk(m, e.origin ?? "", targetActors.map(t => t?.uuid))) return;   // v0.0.314 (pack AU): Taunted, against a creature other than its origin
-      const base = { name: shortName(e.name), boons: m.boons * kOf(m, e), banes: m.banes * kOf(m, e), bb: bbOf(m, e), match: matches(m, traits, from), predicate: predText(m) + onceText(m) + bbText(m, e), ...(once ? { once, onceActor: actor.uuid } : {}) };
+      if ((m.seen && !seesOrigin(actor, e)) || isSpent(e, m)) return;   // v0.0.323 (PACK EFFECT-SHEET): its own "While they see the origin"; "Next one only" used
+      const base = { name: shortName(e.name), boons: m.boons * kOf(m, e), banes: m.banes * kOf(m, e), bb: bbOf(m, e), match: matches(m, traits, from), predicate: predText(m) + onceText(m) + bbText(m, e), ...(once ? { once, onceActor: actor.uuid } : {}), ...(m.spend && m.ruleId ? { spend: `${e.id}|${m.ruleId}`, spendActor: actor.uuid } : {}) };
       if (!m.vsMarked) return out.push({ id: `${e.id}:${i}`, ...base });
       for (const t of targetActors) if (isMarked(actor, t)) out.push({ ...base, id: `${t.uuid}|${e.id}:${i}`, name: `${base.name} (${t.name})`, predicate: `Against your marked target, ${t.name}: ${base.predicate}` });
     });
@@ -154,7 +158,8 @@ export function modifierList(actor, traits, targetActors = [], from = null) {
         if (!m.against || !(m.boons || m.banes)) return;
         const once = m.oncePerRound ? onceKey(e, "m", i) : "";   // v0.0.186: the first matching Action against it each round (Elusive)
         if (once && onceBlocked(t, once)) return;
-        out.push({ id: `${t.uuid}|${e.id}:${i}`, name: `${shortName(e.name)} (${t.name})`, boons: m.boons * kOf(m, e), banes: m.banes * kOf(m, e), bb: bbOf(m, e), match: matches(m, traits), predicate: `Against ${t.name}: ${predText(m)}${onceText(m)}${bbText(m, e)}`, ...(once ? { once, onceActor: t.uuid } : {}) });
+        if ((m.seen && !seesOrigin(t, e)) || isSpent(e, m)) return;   // v0.0.323
+        out.push({ ...(m.spend && m.ruleId ? { spend: `${e.id}|${m.ruleId}`, spendActor: t.uuid } : {}), id: `${t.uuid}|${e.id}:${i}`, name: `${shortName(e.name)} (${t.name})`, boons: m.boons * kOf(m, e), banes: m.banes * kOf(m, e), bb: bbOf(m, e), match: matches(m, traits), predicate: `Against ${t.name}: ${predText(m)}${onceText(m)}${bbText(m, e)}`, ...(once ? { once, onceActor: t.uuid } : {}) });
       });
     }
   }
@@ -170,8 +175,12 @@ export async function useOnceModifiers(actor, traits, targetActors = [], from = 
     if (!keys.has(m.onceActor)) keys.set(m.onceActor, []);
     keys.get(m.onceActor).push(m.once);
   }
-  const { markOnce } = await import("./automation.mjs");
+  const { markOnce, markSpent } = await import("./automation.mjs");
   for (const [uuid, list] of keys) { const a = byActor.get(uuid); if (a) await markOnce(a, list); }
+  // v0.0.323 (PACK EFFECT-SHEET): the "Next one only" Boons and Banes that were in the roll are spent
+  const spends = new Map();
+  for (const m of modifierList(actor, traits, targetActors, from)) if (m.spend && ids.has(String(m.id))) { if (!spends.has(m.spendActor)) spends.set(m.spendActor, []); spends.get(m.spendActor).push(m.spend); }
+  for (const [uuid, list] of spends) { const a = byActor.get(uuid); if (a) await markSpent(a, list); }
 }
 
 /** Sum of the chosen modifiers ("effectId:index" ids). */
@@ -225,6 +234,12 @@ async function applyLight(actor, light) {
 
 export { appliedFlags };
 
+/** v0.0.323 (PACK EFFECT-SHEET): the hover text built from the rules says "{origin}": the applied effect names its origin there. */
+function withOriginHover(flags, originUuid) {
+  if (!String(flags?.hover ?? "").includes("{origin}")) return flags;
+  let who = ""; try { who = originUuid ? globalThis.fromUuidSync?.(originUuid)?.name ?? "" : ""; } catch (e) { who = ""; }
+  return { ...flags, hover: flags.hover.replace(/\{origin\}/g, who || "its origin") };
+}
 /** v0.0.317 (Lucas): an effect that needs an origin is named with it, "Frightened (Ogre)": the HUD's card, the sheet and the chips say of whom. */
 export function withOriginName(name, sys, originUuid, actor = null) {
   if (!needsOrigin(sys) || !originUuid || originUuid === actor?.uuid) return name;
@@ -266,7 +281,7 @@ export async function createEffect(actor, item, origin, over = null, extra = {})
       ...extra, effectUuid: item.uuid, duration: d, remaining: d.rounds, ...(value !== undefined ? { value, baseName: item.name } : {}),
       slotInit, originSlot: origin?.slot ?? null,
       originCombatantId: origin?.combatantId ?? "", anchorSlot: origin?.anchorSlot ?? null, anchorCombatantId: origin?.anchorCombatantId ?? "", appliedRound: origin?.round ?? null, appliedTurn: origin?.turn ?? null,
-      ...withBleed(appliedFlags(s, item.toObject().system), over?.bleed), lightBackup, fromEscalation: !!origin?.escalation,
+      ...withOriginHover(withBleed(appliedFlags(s, item.toObject().system), over?.bleed), origin?.actorUuid), lightBackup, fromEscalation: !!origin?.escalation,
       // Immobilized (v0.0.174): its DC, 11 + the Modifier its origin used (13 without an origin or a Modifier). Forced Movement and Reposition read it.
       ...(statuses.includes("immobilized") ? { immobileDc: origin?.actorUuid && Number.isFinite(origin?.mod) ? 11 + origin.mod : TWOD12.baseDC } : {})
     } }

@@ -1,9 +1,9 @@
 import { TWOD12, migrateTags, npcHm, npcCv, stageOf, stageMod } from "./config.mjs";
-import { migrateSettings } from "./settingsmigrate.mjs";
+import { migrateSettings, migrateRules } from "./settingsmigrate.mjs";
 import { classModifiers, modOf, classTrack } from "./modifiers.mjs";
 
 import { applySpeedMods } from "./speedmods.mjs";
-const { SchemaField, NumberField, StringField, BooleanField, ArrayField, SetField, HTMLField } = foundry.data.fields;
+const { SchemaField, NumberField, StringField, BooleanField, ArrayField, SetField, HTMLField, ObjectField } = foundry.data.fields;
 const int = (initial = 0, min = 0) => new NumberField({ required: true, nullable: false, integer: true, initial, min });
 const sint = (initial = 0) => new NumberField({ required: true, nullable: false, integer: true, initial });
 const str = (initial = "") => new StringField({ required: true, blank: true, initial });
@@ -382,12 +382,12 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
         // v0.0.189: Not implemented / Bronze / Silver / Gold
       // Defense bonuses: +bonus to the DC of actions that roll "vs" this attribute (and carry all the listed tags, e.g. "pushed").
       // A passive: settings that work by themselves while the creature has it (always, or while its Escalation is at least passiveEscalation).
-      settings: settingsField(),
+      settings: settingsField(), ...rulesFields(),   // v0.0.323 (PACK EFFECT-SHEET)
       defenses: new ArrayField(new SchemaField({ attr: choice(TWOD12.defenseKinds, "body"), bonus: sint(1), tags: str() }))   // attr: what it raises (every Defense, Armor, Ward or one Vs. Attribute)
     };
   }
   static migrateData(source) {
-    migrateSettings(source);
+    migrateSettings(source); migrateRules(source, "feature");   // v0.0.323
     if (source && source.escalationPassive === undefined && /escalation/i.test(String(source.category ?? ""))) source.escalationPassive = true;   // v0.0.187
     return super.migrateData(source);
   }
@@ -546,7 +546,7 @@ export class TalentData extends foundry.abstract.TypeDataModel {
       // Talents that modify other Actions: which Actions (a name, "category:Weapon Technique" or "trait:strike"), when, and what they add.
       modifiers: modifiersField(),
       // A passive, as on a Feature.
-      settings: settingsField(),
+      settings: settingsField(), ...rulesFields(),   // v0.0.323 (PACK EFFECT-SHEET)
       // v0.0.186 (pack C-a; book 16-talents.md): the Category (Combat, Mobility, Magic, Skill), the Prerequisites as data the Talent picker checks
       // (each a Talent by name, a Level, an Action with a trait, an Attribute at a value, or Other: free text, not checked; all of them, or any one),
       // and a theme tag (Unarmed, Great Weapon, Marksman, Divine) the picker can filter by. "requirements" stays as the old free text.
@@ -559,7 +559,7 @@ export class TalentData extends foundry.abstract.TypeDataModel {
     };
   }
   static migrateData(source) {
-    migrateSettings(source);
+    migrateSettings(source); migrateRules(source, "talent");   // v0.0.323
     // v0.0.186: "Combat Talent" in the Category becomes the Category field.
     const m = /^\s*(combat|mobility|magic|skill)\s+talent\s*$/i.exec(String(source?.category ?? ""));
     if (m && source.group === undefined) { source.group = m[1].toLowerCase(); source.category = "Talent"; }
@@ -567,6 +567,8 @@ export class TalentData extends foundry.abstract.TypeDataModel {
   }
 }
 
+/** v0.0.323 (PACK EFFECT-SHEET): the rules list (the Details tab's source), whether it is stored (rulesOn), the hover card built from it. */
+const rulesFields = () => ({ rules: new ArrayField(new ObjectField()), rulesOn: bool(), autoHover: str() });
 /** The settings of an Effect (and of a Feature's or Talent's passive, v0.0.125): what it does. */
 const settingsField = () => new ArrayField(new SchemaField({
         type: choice(TWOD12.effectSettings, "note"),
@@ -623,11 +625,16 @@ const settingsField = () => new ArrayField(new SchemaField({
         vsOrigin: choice(TWOD12.vsOriginChoices, ""), bleedDc: int(13, 0),
         // v0.0.320 (pack AU part 2): resist: Resist N / Weak N / Immune of a subtype (dmgSub) while it is on the creature (the highest of each counts);
         //   freqmore: more uses of a Frequency (the Elite ladder: Round Specials twice a round, Encounter Specials a second time).
-        rwKind: choice(TWOD12.rwKinds, "resist"), rwValue: int(1, 0), fmWhich: choice(TWOD12.freqMore, "round")
+        rwKind: choice(TWOD12.rwKinds, "resist"), rwValue: int(1, 0), fmWhich: choice(TWOD12.freqMore, "round"),
+        // v0.0.323 (PACK EFFECT-SHEET; fxrules.mjs compile): the rule it came from, "Next one only" (spend), its own "While they see the origin" (seen),
+        //   Empowered "Increase by" (empMode), a Defense or Speed bonus's kind and name (defMode, defName), an Aura's formula size and "Shown on the map",
+        //   On damage's pool (trigPool), "All range Banes" (rangeAll)
+        ruleId: str(), spend: bool(), seen: bool(), empMode: choice({ set: "Set to", inc: "Increase by" }, "set"), defMode: choice({ bonus: "A bonus", inc: "An increase", set: "Set to" }, "bonus"),
+        defName: str(), sizeFormula: str(), trigPool: str(), auraShow: bool(true), rangeAll: bool()
       }));
 
 export class EffectData extends foundry.abstract.TypeDataModel {
-  static migrateData(source) { migrateSettings(source); return super.migrateData(source); }
+  static migrateData(source) { migrateSettings(source); migrateRules(source, "effect"); return super.migrateData(source); }
   static defineSchema() {
     return {
       description: new HTMLField(),
@@ -649,6 +656,9 @@ export class EffectData extends foundry.abstract.TypeDataModel {
       conditions: new ArrayField(new SchemaField({ uuid: str(), name: str(), value: int(1, 0), valued: bool(), mode: choice({ set: "The highest counts", increase: "Increase the value", halfLevel: "Half the creature's level, rounded up (Squeezing)" }, "set") })),   // conditions this effect applies, each with its value; they end when this one does
       duration: new SchemaField({ type: choice(TWOD12.durationTypes, ""), rounds: int(1, 1) }),
       settings: settingsField(),
+      // v0.0.323 (PACK EFFECT-SHEET): the Details tab's rules and Ends (fxrules.mjs), the source of the settings and fields above once stored (rulesOn);
+      //   autoHover: the hover card built from them ({origin} filled in when applied); saveEnd: Ends' "A Save"
+      ...rulesFields(), ends: new ObjectField(), saveEnd: new ObjectField(),
       // The effect ends after an action with any of these traits is used.
       expireOn: new SetField(new StringField({ required: true, blank: false })),   // traits, or "__name:smite" (an Action by name)
       // When on, the effect ends only after an action that has ALL the listed traits (otherwise any one of them).

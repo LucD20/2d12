@@ -165,7 +165,7 @@
 | [[Split\|**Split**]] | A trait: the Action has a Weapon mode and a Power mode, and you choose one each time you use it. |
 | [[Squeezing\|**Squeezing**]] | Moving through a gap one square narrower than you: Difficult Terrain, and Doomed and Vulnerable if you stop there. |
 | [[Size\|**SR**]] | Size Rank: a creature's Size as a number from 1 (Tiny) to 7 (Titanic). Medium is SR 3. |
-| [[Stacking\|**Stacking**]] | Bonuses don't add up: for each value (Guard included) use the highest bonus and the highest penalty. "Increase by N", Boons and Banes (up to the limit of their name), Slowed increases and the Guard of unspent AP do add up. |
+| [[Stacking\|**Stacking**]] | Bonuses don't add up: for each value (Guard included) use the highest bonus and the highest penalty. "Increase by N", Boons and Banes (up to the limit of their name), named bonuses (Field, Pressure, Support: different names add, the same name keeps the highest), Slowed increases and the Guard of unspent AP do add up. |
 | [[Stages\|**Stage**]] | A group of levels: Stage 1 is levels 1-4, Stage 2 levels 5-7, Stage 3 levels 8-10. Your numbers change only at a new Stage (an Attribute, Health, Guard per unspent AP, Rally Points; Modifiers at Stage 3), and it sets the Bestiary's row. |
 | [[Stages\|**Stage Talent**]] | The Talent of levels 5 and 8, from a bigger list. |
 | [[Staggered\|**Staggered**]] | You can't use Reactions; your Reaction AP waits. |

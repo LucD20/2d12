@@ -40,6 +40,20 @@ export class AppliedEffectSheet extends TwoD12ItemSheet {
     return ctx;
   }
 
+  /** v0.0.323 (PACK EFFECT-SHEET): the header's line ("On Archer · from Ogre Chieftain", ⌖ Change), the origin's name in the sentences, the spent rules. */
+  _fxExtra() {
+    const fx = this.fx, o = originView(fx?.origin), e = s => foundry.utils.escapeHTML?.(String(s ?? "")) ?? String(s ?? "");
+    const from = o?.uuid ? ` · from <b>${e(o.name)}</b>` : "";
+    const btn = needsOrigin(this.document.system) || fx?.origin ? ` <button type="button" class="fr-orbtn" data-aporigin><i class="fa-solid fa-crosshairs"></i> Change</button>` : "";
+    return { headLine: `On <b>${e(fx?.parent?.name ?? "?")}</b>${from}${btn}`, originName: o?.uuid ? o.name : "", applied: { spent: fx?.getFlag(F, "spent") ?? [] }, names: o?.uuid ? { [o.uuid]: o.name } : {} };
+  }
+  /** Ends' "Origin goes Down" ⌖ Change: the effect's own origin. */
+  async changeOrigin(t) {
+    await this.fx.update({ origin: t.actor.uuid, name: `${String(this.fx.name).replace(/\s*\([^)]*\)\s*$/, "")}${needsOrigin(this.document.system) ? ` (${t.name})` : ""}` });
+    try { (await import("./conditions.mjs")).forgetSeen(); } catch (e) { /* no cache */ }
+    this.render();
+  }
+
   _onRender(context, options) {
     super._onRender(context, options);
     this.element.querySelector("[data-aporigin]")?.addEventListener("click", async () => {

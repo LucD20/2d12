@@ -2,7 +2,7 @@ import { triggerNotices } from "./triggers.mjs";
 import { techniqueLock, TECHNIQUE_AT, masteryAfterRoll, techniqueState } from "./mastery.mjs";
 import { setQuarry } from "./mark.mjs";
 import { pickTargets, needsTargets } from "./targeting.mjs";
-import { ignoredBy, markOnce, coverIgnored } from "./automation.mjs";
+import { ignoredBy, markOnce, markSpent, coverIgnored } from "./automation.mjs";
 import { splitModes, splitView, SPLIT_LABEL } from "./split.mjs";
 import { canPayEscalation, raiseEscalation } from "./escalation.mjs";
 import { weaponUse, weaponRanges } from "./weaponrange.mjs";
@@ -653,7 +653,7 @@ export async function useAction(actor, item, opts = {}) {
       if (wUse?.range && selfToken && !isAreaAction) {
         const band = rangeBand(squaresBetween(selfToken, tk), wUse.range);
         if (band?.out) { skipped.push(`${tk.name}: out of range (${band.squares} squares, maximum ${band.max})`); continue; }
-        const rb = band?.banes ? Math.max(0, band.banes - (lessRange.length ? 1 : 0)) : 0;   // "Ignore a Bane: one range Bane less" (Long Draw): far range 0, maximum range 1
+        const rb = band?.banes ? Math.max(0, band.banes - (lessRange.all ? band.banes : lessRange.length ? 1 : 0)) : 0;   // "Ignore a Bane: one range Bane less" (Long Draw): far range 0, maximum range 1
         if (rb) extraMods.push({ id: `syn:range|${a.uuid}`, name: `${band.label} (${tk.name})${rb < band.banes ? `, ${lessRange[0]}` : ""}`, boons: 0, banes: rb, match: true, predicate: `${previewWeapon.name}: Range ${wUse.range}` });
         if (wUse.long && band?.squares <= 1) extraMods.push({ id: `syn:long|${a.uuid}`, name: `Long weapon, adjacent (${tk.name})`, boons: 0, banes: 1, bb: "field", match: true, predicate: `${previewWeapon.name} is Long: 1 Field Bane against adjacent creatures` });
       }
@@ -712,7 +712,7 @@ export async function useAction(actor, item, opts = {}) {
   if (wUse?.range && selfToken && targetToken && !multi && rollsAtOthers && !isAreaAction) {
     const band = rangeBand(squaresBetween(selfToken, targetToken), wUse.range);
     if (band?.out) { outOfRange = `out of range (${band.squares} sq., the maximum is ${band.max}${wUse.thrown ? ", thrown" : ""})`; ui.notifications.warn(`${targetToken.name} is out of range: ${band.squares} squares away, the maximum is ${band.max}${wUse.thrown ? " (thrown)" : ""}.`); }
-    else if (band?.banes) { const rb = Math.max(0, band.banes - (lessRange.length ? 1 : 0)); if (rb) extraMods.push({ id: "syn:range", name: `${band.label}${rb < band.banes ? `, ${lessRange[0]}` : ""}`, boons: 0, banes: rb, match: true, predicate: `${previewWeapon.name}: Range ${wUse.range}` }); }
+    else if (band?.banes) { const rb = Math.max(0, band.banes - (lessRange.all ? band.banes : lessRange.length ? 1 : 0)); if (rb) extraMods.push({ id: "syn:range", name: `${band.label}${rb < band.banes ? `, ${lessRange[0]}` : ""}`, boons: 0, banes: rb, match: true, predicate: `${previewWeapon.name}: Range ${wUse.range}` }); }
     if (wUse.long && band && band.squares <= 1) extraMods.push({ id: "syn:long", name: "Long weapon, adjacent", boons: 0, banes: 1, bb: "field", match: true, predicate: `${previewWeapon.name} is Long: 1 Field Bane against adjacent creatures` });
   }
   // Ranged Combat While Engaged: a [Ranged] Action (a ranged Weapon Action, or any Action with the Ranged trait) while you are Engaged has 2 banes; against an Engaged creature, 1 bane (v0.0.169).
@@ -927,6 +927,8 @@ export async function useAction(actor, item, opts = {}) {
   if (mres) for (const r of mres) r.bonuses = keepOnce(collectBonuses(actor, rt, r.chk.tier, { target: r.token?.actor ?? null, mod: src.mod }), r.chk.tier);
   const bonuses = mres ? [...new Map(mres.flatMap(r => r.bonuses).map(b => [`${b.effect}|${b.dmg}|${b.text}`, b])).values()] : (tier && !version.noTiers ? keepOnce(collectBonuses(actor, rt, tier, { target: rollsAtOthers ? (aimed[0]?.actor ?? null) : null, mod: src.mod }), tier) : []);
   { const used = bonuses.filter(b => b.once).map(b => b.once); if (used.length && (chk || mres)) await markOnce(actor, used); }
+  // v0.0.323 (PACK EFFECT-SHEET, "Next one only"): the bonus damage and the Empowered / Enfeebled it used are spent
+  if (chk || mres) { const sp = [...bonuses.filter(b => b.spend).map(b => b.spend), ...[...steps.empowered, ...steps.enfeebled].filter(x => x.spend).map(x => x.spend)]; if (sp.length) { try { await markSpent(actor, sp); } catch (e) { console.warn("twod12 | spent", e); } } }
   // The "once per round" Boons and Banes that were in the roll (Elusive on the target) are used too.
   if (chk || mres) { try { await useOnceModifiers(actor, rt, multi ? perT.map(p => p.actor) : rollsAtOthers && targetToken?.actor ? [targetToken.actor] : [], null, data.fx); } catch (e) { console.warn("twod12 | once per round", e); } }
   // An effect whose Bonus Damage was unticked stays (it wasn't used).

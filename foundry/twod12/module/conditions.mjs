@@ -4,7 +4,7 @@
 // The pure parts are in condrules.mjs.
 import { setSeenGate } from "./escalation.mjs";
 import { dazeSplit, bleedOf, bleedPool, bleedText, needsOrigin, hasBleed } from "./condrules.mjs";
-import { sysLine } from "./sysmsg.mjs";
+import { sysLine, sysCard } from "./sysmsg.mjs";
 import { esc } from "./roll.mjs";
 import { TWOD12 } from "./config.mjs";
 const F = "twod12";
@@ -91,6 +91,25 @@ export async function bleedAtTurnEnd(actor) {
   }
 }
 
+/**
+ * v0.0.323 (PACK EFFECT-SHEET, Ends: "A Save", rolled at the end of their turn): a card for each such effect at the end of the creature's turn: the Save,
+ * its DC (13, the origin's: 11 + its best Modifier, or a set number) and what each Tier does, with an "It ends" button. The Save itself is rolled by hand.
+ */
+export async function saveEndAtTurnEnd(actor) {
+  const ATTR = { body: "Body", mind: "Mind", appeal: "Appeal", instinct: "Instinct", bodyinstinct: "the better of Body / Instinct", mindappeal: "the better of Mind / Appeal" };
+  for (const e of fxList(actor).filter(x => !x.disabled)) {
+    const s = e.getFlag?.(F, "saveEnd");
+    if (!s?.on || s.when !== "eot") continue;
+    let dc = 13;
+    if (s.dc === "set") dc = Number(s.dcValue) || 13;
+    else if (s.dc === "origin") { const o = originActor(e); const os = o?.system ?? {}; dc = 11 + Math.max(Number(os.powerMod ?? os.magicMod) || 0, Number(os.weaponMod) || 0, Number(os.signatureMod) || 0); }
+    const t2 = s.t2 === "ends" || s.t2 === "eot" ? "Tier 2: it ends." : "Tier 2: nothing.";
+    const lead = `${esc(ATTR[s.attr] ?? "Body")} Save, DC ${dc}`;
+    const text = `Roll it: Tier 3 ends <b>${esc(e.name)}</b>. ${t2} Tier 1: nothing. <button type="button" data-twod12="fxEnd" data-fx="${esc(e.uuid)}">It ends</button>`;
+    await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysCard({ title: `${esc(e.name)}: a Save to end it`, lead: `${esc(actor.name)}: ${lead}`, text }) });
+  }
+}
+
 /** Grabbed (and any effect with the "endsWithOrigin" rule): it ends when its origin goes Down or Unconscious. */
 export async function endHeldBy(origin) {
   if (!origin?.uuid) return;
@@ -131,6 +150,7 @@ export function registerConditionRules() {
     if (!game.user.isActiveGM) return;
     const ended = combat.combatants.get(prior?.combatantId);
     if (ended?.actor) { try { await bleedAtTurnEnd(ended.actor); } catch (e) { console.warn("twod12 | Bleed", e); } }
+    if (ended?.actor) { try { await saveEndAtTurnEnd(ended.actor); } catch (e) { console.warn("twod12 | Save ends", e); } }   // v0.0.323
   });
 }
 

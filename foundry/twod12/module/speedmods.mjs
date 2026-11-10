@@ -1,6 +1,7 @@
 // Speed changes from effects: "override: floor(speed/2)" replaces the Speed, "add: 2" adds to it.
 import { allEffects, isBaseSource } from "./passives.mjs";
-import { effectOff } from "./escalation.mjs";
+import { effectOff, seesOrigin } from "./escalation.mjs";
+import { bonusTotal } from "./fxrules.mjs";
 const F = "twod12";
 
 /** Evaluate a formula such as floor(speed/2), ceil(speed*0.5), min(speed, 3) or 2. Returns null when it cannot be read. */
@@ -20,6 +21,7 @@ export function applySpeedMods(actor, base, opts = {}) {
   for (const e of allEffects(actor)) {
     if (effectOff(actor, e) || (opts.baseOnly && !isBaseSource(e))) continue;
     for (const m of e.getFlag?.(F, "speedMods") ?? e.flags?.[F]?.speedMods ?? []) {
+      if (m.seen && !seesOrigin(actor, e)) continue;   // v0.0.323
       // A creature can't have the same condition twice: identical changes (Prone's Hindered and Hindered) count once.
       const key = `${m.mode}|${String(m.formula).replace(/\s+/g, "").toLowerCase()}`;
       if (seen.has(key)) continue;
@@ -27,6 +29,10 @@ export function applySpeedMods(actor, base, opts = {}) {
     }
   }
   for (const m of mods.filter(x => x.mode === "override")) { const v = evalSpeed(m.formula, speed); if (v !== null) speed = v; }
-  for (const m of mods.filter(x => x.mode !== "override")) { const v = evalSpeed(m.formula, speed); if (v !== null) speed += v; }
+  const base0 = speed;
+  for (const m of mods.filter(x => x.mode !== "override" && x.kind !== "bonus")) { const v = evalSpeed(m.formula, speed); if (v !== null) speed += v; }
+  // v0.0.323 (PACK EFFECT-SHEET; the book's Stacking): bonuses to Speed: different names add, the same name the highest, an unnamed one doesn't add to another
+  const bon = mods.filter(x => x.mode !== "override" && x.kind === "bonus").map(m => ({ name: m.name || "", n: evalSpeed(m.formula, base0) ?? 0 }));
+  if (bon.length) speed += bonusTotal(bon);
   return Math.max(0, Math.ceil(speed - 1e-9));
 }

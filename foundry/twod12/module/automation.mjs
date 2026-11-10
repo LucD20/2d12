@@ -34,6 +34,25 @@ export async function markOnce(actor, keys) {
   await actor.setFlag(F, "fxOnce", now);
 }
 
+/**
+ * v0.0.323 (PACK EFFECT-SHEET, "Next one only"): these rules ("effectId|ruleId") were used: each is spent on its effect (greyed in the editor, never offered
+ * again), and the effect ends when every rule that can be spent is spent (fxrules.mjs allSpent). Only an owner writes it (else the GM, damage.mjs).
+ */
+export async function markSpent(actor, keys) {
+  const list = [...new Set(keys ?? [])].filter(Boolean);
+  if (!actor || !list.length) return;
+  if (!actor.isOwner) return game.socket?.emit("system.twod12", { type: "markSpent", actorUuid: actor.uuid, keys: list });
+  const byFx = new Map();
+  for (const k of list) { const [eid, rid] = String(k).split("|"); if (!byFx.has(eid)) byFx.set(eid, []); byFx.get(eid).push(rid); }
+  for (const [eid, rids] of byFx) {
+    const e = actor.effects?.get?.(eid);
+    if (!e) continue;   // a Feature's passive: nothing to spend
+    const spent = [...new Set([...(e.getFlag(F, "spent") ?? []), ...rids])], all = e.getFlag(F, "spendable") ?? [];
+    if (all.length && all.every(r => spent.includes(r))) await e.delete();
+    else await e.setFlag(F, "spent", spent);
+  }
+}
+
 /* ------------------------------------------------------------------ the marked target */
 export const markOf = actor => actor?.getFlag?.(F, "quarry") ?? null;
 const tokenUuids = a => new Set([...(a?.isToken && a.token ? [a.token.uuid] : []), ...(a?.getActiveTokens?.() ?? []).map(t => t.document?.uuid)].filter(Boolean));
@@ -49,9 +68,11 @@ export function isMarked(actor, target) {
 /** The names of what lets this creature ignore a Bane rule for an Action with these traits ([] when nothing does). */
 export function ignoredBy(actor, rule, traits) {
   const out = [];
+  out.all = false;   // v0.0.323 (PACK EFFECT-SHEET): one of them ignores ALL the range Banes
   for (const e of allEffects(actor)) {
     if (effectOff(actor, e)) continue;
-    if ((e.getFlag(F, "ignores") ?? []).some(x => x.rule === rule && matches(x, traits))) out.push(String(e.name ?? "").replace(/^\s*Effect:\s*/i, ""));
+    const hits = (e.getFlag(F, "ignores") ?? []).filter(x => x.rule === rule && matches(x, traits));
+    if (hits.length) { out.push(String(e.name ?? "").replace(/^\s*Effect:\s*/i, "")); if (hits.some(x => x.rangeAll)) out.all = true; }
   }
   return out;
 }
@@ -159,6 +180,31 @@ export async function applyReachedEffects(actor) {
   return n;
 }
 export const tsKey = uuid => String(uuid).replace(/\./g, "_");
+/** v0.0.323 (PACK EFFECT-SHEET): "Grants: an Effect, at the start of each encounter": given when the encounter starts (the active GM). */
+export async function applyEncounterStartEffects(actor) {
+  if (!actor) return 0;
+  const { createEffect, originInfo } = await import("./effects.mjs");
+  let n = 0;
+  for (const e of allEffects(actor)) {
+    if (effectOff(actor, e)) continue;
+    for (const t of e.getFlag(F, "encStarts") ?? []) {
+      const item = await fromUuid(t.fxUuid);
+      if (item?.type !== "effect") continue;
+      await createEffect(actor, item, originInfo(actor.uuid));
+      n++;
+    }
+  }
+  return n;
+}
+/** v0.0.323: the effects that last "This encounter" end when it does. */
+export async function endEncounterEffects(combat) {
+  for (const c of combat?.combatants ?? []) {
+    const a = c.actor;
+    if (!a?.isOwner) continue;
+    const gone = a.effects.filter(e => e.getFlag(F, "duration")?.type === "encounter").map(e => e.id);
+    if (gone.length) await a.deleteEmbeddedDocuments("ActiveEffect", gone);
+  }
+}
 
 /* ------------------------------------------------------------------ v0.0.207: Chat message */
 /**

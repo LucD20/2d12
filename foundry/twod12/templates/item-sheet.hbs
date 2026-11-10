@@ -1,12 +1,14 @@
 <div class="twod12 sheet item{{#if styled}} sk{{/if}}">
   <header class="head">
     <img src="{{item.img}}" data-edit="img" data-action="editImage" width="48" height="48" alt="">
-    <input class="name" type="text" name="name" value="{{item.name}}" placeholder="Name">
+    {{#if fxHeadLine}}<div class="fr-namecol"><input class="name" type="text" name="name" value="{{item.name}}" placeholder="Name"><p class="fr-headline">{{{fxHeadLine}}}</p></div>
+    {{else}}<input class="name" type="text" name="name" value="{{item.name}}" placeholder="Name">{{/if}}
   </header>
   <nav class="tabs">
     {{!-- v0.0.191: links, not buttons: a read-only sheet (a locked compendium) disables every button, and the Details tab could not be opened --}}
     <a class="tabbtn" role="tab" data-action="switchTab" data-tab-target="description">Description</a>
     <a class="tabbtn" role="tab" data-action="switchTab" data-tab-target="details">Details</a>
+    {{#if fxHost}}<a class="fr-q" role="button" tabindex="0" data-fr-q aria-pressed="false" data-tooltip="Show the help texts">?</a>{{/if}}
   </nav>
 
   <section class="tab" data-tab="description">
@@ -327,62 +329,18 @@
     {{/if}}
 
     {{#if isPassiveHost}}
-    <div class="fxd{{#if fxHelp}} help-on{{/if}} passive">
-      <h3>Passive <select class="fxd-add" data-fxadd aria-label="Add a setting"><option value="">+ Add…</option>{{selectOptions settingChoices}}</select></h3>
-      <label class="fxd-hover" data-tooltip="Shown when the mouse is over this effect or ability in a roll. Empty: the start of its description.">Hover text <input type="text" name="system.hover" value="{{system.hover}}" placeholder="What it does, in a short line (optional)"></label>
-      <p class="hint">What the creature with this {{#if isFeature}}Feature{{else}}Talent{{/if}} has by itself (Boons and Banes, Empowered and Enfeebled, Defense, Speed, notes). Each setting has its own "It works...": always, or only while the Escalation is high enough (an Escalation Passive: "while your Escalation is 2 or more"), so one {{#if isFeature}}Feature{{else}}Talent{{/if}} can hold settings that work at different moments.</p>
-      {{> "systems/twod12/templates/parts/settings.hbs"}}
-    </div>
+    {{!-- v0.0.323 (PACK EFFECT-SHEET): the Passive is the same rules list as an Effect's (fxsheet.mjs), each rule with its own "Works" (Escalation) --}}
+    <div class="fr-passive"><h3>Passive</h3><p class="hint">What the creature with this {{#if isFeature}}Feature{{else}}Talent{{/if}} has by itself. Each rule has its own "Works": always, or only while the Escalation is high enough.</p>{{{fxTab}}}</div>
     {{/if}}
 
     {{#if isEffect}}
-    <div class="fxd{{#if fxHelp}} help-on{{/if}}">
-      <div class="fxd-top">
-        <div class="fxd-short"><b>In short:</b> {{fxSummary}}</div>
-        <label class="fxd-helptoggle"><input type="checkbox" data-fxhelp {{#if fxHelp}}checked{{/if}}> Show help</label>
-      </div>
-
-      <label class="fxd-hover" data-tooltip="Shown when the mouse is over this effect or ability in a roll. Empty: the start of its description.">Hover text <input type="text" name="system.hover" value="{{system.hover}}" placeholder="What it does, in a short line (optional)"></label>
-      {{#if applied}}
-      <h3>Applied</h3>
-      <div class="fxd-s">On <b>{{applied.actor}}</b>{{#if applied.valued}}, with a value of <input type="number" min="{{#if applied.exhausted}}0{{else}}1{{/if}}" class="fxd-f n" data-apvalue value="{{applied.value}}">{{/if}}{{#if applied.isRounds}}, with <input type="number" min="0" class="fxd-f n" data-apleft value="{{applied.left}}"> {{applied.leftWord}} left{{/if}}. <a class="fxd-raw" data-action="openRaw">Foundry's effect window</a></div>
-      {{#if applied.needsOrigin}}<div class="fxd-s" data-tooltip="{{applied.origin.uuid}}">Its origin: {{#if applied.origin.uuid}}<b>{{applied.origin.name}}</b>{{#if applied.origin.token}} (token {{applied.origin.token}}){{/if}}{{else}}<b>none</b> (it can't work without one){{/if}}. <button type="button" class="fxd-orbtn" data-aporigin><i class="fa-solid fa-crosshairs"></i> Change: click a token</button></div>{{/if}}
-      <p class="fxd-help">Changes apply to this creature only: the Effect it came from isn't changed. Applying the Effect again replaces this copy.</p>
-      {{#if applied.exhausted}}<p class="fxd-help">Exhausted's own rules (Speed, the penalty on Rolls, the Mind Damage Threshold) come from its value; 0 removes it. Settings added here come on top of them.</p>{{/if}}
-      {{else}}
-      <h3>Identity</h3>
-      <label class="autosel" data-tooltip="How much Foundry does for this card, shown as a chip on it (Not implemented, Bronze, Silver, Gold)">Automation <select name="system.automation">{{selectOptions autoRanks selected=system.automation}}</select></label> <label class="autosel autonote" data-tooltip="What Foundry doesn't do yet for this card (shown on the diamond's tooltip). Mostly for Bronze and Silver">By hand <input type="text" name="system.automationNote" value="{{system.automationNote}}" placeholder="What the players do themselves"></label>
-      <div class="fxd-s">This is <select class="fxd-f" data-fxkind>{{selectOptions kindChoices selected=kindVal}}</select> placed on <select class="fxd-f" data-fxself>{{selectOptions selfChoices selected=selfVal}}</select>.
-        {{#if system.isCondition}}<label class="fxd-inl"><input type="checkbox" name="system.valued" {{#if system.valued}}checked{{/if}}> It has a value (like Empowered 2)</label>{{/if}}</div>
-      {{!-- v0.0.314 (pack AU, the conditions as items): rules a condition (or any Effect) can have --}}
-      <div class="fxd-s">Rules:
-        <label class="fxd-inl" data-tooltip="Frightened: its settings work only while the creature sees the one that applied it"><input type="checkbox" name="system.whileSeen" {{#if system.whileSeen}}checked{{/if}}> Only while it sees its origin</label>
-        <label class="fxd-inl" data-tooltip="Staggered: the Reaction AP waits until it ends"><input type="checkbox" name="system.noReactions" {{#if system.noReactions}}checked{{/if}}> No Reactions</label>
-        <label class="fxd-inl" data-tooltip="Dazed: the value in AP, now; the rest from the AP of the next turn; then it ends"><input type="checkbox" name="system.loseAp" {{#if system.loseAp}}checked{{/if}}> Loses its value in AP</label>
-        <label class="fxd-inl" data-tooltip="Grabbed: when the holder goes Down or is Unconscious"><input type="checkbox" name="system.endsWithOrigin" {{#if system.endsWithOrigin}}checked{{/if}}> Ends when its origin goes Down</label>
-        <label class="fxd-inl" data-tooltip="On: from an Action's card, its origin is the creature that used the Action. Off, or with no Action behind it (the HUD, a chip clicked by hand): it asks, click a token"><input type="checkbox" name="system.originFromUser" {{#if system.originFromUser}}checked{{/if}}> Its origin is the creature that used the Action</label></div>
-      <p class="fxd-help">An effect is a bundle of the settings below. A condition is a named state from the book (Prone, Empowered); one with a value keeps it on the creature, and clicking its icon raises it. "The user" is the creature that used the Action.</p>
-      {{/if}}
-
-      <h3>What it does <select class="fxd-add" data-fxadd aria-label="Add a setting"><option value="">+ Add…</option>{{selectOptions settingChoices}}<option value="condition">Condition (drop one)</option></select></h3>
-      {{> "systems/twod12/templates/parts/settings.hbs"}}
-      {{#each condRows}}
-      <div class="fxd-cond"><span class="fxd-k">Condition</span><span class="fxd-s">Apply <b>{{name}}</b>{{#if valued}} at <input type="number" min="1" class="fxd-f n" data-cfield="{{i}}" value="{{value}}">; if it's already there, <select class="fxd-f" data-cmode="{{i}}">{{selectOptions ../riderModes selected=mode}}</select>{{/if}}.</span><button type="button" data-cdel="{{i}}" data-tooltip="Remove">&times;</button></div>
-      {{/each}}
-      <div class="drop-zone" data-list="conditions" data-accept="effect">Drop a condition here (from the Conditions compendium) to apply it with this effect</div>
-      <p class="fxd-help">A condition applied this way lasts as long as this effect and goes with it. A creature that already has it keeps the higher value, unless you choose to increase the value.</p>
-
-      <h3>Ends</h3>
-      <div class="fxd-s">Lasts <select class="fxd-f" name="system.duration.type">{{selectOptions durationWords selected=system.duration.type}}</select>{{#if isRounds}} <input type="number" min="1" class="fxd-f n" name="system.duration.rounds" value="{{system.duration.rounds}}"> {{roundsWord}}{{/if}}, or until the creature uses an action with <select class="fxd-f" data-expireall>{{selectOptions expireAllChoices selected=expireAllVal}}</select> of
-        {{#each expireChips}}<span class="fxd-chip"><span class="dot" style="background:{{color}}"></span>{{label}}<button type="button" data-erem="{{key}}" aria-label="Remove {{label}}">&#10005;</button></span>{{/each}}
-        <select class="fxd-plus" data-eadd aria-label="Add a trait"><option value="">+</option>{{#each expireOptions}}<option value="{{key}}">{{label}}</option>{{/each}}</select></div>
-      <p class="fxd-help">End of Turn ends at the end of the affected creature's turn. Rounds end at the end of the origin's turn after that many rounds. No traits = no action ends it early.</p>
-
-      <details class="fxd-adv" {{#if system.linked}}open{{/if}}><summary>Advanced</summary>
-        <label>Also applies (by name) <input type="text" name="system.linked" value="{{system.linked}}" placeholder="Hindered (names, separated by commas)"></label>
-        <p class="fxd-help">The older way to bring other conditions along: by their name. They end when this one ends. Dropping a condition above does the same and can give it a value.</p>
-      </details>
-    </div>
+    {{!-- v0.0.323 (PACK EFFECT-SHEET, Lucas's "Prototype C"): the hover card, the rules (list and pane), Ends, Automation, Advanced (fxsheet.mjs) --}}
+    {{#if applied}}
+    <div class="fr-applied">{{#if applied.valued}}<label>Value <input type="number" min="{{#if applied.exhausted}}0{{else}}1{{/if}}" class="fxd-f n" data-apvalue value="{{applied.value}}"></label>{{/if}}{{#if applied.isRounds}}<label><input type="number" min="0" class="fxd-f n" data-apleft value="{{applied.left}}"> {{applied.leftWord}} left</label>{{/if}}
+      <a class="fxd-raw" data-action="openRaw">Foundry's effect window</a>
+      <p class="fr-help">Changes apply to this creature only: the Effect it came from isn't changed. Applying the Effect again replaces this copy.</p></div>
+    {{/if}}
+    {{{fxTab}}}
     {{/if}}
   </section>
 </div>

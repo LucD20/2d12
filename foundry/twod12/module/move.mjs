@@ -19,6 +19,24 @@ import { hazardIn } from "./hazard.mjs";
 import { steadinessOf } from "./defense.mjs";
 import { newMoveAction } from "./moveseq.mjs";   // v0.0.274
 import { unset } from "./util.mjs";   // v0.0.277: removing a key without the legacy "-=" syntax
+import { effectOff, seesOrigin } from "./escalation.mjs";
+import { allEffects } from "./passives.mjs";
+
+import { moveLimitBreaks } from "./fxrules.mjs";
+/** The Movement limits of a creature that work now, each with its origin's token: [{ dir, name, token }] (Frightened: can't move closer to its source). */
+function moveLimitsOf(doc) {
+  const actor = doc?.actor, out = [];
+  if (!actor) return out;
+  for (const e of allEffects(actor)) {
+    if (effectOff(actor, e)) continue;
+    for (const l of e.getFlag?.("twod12", "moveLimits") ?? []) {
+      if (l.seen && !seesOrigin(actor, e)) continue;
+      const o = e.origin ?? "", tok = (canvas?.tokens?.placeables ?? []).find(t => t.document?.uuid === o || (t.actor && t.actor.uuid === o));
+      if (tok && tok.document?.id !== doc.id) out.push({ dir: l.dir, name: String(e.name ?? "").replace(/\s*\(.*\)\s*$/, ""), token: tok });
+    }
+  }
+  return out;
+}
 const F = "twod12", SOCKET = "system.twod12";
 const warn = m => ui.notifications.warn(m);
 const refuse = m => { warn(m); return false; };   // a refusal that says no
@@ -1216,6 +1234,11 @@ export function registerMovement() {
       if (ignoring && num(movement?.pending?.distance)) squares = num(movement.pending.distance);
       squares = squares ? squares / gridUnit() : measureSquares(origin, to);
       if (squares <= 0) return;
+      // v0.0.323 (PACK EFFECT-SHEET): a Movement limit refuses a willing move that ends nearer to (or farther from) its origin (Forced Movement is not willing)
+      for (const l of moveLimitsOf(doc)) {
+        const op = { x: l.token.document.x, y: l.token.document.y };
+        if (moveLimitBreaks(l.dir, measureSquares(origin, op), measureSquares(to, op))) { warn(`${l.name}: ${doc.name} can't willingly move ${l.dir === "away" ? "away from" : "closer to"} ${l.token.name}.`); return false; }
+      }
       // Creatures in the way: no move ends inside another creature's space, and an unwilling creature's squares are Difficult Terrain.
       const way = creaturesOnPath(doc, [origin, ...(movement?.pending?.waypoints ?? []), to], { ignoring });
       if (way.endIn) { warn(`You can't end your movement in ${way.endIn}'s space.`); return false; }

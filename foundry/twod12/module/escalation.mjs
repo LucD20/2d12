@@ -18,6 +18,13 @@ export const escalationOf = actor => (actor?.type === "character" || (actor?.typ
 // the sight check is Foundry's (the map), set by conditions.mjs, so this file stays pure.
 let seenGate = null;
 export const setSeenGate = fn => { seenGate = typeof fn === "function" ? fn : null; };
+/** v0.0.323 (PACK EFFECT-SHEET): one rule's own "While they see the origin": false while the creature doesn't see the effect's origin. */
+export function seesOrigin(actor, e) {
+  if (!seenGate) return true;
+  try { return seenGate(actor, e) !== false; } catch (err) { return true; }
+}
+/** v0.0.323: a rule "Next one only" that was used: spent (the effect keeps the ids). */
+export const isSpent = (e, m) => !!(m?.spend && m.ruleId && (e?.getFlag?.(F, "spent") ?? e?.flags?.[F]?.spent ?? []).includes(m.ruleId));
 export function effectOff(actor, e) {
   if (e?.disabled) return true;
   if ((e?.getFlag?.(F, "whileSeen") ?? e?.flags?.[F]?.whileSeen) && seenGate) { try { if (seenGate(actor, e) === false) return true; } catch (err) { /* no map: it works */ } }

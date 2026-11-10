@@ -16,6 +16,11 @@ export function appliedUpdate(fx, system, source, name, img) {
     const spent = Math.max(0, (o.count ?? g.count) - (o.left ?? o.count ?? g.count));
     return { ...g, left: Math.max(0, g.count - spent), used: o.used ?? [] };
   });
+  if (String(flags.hover ?? "").includes("{origin}")) {   // v0.0.323 (PACK EFFECT-SHEET): the built hover text names this copy's origin
+    let who = ""; try { who = fx.origin ? globalThis.fromUuidSync?.(fx.origin)?.name ?? "" : ""; } catch (e) { who = ""; }
+    flags.hover = flags.hover.replace(/\{origin\}/g, who || "its origin");
+  }
+  flags.spent = old.spent ?? [];   // what "Next one only" already spent stays spent
   const update = isExhaustedFx(fx) ? {} : { img };
   for (const [k, v] of Object.entries(flags)) update[`flags.${F}.${k}`] = v;
   if (isExhaustedFx(fx)) { /* "Exhausted N": the name follows its value (sleep.mjs) */ }

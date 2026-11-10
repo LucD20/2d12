@@ -9,7 +9,7 @@ import { performCheck, checkHtml, esc, sgn, showDice, combineRolls } from "./rol
 import { traitChevrons } from "./config.mjs";
 import { askRoll, enrich, adjLabelOf, ccRowOf } from "./actions.mjs";
 import * as CC from "./chatcards.mjs";   // v0.0.283 (pack chat-cards): the one-target Save card
-import { perDieDelta } from "./calc.mjs";
+import { perDieDelta, topStep } from "./calc.mjs";
 import { resolveModifiers, applyEffects, applyCondition, originInfo, applyBoonEffect, damageSteps, conditionItem } from "./effects.mjs";
 import { parseAttrs, needsOrigin } from "./condrules.mjs";   // v0.0.314 (pack AU): Bleed's Attributes
 import { dealDamageEx } from "./damage.mjs";
@@ -387,7 +387,7 @@ async function prerollTiers(cfg) {
     const user = cfg.saveAction && cfg.actorUuid ? fromUuidSync(cfg.actorUuid) : null;
     if (user) {
       const st = damageSteps(user, new Set([...(cfg.actionTraits ?? []), "__action"]));
-      const emp = Math.max(0, ...st.empowered.map(x => x.n)), enf = Math.max(0, ...st.enfeebled.map(x => x.n));
+      const emp = topStep(st.empowered), enf = topStep(st.enfeebled);   // v0.0.323: "Increase by" adds
       step = emp - enf;   // the Enfeebled value is taken from the Empowered one
     }
   } catch (e) { console.warn("twod12 | Empowered on a Save", e); }

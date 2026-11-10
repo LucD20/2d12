@@ -2,6 +2,7 @@
 // (the footprint of an Emanation around that creature) and moves with it. A creature inside gains the Aura's Effect as soon as it enters and
 // loses it when it leaves. The origin decides whether it is affected itself. The GM's client keeps the scene's Auras up to date.
 // An Aura is a setting of an Effect or of a passive (Feature or Talent): "Aura N around the creature: [who] inside gain [an Effect]".
+import { evalFormula, refValues } from "./fxrules.mjs";
 import { homePos } from "./lean.mjs";
 import { effectOff } from "./escalation.mjs";
 import { TWOD12 } from "./config.mjs";
@@ -35,7 +36,13 @@ function sourcesOf(tokens) {
   const out = [];
   for (const t of tokens) for (const e of allEffects(t.actor)) {
     if (effectOff(t.actor, e) || e.getFlag?.(F, "auraFrom")) continue;
-    (e.getFlag?.(F, "auras") ?? []).forEach((aura, i) => out.push({ key: `${t.actor.uuid}|${e.id}|${i}`, token: t, aura }));
+    (e.getFlag?.(F, "auras") ?? []).forEach((aura0, i) => {
+      // v0.0.323 (PACK EFFECT-SHEET): a formula size ("@origin.pow"): the effect's origin's values (else the creature's own), at least 1
+      let aura = aura0;
+      if (aura0.formula) { let o = null; try { o = e.origin ? fromUuidSync(e.origin) : null; } catch (err) { o = null; } const oa = o?.documentName === "Actor" ? o : o?.actor ?? t.actor;
+        aura = { ...aura0, size: Math.max(1, Math.trunc(Number(evalFormula(aura0.formula, { origin: refValues(oa), target: refValues(t.actor) }).value) || 1)) }; }
+      out.push({ key: `${t.actor.uuid}|${e.id}|${i}`, token: t, aura });
+    });
   }
   return out;
 }
@@ -131,6 +138,7 @@ export function redrawAuras() {
       if (!sources.length) continue;
       const holder = new PIXI.Container(), grid = canvas.interface?.grid;
       for (const src of sources) {
+        if (src.aura.show === false) continue;   // v0.0.323: "Shown on the map" off: it works, it isn't drawn
         const cells = auraCells(t, Math.max(1, Number(src.aura.size) || 1), gs, tokenDistance), { outline, fill } = auraColors(src.aura);
         const segs = outlineSegments(cells, gs), glow = new PIXI.Graphics(), line = new PIXI.Graphics();
         strokeSegments(glow, segs, outline, 8, 0.22);

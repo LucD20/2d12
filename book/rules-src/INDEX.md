@@ -5,14 +5,14 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | File | Chapter | Document | Part | KB | Lines |
 |---|---|---|---|---|---|
 | 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 22.6 | 305 |
-| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 26.6 | 286 |
+| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 27.1 | 289 |
 | 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 38.9 | 450 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 13.7 | 254 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 6.7 | 74 |
 | 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.4 | 43 |
 | 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 5.6 | 95 |
 | 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 8.6 | 113 |
-| 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 25.1 | 197 |
+| 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 25.2 | 197 |
 | 11-species.md | Species | species |  | 0.8 | 32 |
 | 12-paladin.md | Paladin | paladin |  | 3.8 | 123 |
 | 13-archer.md | Archer | archer |  | 3.8 | 127 |
@@ -73,21 +73,21 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 - 144:   ### Effect Timing
 - 154:   ### Buffs
 - 165:     #### Stacking
-- 181:   ### Frequency
-- 187:     #### At-will
-- 195:     #### Turn
-- 199:     #### Round
-- 203:     #### Encounter
-- 207:     #### Daily
-- 211: ## Versus
-- 215:   ### Defenses
-- 230: ## Rounds and Durations
-- 232:   ### Until
-- 236:   ### Your Next Action
-- 240:   ### Rounds
-- 249:   ### End of Turn
-- 257: ## Escalation
-- 280:   ### Momentum
+- 184:   ### Frequency
+- 190:     #### At-will
+- 198:     #### Turn
+- 202:     #### Round
+- 206:     #### Encounter
+- 210:     #### Daily
+- 214: ## Versus
+- 218:   ### Defenses
+- 233: ## Rounds and Durations
+- 235:   ### Until
+- 239:   ### Your Next Action
+- 243:   ### Rounds
+- 252:   ### End of Turn
+- 260: ## Escalation
+- 283:   ### Momentum
 
 ## 03-movement.md: Chapter 3: Movement and the Environment
 

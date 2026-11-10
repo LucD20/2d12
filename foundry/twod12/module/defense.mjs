@@ -5,7 +5,7 @@
 // A Signature Action uses Armor or Ward by the Modifier it rolls. An Action that faces none of these has DC 13.
 // Defense bonuses (Features and effects) don't add up: for each Defense, the highest bonus and the highest penalty count.
 import { allEffects, isBaseSource } from "./passives.mjs";
-import { effectOff } from "./escalation.mjs";
+import { effectOff, seesOrigin } from "./escalation.mjs";
 import { TWOD12 } from "./config.mjs";
 
 /** Traits of the action plus mechanics found in its text (a @Move[pushed...] button makes it a "pushed" action). */
@@ -42,12 +42,19 @@ export function defenseBonus(actor, kind, tags, opts = {}) {
     if (effectOff(actor, e) || (opts.baseOnly && !isBaseSource(e))) continue;
     for (const d of e.getFlag?.("twod12", "defenses") ?? e.flags?.twod12?.defenses ?? []) {
       if (d.kind !== kind && d.kind !== "all") continue;
-      found.push({ name: String(e.name ?? "").replace(/\s*\(.*\)\s*$/, ""), bonus: Number(d.bonus) || 0 });
+      if (d.seen && !seesOrigin(actor, e)) continue;   // v0.0.323: its own "While they see the origin"
+      found.push({ name: String(e.name ?? "").replace(/\s*\(.*\)\s*$/, ""), bonus: Number(d.bonus) || 0, inc: d.mode === "inc", bb: d.mode === "bonus" ? (d.name || "") : "" });
     }
   }
-  const best = found.filter(x => x.bonus > 0).sort((a, b) => b.bonus - a.bonus)[0];
-  const worst = found.filter(x => x.bonus < 0).sort((a, b) => a.bonus - b.bonus)[0];
-  const parts = [best, worst].filter(Boolean);
+  // v0.0.323 (PACK EFFECT-SHEET; the book's Stacking, named bonuses): bonuses with different names add, the same name keeps the highest, an unnamed bonus
+  // never adds to another one (the highest unnamed counts only when it beats the named ones together); the worst penalty counts; an increase always adds.
+  const pos = found.filter(x => x.bonus > 0 && !x.inc), named = new Map();
+  for (const x of pos.filter(p => p.bb)) if (!named.has(x.bb) || named.get(x.bb).bonus < x.bonus) named.set(x.bb, x);
+  const bestUnnamed = pos.filter(p => !p.bb).sort((a, b) => b.bonus - a.bonus)[0];
+  const namedSum = [...named.values()].reduce((s, p) => s + p.bonus, 0);
+  const counted = bestUnnamed && bestUnnamed.bonus >= namedSum ? [bestUnnamed] : [...named.values()];
+  const worst = found.filter(x => x.bonus < 0 && !x.inc).sort((a, b) => a.bonus - b.bonus)[0];
+  const parts = [...counted, worst, ...found.filter(x => x.inc)].filter(Boolean);
   return { total: parts.reduce((s, p) => s + p.bonus, 0), parts };
 }
 

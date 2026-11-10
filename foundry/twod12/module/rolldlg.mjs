@@ -102,11 +102,12 @@ export function tally(chips, st) {
     else if (c.kind === "bane") t.baneSrc.push({ name, n, scope: c.scope ?? "shared", bb: c.bb ?? "" });
     else if (c.kind === "plus") { t.flat += n; t.flatSrc.push({ name, v: n }); }
     else if (c.kind === "minus") { t.flat -= n; t.flatSrc.push({ name: c.manual ? "Situational" : (c.srcName ?? c.label), v: -n }); }
-    else if (c.kind === "emp") { t.emp = Math.max(t.emp, n); t.empSrc.push({ name: c.srcName ?? c.label, n }); }
-    else if (c.kind === "enf") { t.enf = Math.max(t.enf, n); t.enfSrc.push({ name: c.srcName ?? c.label, n }); }
+    else if (c.kind === "emp") { if (c.inc) t.empInc = (t.empInc ?? 0) + n; else t.emp = Math.max(t.emp, n); t.empSrc.push({ name: c.srcName ?? c.label, n }); }   // v0.0.323: "Increase by" adds
+    else if (c.kind === "enf") { if (c.inc) t.enfInc = (t.enfInc ?? 0) + n; else t.enf = Math.max(t.enf, n); t.enfSrc.push({ name: c.srcName ?? c.label, n }); }
     else if (c.kind === "fav") { t.fav = true; t.favBy.push(name === "Favored" ? "Situational" : name); if (c.special === "reload") { t.emp = Math.max(t.emp, 2); t.empSrc.push({ name, n: 2 }); } }
     else if (c.kind === "doom") { t.doom = true; t.doomBy.push(name === "Doomed" ? "Situational" : name); }
   }
+  t.emp += t.empInc ?? 0; t.enf += t.enfInc ?? 0;
   return bbFinish(t);
 }
 /** Two tallies added (the shared panel and one creature's own). */

@@ -82,7 +82,7 @@ cond("Squeezing", "icons/svg/net.svg", "<p>You stopped moving while squeezing th
 // goes Down; Bleed is damage at the end of each turn (a card's own dice: @Condition[bleed|dmg:1d6|pool:R|sub:Ho|attrs:mi/ap]); Blinded is
 // Foundry's blind status (no sight: twod12.mjs CONFIG.specialStatusEffects).
 const bb1 = (banes, extra = {}) => ({ type: "boonbane", boons: 0, banes, all: [], any: [], none: [], ...extra });
-cond("Frightened", "icons/svg/terror.svg", "<p>Frightened is always <b>of</b> a source (the creature or object that applied it). While you see the source (Clear or Obscured to you), all your Rolls take 1 Bane, the Save that would end Frightened included, and you can't willingly move closer to it (Forced Movement still can). Out of your Sight (a wall, Darkness), the Bane and the restriction stop until you see it again.</p>", [bb1(1)], { whileSeen: true, originFromUser: true, hover: "1 Bane on all your Rolls while you see its source; you can't willingly move closer to it." });
+cond("Frightened", "icons/svg/terror.svg", "<p>Frightened is always <b>of</b> a source (the creature or object that applied it). While you see the source (Clear or Obscured to you), all your Rolls take 1 Bane, the Save that would end Frightened included, and you can't willingly move closer to it (Forced Movement still can). Out of your Sight (a wall, Darkness), the Bane and the restriction stop until you see it again.</p>", [bb1(1), { type: "move", text: "closer" }], { whileSeen: true, originFromUser: true, hover: "" });   // v0.0.323 (PACK EFFECT-SHEET): the Movement limit is a rule now; the hover card is built from the rules (its old text was the same words)
 cond("Taunted", "icons/svg/target.svg", "<p>Taunted is always <b>by</b> a creature (the one that applied it). Your Actions against any creature other than it take 1 Bane.</p>", [bb1(1, { vsOrigin: "not" })], { originFromUser: true, hover: "1 Bane on your Actions against anyone but the creature that taunted you." });
 cond("Sickened", "icons/svg/poison.svg", "<p>Sickened always has a value, such as Sickened 1. Your Body and Instinct Saves take that many Banes, and you can't eat, drink or swallow anything: no potions.</p>", [bb1(1, { all: ["__save"], attrs: ["body", "instinct"], byValue: true })], { valued: true });
 cond("Staggered", "icons/svg/paralysis.svg", "<p>You can't use Reactions. Your Reaction AP isn't lost: you can use it again when Staggered ends.</p>", [], { noReactions: true });
@@ -489,5 +489,22 @@ for (const [rank, list] of Object.entries(AUTO)) for (const d of docs) if (list.
 // v0.0.187: the Escalation Passives say so (the Features tab's Escalation section); a card says it with foundry.escalationPassive (Font of Mercy).
 for (const d of docs) if (d.type === "feature" && (/escalation/i.test(d.system.category ?? ""))) d.system.escalationPassive = true;
 for (const a of [...actors, ...pcs]) for (const it of (a.items ?? [])) if (["action", "talent", "feature"].includes(it.type) && FLAVOR[it.name]) { it.system ??= {}; it.system.flavor = FLAVOR[it.name]; }
+
+// v0.0.323 (PACK EFFECT-SHEET): every Effect, Feature and Talent carries its rules (the Details tab's source), its Ends and the hover text built from
+// them, read from its settings (fxrules.mjs migrate; the settings stay what the rolls read). The names of the dropped Effects come from the packs.
+{
+  const FX = await import("../module/fxrules.mjs");
+  const names = Object.fromEntries(docs.map(d => [uuidOf(d.pack, d.name), d.name]));
+  const withRules = d => {
+    if (!["effect", "feature", "talent"].includes(d.type)) return;
+    const sys = (d.system ??= {});
+    const m = FX.migrate(sys, d.type);
+    sys.rules = m.rules; sys.rulesOn = true;
+    if (d.type === "effect") sys.ends = m.ends;
+    sys.autoHover = d.type === "effect" ? FX.hoverCardText(m.rules, m.ends, { originName: "{origin}", names, host: d.type }) : FX.hoverCardText(m.rules, {}, { originName: "its origin", names, host: d.type }).replace(/\s*Lasts until removed\.$/, "");
+  };
+  for (const d of docs) withRules(d);
+  for (const a of [...actors, ...pcs]) for (const it of a.items ?? []) withRules(it);
+}
 
 export { docs, folders, uuidOf, actors, pcs };
