@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-10 from the repository at: 9c20f90 2026-11-10 HANDOFF, MASTER-PLAN: PACK AU part 1 merged (v0.0.314 to v0.0.319); next AU part 2
+Built by tools/knowledge.py on 2026-11-10 from the repository at: 5faf443 2026-11-10 Bring in the unmerged branches' work: the Archer's Armor Training, the expedition loop, two candidates, pack HP's plan
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
