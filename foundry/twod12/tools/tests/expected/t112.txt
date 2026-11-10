@@ -1,5 +1,5 @@
 documents: 185
-references: 134 | broken: none
+references: 133 | broken: none
 Paladin features:  | Divine Connection kept for testing (not in the class): true | its id is the old one: vaYnV1XM6HT1TpMP
 Level 1: Attribute increases (attr: body or appeal, mind or instinct) | Features (items, granted): Divine Power, Kindled Wrath | Hallmark Action (items, choice, pick 1): Smite, Lay On Hands | Hallmark Reaction (items, choice, pick 1): Shield of Faith, Rebuke | Encounter Pick (repertoire, encounter, pick 1) | Escalation 1 Passive (items, choice, pick 1): Radiant Zeal, Divine Surge, Font of Mercy | Escalation 2 Passive (items, choice, pick 1): Searing Blows, Mending Light | Escalation 3 Passive (items, choice, pick 1): Reckoning, Hallowed Stance | Apex (items, choice, pick 1): Final Verdict, Hallowed Dawn | Talent (talent, pick 1)
 Level 2: Talent (talent, pick 1)

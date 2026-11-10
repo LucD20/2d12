@@ -46,7 +46,7 @@ console.log("--- migration: every Effect, Feature and Talent of the packs, old s
 const items = [];
 const walk = d => { for (const f of fs.readdirSync(d, { withFileTypes: true })) { if (f.isDirectory()) walk(`${d}/${f.name}`); else if (f.name.endsWith(".json")) { const j = JSON.parse(fs.readFileSync(`${d}/${f.name}`, "utf8")); items.push(j); for (const it of j.items ?? []) items.push(it); } } };
 walk(ROOT + "packs/_source");
-const NEW = ["ruleId", "spend", "seen", "empMode", "defMode", "defName", "sizeFormula", "trigPool", "auraShow", "rangeAll", "mode", "name", "formula", "show", "pool"];
+const NEW = ["ruleId", "spend", "seen", "empMode", "defMode", "defName", "sizeFormula", "trigPool", "auraShow", "rangeAll", "mode", "name", "formula", "show", "pool", "rows", "areaRows"];
 const sortK = v => (Array.isArray(v) ? v.map(sortK) : v && typeof v === "object" ? Object.fromEntries(Object.keys(v).sort().filter(k => !NEW.includes(k) && v[k] !== "" && v[k] !== undefined && v[k] !== false && !(Array.isArray(v[k]) && !v[k].length)).map(k => [k, sortK(v[k])])) : v);
 const asSys = s => ({ ...s, expireOn: new Set(s.expireOn ?? []), settings: (s.settings ?? []).map(x => ({ ...R.blankSetting(x.type), ...x })) });
 const SAME = new Set(["Sickened"]);   // its Attributes move to "Has one of": the same Rolls

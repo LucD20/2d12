@@ -10,6 +10,7 @@
 // A rule: { id, kind, ...its fields }. The view (fxsheet.mjs) draws them; the item sheet saves { rules, ends } and the compiled fields together.
 import { TWOD12 } from "./config.mjs";
 import { SUBS as SUB_INK } from "./chatcards.mjs";
+import { turnCycleBlocked } from "./usage.mjs";
 
 const T = () => TWOD12;
 const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, Math.trunc(Number(n)) || 0));
@@ -32,13 +33,13 @@ export const RULE_KINDS = {
   uses: { title: "More uses of a Frequency", tile: "U", cls: "esc", group: "Gives" },
   aura: { title: "Aura", tile: "A", cls: "au", group: "Areas" },
   light: { title: "Light", tile: "L", cls: "lt", group: "Areas" },
-  zone: { title: "Zone (old layout)", tile: "Z", cls: "au", group: "Areas" },
+  zone: { title: "Zone (old layout)", tile: "Z", cls: "au", legacy: true },   // v0.0.327: an Effect's Zone is "Where it is: On the map"; an old rule left on a Feature still reads
   move: { title: "Movement limit", tile: "M", cls: "rule", group: "Limits" },
   bleed: { title: "Bleed (condition)", tile: "B", cls: "tk", legacy: true },
   builtin: { title: "Condition rule", tile: "C", cls: "cond", legacy: true },
   raw: { title: "Old setting", tile: "?", cls: "rule", legacy: true }
 };
-export const ADD_MENU = [["Rolls and values", ["act", "value"]], ["Gives", ["grant", "weap", "esc", "uses"]], ["Areas", ["aura", "light", "zone"]], ["Limits", ["move"]]];
+export const ADD_MENU = [["Rolls and values", ["act", "value"]], ["Gives", ["grant", "weap", "esc", "uses"]], ["Areas", ["aura", "light"]], ["Limits", ["move"]]];
 
 /* ------------------------------------------------------------------ the Action filter */
 /** The filter picker's groups: the trait groups (TWOD12.traitGroups), the Roll group with the roll kinds Save, Check and Attack (by roll kind, Chapter 1). */
@@ -137,7 +138,7 @@ const DEFAULTS = {
   weap: () => ({ mode: "prop", weapon: "fists", wprop: "thrown", gl: "loses", prop: "nonthreatening", mprop: "projectile", mval: 3 }),
   esc: () => ({ trig: "allyState", n: 5 }),
   uses: () => ({ which: "round" }),
-  aura: () => ({ size: "2", aff: "allies", self: true, carry: { on: true, fx: "", fxName: "" }, show: true, outline: "", fill: "" }),
+  aura: () => ({ size: "2", inside: insideDefault({ carry: { on: true, self: true } }), show: true, outline: "", fill: "" }),   // v0.0.327 (PACK ZONE): per-row Who
   light: () => ({ bright: 1, dim: 2, color: "#ffd27a", alpha: 0.5, anim: "", aspeed: 5, aint: 5 }),
   move: () => ({ dirm: "closer", sees: false, origin: "" }),
   zone: () => ({ setting: { type: "zone", zoneWho: "allies", zoneHeal: "", fxUuid: "" } }),
@@ -180,7 +181,12 @@ export function normRule(r) {
     x.prop = x.prop in (T().removableProps ?? {}) ? x.prop : "nonthreatening"; x.mprop = x.mprop in (T().weaponTraits ?? {}) ? x.mprop : "projectile"; x.mval = clamp(x.mval, 0, 15);
   } else if (kind === "esc") { x.trig = x.trig in (T().escHookWhen ?? {}) ? x.trig : "allyState"; x.n = clamp(x.n, 0, 30); }
   else if (kind === "uses") x.which = x.which === "encounter" ? "encounter" : "round";
-  else if (kind === "aura") { x.size = String(x.size ?? "1") || "1"; x.aff = ["allies", "enemies", "all"].includes(x.aff) ? x.aff : "allies"; }
+  else if (kind === "aura") {
+    x.size = String(x.size ?? "1") || "1";
+    // v0.0.327 (PACK ZONE): the Aura's one Affects and "And this creature itself" became each row's Who (an older rule: its Carries row gets them)
+    if (!r?.inside) x.inside = insideDefault({ carry: { on: r?.carry?.on ?? true, who: ["allies", "enemies", "all"].includes(r?.aff) ? r.aff : "allies", self: r?.self ?? true, fx: r?.carry?.fx ?? "", fxName: r?.carry?.fxName ?? "" } });
+    x.inside = normInside(x.inside); delete x.aff; delete x.self; delete x.carry;
+  }
   else if (kind === "light") { x.bright = clamp(x.bright, 0, 30); x.dim = clamp(x.dim, 0, 30); x.alpha = Math.min(1, Math.max(0, Number(x.alpha) || 0)); x.aspeed = clamp(x.aspeed, 0, 10); x.aint = clamp(x.aint, 0, 10); }
   else if (kind === "move") x.dirm = x.dirm === "away" ? "away" : "closer";
   else if (kind === "builtin") x.which = ["noReactions", "loseAp"].includes(x.which) ? x.which : "noReactions";
@@ -188,12 +194,13 @@ export function normRule(r) {
 }
 /** Ends with every field. */
 export function normEnds(e = {}) {
-  const x = deepMerge({ time: { on: false, mode: "rounds", rounds: 1 }, save: { on: false, attr: "body", dc: "13", dcValue: 15, when: "eot", t2: "eot" }, down: { on: false }, action: { on: false, filter: { all: [], any: [], not: [] } } }, e);
+  const x = deepMerge({ time: { on: false, mode: "rounds", rounds: 1 }, save: { on: false, attr: "body", dc: "13", dcValue: 15, when: "eot", t2: "eot" }, down: { on: false }, action: { on: false, filter: { all: [], any: [], not: [] } }, someone: { on: false, who: "origin", ap: 1 } }, e);   // someone: a Zone's "Someone uses an Action" (v0.0.327)
   x.time.mode = ["eot", "rounds", "encounter"].includes(x.time.mode) ? x.time.mode : "rounds"; x.time.rounds = clamp(x.time.rounds, 1, 99);
   x.save.attr = ["body", "mind", "appeal", "instinct", "bodyinstinct", "mindappeal"].includes(x.save.attr) ? x.save.attr : "body";
   x.save.dc = ["13", "origin", "set"].includes(String(x.save.dc)) ? String(x.save.dc) : "13"; x.save.dcValue = clamp(x.save.dcValue, 1, 40);
   x.save.when = x.save.when === "interact" ? "interact" : "eot"; x.save.t2 = ["none", "eot", "ends"].includes(x.save.t2) ? x.save.t2 : "eot";
   x.action.filter = normFilter(x.action.filter);
+  x.someone = { on: !!x.someone.on, who: x.someone.who === "reach" ? "reach" : "origin", ap: clamp(x.someone.ap, 0, 3) };
   return x;
 }
 
@@ -254,7 +261,7 @@ export function migrate(sys, host = "effect") {
       case "mastery": add("weap", { ...base, mode: "mastery", mprop: x.mstTrait || "projectile", mval: x.mstValue ?? 3 }); break;
       case "eschook": add("esc", { ...base, trig: x.hookWhen || "allyState", n: x.hookRange ?? 5 }); break;
       case "freqmore": add("uses", { ...base, which: x.fmWhich || "round" }); break;
-      case "aura": add("aura", { ...base, size: String(x.auraSize || 1), aff: x.auraWho || "allies", self: !!x.auraSelf, carry: { on: !!x.fxUuid, fx: x.fxUuid || "", fxName: "" }, outline: x.auraOutline || "", fill: x.auraFill || "" }); break;
+      case "aura": add("aura", { ...base, size: x.sizeFormula || String(x.auraSize || 1), inside: x.areaRows?.carry ? x.areaRows : insideDefault({ carry: { on: !!x.fxUuid, who: x.auraWho || "allies", self: !!x.auraSelf, fx: x.fxUuid || "" } }), show: x.auraShow !== false, outline: x.auraOutline || "", fill: x.auraFill || "" }); break;
       case "light": add("light", { ...base, bright: x.bright || 0, dim: Math.max(0, (Number(x.dim) || 0) - (Number(x.bright) || 0)), color: x.color || "#ffd27a", alpha: x.lightAlpha ?? 0.5, anim: x.lightAnim || "", aspeed: x.lightSpeed ?? 5, aint: x.lightIntensity ?? 5 }); break;
       case "zone": add("zone", { ...base, setting: { ...x } }); break;
       case "bleed": add("bleed", { ...base, setting: { ...x } }); break;
@@ -343,7 +350,8 @@ export function compile(rulesIn, endsIn, host = "effect") {
       case "weap": if (r.mode === "mastery") S(r, "mastery", { mstTrait: r.mprop, mstValue: r.mval }); else S(r, "weaponprop", { wpWhich: r.weapon, wpProp: r.prop }); break;
       case "esc": S(r, "eschook", { hookWhen: r.trig, hookRange: r.n }); break;
       case "uses": S(r, "freqmore", { fmWhich: r.which }); break;
-      case "aura": S(r, "aura", { auraSize: isNum(r.size) ? Math.max(1, Math.trunc(Number(r.size))) : 1, sizeFormula: isNum(r.size) ? "" : r.size, auraWho: r.aff, auraSelf: r.self, fxUuid: r.carry.on ? r.carry.fx : "", auraOutline: r.outline, auraFill: r.fill, auraShow: r.show }); break;
+      case "aura": { const c = r.inside.carry;   // the Carries row is the Aura setting the readers know (aura.mjs); every row goes along (areaRows: Heals, Hazard, Difficult Terrain)
+        S(r, "aura", { auraSize: isNum(r.size) ? Math.max(1, Math.trunc(Number(r.size))) : 1, sizeFormula: isNum(r.size) ? "" : r.size, auraWho: c.who, auraSelf: c.self, fxUuid: c.on ? c.fx : "", auraOutline: r.outline, auraFill: r.fill, auraShow: r.show, areaRows: r.inside }); break; }
       case "light": S(r, "light", { bright: r.bright, dim: r.bright + r.dim, color: r.color, lightAlpha: r.alpha, lightAnim: r.anim, lightSpeed: r.aspeed, lightIntensity: r.aint }); break;
       case "move": settings.push({ ...blankSetting("move"), ruleId: r.id, seen: !!r.sees, text: r.dirm }); break;
       case "zone": case "bleed": case "raw": settings.push({ ...blankSetting(r.setting?.type || "note"), ...r.setting, ruleId: r.id, minEscalation: host === "effect" ? 0 : r.minEsc }); break;
@@ -483,10 +491,9 @@ export function sentence(rIn, ctx = {}) {
     case "esc": return `Once an encounter, when ${(T().escHookWhen?.[r.trig] ?? "").replace(/^An /, "an ").replace(/^The /, "the ").replace(" N ", ` ${r.n} `)}: its Escalation rises by 1${esc0}.`;
     case "uses": return `${cap(T().freqMore?.[r.which] ?? "")}${esc0}.`;
     case "aura": {
-      const w = { allies: "Allies", enemies: "Enemies", all: "Creatures" }[r.aff], sz = isNum(r.size) ? r.size.trim() : `(equal to ${formulaWords(r.size)})`;
-      const fx = r.carry.on ? (nm(r.carry.fx) || r.carry.fxName) : "";
-      const x = r.carry.on ? `${w} inside${r.self ? ", and this creature," : ""} gain ${fx ? `⟦a:${fx}⟧` : "…"}` : "…";
-      return `Aura ${sz}: ${x}${esc0}.`;
+      const sz = isNum(r.size) ? r.size.trim() : `(equal to ${formulaWords(r.size)})`;
+      const x = insideSentences(r.inside, { ...ctx, selfName: "this creature", names: ctx.names });
+      return `Aura ${sz}: ${x.join(" ") || "…"}${esc0}`.replace(/\.?$/, ".");
     }
     case "light": return `Sheds Bright light in a ${r.bright} Emanation and Dim light ${r.dim} squares further${esc0}.`;
     case "zone": return `A Zone (the placed area) for ${r.setting?.zoneWho === "enemies" ? "enemies" : r.setting?.zoneWho === "all" ? "everyone" : "allies"} inside it${r.setting?.fxUuid ? `: they carry ⟦a:${nm(r.setting.fxUuid) || "an Effect"}⟧` : ""}${String(r.setting?.zoneHeal ?? "").trim() ? `; they heal ${r.setting.zoneHeal} at the start of their turns` : ""}.`;
@@ -497,7 +504,7 @@ export function sentence(rIn, ctx = {}) {
   return "";
 }
 /** The plain text (the hover card, the list labels): the marks stripped. */
-export const plainText = t => String(t ?? "").replace(/⟦d:[VR]:([^⟧]+)⟧/g, "$1").replace(/⟦s:([^⟧]+)⟧/g, (m, s) => SUB(s)).replace(/⟦[a-z]:([^⟧]+)⟧/g, "$1").replace(/\s+/g, " ").trim();
+export const plainText = t => String(t ?? "").replace(/⟦h:([^⟧]+)⟧/g, "[$1]").replace(/⟦d:[VR]:([^⟧]+)⟧/g, "$1").replace(/⟦s:([^⟧]+)⟧/g, (m, s) => SUB(s)).replace(/⟦[a-z]:([^⟧]+)⟧/g, "$1").replace(/\s+/g, " ").trim();
 /** The pane's colored sentence (HTML): Boons blue, Banes red, traits as chips, damage in its pool's color, the subtype in full in its color, names bold. */
 export function sentenceHtml(t) {
   // the chips stand for the book's brackets: "[⟦t:Melee⟧, ⟦t:Strike⟧]" is two chips
@@ -528,7 +535,8 @@ export function ruleLabel(rIn, ctx = {}) {
     case "value": t = r.stat === "rally" ? "Rally Points heal more" : plainText(sentence(r, ctx)).replace(/\.$/, "").replace(/, while.*/, "").replace(/^Has /, ""); break;
     case "esc": t = `Escalation +1: ${r.trig === "markDown" ? "mark Down" : "ally Bloodied / Down"}`; break;
     case "uses": t = r.which === "encounter" ? "Encounter Specials a second time" : "Round Specials twice a round"; break;
-    case "aura": t = `Aura ${String(r.size).replace(/@origin\./g, "")}: ${r.carry.on ? (nm(r.carry.fx) || r.carry.fxName || "(empty)") : "(empty)"}`; break;
+    case "aura": { const c = r.inside.carry, bits = [c.on ? (nm(c.fx) || c.fxName || "(empty)") : "", r.inside.heal.on ? `heal ${r.inside.heal.formula}` : "", r.inside.ht.on ? `HT ${r.inside.ht.list.map(d => `${d.dice}${d.sub ? ` ${SUB(d.sub)}` : ""}`).join(" + ")}` : "", r.inside.diff.on ? "Difficult" : ""].filter(Boolean);
+      t = `Aura ${String(r.size).replace(/@origin\./g, "")}: ${bits.join(" + ") || "(empty)"}`; break; }
     case "weap": t = r.mode === "prop" ? `${r.weapon === "fists" ? "Fists" : "Weapons"} lose ${T().removableProps?.[r.prop] ?? r.prop}` : `Starting Mastery ${r.mval}`; break;
     case "light": t = `Light ${r.bright} / ${r.dim}`; break;
     case "move": t = r.dirm === "closer" ? "Can't move closer" : "Can't move away"; break;
@@ -581,6 +589,151 @@ export function endsSentence(eIn, ctx = {}) {
   return `Lasts ${x.join(", or ")}.`;
 }
 
+/* ------------------------------------------------------------------ v0.0.327 PACK ZONE: what an area does inside (Aura and Zone share it) */
+// Four rows, each with its own Who (allies / enemies / everyone, judged from the origin's side: a neutral counts as an enemy) and "self" (the origin,
+// or the Aura's creature: never its own ally, only through this switch). foundry/mockups/zone-prototype.html, option A.
+export const WHO = { allies: "Allies", enemies: "Enemies", all: "Everyone" };
+const whoOk = w => (["allies", "enemies", "all"].includes(w) ? w : "allies");
+export const insideDefault = (o = {}) => normInside(deepMerge({
+  carry: { on: false, who: "allies", self: false, fx: "", fxName: "" },
+  heal: { on: false, who: "allies", self: true, formula: "1d4" },
+  ht: { on: false, who: "all", self: false, entering: true, turn: true, movement: false, list: [{ dice: "1d6", pool: "B", sub: "" }], gives: { on: false, fx: "", fxName: "" } },
+  diff: { on: false, who: "all", self: false }
+}, o));
+export function normInside(x0) {
+  const x = deepMerge({ carry: {}, heal: {}, ht: { gives: {} }, diff: {} }, x0 ?? {});
+  for (const k of ["carry", "heal", "ht", "diff"]) { x[k].on = !!x[k].on; x[k].self = !!x[k].self; }
+  x.carry.who = whoOk(x.carry.who); x.heal.who = whoOk(x.heal.who); x.ht.who = ["allies", "enemies", "all"].includes(x.ht.who) ? x.ht.who : "all"; x.diff.who = ["allies", "enemies", "all"].includes(x.diff.who) ? x.diff.who : "all";
+  x.carry.fx = String(x.carry.fx ?? ""); x.heal.formula = String(x.heal.formula ?? "1d4");
+  x.ht.list = (x.ht.list?.length ? x.ht.list : [{ dice: "1d6", pool: "B", sub: "" }]).map(d => ({ dice: String(d.dice ?? "1"), pool: d.pool === "M" ? "M" : "B", sub: subOk(d.sub) }));
+  x.ht.gives = { on: !!x.ht.gives?.on, fx: String(x.ht.gives?.fx ?? ""), fxName: String(x.ht.gives?.fxName ?? "") };
+  for (const k of ["entering", "turn", "movement"]) x.ht[k] = !!x.ht[k];
+  return x;
+}
+export const insideActive = i => !!(i && ((i.carry?.on && i.carry.fx) || i.heal?.on || i.ht?.on || i.diff?.on));
+/** The patterns of a Hazard row: none ticked = Entering and Turn (Chapter 3). */
+export const htPatterns = ht => { const l = ["entering", "turn", "movement"].filter(k => ht?.[k]); return l.length ? l : ["entering", "turn"]; };
+const PAT = { entering: "Entering", turn: "Turn", movement: "Movement" };
+/** The plain average of a dice formula ("1d4" 2.5, "2d6 + 1" 8), or null for anything else (a formula with names). */
+export function diceAvg(f) {
+  const s = String(f ?? "").replace(/\s+/g, "");
+  if (!/^(\d*d\d+|\d+)([+-](\d*d\d+|\d+))*$/i.test(s)) return null;
+  let t = 0;
+  for (const m of s.matchAll(/([+-]?)(\d*)d(\d+)|([+-]?)(\d+)(?!d)/gi)) {
+    if (m[3]) t += (m[1] === "-" ? -1 : 1) * (Number(m[2]) || 1) * (Number(m[3]) + 1) / 2;
+    else if (m[5]) t += (m[4] === "-" ? -1 : 1) * Number(m[5]);
+  }
+  return Math.round(t * 10) / 10;
+}
+/** "Allies inside, and Nari," / "Creatures inside" (selfName: the origin's name, or "this creature" on an Aura). */
+const whoInside = (row, selfName) => `${{ allies: "Allies", enemies: "Enemies", all: "Creatures" }[row.who]} inside${row.self ? `, and ${selfName},` : ""}`;
+/** The rows' sentences (Aura and Zone). */
+export function insideSentences(insideIn, ctx = {}) {
+  const x = normInside(insideIn), me = ctx.selfName || ctx.originName || "the origin", nm = u => ctx.names?.[u] || "";
+  const out = [];
+  if (x.carry.on) out.push(`${whoInside(x.carry, me)} gain ⟦a:${nm(x.carry.fx) || x.carry.fxName || "…"}⟧.`);
+  if (x.heal.on) out.push(`${whoInside(x.heal, me)} heal ${formulaWords(x.heal.formula)} at the start of each of their turns.`);
+  if (x.ht.on) {
+    const d = x.ht.list.filter(e => String(e.dice).trim()).map(e => `⟦d:${POOL(e.pool)}:${formulaWords(e.dice)} [${POOL(e.pool)}]⟧${e.sub ? ` ⟦s:${e.sub}⟧` : ""}`);
+    const gives = x.ht.gives.on ? (nm(x.ht.gives.fx) || x.ht.gives.fxName) : "";
+    const what = [d.length ? `take ${andJoin(d)} damage` : "", gives ? `gain ⟦a:${gives}⟧` : ""].filter(Boolean);
+    out.push(`⟦h:HT: ${htPatterns(x.ht).map(k => PAT[k]).join(", ")}⟧ ${whoInside(x.ht, me)} ${andJoin(what) || "…"}.`);
+  }
+  if (x.diff.on) {
+    const w = x.diff.who === "all" ? (x.diff.self ? "every creature" : `every creature but ${me}`) : `${x.diff.who}${x.diff.self ? ` and ${me}` : ""}`;
+    out.push(`Its squares are Difficult Terrain for ${w}.`);
+  }
+  return out;
+}
+/** A part row's summary: "Enemies · Consecrated", "Allies · 1d4 (avg 2.5) a turn", "Everyone · Entering, Turn · 1d8 Fire", "Enemies". */
+export function insideSummary(insideIn, key, ctx = {}) {
+  const x = normInside(insideIn), r = x[key];
+  if (!r?.on) return "off";
+  const w = WHO[r.who];
+  if (key === "carry") return `${w} · ${ctx.names?.[r.fx] || r.fxName || "(none dropped)"}`;
+  if (key === "heal") { const a = diceAvg(r.formula); return `${w} · ${r.formula}${a !== null ? ` (avg ${a})` : ""} a turn`; }
+  if (key === "ht") return `${w} · ${htPatterns(r).map(k => PAT[k]).join(", ")} · ${r.list.map(d => `${d.dice}${d.sub ? ` ${SUB(d.sub)}` : ""}`).join(" + ")}`;
+  return w;
+}
+/** Pure: does a row reach this creature? side: the origin's disposition; me: is it the origin (the Aura's creature) itself. A neutral counts as an enemy. */
+export function rowReaches(row, { originDisposition = 1, disposition = 0, isOrigin = false } = {}) {
+  if (!row?.on) return false;
+  if (isOrigin) return !!row.self;
+  const ally = Number(disposition) === Number(originDisposition);
+  return row.who === "all" || (row.who === "allies" && ally) || (row.who === "enemies" && !ally);
+}
+
+/** A placed Zone's rows: its own (rows), or a v0.0.261 Zone's rules ([{ who, fxUuid, heal }]) read as rows. */
+export function zoneRows(zone) {
+  if (zone?.rows) return normInside(zone.rows);
+  const carry = (zone?.rules ?? []).find(r => r.fxUuid), heal = (zone?.rules ?? []).find(r => String(r.heal ?? "").trim());
+  return normInside({ carry: carry ? { on: true, who: carry.who, self: false, fx: carry.fxUuid } : {}, heal: heal ? { on: true, who: heal.who, self: false, formula: heal.heal } : {} });
+}
+/** Hazard (Chapter 3): may this pattern hit now? Entering and Turn share the creature's turn-cycle limit (at: the last such hit [round, turn]); Movement has none. */
+export const htMayHit = (pattern, at, { round, turn, own }) => pattern === "movement" || !turnCycleBlocked(round, turn, own, at);
+/** The areas a creature enters (now in, not before). */
+export const entered = (before, now) => [...now].filter(k => !before.has(k));
+
+/* ------------------------------------------------------------------ v0.0.327 PACK ZONE: the Zone (an effect placed on the map) */
+export const zoneDefault = () => ({ src: "action", shape: "emanation", size: "2", inside: insideDefault({ carry: { on: true, who: "enemies" } }), show: true, outline: "", fill: "" });
+export function normZone(z0) {
+  const z = deepMerge(zoneDefault(), z0 ?? {});
+  z.src = z.src === "here" ? "here" : "action"; z.shape = ["emanation", "burst", "line"].includes(z.shape) ? z.shape : "emanation"; z.size = String(z.size ?? "2") || "2";
+  z.inside = normInside(z.inside); z.show = z.show !== false;
+  return z;
+}
+const SHAPE = { emanation: "Emanation", burst: "Burst", line: "Line" };
+/** "2 Emanation", "2 / 3 Emanation" (the card's), "Line 4", "(equal to the origin's Power Modifier) Burst". action: { area } when "From the Action". */
+export function zoneAreaText(zIn, action = null) {
+  const z = normZone(zIn);
+  if (z.src === "action" && action?.area) return action.area;
+  const n = isNum(z.size) ? z.size.trim() : `(equal to ${formulaWords(z.size)})`;
+  return z.shape === "line" ? `Line ${n}` : `${n} ${SHAPE[z.shape]}`;
+}
+/** The Zone's own sentences (the tip, the hover card on the map, the chips): "2 / 3 Emanation. Enemies inside gain Consecrated. Allies inside heal 1d4..." */
+export function zoneSentence(zIn, ctx = {}) {
+  const z = normZone(zIn);
+  return [`${zoneAreaText(z, ctx.action)}.`, ...insideSentences(z.inside, ctx)].join(" ");
+}
+/** A Zone's Ends: Time (Rounds or This encounter, no EoT), Origin goes Down, Someone uses an Action ({ on, who: "origin" | "reach", ap }); no Save, no bearer's Action. */
+export function zoneEndsSentence(eIn, ctx = {}) {
+  const e = normEnds(eIn), x = [], o = ORIGIN(ctx);
+  if (e.time.on) x.push(e.time.mode === "encounter" ? "until the encounter ends" : plural(e.time.rounds, "round"));
+  if (e.down.on) x.push(`until ${o} goes Down`);
+  if (e.someone.on) x.push(`until ${o}${e.someone.who === "reach" ? " (or a creature within Reach of it)" : ""} ends it with an Action (${e.someone.ap} AP)`);
+  return x.length ? `Lasts ${x.join(", or ")}.` : "Lasts until removed.";
+}
+/** The squares of the preview (Set here): a grid of N x N around the center; Emanation N = (2N+1)² around a square; Burst N = squares whose center is within
+ *  N of a corner (1 -> 4, 2 -> 12); Line N from the center to the right. Returns { n, cells: Set("x,y") } on a (2·k+1)² grid (k = 5). */
+export function previewCells(shape, size, k = 5) {
+  const n = Math.max(1, Math.min(k, Math.trunc(Number(size)) || 2)), cells = new Set(), N = 2 * k + 1;
+  for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+    let on = false;
+    if (shape === "burst") { const dx = x + 0.5 - k, dy = y + 0.5 - k; on = Math.hypot(dx, dy) <= n + 1e-9; }
+    else if (shape === "line") on = y === k && x > k && x <= k + n;
+    else on = Math.max(Math.abs(x - k), Math.abs(y - k)) <= n;
+    if (on) cells.add(`${x},${y}`);
+  }
+  return { n, cells, N };
+}
+/**
+ * v0.0.327: lift the old Zone (the "zone" settings, or the legacy "Zone (old layout)" rules) into the effect's Zone: where "map", each setting's
+ * who to its rows (a dropped Effect -> Carries an Effect; a heal -> Heals, "self" off as the old block); the rest of the rules stay. Idempotent.
+ * sys: { rules, where, zone }. Returns { where, zone, rules, lifted }.
+ */
+export function liftZone(sys) {
+  const rules = (sys?.rules ?? []).map(r => (typeof r?.toObject === "function" ? r.toObject() : r));
+  const old = rules.filter(r => r?.kind === "zone");
+  if (!old.length) return { where: sys?.where === "map" ? "map" : "creature", zone: normZone(sys?.zone), rules, lifted: false };
+  const z = normZone(sys?.where === "map" ? sys.zone : { src: "action", inside: insideDefault() });
+  for (const r of old) {
+    const st = r.setting ?? {}, who = whoOk(st.zoneWho);
+    if (st.fxUuid && !z.inside.carry.fx) z.inside.carry = { ...z.inside.carry, on: true, who, self: false, fx: st.fxUuid };
+    if (String(st.zoneHeal ?? "").trim() && !(sys?.where === "map" && z.inside.heal.on)) z.inside.heal = { ...z.inside.heal, on: true, who, self: false, formula: String(st.zoneHeal).trim() };
+  }
+  return { where: "map", zone: normZone(z), rules: rules.filter(r => r?.kind !== "zone"), lifted: true };
+}
+
 /* ------------------------------------------------------------------ the hover card */
 /**
  * The hover card's text, built from the rules and Ends (plain, no colors). NEW: rules that share "While they see {origin}" with the same origin are
@@ -592,7 +745,7 @@ export function isEmptyRule(rIn) {
   if (r.kind === "act") return !payload(r).length;
   if (r.kind === "grant") return !(r.item || r.itemName || r.msg.on);
   if (r.kind === "value") return r.stat === "resist" && !r.rwSub;
-  if (r.kind === "aura") return !(r.carry.on && r.carry.fx);
+  if (r.kind === "aura") return !insideActive(r.inside);
   return r.kind === "raw";
 }
 export function hoverCardText(rulesIn, endsIn, ctx = {}) {

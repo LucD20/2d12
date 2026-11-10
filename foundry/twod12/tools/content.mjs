@@ -495,12 +495,25 @@ for (const a of [...actors, ...pcs]) for (const it of (a.items ?? [])) if (["act
 {
   const FX = await import("../module/fxrules.mjs");
   const names = Object.fromEntries(docs.map(d => [uuidOf(d.pack, d.name), d.name]));
+  // the Area line as the data model writes it (data.mjs: "2 / 3 Emanation", the Versions' own sizes)
+  const areaOfCfg = sy => { const c = sy?.areaCfg; if (!c?.size) return String(sy?.area ?? ""); const sizes = [...new Set([...(sy.versions ?? [])].sort((a, b) => a.ap - b.ap).map(v => v.areaSize || c.size))], sz = sizes.length > 1 ? sizes.join(" / ") : c.size; return c.shape === "line" ? `Line ${sz}` : `${sz} ${c.shape === "burst" ? "Burst" : "Emanation"}`; };
   const withRules = d => {
     if (!["effect", "feature", "talent"].includes(d.type)) return;
     const sys = (d.system ??= {});
     const m = FX.migrate(sys, d.type);
     sys.rules = m.rules; sys.rulesOn = true;
     if (d.type === "effect") sys.ends = m.ends;
+    // v0.0.327 (PACK ZONE): an old Zone (Consecrated Ground) is the effect placed on the map
+    const z = d.type === "effect" ? FX.liftZone({ rules: sys.rules }) : null;
+    if (z?.lifted) {
+      // the Action that places it: its Area line and its rounds (the Version's own rounds still win when it is placed: 5 at 3 AP)
+      const me = uuidOf(d.pack, d.name), act = docs.find(a => a.type === "action" && (a.system?.versions ?? []).some(v => Object.values(v.fx ?? {}).some(l => (l ?? []).some(x => x?.uuid === me))));
+      const rounds = Number(act?.system?.areaCfg?.rounds) || 0;
+      if (rounds && !m.ends.time.on) m.ends = FX.normEnds({ ...m.ends, time: { on: true, mode: "rounds", rounds } });
+      sys.ends = m.ends;
+      sys.rules = z.rules; sys.where = "map"; sys.zone = z.zone; sys.autoHover = `${FX.plainText(FX.zoneSentence(z.zone, { originName: "{origin}", names, action: act ? { area: areaOfCfg(act.system) } : null }))} ${FX.zoneEndsSentence(m.ends, { originName: "{origin}" })}`;
+      return;
+    }
     sys.autoHover = d.type === "effect" ? FX.hoverCardText(m.rules, m.ends, { originName: "{origin}", names, host: d.type }) : FX.hoverCardText(m.rules, {}, { originName: "its origin", names, host: d.type }).replace(/\s*Lasts until removed\.$/, "");
   };
   for (const d of docs) withRules(d);

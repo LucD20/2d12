@@ -1,5 +1,5 @@
 // Migrations of an Effect's, Feature's or Talent's settings (pure: the tests load it).
-import { migrate } from "./fxrules.mjs";
+import { migrate, liftZone } from "./fxrules.mjs";
 //  v0.0.126: Empowered and Enfeebled are their own setting ("damagestep"), no longer part of Boons and Banes; a passive's Escalation minimum
 //  belongs to each setting (minEscalation), no longer to the whole Feature or Talent (passiveEscalation).
 export function migrateSettings(source) {
@@ -30,5 +30,12 @@ export function migrateSettings(source) {
 export function migrateRules(source, host = "effect") {
   if (!source || source.rulesOn || !Array.isArray(source.settings) || (Array.isArray(source.rules) && source.rules.length)) return source;
   try { const m = migrate(source, host); source.rules = m.rules; if (host === "effect") source.ends = m.ends; } catch (e) { console.warn("twod12 | effect rules", e); }
+  return source;
+}
+
+/** v0.0.327 (PACK ZONE): an Effect's old Zone ("Zone (old layout)" rules) becomes its Zone ("Where it is: On the map"), in memory, on every load (idempotent). */
+export function migrateZone(source) {
+  if (!source || !Array.isArray(source.rules) || !source.rules.some(r => r?.kind === "zone")) return source;
+  try { const z = liftZone(source); source.rules = z.rules; source.where = z.where; source.zone = z.zone; } catch (e) { console.warn("twod12 | zone", e); }
   return source;
 }

@@ -555,7 +555,9 @@ export async function useAction(actor, item, opts = {}) {
   }
   // v0.0.261 (Consecrated Ground): the Zone settings of the Version's effects go on the placed area (its region); those effects are not applied to creatures
   let zoneSkip = new Set();
-  if (areaSet) { const zn = await zoneOf(versions); if (zn) { areaSet.zone = zn.zone; areaSet.keep = true; zoneSkip = zn.uuids; } }
+  if (areaSet) { const zn = await zoneOf(versions); if (zn) { areaSet.zone = { ...zn.zone, area: String(it.area ?? "").trim() }; areaSet.keep = true; zoneSkip = zn.uuids;
+    // v0.0.327 (PACK ZONE): the Version's own rounds win; else the Zone's Ends: Time
+    const t = zn.zone.ends?.time; if (!areaSet.rounds && t?.on && t.mode !== "encounter") areaSet.rounds = t.rounds; } }
   if (areaSet && canvas.ready && canvas.grid?.isSquare) {   // no square grid: no placing, rolled as before
     const { startTemplate } = await import("./template.mjs");
     const outcome = {}; areaOutcome = outcome;

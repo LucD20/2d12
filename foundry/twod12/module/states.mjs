@@ -50,6 +50,7 @@ export async function onStateChange(actor, words) {
   await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-heart-crack", `<b>${name}</b> is <b>${words.join("</b> and <b>")}</b>.${words.includes("Down") ? "" : " (No effect by itself: a hook for cards.)"}`, "statemsg") });
   // v0.0.314: Grabbed (an effect that ends with its origin) ends when the holder goes Down
   if (words.includes("Down")) { try { const { endHeldBy } = await import("./conditions.mjs"); await endHeldBy(actor); } catch (e) { console.warn("twod12 | Grabbed", e); } }
+  if (words.includes("Down")) { try { await (await import("./areafx.mjs")).endZonesOfOrigin(actor); } catch (e) { console.warn("twod12 | Zones", e); } }   // v0.0.327: a Zone's "Origin goes Down"
   const combat = game.combat;
   if (!combat?.started) return;
   // v0.0.314 (pack AU; book, Elite Escalation): an Elite's phases, +1 Escalation when it becomes Bloodied and when it becomes Strained (once each)

@@ -19,9 +19,10 @@ export function auraPlan(sources, tokens, dist, side) {
       const own = t.id === src.token.id;
       if (own) { if (!src.aura.self) continue; }
       else {
-        const sa = side(src.token), st = side(t), ally = sa !== 0 && sa === st, enemy = sa !== 0 && st !== 0 && sa !== st;
+        // v0.0.327 (PACK ZONE): the shared Who of the areas: allies are the origin's side, everyone else an enemy (a neutral counts as an enemy)
+        const ally = side(src.token) === side(t);
         const who = src.aura.who ?? "allies";
-        if (!(who === "all" || (who === "allies" && ally) || (who === "enemies" && enemy))) continue;
+        if (!(who === "all" || (who === "allies" && ally) || (who === "enemies" && !ally))) continue;
         if (dist(src.token, t) > (Number(src.aura.size) || 1)) continue;
       }
       if (!want.has(t.id)) want.set(t.id, new Map());
@@ -69,7 +70,7 @@ export async function refreshAuras() {
       const stale = have.filter(e => !mine.has(e.getFlag(F, "auraFrom"))).map(e => e.id);
       if (stale.length) await actor.deleteEmbeddedDocuments("ActiveEffect", stale);
       for (const [key, src] of mine) {
-        if (have.some(e => e.getFlag(F, "auraFrom") === key)) continue;
+        if (!src.aura.fxUuid || have.some(e => e.getFlag(F, "auraFrom") === key)) continue;   // v0.0.327: an Aura may carry nothing (only its other rows)
         const item = await itemOf(src.aura.fxUuid);
         if (item) await createEffect(actor, item, originInfo(src.token.actor.uuid), null, { auraFrom: key });
       }

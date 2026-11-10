@@ -84,6 +84,7 @@ Hooks.once("init", () => {
   registerHazardHooks();
   registerDownHooks();
   registerZoneHooks();
+  import("./areafx.mjs").then(m => m.registerAreaHooks()).catch(e => console.warn("twod12 | area hooks", e));   // v0.0.327 (PACK ZONE)
   registerLeanHooks();
   registerMasteryHooks();
   registerMarkHooks();
@@ -349,6 +350,7 @@ Hooks.once("ready", async () => {
     else if (b.dataset.twod12 === "rollDamage") await rollDamage(msg);
     else if (/^cc(Apply|ApplyAll|Undo|Adjust|DmgTarget)$/.test(b.dataset.twod12)) await (await import("./ccdamage.mjs")).ccDamageClick(b.dataset.twod12, b, msg);   // v0.0.283
     else if (b.dataset.twod12 === "ccCard") await (await import("./ccdamage.mjs")).openCardWindow(msg);
+    else if (b.dataset.twod12 === "zoneEnd") await (await import("./areafx.mjs")).zoneEndClick(b);   // v0.0.327: a Zone's "Someone uses an Action"
     else if (b.dataset.twod12 === "fxEnd") { const fx = await fromUuid(b.dataset.fx); if (!fx) ui.notifications.info("It has already ended."); else if (fx.isOwner) await fx.delete(); else ui.notifications.warn("Only its owner or the GM can end it."); }   // v0.0.323: Ends, a Save
     else if (b.dataset.twod12 === "ccOpenSrc") (await import("./ccdamage.mjs")).openSource(msg);
     else if (b.dataset.twod12 === "ccSaveDamage") await (await import("./inline.mjs")).saveDamage(msg);

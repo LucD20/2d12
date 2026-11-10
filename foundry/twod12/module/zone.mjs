@@ -3,24 +3,34 @@
 // turns). The settings go on the region the Action keeps on the map (flags.twod12.zone: name, rules, cells, originUuid, originDisposition);
 // the creatures inside get the Effect (flag zoneFrom), lose it when they leave or the area ends; the region's rounds count down like an effect's.
 import { tokenCells } from "./template.mjs";
+import { normZone, normEnds, rowReaches } from "./fxrules.mjs";
+import { zoneRows } from "./fxrules.mjs";
 const F = "twod12";
 const key = c => `${c.i},${c.j}`;
 let timer = null, running = false, again = false;
 const landing = new Map();   // v0.0.270 (Lucas: the Bane stayed after moving out): where a moving token ends (the movement's destination), read on the next refresh
 
-/** The Zone a Version's effects describe (their "zone" settings), for the area about to be placed: { zone: { name, rules }, uuids } or null. */
+/**
+ * v0.0.327 (PACK ZONE): what a Zone keeps on its Region, from its Effect ("Where it is: On the map"): its name, its rows (Carries, Heals, Hazard,
+ * Difficult Terrain, each with its Who), its Ends (Time, Origin goes Down, Someone uses an Action), its colors, the names of the Effects it carries.
+ */
+export function zoneFromItem(item) {
+  const s = item?.system ?? {}, z = normZone(s.zone), names = {};
+  for (const r of [z.inside.carry, z.inside.ht.gives]) if (r.fx) { try { names[r.fx] = fromUuidSync(r.fx)?.name ?? r.fxName ?? ""; } catch (e) { names[r.fx] = r.fxName ?? ""; } }
+  return { name: String(item?.name ?? "Zone").replace(/\s*\(.*\)\s*$/, ""), rows: z.inside, ends: normEnds(s.ends), show: z.show, outline: z.outline, fill: z.fill, names, effectUuid: item?.uuid ?? "" };
+}
+/** The Zone a Version's effects describe (an Effect placed on the map; an older one's "zone" settings are read the same, settingsmigrate.mjs migrateZone), for the
+ *  area about to be placed: { zone, uuids } or null. Those effects are not applied to creatures: the area is them. */
 export async function zoneOf(versions) {
-  const rules = [], uuids = new Set(); let name = "";
+  const uuids = new Set(); let zone = null;
   for (const v of versions ?? []) for (const x of v.fx?.all ?? []) {
     if (uuids.has(x.uuid)) continue;
     let item = null; try { item = await fromUuid(x.uuid); } catch (e) { item = null; }
-    const zs = (item?.system?.settings ?? []).filter(s => s.type === "zone");
-    if (!zs.length) continue;
+    if (item?.system?.where !== "map") continue;
     uuids.add(x.uuid);
-    name ||= String(item.name).replace(/\s*\(.*\)\s*$/, "");
-    for (const s of zs) rules.push({ who: s.zoneWho || "allies", fxUuid: s.fxUuid || "", heal: String(s.zoneHeal ?? "").trim() });
+    zone ??= zoneFromItem(item);
   }
-  return rules.length ? { zone: { name, rules }, uuids } : null;
+  return zone ? { zone, uuids } : null;
 }
 export const zonesOf = scene => (scene?.regions ?? []).filter(r => r.getFlag?.(F, "zone"));
 /** Pure: is a token (its cells) inside the zone's cells? */
@@ -34,11 +44,12 @@ export function zonePlan(regions, tokens) {
   for (const r of regions) for (const t of tokens) {
     if (!inZone(r.zone, t.cells)) continue;
     const side = zoneSide(r.zone, t.disposition);
-    (r.zone.rules ?? []).forEach((rule, i) => {
-      if (!rule.fxUuid || !ruleWants(rule, side)) return;
-      if (!want.has(t.id)) want.set(t.id, new Map());
-      want.get(t.id).set(`${r.id}|${i}`, { regionId: r.id, rule, zone: r.zone });
-    });
+    // v0.0.327 (PACK ZONE): the Carries row, its Who and "And the origin" (an older Zone's rules are read as rows)
+    const carry = zoneRows(r.zone).carry;
+    if (!carry.on || !carry.fx || !rowReaches(carry, { originDisposition: r.zone.originDisposition ?? 1, disposition: t.disposition, isOrigin: !!t.actorUuid && t.actorUuid === r.zone.originUuid })) continue;
+    void side;
+    if (!want.has(t.id)) want.set(t.id, new Map());
+    want.get(t.id).set(`${r.id}|0`, { regionId: r.id, rule: { fxUuid: carry.fx }, zone: r.zone });
   }
   return want;
 }
@@ -49,7 +60,7 @@ export async function refreshZones() {
   try {
     const { createEffect, originInfo } = await import("./effects.mjs");
     const regions = zonesOf(canvas.scene).map(r => ({ id: r.id, zone: r.getFlag(F, "zone") }));
-    const toks = (canvas.scene.tokens ?? []).filter(td => td.actor).map(td => ({ id: td.id, doc: td, disposition: td.disposition, cells: tokenCells(landing.get(td.id) ?? td) }));
+    const toks = (canvas.scene.tokens ?? []).filter(td => td.actor).map(td => ({ id: td.id, doc: td, actorUuid: td.actor.uuid, disposition: td.disposition, cells: tokenCells(landing.get(td.id) ?? td) }));
     landing.clear();
     const want = zonePlan(regions, toks);
     const done = new Set();

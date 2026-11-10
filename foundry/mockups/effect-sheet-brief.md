@@ -21,7 +21,7 @@ The Details tab of the Effect window grew one setting block per feature (Boons a
 
 **Out of scope (do not change)**
 - The Description tab and the JSON tab.
-- **Zone** (an effect placed on the map). It gets its own design later. Keep the existing Zone setting working exactly as it is; show it in the new list as a rule kind "Zone (old layout)" with its current controls inside the new pane, and keep it in the "+ Add rule" menu under Areas. Report it as the one rule left in the old layout.
+- ~~**Zone** (an effect placed on the map). It gets its own design later.~~ **Designed and built (PACK ZONE, v0.0.327): section 5.10.** Was: Keep the existing Zone setting working exactly as it is; show it in the new list as a rule kind "Zone (old layout)" with its current controls inside the new pane, and keep it in the "+ Add rule" menu under Areas. Report it as the one rule left in the old layout.
 - The **Advanced** section: keep it as it is, collapsed, at the bottom.
 - Any rule of the game other than the two in section 8.
 
@@ -157,13 +157,13 @@ A dashed box ("Drop an Effect or an Action here", small line "from the Effects a
 
 ## 5. The rule kinds ("+ Add rule")
 
-The menu, grouped (8 kinds, plus "Zone (old layout)" under Areas until the Zone pass):
+The menu, grouped (8 kinds; the old "Zone (old layout)" is gone since PACK ZONE: a Zone is "Where it is: On the map", section 5.10, and an old Zone rule migrates there):
 
 | Group | Kinds |
 |---|---|
 | Rolls and values | On matching Actions · Changes a value |
 | Gives | Grants an Effect or Action · Weapons (properties, Mastery) · Escalation hook |
-| Areas | Aura · Light · (Zone (old layout)) |
+| Areas | Aura · Light |
 | Limits | Movement limit |
 
 ### 5.1 On matching Actions (tile ±, Boon/Bane split color)
@@ -245,8 +245,8 @@ The old Escalation hook, its own kind. **When:** `<select>` of the triggers the 
 ### 5.6 Aura (tile A)
 The old **Aura** block, reorganized; it is a rule (an effect can have Beacon's Step for its bearer **and** an Aura).
 - **Size:** "Aura [formula] squares" (default 2; e.g. `@origin.pow`). Help: "Counted from every square it occupies (Chapter 3, Aura)."
-- **Affects:** `Allies | Enemies | Everyone`, and a switch **And this creature itself**.
-- **"What it does inside"** (heading), two part rows, both may be on:
+- ~~**Affects:** `Allies | Enemies | Everyone`, and a switch **And this creature itself**.~~ **[CHG] PACK ZONE: each row of "What it does inside" has its own Who** (`Allies | Enemies | Everyone`, full width) and its own switch **And this creature itself**: Consecrated Ground needs Enemies for one row and Allies for another. An older Aura's one Affects goes to its Carries row.
+- **"What it does inside"** (heading): the block of section 5.10 (shared word for word with the Zone): Carries an Effect, Heals, Hazard [HT], Difficult Terrain. Was: two part rows, both may be on:
   1. **Carries an Effect:** drop zone; whoever is inside gains it on entering and loses it on leaving. The carried effect keeps its own rules (the old "Drop the Effect that whoever is inside gains").
   2. **Hazard [HT]** (**NEW here**, it was only on regions / Zones): Triggers `Entering`, `Turn`, `Movement` switches (none ticked = Entering and Turn; Entering and Turn hit once per turn-cycle, Movement each Movement across it: Chapter 3, Hazardous Terrain; reuse hazard.mjs); **Damage**: a list of entries (dice / formula, `[V] | [R]`, subtype), "+ Another damage", "Remove" per entry when 2+; **Also:** Gives an Effect (switch) + its own drop zone. Who it hits: the Aura's Affects (and itself if ticked).
 - **"On the map"** (heading): a part row **Shown on the map**: Outline color and Squares color, each a color picker (`<input type="color">`) plus presets (Gold, Holy, Ally, Enemy, Arcane, Nature), and a small preview (a dark square, the area's squares outlined around a Y token).
@@ -273,6 +273,33 @@ The old **Token light** block.
 - **No Reactions / Loses AP:** conditions (3.8).
 
 ---
+
+
+### 5.10 Zone (placed on the map) (PACK ZONE, Lucas's decisions 2026-11-10)
+Reference for the layout and the wording: `foundry/mockups/zone-prototype.html`, **option A** (B and C are rejected alternatives). Press **?** in it for the help texts.
+
+**Where it is** (the Details tab's first section, under the hover card): full-width segmented `On a creature | On the map (a Zone)`. "On a creature" shows the rule list (sections 3.4, 5.1 to 5.9). "On the map" hides it and shows The area, What it does inside and On the map; Ends stays below. Switching keeps both sides' settings. Help: "On a creature: the rules below need a bearer. On the map: the effect has no bearer; it is the area, and what it does to creatures inside."
+
+**The hover card** of a Zone (the tip, the hover card on the map, the effect's chips): its area, its rows, its Ends. "2 / 3 Emanation. Enemies inside gain Consecrated Ground (1 Bane). Allies inside heal 1d4 at the start of each of their turns. Lasts 3 rounds."
+
+**The area:** "Shape and size: `From the Action | Set here`".
+- **From the Action** (default when an Action applies the effect): a read-only dropped-Action card: name, cost, Frequency, "Area: 2 / 3 Emanation · Distance: 10 sq.". Help: "The card's Area line is the only place the shape is written: change the card, and every Zone it places changes with it."
+- **Set here** (default with no Action; a GM's trap): Shape `Emanation | Burst | Line`; Size, a formula field ("squares", "squares long" for a Line); a square preview with the book's footprints (Emanation N = (2N+1)², Burst N = the squares whose center is within N of a corner: 1 → 4, 2 → 12; Line N from the origin); **Place on the map** (the existing placement, kept as this Zone). Help: "Placed by hand: you draw it where you want. An Emanation stays where it is placed; for an area that follows a creature, use an Aura rule instead." No Aura shape here (an Aura is a rule, with a bearer).
+- Placing from an Action: no new Action setting. An applied Effect whose Where is "On the map" makes the card's Place Area button keep the area as that Zone, with the card's shape, size and Distance; (T2/T3) as for other effects; the Version's own rounds win.
+
+**What it does inside** (the Aura's block too, word for word), four part rows, each with its Who (`Allies | Enemies | Everyone`, judged from the origin's side: a neutral counts as an enemy) and **And the origin (name)** (on an Aura: **And this creature itself**; the origin is never its own ally: Chapter 1):
+1. **Carries an Effect:** a drop zone "Drop the Effect they have while inside". Summary "Enemies · Consecrated". Help: "Gained on entering, lost on leaving or when the Zone ends. While carried, its own Ends are not used: to give something that lasts after leaving, use Hazard → Gives an Effect."
+2. **Heals** [ADD]: "Heal [1d4] at the start of each of their turns inside", a formula (1d4 + @origin.pow). Summary "Allies · 1d4 (avg 2.5) a turn" (the average for plain dice only). "And the origin" on by default. Rolled for each creature at the start of its own turn, once per area, through the Heal window (Chapter 4: it chooses which damage); not on entering. Help: "A heal, as Heal in Chapter 4 (they choose which damage), rolled for each creature at the start of its own turn. Formulas work: 1d4 + @origin.pow."
+3. **Hazard [HT]:** Triggers Entering / Turn / Movement (none: Entering and Turn; Entering and Turn share one hit per turn-cycle, Movement once per Movement; a creature inside when the Zone appears counts as entering: Chapter 3), damage entries (dice or formula, [V] / [R], subtype; + Another damage; Remove), Also: Gives an Effect (its own Ends).
+4. **Difficult Terrain** [ADD]: Who (default Everyone). Summary: the Who. Sentence "Its squares are Difficult Terrain for enemies." / "...for every creature but Nari." Its squares cost double for the creatures it reaches only (the movement cost, the Charge's check); Forced Movement ignores it. Help: "Its squares count double for movement, for the creatures it affects (a persistent effect can hinder one side only). Forced Movement ignores it."
+
+**On the map:** the Aura's "Shown on the map" row (outline and squares, the six presets, a preview). Off: the area still works, only the Regions layer shows it.
+
+**Ends** (the same list as on a creature): **Time** `Rounds | This encounter` (no EoT; it counts down at the end of the slot in which it was placed, Chapter 2); **A Save** greyed, "not for a Zone"; **Origin goes Down** as on a creature; **They use an Action** greyed (no bearer); **Someone uses an Action** [ADD]: Who `The origin | Anyone within Reach of it`, a cost stepper (default 1 AP, 0 to 3) "AP, an Interact"; summary "Nari · 1 AP". The Zone's card in the chat (posted when it is placed) has the "End it" button.
+
+**The old Zone block** [DEL] ("The placed area affects [allies] inside it. At the start of each of their turns inside, they heal [1d4]. Drop the Effect they carry while inside."): **migrated**, on load: Where = On the map; the dropped Effect → Carries an Effect (its Who = the old "affects"); the heal → Heals (its Who = the old "affects", "And the origin" off: the book's "You are never your own ally"); From the Action. A Zone already on a map reads its old rules as rows.
+
+**Not built:** a Darkness or Obscured Zone ([IDEA], rules-backlog.md: the book first).
 
 ## 6. The data
 
@@ -318,7 +345,7 @@ The old **Token light** block.
 | Escalation hook | Escalation hook |
 | Aura (Aura N around the creature, affects [..] and itself, outline / squares colors, drop the Effect) | Aura (Size, Affects, Carries an Effect, On the map) |
 | Token light (bright, dim, color hex, intensity, animation, speed, intensity) | Light |
-| Zone (the placed area) | Unchanged: "Zone (old layout)" |
+| Zone (the placed area) | ~~Unchanged: "Zone (old layout)"~~ PACK ZONE: Where it is: On the map (section 5.10) |
 | Bleed (damage each turn) | Kept for the Bleed condition only (5.9) |
 | Lasts [..], or until the creature uses an action with [any] of [+] | Ends: Time / They use an Action |
 

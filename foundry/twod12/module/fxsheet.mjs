@@ -162,12 +162,36 @@ function escPane(r) {
 const usesPane = r => grid([["Gives", seg("which", r.which, [["round", "Round Specials twice"], ["encounter", "Encounter Specials again"]], "w")]]) + help("The Elite ladder (Bestiary, Elite Escalation). Special Actions are the creature's own, not the Basic Actions.");
 const ASW = [["Gold", "#e8a33a"], ["Holy", "#ffd27a"], ["Ally", "#4a8fd8"], ["Enemy", "#c0392b"], ["Arcane", "#9b6bd8"], ["Nature", "#4caf6a"]];
 const colorRow = (f, v, sw) => `<span class="fr-colors"><input type="color" data-fr-in="${f}" value="${esc(/^#[0-9a-f]{6}$/i.test(v) ? v : "#e8a33a")}" aria-label="Color">${sw.map(([n, c]) => `<button type="button" class="fr-sw${v === c ? " on" : ""}" style="--c:${c}" data-fr="set" data-f="${f}" data-v="${c}" title="${n}">${n}</button>`).join("")}</span>`;
+/* v0.0.327 (PACK ZONE): what an area does inside, the Aura's and the Zone's one block (foundry/mockups/zone-prototype.html): four part rows, each with
+   its own Who (Allies / Enemies / Everyone) and "And the origin" (on an Aura: "And this creature itself"). p: the path of the block ("inside", "zone.inside"). */
+const WHO_OPTS = [["allies", "Allies"], ["enemies", "Enemies"], ["all", "Everyone"]];
+function insideHtml(p, inIn, m, selfLabel, head = true) {
+  const x = R.normInside(inIn), names = m.names ?? {}, sm = k => R.insideSummary(x, k, { names });
+  const who = k => [["Who", seg(`${p}.${k}.who`, x[k].who, WHO_OPTS, "w")], ["", tog(`${p}.${k}.self`, x[k].self, selfLabel)]];
+  const ht = x.ht;
+  const rows = [
+    part(`${p}.carry`, x.carry.on, "Carries an Effect", sm("carry"), grid(who("carry")) + dropped(m, `${p}.carry.fx`, x.carry.fx, x.carry.fxName, "Drop the Effect they have while inside", "from the Effects and Conditions compendiums")
+      + help("Gained on entering, lost on leaving or when the area ends. While carried, its own Ends are not used: to give something that lasts after leaving, use Hazard → Gives an Effect.")),
+    part(`${p}.heal`, x.heal.on, "Heals", sm("heal"), grid([...who("heal"), ["Heal", `${text(`${p}.heal.formula`, x.heal.formula, "1d4", "dice")}${fhelp()} <span class="fr-m">at the start of each of their turns inside</span>`]])
+      + help("A heal, as Heal in Chapter 4 (they choose which damage), rolled for each creature at the start of its own turn. Formulas work: 1d4 + @origin.pow.")),
+    part(`${p}.ht`, ht.on, "Hazard [HT]", sm("ht"), grid([...who("ht"), ["Triggers", ["entering", "turn", "movement"].map(k => tog(`${p}.ht.${k}`, ht[k], k[0].toUpperCase() + k.slice(1))).join("")],
+      ...ht.list.map((d, i) => [i ? "" : "Damage", `${text(`${p}.ht.list.${i}.dice`, d.dice, "1d6", "dice")}${seg(`${p}.ht.list.${i}.pool`, d.pool, [["B", "[V]"], ["M", "[R]"]])}${sel(`${p}.ht.list.${i}.sub`, d.sub, SUBS(), "Subtype")}${ht.list.length > 1 ? `<button type="button" class="fr-rm" data-fr="splice" data-f="${p}.ht.list" data-i="${i}">Remove</button>` : ""}`]),
+      ["", `<button type="button" class="fr-addd" data-fr="push" data-f="${p}.ht.list">+ Another damage</button>`], ["Also", tog(`${p}.ht.gives.on`, ht.gives.on, "Gives an Effect")]])
+      + (ht.gives.on ? dropped(m, `${p}.ht.gives.fx`, ht.gives.fx, ht.gives.fxName, "Drop the Effect a creature it affects gains (with its own Ends)", "from the Effects and Conditions compendiums") : "")
+      + help("Entering: enters the area (a creature inside when it appears counts). Turn: ends its turn there. Entering and Turn share one hit per turn-cycle; Movement hits once per Movement. None ticked: Entering and Turn (Chapter 3).")),
+    part(`${p}.diff`, x.diff.on, "Difficult Terrain", sm("diff"), grid(who("diff")) + help("Its squares count double for movement, for the creatures it affects (a persistent effect can hinder one side only). Forced Movement ignores it."))
+  ];
+  return `${head ? `<div class="fr-addsh">What it does inside</div>` : `<div class="fr-addsh first"></div>`}${rows.join("")}`;
+}
+/** The "Shown on the map" row (the Aura's and the Zone's). p: "" (a rule) or "zone.". */
+const mapRow = (p, o, n) => part(`${p}show`, o.show, "Shown on the map", "outline and squares", grid([["Outline", colorRow(`${p}outline`, o.outline, ASW)], ["Squares", colorRow(`${p}fill`, o.fill, ASW)]])
+  + `<div class="fr-aurapv" style="--o:${esc(o.outline || "#e8a33a")};--f:${esc(o.fill || "#e8a33a")};--n:${Math.min(4, Math.max(1, Number(n) || 2))}"><span class="tok">Y</span></div>`
+  + help("Off: the area still works, it isn't drawn."), `${p}show`);
 function auraPane(r, m) {
-  const fx = m.items?.[r.carry.fx]?.name || r.carry.fxName || "";
-  return grid([["Size", `<span class="fr-m">Aura</span> ${text("size", r.size, "2 or @origin.pow", "dice")} <span class="fr-m">squares</span>${fhelp()}`], ["Affects", seg("aff", r.aff, [["allies", "Allies"], ["enemies", "Enemies"], ["all", "Everyone"]], "w")], ["", tog("self", r.self, "And this creature itself")]])
-    + help("Counted from every square it occupies (Chapter 3, Aura).")
-    + `<div class="fr-addsh">What it does inside</div>${part("carry", r.carry.on, "Carries an Effect", fx || "(none dropped)", dropped(m, "carry.fx", r.carry.fx, r.carry.fxName, "Drop the Effect whoever is inside gains", "from the Effects and Conditions compendiums") + help("Gained on entering, lost on leaving. The dropped effect keeps its own rules."))}`
-    + `<div class="fr-addsh">On the map</div>${part("show", r.show, "Shown on the map", "outline and squares", grid([["Outline", colorRow("outline", r.outline, ASW)], ["Squares", colorRow("fill", r.fill, ASW)]]) + `<div class="fr-aurapv" style="--o:${esc(r.outline || "#e8a33a")};--f:${esc(r.fill || "#e8a33a")};--n:${Math.min(4, Math.max(1, Number(r.size) || 2))}"><span class="tok">Y</span></div>`, "show")}`;
+  return grid([["Size", `<span class="fr-m">Aura</span> ${text("size", r.size, "2 or @origin.pow", "dice")} <span class="fr-m">squares</span>${fhelp()}`]])
+    + help("Counted from every square it occupies (Chapter 3, Aura). Allies and enemies are judged from this creature's side; a neutral creature counts as an enemy.")
+    + insideHtml("inside", r.inside, m, "And this creature itself")
+    + `<div class="fr-addsh">On the map</div>${mapRow("", r, r.size)}`;
 }
 const SWL = [["Torch", "#ff9b3d"], ["Holy", "#ffd27a"], ["Moon", "#b8c8ff"], ["Fire", "#ff5a1f"], ["Arcane", "#b07cff"], ["Fey", "#7dffb0"]];
 function lightPane(r, m) {
@@ -198,6 +222,7 @@ const PANES = { act: actPane, value: valuePane, grant: grantPane, weap: weapPane
 /* ------------------------------------------------------------------ Ends */
 const ATTR_OPTS = [["body", "Body"], ["mind", "Mind"], ["appeal", "Appeal"], ["instinct", "Instinct"], ["bodyinstinct", "Better of Body / Instinct"], ["mindappeal", "Better of Mind / Appeal"]];
 function endsHtml(e, m) {
+  if (m.zoneMode) return zoneEndsHtml(e, m);
   const sm = R.endsSummaries(e, m), p = (k, on, title, body) => `<div class="fr-part${on ? "" : " off"}"><header>${tog(`ends.${k}.on`, on, title)}<span class="fr-psum">${esc(sm[k])}</span></header><div class="fr-pb">${body}</div></div>`;
   return `<div class="fr-endlist">
     ${p("time", e.time.on, "Time", grid([["Lasts", seg("ends.time.mode", e.time.mode, [["eot", "EoT"], ["rounds", "Rounds"], ["encounter", "This encounter"]], "w")], e.time.mode === "rounds" ? ["Rounds", step("ends.time.rounds", e.time.rounds, 1, 20)] : null]) + help("Rounds count down at the end of the origin's turn. EoT ends at the end of the affected creature's turn."))}
@@ -206,6 +231,40 @@ function endsHtml(e, m) {
     ${p("down", e.down.on, "Origin goes Down", grid([["Origin", originChip(m, "@origin")]]) + help("Unconscious or leaving the scene count too."))}
     ${p("action", e.action.on, "They use an Action", filterBox(m, "ends.action.filter", e.action.filter))}
   </div>`;
+}
+
+/** v0.0.327 (PACK ZONE): a Zone's Ends: Time (Rounds or This encounter: no EoT), A Save and They use an Action greyed (no bearer), Origin goes Down,
+ *  Someone uses an Action (the origin, or anyone within Reach of it; an Interact for its AP). */
+function zoneEndsHtml(e, m) {
+  const o = m.originName || "the origin", p = (k, on, title, sum, body) => `<div class="fr-part${on ? "" : " off"}"><header>${tog(`ends.${k}.on`, on, title)}<span class="fr-psum">${on ? esc(sum) : "off"}</span></header><div class="fr-pb">${body}</div></div>`;
+  const dis = (title, why) => `<div class="fr-part off dis"><header><span class="fr-tog" aria-disabled="true"><span class="box"></span>${title}</span><span class="fr-psum">${why}</span></header></div>`;
+  const tm = e.time.mode === "eot" ? "rounds" : e.time.mode;
+  return `<div class="fr-endlist">
+    ${p("time", e.time.on, "Time", tm === "encounter" ? "This encounter" : `${e.time.rounds} round${e.time.rounds === 1 ? "" : "s"}`, grid([["Lasts", seg("ends.time.mode", tm, [["rounds", "Rounds"], ["encounter", "This encounter"]], "w")], tm === "rounds" ? ["Rounds", step("ends.time.rounds", e.time.rounds, 1, 20)] : null]) + help("Counts down at the end of the slot in which it was placed (Chapter 2). No EoT: a placed area has no turn of its own. An Action that sets its own rounds (its Version) keeps them."))}
+    ${dis("A Save", "not for a Zone")}
+    ${p("down", e.down.on, "Origin goes Down", o, grid([["Origin", originChip(m, "@origin")]]) + help("Unconscious or leaving the scene count too."))}
+    ${dis("They use an Action", "not for a Zone")}
+    ${p("someone", e.someone.on, "Someone uses an Action", `${e.someone.who === "origin" ? o : "anyone in Reach"} · ${e.someone.ap} AP`, grid([["Who", seg("ends.someone.who", e.someone.who, [["origin", "The origin"], ["reach", "Anyone within Reach of it"]], "w")], ["Cost", `${step("ends.someone.ap", e.someone.ap, 0, 3)} <span class="fr-m">AP, an Interact</span>`]]) + help("Dismissing it (the origin) or putting it out (stamping on embers, anyone in Reach): the Zone's card in the chat has the button."))}
+  </div>${help("A Save has no bearer to roll it: the rows stay greyed so the list keeps the same rows as on a creature.")}`;
+}
+/** v0.0.327 (PACK ZONE): the Zone layout (Where it is: On the map): The area, What it does inside, On the map. m.zoneAction: the Action that places it. */
+function zoneHtml(zIn, m) {
+  const z = R.normZone(zIn), a = m.zoneAction;
+  let area = `<div class="fr-sub">Shape and size</div>${seg("zone.src", z.src, [["action", "From the Action"], ["here", "Set here"]], "w")}`;
+  if (z.src === "action") {
+    area += a ? `<div class="fr-dropped is-a"><span class="fr-dk">Action</span><b>${esc(a.name)}</b>${a.cost ? `<span class="fr-cost">${esc(a.cost)}</span>` : ""}${a.freq ? ` <span class="fr-m">· ${esc(a.freq)}</span>` : ""}<div class="fr-m2">Area: ${esc(a.area || "?")} · Distance: ${esc(String(a.dist || "?").replace(/\.$/, ""))}${a.more ? ` · and ${a.more} more Action${a.more === 1 ? "" : "s"}` : ""}. Its Place Area button keeps the area on the map.</div></div>`
+      : `<p class="fr-m">No Action applies this effect yet: put it in an Action's effects, or set the area here.</p>`;
+    area += help("The card's Area line is the only place the shape is written: change the card, and every Zone it places changes with it. Every area spreads from its Point of Origin (Chapter 3, Areas).");
+  } else {
+    const pv = R.previewCells(z.shape, z.size), N = pv.N;
+    area += grid([["Shape", seg("zone.shape", z.shape, [["emanation", "Emanation"], ["burst", "Burst"], ["line", "Line"]], "w")], ["Size", `${text("zone.size", z.size, "2 or @origin.pow", "dice")} <span class="fr-m">${z.shape === "line" ? "squares long" : "squares"}</span>${fhelp()}`]])
+      + `<div class="fr-zpv" style="--o:${esc(z.outline || "#e8a33a")};--f:${esc(z.fill || "#e8a33a")};grid-template-columns:repeat(${N},12px)">${Array.from({ length: N * N }, (_, i) => `<i class="${pv.cells.has(`${i % N},${Math.floor(i / N)}`) ? "in" : ""}${i === Math.floor(N * N / 2) ? " c" : ""}"></i>`).join("")}</div>`
+      + (m.canPlace ? `<button type="button" class="fr-place" data-fr="placeZone"><i class="fa-solid fa-vector-square"></i> Place on the map</button>` : "")
+      + help("Placed by hand (a GM's trap, a dropped effect): you draw it where you want. An Emanation stays where it is placed; for an area that follows a creature, use an Aura rule instead.");
+  }
+  return `<section class="fr-sec"><h3>The area</h3>${area}</section>
+    <section class="fr-sec"><h3>What it does inside <small>shared with the Aura</small></h3>${insideHtml("zone.inside", z.inside, m, `And the origin${m.originName ? ` (${esc(m.originName)})` : ""}`, false)}</section>
+    <section class="fr-sec"><h3>On the map</h3>${mapRow("zone.", z, z.size)}</section>`;
 }
 
 /* ------------------------------------------------------------------ the tab */
@@ -218,7 +277,9 @@ export function fxTabHtml(m) {
   const host = m.host || "effect", rules = (m.rules ?? []).map(R.normRule), ends = R.normEnds(m.ends);
   const ctx = { originName: m.originName || (m.applied ? "" : "its origin"), names: { ...(m.names ?? {}), ...Object.fromEntries(Object.entries(m.items ?? {}).map(([k, v]) => [k, v.name])) }, host };
   const selR = rules.find(r => r.id === m.sel) ?? rules[0] ?? null, spent = new Set(m.applied?.spent ?? []);
-  const built = host === "effect" ? R.hoverCardText(rules, ends, ctx) : R.hoverCardText(rules, {}, ctx).replace(/\s*Lasts until removed\.$/, "");
+  const onMap = host === "effect" && m.where === "map";   // v0.0.327 (PACK ZONE)
+  const built = onMap ? `${R.plainText(R.zoneSentence(m.zone, { ...ctx, action: m.zoneAction }))} ${R.zoneEndsSentence(ends, ctx)}`
+    : host === "effect" ? R.hoverCardText(rules, ends, ctx) : R.hoverCardText(rules, {}, ctx).replace(/\s*Lasts until removed\.$/, "");
   const own = String(m.hover ?? "").trim();
   const tip = `<div class="fr-tip" aria-live="polite"><b>${esc(m.name || "Effect")}</b> ${esc(own || built || "Does nothing yet.")}</div>
     <p class="fr-own">This is what players see on hover. <a data-fr="own" role="button" tabindex="0">${own ? "Your own text (empty it to go back)" : "Write it yourself"}</a>${m.own || own ? text("@hover", own, "Leave empty to keep the text built from the rules", "wide fr-ownin") : ""}</p>`;
@@ -234,7 +295,10 @@ export function fxTabHtml(m) {
   }
   const what = `<section class="fr-sec"><h3>What it does <small>${rules.length} rule${rules.length === 1 ? "" : "s"}</small></h3><div class="fr-md"><div class="fr-lst">${list}<div class="fr-adds">${add}</div></div><div class="fr-pane">${pane}</div></div></section>`;
   if (host !== "effect") return `<div class="fr-tab${m.help ? " fr-helpon" : ""}" data-host="${host}">${tip}${what}</div>`;
-  const endsSec = `<section class="fr-sec"><h3>Ends <small>at the first of these; none ticked: until removed</small></h3><div data-scope="ends">${endsHtml(ends, { ...m, names: ctx.names, originName: ctx.originName })}</div></section>`;
+  const endsSec = `<section class="fr-sec"><h3>Ends <small>at the first of these; none ticked: until removed</small></h3><div data-scope="ends">${endsHtml(ends, { ...m, names: ctx.names, originName: ctx.originName, zoneMode: onMap })}</div></section>`;
+  const whereSec = `<section class="fr-sec"><h3>Where it is <small>an effect is worn or placed</small></h3>${seg("@where", onMap ? "map" : "creature", [["creature", "On a creature"], ["map", "On the map (a Zone)"]], "w")}
+    ${help("On a creature: the rules below need a bearer. On the map: the effect has no bearer; it is the area, and what it does to creatures inside. Switching keeps both sides' settings.")}</section>`;
+  const body = onMap ? zoneHtml(m.zone, { ...m, names: ctx.names, originName: m.originName }) : what;
   const a = m.auto ?? {}, dia = a.note ? "half" : "full";
   const autoSec = `<details class="fr-auto"><summary><span class="fr-dia ${dia}" aria-hidden="true"></span>${a.note ? "Partly automated" : "Automated"}</summary>
     ${grid([["Rank", sel("@automation", a.rank ?? "", a.ranks ?? [["", "(not set)"]], "Automation rank")], ["Players do", `<textarea class="fr-ta" data-fr-in="@automationNote" placeholder="What the players do themselves" aria-label="Players do">${esc(a.note ?? "")}</textarea>`]])}
@@ -244,16 +308,17 @@ export function fxTabHtml(m) {
     ["Placed on", seg("@selfApplied", String(!!d.selfApplied), [["false", "the target"], ["true", "the creature that used the Action"]], "w")]])}
     ${help("These are the effect's own fields, as before. The JSON tab shows everything.")}</details>`;
   // v0.0.324 (Lucas): no "Origin: the creature that used the Action" switch: with an Action behind it, the origin is always its user; without one, it asks
-  return `<div class="fr-tab${m.help ? " fr-helpon" : ""}" data-host="effect">${tip}${what}${endsSec}${autoSec}${advSec}</div>`;
+  return `<div class="fr-tab${m.help ? " fr-helpon" : ""}" data-host="effect">${tip}${whereSec}${body}${endsSec}${autoSec}${advSec}</div>`;
 }
 
 /* ------------------------------------------------------------------ the events */
 /** What the item's own fields a control may change ("@field"). */
-const ITEM_FIELDS = { hover: "s", automation: "s", automationNote: "s", isCondition: "b", valued: "b", selfApplied: "b", originFromUser: "b" };
+const ITEM_FIELDS = { where: "s", hover: "s", automation: "s", automationNote: "s", isCondition: "b", valued: "b", selfApplied: "b", originFromUser: "b" };
 /** The update of one save: the rules, the Ends, what they compile to, the hover text built from them. Pure. */
-export function saveUpdate(rules, ends, host = "effect", names = {}) {
+export function saveUpdate(rules, ends, host = "effect", names = {}, zone = null, where = "creature", action = null) {
   const c = R.compile(rules, ends, host), clean = rules.map(R.normRule);
   const upd = { "system.rules": clean, "system.rulesOn": true, "system.settings": c.settings, "system.autoHover": host === "effect" ? R.hoverCardText(clean, ends, { originName: "{origin}", names, host }) : R.hoverCardText(clean, {}, { originName: "its origin", names, host }).replace(/\s*Lasts until removed\.$/, "") };
+  if (host === "effect" && zone) { upd["system.zone"] = R.normZone(zone); if (where === "map") upd["system.autoHover"] = `${R.plainText(R.zoneSentence(zone, { originName: "{origin}", names, action }))} ${R.zoneEndsSentence(ends, { originName: "{origin}" })}`; }   // v0.0.327
   if (host === "effect") Object.assign(upd, { "system.ends": R.normEnds(ends), "system.conditions": c.conditions, "system.linked": c.linked, "system.duration": c.duration, "system.expireOn": c.expireOn, "system.expireAll": c.expireAll,
     "system.endsWithOrigin": c.endsWithOrigin, "system.whileSeen": c.whileSeen, "system.noReactions": c.noReactions, "system.loseAp": c.loseAp, "system.saveEnd": c.saveEnd });
   return upd;
@@ -286,9 +351,9 @@ export function wireFxTab(sheet, root) {
   const st = (sheet._fr ??= { sel: "", own: false, names: {} });
   const host = tab.dataset.host || "effect";
   const sys = () => sheet.item.system;
-  const work = () => ({ rules: foundry.utils.deepClone((sys().rules ?? []).map(r => (typeof r?.toObject === "function" ? r.toObject() : r))).map(R.normRule), ends: R.normEnds(foundry.utils.deepClone(sys().ends ?? {})) });
+  const work = () => ({ rules: foundry.utils.deepClone((sys().rules ?? []).map(r => (typeof r?.toObject === "function" ? r.toObject() : r))).map(R.normRule), ends: R.normEnds(foundry.utils.deepClone(sys().ends ?? {})), zone: R.normZone(foundry.utils.deepClone(sys().zone ?? {})) });
   const save = async (w, extra = {}) => {
-    const upd = { ...saveUpdate(w.rules, w.ends, host, st.names), ...extra };
+    const upd = { ...saveUpdate(w.rules, w.ends, host, st.names, host === "effect" ? w.zone : null, sys().where, st.zoneAction ?? null), ...extra };
     try { await sheet.item.update(upd); } catch (e) { console.warn("twod12 | rules", e); ui.notifications.warn("This effect can't be changed here."); }
   };
   const selected = w => w.rules.find(r => r.id === (st.sel || w.rules[0]?.id));
@@ -297,6 +362,7 @@ export function wireFxTab(sheet, root) {
     if (path.startsWith("@")) { const k = path.slice(1); if (k === "origin") return pickOrigin(null); const v = fn(get(sys(), k)); return sheet.item.update({ [`system.${k}`]: ITEM_FIELDS[k] === "b" ? (v === true || v === "true") : v }); }
     const w = work();
     if (path.startsWith("ends.")) { const p = path.slice(5); put(w.ends, p, fn(get(w.ends, p))); return save(w); }
+    if (path.startsWith("zone.")) { const p = path.slice(5); put(w.zone, p, fn(get(w.zone, p))); return save(w); }   // v0.0.327 (PACK ZONE)
     const r = selected(w);
     if (!r) return;
     put(r, path, fn(get(r, path)));
@@ -334,9 +400,10 @@ export function wireFxTab(sheet, root) {
     });
     if (a === "tier") return change(f, cur => { const t = Number(b.dataset.v), l = [...(cur ?? [])]; return (l.includes(t) ? l.filter(x => x !== t) : [...l, t]).sort(); });
     if (a === "untrait") return change(f, cur => (cur ?? []).filter(k => k !== b.dataset.v));
-    if (a === "push") return change(f, cur => [...(cur ?? []), f.endsWith("riders") ? { tiers: [3], does: "text", text: "", crit: false } : { dice: "1d4", pool: "B", sub: "", tiers: [1, 2, 3], fx: "", text: "" }]);
+    if (a === "push") return change(f, cur => [...(cur ?? []), f.endsWith("riders") ? { tiers: [3], does: "text", text: "", crit: false } : f.endsWith("ht.list") ? { dice: "1d4", pool: "B", sub: "" } : { dice: "1d4", pool: "B", sub: "", tiers: [1, 2, 3], fx: "", text: "" }]);
     if (a === "splice") return change(f, cur => (cur ?? []).filter((x, i) => i !== Number(b.dataset.i)));
     if (a === "clr") return change(f, () => "");
+    if (a === "placeZone") return sheet.placeZone?.();   // v0.0.327 (PACK ZONE): Set here, placed by hand
   });
   tab.addEventListener("keydown", ev => { if ((ev.key === "Enter" || ev.key === " ") && ev.target.matches?.("[data-fr][tabindex]")) { ev.preventDefault(); ev.target.click(); } });
   tab.addEventListener("change", async ev => {
@@ -366,6 +433,11 @@ export function wireFxTab(sheet, root) {
     st.names[doc.uuid] = doc.name;
     const zone = ev.target.closest("[data-fr-drop]")?.dataset.frDrop;
     const w = work();
+    if (zone?.startsWith("zone.")) {   // v0.0.327: a Zone's drop zones (Carries, Hazard's Gives)
+      if (info.type !== "effect") return ui.notifications.warn("Drop an Effect here.");
+      put(w.zone, zone.slice(5), doc.uuid); put(w.zone, `${zone.slice(5)}Name`.replace(/\.fxName$/, ".fxName"), doc.name);
+      return save(w);
+    }
     let r = selected(w);
     const intoGrant = r?.kind === "grant" && (!zone || zone === "item");
     if (zone && zone !== "item" && r) {

@@ -3933,3 +3933,15 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .application .fr-tab .fr-amt .fr-in.amt { width: 150px; min-width: 60px; height: auto; margin: 0; background: var(--fr-field); box-shadow: none; font-size: 13px; text-align: left; padding: 0 6px; }
 .application .fr-tab .fr-pc:has(> .fr-amt) { flex-wrap: wrap; }
 .application .fr-tab .fr-pc:has(> .fr-amt) > .fr-sel { flex: 1 1 140px; width: auto; min-width: 0; }
+/* v0.0.327 PACK ZONE (foundry/mockups/zone-prototype.html, option A): the Set here preview, Place on the map, the greyed Ends rows of a Zone */
+.application .fr-tab .fr-zpv { display: grid; gap: 0; justify-content: center; background: #20262f; border-radius: 3px; padding: 8px 0; margin-top: 8px; }
+.application .fr-tab .fr-zpv i { width: 12px; height: 12px; border-right: 1px solid rgba(255,255,255,.07); border-bottom: 1px solid rgba(255,255,255,.07); }
+.application .fr-tab .fr-zpv i.in { background: color-mix(in srgb, var(--f) 30%, transparent); box-shadow: inset 0 0 0 1px var(--o); }
+.application .fr-tab .fr-zpv i.c { background: #e9e4d8; border-radius: 50%; }
+.application .fr-tab .fr-place { margin-top: 8px; width: 100%; font-weight: 600; }
+.application .fr-tab .fr-part.dis > header { opacity: .55; }
+.application .fr-tab .fr-part.dis .fr-tog { cursor: not-allowed; }
+.application .fr-tab .fr-sub { font-size: 12px; color: var(--fr-mut); margin: 0 0 3px; }
+.application .fr-tab .fr-sec > .fr-seg.w { margin-bottom: 6px; }
+.application .fr-tab .fr-addsh.first:empty { display: none; }
+.application .fr-tab .fr-addsh.first:empty + .fr-part { border-top-width: 1px; border-radius: 4px 4px 0 0; }

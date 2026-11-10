@@ -1,5 +1,5 @@
 import { TWOD12, migrateTags, npcHm, npcCv, stageOf, stageMod } from "./config.mjs";
-import { migrateSettings, migrateRules } from "./settingsmigrate.mjs";
+import { migrateSettings, migrateRules, migrateZone } from "./settingsmigrate.mjs";
 import { classModifiers, modOf, classTrack } from "./modifiers.mjs";
 
 import { applySpeedMods } from "./speedmods.mjs";
@@ -631,11 +631,12 @@ const settingsField = () => new ArrayField(new SchemaField({
         //   On damage's pool (trigPool), "All range Banes" (rangeAll)
         ruleId: str(), spend: bool(), seen: bool(), empMode: choice({ set: "Set to", inc: "Increase by" }, "set"), defMode: choice({ bonus: "A bonus", inc: "An increase", set: "Set to" }, "bonus"),
         defName: str(), sizeFormula: str(), trigPool: str(), auraShow: bool(true), rangeAll: bool(),
+        areaRows: new ObjectField(),   // v0.0.327 (PACK ZONE): an Aura's rows (Carries, Heals, Hazard, Difficult Terrain), each with its Who
         valFormula: str()   // v0.0.324: a Defense's or a Resist / Weak's amount as a formula (@origin.pow...), read when it counts
       }));
 
 export class EffectData extends foundry.abstract.TypeDataModel {
-  static migrateData(source) { migrateSettings(source); migrateRules(source, "effect"); return super.migrateData(source); }
+  static migrateData(source) { migrateSettings(source); migrateRules(source, "effect"); migrateZone(source); return super.migrateData(source); }
   static defineSchema() {
     return {
       description: new HTMLField(),
@@ -660,6 +661,8 @@ export class EffectData extends foundry.abstract.TypeDataModel {
       // v0.0.323 (PACK EFFECT-SHEET): the Details tab's rules and Ends (fxrules.mjs), the source of the settings and fields above once stored (rulesOn);
       //   autoHover: the hover card built from them ({origin} filled in when applied); saveEnd: Ends' "A Save"
       ...rulesFields(), ends: new ObjectField(), saveEnd: new ObjectField(),
+      // v0.0.327 (PACK ZONE): "Where it is": on a creature (its rules) or on the map (a Zone: its area, what it does inside, its colors; fxrules.mjs normZone)
+      where: choice({ creature: "On a creature", map: "On the map (a Zone)" }, "creature"), zone: new ObjectField(),
       // The effect ends after an action with any of these traits is used.
       expireOn: new SetField(new StringField({ required: true, blank: false })),   // traits, or "__name:smite" (an Action by name)
       // When on, the effect ends only after an action that has ALL the listed traits (otherwise any one of them).

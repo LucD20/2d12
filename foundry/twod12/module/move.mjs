@@ -23,6 +23,7 @@ import { effectOff, seesOrigin } from "./escalation.mjs";
 import { allEffects } from "./passives.mjs";
 
 import { moveLimitBreaks } from "./fxrules.mjs";
+import { areaDifficult } from "./areafx.mjs";
 /** The Movement limits of a creature that work now, each with its origin's token: [{ dir, name, token }] (Frightened: can't move closer to its source). */
 function moveLimitsOf(doc) {
   const actor = doc?.actor, out = [];
@@ -329,6 +330,7 @@ function hardStep(doc, to, step, cost, from = null) {
     }
     // v0.0.171: a diagonal between two creatures is Difficult Terrain too, so the movement label shows it while dragging.
     if (!hard && from) hard = stepCorners(squareOf(from), at, { w, h, creatureAt: c => unwillingIn(c, doc) }).kind === "creatures";
+    if (!hard) hard = areaDifficult(doc, cells);   // v0.0.327 (PACK ZONE): a Zone's or an Aura's Difficult Terrain, for the creatures its row reaches only
     if (!hard) return cost;
     return Number.isFinite(step) && step > 0 ? Math.max(cost, 2 * step) : cost * 2;
   } catch (e) { return cost; }
