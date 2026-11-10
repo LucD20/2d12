@@ -3927,3 +3927,9 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 /* v0.0.324: a number or a formula with − / + ; the formula names' ⓘ */
 .application .fr-tab .fr-amt .fr-in.amt { width: 72px; border: 0; border-left: 1px solid var(--fr-fline); border-right: 1px solid var(--fr-fline); border-radius: 0; text-align: center; height: 22px; padding: 0 4px; }
 .application .fr-tab .fr-fi { color: var(--fr-mut); font-size: 12px; cursor: help; margin-left: 2px; }
+/* v0.0.325 (Lucas: the amount field's style and width): one row, the field wide enough for a formula, the − / + the stepper's look; the select beside it */
+.application .fr-tab .fr-amt { display: inline-flex; align-items: stretch; height: 26px; flex: 0 1 auto; }
+.application .fr-tab .fr-amt button { height: auto; width: 24px; }
+.application .fr-tab .fr-amt .fr-in.amt { width: 150px; min-width: 60px; height: auto; margin: 0; background: var(--fr-field); box-shadow: none; font-size: 13px; text-align: left; padding: 0 6px; }
+.application .fr-tab .fr-pc:has(> .fr-amt) { flex-wrap: wrap; }
+.application .fr-tab .fr-pc:has(> .fr-amt) > .fr-sel { flex: 1 1 140px; width: auto; min-width: 0; }

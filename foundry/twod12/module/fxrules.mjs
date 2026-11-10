@@ -437,11 +437,16 @@ export function sentence(rIn, ctx = {}) {
     case "move": return `Can't willingly move ${r.dirm === "closer" ? "closer to" : "away from"} ⟦a:${who}⟧${r.sees ? `, while they see ⟦a:${who}⟧` : ""}.`;
     case "value": {
       if (r.stat === "rally") return `Each Rally Point heals ${formulaWords(r.rally)} more${r.rallyRange ? `, for this creature and its allies within ${r.rallyRange} squares` : ""}${esc0}.`;
-      if (r.stat === "resist") return r.rwSub ? `Has ⟦a:${r.rw === "immune" ? `Immune ${SUB(r.rwSub)}` : `${r.rw === "weak" ? "Weak" : "Resist"} ${isNum(r.rwVal) ? r.rwVal : `(${formulaWords(r.rwVal)})`} ${SUB(r.rwSub)}`}⟧${esc0}.` : "Choose a damage type below.";
+      if (r.stat === "resist") {   // v0.0.325: a formula reads "Resist N Fire, N equal to the origin's Power Modifier"
+        if (!r.rwSub) return "Choose a damage type below.";
+        if (r.rw === "immune") return `Has ⟦a:Immune ${SUB(r.rwSub)}⟧${esc0}.`;
+        const w = r.rw === "weak" ? "Weak" : "Resist";
+        return isNum(r.rwVal) ? `Has ⟦a:${w} ${r.rwVal} ${SUB(r.rwSub)}⟧${esc0}.` : `Has ⟦a:${w} N ${SUB(r.rwSub)}⟧, N equal to ${formulaWords(r.rwVal)}${esc0}.`;
+      }
       const what = r.stat === "defense" ? (r.which === "all" ? "every Defense" : ({ armor: "Armor Defense", ward: "Ward Defense" }[r.which] ?? `Defense ${T().defenseKinds[r.which]}`)) : (r.stype === "all" ? "every Speed" : `${cap(r.stype)} Speed`);
-      const amt = isNum(r.val) ? formulaWords(r.val) : `(${formulaWords(r.val)})`, n = Number(r.val), sign = !isNum(r.val) || n >= 0 ? "+" : "";
+      const amt = formulaWords(r.val), n = Number(r.val), sign = !isNum(r.val) || n >= 0 ? "+" : "";
       let s = r.mode === "set" ? `${cap(what)} becomes ${amt}` : r.mode === "inc" ? `${isNum(r.val) && n < 0 ? `Decrease ${what} by ${Math.abs(n)}` : `Increase ${what} by ${amt}`}`
-        : `⟦o:${sign}${amt} ${r.name ? `${cap(r.name)} ` : ""}bonus⟧ to ${what}`;
+        : isNum(r.val) ? `⟦o:${sign}${amt} ${r.name ? `${cap(r.name)} ` : ""}bonus⟧ to ${what}` : `⟦o:A ${r.name ? `${cap(r.name)} ` : ""}bonus⟧ to ${what} equal to ${formulaWords(r.val)}`;   // v0.0.325: a formula reads in words
       if (r.mode === "bonus" && isNum(r.val) && n < 0) s = `⟦b:${amt} ${r.name ? `${cap(r.name)} ` : ""}penalty⟧ to ${what}`;
       if (r.stat === "defense" && r.vs !== "any") s += ` against ${VS_WORD(r.vs, who)}`;
       if (r.sees) s += `, while they see ⟦a:${who}⟧`;

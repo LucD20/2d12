@@ -133,4 +133,4 @@ console.log(say(dF), "|", say(rF));
 console.log("compiled:", JSON.stringify(R.compile([dF, rF], {}).settings.map(x => [x.type, x.type === "resist" ? x.rwValue : x.defValue, x.valFormula])));
 console.log("read back:", JSON.stringify(R.migrate({ settings: R.compile([dF, rF], {}).settings }).rules.map(r => (r.stat === "resist" ? r.rwVal : r.val))), "| a number stays a number:", R.normRule(D("value", { stat: "resist", rwVal: "3" })).rwVal);
 const html2 = V.fxTabHtml({ host: "effect", name: "X", rules: [dF], ends: {} });
-console.log("no origin switch:", !html2.includes("@originFromUser"), "| the names list beside the formula:", html2.includes("fr-fi") && V.FORMULA_HELP.includes("@origin.<name>"), "| no light preview:", !V.fxTabHtml({ host: "effect", rules: [D("light")] }).includes("fr-lightpv"));
+console.log("no origin switch:", !html2.includes("@originFromUser"), "| the names list beside the formula:", html2.includes("fr-fi") && V.FORMULA_TIP.includes("Power Modifier") && !/<name>/.test(V.FORMULA_TIP), "| no light preview:", !V.fxTabHtml({ host: "effect", rules: [D("light")] }).includes("fr-lightpv"));
