@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-09 from the repository at: 5c38b6b 2026-11-09 v0.0.318: every creature hears (NPC tokens get the Hearing mode)
+Built by tools/knowledge.py on 2026-11-10 from the repository at: 01a0a68 2026-11-09 v0.0.319: every token hears in memory; Hearing written in V14's stored shape
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,8 +14,8 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (79 KB)
-- MASTER-PLAN.md (19 KB)
+- HANDOFF.md (80 KB)
+- MASTER-PLAN.md (18 KB)
 - open-design-items.md (87 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (27 KB)
