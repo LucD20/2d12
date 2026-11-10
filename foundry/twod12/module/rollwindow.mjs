@@ -66,6 +66,9 @@ export class RollWindow extends (ApplicationV2 ?? class {}) {
   }
 
   _click(ev) {
+    // v0.0.335 (Lucas: "clicking on the tier should be anywhere in the tier"): a Tier row of the table forces that result (GM), as its name's button does
+    const row = ev.target.closest("tr[data-force]");
+    if (row && !ev.target.closest("button, a, [data-tooltip] button")) { ev.preventDefault(); const t = Number(row.dataset.force); this.st.forceTier = Number(this.st.forceTier) === t ? 0 : t; return this.render(); }
     const b = ev.target.closest("button[data-act]");
     if (!b || b.disabled) return;
     ev.preventDefault();

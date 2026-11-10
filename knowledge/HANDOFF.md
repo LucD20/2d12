@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.334, 227 tests; READ THIS FIRST)
+## Where we are now (v0.0.335, 227 tests; READ THIS FIRST)
+- **v0.0.335 (2026-11-10, branch `pack-rwi`): Lucas on v0.0.334** (Opportunity Attack at Adjacent and Marked Quarry as the Mark Quarry Action: book and Foundry; Rebuke, Skirmish Shot, Mark Quarry Mithril; trait chips, the Save card's table, the Forced Movement bar). **NEXT:** Lucas's test; then merge `pack-rwi` (it holds `pack-pcs`); then the AU card sessions.
 - **v0.0.334 (2026-11-10, branch `pack-rwi`): Lucas's notes on v0.0.333** (Opportunity Attack had no threat limit: fixed; Basic Actions in the compendium; the sidebar; the weapon's range; the roll window; Rebuke / Skirmish Shot chains; Marked Quarry in the book). New test t229 (**the next new test is t230**). **NEXT:** Lucas's answers (Opportunity Attack at Adjacent? Marked Quarry as only the Action?) and his test.
 - **v0.0.333 (2026-11-10, branch `pack-rwi` from `pack-pcs`): SMALL PACK RWI and the NPC portraits.** The Damage block (Immune / Resist / Weak) on both sheets, `creatureDamageLines(actor)` (ccdamage.mjs; the damage message reads it too), lines on worn armor and wielded weapons, + Add in a pick window; the NPCs' portraits, their sheets checked against the Bestiary. New test t228 (**the next new test is t229**). **NEXT:** Lucas's test of v0.0.331 to v0.0.333; then merge `pack-rwi` (it holds `pack-pcs`).
 - **v0.0.332 (2026-11-10, branch `pack-pcs`):** a level 1 version of each of the four PCs (Lucas: "at least one using a shortbow and another a greatsword": Kaela and Aveline). **NEXT:** Lucas's look at the sheets.

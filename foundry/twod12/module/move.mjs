@@ -708,6 +708,29 @@ function gfxLine(g, pts, color, width, alpha = 1) {
 const MOVE_LABEL = { push: "Pushed", pull: "Pulled", slid: "Slid", reposition: "Reposition" };
 
 /**
+ * v0.0.335 (Lucas: "Push needs a more detailed HUD like Evade / Advance: the movement, an End forced movement, maybe a link to the book"): the bottom
+ * bar of a Forced Movement being chosen, in the Line bar's look: who moves, how far and from whom, the hovered square's result (updated as the
+ * pointer moves), the book's rule, and End forced movement (it moves 0: a Forced Movement's value is a maximum). Returns { set(text), close() }.
+ */
+function forcedBar(mode, target, origin, N, onEnd) {
+  if (typeof document === "undefined") return { set() {}, close() {} };
+  document.querySelector(".twod12-forcedbar")?.remove();
+  const label = mode === "reposition" ? "Repositioned" : MOVE_LABEL[mode];
+  const how = { push: `away from <b>${esc(origin.name)}</b>: click the square where it ends`, pull: `toward <b>${esc(origin.name)}</b>: click the square where it ends (its own square: a Collision)`,
+    slid: "in any direction: click the squares of its path one by one, then the last one again (Enter)", reposition: "within the area: click its new square" }[mode] ?? "";
+  const bar = document.createElement("div");
+  bar.className = "twod12-linebar twod12-setupbar twod12-forcedbar";
+  bar.innerHTML = `<i class="fa-solid ${mode === "pull" ? "fa-hand-back-fist" : "fa-hand"} lb-ic"></i><span class="lb-text"><b>${esc(target.name)}</b> is ${label} up to ${N} square${N === 1 ? "" : "s"} ${how}. <small>Forced Movement ignores Difficult Terrain and triggers no Reactions; a wall or a creature in the way stops it (a Collision).</small><span class="lb-now"></span></span>`
+    + '<button type="button" class="lb-go lb-book" data-tooltip="Forced Movement (Chapter 3)"><i class="fa-solid fa-book-open"></i> Rules</button>'
+    + '<button type="button" class="lb-go lb-end" data-tooltip="It moves 0 squares (the value is a maximum)"><i class="fa-solid fa-flag-checkered"></i> End forced movement</button>';
+  document.body.append(bar);
+  bar.querySelector(".lb-book").addEventListener("click", ev => { ev.preventDefault(); import("./inline.mjs").then(m => m.openBook({ ref: mode === "pull" ? "Pulled" : mode === "slid" ? "Slid" : mode === "push" ? "Pushed" : "Forced Movement", doc: "Chapter 3, Forced Movement" })).catch(() => {}); });
+  bar.querySelector(".lb-end").addEventListener("click", ev => { ev.preventDefault(); onEnd?.(); });
+  const now = bar.querySelector(".lb-now");
+  return { set: t => { if (now) now.innerHTML = t ? ` <b class="lb-res">${esc(t)}</b>` : ""; }, close: () => bar.remove() };
+}
+
+/**
  * Drag the target to a square: only the squares the movement allows (Pushed: away from the origin; Pulled: toward it, or the origin's own square
  * for a Collision; Reposition: the old square in an Emanation) within N steps. Resolves to { path, result } or null.
  */
@@ -737,6 +760,7 @@ function choosePush(origin, target, N, mode = "push") {
     const prevInteractive = canvas.tokens.interactiveChildren;
     canvas.tokens.interactiveChildren = false;
     let current = null;
+    const fbar = forcedBar(mode, target, origin, N, () => done({ ended: true }));   // v0.0.335: the bottom bar
     // v0.0.250 (Lucas): an origin that is not a creature on the map (an area's center) is shown while the Push is chosen: its squares in gold and a diamond on the point
     const ghostOrigin = !canvas.tokens.get(origin.id);
     const originMark = () => {
@@ -779,7 +803,7 @@ function choosePush(origin, target, N, mode = "push") {
       const path = repo || node.intoOrigin ? lineShifts(node) : pathTo(map, key);
       const result = analyzePath(path, path.length - 1, { wallBetween: wallsOn, creatureAt, cornerAt });
       current = { path, result };
-      tip.textContent = text(result); tip.style.display = "block";
+      tip.textContent = text(result); tip.style.display = "block"; fbar.set(text(result));
       const n = ev.nativeEvent ?? ev.data?.originalEvent;
       if (n) { tip.style.left = `${n.clientX + 14}px`; tip.style.top = `${n.clientY + 14}px`; }
       draw();
@@ -788,7 +812,7 @@ function choosePush(origin, target, N, mode = "push") {
       canvas.stage.off("pointermove", hover); canvas.stage.off("pointerdown", down);
       window.removeEventListener("keydown", esc_);
       canvas.tokens.interactiveChildren = prevInteractive;
-      gfx.destroy(); tip.remove();
+      gfx.destroy(); tip.remove(); fbar.close();
       resolve(v);
     };
     const down = ev => {
@@ -800,7 +824,7 @@ function choosePush(origin, target, N, mode = "push") {
     const esc_ = ev => { if (ev.key === "Escape") done(null); };
     canvas.stage.on("pointermove", hover); canvas.stage.on("pointerdown", down);
     window.addEventListener("keydown", esc_);
-    ui.notifications.info(`${MOVE_LABEL[mode]} ${N}: move the pointer to choose where ${target.name} ends${pull ? ` (or ${origin.name}'s own square: Collision)` : ""}. Click to confirm, right-click or Esc to cancel.`);
+    // v0.0.335: the bottom bar says it (no notification)
     draw();
   });
 }
@@ -883,13 +907,14 @@ function choosePath(origin, target, N, mode = "slid", { withinReach = false } = 
       return r;
     };
     const posOf = ev => { const p = ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) : ev.data.getLocalPosition(canvas.stage); const o = canvas.grid.getOffset(p); return { di: o.i - tl.i, dj: o.j - tl.j }; };
-    const showTip = (ev, msg) => { tip.textContent = msg; tip.style.display = "block"; const n = ev?.nativeEvent ?? ev?.data?.originalEvent; if (n) { tip.style.left = `${n.clientX + 14}px`; tip.style.top = `${n.clientY + 14}px`; } };
+    const showTip = (ev, msg) => { tip.textContent = msg; tip.style.display = "block"; fbar?.set(msg); const n = ev?.nativeEvent ?? ev?.data?.originalEvent; if (n) { tip.style.left = `${n.clientX + 14}px`; tip.style.top = `${n.clientY + 14}px`; } };
     const move = ev => { hover = posOf(ev); const r = draw(); const bad = why(hover), last = path[path.length - 1]; showTip(ev, hover.di === last.di && hover.dj === last.dj && path.length > 1 ? text(r) : (bad ? `Not here: ${bad}.` : text(analyze([...path, hover])))); };
+    const fbar = forcedBar(mode, target, origin, N, () => finish({ ended: true }));   // v0.0.335: the bottom bar
     const finish = v => {
       canvas.stage.off("pointermove", move); canvas.stage.off("pointerdown", down);
       window.removeEventListener("keydown", keys);
       canvas.tokens.interactiveChildren = prevInteractive;
-      gfx.destroy(); tip.remove();
+      gfx.destroy(); tip.remove(); fbar.close();
       resolve(v);
     };
     const confirm = () => (path.length > 1 ? finish({ path: [...path], result: analyze(path) }) : finish(null));
@@ -971,6 +996,7 @@ async function pushOne(origin, target, N0, mode = "push", opts = {}) {
   const pathTool = mode === "slid" || mode === "reposition";
   const pick = pathTool ? await choosePath(origin, target, N, mode, opts) : await choosePush(origin, target, N, mode);
   if (!pick) return;
+  if (pick.ended) { await ChatMessage.create({ content: sysLine("fa-hand", `<b>${esc(target.name)}</b> is not moved: ${mode === "reposition" ? "the Reposition" : `${label} ${N0}`} ended at 0 squares (its value is a maximum).`, "pushmsg") }); return; }
   const { result } = pick, f = result.final;
   if (pathTool) await moveAlong(target.document, pick.path.slice(0, result.done + 1));   // one movement along the path (v0.0.175)
   else if (f.di || f.dj) await moveToken(target.document, f.dj, f.di);

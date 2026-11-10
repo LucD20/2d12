@@ -33,7 +33,7 @@ shared roll: 3d12 9 7 7 +2 Modifier | a row per creature: 3 | defenses: WD 13 | 
 grouped by Tier: Tier 3 Grave Wisp Vigor 2d6 + 2 Sl · Resolve 2d10 Ho ↳ Pushed 2 Critical Doubles, or 33+ the target is Prone. Tier 2 Bandit Thug Ogre Chieft
 player view: no WD labels: true
 --- the Save card
-Tier 3 on top: T3 20+ | T2 13–19 | T1 ≤12 | the DC: Appeal Save DC 13 | no effect on Tier 3: true
+Tier 1 on top (v0.0.335, the Action preview's order): T1 ≤12 | T2 13–19 | T3 20+ | the DC: Appeal Save DC 13 | no effect on Tier 3: true
 before the roll: the owner rolls: true | the others wait: Waiting for Ogre Chieftain's Appeal Save… | no row lit: true
 after: the result row is a button: true | its total: 8 | the others dim: 2 | Their Tier: Their Tier 1 | Damage at the bottom: true
 v0.0.294 (brief section 12): the Trigger under the Save line, above the Tier rows, then one diamond: true | Trigger: An enemy within 5 squares makes a [Strike] Action against an ally.
@@ -67,7 +67,7 @@ the pool total in its own column: true | the Tier group names as chips: 3
 no "targeting x, y" chat line after placing an area: true
 --- v0.0.286 (Lucas tested v0.0.285)
 each creature's Defense as a framed badge: WD 13 | WD 13 | WD 14 | hidden for players: true
-a Save on three creatures: a row each: 3 | who got each Tier: T3: - | T2: Grave Wisp | T1: Bandit Thug
+a Save on three creatures: a row each: 3 | who got each Tier: T1: Bandit Thug | T2: Grave Wisp | T3: -
 the owner rolls on their row, the others wait: 1 1 | Damage once someone rolled: true | a one-target card of v0.0.283 still reads: 1
 Save Actions use the new card with several targets (actions.mjs): true | and with none (v0.0.317): true
 --- v0.0.287 (Lucas tested v0.0.286)

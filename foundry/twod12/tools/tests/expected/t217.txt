@@ -57,7 +57,7 @@ the token controls: Line of Effect, Cover height, Show flanking: true | no HUD b
 the sheet's rows have their color again (v0.0.298 had it in a comment): true | Use's tooltip and the open card: true | a Reaction's Frequency line: true
 --- v0.0.303 (Lucas tested v0.0.302)
 chip names, the tag says the rest: Flanking 2 | Target is Engaged | Obscured by Orc | Medium cover
-Opportunity Attack: ["strike"] | A creature you threaten would leave a square during a Move Action or uses the Stand Action. | only a creature you threaten: true range 0
+Opportunity Attack: ["strike"] | An enemy adjacent to you would leave a square during a Move Action or uses the Stand Action. | only a creature you threaten: false range 1
 the Reactions message checks the threat (a Long weapon's min too): true
 Move back with a Long weapon (threatens 2 only): squares [1]
 NPC rows: no "back once at Escalation 3": true | the Basic attack strip: true | an NPC's Escalation Actions listed out of combat: true

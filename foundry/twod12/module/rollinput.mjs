@@ -1,7 +1,7 @@
 // v0.0.292 (PACK ROLL-DIALOG): what the roll dialog shows, built from what useAction (actions.mjs) already computed: the Versions (traits, meta line,
 // Tier table), the Modifier chips (each source by name, its scope: shared, or one creature's), the creatures and their Defenses, the blocked states.
 // The dialog itself is rolldlg.mjs (pure) and rollwindow.mjs (the window).
-import { TWOD12, traitGroupOf, orderTraits, effectiveFrequency, FREQ_COLORS, distanceText, vsText, doomStatus } from "./config.mjs";
+import { TWOD12, traitGroupOf, orderTraits, effectiveFrequency, FREQ_COLORS, distanceText, vsText, doomStatus, highlightText } from "./config.mjs";
 import { modifierList } from "./effects.mjs";
 import { bonusesNotNow } from "./bonus.mjs";
 import { isFaded } from "./usage.mjs";
@@ -38,7 +38,7 @@ export async function rollDialogInput(c) {
   const cbt = game.combat?.started ? combatantOf(actor) : null, have = cbt ? getAP(cbt) : null, rap = cbt && it.reaction ? getRAP(cbt) : 0;
   const freq = effectiveFrequency(it);
   const meta = { escalation: Number(it.escalation) || 0, targets: String(it.targets ?? "").trim(), dist: (() => { const d = distanceText(it); return /^\d+$/.test(d) ? `${d} sq.` : d.replace(/(\d+)\s*(?:squares?|sq\.?)$/i, "$1 sq."); })(),
-    vs: vsText(it, { src, fists: item.getFlag?.("twod12", "basic") === "fists", rolls: true }), requirements: String(it.requirements ?? "").trim(), trigger: String(it.trigger ?? "").trim(), triggerKind: it.reactionKind ?? "" };
+    vs: vsText(it, { src, fists: item.getFlag?.("twod12", "basic") === "fists", rolls: true }), requirements: String(it.requirements ?? "").trim(), trigger: String(it.trigger ?? "").trim(), triggerHtml: (() => { const t = String(it.trigger ?? "").trim(); try { return t ? highlightText(esc(t)) : ""; } catch (e) { return ""; } })(), triggerKind: it.reactionKind ?? "" };
   const versions = [];
   for (const v0 of c.versions) {
     const v = c.talentMods ? applyTalentMods(v0, c.talentMods) : v0;

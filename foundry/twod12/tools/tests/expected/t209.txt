@@ -53,9 +53,9 @@ Bulwark of Faith: strikeDamage 5 (interrupt)
 Covering Shot: strikeDamage 10 on the attacker (interrupt)
 Rebuke: strikeAgainst 0 on the attacker (trigger)
 Overwatch: enemyCloser 10 (trigger)
-Opportunity Attack: enemyMoves 0 (interrupt)
+Opportunity Attack: enemyMoves 1 (interrupt)
 Beacon's Step: allyDamage 2 (interrupt)
-the Basic Action's data carries it: enemyMoves 0
+the Basic Action's data carries it: enemyMoves 1
 --- wired
 the damage waits for the Interrupts: true | a Strike's damage card says so: true | the Triggers after it lands: true | no second click while held: true
 a Strike and a Stand bring their moments: true | a Reaction's step after a @Pause stays a button: true

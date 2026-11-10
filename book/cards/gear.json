@@ -322,7 +322,9 @@
    ],
    "foundry": {
     "img": "icons/svg/target.svg",
-    "folder": "Weapon Techniques"
+    "folder": "Weapon Techniques",
+    "automation": "mithril",
+    "automationNote": "the Evade 1 comes by itself after a Tier 3's damage is applied and lands (the chain after the damage)."
    }
   },
   {

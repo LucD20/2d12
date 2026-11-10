@@ -3981,3 +3981,36 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.rolldlg .rd-trait:is(.tg-roll, .tg-requires, .tg-kind, .tg-damage, .tg-keywords) { color: var(--tg); background: color-mix(in srgb, var(--tg) 16%, #fff); border-color: color-mix(in srgb, var(--tg) 35%, transparent); }
 .twod12.rolldlg .rd-trait.tg-roll { --tg: var(--g-roll); } .twod12.rolldlg .rd-trait.tg-requires { --tg: var(--g-requires); } .twod12.rolldlg .rd-trait.tg-kind { --tg: var(--g-kind); }
 .twod12.rolldlg .rd-trait.tg-damage { --tg: var(--g-damage); } .twod12.rolldlg .rd-trait.tg-keywords { --tg: var(--g-keywords); }
+/* v0.0.335 (Lucas: "the traits aren't formatted like in the preview"): a trait in a Trigger or meta line looks like the Action preview's ([ Strike ] chip),
+   in the chat cards and the roll window too */
+.twod12 .cc-trigger .trhl, .twod12 .cc-meta .trhl, .twod12.rolldlg .rd-meta .trhl { background: #e3eef1; border: 1px solid #b6d0d6; color: #1d4f5a; border-radius: 3px; padding: 0 6px; font-size: 12px; font-weight: 600; }
+/* v0.0.335: the whole Tier row is the GM's click (no underline); hover shows it, the forced one keeps a gold bar */
+.rd-tiers button.rd-tforce { border-bottom: none; }
+.rd-tiers button.rd-tforce[aria-pressed="true"] { border-bottom: none; }
+.rd-tiers tr.rd-forcable { cursor: pointer; }
+.rd-tiers tr.rd-forcable:hover td, .rd-tiers tr.rd-forcable:hover th { filter: brightness(.96); }
+.rd-tiers tr.forced th, .rd-tiers tr.forced td { box-shadow: inset 0 2px 0 #d9b45a, inset 0 -2px 0 #d9b45a; }
+.rd-tiers tr.forced th { box-shadow: inset 3px 0 0 #d9b45a, inset 0 2px 0 #d9b45a, inset 0 -2px 0 #d9b45a; }
+/* v0.0.335 (Lucas): the Save card's Tier rows in the Action preview's table look: a tinted "Tier N" cell with its color on the left edge, a light body,
+   a line between rows; the rolled row keeps its colors and gets a dark outline with the total; the others fade. Overrides the v0.0.283 blocks above. */
+.twod12.chat.cc .cc-srows { gap: 0; border-top: 1px solid #e6d6b2; }
+.twod12.chat.cc .cc-srow { --c: #a8261c; --bg: #fbefed; --n: var(--c); grid-template-columns: 70px minmax(0, 1fr) auto; gap: 0; border-radius: 0; padding: 0; border: none; border-bottom: 1px solid #e6d6b2;
+  background: #fffdf8 !important; color: #26241f !important; align-items: stretch; width: 100%; text-align: left; font: inherit; }
+.twod12.chat.cc .cc-srow.t2 { --c: #3f6e31; --bg: #f1f7ec; --n: #7fae6c; }
+.twod12.chat.cc .cc-srow.t3 { --c: #2b5a2f; --bg: #e8f1e3; }
+.twod12.chat.cc .cc-srow :is(.cc-pv, .cc-pr, .cc-sub, .cc-dot, .cc-none) { color: inherit; }
+.twod12.chat.cc .cc-srow.t3 :is(.cc-pv, .cc-pr, .cc-sub, .cc-dot), .twod12.chat.cc .cc-srow.t1.hit :is(.cc-pv, .cc-pr, .cc-sub, .cc-dot) { color: revert !important; }
+.twod12.chat.cc .cc-srow .cc-pv { color: var(--c-body, #7a1626) !important; } .twod12.chat.cc .cc-srow .cc-pr { color: var(--c-mind, #17327a) !important; }
+.twod12.chat.cc .cc-srow .cc-scell { background: var(--bg); color: var(--c); box-shadow: inset 5px 0 0 var(--n); padding: 5px 6px 5px 11px; align-items: flex-start; justify-content: center; }
+.twod12.chat.cc .cc-srow .cc-scell b { font-family: "Cinzel", serif; font-size: 12px; white-space: nowrap; }
+.twod12.chat.cc .cc-srow .cc-scell small { color: #6f6a5c; }
+.twod12.chat.cc .cc-srow .cc-sbody { padding: 5px 8px; line-height: 1.45; }
+.twod12.chat.cc .cc-srow .cc-rchip, .twod12.chat.cc .cc-srow.t3 .cc-rchip { border-color: #d9b26a; }
+.twod12.chat.cc .cc-srow .cc-rider a[data-twod12-inline] { background: transparent; }
+.twod12.chat.cc .cc-srow .cc-stotal { align-self: center; margin-right: 6px; }
+.twod12.chat.cc .cc-srow.hit, .twod12.chat.cc .cc-card .cc-srow.hit:hover { box-shadow: inset 0 0 0 2px var(--cc-ink); background: #fffdf8 !important; color: #26241f !important; filter: none; }
+.twod12.chat.cc .cc-srow.hit .cc-scell { background: var(--c); color: #fff; } .twod12.chat.cc .cc-srow.hit .cc-scell small { color: rgba(255,255,255,.85); }
+.twod12.chat.cc .cc-srow.dim { opacity: .5; }
+/* v0.0.335: the Forced Movement bar (Pushed, Pulled, Slid, Reposition): the hovered square's result after the text */
+.twod12-forcedbar .lb-text small { display: block; opacity: .75; font-size: 11px; }
+.twod12-forcedbar .lb-res { color: #f3d39c; }

@@ -686,15 +686,17 @@ async function handleEndEffect(cfg, ctx) {
 }
 
 /** v0.0.246: a book link. A Journal page named like the heading opens it (the Journal import comes later); until then, a note. */
-async function openBook(cfg) {
+export async function openBook(cfg) {
   const ref = String(cfg.ref ?? "").trim();
   if (!ref) return;
   for (const j of game.journal ?? []) {
     const page = j.pages?.find?.(p => String(p.name ?? "").toLowerCase() === ref.toLowerCase());
     if (page) return j.sheet.render(true, { pageId: page.id });
   }
-  await foundry.applications.api.DialogV2.prompt({ window: { title: ref }, rejectClose: false, ok: { label: "Close" },
-    content: `<p><b>${esc(ref)}</b> is a rule of the book${cfg.doc ? ` (${esc(cfg.doc)})` : ""}: read it there. When the book is imported into Foundry as a Journal, this link opens its page.</p>` });
+  // v0.0.335: the system's window, not a Foundry dialog (the standing rule)
+  const { pickConfirm } = await import("./pickwindow.mjs");
+  await pickConfirm({ title: ref, name: ref, sub: cfg.doc ?? "", icon: "fa-book-open", confirm: "Close",
+    text: `<b>${esc(ref)}</b> is a rule of the book${cfg.doc ? ` (${esc(cfg.doc)})` : ""}: read it there. When the book is imported into Foundry as a Journal, this link opens its page.` });
 }
 
 export async function handleInline(kind, cfg, ctx = {}) {

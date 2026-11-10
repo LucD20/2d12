@@ -376,8 +376,9 @@ function tierTableHtml(inp, st, v) {
   };
   // v0.0.334 (Lucas): the GM clicks a Tier (or Critical) to make it the result (again: back to the roll); forceTier 4 = a Critical
   const th = (n, label) => (inp.canForce && !inp.save ? `<th scope="row"><button type="button" class="rd-tforce" data-act="force" data-t="${n}" aria-pressed="${Number(st.forceTier) === n}" data-tooltip="${Number(st.forceTier) === n ? "Forced: click again to roll normally" : `Make ${label} the result (GM)`}">${label}</button></th>` : `<th scope="row">${label}</th>`);
-  const rows = [1, 2, 3].map(n => `<tr class="t${n}${Number(st.forceTier) === n ? " forced" : ""}">${th(n, `Tier ${n}`)}<td>${cell(n)}</td></tr>`);
-  if (v.crit) rows.push(`<tr class="crit${Number(st.forceTier) === 4 ? " forced" : ""}">${th(4, "Critical")}<td>${v.crit}</td></tr>`);
+  const can = inp.canForce && !inp.save, rowAt = n => (can ? ` data-force="${n}"` : "");
+  const rows = [1, 2, 3].map(n => `<tr class="t${n}${Number(st.forceTier) === n ? " forced" : ""}${can ? " rd-forcable" : ""}"${rowAt(n)}>${th(n, `Tier ${n}`)}<td>${cell(n)}</td></tr>`);
+  if (v.crit) rows.push(`<tr class="crit${Number(st.forceTier) === 4 ? " forced" : ""}${can ? " rd-forcable" : ""}"${rowAt(4)}>${th(4, "Critical")}<td>${v.crit}</td></tr>`);
   if (v.effects) rows.push(`<tr class="rd-eff"><th scope="row">Effects<small>(T${v.effectsFrom ?? 2}+)</small></th><td>${v.effects}</td></tr>`);
   const net = stepNet(inp, st);
   return `<table class="rd-tiers">${rows.join("")}</table>${net.line ? `<div class="rd-step">${esc(net.line)}</div>` : ""}`;
@@ -395,7 +396,8 @@ function metaHtml(inp, v) {
   if (l2.length) out.push(`<div class="rd-meta">${l2.join(sep)}</div>`);
   if (m.requirements) out.push(`<div class="rd-meta"><b>Requirements:</b> ${esc(m.requirements)}</div>`);
   if (m.setup) out.push(`<div class="rd-meta"><b>Setup:</b> ${m.setup}</div>`);
-  if (m.trigger) out.push(`<div class="rd-meta"><b>${m.triggerKind === "interrupt" ? "Interrupt" : "Trigger"}:</b> ${esc(m.trigger)}</div>`);
+  // v0.0.335 (Lucas): the traits in the Trigger as chips, the Action preview's look (triggerHtml: rollinput.mjs runs config.mjs highlightText)
+  if (m.trigger) out.push(`<div class="rd-meta"><b>${m.triggerKind === "interrupt" ? "Interrupt" : "Trigger"}:</b> ${m.triggerHtml ?? esc(m.trigger)}</div>`);
   return out.join("");
 }
 

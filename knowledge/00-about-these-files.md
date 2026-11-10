@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-10 from the repository at: 1b8d054 2026-11-10 v0.0.333 SMALL PACK RWI: the Damage block (Immune / Resist / Weak) on both sheets, creatureDamageLines (the damage card reads it too), armor and weapon lines, + Add in a pick window; the NPC portraits, their sheets checked; t228
+Built by tools/knowledge.py on 2026-11-10 from the repository at: a85f57b 2026-11-10 v0.0.334: Opportunity Attack's threat limit restored, Basic Actions in the compendium, the sheet sidebar, weapon ranges with an i, roll window colors and forced Tiers, Feature cards in the chat, Rebuke and Skirmish Shot chains after the damage, Marked Quarry in the book; t229
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

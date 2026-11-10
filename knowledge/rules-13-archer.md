@@ -22,7 +22,7 @@ Escalation hook: Your Marked Quarry goes Down (Thrill of the Kill)
 
 Level 1:
 
-Features: Sharpshooter, Marked Quarry, Thrill of the Kill
+Features: Sharpshooter, Thrill of the Kill; the Mark Quarry Action
 
 Hallmark Action: Double Shot or Rolling Shot
 
@@ -54,15 +54,17 @@ Level 5 begins Stage 2 (a Stage Talent and the Stage numbers: see [[Stages]]). F
 
 ### Features
 
-As a marksman, you gain three Features at level 1, and Marked Quarry gives you the Mark Quarry Action. Thrill of the Kill is your class's [[Escalation]] hook.
+As a marksman, you gain two Features and the Mark Quarry Action at level 1. Thrill of the Kill is your class's [[Escalation]] hook.
 
 @@CARD:Sharpshooter@@
 
-@@CARD:Marked Quarry@@
+@@CARD:Thrill of the Kill@@
+
+#### Marked Quarry
+
+Your **Marked Quarry** is the enemy you chose with the Mark Quarry Action. You have one at a time.
 
 @@CARD:Mark Quarry@@
-
-@@CARD:Thrill of the Kill@@
 
 ### Hallmark Action Selection
 
