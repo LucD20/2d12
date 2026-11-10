@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-10 from the repository at: eafcdd5 2026-11-10 v0.0.339: the review's fixes: book words where the After-the-damage chain acts (no double buttons, no per-card overrides; 8 cards Diamond), Open Season's Vulnerable in its chain, a Reaction an Aura brings reaches as far as the Aura, 'only a creature you threaten' hidden; t231
+Built by tools/knowledge.py on 2026-11-10 from the repository at: d987688 2026-11-10 v0.0.340: chain-aware buttons (waiting, done, by hand), an area Action rolled against a DC, an NPC's Rally Point (book Ch. 4), Send to chat as the new card; t232
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

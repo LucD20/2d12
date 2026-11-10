@@ -163,7 +163,6 @@ export function parseInline(kind, inner) {
     else if (key === "pick") cfg.pick = yes(val);
     else if (key === "from") cfg.from = val.toLowerCase();
     else if (key === "doc") cfg.doc = val;
-    else if (key === "chain") cfg.chain = yes(val);   // v0.0.340: the Version's "After the damage" chain does this by itself (chainchips.mjs shows its state)
     else if (key === "crit") cfg.crit = yes(val);   // v0.0.249: @Condition[prone|crit:yes]: only the targets that rolled a Critical
     else if (key === "tier") cfg.tier = Math.max(0, Number(val) || 0);   // v0.0.267: tier:2: only the targets that rolled that Tier or more (a Grant's line on the Tier rows)
     // v0.0.250 (cards 3): s2:/s3: the formula at Stage 2 / 3 (Guard, Heal); side:allies / side:enemies (a chain's chip for one side of the card's targets); extra: a heal added to a Rally Point (Lay On Hands)
@@ -206,7 +205,6 @@ function mkEl(kind, cfg, label, icon) {
   a.dataset.twod12Inline = kind;
   a.dataset.cfg = JSON.stringify(cfg);
   a.innerHTML = `${icon.startsWith("<") ? icon : `<i class="fa-solid ${icon}"></i>`} ${esc(label)}`;
-  if (cfg.chain) { a.classList.add("chain"); a.dataset.tooltip = "Happens by itself once the damage is applied and lands"; }   // v0.0.340 (chainchips.mjs)
   return a;
 }
 

@@ -1,7 +1,7 @@
 --- the automation chip
 gold: <i class="fa-solid fa-diamond autodia auto-gold" aria-label="Gold"></i> | silver: <i class="fa-solid fa-diamond autodia auto-silver" aria-label="Silver"></i> | bronze: <i class="fa-solid fa-diamond autodia auto-bronze" aria-label="Bronze"></i> | none: <i class="fa-solid fa-diamond autodia auto-none" aria-label="Not implemented"></i> | (none): -
 on the card head: true | the Features tab: true | the item sheets' select: 4
-compendium ranks: {"gold":34,"mithril":18,"none":16,"silver":9,"bronze":5,"diamond":11} | old cards have none: true
+compendium ranks: {"gold":34,"mithril":24,"none":16,"silver":9,"bronze":5,"diamond":5} | old cards have none: true
 --- bonus damage named by its source
 the card's bonus row links its source: true | no None type: true | the damage card names it (not Untyped): true | passives carry the item's uuid: true
 --- targeting mode

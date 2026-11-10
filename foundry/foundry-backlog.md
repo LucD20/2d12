@@ -1,10 +1,11 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.340**. Tests: `node tools/tests/run.mjs` (230 tests, see the README; the next new test is t233). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.341**. Tests: `node tools/tests/run.mjs` (230 tests, see the README; the next new test is t233). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 ## Asked by Lucas, not built
-- [ ] **v0.0.340 (to test):** the chain-aware buttons (11 Diamond cards to revise), an area rolled against a DC, an NPC's Rally Point, Send to chat. Not tried in Foundry; the states depend on `ui.chat.updateMessage` re-rendering the card when its damage message changes (if a card keeps "waiting" after Apply, scroll it out and back, or reload: say so). Assumption: 9 / 13 / 17 (a PC's Rally Point by Stage, the two classes averaged, rounded up).
+- [ ] **v0.0.341 (to test):** normal buttons again (the chain-aware ones removed); 5 Diamond cards (Rebuke, Skirmish Shot, Heartseeker, Marksman's Shot, Open Season).
+- [ ] **v0.0.340 (to test; its buttons undone in v0.0.341):** an area rolled against a DC, an NPC's Rally Point, Send to chat. Not tried in Foundry; the states depend on `ui.chat.updateMessage` re-rendering the card when its damage message changes (if a card keeps "waiting" after Apply, scroll it out and back, or reload: say so). Assumption: 9 / 13 / 17 (a PC's Rally Point by Stage, the two classes averaged, rounded up).
 - [x] **v0.0.339:** Lucas: "All else seems to work"; the words became chain-aware buttons in v0.0.340.
 - [ ] **v0.0.339 (to test):** the review's fixes (sections 1, 2, 6): book words where the chain acts, 8 Diamond cards, Open Season's chain, Beacon's Step's range, "only a creature you threaten" hidden. Not tried in Foundry.
 - [ ] **v0.0.338 (to test):** Marksman's Shot's Critical after the damage; the Critical line on the damage message. Other cards whose Critical is still a button (Deadeye's Blinded, Cut Through's Relocate...) stay by click until Lucas asks.

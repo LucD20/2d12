@@ -77,12 +77,8 @@ export function tierTokens(dmg, weaponAction, tier) {
 }
 
 /** The Foundry text of a book text: bold stripped, the links kept (foundryLinks), the buttons convertEffects derives, then the Foundry-only append. */
-// v0.0.339 (the review of the Mithril cards, section 1): a Version's "After the damage" chain and the kinds of chips it runs (Move, Condition, Heal, Guard...)
-export const chainKinds = after => new Set([...String(after ?? "").matchAll(/@(\w+)\[/g)].map(m => m[1]).filter(k => !["Pause", "Book"].includes(k)));
-// v0.0.340 (Lucas: "let me see how it looks with the buttons aware"): the chips the chain does stay buttons, marked chain:yes: the card shows them
-// waiting until the damage is applied, then done (a click does it again by hand), or a plain button when the damage didn't land (inline.mjs)
-export const markChips = (text, kinds) => (kinds?.size ? String(text ?? "").replace(/@(\w+)\[((?:[^\[\]]|\[[^\[\]]*\])*)\]/g, (m, k, a) => (kinds.has(k) && !/\|chain:/.test(a) ? `@${k}[${a}|chain:yes]` : m)) : String(text ?? ""));
-const fxText = (book, append, kinds = null) => [markChips(convertEffects(stripBold(foundryLinks(book ?? ""))), kinds).replace(/^(@\w+\[(?:[^\[\]]|\[[^\[\]]*\])*\](?:\{[^}]*\})?)\.$/, "$1"), append ?? ""].filter(Boolean).join(" ");   // a cell that is one button keeps no final period
+// v0.0.341 (Lucas: "the buttons aware isn't necessary, just make buttons normally"): the Tier text keeps its buttons; the chain runs by itself too
+const fxText = (book, append) => [convertEffects(stripBold(foundryLinks(book ?? ""))).replace(/^(@\w+\[(?:[^\[\]]|\[[^\[\]]*\])*\](?:\{[^}]*\})?)\.$/, "$1"), append ?? ""].filter(Boolean).join(" ");   // a cell that is one button keeps no final period
 const appendOf = (v, key) => { const a = v.foundry?.append; if (!a) return ""; if (typeof a === "string") return key === "effects" ? a : ""; return a[key] ?? ""; };
 
 /** One Version of a card as the item's version data. */
@@ -92,8 +88,7 @@ export function versionData(c, v, resolve = s => s) {
   // v0.0.265: an entry can be { "uuid": "{{fx:X}}", "mode": "conditional" } (the damage card's Effects button applies it: Deathmark's shot when the target goes Down)
   for (const [k, list] of Object.entries(v.foundry?.fx ?? {})) fx[k] = list.map(u => (typeof u === "object" && u ? { uuid: resolve(u.uuid), mode: u.mode || "auto" } : { uuid: resolve(u), mode: "auto" }));
   // v0.0.246 (Lucas): a Version's `foundry.text` is its Foundry text written in full ("As 1 AP, but..." is the book's; Foundry says it all); `foundry.after` the chips that run after the damage.
-  const kinds = chainKinds(v.foundry?.after);   // v0.0.339
-  const out = { ap: v.ap, noTiers: !v.tiers, t1: [], t2: [], t3: [], x1: "", x2: "", x3: "", effects: resolve(fxText(v.foundry?.text ?? v.effects, appendOf(v, "effects"), kinds)), fx };
+  const out = { ap: v.ap, noTiers: !v.tiers, t1: [], t2: [], t3: [], x1: "", x2: "", x3: "", effects: resolve(fxText(v.foundry?.text ?? v.effects, appendOf(v, "effects"))), fx };
   if (v.foundry?.after) out.after = resolve(v.foundry.after);
   // v0.0.254 (Lucas): a card's inline Actions are written on its last Version's Foundry text (a link to the item and its line), so the sheet's preview shows them after "you gain the following Action:"
   if (c.inline?.length && v === (c.versions ?? [])[(c.versions ?? []).length - 1]) out.effects += " " + c.inline.map(a => resolve(`{{link:${a.name}|${a.name}}} \u2014 ${[a.cost, a.frequency, a.traits?.length ? `[${a.traits.join(", ")}]` : "", a.interrupt ? `Interrupt: ${a.interrupt}` : "", a.trigger ? `Trigger: ${a.trigger}` : "", a.target ? `Target: ${a.target}` : "", a.effects ? `Effects: ${convertEffects(stripBold(foundryLinks(a.effects)))}` : ""].filter(Boolean).join(" | ")}`)).join(" ");
@@ -104,13 +99,13 @@ export function versionData(c, v, resolve = s => s) {
       const dmg = isDamage(d) ? d : "", text = isDamage(d) ? x : cell.trim();
       const r = parseTierFull(tierTokens(dmg, weaponAction, i + 1));
       out[`t${i + 1}`] = r.insts;
-      out[`x${i + 1}`] = resolve(fxText(text, appendOf(v, `x${i + 1}`), kinds));
+      out[`x${i + 1}`] = resolve(fxText(text, appendOf(v, `x${i + 1}`)));
     });
   }
   // v0.0.334 (Lucas, Rebuke and Skirmish Shot): a Tier's Foundry text written in full (foundry.x1 / x2 / x3), as it is: no buttons made from it
   // (what it does runs by itself after the damage: the Version's foundry.after chain and its Effects by Tier)
   for (const n of [1, 2, 3]) if (typeof v.foundry?.[`x${n}`] === "string") out[`x${n}`] = resolve(v.foundry[`x${n}`]);
-  if (v.critical) out.critical = resolve(fxText(v.critical, appendOf(v, "critical"), kinds));
+  if (v.critical) out.critical = resolve(fxText(v.critical, appendOf(v, "critical")));
   if (typeof v.foundry?.critical === "string") out.critical = resolve(v.foundry.critical);   // v0.0.338: the Critical's Foundry text as it is (its effect runs after the damage)
   if (v.mode) out.mode = v.mode;
   if (v.foundry?.areaSize) out.areaSize = v.foundry.areaSize;

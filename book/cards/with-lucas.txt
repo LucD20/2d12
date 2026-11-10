@@ -18,10 +18,9 @@ until Lucas revises it (then Mithril again). Each one, with what changed:
   ("Pushed 2, and Frightened of you for 1 round." / "Pushed 1."); after the damage is applied and lands, the chain pushes (2 on the target's Tier 1,
   1 on its Tier 2) and gives Frightened of the Paladin for 1 round on a Tier 1 (the row Lucas called "Tier 3": the Paladin's best result).
 
-- v0.0.340 (Lucas: "let me see how it looks with the buttons aware"; v0.0.339 had made them words): a button the Version's "After the
-  damage" chain also does stays a button, and shows the chain's state: dimmed and waiting until the damage is applied, "✓" once the chain did it
-  (a click does it again by hand), a plain button when the damage didn't land. Same automation, a new look for: Word of Radiance (the Pushes,
-  Prone), Bulwark of Faith (Guard, Slid), Shield of Faith (the reduction), Miraculous Recovery (the heal), Hallowed Dawn (the heal, the Pushes),
-  Smite 3 AP (the Guard, the Push), Rebuke (the Push, Frightened), Skirmish Shot (the Evade; the book's lowercase "you can"), Heartseeker and
-  Marksman's Shot (Vulnerable, Blinded).
+- v0.0.341 (Lucas: "the buttons aware isn't necessary, just make buttons normally"; v0.0.339 had made them words, v0.0.340 state-aware buttons):
+  the Tier, Critical and Effects text keep their normal buttons, and the "After the damage" chain still does the same thing by itself. Back to
+  exactly their Mithril text, Mithril again: Word of Radiance, Bulwark of Faith, Shield of Faith, Miraculous Recovery, Hallowed Dawn, Smite.
+  Diamond (their text has buttons now where their Mithril version had words, v0.0.334 to v0.0.338): Rebuke (Pushed 2 / 1, Frightened),
+  Skirmish Shot ("you can [Evade 1]"), Heartseeker ([Vulnerable 1 (EoT)]), Marksman's Shot ([Vulnerable 2 (EoT)], "The target is [Blinded (EoT)]").
 - Open Season (v0.0.339, the review's section 6): Vulnerable 2 on the Quarry for 1 round is the card's Apply step (its chain), no longer by hand.
