@@ -15,24 +15,6 @@ import { itemInfo } from "./classwindow.mjs";
 import { openLevelsEditor } from "./classeditor.mjs";
 import { prereqText, prereqLine } from "./talents.mjs";
 const { HandlebarsApplicationMixin } = foundry.applications.api;
-/** v0.0.327 (PACK ZONE): the Actions that apply an Effect (its uuid in a Version's effects), the first one's card lines, cached: { name, cost, freq, area, dist, more }. */
-const placing = new Map();
-async function actionPlacing(uuid) {
-  if (!uuid) return null;
-  if (placing.has(uuid)) return placing.get(uuid);
-  const hits = [];
-  const uses = a => (a?.system?.versions ?? []).some(v => Object.values(v.fx ?? {}).some(l => (l ?? []).some(x => x?.uuid === uuid)));
-  for (const a of game.items ?? []) if (a.type === "action" && uses(a)) hits.push(a);
-  for (const pack of game.packs ?? []) {
-    if (pack.documentName !== "Item" || hits.length) continue;
-    try { for (const d of await pack.getDocuments({ type: "action" })) if (uses(d)) hits.push(d); } catch (e) { /* not readable */ }
-  }
-  const a = hits[0], sy = a?.system ?? {};
-  const aps = [...new Set((sy.versions ?? []).map(v => Number(v.ap) || 0))].sort((x, y) => x - y);
-  const info = a ? { name: a.name, cost: aps.length ? `${aps.join("/")}${sy.reaction ? "R" : " AP"}` : "", freq: TWOD12.frequencies?.[sy.frequency] ?? "", area: String(sy.area ?? "").trim(), dist: String(sy.areaDistance ?? "").trim() || (/^\d+$/.test(String(sy.distance ?? "")) ? `${sy.distance} sq.` : String(sy.distance ?? "")), more: hits.length - 1 } : null;
-  placing.set(uuid, info);
-  return info;
-}
 const { ItemSheetV2 } = foundry.applications.sheets;
 
 export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
@@ -346,7 +328,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     const extra = this._fxExtra?.() ?? {};
     this._fr ??= { sel: "", own: false, names: {} };
     const onMap = host === "effect" && s.where === "map";
-    const zoneAction = onMap ? await actionPlacing(it.getFlag?.("twod12", "effectUuid") || it.getFlag?.("core", "sourceId") || it._stats?.compendiumSource || it.uuid) : null;
+    const zoneAction = onMap ? await (await import("./zone.mjs")).actionPlacing(it.getFlag?.("twod12", "effectUuid") || it.getFlag?.("core", "sourceId") || it._stats?.compendiumSource || it.uuid) : null;
     this._fr.zoneAction = zoneAction;   // v0.0.327: a save writes the Action's Area line into the hover text (v0.0.328: after it is declared; before, every rules window failed to open)
     return fxTabHtml({
       where: onMap ? "map" : "creature", zone, zoneAction, canPlace: onMap && !!canvas?.ready && game.user.isGM,
@@ -360,12 +342,8 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
   /** v0.0.327 (PACK ZONE): "Place on the map" (Set here): the existing area placement with the Zone's shape and size, kept as this Zone; the origin is the
    *  selected token's creature (else the GM's character); ⌖ Change on the placed Zone's card can change it later. */
   async placeZone() {
-    const s = this.item.system, R = await import("./fxrules.mjs"), z = R.normZone(s.zone);
-    const tok = canvas?.tokens?.controlled?.[0] ?? null, vals = R.refValues(tok?.actor ?? null);
-    const size = Math.max(1, Math.trunc(Number(R.evalFormula(z.size, { origin: vals, target: vals }).value) || 1));
-    const ends = R.normEnds(s.ends), rounds = ends.time.on && ends.time.mode === "rounds" ? ends.time.rounds : 0;
-    const { zoneFromItem } = await import("./zone.mjs"), { startTemplate } = await import("./template.mjs");
-    await startTemplate({ shape: z.shape, distance: size, quick: true, places: true, rounds, targets: "all", zone: zoneFromItem(this.item), source: this.item.name });
+    const { placeZoneItem } = await import("./zone.mjs");
+    await placeZoneItem(this.item);   // v0.0.329: shared with dropping the Effect on the map
   }
 
   _passiveContext() {

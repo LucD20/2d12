@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-10 from the repository at: 1dce5c0 2026-11-10 PACK ZONE (v0.0.327): an Effect placed on the map, the shared inside rows with their own Who (Carries, Heals, Hazard, Difficult Terrain), the Zone's Ends, the old Zone and Aura migrated, the areafx runtime; t225
+Built by tools/knowledge.py on 2026-11-10 from the repository at: 1963000 2026-11-10 v0.0.328: fix the rules tab (every Effect, Feature and Talent window failed to open: zoneAction read before it was declared); t226 renders every rules tab
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

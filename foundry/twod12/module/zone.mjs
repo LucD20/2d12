@@ -3,12 +3,56 @@
 // turns). The settings go on the region the Action keeps on the map (flags.twod12.zone: name, rules, cells, originUuid, originDisposition);
 // the creatures inside get the Effect (flag zoneFrom), lose it when they leave or the area ends; the region's rounds count down like an effect's.
 import { tokenCells } from "./template.mjs";
+import { TWOD12 } from "./config.mjs";
 import { normZone, normEnds, rowReaches } from "./fxrules.mjs";
 import { zoneRows } from "./fxrules.mjs";
 const F = "twod12";
 const key = c => `${c.i},${c.j}`;
 let timer = null, running = false, again = false;
 const landing = new Map();   // v0.0.270 (Lucas: the Bane stayed after moving out): where a moving token ends (the movement's destination), read on the next refresh
+
+/** v0.0.327 (PACK ZONE): the Actions that apply an Effect (its uuid in a Version's effects), the first one's card lines, cached: { name, cost, freq, area, dist, more }. */
+const placing = new Map();
+export async function actionPlacing(uuid) {
+  if (!uuid) return null;
+  if (placing.has(uuid)) return placing.get(uuid);
+  const hits = [];
+  const uses = a => (a?.system?.versions ?? []).some(v => Object.values(v.fx ?? {}).some(l => (l ?? []).some(x => x?.uuid === uuid)));
+  for (const a of game.items ?? []) if (a.type === "action" && uses(a)) hits.push(a);
+  for (const pack of game.packs ?? []) {
+    if (pack.documentName !== "Item" || hits.length) continue;
+    try { for (const d of await pack.getDocuments({ type: "action" })) if (uses(d)) hits.push(d); } catch (e) { /* not readable */ }
+  }
+  const a = hits[0], sy = a?.system ?? {};
+  const aps = [...new Set((sy.versions ?? []).map(v => Number(v.ap) || 0))].sort((x, y) => x - y);
+  const info = a ? { name: a.name, cost: aps.length ? `${aps.join("/")}${sy.reaction ? "R" : " AP"}` : "", freq: TWOD12.frequencies?.[sy.frequency] ?? "", area: String(sy.area ?? "").trim(), dist: String(sy.areaDistance ?? "").trim() || (/^\d+$/.test(String(sy.distance ?? "")) ? `${sy.distance} sq.` : String(sy.distance ?? "")), more: hits.length - 1, doc: a } : null;
+  placing.set(uuid, info);
+  return info;
+}
+/**
+ * v0.0.329 (Lucas: "effects can't be placed on the map"): place an Effect whose Where is "On the map" (its sheet's Place on the map, or the Effect
+ * dropped on the map). From the Action: the Action's own Area (shape, its smallest size, its rounds); Set here, or no Action found: the Zone's shape
+ * and size (a formula, read with the selected token as the origin). The rounds: the Action's, else the Zone's Ends: Time. Only the GM places one.
+ */
+export async function placeZoneItem(item) {
+  if (!game.user.isGM) return ui.notifications.warn("Only the GM places a Zone by hand. A player places it with the Action that applies it (its Place Area button).");
+  const { normZone: nz, normEnds: ne, refValues, evalFormula } = await import("./fxrules.mjs");
+  const s = item.system, z = nz(s.zone), ends = ne(s.ends);
+  let shape = z.shape, size = 0, rounds = ends.time.on && ends.time.mode === "rounds" ? ends.time.rounds : 0, within = 0;
+  const act = z.src === "action" ? await actionPlacing(item.getFlag?.("twod12", "effectUuid") || item._stats?.compendiumSource || item.uuid) : null;
+  const ac = act?.doc?.system?.areaCfg;
+  if (ac?.size > 0) {
+    shape = ac.shape; within = Number(ac.within) || 0;
+    const v = [...(act.doc.system.versions ?? [])].sort((a, b) => a.ap - b.ap)[0];
+    size = Number(v?.areaSize) || ac.size; rounds = Number(v?.areaRounds) || ac.rounds || rounds;
+  } else {
+    const tok = canvas?.tokens?.controlled?.[0] ?? null, vals = refValues(tok?.actor ?? null);
+    size = Math.trunc(Number(evalFormula(z.size, { origin: vals, target: vals }).value) || 0);
+  }
+  size = Math.max(1, size || 1);
+  const { startTemplate } = await import("./template.mjs");
+  return startTemplate({ shape, distance: size, within, quick: true, places: true, rounds, targets: "all", zone: { ...zoneFromItem(item), ...(act?.area ? { area: act.area } : {}) }, source: item.name });
+}
 
 /**
  * v0.0.327 (PACK ZONE): what a Zone keeps on its Region, from its Effect ("Where it is: On the map"): its name, its rows (Carries, Heals, Hazard,
@@ -23,7 +67,7 @@ export function zoneFromItem(item) {
  *  area about to be placed: { zone, uuids } or null. Those effects are not applied to creatures: the area is them. */
 export async function zoneOf(versions) {
   const uuids = new Set(); let zone = null;
-  for (const v of versions ?? []) for (const x of v.fx?.all ?? []) {
+  for (const v of versions ?? []) for (const x of ["all", "t1", "t2", "t3"].flatMap(k => v.fx?.[k] ?? [])) {   // v0.0.329: every bucket (an Effect on a tier is a Zone too)
     if (uuids.has(x.uuid)) continue;
     let item = null; try { item = await fromUuid(x.uuid); } catch (e) { item = null; }
     if (item?.system?.where !== "map") continue;

@@ -404,6 +404,8 @@ export function registerEffectHooks() {
     if (data?.type !== "Item" || !data.uuid) return;
     const item = fromUuidSync(data.uuid);
     if (item?.type !== "effect") return;
+    // v0.0.329 (Lucas: "effects can't be placed on the map"): an Effect whose Where is "On the map" is placed as a Zone where it is dropped
+    if (item.system?.where === "map") { import("./zone.mjs").then(m => m.placeZoneItem(item)); return false; }
     const hits = canvas.tokens.placeables.filter(t => t.visible && t.bounds.contains(data.x, data.y));
     const token = hits[hits.length - 1];
     if (!token) return;

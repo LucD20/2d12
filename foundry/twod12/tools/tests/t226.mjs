@@ -32,3 +32,15 @@ for (const d of C.docs.filter(d => ["effect", "feature", "talent"].includes(d.ty
 console.log("the rules tab renders:", Object.entries(counts).map(([k, n]) => `${k} ${n}`).join(", "), "| failures:", fails.length ? fails.join("; ") : "none");
 const cg = C.docs.find(d => d.type === "effect" && /Consecrated Ground/.test(d.name) && d.system.where === "map");
 console.log("an Effect on the map (Set here):", /<h3>The area/.test((await tab("effect", "Fire", { rules: [], ends: {}, where: "map", zone: { src: "here", shape: "emanation", size: "2" } })).html ?? ""), "| Consecrated Ground on the map:", cg ? /<h3>The area/.test((await tab("effect", cg.name, cg.system)).html ?? "") : "(not on the map in the source)");
+// v0.0.329 (Lucas: "effects can't be placed on the map"): Place on the map with no Action (From the Action reads the shape set here), and with one;
+// an Effect on a tier (t1, t2, t3) of an Action's Version is a Zone too.
+const noAct = (await tab("effect", "Trap", { rules: [], ends: {}, where: "map", zone: { src: "action", shape: "burst", size: "2" } })).html ?? "";
+console.log("From the Action, no Action: the shape set here and Place on the map:", /fr-zpv/.test(noAct) && /data-fr="placeZone"/.test(noAct) && /No Action applies this effect yet, so its area is the one below/.test(noAct));
+const V = await import(ROOTURL + "module/fxsheet.mjs");
+const withAct = V.fxTabHtml({ host: "effect", name: "CG", rules: [], where: "map", canPlace: true, zone: { src: "action" }, ends: {}, zoneAction: { name: "Consecrated Ground", area: "2 / 3 Emanation", dist: "10 sq." } });
+console.log("From the Action, with one: its card and Place on the map:", /Area: 2 \/ 3 Emanation/.test(withAct) && /data-fr="placeZone"/.test(withAct));
+globalThis.fromUuid = async u => (u === "Z" ? { name: "Fire", uuid: "Z", system: { where: "map", zone: {}, ends: {} } } : { name: "Burning", system: { where: "creature" } });
+globalThis.fromUuidSync = () => null;
+const { zoneOf } = await import(ROOTURL + "module/zone.mjs");
+const zn = await zoneOf([{ fx: { all: [{ uuid: "B" }], t1: [{ uuid: "Z" }] } }]);
+console.log("a Zone on a tier:", zn?.zone?.name, [...(zn?.uuids ?? [])].join(","));

@@ -251,16 +251,18 @@ function zoneEndsHtml(e, m) {
 function zoneHtml(zIn, m) {
   const z = R.normZone(zIn), a = m.zoneAction;
   let area = `<div class="fr-sub">Shape and size</div>${seg("zone.src", z.src, [["action", "From the Action"], ["here", "Set here"]], "w")}`;
-  if (z.src === "action") {
-    area += a ? `<div class="fr-dropped is-a"><span class="fr-dk">Action</span><b>${esc(a.name)}</b>${a.cost ? `<span class="fr-cost">${esc(a.cost)}</span>` : ""}${a.freq ? ` <span class="fr-m">· ${esc(a.freq)}</span>` : ""}<div class="fr-m2">Area: ${esc(a.area || "?")} · Distance: ${esc(String(a.dist || "?").replace(/\.$/, ""))}${a.more ? ` · and ${a.more} more Action${a.more === 1 ? "" : "s"}` : ""}. Its Place Area button keeps the area on the map.</div></div>`
-      : `<p class="fr-m">No Action applies this effect yet: put it in an Action's effects, or set the area here.</p>`;
+  // v0.0.329 (Lucas: "effects can't be placed on the map"): Place on the map with either choice; no Action found: the shape set here is used
+  const place = m.canPlace ? `<button type="button" class="fr-place" data-fr="placeZone"><i class="fa-solid fa-vector-square"></i> Place on the map</button>` : "";
+  if (z.src === "action" && a) {
+    area += `<div class="fr-dropped is-a"><span class="fr-dk">Action</span><b>${esc(a.name)}</b>${a.cost ? `<span class="fr-cost">${esc(a.cost)}</span>` : ""}${a.freq ? ` <span class="fr-m">· ${esc(a.freq)}</span>` : ""}<div class="fr-m2">Area: ${esc(a.area || "?")} · Distance: ${esc(String(a.dist || "?").replace(/\.$/, ""))}${a.more ? ` · and ${a.more} more Action${a.more === 1 ? "" : "s"}` : ""}. Its Place Area button keeps the area on the map.</div></div>` + place;
     area += help("The card's Area line is the only place the shape is written: change the card, and every Zone it places changes with it. Every area spreads from its Point of Origin (Chapter 3, Areas).");
   } else {
     const pv = R.previewCells(z.shape, z.size), N = pv.N;
+    if (z.src === "action") area += `<p class="fr-m">No Action applies this effect yet, so its area is the one below. Put it in an Action's effects for the Action's own area.</p>`;
     area += grid([["Shape", seg("zone.shape", z.shape, [["emanation", "Emanation"], ["burst", "Burst"], ["line", "Line"]], "w")], ["Size", `${text("zone.size", z.size, "2 or @origin.pow", "dice")} <span class="fr-m">${z.shape === "line" ? "squares long" : "squares"}</span>${fhelp()}`]])
       + `<div class="fr-zpv" style="--o:${esc(z.outline || "#e8a33a")};--f:${esc(z.fill || "#e8a33a")};grid-template-columns:repeat(${N},12px)">${Array.from({ length: N * N }, (_, i) => `<i class="${pv.cells.has(`${i % N},${Math.floor(i / N)}`) ? "in" : ""}${i === Math.floor(N * N / 2) ? " c" : ""}"></i>`).join("")}</div>`
-      + (m.canPlace ? `<button type="button" class="fr-place" data-fr="placeZone"><i class="fa-solid fa-vector-square"></i> Place on the map</button>` : "")
-      + help("Placed by hand (a GM's trap, a dropped effect): you draw it where you want. An Emanation stays where it is placed; for an area that follows a creature, use an Aura rule instead.");
+      + place
+      + help("Placed by hand (a GM's trap): press Place on the map, or drag the Effect onto the map, and draw it where you want. An Emanation stays where it is placed; for an area that follows a creature, use an Aura rule instead.");
   }
   return `<section class="fr-sec"><h3>The area</h3>${area}</section>
     <section class="fr-sec"><h3>What it does inside <small>shared with the Aura</small></h3>${insideHtml("zone.inside", z.inside, m, `And the origin${m.originName ? ` (${esc(m.originName)})` : ""}`, false)}</section>
