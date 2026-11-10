@@ -1,9 +1,10 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.337**. Tests: `node tools/tests/run.mjs` (228 tests, see the README; the next new test is t231). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.338**. Tests: `node tools/tests/run.mjs` (228 tests, see the README; the next new test is t231). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 ## Asked by Lucas, not built
+- [ ] **v0.0.338 (to test):** Marksman's Shot's Critical after the damage; the Critical line on the damage message. Other cards whose Critical is still a button (Deadeye's Blinded, Cut Through's Relocate...) stay by click until Lucas asks.
 - [x] **v0.0.337:** the Actions tab's empty sections (a comment cut a line off in v0.0.336): fixed.
 - [ ] **v0.0.336 (Lucas on v0.0.335, to test on v0.0.337):** the Granted Action row, the uses-left card, the Granted section out of combat, the granted uses' bar, Heartseeker and Marksman's Shot, "Blinded (EoT)", the Save table's colors, Brawler Mithril. Not tried in Foundry.
 - [x] **v0.0.335 (Lucas: "all seems good")**; was: **v0.0.335 (Lucas on v0.0.334, to test):** Opportunity Attack adjacent, Mark Quarry in the book, three Mithril cards, trait chips, the Save card's table, the Tier row click, the Forced Movement bar. Not tried in Foundry: all of it. **Left for ACTION-SHEET:** Actions holding settings, so Marked Quarry's Boon and damage move onto Mark Quarry and the Foundry-only Feature goes.

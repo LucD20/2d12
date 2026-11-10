@@ -1300,7 +1300,7 @@ export async function rollDamage(message) {
   if (!version) return ui.notifications.warn("The action or version no longer exists.");
   const weapon = f.weaponId ? actor.items.get(f.weaponId) : null;
   // One creature's damage: its tier, its bonuses, and only that creature as the target of the damage and its effects.
-  const rollFor = async (tier, bonus, targets, who) => {
+  const rollFor = async (tier, bonus, targets, who, crit = false) => {
     const insts = [...version[`t${tier}`], ...bonus.filter(b => b.dmg).map(b => ({ pool: b.pool, useW: false, wCount: 1, dice: b.dmg, useAt: false, subtype: b.sub, source: b.effect, srcUuid: b.srcUuid ?? "" }))];
     const riders = f.ridersOnDamage && version[`t${tier}`]?.some(i => i.useW || i.dice || i.useAt) ? (version.fx?.[`t${tier}`] ?? []).filter(x => x.mode === "auto").map(x => ({ ...x, rider: true })) : [];
     const fx = [...[...(tier >= 2 ? (version.fx?.all ?? []) : []), ...(version.fx?.[`t${tier}`] ?? []), ...bonus.filter(b => b.fxUuid).map(b => ({ uuid: b.fxUuid, mode: "auto" }))]
@@ -1328,6 +1328,8 @@ export async function rollDamage(message) {
     if (String(xt ?? "").trim()) riderHtml.push(await enrich(String(xt).trim(), item));
     for (const b of bonus) if (b.text) riderHtml.push(esc(b.text));
     for (const x of version.fx?.[`t${tier}`] ?? []) { try { const e = await fromUuid(x.uuid); if (e) riderHtml.push(`<span class="fxname">${esc(e.name)}</span>`); } catch (e) { /* gone */ } }
+    // v0.0.338 (Lucas: "the Critical should show on the damage chat card too"): a Critical's line under the Tier's
+    if (crit && String(version.critical ?? "").trim()) riderHtml.push(`<b class="cc-critl">Critical:</b> ${await enrich(String(version.critical).trim(), item)}`);
     return { comps, fx, chip, rolls, riders: riderHtml };
   };
   if (f.results?.length) {
@@ -1335,7 +1337,7 @@ export async function rollDamage(message) {
     const rows = [], all = [], byTier = new Map();
     for (const r of f.results) {
       if (!(r.tier >= 1)) continue;
-      if (!byTier.has(r.tier)) { const d = await rollFor(r.tier, r.bonuses ?? [], [{ uuid: r.uuid, name: r.name }], r.name); byTier.set(r.tier, d); all.push(...d.rolls); }
+      if (!byTier.has(r.tier)) { const d = await rollFor(r.tier, r.bonuses ?? [], [{ uuid: r.uuid, name: r.name }], r.name, r.tier === 3 && f.results.filter(x => x.tier === 3).every(x => x.crit)); byTier.set(r.tier, d); all.push(...d.rolls); }
       const d = byTier.get(r.tier);
       rows.push({ uuid: r.uuid, name: r.name, tier: r.tier, crit: !!r.crit, comps: d.comps.map(c => ({ ...c })), fx: d.fx });
     }
@@ -1345,7 +1347,7 @@ export async function rollDamage(message) {
       await postCcDamage({ actor, title: item.name, groups: tiers.map(t => ({ tier: t, crit: false, comps: byTier.get(t).comps, fx: byTier.get(t).fx, riders: byTier.get(t).riders })), targets: rows.map(r => ({ uuid: r.uuid, name: r.name, tier: r.tier, crit: r.crit, g: tiers.indexOf(r.tier) })), rolls: all, nl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: rows.some(r => r.tier >= 2) ? chainOf(f, version) : "", areaPoint: f.areaPoint ?? null, strike: (f.traits ?? []).includes("strike"), srcId: message.id, escalation: !!f.escalation });
     }
   } else {
-    const d = await rollFor(f.tier, f.bonuses ?? [], f.targets ?? [], "");
+    const d = await rollFor(f.tier, f.bonuses ?? [], f.targets ?? [], "", !!f.crit);
     // v0.0.246: the Version's "After the damage" chips run once the damage is applied (an Effects row: on Tier 2 or 3)
     const { postCcDamage } = await import("./ccdamage.mjs");   // v0.0.283 (pack chat-cards): the new damage message
     await postCcDamage({ actor, title: item.name, groups: [{ tier: f.tier, crit: !!f.crit, comps: d.comps, fx: d.fx, riders: d.riders }], targets: (f.targets ?? []).map(t => ({ ...t, tier: f.tier, crit: !!f.crit, g: 0 })), rolls: d.rolls, nl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: f.tier >= 2 ? chainOf(f, version) : "", areaPoint: f.areaPoint ?? null, strike: (f.traits ?? []).includes("strike"), srcId: message.id, escalation: !!f.escalation });   // v0.0.272: a Strike's damage (the "would damage an ally" moment)

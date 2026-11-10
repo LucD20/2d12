@@ -105,6 +105,7 @@ export function versionData(c, v, resolve = s => s) {
   // (what it does runs by itself after the damage: the Version's foundry.after chain and its Effects by Tier)
   for (const n of [1, 2, 3]) if (typeof v.foundry?.[`x${n}`] === "string") out[`x${n}`] = resolve(v.foundry[`x${n}`]);
   if (v.critical) out.critical = resolve(fxText(v.critical, appendOf(v, "critical")));
+  if (typeof v.foundry?.critical === "string") out.critical = resolve(v.foundry.critical);   // v0.0.338: the Critical's Foundry text as it is (its effect runs after the damage)
   if (v.mode) out.mode = v.mode;
   if (v.foundry?.areaSize) out.areaSize = v.foundry.areaSize;
   if (v.foundry?.areaRounds) out.areaRounds = v.foundry.areaRounds;   // v0.0.261 (Consecrated Ground): this version's rounds for the kept area

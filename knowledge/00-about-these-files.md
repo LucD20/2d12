@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-10 from the repository at: ec161e6 2026-11-10 v0.0.336: Granted Action row and uses-left card fixed, Granted section out of combat, a bottom bar of granted uses (Double Shot), Heartseeker and Marksman's Shot Vulnerable after the damage, Blinded (EoT) as one button, Save table colors, Brawler Mithril; t230
+Built by tools/knowledge.py on 2026-11-10 from the repository at: 71dfe98 2026-11-10 v0.0.337: fix the Actions tab (a comment had cut off the line that builds its sections); t230 guards against it
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

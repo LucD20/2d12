@@ -326,7 +326,8 @@
      "critical": "The target is Blinded (EoT).",
      "foundry": {
       "x3": "Vulnerable 2 (EoT).",
-      "after": "@Condition[vulnerable|value:2|eot|tier:3]"
+      "critical": "The target is Blinded (EoT).",
+      "after": "@Condition[vulnerable|value:2|eot|tier:3] @Condition[blinded|eot|crit:yes]"
      }
     }
    ],
