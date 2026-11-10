@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-10 from the repository at: 340d53a 2026-11-10 v0.0.329: a Zone Effect can be placed: dragged onto the map, Place on the map with either choice, or its Action on any tier
+Built by tools/knowledge.py on 2026-11-10 from the repository at: fc87b18 2026-11-10 t112: the compendium count with the two test items (Fire Patch)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
