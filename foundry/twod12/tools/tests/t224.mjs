@@ -126,3 +126,11 @@ console.log("the hover card is plain:", /<div class="fr-tip"[^>]*><b>Frightened<
 const up = V.saveUpdate(fr, { save: { on: true } }, "effect");
 console.log("one save writes:", Object.keys(up).join(", "));
 console.log("the built hover text keeps {origin} for the applied copy:", up["system.autoHover"]);
+
+console.log("--- v0.0.324 (Lucas on v0.0.323): Defense and Resist / Weak as formulas; no origin switch; the formula names at hand");
+const dF = D("value", { val: "@origin.pow" }), rF = D("value", { stat: "resist", rwSub: "Fi", rwVal: "@target.body + 1" });
+console.log(say(dF), "|", say(rF));
+console.log("compiled:", JSON.stringify(R.compile([dF, rF], {}).settings.map(x => [x.type, x.type === "resist" ? x.rwValue : x.defValue, x.valFormula])));
+console.log("read back:", JSON.stringify(R.migrate({ settings: R.compile([dF, rF], {}).settings }).rules.map(r => (r.stat === "resist" ? r.rwVal : r.val))), "| a number stays a number:", R.normRule(D("value", { stat: "resist", rwVal: "3" })).rwVal);
+const html2 = V.fxTabHtml({ host: "effect", name: "X", rules: [dF], ends: {} });
+console.log("no origin switch:", !html2.includes("@originFromUser"), "| the names list beside the formula:", html2.includes("fr-fi") && V.FORMULA_HELP.includes("@origin.<name>"), "| no light preview:", !V.fxTabHtml({ host: "effect", rules: [D("light")] }).includes("fr-lightpv"));

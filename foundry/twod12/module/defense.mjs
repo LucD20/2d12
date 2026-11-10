@@ -7,6 +7,9 @@
 import { allEffects, isBaseSource } from "./passives.mjs";
 import { effectOff, seesOrigin } from "./escalation.mjs";
 import { TWOD12 } from "./config.mjs";
+import { evalFormula, refValues } from "./fxrules.mjs";
+/** The actor an effect came from (its origin), or null. */
+const originOf = e => { try { const d = e?.origin ? globalThis.fromUuidSync?.(e.origin) : null; return d?.documentName === "Actor" ? d : d?.actor ?? null; } catch (err) { return null; } };
 
 /** Traits of the action plus mechanics found in its text (a @Move[pushed...] button makes it a "pushed" action). */
 export function actionTags(item) {
@@ -43,7 +46,8 @@ export function defenseBonus(actor, kind, tags, opts = {}) {
     for (const d of e.getFlag?.("twod12", "defenses") ?? e.flags?.twod12?.defenses ?? []) {
       if (d.kind !== kind && d.kind !== "all") continue;
       if (d.seen && !seesOrigin(actor, e)) continue;   // v0.0.323: its own "While they see the origin"
-      found.push({ name: String(e.name ?? "").replace(/\s*\(.*\)\s*$/, ""), bonus: Number(d.bonus) || 0, inc: d.mode === "inc", bb: d.mode === "bonus" ? (d.name || "") : "" });
+      const bonus = d.formula ? Math.trunc(Number(evalFormula(d.formula, { origin: refValues(originOf(e) ?? actor), target: refValues(actor) }).value) || 0) : (Number(d.bonus) || 0);   // v0.0.324: a formula
+      found.push({ name: String(e.name ?? "").replace(/\s*\(.*\)\s*$/, ""), bonus, inc: d.mode === "inc", bb: d.mode === "bonus" ? (d.name || "") : "" });
     }
   }
   // v0.0.323 (PACK EFFECT-SHEET; the book's Stacking, named bonuses): bonuses with different names add, the same name keeps the highest, an unnamed bonus

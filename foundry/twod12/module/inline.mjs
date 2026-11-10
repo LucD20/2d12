@@ -825,7 +825,7 @@ async function handleCondition(cfg, ctx = {}) {
   const condIt = await conditionItem(cfg.cond);
   if (condIt && needsOrigin(condIt.system)) {
     const user = ctx.actor ?? (f?.actorUuid ? await fromUuid(f.actorUuid) : null);
-    if (condIt.system.originFromUser && user) src = user;
+    if (user) src = user;   // v0.0.324 (Lucas: "isn't this the default?"): with an Action behind the chip, its user is the origin (the old switch is gone)
     else {
       const { askOrigin } = await import("./conditions.mjs");
       const u = await askOrigin(condIt, actors);

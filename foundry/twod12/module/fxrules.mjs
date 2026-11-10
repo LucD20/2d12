@@ -165,7 +165,7 @@ export function normRule(r) {
   } else if (kind === "value") {
     x.stat = ["defense", "speed", "rally", "resist"].includes(x.stat) ? x.stat : "defense"; x.mode = ["bonus", "inc", "set"].includes(x.mode) ? x.mode : "bonus";
     x.name = ["field", "pressure", "support"].includes(x.name) ? x.name : ""; x.which = x.which in T().defenseKinds ? x.which : "all";
-    x.vs = ["any", "origin", "marked"].includes(x.vs) ? x.vs : "any"; x.val = String(x.val ?? "0"); x.rwVal = clamp(x.rwVal, 0, 99); x.rwSub = subOk(x.rwSub);
+    x.vs = ["any", "origin", "marked"].includes(x.vs) ? x.vs : "any"; x.val = String(x.val ?? "0"); x.rwVal = isNum(x.rwVal) ? clamp(x.rwVal, 0, 99) : String(x.rwVal ?? "1").trim() || 1; x.rwSub = subOk(x.rwSub);   // v0.0.324: a number or a formula
     x.rw = ["resist", "weak", "immune"].includes(x.rw) ? x.rw : "resist"; x.rallyRange = clamp(x.rallyRange, 0, 99);
   } else if (kind === "grant") {
     x.val = clamp(x.val, 0, 20); x.uses = clamp(x.uses, 1, 20); x.ap = clamp(x.ap, 0, 4); x.bbn = clamp(x.bbn, 0, 5); x.bbk = x.bbk === "banes" ? "banes" : "boons";
@@ -231,11 +231,11 @@ export function migrate(sys, host = "effect") {
       case "ignore": add("act", { ...base, filter: filterOf(x), ign: { on: true, ...(IGN[x.ignoreRule] ?? { range: "one" }) } }); break;
       case "cover": { const lv = new Set(x.coverLevels ?? []); add("act", { ...base, filter: filterOf(x), ign: { on: true, low: lv.has("low"), medium: lv.has("medium"), high: lv.has("high") } }); break; }
       case "note": { const a = [...(x.attrs ?? [])]; add("act", { ...base, filter: { all: a.length === 1 ? a : [], any: a.length > 1 ? a : [], not: [] }, note: { on: true, title: x.title || "", text: x.text || "" } }); break; }
-      case "defense": add("value", { ...base, stat: "defense", which: x.defKind || "all", val: String(Math.trunc(Number(x.defValue)) || 0), mode: "bonus", name: x.defName || "", sees: seen }); break;
+      case "defense": add("value", { ...base, stat: "defense", which: x.defKind || "all", val: x.valFormula || String(Math.trunc(Number(x.defValue)) || 0), mode: "bonus", name: x.defName || "", sees: seen }); break;
       case "speed": add("value", { ...base, stat: "speed", val: String(x.speedFormula ?? "0"), mode: x.speedMode === "override" ? "set" : "inc", sees: seen }); break;
       case "rally": add("value", { ...base, stat: "rally", rally: migrateFormula(x.rallyBonus || "0"), rallyRange: x.rallyRange || 0 });
         if (Number(x.rallyRange) > 0) notes.push(`Rally Points for allies within ${x.rallyRange}: kept as before (not turned into an Aura)`); break;
-      case "resist": add("value", { ...base, stat: "resist", rw: x.rwKind || "resist", rwSub: x.dmgSub || "", rwVal: x.rwValue ?? 1 }); break;
+      case "resist": add("value", { ...base, stat: "resist", rw: x.rwKind || "resist", rwSub: x.dmgSub || "", rwVal: x.valFormula || (x.rwValue ?? 1) }); break;
       case "inline": add("grant", { ...base, item: x.inlineAction || "", itemName: /^(Compendium|Item|Actor)\./.test(x.inlineAction ?? "") ? "" : (x.inlineAction || ""), itemType: "action", when: "lasts", amode: "has" }); break;
       case "grant": {
         const riders = [];
@@ -278,7 +278,7 @@ export const blankSetting = type => ({ type, attrs: [], title: "", text: "", bri
   empowered: 0, enfeebled: 0, byValue: false, predicate: "", all: [], any: [], none: [], from: [], dmg: "", dmgPool: "B", dmgSub: "", tiers: ["t1", "t2", "t3"], fxUuid: "", against: false,
   speedMode: "add", speedFormula: "", grantAction: "", grantCount: 1, grantAp: 0, grantDistinct: false, halfT3: false, grantOn: "", grantDo: "half", grantText: "", halfOn: "", grantOn2: "", grantDo2: "text", grantText2: "",
   coverLevels: [], zoneWho: "allies", zoneHeal: "", inlineAction: "", defKind: "all", defValue: 1, minEscalation: 0, auraSize: 1, auraWho: "allies", auraSelf: false, auraOutline: "", auraFill: "",
-  trigSub: "", trigTag: "", oncePerRound: false, vsMarked: false, ignoreRule: "rangeBane", rallyBonus: "", rallyRange: 0, msgWhen: "encounter", msgTo: "owners", msgAction: "", msgAp: 0,
+  valFormula: "", trigSub: "", trigTag: "", oncePerRound: false, vsMarked: false, ignoreRule: "rangeBane", rallyBonus: "", rallyRange: 0, msgWhen: "encounter", msgTo: "owners", msgAction: "", msgAp: 0,
   wpWhich: "fists", wpProp: "nonthreatening", mstTrait: "projectile", mstValue: 3, hookWhen: "allyState", hookRange: 5, vsOrigin: "", bleedDc: 13, rwKind: "resist", rwValue: 1, fmWhich: "round",
   // v0.0.323: the new fields the readers learn (see each module)
   ruleId: "", spend: false, seen: false, empMode: "set", defMode: "bonus", defName: "", sizeFormula: "", trigPool: "", auraShow: true, rangeAll: false });
@@ -316,10 +316,10 @@ export function compile(rulesIn, endsIn, host = "effect") {
         break;
       }
       case "value":
-        if (r.stat === "defense") S(r, "defense", { defKind: r.which, defValue: Math.trunc(Number(r.val)) || 0, defMode: r.mode, defName: r.mode === "bonus" ? r.name : "", vsMarked: r.vs === "marked", vsOrigin: r.vs === "origin" ? "only" : "" });
+        if (r.stat === "defense") S(r, "defense", { defKind: r.which, defValue: isNum(r.val) ? Math.trunc(Number(r.val)) : 0, valFormula: isNum(r.val) ? "" : r.val, defMode: r.mode, defName: r.mode === "bonus" ? r.name : "", vsMarked: r.vs === "marked", vsOrigin: r.vs === "origin" ? "only" : "" });
         else if (r.stat === "speed") S(r, "speed", { speedMode: r.mode === "set" ? "override" : "add", speedFormula: oldFormula(r.val), defMode: r.mode, defName: r.mode === "bonus" ? r.name : "" });
         else if (r.stat === "rally") S(r, "rally", { rallyBonus: oldFormula(r.rally), rallyRange: r.rallyRange });
-        else if (r.stat === "resist" && r.rwSub) S(r, "resist", { rwKind: r.rw, dmgSub: r.rwSub, rwValue: r.rw === "immune" ? 0 : r.rwVal });
+        else if (r.stat === "resist" && r.rwSub) S(r, "resist", { rwKind: r.rw, dmgSub: r.rwSub, rwValue: r.rw === "immune" ? 0 : (isNum(r.rwVal) ? Number(r.rwVal) : 0), valFormula: r.rw !== "immune" && !isNum(r.rwVal) ? String(r.rwVal) : "" });
         break;
       case "grant": {
         const name = r.itemName || "", ref = r.item || "";
@@ -437,9 +437,9 @@ export function sentence(rIn, ctx = {}) {
     case "move": return `Can't willingly move ${r.dirm === "closer" ? "closer to" : "away from"} ⟦a:${who}⟧${r.sees ? `, while they see ⟦a:${who}⟧` : ""}.`;
     case "value": {
       if (r.stat === "rally") return `Each Rally Point heals ${formulaWords(r.rally)} more${r.rallyRange ? `, for this creature and its allies within ${r.rallyRange} squares` : ""}${esc0}.`;
-      if (r.stat === "resist") return r.rwSub ? `Has ⟦a:${r.rw === "immune" ? `Immune ${SUB(r.rwSub)}` : `${r.rw === "weak" ? "Weak" : "Resist"} ${r.rwVal} ${SUB(r.rwSub)}`}⟧${esc0}.` : "Choose a damage type below.";
+      if (r.stat === "resist") return r.rwSub ? `Has ⟦a:${r.rw === "immune" ? `Immune ${SUB(r.rwSub)}` : `${r.rw === "weak" ? "Weak" : "Resist"} ${isNum(r.rwVal) ? r.rwVal : `(${formulaWords(r.rwVal)})`} ${SUB(r.rwSub)}`}⟧${esc0}.` : "Choose a damage type below.";
       const what = r.stat === "defense" ? (r.which === "all" ? "every Defense" : ({ armor: "Armor Defense", ward: "Ward Defense" }[r.which] ?? `Defense ${T().defenseKinds[r.which]}`)) : (r.stype === "all" ? "every Speed" : `${cap(r.stype)} Speed`);
-      const amt = formulaWords(r.val), n = Number(r.val), sign = isNum(r.val) && n >= 0 ? "+" : "";
+      const amt = isNum(r.val) ? formulaWords(r.val) : `(${formulaWords(r.val)})`, n = Number(r.val), sign = !isNum(r.val) || n >= 0 ? "+" : "";
       let s = r.mode === "set" ? `${cap(what)} becomes ${amt}` : r.mode === "inc" ? `${isNum(r.val) && n < 0 ? `Decrease ${what} by ${Math.abs(n)}` : `Increase ${what} by ${amt}`}`
         : `⟦o:${sign}${amt} ${r.name ? `${cap(r.name)} ` : ""}bonus⟧ to ${what}`;
       if (r.mode === "bonus" && isNum(r.val) && n < 0) s = `⟦b:${amt} ${r.name ? `${cap(r.name)} ` : ""}penalty⟧ to ${what}`;

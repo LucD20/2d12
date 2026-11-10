@@ -19,6 +19,11 @@ const { ItemSheetV2 } = foundry.applications.sheets;
 
 export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
   _activeTab = "description";
+  // v0.0.324 (Lucas): the rules tab (Effects, Features, Talents) opens wider
+  constructor(options = {}) {
+    if (["effect", "feature", "talent"].includes(options.document?.type)) options.position = { ...(options.position ?? {}), width: 680 };
+    super(options);
+  }
   static DEFAULT_OPTIONS = {
     classes: ["twod12", "item"],
     position: { width: 560, height: 680 },

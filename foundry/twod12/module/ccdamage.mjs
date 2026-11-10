@@ -7,6 +7,7 @@ import * as CC from "./chatcards.mjs";
 import { esc } from "./util.mjs";
 import { damageOdds } from "./calc.mjs";
 import { allEffects } from "./passives.mjs";
+import { evalFormula, refValues } from "./fxrules.mjs";
 import { effectOff } from "./escalation.mjs";
 const F = "twod12", SOCKET = "system.twod12";
 
@@ -18,7 +19,14 @@ const guardOf = a => (Number(a?.system?.guard) || 0) + (Number(a?.system?.apGuar
  */
 export function dmgModsOf(a) {
   const extra = [];
-  for (const e of allEffects(a)) { if (effectOff(a, e)) continue; extra.push(...(e.getFlag?.(F, "dmgMods") ?? e.flags?.[F]?.dmgMods ?? [])); }
+  for (const e of allEffects(a)) {
+    if (effectOff(a, e)) continue;
+    for (const m of e.getFlag?.(F, "dmgMods") ?? e.flags?.[F]?.dmgMods ?? []) {
+      if (!m.formula) { extra.push(m); continue; }   // v0.0.324: a formula ("@origin.pow"): the origin's values, else the creature's own
+      let o = null; try { const d = e.origin ? fromUuidSync(e.origin) : null; o = d?.documentName === "Actor" ? d : d?.actor ?? null; } catch (err) { o = null; }
+      extra.push({ ...m, n: Math.trunc(Number(evalFormula(m.formula, { origin: refValues(o ?? a), target: refValues(a) }).value) || 0) });
+    }
+  }
   return CC.mergeDmgMods(CC.parseDmgMods(a?.system?.dmgMods ?? ""), extra);
 }
 const modsOf = dmgModsOf;

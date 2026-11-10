@@ -3924,3 +3924,6 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.sheet .fr-applied { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font-size: 12.5px; margin: 0 0 6px; }
 .twod12.sheet .fr-applied .fr-help { display: none; }
 .twod12.sheet .fr-passive > h3 { margin-bottom: 2px; }
+/* v0.0.324: a number or a formula with − / + ; the formula names' ⓘ */
+.application .fr-tab .fr-amt .fr-in.amt { width: 72px; border: 0; border-left: 1px solid var(--fr-fline); border-right: 1px solid var(--fr-fline); border-radius: 0; text-align: center; height: 22px; padding: 0 4px; }
+.application .fr-tab .fr-fi { color: var(--fr-mut); font-size: 12px; cursor: help; margin-left: 2px; }

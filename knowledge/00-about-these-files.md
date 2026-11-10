@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-10 from the repository at: f6d31de 2026-11-10 v0.0.322: the new Action card everywhere an Action is read
+Built by tools/knowledge.py on 2026-11-10 from the repository at: deb73f3 2026-11-10 v0.0.323: PACK EFFECT-SHEET, the Effect's Details tab as rules (Lucas's design)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

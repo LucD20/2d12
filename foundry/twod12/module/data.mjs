@@ -630,7 +630,8 @@ const settingsField = () => new ArrayField(new SchemaField({
         //   Empowered "Increase by" (empMode), a Defense or Speed bonus's kind and name (defMode, defName), an Aura's formula size and "Shown on the map",
         //   On damage's pool (trigPool), "All range Banes" (rangeAll)
         ruleId: str(), spend: bool(), seen: bool(), empMode: choice({ set: "Set to", inc: "Increase by" }, "set"), defMode: choice({ bonus: "A bonus", inc: "An increase", set: "Set to" }, "bonus"),
-        defName: str(), sizeFormula: str(), trigPool: str(), auraShow: bool(true), rangeAll: bool()
+        defName: str(), sizeFormula: str(), trigPool: str(), auraShow: bool(true), rangeAll: bool(),
+        valFormula: str()   // v0.0.324: a Defense's or a Resist / Weak's amount as a formula (@origin.pow...), read when it counts
       }));
 
 export class EffectData extends foundry.abstract.TypeDataModel {

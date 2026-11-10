@@ -14,6 +14,11 @@ const put = (o, path, v) => { const ks = String(path).split("."), last = ks.pop(
 // Every control names what it changes: data-f (a path in the rule, or "ends.…" / "@field" for the item), data-fr (the action).
 const seg = (f, cur, opts, cls = "") => `<span class="fr-seg ${cls}">${opts.map(([v, l]) => `<button type="button" data-fr="set" data-f="${f}" data-v="${esc(v)}" class="${String(cur) === String(v) ? "on" : ""}" aria-pressed="${String(cur) === String(v)}">${l}</button>`).join("")}</span>`;
 const step = (f, cur, min = 0, max = 5, cls = "", signed = false) => `<span class="fr-step ${cls}"><button type="button" data-fr="step" data-f="${f}" data-d="-1" data-min="${min}" data-max="${max}" aria-label="Less">−</button><span class="v">${signed && Number(cur) > 0 ? "+" : ""}${esc(cur)}</span><button type="button" data-fr="step" data-f="${f}" data-d="1" data-min="${min}" data-max="${max}" aria-label="More">+</button></span>`;
+/** v0.0.324 (Lucas): the names a formula reads, always at hand (the ⓘ beside every formula field). */
+export const FORMULA_HELP = "A number or a formula: + − × ÷, ( ), floor( ), ceil( ). @origin.<name> is the origin's value, @target.<name> the affected creature's. Names: pow (Power Modifier), wpn (Weapon Modifier), sig (Signature Modifier), body, mind, appeal, instinct (Attributes), stage. Example: @origin.pow + 2, floor(@target.body / 2).";
+const fhelp = () => `<i class="fa-solid fa-circle-info fr-fi" data-tooltip="${esc(FORMULA_HELP)}" aria-label="${esc(FORMULA_HELP)}"></i>`;
+/** A number or a formula, with − / + that change a plain number. */
+const amount = (f, cur, min, max, ph = "1") => `<span class="fr-step fr-amt"><button type="button" data-fr="step" data-f="${f}" data-d="-1" data-min="${min}" data-max="${max}" aria-label="Less">−</button>${text(f, cur, ph, "amt")}<button type="button" data-fr="step" data-f="${f}" data-d="1" data-min="${min}" data-max="${max}" aria-label="More">+</button></span>${fhelp()}`;
 const tog = (f, on, label) => `<span class="fr-tog${on ? " on" : ""}" data-fr="tog" data-f="${f}" role="switch" aria-checked="${!!on}" tabindex="0"><span class="box"></span>${label}</span>`;
 const text = (f, v, ph = "", cls = "") => `<input type="text" class="fr-in ${cls}" data-fr-in="${f}" value="${esc(v)}" placeholder="${esc(ph)}" aria-label="${esc(ph || f)}">`;
 const sel = (f, cur, opts, label = "") => `<select class="fr-sel" data-fr-in="${f}" aria-label="${esc(label || f)}">${opts.map(([v, l, dis]) => `<option value="${esc(v)}"${String(cur) === String(v) ? " selected" : ""}${dis ? " disabled" : ""}>${esc(l)}</option>`).join("")}</select>`;
@@ -69,7 +74,7 @@ function actPane(r, m) {
     parts += part("emp", r.emp.on, "Empowered and Enfeebled", R.partSummary(r, "emp"), grid([["Counts as", seg("emp.mode", r.emp.mode, [["set", "Set to"], ["inc", "Increase by"]], "w")], ["Empowered", step("emp.emp", r.emp.emp, 0, 5, "boon")], ["Enfeebled", step("emp.enf", r.emp.enf, 0, 5, "bane")]])
       + help("Set to: the highest of each counts (Stacking). Increase by: adds to the value they have for those Rolls (Vow of Enmity)."));
     parts += part("dmg", r.dmg.on, "Extra damage", R.partSummary(r, "dmg"), r.dmg.list.map((d, i) => `<div class="fr-dent">${grid([
-      ["Damage", `${text(`dmg.list.${i}.dice`, d.dice, "1d6", "dice")}${seg(`dmg.list.${i}.pool`, d.pool, [["B", "[V]"], ["M", "[R]"]])}${sel(`dmg.list.${i}.sub`, d.sub, SUBS(), "Subtype")}`],
+      ["Damage", `${text(`dmg.list.${i}.dice`, d.dice, "1d6", "dice")}${fhelp()}${seg(`dmg.list.${i}.pool`, d.pool, [["B", "[V]"], ["M", "[R]"]])}${sel(`dmg.list.${i}.sub`, d.sub, SUBS(), "Subtype")}`],
       ["On", [1, 2, 3].map(t => `<span class="fr-tog${d.tiers.includes(t) ? " on" : ""}" data-fr="tier" data-f="dmg.list.${i}.tiers" data-v="${t}" role="switch" aria-checked="${d.tiers.includes(t)}" tabindex="0"><span class="box"></span>T${t}</span>`).join("")],
       ["Then", `${dropped(m, `dmg.list.${i}.fx`, d.fx, d.fxName, "Drop an Effect the target gains (optional)", "from the Effects and Conditions compendiums")}${d.text ? `<span class="fr-m">The card adds: ${esc(d.text)}</span>` : ""}${r.dmg.list.length > 1 ? `<button type="button" class="fr-rm" data-fr="splice" data-f="dmg.list" data-i="${i}">Remove this damage</button>` : ""}`]
     ])}</div>`).join("") + `<button type="button" class="fr-addd" data-fr="push" data-f="dmg.list">+ Another damage</button>` + help("A number, dice or a formula (<code>@origin.pow</code>, <code>[Mod]</code> the Action's Modifier)."));
@@ -83,10 +88,10 @@ function actPane(r, m) {
 const DEF = () => [["all", "every Defense"], ["armor", "Armor (AD)"], ["ward", "Ward (WD)"], ["body", "Vs. Body"], ["mind", "Vs. Mind"], ["appeal", "Vs. Appeal"], ["instinct", "Vs. Instinct"]];
 function valuePane(r, m) {
   const rows = [["Changes", seg("stat", r.stat, [["defense", "Defense"], ["speed", "Speed"], ["rally", "Rally Points"], ["resist", "Resist / Weak"]], "g")]];
-  if (r.stat === "defense") rows.push(["Amount", `${isFinite(Number(r.val)) ? step("val", Number(r.val), -4, 4, "", true) : text("val", r.val, "1", "dice")} ${sel("which", r.which, DEF(), "Which Defense")}`]);
-  else if (r.stat === "speed") rows.push(["Amount", `${text("val", r.val, "2 or a formula", "dice")} ${sel("stype", r.stype, [["all", "every Speed"], ["walk", "Walk"], ["fly", "Fly (later)", true], ["climb", "Climb (later)", true], ["swim", "Swim (later)", true]], "Which Speed")}`]);
-  else if (r.stat === "rally") rows.push(["Each heals", `${text("rally", r.rally, "@origin.pow + 2", "wide")} <span class="fr-m">more</span>`], r.rallyRange ? ["Allies", `<span class="fr-m">and its allies within ${r.rallyRange} squares (kept from the old setting; an Aura carrying this effect is the new way)</span>`] : null);
-  else rows.push(["Has", `${seg("rw", r.rw, [["resist", "Resist"], ["weak", "Weak"], ["immune", "Immune"]])}${r.rw !== "immune" ? step("rwVal", r.rwVal, 1, 20) : ""} ${sel("rwSub", r.rwSub, SUBS().map(([k, v]) => [k, k ? v : "Choose a type"]), "Damage type")}`]);
+  if (r.stat === "defense") rows.push(["Amount", `${amount("val", r.val, -4, 4)} ${sel("which", r.which, DEF(), "Which Defense")}`]);
+  else if (r.stat === "speed") rows.push(["Amount", `${amount("val", r.val, -6, 6, "2")} ${sel("stype", r.stype, [["all", "every Speed"], ["walk", "Walk"], ["fly", "Fly (later)", true], ["climb", "Climb (later)", true], ["swim", "Swim (later)", true]], "Which Speed")}`]);
+  else if (r.stat === "rally") rows.push(["Each heals", `${text("rally", r.rally, "@origin.pow + 2", "wide")} <span class="fr-m">more</span>${fhelp()}`], r.rallyRange ? ["Allies", `<span class="fr-m">and its allies within ${r.rallyRange} squares (kept from the old setting; an Aura carrying this effect is the new way)</span>`] : null);
+  else rows.push(["Has", `${seg("rw", r.rw, [["resist", "Resist"], ["weak", "Weak"], ["immune", "Immune"]])}${r.rw !== "immune" ? amount("rwVal", r.rwVal, 1, 20) : ""} ${sel("rwSub", r.rwSub, SUBS().map(([k, v]) => [k, k ? v : "Choose a type"]), "Damage type")}`]);
   if (["defense", "speed"].includes(r.stat)) {
     rows.push(["Counts as", seg("mode", r.mode, r.stat === "speed" ? [["bonus", "A bonus"], ["inc", "An increase"], ["set", "Set to"]] : [["bonus", "A bonus"], ["inc", "An increase"]], "w")]);   // a Defense has no "Set to" yet
     if (r.mode === "bonus") rows.push(["Named", seg("name", r.name, NAMES, "w")]);
@@ -157,7 +162,7 @@ const ASW = [["Gold", "#e8a33a"], ["Holy", "#ffd27a"], ["Ally", "#4a8fd8"], ["En
 const colorRow = (f, v, sw) => `<span class="fr-colors"><input type="color" data-fr-in="${f}" value="${esc(/^#[0-9a-f]{6}$/i.test(v) ? v : "#e8a33a")}" aria-label="Color">${sw.map(([n, c]) => `<button type="button" class="fr-sw${v === c ? " on" : ""}" style="--c:${c}" data-fr="set" data-f="${f}" data-v="${c}" title="${n}">${n}</button>`).join("")}</span>`;
 function auraPane(r, m) {
   const fx = m.items?.[r.carry.fx]?.name || r.carry.fxName || "";
-  return grid([["Size", `<span class="fr-m">Aura</span> ${text("size", r.size, "2 or @origin.pow", "dice")} <span class="fr-m">squares</span>`], ["Affects", seg("aff", r.aff, [["allies", "Allies"], ["enemies", "Enemies"], ["all", "Everyone"]], "w")], ["", tog("self", r.self, "And this creature itself")]])
+  return grid([["Size", `<span class="fr-m">Aura</span> ${text("size", r.size, "2 or @origin.pow", "dice")} <span class="fr-m">squares</span>${fhelp()}`], ["Affects", seg("aff", r.aff, [["allies", "Allies"], ["enemies", "Enemies"], ["all", "Everyone"]], "w")], ["", tog("self", r.self, "And this creature itself")]])
     + help("Counted from every square it occupies (Chapter 3, Aura).")
     + `<div class="fr-addsh">What it does inside</div>${part("carry", r.carry.on, "Carries an Effect", fx || "(none dropped)", dropped(m, "carry.fx", r.carry.fx, r.carry.fxName, "Drop the Effect whoever is inside gains", "from the Effects and Conditions compendiums") + help("Gained on entering, lost on leaving. The dropped effect keeps its own rules."))}`
     + `<div class="fr-addsh">On the map</div>${part("show", r.show, "Shown on the map", "outline and squares", grid([["Outline", colorRow("outline", r.outline, ASW)], ["Squares", colorRow("fill", r.fill, ASW)]]) + `<div class="fr-aurapv" style="--o:${esc(r.outline || "#e8a33a")};--f:${esc(r.fill || "#e8a33a")};--n:${Math.min(4, Math.max(1, Number(r.size) || 2))}"><span class="tok">Y</span></div>`, "show")}`;
@@ -168,8 +173,7 @@ function lightPane(r, m) {
   return grid([["Bright", `${step("bright", r.bright, 0, 12)} <span class="fr-m">squares</span>`], ["Dim", `${step("dim", r.dim, 0, 12)} <span class="fr-m">squares beyond the Bright light</span>`], ["Color", colorRow("color", r.color, SWL)],
     ["Intensity", `<input type="range" min="0" max="1" step="0.05" data-fr-in="alpha" value="${r.alpha}" aria-label="Intensity"> <span class="fr-m">${r.alpha}</span>`],
     ["Animation", `${sel("anim", r.anim, anims, "Animation")}${r.anim ? ` <span class="fr-m">speed</span>${step("aspeed", r.aspeed, 1, 10)}<span class="fr-m">strength</span>${step("aint", r.aint, 1, 10)}` : ""}`]])
-    + help("The Bright and Dim light follow the book's Light rules (Obscured, the Hide penalty); color and animation are only the look.")
-    + `<div class="fr-lightpv" style="--c:${esc(r.color)};--a:${r.alpha};--b:${r.bright};--d:${r.dim}"><span class="tok">Y</span></div>`;
+    + help("The Bright and Dim light follow the book's Light rules (Obscured, the Hide penalty); color and animation are only the look.");   // v0.0.324: no preview (Lucas)
 }
 const movePane = (r, m) => grid([["Can't move", seg("dirm", r.dirm, [["closer", "closer to"], ["away", "away from"]], "w")], ["Only", tog("sees", r.sees, "While they see the origin")], ["Origin", originChip(m, "origin", r.origin)]])
   + help("It blocks a willing Move that ends nearer to (or farther from) the origin than it started; Forced Movement is not willing (Frightened, Chapter 8).");
@@ -237,8 +241,8 @@ export function fxTabHtml(m) {
   const advSec = `<details class="fr-adv"><summary>Advanced</summary>${grid([["Kind", tog("@isCondition", d.isCondition, "A condition (a named state of the book)")], d.isCondition ? ["", tog("@valued", d.valued, "It has a value (like Empowered 2)")] : null,
     ["Placed on", seg("@selfApplied", String(!!d.selfApplied), [["false", "the target"], ["true", "the creature that used the Action"]], "w")]])}
     ${help("These are the effect's own fields, as before. The JSON tab shows everything.")}</details>`;
-  const headSw = `<p class="fr-ofu">${tog("@originFromUser", d.originFromUser, "Origin: the creature that used the Action")} <span class="fr-help-in">(off, or with no Action behind it: it asks, click a token)</span></p>`;
-  return `<div class="fr-tab${m.help ? " fr-helpon" : ""}" data-host="effect">${headSw}${tip}${what}${endsSec}${autoSec}${advSec}</div>`;
+  // v0.0.324 (Lucas): no "Origin: the creature that used the Action" switch: with an Action behind it, the origin is always its user; without one, it asks
+  return `<div class="fr-tab${m.help ? " fr-helpon" : ""}" data-host="effect">${tip}${what}${endsSec}${autoSec}${advSec}</div>`;
 }
 
 /* ------------------------------------------------------------------ the events */
@@ -321,7 +325,11 @@ export function wireFxTab(sheet, root) {
     if (a === "origin") return pickOrigin(f === "@origin" ? null : f);
     if (a === "set") return change(f, cur => asType(cur, b.dataset.v));
     if (a === "tog") return change(f, cur => !cur);
-    if (a === "step") return change(f, cur => Math.max(Number(b.dataset.min), Math.min(Number(b.dataset.max), (Number(cur) || 0) + Number(b.dataset.d))));
+    if (a === "step") return change(f, cur => {
+      if (typeof cur === "string" && cur.trim() && !/^\s*[+-]?\d+\s*$/.test(cur)) return cur;   // a formula: − / + leave it as it is
+      const v = Math.max(Number(b.dataset.min), Math.min(Number(b.dataset.max), (Number(cur) || 0) + Number(b.dataset.d)));
+      return typeof cur === "string" ? String(v) : v;
+    });
     if (a === "tier") return change(f, cur => { const t = Number(b.dataset.v), l = [...(cur ?? [])]; return (l.includes(t) ? l.filter(x => x !== t) : [...l, t]).sort(); });
     if (a === "untrait") return change(f, cur => (cur ?? []).filter(k => k !== b.dataset.v));
     if (a === "push") return change(f, cur => [...(cur ?? []), f.endsWith("riders") ? { tiers: [3], does: "text", text: "", crit: false } : { dice: "1d4", pool: "B", sub: "", tiers: [1, 2, 3], fx: "", text: "" }]);

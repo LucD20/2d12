@@ -90,3 +90,8 @@ each kind has a pane: true | Ends rows: 4 | a Passive has Works and no Ends: tru
 the hover card is plain: true | the pane's sentence is colored: true
 one save writes: system.rules, system.rulesOn, system.settings, system.autoHover, system.ends, system.conditions, system.linked, system.duration, system.expireOn, system.expireAll, system.endsWithOrigin, system.whileSeen, system.noReactions, system.loseAp, system.saveEnd
 the built hover text keeps {origin} for the applied copy: While they see {origin}: 1 Bane on their Rolls and they can't willingly move closer to it. Lasts until a Body Save (DC 13) at the end of their turn ends it.
+--- v0.0.324 (Lucas on v0.0.323): Defense and Resist / Weak as formulas; no origin switch; the formula names at hand
++(the origin's Power Modifier) bonus to every Defense. | Has Resist (the target's Body + 1) Fire.
+compiled: [["defense",0,"@origin.pow"],["resist",0,"@target.body + 1"]]
+read back: ["@origin.pow","@target.body + 1"] | a number stays a number: 3
+no origin switch: true | the names list beside the formula: true | no light preview: true
