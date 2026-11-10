@@ -175,8 +175,53 @@ export async function zoneEndClick(button) {
   await ChatMessage.create({ content: sysLine("fa-hand", `<b>${esc(tok?.name ?? game.user.name)}</b> ends <b>${esc(z.name ?? "the Zone")}</b>${ap && c ? ` (${ap} AP)` : ""}.`) });
 }
 
+/* ------------------------------------------------------------------ editing a placed Zone */
+/** v0.0.330 (Lucas: "double clicking on the region should allow to edit the effects"): what an Effect's edit changes on a Zone already placed:
+ *  its rows, Ends (the rounds it was given stay), colors and names; its squares, origin and Action's Area stay. Pure. */
+export function zoneEdited(old, now) {
+  const ends = { ...(now.ends ?? {}), ...(old?.ends?.time ? { time: old.ends.time } : {}) };
+  return { ...old, ...now, ends, cells: old?.cells ?? [], originUuid: old?.originUuid ?? "", originDisposition: old?.originDisposition ?? 1, ...(old?.area ? { area: old.area } : {}) };
+}
+/** Double-clicking a Zone (or opening its Region's window) opens its Effect instead; Shift keeps Foundry's Region window. An Effect in a compendium
+ *  (locked) is copied into the world's Items first and the Zone points at the copy; a Zone whose Effect is gone gets a new one from what it holds. */
+export async function openZoneEffect(region) {
+  const z = region?.getFlag?.(F, "zone");
+  if (!z || !game.user.isGM) return false;
+  let item = null;
+  try { item = z.effectUuid ? await fromUuid(z.effectUuid) : null; } catch (e) { item = null; }
+  if (item?.pack) {
+    const pack = game.packs.get(item.pack);
+    item = game.items.find(i => i.getFlag?.(F, "effectUuid") === item.uuid) ?? await game.items.importFromCompendium(pack, item.id, { flags: { twod12: { effectUuid: item.uuid } } }, { keepId: false });
+  }
+  if (!item) item = await Item.create({ name: z.name ?? "Zone", type: "effect", img: "icons/svg/fire.svg", system: { where: "map", zone: { src: "here", inside: zoneRows(z), show: z.show !== false, outline: z.outline ?? "", fill: z.fill ?? "" }, ends: z.ends ?? {} } });
+  if (!item) return false;
+  if (z.effectUuid !== item.uuid) await region.setFlag(F, "zone", { ...z, effectUuid: item.uuid });
+  item.sheet.render(true);
+  return true;
+}
+/** An Effect saved: every Zone placed from it (in every scene) takes the new rows, Ends, colors and "Shown on the map". */
+async function zonesFollow(item) {
+  if (!game.user.isActiveGM || item?.type !== "effect" || item.system?.where !== "map") return;
+  const { zoneFromItem } = await import("./zone.mjs");
+  const now = zoneFromItem(item);
+  for (const scene of game.scenes ?? []) for (const r of scene.regions ?? []) {
+    const old = r.getFlag?.(F, "zone");
+    if (!old || old.effectUuid !== item.uuid) continue;
+    const z = zoneEdited(old, { ...now, effectUuid: item.uuid });
+    await r.update({ [`flags.${F}.zone`]: z, ...(z.outline || z.fill ? { color: z.outline || z.fill } : {}), visibility: z.show === false ? (CONST.REGION_VISIBILITY?.LAYER ?? 0) : (CONST.REGION_VISIBILITY?.ALWAYS ?? 2) });
+  }
+}
+
 /* ------------------------------------------------------------------ hooks */
 export function registerAreaHooks() {
+  Hooks.on("updateItem", item => { zonesFollow(item).catch(e => console.warn("twod12 | Zone edit", e)); });
+  // the Region's window (double-click, the Regions list): a Zone opens its Effect; with Shift, Foundry's window
+  Hooks.on("renderRegionConfig", app => {
+    const region = app?.document;
+    if (!region?.getFlag?.(F, "zone") || game.keyboard?.isModifierActive?.("Shift")) return;
+    app.close?.({ animate: false });
+    openZoneEffect(region).catch(e => console.warn("twod12 | Zone effect", e));
+  });
   const fresh = () => forgetAreas();
   for (const h of ["createRegion", "deleteRegion", "updateRegion", "createActiveEffect", "deleteActiveEffect", "updateActiveEffect", "canvasReady", "createToken", "deleteToken"]) Hooks.on(h, fresh);
   Hooks.on("updateToken", (doc, ch) => { if ("x" in (ch ?? {}) || "y" in (ch ?? {})) fresh(); });

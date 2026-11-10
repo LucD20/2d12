@@ -319,6 +319,14 @@ add("actions", "action", "Divine Retribution", "icons/svg/sword.svg", { category
 const PE = "Paladin Escalation";
 add("actions", "action", "Call to Arms", "icons/svg/angel.svg", { category: PE, level: 1, traits: ["divine"], frequency: "round", escalation: 1, targets: "One Down ally", distance: "3", versions: [noRoll(0, "The ally can use 1 Rally Point.")] }, "Paladin");
 add("actions", "action", "Judgment", "icons/svg/sword.svg", { category: PE, level: 1, traits: ["divine", "magic"], frequency: "round", escalation: 2, targets: "One enemy", distance: "reach", versions: [vt(1, [["", "No effect."], ["2d6MH", "Hindered (EoT)"], ["2d8MH", "Hindered (EoT)"]])] }, "Paladin");
+// v0.0.330 (Lucas: "create one yourself for testing purposes"): a test Action whose area deals damage, through a Zone (an Effect placed on the map).
+// Not a book card: the "Testing" folder. The Effect's Hazard [HT] deals [V] 1d6 Fire to everyone who enters, the origin too; it lasts 3 rounds.
+add("effects", "effect", "Fire Patch (test Zone)", "icons/svg/fire.svg", { description: "<p>Burning ground: a creature that enters it takes [V] 1d6 Fire (at most once per turn-cycle). Lasts 3 rounds. A test Zone.</p>",
+  where: "map", zone: { src: "action", inside: { carry: { on: false }, ht: { on: true, who: "all", self: true, entering: true, turn: false, movement: false, list: [{ dice: "1d6", pool: "B", sub: "Fi" }] } }, show: true, outline: "#e8582a", fill: "#e8582a" },
+  ends: { time: { on: true, mode: "rounds", rounds: 3 } } }, "Testing");
+add("actions", "action", "Fire Patch (test)", "icons/svg/fire.svg", { category: "Testing", level: 0, traits: ["area"], frequency: "atwill", targets: "The squares of the Area", flavor: "The ground catches, and it does not go out.",
+  areaCfg: { size: 1, shape: "emanation", within: 5, targets: "all", center: false, keep: true, rounds: 3 },
+  versions: [noRoll(1, "You set the ground on fire for 3 rounds. A creature that enters it takes [V] 1d6 Fire (once per turn-cycle).", [uuidOf("effects", "Fire Patch (test Zone)")])] }, "Testing");
 add("actions", "action", "Sanctified Ground", "icons/svg/aura.svg", { category: PE, level: 1, traits: ["divine", "area"], frequency: "round", escalation: 2, targets: "All creatures in the Area", areaCfg: { size: 1, shape: "emanation", within: 5, targets: "all", center: false, keep: true, rounds: 2 }, versions: [noRoll(1, "You fill the Emanation with Holy light for 2 rounds. Enemies in it take 1 Bane on [Strike] Actions.")] }, "Paladin");
 
 add("effects", "effect", "Hunter's Focus", "icons/svg/eye.svg", { selfApplied: true, duration: dur(""), description: "<p>For the rest of the encounter, against your Marked Quarry: you gain 1 Boon and Empowered 1, and you take less damage from each of their Actions, reduced by your Signature Modifier (you choose which instance). The damage reduction is not automated.</p>", settings: [sBoon(1, P(), { vsMarked: true }), { type: "damagestep", empowered: 1, ...P(), vsMarked: true }] }, "Archer");
@@ -500,10 +508,13 @@ for (const a of [...actors, ...pcs]) for (const it of (a.items ?? [])) if (["act
   const withRules = d => {
     if (!["effect", "feature", "talent"].includes(d.type)) return;
     const sys = (d.system ??= {});
+    const ends0 = sys.ends;
     const m = FX.migrate(sys, d.type);
     sys.rules = m.rules; sys.rulesOn = true;
     if (d.type === "effect") sys.ends = m.ends;
     // v0.0.327 (PACK ZONE): an old Zone (Consecrated Ground) is the effect placed on the map
+    // v0.0.330: an Effect written already on the map (Fire Patch): its Zone as written
+    if (d.type === "effect" && sys.where === "map" && sys.zone) { sys.zone = FX.normZone(sys.zone); sys.ends = FX.normEnds(ends0); const act = docs.find(a => a.type === "action" && (a.system?.versions ?? []).some(v => Object.values(v.fx ?? {}).some(l => (l ?? []).some(x => x?.uuid === uuidOf(d.pack, d.name))))); sys.autoHover = `${FX.plainText(FX.zoneSentence(sys.zone, { originName: "{origin}", names, action: act ? { area: areaOfCfg(act.system) } : null }))} ${FX.zoneEndsSentence(sys.ends, { originName: "{origin}" })}`; return; }
     const z = d.type === "effect" ? FX.liftZone({ rules: sys.rules }) : null;
     if (z?.lifted) {
       // the Action that places it: its Area line and its rounds (the Version's own rounds still win when it is placed: 5 at 3 AP)
