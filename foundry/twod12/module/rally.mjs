@@ -25,9 +25,11 @@ async function chooseHealing(actor, total, { n = 1, extraText = "" } = {}) {
  */
 export async function useRally(actor, n, why = "", { announce = true, extra = "", source = null } = {}) {
   const s = actor?.system;
-  if (!s?.rallyMax) { warn(`${actor?.name ?? "This creature"} has no Rally Points.`); return false; }
+  // v0.0.340 (Lucas; book, Rally Points: NPCs): an NPC has no Rally Points; one an Action lets it use heals its Stage's amount and spends nothing
+  const npc = actor?.type === "npc";
+  if (!npc && !s?.rallyMax) { warn(`${actor?.name ?? "This creature"} has no Rally Points.`); return false; }
   if (!actor.isOwner) { warn(`Only the owner of ${actor.name} can use its Rally Points.`); return false; }
-  if (s.rallyLeft < n) { warn(`${actor.name} has ${s.rallyLeft} Rally Point${s.rallyLeft === 1 ? "" : "s"} left and ${n} are needed.`); return false; }
+  if (!npc && s.rallyLeft < n) { warn(`${actor.name} has ${s.rallyLeft} Rally Point${s.rallyLeft === 1 ? "" : "s"} left and ${n} are needed.`); return false; }
   // v0.0.186: the "Rally Points" settings of the creature and of allies within their range (Font of Mercy: Power Modifier + 2, within 5); the highest counts.
   const fm = await rallyBonusFor(actor);
   // v0.0.250 (Lucas, Lay On Hands): an extra heal ("1d6+pow": the card's creature's Power Modifier) is rolled now and shown on the card and in the window
@@ -44,20 +46,20 @@ export async function useRally(actor, n, why = "", { announce = true, extra = ""
   const card = announce || extraRoll ? await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: rallyCard(`${sub}. Choosing the damage to remove…`), rolls: extraRoll ? [extraRoll] : [] }) : null;
   const plan = await chooseHealing(actor, total, { n, extraText });
   if (!plan) { if (card) { try { await card.update({ content: rallyCard(`${sub}. Cancelled: no Rally Point used.`) }); } catch (e) { /* not the author */ } } return false; }
-  const upd = { "system.rallyUsed": s.rallyUsed + n };
+  const upd = npc ? {} : { "system.rallyUsed": s.rallyUsed + n };
   for (const [k, v] of Object.entries(plan)) upd[`system.damage.${k}`] = s.damage[k] - v;
   await actor.update(upd);
   const healed = Object.values(plan).reduce((a, b) => a + b, 0);
   const parts = BUCKETS.filter(([k]) => plan[k]).map(([k, l]) => `${plan[k]} ${l}`).join(", ");
   const leftN = s.rallyMax - s.rallyUsed - n;
-  const result = `Removes <b>${healed}</b> damage${parts ? ` (${parts})` : ""}. <b>${leftN}</b> Rally Point${leftN === 1 ? "" : "s"} left.`;
+  const result = `Removes <b>${healed}</b> damage${parts ? ` (${parts})` : ""}. ${npc ? `An NPC: each Rally Point counts as ${s.rallyHeal} at Stage ${s.stage ?? 1} and spends nothing.` : `<b>${leftN}</b> Rally Point${leftN === 1 ? "" : "s"} left.`}`;
   if (card) { try { await card.update({ content: rallyCard(`${sub}. ${result}`) }); return true; } catch (e) { /* not the author */ } }
   await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: rallyCard(`${sub}. ${result}`) });
   return true;
 }
 
 async function askHowMany(actor, max) {
-  const left = actor.system.rallyLeft;
+  const left = actor.type === "npc" ? max : actor.system.rallyLeft;   // v0.0.340: an NPC spends none
   const top = Math.min(max, left);
   if (top <= 1) return top;
   if (!globalThis.foundry?.applications?.api?.ApplicationV2) return top;   // no windows (the tests)

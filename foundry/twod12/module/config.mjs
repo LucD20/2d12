@@ -161,6 +161,7 @@ export const TWOD12 = {
   // v0.0.320 (pack AU part 2; book, Chapter 1 Resist, Weak and Immune; Bestiary, Elite Escalation): the kinds of a Resist setting, and the extra uses
   //   a "More uses of a Frequency" setting gives (the Elite ladder's rungs 2 and 3; Special Actions: not the Basic Actions).
   rwKinds: { resist: "Resist", weak: "Weak", immune: "Immune" },
+  npcRallyHeal: [9, 13, 17],   // v0.0.340 (book, Rally Points: NPCs): what one Rally Point an NPC is given heals, Stage 1 / 2 / 3 (a PC's, the classes' average)
   freqMore: { round: "its Round Special Actions can be used twice a round", encounter: "its Encounter Special Actions can be used a second time" },
   escHookWhen: { allyState: "An ally within N squares becomes Bloodied or goes Down", markDown: "The creature it marked goes Down" },
   // v0.0.198 (Lucas, 2026-10-30): the Basic Actions section of the Actions tab, 4 groups in a 2x2 grid (row 1 Attack | Control, row 2

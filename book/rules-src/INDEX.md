@@ -7,7 +7,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 22.6 | 305 |
 | 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 27.2 | 289 |
 | 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 38.9 | 450 |
-| 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 13.7 | 254 |
+| 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 14.0 | 256 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 6.7 | 74 |
 | 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.4 | 43 |
 | 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 5.6 | 95 |
@@ -147,18 +147,18 @@ Open (to be decided) boxes: 299: "Targeting walls and objects (and the Breach tr
 - 59:   ### Dominant Damage
 - 68: ## Wounds and the Tables
 - 91: ## Rally Points
-- 107: ## Guard
-- 120: ## Recovery
-- 124:   ### Take a Breather
-- 128:   ### Sleep
-- 136:   ### Rest
-- 150: ## Health States
-- 152:   ### Bloodied
-- 156:   ### Strained
-- 165:   ### Desperate
-- 174:   ### Dying
-- 208:   ### Shattered
-- 242:   ### Unconscious
+- 109: ## Guard
+- 122: ## Recovery
+- 126:   ### Take a Breather
+- 130:   ### Sleep
+- 138:   ### Rest
+- 152: ## Health States
+- 154:   ### Bloodied
+- 158:   ### Strained
+- 167:   ### Desperate
+- 176:   ### Dying
+- 210:   ### Shattered
+- 244:   ### Unconscious
 
 Open (to be decided) boxes: 88: "The entries of the Dying and Shattered Tables are placeholders."
 

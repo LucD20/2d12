@@ -8,8 +8,8 @@ the meta line: true
 Tier and Critical names are buttons for the GM: true | 4 = a Critical (Tier 3 and its line): true
 --- Save Actions: Effects by Tier and the chain after the damage
 the Save card carries the Version's Effects and chain: true | its damage message runs them: true
-Rebuke (mithril): ["Pushed 2, and Frightened of you for 1 round.","Pushed 1.","No effect."] | after: @Move[pushed|distance:1|t1:2] @Condition[frightened|rounds:1|tier:1]
-Skirmish Shot (diamond): ["","","you can Evade 1."] | after: @Move[evade|distance:1|tier:3]
+Rebuke (diamond): ["@Move[pushed|distance:2|chain:yes], and @Condition[frightened|rounds:1|chain:yes]{Frightened} of you for 1 round.","@Move[pushed|distance:1|chain:yes]","No effect."] | after: @Move[pushed|distance:1|t1:2] @Condition[frightened|rounds:1|tier:1]
+Skirmish Shot (diamond): ["","","you can @Move[evade|distance:1|chain:yes]."] | after: @Move[evade|distance:1|tier:3]
 --- the compendium
 Basic Actions: 20 true | Opportunity Attack (v0.0.335, Lucas: adjacent, not the squares you threaten): range 1, threat check false
 Marked Quarry: At the start of each encounter, choose one enemy as your Marked Quarry. You gain 1 Boon on [Shot, Strike] Actions against them, and those Actions deal [V] [Mod] on a Tier 1. You can only have one Marked Quarry at a time.

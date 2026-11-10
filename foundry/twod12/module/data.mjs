@@ -300,7 +300,8 @@ export class NpcData extends CharacterData {
     this.moveSpeed = applySpeedMods(this.parent, this.speed);
     // NPCs do not use the Dying and Shattered tables: at 0 HP they die with more lethal damage, or fall unconscious with more nonlethal.
     if (this.atZero) this.zeroState = this.lethal > this.nonlethal ? "Dead (more Lethal damage)" : (this.nonlethal > this.lethal ? "Unconscious (more Nonlethal damage)" : "Dead or Unconscious (the GM chooses)");
-    this.rallyHeal = 0; this.rallyMax = 0; this.rallyLeft = 0;
+    // v0.0.340 (Lucas; book, Rally Points: NPCs): no Rally Points, but one an Action lets it use (or measures with: Guard RP) is its Stage's amount
+    this.rallyHeal = TWOD12.npcRallyHeal?.[Math.max(0, Math.min(2, (this.stage || 1) - 1))] ?? 9; this.rallyMax = 0; this.rallyLeft = 0;
     // v0.0.305 (pack MOD; the Bestiary, Attributes and Modifiers): the role's two Modifiers (Minion and Grunt +2 / +1, Standard +2 / +2, Elite +3 / +2),
     // the lead one chosen (modLead; "" = the old Weapon / Power Attribute that is higher, Weapon on a tie). No Stage step; Signature: the higher.
     // v0.0.307 (Lucas): each Modifier is a rating of the role's table (npcModRatings, npcModValue).

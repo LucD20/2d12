@@ -1,0 +1,6 @@
+an area not placed, no creature: blocked? "" | the DC: 13
+a typed DC: 15 | the field in the window: true
+the roll's input gives an area the No target row (DC 13): true
+an NPC's Rally Point by Stage: 9 / 13 / 17 | the data model sets it: true | it spends nothing: true
+the book says it: true
+an Action sent to the chat is the new card: true

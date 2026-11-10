@@ -4036,3 +4036,8 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12-linebar.twod12-grantbar { bottom: 140px; gap: 8px; padding: 6px 12px; }
 .twod12-grantbar .lb-grant img.cc-gico { width: 14px; height: 14px; border: 0; vertical-align: -2px; filter: brightness(0) invert(94%) sepia(6%) saturate(400%); }
 .twod12.chat .cc-critl { color: #1d5a9e; }
+.twod12.rolldlg .rd-dcin { margin-left: auto; font-size: 12px; font-weight: 700; } .twod12.rolldlg .rd-dcin input { width: 4em; margin-left: 4px; }
+/* v0.0.340 (Lucas): a button the "After the damage" chain does: waiting (dimmed, dashed), done (a check), manual (a plain button) */
+.twod12 a.twod12-inline.chain:not(.chain-done):not(.chain-manual) { opacity: .55; border-style: dashed; cursor: default; }
+.twod12 a.twod12-inline.chain.chain-done { opacity: .85; }
+.twod12 a.twod12-inline.chain .chain-ok { color: #2b5a2f; margin-right: 2px; }

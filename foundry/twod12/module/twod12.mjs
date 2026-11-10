@@ -397,6 +397,7 @@ Hooks.once("ready", async () => {
   registerDragCopy();
   registerUsageHooks();
   registerGrantCardHooks();
+  import("./chainchips.mjs").then(m => m.registerChainChips()).catch(e => console.warn("twod12 | chain buttons", e));   // v0.0.340
   import("./noroll.mjs").then(m => m.registerNoRollHooks()).catch(e => console.warn("twod12 | non-roll cards", e));   // v0.0.294
   registerMomentHooks();   // v0.0.272 (pack RX): the movement moments
   closeStale().catch(e => console.warn("twod12 | Reactions", e));

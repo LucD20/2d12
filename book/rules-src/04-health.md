@@ -104,6 +104,8 @@ Nonlethal damage is removed like any other damage.
 
 Only a Rest restores Rally Points. Sleep does not. A new encounter does not.
 
+**NPCs.** NPCs have no Rally Points. When an Action lets an NPC use one (an ally's Lay On Hands on it) or measures something in its Rally Points (Guard equal to what one of their Rally Points heals), one of its Rally Points removes **9** damage at Stage 1, **13** at Stage 2 and **17** at Stage 3, and it spends nothing.
+
 ## Guard
 
 Some effects give you **Guard**, written with a value: **Guard 6**. When you take damage, your Guard takes it first (Vigor or Resolve damage alike), and only the rest reaches your Health. Damage your Guard takes isn't damage you take: it doesn't count toward your thresholds or your Health Pool, and it doesn't trigger anything that happens when you take damage. A [[Riders|rider]] on that damage still happens: Guard takes damage that was dealt.

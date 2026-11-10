@@ -117,7 +117,8 @@ const plus = (a, b) => bbFinish({ boons: 0, banes: 0, flat: a.flat + b.flat, fav
 /** Favored and Doomed: either one is 3d12, both together a normal roll (Ch. 1). */
 export const stateOf = (fav, doom) => (fav && doom ? "" : fav ? "favored" : doom ? "doomed" : "");
 /** The creatures still in the roll. */
-export const liveCreatures = (inp, st) => (inp.creatures ?? []).filter(c => !(st.removed ?? []).includes(c.uuid));
+export const liveCreatures = (inp, st) => (inp.creatures ?? []).filter(c => !(st.removed ?? []).includes(c.uuid))
+  .map(c => (c.uuid === "none" && Number(st.noTargetDc) > 0 ? { ...c, dc: Math.trunc(Number(st.noTargetDc)) } : c));   // v0.0.340: the DC typed for "No target"
 /** v0.0.301 (PACK BB): a tally's state and what its Boons and Banes add: 5 or more left make it Favored / Doomed instead (Ch. 1). */
 export function bbState(t) {
   const f = bbFive(t.boons, t.banes), fav = t.fav || f.five === "favored", doom = t.doom || f.five === "doomed";
@@ -207,7 +208,7 @@ export const versionOf = (inp, st) => (inp.versions ?? []).find(v => Number(v.ap
 /** Why Roll can't be pressed now ("" when it can). */
 export function blockedReason(inp, st) {
   const v = versionOf(inp, st);
-  if (inp.area && !inp.area.placed) return "Place the area first";
+  if (inp.area && !inp.area.placed && !liveCreatures(inp, st).some(c => c.uuid === "none")) return "Place the area first";   // v0.0.340: or roll against a DC
   if (v && !v.noTiers && !liveCreatures(inp, st).length && !inp.self) return "No target: target a creature";
   return "";
 }
@@ -416,7 +417,9 @@ function creaturesHtml(inp, st, v) {
   if (!live.length) return `<div class="rd-none">${inp.area && !inp.area.placed ? "Place the area to choose the creatures." : "No target. Target a creature on the map."}</div>`;
   if (!inp.multi) {
     const c = live[0], own = chipsOf(inp, st, c.uuid);
-    return `<div class="rd-cbox"><div class="rd-cname"><b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}${defBadge(c, hide)}</div>${rowsHtml(own, st, c.uuid, ROWS.filter(r => r[0] !== "passives" && r[0] !== "damage"))}${hide ? "" : ladderHtml(c.dc, crit, ladderOdds(inp, st, c, crit))}</div>`;
+    // v0.0.340: "No target" (an area with no creature, an Action rolled without one): its DC typed here (13 by default)
+    const dcIn = c.uuid === "none" ? `<label class="rd-dcin">DC <input type="number" min="1" max="40" data-field="noTargetDc" value="${Number(c.dc) || 13}" aria-label="The DC to roll against"></label>` : "";
+    return `<div class="rd-cbox"><div class="rd-cname"><b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}${dcIn || defBadge(c, hide)}</div>${rowsHtml(own, st, c.uuid, ROWS.filter(r => r[0] !== "passives" && r[0] !== "damage"))}${hide ? "" : ladderHtml(c.dc, crit, ladderOdds(inp, st, c, crit))}</div>`;
   }
   const three = anyThree(inp, st);
   return live.map(c => {

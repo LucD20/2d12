@@ -77,25 +77,12 @@ export function tierTokens(dmg, weaponAction, tier) {
 }
 
 /** The Foundry text of a book text: bold stripped, the links kept (foundryLinks), the buttons convertEffects derives, then the Foundry-only append. */
-// v0.0.339 (Lucas: "run these fixes", the review of the Mithril cards, section 1): a Version with an "After the damage" chain keeps its text plain for
-// what the chain does by itself (its chips' kinds: Move, Condition, Heal, Guard...): a button there would apply it a second time. Other chips stay.
+// v0.0.339 (the review of the Mithril cards, section 1): a Version's "After the damage" chain and the kinds of chips it runs (Move, Condition, Heal, Guard...)
 export const chainKinds = after => new Set([...String(after ?? "").matchAll(/@(\w+)\[/g)].map(m => m[1]).filter(k => !["Pause", "Book"].includes(k)));
-const MOVE_WORD = { pushed: "Pushed", pulled: "Pulled", slid: "Slid", evade: "Evade", advance: "Advance", reposition: "Reposition", charge: "Charge" };
-function chipWords(kind, args) {
-  const segs = String(args).split("|"), first = segs[0].trim(), kv = Object.fromEntries(segs.slice(1).map(x => { const i = x.indexOf(":"); return i < 0 ? [x.trim(), "yes"] : [x.slice(0, i).trim(), x.slice(i + 1).trim()]; }));
-  if (kind === "Move") return `${MOVE_WORD[first.toLowerCase()] ?? first} ${kv.distance ?? ""}`.trim();
-  if (kind === "Condition") { const nm = first.charAt(0).toUpperCase() + first.slice(1); return `${nm}${kv.value ? ` ${kv.value}` : ""}${kv.eot ? " (EoT)" : kv.rounds ? ` (${kv.rounds} round${kv.rounds === "1" ? "" : "s"})` : ""}`; }
-  return first;
-}
-export const plainChips = (text, kinds) => (kinds?.size ? String(text ?? "").replace(/@(\w+)\[((?:[^\[\]]|\[[^\[\]]*\])*)\](?:\{([^}]*)\})?/g, (m, k, a, l) => (kinds.has(k) ? (l ? (k === "Heal" ? l.replace(/^Heal\s+/i, "") : l) : chipWords(k, a)) : m)) : String(text ?? ""));
-// when every button the converter made is one the chain does, the book's own words stay (with their links); else each such button becomes its words
-const plainOrChips = (base, kinds) => {
-  const conv = convertEffects(base);
-  if (!kinds?.size) return conv;
-  const made = [...conv.matchAll(/@(\w+)\[/g)].map(m => m[1]).filter(k => !["Book", "UUID"].includes(k));
-  return made.length && made.every(k => kinds.has(k)) ? base : plainChips(conv, kinds);
-};
-const fxText = (book, append, kinds = null) => [plainOrChips(stripBold(foundryLinks(book ?? "")), kinds).replace(/^(@\w+\[[^\]]*\](?:\{[^}]*\})?)\.$/, "$1"), append ?? ""].filter(Boolean).join(" ");   // a cell that is one button keeps no final period
+// v0.0.340 (Lucas: "let me see how it looks with the buttons aware"): the chips the chain does stay buttons, marked chain:yes: the card shows them
+// waiting until the damage is applied, then done (a click does it again by hand), or a plain button when the damage didn't land (inline.mjs)
+export const markChips = (text, kinds) => (kinds?.size ? String(text ?? "").replace(/@(\w+)\[((?:[^\[\]]|\[[^\[\]]*\])*)\]/g, (m, k, a) => (kinds.has(k) && !/\|chain:/.test(a) ? `@${k}[${a}|chain:yes]` : m)) : String(text ?? ""));
+const fxText = (book, append, kinds = null) => [markChips(convertEffects(stripBold(foundryLinks(book ?? ""))), kinds).replace(/^(@\w+\[(?:[^\[\]]|\[[^\[\]]*\])*\](?:\{[^}]*\})?)\.$/, "$1"), append ?? ""].filter(Boolean).join(" ");   // a cell that is one button keeps no final period
 const appendOf = (v, key) => { const a = v.foundry?.append; if (!a) return ""; if (typeof a === "string") return key === "effects" ? a : ""; return a[key] ?? ""; };
 
 /** One Version of a card as the item's version data. */

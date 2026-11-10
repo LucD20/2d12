@@ -51,7 +51,8 @@ export async function rollDialogInput(c) {
   const size = a => { const n = Number(a?.system?.size); return n > 3 ? (["", "Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"][n] ?? "") : ""; };
   if (c.multi) creatures = c.perT.map(p => ({ uuid: p.actorUuid, name: p.label ?? p.name, size: size(p.actor), def: dcWord(p.dcInfo), dc: p.dcInfo.dc, owned: !!p.actor?.isOwner }));
   else if (c.rollsAtOthers && c.targetToken?.actor) creatures = [{ uuid: c.targetToken.actor.uuid, name: c.targetToken.name, size: size(c.targetToken.actor), def: dcWord(c.dcInfo), dc: c.dcInfo.dc, owned: !!c.targetToken.actor.isOwner, blocked: c.outOfRange || "" }];
-  else if (c.rollsAtOthers && c.areaSet) creatures = [];
+  // v0.0.340 (Lucas: "allow to roll even without target for area effects, choosing a DC (default 13)"): an area with no creature in it (or not placed) rolls against a DC
+  else if (c.rollsAtOthers && c.areaSet) creatures = [{ uuid: "none", name: c.areaOutcome?.ok ? "No creature in the area" : "No target", def: "DC", dc: c.opts.noTargetDc ?? 13, owned: true, area: true }];
   else creatures = [{ uuid: c.rollsAtOthers ? "none" : "self", name: c.rollsAtOthers ? "No target" : (c.isSelf ? "Your roll" : "No target"), def: "DC", dc: c.opts.noTargetDc ?? c.dcInfo.dc, owned: true }];
   const tgtName = uuid => creatures.find(x => x.uuid === uuid)?.name ?? "";
   const single = !c.multi ? creatures[0]?.uuid : null;

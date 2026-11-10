@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.339, 229 tests; READ THIS FIRST)
+## Where we are now (v0.0.340, 230 tests; READ THIS FIRST)
+- **v0.0.340 (2026-11-10, branch `pack-rwi`):** chain-aware buttons (11 Diamond cards for Lucas to look at), an area Action rolled against a DC, an NPC's Rally Point (book Ch. 4: 9 / 13 / 17), Send to chat as the new card. New test t232 (**the next new test is t233**). **NEXT:** Lucas looks at the buttons; then ACTION-SHEET.
 - **v0.0.339 (2026-11-10, branch `pack-rwi`): the review's fixes** (Lucas: "run these fixes, except 5"): one way per thing after the damage (book words where the chain acts), 8 Diamond cards to revise, Open Season's Vulnerable in its chain, Beacon's Step's range from its Aura. New test t231 (**the next new test is t232**). **NEXT:** Lucas revises the 8 Diamond cards and tests; then the ACTION-SHEET redesign (its UI half of the review).
 - **2026-11-10 (after v0.0.338, no new version): the review of the Mithril cards' options** for ACTION-SHEET: `foundry/mockups/action-props-review.md` (Lucas: "all should be good now"; he starts the redesign next). Heartseeker and Marksman's Shot are Mithril (compendium rebuilt).
 - **v0.0.338 (2026-11-10, branch `pack-rwi`):** Marksman's Shot's Critical (Blinded) after the damage; the damage message shows the Critical's line. **NEXT:** Lucas's test.

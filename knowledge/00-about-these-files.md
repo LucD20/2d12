@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-10 from the repository at: 5fc541e 2026-11-10 Review of the Mithril cards' options before ACTION-SHEET (foundry/mockups/action-props-review.md, in the knowledge files); Heartseeker and Marksman's Shot Mithril
+Built by tools/knowledge.py on 2026-11-10 from the repository at: eafcdd5 2026-11-10 v0.0.339: the review's fixes: book words where the After-the-damage chain acts (no double buttons, no per-card overrides; 8 cards Diamond), Open Season's Vulnerable in its chain, a Reaction an Aura brings reaches as far as the Aura, 'only a creature you threaten' hidden; t231
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -20,7 +20,7 @@ Files:
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (27 KB)
 - rules-03-movement.md (39 KB)
-- rules-04-health.md (13 KB)
+- rules-04-health.md (14 KB)
 - rules-05-characters.md (6 KB)
 - rules-06-basic-actions.md (0 KB)
 - rules-07-traits.md (5 KB)

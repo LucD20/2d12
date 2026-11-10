@@ -355,7 +355,7 @@
     }
    ],
    "foundry": {
-    "automation": "mithril",
+    "automation": "diamond",
     "img": "icons/svg/target.svg",
     "folder": "Weapon Techniques"
    }

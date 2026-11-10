@@ -18,13 +18,10 @@ until Lucas revises it (then Mithril again). Each one, with what changed:
   ("Pushed 2, and Frightened of you for 1 round." / "Pushed 1."); after the damage is applied and lands, the chain pushes (2 on the target's Tier 1,
   1 on its Tier 2) and gives Frightened of the Paladin for 1 round on a Tier 1 (the row Lucas called "Tier 3": the Paladin's best result).
 
-- v0.0.339 (Lucas: "run these fixes", foundry/mockups/action-props-review.md section 1): a Version with an "After the damage" chain keeps the
-  book's words where the chain does the thing by itself (no second button that would apply it again). Changed text, same automation:
-  - Word of Radiance: Tier 2 / 3 "Pushed 1." / "Pushed 2." and the Critical "The target is Prone." are words (the chain pushes and knocks Prone).
-  - Bulwark of Faith: "The target gains Guard equal to what one of their Rally Points heals, before the damage. After the damage, they are Slid 1." in words (the card's steps do both).
-  - Shield of Faith: "reduced by 2d6 + your Power Modifier (3d6 at Stage 2, 4d6 at Stage 3)" in words (the step sets the reduction).
-  - Miraculous Recovery: "heals twice / three times what 1 Rally Point would heal" in words (the Apply step heals and ends the effect).
-  - Hallowed Dawn: the heal and the Pushes in words; the Bright light's area button stays.
-  - Smite (3 AP): the Guard and the Push in words; the Bright light's area button stays.
-  - Skirmish Shot: its Tier 3 reads the book's "you can Evade 1." (lowercase; was "You can Evade 1.").
+- v0.0.340 (Lucas: "let me see how it looks with the buttons aware"; v0.0.339 had made them words): a button the Version's "After the
+  damage" chain also does stays a button, and shows the chain's state: dimmed and waiting until the damage is applied, "✓" once the chain did it
+  (a click does it again by hand), a plain button when the damage didn't land. Same automation, a new look for: Word of Radiance (the Pushes,
+  Prone), Bulwark of Faith (Guard, Slid), Shield of Faith (the reduction), Miraculous Recovery (the heal), Hallowed Dawn (the heal, the Pushes),
+  Smite 3 AP (the Guard, the Push), Rebuke (the Push, Frightened), Skirmish Shot (the Evade; the book's lowercase "you can"), Heartseeker and
+  Marksman's Shot (Vulnerable, Blinded).
 - Open Season (v0.0.339, the review's section 6): Vulnerable 2 on the Quarry for 1 round is the card's Apply step (its chain), no longer by hand.

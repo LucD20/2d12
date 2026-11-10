@@ -223,7 +223,7 @@
    "foundry": {
     "img": "icons/svg/sun.svg",
     "folder": "Paladin",
-    "automation": "mithril",
+    "automation": "diamond",
     "automationNote": "offered by itself in the Reactions message after an enemy within 5 squares (its Distance) makes a Strike against an ally; Use makes the Save Action against that enemy (the Save and the damage: the card; Frightened is the condition item since v0.0.314, its Bane only while the enemy sees the Paladin). Since v0.0.334 (Lucas) the Push (2 on a Tier 1, 1 on a Tier 2) and Frightened of the Paladin (a Tier 1, 1 round) come by themselves once the damage is applied and lands.",
     "moment": "strikeAgainst",
     "momentRange": 0,

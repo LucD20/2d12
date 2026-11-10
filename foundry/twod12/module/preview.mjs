@@ -239,7 +239,8 @@ export async function buildInfoCard(item) {
 /** Send an item to the chat as a card (Actions: every Version, like the Description tab). */
 export async function sendItemToChat(item, actor = null) {
   // v0.0.334 (Lucas: "sending a Feature to the chat is still sending the old card"): a Feature or a Talent goes as the new card (buildSoloCard)
-  const solo = ["feature", "talent"].includes(item.type) ? await (await import("./actioncard.mjs")).buildSoloCard(item, { actor }) : "";
+  // v0.0.340 (Lucas: "Send to chat" on an Action still sent the old card): an Action goes as the new card too
+  const solo = ["action", "feature", "talent"].includes(item.type) ? await (await import("./actioncard.mjs")).buildSoloCard(item, { actor }) : "";
   const content = solo || (item.type === "action" ? await buildRawCard(item) : (item.type === "weapon" ? await buildWeaponCard(item) : await buildInfoCard(item)));
   await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content });
 }

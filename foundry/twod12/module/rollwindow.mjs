@@ -43,7 +43,7 @@ export class RollWindow extends (ApplicationV2 ?? class {}) {
       if (!line) return;
       ev.preventDefault(); this._untarget(line.dataset.uuid);
     });
-    el.addEventListener("change", ev => { const f = ev.target.closest("[data-field]"); if (f) { this.st[f.dataset.field] = f.value; } });
+    el.addEventListener("change", ev => { const f = ev.target.closest("[data-field]"); if (f) { this.st[f.dataset.field] = f.value; if (f.dataset.field === "noTargetDc") this.render(); } });   // v0.0.340: the odds follow the typed DC
     el.addEventListener("keydown", ev => {
       if (ev.key === "Enter" && !ev.target.closest("select, textarea") && !(ev.target.closest("button") && ev.target.closest("button").dataset.act !== "roll")) { ev.preventDefault(); this._roll(); }
       else if (ev.key === "Escape") { ev.preventDefault(); ev.stopPropagation(); this.close(); }

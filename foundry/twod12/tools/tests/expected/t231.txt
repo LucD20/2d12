@@ -1,12 +1,13 @@
 the chain's kinds: Move, Condition
-chips the chain does become words, the others stay: You gain Guard 1d8 + [Mod] in a @Template[emanation|distance:2] and are Pushed 1; Vulnerable 2 (EoT). 3d6
-Rebuke x1: Pushed 2, and Frightened of you for 1 round. | no button the chain does: true
-Heartseeker x3: Vulnerable 1 (EoT). | no button the chain does: true
-Marksman's Shot critical: The target is Blinded (EoT). | no button the chain does: true
-Word of Radiance x3: Pushed 2. | no button the chain does: true
-Word of Radiance critical: The target is Prone. | no button the chain does: true
-Bulwark of Faith effects: The target gains @Book[Guard]{Guard} equal to what one of their Rally Points heals, before the damage. After the damage, they are Slid 1. | no button the chain does: true
-Open Season effects: Make a [Ranged, Shot] Weapon Attack (1A) against your @UUID[Compendium.twod12.features.Item.sU8VUHu9utwv3q0k]{Marked Quarry}. For 1 round, they are Vulnerable 2, and [Strike] Actions your allies make against them deal an extra [V] 1d6 Pi. | no button the chain does: true
+the chips the chain does are marked, the others stay: You gain @Guard[1d8+mod|chain:yes]{Guard 1d8 + [Mod]} in a @Template[emanation|distance:2] and are @Move[pushed|distance:1|chain:yes]; @Condition[vulnerable|value:2|eot|chain:yes].
+the states: {"noDamageYet":"wait","notApplied":"wait","chainRan":"done","didNotLand":"manual","nonRollWaiting":"wait","nonRollDone":"done"}
+Rebuke x1: @Move[pushed|distance:2|chain:yes], and @Condition[frightened|rounds:1|chain:yes]{Frightened} of you for 1 round. | every button the chain does is marked: true
+Heartseeker x3: @Condition[vulnerable|value:1|eot|chain:yes] | every button the chain does is marked: true
+Marksman's Shot critical: The target is @Condition[blinded|eot|chain:yes]{Blinded (EoT)}. | every button the chain does is marked: true
+Word of Radiance x3: @Move[pushed|distance:2|chain:yes] | every button the chain does is marked: true
+Word of Radiance critical: The target is @Condition[prone|chain:yes]. | every button the chain does is marked: true
+Bulwark of Faith effects: The target gains @Guard[rally|chain:yes]{Guard RP}, before the damage. After the damage, they are @Move[slid|distance:1|chain:yes]. | every button the chain does is marked: true
+Open Season effects: Make a [Ranged, Shot] Weapon Attack (1A) against your @UUID[Compendium.twod12.features.Item.sU8VUHu9utwv3q0k]{Marked Quarry}. For 1 round, they are @Condition[vulnerable|value:2|chain:yes], and [Strike] Actions your allies make against them deal an extra [V] 1d6 Pi. | every button the chain does is marked: true
 Open Season's chain: @Condition[vulnerable|value:2|rounds:1] | rank: diamond
 the per-card text overrides left (only Lock & Loose's: its Hindered is an Effect by Tier, not a chain): x2: For 1 round, the creature is Hindered un
 a Reaction an Aura brings reaches as far as the Aura: true | 'only a creature you threaten' only while on: true
