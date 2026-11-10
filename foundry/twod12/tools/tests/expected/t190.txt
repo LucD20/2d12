@@ -4,5 +4,5 @@ the confirm is a bar, you-too from the setting first, the windows aside: true
 a retarget rebuilds the Apply rows with the targets' side: true
 a chain's Condition goes to the chain's targets before the card's Self: true
 Each enemy in the Area is @Move[pushed|distance:2] away from you, is @Condition[enfeebled|value:1|rounds:1|quiet:yes] and sheds Bright light in a @Template[emanation|distance:1|rounds:1] for 1 round. @Condition[vulnerable|value:2|eot] and @Condition[hindered].
-Hallowed Dawn: you too by default: true | Enfeebled lasts the round in the chain: true | in the text chip: true
+Hallowed Dawn: you too by default: true | Enfeebled lasts the round in the chain: true | in the text chip: false
 the Mithril sheen: true | the Apply rows styled: true

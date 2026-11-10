@@ -1,6 +1,6 @@
 Overwatch: no Use button true | fx [{"uuid":"{{fx:Overwatch (Weapon Attack)}}","mode":"auto"}] | rank mithril
 Deathmark: no Use button true | fx [{"uuid":"{{fx:Deathmark (Weapon Attack)}}","mode":"down"}] | rank mithril
-Open Season: no Use button true | fx [{"uuid":"{{fx:Open Season (Weapon Attack)}}","mode":"auto"}] | rank mithril
+Open Season: no Use button true | fx [{"uuid":"{{fx:Open Season (Weapon Attack)}}","mode":"auto"}] | rank diamond
 Aim: no Use button true | fx [{"uuid":"{{fx:Aim (Weapon Attack, 1 Boon)}}","mode":"auto"}] | rank mithril
 Covering Fire: no Use button true | fx [{"uuid":"{{fx:Covering Fire}}","mode":"auto"}] | rank mithril | area kept true 3 rounds
 Overwatch's grant says its line on a Tier 2 or more: [["grant","t2","text","The target is @Condition[hindered|rounds:eot]{Hindered (EoT)"]]

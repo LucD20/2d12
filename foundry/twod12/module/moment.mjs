@@ -307,7 +307,9 @@ export async function collectReactions(ev) {
       if (ev.only && kind !== ev.only) continue;
       if (ev.filter && !ev.filter.has(`${actor.uuid}|${item.id}`)) continue;
       if (def.closer && ev.closer && !ev.closer(tk)) continue;
-      const range = Number(item.system.momentRange) || 0;
+      // v0.0.339 (the review of the Mithril cards, section 2): a Reaction an effect with an Aura brings (Beacon's Step) reaches as far as that Aura
+      const auraOf = (() => { const e = item.getFlag?.("twod12", "inlineOf") ? actor.effects?.get?.(item.getFlag("twod12", "inlineOf")) : null; return Number((e?.getFlag?.("twod12", "auras") ?? [])[0]?.size) || 0; })();
+      const range = auraOf || Number(item.system.momentRange) || 0;
       // v0.0.303 (Lucas; book, Opportunity Attack): "a creature you threaten": within your threat (your melee weapon's Range, not the adjacent squares of a Long one)
       const thr = item.system.momentThreat ? threatProfile(actor) : null;
       if (thr && thr.max <= 0) continue;

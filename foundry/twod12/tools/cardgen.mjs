@@ -77,7 +77,25 @@ export function tierTokens(dmg, weaponAction, tier) {
 }
 
 /** The Foundry text of a book text: bold stripped, the links kept (foundryLinks), the buttons convertEffects derives, then the Foundry-only append. */
-const fxText = (book, append) => [convertEffects(stripBold(foundryLinks(book ?? ""))).replace(/^(@\w+\[[^\]]*\](?:\{[^}]*\})?)\.$/, "$1"), append ?? ""].filter(Boolean).join(" ");   // a cell that is one button keeps no final period
+// v0.0.339 (Lucas: "run these fixes", the review of the Mithril cards, section 1): a Version with an "After the damage" chain keeps its text plain for
+// what the chain does by itself (its chips' kinds: Move, Condition, Heal, Guard...): a button there would apply it a second time. Other chips stay.
+export const chainKinds = after => new Set([...String(after ?? "").matchAll(/@(\w+)\[/g)].map(m => m[1]).filter(k => !["Pause", "Book"].includes(k)));
+const MOVE_WORD = { pushed: "Pushed", pulled: "Pulled", slid: "Slid", evade: "Evade", advance: "Advance", reposition: "Reposition", charge: "Charge" };
+function chipWords(kind, args) {
+  const segs = String(args).split("|"), first = segs[0].trim(), kv = Object.fromEntries(segs.slice(1).map(x => { const i = x.indexOf(":"); return i < 0 ? [x.trim(), "yes"] : [x.slice(0, i).trim(), x.slice(i + 1).trim()]; }));
+  if (kind === "Move") return `${MOVE_WORD[first.toLowerCase()] ?? first} ${kv.distance ?? ""}`.trim();
+  if (kind === "Condition") { const nm = first.charAt(0).toUpperCase() + first.slice(1); return `${nm}${kv.value ? ` ${kv.value}` : ""}${kv.eot ? " (EoT)" : kv.rounds ? ` (${kv.rounds} round${kv.rounds === "1" ? "" : "s"})` : ""}`; }
+  return first;
+}
+export const plainChips = (text, kinds) => (kinds?.size ? String(text ?? "").replace(/@(\w+)\[((?:[^\[\]]|\[[^\[\]]*\])*)\](?:\{([^}]*)\})?/g, (m, k, a, l) => (kinds.has(k) ? (l ? (k === "Heal" ? l.replace(/^Heal\s+/i, "") : l) : chipWords(k, a)) : m)) : String(text ?? ""));
+// when every button the converter made is one the chain does, the book's own words stay (with their links); else each such button becomes its words
+const plainOrChips = (base, kinds) => {
+  const conv = convertEffects(base);
+  if (!kinds?.size) return conv;
+  const made = [...conv.matchAll(/@(\w+)\[/g)].map(m => m[1]).filter(k => !["Book", "UUID"].includes(k));
+  return made.length && made.every(k => kinds.has(k)) ? base : plainChips(conv, kinds);
+};
+const fxText = (book, append, kinds = null) => [plainOrChips(stripBold(foundryLinks(book ?? "")), kinds).replace(/^(@\w+\[[^\]]*\](?:\{[^}]*\})?)\.$/, "$1"), append ?? ""].filter(Boolean).join(" ");   // a cell that is one button keeps no final period
 const appendOf = (v, key) => { const a = v.foundry?.append; if (!a) return ""; if (typeof a === "string") return key === "effects" ? a : ""; return a[key] ?? ""; };
 
 /** One Version of a card as the item's version data. */
@@ -87,7 +105,8 @@ export function versionData(c, v, resolve = s => s) {
   // v0.0.265: an entry can be { "uuid": "{{fx:X}}", "mode": "conditional" } (the damage card's Effects button applies it: Deathmark's shot when the target goes Down)
   for (const [k, list] of Object.entries(v.foundry?.fx ?? {})) fx[k] = list.map(u => (typeof u === "object" && u ? { uuid: resolve(u.uuid), mode: u.mode || "auto" } : { uuid: resolve(u), mode: "auto" }));
   // v0.0.246 (Lucas): a Version's `foundry.text` is its Foundry text written in full ("As 1 AP, but..." is the book's; Foundry says it all); `foundry.after` the chips that run after the damage.
-  const out = { ap: v.ap, noTiers: !v.tiers, t1: [], t2: [], t3: [], x1: "", x2: "", x3: "", effects: resolve(fxText(v.foundry?.text ?? v.effects, appendOf(v, "effects"))), fx };
+  const kinds = chainKinds(v.foundry?.after);   // v0.0.339
+  const out = { ap: v.ap, noTiers: !v.tiers, t1: [], t2: [], t3: [], x1: "", x2: "", x3: "", effects: resolve(fxText(v.foundry?.text ?? v.effects, appendOf(v, "effects"), kinds)), fx };
   if (v.foundry?.after) out.after = resolve(v.foundry.after);
   // v0.0.254 (Lucas): a card's inline Actions are written on its last Version's Foundry text (a link to the item and its line), so the sheet's preview shows them after "you gain the following Action:"
   if (c.inline?.length && v === (c.versions ?? [])[(c.versions ?? []).length - 1]) out.effects += " " + c.inline.map(a => resolve(`{{link:${a.name}|${a.name}}} \u2014 ${[a.cost, a.frequency, a.traits?.length ? `[${a.traits.join(", ")}]` : "", a.interrupt ? `Interrupt: ${a.interrupt}` : "", a.trigger ? `Trigger: ${a.trigger}` : "", a.target ? `Target: ${a.target}` : "", a.effects ? `Effects: ${convertEffects(stripBold(foundryLinks(a.effects)))}` : ""].filter(Boolean).join(" | ")}`)).join(" ");
@@ -98,13 +117,13 @@ export function versionData(c, v, resolve = s => s) {
       const dmg = isDamage(d) ? d : "", text = isDamage(d) ? x : cell.trim();
       const r = parseTierFull(tierTokens(dmg, weaponAction, i + 1));
       out[`t${i + 1}`] = r.insts;
-      out[`x${i + 1}`] = resolve(fxText(text, appendOf(v, `x${i + 1}`)));
+      out[`x${i + 1}`] = resolve(fxText(text, appendOf(v, `x${i + 1}`), kinds));
     });
   }
   // v0.0.334 (Lucas, Rebuke and Skirmish Shot): a Tier's Foundry text written in full (foundry.x1 / x2 / x3), as it is: no buttons made from it
   // (what it does runs by itself after the damage: the Version's foundry.after chain and its Effects by Tier)
   for (const n of [1, 2, 3]) if (typeof v.foundry?.[`x${n}`] === "string") out[`x${n}`] = resolve(v.foundry[`x${n}`]);
-  if (v.critical) out.critical = resolve(fxText(v.critical, appendOf(v, "critical")));
+  if (v.critical) out.critical = resolve(fxText(v.critical, appendOf(v, "critical"), kinds));
   if (typeof v.foundry?.critical === "string") out.critical = resolve(v.foundry.critical);   // v0.0.338: the Critical's Foundry text as it is (its effect runs after the damage)
   if (v.mode) out.mode = v.mode;
   if (v.foundry?.areaSize) out.areaSize = v.foundry.areaSize;

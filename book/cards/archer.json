@@ -325,8 +325,6 @@
      "ruler": "on 3: vulnerable 2",
      "critical": "The target is Blinded (EoT).",
      "foundry": {
-      "x3": "Vulnerable 2 (EoT).",
-      "critical": "The target is Blinded (EoT).",
       "after": "@Condition[vulnerable|value:2|eot|tier:3] @Condition[blinded|eot|crit:yes]"
      }
     }
@@ -777,7 +775,8 @@
        "all": [
         "{{fx:Open Season (Weapon Attack)}}"
        ]
-      }
+      },
+      "after": "@Condition[vulnerable|value:2|rounds:1]"
      }
     }
    ],
@@ -785,8 +784,8 @@
     "img": "icons/svg/target.svg",
     "folder": "Archer",
     "level": 1,
-    "automation": "mithril",
-    "automationNote": "the Weapon Attack as a granted use (the card's button); Vulnerable 2 on the Quarry (drop the condition by hand); the allies add [V] 1d6 Pi by hand."
+    "automation": "diamond",
+    "automationNote": "the Weapon Attack as a granted use (the card's button); Vulnerable 2 on the Quarry for 1 round with the card's Apply (its After the damage chain, v0.0.339); the allies add [V] 1d6 Pi by hand."
    },
    "distance": "Weapon"
   },

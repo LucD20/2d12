@@ -2,6 +2,8 @@
 
 2026-11-10, after v0.0.338. Lucas: "Check the details of all Mithril, see if any can be merged or if any option makes another obsolete; I will start the redesign after we make sure the props are OK."
 
+**Applied in v0.0.339 (Lucas: "run these fixes, except 5"):** section 1's data side (a Version with an "After the damage" chain keeps the book's words where the chain does the thing: no second button; the per-card text overrides removed; 8 Mithril cards became Diamond for their text), section 2 (a Reaction an Aura brings reaches as far as the Aura; "only a creature you threaten" hidden on the Action sheet unless on), section 6 (Open Season's Vulnerable 2 is its chain). **Left for the redesign:** the "After the damage" rows UI and its "Fill from the Tier text" (section 1), the area per Version on the sheet (section 3), Marked Quarry on the Action (section 5). **Section 4 was wrong** (see it).
+
 Read: every Mithril card's Foundry data (28 items: 22 Actions, 3 Effects, 2 Talents, plus Heartseeker and Marksman's Shot, Mithril since v0.0.338). Each finding: what overlaps, the cards it touches, and a recommendation for the Action sheet. **Nothing here is applied yet**, apart from Heartseeker and Marksman's Shot becoming Mithril.
 
 ## 1. The big one: three ways to say "this happens after the damage"
@@ -47,10 +49,8 @@ A Tier's effect (Pushed 2, Vulnerable 2 (EoT), Frightened, Evade 1) can live in 
 
 ## 4. Effects: the old fields stored next to the new
 
-- The three Mithril Effects (Covering Fire, Consecrated Ground, Beacon) still carry the old `settings` list in the compendium **and** the new `rules` / `zone` (the settings are compiled from the rules when read; the stored copy is never read for them).
-- **Beacon** has the old `duration` (3 rounds) **and** the new **Ends: Time** (3 rounds).
-
-**Recommendation:** the compendium writes only `rules`, `zone` and `ends`; a one-time cleanup of the world copies (or leave them: harmless). Not a sheet question.
+- The three Mithril Effects (Covering Fire, Consecrated Ground, Beacon) carry the `settings` list **and** the `rules` / `zone`; Beacon the `duration` **and** **Ends: Time**.
+- **Correction (v0.0.339):** these are not leftovers. `settings` and `duration` are the **compiled copy** the system reads when an effect works (`appliedflags.mjs` reads `settings`, `effects.mjs` reads `duration`); the sheet writes both from the rules and Ends on every save. They stay; the redesign only has to keep writing them (or move the reading onto the rules, a separate refactor).
 
 ## 5. Marked Quarry (v0.0.335)
 

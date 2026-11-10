@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-10 from the repository at: 123dcfc 2026-11-10 v0.0.338: Marksman's Shot's Critical (Blinded) applies after the damage; the damage message shows the Critical's line
+Built by tools/knowledge.py on 2026-11-10 from the repository at: 5fc541e 2026-11-10 Review of the Mithril cards' options before ACTION-SHEET (foundry/mockups/action-props-review.md, in the knowledge files); Heartseeker and Marksman's Shot Mithril
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (90 KB)
+- HANDOFF.md (91 KB)
 - MASTER-PLAN.md (23 KB)
 - open-design-items.md (96 KB)
 - rules-01-roll.md (23 KB)
@@ -40,4 +40,4 @@ Files:
 - design-base-building.md (7 KB)
 - design-roleplay-skills.md (6 KB)
 - design-items-economy.md (32 KB)
-- design-action-props-review.md (7 KB)
+- design-action-props-review.md (8 KB)
