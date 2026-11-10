@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-10 from the repository at: 01a0a68 2026-11-09 v0.0.319: every token hears in memory; Hearing written in V14's stored shape
+Built by tools/knowledge.py on 2026-11-10 from the repository at: 9c20f90 2026-11-10 HANDOFF, MASTER-PLAN: PACK AU part 1 merged (v0.0.314 to v0.0.319); next AU part 2
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,9 +14,9 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (80 KB)
-- MASTER-PLAN.md (18 KB)
-- open-design-items.md (87 KB)
+- HANDOFF.md (81 KB)
+- MASTER-PLAN.md (20 KB)
+- open-design-items.md (94 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (27 KB)
 - rules-03-movement.md (39 KB)
@@ -31,6 +31,7 @@ Files:
 - rules-14-bestiary.md (21 KB)
 - rules-15-gear.md (10 KB)
 - rules-16-talents.md (2 KB)
+- design-expedition-loop.md (12 KB)
 - design-playtest-2.md (7 KB)
 - design-playtest-3.md (4 KB)
 - design-rework-r.md (57 KB)

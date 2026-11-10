@@ -171,7 +171,7 @@ The armor a creature wears gives its **Armor value**, and its Armor Defense is *
 
 ### Armor Training
 
-Each class has an **Armor Training**: Light, Medium or Heavy. Each one includes the lighter ones (Heavy covers Medium and Light), and every creature is trained in Unarmored. The Paladin has Heavy and the Archer Light.
+Each class has an **Armor Training**: Light, Medium or Heavy. Each one includes the lighter ones (Heavy covers Medium and Light), and every creature is trained in Unarmored. The Paladin has Heavy and the Archer Medium.
 
 If you wear armor you are not trained in, **all your Rolls are Doomed**, and **Actions that roll against your Armor Defense or Ward Defense are Favored**.
 
