@@ -1,7 +1,7 @@
 // PACK SHEET (v0.0.289, Lucas's approved design: foundry/mockups/sheet-prototype.html): the data of the character sheet's new layout.
 // pcModel(sheet, ctx) reads the actor and the context the sheet already built (_sheetModel: granted tickets, conditions, effects, gear) and returns
 // the template's `pc` object. The pure rules (sections, Defenses, Save DCs, Down state...) are in sheetmodel.mjs (tests t212).
-import { TWOD12, SIZE_NAMES, effectiveFrequency, distanceText, areaText, vsText, isTalentAction, autoChip } from "./config.mjs";
+import { TWOD12, SIZE_NAMES, effectiveFrequency, distanceText, distanceNote, areaText, vsText, isTalentAction, autoChip } from "./config.mjs";
 import { combatantOf, getAP, getRAP, slowedOf, apPerTurn, quickenedOf, baseAP } from "./combat.mjs";
 import { guardPerAP } from "./guard.mjs";
 import { defenseBonus, steadinessOf } from "./defense.mjs";
@@ -141,13 +141,15 @@ export async function pcModel(sheet, ctx) {
     down.collapseOff = unconscious ? "Already Unconscious" : "";
   }
   const dom = dominantPool(s.bodyDamage, s.mindDamage);
+  // v0.0.334 (Lucas): the bar's tooltip as a list: Lethal, Nonlethal, then the clicks
+  const barTip = (name, l, n, max, note) => `<b>${name}</b> ${l + n} / ${max} · ${note}<br>Lethal: ${l}<br>Nonlethal: ${n}<br>Left click: +1 damage; Ctrl + click: +5 damage<br>Shift + click: nonlethal<br>Right click: remove damage`;
   const health = {
     pool: s.pool, toDown: toDown(s.pool, s.totalDamage), damage: s.totalDamage, down, dominant: dom, domColor: dom === "Resolve" ? "#8fb3ee" : dom === "Vigor" ? "#ef8a80" : "#c9cfda",
     bars: [
       { name: "Vigor", label: "#ef8a80", pool: "body", value: s.bodyDamage, max: s.bdt, tag: tags.bloodied ? "BLOODIED" : "", bg: "#c4453c", solid: "#c4453c", dark: "#7f2a24",
-        seg: barSegments(d.bodyLethal, d.bodyNonlethal, s.bdt), tip: `Vigor: ${d.bodyLethal} lethal, ${d.bodyNonlethal} nonlethal of ${s.bdt}. Bloodied when full. Click: +1 damage, right-click: −1 (Shift: nonlethal, Ctrl: 5).` },
+        seg: barSegments(d.bodyLethal, d.bodyNonlethal, s.bdt), tip: barTip("Vigor", d.bodyLethal, d.bodyNonlethal, s.bdt, "Bloodied when full") },
       { name: "Resolve", label: "#8fb3ee", pool: "mind", value: s.mindDamage, max: s.mdt, tag: tags.strained ? "STRAINED" : "", bg: "#3a6fc4", solid: "#5b8ad6", dark: "#3a5f99",
-        seg: barSegments(d.mindLethal, d.mindNonlethal, s.mdt), tip: `Resolve: ${d.mindLethal} lethal, ${d.mindNonlethal} nonlethal of ${s.mdt}${s.exhausted ? ` (Exhausted ${s.exhausted}: −${4 * s.exhausted})` : ""}. Strained when full. Click: +1 damage, right-click: −1 (Shift: nonlethal, Ctrl: 5).` }
+        seg: barSegments(d.mindLethal, d.mindNonlethal, s.mdt), tip: barTip("Resolve", d.mindLethal, d.mindNonlethal, s.mdt, `Strained when full${s.exhausted ? ` (Exhausted ${s.exhausted}: −${4 * s.exhausted})` : ""}`) }
     ]
   };
   const rally = { left: s.rallyLeft, max: s.rallyMax, heal: s.rallyHeal, pips: Array.from({ length: s.rallyMax }, (_, k) => k < s.rallyLeft) };
@@ -245,7 +247,7 @@ export async function pcModel(sheet, ctx) {
       id: i.id, name: i.name, sub: subs.join(" \u00b7 "), fav: favs.includes(i.id), section: sec, lines: rowLines({ frequency: effectiveFrequency(it), reaction, strike: !!it.traits?.has?.("strike") || i.getFlag(F, "basic") === "opportunityAttack" }),   // Opportunity Attack makes a Weapon Attack: a Strike
       cost: pillTxt,   // v0.0.298: costPill already writes "AP" (an NPC's read "2 AP AP")
       fc: (SHEET_FREQ[reaction ? "reaction" : sec] ?? SHEET_FREQ[effectiveFrequency(it)] ?? SHEET_FREQ.atwill).color,   // v0.0.302: this line had been joined into the comment above (v0.0.298), so the pills had no color
-      dist: area ? (String(it.areaDistance ?? "").trim() ? distanceShort(dist) : "—") : distanceShort(dist), vs: vsShort(vsText(it, { fists })), vsKind: vsKind(vsShort(vsText(it, { fists }))),   // v0.0.314: its color
+      dist: area ? (String(it.areaDistance ?? "").trim() ? distanceShort(dist) : "—") : distanceShort(dist), distTip: distanceNote(it, r.weapon), vs: vsShort(vsText(it, { fists })), vsKind: vsKind(vsShort(vsText(it, { fists }))),   // v0.0.314: its color
       off: !!why, offWhy: why, weapon: r.isWeapon && !npc, grip: handBtns?.[0]?.grip ?? "", unloaded: r.unloaded, reaction,
       grant: r.grant ? { tip: r.grant.tip } : null, handBtns: why || npc ? null : handBtns,   // v0.0.291: no Hands for NPCs (a plain Use)
       useTip: r.useTip || `Use ${i.name}`, open: r.open,   // v0.0.302: back out of the comment (lost in v0.0.291)

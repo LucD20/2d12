@@ -36,7 +36,7 @@
    "category": "Archer Feature",
    "level": 1,
    "flavor": "You pick the one, and the world narrows.",
-   "text": "At the start of each encounter, choose one enemy as your **Marked Quarry**. You gain 1 Boon on [Shot, Strike] Actions against them, and those Actions deal [V] [Mod] on a Tier 1. When they die or go Down, you can choose a new Marked Quarry (0R [Focus]). Once per turn, you can change your Marked Quarry during an encounter by spending 1 AP [Focus].",
+   "text": "At the start of each encounter, choose one enemy as your **Marked Quarry**. You gain 1 Boon on [Shot, Strike] Actions against them, and those Actions deal [V] [Mod] on a Tier 1. You can only have one Marked Quarry at a time.",
    "foundry": {
     "img": "icons/svg/target.svg",
     "automation": "gold",
@@ -787,8 +787,7 @@
    "name": "Mark Quarry",
    "category": "Marked Quarry",
    "level": 1,
-   "book": false,
-   "_note": "Foundry only (v0.0.186): the Action Marked Quarry grants to mark a creature; the book's Marked Quarry text covers it.",
+   "_note": "Foundry only from v0.0.186; in the book since v0.0.334 (Lucas: the Marked Quarry text keeps only what the mark does; this card says how you choose and change it). The Action the Marked Quarry Feature grants.",
    "flavor": "One name, one face, and the rest of the field goes quiet.",
    "traits": [
     "focus"
@@ -798,11 +797,11 @@
    "versions": [
     {
      "ap": 0,
-     "effects": "The targeted creature becomes your Marked Quarry: at the start of an encounter, or as a 0R [Focus] when yours died or went Down."
+     "effects": "The targeted creature becomes your [[Marked Quarry]]: at the start of an encounter, or as a 0R [Focus] when yours died or went Down."
     },
     {
      "ap": 1,
-     "effects": "The targeted creature becomes your Marked Quarry instead of the one you had (once per turn)."
+     "effects": "The targeted creature becomes your [[Marked Quarry]] instead of the one you had."
     }
    ],
    "foundry": {

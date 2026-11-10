@@ -85,14 +85,14 @@ export function dmgModel(s) {
  * Post a damage message. groups: [{ tier, crit, comps, fx, riders (HTML) }]; targets: [{ uuid, name, tier, crit, g (its group) }].
  * comps: [{ pool, sub, nl, total, formula, dice, kind, src, emp, label }]. The old flags (dmgCard / damage) stay for the modules that read them.
  */
-export async function postCcDamage({ actor = null, title, groups, targets = [], nl = false, originUuid = "", originMod = null, after = "", areaPoint = null, strike = false, srcId = "", rolls = [], escalation = false, note = "", noNl = false }) {   // v0.0.315: note (a short line, no ↳ box: Bleed's Save), noNl (no Lethal tag)
+export async function postCcDamage({ actor = null, title, groups, targets = [], nl = false, originUuid = "", originMod = null, after = "", areaPoint = null, strike = false, srcId = "", rolls = [], escalation = false, note = "", noNl = false, save = false }) {   // v0.0.315: note (a short line, no ↳ box: Bleed's Save), noNl (no Lethal tag)
   const rows = targets.map(t => {
     const g = Number.isInteger(t.g) ? t.g : Math.max(0, groups.findIndex(x => x.tier === t.tier));
     const p = rowPreview(groups[g]?.comps ?? [], actorOf(t.uuid));
     return { uuid: t.uuid, name: t.name, tier: t.tier ?? groups[g]?.tier ?? 0, crit: !!t.crit, g, mods: p.mods, choice: p.choice, applied: null };
   });
   const gs = groups.map((g, i) => ({ tier: g.tier ?? 0, crit: !!g.crit, comps: g.comps.map(c => ({ pool: c.pool || "B", sub: c.sub ?? "", nl: c.nl, total: Number(c.total) || 0, formula: c.formula ?? "", dice: c.dice ?? [], kind: c.kind ?? "", src: c.src ?? "", emp: c.emp ?? 0, label: c.label ?? "" })), fx: g.fx ?? [], riders: g.riders ?? [], rows: rows.map((r, k) => (r.g === i ? k : -1)).filter(k => k >= 0) }));
-  const state = { name: title, nl: !!nl, groups: gs, rows, originUuid, originMod, after, areaPoint, strike: !!strike, srcId, escalation: !!escalation, note, noNl: !!noNl };
+  const state = { name: title, nl: !!nl, groups: gs, rows, originUuid, originMod, after, areaPoint, strike: !!strike, srcId, escalation: !!escalation, note, noNl: !!noNl, save: !!save };   // v0.0.334: save: from a Save Action (its chain runs on the Tiers the damage landed: 1 and 2)
   const first = gs[0];
   return ChatMessage.create({
     speaker: ChatMessage.getSpeaker(actor ? { actor } : {}), rolls, content: CC.cardContent(dmgModel(state)),
@@ -192,12 +192,12 @@ async function applyRow(s, i, factor = 1, { ask = true, rerun = false } = {}) {
 }
 /** The "After the damage" chain, once, for the rows just applied whose damage landed on a Tier 2 or 3 (Ch. 1 Riders). */
 async function runChain(s, idx) {
-  const list = idx.map(i => s.rows[i]).filter(r => r?.applied?.landed && !r.applied.chainDone && (r.tier ?? 0) >= 2);
+  const list = idx.map(i => s.rows[i]).filter(r => r?.applied?.landed && !r.applied.chainDone && (s.save || (r.tier ?? 0) >= 2));
   if (!s.after || !list.length) return;
   for (const r of list) r.applied.chainDone = true;
   let actor = null; try { actor = s.originUuid ? await fromUuid(s.originUuid) : null; } catch (e) { actor = null; }
   const { runAfter } = await import("./inline.mjs");
-  await runAfter(s.after, { actor: actor?.documentName === "Actor" ? actor : (actor?.actor ?? null), targets: list.map(r => ({ uuid: r.uuid, name: r.name, tier: r.tier, crit: !!r.crit })), attrVal: Number.isFinite(s.originMod) ? s.originMod : null, areaPoint: s.areaPoint ?? null });
+  await runAfter(s.after, { save: !!s.save, actor: actor?.documentName === "Actor" ? actor : (actor?.actor ?? null), targets: list.map(r => ({ uuid: r.uuid, name: r.name, tier: r.tier, crit: !!r.crit })), attrVal: Number.isFinite(s.originMod) ? s.originMod : null, areaPoint: s.areaPoint ?? null });
 }
 async function lockSource(s) {
   const src = s.srcId ? game.messages.get(s.srcId) : null;

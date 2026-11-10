@@ -54,11 +54,13 @@ Level 5 begins Stage 2 (a Stage Talent and the Stage numbers: see [[Stages]]). F
 
 ### Features
 
-As a marksman, you gain three Features at level 1. Thrill of the Kill is your class's [[Escalation]] hook.
+As a marksman, you gain three Features at level 1, and Marked Quarry gives you the Mark Quarry Action. Thrill of the Kill is your class's [[Escalation]] hook.
 
 @@CARD:Sharpshooter@@
 
 @@CARD:Marked Quarry@@
+
+@@CARD:Mark Quarry@@
 
 @@CARD:Thrill of the Kill@@
 

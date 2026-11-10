@@ -11,7 +11,7 @@
   <div class="ps-line" data-action="toggleCard">
     <span class="ps-name"><a class="ps-nm" role="button" tabindex="0" aria-expanded="{{#if open}}true{{else}}false{{/if}}">{{name}}{{{auto}}}</a>{{#if sub}}<span class="ps-sub">{{sub}}</span>{{/if}}{{#if fav}}<i class="fa-solid fa-star ps-fav" data-tooltip="Favorite (right-click the row to change)" aria-label="Favorite"></i>{{/if}}</span>
     <span class="ps-c"><span class="ps-pill{{#if outline}} line{{/if}}" style="--fc:{{fc}}">{{cost}}</span></span>
-    <span class="ps-c ps-dist">{{dist}}</span>
+    <span class="ps-c ps-dist"{{#if distTip}} data-tooltip="{{distTip}}"{{/if}}>{{dist}}{{#if distTip}} <i class="fa-solid fa-circle-info dist-i"></i>{{/if}}</span>
     <span class="ps-c">{{#if vs}}<span class="ps-vs{{#if vsKind}} vsk-{{vsKind}}{{/if}}">{{vs}}</span>{{/if}}</span>
     <span class="ps-c">{{> usebtn}}</span>
   </div>
@@ -135,12 +135,12 @@
           <div class="ps-track np-track" data-pool="{{pool}}" data-tooltip="{{tip}}"><span class="sl" style="width:{{seg.lethal}}%;background:{{solid}}"></span><span class="sn" style="width:{{seg.nonlethal}}%;--a:{{solid}};--b:{{dark}}"></span></div>
         </div>
         {{/each}}
-        {{#unless ../pc.npc}}<div class="ps-foot">{{#if down.down}}Dominant: <b style="color:{{domColor}}">{{dominant}}</b> &rarr; {{down.title}}{{else}}Solid = lethal &middot; striped = nonlethal &middot; Dominant: <b style="color:{{domColor}}">{{dominant}}</b>{{/if}}</div>{{/unless}}
+        {{#unless ../pc.npc}}<div class="ps-foot">{{#if down.down}}Dominant Damage: <b style="color:{{domColor}}">{{dominant}}</b> &rarr; {{down.title}}{{else}}Dominant Damage: <b style="color:{{domColor}}">{{dominant}}</b>{{/if}}</div>{{/unless}}
         {{/with}}
       </section>
 
       {{#unless pc.npc}}<section class="ps-sec line">
-        <div class="ps-hh"><span class="ps-k">Rally</span><span class="ps-rally">{{pc.rally.left}} / {{pc.rally.max}} &middot; each heals {{pc.rally.heal}}</span></div>
+        <div class="ps-hh"><span class="ps-k">Rally</span><span class="ps-rally">{{pc.rally.left}} / {{pc.rally.max}} &middot; Each heals {{pc.rally.heal}}</span></div>
         <span class="ps-rpips" data-tooltip="Rally Points: your class's Rally value + your Stage. Each removes {{pc.rally.heal}} damage (a quarter of your Health Pool, rounded up). Only a Rest restores them.">{{#each pc.rally.pips}}<i class="{{#if this}}on{{/if}}"></i>{{/each}}</span>
       </section>{{/unless}}
 

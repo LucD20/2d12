@@ -313,7 +313,11 @@
       "[V] [Mod] Pi",
       "[V] 1d6 + [Mod] Pi",
       "[V] 1d10 + [Mod] Pi; you can Evade 1."
-     ]
+     ],
+     "foundry": {
+      "x3": "You can Evade 1.",
+      "after": "@Move[evade|distance:1|tier:3]"
+     }
     }
    ],
    "foundry": {

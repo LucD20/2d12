@@ -450,7 +450,7 @@ export function highlightText(html) {
  * The line under the traits: the Frequency (only when it matters) and the Target text, separated by a sparkle.
  * Then, on its own line, the tokens that are targeted.
  */
-export function metaRowHtml({ frequency = "", targetText = "", distance = "", area: areaLine = "", vs = "", requirements = "", trigger = "", reactionKind = "", self = false, escalation = 0, areaHtml = "", sepHtml = "" } = {}) {
+export function metaRowHtml({ distanceTip = "", frequency = "", targetText = "", distance = "", area: areaLine = "", vs = "", requirements = "", trigger = "", reactionKind = "", self = false, escalation = 0, areaHtml = "", sepHtml = "" } = {}) {
   // v0.0.297 (PACK ACTION-PREVIEW): the sheet card passes its own separator (a gold ✦) and its Area chip (the Place Area button) as areaHtml
   const sep = sepHtml || ' <i class="fa-solid fa-sparkle sep"></i> ';
   // Three lines, always in the same place (v0.0.157): 1 Escalation; 2 Targets ✦ Area; 3 Distance ✦ Vs. (a Save: "Instinct Save").
@@ -461,7 +461,7 @@ export function metaRowHtml({ frequency = "", targetText = "", distance = "", ar
   const hl = t => { try { return highlightText(escAttr(t)); } catch (e) { return escAttr(t); } };
   const l1 = Number(escalation) > 0 ? [`<span class="esc">${Number(escalation)} Escalation</span>`] : [];
   const l2 = [(!self || areaLine) && targetText ? `<span class="tgt"><b>Targets:</b> ${hl(targetText)}</span>` : "", areaLine ? `<span class="dist"><b>Area:</b> ${areaHtml || hl(areaLine)}</span>` : ""].filter(Boolean);
-  const l3 = [distance && distance.toLowerCase() !== "self" ? `<span class="dist"><b>Distance:</b> ${hl(distance)}</span>` : "", vs ? `<span class="vs">${/save$/i.test(String(vs).trim()) ? "" : "<b>Vs.</b> "}${vsColored(vs)}</span>` : ""   /* v0.0.295 (Lucas): Vs. bold, the value colored */].filter(Boolean);
+  const l3 = [distance && distance.toLowerCase() !== "self" ? `<span class="dist"><b>Distance:</b> ${hl(/^\d+$/.test(String(distance).trim()) && distanceTip ? `${distance} sq.` : distance)}${distanceTip ? ` <i class="fa-solid fa-circle-info dist-i" data-tooltip="${escAttr(distanceTip)}" aria-label="${escAttr(distanceTip)}"></i>` : ""}</span>` : "", vs ? `<span class="vs">${/save$/i.test(String(vs).trim()) ? "" : "<b>Vs.</b> "}${vsColored(vs)}</span>` : ""   /* v0.0.295 (Lucas): Vs. bold, the value colored */].filter(Boolean);
   const row = [l1, l2, l3].filter(l => l.length).map(l => `<div class="trow"><span>${l.join(sep)}</span></div>`).join("");
   const req = requirements ? `<div class="trow reqrow"><span><b>Requirements:</b> ${hl(requirements)}</span></div>` : "";
   const trg = trigger ? `<div class="trow trgrow"><span><b>${reactionKind === "interrupt" ? "Interrupt" : "Trigger"}:</b> ${hl(trigger)}</span></div>` : "";
@@ -616,6 +616,18 @@ export function areaText(d) {
   return area.replace(/\s+within\s+.*$/i, "");
 }
 
+function weaponBand(v, weapon) {
+  const m = String(v ?? "").trim().toLowerCase().match(/^your weapon's (normal|far|maximum) range$/);
+  if (!m || !weapon?.system) return "";
+  const parts = String(weaponRanges(weapon, weapon.parent?.system?.reach ?? 1).ranged ?? "").split("/").map(x => x.trim()).filter(Boolean);
+  return parts[{ normal: 0, far: 1, maximum: 2 }[m[1]]] ?? "";
+}
+/** v0.0.334: the words a Distance stood for when distanceText read them as the weapon's number ("Your weapon's normal range"), else "": the ⓘ's tooltip. */
+export function distanceNote(d, weapon = null) {
+  const area = String(d?.area ?? "").trim(), within = area.match(/\s+within\s+(.*)$/i)?.[1] ?? "";
+  const v = (area ? (String(d?.areaDistance ?? "").trim() || within) : "") || String(d?.distance ?? "").trim();
+  return weaponBand(v, weapon) ? v.replace(/^your weapon's/i, "Your weapon's") : "";
+}
 export function distanceText(d, weapon = null) {
   // An Area Action's Distance (v0.0.176): how far its area can be placed (the Area settings, or an older "within" text: the limit that is enforced),
   // else its own Distance field.
@@ -626,6 +638,9 @@ export function distanceText(d, weapon = null) {
   // A Weapon Action shows the Range of the weapon it is made with (Distance: Weapon, or Reach on older cards): melee with Reach above 1 added,
   // ranged, or both for a Thrown weapon.
   const low = v.toLowerCase(), sp = t => String(t).split("/").join(" / ");
+  // v0.0.334 (Lucas): "Your weapon's normal / far / maximum range" reads the weapon in use (its band of the ranged Range); distanceNote keeps the words
+  const band = weaponBand(v, weapon);
+  if (band) return band;
   if (weapon?.system && (low === "weapon" || (d?.traits?.has?.("weapon") && low === "reach"))) {
     const r = weaponRanges(weapon, weapon.parent?.system?.reach ?? 1);
     const wants = d?.traits?.has?.("melee") ? "melee" : d?.traits?.has?.("ranged") ? "ranged" : "";

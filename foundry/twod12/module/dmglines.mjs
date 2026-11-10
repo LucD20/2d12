@@ -29,7 +29,7 @@ export function damageBlockHtml(m) {
   const chip = c => `<button type="button" class="ps-dl ${c.kind}${c.dashed ? " tmp" : ""}" data-action="dmgLineOpen" data-kind="${c.kind}" data-sub="${esc(c.code)}" data-uuid="${esc(c.uuid)}" data-src="${c.src}" data-tooltip="${esc(c.tip)}" aria-label="${esc(c.aria)}">${esc(c.text)}</button>`;
   const rows = m.rows.map(r => `<div class="ps-dlrow"><span class="ps-dll">${r.label}</span><span class="ps-dlc">${r.chips.map(chip).join("")}</span></div>`).join("");
   const add = m.add ? `<button type="button" class="ps-dladd" data-action="dmgLineAdd" data-tooltip="Add a lasting Immune, Resist or Weak line (GM)">+ Add</button>` : "";
-  return `<section class="ps-sec line ps-dmg"><span class="ps-k">Damage</span>${rows}${add}</section>`;
+  return `<section class="ps-sec line ps-rwi"><span class="ps-k">Damage Immune/Resist/Weak</span>${rows}${add}</section>`;
 }
 
 /**

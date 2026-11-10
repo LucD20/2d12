@@ -177,7 +177,7 @@ export function headHtml(m) {
 export function targetLineHtml(m, view = FULL_VIEW, { locked = false } = {}) {
   const t = m.tline ?? {}, star = '<span class="cc-star" aria-hidden="true">✦</span>';
   const names = t.names?.length === 1 ? esc(t.names[0]) : t.names?.length ? `${t.names.length} targets` : "No target";
-  const bits = [t.area ? t.area : t.targets ? esc(t.targets) : "", t.dist ? esc(t.dist) : ""].filter(Boolean).join(` ${star} `);
+  const bits = [t.area ? t.area : t.targets ? esc(t.targets) : "", t.dist ? `${esc(t.dist)}${t.distTip ? ` <i class="fa-solid fa-circle-info dist-i" data-tooltip="${esc(t.distTip)}" aria-label="${esc(t.distTip)}"></i>` : ""}` : ""].filter(Boolean).join(` ${star} `);
   const btn = view.author && !locked && t.retarget !== false ? `<button type="button" class="cc-icon" data-twod12="${esc(t.retargetKind ?? "retargetAction")}" aria-label="Target the selected tokens" title="Target the selected tokens"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i></button>` : "";
   return `<div class="cc-tline"><span>${bits}${bits ? " " : ""}<span aria-hidden="true">→</span> <b>${names}</b></span>${btn}</div>`;
 }
@@ -187,7 +187,7 @@ export function targetLineHtml(m, view = FULL_VIEW, { locked = false } = {}) {
  */
 export function metaLineHtml(m) {
   const t = m.tline ?? {}, star = '<span class="cc-star" aria-hidden="true">\u2726</span>';
-  const bits = [t.area ? t.area : t.targets ? esc(t.targets) : "", t.dist ? esc(t.dist) : ""].filter(Boolean).join(` ${star} `);
+  const bits = [t.area ? t.area : t.targets ? esc(t.targets) : "", t.dist ? `${esc(t.dist)}${t.distTip ? ` <i class="fa-solid fa-circle-info dist-i" data-tooltip="${esc(t.distTip)}" aria-label="${esc(t.distTip)}"></i>` : ""}` : ""].filter(Boolean).join(` ${star} `);
   return bits ? `<div class="cc-tline meta"><span>${bits}</span></div>` : "";
 }
 export function footHtml(m, view = FULL_VIEW, { damage = "rollDamage", hasDamage = m.hasDamage, locked = m.locked, target = true } = {}) {   // v0.0.287: the Save card's too

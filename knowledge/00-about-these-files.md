@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-10 from the repository at: b1362a7 2026-11-10 v0.0.332: a level 1 version of each of the four PCs (Aveline's Greatsword, Kaela's Shortbow among them)
+Built by tools/knowledge.py on 2026-11-10 from the repository at: 1b8d054 2026-11-10 v0.0.333 SMALL PACK RWI: the Damage block (Immune / Resist / Weak) on both sheets, creatureDamageLines (the damage card reads it too), armor and weapon lines, + Add in a pick window; the NPC portraits, their sheets checked; t228
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (88 KB)
+- HANDOFF.md (89 KB)
 - MASTER-PLAN.md (23 KB)
 - open-design-items.md (96 KB)
 - rules-01-roll.md (23 KB)

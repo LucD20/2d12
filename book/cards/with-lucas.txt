@@ -12,4 +12,7 @@ Diamond (Lucas, 2026-11-09): a Mithril card that a later pack changed, even only
 until Lucas revises it (then Mithril again). Each one, with what changed:
 - Rebuke (v0.0.314 / v0.0.315, pack AU): Frightened is the condition item (its Bane only while the enemy sees the Paladin), and only the word
   "Frightened" is its button ("of you for 1 round" is text). The automationNote says so.
+- Rebuke (v0.0.334, Lucas: "trigger the push after applying damage; when applying damage from Tier 3, apply Frightened"): the Tier text has no buttons
+  ("Pushed 2, and Frightened of you for 1 round." / "Pushed 1."); after the damage is applied and lands, the chain pushes (2 on the target's Tier 1,
+  1 on its Tier 2) and gives Frightened of the Paladin for 1 round on a Tier 1 (the row Lucas called "Tier 3": the Paladin's best result).
 

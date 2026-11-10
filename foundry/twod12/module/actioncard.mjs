@@ -10,7 +10,7 @@
 //   the Flavor at the bottom under ◆ ◆ ◆; the ruler line in Designer mode only.
 // With actor: what effects add inside the cells in green or red (as before), the strip, the Version buttons. The pure pieces: cardview.mjs.
 // The chat cards are unchanged (chatcards.mjs, preview.mjs).
-import { autoChip, TWOD12, traitGroupOf, highlightText, metaRowHtml, effectiveFrequency, distanceText, areaText, vsText, areaButton, prettyDamage, categoryText, doomStatus } from "./config.mjs";
+import { autoChip, TWOD12, traitGroupOf, highlightText, metaRowHtml, effectiveFrequency, distanceText, distanceNote, areaText, vsText, areaButton, prettyDamage, categoryText, doomStatus } from "./config.mjs";
 import { rawTierLine, modifierBlocks, actionOnlyTalent } from "./preview.mjs";
 import { prereqLine } from "./talents.mjs";
 import { actionChanges, unloadedWeapon, traitsFor } from "./actionrows.mjs";
@@ -146,7 +146,7 @@ export async function buildActionCard(item, { actor = null, use = true } = {}) {
   const area = areaText(it), aBtn = areaButton(it);
   const areaHtml = area && aBtn ? await enrich(aBtn.replace(/\|label:[^|\]]*/, "").replace(/\]$/, `|label:${area.replace(/[|\]]/g, " ")}]`), item) : "";
   // the Distance as the row writes it ("10 sq.")
-  const meta = metaRowHtml({ escalation: it.escalation ?? 0, frequency: "", targetText: it.targets, distance: distanceShort(distanceText(it, weapon)).replace(/^\u2014$/, ""), area, areaHtml, sepHtml: '<span class="ap-st" aria-hidden="true">✦</span>', vs: vsText(it, { src: actor?.system?.attributes ? rollSource(actor.system, it) : null, fists: item.getFlag?.("twod12", "basic") === "fists" }), requirements: it.requirements, trigger: it.trigger, reactionKind: it.reactionKind, self: it.traits?.has?.("self") });
+  const meta = metaRowHtml({ escalation: it.escalation ?? 0, frequency: "", targetText: it.targets, distance: distanceShort(distanceText(it, weapon)).replace(/^\u2014$/, ""), distanceTip: distanceNote(it, weapon), area, areaHtml, sepHtml: '<span class="ap-st" aria-hidden="true">✦</span>', vs: vsText(it, { src: actor?.system?.attributes ? rollSource(actor.system, it) : null, fists: item.getFlag?.("twod12", "basic") === "fists" }), requirements: it.requirements, trigger: it.trigger, reactionKind: it.reactionKind, self: it.traits?.has?.("self") });
   // An area with no Area line (a Self Emanation without a Targets line): its chip on its own line, as before
   const areaRow = aBtn && !(area && meta.includes("<b>Area:</b>")) ? `<div class="trow arearow">${await enrich(aBtn, item)}</div>` : "";
   const setup = it.setup ? `<div class="trow setuprow"><b>Setup:</b> ${await enrich(it.setup, item)}</div>` : "";

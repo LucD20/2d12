@@ -5,9 +5,11 @@ import { BASIC_ACTIONS } from "./basic-data.mjs";   // v0.0.227 (pack CS): gener
 export { BASIC_ACTIONS };
 const F = "twod12";
 
+// v0.0.334 (Lucas: "Opportunity Attack is triggering from non-threatened squares"): momentThreat was left out, so every creature's Opportunity Attack
+// had no limit (any enemy moving anywhere); staleBasics compares it, so the creatures' copies are replaced by the refresh.
 const toItem = (key, d) => ({
   name: d.name, type: "action", img: d.img,
-  system: { category: TWOD12.basicCategory, level: 0, flavor: d.flavor ?? "", frequency: d.frequency ?? "", distance: d.distance ?? "", requirements: d.requirements ?? "", ...(d.description ? { description: d.description } : {}), traits: d.traits, targets: d.targets, vs: d.vs, ...(d.weaponUse ? { weaponUse: d.weaponUse } : {}), ...(d.reaction ? { reaction: true, reactionKind: d.reactionKind, trigger: d.trigger } : {}), ...(d.moment ? { moment: d.moment, momentRange: d.momentRange ?? 0, momentSelf: !!d.momentSelf, momentTarget: d.momentTarget ?? "subject" } : {}), versions: foundry.utils.deepClone(d.versions) },
+  system: { category: TWOD12.basicCategory, level: 0, flavor: d.flavor ?? "", frequency: d.frequency ?? "", distance: d.distance ?? "", requirements: d.requirements ?? "", ...(d.description ? { description: d.description } : {}), traits: d.traits, targets: d.targets, vs: d.vs, ...(d.weaponUse ? { weaponUse: d.weaponUse } : {}), ...(d.reaction ? { reaction: true, reactionKind: d.reactionKind, trigger: d.trigger } : {}), ...(d.moment ? { moment: d.moment, momentRange: d.momentRange ?? 0, momentSelf: !!d.momentSelf, momentTarget: d.momentTarget ?? "subject", momentThreat: !!d.momentThreat } : {}), versions: foundry.utils.deepClone(d.versions) },
   flags: { [F]: { basic: key } }
 });
 

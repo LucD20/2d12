@@ -232,6 +232,9 @@ add("classes", "class", "Archer", "icons/svg/target.svg", {
 
 /* ------------------------------------------------------------------ NPCs (Actors, with their items inside) */
 const { basicItemData, BASIC_ACTIONS, wanted } = await import("../module/basic.mjs");   // v0.0.214: no Weapon Attack or Fists Action on NPCs
+// v0.0.334 (Lucas: "Basic Actions should have Actions in the compendium"): each Basic Action in the Actions compendium (folder Basic Actions), with its
+// basic flag, so one dragged onto a creature works as the built-in one (a creature already has them all: this is for reading, the GM's own NPCs, a world copy)
+for (const k of Object.keys(BASIC_ACTIONS)) { const d = basicItemData(k); docs.push({ pack: "actions", type: "action", name: d.name, img: d.img, folder: "Basic Actions", system: d.system, flags: d.flags }); }
 const { fistsItemData } = await import("../module/fists.mjs");
 const actors = [];
 // v0.0.184: the id includes the type, so a weapon and its Basic attack can share a name ("Cudgel"); a duplicate id stopped the whole build.

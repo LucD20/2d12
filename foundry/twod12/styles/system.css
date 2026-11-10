@@ -3947,7 +3947,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .application .fr-tab .fr-addsh.first:empty + .fr-part { border-top-width: 1px; border-radius: 4px 4px 0 0; }
 
 /* v0.0.333 (PACK RWI): the "Damage" block under Defenses (Immune / Resist / Weak chips; dashed = from an effect) and the items' Damage lines */
-.twod12.sheet.pcs .ps-dmg { display: flex; flex-direction: column; gap: 4px; }
+.twod12.sheet.pcs .ps-rwi { display: flex; flex-direction: column; gap: 4px; }
 .twod12.sheet.pcs .ps-dlrow, .twod12 .it-dmg { display: grid; grid-template-columns: 56px 1fr; align-items: start; gap: 4px; }
 .twod12.sheet.pcs .ps-dll { font-size: 11px; color: #9aa6ba; padding-top: 2px; }
 .twod12 .ps-dlc { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
@@ -3962,3 +3962,22 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12 .it-dmg { grid-template-columns: 110px 1fr; margin: 6px 0; }
 .twod12 .it-dmgl { font-size: 12px; font-weight: 600; } .twod12 .it-dmgl small { display: block; font-weight: 400; opacity: .7; }
 .twod12.pickwin .pw-num input { width: 5em; margin-left: 6px; }
+/* v0.0.334 (Lucas: "fit everything without extending the sheet much"): a tighter sidebar, a larger click area on the Vigor / Resolve bars, smaller Rally pips */
+.twod12.sheet.pcs .ps-side { gap: 10px; }
+.twod12.sheet.pcs .ps-sec { gap: 5px; }
+.twod12.sheet.pcs .ps-sec.line { padding-top: 8px; }
+.twod12.sheet.pcs .ps-track { height: 14px; }
+.twod12.sheet.pcs .ps-bar { gap: 2px; }
+.twod12.sheet.pcs .ps-rpips { gap: 4px; }
+.twod12.sheet.pcs .ps-rpips i { width: 9px; height: 9px; border-width: 1.5px; }
+.twod12.sheet.pcs .ps-rwi .ps-dlrow { grid-template-columns: 48px 1fr; }
+.twod12 .dist-i { font-size: .8em; opacity: .65; cursor: help; }
+.twod12.chat.cc .cc-arrow b { white-space: nowrap; }   /* v0.0.334 (Lucas): a two-digit total at the right edge was stacked digit by digit */
+/* v0.0.334: the roll window's Tier names are buttons for the GM (force that result) */
+.rd-tiers button.rd-tforce { all: unset; cursor: pointer; font: inherit; border-bottom: 1px dotted currentColor; }
+.rd-tiers button.rd-tforce[aria-pressed="true"] { border-bottom-style: solid; font-weight: 800; }
+.rd-tiers tr.forced td { box-shadow: inset 3px 0 0 #d9b45a; }
+/* v0.0.334 (Lucas): the roll window's trait chips in the sheets' colors (the trait group variables, tinted 16%), not their own palette */
+.twod12.rolldlg .rd-trait:is(.tg-roll, .tg-requires, .tg-kind, .tg-damage, .tg-keywords) { color: var(--tg); background: color-mix(in srgb, var(--tg) 16%, #fff); border-color: color-mix(in srgb, var(--tg) 35%, transparent); }
+.twod12.rolldlg .rd-trait.tg-roll { --tg: var(--g-roll); } .twod12.rolldlg .rd-trait.tg-requires { --tg: var(--g-requires); } .twod12.rolldlg .rd-trait.tg-kind { --tg: var(--g-kind); }
+.twod12.rolldlg .rd-trait.tg-damage { --tg: var(--g-damage); } .twod12.rolldlg .rd-trait.tg-keywords { --tg: var(--g-keywords); }

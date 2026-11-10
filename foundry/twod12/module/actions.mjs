@@ -17,7 +17,7 @@ import { offerWake } from "./down.mjs";
 import { performCheck, performMultiCheck, multiCheckHtml, collapseNames, uniqueLabels, checkHtml, esc, sgn } from "./roll.mjs";
 import { fxTipHtml, hoverOf, tipAttrs } from "./util.mjs";   // v0.0.253: the effects' hover cards
 import { effectWhat } from "./fxdetails.mjs";   // v0.0.267: the hover card says what the effect does (its settings)
-import { cardVars, cardHead, flavorHtml, apIcon, traitChevrons, categoryText, highlightText, metaRowHtml, effectiveFrequency, distanceText, areaText, cardColorFor, vsText, targetsRowHtml, targetEntries, requirementProblem, doomStatus } from "./config.mjs";
+import { cardVars, cardHead, flavorHtml, apIcon, traitChevrons, categoryText, highlightText, metaRowHtml, effectiveFrequency, distanceText, distanceNote, areaText, cardColorFor, vsText, targetsRowHtml, targetEntries, requirementProblem, doomStatus } from "./config.mjs";
 import { collectBonuses, expireOnUse } from "./bonus.mjs";
 import { notesFor, useOnceModifiers, resolveModifiers, applyEffects, originInfo, damageSteps, modifierList } from "./effects.mjs";
 import { spendAP, combatantOf } from "./combat.mjs";
@@ -911,8 +911,10 @@ export async function useAction(actor, item, opts = {}) {
     });
   // For testing: a Tier picked in the dialog replaces the result of the roll.
   const forcedTier = Number(data.forceTier) || 0;
-  if (chk && forcedTier >= 1 && forcedTier <= 3) { chk.base = forcedTier; chk.tier = forcedTier; chk.doubles = false; chk.crit = false; chk.forced = true; }
-  if (mres && forcedTier >= 1 && forcedTier <= 3) for (const r of mres) { r.chk.base = forcedTier; r.chk.tier = forcedTier; r.chk.doubles = false; r.chk.crit = false; r.chk.forced = true; }
+  // v0.0.334: 4 = a Critical (Tier 3 and its Critical line)
+  const ft = forcedTier === 4 ? 3 : forcedTier, fcrit = forcedTier === 4;
+  if (chk && ft >= 1 && ft <= 3) { chk.base = ft; chk.tier = ft; chk.doubles = fcrit; chk.crit = fcrit; chk.forced = true; }
+  if (mres && ft >= 1 && ft <= 3) for (const r of mres) { r.chk.base = ft; r.chk.tier = ft; r.chk.doubles = fcrit; r.chk.crit = fcrit; r.chk.forced = true; }
   // The shield shows the Defense it rolled against: "AD 13", "WD 12" (v0.0.164) or a Vs. Attribute in two letters, "Bo 14" (Bo, Mi, Ap, In; v0.0.165);
   // "DC" when there is no target or the DC was typed in the dialog.
   const VS2 = { body: "Bo", mind: "Mi", appeal: "Ap", instinct: "In" };
@@ -1013,7 +1015,7 @@ export async function useAction(actor, item, opts = {}) {
   const btn = (mres ? mres.some(r => dmgNeeded(r.chk.tier, r.bonuses)) : dmgNeeded(tier, bonuses))
     ? `<div class="dmgbtn"><button type="button" data-twod12="rollDamage"><i class="fa-solid fa-dice"></i> Roll Damage${mres ? " (per Tier)" : ""}</button></div>` : "";
   const color = cardColorFor(it);
-  const trow = metaRowHtml({ escalation: it.escalation ?? 0, frequency: effectiveFrequency(it), targetText: it.targets, distance: distanceText(it, weapon), area: areaText(it), vs: vsText(it, { src, fists: item.getFlag?.("twod12", "basic") === "fists", rolls: !version.noTiers }), requirements: it.requirements, trigger: it.trigger, reactionKind: it.reactionKind, self: isSelf });
+  const trow = metaRowHtml({ escalation: it.escalation ?? 0, frequency: effectiveFrequency(it), targetText: it.targets, distance: distanceText(it, weapon), distanceTip: distanceNote(it, weapon), area: areaText(it), vs: vsText(it, { src, fists: item.getFlag?.("twod12", "basic") === "fists", rolls: !version.noTiers }), requirements: it.requirements, trigger: it.trigger, reactionKind: it.reactionKind, self: isSelf });
   const areaRow = areaButton(it) ? `<div class="trow arearow">${await enrich(areaButton(it), item)}</div>` : "";   // v0.0.249 (Lucas): on the chat card even once placed, to place it again and retarget
   const setupRow = it.setup ? `<div class="trow setuprow"><b>Setup:</b> ${await enrich(setupFor(it.setup, setupDone), item)}</div>` : "";
   // v0.0.283 (pack chat-cards): an Action that rolls gets the new card (chatcards.mjs); the rest (no roll, Save Actions) keep the card below.
@@ -1058,7 +1060,7 @@ export async function useAction(actor, item, opts = {}) {
     }
     ccModel = {
       v: 1, kind: "noroll", name: item.name, auto: autoChip(it.automation, it.automationNote), freq: effectiveFrequency(it), cost: it.reaction ? `${version.ap}R` : `${version.ap} AP`, traitsHtml: useTraits.size ? traitsHtml(useTraits) : "",
-      tline: { targets: it.targets ?? "", dist: sqText(distanceText(it, weapon ?? previewWeapon ?? null)) || (it.reaction && Number(it.momentRange) > 0 ? `${Number(it.momentRange)} sq.` : ""), area: "", names: targets.map(t => t.name) },
+      tline: { distTip: distanceNote(it, weapon ?? previewWeapon ?? null), targets: it.targets ?? "", dist: sqText(distanceText(it, weapon ?? previewWeapon ?? null)) || (it.reaction && Number(it.momentRange) > 0 ? `${Number(it.momentRange)} sq.` : ""), area: "", names: targets.map(t => t.name) },
       triggerHtml: it.trigger ? await enrich(esc(it.trigger), item) : "", triggerLabel: it.reactionKind === "interrupt" ? "Interrupt" : "Trigger",
       effectHtml: use.html, useHtml: use.anchor, useName, useOff,
       steps, afterDone: from ? steps.filter(x => x.k === 0).map(x => `0|${x.side}`) : [],

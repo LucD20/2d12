@@ -101,6 +101,9 @@ export function versionData(c, v, resolve = s => s) {
       out[`x${i + 1}`] = resolve(fxText(text, appendOf(v, `x${i + 1}`)));
     });
   }
+  // v0.0.334 (Lucas, Rebuke and Skirmish Shot): a Tier's Foundry text written in full (foundry.x1 / x2 / x3), as it is: no buttons made from it
+  // (what it does runs by itself after the damage: the Version's foundry.after chain and its Effects by Tier)
+  for (const n of [1, 2, 3]) if (typeof v.foundry?.[`x${n}`] === "string") out[`x${n}`] = resolve(v.foundry[`x${n}`]);
   if (v.critical) out.critical = resolve(fxText(v.critical, appendOf(v, "critical")));
   if (v.mode) out.mode = v.mode;
   if (v.foundry?.areaSize) out.areaSize = v.foundry.areaSize;

@@ -637,7 +637,8 @@ export async function runAfter(text, ctx = {}, { side = "" } = {}) {
     let targets = cfg.side ? sideTargets(ctx, cfg.side) : ctx.targets;
     if (cfg.side && !targets?.length) continue;
     // v0.0.267: a chip for a Tier (tier:2) or a Critical (crit:yes) runs for the targets that rolled it; a target without a result (a click by hand) passes
-    if (cfg.tier || cfg.crit) { targets = (targets ?? []).filter(t => t.tier === undefined ? true : (!cfg.tier || (Number(t.tier) || 0) >= cfg.tier) && (!cfg.crit || t.crit)); if (!targets.length) continue; }
+    // v0.0.334: after a Save Action, tier:N means that Tier or worse for the target (tier:1: only those who rolled a Tier 1)
+    if (cfg.tier || cfg.crit) { targets = (targets ?? []).filter(t => t.tier === undefined ? true : (!cfg.tier || (ctx.save ? (Number(t.tier) || 0) <= cfg.tier : (Number(t.tier) || 0) >= cfg.tier)) && (!cfg.crit || t.crit)); if (!targets.length) continue; }
     try { await handleInline(m[1], cfg, { ...ctx, targets, message: ctx.message ?? null }); } catch (e) { console.error("twod12 | after the damage", e); }
   }
 }
@@ -897,7 +898,9 @@ export function saveActionCfg(actor, item, version, src) {
     if (x && !/^no effect\.?$/i.test(x)) parts.push(`"${x.replace(/"/g, "'")}"`);
     return parts.join(", ") || "0";
   };
-  return { attr: it.vs && it.vs !== "roll" ? it.vs : "body", dc: saveDcOf(src, actor.system?.attributes), adj: 0, boon: 0, bane: 0, traits: [], tiers: { t1: tier(1), t2: tier(2), t3: tier(3) }, saveAction: true, source: item.name, actorUuid: actor.uuid, actionTraits: [...(it.traits ?? [])] };
+  return { attr: it.vs && it.vs !== "roll" ? it.vs : "body", dc: saveDcOf(src, actor.system?.attributes), adj: 0, boon: 0, bane: 0, traits: [], tiers: { t1: tier(1), t2: tier(2), t3: tier(3) }, saveAction: true, source: item.name, actorUuid: actor.uuid, actionTraits: [...(it.traits ?? [])],
+    // v0.0.334 (Lucas, Rebuke): the Version's Effects by Tier (applied when the damage is applied and lands) and its "After the damage" chain
+    fx: Object.fromEntries([1, 2, 3].map(n => [`t${n}`, [...(version.fx?.all ?? []), ...(version.fx?.[`t${n}`] ?? [])].filter(x => x?.uuid && (x.mode ?? "auto") === "auto").map(x => x.uuid)])), after: String(version.after ?? "").trim() };
 }
 
 /**
@@ -986,10 +989,10 @@ export async function saveDamage(msg) {
   const cfg = st.cfg, m = msg.getFlag("twod12", "cc");
   const tiers = [...new Set(ready.map(x => x.r.result.tier))].sort((a, b) => a - b);
   const groups = tiers.map(t => { const parts = parseParts(cfg.tiers[`t${t}`]), first = ready.find(x => x.r.result.tier === t).r.result;
-    return { tier: t, crit: false, comps: (st.tierDmg?.[`t${t}`] ?? first.ccComps ?? []).map(c => ({ pool: c.pool, sub: c.sub, nl: c.nl, total: c.total, formula: c.formula, dice: c.dice, kind: c.kind ?? "D" })), fx: parts.uuids.map(u => ({ uuid: u, mode: "auto", rider: true })), riders: m?.tiers?.[t]?.riders ?? [] }; });
+    return { tier: t, crit: false, comps: (st.tierDmg?.[`t${t}`] ?? first.ccComps ?? []).map(c => ({ pool: c.pool, sub: c.sub, nl: c.nl, total: c.total, formula: c.formula, dice: c.dice, kind: c.kind ?? "D" })), fx: [...parts.uuids, ...(cfg.fx?.[`t${t}`] ?? [])].map(u => ({ uuid: u, mode: "auto", rider: true })), riders: m?.tiers?.[t]?.riders ?? [] }; });
   let actor = null; try { actor = cfg.actorUuid ? await fromUuid(cfg.actorUuid) : null; } catch (e) { actor = null; }
   const { postCcDamage } = await import("./ccdamage.mjs");
-  await postCcDamage({ actor, title: cfg.source || m?.name || "Save", groups, targets: ready.map(({ r }) => ({ uuid: r.uuid, name: r.name, tier: r.result.tier, g: tiers.indexOf(r.result.tier) })), nl: !!cfg.nonlethal, originUuid: cfg.actorUuid ?? "", srcId: msg.id });
+  await postCcDamage({ actor, title: cfg.source || m?.name || "Save", groups, targets: ready.map(({ r }) => ({ uuid: r.uuid, name: r.name, tier: r.result.tier, g: tiers.indexOf(r.result.tier) })), nl: !!cfg.nonlethal, originUuid: cfg.actorUuid ?? "", srcId: msg.id, after: cfg.after ?? "", save: true });
   for (const { i } of ready) st.rows[i].damageDone = true;
   await writeSaveCard(msg, st);
 }

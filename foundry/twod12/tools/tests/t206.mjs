@@ -16,7 +16,7 @@ console.log("the chain:", F.withGrantLine(v, g).after);
 console.log("a Tier 1 line adds no gate:", F.withGrantLine(v, { on: "t1", does: "text", text: "@Condition[prone]" }).after, "| any result:", F.withGrantLine(v, { on: "all", does: "text", text: "@Condition[prone]" }).after, "| a no-tier Version keeps no chain:", F.withGrantLine({ ...v, noTiers: true }, g).after);
 console.log("tier:2 parsed:", I.parseInline("Condition", "hindered|rounds:eot|tier:2").tier, "| crit:", I.parseInline("Condition", "prone|crit:yes").crit);
 const il = src("module/inline.mjs");
-console.log("the chain filters its targets by the Tier and the Critical:", il.includes("if (cfg.tier || cfg.crit) { targets = (targets ?? []).filter(t => t.tier === undefined ? true : (!cfg.tier || (Number(t.tier) || 0) >= cfg.tier) && (!cfg.crit || t.crit)); if (!targets.length) continue; }"));
+console.log("the chain filters its targets by the Tier and the Critical:", il.includes("if (cfg.tier || cfg.crit) { targets = (targets ?? []).filter(t => t.tier === undefined ? true : (!cfg.tier || (ctx.save ? (Number(t.tier) || 0) <= cfg.tier : (Number(t.tier) || 0) >= cfg.tier)) && (!cfg.crit || t.crit)); if (!targets.length) continue; }"));
 console.log("the hover card's what line:", U.fxTipHtml({ name: "Aim (Weapon Attack, 1 Boon)", what: "grants Weapon Attack ×1, free, 1 Boon · ignores Low cover" }));
 const ac = src("module/actions.mjs");
 console.log("the cover notice and the Boons on the granted-use notice:", ac.includes('coverNotices.push({ text: `${cov.label} ignored`, icon: "fa-shield-halved"') && ac.includes("...coverNotices") && ac.includes("${opts.grant.grant?.boons ? `, ${opts.grant.grant.boons} Boon"));

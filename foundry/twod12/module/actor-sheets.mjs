@@ -776,8 +776,12 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   async _loadCard(row) {
     const box = row.querySelector(":scope > .ar-card"), item = this.actor.items.get(row.dataset.itemId);
     if (!box || !item || box.dataset.loaded) return;
+    // v0.0.334 (Lucas: Rebuke used with the sheet open "closed and opened the preview card a few times"): each re-render (AP, uses, damage) rebuilt
+    // the open card from empty. The last card of the row is put back at once, and the fresh one replaces it when it is ready.
+    const ck = `${item.id}|${row.classList.contains("ps-brw") ? "b" : "a"}`, cached = (this._cardCache ??= new Map()).get(ck);
+    if (cached) box.innerHTML = cached;
     // v0.0.297 (PACK ACTION-PREVIEW): a Build tab row has no Use: its card shows the Versions' costs, not their Use buttons
-    try { box.innerHTML = item.type === "action" ? await buildActionCard(item, { actor: this.actor, use: !row.classList.contains("ps-brw") }) : await buildFeatureCard(item, { actor: this.actor }); box.dataset.loaded = "1"; }   // v0.0.298: Features and Talents in the same look
+    try { const html = item.type === "action" ? await buildActionCard(item, { actor: this.actor, use: !row.classList.contains("ps-brw") }) : await buildFeatureCard(item, { actor: this.actor }); this._cardCache.set(ck, html); if (html !== cached) box.innerHTML = html; box.dataset.loaded = "1"; }   // v0.0.298: Features and Talents in the same look
     catch (e) { console.warn("twod12 | could not show the card", e); box.innerHTML = `<div class="tferr">Could not show this card (${esc(String(e.message ?? e).slice(0, 80))}).</div>`; }
   }
 

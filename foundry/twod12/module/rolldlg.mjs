@@ -374,8 +374,10 @@ function tierTableHtml(inp, st, v) {
     const riders = (v.tiers?.[n]?.riders ?? []).map(r => `<div class="rd-rider">↳ ${r}</div>`).join("");
     return (dmg || riders ? `${dmg ? `<div>${dmg}</div>` : ""}${riders}` : "&mdash;") + statLine(stats[n]);
   };
-  const rows = [1, 2, 3].map(n => `<tr class="t${n}"><th scope="row">Tier ${n}</th><td>${cell(n)}</td></tr>`);
-  if (v.crit) rows.push(`<tr class="crit"><th scope="row">Critical</th><td>${v.crit}</td></tr>`);
+  // v0.0.334 (Lucas): the GM clicks a Tier (or Critical) to make it the result (again: back to the roll); forceTier 4 = a Critical
+  const th = (n, label) => (inp.canForce && !inp.save ? `<th scope="row"><button type="button" class="rd-tforce" data-act="force" data-t="${n}" aria-pressed="${Number(st.forceTier) === n}" data-tooltip="${Number(st.forceTier) === n ? "Forced: click again to roll normally" : `Make ${label} the result (GM)`}">${label}</button></th>` : `<th scope="row">${label}</th>`);
+  const rows = [1, 2, 3].map(n => `<tr class="t${n}${Number(st.forceTier) === n ? " forced" : ""}">${th(n, `Tier ${n}`)}<td>${cell(n)}</td></tr>`);
+  if (v.crit) rows.push(`<tr class="crit${Number(st.forceTier) === 4 ? " forced" : ""}">${th(4, "Critical")}<td>${v.crit}</td></tr>`);
   if (v.effects) rows.push(`<tr class="rd-eff"><th scope="row">Effects<small>(T${v.effectsFrom ?? 2}+)</small></th><td>${v.effects}</td></tr>`);
   const net = stepNet(inp, st);
   return `<table class="rd-tiers">${rows.join("")}</table>${net.line ? `<div class="rd-step">${esc(net.line)}</div>` : ""}`;
