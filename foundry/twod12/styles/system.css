@@ -3776,3 +3776,9 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat.cc .cc-rwi { font-size: 10px; margin-left: 4px; color: var(--cc-mute); cursor: help; }
 .twod12.chat.cc .cc-rwi.weak { color: #b5532a; }
 .twod12.chat.cc .cc-rwi.resist { color: #3f6b8f; }
+
+/* v0.0.322: the new card with its own title line (buildSoloCard: the chat's Card button, the Action sheet's preview, hover cards, the class window) */
+.twod12.acard.d2 > .ap-title { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding-bottom: 6px; border-bottom: 1px solid #c9a35a; }
+.twod12.acard.d2 > .ap-title > b { font-family: "Cinzel", serif; font-size: 15px; color: #1b2433; letter-spacing: .02em; }
+.twod12.acard.d2 > .ap-title .ap-tcost { flex: none; font-size: 11px; font-weight: 700; color: #fbf6ea; background: #1b2433; border-radius: 3px; padding: 1px 6px; }
+.cc-window .window-content > .twod12.chat > .twod12.acard.d2 { margin-bottom: 8px; }

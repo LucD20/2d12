@@ -207,8 +207,9 @@ export async function openCardWindow(msg) {
   const f = msg.getFlag(F, "action"), m = msg.getFlag(F, "cc");
   let item = null;
   try { const a = f?.actorUuid ? await fromUuid(f.actorUuid) : null; item = a?.items?.get?.(f.itemId) ?? null; } catch (e) { item = null; }
-  const { buildRawCard } = await import("./preview.mjs");
-  const card = item ? await buildRawCard(item) : "";
+  // v0.0.322 (Lucas): the new card (as the sheets show it), with its title line; "This roll" stays under it
+  const { buildSoloCard } = await import("./actioncard.mjs");
+  const card = item ? await buildSoloCard(item) : "";
   const src = (m?.rows ?? []).map(r => {
     const bb = CC.boonBaneLines(r).map(x => `${x.kind === "boon" ? "Boon" : "Bane"} ${x.val >= 0 ? "+" : "−"}${Math.abs(x.val)}${x.name ? `: ${esc(x.name)}` : ""}`);
     const mods = (r.mods ?? []).filter(x => Number(x.v)).map(x => `${x.v > 0 ? "+" : "−"}${Math.abs(x.v)} ${esc(x.label)}`);
@@ -218,7 +219,7 @@ export async function openCardWindow(msg) {
   const html = `${card}${src || extra ? `<div class="cc-card cc-srcs"><b>This roll</b><ul>${src}${extra}</ul></div>` : ""}`;
   const { ApplicationV2 } = foundry.applications.api;
   class CardWindow extends ApplicationV2 {
-    static DEFAULT_OPTIONS = { classes: ["twod12", "cc-window"], window: { resizable: true }, position: { width: 380, height: "auto" } };
+    static DEFAULT_OPTIONS = { classes: ["twod12", "cc-window"], window: { resizable: true }, position: { width: 440, height: "auto" } };
     async _renderHTML() { const d = document.createElement("div"); d.className = "twod12 chat"; d.innerHTML = html; return d; }
     _replaceHTML(result, content) { content.replaceChildren(result); }
   }

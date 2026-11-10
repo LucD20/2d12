@@ -3,7 +3,7 @@ import { rollSource } from "./rollsource.mjs";
 import { tagChoices, TWOD12, categoryText, traitPicker, npcDamage } from "./config.mjs";
 import { versionRow } from "./actions.mjs";
 import { versionStats, fmt } from "./calc.mjs";
-import { buildRawCard, buildWeaponCard } from "./preview.mjs";
+import { buildWeaponCard } from "./preview.mjs";
 import { openWeaponGenerator } from "./gen.mjs";
 import { openActionGenerator } from "./genaction.mjs";
 import { enableDragging } from "./drag.mjs";
@@ -64,7 +64,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       // v0.0.172: the help tips (the grey hints) of the Action and Talent sheets can be hidden, like the Effect's (one choice per user, for both sheets).
       helpable: t === "action" || t === "talent" || t === "class",
       sheetHelp: (() => { try { return game.settings.get("twod12", "sheetHelp") !== false; } catch (e) { return true; } })(),
-      rawCard: t === "action" ? await buildRawCard(it) : t === "weapon" ? await buildWeaponCard(it) : "",
+      rawCard: t === "action" ? await (await import("./actioncard.mjs")).buildSoloCard(it) : t === "weapon" ? await buildWeaponCard(it) : "",   // v0.0.322: the new card
       categoryShown: categoryText(s),
       enriched: await TE.enrichHTML(s.description ?? "", { relativeTo: it }),
       vsChoices: TWOD12.vsChoices,

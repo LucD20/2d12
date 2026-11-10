@@ -26,14 +26,14 @@ import { useAction, askRoll, adjLabelOf } from "./actions.mjs";
 import { handleDrop } from "./grants.mjs";
 import { hasLevels, classTabSections, classTalentSlots } from "./classwindow.mjs";
 import { resolveModifiers } from "./effects.mjs";
-import { buildRawCard, buildInfoCard, sendItemToChat } from "./preview.mjs";
+import { buildInfoCard, sendItemToChat } from "./preview.mjs";
 import { openWeaponGenerator } from "./gen.mjs";
 import { openActionGenerator } from "./genaction.mjs";
 import { rollActorInitiative, combatantOf, getAP, setAP, spendAP, getRAP, setRAP } from "./combat.mjs";
 import { healthView, donutPoolAt } from "./healthview.mjs";
 import { applySpeedMods } from "./speedmods.mjs";
 import { unloadedWeapon, costText, frequencyText, costGroup, groupRows, GROUP_BY, SORT_BY, sortKeyOf } from "./actionrows.mjs";
-import { buildActionCard, buildFeatureCard } from "./actioncard.mjs";
+import { buildActionCard, buildFeatureCard, buildSoloCard } from "./actioncard.mjs";
 import { versionCant, dmgModsEdit, dmgModsText } from "./sheetmodel.mjs";
 import { parseDmgMods, SUBS } from "./chatcards.mjs";
 import { enableDragging, dropEffect } from "./drag.mjs";
@@ -305,7 +305,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         fq: cardColorFor(i.system), freqKey: FREQ_ORDER[effectiveFrequency(i.system)] ?? 3,
         traitShort: tr.slice(0, 3).join(" \u00b7 "), traitMore: Math.max(0, tr.length - 3), traitFull: tr.join(" \u00b7 "),
         faded: f.faded, fadedWhy: f.faded ? f.why : "", fav: favs.includes(i.id), group: this._groupOf(i),
-        tip: condensed ? await buildRawCard(i) : ""
+        tip: condensed ? await buildSoloCard(i) : ""   // v0.0.322: the new card
       };
     };
     // Weapon Techniques: not shown before their Mastery, nor while their weapon is not in hand (v0.0.213, Lucas: a Technique is used only with its own weapon).
@@ -691,7 +691,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       const item = d.dataset.itemId ? this.actor.items.get(d.dataset.itemId) : (d.dataset.itemUuid ? await fromUuid(d.dataset.itemUuid) : null);
       try {
         if (!item) throw new Error("item not found");
-        box.innerHTML = item.type === "action" ? await buildRawCard(item) : await buildInfoCard(item);
+        box.innerHTML = ["action", "feature", "talent"].includes(item.type) ? await buildSoloCard(item, { actor: this.actor }) : await buildInfoCard(item);   // v0.0.322
         box.dataset.loaded = "1";
       } catch (e) {
         console.warn("twod12 | could not show the card", e);
@@ -979,7 +979,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const row = target.closest(".arow"), box = row?.querySelector(".adetail");
     const item = this._item(target);
     if (!box || !item) return;
-    if (!box.dataset.loaded) { box.innerHTML = await buildRawCard(item); box.dataset.loaded = "1"; }
+    if (!box.dataset.loaded) { box.innerHTML = await buildSoloCard(item, { actor: this.actor }); box.dataset.loaded = "1"; }   // v0.0.322: the new card
     box.hidden = !box.hidden;
     row.classList.toggle("open", !box.hidden);
   }

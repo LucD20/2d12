@@ -202,3 +202,18 @@ export async function buildFeatureCard(item, { actor = null } = {}) {
     ${ruler ? `<div class="ap-ruler"><b>Ruler</b> ${esc(ruler)}</div>` : ""}
   </div>`;
 }
+
+/**
+ * v0.0.322 (Lucas: "the Action Card when clicking on the Card button the same as the new designs"): the new card where no sheet row is its head
+ * (the chat's Card button, the Action sheet's preview, a condensed row's hover card, the class window, the older sheets' panels): a title line
+ * (the name, and the cost or the kind) on top of buildActionCard / buildFeatureCard. No Use buttons: these are for reading.
+ */
+export const soloTitle = (name, right = "") => `<div class="ap-title"><b>${esc(name)}</b>${right ? `<span class="ap-tcost">${esc(right)}</span>` : ""}</div>`;
+const KIND = { feature: "Feature", talent: "Talent" };
+export async function buildSoloCard(item, { actor = null } = {}) {
+  if (!item) return "";
+  const s = item.system ?? {};
+  const card = item.type === "action" ? await buildActionCard(item, { actor, use: false }) : await buildFeatureCard(item, { actor });
+  const right = item.type === "action" ? costPill((s.versions ?? []).map(v => v.ap), !!s.reaction) : (KIND[item.type] ?? "");
+  return card.replace(/^(\s*<div class="twod12 acard d2[^"]*"[^>]*>)/, `$1${soloTitle(item.name, right)}`);
+}
