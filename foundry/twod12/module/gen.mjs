@@ -114,7 +114,8 @@ export function convertEffects(text) {
     const END = "(?=\\s*(?:[.;,()]|and\\b|$))";
     s = s.replace(new RegExp(`${NOT}\\b(Frightened|Taunted)((?:\\s+(?:of|by)\\s+(?:you|it|them|the\\s+[A-Z][\\w'-]*(?:\\s+[A-Z][\\w'-]*)*|[A-Z][\\w'-]*(?:\\s+[A-Z][\\w'-]*)*))?)${DUR}${END}`, "g"),
       (m, c, src, n, p) => `@Condition[${c.toLowerCase()}${durOf(n, p)}]{${c}}${m.slice(c.length)}`);
-    s = s.replace(new RegExp(`${NOT}\\b(Blinded|Staggered|Grabbed)${DUR}${END}`, "g"), (m, c, n, p) => `@Condition[${c.toLowerCase()}${durOf(n, p)}]{${c}}${m.slice(c.length)}`);
+    // v0.0.336 (Lucas, Marksman's Shot: "Blinded (EoT) fully as a button, as Vulnerable does"): a duration in parentheses is part of the button
+    s = s.replace(new RegExp(`${NOT}\\b(Blinded|Staggered|Grabbed)${DUR}${END}`, "g"), (m, c, n, p) => { const lab = p ? m.match(/^\w+\s*\([^)]*\)/)[0] : c; return `@Condition[${c.toLowerCase()}${durOf(n, p)}]{${lab}}${m.slice(lab.length)}`; });
     s = s.replace(new RegExp(`${NOT}\\b(Dazed|Sickened)\\s+(\\d+)${DUR}${END}`, "g"), (m, c, v, n, p) => { const nm = m.match(/^\w+\s+\d+/)[0]; return `@Condition[${c.toLowerCase()}|value:${v}${durOf(n, p)}]{${nm}}${m.slice(nm.length)}`; });
     // "Bleed [R] 1d6 Ho (Mi/Ap)", "Bleed 2 (Bo/In; DC 15)": the card's own dice, pool, type, Attributes and DC
     s = s.replace(/\bBleed\s+(?:\[([VRBM])\]\s*)?(\d+d\d+(?:[+-]\d+)?|\d+)(?:\s+([A-Z][a-z]))?\s*\(((?:Bo|Mi|Ap|In)(?:\/(?:Bo|Mi|Ap|In))*)(?:;\s*DC\s*(\d+))?\)/g,

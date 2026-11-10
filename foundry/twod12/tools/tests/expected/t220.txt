@@ -34,11 +34,11 @@ a card's Bleed over the condition's: {"dmg":"1d6","pool":"M","sub":"Ho","attrs":
 "A Strained target also gains Bleed [R] 1d6 Ho (Mi/Ap)." -> A Strained target also gains @Condition[bleed|dmg:1d6|pool:R|sub:Ho|attrs:mi/ap]{Bleed} [R] 1d6 Ho (Mi/Ap).
 "Bleed 2 (Bo/In; DC 15)." -> @Condition[bleed|dmg:2|attrs:bo/in|dc:15]{Bleed} 2 (Bo/In; DC 15).
 "they are Dazed 1 and Hindered (EoT)." -> they are @Condition[dazed|value:1]{Dazed 1} and @Condition[hindered|eot].
-"The target is Blinded (EoT)." -> The target is @Condition[blinded|eot]{Blinded} (EoT).
+"The target is Blinded (EoT)." -> The target is @Condition[blinded|eot]{Blinded (EoT)}.
 "The target is Blinded for 1 round." -> The target is @Condition[blinded|rounds:1]{Blinded} for 1 round.
 "Sickened 2." -> @Condition[sickened|value:2]{Sickened 2}.
 "Taunted by you (EoT)." -> @Condition[taunted|eot]{Taunted} by you (EoT).
-"Staggered (EoT)." -> @Condition[staggered|eot]{Staggered} (EoT).
+"Staggered (EoT)." -> @Condition[staggered|eot]{Staggered (EoT)}.
 "Grabbed." -> @Condition[grabbed]{Grabbed}.
 "a Frightened creature flees; no longer Staggered." -> a Frightened creature flees; no longer Staggered.
 @Condition[bleed|...] parsed: {"dmg":"1d6","pool":"M","sub":"Ho","attrs":["mind","appeal"],"dc":15} | the cond: bleed

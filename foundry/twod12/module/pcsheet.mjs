@@ -285,7 +285,7 @@ export async function pcModel(sheet, ctx) {
   if (npc) { const lv = Math.max(0, ...secRows.apex.map(r => Number(a.items.get(r.id)?.system?.escalation) || 0)); SEC_META.apex = { ...SEC_META.apex, title: `Escalation ${lv || 1}` }; }
   // v0.0.303 (Lucas: "I can't edit the Escalation things from NPCs"): an NPC's Escalation Actions are always listed (out of combat too, and on a non-Elite),
   // so they can be built and edited; a PC's stay in combat only (its Build tab lists them)
-  const sections = SECTION_ORDER.filter(k => secRows[k].length && (inCombat || k !== "granted") && (inCombat || npc || k !== "apex")).map(k => ({ key: k, ...SEC_META[k], rows: secRows[k] }));
+  const sections = SECTION_ORDER.filter(k => secRows[k].length && (inCombat || npc || k !== "apex"))   // v0.0.336 (Lucas: "nothing showing the granted actions"): Granted shows out of combat too.map(k => ({ key: k, ...SEC_META[k], rows: secRows[k] }));
 
   // Basic Actions: the four columns (config basicGroups), each button with its reason when it can't be used.
   const held = weapons.filter(w => w.system?.wielded && !w.system?.traits?.has?.("barehanded"));

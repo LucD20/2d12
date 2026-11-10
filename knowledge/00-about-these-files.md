@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-10 from the repository at: a85f57b 2026-11-10 v0.0.334: Opportunity Attack's threat limit restored, Basic Actions in the compendium, the sheet sidebar, weapon ranges with an i, roll window colors and forced Tiers, Feature cards in the chat, Rebuke and Skirmish Shot chains after the damage, Marked Quarry in the book; t229
+Built by tools/knowledge.py on 2026-11-10 from the repository at: 87992cf 2026-11-10 v0.0.335: Opportunity Attack at Adjacent and Marked Quarry as the Mark Quarry Action (book and Foundry); Rebuke, Skirmish Shot, Mark Quarry Mithril; trait chips everywhere alike, the Save card's Tier table, Tier rows clickable, the Forced Movement bar
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (89 KB)
+- HANDOFF.md (90 KB)
 - MASTER-PLAN.md (23 KB)
 - open-design-items.md (96 KB)
 - rules-01-roll.md (23 KB)

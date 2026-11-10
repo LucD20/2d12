@@ -4014,3 +4014,24 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 /* v0.0.335: the Forced Movement bar (Pushed, Pulled, Slid, Reposition): the hovered square's result after the text */
 .twod12-forcedbar .lb-text small { display: block; opacity: .75; font-size: 11px; }
 .twod12-forcedbar .lb-res { color: #f3d39c; }
+/* v0.0.336 (Lucas: Double Shot's "Granted Action" stacked one letter a line): the label on its own line, the buttons under it, wrapping */
+.twod12.chat.cc .tline.grantrow { flex-wrap: wrap; }
+.twod12.chat.cc .tline.grantrow .apside { flex: 1 1 100%; white-space: normal; }
+.twod12.chat.cc .tline.grantrow .gbtns { flex: 1 1 100%; flex-wrap: wrap; }
+.twod12.chat.cc .tline.grantrow .gbtns > * { flex: 1 1 0; justify-content: center; min-width: 110px; }
+/* v0.0.336 (Lucas: the "uses left" card after a granted use was the old style with a huge sword): the grant rows and their icon in every system
+   chat message (a sysCard too), in the chat cards' look */
+.twod12 img.cc-gico { width: 14px; height: 14px; border: 0; vertical-align: -2px; }
+.twod12.chat .tline.grantrow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 6px 0 0; padding: 6px 8px; background: #efe7d6; border: 0; border-radius: 4px; }
+.twod12.chat .tline.grantrow .apside { flex: 1 1 100%; font-size: 12px; color: #6f6a5c; } .twod12.chat .tline.grantrow .apside b { color: #26241f; }
+.twod12.chat .tline.grantrow .gbtns { display: flex; flex-wrap: wrap; gap: 4px; flex: 1 1 100%; }
+.twod12.chat .tline.grantrow .cc-gbtn { display: inline-flex; align-items: center; justify-content: center; gap: 4px; flex: 1 1 0; min-width: 110px; min-height: 26px; padding: 2px 10px; border: 0; border-radius: 4px; background: #3a3226; color: #f4ede0; font-size: 12px; font-weight: 700; cursor: pointer; }
+.twod12.chat .tline.grantrow .cc-gbtn i { color: #f4ede0; }
+.twod12.chat .tline.grantrow .cc-gbtn img.cc-gico { filter: brightness(0) invert(94%) sepia(6%) saturate(400%); }
+.twod12.chat .tline.grantrow .cc-used { color: #2b5a2f; font-weight: 700; font-size: 12px; white-space: nowrap; flex: 1 1 0; text-align: center; }
+/* v0.0.336 (Lucas: the Save card's Tier table "too white", "a very thick black outline" on the result): the card's own parchment, a thin outline */
+.twod12.chat.cc .cc-srow, .twod12.chat.cc .cc-srow.hit, .twod12.chat.cc .cc-card .cc-srow.hit:hover { background: transparent !important; }
+.twod12.chat.cc .cc-srow.hit, .twod12.chat.cc .cc-card .cc-srow.hit:hover { box-shadow: inset 0 0 0 1px #8a7650; }
+/* v0.0.336 (Lucas, Double Shot): the granted uses' bar, above the other bottom bars (it stays while the token is selected); its sword icon light */
+.twod12-linebar.twod12-grantbar { bottom: 140px; gap: 8px; padding: 6px 12px; }
+.twod12-grantbar .lb-grant img.cc-gico { width: 14px; height: 14px; border: 0; vertical-align: -2px; filter: brightness(0) invert(94%) sepia(6%) saturate(400%); }

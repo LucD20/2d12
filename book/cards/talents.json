@@ -141,7 +141,7 @@
    "text": "You gain the Pummel Action. Your [[Fists]] don't have the [[Non-threatening]] property: you can flank with them.",
    "foundry": {
     "img": "icons/svg/combat.svg",
-    "automation": "gold",
+    "automation": "mithril",
     "actions": [
      "Pummel"
     ],

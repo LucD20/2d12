@@ -349,7 +349,11 @@
       "[V] [Mod] Pi",
       "[V] 1d4 + 1 + [Mod] Pi",
       "[V] 1d8 + 1 + [Mod] Pi; Vulnerable 1 (EoT)."
-     ]
+     ],
+     "foundry": {
+      "x3": "Vulnerable 1 (EoT).",
+      "after": "@Condition[vulnerable|value:1|eot|tier:3]"
+     }
     }
    ],
    "foundry": {

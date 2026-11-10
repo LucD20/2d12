@@ -172,7 +172,46 @@ export async function refreshGrantCards(actor, effectId = "") {
     if (content !== msg.content) { try { await msg.update({ content }); } catch (e) { /* not ours */ } }
   }
 }
+/**
+ * v0.0.336 (Lucas, Double Shot: "when you click on a token that has the effect that grants Actions, besides the chat button, a small hud at the
+ * bottom with buttons to the granted Actions"): pure: the uses left on a creature's effects, one button each: [{ effectId, index, source, actionName, left }].
+ */
+export function grantBarModel(effects, nameOf = g => String(g.spec ?? "").replace(/^(category|trait):/i, "")) {
+  const out = [];
+  for (const e of effects ?? []) (e.getFlag?.(F, "grants") ?? e.flags?.[F]?.grants ?? []).forEach((g, index) => { if (g?.left > 0) out.push({ effectId: e.id, index, source: cleanName(e.name), actionName: cleanName(nameOf(g)), left: g.left }); });
+  return out;
+}
+let grantBarEl = null;
+function closeGrantBar() { grantBarEl?.remove(); grantBarEl = null; }
+/** The bar for the token the user controls (one token; its owner): a button per use left, each uses that grant (as the card's button does). */
+export function refreshGrantBar() {
+  if (typeof document === "undefined") return;
+  const toks = globalThis.canvas?.tokens?.controlled ?? [];
+  const tok = toks.length === 1 ? toks[0] : null, actor = tok?.actor;
+  const list = actor?.isOwner ? grantBarModel(actor.effects, g => actionsFor(actor, g.spec)[0]?.name ?? g.spec) : [];
+  if (!list.length) return closeGrantBar();
+  const btns = list.flatMap(x => Array.from({ length: x.left }, () => `<button type="button" class="lb-go lb-grant" data-effect-id="${escT(x.effectId)}" data-index="${x.index}" data-tooltip="${escT(`${x.actionName}, granted by ${x.source} (free)`)}">${grantIcon(x.actionName)} ${escT(x.actionName)}</button>`)).join("");
+  const sources = [...new Set(list.map(x => x.source))].join(", ");
+  const html = `<i class="fa-solid fa-bolt lb-ic"></i><span class="lb-text"><b>${escT(tok.name)}</b>: granted by <b>${escT(sources)}</b></span>${btns}`;
+  if (!grantBarEl) {
+    grantBarEl = document.createElement("div"); grantBarEl.className = "twod12-linebar twod12-setupbar twod12-grantbar"; document.body.append(grantBarEl);
+    grantBarEl.addEventListener("click", async ev => { const b = ev.target.closest(".lb-grant"); if (!b) return; ev.preventDefault(); const t = canvas.tokens.controlled[0]; if (t?.actor) await useGrantOf(t.actor, b.dataset.effectId, Number(b.dataset.index) || 0); });
+  }
+  grantBarEl.innerHTML = html;
+}
+/** Use one granted use of a creature's effect (the bar's button). Returns whether it was used. */
+export async function useGrantOf(actor, effectId, index = 0) {
+  if (!actor?.isOwner) { ui.notifications.warn(`You don't own ${actor?.name ?? "that creature"}.`); return false; }
+  const e = actor.effects.get(effectId), grant = e?.getFlag(F, "grants")?.[index];
+  if (!grant || !(grant.left > 0)) { ui.notifications.warn("No use left."); return false; }
+  const item = actionsFor(actor, grant.spec).find(i => activeGrants(actor, i).some(x => x.effect.id === effectId)) ?? actionsFor(actor, grant.spec)[0];
+  if (!item) { ui.notifications.warn(`${actor.name} has no Action called "${grant.spec}".`); return false; }
+  return !!(await useAction(actor, item, { grantKey: { effectId, index } }));
+}
 export function registerGrantCardHooks() {
+  // v0.0.336: the granted uses' bar follows the controlled token and its effects
+  const later = () => setTimeout(refreshGrantBar, 50);
+  for (const h of ["controlToken", "createActiveEffect", "updateActiveEffect", "deleteActiveEffect", "canvasReady"]) Hooks.on(h, later);
   Hooks.on("updateActiveEffect", (fx, changes) => { if (changes?.flags?.[F]?.grants && fx.parent?.documentName === "Actor") refreshGrantCards(fx.parent, fx.id); });
   Hooks.on("deleteActiveEffect", fx => { if ((fx.getFlag?.(F, "grants") ?? []).length && fx.parent?.documentName === "Actor") refreshGrantCards(fx.parent, fx.id); });
 }

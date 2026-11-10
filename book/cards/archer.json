@@ -323,7 +323,11 @@
       "[V] 1[W] + [Mod] + 3d6 Pi; Vulnerable 2 (EoT)."
      ],
      "ruler": "on 3: vulnerable 2",
-     "critical": "The target is Blinded (EoT)."
+     "critical": "The target is Blinded (EoT).",
+     "foundry": {
+      "x3": "Vulnerable 2 (EoT).",
+      "after": "@Condition[vulnerable|value:2|eot|tier:3]"
+     }
     }
    ],
    "foundry": {
