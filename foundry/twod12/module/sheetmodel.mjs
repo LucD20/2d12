@@ -340,3 +340,60 @@ export function dmgModsEdit(parsed, kind, sub, n = null) {
   else if (kind === "resist" || kind === "weak") { delete out[kind][sub]; if (n !== null && Number(n) > 0) out[kind][sub] = Math.trunc(Number(n)); }
   return out;
 }
+
+/* ------------------------------------------------------------------ v0.0.333 (PACK RWI): Immune / Resist / Weak lines (book, Chapter 1) */
+export const DMG_KINDS = ["immune", "resist", "weak"];
+const KIND_WORD = { immune: "Immune", resist: "Resist", weak: "Weak" };
+/**
+ * The creature's effective Immune / Resist / Weak lines, from its sources: [{ name, type ("actor" | "item" | "talent" | "feature" | "effect"),
+ * uuid, temporary, remaining (rounds, "eot" or null), lines: [{ kind, sub (a code), n }] }]. names: code -> the subtype's name (TWOD12.subtypes).
+ * Two of the same kind and subtype don't add up: the highest is kept (a tie keeps a lasting one first), the others are listed in its overridden.
+ * Immune and a Resist / Weak of the same subtype are both kept (Immune wins when damage is applied). Ordered Immune, Resist, Weak, then by subtype.
+ * Each: { kind, subtype, code, value (null for Immune), source { name, type, uuid }, temporary, remaining, overridden: [same, without overridden] }.
+ */
+export function damageLinesFrom(sources, names) {
+  const all = [];
+  for (const s of sources ?? []) for (const l of s?.lines ?? []) {
+    const kind = DMG_KINDS.includes(l?.kind) ? l.kind : "", code = l?.sub;
+    if (!kind || !code || !(code in (names ?? {}))) continue;
+    const value = kind === "immune" ? null : Math.max(0, Math.trunc(Number(l.n)) || 0);
+    if (kind !== "immune" && !(value > 0)) continue;
+    all.push({ kind, subtype: names[code], code, value, source: { name: s.name ?? "", type: s.type ?? "actor", uuid: s.uuid ?? "" }, temporary: !!s.temporary, remaining: s.remaining ?? null });
+  }
+  const better = (a, b) => (a.kind === "immune" ? 0 : (a.value - b.value)) || ((b.temporary ? 1 : 0) - (a.temporary ? 1 : 0));
+  const kept = new Map();
+  for (const l of all) {
+    const k = `${l.kind}|${l.code}`, cur = kept.get(k);
+    if (!cur) { kept.set(k, { ...l, overridden: [] }); continue; }
+    if (better(l, cur) > 0) { const { overridden, ...old } = cur; kept.set(k, { ...l, overridden: [old, ...overridden] }); }
+    else cur.overridden.push(l);
+  }
+  const codes = Object.keys(names ?? {});
+  return [...kept.values()].sort((a, b) => DMG_KINDS.indexOf(a.kind) - DMG_KINDS.indexOf(b.kind) || codes.indexOf(a.code) - codes.indexOf(b.code));
+}
+/** "Immune Psychic", "Resist 3 Blunt". */
+export const damageLineName = l => (l.kind === "immune" ? `Immune ${l.subtype}` : `${KIND_WORD[l.kind]} ${l.value} ${l.subtype}`);
+/** The chip's text: "Psychic", "3 Blunt", "2 Fire · 3 rd" (a temporary line's time left: rounds, EoT, or nothing until removed). */
+export const damageLineChip = l => `${l.kind === "immune" ? l.subtype : `${l.value} ${l.subtype}`}${l.temporary && l.remaining ? ` · ${l.remaining === "eot" ? "EoT" : `${l.remaining} rd`}` : ""}`;
+const SRC_TYPE = { actor: "its stat block", item: "item", talent: "Talent", feature: "Feature", effect: "effect" };
+/** The tooltip: the line, its source (and time left), the rule in one sentence; and what it overrode. */
+export function damageLineTip(l) {
+  const from = l.source.type === "actor" ? "its own line" : `${l.source.name} (${SRC_TYPE[l.source.type] ?? l.source.type})`;
+  const left = l.temporary ? (l.remaining === "eot" ? " · until the end of the turn" : l.remaining ? ` · ${l.remaining} round${l.remaining === 1 ? "" : "s"} left` : " · until removed") : "";
+  const rule = l.kind === "immune" ? `its ${l.subtype} damage is 0.` : `each Action's ${l.subtype} damage, both pools together, is ${l.kind === "weak" ? "increased" : "reduced"} by ${l.value} once.`;
+  const also = (l.overridden ?? []).map(o => `${damageLineName(o)} from ${o.source.type === "actor" ? "its own line" : o.source.name}`);
+  return `${damageLineName(l)}, from ${from}${left}: ${rule}${also.length ? ` Also: ${also.join("; ")} (the highest applies).` : ""}`;
+}
+/** The lines as the damage message reads them: { resist: { code: n }, weak: { code: n }, immune: [codes] }. */
+export function damageLinesMods(lines) {
+  const out = { resist: {}, weak: {}, immune: [] };
+  for (const l of lines ?? []) {
+    if (l.kind === "immune") { if (!out.immune.includes(l.code)) out.immune.push(l.code); }
+    else out[l.kind][l.code] = Math.max(out[l.kind][l.code] ?? 0, l.value);
+  }
+  return out;
+}
+/** The Damage block's rows: one per kind that has a line, in the order Immune, Resist, Weak. */
+export const damageLineRows = lines => DMG_KINDS.map(k => ({ kind: k, label: KIND_WORD[k], lines: (lines ?? []).filter(l => l.kind === k) })).filter(r => r.lines.length);
+/** One Immune / Resist / Weak written as text ("Resist 3 Blunt"), and a whole line list as the stored text ("Resist 3 Blunt, Immune Psychic"), for dmgMods fields. */
+export const dmgModsFromLines = (list, names) => list.map(l => (l.kind === "immune" ? `Immune ${names[l.sub] ?? l.sub}` : `${KIND_WORD[l.kind]} ${l.n} ${names[l.sub] ?? l.sub}`)).join(", ");

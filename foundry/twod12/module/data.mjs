@@ -508,6 +508,7 @@ export class WeaponData extends foundry.abstract.TypeDataModel {
       actions: new ArrayField(str()),
       wielded: bool(),
       hand: str(),   // v0.0.208: the hand that holds it, "main" or "off" (empty: by order; a two-handed grip uses both)
+      dmgMods: str(""),   // v0.0.333 (PACK RWI): Immune / Resist / Weak it gives while wielded (a shield, a warded blade)
       dropped: bool()   // v0.0.139: on the ground (not in hand, not worn); Worn = not wielded and not dropped
     };
   }
@@ -522,6 +523,7 @@ export class ArmorData extends foundry.abstract.TypeDataModel {
       bonus: sint(0), ward: int(0, 0),
       properties: str(),   // free text for now (Resist, Bulky, Noisy...: not automated yet)
       worn: bool(),
+      dmgMods: str(""),   // v0.0.333 (PACK RWI): Immune / Resist / Weak it gives while worn ("Resist 2 Fire, Immune Cold"; the actor field's format)
       dropped: bool()   // v0.0.139: on the ground; not worn and not dropped = Carried
     };
   }

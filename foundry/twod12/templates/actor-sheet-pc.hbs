@@ -149,6 +149,7 @@
         <div class="ps-g2">{{#each pc.defs.main}}<div class="ps-box big" data-tooltip="{{tip}}"><b class="{{cls}}">{{value}}</b><span>{{label}}</span></div>{{/each}}</div>
         <div class="ps-g4 small">{{#each pc.defs.vs}}<div class="ps-box" data-tooltip="{{tip}}"><b>{{value}}</b><span>{{label}}</span></div>{{/each}}</div>
       </section>
+      {{{pc.dmgHtml}}}
 
       <section class="ps-sec line">
         <span class="ps-k">Attributes</span>
@@ -416,7 +417,7 @@
               </div>{{/each}}
             </div>
           </div>
-          <div class="ps-block nb-rw"><div class="ps-bh"><b>Resist and Weak</b><span class="ps-bsub">Resist lowers that type's damage by its number, Weak raises it; Immune ignores it</span></div>
+          <div class="ps-block nb-rw"><div class="ps-bh"><b>Damage: Immune, Resist and Weak</b><button type="button" class="ps-dladd" data-action="dmgLineAdd" data-tooltip="Add a line in the pick window">+ Add</button><span class="ps-bsub">Resist lowers that type's damage by its number, Weak raises it; Immune ignores it</span></div>
             <div class="nb-chips">{{#each rw.chips}}<span class="nb-chip {{kind}}">{{label}}<a data-action="removeDmgMod" data-kind="{{kind}}" data-sub="{{sub}}" aria-label="Remove {{label}}" data-tooltip="Remove">&times;</a></span>{{else}}<span class="ps-mut">None.</span>{{/each}}</div>
             <div class="nb-rwadd"><select class="nb-rwtype" aria-label="Damage type">{{#each rw.types}}<option value="{{key}}">{{label}}</option>{{/each}}</select>
               <input type="number" class="nb-rwn" min="1" max="20" value="5" aria-label="Amount">

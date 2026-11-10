@@ -79,6 +79,8 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       // v0.0.323 (PACK EFFECT-SHEET): the new Details tab (fxsheet.mjs), and the ? on the tab bar
       fxHost: ["effect", "feature", "talent"].includes(t),
       fxTab: ["effect", "feature", "talent"].includes(t) ? await this._fxTab() : "",
+      // v0.0.333 (PACK RWI): an armor's (while worn) or a weapon's (while wielded) Immune / Resist / Weak lines, edited in the pick window
+      dmgLinesHtml: ["armor", "weapon"].includes(t) ? (await import("./dmglines.mjs")).itemDamageHtml(this.item, { editable: this.isEditable }) : "",
       fxHeadLine: t === "effect" ? (this._fxExtra?.()?.headLine ?? "") : "",
       isPassiveHost: ["feature", "talent"].includes(t),
       freqChoices: TWOD12.frequencies,
@@ -389,6 +391,12 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     this.element.classList.toggle("twod12-styled", this.item.type !== "species");   // v0.0.168 (system.css "Item sheets")
     applyTab(this);
     enableDragging(this);
+    // v0.0.333 (PACK RWI): the "Damage lines" list: + Add and a chip (edit or remove) open the pick window
+    this.element.querySelectorAll("[data-dl-add], [data-dl-edit]").forEach(b => b.addEventListener("click", async ev => {
+      ev.preventDefault();
+      const { editDamageLine } = await import("./dmglines.mjs"), d = b.dataset;
+      await editDamageLine(this.item, b.hasAttribute("data-dl-edit") ? { kind: d.kind, code: d.sub, value: d.value === "" ? null : Number(d.value) } : null);
+    }));
     this.element.querySelectorAll("details.setting").forEach(d =>
       d.addEventListener("toggle", () => {
         this._openSettings ??= new Set();

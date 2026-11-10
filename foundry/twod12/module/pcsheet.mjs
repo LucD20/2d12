@@ -21,6 +21,9 @@ import {
   rowLines, senseChips, strikePips, ELITE_RUNGS, ratingKeys, npcRow, specialAvg, ratingsAverage, downIn, diceFor, dmgModChips
 } from "./sheetmodel.mjs";
 import { parseDmgMods, SUBS } from "./chatcards.mjs";
+import { creatureDamageLines } from "./ccdamage.mjs";
+import { damageBlockModel, damageBlockHtml } from "./dmglines.mjs";
+import { damageLineName } from "./sheetmodel.mjs";
 const F = "twod12";
 const sg = v => (v >= 0 ? `+${v}` : `−${Math.abs(v)}`);
 const clean = n => String(n ?? "").replace(/\s*\(.*\)\s*$/, "");
@@ -436,6 +439,8 @@ export async function pcModel(sheet, ctx) {
     npc, builder: npc ? npcBuilderModel(a) : null, loot: npc ? lootRows(a) : null,
     head, strip, hands, chips, health, rally, defs, attrs, move, mods, wounds, sections, basic, favRows, tabs, untrained,
     effects: { conditions, effects }, weapons: weaponRows, armor: armorRows, build, mastery, upkeep, down,
+    // v0.0.333 (PACK RWI): the Damage block under Defenses (Immune / Resist / Weak, every source; hidden with none, but a GM sees + Add)
+    dmgHtml: (() => { try { return damageBlockHtml(damageBlockModel(creatureDamageLines(a), { gm: !!game.user?.isGM })); } catch (e) { console.warn("twod12 | Damage block", e); return ""; } })(),
     modConflict: s.modConflict ? `Both Modifiers wanted the same Attribute: the ${csys?.modPriority === "power" ? "Power" : "Weapon"} Modifier kept it.` : ""
   };
 }
@@ -541,11 +546,12 @@ export function lootRows(a) {
 /** The "Post stat block" card (GM): name, role, CV, Stage, Health, Defenses, Speed, Senses, each Action in one line. */
 export function statBlockHtml(a, sysCard) {
   const s = a.system, chips = senseChips(s.senses ?? {}).map(c => c.label).join(", ");
+  let dl = []; try { dl = creatureDamageLines(a); } catch (e) { dl = []; }   // v0.0.333: "Immune Psychic · Resist 3 Blunt · Weak 5 Fire"
   const acts = a.itemTypes.action.filter(i => !i.getFlag(F, "basic") || i.getFlag(F, "basic") === "opportunityAttack").map(i => {
     const f = effectiveFrequency(i.system), cost = costPill((i.system.versions ?? []).map(v => v.ap), !!i.system.reaction);
     const line = plainEnrichers(hoverOf(i.system.hover, i.system.description ?? i.system.versions?.[0]?.effects ?? "")).slice(0, 110);
     return `<b>${esc(i.name)}</b> (${esc(cost)}${f ? `, ${esc(TWOD12.frequencies[f])}` : ""})${line ? `: ${esc(line)}` : ""}`;
   });
   return sysCard({ title: a.name, lead: `${esc(s.roleLabel ?? "")} \u00b7 CV ${esc(s.cv ?? "")} \u00b7 Stage ${esc(s.stage ?? 1)}`,
-    text: [`Health ${s.pool} (Vigor ${s.bdt}, Resolve ${s.mdt}) \u00b7 AD ${s.armorDC} \u00b7 WD ${s.wardDC} \u00b7 Speed ${s.moveSpeed ?? s.speed}`, `Senses: ${esc(chips)}`, ...acts].join("<br>") });
+    text: [`Health ${s.pool} (Vigor ${s.bdt}, Resolve ${s.mdt}) \u00b7 AD ${s.armorDC} \u00b7 WD ${s.wardDC} \u00b7 Speed ${s.moveSpeed ?? s.speed}`, ...(dl.length ? [esc(dl.map(damageLineName).join(" \u00b7 "))] : []), `Senses: ${esc(chips)}`, ...acts].join("<br>") });
 }

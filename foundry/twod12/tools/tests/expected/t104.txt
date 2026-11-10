@@ -12,7 +12,7 @@ another Action: fresh: [["Shove",1,[]]]
 added: Hindered | removed: Prone
 --- where a click goes
 foundry window | 2d12 editor | foundry window | foundry window
-panel, sheet and Shift+click use it: 2 1 | registered: true | template has the Applied part: true
+panel, sheet and Shift+click use it: 2 2 | registered: true | template has the Applied part: true
 --- v0.0.114: Exhausted and the form
 the form's own fields go to the temporary item: true | Exhausted opens it: true | Shift+click on Exhausted: true
 Exhausted keeps its name and picture: true | gets the bane: 1

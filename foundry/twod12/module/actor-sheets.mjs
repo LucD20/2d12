@@ -77,7 +77,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     actions: {
       switchTab: CharacterSheet.switchTab, rollAttr: CharacterSheet.rollAttr, rollTable: CharacterSheet.rollTable,
       useAction: CharacterSheet.useAction, useWith: CharacterSheet.useWith, swapHands: CharacterSheet.swapHands, handBlocked: CharacterSheet.handBlocked, openItem: CharacterSheet.openItem, deleteItem: CharacterSheet.deleteItem,
-      openEffect: CharacterSheet.openEffect, deleteEffect: CharacterSheet.deleteEffect, exhaustedUp: CharacterSheet.exhaustedUp, exhaustedDown: CharacterSheet.exhaustedDown,
+      openEffect: CharacterSheet.openEffect, deleteEffect: CharacterSheet.deleteEffect, dmgLineOpen: CharacterSheet.dmgLineOpen, dmgLineAdd: CharacterSheet.dmgLineAdd, exhaustedUp: CharacterSheet.exhaustedUp, exhaustedDown: CharacterSheet.exhaustedDown,
       confirmDelete: CharacterSheet.confirmDelete,
       rollInitiative: CharacterSheet.rollInitiative, addBasic: CharacterSheet.addBasic, rest: CharacterSheet.rest, editSenses: CharacterSheet.editSenses,
       sendItem: CharacterSheet.sendItem, toggleGroup: CharacterSheet.toggleGroup, generateWeapon: CharacterSheet.generateWeapon, toggleLoaded: CharacterSheet.toggleLoaded,
@@ -1338,6 +1338,24 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const fx = this.actor.effects.get(target.closest("[data-effect-id]")?.dataset.effectId);
     if (isExhaustedFx(fx) && this.actor.type === "character") { exhaustedClick(this.actor, fx, { shift: event?.shiftKey, ctrl: event?.ctrlKey || event?.metaKey }); return; }   // Exhausted: click +1, Shift settings, Ctrl remove
     openEffectSheet(fx);
+  }
+  /** v0.0.333 (PACK RWI): a Damage chip opens its source (the effect, item, Talent or Feature); the creature's own line opens the edit window (GM). */
+  static async dmgLineOpen(event, target) {
+    const d = target.dataset;
+    if (d.src === "actor") {
+      if (!game.user.isGM) return;
+      const { editDamageLine } = await import("./dmglines.mjs"), { creatureDamageLines } = await import("./ccdamage.mjs");
+      const own = creatureDamageLines(this.actor).flatMap(l => [l, ...(l.overridden ?? [])]).find(l => l.source.type === "actor" && l.kind === d.kind && l.code === d.sub);
+      return editDamageLine(this.actor, own ?? { kind: d.kind, code: d.sub, value: null });
+    }
+    if (d.src === "effect") { const fx = this.actor.effects.find(e => e.uuid === d.uuid); if (fx) return openEffectSheet(fx); }
+    try { const doc = d.uuid ? await fromUuid(d.uuid) : null; doc?.sheet?.render(true); } catch (e) { /* gone */ }
+  }
+  /** + Add (GM): a lasting line on the creature itself (system.dmgMods), in the pick window. */
+  static async dmgLineAdd() {
+    if (!game.user.isGM) return;
+    const { editDamageLine } = await import("./dmglines.mjs");
+    return editDamageLine(this.actor, null);
   }
   /** The + and - buttons on the Exhausted condition of the sheet. */
   static exhaustedUp() { if (this.actor.isOwner) bumpExhausted(this.actor, 1); }

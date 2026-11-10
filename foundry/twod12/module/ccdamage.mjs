@@ -9,6 +9,8 @@ import { damageOdds } from "./calc.mjs";
 import { allEffects } from "./passives.mjs";
 import { evalFormula, refValues } from "./fxrules.mjs";
 import { effectOff } from "./escalation.mjs";
+import { damageLinesFrom, damageLinesMods } from "./sheetmodel.mjs";
+import { TWOD12 } from "./config.mjs";
 const F = "twod12", SOCKET = "system.twod12";
 
 const actorOf = uuid => { try { const d = fromUuidSync(uuid); return d?.documentName === "Actor" ? d : d?.actor ?? null; } catch (e) { return null; } };
@@ -18,6 +20,7 @@ const guardOf = a => (Number(a?.system?.guard) || 0) + (Number(a?.system?.apGuar
  * settings of its effects, Features and Talents that work now (an Escalation minimum, Only while it sees its origin); the highest of each counts.
  */
 export function dmgModsOf(a) {
+  try { return damageLinesMods(creatureDamageLines(a)); } catch (e) { console.warn("twod12 | damage lines", e); }   // v0.0.333: one source for the sheet and the card
   const extra = [];
   for (const e of allEffects(a)) {
     if (effectOff(a, e)) continue;
@@ -30,6 +33,38 @@ export function dmgModsOf(a) {
   return CC.mergeDmgMods(CC.parseDmgMods(a?.system?.dmgMods ?? ""), extra);
 }
 const modsOf = dmgModsOf;
+
+/**
+ * v0.0.333 (PACK RWI; book, Chapter 1, Resist, Weak and Immune): every Immune / Resist / Weak line of a creature with its source, the highest of
+ * each kind and subtype kept (sheetmodel.mjs damageLinesFrom). The sources: its own line (system.dmgMods: an NPC's stat block, a GM's lasting line),
+ * the armor it wears and the weapons it wields (their dmgMods), the "Resist, Weak or Immune" rule of its Features and Talents (lasting) and of the
+ * effects on it (temporary, with their time left). An effect that doesn't work now (an Escalation minimum, Only while it sees its origin) is left out.
+ */
+export function creatureDamageLines(a) {
+  const names = Object.fromEntries(Object.entries(TWOD12.subtypes ?? {}).filter(([k]) => k));
+  const parsed = t => { const p = CC.parseDmgMods(t ?? ""); return [...Object.entries(p.resist).map(([sub, n]) => ({ kind: "resist", sub, n })), ...Object.entries(p.weak).map(([sub, n]) => ({ kind: "weak", sub, n })), ...p.immune.map(sub => ({ kind: "immune", sub }))]; };
+  const sources = [];
+  if (String(a?.system?.dmgMods ?? "").trim()) sources.push({ name: a.name, type: "actor", uuid: a.uuid ?? "", lines: parsed(a.system.dmgMods) });
+  for (const it of [...(a?.itemTypes?.armor ?? []).filter(i => i.system?.worn), ...(a?.itemTypes?.weapon ?? []).filter(i => i.system?.wielded)])
+    if (String(it.system?.dmgMods ?? "").trim()) sources.push({ name: it.name, type: "item", uuid: it.uuid ?? "", lines: parsed(it.system.dmgMods) });
+  for (const e of allEffects(a)) {
+    if (effectOff(a, e)) continue;
+    const list = e.getFlag?.(F, "dmgMods") ?? e.flags?.[F]?.dmgMods ?? [];
+    if (!list.length) continue;
+    let o = null;
+    const lines = list.map(m => {
+      if (!m.formula) return m;
+      if (o === null) { try { const d = e.origin ? fromUuidSync(e.origin) : null; o = d?.documentName === "Actor" ? d : d?.actor ?? false; } catch (err) { o = false; } }
+      return { ...m, n: Math.trunc(Number(evalFormula(m.formula, { origin: refValues(o || a), target: refValues(a) }).value) || 0) };
+    });
+    const pid = /^passive-(.+)-\d+$/.exec(e.id ?? "")?.[1], item = pid ? a.items?.get?.(pid) : null;
+    if (item) { sources.push({ name: item.name, type: item.type === "talent" ? "talent" : "feature", uuid: item.uuid ?? "", lines }); continue; }
+    if (String(e.id ?? "").startsWith("passive-")) { sources.push({ name: e.name, type: "feature", uuid: "", lines }); continue; }
+    const d = e.getFlag?.(F, "duration") ?? {}, left = Number(e.getFlag?.(F, "remaining") ?? d.rounds) || 0;
+    sources.push({ name: e.name, type: "effect", uuid: e.uuid ?? "", temporary: true, remaining: d.type === "rounds" && left > 0 ? left : d.type === "eot" ? "eot" : null, lines });
+  }
+  return damageLinesFrom(sources, names);
+}
 
 /** The preview of one row (what changes the damage for that creature) and its choice, from the creature as it is now. */
 export function rowPreview(comps, actor) {

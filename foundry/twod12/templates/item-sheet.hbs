@@ -283,6 +283,7 @@
       <label>Ward <input type="number" min="0" name="system.ward" value="{{system.ward}}"></label>
     </div>
     <label class="inline"><input type="checkbox" name="system.worn" {{#if system.worn}}checked{{/if}}> Worn</label>
+    {{{dmgLinesHtml}}}
     <label>Properties <input type="text" name="system.properties" value="{{system.properties}}" placeholder="Resist Slash 1, Bulky (not automated yet)"></label>
     <p class="hint">The wearer's Armor is 11 + the category's value (Light 1, Medium 2, Heavy 3) + the extra; Ward adds to the wearer's Ward. Only one armor is worn at a time. Wearing armor beyond your class's Armor Training makes your Rolls Doomed and Actions against your Armor or Ward Favored.</p>
     {{/if}}
@@ -297,6 +298,7 @@
     {{/if}}
 
     {{#if isWeapon}}
+    {{{dmgLinesHtml}}}
     <div class="opts"><button type="button" data-action="generateWeapon"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Weapon</button><span class="ihint">one line, like <code>greatsword: two-handed, slash, 0/1d8/2d6</code></span></div>
     <label>Properties {{formInput fields.traits value=system.traits name="system.traits"}}</label>
     <div class="grid3">

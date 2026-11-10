@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-10 from the repository at: bdcb503 2026-11-10 v0.0.331: four new compendium PCs with Lucas's portraits (Aveline, Durgan, Sylwen, Kaela; level 4, every pair of a class different) and the book's other 14 weapons; t227 checks each sheet
+Built by tools/knowledge.py on 2026-11-10 from the repository at: b1362a7 2026-11-10 v0.0.332: a level 1 version of each of the four PCs (Aveline's Greatsword, Kaela's Shortbow among them)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

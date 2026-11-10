@@ -246,22 +246,23 @@ const npc = ({ name, img, role, weaponAttribute, powerAttribute = "mind", modLea
   r.speed = [3, 4, 5, 6, 7].includes(speed) ? String(speed) : "custom";
   actors.push({ name, img, system: { level: 1, role, speed, weaponAttribute, powerAttribute, modLead, ratings: r, useEscalation: role === "elite" }, items: [...extra, ...basics, (() => { const f = fistsItemData(), e = embedded(name, "weapon", f.name, f.img, f.system, f.flags); e._id = idOf("Item", `${name}:weapon:Fists`); return e; })()] });
 };
+// v0.0.333 (Lucas): the portraits (art/npcs/; the Grave Wisp has none yet).
 // v0.0.183 (Lucas: a complete rebuild, simple NPCs to test with): one NPC for each role, at Stage 1 (level 1). The Minion, the Standard and
 // the Elite are the Bestiary's own examples (book: Example NPCs; the Grave Wisp since pack R-bestiary); the Grunt follows the same recipe. Damage is the book's average for the
 // rating ([Mod] is added on Tier 2 and 3, as for any Weapon Action); the weapon in its hands is only what the attack looks like.
 {
   const n = "Goblin Sneak", knife = npcWeapon(n, "rusty knife: melee, pierce, 0/1d4/1d6", "icons/svg/dagger.svg");
-  npc({ name: n, img: "icons/svg/mystery-man.svg", role: "minion", weaponAttribute: "instinct", speed: 7, ratings: { bodyHm: "low", mindHm: "low", wd: "low" },
+  npc({ name: n, img: "systems/twod12/art/npcs/goblin-sneak.png", role: "minion", weaponAttribute: "instinct", speed: 7, ratings: { bodyHm: "low", mindHm: "low", wd: "low" },
     extra: [knife] });
 }
 {
   const n = "Bandit Thug", club = npcWeapon(n, "cudgel: melee, blunt, 0/1d4/1d6", "icons/svg/hammer.svg");
-  npc({ name: n, img: "icons/svg/mystery-man.svg", role: "grunt", weaponAttribute: "body",
+  npc({ name: n, img: "systems/twod12/art/npcs/bandit-thug.png", role: "grunt", weaponAttribute: "body",
     extra: [club] });
 }
 {
   const n = "Orc Warrior", cleaver = npcWeapon(n, "cleaver: melee, slash, 0/1d8/2d8", "icons/svg/sword.svg");
-  npc({ name: n, img: "icons/svg/mystery-man.svg", role: "standard", weaponAttribute: "body", ratings: { bodyHm: "high", mindHm: "low", wd: "low" },
+  npc({ name: n, img: "systems/twod12/art/npcs/orc-warrior.png", role: "standard", weaponAttribute: "body", ratings: { bodyHm: "high", mindHm: "low", wd: "low" },
     extra: [cleaver] });
 }
 // v0.0.240 (pack R-bestiary): a Standard that attacks Ward Defense only (its Actions are Power Actions dealing [R]); no weapon in its hands.
@@ -271,7 +272,7 @@ const npc = ({ name, img, role, weaponAttribute, powerAttribute = "mind", modLea
 }
 {
   const n = "Ogre Chieftain", club = npcWeapon(n, "great club: two-handed, melee, blunt, 0/1d10/2d10", "icons/svg/hammer.svg");
-  npc({ name: n, img: "icons/svg/mystery-man.svg", role: "elite", weaponAttribute: "body", speed: 4, ratings: { wd: "low" },
+  npc({ name: n, img: "systems/twod12/art/npcs/ogre-chieftain.png", role: "elite", weaponAttribute: "body", speed: 4, ratings: { wd: "low" },
     extra: [club] });
 }
 actors.forEach(a => { a.system.level = 1; });

@@ -3945,3 +3945,20 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .application .fr-tab .fr-sec > .fr-seg.w { margin-bottom: 6px; }
 .application .fr-tab .fr-addsh.first:empty { display: none; }
 .application .fr-tab .fr-addsh.first:empty + .fr-part { border-top-width: 1px; border-radius: 4px 4px 0 0; }
+
+/* v0.0.333 (PACK RWI): the "Damage" block under Defenses (Immune / Resist / Weak chips; dashed = from an effect) and the items' Damage lines */
+.twod12.sheet.pcs .ps-dmg { display: flex; flex-direction: column; gap: 4px; }
+.twod12.sheet.pcs .ps-dlrow, .twod12 .it-dmg { display: grid; grid-template-columns: 56px 1fr; align-items: start; gap: 4px; }
+.twod12.sheet.pcs .ps-dll { font-size: 11px; color: #9aa6ba; padding-top: 2px; }
+.twod12 .ps-dlc { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.twod12 button.ps-dl { all: unset; box-sizing: border-box; cursor: pointer; font-size: 12px; line-height: 1.4; padding: 1px 7px; border-radius: 3px; border: 1px solid; white-space: nowrap; }
+.twod12 button.ps-dl:focus-visible { outline: 2px solid #d9b45a; outline-offset: 1px; }
+.twod12 button.ps-dl.immune { background: #3a4559; color: #e6e9ef; border-color: #6b7891; }
+.twod12 button.ps-dl.resist { background: #1f3d3a; color: #bfe3d7; border-color: #2f6f60; }
+.twod12 button.ps-dl.weak { background: #3a2a2a; color: #f2c9c4; border-color: #7a3b35; }
+.twod12 button.ps-dl.tmp { border-style: dashed; }
+.twod12 button.ps-dladd { all: unset; cursor: pointer; font-size: 11px; color: #9aa6ba; padding: 1px 4px; align-self: flex-start; }
+.twod12 button.ps-dladd:hover, .twod12 button.ps-dladd:focus-visible { color: #d9b45a; text-decoration: underline; }
+.twod12 .it-dmg { grid-template-columns: 110px 1fr; margin: 6px 0; }
+.twod12 .it-dmgl { font-size: 12px; font-weight: 600; } .twod12 .it-dmgl small { display: block; font-weight: 400; opacity: .7; }
+.twod12.pickwin .pw-num input { width: 5em; margin-left: 6px; }
