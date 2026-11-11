@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-11 from the repository at: adfe2cb 2026-11-11 v0.0.352: playtest 4, Step 6 (buttons): a chip's icon uses it, its name opens it; calculated chips colored; flanking labels per zoom; area tooltip colors; Smite's Stage parenthesis off in Foundry (Diamond)
+Built by tools/knowledge.py on 2026-11-11 from the repository at: 4bc02e4 2026-11-11 v0.0.353: smaller flanking labels with the name on the ring, no dotted underline on calculated chips, chip icons aligned
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

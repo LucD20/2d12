@@ -1,6 +1,6 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.353**. Tests: `node tools/tests/run.mjs` (238 tests, see the README; the next new test is t241). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.354**. Tests: `node tools/tests/run.mjs` (238 tests, see the README; the next new test is t241). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 ## PLAYTEST 4 FIXES (Lucas, 2026-11-10/11; decided; one version per step, in this order. Step 1 applied in v0.0.343, Step 2 in v0.0.345, Step 3 in v0.0.347, Step 4 in v0.0.349, Step 5 in v0.0.350, Step 6 in v0.0.352: all applied)

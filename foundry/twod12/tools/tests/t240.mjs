@@ -11,7 +11,7 @@ console.log("the tooltip's sides colored, the words highlighted:", zt.includes('
 const inl = src("module/inline.mjs"), main = src("module/twod12.mjs");
 console.log("a chip's name is its own span:", inl.includes('<span class="ti-name">${esc(label)}</span>'), "| the name opens, the icon uses:", main.includes('!ev.target.closest?.("i, img, svg, .ti-use")') && main.includes("await openChip("));
 console.log("what the name opens:", inl.includes('if (kind === "Condition" && cfg.cond) { const it = await conditionItem(cfg.cond);') && inl.includes('const ref = kind === "Move" ? MOVE_REF[cfg.kind] : RULE_REF[kind];'), "| Pushed:", /pushed: "Pushed"/.test(inl), "| Guard:", /Guard: "Guard"/.test(inl));
-console.log("calculated chips:", inl.includes('el.classList.add("calc"); el.dataset.tooltip = `Calculated: ${label} with this creature') && inl.includes("Calculated: Stage ${stageN}:") && css.includes("a.twod12-inline.calc .ti-name, a.twod12-inline.calc { color: var(--c-ap, #3b4cb8); }"));
+console.log("calculated chips:", inl.includes('el.classList.add("calc"); el.dataset.tooltip = `Calculated: ${label} with this creature') && inl.includes("Calculated: Stage ${stageN}:") && css.includes("a.twod12-inline.calc .ti-name, a.twod12-inline.calc { color: #1a3fb0; }"));
 console.log("Smite's parenthesis off in Foundry:", !src("module/gen.mjs").includes("]{Guard ${f.replace(/\\s+/g, \" \")}}${paren ?? \"\"}"), "| Smite Diamond:", /"name": "Smite"[\s\S]*?"automation": "diamond"/.test(fs.readFileSync(ROOT + "../../book/cards/paladin.json", "utf8")));
 // v0.0.353 (Lucas on v0.0.352): smaller flanking texts, the name on the ring; no dotted underline; the chips' icons aligned
 const fo = src("module/flankoverlay.mjs");
