@@ -85,8 +85,23 @@ export function setStepOn(st, on, isSave = false) {
   else if (on === "t23") optSet(st, "tier", 2); else if (on === "t3") optSet(st, "tier", 3);
   return st;
 }
+/** v0.0.358 (Lucas: a Tier 2 alone couldn't be said): on:2 / on:1,3 are the exact Tiers a step runs on. */
+const onList = st => String(optGet(st, "on")).split(",").map(x => Number(x.trim())).filter(n => [1, 2, 3].includes(n));
+/**
+ * Set the Tiers a step runs on (any set of 1, 2, 3; none = all) or a Critical. The older chips are written where they say the same (tier:2 on a
+ * roll is Tier 2 or 3; on a Save, Tier 1 or 2), so the cards' chains don't change; any other set is on:N,N.
+ */
+export function setStepTiers(st, tiers, isSave = false, crit = false) {
+  optSet(st, "crit", ""); optSet(st, "tier", ""); optSet(st, "on", "");
+  if (crit) return optSet(st, "crit", "yes");
+  const set = [...new Set((tiers ?? []).map(Number).filter(n => [1, 2, 3].includes(n)))].sort(), key = set.join("");
+  if (!set.length || key === "123") return st;
+  const old = isSave ? { 1: 1, 12: 2 }[key] : { 3: 3, 23: 2 }[key];
+  return old ? optSet(st, "tier", old) : optSet(st, "on", set.join(","));
+}
 /** The results a step runs on, for the lit chips: ["t1", "t2"], ["crit"]... A by-Tier move: the Tiers with a distance. */
 export function stepTiers(st, isSave = false) {
+  if (optHas(st, "on") && onList(st).length && !(yes(optGet(st, "crit")) && optHas(st, "crit"))) return onList(st).map(n => `t${n}`);
   if (moveByTier(st)) return TIERS.filter(k => optHas(st, k) || (optHas(st, "distance") && (isSave ? k !== "t3" : true)));
   const on = stepOn(st, isSave);
   return (onChoices(isSave).find(c => c[0] === on) ?? onChoices(isSave)[0])[2];
@@ -191,13 +206,10 @@ export function fillSteps(texts, isSave = false) {
       const on = [0, 1, 2].filter(j => per[j].some(x => writeStep({ ...x, label: "" }) === key)).map(j => j + 1);
       seen.add(key);
       const st = { kind: s.kind, head: s.head, label: s.kind === "Effect" ? s.label : "", opts: s.opts.map(o => [...o]) };
-      const str = on.join("");
-      const choice = isSave ? { 1: "t1", 12: "t12", 123: "any" }[str] : { 3: "t3", 23: "t23", 123: "any" }[str];
-      if (!choice) { left.push(`${stepLabel(st)} on Tier ${on.join(" and ")}`); continue; }
-      steps.push(setStepOn(st, choice, isSave));
+      steps.push(setStepTiers(st, on, isSave));   // v0.0.358: any set of Tiers can be said (on:2)
     }
   });
-  for (const s of parseAfter(texts?.critical).filter(x => x.kind !== "text")) steps.push(setStepOn({ kind: s.kind, head: s.head, label: s.kind === "Effect" ? s.label : "", opts: s.opts.map(o => [...o]) }, "crit", isSave));
+  for (const s of parseAfter(texts?.critical).filter(x => x.kind !== "text")) steps.push(setStepTiers({ kind: s.kind, head: s.head, label: s.kind === "Effect" ? s.label : "", opts: s.opts.map(o => [...o]) }, [], isSave, true));
   return { steps, left };
 }
 

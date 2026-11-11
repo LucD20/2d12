@@ -65,6 +65,8 @@ console.log("Smite: its Effects kept:", back.versions.map(x => x.fx.all.length).
 const shove = acts.find(d => d.name === "Shove").system, sb = G.cardSystem(G.parseCard(G.cardText("Shove", shove)), shove).system;
 console.log("Shove (not written with Lucas yet): its buttons stay buttons, no steps added:", sb.versions.every(x => !x.after) && sb.versions.some(x => /@Move\[/.test(`${x.x2}${x.x3}`)));
 
+const ex = G.cardSystem(G.parseCard(W.SAMPLE));
+console.log("v0.0.358: the example makes no warning (a Tier 2 alone is a step now):", ex.notes.length, ex.notes.join(" / "), "|", ex.system.versions.map(x => x.after).join(" || "));
 console.log("--- the window");
 const h = W.genHtml({ text: "", target: "Create in the world", help: false }), r = W.readHtml(rb, rs.system, rs.notes);
 console.log("one text box, the list, the card:", h.includes("data-gc-text") && h.includes("data-gc-read") && h.includes("data-gc-card"), "| a ✓ per read line:", (r.match(/<li class="ok">/g) ?? []).length, "| the example reads whole:", G.parseCard(W.SAMPLE).lines.every(l => l.ok));

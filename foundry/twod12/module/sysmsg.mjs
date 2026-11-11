@@ -2,7 +2,7 @@
 // A card: the Action cards' title bar (sheet navy) with the name and a tight cost chip, then one bold line and one plain line.
 // A line: a small parchment strip with an icon, for a short follow-up (no title bar).
 import { cardHead, cardVars, apIcon, highlightText } from "./config.mjs";
-import { esc } from "./util.mjs";
+import { esc, shortNames } from "./util.mjs";
 
 export const SYS_COLOR = "#1e2a3a";
 // v0.0.221 (Lucas): the class documents' colors in the system's messages too (Bane red, Boon blue, Rally Point turquoise, AP, movement).
@@ -13,7 +13,10 @@ export const apText = n => `<span class="kw-ap">${Math.max(0, Math.round(Number(
 export const sysCard = ({ title, ap = null, lead = "", text = "", cls = "" }) =>
   `<div class="twod12 chat action sysmsg${cls ? ` ${cls}` : ""}" style="${cardVars(SYS_COLOR)}">${cardHead(title, "", ap === null ? "" : apIcon(ap))}${lead ? `<div class="sm-lead">${hl(lead)}</div>` : ""}${text ? `<div class="sm-text">${hl(text)}</div>` : ""}</div>`;
 /** A one-line follow-up with an icon (Font Awesome name). */
-export const sysLine = (icon, html, cls = "") => `<div class="twod12 chat sysline${cls ? ` ${cls}` : ""}"><i class="fa-solid ${icon}"></i><span>${hl(html)}</span></div>`;
+// v0.0.358 (Lucas): a line names creatures by their first name ("Aveline", not "Aveline (Human Paladin, Smite, level 1)"; "The Herald" stays), and
+// its chat message shows no sender, time or bin (twod12.mjs bareSysLine, system.css)
+const sceneNames = () => { try { return [...(globalThis.canvas?.tokens?.placeables ?? []).map(t => t.name), ...(globalThis.canvas?.tokens?.placeables ?? []).map(t => t.actor?.name), ...(globalThis.game?.actors ?? []).map(a => a.name)]; } catch (e) { return []; } };
+export const sysLine = (icon, html, cls = "") => `<div class="twod12 chat sysline${cls ? ` ${cls}` : ""}"><i class="fa-solid ${icon}"></i><span>${hl(shortNames(html, sceneNames()))}</span></div>`;
 
 /** Swapping Initiative: A pays 1 AP and swaps with ally B; B acts now with bAp; A keeps aAp, frozen until its slot (1-based). */
 export const swapCardHtml = (aName, bName, bAp, aAp, slot) => sysCard({

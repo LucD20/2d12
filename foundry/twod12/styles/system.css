@@ -4300,3 +4300,41 @@ a.twod12-inline.calc .ti-name, a.twod12-inline.calc { color: #1a3fb0; }   /* v0.
 .application.twod12-builder .bb-root, .application.twod12-builder .gc-root, .application.twod12-builder .bb-win, .application.twod12-builder .gc-win { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; }
 .application.twod12-builder .bb-tab, .application.twod12-gencard .gc-tab { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
 .application.twod12-builder .bb-foot { flex: 0 0 auto; }
+
+/* ================================================================== v0.0.358 (Lucas on v0.0.355 to v0.0.357): the design notes.
+   A system line's message shows only the line; no underline on a button's hover; the Action sheet's damage line like the card, its segmented
+   buttons fit their text, the step's buttons in its pane; Create Button's kinds and common buttons in even rows. */
+.chat-message.twod12-bare { padding: 2px 6px; }
+.chat-message.twod12-bare > .message-header { display: none; }
+.chat-message.twod12-bare .message-content { padding: 0; }
+a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:hover, .twod12 a.twod12-inline:hover { text-decoration: none; }
+.twod12.chat.sysmsg.btnmsg .sm-lead.bb-sent { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; font-weight: 400; }
+/* the Tier's damage, read back like the card: the pool's icon, the amount, the pool; "|" between pools */
+.application .as-tab .as-under { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline; }
+.application .as-tab .as-dmg1 { font-size: 12px; white-space: nowrap; color: var(--sk-ink); }
+.application .as-tab .as-dmg1 b { font-weight: 700; }
+.application .as-tab .as-dmg1 small { color: var(--sk-mut); font-size: 11px; }
+.application .as-tab .as-dmg1 i { font-size: 11px; }
+.application .as-tab .as-dmg1.v > i { color: #a32d2d; } .application .as-tab .as-dmg1.r > i { color: #2c5d9e; }
+.application .as-tab .as-sub { font-weight: 700; }
+.application .as-tab .as-bar { color: var(--sk-line); }
+/* segmented buttons whose text is longer than one line grow instead of clipping (the step's Who) */
+.application.twod12-styled .sk .as-tab .fr-seg button { height: auto; min-height: 26px; line-height: 1.2; white-space: normal; padding-top: 3px; padding-bottom: 3px; }
+.application .as-tab .fr-seg.w { align-items: stretch; }
+/* "On": four switches */
+.application.twod12-styled .sk .as-tab button.as-onb { width: auto; height: auto; line-height: 1.5; padding: 1px 9px; border-radius: 6px; font-size: 11.5px; color: var(--sk-mut); border: 1px solid var(--sk-line); background: #fff; cursor: pointer; }
+.application.twod12-styled .sk .as-tab button.as-onb.on { color: #fff; font-weight: 700; border-color: transparent; }
+.application.twod12-styled .sk .as-tab button.as-onb.t1.on { background: #8c2f28; } .application.twod12-styled .sk .as-tab button.as-onb.t2.on { background: #8a6a14; } .application.twod12-styled .sk .as-tab button.as-onb.t3.on { background: #2f6b3a; } .application.twod12-styled .sk .as-tab button.as-onb.crit.on { background: #b8891f; }
+.application .as-tab .as-on { margin-left: 0; margin-right: 8px; }
+/* a step's Earlier / Later / Remove: in its pane's title, not over its row */
+.application .as-tab .as-ord { position: static; opacity: 1; margin-left: auto; display: inline-flex; gap: 4px; background: none; }
+.application.twod12-styled .sk .as-tab .as-ord button { width: auto; height: auto; padding: 1px 7px; line-height: 1.5; font: 400 11px Signika, sans-serif; }
+/* Create Button: even rows */
+.application.twod12-builder .bb-kinds { display: grid; grid-template-columns: 96px repeat(3, minmax(0, 1fr)); gap: 5px 6px; align-items: center; }
+.application.twod12-builder .bb-kg { display: contents; }
+.application.twod12-builder .bb-kg > span { width: auto; }
+.application.twod12-styled .sk button.bb-kind { width: 100%; justify-content: flex-start; }
+.application.twod12-builder .bb-quick { display: grid; grid-template-columns: 96px repeat(4, minmax(0, 1fr)); gap: 4px 6px; }
+.application.twod12-builder .bb-quick > .fr-m { grid-row: span 2; align-self: start; padding-top: 3px; }
+.application.twod12-styled .sk .bb-quick button { width: 100%; border-radius: 6px; }
+.application .as-tab .fr-pane h4 { display: flex; align-items: center; gap: 8px; }

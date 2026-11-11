@@ -291,6 +291,9 @@ function collapsibleCards(msg, html) {
   head?.addEventListener("click", () => root.classList.toggle("collapsed"));
 }
 Hooks.on("renderChatMessageHTML", collapsibleCards);
+// v0.0.358 (Lucas: "just the message by itself; no title, no time, no trash bin"): a message that is only one of the system's lines shows no header
+// (the right-click menu still deletes it)
+Hooks.on("renderChatMessageHTML", (msg, html) => { try { const el = html?.[0] ?? html, c = el?.querySelector?.(".message-content"); if (c && c.children.length === 1 && c.firstElementChild.classList.contains("sysline") && !c.textContent.replace(c.firstElementChild.textContent, "").trim()) el.classList.add("twod12-bare"); } catch (e) { /* cosmetic */ } });
 // v0.0.283 (pack chat-cards): the new cards are drawn for each viewer from their model (chatcards.mjs); Designer mode's marks on the older cards
 function ccRender(msg, html) {
   const el = html instanceof HTMLElement ? html : html?.[0];

@@ -10,6 +10,12 @@ export const REFERENCES = {
   instinct: { label: "Instinct", get: a => a.system.attributes?.instinct },
   level: { label: "Level", get: a => a.system.level },
   weapon: { label: "Weapon Modifier", get: a => a.system.weaponMod },
+  // v0.0.358: the names the Effect sheet's formulas use, so a chip's number options read them too (near:pow+2, value:stage)
+  wpn: { label: "Weapon Modifier", get: a => a.system.weaponMod },
+  power: { label: "Power Modifier", get: a => a.system.powerMod ?? a.system.magicMod },
+  pow: { label: "Power Modifier", get: a => a.system.powerMod ?? a.system.magicMod },
+  sig: { label: "Signature Modifier", get: a => a.system.signatureMod },
+  stage: { label: "Stage", get: a => a.system.stage },
   hp: { label: "Health Pool", get: a => a.system.pool },
   rally: { label: "HP healed by a Rally Point", get: a => a.system.rallyHeal }
 };

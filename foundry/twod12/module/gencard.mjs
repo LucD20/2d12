@@ -126,7 +126,8 @@ export function cardSystem(card, old = null) {
     const keep = oldV(v.ap);
     const fill = keep ? { steps: [], left: [] } : A.fillSteps(conv, isSave), fresh = fill.steps;
     for (const l of fill.left) notes.push(`${v.ap} AP: "${l}" stays text (a chip can't say that Tier alone).`);
-    for (const x of t) for (const p of x.plain) notes.push(`${v.ap} AP: "${p}" is kept as plain text.`);
+    // v0.0.358 (Lucas: "a weird warning"): words are words; only say so when they look like damage that wasn't read ("2d6 Cold dmg")
+    for (const x of t) for (const p of x.plain) if (/\d+d\d+|\[[VRBMCW]\]/i.test(p)) notes.push(`${v.ap} AP: "${p}" looks like damage but wasn't read as it: it is kept as words. Write it like [V] 2d6 Co.`);
     const steps = [...A.parseAfter(keep?.after), ...fresh];
     // With steps, the Tier text is the words as they were written (nothing happens twice); without, its buttons as before.
     const written = { x1: tierWords(v.t1), x2: tierWords(v.t2), x3: tierWords(v.t3), critical: String(v.critical ?? "").trim() };

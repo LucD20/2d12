@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-11 from the repository at: 033a3f9 2026-11-11 v0.0.357: PACK ACTION-SHEET, Generate Action reads a pasted card (G2); filling an Action keeps its Effects and steps
+Built by tools/knowledge.py on 2026-11-11 from the repository at: e32d829 2026-11-11 PACK ACTION-SHEET, session 2: the test checklist, HANDOFF, MASTER-PLAN, the backlog, README and knowledge for v0.0.355 to v0.0.357
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (100 KB)
+- HANDOFF.md (101 KB)
 - MASTER-PLAN.md (28 KB)
 - open-design-items.md (108 KB)
 - rules-01-roll.md (23 KB)

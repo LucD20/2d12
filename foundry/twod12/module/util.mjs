@@ -52,3 +52,27 @@ export const hoverOf = (hover, description) => {
   if (h) return h;
   return String(description ?? "").replace(/<[^>]+>/g, " ").replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim().slice(0, 240);
 };
+
+/**
+ * v0.0.358 (Lucas: "always use the first name of the actor, unless it is 'The'"): a creature's short name. "Aveline (Human Paladin, Smite, level 1)"
+ * and "Aveline Dawnshield" are "Aveline"; "Ogre Chieftain" is "Ogre"; a name that starts with "The" keeps its next word ("The Herald", not "The").
+ * Every place that shows only a first name uses it (the flanking overlay, the system's one-line chat messages).
+ */
+export function firstName(name) {
+  const full = String(name ?? ""), w = full.replace(/\s*\([^()]*\)\s*$/, "").trim().split(/\s+/).filter(Boolean);
+  if (!w.length) return full;
+  return /^the$/i.test(w[0]) && w[1] ? `${w[0]} ${w[1]}` : w[0];
+}
+/**
+ * The names in a line of HTML shortened to first names. names: the creatures' full names (the scene's tokens, the world's actors). Two creatures
+ * that would get the same first name ("Ogre Chieftain", "Ogre Brute") keep their names without the parenthesis instead. Pure.
+ */
+export function shortNames(html, names) {
+  const escH = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const list = [...new Set((names ?? []).map(n => String(n ?? "").trim()).filter(Boolean))], count = new Map();
+  for (const n of list) { const f = firstName(n); count.set(f, (count.get(f) ?? 0) + 1); }
+  const short = n => (count.get(firstName(n)) > 1 ? n.replace(/\s*\([^()]*\)\s*$/, "").trim() || n : firstName(n));
+  let out = String(html ?? "");
+  for (const n of list.sort((a, b) => b.length - a.length)) { const s = short(n); if (s === n) continue; for (const form of new Set([escH(n), n])) if (out.includes(form)) out = out.split(form).join(form === n ? s : escH(s)); }
+  return out;
+}

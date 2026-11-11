@@ -33,5 +33,7 @@ from the fields: @Move[pushed|distance:3] | an empty kind asks: Drop an Effect o
 --- the window
 12 kinds: 12 | the write-it box on top: true | two ways out: true | Recent: true | the Traits grid is a + trait picker: true
 the Area without the old kept-area options (D49): true | buttons off while a field is missing: true
-the system's window, not a Foundry default one: true | sent as if typed: true | a failed copy selects the text: true | it stays open: true
+the system's window, not a Foundry default one: true | sent as a system card (v0.0.358): true | a failed copy selects the text: true | it stays open: true
+v0.0.358: Damage opens with one row and "+ Another damage": 1 true | three after two clicks: 3 | only the rows shown are written: @Damage[1d6[vigor]]
+the kinds in four rows of three: 3,3,3,3 | the + trait picker comes first: true
 opened from the Action sheet's Effects text: true

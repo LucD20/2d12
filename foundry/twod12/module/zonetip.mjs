@@ -67,4 +67,6 @@ export function registerZoneTip() {
     canvas.stage?.on?.("pointerleave", hide);
   });
   Hooks.on("canvasTearDown", hide);
+  // v0.0.358 (Lucas: the tooltip showed over the windows): the map's own pointer events don't say when the mouse goes onto a window or the sidebar
+  document.addEventListener("pointermove", ev => { if (el && el.style.display !== "none" && ev.target !== canvas?.app?.view && ev.target?.id !== "board") hide(); }, { passive: true });
 }

@@ -8,6 +8,8 @@ import { TWOD12 } from "./config.mjs";
 import { convertEffects } from "./gen.mjs";
 import { parseCardTier, humanize } from "./genaction.mjs";
 import * as R from "./fxrules.mjs";
+import { SYS_COLOR } from "./sysmsg.mjs";
+import { cardHead, cardVars } from "./config.mjs";
 
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 /** v0.0.356 (D41): a label can't hold the chip's own marks: | cut it short and ] broke the button. */
@@ -59,7 +61,7 @@ export function buildCommand(d) {
   }
   if (d.type === "damage") {
     const inst = [];
-    for (let i = 1; i <= 4; i++) {
+    for (let i = 1; i <= Math.min(4, Number(d.drows) || 4); i++) {
       const f = (d[`f${i}`] ?? "").trim();
       if (!f) continue;
       const tags = [d[`p${i}`], d[`s${i}`], d[`n${i}`] ? "nonlethal" : ""].filter(Boolean);
@@ -149,8 +151,9 @@ export function wordsToButtons(text) {
 }
 
 /* ------------------------------------------------------------------ the window */
-const KINDS = [["Rolls", [["check", "2d", "bb", "Check"], ["save", "S", "bb", "Save"], ["damage", "D", "tk", "Damage"]]], ["Moves and areas", [["move", "M", "rule", "Move"], ["template", "A", "au", "Area"]]],
-  ["Gives", [["condition", "C", "cond", "Condition"], ["effect", "E", "cond", "Effect"], ["guard", "G", "wp", "Guard"], ["heal", "H", "au", "Heal"], ["reduce", "R", "esc", "Reduce"], ["rally", "RP", "esc", "Rally"]]], ["Other", [["use", "U", "rule", "Use an Action"]]]];
+// v0.0.358 (Lucas: "the buttons need some organization"): four columns, three kinds a row, so no kind sits alone on a line
+const KINDS = [["Rolls", [["check", "2d", "bb", "Check"], ["save", "S", "bb", "Save"], ["damage", "D", "tk", "Damage"]]], ["On the map", [["move", "M", "rule", "Move"], ["template", "A", "au", "Area"], ["use", "U", "rule", "Use an Action"]]],
+  ["Gives", [["condition", "C", "cond", "Condition"], ["effect", "E", "cond", "Effect"], ["guard", "G", "wp", "Guard"]]], ["Heals", [["heal", "H", "au", "Heal"], ["reduce", "R", "esc", "Reduce"], ["rally", "RP", "esc", "Rally"]]]];
 const QUICK = ["Body Check", "Instinct Save", "Pushed 1", "Evade 1", "Prone", "Hindered (EoT)", "Rally 1", "2 Emanation"];
 const seg = (f, cur, opts, cls = "") => `<span class="fr-seg ${cls}">${opts.map(([v, l]) => `<button type="button" data-bb="set" data-f="${f}" data-v="${esc(v)}" class="${String(cur) === String(v) ? "on" : ""}" aria-pressed="${String(cur) === String(v)}">${l}</button>`).join("")}</span>`;
 const step = (f, cur, min = 0, max = 9, cls = "") => `<span class="fr-step ${cls}"><button type="button" data-bb="step" data-f="${f}" data-d="-1" data-min="${min}" data-max="${max}" aria-label="Less">−</button><span class="v">${esc(cur)}</span><button type="button" data-bb="step" data-f="${f}" data-d="1" data-min="${min}" data-max="${max}" aria-label="More">+</button></span>`;
@@ -163,14 +166,14 @@ const ATTR = () => Object.entries(TWOD12.attributes ?? {});
 const SUBS = () => [["", "No subtype"], ...Object.entries(TWOD12.subtypes ?? {}).filter(([k]) => k).map(([k, v]) => [v.toLowerCase(), v])];
 export const newBuilderState = () => ({ words: "", src: "fields", type: "check", attr: "body", dcMode: "card", dc: 13, adj: 0, boon: 0, bane: 0, traits: [], t1: "", t2: "", t3: "", cardTiers: true, label: "",
   f1: "", p1: "vigor", s1: "", n1: false, f2: "", p2: "vigor", s2: "", n2: false, f3: "", p3: "vigor", s3: "", n3: false, f4: "", p4: "vigor", s4: "", n4: false, nlAll: false,
-  mkind: "pushed", mdistance: "2", mfrom: "", mpick: false, marea: 2, mterrain: false, more: false, shape: "emanation", distance: 2, targets: "all", self: false, rounds: 0,
+  drows: 1, mkind: "pushed", mdistance: "2", mfrom: "", mpick: false, marea: 2, mterrain: false, more: false, shape: "emanation", distance: 2, targets: "all", self: false, rounds: 0,
   cname: "prone", cvalue: 0, cdur: "", crounds: 1, fxUuid: "", fxName: "", aformula: "1d8+mod", awho: "", anear: 0, rn: 1, uname: "Weapon Attack", uap: 0, help: false });
 
 function traitsRow(traits) {
   const have = new Set(traits);
   const chips = traits.map(k => `<span class="fr-chip g-${R.traitGroup(k)}">${esc(R.traitLabel(k))}<button type="button" data-bb="untrait" data-v="${esc(k)}" aria-label="Remove">×</button></span>`).join("");
   const opts = (TWOD12.traitGroups ?? []).map(g => `<optgroup label="${esc(g.label)}">${g.traits.filter(k => k in (TWOD12.actionTraits ?? {}) && !have.has(k)).map(k => `<option value="${esc(k)}">${esc(TWOD12.actionTraits[k])}</option>`).join("")}</optgroup>`).join("");
-  return `${chips}<select class="fr-sel fr-tsel" data-bb-trait aria-label="Add a trait"><option value="">+ trait</option>${opts}</select> <span class="fr-m">so Effects on those rolls count ("a Boon on [Fear] Saves")</span>`;
+  return `<select class="fr-sel fr-tsel" data-bb-trait aria-label="Add a trait"><option value="">+ trait</option>${opts}</select>${chips} <span class="fr-m">so Effects on those rolls count ("a Boon on [Fear] Saves")</span>`;
 }
 function fieldsHtml(s) {
   const roll = [["", seg("attr", s.attr, ATTR(), "w")],
@@ -182,7 +185,7 @@ function fieldsHtml(s) {
     const tier = n => { const r = tierFromCard(s[`t${n}`]); return `<div class="as-tier t${n}"><span class="as-tl">Tier ${n}</span><div class="as-tb">${text(`t${n}`, s[`t${n}`], n === 3 ? "No effect." : "[R] 1d8 Ho; Pushed 2", "as-dmg")}${r.text && r.text !== "0" ? `<span class="as-under"><span class="as-dc">${esc(r.text)}</span>${r.skipped.length ? `<span class="as-dc bb-warn">not on a loose button: ${esc(r.skipped.join(", "))}</span>` : ""}</span>` : ""}</div></div>`; };
     return `${grid(roll)}<div class="as-tiers">${[1, 2, 3].map(tier).join("")}</div>${help("Each Tier is written like the card: the damage, then <code>;</code> and its words. Tier 1 is the worst Save. The chip under a Tier shows what was understood.")}`;
   }
-  if (s.type === "damage") return `${[1, 2, 3, 4].map(i => `<div class="bb-drow">${text(`f${i}`, s[`f${i}`], "1d6+2", "amt")}${seg(`p${i}`, s[`p${i}`], [["vigor", "Vigor"], ["resolve", "Resolve"], ["choice", "Choice"]])}${sel(`s${i}`, s[`s${i}`], SUBS())}${tog(`n${i}`, s[`n${i}`], "Nonlethal")}</div>`).join("")}${grid([["", tog("nlAll", s.nlAll, "All of it Nonlethal")]])}`;
+  if (s.type === "damage") { const n = Math.max(1, Math.min(4, Number(s.drows) || 1, 4)); return `${Array.from({ length: n }, (x, k) => k + 1).map(i => `<div class="bb-drow">${text(`f${i}`, s[`f${i}`], "1d6+2", "amt")}${seg(`p${i}`, s[`p${i}`], [["vigor", "Vigor"], ["resolve", "Resolve"], ["choice", "Choice"]])}${sel(`s${i}`, s[`s${i}`], SUBS())}${tog(`n${i}`, s[`n${i}`], "Nonlethal")}${i > 1 && i === n ? `<button type="button" class="fr-x" data-bb="deldmg" aria-label="Remove this damage" title="Remove">×</button>` : ""}</div>`).join("")}<div class="bb-drow">${n < 4 ? `<button type="button" class="as-fill" data-bb="adddmg">+ Another damage</button>` : ""}${tog("nlAll", s.nlAll, "All of it Nonlethal")}</div>`; }
   if (s.type === "move") return grid([["Kind", seg("mkind", s.mkind, [["pushed", "Pushed"], ["pulled", "Pulled"], ["slid", "Slid"], ["reposition", "Reposition"], ["advance", "Advance"], ["evade", "Evade"]], "w")], ["Distance", `${text("mdistance", s.mdistance, "2, or speed/2", "amt")} <span class="fr-m">squares</span> ${tog("more", s.more, "More")}`],
     s.more ? ["Away from", seg("mfrom", s.mfrom, [["", "You"], ["target", "The target"], ["area", "The area's center"]], "w")] : null,
     s.more ? ["Who", `${tog("mpick", s.mpick, "The others around the target, one by one")}${s.mpick ? ` ${step("marea", s.marea, 1, 9)} <span class="fr-m">Emanation</span>` : ""}`] : null,
@@ -212,6 +215,13 @@ export function builderHtml(s, read, look, recent = []) {
   const rec = recent.length ? `<details class="bb-recent" open><summary>Recent <span class="fr-m">click one to make it the text</span></summary><div class="bb-chips">${recent.map((c, i) => `<button type="button" class="bb-rec" data-bb="recent" data-i="${i}" title="${esc(c)}">${esc(c.length > 46 ? `${c.slice(0, 44)}…` : c)}</button>`).join("")}</div></details>` : "";
   return `<div class="twod12 sheet item sk bb-win"><div class="fr-tab as-tab${s.help ? " fr-helpon" : ""} bb-tab">${top}${fields}${out}${rec}</div>
     <footer class="bb-foot"><a class="fr-q${s.help ? " on" : ""}" data-bb="help" role="button" tabindex="0" aria-pressed="${!!s.help}" title="Show the help texts">?</a><span class="fr-m">The window stays open for the next one.</span><button type="button" data-bb="close">Close</button><button type="button" class="bb-copy" data-bb="copy"${look.cmd && !look.problem ? "" : " disabled"}>Copy the text</button><button type="button" class="bb-go" data-bb="send"${look.cmd && !look.problem ? "" : " disabled"}>Send to chat</button></footer></div>`;
+}
+const KIND_TITLE = { Check: "Check", Save: "Save", Damage: "Damage", Move: "Movement", Template: "Area", Condition: "Condition", Effect: "Effect", Guard: "Guard", Heal: "Heal", Reduce: "Reduce", Rally: "Rally Point", Use: "Action" };
+/** v0.0.358: the chat card of the buttons sent: titled by what they are (one kind: its name; several: "Buttons"). Pure. */
+export function buttonCard(cmd) {
+  const kinds = [...new Set([...String(cmd ?? "").matchAll(/@(\w+)\[/g)].map(m => m[1]))];
+  // the system card's own markup (sysmsg.mjs sysCard), without its text coloring: that would write inside the buttons' text
+  return `<div class="twod12 chat action sysmsg btnmsg" style="${cardVars(SYS_COLOR)}">${cardHead(kinds.length === 1 ? (KIND_TITLE[kinds[0]] ?? "Button") : "Buttons", "", "")}<div class="sm-lead bb-sent">${cmd}</div></div>`;
 }
 /** What the window would copy or send now: the written buttons (those read), or the picked kind's. */
 export function builderOutput(s, read = wordsToButtons(s.words)) {
@@ -257,6 +267,8 @@ class ButtonBuilder extends (ApplicationV2 ?? class {}) {
       if (a === "quick") { s.words = [s.words.trim(), b.dataset.v].filter(Boolean).join("; "); s.src = "words"; return this.render(); }
       if (a === "recent") { s.words = this._recent()[Number(b.dataset.i)] ?? ""; s.src = "words"; return this.render(); }
       if (a === "clrfx") { s.fxUuid = ""; s.fxName = ""; return this.render(); }
+      if (a === "adddmg") { s.drows = Math.min(4, (Number(s.drows) || 1) + 1); s.src = "fields"; return this.render(); }
+      if (a === "deldmg") { const n = Number(s.drows) || 1; s[`f${n}`] = ""; s[`s${n}`] = ""; s[`n${n}`] = false; s.drows = Math.max(1, n - 1); s.src = "fields"; return this.render(); }
       if (a === "untrait") { s.traits = s.traits.filter(k => k !== b.dataset.v); s.src = "fields"; return this.render(); }
       s.src = "fields";
       if (a === "set") s[f] = typeof s[f] === "number" ? Number(b.dataset.v) || 0 : b.dataset.v;
@@ -304,8 +316,9 @@ class ButtonBuilder extends (ApplicationV2 ?? class {}) {
     const cmd = this._out?.cmd;
     if (!cmd || this._out.problem) return;
     await this._remember(cmd);
-    try { if (typeof ui.chat?.processMessage === "function") await ui.chat.processMessage(cmd); else await ChatMessage.create({ content: cmd, speaker: ChatMessage.getSpeaker?.() }); }
-    catch (e) { console.warn("twod12 | Create Button", e); try { await ChatMessage.create({ content: cmd }); } catch (e2) { return ui.notifications.error("The button could not be sent to the chat."); } }
+    // v0.0.358 (Lucas: "they should follow the chat card format"): a system card (sysmsg.mjs): a title bar, the buttons on its lead line
+    try { await ChatMessage.create({ content: buttonCard(cmd), speaker: ChatMessage.getSpeaker?.() }); }
+    catch (e) { console.warn("twod12 | Create Button", e); return ui.notifications.error("The button could not be sent to the chat."); }
     this.render();
   }
   async close(options) { open = null; return super.close(options); }

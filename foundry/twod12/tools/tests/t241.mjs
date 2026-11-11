@@ -49,7 +49,9 @@ console.log("Rebuke's words:", A.writeAfter(f1.steps), "| left:", f1.left.length
 const f2 = A.fillSteps({ x3: "@Condition[vulnerable|value:2|eot]", critical: "@Condition[blinded|eot]" }, false);
 console.log("Marksman's Shot's words:", A.writeAfter(f2.steps));
 const f3 = A.fillSteps({ x2: "@Condition[hindered|eot]" }, false);
-console.log("a condition on a Tier 2 only, on a roll, can't be a chip:", f3.steps.length === 0 && f3.left.length === 1, "|", f3.left[0]);
+console.log("v0.0.358: a condition on a Tier 2 only is said (on:2), nothing is left:", A.writeAfter(f3.steps), f3.left.length);
+console.log("v0.0.358: the Tiers as four switches:", [[1], [2], [3], [1, 2], [2, 3], [1, 3], [1, 2, 3], []].map(t => `${t.join("") || "-"}:${A.writeStep(A.setStepTiers({ kind: "Condition", head: "prone", label: "", opts: [] }, t, false)).replace("@Condition[prone", "").replace("]", "") || "(all)"}`).join(" "), "| on a Save:", [[1], [2], [1, 2], [3]].map(t => `${t.join("")}:${A.writeStep(A.setStepTiers({ kind: "Condition", head: "prone", label: "", opts: [] }, t, true)).replace("@Condition[prone", "").replace("]", "")}`).join(" "), "| a Critical:", A.writeStep(A.setStepTiers({ kind: "Condition", head: "prone", label: "", opts: [["tier", "3"]] }, [], false, true)));
+console.log("  read back:", ["@Condition[prone|on:2]", "@Condition[prone|on:1,3]", "@Condition[prone|tier:2]"].map(c => A.stepTiers(A.parseAfter(c)[0], false).join("")).join(" "), "| the chain runs it only for those Tiers:", src("module/inline.mjs").includes("cfg.onTiers.includes(Number(t.tier) || 0)"), JSON.stringify(parseInline("Condition", "prone|on:1,3").onTiers), JSON.stringify(parseInline("Move", "pushed|distance:1|on:2").onTiers));
 const f4 = A.fillSteps({ x1: "@Move[pushed|distance:1]", x2: "@Move[pushed|distance:1]", x3: "@Move[pushed|distance:1]" }, false);
 console.log("the same Push on every Tier is one distance:", A.writeAfter(f4.steps));
 
@@ -96,4 +98,18 @@ console.log("with 6, Works offers:", (w6.match(/data-f="minEsc"/g) ?? []).length
 TWOD12.escalationMax = 3;
 const g = parseInline("Guard", "1d8+mod|s2:2d6+mod|s3:2d8+mod"), g1 = parseInline("Guard", "1d6+mod|s1:1d8+mod|s3:2d8+mod");
 console.log("a chip's sN: (old chips as before):", [0, 1, 2, 3].map(s => `${s}=${stagedFormula(g, s)}`).join(" "), "| with a Stage 0 base and s1:", [0, 1, 2, 3].map(s => `${s}=${stagedFormula(g1, s)}`).join(" "), "| none:", stagedFormula(parseInline("Guard", "1d8+mod"), 3));
+console.log("--- v0.0.358 (Lucas on v0.0.355 to v0.0.357)");
+const I = await import(ROOTURL + "module/inline.mjs"), AS = await import(ROOTURL + "module/actionsheet.mjs"), U = await import(ROOTURL + "module/util.mjs");
+const who = { system: { powerMod: 3, weaponMod: 2, signatureMod: 3, stage: 2, level: 5, moveSpeed: 6, attributes: { body: 2 } } };
+console.log("number options take a formula:", ["Guard|1d8+mod|who:pick|near:pow+2", "Condition|vulnerable|value:pow|rounds:stage", "Move|pushed|distance:1|pick:yes|area:stage+1", "Guard|1d8|near:5"].map(x => { const [k, ...r] = x.split("|"), c = I.resolveExprs(parseInline(k, r.join("|")), who); return [c.near, c.value, c.rounds, c.area].filter(v => v !== undefined).join("/"); }).join(" | "));
+const chips = AS.dmgChips([{ pool: "B", useW: true, wCount: 1 }, { pool: "M", dice: "1d8", subtype: "Ho" }]);
+console.log("the damage line like the card:", chips.replace(/<i [^>]*><\/i>/g, "♥").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim(), "| the pool's icon:", chips.includes("fa-heart") && chips.includes("fa-brain"), "| Holy in its color:", /style="color:[^"]+">Holy/.test(chips));
+console.log("first names:", ["Aveline (Human Paladin, Smite, level 1)", "Ogre Chieftain", "The Herald", "The Herald of Ash", "Sylwen"].map(U.firstName).join(" | "));
+console.log("a line's names:", U.shortNames("<b>Aveline (Human Paladin, Smite, level 1)</b> keeps Guard 10. <b>Ogre Chieftain</b> is Pushed 1.", ["Aveline (Human Paladin, Smite, level 1)", "Ogre Chieftain"]), "| two Ogres keep their names:", U.shortNames("<b>Ogre Chieftain</b> and <b>Ogre Brute (2)</b>", ["Ogre Chieftain", "Ogre Brute (2)"]));
+const { sysLine } = await import(ROOTURL + "module/sysmsg.mjs");
+globalThis.canvas = { tokens: { placeables: [{ name: "Aveline (Human Paladin, Smite, level 1)", actor: { name: "Aveline (Human Paladin, Smite, level 1)" } }] } }; globalThis.game.actors = [];
+console.log("a system line uses them:", sysLine("fa-shield", "<b>Aveline (Human Paladin, Smite, level 1)</b> keeps Guard 10").replace(/<[^>]+>/g, ""), "| its message shows no header:", src("module/twod12.mjs").includes('el.classList.add("twod12-bare")') && src("styles/system.css").includes(".chat-message.twod12-bare > .message-header { display: none; }"), "| the flanking overlay shares the rule:", src("module/flankoverlay.mjs").includes('export { firstName } from "./util.mjs"'));
+globalThis.canvas = {};
+const sm2 = actionTabHtml({ sys: JSON.parse(JSON.stringify(smite.system)), v: 2, step: 0, names, lines: {}, card: "", rulesTab: "", dmgText });
+console.log("the step's buttons in its pane, not on its row:", !/as-step[^>]*>(?:(?!<\/div>)[\s\S])*as-ord/.test(sm2) && /<h4>Guard<span class="as-ord">/.test(sm2), "| four Tier switches:", (sm2.match(/data-as="tiertog"/g) ?? []).length, "| the + trait picker first:", sm2.indexOf("data-as-trait") < sm2.indexOf('data-as="untrait"'), "| no hover underline on buttons:", src("styles/system.css").includes("a.twod12-inline:hover, a.twod12-inline:hover .ti-name"), "| the area tooltip hides over a window:", src("module/zonetip.mjs").includes('document.addEventListener("pointermove"'));
 console.log("the by-Stage row reads TWOD12.stages:", src("module/actionsheet.mjs").includes("(TWOD12.stages ?? []).map((x, j)"));

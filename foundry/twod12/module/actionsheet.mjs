@@ -6,7 +6,7 @@
 //   wireActionTab(sheet, root)   the events: every click is one update of the item
 // What is stored doesn't change: the steps read and write the Version's `after` chips (aftersteps.mjs), a Tier's damage is read like the card
 // (genaction.mjs parseCardTier) into the same Instances.
-import { TWOD12 } from "./config.mjs";
+import { TWOD12, poolIcon } from "./config.mjs";
 import * as R from "./fxrules.mjs";
 import * as A from "./aftersteps.mjs";
 
@@ -31,7 +31,8 @@ function traitsRow(traits) {
   const have = new Set(traits), order = (TWOD12.traitGroups ?? []).flatMap(g => g.traits).filter(k => have.has(k));
   const rest = traits.filter(k => !order.includes(k));
   const opts = (TWOD12.traitGroups ?? []).map(g => `<optgroup label="${esc(g.label)}">${g.traits.filter(k => k in (TWOD12.actionTraits ?? {}) && !have.has(k)).map(k => `<option value="${esc(k)}">${esc(TWOD12.actionTraits[k])}</option>`).join("")}</optgroup>`).join("");
-  return `<div class="as-traits">${[...order, ...rest].map(traitChip).join("")}<select class="fr-sel fr-tsel" data-as-trait aria-label="Add a trait"><option value="">+ trait</option>${opts}</select></div>`;
+  // v0.0.358 (Lucas): the picker first, so it doesn't move as traits are added
+  return `<div class="as-traits"><select class="fr-sel fr-tsel" data-as-trait aria-label="Add a trait"><option value="">+ trait</option>${opts}</select>${[...order, ...rest].map(traitChip).join("")}</div>`;
 }
 
 /* ------------------------------------------------------------------ the card's lines */
@@ -85,30 +86,34 @@ function whenSec(m) {
 
 /* ------------------------------------------------------------------ a Version */
 const TIERC = ["t1", "t2", "t3"];
-function dmgChips(list) {
+/** v0.0.358 (Lucas: "more like the book / the card"): what a Tier's damage was read as: the pool's icon, the amount (a subtype in its color), the pool's name; "|" between pools. */
+export function dmgChips(list) {
   if (!list?.length) return "";
-  const out = [];
+  const groups = new Map();
   for (const i of list) {
-    const pool = i.pool === "M" ? "r" : i.pool === "C" ? "" : "v", name = i.pool === "M" ? "Resolve" : i.pool === "C" ? "a choice" : "Vigor", sub = i.subtype ? ` ${TWOD12.subtypes?.[i.subtype] ?? i.subtype}` : "";
-    if (i.useW) out.push(`<span class="as-dc ${pool}">${i.wCount || 1} × weapon <small>${name}</small></span>`);
-    if (i.dice) out.push(`<span class="as-dc ${pool}">${esc(i.dice)}${esc(sub)} <small>${name}</small></span>`);
-    if (i.useAt) out.push(`<span class="as-dc ${pool}">+ Modifier${i.dice ? "" : esc(sub)} <small>${name}</small></span>`);
+    const pool = i.pool === "M" ? "M" : i.pool === "C" ? "C" : "B", ink = TWOD12.subtypeInk?.[i.subtype], sub = i.subtype ? ` <span class="as-sub"${ink ? ` style="color:${ink}"` : ""}>${esc(TWOD12.subtypes?.[i.subtype] ?? i.subtype)}</span>` : "";
+    const parts = groups.get(pool) ?? groups.set(pool, []).get(pool);
+    if (i.useW) parts.push(`<b>${i.wCount || 1} × Weapon</b>`);
+    if (i.dice) parts.push(`<b>${esc(i.dice)}</b>${sub}`);
+    if (i.useAt) parts.push(`<b>Modifier</b>${i.dice ? "" : sub}`);
   }
-  return `<span class="as-under">${out.join("")}</span>`;
+  const NAME = { B: "Vigor", M: "Resolve", C: "Vigor or Resolve" };
+  return `<span class="as-under">${[...groups].map(([pool, parts]) => `<span class="as-dmg1 ${pool === "M" ? "r" : pool === "B" ? "v" : ""}">${poolIcon(pool)} ${parts.join(" + ")} <small>${NAME[pool]}</small></span>`).join('<span class="as-bar" aria-hidden="true">|</span>')}</span>`;
 }
-const onChips = (st, isSave) => { const lit = A.stepTiers(st, isSave); return `<span class="as-on" aria-hidden="true">${[["t1", "Tier 1"], ["t2", "Tier 2"], ["t3", "Tier 3"], ...(isSave ? [] : [["crit", "Critical"]])].map(([k, l]) => `<span class="as-onb ${k}${lit.includes(k) ? " on" : ""}">${l}</span>`).join("")}</span>`; };
+/** v0.0.358: "On" is four switches (the Tiers it runs on, or a Critical alone); none lit can't be: it means every Tier. */
+const onChips = (st, i, isSave) => { const lit = A.stepTiers(st, isSave); return `<span class="as-on">${[["t1", "Tier 1"], ["t2", "Tier 2"], ["t3", "Tier 3"], ...(isSave ? [] : [["crit", "A Critical"]])].map(([k, l]) => `<button type="button" class="as-onb ${k}${lit.includes(k) ? " on" : ""}" data-as="tiertog" data-i="${i}" data-v="${k}" aria-pressed="${lit.includes(k)}">${l}</button>`).join("")}</span><span class="fr-m">${lit.length === 3 ? "any result" : lit.includes("crit") ? "only on a Critical" : `only on ${lit.map(k => `Tier ${k[1]}`).join(" and ")}`}</span>`; };
 function stepPane(st, i, m) {
   const k = A.STEP_KINDS[st.kind], isSave = m.isSave, o = key => A.optGet(st, key);
-  if (st.kind === "text") return `<h4>Plain text</h4>${grid([["Text", field(`step.${i}.text`, st.text, "", "wide")]])}${help("Text between chips is kept as it is; it does nothing.")}`;
+  if (st.kind === "text") return `<h4>Plain text<span class="as-ord"><button type="button" data-as="stepmove" data-i="${i}" data-d="-1">↑ Earlier</button><button type="button" data-as="stepmove" data-i="${i}" data-d="1">↓ Later</button><button type="button" data-as="stepdel" data-i="${i}">× Remove</button></span></h4>${grid([["Text", field(`step.${i}.text`, st.text, "", "wide")]])}${help("Text between chips is kept as it is; it does nothing.")}`;
   const rows = [];
   const byTier = A.moveByTier(st);
-  if (!byTier) rows.push(["On", `${seg(`step.${i}.@on`, A.stepOn(st, isSave), A.onChoices(isSave).map(([v, l]) => [v, l]), "w")}${onChips(st, isSave)}`]);
+  if (!byTier) rows.push(["On", onChips(st, i, isSave)]);
   if (st.kind === "Move") {
     const lit = A.stepTiers(st, isSave);
     rows.push(["Moves", seg(`step.${i}.head`, String(st.head).toLowerCase(), [["pushed", "Pushed"], ["pulled", "Pulled"], ["slid", "Slid"], ["evade", "Evade (you)"]], "w")],
       ["Squares", byTier ? `${tog(`step.${i}.@bytier`, true, "By Tier")} ${["t1", "t2", "t3"].map(t => `<span class="as-bt ${t}">Tier ${t[1]} ${field(`step.${i}.opt.${t}`, A.optGet(st, t) || (lit.includes(t) ? o("distance") : ""), "0", "as-n2")}</span>`).join("")}<span class="fr-m">empty: no movement on that Tier</span>`
         : `${field(`step.${i}.opt.distance`, o("distance") || "1", "1", "as-n2")} ${tog(`step.${i}.@bytier`, false, "By Tier")}`],
-      ["Who", seg(`step.${i}.@movewho`, /^(yes|true|1|y)$/i.test(o("pick")) ? (o("area") ? "area" : "all") : "target", [["target", "The target"], ["area", "The others around it (a pick)"], ["all", "The targets, one by one"]], "w")],
+      ["Who", seg(`step.${i}.@movewho`, /^(yes|true|1|y)$/i.test(o("pick")) ? (o("area") ? "area" : "all") : "target", [["target", "The target"], ["area", "The others around it"], ["all", "Each target"]], "w")],
       o("area") ? ["Around it", `${field(`step.${i}.opt.area`, o("area"), "2", "as-n2")} <span class="fr-m">Emanation around the target</span>`] : null,
       ["Away from", seg(`step.${i}.opt.from`, String(o("from")).toLowerCase(), [["", "You"], ["target", "The target"], ["area", "The area's center"]], "w")]);
   } else if (st.kind === "Condition") {
@@ -116,28 +121,29 @@ function stepPane(st, i, m) {
     const dur = /^eot$/i.test(r) || /^eot$/i.test(bare) ? "eot" : Number(r || bare) ? "rounds" : "";
     rows.push(["Condition", `${field(`step.${i}.head`, st.head, "prone", "", "conds")}<span class="fr-m">its name in the Conditions compendium</span>`], ["Value", `${field(`step.${i}.opt.value`, o("value"), "none", "as-n2")} <span class="fr-m">for a valued condition (Vulnerable 2)</span>`],
       ["Lasts", `${seg(`step.${i}.@dur`, dur, [["", "As the condition says"], ["eot", "EoT"], ["rounds", "Rounds"]], "w")}${dur === "rounds" ? field(`step.${i}.@rounds`, Number(r || bare) || 1, "1", "as-n2") : ""}`],
-      ["Who", seg(`step.${i}.opt.side`, String(o("side")).toLowerCase(), [["", "The target"], ["enemies", "Enemies among the targets"], ["allies", "Allies among the targets"]], "w")]);
+      ["Who", seg(`step.${i}.opt.side`, String(o("side")).toLowerCase(), [["", "The target"], ["enemies", "Its enemies"], ["allies", "Its allies"]], "w")]);
   } else if (["Guard", "Heal", "Reduce"].includes(st.kind)) {
     const stages = (TWOD12.stages ?? []).map(x => x.n), by = A.hasStages(st) || m.stageOpen === i;
     rows.push(["Amount", `${field(`step.${i}.head`, st.head, "1d8+mod", "amt")} ${tog(`step.${i}.@stages`, by, "By Stage")}<span class="fr-m">mod, pow, wpn, rally, rp</span>`],
       by ? ["", `<div class="as-stages" role="group" aria-label="By Stage">${(TWOD12.stages ?? []).map((x, j) => `<label><span>Stage ${x.n}<small>levels ${x.from}-${x.to}</small></span>${j === 0 ? `<input type="text" class="fr-in" value="${esc(st.head)}" disabled aria-label="Stage ${x.n}">` : field(`step.${i}.opt.s${x.n}`, A.optGet(st, `s${x.n}`), "as the Stage before", "")}</label>`).join("")}</div>`] : null,
-      ["Who", seg(`step.${i}.opt.who`, String(o("who")).toLowerCase(), st.kind === "Guard" ? [["", "You"], ["pick", "You or one ally (a pick)"], ["all", "You and every ally found"]] : [["", "The target"], ["pick", "You or one ally (a pick)"], ["all", "Every ally found"], ["targets", "The targets"]], "w")],
+      ["Who", seg(`step.${i}.opt.who`, String(o("who")).toLowerCase(), st.kind === "Guard" ? [["", "You"], ["pick", "You or an ally"], ["all", "You and allies"]] : [["", "The target"], ["pick", "You or an ally"], ["all", "Every ally"], ["targets", "The targets"]], "w")],
       ["Found", `<span class="fr-m">within</span> ${field(`step.${i}.opt.near`, o("near"), "any", "as-n2")} <span class="fr-m">squares of you, or in a</span> ${field(`step.${i}.opt.area`, o("area"), "none", "as-n2")} <span class="fr-m">Emanation around the target</span>`]);
     void stages;
   } else if (st.kind === "Effect") {
     rows.push(["Effect", m.names[st.head] ? `<div class="fr-dropped"><span class="fr-dk">Effect</span><b>${esc(m.names[st.head])}</b></div>` : `<div class="fr-drop" data-as-drop="step.${i}">Drop an Effect here<br><small>from the Effects and Conditions compendiums</small></div>`],
       ["Who", seg(`step.${i}.opt.who`, String(o("who")).toLowerCase(), [["", "The target"], ["targets", "The targets"], ["self", "You"]], "w")]);
-  } else if (st.kind === "EndEffect") rows.push(["Ends", seg(`step.${i}.head`, /^any$/i.test(st.head) ? "any" : "eot1", [["eot1", "One effect that lasts EoT or 1 round"], ["any", "Any one effect"]], "w")]);
+  } else if (st.kind === "EndEffect") rows.push(["Ends", seg(`step.${i}.head`, /^any$/i.test(st.head) ? "any" : "eot1", [["eot1", "One EoT / 1 round effect"], ["any", "Any one effect"]], "w")]);
   else if (st.kind === "Pause") rows.push(["Button", field(`step.${i}.head`, st.head, "After the damage", "wide")]);
   const known = new Set(["tier", "crit", "distance", "t1", "t2", "t3", "pick", "area", "from", "value", "rounds", "duration", "eot", "side", "who", "near", ...(TWOD12.stages ?? []).map(x => `s${x.n}`)]);
   const other = st.opts.filter(([key]) => !known.has(String(key).toLowerCase())).map(([key, v]) => (v == null ? key : `${key}:${v}`)).join("|");
   rows.push(["Other", `${field(`step.${i}.@other`, other, "option:value|option:value", "wide")}`]);
-  return `<h4>${esc(k?.title ?? st.kind)}</h4><div class="fr-says">${esc(A.stepSentence(st, isSave))}</div>${grid(rows)}${help("Other: options of the chip this pane has no control for, as <code>name:value</code> separated by <code>|</code>. They are kept as written.")}`;
+  const ordBtns = `<span class="as-ord"><button type="button" data-as="stepmove" data-i="${i}" data-d="-1" title="Earlier">↑ Earlier</button><button type="button" data-as="stepmove" data-i="${i}" data-d="1" title="Later">↓ Later</button><button type="button" data-as="stepdel" data-i="${i}" title="Remove this step">× Remove</button></span>`;
+  return `<h4>${esc(k?.title ?? st.kind)}${ordBtns}</h4><div class="fr-says">${esc(A.stepSentence(st, isSave))}</div>${grid(rows)}${help("A number field also takes a formula for the creature that uses it: <code>pow</code>, <code>wpn</code>, <code>sig</code>, <code>stage</code>, <code>level</code>, <code>speed/2</code>, <code>body+1</code>. Other: options of the chip this pane has no control for, as <code>name:value</code> separated by <code>|</code>; they are kept as written.")}`;
 }
 const ADD_STEP = () => `<select class="fr-sel fr-addsel" data-as-addstep aria-label="Add a step"><option value="">+ Add a step</option>${A.STEP_MENU.map(([g, ks]) => `<optgroup label="${esc(g)}">${ks.map(k => `<option value="${k}">${esc(A.STEP_KINDS[k].title)}</option>`).join("")}</optgroup>`).join("")}</select>`;
 function afterBlock(v, m) {
   const steps = A.parseAfter(v.after), cur = Math.min(Math.max(0, m.step), steps.length - 1);
-  const item = (st, i) => { const k = A.STEP_KINDS[st.kind] ?? { tile: "…", cls: "rule" }; return `<div class="fr-it as-step${i === cur ? " on" : ""}" data-as="stepsel" data-i="${i}" role="button" tabindex="0"><span class="as-n">${i + 1}</span>${kindTile(k.tile, k.cls)}<span class="fr-itxt">${esc(st.kind === "Effect" ? (m.names[st.head] || A.stepLabel(st)) : A.stepLabel(st, m.isSave))}${st.kind === "text" ? "" : ` <em class="fr-m">${esc(A.tiersShort(A.stepTiers(st, m.isSave)))} · ${esc(A.stepWho(st))}</em>`}</span><span class="as-ord"><button type="button" data-as="stepmove" data-i="${i}" data-d="-1" aria-label="Earlier" title="Earlier">↑</button><button type="button" data-as="stepmove" data-i="${i}" data-d="1" aria-label="Later" title="Later">↓</button><button type="button" data-as="stepdel" data-i="${i}" aria-label="Remove this step" title="Remove">×</button></span></div>`; };
+  const item = (st, i) => { const k = A.STEP_KINDS[st.kind] ?? { tile: "…", cls: "rule" }; return `<div class="fr-it as-step${i === cur ? " on" : ""}" data-as="stepsel" data-i="${i}" role="button" tabindex="0"><span class="as-n">${i + 1}</span>${kindTile(k.tile, k.cls)}<span class="fr-itxt">${esc(st.kind === "Effect" ? (m.names[st.head] || A.stepLabel(st)) : A.stepLabel(st, m.isSave))}${st.kind === "text" ? "" : ` <em class="fr-m">${esc(A.tiersShort(A.stepTiers(st, m.isSave)))} · ${esc(A.stepWho(st))}</em>`}</span></div>`; };
   const fill = `<div class="as-empty"><button type="button" class="as-fill" data-as="fill">Fill from the Tier text</button><span class="fr-m">reads "Pushed 2", "Vulnerable 2 (EoT)", "Frightened of you for 1 round" in the Tiers and the Critical, and proposes the steps</span></div>`;
   if (!steps.length) return `<div class="as-empty">${ADD_STEP()}</div>${fill}`;
   return `<div class="fr-md as-after"><div class="fr-lst">${steps.map(item).join("")}<div class="fr-adds">${ADD_STEP()}</div></div><div class="fr-pane">${stepPane(steps[cur], cur, m)}</div></div>${fill}${help("The steps run in this order once the damage is applied and lands. The Tier text stays the book's words.")}`;
@@ -251,7 +257,8 @@ export function wireActionTab(sheet, root) {
     const a = b.dataset.as, f = b.dataset.f, d = b.dataset;
     if (a === "goto") { ev.preventDefault(); if (d.i != null && Number(d.i) !== st.step) { st.step = Number(d.i); st.scrollTo = d.to; return sheet.render(); } return anchor(d.to)?.scrollIntoView({ behavior: "smooth", block: "start" }); }
     if (a === "vsel") { st.v = Number(d.v) || 0; st.step = 0; return sheet.render(); }
-    if (a === "stepsel") { if (ev.target.closest(".as-ord")) return; st.step = Number(d.i) || 0; return sheet.render(); }
+    if (a === "stepsel") { st.step = Number(d.i) || 0; return sheet.render(); }
+    if (a === "tiertog") { ev.preventDefault(); return mutSteps(steps => { const s = steps[Number(d.i)]; if (!s) return; const save = isSave(); if (d.v === "crit") return void A.setStepTiers(s, [], save, !A.stepTiers(s, save).includes("crit")); const lit = new Set(A.stepTiers(s, save).filter(k => k !== "crit").map(k => Number(k[1]))), n = Number(d.v[1]); if (lit.has(n)) lit.delete(n); else lit.add(n); A.setStepTiers(s, [...lit], save); }); }
     if (a === "show") { st.show[d.v] = true; return sheet.render(); }
     if (a === "openfx") { const doc = d.v ? await fromUuid(d.v) : null; return doc?.sheet?.render(true); }
     ev.preventDefault();

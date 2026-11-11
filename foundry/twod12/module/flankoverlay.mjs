@@ -47,7 +47,8 @@ function ring(g, tok, color, width = 4, dash = false) {
 }
 
 /** v0.0.350 (Lucas, playtest 4: "too cluttered; only first names"): a creature's first name ("Sylwen (Elf Archer...)" -> "Sylwen"). */
-export const firstName = n => (String(n ?? "").replace(/\s*\([^()]*\)\s*$/, "").trim().split(/\s+/)[0] || String(n ?? ""));
+export { firstName } from "./util.mjs";   // v0.0.358: one rule everywhere (a name that starts with "The" keeps its next word)
+import { firstName } from "./util.mjs";
 /** The text over a flanked creature: "Flanked: Kai +2 · Nari +1" (v0.0.350: first names; a flanker whose Boons are all cancelled is left out). "" when none gives any. */
 export function flankedText(row) {
   const live = row.flankers.filter(f => f.boons > 0);

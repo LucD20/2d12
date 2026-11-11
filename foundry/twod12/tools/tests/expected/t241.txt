@@ -13,7 +13,9 @@ a by-Tier move on a Save: true t1=2 t2=1 | Pushed 2 / 1
 --- Fill from the Tier text (D14)
 Rebuke's words: @Move[pushed|t1:2|t2:1] @Condition[frightened|rounds:1|tier:1] | left: 0
 Marksman's Shot's words: @Condition[vulnerable|value:2|eot|tier:3] @Condition[blinded|eot|crit:yes]
-a condition on a Tier 2 only, on a roll, can't be a chip: true | Hindered (EoT) on Tier 2
+v0.0.358: a condition on a Tier 2 only is said (on:2), nothing is left: @Condition[hindered|eot|on:2] 0
+v0.0.358: the Tiers as four switches: 1:|on:1 2:|on:2 3:|tier:3 12:|on:1,2 23:|tier:2 13:|on:1,3 123:(all) -:(all) | on a Save: 1:|tier:1 2:|on:2 12:|tier:2 3:|on:3 | a Critical: @Condition[prone|crit:yes]
+  read back: t2 t1t3 t2t3 | the chain runs it only for those Tiers: true [1,3] [2]
 the same Push on every Tier is one distance: @Move[pushed|distance:1]
 --- the order of events
 Smite 3 AP: On your turn > Pay 3 AP > One creature > Your roll > Smite (Bright light 2) > The damage > Guard 1d8 + [Mod]* > Pushed 1*
@@ -32,4 +34,11 @@ an Action with settings is a source, one without isn't: 1 Mark Quarry | its Boon
 escalationMax in the config: 3 | the sheet reads it: true | a rule's Works too: true | no fixed clamp: true
 with 6, Works offers: 7 choices | a rule keeps Escalation 5: 5
 a chip's sN: (old chips as before): 0=1d8+mod 1=1d8+mod 2=2d6+mod 3=2d8+mod | with a Stage 0 base and s1: 0=1d6+mod 1=1d8+mod 2=1d8+mod 3=2d8+mod | none: 1d8+mod
+--- v0.0.358 (Lucas on v0.0.355 to v0.0.357)
+number options take a formula: 5 | 3/2 | 3 | 5
+the damage line like the card: ♥ 1 × Weapon Vigor|♥ 1d8 Holy Resolve | the pool's icon: true | Holy in its color: true
+first names: Aveline | Ogre | The Herald | The Herald | Sylwen
+a line's names: <b>Aveline</b> keeps Guard 10. <b>Ogre</b> is Pushed 1. | two Ogres keep their names: <b>Ogre Chieftain</b> and <b>Ogre Brute</b>
+a system line uses them: Aveline keeps Guard 10 | its message shows no header: true | the flanking overlay shares the rule: true
+the step's buttons in its pane, not on its row: true | four Tier switches: 4 | the + trait picker first: true | no hover underline on buttons: true | the area tooltip hides over a window: true
 the by-Stage row reads TWOD12.stages: true

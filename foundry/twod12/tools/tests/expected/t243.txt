@@ -15,6 +15,7 @@ an Area line: {"size":2,"shape":"emanation"} {"size":10,"shape":"line"} null | m
 --- filling an Action keeps what the text doesn't hold
 Smite: its Effects kept: 1,1,1 | its 3 AP steps kept: true
 Shove (not written with Lucas yet): its buttons stay buttons, no steps added: true
+v0.0.358: the example makes no warning (a Tier 2 alone is a step now): 0  | @Condition[hindered|eot|tier:1] || @Condition[hindered|rounds:1|tier:1] @Condition[hindered|eot|on:2]
 --- the window
 one text box, the list, the card: true | a ✓ per read line: 9 | the example reads whole: true
 the system's window, not a Foundry default one: true | opened as before: true | the box isn't redrawn while typing: true

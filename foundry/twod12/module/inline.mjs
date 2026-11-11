@@ -21,6 +21,7 @@ import { handleRally } from "./rally.mjs";
 import { gainGuard } from "./guard.mjs";
 import { handleUse } from "./freeuse.mjs";
 import { squaresBetween } from "./move.mjs";
+import { evalExpr } from "./refs.mjs";
 
 /** Split on a separator that is not inside brackets, parentheses, braces or quotes. */
 export function splitTop(str, sep) {
@@ -96,6 +97,8 @@ export function parseInline(kind, inner) {
       else if (/^label\s*:/i.test(s)) cfg.label = s.replace(/^label\s*:\s*/i, "");
       else if (/^crit\s*:/i.test(s)) cfg.crit = yes(s.replace(/^crit\s*:\s*/i, ""));   // v0.0.249: only the targets that rolled a Critical
       else if (/^tier\s*:/i.test(s)) cfg.tier = Math.max(0, Number(s.replace(/^tier\s*:\s*/i, "")) || 0);   // v0.0.267: only the targets that rolled that Tier or more
+      else if (/^on\s*:/i.test(s)) cfg.onTiers = s.replace(/^on\s*:\s*/i, "").split(",").map(x => Number(x.trim())).filter(n => [1, 2, 3].includes(n));   // v0.0.358: exactly these Tiers (on:2)
+      else if (/^(value|rounds?)\s*:\s*(?!eot$)(?=.*[a-z@(])/i.test(s.trim())) (cfg.exprs ??= {})[/^value/i.test(s.trim()) ? "value" : "rounds"] = s.replace(/^[a-z]+\s*:\s*/i, "").toLowerCase().replace(/\s+/g, "");   // v0.0.358: a formula (value:pow, rounds:stage)
       else if (/^value\s*:/i.test(s)) cfg.value = Math.max(1, Math.trunc(Number(s.replace(/^value\s*:\s*/i, ""))) || 1);   // v0.0.250: Enfeebled 1, Vulnerable 2
       else if (/^side\s*:/i.test(s)) cfg.side = s.replace(/^side\s*:\s*/i, "").toLowerCase();
       else if (/^quiet\s*:/i.test(s)) cfg.quiet = yes(s.replace(/^quiet\s*:\s*/i, ""));
@@ -160,6 +163,10 @@ export function parseInline(kind, inner) {
     // v0.0.246 (cards 1, Smite): who:pick asks "you or one ally" (a picker); area:N looks in an N Emanation around the card's target; pick:yes on a
     // Pushed / Pulled / Slid lists the creatures to move one by one; from:target makes the card's target the origin of the Forced Movement.
     else if (key === "who") cfg.who = val.toLowerCase();
+    // v0.0.358 (Lucas: "most number fields should allow a formula"): area, near, count and min read a formula too (refs.mjs evalExpr: pow, mod, stage, speed/2...),
+    // worked out for the creature when the chip is used (handleInline)
+    else if (["area", "near", "count", "min"].includes(key) && /[a-z@(]/i.test(val)) (cfg.exprs ??= {})[key] = val.toLowerCase().replace(/\s+/g, "");
+    else if (key === "on") cfg.onTiers = val.split(",").map(x => Number(x.trim())).filter(n => [1, 2, 3].includes(n));   // v0.0.358: exactly these Tiers (on:2, on:1,3)
     else if (key === "area") cfg.area = Math.max(0, Number(val) || 0);
     else if (key === "pick") cfg.pick = yes(val);
     else if (key === "from") cfg.from = val.toLowerCase();
@@ -648,6 +655,7 @@ export async function runAfter(text, ctx = {}, { side = "" } = {}) {
     if (cfg.side && !targets?.length) continue;
     // v0.0.267: a chip for a Tier (tier:2) or a Critical (crit:yes) runs for the targets that rolled it; a target without a result (a click by hand) passes
     // v0.0.334: after a Save Action, tier:N means that Tier or worse for the target (tier:1: only those who rolled a Tier 1)
+    if (cfg.onTiers?.length) { targets = (targets ?? []).filter(t => t.tier === undefined || cfg.onTiers.includes(Number(t.tier) || 0)); if (!targets.length) continue; }   // v0.0.358
     if (cfg.tier || cfg.crit) { targets = (targets ?? []).filter(t => t.tier === undefined ? true : (!cfg.tier || (ctx.save ? (Number(t.tier) || 0) <= cfg.tier : (Number(t.tier) || 0) >= cfg.tier)) && (!cfg.crit || t.crit)); if (!targets.length) continue; }
     try { await handleInline(m[1], cfg, { ...ctx, targets, message: ctx.message ?? null }); } catch (e) { console.error("twod12 | after the damage", e); }
   }
@@ -732,7 +740,15 @@ export async function openChip(kind, cfg, ctx = {}) {
   return false;
 }
 
-export async function handleInline(kind, cfg, ctx = {}) {
+/** v0.0.358: a chip's number options written as formulas (cfg.exprs), worked out for the creature that uses it. Pure but for evalExpr. */
+export function resolveExprs(cfg, actor) {
+  if (!cfg?.exprs) return cfg;
+  const out = { ...cfg };
+  for (const [k, e] of Object.entries(cfg.exprs)) { let v = 0; try { v = Math.max(0, Math.trunc(Number(evalExpr(e, actor)) || 0)); } catch (err) { v = 0; } out[k] = k === "value" || k === "count" ? Math.max(1, v) : v; if (k === "rounds") { out.dur = "rounds"; out.rounds = Math.max(1, v); } }
+  return out;
+}
+export async function handleInline(kind, cfg0, ctx = {}) {
+  const cfg = cfg0?.exprs ? resolveExprs(cfg0, originActor(ctx)) : cfg0;
   if (kind === "Book") return openBook(cfg);
   if (kind === "Heal") return handleHeal(cfg, ctx);
   if (kind === "Reduce") return handleReduce(cfg, ctx);
