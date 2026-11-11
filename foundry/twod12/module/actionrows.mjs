@@ -45,7 +45,7 @@ export function actionChanges(actor, item) {
       if (down > 0) { enf = Math.max(enf, down); add(name, `Enfeebled ${down}: \u2212${down} per damage die`, false); }
     }
     for (const b of flagOf(e, "bonuses") ?? []) {
-      if (!matches(b, traits)) continue;
+      if (b.against || !matches(b, traits)) continue;   // v0.0.343: against = Rolls made against this creature
       const tiers = b.tiers?.length ? b.tiers : ["t1", "t2", "t3"];
       const dmg = [b.dmg ? `[${({ B: "V", M: "R" })[b.dmgPool || "B"] ?? b.dmgPool}] ${b.dmg}${b.dmgSub ? ` ${b.dmgSub}` : ""}` : "", b.text || ""].filter(Boolean).join("; ");
       if (!dmg) continue;

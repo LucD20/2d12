@@ -15,6 +15,8 @@ Every creature can use these Actions.
 
 @@CARD:Haul@@
 
+@@CARD:Hide@@
+
 @@CARD:Interact@@
 
 @@CARD:Leaning@@

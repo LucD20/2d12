@@ -10,7 +10,7 @@ An **encounter** is a fight or a similar scene: it starts when Initiative is rol
 
 ## Initiative
 
-At the start of combat, **every creature rolls Initiative**. Initiative is a Check, normally an Instinct Check, but the GM can call for a different Attribute. The total is the creature's initiative.
+At the start of combat, **every creature rolls Initiative**. Initiative is a Check, normally an Instinct Check, but the GM can call for a different Attribute, for everyone or for some creatures only. The total is the creature's initiative.
 
 Initiative is a **zipper**. The creatures are split into however many different **groups** exist. Usually it is the PCs against a single group of enemies, but three-way combat is possible. Each group puts its creatures in order from the highest result to the lowest. The group with the highest single result goes first. Then the groups take turns, one creature at a time, in the order of their highest result, each taking its highest remaining creature. A group with no creatures left is skipped.
 
@@ -20,6 +20,13 @@ Initiative is a **zipper**. The creatures are split into however many different 
 > In a three-way fight, Mark rolls 13 and Nick 9, the enemies Goblin Warrior 12 and Goblin Scoundrel 8, and a third group Kobold Mage 13 and Kobold Shaman 5. The order is Mark, Kobold Mage, Goblin Warrior, Nick, Kobold Shaman, Goblin Scoundrel.
 
 **Ties** are broken by the higher Attribute Modifier used for the Initiative roll. If they are still tied, the Friendly creature (a PC or an ally of the PCs) goes first.
+
+### The Start of the Encounter
+
+Some abilities happen **at the start of an encounter**, such as the Archer's [[Mark Quarry]]. After Initiative is rolled and before the first turn, each of them waits in a **stack**, in the turn order. The GM can change that order: an ally can go later, for example to act after another ally's ability. Then they resolve one at a time, in the stack's order, and the first turn begins.
+
+> [!example]
+> Chris and Krysta are Archers. Chris rolls 15 and Krysta 13, so the stack is Chris's Mark Quarry, then Krysta's. Chris wants to know which enemy Krysta marks before choosing his own, so the GM puts Krysta's first.
 
 ### Swapping Initiative
 
@@ -42,14 +49,14 @@ At the start of your turn in combat, you **regain AP**: you lose any AP you didn
 
 ### Unspent AP
 
-If you end your turn without spending all your AP, you keep the rest until you regain AP, and each kept AP gives you **[[Guard]]**: **2** per AP at Stage 1, **3** at Stage 2 and **4** at Stage 3 (see [[Stages]]).
+If you end your turn without spending all your AP, you keep the rest until your next turn starts: nothing else happens then, and those AP can still pay for [[Reactions]]. When you regain AP at the start of your next turn, each AP you still had unused gives you **[[Guard]]** for 1 round: **2** per AP at Stage 1, **3** at Stage 2 and **4** at Stage 3 (see [[Stages]]).
 
-- This Guard **adds** to any Guard you already have (an exception to [[Stacking]]), and what is left of it ends when you regain AP. Damage takes it before your other Guard.
-- A kept AP can still pay for a Reaction: your Guard from AP then drops by one AP's worth (to a minimum of 0).
-- Your Reaction AP never becomes Guard.
+- This Guard **adds** to any Guard you already have (an exception to [[Stacking]]), and what is left of it ends 1 round later, when you regain AP again. Damage takes it before your other Guard.
+- A kept AP you spend on a Reaction is one AP less when your turn starts, so it gives no Guard.
+- Your Reaction AP never becomes Guard, and your first turn of an encounter has no unused AP.
 
 > [!example]
-> Drak (Stage 1) has Guard 5 from a card and ends his turn with 1 AP left: he has Guard 7 until his next turn. A goblin hits him for 3: his Guard from AP takes 2 and his other Guard 1, so he has Guard 4 left. If he then spends his kept AP on a Reaction, he loses no more Guard: that AP's Guard is already gone.
+> Drak (Stage 1) has Guard 5 from a card and ends his turn with 1 AP left: nothing changes until his next turn (he could still spend that AP on a Reaction). When his next turn starts, he regains his AP and gains Guard 2 for 1 round, on top of his Guard 5: Guard 7. A goblin then hits him for 3: his Guard from AP takes 2 and his other Guard 1, so he has Guard 4 left.
 
 ### Losing and Gaining Action Points
 
@@ -63,7 +70,7 @@ When something gives or takes Action Points, it says whether it happens **now** 
 A **Reaction** is an Action you use in response to something another creature does. Its card has an **Interrupt** or a **Trigger** line that says what it responds to, and which of the two it is decides when it happens. Its cost is written with an R, such as **1R**: it uses that many Action Points, but only as a response. A **0R** Reaction uses no AP; its Frequency still limits it.
 
 - **Paying:** A Reaction is paid with your **Reaction AP**, with AP you kept from your turn (see [[Unspent AP]]), or with both: a 2R Reaction can use your Reaction AP and one kept AP. On your own turn, your turn's AP can pay for it too. Your Reaction AP lasts until you regain AP at the start of your next turn.
-- **Opportunity Attack:** Every creature has the Opportunity Attack Reaction (see [[Chapter 6: Basic Actions|Chapter 6]]): it can attack a creature within 3 squares that moves with a Move Action or stands up.
+- **Opportunity Attack:** Every creature has the Opportunity Attack Reaction (see [[Chapter 6: Basic Actions|Chapter 6]]): it can attack an adjacent enemy that moves with a Move Action or stands up. A Talent can widen it (to the creatures it [[Flanking|threatens]], for example).
 - **Interrupt:** An Interrupt happens **before** the Action that triggers it. "Interrupt: A creature would Advance" means the Reaction happens before the creature uses the Advance Action. An Interrupt can say that part of its effect happens after the triggering Action ("after the damage, they are Slid 1"): that part waits for it.
 - **Trigger:** A Trigger happens **after** the Action that triggers it. "Trigger: A creature deals damage to you" happens after you take the triggering damage.
 - **Once per triggering Action:** You can react only once to the same Action, but several creatures can react to it. Some Actions, mainly Move Actions, can happen throughout different squares. It is still a single Action, and you decide when you take the Reaction: for instance, you can wait for the creature to move into a more advantageous position before taking your Reaction, instead of taking it as soon as the creature moves.
@@ -166,12 +173,15 @@ A **Buff** is an effect that modifies another Action, such as Rimebrand's extra 
 
 The same effect never stacks with itself, and bonuses from different effects don't add up either: for each value (Empowered, Enfeebled, Vulnerable, a Defense, [[Guard]]...), a creature uses only the **highest bonus** and the **highest penalty** that apply. If a creature gets the same effect again, it keeps the higher value and the longer duration: two effects that make it Enfeebled 1 do not make it Enfeebled 2.
 
-Four things do add up:
+Five things do add up:
 
 - An effect that says it **increases** a value: "increase your Enfeebled value by 1" (an Action that says "increase your Empowered value by 1" adds to the Empowered you have).
-- **Boons and Banes.**
+- **Boons and Banes**, up to the limit of their name (see [[Named Boons and Banes]]).
+- **Named bonuses.** A bonus to a value such as a Defense or a Speed can have a name, as Boons and Banes do: Field, Pressure or Support. Bonuses with different names add up; with the same name, only the highest counts. An unnamed bonus never adds to another bonus: it counts only when it is higher than the named ones together.
 - An effect that **increases** your [[Slowed]] value (being Desperate, Dying or Shattered).
 - The **Guard** your [[Unspent AP]] give you: it adds to the Guard you have.
+
+For example, Jacob has a +1 Support bonus to every Defense and a +1 Field bonus to Armor Defense: his Armor Defense rises by 2. A second +1 Support bonus changes nothing, and an unnamed +1 bonus doesn't add to them either: he keeps +2.
 
 **Equipment is not a bonus.** Your armor gives your Armor value and your charm your Ward value; effects add to those. With +1 AD and +1 Defense, your Armor Defense rises by 1 (not 2) and every other Defense by 1.
 
@@ -220,7 +230,7 @@ An Action against a creature rolls against one of its **Defenses**. A creature h
 |---|---|
 | **Armor Defense (AD)** | the creature's Armor Defense |
 | **Ward Defense (WD)** | the creature's Ward Defense |
-| **Vs. an Attribute** | 13 + half the target's Attribute, rounded up (−1 and 0 give +0, 1 and 2 give +1, 3 gives +2) |
+| **Vs. an Attribute** | 12 + the target's Attribute |
 | **Vs. DC** | A set DC, such as "Vs. DC 13": some Actions have a set DC, and others target something that has no Defenses, such as a stationary object. |
 
 - **Armor value** is the value provided by the [[Armor|armor]] a creature wears. **Armor Defense** is 11 + Armor value + other items + bonuses − penalties.
@@ -252,7 +262,7 @@ When an effect lasts until the end of the turn of the affected creature, it is m
 
 An EoT effect on yourself still ends at the end of the current turn. A duration in rounds is different: it does not count down at the end of the turn in which the effect was created, because it has to last a whole round.
 
-Each position in the turn order is an **initiative slot**. Effects end at the end of an initiative slot, not of a creature. If a creature swaps initiative, an EoT effect still ends at the end of the slot the creature was in when the effect was applied, and a duration in rounds still counts down at the end of the slot of its origin.
+Each position in the turn order is an **initiative slot**. Effects end at the end of an initiative slot, not of a creature. If a creature swaps initiative, an EoT effect still ends at the end of the slot the creature was in when the effect was applied, and a duration in rounds counts down at the end of the slot in which the effect was applied (the origin's own slot when it was applied on its turn, the current slot when it was applied as a Reaction or out of turn).
 
 ## Escalation
 

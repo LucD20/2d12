@@ -16,7 +16,7 @@ Body 1  Body Health 1 (x0)  Mind Health 3
 Appeal 3  Body Health 44 (hm null)  AD 17 WD 9
 --- the derived NPC
 Orc Warrior                    pool 65  AP 4  Weapon 2 (body)  Power 2 (instinct)  Signature 2 from weapon  AD 13 WD 12  Standard CV 100
-a Minion                       pool 6  AP 3  Weapon 1 (body)  Power 1 (mind)  Signature 1 from weapon  AD 12 WD 12  Minion CV 25
+a Minion                       pool 6  AP 3  Weapon 2 (body)  Power 1 (mind)  Signature 2 from weapon  AD 12 WD 12  Minion CV 25
 Elite, Power Attribute higher  pool 145  AP 4  Weapon 2 (body)  Power 3 (mind)  Signature 3 from power  AD 14 WD 14  Elite CV 200
 --- dice that come close (the Modifier taken out)
 0->[Mod]  0.4->[Mod]  1->1  2.5->1d4  3->1d4  4->1d6  5.5->1d10  7->2d6  8->2d6  10->2d8  12.5->2d12

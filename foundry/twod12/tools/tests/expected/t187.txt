@@ -1,0 +1,5 @@
+the bar picks a clicked token (the candidates outlined, the tokens not selectable meanwhile, everything put back): true
+the Push list and the Guard list give the bar their tokens: true true
+the Push list leaves you out unless self:yes: true
+every chip is inline-flex (icon and words aligned everywhere): true
+Smite 3 AP, the book and Foundry say 'you excepted': true true

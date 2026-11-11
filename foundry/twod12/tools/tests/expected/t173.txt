@@ -1,4 +1,4 @@
-Encounter use kept on the combatant too: {"combatId":"c1","encounter":["slam"],"roundAt":{}}
+Encounter use kept on the combatant too: {"combatId":"c1","encounter":["slam"],"roundAt":{},"roundPrev":{},"encounter2":[]}
 the creature's own record lost (what Lucas saw after a reload): still greyed: {"faded":true,"why":"Used this encounter"}
 roll dialog: a removed tile is display:none, with an undo chip: true
 a damaging Action doesn't tick Affect yourself: true

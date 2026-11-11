@@ -1,6 +1,6 @@
 import { tokenLight, seenLight, tokenDistance, LIGHT_NAMES } from "./light.mjs";
 import { registerSightGate, registerSightRefresh } from "./sightgate.mjs";
-import { modeList } from "./modes.mjs";
+import { modeList, withMode } from "./modes.mjs";
 
 // Perception statuses the GM puts on a token, for how the other side perceives it (see Senses in the rules):
 //   Obscured: Actions against it take 1 bane; its Actions against others gain 1 boon.
@@ -42,8 +42,7 @@ export function registerSenses() {
     class HearingMode extends Base {
       static getDetectionFilter() { return this._detectionFilter ??= Outline.create({ outlineColor: [1, 1, 1, 1], knockout: true, wave: true }); }
       _canDetect(visionSource, target) {
-        const src = visionSource?.object?.document;
-        if (src?.hasStatusEffect?.(CONFIG.specialStatusEffects?.BLIND)) return false;
+        // v0.0.315 (Lucas): a Blinded creature still hears (the ripple stays); only its Sight is gone
         const actor = target?.document?.actor ?? target?.actor;
         if (actor?.statuses?.has?.("unsensed")) return false;   // nobody perceives it: not even by its noise
         if (actor?.statuses?.has?.("hidden")) return true;   // the GM's Hidden status
@@ -59,29 +58,53 @@ export function registerSenses() {
 /** New characters can hear: their token gets the Hearing detection mode (no range limit). */
 export function giveHearing(actor) {
   try {
-    const modes = modeList(actor.prototypeToken?.toObject?.().detectionModes);
-    if (modes.some(m => m.id === MODE_ID)) return;
-    actor.updateSource({ "prototypeToken.detectionModes": [...modes, { id: MODE_ID, enabled: true, range: null }] });
+    const w = withMode(actor.prototypeToken?.toObject?.().detectionModes, MODE_ID);
+    if (w.changed) actor.updateSource({ "prototypeToken.detectionModes": w.value });
   } catch (e) { console.warn("twod12 | could not add Hearing", e); }
 }
 
-/** game.twod12.addHearing(): give the Hearing detection mode to every existing character (prototype token and placed tokens). */
-export async function addHearing() {
-  let n = 0;
-  for (const actor of game.actors.filter(a => a.type === "character")) {
-    const modes = modeList(actor.prototypeToken.toObject().detectionModes);
-    if (!modes.some(m => m.id === MODE_ID)) { await actor.update({ "prototypeToken.detectionModes": [...modes, { id: MODE_ID, enabled: true, range: null }] }); n++; }
+/**
+ * v0.0.319: every token has Hearing when Foundry prepares its data (nothing written to the world), whatever is stored: Foundry tests only the
+ * modes a token lists, and NPC tokens had none (the book: "Every creature has Sight and Hearing").
+ */
+export function hearingOnPrepare() {
+  const proto = CONFIG.Token?.documentClass?.prototype;
+  const name = ["_prepareDetectionModes", "prepareBaseData"].find(n => typeof proto?.[n] === "function");
+  if (!name || proto[name].twod12Hearing) return name ?? "";
+  const inner = proto[name];
+  const wrapped = function (...args) {
+    const r = inner.apply(this, args);
+    try {
+      if (["character", "npc"].includes(this.actor?.type)) {
+        const raw = this.detectionModes, w = withMode(raw, MODE_ID);
+        if (w.changed) { if (Array.isArray(raw)) raw.push(w.value.at(-1)); else if (raw && typeof raw === "object" && !raw.contents) raw[MODE_ID] = w.value[MODE_ID]; else this.detectionModes = w.value; }
+      }
+    } catch (e) { /* the stored modes stay */ }
+    return r;
+  };
+  wrapped.twod12Hearing = true;
+  proto[name] = wrapped;
+  return name;
+}
+
+/** game.twod12.addHearing(): give the Hearing detection mode to every existing creature (prototype token and placed tokens); v0.0.318: NPCs too. */
+export async function addHearing({ quiet = false } = {}) {   // v0.0.318: every creature (NPCs too); v0.0.319: in the shape this Foundry stores
+  let n = 0, failed = 0;
+  for (const actor of game.actors.filter(a => a.type === "character" || a.type === "npc")) {
+    const w = withMode(actor.prototypeToken.toObject().detectionModes, MODE_ID);
+    if (w.changed) { try { await actor.update({ "prototypeToken.detectionModes": w.value }); n++; } catch (e) { failed++; console.warn("twod12 | Add Hearing", actor.name, e); } }
   }
   for (const scene of game.scenes) {
     const updates = [];
     for (const t of scene.tokens) {
-      if (t.actor?.type !== "character") continue;
-      const modes = modeList(t.toObject().detectionModes);
-      if (!modes.some(m => m.id === MODE_ID)) updates.push({ _id: t.id, detectionModes: [...modes, { id: MODE_ID, enabled: true, range: null }] });
+      if (!["character", "npc"].includes(t.actor?.type)) continue;
+      const w = withMode(t.toObject().detectionModes, MODE_ID);
+      if (w.changed) updates.push({ _id: t.id, detectionModes: w.value });
     }
-    if (updates.length) await scene.updateEmbeddedDocuments("Token", updates);
+    if (updates.length) { try { await scene.updateEmbeddedDocuments("Token", updates); } catch (e) { failed++; console.warn("twod12 | Add Hearing (tokens)", scene.name, e); } }
   }
-  ui.notifications.info(`Hearing added to ${n} character${n === 1 ? "" : "s"} and their tokens.`);
+  if (!quiet || failed) ui.notifications[failed ? "warn" : "info"](`Hearing added to ${n} creature${n === 1 ? "" : "s"} and their tokens${failed ? ` (${failed} failed: see the console)` : ""}.`);
+  return n;
 }
 
 /** How a creature is perceived by the other side, from the GM's statuses: "unsensed", "hidden", "obscured" or "" (Clear). */
@@ -108,7 +131,7 @@ export function perceive(observer, target, { loe = true } = {}) {
   const os = o?.system?.senses ?? {};
   if (o?.statuses?.has?.("unconscious")) return { level: "unsensed", why: "Unconscious: every creature is Unsensed to you", name: CAP.unsensed };   // the Unconscious rule
   const options = [];
-  const blind = !!o?.statuses?.has?.(CONFIG.specialStatusEffects?.BLIND ?? "blind");
+  const blind = !!o?.statuses?.has?.("blinded") || !!o?.statuses?.has?.(CONFIG.specialStatusEffects?.BLIND ?? "blind");   // v0.0.316: the system's Blinded
   if (loe && !blind && target) {
     const raw = tokenLight(target), light = seenLight(raw, os);
     const how = light === raw ? `Sight, ${LIGHT_NAMES[raw]} light` : `Sight (${os.darksight ? "Dark Sight" : "Dim-light Sight"}), ${LIGHT_NAMES[raw]} light`;
@@ -130,4 +153,30 @@ export function perceive(observer, target, { loe = true } = {}) {
   const st = perceptionOf(t);
   if (st && RANK[st] < RANK[best[0]]) best = [st, `${CAP[st]} (status)`];
   return { level: best[0], why: best[1], name: CAP[best[0]] };
+}
+
+/**
+ * v0.0.317 (Lucas: a Blinded token shows no ripples): game.twod12.hearInfo(): for each controlled token, whether it can hear and what it hears.
+ * A ripple needs: the Hearing mode on the observer's token (enabled), a started combat with the target in it (a creature makes noise only in
+ * combat) or the GM's Hidden status on the target, and the target within the Hearing range. Prints a line per creature and returns it.
+ */
+export function hearInfo() {
+  const sel = canvas?.tokens?.controlled ?? [];
+  if (!sel.length) { ui.notifications.warn("Select the token that should hear (the Blinded one)."); return []; }
+  const out = [];
+  for (const o of sel) {
+    const raw = o.document?.detectionModes, modes = modeList(raw), hm = modes.find(m => m.id === MODE_ID);
+    const shape = Array.isArray(raw) ? "a list" : raw?.contents ? "a collection" : raw && typeof raw === "object" ? "a record" : String(raw);
+    let stored = ""; try { stored = JSON.stringify(o.document?.toObject?.().detectionModes); } catch (e) { stored = "?"; }
+    out.push(`${o.name}: its modes (${shape}): ${modes.map(m => `${m.id}${m.enabled === false ? " (off)" : ""}`).join(", ") || "none"}; stored: ${stored}; vision ${o.document?.sight?.enabled !== false ? "on" : "OFF"}`);
+    const head = `${o.name}: Hearing mode ${hm ? (hm.enabled === false ? "OFF on the token" : `on (range ${hm.range ?? "none"})`) : "MISSING on the token (Add Hearing)"}; Blinded ${!!o.actor?.statuses?.has?.("blinded")}; combat started ${!!game.combat?.started}; hearing range ${hearingRange(o.actor)} sq.`;
+    out.push(head);
+    for (const t of canvas.tokens.placeables) {
+      if (t === o || !t.actor) continue;
+      out.push(`  ${t.name}: makes noise ${makesNoise(t)} (in the combat: ${!!game.combat?.combatants?.find?.(c => c.tokenId === t.id)}), GM Hidden ${!!t.actor.statuses?.has?.("hidden")}, Unsensed ${!!t.actor.statuses?.has?.("unsensed")}, ${Math.round(tokenDistance(o, t) * 10) / 10} sq. away -> heard ${hears(o, t) || !!t.actor.statuses?.has?.("hidden")}; shown now ${t.visible}`);
+    }
+  }
+  console.log(out.join("\n"));
+  ui.notifications.info("Hearing: the details are in the console (F12).");
+  return out;
 }

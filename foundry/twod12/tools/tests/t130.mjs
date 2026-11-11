@@ -21,14 +21,18 @@ console.log("entry on getting the weapon:", JSON.stringify(flags.mastery), "| Te
 globalThis.game = { ...(globalThis.game ?? {}), combat: null };
 await M.masteryAfterRoll(A, gs, true, [3]);
 console.log("v0.0.189: a Tier 3 out of combat gives nothing:", M.masteryValue(A, "Greatsword"));
-globalThis.game.combat = { started: true, combatants: [{ actor: A }] };
+globalThis.game.combat = { id: "c1", started: true, combatants: [{ actor: A }] };
 await M.masteryAfterRoll(A, gs, true, [2]);
 await M.masteryAfterRoll(A, gs, false, [3]);
 console.log("Tier 2, or not a Weapon roll: nothing:", M.masteryValue(A, "Greatsword"));
 await M.masteryAfterRoll(A, gs, true, [3, 3, 1]);
 console.log("several targets with two Tier 3: +1 once:", M.masteryValue(A, "Greatsword"));
 await M.masteryAfterRoll(A, gs1, true, [3]);
+console.log("v0.0.343: a second Tier 3 with a Blade in the same encounter gives nothing:", M.masteryValue(A, "Greatsword"));
+globalThis.game.combat = { id: "c2", started: true, combatants: [{ actor: A }] };   // the next encounter
+await M.masteryAfterRoll(A, gs1, true, [3]);
 console.log("the +1 Greatsword counts for the Greatsword:", M.masteryValue(A, "Greatsword"));
+globalThis.game.combat = { id: "c3", started: true, combatants: [{ actor: A }] };
 await M.masteryAfterRoll(A, gs, true, [3]);
 console.log("at 3:", JSON.stringify(M.techniqueLock(A, tech)), "| posted:", posted.at(-1));
 console.log("rows:", JSON.stringify(M.masteryRows(A).map(r => ({ name: r.name, value: r.value, owned: r.owned, next: r.next, nextText: r.nextText, pct: r.pct, steps: r.steps.map(s => (s.on ? "*" : "") + s.s).join(" ") }))));

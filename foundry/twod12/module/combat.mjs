@@ -1,21 +1,23 @@
 import { logEvent, makeLine } from "./ticker.mjs";
-import { swapCardHtml, thawLineHtml, sysLine, apText } from "./sysmsg.mjs";
-import { apGuardOf, apGuardAfterReaction, guardPerAP } from "./guard.mjs";
+import { swapCardHtml, thawLineHtml, sysLine } from "./sysmsg.mjs";
+import { apGuardOf } from "./guard.mjs";
 import { hasMomentum, setMomentum } from "./escalation.mjs";
-import { askInitiative } from "./initwindow.mjs";
-import { initCardData, initCardHtml } from "./initcard.mjs";
+import { sideDisp, lastOrder } from "./initmodel.mjs";   // v0.0.310: the Initiative windows (initwindow.mjs, loaded when used)
 import { groupColor } from "./config.mjs";
 // Combat: attribute-roll Initiative for everyone, "zipper" turn order between the two sides,
 // and an Action Points counter per combatant (shown and editable in the tracker, changes sent to the chat).
-import { performCheck, esc, combineRolls } from "./roll.mjs";
+import { esc } from "./roll.mjs";
 import { TWOD12 } from "./config.mjs";
 import { forgetRestored } from "./effects.mjs";
+import { unset } from "./util.mjs";   // v0.0.277: removing a key without the legacy "-=" syntax
+import { payReaction } from "./sheetmodel.mjs";
 const { DialogV2 } = foundry.applications.api;
 const F = "twod12";
 const warn = m => ui.notifications.warn(m);
 
 // v0.0.243 (pack R; book, Chapter 2): 4 AP a turn and 1 Reaction AP (the combatant flag "rap"), which pays only for Reactions and lasts until the AP
-// are regained; losing or gaining AP, Slowed and Quickened touch the 4 only. The AP kept at the end of a turn become Guard (system.apGuard, guard.mjs).
+// are regained; losing or gaining AP, Slowed and Quickened touch the 4 only. v0.0.274: the AP a turn left unused become Guard for 1 round when
+// the next turn starts (system.apGuard, guard.mjs).
 export const AP_PER_TURN = TWOD12.apPerTurn, REACTION_AP = TWOD12.reactionAp;
 /** The value of a condition with a value on a creature (Slowed 2, Quickened 1): the highest of its effects, or 0. */
 export function conditionValue(actor, id) {
@@ -43,7 +45,7 @@ export const apPerTurn = combatant => {
 /** The Reaction AP a creature has (0 or 1): regained with its AP, spent only on Reactions. */
 export const getRAP = c => Math.max(0, Math.min(REACTION_AP, Math.trunc(Number(c?.getFlag(F, "rap"))) || 0));
 /** Pure: how a Reaction's cost is paid: the Reaction AP first, then AP (kept from the turn, or the turn's own). { fromRap, fromAp } */
-export const payReaction = (cost, ap, rap) => { const fromRap = Math.min(Math.max(0, rap), Math.max(0, cost)); return { fromRap, fromAp: Math.max(0, cost - fromRap) }; };
+export { payReaction };   // v0.0.297: the one AP rule lives in sheetmodel.mjs (pure), with versionCant
 /** The Stage of a combatant's creature (for the Guard an unspent AP gives). */
 const stageOfC = c => Math.max(1, Math.min(3, Number(c?.actor?.system?.stage) || 1));
 
@@ -57,6 +59,15 @@ export async function climbUp(c) {
 }
 export const getAP = c => Number(c?.getFlag(F, "ap")) || 0;
 
+export const initRollIds = combat => [...(combat?.combatants ?? [])].filter(c => c.initiative === null || c.initiative === undefined).map(c => c.id);
+/** v0.0.310 (Lucas): the Initiative button. The GM opens the Initiative window (who rolls is chosen there); a player rolls their own creatures still to roll. */
+export async function rollPendingInitiative(combat) {
+  if (!combat) return;
+  if (game.user.isGM) { const { openInitiative } = await import("./initwindow.mjs"); return openInitiative(combat); }
+  const ids = initRollIds(combat).filter(id => combat.combatants.get(id)?.isOwner);
+  if (!ids.length) return ui.notifications.info("Your creatures have rolled their initiative.");
+  return combat.rollInitiative(ids);
+}
 export function combatantOf(actor, combat = game.combat) {
   if (!combat || !actor) return null;
   // A token of an unlinked NPC: its own combatant (several tokens can share one actor id, so the id alone is not enough).
@@ -90,25 +101,23 @@ export async function setAP(c, value, why = "", { quiet = false, reaction = fals
 export const setRAP = (c, n) => c.setFlag(F, "rap", Math.max(0, Math.min(REACTION_AP, Math.trunc(Number(n)) || 0)));
 
 /**
- * v0.0.243 (book, Unspent AP): a turn ends with AP left: each kept AP is Guard 2 / 3 / 4 by Stage until the creature regains AP (it adds to the other
- * Guard and is taken first). A frozen creature (it swapped initiative) keeps its AP for its new slot: no Guard. The active GM does it when the turn moves on.
+ * v0.0.274 (Lucas, the book's Unspent AP rewritten): nothing happens when a turn ends with AP left (they can still pay Reactions). When the
+ * creature regains AP at the start of its next turn, each AP it didn't use is Guard 2 / 3 / 4 by Stage for 1 round (until it regains AP again):
+ * it adds to the other Guard and is taken first. A creature's first turn of the encounter has no unused AP. Pure: { unused, guard }.
  */
-export async function keepApGuard(c) {
+export const unusedApGuard = (hadTurn, apLeft, stage) => { const unused = hadTurn ? Math.max(0, Math.trunc(Number(apLeft)) || 0) : 0; return { unused, guard: apGuardOf(unused, stage) }; };
+/** The start of a turn: the Guard of the AP the last turn left unused replaces the one before (1 round), and the chat says so. */
+export async function setUnusedApGuard(c, hadTurn, apLeft) {
   const a = c?.actor;
-  if (!a || c.getFlag(F, "frozen")) return 0;
-  const kept = getAP(c), guard = apGuardOf(kept, stageOfC(c));
+  if (!a) return 0;
+  const { unused, guard } = unusedApGuard(hadTurn, apLeft, stageOfC(c));
   if ((Number(a.system?.apGuard) || 0) !== guard) await a.update({ "system.apGuard": guard });
-  if (guard > 0) await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: a }), content: sysLine("fa-shield-halved", `<b>${esc(c.name)}</b> keeps ${apText(kept)}: <b>Guard ${guard}</b> until its next turn (${guardPerAP(stageOfC(c))} an AP). A kept AP can still pay a Reaction.`, "apguard") });
+  if (guard > 0) await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: a }), content: sysLine("fa-shield-halved", `<b>${esc(c.name)}</b> unused AP (${unused}): <b>Guard ${guard}</b> (1 round).`, "apguard") });
   return guard;
-}
-/** The AP are regained: the Guard they gave ends. */
-export async function dropApGuard(c) {
-  const a = c?.actor;
-  if (a && (Number(a.system?.apGuard) || 0) > 0) await a.update({ "system.apGuard": 0 });
 }
 
 /** Pay the AP of an action. Returns false when the player decides not to go ahead. Does nothing outside combat. */
-export async function spendAP(actor, cost, label = "", { quiet = false, reaction = false } = {}) {
+export async function spendAP(actor, cost, label = "", { quiet = false, reaction = false, force = false } = {}) {   // force (v0.0.293): no "Not enough AP" question (the roll dialog warned)
   const c = combatantOf(actor);
   if (!c || !game.combat?.started) return true;
   // v0.0.243 (book, Reactions): a Reaction is paid with the Reaction AP first, then with AP (kept from the turn, or the turn's own on its own turn).
@@ -117,31 +126,30 @@ export async function spendAP(actor, cost, label = "", { quiet = false, reaction
     const ok = await DialogV2.confirm({ window: { title: "Frozen" }, content: `<p><b>${esc(c.name)}</b> swapped initiative, so its remaining actions are frozen until its turn. Use ${esc(label)} anyway?</p>`, rejectClose: false });
     if (!ok) return false;
   }
-  if (have < pay.fromAp) {
+  if (have < pay.fromAp && !force) {
     const ok = await DialogV2.confirm({ window: { title: "Not enough AP" }, content: `<p><b>${esc(c.name)}</b> has ${have} AP${reaction ? ` and ${rap} Reaction AP` : ""} and ${esc(label)} costs ${cost}${reaction ? "R" : ""}. Use it anyway?</p>`, rejectClose: false });
     if (!ok) return false;
   }
   await c.setFlag(F, "acted", true);
-  if (Number(c.getFlag(F, "evadeMove")) > 0) await c.update({ [`flags.${F}.evadeMove`]: 0, [`flags.${F}.-=ignoreTerrain`]: null });   // v0.0.182: an Evade left unused ends when another Action is used
+  if (Number(c.getFlag(F, "evadeMove")) > 0) await c.update({ [`flags.${F}.evadeMove`]: 0, ...unset(`flags.${F}.ignoreTerrain`) });   // v0.0.182: an Evade left unused ends when another Action is used
   // v0.0.200: a movement still under way is written to the Turn Log before this Action (its line comes first).
   try { const { closeMoveLine } = await import("./move.mjs"); await closeMoveLine(c); } catch (e) { /* none */ }
   if (pay.fromRap) await setRAP(c, rap - pay.fromRap);
-  // A kept AP (out of its turn) that pays a Reaction loses its Guard (one AP's worth each).
-  const off = game.combat?.combatant?.id !== c.id, ag = Number(actor.system?.apGuard) || 0;
-  if (pay.fromAp > 0 && off && ag > 0) {
-    const left = apGuardAfterReaction(ag, pay.fromAp, stageOfC(c));
-    if (actor.isOwner) await actor.update({ "system.apGuard": left }); else game.socket.emit("system.twod12", { type: "applyApGuard", actorUuid: actor.uuid, value: left });
-  }
+  // v0.0.274: a kept AP that pays a Reaction is simply one AP less at the start of the next turn (its Guard comes then: setUnusedApGuard)
   await setAP(c, Math.max(0, have - pay.fromAp), label, { quiet, reaction, rap: reaction ? { b: rap, a: rap - pay.fromRap } : null });
   return true;
 }
 
 /* ---- Zipper order ---- */
-/** Creatures are grouped by token disposition (Friendly, Neutral, Hostile, Secret): usually the PCs against one group of enemies, but a three-way fight works too. */
+/** Creatures are grouped by token disposition (Friendly, Neutral, Hostile): usually the PCs against one group of enemies, but a three-way fight works too.
+ *  v0.0.310 (Lucas, the Initiative window): a side the GM chose in the window (the combatant flag twod12.init.side: a Fourth side too) comes first,
+ *  and Secret counts as Hostile (it was a side of its own), so the order matches the window's sides. */
 const sideOf = c => {
+  const own = c.getFlag?.(F, "init")?.side;
+  if (own) return sideDisp(own);
   const d = c.token?.disposition;
-  if (d !== undefined && d !== null) return d;
-  return c.actor?.type === "character" ? CONST.TOKEN_DISPOSITIONS.FRIENDLY : CONST.TOKEN_DISPOSITIONS.HOSTILE;
+  if (d !== undefined && d !== null) return d < -1 ? -1 : d;
+  return c.actor?.type === "character" ? 1 : -1;
 };
 
 /**
@@ -172,39 +180,31 @@ export class TwoD12Combat extends Combat {
 
   setupTurns() {
     const tieAttr = c => Number(c.getFlag?.(F, "initAttr")) || 0;
-    const disp = c => c.token?.disposition ?? (c.actor?.type === "character" ? 1 : -1);
-    const base = [...super.setupTurns()].sort((a, b) => ((b.initiative ?? -Infinity) - (a.initiative ?? -Infinity)) || (tieAttr(b) - tieAttr(a)) || (disp(b) - disp(a)));
-    const ordered = zipper([...base]);
+    const all = [...super.setupTurns()].sort((a, b) => ((b.initiative ?? -Infinity) - (a.initiative ?? -Infinity)) || (tieAttr(b) - tieAttr(a)) || (sideOf(b) - sideOf(a)));
+    // v0.0.310 (Lucas): a creature that goes last (Dying or Shattered before the encounter) doesn't roll and is placed after everyone,
+    // several of them by the tie rule (the higher Attribute Modifier for the called Check, then Friendly)
+    const isLast = c => !!c.getFlag?.(F, "init")?.last;
+    const call = { attr: this.getFlag?.(F, "initCall")?.attr || "instinct" };
+    const lastC = all.filter(isLast), base = all.filter(c => !isLast(c));
+    const lastIds = lastOrder(lastC.map(c => ({ id: c.id, mods: c.actor?.system?.attributes ?? {}, set: c.getFlag?.(F, "init") ?? {}, disp: sideOf(c) })), call).map(x => x.id);
+    const ordered = [...zipper([...base]), ...lastIds.map(id => lastC.find(c => c.id === id))];
     this.turns = ordered;
     const c = ordered[this.turn];
     if (this.current) { this.current.combatantId = c?.id ?? null; this.current.tokenId = c?.tokenId ?? null; }
     return ordered;
   }
 
-  /** Everyone rolls the same Attribute Check (asked once). */
+  /**
+   * v0.0.310 (Lucas): the GM's roll opens the Initiative window (initwindow.mjs: who rolls, each creature's Check, Favored, Doomed, Boons and
+   * Banes); a player's roll (portrait, tracker, sheet) rolls their own creatures at once with the GM's settings and their own effects.
+   * options.direct: roll these now, without the window (the GM too).
+   */
   async rollInitiative(ids, options = {}) {
     ids = typeof ids === "string" ? [ids] : [...ids];
-    const list = ids.map(id => this.combatants.get(id)).filter(c => c?.isOwner && c.actor);
-    if (!list.length) return this;
-    const ask = await askInitiative(list);
-    if (!ask?.attr) return this;
-    const curId = this.started ? this.combatant?.id : null;
-    const rows = [], rolls = [], updates = [];
-    for (const c of list) {
-      const attr = ask.per?.[c.id] || ask.attr;
-      const mod = c.actor.system.attributes?.[attr] ?? 0;
-      const r = await performCheck({ mod, boons: ask.boons, banes: ask.banes, manualBoons: ask.boons, manualBanes: ask.banes, favored: ask.favored, doomed: ask.doomed, noDoubles: true });
-      rolls.push(...r.rolls);
-      updates.push({ _id: c.id, initiative: r.total, [`flags.${F}.initAttr`]: mod });
-      rows.push({ id: c.id, name: c.name, side: sideOf(c), attr, mod, r });
-    }
-    await this.updateEmbeddedDocuments("Combatant", updates);
-    const all = combineRolls(rolls);
-    // v0.0.206 (Lucas, B4): the card lists them in the turn order the tracker now has (setupTurns: the zipper).
-    const data = initCardData(rows, (this.turns ?? []).map(c => c.id));
-    await ChatMessage.create({ rolls: all ? [all] : [], content: initCardHtml(data), flags: { [F]: { initiative: rows.map(x => ({ id: x.id, attr: x.attr, mod: x.mod, total: x.r.total })) } } });
-    // Keep the creature whose turn it is as the current one when the order changes.
-    if (curId) { const idx = this.turns.findIndex(c => c.id === curId); if (idx >= 0 && idx !== this.turn) await this.update({ turn: idx }); }
+    const W = await import("./initwindow.mjs");
+    if (game.user.isGM && !options.direct) { await W.openInitiative(this); return this; }
+    if (game.user.isGM) await W.rollCreatures(this, ids, "GM");
+    else await W.playerRoll(this, ids);
     return this;
   }
 }
@@ -217,20 +217,25 @@ async function startTurn(combat) {
   const key = `${combat.round}:${c.id}`;
   // v0.0.204: a creature that swapped had its turn start this round already; its new slot is a new start (it thaws), so frozen skips this check.
   if (c.getFlag(F, "apTurn") === key && !c.getFlag(F, "frozen")) return;
-  const fresh = { [`flags.${F}.apTurn`]: key, [`flags.${F}.acted`]: false, [`flags.${F}.moveLeft`]: 0, [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, [`flags.${F}.-=ignoreTerrain`]: null };
+  const hadTurn = !!c.getFlag(F, "apTurn"), apLeft = getAP(c);   // v0.0.274: the AP its last turn left unused (none on its first turn)
+  const fresh = { [`flags.${F}.apTurn`]: key, [`flags.${F}.acted`]: false, [`flags.${F}.moveLeft`]: 0, [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...unset(`flags.${F}.ignoreTerrain`) };
   if (c.getFlag(F, "frozen")) {
     // It swapped initiative earlier: it carries on with the AP it had left.
     await c.update({ ...fresh, [`flags.${F}.frozen`]: false, [`flags.${F}.thawed`]: key });   // v0.0.205: a thawed turn can't swap again
     await ChatMessage.create({ content: thawLineHtml(c.name, getAP(c)) });
   } else {
     await c.update({ ...fresh, [`flags.${F}.rap`]: REACTION_AP });   // v0.0.243: the Reaction AP comes back with the AP
-    await dropApGuard(c);   // v0.0.243: the Guard of the AP it kept ends when it regains AP
     await setAP(c, apPerTurn(c), "start of turn", { rap: { b: 0, a: REACTION_AP } });
+    await setUnusedApGuard(c, hadTurn, apLeft);   // v0.0.274: its unused AP are Guard for 1 round (the one before ends)
+    try { const { dazeAtTurnStart } = await import("./conditions.mjs"); await dazeAtTurnStart(c); } catch (e) { console.warn("twod12 | Dazed", e); }   // v0.0.314: the rest of a Dazed
     await climbUp(c);
     // v0.0.187: the Effects its Features give at the start of each turn (Killer's Focus, Radiant Zeal); not when it carries on after a swap.
     try { const { applyTurnStartEffects } = await import("./automation.mjs"); await applyTurnStartEffects(c.actor); } catch (e) { console.warn("twod12 | Effect each turn", e); }
     // v0.0.207: its "At the start of each of its turns" Chat message settings.
     try { const { postMessages } = await import("./automation.mjs"); await postMessages(c.actor, "turn"); } catch (e) { console.warn("twod12 | turn messages", e); }
+    // v0.0.261 (Consecrated Ground): the heals of the Zones it stands in; the lit Half of a Covering Shot ends with its new turn
+    try { const { healAtTurnStart } = await import("./areafx.mjs"); await healAtTurnStart(c); } catch (e) { console.warn("twod12 | area heals", e); }   // v0.0.327 (PACK ZONE): Zones and Auras, each row's Who
+    try { const { clearHalfHint } = await import("./halfhint.mjs"); if (c.actor) await clearHalfHint(c.actor.uuid); } catch (e) { /* no hint */ }
   }
   await takeSnapshot(combat);
 }
@@ -328,9 +333,10 @@ export async function performSwap(combat, aId, bId, userId = null) {
   if (idx >= 0 && idx !== combat.turn) await combat.update({ turn: idx });
   await A.update({ [`flags.${F}.frozen`]: true });
   await setAP(A, left - 1, `swap with ${B.name}`, { kind: "act" });   // its own turn, though the turn has already moved to B
-  await B.update({ [`flags.${F}.apTurn`]: `${combat.round}:${B.id}`, [`flags.${F}.acted`]: false, [`flags.${F}.frozen`]: false, [`flags.${F}.moveLeft`]: 0, [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, [`flags.${F}.-=ignoreTerrain`]: null, [`flags.${F}.rap`]: REACTION_AP });
-  await dropApGuard(B);
+  const bHad = !!B.getFlag(F, "apTurn"), bLeft = getAP(B);   // v0.0.274: B's unused AP from its last turn
+  await B.update({ [`flags.${F}.apTurn`]: `${combat.round}:${B.id}`, [`flags.${F}.acted`]: false, [`flags.${F}.frozen`]: false, [`flags.${F}.moveLeft`]: 0, [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...unset(`flags.${F}.ignoreTerrain`), [`flags.${F}.rap`]: REACTION_AP });
   await setAP(B, apPerTurn(B), "swapped in: start of turn", { rap: { b: 0, a: REACTION_AP } });
+  await setUnusedApGuard(B, bHad, bLeft);
   await climbUp(B);
   // v0.0.203: the system card (sysmsg.mjs); the slot is where A acts now (B's old place), counted from 1.
   const slot = combat.turns.findIndex(c => c.id === A.id) + 1;
@@ -373,8 +379,7 @@ export function registerCombatHooks() {
   });
   Hooks.on("combatStart", combat => startTurn(combat));
   Hooks.on("combatTurnChange", async (combat, prior) => {
-    // v0.0.243: the creature whose turn ended keeps its AP as Guard (the active GM), then the next one starts.
-    if (game.user.isActiveGM && combat.started) { const p = combat.combatants.get(prior?.combatantId); if (p && p.id !== combat.combatant?.id) { try { await keepApGuard(p); } catch (e) { console.warn("twod12 | AP Guard", e); } } }
+    // v0.0.274 (Lucas): nothing happens to the AP left when a turn ends (v0.0.243 made them Guard here): the next turn's start does it
     await startTurn(combat);
   });
   Hooks.on("renderCombatTracker", (app, html) => {
@@ -412,7 +417,7 @@ export function registerCombatHooks() {
       const btn = document.createElement("button");
       btn.type = "button"; btn.className = "twod12-init";
       btn.innerHTML = '<i class="fa-solid fa-dice-d20"></i> Initiative';
-      btn.addEventListener("click", () => combat.rollInitiative(combat.combatants.map(c => c.id)));
+      btn.addEventListener("click", () => rollPendingInitiative(combat));   // v0.0.273: only the ones still to roll, not left out
       (el.querySelector("header") ?? el).append(btn);
       // v0.0.243 (book, Momentum): the GM's switch: the party starts this encounter at Escalation 2 (used up when it starts).
       if (game.user.isGM) {

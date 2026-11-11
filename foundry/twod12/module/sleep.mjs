@@ -1,5 +1,5 @@
 import { openEffectSheet } from "./fxopen.mjs";
-import { esc } from "./util.mjs";
+import { esc, unset } from "./util.mjs";
 // Sleep and Exhausted (see Resting and Exhausted in the rules), driven by the world clock (game.time.worldTime, in seconds).
 //   A Sleep renews Daily Actions and reduces Exhausted by 2; at most once every 16 hours. A Rest includes a Sleep.
 //   24 hours without a Sleep: Exhausted 1, +1 for every further 24 hours.
@@ -51,24 +51,25 @@ export async function setExhausted(actor, n) {
 /** The effects of a completed Sleep (also part of a Rest): Daily Actions renewed, Exhausted - 2, the clock restarts. */
 export async function sleepEffects(actor) {
   const before = Number(actor.system.exhausted ?? 0);
-  await actor.update({ [`flags.${F}.dailyUsed`]: [], [`flags.${F}.lastSleep`]: now(), [`flags.${F}.awakeDays`]: 0, [`flags.${F}.-=exhaustSaveAt`]: null });
+  await actor.update({ [`flags.${F}.dailyUsed`]: [], [`flags.${F}.lastSleep`]: now(), [`flags.${F}.awakeDays`]: 0, ...unset(`flags.${F}.exhaustSaveAt`) });
   const after = before ? await setExhausted(actor, before - 2) : 0;
   return { before, after };
 }
 
 /** The Sleep option of the Recovery button. At most once every 16 hours (anyone can still confirm). */
-export async function completeSleep(actor, { force = false } = {}) {
+export async function completeSleep(actor, { force = false, ask = false } = {}) {
   const last = actor.getFlag(F, "lastSleep");
+  // v0.0.289 (PACK SHEET): the confirmations in the system's window (pickwindow.mjs)
+  const { pickConfirm } = await import("./pickwindow.mjs");
   if (!force && last != null && now() - last < 16 * HOUR) {
-    const ok = await foundry.applications.api.DialogV2.confirm({
-      window: { title: `Sleep: ${actor.name}` },
-      content: `<p>${esc(actor.name)}'s last Sleep ended ${hoursText(now() - last)} ago. A Sleep can be completed at most once every 16 hours.</p><p>Complete a Sleep anyway?</p>`,
-      rejectClose: false
-    });
+    const ok = await pickConfirm({ title: `Sleep: ${actor.name}`, name: "Sleep anyway?", sub: "once every 16 hours", icon: "fa-bed", confirm: "Sleep",
+      text: `${esc(actor.name)}'s last Sleep ended ${hoursText(now() - last)} ago. A Sleep can be completed at most once every 16 hours. Complete a Sleep anyway?` });
     if (!ok) return false;
-  }
+  } else if (ask && !(await pickConfirm({ title: `Sleep: ${actor.name}`, name: "Sleep", sub: "8 hours", icon: "fa-bed", confirm: "Sleep",
+    text: "8 hours of sleep or quiet watch: your Daily Actions return and Exhausted goes down by 2. Complete a Sleep?" }))) return false;
   const { before, after } = await sleepEffects(actor);
-  await post(actor, `<b>${esc(actor.name)}</b> completes a Sleep: Daily Actions are renewed${before ? `, and Exhausted goes from ${before} to ${after}` : ""}.`);
+  const { sysCard } = await import("./sysmsg.mjs");
+  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysCard({ title: "Sleep", lead: `${esc(actor.name)} completes a Sleep`, text: `Daily Actions are renewed${before ? `, and Exhausted goes from ${before} to ${after}` : ""}.` }) });
   return true;
 }
 
@@ -92,7 +93,7 @@ export const trackingExhaustion = () => { try { return !!game.settings.get(F, "t
 /** Turn the counting on or off. Turning it on starts every character's time awake from now. */
 export async function setTracking(on) {
   await game.settings.set(F, "trackExhaustion", !!on);
-  if (on) for (const actor of game.actors?.filter?.(a => a.type === "character") ?? []) await actor.update({ [`flags.${F}.lastSleep`]: now(), [`flags.${F}.awakeDays`]: 0, [`flags.${F}.-=exhaustSaveAt`]: null });
+  if (on) for (const actor of game.actors?.filter?.(a => a.type === "character") ?? []) await actor.update({ [`flags.${F}.lastSleep`]: now(), [`flags.${F}.awakeDays`]: 0, ...unset(`flags.${F}.exhaustSaveAt`) });
   await ChatMessage.create({ content: `<div class="twod12 chat"><div class="apmsg">Exhaustion from time awake is now <b>${on ? "counted (everyone's time awake starts from now)" : "paused"}</b>.</div></div>` });
 }
 

@@ -185,6 +185,12 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--fleuron:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='18' viewBox='0 0 120 18'%3E%3Cpath d='M2 9h40M78 9h40' stroke='%236b5d45' stroke-width='1'/%3E%3Cpath d='M60 3c3 3 3 9 0 12-3-3-3-9 0-12zM52 9c3-4 6-4 8 0-2 4-5 4-8 0zM68 9c-3-4-6-4-8 0 2 4 5 4 8 0z' fill='%236b5d45'/%3E%3C/svg%3E")}}
 :root[data-theme="dark"]{--fleuron:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='18' viewBox='0 0 120 18'%3E%3Cpath d='M2 9h40M78 9h40' stroke='%236b5d45' stroke-width='1'/%3E%3Cpath d='M60 3c3 3 3 9 0 12-3-3-3-9 0-12zM52 9c3-4 6-4 8 0-2 4-5 4-8 0zM68 9c-3-4-6-4-8 0 2 4 5 4 8 0z' fill='%236b5d45'/%3E%3C/svg%3E")}
 
+/* cards 2 (2026-11-05): an inline Action, a small card nested in its parent's (Beacon's Step) */
+.acard .acard.inl{margin:8px 12px 10px;font-size:.92em;border:1px solid var(--tc-line);border-radius:6px;overflow:hidden}
+.acard .acard.inl .ahead{padding:4px 10px;font-size:.95em}
+.acard .acard.inl .abody{padding:4px 0 2px}
+.acard .acard.inl .arow,.acard .acard.inl .eff{margin:2px 10px}
+
 .pushsvg .gcell{fill:#fff;stroke:#d9d3c7}.pushsvg .greach{fill:#ecd98b;stroke:#d9d3c7}.pushsvg .gdt{fill:#d9c3a0;stroke:#b79e74}
 .pushsvg .gbright{fill:#f1d760;stroke:#d9d3c7}.pushsvg .gdim{fill:#f7ecbd;stroke:#d9d3c7}
 .pushsvg .gcoord{font:600 10px system-ui,sans-serif;fill:#8a7f6a;text-anchor:middle}.pushsvg .gcoordr{text-anchor:end}
@@ -273,6 +279,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <li><strong>Attributes</strong>: by default one <strong>High</strong>, two <strong>Medium</strong> and one <strong>Low</strong>.</li>
 <li><strong>Health</strong>: a rating for the <strong><span class="at-body">Body</span> Health Multiplier</strong> and one for the <strong><span class="at-mind">Mind</span> Health Multiplier</strong>, Medium by default. A brute might have High <span class="at-body">Body</span> and Low <span class="at-mind">Mind</span>; a ghost, Terrible <span class="at-body">Body</span> and High <span class="at-mind">Mind</span>.</li>
 <li><strong>Defenses</strong>: a rating for <strong>Armor Defense</strong> and one for <strong>Ward Defense</strong> (see Defenses below).</li>
+<li><strong>Modifiers</strong>: a rating for the <strong><span class="mod-weapon">Weapon Modifier</span></strong> and one for the <strong><span class="mod-power">Power Modifier</span></strong> (see Attributes and Modifiers below).</li>
 <li><strong>Basic attack</strong>: a rating for its damage (Medium by default).</li>
 </ul>
 <p><strong>The ratings are guidance, not a rule: choose any rating for any number.</strong> As a suggestion, if one number is High, a Low somewhere else usually makes sense (High Armor Defense and Low Health, for example). A creature whose ratings average out to Medium is balanced for its role.</p>
@@ -280,9 +287,56 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <p>An NPC has an <strong>Armor Defense</strong> and a <strong>Ward Defense</strong>. Each one is a rating from its role's Defense table, picked <strong>independently</strong> of the other: a Standard is Medium in both by default (13 and 13); a knight could have a High Armor Defense (14) and a Low Ward Defense (12). A Defense is never below 11. An NPC's Defenses come from these ratings only.</p>
 <p><strong>A Defense rating is a small step.</strong> One rating is 1 point of Defense, which takes about 8 to 10% off what the PCs deal in a turn; a rating of Health or damage is 20 to 25%. A High Defense is worth about +10% Health against +25% for a High Health, so Defense is the mildest of the ratings.</p>
 <h3 id="attacking-ward-defense">Attacking Ward Defense</h3>
-<p><strong>Any NPC Action can be Vs. WD</strong>: it is then a <span class="trhl" style="--tc:var(--g-roll)">Power</span> Action (it rolls the NPC's <span class="mod-power">Power Modifier</span> against the target's Ward Defense) and <strong>deals [R] (Resolve damage) by default</strong>; write it on the Action when it deals [V] instead. The damage tables are the same for Vs. AD and Vs. WD attacks: a PC's Ward Defense is 13 at Stage 1 (14 at Stages 2 and 3), close to its Armor Defense, so a Vs. WD attack hits about as often. What changes is the pool it hits: Resolve is most PCs' low pool, so a creature that attacks Ward Defense makes them Strained early (see <a class="xref" href="core-rules.html#bloodied">Bloodied</a> and <a class="xref" href="core-rules.html#strained">Strained</a>). Some creatures attack <strong>only</strong> Ward Defense (a ghost, a nightmare, a wisp of dread); about one NPC in four should, so the PCs' Resolve and everything that cares about Strained get their share of the fights.</p>
+<p><strong>Any NPC Action can be Vs. WD</strong>: it is then a <span class="trhl" style="--tc:var(--g-roll)">Power</span> Action (it rolls the NPC's <span class="mod-power">Power Modifier</span> against the target's Ward Defense) and <strong>deals [R] (Resolve damage) by default</strong>; write it on the Action when it deals [V] instead. The damage tables are the same for Vs. AD and Vs. WD attacks: a PC's Ward Defense is 12 or 13 at Stage 1 (up to 14 at Stage 2 and 15 at Stage 3), close to its Armor Defense, so a Vs. WD attack hits about as often. What changes is the pool it hits: Resolve is most PCs' low pool, so a creature that attacks Ward Defense makes them Strained early (see <a class="xref" href="core-rules.html#bloodied">Bloodied</a> and <a class="xref" href="core-rules.html#strained">Strained</a>). Some creatures attack <strong>only</strong> Ward Defense (a ghost, a nightmare, a wisp of dread); about one NPC in four should, so the PCs' Resolve and everything that cares about Strained get their share of the fights.</p>
 <h2 id="attributes-and-modifiers">Attributes and Modifiers</h2>
-<p>Assign the Attributes to <strong><span class="at-body">Body</span>, <span class="at-mind">Mind</span>, <span class="at-appeal">Appeal</span> and <span class="at-instinct">Instinct</span></strong>. Choose a <strong><span class="mod-weapon">Weapon Attribute</span></strong> and a <strong><span class="mod-power">Power Attribute</span></strong>: each Modifier is <strong>⌈Attribute ÷ 2⌉ + 1</strong>, as for a PC (see <a class="xref" href="core-rules.html#weapon-power-and-signature-modifiers">Weapon, Power and <span class="mod-signature">Signature Modifiers</span></a>). Its Vs. Attributes are 13 + half, as for anyone. <strong>An NPC's Modifiers don't grow with its Stage</strong> (its Health and damage tables do), and are never above +4.</p>
+<p>Assign the Attributes to <strong><span class="at-body">Body</span>, <span class="at-mind">Mind</span>, <span class="at-appeal">Appeal</span> and <span class="at-instinct">Instinct</span></strong>. Its Vs. Attributes are 12 + the Attribute, as for anyone.</p>
+<p>An NPC's <strong><span class="mod-weapon">Weapon Modifier</span></strong> and <strong><span class="mod-power">Power Modifier</span></strong> are each a rating of its role's table. They don't come from its Attributes and don't grow with its Stage (its Health and damage tables do). By default the <span class="mod-weapon">Weapon Modifier</span> is <strong>Medium</strong> and the <span class="mod-power">Power Modifier</span> <strong>Low</strong> (a Standard's is Medium too); a creature that attacks Ward Defense usually swaps them. A Modifier is never above +4.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Role</th>
+<th><strong>Terrible</strong></th>
+<th><strong>Low</strong></th>
+<th><strong>Medium</strong></th>
+<th><strong>High</strong></th>
+<th><strong>Extreme</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minion</strong></td>
+<td>+0</td>
+<td>+1</td>
+<td>+2</td>
+<td>+3</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Grunt</strong></td>
+<td>+0</td>
+<td>+1</td>
+<td>+2</td>
+<td>+3</td>
+<td>+4</td>
+</tr>
+<tr>
+<td><strong>Standard</strong></td>
+<td>+0</td>
+<td>+1</td>
+<td>+2</td>
+<td>+3</td>
+<td>+4</td>
+</tr>
+<tr>
+<td><strong>Elite</strong></td>
+<td>+1</td>
+<td>+2</td>
+<td>+3</td>
+<td>+4</td>
+<td>+4</td>
+</tr>
+</tbody>
+</table></div>
 <h2 id="health">Health</h2>
 <p>The Bestiary's own formula (a PC's Health is in <a class="xref" href="core-rules.html#health-pool">Health Pool</a>), with the role's numbers:</p>
 <ul>
@@ -347,7 +401,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <tbody>
 <tr>
 <td><strong>Mild</strong></td>
-<td>Hindered (EoT); <span class="kw-bane">1 Bane</span> on its next roll; Pushed, Pulled or Slid (any distance); Bright light on it (it can't hide); Taunted (1 round); Sickened 1; Bleed 1 or 2; Staggered (EoT) on a creature whose Reaction is only Opportunity Attack</td>
+<td>Hindered (EoT); 1 Pressure <span class="kw-bane">Bane</span> on its next roll; Pushed, Pulled or Slid (any distance); Bright light on it (it can't hide); Taunted (1 round); Sickened 1; Bleed 1 or 2; Staggered (EoT) on a creature whose Reaction is only Opportunity Attack</td>
 </tr>
 <tr>
 <td><strong>Moderate</strong></td>
@@ -976,17 +1030,17 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tbody>
 </table></div>
 <h2 id="example-npcs-stage-1">Example NPCs (Stage 1)</h2>
-<p><strong>Goblin Sneak</strong> (Minion, CV 25, <span class="kw-ap">3 AP</span>): <span class="at-instinct">Instinct</span> High (+1), <span class="at-body">Body</span> Medium (0), <span class="at-mind">Mind</span> Medium (0), <span class="at-appeal">Appeal</span> Low (−1). <span class="mod-weapon">Weapon Modifier</span> +2 (<span class="at-instinct">Instinct</span>). <span class="at-body">Body</span> and <span class="at-mind">Mind</span> Health Low (×0.75): Health 6 (3 + 3). Armor Defense Medium (12), Ward Defense Low (11). <strong>Speed 7</strong> (fast: its Health is Low).
+<p><strong>Goblin Sneak</strong> (Minion, CV 25, <span class="kw-ap">3 AP</span>): <span class="at-instinct">Instinct</span> High (+1), <span class="at-body">Body</span> Medium (0), <span class="at-mind">Mind</span> Medium (0), <span class="at-appeal">Appeal</span> Low (−1). <span class="mod-weapon">Weapon Modifier</span> Medium (+2), <span class="mod-power">Power Modifier</span> Low (+1). <span class="at-body">Body</span> and <span class="at-mind">Mind</span> Health Low (×0.75): Health 6 (3 + 3). Armor Defense Medium (12), Ward Defense Low (11). <strong>Speed 7</strong> (fast: its Health is Low).
 - <em>Rusty Knife</em> (Basic attack, Medium): about 2 / 4 ([Mod] / 1d4 + [Mod] <span class="dcode" style="--dc:#8a8a8a">Pi</span>).
 - <em>Dirty Trick</em> (Special, <span class="kw-ap">1 AP</span>, Round): Low damage + Mild condition = Medium: about 2 / 5 ([Mod] / 1d6 + [Mod] <span class="dcode" style="--dc:#8a8a8a">Pi</span>), and Hindered (EoT).</p>
-<p><strong>Orc Warrior</strong> (Standard, CV 100): <span class="at-body">Body</span> High (+2), <span class="at-instinct">Instinct</span> Medium (+1), <span class="at-mind">Mind</span> Medium (+1), <span class="at-appeal">Appeal</span> Low (0). <span class="mod-weapon">Weapon Modifier</span> +2 (<span class="at-body">Body</span>). <span class="at-body">Body</span> Health High (×9.75), <span class="at-mind">Mind</span> Health Low (×5.75): Health 65 (Vigor 43, Resolve 22). Armor Defense Medium (13), Ward Defense Low (12).
+<p><strong>Orc Warrior</strong> (Standard, CV 100): <span class="at-body">Body</span> High (+2), <span class="at-instinct">Instinct</span> Medium (+1), <span class="at-mind">Mind</span> Medium (+1), <span class="at-appeal">Appeal</span> Low (0). <span class="mod-weapon">Weapon Modifier</span> Medium (+2), <span class="mod-power">Power Modifier</span> Medium (+2). <span class="at-body">Body</span> Health High (×9.75), <span class="at-mind">Mind</span> Health Low (×5.75): Health 65 (Vigor 43, Resolve 22). Armor Defense Medium (13), Ward Defense Low (12).
 - <em>Cleaver</em> (Basic attack, Medium): about 4 / 7.5 (1d4 + [Mod] / 1d10 + [Mod] <span class="dcode" style="--dc:#8a8a8a">Sl</span>).
 - <em>Brutal Swing</em> (Special, <span class="kw-ap">2 AP</span>, Round): Terrible damage + Severe condition = High: about 6.5 / 9 (1d8 + [Mod] / 2d6 + [Mod] <span class="dcode" style="--dc:#8a8a8a">Sl</span>), and Prone.
 - <em>Hold the Line</em> (Reaction, <span class="kw-ap">1R</span>, Trigger: an ally within 2 squares is hit): the attacker takes a Medium <span class="kw-ap">1 AP</span> Special one rating up: about 7.5 / 12.5 (1d10 + [Mod] / 3d6 + [Mod] <span class="dcode" style="--dc:#8a8a8a">Sl</span>).</p>
-<p><strong>Grave Wisp</strong> (Standard, CV 100): <span class="at-mind">Mind</span> High (+2), <span class="at-appeal">Appeal</span> Medium (+1), <span class="at-instinct">Instinct</span> Medium (+1), <span class="at-body">Body</span> Low (0). <span class="mod-power">Power Modifier</span> +2 (<span class="at-mind">Mind</span>); it attacks only Ward Defense. <span class="at-body">Body</span> Health Terrible (×3.75), <span class="at-mind">Mind</span> Health High (×9.75): Health 55 (Vigor 12, Resolve 43). Armor Defense Low (12), Ward Defense High (14). Speed 5, flies (a fast creature: its Vigor is Terrible).
+<p><strong>Grave Wisp</strong> (Standard, CV 100): <span class="at-mind">Mind</span> High (+2), <span class="at-appeal">Appeal</span> Medium (+1), <span class="at-instinct">Instinct</span> Medium (+1), <span class="at-body">Body</span> Low (0). <span class="mod-power">Power Modifier</span> Medium (+2), <span class="mod-weapon">Weapon Modifier</span> Medium (+2); it attacks only Ward Defense. <span class="at-body">Body</span> Health Terrible (×3.75), <span class="at-mind">Mind</span> Health High (×9.75): Health 55 (Vigor 12, Resolve 43). Armor Defense Low (12), Ward Defense High (14). Speed 5, flies (a fast creature: its Vigor is Terrible).
 - <em>Chilling Touch</em> (Basic attack, Medium, Vs. WD): about 4 / 7.5 (<span class="pool-m">[R] 1d4 + [Mod] / 1d10 + [Mod]</span> <span class="dcode" style="--dc:#2f9bc4">Co</span>).
 - <em>Dread Whisper</em> (Special, <span class="kw-ap">2 AP</span>, Round, Vs. WD, [Fear]): Low damage + Moderate condition = High: about 7.5 / 13 (<span class="pool-m">[R] 1d10 + [Mod] / 3d6 + [Mod]</span> <span class="dcode" style="--dc:#c9577f">Ps</span>), and Frightened of it (EoT).</p>
-<p><strong>Ogre Chieftain</strong> (Elite, CV 200): <span class="at-body">Body</span> High (+3), <span class="at-instinct">Instinct</span> Medium (+2), <span class="at-mind">Mind</span> Medium (+2), <span class="at-appeal">Appeal</span> Low (+1). <span class="mod-weapon">Weapon Modifier</span> +3 (<span class="at-body">Body</span>). Health Medium: 132 (Vigor 73, Resolve 59). Armor Defense Medium (14), Ward Defense Low (13). Speed 4 (slow: High Basic attack). Elite Escalation (the ladder above).
+<p><strong>Ogre Chieftain</strong> (Elite, CV 200): <span class="at-body">Body</span> High (+3), <span class="at-instinct">Instinct</span> Medium (+2), <span class="at-mind">Mind</span> Medium (+2), <span class="at-appeal">Appeal</span> Low (+1). <span class="mod-weapon">Weapon Modifier</span> Medium (+3), <span class="mod-power">Power Modifier</span> Low (+2). Health Medium: 132 (Vigor 73, Resolve 59). Armor Defense Medium (14), Ward Defense Low (13). Speed 4 (slow: High Basic attack). Elite Escalation (the ladder above).
 - <em>Club</em> (Basic attack, High): about 6.5 / 9.5 (1d6 + [Mod] / 2d6 + [Mod] <span class="dcode" style="--dc:#8a8a8a">Bl</span>).
 - <em>Ground Slam</em> (Special, <span class="kw-ap">3 AP</span>, Encounter, Area 1 Emanation, a <span class="trhl" style="--tc:var(--g-roll)">Save</span> Action: <span class="at-body">Body</span> Save, DC 14): half of a Medium <span class="kw-ap">3 AP</span>: about 13 / 8.5 / 0 (Tier 1 is the worst for them: 3d6 + [Mod] / 1d10 + [Mod] <span class="dcode" style="--dc:#8a8a8a">Bl</span>), and Prone on Tier 1. At Escalation 3 it comes back once.
 - <em>Rally the Tribe</em> (Escalation 2, <span class="kw-ap">1 AP</span>, Round): allies within 5 squares gain <span class="kw-boon">1 Boon</span> on their next [<span class="trhl" style="--tc:var(--g-roll)">Weapon</span>] Action.</p></div></details></section><p class="credits">Icons: Font Awesome Free (CC BY 4.0). Card title font: Cinzel (SIL Open Font License).</p><p class="totop"><a href="#top">Back to top</a></p></main></div><script>

@@ -1,12 +1,15 @@
 // Defenses. An Action against a creature rolls against one of them:
 //   Armor Defense, AD (Weapon Actions, and Fists): 11 + Armor value + bonuses;  Ward Defense, WD (Power Actions): 11 + Power Modifier + Ward value + bonuses;
 //   an NPC's AD and WD are typed values (the Bestiary).
-//   Vs. an Attribute (an Action with a Vs. entry, which replaces Armor and Ward): 13 + half the Attribute, rounded up.
+//   Vs. an Attribute (an Action with a Vs. entry, which replaces Armor and Ward): 12 + the Attribute (v0.0.307, Lucas; was 13 + half, rounded up).
 // A Signature Action uses Armor or Ward by the Modifier it rolls. An Action that faces none of these has DC 13.
 // Defense bonuses (Features and effects) don't add up: for each Defense, the highest bonus and the highest penalty count.
 import { allEffects, isBaseSource } from "./passives.mjs";
-import { effectOff } from "./escalation.mjs";
+import { effectOff, seesOrigin } from "./escalation.mjs";
 import { TWOD12 } from "./config.mjs";
+import { evalFormula, refValues } from "./fxrules.mjs";
+/** The actor an effect came from (its origin), or null. */
+const originOf = e => { try { const d = e?.origin ? globalThis.fromUuidSync?.(e.origin) : null; return d?.documentName === "Actor" ? d : d?.actor ?? null; } catch (err) { return null; } };
 
 /** Traits of the action plus mechanics found in its text (a @Move[pushed...] button makes it a "pushed" action). */
 export function actionTags(item) {
@@ -42,12 +45,20 @@ export function defenseBonus(actor, kind, tags, opts = {}) {
     if (effectOff(actor, e) || (opts.baseOnly && !isBaseSource(e))) continue;
     for (const d of e.getFlag?.("twod12", "defenses") ?? e.flags?.twod12?.defenses ?? []) {
       if (d.kind !== kind && d.kind !== "all") continue;
-      found.push({ name: String(e.name ?? "").replace(/\s*\(.*\)\s*$/, ""), bonus: Number(d.bonus) || 0 });
+      if (d.seen && !seesOrigin(actor, e)) continue;   // v0.0.323: its own "While they see the origin"
+      const bonus = d.formula ? Math.trunc(Number(evalFormula(d.formula, { origin: refValues(originOf(e) ?? actor), target: refValues(actor) }).value) || 0) : (Number(d.bonus) || 0);   // v0.0.324: a formula
+      found.push({ name: String(e.name ?? "").replace(/\s*\(.*\)\s*$/, ""), bonus, inc: d.mode === "inc", bb: d.mode === "bonus" ? (d.name || "") : "" });
     }
   }
-  const best = found.filter(x => x.bonus > 0).sort((a, b) => b.bonus - a.bonus)[0];
-  const worst = found.filter(x => x.bonus < 0).sort((a, b) => a.bonus - b.bonus)[0];
-  const parts = [best, worst].filter(Boolean);
+  // v0.0.323 (PACK EFFECT-SHEET; the book's Stacking, named bonuses): bonuses with different names add, the same name keeps the highest, an unnamed bonus
+  // never adds to another one (the highest unnamed counts only when it beats the named ones together); the worst penalty counts; an increase always adds.
+  const pos = found.filter(x => x.bonus > 0 && !x.inc), named = new Map();
+  for (const x of pos.filter(p => p.bb)) if (!named.has(x.bb) || named.get(x.bb).bonus < x.bonus) named.set(x.bb, x);
+  const bestUnnamed = pos.filter(p => !p.bb).sort((a, b) => b.bonus - a.bonus)[0];
+  const namedSum = [...named.values()].reduce((s, p) => s + p.bonus, 0);
+  const counted = bestUnnamed && bestUnnamed.bonus >= namedSum ? [bestUnnamed] : [...named.values()];
+  const worst = found.filter(x => x.bonus < 0 && !x.inc).sort((a, b) => a.bonus - b.bonus)[0];
+  const parts = [...counted, worst, ...found.filter(x => x.inc)].filter(Boolean);
   return { total: parts.reduce((s, p) => s + p.bonus, 0), parts };
 }
 
@@ -98,8 +109,8 @@ export function computeDC(item, targetActor, rolledAttr = "", src = null) {
   const t = targetActor.system ?? {}, tags = actionTags(item);
   let dc, bits;
   if (def.type === "vs") {
-    const attr = t.attributes?.[def.key] ?? 0, value = Math.ceil(attr / 2) || 0;   // half the Attribute, rounded up
-    dc = base + value; bits = [`${base}`, `${sign(value)} (half ${TWOD12.attributes[def.key]} ${attr})`];
+    const attr = Math.trunc(Number(t.attributes?.[def.key]) || 0), vb = TWOD12.vsBase;   // v0.0.307 (Lucas; book, Chapter 2, Defenses): 12 + the Attribute
+    dc = vb + attr; bits = [`${vb}`, `${sign(attr)} (${TWOD12.attributes[def.key]})`];
   } else {
     const derived = def.type === "armor" ? t.armorDC : t.wardDC;
     if (Number.isFinite(derived)) { dc = derived; bits = [...(def.type === "armor" ? t.armorParts : t.wardParts) ?? [`${derived}`]]; }   // the actor's own Defense (data.deriveDefenses)

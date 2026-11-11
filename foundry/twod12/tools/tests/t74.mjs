@@ -1,12 +1,12 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t74.mjs)
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 // Sleep, Exhausted and Daily, driven by the world clock (1 round = 10 seconds; a day = 86400 seconds).
-const hooks = {}, chat = [];
+const hooks = {}, chat = [];   // v0.0.289: the Sleep's confirmations are pick windows: ApplicationV2's stand-in answers confirmAnswer
 let confirmAnswer = true;
 globalThis.Combat = class {}; globalThis.CONFIG = { time: {} };
 globalThis.Hooks = { on: (h, f) => (hooks[h] = f), once() {} };
 globalThis.ChatMessage = { create: async m => chat.push(m.content.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim()), getSpeaker: () => ({}) };
-globalThis.foundry = { applications: { api: { DialogV2: { confirm: async () => confirmAnswer }, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async h => h } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
+globalThis.foundry = { applications: { api: { DialogV2: { confirm: async () => confirmAnswer }, ApplicationV2: class { render() { this.o.resolve(confirmAnswer ? this.o.result() : null); } } }, ux: { TextEditor: { implementation: { enrichHTML: async h => h } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
 globalThis.game = { settings: { get: () => true, register() {}, set: async () => {} }, time: { worldTime: 0 }, user: { isActiveGM: true }, combat: null };
 const mdtBase = 8;
 const makeActor = name => {

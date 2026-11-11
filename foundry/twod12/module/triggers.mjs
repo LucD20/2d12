@@ -21,6 +21,7 @@ export function matchingTriggers(source, target, comps) {
     if (effectOff(source, e)) continue;
     for (const tr of e.getFlag?.(F, "triggers") ?? []) {
       if (!tr.fxUuid || (tr.sub && !subs.has(tr.sub)) || (tr.tag && !tags.has(norm(tr.tag)))) continue;
+      if (tr.pool && !(comps ?? []).some(c => (Number(c.total) || 0) > 0 && (c.pool === "M" ? "M" : "B") === tr.pool)) continue;   // v0.0.323: "[V]" or "[R]" damage only
       out.set(tr.fxUuid, { ...tr, source: String(e.name ?? ""), hover: hoverOf(e.getFlag?.(F, "hover"), e.getFlag?.(F, "description")) });
     }
   }

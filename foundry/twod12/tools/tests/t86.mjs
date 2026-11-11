@@ -92,7 +92,8 @@ const run = async (label, dice, extra = {}) => {
 };
 whirl.system.vs = "body"; lonny.system.attributes.body = 8; goblin.system.attributes.body = 20; nari.system.attributes.body = 0;
 const card2 = await run("three DCs (13, 17, 23), dice 9 and 11", [9, 11, 2, 1, 2]);
-console.log("tier rows show who landed where:", strip((card2.content.match(/<table class="tiers">[\s\S]*?<\/table>/) ?? [""])[0]));
+console.log("the outcome grouped by Tier, who landed where:", strip((card2.content.match(/<div class="cc-groups">[\s\S]*?<\/div><\/div><\/div>/) ?? [""])[0]));
+console.log("each creature's own Defense on its row:", [...card2.content.matchAll(/class="cc-cname">([^<]*)<\/span><span class="cc-cdef">([\s\S]*?)<\/span><button/g)].map(m => `${m[1]}: ${strip(m[2])}`).join(" | "));
 console.log("DC ranges in the tier column are generic when the DCs differ:", !/≤ \d+/.test(card2.content));
 console.log("flags:", JSON.stringify(card2.flags.twod12.action.results.map(r => `${r.name} T${r.tier}${r.crit ? " crit" : ""}`)), "| highest tier on the card:", card2.flags.twod12.action.tier);
 // Favored for everyone (the dialog's toggle): a third die, each keeps the two highest
@@ -104,33 +105,37 @@ console.log("dialog tiles:", tiles.join(" "), "| groups:", [...dialogContent.mat
 const groupChips = u => [...(dialogContent.match(new RegExp(`data-for="${u.replace(/\./g, "\\.")}">([\\s\\S]*?)</div>`)) ?? ["", ""])[1].matchAll(/name="fx" value="([^"]+)"/g)].map(m => m[1]).join(" ") || "(none)";
 console.log("Nari's tile holds:", groupChips("Actor.Nari"), "| Lonny's:", groupChips("Actor.Lonny"), "| Goblin's:", groupChips("Actor.Goblin"));
 console.log("the chips carry their boons and banes (for the dots): Lonny's cover", /name="fx" value="syn:cover\|Actor\.Lonny" data-b="0" data-n="(\d)"/.exec(dialogContent)?.[1], "banes | Nari's Prone", /name="fx" value="Actor\.Nari\|pr:0" data-b="(\d)" data-n="0"/.exec(dialogContent)?.[1], "boon");
-console.log("odds on each row:", (card2.content.match(/class="modds"/g) || []).length, "|", strip((card2.content.match(/<div class="modds">[^<]*/) ?? [""])[0]));
+const CCm = await import(ROOTURL + "module/chatcards.mjs");
+console.log("odds: not in the stored card:", !card2.content.includes("cc-designer"), "| in Designer mode, one line per creature:", (CCm.renderCard(card2.flags.twod12.cc, CCm.viewOf({ gm: true, designer: true })).match(/Odds \(/g) || []).length);
 // ---------------------------------------------------------------------------------------------------- Roll Damage: ONE card, a row per creature with its own buttons
 chat.length = 0; notes.length = 0; script = [];
 for (const a of [nari, lonny, goblin]) a.system.damage = { bodyLethal: 0, bodyNonlethal: 0, mindLethal: 0, mindNonlethal: 0 };
 for (const a of [nari, lonny, goblin]) a.update = async u => { for (const [k, v] of Object.entries(u)) a.system.damage[k.split(".").pop()] = v; };
 globalThis.fromUuid = async u => byUuid(u) ?? sceneTokens.find(t => t.uuid === u) ?? null;
+globalThis.fromUuidSync = u => byUuid(u) ?? sceneTokens.find(t => t.uuid === u) ?? null;
 const msg = { getFlag: (s, k) => card2.flags[s][k], setFlag: async () => {} };
 const dm = await A.rollDamage(msg).catch(e => ({ error: e }));
 if (dm?.error) console.log("rollDamage FAILED:", dm.error.stack.split("\n").slice(0, 4).join(" | "));
-const dcards = chat.filter(m => /mdrow/.test(m.content));
-console.log("damage cards posted:", chat.filter(m => /Damage/.test(m.content)).length, "| merged card rows:", (dcards[0]?.content.match(/class="mdrow[ "]/g) || []).length, "| buttons on a row:", [...(dcards[0]?.content.match(/data-twod12="rowApply"[^>]*>([^<]+)</g) || [])].slice(0, 3).map(x => x.split(">")[1].replace("<", "")).join("/"), "| All buttons:", (dcards[0]?.content.match(/data-twod12="allApply"/g) || []).length);
-const dc = dcards[0], flags = dc.flags.twod12.dmgMulti;
-console.log("rows:", flags.rows.map(r => `${r.name} tier ${r.tier} total ${r.comps.reduce((a, c) => a + c.total, 0)}`).join(" | "));
-// pressing the buttons
+// v0.0.283 (pack chat-cards): the new damage message: one group per Tier (rolled once), a row per creature; Apply, Half, Apply all, Undo
+const dcards = chat.filter(m => m.flags?.twod12?.ccDmg);
+const dc = dcards[0], st0 = dc.flags.twod12.ccDmg;
+console.log("damage messages posted:", dcards.length, "| groups (Tiers):", st0.groups.map(g => `Tier ${g.tier}: ${g.comps.reduce((x, c) => x + c.total, 0)}`).join(" | "), "| rows:", st0.rows.map(r => `${r.name} (group ${r.g})`).join(", "));
+console.log("Apply buttons:", (dc.content.match(/data-twod12="ccApply"[^>]*data-factor="1">Apply/g) || []).length, "| Apply all:", dc.content.includes("ccApplyAll"), "| no Lethal selector, no Block:", !dc.content.includes('class="kind"') && !dc.content.includes("Block"));
 let current = { content: dc.content, flags: JSON.parse(JSON.stringify(dc.flags)) };
-const live = { getFlag: (s, k) => current.flags[s][k], setFlag: async () => {}, update: async d => { if (d.content) current.content = d.content; for (const [k, v] of Object.entries(d)) if (k.startsWith("flags.twod12.dmgMulti.")) current.flags.twod12.dmgMulti[k.split(".").pop()] = v; } };
-const D = await import(ROOTURL + "module/damage.mjs");
-const btn = (kind, row, factor, kindSel = "lethal") => ({ dataset: { row: String(row), factor: String(factor) }, closest: () => ({ querySelector: () => ({ value: kindSel }) }) });
+const live = { id: "dm1", isAuthor: true, get content() { return current.content; }, getFlag: (s, k) => current.flags[s][k], setFlag: async () => {}, update: async d => { if (d.content) current.content = d.content; if (d["flags.twod12.ccDmg"]) current.flags.twod12.ccDmg = d["flags.twod12.ccDmg"]; } };
+const CD = await import(ROOTURL + "module/ccdamage.mjs");
+const btn = (row, factor) => ({ dataset: { row: String(row), factor: String(factor) } });
 const hp = a => a.system.damage.bodyLethal + a.system.damage.mindLethal;
+const ccRows = () => current.flags.twod12.ccDmg.rows;
+const fullOf = i => current.flags.twod12.ccDmg.groups[ccRows()[i].g].comps.reduce((x, c) => x + c.total, 0);
 console.log("before: Nari", hp(nari), "Lonny", hp(lonny), "Goblin", hp(goblin));
-await D.damageButton("rowApply", btn("rowApply", 0, 1), live); console.log("Damage on Nari's row: Nari", hp(nari), "| the row says:", strip(current.flags.twod12.dmgMulti.rows[0].applied));
-const full1 = (current.flags.twod12.dmgMulti.rows[1].comps.reduce((a, c) => a + c.total, 0));
-await D.damageButton("rowApply", btn("rowApply", 1, 0.5), live); console.log("Half on Lonny's row: Lonny", hp(lonny), "(full would be " + full1 + ", half rounded up " + Math.ceil(full1 / 2) + ")");
-await D.damageButton("rowBlock", btn("rowBlock", 2, 1), live); console.log("Block on Goblin's row:", current.flags.twod12.dmgMulti.rows[2].blocked, "| the card shows it:", /mdrow blocked/.test(current.content));
-await D.damageButton("allApply", btn("allApply", 0, 1), live); console.log("All: Goblin (blocked) untouched:", hp(goblin) === 0, "| Nari and Lonny not hit twice:", hp(nari) === hp(nari));
-await D.damageButton("rowBlock", btn("rowBlock", 2, 1), live); await D.damageButton("rowApply", btn("rowApply", 2, 2), live); console.log("Unblock, then Double on Goblin's row: Goblin", hp(goblin), "| all rows done:", current.flags.twod12.dmgMulti.rows.every(r => r.applied), "| the All bar is gone:", !/data-twod12="allApply"/.test(current.content));
-console.log("applying a row twice does nothing:", await (async () => { const b = hp(nari); await D.damageButton("rowApply", btn("rowApply", 0, 1), live); return hp(nari) === b; })());
+await CD.ccDamageClick("ccApply", btn(0, 1), live); console.log("Apply on Nari's row: Nari", hp(nari), "of", fullOf(0), "| the row says:", strip(current.content.match(/class="cc-took">(.*?)<\/span>/)?.[1] ?? ""));
+await CD.ccDamageClick("ccApply", btn(1, 0.5), live); console.log("Half on Lonny's row: Lonny", hp(lonny), "(full would be " + fullOf(1) + ", half rounded up " + Math.ceil(fullOf(1) / 2) + ")");
+await CD.ccDamageClick("ccApplyAll", btn(0, 1), live); console.log("Apply all: Goblin", hp(goblin), "of", fullOf(2), "| Nari not hit twice:", hp(nari) === fullOf(0), "| all rows applied:", ccRows().every(r => r.applied));
+await CD.ccDamageClick("ccUndo", btn(2, 1), live); console.log("Undo on Goblin's row: Goblin", hp(goblin), "| the row waits again:", !ccRows()[2].applied);
+await CD.ccDamageClick("ccApply", btn(2, 2), live); console.log("Double on Goblin's row: Goblin", hp(goblin), "(double " + Math.ceil(fullOf(2) * 2) + ")");
+await CD.ccDamageClick("ccAdjust", btn(2, 0.5), live); console.log("Then Half on the applied row: Goblin", hp(goblin), "(half " + Math.ceil(fullOf(2) / 2) + ")");
+console.log("applying a row twice does nothing:", await (async () => { const b = hp(nari); await CD.ccDamageClick("ccApply", btn(0, 1), live); return hp(nari) === b; })());
 // ---------------------------------------------------------------------------------------------------- a normal Strike: one target keeps the old card, two targets use the new one
 sword.system.range = "10";   // v0.0.122: a melee weapon's Range is checked; these targets stand farther than 1 square
 const strike = { id: "st", name: "Strike", type: "action", img: "", getFlag() {}, system: { traits: new Set(["strike", "weapon", "melee"]), area: "", areaCfg: { size: 0 }, targets: "One creature", distance: "reach", frequency: "atwill", requirements: "", vs: "body", category: "", level: 0, reaction: false, trigger: "", flavor: "", description: "", setup: "", prerequisites: "", modifiers: [],
@@ -141,7 +146,7 @@ const one = async (label, targets, dice) => {
   const e = await A.useAction(kai, strike).catch(err => ({ error: err }));
   if (e?.error) { console.log(label, "FAILED:", e.error.stack.split("\n").slice(0, 3).join(" | ")); return null; }
   const c = chat.find(m => /Strike/.test(m.content));
-  console.log(`${label}: rows per creature: ${(c.content.match(/class="mrow/g) || []).length} | single roll line with a shield: ${/class="shield (win|lose)"/.test(c.content)} | results in the flags: ${c.flags.twod12.action.results ? c.flags.twod12.action.results.length : "none"} | tier ${c.flags.twod12.action.tier}`);
+  console.log(`${label}: rows per creature: ${(c.content.match(/class="cc-crow"/g) || []).length} | one stamp and one ladder (one target): ${/class="cc-stamp/.test(c.content) && (c.content.match(/class="cc-ladder"/g) || []).length === 1} | results in the flags: ${c.flags.twod12.action.results ? c.flags.twod12.action.results.length : "none"} | tier ${c.flags.twod12.action.tier}`);
   return c;
 };
 nari.effects = coll([]);
@@ -155,13 +160,12 @@ const caps = Array.from({ length: 6 }, (_, n) => { const a = mkActor("Skeleton C
 whirl.system.vs = "body"; whirl.system.areaCfg.size = 5; whirl.system.area = "5 Emanation";
 const cardC = await run("six Skeleton Captains, dice 6 and 7", [6, 7]);
 console.log("dialog tiles:", [...dialogContent.matchAll(/class="ttile[^"]*" data-tg="[^"]+" data-name="([^"]+)"/g)].map(m => m[1]).join(" | "), "| numbers on the tiles:", [...dialogContent.matchAll(/class="tnum">(\d+)</g)].map(m => m[1]).join(","), "| a dots holder on each:", (dialogContent.match(/class="tdots"/g) || []).length, "| a caption:", /class="tcap"/.test(dialogContent), "| the old per-tile name and DC text is gone:", !/class="tn"/.test(dialogContent));
-console.log("rows on the card:", (cardC.content.match(/class="mrow t/g) || []).length, "|", strip((cardC.content.match(/<div class="mtable">[\s\S]*?<\/div><\/div>/) ?? [""])[0]).slice(0, 90));
-console.log("tier row names:", strip((cardC.content.match(/<table class="tiers">[\s\S]*?<\/table>/) ?? [""])[0]).slice(0, 120));
-console.log("targets line:", strip((cardC.content.match(/<div class="tline cardtargets">[\s\S]*?<\/div>/) ?? [""])[0]));
+console.log("rows on the card (one per creature):", (cardC.content.match(/class="cc-crow"/g) || []).length, "| Tier groups:", strip((cardC.content.match(/<div class="cc-groups">[\s\S]*?<\/div><\/div>/) ?? [""])[0]).slice(0, 120));
+console.log("targets line (v0.0.285, kept in v0.0.296: at the bottom, beside the buttons):", strip((cardC.content.match(/<div class="cc-foot">[\s\S]*?<\/div>/) ?? [""])[0]), "| the top keeps the area:", strip((cardC.content.match(/<div class="cc-tline meta">[\s\S]*?<\/div>/) ?? [""])[0]));
 chat.length = 0; script = [];
 await A.rollDamage({ getFlag: (s, k) => cardC.flags[s][k], setFlag: async () => {} });
-const dcC = chat.find(m => /mdrow/.test(m.content));
-console.log("damage: one card with", (dcC.content.match(/class="mdrow[ "]/g) || []).length, "rows, named:", dcC.flags.twod12.dmgMulti.rows.map(r => r.name).join(", "), "| All bar:", /data-twod12="allApply"/.test(dcC.content));
+const dcC = chat.find(m => m.flags?.twod12?.ccDmg);
+console.log("damage: one card with", (dcC.content.match(/class="cc-trow"/g) || []).length, "rows, named:", dcC.flags.twod12.ccDmg.rows.map(r => r.name).join(", "), "| Apply all:", /data-twod12="ccApplyAll"/.test(dcC.content));
 const sizeOf = h => String(h).length;
 console.log("size of the roll card: about", sizeOf(cardC.content), "characters for 6 creatures (one row), against", sizeOf(card2.content), "for 3");
 // ---------------------------------------------------------------------------------------------------- a scene where the area can't be placed: the Action is still usable

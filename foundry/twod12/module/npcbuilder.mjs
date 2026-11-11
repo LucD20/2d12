@@ -8,13 +8,8 @@ import { npcBuild } from "./data.mjs";
 const sg = v => (v >= 0 ? `+${v}` : `\u2212${Math.abs(v)}`);
 const fmt = n => String(Math.round(n * 100) / 100);
 
-/** Dice (and flat numbers) that come close to an average, the Modifier taken out: 2.5 -> "1d4". "" when the Modifier alone is enough. */
-const DICE = [["", 0], ["1", 1], ["2", 2], ["1d4", 2.5], ["1d6", 3.5], ["1d8", 4.5], ["1d10", 5.5], ["1d12", 6.5], ["2d6", 7], ["2d8", 9], ["2d10", 11], ["2d12", 13], ["3d8", 13.5], ["3d10", 16.5], ["3d12", 19.5], ["4d10", 22], ["4d12", 26], ["5d10", 27.5], ["5d12", 32.5], ["6d12", 39], ["7d12", 45.5]];
-export function diceFor(avg) {
-  let best = DICE[0];
-  for (const d of DICE) if (Math.abs(d[1] - avg) < Math.abs(best[1] - avg) - 1e-9) best = d;
-  return best[0];
-}
+import { diceFor } from "./sheetmodel.mjs";   // v0.0.308: moved to sheetmodel.mjs (pure; the Builder tab uses it too)
+export { diceFor };
 const withMod = d => (d ? `${d} + [Mod]` : "[Mod]");
 
 /** "Stage 2 (levels 5-7)". */
@@ -40,7 +35,7 @@ export function npcBuilderContext(actor) {
   // Attributes
   const attrRows = Object.entries(TWOD12.attributes).map(([k, label]) => {
     const r = nb.rating(k), v = nb.attributes[k];
-    const sub = [k === s.weaponAttribute ? "Weapon Attribute" : "", k === s.powerAttribute ? "Power Attribute" : ""].filter(Boolean).join(" \u00b7 ");
+    const sub = "";   // pack MOD (v0.0.305): no Weapon / Power Attribute (the role gives the Modifiers)
     const how = r === "custom" ? "Your number. Click a rating to use the table again" : `${R[r].label}, ${role.label}: ${sg(v)}`;
     return row(k, label, sub, x => sg(role.attr + R[x].off), sg(v), how, { name: `system.custom.${k}`, value: Number(s.custom?.[k]) || 0 },
       [v, role.attr + R[lo].off, role.attr + R[hi].off, sg]);
@@ -79,7 +74,7 @@ export function npcBuilderContext(actor) {
       return { key: "steadiness", r: String(v), label: String(v), value: v === 0 ? "default" : "", on, click: on ? "custom" : String(v), act: "setSteadiness", tip: on ? "Click again to clear it and type your own Steadiness" : "" }; }),
     how: stCustom ? "Your number. Click a button to use one of these again" : st ? `Forced Movement and Reposition against it are reduced by ${st}` : "Forced Movement and Reposition move it fully (a big or heavy creature can have 1 or more)" };
   const groups = [
-    { title: "Attributes", note: `Default: one High, two Medium, one Low. Weapon Modifier ${sg(s.weaponMod ?? 0)}, Power Modifier ${sg(s.powerMod ?? 0)}`, rows: attrRows },
+    { title: "Attributes", note: `Default: one High, two Medium, one Low. Modifiers (the role's, not the Attributes): Weapon ${sg(s.weaponMod ?? 0)}, Power ${sg(s.powerMod ?? 0)}`, rows: attrRows },
     { title: "Health", note: "(Attribute + 2) \u00d7 Multiplier + Base, each threshold rounded up", rows: [healthRow("body", "body", "Body Health"), healthRow("mind", "mind", "Mind Health")] },
     { title: "Defenses", note: "Picked independently", rows: [defRow("ad", "Armor Defense", "AD, against Weapon Actions", nb.armorDef, "system.armorDef"), defRow("wd", "Ward Defense", "WD, against Power Actions", nb.wardDef, "system.wardDef")] },
     { title: "Speed", note: "Speed is free, but strong: balance a fast or slow creature with the rest", rows: [speedRow] },

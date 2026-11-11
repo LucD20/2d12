@@ -5,14 +5,14 @@ power mode: traits divine,strike,split,magic | versions P,3R | distance reach | 
 the original is untouched: divine,strike,split 3 weapon
 useAction asks the mode first, then uses the view: true | the damage card remembers the mode: true | the versions editor has a Mode, and a version can cost 0: true
 --- Auras
-Aura 3, allies, and the Paladin: friend, pal | not the Paladin: friend | Aura 1: pal | enemies: orc | everyone (the neutral too): friend, mob, orc, pal
+Aura 3, allies, and the Paladin: friend, pal | not the Paladin: friend | Aura 1: pal | enemies: mob, orc | everyone (the neutral too): friend, mob, orc, pal
 the module wires hooks and keeps the effects it made: true
 --- On damage (Tags)
 Holy damage to a Profane creature: enf | Fire damage: nothing | not Profane: nothing | no damage dealt: nothing | mixed damage: enf
 an Escalation passive trigger (from 2): at 1: nothing | at 2: enf
 applied when the damage is applied: true
 An Aura 3 around the creature: allies and the creature itself inside gain (drop an Effect). | When it deals Holy damage to a creature with the Profane Tag, that creature gains (drop an Effect).
-flags: "auras":[{"size":3,"who":"allies","self":true,"fxUuid":"Compendium.x.Item.vigil","outline":"","fill":""}],"triggers":[{"sub":"Ho","tag":"Profane","fxUuid":"Compendium.x.Item.enf"}]
+flags: "auras":[{"rows":null,"size":3,"who":"allies","self":true,"fxUuid":"Compendium.x.Item.vigil","outline":"","fill":"","formula":"","show":true}],"triggers":[{"sub":"Ho","tag":"Profane","fxUuid":"Compendium.x.Item.enf","pool":""}]
 --- v0.0.127: the roll dialog and the chat say when a trigger or a damage effect is in play
 Smite (Holy) against a Profane creature: Profane Judgment | a Fire-only Action: nothing | a creature that isn't Profane: nothing | no target: nothing
 the trigger knows the ability that fired: Profane Judgment
@@ -52,10 +52,10 @@ Aura 1 around a 2x2 creature:
 .........
 .........
 .........
-several targets: a trigger chip in its creature's tile: true | the sheet has a Hover text on effects and on passives: true | hovering a token shows its Aura: true
+several targets: a trigger chip in its creature's tile: true | the sheet has a Hover text on effects and on passives (v0.0.323: Write it yourself, in the shared tab): true | hovering a token shows its Aura: true
 --- v0.0.129: the outline, and a color for each Aura
 edges of the limit: one square 4 | Aura 1 around one square (a 3x3 block) 12 | Aura 2 (a rounded square) 20 | two squares apart (two limits) 8 | two squares side by side (shared edge not drawn) 6
 colors: allies by default: outline 4a90d9, squares 4a90d9 | enemies: outline d94a4a, squares d94a4a | its own: outline d4a62a, squares 3fb68b | a bad value falls back: outline 9b59b6, squares 9b59b6
-the flags carry the colors: [{"size":3,"who":"allies","self":true,"fxUuid":"Compendium.x.Item.vigil","outline":"#d4a62a","fill":"#d4a62a"}]
+the flags carry the colors: [{"rows":null,"size":3,"who":"allies","self":true,"fxUuid":"Compendium.x.Item.vigil","outline":"#d4a62a","fill":"#d4a62a","formula":"","show":true}]
 drawn in combat, for every token with an Aura: true | the squares only on hover: true | both PixiJS 7 and 8 drawing: true | color pickers in the editor: true | a setting turns the combat outlines off: true
-the Paladin's auras have their own colors: Aura of Protection: #3fb68b | Divine Vigil: #d4a62a
+the Paladin's auras have their own colors: Beacon: #3fb68b | Divine Vigil: #d4a62a

@@ -1,4 +1,5 @@
 import { weaponRanges } from "./weaponrange.mjs";
+import { vsColored } from "./util.mjs";   // v0.0.295: the Vs. value in its color
 const sortObj = o => Object.fromEntries(Object.entries(o).sort((a, b) => a[1].localeCompare(b[1])));
 const actionTraits = sortObj({
   area: "Area",
@@ -30,6 +31,9 @@ export const TWOD12 = {
   attributes: { body: "Body", mind: "Mind", appeal: "Appeal", instinct: "Instinct" },
   actionTraits,
   weaponTraits,
+  // v0.0.343 (book, Chapter 15, Weapon Groups): the eight groups, and each weapon of the book's tables in its group (Mastery: 1 per group an encounter)
+  weaponGroups: { blades: "Blades", axes: "Axes", hammers: "Hammers", polearms: "Polearms", bows: "Bows", crossbows: "Crossbows", firearms: "Firearms", unarmed: "Unarmed" },
+  weaponGroupOf: { dagger: "blades", longsword: "blades", greatsword: "blades", handaxe: "axes", greataxe: "axes", mace: "hammers", maul: "hammers", spear: "polearms", pike: "polearms", "knuckle dagger": "unarmed", fists: "unarmed", fist: "unarmed", unarmed: "unarmed", shortbow: "bows", longbow: "bows", "hand crossbow": "crossbows", crossbow: "crossbows", pistol: "firearms", musket: "firearms" },
   traits: { ...actionTraits, ...weaponTraits },
   dice: { "": "None", d4: "d4", d6: "d6", d8: "d8", d10: "d10", d12: "d12", d20: "d20" },
   // Damage subtypes use two letters, so they never look like the pools [B] [M] [C].
@@ -69,7 +73,7 @@ export const TWOD12 = {
   frequencies: { "": "Default", none: "None", atwill: "At-will", turn: "Turn", round: "Round", encounter: "Encounter", daily: "Daily" },
   // The kind of a roll, for effects (Round 10): checks and saves are marked when they are rolled, and an Action that rolls an Attribute
   // directly (not a Weapon, Power or Signature roll) is an Attribute Action. Weapon, Power and Signature rolls are their traits.
-  rollKinds: { __check: "Check", __save: "Save", __attr: "Attribute Action", __twohanded: "Two-handed weapon" },   // v0.0.188: Two-handed weapon (Heavy Blows)
+  rollKinds: { __check: "Check", __save: "Save", __attr: "Attribute Action", __twohanded: "Two-handed weapon", __attack: "Attack" },   // v0.0.320: Attack = an Action that rolls against another creature (the Elite ladder's first attack)   // v0.0.188: Two-handed weapon (Heavy Blows)
   pools: { "": "None", B: "Vigor [V]", M: "Resolve [R]", C: "Choice [C]" },   // v0.0.234 (pack R-core): the labels; the keys stay B / M
   // Damage types: one icon each (Slash also has Foundry's sword image on cards), bright colors for dark backgrounds,
   // and dark "ink" colors for the parchment cards.
@@ -142,20 +146,39 @@ export const TWOD12 = {
     nonthreatening: "Doesn't threaten: you can't flank with it, unless a feature says otherwise (Fists have it; Brawler removes it).",
     move: "You must have a Speed of at least 1."
   },
-  effectSettings: { boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", speed: "Speed", light: "Token Light", note: "Note", ignore: "Ignore a Bane", rally: "Rally Points", turnstart: "Effect each turn", message: "Chat message", weaponprop: "Weapon property", mastery: "Starting Mastery", eschook: "Escalation hook" },
+  // v0.0.261 (Lucas, Divine Intervention): the moment a Reaction watches for by itself ("would go Down": asked before the damage lands)
+  // v0.0.272 (pack RX, Lucas): the first set of moments. "Within N" is measured to the creature the moment is about (the ally, the enemy who moves).
+  moments: { "": "None", wouldDown: "A creature would go Down", strikeDamage: "A Strike would damage an ally within N", strikeAgainst: "A Strike is made against an ally within N", enemyCloser: "An enemy within N moves closer (to you or an ally)", allyDamage: "An ally within N takes damage", enemyMoves: "An enemy within N moves or stands up" },
+  // v0.0.272: whom the Reaction is used on when its moment comes ("the triggering creature" of the card)
+  momentTargets: { subject: "The creature of the moment (the ally, the enemy who moves)", source: "The creature that caused it (the attacker)" },
+  // v0.0.264 (Lucas): a Grant's "On [a result], [what happens]": the result, and what happens (the target's next damage halved, or a line on the card)
+  grantOnChoices: { "": "never", t1: "a Tier 1 or more", t2: "a Tier 2 or more", t3: "a Tier 3", crit: "a Critical", all: "any result" },
+  grantDoChoices: { half: "the target's next damage is halved", text: "the card says" },
+  coverLevels: { low: "Low", medium: "Medium", high: "High" },   // v0.0.266 (Lucas, Aim): the "Ignores cover" setting's levels
+  // v0.0.301 (PACK BB; book Ch. 1, Named Boons and Banes): the names that carry a limit of 2 (none: they always add up)
+  bbNames: { "": "no name", field: "Field", pressure: "Pressure", support: "Support" },
+  effectSettings: { inline: "Grants an Action while active", boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", zone: "Zone (the placed area)", cover: "Ignores cover", speed: "Speed", light: "Token Light", note: "Note", ignore: "Ignore a Bane", rally: "Rally Points", turnstart: "Effect each turn", message: "Chat message", weaponprop: "Weapon property", mastery: "Starting Mastery", eschook: "Escalation hook", bleed: "Bleed (damage each turn)", resist: "Resist, Weak or Immune", freqmore: "More uses of a Frequency", move: "Movement limit", encstart: "Effect each encounter" },
+  // v0.0.314 (pack AU): a Boons and Banes setting can count only against creatures other than the effect's origin (Taunted), or only against it
+  vsOriginChoices: { "": "against any creature", not: "only against creatures other than its origin", only: "only against its origin" },
   // v0.0.243 (pack R): the moments a class's Escalation hook names (once an encounter, +1 Escalation): Kindled Wrath, Thrill of the Kill.
+  // v0.0.320 (pack AU part 2; book, Chapter 1 Resist, Weak and Immune; Bestiary, Elite Escalation): the kinds of a Resist setting, and the extra uses
+  //   a "More uses of a Frequency" setting gives (the Elite ladder's rungs 2 and 3; Special Actions: not the Basic Actions).
+  rwKinds: { resist: "Resist", weak: "Weak", immune: "Immune" },
+  npcRallyHeal: [9, 13, 17],   // v0.0.340 (book, Rally Points: NPCs): what one Rally Point an NPC is given heals, Stage 1 / 2 / 3 (a PC's, the classes' average)
+  freqMore: { round: "its Round Special Actions can be used twice a round", encounter: "its Encounter Special Actions can be used a second time" },
   escHookWhen: { allyState: "An ally within N squares becomes Bloodied or goes Down", markDown: "The creature it marked goes Down" },
   // v0.0.198 (Lucas, 2026-10-30): the Basic Actions section of the Actions tab, 4 groups in a 2x2 grid (row 1 Attack | Control, row 2
   // Movement | Utility), each in this order. By name: the Kind traits don't separate them. The items and the compendium don't change.
   basicGroups: [
-    { key: "attack", label: "Attack", names: ["Weapon Attack", "Fists", "Charge", "Reload", "Opportunity Attack"] },   // pack R-core: Opportunity Attack, the basic Reaction
-    { key: "control", label: "Control", names: ["Shove", "Haul", "Relocate", "Trip"] },
+    // v0.0.289 (PACK SHEET, Lucas's design): four columns, Attack | Movement | Control | Utility; Opportunity Attack is in the Reactions section
+    { key: "attack", label: "Attack", names: ["Weapon Attack", "Charge", "Fists", "Reload"] },
     { key: "movement", label: "Movement", names: ["Advance", "Evade", "Crawl", "Stand", "Break Free"] },
-    { key: "utility", label: "Utility", names: ["Interact", "Release", "Regrip", "Leaning", "Steel Yourself"] }
+    { key: "control", label: "Control", names: ["Shove", "Trip", "Haul", "Relocate"] },
+    { key: "utility", label: "Utility", names: ["Steel Yourself", "Interact", "Regrip", "Release", "Leaning"] }
   ],
   // v0.0.189 (Lucas, after Draw Steel's Codex): how much of a card Foundry does for you, as a chip on the card. "" shows nothing.
-  automationRanks: { "": "(not set)", none: "Not implemented", bronze: "Bronze", silver: "Silver", gold: "Gold" },
-  automationHints: { none: "Not implemented: read the card and do it by hand", bronze: "Bronze: partly automated (buttons or an effect to apply; the rest by hand)", silver: "Silver: mostly automated (one part by hand)", gold: "Gold: fully automated" },
+  automationRanks: { "": "(not set)", none: "Not implemented", bronze: "Bronze", silver: "Silver", gold: "Gold", mithril: "Mithril", diamond: "Diamond" },   // v0.0.315 (Lucas): Diamond, a Mithril card changed since (even only its text or buttons): to revise with him   // v0.0.250 (Lucas): Mithril, a card written with him (book/cards/with-lucas.txt)
+  automationHints: { diamond: "Diamond: written with Lucas (Mithril), then changed by a later pack; it needs his quick revision (book/cards/with-lucas.txt lists what changed)", none: "Not implemented: read the card and do it by hand", bronze: "Bronze: partly automated (buttons or an effect to apply; the rest by hand)", silver: "Silver: mostly automated (one part by hand)", gold: "Gold: fully automated", mithril: "Mithril: written with Lucas, card by card; what the rules leave by hand is listed" },
   // v0.0.186 (pack OT in the book, 16-talents.md): a Talent's Category, and the kinds of Prerequisite the Talent picker can check.
   talentGroups: { combat: "Combat", mobility: "Mobility", magic: "Magic", skill: "Skill" },
   prereqKinds: { talent: "A Talent", level: "A Level", trait: "An Action with a trait", attribute: "An Attribute", other: "Other (not checked)" },
@@ -167,7 +190,7 @@ export const TWOD12 = {
   propWeapons: { fists: "Fists", all: "weapons" },
   weaponUses: { "": "Its weapon (any weapon it can use)", fists: "Only the Fists (needs a free hand)", kick: "The Fists, even with no free hand (a kick)" },
   ignoreRules: { rangeBane: "one of their range Banes (far range none, maximum range 1)", engagedSelf: "the Banes for a [Ranged] Action while you are Engaged", engagedTarget: "the Bane for targeting a creature Engaged with a creature other than you" },
-  durationTypes: { "": "None", eot: "End of Turn (EoT)", rounds: "Rounds" },
+  durationTypes: { "": "None", eot: "End of Turn (EoT)", rounds: "Rounds", encounter: "This encounter" },   // v0.0.323: This encounter (Ends: Time)
   // Trait groups (v0.0.179, the book's GROUPS in book/build_rules.py): listed in this order, a trait with no group of its own is a Keyword.
   // Their colors are CSS variables (--g-roll...), light on parchment and dark on the dark sheets (system.css). Weapon properties have no group and no color.
   traitGroups: [
@@ -183,16 +206,16 @@ export const TWOD12 = {
   //   hm and basic: the Health Multiplier and the Basic attack averages (Tier 2 / Tier 3, [Mod] included) by Stage (1, 2, 3), one per rating
   //   (Terrible, Low, Medium, High, Extreme; a Minion has no Extreme). Exactly the book's tables: nothing is computed from them.
   npcRoles: {
-    minion: { label: "Minion", cv: [25, 20, 15], ap: 3, attr: 0, hb: 1, defense: 12, extreme: false, deals: "5", takes: "one PC hit",
+    minion: { label: "Minion", mods: [2, 1], modBy: [0, 1, 2, 3], cv: [25, 20, 15], ap: 3, attr: 0, hb: 1, defense: 12, extreme: false, deals: "5", takes: "one PC hit",
       hm: [[0, 0.75, 1, 1.25], [0, 1, 1.25, 1.5], [0, 1.5, 2, 2.75]],
       basic: [[[1, 2.5], [1.5, 3.5], [2, 4], [2.5, 5]], [[1.5, 3.5], [2, 5], [3, 5.5], [3.5, 7]], [[2, 5], [3, 7], [4, 8], [5, 10]]] },
-    grunt: { label: "Grunt", cv: [50, 40, 30], ap: 4, attr: 0, hb: 3, defense: 13, extreme: true, deals: "8", takes: "1 PC turn",
+    grunt: { label: "Grunt", mods: [2, 1], modBy: [0, 1, 2, 3, 4], cv: [50, 40, 30], ap: 4, attr: 0, hb: 3, defense: 13, extreme: true, deals: "8", takes: "1 PC turn",
       hm: [[2, 3, 4.25, 5.25, 6.25], [2.5, 3.75, 4.75, 6, 7.25], [4, 6, 8, 10, 12]],
       basic: [[[2, 3], [2.5, 3.5], [3, 4], [4, 5.5], [4.5, 6.5]], [[3, 4], [3.5, 5], [4, 6.5], [5.5, 8], [6.5, 10]], [[4, 6.5], [5, 7], [6.5, 9], [8, 11], [9, 14]]] },
-    standard: { label: "Standard", cv: [100, 80, 65], ap: 4, attr: 1, hb: 4, defense: 13, extreme: true, deals: "12", takes: "2 PC turns",
+    standard: { label: "Standard", mods: [2, 2], modBy: [0, 1, 2, 3, 4], cv: [100, 80, 65], ap: 4, attr: 1, hb: 4, defense: 13, extreme: true, deals: "12", takes: "2 PC turns",
       hm: [[3.75, 5.75, 7.75, 9.75, 11.5], [4.5, 6.75, 9, 11.25, 13.5], [7.5, 11, 15, 18.5, 22.5]],
       basic: [[[3, 4], [3.5, 6], [4, 7.5], [5.5, 9], [6.5, 11]], [[4, 6.5], [5, 8.5], [6.5, 11.5], [8, 13.5], [10, 16.5]], [[6.5, 9], [7, 12], [9, 16.5], [11, 19], [14, 23]]] },
-    elite: { label: "Elite", cv: [200, 160, 130], ap: 4, attr: 2, hb: 6, defense: 14, extreme: true, deals: "17", takes: "4 PC turns",
+    elite: { label: "Elite", mods: [3, 2], modBy: [1, 2, 3, 4, 4], cv: [200, 160, 130], ap: 4, attr: 2, hb: 6, defense: 14, extreme: true, deals: "17", takes: "4 PC turns",
       hm: [[6.5, 10, 13.25, 16.5, 19.75], [7.75, 11.5, 15.5, 19.25, 23.25], [13, 19.25, 25.5, 32, 38.5]],
       basic: [[[3, 4], [4, 6.5], [5, 7.5], [6.5, 9.5], [7.5, 11]], [[4, 6.5], [6, 9], [7.5, 11.5], [9, 14], [10.5, 16]], [[6, 9], [8.5, 12.5], [10.5, 15.5], [12.5, 19.5], [15, 22.5]]] }
   },
@@ -208,6 +231,8 @@ export const TWOD12 = {
   stages: [{ n: 1, from: 1, to: 4 }, { n: 2, from: 5, to: 7 }, { n: 3, from: 8, to: 10 }],
   // A PC's Weapon and Power Modifiers by Stage (book, Chapter 5; pack R, v0.0.243): +1 at Stage 3 only, never above +4 (NPCs: no step).
   stageModStep: [0, 0, 1], modCap: 4,
+  // modBy (v0.0.307, Lucas; the Bestiary, Attributes and Modifiers): an NPC's Weapon or Power Modifier by rating (Terrible to Extreme; a Minion has no Extreme).
+  vsBase: 12,   // v0.0.307 (Lucas; book, Chapter 2, Defenses): Vs. an Attribute = 12 + the Attribute
   // Pack R (v0.0.243; book, Chapter 2): 4 AP a turn and 1 Reaction AP (the Reaction AP pays only for Reactions; Slowed and Quickened change the 4 only);
   // each AP kept at the end of the turn is Guard 2 / 3 / 4 by Stage until the AP are regained (guard.mjs).
   apPerTurn: 4, reactionAp: 1, guardPerAp: [2, 3, 4],
@@ -224,7 +249,7 @@ export const TWOD12 = {
   // Collision when Pushed: unused squares of the push x damage per square (Body). A wall hurts the pushed creature; a creature hurts both.
   collision: { wall: 2, creature: 1 },
   baseDC: 13,
-  // Defenses (Round 11/12): Armor and Ward are 11 + their value; Vs. an Attribute is baseDC + half the Attribute.
+  // Defenses (Round 11/12): Armor and Ward are 11 + their value; Vs. an Attribute is vsBase (12) + the Attribute (v0.0.307).
   defenseBase: 11,
   // The default colors of an Aura on the map by who it affects (each Aura can set its own outline and squares colors).
   auraColors: { allies: "#4a90d9", enemies: "#d94a4a", all: "#9b59b6" },
@@ -377,12 +402,14 @@ const TOKEN_RE = new RegExp([
   String.raw`(?<attr>\b(?:Body|Mind|Instinct|Appeal)\b)`,
   `(?<word>\\b(?:${[...Object.keys(TRAIT_WORDS), ...Object.keys(DAMAGE_WORDS)].sort((a, b) => b.length - a.length).join("|")})\\b(?!\\s+(?:Attack|Technique)))`
 ].join("|"), "g");
+const traitTip = k => (TWOD12.traitHelp[k] ? ` data-tooltip="${escAttr(TWOD12.traitHelp[k])}"` : "");
 /** One colored token of text (the class names are the book's). */
 function colorToken(m, g) {
   if (g.slash) return `<span class="pool-${POOL_CSS[g.sp]}">${m}</span>`;
   if (g.tag) return `<span class="pool-${POOL_CSS[g.tp]}">${m}</span>`;
   if (g.ht) return `<span class="kw-ht">${m}</span>`;
-  if (g.tgrp) return `<span class="trgrp">[${m.slice(1, -1).split(/,\s*/).map(w => `<span class="trhl" style="--tc:${famColor(TRAIT_KEY_OF[w.toLowerCase()])}">${w}</span>`).join(", ")}]</span>`;
+  // v0.0.261 (Lucas, Rolling Shot): a trait in a text carries its tooltip, like the chips of the Traits line
+  if (g.tgrp) return `<span class="trgrp">[${m.slice(1, -1).split(/,\s*/).map(w => `<span class="trhl" style="--tc:${famColor(TRAIT_KEY_OF[w.toLowerCase()])}"${traitTip(TRAIT_KEY_OF[w.toLowerCase()])}>${w}</span>`).join(", ")}]</span>`;
   if (g.mod) return `<span class="mod-${m.split(/\s/)[0].toLowerCase()}">${m}</span>`;
   if (g.apa) return `(<span class="kw-ap">${g.apa}</span>)`;
   if (g.ap || g.rx) return `<span class="kw-ap">${m}</span>`;
@@ -393,7 +420,7 @@ function colorToken(m, g) {
   if (g.boon) return `<span class="kw-boon">${m}</span>`;
   if (g.rally) return `<span class="kw-rally">${m}</span>`;
   if (g.attr) return `<span class="at-${m.toLowerCase()}">${m}</span>`;
-  return TRAIT_WORDS[m] ? `<span class="trhl" style="--tc:${famColor(TRAIT_WORDS[m])}">${m}</span>` : `<span class="dmgword" style="--dc:${TWOD12.subtypeColors[DAMAGE_WORDS[m]]}">${m}</span>`;
+  return TRAIT_WORDS[m] ? `<span class="trhl" style="--tc:${famColor(TRAIT_WORDS[m])}"${traitTip(TRAIT_WORDS[m])}>${m}</span>` : `<span class="dmgword" style="--dc:${TWOD12.subtypeColors[DAMAGE_WORDS[m]]}">${m}</span>`;
 }
 // Never inside: links, buttons, headings, scripts, SVG, and chips or marks that already have their own look.
 const SKIP_TAG = /^(a|button|h[1-6]|script|style|svg|summary|code)$/i;
@@ -427,26 +454,56 @@ export function highlightText(html) {
  * The line under the traits: the Frequency (only when it matters) and the Target text, separated by a sparkle.
  * Then, on its own line, the tokens that are targeted.
  */
-export function metaRowHtml({ frequency = "", targetText = "", distance = "", area: areaLine = "", vs = "", requirements = "", trigger = "", reactionKind = "", self = false, escalation = 0 } = {}) {
-  const sep = ' <i class="fa-solid fa-sparkle sep"></i> ';
+export function metaRowHtml({ distanceTip = "", frequency = "", targetText = "", distance = "", area: areaLine = "", vs = "", requirements = "", trigger = "", reactionKind = "", self = false, escalation = 0, areaHtml = "", sepHtml = "" } = {}) {
+  // v0.0.297 (PACK ACTION-PREVIEW): the sheet card passes its own separator (a gold ✦) and its Area chip (the Place Area button) as areaHtml
+  const sep = sepHtml || ' <i class="fa-solid fa-sparkle sep"></i> ';
   // Three lines, always in the same place (v0.0.157): 1 Escalation; 2 Targets ✦ Area; 3 Distance ✦ Vs. (a Save: "Instinct Save").
   // The Frequency is in the title bar (cardHead). The Self trait already says it targets you, so Self is left out.
   // v0.0.176: the Area (line 2, with the Targets) and the Distance (line 3) are separate; an older caller may still pass "Area: ..." as the distance.
   if (!areaLine && /^Area: /.test(distance)) { areaLine = distance.slice(6); distance = ""; }
+  // v0.0.249 (Lucas): "Targets:" is labeled, and the meta texts are colored like the rules text (a [Strike] in a Trigger is a trait chip, the Attribute of "Appeal Save" has its color)
+  const hl = t => { try { return highlightText(escAttr(t)); } catch (e) { return escAttr(t); } };
   const l1 = Number(escalation) > 0 ? [`<span class="esc">${Number(escalation)} Escalation</span>`] : [];
-  const l2 = [(!self || areaLine) && targetText ? `<span class="tgt">${escAttr(targetText)}</span>` : "", areaLine ? `<span class="dist"><b>Area:</b> ${escAttr(areaLine)}</span>` : ""].filter(Boolean);
-  const l3 = [distance && distance.toLowerCase() !== "self" ? `<span class="dist"><b>Distance:</b> ${escAttr(distance)}</span>` : "", vs ? `<span class="vs">${/save$/i.test(String(vs).trim()) ? "" : "Vs. "}${escAttr(vs)}</span>` : ""].filter(Boolean);
+  const l2 = [(!self || areaLine) && targetText ? `<span class="tgt"><b>Targets:</b> ${hl(targetText)}</span>` : "", areaLine ? `<span class="dist"><b>Area:</b> ${areaHtml || hl(areaLine)}</span>` : ""].filter(Boolean);
+  const l3 = [distance && distance.toLowerCase() !== "self" ? `<span class="dist"><b>Distance:</b> ${hl(/^\d+$/.test(String(distance).trim()) && distanceTip ? `${distance} sq.` : distance)}${distanceTip ? ` <i class="fa-solid fa-circle-info dist-i" data-tooltip="${escAttr(distanceTip)}" aria-label="${escAttr(distanceTip)}"></i>` : ""}</span>` : "", vs ? `<span class="vs">${/save$/i.test(String(vs).trim()) ? "" : "<b>Vs.</b> "}${vsColored(vs)}</span>` : ""   /* v0.0.295 (Lucas): Vs. bold, the value colored */].filter(Boolean);
   const row = [l1, l2, l3].filter(l => l.length).map(l => `<div class="trow"><span>${l.join(sep)}</span></div>`).join("");
-  const req = requirements ? `<div class="trow reqrow"><span><b>Requirements:</b> ${escAttr(requirements)}</span></div>` : "";
-  const trg = trigger ? `<div class="trow trgrow"><span><b>${reactionKind === "interrupt" ? "Interrupt" : "Trigger"}:</b> ${escAttr(trigger)}</span></div>` : "";
-  return row + req + trg;
+  const req = requirements ? `<div class="trow reqrow"><span><b>Requirements:</b> ${hl(requirements)}</span></div>` : "";
+  const trg = trigger ? `<div class="trow trgrow"><span><b>${reactionKind === "interrupt" ? "Interrupt" : "Trigger"}:</b> ${hl(trigger)}</span></div>` : "";
+  return trg + row + req;   // v0.0.254 (Lucas): a Reaction's Interrupt / Trigger line comes first, it is what the player reads first
 }
 
 /** The targeted tokens, shown at the bottom of an Action card (like the damage card). */
-export const targetsRowHtml = (tokens, { retarget = false } = {}) =>
-  tokens?.length || retarget
-    ? `<div class="tline cardtargets">${retarget ? `<button type="button" class="tgt" data-twod12="retargetAction" data-tooltip="Target the selected tokens"><i class="fa-solid fa-bullseye"></i></button>` : `<i class="fa-solid fa-crosshairs"></i>`}<span>${tokens?.length ? tokens.map(escAttr).join(", ") : "No target"}</span></div>`
-    : "";
+/** v0.0.258 (Lucas): the side of a card's targets, for the color of the target line: "ally" when all are on your side, "enemy" when none is, "" when mixed or unknown. */
+export const targetSide = (targets, mine = 1) => {
+  const ds = (targets ?? []).map(t => t?.disposition).filter(d => d !== undefined && d !== null);
+  if (!ds.length) return "";
+  if (ds.every(d => d === mine)) return "ally";
+  if (ds.every(d => d !== mine)) return "enemy";
+  return "";
+};
+/** v0.0.259 (Lucas): the card's targets as entries for the target line, each name once ("NPC ×2") with its side ("ally" / "enemy" / ""). */
+export const targetEntries = (targets, mine = 1) => {
+  const out = [];
+  for (const t of targets ?? []) {
+    const name = String(t?.name ?? "").trim(); if (!name) continue;
+    const d = t?.disposition, side = d === undefined || d === null ? "" : d === mine ? "ally" : "enemy";
+    const have = out.find(e => e.name === name && e.side === side);
+    if (have) have.n++; else out.push({ name, side, n: 1 });
+  }
+  return out;
+};
+const entryOf = t => (typeof t === "string" ? { name: t, side: "", n: 1 } : { name: String(t?.name ?? ""), side: t?.side ?? "", n: Number(t?.n) || 1 });
+/** The target line of a card: one target is a tag (colored by its side); several are a tag with the count and a small list under it, a dot per side. */
+export const targetsRowHtml = (tokens, { retarget = false, side = "" } = {}) => {
+  if (!tokens?.length && !retarget) return "";
+  const es = (tokens ?? []).map(entryOf), total = es.reduce((a, e) => a + e.n, 0);
+  const btn = retarget ? `<button type="button" class="tgt" data-twod12="retargetAction" data-tooltip="Target the selected tokens"><i class="fa-solid fa-bullseye"></i></button>` : "";
+  const one = n => `${escAttr(n.name)}${n.n > 1 ? ` \u00d7${n.n}` : ""}`;
+  if (!es.length) return `<div class="tline cardtargets"><span class="tname none"><i class="fa-solid fa-crosshairs"></i>No target</span>${btn}</div>`;
+  const sd = side || (es.every(e => e.side === "ally") ? "ally" : es.every(e => e.side === "enemy") ? "enemy" : "");
+  if (es.length === 1) return `<div class="tline cardtargets"><span class="tname${sd ? ` ${sd}` : ""}"><i class="fa-solid fa-crosshairs"></i>${one(es[0])}</span>${btn}</div>`;
+  return `<div class="tline cardtargets many"><span class="tname${sd ? ` ${sd}` : ""}"><i class="fa-solid fa-crosshairs"></i>${total} targets</span>${btn}<ul class="tlist">${es.map(e => `<li${e.side ? ` class="${e.side}"` : ""}>${one(e)}</li>`).join("")}</ul></div>`;
+};
 
 /** "Speed 3" in Requirements: the creature needs at least that Speed. Returns a reason it can't, or "". */
 /** Hands in use: every wielded weapon uses its hands, except Barehanded weapons (they use no hand). */
@@ -563,6 +620,18 @@ export function areaText(d) {
   return area.replace(/\s+within\s+.*$/i, "");
 }
 
+function weaponBand(v, weapon) {
+  const m = String(v ?? "").trim().toLowerCase().match(/^your weapon's (normal|far|maximum) range$/);
+  if (!m || !weapon?.system) return "";
+  const parts = String(weaponRanges(weapon, weapon.parent?.system?.reach ?? 1).ranged ?? "").split("/").map(x => x.trim()).filter(Boolean);
+  return parts[{ normal: 0, far: 1, maximum: 2 }[m[1]]] ?? "";
+}
+/** v0.0.334: the words a Distance stood for when distanceText read them as the weapon's number ("Your weapon's normal range"), else "": the ⓘ's tooltip. */
+export function distanceNote(d, weapon = null) {
+  const area = String(d?.area ?? "").trim(), within = area.match(/\s+within\s+(.*)$/i)?.[1] ?? "";
+  const v = (area ? (String(d?.areaDistance ?? "").trim() || within) : "") || String(d?.distance ?? "").trim();
+  return weaponBand(v, weapon) ? v.replace(/^your weapon's/i, "Your weapon's") : "";
+}
 export function distanceText(d, weapon = null) {
   // An Area Action's Distance (v0.0.176): how far its area can be placed (the Area settings, or an older "within" text: the limit that is enforced),
   // else its own Distance field.
@@ -573,6 +642,9 @@ export function distanceText(d, weapon = null) {
   // A Weapon Action shows the Range of the weapon it is made with (Distance: Weapon, or Reach on older cards): melee with Reach above 1 added,
   // ranged, or both for a Thrown weapon.
   const low = v.toLowerCase(), sp = t => String(t).split("/").join(" / ");
+  // v0.0.334 (Lucas): "Your weapon's normal / far / maximum range" reads the weapon in use (its band of the ranged Range); distanceNote keeps the words
+  const band = weaponBand(v, weapon);
+  if (band) return band;
   if (weapon?.system && (low === "weapon" || (d?.traits?.has?.("weapon") && low === "reach"))) {
     const r = weaponRanges(weapon, weapon.parent?.system?.reach ?? 1);
     const wants = d?.traits?.has?.("melee") ? "melee" : d?.traits?.has?.("ranged") ? "ranged" : "";

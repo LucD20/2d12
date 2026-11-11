@@ -21,7 +21,7 @@ none  4.5 / 4.5 / 4.5
 old isWeapon: 4.5 / 7.5 / 7.5 | no damage on a tier adds nothing: 0
 --- costs and the Turn Frequency
 0 AP: 0AP | 0R: 0R | 1/2R: 1/2R | Turn: Turn #0F6E6E | Power is the label of the magic key: Power | Signature: Signature
-roll kinds: {"__check":"Check","__save":"Save","__attr":"Attribute Action","__twohanded":"Two-handed weapon"}
+roll kinds: {"__check":"Check","__save":"Save","__attr":"Attribute Action","__twohanded":"Two-handed weapon","__attack":"Attack"}
 before: {"faded":false,"why":""}
 used on turn 1: {"faded":true,"why":"Used this turn"}
 the next creature's turn: {"faded":false,"why":""}
@@ -29,4 +29,4 @@ a new round, same turn number: {"faded":false,"why":""}
 --- the data and the sheets
 a Version can cost 0: true | the class has modPriority: true | effect settings accept roll kinds: true
 class dialog: different increases: true | no Weapon/Magic pick: true | sheet shows Power and Signature: true
-compendium Paladin Power: mind, appeal | Archer Weapon: instinct, body
+compendium Paladin Modifiers: 2 1 either | Archer: 2 1 weapon

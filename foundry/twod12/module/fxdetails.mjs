@@ -5,6 +5,11 @@ import { esc } from "./util.mjs";
 
 const keys = s => (s ? [...s] : []);
 /** The name of an Effect by its UUID (empty when it can't be looked up: tests, or an Effect that no longer exists). */
+/** v0.0.264: a Grant's "On [a result], [what happens]" as text ("" when it has none). */
+const grantOnText = x => {
+  const one = (on, does, text) => (!on || (does === "text" && !text) ? "" : `; on ${TWOD12.grantOnChoices[on] ?? on}, ${does === "text" ? `the card says "${esc(text)}"` : "the target's next damage is halved"}`);
+  return one(x.grantOn || x.halfOn || (x.halfT3 ? "t3" : ""), x.grantDo || "half", String(x.grantText ?? "").trim()) + one(x.grantOn2 || "", x.grantDo2 || "text", String(x.grantText2 ?? "").trim());   // v0.0.266: two lines
+};
 const fxNameOf = uuid => { try { return uuid && typeof fromUuidSync === "function" ? (fromUuidSync(uuid)?.name ?? "") : ""; } catch (e) { return ""; } };
 const traitName = k => TWOD12.traits[k] ?? TWOD12.rollKinds?.[k] ?? (String(k).startsWith("__name:") ? `${String(k).slice(7).replace(/-/g, " ")} (by name)` : k);
 const plural = (n, w) => `${n} ${w}${n === 1 ? "" : "s"}`;
@@ -38,7 +43,10 @@ export function predicateText(x) {
 
 /** v0.0.186: " (the first matching Action each round), only against the creature it marked" (empty when neither is set). */
 export function limitText(x) {
-  const bits = [x.oncePerRound ? "the first matching Action each round" : "", x.vsMarked && !x.against ? "only against the creature it marked" : ""].filter(Boolean);
+  const attrs = [...(x.attrs ?? [])].map(a => TWOD12.attributes[a] ?? a);
+  const bits = [x.oncePerRound ? "the first matching Action each round" : "", x.vsMarked && !x.against ? "only against the creature it marked" : "",
+    // v0.0.314 (pack AU): Taunted's "only against creatures other than its origin"; Sickened's Attributes
+    x.type === "boonbane" && x.vsOrigin && !x.against ? (TWOD12.vsOriginChoices?.[x.vsOrigin] ?? "") : "", x.type === "boonbane" && attrs.length ? `only ${attrs.join(" or ")} rolls` : ""].filter(Boolean);
   return bits.length ? ` <i class="fxd-lim">(${bits.join("; ")})</i>` : "";
 }
 
@@ -54,7 +62,8 @@ function settingSentenceOnly(x) {
       const pred = predicateText(x), every = !pred;   // no traits: every roll
       const rolls = `${every ? "every roll" : "rolls"} made ${x.against ? "<b>against</b> this creature" : "by this creature"}${pred}`;
       if (!gains) return `Nothing yet on ${rolls}.`;
-      return `<b>${gains}</b>${x.byValue ? " (times the condition's value)" : ""} on ${rolls}.`;
+      const nm = { field: "Field ", pressure: "Pressure ", support: "Support " }[x.bbName] ?? "";   // v0.0.301: "1 Pressure Bane"
+      return `<b>${nm ? gains.replace(/(\d+) (Boons?|Banes?)/g, `$1 ${nm}$2`) : gains}</b>${x.byValue ? " (times the condition's value)" : ""} on ${rolls}.`;
     }
     case "damagestep": {
       const dmg = [x.empowered ? `Empowered ${x.empowered}` : "", x.enfeebled ? `Enfeebled ${x.enfeebled}` : ""].filter(Boolean).join(" and ");
@@ -67,10 +76,31 @@ function settingSentenceOnly(x) {
       const tiers = keys(x.tiers);
       const on = tiers.length && tiers.length < 3 ? ` on ${wordList(tiers.map(t => t.toUpperCase()), "and")}` : "";
       const pool = x.dmgPool ? ` to ${esc((TWOD12.pools[x.dmgPool] ?? "").replace(/\s*\[.*\]/, ""))}` : "";
-      return `The next action${predicateText(x) || " of any kind"} deals <b>+${esc(x.dmg || "?")}${x.dmgSub ? " " + esc(TWOD12.subtypes[x.dmgSub]) : ""}</b> damage${pool}${on}.`;
+      return `The next action${predicateText(x) || " of any kind"} deals <b>+${esc(x.dmg || "?")}${x.dmgSub && x.dmgSub !== "W" ? " " + esc(TWOD12.subtypes[x.dmgSub]) : ""}</b> damage${x.dmgSub === "W" ? " (the weapon's subtype)" : ""}${pool}${on}.`;
     }
+    case "bleed": {   // v0.0.314 (pack AU)
+      const attrs = [...(x.attrs ?? [])].map(a => TWOD12.attributes[a] ?? a).join(" or ") || "Body or Instinct";
+      const pool = x.dmgPool === "M" ? "Resolve" : (x.dmgPool === "B" ? "Vigor" : "Vigor or Resolve by the Attributes");
+      return `At the end of each of its turns, the creature takes <b>${esc(x.dmg || "?")}${x.dmgSub ? " " + esc(TWOD12.subtypes[x.dmgSub]) : ""}</b> damage (${pool}); Interact and a Save with the better of ${attrs} against DC ${Math.max(0, Number(x.bleedDc) || 13)} end it.`;
+    }
+    case "resist": {   // v0.0.320 (pack AU part 2)
+      const sub = TWOD12.subtypes[x.dmgSub] || "?";
+      return x.rwKind === "immune" ? `The creature has <b>Immune ${esc(sub)}</b>.` : `The creature has <b>${x.rwKind === "weak" ? "Weak" : "Resist"} ${Math.max(0, Number(x.rwValue) || 0)} ${esc(sub)}</b>.`;
+    }
+    case "freqmore":
+      return `While this works, ${esc(TWOD12.freqMore[x.fmWhich] ?? TWOD12.freqMore.round)}.`;
+    case "inline":
+      return `Has the Action <b>${esc(fxNameOf(x.inlineAction) || x.inlineAction || "?")}</b> while this lasts.`;
     case "grant":
-      return `Can use <b>${esc(x.grantAction || "?")}</b> ${x.grantCount === 1 ? "once" : `${x.grantCount} times`} for <b>${x.grantAp ? `${x.grantAp} AP` : "free"}</b>${x.boons ? `, with ${plural(x.boons, "Boon")}` : ""}${x.grantDistinct ? ", a different target each time" : ""}.`;
+      return `Can use <b>${esc(x.grantAction || "?")}</b> ${x.grantCount === 1 ? "once" : `${x.grantCount} times`} for <b>${x.grantAp ? `${x.grantAp} AP` : "free"}</b>${x.boons ? `, with ${plural(x.boons, "Boon")}` : ""}${x.grantDistinct ? ", a different target each time" : ""}${grantOnText(x)}.`;
+    case "cover": {   // v0.0.266 (Aim)
+      const lv = [...(x.coverLevels ?? [])].map(k => TWOD12.coverLevels[k] ?? k);
+      return `Its Actions${predicateText(x) || ""} ignore <b>${lv.length ? lv.join(", ") : "(pick the levels)"}</b> cover: no Banes from it.`;
+    }
+    case "zone": {
+      const who = { allies: "Allies", enemies: "Enemies", all: "Creatures" }[x.zoneWho] ?? "Allies", fx = fxNameOf(x.fxUuid), heal = String(x.zoneHeal ?? "").trim();
+      return `<b>${who}</b> in the placed area${fx ? ` gain <b>${esc(fx)}</b> while inside` : ""}${fx && heal ? " and" : ""}${heal ? ` heal <b>${esc(heal)}</b> at the start of each of their turns` : ""}${!fx && !heal ? " (drop an Effect, or write a heal)" : ""}.`;
+    }
     case "aura": {
       const fx = fxNameOf(x.fxUuid), who = { allies: "allies", enemies: "enemies", all: "creatures" }[x.auraWho] ?? "allies";
       return `An <b>Aura ${Math.max(1, Number(x.auraSize) || 1)}</b> around the creature: ${who}${x.auraSelf ? " and the creature itself" : ""} inside gain <b>${esc(fx) || "(drop an Effect)"}</b>.`;
@@ -103,7 +133,7 @@ function settingSentenceOnly(x) {
     case "eschook":
       return `Once an encounter, when ${x.hookWhen === "markDown" ? "<b>the creature it marked goes Down</b>" : `<b>an ally within ${Math.max(0, Number(x.hookRange) || 0)} squares becomes Bloodied or goes Down</b>`}, its Escalation rises by 1 (at 3: nothing, and the once isn't used up).`;
     case "light":
-      return `The token sheds bright light out to <b>${x.bright}</b> and dim light out to <b>${x.dim}</b> squares.`;
+      return `The token sheds bright light out to <b>${x.bright}</b> and dim light out to <b>${x.dim}</b> squares${Number.isFinite(Number(x.lightAlpha)) && Number(x.lightAlpha) !== 0.5 ? `, intensity ${Number(x.lightAlpha)}` : ""}${x.lightAnim ? `, animated (${esc(x.lightAnim)} ${x.lightSpeed ?? 5} / ${x.lightIntensity ?? 5})` : ""}.`;
     case "note": {
       const attrs = keys(x.attrs).map(k => TWOD12.attributes[k] ?? k);
       return `Shows the note <b>${esc(x.title || "(no title)")}</b> in ${attrs.length ? `${wordList(attrs, "and")} rolls` : "every roll"}.`;
@@ -129,6 +159,8 @@ export function settingShort(x) {
       return `${dmg}${p ? ` (${p})` : ""}${strip(limitText(x))}`;
     }
     case "aura": return `Aura ${Math.max(1, Number(x.auraSize) || 1)}: ${fxNameOf(x.fxUuid) || "no Effect yet"}`;
+    case "cover": return `ignores ${[...(x.coverLevels ?? [])].map(k => TWOD12.coverLevels[k] ?? k).join(", ") || "?"} cover`;
+    case "zone": return `zone: ${x.zoneWho ?? "allies"} ${fxNameOf(x.fxUuid) || (String(x.zoneHeal ?? "").trim() ? `heal ${String(x.zoneHeal).trim()}` : "?")}`;
     case "ondamage": return `${fxNameOf(x.fxUuid) || "an Effect"} on ${TWOD12.subtypes[x.trigSub] ?? "any"} damage${x.trigTag ? ` to ${x.trigTag}` : ""}`;
     case "defense": { const n = Math.trunc(Number(x.defValue)) || 0; return `${n >= 0 ? "+" : "\u2212"}${Math.abs(n)} ${x.defKind === "all" ? "Defense" : (TWOD12.defenseKinds[x.defKind] ?? "Defense")}`; }
     case "speed": return x.speedMode === "override" ? `Speed becomes ${x.speedFormula || "?"}` : `Speed ${/^[-+]/.test(x.speedFormula ?? "") ? "" : "+"}${x.speedFormula || "?"}`;
@@ -141,6 +173,8 @@ export function settingShort(x) {
     case "weaponprop": return `${TWOD12.propWeapons[x.wpWhich] ?? "Fists"} not ${TWOD12.removableProps[x.wpProp] ?? "?"}`;
     case "mastery": return `${TWOD12.weaponTraits[x.mstTrait] ?? "?"} weapon at ${Math.max(0, Number(x.mstValue) || 0)} Mastery`;
     case "note": return `note "${x.title || "(no title)"}"`;
+    case "resist": return x.rwKind === "immune" ? `Immune ${TWOD12.subtypes[x.dmgSub] || "?"}` : `${x.rwKind === "weak" ? "Weak" : "Resist"} ${Math.max(0, Number(x.rwValue) || 0)} ${TWOD12.subtypes[x.dmgSub] || "?"}`;   // v0.0.320
+    case "freqmore": return x.fmWhich === "encounter" ? "Encounter Specials a second time" : "Round Specials twice a round";
     default: return strip(settingSentence(x)).replace(/\.$/, "").replace(/^The next action/, "next action");
   }
 }
@@ -174,6 +208,16 @@ export function effectSummary(s) {
   return out.charAt(0).toUpperCase() + out.slice(1) + ".";
 }
 
+/** v0.0.267 (Lucas): what an effect does, in a line, for its hover card: an Effect item's settings, or the item an applied effect came from. "" when it has none. */
+export function effectWhat(doc) {
+  try {
+    let it = doc;
+    if (doc?.documentName === "ActiveEffect") { const u = doc.getFlag?.("twod12", "effectUuid"); it = u ? fromUuidSync(u) : null; }
+    const s = it?.system;
+    if (!s || !((s.settings ?? []).length || (s.conditions ?? []).length || s.linked)) return "";
+    return effectSummary(s).replace(/\.$/, "");
+  } catch (e) { return ""; }
+}
 /** The chip rows of one setting: the fields that have traits, plus the ones the user opened (shown is a Set of field names). */
 export function predRows(x, shown = new Set(), fields = ["all", "any", "none", "from"], everyLabel = "every roll") {
   // The roll kinds first (Check, Save, Attribute Action), then the traits in order.

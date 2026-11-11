@@ -1,0 +1,7 @@
+side: allies ally | enemies enemy | mixed "" | unknown "" | none ""
+enemy row: <div class="tline cardtargets"><span class="tname enemy"><i class="fa-solid fa-crosshairs"></i>Goblin ×2</span><button type="button" class="tgt" data-twod12="retargetAction" data-tooltip="Target the selected tokens"><i class="fa-solid fa-bullseye"></i></button></div>
+ally row: <div class="tline cardtargets"><span class="tname ally"><i class="fa-solid fa-crosshairs"></i>Nari</span><button type="button" class="tgt" data-twod12="retargetAction" data-tooltip="Target the selected tokens"><i class="fa-solid fa-bullseye"></i></button></div>
+no target keeps its own class: true
+the card and the retarget pass the side: true
+the panel orders a linked condition under its effect with a chain: true
+the rules, the side colors, the squared tag, the chain: true

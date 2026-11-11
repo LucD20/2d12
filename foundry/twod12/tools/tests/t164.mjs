@@ -43,4 +43,5 @@ const doc = (n, t) => docs.find(d => d.name === n && (!t || d.type === t));
 const types = n => (doc(n).system.settings ?? []).map(x => x.type === "message" ? `message/${x.msgWhen}/${x.msgAction}/${x.msgAp} AP` : x.type).join(", ");
 for (const n of ["Marked Quarry", "Sharpshooter", "Bow Mastery", "Brawler"]) console.log(n.padEnd(14), types(n));
 console.log("Weapon used: Pummel", doc("Pummel", "action").system.weaponUse, "| Leg Sweep", doc("Leg Sweep", "action").system.weaponUse, "| the Fists Basic Action", BASIC_ACTIONS.fists.weaponUse);
-console.log("compendium items with hidden flags:", docs.filter(d => d.flags && Object.keys(d.flags.twod12 ?? {}).length).map(d => d.name).join(", ") || "none");
+// v0.0.334: the Basic Actions in the compendium carry only their basic key (what makes a dragged one work as the built-in Basic Action)
+console.log("compendium items with hidden flags:", docs.filter(d => d.flags && Object.keys(d.flags.twod12 ?? {}).filter(k => !(k === "basic" && d.folder === "Basic Actions")).length).map(d => d.name).join(", ") || "none", "| Basic Actions with only their key:", docs.filter(d => d.folder === "Basic Actions").length);

@@ -19,7 +19,7 @@ Rage (Empowered 2): empowered 2, enfeebled 0
 Dread (Enfeebled 3): empowered 0, enfeebled 3
 an older effect that stored true: empowered 1, enfeebled 0
 negative and garbage values are cleaned: empowered 0, enfeebled 0
-damageSteps for a [Melee] Action: {"empowered":[{"name":"Rage (4 rounds)","n":2}],"enfeebled":[{"name":"Dread","n":1}]} | for a [Ranged] one: {"empowered":[],"enfeebled":[]} | nobody: {"empowered":[],"enfeebled":[]}
+damageSteps for a [Melee] Action: {"empowered":[{"name":"Rage (4 rounds)","n":2,"inc":false}],"enfeebled":[{"name":"Dread","n":1,"inc":false}]} | for a [Ranged] one: {"empowered":[],"enfeebled":[]} | nobody: {"empowered":[],"enfeebled":[]}
 
 --- conditions with a value, and an effect that applies conditions
 Empowered applied without a value: Empowered 1 1 [empowered]
@@ -52,7 +52,7 @@ someone who doesn't own the creature can't change it: 2 (the effect is named "Em
 not on: a click applies it at 1: Item.Empowered {"value":1} | Foundry's own toggle: 0
 not on: a right-click does nothing: 0 applied, 0 own toggles
 a condition without a value: Foundry's own toggle: own prone
-the HUD tooltips: 1 set | Empowered 2 · Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove || (none) || (none)
+the HUD tooltips: 1 set | <div class="twod12 fxtip"><div class="ft-head"><b>Empowered 2</b><span class="ft-dur">until removed</span></div><div class="ft-ctl">Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove</div></div> || (none) || (none)
 no HUD root or no creature: 0 0
 
 --- a rider that increases the value

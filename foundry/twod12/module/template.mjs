@@ -161,6 +161,18 @@ function dashedCells(g, cells, color = 0xf3c9ee) {
 
 const tokensAt = c => canvas.tokens.placeables.filter(t => tokenCells(t).some(x => x.i === c.i && x.j === c.j));
 const tokensIn = cells => { const set = new Set(cells.map(key)); return canvas.tokens.placeables.filter(t => tokenCells(t).some(c => set.has(key(c)))); };
+/**
+ * v0.0.246 (cards 1, Smite): the creatures in an N Emanation around these tokens (the book's 1-2-1 shape from every square of their spaces: the squares
+ * a light of size N reaches), the tokens themselves left out. Hidden tokens and tokens with no creature are left out too.
+ */
+export function tokensInEmanation(tokens, n) {
+  const list = (tokens ?? []).filter(Boolean);
+  if (!list.length || !(Number(n) > 0)) return [];
+  const cells = new Map();
+  for (const t of list) for (const c of emanationCells(tokenCells(t), Number(n))) cells.set(key(c), c);
+  const ids = new Set(list.map(t => t.id));
+  return tokensIn([...cells.values()]).filter(t => !ids.has(t.id) && t.actor && !t.document?.hidden);
+}
 
 function compute(shape, n, pos, { user = null, side = "left" } = {}) {
   if (shape === "line") return lineCompute(user, n, pos, side);
@@ -216,9 +228,11 @@ function place(shape, n, { within = 0, user = null } = {}) {
     };
     // "Within N sq.": the Point of Origin can be at most that far from the creature using the Action (a spot that is too far is shown in red).
     const tooFar = c => !!(within && user && c && placementDistance(user, c) > within);
+    const limit = within && user ? emanationCells(tokenCells(user), within) : [];   // v0.0.249 (Lucas): the reach of the placement, outlined in gold like a Charge's
     const draw = () => {
       gfx.clear();
       showBar();
+      if (limit.length) outlineCells(gfx, limit, { color: 0xf1c84b, width: 2 });
       if (!current) return;
       const far = tooFar(current);
       fillCells(gfx, current.cells, far ? 0xc0392b : COLOR, far ? 0.35 : 0.5);
@@ -250,7 +264,7 @@ function place(shape, n, { within = 0, user = null } = {}) {
     canvas.stage.on("pointermove", move);
     canvas.stage.on("pointerdown", down);
     window.addEventListener("keydown", key_, true);
-    if (!isLine) ui.notifications.info(`${shape === "burst" ? "Burst" : "Emanation"} ${n}${within ? ` (within ${within} sq.)` : ""}: click to place, right-click or Esc to cancel.`);
+    if (!isLine) ui.notifications.info(`${n} ${shape === "burst" ? "Burst" : "Emanation"}${within ? ` (within ${within} sq.)` : ""}: click to place, right-click or Esc to cancel.`);   // v0.0.246: the book's order (a 2 Emanation)
     else showBar();
   });
 }
@@ -269,8 +283,10 @@ export async function startTemplate(cfg, ctx = {}) {
   // at:self: an Emanation centered on the user (a Self Action), no placing needed.
   let placed, preview = null;
   const dropPreview = () => { try { preview?.destroy(); } catch (e) { /* gone */ } preview = null; };
+  let back0 = async () => {};
   if (cfg.at === "self") {
     if (!user) return ui.notifications.warn("Select your token first.");
+    back0 = await stepAside();   // v0.0.251 (Lucas): the windows step aside while the area is shown, as when one is placed
     const base = tokenCells(user);
     placed = { cells: emanationCells(base, n), origin: user, baseCells: base, point: spaceCenter(user) };
     // Show it on the map before applying, so everyone sees what it covers.
@@ -341,7 +357,7 @@ export async function startTemplate(cfg, ctx = {}) {
         },
         rejectClose: false
       });
-  if (!data) { dropPreview(); return; }
+  if (!data) { dropPreview(); await back0(); return; }
 
   // The origin is the creature using the Action: allies and enemies are judged from its side.
   const origin = user ?? placed.origin ?? null;
@@ -365,16 +381,15 @@ export async function startTemplate(cfg, ctx = {}) {
     const actName = (() => { try { const f = ctx?.message?.getFlag?.("twod12", "action"); return fromUuidSync(f?.actorUuid)?.items?.get?.(f?.itemId)?.name ?? ""; } catch (e) { return ""; } })();
     const names = tokens.filter(t => t.id !== centerTok?.id).map(t => escT(t.name)).join(", ") || "nobody";
     // v0.0.215 (Lucas, playtest 2: Ground Slam): an Emanation around its user is only shown; this window asks whether the user is affected too, and confirms.
-    const selfBox = centerTok ? `<div class="form-group"><label><input type="checkbox" name="self" ${data.self ? "checked" : ""}> Affect ${escT(centerTok.name)} too (the creature it is around)</label></div>` : "";
-    const res = await DialogV2.wait({
-      window: { title: actName || "Apply Area" },
-      content: `<p>Apply ${escT(actName || "the area")}'s area (shown on the map)?</p><p>Targets: <b>${names}</b></p>${selfBox}${noLoE.length ? `<p>No Line of Effect from the Point of Origin: <b>${noLoE.map(escT).join(", ")}</b></p>` : ""}`,
-      buttons: [{ action: "yes", label: "Apply", icon: "fa-solid fa-check", default: true, callback: (ev, btn) => ({ self: !!btn.form?.elements?.self?.checked }) }, { action: "no", label: "Cancel", icon: "fa-solid fa-xmark" }],
-      rejectClose: false
-    });
+    // v0.0.251 (Lucas): the question is a bar at the bottom, in the system's style; "you too" follows the Action's Area setting (the item sheet: "Affect the creature it is around") and is a click away
+    const { pickBar } = await import("./pickbar.mjs");
+    const withMe = { id: "me", label: `Apply, ${escT(centerTok?.name ?? "you")} too` }, withoutMe = { id: "others", label: centerTok ? `Apply, not ${escT(centerTok.name)}` : "Apply" };
+    const res = await pickBar({ icon: "fa-vector-square", aside: false, text: `<b>${escT(actName || "the area")}</b>: apply the area shown on the map? Targets: <b>${names}</b>.${noLoE.length ? ` No Line of Effect: ${noLoE.map(escT).join(", ")}.` : ""}`,
+      options: centerTok ? (data.self ? [withMe, withoutMe] : [withoutMe, withMe]) : [withoutMe] });
     dropPreview();
-    if (!res || res === "no") return;
-    if (centerTok) tokens = res.self ? [...new Set([...tokens, centerTok])] : tokens.filter(t => t.id !== centerTok.id);
+    await back0();
+    if (res == null) return;
+    if (centerTok) tokens = res === "me" ? [...new Set([...tokens, centerTok])] : tokens.filter(t => t.id !== centerTok.id);
   }
   // Restart the targeting: release every current target, then target the tokens in the area.
   for (const t of [...game.user.targets]) t.setTarget(false, { releaseOthers: false, groupSelection: true });
@@ -385,7 +400,8 @@ export async function startTemplate(cfg, ctx = {}) {
   const timed = data.expire === "eot" || data.rounds > 0;
   const difficult = data.difficult && data.dtypes.length;
   const hazard = (data.ht ?? []).length > 0;
-  if (data.keep || timed || difficult || hazard) {
+  const zone = cfg.zone ?? null;   // v0.0.261 (Consecrated Ground): the area is a Zone: its rules on the region, the creatures inside get them (zone.mjs)
+  if (data.keep || timed || difficult || hazard || zone) {
     const comb = game.combat?.combatants.find(c => c.tokenId === origin?.id);
     const cur = game.combat?.combatant;
     const flags = { twod12: { template: true, ...(placed.line ? { line: placed.line } : {}) } };   // a Line keeps { origin, target, value, side }: lineCellsFromFlag rebuilds it
@@ -393,6 +409,7 @@ export async function startTemplate(cfg, ctx = {}) {
       const actName = (() => { try { const f = ctx?.message?.getFlag?.("twod12", "action"); return fromUuidSync(f?.actorUuid)?.items?.get?.(f?.itemId)?.name ?? ""; } catch (e) { return ""; } })();
       flags.twod12.ht = { patterns: data.ht, text: data.httext ?? "", originUuid: origin?.actor?.uuid ?? "", name: actName || cfg.source || "", cells: placed.cells.map(key), hits: {}, appearHandled: !!cfg.htSave };   // a Save Action makes the creatures inside save itself
     }
+    if (zone) flags.twod12.zone = { ...zone, ...(data.rounds > 0 && zone.ends ? { ends: { ...zone.ends, time: { on: true, mode: "rounds", rounds: data.rounds } } } : {}), cells: placed.cells.map(key), originUuid: origin?.actor?.uuid ?? "", originDisposition: Number(origin?.document?.disposition ?? 1) };   // v0.0.327: the rounds it was given
     // The area starts when it is placed (reactions included); see registerEffectHooks for the countdown.
     if (timed) Object.assign(flags.twod12, {
       duration: { type: data.expire === "eot" ? "eot" : "rounds", rounds: data.rounds, expire: data.expire === "eot" ? "eot" : "" },
@@ -401,9 +418,12 @@ export async function startTemplate(cfg, ctx = {}) {
       appliedRound: game.combat?.round ?? null, appliedTurn: game.combat?.turn ?? null
     });
     const difficulties = Object.fromEntries(data.dtypes.map(a => [a, 2]));
+    // v0.0.327 (PACK ZONE): a Zone's colors (its outline) and "Shown on the map" (off: only on the Regions layer; it still works)
+    const zoneLook = zone && (zone.outline || zone.fill) ? { color: zone.outline || zone.fill } : {};
     const base = {
-      name: hazard && flags.twod12.ht.name ? `${flags.twod12.ht.name} [HT: ${patternText(data.ht)}]` : `${hazard ? "[HT] " : ""}${difficult ? "Difficult " : ""}${areaName(shape, n)}`, color: hazard ? "#c0502a" : difficult ? "#8a6a3a" : "#b05aa0",
-      visibility: CONST.REGION_VISIBILITY?.ALWAYS ?? 2, flags
+      ...zoneLook,
+      name: zone ? `${zone.name}${timed && data.rounds ? ` (${data.rounds} round${data.rounds === 1 ? "" : "s"})` : ""}` : hazard && flags.twod12.ht.name ? `${flags.twod12.ht.name} [HT: ${patternText(data.ht)}]` : `${hazard ? "[HT] " : ""}${difficult ? "Difficult " : ""}${areaName(shape, n)}`, color: zone ? "#c9a227" : hazard ? "#c0502a" : difficult ? "#8a6a3a" : "#b05aa0",
+      visibility: zone?.show === false ? (CONST.REGION_VISIBILITY?.LAYER ?? 0) : (CONST.REGION_VISIBILITY?.ALWAYS ?? 2), flags
     };
     const core = { type: "modifyMovementCost", name: "Difficult Terrain", system: { difficulties } };
     const custom = { type: "difficultTerrain", name: "Difficult Terrain", system: { difficulties, targets: data.dfor, originDisposition: od } };
@@ -428,6 +448,7 @@ export async function startTemplate(cfg, ctx = {}) {
       if (ctx?.outcome) ctx.outcome.region = made;
     } catch (e) { console.warn("twod12 | could not create the region", e); ui.notifications.warn("Could not keep the area on the map (permissions?)."); }
   }
-  const lineNote = placed.line ? ` (${placed.cells.length} square${placed.cells.length === 1 ? "" : "s"}${placed.hasTie ? `, ties ${placed.line.side}` : ""}${placed.cut ? ", stopped by a wall" : ""})` : "";
-  await ChatMessage.create({ content: `<div class="twod12 chat"><b>${areaName(shape, n)}</b>${lineNote}: ${tokens.length ? "targeting " + tokens.map(t => t.name).join(", ") : "no targets"}.${noLoE.length ? ` No Line of Effect: ${noLoE.join(", ")}.` : ""}</div>` });
+  // v0.0.284 (Lucas: "it's sending 'targeting x, y, z' as plain text"): no chat line any more (the Action's card lists its targets); only what the map can't show is a notification
+  if (noLoE.length) ui.notifications.info(`${areaName(shape, n)}: no Line of Effect to ${noLoE.join(", ")}.`);
+  if (placed.cut) ui.notifications.info(`${areaName(shape, n)}: the Line is stopped by a wall (${placed.cells.length} square${placed.cells.length === 1 ? "" : "s"}).`);
 }

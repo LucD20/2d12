@@ -6,7 +6,8 @@ import { TWOD12, effectiveFrequency, categoryText } from "./config.mjs";
 import { esc } from "./util.mjs";
 import { levelModel, togglePick, setAttr, attrList, levelPlan, sectionsAt, stageLine } from "./classlevels.mjs";
 import { grantFeature, grantTalent } from "./grants.mjs";
-import { buildRawCard, buildInfoCard } from "./preview.mjs";
+import { buildInfoCard } from "./preview.mjs";
+import { classTrack } from "./modifiers.mjs";
 const { ApplicationV2, DialogV2 } = foundry.applications.api;
 const F = "twod12";
 const AN = TWOD12.attributes;
@@ -61,7 +62,7 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
   /** o: { name, img, cls (the class data), level, adding, owned, priorAttrs, data (from gather), resolve } */
   constructor(o) {
     super({ window: { title: `Class: ${o.name}` } });
-    Object.assign(this, { o, picks: {}, attrs: {}, view: null, cards: new Map(), done: false, priority: o.cls.modPriority === "power" ? "power" : "weapon" });
+    Object.assign(this, { o, picks: {}, attrs: {}, view: null, cards: new Map(), done: false, priority: o.cls.modPriority === "power" ? "power" : "weapon", stage2: o.cls.modStage2 || "" });
     this.healthHigh = "vigor";   // v0.0.244 (pack R): where the class's high Health value goes (a level 1 choice); v0.0.245: a dropped class starts fresh (Vigor), never from the sheet's old state
     this.tf = { q: "", cat: "", only: true, compact: false };   // v0.0.195: the Talent filter bar
     this.choiceSel = {};   // v0.0.215: a chosen Talent or Feature with a choice (Lesser Blessing's blessing): uuid -> the options picked here
@@ -104,7 +105,7 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
   async _card(uuid) {
     if (!this.cards.has(uuid)) {
       const d = this.o.data.docs.get(uuid);
-      this.cards.set(uuid, d ? (d.type === "action" ? await buildRawCard(d) : await buildInfoCard(d)) : "");
+      this.cards.set(uuid, d ? (["action", "feature", "talent"].includes(d.type) ? await (await import("./actioncard.mjs")).buildSoloCard(d) : await buildInfoCard(d)) : "");   // v0.0.322: the new card
     }
     return this.cards.get(uuid);
   }
@@ -126,6 +127,25 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
     // v0.0.244 (Lucas): the Health line's choice as a selection like the Attributes: the high value on Vigor or Resolve (book, Chapter 4; chosen once).
     const healthRow = level === 1 && Number(cls.healthHigh) > 0 ? `<div class="cw-attr"><span>High Health value (${Number(cls.healthHigh)}) on</span><div class="cw-seg">${[["vigor", "Vigor"], ["resolve", "Resolve"]].map(([k, l]) => `<button type="button" data-key="hhigh:${k}" data-hhigh="${k}" aria-pressed="${this.healthHigh === k}">${this.healthHigh === k ? `${CHECK} ` : ""}${l}</button>`).join("")}</div><span class="cw-hnote">the low value (${Number(cls.healthLow)}) on the other</span></div>` : "";
     let healthPlaced = !healthRow;
+    // v0.0.305 (pack MOD; book, Chapter 5): the class's two Modifier values. Level 1: which is the Weapon Modifier (a class that lets you choose);
+    // level 5 (Stage 2): which Modifier takes the +1 (default: the higher one). Chosen once.
+    const mh = Number(cls.modHigh) || 0, ml = Number(cls.modLow) || 0, hasVals = mh > 0 || ml > 0, sgv = n => `${n >= 0 ? "+" : "−"}${Math.abs(n)}`;
+    const segBtn = (data, k, on, l) => `<button type="button" data-key="${data}:${k}" data-${data}="${k}" aria-pressed="${on}">${on ? `${CHECK} ` : ""}${esc(l)}</button>`;
+    const orderRow = level === 1 && hasVals && (cls.modOrder || "either") === "either"
+      ? `<div class="cw-attr"><span>Your Modifiers</span><div class="cw-seg">${[["weapon", `Weapon ${sgv(mh)}, Power ${sgv(ml)}`], ["power", `Power ${sgv(mh)}, Weapon ${sgv(ml)}`]].map(([k, l]) => segBtn("prio", k, this.priority === k, l)).join("")}</div></div>` : "";
+    // v0.0.307 (Lucas): a class that fixes the order (the Archer) still shows its Modifiers at level 1, as a decided choice.
+    const fixedFirst = cls.modOrder === "power" ? "power" : "weapon";
+    const fixedRow = level === 1 && hasVals && (cls.modOrder || "either") !== "either"
+      ? `<div class="cw-attr"><span>Your Modifiers</span><div class="cw-seg"><button type="button" aria-pressed="true" disabled data-tooltip="Set by the class">${CHECK} ${esc(fixedFirst === "power" ? `Power ${sgv(mh)}, Weapon ${sgv(ml)}` : `Weapon ${sgv(mh)}, Power ${sgv(ml)}`)}</button></div></div>` : "";
+    const t1 = hasVals ? classTrack({ high: mh, low: ml, order: cls.modOrder, lead: this.priority, stage: 1 }) : null;
+    const s2now = this.stage2 || (t1?.weaponFirst ? "weapon" : "power");
+    const s2Row = level === 5 && hasVals
+      ? `<div class="cw-attr"><span>Stage 2: +1 to</span><div class="cw-seg">${[["weapon", `Weapon Modifier (Weapon ${sgv(t1.weapon + 1)}, Power ${sgv(t1.power)})`], ["power", `Power Modifier (Weapon ${sgv(t1.weapon)}, Power ${sgv(t1.power + 1)})`]].map(([k, l]) => segBtn("s2", k, s2now === k, l)).join("")}</div></div>` : "";
+    const modSub = orderRow ? "Your class gives two Modifier values: choose which is your Weapon Modifier (Weapon Actions) and which your Power Modifier (Power Actions and Ward Defense). It can't be changed later."
+      : fixedRow ? "Your class sets your Weapon Modifier (Weapon Actions) and your Power Modifier (Power Actions and Ward Defense). Stage 2 adds +1 to the one you choose, Stage 3 +1 to both."
+      : "Stage 2 adds +1 to one of your Modifiers (never above +4). It can't be changed later.";
+    const modSec = orderRow || fixedRow || s2Row ? `<section class="cw-sec"><h2>Modifiers <span class="cw-pill done">${orderRow || s2Row ? "Chosen" : "Set by the class"}</span></h2><p class="cw-sub">${modSub}</p>${orderRow}${fixedRow}${s2Row}</section>` : "";
+    let modPlaced = !modSec;   // v0.0.306 (Lucas): the Modifiers section right under the Attribute increases, above the Features
     const secs = m.sections.map(x => {
       const pill = `<span class="cw-pill${x.done && x.kind !== "granted" ? " done" : ""}">${esc(x.pill)}</span>`;
       let body = "";
@@ -137,8 +157,11 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
         const bar = x.s.kind === "talent" ? this._filterBar(x.s.id) : "";
         body = `${x.empty ? '<div class="cw-empty">Everything here is already yours.</div>' : ""}${bar}<div class="cw-tiles${x.s.kind === "talent" && this.tf.compact ? " compact" : ""}" data-sec="${x.s.id}">${x.list.map(u => tile(x, u)).join("")}</div>${x.s.kind === "talent" ? '<p class="cw-none" hidden>No Talent matches the filter.</p>' : ""}`;
       }
-      return `<section class="cw-sec"><h2>${esc(x.s.title)} ${pill}</h2><p class="cw-sub">${esc(x.sub)}</p>${body}</section>`;
-    }).join("") + (healthPlaced ? "" : `<section class="cw-sec"><h2>Health <span class="cw-pill done">Chosen</span></h2><p class="cw-sub">The class gives a high and a low Health value: you assign them.</p>${healthRow}</section>`) || '<p class="cw-empty">Nothing to choose at this level.</p>';
+      const html = `<section class="cw-sec"><h2>${esc(x.s.title)} ${pill}</h2><p class="cw-sub">${esc(x.sub)}</p>${body}</section>`;
+      if (x.kind === "attr" && !modPlaced) { modPlaced = true; return html + modSec; }
+      return html;
+    }).join("");
+    const secsAll = (modPlaced ? "" : modSec) + secs + (healthPlaced ? "" : `<section class="cw-sec"><h2>Health <span class="cw-pill done">Chosen</span></h2><p class="cw-sub">The class gives a high and a low Health value: you assign them.</p>${healthRow}</section>`) || '<p class="cw-empty">Nothing to choose at this level.</p>';
     // The card being read.
     let detail = '<p class="cw-empty">Click a name to read it.</p>';
     if (this.view) {
@@ -159,7 +182,7 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
     div.innerHTML = `<header class="cw-head"><div class="cw-top"><div class="cw-ttl"><img src="${esc(img)}" alt=""><h1>${esc(name)} <small>Level ${level}</small></h1></div>
         <div class="cw-progress"><span class="cw-dots">${dots}</span><span>${m.made} of ${m.total} choices made</span></div></div>
         <div class="cw-stats">${stats.map(([k, v]) => `<span>${k}<b>${esc(v)}</b></span>`).join("")}</div>${stage ? `<div class="cw-stage">${esc(stage)}</div>` : ""}</header>
-      <div class="cw-body"><div class="cw-col cw-slots">${secs}</div><div class="cw-col cw-detail">${detail}</div></div>
+      <div class="cw-body"><div class="cw-col cw-slots">${secsAll}</div><div class="cw-col cw-detail">${detail}</div></div>
       <footer class="cw-foot"><span class="cw-msg">${left > 0 ? `${left} left to choose.` : missing.length ? `Choose for ${esc(missing.join(", "))} (under its card).` : "Everything is chosen. Attribute and Health choices can't be changed later."}</span>
         <span class="cw-btns"><button type="button" class="cw-btn" data-key="cancel" data-cancel>Cancel</button><button type="button" class="cw-btn primary" data-key="confirm" data-confirm${m.complete ? "" : " disabled"}>${adding ? `Add ${esc(name)} to sheet` : `Level up to ${level}`}</button></span></footer>`;
     return div;
@@ -226,6 +249,7 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
     else if (b.dataset.pick) { const s = sec(b.dataset.pick); if (s) { this.picks = togglePick(this.picks, s, b.dataset.uuid); this.view = { uuid: b.dataset.uuid, sec: s.id }; } }
     else if (b.dataset.attr) this.attrs = setAttr(this.attrs, sectionsAt(this.o.cls, this.o.level), b.dataset.attr, Number(b.dataset.pair), b.dataset.k, this.o.priorAttrs);
     else if (b.dataset.prio) this.priority = b.dataset.prio;
+    else if (b.dataset.s2) this.stage2 = b.dataset.s2;   // v0.0.305 (pack MOD): the Stage 2 +1
     else if (b.dataset.hhigh) this.healthHigh = b.dataset.hhigh;
     else if (b.dataset.choice) {
       const u = b.dataset.choice, d = this.o.data.docs.get(u), count = Math.max(1, d?.system?.choiceCount || 1), cur = this._choicesFor(u);
@@ -236,7 +260,7 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
     else if (b.hasAttribute("data-confirm")) {
       if (!m.complete || this._missingChoices(m).length) return;
       this.done = true;
-      this.o.resolve({ grant: levelPlan(this.o.cls, this.o.level, m), attrs: attrList(this.o.cls, this.o.level, this.attrs), attrMap: this.attrs, picks: this.picks, priority: this.priority, choices: this.choiceSel, healthHigh: this.healthHigh });
+      this.o.resolve({ grant: levelPlan(this.o.cls, this.o.level, m), attrs: attrList(this.o.cls, this.o.level, this.attrs), attrMap: this.attrs, picks: this.picks, priority: this.priority, stage2: this.stage2 || "", choices: this.choiceSel, healthHigh: this.healthHigh });
       return this.close();
     } else return;
     this.render();
@@ -291,6 +315,7 @@ async function applyLevel(actor, level, res) {
   const all = [...(cls.system.chosenAttrs ?? []), ...res.attrs];
   const upd = { "system.chosenAttrs": all, "system.chosenA": all[0] ?? "", "system.chosenB": all[1] ?? "", [`flags.${F}.classPicks.${level}`]: res.picks, [`flags.${F}.classAttrs.${level}`]: res.attrs };
   if (level === 1) upd["system.modPriority"] = res.priority;
+  if (level === 5 && res.stage2) upd["system.modStage2"] = res.stage2;   // v0.0.305 (pack MOD): "" keeps the default (the higher one)
   await cls.update(upd);
   if (level === 1 && res.healthHigh && actor.type === "character" && actor.system.healthHigh !== res.healthHigh) await actor.update({ "system.healthHigh": res.healthHigh });   // v0.0.244: the Health line's side
 }

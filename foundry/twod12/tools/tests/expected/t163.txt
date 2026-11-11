@@ -13,4 +13,4 @@ Nari, Doomed, a dropped exploded die: Appeal Check Doomed 4 + 6 12 4 + 3
 no Doubles mark: true | no Attribute in the header: true | letter chips: IBIIIIMIA
 parentheses muted: true | names escaped: true
 splitName: {"base":"Archer 1","note":"Double Shot, Marksman"} {"base":"(Odd)","note":""}
-Favored with Doubles counting keeps: 0+1 | initiative (noDoubles) keeps: 1+2
+Favored with Doubles counting keeps: 0+2 | initiative (noDoubles) keeps: 0+2

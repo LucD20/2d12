@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>2d12 character sheet prototype</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&amp;family=Signika:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#8a5a12}a:hover{color:#5e3c08}
+button{font-family:inherit;cursor:pointer}
+button:disabled{cursor:not-allowed}
+b[data-act]{cursor:pointer}b[data-act]:hover{text-decoration:underline}
+</style>
+</helmet>
+<div style="width: 900px; height: 1100px; box-sizing: border-box; display: flex; flex-direction: column; font-family: Signika, 'Segoe UI', sans-serif; color: #26241f; background: #1b2433; overflow: hidden">
+
+<div style="display: flex; align-items: center; gap: 14px; padding: 12px 16px; color: #f3efe6">
+  <div style="width: 52px; height: 52px; border-radius: 50%; border: 2px solid #d9902f; background: #2a3548; flex: none"></div>
+  <div style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1">
+    <div style="font-family: Cinzel, serif; font-size: 22px; font-weight: 700">Paladin 1</div>
+    <div style="font-size: 13px; color: #c9cfda">Level 1 · <b style="color: #f3d39c">Stage 1</b> · Human Paladin · Medium</div>
+  </div>
+  <button onClick="{{ toggleCombat }}" title="Prototype: toggles combat on and off" style="height: 34px; padding: 0 14px; border-radius: 6px; border: 1px solid #d9902f; background: #2a3548; color: #f3d39c; font-size: 13px; font-weight: 600">{{ combatLabel }}</button>
+  <button onClick="{{ toggleDown }}" title="Prototype only: shows the sheet while Dying" style="height: 34px; padding: 0 12px; border-radius: 6px; border: 1px dashed #6b7891; background: transparent; color: #b7c0cf; font-size: 12px">{{ downLabel }}</button>
+</div>
+
+<sc-if value="{{ inCombat }}" hint-placeholder-val="{{ true }}"><div style="display: grid; grid-template-columns: 170px 120px 1fr 150px; gap: 1px; background: #33405a; border-top: 1px solid #33405a; border-bottom: 1px solid #33405a">
+  <div style="background: #222d40; padding: 8px 12px; display: flex; flex-direction: column; gap: 5px">
+    <div style="font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba">Action Points</div>
+    <div style="display: flex; align-items: center; gap: 5px">
+      <span style="width: 16px; height: 16px; border-radius: 50%; background: #d9902f"></span><span style="width: 16px; height: 16px; border-radius: 50%; background: #d9902f"></span><span style="width: 14px; height: 14px; border-radius: 50%; border: 1px solid #5d6b85"></span><span title="Lost to Slowed 1 this turn" style="width: 14px; height: 14px; border-radius: 50%; border: 1px solid #7a3b35; position: relative; display: inline-flex; align-items: center; justify-content: center; color: #e8786f; font-size: 12px; line-height: 1">×</span>
+      <span style="width: 1px; height: 16px; background: #4a5872; margin: 0 3px"></span><span style="width: 13px; height: 13px; transform: rotate(45deg); background: #2fa59a"></span>
+    </div>
+    <div style="font-size: 11px; color: #c9cfda">2 of 3 · Reaction ready</div>
+  </div>
+  <div style="background: #222d40; padding: 8px 12px; display: flex; flex-direction: column; gap: 3px">
+    <div style="font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba">Guard</div>
+    <div style="font-size: 22px; font-weight: 700; color: #f3efe6">0</div>
+    <div style="font-size: 11px; color: #c9cfda">+2 per kept AP</div>
+  </div>
+  <div style="background: #222d40; padding: 8px 12px; display: flex; flex-direction: column; gap: 5px">
+    <div style="font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba">Escalation 2</div>
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px">
+      <div style="background: #d9902f; color: #1b2433; border-radius: 4px; padding: 3px 6px; font-size: 11px; font-weight: 600">1 · Radiant Zeal</div>
+      <div style="background: #d9902f; color: #1b2433; border-radius: 4px; padding: 3px 6px; font-size: 11px; font-weight: 600">2 · Searing Blows</div>
+      <div style="border: 1px dashed #6b7891; color: #b7c0cf; border-radius: 4px; padding: 3px 6px; font-size: 11px">3 · Reckoning + Apex</div>
+    </div>
+    <div style="font-size: 11px; color: #c9cfda">Hooks still available: Critical · Kindled Wrath</div>
+  </div>
+  <div style="background: #222d40; padding: 8px 12px; display: flex; flex-direction: column; gap: 5px">
+    <div style="font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba">Hands</div>
+    <button style="border: 1px solid #d9902f; background: #2a3548; border-radius: 5px; padding: 4px 8px; font-size: 12px; color: #f3efe6; display: flex; justify-content: space-between"><span>Greatsword</span><b style="color: #f3d39c">2H</b></button>
+    <div style="font-size: 11px; color: #c9cfda">Strikes this turn 2 / 3</div>
+  </div>
+</div>
+
+</sc-if><sc-if value="{{ outCombat }}" hint-placeholder-val="{{ false }}"><div style="display: grid; grid-template-columns: 1fr 150px; gap: 1px; background: #33405a; border-top: 1px solid #33405a; border-bottom: 1px solid #33405a">
+  <div style="background: #222d40; padding: 8px 12px; display: flex; align-items: center; gap: 10px; color: #c9cfda; font-size: 12px"><span style="font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba">Out of combat</span><span>AP, Guard and Escalation appear when Initiative is rolled</span></div>
+  <div style="background: #222d40; padding: 8px 12px; display: flex; flex-direction: column; gap: 5px">
+    <div style="font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba">Hands</div>
+    <button style="border: 1px solid #d9902f; background: #2a3548; border-radius: 5px; padding: 4px 8px; font-size: 12px; color: #f3efe6; display: flex; justify-content: space-between"><span>Greatsword</span><b style="color: #f3d39c">2H</b></button>
+  </div>
+</div></sc-if><div style="display: flex; align-items: center; gap: 8px; padding: 6px 16px; background: #1f2939; border-bottom: 1px solid #33405a">
+  <span style="font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba">On you</span>
+  <sc-if value="{{ isDown }}" hint-placeholder-val="{{ false }}"><button title="Open the effect" style="font-size: 12px; padding: 2px 8px; border-radius: 10px; background: #5a1f1a; color: #ffd9d4; border: 1px solid #c4453c; font-weight: 700">Dying</button></sc-if>
+  <button title="Open the effect" style="font-size: 12px; padding: 2px 8px; border-radius: 10px; background: #3a2a2a; color: #f2c9c4; border: 1px solid #7a3b35">{{ slowedLabel }}</button>
+  <button title="Open the effect" style="font-size: 12px; padding: 2px 8px; border-radius: 10px; background: #3a2a2a; color: #f2c9c4; border: 1px solid #7a3b35">Broken Leg (Wound)</button>
+  <button title="Open the effect" style="font-size: 12px; padding: 2px 8px; border-radius: 10px; background: #263a33; color: #bfe3d7; border: 1px solid #2f6f60">+1 Defense (Smite) · 1 rd</button>
+</div>
+
+<div style="display: flex; flex-grow: 1; min-height: 0"><div style="width: 260px; flex: none; padding: 12px 14px; display: flex; flex-direction: column; gap: 13px; color: #e6e9ef; box-sizing: border-box; min-height: 0; overflow-y: auto">
+
+<sc-if value="{{ notDown }}" hint-placeholder-val="{{ true }}">  <div style="display: flex; flex-direction: column; gap: 7px">
+    <div style="display: flex; justify-content: space-between; align-items: baseline">
+      <span style="font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba">Health 35</span>
+      <span style="font-size: 12px; color: #f3d39c"><b style="font-size: 18px">21</b> to Down</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 3px">
+      <div style="display: flex; justify-content: space-between; font-size: 12px"><b style="color: #ef8a80">Vigor</b><span>9 / 23</span></div>
+      <div style="display: flex; height: 10px; border-radius: 3px; overflow: hidden; background: #2a3548"><div style="width: 39%; background: #c4453c"></div></div>
+      <div style="font-size: 11px; color: #9aa6ba">Bloodied when full · lethal 9</div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 3px">
+      <div style="display: flex; justify-content: space-between; font-size: 12px"><b style="color: #8fb3ee">Resolve</b><span>5 / 12</span></div>
+      <div style="display: flex; height: 10px; border-radius: 3px; overflow: hidden; background: #2a3548"><div style="width: 42%; background: repeating-linear-gradient(45deg, #5b8ad6 0 4px, #3a5f99 4px 8px)"></div></div>
+      <div style="font-size: 11px; color: #9aa6ba">Strained when full · nonlethal 5</div>
+    </div>
+    <div style="font-size: 11px; color: #9aa6ba">Solid = lethal · striped = nonlethal · Dominant: <b style="color: #ef8a80">Vigor</b></div>
+  </div>
+
+</sc-if><sc-if value="{{ isDown }}" hint-placeholder-val="{{ false }}">  <div style="display: flex; flex-direction: column; gap: 7px">
+    <div style="display: flex; justify-content: space-between; align-items: baseline">
+      <span style="font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba">Health 35</span>
+      <span style="font-size: 12px; color: #ffb3aa"><b style="font-size: 18px">37</b> / 35 damage</span>
+    </div>
+    <div style="background: #5a1f1a; border: 1px solid #c4453c; border-radius: 6px; padding: 8px 10px; display: flex; flex-direction: column; gap: 6px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline"><b style="font-size: 15px; color: #ffd9d4; letter-spacing: .04em">DOWN · DYING</b><span style="font-size: 11px; color: #f2c9c4">Dying Table rolled</span></div>
+      <span style="font-size: 11px; color: #f2c9c4">Keep fighting, or collapse (Unconscious). Damage while fighting: a Body Check (Vigor) or Mind Check (Resolve).</span>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px">
+        <button style="height: 30px; border-radius: 5px; border: none; background: #f3efe6; color: #5a1f1a; font-size: 12px; font-weight: 700">Keep fighting</button>
+        <button style="height: 30px; border-radius: 5px; border: 1px solid #f2c9c4; background: transparent; color: #ffd9d4; font-size: 12px">Collapse</button>
+      </div>
+      <button style="height: 30px; border-radius: 5px; border: 1px solid #f2c9c4; background: transparent; color: #ffd9d4; font-size: 12px">End-of-turn Body Check</button>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 3px">
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px"><span style="display: flex; gap: 6px; align-items: center"><b style="color: #ef8a80">Vigor</b><span style="font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 8px; background: #c4453c; color: #fff">BLOODIED</span></span><span>26 / 23</span></div>
+      <div style="display: flex; height: 10px; border-radius: 3px; overflow: hidden; background: #2a3548"><div style="width: 100%; background: #c4453c"></div></div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 3px">
+      <div style="display: flex; justify-content: space-between; font-size: 12px"><b style="color: #8fb3ee">Resolve</b><span>11 / 12</span></div>
+      <div style="display: flex; height: 10px; border-radius: 3px; overflow: hidden; background: #2a3548"><div style="width: 92%; background: repeating-linear-gradient(45deg, #5b8ad6 0 4px, #3a5f99 4px 8px)"></div></div>
+    </div>
+    <div style="font-size: 11px; color: #9aa6ba">Dominant: <b style="color: #ef8a80">Vigor</b> → Dying</div>
+  </div>
+
+</sc-if>  <div style="display: flex; flex-direction: column; gap: 5px; padding-top: 10px; border-top: 1px solid #2f3b52">
+    <div style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba">Rally</span><span style="font-size: 11px; color: #9fd8b0">5 / 7 · each heals 9</span></div>
+    <div style="display: flex; gap: 5px; align-items: center">
+      <span style="width: 12px; height: 12px; border-radius: 50%; background: #4fb06d"></span><span style="width: 12px; height: 12px; border-radius: 50%; background: #4fb06d"></span><span style="width: 12px; height: 12px; border-radius: 50%; background: #4fb06d"></span><span style="width: 12px; height: 12px; border-radius: 50%; background: #4fb06d"></span><span style="width: 12px; height: 12px; border-radius: 50%; background: #4fb06d"></span><span style="width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid #4f6b5a; box-sizing: border-box"></span><span style="width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid #4f6b5a; box-sizing: border-box"></span>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 6px; padding-top: 10px; border-top: 1px solid #2f3b52">
+    <span style="font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba">Defenses</span>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px">
+      <div style="background: #243047; border-radius: 5px; padding: 6px; text-align: center"><div style="font-size: 20px; font-weight: 700">14</div><div style="font-size: 11px; color: #c9cfda">AD</div></div>
+      <div style="background: #243047; border-radius: 5px; padding: 6px; text-align: center"><div style="font-size: 20px; font-weight: 700">13</div><div style="font-size: 11px; color: #c9cfda">WD</div></div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; font-size: 10px; text-align: center; color: #c9cfda">
+      <div style="background: #212b3d; border-radius: 4px; padding: 3px 0"><b style="color: #f3efe6; font-size: 14px">14</b><br>vs Body</div>
+      <div style="background: #212b3d; border-radius: 4px; padding: 3px 0"><b style="color: #f3efe6; font-size: 14px">14</b><br>vs Mind</div>
+      <div style="background: #212b3d; border-radius: 4px; padding: 3px 0"><b style="color: #f3efe6; font-size: 14px">14</b><br>vs Appeal</div>
+      <div style="background: #212b3d; border-radius: 4px; padding: 3px 0"><b style="color: #f3efe6; font-size: 14px">13</b><br>vs Inst.</div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 6px; padding-top: 10px; border-top: 1px solid #2f3b52">
+    <span style="font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba">Attributes</span>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; text-align: center">
+      <button title="Click: Body Check · Shift-click: Body Save" style="background: #243047; border: 1px solid #33405a; border-radius: 4px; padding: 4px 0; color: #f3efe6"><b style="font-size: 16px">+2</b><br><span style="font-size: 10px; color: #c9cfda">Body</span></button>
+      <button title="Click: Mind Check · Shift-click: Mind Save" style="background: #243047; border: 1px solid #33405a; border-radius: 4px; padding: 4px 0; color: #f3efe6"><b style="font-size: 16px">+1</b><br><span style="font-size: 10px; color: #c9cfda">Mind</span></button>
+      <button title="Click: Appeal Check · Shift-click: Appeal Save" style="background: #243047; border: 1px solid #33405a; border-radius: 4px; padding: 4px 0; color: #f3efe6"><b style="font-size: 16px">+1</b><br><span style="font-size: 10px; color: #c9cfda">Appeal</span></button>
+      <button title="Click: Instinct Check · Shift-click: Instinct Save" style="background: #243047; border: 1px solid #33405a; border-radius: 4px; padding: 4px 0; color: #f3efe6"><b style="font-size: 16px">+0</b><br><span style="font-size: 10px; color: #c9cfda">Instinct</span></button>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 6px">
+    <span style="font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba">Movement</span>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; text-align: center">
+      <div style="background: #243047; border: 1px solid #33405a; border-radius: 4px; padding: 4px 0"><b style="font-size: 16px">5</b><br><span style="font-size: 10px; color: #c9cfda">Speed</span></div>
+      <div style="background: #243047; border: 1px solid #33405a; border-radius: 4px; padding: 4px 0"><b style="font-size: 16px">1</b><br><span style="font-size: 10px; color: #c9cfda">Reach</span></div>
+      <div style="background: #243047; border: 1px solid #33405a; border-radius: 4px; padding: 4px 0"><b style="font-size: 16px">3</b><br><span style="font-size: 10px; color: #c9cfda">Size</span></div>
+      <div style="background: #243047; border: 1px solid #33405a; border-radius: 4px; padding: 4px 0"><b style="font-size: 16px">0</b><br><span style="font-size: 10px; color: #c9cfda">Steady</span></div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 10px; border-top: 1px solid #2f3b52; font-size: 12px">
+    <span style="font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba">Modifiers · Save DC</span>
+    <div style="display: grid; grid-template-columns: 1fr auto auto; gap: 3px 10px">
+      <span>Weapon <span style="color: #9aa6ba">Body</span></span><b>+2</b><span style="color: #c9cfda">DC 13</span>
+      <span>Power <span style="color: #9aa6ba">Mind</span></span><b>+2</b><span style="color: #c9cfda">DC 13</span>
+      <span>Signature <span style="color: #9aa6ba">Weapon</span></span><b>+2</b><span style="color: #c9cfda">DC 13</span>
+    </div>
+  </div>
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin-top: auto; padding-top: 10px; border-top: 1px solid #2f3b52">
+    <div style="background: #2a2230; border: 1px solid #5a3a45; border-radius: 6px; padding: 6px; display: flex; flex-direction: column; gap: 4px">
+      <div style="display: flex; justify-content: space-between; align-items: center"><span style="font-size: 11px; color: #f2c9c4">Body Wounds</span><b>1</b></div>
+      <button style="font-size: 11px; padding: 2px 6px; border-radius: 10px; border: 1px solid #7a3b35; background: #3a2a2a; color: #f2c9c4; text-align: left">Broken Leg</button>
+      <button style="font-size: 11px; padding: 3px 0; border-radius: 4px; border: 1px solid #7a3b35; background: transparent; color: #f2c9c4">Roll Dying</button>
+    </div>
+    <div style="background: #222a3d; border: 1px solid #3a4a6e; border-radius: 6px; padding: 6px; display: flex; flex-direction: column; gap: 4px">
+      <div style="display: flex; justify-content: space-between; align-items: center"><span style="font-size: 11px; color: #c4d4f2">Mind Wounds</span><b>0</b></div>
+      <span style="font-size: 11px; padding: 2px 6px; color: #7f8ba0">none</span>
+      <button style="font-size: 11px; padding: 3px 0; border-radius: 4px; border: 1px solid #3a5f99; background: transparent; color: #c4d4f2">Roll Shattered</button>
+    </div>
+  </div>
+
+</div>
+
+<div style="flex-grow: 1; min-width: 0; background: #efebe3; display: flex; flex-direction: column; min-height: 0">
+<div style="display: flex; gap: 4px; padding: 8px 12px 0; border-bottom: 1px solid #d6cfc0; flex: none">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="7"><button onClick="{{ t.go }}" style="{{ t.style }}">{{ t.label }}</button></sc-for>
+</div>
+<div style="flex-grow: 1; min-height: 0; overflow-y: auto"><sc-if value="{{ show.actions }}" hint-placeholder-val="{{ true }}">  <div style="padding: 10px 14px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) 72px 104px 56px 72px; column-gap: 18px; justify-items: center; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #6b665a; padding: 0 10px"><span style="justify-self: start">Action</span><span>Cost</span><span>Distance</span><span>Vs.</span><span></span></div><div style="display: flex; flex-direction: column; gap: 8px"><sc-if value="{{ inCombat }}" hint-placeholder-val="{{ true }}"><div style="display: flex; flex-direction: column; gap: 8px"><div style="background: #fffefb; border: 1.5px dashed #6b7891; border-radius: 6px; overflow: hidden"><div style="display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: #e8ecf3"><span style="width: 8px; height: 8px; border-radius: 50%; background: #4a5a78"></span><b style="font-size: 13px; color: #2a3548">Granted</b><span style="font-size: 11px; color: #4a5a78">from other effects · gone when spent or expired</span></div><div style="display: grid; grid-template-columns: minmax(0, 1fr) 72px 104px 56px 72px; column-gap: 18px; justify-items: center; align-items: center; padding: 7px 10px; border-top: 1px solid #e3dccd"><span style="justify-self: start; display: flex; flex-direction: column; line-height: 1.25"><b style="font-size: 14px">Beacon's Step</b><span style="font-size: 11px; color: #5b574d">from Lana · until end of your turn</span></span><span style="font-size: 12px; font-weight: 700; color: #1b2433; border: 1.5px solid #1b2433; border-radius: 9px; text-align: center; padding: 0; width: 64px">0</span><span style="font-size: 12px">Self</span><span></span><button style="height: 28px; min-width: 52px; border-radius: 6px; border: none; background: #1b2433; color: #fff; font-size: 12px; font-weight: 700; box-shadow: 0 2px 0 #05080e">Use</button></div></div><div style="background: #fffefb; border: 1px solid #c9bfab; border-radius: 6px; box-shadow: 0 1px 2px rgba(27,36,51,.12); overflow: hidden"><div style="display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: #f6ead3"><span style="width: 8px; height: 8px; border-radius: 50%; background: #c9821f"></span><b style="font-size: 13px; color: #6b4410">Escalation 3</b><span style="font-size: 11px; color: #8a6a3a">in combat only</span></div><div style="display: grid; grid-template-columns: minmax(0, 1fr) 72px 104px 56px 72px; column-gap: 18px; justify-items: center; align-items: center; padding: 7px 10px; border-top: 1px solid #e3dccd; opacity: .45"><span style="justify-self: start; display: flex; flex-direction: column; line-height: 1.25"><b style="font-size: 14px">Final Verdict</b><span style="font-size: 11px; color: #5b574d">Area: 1 Emanation</span></span><span style="font-size: 12px; font-weight: 700; color: #fff; background: #a8322d; border-radius: 9px; text-align: center; padding: 1px 0; width: 64px">2</span><span style="font-size: 12px">—</span><span></span><button disabled="disabled" title="Not available right now" style="height: 28px; min-width: 52px; border-radius: 6px; border: 1px dashed #a99f8a; background: transparent; color: #8f8774; font-size: 12px">Use</button></div></div></sc-if><div style="background: #fffefb; border: 1px solid #c9bfab; border-radius: 6px; box-shadow: 0 1px 2px rgba(27,36,51,.12); overflow: hidden"><div style="display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: #f3efe6"><span style="width: 8px; height: 8px; border-radius: 50%; background: #2c5d9e"></span><b style="font-size: 13px">Once per round</b></div><div style="display: grid; grid-template-columns: minmax(0, 1fr) 72px 104px 56px 72px; column-gap: 18px; justify-items: center; align-items: center; padding: 7px 10px; border-top: 1px solid #e3dccd; opacity: .45;"><b data-act="1" title="Open the Action" style="font-size: 14px; justify-self: start">Smite</b><span style="font-size: 12px; font-weight: 700; color: #fff; background: #2c5d9e; border-radius: 9px; text-align: center; padding: 1px 0; width: 64px">1/2/3</span><span style="font-size: 12px">1 sq.</span><span style="font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 4px; border: 1px solid #8f8774; color: #3a372f">AD</span><button disabled="disabled" title="Not available right now" style="height: 28px; min-width: 52px; border-radius: 6px; border: 1px dashed #a99f8a; background: transparent; color: #8f8774; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; gap: 4px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6M16 16l4 4M19 21l2-2"/></svg><span style="font-size: 10px">2H</span></button></div></div><div style="background: #fffefb; border: 1px solid #c9bfab; border-radius: 6px; box-shadow: 0 1px 2px rgba(27,36,51,.12); overflow: hidden"><div style="display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: #f3efe6"><span style="width: 8px; height: 8px; border-radius: 50%; background: #a8322d"></span><b style="font-size: 13px">Once per encounter</b></div><div style="display: grid; grid-template-columns: minmax(0, 1fr) 72px 104px 56px 72px; column-gap: 18px; justify-items: center; align-items: center; padding: 7px 10px; border-top: 1px solid #e3dccd;"><b data-act="1" title="Open the Action" style="font-size: 14px; justify-self: start">Holy Wrath</b><span style="font-size: 12px; font-weight: 700; color: #fff; background: #a8322d; border-radius: 9px; text-align: center; padding: 1px 0; width: 64px">2/3</span><span style="font-size: 12px">1 sq.</span><span style="font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 4px; border: 1px solid #8f8774; color: #3a372f">AD</span><button style="height: 28px; min-width: 52px; border-radius: 6px; border: none; background: #1b2433; color: #f3d39c; font-size: 12px; font-weight: 700; box-shadow: 0 2px 0 #05080e; display: inline-flex; align-items: center; justify-content: center; gap: 4px" title="Use with Greatsword (two hands)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6M16 16l4 4M19 21l2-2"/></svg><span style="font-size: 10px">2H</span></button></div></div><div style="background: #fffefb; border: 1px solid #c9bfab; border-radius: 6px; box-shadow: 0 1px 2px rgba(27,36,51,.12); overflow: hidden"><div style="display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: #f3efe6"><span style="width: 8px; height: 8px; border-radius: 50%; background: #1f7a72"></span><b style="font-size: 13px">Reactions</b></div><div style="display: grid; grid-template-columns: minmax(0, 1fr) 72px 104px 56px 72px; column-gap: 18px; justify-items: center; align-items: center; padding: 7px 10px; border-top: 1px solid #e3dccd;"><b data-act="1" title="Open the Action" style="font-size: 14px; justify-self: start">Rebuke</b><span style="font-size: 12px; font-weight: 700; color: #fff; background: #1f7a72; border-radius: 9px; text-align: center; padding: 1px 0; width: 64px">1R</span><span style="font-size: 12px">5 sq.</span><span></span><button style="height: 28px; min-width: 52px; border-radius: 6px; border: none; background: #17635c; color: #fff; font-size: 12px; font-weight: 700; box-shadow: 0 2px 0 #05080e">Use</button></div><div style="display: grid; grid-template-columns: minmax(0, 1fr) 72px 104px 56px 72px; column-gap: 18px; justify-items: center; align-items: center; padding: 7px 10px; border-top: 1px solid #e3dccd;"><b data-act="1" title="Open the Action" style="font-size: 14px; justify-self: start">Opportunity Attack</b><span style="font-size: 12px; font-weight: 700; color: #fff; background: #1f7a72; border-radius: 9px; text-align: center; padding: 1px 0; width: 64px">1R</span><span style="font-size: 12px">1 sq.</span><span style="font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 4px; border: 1px solid #8f8774; color: #3a372f">AD</span><button style="height: 28px; min-width: 52px; border-radius: 6px; border: none; background: #17635c; color: #f3d39c; font-size: 12px; font-weight: 700; box-shadow: 0 2px 0 #05080e; display: inline-flex; align-items: center; justify-content: center; gap: 4px" title="Use with Greatsword (two hands)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6M16 16l4 4M19 21l2-2"/></svg><span style="font-size: 10px">2H</span></button></div></div></div><div style="display: flex; flex-direction: column; gap: 6px"><span style="display: flex; align-items: baseline; gap: 10px"><span style="font-family: Cinzel, serif; font-size: 13px; font-weight: 700; color: #4a463d">Basic Actions</span><span style="font-size: 11px; color: #6b665a"><span style="color: #4c7a2e">●</span> At-will <span style="color: #2c5d9e">●</span> Once per round</span></span><div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; align-items: start"><div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: #6b665a; font-weight: 700; border-bottom: 1px solid #c9bfab; padding-bottom: 3px">Attack</span><button style="display: flex; align-items: center; gap: 6px; width: 100%; min-height: 40px; background: #fffefb; border: 1px solid #b9ae97; border-radius: 5px; padding: 4px 8px; box-shadow: 0 1px 2px rgba(27,36,51,.15); text-align: left; color: #26241f"><span style="display: flex; flex-direction: column; flex-grow: 1; line-height: 1.2"><span style="font-size: 12px"><span style="color: #4c7a2e">●</span> Weapon Attack</span><span style="font-size: 10px; font-weight: 700; color: #a8322d">next: 1 Bane</span></span><b style="font-size: 12px">1</b></button><button style="display: flex; align-items: center; gap: 6px; width: 100%; min-height: 40px; background: #fffefb; border: 1px solid #b9ae97; border-radius: 5px; padding: 4px 8px; box-shadow: 0 1px 2px rgba(27,36,51,.15); text-align: left; color: #26241f"><span style="display: flex; flex-direction: column; flex-grow: 1; line-height: 1.2"><span style="font-size: 12px"><span style="color: #2c5d9e">●</span> Charge</span></span><b style="font-size: 12px">2</b></button><button disabled="disabled" title="No free hand" style="display: flex; align-items: center; gap: 6px; width: 100%; min-height: 40px; background: #e4ded2; border: 1px solid #d3cbbb; border-radius: 5px; padding: 4px 8px; color: #7d776a; text-align: left"><span style="display: flex; flex-direction: column; flex-grow: 1; line-height: 1.2"><span style="font-size: 12px">Fists</span><span style="font-size: 10px; font-style: italic">No free hand</span></span><span style="color: #9a9384"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg></span></button><button disabled="disabled" title="No Reload weapon" style="display: flex; align-items: center; gap: 6px; width: 100%; min-height: 40px; background: #e4ded2; border: 1px solid #d3cbbb; border-radius: 5px; padding: 4px 8px; color: #7d776a; text-align: left"><span style="display: flex; flex-direction: column; flex-grow: 1; line-height: 1.2"><span style="font-size: 12px">Reload</span><span style="font-size: 10px; font-style: italic">No Reload weapon</span></span><span style="color: #9a9384"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg></span></button></div><div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: #6b665a; font-weight: 700; border-bottom: 1px solid #c9bfab; padding-bottom: 3px">Movement</span><button style="display: flex; align-items: center; gap: 6px; width: 100%; min-height: 40px; background: #fffefb; border: 1px solid #b9ae97; border-radius: 5px; padding: 4px 8px; box-shadow: 0 1px 2px rgba(27,36,51,.15); text-align: left; color: #26241f"><span style="display: flex; flex-direction: column; flex-grow: 1; line-height: 1.2"><span style="font-size: 12px"><span style="color: #4c7a2e">●</span> Advance</span></span><b style="font-size: 12px">1</b></button><button style="display: flex; align-items: center; gap: 6px; width: 100%; min-height: 40px; background: #fffefb; border: 1px solid #b9ae97; border-radius: 5px; padding: 4px 8px; box-shadow: 0 1px 2px rgba(27,36,51,.15); text-align: left; color: #26241f"><span style="display: flex; flex-direction: column; flex-grow: 1; line-height: 1.2"><span style="font-size: 12px"><span style="color: #4c7a2e">●</span> Evade</span></span><b style="font-size: 12px">1/2</b></button><button disabled="disabled" title="Not Prone" style="display: flex; align-items: center; gap: 6px; width: 100%; min-height: 40px; background: #e4ded2; border: 1px solid #d3cbbb; border-radius: 5px; padding: 4px 8px; color: #7d776a; text-align: left"><span style="display: flex; flex-direction: column; flex-grow: 1; line-height: 1.2"><span style="font-size: 12px">Crawl</span><span style="font-size: 10px; font-style: italic">Not Prone</span></span><span style="color: #9a9384"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg></span></button><button disabled="disabled" title="Not Prone" style="display: flex; align-items: center; gap: 6px; width: 100%; min-height: 40px; background: #e4ded2; border: 1px solid #d3cbbb; border-radius: 5px; padding: 4px 8px; color: #7d776a; text-align: left"><span style="display: flex; flex-direction: column; flex-grow: 1; line-height: 1.2"><span style="font-size: 12px">Stand</span><span style="font-size: 10px; font-style: italic">Not Prone</span></span><span style="color: #9a9384"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg></span></button></div><div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: #6b665a; font-weight: 700; border-bottom: 1px solid #c9bfab; padding-bottom: 3px">Control</span><button style="display: flex; align-items: center; gap: 6px; width: 100%; min-height: 40px; background: #fffefb; border: 1px solid #b9ae97; border-radius: 5px; padding: 4px 8px; box-shadow: 0 1px 2px rgba(27,36,51,.15); text-align: left; color: #26241f"><span style="display: flex; flex-direction: column; flex-grow: 1; line-height: 1.2"><span style="font-size: 12px"><span style="color: #2c5d9e">●</span> Shove</span></span><b style="font-size: 12px">1/2/3</b></button><button style="display: flex; align-items: center; gap: 6px; width: 100%; min-height: 40px; background: #fffefb; border: 1px solid #b9ae97; border-radius: 5px; padding: 4px 8px; box-shadow: 0 1px 2px rgba(27,36,51,.15); text-align: left; color: #26241f"><span style="display: flex; flex-direction: column; flex-grow: 1; line-height: 1.2"><span style="font-size: 12px"><span style="color: #2c5d9e">●</span> Trip</span></span><b style="font-size: 12px">1/2</b></button><button style="display: flex; align-items: center; gap: 6px; width: 100%; min-height: 40px; background: #fffefb; border: 1px solid #b9ae97; border-radius: 5px; padding: 4px 8px; box-shadow: 0 1px 2px rgba(27,36,51,.15); text-align: left; color: #26241f"><span style="display: flex; flex-direction: column; flex-grow: 1; line-height: 1.2"><span style="font-size: 12px"><span style="color: #2c5d9e">●</span> Haul</span></span><b style="font-size: 12px">1/2/3</b></button><button style="display: flex; align-items: center; gap: 6px; width: 100%; min-height: 40px; background: #fffefb; border: 1px solid #b9ae97; border-radius: 5px; padding: 4px 8px; box-shadow: 0 1px 2px rgba(27,36,51,.15); text-align: left; color: #26241f"><span style="display: flex; flex-direction: column; flex-grow: 1; line-height: 1.2"><span style="font-size: 12px"><span style="color: #2c5d9e">●</span> Relocate</span></span><b style="font-size: 12px">1/2/3</b></button></div><div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: #6b665a; font-weight: 700; border-bottom: 1px solid #c9bfab; padding-bottom: 3px">Utility</span><button style="display: flex; align-items: center; gap: 6px; width: 100%; min-height: 40px; background: #fffefb; border: 1px solid #b9ae97; border-radius: 5px; padding: 4px 8px; box-shadow: 0 1px 2px rgba(27,36,51,.15); text-align: left; color: #26241f"><span style="display: flex; flex-direction: column; flex-grow: 1; line-height: 1.2"><span style="font-size: 12px"><span style="color: #2c5d9e">●</span> Steel Yourself</span></span><b style="font-size: 12px">2/3</b></button><button style="display: flex; align-items: center; gap: 6px; width: 100%; min-height: 40px; background: #fffefb; border: 1px solid #b9ae97; border-radius: 5px; padding: 4px 8px; box-shadow: 0 1px 2px rgba(27,36,51,.15); text-align: left; color: #26241f"><span style="display: flex; flex-direction: column; flex-grow: 1; line-height: 1.2"><span style="font-size: 12px"><span style="color: #4c7a2e">●</span> Interact</span></span><b style="font-size: 12px">1</b></button><button style="display: flex; align-items: center; gap: 6px; width: 100%; min-height: 40px; background: #fffefb; border: 1px solid #b9ae97; border-radius: 5px; padding: 4px 8px; box-shadow: 0 1px 2px rgba(27,36,51,.15); text-align: left; color: #26241f"><span style="display: flex; flex-direction: column; flex-grow: 1; line-height: 1.2"><span style="font-size: 12px"><span style="color: #4c7a2e">●</span> Regrip</span></span><b style="font-size: 12px">1</b></button><button style="display: flex; align-items: center; gap: 6px; width: 100%; min-height: 40px; background: #fffefb; border: 1px solid #b9ae97; border-radius: 5px; padding: 4px 8px; box-shadow: 0 1px 2px rgba(27,36,51,.15); text-align: left; color: #26241f"><span style="display: flex; flex-direction: column; flex-grow: 1; line-height: 1.2"><span style="font-size: 12px"><span style="color: #4c7a2e">●</span> Release</span></span><b style="font-size: 12px">0</b></button><button style="display: flex; align-items: center; gap: 6px; width: 100%; min-height: 40px; background: #fffefb; border: 1px solid #b9ae97; border-radius: 5px; padding: 4px 8px; box-shadow: 0 1px 2px rgba(27,36,51,.15); text-align: left; color: #26241f"><span style="display: flex; flex-direction: column; flex-grow: 1; line-height: 1.2"><span style="font-size: 12px"><span style="color: #4c7a2e">●</span> Leaning</span></span><b style="font-size: 12px">1</b></button><button style="display: flex; align-items: center; gap: 6px; width: 100%; min-height: 40px; background: #fffefb; border: 1px solid #b9ae97; border-radius: 5px; padding: 4px 8px; box-shadow: 0 1px 2px rgba(27,36,51,.15); text-align: left; color: #26241f"><span style="display: flex; flex-direction: column; flex-grow: 1; line-height: 1.2"><span style="font-size: 12px"><span style="color: #4c7a2e">●</span> Hide</span></span><b style="font-size: 12px"></b></button></div></div></div></div>
+  </div></sc-if><sc-if value="{{ show.build }}" hint-placeholder-val="{{ false }}"><div style="padding: 12px 14px; display: flex; flex-direction: column; gap: 14px">
+  <div style="display: flex; gap: 10px; align-items: center; background: #fbe4dc; border: 1px solid #d98a74; border-radius: 6px; padding: 7px 12px; font-size: 13px"><b style="color: #8f2f1c">2 cards fill no slot:</b><span>Shield of Faith · Bulwark of Faith</span><button style="margin-left: auto; font-size: 12px; padding: 3px 8px; border-radius: 4px; border: 1px solid #b0604a; background: #fff; color: #8f2f1c">Review</button></div>
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+    <div style="background: #fffefb; border: 1px solid #c9bfab; border-radius: 6px; box-shadow: 0 1px 2px rgba(27,36,51,.12); overflow: hidden; display: flex; flex-direction: column">
+  <div style="background: #1b2433; color: #f3efe6; padding: 7px 12px; display: flex; justify-content: space-between; align-items: baseline"><span><span style="font-size: 10px; letter-spacing: .1em; color: #9aa6ba">SPECIES</span> <b style="font-family: Cinzel, serif; font-size: 16px; margin-left: 6px">Human</b></span><button style="font-size: 12px; color: #f3d39c; background: transparent; border: none; padding: 0">Choices</button></div>
+  <div style="padding: 9px 12px; display: flex; flex-direction: column; gap: 8px">
+    <div style="display: flex; gap: 4px; flex-wrap: nowrap"><span style="font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 9px; background: #ece6da; color: #3a372f; white-space: nowrap">Body +1</span><span style="font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 9px; background: #ece6da; color: #3a372f; white-space: nowrap">Appeal +1</span><span style="font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 9px; background: #f6dcd8; color: #8f2f1c; white-space: nowrap">Vigor +3</span><span style="font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 9px; background: #dce5f4; color: #2c4f8a; white-space: nowrap">Resolve +2</span></div>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px"><div style="background: #f1ece2; border-radius: 4px; padding: 3px 0; text-align: center"><b style="font-size: 13px">5</b><br><span style="font-size: 10px; color: #6b665a">Speed</span></div><div style="background: #f1ece2; border-radius: 4px; padding: 3px 0; text-align: center"><b style="font-size: 13px">1</b><br><span style="font-size: 10px; color: #6b665a">Reach</span></div><div style="background: #f1ece2; border-radius: 4px; padding: 3px 0; text-align: center"><b style="font-size: 13px">3</b><br><span style="font-size: 10px; color: #6b665a">Medium</span></div><div style="background: #f1ece2; border-radius: 4px; padding: 3px 0; text-align: center"><b style="font-size: 13px">0</b><br><span style="font-size: 10px; color: #6b665a">Steady</span></div></div>
+  </div></div>
+    <div style="background: #fffefb; border: 1px solid #c9bfab; border-radius: 6px; box-shadow: 0 1px 2px rgba(27,36,51,.12); overflow: hidden; display: flex; flex-direction: column">
+  <div style="background: #1b2433; color: #f3efe6; padding: 7px 12px; display: flex; justify-content: space-between; align-items: baseline"><span><span style="font-size: 10px; letter-spacing: .1em; color: #9aa6ba">CLASS</span> <b style="font-family: Cinzel, serif; font-size: 16px; margin-left: 6px">Paladin 1</b></span><button style="font-size: 12px; color: #f3d39c; background: transparent; border: none; padding: 0">Choices</button></div>
+  <div style="padding: 9px 12px; display: flex; flex-direction: column; gap: 8px">
+    <div style="display: flex; gap: 4px; flex-wrap: nowrap"><span style="font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 9px; background: #ece6da; color: #3a372f; white-space: nowrap">Body +1</span><span style="font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 9px; background: #ece6da; color: #3a372f; white-space: nowrap">Mind +1</span><span style="font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 9px; background: #f6dcd8; color: #8f2f1c; white-space: nowrap">Vigor 20</span><span style="font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 9px; background: #dce5f4; color: #2c4f8a; white-space: nowrap">Resolve 10</span></div>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px"><div style="background: #f1ece2; border-radius: 4px; padding: 3px 0; text-align: center"><b style="font-size: 13px">Body</b><br><span style="font-size: 10px; color: #6b665a">Weapon</span></div><div style="background: #f1ece2; border-radius: 4px; padding: 3px 0; text-align: center"><b style="font-size: 13px">Mind</b><br><span style="font-size: 10px; color: #6b665a">Power</span></div><div style="background: #f1ece2; border-radius: 4px; padding: 3px 0; text-align: center"><b style="font-size: 13px">6</b><br><span style="font-size: 10px; color: #6b665a">Rally</span></div><div style="background: #f1ece2; border-radius: 4px; padding: 3px 0; text-align: center"><b style="font-size: 13px">Heavy</b><br><span style="font-size: 10px; color: #6b665a">Armor</span></div></div>
+  </div></div>
+  </div>
+  <div style="background: #fffefb; border: 1px solid #c9bfab; border-radius: 6px; box-shadow: 0 1px 2px rgba(27,36,51,.12); overflow: hidden"><div style="display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: #f3efe6"><span style="width: 8px; height: 8px; border-radius: 50%; background: #6b665a"></span><b style="font-size: 13px; color: #26241f">Level 1</b></div>
+    <div style="display: grid; grid-template-columns: 120px minmax(0, 1fr) 64px 84px; column-gap: 14px; align-items: center; padding: 7px 10px; border-top: 1px solid #e3dccd"><span style="font-size: 11px; color: #6b665a">Feature</span><b style="font-size: 14px">Divine Power</b><span style="width: 64px"></span><span style="font-size: 12px; color: #4a463d; text-align: center">—</span></div>
+    <div style="display: grid; grid-template-columns: 120px minmax(0, 1fr) 64px 84px; column-gap: 14px; align-items: center; padding: 7px 10px; border-top: 1px solid #e3dccd"><span style="font-size: 11px; color: #6b665a">Feature</span><b style="font-size: 14px">Kindled Wrath</b><span style="width: 64px"></span><span style="font-size: 12px; color: #4a463d; text-align: center">Encounter</span></div>
+    <div style="display: grid; grid-template-columns: 120px minmax(0, 1fr) 64px 84px; column-gap: 14px; align-items: center; padding: 7px 10px; border-top: 1px solid #e3dccd"><span style="font-size: 11px; color: #6b665a">Hallmark Action</span><b style="font-size: 14px">Smite</b><span style="font-size: 12px; font-weight: 700; color: #fff; background: #2c5d9e; border-radius: 9px; text-align: center; padding: 1px 0; width: 64px">1/2/3</span><span style="font-size: 12px; color: #4a463d; text-align: center">Round</span></div>
+    <div style="display: grid; grid-template-columns: 120px minmax(0, 1fr) 64px 84px; column-gap: 14px; align-items: center; padding: 7px 10px; border-top: 1px solid #e3dccd"><span style="font-size: 11px; color: #6b665a">Hallmark Reaction</span><b style="font-size: 14px">Rebuke</b><span style="font-size: 12px; font-weight: 700; color: #fff; background: #1f7a72; border-radius: 9px; text-align: center; padding: 1px 0; width: 64px">1R</span><span style="font-size: 12px; color: #4a463d; text-align: center">Turn</span></div>
+    <div style="display: grid; grid-template-columns: 120px minmax(0, 1fr) 64px 84px; column-gap: 14px; align-items: center; padding: 7px 10px; border-top: 1px solid #e3dccd"><span style="font-size: 11px; color: #6b665a">Encounter Pick</span><b style="font-size: 14px">Holy Wrath</b><span style="font-size: 12px; font-weight: 700; color: #fff; background: #a8322d; border-radius: 9px; text-align: center; padding: 1px 0; width: 64px">2/3</span><span style="font-size: 12px; color: #4a463d; text-align: center">Encounter</span></div>
+    <div style="display: grid; grid-template-columns: 120px minmax(0, 1fr) 64px 84px; column-gap: 14px; align-items: center; padding: 7px 10px; border-top: 1px solid #e3dccd"><span style="font-size: 11px; color: #6b665a">Talent</span><b style="font-size: 14px">Heavy Blows</b><span style="width: 64px"></span><span style="font-size: 12px; color: #4a463d; text-align: center">—</span></div>
+  </div>
+  <div style="background: #fffefb; border: 1px solid #c9bfab; border-radius: 6px; box-shadow: 0 1px 2px rgba(27,36,51,.12); overflow: hidden"><div style="display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: #f6ead3"><span style="width: 8px; height: 8px; border-radius: 50%; background: #c9821f"></span><b style="font-size: 13px; color: #6b4410">Escalation</b></div>
+    <div style="display: grid; grid-template-columns: 120px minmax(0, 1fr) 64px 84px; column-gap: 14px; align-items: center; padding: 7px 10px; border-top: 1px solid #e3dccd"><span style="font-size: 11px; color: #6b665a">Escalation 1</span><b style="font-size: 14px">Radiant Zeal</b><span style="width: 64px"></span><span style="font-size: 12px; color: #4a463d; text-align: center">—</span></div>
+    <div style="display: grid; grid-template-columns: 120px minmax(0, 1fr) 64px 84px; column-gap: 14px; align-items: center; padding: 7px 10px; border-top: 1px solid #e3dccd"><span style="font-size: 11px; color: #6b665a">Escalation 2</span><b style="font-size: 14px">Searing Blows</b><span style="width: 64px"></span><span style="font-size: 12px; color: #4a463d; text-align: center">—</span></div>
+    <div style="display: grid; grid-template-columns: 120px minmax(0, 1fr) 64px 84px; column-gap: 14px; align-items: center; padding: 7px 10px; border-top: 1px solid #e3dccd"><span style="font-size: 11px; color: #6b665a">Escalation 3</span><b style="font-size: 14px">Reckoning</b><span style="width: 64px"></span><span style="font-size: 12px; color: #4a463d; text-align: center">—</span></div>
+    <div style="display: grid; grid-template-columns: 120px minmax(0, 1fr) 64px 84px; column-gap: 14px; align-items: center; padding: 7px 10px; border-top: 1px solid #e3dccd"><span style="font-size: 11px; color: #6b665a">Apex</span><b style="font-size: 14px">Final Verdict</b><span style="font-size: 12px; font-weight: 700; color: #fff; background: #a8322d; border-radius: 9px; text-align: center; padding: 1px 0; width: 64px">2</span><span style="font-size: 12px; color: #4a463d; text-align: center">Encounter</span></div>
+  </div>
+  <div style="background: #fffefb; border: 1px solid #c9bfab; border-radius: 6px; box-shadow: 0 1px 2px rgba(27,36,51,.12); overflow: hidden"><div style="display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: #f3efe6"><span style="width: 8px; height: 8px; border-radius: 50%; background: #6b665a"></span><b style="font-size: 13px; color: #26241f">Next levels</b></div>
+    <div style="display: grid; grid-template-columns: 70px 1fr; column-gap: 14px; row-gap: 0; font-size: 13px">
+      <span style="padding: 6px 10px; border-top: 1px solid #e3dccd; color: #6b665a">Level 2</span><span style="padding: 6px 0; border-top: 1px solid #e3dccd">1 Talent</span>
+      <span style="padding: 6px 10px; border-top: 1px solid #e3dccd; color: #6b665a">Level 3</span><span style="padding: 6px 0; border-top: 1px solid #e3dccd">1 Talent · 1 Daily Pick</span>
+      <span style="padding: 6px 10px; border-top: 1px solid #e3dccd; color: #6b665a">Level 4</span><span style="padding: 6px 0; border-top: 1px solid #e3dccd">1 Talent</span>
+      <span style="padding: 6px 10px; border-top: 1px solid #e3dccd; color: #6b665a">Level 5</span><span style="padding: 6px 0; border-top: 1px solid #e3dccd">Stage 2: Stage Talent · +1 Attribute · Health +12 / +6 · Guard 3 per AP · Rally +1</span>
+    </div>
+  </div>
+</div></sc-if><sc-if value="{{ show.items }}" hint-placeholder-val="{{ false }}">  <div style="padding: 12px 14px; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <span style="font-family: Cinzel, serif; font-size: 15px; font-weight: 700; color: #4a463d">Weapons</span>
+      <div style="display: flex; gap: 6px"><button style="font-size: 12px; padding: 4px 10px; border-radius: 5px; border: 1px solid #b0a68f; background: #f8f5ee">Generate Weapon</button><button style="font-size: 12px; padding: 4px 10px; border-radius: 5px; border: 1px solid #b0a68f; background: #f8f5ee">+ New Item</button></div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 120px 96px 150px; gap: 10px; align-items: center; background: #f8f5ee; border: 1px solid #ddd5c4; border-radius: 8px; padding: 10px 12px">
+      <div style="display: flex; flex-direction: column; gap: 2px"><b style="font-size: 15px">Greatsword</b><span style="font-size: 12px; color: #6b665a">Blades · Melee, Two-handed · Slash · Range 1</span></div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px; text-align: center; font-size: 12px">
+        <span style="background: #ebe5d8; border-radius: 4px; padding: 2px 0"><span style="font-size: 9px; color: #6b665a">T1</span><br><b>0</b></span>
+        <span style="background: #ebe5d8; border-radius: 4px; padding: 2px 0"><span style="font-size: 9px; color: #6b665a">T2</span><br><b>1d8</b></span>
+        <span style="background: #ebe5d8; border-radius: 4px; padding: 2px 0"><span style="font-size: 9px; color: #6b665a">T3</span><br><b>2d6</b></span>
+      </div>
+      <div style="font-size: 12px; line-height: 1.4">Mastery <b>0 / 3</b><br><span style="color: #6b665a">Technique locked</span></div>
+      <div style="display: flex; border: 1px solid #b0a68f; border-radius: 5px; overflow: hidden; font-size: 12px">
+        <span style="flex-grow: 1; text-align: center; padding: 4px 0">Dropped</span>
+        <span style="flex-grow: 1; text-align: center; padding: 4px 0; border-left: 1px solid #b0a68f">On you</span>
+        <span style="flex-grow: 1; text-align: center; padding: 4px 0; border-left: 1px solid #b0a68f; background: #1b2433; color: #f3d39c; font-weight: 700">In hand 2H</span>
+      </div>
+    </div>
+
+    <span style="font-family: Cinzel, serif; font-size: 15px; font-weight: 700; color: #4a463d">Armor</span>
+    <div style="display: grid; grid-template-columns: 1fr 210px 170px; gap: 10px; align-items: center; background: #f8f5ee; border: 1px solid #ddd5c4; border-radius: 8px; padding: 10px 12px">
+      <div style="display: flex; flex-direction: column; gap: 2px"><b style="font-size: 15px">Heavy Armor</b><span style="font-size: 12px; color: #4c7a2e; font-weight: 600">Trained (Heavy)</span></div>
+      <div style="font-size: 13px">Armor value <b>3</b> → AD <b>14</b> · Ward <b>+0</b></div>
+      <div style="display: flex; border: 1px solid #b0a68f; border-radius: 5px; overflow: hidden; font-size: 12px">
+        <span style="flex-grow: 1; text-align: center; padding: 4px 0">Dropped</span>
+        <span style="flex-grow: 1; text-align: center; padding: 4px 0; border-left: 1px solid #b0a68f">Carried</span>
+        <span style="flex-grow: 1; text-align: center; padding: 4px 0; border-left: 1px solid #b0a68f; background: #1b2433; color: #f3d39c; font-weight: 700">Worn</span>
+      </div>
+    </div>
+    <div style="font-size: 12px; color: #8f2f1c; background: #fbe4dc; border: 1px solid #d98a74; border-radius: 6px; padding: 6px 10px">When untrained armor is worn: "Untrained: all your Rolls Doomed; Actions against your AD and WD Favored" shows here and as a chip in the strip.</div>
+
+    <span style="font-family: Cinzel, serif; font-size: 15px; font-weight: 700; color: #4a463d">Gear and loot</span>
+    <div style="border: 1px dashed #c8bfac; border-radius: 8px; padding: 14px; font-size: 13px; color: #6b665a; text-align: center">Nothing yet. Drag gear here.</div>
+
+  </div></sc-if><sc-if value="{{ show.mastery }}" hint-placeholder-val="{{ false }}">  <div style="padding: 12px 14px; display: flex; flex-direction: column; gap: 12px">
+    <div style="display: flex; align-items: baseline; gap: 10px"><span style="font-family: Cinzel, serif; font-size: 15px; font-weight: 700; color: #4a463d">Weapon Mastery</span><span style="font-size: 12px; color: #6b665a">+1 on your first Tier 3 with a group each encounter</span></div>
+    <div style="background: #fffefb; border: 1px solid #c9bfab; border-radius: 6px; box-shadow: 0 1px 2px rgba(27,36,51,.12); overflow: hidden">
+      <div style="display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: #f3efe6"><b style="font-size: 13px">Blades</b><span style="font-size: 11px; color: #6b665a">group floor: a third of your best Blade</span></div>
+      <div style="display: grid; grid-template-columns: 110px 1fr 70px; gap: 12px; align-items: center; padding: 8px 10px; border-top: 1px solid #e3dccd">
+        <b style="font-size: 14px">Greatsword</b>
+        <div style="display: flex; flex-direction: column; gap: 4px"><div style="position: relative; height: 10px; border-radius: 5px; background: #e4ded2; overflow: hidden"><div style="width: 0%; height: 10px; background: #1b2433"></div></div><div style="display: flex; justify-content: space-between; font-size: 11px; color: #6b665a"><span>0</span><span>3 Technique</span><span>8 Expert</span><span>15 Master</span></div></div>
+        <span style="font-size: 13px; font-weight: 700; text-align: right">0 / 3</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 110px 1fr 70px; gap: 12px; align-items: center; padding: 8px 10px; border-top: 1px solid #e3dccd; color: #6b665a">
+        <span style="font-size: 14px">Longsword</span><span style="font-size: 12px">not used yet</span><span style="font-size: 13px; text-align: right">0 / 3</span>
+      </div>
+    </div>
+    <div style="font-size: 12px; color: #6b665a">Technique cards appear in the Actions tab once unlocked. Expert (8): free draw, stow or grip change once a turn. Master (15): one more [W] from level 8.</div>
+  </div></sc-if><sc-if value="{{ show.effects }}" hint-placeholder-val="{{ false }}"><div style="padding: 12px 14px; display: flex; flex-direction: column; gap: 14px">
+  <div style="background: #fffefb; border: 1px solid #c9bfab; border-radius: 6px; box-shadow: 0 1px 2px rgba(27,36,51,.12); overflow: hidden"><div style="display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: #f3efe6"><span style="width: 8px; height: 8px; border-radius: 50%; background: #a8322d"></span><b style="font-size: 13px; color: #26241f">Conditions</b></div>
+    <div style="display: grid; grid-template-columns: 30px 130px minmax(0, 1fr) 96px; column-gap: 10px; align-items: center; padding: 8px 10px; border-top: 1px solid #e3dccd; font-size: 13px"><span style="width: 28px; height: 28px; border-radius: 6px; background: #8f3a32; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px">S</span><b>Slowed 1</b><span style="line-height: 1.35">When you regain AP at the start of your turn, you regain 1 fewer.</span><span style="font-size: 11px; font-weight: 600; background: #ece6da; color: #4a463d; border-radius: 9px; text-align: center; padding: 2px 4px">until removed</span></div>
+    <div style="display: grid; grid-template-columns: 30px 130px minmax(0, 1fr) 96px; column-gap: 10px; align-items: center; padding: 8px 10px; border-top: 1px solid #e3dccd; font-size: 13px"><span style="width: 28px; height: 28px; border-radius: 6px; background: #8f3a32; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px">W</span><b>Broken Leg</b><span style="line-height: 1.35">[Wound debuff text from the Dying Table]</span><span style="font-size: 11px; font-weight: 600; background: #ece6da; color: #4a463d; border-radius: 9px; text-align: center; padding: 2px 4px">Body Wound</span></div>
+  </div>
+  <div style="background: #fffefb; border: 1px solid #c9bfab; border-radius: 6px; box-shadow: 0 1px 2px rgba(27,36,51,.12); overflow: hidden"><div style="display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: #f3efe6"><span style="width: 8px; height: 8px; border-radius: 50%; background: #1b2433"></span><b style="font-size: 13px; color: #26241f">Effects</b></div>
+    <div style="display: grid; grid-template-columns: 30px 130px minmax(0, 1fr) 96px; column-gap: 10px; align-items: center; padding: 8px 10px; border-top: 1px solid #e3dccd; font-size: 13px"><span style="width: 28px; height: 28px; border-radius: 6px; background: #3a4a66; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px">+</span><b>+1 Defense</b><span style="line-height: 1.35">You have +1 Defense. From your Smite (2 AP).</span><span style="font-size: 11px; font-weight: 600; background: #ece6da; color: #4a463d; border-radius: 9px; text-align: center; padding: 2px 4px">1 round</span></div>
+  </div>
+  <div style="border: 1px dashed #b9ae97; border-radius: 6px; padding: 12px; font-size: 13px; color: #6b665a; text-align: center">Drop an effect or a condition here to apply it</div>
+</div></sc-if><sc-if value="{{ show.upkeep }}" hint-placeholder-val="{{ false }}">  <div style="padding: 12px 14px; display: flex; flex-direction: column; gap: 16px">
+    <div style="display: flex; align-items: baseline; gap: 12px">
+      <span style="font-family: Cinzel, serif; font-size: 16px; font-weight: 700; color: #4a463d">Recovery</span>
+      <span style="font-size: 12px; color: #6b665a">each button asks to confirm and posts a chat line</span>
+      <span style="margin-left: auto; font-size: 13px">Exhausted <b>0</b> · last Sleep <b>6 h</b> ago</span>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
+      <div style="background: #f8f5ee; border: 1px solid #ddd5c4; border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 8px">
+        <div style="display: flex; justify-content: space-between; align-items: baseline"><b style="font-size: 16px; color: #2c5d9e">Breather</b><span style="font-size: 12px; color: #6b665a">10 minutes</span></div>
+        <span style="font-size: 13px; line-height: 1.45">Removes all your Nonlethal damage. Not a Rest.</span>
+        <span style="font-size: 12px; color: #6b665a">Now: removes 5 (Resolve)</span>
+        <button style="margin-top: auto; height: 32px; border-radius: 5px; border: 1px solid #2c5d9e; background: #fff; color: #2c5d9e; font-weight: 600">Take a Breather</button>
+      </div>
+      <div style="background: #f8f5ee; border: 1px solid #ddd5c4; border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 8px">
+        <div style="display: flex; justify-content: space-between; align-items: baseline"><b style="font-size: 16px; color: #6b4c9a">Sleep</b><span style="font-size: 12px; color: #6b665a">8 hours</span></div>
+        <span style="font-size: 13px; line-height: 1.45">Daily Actions return. Exhausted −2. Once every 16 hours.</span>
+        <span style="font-size: 12px; color: #8f2f1c">Available in 10 h</span>
+        <button disabled="disabled" style="margin-top: auto; height: 32px; border-radius: 5px; border: 1px solid #b0a68f; background: #ece7dc; color: #8a8576; font-weight: 600">Sleep</button>
+      </div>
+      <div style="background: #f8f5ee; border: 1px solid #ddd5c4; border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 8px">
+        <div style="display: flex; justify-content: space-between; align-items: baseline"><b style="font-size: 16px; color: #4c7a2e">Rest</b><span style="font-size: 12px; color: #6b665a">24 h, safe place</span></div>
+        <span style="font-size: 13px; line-height: 1.45">Removes all damage, restores all Rally Points, includes a Sleep, then a Body Check and a Mind Check for Wounds.</span>
+        <button style="margin-top: auto; height: 32px; border-radius: 5px; border: 1px solid #4c7a2e; background: #fff; color: #4c7a2e; font-weight: 600">Rest</button>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 8px">
+      <span style="font-family: Cinzel, serif; font-size: 16px; font-weight: 700; color: #4a463d">Upkeep</span>
+      <div style="border: 1px dashed #c8bfac; border-radius: 8px; padding: 22px; display: flex; flex-direction: column; gap: 6px; align-items: center; text-align: center">
+        <b style="color: #6b665a">[Upkeep mechanics: placeholder]</b>
+        <span style="font-size: 13px; color: #8a8576">Space reserved for the coming Upkeep rules (costs, cadence, what you keep up between sessions).</span>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 8px">
+      <span style="font-family: Cinzel, serif; font-size: 16px; font-weight: 700; color: #4a463d">Wounds</span>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+        <div style="background: #fbece8; border: 1px solid #e0b3a8; border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px">
+          <div style="display: flex; justify-content: space-between"><b style="color: #8f2f1c">Body Wounds 1</b><span style="font-size: 12px; color: #6b665a">Rest: Body Check</span></div>
+          <button style="align-self: flex-start; font-size: 12px; padding: 3px 10px; border-radius: 12px; border: 1px solid #c4453c; background: #fff; color: #8f2f1c">Broken Leg · see debuff</button>
+        </div>
+        <div style="background: #e9eef8; border: 1px solid #b3c3e0; border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px">
+          <div style="display: flex; justify-content: space-between"><b style="color: #2c4f8a">Mind Wounds 0</b><span style="font-size: 12px; color: #6b665a">Rest: Mind Check</span></div>
+          <span style="font-size: 12px; color: #8a8576">none</span>
+        </div>
+      </div>
+    </div>
+  </div></sc-if><sc-if value="{{ show.notes }}" hint-placeholder-val="{{ false }}">  <div style="padding: 12px 14px; display: flex; flex-direction: column; gap: 10px">
+    <label for="notes" style="font-family: Cinzel, serif; font-size: 15px; font-weight: 700; color: #4a463d">Notes</label>
+    <textarea id="notes" style="height: 420px; border: 1px solid #c9bfab; border-radius: 6px; background: #fffefb; padding: 10px; font-family: Signika, sans-serif; font-size: 13px; resize: none">Backstory, allies, oaths...</textarea>
+  </div></sc-if></div>
+</div></div></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"inCombat":{"editor":"boolean","default":true},"$preview":{"width":900,"height":1100}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const tab = st.tab || 'actions';
+    const combat = st.combat !== undefined ? st.combat : (this.props.inCombat ?? true);
+    const keys = [['actions','Actions'],['effects','Effects'],['items','Items'],['build','Build'],['mastery','Mastery'],['upkeep','Upkeep'],['notes','Notes']];
+    const on = 'padding: 6px 12px 8px; border: none; border-bottom: 2px solid #d9902f; background: transparent; color: #26241f; font-size: 14px; font-weight: 600';
+    const off = 'padding: 6px 12px 8px; border: none; border-bottom: 2px solid transparent; background: transparent; color: #5b574d; font-size: 14px';
+    const tabs = keys.map(([k, label]) => ({ label, style: k === tab ? on : off, go: () => this.setState({ tab: k }) }));
+    const show = {};
+    keys.forEach(([k]) => { show[k] = k === tab; });
+    return {
+      tabs, show,
+      inCombat: combat, outCombat: !combat,
+      combatLabel: combat ? 'In combat · Round 2' : 'Roll Initiative',
+      toggleCombat: () => this.setState({ combat: !combat }),
+      slowedLabel: st.down ? 'Slowed 2 · regain 2 AP' : 'Slowed 1 · regain 3 AP',
+      isDown: !!st.down, notDown: !st.down,
+      downLabel: st.down ? 'Demo: back up' : 'Demo: Dying',
+      toggleDown: () => this.setState({ down: !st.down })
+    };
+  }
+}
+</script>
+</body>
+</html>

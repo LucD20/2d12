@@ -1,12 +1,16 @@
 import { allEffects } from "./passives.mjs";
+import { seesOrigin, isSpent } from "./escalation.mjs";
 import { appliedFlags } from "./appliedflags.mjs";
 import { effectOff } from "./escalation.mjs";
 import { openEffectSheet } from "./fxopen.mjs";
 import { bumpExhausted, isExhaustedFx, exhaustedClick, heldModifiers } from "./sleep.mjs";
-import { esc } from "./roll.mjs";
+import { fxTipHtml, hoverOf } from "./util.mjs";   // v0.0.254: the HUD's hover cards
+import { effectWhat } from "./fxdetails.mjs";   // v0.0.267
 import { TWOD12 } from "./config.mjs";
 import { combatantOf } from "./combat.mjs";
 import { onceKey, onceBlocked, isMarked } from "./automation.mjs";
+import { bbCount, bbKey } from "./calc.mjs";
+import { originOk, attrsOk, bleedOf, bleedText, needsOrigin, hasBleed } from "./condrules.mjs";   // v0.0.314 (pack AU)
 const SOCKET = "system.twod12";
 const F = "twod12";
 
@@ -16,7 +20,9 @@ export const durationText = d => (d?.type === "eot" ? "EoT" : (d?.type === "roun
 export function originInfo(actorUuid) {
   const c = game.combat;
   const comb = c?.combatants.find(x => x.actor?.uuid === actorUuid);
-  return { actorUuid, combatantId: comb?.id ?? "", slot: comb?.initiative ?? null, round: c?.round ?? null, turn: c?.turn ?? null };
+  // v0.0.252 (Lucas; book, Chapter 2): a duration in rounds counts down at the end of the slot in which the effect was applied (the current combatant's), not the origin's
+  const cur = c?.combatant ?? null;
+  return { actorUuid, combatantId: comb?.id ?? "", slot: comb?.initiative ?? null, anchorCombatantId: cur?.id ?? comb?.id ?? "", anchorSlot: cur?.initiative ?? comb?.initiative ?? null, round: c?.round ?? null, turn: c?.turn ?? null };
 }
 
 /** Notes of the actor's effects that apply to rolls with this attribute. */
@@ -33,7 +39,8 @@ export function notesFor(actor, attrKey) {
 export const matches = (m, traits, from = null) => (m.all ?? []).every(t => traits.has(t))
   && (!(m.any?.length) || m.any.some(t => traits.has(t)))
   && !(m.none ?? []).some(t => traits.has(t))
-  && (!(m.from?.length) || (!!from && m.from.some(t => from.has(t))));   // "from": traits of the Action that caused a Save
+  && (!(m.from?.length) || (!!from && m.from.some(t => from.has(t))))   // "from": traits of the Action that caused a Save
+  && attrsOk(m, traits);   // v0.0.314 (pack AU): only rolls with one of its Attributes (Sickened: Body and Instinct Saves)
 
 // __action marks every Action and stays hidden; the roll kinds a player can pick (Check, Save, Attribute Action) are shown by name.
 const vis = list => (list ?? []).filter(t => !String(t).startsWith("__") || t in TWOD12.rollKinds);
@@ -42,7 +49,9 @@ const predText = m0 => { const m = { ...m0, all: vis(m0.all), any: vis(m0.any), 
   m.all?.length ? m.all.map(tname).join(" and ") : "",
   m.any?.length ? `any of ${m.any.map(tname).join(", ")}` : "",
   m.none?.length ? `not ${m.none.map(tname).join(", ")}` : "",
-  m.from?.length ? `Saves against ${m.from.map(tname).join(" or ")} Actions` : ""
+  m.from?.length ? `Saves against ${m.from.map(tname).join(" or ")} Actions` : "",
+  m.attrs?.length ? `${m.attrs.map(a => TWOD12.attributes[a] ?? a).join(" or ")} rolls` : "",
+  m.vsOrigin === "not" ? "Actions against a creature other than its origin" : (m.vsOrigin === "only" ? "Actions against its origin" : "")
 ].filter(Boolean).join("; ") || "Any roll"; };
 
 /** The Empowered and Enfeebled values that a creature's effects give to the damage of an Action with these traits: { empowered: [{ name, n }], enfeebled: [{ name, n }] } (Bloodlust: Empowered 1). */
@@ -51,9 +60,11 @@ export function damageSteps(actor, traits, target = null) {
   for (const e of allEffects(actor)) for (const m of (effectOff(actor, e) ? [] : e.getFlag(F, "modifiers") ?? [])) {
     if (m.against || !matches(m, traits)) continue;
     if (m.vsMarked && !isMarked(actor, target)) continue;   // v0.0.186: only against the creature it marked (Hunter's Focus)
+    if ((m.seen && !seesOrigin(actor, e)) || isSpent(e, m)) continue;   // v0.0.323: its own "While they see the origin"; "Next one only" already used
     const emp = m.empowered === true ? 1 : Math.trunc(Number(m.empowered)) || 0, enf = Math.trunc(Number(m.enfeebled)) || 0;   // (older effects stored true for Empowered)
-    if (emp > 0) out.empowered.push({ name: shortName(e.name), n: emp });
-    if (enf > 0) out.enfeebled.push({ name: shortName(e.name), n: enf });
+    const inc = m.empMode === "inc", sp = m.spend && m.ruleId ? { spend: `${e.id}|${m.ruleId}` } : {};   // v0.0.323: "Increase by" adds to the value they have
+    if (emp > 0) out.empowered.push({ name: shortName(e.name), n: emp, inc, ...sp });
+    if (enf > 0) out.enfeebled.push({ name: shortName(e.name), n: enf, inc, ...sp });
   }
   for (const e of actor?.effects ?? []) for (const id of ["empowered", "enfeebled"]) {   // the conditions Empowered N and Enfeebled N
     if (e.statuses?.has?.(id)) out[id].push({ name: baseNameOf(e), n: Math.max(1, Math.trunc(Number(e.getFlag(F, "value"))) || 1) });
@@ -68,16 +79,17 @@ export async function applyBoonEffect(actor, cfg, origin) {
   if (!n) return;
   const traits = cfg.traits ?? [];
   const what = traits.length ? traits.map(t => TWOD12.traits[t] ?? t).join(" ") : "Roll";
-  const name = cfg.name || `${Math.abs(n)} ${n < 0 ? "Bane" : "Boon"}${Math.abs(n) === 1 ? "" : "s"} on the next ${what}`;
+  const bb = bbKey(cfg.bb), nm = bb ? `${BBW[bb]} ` : "";   // v0.0.301 (PACK BB): a named one ("1 Pressure Bane")
+  const name = cfg.name || `${Math.abs(n)} ${nm}${n < 0 ? "Bane" : "Boon"}${Math.abs(n) === 1 ? "" : "s"} on the next ${what}`;
   const d = Number(cfg.rounds) > 0 ? { type: "rounds", rounds: Number(cfg.rounds) } : { type: "eot", rounds: 1 };
   const own = combatantOf(actor);
   await actor.createEmbeddedDocuments("ActiveEffect", [{
     name, img: n < 0 ? "icons/svg/downgrade.svg" : "icons/svg/upgrade.svg", origin: origin?.actorUuid ?? null, showIcon: 2,
     flags: { [F]: {
       duration: d, remaining: d.rounds, slotInit: own?.initiative ?? null, originSlot: origin?.slot ?? null,
-      originCombatantId: origin?.combatantId ?? "", appliedRound: origin?.round ?? null, appliedTurn: origin?.turn ?? null,
+      originCombatantId: origin?.combatantId ?? "", anchorSlot: origin?.anchorSlot ?? null, anchorCombatantId: origin?.anchorCombatantId ?? "", appliedRound: origin?.round ?? null, appliedTurn: origin?.turn ?? null,
       description: "", notes: [], bonuses: [], grants: [],
-      modifiers: [{ against: false, boons: n > 0 ? n : 0, banes: n < 0 ? -n : 0, empowered: 0, enfeebled: 0, all: traits, any: [], none: [], from: [] }],
+      modifiers: [{ against: false, boons: n > 0 ? n : 0, banes: n < 0 ? -n : 0, bb, empowered: 0, enfeebled: 0, all: traits, any: [], none: [], from: [] }],
       // "the next ...": it is used up by the next roll with all those traits (with no traits it lasts its duration)
       expireOn: traits, expireAll: true
     } }
@@ -100,6 +112,13 @@ export function derivedMods(actor) {
 }
 
 const onceText = m => (m.oncePerRound ? " (the first one each round)" : "");
+/**
+ * v0.0.301 (PACK BB): the name of a modifier's Boons and Banes ("field", "pressure", "support" or ""): the setting's own; an applied Prone made before
+ * v0.0.301 has none, and Prone's are Field (book, Ch. 8).
+ */
+export const bbOf = (m, e) => bbKey(m?.bb) || (e?.statuses?.has?.("prone") || /^prone$/i.test(shortName(e?.getFlag?.(F, "baseName") ?? e?.name ?? "").trim()) ? "field" : "");
+const BBW = { field: "Field", pressure: "Pressure", support: "Support" };
+const bbText = (m, e) => { const k = bbOf(m, e); return k ? ` (${BBW[k]})` : ""; };
 /** How many times a modifier counts: one that is "by value" (a condition with a value) counts as many times as the value (Vulnerable 2: 2 boons). */
 const kOf = (m, e) => (m.byValue ? Math.max(1, Number(e.getFlag(F, "value")) || 1) : 1);
 /** The value of a Vulnerable effect: the condition with a value, or an older effect named "Vulnerable 2". 0 for anything else. */
@@ -111,7 +130,7 @@ const vulnerableOf = e => {
 
 export function modifierList(actor, traits, targetActors = [], from = null) {
   const out = [];
-  for (const m of derivedMods(actor)) out.push({ id: m.id, name: m.name, boons: m.boons, banes: m.banes, match: matches(m, traits, from), predicate: predText(m) });
+  for (const m of derivedMods(actor)) out.push({ id: m.id, name: m.name, boons: m.boons, banes: m.banes, bb: bbKey(m.bb), match: matches(m, traits, from), predicate: predText(m) });
   for (const e of allEffects(actor)) {
     if (effectOff(actor, e)) continue;
     (e.getFlag(F, "modifiers") ?? []).forEach((m, i) => {
@@ -119,7 +138,9 @@ export function modifierList(actor, traits, targetActors = [], from = null) {
       // v0.0.186: once per round (used: not offered) and only against the marked target (one chip for that target).
       const once = m.oncePerRound ? onceKey(e, "m", i) : "";
       if (once && onceBlocked(actor, once)) return;
-      const base = { name: shortName(e.name), boons: m.boons * kOf(m, e), banes: m.banes * kOf(m, e), match: matches(m, traits, from), predicate: predText(m) + onceText(m), ...(once ? { once, onceActor: actor.uuid } : {}) };
+      if (m.vsOrigin && !originOk(m, e.origin ?? "", targetActors.map(t => t?.uuid))) return;   // v0.0.314 (pack AU): Taunted, against a creature other than its origin
+      if ((m.seen && !seesOrigin(actor, e)) || isSpent(e, m)) return;   // v0.0.323 (PACK EFFECT-SHEET): its own "While they see the origin"; "Next one only" used
+      const base = { name: shortName(e.name), boons: m.boons * kOf(m, e), banes: m.banes * kOf(m, e), bb: bbOf(m, e), match: matches(m, traits, from), predicate: predText(m) + onceText(m) + bbText(m, e), ...(once ? { once, onceActor: actor.uuid } : {}), ...(m.spend && m.ruleId ? { spend: `${e.id}|${m.ruleId}`, spendActor: actor.uuid } : {}) };
       if (!m.vsMarked) return out.push({ id: `${e.id}:${i}`, ...base });
       for (const t of targetActors) if (isMarked(actor, t)) out.push({ ...base, id: `${t.uuid}|${e.id}:${i}`, name: `${base.name} (${t.name})`, predicate: `Against your marked target, ${t.name}: ${base.predicate}` });
     });
@@ -137,7 +158,8 @@ export function modifierList(actor, traits, targetActors = [], from = null) {
         if (!m.against || !(m.boons || m.banes)) return;
         const once = m.oncePerRound ? onceKey(e, "m", i) : "";   // v0.0.186: the first matching Action against it each round (Elusive)
         if (once && onceBlocked(t, once)) return;
-        out.push({ id: `${t.uuid}|${e.id}:${i}`, name: `${shortName(e.name)} (${t.name})`, boons: m.boons * kOf(m, e), banes: m.banes * kOf(m, e), match: matches(m, traits), predicate: `Against ${t.name}: ${predText(m)}${onceText(m)}`, ...(once ? { once, onceActor: t.uuid } : {}) });
+        if ((m.seen && !seesOrigin(t, e)) || isSpent(e, m)) return;   // v0.0.323
+        out.push({ ...(m.spend && m.ruleId ? { spend: `${e.id}|${m.ruleId}`, spendActor: t.uuid } : {}), id: `${t.uuid}|${e.id}:${i}`, name: `${shortName(e.name)} (${t.name})`, boons: m.boons * kOf(m, e), banes: m.banes * kOf(m, e), bb: bbOf(m, e), match: matches(m, traits), predicate: `Against ${t.name}: ${predText(m)}${onceText(m)}${bbText(m, e)}`, ...(once ? { once, onceActor: t.uuid } : {}) });
       });
     }
   }
@@ -153,31 +175,45 @@ export async function useOnceModifiers(actor, traits, targetActors = [], from = 
     if (!keys.has(m.onceActor)) keys.set(m.onceActor, []);
     keys.get(m.onceActor).push(m.once);
   }
-  const { markOnce } = await import("./automation.mjs");
+  const { markOnce, markSpent } = await import("./automation.mjs");
   for (const [uuid, list] of keys) { const a = byActor.get(uuid); if (a) await markOnce(a, list); }
+  // v0.0.323 (PACK EFFECT-SHEET): the "Next one only" Boons and Banes that were in the roll are spent
+  const spends = new Map();
+  for (const m of modifierList(actor, traits, targetActors, from)) if (m.spend && ids.has(String(m.id))) { if (!spends.has(m.spendActor)) spends.set(m.spendActor, []); spends.get(m.spendActor).push(m.spend); }
+  for (const [uuid, list] of spends) { const a = byActor.get(uuid); if (a) await markSpent(a, list); }
 }
 
 /** Sum of the chosen modifiers ("effectId:index" ids). */
 export function resolveModifiers(actor, ids, extra = []) {
-  let boons = 0, banes = 0;
+  // v0.0.301 (PACK BB): each source keeps its name (Field, Pressure, Support); the totals have the limit of 2 per name (calc.mjs bbCount).
+  // A source can also make the roll Favored or Doomed (High cover: Doomed, and no Field Banes).
   const sources = [];
+  let favored = false, doomed = false;
+  const favBy = [], doomBy = [];
   for (const id of ids ?? []) {
     if (String(id).startsWith("syn:")) {
       const m = [...derivedMods(actor), ...extra].find(x => x.id === id);
-      if (m) { boons += m.boons ?? 0; banes += m.banes ?? 0; sources.push({ name: m.name, boons: m.boons ?? 0, banes: m.banes ?? 0 }); }
+      if (m) {
+        sources.push({ name: m.name, boons: m.boons ?? 0, banes: m.banes ?? 0, bb: bbKey(m.bb) });
+        if (m.favored) { favored = true; favBy.push(m.name); }
+        if (m.doomed) { doomed = true; doomBy.push(m.name); }
+      }
       continue;
     }
     const [owner, rest] = id.includes("|") ? id.split("|") : [null, id];
     const [eid, idx] = rest.split(":");
     const holder = owner ? fromUuidSync(owner) : actor;
-    const e = holder?.effects?.get(eid);
+    // v0.0.320 (two fixes): a Feature's or Talent's passive (id "passive-...") is not in the creature's effects: look among its passives too; and a
+    // modifier "only against the creature it marked" is the roller's own, with the target's uuid in front of its id: look in the roller's own too.
+    const findIn = a => a?.effects?.get?.(eid) ?? (String(eid).startsWith("passive-") ? allEffects(a).find(x => x.id === eid) : null);
+    const e = findIn(holder) ?? (owner ? findIn(actor) : null);
     const m = e?.getFlag(F, "modifiers")?.[Number(idx)];
     if (!m) continue;
     const k = kOf(m, e);
-    boons += m.boons * k; banes += m.banes * k;
-    sources.push({ name: shortName(e.name), boons: m.boons * k, banes: m.banes * k });
+    sources.push({ name: shortName(e.name), boons: m.boons * k, banes: m.banes * k, bb: bbOf(m, e) });
   }
-  return { boons, banes, sources };
+  const n = bbCount(sources);
+  return { boons: n.boons, banes: n.banes, sources, groups: n.groups, favored, doomed, favBy, doomBy };
 }
 
 /** The radius (in squares, from the token's center) of a light of size N around a creature whose token is `half` squares wide from its center (lightradius.mjs draws it so). */
@@ -187,15 +223,40 @@ async function applyLight(actor, light) {
   const dist = canvas.scene?.grid?.distance ?? 1;
   const backup = [];
   for (const td of actor.getActiveTokens(false, true)) {
-    backup.push({ uuid: td.uuid, bright: td.light.bright, dim: td.light.dim, color: td.light.color ?? null });
+    backup.push({ uuid: td.uuid, bright: td.light.bright, dim: td.light.dim, color: td.light.color ?? null, alpha: td.light.alpha, animation: { type: td.light.animation?.type ?? null, speed: td.light.animation?.speed ?? 5, intensity: td.light.animation?.intensity ?? 5 } });
     // v0.0.177: the token's light gets the book's size (N); lightradius.mjs adds half the token's width when the light is drawn (v0.0.176 wrote N + 0.5 here).
-    await td.update({ "light.bright": light.bright * dist, "light.dim": light.dim * dist, "light.color": light.color || null });
+    // v0.0.247: its intensity (alpha) and animation come from the setting too (Lucas: v0.0.246's light was far too bright).
+    const alpha = Number.isFinite(Number(light.lightAlpha)) ? Math.min(1, Math.max(0, Number(light.lightAlpha))) : 0.5;
+    await td.update({ "light.bright": light.bright * dist, "light.dim": light.dim * dist, "light.color": light.color || null, "light.alpha": alpha, "light.animation.type": light.lightAnim || null, "light.animation.speed": Number(light.lightSpeed) || 5, "light.animation.intensity": Number(light.lightIntensity) || 5 });
   }
   return backup;
 }
 
 export { appliedFlags };
 
+/** v0.0.323 (PACK EFFECT-SHEET): the hover text built from the rules says "{origin}": the applied effect names its origin there. */
+function withOriginHover(flags, originUuid) {
+  if (!String(flags?.hover ?? "").includes("{origin}")) return flags;
+  let who = ""; try { who = originUuid ? globalThis.fromUuidSync?.(originUuid)?.name ?? "" : ""; } catch (e) { who = ""; }
+  return { ...flags, hover: flags.hover.replace(/\{origin\}/g, who || "its origin") };
+}
+/** v0.0.317 (Lucas): an effect that needs an origin is named with it, "Frightened (Ogre)": the HUD's card, the sheet and the chips say of whom. */
+export function withOriginName(name, sys, originUuid, actor = null) {
+  if (!needsOrigin(sys) || !originUuid || originUuid === actor?.uuid) return name;
+  let who = ""; try { who = globalThis.fromUuidSync?.(originUuid)?.name ?? ""; } catch (e) { who = ""; }
+  return who ? `${name} (${who})` : name;
+}
+/**
+ * v0.0.315 (Lucas: "all effects need to be editable / seen"): a card's own Bleed (its dice, pool, type, Attributes, DC) goes INTO the applied effect's
+ * Bleed setting (its copy of the settings and the flags the turn reads), so the effect's Details tab shows it and can change it.
+ */
+export function withBleed(af, b) {
+  if (!b) return af;
+  const set = { ...(b.dmg ? { dmg: String(b.dmg) } : {}), ...(b.pool ? { dmgPool: b.pool } : {}), ...(b.sub ? { dmgSub: b.sub } : {}), ...(b.attrs?.length ? { attrs: [...b.attrs] } : {}), ...(Number(b.dc) ? { bleedDc: Number(b.dc) } : {}) };
+  const settings = (af.source?.settings ?? []).map(x => (x.type === "bleed" ? { ...x, ...set } : x));
+  const bleeds = (af.bleeds?.length ? af.bleeds : [{ dmg: "1", pool: "", sub: "", attrs: ["body", "instinct"], dc: 13 }]).map((x, i) => (i ? x : { ...x, ...(set.dmg ? { dmg: set.dmg } : {}), ...(set.dmgPool ? { pool: set.dmgPool } : {}), ...(set.dmgSub ? { sub: set.dmgSub } : {}), ...(set.attrs ? { attrs: set.attrs } : {}), ...(set.bleedDc ? { dc: set.bleedDc } : {}) }));
+  return { ...af, bleeds, ...(af.source ? { source: { ...af.source, settings } } : {}) };
+}
 export async function createEffect(actor, item, origin, over = null, extra = {}) {
   const s = item.system;
   const olds = actor.effects.filter(e => e.getFlag(F, "effectUuid") === item.uuid), old = olds.map(e => e.id);
@@ -215,18 +276,53 @@ export async function createEffect(actor, item, origin, over = null, extra = {})
   const own = combatantOf(actor);
   const slotInit = own?.initiative ?? null;
   const made = (await actor.createEmbeddedDocuments("ActiveEffect", [{
-    name: value !== undefined ? `${item.name} ${value}` : item.name, img: item.img, origin: origin?.actorUuid ?? null, showIcon: 2, statuses,
+    name: value !== undefined ? `${item.name} ${value}` : (over?.bleed ? bleedText(bleedOf({ flags: { [F]: { bleeds: appliedFlags(s, {}).bleeds, bleed: over.bleed } } })) : withOriginName(item.name, s, origin?.actorUuid, actor)), img: item.img, origin: origin?.actorUuid ?? null, showIcon: 2, statuses,
     flags: { [F]: {
       ...extra, effectUuid: item.uuid, duration: d, remaining: d.rounds, ...(value !== undefined ? { value, baseName: item.name } : {}),
       slotInit, originSlot: origin?.slot ?? null,
-      originCombatantId: origin?.combatantId ?? "", appliedRound: origin?.round ?? null, appliedTurn: origin?.turn ?? null,
-      ...appliedFlags(s, item.toObject().system), lightBackup, fromEscalation: !!origin?.escalation,
+      originCombatantId: origin?.combatantId ?? "", anchorSlot: origin?.anchorSlot ?? null, anchorCombatantId: origin?.anchorCombatantId ?? "", appliedRound: origin?.round ?? null, appliedTurn: origin?.turn ?? null,
+      ...withOriginHover(withBleed(appliedFlags(s, item.toObject().system), over?.bleed), origin?.actorUuid), lightBackup, fromEscalation: !!origin?.escalation,
       // Immobilized (v0.0.174): its DC, 11 + the Modifier its origin used (13 without an origin or a Modifier). Forced Movement and Reposition read it.
       ...(statuses.includes("immobilized") ? { immobileDc: origin?.actorUuid && Number.isFinite(origin?.mod) ? 11 + origin.mod : TWOD12.baseDC } : {})
     } }
   }]))?.[0];
   if (made) await createLinked(actor, item, made, origin, d);
   if (made) await createRiders(actor, item, made, origin, d);
+  if (made) await createInlineActions(actor, item, made);
+}
+
+/** v0.0.249 (Lucas, inline Actions): an Action by uuid or by name: the creature's own, the world's, then the compendium's. */
+export async function findAction(spec, actor = null) {
+  const s = String(spec ?? "").trim();
+  if (!s) return null;
+  if (/^(Item|Actor|Compendium)\./.test(s)) { try { const d = await fromUuid(s); return d?.type === "action" ? d : null; } catch (e) { return null; } }
+  const low = s.toLowerCase();
+  const own = actor?.items?.find(i => i.type === "action" && i.name.toLowerCase() === low && !i.getFlag(F, "inlineOf"));
+  if (own) return own;
+  const world = game.items?.find(i => i.type === "action" && i.name.toLowerCase() === low);
+  if (world) return world;
+  for (const pack of game.packs ?? []) {
+    if (pack.documentName !== "Item") continue;
+    const hit = pack.index.find(e => e.type === "action" && String(e.name).toLowerCase() === low);
+    if (hit) { try { return await pack.getDocument(hit._id); } catch (e) { /* next pack */ } }
+  }
+  return null;
+}
+/** The effect's inline Actions go on the creature (flagged with the effect's id), and leave with it (registerEffectHooks). */
+async function createInlineActions(actor, item, effect) {
+  const specs = (item.system.settings ?? []).filter(x => x.type === "inline" && String(x.inlineAction ?? "").trim()).map(x => String(x.inlineAction).trim());
+  if (!specs.length) return;
+  const data = [];
+  for (const spec of specs) {
+    const act = await findAction(spec, actor);
+    if (!act) { ui.notifications?.warn?.(`${item.name}: no Action called ${spec}.`); continue; }
+    const d = act.toObject(); delete d._id;
+    foundry.utils.setProperty(d, `flags.${F}.inlineOf`, effect.id);
+    foundry.utils.setProperty(d, `flags.${F}.sourceName`, item.name);
+    foundry.utils.setProperty(d, `flags.${F}.sourceUuid`, act.uuid);
+    data.push(d);
+  }
+  if (data.length) await actor.createEmbeddedDocuments("Item", data);
 }
 
 /** The conditions an Effect applies with it (its Conditions list, each with a value): they end with it. One the creature already has keeps the higher value. */
@@ -285,9 +381,35 @@ async function restoreLight(effect) {
   for (const v of b) {
     try {
       const td = await fromUuid(v.uuid);
-      if (td) await td.update({ "light.bright": v.bright, "light.dim": v.dim, "light.color": v.color });
+      if (td) await td.update({ "light.bright": v.bright, "light.dim": v.dim, "light.color": v.color, ...(v.alpha !== undefined ? { "light.alpha": v.alpha } : {}), ...(v.animation ? { "light.animation.type": v.animation.type, "light.animation.speed": v.animation.speed, "light.animation.intensity": v.animation.intensity } : {}) });
     } catch (err) { console.warn("twod12 | could not restore token light", v.uuid, err); }
   }
+}
+
+/**
+ * Pure (v0.0.343): what the end of a turn does to one effect's duration. flags: the effect's twod12 flags; ended: the combatant whose turn ended
+ * { id, initiative, tokenId, actorUuid } (null: none); prior: { round, turn }; me: the affected creature { uuid, tokenId, combatantId }.
+ * EoT: ends at the end of the slot the creature was in when it was applied (no slot: the creature's own turn). Rounds: counts down at the end of
+ * the slot in which it was applied (older effects: the origin's), skipping that first turn. Returns "end", "tick" or null.
+ */
+const DUR_KEYS = ["duration", "remaining", "slotInit", "originSlot", "originCombatantId", "anchorSlot", "anchorCombatantId", "appliedRound", "appliedTurn", "lastTick"];
+export function durationStep(flags, ended, prior, me) {
+  const dur = flags?.duration;
+  if (!dur?.type || !ended) return null;
+  const has = v => v !== null && v !== undefined && v !== "";
+  if (dur.type === "eot") {
+    if (has(flags.slotInit)) return Number(ended.initiative) === Number(flags.slotInit) && ended.initiative !== null ? "end" : null;
+    const mine = (me?.combatantId && ended.id === me.combatantId) || (me?.tokenId && ended.tokenId === me.tokenId) || (me?.uuid && ended.actorUuid === me.uuid) || (!!me?.ref && ended.ref === me.ref);
+    return mine ? "end" : null;
+  }
+  if (dur.type !== "rounds") return null;
+  const oslot = has(flags.anchorSlot) ? flags.anchorSlot : flags.originSlot;
+  const mine = has(oslot) ? ended.initiative !== null && Number(ended.initiative) === Number(oslot) : (flags.anchorCombatantId || flags.originCombatantId || "") === ended.id;
+  if (!mine) return null;
+  if (flags.appliedRound === prior?.round && flags.appliedTurn === prior?.turn) return null;
+  if (flags.lastTick === prior?.round) return null;
+  const rem = (flags.remaining ?? dur.rounds) - 1;
+  return rem <= 0 ? "end" : "tick";
 }
 
 export function registerEffectHooks() {
@@ -298,6 +420,9 @@ export function registerEffectHooks() {
       if (userId !== game.user?.id || !fx.parent?.effects) return;
       const ids = fx.parent.effects.filter(x => x.getFlag?.(F, "linkedTo") === fx.id).map(x => x.id);
       if (ids.length) fx.parent.deleteEmbeddedDocuments("ActiveEffect", ids).catch(() => {});
+      // v0.0.249: its inline Actions leave with it
+      const acts = (fx.parent.items ?? []).filter(i => i.getFlag?.(F, "inlineOf") === fx.id).map(i => i.id);
+      if (acts.length) fx.parent.deleteEmbeddedDocuments("Item", acts).catch(() => {});
     } catch (err) { console.warn("twod12 | linked conditions", err); }
   });
   // Drag an Effect item from the sidebar onto a token to apply it.
@@ -305,6 +430,8 @@ export function registerEffectHooks() {
     if (data?.type !== "Item" || !data.uuid) return;
     const item = fromUuidSync(data.uuid);
     if (item?.type !== "effect") return;
+    // v0.0.329 (Lucas: "effects can't be placed on the map"): an Effect whose Where is "On the map" is placed as a Zone where it is dropped
+    if (item.system?.where === "map") { import("./zone.mjs").then(m => m.placeZoneItem(item)); return false; }
     const hits = canvas.tokens.placeables.filter(t => t.visible && t.bounds.contains(data.x, data.y));
     const token = hits[hits.length - 1];
     if (!token) return;
@@ -319,26 +446,23 @@ export function registerEffectHooks() {
   Hooks.on("combatTurnChange", async (combat, prior) => {
     if (!game.user.isActiveGM) return;
     const ended = combat.combatants.get(prior?.combatantId);
-    const actors = new Set();
-    for (const c of combat.combatants) if (c.actor) actors.add(c.actor);
-    for (const td of canvas.scene?.tokens ?? []) if (td.actor) actors.add(td.actor);
-    for (const actor of actors) {
+    // v0.0.343: one actor per uuid (an unlinked token's combatant and its scene token can be two objects for the same creature: the second one
+    // deleted an effect the first had already ended, and that error stopped the loop)
+    const actors = new Map();
+    for (const c of combat.combatants) if (c.actor) actors.set(c.actor.uuid, c.actor);
+    for (const td of canvas.scene?.tokens ?? []) if (td.actor && !actors.has(td.actor.uuid)) actors.set(td.actor.uuid, td.actor);
+    // v0.0.343 (Lucas, playtest 4: Frightened (1 round) and Vulnerable (EoT) didn't end): each effect is done on its own (one error no longer stops
+    // the others), and the creature is matched by its combatant, token or uuid, not by object identity (durationStep, tested in t233)
+    for (const actor of actors.values()) {
       for (const e of [...actor.effects]) {
-        const dur = e.getFlag(F, "duration");
-        if (!dur?.type) continue;
-        const slot = e.getFlag(F, "slotInit");
-        if (dur.type === "eot") {
-          const hit = slot !== null && slot !== undefined ? ended?.initiative === slot : ended?.actor === actor;
-          if (hit) await e.delete();
-          continue;
-        }
-        const oslot = e.getFlag(F, "originSlot");
-        const mine = oslot !== null && oslot !== undefined ? ended?.initiative === oslot : e.getFlag(F, "originCombatantId") === ended?.id;
-        if (!ended || !mine) continue;
-        if (e.getFlag(F, "appliedRound") === prior.round && e.getFlag(F, "appliedTurn") === prior.turn) continue;
-        if (e.getFlag(F, "lastTick") === prior.round) continue;
-        const rem = (e.getFlag(F, "remaining") ?? dur.rounds) - 1;
-        if (rem <= 0) await e.delete(); else { await e.setFlag(F, "remaining", rem); await e.setFlag(F, "lastTick", prior.round); }
+        if (typeof actor.effects.has === "function" && !actor.effects.has(e.id)) continue;   // gone with its parent (a linked condition)
+        try {
+          const fl = Object.fromEntries(DUR_KEYS.map(k => [k, e.getFlag(F, k)]));
+          let cid = ""; try { cid = combatantOf(actor, combat)?.id ?? ""; } catch (err) { /* no combatant */ }
+          const step = durationStep(fl, ended ? { id: ended.id, initiative: ended.initiative ?? null, tokenId: ended.tokenId ?? "", actorUuid: ended.actor?.uuid ?? "", ref: ended.actor ?? null } : null, prior, { uuid: actor.uuid ?? "", tokenId: actor.isToken ? actor.token?.id ?? "" : "", combatantId: cid, ref: actor });
+          if (step === "end") await e.delete();
+          else if (step === "tick") { const rem = (e.getFlag(F, "remaining") ?? e.getFlag(F, "duration")?.rounds) - 1; await e.setFlag(F, "remaining", rem); await e.setFlag(F, "lastTick", prior.round); }
+        } catch (err) { console.warn(`twod12 | the duration of ${e?.name} on ${actor?.name}`, err); }
       }
     }
     // Kept template areas with a duration. They start when placed (reactions included):
@@ -371,25 +495,46 @@ function positionPanel() {
   panel.style.right = `${Math.max(8, window.innerWidth - r.left + 8)}px`;
   panel.style.top = `${Math.max(8, r.top + 8)}px`;
 }
+/** v0.0.257 (Lucas): the hover card of an icon of the panel beside the chat (the sheet's and the HUD's card, with the panel's own controls). */
+export function panelCardHtml(e, actor, { dur = "", note = "" } = {}) {
+  const counter = isExhaustedFx(e) && actor?.type === "character", valued = isValued(e);
+  const name = valued ? `${baseNameOf(e)} ${Number(e.getFlag(F, "value")) || 1}` : counter && actor.system.exhausted > 0 ? `${e.name} ${actor.system.exhausted}` : e.name;
+  const text = hoverOf(e.getFlag(F, "hover"), e.getFlag(F, "description") ?? e.description);
+  const by = e.origin && e.origin !== actor?.uuid ? (fromUuidSync(e.origin)?.name ?? "") : "";
+  return fxTipHtml({ name, dur: dur || "until removed", text: [text, note].filter(Boolean).join(" "), what: effectWhat(e), source: by ? `From ${by}` : "",
+    controls: valued || counter ? "Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove" : "Click: open · Right-click: remove" });
+}
+/** The attributes that show an HTML card on hover, to the left: Foundry 13 reads data-tooltip-html (its data-tooltip is text), older versions data-tooltip. */
+const markTip = (el, html) => { el.dataset.tooltipHtml = html; el.dataset.tooltip = html; el.dataset.tooltipDirection = "LEFT"; };
+/** On hover the card is also handed to the tooltip manager as an element (the HUD's way, v0.0.256), in case the attribute is read as text. */
+function activateTip(el) {
+  const html = el?.dataset?.tooltipHtml; if (!html) return;
+  try { const box = document.createElement("div"); box.innerHTML = html; game.tooltip?.activate?.(el, { content: box, direction: "LEFT" }); } catch (e) { /* the attributes stay */ }
+}
 function renderPanel() {
   if (!panel) return;
   const actor = currentActor();
   panel.innerHTML = "";
   if (actor) {
-    for (const e of actor.effects) {
-      if (e.disabled) continue;
+    // v0.0.258 (Lucas): a condition another effect brought (linkedTo) sits right under that effect, a chain between the two icons
+    const shown = actor.effects.filter(e => !e.disabled), order = [];
+    for (const e of shown) if (!e.getFlag(F, "linkedTo") || !shown.some(p => p.id === e.getFlag(F, "linkedTo"))) order.push(e, ...shown.filter(c => c.getFlag(F, "linkedTo") === e.id));
+    for (const e of order) {
+      if (e.getFlag(F, "linkedTo") && shown.some(p => p.id === e.getFlag(F, "linkedTo"))) {
+        const link = document.createElement("div");
+        link.className = "fx-chain";
+        link.innerHTML = `<span class="fx-chainline"></span><i class="fa-solid fa-link"></i>`;
+        link.dataset.tooltip = `Brought by ${shown.find(p => p.id === e.getFlag(F, "linkedTo")).name}: it leaves with it`;
+        panel.appendChild(link);
+      }
       const dur = durationText(e.getFlag(F, "duration"));
       const note = (e.getFlag(F, "notes") ?? []).map(n => n.text).filter(Boolean).join(" ");
       const el = document.createElement("div");
-      el.className = "fx-icon";
+      el.className = `fx-icon${e.getFlag(F, "linkedTo") && shown.some(p => p.id === e.getFlag(F, "linkedTo")) ? " fx-linked" : ""}`;
       el.dataset.effectId = e.id;
-      el.dataset.tooltip = esc(`${e.name}${dur ? ` (${dur})` : ""}${note ? `: ${note}` : ""}${isExhaustedFx(e) && actor.type === "character" ? " · Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove" : ""}`);
       el.innerHTML = `<img src="${e.img}" alt="">${isExhaustedFx(e) && actor.type === "character" && actor.system.exhausted > 0 ? `<span class="fx-val">${actor.system.exhausted}</span>` : ""}`;
-      if (isValued(e)) {
-        const v = Number(e.getFlag(F, "value")) || 1;
-        el.innerHTML = `<img src="${e.img}" alt=""><span class="fx-val">${v}</span>`;
-        el.dataset.tooltip = esc(`${baseNameOf(e)} ${v}${dur ? ` (${dur})` : ""} · Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove`);
-      }
+      if (isValued(e)) el.innerHTML = `<img src="${e.img}" alt=""><span class="fx-val">${Number(e.getFlag(F, "value")) || 1}</span>`;
+      markTip(el, panelCardHtml(e, actor, { dur, note }));   // v0.0.257 (Lucas): the hover card here too, to the left of the panel (away from the chat)
       panel.appendChild(el);
     }
   }
@@ -403,6 +548,7 @@ export function setupPanel() {
   window.addEventListener("resize", positionPanel);
   const sb = document.getElementById("sidebar");
   if (sb && window.ResizeObserver) new ResizeObserver(positionPanel).observe(sb);
+  panel.addEventListener("pointerover", ev => activateTip(ev.target.closest("[data-effect-id]")), true);   // v0.0.257: the hover card
   panel.addEventListener("contextmenu", async ev => {
     const el = ev.target.closest("[data-effect-id]");
     if (!el) return;
@@ -471,21 +617,35 @@ export function valuedHud(app, html) {
   const actor = (app?.document ?? app?.object)?.actor;
   if (!root?.querySelectorAll || !actor) return 0;
   let n = 0;
-  for (const el of root.querySelectorAll("[data-status-id]")) {
-    const fx = actor.effects.find(x => x.statuses?.has?.(el.dataset.statusId) && isValued(x));
-    if (!fx) continue;
-    el.dataset.tooltip = `${baseNameOf(fx)} ${Number(fx.getFlag(F, "value")) || 1} · Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove`;
-    n++;
+  // v0.0.254 (Lucas): the hover card on the token HUD's statuses too, shown to the left (away from the chat). v0.0.255: through the tooltip manager on hover,
+  // delegated from the HUD's root (the statuses are drawn after the render, so a tooltip written at render is lost).
+  const cardOf = id => {
+    const fx = actor.effects.find(x => x.statuses?.has?.(id));
+    if (!fx) return "";
+    const valued = isValued(fx);
+    return fxTipHtml({ name: valued ? `${baseNameOf(fx)} ${Number(fx.getFlag(F, "value")) || 1}` : fx.name, dur: durationText(fx.getFlag(F, "duration")) || "until removed", text: hoverOf(fx.getFlag(F, "hover"), fx.getFlag(F, "description") ?? fx.description), what: effectWhat(fx), controls: valued ? "Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove" : "Click: remove · Right-click: overlay" });
+  };
+  // v0.0.256: Foundry 13 reads data-tooltip-html (data-tooltip is text there); both are written, and the manager is given the card as an element on hover
+  const mark = markTip;
+  for (const el of root.querySelectorAll("[data-status-id]")) { const html = cardOf(el.dataset.statusId); if (html) { mark(el, html); n++; } }
+  if (root.dataset && root.addEventListener && !root.dataset.twod12Hud) {
+    root.dataset.twod12Hud = "1";
+    root.addEventListener("pointerover", ev => {
+      const el = ev.target?.closest?.("[data-status-id]"); if (!el) return;
+      const html = cardOf(el.dataset.statusId); if (!html) return;
+      mark(el, html);
+      try { const box = document.createElement("div"); box.innerHTML = html; game.tooltip?.activate?.(el, { content: box, direction: "LEFT" }); } catch (e) { /* the attributes stay */ }
+    }, true);
   }
   return n;
 }
 
-export async function applyCondition(cond, actors, dur, origin) {
+export async function applyCondition(cond, actors, dur, origin, value = null, extra = {}) {   // extra (v0.0.314): { bleed } (a card's Bleed values)
   const id = String(cond).trim().toLowerCase();
   const item = await conditionItem(id);
   for (const actor of actors) {
     if (item) {
-      await applyEffects([item.uuid], [actor.uuid], origin, dur ? { duration: dur } : null);
+      await applyEffects([item.uuid], [actor.uuid], origin, dur || value || extra?.bleed ? { ...(dur ? { duration: dur } : {}), ...(value ? { value } : {}), ...(extra?.bleed ? { bleed: extra.bleed } : {}) } : null);   // v0.0.250: a value (Enfeebled 1)
     } else if (actor.isOwner) {
       await actor.toggleStatusEffect(id, { active: true });
     } else {
@@ -520,7 +680,12 @@ export function wrapConditions(proto, deps = {}) {
     const item = await find(statusId);
     if (!item) return inner.call(this, statusId, options);                 // no Effect with that name: just the status
     if (item.system?.valued && options?.overlay) return false;             // a right-click on a condition it doesn't have: nothing to lower
-    await apply([item.uuid], [this.uuid], originInfo(this.uuid), item.system?.valued ? { value: 1 } : null);   // a condition with a value starts at 1
+    // v0.0.315 (Lucas): Frightened, Taunted, Grabbed ask their origin (a token on the map); Bleed asks its damage (a window). Cancel: nothing.
+    const ask = deps.ask ?? (async (it, a) => (await import("./conditions.mjs")).askApply(it, a));
+    const asked = (needsOrigin(item.system) || hasBleed(item.system)) ? await ask(item, this) : { origin: null, over: {} };
+    if (!asked) return false;
+    const over = { ...(item.system?.valued ? { value: 1 } : {}), ...(asked.over ?? {}) };
+    await apply([item.uuid], [this.uuid], originInfo(asked.origin ?? this.uuid), Object.keys(over).length ? over : null);   // a condition with a value starts at 1
     return this.effects.find(x => x.statuses?.has?.(statusId)) ?? false;
   };
   wrapped.twod12Conditions = true;

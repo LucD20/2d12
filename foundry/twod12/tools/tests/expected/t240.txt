@@ -1,0 +1,7 @@
+flanking labels keep their screen size: true
+the tooltip's sides colored, the words highlighted: true
+a chip's name is its own span: true | the name opens, the icon uses: true
+what the name opens: true | Pushed: true | Guard: true
+calculated chips: true
+Smite's parenthesis off in Foundry: true | Smite Diamond: true
+v0.0.353: smaller labels: true | the name on the ring: true | no dotted underline: false | chips a centered row: true

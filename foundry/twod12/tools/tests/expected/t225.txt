@@ -1,0 +1,43 @@
+--- each row alone, every Who and self
+allies: Allies inside gain Consecrated. | Allies inside heal 1d4 at the start of each of their turns. | Its squares are Difficult Terrain for allies.
+allies + self: Allies inside, and Nari, gain Consecrated. | Allies inside, and Nari, heal 1d4 at the start of each of their turns. | Its squares are Difficult Terrain for allies and Nari.
+enemies: Enemies inside gain Consecrated. | Enemies inside heal 1d4 at the start of each of their turns. | Its squares are Difficult Terrain for enemies.
+enemies + self: Enemies inside, and Nari, gain Consecrated. | Enemies inside, and Nari, heal 1d4 at the start of each of their turns. | Its squares are Difficult Terrain for enemies and Nari.
+all: Creatures inside gain Consecrated. | Creatures inside heal 1d4 at the start of each of their turns. | Its squares are Difficult Terrain for every creature but Nari.
+all + self: Creatures inside, and Nari, gain Consecrated. | Creatures inside, and Nari, heal 1d4 at the start of each of their turns. | Its squares are Difficult Terrain for every creature.
+[HT: Entering, Turn] Creatures inside take 1d8 [V] Fire and 1d4 [R] Psychic damage and gain Burning.
+[HT: Movement] Enemies inside, and Nari, take 1d6 [V] damage.
+summaries: Enemies · Consecrated | Allies · 1d4 (avg 2.5) a turn | Everyone · Entering, Turn · 1d8 Fire | Enemies | off: off
+averages: 1d4 2.5 | 2d6 + 1 8 | 1d4 + @origin.pow null
+--- the Zone's sentence and Ends (the book's Chapter 3 fire example; Consecrated Ground's real card)
+2 Emanation. [HT: Entering, Turn] Creatures inside, and Nari, take 1d8 [V] Fire damage. Lasts 2 rounds.
+2 / 3 Emanation. Enemies inside gain Consecrated Ground (1 Bane). Allies inside heal 1d4 at the start of each of their turns. Lasts 3 rounds.
+2 Burst | Line 4 | (equal to the origin's Power Modifier) Emanation
+Lasts until removed.
+Lasts until the encounter ends.
+Lasts until Nari goes Down.
+Lasts until Nari ends it with an Action (1 AP).
+Lasts until Nari (or a creature within Reach of it) ends it with an Action (2 AP).
+Lasts 1 round, or until Nari goes Down, or until Nari ends it with an Action (1 AP).
+--- Who resolution (a neutral counts as an enemy; the origin only through self)
+ally: allies true, enemies false, all true | enemy: allies false, enemies true, all true | neutral: allies false, enemies true, all true | origin: allies false, enemies false, all false
+the origin with self: true | a row that is off: false
+--- migration: the old Zone, the old Aura; twice
+where: map | carry: {"on":true,"who":"enemies","self":false,"fx":"C","fxName":""} | heal: {"on":true,"who":"allies","self":false,"formula":"1d4"} | rules left: light | idempotent: true
+from the old settings: map {"on":true,"who":"allies","self":false,"formula":"1d4 + 1"}
+an old Aura's Affects -> its Carries row: {"on":true,"who":"allies","self":true,"fx":"W","fxName":""} | no old fields: true | twice: true
+the Aura compiles to its Carries (auraWho, auraSelf, fxUuid) and its rows: allies true W true | read back: {"on":true,"who":"allies","self":true,"fx":"W","fxName":""}
+a placed Zone of v0.0.261 (flags rules) read as rows: {"on":true,"who":"allies","self":false,"formula":"1d4"}
+--- Hazard: Entering and Turn share one hit per turn-cycle; Movement each time
+entering, hit this cycle: false | turn after an entering hit this cycle: false | next cycle: true | movement: true
+entered: ["b"]
+patterns: none ticked entering+turn | movement only movement
+--- the preview's footprints (Set here)
+Emanation 1, 2: 9 25 | Burst 1, 2: 4 12 | Line 4: 4
+--- the view
+on the map: the sections: true | no rule list: true | the Action's card: true
+the Zone's Ends: A Save and They use an Action greyed: true | Someone uses an Action: true | no EoT: true
+the tip: true
+on a creature: the rule list, and the Zone's settings kept: true | Set here has the preview and Place on the map: true
+the Aura pane: the four rows, each with its Who and 'And this creature itself': true true
+a save writes the Zone and its hover text: true | 2 / 3 Emanation. Enemies inside gain Consecrated Ground (1 Bane). Allies inside heal 1d4 at the start of each of their turns. Lasts 3 rounds.

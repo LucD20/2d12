@@ -1,4 +1,4 @@
-button flow: CARD > DIALOG:Rally: remove 9 damage > HEAL > CARD UPDATED | RallyPaladin uses 1 Rally Point9 healing (1 × 9). Removes 7 damage (3 Vigor, 4 Resolve). 2 Rally Points left.
-action flow (card already posted): DIALOG:Rally: remove 9 damage > HEAL > CARD | RallyPaladin uses 1 Rally Point9 healing (1 × 9). Removes 7 damage (3 Vigor, 4 Resolve). 2 Rally Points left.
-up to 2, asked: DIALOG:Rally Points > CARD > HEAL > CARD UPDATED
+button flow: CARD > HEAL > CARD UPDATED | RallyPaladin uses 1 Rally Point9 healingRemoves 9 Vigor. 2 Rally Points left.
+action flow (card already posted): HEAL > CARD | RallyPaladin uses 1 Rally Point9 healingRemoves 9 Vigor. 2 Rally Points left.
+up to 2, asked: CARD > HEAL > CARD UPDATED
 windows opened for 3 clicks: 1

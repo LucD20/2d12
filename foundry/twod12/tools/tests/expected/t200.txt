@@ -1,0 +1,9 @@
+zone plan: [["orc",["r1|0"]],["wolf",["r1|0"]]] | sides: allies enemies enemies | inside: true false
+the heal rule is for allies only: true | everyone: true
+would go Down: true false false | no pool: false
+cut to 1 under the Pool: 7 {"B":{"l":0,"n":2},"M":{"l":2,"n":0},"momentCut":7} | total after: 34
+heal 1d4 is a chip: allies in it heal @Heal[1d4]{Heal 1d4} at the start of each of their turns | a Stage heal stays: true
+Divine Intervention: wouldDown 5 | distance: "" | targets: The triggering creature | after: @Guard[rally] | no button in the text: true
+Consecrated Ground: rounds 3 / 5 | the zone effect on both: true
+Rolling Shot: no Use button, an effect per version: true | Covering Shot: true {{fx:Covering Shot (Weapon Attack, 1 Boon)}}
+wired: the moment asked before the damage lands true | the zone on the area true | the moment's chain by itself true | the Tier 3 half true | traits in texts carry tooltips true

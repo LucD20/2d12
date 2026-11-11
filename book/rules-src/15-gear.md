@@ -6,7 +6,7 @@
 Your class determines your Weapon Modifier. Each weapon belongs to a [[Weapon Groups|Weapon Group]] and has its own **Weapon Technique**, which you unlock with [[Mastery]]. A Weapon Technique can only be used with the weapon it belongs to, while you wield it: its Weapon Actions use that weapon, never another one.
 
 > [!example]
-> A Paladin whose Weapon Modifier uses Body deals 1d8 + Body slash damage on Tier 2 with a Greatsword Weapon Attack.
+> A Paladin with a Weapon Modifier of +2 deals 1d8 + 2 Slashing damage on Tier 2 with a Greatsword Weapon Attack.
 
 ### Weapon Damage [W]
 
@@ -105,7 +105,7 @@ A **Firearm** shoots with powder, such as a pistol or a musket. It is not a Proj
 
 #### Long
 
-A weapon with the **Long** property is made to keep enemies at a distance: you take **1 Bane** on Weapon Actions with it against adjacent creatures, and it doesn't threaten them (see [[Flanking]]). A Pike has Range 3 and Long.
+A weapon with the **Long** property is made to keep enemies at a distance: you take **1 Field Bane** on Weapon Actions with it against adjacent creatures, and it doesn't threaten them (see [[Flanking]]). A Pike has Range 3 and Long.
 
 #### Projectile
 
@@ -172,7 +172,7 @@ The armor a creature wears gives its **Armor value**, and its Armor Defense is *
 
 ### Armor Training
 
-Each class has an **Armor Training**: Light, Medium or Heavy. Each one includes the lighter ones (Heavy covers Medium and Light), and every creature is trained in Unarmored. The Paladin has Heavy and the Archer Light.
+Each class has an **Armor Training**: Light, Medium or Heavy. Each one includes the lighter ones (Heavy covers Medium and Light), and every creature is trained in Unarmored. The Paladin has Heavy and the Archer Medium.
 
 If you wear armor you are not trained in, **all your Rolls are Doomed**, and **Actions that roll against your Armor Defense or Ward Defense are Favored**.
 

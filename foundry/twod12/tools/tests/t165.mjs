@@ -45,7 +45,7 @@ game.actors.contents = [lana, orc];
 MK.registerMarkHooks();
 await hooks.combatStart.at(-1)({ combatants: [{ actor: lana }, { actor: orc }] });
 console.log("the old mark ended:", lana.getFlag(F, "quarry") === undefined, "| messages:", posted.length);
-for (const p of posted) console.log(`  whisper ${JSON.stringify(p.whisper)} | speaker ${p.speaker.alias} | flags ${JSON.stringify(p.flags)}\n  ${p.content}`);
+for (const p of posted) console.log(`  whisper ${JSON.stringify(p.whisper)} | speaker ${p.speaker?.alias ?? "-"} | flags ${JSON.stringify(p.flags)}\n  ${p.content}`);
 
 console.log("--- the marked creature goes Down");
 posted.length = 0;

@@ -1,0 +1,97 @@
+--- 5.1 On matching Actions (the brief's examples)
+Their Rolls, while they see Ogre Chieftain: 1 Bane.
+Their next Roll with [Strike] Actions against the creature it marked: 1 Boon and Empowered +1.
+Their Rolls with [Strike] Actions, the first each round: an extra 1d6 [V] Holy damage on T2/T3 and 1d4 [R] Psychic damage on T3; the target gains Frightened on T3.
+Their Rolls with [Shot] Actions: ignore Low cover and one range Bane.
+Their Rolls with [Body] Actions: show the note Brute Force.
+Rolls against them made by anyone but Ogre Chieftain: 1 Bane. | Their Rolls: 5 Boons (Favored). | Does nothing yet: switch on a part below.
+filter in the book's notation: [Melee, Strike] Actions, not [Divine] | [Strike] Actions that are [Melee] or [Ranged], not [Fear] | any Action
+list labels: (empty) | Grants (empty) | Aura 2: (empty) | Light 1 / 2 | Can't move closer | Fists lose Non-threatening | Escalation +1: ally Bloodied / Down | Round Specials twice a round
+part summaries: 1 Boon | off | Low cover and one range Bane
+--- 5.2 to 5.8
++1 Support bonus to every Defense.
+Increase Ward Defense by 1.
+Every Speed becomes 4.
++2 bonus to every Speed.
+Each Rally Point heals the origin's Power Modifier + 2 more.
+Has Immune Fire.
+Is Sickened 1.
+At the start of each of its turns, it gains Radiant Zeal.
+When it deals [V] damage to a creature, that creature gains Sickened 1.
+Has the Action Beacon's Step while this effect lasts.
+Can use Weapon Attack once for 0 AP; on T3, the target's next damage is halved.
+At the start of each encounter, it can use Mark Quarry once for 0 AP; posts “Choose a creature to mark.” to its owners and the GM.
+Its Fists don't have the property Non-threatening.
+Choose one weapon with the property Projectile: it starts at 3 Mastery.
+Once an encounter, when an ally within 5 squares becomes Bloodied or goes Down: its Escalation rises by 1.
+Its Encounter Special Actions can be used a second time.
+Aura 2: Allies inside, and this creature, gain Beacon's Ward.
+Aura (equal to the origin's Power Modifier): Allies inside, and this creature, gain Beacon's Ward.
+Sheds Bright light in a 1 Emanation and Dim light 2 squares further.
+Can't willingly move closer to Ogre Chieftain, while they see Ogre Chieftain.
+--- the hover card: shared limits merged, then the rest; Ends
+While they see Ogre Chieftain: 1 Bane on their Rolls and they can't willingly move closer to it. Lasts 1 round, or until an Appeal Save (DC 13) at the end of their turn ends it, or until Ogre Chieftain goes Down.
+While they see Ogre Chieftain: 1 Bane on their Rolls and they can't willingly move closer to it. Sheds Bright light in a 1 Emanation and Dim light 2 squares further. Lasts until removed. (the empty rule is left out)
+Lasts until removed. | {"time":"off","save":"off","down":"off","action":"off"}
+Lasts until the end of their turn. | {"time":"EoT","save":"off","down":"off","action":"off"}
+Lasts until the encounter ends. | {"time":"This encounter","save":"off","down":"off","action":"off"}
+Lasts until an Instinct Save (DC 15) with Interact (1 AP) ends it. | {"time":"off","save":"Instinct, DC 15, Interact","down":"off","action":"off"}
+Lasts until a Save with the better of Mind / Appeal (the origin's DC) at the end of their turn ends it. | {"time":"off","save":"Mind / Appeal, the origin's DC, end of turn","down":"off","action":"off"}
+Lasts until they use a [Strike] Action. | {"time":"off","save":"off","down":"off","action":"a [Strike] Action"}
+Lasts until Ogre Chieftain goes Down, or until they use any Action. | {"time":"off","save":"off","down":"Ogre Chieftain","action":"any Action"}
+--- migration: every Effect, Feature and Talent of the packs, old settings -> rules -> settings, read the same (appliedFlags)
+64 items migrated; differ: none; notes: Font of Mercy: Rally Points for allies within 5: kept as before (not turned into an Aura)
+one per old block: 
+  Boons and Banes vs marked, first each round: act[bb]
+  Empowered and Enfeebled: act[emp]
+  Bonus damage + effect: act[dmg]
+  Ignore a Bane, cover: act[ign], act[ign]
+  Note: act[note]
+  Defense, Speed, Rally: value, value, value
+  Conditions, linked: grant, grant
+  Grants: inline, use, on damage, each turn, message: grant, grant, grant, grant, grant
+  Weapons, Escalation, Aura, Light, Zone, Bleed, Resist, More uses: weap, weap, esc, aura, light, zone, bleed, value, uses
+  Rules: No Reactions, Loses AP: builtin, builtin
+Light: old dim 3 (from the token) is 2 squares beyond the Bright light: 2 | compiled back: 3
+Ends from the old fields: {"time":{"on":true,"mode":"rounds","rounds":2},"down":true,"action":{"on":true,"filter":{"all":["strike"],"any":[],"not":[]}}} -> {"settings":[],"conditions":[],"linked":"","noReactions":false,"loseAp":false,"whileSeen":false,"duration":{"type":"rounds","rounds":2},"expireOn":["strike"],"expireAll":false,"endsWithOrigin":true,"saveEnd":{"on":false}}
+--- the Action filter (Chapter 1: an Attribute's Rolls are its Checks, Saves and Attribute Actions; Save and Check by roll kind)
+[Body]                               Body Check: yes | Body Save: yes | Body Action (Shove): yes | Weapon Strike (no Attribute: pack MOD): no | Mind Save: no
+[Save]                               Body Check: no | Body Save: yes | Body Action (Shove): no | Weapon Strike (no Attribute: pack MOD): no | Mind Save: yes
+[Check]                              Body Check: yes | Body Save: no | Body Action (Shove): no | Weapon Strike (no Attribute: pack MOD): no | Mind Save: no
+[Body, Save]                         Body Check: no | Body Save: yes | Body Action (Shove): no | Weapon Strike (no Attribute: pack MOD): no | Mind Save: no
+one of [Body] or [Mind], not [Strike] Body Check: yes | Body Save: yes | Body Action (Shove): no | Weapon Strike (no Attribute: pack MOD): no | Mind Save: yes
+[Attack]                             Body Check: no | Body Save: no | Body Action (Shove): yes | Weapon Strike (no Attribute: pack MOD): yes | Mind Save: no
+the picker's Roll group: Appeal, Attack, Attribute Action, Body, Check, Instinct, Mind, Power, Save, Signature, Split, Weapon
+--- formulas
+"@origin.pow + 2"              {"ok":true,"value":5,"error":""}
+"floor(@target.body / 2)"      {"ok":true,"value":2,"error":""}
+"ceil(@target.body ÷ 2) × 2"   {"ok":true,"value":6,"error":""}
+"2"                            {"ok":true,"value":2,"error":""}
+""                             {"ok":true,"value":0,"error":""}
+"@origin.pow + banana"         {"ok":false,"value":0,"error":"only numbers, + − × ÷, ( ), floor( ), ceil( ), @origin and @target"}
+"@origin.luck"                 {"ok":false,"value":0,"error":"unknown name luck"}
+"1d6 + 2"                      {"ok":false,"value":0,"error":"dice are only for damage"}
+dice in damage: {"ok":true,"value":"1d6 + 3","error":""} | words: the origin's Power Modifier + 2 | old names: @target.pow + 2 -> power + 2
+--- Next one only: spent rules; the effect ends when every spendable rule is spent
+none spent: false | a: false | a and b (the Movement limit is passive): true | only passive rules: false
+compiled: spend on the settings: boonbane spend true a, damagestep spend true b | flags spendable: ["a","b"]
+--- named bonuses (the book's Stacking): different names add, the same name the highest, an unnamed one never adds to another
+Support 1 + Field 1: 2 | Support 1 + Support 2: 2 | unnamed 2 + unnamed 1: 2 | unnamed 2 + Support 1: 2 | unnamed 1 + Support 1 + Field 1: 2 | with a -1 penalty: 0
+--- Increase by (Empowered and Enfeebled)
+Set 2 + Set 1: 2 | Set 2 + Increase 1: 3 | Increase 1 alone: 1
+the roll dialog's tally: Empowered 3
+--- the Movement limit (move.mjs moveLimitBreaks)
+move.mjs uses it: true
+closer 4 -> 3: true | closer 4 -> 4: false | closer 4 -> 5: false | away 4 -> 5: true
+Frightened compiles to its Bane and a Movement limit, both while seen: ["boonbane","move"] whileSeen true
+--- the view (fxsheet.mjs)
+one row per rule: true | a trash bin on each: true | + Add rule with 4 groups: true
+each kind has a pane: true | Ends rows: 4 | a Passive has Works and no Ends: true
+the hover card is plain: true | the pane's sentence is colored: true
+one save writes: system.rules, system.rulesOn, system.settings, system.autoHover, system.ends, system.conditions, system.linked, system.duration, system.expireOn, system.expireAll, system.endsWithOrigin, system.whileSeen, system.noReactions, system.loseAp, system.saveEnd
+the built hover text keeps {origin} for the applied copy: While they see {origin}: 1 Bane on their Rolls and they can't willingly move closer to it. Lasts until a Body Save (DC 13) at the end of their turn ends it.
+--- v0.0.324 (Lucas on v0.0.323): Defense and Resist / Weak as formulas; no origin switch; the formula names at hand
+A bonus to every Defense equal to the origin's Power Modifier. | Has Resist N Fire, N equal to the target's Body + 1.
+compiled: [["defense",0,"@origin.pow"],["resist",0,"@target.body + 1"]]
+read back: ["@origin.pow","@target.body + 1"] | a number stays a number: 3
+no origin switch: true | the names list beside the formula: true | no light preview: true

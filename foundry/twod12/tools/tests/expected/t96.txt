@@ -1,7 +1,7 @@
 --- the panels of the diagram
 two flankers                                                     Kai: 1  Nari: 1
 three flankers                                                   Kai: 2  Nari: 2  Mara: 2
-five flankers (3 is the limit)                                   Kai: 3  Nari: 3  Mara: 3  Rin: 3  Tor: 3
+five flankers (2 is the limit, v0.0.301)                         Kai: 2  Nari: 2  Mara: 2  Rin: 2  Tor: 2
 a Reach 2 weapon flanks from 2 squares (Nari is 2 away)          Kai: 1  Nari: 1
 ... from 3 squares: she does not reach                           Kai: 0  Nari: 0
 ... two diagonals away counts 3: she does not reach              Kai: 0  Nari: 0
@@ -14,12 +14,12 @@ Nari is Unconscious: she does not cancel anything                A: 2  B: 2  C: 
 Nari holds only a bow: she threatens no one                      A: 2  B: 2  C: 2
 Nari is far away                                                 A: 2  B: 2  C: 2
 three goblins on a lone hero (no ally of his near)               A: 2  B: 2  C: 2
-five goblins on a lone hero (3 is the limit)                     A: 3  B: 3  C: 3  D: 3  E: 3
+five goblins on a lone hero (2 is the limit, v0.0.301)           A: 2  B: 2  C: 2  D: 2  E: 2
 --- formations
 two against two, all next to each other                          Ann at Orc: 0  Ann at Imp: 0  Ben at Orc: 0  Orc at Ann: 0  Imp at Ben: 0
 two lines of 4: every attack with a boon: A1 at B2: 1 | A4 at B3: 1 | B1 at A2: 1 | B4 at A3: 1
 two lines of 5: every attack with a boon: A1 at B2: 1 | A5 at B4: 1 | B1 at A2: 1 | B5 at A4: 1
-a hero and an ally side by side against four goblins (at the hero) Gob1: 3  Gob2: 2  Gob3: 2  Gob4: 2
+a hero and an ally side by side against four goblins (at the hero) Gob1: 2  Gob2: 2  Gob3: 2  Gob4: 2
 ... at the ally                                                  Gob2: 1  Gob3: 1  Gob4: 1
 --- who threatens
 Nari is Unconscious (and threatens no one)                       Kai: 0  Nari: 0
@@ -44,9 +44,9 @@ hostile creatures flank a hero                                   Orc1: 1  Orc2: 
 --- an attacker that does not threaten gets nothing
 two flank, an archer 2 squares away (a Melee Action it cannot make) Kai: 1  Archer: 0
 --- the roll modifier
-{"id":"syn:flanking","name":"Flanking (2 Boons)","boons":2,"banes":0,"match":true,"predicate":"Goblin is also threatened by Nari, Mara: a Boon for each, up to 3"}
-{"id":"syn:flanking|Scene.s.Token.7","name":"Flanking (Goblin, 2 Boons)","boons":2,"banes":0,"match":true,"predicate":"Goblin is also threatened by Nari, Mara: a Boon for each, up to 3"}
-with a cancelled boon: Flanking (1 Boon) | Kai is also threatened by Goblin A, Goblin C: a Boon for each, up to 3; Nari is an ally of Kai that threatens you: one boon cancelled for each
+{"id":"syn:flanking","name":"Flanking 2","boons":2,"banes":0,"bb":"field","match":true,"predicate":"Goblin is also threatened by Nari, Mara: a Field Boon for each, up to 2"}
+{"id":"syn:flanking|Scene.s.Token.7","name":"Flanking 2 (Goblin)","boons":2,"banes":0,"bb":"field","match":true,"predicate":"Goblin is also threatened by Nari, Mara: a Field Boon for each, up to 2"}
+with a cancelled boon: Flanking 1 | Kai is also threatened by Goblin A, Goblin C: a Field Boon for each, up to 2; Nari is an ally of Kai that threatens you: one boon cancelled for each
 a lone attacker next to a defender gets no chip: null
 a boon that is fully cancelled gives no chip (Kai at goblin B): null
 --- the roll dialog

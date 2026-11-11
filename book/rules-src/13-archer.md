@@ -10,8 +10,7 @@
 <div class="sbr"><span class="lbl">Health</span><span>high 16, low 8 (Stage 2: +9 / +5; Stage 3: +11 / +6)</span></div>
 <div class="sbr"><span class="lbl">Rally</span><span>5</span></div>
 <div class="sbr"><span class="lbl">Speed Modifier</span><span>+1</span></div>
-<div class="sbr"><span class="lbl">Weapon Modifier</span><span>Instinct or Body</span></div>
-<div class="sbr"><span class="lbl">Power Modifier</span><span>Mind or Appeal</span></div>
+<div class="sbr"><span class="lbl">Modifiers</span><span>Weapon +2, Power +1</span></div>
 <div class="sbr"><span class="lbl">Armor Training</span><span>Medium</span></div>
 <div class="sbr"><span class="lbl">Escalation hook</span><span>Your Marked Quarry goes Down (Thrill of the Kill)</span></div>
 </div>
@@ -20,7 +19,7 @@
 
 <div class="levels">
 <div class="lvl"><div class="lvn"><b>1</b><span>Level</span></div><div class="lvb">
-<div><span class="lbl">Features</span> Sharpshooter, Marked Quarry, Thrill of the Kill</div>
+<div><span class="lbl">Features</span> Sharpshooter, Thrill of the Kill; the Mark Quarry Action</div>
 <div><span class="lbl">Hallmark Action</span> Double Shot or Rolling Shot</div>
 <div><span class="lbl">Hallmark Reaction</span> Overwatch or Covering Shot</div>
 <div><span class="lbl">Picks</span> 1 Encounter Pick</div>
@@ -44,13 +43,17 @@
 
 ### Features
 
-As a marksman, you gain three Features at level 1. Thrill of the Kill is your class's [[Escalation]] hook.
+As a marksman, you gain two Features and the Mark Quarry Action at level 1. Thrill of the Kill is your class's [[Escalation]] hook.
 
 @@CARD:Sharpshooter@@
 
-@@CARD:Marked Quarry@@
-
 @@CARD:Thrill of the Kill@@
+
+#### Marked Quarry
+
+Your **Marked Quarry** is the enemy you chose with the Mark Quarry Action. You have one at a time.
+
+@@CARD:Mark Quarry@@
 
 ### Hallmark Action Selection
 

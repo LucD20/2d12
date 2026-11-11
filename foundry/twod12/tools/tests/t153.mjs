@@ -29,7 +29,7 @@ console.log("old cards: Paladin", C.docs.filter(d => d.folder === "Paladin (old 
 console.log("old cards: Archer", C.docs.filter(d => d.folder === "Archer (old cards)").map(d => d.name).join(", "));
 // the text sync: every compendium and Basic Action text
 const texts = [];
-const walk = (w, o) => { if (typeof o === "string") texts.push([w, o]); else if (Array.isArray(o)) o.forEach(x => walk(w, x)); else if (o && typeof o === "object") for (const [k, v] of Object.entries(o)) if (!["img", "uuid", "fxUuid", "choiceOptions", "actions", "traits", "all", "any", "none", "from", "type", "kind"].includes(k)) walk(w, v); };
+const walk = (w, o) => { if (typeof o === "string") texts.push([w, o]); else if (Array.isArray(o)) o.forEach(x => walk(w, x)); else if (o && typeof o === "object") for (const [k, v] of Object.entries(o)) if (!["img", "uuid", "fxUuid", "choiceOptions", "actions", "traits", "all", "any", "none", "from", "type", "kind", "rules", "ends", "autoHover"].includes(k)) walk(w, v); };   // v0.0.323: the rules (and the hover text built from them) repeat the settings' words
 for (const d of C.docs) walk(d.name, d.system);
 for (const k of Object.keys(BASIC_ACTIONS)) { const d = basicItemData(k); walk(d.name, d.system); }
 const strip = t => t.replace(/@\w+\[[^\]]*\]/g, "");

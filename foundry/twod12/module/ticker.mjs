@@ -48,6 +48,8 @@ export const nextLog = (log, line) => (line.k === "start" ? [line] : [...(log ??
  */
 export async function logEvent(c, line) {
   if (!c) return null;
+  // v0.0.277 (Lucas: "The Combat ... does not exist" when an encounter ended mid-movement): a combat already deleted gets no line
+  if (c.parent?.id && globalThis.game?.combats?.has && !game.combats.has(c.parent.id)) return null;
   const lines = nextLog(c.getFlag?.(F, "turnLog") ?? [], line);
   try { if (c.isOwner) await c.setFlag(F, "turnLog", lines); } catch (e) { console.warn("twod12 | turn log", e); }
   const speaker = c.actor && ChatMessage.getSpeaker ? ChatMessage.getSpeaker({ actor: c.actor, token: c.token }) : {};

@@ -1,5 +1,5 @@
 --- a boon becomes 2, Speed is added
-name: Battle Fervor | modifiers: [{"against":false,"boons":2,"empowered":0,"enfeebled":0,"byValue":false,"all":["melee"],"any":[],"none":[],"from":[],"oncePerRound":false,"vsMarked":false}] | speed: [{"mode":"add","formula":"2"}]
+name: Battle Fervor | modifiers: [{"against":false,"boons":2,"bb":"","empowered":0,"enfeebled":0,"byValue":false,"all":["melee"],"any":[],"none":[],"from":[],"oncePerRound":false,"vsMarked":false,"attrs":[],"vsOrigin":"","ruleId":"","spend":false,"seen":false,"empMode":"set"}] | speed: [{"mode":"add","formula":"2"}]
 same duration: the rounds left stay: true | source kept: true
 --- the duration changes: it starts again
 {"type":"rounds","rounds":3} remaining 3
@@ -12,7 +12,7 @@ another Action: fresh: [["Shove",1,[]]]
 added: Hindered | removed: Prone
 --- where a click goes
 foundry window | 2d12 editor | foundry window | foundry window
-panel, sheet and Shift+click use it: 2 1 | registered: true | template has the Applied part: true
+panel, sheet and Shift+click use it: 2 2 | registered: true | template has the Applied part: true
 --- v0.0.114: Exhausted and the form
 the form's own fields go to the temporary item: true | Exhausted opens it: true | Shift+click on Exhausted: true
 Exhausted keeps its name and picture: true | gets the bane: 1

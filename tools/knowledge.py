@@ -2,7 +2,10 @@
 
 Run from anywhere: python tools/knowledge.py            (the core set: rules, open items, the current design documents)
                    python tools/knowledge.py weapons    (the core set + the weapon design documents, for weapon chats)
-Then, in the Project: delete every old knowledge file and upload everything in knowledge/ (replace, don't add copies).
+                   python tools/knowledge.py --out DIR  (into another folder; Update Foundry.cmd builds knowledge-upload/ this way)
+knowledge/ is committed (2026-11-07, Lucas: "do both"): every pack runs this at its end, in a cloud session too, and commits knowledge/.
+The Project reads that folder from GitHub: press its sync button after a pack. By hand instead: delete every old knowledge file in the
+Project and upload everything in knowledge-upload/ (Update Foundry.cmd rebuilds it and opens it), replacing, not adding copies.
 
 The set is for DESIGN conversations and is kept small on purpose, so the Project can hold all of it at once instead of
 searching it (a large set is only searched in pieces, and the chat then misses rules):
@@ -26,16 +29,18 @@ OUT = ROOT / "knowledge"
 
 # Design documents still in progress (decided or proposed, not fully in rules-src yet). Keep this list short.
 DESIGN_DOCS = [
+    "book/expedition-loop.md",  # Momentum, Alert, the decided fight and the Parting Beat: a candidate (2026-11-09)
     "book/playtest-2.md",       # playtest 2 and the rework it decided (pack R)
     "book/playtest-3.md",       # playtest 3, the baseline (no NPC Weapon Attack); its questions
+    "book/playtest-4.md",       # playtest 4 (Foundry, v0.0.342, not finished): the log; its fixes in foundry-backlog "PLAYTEST 4 FIXES"
     "book/rework-r.md",         # pack R: the numbers and the decided sheet (section 14); R-core, R-classes and R-bestiary applied, R-Foundry to go
     "book/progression-lv.md",   # progression, Overcast and Momentum (pack R changes Overcast)
     "book/class-charter.md",    # what every class must have
-    "book/expedition-loop.md",  # Momentum, Alert, the decided fight and the Parting Beat: a candidate (2026-11-09)
     "book/decisions-s1.md",  # decision sheet S1 (Stage 0, Escalation 1-6, Momentum): answered, not applied (2026-11-11)
     "book/base-building.md",    # base building: proposals for much later (2026-11-07)
     "book/roleplay-skills.md",  # roleplay and skills: proposals (2026-11-07), Lucas reviews later
     "book/items-economy.md",    # items, loot, money, carrying (designed 2026-11-06, logged part by part)
+    "foundry/mockups/action-props-review.md",  # the Mithril cards' options before ACTION-SHEET: what to merge, what is obsolete (2026-11-10)
 ]
 # Topic sets: added only when named on the command line (they are big; the core set stays small).
 TOPICS = {
@@ -89,7 +94,12 @@ def commit() -> str:
         return "unknown"
 
 
-topics = sys.argv[1:]
+args = sys.argv[1:]
+if "--out" in args:   # 2026-11-07: Update Foundry.cmd builds an untracked copy, so the committed knowledge/ never changes locally
+    k = args.index("--out")
+    OUT = Path(args[k + 1]).resolve() if k + 1 < len(args) else OUT
+    del args[k:k + 2]
+topics = args
 for t in topics:
     if t not in TOPICS:
         raise SystemExit(f"unknown topic {t!r}; known: {', '.join(TOPICS)}")

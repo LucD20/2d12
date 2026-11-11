@@ -7,6 +7,9 @@ import { modeList } from "./modes.mjs";
 /** Does the observer see this token by the rules? Its own token and tokens without a creature are not judged here. */
 export function canSeeByRules(observer, target) {
   if (!observer?.actor || !target?.actor || observer === target || (observer.id && observer.id === target.id)) return true;
+  // v0.0.316 (Lucas: Blinded hid the Hearing ripple too): Blinded is the system's own status, not Foundry's blind one; it only stops these
+  // sight modes here, so the Hearing mode (senses.mjs) still shows what the creature hears
+  if (observer.actor.statuses?.has?.("blinded")) return false;
   return seenLight(tokenLight(target), observer.actor.system?.senses ?? {}) !== "dark";
 }
 
@@ -46,7 +49,7 @@ const CHANGES = {
   createActiveEffect: e => hasPerception(e), updateActiveEffect: e => hasPerception(e), deleteActiveEffect: e => hasPerception(e),
   updateActor: (d, ch) => !!ch?.system?.senses
 };
-const hasPerception = e => ["unsensed", "hidden", "obscured", "unconscious"].some(s => e?.statuses?.has?.(s));
+const hasPerception = e => ["unsensed", "hidden", "obscured", "unconscious", "blinded"].some(s => e?.statuses?.has?.(s));
 export function registerSightRefresh() {
   if (typeof Hooks === "undefined") return null;
   let timer = null;

@@ -24,7 +24,13 @@ const dmgHead = (title, subtitle) => {
   return `<div class="ahead"><b>${esc(title)}</b><div class="aright"><span class="aps"><span class="apmark dmgtag">${esc(badge)}</span></span>${cat && cat !== badge ? `<span class="acat">${esc(cat)}</span>` : ""}</div></div>`;
 };
 
-export async function postDamageCard({ actor = null, title, subtitle = "", comps: allComps, texts = [], fx = [], targets = [], originUuid = "", chip = "", rolls = [], applied = "", color = TWOD12.cardColors.default, defaultNl = false, originMod = null }) {
+export async function postDamageCard({ actor = null, title, subtitle = "", comps: allComps, texts = [], fx = [], targets = [], originUuid = "", chip = "", rolls = [], applied = "", color = TWOD12.cardColors.default, defaultNl = false, originMod = null, after = "", areaPoint = null, strike = false }) {
+  // v0.0.283 (pack chat-cards): every damage card that isn't already applied is the new damage message (ccdamage.mjs)
+  if (!applied) {
+    const { postCcDamage } = await import("./ccdamage.mjs");
+    const t0 = targets[0]?.tier ?? (/Tier (\d)/.exec(subtitle)?.[1] ? Number(/Tier (\d)/.exec(subtitle)[1]) : 0);
+    return postCcDamage({ actor, title, groups: [{ tier: t0, crit: !!targets[0]?.crit, comps: allComps, fx, riders: texts }], targets: targets.map(t => ({ ...t, tier: t.tier ?? t0, g: 0 })), rolls, nl: defaultNl, originUuid, originMod, after, areaPoint, strike });
+  }
   const comps = allComps;
   const pools = {};
   for (const c of comps) (pools[c.pool || ""] ??= []).push(c);
@@ -37,7 +43,7 @@ export async function postDamageCard({ actor = null, title, subtitle = "", comps
   }).join("");
   const odds = (() => {
     try {
-      if (game.settings.get("twod12", "showOdds") === false) return "";
+      if (game.settings.get("twod12", "designerMode") !== true) return "";   // v0.0.283: only in Designer mode
     } catch (e) {
       /* default on */
     }
@@ -52,7 +58,7 @@ export async function postDamageCard({ actor = null, title, subtitle = "", comps
         <button type="button" data-twod12="applyHalf">Half</button>
         <button type="button" data-twod12="applyDouble">Double</button>
         <button type="button" class="blk" data-twod12="block" data-tooltip="Toggle (no mechanics yet)">Block</button>
-        ${fx.some(x => x.mode === "conditional") ? '<button type="button" data-twod12="applyFx">Effects</button>' : ""}
+        ${fx.some(x => x.mode === "conditional" || x.mode === "down") ? '<button type="button" data-twod12="applyFx">Effects</button>' : ""}
         <select class="kind"><option value="lethal" ${defaultNl ? "" : "selected"}>Lethal</option><option value="nonlethal" ${defaultNl ? "selected" : ""}>Nonlethal</option></select>
       </div>`;
   const content = `<div class="twod12 chat dmg" style="${color ? cardVars(color) : ""}">${dmgHead(title, subtitle)}<div class="orn">&#10022; &#10022; &#10022;</div>${chip}${boxes || "<div class='hint'>No damage.</div>"}${texts.length ? `<div class="dtexts">${texts.join("")}</div>` : ""}
@@ -69,7 +75,7 @@ export async function postDamageCard({ actor = null, title, subtitle = "", comps
   const damage = comps.map(c => ({ pool: c.pool, subtype: c.sub, total: c.total, formula: c.formula, nonlethal: c.nl }));
   await ChatMessage.create({
     speaker: ChatMessage.getSpeaker(actor ? { actor } : {}), content, rolls,
-    flags: { twod12: { damage, dmgCard: { comps: comps.map(c => ({ pool: c.pool, sub: c.sub, nl: c.nl, total: c.total })), targets, name: title, fx, originUuid, originMod } } }
+    flags: { twod12: { damage, dmgCard: { comps: comps.map(c => ({ pool: c.pool, sub: c.sub, nl: c.nl, total: c.total })), targets, name: title, fx, originUuid, originMod, after, areaPoint, strike: !!strike } } }
   });
 }
 
@@ -90,19 +96,19 @@ export function multiDamageHtml({ title, rows, color = TWOD12.cardColors.default
     `<div class="mdrow${r.blocked ? " blocked" : ""}${r.applied ? " done" : ""}" data-row="${i}"><div class="mdtop"><b class="mdname" data-tooltip="${esc(r.name)}">${esc(r.name)}</b><span class="rtag rolled${r.tier === 1 ? " fail" : ""}">Tier ${r.tier}</span><span class="mdsum">${damageSummary(r.comps)}</span></div>` +
     (r.applied
       ? `<div class="applied">${r.applied}</div>`
-      : `<div class="dbtns">${btn("rowApply", i, 1, "Damage")}${btn("rowApply", i, 0.5, "Half")}${btn("rowApply", i, 2, "Double")}<button type="button" class="blk${r.blocked ? " active" : ""}" data-twod12="rowBlock" data-row="${i}" data-tooltip="Toggle (no mechanics yet). Blocked rows are skipped by the All buttons.">Block</button>${(r.fx ?? []).some(x => x.mode === "conditional") ? `<button type="button" data-twod12="rowFx" data-row="${i}">Effects</button>` : ""}</div>`) +
+      : `<div class="dbtns">${btn("rowApply", i, 1, "Damage")}${btn("rowApply", i, 0.5, "Half")}${btn("rowApply", i, 2, "Double")}<button type="button" class="blk${r.blocked ? " active" : ""}" data-twod12="rowBlock" data-row="${i}" data-tooltip="Toggle (no mechanics yet). Blocked rows are skipped by the All buttons.">Block</button>${(r.fx ?? []).some(x => x.mode === "conditional" || x.mode === "down") ? `<button type="button" data-twod12="rowFx" data-row="${i}">Effects</button>` : ""}</div>`) +
     `</div>`;
   const pending = rows.some(r => !r.applied && !r.blocked);
   return `<div class="twod12 chat dmg multi" style="${color ? cardVars(color) : ""}">${dmgHead(title, "Damage \u2022 Each target")}<div class="orn">&#10022; &#10022; &#10022;</div>`
     + (pending && rows.length > 1 ? `<div class="mdall"><span class="mdl">All</span><div class="dbtns">${btn("allApply", null, 1, "Damage")}${btn("allApply", null, 0.5, "Half")}${btn("allApply", null, 2, "Double")}</div></div>` : "")
     + `<div class="mdrows">${rows.map(rowHtml).join("")}</div>`
-    + `<div class="dtotal"><select class="kind"><option value="lethal" ${nl ? "" : "selected"}>Lethal</option><option value="nonlethal" ${nl ? "selected" : ""}>Nonlethal</option></select></div></div>`;
+    + (pending ? `<div class="dtotal"><select class="kind"><option value="lethal" ${nl ? "" : "selected"}>Lethal</option><option value="nonlethal" ${nl ? "selected" : ""}>Nonlethal</option></select></div>` : "") + "</div>";   // v0.0.249 (Lucas): the selector goes once every row is applied
 }
 
-export async function postMultiDamageCard({ actor = null, title, rows, rolls = [], color = TWOD12.cardColors.default, defaultNl = false, originUuid = "", originMod = null }) {
-  const data = rows.map(r => ({ uuid: r.uuid, name: r.name, tier: r.tier, comps: (r.comps ?? []).map(c => ({ pool: c.pool, sub: c.sub, nl: c.nl, total: c.total, hidden: !!c.hidden })), fx: r.fx ?? [], applied: "", blocked: false }));
+export async function postMultiDamageCard({ actor = null, title, rows, rolls = [], color = TWOD12.cardColors.default, defaultNl = false, originUuid = "", originMod = null, after = "", areaPoint = null, strike = false }) {
+  const data = rows.map(r => ({ uuid: r.uuid, name: r.name, tier: r.tier, crit: !!r.crit, comps: (r.comps ?? []).map(c => ({ pool: c.pool, sub: c.sub, nl: c.nl, total: c.total, hidden: !!c.hidden })), fx: r.fx ?? [], applied: "", blocked: false }));
   await ChatMessage.create({
     speaker: ChatMessage.getSpeaker(actor ? { actor } : {}), content: multiDamageHtml({ title, rows: data, color, defaultNl }), rolls,
-    flags: { twod12: { dmgMulti: { name: title, originUuid, originMod, color, defaultNl, kind: "", rows: data } } }
+    flags: { twod12: { dmgMulti: { name: title, originUuid, originMod, color, defaultNl, kind: "", rows: data, after, areaPoint, strike: !!strike } } }
   });
 }

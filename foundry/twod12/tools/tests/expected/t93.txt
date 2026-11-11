@@ -25,5 +25,5 @@ no listener: true | an Unsensed target: false | makes noise: true false false fa
 an old `hiding` status does nothing any more: true
 --- the detection mode (the ripple on the canvas)
 in combat within 10: true | in combat, 11 away: false | not in combat: false | Unsensed: false | defeated: false
-the GM's Hidden status, out of combat, far away: true | the observer itself: false | a blind observer: false
+the GM's Hidden status, out of combat, far away: true | the observer itself: false | a blind observer: true
 a keen observer, 15 away: true | a deaf one, next to it: false

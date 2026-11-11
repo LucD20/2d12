@@ -5,9 +5,11 @@ import { BASIC_ACTIONS } from "./basic-data.mjs";   // v0.0.227 (pack CS): gener
 export { BASIC_ACTIONS };
 const F = "twod12";
 
+// v0.0.334 (Lucas: "Opportunity Attack is triggering from non-threatened squares"): momentThreat was left out, so every creature's Opportunity Attack
+// had no limit (any enemy moving anywhere); staleBasics compares it, so the creatures' copies are replaced by the refresh.
 const toItem = (key, d) => ({
   name: d.name, type: "action", img: d.img,
-  system: { category: TWOD12.basicCategory, level: 0, flavor: d.flavor ?? "", frequency: d.frequency ?? "", distance: d.distance ?? "", requirements: d.requirements ?? "", ...(d.description ? { description: d.description } : {}), traits: d.traits, targets: d.targets, vs: d.vs, ...(d.weaponUse ? { weaponUse: d.weaponUse } : {}), ...(d.reaction ? { reaction: true, reactionKind: d.reactionKind, trigger: d.trigger } : {}), versions: foundry.utils.deepClone(d.versions) },
+  system: { category: TWOD12.basicCategory, level: 0, flavor: d.flavor ?? "", frequency: d.frequency ?? "", distance: d.distance ?? "", requirements: d.requirements ?? "", ...(d.description ? { description: d.description } : {}), traits: d.traits, targets: d.targets, vs: d.vs, ...(d.weaponUse ? { weaponUse: d.weaponUse } : {}), ...(d.reaction ? { reaction: true, reactionKind: d.reactionKind, trigger: d.trigger } : {}), ...(d.moment ? { moment: d.moment, momentRange: d.momentRange ?? 0, momentSelf: !!d.momentSelf, momentTarget: d.momentTarget ?? "subject", momentThreat: !!d.momentThreat } : {}), versions: foundry.utils.deepClone(d.versions) },
   flags: { [F]: { basic: key } }
 });
 
@@ -22,7 +24,7 @@ export const NPC_NO_BASIC = ["rally", "basicWeaponAttack", "fists"];
 export const wanted = (actor, key) => !(actor?.type === "npc" && NPC_NO_BASIC.includes(key));
 /** v0.0.228 (pack CS): a Basic Action on the actor whose texts or fields differ from the generated data (a card edited in book/cards): it is replaced.
  *  Compared: the texts of each Version, the requirements, the description, the targets, the traits, the distance and the Frequency (strings and numbers, not the tier shapes the data model normalizes). */
-const basicPrint = sys => JSON.stringify({ d: sys.description ?? "", r: sys.requirements ?? "", t: sys.targets ?? "", tr: [...(sys.traits ?? [])].sort(), di: sys.distance ?? "", f: sys.frequency ?? "", v: (sys.versions ?? []).map(v => [v.ap, v.effects ?? "", v.x1 ?? "", v.x2 ?? "", v.x3 ?? ""]) });
+const basicPrint = sys => JSON.stringify({ d: sys.description ?? "", r: sys.requirements ?? "", t: sys.targets ?? "", tr: [...(sys.traits ?? [])].sort(), di: sys.distance ?? "", f: sys.frequency ?? "", ...(sys.moment ? { m: [sys.moment, Number(sys.momentRange) || 0, !!sys.momentSelf, sys.momentTarget ?? "subject", !!sys.momentThreat] } : {}), tg: sys.trigger ?? "", v: (sys.versions ?? []).map(v => [v.ap, v.effects ?? "", v.x1 ?? "", v.x2 ?? "", v.x3 ?? ""]) });
 export const staleBasics = actor => actor.items.filter(i => { const k = i.type === "action" && i.getFlag(F, "basic"); return k && BASIC_ACTIONS[k] && basicPrint(i.system) !== basicPrint(toItem(k, BASIC_ACTIONS[k]).system); });
 /** The Basic Actions a creature has but shouldn't (an NPC made before v0.0.214 with Weapon Attack). */
 export const unwantedBasics = actor => actor.items.filter(i => i.type === "action" && i.getFlag(F, "basic") && !wanted(actor, i.getFlag(F, "basic")));

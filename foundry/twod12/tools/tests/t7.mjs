@@ -12,5 +12,5 @@ for (const t of [t1, t2, t3]) console.log([...t].join(","), modifierList(actor, 
 console.log(modifierList(actor, t1)[0].predicate, "/", modifierList(actor, t1)[1].predicate);
 console.log(resolveModifiers(actor, ["e1:0", "e2:0"]));
 const { checkHtml } = await import(ROOTURL + "module/roll.mjs");
-const r = { d1: [8], d2: [8], boonFaces: [2], baneFaces: [], bo: 2, ba: 0, total: 20, dc: 13, doubles: true, tier: 3, base: 3, sources: [{ name: "Paladin's Attack", boons: 1, banes: 0 }], manualBoons: 1, manualBanes: 0 };
+const r = { d1: [8], d2: [8], boonFaces: [1, 1], baneFaces: [], bo: 2, ba: 0, total: 20, dc: 13, doubles: true, tier: 3, base: 3, sources: [{ name: "Paladin's Attack", boons: 1, banes: 0 }], manualBoons: 1, manualBanes: 0 };
 console.log(checkHtml("Weapon Attack \u2022 Body", r, ["Weapon Attack +2"]).replace(/<[^>]+>/g, " ").replace(/\s+/g, " "));

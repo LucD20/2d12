@@ -1,0 +1,523 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Zone – an effect placed on the map</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Signika:wght@400;500;600&display=swap" rel="stylesheet"><style>
+
+:root{
+  color-scheme:light;
+  --page:#cfc8b8; --page-ink:#2c2a26;
+  --navy:#1e2a3b; --navy-2:#253247; --gold:#e8a33a; --gold-soft:#e6d6a6;
+  --parch:#ebe5d6; --parch-2:#f4efe3; --line:#cbbf9f; --ink:#2b2620; --muted:#6d6456;
+  --maroon:#7a2a1e; --field:#fffdf8; --field-line:#b9ad91;
+  --bane:#a3271f; --boon:#1f5ea8; --rule:#5b3f8c; --cond:#2f6b3c;
+  --g-roll:#7a4a12; --g-req:#2e5d78; --g-kind:#5a3d7a; --g-dmg:#7a2a2a; --g-key:#4d5a2a;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){color-scheme:dark;--page:#15181d;--page-ink:#d9d3c5}}
+:root[data-theme="dark"]{color-scheme:dark;--page:#15181d;--page-ink:#d9d3c5}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--page);color:var(--page-ink);font:14px/1.45 Signika,"Segoe UI",Arial,sans-serif;padding:20px 12px}
+.top{max-width:1200px;margin:0 auto 16px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.top h1{font:700 21px Cinzel,serif;margin:0 14px 0 0}
+.pick{display:inline-flex;border:1px solid #8b7f66;border-radius:4px;overflow:hidden}
+.pick button{border:0;background:transparent;color:inherit;font:600 14px Signika;padding:7px 14px;cursor:pointer}
+.pick button+button{border-left:1px solid #8b7f66}
+.pick button.on{background:var(--navy);color:#fff}
+.wrap{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:minmax(0,660px) minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:1000px){.wrap{grid-template-columns:1fr}}
+
+/* window */
+.win{background:var(--parch);color:var(--ink);border:1px solid #000;box-shadow:0 8px 30px rgba(0,0,0,.35)}
+.titlebar{background:#0d0f13;color:#eee;font-size:13px;padding:5px 10px;display:flex;justify-content:space-between}
+.head{background:var(--navy);display:flex;align-items:center;gap:14px;padding:10px 14px}
+.icon{width:44px;height:44px;border-radius:4px;background:var(--navy-2);border:1px solid #3c4a62;display:grid;place-items:center;font-size:23px}
+.head h2{margin:0;color:#f6efe0;font:700 21px Cinzel,serif}
+.head p{margin:1px 0 0;color:#a9b6c9;font-size:12.5px}
+.tabs{background:var(--navy-2);display:flex}
+.tabs span{flex:1;text-align:center;color:#b9c2d0;font:600 13px Signika;padding:10px 0;border-bottom:3px solid transparent}
+.tabs span.on{color:#fff;border-bottom-color:var(--gold)}
+.tabs span.help{flex:0 0 44px;font-weight:700}
+.body{padding:12px 16px 16px}
+.tip{background:var(--navy);color:#e9e4d8;border-radius:4px;padding:8px 12px;border-left:4px solid var(--gold);font-size:13.5px}
+.tip b{font:700 13.5px Cinzel,serif;color:var(--gold);margin-right:6px}
+.sec{margin-top:14px}
+.sec>h3{margin:0 0 8px;font:700 14px Cinzel,serif;color:var(--maroon);background:linear-gradient(90deg,var(--gold-soft),transparent 85%);border-left:4px solid #3b342b;padding:5px 9px;display:flex;justify-content:space-between;align-items:center}
+.sec>h3 small{font:500 12px Signika;color:var(--muted)}
+
+/* shared controls */
+.seg{display:inline-flex;border:1px solid var(--field-line);border-radius:4px;overflow:hidden;background:var(--field);vertical-align:middle}
+.seg button{border:0;background:none;padding:4px 9px;font:500 13px Signika;color:var(--ink);cursor:pointer}
+.seg button+button{border-left:1px solid var(--field-line)}
+.seg button.on{background:var(--navy);color:#fff}
+.step{display:inline-flex;align-items:center;border:1px solid var(--field-line);border-radius:4px;background:var(--field);vertical-align:middle}
+.step button{border:0;background:none;width:22px;height:24px;cursor:pointer;font:600 14px Signika;color:var(--ink)}
+.step span{min-width:16px;text-align:center;font-weight:600}
+.step.boon span{color:var(--boon)} .step.bane span{color:var(--bane)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+.origin{display:inline-flex;align-items:center;gap:6px;background:var(--parch-2);border:1px solid var(--line);border-radius:3px;padding:2px 4px 2px 10px;font-size:13px;vertical-align:middle}
+.origin b{font-weight:600}
+.origin button{border:1px solid var(--field-line);background:var(--field);border-radius:3px;font:12px Signika;padding:1px 8px;cursor:pointer;color:var(--ink)}
+.tog{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--parch-2);border-radius:3px;padding:3px 10px 3px 6px;font-size:13px;cursor:pointer;user-select:none}
+.tog .box{width:14px;height:14px;border-radius:3px;border:1.5px solid #3b342b;background:var(--field);display:grid;place-items:center;font-size:11px;line-height:1;color:#fff}
+.tog.on{background:var(--gold-soft);border-color:#b8a46c}
+.tog.on .box{background:#3b342b}
+.tog.on .box::after{content:"✓"}
+.kind{width:22px;height:22px;border-radius:4px;display:grid;place-items:center;color:#fff;font:700 11px Signika;flex:none}
+.k-bb{background:linear-gradient(135deg,var(--boon) 50%,var(--bane) 50%)} .k-rule{background:var(--rule)} .k-cond{background:var(--cond)}
+.x{border:0;background:none;color:var(--muted);font-size:17px;cursor:pointer;line-height:1}
+.x:hover{color:var(--bane)}
+.adds{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.add{border:1px solid var(--field-line);background:var(--field);border-radius:4px;padding:4px 10px;font:500 13px Signika;color:var(--ink);cursor:pointer}
+.add:hover{background:var(--gold-soft)}
+
+/* trait filter: tri-state chips */
+.tf{display:flex;flex-wrap:wrap;gap:10px 14px}
+.tg{display:flex;flex-direction:column;gap:3px}
+.tg>i{font:600 10.5px Signika;font-style:normal;color:var(--muted);letter-spacing:.02em}
+.tg>div{display:flex;flex-wrap:wrap;gap:3px}
+.tc{border:1px solid var(--field-line);background:var(--field);border-radius:3px;font:500 12.5px Signika;padding:2px 7px;cursor:pointer;color:var(--ink);min-width:44px;text-align:center}
+.tc.req{color:#fff;border-color:transparent}
+.tc.exc{background:#f3dcd8;border-color:#c9877e;color:var(--bane);text-decoration:line-through}
+.tg.roll .tc.req{background:var(--g-roll)} .tg.req .tc.req{background:var(--g-req)} .tg.kind .tc.req{background:var(--g-kind)} .tg.dmg .tc.req{background:var(--g-dmg)} .tg.key .tc.req{background:var(--g-key)}
+.tfhelp{font-size:12px;color:var(--muted);margin-top:5px}
+
+/* ends */
+.ends{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center}
+.num{width:44px;text-align:center;background:var(--field);border:1px solid var(--field-line);border-radius:4px;padding:3px 4px;font:14px Signika;color:var(--ink)}
+select{background:var(--field);border:1px solid var(--field-line);border-radius:4px;padding:3px 6px;font:13px Signika;color:var(--ink)}
+
+/* ===== A: cards ===== */
+.card{border:1px solid var(--line);border-radius:4px;background:var(--parch-2);margin-bottom:8px;overflow:hidden}
+.card>header{display:flex;align-items:center;gap:9px;padding:7px 10px;cursor:pointer}
+.card>header .sum{flex:1;font-size:14px}
+.card>header .chev{color:var(--muted);width:12px}
+.card.open>header{border-bottom:1px solid var(--line);background:#efe7d3}
+.card .in{display:none;padding:10px 12px 12px}
+.card.open .in{display:block}
+.frow{display:grid;grid-template-columns:96px 1fr;gap:8px;align-items:start;padding:5px 0}
+.frow+.frow{border-top:1px dotted var(--line)}
+.frow>label{font-size:12.5px;color:var(--muted);padding-top:4px}
+.frow>div{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+
+/* ===== B: sentences ===== */
+.sent{border:1px solid var(--line);border-radius:4px;background:var(--parch-2);margin-bottom:8px;padding:9px 10px}
+.sent .line{display:flex;gap:9px;align-items:flex-start}
+.sent .words{flex:1;font-size:15px;line-height:2}
+.tok{border:0;border-bottom:2px solid var(--gold);background:rgba(232,163,58,.12);padding:1px 5px;border-radius:3px 3px 0 0;font:600 15px Signika;color:var(--ink);cursor:pointer}
+.tok.boon{color:var(--boon)} .tok.bane{color:var(--bane)}
+.tok.act{background:var(--navy);color:#fff;border-bottom-color:var(--navy)}
+.tok.dim{font-weight:500;color:var(--muted)}
+.pop{margin:8px 0 2px 31px;border:1px solid var(--field-line);border-radius:4px;background:var(--field);padding:9px 10px;position:relative}
+.pop::before{content:"";position:absolute;top:-7px;left:var(--ax,30px);width:12px;height:12px;background:var(--field);border-left:1px solid var(--field-line);border-top:1px solid var(--field-line);transform:rotate(45deg)}
+.pop .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pop .row+.row{margin-top:7px}
+
+/* ===== C: master–detail ===== */
+.md{display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr);border:1px solid var(--line);border-radius:4px;overflow:hidden;min-height:330px}
+@media (max-width:560px){.md{grid-template-columns:1fr}}
+.md .lst{background:#e4dcc7;border-right:1px solid var(--line);display:flex;flex-direction:column}
+.md .it{display:flex;gap:8px;align-items:flex-start;padding:8px 9px;border-bottom:1px solid var(--line);cursor:pointer;font-size:13px;line-height:1.3}
+.md .it.on{background:var(--parch-2);box-shadow:inset 3px 0 0 var(--gold)}
+.md .it .kind{width:18px;height:18px;font-size:10px}
+.md .lst .adds{padding:8px;margin:auto 0 0;flex-direction:column}
+.md .pane{background:var(--parch-2);padding:10px 12px}
+.md .pane h4{margin:0 0 6px;font:700 13px Cinzel,serif;color:var(--maroon)}
+.md .pane .says{font-size:13.5px;background:var(--field);border:1px solid var(--line);border-radius:4px;padding:6px 9px;margin-bottom:8px}
+.grid2{display:grid;grid-template-columns:auto 1fr;gap:7px 10px;align-items:center}
+.grid2>label{font-size:12.5px;color:var(--muted);text-align:right}
+.grid2>div{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.grid2 .full{grid-column:1/-1;margin-top:4px}
+
+/* notes */
+.notes h2{font:700 19px Cinzel,serif;margin:0 0 4px}
+.notes .lead{margin:0 0 14px;opacity:.88}
+.note{border-left:3px solid var(--gold);padding:1px 0 1px 12px;margin:0 0 12px}
+.note h3{font:600 14.5px Signika;margin:0 0 2px}
+.note p{margin:0;opacity:.9}
+.pro{color:var(--cond)} .con{color:var(--bane)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .pro{color:#7cc68a}:root:not([data-theme="light"]) .con{color:#e58a80}}
+
+/* --- prototype C additions --- */
+.md{min-height:380px}
+.md .lst .adds{gap:4px}
+.md .lst .add{text-align:left}
+.tog{border-radius:3px}
+.origin{border-radius:3px}
+.clause{display:grid;grid-template-columns:86px 1fr;gap:8px;align-items:start;padding:5px 0;border-top:1px dotted var(--line)}
+.clause:first-of-type{border-top:0}
+.clause>span{font-size:12.5px;color:var(--muted);padding-top:4px}
+.clause>div{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:4px;border-radius:3px;color:#fff;font:500 12.5px Signika;padding:2px 3px 2px 8px}
+.chip button{border:0;background:rgba(255,255,255,.18);color:#fff;width:17px;height:17px;border-radius:2px;cursor:pointer;font-size:12px;line-height:1}
+.chip.roll{background:var(--g-roll)} .chip.req{background:var(--g-req)} .chip.kd{background:var(--g-kind)} .chip.dmg{background:var(--g-dmg)} .chip.key{background:var(--g-key)}
+.clause.not .chip{background:var(--field);color:var(--bane);border:1.5px solid var(--bane);padding:1px 2px 1px 7px}
+.clause.not .chip button{background:rgba(163,39,31,.12);color:var(--bane)}
+.clause select{font-size:12.5px;padding:2px 4px;color:var(--muted)}
+.filter{border:1px solid var(--line);background:var(--field);border-radius:3px;padding:6px 9px}
+.filter .reads{font-size:13px;margin-bottom:4px}
+.filter .reads b{font-weight:600}
+.subends{margin:6px 0 0 0;padding:8px 10px;border:1px solid var(--line);border-left:3px solid var(--gold);background:var(--parch-2);border-radius:3px;display:grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center}
+.subends>label{font-size:12.5px;color:var(--muted);text-align:right}
+.subends>div{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ends .tog{margin-right:2px}
+.endblock{margin-top:7px}
+.assume{font-size:11.5px;color:var(--muted)}
+.says .bn{color:var(--bane);font-weight:600} .says .bo{color:var(--boon);font-weight:600}
+.says .tc2{display:inline-block;border-radius:3px;color:#fff;font:500 12px Signika;padding:0 6px;margin:0 1px;line-height:18px;vertical-align:1px}
+.says .tc2.roll{background:var(--g-roll)} .says .tc2.req{background:var(--g-req)} .says .tc2.kd{background:var(--g-kind)} .says .tc2.dmg{background:var(--g-dmg)} .says .tc2.key{background:var(--g-key)}
+.says .tc2.no{background:var(--field);color:var(--bane);border:1px solid var(--bane);line-height:16px}
+.says .who{font-weight:600}
+.endlist{border:1px solid var(--line);border-radius:4px;background:var(--parch-2)}
+.endlist .lead2{font-size:12.5px;color:var(--muted);padding:6px 10px;border-bottom:1px solid var(--line)}
+.erow{display:grid;grid-template-columns:150px 1fr;gap:8px 10px;align-items:center;padding:7px 10px;border-top:1px dotted var(--line)}
+.erow:first-of-type{border-top:0}
+.erow .opts{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.erow.off .opts{display:none}
+.erow .tog{justify-self:start}
+.erow .lbl{font-size:11.5px;color:var(--muted)}
+@media (max-width:560px){.erow{grid-template-columns:1fr}}
+
+.part{border:1px solid var(--line);border-radius:4px;background:var(--field);margin-top:6px}
+.part>header{display:flex;align-items:center;gap:8px;padding:5px 8px}
+.part>header .tog{border:0;background:none;padding:0;font:600 13px Signika}
+.part>header .tog.on{background:none}
+.part .pb{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;padding:4px 8px 8px 30px;border-top:1px dotted var(--line)}
+.part.off .pb{display:none}
+.part.off>header .tog{color:var(--muted);font-weight:500}
+.pb .lbl{font-size:11.5px;color:var(--muted)}
+.pb input[type=text]{width:70px;background:var(--field);border:1px solid var(--field-line);border-radius:3px;padding:3px 6px;font:13px Signika;color:var(--ink)}
+.drop2{border:1.5px dashed var(--field-line);border-radius:3px;padding:3px 8px;font-size:12px;color:var(--muted)}
+.drop2.full{border-style:solid;color:var(--ink);background:var(--parch-2)}
+.addsel{width:100%;font:500 13px Signika;padding:5px 6px;color:var(--ink)}
+.says .emp{color:var(--boon);font-weight:600} .says .enf{color:var(--bane);font-weight:600}
+.says .pool{font-weight:700;color:var(--g-dmg)}
+
+.dmgrow{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;padding:6px 0;border-top:1px dotted var(--line);width:100%}
+.dmgrow:first-child{border-top:0;padding-top:0}
+.addd{border:1px dashed var(--field-line);background:none;border-radius:3px;padding:3px 9px;font:500 12.5px Signika;color:var(--ink);cursor:pointer}
+.addd:hover{background:var(--gold-soft)}
+.says .dv{color:#9b1c1c;font-weight:700} .says .dr{color:#3d4fa8;font-weight:700}
+.says .st{font-weight:600}
+.pick2{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.acard{border:1px solid var(--line);border-left:4px solid #3d6f8f;border-radius:3px;background:var(--field);padding:6px 9px;font-size:13px;width:100%}
+.acard b{font:700 13.5px Cinzel,serif}
+.acard .m{color:var(--muted);font-size:12px}
+.acard .cost{display:inline-block;background:#3a3f8f;color:#fff;border-radius:3px;font:600 11.5px Signika;padding:0 5px;margin-left:6px}
+.note2{font-size:12px;color:var(--muted);grid-column:1/-1}
+.sgn{min-width:22px}
+
+.k-lt{background:#b8860b}
+.ex{color:var(--muted);font-style:normal;font-size:11.5px}
+.dropbig{border:1.5px dashed var(--field-line);border-radius:4px;padding:14px;text-align:center;color:var(--ink);font-size:13.5px;cursor:pointer;background:var(--field)}
+.dropbig small{color:var(--muted);font-size:11.5px}
+.dropbig:hover{background:var(--gold-soft)}
+.simmenu{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:6px;font-size:12px}
+.simmenu i{color:var(--muted);margin-right:4px}
+.simmenu button{border:1px solid var(--field-line);background:var(--field);border-radius:3px;padding:2px 8px;font:12.5px Signika;color:var(--ink);cursor:pointer}
+.dropped{border:1px solid var(--line);border-left:4px solid #2f6b3c;border-radius:3px;background:var(--field);padding:6px 9px;font-size:13px;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.dropped.is-a{border-left-color:#3d6f8f}
+.dropped b{font:700 13.5px Cinzel,serif}
+.dropped .dk{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:3px;padding:0 5px}
+.dropped .x{margin-left:auto}
+.dropped .m,.dropped .m2{color:var(--muted);font-size:12px}
+.dropped .m2{flex-basis:100%}
+.cost{display:inline-block;background:#3a3f8f;color:#fff;border-radius:3px;font:600 11.5px Signika;padding:0 5px}
+input.wide{width:200px;background:var(--field);border:1px solid var(--field-line);border-radius:3px;padding:3px 6px;font:13px Signika;color:var(--ink)}
+.riders{border:1px solid var(--line);border-radius:3px;background:var(--field);padding:6px 8px}
+.colors{gap:4px!important}
+.colors input[type=color]{width:34px;height:26px;padding:0 2px;border:1px solid var(--field-line);border-radius:3px;background:var(--field)}
+.sw{border:1px solid var(--field-line);border-radius:3px;background:var(--field);font:12px Signika;color:var(--ink);padding:2px 7px 2px 20px;position:relative;cursor:pointer}
+.sw::before{content:"";position:absolute;left:5px;top:50%;width:10px;height:10px;margin-top:-5px;border-radius:2px;background:var(--c);border:1px solid rgba(0,0,0,.3)}
+.sw.on{outline:2px solid var(--navy)}
+.lightpv{width:100%;height:110px;border-radius:3px;background:#20262f;position:relative;overflow:hidden}
+.lightpv::before{content:"";position:absolute;left:50%;top:50%;width:calc((var(--b) + var(--d)) * 18px * 2 + 18px);height:calc((var(--b) + var(--d)) * 18px * 2 + 18px);transform:translate(-50%,-50%);background:radial-gradient(circle,color-mix(in srgb,var(--c) calc(var(--a)*100%),transparent) 0 calc(var(--b) / (var(--b) + var(--d) + .5) * 70%),color-mix(in srgb,var(--c) calc(var(--a)*45%),transparent) 0 70%,transparent 71%)}
+.lightpv .tok{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:18px;height:18px;border-radius:50%;background:#e9e4d8;color:#1e2a3b;font:700 11px Signika;display:grid;place-items:center}
+
+.k-wp{background:#6b4a2a}
+.md .it{position:relative;padding-right:30px}
+.trash{position:absolute;right:5px;top:6px;border:1px solid transparent;background:none;color:var(--muted);width:22px;height:22px;border-radius:3px;display:grid;place-items:center;cursor:pointer;opacity:0}
+.md .it:hover .trash,.trash:focus-visible{opacity:1}
+.trash:hover{color:var(--bane);border-color:#c9877e;background:#f3dcd8}
+@media (hover:none){.trash{opacity:.6}}
+.ntext{width:100%;min-height:52px;background:var(--field);border:1px solid var(--field-line);border-radius:3px;padding:5px 7px;font:13px Signika;color:var(--ink);resize:vertical}
+
+.k-esc{background:#8a5a12} .k-tk{background:#7a2a2a}
+.grid2 .full{display:block}
+.grid2>div:has(> .seg.segw:only-child),.grid2>div:has(> .seg.segg:only-child){display:block}
+.seg.segw{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;width:100%}
+.seg.segg{display:grid;grid-template-columns:1fr 1fr;width:100%}
+.seg.segg button{border-left:1px solid var(--field-line);border-top:1px solid var(--field-line)}
+.seg.segg button:nth-child(odd){border-left:0}
+.seg.segg button:nth-child(-n+2){border-top:0}
+.addsh{font:600 12px Signika;color:var(--muted);margin:10px 0 4px;border-top:1px solid var(--line);padding-top:8px}
+.part{margin-top:0;border-radius:0;border-top-width:0}
+.addsh+.part{border-top-width:1px;border-radius:4px 4px 0 0}
+.part.last{border-radius:0 0 4px 4px}
+.part>header{min-height:32px}
+.part .psum{margin-left:auto;font-size:12.5px;color:var(--ink);text-align:right}
+.part.off .psum{color:var(--muted);font-style:italic}
+.part.off{background:var(--parch-2)}
+.fav,.doom{font:600 11.5px Signika;border-radius:3px;padding:1px 6px;color:#fff}
+.fav{background:var(--boon)} .doom{background:var(--bane)}
+
+.k-au{background:#2e5d78}
+.ht{color:var(--bane);font-weight:600}
+.aurapv{width:100%;height:120px;border-radius:3px;background:#20262f;position:relative;overflow:hidden}
+.aurapv::before{content:"";position:absolute;left:50%;top:50%;width:calc((var(--n) * 2 + 1) * 14px);height:calc((var(--n) * 2 + 1) * 14px);transform:translate(-50%,-50%);border:2px solid var(--o);background:color-mix(in srgb,var(--f) 22%,transparent);background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:14px 14px}
+.aurapv .tok{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:#e9e4d8;color:#1e2a3b;font:700 9px Signika;display:grid;place-items:center}
+
+.part .pb{display:block}
+.pgrid{display:grid;grid-template-columns:96px 1fr;gap:6px 10px;align-items:center}
+.pgrid .pl{font-size:12px;color:var(--muted)}
+.pgrid .pc{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-width:0}
+.dent{padding:7px 0;border-top:1px dotted var(--line)}
+.dent:first-child{border-top:0;padding-top:0}
+.dent .dice{width:80px;background:var(--field);border:1px solid var(--field-line);border-radius:3px;padding:3px 6px;font:13px Signika;color:var(--ink)}
+.dent .dx{margin-left:auto}
+.ntext{min-height:46px}
+
+.grid2{grid-template-columns:70px minmax(0,1fr)!important;gap:7px 8px!important}
+.seg.segw button,.grid2>div>.seg:only-child button{padding:4px 5px;line-height:1.2}
+.grid2>label{text-align:left!important}
+.pgrid{grid-template-columns:80px minmax(0,1fr)}
+.grid2>div>.seg:only-child:not(.segg){display:grid;grid-auto-flow:column;grid-auto-columns:1fr;width:100%}
+.grid2>.full2{display:block!important}
+.addsh.first{margin-top:0;border-top:0;padding-top:0}
+.note2,.tfhelp,.assume{display:none}
+body.helpon .note2,body.helpon .tfhelp,body.helpon .assume{display:block}
+.tabs .help{flex:0 0 44px;background:none;border:0;color:#b9c2d0;font:700 14px Signika;cursor:pointer;border-bottom:3px solid transparent}
+.tabs .help.on{color:var(--gold)}
+.rmline{margin-left:auto;border:0;background:none;color:var(--muted);font:12px Signika;text-decoration:underline;cursor:pointer}
+.rmline:hover{color:var(--bane)}
+.endlist{border:0;background:none}
+.endlist .part:first-child{border-top-width:1px;border-radius:4px 4px 0 0}
+.endlist .part:last-child{border-radius:0 0 4px 4px}
+.endlist .pb .note2{margin:6px 0 0}
+.sec>h3 small{font-style:normal}
+.grid2 select{max-width:100%}
+.part.dis header{opacity:.55}
+.part.dis .tog{cursor:not-allowed}
+.stub{border:1.5px dashed var(--field-line);border-radius:4px;padding:16px;text-align:center;color:var(--muted);background:var(--field)}
+.zpv{display:grid;grid-template-columns:repeat(11,14px);gap:0;justify-content:center;background:#20262f;border-radius:3px;padding:8px 0;margin-top:8px;position:relative}
+.zpv i{width:14px;height:14px;border-right:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07)}
+.zpv i.in{background:color-mix(in srgb,var(--f) 30%,transparent);box-shadow:inset 0 0 0 1px var(--o)}
+.zpv .ztok{position:absolute;left:calc(50% - 7px - 0px);top:calc(8px + 5*14px);width:14px;height:14px;border-radius:50%;background:#e9e4d8;color:#1e2a3b;font:700 9px Signika;display:grid;place-items:center}
+.k-heal{background:#2f6b3c} .k-cond{background:var(--cond)}
+.md .it.dimit{opacity:.6}
+.says.warn{border-color:#c9877e;background:#f3dcd8;color:var(--bane)}
+.part.flat{border-top-width:1px!important;border-radius:4px!important}
+.notes code{font-size:12px;background:rgba(0,0,0,.08);padding:0 4px;border-radius:3px}
+.notes .ex{display:block;margin-top:6px}
+.md .pane .dropped{margin-top:6px}
+</style></head>
+<body>
+<div class="top"><h1>Zone: an effect placed on the map</h1>
+  <div class="pick" id="optPick"><button data-o="A" class="on">A · Where switch</button><button data-o="B">B · Pinned item</button><button data-o="C">C · Inside as list</button></div>
+  <div class="pick" id="exPick"><button data-x="cg" class="on">Consecrated Ground</button><button data-x="fire">Fire (book example)</button><button data-x="old">Old Zone, migrated</button></div>
+</div>
+<div class="wrap">
+  <div class="win">
+    <div class="titlebar"><span id="tbar"></span><span>⋮ ✕</span></div>
+    <div class="head"><div class="icon" id="hicon" aria-hidden="true">✨</div><div><h2 id="hname"></h2><p id="hsub"></p></div></div>
+    <div class="tabs"><span>Description</span><span class="on">Details</span><button class="help" id="helpBtn" aria-pressed="false" title="Show help">?</button></div>
+    <div class="body" id="body"></div>
+  </div>
+  <div class="notes" id="notes"></div>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+const SUBS=["None","Fire","Holy","Cold","Pierce","Psychic","Blunt","Slash"];
+const ASW=[["Gold","#e8a33a"],["Holy","#ffd27a"],["Ally","#4a8fd8"],["Enemy","#c0392b"],["Arcane","#9b6bd8"],["Nature","#4caf6a"]];
+const EX={
+ cg:()=>({name:"Consecrated Ground",icon:"✨",origin:"Nari",action:{n:"Consecrated Ground",area:"2 Burst",shape:"burst",size:"2",dist:"10 sq.",cost:"2 / 3 AP",f:"Daily"},
+   where:"map",src:"action",shape:"burst",size:"2",
+   carry:{on:true,who:"enemies",self:false,item:"Consecrated",itemT:"1 Bane on [Strike] and [Power] Actions"},
+   heal:{on:true,who:"allies",self:true,dice:"1d4"},
+   ht:{on:false,who:"all",self:false,E:true,T:true,M:false,list:[{dice:"1d8",pool:"V",sub:"Fire"}],fx:false,fxItem:""},
+   diff:{on:false},show:true,outline:"#ffd27a",fill:"#ffd27a",
+   time:{on:true,dur:"rounds",n:3},down:{on:false},act:{on:false,who:"origin",ap:1},sel:"area"}),
+ fire:()=>({name:"Burning ground",icon:"🔥",origin:"Drak",action:{n:"Fire Burst (example)",area:"2 Emanation",shape:"eman",size:"2",dist:"10 sq.",cost:"2 AP",f:"Encounter"},
+   where:"map",src:"action",shape:"eman",size:"2",
+   carry:{on:false,who:"all",self:false,item:"",itemT:""},
+   heal:{on:false,who:"allies",self:false,dice:"1d4"},
+   ht:{on:true,who:"all",self:true,E:true,T:true,M:false,list:[{dice:"1d8",pool:"V",sub:"Fire"}],fx:false,fxItem:""},
+   diff:{on:false},show:true,outline:"#c0392b",fill:"#c0392b",
+   time:{on:true,dur:"rounds",n:2},down:{on:false},act:{on:false,who:"origin",ap:1},sel:"area"}),
+ old:()=>({name:"Old Zone (migrated)",icon:"⛪",origin:"Wes",action:null,
+   where:"map",src:"here",shape:"eman",size:"1",
+   carry:{on:false,who:"allies",self:false,item:"",itemT:""},
+   heal:{on:true,who:"allies",self:false,dice:"1d4"},
+   ht:{on:false,who:"all",self:false,E:true,T:true,M:false,list:[{dice:"1d6",pool:"V",sub:"Fire"}],fx:false,fxItem:""},
+   diff:{on:false},show:true,outline:"#e8a33a",fill:"#e8a33a",
+   time:{on:false,dur:"rounds",n:1},down:{on:false},act:{on:false,who:"origin",ap:1},sel:"area"})
+};
+let OPT="A",EXK="cg",S=EX.cg();
+const AVG={"1d4":2.5,"1d6":3.5,"1d8":4.5,"1d10":5.5,"1d12":6.5,"2d6":7,"2d8":9};
+const avg=d=>AVG[d.trim()]!=null?AVG[d.trim()]:null;
+const WHO={allies:"Allies",enemies:"Enemies",all:"Everyone"};
+const SHAPE={eman:"Emanation",burst:"Burst",line:"Line"};
+const get=(p)=>p.split(".").reduce((o,k)=>o[k],S);
+const set=(p,v)=>{const k=p.split(".");const l=k.pop();k.reduce((o,x)=>o[x],S)[l]=v;};
+const seg=(p,opts,cls="segw")=>`<span class="seg ${cls}">${opts.map(([v,l])=>`<button data-set="${p}" data-v="${v}" class="${String(get(p))===String(v)?"on":""}">${l}</button>`).join("")}</span>`;
+const tog=(p,label)=>`<span class="tog ${get(p)?"on":""}" data-tog="${p}" role="switch" aria-checked="${!!get(p)}"><span class="box"></span>${label}</span>`;
+const PG=rows=>`<div class="pgrid">${rows.map(([l,c])=>`<span class="pl">${l}</span><div class="pc">${c}</div>`).join("")}</div>`;
+const rowPart=(on,togHtml,sum,body,extra="")=>`<div class="part ${on?"":"off"} ${extra}"><header>${togHtml}<span class="psum">${on?sum:"off"}</span></header><div class="pb">${body}</div></div>`;
+function areaTxt(){const sh=S.src==="action"&&S.action?S.action.shape:S.shape, sz=S.src==="action"&&S.action?S.action.size:S.size;
+  const n=/^\d+$/.test(sz.trim())?sz.trim():"("+sz.replace("@origin.","the origin's ")+")";
+  return sh==="line"?`Line ${n}`:`${n} ${SHAPE[sh]}`;}
+function whoTxt(r){return ({allies:"Allies",enemies:"Enemies",all:"Creatures"})[r.who]+" inside"+(r.self?`, and ${S.origin},`:"");}
+function sentences(){const x=[];
+  if(S.carry.on) x.push(`${whoTxt(S.carry)} gain <b>${S.carry.item||"…"}</b>${S.carry.itemT?` (${S.carry.itemT})`:""}.`);
+  if(S.heal.on){const a=avg(S.heal.dice);x.push(`${whoTxt(S.heal)} heal <b>${S.heal.dice}</b>${a!=null?` (avg ${a})`:""} at the start of each of their turns.`);}
+  if(S.ht.on){const p=["E","T","M"].filter(k=>S.ht[k]).map(k=>({E:"Entering",T:"Turn",M:"Movement"})[k]);
+    const d=S.ht.list.map(e=>`<b>${e.dice} [${e.pool}]</b>${e.sub!=="None"?" "+e.sub:""}`).join(" and ");
+    x.push(`<span class="ht">[HT: ${p.join(", ")||"Entering, Turn"}]</span> ${whoTxt(S.ht)} take ${d} damage${S.ht.fx&&S.ht.fxItem?` and gain <b>${S.ht.fxItem}</b>`:""}.`);}
+  if(S.diff.on){const w={allies:"allies",enemies:"enemies",all:"every creature"}[S.diff.who];x.push(`Its squares are Difficult Terrain for ${w}${S.diff.who==="all"?(S.diff.self?"":" but "+S.origin):(S.diff.self?" and "+S.origin:"")}.`);}
+  return x;}
+function endTxt(){const x=[];
+  if(S.time.on) x.push(S.time.dur==="rounds"?`${S.time.n} round${S.time.n>1?"s":""}`:"until the encounter ends");
+  if(S.down.on) x.push(`until ${S.origin} goes Down`);
+  if(S.act.on) x.push(`until ${S.act.who==="origin"?S.origin:"a creature within Reach of it"} ends it with an Action (${S.act.ap} AP)`);
+  return x.length?"Lasts "+x.join(", or ")+".":"Lasts until removed.";}
+function tip(){return `<div class="tip"><b>${S.name}</b>${S.where==="map"?`${areaTxt()}${S.src==="action"&&S.action?" (placed by the Action)":""}. ${sentences().join(" ")} ${endTxt()}`:"On a creature: the rule list of Prototype C."}</div>`;}
+
+/* ---------- blocks ---------- */
+function whereH(){return `<div class="sec"><h3>Where it is <small>an effect is worn or placed</small></h3>${seg("where",[["creature","On a creature"],["map","On the map (a Zone)"]])}
+  <p class="note2">On a creature: the rules below need a bearer. On the map: the effect has no bearer; it is the area, and what it does to creatures inside.</p></div>`;}
+function areaPane(){
+  const fromA=S.src==="action"&&S.action;
+  let h=PG([["Shape and size",seg("src",[["action","From the Action"],["here","Set here"]])]]);
+  if(fromA){h+=`<div class="dropped is-a" style="margin-top:6px"><span class="dk">Action</span><b>${S.action.n}</b><span class="cost">${S.action.cost}</span> <span class="m">· ${S.action.f}</span><div class="m2">Area: ${S.action.area} · Distance: ${S.action.dist}. Its Place Area button keeps the area on the map.</div></div>`;}
+  else{h+=PG([["Shape",seg("shape",[["eman","Emanation"],["burst","Burst"],["line","Line"]])],
+     ["Size",`<input type="text" class="wide" style="width:130px" data-in="size" value="${S.size}" placeholder="2 or @origin.pow" aria-label="Size"> <span class="lbl">${S.shape==="line"?"squares long":"squares"}</span>`]]);
+    h+=`<p class="note2">Placed by hand (a GM's trap, a dropped effect): you draw it where you want. An Emanation stays where it is placed; for an area that follows a creature, use an Aura rule instead.</p>`;}
+  h+=`<p class="note2">${fromA?"The card's Area line is the only place the shape is written: change the card, and every Zone it places changes with it.":""} Every area spreads from its Point of Origin (Chapter 3, Areas).</p>`;
+  return h;}
+function whoRow(p,selfLbl="And the origin"){return [["Who",seg(p+".who",[["allies","Allies"],["enemies","Enemies"],["all","Everyone"]])],["",tog(p+".self",`${selfLbl} (${S.origin})`)]];}
+function effDrop(p,label){const v=get(p);
+  return v?`<div class="dropped is-e"><span class="dk">Effect</span><b>${v}</b>${p==="carry.item"&&S.carry.itemT?`<span class="m">${S.carry.itemT}</span>`:""}<button class="x" data-clr="${p}" aria-label="Remove">×</button></div>`
+   :`<div class="dropbig" data-fake="${p}">${label}<br><small>from the Effects and Conditions compendiums (mockup: click to pretend)</small></div>`;}
+function insideRows(only){
+  const hs=S.heal.dice, ha=avg(hs);
+  const htsum=`${WHO[S.ht.who]} · ${["E","T","M"].filter(k=>S.ht[k]).map(k=>({E:"Entering",T:"Turn",M:"Movement"})[k]).join(", ")||"Entering, Turn"} · ${S.ht.list.map(d=>d.dice+(d.sub!=="None"?" "+d.sub:"")).join(" + ")}`;
+  const R={
+   carry:()=>rowPart(S.carry.on,tog("carry.on","Carries an Effect"),`${WHO[S.carry.who]} · ${S.carry.item||"(none dropped)"}`,
+     PG(whoRow("carry"))+effDrop("carry.item","Drop the Effect they have while inside")+`<p class="note2">Gained on entering, lost on leaving or when the Zone ends. While carried, its own Ends are not used: to give something that lasts after leaving, use Hazard → Gives an Effect.</p>`),
+   heal:()=>rowPart(S.heal.on,tog("heal.on","Heals"),`${WHO[S.heal.who]} · ${hs}${ha!=null?" (avg "+ha+")":""} a turn`,
+     PG([...whoRow("heal"),["Heal",`<input type="text" class="wide" style="width:110px" data-in="heal.dice" value="${hs}" aria-label="Heal"> <span class="lbl">at the start of each of their turns inside</span>`]])
+     +`<p class="note2">A heal, as Heal in Chapter 4 (they choose which damage), rolled for each creature at the start of its own turn. Formulas work: 1d4 + @origin.pow.</p>`),
+   ht:()=>rowPart(S.ht.on,tog("ht.on","Hazard [HT]"),htsum,
+     PG([...whoRow("ht"),["Triggers",["E","T","M"].map(k=>tog("ht."+k,({E:"Entering",T:"Turn",M:"Movement"})[k])).join("")],
+       ...S.ht.list.map((d,i)=>[i?"":"Damage",`<input type="text" class="dice" style="width:80px" data-in="ht.list.${i}.dice" value="${d.dice}" aria-label="Damage">${seg(`ht.list.${i}.pool`,[["V","[V]"],["R","[R]"]],"")}<select data-sel="ht.list.${i}.sub" aria-label="Subtype">${SUBS.map(x=>`<option ${x===d.sub?"selected":""}>${x}</option>`).join("")}</select>`]),
+       ["",`<button class="addd" data-hadd>+ Another damage</button>`],["Also",tog("ht.fx","Gives an Effect")]])
+     +(S.ht.fx?effDrop("ht.fxItem","Drop the Effect a creature it affects gains (with its own Ends)"):"")
+     +`<p class="note2">As in the approved Aura pane. None ticked: Entering and Turn. Entering and Turn share one hit per turn-cycle; Movement hits once per Movement. A creature inside when the Zone appears counts as entering.</p>`),
+   diff:()=>rowPart(S.diff.on,tog("diff.on","Difficult Terrain"),WHO[S.diff.who],
+     PG(whoRow("diff"))+`<p class="note2">Its squares count double for movement, for the creatures it affects (a persistent effect can hinder one side only). Forced Movement ignores it.</p>`
+     +`<p class="note2">Darkness and Obscured are not offered: the book says a light never makes a square darker, and smoke (Obscured) is still a candidate. They come when the book writes them.</p>`)};
+  const keys=only?[only]:["carry","heal","ht","diff"];
+  return keys.map(k=>R[k]()).join("").replace(/<div class="part ([^"]*)"/g,(m,c)=>m).replace(/(<div class="part[^"]*)("[^>]*>)(?![\s\S]*<div class="part)/,"$1 last$2");}
+function mapRow(){const n=Math.min(+((S.src==="action"&&S.action?S.action.size:S.size).match(/^\d+$/)||[2])[0],4);
+  return rowPart(S.show,tog("show","Shown on the map"),"outline and squares",
+   PG([["Outline",`<span class="colors" style="display:flex;flex-wrap:wrap;gap:4px"><input type="color" data-col="outline" value="${S.outline}" aria-label="Outline color">${ASW.map(([nm,c])=>`<button class="sw ${S.outline===c?"on":""}" style="--c:${c}" data-sw="outline" data-v="${c}">${nm}</button>`).join("")}</span>`],
+       ["Squares",`<span class="colors" style="display:flex;flex-wrap:wrap;gap:4px"><input type="color" data-col="fill" value="${S.fill}" aria-label="Fill color">${ASW.map(([nm,c])=>`<button class="sw ${S.fill===c?"on":""}" style="--c:${c}" data-sw="fill" data-v="${c}">${nm}</button>`).join("")}</span>`]])
+   +pv(n),"last");}
+function pv(n){const sh=S.src==="action"&&S.action?S.action.shape:S.shape;const cells=[];const N=11,c=5;
+  for(let y=0;y<N;y++)for(let x=0;x<N;x++){let on=false;
+    if(sh==="eman") on=Math.max(Math.abs(x-c),Math.abs(y-c))<=n;
+    else if(sh==="burst"){const dx=x+.5-c,dy=y+.5-c;on=Math.hypot(dx,dy)<=n+.0001;}
+    else on=y===c&&x>c&&x<=c+Math.min(n*1.5|0,5);
+    cells.push(`<i class="${on?"in":""}"></i>`);}
+  return `<div class="zpv" style="--o:${S.outline};--f:${S.fill}">${cells.join("")}<span class="ztok" style="${sh==="line"?"":"display:none"}">Y</span></div>`;}
+function endsH(){
+  return `<div class="sec"><h3>Ends <small>at the first of these; none ticked: until removed</small></h3><div class="endlist">
+   ${rowPart(S.time.on,tog("time.on","Time"),S.time.dur==="rounds"?`${S.time.n} round${S.time.n>1?"s":""}`:"this encounter",
+      PG([["Lasts",seg("time.dur",[["rounds","Rounds"],["enc","This encounter"]])],...(S.time.dur==="rounds"?[["Rounds",`<input class="num" type="number" min="1" data-in="time.n" value="${S.time.n}" aria-label="Rounds">`]]:[])])
+      +`<p class="note2">Counts down at the end of the slot in which it was placed (Chapter 2). No EoT: a placed area has no turn of its own.</p>`)}
+   <div class="part off dis"><header><span class="tog" aria-disabled="true"><span class="box"></span>A Save</span><span class="psum">not for a Zone</span></header></div>
+   ${rowPart(S.down.on,tog("down.on","Origin goes Down"),S.origin,PG([["Origin",`<span class="origin">Origin: <b>${S.origin}</b><button>⌖ Change</button></span>`]])+`<p class="note2">Unconscious or leaving the scene count too.</p>`)}
+   ${rowPart(S.act.on,tog("act.on","Someone uses an Action"),`${S.act.who==="origin"?S.origin:"anyone in Reach"} · ${S.act.ap} AP`,
+      PG([["Who",seg("act.who",[["origin","The origin"],["reach","Anyone within Reach of it"]])],["Cost",`<span class="step"><button data-step="act.ap" data-d="-1">−</button><span>${S.act.ap}</span><button data-step="act.ap" data-d="1">+</button></span> <span class="lbl">AP, an Interact</span>`]])
+      +`<p class="note2">Dismissing it (the origin) or putting it out (stamping on embers, anyone in Reach).</p>`,"last")}
+   </div><p class="note2">A Save has no bearer to roll it: the row stays greyed so the list keeps the same rows as on a creature.</p></div>`;}
+
+/* ---------- options ---------- */
+function optA(){
+  if(S.where!=="map") return whereH()+`<div class="sec"><h3>What it does</h3><div class="stub">Prototype C's rule list, unchanged.</div></div>`+endsH();
+  return whereH()
+   +`<div class="sec"><h3>The area</h3>${areaPane()}</div>`
+   +`<div class="sec"><h3>What it does inside <small>shared with the Aura</small></h3>${insideRows()}</div>`
+   +`<div class="sec"><h3>On the map</h3>${mapRow()}</div>`
+   +endsH();}
+function optB(){
+  const items=[{k:"zone",tile:["au","⌖"],t:`On the map: ${areaTxt()}`,s:sentences().length+" things inside"},{k:"bear",tile:["rule","V"],t:"Changes a value: +1 Defense",s:"needs a bearer",dim:true}];
+  const pane=S.sel==="zone"||S.sel==="area"?`<h4>Placed on the map</h4><div class="says">${areaTxt()}: ${sentences().join(" ")||"…"}</div><div class="grid2"><div class="full full2">${areaPane()}<div class="addsh">What it does inside</div>${insideRows()}<div class="addsh">On the map</div>${mapRow()}</div></div>`
+     :`<h4>Changes a value</h4><div class="says warn">This rule needs a bearer. A placed effect has none: it does nothing. Put it in the Effect the Zone carries.</div>`;
+  return `<div class="sec"><h3>What it does <small>2 rules</small></h3><div class="md"><div class="lst">${items.map(i=>`<div class="it ${((S.sel==="area"||S.sel==="zone")&&i.k==="zone")||(S.sel===i.k)?"on":""} ${i.dim?"dimit":""}" data-pick="${i.k}"><span class="kind k-${i.tile[0]}">${i.tile[1]}</span><div><div>${i.t}</div><div class="ex">${i.s}</div></div></div>`).join("")}
+   <div class="adds"><select class="addsel" aria-label="Add a rule"><option>+ Add rule</option><optgroup label="Areas"><option>Aura</option><option>Light</option><option>Place on the map (Zone)</option></optgroup></select></div></div>
+   <div class="pane">${pane}</div></div></div>`+endsH();}
+function optC(){
+  if(S.where!=="map") return whereH()+`<div class="sec"><h3>What it does</h3><div class="stub">Prototype C's rule list, unchanged.</div></div>`+endsH();
+  const rows=[["area",["au","⌖"],"The area",areaTxt()+(S.src==="action"&&S.action?" · from the Action":"")]];
+  const L={carry:["cond","E","Carries an Effect"],heal:["heal","+","Heals"],ht:["tk","H","Hazard [HT]"],diff:["rule","D","Difficult Terrain"]};
+  ["carry","heal","ht","diff"].forEach(k=>{if(S[k].on)rows.push([k,[L[k][0],L[k][1]],L[k][2],k==="diff"?WHO[S.diff.who]:WHO[S[k].who]+(k==="carry"?" · "+(S.carry.item||"…"):k==="heal"?" · "+S.heal.dice:" · "+S.ht.list.map(d=>d.dice).join("+"))]);});
+  rows.push(["map",["lt","◧"],"On the map",S.show?"shown":"hidden"]);
+  const sel=rows.find(r=>r[0]===S.sel)?S.sel:"area";
+  const say=sel==="area"?`${areaTxt()}.`:sel==="map"?(S.show?"Shown with its outline and squares.":"Not drawn on the map."):sentences()[["carry","heal","ht","diff"].filter(k=>S[k].on).indexOf(sel)]||"";
+  const pane=sel==="area"?areaPane():sel==="map"?mapRow():insideRows(sel).replace(/class="part /,'class="part flat ');
+  const missing=["carry","heal","ht","diff"].filter(k=>!S[k].on);
+  return whereH()+`<div class="sec"><h3>What it does inside <small>${rows.length-2} things</small></h3><div class="md"><div class="lst">${rows.map(r=>`<div class="it ${r[0]===sel?"on":""}" data-pick="${r[0]}"><span class="kind k-${r[1][0]}">${r[1][1]}</span><div><div>${r[2]}</div><div class="ex">${r[3]}</div></div></div>`).join("")}
+   <div class="adds"><select class="addsel" data-addin aria-label="Add"><option value="">+ Add inside</option>${missing.map(k=>`<option value="${k}">${L[k][2]}</option>`).join("")}</select></div></div>
+   <div class="pane"><h4>${rows.find(r=>r[0]===sel)[2]}</h4><div class="says">${say}</div>${pane}</div></div></div>`+endsH();}
+
+/* ---------- notes ---------- */
+const NOTES={
+A:`<h2>A · Where switch (my pick)</h2><p class="lead">One question first: is this effect worn or placed? “On the map” turns the Details tab into the Zone's layout; Ends stays the same list.</p>
+<div class="note"><h3>Why it reads well</h3><p class="pro">Matches the rule: a Zone has no bearer, so it never shows bearer rules. The inside block is the Aura's own (same rows, same order), so a GM who built an Aura already knows it.</p><p class="con">Two layouts in one window. Switching back to “On a creature” keeps the Zone's settings hidden, not deleted.</p></div>`,
+B:`<h2>B · Pinned item in the rule list</h2><p class="lead">“Place on the map (Zone)” is added from + Add rule and pins to the top of the list; its pane holds everything.</p>
+<div class="note"><h3>Trade-off</h3><p class="pro">No new control: Prototype C's list stays the only entry point.</p><p class="con">It makes the Zone look like a rule, which it isn't, and bearer rules can sit next to it doing nothing (greyed, “needs a bearer”). Its pane is the longest in the window.</p></div>`,
+C:`<h2>C · Inside as a list</h2><p class="lead">Same Where switch as A, then each thing the Zone does is its own list item with its own sentence, in Prototype C's master–detail rhythm.</p>
+<div class="note"><h3>Trade-off</h3><p class="pro">One sentence per thing, easy to scan; adding a Hazard is a menu pick.</p><p class="con">The Aura's pane shows the same block as part rows, so the Zone and the Aura would build the same thing two ways. Only worth it if the Aura moves to this too.</p></div>`};
+function numbers(){
+  const x=[];
+  if(S.heal.on){const a=avg(S.heal.dice)||0, r=S.time.on&&S.time.dur==="rounds"?S.time.n:3;
+    x.push(`<b>Heals ${S.heal.dice}</b>: ${a} a creature a turn. Over ${r} rounds with 3 allies inside the whole time: ${a} × 3 × ${r} = <b>${(a*3*r).toFixed(1)}</b> healed in all, at most (ruler line: <code>heal-dice ${S.heal.dice}</code> with <code>allies</code> / <code>rounds</code>).`);}
+  if(S.ht.on){const t=S.ht.list.reduce((s,d)=>s+(avg(d.dice)||0),0), r=S.time.on&&S.time.dur==="rounds"?S.time.n:2;
+    x.push(`<b>Hazard</b>: ${t} damage a creature per turn-cycle (Entering and Turn share one hit). A creature that stays ${r} rounds: about ${(t*r).toFixed(1)}; a Standard has 57 Health, so ${Math.round(t*r/57*100)}% of it.`);}
+  if(S.carry.on) x.push(`<b>Carries ${S.carry.item||"…"}</b>: priced as that effect on each creature inside, for as long as they stay.`);
+  return x.length?`<div class="note"><h3>Numbers (this example)</h3>${x.map(s=>`<p>${s}</p>`).join("")}${EXK==="cg"?`<p class="ex">Shape, Distance and duration here are example values: I couldn't find Consecrated Ground's card text in the knowledge files.</p>`:EXK==="fire"?`<p class="ex">Chapter 3's example: a 2 Emanation of fire, Distance 10 sq., [HT: Entering, Turn], 1d8 Fire, lasting 2 rounds.</p>`:""}</div>`:"";}
+function common(){return `<div class="note"><h3>How a card places it</h3><p>The Action keeps its Area and Distance lines; its Automation applies this Effect as it applies any other. Because the Effect says “On the map”, the card's Place Area button keeps the area instead of only targeting it, and the Zone takes the card's shape and size (“From the Action”). Tiers work as for other effects: (T2/T3) on the card, nothing new.</p></div>
+<div class="note"><h3>Merges, checked three times</h3><p><b>Merged:</b> the Aura's “What it does inside” and “On the map” rows (same meaning: a creature inside an area); the Zone's shape with the card's Area line (one source of truth).</p>
+<p><b>Changed in the Aura too:</b> Affects moves into each row, because Consecrated Ground needs Enemies for one row and Allies for another. The Aura's pane loses its top Affects line; Beacon still reads “Allies and this creature”.</p>
+<p><b>Kept apart:</b> Heals is not a Hazard (HT is harm, with Entering and the turn-cycle limit); Heals is not the Tick rule (a rule needs a bearer); Ends keeps the same rows as on a creature, with A Save greyed.</p></div>
+<div class="note"><h3>Old Zone block → new rows</h3><p>“affects [allies] inside it” → each row's Who. “heal [1d4] at the start of each of their turns” → Heals. “Drop the Effect they carry while inside” → Carries an Effect. Nothing is lost; the old block can go.</p></div>`;}
+function render(){
+  if(!S.diff.who){S.diff.who="all";S.diff.self=true;}
+  $("#tbar").textContent=`${S.name} (placed by ${S.origin})`;
+  $("#hname").textContent=S.name;$("#hicon").textContent=S.icon;
+  $("#hsub").textContent=S.where==="map"?`On the map · from ${S.origin}`:`On a creature · from ${S.origin}`;
+  $("#body").innerHTML=tip()+(OPT==="A"?optA():OPT==="B"?optB():optC());
+  $("#notes").innerHTML=NOTES[OPT]+numbers()+common();
+  document.querySelectorAll("#optPick button").forEach(b=>b.classList.toggle("on",b.dataset.o===OPT));
+  document.querySelectorAll("#exPick button").forEach(b=>b.classList.toggle("on",b.dataset.x===EXK));}
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-o],[data-x],[data-set],[data-tog],[data-pick],[data-clr],[data-fake],[data-sw],[data-step],[data-hadd],#helpBtn");if(!t)return;
+  if(t.id==="helpBtn"){document.body.classList.toggle("helpon");t.classList.toggle("on");t.setAttribute("aria-pressed",document.body.classList.contains("helpon"));return;}
+  if(t.dataset.o){OPT=t.dataset.o;S.sel="area";}
+  else if(t.dataset.x){EXK=t.dataset.x;S=EX[EXK]();}
+  else if(t.dataset.set){const v=t.dataset.v;set(t.dataset.set,isNaN(+v)||v===""?v:(t.dataset.set.endsWith(".n")?+v:v));}
+  else if(t.dataset.tog){if(t.getAttribute("aria-disabled"))return;set(t.dataset.tog,!get(t.dataset.tog));}
+  else if(t.dataset.pick){S.sel=t.dataset.pick;}
+  else if(t.dataset.clr){set(t.dataset.clr,"");if(t.dataset.clr==="carry.item")S.carry.itemT="";}
+  else if(t.dataset.fake){set(t.dataset.fake,t.dataset.fake==="carry.item"?"Consecrated":"Burning");if(t.dataset.fake==="carry.item")S.carry.itemT="1 Bane on [Strike] and [Power] Actions";}
+  else if(t.dataset.sw){set(t.dataset.sw,t.dataset.v);}
+  else if(t.dataset.step){set(t.dataset.step,Math.max(0,Math.min(3,get(t.dataset.step)+ +t.dataset.d)));}
+  else if(t.hasAttribute("data-hadd")){S.ht.list.push({dice:"1d4",pool:"R",sub:"Psychic"});}
+  render();});
+document.addEventListener("change",e=>{const t=e.target;
+  if(t.dataset.in){set(t.dataset.in,t.dataset.in==="time.n"?Math.max(1,+t.value||1):t.value);render();}
+  else if(t.dataset.sel){set(t.dataset.sel,t.value);render();}
+  else if(t.dataset.col){set(t.dataset.col,t.value);render();}
+  else if(t.hasAttribute("data-addin")&&t.value){S[t.value].on=true;S.sel=t.value;render();}});
+render();
+</script>
+</body></html>

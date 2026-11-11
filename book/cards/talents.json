@@ -6,12 +6,12 @@
    "category": "Combat Talent",
    "level": 1,
    "flavor": "You call them out, and they cannot look away.",
-   "text": "Once per round, when you deal damage to a creature with a [Melee, Strike] Action, you can challenge them: until the end of their next turn, their [Strike] Actions against creatures other than you take 1 Bane.",
+   "text": "Once per round, when you deal damage to a creature with a [Melee, Strike] Action, you can challenge them: their [Strike] Actions against creatures other than you take 1 Bane (EoT).",
    "foundry": {
     "img": "icons/svg/combat.svg",
     "automation": "bronze",
     "automationNote": "apply the Challenged effect from the compendium.",
-    "append": "(Apply the Challenged effect from the compendium; its Bane is a chip the attacker unticks when they attack you.)"
+    "append": "(Apply the Challenged effect from the compendium; its Bane counts only on Strikes against creatures other than you.)"
    },
    "talent": {
     "group": "combat"
@@ -141,7 +141,7 @@
    "text": "You gain the Pummel Action. Your [[Fists]] don't have the [[Non-threatening]] property: you can flank with them.",
    "foundry": {
     "img": "icons/svg/combat.svg",
-    "automation": "gold",
+    "automation": "mithril",
     "actions": [
      "Pummel"
     ],
@@ -265,9 +265,13 @@
    "versions": [
     {
      "ap": 1,
-     "effects": "Make a [Ranged] Weapon Attack (1A) with 1 Boon. It ignores Low Cover.",
+     "effects": "Make a [Ranged] Weapon Attack (1A) with 1 Boon. It ignores [[Cover|Low cover]].",
      "foundry": {
-      "append": "@Use[Weapon Attack|boons:1|label:[Ranged] Weapon Attack (1A) with 1 Boon]"
+      "fx": {
+       "all": [
+        "{{fx:Aim (Weapon Attack, 1 Boon)}}"
+       ]
+      }
      },
      "ruler": "does Weapon Attack | each boon 1 | cover"
     }
@@ -275,8 +279,8 @@
    "foundry": {
     "img": "icons/svg/target.svg",
     "folder": "Talents",
-    "automation": "silver",
-    "automationNote": "ignoring Low Cover (untick the Low cover chip in the roll dialog)."
+    "automation": "mithril",
+    "automationNote": "the Weapon Attack with its Boon as a granted use (the card's button); Low cover gives it no Bane (the effect's Ignores cover setting)."
    },
    "talent": {
     "group": "combat",

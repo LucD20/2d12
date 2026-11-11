@@ -4,8 +4,9 @@
 //   encounter on the class's hook (an "Escalation hook" setting on a Feature: Kindled Wrath, Thrill of the Kill); at most 3 (a Critical or a hook at 3
 //   does nothing and isn't used up). Back to 1 when the encounter ends. The Escalation Passives work while the level is at least theirs; the Apex (an
 //   Action with Escalation 3) can be used while it is 3 and spends nothing. NPCs have none, except an Elite (the NPC sheet's switch: it starts at 1 and
-//   gains 1 a round like a PC; its phases, Bloodied and Strained, are by hand until R-Foundry 2).
+//   gains 1 a round like a PC; since v0.0.314 it gains 1 more when it becomes Bloodied and when it becomes Strained, once each, and has no Critical hook).
 import { TWOD12 } from "./config.mjs";
+import { unset } from "./util.mjs";   // v0.0.277: removing a key without the legacy "-=" syntax
 const F = "twod12";
 export const ESC_MAX = TWOD12.escalation.max, ESC_MIN = TWOD12.escalation.min, ESC_MOMENTUM = TWOD12.escalation.momentum;
 
@@ -13,8 +14,20 @@ export const ESC_MAX = TWOD12.escalation.max, ESC_MIN = TWOD12.escalation.min, E
 export const escalationOf = actor => (actor?.type === "character" || (actor?.type === "npc" && actor.system?.useEscalation) ? Math.max(0, Math.min(ESC_MAX, Number(actor.system?.escalation) || 0)) : null);   // NPCs: only with Escalation switched on
 
 /** Is this applied effect off because its owner's Escalation is under the effect's minimum (or it is disabled)? */
+// v0.0.314 (pack AU): an applied effect with the "whileSeen" rule (Frightened) is off while its creature doesn't see the effect's origin;
+// the sight check is Foundry's (the map), set by conditions.mjs, so this file stays pure.
+let seenGate = null;
+export const setSeenGate = fn => { seenGate = typeof fn === "function" ? fn : null; };
+/** v0.0.323 (PACK EFFECT-SHEET): one rule's own "While they see the origin": false while the creature doesn't see the effect's origin. */
+export function seesOrigin(actor, e) {
+  if (!seenGate) return true;
+  try { return seenGate(actor, e) !== false; } catch (err) { return true; }
+}
+/** v0.0.323: a rule "Next one only" that was used: spent (the effect keeps the ids). */
+export const isSpent = (e, m) => !!(m?.spend && m.ruleId && (e?.getFlag?.(F, "spent") ?? e?.flags?.[F]?.spent ?? []).includes(m.ruleId));
 export function effectOff(actor, e) {
   if (e?.disabled) return true;
+  if ((e?.getFlag?.(F, "whileSeen") ?? e?.flags?.[F]?.whileSeen) && seenGate) { try { if (seenGate(actor, e) === false) return true; } catch (err) { /* no map: it works */ } }
   const min = Number(e?.getFlag?.(F, "minEscalation") ?? e?.flags?.[F]?.minEscalation) || 0;
   return min > 0 && (escalationOf(actor) ?? 0) < min;
 }
@@ -50,7 +63,15 @@ export async function gainForRound(combat) {
     const a = c.actor;
     if (escalationOf(a) === null || a.statuses?.has?.("unconscious") || c.defeated) continue;
     const now = escalationOf(a);
-    if (now < ESC_MAX) await a.update({ "system.escalation": now + 1 });
+    if (now < ESC_MAX) {
+      await a.update({ "system.escalation": now + 1 });
+      // v0.0.314 (pack AU; book: "the players always see an Elite change"): an Elite's new level, and what it does, as a system line
+      if (a.type === "npc") try {
+        const { sysLine } = await import("./sysmsg.mjs");
+        const { esc } = await import("./util.mjs");
+        await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: a }), content: sysLine("fa-fire", `Round ${combat.round}: <b>${esc(c.name)}</b>'s Escalation rises to <b>${now + 1}</b>. Now: ${esc(eliteRung(now + 1))}.`, "escmsg") });
+      } catch (e) { console.warn("twod12 | Elite Escalation line", e); }
+    }
   }
 }
 
@@ -58,10 +79,18 @@ export async function gainForRound(combat) {
  * A raise outside the rounds: "crit" (a Critical on one of the creature's Actions) or "hook" (its class's hook), each once an encounter; "gm" (the
  * GM's valve) as often as the GM wants. At 3 nothing happens and the once isn't used up. Says so in the chat (sysmsg.mjs). Returns the new level, or null.
  */
+/** v0.0.314 (pack AU; book, Bestiary, Elite Escalation): what an Elite's Escalation does at each level (unless its entry says otherwise). */
+export const ELITE_RUNGS = { 1: "1 Boon on its first attack each round", 2: "its Round Special Action twice a round", 3: "its Encounter Special Action back, once" };
+export const eliteRung = n => ELITE_RUNGS[Math.max(1, Math.min(ESC_MAX, Math.trunc(Number(n)) || 1))];
+/** Pure: the Elite phases an Elite gains from these state words (["Bloodied", "Strained", "Down"]): "bloodied" and/or "strained". */
+export const elitePhases = words => ["Bloodied", "Strained"].filter(w => (words ?? []).includes(w)).map(w => w.toLowerCase());
+
 export async function raiseEscalation(actor, why = "gm", { combat = globalThis.game?.combat ?? null, label = "" } = {}) {
   const now = escalationOf(actor);
   if (now === null) return null;
-  const once = why === "crit" || why === "hook";
+  if (why === "crit" && actor?.type === "npc") return null;   // v0.0.314 (book, Elite Escalation): an Elite has no Critical hook
+  // v0.0.314 (pack AU): an Elite's phases, once each an encounter: it becomes Bloodied, it becomes Strained
+  const once = why === "crit" || why === "hook" || why === "bloodied" || why === "strained";
   const used = actor.getFlag?.(F, "escUsed") ?? {};
   if (once && combat?.id && used[why] === combat.id) return null;   // already this encounter
   if (now >= ESC_MAX) return null;   // does nothing and isn't used up
@@ -69,11 +98,13 @@ export async function raiseEscalation(actor, why = "gm", { combat = globalThis.g
   const upd = { "system.escalation": to };
   if (once && combat?.id) upd[`flags.${F}.escUsed.${why}`] = combat.id;
   await actor.update(upd);
+  try { await Hooks.callAll?.("twod12.escalationChanged", actor); } catch (e) { console.warn("twod12 | the rung's effects", e); }   // v0.0.249: the rung's effects (twod12.mjs listens)
   try {
     const { sysLine } = await import("./sysmsg.mjs");
     const { esc } = await import("./util.mjs");
     const what = why === "crit" ? "A Critical" : why === "hook" ? (label || "The class hook") : (label || "The GM");
-    await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-fire", `${esc(what)}: <b>${esc(actor.name)}</b>'s Escalation rises to <b>${to}</b>${once ? " (once an encounter)" : ""}.`, "escmsg") });
+    const rung = actor?.type === "npc" ? ` Now: ${esc(eliteRung(to))}.` : "";   // v0.0.314: an Elite's line says what its new level does
+    await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-fire", `${esc(what)}: <b>${esc(actor.name)}</b>'s Escalation rises to <b>${to}</b>${once ? " (once an encounter)" : ""}.${rung}`, "escmsg") });
   } catch (e) { console.warn("twod12 | Escalation line", e); }
   return to;
 }
@@ -106,10 +137,12 @@ export async function startAtOne(combat, { momentum = hasMomentum() } = {}) {
     const to = a.type === "npc" ? ESC_MIN : lv;   // an Elite has no Momentum
     const upd = {};
     if (escalationOf(a) !== to) upd["system.escalation"] = to;
-    if (a.getFlag?.(F, "escUsed")) upd[`flags.${F}.-=escUsed`] = null;
+    if (a.getFlag?.(F, "escUsed")) Object.assign(upd, unset(`flags.${F}.escUsed`));
     if (Object.keys(upd).length) await a.update(upd);
+    try { await Hooks.callAll?.("twod12.escalationChanged", a); } catch (e) { console.warn("twod12 | the rung's effects", e); }   // v0.0.249: Radiant Zeal at Escalation 1 from the start (twod12.mjs listens)
   }
   if (momentum) {
+    await combat?.setFlag?.(F, "momentumStart", true);   // v0.0.289 (PACK SHEET): the strip's Momentum badge
     await setMomentum(false);
     try {
       const { sysLine } = await import("./sysmsg.mjs");

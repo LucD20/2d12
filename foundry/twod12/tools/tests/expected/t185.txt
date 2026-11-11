@@ -1,0 +1,31 @@
+--- convertEffects: the Guard chip and the Line areas
+you or one ally in the light gain @Guard[1d8+mod]{Guard 1d8 + [Mod]} (2d6 + [Mod] at Stage 2). The other creatures are @Move[pushed|distance:1].
+@Guard[2d6+3]{Guard 2d6 + 3} for 1 round; The target gains @Guard[rally]{Guard RP}.
+A @Template[line|distance:6] of fire, a @Template[line|distance:2], Line of Effect is needed, Bright light in a @Template[emanation|distance:2|rounds:1] for 1 round, a @Template[burst|distance:3].
+--- the book's links in Foundry
+try to {{link:Hide|Hide}}, gain @Book[Guard]{Guard} 1d8, use @Book[Evade]{Evade} or @Book[Straight Line]{a straight line}; {{link:Smite|Smite}} again
+resolved by content.mjs: @UUID[Compendium.twod12.actions.Item.<id>]{Hide} @UUID[Compendium.twod12.features.Item.<id>]{the Passive}
+--- the area chips and [Mod] as a number (inline.mjs)
+labels: 1 Emanation | 2 Burst | 6 Line | icons: emanation, burst, line | each an <i> masked with the shape's SVG file (v0.0.247): true
+withMod: Guard 1d8+3 | Guard 1d8 + [Mod] | 2 to all | Pushed 1
+modForDoc: an Action card 3 | a damage card 2 | nothing null | no document null
+chips: <icon/> <span class="ti-name">2 Emanation</span> [twod12-inline] | <icon/> <span class="ti-name">3 Burst</span> [twod12-inline] | <icon/> <span class="ti-name">6 Line</span> [twod12-inline]
+Guard on an Action card (Modifier 3): <i class="fa-solid fa-shield-heart"></i> <span class="ti-name">Guard 1d8+3</span> [twod12-inline calc] (Calculated: Guard 1d8 + [Mod] with this creature's [Mod] 3 = Guard 1d8+3) | on the sheet with no creature: <i class="fa-solid fa-shield-heart"></i> <span class="ti-name">Guard 1d8 + [Mod]</span> [twod12-inline]
+a book link: <i class="fa-solid fa-book-open"></i> <span class="ti-name">Bright light</span> [twod12-inline book] (Bright: a rule of the book) | <i class="fa-solid fa-book-open"></i> <span class="ti-name">Guard</span> [twod12-inline book] (Guard: a rule of the book (Core Rules))
+options: {"formula":"1d8+mod","who":"pick","area":2} {"kind":"pushed","distance":1,"pick":true,"area":2,"from":"target"} {"ref":"Bright","doc":"Core Rules"}
+--- the Smite card (book/cards/paladin.json) as Foundry data
+1 AP: The target sheds @Book[Bright]{Bright light} in a @Template[emanation|distance:1|rounds:1] and takes 1 Bane when they try to {{link:Hide|Hide}}, for 1 round. | fx: {{fx:Smite (Bright light 1)}}
+2 AP: The target sheds @Book[Bright]{Bright light} in a @Template[emanation|distance:2|rounds:1] and takes 1 Bane when they try to {{link:Hide|Hide}}, for 1 round. | fx: {{fx:Smite (Bright light 2)}}
+3 AP: The target sheds @Book[Bright]{Bright light} in a @Template[emanation|distance:2|rounds:1] and takes 1 Bane when they try to {{link:Hide|Hide}}, for 1 round. You or one ally in the Bright light gain @Guard[1d8+mod|s2:2d6+mod|s3:2d8+mod]{Guard 1d8 + [Mod]}. The other creatures in the light, you excepted, are @Move[pushed|distance:1], away from the target. | fx: {{fx:Smite (Bright light 2)}} | after: @Guard[1d8+mod|who:pick|area:2] @Move[pushed|distance:1|pick:yes|area:2|from:target]
+the 2 and 3 AP texts are written in full (the book says As 1 AP): As 1 AP, but a 2 Emanation. | true true
+automation: diamond | the damage, the light on the target (the Damage button), then who gains the Guard (the Stage's dice) and the Pushes one by one (3 AP); the Bane on Hide by hand (Hide isn't written).
+a card in a table cell keeps a link with a label (cells of build_rules.py): true | the built book links Bright light and Hide: true true | every card an anchor: true
+--- the placeholder card (Hide) and the Smite light effects
+Hide: placeholder true | an Action: true | versions: 0 | frequency: "" | text: Not written yet. Hiding and sneaking are an open item (see @Book[Senses]{Senses}). This card holds the place, so that other cards can refer to Hide.
+in the Actions pack: actions/action | placed in Chapter 6: true
+effects: Smite (Bright light 1): light 1/2, note, rounds 1 | Smite (Bright light 2): light 2/4, note, rounds 1 | the old +1 Defense is gone: true
+--- the chain and the pickers in the code
+move.mjs: a Push picker (pick:yes), the card's target as the origin (from:target), the chain's targets: true true true
+damage.mjs: the chain runs after the damage (single and merged cards): true true | actions.mjs passes it on Tier 2+: true
+the Version field exists and is editable: true true | inline.mjs: the who picker and runAfter: true true
+the chips of the chain parse: Guard:true Move:true

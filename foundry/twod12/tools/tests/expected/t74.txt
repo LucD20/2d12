@@ -6,7 +6,7 @@ after 48 hours: Exhausted 2, threshold 0, condition "Exhausted 2" | Mind Save as
 6 hours later, no new Save yet: true
 12 hours after the first, asked again: true
 Daily used: {"faded":true,"why":"Used today: renews after a Sleep or a Rest"}
-after a Sleep: Exhausted 0, threshold 8, condition "none" | Daily renewed: true | last chat: Kai completes a Sleep: Daily Actions are renewed, and Exhausted goes from 2 to 0.
+after a Sleep: Exhausted 0, threshold 8, condition "none" | Daily renewed: true | last chat: SleepKai completes a SleepDaily Actions are renewed, and Exhausted goes from 2 to 0.
 Sleep again 10 hours later, declined at the 16-hour warning: true | Exhausted 0, threshold 8, condition "none"
 24 hours after the first Sleep, Sleep again: Exhausted 0, threshold 8, condition "none"
 6 rounds in a row change nothing: true

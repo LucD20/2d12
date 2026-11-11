@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Effect Details – redesign mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Signika:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --page:#cfc8b8; --page-ink:#2c2a26;
+  --navy:#1e2a3b; --navy-2:#253247; --gold:#e8a33a; --gold-soft:#e6d6a6;
+  --parch:#ebe5d6; --parch-2:#f4efe3; --line:#cbbf9f; --ink:#2b2620; --muted:#6d6456;
+  --maroon:#7a2a1e; --field:#fffdf8; --field-line:#b9ad91;
+  --bane:#a3271f; --boon:#1f5ea8; --rule:#5b3f8c; --cond:#2f6b3c;
+  --chip:#e0d5b8;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ color-scheme:dark; --page:#15181d; --page-ink:#d9d3c5; }
+}
+:root[data-theme="dark"]{ color-scheme:dark; --page:#15181d; --page-ink:#d9d3c5; }
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--page);color:var(--page-ink);font:14px/1.45 Signika,"Segoe UI",Arial,sans-serif;padding:24px 12px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:minmax(0,640px) minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:980px){.wrap{grid-template-columns:1fr}}
+
+/* ---------- the Foundry window ---------- */
+.win{background:var(--parch);color:var(--ink);border:1px solid #000;box-shadow:0 8px 30px rgba(0,0,0,.35)}
+.titlebar{background:#0d0f13;color:#eee;font-size:13px;padding:5px 10px;display:flex;justify-content:space-between}
+.head{background:var(--navy);display:flex;align-items:center;gap:14px;padding:10px 14px}
+.icon{width:46px;height:46px;border-radius:6px;background:var(--navy-2);border:1px solid #3c4a62;display:grid;place-items:center;font-size:24px}
+.head input{flex:1;background:transparent;border:0;border-bottom:1px dashed transparent;color:#f6efe0;font:700 22px Cinzel,serif;padding:2px 0}
+.head input:focus{outline:none;border-bottom-color:var(--gold)}
+.tabs{background:var(--navy-2);display:flex;align-items:stretch}
+.tabs button{flex:1;background:none;border:0;color:#b9c2d0;font:600 13px Signika,sans-serif;padding:11px 0;border-bottom:3px solid transparent;cursor:pointer}
+.tabs button.on{color:#fff;border-bottom-color:var(--gold)}
+.tabs .help{flex:0 0 44px;font:700 15px Signika;color:#b9c2d0}
+.tabs .help.on{color:var(--gold);border-bottom-color:transparent}
+.body{padding:14px 16px 18px}
+
+/* hover-card preview */
+.preview{display:flex;gap:12px;align-items:flex-start;margin-bottom:6px}
+.tip{flex:1;background:var(--navy);color:#e9e4d8;border-radius:6px;padding:9px 12px;border-left:4px solid var(--gold);min-height:58px}
+.tip b{font:700 14px Cinzel,serif;color:var(--gold)}
+.tip .line{margin-top:3px;font-size:13.5px}
+.tip .src{margin-top:4px;font-size:12px;color:#9fb0c6}
+.own{font-size:12px;color:var(--muted);margin:4px 0 0}
+.own a{color:var(--maroon);cursor:pointer;text-decoration:underline}
+.own input{width:100%;margin-top:5px}
+
+/* sections */
+.sec{margin-top:16px}
+.sec h3{margin:0 0 8px;font:700 14px Cinzel,serif;color:var(--maroon);letter-spacing:.02em;background:linear-gradient(90deg,var(--gold-soft),transparent 85%);border-left:4px solid #3b342b;padding:5px 9px;display:flex;justify-content:space-between;align-items:center}
+.sec h3 small{font:500 12px Signika;color:var(--muted);letter-spacing:0}
+.hint{display:none;font-size:12.5px;color:var(--muted);background:var(--parch-2);border:1px dashed var(--line);border-radius:4px;padding:6px 9px;margin:-2px 0 8px}
+body.helpon .hint{display:block}
+
+/* sentence rows */
+.sentence{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;font-size:14.5px}
+.seg{display:inline-flex;border:1px solid var(--field-line);border-radius:4px;overflow:hidden;background:var(--field)}
+.seg button{border:0;background:none;padding:5px 10px;font:500 13.5px Signika;color:var(--ink);cursor:pointer}
+.seg button+button{border-left:1px solid var(--field-line)}
+.seg button.on{background:var(--navy);color:#fff}
+.num{width:46px;text-align:center}
+input[type=text],input[type=number],select,textarea{background:var(--field);border:1px solid var(--field-line);border-radius:4px;padding:5px 8px;font:14px Signika;color:var(--ink)}
+input:focus-visible,select:focus-visible,button:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+.sub{margin-top:9px;display:flex;flex-wrap:wrap;gap:6px}
+.tog{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--parch-2);border-radius:14px;padding:3px 10px 3px 6px;font-size:13px;cursor:pointer;user-select:none}
+.tog .box{width:14px;height:14px;border-radius:3px;border:1.5px solid #3b342b;background:var(--field);display:grid;place-items:center;font-size:11px;line-height:1}
+.tog.on{background:var(--gold-soft);border-color:#b8a46c}
+.tog.on .box{background:#3b342b;color:#fff}
+.tog.on .box::after{content:"✓"}
+
+/* what it does list */
+.list{border:1px solid var(--line);border-radius:5px;background:var(--parch-2)}
+.row{display:grid;grid-template-columns:22px 1fr auto 26px;gap:8px;align-items:center;padding:7px 9px;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.kind{width:22px;height:22px;border-radius:4px;display:grid;place-items:center;color:#fff;font:700 11px Signika}
+.k-mod{background:var(--boon)} .k-bane{background:var(--bane)} .k-cond{background:var(--cond)} .k-rule{background:var(--rule)}
+.row .txt{font-size:14px}
+.row .txt em{font-style:normal;color:var(--muted);font-size:12.5px}
+.step{display:inline-flex;align-items:center;border:1px solid var(--field-line);border-radius:4px;background:var(--field)}
+.step button{border:0;background:none;width:22px;height:24px;cursor:pointer;font:600 14px Signika;color:var(--ink)}
+.step span{min-width:18px;text-align:center;font-weight:600}
+.x{border:0;background:none;color:var(--muted);font-size:16px;cursor:pointer}
+.x:hover{color:var(--bane)}
+.drop{border:1.5px dashed var(--field-line);border-radius:5px;padding:12px;text-align:center;color:var(--muted);font-size:13px}
+.adds{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.add{border:1px solid var(--field-line);background:var(--field);border-radius:4px;padding:4px 10px;font:500 13px Signika;color:var(--ink);cursor:pointer}
+.add:hover{background:var(--gold-soft)}
+.menu{display:none;margin-top:6px;border:1px solid var(--field-line);border-radius:5px;background:var(--field);padding:6px;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}
+.menu.open{display:grid}
+.menu button{text-align:left;border:0;background:none;padding:5px 7px;border-radius:3px;font:13px Signika;color:var(--ink);cursor:pointer}
+.menu button:hover{background:var(--parch-2)}
+.menu .g{grid-column:1/-1;font:600 11.5px Signika;color:var(--muted);padding:4px 7px 0}
+
+/* automation footer */
+details.auto,details.adv{margin-top:16px;border-top:1px solid var(--line);padding-top:10px}
+details summary{cursor:pointer;font:600 13.5px Signika;color:var(--ink);display:flex;align-items:center;gap:8px;list-style:none}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"▸";color:var(--muted)}
+details[open] summary::before{content:"▾"}
+.dia{width:12px;height:12px;transform:rotate(45deg);border:1.5px solid var(--navy);display:inline-block}
+.dia.full{background:var(--navy)} .dia.half{background:linear-gradient(135deg,var(--navy) 50%,transparent 50%)}
+.autogrid{display:grid;grid-template-columns:110px 1fr;gap:8px 10px;align-items:center;margin-top:10px}
+.autogrid label{font-size:13px;color:var(--muted)}
+.autogrid textarea{min-height:46px;resize:vertical}
+
+/* notes column */
+.notes h1{font:700 22px Cinzel,serif;margin:0 0 4px}
+.notes p.lead{margin:0 0 16px;color:inherit;opacity:.85}
+.note{border-left:3px solid var(--gold);padding:2px 0 2px 12px;margin:0 0 14px}
+.note h2{font:600 15px Signika;margin:0 0 2px}
+.note p{margin:0;opacity:.9}
+.note .was{font-size:12.5px;opacity:.7;margin-top:3px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="win" role="region" aria-label="Effect window mockup">
+  <div class="titlebar"><span>Effect: Frightened by the Judge</span><span>⋮ ✕</span></div>
+  <div class="head"><div class="icon" aria-hidden="true">😨</div><input id="name" value="Frightened by the Judge" aria-label="Effect name"></div>
+  <div class="tabs">
+    <button>Description</button>
+    <button class="on">Details</button>
+    <button class="help" id="helpBtn" title="Show help" aria-pressed="false">?</button>
+  </div>
+
+  <div class="body">
+    <!-- 1. Hover card preview -->
+    <div class="preview">
+      <div class="tip" aria-live="polite">
+        <b id="tName">Frightened by the Judge</b>
+        <div class="line" id="tLine"></div>
+        <div class="src" id="tSrc"></div>
+      </div>
+    </div>
+    <p class="own">This is what players see on hover. <a id="ownLink">Write it yourself</a><input id="ownText" type="text" placeholder="Leave empty to keep the line built from the settings" hidden></p>
+
+    <!-- 2. Who -->
+    <div class="sec">
+      <h3>Who gets it</h3>
+      <div class="hint">An Aura follows the creature it is on; a Zone stays on the squares where it was placed. Allies and enemies are judged from the origin.</div>
+      <div class="sentence">
+        <div class="seg" id="kind"><button class="on" data-v="effect">An effect</button><button data-v="aura">An Aura</button><button data-v="zone">A Zone</button></div>
+        <span id="kindJoin">on</span>
+        <div class="seg" id="on"><button class="on" data-v="target">the target</button><button data-v="self">the origin</button></div>
+        <span id="areaBits" hidden>of size <input class="num" id="size" type="number" min="1" value="2"> that affects
+          <select id="who"><option>enemies</option><option>allies</option><option>allies and the origin</option><option>everyone</option></select></span>
+      </div>
+      <div class="sub">
+        <span class="tog" data-k="sees" role="switch" aria-checked="false"><span class="box"></span>Works only while they see the origin</span>
+      </div>
+    </div>
+
+    <!-- 3. What -->
+    <div class="sec">
+      <h3>What it does <small id="count"></small></h3>
+      <div class="hint">Drag a condition from the Conditions compendium onto this list, or use the buttons. Values that stack (Empowered, Enfeebled) take the − / + buttons.</div>
+      <div class="list" id="list"></div>
+      <div class="adds">
+        <button class="add" data-m="mod">+ Boon or Bane</button>
+        <button class="add" data-m="cond">+ Condition</button>
+        <button class="add" data-m="rule">+ Rule</button>
+      </div>
+      <div class="menu" id="menu"></div>
+    </div>
+
+    <!-- 4. Ends -->
+    <div class="sec">
+      <h3>Ends</h3>
+      <div class="hint">Rounds count down at the end of the origin's turn. EoT ends at the end of the affected creature's turn.</div>
+      <div class="sentence">
+        <div class="seg" id="dur"><button data-v="eot">EoT</button><button class="on" data-v="rounds">For rounds</button><button data-v="enc">This encounter</button><button data-v="never">Until removed</button></div>
+        <span id="roundsBit"><input class="num" id="rounds" type="number" min="1" value="1"> <span id="rWord">round</span></span>
+      </div>
+      <div class="sub">
+        <span class="tog on" data-k="useEnd" role="switch" aria-checked="true"><span class="box"></span>Or when they use a</span>
+        <select id="useTrait"><option>Move</option><option selected>Strike</option><option>Handle</option><option>Melee</option><option>Ranged</option><option>Area</option><option>any</option></select>
+        <span style="align-self:center;font-size:13px">Action</span>
+      </div>
+      <div class="sub">
+        <span class="tog on" data-k="downEnd" role="switch" aria-checked="true"><span class="box"></span>Or when its origin goes Down</span>
+      </div>
+    </div>
+
+    <!-- 5. Automation -->
+    <details class="auto">
+      <summary><span class="dia half" id="autoDia"></span><span id="autoSum">Partly automated</span></summary>
+      <div class="hint" style="margin-top:8px">The diamond is the same one the Action cards show. A script covers what the settings above can't.</div>
+      <div class="autogrid">
+        <label for="script">Script</label>
+        <select id="script"><option value="">None</option><option>Beacon's Step moment</option><option>Shield of Faith reduction</option><option>Consecrated Ground start of turn</option></select>
+        <label for="hand">Players do</label>
+        <textarea id="hand">The origin decides when the effect ends early.</textarea>
+      </div>
+    </details>
+
+    <details class="adv"><summary>Advanced</summary><p style="font-size:13px;color:var(--muted);margin:8px 0 0">Unchanged for now (flags, raw changes). Next pass.</p></details>
+  </div>
+</div>
+
+<div class="notes">
+  <h1>Details tab, redesign 1</h1>
+  <p class="lead">The tab reads top to bottom as the questions a GM asks: who gets it, what it does, when it ends. Click around: the hover card on top rebuilds itself from the settings.</p>
+
+  <div class="note"><h2>The hover card replaces “In short” and “Hover text”</h2>
+    <p>One preview in the tooltip's own look, built from the settings. Writing your own line is a link, not a field that is always there.</p>
+    <p class="was">Was: an “In short” box, a Hover text field and a Show help checkbox, three things about one line.</p></div>
+
+  <div class="note"><h2>“Show help” is the ? on the tab bar</h2>
+    <p>It shows one hint under each heading; off by default.</p></div>
+
+  <div class="note"><h2>Who gets it: one sentence with segmented buttons</h2>
+    <p>Kind and placement as buttons, not dropdowns. Aura and Zone open their size and who they affect inline.</p>
+    <p class="was">Was: “This is [an effect] placed on [the target]” inside Identity, between Automation and the Rules.</p></div>
+
+  <div class="note"><h2>The four Rules go where they belong</h2>
+    <p>No Reactions and Loses its value in AP become rows of What it does (they are things it does). Ends when its origin goes Down goes to Ends. Only while it sees its origin stays a switch under Who gets it.</p>
+    <p class="was">Was: four checkboxes with their labels misaligned under them.</p></div>
+
+  <div class="note"><h2>What it does: one list for everything</h2>
+    <p>Boons, Banes, conditions and rules are rows in one list, each with a colored kind tile, its value stepper and ×. The drop zone is the empty list itself.</p>
+    <p class="was">Was: a “+ Add…” dropdown in the heading and a separate drop zone for conditions.</p></div>
+
+  <div class="note"><h2>Ends: the book's durations as buttons</h2>
+    <p>EoT, for N rounds, this encounter, until removed; then the “or when” clauses as switches, one per line.</p>
+    <p class="was">Was: “Lasts [until removed], or until the creature uses an action with [any] of [+]”.</p></div>
+
+  <div class="note"><h2>Automation moves to the bottom, closed</h2>
+    <p>It's for the designer, not for reading the effect. Its summary carries the automation diamond, so you see the status without opening it.</p>
+    <p class="was">Was: the first two fields of the tab.</p></div>
+</div>
+
+</div>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+let items=[
+  {k:"bane",t:"Pressure Bane on Rolls against the origin",v:1},
+  {k:"cond",t:"Enfeebled",v:1},
+  {k:"rule",t:"Can't take Reactions",v:null}
+];
+const MENU={
+  mod:[["Boons","Boon on Rolls","Boon on [Strike] Actions","Support Boon on Rolls"],["Banes","Bane on Rolls","Pressure Bane on Rolls against the origin","Field Bane on Rolls"]],
+  cond:[["Valued","Empowered","Enfeebled","Vulnerable"],["Others","Frightened","Hindered","Immobilized","Dazed","Prone","Slowed"]],
+  rule:[["Rules","Can't take Reactions","Loses its value in AP","Guard","Damage reduction"]]
+};
+const valued=["Empowered","Enfeebled","Vulnerable","Slowed","Guard","Damage reduction"];
+const tag={mod:"+",bane:"−",cond:"C",rule:"R"};
+function kindOf(m,t){return m==="mod"?(t.includes("Bane")?"bane":"mod"):m}
+function render(){
+  const L=$("#list");
+  if(!items.length){L.innerHTML='<div class="drop">Drop a condition here, or add something below.</div>'}
+  else L.innerHTML=items.map((it,i)=>`<div class="row"><span class="kind k-${it.k}">${tag[it.k]}</span>
+    <span class="txt">${it.v!=null&&(it.k==="bane"||it.k==="mod")?it.v+" ":""}${it.t}${it.v!=null&&!(it.k==="bane"||it.k==="mod")?" "+it.v:""}</span>
+    ${it.v!=null?`<span class="step"><button data-i="${i}" data-d="-1" aria-label="Less">−</button><span>${it.v}</span><button data-i="${i}" data-d="1" aria-label="More">+</button></span>`:"<span></span>"}
+    <button class="x" data-r="${i}" aria-label="Remove">×</button></div>`).join("");
+  $("#count").textContent=items.length?items.length+(items.length>1?" things":" thing"):"";
+  preview();
+}
+function seg(id){return $(id+" .on").dataset.v}
+function preview(){
+  const parts=items.map(it=>{
+    if(it.k==="bane"||it.k==="mod")return `${it.v} ${it.t}`;
+    return it.v!=null?`${it.t} ${it.v}`:it.t});
+  const d=seg("#dur"), r=+$("#rounds").value||1;
+  let end={eot:"until the end of their turn",rounds:`for ${r} round${r>1?"s":""}`,enc:"until the encounter ends",never:"until removed"}[d];
+  const extra=[];
+  if($('[data-k="useEnd"]').classList.contains("on"))extra.push(`they use a ${$("#useTrait").value==="any"?"":"["+$("#useTrait").value+"] "}Action`);
+  if($('[data-k="downEnd"]').classList.contains("on"))extra.push("the origin goes Down");
+  if(extra.length&&d!=="never")end+=", or until "+extra.join(" or ");
+  else if(extra.length)end="until "+extra.join(" or ");
+  const own=$("#ownText").value.trim();
+  $("#tName").textContent=$("#name").value;
+  $("#tLine").textContent=own||(parts.length?parts.join(". ")+". ":"Does nothing yet. ")+(parts.length?end.charAt(0).toUpperCase()+end.slice(1)+".":"");
+  const k=seg("#kind");
+  let src=k==="effect"?(seg("#on")==="target"?"On the target":"On the origin"):`${k==="aura"?"Aura":"Zone"} ${$("#size").value}, affects ${$("#who").value}`;
+  if($('[data-k="sees"]').classList.contains("on"))src+=" · only while they see the origin";
+  $("#tSrc").textContent=src;
+  const sc=$("#script").value, hand=$("#hand").value.trim();
+  const st=sc&&!hand?"full":(sc||hand?"half":"full");
+  $("#autoDia").className="dia "+(st==="full"?"full":"half");
+  $("#autoSum").textContent=st==="full"?"Automated":"Partly automated";
+}
+$$(".seg").forEach(s=>s.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+  s.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));
+  const k=seg("#kind");$("#areaBits").hidden=k==="effect";$("#on").style.display=k==="zone"?"none":"";
+  $("#kindJoin").textContent=k==="zone"?"":"on";
+  $("#roundsBit").style.visibility=seg("#dur")==="rounds"?"visible":"hidden";
+  preview();}));
+$$(".tog").forEach(t=>t.addEventListener("click",()=>{t.classList.toggle("on");t.setAttribute("aria-checked",t.classList.contains("on"));preview()}));
+["#rounds","#size","#who","#useTrait","#name","#ownText","#script","#hand"].forEach(s=>$(s).addEventListener("input",()=>{$("#rWord").textContent=+$("#rounds").value>1?"rounds":"round";preview()}));
+$("#list").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+  if(b.dataset.r!=null)items.splice(+b.dataset.r,1);
+  else{const it=items[+b.dataset.i];it.v=Math.max(1,it.v+ +b.dataset.d)}
+  render();});
+let openM=null;
+$$(".add").forEach(a=>a.addEventListener("click",()=>{const m=a.dataset.m,M=$("#menu");
+  if(openM===m){M.classList.remove("open");openM=null;return}
+  openM=m;M.innerHTML=MENU[m].map(g=>`<div class="g">${g[0]}</div>`+g.slice(1).map(o=>`<button data-o="${o}">${o}</button>`).join("")).join("");
+  M.classList.add("open");}));
+$("#menu").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const o=b.dataset.o;
+  const k=kindOf(openM,o);
+  items.push({k,t:o.replace(/^(Boon|Bane)/,"$1"),v:(k==="bane"||k==="mod"||valued.includes(o))?1:null});
+  $("#menu").classList.remove("open");openM=null;render();});
+$("#ownLink").addEventListener("click",()=>{const i=$("#ownText");i.hidden=!i.hidden;if(!i.hidden)i.focus();else{i.value="";preview()}});
+$("#helpBtn").addEventListener("click",e=>{document.body.classList.toggle("helpon");const on=document.body.classList.contains("helpon");e.target.classList.toggle("on",on);e.target.setAttribute("aria-pressed",on)});
+render();
+</script>
+</body>
+</html>

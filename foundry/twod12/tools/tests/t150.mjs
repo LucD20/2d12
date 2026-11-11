@@ -12,7 +12,7 @@ const C = await import(ROOTURL + "tools/content.mjs");
 const src = f => fs.readFileSync(ROOT + f, "utf8");
 
 // A level 2 Paladin built like the compendium's (its items carry classLevel and classSection).
-const pc = JSON.parse(fs.readFileSync(ROOT + "packs/_source/pcs/paladin-1-smite-heavy-blows.pc.json", "utf8"));
+const pc = JSON.parse(fs.readFileSync(ROOT + "packs/_source/pcs/aveline-human-paladin-smite.pc.json", "utf8"));
 const mkItems = list => list.map(i => ({ ...i, id: i._id, getFlag: (s, k) => i.flags?.twod12?.[k] }));
 const actorOf = (level, items) => { const its = mkItems(items); return { type: "character", system: { level }, items: Object.assign(its, { get: id => its.find(i => i.id === id) }), itemTypes: { class: its.filter(i => i.type === "class") } }; };
 const a1 = actorOf(1, pc.items), cls = a1.itemTypes.class[0];
@@ -35,4 +35,4 @@ console.log("the Level before a change is kept:", main.includes('options.twod12F
 console.log("Cancel on a level up puts the Level back:", win.includes('await actor.update({ "system.level": l - 1 }, { twod12Class: "skip" });'), "| a lower Level asks, then removes what the higher levels gave:", win.includes("Going down to level") && win.includes("deleteEmbeddedDocuments(\"Item\", gone.map(i => i.id))"), "| No keeps the Level:", win.includes('return actor.update({ "system.level": from }, { twod12Class: "skip" });'));
 console.log("nothing applied before confirm (drop):", win.indexOf("const res = await chooseLevel({ name: item.name") < win.indexOf("for (const old of actor.itemTypes.class) await old.delete();"), "| confirm disabled until complete:", win.includes('data-confirm${m.complete ? "" : " disabled"}'), "| buttons:", win.includes("`Add ${esc(name)} to sheet`") && win.includes("`Level up to ${level}`"));
 console.log("the sheet reads the sections:", sheet.includes("const t = classTabSections(this.actor, cls);") && sheet.includes("for (const sl of classTalentSlots(a))"));
-console.log("Class Details: the Levels button", tpl.includes('data-action="editLevels"'), "| Repertoire and Escalation drop zones", tpl.includes('data-list="repertoire"') && tpl.includes('data-list="escalation"'), "| Modifier selects", tpl.includes('data-modsel="weaponAttrs"') && is.includes("[data-modsel]"), "| the old Features list only when there is one", tpl.includes("{{#if featuresList.length}}"));
+console.log("Class Details: the Levels button", tpl.includes('data-action="editLevels"'), "| Repertoire and Escalation drop zones", tpl.includes('data-list="repertoire"') && tpl.includes('data-list="escalation"'), "| Modifier values and order (pack MOD)", tpl.includes('name="system.modHigh"') && tpl.includes('name="system.modOrder"') && tpl.includes('name="system.modStage2"'), "| the old Features list only when there is one", tpl.includes("{{#if featuresList.length}}"));

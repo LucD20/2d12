@@ -1,9 +1,9 @@
 import { TWOD12, migrateTags, npcHm, npcCv, stageOf, stageMod } from "./config.mjs";
-import { migrateSettings } from "./settingsmigrate.mjs";
-import { classModifiers, modOf } from "./modifiers.mjs";
+import { migrateSettings, migrateRules, migrateZone } from "./settingsmigrate.mjs";
+import { classModifiers, modOf, classTrack } from "./modifiers.mjs";
 
 import { applySpeedMods } from "./speedmods.mjs";
-const { SchemaField, NumberField, StringField, BooleanField, ArrayField, SetField, HTMLField } = foundry.data.fields;
+const { SchemaField, NumberField, StringField, BooleanField, ArrayField, SetField, HTMLField, ObjectField } = foundry.data.fields;
 const int = (initial = 0, min = 0) => new NumberField({ required: true, nullable: false, integer: true, initial, min });
 const sint = (initial = 0) => new NumberField({ required: true, nullable: false, integer: true, initial });
 const str = (initial = "") => new StringField({ required: true, blank: true, initial });
@@ -31,6 +31,8 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
       // Ward Defense (WD) = 11 + Power Modifier + Ward value + bonuses (v0.0.162). An NPC types both Defenses instead (NpcData armorDef, wardDef).
       armor: choice(Object.fromEntries(Object.entries(TWOD12.armors).map(([k, v]) => [k, v.label])), "unarmored"), ward: int(0, 0),
       guard: int(0, 0),   // v0.0.181: Guard N (book, Chapter 4): takes damage before the Health, the higher value kept, 0 at the end of the encounter (guard.mjs)
+      dmgMods: str(""),   // v0.0.283 (pack chat-cards): "Resist 5 Fire, Weak 2 Holy, Immune Cold" (book, Chapter 1), read by the damage message
+      reduceNext: int(0, 0),   // v0.0.254 (cards 4, Shield of Faith): the next damage this creature takes is reduced by this much, then it is 0
       apGuard: int(0, 0),   // v0.0.243 (pack R): the Guard of the AP kept at the end of the turn (2 / 3 / 4 each by Stage): taken first, 0 when the AP are regained
       escalation: int(1, 0),   // v0.0.243 (pack R): a level 1 to 3, never spent: 1 at the start of an encounter (2 with Momentum), +1 a round, +1 on a Critical and on the class hook once an encounter (escalation.mjs)
       // v0.0.243 (pack R; book, Health Pool): the class's high Health value goes to Vigor or to Resolve (the player's choice, Vigor by default); a species that lets
@@ -97,9 +99,23 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     this.rallyLeft = Math.max(0, this.rallyMax - this.rallyUsed);
     this.apPerTurn = TWOD12.apPerTurn;
 
-    // Weapon and Power Modifiers: the higher of the class's two Attributes each, never the same one (modifiers.mjs).
-    // A class from before v0.0.117 that has no lists keeps the Attribute that was picked for it.
     const cs = cls?.system;
+    if (cs && (Number(cs.modHigh) > 0 || Number(cs.modLow) > 0)) {
+      // v0.0.305 (pack MOD; book, Chapter 5): the class's two values, in the order the class fixes or the player chose, + the Stage steps (modifiers.mjs classTrack).
+      const t = classTrack({ high: cs.modHigh, low: cs.modLow, order: cs.modOrder, lead: cs.modPriority === "power" ? "power" : "weapon", stage2: cs.modStage2, stage: this.stage, cap: TWOD12.modCap });
+      this.modSource = "class"; this.modWeaponFirst = t.weaponFirst;
+      this.weaponAttribute = ""; this.weaponAttrValue = 0; this.weaponMod = t.weapon;
+      this.powerAttribute = ""; this.powerAttrValue = 0; this.powerMod = t.power;
+      this.signatureAttribute = ""; this.signatureAttrValue = 0; this.signatureMod = t.signature; this.signatureFrom = t.from;
+      this.modConflict = false;
+      this.armorTraining = cs.armorTraining || "light";
+      deriveDefenses(this, this.armorTraining);
+      this.magicAttribute = ""; this.magicAttrValue = 0; this.magicMod = this.powerMod;
+      return;
+    }
+    // Before pack MOD (a class copy not yet updated from the compendium): the higher of the class's two Attributes each, never the same one (modifiers.mjs).
+    // A class from before v0.0.117 that has no lists keeps the Attribute that was picked for it.
+    this.modSource = cs ? "attrs" : "";
     const wKeys = cs ? ([...(cs.weaponAttrs ?? [])].length ? [...cs.weaponAttrs] : [cs.chosenWeapon].filter(Boolean)) : [];
     const pKeys = cs ? ([...(cs.magicAttrs ?? [])].length ? [...cs.magicAttrs] : [cs.chosenMagic].filter(Boolean)) : [];
     const cm = classModifiers(a, wKeys, pKeys, cs?.modPriority === "power" ? "power" : "weapon");
@@ -228,21 +244,44 @@ export function npcBuild(sys) {
   return { role, rating, attributes, bodyHm: b.hm, mindHm: m.hm, bdt: b.v, mdt: m.v, armorDef: def("ad", sys.armorDef), wardDef: def("wd", sys.wardDef), speed, speedCustom: sr === "custom" };
 }
 
+/** Pack MOD: an NPC's lead Modifier: its modLead, or, for an NPC from before (""), the old Weapon / Power Attribute that is higher (Weapon on a tie). */
+export function npcLead(sys) {
+  if (sys?.modLead === "weapon" || sys?.modLead === "power") return sys.modLead;
+  const at = sys?.attributes ?? {}, w = Number(at[sys?.weaponAttribute ?? "body"]) || 0, p = Number(at[sys?.powerAttribute ?? "mind"]) || 0;
+  return p > w ? "power" : "weapon";
+}
+
+/** v0.0.307 (Lucas; the Bestiary): an NPC's Weapon and Power Modifier ratings. A rating left at "" is the default: the lead Modifier
+ *  (npcLead) Medium, the other Low (a Standard's Medium too). Returns { weapon, power } rating keys. */
+export function npcModRatings(sys) {
+  const lead = npcLead(sys), other = sys?.role === "standard" ? "medium" : "low", r = sys?.ratings ?? {};
+  return { weapon: r.wmod || (lead === "weapon" ? "medium" : other), power: r.pmod || (lead === "power" ? "medium" : other) };
+}
+/** The Modifier of a rating for a role (the book's table; a Minion's Extreme is its High). */
+export function npcModValue(roleKey, rating) {
+  const role = TWOD12.npcRoles[roleKey] ?? TWOD12.npcRoles.standard, i = TWOD12.npcRatings[rating]?.i ?? 2;
+  return Math.min(TWOD12.modCap, role.modBy[Math.min(i, role.modBy.length - 1)]);
+}
+
 export class NpcData extends CharacterData {
   static defineSchema() {
     return {
       ...super.defineSchema(),
       attributes: new SchemaField({ body: sint(), mind: sint(), appeal: sint(), instinct: sint() }),
-      speed: int(5), weaponAttribute: choice(TWOD12.attributes, "body"), powerAttribute: choice(TWOD12.attributes, "mind"),
+      speed: int(5), weaponAttribute: choice(TWOD12.attributes, "body"), powerAttribute: choice(TWOD12.attributes, "mind"),   // before pack MOD: only read when modLead is ""
+      modLead: choice({ "": "Default", weapon: "Weapon Modifier", power: "Power Modifier" }, ""),   // v0.0.307: only read for a rating left at its default   // v0.0.305 (pack MOD): which of the role's Modifiers is the higher one
       // The Bestiary (v0.0.163): its role and a rating for each number ("custom": the typed number below is used).
       role: choice(Object.fromEntries(Object.entries(TWOD12.npcRoles).map(([k, v]) => [k, v.label])), "standard"),
       ratings: new SchemaField(Object.fromEntries([["body", "high"], ["mind", "medium"], ["appeal", "low"], ["instinct", "medium"], ["bodyHm", "medium"], ["mindHm", "medium"], ["ad", "medium"], ["wd", "medium"]]
         .map(([k, d]) => [k, choice({ terrible: "Terrible", low: "Low", medium: "Medium", high: "High", extreme: "Extreme", custom: "Custom" }, d)])
-        .concat([["speed", choice({ 3: "3", 4: "4", 5: "5", 6: "6", 7: "7", custom: "Custom" }, "5")]]))),   // speed: Custom uses system.speed
+        .concat([["speed", choice({ 3: "3", 4: "4", 5: "5", 6: "6", 7: "7", custom: "Custom" }, "5")]])
+        // v0.0.307 (Lucas): the Weapon and Power Modifiers as ratings ("" = the default: npcModRatings)
+        .concat(["wmod", "pmod"].map(k => [k, choice({ "": "Default", terrible: "Terrible", low: "Low", medium: "Medium", high: "High", extreme: "Extreme" }, "")])))),   // speed: Custom uses system.speed
       custom: new SchemaField({ body: sint(), mind: sint(), appeal: sint(), instinct: sint(), bodyHealth: sint(10), mindHealth: sint(10) }),
       armor: choice(Object.fromEntries(Object.entries(TWOD12.armors).map(([k, v]) => [k, v.label])), "medium"),   // its Armor type (for rules and Talents that ask); medium: a typical enemy
       armorDef: sint(13), wardDef: sint(13),   // its typed Armor Defense and Ward Defense, used when that rating is Custom (any number)
       useEscalation: bool(false),   // an NPC can have Escalation too (an elite foe): off by default
+      eliteLadder: bool(true),   // v0.0.320 (pack AU part 2): with Escalation on, the Bestiary's default Elite ladder works by itself (passives.mjs); off: its entry says otherwise (its own Features)
       reachBase: int(1, 1),   // the creature's Reach (most are 1; a big creature or a long-limbed one more)
       steadiness: int(0, 0)   // v0.0.169: resistance to being moved: 0 unless its description says otherwise (Builder tab: 0 to 4)
     };
@@ -261,16 +300,18 @@ export class NpcData extends CharacterData {
     this.moveSpeed = applySpeedMods(this.parent, this.speed);
     // NPCs do not use the Dying and Shattered tables: at 0 HP they die with more lethal damage, or fall unconscious with more nonlethal.
     if (this.atZero) this.zeroState = this.lethal > this.nonlethal ? "Dead (more Lethal damage)" : (this.nonlethal > this.lethal ? "Unconscious (more Nonlethal damage)" : "Dead or Unconscious (the GM chooses)");
-    this.rallyHeal = 0; this.rallyMax = 0; this.rallyLeft = 0;
-    // Weapon and Power Attributes (the Bestiary): each Modifier is half the Attribute, rounded up, + 1; Signature uses the higher (Weapon on a tie).
-    // v0.0.181: no Stage step for NPCs, and never above +4 (a Custom Attribute could go higher).
-    this.weaponAttrValue = this.attributes[this.weaponAttribute] ?? 0;
-    this.weaponMod = Math.min(TWOD12.modCap, Math.ceil(this.weaponAttrValue / 2 + 1));
-    this.powerAttrValue = this.attributes[this.powerAttribute] ?? 0;
-    this.powerMod = Math.min(TWOD12.modCap, Math.ceil(this.powerAttrValue / 2 + 1));
+    // v0.0.340 (Lucas; book, Rally Points: NPCs): no Rally Points, but one an Action lets it use (or measures with: Guard RP) is its Stage's amount
+    this.rallyHeal = TWOD12.npcRallyHeal?.[Math.max(0, Math.min(2, (this.stage || 1) - 1))] ?? 9; this.rallyMax = 0; this.rallyLeft = 0;
+    // v0.0.305 (pack MOD; the Bestiary, Attributes and Modifiers): the role's two Modifiers (Minion and Grunt +2 / +1, Standard +2 / +2, Elite +3 / +2),
+    // the lead one chosen (modLead; "" = the old Weapon / Power Attribute that is higher, Weapon on a tie). No Stage step; Signature: the higher.
+    // v0.0.307 (Lucas): each Modifier is a rating of the role's table (npcModRatings, npcModValue).
+    this.modLeadKey = npcLead(this);
+    const mr = npcModRatings(this);
+    this.modRatings = mr;
+    this.modSource = "role";
+    this.weaponAttrValue = 0; this.weaponMod = npcModValue(this.role, mr.weapon); this.powerAttrValue = 0; this.powerMod = npcModValue(this.role, mr.power);
     const sigP = this.powerMod > this.weaponMod;
-    this.signatureAttribute = sigP ? this.powerAttribute : this.weaponAttribute; this.signatureAttrValue = sigP ? this.powerAttrValue : this.weaponAttrValue;
-    this.signatureMod = sigP ? this.powerMod : this.weaponMod; this.signatureFrom = sigP ? "power" : "weapon";
+    this.signatureAttribute = ""; this.signatureAttrValue = 0; this.signatureMod = sigP ? this.powerMod : this.weaponMod; this.signatureFrom = sigP ? "power" : "weapon";
     this.modConflict = false;
     this.armorTraining = "heavy";   // NPCs wear what their stat block says
     deriveDefenses(this, this.armorTraining);
@@ -306,7 +347,11 @@ export class ClassData extends foundry.abstract.TypeDataModel {
       weaponAttrs: attrSet(), magicAttrs: attrSet(),
       features: new ArrayField(new SchemaField({ uuid: str(), level: int(1, 0) })),
       chosenA: str(), chosenB: str(), chosenWeapon: str(), chosenMagic: str(),   // chosenWeapon / chosenMagic: only for classes from before v0.0.117
-      modPriority: choice({ weapon: "Weapon Modifier", power: "Power Modifier" }, "weapon"),   // which Modifier keeps an Attribute both would use
+      modPriority: choice({ weapon: "Weapon Modifier", power: "Power Modifier" }, "weapon"),   // pack MOD: which Modifier leads (an "either" class) and takes a Signature tie; before: which kept an Attribute both would use
+      // v0.0.305 (pack MOD; book, Chapter 5): the class's two Modifier values (Paladin +2 / +1 either way; Archer Weapon +2, Power +1). 0 / 0: a class
+      // from before keeps the Attribute formula until it is updated from the compendium. modStage2: the Modifier the player raised at Stage 2 ("" = the lead one).
+      modHigh: sint(0), modLow: sint(0), modOrder: choice({ either: "Either way (the player chooses)", weapon: "Weapon Modifier first", power: "Power Modifier first" }, "either"),
+      modStage2: choice({ "": "The higher one", weapon: "Weapon Modifier", power: "Power Modifier" }, ""),
       armorTraining: choice(TWOD12.armorTrainings, "light"),
       // v0.0.185 (pack C2): the class sheet's new fields, the Repertoire and Escalation lists, and the levels as sections (classlevels.mjs).
       category: new StringField({ required: true, blank: true, initial: "Class" }), flavor: str(),
@@ -338,12 +383,12 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
         // v0.0.189: Not implemented / Bronze / Silver / Gold
       // Defense bonuses: +bonus to the DC of actions that roll "vs" this attribute (and carry all the listed tags, e.g. "pushed").
       // A passive: settings that work by themselves while the creature has it (always, or while its Escalation is at least passiveEscalation).
-      settings: settingsField(),
+      settings: settingsField(), ...rulesFields(),   // v0.0.323 (PACK EFFECT-SHEET)
       defenses: new ArrayField(new SchemaField({ attr: choice(TWOD12.defenseKinds, "body"), bonus: sint(1), tags: str() }))   // attr: what it raises (every Defense, Armor, Ward or one Vs. Attribute)
     };
   }
   static migrateData(source) {
-    migrateSettings(source);
+    migrateSettings(source); migrateRules(source, "feature");   // v0.0.323
     if (source && source.escalationPassive === undefined && /escalation/i.test(String(source.category ?? ""))) source.escalationPassive = true;   // v0.0.187
     return super.migrateData(source);
   }
@@ -354,7 +399,7 @@ const instance = () => new SchemaField({
   useAt: bool(), subtype: choice(TWOD12.subtypes)
 });
 const tier = () => new ArrayField(instance());
-const fxList = () => new ArrayField(new SchemaField({ uuid: str(), mode: choice({ auto: "Automatically applied", conditional: "Conditional" }, "auto") }));
+const fxList = () => new ArrayField(new SchemaField({ uuid: str(), mode: choice({ auto: "Automatically applied", conditional: "Conditional", down: "After the damage, when the target is Down" }, "auto") }));   // v0.0.266: down (Deathmark)
 
 export class ActionData extends foundry.abstract.TypeDataModel {
   /** v0.0.186: Mark Quarry marked by its category before; now by its "Marks the target" box. */
@@ -392,6 +437,11 @@ export class ActionData extends foundry.abstract.TypeDataModel {
       trigger: str(),
       reaction: bool(),
       reactionKind: choice({ interrupt: "Interrupt", trigger: "Trigger" }, "trigger"),
+      // v0.0.261 (Lucas, Divine Intervention): a Reaction with a moment is offered by itself when the moment comes (within this many squares; 0: anywhere)
+      moment: choice(TWOD12.moments, ""), momentRange: int(0, 0), momentThreat: bool(),   // v0.0.303: only a creature you threaten (Opportunity Attack)
+     
+      // v0.0.272 (pack RX): the Reaction's owner counts as the creature of the moment too ("you or an ally"); whom the Reaction is used on
+      momentSelf: bool(), momentTarget: choice(TWOD12.momentTargets, "subject"),
       flavor: str(),
       area: str(),
       setup: str(),
@@ -414,6 +464,7 @@ export class ActionData extends foundry.abstract.TypeDataModel {
       escalation: int(0, 0),   // the Escalation it costs on top of its AP (an Escalation Action); 0: none
       marksTarget: bool(),
       basicAttack: bool(),   // v0.0.216 (Lucas): an NPC's Basic attack: used when an Action calls for a Weapon Attack (NPCs have none)
+      basicRating: choice({ terrible: "Terrible", low: "Low", medium: "Medium", high: "High", extreme: "Extreme" }, "medium"),   // v0.0.291 (PACK NPC-SHEET): the Basic attack's rating (the Bestiary's suggested average; the dice stay the GM's)
       weaponUse: choice(TWOD12.weaponUses, ""),   // v0.0.207: which weapon a Weapon Action uses (Pummel: only the Fists; Leg Sweep: a kick)
       automation: choice(TWOD12.automationRanks, ""), automationNote: str(),   // v0.0.215: what is done by hand (the diamond tooltip)
         // v0.0.189   // v0.0.186: using it marks the targeted creature (Mark Quarry); settings "only against my marked target" read the mark
@@ -423,6 +474,7 @@ export class ActionData extends foundry.abstract.TypeDataModel {
           mode: choice({ weapon: "Weapon mode", power: "Power mode" }),   // a Split Action's versions: "" for the others
           noTiers: bool(),
           areaSize: int(0, 0),   // v0.0.215: this version's Area size (0: the Action's); Word of Radiance is "2 / 3 Emanation"
+          areaRounds: int(0, 0),   // v0.0.261 (Consecrated Ground): this version's rounds for the kept area (0: the Action's)
           t1: tier(),
           t2: tier(),
           t3: tier(),
@@ -431,6 +483,7 @@ export class ActionData extends foundry.abstract.TypeDataModel {
           x3: str(),
           critical: str(),
           effects: str(),
+          after: str(),   // v0.0.246 (cards 1): chips run one after the other once the damage is applied (Smite 3 AP: the Guard's "who", then the Pushes)
           fx: new SchemaField({ all: fxList(), t1: fxList(), t2: fxList(), t3: fxList() })
         })
       )
@@ -450,12 +503,14 @@ export class WeaponData extends foundry.abstract.TypeDataModel {
       subtype: choice(TWOD12.subtypes, "Sl"),
       range: str(), reach: int(0),   // range: every weapon's Range ("1", "1/2", "10/20/40"); reach: the old extra Reach (a melee weapon without a Range uses 1 + it)
       thrownRange: str(),   // a Thrown weapon's Range when thrown ("4/8/12")
+      weaponGroup: str(),   // v0.0.343: its Weapon Group (blades, axes...; empty: from its name, the book's table)
       masteryGroup: str(),   // v0.0.154: the kind of weapon its Mastery counts for (empty: its name), so a +1 Greatsword shares the Greatsword's
       hands: int(1, 1), unloaded: bool(),
       damage: new SchemaField({ t1: tierDamage(), t2: tierDamage(), t3: tierDamage() }),
       actions: new ArrayField(str()),
       wielded: bool(),
       hand: str(),   // v0.0.208: the hand that holds it, "main" or "off" (empty: by order; a two-handed grip uses both)
+      dmgMods: str(""),   // v0.0.333 (PACK RWI): Immune / Resist / Weak it gives while wielded (a shield, a warded blade)
       dropped: bool()   // v0.0.139: on the ground (not in hand, not worn); Worn = not wielded and not dropped
     };
   }
@@ -470,6 +525,7 @@ export class ArmorData extends foundry.abstract.TypeDataModel {
       bonus: sint(0), ward: int(0, 0),
       properties: str(),   // free text for now (Resist, Bulky, Noisy...: not automated yet)
       worn: bool(),
+      dmgMods: str(""),   // v0.0.333 (PACK RWI): Immune / Resist / Weak it gives while worn ("Resist 2 Fire, Immune Cold"; the actor field's format)
       dropped: bool()   // v0.0.139: on the ground; not worn and not dropped = Carried
     };
   }
@@ -494,7 +550,7 @@ export class TalentData extends foundry.abstract.TypeDataModel {
       // Talents that modify other Actions: which Actions (a name, "category:Weapon Technique" or "trait:strike"), when, and what they add.
       modifiers: modifiersField(),
       // A passive, as on a Feature.
-      settings: settingsField(),
+      settings: settingsField(), ...rulesFields(),   // v0.0.323 (PACK EFFECT-SHEET)
       // v0.0.186 (pack C-a; book 16-talents.md): the Category (Combat, Mobility, Magic, Skill), the Prerequisites as data the Talent picker checks
       // (each a Talent by name, a Level, an Action with a trait, an Attribute at a value, or Other: free text, not checked; all of them, or any one),
       // and a theme tag (Unarmed, Great Weapon, Marksman, Divine) the picker can filter by. "requirements" stays as the old free text.
@@ -507,7 +563,7 @@ export class TalentData extends foundry.abstract.TypeDataModel {
     };
   }
   static migrateData(source) {
-    migrateSettings(source);
+    migrateSettings(source); migrateRules(source, "talent");   // v0.0.323
     // v0.0.186: "Combat Talent" in the Category becomes the Category field.
     const m = /^\s*(combat|mobility|magic|skill)\s+talent\s*$/i.exec(String(source?.category ?? ""));
     if (m && source.group === undefined) { source.group = m[1].toLowerCase(); source.category = "Talent"; }
@@ -515,20 +571,31 @@ export class TalentData extends foundry.abstract.TypeDataModel {
   }
 }
 
+/** v0.0.323 (PACK EFFECT-SHEET): the rules list (the Details tab's source), whether it is stored (rulesOn), the hover card built from it. */
+const rulesFields = () => ({ rules: new ArrayField(new ObjectField()), rulesOn: bool(), autoHover: str() });
 /** The settings of an Effect (and of a Feature's or Talent's passive, v0.0.125): what it does. */
 const settingsField = () => new ArrayField(new SchemaField({
         type: choice(TWOD12.effectSettings, "note"),
         attrs: attrSet(), title: str(), text: str(),
         bright: int(0), dim: int(0), color: str(),
-        boons: int(0), banes: int(0), empowered: int(0), enfeebled: int(0), byValue: bool(), predicate: str(), all: predSet(), any: predSet(), none: predSet(), from: traitSet(),
+        // v0.0.247 (Lucas: Smite's light was far too bright): the light's intensity (Foundry's alpha, 0 to 1; 0.5 is Foundry's default) and animation
+        lightAlpha: new NumberField({ required: true, nullable: false, initial: 0.5, min: 0, max: 1 }), lightAnim: str(), lightSpeed: int(5, 0), lightIntensity: int(5, 0),
+        boons: int(0), banes: int(0), bbName: choice({ "": "", field: "Field", pressure: "Pressure", support: "Support" }, ""), empowered: int(0), enfeebled: int(0), byValue: bool(), predicate: str(), all: predSet(), any: predSet(), none: predSet(), from: traitSet(),
         // Bonus Damage: an instance added to the damage of the next matching action, on the listed tiers (none = all).
-        dmg: str(), dmgPool: choice(TWOD12.pools, "B"), dmgSub: choice(TWOD12.subtypes), tiers: new SetField(new StringField({ choices: ["t1", "t2", "t3"] })), fxUuid: str(),
+        dmg: str(), dmgPool: choice(TWOD12.pools, "B"), dmgSub: choice({ ...TWOD12.subtypes, W: "The weapon's" }), tiers: new SetField(new StringField({ choices: ["t1", "t2", "t3"] })), fxUuid: str(),
         // Boons and banes that apply to rolls made AGAINST the creature with the effect (Prone).
         against: bool(),
         // Speed: "override" replaces it with the formula, "add" adds the formula to it.
         speedMode: choice({ override: "Override", add: "Add" }, "add"), speedFormula: str(),
         // Grant: lets the creature use an Action (a name, "category:Weapon Technique" or "trait:strike") a number of times, for this AP cost.
-        grantAction: str(), grantCount: int(1, 1), grantAp: int(0, 0), grantDistinct: bool(),
+        grantAction: str(), grantCount: int(1, 1), grantAp: int(0, 0), grantDistinct: bool(), halfT3: bool(),   // v0.0.261 (Covering Shot): on a Tier 3, the target's next damage is halved (the Half button lit); v0.0.263: halfOn says on which result (halfT3 is read as "t3")
+        // v0.0.264 (Lucas): "On [grantOn], [grantDo]": the target's next damage halved (Covering Shot), or a line (grantText) on the granted use's card for those results. halfOn: v0.0.263's field, read as grantOn.
+        grantOn: choice(TWOD12.grantOnChoices, ""), grantDo: choice(TWOD12.grantDoChoices, "half"), grantText: str(), halfOn: choice(TWOD12.grantOnChoices, ""),
+        grantOn2: choice(TWOD12.grantOnChoices, ""), grantDo2: choice(TWOD12.grantDoChoices, "text"), grantText2: str(),   // v0.0.266 (Lucas, Overwatch): a second "and on [a result], ..." line
+        coverLevels: new SetField(new StringField({ choices: ["low", "medium", "high"] })),   // v0.0.266 (Lucas, Aim): the cover levels the creature's matching Actions ignore
+        // v0.0.261 (Consecrated Ground): Zone: the placed area holds it; who is inside gains the Effect (fxUuid) while inside, or heals this at the start of each of their turns
+        zoneWho: choice({ allies: "Allies", enemies: "Enemies", all: "Everyone" }, "allies"), zoneHeal: str(),
+        inlineAction: str(),   // v0.0.249 (Lucas, inline Actions): the Action (a uuid or a name) the creature has while the effect lasts (Beacon's Step)
         // Defense: +N (or -N) to every Defense, Armor, Ward or one Vs. Attribute. Bonuses don't add up: the highest bonus and the highest penalty count.
         defKind: choice(TWOD12.defenseKinds, "all"), defValue: sint(1),
         // A passive's own Escalation minimum (0: always); an Effect ignores it.
@@ -556,11 +623,27 @@ const settingsField = () => new ArrayField(new SchemaField({
         mstTrait: choice(TWOD12.weaponTraits, "projectile"), mstValue: int(3, 0),
         // v0.0.243 (pack R): eschook: the class's Escalation hook: once an encounter, when hookWhen happens (an ally within hookRange squares becomes
         //   Bloodied or goes Down; the creature it marked goes Down), the creature's Escalation rises by 1 (Kindled Wrath, Thrill of the Kill).
-        hookWhen: choice(TWOD12.escHookWhen, "allyState"), hookRange: int(5, 0)
+        hookWhen: choice(TWOD12.escHookWhen, "allyState"), hookRange: int(5, 0),
+        // v0.0.314 (pack AU): Boons and Banes only against creatures other than the effect's origin (Taunted), or only against it;
+        //   bleed: damage at the end of each of the creature's turns (dmg, dmgPool, dmgSub; attrs: the Save's Attributes; bleedDc: its DC).
+        vsOrigin: choice(TWOD12.vsOriginChoices, ""), bleedDc: int(13, 0),
+        // v0.0.346 (v0.0.345's field was missing here, so Foundry dropped it): a Movement limit refuses ("cant") or is Difficult Terrain ("difficult", Frightened);
+        // dmgSub "W" (above): Bonus Damage of the weapon's subtype (Marked Quarry)
+        moveHow: choice({ cant: "Not allowed", difficult: "Difficult Terrain" }, "cant"),
+        // v0.0.320 (pack AU part 2): resist: Resist N / Weak N / Immune of a subtype (dmgSub) while it is on the creature (the highest of each counts);
+        //   freqmore: more uses of a Frequency (the Elite ladder: Round Specials twice a round, Encounter Specials a second time).
+        rwKind: choice(TWOD12.rwKinds, "resist"), rwValue: int(1, 0), fmWhich: choice(TWOD12.freqMore, "round"),
+        // v0.0.323 (PACK EFFECT-SHEET; fxrules.mjs compile): the rule it came from, "Next one only" (spend), its own "While they see the origin" (seen),
+        //   Empowered "Increase by" (empMode), a Defense or Speed bonus's kind and name (defMode, defName), an Aura's formula size and "Shown on the map",
+        //   On damage's pool (trigPool), "All range Banes" (rangeAll)
+        ruleId: str(), spend: bool(), seen: bool(), empMode: choice({ set: "Set to", inc: "Increase by" }, "set"), defMode: choice({ bonus: "A bonus", inc: "An increase", set: "Set to" }, "bonus"),
+        defName: str(), sizeFormula: str(), trigPool: str(), auraShow: bool(true), rangeAll: bool(),
+        areaRows: new ObjectField(),   // v0.0.327 (PACK ZONE): an Aura's rows (Carries, Heals, Hazard, Difficult Terrain), each with its Who
+        valFormula: str()   // v0.0.324: a Defense's or a Resist / Weak's amount as a formula (@origin.pow...), read when it counts
       }));
 
 export class EffectData extends foundry.abstract.TypeDataModel {
-  static migrateData(source) { migrateSettings(source); return super.migrateData(source); }
+  static migrateData(source) { migrateSettings(source); migrateRules(source, "effect"); migrateZone(source); return super.migrateData(source); }
   static defineSchema() {
     return {
       description: new HTMLField(),
@@ -571,10 +654,22 @@ export class EffectData extends foundry.abstract.TypeDataModel {
       automation: choice(TWOD12.automationRanks, ""), automationNote: str(),   // v0.0.215: what is done by hand (the diamond tooltip)
         // v0.0.189
       minEscalation: int(0, 0),   // a passive that works only while its owner's Escalation is at least this (0: always)
+      // v0.0.314 (pack AU, the conditions as items): general rules a condition can have.
+      //   whileSeen: it works only while the creature sees its origin (Frightened); noReactions: the creature can't use Reactions (Staggered);
+      //   loseAp: when applied, the creature loses its value in AP (the rest from its next regain), then it ends (Dazed);
+      //   endsWithOrigin: it ends when its origin goes Down or Unconscious (Grabbed).
+      whileSeen: bool(), noReactions: bool(), loseAp: bool(), endsWithOrigin: bool(),
+      // v0.0.316 (Lucas): its origin is the creature that used the Action (a card's chip); off, or with no Action behind it, it asks (a token on the map)
+      originFromUser: bool(),
       linked: str(),   // other conditions this one brings with it, by name ("Hindered"); they end when this one does
       conditions: new ArrayField(new SchemaField({ uuid: str(), name: str(), value: int(1, 0), valued: bool(), mode: choice({ set: "The highest counts", increase: "Increase the value", halfLevel: "Half the creature's level, rounded up (Squeezing)" }, "set") })),   // conditions this effect applies, each with its value; they end when this one does
       duration: new SchemaField({ type: choice(TWOD12.durationTypes, ""), rounds: int(1, 1) }),
       settings: settingsField(),
+      // v0.0.323 (PACK EFFECT-SHEET): the Details tab's rules and Ends (fxrules.mjs), the source of the settings and fields above once stored (rulesOn);
+      //   autoHover: the hover card built from them ({origin} filled in when applied); saveEnd: Ends' "A Save"
+      ...rulesFields(), ends: new ObjectField(), saveEnd: new ObjectField(),
+      // v0.0.327 (PACK ZONE): "Where it is": on a creature (its rules) or on the map (a Zone: its area, what it does inside, its colors; fxrules.mjs normZone)
+      where: choice({ creature: "On a creature", map: "On the map (a Zone)" }, "creature"), zone: new ObjectField(),
       // The effect ends after an action with any of these traits is used.
       expireOn: new SetField(new StringField({ required: true, blank: false })),   // traits, or "__name:smite" (an Action by name)
       // When on, the effect ends only after an action that has ALL the listed traits (otherwise any one of them).

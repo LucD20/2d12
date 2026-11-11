@@ -11,12 +11,12 @@ const C = await import(ROOTURL + "tools/content.mjs");
 const src = f => fs.readFileSync(ROOT + f, "utf8");
 console.log("--- the automation chip");
 console.log(["gold", "silver", "bronze", "none", ""].map(r => `${r || "(none)"}: ${cfg.autoChip(r).replace(/ data-tooltip="[^"]*"/, "") || "-"}`).join(" | "));
-console.log("on the card head:", cfg.cardHead("Smite", "Divine Power 1", "", "", "gold").includes('autodia auto-gold'), "| the Features tab:", src("templates/actor-sheet.hbs").includes("{{name}}</span>{{{auto}}}"), "| the item sheets' select:", (src("templates/item-sheet.hbs").match(/name="system.automation"/g) ?? []).length);
+console.log("on the card head:", cfg.cardHead("Smite", "Divine Power 1", "", "", "gold").includes('autodia auto-gold'), "| the Features tab:", src("templates/actor-sheet.hbs").includes("{{name}}</span>{{{auto}}}"), "| the item sheets' select:", (src("templates/item-sheet.hbs").match(/name="system.automation"/g) ?? []).length + (src("module/fxsheet.mjs").includes('"@automation"') ? 1 : 0));   // v0.0.323: the Effect's is in the new tab
 const count = {}; for (const d of C.docs) if (d.system.automation) count[d.system.automation] = (count[d.system.automation] ?? 0) + 1;
 console.log("compendium ranks:", JSON.stringify(count), "| old cards have none:", !C.docs.some(d => /old cards/.test(d.folder ?? "") && d.system.automation));
 console.log("--- bonus damage named by its source");
 const act = src("module/actions.mjs"), dmg = src("module/dmgcard.mjs");
-console.log("the card's bonus row links its source:", act.includes("<b>${srcLink(b.effect, b.srcUuid)}</b>"), "| no None type:", act.includes('${b.sub ? ` ${esc(TWOD12.subtypes[b.sub] ?? "")}` : ""}'), "| the damage card names it (not Untyped):", dmg.includes("const name = c.src ?"), "| passives carry the item's uuid:", src("module/passives.mjs").includes('srcUuid: it.getFlag?.(F, "sourceUuid") || it.uuid'));
+console.log("the card's bonus row links its source:", act.includes("<b>${srcLink(b.effect, b.srcUuid)}</b>"), "| no None type:", act.includes('${b.sub ? ` ${esc(TWOD12.subtypes[b.sub === "W" ? previewWeapon?.system?.subtype ?? "" : b.sub] ?? "")}` : ""}'), "| the damage card names it (not Untyped):", dmg.includes("const name = c.src ?"), "| passives carry the item's uuid:", src("module/passives.mjs").includes('srcUuid: it.getFlag?.(F, "sourceUuid") || it.uuid'));
 console.log("--- targeting mode");
 const T = (targets, traits = [], area = "") => ({ targets, traits: new Set(traits), area });
 console.log("needs targets:", [T("One creature"), T("Two creatures"), T("The triggering creature"), T("One creature", ["self"]), T("All creatures in the Area", [], "2 Emanation"), T("Allies within 5 squares"), T("")].map(TG.needsTargets).join(" "));

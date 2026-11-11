@@ -21,24 +21,24 @@ escapes names: true
 Also applies Hindered · lasts until the end of its turn · ends early after an action that is Ranged and Strike.
 Does nothing yet.
 --- chip rows
-with all of: Melee var(--g-requires), Strike var(--g-kind) [32 to add] | but none of: Ranged var(--g-requires) [33 to add]
+with all of: Melee var(--g-requires), Strike var(--g-kind) [33 to add] | but none of: Ranged var(--g-requires) [34 to add]
 hidden: Any of, Saves against | once Any of is opened: all,any,none / from
 bonus damage has no Saves against: any,none
 --- the template
-data-fxhelp                template: true | sheet listens: true
-data-fxkind                template: true | sheet listens: true
-data-fxself                template: true | sheet listens: true
-data-fxadd                 template: true | sheet listens: true
+data-fr-q                  new tab: true | listened: true
+@isCondition               new tab: true | listened: true
+@selfApplied               new tab: true | listened: true
+data-fr-add                new tab: true | listened: true
 data-padd                  template: true | sheet listens: true
 data-prem                  template: true | sheet listens: true
 data-pshow                 template: true | sheet listens: true
-data-eadd                  template: true | sheet listens: true
-data-erem                  template: true | sheet listens: true
-data-expireall             template: true | sheet listens: true
-data-list="conditions"     template: true | sheet listens: -
-name="system.duration.type" template: true | sheet listens: -
-name="system.linked"       template: true | sheet listens: -
-name="system.valued"       template: true | sheet listens: -
+data-eadd                  template: false | sheet listens: true
+data-erem                  template: false | sheet listens: true
+data-expireall             template: false | sheet listens: true
+data-list="conditions"     template: false | sheet listens: -
+name="system.duration.type" template: false | sheet listens: -
+name="system.linked"       template: false | sheet listens: -
+name="system.valued"       template: false | sheet listens: -
 fxd-help                   template: true | sheet listens: -
 no old 88-checkbox predicate grid: true | no old Add setting button: true
 help setting registered: true

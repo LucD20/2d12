@@ -3,7 +3,7 @@
 //   Armor: Dropped, Carried (in the pack), Worn. One armor is worn at a time.
 // Pure, so the tests can check it; the sheet (actor-sheets.mjs) builds its rows and slots from it.
 
-export const WEAPON_WHERE = { dropped: "Dropped", worn: "Worn", "1h": "One hand", "2h": "Both hands" };
+export const WEAPON_WHERE = { dropped: "Dropped", worn: "On you", "1h": "One hand", "2h": "Both hands" };   // v0.0.289: "Worn" reads "On you"
 export const ARMOR_WHERE = { dropped: "Dropped", carried: "Carried", worn: "Worn" };
 
 const traitsOf = it => it?.system?.traits ?? new Set();
@@ -133,7 +133,7 @@ export function useButtons(weapons, fits) {
 
 /** v0.0.141: the row's "where" buttons. Weapons: Dropped / Worn / 1H / 2H; armor: Dropped / Carried / Worn. [{ v, l, tip, on, drop }] */
 const SEG = {
-  weapon: [["dropped", "Dropped", "On the ground"], ["worn", "Worn", "On you, ready to draw"], ["1h", "1H", "In one hand"], ["2h", "2H", "In both hands"]],
+  weapon: [["dropped", "Dropped", "On the ground"], ["worn", "On you", "On you, ready to draw"], ["1h", "1H", "In one hand"], ["2h", "2H", "In both hands"]],
   armor: [["dropped", "Dropped", "On the ground"], ["carried", "Carried", "In your pack"], ["worn", "Worn", "Worn: its Armor and Ward count"]]
 };
 export function whereButtons(kind, where) {

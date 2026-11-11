@@ -19,7 +19,12 @@ export function isEscPassive(it, cls = null) {
   return !!it.system?.escalationPassive || /escalation/i.test(String(it.system?.category ?? "")) || (cls?.system?.escPassives ?? []).includes(it.getFlag?.(F, "sourceUuid"));
 }
 /** The Escalation a passive needs: its settings' lowest minimum, or "Escalation is N or more" in its text (Hallowed Stance), or 1. At most 3. */
-export function passiveThreshold(it) {
+export function passiveThreshold(it, cls = null) {
+  // v0.0.289 (PACK SHEET, Lucas: Searing Blows and Reckoning read "always on"): the class section it was picked in says its rung ("Escalation 2 Passive")
+  const k = cls ?? it?.parent?.itemTypes?.class?.[0] ?? null, secId = it?.getFlag?.(F, "classSection");
+  const sec = secId ? (k?.system?.levels ?? []).flatMap(l => l.sections ?? []).find(x => x.id === secId) : null;
+  const rung = Number(String(sec?.title ?? "").match(/^Escalation\s+(\d)/i)?.[1]) || 0;
+  if (rung) return Math.min(3, rung);
   const mins = (it?.system?.settings ?? []).map(x => Math.trunc(Number(x.minEscalation)) || 0).filter(n => n > 0);
   if (mins.length) return Math.min(3, ...mins);
   const m = String(it?.system?.description ?? "").match(/Escalation is (\d) or more/i);
@@ -64,7 +69,7 @@ export function escalationModel(actor, { actionRow, isFaded, open = null, openPa
   const down = !!actor.statuses?.has?.("unconscious");
   const rungs = [3, 2, 1].map(n => ({
     n, lit: now >= n,
-    passives: passives.filter(p => passiveThreshold(p) === n).map(p => {
+    passives: passives.filter(p => passiveThreshold(p, cls) === n).map(p => {
       const state = passiveState(actor, p, now);
       // v0.0.215 (Lucas, playtest 2): clicking a Passive shows its description under it (desc), instead of opening the Feature window.
       return { id: p.id, name: p.name, state, tag: PASSIVE_TAG[state], tip: `${p.name} · Escalation ${n}+: ${String(p.system?.hover || p.system?.description || "").replace(/<[^>]+>/g, "").trim()}`,
@@ -90,6 +95,14 @@ export function grantBadges(g, effect) {
   const short = [], long = [];
   if (g.distinct) { short.push("≠ targets"); long.push("Each use needs a different target"); }
   if (g.boons) { short.push(`+${g.boons} Boon${g.boons === 1 ? "" : "s"}`); long.push(`${g.boons} Boon${g.boons === 1 ? "" : "s"} on it`); }
+  // v0.0.264: "On [a result], [what happens]"; v0.0.266: both lines, the badge short (the chips as their labels, cut), the whole line in the body
+  const plain = t => String(t ?? "").replace(/@\w+\[[^\]]*\]\{([^}]*)\}/g, "$1").replace(/@(\w+)\[[^\]]*\]/g, "$1").replace(/\s+/g, " ").trim();
+  for (const [on, does, text] of [[g.on, g.does, g.text], [g.on2, g.does2 ?? "text", g.text2]]) {
+    if (!on || (does === "text" && !text)) continue;
+    const w = TWOD12.grantOnChoices?.[on] ?? on, when = w.replace(/^a /, "").replace(" or more", "+");
+    if (does === "text") { const p = plain(text); short.push(`${when}: ${p.length > 28 ? `${p.slice(0, 27).trim()}…` : p}`); long.push(`On ${w}, the card says "${p}"`); }
+    else { short.push(`half on ${when}`); long.push(`On ${w}, the target's next damage is halved`); }
+  }
   for (const b of effect?.getFlag?.(F, "bonuses") ?? []) {
     if (b.dmg) { short.push(`+${b.dmg}${b.dmgSub ? ` ${b.dmgSub}` : ""}`); long.push(`+[${({ B: "V", M: "R" })[b.dmgPool || "B"] ?? b.dmgPool}] ${b.dmg}${b.dmgSub ? ` ${TWOD12.subtypes[b.dmgSub] ?? b.dmgSub}` : ""} damage${tierWord(b.tiers) ? ` on${tierWord(b.tiers)}` : ""}`); }
     if (b.text) { short.push(`${String(b.text).replace(/\s*\((?:EoT|.*round.*)\)\s*$/i, "")}${tierWord(b.tiers)}`); long.push(`${b.text}${tierWord(b.tiers) ? ` on${tierWord(b.tiers)}` : ""}`); }

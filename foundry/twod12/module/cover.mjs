@@ -5,7 +5,8 @@
 import { homePos, leanOf, pickPeek, CORNERS, CORNER_LABEL } from "./lean.mjs";
 
 export const COVER_LABELS = ["No cover", "Low cover", "Medium cover", "High cover", "Total cover"];
-const INSET = 0.04;   // corners are pulled slightly inward, so a wall running along the target's edge doesn't block its own corner
+const INSET = 0.04;
+const WAY_INSET = 0.03;   // v0.0.350: a creature in the way: its square less a sliver (was 0.12: a line through a quarter of the square didn't count)   // corners are pulled slightly inward, so a wall running along the target's edge doesn't block its own corner
 
 /** Do walls that block sight or movement lie between two points? A line that only touches the end of a wall isn't blocked. */
 export function wallBlocks(a, b) {
@@ -64,14 +65,17 @@ export function coverBetween(attacker, target, { blockedFn = wallBlocks, others 
   }
   const tc = centerOf(tr);
   const crowd = others ?? (canvas.tokens?.placeables ?? []).filter(t => t.id !== attacker.id && t.id !== target.id && !t.document.hidden);
-  const inWay = best.blocked < 4 && crowd.some(t => segmentHitsRect(best.origin, tc, inset(rectOf(t), 0.12)));
+  // v0.0.350 (Lucas, playtest 4: "show center-to-center cover too; I think it isn't calculating it correctly"): a creature whose square the center
+  // line crosses is in the way (book: "on the line"); only a sliver is left out so a line along an edge or through a corner point doesn't count
+  const blockers = best.blocked < 4 ? crowd.filter(t => segmentHitsRect(best.origin, tc, inset(rectOf(t), WAY_INSET))) : [];
+  const inWay = blockers.length > 0;
   let level = Math.min(4, Math.max(best.blocked, inWay ? 1 : 0));
   // A target that is Leaning is exposed: its cover is reduced by 1 level (Total -> High -> Medium -> Low -> none).
   const exposed = !!target.actor?.statuses?.has?.("leaning") && level >= 1;   // Total cover becomes High: a creature Leaning out of it can be targeted
   if (exposed) level -= 1;
   // origin and corners: the lines the cover was counted with (the Line of Effect button draws them, v0.0.165).
   const corners = targetCorners.map(c => ({ x: c.x, y: c.y, blocked: !!blockedFn(best.origin, c) }));
-  return { blocked: best.blocked, level, banes: level >= 4 ? 0 : level, noLoE: level >= 4, inWay, leaning, leanCorner: chosen, exposed, label: COVER_LABELS[level], origin: best.origin, corners };
+  return { blocked: best.blocked, level, banes: level >= 4 ? 0 : level, noLoE: level >= 4, inWay, leaning, leanCorner: chosen, exposed, label: COVER_LABELS[level], origin: best.origin, corners, center: tc, blockers: blockers.map(t => ({ id: t.id, name: t.name })) };
 }
 
 /**
@@ -84,7 +88,7 @@ export function coverFromPoint(point, target, { blockedFn = wallBlocks, others =
   const tr = rectOf(target);
   const blocked = cornersOf(inset(tr, INSET)).filter(c => blockedFn(point, c)).length;
   const crowd = others ?? (canvas.tokens?.placeables ?? []).filter(t => t.id !== target.id && !exclude.includes(t.id) && !t.document.hidden);
-  const inWay = blocked < 4 && crowd.some(t => segmentHitsRect(point, centerOf(tr), inset(rectOf(t), 0.12)));
+  const inWay = blocked < 4 && crowd.some(t => segmentHitsRect(point, centerOf(tr), inset(rectOf(t), WAY_INSET)));   // v0.0.350
   let level = Math.min(4, Math.max(blocked, inWay ? 1 : 0));
   const exposed = !!target.actor?.statuses?.has?.("leaning") && level >= 1;   // Total cover becomes High: a creature Leaning out of it can be targeted
   if (exposed) level -= 1;

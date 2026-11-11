@@ -67,3 +67,46 @@ export function registerMigrationR() {
     await migrateR();
   });
 }
+
+// Pack MOD on load (v0.0.305; book, Chapter 5): the Weapon and Power Modifiers are class values (+2 and +1). Each character keeps the order its
+// Modifiers had: the one that was higher (from the Attributes, the old formula) becomes the lead (the +2); a tie goes to the Weapon Modifier.
+// Nothing is asked: the GM gets one card. The class copies take their values when they are updated from the compendium (refresh.mjs keeps
+// modPriority and modStage2). Also game.twod12.migrateMod().
+const DONE_MOD = "MOD1";
+/** The Attribute lists of the classes before pack MOD (a class copy already updated from the compendium has none left). */
+export const OLD_MOD_LISTS = { Paladin: [["body", "appeal"], ["mind", "appeal"]], Archer: [["instinct", "body"], ["mind", "appeal"]] };
+
+/** Pure: the lead Modifier a character keeps. attrs: its Attributes; cs: its class copy's system; name: the class's name. */
+export function modLeadOf(attrs, cs, name, classModifiers) {
+  const list = k => [...(cs?.[k] ?? [])];
+  let W = list("weaponAttrs"), P = list("magicAttrs");
+  if (!W.length && !P.length) [W, P] = OLD_MOD_LISTS[name] ?? [[cs?.chosenWeapon].filter(Boolean), [cs?.chosenMagic].filter(Boolean)];
+  const cm = classModifiers(attrs ?? {}, W, P, cs?.modPriority === "power" ? "power" : "weapon");
+  return cm.power.mod > cm.weapon.mod ? "power" : "weapon";
+}
+
+export async function migrateMod() {
+  if (!game.user.isGM) { ui.notifications.warn("Only the GM can run the pack MOD migration."); return null; }
+  const { classModifiers } = await import("./modifiers.mjs");
+  const lines = [];
+  for (const a of characters()) {
+    const cls = a.itemTypes?.class?.[0];
+    if (!cls) continue;
+    const lead = modLeadOf(a.system.attributes, cls.system, cls.name, classModifiers);
+    if ((cls.system.modPriority || "weapon") !== lead) await cls.update({ "system.modPriority": lead });
+    lines.push(`${esc(a.name)} (${esc(cls.name)}): leads with the <b>${lead === "power" ? "Power" : "Weapon"} Modifier</b>`);
+  }
+  await game.settings.set(F, "migratedMod", DONE_MOD);
+  if (lines.length) await ChatMessage.create({ whisper: game.users.filter(u => u.isGM).map(u => u.id), content: sysCard({ title: "Modifiers are class values", lead: `${lines.length} character${lines.length === 1 ? "" : "s"}: each keeps the order of its Modifiers`,
+    text: `${lines.join("<br>")}<br>The Paladin's Modifiers are +2 and +1 (the player's order), the Archer's Weapon +2, Power +1; Stage 2 adds +1 to one, Stage 3 +1 to both. They take effect when the class copies are updated from the compendium (System settings: Update from the compendium). A Paladin's order can be changed on its class (Details tab).` }) });
+  return { characters: lines.length };
+}
+
+export function registerMigrationMod() {
+  game.settings.register(F, "migratedMod", { scope: "world", config: false, type: String, default: "" });
+  Hooks.once("ready", async () => {
+    if (!game.user.isActiveGM || game.settings.get(F, "migratedMod") === DONE_MOD) return;
+    if (!characters().length) { await game.settings.set(F, "migratedMod", DONE_MOD); return; }
+    await migrateMod();
+  });
+}

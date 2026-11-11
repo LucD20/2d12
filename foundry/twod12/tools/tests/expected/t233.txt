@@ -1,0 +1,22 @@
+Frightened (1 round): the Goblin's turn it was applied in: null | Kaela's turn, round 3: null | the Goblin's next turn: end
+2 rounds: round 3: tick | the same round again: null | round 4: end
+Vulnerable (EoT): Kaela's turn: null | the Goblin's turn: end
+EoT, no slot: by combatant: end | by token: end | by uuid: end | someone else: null
+no duration / no ended turn: null null
+the countdown: one actor per uuid: true | each effect in its own try: true | skips one already gone: true
+a hand click: the targeted creatures when the selected one is the pusher: true | a right-click takes a square back: true
+groups: Greatsword=blades, +1 Greatsword=blades, Hand Crossbow=crossbows, Crossbow=crossbows, Knuckle Dagger=unarmed, Dagger=blades, Shortbow=bows, Fists=unarmed, Warhammer=- | set on the weapon: hammers | by its Mastery kind: blades
+a Longsword after a Greatsword's Tier 3: false | a Shortbow: true | the next encounter: true | no group: its own kind: kind:warhammer
+the message is a sysLine: true | the limit is stored on the character: true | the weapon sheet has the field: true
+who:pick / area / near skip the card's targets as recipients: true
+both creatures in the window: true | the input passes every aimed token: true
+the old setting becomes the rule: act against notorigin true "1d6"
+compiled back: 1d6 Pi against:true vsOrigin:not
+its sentence: Rolls against them with [Strike] Actions made by anyone but Kaela: an extra 1d6 [V] Pierce damage.
+an ally's [Strike]: true | Kaela's own: false | not a Strike: false
+the card's chain puts it on the Quarry: true | the sheet offers Extra damage for both directions: true
+at the bottom: true | scrolled up to read: false | registered: true
+its card id kept: true | deleted (through the GM if not yours): true | the line: true | Charge! next to Give up: true
+no marks line: true | Covering Fire: true
+hidden tokens react: true | and count for 'closer': true
+the pale CRIT zone has light text: true

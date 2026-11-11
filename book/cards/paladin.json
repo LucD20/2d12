@@ -63,7 +63,14 @@
       "[V] 1[W] + [Mod] + [R] 1d6 Ho",
       "[V] 1[W] + [Mod] + [R] 1d8 Ho"
      ],
-     "effects": "The target sheds Bright light in a 1 Emanation and takes 1 Bane when they try to hide, for 1 round."
+     "effects": "The target sheds [[Bright|Bright light]] in a 1 Emanation and takes 1 Bane when they try to [[Hide]], for 1 round.",
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Smite (Bright light 1)}}"
+       ]
+      }
+     }
     },
     {
      "ap": 2,
@@ -72,7 +79,15 @@
       "[V] 1[W] + [Mod] + [R] 2d6 Ho",
       "[V] 1[W] + [Mod] + [R] 2d10 Ho"
      ],
-     "effects": "As 1 AP, but a 2 Emanation."
+     "effects": "As 1 AP, but a 2 Emanation.",
+     "foundry": {
+      "text": "The target sheds [[Bright|Bright light]] in a 2 Emanation and takes 1 Bane when they try to [[Hide]], for 1 round.",
+      "fx": {
+       "all": [
+        "{{fx:Smite (Bright light 2)}}"
+       ]
+      }
+     }
     },
     {
      "ap": 3,
@@ -81,9 +96,15 @@
       "[V] 1[W] + [Mod] + [R] 2d8 Ho",
       "[V] 1[W] + [Mod] + [R] 3d8 Ho"
      ],
-     "effects": "As 2 AP, and you or one ally in the light gain [[Guard]] 1d8 + [Mod] (2d6 + [Mod] at Stage 2, 2d8 + [Mod] at Stage 3). The other creatures in the light are Pushed 1, away from the target.",
+     "effects": "As 2 AP, and you or one ally in the Bright light gain [[Guard]] 1d8 + [Mod] (2d6 + [Mod] at Stage 2, 2d8 + [Mod] at Stage 3). The other creatures in the light, you excepted, are Pushed 1, away from the target.",
      "foundry": {
-      "append": "@Guard[1d8+mod]{Guard 1d8 + [Mod]}"
+      "text": "The target sheds [[Bright|Bright light]] in a 2 Emanation and takes 1 Bane when they try to [[Hide]], for 1 round. You or one ally in the Bright light gain [[Guard]] 1d8 + [Mod] (2d6 + [Mod] at Stage 2, 2d8 + [Mod] at Stage 3). The other creatures in the light, you excepted, are Pushed 1, away from the target.",
+      "fx": {
+       "all": [
+        "{{fx:Smite (Bright light 2)}}"
+       ]
+      },
+      "after": "@Guard[1d8+mod|who:pick|area:2] @Move[pushed|distance:1|pick:yes|area:2|from:target]"
      },
      "ruler": "on 2+: guard 1d8+[Mod] self"
     }
@@ -91,9 +112,10 @@
    "foundry": {
     "img": "icons/svg/sun.svg",
     "folder": "Paladin",
-    "automation": "gold"
+    "automation": "diamond",
+    "automationNote": "the damage, the light on the target (the Damage button), then who gains the Guard (the Stage's dice) and the Pushes one by one (3 AP); the Bane on Hide by hand (Hide isn't written)."
    },
-   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): more damage, no +1 Defense; the 3 AP Version is an explosion: the other creatures in the light are Pushed 1 away from the target (the target is the Push's origin; a Push's value is a maximum, so the Paladin moves each one 0 or 1: no \"can\" on cards, Lucas 2026-11-04)."
+   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): more damage, no +1 Defense; the 3 AP Version is an explosion: the other creatures in the light are Pushed 1 away from the target (the target is the Push's origin; a Push's value is a maximum, so the Paladin moves each one 0 or 1: no \"can\" on cards, Lucas 2026-11-04). Cards 1 (Lucas, 2026-11-05): the first card written his way: book links (Bright light, Hide), the 2 and 3 AP texts written in full for Foundry (foundry.text), the light as an effect the Damage button applies (fx), the Guard's who-picker with the Modifier as a number and the Push picker after the damage (foundry.after)."
   },
   {
    "name": "Lay On Hands",
@@ -115,17 +137,14 @@
     },
     {
      "ap": 2,
-     "effects": "As 1 AP, and the target heals 1d6 + your Power Modifier more.",
-     "foundry": {
-      "append": "@Rally[1]"
-     },
+     "effects": "The target can use 1 Rally Point, healing 1d6 + your Power Modifier more.",
      "ruler": "heal 1; mend 1d6+[Mod] ally"
     },
     {
      "ap": 3,
-     "effects": "The target can use 2 Rally Points and heals 1d6 + your Power Modifier more.",
+     "effects": "As 2 AP, but 2 Rally Points.",
      "foundry": {
-      "append": "@Rally[2]"
+      "text": "The target can use 2 Rally Points, healing 1d6 + your Power Modifier more."
      },
      "ruler": "heal 2; mend 1d6+[Mod] ally"
     }
@@ -133,8 +152,8 @@
    "foundry": {
     "img": "icons/svg/regen.svg",
     "folder": "Paladin",
-    "automation": "silver",
-    "automationNote": "the Rally Points (buttons); the extra healing by hand."
+    "automation": "mithril",
+    "automationNote": "the Rally Points with the extra healing (the chip opens the Rally window; the Pow is the Paladin's)."
    },
    "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): the Holy Strike rider is gone; the 2 and 3 AP Versions heal new Health on top of the Rally Points, a step above the future Heal Action (2 AP, a roll) at every AP."
   },
@@ -142,27 +161,33 @@
    "name": "Shield of Faith",
    "category": "Divine Power",
    "level": 1,
-   "_note": "Pack R-classes: a Hallmark Reaction (decision sheet item 7: 1R, Turn, 2d6 + [PMod], no Escalation; measured 0.88 AP a turn). The block steps by Stage like the Health line (item 18).",
+   "_note": "Cards 4 (Lucas, 2026-11-06): Targets the triggering creature, no Distance (the Interrupt says it); the reduction is a chip with the Stage dice; the Reaction's moment waits for the Reactions pass.",
    "flavor": "A shimmer of light holds steady between them and harm.",
    "traits": [
     "divine",
     "focus"
    ],
    "frequency": "Turn",
-   "target": "The creature the Strike would damage (you or an ally)",
-   "distance": "5 sq.",
+   "target": "The triggering creature",
    "interrupt": "A [Strike] Action would damage you or an ally within 5 squares.",
    "versions": [
     {
      "ap": 1,
      "effects": "The damage that Strike deals to the target is reduced by 2d6 + your Power Modifier (3d6 at Stage 2, 4d6 at Stage 3).",
-     "ruler": "block 2d6+[Mod]"
+     "ruler": "block 2d6+[Mod]",
+     "foundry": {
+      "after": "@Reduce[2d6+pow|s2:3d6+pow|s3:4d6+pow|who:pick|near:5]"
+     }
     }
    ],
    "foundry": {
     "img": "icons/svg/shield.svg",
     "folder": "Paladin",
-    "automation": "none"
+    "automation": "mithril",
+    "automationNote": "offered by itself in the Reactions message when a Strike would damage you or an ally within 5 squares (the damage waits); Use sets the reduction on that creature, taken from the held damage when it lands.",
+    "moment": "strikeDamage",
+    "momentRange": 5,
+    "momentSelf": true
    }
   },
   {
@@ -189,14 +214,20 @@
       "[R] 1d6 Ho; Pushed 1.",
       "No effect."
      ],
-     "ruler": "on 1: push 2; on 1: debuff Frightened (EoT); on 2: push 1"
+     "ruler": "on 1: push 2; on 1: debuff Frightened (EoT); on 2: push 1",
+     "foundry": {
+      "after": "@Move[pushed|distance:1|t1:2] @Condition[frightened|rounds:1|tier:1]"
+     }
     }
    ],
    "foundry": {
     "img": "icons/svg/sun.svg",
     "folder": "Paladin",
-    "automation": "silver",
-    "automationNote": "the Save and the damage (the card); the Push and Frightened by hand."
+    "automation": "diamond",
+    "automationNote": "offered by itself in the Reactions message after an enemy within 5 squares (its Distance) makes a Strike against an ally; Use makes the Save Action against that enemy (the Save and the damage: the card; Frightened is the condition item since v0.0.314, its Bane only while the enemy sees the Paladin). Since v0.0.334 (Lucas) the Push (2 on a Tier 1, 1 on a Tier 2) and Frightened of the Paladin (a Tier 1, 1 round) come by themselves once the damage is applied and lands.",
+    "moment": "strikeAgainst",
+    "momentRange": 0,
+    "momentTarget": "source"
    }
   },
   {
@@ -235,7 +266,7 @@
    "foundry": {
     "img": "icons/svg/sun.svg",
     "folder": "Paladin",
-    "automation": "gold"
+    "automation": "mithril"
    }
   },
   {
@@ -262,7 +293,10 @@
       "[R] 3d6 Ho; Pushed 2."
      ],
      "ruler": "area 1.8 | on 2: push 1; on 3: push 2",
-     "critical": "The target is Prone."
+     "critical": "The target is Prone.",
+     "foundry": {
+      "after": "@Move[pushed|distance:1|t3:2|pick:yes|from:area] @Condition[prone|crit:yes]"
+     }
     },
     {
      "ap": 3,
@@ -272,55 +306,60 @@
       "[R] 3d8 Ho; Pushed 2."
      ],
      "ruler": "area 2.3 | on 2: push 1; on 3: push 2",
-     "critical": "The target is Prone."
+     "critical": "The target is Prone.",
+     "foundry": {
+      "after": "@Move[pushed|distance:1|t3:2|pick:yes|from:area] @Condition[prone|crit:yes]"
+     }
     }
    ],
    "foundry": {
     "img": "icons/svg/sun.svg",
     "folder": "Paladin",
-    "automation": "gold",
+    "automation": "mithril",
     "areaCfg": {
      "targets": "enemies"
-    }
+    },
+    "automationNote": "the Burst, the damage per target, then the Pushes one by one from the Burst's center (1 on Tier 2, 2 on Tier 3) and Prone on the Criticals (after the damage)."
    },
-   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): a Burst (on a corner within 10 squares), Pushed 1 / 2 from the Burst's center on Tiers 2 and 3, Prone on a Critical.",
-   "notes": "The Burst's center is the origin of the Push (see [[Forced Movement]])."
+   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): a Burst (on a corner within 10 squares), Pushed 1 / 2 from the Burst's center on Tiers 2 and 3, Prone on a Critical. Cards 2 (Lucas, 2026-11-05): the Pushes and Prone run after the damage (foundry.after); the notes line about the Burst's center dropped (it is in the rules)."
   },
   {
    "name": "Bulwark of Faith",
    "category": "Paladin Feature",
    "level": 1,
-   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): an Encounter Pick (1R, Interrupt), no longer a Hallmark Reaction (Rebuke took the slot); the ally is Slid 1 after the damage.",
+   "_note": "Cards 4 (Lucas, 2026-11-06): Targets the triggering creature, no Distance; the Guard chip reads Guard RP (a Rally Point's heal, the recipient's); the Slid comes on a second button after the damage (@Pause). The 'would damage' Interrupt stays: the Reactions pass can ask before the damage roll.",
    "flavor": "You step into the blow meant for them, and your god holds the line with you.",
    "traits": [
     "divine",
     "focus"
    ],
    "frequency": "Encounter",
-   "target": "The ally the Strike would damage",
-   "distance": "5 sq.",
+   "target": "The triggering creature",
    "interrupt": "A [Strike] Action would damage an ally within 5 squares.",
    "versions": [
     {
      "ap": 1,
      "effects": "The target gains [[Guard]] equal to what one of their Rally Points heals, before the damage. After the damage, they are Slid 1.",
+     "ruler": "block 9; slide 1",
      "foundry": {
-      "append": "@Guard[rally]{Guard equal to what one of their Rally Points heals}"
-     },
-     "ruler": "block 9; slide 1"
+      "after": "@Guard[rally|who:pick|near:5] @Pause[After the damage] @Move[slid|distance:1]"
+     }
     }
    ],
    "foundry": {
     "img": "icons/svg/shield.svg",
     "folder": "Paladin",
-    "automation": "silver"
+    "automation": "mithril",
+    "automationNote": "offered by itself in the Reactions message when a Strike would damage an ally within 5 squares (the damage waits); Use gives the Guard to that ally before the held damage lands, then a second button, after the damage, Slides them 1.",
+    "moment": "strikeDamage",
+    "momentRange": 5
    }
   },
   {
    "name": "Beacon",
    "category": "Paladin Feature",
    "level": 1,
-   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): Aura of Protection reworked as an interactive Encounter Pick: 1 AP, 3 rounds, and a free step toward an ally who is hit.",
+   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): Aura of Protection reworked as an interactive Encounter Pick: 1 AP, 3 rounds, and a free step toward an ally who is hit. Cards 2 (Lucas, 2026-11-05): the step is an inline Action, Beacon's Step (0R, Round, Interrupt), the first of its kind; the Aura links to the book once.",
    "flavor": "You plant your feet, and light rims the shoulders of everyone near you.",
    "traits": [
     "area",
@@ -333,11 +372,11 @@
    "versions": [
     {
      "ap": 1,
-     "effects": "For 3 rounds, you and allies in the Aura gain +1 Defense. The first time each round a [Strike] Action would damage an ally in the Aura, you can Evade 1 toward them, before the damage.",
+     "effects": "For 3 rounds, you and allies in the [[Aura]] gain +1 Defense. While the Beacon is active, you gain the following Action:",
      "foundry": {
       "fx": {
        "all": [
-        "{{fx:Aura of Protection}}"
+        "{{fx:Beacon}}"
        ]
       }
      },
@@ -347,9 +386,23 @@
    "foundry": {
     "img": "icons/svg/aura.svg",
     "folder": "Paladin",
-    "automation": "silver",
-    "automationNote": "the Defense (the effect, 3 rounds); the Evade by hand."
-   }
+    "automation": "mithril",
+    "automationNote": "the Beacon effect (the aura for 3 rounds, +1 Defense inside, Beacon's Step on the sheet while it lasts); the Step is offered by itself when an ally in the Aura takes damage (the Reactions message)."
+   },
+   "inline": [
+    {
+     "name": "Beacon's Step",
+     "cost": "0R",
+     "frequency": "Round",
+     "flavor": "A step into the light, before the blow lands.",
+     "interrupt": "An ally in the Aura takes damage.",
+     "effects": "You Evade 1 toward the ally.",
+     "automation": "mithril",
+     "automationNote": "offered by itself in the Reactions message when an ally within 2 squares (the Aura) takes damage (the damage waits); the Evade is the card's button.",
+     "moment": "allyDamage",
+     "momentRange": 2
+    }
+   ]
   },
   {
    "name": "Consecrated Ground",
@@ -368,19 +421,35 @@
     {
      "ap": 2,
      "effects": "For 3 rounds, enemies in the area take 1 Bane on [Weapon], [Power] and [Signature] Actions, and allies in it heal 1d4 at the start of each of their turns.",
-     "ruler": "rounds 3 | area 2 | allies 2 | banes 1 strike power; heal-dice 1d4"
+     "ruler": "rounds 3 | area 2 | allies 2 | banes 1 strike power; heal-dice 1d4",
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Consecrated Ground}}"
+       ]
+      }
+     }
     },
     {
      "ap": 3,
      "effects": "As 2 AP, but for 5 rounds.",
-     "ruler": "rounds 5 | area 2.5 | allies 2.5 | banes 1 strike power; heal-dice 1d4"
+     "ruler": "rounds 5 | area 2.5 | allies 2.5 | banes 1 strike power; heal-dice 1d4",
+     "foundry": {
+      "text": "For 5 rounds, enemies in the area take 1 Bane on [Weapon], [Power] and [Signature] Actions, and allies in it heal 1d4 at the start of each of their turns.",
+      "areaRounds": 5,
+      "fx": {
+       "all": [
+        "{{fx:Consecrated Ground}}"
+       ]
+      }
+     }
     }
    ],
    "foundry": {
     "img": "icons/svg/sun.svg",
     "folder": "Paladin",
-    "automation": "bronze",
-    "automationNote": "the Banes and the 1d4 healing for creatures in the area (the area is placed and kept).",
+    "automation": "mithril",
+    "automationNote": "the area is a Zone: enemies inside carry the Bane while inside, allies inside roll the 1d4 at the start of their turns and get their Heal window; the area ends after its rounds. The Heal chip on the card is for a heal by hand.",
     "areaCfg": {
      "targets": "all",
      "keep": true,
@@ -404,19 +473,28 @@
     {
      "ap": 2,
      "effects": "The target heals twice what 1 Rally Point would heal, and you end one non-permanent effect of your choice on them.",
-     "ruler": "heal 2; remove-effect 1"
+     "ruler": "heal 2; remove-effect 1",
+     "foundry": {
+      "after": "@Heal[rp*2] @EndEffect[any]"
+     }
     },
     {
      "ap": 3,
      "effects": "As 2 AP, but three times what 1 Rally Point would heal.",
-     "ruler": "heal 3; remove-effect 1"
+     "ruler": "heal 3; remove-effect 1",
+     "foundry": {
+      "text": "The target heals three times what 1 Rally Point would heal, and you end one non-permanent effect of your choice on them.",
+      "after": "@Heal[rp*3] @EndEffect[any]"
+     }
     }
    ],
    "foundry": {
     "img": "icons/svg/regen.svg",
     "folder": "Paladin",
-    "automation": "none"
-   }
+    "automation": "mithril",
+    "automationNote": "the Apply button: the heal (twice or three times the target's Rally Point heal, the target chooses the split) and the effect the target ends."
+   },
+   "_note": "Cards 3 (Lucas, 2026-11-05): the heal is a @Heal chip (rp*2 / rp*3: the target's own Rally Point heal, no Rally Point spent), the effect ended in a window; the target's player is prompted (the book says the Paladin chooses)."
   },
   {
    "name": "Divine Intervention",
@@ -427,8 +505,7 @@
     "divine"
    ],
    "frequency": "Daily",
-   "target": "One creature",
-   "distance": "5 sq.",
+   "target": "The triggering creature",
    "interrupt": "You or an ally within 5 squares would go Down.",
    "versions": [
     {
@@ -436,16 +513,21 @@
      "effects": "Instead of going Down, the creature's total damage becomes 1 less than their Health Pool, and they gain [[Guard]] equal to what one of their Rally Points heals.",
      "ruler": "prevent-down; guard 9 ally",
      "foundry": {
-      "append": "@Guard[rally]{Guard equal to what one of their Rally Points heals}"
+      "text": "Instead of going Down, the creature's total damage becomes 1 less than their Health Pool, and they gain [[Guard]] equal to a Rally Point's healing.",
+      "after": "@Guard[rally]"
      }
     }
    ],
    "foundry": {
     "img": "icons/svg/angel.svg",
     "folder": "Paladin",
-    "automation": "none"
+    "automation": "mithril",
+    "automationNote": "offered by itself in the Reactions message when you or an ally within 5 squares would go Down (Use / Pass for its owner; the damage waits for the answer); used, the damage stops 1 under the Health Pool and the Guard is applied. Nothing by hand.",
+    "moment": "wouldDown",
+    "momentRange": 5,
+    "momentSelf": true
    },
-   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): the saved creature also gains a Rally Point's worth of Guard."
+   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): the saved creature also gains a Rally Point's worth of Guard. Cards session 5 (2026-11-06, Lucas): no Distance (the Interrupt says it), Targets the triggering creature, no button: the Reaction watches for the moment."
   },
   {
    "name": "Radiant Zeal",
@@ -475,7 +557,7 @@
    "escalation": 1,
    "_note": "Pack R-classes: an Escalation 1 Passive (decision sheet item 15, revised in 14.3): the ally's [R] 1d8 Ho stays, the Guard 2d6 is gone (it measured 0.9 AP a turn as a 0 AP Active).",
    "flavor": "You name the foe in your god's sight, and every blade that finds it burns.",
-   "text": "While your Escalation is 1 or more, at the start of each of your turns you can name one enemy within 5 squares of you. Until the start of your next turn, the first time an ally deals damage to them, they deal an extra [R] 1d8 Ho.",
+   "text": "While your Escalation is 1 or more, at the start of each of your turns you can name one enemy within 5 squares of you. For 1 round, the first time an ally deals damage to them, they deal an extra [R] 1d8 Ho.",
    "foundry": {
     "img": "icons/svg/sun.svg",
     "level": 1,
@@ -532,7 +614,7 @@
    "name": "Mending Light",
    "category": "Paladin Escalation (Passive)",
    "escalation": 2,
-   "_note": "Pack R-classes: the Escalation 2 mercy pick; the amount steps by Stage (decision sheet item 18): 5 / 6 / 9 with a Power Modifier of 2 / 2 / 3 (rclasses.md section 4: 4 a turn measured 0.5-0.6 AP, under the rung's 0.6-0.8).",
+   "_note": "Pack R-classes: the Escalation 2 mercy pick; the amount steps by Stage (decision sheet item 18): 5 / 6 / 9 with a Power Modifier of 2 / 2 / 3 (pack MOD, 2026-11-09: the Power Modifier is now 2 / 3 / 4 for a faith-first Paladin, 1 less sword-first) (rclasses.md section 4: 4 a turn measured 0.5-0.6 AP, under the rung's 0.6-0.8).",
    "flavor": "Light gathers where you stand, and the hurt are drawn to it.",
    "text": "While your Escalation is 2 or more, at the start of each of your turns, you or one ally within 5 squares of you heals twice your Power Modifier + your Stage.",
    "foundry": {
@@ -624,7 +706,7 @@
   {
    "name": "Hallowed Dawn",
    "category": "Paladin Apex",
-   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): the mercy Apex: the dawn pushes the dark back (Pushed 2 away from you) and Enfeebles it; Self: you are the Emanation's target.",
+   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): the mercy Apex: the dawn pushes the dark back (Pushed 2 away from you) and Enfeebles it; Self: you are the Emanation's target. Cards 3 (Lucas, 2026-11-05): the light lasts 1 round (was until the end of your next turn); the Allies / Enemies Apply buttons run the chain (foundry.after). v0.0.251 (Lucas's test): the Emanation is shown before the card (you included by default: areaCfg.center), Enfeebled 1 lasts the round.",
    "flavor": "Dawn breaks where you stand, and it chooses sides.",
    "traits": [
     "area",
@@ -638,18 +720,22 @@
    "versions": [
     {
      "ap": 3,
-     "effects": "You and each ally in the Area heal 3d6 + your Power Modifier (4d6 at Stage 2, 6d6 at Stage 3) and end one effect on them that is EoT or has 1 round left. Each enemy in the Area is Pushed 2 away from you, is Enfeebled 1 and sheds Bright light in a 1 Emanation until the end of your next turn.",
-     "ruler": "allies 3 | mend 3d6+[Mod] any; push 2; remove-effect 1"
+     "effects": "You and each ally in the Area heal 3d6 + your Power Modifier (4d6 at Stage 2, 6d6 at Stage 3) and end one effect on them that is EoT or has 1 round left. Each enemy in the Area is Pushed 2 away from you, is Enfeebled 1 and sheds Bright light in a 1 Emanation for 1 round.",
+     "ruler": "allies 3 | mend 3d6+[Mod] any; push 2; remove-effect 1",
+     "foundry": {
+      "after": "@Heal[3d6+pow|s2:4d6+pow|s3:6d6+pow|side:allies] @EndEffect[eot1|side:allies] @Move[pushed|distance:2|pick:yes|side:enemies] @Condition[enfeebled|value:1|rounds:1|side:enemies] @Effect[{{fx:Hallowed Dawn (Bright light 1)}}|side:enemies]"
+     }
     }
    ],
    "foundry": {
     "img": "icons/svg/sun.svg",
     "folder": "Paladin",
     "level": 1,
-    "automation": "bronze",
-    "automationNote": "the healing (the button) and Enfeebled 1 on the enemies by hand.",
+    "automation": "mithril",
+    "automationNote": "the Apply buttons do it all: the heal (rolled once, each ally chooses the split) and the effect each ally ends; the Pushes one by one, Enfeebled 1 and the light on the enemies.",
     "areaCfg": {
-     "targets": "all"
+     "targets": "all",
+     "center": true
     }
    }
   }

@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Effect rules – prototype C</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Signika:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  color-scheme:light;
+  --page:#cfc8b8; --page-ink:#2c2a26;
+  --navy:#1e2a3b; --navy-2:#253247; --gold:#e8a33a; --gold-soft:#e6d6a6;
+  --parch:#ebe5d6; --parch-2:#f4efe3; --line:#cbbf9f; --ink:#2b2620; --muted:#6d6456;
+  --maroon:#7a2a1e; --field:#fffdf8; --field-line:#b9ad91;
+  --bane:#a3271f; --boon:#1f5ea8; --rule:#5b3f8c; --cond:#2f6b3c;
+  --g-roll:#7a4a12; --g-req:#2e5d78; --g-kind:#5a3d7a; --g-dmg:#7a2a2a; --g-key:#4d5a2a;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){color-scheme:dark;--page:#15181d;--page-ink:#d9d3c5}}
+:root[data-theme="dark"]{color-scheme:dark;--page:#15181d;--page-ink:#d9d3c5}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--page);color:var(--page-ink);font:14px/1.45 Signika,"Segoe UI",Arial,sans-serif;padding:20px 12px}
+.top{max-width:1200px;margin:0 auto 16px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.top h1{font:700 21px Cinzel,serif;margin:0 14px 0 0}
+.pick{display:inline-flex;border:1px solid #8b7f66;border-radius:4px;overflow:hidden}
+.pick button{border:0;background:transparent;color:inherit;font:600 14px Signika;padding:7px 14px;cursor:pointer}
+.pick button+button{border-left:1px solid #8b7f66}
+.pick button.on{background:var(--navy);color:#fff}
+.wrap{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:minmax(0,660px) minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:1000px){.wrap{grid-template-columns:1fr}}
+
+/* window */
+.win{background:var(--parch);color:var(--ink);border:1px solid #000;box-shadow:0 8px 30px rgba(0,0,0,.35)}
+.titlebar{background:#0d0f13;color:#eee;font-size:13px;padding:5px 10px;display:flex;justify-content:space-between}
+.head{background:var(--navy);display:flex;align-items:center;gap:14px;padding:10px 14px}
+.icon{width:44px;height:44px;border-radius:4px;background:var(--navy-2);border:1px solid #3c4a62;display:grid;place-items:center;font-size:23px}
+.head h2{margin:0;color:#f6efe0;font:700 21px Cinzel,serif}
+.head p{margin:1px 0 0;color:#a9b6c9;font-size:12.5px}
+.tabs{background:var(--navy-2);display:flex}
+.tabs span{flex:1;text-align:center;color:#b9c2d0;font:600 13px Signika;padding:10px 0;border-bottom:3px solid transparent}
+.tabs span.on{color:#fff;border-bottom-color:var(--gold)}
+.tabs span.help{flex:0 0 44px;font-weight:700}
+.body{padding:12px 16px 16px}
+.tip{background:var(--navy);color:#e9e4d8;border-radius:4px;padding:8px 12px;border-left:4px solid var(--gold);font-size:13.5px}
+.tip b{font:700 13.5px Cinzel,serif;color:var(--gold);margin-right:6px}
+.sec{margin-top:14px}
+.sec>h3{margin:0 0 8px;font:700 14px Cinzel,serif;color:var(--maroon);background:linear-gradient(90deg,var(--gold-soft),transparent 85%);border-left:4px solid #3b342b;padding:5px 9px;display:flex;justify-content:space-between;align-items:center}
+.sec>h3 small{font:500 12px Signika;color:var(--muted)}
+
+/* shared controls */
+.seg{display:inline-flex;border:1px solid var(--field-line);border-radius:4px;overflow:hidden;background:var(--field);vertical-align:middle}
+.seg button{border:0;background:none;padding:4px 9px;font:500 13px Signika;color:var(--ink);cursor:pointer}
+.seg button+button{border-left:1px solid var(--field-line)}
+.seg button.on{background:var(--navy);color:#fff}
+.step{display:inline-flex;align-items:center;border:1px solid var(--field-line);border-radius:4px;background:var(--field);vertical-align:middle}
+.step button{border:0;background:none;width:22px;height:24px;cursor:pointer;font:600 14px Signika;color:var(--ink)}
+.step span{min-width:16px;text-align:center;font-weight:600}
+.step.boon span{color:var(--boon)} .step.bane span{color:var(--bane)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+.origin{display:inline-flex;align-items:center;gap:6px;background:var(--parch-2);border:1px solid var(--line);border-radius:3px;padding:2px 4px 2px 10px;font-size:13px;vertical-align:middle}
+.origin b{font-weight:600}
+.origin button{border:1px solid var(--field-line);background:var(--field);border-radius:3px;font:12px Signika;padding:1px 8px;cursor:pointer;color:var(--ink)}
+.tog{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--parch-2);border-radius:3px;padding:3px 10px 3px 6px;font-size:13px;cursor:pointer;user-select:none}
+.tog .box{width:14px;height:14px;border-radius:3px;border:1.5px solid #3b342b;background:var(--field);display:grid;place-items:center;font-size:11px;line-height:1;color:#fff}
+.tog.on{background:var(--gold-soft);border-color:#b8a46c}
+.tog.on .box{background:#3b342b}
+.tog.on .box::after{content:"✓"}
+.kind{width:22px;height:22px;border-radius:4px;display:grid;place-items:center;color:#fff;font:700 11px Signika;flex:none}
+.k-bb{background:linear-gradient(135deg,var(--boon) 50%,var(--bane) 50%)} .k-rule{background:var(--rule)} .k-cond{background:var(--cond)}
+.x{border:0;background:none;color:var(--muted);font-size:17px;cursor:pointer;line-height:1}
+.x:hover{color:var(--bane)}
+.adds{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.add{border:1px solid var(--field-line);background:var(--field);border-radius:4px;padding:4px 10px;font:500 13px Signika;color:var(--ink);cursor:pointer}
+.add:hover{background:var(--gold-soft)}
+
+/* trait filter: tri-state chips */
+.tf{display:flex;flex-wrap:wrap;gap:10px 14px}
+.tg{display:flex;flex-direction:column;gap:3px}
+.tg>i{font:600 10.5px Signika;font-style:normal;color:var(--muted);letter-spacing:.02em}
+.tg>div{display:flex;flex-wrap:wrap;gap:3px}
+.tc{border:1px solid var(--field-line);background:var(--field);border-radius:3px;font:500 12.5px Signika;padding:2px 7px;cursor:pointer;color:var(--ink);min-width:44px;text-align:center}
+.tc.req{color:#fff;border-color:transparent}
+.tc.exc{background:#f3dcd8;border-color:#c9877e;color:var(--bane);text-decoration:line-through}
+.tg.roll .tc.req{background:var(--g-roll)} .tg.req .tc.req{background:var(--g-req)} .tg.kind .tc.req{background:var(--g-kind)} .tg.dmg .tc.req{background:var(--g-dmg)} .tg.key .tc.req{background:var(--g-key)}
+.tfhelp{font-size:12px;color:var(--muted);margin-top:5px}
+
+/* ends */
+.ends{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center}
+.num{width:44px;text-align:center;background:var(--field);border:1px solid var(--field-line);border-radius:4px;padding:3px 4px;font:14px Signika;color:var(--ink)}
+select{background:var(--field);border:1px solid var(--field-line);border-radius:4px;padding:3px 6px;font:13px Signika;color:var(--ink)}
+
+/* ===== A: cards ===== */
+.card{border:1px solid var(--line);border-radius:4px;background:var(--parch-2);margin-bottom:8px;overflow:hidden}
+.card>header{display:flex;align-items:center;gap:9px;padding:7px 10px;cursor:pointer}
+.card>header .sum{flex:1;font-size:14px}
+.card>header .chev{color:var(--muted);width:12px}
+.card.open>header{border-bottom:1px solid var(--line);background:#efe7d3}
+.card .in{display:none;padding:10px 12px 12px}
+.card.open .in{display:block}
+.frow{display:grid;grid-template-columns:96px 1fr;gap:8px;align-items:start;padding:5px 0}
+.frow+.frow{border-top:1px dotted var(--line)}
+.frow>label{font-size:12.5px;color:var(--muted);padding-top:4px}
+.frow>div{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+
+/* ===== B: sentences ===== */
+.sent{border:1px solid var(--line);border-radius:4px;background:var(--parch-2);margin-bottom:8px;padding:9px 10px}
+.sent .line{display:flex;gap:9px;align-items:flex-start}
+.sent .words{flex:1;font-size:15px;line-height:2}
+.tok{border:0;border-bottom:2px solid var(--gold);background:rgba(232,163,58,.12);padding:1px 5px;border-radius:3px 3px 0 0;font:600 15px Signika;color:var(--ink);cursor:pointer}
+.tok.boon{color:var(--boon)} .tok.bane{color:var(--bane)}
+.tok.act{background:var(--navy);color:#fff;border-bottom-color:var(--navy)}
+.tok.dim{font-weight:500;color:var(--muted)}
+.pop{margin:8px 0 2px 31px;border:1px solid var(--field-line);border-radius:4px;background:var(--field);padding:9px 10px;position:relative}
+.pop::before{content:"";position:absolute;top:-7px;left:var(--ax,30px);width:12px;height:12px;background:var(--field);border-left:1px solid var(--field-line);border-top:1px solid var(--field-line);transform:rotate(45deg)}
+.pop .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pop .row+.row{margin-top:7px}
+
+/* ===== C: master–detail ===== */
+.md{display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr);border:1px solid var(--line);border-radius:4px;overflow:hidden;min-height:330px}
+@media (max-width:560px){.md{grid-template-columns:1fr}}
+.md .lst{background:#e4dcc7;border-right:1px solid var(--line);display:flex;flex-direction:column}
+.md .it{display:flex;gap:8px;align-items:flex-start;padding:8px 9px;border-bottom:1px solid var(--line);cursor:pointer;font-size:13px;line-height:1.3}
+.md .it.on{background:var(--parch-2);box-shadow:inset 3px 0 0 var(--gold)}
+.md .it .kind{width:18px;height:18px;font-size:10px}
+.md .lst .adds{padding:8px;margin:auto 0 0;flex-direction:column}
+.md .pane{background:var(--parch-2);padding:10px 12px}
+.md .pane h4{margin:0 0 6px;font:700 13px Cinzel,serif;color:var(--maroon)}
+.md .pane .says{font-size:13.5px;background:var(--field);border:1px solid var(--line);border-radius:4px;padding:6px 9px;margin-bottom:8px}
+.grid2{display:grid;grid-template-columns:auto 1fr;gap:7px 10px;align-items:center}
+.grid2>label{font-size:12.5px;color:var(--muted);text-align:right}
+.grid2>div{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.grid2 .full{grid-column:1/-1;margin-top:4px}
+
+/* notes */
+.notes h2{font:700 19px Cinzel,serif;margin:0 0 4px}
+.notes .lead{margin:0 0 14px;opacity:.88}
+.note{border-left:3px solid var(--gold);padding:1px 0 1px 12px;margin:0 0 12px}
+.note h3{font:600 14.5px Signika;margin:0 0 2px}
+.note p{margin:0;opacity:.9}
+.pro{color:var(--cond)} .con{color:var(--bane)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .pro{color:#7cc68a}:root:not([data-theme="light"]) .con{color:#e58a80}}
+
+/* --- prototype C additions --- */
+.md{min-height:380px}
+.md .lst .adds{gap:4px}
+.md .lst .add{text-align:left}
+.tog{border-radius:3px}
+.origin{border-radius:3px}
+.clause{display:grid;grid-template-columns:86px 1fr;gap:8px;align-items:start;padding:5px 0;border-top:1px dotted var(--line)}
+.clause:first-of-type{border-top:0}
+.clause>span{font-size:12.5px;color:var(--muted);padding-top:4px}
+.clause>div{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:4px;border-radius:3px;color:#fff;font:500 12.5px Signika;padding:2px 3px 2px 8px}
+.chip button{border:0;background:rgba(255,255,255,.18);color:#fff;width:17px;height:17px;border-radius:2px;cursor:pointer;font-size:12px;line-height:1}
+.chip.roll{background:var(--g-roll)} .chip.req{background:var(--g-req)} .chip.kd{background:var(--g-kind)} .chip.dmg{background:var(--g-dmg)} .chip.key{background:var(--g-key)}
+.clause.not .chip{background:var(--field);color:var(--bane);border:1.5px solid var(--bane);padding:1px 2px 1px 7px}
+.clause.not .chip button{background:rgba(163,39,31,.12);color:var(--bane)}
+.clause select{font-size:12.5px;padding:2px 4px;color:var(--muted)}
+.filter{border:1px solid var(--line);background:var(--field);border-radius:3px;padding:6px 9px}
+.filter .reads{font-size:13px;margin-bottom:4px}
+.filter .reads b{font-weight:600}
+.subends{margin:6px 0 0 0;padding:8px 10px;border:1px solid var(--line);border-left:3px solid var(--gold);background:var(--parch-2);border-radius:3px;display:grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center}
+.subends>label{font-size:12.5px;color:var(--muted);text-align:right}
+.subends>div{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ends .tog{margin-right:2px}
+.endblock{margin-top:7px}
+.assume{font-size:11.5px;color:var(--muted)}
+.says .bn{color:var(--bane);font-weight:600} .says .bo{color:var(--boon);font-weight:600}
+.says .tc2{display:inline-block;border-radius:3px;color:#fff;font:500 12px Signika;padding:0 6px;margin:0 1px;line-height:18px;vertical-align:1px}
+.says .tc2.roll{background:var(--g-roll)} .says .tc2.req{background:var(--g-req)} .says .tc2.kd{background:var(--g-kind)} .says .tc2.dmg{background:var(--g-dmg)} .says .tc2.key{background:var(--g-key)}
+.says .tc2.no{background:var(--field);color:var(--bane);border:1px solid var(--bane);line-height:16px}
+.says .who{font-weight:600}
+.endlist{border:1px solid var(--line);border-radius:4px;background:var(--parch-2)}
+.endlist .lead2{font-size:12.5px;color:var(--muted);padding:6px 10px;border-bottom:1px solid var(--line)}
+.erow{display:grid;grid-template-columns:150px 1fr;gap:8px 10px;align-items:center;padding:7px 10px;border-top:1px dotted var(--line)}
+.erow:first-of-type{border-top:0}
+.erow .opts{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.erow.off .opts{display:none}
+.erow .tog{justify-self:start}
+.erow .lbl{font-size:11.5px;color:var(--muted)}
+@media (max-width:560px){.erow{grid-template-columns:1fr}}
+
+.part{border:1px solid var(--line);border-radius:4px;background:var(--field);margin-top:6px}
+.part>header{display:flex;align-items:center;gap:8px;padding:5px 8px}
+.part>header .tog{border:0;background:none;padding:0;font:600 13px Signika}
+.part>header .tog.on{background:none}
+.part .pb{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;padding:4px 8px 8px 30px;border-top:1px dotted var(--line)}
+.part.off .pb{display:none}
+.part.off>header .tog{color:var(--muted);font-weight:500}
+.pb .lbl{font-size:11.5px;color:var(--muted)}
+.pb input[type=text]{width:70px;background:var(--field);border:1px solid var(--field-line);border-radius:3px;padding:3px 6px;font:13px Signika;color:var(--ink)}
+.drop2{border:1.5px dashed var(--field-line);border-radius:3px;padding:3px 8px;font-size:12px;color:var(--muted)}
+.drop2.full{border-style:solid;color:var(--ink);background:var(--parch-2)}
+.addsel{width:100%;font:500 13px Signika;padding:5px 6px;color:var(--ink)}
+.says .emp{color:var(--boon);font-weight:600} .says .enf{color:var(--bane);font-weight:600}
+.says .pool{font-weight:700;color:var(--g-dmg)}
+
+.dmgrow{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;padding:6px 0;border-top:1px dotted var(--line);width:100%}
+.dmgrow:first-child{border-top:0;padding-top:0}
+.addd{border:1px dashed var(--field-line);background:none;border-radius:3px;padding:3px 9px;font:500 12.5px Signika;color:var(--ink);cursor:pointer}
+.addd:hover{background:var(--gold-soft)}
+.says .dv{color:#9b1c1c;font-weight:700} .says .dr{color:#3d4fa8;font-weight:700}
+.says .st{font-weight:600}
+.pick2{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.acard{border:1px solid var(--line);border-left:4px solid #3d6f8f;border-radius:3px;background:var(--field);padding:6px 9px;font-size:13px;width:100%}
+.acard b{font:700 13.5px Cinzel,serif}
+.acard .m{color:var(--muted);font-size:12px}
+.acard .cost{display:inline-block;background:#3a3f8f;color:#fff;border-radius:3px;font:600 11.5px Signika;padding:0 5px;margin-left:6px}
+.note2{font-size:12px;color:var(--muted);grid-column:1/-1}
+.sgn{min-width:22px}
+
+.k-lt{background:#b8860b}
+.ex{color:var(--muted);font-style:normal;font-size:11.5px}
+.dropbig{border:1.5px dashed var(--field-line);border-radius:4px;padding:14px;text-align:center;color:var(--ink);font-size:13.5px;cursor:pointer;background:var(--field)}
+.dropbig small{color:var(--muted);font-size:11.5px}
+.dropbig:hover{background:var(--gold-soft)}
+.simmenu{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:6px;font-size:12px}
+.simmenu i{color:var(--muted);margin-right:4px}
+.simmenu button{border:1px solid var(--field-line);background:var(--field);border-radius:3px;padding:2px 8px;font:12.5px Signika;color:var(--ink);cursor:pointer}
+.dropped{border:1px solid var(--line);border-left:4px solid #2f6b3c;border-radius:3px;background:var(--field);padding:6px 9px;font-size:13px;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.dropped.is-a{border-left-color:#3d6f8f}
+.dropped b{font:700 13.5px Cinzel,serif}
+.dropped .dk{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:3px;padding:0 5px}
+.dropped .x{margin-left:auto}
+.dropped .m,.dropped .m2{color:var(--muted);font-size:12px}
+.dropped .m2{flex-basis:100%}
+.cost{display:inline-block;background:#3a3f8f;color:#fff;border-radius:3px;font:600 11.5px Signika;padding:0 5px}
+input.wide{width:200px;background:var(--field);border:1px solid var(--field-line);border-radius:3px;padding:3px 6px;font:13px Signika;color:var(--ink)}
+.riders{border:1px solid var(--line);border-radius:3px;background:var(--field);padding:6px 8px}
+.colors{gap:4px!important}
+.colors input[type=color]{width:34px;height:26px;padding:0 2px;border:1px solid var(--field-line);border-radius:3px;background:var(--field)}
+.sw{border:1px solid var(--field-line);border-radius:3px;background:var(--field);font:12px Signika;color:var(--ink);padding:2px 7px 2px 20px;position:relative;cursor:pointer}
+.sw::before{content:"";position:absolute;left:5px;top:50%;width:10px;height:10px;margin-top:-5px;border-radius:2px;background:var(--c);border:1px solid rgba(0,0,0,.3)}
+.sw.on{outline:2px solid var(--navy)}
+.lightpv{width:100%;height:110px;border-radius:3px;background:#20262f;position:relative;overflow:hidden}
+.lightpv::before{content:"";position:absolute;left:50%;top:50%;width:calc((var(--b) + var(--d)) * 18px * 2 + 18px);height:calc((var(--b) + var(--d)) * 18px * 2 + 18px);transform:translate(-50%,-50%);background:radial-gradient(circle,color-mix(in srgb,var(--c) calc(var(--a)*100%),transparent) 0 calc(var(--b) / (var(--b) + var(--d) + .5) * 70%),color-mix(in srgb,var(--c) calc(var(--a)*45%),transparent) 0 70%,transparent 71%)}
+.lightpv .tok{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:18px;height:18px;border-radius:50%;background:#e9e4d8;color:#1e2a3b;font:700 11px Signika;display:grid;place-items:center}
+
+.k-wp{background:#6b4a2a}
+.md .it{position:relative;padding-right:30px}
+.trash{position:absolute;right:5px;top:6px;border:1px solid transparent;background:none;color:var(--muted);width:22px;height:22px;border-radius:3px;display:grid;place-items:center;cursor:pointer;opacity:0}
+.md .it:hover .trash,.trash:focus-visible{opacity:1}
+.trash:hover{color:var(--bane);border-color:#c9877e;background:#f3dcd8}
+@media (hover:none){.trash{opacity:.6}}
+.ntext{width:100%;min-height:52px;background:var(--field);border:1px solid var(--field-line);border-radius:3px;padding:5px 7px;font:13px Signika;color:var(--ink);resize:vertical}
+
+.k-esc{background:#8a5a12} .k-tk{background:#7a2a2a}
+.grid2 .full{display:block}
+.grid2>div:has(> .seg.segw:only-child),.grid2>div:has(> .seg.segg:only-child){display:block}
+.seg.segw{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;width:100%}
+.seg.segg{display:grid;grid-template-columns:1fr 1fr;width:100%}
+.seg.segg button{border-left:1px solid var(--field-line);border-top:1px solid var(--field-line)}
+.seg.segg button:nth-child(odd){border-left:0}
+.seg.segg button:nth-child(-n+2){border-top:0}
+.addsh{font:600 12px Signika;color:var(--muted);margin:10px 0 4px;border-top:1px solid var(--line);padding-top:8px}
+.part{margin-top:0;border-radius:0;border-top-width:0}
+.addsh+.part{border-top-width:1px;border-radius:4px 4px 0 0}
+.part.last{border-radius:0 0 4px 4px}
+.part>header{min-height:32px}
+.part .psum{margin-left:auto;font-size:12.5px;color:var(--ink);text-align:right}
+.part.off .psum{color:var(--muted);font-style:italic}
+.part.off{background:var(--parch-2)}
+.fav,.doom{font:600 11.5px Signika;border-radius:3px;padding:1px 6px;color:#fff}
+.fav{background:var(--boon)} .doom{background:var(--bane)}
+
+.k-au{background:#2e5d78}
+.ht{color:var(--bane);font-weight:600}
+.aurapv{width:100%;height:120px;border-radius:3px;background:#20262f;position:relative;overflow:hidden}
+.aurapv::before{content:"";position:absolute;left:50%;top:50%;width:calc((var(--n) * 2 + 1) * 14px);height:calc((var(--n) * 2 + 1) * 14px);transform:translate(-50%,-50%);border:2px solid var(--o);background:color-mix(in srgb,var(--f) 22%,transparent);background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:14px 14px}
+.aurapv .tok{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:#e9e4d8;color:#1e2a3b;font:700 9px Signika;display:grid;place-items:center}
+
+.part .pb{display:block}
+.pgrid{display:grid;grid-template-columns:96px 1fr;gap:6px 10px;align-items:center}
+.pgrid .pl{font-size:12px;color:var(--muted)}
+.pgrid .pc{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-width:0}
+.dent{padding:7px 0;border-top:1px dotted var(--line)}
+.dent:first-child{border-top:0;padding-top:0}
+.dent .dice{width:80px;background:var(--field);border:1px solid var(--field-line);border-radius:3px;padding:3px 6px;font:13px Signika;color:var(--ink)}
+.dent .dx{margin-left:auto}
+.ntext{min-height:46px}
+
+.grid2{grid-template-columns:70px minmax(0,1fr)!important;gap:7px 8px!important}
+.seg.segw button,.grid2>div>.seg:only-child button{padding:4px 5px;line-height:1.2}
+.grid2>label{text-align:left!important}
+.pgrid{grid-template-columns:80px minmax(0,1fr)}
+.grid2>div>.seg:only-child:not(.segg){display:grid;grid-auto-flow:column;grid-auto-columns:1fr;width:100%}
+.grid2>.full2{display:block!important}
+.addsh.first{margin-top:0;border-top:0;padding-top:0}
+.note2,.tfhelp,.assume{display:none}
+body.helpon .note2,body.helpon .tfhelp,body.helpon .assume{display:block}
+.tabs .help{flex:0 0 44px;background:none;border:0;color:#b9c2d0;font:700 14px Signika;cursor:pointer;border-bottom:3px solid transparent}
+.tabs .help.on{color:var(--gold)}
+.rmline{margin-left:auto;border:0;background:none;color:var(--muted);font:12px Signika;text-decoration:underline;cursor:pointer}
+.rmline:hover{color:var(--bane)}
+.endlist{border:0;background:none}
+.endlist .part:first-child{border-top-width:1px;border-radius:4px 4px 0 0}
+.endlist .part:last-child{border-radius:0 0 4px 4px}
+.endlist .pb .note2{margin:6px 0 0}
+.sec>h3 small{font-style:normal}
+.grid2 select{max-width:100%}
+</style>
+</head>
+<body>
+<div class="top"><h1>Effect rules: prototype C</h1></div>
+<div class="wrap">
+  <div class="win">
+    <div class="titlebar"><span>Frightened (on Archer 1 (Double Shot, Marksman))</span><span>⋮ ✕</span></div>
+    <div class="head"><div class="icon" aria-hidden="true">😱</div><div><h2>Frightened</h2><p>On Archer 1 · from Ogre Chieftain</p></div></div>
+    <div class="tabs"><span>Description</span><span class="on">Details</span><button class="help" id="helpBtn" aria-pressed="false" title="Show help">?</button></div>
+    <div class="body">
+      <div class="tip" id="tip"></div>
+      <div class="sec"><h3>What it does <small id="cnt"></small></h3><div id="what"></div></div>
+      <div class="sec"><h3>Ends <small>at the first of these; none ticked: until removed</small></h3>
+        <div class="endlist">
+          <div class="part off" id="eTime"><header><span class="tog" data-e="time" role="switch" aria-checked="false"><span class="box"></span>Time</span><span class="psum" id="sumTime">off</span></header>
+            <div class="pb"><div class="pgrid"><span class="pl">Lasts</span><div class="pc"><div class="seg segw" id="dur"><button data-v="eot">EoT</button><button class="on" data-v="rounds">Rounds</button><button data-v="enc">This encounter</button></div></div>
+              <span class="pl" id="rbl">Rounds</span><div class="pc" id="rb"><input class="num" id="rounds" type="number" min="1" value="1" aria-label="Rounds"></div></div></div></div>
+          <div class="part" id="eSave"><header><span class="tog on" data-e="save" role="switch" aria-checked="true"><span class="box"></span>A Save</span><span class="psum" id="sumSave"></span></header>
+            <div class="pb"><div class="pgrid">
+              <span class="pl">Save</span><div class="pc"><select id="sAttr" aria-label="Save Attribute"><option>Body</option><option>Mind</option><option selected>Appeal</option><option>Instinct</option><option>Better of Body / Instinct</option><option>Better of Mind / Appeal</option></select></div>
+              <span class="pl">DC</span><div class="pc"><span class="seg segw" id="sDc"><button class="on" data-v="13">13</button><button data-v="origin">The origin's</button><button data-v="set">Set</button></span><input class="num" id="sDcN" type="number" value="15" style="display:none" aria-label="DC"></div>
+              <span class="pl">Rolled</span><div class="pc"><span class="seg segw" id="sWhen"><button class="on" data-v="eot">End of their turn</button><button data-v="interact">With Interact (1 AP)</button></span></div>
+              <span class="pl">Tier 2</span><div class="pc"><span class="seg segw" id="sT2"><button data-v="none">Nothing</button><button class="on" data-v="eot">Ends at EoT</button><button data-v="ends">Ends</button></span></div>
+            </div><p class="note2">Tier 1: nothing. Tier 3: it ends.</p></div></div>
+          <div class="part" id="eDown"><header><span class="tog on" data-e="down" role="switch" aria-checked="true"><span class="box"></span>Origin goes Down</span><span class="psum" id="sumDown"></span></header>
+            <div class="pb"><div class="pgrid"><span class="pl">Origin</span><div class="pc"><span class="origin">Origin: <b id="effOrigin">Ogre Chieftain</b><button id="effOriginBtn">⌖ Change</button></span></div></div>
+            <p class="note2">Unconscious or leaving the scene count too.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="notes" id="notes"></div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const GROUPS=[["Roll","roll",["Appeal","Body","Check","Instinct","Mind","Power","Save","Signature","Split","Weapon"]],
+  ["Requires","req",["Gun","Handle","Melee","Ranged","Shot"]],["Kind","kd",["Area","Move","Self","Strike"]],
+  ["Damage","dmg",["Nonlethal"]],["Keywords","key",["Divine","Fear","Focus"]]];
+const GOF={};GROUPS.forEach(([,c,ts])=>ts.forEach(t=>GOF[t]=c));
+const ORIGINS=["Ogre Chieftain","Goblin Warrior","Archer 1"];
+const SUBS=["None","Acid","Blunt","Cold","Electricity","Fire","Force","Holy","Pierce","Psychic","Slash","Thunder","Unholy"];
+const SUBCOL={Acid:"#5a8a1a",Blunt:"#6b5a48",Cold:"#2a7fa8",Electricity:"#a07d00",Fire:"#c24a12",Force:"#7a3fa0",Holy:"#a8790a",Pierce:"#556070",Psychic:"#a0367a",Slash:"#8a4a3a",Thunder:"#3c5aa0",Unholy:"#5a2a6a"};
+const TAGS=["(any creature)","Undead","Beast","Construct","Fiend"];
+/* things you can drop: effects and Actions */
+const DROPS={
+  effects:[{n:"Taunted",v:false,src:"by"},{n:"Frightened",v:false,src:"of"},{n:"Sickened",v:true},{n:"Vulnerable",v:true},{n:"Hindered",v:false},{n:"Radiant Zeal",v:false},{n:"Beacon's Ward",v:false},{n:"Rally Boost",v:false}],
+  actions:[{n:"Mark Quarry",c:"0 AP",f:"Encounter",t:"Choose a creature you see: it is your Quarry."},{n:"Beacon's Step",c:"0R",f:"Round",t:"Interrupt: an ally in the Aura takes damage. Effects: you Evade 1 toward the ally."},{n:"Weapon Attack",c:"1 AP",f:"At-will",t:"Vs. AD. [W] + [Mod] on T2/T3."}]
+};
+const findDrop=n=>DROPS.effects.find(x=>x.n===n)||DROPS.actions.find(x=>x.n===n);
+const isAction=n=>!!DROPS.actions.find(x=>x.n===n);
+const newDmg=()=>({dice:"1d4",pool:"V",sub:"None",tiers:[1,2,3],fx:""});
+const newAct=o=>Object.assign({kind:"act",dir:"by",vs:"any",who:"Ogre Chieftain",all:[],any:[],not:[],uses:"every",sees:false,
+  bb:{on:false,boons:0,banes:0,name:""},emp:{on:false,mode:"set",emp:0,enf:0},dmg:{on:false,list:[newDmg()]},ign:{on:false,Low:false,Medium:false,High:false,range:"none",engaged:false},note:{on:false,title:"",text:""}},o);
+const newVal=o=>Object.assign({kind:"value",stat:"defense",which:"all",val:1,stype:"all",rally:"@origin.pow + 2",mode:"bonus",name:"",vs:"any",who:"Ogre Chieftain",sees:false},o);
+const newGrant=o=>Object.assign({kind:"grant",item:"",val:1,who:"Ogre Chieftain",to:"self",pool:"any",tag:"(any creature)",
+  when:"lasts",amode:"has",uses:1,ap:0,bbn:0,bbk:"Boons",en:0,ek:"Empowered",against:"any",riders:[],menu:false,msg:{on:false,to:"owners",text:""}},o);
+const newWeap=o=>Object.assign({kind:"weap",mode:"prop",weapon:"Fists",wprop:"Thrown",gl:"loses",prop:"Non-threatening",mprop:"Projectile",mval:3},o);
+const PROPS=["Barehanded","Firearm","Long","Melee","Non-threatening","Projectile","Ranged","Reload","Strung","Thrown","Two-handed","Unarmed"];
+const newEsc=o=>Object.assign({kind:"esc",trig:"allyHurt",n:5},o);
+const newHaz=o=>Object.assign({kind:"haz",pat:{Entering:true,Turn:true,Movement:false},dmgOn:true,dice:"1d8",pool:"V",sub:"Fire",fxOn:false,item:"",menu:false},o);
+const newAura=o=>Object.assign({kind:"aura",size:"2",aff:"allies",self:true,item:"",menu:false,show:true,outline:"#e8a33a",fill:"#e8a33a",
+  carry:{on:true},ht:{on:false,Entering:true,Turn:true,Movement:false,list:[{dice:"1d6",pool:"V",sub:"Fire"}],fx:false},htItem:""},o);
+const ESCT={allyHurt:"an ally within N squares becomes Bloodied or goes Down",enemyDown:"an enemy within N squares goes Down",selfHurt:"this creature becomes Bloodied or Strained"};
+const ATN={pow:"Power Modifier",wpn:"Weapon Modifier",sig:"Signature Modifier",stage:"Stage",body:"Body",mind:"Mind",appeal:"Appeal",instinct:"Instinct"};
+const fmt=t=>t.replace(/@(origin|target)\.(pow|wpn|sig|stage|body|mind|appeal|instinct)/g,(m,w,k)=>`the ${w}'s ${ATN[k]}`);
+const newLight=o=>Object.assign({kind:"light",bright:1,dim:2,color:"#ffd27a",alpha:0.5,anim:"None",aspeed:5,aint:5},o);
+let rules=[
+  newAct({id:1,sees:true,bb:{on:true,boons:0,banes:1,name:""}}),
+  {id:2,kind:"move",dirm:"closer",who:"Ogre Chieftain",sees:true},
+  newAct({id:3,demo:true,label:"Vow of Enmity T2",vs:"marked",all:["Strike"],uses:"next",bb:{on:true,boons:1,banes:0,name:""},emp:{on:true,mode:"inc",emp:1,enf:0}}),
+  newAct({id:4,demo:true,label:"Radiant Zeal",all:["Strike"],uses:"round",dmg:{on:true,list:[{dice:"1d6",pool:"V",sub:"Holy",tiers:[2,3],fx:""},{dice:"1d4",pool:"R",sub:"Psychic",tiers:[3],fx:"Frightened"}]}}),
+  newAct({id:5,demo:true,label:"Ignore a Bane + cover",all:["Shot"],ign:{on:true,Low:true,Medium:false,High:false,range:"one",engaged:false}}),
+  newAct({id:6,demo:true,label:"Note",all:["Body"],any:[],note:{on:true,title:"Brute Force",text:"You can spend 1 Rally Point to reroll a Tier 1."}}),
+  newVal({id:7,demo:true,label:"Beacon",name:"Support"}),
+  newVal({id:8,demo:true,label:"Speed",stat:"speed",val:2}),
+  newVal({id:9,demo:true,label:"Rally Points",stat:"rally",mode:"inc"}),
+  newGrant({id:10,demo:true,label:"Beacon",item:"Beacon's Step"}),
+  newGrant({id:11,demo:true,label:"On damage",item:"Sickened",val:1,when:"damage",pool:"V"}),
+  newGrant({id:12,demo:true,label:"Effect each turn",item:"Radiant Zeal",when:"turn"}),
+  newGrant({id:13,demo:true,label:"Chat message",item:"Mark Quarry",when:"enc",amode:"uses",msg:{on:true,to:"owners",text:"Choose a creature to mark."}}),
+  newGrant({id:14,demo:true,label:"Covering Shot",item:"Weapon Attack",amode:"uses",riders:[{tiers:[3],fx:"The target's next damage is halved"}]}),
+  newWeap({id:15,demo:true,label:"Brawler"}),
+  newWeap({id:16,demo:true,label:"Bow Mastery",mode:"mastery"}),
+  newLight({id:17,demo:true,label:"Smite light"}),
+  newEsc({id:18,demo:true,label:"Kindled Wrath"}),
+  newAura({id:19,demo:true,label:"Beacon",item:"Beacon's Ward"}),
+  newAura({id:20,demo:true,label:"Rally Points aura",size:"@origin.pow",item:"Rally Boost",show:false}),
+  newAura({id:21,demo:true,label:"Burning aura",size:"1",aff:"all",self:false,carry:{on:false},ht:{on:true,Entering:true,Turn:true,Movement:false,list:[{dice:"1d6",pool:"V",sub:"Fire"},{dice:"1d4",pool:"R",sub:"Psychic"}],fx:false},outline:"#c0392b",fill:"#c0392b"}),
+];
+let nextId=23, selC=1;
+
+/* ---------- text ---------- */
+const br=a=>a.map(t=>`[${t}]`);
+const andJoin=a=>a.length<2?(a[0]||""):a.slice(0,-1).join(", ")+" and "+a.at(-1);
+const tiersT=t=>t.length===3?"":" on "+t.map(x=>"T"+x).join("/");
+function filterText(r){
+  let s="";
+  if(r.all.length) s=`[${r.all.join(", ")}] Actions`;
+  if(r.any.length) s=(s?s+" that are ":"Actions that are ")+br(r.any).join(" or ");
+  if(r.not.length) s=(s||"Actions")+", not "+br(r.not).join(" or ");
+  return s;
+}
+const dmgPhrase=d=>`⟦d:${d.pool}:${fmt(d.dice)} [${d.pool}]⟧${d.sub!=="None"?` ⟦s:${d.sub}⟧`:""} damage${tiersT(d.tiers)}`;
+function payload(r,withDmg=true){
+  const p=[];
+  if(r.bb.on){const n=r.bb.name?r.bb.name+" ":"";
+    if(r.bb.boons)p.push(`${r.bb.boons} ${n}Boon${r.bb.boons>1?"s":""}`);if(r.bb.banes)p.push(`${r.bb.banes} ${n}Bane${r.bb.banes>1?"s":""}`);
+    if(r.bb.boons-r.bb.banes>=5)p.push("Favored");if(r.bb.banes-r.bb.boons>=5)p.push("Doomed");}
+  if(r.emp.on){const pl=r.emp.mode==="inc"?"+":"";
+    if(r.emp.emp)p.push(`Empowered ${pl}${r.emp.emp}`);if(r.emp.enf)p.push(`Enfeebled ${pl}${r.emp.enf}`);}
+  if(r.ign.on&&r.dir==="by"){const c=["Low","Medium","High"].filter(k=>r.ign[k]);const x=[];
+    if(c.length)x.push(`${andJoin(c)} cover`);if(r.ign.range!=="none")x.push(r.ign.range==="one"?"one range Bane":"all range Banes");if(r.ign.engaged)x.push("the Engaged Bane");
+    if(x.length)p.push("ignore "+andJoin(x));}
+  if(r.note.on&&r.note.title)p.push(`show the note ⟦a:${r.note.title}⟧`);
+  if(withDmg&&r.dmg.on&&r.dmg.list.length) p.push("an extra "+andJoin(r.dmg.list.map(dmgPhrase)));
+  return p;
+}
+const plain=t=>t.replace(/⟦[ds]:(?:[VR]:)?([^⟧]+)⟧/g,"$1").replace(/⟦a:([^⟧]+)⟧/g,"$1");
+const vsWho=(vs,who)=>vs==="origin"?who:"the creature it marked";
+function say(r){
+  if(r.kind==="act"){
+    const p=payload(r); if(!p.length) return "Does nothing yet: switch on a part below.";
+    let sc=r.dir==="by"?(r.uses==="next"?"Their next Roll":"Their Rolls"):(r.uses==="next"?"The next Roll against them":"Rolls against them");
+    const f=filterText(r); if(f) sc+=" with "+f;
+    if(r.vs!=="any") sc+=(r.dir==="by"?" against ":" made by ")+vsWho(r.vs,r.who);
+    if(r.uses==="round") sc+=", the first each round";
+    if(r.sees) sc+=`, while they see ${r.who}`;
+    let s=sc+": "+andJoin(p);
+    if(r.dmg.on) r.dmg.list.filter(d=>d.fx).forEach(d=>{s+=`; the target gains ⟦a:${d.fx}⟧${tiersT(d.tiers)}`});
+    return s+".";
+  }
+  if(r.kind==="move") return `Can't willingly move ${r.dirm==="closer"?"closer to":"away from"} ${r.who}`+(r.sees?`, while they see ${r.who}`:"")+".";
+  if(r.kind==="value"){
+    const nm=r.name&&r.mode==="bonus"?r.name+" ":"";
+    let what,amt;
+    if(r.stat==="defense"){what={all:"every Defense",ad:"Armor Defense",wd:"Ward Defense",bo:"Defense Vs. Body",mi:"Defense Vs. Mind",ap:"Defense Vs. Appeal",in:"Defense Vs. Instinct"}[r.which];amt=r.val;}
+    else if(r.stat==="speed"){what=r.stype==="all"?"every Speed":r.stype+" Speed";amt=r.val;}
+    else {let s=`Each Rally Point heals ${fmt(r.rally)} more`;if(r.sees)s+=`, while they see ${r.who}`;return s+".";}
+    const n=+amt, sign=isNaN(n)?"":(n<0?"":"+");
+    let s=r.mode==="set"?`${what} becomes ${amt}`:r.mode==="inc"?`Increase ${what} by ${amt}`:`${sign}${amt} ${nm}bonus to ${what}`;
+    if(r.vs!=="any"&&r.stat==="defense") s+=" against "+vsWho(r.vs,r.who);
+    if(r.sees) s+=`, while they see ${r.who}`; return s+".";
+  }
+  if(r.kind==="grant"){
+    if(!r.item) return "Drop an Effect or an Action below.";
+    const D=findDrop(r.item);
+    const W={lasts:"",turn:"At the start of each of its turns, ",enc:"At the start of each encounter, ",damage:""}[r.when];
+    let s;
+    if(isAction(r.item)){
+      if(r.amode==="has") s=`${W?W+"it gains":"Has"} the Action ⟦a:${r.item}⟧${W?" until its next turn":" while this effect lasts"}`;
+      else{ s=`${W}${W?"it can":"Can"} use ⟦a:${r.item}⟧ ${r.uses===1?"once":r.uses+" times"} for ${r.ap} AP`;
+        const x=[];if(r.bbn)x.push(`${r.bbn} ${r.bbk.replace(/s$/,r.bbn>1?"s":"")}`);if(r.en)x.push(`${r.ek} ${r.en}`);
+        if(x.length)s+=", with "+andJoin(x);
+        if(r.against!=="any") s+=" against "+(r.against==="targeted"?"the targeted creature":"the creature it marked");
+        r.riders.forEach(rd=>{const t=rd.fx||"…";s+=`; ${tiersT(rd.tiers).trim()||"on any tier"}, ${t.charAt(0).toLowerCase()+t.slice(1)}`});}
+    } else {
+      const name=`⟦a:${r.item}${D.v?" "+r.val:""}${D.src?" "+D.src+" "+r.who:""}⟧`;
+      if(r.when==="damage") s=`When it deals ${r.pool==="any"?"":"⟦d:"+r.pool+":["+r.pool+"]⟧ "}damage to ${r.tag==="(any creature)"?"a creature":"a creature with the Tag "+r.tag}, that creature gains ${name}`;
+      else if(W) s=`${W}it gains ${name}`;
+      else s=`Is ${name}`;
+    }
+    if(r.msg.on&&r.when!=="lasts") s+=`; posts “${r.msg.text||"…"}” to ${{owners:"its owners and the GM",gm:"the GM",all:"everyone"}[r.msg.to]}`;
+    return s+".";
+  }
+  if(r.kind==="weap"){
+    if(r.mode==="prop") return `${r.weapon==="Fists"?"Its Fists":r.weapon==="all"?"Its weapons":r.weapon==="withp"?`Its weapons with the property ⟦a:${r.wprop}⟧`:"The weapon in its main hand"} ${r.gl==="gains"?"have":"don't have"} the property ⟦a:${r.gl==="gains"?"":""}${r.prop}⟧.`;
+    return `Choose one weapon with the property ⟦a:${r.mprop}⟧: it starts at ${r.mval} Mastery.`;
+  }
+  if(r.kind==="esc") return `Once an encounter, when ${ESCT[r.trig].replace("N",r.n)}: its Escalation rises by 1.`;
+  if(r.kind==="haz"){const pats=["Entering","Turn","Movement"].filter(k=>r.pat[k]);const x=[];
+    if(r.dmgOn)x.push(`takes ⟦d:${r.pool}:${fmt(r.dice)} [${r.pool}]⟧${r.sub!=="None"?" ⟦s:"+r.sub+"⟧":""} damage`);
+    if(r.fxOn&&r.item)x.push(`gains ⟦a:${r.item}⟧`);
+    return `[HT: ${pats.join(", ")||"Entering, Turn"}] A creature it affects ${andJoin(x)||"…"}.`;}
+  if(r.kind==="aura"){const w={allies:"Allies",enemies:"Enemies",all:"Creatures"}[r.aff];
+    const sz=/^\d+$/.test(r.size.trim())?r.size.trim():"(equal to "+fmt(r.size)+")";
+    const x=[];
+    if(r.carry.on) x.push(`${w} inside${r.self?", and this creature,":""} gain ${r.item?"⟦a:"+r.item+"⟧":"…"}`);
+    if(r.ht.on){const pats=["Entering","Turn","Movement"].filter(k=>r.ht[k]);const y=[];if(r.ht.list.length)y.push("take "+andJoin(r.ht.list.map(d=>`⟦d:${d.pool}:${fmt(d.dice)} [${d.pool}]⟧${d.sub!=="None"?" ⟦s:"+d.sub+"⟧":""}`))+" damage");
+      if(r.ht.fx&&r.htItem)y.push(`gain ⟦a:${r.htItem}⟧`);
+      x.push(`[HT: ${pats.join(", ")||"Entering, Turn"}] ${r.carry.on?"they also":w+(r.self?" and this creature":"")} ${andJoin(y)}`);}
+    return `Aura ${sz}: ${x.join("; ")||"…"}.`;}
+  if(r.kind==="light") return `Sheds Bright light in a ${r.bright} Emanation and Dim light ${r.dim} squares further.`;
+  return "";
+}
+function endText(){
+  const on=k=>$(`[data-e="${k}"]`).classList.contains("on"), x=[];
+  if(on("time")){const d=$("#dur .on").dataset.v,n=+$("#rounds").value||1;
+    x.push({eot:"until the end of their turn",rounds:`${n} round${n>1?"s":""}`,enc:"until the encounter ends"}[d]);}
+  if(on("save")){const dc=$("#sDc .on").dataset.v,dcT=dc==="13"?"DC 13":dc==="origin"?"the origin's DC":"DC "+$("#sDcN").value;
+    const w=$("#sWhen .on").dataset.v==="eot"?"at the end of their turn":"with Interact (1 AP)";
+    const at=$("#sAttr").value.replace("Better of ","");
+    x.push(`until ${/^[AEIOU]/.test(at)?"an":"a"} ${at} Save (${dcT}) ${w} ends it`);}
+  if(on("down")) x.push(`until ${$("#effOrigin").textContent} goes Down`);
+  if(!x.length) return "Lasts until removed.";
+  return "Lasts "+x.join(", or ")+".";
+}
+function sayLite(r){
+  if(r.kind==="act"){const p=payload(r);let sc=r.dir==="by"?(r.uses==="next"?"their next Roll":"their Rolls"):(r.uses==="next"?"the next Roll against them":"Rolls against them");
+    const f=filterText(r);if(f)sc+=" with "+f;if(r.vs!=="any")sc+=(r.dir==="by"?" against ":" made by ")+vsWho(r.vs,r.who);if(r.uses==="round")sc+=", the first each round";
+    return andJoin(p)+" on "+sc;}
+  if(r.kind==="move") return `they can't willingly move ${r.dirm==="closer"?"closer to":"away from"} it`;
+  const t=say({...r,sees:false});return t.charAt(0).toLowerCase()+t.slice(1).replace(/\.$/,"");
+}
+function cardText(live){
+  const groups={},out=[];
+  live.forEach(r=>{if(r.sees&&(r.kind==="act"||r.kind==="move")){(groups[r.who]=groups[r.who]||[]).push(r);}else out.push(say(r));});
+  const g=Object.entries(groups).map(([w,rs])=>rs.length>1?`While they see ${w}: ${andJoin(rs.map(sayLite)).replace(/,? and /," and ")}.`:say(rs[0]));
+  return [...g,...out].join(" ");
+}
+function tip(){
+  const live=rules.filter(r=>!r.demo);
+  $("#tip").innerHTML=`<b>Frightened</b>${plain(cardText(live))} ${endText()}`;
+  $("#cnt").textContent=rules.length+" rules";
+  [["time","#eTime"],["save","#eSave"],["down","#eDown"]].forEach(([k,id])=>$(id).classList.toggle("off",!$(`[data-e="${k}"]`).classList.contains("on")));
+  const on=k=>$(`[data-e="${k}"]`).classList.contains("on"),d=$("#dur .on").dataset.v,n=+$("#rounds").value||1;
+  $("#sumTime").textContent=on("time")?{eot:"EoT",rounds:n+" round"+(n>1?"s":""),enc:"This encounter"}[d]:"off";
+  const dc=$("#sDc .on").dataset.v;
+  $("#sumSave").textContent=on("save")?`${$("#sAttr").value.replace("Better of ","")}, ${dc==="13"?"DC 13":dc==="origin"?"the origin's DC":"DC "+$("#sDcN").value}, ${$("#sWhen .on").dataset.v==="eot"?"end of turn":"Interact"}`:"off";
+  $("#sumDown").textContent=on("down")?$("#effOrigin").textContent:"off";
+  $("#rb").style.display=$("#rbl").style.display=d==="rounds"?"":"none";
+}
+function colorize(t,r){
+  let h=t.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+  const keep=[];const K=x=>{keep.push(x);return `⟪${keep.length-1}⟫`};
+  h=h.replace(/⟦d:([VR]):([^⟧]+)⟧/g,(m,p,x)=>K(`<span class="d${p.toLowerCase()}">${x}</span>`));
+  h=h.replace(/⟦s:([^⟧]+)⟧/g,(m,x)=>K(`<span class="st" style="color:${SUBCOL[x]||"inherit"}">${x}</span>`));
+  h=h.replace(/⟦a:([^⟧]+)⟧/g,(m,x)=>K(`<b>${x}</b>`));
+  h=h.replace(/\b(\d+ (?:Field |Pressure |Support )?Banes?)\b/g,'<span class="bn">$1</span>').replace(/\b(\d+ (?:Field |Pressure |Support )?Boons?)\b/g,'<span class="bo">$1</span>');
+  h=h.replace(/\bFavored\b/g,'<span class="bo">Favored</span>').replace(/\bDoomed\b/g,'<span class="bn">Doomed</span>');
+  h=h.replace(/(Empowered \+?\d+)/g,'<span class="emp">$1</span>').replace(/(Enfeebled \+?\d+)/g,'<span class="enf">$1</span>');
+  h=h.replace(/(\+\d+ (?:Field |Pressure |Support )?bonus)/g,'<span class="bo">$1</span>');
+  const nots=new Set(r.not||[]);
+  h=h.replace(/\[HT: ([^\]]+)\]/g,(m,g)=>K(`<span class="ht">[HT: ${g}]</span>`));
+  h=h.replace(/\[([^\]]+)\]/g,(m,g)=>g.split(", ").map(x=>`<span class="tc2 ${nots.has(x)?"no":GOF[x]||"key"}">${x}</span>`).join(""));
+  if(r.who) h=h.split(r.who).join(`<span class="who">${r.who}</span>`);
+  return h.replace(/⟪(\d+)⟫/g,(m,i)=>keep[+i]);
+}
+
+/* ---------- controls ---------- */
+const get=(r,f)=>f.split(".").reduce((o,k)=>o[k],r);
+const put=(r,f,v)=>{const k=f.split(".");const last=k.pop();k.reduce((o,x)=>o[x],r)[last]=v};
+const stepH=(r,f,cls,min=0,max=4)=>`<span class="step ${cls}"><button data-a="dec" data-id="${r.id}" data-f="${f}" data-min="${min}" aria-label="Less">−</button><span class="sgn">${min<0&&get(r,f)>0?"+":""}${get(r,f)}</span><button data-a="inc" data-id="${r.id}" data-f="${f}" data-max="${max}" aria-label="More">+</button></span>`;
+const segH=(r,f,opts,cls="")=>`<span class="seg ${cls}">${opts.map(([v,l])=>`<button data-a="set" data-id="${r.id}" data-f="${f}" data-v="${v}" class="${String(get(r,f))===v?"on":""}">${l}</button>`).join("")}</span>`;
+const togH=(r,f,l)=>{const on=get(r,f);return `<span class="tog ${on?"on":""}" data-a="tog" data-id="${r.id}" data-f="${f}" role="switch" aria-checked="${on}"><span class="box"></span>${l}</span>`};
+const originH=r=>`<span class="origin">Origin: <b>${r.who}</b><button data-a="who" data-id="${r.id}">⌖ Change</button></span>`;
+const NAMES=[["","n/a"],["Field","Field"],["Pressure","Pressure"],["Support","Support"]];
+const VS=[["any","any creature"],["origin","the origin"],["marked","the marked one"]];
+function clauseH(r,key,label){
+  const used=new Set([...r.all,...r.any,...r.not]);
+  const opts=GROUPS.map(([n,,ts])=>`<optgroup label="${n}">${ts.filter(t=>!used.has(t)).map(t=>`<option>${t}</option>`).join("")}</optgroup>`).join("");
+  return `<div class="clause ${key==="not"?"not":""}"><span>${label}</span><div>${r[key].map(t=>`<span class="chip ${GOF[t]}">${t}<button data-a="rmT" data-id="${r.id}" data-k="${key}" data-v="${t}" aria-label="Remove ${t}">×</button></span>`).join("")}
+    <select data-a="addT" data-id="${r.id}" data-k="${key}" aria-label="Add a trait to ${label}"><option value="">+ trait</option>${opts}</select></div></div>`;
+}
+const filterH=r=>`<div class="filter"><div class="reads">Actions: <b>${filterText(r)||"any Action"}</b></div>${clauseH(r,"all","Has all of")}${clauseH(r,"any","Has one of")}${clauseH(r,"not","But not")}</div>`;
+const only=(r,k)=>{const o={...r};["bb","emp","ign","note"].forEach(x=>{if(x!==k)o[x]={on:false}});o.dmg={on:false};return andJoin(payload(o,false).map(plain));};
+const PSUM={bb:r=>only(r,"bb"),emp:r=>only(r,"emp"),ign:r=>only(r,"ign").replace(/^ignore /,""),note:r=>r.note.title,
+  dmg:r=>r.dmg.list.map(d=>"+"+fmt(d.dice).replace("the origin's ","")+(d.sub!=="None"?" "+d.sub:"")).join(", ")};
+const partH=(r,key,title,body)=>`<div class="part ${r[key].on?"":"off"}"><header>${togH(r,key+".on",title)}<span class="psum">${r[key].on?(PSUM[key](r)||""):"off"}</span></header><div class="pb">${body}</div></div>`;
+const PG=rows=>`<div class="pgrid">${rows.map(([l,c])=>`<span class="pl">${l}</span><div class="pc">${c}</div>`).join("")}</div>`;
+function partsH(r){
+  const fav=r.bb.boons-r.bb.banes>=5?'<span class="fav">Favored</span>':r.bb.banes-r.bb.boons>=5?'<span class="doom">Doomed</span>':"";
+  return `<div class="addsh">What it adds</div>`
+   +partH(r,"bb","Boons and Banes",PG([["Boons",stepH(r,"bb.boons","boon",0,5)+fav],["Banes",stepH(r,"bb.banes","bane",0,5)],["Named",segH(r,"bb.name",NAMES,"segw")]]))
+   +partH(r,"emp","Empowered and Enfeebled",PG([["Counts as",segH(r,"emp.mode",[["set","Set to"],["inc","Increase by"]],"segw")],["Empowered",stepH(r,"emp.emp","boon")],["Enfeebled",stepH(r,"emp.enf","bane")]]))
+   +partH(r,"dmg","Extra damage",r.dmg.list.map((d,i)=>`<div class="dent">${PG([
+      ["Damage",`<input type="text" class="dice" data-a="dtxt" data-id="${r.id}" data-i="${i}" value="${d.dice}" aria-label="Dice">
+        <span class="seg">${["V","R"].map(v=>`<button data-a="dset" data-id="${r.id}" data-i="${i}" data-k="pool" data-v="${v}" class="${d.pool===v?"on":""}">[${v}]</button>`).join("")}</span>
+        <select data-a="dsel" data-id="${r.id}" data-i="${i}" aria-label="Subtype">${SUBS.map(x=>`<option ${x===d.sub?"selected":""}>${x}</option>`).join("")}</select>
+`],
+      ["On",[1,2,3].map(t=>`<span class="tog ${d.tiers.includes(t)?"on":""}" data-a="tier" data-id="${r.id}" data-i="${i}" data-v="${t}"><span class="box"></span>T${t}</span>`).join("")],
+      ["Then",`<span class="drop2 ${d.fx?"full":""}" data-a="fx" data-id="${r.id}" data-i="${i}">${d.fx?"The target gains "+d.fx+" ×":"Drop an Effect the target gains (optional)"}</span>${r.dmg.list.length>1?`<button class="rmline" data-a="ddel" data-id="${r.id}" data-i="${i}">Remove this damage</button>`:""}`]])}</div>`).join("")
+      +`<button class="addd" data-a="dadd" data-id="${r.id}">+ Another damage</button>`)
+   +(r.dir==="by"?partH(r,"ign","Ignores",PG([["Cover",["Low","Medium","High"].map(k=>togH(r,"ign."+k,k)).join("")],["Range Banes",segH(r,"ign.range",[["none","None"],["one","One"],["all","All"]],"segw")],["Also",togH(r,"ign.engaged","The Engaged Bane")]])):"")
+   +partH(r,"note","Shows a note",PG([["Title",`<input type="text" class="wide" style="width:100%" data-a="ntitle" data-id="${r.id}" value="${r.note.title}" placeholder="Title" aria-label="Note title">`],["Text",`<textarea class="ntext" data-a="ntext" data-id="${r.id}" placeholder="Shown in the roll dialog of matching Rolls" aria-label="Note text">${r.note.text}</textarea>`]]));
+}
+function dropH(r){
+  if(r.item){const D=findDrop(r.item),A=isAction(r.item);
+    return `<div class="dropped ${A?"is-a":"is-e"}"><span class="dk">${A?"Action":"Effect"}</span><b>${r.item}</b>${A?`<span class="cost">${D.c}</span> <span class="m">· ${D.f}</span>`:""}<button class="x" data-a="clr" data-id="${r.id}" aria-label="Remove">×</button>${A?`<div class="m2">${D.t}</div>`:""}</div>`;}
+  return `<div class="dropbig" data-a="menu" data-id="${r.id}">Drop an Effect or an Action here<br><small>Effects from the Effects and Conditions compendiums, Actions from any card</small></div>
+   ${r.menu?`<div class="simmenu"><i>Mockup: pretend to drop</i>${[...DROPS.effects,...DROPS.actions].map(x=>`<button data-a="pick" data-id="${r.id}" data-v="${x.n}">${x.n}</button>`).join("")}</div>`:""}`;
+}
+const WHEN=[["lasts","While this effect lasts"],["turn","Start of each of its turns"],["enc","Start of each encounter"],["damage","When it deals damage"]];
+function grantH(r){
+  let g=`<div class="full">${dropH(r)}</div>`;
+  if(!r.item) return g;
+  const D=findDrop(r.item), A=isAction(r.item);
+  if(!A){
+    if(D.v) g+=`<label>Value</label><div>${stepH(r,"val","",1,9)}</div>`;
+    if(D.src) g+=`<label>${r.item} ${D.src}</label><div>${originH(r)}</div>`;
+  }
+  g+=`<label>When</label><div>${segH(r,"when",A?WHEN.slice(0,3):WHEN,A?"segw":"segg")}</div>`;
+  if(A){
+    g+=`<label>Gives</label><div>${segH(r,"amode",[["has","The Action"],["uses","Uses of it"]],"segw")}</div>`;
+    if(r.amode==="uses"){
+      g+=`<label>Uses</label><div>${stepH(r,"uses","",1,9)} <span class="lbl">uses for</span> ${stepH(r,"ap","",0,4)} <span class="lbl">AP</span></div>
+        <label>Roll</label><div>${stepH(r,"bbn",r.bbk==="Boons"?"boon":"bane",0,5)} ${segH(r,"bbk",[["Boons","Boons"],["Banes","Banes"]])}</div>
+        <label>Damage</label><div>${stepH(r,"en",r.ek==="Empowered"?"boon":"bane")} ${segH(r,"ek",[["Empowered","Empowered"],["Enfeebled","Enfeebled"]])}</div>
+        <label>Against</label><div>${segH(r,"against",[["any","any creature"],["targeted","the targeted creature"],["marked","the marked one"]],"segw")}</div>
+        <div class="full"><div class="addsh">On its tiers</div><div class="riders">${r.riders.map((rd,i)=>`<div class="dent">${PG([
+          ["On",[1,2,3].map(t=>`<span class="tog ${rd.tiers.includes(t)?"on":""}" data-a="rtier" data-id="${r.id}" data-i="${i}" data-v="${t}"><span class="box"></span>T${t}</span>`).join("")],
+          ["Then",`<input type="text" class="wide" style="width:100%" data-a="rtxt" data-id="${r.id}" data-i="${i}" value="${rd.fx}" placeholder="What happens (or drop an Effect)" aria-label="Rider"><button class="rmline" data-a="rdel" data-id="${r.id}" data-i="${i}">Remove</button>`]])}</div>`).join("")}
+          <button class="addd" data-a="radd" data-id="${r.id}">+ On a tier</button></div></div>`;
+    }
+  } else {
+    if(r.when==="damage") g+=`<label>Damage</label><div>${segH(r,"pool",[["any","any"],["V","[V]"],["R","[R]"]],"segw")}</div>
+       <label>Tag</label><div><select data-a="sel" data-id="${r.id}" data-f="tag" aria-label="Tag">${TAGS.map(t=>`<option ${t===r.tag?"selected":""}>${t}</option>`).join("")}</select></div>`;
+    g+=`<p class="note2">${r.when==="lasts"?"This creature has it; it ends with this effect.":r.when==="damage"?"The damaged creature gains it, with its own duration.":"This creature gains it each time, with its own duration."}</p>`;
+  }
+  if(r.when!=="lasts"){
+    g+=`<label>Message</label><div>${togH(r,"msg.on","Post to chat")}${r.msg.on?segH(r,"msg.to",[["owners","Owners and GM"],["gm","GM"],["all","Everyone"]]):""}</div>`;
+    if(r.msg.on) g+=`<label></label><div><input type="text" class="wide" style="width:100%" data-a="mtxt" data-id="${r.id}" value="${r.msg.text}" placeholder="What the message says${A?" (the Action comes as a button)":""}" aria-label="Message"></div>`;
+  }
+  return g;
+}
+function valueH(r){
+  let g=`<label>Changes</label><div>${segH(r,"stat",[["defense","Defense"],["speed","Speed"],["rally","Rally Points"]])}</div>`;
+  if(r.stat==="defense") g+=`<label>Amount</label><div>${stepH(r,"val","",-4,4)} <select data-a="sel" data-id="${r.id}" data-f="which" aria-label="Which Defense">${[["all","every Defense"],["ad","Armor (AD)"],["wd","Ward (WD)"],["bo","Vs. Body"],["mi","Vs. Mind"],["ap","Vs. Appeal"],["in","Vs. Instinct"]].map(([v,l])=>`<option value="${v}" ${r.which===v?"selected":""}>${l}</option>`).join("")}</select></div>`;
+  else if(r.stat==="speed") g+=`<label>Amount</label><div>${stepH(r,"val","",-6,6)} <select data-a="sel" data-id="${r.id}" data-f="stype" aria-label="Which Speed"><option value="all" ${r.stype==="all"?"selected":""}>every Speed</option><option value="Walk" ${r.stype==="Walk"?"selected":""}>Walk</option><option disabled>Fly (later)</option><option disabled>Climb (later)</option><option disabled>Swim (later)</option></select></div>`;
+  else g+=`<label>Each heals</label><div><input type="text" class="wide" data-a="rtxt2" data-id="${r.id}" value="${r.rally}" aria-label="Extra healing"> <span class="lbl">more</span></div>
+     <p class="note2">@origin.pow is the origin&#39;s Power Modifier, @target.pow the affected creature&#39;s (also wpn, sig, body, mind, appeal, instinct, stage). For allies around it, drop this effect on an Aura.</p>`;
+  if(r.stat!=="rally"){
+    g+=`<label>Counts as</label><div>${segH(r,"mode",[["bonus","A bonus"],["inc","An increase"],["set","Set to"]])}</div>`;
+    if(r.mode==="bonus") g+=`<label>Named</label><div>${segH(r,"name",NAMES)}</div>`;
+    g+=`<p class="note2">${r.mode==="bonus"?"Named bonuses work as named Boons and Banes: different names add, the same name keeps the highest, an unnamed one never adds.":r.mode==="inc"?"An increase adds to everything else.":"Set to replaces the value."}</p>`;
+  }
+  if(r.stat==="defense") g+=`<label>Against</label><div>${segH(r,"vs",VS)}</div>`;
+  g+=`<label>Only</label><div>${togH(r,"sees","While they see the origin")}</div>`;
+  if((r.stat==="defense"&&r.vs==="origin")||r.sees) g+=`<label>Origin</label><div>${originH(r)}</div>`;
+  return g;
+}
+function escH(r){
+  return `<label>When</label><div><select data-a="sel" data-id="${r.id}" data-f="trig" aria-label="Trigger">${Object.entries(ESCT).map(([k,v])=>`<option value="${k}" ${r.trig===k?"selected":""}>${v.charAt(0).toUpperCase()+v.slice(1)}</option>`).join("")}</select></div>
+    ${ESCT[r.trig].includes(" N ")?`<label>Within</label><div>${stepH(r,"n","",1,12)} <span class="lbl">squares (the N)</span></div>`:""}
+    <p class="note2">Once an encounter, +1 Escalation (the class hook in Chapter 2).</p>`;
+}
+function effDrop(r,label,f="item"){
+  const m=f+"Menu";
+  if(r[f]) return `<div class="dropped is-e"><span class="dk">Effect</span><b>${r[f]}</b><button class="x" data-a="clr" data-f="${f}" data-id="${r.id}" aria-label="Remove">×</button></div>`;
+  return `<div class="dropbig" data-a="menu" data-f="${f}" data-id="${r.id}">${label}<br><small>from the Effects and Conditions compendiums</small></div>
+   ${r[m]?`<div class="simmenu"><i>Mockup: pretend to drop</i>${DROPS.effects.map(x=>`<button data-a="pick" data-f="${f}" data-id="${r.id}" data-v="${x.n}">${x.n}</button>`).join("")}</div>`:""}`;
+}
+const ASW=[["Gold","#e8a33a"],["Holy","#ffd27a"],["Ally","#4a8fd8"],["Enemy","#c0392b"],["Arcane","#9b6bd8"],["Nature","#4caf6a"]];
+const rowPart=(on,tog,sum,body)=>`<div class="part ${on?"":"off"}"><header>${tog}<span class="psum">${on?sum:"off"}</span></header><div class="pb">${body}</div></div>`;
+function auraH(r){
+  const htsum=`${["Entering","Turn","Movement"].filter(k=>r.ht[k]).join(", ")||"Entering, Turn"} · ${r.ht.list.map(d=>fmt(d.dice).replace("the origin's ","")+(d.sub!=="None"?" "+d.sub:"")).join(" + ")}${r.ht.fx&&r.htItem?" · "+r.htItem:""}`;
+  return `<label>Size</label><div><span class="lbl">Aura</span> <input type="text" class="wide" style="width:130px" data-a="asz" data-id="${r.id}" value="${r.size}" placeholder="2 or @origin.pow" aria-label="Aura size"> <span class="lbl">squares</span></div>
+    <label>Affects</label><div>${segH(r,"aff",[["allies","Allies"],["enemies","Enemies"],["all","Everyone"]],"segw")}</div>
+    <label></label><div>${togH(r,"self","And this creature itself")}</div>
+    <p class="note2">Counted from every square it occupies (Chapter 3, Aura).</p>
+    <div class="full"><div class="addsh">What it does inside</div>
+    ${rowPart(r.carry.on,togH(r,"carry.on","Carries an Effect"),r.item||"(none dropped)",effDrop(r,"Drop the Effect whoever is inside gains")+`<p class="note2">Gained on entering, lost on leaving. The dropped effect keeps its own rules.</p>`)}
+    ${rowPart(r.ht.on,togH(r,"ht.on","Hazard [HT]"),htsum,PG([
+      ["Triggers",["Entering","Turn","Movement"].map(k=>togH(r,"ht."+k,k)).join("")],
+      ...r.ht.list.map((d,i)=>[i?"":"Damage",`<input type="text" class="dice" data-a="htxt" data-id="${r.id}" data-f="ht.list.${i}.dice" value="${d.dice}" aria-label="Damage">${segH(r,`ht.list.${i}.pool`,[["V","[V]"],["R","[R]"]])}<select data-a="sel" data-id="${r.id}" data-f="ht.list.${i}.sub" aria-label="Subtype">${SUBS.map(x=>`<option ${x===d.sub?"selected":""}>${x}</option>`).join("")}</select>${r.ht.list.length>1?`<button class="rmline" data-a="hdel" data-id="${r.id}" data-i="${i}">Remove</button>`:""}`]),
+      ["",`<button class="addd" data-a="hadd" data-id="${r.id}">+ Another damage</button>`],
+      ["Also",togH(r,"ht.fx","Gives an Effect")]])+(r.ht.fx?effDrop(r,"Drop the Effect a creature it affects gains","htItem"):"")
+      +`<p class="note2">Entering: enters the area. Turn: ends its turn there (Entering and Turn: once per turn-cycle). Movement: each Movement across it. None ticked: Entering and Turn. The same block goes on a Zone.</p>`)}</div>
+    <div class="full"><div class="addsh">On the map</div>${rowPart(r.show,togH(r,"show","Shown on the map"),"outline and squares",`<div class="pgrid"><span class="pl">Outline</span><div class="pc colors"><input type="color" data-a="acol" data-id="${r.id}" data-f="outline" value="${r.outline}" aria-label="Outline color">${ASW.map(([n,c])=>`<button class="sw ${r.outline===c?"on":""}" style="--c:${c}" data-a="aswatch" data-id="${r.id}" data-f="outline" data-v="${c}" title="${n}">${n}</button>`).join("")}</div>
+      <span class="pl">Squares</span><div class="pc colors"><input type="color" data-a="acol" data-id="${r.id}" data-f="fill" value="${r.fill}" aria-label="Fill color">${ASW.map(([n,c])=>`<button class="sw ${r.fill===c?"on":""}" style="--c:${c}" data-a="aswatch" data-id="${r.id}" data-f="fill" data-v="${c}" title="${n}">${n}</button>`).join("")}</div>
+      </div><div class="aurapv" style="--o:${r.outline};--f:${r.fill};--n:${/^\d+$/.test(r.size.trim())?Math.min(+r.size,4):2}"><span class="tok">Y</span></div></div>`)}</div>`;
+}
+function hazH(r){
+  return `<label>Triggers</label><div>${["Entering","Turn","Movement"].map(k=>togH(r,"pat."+k,k)).join("")}</div>
+    <p class="note2">Entering: enters the area. Turn: ends its turn there (Entering and Turn: once per turn-cycle). Movement: each Movement across it. None ticked: Entering and Turn.</p>
+    <div class="full"><div class="addsh">What it does</div>
+    ${rowPart(r.dmgOn,togH(r,"dmgOn","Damage"),`${fmt(r.dice).replace("the origin's ","")} [${r.pool}]${r.sub!=="None"?" "+r.sub:""}`,PG([["Damage",`<input type="text" class="dice" data-a="ttxt" data-id="${r.id}" value="${r.dice}" aria-label="Damage">${segH(r,"pool",[["V","[V]"],["R","[R]"]])}<select data-a="sel" data-id="${r.id}" data-f="sub" aria-label="Subtype">${SUBS.map(x=>`<option ${x===r.sub?"selected":""}>${x}</option>`).join("")}</select>`]]))}
+    ${rowPart(r.fxOn,togH(r,"fxOn","Gives an Effect"),r.item||"(none dropped)",effDrop(r,"Drop the Effect a creature it affects gains"))}</div>
+    <p class="note2">Put this rule in an effect that an Aura or a Zone carries.</p>`;
+}
+function tickH(r){
+  return `<label>When</label><div>${segH(r,"at",[["start","Start of each of its turns"],["end","End of each of its turns"]],"segw")}</div>
+    <label>It</label><div>${segH(r,"what",[["damage","Takes damage"],["heal","Heals"]],"segw")}</div>
+    <label>Amount</label><div><input type="text" class="wide" style="width:110px" data-a="ttxt" data-id="${r.id}" value="${r.dice}" aria-label="Amount">
+      ${r.what==="damage"?`${segH(r,"pool",[["V","[V]"],["R","[R]"]])}<select data-a="sel" data-id="${r.id}" data-f="sub" aria-label="Subtype">${SUBS.map(x=>`<option ${x===r.sub?"selected":""}>${x}</option>`).join("")}</select>`:""}</div>
+    <p class="note2">${r.what==="damage"?"How it ends (Bleed: a Save with Interact, DC 13) is set in Ends, below.":"A heal, as Heal in the book."}</p>`;
+}
+function weapH(r){
+  let g=`<label>Changes</label><div>${segH(r,"mode",[["prop","A property"],["mastery","Starting Mastery"]])}</div>`;
+  const P=f=>`<select data-a="sel" data-id="${r.id}" data-f="${f}" aria-label="Property">${PROPS.map(x=>`<option ${x===r[f]?"selected":""}>${x}</option>`).join("")}</select>`;
+  if(r.mode==="prop") g+=`<label>Weapon</label><div><select data-a="sel" data-id="${r.id}" data-f="weapon" aria-label="Weapon"><option ${r.weapon==="Fists"?"selected":""}>Fists</option><option value="main" ${r.weapon==="main"?"selected":""}>The weapon in its main hand</option><option value="all" ${r.weapon==="all"?"selected":""}>All its weapons</option><option value="withp" ${r.weapon==="withp"?"selected":""}>Its weapons with the property…</option></select>${r.weapon==="withp"?P("wprop"):""}</div>
+     <label>Property</label><div>${segH(r,"gl",[["gains","Gains"],["loses","Loses"]])} ${P("prop")}</div>`;
+  else g+=`<label>Weapon</label><div><span class="lbl">the player chooses one with</span> ${P("mprop")}</div><label>Starts at</label><div>${stepH(r,"mval","",1,15)} <span class="lbl">Mastery</span></div>
+     <p class="note2">Asked once, when this effect is added; the choice is kept on the effect.</p>`;
+  return g;
+}
+const SWATCH=[["Torch","#ff9b3d"],["Holy","#ffd27a"],["Moon","#b8c8ff"],["Fire","#ff5a1f"],["Arcane","#b07cff"],["Fey","#7dffb0"]];
+function lightH(r){
+  return `<label>Bright</label><div>${stepH(r,"bright","",0,12)} <span class="lbl">squares</span></div>
+    <label>Dim</label><div>${stepH(r,"dim","",0,12)} <span class="lbl">squares beyond the Bright light</span></div>
+    <label>Color</label><div class="colors"><input type="color" data-a="col" data-id="${r.id}" value="${r.color}" aria-label="Light color">
+      ${SWATCH.map(([n,c])=>`<button class="sw ${r.color===c?"on":""}" style="--c:${c}" data-a="swatch" data-id="${r.id}" data-v="${c}" title="${n}">${n}</button>`).join("")}</div>
+    <label>Intensity</label><div><input type="range" min="0" max="1" step="0.05" data-a="rng" data-id="${r.id}" data-f="alpha" value="${r.alpha}" aria-label="Intensity"> <span class="lbl">${r.alpha}</span></div>
+    <label>Animation</label><div><select data-a="sel" data-id="${r.id}" data-f="anim" aria-label="Animation">${["None","Torch","Pulse","Flicker","Sunburst","Wave","Fairy"].map(x=>`<option ${x===r.anim?"selected":""}>${x}</option>`).join("")}</select>
+      ${r.anim!=="None"?`<span class="lbl">speed</span>${stepH(r,"aspeed","",1,10)}<span class="lbl">strength</span>${stepH(r,"aint","",1,10)}`:""}</div>
+    <p class="note2">The Bright and Dim light follow the book's Light rules (Obscured, the Hide penalty); color and animation are only the look.</p>
+    <div class="full"><div class="lightpv" style="--c:${r.color};--a:${r.alpha};--b:${r.bright};--d:${r.dim}"><span class="tok">Y</span></div></div>`;
+}
+const ADDSEL=`<select class="addsel" data-a="addRule" aria-label="Add a rule"><option value="">+ Add rule</option>
+  <optgroup label="Rolls and values"><option value="act">On matching Actions</option><option value="value">Changes a value</option></optgroup>
+  <optgroup label="Gives"><option value="grant">Grants an Effect or Action</option><option value="weap">Weapons (properties, Mastery)</option><option value="esc">Escalation hook</option></optgroup>
+  <optgroup label="Areas"><option value="aura">Aura</option><option value="light">Light</option></optgroup>
+  <optgroup label="Limits"><option value="move">Movement limit</option></optgroup></select>`;
+const TILE={act:["bb","±"],value:["rule","V"],grant:["cond","G"],move:["rule","M"],light:["lt","L"],weap:["wp","W"],esc:["esc","E"],haz:["tk","H"],aura:["au","A"]};
+const TITLE={act:"On matching Actions",value:"Changes a value",grant:"Grants",move:"Movement limit",light:"Light",weap:"Weapons",esc:"Escalation hook",haz:"Hazardous Terrain [HT]",aura:"Aura"};
+function short(r){const t=short0(r);return t.charAt(0).toUpperCase()+t.slice(1);}
+function short0(r){
+  if(r.kind==="act"){const p=payload(r,false).map(plain);if(r.dmg.on)p.push(...r.dmg.list.map(d=>"+"+d.dice+(d.sub!=="None"?" "+d.sub:"")));return p.join(", ")||"(empty)";}
+  if(r.kind==="grant"){if(!r.item)return "Grants (empty)";const w={lasts:"",turn:"Each turn: ",enc:"Each encounter: ",damage:"On damage: "}[r.when];
+    return w+(isAction(r.item)?(r.amode==="has"?"has ":"use of ")+r.item:r.item);}
+  if(r.kind==="esc") return "Escalation +1: "+(r.trig==="allyHurt"?"ally Bloodied / Down":r.trig==="enemyDown"?"enemy Down":"self Bloodied / Strained");
+  if(r.kind==="haz") return "HT: "+["Entering","Turn","Movement"].filter(k=>r.pat[k]).join(", ")+(r.dmgOn?" · "+r.dice+(r.sub!=="None"?" "+r.sub:""):"")+(r.fxOn&&r.item?" · "+r.item:"");
+  if(r.kind==="aura") return `Aura ${r.size.replace("@origin.","")}: `+[r.carry.on?(r.item||"(empty)"):"",r.ht.on?"HT "+r.ht.list.map(d=>d.dice+(d.sub!=="None"?" "+d.sub:"")).join(" + "):""].filter(Boolean).join(" + ");
+  if(r.kind==="weap") return r.mode==="prop"?`${r.weapon==="Fists"?"Fists":r.weapon==="withp"?r.wprop+" weapons":"Weapons"} ${r.gl==="gains"?"gain":"lose"} ${r.prop}`:`Starting Mastery ${r.mval}`;
+  if(r.kind==="light") return `Light ${r.bright} / ${r.dim}`;
+  if(r.kind==="move") return r.dirm==="closer"?"Can't move closer":"Can't move away";
+  if(r.kind==="value"&&r.stat==="rally") return "Rally Points heal more";
+  return plain(say(r)).replace(/\.$/,"").replace(/, while.*/,"");
+}
+function render(){
+  const r=rules.find(x=>x.id===selC)||rules[0]; if(r) selC=r.id;
+  const list=rules.map(x=>{const [tk,tl]=TILE[x.kind];return `<div class="it ${x.id===selC?"on":""}" data-a="selC" data-id="${x.id}"><span class="kind k-${tk}">${tl}</span><span class="itxt">${short(x)}${x.demo?`<br><em class="ex">example: ${x.label}</em>`:""}</span><button class="trash" data-a="del" data-id="${x.id}" aria-label="Remove this rule" title="Remove"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 4h10M6.5 4V2.5h3V4M4.5 4l.7 9.5h5.6l.7-9.5M7 6.5v5M9 6.5v5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>`}).join("");
+  let pane="<p style='color:var(--muted)'>Add a rule.</p>";
+  if(r){
+    let g="";
+    if(r.kind==="act") g=`<div class="full addsh first">Which Rolls</div>
+      <label>On Rolls</label><div>${segH(r,"dir",[["by","made by them"],["against","made against them"]],"segw")}</div>
+      <label>With</label><div class="full2">${filterH(r)}</div>
+      <label>${r.dir==="by"?"Against":"Made by"}</label><div>${segH(r,"vs",VS,"segw")}</div>
+      <label>Uses</label><div>${segH(r,"uses",[["every","Every time"],["round","First each round"],["next","Next one only"]],"segw")}</div>
+      <label>Only</label><div>${togH(r,"sees","While they see the origin")}</div>
+      ${(r.vs==="origin"||r.sees)?`<label>Origin</label><div>${originH(r)}</div>`:""}
+      <div class="full">${partsH(r)}</div>`;
+    else if(r.kind==="move") g=`<label>Can't move</label><div>${segH(r,"dirm",[["closer","closer to"],["away","away from"]])}</div><label>Only</label><div>${togH(r,"sees","While they see the origin")}</div><label>Origin</label><div>${originH(r)}</div>`;
+    else if(r.kind==="value") g=valueH(r);
+    else if(r.kind==="grant") g=grantH(r);
+    else if(r.kind==="light") g=lightH(r);
+    else if(r.kind==="weap") g=weapH(r);
+    else if(r.kind==="esc") g=escH(r);
+    else if(r.kind==="haz") g=hazH(r);
+    else if(r.kind==="aura") g=auraH(r);
+    pane=`<h4>${TITLE[r.kind]}</h4><div class="says">${colorize(say(r),r)}</div><div class="grid2">${g}</div>`;
+  }
+  $("#what").innerHTML=`<div class="md"><div class="lst">${list}<div class="adds">${ADDSEL}</div></div><div class="pane">${pane}</div></div>`;
+  tip();
+}
+$("#notes").innerHTML=`<h2>Prototype C, round 12</h2><p class="lead">Hazardous Terrain moved onto the area itself. Eight entries in “+ Add rule”. Rules 3 and on are examples.</p>
+<div class="note"><h3>Why HT is on the area, not a rule</h3><p>The book's patterns are about the area: entering it, ending a turn in it, moving within it. A carried effect only knows that the creature is inside. So HT is a block of the area: Aura now has “What it does inside” with two rows, <b>Carries an Effect</b> and <b>Hazardous Terrain [HT]</b> (triggers, damage, optionally an Effect). The Zone gets the same block. Example: Burning aura, Aura 1, [HT: Entering, Turn] 1d6 [V] Fire.</p></div>
+<div class="note"><h3>Hover card merges shared limits</h3><p>“While they see Ogre Chieftain: 1 Bane on their Rolls and they can't willingly move closer to it.”</p></div>
+<div class="note"><h3>Check in the filter</h3><p>The Roll group has Check beside Save, so a Note or a Boon can target “[Body, Check]”.</p></div>`;
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-a]"); if(!b||["SELECT","INPUT","TEXTAREA"].includes(b.tagName)) return;
+  const a=b.dataset.a,id=+b.dataset.id,r=rules.find(x=>x.id===id),f=b.dataset.f,i=+b.dataset.i;
+  if(a==="del"){rules=rules.filter(x=>x.id!==id);e.stopPropagation();}
+  else if(a==="selC") selC=id;
+  else if(a==="inc") put(r,f,Math.min(+(b.dataset.max||4),get(r,f)+1));
+  else if(a==="dec") put(r,f,Math.max(+(b.dataset.min||0),get(r,f)-1));
+  else if(a==="set") put(r,f,b.dataset.v);
+  else if(a==="tog") put(r,f,!get(r,f));
+  else if(a==="tier"){const d=r.dmg.list[i],t=+b.dataset.v;d.tiers=d.tiers.includes(t)?d.tiers.filter(x=>x!==t):[...d.tiers,t].sort();}
+  else if(a==="rtier"){const d=r.riders[i],t=+b.dataset.v;d.tiers=d.tiers.includes(t)?d.tiers.filter(x=>x!==t):[...d.tiers,t].sort();}
+  else if(a==="fx"){const d=r.dmg.list[i];d.fx=d.fx?"":"Hindered (EoT)";}
+  else if(a==="dset") r.dmg.list[i][b.dataset.k]=b.dataset.v;
+  else if(a==="dadd") r.dmg.list.push(newDmg());
+  else if(a==="hadd") r.ht.list.push({dice:"1d4",pool:"V",sub:"None"});
+  else if(a==="hdel") r.ht.list.splice(i,1);
+  else if(a==="ddel") r.dmg.list.splice(i,1);
+  else if(a==="radd") r.riders.push({tiers:[3],fx:""});
+  else if(a==="rdel") r.riders.splice(i,1);
+  else if(a==="rmT") r[b.dataset.k]=r[b.dataset.k].filter(t=>t!==b.dataset.v);
+  else if(a==="who") r.who=ORIGINS[(ORIGINS.indexOf(r.who)+1)%ORIGINS.length];
+  else if(a==="menu"){if(f){r[f+"Menu"]=!r[f+"Menu"];}else r.menu=!r.menu;}
+  else if(a==="pick"){if(f){r[f]=b.dataset.v;r[f+"Menu"]=false;}else{r.item=b.dataset.v;r.menu=false;if(isAction(r.item)&&r.when==="damage")r.when="lasts";}}
+  else if(a==="clr") r[f||"item"]="";
+  else if(a==="swatch") r.color=b.dataset.v;
+  else if(a==="aswatch") r[b.dataset.f]=b.dataset.v;
+  else return;
+  render();
+});
+document.addEventListener("change",e=>{const s=e.target,a=s.dataset.a,r=rules.find(x=>x.id===+s.dataset.id),i=+s.dataset.i;
+  if(a==="addT"&&s.value) r[s.dataset.k].push(s.value);
+  else if(a==="sel") put(r,s.dataset.f,s.value);
+  else if(a==="dsel") r.dmg.list[i].sub=s.value;
+  else if(a==="dtxt") r.dmg.list[i].dice=s.value||"1d4";
+  else if(a==="rtxt") r.riders[i].fx=s.value;
+  else if(a==="rtxt2") r.rally=s.value||"0";
+  else if(a==="ttxt") r.dice=s.value||"1";
+  else if(a==="asz") r.size=s.value||"1";
+  else if(a==="htxt") put(r,s.dataset.f,s.value||"1");
+  else if(a==="ntitle") r.note.title=s.value;
+  else if(a==="ntext") r.note.text=s.value;
+  else if(a==="mtxt") r.msg.text=s.value;
+  else if(a==="num") put(r,s.dataset.f,+s.value);
+  else if(a==="col") r.color=s.value;
+  else if(a==="acol") r[s.dataset.f]=s.value;
+  else if(a==="rng") put(r,s.dataset.f,+s.value);
+  else if(a==="addRule"&&s.value){const v=s.value;const n=v==="act"?newAct({}):v==="value"?newVal({}):v==="grant"?newGrant({}):v==="light"?newLight({}):v==="weap"?newWeap({}):v==="esc"?newEsc({}):v==="haz"?newHaz({}):v==="aura"?newAura({}):{kind:"move",dirm:"closer",who:"Ogre Chieftain",sees:false};
+    n.id=nextId++;rules.push(n);selC=n.id;}
+  else return;
+  render();
+});
+const segBind=id=>$(id).addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;$$(id+" button").forEach(x=>x.classList.toggle("on",x===b));
+  $("#sDcN").style.display=$("#sDc .on").dataset.v==="set"?"":"none";tip();});
+["#dur","#sDc","#sWhen","#sT2"].forEach(segBind);
+["#rounds","#sAttr","#sDcN"].forEach(s=>$(s).addEventListener("input",tip));
+$$("[data-e]").forEach(t=>t.addEventListener("click",()=>{t.classList.toggle("on");t.setAttribute("aria-checked",t.classList.contains("on"));tip();}));
+$("#effOriginBtn").addEventListener("click",()=>{const o=$("#effOrigin");o.textContent=ORIGINS[(ORIGINS.indexOf(o.textContent)+1)%ORIGINS.length];tip();});
+$("#helpBtn").addEventListener("click",e=>{const on=document.body.classList.toggle("helpon");e.currentTarget.setAttribute("aria-pressed",on);e.currentTarget.classList.toggle("on",on)});
+render();
+</script>
+</body>
+</html>

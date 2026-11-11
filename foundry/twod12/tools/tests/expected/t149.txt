@@ -40,4 +40,4 @@ Escalation 3 Passive: {"text":"Choose 1 of 2","warn":false}
 Apex: {"text":"Choose 1 of 2","warn":false}
 Talent: {"text":"Choose 1 Talent","warn":false}
 an empty section: {"text":"Empty: drop at least one item.","warn":true} | too few: {"text":"Choose 3 but only 1 item to pick from.","warn":true}
-the Stage line: 1: - | 4: - | 5: Stage 2: your Weapon and Power Modifiers +1 (never above +4). | 8: Stage 3: your Weapon and Power Modifiers +2 (never above +4).
+the Stage line: 1: - | 4: - | 5: Stage 2: +1 to your Weapon or Power Modifier (never above +4). | 8: Stage 3: your Weapon and Power Modifiers +1 (never above +4).

@@ -28,52 +28,88 @@ function chain(maxDepth = 6) {
   return list;
 }
 
+/* ---- v0.0.301 (PACK BB; book Ch. 1 "Boons and Banes", "Named Boons and Banes", "Five Boons or Banes", "Favored and Doomed Rolls") ---- */
+/** Boons and Banes with the same name add up to 2 (each side, before cancelling). */
+export const BB_LIMIT = 2;
+/** The names that carry a limit. A Boon or Bane with no name (or any other word) has none: it always adds up. */
+export const BB_NAMES = { field: "Field", pressure: "Pressure", support: "Support" };
+export const bbKey = v => { const k = String(v ?? "").trim().toLowerCase(); return Object.hasOwn(BB_NAMES, k) ? k : ""; };
+/**
+ * Boons and Banes of several sources, each { boons, banes, bb } (bb: "field" | "pressure" | "support" | ""): the limit of 2 applied to each name and
+ * each side, then the totals. { boons, banes, rawBoons, rawBanes, groups: { field: { boons, banes, keptBoons, keptBanes } } }. Pure.
+ */
+export function bbCount(list = []) {
+  const groups = {};
+  let boons = 0, banes = 0, rawBoons = 0, rawBanes = 0;
+  for (const s of list ?? []) {
+    const b = Math.max(0, Number(s?.boons) || 0), n = Math.max(0, Number(s?.banes) || 0), k = bbKey(s?.bb);
+    rawBoons += b; rawBanes += n;
+    if (!k) { boons += b; banes += n; continue; }
+    const g = (groups[k] ??= { boons: 0, banes: 0, keptBoons: 0, keptBanes: 0 });
+    g.boons += b; g.banes += n;
+  }
+  for (const g of Object.values(groups)) { g.keptBoons = Math.min(BB_LIMIT, g.boons); g.keptBanes = Math.min(BB_LIMIT, g.banes); boons += g.keptBoons; banes += g.keptBanes; }
+  return { boons, banes, rawBoons, rawBanes, groups };
+}
+/** Boons and Banes cancel; 5 or more left make the roll Favored (Boons) or Doomed (Banes) instead of adding. { net, add, five }. */
+export function bbFive(boons = 0, banes = 0) {
+  const net = (Number(boons) || 0) - (Number(banes) || 0);
+  if (net >= 5) return { net, add: 0, five: "favored" };
+  if (net <= -5) return { net, add: 0, five: "doomed" };
+  return { net, add: net, five: "" };
+}
+/** The roll's state from its own Favored / Doomed and the five b/b: Favored and Doomed together are a normal roll; never Favored (or Doomed) twice. */
+export function rollState(favored = false, doomed = false, five = "") {
+  const f = !!favored || five === "favored", d = !!doomed || five === "doomed";
+  return f && d ? "" : f ? "favored" : d ? "doomed" : "";
+}
+/** The same from a state string ("favored", "doomed" or ""). */
+export const mergeState = (state = "", five = "") => rollState(state === "favored", state === "doomed", five);
+
+/**
+ * How Favored and Doomed keep their dice (Ch. 1): Doomed keeps the two lowest totals, no Doubles. Favored keeps the two highest totals, any two
+ * matching faces of the three are Doubles (even one not kept), three of a kind a Critical whatever the total. trio: [{ f (first face), t (total) }].
+ * Returns { keep: [i, j], doubles, triple }.
+ */
+export function keepThree(trio, state, noDoubles = false) {
+  const order = trio.map((d, i) => ({ t: d.t, i })).sort((a, b) => (state === "doomed" ? a.t - b.t : b.t - a.t) || a.i - b.i);
+  const keep = [order[0].i, order[1].i].sort((a, b) => a - b);
+  if (state !== "favored" || noDoubles) return { keep, doubles: false, triple: false };
+  const [a, b, c] = trio.map(d => d.f);
+  return { keep, doubles: a === b || a === c || b === c, triple: a === b && b === c };
+}
+/** A total's Tier, with Doubles and three of a kind: { tier, crit, base }. */
+export function tierOf(total, dc, doubles = false, triple = false) {
+  const base = total < dc ? 1 : (total < dc + 7 ? 2 : 3);
+  if (triple) return { base, tier: 3, crit: true };
+  return { base, tier: doubles ? Math.min(3, base + 1) : base, crit: (doubles && base === 3) || total >= dc + 20 };
+}
+
 const CACHE = new Map();
-/** Chance of Tier 1, 2 and 3 for 2d12 + mod vs a DC, with the doubles rule, boons (+1d3-1 each) and banes (-1d3+1 each). */
+/**
+ * Chance of Tier 1, 2 and 3 for 2d12 + mod vs a DC, with Doubles, Boons (+1 each) and Banes (-1 each) that cancel, 5 or more left making the roll
+ * Favored or Doomed instead (boons and banes are counts after the limits of their names: bbCount), and state "favored" / "doomed" / "".
+ * wantCrit: [_, _, chance of a Critical].
+ */
 export function tierProbs(mod, dc = 13, boons = 0, banes = 0, state = "", wantCrit = false) {
   const key = `${mod}|${dc}|${boons}|${banes}|${state}|${wantCrit}`;
   if (CACHE.has(key)) return CACHE.get(key);
   const c = chain();
-  // distribution of the 1d3-1 pool (boons add, banes subtract); at most a few dice, convolved
-  let pool = new Map([[0, 1]]);
-  for (const sign of [...Array(Math.max(0, boons)).fill(1), ...Array(Math.max(0, banes)).fill(-1)]) {
-    const next = new Map();
-    for (const [v, p] of pool) for (let d = 0; d <= 2; d++) { const nv = v + sign * d; next.set(nv, (next.get(nv) ?? 0) + p / 3); }
-    pool = next;
-  }
+  const five = bbFive(boons, banes), st = mergeState(state, five.five), adj = five.add;
   const res = [0, 0, 0];
-  const add = (a, b, w) => {
-    for (const [adj, pp] of pool) {
-      const total = a.t + b.t + mod + adj;
-      const base = total < dc ? 1 : (total < dc + 7 ? 2 : 3);
-      const t = a.f === b.f ? Math.min(3, base + 1) : base;
-      // Critical: Doubles on a result that is already Tier 3, or a total 20 or more above the DC.
-      if (wantCrit) { if ((a.f === b.f && base === 3) || total >= dc + 20) res[2] += w * pp; }
-      else res[t - 1] += w * pp;
+  if (!st) {
+    for (const a of c) for (const b of c) {
+      const r = tierOf(a.t + b.t + mod + adj, dc, a.f === b.f);
+      if (wantCrit) { if (r.crit) res[2] += a.p * b.p; }
+      else res[r.tier - 1] += a.p * b.p;
     }
-  };
-  if (!state) {
-    for (const a of c) for (const b of c) add(a, b, a.p * b.p);
   } else {
-    // Three dice. Doomed: keep the two lowest totals, and there are no Doubles. Favored: keep the pair that gives the best Tier
-    // (then a Critical, then the higher total), which can be a lower pair of Doubles (rolls.keepDice does the same at the table).
     const c3 = chain(2);   // three dice: two explosions deep is enough (a third 12 in a row is 1 in 1,728)
     for (const a of c3) for (const b of c3) for (const x of c3) {
-      const w = a.p * b.p * x.p, trio = [a, b, x];
-      for (const [adj, pp] of pool) {
-        let best = null;
-        for (const [i, j] of [[0, 1], [0, 2], [1, 2]]) {
-          const p = trio[i], q = trio[j], total = p.t + q.t + mod + adj;
-          const base = total < dc ? 1 : (total < dc + 7 ? 2 : 3);
-          const dbl = state === "favored" && p.f === q.f;
-          const r = { tier: dbl ? Math.min(3, base + 1) : base, crit: (dbl && base === 3) || total >= dc + 20, total, low: -(p.t + q.t) };
-          if (!best) { best = r; continue; }
-          if (state === "doomed") { if (r.low > best.low) best = r; continue; }
-          if (r.tier > best.tier || (r.tier === best.tier && (Number(r.crit) > Number(best.crit) || (r.crit === best.crit && r.total > best.total)))) best = r;
-        }
-        if (wantCrit) { if (best.crit) res[2] += w * pp; }
-        else res[best.tier - 1] += w * pp;
-      }
+      const w = a.p * b.p * x.p, trio = [a, b, x], k = keepThree(trio, st);
+      const r = tierOf(trio[k.keep[0]].t + trio[k.keep[1]].t + mod + adj, dc, k.doubles, k.triple);
+      if (wantCrit) { if (r.crit) res[2] += w; }
+      else res[r.tier - 1] += w;
     }
   }
   CACHE.set(key, res);
@@ -153,10 +189,11 @@ export function netStep(empowered = [], enfeebled = []) {
 }
 
 /** The highest value of a list of { n } (the same effect doesn't stack). */
-export const topStep = list => (list ?? []).reduce((m, x) => Math.max(m, Number(x.n) || 0), 0);
+/** Empowered / Enfeebled from several sources: the highest "Set to" (Stacking) plus every "Increase by" (v0.0.323, PACK EFFECT-SHEET: Vow of Enmity). */
+export const topStep = list => (list ?? []).reduce((m, x) => (x.inc ? m : Math.max(m, Number(x.n) || 0)), 0) + (list ?? []).reduce((s, x) => s + (x.inc ? Number(x.n) || 0 : 0), 0);
 
 /** "Empowered 2", "Enfeebled 1", or "" for no step. */
 export const stepLabel = n => (n > 0 ? `Empowered ${n}` : n < 0 ? `Enfeebled ${-n}` : "");
 
-/** Chance of a Critical: Doubles on a Tier 3, or a total 20 or more above the DC. */
+/** Chance of a Critical: Doubles on a Tier 3, a total 20 or more above the DC, or three of a kind on a Favored roll. */
 export const critProb = (mod, dc = 13, boons = 0, banes = 0, state = "") => tierProbs(mod, dc, boons, banes, state, true)[2];

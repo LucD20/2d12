@@ -4,5 +4,5 @@ both: true null rolls 2
 Favored with an explosion (12 -> 11+5=16, 4, 8): [ 12, 5 ] [ 8 ] dropped [ 4 ] total 26 (16+8+2=26)
 Doomed 5,5,7: doubles on the kept pair: false tier 1
 html: dropped die shown: true | Doomed chip: true
-|Two or more creatures|Distance:| 10 / 20 / 40| || ""
+|Targets:| Two or more creatures|Distance:| 10 / 20 / 40| || ""
 melee strike keeps it: 0 | ranged weapon strike ends it: 1 [ 'e1' ]

@@ -1,7 +1,7 @@
-exact odds +0 vs 13: none 42/39/19 58% | 1 boon 35/42/23 65% | 2 boons 72% | 3 boons 77% (simulation: 58 / 65 / 72 / 77)
-+2: none 72% | 1 boon 78% | 3 boons 87% | 1 bane 65% | boon+bane 28/44/27 vs none 28/45/27
-9+9+3 = 21 with doubles (Tier 3 already): crit true tier 3 | boons [ 2, 0 ] bonus 2 total 23 (boon dice 3,1 -> 2 and 0 = +2)
+exact odds +0 vs 13: none 42/39/19 58% | 1 boon 35/42/23 65% | 2 boons 72% | 3 boons 78% (v0.0.301: flat, a Boon is +1 Modifier)
++2: none 72% | 1 boon 78% | 3 boons 87% | 1 bane 65% | boon+bane 28/45/27 vs none 28/45/27
+9+9+3 = 21 with doubles (Tier 3 already): crit true tier 3 | boons [ 1, 1 ] bonus 2 total 23 (2 Boons: +1 each)
 5+5+0 = 10, doubles on a Tier 1: crit false tier 2
 8+8 = 16, doubles on a Tier 2: crit false tier 3 (Tier 2 -> 3 is not a Critical)
-no doubles, 9+4+8, 1 bane: crit false | bane faces [ 2 ] | ba 2
+no doubles, 9+4+8, 1 bane: crit false | bane faces [ 1 ] | ba 1
 Lay On Hands on the ally; Paladin selected: ally | ally selected: ally | nothing selected: ally | no target, skeleton selected: skel | two targets, one selected: ally

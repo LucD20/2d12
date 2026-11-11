@@ -10,8 +10,7 @@
 <div class="sbr"><span class="lbl">Health</span><span>high 20, low 10 (Stage 2: +12 / +6; Stage 3: +14 / +7)</span></div>
 <div class="sbr"><span class="lbl">Rally</span><span>6</span></div>
 <div class="sbr"><span class="lbl">Speed Modifier</span><span>+0</span></div>
-<div class="sbr"><span class="lbl">Weapon Modifier</span><span>Body or Appeal</span></div>
-<div class="sbr"><span class="lbl">Power Modifier</span><span>Mind or Appeal</span></div>
+<div class="sbr"><span class="lbl">Modifiers</span><span>+2 and +1: you choose which is your Weapon Modifier</span></div>
 <div class="sbr"><span class="lbl">Armor Training</span><span>Heavy</span></div>
 <div class="sbr"><span class="lbl">Escalation hook</span><span>An ally within 5 squares becomes Bloodied or goes Down (Kindled Wrath)</span></div>
 </div>

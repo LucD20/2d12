@@ -46,14 +46,14 @@ const pcAt = (lv, mods = {}) => {
 };
 for (const lv of [1, 4, 5, 8, 10]) { const s = pcAt(lv); console.log(`level ${String(lv).padStart(2)}: BDT ${s.bdt} MDT ${s.mdt} Pool ${s.pool} | Weapon ${s.weaponMod} Power ${s.powerMod} Signature ${s.signatureMod} (${s.signatureFrom}) | Stage ${s.stage}`); }
 console.log("never above +4:", [[3, 1], [3, 5], [3, 8], [4, 8], [5, 8], [1, 8]].map(([m, l]) => `${m} at ${l} -> ${cf.stageMod(m, l)}`).join(", "));
-console.log("NPCs: no step, never above +4:", src("module/data.mjs").includes("this.weaponMod = Math.min(TWOD12.modCap, Math.ceil(this.weaponAttrValue / 2 + 1));"));
+console.log("NPCs: no step (pack MOD: the role's values, no Stage):", src("module/data.mjs").includes("this.weaponMod = npcModValue(this.role, mr.weapon);"));
 
 console.log("--- Guard (Chapter 4: Zack has Guard 6 and takes 8 Body damage: 6 to the Guard, 2 Body)");
 const dm = (bl, bn, ml, mn) => ({ B: { l: bl, n: bn }, M: { l: ml, n: mn } });
 for (const [g, a] of [[6, dm(8, 0, 0, 0)], [10, dm(4, 0, 3, 0)], [5, dm(0, 2, 6, 1)], [0, dm(3, 0, 0, 0)]]) { const r = G.absorbGuard(g, a); console.log(`Guard ${g} vs ${JSON.stringify(a)} -> takes ${r.taken}, Guard ${r.guard} left, Health gets ${JSON.stringify(r.a)}`); }
 console.log("keep the higher:", G.gainGuard(6, 4), G.gainGuard(3, 7.6), G.gainGuard(0, -2));
 const dmg = src("module/damage.mjs"), esc = src("module/escalation.mjs"), inl = src("module/inline.mjs");
-console.log("damage goes through the Guard first:", dmg.includes("const g = absorbGuard(actor.system.guard, a, actor.system.apGuard);"), "| each target its own:", dmg.includes("const mine = { B: { ...a.B }, M: { ...a.M } };"), "| ends with the encounter:", esc.includes('if (a.system?.guard > 0) g["system.guard"] = 0;'), "| @Guard and @Effect buttons:", inl.includes("|Guard|Effect|"), "| on the sheet:", tpl.includes('class="np-guardbtn'));
+console.log("damage goes through the Guard first:", dmg.includes("const g = absorbGuard(actor.system.guard, a, actor.system.apGuard"), "| each target its own:", dmg.includes("const mine = { B: { ...a.B }, M: { ...a.M } };"), "| ends with the encounter:", esc.includes('if (a.system?.guard > 0) g["system.guard"] = 0;'), "| @Guard and @Effect buttons:", inl.includes("|Guard|Effect|"), "| on the sheet:", tpl.includes('class="np-guardbtn'));
 
 console.log("--- the Archer (A1) and the Paladin (P1) in code");
 // v0.0.186: Marked Quarry's Tier 1 and Sharpshooter are settings on their cards now (automation.mjs; tested in t151).
@@ -62,7 +62,7 @@ const item = traits => ({ system: { vs: "", traits: new Set(traits) } });
 console.log("Defense: [Signature, Weapon] (Smite) from power:", D.defenseOf(item(["signature", "weapon", "strike"]), { kind: "signature", from: "power" }).type, "| [Power, Signature]:", D.defenseOf(item(["signature", "power"]), { kind: "signature", from: "weapon" }).type, "| Signature alone:", D.defenseOf(item(["signature"]), { kind: "signature", from: "power" }).type);
 console.log("card: Smite Vs.", cf.vsText({ traits: new Set(["divine", "signature", "strike", "weapon"]), versions: [{ noTiers: false }] }));
 const ral = src("module/rally.mjs");
-console.log("Rally Points read the Rally settings (Font of Mercy):", ral.includes("const fm = await rallyBonusFor(actor);"), ral.includes("const total = (s.rallyHeal + (fm?.bonus ?? 0)) * n;"));
+console.log("Rally Points read the Rally settings (Font of Mercy):", ral.includes("const fm = await rallyBonusFor(actor);"), ral.includes("const total = (s.rallyHeal + (fm?.bonus ?? 0)) * n + (extraRoll?.total ?? 0);"));
 console.log("a [Signature, Weapon] Action adds its [Mod] on Tier 2-3 (preview, card, damage):", (src("module/actions.mjs").match(/isWeapon: modOnWeapon\(src, useTraits\)/g) ?? []).length);
 console.log("--- v0.0.182: Evade, the damage line with the Guard, the Guard display, granted uses");
 const mv = src("module/move.mjs"), cb = src("module/combat.mjs");
@@ -70,4 +70,4 @@ console.log("an Evade keeps its unused squares until another Action:", mv.includ
 console.log("one damage line:", [G.guardBefore(12, 5) + "7 Body" + G.guardAfter(5, 0), G.guardBefore(4, 4) + "no damage" + G.guardAfter(4, 3), JSON.stringify(G.guardBefore(6, 0))].join(" | "));
 console.log("Guard on the donut and on the token bar:", tpl.includes('class="np-donutwrap{{#if system.guard}} guarded{{/if}}"') && !tpl.includes('hb-meter guard'), src("module/healthbar.mjs").includes("COLORS.guard, 0.95"));
 console.log("granted use without asking, Shift for a normal one, blue button, the dialog's first line:", !src("module/actions.mjs").includes('yes: { label: "Granted use" }'), src("module/actor-sheets.mjs").includes("event?.shiftKey ? { noGrant: true } : {}"), tpl.includes('class="ar-use granted"'), src("module/actions.mjs").includes("notices: [...(opts.grant ? [{ text: `Granted use:"));
-console.log("v0.0.183: the damage card shows its result under the target line (no new message):", src("module/damage.mjs").includes('const block = `<div class="applied dres">') && src("styles/system.css").includes(":not(.dres):not(.dtexts) { display: none; }"), "| the Guard button (click +1, right-click -1, Ctrl 5):", src("module/actor-sheets.mjs").includes('const gb = this.element.querySelector(".np-guardbtn");'));
+console.log("v0.0.183: the damage card shows its result under the target line (no new message):", src("module/damage.mjs").includes('const block = `<div class="applied dres">') && src("styles/system.css").includes(":not(.dres):not(.dtexts) { display: none; }"), "| the Guard button (click +1, right-click -1, Ctrl 5):", src("module/actor-sheets.mjs").includes('for (const gb of this.element.querySelectorAll(".np-guardbtn")) for'));

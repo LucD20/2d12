@@ -4,7 +4,7 @@ foundry/package-lock.json
 __pycache__/
 *.zip
 foundry/twod12/packs/
-knowledge/
+knowledge-upload/
 sync.log
 .sync-state
 pack-sync/

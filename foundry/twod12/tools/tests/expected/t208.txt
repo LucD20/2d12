@@ -1,0 +1,3 @@
+in, then out: r1|0 | 0
+the movement's destination is read, every token update and each turn refresh: true
+a grant's other settings count for its own use only: true

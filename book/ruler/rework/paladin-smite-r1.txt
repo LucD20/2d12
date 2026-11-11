@@ -9,8 +9,9 @@ attributes body 2, mind 1, instinct 0, appeal 0
 health body x4 +3, mind x4 +4
 health-factor 1.125
 armor 3
+# pack MOD (2026-11-09): Modifiers are class values (track A2)
 weapon-mod 2
-power-mod 2
+power-mod 1
 rally 6
 targeted 1.5
 weapon Greatsword (melee, two-handed): 0 / 1d8 / 2d6

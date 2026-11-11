@@ -1,0 +1,7 @@
+the panel's card: <div class="twod12 fxtip"><div class="ft-head"><b>Beacon (+1 Defense)</b><span class="ft-dur">3 rounds</span></div><div class="ft-text">+1 Defense while within the Beacon.</div><div class="ft-src">From Krysta</div><div class="ft-ctl">Click: open · Right-click: remove</div></div>
+a valued condition's card: <div class="twod12 fxtip"><div class="ft-head"><b>Enfeebled 2</b><span class="ft-dur">1 round</span></div><div class="ft-src">From Krysta</div><div class="ft-ctl">Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove</div></div>
+the panel marks each icon and hands the card to the manager on hover: true
+targets row: <div class="tline cardtargets"><span class="tname"><i class="fa-solid fa-crosshairs"></i>Goblin, Nari</span><button type="button" class="tgt" data-twod12="retargetAction" data-tooltip="Target the selected tokens"><i class="fa-solid fa-bullseye"></i></button></div>
+no target: <div class="tline cardtargets"><span class="tname none"><i class="fa-solid fa-crosshairs"></i>No target</span><button type="button" class="tgt" data-twod12="retargetAction" data-tooltip="Target the selected tokens"><i class="fa-solid fa-bullseye"></i></button></div>
+without the button: <div class="tline cardtargets"><span class="tname"><i class="fa-solid fa-crosshairs"></i>Goblin</span></div>
+the tag centered, the button at the edge: true

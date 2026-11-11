@@ -1,16 +1,16 @@
-cards: 113 | files: archer.json, basic-actions.json, bestiary.json, gear.json, paladin.json, talents.json
+cards: 114 | files: archer.json, basic-actions.json, bestiary.json, gear.json, paladin.json, placeholders.json, talents.json
 --- the generated Basic Actions
 module/basic-data.mjs up to date: true module/basic-data.mjs is up to date
 Basic Action cards: 19 | keys in basic-data.mjs: 19 | the same set: true
 every Basic Action card is a Basic Action: true | every card in basic-actions.json has a key: true
 the generator gives the data of the file: true
 --- the book places every card it shows
-shown in the book: 99 | placed once: true | markers with no card: none
+shown in the book: 100 | placed once: true | markers with no card: none
 cards of the files still written by hand in a chapter: none
-a card the book does not show (book: false): Mark Quarry, Break Free, Rusty Knife, Dirty Trick, Cudgel, Low Blow, Cleaver, Brutal Swing, Hold the Line, Chilling Touch, Dread Whisper, Club, Ground Slam, Rally the Tribe
+a card the book does not show (book: false): Marked Quarry, Break Free, Rusty Knife, Dirty Trick, Cudgel, Low Blow, Cleaver, Brutal Swing, Hold the Line, Chilling Touch, Dread Whisper, Club, Ground Slam, Rally the Tribe
 --- the compendium items are the cards (content.mjs reads book/cards)
-compendium cards: 94 | one item each, equal to the card: all | CARDS exported: true
-Techniques whose weapon is not in the compendium yet (information, for pack X): 14 (Stick and Slip (Dagger), Guarded Cut (Longsword), Hooking Chop (Handaxe)...)
+compendium cards: 95 | one item each, equal to the card: all | CARDS exported: true
+Techniques whose weapon is not in the compendium yet (information, for pack X): 0 
 --- every card reads for Foundry and the ruler
 ruler lines: 83 | they parse: true
 problems: none

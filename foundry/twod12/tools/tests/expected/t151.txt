@@ -5,7 +5,7 @@ Killer's Focus  an Effect each turn
 Long Draw       ignores one of their range Banes
 Steady Nerves   ignores the Banes for a [Ranged] Action while you are Engaged
 Sharpshooter    ignores the Bane for targeting a creature Engaged with a creature other than you | Projectile weapon at 3 Mastery
-Marked Quarry   1 Boon (with Shot and Strike) (only against the creature it marked) | next action with Shot and Strike deals +[Mod] damage to Vigor on T1 (only against the creature it marked) | message at encounter (Mark Quarry) | message when its mark goes Down (Mark Quarry)
+Marked Quarry   1 Boon (with Shot and Strike) (only against the creature it marked) | next action with Shot and Strike deals +[Mod] damage (the weapon's subtype) to Vigor on T1 (only against the creature it marked) | message at encounter (Mark Quarry) | message when its mark goes Down (Mark Quarry)
 Hunter's Focus  1 Boon on every roll (only against the creature it marked) | Empowered 1 (only against the creature it marked)
 no hasFeature(name) left: true | paladin.mjs gone: true | Mark Quarry marks by its box: true
 --- once per round (the engine; no compendium card uses it on its own bonus now)
@@ -22,8 +22,8 @@ Radiant Zeal: a Strike: Radiant Zeal +1d6 Ho [M] | not a Strike: none
 roll dialog: Bonus chips true | unticked ones left out true | their effect kept false | turn start wired true
 --- Marked Quarry and Hunter's Focus: only against the marked creature
 boons vs the Orc: Hunter's Focus (Orc) 1, Marked Quarry (Orc) 1 | vs the Goblin: none
-Tier 1 vs the Orc (Modifier +2): Marked Quarry +2 [B] | Tier 2: none | vs the Goblin: none | Modifier 0: none
-Empowered vs the Orc: [{"name":"Hunter's Focus","n":1}] | vs the Goblin: []
+Tier 1 vs the Orc (Modifier +2): Marked Quarry +2 W [B] | Tier 2: none | vs the Goblin: none | Modifier 0: none
+Empowered vs the Orc: [{"name":"Hunter's Focus","n":1,"inc":false}] | vs the Goblin: []
 the mark matches a token too: true | v0.0.207 its reminders are settings: Mark Quarry | the Orc has none: 0
 [Mod] in a Bonus Damage: [Mod] -> "3" | 1d6 + [Mod] -> "1d6 + 3" | 1d4 -> "1d4" | [Mod] with -1: null "1d6 - 1"
 --- Ignore a Bane: Long Draw, Steady Nerves (now a Talent: no Escalation), Sharpshooter

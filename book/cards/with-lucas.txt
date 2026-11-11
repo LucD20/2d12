@@ -1,0 +1,36 @@
+Cards written with Lucas (the Mithril rank in Foundry): one line per card, the session, the date. A card gets here when Lucas wrote it his way and the session
+built it (book/cards/README.md, "Writing cards with Lucas"). The automationNote on the card says what the rules leave by hand.
+
+Session 1 (2026-11-05, v0.0.246): Smite
+Session 2 (2026-11-05, v0.0.249): Rebuke, Word of Radiance, Beacon (with the inline Action Beacon's Step)
+Session 3 (2026-11-05, v0.0.250): Lay On Hands, Hallowed Dawn, Miraculous Recovery
+Session 4 (2026-11-06, v0.0.254): Shield of Faith, Bulwark of Faith; Beacon and Beacon's Step revisited
+Session 5 (2026-11-06, v0.0.261): Holy Wrath (confirmed as written), Rolling Shot, Covering Shot, Consecrated Ground, Divine Intervention
+Session 5b (2026-11-06, v0.0.265 to v0.0.271, done by hand from Lucas's picks and tested by him): Overwatch, Deathmark, Open Season, Aim, Covering Fire
+Session 7 (2026-11-10, v0.0.336 to v0.0.338, Lucas: "Brawler: Mithril"; "all should be good now"): Brawler, Heartseeker (Vulnerable 1 after a Tier 3's damage), Marksman's Shot (Vulnerable 2 after a Tier 3, Blinded (EoT) after a Critical)
+Session 6 (2026-11-10, v0.0.334 / v0.0.335, from Lucas's notes and tested by him: "Make Skirmish Shot, Rebuke and Mark Quarry mithril"): Rebuke (the Push and Frightened after the damage lands; Diamond before, Mithril again), Skirmish Shot (the Evade after a Tier 3's damage), Mark Quarry (the Archer's Action with Marked Quarry's rules; the Feature is Foundry-only)
+
+Diamond (Lucas, 2026-11-09): a Mithril card that a later pack changed, even only its text or its buttons, becomes Diamond (automation: "diamond")
+until Lucas revises it (then Mithril again). Each one, with what changed:
+- Rebuke (v0.0.314 / v0.0.315, pack AU): Frightened is the condition item (its Bane only while the enemy sees the Paladin), and only the word
+  "Frightened" is its button ("of you for 1 round" is text). The automationNote says so.
+- Rebuke (v0.0.334, Lucas: "trigger the push after applying damage; when applying damage from Tier 3, apply Frightened"): the Tier text has no buttons
+  ("Pushed 2, and Frightened of you for 1 round." / "Pushed 1."); after the damage is applied and lands, the chain pushes (2 on the target's Tier 1,
+  1 on its Tier 2) and gives Frightened of the Paladin for 1 round on a Tier 1 (the row Lucas called "Tier 3": the Paladin's best result).
+
+- v0.0.341 (Lucas: "the buttons aware isn't necessary, just make buttons normally"; v0.0.339 had made them words, v0.0.340 state-aware buttons):
+  the Tier, Critical and Effects text keep their normal buttons, and the "After the damage" chain still does the same thing by itself. Back to
+  exactly their Mithril text, Mithril again: Word of Radiance, Bulwark of Faith, Shield of Faith, Miraculous Recovery, Hallowed Dawn, Smite.
+  Diamond (their text has buttons now where their Mithril version had words, v0.0.334 to v0.0.338): Rebuke (Pushed 2 / 1, Frightened),
+  Skirmish Shot ("you can [Evade 1]"), Heartseeker ([Vulnerable 1 (EoT)]), Marksman's Shot ([Vulnerable 2 (EoT)], "The target is [Blinded (EoT)]").
+- Open Season (v0.0.339, the review's section 6): Vulnerable 2 on the Quarry for 1 round is the card's Apply step (its chain), no longer by hand.
+- Open Season (v0.0.343, playtest 4: "the allies' extra [V] 1d6 Pi automated, button kept"): the same chain also puts the Effect "Open Season (the
+  Quarry)" on the Quarry for 1 round; its rule ("Rolls made against them, with [Strike], made by anyone but the origin: an extra [V] 1d6 Pi")
+  adds the dice to the allies' damage cards. The card's text and its button are unchanged.
+- Covering Fire (v0.0.343, Lucas 2026-11-11: "remove (the area doesn't move)"): the card reads "For 3 rounds, enemies in the area take 1 Bane on
+  [Strike] Actions, and allies in it gain +1 Defense." (book and Foundry; the Covering Fire Effect's description too). Nothing else changed.
+- Mark Quarry (v0.0.345, Lucas 2026-11-11: "Marked Quarry needs to say ... extra damage (same subtype as your weapon) on a Tier 1"): its rules
+  read "those Actions deal [V] [Mod] extra damage (the same subtype as your weapon) on a Tier 1." (the Archer Feature's text too). Nothing else.
+- Smite (v0.0.352, Lucas: "remove '(2d6 + [Mod] at Stage 2, 2d8 + [Mod] at Stage 3)' from Foundry's Smite card"): in Foundry only, the 3 AP
+  Version's Guard chip no longer has the parenthesis after it (the chip shows the creature's Stage dice, in the calculated color, the Stage
+  formula on hover). The book keeps the parenthesis. Nothing else changed.

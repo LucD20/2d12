@@ -10,8 +10,9 @@
 //   roll on the Table and stabilize (no longer Dying or Shattered, still Unconscious). Fighting: then you may collapse.
 // The choice (fighting or collapsed) is the actor flag twod12.downChoice; the Table already rolled this encounter: twod12.downTableCombat.
 import { performCheck, checkHtml, rollTable, showDice } from "./roll.mjs";
+import { sysLine } from "./sysmsg.mjs";
+import { esc } from "./util.mjs";
 const F = "twod12";
-const { DialogV2 } = foundry.applications.api;
 
 /** The client that handles a character's going Down: its first active player owner, else the active GM. */
 export function handlerOf(actor) {
@@ -22,8 +23,30 @@ const mine = actor => handlerOf(actor)?.id === game.user.id;
 const has = (actor, s) => !!actor.statuses?.has?.(s);
 const setStatus = (actor, s, on) => (has(actor, s) === on ? null : actor.toggleStatusEffect(s, { active: on }));
 
+// v0.0.289 (PACK SHEET, the standing rule: no Foundry default windows): the choice in the system's pick window. Closed: the last option.
 async function ask(actor, text, buttons) {
-  return (await DialogV2.wait({ window: { title: actor.name }, content: `<p>${text}</p>`, buttons: buttons.map(([action, label]) => ({ action, label, callback: () => action })), rejectClose: false })) ?? buttons[buttons.length - 1][0];
+  const { pickOne } = await import("./pickwindow.mjs");
+  const k = await pickOne({ title: actor.name, name: actor.name, sub: "Going Down", icon: "fa-heart-crack", text: String(text).replace(/<[^>]+>/g, ""), options: buttons.map(([k, l]) => ({ k, l })) });
+  return k ?? buttons[buttons.length - 1][0];
+}
+
+/** v0.0.289 (PACK SHEET): the sheet's Keep fighting / Collapse (Give up) while Dying or Shattered. Collapsing asks first (it can't be undone while Down). */
+export async function setDownChoice(actor, choice) {
+  const kind = has(actor, "dying") ? "dying" : (has(actor, "shattered") ? "shattered" : "");
+  if (!kind) return;
+  if (choice === "fight") {
+    if (has(actor, "unconscious")) return ui.notifications.warn(`${actor.name} is Unconscious: you can't wake up while ${kind === "dying" ? "Dying" : "Shattered"}.`);
+    await actor.setFlag(F, "downChoice", "fighting");
+    return ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-person-rifle", `<b>${esc(actor.name)}</b> keeps fighting (${kind === "dying" ? "Dying" : "Shattered"}).`) });
+  }
+  const { pickConfirm } = await import("./pickwindow.mjs");
+  const word = kind === "dying" ? "Collapse" : "Give up";
+  const ok = await pickConfirm({ title: `${word}: ${actor.name}`, name: word, sub: kind === "dying" ? "Dying" : "Shattered", icon: "fa-bed", confirm: word,
+    text: `${esc(actor.name)} falls <b>Unconscious</b>. While ${kind === "dying" ? "Dying" : "Shattered"} you can't wake up; at the end of each of your turns you make a ${kind === "dying" ? "Body" : "Mind"} Check (Tier 3: stabilize).` });
+  if (!ok) return;
+  await actor.setFlag(F, "downChoice", "collapsed");
+  await setStatus(actor, "unconscious", true);
+  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-bed", `<b>${esc(actor.name)}</b> ${kind === "dying" ? "collapses" : "gives up"}: Unconscious.`) });
 }
 
 /** Dying or Shattered: by the Dominant Damage (a tie: the creature chooses). */
@@ -107,8 +130,8 @@ export async function afterDamage(actor, before) {
 }
 
 /** At the end of a Dying or Shattered creature's turn. */
-export async function endOfTurn(actor) {
-  if (!actor || actor.type !== "character" || !mine(actor)) return;
+export async function endOfTurn(actor, { force = false } = {}) {
+  if (!actor || actor.type !== "character" || (!force && !mine(actor))) return;   // v0.0.289: force, the sheet's button
   const kind = has(actor, "dying") ? "dying" : (has(actor, "shattered") ? "shattered" : "");
   if (!kind) return;
   const attr = kind === "dying" ? "body" : "mind", collapsed = has(actor, "unconscious");
@@ -117,7 +140,7 @@ export async function endOfTurn(actor) {
   if (collapsed && tier === 3) {
     await rollTable(actor, kind);
     await setStatus(actor, kind, false);   // stabilized: no longer Dying or Shattered, still Unconscious
-    await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: `<div class="twod12 chat"><b>${actor.name}</b> stabilizes: no longer ${kind === "dying" ? "Dying" : "Shattered"}, still Unconscious.</div>` });
+    await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-heart-pulse", `<b>${esc(actor.name)}</b> stabilizes: no longer ${kind === "dying" ? "Dying" : "Shattered"}, still Unconscious.`) });
     return;
   }
   if (!collapsed) await chooseFight(actor, kind);

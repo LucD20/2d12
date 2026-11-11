@@ -3,8 +3,9 @@ entry on getting the weapon: {"greatsword":{"name":"Greatsword","value":0}} | Te
 v0.0.189: a Tier 3 out of combat gives nothing: 0
 Tier 2, or not a Weapon roll: nothing: 0
 several targets with two Tier 3: +1 once: 1
+v0.0.343: a second Tier 3 with a Blade in the same encounter gives nothing: 1
 the +1 Greatsword counts for the Greatsword: 2
-at 3: {"locked":false,"group":"Greatsword","value":3} | posted:  Drak: Greatsword Mastery 3: Weapon Technique unlocked!
+at 3: {"locked":false,"group":"Greatsword","value":3} | posted: Drak gains 1 Greatsword Mastery (3): Weapon Technique unlocked! No more Blades Mastery this encounter.
 rows: [{"name":"Greatsword","value":3,"owned":["Greatsword","+1 Greatsword"],"next":8,"nextText":"(to be decided)","pct":0,"steps":"*3 8 15"}]
 NPCs have no Mastery: {"locked":false} | other Actions are never locked: false
 locked Techniques: faded on the sheet true | refused when used true | gained after the roll true

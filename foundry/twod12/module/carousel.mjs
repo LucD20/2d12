@@ -1,6 +1,6 @@
 // A strip of portraits across the top of the screen while there is a combat (also while it is being prepared):
 // turn order, the creature whose turn it is, and its Action Points as dots under the portrait.
-import { getAP, setAP, apMax, getRAP, endTurnFor, swapCandidates, swapWith, thawedNow } from "./combat.mjs";
+import { getAP, setAP, apMax, getRAP, endTurnFor, swapCandidates, swapWith, thawedNow, rollPendingInitiative } from "./combat.mjs";
 import { stripMove, endMoveFor, evadeToAdvance } from "./move.mjs";
 import { groupColor } from "./config.mjs";
 import { esc } from "./util.mjs";
@@ -20,7 +20,7 @@ function card(combat, c, st) {
   // v0.0.201 (Lucas): three kinds of pips, by shape as well as color: its turn (discs), out of turn (diamonds: AP for Reactions), frozen (dashed rings).
   // v0.0.243 (pack R): the Reaction AP is the last pip (a diamond with an R); out of its turn the kept AP are Guard (the tooltip says how much).
   const pipKind = frozen ? "frozen" : (current ? "turn" : "react");
-  const pipTip = { turn: `${ap} AP this turn`, react: `${ap} AP kept${apGuard ? ` (Guard ${apGuard})` : ""}: they can pay Reactions`, frozen: `${ap} AP, frozen until its new turn (it swapped initiative)` }[pipKind] + (combat.started ? `. Reaction AP ${rap ? "ready" : "spent"}` : "");
+  const pipTip = { turn: `${ap} AP this turn`, react: `${ap} AP kept: they can pay Reactions; still unused when its turn starts, each is Guard for 1 round${apGuard ? `. Guard ${apGuard} from its last unused AP` : ""}`, frozen: `${ap} AP, frozen until its new turn (it swapped initiative)` }[pipKind] + (combat.started ? `. Reaction AP ${rap ? "ready" : "spent"}` : "");
   const pips = `<div class="tp-pips ${pipKind}" data-tooltip="${pipTip}">${Array.from({ length: max }, (_, i) => `<i class="${i < ap ? "on" : ""}"></i>`).join("")}${combat.started ? `<span class="hsep"></span><i class="rap${rap ? " on" : ""}">R</i>` : ""}</div>`;
   // v0.0.224 (Lucas, playtest 3): the 3 Strikes of this turn as three red diamonds; each Strike (not a Linked one) empties one.
   const used = combat.started ? Math.min(3, strikesUsed(c.actor)) : 0;
@@ -90,7 +90,7 @@ export function renderCarousel() {
   if (swapping && (swapping !== cur?.id || swapWhy)) swapping = null;
   const st = { swapWhy, swapping: !!swapping, swapIds: new Set(swapping ? cands.map(x => x.id) : []), canAct: mine || gm, gm };
   const btn = (k, icon, label, tip, off = false) => `<button type="button" class="tc-btn" data-tc="${k}" data-tooltip="${tip}"${off ? " disabled" : ""}><i class="fa-solid ${icon}"></i>${label ? ` ${label}` : ""}</button>`;
-  const left = gm ? (started ? btn("prev", "fa-backward-step", "Previous turn", "Go back one turn") : btn("init", "fa-dice-d20", "Initiative", "Roll initiative for everyone")) : "";
+  const left = gm ? (started ? btn("prev", "fa-backward-step", "Previous turn", "Go back one turn") : btn("init", "fa-dice-d20", "Initiative", "Roll initiative for the creatures that haven't rolled (the window says who skips)")) : "";
   const middle = started ? `<span class="tc-round">Round <b>${combat.round}</b></span>` : '<span class="tc-round tc-prep">Preparing the encounter</span>';
   const moving = cur ? stripMove(cur).n > 0 : false;
   const right = [
@@ -122,7 +122,7 @@ export function renderCarousel() {
     if (k === "next") return endTurnFor(combat);
     if (k === "prev") return combat.previousTurn();
     if (k === "swap" && cur) { swapping = swapping ? null : cur.id; return renderCarousel(); }
-    if (k === "init") return combat.rollInitiative(combat.combatants.map(x => x.id));
+    if (k === "init") return rollPendingInitiative(combat);   // v0.0.273: only the ones still to roll, not left out
     if (k === "begin") return combat.startCombat();
     if (k === "end") return combat.endCombat();   // Foundry asks for confirmation itself
     if (k === "applus" && c) return setAP(c, getAP(c) + 1, "edited");

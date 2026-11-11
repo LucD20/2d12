@@ -3,8 +3,6 @@
 // (automation.mjs). The mark ends when an encounter starts and when the marked creature dies or goes Down. What the marker is told then is
 // not code: the "Chat message" settings of its items (Marked Quarry: "At the start of an encounter", "When the creature it marked goes Down").
 import { postMessages } from "./automation.mjs";
-import { sysLine } from "./sysmsg.mjs";
-import { esc } from "./util.mjs";
 const F = "twod12";
 export const quarryOf = actor => actor?.getFlag?.(F, "quarry") ?? null;
 const uuidOfToken = t => t?.document?.uuid ?? t?.uuid ?? "";
@@ -13,7 +11,7 @@ const uuidOfToken = t => t?.document?.uuid ?? t?.uuid ?? "";
 export async function setQuarry(actor, token) {
   if (!token) { if (quarryOf(actor)) await actor.unsetFlag(F, "quarry"); return; }
   await actor.setFlag(F, "quarry", { uuid: uuidOfToken(token), name: token.name });
-  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-crosshairs", `<b>${esc(actor.name)}</b> marks <b>${esc(token.name)}</b>.`, "mark") });   // v0.0.204: the system line (sysmsg.mjs)
+  // v0.0.343 (Lucas, playtest 4): no "X marks Y" line: the Action's card says it, and the mark shows on the map (its icon on the token)
 }
 
 /** The creatures that could hold a mark: the world's actors and the unlinked tokens of the scene. */
@@ -23,7 +21,8 @@ function quarryMarks() {
   const out = new Map();
   for (const a of markers().filter(x => game.user.isGM || x.isOwner)) {
     const q = quarryOf(a);
-    if (q?.uuid) out.set(q.uuid, (a.isToken ? a.token?.texture?.src : a.getActiveTokens?.()[0]?.document?.texture?.src) || a.prototypeToken?.texture?.src || a.img || "");
+    // v0.0.348 (Lucas: "multiple marks on the same target need to show all icons, like two Archers marking the same Quarry"): a list per token
+    if (q?.uuid) { const src = (a.isToken ? a.token?.texture?.src : a.getActiveTokens?.()[0]?.document?.texture?.src) || a.prototypeToken?.texture?.src || a.img || ""; out.set(q.uuid, [...(out.get(q.uuid) ?? []), src]); }
   }
   return out;
 }
@@ -34,25 +33,27 @@ function drawQuarryMark(token, marks = quarryMarks()) {
   if (!marks.has(token.document?.uuid)) return;
   const w = token.w ?? token.document.width * (canvas.grid?.size ?? 100), r = Math.max(10, w * 0.16);
   // v0.0.224 (Lucas, playtest 3): the marker's portrait in the red ring (who marked it), with the crosshair ticks around it.
-  const box = new PIXI.Container();
-  box.name = "twod12-quarry"; box.eventMode = "none"; box.position.set(w - r * 0.9, r * 0.9);
-  const g = new PIXI.Graphics();
-  g.beginFill(0xffffff, 0.9).drawCircle(0, 0, r).endFill();
-  box.addChild(g);
-  const src = marks.get(token.document?.uuid);
-  if (src) {
-    try {
-      const sp = PIXI.Sprite.from(src); sp.anchor.set(0.5); sp.width = sp.height = r * 2;
-      const mask = new PIXI.Graphics().beginFill(0xffffff).drawCircle(0, 0, r - 1).endFill();
-      sp.mask = mask; box.addChild(mask, sp);
-    } catch (e) { /* no image: the plain mark */ }
-  }
-  const ring = new PIXI.Graphics();
-  ring.lineStyle(Math.max(2, r * 0.2), 0xb3261e, 1).drawCircle(0, 0, r);
-  ring.moveTo(-r * 1.4, 0).lineTo(-r * 0.95, 0).moveTo(r * 0.95, 0).lineTo(r * 1.4, 0).moveTo(0, -r * 1.4).lineTo(0, -r * 0.95).moveTo(0, r * 0.95).lineTo(0, r * 1.4);
-  if (!src) ring.beginFill(0xb3261e, 1).drawCircle(0, 0, r * 0.25).endFill();
-  box.addChild(ring);
-  token.addChild(box);
+  // v0.0.348: one per marker, down the token's right edge (the first at the top right)
+  (marks.get(token.document?.uuid) ?? [""]).forEach((src, k) => {
+    const box = new PIXI.Container();
+    box.name = "twod12-quarry"; box.eventMode = "none"; box.position.set(w - r * 0.9, r * 0.9 + k * r * 2.3);
+    const g = new PIXI.Graphics();
+    g.beginFill(0xffffff, 0.9).drawCircle(0, 0, r).endFill();
+    box.addChild(g);
+    if (src) {
+      try {
+        const sp = PIXI.Sprite.from(src); sp.anchor.set(0.5); sp.width = sp.height = r * 2;
+        const mask = new PIXI.Graphics().beginFill(0xffffff).drawCircle(0, 0, r - 1).endFill();
+        sp.mask = mask; box.addChild(mask, sp);
+      } catch (e) { /* no image: the plain mark */ }
+    }
+    const ring = new PIXI.Graphics();
+    ring.lineStyle(Math.max(2, r * 0.2), 0xb3261e, 1).drawCircle(0, 0, r);
+    ring.moveTo(-r * 1.4, 0).lineTo(-r * 0.95, 0).moveTo(r * 0.95, 0).lineTo(r * 1.4, 0).moveTo(0, -r * 1.4).lineTo(0, -r * 0.95).moveTo(0, r * 0.95).lineTo(0, r * 1.4);
+    if (!src) ring.beginFill(0xb3261e, 1).drawCircle(0, 0, r * 0.25).endFill();
+    box.addChild(ring);
+    token.addChild(box);
+  });
 }
 const redrawQuarryMarks = () => { if (!canvas?.ready) return; const m = quarryMarks(); for (const t of canvas.tokens?.placeables ?? []) drawQuarryMark(t, m); };
 
@@ -84,16 +85,19 @@ export function registerMarkHooks() {
   Hooks.on("deleteCombat", async combat => {
     if (!game.user.isActiveGM) return;
     for (const c of combat.combatants) { const a = c.actor; if (a && quarryOf(a)) await a.unsetFlag(F, "quarry"); }
+    try { await (await import("./automation.mjs")).endEncounterEffects(combat); } catch (e) { console.warn("twod12 | encounter effects", e); }   // v0.0.323: "This encounter"
     redrawQuarryMarks();
   });
-  // An encounter starts: every mark ends, then each creature's "At the start of an encounter" messages are posted.
+  // An encounter starts: every mark ends; the "At the start of an encounter" messages are one stack card in the turn order (v0.0.345,
+  // startstack.mjs; they were one message each).
   Hooks.on("combatStart", async combat => {
     if (!game.user.isActiveGM) return;
     for (const c of combat.combatants) {
       const a = c.actor;
       if (!a) continue;
       if (quarryOf(a)) await a.unsetFlag(F, "quarry");
-      await postMessages(a, "encounter");
+      try { await (await import("./automation.mjs")).applyEncounterStartEffects(a); } catch (e) { console.warn("twod12 | encounter effects", e); }   // v0.0.323
     }
+    try { await (await import("./startstack.mjs")).postStartStack(combat); } catch (e) { console.warn("twod12 | start of the encounter", e); }
   });
 }

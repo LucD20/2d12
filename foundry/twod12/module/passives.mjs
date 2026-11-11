@@ -26,8 +26,29 @@ export function passiveSources(actor) {
   return out;
 }
 
+/**
+ * v0.0.320 (pack AU part 2; book, Bestiary, Elite Escalation): the default Elite ladder as settings, each with the Escalation it needs:
+ * 1: 1 Boon on its first attack each round; 2: its Round Special Actions twice a round; 3: its Encounter Special Actions a second time (back, once).
+ */
+const blank = { attrs: [], all: [], any: [], none: [], from: [], tiers: [], predicate: "", boons: 0, banes: 0, bbName: "", empowered: 0, enfeebled: 0, byValue: false, against: false, oncePerRound: false, vsMarked: false, vsOrigin: "" };
+export const ELITE_LADDER = [
+  { ...blank, type: "boonbane", boons: 1, all: ["__attack"], oncePerRound: true, minEscalation: 1 },
+  { ...blank, type: "freqmore", fmWhich: "round", minEscalation: 2 },
+  { ...blank, type: "freqmore", fmWhich: "encounter", minEscalation: 3 }
+];
+/** Does this creature use the default Elite ladder? An NPC with Escalation on, unless its "Default ladder" switch is off. */
+export const usesEliteLadder = actor => actor?.type === "npc" && !!actor.system?.useEscalation && actor.system?.eliteLadder !== false;
+function ladderSources(actor) {
+  if (!usesEliteLadder(actor)) return [];
+  return [1, 2, 3].map(min => {
+    const flags = appliedFlags({ settings: ELITE_LADDER.filter(x => x.minEscalation === min), description: "", hover: "", expireOn: new Set(), expireAll: false }, null);
+    flags.minEscalation = min; flags.passive = true;
+    return { id: `passive-elite-${min}`, name: "Elite Escalation", srcUuid: "", disabled: false, statuses: new Set(), flags: { [F]: flags }, getFlag: (scope, k) => (scope === F ? flags[k] : undefined) };
+  });
+}
+
 /** The applied effects and the passives of a creature, for anything that reads what changes its rolls. */
-export const allEffects = actor => [...(actor?.effects ?? []), ...passiveSources(actor)];
+export const allEffects = actor => [...(actor?.effects ?? []), ...passiveSources(actor), ...ladderSources(actor)];
 
 /**
  * Part of the creature's base (v0.0.130): a passive that always works. Applied effects and Escalation passives are not:

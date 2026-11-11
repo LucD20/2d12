@@ -48,4 +48,5 @@ console.log("--- the data and the sheets");
 const src = n => fs.readFileSync(ROOT + n, "utf8");
 console.log("a Version can cost 0:", src("module/data.mjs").includes("ap: int(1, 0)"), "| the class has modPriority:", src("module/data.mjs").includes("modPriority: choice("), "| effect settings accept roll kinds:", src("module/data.mjs").includes("all: predSet()"));
 console.log("class dialog: different increases:", src("module/grants.mjs").includes("must go to different Attributes"), "| no Weapon/Magic pick:", !src("module/grants.mjs").includes('"Magic Modifier", s.magicAttrs'), "| sheet shows Power and Signature:", src("module/actor-sheets.mjs").includes('modTile("Signature"'));
-console.log("compendium Paladin Power:", JSON.parse(src("packs/_source/classes/paladin.class.json")).system.magicAttrs.join(", "), "| Archer Weapon:", JSON.parse(src("packs/_source/classes/archer.class.json")).system.weaponAttrs.join(", "));
+{ const pal = JSON.parse(src("packs/_source/classes/paladin.class.json")).system, arc = JSON.parse(src("packs/_source/classes/archer.class.json")).system;   // pack MOD (v0.0.305): class values, no Attribute lists
+  console.log("compendium Paladin Modifiers:", pal.modHigh, pal.modLow, pal.modOrder, "| Archer:", arc.modHigh, arc.modLow, arc.modOrder); }

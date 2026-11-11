@@ -17,10 +17,11 @@ export const apGuardAfterReaction = (apGuard, apSpent, stage) => Math.max(0, (Ma
  * Resolve lethal, Resolve nonlethal). The Guard from unspent AP (apGuard) is taken before the other Guard.
  * Returns { a: what is left for the Health, taken (both Guards together), guard: the Guard left, apGuard: the AP Guard left, takenAp }.
  */
-export function absorbGuard(guard, a, apGuard = 0) {
+export function absorbGuard(guard, a, apGuard = 0, first = "B") {   // v0.0.283: first: the pool the Guard takes first (the damaged creature's choice, Ch. 4)
   let g = Math.max(0, Math.floor(Number(guard) || 0)), ag = Math.max(0, Math.floor(Number(apGuard) || 0)), taken = 0, takenAp = 0;
   const out = { B: { ...a.B }, M: { ...a.M } };
-  for (const [p, k] of [["B", "l"], ["B", "n"], ["M", "l"], ["M", "n"]]) {
+  const order = first === "M" ? [["M", "l"], ["M", "n"], ["B", "l"], ["B", "n"]] : [["B", "l"], ["B", "n"], ["M", "l"], ["M", "n"]];
+  for (const [p, k] of order) {
     const fromAp = Math.min(ag, out[p][k] || 0);
     out[p][k] = (out[p][k] || 0) - fromAp; ag -= fromAp; takenAp += fromAp;
     const n = Math.min(g, out[p][k] || 0);
@@ -33,5 +34,6 @@ export function absorbGuard(guard, a, apGuard = 0) {
 export const gainGuard = (current, value) => Math.max(Math.max(0, Number(current) || 0), Math.max(0, Math.floor(Number(value) || 0)));
 
 /** v0.0.182: what the Guard did, for the damage line: "12 − Guard 5 = " before the damage, and "(Guard 3 left)" after it. */
-export const guardBefore = (total, taken) => (taken ? `${total} \u2212 Guard ${taken} = ` : "");
-export const guardAfter = (taken, left) => (taken ? ` <small>(${left ? `Guard ${left} left` : "the Guard ends"})</small>` : "");
+// v0.0.255 (Lucas): a reduction (Shield of Faith) shows on the line like the Guard: "12 − reduction 7 − Guard 5 = 0"
+export const guardBefore = (total, taken, reduced = 0) => (taken || reduced ? `${total}${reduced ? ` \u2212 reduction ${reduced}` : ""}${taken ? ` \u2212 Guard ${taken}` : ""} = ` : "");
+export const guardAfter = (taken, left, reduced = 0, reduceLeft = 0) => (taken || reduced ? ` <small>(${[reduced ? (reduceLeft ? `reduction ${reduceLeft} left` : "the reduction is spent") : "", taken ? (left ? `Guard ${left} left` : "the Guard ends") : ""].filter(Boolean).join("; ")})</small>` : "");

@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>2d12 NPC sheet prototype</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&amp;family=Signika:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+button{font-family:inherit;cursor:pointer}
+button:disabled{cursor:not-allowed}
+b[data-act]{cursor:pointer}b[data-act]:hover{text-decoration:underline}
+</style>
+</helmet>
+<div style="width: 900px; height: 1100px; box-sizing: border-box; display: flex; flex-direction: column; font-family: Signika, 'Segoe UI', sans-serif; color: #26241f; background: #1b2433; overflow: hidden">
+
+<!-- HEADER -->
+<div style="display: flex; align-items: center; gap: 14px; padding: 12px 16px; color: #f3efe6">
+  <div style="width: 52px; height: 52px; border-radius: 50%; border: 2px solid #a8322d; background: #2a3548; flex: none"></div>
+  <div style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1; min-width: 0">
+    <div style="display: flex; align-items: baseline; gap: 10px"><span style="font-family: Cinzel, serif; font-size: 22px; font-weight: 700">{{ n.name }}</span><span style="{{ n.roleChip }}">{{ n.role }}</span></div>
+    <div style="font-size: 13px; color: #c9cfda">Level 1 · <b style="color: #f3d39c">Stage 1</b> · Medium · CV <b style="color: #f3d39c">{{ n.cv }}</b></div>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px">
+    <div style="display: flex; gap: 6px">
+      <button title="Posts the stat block to chat (GM only)" style="height: 30px; padding: 0 12px; border-radius: 6px; border: 1px solid #4a5872; background: #243047; color: #e6e9ef; font-size: 12px">Post stat block</button>
+      <button onClick="{{ toggleCombat }}" title="Prototype: toggles combat" style="height: 30px; padding: 0 12px; border-radius: 6px; border: 1px solid #d9902f; background: #2a3548; color: #f3d39c; font-size: 12px; font-weight: 600">{{ combatLabel }}</button>
+    </div>
+    <div style="display: flex; border: 1px dashed #6b7891; border-radius: 6px; overflow: hidden" title="Prototype only: switch the example NPC">
+      <sc-for list="{{ picker }}" as="p" hint-placeholder-count="3"><button onClick="{{ p.go }}" style="{{ p.style }}">{{ p.label }}</button></sc-for>
+    </div>
+  </div>
+</div>
+
+<!-- STRIP -->
+<sc-if value="{{ inCombat }}" hint-placeholder-val="{{ true }}">
+<div style="{{ n.stripGrid }}">
+  <div style="background: #222d40; padding: 8px 12px; display: flex; flex-direction: column; gap: 5px">
+    <div style="font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba">Action Points</div>
+    <div style="display: flex; align-items: center; gap: 5px">
+      <sc-for list="{{ n.pips }}" as="pp" hint-placeholder-count="4"><span style="{{ pp }}"></span></sc-for>
+      <span style="width: 1px; height: 16px; background: #4a5872; margin: 0 3px"></span><span style="width: 13px; height: 13px; transform: rotate(45deg); background: #2fa59a"></span>
+    </div>
+    <div style="font-size: 11px; color: #c9cfda">{{ n.apText }}</div>
+  </div>
+  <div style="background: #222d40; padding: 8px 12px; display: flex; flex-direction: column; gap: 3px">
+    <div style="font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba">Guard</div>
+    <div style="font-size: 22px; font-weight: 700; color: #f3efe6">0</div>
+    <div style="font-size: 11px; color: #c9cfda">+2 per kept AP</div>
+  </div>
+  <sc-if value="{{ n.isElite }}" hint-placeholder-val="{{ false }}">
+  <div style="background: #222d40; padding: 8px 12px; display: flex; flex-direction: column; gap: 5px">
+    <div style="font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba">Elite Escalation 3</div>
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px">
+      <div title="1 Boon on its first attack each round" style="background: #d9902f; color: #1b2433; border-radius: 4px; padding: 3px 6px; font-size: 11px; font-weight: 600">1 · first attack +1 Boon</div>
+      <div title="Its Round Special can be used twice a round" style="background: #d9902f; color: #1b2433; border-radius: 4px; padding: 3px 6px; font-size: 11px; font-weight: 600">2 · Round Special ×2</div>
+      <div title="Its Encounter Special comes back, once" style="background: #d9902f; color: #1b2433; border-radius: 4px; padding: 3px 6px; font-size: 11px; font-weight: 600">3 · Encounter Special back</div>
+    </div>
+    <div style="font-size: 11px; color: #c9cfda">Phases: Bloodied +1 ✓ · Strained +1 not yet</div>
+  </div>
+  </sc-if>
+
+  <div style="background: #222d40; padding: 8px 12px; display: flex; flex-direction: column; gap: 5px">
+    <div style="font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba">This turn</div>
+    <div style="display: flex; align-items: center; gap: 6px" title="Strikes left this turn: 2 of 3"><span style="font-size: 12px; color: #f3efe6">Strikes</span><span style="width: 11px; height: 11px; transform: rotate(45deg); background: #d14b3f"></span><span style="width: 11px; height: 11px; transform: rotate(45deg); background: #d14b3f"></span><span style="width: 9px; height: 9px; transform: rotate(45deg); border: 1.5px solid #d14b3f"></span></div>
+    <div style="font-size: 11px; color: #e8a49c">Basic attack: next +1 Bane</div>
+  </div>
+  <div style="background: #222d40; padding: 8px 12px; display: flex; flex-direction: column; gap: 5px">
+    <div style="font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba">Senses</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 4px"><sc-for list="{{ n.senses }}" as="sn" hint-placeholder-count="2"><span title="{{ sn.tip }}" style="font-size: 11px; padding: 1px 7px; border-radius: 3px; border: 1px solid #4a5872; color: #e6e9ef; background: #2a3548">{{ sn.label }}</span></sc-for></div>
+  </div>
+</div>
+</sc-if>
+<sc-if value="{{ outCombat }}" hint-placeholder-val="{{ false }}">
+<div style="background: #222d40; padding: 9px 16px; border-top: 1px solid #33405a; border-bottom: 1px solid #33405a; display: flex; gap: 10px; align-items: center; font-size: 12px; color: #c9cfda"><span style="font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba">Out of combat</span><span>AP, Guard and Escalation appear when it joins a combat</span><span style="margin-left: auto; display: flex; gap: 4px; align-items: center"><span style="font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba; margin-right: 4px">Senses</span><sc-for list="{{ n.senses }}" as="sn" hint-placeholder-count="2"><span title="{{ sn.tip }}" style="font-size: 11px; padding: 1px 7px; border-radius: 3px; border: 1px solid #4a5872; color: #e6e9ef; background: #2a3548">{{ sn.label }}</span></sc-for></span></div>
+</sc-if>
+
+<!-- CONDITIONS -->
+<div style="display: flex; align-items: center; gap: 8px; padding: 6px 16px; background: #1f2939; border-bottom: 1px solid #33405a; min-height: 18px">
+  <span style="font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba">On it</span>
+  <sc-for list="{{ n.chips }}" as="c" hint-placeholder-count="1"><button title="Open the effect" style="font-size: 12px; padding: 2px 8px; border-radius: 3px; background: #3a2a2a; color: #f2c9c4; border: 1px solid #7a3b35">{{ c }}</button></sc-for>
+  <span style="font-size: 12px; color: #8f9bb0; margin-left: auto">drop a condition or effect here</span>
+</div>
+
+<div style="display: flex; flex-grow: 1; min-height: 0">
+
+<!-- SIDEBAR -->
+<div style="width: 260px; flex: none; padding: 12px 14px; display: flex; flex-direction: column; gap: 13px; color: #e6e9ef; box-sizing: border-box; overflow-y: auto">
+  <div style="display: flex; flex-direction: column; gap: 7px">
+    <div style="display: flex; justify-content: space-between; align-items: baseline">
+      <span style="font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba">Health {{ n.pool }}</span>
+      <span style="font-size: 12px; color: #f3d39c"><b style="font-size: 18px">{{ n.toDown }}</b> to Down</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 3px">
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px"><span style="display: flex; gap: 6px; align-items: center"><b style="color: #ef8a80">Vigor</b><sc-if value="{{ n.bloodied }}" hint-placeholder-val="{{ false }}"><span style="font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 3px; background: #c4453c; color: #fff">BLOODIED</span></sc-if></span><span>{{ n.vText }}</span></div>
+      <div style="display: flex; height: 10px; border-radius: 3px; overflow: hidden; background: #2a3548"><div style="{{ n.vBar }}"></div></div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 3px">
+      <div style="display: flex; justify-content: space-between; font-size: 12px"><b style="color: #8fb3ee">Resolve</b><span>{{ n.rText }}</span></div>
+      <div style="display: flex; height: 10px; border-radius: 3px; overflow: hidden; background: #2a3548"><div style="{{ n.rBar }}"></div></div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 6px; padding-top: 10px; border-top: 1px solid #2f3b52">
+    <span style="font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba">Defenses</span>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px">
+      <div style="background: #243047; border-radius: 5px; padding: 6px; text-align: center"><div style="font-size: 20px; font-weight: 700">{{ n.ad }}</div><div style="font-size: 11px; color: #c9cfda">AD</div></div>
+      <div style="background: #243047; border-radius: 5px; padding: 6px; text-align: center"><div style="font-size: 20px; font-weight: 700">{{ n.wd }}</div><div style="font-size: 11px; color: #c9cfda">WD</div></div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; font-size: 10px; text-align: center; color: #c9cfda">
+      <sc-for list="{{ n.vsAttr }}" as="va" hint-placeholder-count="4"><div style="background: #212b3d; border-radius: 4px; padding: 3px 0"><b style="color: #f3efe6; font-size: 14px">{{ va.v }}</b><br>{{ va.k }}</div></sc-for>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 6px; padding-top: 10px; border-top: 1px solid #2f3b52">
+    <span style="font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba">Attributes</span>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; text-align: center">
+      <sc-for list="{{ n.attrs }}" as="a" hint-placeholder-count="4"><button title="{{ a.tip }}" style="background: #243047; border: 1px solid #33405a; border-radius: 4px; padding: 4px 0; color: #f3efe6"><b style="font-size: 16px">{{ a.v }}</b><br><span style="font-size: 10px; color: #c9cfda">{{ a.k }}</span></button></sc-for>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 6px">
+    <span style="font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba">Movement</span>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; text-align: center">
+      <div style="background: #243047; border: 1px solid #33405a; border-radius: 4px; padding: 4px 0"><b style="font-size: 16px">{{ n.speed }}</b><br><span style="font-size: 10px; color: #c9cfda">Speed</span></div>
+      <div style="background: #243047; border: 1px solid #33405a; border-radius: 4px; padding: 4px 0"><b style="font-size: 16px">1</b><br><span style="font-size: 10px; color: #c9cfda">Reach</span></div>
+      <div style="background: #243047; border: 1px solid #33405a; border-radius: 4px; padding: 4px 0"><b style="font-size: 16px">3</b><br><span style="font-size: 10px; color: #c9cfda">Size</span></div>
+      <div style="background: #243047; border: 1px solid #33405a; border-radius: 4px; padding: 4px 0"><b style="font-size: 16px">{{ n.steady }}</b><br><span style="font-size: 10px; color: #c9cfda">Steady</span></div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 10px; border-top: 1px solid #2f3b52; font-size: 12px">
+    <span style="font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #9aa6ba">Modifier · Save DC</span>
+    <div style="display: grid; grid-template-columns: 1fr auto auto; gap: 3px 10px">
+      <span>{{ n.modName }} <span style="color: #9aa6ba">{{ n.modAttr }}</span></span><b>{{ n.mod }}</b><span style="color: #c9cfda">DC {{ n.dc }}</span>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div style="flex-grow: 1; min-width: 0; background: #efebe3; display: flex; flex-direction: column; min-height: 0">
+  <div style="display: flex; gap: 4px; padding: 8px 12px 0; border-bottom: 1px solid #d6cfc0; flex: none">
+    <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5"><button onClick="{{ t.go }}" style="{{ t.style }}">{{ t.label }}</button></sc-for>
+  </div>
+  <div style="flex-grow: 1; min-height: 0; overflow-y: auto">
+
+  <!-- ACTIONS -->
+  <sc-if value="{{ show.actions }}" hint-placeholder-val="{{ true }}">
+  <div style="padding: 10px 14px; display: flex; flex-direction: column; gap: 10px">
+    <div style="display: grid; grid-template-columns: minmax(0, 1fr) 72px 96px 80px 72px; column-gap: 14px; justify-items: center; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #6b665a; padding: 0 10px"><span style="justify-self: start">Action</span><span>Cost</span><span>Distance</span><span>Vs.</span><span></span></div>
+    <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="3">
+    <div style="{{ sec.box }}">
+      <div style="{{ sec.head }}"><span style="{{ sec.dot }}"></span><b style="{{ sec.titleStyle }}">{{ sec.title }}</b><span style="font-size: 11px; color: #6b665a">{{ sec.sub }}</span></div>
+      <sc-for list="{{ sec.rows }}" as="r" hint-placeholder-count="1">
+      <div style="{{ r.rowStyle }}">
+        <span style="justify-self: start; display: flex; flex-direction: column; line-height: 1.25"><b data-act="1" title="Open the Action" style="font-size: 14px">{{ r.name }}</b><span style="font-size: 11px; color: #5b574d">{{ r.sub }}</span></span>
+        <span style="{{ r.pill }}">{{ r.cost }}</span>
+        <span style="font-size: 12px">{{ r.dist }}</span>
+        <span style="{{ r.vsStyle }}">{{ r.vs }}</span>
+        <button style="{{ r.btn }}" title="{{ r.tip }}">{{ r.btnLabel }}</button>
+      </div>
+      </sc-for>
+    </div>
+    </sc-for>
+
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <span style="font-family: Cinzel, serif; font-size: 13px; font-weight: 700; color: #4a463d">Basic Actions</span>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; align-items: start">
+        <sc-for list="{{ basic }}" as="g" hint-placeholder-count="4">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: #6b665a; font-weight: 700; border-bottom: 1px solid #c9bfab; padding-bottom: 3px">{{ g.name }}</span>
+          <sc-for list="{{ g.items }}" as="i" hint-placeholder-count="3">
+          <button title="{{ i.tip }}" style="{{ i.style }}"><span style="display: flex; flex-direction: column; flex-grow: 1; line-height: 1.2; text-align: left"><span style="font-size: 12px">{{ i.name }}</span><span style="font-size: 10px; font-style: italic">{{ i.reason }}</span></span><b style="font-size: 12px">{{ i.cost }}</b></button>
+          </sc-for>
+        </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- EFFECTS -->
+  <sc-if value="{{ show.effects }}" hint-placeholder-val="{{ false }}">
+  <div style="padding: 12px 14px; display: flex; flex-direction: column; gap: 14px">
+    <div style="background: #fffefb; border: 1px solid #c9bfab; border-radius: 6px; box-shadow: 0 1px 2px rgba(27,36,51,.12); overflow: hidden">
+      <div style="display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: #f3efe6"><span style="width: 8px; height: 8px; border-radius: 50%; background: #a8322d"></span><b style="font-size: 13px">Conditions</b></div>
+      <sc-for list="{{ n.effects }}" as="e" hint-placeholder-count="1">
+      <div style="display: grid; grid-template-columns: 30px 120px minmax(0, 1fr) 96px; column-gap: 10px; align-items: center; padding: 8px 10px; border-top: 1px solid #e3dccd; font-size: 13px"><span style="width: 28px; height: 28px; border-radius: 6px; background: #8f3a32; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px">{{ e.icon }}</span><b>{{ e.name }}</b><span style="line-height: 1.35">{{ e.desc }}</span><span style="font-size: 11px; font-weight: 600; background: #ece6da; color: #4a463d; border-radius: 3px; text-align: center; padding: 2px 4px">{{ e.dur }}</span></div>
+      </sc-for>
+    </div>
+    <div style="border: 1px dashed #b9ae97; border-radius: 6px; padding: 12px; font-size: 13px; color: #6b665a; text-align: center">Drop an effect or a condition here to apply it</div>
+  </div>
+  </sc-if>
+
+  <!-- RATINGS -->
+  <sc-if value="{{ show.ratings }}" hint-placeholder-val="{{ false }}">
+  <div style="padding: 12px 14px; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap">
+      <span style="font-size: 12px; color: #6b665a">Role</span>
+      <div style="display: flex; border: 1px solid #1b2433; border-radius: 6px; overflow: hidden">
+        <sc-for list="{{ roleSeg }}" as="rs" hint-placeholder-count="4"><button onClick="{{ rs.go }}" style="{{ rs.style }}">{{ rs.label }}</button></sc-for>
+      </div>
+      <span style="font-size: 12px; color: #6b665a; margin-left: 8px">Level</span><span style="font-size: 13px; font-weight: 700; padding: 3px 10px; border: 1px solid #c9bfab; border-radius: 6px; background: #fffefb">1</span><span style="font-size: 12px; color: #6b665a">Stage 1 · CV {{ n.cv }} · {{ n.ap }} AP</span>
+      <sc-if value="{{ n.isElite }}" hint-placeholder-val="{{ false }}"><span style="margin-left: auto; font-size: 12px; padding: 3px 10px; border-radius: 3px; background: #1b2433; color: #f3d39c; font-weight: 600">Elite Escalation: on</span></sc-if>
+    </div>
+    <sc-for list="{{ rgroups }}" as="rg" hint-placeholder-count="5">
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <div style="display: flex; align-items: baseline; gap: 10px; border-bottom: 1px solid #c9bfab; padding-bottom: 3px"><span style="font-family: Cinzel, serif; font-size: 14px; font-weight: 700; color: #4a463d">{{ rg.title }}</span><span style="font-size: 11px; color: #6b665a">{{ rg.note }}</span></div>
+      <sc-for list="{{ rg.rows }}" as="rr" hint-placeholder-count="2">
+      <div style="display: grid; grid-template-columns: 112px minmax(0, 1fr) 54px; column-gap: 10px; align-items: center">
+        <span style="display: flex; flex-direction: column; line-height: 1.2"><b style="font-size: 13px">{{ rr.k }}</b><span style="font-size: 10px; color: #6b665a">{{ rr.sub }}</span></span>
+        <div style="{{ rr.grid }}">
+          <sc-for list="{{ rr.btns }}" as="rb" hint-placeholder-count="5"><button onClick="{{ rb.go }}" style="{{ rb.style }}"><span style="font-size: 10px">{{ rb.label }}</span><br><b style="font-size: 12px">{{ rb.val }}</b></button></sc-for>
+        </div>
+        <span style="text-align: right; display: flex; flex-direction: column; line-height: 1.2"><b style="font-size: 16px">{{ rr.result }}</b><span style="font-size: 10px; color: #6b665a">{{ rr.resultNote }}</span></span>
+      </div>
+      </sc-for>
+    </div>
+    </sc-for>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+      <sc-for list="{{ checks }}" as="ck" hint-placeholder-count="4">
+      <div style="background: #fffefb; border: 1px solid #c9bfab; border-radius: 6px; box-shadow: 0 1px 2px rgba(27,36,51,.12); padding: 8px 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; color: #6b665a">{{ ck.k }}</span><b style="font-size: 16px">{{ ck.v }}</b><span style="font-size: 10px; color: #6b665a; line-height: 1.3">{{ ck.note }}</span></div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- LOOT -->
+  <sc-if value="{{ show.loot }}" hint-placeholder-val="{{ false }}">
+  <div style="padding: 12px 14px; display: flex; flex-direction: column; gap: 12px">
+    <div style="font-size: 12px; color: #6b665a">An NPC's items are flavor and loot: they never change its Health, Defenses or damage.</div>
+    <div style="background: #fffefb; border: 1px solid #c9bfab; border-radius: 6px; box-shadow: 0 1px 2px rgba(27,36,51,.12); overflow: hidden">
+      <div style="display: grid; grid-template-columns: minmax(0, 1fr) 60px 110px; column-gap: 14px; padding: 6px 12px; background: #f3efe6; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #6b665a"><span>Item</span><span>Qty</span><span></span></div>
+      <sc-for list="{{ n.loot }}" as="l" hint-placeholder-count="2">
+      <div style="display: grid; grid-template-columns: minmax(0, 1fr) 60px 110px; column-gap: 14px; align-items: center; padding: 7px 12px; border-top: 1px solid #e3dccd; font-size: 13px"><span><b>{{ l.name }}</b> <span style="font-size: 11px; color: #6b665a">{{ l.note }}</span></span><span>{{ l.qty }}</span><button style="height: 26px; border-radius: 6px; border: none; background: #1b2433; color: #fff; font-size: 12px; font-weight: 600; box-shadow: 0 2px 0 #05080e">Give to a PC</button></div>
+      </sc-for>
+    </div>
+    <div style="border: 1px dashed #b9ae97; border-radius: 6px; padding: 12px; font-size: 13px; color: #6b665a; text-align: center">Drag items here</div>
+  </div>
+  </sc-if>
+
+  <!-- NOTES -->
+  <sc-if value="{{ show.notes }}" hint-placeholder-val="{{ false }}">
+  <div style="padding: 12px 14px; display: flex; flex-direction: column; gap: 10px">
+    <label for="npcnotes" style="font-family: Cinzel, serif; font-size: 15px; font-weight: 700; color: #4a463d">GM notes</label>
+    <textarea id="npcnotes" style="height: 420px; border: 1px solid #c9bfab; border-radius: 6px; background: #fffefb; padding: 10px; font-family: Signika, sans-serif; font-size: 13px; resize: none">Tactics, motives, what it knows...</textarea>
+  </div>
+  </sc-if>
+
+  </div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"inCombat":{"editor":"boolean","default":true},"$preview":{"width":900,"height":1100}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const tab = st.tab || 'actions';
+    const npcKey = st.npc || 'standard';
+    const combat = st.combat !== undefined ? st.combat : (this.props.inCombat ?? true);
+    const INK = '#1b2433', TEAL = '#17635c';
+    const C = { round: '#2c5d9e', enc: '#a8322d', turn: '#1f7a72', at: '#4c7a2e', esc: '#c9821f', strike: '#d14b3f' };
+    const RN = ['Terrible', 'Low', 'Medium', 'High', 'Extreme'];
+    const RC = ['#6b665a', '#8a7a5a', '#1b2433', '#8a5a12', '#a8322d'];
+    const T = {
+      Minion: { cv: 25, ap: 3, deals: 5, n: 4, attr: [-2, -1, 0, 1], hm: [0, 0.75, 1, 1.25], base: 1, def: [11, 11, 12, 13], basic: [[1, 2.5], [1.5, 3.5], [2, 4], [2.5, 5]] },
+      Grunt: { cv: 50, ap: 4, deals: 8, n: 5, attr: [-2, -1, 0, 1, 2], hm: [2, 3, 4.25, 5.25, 6.25], base: 3, def: [11, 12, 13, 14, 15], basic: [[2, 3], [2.5, 3.5], [3, 4], [4, 5.5], [4.5, 6.5]] },
+      Standard: { cv: 100, ap: 4, deals: 12, n: 5, attr: [-1, 0, 1, 2, 3], hm: [3.75, 5.75, 7.75, 9.75, 11.5], base: 4, def: [11, 12, 13, 14, 15], basic: [[3, 4], [3.5, 6], [4, 7.5], [5.5, 9], [6.5, 11]] },
+      Elite: { cv: 200, ap: 4, deals: 17, n: 5, attr: [0, 1, 2, 3, 4], hm: [6.5, 10, 13.25, 16.5, 19.75], base: 6, def: [12, 13, 14, 15, 16], basic: [[3, 4], [4, 6.5], [5, 7.5], [6.5, 9.5], [7.5, 11]] }
+    };
+    const pill = (c) => `font-size: 12px; font-weight: 700; color: #fff; background: ${c}; border-radius: 3px; text-align: center; padding: 1px 0; width: 64px`;
+    const vsOn = 'font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 4px; border: 1px solid #8f8774; color: #3a372f; white-space: nowrap';
+    const btn = (react) => `height: 28px; min-width: 56px; border-radius: 6px; border: none; background: ${react ? TEAL : INK}; color: #fff; font-size: 12px; font-weight: 700; box-shadow: 0 2px 0 #05080e`;
+    const btnOff = 'height: 28px; min-width: 56px; border-radius: 6px; border: 1px dashed #a99f8a; background: transparent; color: #8f8774; font-size: 12px';
+    const rowBase = 'display: grid; grid-template-columns: minmax(0, 1fr) 72px 96px 80px 72px; column-gap: 14px; justify-items: center; align-items: center; padding: 7px 10px; border-top: 1px solid #e3dccd';
+    const row = (o) => ({ name: o.name, sub: o.sub || '', cost: o.cost, dist: o.dist || '\u2014', vs: o.vs || '', pill: pill(o.c), vsStyle: o.vs ? vsOn : 'font-size: 11px', btn: o.off ? btnOff : btn(o.react), btnLabel: 'Use', tip: o.off || 'Use', rowStyle: rowBase + (o.strike ? '; padding-left: 16px; box-shadow: inset 4px 0 0 #d14b3f' : '') + (o.off ? '; opacity: .45' : '') });
+    const box = 'background: #fffefb; border: 1px solid #c9bfab; border-radius: 6px; box-shadow: 0 1px 2px rgba(27,36,51,.12); overflow: hidden';
+    const sec = (title, color, rows, opts = {}) => ({ title, sub: opts.sub || '', rows: rows.map(row), box, head: `display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: ${opts.tint || '#f3efe6'}`, dot: `width: 8px; height: 8px; border-radius: 50%; background: ${color}`, titleStyle: `font-size: 13px; color: ${opts.tcol || '#26241f'}` });
+    const NPCS = {
+      minion: { name: 'Goblin Sneak', senses: [{ label: 'Dark Sight', tip: 'Dim light and Darkness count as Bright for its Sight' }, { label: 'Hearing 10', tip: 'Creatures that make noise within 10 squares are Hidden to it' }], role: 'Minion', apUsed: 1, vDmg: 0, rDmg: 0, modName: 'Weapon', modAttr: 'Instinct', mod: 2,
+        r: { body: 2, mind: 2, appeal: 1, instinct: 3, bh: 1, mh: 1, ad: 2, wd: 1, basic: 2, speed: 7, steady: 0 },
+        chips: [], effects: [{ icon: '\u2014', name: 'None', desc: 'No conditions on it.', dur: '' }],
+        sections: [sec('At will', C.at, [{ strike: true, name: 'Rusty Knife', sub: 'Basic attack', cost: '1 AP', c: C.at, dist: '1 sq.', vs: 'AD' }]),
+          sec('Once per round', C.round, [{ strike: true, name: 'Dirty Trick', sub: 'Hindered (EoT) on a hit', cost: '1 AP', c: C.round, dist: '1 sq.', vs: 'AD' }]),
+          sec('Reactions', C.turn, [{ strike: true, name: 'Opportunity Attack', sub: 'with Rusty Knife', cost: '1R', c: C.turn, dist: '1 sq.', vs: 'AD', react: true }])],
+        loot: [{ name: 'Rusty knife', note: 'flavor', qty: 1 }, { name: 'Copper bits', note: '', qty: 7 }] },
+      standard: { name: 'Orc Warrior', senses: [{ label: 'Sight', tip: 'Bright: Clear; Dim: Obscured; Darkness: can\u2019t see' }, { label: 'Dim-light Sight', tip: 'Dim light counts as Bright for its Sight' }, { label: 'Hearing 10', tip: 'Creatures that make noise within 10 squares are Hidden to it' }], role: 'Standard', apUsed: 2, vDmg: 20, rDmg: 0, modName: 'Weapon', modAttr: 'Body', mod: 2,
+        r: { body: 3, mind: 2, appeal: 1, instinct: 2, bh: 3, mh: 1, ad: 2, wd: 1, basic: 2, speed: 5, steady: 0 },
+        chips: ['Hindered (EoT)'], effects: [{ icon: 'H', name: 'Hindered', desc: 'Its movement is halved (a movement in progress too).', dur: 'EoT' }],
+        sections: [sec('At will', C.at, [{ strike: true, name: 'Cleaver', sub: 'Basic attack', cost: '1 AP', c: C.at, dist: '1 sq.', vs: 'AD' }]),
+          sec('Once per round', C.round, [{ strike: true, name: 'Brutal Swing', sub: 'Prone on a hit', cost: '2 AP', c: C.round, dist: '1 sq.', vs: 'AD', off: 'Used this round' }]),
+          sec('Reactions', C.turn, [{ strike: true, name: 'Hold the Line', sub: 'Trigger: an ally within 2 squares is hit', cost: '1R', c: C.turn, vs: 'AD', react: true }, { strike: true, name: 'Opportunity Attack', sub: 'with Cleaver', cost: '1R', c: C.turn, dist: '1 sq.', vs: 'AD', react: true }])],
+        loot: [{ name: 'Cleaver', note: 'flavor', qty: 1 }, { name: 'Hide armor', note: 'flavor', qty: 1 }, { name: 'Silver pieces', note: '', qty: 12 }] },
+      elite: { name: 'Ogre Chieftain', senses: [{ label: 'Sight', tip: 'Bright: Clear; Dim: Obscured; Darkness: can\u2019t see' }, { label: 'Hearing 10', tip: 'Creatures that make noise within 10 squares are Hidden to it' }], role: 'Elite', apUsed: 0, vDmg: 74, rDmg: 10, modName: 'Weapon', modAttr: 'Body', mod: 3,
+        r: { body: 3, mind: 2, appeal: 1, instinct: 2, bh: 2, mh: 2, ad: 2, wd: 1, basic: 3, speed: 4, steady: 0 },
+        chips: [], effects: [{ icon: '\u2014', name: 'None', desc: 'No conditions on it.', dur: '' }],
+        sections: [sec('Escalation 2', C.esc, [{ name: 'Rally the Tribe', sub: 'Allies within 5 squares: 1 Boon on their next [Weapon] Action', cost: '1 AP', c: C.round, dist: '5 sq.' }], { tint: '#f6ead3', tcol: '#6b4410', sub: 'once per round' }),
+          sec('At will', C.at, [{ strike: true, name: 'Club', sub: 'Basic attack \u00b7 +1 Boon on its first attack this round', cost: '1 AP', c: C.at, dist: '1 sq.', vs: 'AD' }]),
+          sec('Once per encounter', C.enc, [{ name: 'Ground Slam', sub: 'Area: 1 Emanation \u00b7 Prone on Tier 1 \u00b7 back once at Escalation 3', cost: '3 AP', c: C.enc, vs: 'Body Save' }]),
+          sec('Reactions', C.turn, [{ strike: true, name: 'Opportunity Attack', sub: 'with Club', cost: '1R', c: C.turn, dist: '1 sq.', vs: 'AD', react: true }])],
+        loot: [{ name: 'Great club', note: 'flavor', qty: 1 }, { name: 'Chieftain\u2019s torc', note: 'gold', qty: 1 }] }
+    };
+    const base = NPCS[npcKey];
+    const over = (st.over && st.over[npcKey]) || {};
+    const role = over.role || base.role;
+    const t = T[role];
+    const r = Object.assign({}, base.r, over.r || {});
+    ['body', 'mind', 'appeal', 'instinct', 'bh', 'mh', 'ad', 'wd', 'basic'].forEach(k => { if (r[k] > t.n - 1) r[k] = t.n - 1; });
+    const setR = (k, v) => { const o = Object.assign({}, st.over || {}); const cur = Object.assign({}, o[npcKey] || {}); cur.r = Object.assign({}, cur.r || {}, { [k]: v }); o[npcKey] = cur; this.setState({ over: o }); };
+    const setRole = (ro) => { const o = Object.assign({}, st.over || {}); const cur = Object.assign({}, o[npcKey] || {}); cur.role = ro; o[npcKey] = cur; this.setState({ over: o }); };
+    const sg = (v) => (v >= 0 ? '+' : '\u2212') + Math.abs(v);
+    const A = { body: t.attr[r.body], mind: t.attr[r.mind], appeal: t.attr[r.appeal], instinct: t.attr[r.instinct] };
+    const vigor = Math.ceil((A.body + 2) * t.hm[r.bh] + t.base), resolve = Math.ceil((A.mind + 2) * t.hm[r.mh] + t.base);
+    const pool = vigor + resolve, dmg = base.vDmg + base.rDmg;
+    const ad = t.def[r.ad], wd = t.def[r.wd];
+    const half = (x) => Math.round(x * 2) / 2;
+    const bas = t.basic[r.basic];
+    const isElite = role === 'Elite';
+    const pips = []; for (let i = 0; i < t.ap; i++) pips.push(i < t.ap - base.apUsed ? 'width: 16px; height: 16px; border-radius: 50%; background: #d9902f' : 'width: 14px; height: 14px; border-radius: 50%; border: 1px solid #5d6b85');
+    const roleColors = { Minion: '#4a5a78', Grunt: '#4a5a78', Standard: '#5b574d', Elite: '#a8322d' };
+    const n = {
+      name: base.name, role, cv: t.cv, ap: t.ap, pips, apText: `${Math.max(0, t.ap - base.apUsed)} of ${t.ap} \u00b7 Reaction ready`, isElite,
+      stripGrid: `display: grid; grid-template-columns: ${isElite ? '160px 96px 1fr 130px 160px' : '170px 110px 170px 1fr'}; gap: 1px; background: #33405a; border-top: 1px solid #33405a; border-bottom: 1px solid #33405a`,
+      roleChip: `font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; background: ${roleColors[role]}; color: #fff`,
+      pool, toDown: Math.max(0, pool - dmg), vText: `${base.vDmg} / ${vigor}`, rText: `${base.rDmg} / ${resolve}`, bloodied: base.vDmg >= vigor,
+      vBar: `width: ${Math.min(100, Math.round(base.vDmg / vigor * 100))}%; height: 10px; background: #c4453c`,
+      rBar: `width: ${Math.min(100, Math.round(base.rDmg / resolve * 100))}%; height: 10px; background: repeating-linear-gradient(45deg, #5b8ad6 0 4px, #3a5f99 4px 8px)`,
+      ad, wd, speed: r.speed, steady: r.steady,
+      attrs: [['Body', A.body], ['Mind', A.mind], ['Appeal', A.appeal], ['Instinct', A.instinct]].map(([k, v]) => ({ k, v: sg(v), tip: `Click: ${k} Check \u00b7 Shift-click: ${k} Save` })),
+      vsAttr: [['vs Body', A.body], ['vs Mind', A.mind], ['vs Appeal', A.appeal], ['vs Inst.', A.instinct]].map(([k, v]) => ({ k, v: 13 + Math.ceil(v / 2) })),
+      modName: base.modName, modAttr: base.modAttr, mod: sg(base.mod), dc: 11 + base.mod,
+      chips: base.chips, effects: base.effects, loot: base.loot, senses: base.senses
+    };
+    let sections = base.sections;
+    if (!combat) sections = sections.filter(s => !s.title.startsWith('Escalation'));
+    // rating rows
+    const ratBtns = (k, vals, labels) => vals.map((v, i) => {
+      const sel = r[k] === i;
+      const col = labels ? INK : RC[i];
+      return { label: labels ? labels[i] : RN[i], val: v, go: () => setR(k, i),
+        style: `padding: 4px 2px; border-radius: 5px; border: 1px solid ${sel ? col : '#c9bfab'}; background: ${sel ? col : '#fffefb'}; color: ${sel ? '#fff' : col}; line-height: 1.15; box-shadow: ${sel ? '0 2px 0 #05080e' : 'none'}` };
+    });
+    const grid = (cnt) => `display: grid; grid-template-columns: repeat(${cnt}, minmax(0, 1fr)); gap: 4px`;
+    const rr = (k, label, sub, vals, result, note, labels) => ({ k: label, sub, btns: ratBtns(k, vals, labels), grid: grid(vals.length), result, resultNote: note });
+    const ref = (label, sub, mult) => ({ k: label, sub, grid: grid(t.n), result: '', resultNote: '',
+      btns: t.basic.map((b, i) => ({ label: RN[i], val: `${half(b[0] * mult)} / ${half(b[1] * mult)}`, go: () => {}, style: 'padding: 4px 2px; border-radius: 5px; border: 1px dashed #c9bfab; background: transparent; color: #4a463d; line-height: 1.15; cursor: default' })) });
+    const rgroups = [
+      { title: 'Attributes', note: 'by default one High, two Medium and one Low', rows: [
+        rr('body', 'Body', '', t.attr.map(sg), sg(A.body), RN[r.body]), rr('mind', 'Mind', '', t.attr.map(sg), sg(A.mind), RN[r.mind]),
+        rr('appeal', 'Appeal', '', t.attr.map(sg), sg(A.appeal), RN[r.appeal]), rr('instinct', 'Instinct', '', t.attr.map(sg), sg(A.instinct), RN[r.instinct])] },
+      { title: 'Health', note: `(Attribute + 2) \u00d7 multiplier + Health Base ${t.base}`, rows: [
+        rr('bh', 'Body Health', 'Vigor', t.hm.map(m => '\u00d7' + m), vigor, 'Vigor'), rr('mh', 'Mind Health', 'Resolve', t.hm.map(m => '\u00d7' + m), resolve, 'Resolve')] },
+      { title: 'Defenses', note: 'picked independently', rows: [
+        rr('ad', 'Armor Defense', 'AD, vs Weapon Actions', t.def, ad, RN[r.ad]), rr('wd', 'Ward Defense', 'WD, vs Power Actions', t.def, wd, RN[r.wd])] },
+      { title: 'Movement', note: 'Speed is free but strong: balance a fast or slow creature', rows: [
+        rr('speed', 'Speed', 'squares per Move', [3, 4, 5, 6, 7], r.speed, '', ['slow', 'slow', 'default', 'fast', 'fast']).btns ? Object.assign(rr('speed', 'Speed', 'squares per Move', [3, 4, 5, 6, 7], r.speed - 3 >= 0 ? r.speed : 5, '', ['slow', 'slow', 'default', 'fast', 'fast']), { btns: [3, 4, 5, 6, 7].map((v, i) => ({ label: ['slow', 'slow', 'default', 'fast', 'fast'][i], val: v, go: () => setR('speed', v), style: `padding: 4px 2px; border-radius: 5px; border: 1px solid ${r.speed === v ? INK : '#c9bfab'}; background: ${r.speed === v ? INK : '#fffefb'}; color: ${r.speed === v ? '#fff' : INK}; line-height: 1.15` })) }) : null,
+        Object.assign(rr('steady', 'Steadiness', 'resists being moved', [0, 1, 2, 3, 4], r.steady, ''), { btns: [0, 1, 2, 3, 4].map(v => ({ label: v === 0 ? 'default' : '', val: v, go: () => setR('steady', v), style: `padding: 4px 2px; border-radius: 5px; border: 1px solid ${r.steady === v ? INK : '#c9bfab'}; background: ${r.steady === v ? INK : '#fffefb'}; color: ${r.steady === v ? '#fff' : INK}; line-height: 1.15` })) })] },
+      { title: 'Attacks', note: 'average damage, Tier 2 / Tier 3; the Specials are reference for writing Actions', rows: [
+        rr('basic', 'Basic attack', '1 AP, At-will', t.basic.map(b => `${b[0]} / ${b[1]}`), `${bas[0]} / ${bas[1]}`, RN[r.basic]),
+        ref('Special, 1 AP', 'Round \u00b7 \u00d71.4', 1.4), ref('Special, 2 AP', 'Round \u00b7 \u00d72.2', 2.2)].concat(role === 'Minion' ? [] : [ref('Special, 3 AP', 'Encounter \u00b7 \u00d73.5', 3.5)]) }
+    ];
+    const idx = ['body', 'mind', 'appeal', 'instinct', 'bh', 'mh', 'ad', 'wd', 'basic'].map(k => r[k]);
+    const avg = idx.reduce((a, b) => a + b, 0) / idx.length;
+    const checks = [
+      { k: 'Health', v: pool, note: `Vigor ${vigor} + Resolve ${resolve}` },
+      { k: 'Down in about', v: `${(pool / 23.3).toFixed(1)} PC turns`, note: 'a Stage 1 PC deals about 23.3 a turn' },
+      { k: 'Should deal', v: `about ${t.deals}`, note: 'a turn, to an average PC (the role\u2019s target)' },
+      { k: 'Ratings average', v: RN[Math.round(avg)], note: 'guidance only' }
+    ];
+    const on = 'padding: 6px 12px 8px; border: none; border-bottom: 2px solid #d9902f; background: transparent; color: #26241f; font-size: 14px; font-weight: 600';
+    const off = 'padding: 6px 12px 8px; border: none; border-bottom: 2px solid transparent; background: transparent; color: #5b574d; font-size: 14px';
+    const keys = [['actions', 'Actions'], ['effects', 'Effects'], ['ratings', 'Ratings'], ['loot', 'Loot'], ['notes', 'Notes']];
+    const tabs = keys.map(([k, label]) => ({ label, style: k === tab ? on : off, go: () => this.setState({ tab: k }) }));
+    const show = {}; keys.forEach(([k]) => { show[k] = k === tab; });
+    const pOn = 'padding: 3px 10px; border: none; background: #3a4a66; color: #fff; font-size: 11px; font-weight: 600';
+    const pOff = 'padding: 3px 10px; border: none; background: transparent; color: #b7c0cf; font-size: 11px';
+    const picker = [['minion', 'Demo: Goblin'], ['standard', 'Orc'], ['elite', 'Ogre']].map(([k, label]) => ({ label, style: k === npcKey ? pOn : pOff, go: () => this.setState({ npc: k }) }));
+    const roleSeg = ['Minion', 'Grunt', 'Standard', 'Elite'].map(ro => ({ label: ro, go: () => setRole(ro), style: ro === role ? 'padding: 4px 12px; border: none; background: #1b2433; color: #fff; font-size: 12px; font-weight: 600' : 'padding: 4px 12px; border: none; background: #fffefb; color: #1b2433; font-size: 12px' }));
+    const item = (name, cost, freq, strike, reason) => {
+      const bars = reason ? 'inset 4px 0 0 #b5ad9c' : (strike ? `inset 4px 0 0 ${freq}, inset 8px 0 0 ${C.strike}` : `inset 4px 0 0 ${freq}`);
+      return { name, cost: reason ? '\u2298' : cost, reason: reason || '', tip: reason || name,
+        style: reason ? `display: flex; align-items: center; gap: 6px; width: 100%; min-height: 40px; background: #e4ded2; border: 1px solid #d3cbbb; border-radius: 5px; padding: 4px 8px 4px 14px; color: #7d776a; box-shadow: ${bars}`
+          : `display: flex; align-items: center; gap: 6px; width: 100%; min-height: 40px; background: #fffefb; border: 1px solid #b9ae97; border-radius: 5px; padding: 4px 8px 4px ${strike ? 16 : 14}px; color: #26241f; box-shadow: ${bars}, 0 1px 2px rgba(27,36,51,.15)` };
+    };
+    const basic = [
+      { name: 'Attack', items: [item('Charge', '2 AP', C.round, true)] },
+      { name: 'Movement', items: [item('Advance', '1 AP', C.at), item('Evade', '1/2 AP', C.at), item('Crawl', '1/2 AP', C.at, false, 'Not Prone'), item('Stand', '1 AP', C.at, false, 'Not Prone')] },
+      { name: 'Control', items: [item('Shove', '1/2/3 AP', C.round), item('Trip', '1/2 AP', C.round), item('Haul', '1/2/3 AP', C.round), item('Relocate', '1/2/3 AP', C.at)] },
+      { name: 'Utility', items: [item('Interact', '1 AP', C.at), item('Leaning', '1 AP', C.at), item('Hide', '', C.at), item('Steel Yourself', '2/3 AP', C.round, false, 'No Rally Points')] }
+    ];
+    return { n, sections, tabs, show, picker, roleSeg, basic, rgroups, checks, inCombat: combat, outCombat: !combat,
+      combatLabel: combat ? 'In combat \u00b7 Round 2' : 'Roll Initiative', toggleCombat: () => this.setState({ combat: !combat }) };
+  }
+}
+</script>
+</body>
+</html>

@@ -310,7 +310,8 @@
    ],
    "foundry": {
     "img": "icons/svg/hammer.svg",
-    "npcWeapon": "Great Club"
+    "npcWeapon": "Great Club",
+    "basicRating": "high"
    },
    "ruler": false
   },
@@ -363,7 +364,7 @@
    "versions": [
     {
      "ap": 1,
-     "effects": "Allies within 5 squares gain 1 Boon on their next [Weapon] Action."
+     "effects": "Allies within 5 squares gain 1 Support Boon on their next [Weapon] Action."
     }
    ],
    "foundry": {

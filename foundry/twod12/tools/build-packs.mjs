@@ -36,9 +36,9 @@ for (const [pack, def] of Object.entries(PACKS)) {
       const items = a.items.map((it, k) => ({ ...it, _key: `!actors.items!${_id}.${it._id}`, sort: (k + 1) * 100000, _stats: stats }));
       const isPc = pack === "pcs";
       const token = isPc
-        ? { name: a.name, texture: { src: a.img }, disposition: 1, actorLink: true, sight: { enabled: true }, detectionModes: [{ id: "hearing", enabled: true, range: null }] }
-        : { name: a.name, texture: { src: a.img }, disposition: -1, actorLink: false };
-      const doc = { _id, _key: `!actors!${_id}`, name: a.name, type: isPc ? "character" : "npc", img: a.img, folder: null, sort: (i + 1) * 100000, system: a.system, items, effects: [], flags: {}, ownership: { default: 0 }, prototypeToken: token, _stats: stats };
+        ? { name: a.token || a.name, texture: { src: a.img }, disposition: 1, actorLink: true, sight: { enabled: true }, detectionModes: [{ id: "hearing", enabled: true, range: null }], displayBars: 50, lockRotation: true }
+        : { name: a.name, texture: { src: a.img }, disposition: -1, actorLink: false, displayBars: 50, lockRotation: true };   // v0.0.346 (Lucas): bars always shown, to everyone
+      const doc = { _id, _key: `!actors!${_id}`, name: a.name, type: isPc ? "character" : "npc", img: a.img, folder: null, sort: (i + 1) * 100000, system: a.system, items, effects: [], flags: a.flags ?? {}, ownership: { default: 0 }, prototypeToken: token, _stats: stats };
       fs.writeFileSync(path.join(dir, `${slug(a.name)}.${isPc ? "pc" : "npc"}.json`), JSON.stringify(doc, null, 2));
     });
     counts[pack] = people.length;

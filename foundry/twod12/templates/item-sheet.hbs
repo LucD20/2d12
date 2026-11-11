@@ -1,12 +1,14 @@
 <div class="twod12 sheet item{{#if styled}} sk{{/if}}">
   <header class="head">
     <img src="{{item.img}}" data-edit="img" data-action="editImage" width="48" height="48" alt="">
-    <input class="name" type="text" name="name" value="{{item.name}}" placeholder="Name">
+    {{#if fxHeadLine}}<div class="fr-namecol"><input class="name" type="text" name="name" value="{{item.name}}" placeholder="Name"><p class="fr-headline">{{{fxHeadLine}}}</p></div>
+    {{else}}<input class="name" type="text" name="name" value="{{item.name}}" placeholder="Name">{{/if}}
   </header>
   <nav class="tabs">
     {{!-- v0.0.191: links, not buttons: a read-only sheet (a locked compendium) disables every button, and the Details tab could not be opened --}}
     <a class="tabbtn" role="tab" data-action="switchTab" data-tab-target="description">Description</a>
     <a class="tabbtn" role="tab" data-action="switchTab" data-tab-target="details">Details</a>
+    {{#if fxHost}}<a class="fr-q" role="button" tabindex="0" data-fr-q aria-pressed="false" data-tooltip="Show the help texts">?</a>{{/if}}
   </nav>
 
   <section class="tab" data-tab="description">
@@ -57,17 +59,19 @@
       <label>Stage 3 step, low <input type="number" min="0" name="system.stepLow3" value="{{system.stepLow3}}"></label>
     </div>
     {{#if system.bodyMult}}<p class="hint">Old Health multipliers (before pack R): Body ×{{system.bodyMult}}, Mind ×{{system.mindMult}}. They are used only while the high value above is 0.</p>{{/if}}
-    <div class="grid4">
-      <label>Weapon Modifier uses <select data-modsel="weaponAttrs" data-side="0">{{selectOptions attrChoices selected=cls.weapon.[0]}}</select></label>
-      <label>or <select data-modsel="weaponAttrs" data-side="1">{{selectOptions attrChoices selected=cls.weapon.[1]}}</select></label>
-      <label>Power Modifier uses <select data-modsel="magicAttrs" data-side="0">{{selectOptions attrChoices selected=cls.power.[0]}}</select></label>
-      <label>or <select data-modsel="magicAttrs" data-side="1">{{selectOptions attrChoices selected=cls.power.[1]}}</select></label>
+    {{!-- v0.0.305 (pack MOD; book, Chapter 5): the class's two Modifier values and their order; on a character, its own choices. --}}
+    <div class="grid3">
+      <label>Modifier, high <input type="number" min="0" max="4" name="system.modHigh" value="{{system.modHigh}}"></label>
+      <label>Modifier, low <input type="number" min="0" max="4" name="system.modLow" value="{{system.modLow}}"></label>
+      <label>Order <select name="system.modOrder">{{selectOptions modOrderChoices selected=system.modOrder}}</select></label>
     </div>
     <div class="grid3">
       <div class="ro"><span>Attribute increases</span><b>{{#if cls.attrLine}}{{cls.attrLine}}{{else}}none (set them on level 1){{/if}}</b></div>
-      {{#if cls.shared}}<label>If {{cls.shared}} is the higher for both <select name="system.modPriority">{{selectOptions modPriorityChoices selected=system.modPriority}}</select></label>{{/if}}
+      {{#if onActor}}<label data-tooltip="Which value is the Weapon Modifier (a class that lets the player choose), and where a tie of the Signature Modifier goes">Leads with <select name="system.modPriority">{{selectOptions modLeadChoices selected=system.modPriority}}</select></label>
+      <label data-tooltip="Stage 2 (level 5): +1 to one Modifier">Stage 2 +1 to <select name="system.modStage2">{{selectOptions modStage2Choices selected=system.modStage2}}</select></label>{{/if}}
     </div>
-    <p class="hint">Each Modifier uses the higher of its two Attributes. The two Modifiers can't use the same Attribute: when one Attribute is the higher for both, the Modifier chosen above keeps it (the player can change it in the class window). The Attribute increases are set on level 1, in the Levels window.</p>
+    {{#if cls.oldMods}}<p class="hint">This copy is from before the Modifiers were class values (both values are 0): it still uses the higher of {{cls.oldMods}}. Set the values above, or update it from the compendium.</p>{{/if}}
+    <p class="hint">The class gives two Modifier values (+2 and +1 at level 1). "Either way": the player chooses which is the Weapon Modifier in the class window; otherwise the class fixes it. Stage 2 adds +1 to the one the player chooses, Stage 3 +1 to both, never above +4. The Attribute increases are set on level 1, in the Levels window.</p>
     <h3 class="cls-h">Levels <button type="button" data-action="editLevels"><i class="fa-solid fa-layer-group"></i> Edit levels&hellip;</button></h3>
     <p class="hint">What the player gets at each level (Features, the Hallmark Action, Picks, Talents, Attribute choices) is set up in the Levels window. It opens wider than this sheet.</p>
     <div class="cls-levels">
@@ -210,10 +214,22 @@
     <label>Traits {{formInput fields.traits value=system.traits name="system.traits" options=traitPicker.options groups=traitPicker.groups}}</label>
     <label>Flavor <input type="text" name="system.flavor" value="{{system.flavor}}" placeholder="Your weapon blazes with holy light."></label>
     <label class="autosel" data-tooltip="How much Foundry does for this card, shown as a chip on it (Not implemented, Bronze, Silver, Gold)">Automation <select name="system.automation">{{selectOptions autoRanks selected=system.automation}}</select></label> <label class="autosel autonote" data-tooltip="What Foundry doesn't do yet for this card (shown on the diamond's tooltip). Mostly for Bronze and Silver">By hand <input type="text" name="system.automationNote" value="{{system.automationNote}}" placeholder="What the players do themselves"></label>
-    <div class="grid3 rx">
+    <div class="grid4 rx">
       <label class="inline"><input type="checkbox" name="system.reaction" {{#if system.reaction}}checked{{/if}}> Reaction</label>
       <label>Kind <select name="system.reactionKind" {{#unless system.reaction}}disabled{{/unless}}>{{selectOptions reactionKinds selected=system.reactionKind}}</select></label>
     </div>
+    {{!-- v0.0.273 (Lucas couldn't find them in v0.0.272's row): the moment's fields as their own section --}}
+    <fieldset class="rx-moment{{#unless system.reaction}} off{{/unless}}">
+      <legend><i class="fa-solid fa-bolt-lightning"></i> Reaction moment</legend>
+      <p class="hint">When this moment comes, the chat offers the Reaction to its owner (Use / Pass) in the Reactions message. An Interrupt holds the damage until answered; a Trigger is offered after. Tick Reaction above first.</p>
+      <div class="grid4 rx">
+        <label data-tooltip="The moment this Reaction watches for. None: it is used by hand">Moment <select name="system.moment" {{#unless system.reaction}}disabled{{/unless}}>{{selectOptions moments selected=system.moment}}</select></label>
+        <label data-tooltip="How far (squares) the creature of the moment can be from you (the ally, the enemy who moves); 0: anywhere. A range in squares on the card (5 sq.) also limits how far its target can be">Within <input type="number" min="0" name="system.momentRange" value="{{system.momentRange}}" {{#unless system.reaction}}disabled{{/unless}}></label>
+        {{#if system.momentThreat}}<label class="inline" data-tooltip="(Old, v0.0.339: shown only while on.) Only a creature you threaten (your melee weapon's Range; a Long weapon not adjacent ones): Opportunity Attack. Within is then ignored"><input type="checkbox" name="system.momentThreat" {{#if system.momentThreat}}checked{{/if}} {{#unless system.reaction}}disabled{{/unless}}> You threaten it</label>{{/if}}
+        <label class="inline" data-tooltip="You count as the creature of the moment too ('you or an ally within 5 squares')"><input type="checkbox" name="system.momentSelf" {{#if system.momentSelf}}checked{{/if}} {{#unless system.reaction}}disabled{{/unless}}> You too</label>
+        <label data-tooltip="Whom Use is made against: the creature of the moment, or the one that caused it (the attacker)">Used on <select name="system.momentTarget" {{#unless system.reaction}}disabled{{/unless}}>{{selectOptions momentUsedOn selected=system.momentTarget}}</select></label>
+      </div>
+    </fieldset>
     <div class="grid4">
       <label>Category <input type="text" name="system.category" value="{{system.category}}" placeholder="Paladin Feature"></label>
       <label>Level <input type="number" min="0" name="system.level" value="{{system.level}}"></label>
@@ -229,6 +245,7 @@
     <label class="inline" data-tooltip="Using it marks the targeted creature (Mark Quarry). Settings with &quot;Only against the creature it marked&quot; read the mark; it ends when that creature goes Down and when an encounter starts. What the creature is told then: a Chat message setting on its Feature (Marked Quarry).">
       <input type="checkbox" name="system.marksTarget" {{#if system.marksTarget}}checked{{/if}}> Marks the target</label>
     <label class="inline" data-tooltip="An NPC's Basic attack: NPCs have no Weapon Attack, so when an Action calls for one (the attack at the end of a Charge), the NPC uses this"><input type="checkbox" name="system.basicAttack" {{#if system.basicAttack}}checked{{/if}}> NPC's Basic attack</label>
+    {{#if system.basicAttack}}<label data-tooltip="The Bestiary's rating of this Basic attack: it suggests the average damage (Tier 2 / Tier 3) from the NPC's role table; the dice stay yours">Basic attack rating <select name="system.basicRating">{{selectOptions basicRatings selected=system.basicRating}}</select>{{#if basicSuggest}} <span class="hint">suggested average {{basicSuggest}}</span>{{/if}}</label>{{/if}}
     <label data-tooltip="Which weapon a [Weapon] Action uses: Pummel uses only the Fists (a free hand); Leg Sweep is a kick (the Fists, even with both hands full)">Weapon used <select name="system.weaponUse">{{selectOptions weaponUses selected=system.weaponUse}}</select></label>
     <p class="hint">Actions with the Weapon trait always roll the Weapon Modifier; for the others, pick the attribute rolled. With no Defense the DC is 13. With Defense Body, the DC is 13 + the target's Body (negatives included) + any defense bonuses it has against this action.</p>
     <p class="hint">Actions with the Weapon trait use the class Weapon Modifier instead of the Check.</p>
@@ -266,6 +283,7 @@
       <label>Ward <input type="number" min="0" name="system.ward" value="{{system.ward}}"></label>
     </div>
     <label class="inline"><input type="checkbox" name="system.worn" {{#if system.worn}}checked{{/if}}> Worn</label>
+    {{{dmgLinesHtml}}}
     <label>Properties <input type="text" name="system.properties" value="{{system.properties}}" placeholder="Resist Slash 1, Bulky (not automated yet)"></label>
     <p class="hint">The wearer's Armor is 11 + the category's value (Light 1, Medium 2, Heavy 3) + the extra; Ward adds to the wearer's Ward. Only one armor is worn at a time. Wearing armor beyond your class's Armor Training makes your Rolls Doomed and Actions against your Armor or Ward Favored.</p>
     {{/if}}
@@ -280,11 +298,13 @@
     {{/if}}
 
     {{#if isWeapon}}
+    {{{dmgLinesHtml}}}
     <div class="opts"><button type="button" data-action="generateWeapon"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Weapon</button><span class="ihint">one line, like <code>greatsword: two-handed, slash, 0/1d8/2d6</code></span></div>
     <label>Properties {{formInput fields.traits value=system.traits name="system.traits"}}</label>
     <div class="grid3">
       <label>Range <input type="text" name="system.range" value="{{system.range}}" placeholder="1   or   1/2   or   10/20/40"></label>
       {{#if weaponThrown}}<label>Thrown Range <input type="text" name="system.thrownRange" value="{{system.thrownRange}}" placeholder="4/8/12"></label>{{/if}}
+      <label data-tooltip="Its Weapon Group (Chapter 15). You gain at most 1 Mastery per Weapon Group in each encounter. Empty: from its name (the book's weapon table).">Weapon Group <select name="system.weaponGroup">{{selectOptions weaponGroupChoices selected=system.weaponGroup}}</select></label>
       <label data-tooltip="The kind of weapon its Mastery counts for. Empty: its name. A +1 Greatsword with 'Greatsword' here shares the Greatsword's Mastery.">Mastery group <input type="text" name="system.masteryGroup" value="{{system.masteryGroup}}" placeholder="{{item.name}}"></label>
       {{#if system.reach}}<label>Old extra Reach <input type="number" min="0" name="system.reach" value="{{system.reach}}"></label>{{/if}}
     </div>
@@ -312,54 +332,18 @@
     {{/if}}
 
     {{#if isPassiveHost}}
-    <div class="fxd{{#if fxHelp}} help-on{{/if}} passive">
-      <h3>Passive <select class="fxd-add" data-fxadd aria-label="Add a setting"><option value="">+ Add…</option>{{selectOptions settingChoices}}</select></h3>
-      <label class="fxd-hover" data-tooltip="Shown when the mouse is over this effect or ability in a roll. Empty: the start of its description.">Hover text <input type="text" name="system.hover" value="{{system.hover}}" placeholder="What it does, in a short line (optional)"></label>
-      <p class="hint">What the creature with this {{#if isFeature}}Feature{{else}}Talent{{/if}} has by itself (Boons and Banes, Empowered and Enfeebled, Defense, Speed, notes). Each setting has its own "It works...": always, or only while the Escalation is high enough (an Escalation Passive: "while your Escalation is 2 or more"), so one {{#if isFeature}}Feature{{else}}Talent{{/if}} can hold settings that work at different moments.</p>
-      {{> "systems/twod12/templates/parts/settings.hbs"}}
-    </div>
+    {{!-- v0.0.323 (PACK EFFECT-SHEET): the Passive is the same rules list as an Effect's (fxsheet.mjs), each rule with its own "Works" (Escalation) --}}
+    <div class="fr-passive"><h3>Passive</h3><p class="hint">What the creature with this {{#if isFeature}}Feature{{else}}Talent{{/if}} has by itself. Each rule has its own "Works": always, or only while the Escalation is high enough.</p>{{{fxTab}}}</div>
     {{/if}}
 
     {{#if isEffect}}
-    <div class="fxd{{#if fxHelp}} help-on{{/if}}">
-      <div class="fxd-top">
-        <div class="fxd-short"><b>In short:</b> {{fxSummary}}</div>
-        <label class="fxd-helptoggle"><input type="checkbox" data-fxhelp {{#if fxHelp}}checked{{/if}}> Show help</label>
-      </div>
-
-      <label class="fxd-hover" data-tooltip="Shown when the mouse is over this effect or ability in a roll. Empty: the start of its description.">Hover text <input type="text" name="system.hover" value="{{system.hover}}" placeholder="What it does, in a short line (optional)"></label>
-      {{#if applied}}
-      <h3>Applied</h3>
-      <div class="fxd-s">On <b>{{applied.actor}}</b>{{#if applied.valued}}, with a value of <input type="number" min="{{#if applied.exhausted}}0{{else}}1{{/if}}" class="fxd-f n" data-apvalue value="{{applied.value}}">{{/if}}{{#if applied.isRounds}}, with <input type="number" min="0" class="fxd-f n" data-apleft value="{{applied.left}}"> {{applied.leftWord}} left{{/if}}. <a class="fxd-raw" data-action="openRaw">Foundry's effect window</a></div>
-      <p class="fxd-help">Changes apply to this creature only: the Effect it came from isn't changed. Applying the Effect again replaces this copy.</p>
-      {{#if applied.exhausted}}<p class="fxd-help">Exhausted's own rules (Speed, the penalty on Rolls, the Mind Damage Threshold) come from its value; 0 removes it. Settings added here come on top of them.</p>{{/if}}
-      {{else}}
-      <h3>Identity</h3>
-      <label class="autosel" data-tooltip="How much Foundry does for this card, shown as a chip on it (Not implemented, Bronze, Silver, Gold)">Automation <select name="system.automation">{{selectOptions autoRanks selected=system.automation}}</select></label> <label class="autosel autonote" data-tooltip="What Foundry doesn't do yet for this card (shown on the diamond's tooltip). Mostly for Bronze and Silver">By hand <input type="text" name="system.automationNote" value="{{system.automationNote}}" placeholder="What the players do themselves"></label>
-      <div class="fxd-s">This is <select class="fxd-f" data-fxkind>{{selectOptions kindChoices selected=kindVal}}</select> placed on <select class="fxd-f" data-fxself>{{selectOptions selfChoices selected=selfVal}}</select>.
-        {{#if system.isCondition}}<label class="fxd-inl"><input type="checkbox" name="system.valued" {{#if system.valued}}checked{{/if}}> It has a value (like Empowered 2)</label>{{/if}}</div>
-      <p class="fxd-help">An effect is a bundle of the settings below. A condition is a named state from the book (Prone, Empowered); one with a value keeps it on the creature, and clicking its icon raises it. "The user" is the creature that used the Action.</p>
-      {{/if}}
-
-      <h3>What it does <select class="fxd-add" data-fxadd aria-label="Add a setting"><option value="">+ Add…</option>{{selectOptions settingChoices}}<option value="condition">Condition (drop one)</option></select></h3>
-      {{> "systems/twod12/templates/parts/settings.hbs"}}
-      {{#each condRows}}
-      <div class="fxd-cond"><span class="fxd-k">Condition</span><span class="fxd-s">Apply <b>{{name}}</b>{{#if valued}} at <input type="number" min="1" class="fxd-f n" data-cfield="{{i}}" value="{{value}}">; if it's already there, <select class="fxd-f" data-cmode="{{i}}">{{selectOptions ../riderModes selected=mode}}</select>{{/if}}.</span><button type="button" data-cdel="{{i}}" data-tooltip="Remove">&times;</button></div>
-      {{/each}}
-      <div class="drop-zone" data-list="conditions" data-accept="effect">Drop a condition here (from the Conditions compendium) to apply it with this effect</div>
-      <p class="fxd-help">A condition applied this way lasts as long as this effect and goes with it. A creature that already has it keeps the higher value, unless you choose to increase the value.</p>
-
-      <h3>Ends</h3>
-      <div class="fxd-s">Lasts <select class="fxd-f" name="system.duration.type">{{selectOptions durationWords selected=system.duration.type}}</select>{{#if isRounds}} <input type="number" min="1" class="fxd-f n" name="system.duration.rounds" value="{{system.duration.rounds}}"> {{roundsWord}}{{/if}}, or until the creature uses an action with <select class="fxd-f" data-expireall>{{selectOptions expireAllChoices selected=expireAllVal}}</select> of
-        {{#each expireChips}}<span class="fxd-chip"><span class="dot" style="background:{{color}}"></span>{{label}}<button type="button" data-erem="{{key}}" aria-label="Remove {{label}}">&#10005;</button></span>{{/each}}
-        <select class="fxd-plus" data-eadd aria-label="Add a trait"><option value="">+</option>{{#each expireOptions}}<option value="{{key}}">{{label}}</option>{{/each}}</select></div>
-      <p class="fxd-help">End of Turn ends at the end of the affected creature's turn. Rounds end at the end of the origin's turn after that many rounds. No traits = no action ends it early.</p>
-
-      <details class="fxd-adv" {{#if system.linked}}open{{/if}}><summary>Advanced</summary>
-        <label>Also applies (by name) <input type="text" name="system.linked" value="{{system.linked}}" placeholder="Hindered (names, separated by commas)"></label>
-        <p class="fxd-help">The older way to bring other conditions along: by their name. They end when this one ends. Dropping a condition above does the same and can give it a value.</p>
-      </details>
-    </div>
+    {{!-- v0.0.323 (PACK EFFECT-SHEET, Lucas's "Prototype C"): the hover card, the rules (list and pane), Ends, Automation, Advanced (fxsheet.mjs) --}}
+    {{#if applied}}
+    <div class="fr-applied">{{#if applied.valued}}<label>Value <input type="number" min="{{#if applied.exhausted}}0{{else}}1{{/if}}" class="fxd-f n" data-apvalue value="{{applied.value}}"></label>{{/if}}{{#if applied.isRounds}}<label><input type="number" min="0" class="fxd-f n" data-apleft value="{{applied.left}}"> {{applied.leftWord}} left</label>{{/if}}
+      <a class="fxd-raw" data-action="openRaw">Foundry's effect window</a>
+      <p class="fr-help">Changes apply to this creature only: the Effect it came from isn't changed. Applying the Effect again replaces this copy.</p></div>
+    {{/if}}
+    {{{fxTab}}}
     {{/if}}
   </section>
 </div>

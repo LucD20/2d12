@@ -9,6 +9,7 @@ import { allEffects } from "./passives.mjs";
 import { effectOff } from "./escalation.mjs";
 import { matches } from "./effects.mjs";
 import { turnCycleBlocked } from "./usage.mjs";
+import { unset } from "./util.mjs";   // v0.0.277: removing a key without the legacy "-=" syntax
 const F = "twod12";
 
 /* ------------------------------------------------------------------ once per round */
@@ -33,6 +34,25 @@ export async function markOnce(actor, keys) {
   await actor.setFlag(F, "fxOnce", now);
 }
 
+/**
+ * v0.0.323 (PACK EFFECT-SHEET, "Next one only"): these rules ("effectId|ruleId") were used: each is spent on its effect (greyed in the editor, never offered
+ * again), and the effect ends when every rule that can be spent is spent (fxrules.mjs allSpent). Only an owner writes it (else the GM, damage.mjs).
+ */
+export async function markSpent(actor, keys) {
+  const list = [...new Set(keys ?? [])].filter(Boolean);
+  if (!actor || !list.length) return;
+  if (!actor.isOwner) return game.socket?.emit("system.twod12", { type: "markSpent", actorUuid: actor.uuid, keys: list });
+  const byFx = new Map();
+  for (const k of list) { const [eid, rid] = String(k).split("|"); if (!byFx.has(eid)) byFx.set(eid, []); byFx.get(eid).push(rid); }
+  for (const [eid, rids] of byFx) {
+    const e = actor.effects?.get?.(eid);
+    if (!e) continue;   // a Feature's passive: nothing to spend
+    const spent = [...new Set([...(e.getFlag(F, "spent") ?? []), ...rids])], all = e.getFlag(F, "spendable") ?? [];
+    if (all.length && all.every(r => spent.includes(r))) await e.delete();
+    else await e.setFlag(F, "spent", spent);
+  }
+}
+
 /* ------------------------------------------------------------------ the marked target */
 export const markOf = actor => actor?.getFlag?.(F, "quarry") ?? null;
 const tokenUuids = a => new Set([...(a?.isToken && a.token ? [a.token.uuid] : []), ...(a?.getActiveTokens?.() ?? []).map(t => t.document?.uuid)].filter(Boolean));
@@ -48,9 +68,23 @@ export function isMarked(actor, target) {
 /** The names of what lets this creature ignore a Bane rule for an Action with these traits ([] when nothing does). */
 export function ignoredBy(actor, rule, traits) {
   const out = [];
+  out.all = false;   // v0.0.323 (PACK EFFECT-SHEET): one of them ignores ALL the range Banes
   for (const e of allEffects(actor)) {
     if (effectOff(actor, e)) continue;
-    if ((e.getFlag(F, "ignores") ?? []).some(x => x.rule === rule && matches(x, traits))) out.push(String(e.name ?? "").replace(/^\s*Effect:\s*/i, ""));
+    const hits = (e.getFlag(F, "ignores") ?? []).filter(x => x.rule === rule && matches(x, traits));
+    if (hits.length) { out.push(String(e.name ?? "").replace(/^\s*Effect:\s*/i, "")); if (hits.some(x => x.rangeAll)) out.all = true; }
+  }
+  return out;
+}
+
+/** v0.0.266 (Lucas, Aim): the names of what lets the creature's matching Actions ignore this cover level ("low", "medium", "high"). */
+export function coverIgnored(actor, level, traits, grantEffectId = null) {
+  const out = [];
+  for (const e of allEffects(actor)) {
+    if (effectOff(actor, e)) continue;
+    // v0.0.270 (Lucas, Aim): an effect that grants a use keeps its other settings for that use: on another roll they don't count
+    if ((e.getFlag(F, "grants") ?? []).some(g => g.left > 0) && e.id !== grantEffectId) continue;
+    if ((e.getFlag(F, "covers") ?? []).some(x => x.levels?.includes(level) && matches(x, traits))) out.push(String(e.name ?? "").replace(/^\s*Effect:\s*/i, ""));
   }
   return out;
 }
@@ -123,7 +157,54 @@ export async function applyTurnStartEffects(actor) {
   }
   return n;
 }
+/**
+ * v0.0.249 (Lucas): a rung Passive's effect comes as soon as the Escalation reaches its rung, not only at the start of the creature's turn:
+ * the "Effect each turn" settings whose minimum is met now and whose Effect the creature doesn't carry yet are given (in an encounter only).
+ */
+export async function applyReachedEffects(actor) {
+  if (!actor || !globalThis.game?.combat?.started) return 0;
+  const { createEffect, originInfo } = await import("./effects.mjs");
+  const has = u => actor.effects.some(x => x.getFlag(F, "effectUuid") === u);
+  let n = 0;
+  for (const e of allEffects(actor)) {
+    const min = Number(e.getFlag?.(F, "minEscalation") ?? e.flags?.[F]?.minEscalation) || 0;
+    if (!min || effectOff(actor, e)) continue;
+    for (const t of e.getFlag(F, "turnStarts") ?? []) {
+      if (has(t.fxUuid)) continue;
+      const item = await fromUuid(t.fxUuid);
+      if (item?.type !== "effect") continue;
+      await createEffect(actor, item, { ...originInfo(actor.uuid), escalation: true }, null, { turnStart: true });
+      n++;
+    }
+  }
+  return n;
+}
 export const tsKey = uuid => String(uuid).replace(/\./g, "_");
+/** v0.0.323 (PACK EFFECT-SHEET): "Grants: an Effect, at the start of each encounter": given when the encounter starts (the active GM). */
+export async function applyEncounterStartEffects(actor) {
+  if (!actor) return 0;
+  const { createEffect, originInfo } = await import("./effects.mjs");
+  let n = 0;
+  for (const e of allEffects(actor)) {
+    if (effectOff(actor, e)) continue;
+    for (const t of e.getFlag(F, "encStarts") ?? []) {
+      const item = await fromUuid(t.fxUuid);
+      if (item?.type !== "effect") continue;
+      await createEffect(actor, item, originInfo(actor.uuid));
+      n++;
+    }
+  }
+  return n;
+}
+/** v0.0.323: the effects that last "This encounter" end when it does. */
+export async function endEncounterEffects(combat) {
+  for (const c of combat?.combatants ?? []) {
+    const a = c.actor;
+    if (!a?.isOwner) continue;
+    const gone = a.effects.filter(e => e.getFlag(F, "duration")?.type === "encounter").map(e => e.id);
+    if (gone.length) await a.deleteEmbeddedDocuments("ActiveEffect", gone);
+  }
+}
 
 /* ------------------------------------------------------------------ v0.0.207: Chat message */
 /**
@@ -140,10 +221,10 @@ export function messagesFor(actor, when) {
 }
 const escHtml = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 /** One message as HTML before the buttons are made: "<b>Name</b>: text" ({name}, {mark} filled in) and a @Use button for the Action it offers. */
-export function messageHtml(actor, m, { mark = "" } = {}) {
+export function messageHtml(actor, m, { mark = "", withActor = false } = {}) {   // withActor (v0.0.345): the @Use names its creature
   const text = escHtml(m.text).replace(/\{name\}/g, `<b>${escHtml(actor?.name)}</b>`).replace(/\{mark\}/g, `<b>${escHtml(mark || "?")}</b>`);
   const clean = s => String(s).replace(/[[\]|]/g, " ").trim();
-  const btn = m.action ? ` @Use[${clean(m.action)}|ap:${m.ap}|source:${clean(m.source)}|label:${clean(m.action)} (${m.ap} AP)]` : "";
+  const btn = m.action ? ` @Use[${clean(m.action)}|ap:${m.ap}|source:${clean(m.source)}${withActor && actor?.uuid ? `|actor:${actor.uuid}` : ""}|label:${clean(m.action)} (${m.ap} AP)]` : "";
   return `<b>${escHtml(actor?.name)}</b>: ${text}${btn}`;
 }
 /** Post a creature's messages for this moment (the active GM calls it): the system line (sysmsg.mjs), whispered to its owners unless "everyone". */
@@ -233,15 +314,15 @@ export async function giveSettingsV207(items, actors, source = null) {
     if (it.type === "action") {
       const use = fl.fistsOnly || fl.basic === "fists" || it.name === "Pummel" ? "fists" : (fl.kick || it.name === "Leg Sweep" ? "kick" : "");
       if (use && !it.system?.weaponUse) upd["system.weaponUse"] = use;
-      if ("fistsOnly" in fl) upd["flags.twod12.-=fistsOnly"] = null;
-      if ("kick" in fl) upd["flags.twod12.-=kick"] = null;
+      if ("fistsOnly" in fl) Object.assign(upd, unset("flags.twod12.fistsOnly"));
+      if ("kick" in fl) Object.assign(upd, unset("flags.twod12.kick"));
     } else if (["feature", "talent"].includes(it.type)) {
       const have = (it.system?.toObject?.().settings ?? foundry.utils.deepClone(it.system?.settings ?? []));
       const add = (src.get(it.name) ?? []).filter(x => !have.some(h => h.type === x.type && (x.type !== "message" || h.msgWhen === x.msgWhen)));
       if ((fl.fistsThreaten || fl.fistsWeapon) && !have.some(h => h.type === "weaponprop") && !add.some(x => x.type === "weaponprop")) add.push(PROP);
       if (add.length) upd["system.settings"] = [...have, ...foundry.utils.deepClone(add)];
-      if ("fistsThreaten" in fl) upd["flags.twod12.-=fistsThreaten"] = null;
-      if ("fistsWeapon" in fl) upd["flags.twod12.-=fistsWeapon"] = null;
+      if ("fistsThreaten" in fl) Object.assign(upd, unset("flags.twod12.fistsThreaten"));
+      if ("fistsWeapon" in fl) Object.assign(upd, unset("flags.twod12.fistsWeapon"));
     }
     if (!Object.keys(upd).length) return;
     try { await it.update(upd); n++; } catch (e) { console.warn("twod12 | v0.0.207 settings for", it.name, e); }
@@ -254,7 +335,7 @@ export async function giveSettingsV207(items, actors, source = null) {
     if (bow === undefined) continue;
     const { startMasteryOf } = await import("./mastery.mjs");
     const first = startMasteryOf(a)[0];
-    const upd = { "flags.twod12.-=bowMastery": null };
+    const upd = { ...unset("flags.twod12.bowMastery") };
     if (first && bow && !first.chosen) upd[`flags.twod12.startMastery.${first.itemId}`] = bow;
     try { await a.update(upd); n++; } catch (e) { console.warn("twod12 | v0.0.207 Bow Mastery of", a.name, e); }
   }

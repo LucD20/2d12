@@ -18,7 +18,7 @@ const row = n => { const s = get(n).system; return `${n}: ${s.frequency} | ${[..
 for (const n of ["Double Shot", "Rolling Shot", "Marksman's Shot", "Pinning Shot", "Lock & Loose"]) console.log("  " + row(n));
 const tiers = n => get(n).system.versions.map(v => v.noTiers ? `${v.ap}AP: ${v.effects.replace(/<[^>]+>/g, "").slice(0, 120)}${v.fx.all.length ? ` [${v.fx.all.length} effect]` : ""}` : `${v.ap}AP: ` + [1, 2, 3].map(k => v["t" + k].map(i => (i.useW ? "1[W]" : "") + (i.dice ? `${i.dice}${i.subtype ? " " + i.subtype : ""}` : "")).join("+") + (v["x" + k] ? ` "${v["x" + k].replace(/<[^>]+>/g, "")}"` : "")).join(" / ")).join(" || ");
 for (const n of ["Double Shot", "Rolling Shot", "Marksman's Shot"]) console.log("  " + n + " -> " + tiers(n));
-const rs = get("Rolling Shot (+2d6 Pi)").system.settings[0];
+const rs = get("Rolling Shot (+2d6 Pi)").system.settings.find(x => x.type === "bonusdamage");   // v0.0.261: the grant comes first on the effect
 console.log("Rolling Shot 3 AP's extra:", rs.type, rs.dmg, rs.dmgPool, rs.dmgSub, rs.tiers.join(","), "| ends after:", get("Rolling Shot (+2d6 Pi)").system.expireOn.join(","));
 const strip = h => String(h).replace(/<[^>]+>/g, "");
 console.log("Sharpshooter:", strip(get("Sharpshooter").system.description), "| no Actions:", !(get("Sharpshooter").system.actions ?? []).length);

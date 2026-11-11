@@ -1,0 +1,63 @@
+--- the moments are settings
+the moments: wouldDown, strikeDamage, strikeAgainst, enemyCloser, allyDamage, enemyMoves | each has its rules: true
+used on: subject, source | the data model: true
+the item sheet: Moment, Within, You too, Used on: true
+--- pure pieces
+sides: an ally true | an enemy as an ally false | you without You too false | with true | an enemy true | a neutral is no enemy false | you are never the enemy false
+a Distance in squares: 5 0 0 | the clock: 10:00 1:02 0:00
+Use twice (row 1 then row 0): resolves 0 then 1 | a second answer refused: true | all answered: false
+Skip all others: skipped 3 | the GM's own row too (v0.0.274): skip,skip,skip | the timer has nothing left: 0
+half of the held damage: taken off 5 {"B":{"l":4,"n":1},"M":{"l":2,"n":0}} | came closer: true false
+--- the message (v0.0.275: the stack card; details in t210)
+the card: true | title Reactions: true | waiting rows: 1 | slabs: 3
+the stack, top first: Shot, Shield | the base: Strike → Krysta | 9 held
+Use / Pass only on the waiting row: 1 1 | the timer: 10:00 | Skip all others: true
+answered: no buttons, no timer: true | one line that unfolds: true
+--- who is offered (tokens on the map)
+a Strike would damage Krysta: Nari's Shield on Krysta (2 sq); Lana's Shot on Bandit (9 sq) | the enemy's own Reaction is not offered: true
+a Strike would damage Nari herself: You too Nari's Shield; Lana's Shot
+a Strike against Krysta: Rebuke on Bandit | from far away (its Distance 5 sq.): 0
+Krysta would go Down, the Reaction used today: rows 0 | blocked: Interv (Used today: renews after a Sleep or a Rest)
+nobody can react: one line true | No Reactions: Nari's [Interv]: Used today: renews after a Sleep or a Rest | whispered to nobody (v0.0.347: for everyone)
+--- the flow: answers, the stack, the held damage
+the message: rows Nari/Shield/p1/Krysta ; Lana/Shot/p2/Bandit | the timer at 1 minute: 1
+someone else's row can't be answered: Lana's row wait
+two on the stack wait for Resolve: true | nothing run yet: 0 | Resolve and the grips on the message: true 2
+one who isn't in it can't change the order: first Shield
+v0.0.275: a reactor can't change the order (the GM drags): first Shield
+the GM moved Lana's row up: first Shot | the numbers on the slabs: 1.Shot 2.Shield
+the clock paused: true true | no countdown while paused: true
+and going on: true | about a minute left: 1
+v0.0.275: a reactor can't Resolve: 0
+Resolve: the first to resolve: p2:cs | on Bandit
+then the next: p1:sof | on Krysta
+resolved: cs used (half), sof used | the message is resolved in place: true
+v0.0.275: not posted again (edited in place): true
+v0.0.274: the GM answers a player's row: pass | a player can't answer another's: wait
+a player can't Skip all others: pass,wait
+the GM can: pass,skip | nothing used: 0
+the damage moment's message: the base slab Strike → Krysta | 9 held | its face: Bandit | the Interrupt tag: true
+the held damage is halved: {"half":true,"halfBy":"Shot","id":"id5","gained":0,"never":false}
+--- v0.0.273: the order, the clock, Move back, the Action's link
+resolves: 2,1,0 | 0 sooner: true 2,0,1 | the first can't go sooner: false | the last can't go later: false
+who manages: true false true | time left paused: 41000 3000
+Move back (v0.0.275: on the base slab): Move Orc back to the square it left (4 sq.), the movement refunded | used: Orc went back to where its movement started; its movement is refunded
+the Action's name opens it: true | the item sheet's section: true
+the move's movement kept before it (refunded on Move back): true
+v0.0.310: the Initiative button: the GM opens the Initiative window, a player rolls their own: true | no chip on the strip any more: true
+v0.0.274: a new Move Action, a new key (Opportunity Attack again after a second Advance): 1 2 | counted by move.mjs: true | the moment's key: true
+--- the eight cards' moments (book texts unchanged)
+Divine Intervention: wouldDown 5 +you (interrupt)
+Shield of Faith: strikeDamage 5 +you (interrupt)
+Bulwark of Faith: strikeDamage 5 (interrupt)
+Covering Shot: strikeDamage 10 on the attacker (interrupt)
+Rebuke: strikeAgainst 0 on the attacker (trigger)
+Overwatch: enemyCloser 10 (trigger)
+Opportunity Attack: enemyMoves 1 (interrupt)
+Beacon's Step: allyDamage 2 (interrupt)
+the Basic Action's data carries it: enemyMoves 1
+--- wired
+the damage waits for the Interrupts: true | a Strike's damage card says so: true | the Triggers after it lands: true | no second click while held: true
+a Strike and a Stand bring their moments: true | a Reaction's step after a @Pause stays a button: true
+the chat and the socket: true | the settings at init: true | no Foundry window and no pick window in it: true
+the timer setting: off by default (v0.0.282), 1 minute when on (v0.0.273): true

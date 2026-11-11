@@ -49,6 +49,6 @@ console.log("Nari, Doomed, a dropped exploded die:", txt(rowOf("nari")));
 console.log("no Doubles mark:", !html.includes(" dbl"), "| no Attribute in the header:", !/class="ahead"[^]*?(Instinct|Body)[^]*?<\/div><\/div><div class="orn"/.test(html.split('<div class="orn"')[0] + '<div class="orn"'), "| letter chips:", [...html.matchAll(/class="ic-attr (\w+)"[^>]*>(\w)</g)].map(m => m[2]).join(""));
 console.log("parentheses muted:", html.includes('<i class="ic-note">(Rolling Shot, Kickboxer)</i>'), "| names escaped:", initCardHtml(initCardData([{ id: "x", name: "<b>Zack</b>", side: 1, attr: "instinct", mod: 0, r: R([1], [1], 0, 2) }], ["x"])).includes("&lt;b&gt;Zack"));
 console.log("splitName:", JSON.stringify(splitName("Archer 1 (Double Shot, Marksman)")), JSON.stringify(splitName("(Odd)")));
-// Favored, 3d12 = 5, 5, 7: with Doubles the pair 5+5 (Tier up) would win; for initiative the highest pair 5+7.
+// Favored, 3d12 = 5, 5, 7: v0.0.301, Favored always keeps the two highest (5 + 7), the 5s are Doubles; initiative (no Doubles) keeps the same pair.
 const d = [{ total: 5, first: 5 }, { total: 5, first: 5 }, { total: 7, first: 7 }];
 console.log("Favored with Doubles counting keeps:", keepDice(d, "favored", 0, 13).i.join("+"), "| initiative (noDoubles) keeps:", keepDice(d, "favored", 0, 13, true).i.join("+"));

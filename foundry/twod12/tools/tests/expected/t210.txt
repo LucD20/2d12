@@ -1,0 +1,92 @@
+--- pure pieces
+initials: BT NA ? | colors in the order used: #f0b54a #5fc4c0 #b48ce0 #7fc97f #f0b54a
+roles from the Reaction's own data: a Strike attack | used on the attacker attack | on an ally protect | on an enemy (a movement) attack | no side other
+the path's squares: 0,0 1,0 2,0 3,0 3,1 3,2 | a big token's squares are its size: 200
+--- one Reaction per creature for the same Action (the book, Chapter 2): the "pick one" group
+groups: 0+1 | 2
+Use one option: its group is answered: 0:pass 1:use 2:wait | the other option can't be used now: true | its color: #f0b54a
+Pass on the group passes both: pass,pass,wait | groups left: 1
+--- the live card
+header: Reactions, the clock, Skip all others: true 0:59 true
+one kind tag on the section: true | none on the rows: true
+the Archer's row: A1 Covering Shot 1R → Bandit Thug deciding… | no build in parentheses: true
+the Paladin's group: P1 Pick one Paladin 1 · 2 options → Character deciding… Shield of Faith 1R Bulwark of Faith 1R | options: 2 | a single Pass for it: true
+the stack: only the base slab: 1 | BT Strike → Character 9 held
+Archer used: its row left Can react: true | a slab on top, its color: #f0b54a | A1 Covering Shot → Bandit Thug
+Paladin passed: gone from the card (no "Passed" line): true | no Can react section left: true | Skip all others gone once all answered: true
+mixed kinds: a tag on each row: 2
+who sees Use / Pass: the owner true | another player false | the GM, for a player's creature (v0.0.277: the GM picks too) true | the GM's own true
+--- all answered: the GM's drag and the map's pins
+the subtitle: true | grips: 2 | numbers: 1,2 | Resolve (GM only): true
+the pins:  row 1: 1, row 0: 2 | while the GM drags the Archer on top: row 0: 1, row 1: 2 | a wrong list is ignored: 1:1,0:2
+the drop: the order set true Covering Shot then Shield of Faith | a wrong list refused: false false
+the overlay's setting: ["reactionOverlay",{"name":"Reaction map overlay","hint":"While a Reactions message is open, the map shows the triggering Action, a ring on every creature that can react and a line for every Reaction used (this client only).","scope":"client","config":true,"default":true}] (registered with the Reactions settings: true )
+--- the movement moment's base slab
+the base: BT Moves 4 sq. | Move back on it: true | no footer button any more: true
+--- the flow on the map: answers, Resolve, the results, the message edited in place
+the rows: Nari/Shield of Faith/protect ; Nari/Bulwark of Faith/protect ; Lana/Covering Shot/attack | faces with images: true | the base: Bandit -> Krysta 9 held
+Nari used Bulwark: Shield of Faith passed with it: Shield of Faith:pass, Bulwark of Faith:use, Covering Shot:wait | a second Use refused: pass
+all answered, two on the stack: waits for the GM: true | the drag (a player's refused): 2,1 | the GM's: 1,2
+first to resolve: bof on Krysta
+then: cs on Bandit
+the moment's answer: {"half":false,"halfBy":"","id":true,"gained":0,"never":false}
+edited in place, no new message: true true | no overlay for it any more (done): true
+the collapsed line: BA KR · NA LA 9 4 | faces in resolve order: Bandit, Krysta, Nari, Lana | icons (Font Awesome, v0.0.276): fa-check fa-burst fa-shield-halved fa-crosshairs fa-chevron-down | no <svg> in the content: true
+the result chip: struck held, final: <s>9</s> 4
+unfolded: header Reactions Resolved | the map button (v0.0.281, replaces the snapshot): true | its labels (drawn on each client, v0.0.276): 9 → 4
+the frozen stack: 1 NA −5 vs KR | 2 LA T3 vs BA | BA Strike → Krysta 9 4 | no grips: true
+--- the edge case: the attacker drops before the rest resolve
+Covering Shot resolves first: cs
+Shield of Faith only pays its AP: true sof
+v0.0.278: resolved under the card: a new message at the bottom true | v0.0.347: the live one left a short line: Reactions Lana uses Covering Shot → Bandit; Nari uses Shield of Faith → Krysta | one message for the moment: 1
+the damage never lands: true | the chips: never:never lands ; hit:Down ; spent:spent ; never:never lands | struck through: false
+damage.mjs: never lands empties the damage: true | the final damage and the protection written back: true
+--- result chips
+blocked: {"cls":"blk","text":"−5","short":"−5"} | tier: T2 hit T1 | Down: Down | spent: 1R spent | failed: not used | nothing read: no chip: null null
+base: held {"cls":"dmg","html":"9 held","short":"9 held"} | final {"cls":"dmg","html":"<s>9</s> 4","short":"9 → 4"} | same {"cls":"dmg","html":"9","short":"9"} | never {"cls":"never","html":"never lands","short":"never lands"}
+movement: N hits {"cls":"hit","html":"2 hits","short":"2 hits"} | one {"cls":"hit","html":"1 hit","short":"1 hit"} | a Trigger's dealt damage {"cls":"dmg","html":"6 dealt","short":"6 dealt"}
+--- wired
+the overlay's hooks with the moment's: true | the message syncs it: true | the old messages keep their look: true | the chat hooks: true
+no second post: true | no Foundry window: true | the CSS block: true | no explanation paragraph or "Every row is answered": true
+--- v0.0.276 (Lucas tested v0.0.275)
+names without the build: Archer 1 | Bandit Thug | (odd)
+no <svg> in any card: true | no snapshot box any more (v0.0.281): true
+Opportunity Attack before its Weapon Attack: no chip (not "0 hits"): null | no slab chip: null
+its Weapon Attack card later: answers row 0 T2 | another's card: 0 | a card with no tier: 0 | too late (5 min): 0
+both known: the chip {"cls":"hit","html":"1 hit","short":"1 hit"} | wired: true
+--- v0.0.277 (Lucas tested v0.0.276)
+the GM picks on every row (no "deciding..."): true | a player still only on his own: false
+the path's squares: 8 | left: 2,3,4,5,6,7,8
+measured only where it started: offered 0 | on every square it left: Watcher's Opportunity Attack (1 sq)
+the movement moment uses the path: true | closer on any square entered: true | a split movement keeps listening: true
+removing a key: the old syntax without Foundry: {"flags.twod12.-=ignoreTerrain":null}
+with V14's ForcedDeletion: flags.twod12.ignoreTerrain FD | no "-=" left in module/: true
+a Turn Log line for a deleted combat is skipped: null | ticker.mjs checks it: true
+--- v0.0.278 (Lucas tested v0.0.277)
+the snapshot's positions are a list (a uuid key would be split by Foundry's flags): true pal,kry,arc,ban | drawn from it: 10 circles
+resolved: posted again at the bottom (the live copy deleted): true | again under a late roll card: true | the overlay above the tokens: true
+--- v0.0.279 (Lucas tested v0.0.278)
+the snapshot: no labels on the lines, a numbered pin on each reactor: 1. Bulwark of Faith: −5 ; 2. Covering Shot: T3 | the damage stays over the target: true
+closer in: a token's radius 14 (was 11 at most)
+the frozen stack shows the target's face: true
+Opportunity Attack (would leave a square): the last square left within 1: 4 | two watchers, the later wins: 4 | the last square is never left: 0
+Overwatch (moves closer): the last square entered within reach and nearer: 3 | none: back to the start 0
+the refund for part of the way (2 of 5 squares back): {"moveLeft":2,"freeMove":0} | all the way: {"moveLeft":5}
+a Pass offers it again on the next square (only a Use blocks the Move Action): true | Shift+click goes back to the start: true | the square marked on the map: true
+--- v0.0.280 (Lucas: pick the square in the bottom bar)
+every square where a Reaction could come, the last first: 4,3,2,1,0 | the default is still the last: 2
+the bar's choices: i4: 1 sq. back (1 refunded) ; i2: 3 sq. back (3 refunded) ; start: Where it started (5 refunded) | the start square is not listed twice: 1
+the bottom bar takes squares as well as tokens (clicked on the map too): true | Move back opens it when there is a choice: true | no Foundry window: true
+--- v0.0.281 (Lucas: "Ally T1/2/3/not used vs Target", drop the chat's grid, the overlay's labels overlapped)
+the resolved rows: 1 NA −5 vs KR | 2 LA T3 vs BA | a click opens the Action: Bulwark of Faith: open the Action ; Covering Shot: open the Action
+a result not read yet: an ellipsis pill: true
+the overlay: no name on the lines, a pin on the reactor, the name on hover: true | the map button replays the moment where everyone stood: true
+the frozen positions read back: pal,kry,arc,ban | an old object form too: 1
+a Reaction that posted its card counts as used: true
+--- v0.0.282 (Lucas: no timer by default; a Cancel for the whole thing; deleting the message cancels it)
+the timer is off by default: false
+the GM's Cancel in the header: true | a player can't cancel: false
+confirmed, before Resolve: true | the Cancel still there: true
+the GM cancels: nothing resolved: 0 | the damage goes on as if nobody reacted: {"half":false,"halfBy":"","id":"","gained":0,"never":false} | the message: BA KR · cancelled 9
+a click after it does nothing: 0
+its message deleted: the moment is cancelled, no timer left to resolve it: {"half":false,"halfBy":"","id":"","gained":0,"never":false} | wired to the delete hook: true

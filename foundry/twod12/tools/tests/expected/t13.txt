@@ -1,10 +1,10 @@
 [
-  `<i class="fa-solid fa-dice-d20"></i> DC 14 Paladin's Attack`,
-  '<i class="fa-solid fa-dice-d20"></i> DC 14 Body Check',
-  '<i class="fa-solid fa-dice-d20"></i> Mind Check',
-  '<i class="fa-solid fa-heart-crack"></i> Hit',
-  '<i class="fa-solid fa-vector-square"></i> 2',
-  '<i class="fa-solid fa-burst"></i> Boom'
+  `<i class="fa-solid fa-dice-d20"></i> <span class="ti-name">DC 14 Paladin's Attack</span>`,
+  '<i class="fa-solid fa-dice-d20"></i> <span class="ti-name">DC 14 Body Check</span>',
+  '<i class="fa-solid fa-dice-d20"></i> <span class="ti-name">Mind Check</span>',
+  '<i class="fa-solid fa-heart-crack"></i> <span class="ti-name">Hit</span>',
+  '<i class="areaic emanation"></i> <span class="ti-name">2 Emanation</span>',
+  '<i class="areaic burst"></i> <span class="ti-name">Boom</span>'
 ]
 {"dc":13,"adj":0,"boon":0,"bane":0,"traits":[],"tiers":{},"shape":"emanation","distance":2,"rounds":1,"difficult":["walk","fly"],"dfor":"enemies","places":true}
 {"dc":13,"adj":0,"boon":0,"bane":0,"traits":[],"tiers":{},"shape":"burst","distance":1,"rounds":2,"difficult":["walk"]}

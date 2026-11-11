@@ -1,9 +1,9 @@
 // The item sheet (every item type; the Details tab of an Effect is written as sentences: fxdetails.mjs).
 import { rollSource } from "./rollsource.mjs";
-import { tagChoices, TWOD12, categoryText, traitPicker } from "./config.mjs";
+import { tagChoices, TWOD12, categoryText, traitPicker, npcDamage } from "./config.mjs";
 import { versionRow } from "./actions.mjs";
 import { versionStats, fmt } from "./calc.mjs";
-import { buildRawCard, buildWeaponCard } from "./preview.mjs";
+import { buildWeaponCard } from "./preview.mjs";
 import { openWeaponGenerator } from "./gen.mjs";
 import { openActionGenerator } from "./genaction.mjs";
 import { enableDragging } from "./drag.mjs";
@@ -19,6 +19,11 @@ const { ItemSheetV2 } = foundry.applications.sheets;
 
 export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
   _activeTab = "description";
+  // v0.0.324 (Lucas): the rules tab (Effects, Features, Talents) opens wider
+  constructor(options = {}) {
+    if (["effect", "feature", "talent"].includes(options.document?.type)) options.position = { ...(options.position ?? {}), width: 680 };
+    super(options);
+  }
   static DEFAULT_OPTIONS = {
     classes: ["twod12", "item"],
     position: { width: 560, height: 680 },
@@ -58,19 +63,30 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       system: s,
       fields: s.schema.fields,
       traitPicker: traitPicker(),   // v0.0.179: the Traits drop-down grouped Roll, Requires, Kind, Damage, Keywords
+      // v0.0.291 (PACK NPC-SHEET): the Basic attack's rating and the average it suggests (the NPC's role and Stage)
+      basicRatings: Object.fromEntries(Object.entries(TWOD12.npcRatings).filter(([k]) => it.parent?.system?.role !== "minion" || k !== "extreme").map(([k, v]) => [k, v.label])),
+      basicSuggest: t === "action" && it.parent?.type === "npc" ? npcDamage(it.parent.system.role, s.basicRating || "medium", it.parent.system.level).join(" / ") : "",
       // v0.0.172: the help tips (the grey hints) of the Action and Talent sheets can be hidden, like the Effect's (one choice per user, for both sheets).
       helpable: t === "action" || t === "talent" || t === "class",
       sheetHelp: (() => { try { return game.settings.get("twod12", "sheetHelp") !== false; } catch (e) { return true; } })(),
-      rawCard: t === "action" ? await buildRawCard(it) : t === "weapon" ? await buildWeaponCard(it) : "",
+      rawCard: t === "action" ? await (await import("./actioncard.mjs")).buildSoloCard(it) : t === "weapon" ? await buildWeaponCard(it) : "",   // v0.0.322: the new card
       categoryShown: categoryText(s),
       enriched: await TE.enrichHTML(s.description ?? "", { relativeTo: it }),
       vsChoices: TWOD12.vsChoices,
       attrChoices: TWOD12.attributes,
       defensesList: t === "feature" ? s.defenses.map((d, i) => ({ i, attr: d.attr, bonus: d.bonus, tags: d.tags })) : [],
       ...(t === "effect" ? this._effectContext(s) : ["feature", "talent"].includes(t) ? this._passiveContext() : {}),
+      // v0.0.323 (PACK EFFECT-SHEET): the new Details tab (fxsheet.mjs), and the ? on the tab bar
+      fxHost: ["effect", "feature", "talent"].includes(t),
+      fxTab: ["effect", "feature", "talent"].includes(t) ? await this._fxTab() : "",
+      // v0.0.333 (PACK RWI): an armor's (while worn) or a weapon's (while wielded) Immune / Resist / Weak lines, edited in the pick window
+      dmgLinesHtml: ["armor", "weapon"].includes(t) ? (await import("./dmglines.mjs")).itemDamageHtml(this.item, { editable: this.isEditable }) : "",
+      fxHeadLine: t === "effect" ? (this._fxExtra?.()?.headLine ?? "") : "",
       isPassiveHost: ["feature", "talent"].includes(t),
       freqChoices: TWOD12.frequencies,
       reactionKinds: { interrupt: "Interrupt", trigger: "Trigger" },
+      moments: TWOD12.moments,   // v0.0.261
+      momentUsedOn: TWOD12.momentTargets,   // v0.0.272 (named so: the template test reads "Targets" as the Targets field)
       condRows: (s.conditions ?? []).map((c, i) => ({ i, name: c.name, value: c.value, valued: !!c.valued, mode: c.mode || "set" })),
       riderModes: { set: "the highest counts", increase: "increase the value" },
       isTalent: t === "talent",
@@ -104,6 +120,9 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       defenseKindChoices: TWOD12.defenseKinds,
       armorTrainingChoices: TWOD12.armorTrainings,
       modPriorityChoices: { weapon: "the Weapon Modifier keeps it", power: "the Power Modifier keeps it" },
+      modOrderChoices: { either: "Either way (the player chooses)", weapon: "Weapon Modifier is the high one", power: "Power Modifier is the high one" },   // v0.0.305 (pack MOD)
+      modLeadChoices: { weapon: "Weapon Modifier", power: "Power Modifier" },
+      modStage2Choices: { "": "the higher one (default)", weapon: "Weapon Modifier", power: "Power Modifier" },
       isFeature: t === "feature",
       isEffect: t === "effect",
       styled: t !== "species",   // v0.0.168: the sheet's look (parchment, dark text); v0.0.185: Class too, Species keeps the old one until it is redone
@@ -141,10 +160,13 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
                 defValue: x.defValue,
                 defKinds: TWOD12.defenseKinds,
                 isGrant: x.type === "grant",
+                isInline: x.type === "inline", inlineAction: x.inlineAction ?? "",
                 grantAction: x.grantAction,
                 grantCount: x.grantCount,
                 grantAp: x.grantAp,
-                grantDistinct: x.grantDistinct,
+                grantDistinct: x.grantDistinct, grantDistinctStr: x.grantDistinct ? "true" : "false", distinctChoices: { "false": "to any creature", "true": "to a different creature each time" },   // v0.0.266
+                grantOn2: x.grantOn2 || "", grantDo2: x.grantDo2 || "text", grantText2: x.grantText2 ?? "",
+                isCover: x.type === "cover", coverBoxes: Object.entries(TWOD12.coverLevels).map(([key, label]) => ({ key, label, checked: x.coverLevels?.has?.(key) || [...(x.coverLevels ?? [])].includes(key) })),
                 against: x.against,
                 againstVal: String(!!x.against),
                 speedMode: x.speedMode,
@@ -154,6 +176,8 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
                 isIgnore: x.type === "ignore",
                 isRally: x.type === "rally",
                 isTurnStart: x.type === "turnstart",
+                isZone: x.type === "zone", zoneWho: x.zoneWho ?? "allies", zoneHeal: x.zoneHeal ?? "", zoneWhoChoices: { allies: "allies", enemies: "enemies", all: "everyone" },   // v0.0.262 (Lucas: every setting editable)
+                grantOn: x.grantOn || x.halfOn || (x.halfT3 ? "t3" : ""), grantOnChoices: TWOD12.grantOnChoices, grantDo: x.grantDo || "half", grantDoChoices: TWOD12.grantDoChoices, grantText: x.grantText ?? "",   // v0.0.264
                 // v0.0.207: Chat message, Weapon property, Starting Mastery
                 isMessage: x.type === "message", msgWhen: x.msgWhen, msgTo: x.msgTo, msgAction: x.msgAction, msgAp: x.msgAp,
                 msgWhens: TWOD12.messageWhen, msgTos: TWOD12.messageTo,
@@ -166,11 +190,16 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
                 rallyRange: x.rallyRange,
                 oncePerRound: x.oncePerRound,
                 vsMarked: x.vsMarked,
+                vsOrigin: x.vsOrigin ?? "", vsOriginChoices: TWOD12.vsOriginChoices,   // v0.0.314 (pack AU): Taunted
+                isBleed: x.type === "bleed", bleedDc: x.bleedDc ?? 13,   // v0.0.314: Bleed
+                isResist: x.type === "resist", rwKind: x.rwKind || "resist", rwValue: x.rwValue ?? 1, rwKinds: TWOD12.rwKinds, rwNum: (x.rwKind || "resist") !== "immune",   // v0.0.320 (pack AU part 2)
+                isFreqMore: x.type === "freqmore", fmWhich: x.fmWhich || "round", fmChoices: TWOD12.freqMore,
                 showOnce: ["boonbane", "bonusdamage"].includes(x.type),
                 showMarked: ["bonusdamage", "damagestep"].includes(x.type) || (x.type === "boonbane" && !x.against),
                 isBonus: x.type === "bonusdamage",
                 boons: x.boons,
                 banes: x.banes,
+                bbName: x.bbName ?? "", bbChoices: TWOD12.bbNames,   // v0.0.301 (PACK BB)
                 empowered: x.empowered,
                 enfeebled: x.enfeebled,
                 byValue: x.byValue,
@@ -192,6 +221,8 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
                 bright: x.bright,
                 dim: x.dim,
                 color: x.color,
+                lightAlpha: x.lightAlpha ?? 0.5, lightSpeed: x.lightSpeed ?? 5, lightIntensity: x.lightIntensity ?? 5,   // v0.0.247: the light's intensity and animation
+                lightAnims: [{ key: "", label: "None", on: !x.lightAnim }, ...Object.entries(CONFIG.Canvas?.lightAnimations ?? {}).map(([key, v]) => ({ key, label: (typeof v?.label === "string" && game.i18n?.localize?.(v.label)) || key, on: x.lightAnim === key }))],
                 attrs: Object.entries(TWOD12.attributes).map(([key, label]) => ({ key, label, checked: x.attrs.has(key) }))
               };
             })
@@ -228,6 +259,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       poolChoices: TWOD12.pools,
       dieChoices: TWOD12.dice,
       subtypeChoices: TWOD12.subtypes,
+      ...(t === "weapon" ? await (async () => { const { weaponGroupOf } = await import("./mastery.mjs"); const auto = weaponGroupOf({ name: it.name, system: { ...it.system, weaponGroup: "" } }); return { weaponGroupChoices: { "": `From its name${auto && TWOD12.weaponGroups[auto] ? ` (${TWOD12.weaponGroups[auto]})` : ": none"}`, ...TWOD12.weaponGroups } }; })() : {}),   // v0.0.343
       versionCount: t === "action" ? s.versions.length : 0,
       versionRows: t === "action" ? this._versionRows() : [],
       onActor: !!it.parent,
@@ -259,6 +291,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     const shared = w.filter(k => p.includes(k)).map(k => TWOD12.attributes[k]);
     return {
       weapon: [w[0] ?? "body", w[1] ?? w[0] ?? "body"], power: [p[0] ?? "mind", p[1] ?? p[0] ?? "mind"], attrLine: attrLine(s, 1), shared: shared.join(" or "),
+      oldMods: !(Number(s.modHigh) > 0 || Number(s.modLow) > 0) && (w.length || p.length) ? `${w.map(k => TWOD12.attributes[k]).join(" or ") || "-"} (Weapon) and ${p.map(k => TWOD12.attributes[k]).join(" or ") || "-"} (Power)` : "",
       levels: (s.levels ?? []).map((l, i) => { const c = choicesToMake(s, i + 1, info); return { n: i + 1, sections: l.sections.length, one: l.sections.length === 1, choices: c, oneChoice: c === 1 }; }),
       rep: repGroups,
       esc: [{ key: "escPassives", label: "Passives", list: (s.escPassives ?? []).map(chip) }, { key: "escActives", label: "Actives", list: (s.escActives ?? []).map(chip) }]
@@ -266,6 +299,57 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
   }
 
   /** A Feature's or Talent's passive: the same sentences as an Effect's settings. */
+  /** v0.0.323 (PACK EFFECT-SHEET): the model of the new Details tab: the rules, the names and details of what was dropped, the origin, the help. */
+  async _fxTab() {
+    const it = this.item, s = it.system, host = it.type;
+    const { fxTabHtml, dropInfo } = await import("./fxsheet.mjs");
+    const plain = r => (typeof r?.toObject === "function" ? r.toObject() : r);
+    const rules = (s.rules ?? []).map(plain);
+    const refs = new Set();
+    for (const r of rules) {
+      if (r?.item) refs.add(r.item);
+      if (r?.carry?.fx) refs.add(r.carry.fx);
+      for (const d of r?.dmg?.list ?? []) if (d.fx) refs.add(d.fx);
+      if (r?.setting?.fxUuid) refs.add(r.setting.fxUuid);
+      for (const k of ["carry"]) if (r?.inside?.[k]?.fx) refs.add(r.inside[k].fx);
+      if (r?.inside?.ht?.gives?.fx) refs.add(r.inside.ht.gives.fx);
+    }
+    // v0.0.327 (PACK ZONE): the Zone's dropped Effects, and the Action that places it ("From the Action")
+    const zone = host === "effect" ? (s.zone ?? {}) : {};
+    if (zone.inside?.carry?.fx) refs.add(zone.inside.carry.fx);
+    if (zone.inside?.carry2?.fx) refs.add(zone.inside.carry2.fx);   // v0.0.351
+    if (zone.inside?.ht?.gives?.fx) refs.add(zone.inside.ht.gives.fx);
+    const items = {};
+    for (const u of refs) { try { const d = /^(Compendium|Item|Actor|Scene)\./.test(u) ? await fromUuid(u) : null; const inf = await dropInfo(d); if (inf) items[u] = inf; } catch (e) { /* gone */ } }
+    // a granted Action given by name (an older setting): find it on the creature or in the world for its card line
+    for (const r of rules) if (r?.kind === "grant" && !r.item && r.itemName && !items[`name:${r.itemName}`]) {
+      const d = it.parent?.items?.getName?.(r.itemName) ?? game.items?.getName?.(r.itemName);
+      if (d) { const inf = await dropInfo(d); if (inf) items[`name:${r.itemName}`] = inf; }
+    }
+    let help = false;
+    try { help = !!game.settings.get("twod12", "effectHelp"); } catch (e) { /* not registered */ }
+    const anims = [["", "None"], ...Object.entries(CONFIG.Canvas?.lightAnimations ?? {}).map(([k, v]) => [k, (typeof v?.label === "string" && game.i18n?.localize?.(v.label)) || k])];
+    const extra = this._fxExtra?.() ?? {};
+    this._fr ??= { sel: "", own: false, names: {} };
+    const onMap = host === "effect" && s.where === "map";
+    const zoneAction = onMap ? await (await import("./zone.mjs")).actionPlacing(it.getFlag?.("twod12", "effectUuid") || it.getFlag?.("core", "sourceId") || it._stats?.compendiumSource || it.uuid) : null;
+    this._fr.zoneAction = zoneAction;   // v0.0.327: a save writes the Action's Area line into the hover text (v0.0.328: after it is declared; before, every rules window failed to open)
+    return fxTabHtml({
+      where: onMap ? "map" : "creature", zone, zoneAction, canPlace: onMap && !!canvas?.ready && game.user.isGM,
+      host, name: it.name, rules, ends: s.ends ?? {}, sel: this._fr.sel, own: this._fr.own, names: { ...this._fr.names, ...(extra.names ?? {}) }, items,
+      originName: extra.originName ?? "", applied: extra.applied ?? null, hover: s.hover ?? "", help, lightAnims: anims, valuedHost: !!s.valued,
+      auto: { rank: s.automation ?? "", note: s.automationNote ?? "", ranks: Object.entries(TWOD12.automationRanks ?? {}) },
+      adv: { isCondition: !!s.isCondition, valued: !!s.valued, selfApplied: !!s.selfApplied, originFromUser: !!s.originFromUser }
+    });
+  }
+
+  /** v0.0.327 (PACK ZONE): "Place on the map" (Set here): the existing area placement with the Zone's shape and size, kept as this Zone; the origin is the
+   *  selected token's creature (else the GM's character); ⌖ Change on the placed Zone's card can change it later. */
+  async placeZone() {
+    const { placeZoneItem } = await import("./zone.mjs");
+    await placeZoneItem(this.item);   // v0.0.329: shared with dropping the Effect on the map
+  }
+
   _passiveContext() {
     let help = false;
     try { help = !!game.settings.get("twod12", "effectHelp"); } catch (e) { /* not registered yet */ }
@@ -309,6 +393,12 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     this.element.classList.toggle("twod12-styled", this.item.type !== "species");   // v0.0.168 (system.css "Item sheets")
     applyTab(this);
     enableDragging(this);
+    // v0.0.333 (PACK RWI): the "Damage lines" list: + Add and a chip (edit or remove) open the pick window
+    this.element.querySelectorAll("[data-dl-add], [data-dl-edit]").forEach(b => b.addEventListener("click", async ev => {
+      ev.preventDefault();
+      const { editDamageLine } = await import("./dmglines.mjs"), d = b.dataset;
+      await editDamageLine(this.item, b.hasAttribute("data-dl-edit") ? { kind: d.kind, code: d.sub, value: d.value === "" ? null : Number(d.value) } : null);
+    }));
     this.element.querySelectorAll("details.setting").forEach(d =>
       d.addEventListener("toggle", () => {
         this._openSettings ??= new Set();
@@ -318,6 +408,16 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       })
     );
     this._effectListeners();
+    // v0.0.323 (PACK EFFECT-SHEET): the new Details tab, and the ? that shows its help texts
+    const frTab = this.element.querySelector(".fr-tab");
+    if (frTab) import("./fxsheet.mjs").then(m => m.wireFxTab(this, this.element));
+    this.element.querySelector("[data-fr-q]")?.addEventListener("click", async ev => {
+      ev.preventDefault();
+      const on = !this.element.querySelector(".fr-tab")?.classList.contains("fr-helpon");
+      this.element.querySelector(".fr-tab")?.classList.toggle("fr-helpon", on);
+      ev.currentTarget.classList.toggle("on", on); ev.currentTarget.setAttribute("aria-pressed", String(on));
+      try { await game.settings.set("twod12", "effectHelp", on); } catch (e) { /* not registered */ }
+    });
     // v0.0.185: the Class's Weapon and Power Modifier selects ("uses X or Y") write the two-Attribute lists.
     this.element.querySelectorAll("[data-modsel]").forEach(el => el.addEventListener("change", async () => {
       const key = el.dataset.modsel, pair = [...this.element.querySelectorAll(`[data-modsel="${key}"]`)].map(x => x.value);
@@ -539,7 +639,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       }
       if (src.kind) {
         ctx.attrVal = Number(src.mod) || 0;   // [Mod]: the Modifier used on the roll
-        ctx.mod = src.kind === "attribute" ? ctx.attrVal : (src.attrKey ? src.mod : null);
+        ctx.mod = src.kind === "attribute" ? ctx.attrVal : (src.attrKey || ["class", "role"].includes(actor.system?.modSource) ? src.mod : null);   // pack MOD: a class value has no Attribute
         ctx.attrMode = src.attrMode;
       }
     }

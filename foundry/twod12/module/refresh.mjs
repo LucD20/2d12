@@ -11,7 +11,7 @@ const { DialogV2 } = foundry.applications.api;
 
 /** What a copy keeps of its own system data, by item type. */
 export const KEEP = {
-  class: ["chosenA", "chosenB", "chosenAttrs", "chosenWeapon", "chosenMagic", "modPriority"],
+  class: ["chosenA", "chosenB", "chosenAttrs", "chosenWeapon", "chosenMagic", "modPriority", "modStage2"],
   species: ["chosen"],
   weapon: ["wielded", "dropped", "unloaded", "hands"],
   armor: ["worn", "dropped"],

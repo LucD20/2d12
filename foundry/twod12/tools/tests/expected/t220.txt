@@ -1,0 +1,72 @@
+--- the conditions pass's eight, as items (tools/content.mjs, the conditions pack)
+Bleed       item | valued: false | rules: - | linked: - | settings: bleed[body/instinct]
+Blinded     item | valued: false | rules: - | linked: - | settings: -
+Dazed       item | valued: true | rules: loseAp | linked: - | settings: -
+Frightened  item | valued: false | rules: whileSeen | linked: - | settings: boonbane, move
+Grabbed     item | valued: false | rules: endsWithOrigin | linked: Immobilized | settings: -
+Sickened    item | valued: true | rules: - | linked: - | settings: boonbane[body/instinct]
+Staggered   item | valued: false | rules: noReactions | linked: - | settings: -
+Taunted     item | valued: false | rules: - | linked: - | settings: boonbane(not)
+--- what the settings become on the creature (appliedFlags)
+Frightened  whileSeen true noReactions false loseAp false endsWithOrigin false | modifiers [{"banes":1,"all":[],"attrs":[],"vsOrigin":"","byValue":false}] | bleeds []
+Taunted     whileSeen false noReactions false loseAp false endsWithOrigin false | modifiers [{"banes":1,"all":[],"attrs":[],"vsOrigin":"not","byValue":false}] | bleeds []
+Sickened    whileSeen false noReactions false loseAp false endsWithOrigin false | modifiers [{"banes":1,"all":["__save"],"attrs":["body","instinct"],"vsOrigin":"","byValue":true}] | bleeds []
+Staggered   whileSeen false noReactions true loseAp false endsWithOrigin false | modifiers [] | bleeds []
+Dazed       whileSeen false noReactions false loseAp true endsWithOrigin false | modifiers [] | bleeds []
+Grabbed     whileSeen false noReactions false loseAp false endsWithOrigin true | modifiers [] | bleeds []
+Bleed       whileSeen false noReactions false loseAp false endsWithOrigin false | modifiers [] | bleeds [{"dmg":"1","pool":"","sub":"","attrs":["body","instinct"],"dc":13}]
+--- the Banes in a roll (effects.mjs modifierList)
+Frightened of the Ogre, an attack on the Goblin: Frightened 1 | a Body Save: Frightened 1
+the Ogre out of Kai's Sight (a wall): the Bane stops: none
+seen again: Frightened 1
+Taunted by the Ogre: vs the Goblin: Taunted 1 | vs the Ogre: none | vs both: Taunted 1 | a Check (no target): none
+Sickened 2: a Body Save: Sickened 2 2 | an Instinct Save: Sickened 2 2 | a Mind Save: none | a Body Check: none | an attack: none
+Challenged keeps its [Strike] and counts only against others: [{"all":["strike"],"vsOrigin":"not"}]
+--- the pure rules (condrules.mjs)
+originOk not: false true false | only: true false | none: true
+Dazed 1 with 3 AP: {"now":1,"rest":0} | Dazed 2 with 1 AP: {"now":1,"rest":1} | Dazed 1 with 0 AP: {"now":0,"rest":1}
+Staggered: Reactions off: true | nothing on: false | a disabled one: false
+Bleed's pool: Bo/In B | Mi/Ap M | [V] (Ap) B | attrs 'mi/ap': mind,appeal
+a card's Bleed over the condition's: {"dmg":"1d6","pool":"M","sub":"Ho","attrs":["mind","appeal"],"dc":13} -> Bleed [R] 1d6 Ho (Mi/Ap) | the bare condition: Bleed [V] 1 (Bo/In) | DC 15: Bleed [V] 2 (Bo/In; DC 15)
+--- card text that becomes the buttons (gen.mjs convertEffects)
+"[R] 1d8 Ho; Pushed 2, and Frightened of you for 1 round." -> [R] 1d8 Ho; @Move[pushed|distance:2], and @Condition[frightened|rounds:1]{Frightened} of you for 1 round.
+"Frightened of the Grave Wisp (EoT)." -> @Condition[frightened|eot]{Frightened} of the Grave Wisp (EoT).
+"A Strained target also gains Bleed [R] 1d6 Ho (Mi/Ap)." -> A Strained target also gains @Condition[bleed|dmg:1d6|pool:R|sub:Ho|attrs:mi/ap]{Bleed} [R] 1d6 Ho (Mi/Ap).
+"Bleed 2 (Bo/In; DC 15)." -> @Condition[bleed|dmg:2|attrs:bo/in|dc:15]{Bleed} 2 (Bo/In; DC 15).
+"they are Dazed 1 and Hindered (EoT)." -> they are @Condition[dazed|value:1]{Dazed 1} and @Condition[hindered|eot].
+"The target is Blinded (EoT)." -> The target is @Condition[blinded|eot]{Blinded (EoT)}.
+"The target is Blinded for 1 round." -> The target is @Condition[blinded|rounds:1]{Blinded} for 1 round.
+"Sickened 2." -> @Condition[sickened|value:2]{Sickened 2}.
+"Taunted by you (EoT)." -> @Condition[taunted|eot]{Taunted} by you (EoT).
+"Staggered (EoT)." -> @Condition[staggered|eot]{Staggered (EoT)}.
+"Grabbed." -> @Condition[grabbed]{Grabbed}.
+"a Frightened creature flees; no longer Staggered." -> a Frightened creature flees; no longer Staggered.
+@Condition[bleed|...] parsed: {"dmg":"1d6","pool":"M","sub":"Ho","attrs":["mind","appeal"],"dc":15} | the cond: bleed
+--- the Elite's Escalation (escalation.mjs)
+rungs: 1: 1 Boon on its first attack each round | 2: its Round Special Action twice a round | 3: its Encounter Special Action back, once
+phases from the state words: ["bloodied"] ["bloodied","strained"] []
+an Elite's Critical (no Critical hook): null
+it becomes Bloodied: 3 | again (once): null
+then Strained: 3 | at 3, nothing: null
+what it posted: Ogre Chieftain becomes Bloodied (Elite phase): Ogre Chieftain's Escalation rises to 3 (once an encounter). Now: its Encounter Special Action back, once. || Ogre Chieftain becomes Strained (Elite phase): Ogre Chieftain's Escalation rises to 3 (once an encounter). Now: its Encounter Special Action back, once.
+--- the Vs. colors (util.mjs vsKind; the sheets' pills and the chat badges)
+"AD"=ad "WD"=wd "AD 13"=ad "WD 14"=wd "AD/WD"=adwd "Body Save"=body "App Save"=appeal "Inst"=instinct "Bo"=body "Mi"=mind "DC"=- ""=-
+the roll's badge: <span class="cc-badge vsk-wd">WD 13</span>
+--- v0.0.315 (Lucas on v0.0.314)
+needs an origin (the HUD asks): Bleed false, Blinded false, Dazed false, Frightened true, Grabbed true, Sickened false, Staggered false, Taunted true
+asks its damage (Bleed's window): Bleed
+Bleed's window: Bleed | Goblin | [["At the end of each turn","Bleed [R] 1d6 Ho (Mi/Ap)"]] | rows: Save: Body / Instinct/Mind / Appeal*; Pool: By the Save*/[V] Vigor/[R] Resolve | confirm: Apply true | empty: false
+a card's Bleed goes into the applied effect's own setting (seen and editable): {"type":"bleed","dmg":"1d6","dmgPool":"M","dmgSub":"Ho","attrs":["mind","appeal"],"bleedDc":15} | the turn reads: {"dmg":"1d6","pool":"M","sub":"Ho","attrs":["mind","appeal"],"dc":15}
+Bleed's card: no ↳ box: true | no Lethal tag: true | the note: Ends with Interact (1 AP) and a Bo/In Save, DC 13.
+an origin on the Details tab: {"name":"Grave Wisp","token":"AjaXvWGAPxEypR0a","uuid":"Scene.s1.Token.AjaXvWGAPxEypR0a.Actor.a1"} | none: {"name":"","token":"","uuid":""}
+--- v0.0.316 (Lucas on v0.0.315)
+the origin is the Action's user (else it asks): Frightened true, Grabbed true, Taunted true
+a Blinded observer sees no creature by sight (Hearing is another mode): false
+--- v0.0.317 (Lucas on v0.0.316)
+a rider with buttons flows after the arrow: <div class="cc-rider cc-rflow"><span class="cc-rtext"><span class="cc-rarrow" aria-hidden="true">↳</span> [Pushed 2], and [Frightened] of you for 1 round.</span></div> | plain words keep the chip: <div class="cc-rider"><span aria-hidden="true">↳</span> <span class="cc-rchip">Pushed 2</span></div>
+a Save card with no target says so: No target yet: target the creatures, then press the target button below.
+the name with its origin: Frightened (Ogre) | no origin: Frightened | its own: Frightened | Prone (needs none): Prone
+--- v0.0.319 (Lucas: the Blinded Grave Wisp still had no Hearing mode)
+Hearing added to a list: [{"id":"basicSight","enabled":true,"range":0},{"id":"hearing","enabled":true,"range":null}] | to a record: {"basicSight":{"enabled":true,"range":0},"hearing":{"id":"hearing","enabled":true,"range":null}} | to nothing: [{"id":"hearing","enabled":true,"range":null}] | already there: false false
+the token's data preparation wrapped: _prepareDetectionModes
+an NPC token, a list: basicSight, hearing | a record: basicSight, hearing | the original ran: true

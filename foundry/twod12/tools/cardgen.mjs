@@ -13,6 +13,15 @@ const { readFileSync, existsSync } = await import("node:fs");
 const WORTH_FILE = new URL("../../../book/ruler/worth.json", import.meta.url);
 export const WORTH = existsSync(WORTH_FILE) ? JSON.parse(readFileSync(WORTH_FILE, "utf8")) : {};
 const worthOf = name => WORTH[name] ?? "";
+// v0.0.246 (cards 1, Lucas): the book's [[links]] stay links in Foundry. A link to a card of the compendium opens that item (anyone can read it: Hide);
+// any other link is a book link (@Book[Heading]{label}: the book's anchor; the Journal import comes later). A Basic Action has no compendium item: a book link.
+const CARD_BY_NAME = new Map(loadCards().map(c => [c.name.toLowerCase(), c]));
+export function foundryLinks(text) {
+  return String(text ?? "").replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (m, ref, label) => {
+    const r = ref.trim(), l = (label ?? r).trim(), c = CARD_BY_NAME.get(r.toLowerCase());
+    return c && !c.foundry?.basic ? `{{link:${c.name}|${l}}}` : `@Book[${r}]{${l}}`;
+  });
+}
 
 const FREQ = { "at-will": "atwill", turn: "turn", round: "round", encounter: "encounter", daily: "daily" };
 const TRAIT_KEY = { power: "magic" };   // the book's word -> Foundry's key (config.mjs: the key stays "magic", the label is Power)
@@ -67,16 +76,22 @@ export function tierTokens(dmg, weaponAction, tier) {
   return out.map(x => x.t).join(",");
 }
 
-/** The Foundry text of a book text: links and bold stripped, the buttons convertEffects derives, then the Foundry-only append. */
-const fxText = (book, append) => [convertEffects(stripBold(stripLinks(book ?? ""))).replace(/^(@\w+\[[^\]]*\](?:\{[^}]*\})?)\.$/, "$1"), append ?? ""].filter(Boolean).join(" ");   // a cell that is one button keeps no final period
+/** The Foundry text of a book text: bold stripped, the links kept (foundryLinks), the buttons convertEffects derives, then the Foundry-only append. */
+// v0.0.341 (Lucas: "the buttons aware isn't necessary, just make buttons normally"): the Tier text keeps its buttons; the chain runs by itself too
+const fxText = (book, append) => [convertEffects(stripBold(foundryLinks(book ?? ""))).replace(/^(@\w+\[(?:[^\[\]]|\[[^\[\]]*\])*\](?:\{[^}]*\})?)\.$/, "$1"), append ?? ""].filter(Boolean).join(" ");   // a cell that is one button keeps no final period
 const appendOf = (v, key) => { const a = v.foundry?.append; if (!a) return ""; if (typeof a === "string") return key === "effects" ? a : ""; return a[key] ?? ""; };
 
 /** One Version of a card as the item's version data. */
 export function versionData(c, v, resolve = s => s) {
   const weaponAction = (c.traits ?? []).includes("weapon") && !(c.traits ?? []).includes("save");   // a Save Action's tiers are the target's result: its [Mod] stays explicit
   const fx = { all: [], t1: [], t2: [], t3: [] };
-  for (const [k, list] of Object.entries(v.foundry?.fx ?? {})) fx[k] = list.map(u => ({ uuid: resolve(u), mode: "auto" }));
-  const out = { ap: v.ap, noTiers: !v.tiers, t1: [], t2: [], t3: [], x1: "", x2: "", x3: "", effects: resolve(fxText(v.effects, appendOf(v, "effects"))), fx };
+  // v0.0.265: an entry can be { "uuid": "{{fx:X}}", "mode": "conditional" } (the damage card's Effects button applies it: Deathmark's shot when the target goes Down)
+  for (const [k, list] of Object.entries(v.foundry?.fx ?? {})) fx[k] = list.map(u => (typeof u === "object" && u ? { uuid: resolve(u.uuid), mode: u.mode || "auto" } : { uuid: resolve(u), mode: "auto" }));
+  // v0.0.246 (Lucas): a Version's `foundry.text` is its Foundry text written in full ("As 1 AP, but..." is the book's; Foundry says it all); `foundry.after` the chips that run after the damage.
+  const out = { ap: v.ap, noTiers: !v.tiers, t1: [], t2: [], t3: [], x1: "", x2: "", x3: "", effects: resolve(fxText(v.foundry?.text ?? v.effects, appendOf(v, "effects"))), fx };
+  if (v.foundry?.after) out.after = resolve(v.foundry.after);
+  // v0.0.254 (Lucas): a card's inline Actions are written on its last Version's Foundry text (a link to the item and its line), so the sheet's preview shows them after "you gain the following Action:"
+  if (c.inline?.length && v === (c.versions ?? [])[(c.versions ?? []).length - 1]) out.effects += " " + c.inline.map(a => resolve(`{{link:${a.name}|${a.name}}} \u2014 ${[a.cost, a.frequency, a.traits?.length ? `[${a.traits.join(", ")}]` : "", a.interrupt ? `Interrupt: ${a.interrupt}` : "", a.trigger ? `Trigger: ${a.trigger}` : "", a.target ? `Target: ${a.target}` : "", a.effects ? `Effects: ${convertEffects(stripBold(foundryLinks(a.effects)))}` : ""].filter(Boolean).join(" | ")}`)).join(" ");
   if (v.tiers) {
     if (v.tiers.length !== 3) throw new Error(`${c.name}: a Version needs three tiers`);
     v.tiers.forEach((cell, i) => {
@@ -87,9 +102,14 @@ export function versionData(c, v, resolve = s => s) {
       out[`x${i + 1}`] = resolve(fxText(text, appendOf(v, `x${i + 1}`)));
     });
   }
+  // v0.0.334 (Lucas, Rebuke and Skirmish Shot): a Tier's Foundry text written in full (foundry.x1 / x2 / x3), as it is: no buttons made from it
+  // (what it does runs by itself after the damage: the Version's foundry.after chain and its Effects by Tier)
+  for (const n of [1, 2, 3]) if (typeof v.foundry?.[`x${n}`] === "string") out[`x${n}`] = resolve(v.foundry[`x${n}`]);
   if (v.critical) out.critical = resolve(fxText(v.critical, appendOf(v, "critical")));
+  if (typeof v.foundry?.critical === "string") out.critical = resolve(v.foundry.critical);   // v0.0.338: the Critical's Foundry text as it is (its effect runs after the damage)
   if (v.mode) out.mode = v.mode;
   if (v.foundry?.areaSize) out.areaSize = v.foundry.areaSize;
+  if (v.foundry?.areaRounds) out.areaRounds = v.foundry.areaRounds;   // v0.0.261 (Consecrated Ground): this version's rounds for the kept area
   return out;
 }
 
@@ -111,35 +131,43 @@ export function areaOf(c) {
 /** The item's system data of a card (an Action). `resolve` turns {{fx:Name}} into the Effect's uuid (content.mjs). */
 /** A costed card with no table ("1R" and prose: Opportunity Attack) reads as one Version whose text is the card's text. */
 export const versionsOf = c => (hasVersions(c) ? c.versions : c.cost ? [{ ap: Number(String(c.cost).match(/\d+/)?.[0] ?? 0), effects: c.text ?? "", foundry: c.foundry?.append ? { append: c.foundry.append } : undefined, ruler: c.ruler?.line }] : []);
-export const isAction = c => hasVersions(c) || Boolean(c.cost);
+/** v0.0.246: a placeholder card (`placeholder: true`: an Action the book hasn't written yet, Hide) is an Action item with no Versions, so links to it open something to read. */
+export const isAction = c => hasVersions(c) || Boolean(c.cost) || Boolean(c.placeholder);
 export function cardSystem(c, resolve = s => s) {
   if (!isAction(c)) throw new Error(`${c.name}: an Action card needs versions`);
   const area = areaOf(c);
-  const sys = { category: c.category, level: c.level ?? c.foundry?.level ?? 0, traits: traitKeys(c.traits), targets: stripLinks(c.target ?? ""), distance: area ? undefined : (/^Aura \d+$/i.test(c.area ?? "") ? c.area.trim() : distanceKey(c)), frequency: frequencyKey(c.frequency) };
+  const aura = /^Aura \d+$/i.test(c.area ?? "");   // v0.0.249 (Lucas): an Aura is the Area line ("Area: Aura 2"), not a Distance
+  const sys = { category: c.category, level: c.level ?? c.foundry?.level ?? 0, traits: traitKeys(c.traits), targets: stripLinks(c.target ?? ""), distance: area ? undefined : distanceKey(c), frequency: c.placeholder && !c.frequency ? "" : frequencyKey(c.frequency) };
   if (sys.distance === undefined) delete sys.distance;   // an Action with an Area places it from its areaCfg (within or the weapon's range)
   if (area) sys.areaCfg = area.cfg;
+  if (aura) sys.area = c.area.trim();
   const vs = vsKey(c.vs); if (vs) sys.vs = vs;
   if (c.escalation) sys.escalation = c.escalation;
   if (isReaction(c)) { sys.reaction = true; sys.reactionKind = c.interrupt ? "interrupt" : "trigger"; sys.trigger = stripLinks(c.interrupt ?? c.trigger); }
   if (c.requirements) sys.requirements = stripLinks(c.requirements);
   if (c.prerequisites) sys.prerequisites = stripLinks(c.prerequisites);
   if (c.setup) sys.setup = resolve(fxText(c.setup, c.foundry?.appendSetup));
-  const prose = [c.rules, c.notes].filter(Boolean).map(t => `<p>${boldHtml(stripLinks(t))}</p>`).join("");
-  if (prose) sys.description = prose;
+  const prose = [c.rules, c.notes, ...(c.placeholder ? [c.text] : [])].filter(Boolean).map(t => `<p>${boldHtml(foundryLinks(t))}</p>`).join("");
+  if (prose) sys.description = resolve(prose);
   if (worthOf(c.name)) sys.worth = worthOf(c.name);
   if (c.category === "Basic attack") sys.basicAttack = true;   // an NPC's Basic attack stands in for the Weapon Attack NPCs don't have
   sys.versions = versionsOf(c).map((v, i) => { const d = versionData(c, v, resolve); if (area && i > 0 && area.sizes[i] && area.sizes[i] !== area.sizes[0]) d.areaSize = area.sizes[i]; return d; });
   if (c.flavor) sys.flavor = c.flavor;
-  for (const k of ["weaponUse", "automation", "automationNote", "marksTarget", "basicAttack", "modifiers"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];
+  for (const k of ["weaponUse", "automation", "automationNote", "marksTarget", "basicAttack", "basicRating", "modifiers", "moment", "momentRange", "momentSelf", "momentTarget", "momentThreat"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];   // v0.0.261: moment, momentRange (Divine Intervention); v0.0.272: momentSelf, momentTarget
   return sys;
 }
 
+/**
+ * v0.0.249 (Lucas, inline Actions): a card's `inline` list, each as a card of its own (an Action item in the "Inline" folder; the parent's effect
+ * carries it with the "inline" setting while it lasts). Written by Lucas as one line: Name — cost | Frequency | [traits] | Interrupt: ... | Effects: ...
+ */
+export const inlineCards = c => (c.inline ?? []).map(a => ({ name: a.name, category: "Inline Action", flavor: a.flavor, traits: a.traits ?? [], frequency: a.frequency, target: a.target, cost: a.cost, interrupt: a.interrupt, trigger: a.trigger, requirements: a.requirements, text: a.effects, foundry: { img: c.foundry?.img, folder: "Inline", automation: a.automation ?? c.foundry?.automation, automationNote: a.automationNote, append: a.append, inlineOf: c.name, ...Object.fromEntries(["moment", "momentRange", "momentSelf", "momentTarget"].filter(k => a[k] !== undefined).map(k => [k, a[k]])) }, _file: c._file }));
 /** The item's system data of a Feature or Talent card (no Versions): its text is the description (plus the Foundry-only `append`), its automation is settings. */
 export function featureSystem(c, resolve = s => s) {
   if (isAction(c)) throw new Error(`${c.name}: a Feature card has no versions`);
   const category = String(c.category).replace(/\s*\(Passive\)$/, "");
-  const text = [boldHtml(stripLinks(c.text ?? "")), c.foundry?.append ?? ""].filter(Boolean).join(" ");
-  const sys = { category, level: c.level ?? c.foundry?.level ?? 0, description: text ? `<p>${text}</p>` : "" };
+  const text = [boldHtml(foundryLinks(c.text ?? "")), c.foundry?.append ?? ""].filter(Boolean).join(" ");
+  const sys = { category, level: c.level ?? c.foundry?.level ?? 0, description: text ? resolve(`<p>${text}</p>`) : "" };
   if (worthOf(c.name)) sys.worth = worthOf(c.name);
   if (c.foundry?.settings) sys.settings = JSON.parse(resolve(JSON.stringify(c.foundry.settings)));
   if (c.foundry?.actions) sys.actions = c.foundry.actions.map(n => resolve(`{{action:${n}}}`));
@@ -158,8 +186,8 @@ export function talentSystem(c, resolve = s => s) {
   if (t.traits) sys.traits = t.traits.map(x => TRAIT_KEY[x] ?? x);
   if (t.prereqs) sys.prereqs = t.prereqs;
   if (t.prereqMode) sys.prereqMode = t.prereqMode;
-  const text = isAction(c) ? (t.description ?? "") : [boldHtml(stripLinks(c.text ?? "")), c.foundry?.append ?? ""].filter(Boolean).join(" ");
-  if (text) sys.description = `<p>${text}</p>`;
+  const text = isAction(c) ? (t.description ?? "") : [boldHtml(foundryLinks(c.text ?? "")), c.foundry?.append ?? ""].filter(Boolean).join(" ");
+  if (text) sys.description = resolve(`<p>${text}</p>`);
   const actions = [...(isAction(c) ? [c.name] : []), ...(c.foundry?.actions ?? [])];
   if (actions.length) sys.actions = actions.map(n => resolve(`{{action:${n}}}`));
   if (t.modifiers) sys.modifiers = t.modifiers;
@@ -179,6 +207,7 @@ export function basicEntry(c) {
   if (s.weaponUse) e.weaponUse = s.weaponUse;
   if (s.description) e.description = s.description;
   if (s.reaction) Object.assign(e, { reaction: true, reactionKind: s.reactionKind, trigger: s.trigger });   // pack R-core: Opportunity Attack, the basic Reaction
+  for (const k of ["moment", "momentRange", "momentSelf", "momentTarget", "momentThreat"]) if (s[k] !== undefined) e[k] = s[k];   // v0.0.272 (pack RX): its moment
   e.flavor = c.flavor ?? "";
   e.versions = s.versions;
   return e;

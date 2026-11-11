@@ -92,6 +92,24 @@ function TestAndBuild([bool]$needBuild) {
     @{ ok = $ok; summary = $(if ($lines.Count) { $lines -join "`n" } else { "no test output" }); build = $build }
 }
 
+# The Project's knowledge files for a hand upload: knowledge-upload/, opened in Explorer from the window (2026-11-07, Lucas).
+# The committed knowledge/ is what the Project's GitHub sync reads; this copy is built from the commit just synced.
+function BuildKnowledge {
+    if ($DryRun) { Log "would build knowledge-upload/ (python tools/knowledge.py --out knowledge-upload)"; return }
+    Set-Location $Repo
+    $py = if (Get-Command python -ErrorAction SilentlyContinue) { "python" } elseif (Get-Command py -ErrorAction SilentlyContinue) { "py" } else { $null }
+    if (-not $py) { Log "knowledge: no python found, skipped"; return }
+    $out = Run "knowledge.py" { & $py tools/knowledge.py --out knowledge-upload }
+    if ($script:RunExit -eq 0) {
+        Log "knowledge: $(($out | Select-Object -Last 1))"
+        if ($Interactive) {
+            Write-Host ""
+            Write-Host "Project knowledge rebuilt in knowledge-upload\ (opening it). In the Project: press Sync on the GitHub files, or replace the files by hand with these." -ForegroundColor Cyan
+            Start-Process explorer.exe (Join-Path $Repo "knowledge-upload")
+        }
+    }
+}
+
 if ($TestNotify) { Notify "2d12 sync test" "If you see this, notifications work."; exit 0 }
 
 Set-Location $Repo
@@ -99,6 +117,12 @@ if ($DryRun) { Log "DRY RUN: nothing will be checked out, built, written or noti
 
 $state = if (Test-Path $StateFile) { Get-Content $StateFile -Raw | ConvertFrom-Json } else { $null }
 
+# 1b. (2026-11-07) knowledge/ is generated and committed by each pack: a local change to it (an old untracked copy, a run of
+# knowledge.py by hand) is thrown away, so it never stops the sync. The upload copy is knowledge-upload/ (gitignored).
+if (-not $DryRun) {
+    [void](G checkout -- knowledge 2>$null)
+    [void](G clean -fdq -- knowledge)
+}
 # 2. uncommitted changes other than notes.txt (and the sync's own files, which a pack branch does not gitignore)
 $dirty = @(G status --porcelain | Where-Object { $_ -and $_.Substring(3).Trim('"') -notmatch '^(notes\.txt|sync\.log|\.sync-state|pack-sync/)$' })
 if ($dirty.Count) {
@@ -131,13 +155,17 @@ if (-not $pick) {
         [void](G rev-parse --verify --quiet "refs/remotes/origin/$cur")
         if ($GitExit -ne 0) { $merged = $true } else { [void](G merge-base --is-ancestor "origin/$cur" origin/main); $merged = ($GitExit -eq 0) }
     }
-    if (-not $merged) {
+    # 3c (2026-11-06): on main already, and main moved on GitHub (a pack merged from a cloud session) or this commit of main was never
+    # synced here (the state file says so): pull, test and rebuild like a pack. Before this, the window said "Already up to date" on an old main.
+    $mainHash = @(G rev-parse origin/main)[0]
+    $mainAhead = $false
+    if ($cur -eq "main") { $mainAhead = ((@(G rev-parse HEAD)[0] -ne $mainHash) -or (-not $state) -or ($state.hash -ne $mainHash)) }
+    if (-not $merged -and -not $mainAhead) {
         if ($DryRun) { Log "nothing to sync (no new unmerged origin/pack-* or origin/claude/pack-* branch; on $cur)" }
         if ($Interactive) { Notify "Already up to date" "on $cur, v$((Get-Content (Join-Path $Repo 'foundry\twod12\system.json') -Raw | ConvertFrom-Json).version); no newer pack branch" }
         exit 0
     }
     if ($Interactive) { WaitForFoundryClosed }
-    $mainHash = @(G rev-parse origin/main)[0]
     if (Get-Process -Name $FoundryProcess -ErrorAction SilentlyContinue) {
         if (-not ($state -and $state.waitingHash -eq "main:$mainHash")) {
             Notify "2d12 sync" "$cur was merged: close Foundry to go back to main"
@@ -147,16 +175,18 @@ if (-not $pick) {
     }
     $before = @(G rev-parse HEAD)[0]
     $changedMain = @(G diff --name-only $before origin/main)
-    $needMain = ($changedMain -contains "foundry/twod12/tools/content.mjs") -or ($changedMain -contains "foundry/twod12/system.json") -or -not (Test-Path (Join-Path $Repo "foundry\twod12\packs\actions"))
-    if ($DryRun) { Log "would: go back to main ($cur was merged), git pull --ff-only, test, $(if ($needMain) { 'REBUILD' } else { 'NOT rebuild' }) the packs, notify"; exit 0 }
+    $needMain = ($changedMain -contains "foundry/twod12/tools/content.mjs") -or ($changedMain -contains "foundry/twod12/system.json") -or -not (Test-Path (Join-Path $Repo "foundry\twod12\packs\actions")) -or (-not $state) -or ($state.hash -ne $mainHash)   # never built this main here: rebuild
+    $why = if ($mainAhead) { "main moved on GitHub" } else { "$cur was merged" }
+    if ($DryRun) { Log "would: go back to main ($why), git pull --ff-only, test, $(if ($needMain) { 'REBUILD' } else { 'NOT rebuild' }) the packs, notify"; exit 0 }
     [void](G checkout main)
     if ($GitExit -ne 0) { Log "checkout of main failed, stopping"; exit 1 }
     [void](G pull --ff-only)
     if ($GitExit -ne 0) { Log "git pull of main failed, stopping"; exit 1 }
-    Log "back on main @ $((G rev-parse --short HEAD)) ($cur was merged)"
+    Log "back on main @ $((G rev-parse --short HEAD)) ($why)"
     $r = TestAndBuild $needMain
     $v = (Get-Content (Join-Path $Repo "foundry\twod12\system.json") -Raw | ConvertFrom-Json).version
     SaveState @{ branch = "main"; hash = $mainHash; waitingHash = "" }
+    BuildKnowledge
     $msg = "Back on main v$v (packs: $($r.build)): $(if ($needMain) { 'restart Foundry' } else { 'reload Foundry (F5)' })"
     if (-not $r.ok) { $msg += " (tests FAILED, see sync.log)" }
     Notify "2d12 sync" $msg
@@ -236,6 +266,7 @@ $entry
 
 @{ branch = $branch; hash = $pick.hash; waitingHash = "" } | ConvertTo-Json | Set-Content $StateFile -Encoding UTF8
 Log "wrote pack-sync\latest.md and .sync-state"
+BuildKnowledge
 if ($Interactive) { Write-Host ""; Write-Host "What this version changed (test it with this):" -ForegroundColor Cyan; Write-Host $entry }
 $msg = "$branch v$version is ready: $(if ($needBuild) { 'start Foundry (the packs were rebuilt)' } else { 'reload Foundry (F5)' }) and test"
 if (-not $testsOk) { $msg += " (tests FAILED, see pack-sync\latest.md)" }

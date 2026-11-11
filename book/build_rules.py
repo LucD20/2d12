@@ -98,13 +98,16 @@ def chevrons(keys):
         out.append(f'<span class="tg" style="--tg:var(--g-{g})"><span class="tgl">{title}</span><span class="tgc">{chips}</span></span>')
     return ''.join(out)
 
-def cells(line): return [c.strip() for c in line.strip().strip('|').split('|')]
+def cells(line):
+    """The cells of a table row. A `|` inside a [[link|label]] is not a separator (cards 1, 2026-11-05: Smite's [[Bright|Bright light]])."""
+    keep = re.sub(r'\[\[([^\]]*?)\]\]', lambda m: '[[' + m.group(1).replace('|', '\x00') + ']]', line.strip().strip('|'))
+    return [c.strip().replace('\x00', '|') for c in keep.split('|')]
 def inline(t): return hl(re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', e(t)))
 
 # ---------------------------------------------------------------- action cards
 FREQ_COL = {'at-will': ('#3B6D11', '#EAF3DE'), 'turn': ('#0F6E6E', '#E1F3F2'), 'round': ('#185FA5', '#E6F1FB'), 'encounter': ('#A32D2D', '#FCEBEB'), 'daily': ('#5B3FA6', '#EEEDFE')}
 GREY_COL = ('#5F5E5A', '#F1EFE8')
-KNOWN = ('Frequency', 'Target', 'Distance', 'Area', 'Vs', 'Requirements', 'Prerequisites', 'Trigger', 'Flavor', 'Setup', 'Escalation', 'Split')
+KNOWN = ('Frequency', 'Target', 'Distance', 'Area', 'Vs', 'Requirements', 'Prerequisites', 'Trigger', 'Interrupt', 'Flavor', 'Setup', 'Escalation', 'Split', 'Inline')
 
 # A chapter written in the class style (first line "<!-- style: class -->"): its Action cards open and close, and its text is colored: a damage expression
 # (the [B] or [M] tag with its dice and numbers; [W] and [Mod] expressions for Body) in the color of its pool, Bane, Boon and Rally Point (with their
@@ -157,8 +160,10 @@ def card(block, markers=False):
     traits = [t.strip().lower().replace('-', '') for t in tm.group(1).split('•')] if tm else []
     get = lambda key: re.search(r'^\*\*' + key + r':\*\*\s*(.+)$', block, re.M)
     target, freq, distm, vsm, reqm, trgm, flav = get('Target'), get('Frequency'), get('Distance'), get('Vs'), get('Requirements'), get('Trigger'), get('Flavor')
+    intm = get('Interrupt')   # cards 4: an Interrupt line, shown first like a Trigger (it was a note paragraph before)
     aream, prem, escm, splitm = get('Area'), get('Prerequisites'), get('Escalation'), get('Split')
     setups = re.findall(r'^\*\*(Setup[^*]*):\*\*\s*(.+)$', block, re.M)
+    inlines = re.findall(r'^\*\*Inline:\*\*\s*(.+)$', block, re.M)   # cards 2: inline Actions (Name — cost | Frequency | ... | Effects: ...)
     costm = re.search(r'<div class="action-head"><span>.*?</span><span>(\d+(?:\s*/\s*\d+)*\s*R)</span>', block)
     free = None   # (the old Free Action marker is gone: 0 AP)
     lines = block.split('\n')
@@ -238,15 +243,16 @@ def card(block, markers=False):
     sep = " <i class='sep'>&#10022;</i> "
     vs_txt = (f'<span class="vs">{"" if vsm.group(1).strip().endswith("Save") else "Vs. "}{inline(vsm.group(1))}</span>') if vsm else ''
     l1 = [f'<span class="esc">Escalation {inline(escm.group(1))}</span>'] if escm else []   # pack R: a requirement ("Escalation 3"), not a cost
-    l2 = ([f'<span>{inline(target.group(1))}</span>'] if target else []) + ([f'<span class="dist"><b>Area:</b> {inline(aream.group(1))}</span>'] if aream else [])
+    l2 = ([f'<span><b>Targets:</b> {inline(target.group(1))}</span>'] if target else []) + ([f'<span class="dist"><b>Area:</b> {inline(aream.group(1))}</span>'] if aream else [])   # cards 2 (Lucas): the label
     l3 = ([f'<span class="dist"><b>Distance:</b> {inline(distm.group(1))}</span>'] if distm and distm.group(1).strip().lower() != 'self' else []) + ([vs_txt] if vs_txt else [])
     meta_lines = [l for l in (l1, l2, l3) if l]
     meta = meta_lines
     head = ((f'<div class="traits">{chevrons(traits)}{mk(4)}</div>' if traits else '')
+            + (f'<div class="arow trg"><b>Interrupt:</b> {inline(intm.group(1))}</div>' if intm else '')   # cards 4 (Lucas, 2026-11-06): a Reaction's Interrupt / Trigger line comes first
+            + (f'<div class="arow trg"><b>Trigger:</b> {inline(trgm.group(1))}</div>' if trgm else '')
             + ''.join(f'<div class="meta">{sep.join(l)}{mk(5) if k == len(meta) - 1 else ""}</div>' for k, l in enumerate(meta))
             + (f'<div class="arow"><b>Prerequisites:</b> {inline(prem.group(1))}</div>' if prem else '')
             + (f'<div class="arow"><b>Requirements:</b> {inline(reqm.group(1))}</div>' if reqm else '')
-            + (f'<div class="arow"><b>Trigger:</b> {inline(trgm.group(1))}</div>' if trgm else '')
             + (f'<div class="arow"><b>Split:</b> {inline(splitm.group(1))}</div>' if splitm else '')
             + ''.join(f'<div class="arow"><b>{e(k)}:</b> {inline(t)}</div>' for k, t in setups))
     is_action = bool(versions or costm or free)
@@ -261,15 +267,32 @@ def card(block, markers=False):
         body_ = f'<b>{inline(m.group(1)).capitalize() if False else inline(m.group(1))}:</b> {inline(m.group(2))}' if m else inline(n)
         return f'<div class="eff sep"><div class="eh">Modifies</div><div class="el"><span>{body_}</span></div></div>'
     modblock = ''.join(mod_html(n) for n in mods)
+    def inline_html(line):
+        # Name — cost | Frequency | [traits] | Interrupt: ... | Effects: ... (a plain hyphen reads too): a small nested card
+        m = re.match(r'^(.*?)\s+(?:\u2014|-)\s+(.*)$', line)
+        nm, fields = (m.group(1), [f.strip() for f in m.group(2).split('|')]) if m else (line, [])
+        cost_, freq_ = (fields[0] if fields else ''), (fields[1] if len(fields) > 1 else '')
+        rest = fields[2:]
+        tr = [f for f in rest if f.startswith('[')]
+        rows_ = [f for f in rest if not f.startswith('[')]
+        trs = [t.strip().lower().replace('-', '') for t in tr[0].strip('[]').split(',')] if tr else []
+        badge_ = (f'<span class="rmark">{e(cost_)}</span>' if cost_.endswith('R') else ap_label([int(cost_.split()[0])]) if cost_ and cost_[0].isdigit() else '')
+        body_ = ''.join(f'<div class="arow"><b>{e(r.split(":", 1)[0])}:</b> {inline(r.split(":", 1)[1].strip())}</div>' if ':' in r and not r.startswith('Effects:') else f'<div class="eff"><div class="eh">Effects</div><div class="el"><span>{inline(r.split(":", 1)[1].strip())}</span></div></div>' for r in rows_)
+        icol, itxt = next((c for key, c in FREQ_COL.items() if freq_.strip().lower().startswith(key)), GREY_COL)   # its own Frequency color
+        return (f'<div class="acard inl" style="--fq:{icol};--fqt:{itxt}"><div class="ahead"><b>{e(nm)}</b>'
+                + (f'<span class="afreq">{e(freq_)}</span>' if freq_ else '') + (f'<span class="aps">{badge_}</span>' if badge_ else '') + '</div>'
+                + f'<div class="abody">' + (f'<div class="traits">{chevrons(trs)}</div>' if trs else '') + body_ + '</div></div>')
+    inlblock = ''.join(inline_html(l) for l in inlines)
     if passive and plain:
         # a Talent or Feature that isn't an Action: its text belongs with its traits, above any divider
         head += ''.join(f'<p class="anote">{inline(n)}</p>' for n in plain)
         plain = []
-    rest = ''.join(f'<p class="anote">{inline(n)}</p>' for n in plain) + grid + eff + modblock
+    rest = ''.join(f'<p class="anote">{inline(n)}</p>' for n in plain) + grid + eff + inlblock + modblock
     body = ((f'<div class="flavor">{inline(flav.group(1))}</div>' if flav else '') + head
             + ('<hr class="cdiv">' if head and rest else '') + rest)
     tag_, head_ = ('details', 'summary') if CLASSY['on'] else ('div', 'div')   # the class style: a card opens and closes
-    return (f'<{tag_} class="acard{" passive" if passive else ""}" style="--fq:{col};--fqt:{txt}"><{head_} class="ahead"><b>{name}{mk(1)}</b>'
+    cid = 'card-' + re.sub(r'[^a-z0-9]+', '-', re.sub(r'<[^>]+>', '', name).lower()).strip('-')   # cards 1 (2026-11-05): every card is an anchor, so [[Hide]] links to the card
+    return (f'<{tag_} class="acard{" passive" if passive else ""}" id="{cid}" style="--fq:{col};--fqt:{txt}"><{head_} class="ahead"><b>{name}{mk(1)}</b>'
             + (f'<span class="acat">{e(cat)}{mk(2)}</span>' if cat else '')
             + (f'<span class="afreq">{inline(freq.group(1))}</span>' if freq else '')
             + (f'<span class="aps">{cost}{mk(3)}</span>' if cost else '') + f'</{head_}>'
@@ -381,6 +404,7 @@ for fn in files:
     h1 = re.search(r'<h1 id="([^"]+)">(.*?)</h1>', body)
     h2s = re.findall(r'<h2 id="([^"]+)">(.*?)</h2>', body)
     for m in re.finditer(r'<h([1-4]) id="([^"]+)">(.*?)</h\1>', body): headings.setdefault(norm(m.group(3)), []).append((doc, m.group(2)))   # when titles repeat, [[Title]] goes to the one in its own document, else the first
+    for m in re.finditer(r'<(?:details|div) class="acard[^"]*" id="(card-[^"]+)"[^>]*><(?:summary|div) class="ahead"><b>(.*?)</b>', body): headings.setdefault(norm(m.group(2)), []).append((doc, m.group(1)))   # cards 1: a card is an anchor too (a heading of the same name comes first)
     chapters.append(dict(part=part, body=body, h1=h1.groups(), h2=h2s, fn=fn, doc=doc, style=style))
 
 def ref_id(title, doc):

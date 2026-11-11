@@ -13,7 +13,7 @@ const vs = n => { const d = get(n); return G.vsText({ ...d.system, traits: new S
 const book = { "Smite": "AD", "Vow of Enmity": "WD", "Rebuke": "WD", "Champion's Challenge": "WD", "Word of Radiance": "WD", "Divine Retribution": "AD (Weapon mode) or WD (Power mode)", "Judgment": "WD", "Whirlwind": "AD", "Cut Through": "AD", "Pummel": "AD", "Leg Sweep": "AD" };
 const bad = Object.entries(book).filter(([n, v]) => vs(n) !== v).map(([n, v]) => `${n}: ${vs(n)} (book ${v})`);
 console.log("Vs. entries as in the book:", bad.length ? bad.join(" | ") : "all " + Object.keys(book).length + " match");
-console.log("no-roll cards have no Vs.:", ["Lay On Hands", "Shield of Faith", "Sacred Weapon", "Aura of Protection", "Miraculous Recovery", "Consecrated Ground", "Divine Intervention", "Precise Aim"].every(n => vs(n) === "(none)"));
+console.log("no-roll cards have no Vs.:", ["Lay On Hands", "Shield of Faith", "Sacred Weapon", "Beacon", "Miraculous Recovery", "Consecrated Ground", "Divine Intervention", "Precise Aim"].every(n => vs(n) === "(none)"));
 // "As 1 AP" written out on chat cards and in the roll dialog (they show one Version)
 const x = (n, ap, t) => { const it = get(n).system; const v = it.versions.find(y => y.ap === ap); return G.expandAsText(v["x" + t], it.versions, v, t).replace(/<[^>]+>/g, ""); };
 console.log("Vow of Enmity 2 AP T2:", x("Vow of Enmity", 2, 2));

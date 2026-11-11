@@ -8,8 +8,9 @@ attributes body 1, mind 1, instinct 2, appeal 0
 health body x3 +3, mind x2.5 +4
 health-factor 1.125
 armor 2
+# pack MOD (2026-11-09): Modifiers are class values (track A2)
 weapon-mod 2
-power-mod 2
+power-mod 1
 rally 5
 targeted 0.75
 weapon Crossbow (ranged, projectile, reload, two-handed, range 10/20/40): 0 / 1d4+2 / 1d10+2

@@ -35,8 +35,10 @@
    "name": "Marked Quarry",
    "category": "Archer Feature",
    "level": 1,
+   "book": false,
+   "_note": "v0.0.335 (Lucas): Foundry only: the book's Archer has the Mark Quarry Action (its card holds these rules). This Feature holds the mark's settings (the Boon, the Tier 1 damage, the reminders) and grants the Action, until Actions can hold settings (pack ACTION-SHEET).",
    "flavor": "You pick the one, and the world narrows.",
-   "text": "At the start of each encounter, choose one enemy as your **Marked Quarry**. You gain 1 Boon on [Shot, Strike] Actions against them, and those Actions deal [V] [Mod] on a Tier 1. When they die or go Down, you can choose a new Marked Quarry (0R [Focus]). Once per turn, you can change your Marked Quarry during an encounter by spending 1 AP [Focus].",
+   "text": "At the start of each encounter, choose one enemy as your **Marked Quarry**. You gain 1 Boon on [Shot, Strike] Actions against them, and those Actions deal [V] [Mod] extra damage (the same subtype as your weapon) on a Tier 1. You can only have one Marked Quarry at a time.",
    "foundry": {
     "img": "icons/svg/target.svg",
     "automation": "gold",
@@ -60,7 +62,7 @@
       "type": "bonusdamage",
       "dmg": "[Mod]",
       "dmgPool": "B",
-      "dmgSub": "",
+      "dmgSub": "W",
       "tiers": [
        "t1"
       ],
@@ -178,7 +180,11 @@
      "ap": 1,
      "effects": "Evade 1, then make a [Ranged, Shot] Weapon Attack (1A).",
      "foundry": {
-      "append": "@Use[Weapon Attack|label:[Ranged, Shot] Weapon Attack (1A)]"
+      "fx": {
+       "all": [
+        "{{fx:Rolling Shot (Weapon Attack)}}"
+       ]
+      }
      },
      "ruler": "does Weapon Attack | evade 1"
     },
@@ -186,7 +192,6 @@
      "ap": 2,
      "effects": "Evade 2, then make a [Ranged, Shot] Weapon Attack (1A) that deals an extra [V] 1d6 Pi.",
      "foundry": {
-      "append": "@Use[Weapon Attack|label:[Ranged, Shot] Weapon Attack (1A)]",
       "fx": {
        "all": [
         "{{fx:Rolling Shot (+1d6 Pi)}}"
@@ -199,7 +204,6 @@
      "ap": 3,
      "effects": "Evade 3, then make a [Ranged, Shot] Weapon Attack (1A) that deals an extra [V] 2d6 Pi.",
      "foundry": {
-      "append": "@Use[Weapon Attack|label:[Ranged, Shot] Weapon Attack (1A)]",
       "fx": {
        "all": [
         "{{fx:Rolling Shot (+2d6 Pi)}}"
@@ -212,7 +216,8 @@
    "foundry": {
     "img": "icons/svg/target.svg",
     "folder": "Archer",
-    "automation": "gold"
+    "automation": "mithril",
+    "automationNote": "the Evade chip, then the granted Weapon Attack (the card's button or the sheet's ticket); at 2 / 3 AP the extra damage rides only on that attack."
    }
   },
   {
@@ -236,7 +241,11 @@
      "ap": 1,
      "effects": "Make a [Ranged, Shot] Weapon Attack (1A) against the triggering creature. On a Tier 2 or 3, it is Hindered (EoT); on a Critical, it is also Pushed 2.",
      "foundry": {
-      "append": "@Use[Weapon Attack|label:Weapon Attack (1A)] @Condition[Hindered|eot]{Hindered (EoT)}"
+      "fx": {
+       "all": [
+        "{{fx:Overwatch (Weapon Attack)}}"
+       ]
+      }
      },
      "ruler": "does Weapon Attack"
     }
@@ -244,8 +253,10 @@
    "foundry": {
     "img": "icons/svg/target.svg",
     "folder": "Archer",
-    "automation": "silver",
-    "automationNote": "the Weapon Attack (the button); the trigger is by hand."
+    "automation": "mithril",
+    "automationNote": "offered by itself in the Reactions message after an enemy within 10 squares moves closer to you or an ally (once a turn per Reaction; not an Evade or a Forced Movement); Use makes the granted Weapon Attack against it at once, its Tier 2 and 3 rows carry the Hindered and Pushed chips.",
+    "moment": "enemyCloser",
+    "momentRange": 10
    }
   },
   {
@@ -267,7 +278,11 @@
      "ap": 1,
      "effects": "Make a [Ranged, Shot] Weapon Attack (1A) with 1 Boon against the attacker. On a Tier 3, the ally takes half of the triggering damage.",
      "foundry": {
-      "append": "@Use[Weapon Attack|boons:1|label:Weapon Attack (1A), 1 Boon]"
+      "fx": {
+       "all": [
+        "{{fx:Covering Shot (Weapon Attack, 1 Boon)}}"
+       ]
+      }
      },
      "ruler": "does Weapon Attack | each boon 1"
     }
@@ -275,8 +290,11 @@
    "foundry": {
     "img": "icons/svg/target.svg",
     "folder": "Archer",
-    "automation": "silver",
-    "automationNote": "the Weapon Attack with its Boon (the button); halving the ally's damage by hand."
+    "automation": "mithril",
+    "automationNote": "offered by itself in the Reactions message when a Strike would damage an ally within 10 squares (the damage waits); Use makes the granted Weapon Attack with its Boon against the attacker at once, and on a Tier 3 the held damage lands halved.",
+    "moment": "strikeDamage",
+    "momentRange": 10,
+    "momentTarget": "source"
    },
    "distance": "Weapon",
    "interrupt": "A [Strike] Action would damage an ally within 10 squares."
@@ -305,13 +323,16 @@
       "[V] 1[W] + [Mod] + 3d6 Pi; Vulnerable 2 (EoT)."
      ],
      "ruler": "on 3: vulnerable 2",
-     "critical": "The target is Blinded (EoT)."
+     "critical": "The target is Blinded (EoT).",
+     "foundry": {
+      "after": "@Condition[vulnerable|value:2|eot|tier:3] @Condition[blinded|eot|crit:yes]"
+     }
     }
    ],
    "foundry": {
     "img": "icons/svg/target.svg",
     "folder": "Archer",
-    "automation": "gold"
+    "automation": "diamond"
    },
    "_note": "Pack R-classes: the Encounter ceilings (decision sheet item 16): 3d6 / 4d6 became 2d6 / 3d6. Part 4: a Critical row, Blinded (EoT) (6.7 DE on one Tier 3 in twelve)."
   },
@@ -370,15 +391,22 @@
    "versions": [
     {
      "ap": 2,
-     "effects": "For 3 rounds (the area doesn't move), enemies in the area take 1 Bane on [Strike] Actions, and allies in it gain +1 Defense.",
-     "ruler": "rounds 3 | area 2 | allies 2 | banes 1 strike; defense 1 allies"
+     "effects": "For 3 rounds, enemies in the area take 1 Bane on [Strike] Actions, and allies in it gain +1 Defense.",
+     "ruler": "rounds 3 | area 2 | allies 2 | banes 1 strike; defense 1 allies",
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Covering Fire}}"
+       ]
+      }
+     }
     }
    ],
    "foundry": {
     "img": "icons/svg/target.svg",
     "folder": "Archer",
-    "automation": "bronze",
-    "automationNote": "the Bane and +1 Defense for creatures in the area (the area is placed and kept for 3 rounds).",
+    "automation": "diamond",
+    "automationNote": "the area is a Zone kept 3 rounds: enemies inside carry the Bane, allies inside the +1 Defense, both only while inside.",
     "areaCfg": {
      "targets": "all",
      "keep": true,
@@ -589,7 +617,7 @@
    "name": "Harrying Shots",
    "category": "Archer Escalation (Passive)",
    "flavor": "Every arrow says the same thing: not yet.",
-   "text": "While your Escalation is 1 or more, the first time each round you deal damage to your Marked Quarry with a [Shot] Action, they take 1 Bane on [Strike] Actions until the end of their next turn.",
+   "text": "While your Escalation is 1 or more, the first time each round you deal damage to your Marked Quarry with a [Shot] Action, they take 1 Bane on [Strike] Actions (EoT).",
    "foundry": {
     "img": "icons/svg/target.svg",
     "level": 1,
@@ -701,9 +729,16 @@
       "[V] 1[W] + [Mod] + 2d8 Pi",
       "[V] 1[W] + [Mod] + 3d8 Pi"
      ],
-     "effects": "Against your Marked Quarry, this Action has 1 Boon. If the target goes Down, you can choose a new Marked Quarry (0R) and make a [Ranged, Shot] Weapon Attack (1A) against them.",
+     "effects": "Against your [[Marked Quarry]], this Action has 1 Boon. If the target goes Down, you can choose a new Marked Quarry (0R) and make a [Ranged, Shot] Weapon Attack (1A) against them.",
      "foundry": {
-      "append": "@Use[Weapon Attack|label:Weapon Attack (1A)]"
+      "fx": {
+       "all": [
+        {
+         "uuid": "{{fx:Deathmark (Weapon Attack)}}",
+         "mode": "down"
+        }
+       ]
+      }
      }
     }
    ],
@@ -711,8 +746,8 @@
     "img": "icons/svg/target.svg",
     "folder": "Archer",
     "level": 1,
-    "automation": "silver",
-    "automationNote": "the Boon against the Quarry (the mark) and the Weapon Attack (the button); the new Quarry by hand."
+    "automation": "mithril",
+    "automationNote": "the Boon against the Quarry (the mark); when the damage puts the target Down, the Weapon Attack is granted by itself (the sheet's ticket; the damage card's Effects button for a miss-click); the new Quarry by hand."
    }
   },
   {
@@ -733,10 +768,15 @@
    "versions": [
     {
      "ap": 2,
-     "effects": "Make a [Ranged, Shot] Weapon Attack (1A) against your Marked Quarry. Until the end of your next turn, they are Vulnerable 2, and [Strike] Actions your allies make against them deal an extra [V] 1d6 Pi.",
+     "effects": "Make a [Ranged, Shot] Weapon Attack (1A) against your [[Marked Quarry]]. For 1 round, they are Vulnerable 2, and [Strike] Actions your allies make against them deal an extra [V] 1d6 Pi.",
      "ruler": "does Weapon Attack | always: vulnerable 2 round",
      "foundry": {
-      "append": "@Use[Weapon Attack|label:Weapon Attack (1A)]"
+      "fx": {
+       "all": [
+        "{{fx:Open Season (Weapon Attack)}}"
+       ]
+      },
+      "after": "@Condition[vulnerable|value:2|rounds:1] @Effect[{{fx:Open Season (the Quarry)}}|who:targets]"
      }
     }
    ],
@@ -744,23 +784,23 @@
     "img": "icons/svg/target.svg",
     "folder": "Archer",
     "level": 1,
-    "automation": "bronze",
-    "automationNote": "the Weapon Attack (the button); Vulnerable 2 on the Quarry (drop the condition by hand); the allies add [V] 1d6 Pi by hand."
+    "automation": "diamond",
+    "automationNote": "the Weapon Attack as a granted use (the card's button); Vulnerable 2 on the Quarry for 1 round with the card's Apply (its After the damage chain, v0.0.339); the allies' extra [V] 1d6 Pi with the Open Season (the Quarry) Effect the same chain puts on the Quarry for 1 round (v0.0.343; its rule is on the Effect's Details tab)."
    },
    "distance": "Weapon"
   },
   {
    "name": "Mark Quarry",
-   "category": "Marked Quarry",
+   "category": "Archer Feature",
    "level": 1,
-   "book": false,
-   "_note": "Foundry only (v0.0.186): the Action Marked Quarry grants to mark a creature; the book's Marked Quarry text covers it.",
+   "_note": "Foundry only from v0.0.186; in the book since v0.0.334; v0.0.335 (Lucas: \"make the feature just an Action the Archers get\"): the Archer's level 1 Action, with the Marked Quarry Feature's rules. In Foundry the Feature stays (book: false) to hold the mark's settings until Actions can (pack ACTION-SHEET). Mithril (Lucas, v0.0.335).",
    "flavor": "One name, one face, and the rest of the field goes quiet.",
    "traits": [
     "focus"
    ],
    "frequency": "Turn",
    "target": "One creature",
+   "rules": "At the start of each encounter, choose one enemy as your Marked Quarry with this Action. You gain 1 Boon on [Shot, Strike] Actions against them, and those Actions deal [V] [Mod] extra damage (the same subtype as your weapon) on a Tier 1. You can only have one Marked Quarry at a time.",
    "versions": [
     {
      "ap": 0,
@@ -768,13 +808,13 @@
     },
     {
      "ap": 1,
-     "effects": "The targeted creature becomes your Marked Quarry instead of the one you had (once per turn)."
+     "effects": "The targeted creature becomes your Marked Quarry instead of the one you had."
     }
    ],
    "foundry": {
     "img": "icons/svg/target.svg",
     "folder": "Archer",
-    "automation": "gold",
+    "automation": "diamond",
     "marksTarget": true
    },
    "ruler": false
