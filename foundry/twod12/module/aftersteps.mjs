@@ -221,7 +221,7 @@ export function fillSteps(texts, isSave = false) {
 export function versionEvents(sys, v, { names = {}, moments = {}, frequencies = {}, dmgText = () => "" } = {}) {
   const ev = [], add = (tile, cls, title, sub, to, o = {}) => ev.push({ tile, cls, title, sub, to, ...o });
   const traits = [...(sys.traits ?? [])], isSave = traits.includes("save"), a = sys.areaCfg ?? {}, hasArea = (Number(a.size) || 0) > 0;
-  if (sys.reaction) add("R", "esc", sys.reactionKind === "interrupt" ? "Interrupt" : "Trigger", String(moments[sys.moment] ?? "used by hand").replace(" within N", sys.momentRange ? ` within ${sys.momentRange}` : ""), "when");
+  if (sys.reaction) add("R", "esc", sys.reactionKind === "interrupt" ? "Interrupt" : "Trigger", String(moments[sys.moment] ?? "used by hand").replace(" within N", sys.momentRangeExpr ? ` within ${sys.momentRangeExpr}` : sys.momentRange ? ` within ${sys.momentRange}` : ""), "when");
   else add("T", "rule", "On your turn", sys.frequency && sys.frequency !== "none" && frequencies[sys.frequency] ? `Frequency: ${frequencies[sys.frequency]}` : "", "card");
   add(String(v.ap), "ap", `Pay ${v.ap} AP${sys.reaction ? " (R)" : ""}`, Number(sys.escalation) > 0 ? `needs Escalation ${sys.escalation}` : "", "vers");
   if (hasArea) add("A", "au", "Place the area", `${v.areaSize || a.size} ${a.shape === "line" ? "Line" : cap(a.shape || "emanation")}${a.shape === "line" ? "" : a.withinRange ? `, the weapon's ${a.withinRange} range` : Number(a.within) > 0 ? `, within ${a.within} sq.` : ", around you"}`, "when");

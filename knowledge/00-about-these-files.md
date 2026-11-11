@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-11 from the repository at: e32d829 2026-11-11 PACK ACTION-SHEET, session 2: the test checklist, HANDOFF, MASTER-PLAN, the backlog, README and knowledge for v0.0.355 to v0.0.357
+Built by tools/knowledge.py on 2026-11-11 from the repository at: 7e44ef7 2026-11-11 v0.0.358: Lucas's ten design notes on the Action sheet, Create Button and Generate Action (bare system lines with first names, the damage line like the card, formulas in chip options, a step on any set of Tiers)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

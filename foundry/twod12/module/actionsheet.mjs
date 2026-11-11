@@ -67,7 +67,8 @@ function whenSec(m) {
   const rx = grid([
     ["Kind", seg("system.reactionKind", s.reactionKind ?? "trigger", [["interrupt", "Interrupt (before it)"], ["trigger", "Trigger (after it)"]], "w")],
     ["Moment", sel('name="system.moment"', s.moment ?? "", moments, "Moment")],
-    ["Within", `${step("system.momentRange", s.momentRange ?? 0, 0, 60)} <span class="fr-m">squares to the creature of the moment; 0: the Action's Distance${s.distance ? ` (${esc(s.distance)})` : ""}, or anywhere</span>`],
+    // v0.0.359 (Lucas): a number or a formula
+    ["Within", `${field("@within", s.momentRangeExpr || String(s.momentRange ?? 0), "0", "amt")} <span class="fr-m">squares to the creature of the moment; a number or a formula (<code>pow+2</code>, <code>stage</code>, <code>speed/2</code>); 0: the Action's Distance${s.distance ? ` (${esc(s.distance)})` : ""}, or anywhere</span>`],
     ["Counts", tog("system.momentSelf", s.momentSelf, "You too (\"you or an ally\")")],
     ["Used on", seg("system.momentTarget", s.momentTarget ?? "subject", [["subject", "The creature of the moment"], ["source", "The one that caused it"]], "w")],
     ["Card line", named("system.trigger", s.trigger, "An enemy within 5 squares makes a [Strike] Action against an ally.", "wide")],
@@ -222,6 +223,7 @@ export function wireActionTab(sheet, root) {
   const change = async (f, fn) => {
     if (f === "@area") { const on = (Number(sys().areaCfg?.size) || 0) > 0; return upd({ "system.areaCfg.size": on ? 0 : 1 }); }
     if (f === "@placed") { const v = fn(""); return upd(v === "weapon" ? { "system.areaCfg.withinRange": sys().areaCfg?.withinRange || "normal", "system.areaCfg.within": 0 } : v === "sq" ? { "system.areaCfg.withinRange": "", "system.areaCfg.within": Math.max(1, Number(sys().areaCfg?.within) || 5) } : { "system.areaCfg.withinRange": "", "system.areaCfg.within": 0 }); }
+    if (f === "@within") { const v = String(fn("")).trim(); return /^\d*$/.test(v) ? upd({ "system.momentRange": Number(v) || 0, "system.momentRangeExpr": "" }) : upd({ "system.momentRangeExpr": v.toLowerCase().replace(/\s+/g, ""), "system.momentRange": 0 }); }
     if (f.startsWith("system.")) { const cur = getP(item, f); return upd({ [f]: fn(cur) }); }
     if (f.startsWith("v.")) {
       const k = f.slice(2);

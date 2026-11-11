@@ -41,4 +41,7 @@ first names: Aveline | Ogre | The Herald | The Herald | Sylwen
 a line's names: <b>Aveline</b> keeps Guard 10. <b>Ogre</b> is Pushed 1. | two Ogres keep their names: <b>Ogre Chieftain</b> and <b>Ogre Brute</b>
 a system line uses them: Aveline keeps Guard 10 | its message shows no header: true | the flanking overlay shares the rule: true
 the step's buttons in its pane, not on its row: true | four Tier switches: 4 | the + trait picker first: true | no hover underline on buttons: true | the area tooltip hides over a window: true
+--- v0.0.359 (Lucas on v0.0.358)
+a Reaction's Within takes a formula: the field: true | stored beside the number: true | worked out for the creature when read: true | pow+2 with Power 3: 5 | the order of events shows it: true
+the area tooltip asks what is under the mouse: true
 the by-Stage row reads TWOD12.stages: true

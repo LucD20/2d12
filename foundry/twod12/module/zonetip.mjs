@@ -36,8 +36,12 @@ export function zoneTipLines(z, nameOf = () => null) {
 let el = null, queued = false, last = null;
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 function hide() { if (el) el.style.display = "none"; }
+/** v0.0.359 (Lucas: "still showing over windows"): the map's pointermove also fires while the mouse is over a window (PIXI listens on the document):
+ *  only the map itself under the mouse counts. */
+const overMap = ev => { try { const t = document.elementFromPoint(ev.clientX, ev.clientY); return !t || t === canvas?.app?.view || t.id === "board"; } catch (e) { return true; } };
 function show(ev) {
   queued = false;
+  if (!overMap(ev)) return hide();
   if (!canvas?.ready || !canvas.grid?.isSquare || !last) return hide();
   const p = last, off = canvas.grid.getOffset?.({ x: p.x, y: p.y });
   if (!off) return hide();

@@ -1,4 +1,5 @@
 import { TWOD12, migrateTags, npcHm, npcCv, stageOf, stageMod } from "./config.mjs";
+import { evalExpr } from "./refs.mjs";
 import { migrateSettings, migrateRules, migrateZone } from "./settingsmigrate.mjs";
 import { classModifiers, modOf, classTrack } from "./modifiers.mjs";
 
@@ -423,6 +424,13 @@ export class ActionData extends foundry.abstract.TypeDataModel {
       this.areaDistance = c.size > 0 && c.shape !== "line" ? (c.withinRange ? `Your weapon's ${c.withinRange} range` : (c.within > 0 ? `${c.within} sq.` : "")) : "";
     }
     if (String(this.area ?? "").trim() && this.traits instanceof Set && !this.traits.has("area")) this.traits.add("area");
+    // v0.0.359: a Reaction's Within written as a formula is worked out for the creature that has the Action, when it is read (its Modifiers and Stage
+    // are ready by then), so every reader of momentRange gets the number. On an Action with no creature: 0 (anywhere, or the Action's Distance).
+    const expr = String(this.momentRangeExpr ?? "").trim();
+    if (expr) {
+      const stored = this.momentRange, self = this;
+      try { Object.defineProperty(this, "momentRange", { configurable: true, enumerable: true, set() { /* the formula decides */ }, get() { const actor = self.parent?.parent; if (!actor?.system) return stored; const v = evalExpr(expr, actor); return Number.isFinite(v) ? Math.max(0, Math.trunc(v)) : stored; } }); } catch (e) { /* keep the number */ }
+    }
   }
 
   static defineSchema() {
@@ -439,6 +447,7 @@ export class ActionData extends foundry.abstract.TypeDataModel {
       reaction: bool(),
       reactionKind: choice({ interrupt: "Interrupt", trigger: "Trigger" }, "trigger"),
       // v0.0.261 (Lucas, Divine Intervention): a Reaction with a moment is offered by itself when the moment comes (within this many squares; 0: anywhere)
+      momentRangeExpr: str(),   // v0.0.359 (Lucas: "the Reaction's Within is still not a formula"): Within as a formula (pow+2, stage, speed/2); empty: the number
       moment: choice(TWOD12.moments, ""), momentRange: int(0, 0), momentThreat: bool(),   // v0.0.303: only a creature you threaten (Opportunity Attack)
      
       // v0.0.272 (pack RX): the Reaction's owner counts as the creature of the moment too ("you or an ally"); whom the Reaction is used on
