@@ -3,6 +3,7 @@
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
 ## Where we are now (v0.0.364, 243 tests; READ THIS FIRST)
+- **2026-11-11 (no new version): the automated playtest environment planned** (Lucas: an environment with grid, tokens and automated combats, for Fable). The brief and what the ruler still lacks: `book/sim-brief.md` (in DESIGN_DOCS). The new order (MASTER-PLAN section 3, item 3): **the ruler catch-up's rules part, then SIM (four sessions), then the Stage 0 run in SIM**. **NEXT:** the ruler catch-up, rules part (sim-brief.md section 3).
 - **2026-11-11: `pack-perf` (v0.0.361 to v0.0.364: PACK PERF and the Turn Breakdown dock) merged into main** (Lucas: "Perfect. Merge."; a fast-forward, no conflicts). **NEXT:** the ruler catch-up, then Stage 0 (MASTER-PLAN section 3).
 - **v0.0.364 (2026-11-11, branch `pack-perf`): Lucas on v0.0.363 (the Turn button at the bottom, Export still shown):** the Turn button replaces every Export Chat Log button whenever Foundry draws it (a MutationObserver; V14 draws the chat's buttons after the chat). **NEXT:** Lucas's test; merge `pack-perf` when he says.
 - **v0.0.363 (2026-11-11, branch `pack-perf`): Lucas on v0.0.362 (the dock floated over the map with the chat input, took no clicks, the button misplaced):** the dock is its own fixed element above the chat's input wherever V14 shows it; the Turn button in Export's place; `game.twod12.dockInfo()`. **NEXT:** Lucas's test; merge `pack-perf` when he says.

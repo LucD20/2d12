@@ -29,6 +29,7 @@ OUT = ROOT / "knowledge"
 
 # Design documents still in progress (decided or proposed, not fully in rules-src yet). Keep this list short.
 DESIGN_DOCS = [
+    "book/sim-brief.md",        # the automated playtest environment (SIM): the brief, the order, what the ruler lacks (2026-11-11)
     "book/expedition-loop.md",  # Momentum, Alert, the decided fight and the Parting Beat: a candidate (2026-11-09)
     "book/playtest-2.md",       # playtest 2 and the rework it decided (pack R)
     "book/playtest-3.md",       # playtest 3, the baseline (no NPC Weapon Attack); its questions
