@@ -4235,3 +4235,45 @@ a.twod12-inline.calc .ti-name, a.twod12-inline.calc { color: #1a3fb0; }   /* v0.
 .application .as-tab .fr-it.as-step .fr-itxt { flex: 1 1 auto; }
 .application .as-tab .as-ord { position: absolute; right: 4px; top: 4px; background: inherit; }
 .application .as-tab .as-flowcols.as-norail { grid-template-columns: minmax(0, 1fr); }
+
+/* ================================================================== v0.0.356 PACK ACTION-SHEET: the Create Button window (builder.mjs; Lucas's pick
+   "B3 on top of B1", foundry/mockups/button-builder.html). The fr- pieces and the as- Tier rows above; this block: the write-it box, the kinds, the look. */
+.application.twod12-builder .window-content { padding: 0; }
+.application.twod12-builder .bb-tab { padding: 12px 14px 4px; }
+.application.twod12-builder .bb-words, .application.twod12-builder .bb-fields { padding: 8px 10px; border: 1px solid var(--sk-line); border-left: 4px solid var(--sk-line); border-radius: 4px; background: var(--sk-panel); margin-bottom: 10px; }
+.application.twod12-builder .bb-words.on, .application.twod12-builder .bb-fields.on { border-left-color: var(--sk-amber); background: #fff; }
+.application.twod12-builder .bb-fields > h3 { margin: 0 0 8px; }
+.application.twod12-builder .bb-fields > h3 small { font: 400 11px Signika, sans-serif; color: var(--sk-mut); margin-left: 6px; }
+.application.twod12-styled .sk .bb-typel { display: block; font-weight: 700; color: var(--sk-ink); font-size: 13px; margin-bottom: 4px; }
+.application.twod12-builder .bb-typel small { font-weight: 400; color: var(--sk-mut); margin-left: 6px; }
+.application.twod12-builder .fr-tab .fr-ta.bb-type { width: 100%; font: 14px/1.5 ui-monospace, Consolas, monospace; min-height: 3.4em; }
+.application.twod12-builder .bb-quick { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin: 8px 0 4px; }
+.application.twod12-styled .sk .bb-quick button { font-size: 12px; padding: 2px 9px; width: auto; height: auto; line-height: 1.5; }
+.application.twod12-styled .sk table.bb-read { width: 100%; border-collapse: collapse; margin: 8px 0 0; background: #fff; border: 1px solid var(--sk-line); }
+.application.twod12-styled .sk table.bb-read th, .application.twod12-styled .sk table.bb-read td { border: 0; border-bottom: 1px solid var(--sk-line); padding: 4px 8px; text-align: left; vertical-align: middle; color: var(--sk-ink); background: none; }
+.application.twod12-styled .sk table.bb-read th { font: 700 11px Signika, sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--sk-mut); background: var(--sk-panel); }
+.application.twod12-styled .sk table.bb-read tr.no td { background: #fbf6e6; }
+.application.twod12-builder .bb-tick { display: inline-block; width: 16px; font-weight: 700; color: #2f6b3a; } .application.twod12-builder tr.no .bb-tick { color: #8a6a14; }
+.application.twod12-builder table.bb-read code { font-size: 11.5px; overflow-wrap: anywhere; }
+.application.twod12-builder .bb-kinds { display: grid; gap: 5px; margin-bottom: 10px; }
+.application.twod12-builder .bb-kg { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.application.twod12-builder .bb-kg > span { width: 104px; font: 700 11px Signika, sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--sk-mut); }
+.application.twod12-styled .sk button.bb-kind { display: inline-flex; gap: 6px; align-items: center; padding: 3px 9px 3px 4px; width: auto; height: auto; line-height: 1.4; cursor: pointer; }
+.application.twod12-styled .sk button.bb-kind.on { background: var(--sk-navy); color: #fff; border-color: var(--sk-navy); font-weight: 700; }
+.application.twod12-builder .bb-drow { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 4px; }
+.application.twod12-builder .as-dc.bb-warn { background: #fbf0d0; border-color: #d9c078; }
+.application.twod12-builder .bb-out { display: grid; gap: 8px; padding: 10px 12px; border: 1px solid var(--sk-line); border-left: 4px solid var(--sk-amber); border-radius: 4px; background: #fff; margin-bottom: 10px; }
+.application.twod12-builder .bb-cap { display: block; font: 700 11px Signika, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--sk-mut); }
+.application.twod12-builder .bb-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; align-items: center; }
+.application.twod12-builder code.bb-cmd { display: block; margin-top: 2px; padding: 5px 7px; font: 12px/1.45 ui-monospace, Consolas, monospace; overflow-wrap: anywhere; white-space: pre-wrap; user-select: all; }
+.application.twod12-builder .bb-recent { border-top: 1px dotted var(--sk-line); padding: 8px 0; }
+.application.twod12-builder .bb-recent summary { cursor: pointer; font-weight: 700; color: var(--sk-acc); }
+.application.twod12-styled .sk button.bb-rec { font: 11.5px ui-monospace, Consolas, monospace; padding: 2px 7px; width: auto; height: auto; line-height: 1.5; }
+.application.twod12-builder .bb-foot { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; align-items: center; padding: 10px 14px; border-top: 1px solid var(--sk-line); background: var(--sk-panel); }
+.application.twod12-builder .bb-foot .fr-m { margin-right: auto; color: var(--sk-mut); font-size: 12px; }
+.application.twod12-styled .sk .bb-foot button { padding: 5px 14px; width: auto; height: auto; line-height: 1.5; }
+.application.twod12-styled .sk .bb-foot button.bb-copy { font-weight: 700; border-color: var(--sk-navy); color: var(--sk-navy); }
+.application.twod12-styled .sk .bb-foot button.bb-go { background: var(--sk-acc); color: #fff; border-color: var(--sk-acc); font-weight: 700; }
+.application.twod12-styled .sk .bb-foot button:disabled { opacity: .45; cursor: not-allowed; }
+.application.twod12-builder .bb-foot .fr-q { cursor: pointer; width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--sk-line); display: inline-grid; place-items: center; font-weight: 700; color: var(--sk-mut); }
+.application.twod12-builder .bb-foot .fr-q.on { background: var(--sk-navy); color: #fff; border-color: var(--sk-navy); }

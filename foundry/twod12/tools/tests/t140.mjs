@@ -101,7 +101,7 @@ console.log("the Haul card's flavor:", b.basicItemData("haul").system.flavor);
 console.log("--- @Move[pulled]");
 const gen = await import(ROOTURL + "module/gen.mjs").catch(() => null);
 console.log("the generator reads 'Pulled 3':", gen?.convertEffects ? gen.convertEffects("Pulled 3.") : src("module/gen.mjs").includes("(pushed|pulled|advance|walk|evade)"), "| words back:", src("module/genaction.mjs").includes("@Move\\[(pushed|pulled|slid|advance|evade|reposition)"));
-console.log("the builder offers Pulled:", src("module/builder.mjs").includes('pulled: "Pulled (forced movement)"'), "| the button:", src("module/inline.mjs").includes('pulled: "Pulled"'), "| a defense tag:", src("module/defense.mjs").includes('tags.add("pulled")'), "| the flow:", mvSrc.includes('if (cfg.kind === "pulled") return pushFlow(cfg, ctx, "pull");'));
+console.log("the builder offers Pulled:", src("module/builder.mjs").includes('["pulled", "Pulled"]'), "| the button:", src("module/inline.mjs").includes('pulled: "Pulled"'), "| a defense tag:", src("module/defense.mjs").includes('tags.add("pulled")'), "| the flow:", mvSrc.includes('if (cfg.kind === "pulled") return pushFlow(cfg, ctx, "pull");'));
 
 console.log("--- Squeezing");
 const content = src("tools/content.mjs");

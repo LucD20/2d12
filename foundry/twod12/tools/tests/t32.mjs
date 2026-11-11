@@ -20,7 +20,8 @@ dialogAnswer = 2; await r.handleRally({ n: 2, upto: true }); console.log("up to 
 // builder: one window at a time
 let opened = 0;
 foundry.applications.api.DialogV2.prompt = async () => { opened++; await new Promise(r => setTimeout(r, 30)); return null; };
+foundry.applications.api.ApplicationV2 = class { async render() { globalThis.__bbOpened = (globalThis.__bbOpened ?? 0) + 1; await new Promise(r => setTimeout(r, 30)); this.rendered = true; return this; } bringToFront() {} };
 const b = await import(ROOTURL + "module/builder.mjs");
 globalThis.TWOD12 = undefined;
 await Promise.all([b.openBuilder(), b.openBuilder(), b.openBuilder()]).catch(e => console.log("builder err:", e.message.slice(0, 80)));
-console.log("windows opened for 3 clicks:", opened);
+console.log("windows opened for 3 clicks:", globalThis.__bbOpened ?? 0);   // v0.0.356: the builder is the system's own window (ApplicationV2), still one at a time

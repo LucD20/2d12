@@ -1,0 +1,37 @@
+--- the errors (D41 to D46)
+a label's marks: @Check[body|label:Climb the wall] | read back: Climb the wall
+a Save's Tier like the card: {"text":"1d8[resolve,holy], \"Pushed 2\"","skipped":[]} {"text":"0","skipped":[]} {"text":"1d6[resolve,holy]","skipped":["1[W]"]}
+Rebuke's Save as a button: @Save[appeal|dc:@power|traits:divine|t1:1d8[resolve,holy], "Pushed 2"|t2:1d6[resolve,holy], "Pushed 1"|t3:0]
+  read back: dc power | t1 [["1d8","M","Ho"]] ["Pushed 2"] | t3 0
+no button from empty fields: damage: asks, move: asks, rally: asks, template: asks, condition: asks, effect: asks, guard: asks, use: asks | a filled one: true
+a Line has no self: @Template[line|distance:10] | an Emanation keeps it: @Template[emanation|distance:2|self:yes]
+the DC: card -> @Check[mind] | 13 -> @Check[mind|dc:13] | power -> @Check[mind|dc:@power] | weapon -> @Check[mind|dc:@weapon] | set -> @Check[mind|dc:15]
+  the old form still reads (no dcMode): @Check[body|dc:14] @Check[body]
+Vigor / Resolve in a chip: @Damage[(1d6+2)[resolve,holy],2d6[vigor]] | read back: [["1d6+2","M","Ho"],["2d6","B",""]] | body / mind still read: ["M","B"]
+--- the missing kinds (D52), each read back
+  @Condition[vulnerable|value:2|eot] -> vulnerable 2 eot
+  @Condition[frightened|rounds:1] -> frightened rounds 1
+  @Effect[Compendium.twod12.effects.Item.abc]{Beacon} -> Compendium.twod12.effects.Item.abc
+  @Guard[1d8+mod|who:pick|near:5] -> 1d8+mod pick 5
+  @Heal[2d6+pow] -> 2d6+pow
+  @Reduce[2d6+pow|who:pick] -> 2d6+pow pick
+  @Use[Weapon Attack|ap:0] -> Weapon Attack 0
+  @Rally[2] -> 2
+  @Move[pushed|distance:1|from:target|pick:yes|area:2] -> pushed 1 target true 2
+--- write it (D53)
+  ok Appeal Save, DC 15 => @Save[appeal|dc:15]
+  ok Pushed 2 => @Move[pushed|distance:2]
+  ok Vulnerable 2 (EoT) => @Condition[vulnerable|value:2|eot]
+  ok [R] 2d6 Ho => @Damage[2d6[resolve,holy]]
+  ok Body Check => @Check[body]
+  ok Rally 1 => @Rally[1]
+  ok 2 Emanation => @Template[emanation|distance:2]
+  ok Evade 1 => @Move[evade|distance:1]
+  ?? blinded by the flash => 
+what is sent: only what was read: @Move[pushed|distance:2] @Condition[prone] | nothing read: Nothing of what you wrote was understood.
+from the fields: @Move[pushed|distance:3] | an empty kind asks: Drop an Effect on the box.
+--- the window
+12 kinds: 12 | the write-it box on top: true | two ways out: true | Recent: true | the Traits grid is a + trait picker: true
+the Area without the old kept-area options (D49): true | buttons off while a field is missing: true
+the system's window, not a Foundry default one: true | sent as if typed: true | a failed copy selects the text: true | it stays open: true
+opened from the Action sheet's Effects text: true

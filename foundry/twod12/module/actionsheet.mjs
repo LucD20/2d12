@@ -153,7 +153,7 @@ function versionBody(v, vi, m) {
   const tiers = v.noTiers ? "" : `<div class="as-tiers">${TIERC.map(tierRow).join("")}<div class="as-tier crit"><span class="as-tl">Critical</span><div class="as-tb">${field("v.critical", v.critical, "Only on Doubles with a Tier 3 (empty: none)", "wide as-tx")}</div></div></div>${help("Write the damage like the card: <code>[V] 1[W] + [R] 1d6 Ho</code> ([V] Vigor, [R] Resolve; <code>1[W]</code> the weapon's damage; <code>[Mod]</code> the Modifier; a subtype's two letters). The chips under the field show what was understood.")}`;
   return `${grid([["Cost", `${step("v.ap", v.ap, 0, 5)} <span class="fr-m">AP${s.reaction ? " (the Reaction AP)" : ""}</span> ${tog("v.@tiers", !v.noTiers, "It has Tiers")}${calc && !v.noTiers ? ` <span class="as-calc">${calc.hasExp ? `Exp ${esc(calc.total)} · ` : ""}Avg ${esc(calc.meanAvg)}</span>` : ""}${m.hasModes ? ` <span class="fr-m">Split</span> ${sel('data-as-in="v.mode"', v.mode ?? "", [["", "(not a Split Action)"], ["weapon", "Weapon mode"], ["power", "Power mode"]], "Mode")}` : ""}`]])}
     ${tiers}
-    ${grid([["Effects", `<textarea class="fr-ta" rows="3" data-as-in="v.effects" placeholder="The card's Effects line (the book's words)" aria-label="Effects">${esc(v.effects)}</textarea>`],
+    ${grid([["Effects", `<textarea class="fr-ta" rows="3" data-as-in="v.effects" placeholder="The card's Effects line (the book's words)" aria-label="Effects">${esc(v.effects)}</textarea><a class="as-link" data-as="button" role="button" tabindex="0">+ a button in this text</a>`],
       areaOn ? ["Area", `<span class="fr-m">Size</span> ${step("v.@size", v.areaSize || a.size, 1, 30)}${a.keep ? ` <span class="fr-m">Rounds</span> ${step("v.@rounds", v.areaRounds || a.rounds || 0, 0, 20)} <span class="fr-m">0: until removed</span>` : ""}`] : null])}
     <h4 class="as-h4" data-as-anchor="use">${v.noTiers ? "On use" : "On a Tier 2 or 3"} <small>${v.noTiers ? "Effects applied when the Action is used" : "Effects applied with the card's Effects line (Tier 2+)"}</small></h4>${fxBlock(v, m)}
     <h4 class="as-h4" data-as-anchor="after">After the damage <small>${A.parseAfter(v.after).filter(x => x.kind !== "text").length} step(s)</small></h4>${afterBlock(v, m)}`;
@@ -267,6 +267,8 @@ export function wireActionTab(sheet, root) {
     if (a === "stepmove") { ev.stopPropagation(); const i = Number(d.i), to = i + Number(d.d); return mutSteps(steps => { if (to < 0 || to >= steps.length) return; [steps[i], steps[to]] = [steps[to], steps[i]]; st.step = to; }); }
     if (a === "fxdel") return mutV(v => { v.fx ??= { all: [], t1: [], t2: [], t3: [] }; (v.fx[d.t] ?? []).splice(Number(d.i), 1); });
     if (a === "fill") return fillFromText();
+    // v0.0.356: Create Button, opened from the Effects text: Copy puts the button at its end
+    if (a === "button") { const { openBuilder } = await import("./builder.mjs"); return openBuilder({ insert: cmd => mutV(v => { v.effects = `${String(v.effects ?? "").trim()} ${cmd}`.trim(); }) }); }
   });
   tab.addEventListener("keydown", ev => { if ((ev.key === "Enter" || ev.key === " ") && ev.target.matches?.("[data-as][tabindex]")) { ev.preventDefault(); ev.target.click(); } });
   tab.addEventListener("change", async ev => {

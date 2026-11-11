@@ -43,7 +43,7 @@ const SUB = { ...Object.fromEntries(Object.entries(TWOD12.subtypes).filter(([k])
 function parseTag(tags) {
   const o = { pool: "", sub: "", nl: undefined };
   for (const t of (tags ?? "").split(",").map(x => x.trim().toLowerCase()).filter(Boolean)) {
-    if (t === "body") o.pool = "B"; else if (t === "mind") o.pool = "M"; else if (t === "choice") o.pool = "C";
+    if (t === "body" || t === "vigor" || t === "v") o.pool = "B"; else if (t === "mind" || t === "resolve" || t === "r") o.pool = "M"; else if (t === "choice") o.pool = "C";   // v0.0.356 (D46): the pools' names since pack R-core; body / mind still read
     else if (t === "nonlethal") o.nl = true; else if (t === "lethal") o.nl = false;
     else if (SUB[t]) o.sub = SUB[t];
   }
