@@ -1,7 +1,6 @@
 // v0.0.302 (Lucas tested v0.0.301): "Show flanking", a toggle in the token controls. It draws how Flanking stands on the map right now (book, Ch. 3; the same
 // test as the roll: flanking.mjs flankPicture): for every creature threatened by two or more enemies, a line from each flanker with the Field Boons it gets
-// ("+2"; "+0" when its Boons are cancelled), a dashed orange line from each creature that cancels one of them, and a small note under each creature that
-// threatens no one ("no Melee weapon in hand (Crossbow)"). Only for the user who turns it on; players see only the tokens they can see. It follows the tokens.
+// ("+2"), a dashed orange line from each creature that cancels one of them. (v0.0.350: no "+0" labels and no "threatens no one" notes.) Only for the user who turns it on; players see only the tokens they can see. It follows the tokens.
 import { flankPicture } from "./flanking.mjs";
 
 const NAME = "twod12-flank";
@@ -43,9 +42,19 @@ function ring(g, tok, color, width = 4, dash = false) {
   for (let i = 0; i < n; i += 2) { const a0 = (i / n) * Math.PI * 2, a1 = ((i + 1) / n) * Math.PI * 2; g.moveTo(c.x + r * Math.cos(a0), c.y + r * Math.sin(a0)).arc(c.x, c.y, r, a0, a1); }
 }
 
-/** The text over a flanked creature: "Flanked: Kai +2 · Nari +1 · Rin +0 (cancelled by Orc)". */
+/** v0.0.350 (Lucas, playtest 4: "too cluttered; only first names"): a creature's first name ("Sylwen (Elf Archer...)" -> "Sylwen"). */
+export const firstName = n => (String(n ?? "").replace(/\s*\([^()]*\)\s*$/, "").trim().split(/\s+/)[0] || String(n ?? ""));
+/** The text over a flanked creature: "Flanked: Kai +2 · Nari +1" (v0.0.350: first names; a flanker whose Boons are all cancelled is left out). "" when none gives any. */
 export function flankedText(row) {
-  return `Flanked: ${row.flankers.map(f => `${f.token.name} +${f.boons}${f.cancels.length ? ` (${f.raw === 0 ? "cancelled" : `−${f.cancels.length}`} by ${f.cancels.map(c => c.name).join(", ")})` : ""}`).join(" · ")}`;
+  const live = row.flankers.filter(f => f.boons > 0);
+  return live.length ? `Flanked: ${live.map(f => `${firstName(f.token.name)} +${f.boons}${f.cancels.length ? ` (−${f.cancels.length} ${f.cancels.map(c => firstName(c.name)).join(", ")})` : ""}`).join(" · ")}` : "";
+}
+/** v0.0.350: pure: a position for a label of size w × h that overlaps none placed so far (moved up, then down, by its height). placed: [{x, y, w, h}] (centers). */
+export function freeSpot(placed, x, y, w, h) {
+  const hits = (cx, cy) => placed.some(p => Math.abs(p.x - cx) < (p.w + w) / 2 + 2 && Math.abs(p.y - cy) < (p.h + h) / 2 + 2);
+  for (let k = 0; k < 12; k++) { const cy = y + (k % 2 ? 1 : -1) * Math.ceil(k / 2) * (h + 3); if (!hits(x, cy)) { placed.push({ x, y: cy, w, h }); return { x, y: cy }; } }
+  placed.push({ x, y, w, h });
+  return { x, y };
 }
 
 function draw() {
@@ -57,38 +66,32 @@ function draw() {
   box.name = NAME; box.eventMode = "none";
   const g = new PIXI.Graphics();
   box.addChild(g);
-  const FLANKED = 0xf0c040, IDLE = 0x9a9a9a;
+  const FLANKED = 0xf0c040, placed = [];
+  // v0.0.350 (Lucas, playtest 4: "too cluttered; first names; nothing on top of another"): one label per flanked creature, only the flankers that
+  // give Boons (no "+0"), no "threatens no one" notes; every label is moved off the ones already placed
+  const put = (t, x, y) => { const w = t.width || 60, h = t.height || 20, p = freeSpot(placed, x, y, w, h); t.position.set(p.x, p.y); box.addChild(t); };
+  const seen = new Set();
   for (const row of pic.flanked) {
-    if (!visible(row.target)) continue;
-    ring(g, row.target, FLANKED, 6);   // v0.0.303 (Lucas): outlines: the flanked creature gold, each flanker in its side's color, a canceller dashed orange
-    for (const f of row.flankers) if (visible(f.token)) ring(g, f.token, SIDE[String(f.token.document?.disposition ?? 0)] ?? SIDE[0], f.boons ? 4 : 2);
-    for (const c of new Set(row.flankers.flatMap(f => f.cancels))) if (visible(c)) ring(g, c, CANCEL, 3, true);
-    for (const f of row.flankers) {
-      if (!visible(f.token)) continue;
+    if (!visible(row.target) || seen.has(row.target.id)) continue;
+    const live = row.flankers.filter(f => f.boons > 0 && visible(f.token));
+    if (!live.length) continue;
+    seen.add(row.target.id);
+    ring(g, row.target, FLANKED, 6);   // the flanked creature gold, each flanker in its side's color, a canceller dashed orange
+    for (const f of live) ring(g, f.token, SIDE[String(f.token.document?.disposition ?? 0)] ?? SIDE[0], 4);
+    for (const f of live) {
       const e = ends(f.token, row.target), color = SIDE[String(f.token.document?.disposition ?? 0)] ?? SIDE[0];
-      g.lineStyle(f.boons ? 4 : 2, color, f.boons ? 0.95 : 0.55).moveTo(e.x1, e.y1).lineTo(e.x2, e.y2);
-      const t = label(`+${f.boons}`, f.boons ? "#ffffff" : "#c9c9c9", fsz(0.28));
-      t.anchor.set(0.5); t.position.set(e.x1 + (e.x2 - e.x1) * 0.35, e.y1 + (e.y2 - e.y1) * 0.35);
-      box.addChild(t);
+      g.lineStyle(4, color, 0.95).moveTo(e.x1, e.y1).lineTo(e.x2, e.y2);
+      const t = label(`+${f.boons}`, "#ffffff", fsz(0.26));
+      t.anchor.set(0.5); put(t, e.x1 + (e.x2 - e.x1) * 0.35, e.y1 + (e.y2 - e.y1) * 0.35);
       for (const c of f.cancels) {
         if (!visible(c)) continue;
+        ring(g, c, CANCEL, 3, true);
         const k = ends(c, f.token);
         g.lineStyle(3, CANCEL, 0.95); dashed(g, k.x1, k.y1, k.x2, k.y2);
-        const ct = label("−1", "#ffd27a", fsz(0.24), 0x4a2e00);
-        ct.anchor.set(0.5); ct.position.set((k.x1 + k.x2) / 2, (k.y1 + k.y2) / 2);
-        box.addChild(ct);
       }
     }
     const tt = label(flankedText(row), "#ffe3a3", fsz(0.22));
-    tt.anchor.set(0.5, 1); tt.position.set(centerOf(row.target).x, (row.target.document?.y ?? 0) - 10);
-    box.addChild(tt);
-  }
-  for (const x of pic.idle) {
-    if (!visible(x.token)) continue;
-    ring(g, x.token, IDLE, 2, true);
-    const t = label(`threatens no one: ${x.why}`, "#e0e0e0", fsz(0.18));
-    t.anchor.set(0.5, 0); t.position.set(centerOf(x.token).x, (x.token.document?.y ?? 0) + (x.token.h ?? canvas.grid.size) + 6);
-    box.addChild(t);
+    tt.anchor.set(0.5); put(tt, centerOf(row.target).x, (row.target.document?.y ?? 0) - fsz(0.2));
   }
   layer()?.addChild(box);
 }

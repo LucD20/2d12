@@ -1,0 +1,9 @@
+a creature on the center line: true Low cover | who: Durgan (Dwarf Paladin) | the center: {"x":650,"y":50}
+the label: Low cover: 0 blocked, Durgan in the way | the line drawn: true
+label: Flanked: Aveline +2 | all cancelled: ""
+labels never on each other: [{"x":100,"y":100},{"x":100,"y":123},{"x":110,"y":72}] | no idle notes: true
+Covering Fire: Enemies: 1 Bane / Allies: +1 Defense / 3 rounds
+the bar movable (its grip, kept in this browser): true | lower: true
+free: 5 0 | a wall at 4: 3 2 {"self":4,"other":0} | a Goblin at 3: 2 3 {"self":3,"other":3}
+GM only, Alt held, Foundry's move cancelled: true | no Reactions (twod12Forced): true
+stamp: true | no tag: true

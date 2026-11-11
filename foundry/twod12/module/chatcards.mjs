@@ -79,7 +79,9 @@ export function stampHtml(r, { hide = false } = {}) {
   const line = r.crit ? "Critical" : raised ? "Doubles ↑" : hide ? "" : `vs ${r.dcLabel ?? "DC"} ${r.dc}`;
   // v0.0.348 (Lucas: "doubles need to be clearer; we already have green for the Tiers and blue for a Critical: a golden outline?"): a roll with
   // Doubles has a gold outline and a "Doubles" tag on its stamp
-  return `<div class="cc-stamp ${tierCls(r.tier, r.crit)}${r.doubles ? " dbl" : ""}"${r.doubles ? ' data-tooltip="Doubles"' : ""}>${r.doubles ? '<span class="cc-dbltag">Doubles</span>' : ""}<small>${r.crit ? "CRIT" : "TIER"}</small><b>${r.tier}</b>${line ? `<small class="cc-stl">${esc(line)}</small>` : ""}</div>`;
+  // v0.0.350 (Lucas: "no 'Doubles' word on the outline; the Doubles inside the Tier square with the golden background"): the outline alone, and the
+  // stamp's "Doubles ↑" line in gold
+  return `<div class="cc-stamp ${tierCls(r.tier, r.crit)}${r.doubles ? " dbl" : ""}"${r.doubles ? ' data-tooltip="Doubles"' : ""}><small>${r.crit ? "CRIT" : "TIER"}</small><b>${r.tier}</b>${line ? `<small class="cc-stl${/Doubles/.test(line) ? " dbl" : ""}">${esc(line)}</small>` : ""}</div>`;
 }
 /** A small Tier pill (22px, the numeral) or a word pill ("Tier 2"). */
 export const tierPill = (tier, crit = false, word = false, dbl = false) => `<span class="cc-pill ${tierCls(tier, crit)}${word ? " word" : ""}${dbl ? " dbl" : ""}"${dbl ? ' data-tooltip="Doubles"' : ""}>${word ? (crit ? "Critical" : `Tier ${tier}`) : `T${tier}`}</span>`;   // v0.0.287 (Lucas): "T1", squared like the trait chips

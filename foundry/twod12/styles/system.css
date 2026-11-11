@@ -4116,3 +4116,12 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.rolldlg .rd-quick.tight .rd-pip { transform: scale(.85); }
 .twod12.rolldlg .rd-bar .rd-vers { flex: none; }
 .twod12.rolldlg .rd-bar .rd-vers button { min-height: 30px; }
+/* v0.0.350 (Lucas): the stamp's "Doubles ↑" line on gold (the "Doubles" tag over the outline is gone) */
+.twod12.chat.cc .cc-stamp .cc-stl.dbl { background: #e0b23a; color: #2a2010; border-radius: 3px; padding: 0 4px; font-weight: 700; }
+/* v0.0.350 (Lucas, playtest 4): the tooltip over a placed area */
+.twod12-zonetip { position: fixed; z-index: 1000; display: none; pointer-events: none; max-width: 280px; padding: 5px 9px; border-radius: 5px; background: rgba(27, 36, 51, .94); border: 1px solid #c9a24a; color: #f1e6c8; font: 12px/1.35 "Signika", sans-serif; box-shadow: 0 2px 8px rgba(0,0,0,.5); }
+.twod12-zonetip b { display: block; color: #ecdcae; font-size: 12.5px; margin-bottom: 2px; }
+/* v0.0.350 (Lucas, playtest 4): the granted uses' bar lower (just above the hotbar) and movable by its grip */
+.twod12-linebar.twod12-grantbar { bottom: 74px; }
+.twod12-grantbar .lb-grip { cursor: grab; color: #c9a24a; padding: 0 2px; }
+.twod12-grantbar .lb-grip:active { cursor: grabbing; }

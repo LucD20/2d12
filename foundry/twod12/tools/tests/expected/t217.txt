@@ -52,7 +52,7 @@ Paladin and an Archer around the Goblin: 0 Boons | no other creature threatens G
 a Fighter joins: 1 Boon, from Fighter
 an Orc (the Goblin's side) threatens the Paladin: 0 | Fighter also threatens Goblin, but Orc (Goblin's side) threatens you: every Boon cancelled
 overlay: flanked Paladin by Goblin +0 (raw 0, cancelled by Fighter), Orc +0 (raw 0, cancelled by Fighter) | Goblin by Paladin +0 (raw 0, cancelled by Orc), Fighter +0 (raw 0, cancelled by Orc) | Fighter by Goblin +0 (raw 0, cancelled by Paladin), Orc +0 (raw 0, cancelled by Paladin) | Orc by Paladin +0 (raw 0, cancelled by Goblin), Fighter +0 (raw 0, cancelled by Goblin) | idle: Archer: no Melee weapon in hand (Crossbow)
-its label: Flanked: Goblin +0 (cancelled by Fighter) · Orc +0 (cancelled by Fighter) | Flanked: Paladin +0 (cancelled by Orc) · Fighter +0 (cancelled by Orc) | Flanked: Goblin +0 (cancelled by Paladin) · Orc +0 (cancelled by Paladin) | Flanked: Paladin +0 (cancelled by Goblin) · Fighter +0 (cancelled by Goblin)
+its label:  |  |  | 
 the token controls: Line of Effect, Cover height, Show flanking: true | no HUD buttons any more: true
 the sheet's rows have their color again (v0.0.298 had it in a comment): true | Use's tooltip and the open card: true | a Reaction's Frequency line: true
 --- v0.0.303 (Lucas tested v0.0.302)

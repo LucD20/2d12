@@ -9,14 +9,14 @@ import { toggleFlanking, flankingShown } from "./flankoverlay.mjs";
 // your selected token), Cover height calculation (a button) and Show flanking (a toggle, flankoverlay.mjs). The shortcuts (Shift+L, Shift+H) stay.
 
 const NAME = "twod12-loe";
-const GREEN = 0x2fa84f, RED = 0xd23b2f;
+const GREEN = 0x2fa84f, RED = 0xd23b2f, AMBER = 0xf0b54a;   // v0.0.350: amber, the center line through a creature
 let state = null;   // { tokenId } while the lines are on for one token (the shortcut), { follow: true } for the toolbar's toggle (your selected token)
 let queued = false;
 
 /** The text over a target: its cover and why. */
 export function loeLabel(c) {
   if (c.noLoE) return `No Line of Effect: ${c.blocked} of 4 blocked`;
-  const why = [`${c.blocked} blocked`, c.inWay ? "a creature in the way" : "", c.exposed ? "it is Leaning (-1)" : ""].filter(Boolean).join(", ");
+  const why = [`${c.blocked} blocked`, c.inWay ? `${(c.blockers ?? []).map(b => String(b.name ?? "").replace(/\s*\(.*\)\s*$/, "").split(/\s+/)[0]).filter(Boolean).join(", ") || "a creature"} in the way` : "", c.exposed ? "it is Leaning (-1)" : ""].filter(Boolean).join(", ");
   return `${c.label}: ${why}`;
 }
 
@@ -40,6 +40,15 @@ function draw() {
     for (const k of c.corners) {
       g.lineStyle(3, k.blocked ? RED : GREEN, 0.95).moveTo(c.origin.x, c.origin.y).lineTo(k.x, k.y);
       g.lineStyle(0).beginFill(k.blocked ? RED : GREEN, 1).drawCircle(k.x, k.y, 5).endFill();
+    }
+    // v0.0.350 (Lucas: "show center-to-center cover too"): the center-to-center line, dashed: amber when a creature is in the way (Low cover; a
+    // ring on it), pale when nothing is
+    if (c.center) {
+      const a = c.origin, z = c.center, dx = z.x - a.x, dy = z.y - a.y, len = Math.hypot(dx, dy) || 1, col = c.inWay ? AMBER : 0xe8e2d0;
+      g.lineStyle(2.5, col, c.inWay ? 0.95 : 0.6);
+      for (let s0 = 0; s0 < len; s0 += 16) { const e = Math.min(len, s0 + 10); g.moveTo(a.x + (dx * s0) / len, a.y + (dy * s0) / len).lineTo(a.x + (dx * e) / len, a.y + (dy * e) / len); }
+      g.lineStyle(0).beginFill(col, 1).drawCircle(z.x, z.y, 4).endFill();
+      for (const b of c.blockers ?? []) { const bt = canvas.tokens?.get(b.id); if (bt) g.lineStyle(3, AMBER, 0.95).drawCircle(bt.center.x, bt.center.y, Math.max(bt.w, bt.h) / 2 + 3); }
     }
     g.lineStyle(2, 0x1e2430, 1).beginFill(0xffffff, 1).drawCircle(c.origin.x, c.origin.y, 6).endFill();
     box.addChild(g);

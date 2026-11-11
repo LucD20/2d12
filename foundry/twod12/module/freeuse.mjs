@@ -214,12 +214,28 @@ export function refreshGrantBar() {
     return Array.from({ length: x.left }, (_, k) => { const t = free[k]; return `<button type="button" class="lb-go lb-grant" data-effect-id="${escT(x.effectId)}" data-index="${x.index}"${t?.uuid ? ` data-target="${escT(t.uuid)}"` : ""} data-tooltip="${escT(`${x.actionName}${t?.name ? ` against ${t.name}` : ""}, granted by ${x.source} (free)`)}">${grantIcon(x.actionName)} ${escT(x.actionName)}${t?.name ? `: ${escT(t.name)}` : ""}</button>`; });
   }).join("");
   const sources = [...new Set(list.map(x => x.source))].join(", ");
-  const html = `<i class="fa-solid fa-bolt lb-ic"></i><span class="lb-text"><b>${escT(tok.name)}</b>: granted by <b>${escT(sources)}</b></span>${btns}`;
+  const html = `<span class="lb-grip" data-tooltip="Drag to move this bar (double-click: back to its place)"><i class="fa-solid fa-grip-vertical"></i></span><i class="fa-solid fa-bolt lb-ic"></i><span class="lb-text"><b>${escT(tok.name)}</b>: granted by <b>${escT(sources)}</b></span>${btns}`;
   if (!grantBarEl) {
     grantBarEl = document.createElement("div"); grantBarEl.className = "twod12-linebar twod12-setupbar twod12-grantbar"; document.body.append(grantBarEl);
+    makeMovable(grantBarEl);   // v0.0.350 (Lucas, playtest 4: "the granted actions HUD should be movable and lower on the screen")
     grantBarEl.addEventListener("click", async ev => { const b = ev.target.closest(".lb-grant"); if (!b) return; ev.preventDefault(); const t = canvas.tokens.controlled[0]; if (t?.actor) await useGrantOf(t.actor, b.dataset.effectId, Number(b.dataset.index) || 0, b.dataset.target ?? ""); });
   }
   grantBarEl.innerHTML = html;
+}
+/** v0.0.350: a bar dragged by its grip keeps its place (this browser); a double-click on the grip puts it back. */
+const POS_KEY = "twod12.grantBarPos";
+function makeMovable(bar) {
+  const place = p => { if (p && Number.isFinite(p.x) && Number.isFinite(p.y)) { bar.style.left = `${Math.max(0, Math.min(window.innerWidth - 80, p.x))}px`; bar.style.top = `${Math.max(0, Math.min(window.innerHeight - 30, p.y))}px`; bar.style.bottom = "auto"; bar.style.transform = "none"; } else { bar.style.left = ""; bar.style.top = ""; bar.style.bottom = ""; bar.style.transform = ""; } };
+  try { place(JSON.parse(localStorage.getItem(POS_KEY) ?? "null")); } catch (e) { /* default place */ }
+  bar.addEventListener("pointerdown", ev => {
+    if (!ev.target.closest(".lb-grip")) return;
+    ev.preventDefault();
+    const r = bar.getBoundingClientRect(), dx = ev.clientX - r.left, dy = ev.clientY - r.top;
+    const move = e => place({ x: e.clientX - dx, y: e.clientY - dy });
+    const up = e => { window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", up); try { localStorage.setItem(POS_KEY, JSON.stringify({ x: e.clientX - dx, y: e.clientY - dy })); } catch (x) { /* not kept */ } };
+    window.addEventListener("pointermove", move); window.addEventListener("pointerup", up);
+  });
+  bar.addEventListener("dblclick", ev => { if (!ev.target.closest(".lb-grip")) return; try { localStorage.removeItem(POS_KEY); } catch (e) { /* */ } place(null); });
 }
 /** Use one granted use of a creature's effect (the bar's button). Returns whether it was used. */
 export async function useGrantOf(actor, effectId, index = 0, targetUuid = "") {

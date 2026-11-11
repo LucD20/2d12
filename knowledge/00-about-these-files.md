@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-11 from the repository at: 6c10f70 2026-11-11 v0.0.348: the changelog, backlog and handoff entries
+Built by tools/knowledge.py on 2026-11-11 from the repository at: 98fb6ab 2026-11-11 v0.0.349: playtest 4, Step 4 (the sheet header and the roll window)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (94 KB)
+- HANDOFF.md (95 KB)
 - MASTER-PLAN.md (24 KB)
 - open-design-items.md (96 KB)
 - rules-01-roll.md (23 KB)

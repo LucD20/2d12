@@ -1258,8 +1258,50 @@ function measureSquares(from, to) {
   } catch (e) { return 0; }
 }
 
+/**
+ * v0.0.350 (Lucas, playtest 4: "hold Alt while moving and it is Forced Movement, as Codex (Draw Steel) does; moving against something causes a
+ * Collision"; GM only): the token goes in a straight line toward the square it was dropped on, any distance, no Reactions, no movement spent,
+ * Difficult Terrain ignored; it stops before the first wall or creature and the squares left are a Collision (book: Forced Movement).
+ */
+export function forcedDragPath(cells, { wallAt, creatureAt }) {
+  let done = 0, block = null;
+  for (let n = 1; n < cells.length; n++) {
+    if (wallAt(cells[n - 1], cells[n])) { block = { type: "wall" }; break; }
+    const t = creatureAt(cells[n]);
+    if (t) { block = { type: "creature", token: t }; break; }
+    done = n;
+  }
+  const total = cells.length - 1, unused = block ? total - done : 0, k = TWOD12.collision;
+  const damage = !block ? { self: 0, other: 0 } : block.type === "wall" ? { self: unused * k.wall, other: 0 } : { self: unused * k.creature, other: unused * k.creature };
+  return { done, block, unused, damage, total };
+}
+async function forcedDrag(doc, dest) {
+  const w = Math.max(1, Math.round(doc.width ?? 1)), h = Math.max(1, Math.round(doc.height ?? 1)), size = canvas.grid.size;
+  const a = cellAt({ x: homePos(doc).x + 2, y: homePos(doc).y + 2 }), b = cellAt({ x: dest.x + 2, y: dest.y + 2 });
+  const cells = [a, ...lineSteps({ x: a.j, y: a.i }, { x: b.j, y: b.i }, "left").map(c => ({ i: c.y, j: c.x }))];
+  const mid = c => { const t = canvas.grid.getTopLeftPoint({ i: c.i, j: c.j }); return { x: t.x + (w * size) / 2, y: t.y + (h * size) / 2 }; };
+  const others = (canvas.tokens?.placeables ?? []).filter(t => t.document?.id !== doc.id && t.actor).map(t => ({ t, set: new Set(tokenCells(t).map(c => `${c.i},${c.j}`)) }));
+  const foot = c => { const out = []; for (let di = 0; di < h; di++) for (let dj = 0; dj < w; dj++) out.push(`${c.i + di},${c.j + dj}`); return out; };
+  const r = forcedDragPath(cells, { wallAt: (p, q) => wallBetween(mid(p), mid(q)), creatureAt: c => others.find(o => foot(c).some(k => o.set.has(k)))?.t ?? null });
+  const end = canvas.grid.getTopLeftPoint({ i: cells[r.done].i, j: cells[r.done].j });
+  if (r.done > 0) await doc.update({ x: end.x, y: end.y }, { twod12Forced: true, animate: true, animation: { movementSpeed: TWOD12.pushSpeed, easing: "easeOutCubic" } });
+  const lines = [`<b>${esc(doc.name)}</b> is Force Moved ${r.done} square${r.done === 1 ? "" : "s"} (GM, Alt-drag).`];
+  if (r.block?.type === "wall") { lines.push(`It hits a wall with ${r.unused} unused: <b>${r.damage.self} Body</b> damage.`); if (doc.actor && r.damage.self) await applyToActor(doc.actor, bodyDamage(r.damage.self)); }
+  else if (r.block) { lines.push(`It hits <b>${esc(r.block.token.name)}</b> with ${r.unused} unused: both take <b>${r.damage.self} Body</b> damage.`); if (doc.actor && r.damage.self) await applyToActor(doc.actor, bodyDamage(r.damage.self)); if (r.block.token.actor && r.damage.other) await applyToActor(r.block.token.actor, bodyDamage(r.damage.other)); }
+  await ChatMessage.create({ content: sysLine("fa-hand", lines.join(" "), "pushmsg") });
+}
+
 export function registerMovement() {
   try { installDarknessCost(); } catch (e) { console.warn("twod12 | Darkness cost", e); }   // (this runs when Foundry is ready: the Token class is final)
+  // v0.0.350: the GM's Alt-drag is Forced Movement (forcedDrag); Foundry's own move is cancelled
+  Hooks.on("preMoveToken", (doc, movement, operation) => {
+    try {
+      if (!game.user.isGM || operation?.twod12Forced || operation?.twod12Lean || movement?.method === "undo") return;
+      if (!game.keyboard?.isModifierActive?.("Alt") || !canvas?.grid?.isSquare || !movement?.destination) return;
+      forcedDrag(doc, movement.destination).catch(e => console.warn("twod12 | Alt-drag Forced Movement", e));
+      return false;
+    } catch (e) { return; }
+  });
   // The movement area never outlives its use: it goes when the combat ends, when the scene changes, and (outside combat) when its token moves.
   Hooks.on("deleteCombat", () => clearLooseMove());
   Hooks.on("canvasReady", () => clearLooseMove());

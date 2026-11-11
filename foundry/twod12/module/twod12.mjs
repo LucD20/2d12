@@ -9,7 +9,8 @@ import { registerLeanHooks } from "./lean.mjs";
 import { registerMasteryHooks } from "./mastery.mjs";
 import { registerChatScroll } from "./chatscroll.mjs";   // v0.0.343
 import { registerFearLine } from "./fearline.mjs";   // v0.0.345
-import { renderFollow, renderDamageUsed, registerDamageUsed, addHealButton } from "./followup.mjs";   // v0.0.347
+import { renderFollow, renderDamageUsed, registerDamageUsed, addHealButton } from "./followup.mjs";
+import { registerZoneTip } from "./zonetip.mjs";   // v0.0.350   // v0.0.347
 import { registerMarkHooks } from "./mark.mjs";
 import { registerLoE } from "./loe.mjs";
 import { registerFlankOverlay } from "./flankoverlay.mjs";
@@ -93,6 +94,7 @@ Hooks.once("init", () => {
   registerChatScroll();   // v0.0.343: the chat stays at its bottom when a card grows
   registerFearLine();   // v0.0.345: a selected Frightened creature shows its source on the map
   registerDamageUsed();   // v0.0.347
+  registerZoneTip();   // v0.0.350: hovering a placed area shows what it does
   registerMarkHooks();
   registerLoE();   // Line of Effect, Cover height and Show flanking in the token controls (v0.0.165; moved from the token HUD in v0.0.302)
   registerFlankOverlay();   // v0.0.302
