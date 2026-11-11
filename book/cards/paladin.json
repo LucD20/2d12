@@ -112,7 +112,7 @@
    "foundry": {
     "img": "icons/svg/sun.svg",
     "folder": "Paladin",
-    "automation": "mithril",
+    "automation": "diamond",
     "automationNote": "the damage, the light on the target (the Damage button), then who gains the Guard (the Stage's dice) and the Pushes one by one (3 AP); the Bane on Hide by hand (Hide isn't written)."
    },
    "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): more damage, no +1 Defense; the 3 AP Version is an explosion: the other creatures in the light are Pushed 1 away from the target (the target is the Push's origin; a Push's value is a maximum, so the Paladin moves each one 0 or 1: no \"can\" on cards, Lucas 2026-11-04). Cards 1 (Lucas, 2026-11-05): the first card written his way: book links (Bright light, Hide), the 2 and 3 AP texts written in full for Foundry (foundry.text), the light as an effect the Damage button applies (fx), the Guard's who-picker with the Modifier as a number and the Push picker after the damage (foundry.after)."

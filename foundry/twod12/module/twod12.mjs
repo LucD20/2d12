@@ -337,6 +337,10 @@ Hooks.once("ready", async () => {
     const inl = ev.target.closest?.("[data-twod12-inline]");
     if (inl) {
       ev.preventDefault();
+      // v0.0.352 (Lucas, Step 6): the icon uses the chip, the name opens what it names (a Book or a step marker: as before)
+      if (!["Book", "Pause"].includes(inl.dataset.twod12Inline) && !ev.target.closest?.("i, img, svg, .ti-use")) {
+        try { const { openChip } = await import("./inline.mjs"); if (await openChip(inl.dataset.twod12Inline, JSON.parse(inl.dataset.cfg), { message: game.messages.get(inl.closest("[data-message-id]")?.dataset.messageId) ?? null })) return; } catch (err) { console.warn("twod12 | chip name", err); }
+      }
       try { await handleInline(inl.dataset.twod12Inline, JSON.parse(inl.dataset.cfg), { message: game.messages.get(inl.closest("[data-message-id]")?.dataset.messageId) ?? null }); } catch (err) { console.error("twod12 | inline roll failed", err); }
       return;
     }

@@ -5,9 +5,9 @@ needs 2, has 1: false | Paladin has 1 Rally Point left and 2 are needed.
 choose 3 body + 4 mind of 9: true {"bodyLethal":3,"mindLethal":4,"bodyNonlethal":0,"mindNonlethal":0} | RallyPaladin uses 1 Rally Point9 healingRemoves 9 Vigor. 2 Rally Points left.
 dialog closed -> default (lethal first): {"bodyLethal":3,"mindLethal":4,"bodyNonlethal":0,"mindNonlethal":0}
 [
-  '<i class="fa-solid fa-heart-pulse"></i> 2 Rally Points',
-  '<i class="fa-solid fa-heart-pulse"></i> Use Rally',
-  '<i class="fa-solid fa-hand"></i> Pushed 4'
+  '<i class="fa-solid fa-heart-pulse"></i> <span class="ti-name">2 Rally Points</span>',
+  '<i class="fa-solid fa-heart-pulse"></i> <span class="ti-name">Use Rally</span>',
+  '<i class="fa-solid fa-hand"></i> <span class="ti-name">Pushed 4</span>'
 ]
 {"dc":13,"adj":0,"boon":0,"bane":0,"traits":[],"tiers":{},"n":3}
 An ally uses @Rally[1] | You use @Rally[2]. @Move[pushed|distance:3] | Bright light @Template[emanation|distance:2|rounds:1]

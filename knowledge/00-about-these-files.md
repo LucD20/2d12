@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-11 from the repository at: b7c63f8 2026-11-11 v0.0.350: playtest 4, Step 5 (the map); Doubles' gold line
+Built by tools/knowledge.py on 2026-11-11 from the repository at: 47b5464 2026-11-11 v0.0.351: a Zone's second carried Effect (Covering Fire's allies), the granted uses' retarget and Cancel, the Alt-drag preview, LoE and flanking touches
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (95 KB)
+- HANDOFF.md (96 KB)
 - MASTER-PLAN.md (24 KB)
 - open-design-items.md (96 KB)
 - rules-01-roll.md (23 KB)

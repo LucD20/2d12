@@ -10,7 +10,7 @@ import { traitChevrons } from "./config.mjs";
 import { askRoll, enrich, adjLabelOf, ccRowOf } from "./actions.mjs";
 import * as CC from "./chatcards.mjs";   // v0.0.283 (pack chat-cards): the one-target Save card
 import { perDieDelta, topStep } from "./calc.mjs";
-import { resolveModifiers, applyEffects, applyCondition, originInfo, applyBoonEffect, damageSteps, conditionItem } from "./effects.mjs";
+import { resolveModifiers, applyEffects, applyCondition, originInfo, applyBoonEffect, damageSteps, conditionItem, findAction } from "./effects.mjs";
 import { parseAttrs, needsOrigin } from "./condrules.mjs";   // v0.0.314 (pack AU): Bleed's Attributes
 import { dealDamageEx } from "./damage.mjs";
 import { postDamageCard } from "./dmgcard.mjs";
@@ -205,7 +205,8 @@ function mkEl(kind, cfg, label, icon) {
   a.classList.add("twod12-inline");
   a.dataset.twod12Inline = kind;
   a.dataset.cfg = JSON.stringify(cfg);
-  a.innerHTML = `${icon.startsWith("<") ? icon : `<i class="fa-solid ${icon}"></i>`} ${esc(label)}`;
+  // v0.0.352 (Step 6): the icon uses the chip, the name opens what it names (twod12.mjs's click; openChip)
+  a.innerHTML = `${icon.startsWith("<") ? icon : `<i class="fa-solid ${icon}"></i>`} <span class="ti-name">${esc(label)}</span>`;
   return a;
 }
 
@@ -275,9 +276,12 @@ export function registerInline() {
       const cfg = parseInline(kind, match[2]);
       // v0.0.246: "[Mod]" in a chip's words becomes the number of the creature the text belongs to (the tooltip says whose). v0.0.250: "Pow" too (the Power Modifier), and a Stage formula.
       const modN = modForDoc(options?.relativeTo), powN = powForDoc(options?.relativeTo), stageN = stageForDoc(options?.relativeTo);
-      const inlineEl = (k, c, label, icon) => { const l2 = withPow(withMod(label, modN), powN); const el = mkEl(k, c, l2, icon); if (l2 !== label) el.dataset.tooltip = `This creature's Modifiers on the Action: ${[modN !== null ? `[Mod] ${modN}` : "", powN !== null ? `Pow ${powN}` : ""].filter(Boolean).join(", ")}`; return el; };
-      if (kind === "Heal") return inlineEl("Heal", cfg, cfg.label ?? match[3] ?? `Heal ${healText(stagedFormula(cfg, stageN))}`, "fa-hand-holding-medical");
-      if (kind === "Reduce") return inlineEl("Reduce", cfg, (cfg.stages && stageN > 1 ? null : cfg.label ?? match[3]) ?? `reduced by ${healText(stagedFormula(cfg, stageN))}`, "fa-shield-halved");
+      // v0.0.352 (Lucas, playtest 4, Step 6: "calculated buttons in a slightly different text colour, the calculation on hover"): a chip whose
+      // number was worked out for this creature (its [Mod] / Pow, its Stage's dice, a Rally Point, a distance from its Speed) has the class calc
+      const inlineEl = (k, c, label, icon) => { const l2 = withPow(withMod(label, modN), powN); const el = mkEl(k, c, l2, icon); if (l2 !== label) { el.classList.add("calc"); el.dataset.tooltip = `Calculated: ${label} with this creature's ${[modN !== null ? `[Mod] ${modN}` : "", powN !== null ? `Pow ${powN}` : ""].filter(Boolean).join(", ")} = ${l2}`; } return el; };
+      const staged = el => { if (cfg.stages && stageN > 1) { el.classList.add("calc"); el.dataset.tooltip = `Calculated: Stage ${stageN}: ${stagedFormula(cfg, stageN)} (Stage 1: ${cfg.formula})${el.dataset.tooltip ? `. ${el.dataset.tooltip}` : ""}`; } return el; };
+      if (kind === "Heal") return staged(inlineEl("Heal", cfg, cfg.label ?? match[3] ?? `Heal ${healText(stagedFormula(cfg, stageN))}`, "fa-hand-holding-medical"));
+      if (kind === "Reduce") return staged(inlineEl("Reduce", cfg, (cfg.stages && stageN > 1 ? null : cfg.label ?? match[3]) ?? `reduced by ${healText(stagedFormula(cfg, stageN))}`, "fa-shield-halved"));
       if (kind === "Pause") return inlineEl("Pause", cfg, cfg.label || "After the damage", "fa-pause");
       if (kind === "EndEffect") return inlineEl("EndEffect", cfg, cfg.label ?? match[3] ?? (cfg.which === "any" ? "End one effect" : "End one effect (EoT or 1 round left)"), "fa-wand-magic-sparkles");
       if (kind === "Book") {
@@ -336,8 +340,8 @@ export function registerInline() {
         const rp = /\brally\b/.test(cfg.formula) ? rallyForDoc(options?.relativeTo) : null;
         const lbl = cfg.stages && stageN > 1 ? null : cfg.label ?? match[3];
         const text = rp !== null && (lbl === undefined || lbl === null || /\bRP\b/.test(lbl)) ? (lbl ? lbl.replace(/\bRP\b/, String(rp)) : `Guard ${rp}`) : lbl ?? `Guard ${guardText(stagedFormula(cfg, stageN))}`;
-        const el = inlineEl("Guard", cfg, text, "fa-shield-heart");
-        if (rp !== null) el.dataset.tooltip = "Guard equal to what one of their Rally Points heals";
+        const el = staged(inlineEl("Guard", cfg, text, "fa-shield-heart"));
+        if (rp !== null) { el.classList.add("calc"); el.dataset.tooltip = `Calculated: Guard equal to what one of their Rally Points heals (${rp})`; }
         return el;
       }
       if (kind === "Move") {
@@ -347,6 +351,7 @@ export function registerInline() {
         const n = cfg.distanceExpr ? (value || cfg.distanceExpr.replace(/[a-z]+/g, w => w[0].toUpperCase() + w.slice(1))) : (cfg.distance || 1);
         const name = { pushed: "Pushed", pulled: "Pulled", slid: "Slid", evade: "Evade", charge: "Charge", reposition: "Reposition" }[cfg.kind] ?? "Advance", icon = { pushed: "fa-hand", pulled: "fa-hand-back-fist", slid: "fa-route", evade: "fa-wind", charge: "fa-person-running-fast", reposition: "fa-arrows-up-down-left-right" }[cfg.kind] ?? "fa-person-running";
         const el = inlineEl("Move", cfg, cfg.label ?? match[3] ?? `${name} ${n}`, icon);
+        if (calc) el.classList.add("calc");   // v0.0.352
         if (calc) { const c = document.createElement("i"); c.className = "fa-solid fa-calculator calc"; c.dataset.tooltip = value ? `Calculated from your stats: ${cfg.distanceExpr} = ${value}` : `Calculated: ${cfg.distanceExpr}`; el.append(" ", c); }
         return el;
       }
@@ -701,6 +706,29 @@ export async function openBook(cfg) {
   const { pickConfirm } = await import("./pickwindow.mjs");
   await pickConfirm({ title: ref, name: ref, sub: cfg.doc ?? "", icon: "fa-book-open", confirm: "Close",
     text: `<b>${esc(ref)}</b> is a rule of the book${cfg.doc ? ` (${esc(cfg.doc)})` : ""}: read it there. When the book is imported into Foundry as a Journal, this link opens its page.` });
+}
+
+/**
+ * v0.0.352 (Lucas, playtest 4, Step 6: "clicking the left side (the symbol) uses it, clicking the right side (the name) opens the sheet of the
+ * feature"): a chip's name opens what it names: a condition or an Effect its item, @Use its Action, a movement or a rule its book rule. Returns
+ * true when something was opened (otherwise the click uses the chip, as before).
+ */
+const MOVE_REF = { pushed: "Pushed", pulled: "Pulled", slid: "Slid", reposition: "Reposition", advance: "Advance", walk: "Advance", evade: "Evade", charge: "Charge", crawl: "Crawl", shift: "Shift", climb: "Climb", jump: "Jump" };
+const RULE_REF = { Guard: "Guard", Heal: "Heal", Rally: "Rally Points", Reduce: "Damage", Check: "Checks", Save: "Saves", Template: "Areas", Damage: "Damage", Boon: "Boons and Banes", Cleave: "Cleave", Reload: "Reload", Release: "Hands", Regrip: "Hands", EndEffect: "Effects" };
+export async function openChip(kind, cfg, ctx = {}) {
+  try {
+    if (kind === "Condition" && cfg.cond) { const it = await conditionItem(cfg.cond); if (it?.sheet) { it.sheet.render(true); return true; } }
+    if (kind === "Effect" && cfg.uuid) { const d = await fromUuid(cfg.uuid); if (d?.sheet) { d.sheet.render(true); return true; } }
+    if (kind === "Use" && cfg.target && !/^(category|trait):/i.test(cfg.target)) {
+      const f = ctx.message?.getFlag?.("twod12", "action");
+      let actor = null; try { const d = cfg.actor ? await fromUuid(cfg.actor) : f?.actorUuid ? await fromUuid(f.actorUuid) : null; actor = d?.documentName === "Actor" ? d : d?.actor ?? null; } catch (e) { actor = null; }
+      const it = await findAction(cfg.target, actor);
+      if (it?.sheet) { it.sheet.render(true); return true; }
+    }
+    const ref = kind === "Move" ? MOVE_REF[cfg.kind] : RULE_REF[kind];
+    if (ref) { await openBook({ ref }); return true; }
+  } catch (e) { console.warn("twod12 | chip name", e); }
+  return false;
 }
 
 export async function handleInline(kind, cfg, ctx = {}) {

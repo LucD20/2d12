@@ -2,6 +2,7 @@
 // Actions / Allies +1 Defense'"): over a placed area (a Zone's region), a small card follows the mouse: its name, then one line per thing it does
 // (an Effect it gives to allies / enemies / everyone inside, a heal, a hazard, Difficult Terrain). Nothing is saved; it reads the region's flags.
 import { zoneRows } from "./fxrules.mjs";
+import { highlightText } from "./config.mjs";
 const F = "twod12";
 const WHO = { allies: "Allies", enemies: "Enemies", all: "Everyone" };
 const strip = s => String(s ?? "").replace(/<[^>]+>/g, "").trim();
@@ -46,8 +47,11 @@ function show(ev) {
   if (!z) return hide();
   const nameOf = u => { try { const d = fromUuidSync(u); if (!d) return null; return { name: d.name, summary: d.system?.autoHover ?? d.system?.hover ?? "" }; } catch (e) { return null; } };
   const lines = zoneTipLines(z, nameOf);
-  if (!el) { el = document.createElement("div"); el.className = "twod12-zonetip"; document.body.append(el); }
-  el.innerHTML = `<b>${esc(z.name ?? "Area")}</b>${lines.map(l => `<div>${esc(l)}</div>`).join("")}`;
+  if (!el) { el = document.createElement("div"); el.className = "twod12 twod12-zonetip"; document.body.append(el); }
+  // v0.0.352 (Lucas: "Enemies red and Allies blue; and the colors of the stats, as elsewhere"): the side in its color, the rest through the
+  // system's highlighting (Attributes, Boons and Banes, traits)
+  const hl = t => { try { return highlightText(esc(t)); } catch (e) { return esc(t); } };
+  el.innerHTML = `<b>${esc(z.name ?? "Area")}</b>${lines.map(l => { const m = l.match(/^(Enemies|Allies|Everyone): (.*)$/); return `<div>${m ? `<span class="zt-who ${m[1].toLowerCase()}">${m[1]}</span>: ${hl(m[2])}` : hl(l)}</div>`; }).join("")}`;
   el.style.display = "block";
   el.style.left = `${ev.clientX + 16}px`; el.style.top = `${ev.clientY + 14}px`;
 }

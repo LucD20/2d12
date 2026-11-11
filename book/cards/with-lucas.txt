@@ -31,3 +31,6 @@ until Lucas revises it (then Mithril again). Each one, with what changed:
   [Strike] Actions, and allies in it gain +1 Defense." (book and Foundry; the Covering Fire Effect's description too). Nothing else changed.
 - Mark Quarry (v0.0.345, Lucas 2026-11-11: "Marked Quarry needs to say ... extra damage (same subtype as your weapon) on a Tier 1"): its rules
   read "those Actions deal [V] [Mod] extra damage (the same subtype as your weapon) on a Tier 1." (the Archer Feature's text too). Nothing else.
+- Smite (v0.0.352, Lucas: "remove '(2d6 + [Mod] at Stage 2, 2d8 + [Mod] at Stage 3)' from Foundry's Smite card"): in Foundry only, the 3 AP
+  Version's Guard chip no longer has the parenthesis after it (the chip shows the creature's Stage dice, in the calculated color, the Stage
+  formula on hover). The book keeps the parenthesis. Nothing else changed.

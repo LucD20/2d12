@@ -30,6 +30,10 @@ function label(txt, fill, size = fsz(0.24), bgColor = 0x1b2433) {
   const w = t.width + size * 0.8, h = t.height + size * 0.25, bg = new PIXI.Graphics();
   bg.lineStyle(2, 0xd9c9a3, 0.9).beginFill(bgColor, 0.85).drawRoundedRect(-w / 2, -h / 2, w, h, size * 0.35).endFill();
   box.addChild(bg, t);
+  // v0.0.352 (Lucas: "size per zoom, so zooming in helps"): the labels keep their size on the screen (as at 100% zoom): zooming in spreads the
+  // tokens apart, not the labels
+  const z = Number(canvas?.stage?.scale?.x) || 1;
+  box.scale.set(Math.max(0.35, Math.min(2.5, 1 / z)));
   box.anchor = { set: (ax, ay = ax) => { box.pivot.set((ax - 0.5) * w, (ay - 0.5) * h); } };   // the same anchor calls as a Text
   return box;
 }
@@ -110,5 +114,6 @@ export function registerFlankOverlay() {
   Hooks.on("refreshToken", redraw);
   for (const h of ["createToken", "updateToken", "deleteToken", "updateActor", "createItem", "updateItem", "deleteItem", "createActiveEffect", "deleteActiveEffect", "updateActiveEffect", "sightRefresh"]) Hooks.on(h, redraw);
   Hooks.on("canvasReady", redraw);
+  Hooks.on("canvasPan", redraw);   // v0.0.352: the zoom changed: the labels' size follows
   Hooks.on("canvasTearDown", () => { queued = false; });
 }
