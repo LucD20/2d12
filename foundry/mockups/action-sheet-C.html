@@ -4272,6 +4272,53 @@ body { background: var(--pg); color: var(--pg-ink); font: 14px/1.45 Signika, "Se
 .as-win .as-cpane { margin-top: 10px; }
 .as-win .as-cadd .fr-sel { width: 100%; }
 @media (max-width: 900px) { .as-win .as-cols { grid-template-columns: 1fr; } .as-win .as-right { position: static; } }
+
+.as-win .as-flowcols { display: grid; grid-template-columns: 208px minmax(0, 1fr); gap: 14px; align-items: start; }
+.as-win .as-flow { position: sticky; top: 8px; background: var(--sk-panel); border: 1px solid var(--sk-line); border-radius: 5px; padding: 8px 8px 10px; }
+.as-win .as-railh { display: block; font: 700 11px Signika, sans-serif; letter-spacing: .07em; text-transform: uppercase; color: var(--sk-acc); margin-bottom: 6px; }
+.as-win .as-railh small { display: block; letter-spacing: 0; text-transform: none; font-weight: 400; color: var(--sk-mut); }
+.as-win ol.as-rail { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; position: relative; }
+.as-win ol.as-rail[hidden] { display: none; }
+.as-win ol.as-rail::before { content: ""; position: absolute; left: 30px; top: 12px; bottom: 34px; width: 2px; background: var(--sk-line); }
+.as-win .sk a.as-ev { position: relative; display: grid; grid-template-columns: 12px 22px minmax(0, 1fr); gap: 6px; align-items: start; padding: 4px 4px; border-radius: 4px; color: var(--sk-ink); text-decoration: none; cursor: pointer; }
+.as-win .sk a.as-ev:hover, .as-win .sk a.as-ev.on { background: #fff; box-shadow: inset 3px 0 0 var(--sk-acc); }
+.as-win .as-always a.as-ev { grid-template-columns: 22px minmax(0, 1fr); }
+.as-win .as-evn { font: 700 10px Georgia, serif; color: var(--sk-mut); padding-top: 4px; text-align: right; }
+.as-win .as-evt b { display: block; font-size: 12.5px; line-height: 1.25; }
+.as-win .as-evt em { display: block; font-style: normal; font-size: 11px; color: var(--sk-mut); line-height: 1.25; overflow-wrap: anywhere; }
+.as-win .as-evt em.mono { font-family: ui-monospace, Consolas, monospace; font-size: 10px; }
+.as-win .as-evsep { font: 700 10px Signika, sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--sk-acc); padding: 6px 0 2px 40px; background: var(--sk-panel); position: relative; }
+.as-win .sk button.as-evadd { margin: 4px 0 0 40px; font-size: 11px; border-style: dashed; color: var(--sk-acc); position: relative; }
+.as-win .as-always { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--sk-line); display: grid; gap: 2px; }
+.as-win .as-page [id] { scroll-margin-top: 10px; }
+@media (max-width: 760px) { .as-win .as-flowcols { grid-template-columns: 1fr; } .as-win .as-flow { position: static; } }
+.ga-win .sk .head.ga-head { gap: 12px; color: #fff; }
+.ga-win .ga-ico { width: 40px; height: 40px; border-radius: 5px; background: #26364d; display: grid; place-items: center; font-size: 20px; color: #f1e6c8; }
+.ga-win .ga-head b { display: block; font: 700 19px Georgia, serif; } .ga-win .ga-head small { color: #c9d2e2; }
+.ga-win .ga-cols { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; align-items: start; }
+.ga-win .ga-cols aside .as-card { padding: 0; }
+.ga-win .ga-foot { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; align-items: center; padding: 10px 14px; border-top: 1px solid var(--sk-line); background: var(--sk-panel); }
+.ga-win .ga-foot .fr-m { margin-right: auto; color: var(--sk-mut); font-size: 12px; }
+.ga-win .sk .ga-foot button { padding: 5px 14px; }
+.ga-win.application.twod12-styled .sk .ga-foot button.ga-go { background: var(--sk-acc); color: #fff; border-color: var(--sk-acc); font-weight: 700; }
+.ga-win .ga-read { margin-top: 10px; border: 1px solid var(--sk-line); border-radius: 5px; background: #fff; padding: 8px 10px; }
+.ga-win .fr-tab .ga-read h4 { margin: 0 0 4px; font: 700 12px Georgia, serif; color: #2f6b3a; display: block; } .ga-win .fr-tab .ga-read h4.no { color: #8a6a14; margin-top: 8px; }
+.ga-win .ga-read ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.ga-win .ga-read li { display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: 6px; font-size: 12.5px; }
+.ga-win .ga-read li > span { font-weight: 700; color: #2f6b3a; } .ga-win .ga-read li.no > span { color: #8a6a14; } .ga-win .ga-read li.step > span { color: var(--sk-acc); }
+.ga-win .ga-read em { display: block; font-style: normal; color: var(--sk-mut); font-size: 11.5px; }
+.ga-win .ga-read .as-traits { display: inline-flex; vertical-align: middle; }
+.ga-win .ga-paste { background: #fff; border: 1px solid var(--sk-line); border-radius: 5px; padding: 8px 6px; font: 12.5px/1.55 ui-monospace, Consolas, monospace; min-height: 190px; overflow-x: auto; }
+.ga-win .ga-line { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 6px; white-space: pre-wrap; }
+.ga-win .ga-mark { font-weight: 700; color: #2f6b3a; text-align: center; } .ga-win .ga-mark.no { color: #8a6a14; }
+.ga-win .ga-shapes { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 6px; margin-bottom: 12px; }
+.ga-win .sk button.ga-shape { display: grid; gap: 1px; text-align: left; padding: 6px 9px; cursor: pointer; }
+.ga-win .sk button.ga-shape small { color: var(--sk-mut); font-size: 11px; }
+.ga-win.application.twod12-styled .sk button.ga-shape.on { background: var(--sk-navy); color: #fff; border-color: var(--sk-navy); } .ga-win.application.twod12-styled .sk button.ga-shape.on small { color: #c9d2e2; }
+.ga-win .ga-sent { margin: 12px 0 4px; padding: 10px 12px; background: #fff; border: 1px solid var(--sk-line); border-left: 4px solid var(--sk-acc); border-radius: 4px; font-size: 14px; line-height: 2.1; }
+.ga-win .ga-sent p { margin: 0; }
+.ga-win .fr-tab .ga-sent .fr-in.ga-blank { text-align: center; font-weight: 700; }
+@media (max-width: 860px) { .ga-win .ga-cols { grid-template-columns: 1fr; } }
 </style>
 <div class="pg-top"><h1>Mockup C: Versions side by side, the card beside them</h1><p>A wide window. The Versions are the columns of one table (Tiers, Critical, Effects, Area, the Effects applied, After the damage), so what changes with the AP cost shows at once; the real card stays in view on the right and redraws as you edit.</p></div>
 <div class="pg-pick" role="group" aria-label="The card shown"><button type="button" id="pick-0" data-card="Smite" class="on" aria-pressed="true">Smite</button><button type="button" id="pick-1" data-card="Rebuke" class="" aria-pressed="false">Rebuke</button><button type="button" id="pick-2" data-card="Covering Fire" class="" aria-pressed="false">Covering Fire</button><button type="button" id="pick-3" data-card="Mark Quarry" class="" aria-pressed="false">Mark Quarry</button><small>four real cards from the compendium source · the ? on the tab bar shows the help texts · static: nothing is saved</small></div>
@@ -4389,6 +4436,8 @@ document.querySelectorAll(".pg-pick button").forEach(b => b.addEventListener("cl
 document.querySelectorAll(".as-win").forEach(w => {
   const pick = (btns, panes, key) => btns.forEach(b => b.addEventListener("click", () => { const scope = b.closest(".fr-sec, .as-after, .as-bmd") ?? w; btns.forEach(x => { if (scope.contains(x)) x.classList.toggle("on", x === b); }); panes.forEach(p => { if (scope.contains(p)) p.hidden = p.dataset[key] !== b.dataset[key]; }); }));
   pick([...w.querySelectorAll(".as-vtab[data-v]")], [...w.querySelectorAll(".as-vbody")], "v");
+  w.querySelectorAll(".as-vtab[data-v]").forEach(b => b.addEventListener("click", () => w.querySelectorAll(".as-rail").forEach(r => { r.hidden = r.dataset.v !== b.dataset.v; })));
+  w.querySelectorAll("a.as-ev").forEach(a => a.addEventListener("click", ev => { ev.preventDefault(); const t = w.querySelector(a.getAttribute("href").replace(/^#/, "#").replace(/([^#w-])/g, "\$1")) ?? [...w.querySelectorAll(".as-vbody:not([hidden]) h4.as-h4, .as-vbody:not([hidden]) .as-tiers")].find(x => (a.dataset.to === "tiers" && x.classList.contains("as-tiers")) || (a.dataset.to === "after" && /After the damage/.test(x.textContent)) || (a.dataset.to === "use" && /^On /.test(x.textContent))); w.querySelectorAll("a.as-ev").forEach(x => x.classList.toggle("on", x === a)); t?.scrollIntoView({ behavior: "smooth", block: "start" }); }));
   pick([...w.querySelectorAll(".as-bmd > .fr-lst > .fr-it")], [...w.querySelectorAll(".as-bpane")], "i");
   w.querySelectorAll(".as-after").forEach(a => { const its = [...a.querySelectorAll(".as-step")], ps = [...a.querySelectorAll(".as-steppane")]; its.forEach(b => b.addEventListener("click", () => { its.forEach(x => x.classList.toggle("on", x === b)); ps.forEach(p => { p.hidden = p.dataset.step !== b.dataset.step; }); })); });
   w.querySelectorAll(".fr-q").forEach(q => q.addEventListener("click", () => { w.querySelectorAll(".fr-tab").forEach(t => t.classList.toggle("fr-helpon")); q.classList.toggle("on"); }));

@@ -414,6 +414,8 @@ document.querySelectorAll(".pg-pick button").forEach(b => b.addEventListener("cl
 document.querySelectorAll(".as-win").forEach(w => {
   const pick = (btns, panes, key) => btns.forEach(b => b.addEventListener("click", () => { const scope = b.closest(".fr-sec, .as-after, .as-bmd") ?? w; btns.forEach(x => { if (scope.contains(x)) x.classList.toggle("on", x === b); }); panes.forEach(p => { if (scope.contains(p)) p.hidden = p.dataset[key] !== b.dataset[key]; }); }));
   pick([...w.querySelectorAll(".as-vtab[data-v]")], [...w.querySelectorAll(".as-vbody")], "v");
+  w.querySelectorAll(".as-vtab[data-v]").forEach(b => b.addEventListener("click", () => w.querySelectorAll(".as-rail").forEach(r => { r.hidden = r.dataset.v !== b.dataset.v; })));
+  w.querySelectorAll("a.as-ev").forEach(a => a.addEventListener("click", ev => { ev.preventDefault(); const t = w.querySelector(a.getAttribute("href").replace(/^#/, "#").replace(/([^#\w-])/g, "\\$1")) ?? [...w.querySelectorAll(".as-vbody:not([hidden]) h4.as-h4, .as-vbody:not([hidden]) .as-tiers")].find(x => (a.dataset.to === "tiers" && x.classList.contains("as-tiers")) || (a.dataset.to === "after" && /After the damage/.test(x.textContent)) || (a.dataset.to === "use" && /^On /.test(x.textContent))); w.querySelectorAll("a.as-ev").forEach(x => x.classList.toggle("on", x === a)); t?.scrollIntoView({ behavior: "smooth", block: "start" }); }));
   pick([...w.querySelectorAll(".as-bmd > .fr-lst > .fr-it")], [...w.querySelectorAll(".as-bpane")], "i");
   w.querySelectorAll(".as-after").forEach(a => { const its = [...a.querySelectorAll(".as-step")], ps = [...a.querySelectorAll(".as-steppane")]; its.forEach(b => b.addEventListener("click", () => { its.forEach(x => x.classList.toggle("on", x === b)); ps.forEach(p => { p.hidden = p.dataset.step !== b.dataset.step; }); })); });
   w.querySelectorAll(".fr-q").forEach(q => q.addEventListener("click", () => { w.querySelectorAll(".fr-tab").forEach(t => t.classList.toggle("fr-helpon")); q.classList.toggle("on"); }));
@@ -431,14 +433,151 @@ const LAY = {
   C: { fn: layoutC, title: "Action Sheet C", name: "Versions side by side, the card beside them", blurb: "A wide window. The Versions are the columns of one table (Tiers, Critical, Effects, Area, the Effects applied, After the damage), so what changes with the AP cost shows at once; the real card stays in view on the right and redraws as you edit.",
     notes: ["<b>1, 2 and 3 AP side by side</b>: a grey cell repeats the Version to its left, so only the differences are written.", "<b>The card is always visible</b> (the Generate Action window's live preview, kept).", "<b>Needs width</b>: 1040 px; under 900 px the card drops below. Four or five Versions scroll sideways.", "A single-Version card (Rebuke, Covering Fire) leaves the table mostly empty; the step's pane sits under the table, not next to its cell."] }
 };
+
+/* ================================================================ A2: A, with the order of events on its left (Lucas, 2026-11-11) */
+function events(m, v) {
+  const ev = [], add = (tile, cls, title, sub, to, o = {}) => ev.push({ tile, cls, title, sub, to, ...o });
+  if (m.reaction) add("R", "esc", cap(m.rkind === "interrupt" ? "Interrupt" : "Trigger"), (TWOD12.moments[m.moment] ?? "by hand").replace(" within N", ` within ${m.distance || m.momentRange}`), "when");
+  else add("T", "rule", "On your turn", m.freq === "none" ? "" : `${TWOD12.frequencies[m.freq]}: once a ${m.freq === "atwill" ? "turn or more" : m.freq}`, "card");
+  add(String(v.ap), "ap", `Pay ${v.ap} AP${m.reaction ? " (R)" : ""}`, m.esc ? `and Escalation ${m.esc}` : "", "vers");
+  if (m.area.on) add("A", "au", "Place the area", `${v.areaSize || m.area.size} ${cap(m.area.shape)}${m.area.withinRange ? `, the weapon's ${m.area.withinRange} range` : m.area.within ? `, within ${m.area.within} sq.` : ", around you"}`, "when");
+  else add("◎", "rule", m.targets || "A target", m.marks ? "it becomes your mark" : m.distance ? `Distance: ${m.distance}` : "", "card");
+  if (!v.noTiers) add("2d", "bb", m.save ? "The target's Save" : "Your roll", m.save ? `${cap(m.vs)} Save: a Tier for each target` : `Vs. ${m.weapon ? "AD" : m.vs ? cap(m.vs) : "DC 13"}: Tier 1, 2 or 3`, "tiers");
+  for (const x of v.onUse) add("E", "cond", x.name, v.noTiers ? "on use" : "on a Tier 2 or 3", "use");
+  if (!v.noTiers) add("D", "tk", "The damage", v.tiers.map(t => t.dmg || "none").join(" / "), "tiers", { mono: true });
+  v.after.forEach((r, i) => { const [t, c] = KIND[r.kind] ?? ["?", "rule"]; add(t, c, r.label, `${onShort(r.on)} · ${r.who.replace(/ \(a pick\)|, one by one/g, "")}`, "after", { after: i === 0 }); });
+  return ev;
+}
+function rail(m, v, vi, hidden) {
+  const ev = events(m, v);
+  return `<ol class="as-rail" data-v="${vi}"${hidden ? " hidden" : ""}>${ev.map((e, i) => `${e.after ? `<li class="as-evsep">after the damage lands</li>` : ""}<li><a class="as-ev" href="#${m.name.replace(/\W/g, "")}-${e.to}" data-to="${e.to}"><span class="as-evn">${i + 1}</span><span class="fr-kind k-${e.cls}">${e.tile}</span><span class="as-evt"><b>${esc(e.title)}</b>${e.sub ? `<em class="${e.mono ? "mono" : ""}">${esc(e.sub)}</em>` : ""}</span></a></li>`).join("")}<li><button type="button" class="as-evadd">+ a step after the damage</button></li></ol>`;
+}
+function layoutA2(n) {
+  const m = cards[n].m, id = k => `${m.name.replace(/\W/g, "")}-${k}`, last = m.versions.length - 1;
+  const vb = (v, i) => { let h = versionBody(v, i, m); h = h.replace('<div class="as-tiers">', `<div class="as-tiers" id="${i === last ? id("tiers") : ""}">`).replace(/<h4 class="as-h4">(On use|On a Tier 2 or 3)/, `<h4 class="as-h4" id="${i === last ? id("use") : ""}">$1`).replace('<h4 class="as-h4">After the damage', `<h4 class="as-h4" id="${i === last ? id("after") : ""}">After the damage`); return h; };
+  const always = m.name === "Mark Quarry" ? `<div class="as-always"><span class="as-railh">Always, while you have it</span>${MQ_RULES.map(r => { const k = R.RULE_KINDS[r.kind]; return `<a class="as-ev" href="#${id("rules")}"><span class="fr-kind k-${k.cls}">${k.tile}</span><span class="as-evt"><b>${esc(R.ruleLabel(r, { names: {}, host: "feature" }))}</b></span></a>`; }).join("")}</div>` : "";
+  const body = `<div class="fr-tab as-A as-A2"><div class="as-flowcols"><aside class="as-flow"><span class="as-railh">Order of events <small>the ${m.versions.length > 1 ? "selected " : ""}Version</small></span>${m.versions.map((v, i) => rail(m, v, i, i !== last)).join("")}${always}</aside><div class="as-page">
+    ${preview(n)}
+    <div id="${id("card")}">${sec("The card", "its lines, in the order players read them", grid(cardRows(m)) + cardMore(m))}</div>
+    <div id="${id("when")}">${sec("When and where", "", `<div class="fr-endlist">${part(m.reaction, "A Reaction", reactionSum(m), reactionBody(m))}${part(m.area.on, "An Area", areaSum(m), areaBody(m))}</div>`)}</div>
+    <div id="${id("vers")}">${sec("Versions", `${m.versions.length} · one tab per AP cost`, `${vtabs(m, `<span class="as-vtools"><button type="button">Duplicate</button><button type="button">Delete</button></span>`)}${m.versions.map((v, i) => `<div class="as-vbody" data-v="${i}"${i === last ? "" : " hidden"}>${vb(v, i)}</div>`).join("")}`)}</div>
+    <div id="${id("rules")}">${rulesSec(m)}</div>
+    ${autoSec(m)}
+  </div></div></div>`;
+  return win(m, body, 900);
+}
+
+/* ================================================================ Generate Action: three mockups (Lucas, 2026-11-11) */
+const gwin = (key, title, sub, body, foot, w, hidden) => `<div ${hidden ? "hidden " : ""}class="application twod12 twod12-styled sheet as-win ga-win" style="--w:${w}px" data-card="${key}"><header class="window-header"><span>${esc(title)}</span><span class="wh-x">✕</span></header><section class="window-content"><div class="twod12 sheet item sk"><header class="head ga-head"><span class="ga-ico">✦</span><div><b>${esc(title)}</b><small>${sub}</small></div></header><section class="tab active"><div class="fr-tab ga">${body}</div></section><footer class="ga-foot">${foot}</footer></div></section></div>`;
+const gfoot = (what, alt = "Create in the world") => `<span class="fr-m">Nothing is created until you click.</span><button type="button">Cancel</button><button type="button">${alt}</button><button type="button" class="ga-go">${what}</button>`;
+const okLine = (t, cls = "ok") => `<li class="${cls}"><span>${cls === "ok" ? "✓" : cls === "step" ? "→" : "?"}</span><div>${t}</div></li>`;
+const stepsOf = v => v.after.map(r => okLine(`<b>${esc(r.label)}</b> after the damage · ${onShort(r.on)} · ${esc(r.who.replace(/ \(a pick\)|, one by one/g, ""))}`, "step")).join("");
+function genForm() {   // G1: the form, in the sheet's pieces (Smite)
+  const m = cards.Smite.m, v = m.versions[2];
+  const left = `${grid([["Name", text(m.name, "Grave Chill", "wide")], ["Traits", traitsRow(m.traits)], ["Frequency", seg(m.freq, FREQ, "w")], ["Used", seg("turn", [["turn", "On your turn"], ["int", "A Reaction: Interrupt"], ["trg", "A Reaction: Trigger"]], "w")], ["Target", text(m.targets, "One creature", "wide")], ["Distance", text(m.distance, "5 sq., weapon, self")]])}
+    ${vtabs(m)}
+    ${grid([["Cost", `${step(v.ap)} <span class="fr-m">AP</span>`]])}
+    <div class="as-tiers">${v.tiers.map((t, i) => `<div class="as-tier ${TIERC[i]}"><span class="as-tl">Tier ${i + 1}</span><div class="as-tb">${text(t.dmg + (t.text ? `; ${t.text}` : ""), "[V] 2d8 Co; Hindered (EoT)", "as-dmg")}${dmgChips(t.dmg)}</div></div>`).join("")}<div class="as-tier crit"><span class="as-tl">Critical</span><div class="as-tb">${text(v.critical, "Immobilized (EoT)", "wide as-tx")}</div></div></div>
+    ${grid([["Effects", area(v.effects, "Effects (Tier 2+): write them as the card does", 4)]])}
+    ${help("Write it like the card: <code>[V] 1d8 Co</code> is 1d8 Cold to Vigor, <code>1[W]</code> the weapon's damage, <code>[Mod]</code> the Modifier, <code>[R] 2d6 Ho</code> Resolve, Holy; then <code>;</code> and an effect (<code>Hindered (EoT)</code>, <code>Pushed 2</code>).")}`;
+  const right = `<div class="as-live">The card, live</div><div class="as-card">${cards.Smite.card}</div>
+    <div class="ga-read"><h4>Understood <small>3 AP</small></h4><ul>${okLine("3 Tiers: the weapon's damage to Vigor, Holy damage to Resolve")}${okLine("Bright light in a 2 Emanation, 1 round <em>needs an Effect: drop one on the sheet, or <a class=\"as-link\">create \"Smite (Bright light 2)\"</a></em>")}${stepsOf(v)}</ul>
+    <h4 class="no">Kept as plain text</h4><ul>${okLine("\"takes 1 Bane when they try to Hide\" (Hide isn't written)", "no")}</ul></div>`;
+  return gwin("form", "Generate Action", "the fields, written like the card", `<div class="ga-cols"><div>${left}</div><aside>${right}</aside></div>`, gfoot("Fill Smite"), 980, false);
+}
+const BOOK = `Rebuke                         Divine Power 1 · Turn · 1R
+[Power] [Save] [Divine]
+Trigger: An enemy within 5 squares makes a [Strike] Action against an ally.
+Targets: The triggering creature
+Distance: 5 sq. · Vs. Appeal Save
+Tier 1: [R] 1d8 Ho; Pushed 2, and Frightened of you for 1 round.
+Tier 2: [R] 1d6 Ho; Pushed 1.
+Tier 3: No effect.
+Strike my friends, and feel why you should not have.`;
+function genPaste() {   // G2: paste the card's text (Rebuke)
+  const m = cards.Rebuke.m, v = m.versions[0], marks = ["ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok"];
+  const left = `<div class="ga-paste" role="textbox" aria-label="The card's text" tabindex="0">${BOOK.split("\n").map((l, i) => `<div class="ga-line"><span class="ga-mark ${marks[i]}">${marks[i] === "ok" ? "✓" : "?"}</span><span>${esc(l)}</span></div>`).join("")}</div>
+    ${help("Paste or type the card as the book prints it: the name line, the traits, <code>Trigger:</code>, <code>Targets:</code>, <code>Distance:</code>, a line per Tier, <code>Critical:</code>, <code>Effects:</code>, the Flavor last. A ✓ line was read; a ? line is kept as plain text.")}
+    <div class="ga-read"><h4>What was read</h4><ul>
+      ${okLine(`<b>Rebuke</b> · Divine Power 1 · ${traitsRow(m.traits).replace(/<select[\s\S]*?<\/select>/, "").replace(/<button[^>]*>×<\/button>/g, "")}`)}
+      ${okLine("A <b>Reaction</b>, a Trigger, 1 AP (R), once a Turn · the moment: <b>a Strike is made against an ally</b>, within its Distance (5 sq.), used on the one that caused it")}
+      ${okLine("The target rolls an <b>Appeal Save</b>; Tier 1: 1d8 Holy to Resolve, Tier 2: 1d6 Holy to Resolve, Tier 3: no effect")}
+      ${stepsOf(v)}
+    </ul></div>`;
+  const right = `<div class="as-live">The card it makes</div><div class="as-card">${cards.Rebuke.card}</div>`;
+  return gwin("paste", "Generate Action", "paste the card's text", `<div class="ga-cols"><div>${left}</div><aside>${right}</aside></div>`, gfoot("Create Rebuke", "Open it in the sheet first"), 980, true);
+}
+function genShape() {   // G3: start from a shape (Covering Fire: the Action and its Zone Effect together)
+  const m = cards["Covering Fire"].m, blank = (v, w = 3) => `<input type="text" class="fr-in ga-blank" style="width:${w}em" value="${esc(v)}" aria-label="value">`;
+  const shapes = [["A Strike", "a roll, damage by Tier"], ["A Save", "the target rolls"], ["A Reaction", "a moment, then one of the others"], ["An area", "everyone in it, once"], ["A Zone", "an area that stays"], ["On you", "an Effect on you"], ["A heal", "Rally or dice"]];
+  const left = `<div class="ga-shapes" role="group" aria-label="Start from">${shapes.map(([t, s]) => `<button type="button" class="ga-shape${t === "A Zone" ? " on" : ""}" aria-pressed="${t === "A Zone"}"><b>${t}</b><small>${s}</small></button>`).join("")}</div>
+    ${grid([["Name", text(m.name, "", "wide")], ["Traits", traitsRow(m.traits)], ["Frequency", seg(m.freq, FREQ, "w")], ["Cost", `${step(2)} <span class="fr-m">AP</span>`]])}
+    <div class="ga-sent"><p>Place a ${blank(2, 2)} ${sel("emanation", [["emanation", "Emanation"], ["burst", "Burst"], ["line", "Line"]])} within ${sel("normal", [["normal", "your weapon's normal range"], ["sq", "N squares"], ["self", "around you"]])}. It stays ${blank(3, 2)} rounds.</p>
+      <p>Inside it, ${sel("enemies", [["enemies", "enemies"], ["allies", "allies"], ["all", "everyone"]])} have ${blank(1, 2)} ${sel("b", [["b", "Bane"], ["o", "Boon"]])} on ${tchip("strike")} Actions <a class="as-link">change</a>,</p>
+      <p>and ${sel("allies", [["allies", "allies"], ["enemies", "enemies"], ["all", "everyone"]])} have ${sel("def", [["def", "+ Defense"], ["spd", "+ Speed"], ["heal", "a heal each turn"], ["ht", "damage (a Hazard)"]])} ${blank("+1", 2)}. <a class="as-link">+ another line</a></p></div>
+    ${help("A shape asks only for what it needs, as a sentence. A Zone makes the Action and its Effect together; every blank is a field on their sheets afterwards.")}
+    <div class="ga-read"><h4>It will create</h4><ul>${okLine("the Action <b>Covering Fire</b>: 2 AP, Encounter, a 2 Emanation within the weapon's normal range, kept 3 rounds")}${okLine("the Effect <b>Covering Fire</b>, on the map (a Zone): enemies inside carry <b>Covering Fire (1 Bane)</b>, allies inside carry <b>Covering Fire (+1 Defense)</b>")}${okLine("the two carried Effects, each with one rule")}</ul></div>`;
+  const right = `<div class="as-live">The card it makes</div><div class="as-card">${cards["Covering Fire"].card}</div>`;
+  return gwin("shape", "Generate Action", "start from a shape", `<div class="ga-cols"><div>${left}</div><aside>${right}</aside></div>`, gfoot("Create Covering Fire and its 3 Effects"), 980, true);
+}
+const GACSS = `
+.as-win .as-flowcols { display: grid; grid-template-columns: 208px minmax(0, 1fr); gap: 14px; align-items: start; }
+.as-win .as-flow { position: sticky; top: 8px; background: var(--sk-panel); border: 1px solid var(--sk-line); border-radius: 5px; padding: 8px 8px 10px; }
+.as-win .as-railh { display: block; font: 700 11px Signika, sans-serif; letter-spacing: .07em; text-transform: uppercase; color: var(--sk-acc); margin-bottom: 6px; }
+.as-win .as-railh small { display: block; letter-spacing: 0; text-transform: none; font-weight: 400; color: var(--sk-mut); }
+.as-win ol.as-rail { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; position: relative; }
+.as-win ol.as-rail[hidden] { display: none; }
+.as-win ol.as-rail::before { content: ""; position: absolute; left: 30px; top: 12px; bottom: 34px; width: 2px; background: var(--sk-line); }
+.as-win .sk a.as-ev { position: relative; display: grid; grid-template-columns: 12px 22px minmax(0, 1fr); gap: 6px; align-items: start; padding: 4px 4px; border-radius: 4px; color: var(--sk-ink); text-decoration: none; cursor: pointer; }
+.as-win .sk a.as-ev:hover, .as-win .sk a.as-ev.on { background: #fff; box-shadow: inset 3px 0 0 var(--sk-acc); }
+.as-win .as-always a.as-ev { grid-template-columns: 22px minmax(0, 1fr); }
+.as-win .as-evn { font: 700 10px Georgia, serif; color: var(--sk-mut); padding-top: 4px; text-align: right; }
+.as-win .as-evt b { display: block; font-size: 12.5px; line-height: 1.25; }
+.as-win .as-evt em { display: block; font-style: normal; font-size: 11px; color: var(--sk-mut); line-height: 1.25; overflow-wrap: anywhere; }
+.as-win .as-evt em.mono { font-family: ui-monospace, Consolas, monospace; font-size: 10px; }
+.as-win .as-evsep { font: 700 10px Signika, sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--sk-acc); padding: 6px 0 2px 40px; background: var(--sk-panel); position: relative; }
+.as-win .sk button.as-evadd { margin: 4px 0 0 40px; font-size: 11px; border-style: dashed; color: var(--sk-acc); position: relative; }
+.as-win .as-always { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--sk-line); display: grid; gap: 2px; }
+.as-win .as-page [id] { scroll-margin-top: 10px; }
+@media (max-width: 760px) { .as-win .as-flowcols { grid-template-columns: 1fr; } .as-win .as-flow { position: static; } }
+.ga-win .sk .head.ga-head { gap: 12px; color: #fff; }
+.ga-win .ga-ico { width: 40px; height: 40px; border-radius: 5px; background: #26364d; display: grid; place-items: center; font-size: 20px; color: #f1e6c8; }
+.ga-win .ga-head b { display: block; font: 700 19px Georgia, serif; } .ga-win .ga-head small { color: #c9d2e2; }
+.ga-win .ga-cols { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; align-items: start; }
+.ga-win .ga-cols aside .as-card { padding: 0; }
+.ga-win .ga-foot { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; align-items: center; padding: 10px 14px; border-top: 1px solid var(--sk-line); background: var(--sk-panel); }
+.ga-win .ga-foot .fr-m { margin-right: auto; color: var(--sk-mut); font-size: 12px; }
+.ga-win .sk .ga-foot button { padding: 5px 14px; }
+.ga-win.application.twod12-styled .sk .ga-foot button.ga-go { background: var(--sk-acc); color: #fff; border-color: var(--sk-acc); font-weight: 700; }
+.ga-win .ga-read { margin-top: 10px; border: 1px solid var(--sk-line); border-radius: 5px; background: #fff; padding: 8px 10px; }
+.ga-win .fr-tab .ga-read h4 { margin: 0 0 4px; font: 700 12px Georgia, serif; color: #2f6b3a; display: block; } .ga-win .fr-tab .ga-read h4.no { color: #8a6a14; margin-top: 8px; }
+.ga-win .ga-read ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.ga-win .ga-read li { display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: 6px; font-size: 12.5px; }
+.ga-win .ga-read li > span { font-weight: 700; color: #2f6b3a; } .ga-win .ga-read li.no > span { color: #8a6a14; } .ga-win .ga-read li.step > span { color: var(--sk-acc); }
+.ga-win .ga-read em { display: block; font-style: normal; color: var(--sk-mut); font-size: 11.5px; }
+.ga-win .ga-read .as-traits { display: inline-flex; vertical-align: middle; }
+.ga-win .ga-paste { background: #fff; border: 1px solid var(--sk-line); border-radius: 5px; padding: 8px 6px; font: 12.5px/1.55 ui-monospace, Consolas, monospace; min-height: 190px; overflow-x: auto; }
+.ga-win .ga-line { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 6px; white-space: pre-wrap; }
+.ga-win .ga-mark { font-weight: 700; color: #2f6b3a; text-align: center; } .ga-win .ga-mark.no { color: #8a6a14; }
+.ga-win .ga-shapes { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 6px; margin-bottom: 12px; }
+.ga-win .sk button.ga-shape { display: grid; gap: 1px; text-align: left; padding: 6px 9px; cursor: pointer; }
+.ga-win .sk button.ga-shape small { color: var(--sk-mut); font-size: 11px; }
+.ga-win.application.twod12-styled .sk button.ga-shape.on { background: var(--sk-navy); color: #fff; border-color: var(--sk-navy); } .ga-win.application.twod12-styled .sk button.ga-shape.on small { color: #c9d2e2; }
+.ga-win .ga-sent { margin: 12px 0 4px; padding: 10px 12px; background: #fff; border: 1px solid var(--sk-line); border-left: 4px solid var(--sk-acc); border-radius: 4px; font-size: 14px; line-height: 2.1; }
+.ga-win .ga-sent p { margin: 0; }
+.ga-win .fr-tab .ga-sent .fr-in.ga-blank { text-align: center; font-weight: 700; }
+@media (max-width: 860px) { .ga-win .ga-cols { grid-template-columns: 1fr; } }
+`;
 const NAMES = Object.keys(cards);
+LAY.A2 = { fn: layoutA2, title: "Action Sheet A2", name: "A, with the order of events", blurb: "Mockup A's page, and on its left the order of events of the selected Version: when it is used, what it costs, the target, the roll, the Effects it applies, the damage, each step after it. Click an event to jump to where it is edited.",
+  notes: ["<b>A is unchanged on the right</b>: one page in the card's order, a tab per Version.", "<b>The order of events follows the Version's tab</b>: pick 3 AP and the rail shows its light, its damage, its Guard and its Push, in the order Foundry runs them.", "<b>Each event is a link</b> to its place on the page; a step can also be added from the rail (+ at the end).", "The window is 900 px wide (A is 680); under 760 px the rail folds to a strip above the page."] };
 for (const [k, L] of Object.entries(LAY)) {
   const html = `<title>${L.title}</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Signika:wght@400;600;700&display=swap">
 <style>${SYSCSS}</style>
-<style>${PAGECSS}${ASCSS}</style>
-<div class="pg-top"><h1>Mockup ${k}: ${L.name}</h1><p>${L.blurb}</p></div>
+<style>${PAGECSS}${ASCSS}${GACSS}</style>
+<div class="pg-top"><h1>Mockup ${k}${k === "A2" ? "" : `: ${L.name}`}${k === "A2" ? `: ${L.name}` : ""}</h1><p>${L.blurb}</p></div>
 <div class="pg-pick" role="group" aria-label="The card shown">${NAMES.map((n, i) => `<button type="button" id="pick-${i}" data-card="${esc(n)}" class="${i ? "" : "on"}" aria-pressed="${!i}">${esc(n)}</button>`).join("")}<small>four real cards from the compendium source · the ? on the tab bar shows the help texts · static: nothing is saved</small></div>
 <div class="pg-stage">${NAMES.map((n, i) => L.fn(n).replace('class="application', `${i ? "hidden " : ""}class="application`)).join("\n")}</div>
 <div class="pg-notes"><h2>What this layout does</h2><ul>${L.notes.map(x => `<li>${x}</li>`).join("")}</ul>
@@ -446,4 +585,24 @@ for (const [k, L] of Object.entries(LAY)) {
 <script>${JS}</script>`;
   fs.writeFileSync(path.join(HERE, `action-sheet-${k}.html`), html);
   console.log(`action-sheet-${k}.html`, Math.round(html.length / 1024), "KB");
+}
+
+{
+  const G = [["form", "G1: the form", "Smite"], ["paste", "G2: paste the card", "Rebuke"], ["shape", "G3: start from a shape", "Covering Fire"]];
+  const html = `<title>Generate Action Mockups</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Signika:wght@400;600;700&display=swap">
+<style>${SYSCSS}</style>
+<style>${PAGECSS}${ASCSS}${GACSS}</style>
+<div class="pg-top"><h1>Generate Action: three ways</h1><p>The Generate Action window in the system's style (no Foundry default window), next to the new Action sheet. Each one is shown filled with a real card and the card it makes.</p></div>
+<div class="pg-pick" role="group" aria-label="The mockup shown">${G.map(([k, l, c], i) => `<button type="button" id="pick-${i}" data-card="${k}" class="${i ? "" : "on"}" aria-pressed="${!i}">${l} <span style="font-weight:400">(${c})</span></button>`).join("")}<small>static: nothing is saved</small></div>
+<div class="pg-stage">${genForm()}${genPaste()}${genShape()}</div>
+<div class="pg-notes"><h2>What each one is for</h2><ul>
+<li><b>G1, the form.</b> Today's window, in the sheet's pieces: the same fields, each Tier written like the card. New: the "Understood" list also says which words become steps after the damage, and which Effect is missing. Good for an NPC's quick Action. Its fields repeat the new sheet's, so it adds the least.</li>
+<li><b>G2, paste the card.</b> One text box: the card as the book prints it. Every line gets a ✓ or a ?, and the list under it says what was read (the Reaction's moment from the Trigger line, the Save, the steps). The fastest when the card is already written in <code>book/</code> or in your notes; it needs the most parsing code.</li>
+<li><b>G3, start from a shape.</b> Pick what kind of Action it is and fill a sentence with blanks. A Zone or an "on you" Action also creates its Effects, which neither the form nor the sheet does in one go. Good for the shapes that need two or three items; each shape has to be written.</li>
+</ul></div>
+<script>${JS}</script>`;
+  fs.writeFileSync(path.join(HERE, "generate-action.html"), html);
+  console.log("generate-action.html", Math.round(html.length / 1024), "KB");
 }

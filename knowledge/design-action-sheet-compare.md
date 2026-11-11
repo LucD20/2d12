@@ -21,3 +21,18 @@ A is the fastest to write a card in, it reads in the book's order, it fits the w
 - **from B, nothing now.** If the sheet later feels long, the Version tabs can become B's list without changing the data.
 
 C is the one to pick instead if most of your cards will have three Versions (as Smite does): its table is the only layout that shows them together.
+
+## After Lucas's answers (2026-11-11)
+
+**A, with the order of events: `action-sheet-A2.html`.** Lucas: "I like A but the side panel of B is good because it looks like an order of events." A2 is A's page with a rail on its left for the selected Version: 1 when it is used (your turn, or the Reaction's moment), 2 the cost, 3 the target or the area, 4 the roll, 5 the Effects applied (on use, or on a Tier 2 or 3), 6 the damage, then, under "after the damage lands", each step. An event jumps to where it is edited; the rail follows the Version's tab; rules the Action holds are listed under "Always, while you have it". The window is 900 px (A is 680).
+
+**Generate Action: `generate-action.html`, three ways.**
+
+| | G1: the form | G2: paste the card | G3: start from a shape |
+|---|---|---|---|
+| The idea | Today's window in the sheet's pieces | One text box: the card as the book prints it; each line gets a tick or a question mark | Pick the kind of Action, fill a sentence with blanks |
+| Good at | An NPC's quick Action; nothing new to learn | A card already written (book/, your notes): the fastest; reads the Reaction's moment and the steps | Shapes that need two or three items (a Zone and its Effects) |
+| Bad at | Repeats the new sheet's fields | The most parsing code; a line it can't read stays plain text | Each shape has to be written; no help outside the shapes |
+| Build | S | M | M, per shape |
+
+**Recommendation:** G2 as the Generate Action window (the new sheet already is G1), and G3's Zone shape later, when more Zones are written.
