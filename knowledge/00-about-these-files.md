@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-11 from the repository at: 498dbf0 2026-11-11 v0.0.362: the Turn Breakdown dock (layout A): under the chat, folded per client; Turn button for Export Chat Log (moved to Journal); End of Turn line; Advance live
+Built by tools/knowledge.py on 2026-11-11 from the repository at: 702bf06 2026-11-11 v0.0.363: the Turn Breakdown dock as its own element above the chat input (clickable in the sidebar and floating), the Turn button in Export's place, dockInfo()
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

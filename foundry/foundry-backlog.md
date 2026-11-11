@@ -1,6 +1,6 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.363**. Tests: `node tools/tests/run.mjs` (243 tests, see the README; the next new test is t246). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.364**. Tests: `node tools/tests/run.mjs` (243 tests, see the README; the next new test is t246). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 ## PLAYTEST 4 FIXES (Lucas, 2026-11-10/11; decided; one version per step, in this order. Step 1 applied in v0.0.343, Step 2 in v0.0.345, Step 3 in v0.0.347, Step 4 in v0.0.349, Step 5 in v0.0.350, Step 6 in v0.0.352: all applied)
@@ -21,6 +21,7 @@ Mockups: `foundry/mockups/turn-breakdown.html`. What changed: the changelog (doc
 - [ ] **No AP ticker messages and no "unused AP" line** in the chat any more; at each turn's end **one line "End of X's Turn"** (bare, no sender), which unfolds into that turn (what ticked and ended, the Effects left).
 - [ ] **Not verified:** where V14 draws the chat's Export button (`[data-action="export"]`; if the Turn button is missing, the console says "twod12 | Turn button"), the Journal tab's footer (`.directory-footer`), `game.messages.export()`; the dock's place in the chat when the sidebar is collapsed (the chat pops out: the dock stays in the chat tab).
 - [ ] **v0.0.363 (Lucas on v0.0.362: not clickable, floating over the map, the button misplaced):** the dock is its own fixed element above the chat's input (sidebar or floating), the Turn button in Export's place with Foundry's icon-button classes. **To test:** click the dock with the sidebar open on the chat, then collapsed (or on another tab); the Turn button's place. If anything is off: run `game.twod12.dockInfo()` in the console (F12) and send its line with a screenshot.
+- [ ] **v0.0.364 (Lucas on v0.0.363: the button at the bottom, Export still there):** the Turn button now replaces every Export Chat Log button whenever Foundry draws it. **To test:** the floppy disk is gone and the Turn icon is in its place, beside the trash; it hides and shows the dock.
 - [ ] **Known limits:** a movement that gets more squares mid-way (a second Advance on the same banner) counts the first grant only until it ends; a client reloaded mid-move leaves the line "live" until that creature's next turn.
 
 ## PACK PERF (v0.0.361, 2026-11-11; the Effects audit's section 6, D27 to D37 and D40, all at their defaults; **Lucas tested it: "All seems to work"**)

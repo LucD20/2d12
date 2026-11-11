@@ -121,7 +121,6 @@ const firstName = n => String(n ?? "").replace(/\s*\(.*\)\s*$/, "");
 const shown = () => { try { return game.settings.get(F, "turnDockShown") !== false; } catch (e) { return true; } };
 const opened = () => { try { return !!game.settings.get(F, "turnDockOpen"); } catch (e) { return false; } };
 
-function chatRoot() { return document.querySelector("#sidebar #chat") ?? document.querySelector("#chat"); }
 /**
  * v0.0.363 (Lucas: "can't click on it"; it floated over the map): the dock is an element of its own (in the body, so no Foundry layer takes its
  * clicks), placed right above the chat's input wherever V14 shows it: in the sidebar's chat tab, or floating at the bottom right (the
@@ -178,21 +177,32 @@ export function dockInfo() {
 const drawSoon = perFrame(renderDock);
 
 /** The Turn button, where Foundry's Export Chat Log was (its button is hidden; Export Chat Log is on the Journal tab). */
-function turnButton(root) {
-  if (!root?.querySelector) return;
-  const exp = root.querySelector('[data-action="export"], .export-log');
-  if (root.querySelector(".twod12-turnbtn")) { exp?.classList.add("twod12-hidden"); return; }
-  // v0.0.363: Foundry's own icon-button look (the classes of the buttons beside it), in Export Chat Log's exact place
+/**
+ * v0.0.364 (Lucas: the button sat at the very bottom and Export Chat Log stayed; dockInfo: the button was in section#chat, the floppy-disk
+ * Export button in the sidebar): V14 draws the chat's buttons after the chat itself, so at that moment there was no Export button to replace.
+ * Now every Export Chat Log button that appears (the sidebar's, the floating input's) gets the Turn button in its place and is hidden, whenever
+ * Foundry draws it; a Turn button left anywhere else is removed.
+ */
+function makeTurnButton() {
   const b = document.createElement("button");
   b.type = "button";
   b.className = "ui-control icon fa-solid fa-list-check twod12-turnbtn";
   b.setAttribute("aria-pressed", String(shown()));
   b.dataset.tooltip = "Turn Breakdown: show or hide";
   b.setAttribute("aria-label", "Turn Breakdown");
-  b.addEventListener("click", async ev => { ev.preventDefault(); ev.stopPropagation(); await game.settings.set(F, "turnDockShown", !shown()); b.setAttribute("aria-pressed", String(shown())); renderDock(); });
-  if (exp) { exp.classList.add("twod12-hidden"); exp.before(b); }
-  else (root.querySelector("#chat-controls .control-buttons") ?? root.querySelector("#chat-controls") ?? root).append(b);
+  b.addEventListener("click", async ev => { ev.preventDefault(); ev.stopPropagation(); await game.settings.set(F, "turnDockShown", !shown()); document.querySelectorAll(".twod12-turnbtn").forEach(x => x.setAttribute("aria-pressed", String(shown()))); renderDock(); });
+  return b;
 }
+export function ensureTurnButtons() {
+  if (typeof document === "undefined") return;
+  const exps = [...document.querySelectorAll('[data-action="export"]')].filter(e => e.closest("#sidebar, #chat-notifications, #chat, .chat-form"));
+  for (const exp of exps) {
+    exp.classList.add("twod12-hidden");
+    if (!exp.previousElementSibling?.classList?.contains("twod12-turnbtn")) exp.before(makeTurnButton());
+  }
+  for (const b of document.querySelectorAll(".twod12-turnbtn")) if (!b.nextElementSibling?.matches?.('[data-action="export"]')) b.remove();
+}
+const turnButtonsSoon = perFrame(ensureTurnButtons);
 /** Export Chat Log, moved to the Journal tab's footer. */
 function journalExport(root) {
   if (!root?.querySelector || root.querySelector(".twod12-exportchat")) return;
@@ -210,13 +220,15 @@ export function registerTurnDock({ pendingSteps: ps } = {}) {
   game.settings.register(F, "turnDockShown", { scope: "client", config: false, type: Boolean, default: true });
   game.settings.register(F, "turnDockOpen", { scope: "client", config: false, type: Boolean, default: false });
   const el = h => (h instanceof HTMLElement ? h : h?.[0]);
-  Hooks.on("renderChatLog", (app, html) => { try { turnButton(app?.element ?? el(html)); drawSoon(); } catch (e) { console.warn("twod12 | Turn button", e); } });
+  Hooks.on("renderChatLog", () => { try { turnButtonsSoon(); drawSoon(); } catch (e) { console.warn("twod12 | Turn button", e); } });
   Hooks.on("renderJournalDirectory", (app, html) => { try { journalExport(app?.element ?? el(html)); } catch (e) { console.warn("twod12 | Export Chat Log", e); } });
   // registered at ready (twod12.mjs): the chat and the Journal tab are already drawn
-  if (typeof document !== "undefined") { try { turnButton(chatRoot()); const j = document.querySelector("#journal"); if (j) journalExport(j); } catch (e) { /* drawn on their next render */ } drawSoon(); }
+  if (typeof document !== "undefined") { try { ensureTurnButtons(); const j = document.querySelector("#journal"); if (j) journalExport(j); } catch (e) { /* drawn on their next render */ } drawSoon(); }
   // v0.0.363: the dock follows the chat input (the sidebar opened, closed or on another tab, the window resized)
   for (const h of ["collapseSidebar", "changeSidebarTab", "renderSidebar", "renderChatLog"]) Hooks.on(h, () => { placeSoon(); setTimeout(placeDock, 450); });
   if (typeof window !== "undefined") window.addEventListener("resize", placeSoon);
+  // v0.0.364: Foundry redraws the chat's buttons on its own (a part of the chat, the input moving to the floating area): watch for them
+  if (typeof MutationObserver !== "undefined" && typeof document !== "undefined") new MutationObserver(muts => { if (muts.some(m => [...m.addedNodes].some(n => n.nodeType === 1 && (n.matches?.('[data-action="export"]') || n.querySelector?.('[data-action="export"]'))))) turnButtonsSoon(); }).observe(document.body, { childList: true, subtree: true });
   for (const h of ["createCombat", "deleteCombat", "updateCombat", "combatStart", "combatTurnChange", "createCombatant", "updateCombatant", "deleteCombatant",
     "createActiveEffect", "updateActiveEffect", "deleteActiveEffect", "updateRegion", "deleteRegion", "canvasReady"]) Hooks.on(h, drawSoon);
   Hooks.on("updateActor", (a, ch) => { if (ch?.system && ("guard" in ch.system || "apGuard" in ch.system)) drawSoon(); });
