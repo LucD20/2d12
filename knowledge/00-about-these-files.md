@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-11 from the repository at: 125083f 2026-11-11 PACK ACTION-SHEET, session 1: the Effects audit (40 numbered defaults) and three mockups of the Action sheet
+Built by tools/knowledge.py on 2026-11-11 from the repository at: 89dbe69 2026-11-11 PACK ACTION-SHEET, session 1: Lucas's answers; mockup A2 (A with the order of events) and the Generate Action mockups
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -42,6 +42,6 @@ Files:
 - design-base-building.md (7 KB)
 - design-roleplay-skills.md (6 KB)
 - design-items-economy.md (32 KB)
-- design-action-effects-audit.md (27 KB)
-- design-action-sheet-compare.md (4 KB)
+- design-action-effects-audit.md (33 KB)
+- design-action-sheet-compare.md (6 KB)
 - design-action-props-review.md (8 KB)

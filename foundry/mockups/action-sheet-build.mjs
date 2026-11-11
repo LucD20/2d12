@@ -409,13 +409,20 @@ const ASCSS = `
 const JS = `
 document.querySelectorAll(".pg-pick button").forEach(b => b.addEventListener("click", () => {
   document.querySelectorAll(".pg-pick button").forEach(x => { x.classList.toggle("on", x === b); x.setAttribute("aria-pressed", x === b); });
-  document.querySelectorAll(".as-win").forEach(w => { w.hidden = w.dataset.card !== b.dataset.card; });
+  document.querySelectorAll(".as-win.as-scroll").forEach(w => {
+  const sc = w.querySelector(".window-content"), find = to => [...w.querySelectorAll('[id$="-' + to + '"]')].find(x => x.offsetParent);
+  const spy = () => { const rail = w.querySelector(".as-rail:not([hidden])"); if (!rail) return; const top = sc.getBoundingClientRect().top + sc.clientHeight * 0.45; let cur = null;
+    for (const a of rail.querySelectorAll("a.as-ev")) { const t = find(a.dataset.to); if (t && t.offsetParent && t.getBoundingClientRect().top <= top) cur = a.dataset.to; }
+    const evs = [...rail.querySelectorAll("a.as-ev")], last = evs.filter(a => a.dataset.to === cur).at(0); evs.forEach(a => a.classList.toggle("at", a.dataset.to === cur)); };
+  sc.addEventListener("scroll", spy, { passive: true }); spy();
+});
+document.querySelectorAll(".as-win").forEach(w => { w.hidden = w.dataset.card !== b.dataset.card; });
 }));
 document.querySelectorAll(".as-win").forEach(w => {
   const pick = (btns, panes, key) => btns.forEach(b => b.addEventListener("click", () => { const scope = b.closest(".fr-sec, .as-after, .as-bmd") ?? w; btns.forEach(x => { if (scope.contains(x)) x.classList.toggle("on", x === b); }); panes.forEach(p => { if (scope.contains(p)) p.hidden = p.dataset[key] !== b.dataset[key]; }); }));
   pick([...w.querySelectorAll(".as-vtab[data-v]")], [...w.querySelectorAll(".as-vbody")], "v");
   w.querySelectorAll(".as-vtab[data-v]").forEach(b => b.addEventListener("click", () => w.querySelectorAll(".as-rail").forEach(r => { r.hidden = r.dataset.v !== b.dataset.v; })));
-  w.querySelectorAll("a.as-ev").forEach(a => a.addEventListener("click", ev => { ev.preventDefault(); const t = w.querySelector(a.getAttribute("href").replace(/^#/, "#").replace(/([^#\w-])/g, "\\$1")) ?? [...w.querySelectorAll(".as-vbody:not([hidden]) h4.as-h4, .as-vbody:not([hidden]) .as-tiers")].find(x => (a.dataset.to === "tiers" && x.classList.contains("as-tiers")) || (a.dataset.to === "after" && /After the damage/.test(x.textContent)) || (a.dataset.to === "use" && /^On /.test(x.textContent))); w.querySelectorAll("a.as-ev").forEach(x => x.classList.toggle("on", x === a)); t?.scrollIntoView({ behavior: "smooth", block: "start" }); }));
+  w.querySelectorAll("a.as-ev").forEach(a => a.addEventListener("click", ev => { ev.preventDefault(); const id = a.getAttribute("href").slice(1), t = [...w.querySelectorAll("[id]")].find(x => x.id === id && x.offsetParent); w.querySelectorAll("a.as-ev").forEach(x => x.classList.toggle("on", x === a)); const sc = w.querySelector(".window-content"); if (t && w.classList.contains("as-scroll")) sc.scrollTo({ top: sc.scrollTop + t.getBoundingClientRect().top - sc.getBoundingClientRect().top - 130, behavior: "smooth" }); else t?.scrollIntoView({ behavior: "smooth", block: "start" }); }));
   pick([...w.querySelectorAll(".as-bmd > .fr-lst > .fr-it")], [...w.querySelectorAll(".as-bpane")], "i");
   w.querySelectorAll(".as-after").forEach(a => { const its = [...a.querySelectorAll(".as-step")], ps = [...a.querySelectorAll(".as-steppane")]; its.forEach(b => b.addEventListener("click", () => { its.forEach(x => x.classList.toggle("on", x === b)); ps.forEach(p => { p.hidden = p.dataset.step !== b.dataset.step; }); })); });
   w.querySelectorAll(".fr-q").forEach(q => q.addEventListener("click", () => { w.querySelectorAll(".fr-tab").forEach(t => t.classList.toggle("fr-helpon")); q.classList.toggle("on"); }));
@@ -454,7 +461,7 @@ function rail(m, v, vi, hidden) {
 }
 function layoutA2(n) {
   const m = cards[n].m, id = k => `${m.name.replace(/\W/g, "")}-${k}`, last = m.versions.length - 1;
-  const vb = (v, i) => { let h = versionBody(v, i, m); h = h.replace('<div class="as-tiers">', `<div class="as-tiers" id="${i === last ? id("tiers") : ""}">`).replace(/<h4 class="as-h4">(On use|On a Tier 2 or 3)/, `<h4 class="as-h4" id="${i === last ? id("use") : ""}">$1`).replace('<h4 class="as-h4">After the damage', `<h4 class="as-h4" id="${i === last ? id("after") : ""}">After the damage`); return h; };
+  const vb = (v, i) => { let h = versionBody(v, i, m); h = h.replace('<div class="as-tiers">', `<div class="as-tiers" id="${id("tiers")}">`).replace(/<h4 class="as-h4">(On use|On a Tier 2 or 3)/, `<h4 class="as-h4" id="${id("use")}">$1`).replace('<h4 class="as-h4">After the damage', `<h4 class="as-h4" id="${id("after")}">After the damage`); return h; };
   const always = m.name === "Mark Quarry" ? `<div class="as-always"><span class="as-railh">Always, while you have it</span>${MQ_RULES.map(r => { const k = R.RULE_KINDS[r.kind]; return `<a class="as-ev" href="#${id("rules")}"><span class="fr-kind k-${k.cls}">${k.tile}</span><span class="as-evt"><b>${esc(R.ruleLabel(r, { names: {}, host: "feature" }))}</b></span></a>`; }).join("")}</div>` : "";
   const body = `<div class="fr-tab as-A as-A2"><div class="as-flowcols"><aside class="as-flow"><span class="as-railh">Order of events <small>the ${m.versions.length > 1 ? "selected " : ""}Version</small></span>${m.versions.map((v, i) => rail(m, v, i, i !== last)).join("")}${always}</aside><div class="as-page">
     ${preview(n)}
@@ -464,7 +471,7 @@ function layoutA2(n) {
     <div id="${id("rules")}">${rulesSec(m)}</div>
     ${autoSec(m)}
   </div></div></div>`;
-  return win(m, body, 900);
+  return win(m, body, 900).replace('class="application twod12 twod12-styled sheet as-win"', 'class="application twod12 twod12-styled sheet as-win as-scroll"');
 }
 
 /* ================================================================ Generate Action: three mockups (Lucas, 2026-11-11) */
@@ -522,6 +529,9 @@ function genShape() {   // G3: start from a shape (Covering Fire: the Action and
 }
 const GACSS = `
 .as-win .as-flowcols { display: grid; grid-template-columns: 208px minmax(0, 1fr); gap: 14px; align-items: start; }
+.as-win.as-scroll .window-content { max-height: min(820px, 86vh); overflow-y: auto; overscroll-behavior: contain; }
+.as-win.as-scroll .sk .head, .as-win.as-scroll nav.tabs { position: sticky; z-index: 3; } .as-win.as-scroll .sk .head { top: 0; } .as-win.as-scroll nav.tabs { top: 68px; }
+.as-win.as-scroll .as-flow { top: 120px; max-height: calc(min(820px, 86vh) - 136px); overflow-y: auto; }
 .as-win .as-flow { position: sticky; top: 8px; background: var(--sk-panel); border: 1px solid var(--sk-line); border-radius: 5px; padding: 8px 8px 10px; }
 .as-win .as-railh { display: block; font: 700 11px Signika, sans-serif; letter-spacing: .07em; text-transform: uppercase; color: var(--sk-acc); margin-bottom: 6px; }
 .as-win .as-railh small { display: block; letter-spacing: 0; text-transform: none; font-weight: 400; color: var(--sk-mut); }
@@ -529,6 +539,7 @@ const GACSS = `
 .as-win ol.as-rail[hidden] { display: none; }
 .as-win ol.as-rail::before { content: ""; position: absolute; left: 30px; top: 12px; bottom: 34px; width: 2px; background: var(--sk-line); }
 .as-win .sk a.as-ev { position: relative; display: grid; grid-template-columns: 12px 22px minmax(0, 1fr); gap: 6px; align-items: start; padding: 4px 4px; border-radius: 4px; color: var(--sk-ink); text-decoration: none; cursor: pointer; }
+.as-win .sk a.as-ev.at { background: #fff; box-shadow: inset 3px 0 0 var(--sk-amber); }
 .as-win .sk a.as-ev:hover, .as-win .sk a.as-ev.on { background: #fff; box-shadow: inset 3px 0 0 var(--sk-acc); }
 .as-win .as-always a.as-ev { grid-template-columns: 22px minmax(0, 1fr); }
 .as-win .as-evn { font: 700 10px Georgia, serif; color: var(--sk-mut); padding-top: 4px; text-align: right; }
@@ -570,7 +581,7 @@ const GACSS = `
 `;
 const NAMES = Object.keys(cards);
 LAY.A2 = { fn: layoutA2, title: "Action Sheet A2", name: "A, with the order of events", blurb: "Mockup A's page, and on its left the order of events of the selected Version: when it is used, what it costs, the target, the roll, the Effects it applies, the damage, each step after it. Click an event to jump to where it is edited.",
-  notes: ["<b>A is unchanged on the right</b>: one page in the card's order, a tab per Version.", "<b>The order of events follows the Version's tab</b>: pick 3 AP and the rail shows its light, its damage, its Guard and its Push, in the order Foundry runs them.", "<b>Each event is a link</b> to its place on the page; a step can also be added from the rail (+ at the end).", "The window is 900 px wide (A is 680); under 760 px the rail folds to a strip above the page."] };
+  notes: ["<b>A is unchanged on the right</b>: one page in the card's order, a tab per Version.", "<b>The order of events follows the Version's tab</b>: pick 3 AP and the rail shows its light, its damage, its Guard and its Push, in the order Foundry runs them.", "<b>Each event is a link</b> to its place on the page; a step can also be added from the rail (+ at the end).", "<b>The rail stays in view</b> while the page scrolls, and the event you are at is lit (scroll the window to see it).", "The window is 900 px wide (A is 680); under 760 px the rail folds to a strip above the page."] };
 for (const [k, L] of Object.entries(LAY)) {
   const html = `<title>${L.title}</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -605,4 +616,83 @@ for (const [k, L] of Object.entries(LAY)) {
 <script>${JS}</script>`;
   fs.writeFileSync(path.join(HERE, "generate-action.html"), html);
   console.log("generate-action.html", Math.round(html.length / 1024), "KB");
+}
+
+/* ================================================================ The button builder ("Create Button"): three mockups (Lucas, 2026-11-11) */
+{
+  const chip = (ico, label) => `<a class="twod12-inline bb-chip"><span class="bb-ico">${ico}</span> <span class="ti-name">${esc(label)}</span></a>`;
+  const out = (chips, cmd, n = 1) => `<div class="bb-out"><div><span class="as-live">The button${n > 1 ? "s" : ""}</span><div class="bb-chips">${chips}</div></div><div><span class="as-live">Its text</span><code class="bb-cmd">${esc(cmd)}</code></div></div>`;
+  const foot = (n = 1) => `<span class="fr-m">The window stays open for the next one.</span><button type="button">Close</button><button type="button" class="bb-copy">⧉ Copy the text</button><button type="button" class="ga-go">➤ Send to chat</button>`;
+  const KINDS = [["Rolls", [["2d", "bb", "Check"], ["S", "bb", "Save"], ["D", "tk", "Damage"]]], ["Moves and areas", [["M", "rule", "Move"], ["A", "au", "Area"]]], ["Gives", [["C", "cond", "Condition"], ["E", "cond", "Effect"], ["G", "wp", "Guard"], ["H", "au", "Heal"], ["R", "esc", "Reduce"], ["RP", "esc", "Rally"]]], ["Other", [["U", "rule", "Use an Action"]]]];
+  const kindBar = cur => `<div class="bb-kinds">${KINDS.map(([g, ks]) => `<div class="bb-kg"><span>${g}</span>${ks.map(([t, c, l]) => `<button type="button" class="bb-kind${l === cur ? " on" : ""}" aria-pressed="${l === cur}"><span class="fr-kind k-${c}">${t}</span>${l}</button>`).join("")}</div>`).join("")}</div>`;
+  const ATTR = [["body", "Body"], ["mind", "Mind"], ["appeal", "Appeal"], ["instinct", "Instinct"]];
+  const tierIn = (i, v, chips) => `<div class="as-tier ${TIERC[i]}"><span class="as-tl">Tier ${i + 1}</span><div class="as-tb">${text(v, i === 2 ? "No effect." : "[R] 1d8 Ho; Pushed 2", "as-dmg")}${chips ? `<span class="as-under">${chips}</span>` : ""}</div></div>`;
+  const dc = (l, cls = "") => `<span class="as-dc ${cls}">${l}</span>`;
+  // BB1: the kinds as a bar, the fields under it (a Save, as Rebuke's)
+  const b1 = `${kindBar("Save")}
+    ${grid([["Save", seg("appeal", ATTR, "w")], ["DC", `${seg("power", [["card", "The card's"], ["13", "13"], ["power", "The user's Power DC"], ["weapon", "Weapon DC"], ["set", "A number"]], "w")}`], ["Modifier", `${step("0")} <span class="fr-m">Boons</span> ${step(0, "boon")} <span class="fr-m">Banes</span> ${step(0, "bane")}`], ["Matches", `${tchip("divine")}<select class="fr-sel fr-tsel"><option>+ trait</option></select> <span class="fr-m">so Effects on [Divine] Saves count</span>`]])}
+    <div class="as-tiers">${tierIn(0, "[R] 1d8 Ho; Pushed 2", dc("1d8 Holy <small>Resolve</small>", "r") + dc("Pushed 2"))}${tierIn(1, "[R] 1d6 Ho; Pushed 1", dc("1d6 Holy <small>Resolve</small>", "r") + dc("Pushed 1"))}${tierIn(2, "", "")}</div>
+    ${grid([["Label", text("", "optional: the button's own words", "wide")]])}
+    ${help("Each Tier is written like the card (damage, then <code>;</code> and its effects). The chips under a Tier show what was understood. DC \"The card's\": the DC of the Action the button sits on.")}
+    ${out(chip("🎲", "Appeal Save"), `@Save[appeal|dc:@power|traits:divine|t1:1d8[mind,holy], "Pushed 2"|t2:1d6[mind,holy], "Pushed 1"|t3:0]`)}`;
+  // BB2: a list of kinds and a sentence with blanks (a Condition)
+  const blank = (v, w = 2) => `<input type="text" class="fr-in ga-blank" style="width:${w}em" value="${esc(v)}" aria-label="value">`;
+  const klist = cur => KINDS.map(([g, ks]) => `<div class="as-grp">${g}</div>${ks.map(([t, c, l]) => `<div class="fr-it${l === cur ? " on" : ""}" role="button" tabindex="0"><span class="fr-kind k-${c}">${t}</span><span class="fr-itxt">${l}</span></div>`).join("")}`).join("");
+  const b2 = `<div class="fr-md as-bmd bb-md"><div class="fr-lst">${klist("Condition")}</div><div class="fr-pane"><h4>A condition</h4>
+      <div class="ga-sent"><p>${sel("t", [["t", "The target"], ["y", "You"], ["p", "A creature you pick"]])} is ${sel("v", [["v", "Vulnerable"], ["f", "Frightened"], ["h", "Hindered"], ["p", "Prone"], ["d", "Dazed"]])} ${blank(2)} for ${sel("eot", [["eot", "EoT"], ["r", "N rounds"], ["c", "as the condition says"]])}.</p></div>
+      ${grid([["Only on", `${onChips(["t3"])} <span class="fr-m">in a card's "After the damage"; none: always</span>`], ["Label", text("", "optional", "wide")]])}
+      ${help("Only what this kind needs is asked. The conditions come from the Conditions compendium; a valued one (Vulnerable, Empowered) asks its value.")}
+      ${out(chip("◈", "Vulnerable 2 (EoT)"), "@Condition[vulnerable|value:2|eot|tier:3]")}</div></div>`;
+  // BB3: type it, as the card writes it
+  const rows = [["Appeal Save, DC 15", chip("🎲", "Appeal Save"), "@Save[appeal|dc:15]"], ["Pushed 2", chip("➜", "Pushed 2"), "@Move[pushed|distance:2]"], ["Vulnerable 2 (EoT)", chip("◈", "Vulnerable 2"), "@Condition[vulnerable|value:2|eot]"], ["[R] 2d6 Ho", chip("✹", "2d6 Holy"), "@Damage[2d6[mind,holy]]"], ["blinded by the flash", "", ""]];
+  const quick = ["Body Check", "Instinct Save", "Pushed 1", "Evade 1", "Prone", "Hindered (EoT)", "Rally 1", "2 Emanation"];
+  const b3 = `<label class="bb-typel">Write what the button does, as a card would <small>several at once: separate them with <code>;</code></small></label>
+    <textarea class="fr-ta bb-type" rows="2" aria-label="What the button does">Appeal Save, DC 15; Pushed 2; Vulnerable 2 (EoT); [R] 2d6 Ho; blinded by the flash</textarea>
+    <div class="bb-quick"><span class="fr-m">Common</span>${quick.map(q => `<button type="button">${q}</button>`).join("")}</div>
+    <table class="bb-read"><thead><tr><th>You wrote</th><th>The button</th><th>Its text</th></tr></thead><tbody>${rows.map(([w, c, t]) => `<tr class="${c ? "" : "no"}"><td><span class="bb-tick">${c ? "✓" : "?"}</span>${esc(w)}</td><td>${c || `<span class="fr-m">not understood: left as plain text</span>`}</td><td>${t ? `<code>${esc(t)}</code>` : ""}</td></tr>`).join("")}</tbody></table>
+    <details class="bb-recent" open><summary>Recent <span class="fr-m">the last buttons you made; click one to send it again</span></summary><div class="bb-chips">${chip("🎲", "Body Check (DC 15)")}${chip("➜", "Pulled 1")}${chip("✚", "Rally 1")}${chip("◈", "Prone")}</div></details>
+    ${help("The same reader as Generate Action and the Tier text (<code>convertEffects</code>): \"Pushed 2\", \"Vulnerable 2 (EoT)\", \"Appeal Save\", \"2 Emanation\", \"uses 1 Rally Point\", \"Evade 1\". Anything else stays words.")}`;
+  const bwin = (key, sub, body, w, hidden) => gwin(key, "Create Button", sub, body, foot(), w, hidden);
+  const BCSS = `
+.ga-win .bb-kinds { display: grid; gap: 6px; margin-bottom: 12px; }
+.ga-win .bb-kg { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.ga-win .bb-kg > span { width: 104px; font: 700 11px Signika, sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--sk-mut); }
+.ga-win .sk button.bb-kind { display: inline-flex; gap: 6px; align-items: center; padding: 3px 9px 3px 4px; cursor: pointer; }
+.ga-win.application.twod12-styled .sk button.bb-kind.on { background: var(--sk-navy); color: #fff; border-color: var(--sk-navy); font-weight: 700; }
+.ga-win .bb-out { margin-top: 12px; display: grid; gap: 8px; padding: 10px 12px; border: 1px solid var(--sk-line); border-left: 4px solid var(--sk-amber); border-radius: 4px; background: #fff; }
+.ga-win .bb-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+.ga-win .sk a.bb-chip { color: var(--sk-ink); border-color: #777; }
+.ga-win .bb-ico { font-size: 12px; }
+.ga-win code.bb-cmd { display: block; margin-top: 2px; padding: 5px 7px; font: 12px/1.45 ui-monospace, Consolas, monospace; overflow-wrap: anywhere; white-space: pre-wrap; }
+.ga-win .sk .ga-foot button.bb-copy { font-weight: 700; border-color: var(--sk-navy); color: var(--sk-navy); }
+.ga-win .bb-md.fr-md.as-bmd { grid-template-columns: 190px 1fr; }
+.ga-win .bb-typel { display: block; font-weight: 700; color: var(--sk-ink); font-size: 13px; margin-bottom: 4px; } .ga-win .bb-typel small { font-weight: 400; color: var(--sk-mut); margin-left: 6px; }
+.ga-win .fr-tab .fr-ta.bb-type { width: 100%; font: 14px/1.5 ui-monospace, Consolas, monospace; }
+.ga-win .bb-quick { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin: 8px 0 12px; }
+.ga-win .sk .bb-quick button { font-size: 12px; padding: 2px 9px; border-radius: 11px; }
+.ga-win .sk table.bb-read { width: 100%; border-collapse: collapse; margin: 0 0 10px; background: #fff; border: 1px solid var(--sk-line); }
+.ga-win .sk table.bb-read th, .ga-win .sk table.bb-read td { border: 0; border-bottom: 1px solid var(--sk-line); padding: 5px 8px; text-align: left; vertical-align: middle; color: var(--sk-ink); background: none; }
+.ga-win .sk table.bb-read th { font: 700 11px Signika, sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--sk-mut); background: var(--sk-panel); }
+.ga-win .sk table.bb-read tr.no td { background: #fbf6e6; }
+.ga-win .bb-tick { display: inline-block; width: 16px; font-weight: 700; color: #2f6b3a; } .ga-win tr.no .bb-tick { color: #8a6a14; }
+.ga-win .sk table.bb-read code { font-size: 11.5px; overflow-wrap: anywhere; }
+.ga-win .bb-recent { border-top: 1px dotted var(--sk-line); padding-top: 8px; } .ga-win .bb-recent summary { cursor: pointer; font-weight: 700; color: var(--sk-acc); }
+`;
+  const B = [["b1", "B1: kinds and fields", "a Save"], ["b2", "B2: a list and a sentence", "a condition"], ["b3", "B3: write it", "several at once"]];
+  const html = `<title>Button Builder Mockups</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Signika:wght@400;600;700&display=swap">
+<style>${SYSCSS}</style>
+<style>${PAGECSS}${ASCSS}${GACSS}${BCSS}</style>
+<div class="pg-top"><h1>Create Button: three ways</h1><p>The button builder in the system's style (it is a Foundry default window today). In all three: every kind of button the system has, a live look at the button, and two ways out: copy its text, or send it to the chat at once.</p></div>
+<div class="pg-pick" role="group" aria-label="The mockup shown">${B.map(([k, l, c], i) => `<button type="button" id="pick-${i}" data-card="${k}" class="${i ? "" : "on"}" aria-pressed="${!i}">${l} <span style="font-weight:400">(${c})</span></button>`).join("")}<small>static: nothing is sent</small></div>
+<div class="pg-stage">${bwin("b1", "pick a kind, fill its fields", b1, 640, false)}${bwin("b2", "pick a kind, fill a sentence", b2, 700, true)}${bwin("b3", "write it like the card", b3, 640, true)}</div>
+<div class="pg-notes"><h2>What each one is for</h2><ul>
+<li><b>B1, kinds and fields.</b> Today's window with the missing kinds added (Condition, Effect, Guard, Heal, Reduce, Use an Action), in the sheet's pieces. A Save's Tiers are written like the card; the DC can be the user's Power or Weapon DC. The closest to what you have.</li>
+<li><b>B2, a list and a sentence.</b> The kinds in a list on the left (the Effect sheet's shape), and on the right one sentence with blanks for the picked kind. The least to read per button; a Save or Damage with several parts needs more than a sentence.</li>
+<li><b>B3, write it.</b> One box: "Pushed 2; Vulnerable 2 (EoT)". Each piece becomes a button, and a piece that wasn't understood says so. Several buttons in one go, and the last ones are kept under Recent. The fastest at the table; options the words don't cover (a Push "away from the target") need B1's fields.</li>
+</ul><h2 style="margin-top:12px">In all three</h2><ul><li><b>Two buttons at the bottom</b> (Lucas): Copy the text, and Send to chat. The window stays open after either, to make the next one.</li><li>Opened from the scene controls as today (the GM), and from a card's text field on the Action sheet, where the text is inserted at the cursor.</li></ul></div>
+<script>${JS}</script>`;
+  fs.writeFileSync(path.join(HERE, "button-builder.html"), html);
+  console.log("button-builder.html", Math.round(html.length / 1024), "KB");
 }

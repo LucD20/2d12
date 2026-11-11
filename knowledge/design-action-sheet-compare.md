@@ -36,3 +36,18 @@ C is the one to pick instead if most of your cards will have three Versions (as 
 | Build | S | M | M, per shape |
 
 **Recommendation:** G2 as the Generate Action window (the new sheet already is G1), and G3's Zone shape later, when more Zones are written.
+
+## Second round (2026-11-11)
+
+Lucas: A2 yes, "the order of events should follow the scroll, like a fixed element" (done: the window scrolls as a Foundry window does, the rail stays and lights the event you are at); **G2 now, G3's Zone later**; the audit's defaults as they are.
+
+**The button builder: `button-builder.html`, three ways** (the audit's section 7 has what is wrong with today's window). In all three: every kind of button, a live look at it, and two ways out (Lucas): **Copy the text** and **Send to chat**.
+
+| | B1: kinds and fields | B2: a list and a sentence | B3: write it |
+|---|---|---|---|
+| The idea | Today's window, the missing kinds added, in the sheet's pieces | The kinds in a list; one sentence with blanks for the picked kind | One box: "Pushed 2; Vulnerable 2 (EoT)"; each piece becomes a button |
+| Good at | Every option of every kind; a Save with its three Tiers | The least to read; the same shape as the Effect sheet | Speed at the table; several buttons at once; Recent |
+| Bad at | The most to look at | A Save or Damage with several parts doesn't fit one sentence | Options the words don't cover (a Push away from the target) |
+| Build | M | M | S (the reader exists: `convertEffects`) |
+
+**Recommendation:** B3's box at the top of B1's window: write it when the words are enough, pick a kind when they aren't.

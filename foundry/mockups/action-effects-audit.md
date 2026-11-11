@@ -1,6 +1,6 @@
 # The Effects audit, before the Action sheet's redesign (PACK ACTION-SHEET, part 1)
 
-2026-11-11, on v0.0.354 (238 tests pass). Nothing here is applied: `module/`, `templates/` and the compendium are untouched. Each finding has a recommendation and a **default**; the defaults are numbered **D1 to D40**, so you can answer "all defaults except 7 and 22". The three mockups (`action-sheet-A.html`, `-B.html`, `-C.html`) are built on these defaults.
+2026-11-11, on v0.0.354 (238 tests pass). Nothing here is applied: `module/`, `templates/` and the compendium are untouched. Each finding has a recommendation and a **default**; the defaults are numbered **D1 to D55** (D41 to D55: the buttons, added the same day), so you can answer "all defaults except 7 and 22". The three mockups (`action-sheet-A.html`, `-B.html`, `-C.html`) are built on these defaults.
 
 ## Summary
 
@@ -151,6 +151,39 @@ The pure code is cheap; the cost is in how many times the same thing is redrawn 
 
 ---
 
+## 7. The buttons (the chips, and the Create Button window), added 2026-11-11
+
+Lucas: "check the Buttons for errors, obsolete options, improvements". Read: `builder.mjs` (the window, 119 lines), `inline.mjs` `parseInline` (what a chip understands), `gen.mjs` `convertEffects` (words to chips). **Measured:** I ran the window's `buildCommand` with twelve inputs and read each result back with `parseInline` (node, Foundry stubbed); the chip counts are section 3's. Not tried: any click in Foundry.
+
+**The system has 20 kinds of chip; the window makes 6.** Check, Damage, Save, Template, Move, Rally are in it. Missing: Condition (the most used chip on the cards: 35 in text, 8 in chains), Guard, Heal, Reduce, Effect, EndEffect, Use, Boon, Cleave, Pause, Reload, Release, Regrip, Book.
+
+### Errors
+
+| # | What | Where | Seen in the round trip | Default |
+|---|---|---|---|---|
+| **D41** | A label with `|` is cut at it, and one with `]` breaks the button: neither is escaped. | `builder.mjs:17` | `label:Climb | the wall]` came back as "Climb", with a stray `]` after the button | Refuse or strip `|`, `[`, `]` in the label, and say so. |
+| **D42** | A Save's Tier written like the card (`[R] 1d8 Ho; Pushed 2`) is read as one broken formula ("1d8 Ho; Pushed 2"): a Tier only splits at commas, and its own format (`1d6[mind,holy], "text", Item.id`) is nothing a card uses. | `inline.mjs:54-78`, the window's placeholder | yes | The Tier fields take the card's notation (the Generate Action reader), and the window writes the chip's format from it. |
+| **D43** | Empty or zero inputs make a button anyway, silently changed: no damage row gives `@Damage[]` (a button that does nothing); Rally 0 becomes 1; an area of 0 becomes 1; an empty Move distance becomes 1. | `builder.mjs:25-36` | yes | No Send or Copy until the kind's needed fields are filled; the missing field is marked. |
+| **D44** | Options that contradict each other are all written or one is dropped without a word: "Target self" on a Line; "Expires: end of turn" drops the Rounds typed; Difficult terrain with no movement ticked becomes Walk. | `builder.mjs:37-45` | yes | Fields that don't apply are hidden (a Line has no "self"; EoT hides Rounds). |
+| **D45** | The DC can't be "the user's": a chip reads `dc:@power`, `@weapon`, `@signature` or an Attribute (`inline.mjs:128`), the window only a number. And 13 is never written, so on a card "13" silently means "the card's DC" (`saveDcFor`). | `builder.mjs:10` | `dc:13` is left out | DC as a choice: the card's, 13, the user's Power / Weapon DC, a number. |
+| **D46** | The pools are still named for the old system inside the chip (`body`, `mind`), and `vigor` / `resolve` are not understood: `1d6[resolve,holy]` falls back to Vigor without a warning. The window's labels say Vigor and Resolve. | `inline.mjs:43-50` | yes | The tags also read `vigor`, `resolve`, `V`, `R`; the window writes the new names; the old stay read. |
+| **D47** | It is a Foundry default window (`DialogV2`), against the standing rule; and it closes after one button. | `builder.mjs:95` | | The system's window (the mockups), kept open for the next button. |
+| **D48** | One way out, doing two things: it copies to the clipboard and fills the chat box, without sending. A failed copy says nothing. | `builder.mjs:112-118` | | **Lucas, 2026-11-11: two buttons, "Copy the text" and "Send to chat" (sent at once).** A failed copy shows the text selected. |
+
+### Obsolete, or doing another option's job
+
+- **D49. The Template's "Keep the area", Expires, Difficult terrain, Difficult for and Movement** are the old kept area. Since v0.0.327 an area that stays is a Zone (an Effect on the map, with its own rows and Ends). The compendium has 5 `@Template` chips, all `emanation|distance:N|rounds:1` (Smite's and two other cards' light): none uses keep, expire, difficult, difficultFor or `ht:` (the old Hazard: D20b). **Default: the Area button keeps Shape, Size, Targets, "and the creature it is around" and Rounds; an area that stays or does something inside is made by dropping its Zone Effect (the Effect button). The old options stay read.**
+- **D50. The Traits grid on a Check and a Save** shows all 22 traits. The four Attributes repeat the row above; Signature, Split, Weapon, Power and the whole Requires group mean nothing on a loose Check. They only exist so Effects can match ("a Boon on [Fear] Saves"). **Default: a "+ trait" picker (as on the sheet) labelled "Matches", empty by default.**
+- **D51. `s2:` / `s3:` (a formula at Stage 2 / 3)** are fixed names in the chip (`inline.mjs:170`, `stagedFormula` line 262), for Guard, Heal and Reduce. With Stage 0 they need `s0:` and `s1:` too. **Default: `sN:` for any Stage of `TWOD12.stages`; an empty Stage uses the one before it (D15, D23).**
+- Already found: `tier:N` flips its meaning on a Save (D13).
+
+### Improvements
+
+- **D52. The missing kinds**, in this order of use: Condition (value, duration), Effect (a drop zone; a Zone too), Guard, Heal and Reduce (a formula, by Stage, who), Use an Action. Boon, Cleave, Pause and the hands chips stay text-only (written by cards, never by hand).
+- **D53. Write it.** `convertEffects` already turns "Pushed 2", "Vulnerable 2 (EoT)", "Appeal Save", "Evade 1", "Body Check", "2Emanation 1/round" into chips (checked: ten phrases, all read). A text box that shows each piece as its button is the fastest builder and needs little new code (mockup B3).
+- **D54. A live look at the button and its text** before it leaves; **Recent** (the last buttons, to send again); opened from a card's text field too (insert at the cursor), not only from the scene controls.
+- **D55. Move's options that exist and can't be picked:** "away from" (you, the target, the area's center), "the others in an area" with a pick, a minimum, through creatures (`terrain:ignore`). **Default: in the Move kind, behind "More".**
+
 ## The defaults, in one list
 
 | # | Default |
@@ -195,3 +228,18 @@ The pure code is cheap; the cost is in how many times the same thing is redrawn 
 | D38 | The dead `settingsList` deleted |
 | D39 | The new Action sheet redraws only what changed |
 | D40 | The smaller ones (Aura hover, Zone refresh, sight gate, createCombat) |
+| D41 | A button's label can't hold `|`, `[`, `]` |
+| D42 | A Save button's Tiers written like the card |
+| D43 | No button from empty fields |
+| D44 | Fields that don't apply are hidden |
+| D45 | DC: the card's, 13, the user's Power / Weapon DC, a number |
+| D46 | Pool tags read `vigor` / `resolve`; the window writes them |
+| D47 | The system's window, kept open |
+| D48 | Two buttons: Copy the text, Send to chat (Lucas) |
+| D49 | The Area button without the old kept-area options |
+| D50 | "Matches": a + trait picker instead of the grid |
+| D51 | `sN:` for every Stage of the config |
+| D52 | The missing kinds: Condition, Effect, Guard, Heal, Reduce, Use an Action |
+| D53 | Write it: words to buttons |
+| D54 | A live look, Recent, opened from a card's text field |
+| D55 | Move's hidden options behind "More" |

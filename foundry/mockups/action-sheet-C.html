@@ -4274,6 +4274,9 @@ body { background: var(--pg); color: var(--pg-ink); font: 14px/1.45 Signika, "Se
 @media (max-width: 900px) { .as-win .as-cols { grid-template-columns: 1fr; } .as-win .as-right { position: static; } }
 
 .as-win .as-flowcols { display: grid; grid-template-columns: 208px minmax(0, 1fr); gap: 14px; align-items: start; }
+.as-win.as-scroll .window-content { max-height: min(820px, 86vh); overflow-y: auto; overscroll-behavior: contain; }
+.as-win.as-scroll .sk .head, .as-win.as-scroll nav.tabs { position: sticky; z-index: 3; } .as-win.as-scroll .sk .head { top: 0; } .as-win.as-scroll nav.tabs { top: 68px; }
+.as-win.as-scroll .as-flow { top: 120px; max-height: calc(min(820px, 86vh) - 136px); overflow-y: auto; }
 .as-win .as-flow { position: sticky; top: 8px; background: var(--sk-panel); border: 1px solid var(--sk-line); border-radius: 5px; padding: 8px 8px 10px; }
 .as-win .as-railh { display: block; font: 700 11px Signika, sans-serif; letter-spacing: .07em; text-transform: uppercase; color: var(--sk-acc); margin-bottom: 6px; }
 .as-win .as-railh small { display: block; letter-spacing: 0; text-transform: none; font-weight: 400; color: var(--sk-mut); }
@@ -4281,6 +4284,7 @@ body { background: var(--pg); color: var(--pg-ink); font: 14px/1.45 Signika, "Se
 .as-win ol.as-rail[hidden] { display: none; }
 .as-win ol.as-rail::before { content: ""; position: absolute; left: 30px; top: 12px; bottom: 34px; width: 2px; background: var(--sk-line); }
 .as-win .sk a.as-ev { position: relative; display: grid; grid-template-columns: 12px 22px minmax(0, 1fr); gap: 6px; align-items: start; padding: 4px 4px; border-radius: 4px; color: var(--sk-ink); text-decoration: none; cursor: pointer; }
+.as-win .sk a.as-ev.at { background: #fff; box-shadow: inset 3px 0 0 var(--sk-amber); }
 .as-win .sk a.as-ev:hover, .as-win .sk a.as-ev.on { background: #fff; box-shadow: inset 3px 0 0 var(--sk-acc); }
 .as-win .as-always a.as-ev { grid-template-columns: 22px minmax(0, 1fr); }
 .as-win .as-evn { font: 700 10px Georgia, serif; color: var(--sk-mut); padding-top: 4px; text-align: right; }
@@ -4431,13 +4435,20 @@ body { background: var(--pg); color: var(--pg-ink); font: 14px/1.45 Signika, "Se
 <script>
 document.querySelectorAll(".pg-pick button").forEach(b => b.addEventListener("click", () => {
   document.querySelectorAll(".pg-pick button").forEach(x => { x.classList.toggle("on", x === b); x.setAttribute("aria-pressed", x === b); });
-  document.querySelectorAll(".as-win").forEach(w => { w.hidden = w.dataset.card !== b.dataset.card; });
+  document.querySelectorAll(".as-win.as-scroll").forEach(w => {
+  const sc = w.querySelector(".window-content"), find = to => [...w.querySelectorAll('[id$="-' + to + '"]')].find(x => x.offsetParent);
+  const spy = () => { const rail = w.querySelector(".as-rail:not([hidden])"); if (!rail) return; const top = sc.getBoundingClientRect().top + sc.clientHeight * 0.45; let cur = null;
+    for (const a of rail.querySelectorAll("a.as-ev")) { const t = find(a.dataset.to); if (t && t.offsetParent && t.getBoundingClientRect().top <= top) cur = a.dataset.to; }
+    const evs = [...rail.querySelectorAll("a.as-ev")], last = evs.filter(a => a.dataset.to === cur).at(0); evs.forEach(a => a.classList.toggle("at", a.dataset.to === cur)); };
+  sc.addEventListener("scroll", spy, { passive: true }); spy();
+});
+document.querySelectorAll(".as-win").forEach(w => { w.hidden = w.dataset.card !== b.dataset.card; });
 }));
 document.querySelectorAll(".as-win").forEach(w => {
   const pick = (btns, panes, key) => btns.forEach(b => b.addEventListener("click", () => { const scope = b.closest(".fr-sec, .as-after, .as-bmd") ?? w; btns.forEach(x => { if (scope.contains(x)) x.classList.toggle("on", x === b); }); panes.forEach(p => { if (scope.contains(p)) p.hidden = p.dataset[key] !== b.dataset[key]; }); }));
   pick([...w.querySelectorAll(".as-vtab[data-v]")], [...w.querySelectorAll(".as-vbody")], "v");
   w.querySelectorAll(".as-vtab[data-v]").forEach(b => b.addEventListener("click", () => w.querySelectorAll(".as-rail").forEach(r => { r.hidden = r.dataset.v !== b.dataset.v; })));
-  w.querySelectorAll("a.as-ev").forEach(a => a.addEventListener("click", ev => { ev.preventDefault(); const t = w.querySelector(a.getAttribute("href").replace(/^#/, "#").replace(/([^#w-])/g, "\$1")) ?? [...w.querySelectorAll(".as-vbody:not([hidden]) h4.as-h4, .as-vbody:not([hidden]) .as-tiers")].find(x => (a.dataset.to === "tiers" && x.classList.contains("as-tiers")) || (a.dataset.to === "after" && /After the damage/.test(x.textContent)) || (a.dataset.to === "use" && /^On /.test(x.textContent))); w.querySelectorAll("a.as-ev").forEach(x => x.classList.toggle("on", x === a)); t?.scrollIntoView({ behavior: "smooth", block: "start" }); }));
+  w.querySelectorAll("a.as-ev").forEach(a => a.addEventListener("click", ev => { ev.preventDefault(); const id = a.getAttribute("href").slice(1), t = [...w.querySelectorAll("[id]")].find(x => x.id === id && x.offsetParent); w.querySelectorAll("a.as-ev").forEach(x => x.classList.toggle("on", x === a)); const sc = w.querySelector(".window-content"); if (t && w.classList.contains("as-scroll")) sc.scrollTo({ top: sc.scrollTop + t.getBoundingClientRect().top - sc.getBoundingClientRect().top - 130, behavior: "smooth" }); else t?.scrollIntoView({ behavior: "smooth", block: "start" }); }));
   pick([...w.querySelectorAll(".as-bmd > .fr-lst > .fr-it")], [...w.querySelectorAll(".as-bpane")], "i");
   w.querySelectorAll(".as-after").forEach(a => { const its = [...a.querySelectorAll(".as-step")], ps = [...a.querySelectorAll(".as-steppane")]; its.forEach(b => b.addEventListener("click", () => { its.forEach(x => x.classList.toggle("on", x === b)); ps.forEach(p => { p.hidden = p.dataset.step !== b.dataset.step; }); })); });
   w.querySelectorAll(".fr-q").forEach(q => q.addEventListener("click", () => { w.querySelectorAll(".fr-tab").forEach(t => t.classList.toggle("fr-helpon")); q.classList.toggle("on"); }));
