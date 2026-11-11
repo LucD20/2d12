@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.352, 238 tests; READ THIS FIRST)
+## Where we are now (v0.0.353, 238 tests; READ THIS FIRST)
+- **v0.0.353 (2026-11-11, branch `pack-rwi`): Lucas on v0.0.352:** smaller flanking labels with the name on the ring, no dotted underline on calculated chips, chip icons aligned. **NEXT:** Lucas's test; merge `pack-rwi` when he says; then ACTION-SHEET.
 - **v0.0.352 (2026-11-11, branch `pack-rwi`): Lucas on v0.0.351, then playtest 4, Step 6 (buttons; the last step):** the flanking labels per zoom, the area tooltip's colors, every chip's icon uses it and its name opens it, calculated chips in their own color, Smite's Stage parenthesis off in Foundry (Diamond). New test t240 (**the next new test is t241**). **PLAYTEST 4 FIXES done.** **NEXT:** Lucas's test; merge `pack-rwi` into main when he says; then ACTION-SHEET.
 - **v0.0.351 (2026-11-11, branch `pack-rwi`): Lucas on v0.0.350:** the red-orange center line, the flanked name, a Zone's second carried Effect (Covering Fire's allies' Defense, missing since v0.0.327), the granted uses' retarget and Cancel, the Alt-drag preview. New test t239 (**the next new test is t240**). **NEXT:** Lucas's test; then Step 6 (buttons).
 - **v0.0.350 (2026-11-11, branch `pack-rwi`): playtest 4, Step 5 (the map):** the center line's creature cover drawn and counted, the flanking overlay without noise, the area tooltip, the granted bar movable and lower, the GM's Alt-drag Forced Movement; Doubles' gold line in the stamp. New test t238 (**the next new test is t239**). **NEXT:** Lucas's test; then Step 6 (buttons).

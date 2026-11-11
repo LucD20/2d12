@@ -4137,9 +4137,13 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12-zonetip .zt-who.allies { color: #4cc3ff; }
 .twod12-zonetip .zt-who.everyone { color: #e6bd5a; }
 /* v0.0.352 (Lucas, playtest 4, Step 6): a chip's icon is its "use" half, its name the "open" half */
-a.twod12-inline > i:first-child, a.twod12-inline > img:first-child, a.twod12-inline > svg:first-child { padding-right: 5px; margin-right: 3px; border-right: 1px solid rgba(0, 0, 0, .28); }
+a.twod12-inline > i:first-child:not(.areaic), a.twod12-inline > img:first-child, a.twod12-inline > svg:first-child { padding-right: 5px; margin-right: 3px; border-right: 1px solid rgba(0, 0, 0, .28); }
+/* v0.0.353 (Lucas: "align all icons, they look a bit off"): the chip is a row: the icon and the name centered on one line, the icon a fixed width */
+a.twod12-inline { display: inline-flex; align-items: center; gap: 0; vertical-align: -0.12em; line-height: 1.35; }
+a.twod12-inline > i.areaic:first-child { margin-right: 5px; }
+a.twod12-inline > i:first-child:not(.areaic) { flex: none; width: 1.25em; text-align: center; line-height: 1; align-self: stretch; display: inline-flex; align-items: center; justify-content: center; box-sizing: content-box; }
+a.twod12-inline > i.calc { margin-left: 4px; font-size: .85em; }
 a.twod12-inline > i:first-child:hover { color: #2f6b3a; }
 a.twod12-inline .ti-name:hover { text-decoration: underline; text-underline-offset: 2px; }
 /* v0.0.352 (Lucas, playtest 4, Step 6): a calculated chip's number in its own color (the calculation in its tooltip) */
 a.twod12-inline.calc .ti-name, a.twod12-inline.calc { color: var(--c-ap, #3b4cb8); }
-a.twod12-inline.calc .ti-name { text-decoration: underline dotted; text-underline-offset: 2px; }

@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-11 from the repository at: 47b5464 2026-11-11 v0.0.351: a Zone's second carried Effect (Covering Fire's allies), the granted uses' retarget and Cancel, the Alt-drag preview, LoE and flanking touches
+Built by tools/knowledge.py on 2026-11-11 from the repository at: adfe2cb 2026-11-11 v0.0.352: playtest 4, Step 6 (buttons): a chip's icon uses it, its name opens it; calculated chips colored; flanking labels per zoom; area tooltip colors; Smite's Stage parenthesis off in Foundry (Diamond)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

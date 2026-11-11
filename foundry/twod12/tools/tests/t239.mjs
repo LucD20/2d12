@@ -12,7 +12,7 @@ for (const n of ["Combat", "Combatant", "Actor", "Item", "ChatMessage", "TokenDo
 globalThis.Hooks = { on() {}, once() {} }; globalThis.CONFIG = { Canvas: {} }; globalThis.game = { settings: { get: () => false }, user: { isGM: true } };
 
 console.log("the center line red-orange and thicker when a creature is in the way:", src("module/loe.mjs").includes("AMBER = 0xff5a1f") && src("module/loe.mjs").includes("g.lineStyle(c.inWay ? 4 : 2.5, col, c.inWay ? 1 : 0.6);"));
-console.log("the flanked creature's name on top:", src("module/flankoverlay.mjs").includes("label(`${firstName(row.target.name)}\\n${flankedText(row)}`"));
+console.log("the flanked creature's name on top:", src("module/flankoverlay.mjs").includes('const nm = label(firstName(row.target.name), "#f0c040", fsz(0.15), 0x1b2433, 0xf0c040);') /* v0.0.353: on its ring */);
 
 // The Zone's second carried Effect
 const R = await import(ROOTURL + "module/fxrules.mjs");
