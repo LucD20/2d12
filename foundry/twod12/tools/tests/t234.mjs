@@ -25,9 +25,9 @@ console.log("resolving: now", st.cur, "| no moving now:", S.moveRow(st, 2, -1).o
 st = S.nextRow(st); st = S.nextRow(st, true);
 console.log("states:", st.rows.map(r => `${r.name}:${r.state}`).join(" "), "| cur", st.cur);
 st = S.nextRow(st);
-console.log("resolved:", S.resolved(st), "| the card says it:", S.stackHtml({ ...st, first: "Chris" }).includes("All resolved. <b>Chris</b>'s turn begins."));
+console.log("resolved:", S.resolved(st), "| the card says it:", S.stackHtml({ ...st, first: "Chris" }).includes("<b>Chris</b>'s turn begins."));
 const h0 = S.stackHtml(S.newStack([{ actorUuid: "A", name: "Lana", source: "Marked Quarry", html: "choose" }]));
-console.log("before: Resolve and arrows for the GM only:", h0.includes('data-ss="resolve" class="ss-pri ss-gm"') && h0.includes('class="ss-move ss-gm"'), "| combat start posts it:", src("module/mark.mjs").includes("postStartStack(combat)"), "| @Use names its creature:", src("module/automation.mjs").includes("|actor:${actor.uuid}") && src("module/freeuse.mjs").includes("cfg.actor ? await fromUuid(cfg.actor)"));
+console.log("before: Resolve and arrows for the GM only:", h0.includes('<div class="rx-ft ss-gm"><button type="button" class="rx-btn rx-pri" data-ss="resolve">') && h0.includes('class="rx-grip ss-gm"') /* v0.0.346: the drag grip */, "| combat start posts it:", src("module/mark.mjs").includes("postStartStack(combat)"), "| @Use names its creature:", src("module/automation.mjs").includes("|actor:${actor.uuid}") && src("module/freeuse.mjs").includes("cfg.actor ? await fromUuid(cfg.actor)"));
 
 // 3. Frightened: a Movement limit as Difficult Terrain
 const R = await import(ROOTURL + "module/fxrules.mjs");

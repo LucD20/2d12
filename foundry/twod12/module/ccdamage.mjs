@@ -245,6 +245,19 @@ export function openSource(msg) {
   el.classList.add("cc-flash"); setTimeout(() => el.classList.remove("cc-flash"), 1600);
 }
 
+/** v0.0.346: an Action's card in a window (the start-of-the-encounter stack's Card button). */
+export async function openItemCardWindow(item) {
+  const { buildSoloCard } = await import("./actioncard.mjs");
+  const html = await buildSoloCard(item);
+  const { ApplicationV2 } = foundry.applications.api;
+  class CardWindow extends ApplicationV2 {
+    static DEFAULT_OPTIONS = { classes: ["twod12", "cc-window"], window: { resizable: true }, position: { width: 440, height: "auto" } };
+    async _renderHTML() { const d = document.createElement("div"); d.className = "twod12 chat"; d.innerHTML = html; return d; }
+    _replaceHTML(result, content) { content.replaceChildren(result); }
+  }
+  new CardWindow({ window: { title: item?.name ?? "Card" } }).render(true);
+}
+
 /** The Card button: the Action's full card in a window, with the roll's sources (the same as the breakdown's hovers: never hover-only). */
 export async function openCardWindow(msg) {
   const f = msg.getFlag(F, "action"), m = msg.getFlag(F, "cc");

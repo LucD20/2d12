@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.345, 232 tests; READ THIS FIRST)
+## Where we are now (v0.0.346, 233 tests; READ THIS FIRST)
+- **v0.0.346 (2026-11-11, branch `pack-rwi`): Lucas on v0.0.345:** the data model lacked `moveHow` and `dmgSub` "W" (why Frightened and Marked Quarry didn't change; a world pass fixes old copies once), bars always shown, the stack card restyled as the Reactions card, no 0 on the pool line. New test t235 (**the next new test is t236**). **NEXT:** Lucas's test; then Step 3 (a quieter chat).
 - **v0.0.345 (2026-11-11, branch `pack-rwi`): playtest 4, Step 2 (the rules, book first):** the start-of-the-encounter stack (Ch. 2; one card, GM orders and resolves), Frightened's Difficult Terrain (Ch. 8) and its line on the map, Mark Quarry's extra damage of the weapon's subtype (Diamond) and the "7 + 2 Pi" pool line. New test t234 (**the next new test is t235**). **NEXT:** Lucas's test; then Step 3 (a quieter chat).
 - **v0.0.344 (2026-11-11, branch `pack-rwi`):** the pale CRIT zone (a Tier 3 not a Critical) readable on the dark green segment. **NEXT:** Lucas's test of v0.0.343's checklist; then Step 2.
 - **v0.0.343 (2026-11-11, branch `pack-rwi`): playtest 4, Step 1 (the twelve bugs)**: forced movement's right-click and targets, durations hardened, Mastery 1 per Weapon Group an encounter (a Weapon Group field), Smite's Guard pick, Double Shot's targets, Open Season's allies' 1d6 (Effects can add damage to Rolls made against them), the chat pinned to its bottom, Charge's give-up and Charge! button, no marks line, Covering Fire's text (Diamond), hidden tokens react. New test t233 (**the next new test is t234**). **NEXT:** Lucas's test; then Step 2 (rules, book first).

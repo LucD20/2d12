@@ -437,7 +437,8 @@ export function poolBlock(comps) {
   for (const c of comps ?? []) { const p = by[c.pool] ? c.pool : "B", k = c.sub || ""; (by[p][k] ??= []).push(Number(c.total) || 0); }
   return ["B", "M", "C"].filter(p => Object.keys(by[p]).length).map(p => {
     const subs = Object.entries(by[p]), tot = subs.reduce((a, [, ns]) => a + ns.reduce((x, y) => x + y, 0), 0);
-    return `<span class="cc-poolrow">${poolIc(p)}<span>${POOL[p]} · ${subs.map(([s, ns]) => `${ns.join(" + ")}${s ? ` ${subCode(s)}` : ""}`).join(" + ")}</span><b class="cc-ptot">${tot}</b></span>`;
+    // v0.0.346 (Lucas: "0 + 7 Pi + 2"): a part that is 0 (a Tier 1's weapon dice) is left out when the subtype has another
+    return `<span class="cc-poolrow">${poolIc(p)}<span>${POOL[p]} · ${subs.map(([s, ns]) => `${(ns.some(n => n) ? ns.filter(n => n) : [0]).join(" + ")}${s ? ` ${subCode(s)}` : ""}`).join(" + ")}</span><b class="cc-ptot">${tot}</b></span>`;
   }).join("");
 }
 const instBlock = x => `<div class="cc-inst"><div class="cc-ititle">${poolIc(x.pool)} ${POOL[x.pool] ?? "Vigor"} · <b style="color:${subInk(x.sub)}">${esc(subName(x.sub))}</b>${x.src ? ` (${esc(x.src)})` : ""}</div>`

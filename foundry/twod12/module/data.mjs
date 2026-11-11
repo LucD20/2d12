@@ -582,7 +582,7 @@ const settingsField = () => new ArrayField(new SchemaField({
         lightAlpha: new NumberField({ required: true, nullable: false, initial: 0.5, min: 0, max: 1 }), lightAnim: str(), lightSpeed: int(5, 0), lightIntensity: int(5, 0),
         boons: int(0), banes: int(0), bbName: choice({ "": "", field: "Field", pressure: "Pressure", support: "Support" }, ""), empowered: int(0), enfeebled: int(0), byValue: bool(), predicate: str(), all: predSet(), any: predSet(), none: predSet(), from: traitSet(),
         // Bonus Damage: an instance added to the damage of the next matching action, on the listed tiers (none = all).
-        dmg: str(), dmgPool: choice(TWOD12.pools, "B"), dmgSub: choice(TWOD12.subtypes), tiers: new SetField(new StringField({ choices: ["t1", "t2", "t3"] })), fxUuid: str(),
+        dmg: str(), dmgPool: choice(TWOD12.pools, "B"), dmgSub: choice({ ...TWOD12.subtypes, W: "The weapon's" }), tiers: new SetField(new StringField({ choices: ["t1", "t2", "t3"] })), fxUuid: str(),
         // Boons and banes that apply to rolls made AGAINST the creature with the effect (Prone).
         against: bool(),
         // Speed: "override" replaces it with the formula, "add" adds the formula to it.
@@ -627,6 +627,9 @@ const settingsField = () => new ArrayField(new SchemaField({
         // v0.0.314 (pack AU): Boons and Banes only against creatures other than the effect's origin (Taunted), or only against it;
         //   bleed: damage at the end of each of the creature's turns (dmg, dmgPool, dmgSub; attrs: the Save's Attributes; bleedDc: its DC).
         vsOrigin: choice(TWOD12.vsOriginChoices, ""), bleedDc: int(13, 0),
+        // v0.0.346 (v0.0.345's field was missing here, so Foundry dropped it): a Movement limit refuses ("cant") or is Difficult Terrain ("difficult", Frightened);
+        // dmgSub "W" (above): Bonus Damage of the weapon's subtype (Marked Quarry)
+        moveHow: choice({ cant: "Not allowed", difficult: "Difficult Terrain" }, "cant"),
         // v0.0.320 (pack AU part 2): resist: Resist N / Weak N / Immune of a subtype (dmgSub) while it is on the creature (the highest of each counts);
         //   freqmore: more uses of a Frequency (the Elite ladder: Round Specials twice a round, Encounter Specials a second time).
         rwKind: choice(TWOD12.rwKinds, "resist"), rwValue: int(1, 0), fmWhich: choice(TWOD12.freqMore, "round"),

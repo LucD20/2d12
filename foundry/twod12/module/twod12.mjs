@@ -140,6 +140,7 @@ Hooks.once("init", () => {
     lightInfo, hearInfo,
     sliderInfo,
     refreshBasics: refreshAllBasics,
+    fixRulesV346: () => import("./fixrules.mjs").then(m => m.fixRulesV346()),   // v0.0.346: old copies of Frightened / Marked Quarry
     refreshFromCompendium: (opts = {}) => (Object.keys(opts).length ? refreshFromCompendium(opts) : askRefresh()),   // v0.0.190: a macro can call it
     escalation: (delta = 1, actors = null) => escalationAll(delta, actors),
     migrateMod: () => import("./migrater.mjs").then(m => m.migrateMod()),
@@ -224,6 +225,7 @@ Hooks.once("init", () => {
   game.settings.register("twod12", "weaponRoundApplied", { scope: "world", config: false, type: Boolean, default: false });
   game.settings.register("twod12", "projectileApplied", { scope: "world", config: false, type: Boolean, default: false });
   game.settings.register("twod12", "unlockPacks", { name: "Unlock the system compendiums", hint: "Keep the 2d12 compendiums unlocked, so their items can be opened and edited without unlocking them first (only the GM and Assistants can edit; a system update rebuilds them, so edits there are lost).", scope: "world", config: true, type: Boolean, default: true, onChange: () => import("./basic.mjs").then(m => m.unlockSystemPacks()) });   // v0.0.191
+  game.settings.register("twod12", "worldPassV346", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.346: bars, Frightened, Marked Quarry
   game.settings.register("twod12", "hearingAllV319", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.318/319: Hearing on every creature's token, once
   game.settings.register("twod12", "tokenDefaultsV215", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.215: core token rotation off, once
   game.settings.register("twod12", "settingsV207", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.207: the editability sweep's settings and fields (automation.mjs)
@@ -484,6 +486,8 @@ Hooks.on("preCreateActor", actor => {
 });
 // v0.0.318: a token placed from an actor made before (or from the compendium) gets the Hearing mode too
 Hooks.on("preCreateToken", doc => {
+  // v0.0.346 (Lucas, playtest 4: "tokens from the compendium still don't have Display Bars: Always"): every creature's token shows its bars, to everyone
+  try { if (["character", "npc"].includes(doc.actor?.type)) doc.updateSource({ displayBars: globalThis.CONST?.TOKEN_DISPLAY_MODES?.ALWAYS ?? 50 }); } catch (e) { /* keep Foundry's */ }
   try {
     if (!["character", "npc"].includes(doc.actor?.type)) return;
     const w = withMode(doc.toObject().detectionModes, "hearing");   // v0.0.319: in the shape this Foundry stores
@@ -497,6 +501,22 @@ Hooks.once("ready", async () => {
     await addHearing({ quiet: true });
     await game.settings.set("twod12", "hearingAllV319", true);
   } catch (e) { console.warn("twod12 | Hearing for every creature", e); }
+});
+
+// v0.0.346 (Lucas): once per world, every creature's prototype token and every placed token shows its bars always (the compendium's actors had
+// Foundry's default); and the world's copies of Frightened and Marked Quarry take the book's v0.0.345 rules (data.mjs-free: see fixRulesV346)
+Hooks.once("ready", async () => {
+  try {
+    if (!game.user.isActiveGM || game.settings.get("twod12", "worldPassV346")) return;
+    const ALWAYS = globalThis.CONST?.TOKEN_DISPLAY_MODES?.ALWAYS ?? 50;
+    for (const a of game.actors ?? []) if (["character", "npc"].includes(a.type) && a.prototypeToken?.displayBars !== ALWAYS) await a.update({ "prototypeToken.displayBars": ALWAYS });
+    for (const sc of game.scenes ?? []) {
+      const ups = sc.tokens.filter(t => t.displayBars !== ALWAYS).map(t => ({ _id: t.id, displayBars: ALWAYS }));
+      if (ups.length) await sc.updateEmbeddedDocuments("Token", ups);
+    }
+    await (await import("./fixrules.mjs")).fixRulesV346();
+    await game.settings.set("twod12", "worldPassV346", true);
+  } catch (e) { console.warn("twod12 | v0.0.346 world pass", e); }
 });
 
 // v0.0.215 (Lucas, playtest 2): Foundry's own token auto-rotation is turned off once per world (the GM can turn it back on in Core settings).
