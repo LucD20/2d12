@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.343, 231 tests; READ THIS FIRST)
+## Where we are now (v0.0.344, 231 tests; READ THIS FIRST)
+- **v0.0.344 (2026-11-11, branch `pack-rwi`):** the pale CRIT zone (a Tier 3 not a Critical) readable on the dark green segment. **NEXT:** Lucas's test of v0.0.343's checklist; then Step 2.
 - **v0.0.343 (2026-11-11, branch `pack-rwi`): playtest 4, Step 1 (the twelve bugs)**: forced movement's right-click and targets, durations hardened, Mastery 1 per Weapon Group an encounter (a Weapon Group field), Smite's Guard pick, Double Shot's targets, Open Season's allies' 1d6 (Effects can add damage to Rolls made against them), the chat pinned to its bottom, Charge's give-up and Charge! button, no marks line, Covering Fire's text (Diamond), hidden tokens react. New test t233 (**the next new test is t234**). **NEXT:** Lucas's test; then Step 2 (rules, book first).
 - **2026-11-11 (no new version): playtest 4's notes organized** into six steps (foundry-backlog "PLAYTEST 4 FIXES", rules-backlog four items, the log `book/playtest-4.md`); Lucas answered the questions. **NEXT:** Step 1 (bugs) when Lucas says go.
 - **v0.0.342 (2026-11-10, branch `pack-rwi`):** the CRIT zone in a narrow chat, the Critical line only when rolled, the Save card's "No effect." colour, no Card button in the roll window. **NEXT:** Lucas's test; merge `pack-rwi`; ACTION-SHEET.

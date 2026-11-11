@@ -19,3 +19,4 @@ at the bottom: true | scrolled up to read: false | registered: true
 its card id kept: true | deleted (through the GM if not yours): true | the line: true | Charge! next to Give up: true
 no marks line: true | Covering Fire: true
 hidden tokens react: true | and count for 'closer': true
+the pale CRIT zone has light text: true

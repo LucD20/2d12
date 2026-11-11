@@ -4047,3 +4047,6 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 /* v0.0.343 (Lucas, playtest 4): the Charge bar's "Charge!" next to Give up */
 .twod12-chargebar .lb-go { width: auto; height: 26px; line-height: 24px; padding: 0 10px; margin: 0; font-size: 13px; background: #2e5a3a; color: #f4e9d0; border: 1px solid #c9a24a; border-radius: 5px; cursor: pointer; white-space: nowrap; flex: 0 0 auto; }
 .twod12-chargebar .lb-go:hover { background: #3a7049; }
+/* v0.0.344 (Lucas: "still showing like this", the Ogre's Tier 3): the pale CRIT zone (a Tier 3 that is not a Critical) sits on the lit dark green
+   segment, so its dark blue label vanished: a lighter blue band with light text, still clearly paler than a rolled Critical's solid blue */
+.twod12.chat.cc .cc-czone.pale { background: rgba(120,160,215,.45); color: #eef4fb; border-left: 1px dashed rgba(238,244,251,.6); }

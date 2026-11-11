@@ -79,3 +79,6 @@ const arc = fs.readFileSync(ROOT + "../../book/cards/archer.json", "utf8");
 console.log("no marks line:", !src("module/mark.mjs").includes("</b> marks <b>"), "| Covering Fire:", arc.includes('"effects": "For 3 rounds, enemies in the area take 1 Bane on [Strike] Actions, and allies in it gain +1 Defense."') && !src("tools/content.mjs").includes("the area doesn't move"));
 const mo = src("module/moment.mjs");
 console.log("hidden tokens react:", !mo.includes("if (!actor || tk.document?.hidden) continue;"), "| and count for 'closer':", !mo.includes("t.actor && !t.document.hidden && Number("));
+
+// v0.0.344 (Lucas: "still showing like this"): the pale CRIT zone of a Tier 3 that is not a Critical is readable on the dark green segment
+console.log("the pale CRIT zone has light text:", src("styles/system.css").includes(".twod12.chat.cc .cc-czone.pale { background: rgba(120,160,215,.45); color: #eef4fb;"));
