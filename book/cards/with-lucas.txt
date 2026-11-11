@@ -24,3 +24,8 @@ until Lucas revises it (then Mithril again). Each one, with what changed:
   Diamond (their text has buttons now where their Mithril version had words, v0.0.334 to v0.0.338): Rebuke (Pushed 2 / 1, Frightened),
   Skirmish Shot ("you can [Evade 1]"), Heartseeker ([Vulnerable 1 (EoT)]), Marksman's Shot ([Vulnerable 2 (EoT)], "The target is [Blinded (EoT)]").
 - Open Season (v0.0.339, the review's section 6): Vulnerable 2 on the Quarry for 1 round is the card's Apply step (its chain), no longer by hand.
+- Open Season (v0.0.343, playtest 4: "the allies' extra [V] 1d6 Pi automated, button kept"): the same chain also puts the Effect "Open Season (the
+  Quarry)" on the Quarry for 1 round; its rule ("Rolls made against them, with [Strike], made by anyone but the origin: an extra [V] 1d6 Pi")
+  adds the dice to the allies' damage cards. The card's text and its button are unchanged.
+- Covering Fire (v0.0.343, Lucas 2026-11-11: "remove (the area doesn't move)"): the card reads "For 3 rounds, enemies in the area take 1 Bane on
+  [Strike] Actions, and allies in it gain +1 Defense." (book and Foundry; the Covering Fire Effect's description too). Nothing else changed.

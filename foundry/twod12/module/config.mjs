@@ -31,6 +31,9 @@ export const TWOD12 = {
   attributes: { body: "Body", mind: "Mind", appeal: "Appeal", instinct: "Instinct" },
   actionTraits,
   weaponTraits,
+  // v0.0.343 (book, Chapter 15, Weapon Groups): the eight groups, and each weapon of the book's tables in its group (Mastery: 1 per group an encounter)
+  weaponGroups: { blades: "Blades", axes: "Axes", hammers: "Hammers", polearms: "Polearms", bows: "Bows", crossbows: "Crossbows", firearms: "Firearms", unarmed: "Unarmed" },
+  weaponGroupOf: { dagger: "blades", longsword: "blades", greatsword: "blades", handaxe: "axes", greataxe: "axes", mace: "hammers", maul: "hammers", spear: "polearms", pike: "polearms", "knuckle dagger": "unarmed", fists: "unarmed", fist: "unarmed", unarmed: "unarmed", shortbow: "bows", longbow: "bows", "hand crossbow": "crossbows", crossbow: "crossbows", pistol: "firearms", musket: "firearms" },
   traits: { ...actionTraits, ...weaponTraits },
   dice: { "": "None", d4: "d4", d6: "d6", d8: "d8", d10: "d10", d12: "d12", d20: "d20" },
   // Damage subtypes use two letters, so they never look like the pools [B] [M] [C].

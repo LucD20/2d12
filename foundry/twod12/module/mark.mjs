@@ -3,8 +3,6 @@
 // (automation.mjs). The mark ends when an encounter starts and when the marked creature dies or goes Down. What the marker is told then is
 // not code: the "Chat message" settings of its items (Marked Quarry: "At the start of an encounter", "When the creature it marked goes Down").
 import { postMessages } from "./automation.mjs";
-import { sysLine } from "./sysmsg.mjs";
-import { esc } from "./util.mjs";
 const F = "twod12";
 export const quarryOf = actor => actor?.getFlag?.(F, "quarry") ?? null;
 const uuidOfToken = t => t?.document?.uuid ?? t?.uuid ?? "";
@@ -13,7 +11,7 @@ const uuidOfToken = t => t?.document?.uuid ?? t?.uuid ?? "";
 export async function setQuarry(actor, token) {
   if (!token) { if (quarryOf(actor)) await actor.unsetFlag(F, "quarry"); return; }
   await actor.setFlag(F, "quarry", { uuid: uuidOfToken(token), name: token.name });
-  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-crosshairs", `<b>${esc(actor.name)}</b> marks <b>${esc(token.name)}</b>.`, "mark") });   // v0.0.204: the system line (sysmsg.mjs)
+  // v0.0.343 (Lucas, playtest 4): no "X marks Y" line: the Action's card says it, and the mark shows on the map (its icon on the token)
 }
 
 /** The creatures that could hold a mark: the world's actors and the unlinked tokens of the scene. */

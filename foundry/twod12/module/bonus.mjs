@@ -17,6 +17,7 @@ export function collectBonuses(actor, traits, tier, opts = {}) {
   for (const e of allEffects(actor)) {
     if (effectOff(actor, e)) continue;
     (e.getFlag(F, "bonuses") ?? []).forEach((m, i) => {
+      if (m.against) return;   // v0.0.343: one for Rolls made against this creature (read from the target, below)
       const pred = (m.all ?? []).every(t => traits.has(t)) && (!(m.any?.length) || m.any.some(t => traits.has(t))) && !(m.none ?? []).some(t => traits.has(t));
       if (!pred) return;
       const tiers = m.tiers?.length ? m.tiers : ["t1", "t2", "t3"];
@@ -30,7 +31,28 @@ export function collectBonuses(actor, traits, tier, opts = {}) {
       out.push({ ...(m.spend && m.ruleId ? { spend: `${e.id}|${m.ruleId}` } : {}), effectId: e.id, effect: String(e.name ?? "").replace(/^\s*Effect:\s*/i, ""), dmg, pool: m.dmgPool || "B", sub: m.dmgSub || "", text: m.text || "", fxUuid: m.fxUuid || "", hover: hoverOf(e.getFlag(F, "hover"), e.getFlag(F, "description")), srcUuid: e.srcUuid || e.getFlag(F, "effectUuid") || e.uuid || "", ...(once ? { once } : {}) });
     });
   }
+  // v0.0.343 (Open Season): the target's effects that add damage to Rolls made against it ("[Strike] Actions your allies make against them deal an
+  // extra [V] 1d6 Pi"); "anyone but the origin": not the creature that put it there
+  const t = opts.target ?? null;
+  for (const e of t ? allEffects(t) : []) {
+    if (effectOff(t, e)) continue;
+    (e.getFlag(F, "bonuses") ?? []).forEach(m => {
+      if (!m.against || !againstOk(m, traits, tier, e.origin ?? "", actor?.uuid ?? "")) return;
+      if ((m.seen && !seesOrigin(t, e)) || isSpent(e, m)) return;
+      const dmg = modDamage(m.dmg || "", opts.mod);
+      if (dmg === null) return;
+      out.push({ effectId: e.id, effect: String(e.name ?? "").replace(/^\s*Effect:\s*/i, ""), dmg, pool: m.dmgPool || "B", sub: m.dmgSub || "", text: m.text || "", fxUuid: m.fxUuid || "", against: true, onActor: t.uuid });
+    });
+  }
   return out;
+}
+/** Pure (v0.0.343): does a target's "against" Bonus Damage apply? traits: the Action's (a Set); origin: the effect's origin uuid; by: the attacker's. */
+export function againstOk(m, traits, tier, origin, by) {
+  if (!(m.all ?? []).every(x => traits.has(x)) || ((m.any?.length) && !m.any.some(x => traits.has(x))) || (m.none ?? []).some(x => traits.has(x))) return false;
+  if (!(m.tiers?.length ? m.tiers : ["t1", "t2", "t3"]).includes(`t${tier}`)) return false;
+  if (m.vsOrigin === "not" && origin && origin === by) return false;
+  if (m.vsOrigin === "only" && origin !== by) return false;
+  return true;
 }
 
 /**
@@ -44,6 +66,7 @@ export function bonusesNotNow(actor, traits, { label = k => k, name = "this Acti
   for (const e of allEffects(actor)) {
     if (effectOff(actor, e)) continue;
     (e.getFlag(F, "bonuses") ?? []).forEach((m, i) => {
+      if (m.against) return;   // v0.0.343
       const miss = (m.all ?? []).filter(t => !traits.has(t)), anyMiss = m.any?.length && !m.any.some(t => traits.has(t)), bad = (m.none ?? []).filter(t => traits.has(t));
       const base = { effect: String(e.name ?? "").replace(/^\s*Effect:\s*/i, ""), dmg: m.dmg || "", sub: m.dmgSub || "", pool: m.dmgPool || "B", tiers: (m.tiers?.length ? m.tiers : ["t1", "t2", "t3"]).map(t => Number(String(t).slice(1))), srcUuid: e.srcUuid || e.getFlag(F, "effectUuid") || e.uuid || "" };
       if (miss.length || anyMiss || bad.length) {

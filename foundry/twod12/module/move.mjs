@@ -494,7 +494,7 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
     const f = ctx?.message?.getFlag?.(F, "action");
     // v0.0.224 (Lucas, playtest 3): a Charge targets a creature (the card's target, else the one targeted now): its line goes toward it.
     const tUuid = f?.targets?.[0]?.uuid ?? "", targetId = String(tUuid).split(".").pop() || ([...game.user.targets].find(t => t.id !== token?.id)?.id ?? "");
-    await c.setFlag(F, "charge", { min: cfg.min || 3, max: n, refund: Math.max(0, num(f?.apPaid ?? f?.ap)), itemId: f?.itemId ?? "", actorUuid: f?.actorUuid ?? "", targetId });
+    await c.setFlag(F, "charge", { min: cfg.min || 3, max: n, refund: Math.max(0, num(f?.apPaid ?? f?.ap)), itemId: f?.itemId ?? "", actorUuid: f?.actorUuid ?? "", targetId, messageId: ctx?.message?.id ?? "" });   // v0.0.343: its card (deleted when given up)
   }
   const sq = `${n} square${n === 1 ? "" : "s"}`;
   if (cfg.quiet && kind !== "charge") { showRange(c, n); return true; }   // v0.0.224: a Setup's movement (its bar says it), no chat line
@@ -663,7 +663,13 @@ export async function endMovement(combatantId) {
       for (const a of new Set([from, c.actor].filter(Boolean))) { const it = charging.itemId ? a.items?.get(charging.itemId) : null; if (it) await unmarkUsed(a, it); }
     } catch (e) { console.warn("twod12 | Charge given up: its use", e); }
     try { voidLastAction(c.token?.object ?? c.actor, c.actor?.items?.get(charging.itemId)?.name ?? "Charge", "Charge given up"); } catch (e) { /* no log */ }   // v0.0.223
-    return postCard("Charge", `${esc(c.name)} gives up the Charge`, back > 0 ? `${apText(back)} back. The Charge can be used again this round.` : "Nothing was spent.", "chargemsg");
+    // v0.0.343 (Lucas, playtest 4): the Charge's card is deleted for everyone (through the GM when it isn't yours) and one short line says it
+    if (charging.messageId) {
+      const m = game.messages?.get(charging.messageId);
+      try { if (m?.canUserModify?.(game.user, "delete") ?? m?.isOwner) await m.delete(); else if (m) game.socket.emit("system.twod12", { type: "deleteMessage", messageId: m.id }); } catch (e) { console.warn("twod12 | Charge card", e); }
+    }
+    const { sysLine } = await import("./sysmsg.mjs");
+    return ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: c.actor }), content: sysLine("fa-person-running-fast", `<b>${esc(c.name)}</b> gives up Charge.${back > 0 ? ` ${apText(back)} back.` : ""}`, "chargemsg") });
   }
   await post(left > 0 ? `<b>${esc(c.name)}</b> ends the movement. ${left} free square${left === 1 ? "" : "s"} unused.` : `<b>${esc(c.name)}</b> has no free movement left.`);
 }
@@ -816,8 +822,7 @@ function choosePush(origin, target, N, mode = "push") {
       resolve(v);
     };
     const down = ev => {
-      if (ev.button === 2) return done(null);
-      if (ev.button !== 0) return;
+      if (ev.button !== 0) return;   // v0.0.343 (Lucas: a right-click by mistake cancelled the Push): only Esc or End forced movement cancel
       hover(ev);
       if (current) done(current);
     };
@@ -919,7 +924,7 @@ function choosePath(origin, target, N, mode = "slid", { withinReach = false } = 
     };
     const confirm = () => (path.length > 1 ? finish({ path: [...path], result: analyze(path) }) : finish(null));
     const down = ev => {
-      if (ev.button === 2) { if (path.length > 1) { path.pop(); draw(); } else finish(null); return; }
+      if (ev.button === 2) { if (path.length > 1) { path.pop(); draw(); } return; }   // v0.0.343: a right-click takes a square back, never cancels
       if (ev.button !== 0) return;
       const sh = posOf(ev), last = path[path.length - 1];
       if (sh.di === last.di && sh.dj === last.dj) return confirm();
@@ -1031,7 +1036,11 @@ async function pushFlow(cfg, ctx, mode = "push") {
   if (!origin) return warn(`Select the token that is the origin of the ${MOVE_LABEL[mode]}.`);
   if (cfg.pick) return pushPicker(cfg, ctx, mode, origin, N);
   const by = cfg.from === "target" || cfg.from === "area" ? tokenOf(actor) : null;
-  const targets = targetTokens(ctx).filter(t => t.id !== origin.id);
+  // v0.0.343 (Lucas: "Target the creature to move first" with the creature targeted): a chip clicked by hand took the selected tokens first, and the
+  // selected one is usually the pusher (the origin, left out): then the targeted creatures, then the card's
+  let targets = targetTokens(ctx).filter(t => t.id !== origin.id);
+  if (!targets.length && !ctx?.targets) targets = [...game.user.targets].filter(t => t.id !== origin.id);
+  if (!targets.length && !ctx?.targets) targets = targetTokens({ ...ctx, targets: ctx?.message?.getFlag?.(F, "action")?.targets ?? [] }).filter(t => t.id !== origin.id);
   if (!targets.length) return warn("Target the creature to move first.");
   // Immobilized (v0.0.174): checked before Steadiness. The card says whether the Action rolled (its result, per target) or is a Save Action
   // (then the origin rolls 2d12 + its Modifier once, for every Immobilized creature it would move).
@@ -1478,7 +1487,7 @@ export function openChargePicker(c, token) {
   let side = "left", pos = null, cur = null, armed = "";
   const bar = document.createElement("div");
   bar.className = "twod12-linebar twod12-chargebar";
-  bar.innerHTML = `<i class="fa-solid fa-person-running-fast lb-ic"></i><span class="lb-text"></span><span class="lb-side"><span class="lb-lbl" data-tooltip="Where the line passes exactly between two squares, every tie takes this side (seen from you toward the destination). Tab switches.">Ties</span><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><kbd>Tab</kbd></span><button type="button" class="lb-give" data-tooltip="Give up the Charge: it is taken back, and its AP are refunded">Give up</button>`;
+  bar.innerHTML = `<i class="fa-solid fa-person-running-fast lb-ic"></i><span class="lb-text"></span><span class="lb-side"><span class="lb-lbl" data-tooltip="Where the line passes exactly between two squares, every tie takes this side (seen from you toward the destination). Tab switches.">Ties</span><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><kbd>Tab</kbd></span><button type="button" class="lb-go" data-tooltip="Charge to the square shown (as clicking it; a blocked or too-long line charges anyway)">Charge!</button><button type="button" class="lb-give" data-tooltip="Give up the Charge: it is taken back, and its AP are refunded">Give up</button>`;
   document.body.append(bar);
   const text = () => {
     if (cur?.target) {
@@ -1551,6 +1560,16 @@ export function openChargePicker(c, token) {
   const flip = () => { side = side === "left" ? "right" : "left"; armed = ""; if (target) cur = computeTarget(); else if (pos) cur = compute(pos); draw(); };
   bar.querySelectorAll(".lb-side button").forEach(b => b.addEventListener("click", ev => { ev.preventDefault(); ev.stopPropagation(); if (b.dataset.side !== side) flip(); }));
   bar.querySelector(".lb-give").addEventListener("click", ev => { ev.preventDefault(); close(true); });
+  // v0.0.343 (Lucas, playtest 4): "Charge!" next to Give up: the line shown (toward the target, or the last square pointed at) goes, as a confirmed click
+  bar.querySelector(".lb-go").addEventListener("click", async ev => {
+    ev.preventDefault(); ev.stopPropagation();
+    if (!cur) return ui.notifications.info("Point at the destination on the map first.");
+    const r = cur.path;
+    if (r.cells.length < 2 || (r.bad < 0 && !cur.tooFar && r.sq + 1e-6 < ch.min) || (!cur.target && r.sq > ch.max + 1e-6)) return ui.notifications.info("That Charge isn't possible: see the bar.");
+    const go = cur;
+    close(false);
+    await runCharge(c, doc, go, reach);
+  });
   const local = ev => (ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) : ev.data.getLocalPosition(canvas.stage));
   const move = ev => { pos = local(ev); const n = compute(pos); if (n.key !== cur?.key) armed = ""; cur = n; draw(); };
   const down = async ev => {

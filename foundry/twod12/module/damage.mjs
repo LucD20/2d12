@@ -88,6 +88,7 @@ export function registerSocket() {
       if (data.type === "endEffectPrompt") return H.endEffectHere(actor, data.which, { source: data.source });
     }
     if (!game.user.isActiveGM) return;
+    if (data?.type === "deleteMessage") { const m = game.messages?.get(data.messageId); if (m) await m.delete(); return; }   // v0.0.343: a given-up Charge's card
     if (data?.type === "applyEffects") return applyEffects(data.effectUuids, data.targetUuids, data.origin, data.over);
     if (data?.type === "applyBoon") { const a = await fromUuid(data.actorUuid); if (a) await applyBoonEffect(a, data.cfg, data.origin); return; }
     if (data?.type === "applyCondition") { const a = await fromUuid(data.actorUuid); if (a) await applyCondition(data.cond, [a], data.dur, data.origin); return; }

@@ -771,7 +771,7 @@ export async function useAction(actor, item, opts = {}) {
       const mk = await attackModelParts({ it, item, version: v, weapon: previewWeapon, cardCtx, fxn, fxNames, areaSize: v.areaSize || areaSet?.distance, chip: src.chip });
       return { tiers: mk.outcomes, crit: v.critical ? await enrich(v.critical, item) : "", effects: mk.effectsHtml, setup: it.setup ? await enrich(setupFor(it.setup, setupDone), item) : "" };
     };
-    const inp = await rollDialogInput({ actor, item, versions, src, useTraits, dlgTraits, previewWeapon, multi, perT, targetToken, rollsAtOthers, isSelf, areaSet, areaOutcome, extraMods, steps, bonusSeen, usesReload,
+    const inp = await rollDialogInput({ actor, item, versions, src, useTraits, dlgTraits, previewWeapon, multi, perT, aimed, targetToken, rollsAtOthers, isSelf, areaSet, areaOutcome, extraMods, steps, bonusSeen, usesReload,
       saveAct, notices: [...extraNotices], opts, dcInfo, seen, seenWhy, mine, unseenYou, untrainedTarget, outOfRange, talentMods: talentModsFor(actor, item), partsFor });
     rdData = await askAction({ inp, state: opts.rdState ?? null, live: !areaSet, card: () => item.sheet?.render(true) });
     if (!rdData) return;

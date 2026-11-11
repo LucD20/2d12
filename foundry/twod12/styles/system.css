@@ -4043,3 +4043,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 /* v0.0.342 (Lucas): the Save card's "No effect." in the row's ink (it was white from the old dark Tier 3 row); the roll window's Use fills the bar */
 .twod12.chat.cc .cc-srow.t3 .cc-none, .twod12.chat.cc .cc-srow.t1.hit .cc-none, .twod12.chat.cc .cc-srow .cc-none { color: #6f6a5c; }
 .twod12.rolldlg .rd-bar .rd-go { flex: 1 1 auto; }
+
+/* v0.0.343 (Lucas, playtest 4): the Charge bar's "Charge!" next to Give up */
+.twod12-chargebar .lb-go { width: auto; height: 26px; line-height: 24px; padding: 0 10px; margin: 0; font-size: 13px; background: #2e5a3a; color: #f4e9d0; border: 1px solid #c9a24a; border-radius: 5px; cursor: pointer; white-space: nowrap; flex: 0 0 auto; }
+.twod12-chargebar .lb-go:hover { background: #3a7049; }

@@ -11,6 +11,26 @@ export const TECHNIQUE_AT = 3;
 
 /** The kind of weapon a weapon's Mastery counts for: its Mastery group, or its name. */
 export const groupOf = w => String(w?.system?.masteryGroup || w?.name || "").trim();
+/**
+ * v0.0.343 (book, Chapter 15: at most 1 Mastery per Weapon Group in each encounter): a weapon's Weapon Group key (TWOD12.weaponGroups): the one set
+ * on the weapon, else the book's table by its kind or its name ("+1 Greatsword" is a Greatsword: Blades), else its kind (a group of its own).
+ */
+export function weaponGroupOf(w) {
+  const set = String(w?.system?.weaponGroup ?? "").trim();
+  if (set) return set;
+  const table = TWOD12.weaponGroupOf ?? {}, names = Object.keys(table).sort((a, b) => b.length - a.length);
+  for (const raw of [w?.system?.masteryGroup, w?.name]) {
+    const low = String(raw ?? "").toLowerCase();
+    const hit = names.find(n => new RegExp(`(^|[^a-z])${n.replace(/ /g, "\\s+")}($|[^a-z])`).test(low));
+    if (hit) return table[hit];
+  }
+  return "";
+}
+/** Pure: the group a Tier 3 counts against this encounter ("kind:<key>" for a weapon outside the eight groups). */
+export const masteryLimitKey = w => weaponGroupOf(w) || `kind:${masteryKey(groupOf(w))}`;
+/** Pure: can this weapon still gain Mastery in this encounter? used: the actor's flag { combatId, groups: [] }. */
+export const canGainMastery = (used, combatId, w) => !(!!used && used.combatId === combatId && (used.groups ?? []).includes(masteryLimitKey(w)));
+
 /** A flag key for a group ("Great Sword" -> "great-sword"). */
 export const masteryKey = name => String(name ?? "").trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "weapon";
 export const masteryOf = actor => actor?.getFlag?.(F, "mastery") ?? {};
@@ -90,10 +110,18 @@ export async function masteryAfterRoll(actor, weapon, isWeaponRoll, tiers) {
   // v0.0.189 (Lucas): only in combat (an encounter that has started, with this creature in it).
   const c = game.combat;
   if (!c?.started || !c.combatants?.some?.(x => x.actor === actor || x.actor?.id === actor.id)) return;
+  // v0.0.343 (Lucas, playtest 4; book, Chapter 15): at most 1 Mastery per Weapon Group in each encounter (stored on the character: { combatId, groups })
+  const used = actor.getFlag(F, "masteryEnc"), lim = masteryLimitKey(weapon);
+  if (!canGainMastery(used, c.id, weapon)) return;
   const r = await addMastery(actor, weapon, 1);
   if (!r) return;
+  await actor.setFlag(F, "masteryEnc", { combatId: c.id, groups: [...(used && used.combatId === c.id ? used.groups ?? [] : []), lim] });
   const what = r.reached.map(s => `<b>${STEP_TEXT[s]}</b> unlocked`).join(", ");
-  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: `<div class="twod12 chat mastery"><i class="fa-solid fa-medal"></i> <b>${actor.name}</b>: ${r.group} Mastery ${r.after}${what ? `: ${what}!` : ""}</div>` });
+  const grp = TWOD12.weaponGroups?.[weaponGroupOf(weapon)];
+  const { sysLine } = await import("./sysmsg.mjs");
+  const { esc } = await import("./util.mjs");
+  // v0.0.343: the system's line (was a plain line)
+  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-medal", `<b>${esc(actor.name)}</b> gains 1 ${esc(r.group)} Mastery (${r.after})${what ? `: ${what}!` : "."}${grp ? ` No more ${esc(grp)} Mastery this encounter.` : ""}`, "mastery") });
 }
 
 export function registerMasteryHooks() {

@@ -75,11 +75,14 @@ function actPane(r, m) {
   if (r.dir === "by") {
     parts += part("emp", r.emp.on, "Empowered and Enfeebled", R.partSummary(r, "emp"), grid([["Counts as", seg("emp.mode", r.emp.mode, [["set", "Set to"], ["inc", "Increase by"]], "w")], ["Empowered", step("emp.emp", r.emp.emp, 0, 5, "boon")], ["Enfeebled", step("emp.enf", r.emp.enf, 0, 5, "bane")]])
       + help("Set to: the highest of each counts (Stacking). Increase by: adds to the value they have for those Rolls (Vow of Enmity)."));
-    parts += part("dmg", r.dmg.on, "Extra damage", R.partSummary(r, "dmg"), r.dmg.list.map((d, i) => `<div class="fr-dent">${grid([
+  }
+  // v0.0.343: extra damage on Rolls made against them too (Open Season: the allies' [Strike] Actions against the Quarry)
+  parts += part("dmg", r.dmg.on, "Extra damage", R.partSummary(r, "dmg"), r.dmg.list.map((d, i) => `<div class="fr-dent">${grid([
       ["Damage", `${text(`dmg.list.${i}.dice`, d.dice, "1d6", "dice")}${fhelp()}${seg(`dmg.list.${i}.pool`, d.pool, [["B", "[V]"], ["M", "[R]"]])}${sel(`dmg.list.${i}.sub`, d.sub, SUBS(), "Subtype")}`],
       ["On", [1, 2, 3].map(t => `<span class="fr-tog${d.tiers.includes(t) ? " on" : ""}" data-fr="tier" data-f="dmg.list.${i}.tiers" data-v="${t}" role="switch" aria-checked="${d.tiers.includes(t)}" tabindex="0"><span class="box"></span>T${t}</span>`).join("")],
       ["Then", `${dropped(m, `dmg.list.${i}.fx`, d.fx, d.fxName, "Drop an Effect the target gains (optional)", "from the Effects and Conditions compendiums")}${d.text ? `<span class="fr-m">The card adds: ${esc(d.text)}</span>` : ""}${r.dmg.list.length > 1 ? `<button type="button" class="fr-rm" data-fr="splice" data-f="dmg.list" data-i="${i}">Remove this damage</button>` : ""}`]
     ])}</div>`).join("") + `<button type="button" class="fr-addd" data-fr="push" data-f="dmg.list">+ Another damage</button>` + help("A number, dice or a formula (<code>@origin.pow</code>, <code>[Mod]</code> the Action's Modifier)."));
+  if (r.dir === "by") {
     parts += part("ign", r.ign.on, "Ignores", R.partSummary(r, "ign"), grid([["Cover", ["low", "medium", "high"].map(k => tog(`ign.${k}`, r.ign[k], k[0].toUpperCase() + k.slice(1))).join("")],
       ["Range Banes", seg("ign.range", r.ign.range, [["none", "None"], ["one", "One"], ["all", "All"]], "w")], ["Also", tog("ign.engaged", r.ign.engaged, "The Engaged Bane") + tog("ign.engagedTarget", r.ign.engagedTarget, "Target Engaged with another")]]));
   }

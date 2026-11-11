@@ -391,7 +391,7 @@
    "versions": [
     {
      "ap": 2,
-     "effects": "For 3 rounds (the area doesn't move), enemies in the area take 1 Bane on [Strike] Actions, and allies in it gain +1 Defense.",
+     "effects": "For 3 rounds, enemies in the area take 1 Bane on [Strike] Actions, and allies in it gain +1 Defense.",
      "ruler": "rounds 3 | area 2 | allies 2 | banes 1 strike; defense 1 allies",
      "foundry": {
       "fx": {
@@ -405,7 +405,7 @@
    "foundry": {
     "img": "icons/svg/target.svg",
     "folder": "Archer",
-    "automation": "mithril",
+    "automation": "diamond",
     "automationNote": "the area is a Zone kept 3 rounds: enemies inside carry the Bane, allies inside the +1 Defense, both only while inside.",
     "areaCfg": {
      "targets": "all",
@@ -776,7 +776,7 @@
         "{{fx:Open Season (Weapon Attack)}}"
        ]
       },
-      "after": "@Condition[vulnerable|value:2|rounds:1]"
+      "after": "@Condition[vulnerable|value:2|rounds:1] @Effect[{{fx:Open Season (the Quarry)}}|who:targets]"
      }
     }
    ],
@@ -785,7 +785,7 @@
     "folder": "Archer",
     "level": 1,
     "automation": "diamond",
-    "automationNote": "the Weapon Attack as a granted use (the card's button); Vulnerable 2 on the Quarry for 1 round with the card's Apply (its After the damage chain, v0.0.339); the allies add [V] 1d6 Pi by hand."
+    "automationNote": "the Weapon Attack as a granted use (the card's button); Vulnerable 2 on the Quarry for 1 round with the card's Apply (its After the damage chain, v0.0.339); the allies' extra [V] 1d6 Pi with the Open Season (the Quarry) Effect the same chain puts on the Quarry for 1 round (v0.0.343; its rule is on the Effect's Details tab)."
    },
    "distance": "Weapon"
   },

@@ -386,6 +386,32 @@ async function restoreLight(effect) {
   }
 }
 
+/**
+ * Pure (v0.0.343): what the end of a turn does to one effect's duration. flags: the effect's twod12 flags; ended: the combatant whose turn ended
+ * { id, initiative, tokenId, actorUuid } (null: none); prior: { round, turn }; me: the affected creature { uuid, tokenId, combatantId }.
+ * EoT: ends at the end of the slot the creature was in when it was applied (no slot: the creature's own turn). Rounds: counts down at the end of
+ * the slot in which it was applied (older effects: the origin's), skipping that first turn. Returns "end", "tick" or null.
+ */
+const DUR_KEYS = ["duration", "remaining", "slotInit", "originSlot", "originCombatantId", "anchorSlot", "anchorCombatantId", "appliedRound", "appliedTurn", "lastTick"];
+export function durationStep(flags, ended, prior, me) {
+  const dur = flags?.duration;
+  if (!dur?.type || !ended) return null;
+  const has = v => v !== null && v !== undefined && v !== "";
+  if (dur.type === "eot") {
+    if (has(flags.slotInit)) return Number(ended.initiative) === Number(flags.slotInit) && ended.initiative !== null ? "end" : null;
+    const mine = (me?.combatantId && ended.id === me.combatantId) || (me?.tokenId && ended.tokenId === me.tokenId) || (me?.uuid && ended.actorUuid === me.uuid) || (!!me?.ref && ended.ref === me.ref);
+    return mine ? "end" : null;
+  }
+  if (dur.type !== "rounds") return null;
+  const oslot = has(flags.anchorSlot) ? flags.anchorSlot : flags.originSlot;
+  const mine = has(oslot) ? ended.initiative !== null && Number(ended.initiative) === Number(oslot) : (flags.anchorCombatantId || flags.originCombatantId || "") === ended.id;
+  if (!mine) return null;
+  if (flags.appliedRound === prior?.round && flags.appliedTurn === prior?.turn) return null;
+  if (flags.lastTick === prior?.round) return null;
+  const rem = (flags.remaining ?? dur.rounds) - 1;
+  return rem <= 0 ? "end" : "tick";
+}
+
 export function registerEffectHooks() {
   Hooks.on("renderTokenHUD", (app, html) => { try { valuedHud(app, html); } catch (e) { console.warn("twod12 | token HUD", e); } });
   // An effect that brought other conditions with it takes them away when it goes (removed by hand, from the HUD, or ended).
@@ -420,28 +446,23 @@ export function registerEffectHooks() {
   Hooks.on("combatTurnChange", async (combat, prior) => {
     if (!game.user.isActiveGM) return;
     const ended = combat.combatants.get(prior?.combatantId);
-    const actors = new Set();
-    for (const c of combat.combatants) if (c.actor) actors.add(c.actor);
-    for (const td of canvas.scene?.tokens ?? []) if (td.actor) actors.add(td.actor);
-    for (const actor of actors) {
+    // v0.0.343: one actor per uuid (an unlinked token's combatant and its scene token can be two objects for the same creature: the second one
+    // deleted an effect the first had already ended, and that error stopped the loop)
+    const actors = new Map();
+    for (const c of combat.combatants) if (c.actor) actors.set(c.actor.uuid, c.actor);
+    for (const td of canvas.scene?.tokens ?? []) if (td.actor && !actors.has(td.actor.uuid)) actors.set(td.actor.uuid, td.actor);
+    // v0.0.343 (Lucas, playtest 4: Frightened (1 round) and Vulnerable (EoT) didn't end): each effect is done on its own (one error no longer stops
+    // the others), and the creature is matched by its combatant, token or uuid, not by object identity (durationStep, tested in t233)
+    for (const actor of actors.values()) {
       for (const e of [...actor.effects]) {
-        const dur = e.getFlag(F, "duration");
-        if (!dur?.type) continue;
-        const slot = e.getFlag(F, "slotInit");
-        if (dur.type === "eot") {
-          const hit = slot !== null && slot !== undefined ? ended?.initiative === slot : ended?.actor === actor;
-          if (hit) await e.delete();
-          continue;
-        }
-        // v0.0.252: the slot in which it was applied (anchor); older effects: the origin's
-        const aslot = e.getFlag(F, "anchorSlot"), aid = e.getFlag(F, "anchorCombatantId");
-        const oslot = aslot !== null && aslot !== undefined ? aslot : e.getFlag(F, "originSlot");
-        const mine = oslot !== null && oslot !== undefined ? ended?.initiative === oslot : (aid || e.getFlag(F, "originCombatantId")) === ended?.id;
-        if (!ended || !mine) continue;
-        if (e.getFlag(F, "appliedRound") === prior.round && e.getFlag(F, "appliedTurn") === prior.turn) continue;
-        if (e.getFlag(F, "lastTick") === prior.round) continue;
-        const rem = (e.getFlag(F, "remaining") ?? dur.rounds) - 1;
-        if (rem <= 0) await e.delete(); else { await e.setFlag(F, "remaining", rem); await e.setFlag(F, "lastTick", prior.round); }
+        if (typeof actor.effects.has === "function" && !actor.effects.has(e.id)) continue;   // gone with its parent (a linked condition)
+        try {
+          const fl = Object.fromEntries(DUR_KEYS.map(k => [k, e.getFlag(F, k)]));
+          let cid = ""; try { cid = combatantOf(actor, combat)?.id ?? ""; } catch (err) { /* no combatant */ }
+          const step = durationStep(fl, ended ? { id: ended.id, initiative: ended.initiative ?? null, tokenId: ended.tokenId ?? "", actorUuid: ended.actor?.uuid ?? "", ref: ended.actor ?? null } : null, prior, { uuid: actor.uuid ?? "", tokenId: actor.isToken ? actor.token?.id ?? "" : "", combatantId: cid, ref: actor });
+          if (step === "end") await e.delete();
+          else if (step === "tick") { const rem = (e.getFlag(F, "remaining") ?? e.getFlag(F, "duration")?.rounds) - 1; await e.setFlag(F, "remaining", rem); await e.setFlag(F, "lastTick", prior.round); }
+        } catch (err) { console.warn(`twod12 | the duration of ${e?.name} on ${actor?.name}`, err); }
       }
     }
     // Kept template areas with a duration. They start when placed (reactions included):

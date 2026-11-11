@@ -304,6 +304,7 @@
     <div class="grid3">
       <label>Range <input type="text" name="system.range" value="{{system.range}}" placeholder="1   or   1/2   or   10/20/40"></label>
       {{#if weaponThrown}}<label>Thrown Range <input type="text" name="system.thrownRange" value="{{system.thrownRange}}" placeholder="4/8/12"></label>{{/if}}
+      <label data-tooltip="Its Weapon Group (Chapter 15). You gain at most 1 Mastery per Weapon Group in each encounter. Empty: from its name (the book's weapon table).">Weapon Group <select name="system.weaponGroup">{{selectOptions weaponGroupChoices selected=system.weaponGroup}}</select></label>
       <label data-tooltip="The kind of weapon its Mastery counts for. Empty: its name. A +1 Greatsword with 'Greatsword' here shares the Greatsword's Mastery.">Mastery group <input type="text" name="system.masteryGroup" value="{{system.masteryGroup}}" placeholder="{{item.name}}"></label>
       {{#if system.reach}}<label>Old extra Reach <input type="number" min="0" name="system.reach" value="{{system.reach}}"></label>{{/if}}
     </div>

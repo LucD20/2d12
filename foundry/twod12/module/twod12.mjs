@@ -7,6 +7,7 @@ import { markHalfHint } from "./halfhint.mjs";   // v0.0.261 (Covering Shot)
 import { rxRender, rxClick, registerReactionSettings, registerMomentHooks, closeStale } from "./moment.mjs";   // v0.0.272 (pack RX): the Reactions message
 import { registerLeanHooks } from "./lean.mjs";
 import { registerMasteryHooks } from "./mastery.mjs";
+import { registerChatScroll } from "./chatscroll.mjs";   // v0.0.343
 import { registerMarkHooks } from "./mark.mjs";
 import { registerLoE } from "./loe.mjs";
 import { registerFlankOverlay } from "./flankoverlay.mjs";
@@ -87,6 +88,7 @@ Hooks.once("init", () => {
   import("./areafx.mjs").then(m => m.registerAreaHooks()).catch(e => console.warn("twod12 | area hooks", e));   // v0.0.327 (PACK ZONE)
   registerLeanHooks();
   registerMasteryHooks();
+  registerChatScroll();   // v0.0.343: the chat stays at its bottom when a card grows
   registerMarkHooks();
   registerLoE();   // Line of Effect, Cover height and Show flanking in the token controls (v0.0.165; moved from the token HUD in v0.0.302)
   registerFlankOverlay();   // v0.0.302

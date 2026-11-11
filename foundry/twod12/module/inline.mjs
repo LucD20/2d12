@@ -528,7 +528,9 @@ async function allyRecipients(cfg, ctx, what = "the effect") {
   const origin = originActor(ctx);
   if (cfg.self || cfg.who === "self") return { origin, who: [origin].filter(Boolean) };
   // v0.0.255 (Lucas): the card's targets are the recipients when it has them (no question asked); the picker only when it has none
-  if (ctx.targets?.length && cfg.who !== "self") {
+  // v0.0.343 (Lucas, playtest 4: Smite 3 AP's Guard went to the creature hit): not for who:pick or an area / near search: there the card's targets
+  // are where to look (the enemy hit), never the recipients
+  if (ctx.targets?.length && cfg.who !== "self" && cfg.who !== "pick" && !(cfg.area > 0) && !(cfg.near > 0)) {
     const list = [];
     for (const t of ctx.targets) { try { const d = await fromUuid(t.uuid); const a = d?.documentName === "Actor" ? d : d?.actor; if (a) list.push(a); } catch (e) { /* gone */ } }
     if (list.length) return { origin, who: list };

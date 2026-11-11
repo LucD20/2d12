@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-11 from the repository at: c88baa5 2026-11-11 Playtest 4: the log (book/playtest-4.md) and its fixes organized in six steps (foundry-backlog), four rules decided (rules-backlog); nothing applied
+Built by tools/knowledge.py on 2026-11-11 from the repository at: 345c148 2026-11-11 Playtest 4 fixes: the screenshots' details added to the plan
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

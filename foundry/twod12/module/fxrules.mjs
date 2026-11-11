@@ -233,7 +233,7 @@ export function migrate(sys, host = "effect") {
       }
       case "damagestep": add("act", { ...base, filter: filterOf(x), vs, sees: seen, emp: { on: true, mode: "set", emp: x.empowered || 0, enf: x.enfeebled || 0 } }); break;
       case "bonusdamage":
-        add("act", { ...base, filter: filterOf(x), vs, uses: x.oncePerRound ? "round" : "every", sees: seen, dmg: { on: true, list: [dmgEntry({ dice: x.dmg ?? "", pool: x.dmgPool === "M" ? "M" : "B", sub: x.dmgSub || "", tiers: tierNums(x.tiers).length ? tierNums(x.tiers) : [1, 2, 3], fx: x.fxUuid || "", text: x.text || "" })] } });
+        add("act", { ...base, dir: x.against ? "against" : "by", filter: filterOf(x), vs, uses: x.oncePerRound ? "round" : "every", sees: seen, dmg: { on: true, list: [dmgEntry({ dice: x.dmg ?? "", pool: x.dmgPool === "M" ? "M" : "B", sub: x.dmgSub || "", tiers: tierNums(x.tiers).length ? tierNums(x.tiers) : [1, 2, 3], fx: x.fxUuid || "", text: x.text || "" })] } });
         break;
       case "ignore": add("act", { ...base, filter: filterOf(x), ign: { on: true, ...(IGN[x.ignoreRule] ?? { range: "one" }) } }); break;
       case "cover": { const lv = new Set(x.coverLevels ?? []); add("act", { ...base, filter: filterOf(x), ign: { on: true, low: lv.has("low"), medium: lv.has("medium"), high: lv.has("high") } }); break; }
@@ -308,9 +308,10 @@ export function compile(rulesIn, endsIn, host = "effect") {
         const f = { all: [...r.filter.all], any: [...r.filter.any], none: [...r.filter.not], attrs: [...r.attrs], from: [...r.from] };
         const lim = { vsMarked: r.vs === "marked", vsOrigin: r.vs === "origin" ? "only" : r.vs === "notorigin" ? "not" : "", oncePerRound: r.uses === "round", spend: r.uses === "next" };
         if (r.bb.on && (r.bb.boons || r.bb.banes)) S(r, "boonbane", { ...f, ...lim, boons: r.bb.boons, banes: r.bb.banes, bbName: r.bb.name, byValue: r.bb.byValue, against: r.dir === "against" });
+        // v0.0.343 (Open Season: "[Strike] Actions your allies make against them deal an extra [V] 1d6 Pi"): extra damage on Rolls made against them too
+        if (r.dmg.on) for (const d of r.dmg.list) if (String(d.dice).trim() || d.fx || d.text) S(r, "bonusdamage", { ...f, vsMarked: lim.vsMarked, vsOrigin: lim.vsOrigin, oncePerRound: lim.oncePerRound, spend: lim.spend, dmg: oldFormula(d.dice), dmgPool: d.pool, dmgSub: d.sub, tiers: d.tiers.map(t => `t${t}`), fxUuid: d.fx, text: d.text, against: r.dir === "against" });
         if (r.dir === "by") {
           if (r.emp.on && (r.emp.emp || r.emp.enf)) S(r, "damagestep", { ...f, vsMarked: lim.vsMarked, spend: lim.spend, empowered: r.emp.emp, enfeebled: r.emp.enf, empMode: r.emp.mode });
-          if (r.dmg.on) for (const d of r.dmg.list) if (String(d.dice).trim() || d.fx || d.text) S(r, "bonusdamage", { ...f, vsMarked: lim.vsMarked, oncePerRound: lim.oncePerRound, spend: lim.spend, dmg: oldFormula(d.dice), dmgPool: d.pool, dmgSub: d.sub, tiers: d.tiers.map(t => `t${t}`), fxUuid: d.fx, text: d.text });
           if (r.ign.on) {
             const lv = ["low", "medium", "high"].filter(k => r.ign[k]);
             if (lv.length) S(r, "cover", { ...f, coverLevels: lv });
@@ -408,7 +409,7 @@ function payload(r, withDmg = true) {
     if (x.length) p.push(`ignore ${andJoin(x)}`);
   }
   if (r.note.on && r.note.title) p.push(`show the note ⟦a:${r.note.title}⟧`);
-  if (withDmg && r.dir === "by" && r.dmg.on && r.dmg.list.some(d => String(d.dice).trim())) p.push(`an extra ${andJoin(r.dmg.list.map(dmgPhrase).filter(Boolean))}`);
+  if (withDmg && r.dmg.on && r.dmg.list.some(d => String(d.dice).trim())) p.push(`an extra ${andJoin(r.dmg.list.map(dmgPhrase).filter(Boolean))}`);
   return p.filter(x => !/^\(/.test(x)).length ? p.reduce((a, x) => (/^\(/.test(x) && a.length ? [...a.slice(0, -1), `${a.at(-1)} ${x}`] : [...a, x]), []) : [];
 }
 const VS_WORD = (vs, who) => (vs === "origin" ? `⟦a:${who}⟧` : vs === "notorigin" ? `anyone but ⟦a:${who}⟧` : "the creature it marked");
@@ -439,7 +440,7 @@ export function sentence(rIn, ctx = {}) {
       if (r.uses === "round") sc += ", the first each round";
       if (r.sees) sc += `, while they see ⟦a:${who}⟧`;
       let s = `${sc}${esc0}: ${andJoin(p)}`;
-      if (r.dir === "by" && r.dmg.on) for (const d of r.dmg.list) { if (d.fx) s += `; the target gains ⟦a:${nm(d.fx) || d.fxName || "an Effect"}⟧${tiersT(d.tiers)}`; if (d.text) s += `; ${tiersT(d.tiers).trim() || "on any tier"}: ${d.text}`; }
+      if (r.dmg.on) for (const d of r.dmg.list) { if (d.fx) s += `; the target gains ⟦a:${nm(d.fx) || d.fxName || "an Effect"}⟧${tiersT(d.tiers)}`; if (d.text) s += `; ${tiersT(d.tiers).trim() || "on any tier"}: ${d.text}`; }
       return `${s}.`;
     }
     case "move": return `Can't willingly move ${r.dirm === "closer" ? "closer to" : "away from"} ⟦a:${who}⟧${r.sees ? `, while they see ⟦a:${who}⟧` : ""}.`;
@@ -524,7 +525,7 @@ export function ruleLabel(rIn, ctx = {}) {
   const r = normRule(rIn), nm = u => ctx.names?.[u] || "";
   let t = "";
   switch (r.kind) {
-    case "act": { const p = payload(r, false).map(plainText); if (r.dir === "by" && r.dmg.on) p.push(...r.dmg.list.map(d => `+${formulaWords(d.dice).replace(/the origin's /g, "")}${d.sub ? ` ${SUB(d.sub)}` : ""}`)); t = p.join(", ") || "(empty)"; break; }
+    case "act": { const p = payload(r, false).map(plainText); if (r.dmg.on) p.push(...r.dmg.list.map(d => `+${formulaWords(d.dice).replace(/the origin's /g, "")}${d.sub ? ` ${SUB(d.sub)}` : ""}`)); t = p.join(", ") || "(empty)"; break; }
     case "grant": {
       const name = nm(r.item) || r.itemName;
       if (!name) { t = r.msg.on ? "Message" : "Grants (empty)"; break; }

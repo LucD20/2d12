@@ -259,6 +259,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       poolChoices: TWOD12.pools,
       dieChoices: TWOD12.dice,
       subtypeChoices: TWOD12.subtypes,
+      ...(t === "weapon" ? await (async () => { const { weaponGroupOf } = await import("./mastery.mjs"); const auto = weaponGroupOf({ name: it.name, system: { ...it.system, weaponGroup: "" } }); return { weaponGroupChoices: { "": `From its name${auto && TWOD12.weaponGroups[auto] ? ` (${TWOD12.weaponGroups[auto]})` : ": none"}`, ...TWOD12.weaponGroups } }; })() : {}),   // v0.0.343
       versionCount: t === "action" ? s.versions.length : 0,
       versionRows: t === "action" ? this._versionRows() : [],
       onActor: !!it.parent,

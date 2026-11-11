@@ -298,7 +298,7 @@ export async function collectReactions(ev) {
   const rows = [], blocked = [];
   for (const tk of globalThis.canvas?.tokens?.placeables ?? []) {
     const actor = tk.actor;
-    if (!actor || tk.document?.hidden) continue;
+    if (!actor) continue;   // v0.0.343 (Lucas, playtest 4): a token the GM hid on the map reacts too (hidden is only what the players see)
     if (ev.source?.actor && actor.uuid === ev.source.actor.uuid) continue;   // never a Reaction to your own Strike or move
     for (const item of actor.itemTypes?.action ?? []) {
       const k = item.system?.moment, def = MOMENTS[k];
@@ -919,7 +919,7 @@ export function moveMoment(doc, origin, dest, { stand = false, before = null, wa
     // v0.0.274 (Lucas; the book: "You can react only once to the same Action"): once per Reaction for each Move Action (a new Advance offers again)
     const cbt = game.combat.combatants?.find?.(x => x.tokenId === doc.id);
     const turn = `${doc.id}|${game.combat.round}|${game.combat.turn}|${moveActionOf(cbt?.id)}`;
-    const sideToks = disp => (canvas.tokens?.placeables ?? []).filter(t => t.actor && !t.document.hidden && Number(t.document.disposition ?? 0) === Number(disp ?? 0) && t.document.id !== doc.id);
+    const sideToks = disp => (canvas.tokens?.placeables ?? []).filter(t => t.actor && Number(t.document.disposition ?? 0) === Number(disp ?? 0) && t.document.id !== doc.id);
     // v0.0.277 (Lucas: the trigger "didn't happen" when the mover walked past and away): the squares it left (Opportunity Attack: "would leave a
     // square") and the squares it entered (Overwatch: "moves closer": any square nearer than where it started) along its whole path, not only
     // where it started and stopped

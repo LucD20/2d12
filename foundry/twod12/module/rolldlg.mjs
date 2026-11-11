@@ -415,6 +415,8 @@ function creaturesHtml(inp, st, v) {
   // v0.0.293: a Save Action: each creature with your Save DC (they roll; nothing of theirs to switch here)
   if (inp.save) return live.filter(c => c.uuid !== "none" && c.uuid !== "self").map(c => `<div class="rd-cbox"><div class="rd-cname"><b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}<span class="rd-def">${esc(inp.save.label)} ${inp.save.dc}</span></div></div>`).join("") || `<div class="rd-none">No target. Target a creature on the map.</div>`;
   if (!live.length) return `<div class="rd-none">${inp.area && !inp.area.placed ? "Place the area to choose the creatures." : "No target. Target a creature on the map."}</div>`;
+  // v0.0.343: several creatures for an Action that rolls nothing (Double Shot): each one named, nothing to roll against
+  if (!inp.multi && live.length > 1) return live.map(c => `<div class="rd-cbox"><div class="rd-cname"><b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}</div></div>`).join("");
   if (!inp.multi) {
     const c = live[0], own = chipsOf(inp, st, c.uuid);
     // v0.0.340: "No target" (an area with no creature, an Action rolled without one): its DC typed here (13 by default)

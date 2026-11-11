@@ -503,6 +503,7 @@ export class WeaponData extends foundry.abstract.TypeDataModel {
       subtype: choice(TWOD12.subtypes, "Sl"),
       range: str(), reach: int(0),   // range: every weapon's Range ("1", "1/2", "10/20/40"); reach: the old extra Reach (a melee weapon without a Range uses 1 + it)
       thrownRange: str(),   // a Thrown weapon's Range when thrown ("4/8/12")
+      weaponGroup: str(),   // v0.0.343: its Weapon Group (blades, axes...; empty: from its name, the book's table)
       masteryGroup: str(),   // v0.0.154: the kind of weapon its Mastery counts for (empty: its name), so a +1 Greatsword shares the Greatsword's
       hands: int(1, 1), unloaded: bool(),
       damage: new SchemaField({ t1: tierDamage(), t2: tierDamage(), t3: tierDamage() }),
