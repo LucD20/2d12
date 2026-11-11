@@ -4,7 +4,7 @@ MASTER-PLAN step 1. Lucas answered the 32 items Claude proposed (with defaults) 
 
 ## A. Stage 0 and the level cap
 1. **Stage 0 (levels 1-3): yes.**
-2. **The cap is 15, but only Stage 0 and Stage 1 get written for now (levels 1-7)** (Lucas: "we need to make the combat loop fun first"). Stages 2 and 3 come later.
+2. **The cap is 15. Only Stage 0 (levels 1-3) gets written for now** (Lucas, 2026-11-11, correcting his first answer, which was Stages 0 and 1: "let's focus on making Stage 0 (1-3) fun before the rest"; earlier: "we need to make the combat loop fun first"). Level 4 (the Apex, the Stage Talent, the Stage increase) stays in the table below as the target, and Stages 1 to 3 come later.
 3. **Stages:** Stage 0 levels 1-3, Stage 1 4-7, Stage 2 8-11, Stage 3 12-15: **yes.**
 4. **Option A: Stage 0 has its own numbers and its own Bestiary row.**
 5. **Lucas's level lists** (these replace the template Claude proposed):
@@ -16,18 +16,22 @@ MASTER-PLAN step 1. Lucas answered the 32 items Claude proposed (with defaults) 
    | 3 | Escalation 3; 1 Skill Talent | Escalation 3; 1 Skill Talent |
    | 4 (Stage 1) | 1 Apex; Stage Talent; the Stage increase: Health and Rally Points | the same |
 
-   What follows from it (Claude's reading; see the questions at the end):
+   **The Escalation rungs (Lucas's answer to question 1):** the Passives' Escalation levels on the 1-to-6 ladder. **Level 1 gets the Escalation 4 Passive, level 2 the Escalation 2 Passive, level 3 the Escalation 6 Passive**, and the Apex comes at level 4. "Escalation 2 / 1 / 3" in the table are today's rung names: rung 2 = 4, rung 1 = 2, rung 3 = 6.
+
+   What follows from it:
    - **The Escalation hook Features** (Kindled Wrath, Thrill of the Kill) move to level 2, so neither class gets its hook's +1 Escalation at level 1.
    - **Talents alternate:** a Skill Talent at levels 1 and 3, a regular Talent at level 2. This is the start of the "two tracks" proposal (TALENT STRUCTURE in rules-backlog.md; roleplay-skills.md proposal 3).
    - **The Apex moves to level 4,** as the start of Stage 1.
-   - **The Daily Pick isn't in Stage 0** (today it comes at level 3).
+   - **The Daily Pick isn't in Stage 0** (today it comes at level 3). **It comes later** (Lucas's answer to question 2), in a Stage written after Stage 0.
+   - **Level 1 has no Passive until Escalation 4** (round 4 at Momentum 0, round 1 at Momentum 3 or more). Levels 2 and 3 fill in Escalation 2 and 6. The ruler checks how a level 1 PC's first fights feel.
+   - **Skill Talent slots stay empty for now** (Lucas's answer to question 4), until the Skills design (D3).
 6. **The numbers by Stage:**
    - **No Attribute increases at the Stages** (Lucas: "no need to change attributes").
    - Guard per unspent AP stays 2 / 2 / 3 / 4 (Stages 0 / 1 / 2 / 3).
    - Rally Points stay Rally + 1 / 2 / 3 / 4.
    - The Health steps come at Stages 1, 2 and 3 (each class needs three steps; the ruler sets them).
 7. **Stage Talents at levels 4, 8 and 12: yes.**
-8. **Retraining: on a Rest, you can swap your choices** (this replaces "one swap a level-up" and the free swaps in Stage 0).
+8. **Retraining: on a Rest, you can swap all of your choices**, the Hallmark Action and the Hallmark Reaction included (Lucas's answer to question 3). This replaces "one swap a level-up" and the free swaps in Stage 0.
 9. **No pacing line for now.** An XP ladder comes later; Stage 0 should be fast.
 
 ## B. Escalation 1 to 6 and Momentum (book/expedition-loop.md, part 1)
@@ -56,15 +60,23 @@ MASTER-PLAN step 1. Lucas answered the 32 items Claude proposed (with defaults) 
 31. **Answer now, and let the ruler confirm the numbers after: yes.**
 32. **The branch name:** not answered. Default: `pack-s1-core` when steps 2 and 3 start.
 
+## G. Talents (Lucas, 2026-11-11)
+33. **Remove all the current Talents** (the 18 cards of `book/rules-src/16-talents.md` and `book/cards/talents.json`). Lucas hasn't reviewed any of them, and he wants to focus on the classes. **Logged, not done:** this happens with steps 3 and 4. The Talent slots (Talent and Skill Talent) stay in the level lists as empty slots. What to check when it's done:
+    - the ruler's `catalogue/talents.txt` and `talents-ranged.txt`, and the class builds and Talent options that use them (the R builds leave Talents out already);
+    - Foundry's compendium and the Talent picker (v0.0.186 / v0.0.195), and any tests that use a Talent;
+    - every reference in the book (Opportunity Attack is a Talent today; Class Expertise; Brawler, then Kickboxer).
+
+    The TALENT STRUCTURE proposal in rules-backlog.md stays, for when Talents are rewritten.
+
 ## For the ruler (step 2) to check
-- **Stage 0 power:** level 1 now has one Passive and no Escalation hook. Fit the Bestiary's Stage 0 row to it.
+- **Stage 0 power:** level 1 now has one Passive (at Escalation 4), no Escalation hook and no Talent in play. Fit the Bestiary's Stage 0 row to levels 1, 2 and 3.
 - **Momentum 4:** you start at Escalation 5 at most. With a Critical or the hook in round 1, you can reach rung 6 (the Apex) in round 1, which the expedition loop wanted to avoid. The Apex only arrives at level 4, so this is a Stage 1 question: check how often it happens and what it does to the last fight of an expedition.
 - **Health steps for three Stages, and the Bestiary rows for Stages 0 and 1.**
 
-## Questions for Lucas (when step 2 starts; nothing blocks the log)
-1. **"Escalation 2 at level 1, Escalation 1 at level 2, Escalation 3 at level 3":** on the 1-to-6 ladder, which rungs are these?
-   - **(a)** Today's names. Level 1 gets today's rung 2 Passive, which becomes the Escalation 4 Passive on the new scale, and level 2 gets the rung 1 Passive (Escalation 2).
-   - **(b)** New Escalation levels, which would need Passives at 1, 2 and 3 instead of 2, 4 and 6.
-2. **The Daily Pick:** does it come in Stage 1 (which level?), or is it dropped from these classes?
-3. **"Swap your choices on a Rest":** does that include the Hallmarks (the Action and the Reaction), or only Talents and Picks?
-4. **Skill Talents** before the Skills design (D3): a placeholder slot, or a few Skill Talents written now?
+## Questions for Lucas: answered 2026-11-11
+1. **The rungs:** Escalation 4 at level 1, Escalation 2 at level 2, Escalation 6 at level 3 (item 5).
+2. **The Daily Pick:** later (item 5). With it, Lucas narrowed the scope: Stage 0 first (item 2).
+3. **Swapping on a Rest:** all of it, the Hallmarks included (item 8).
+4. **Skill Talents:** an empty slot for now. With it, Lucas asked to remove all the current Talents (item 33).
+
+**Status:** Lucas's other pack (Boons and Modifiers) isn't done yet. Compare it with items 16-28 once he has updated the knowledge, before step 2.
