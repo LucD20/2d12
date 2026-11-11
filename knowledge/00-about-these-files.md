@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-11 from the repository at: 71e39f5 2026-11-11 v0.0.364: the Turn button replaces every Export Chat Log button whenever Foundry draws it
+Built by tools/knowledge.py on 2026-11-11 from the repository at: c08074b 2026-11-11 PACK PERF and the Turn Breakdown dock merged into main (v0.0.361 to v0.0.364); NEXT: the ruler catch-up
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
