@@ -4390,3 +4390,6 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12 .td-tl .tk-pips .hsep { width: 3px; }
 .twod12-exportchat { margin-top: 4px; }
 .twod12.chat.turnend .td-ttl { flex: none; }
+/* v0.0.363 (Lucas: it floated over the map and took no clicks): the dock is its own fixed element, placed above the chat's input (turndock.mjs placeDock) */
+#twod12-dock { position: fixed; z-index: 70; margin: 0; pointer-events: auto; }
+#twod12-dock[hidden] { display: none; }

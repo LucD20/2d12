@@ -136,6 +136,7 @@ Hooks.once("init", () => {
     onDown: () => { import("./loe.mjs").then(m => m.heightShortcut()); return true; } });
   CONFIG.Combat.documentClass = TwoD12Combat;
   game.twod12 = {
+    dockInfo: () => import("./turndock.mjs").then(m => m.dockInfo()),   // v0.0.363: where the Turn Breakdown and its button went
     catalog,
     addHearing,
     syncVision,

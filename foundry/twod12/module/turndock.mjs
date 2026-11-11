@@ -121,26 +121,59 @@ const firstName = n => String(n ?? "").replace(/\s*\(.*\)\s*$/, "");
 const shown = () => { try { return game.settings.get(F, "turnDockShown") !== false; } catch (e) { return true; } };
 const opened = () => { try { return !!game.settings.get(F, "turnDockOpen"); } catch (e) { return false; } };
 
-function chatRoot() { return document.querySelector("#chat"); }
-function placeDock() {
-  const root = chatRoot();
-  if (!root) return null;
-  let dock = root.querySelector(":scope .twod12-dockwrap");
-  const scroll = root.querySelector(".chat-scroll") ?? root.querySelector("#chat-log, .chat-log");
-  if (!dock) { dock = document.createElement("div"); dock.className = "twod12-dockwrap"; }
-  // under the messages, above the chat's input (it never scrolls away)
-  const anchor = scroll?.closest?.(".chat-scroll") ?? scroll;
-  if (anchor?.parentElement && dock.previousElementSibling !== anchor) anchor.after(dock);
-  else if (!dock.isConnected) root.append(dock);
+function chatRoot() { return document.querySelector("#sidebar #chat") ?? document.querySelector("#chat"); }
+/**
+ * v0.0.363 (Lucas: "can't click on it"; it floated over the map): the dock is an element of its own (in the body, so no Foundry layer takes its
+ * clicks), placed right above the chat's input wherever V14 shows it: in the sidebar's chat tab, or floating at the bottom right (the
+ * notifications area, when the sidebar is collapsed or on another tab). In the sidebar the log gets room at its bottom so no message hides under it.
+ */
+const visible = el => { if (!el?.getBoundingClientRect) return false; const r = el.getBoundingClientRect(); return r.width > 0 && r.height > 0 && getComputedStyle(el).visibility !== "hidden"; };
+function chatInput() {
+  const forms = [...document.querySelectorAll(".chat-form, #chat-form")];
+  const tx = document.querySelector("#chat-message");
+  if (tx) forms.push(tx.closest("form, .chat-form") ?? tx.parentElement);
+  return forms.find(visible) ?? null;
+}
+let padded = null;
+function padLog(px) {
+  const log = px ? (document.querySelector("#sidebar #chat .chat-scroll") ?? document.querySelector("#sidebar .chat-scroll")) : null;
+  if (padded && padded !== log) { padded.style.paddingBottom = ""; padded = null; }
+  if (log) { log.style.paddingBottom = `${px}px`; padded = log; }
+}
+export function placeDock() {
+  if (typeof document === "undefined") return;
+  const dock = document.getElementById("twod12-dock");
+  if (!dock) return;
+  const form = dock.hidden ? null : chatInput();
+  if (!form) { dock.style.display = "none"; padLog(0); return; }
+  dock.style.display = "";
+  const r = form.getBoundingClientRect();
+  dock.style.left = `${Math.round(r.left)}px`;
+  dock.style.width = `${Math.round(r.width)}px`;
+  dock.style.bottom = `${Math.round(window.innerHeight - r.top + 4)}px`;
+  padLog(form.closest("#sidebar") ? Math.ceil(dock.getBoundingClientRect().height + 8) : 0);
+}
+const placeSoon = perFrame(placeDock);
+function dockEl() {
+  let dock = document.getElementById("twod12-dock");
+  if (!dock) { dock = document.createElement("div"); dock.id = "twod12-dock"; dock.className = "twod12-dockwrap"; document.body.append(dock); }
   return dock;
 }
 export function renderDock() {
   if (typeof document === "undefined") return;
-  const dock = placeDock();
-  if (!dock) return;
+  const dock = dockEl();
   const combat = game.combat, c = combat?.combatant;
-  if (!shown() || !combat?.started || !c || (c.hidden && !game.user.isGM)) { dock.innerHTML = ""; dock.hidden = true; return; }
+  if (!shown() || !combat?.started || !c || (c.hidden && !game.user.isGM)) { dock.innerHTML = ""; dock.hidden = true; placeDock(); return; }
   try { dock.innerHTML = dockHtml(modelFor(combat, c), opened()); dock.hidden = false; } catch (e) { console.warn("twod12 | Turn Breakdown", e); }
+  placeDock();
+}
+/** Console: where the dock and the Turn button went (for a screenshot that looks wrong). */
+export function dockInfo() {
+  const form = chatInput(), exp = document.querySelector('[data-action="export"]'), btn = document.querySelector(".twod12-turnbtn");
+  const where = el => (el ? `${el.tagName.toLowerCase()}${el.id ? `#${el.id}` : ""}.${[...el.classList].join(".")} in ${el.closest("#sidebar") ? "the sidebar" : (el.closest("#chat-notifications") ? "#chat-notifications" : el.parentElement?.id || el.parentElement?.className || "?")}` : "none");
+  const info = { input: where(form), exportButton: where(exp), turnButton: where(btn), turnButtonParent: where(btn?.parentElement), dock: document.getElementById("twod12-dock")?.style.cssText ?? "none" };
+  console.log("twod12 | Turn Breakdown:", info);
+  return info;
 }
 const drawSoon = perFrame(renderDock);
 
@@ -149,16 +182,16 @@ function turnButton(root) {
   if (!root?.querySelector) return;
   const exp = root.querySelector('[data-action="export"], .export-log');
   if (root.querySelector(".twod12-turnbtn")) { exp?.classList.add("twod12-hidden"); return; }
+  // v0.0.363: Foundry's own icon-button look (the classes of the buttons beside it), in Export Chat Log's exact place
   const b = document.createElement("button");
   b.type = "button";
-  b.className = `${exp?.className ?? "ui-control icon"} twod12-turnbtn${shown() ? " active" : ""}`.replace(/\bexport-log\b/, "").trim();
-  b.removeAttribute("data-action");
-  b.innerHTML = '<i class="fa-solid fa-list-check"></i>';
+  b.className = "ui-control icon fa-solid fa-list-check twod12-turnbtn";
+  b.setAttribute("aria-pressed", String(shown()));
   b.dataset.tooltip = "Turn Breakdown: show or hide";
   b.setAttribute("aria-label", "Turn Breakdown");
-  b.addEventListener("click", async ev => { ev.preventDefault(); ev.stopPropagation(); await game.settings.set(F, "turnDockShown", !shown()); b.classList.toggle("active", shown()); renderDock(); });
-  if (exp) { exp.classList.add("twod12-hidden"); exp.after(b); }
-  else (root.querySelector("#chat-controls .control-buttons, #chat-controls") ?? root.querySelector(".chat-form") ?? root).append(b);
+  b.addEventListener("click", async ev => { ev.preventDefault(); ev.stopPropagation(); await game.settings.set(F, "turnDockShown", !shown()); b.setAttribute("aria-pressed", String(shown())); renderDock(); });
+  if (exp) { exp.classList.add("twod12-hidden"); exp.before(b); }
+  else (root.querySelector("#chat-controls .control-buttons") ?? root.querySelector("#chat-controls") ?? root).append(b);
 }
 /** Export Chat Log, moved to the Journal tab's footer. */
 function journalExport(root) {
@@ -181,6 +214,9 @@ export function registerTurnDock({ pendingSteps: ps } = {}) {
   Hooks.on("renderJournalDirectory", (app, html) => { try { journalExport(app?.element ?? el(html)); } catch (e) { console.warn("twod12 | Export Chat Log", e); } });
   // registered at ready (twod12.mjs): the chat and the Journal tab are already drawn
   if (typeof document !== "undefined") { try { turnButton(chatRoot()); const j = document.querySelector("#journal"); if (j) journalExport(j); } catch (e) { /* drawn on their next render */ } drawSoon(); }
+  // v0.0.363: the dock follows the chat input (the sidebar opened, closed or on another tab, the window resized)
+  for (const h of ["collapseSidebar", "changeSidebarTab", "renderSidebar", "renderChatLog"]) Hooks.on(h, () => { placeSoon(); setTimeout(placeDock, 450); });
+  if (typeof window !== "undefined") window.addEventListener("resize", placeSoon);
   for (const h of ["createCombat", "deleteCombat", "updateCombat", "combatStart", "combatTurnChange", "createCombatant", "updateCombatant", "deleteCombatant",
     "createActiveEffect", "updateActiveEffect", "deleteActiveEffect", "updateRegion", "deleteRegion", "canvasReady"]) Hooks.on(h, drawSoon);
   Hooks.on("updateActor", (a, ch) => { if (ch?.system && ("guard" in ch.system || "apGuard" in ch.system)) drawSoon(); });

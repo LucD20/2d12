@@ -16,6 +16,6 @@ unfolded, what happened: When the turn ended ⏳ Hindered on Goblin Sneak 1 rd l
 --- reading a combat
 rows: Turn start | Guard 8 | Mark Quarry | Advance 3 | Durgan: Rebuke | moved so far: 7 - 4 left = Advance 3 | On Kaela: Frightened (Orc Warrior), Guard 8
 --- the wiring
-Export Chat Log hidden, the Turn button after it: true | Export Chat Log on the Journal tab: true | per client: true
+Export Chat Log hidden, the Turn button in its place: true | v0.0.363 the dock is its own fixed element above the chat input: true | Export Chat Log on the Journal tab: true | per client: true
 the durations hook and the dock share one rule: true | the End line after the ticks: true | shown bare: true
 no ticker message: true | no unused AP chat line: true | the movement live from its start: true | the CSS: true
