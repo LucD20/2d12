@@ -32,6 +32,7 @@ DESIGN_DOCS = [
     "book/progression-lv.md",   # progression, Overcast and Momentum (pack R changes Overcast)
     "book/class-charter.md",    # what every class must have
     "book/expedition-loop.md",  # Momentum, Alert, the decided fight and the Parting Beat: a candidate (2026-11-09)
+    "book/decisions-s1.md",  # decision sheet S1 (Stage 0, Escalation 1-6, Momentum): answered, not applied (2026-11-11)
     "book/base-building.md",    # base building: proposals for much later (2026-11-07)
     "book/roleplay-skills.md",  # roleplay and skills: proposals (2026-11-07), Lucas reviews later
     "book/items-economy.md",    # items, loot, money, carrying (designed 2026-11-06, logged part by part)
