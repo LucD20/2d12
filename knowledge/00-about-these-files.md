@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-11 from the repository at: 89dbe69 2026-11-11 PACK ACTION-SHEET, session 1: Lucas's answers; mockup A2 (A with the order of events) and the Generate Action mockups
+Built by tools/knowledge.py on 2026-11-11 from the repository at: 033a3f9 2026-11-11 v0.0.357: PACK ACTION-SHEET, Generate Action reads a pasted card (G2); filling an Action keeps its Effects and steps
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,8 +14,8 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (98 KB)
-- MASTER-PLAN.md (27 KB)
+- HANDOFF.md (100 KB)
+- MASTER-PLAN.md (28 KB)
 - open-design-items.md (108 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
@@ -42,6 +42,6 @@ Files:
 - design-base-building.md (7 KB)
 - design-roleplay-skills.md (6 KB)
 - design-items-economy.md (32 KB)
-- design-action-effects-audit.md (33 KB)
+- design-action-effects-audit.md (34 KB)
 - design-action-sheet-compare.md (6 KB)
 - design-action-props-review.md (8 KB)
