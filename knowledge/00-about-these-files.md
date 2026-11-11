@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-11 from the repository at: 4bc02e4 2026-11-11 v0.0.353: smaller flanking labels with the name on the ring, no dotted underline on calculated chips, chip icons aligned
+Built by tools/knowledge.py on 2026-11-11 from the repository at: e187575 2026-11-11 Merge main (v0.0.354) into the design branch; S1 compared with main and Lucas's answers logged; MASTER-PLAN order: ACTION-SHEET, then Stage 0
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,9 +14,9 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (96 KB)
-- MASTER-PLAN.md (24 KB)
-- open-design-items.md (96 KB)
+- HANDOFF.md (98 KB)
+- MASTER-PLAN.md (27 KB)
+- open-design-items.md (108 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
@@ -38,7 +38,10 @@ Files:
 - design-rework-r.md (57 KB)
 - design-progression-lv.md (13 KB)
 - design-class-charter.md (10 KB)
+- design-decisions-s1.md (10 KB)
 - design-base-building.md (7 KB)
 - design-roleplay-skills.md (6 KB)
 - design-items-economy.md (32 KB)
+- design-action-effects-audit.md (27 KB)
+- design-action-sheet-compare.md (3 KB)
 - design-action-props-review.md (8 KB)

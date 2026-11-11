@@ -40,6 +40,8 @@ DESIGN_DOCS = [
     "book/base-building.md",    # base building: proposals for much later (2026-11-07)
     "book/roleplay-skills.md",  # roleplay and skills: proposals (2026-11-07), Lucas reviews later
     "book/items-economy.md",    # items, loot, money, carrying (designed 2026-11-06, logged part by part)
+    "foundry/mockups/action-effects-audit.md",  # PACK ACTION-SHEET session 1: the Effects audit, 40 numbered defaults (2026-11-11); remove when the build is done
+    "foundry/mockups/action-sheet-compare.md",  # the three Action sheet mockups compared (2026-11-11)
     "foundry/mockups/action-props-review.md",  # the Mithril cards' options before ACTION-SHEET: what to merge, what is obsolete (2026-11-10)
 ]
 # Topic sets: added only when named on the command line (they are big; the core set stays small).
