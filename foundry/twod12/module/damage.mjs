@@ -81,13 +81,15 @@ export function registerSocket() {
   game.socket.on(SOCKET, async data => {
     // v0.0.250 (cards 3): prompts addressed to one user (the creature's answerer): the Heal window and the "end one effect" window
     if (data?.userId && data.userId === game.user.id) {
-      if (String(data.type).startsWith("rx")) return (await import("./moment.mjs")).onSocket(data);   // v0.0.272 (pack RX): the Reactions message (an answer, a Reaction to run, its result)
+      if (String(data.type).startsWith("rx")) return (await import("./moment.mjs")).onSocket(data);
+      if (String(data.type).startsWith("ss")) return (await import("./startstack.mjs")).onSocket(data);   // v0.0.347: the start-of-the-encounter stack runs a row on its owner's client   // v0.0.272 (pack RX): the Reactions message (an answer, a Reaction to run, its result)
       const H = await import("./healwin.mjs"), a = await fromUuid(data.actorUuid), actor = a?.documentName === "Actor" ? a : a?.actor;
       if (!actor) return;
       if (data.type === "healPrompt") return H.healHere(actor, data.amount, { source: data.source, lead: data.lead });
       if (data.type === "endEffectPrompt") return H.endEffectHere(actor, data.which, { source: data.source });
     }
     if (!game.user.isActiveGM) return;
+    if (data?.type === "followUp") return (await import("./followup.mjs")).onFollowSocket(data);   // v0.0.347: a line into another user's card
     if (data?.type === "deleteMessage") { const m = game.messages?.get(data.messageId); if (m) await m.delete(); return; }   // v0.0.343: a given-up Charge's card
     if (data?.type === "applyEffects") return applyEffects(data.effectUuids, data.targetUuids, data.origin, data.over);
     if (data?.type === "applyBoon") { const a = await fromUuid(data.actorUuid); if (a) await applyBoonEffect(a, data.cfg, data.origin); return; }

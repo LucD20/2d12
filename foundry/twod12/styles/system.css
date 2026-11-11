@@ -4062,3 +4062,27 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat.startstack .ss-it.done, .twod12.chat.startstack .ss-it.skip { opacity: .55; }
 .twod12.chat.startstack .ss-skipped { font-size: 10px; opacity: .8; }
 .twod12.chat.startstack .ss-end { padding: 6px 9px 7px; font-size: 12px; }
+/* v0.0.347 (Lucas, playtest 4, Step 3): an Action's follow-ups inside its card, under a thin line (followup.mjs) */
+.twod12.chat.follow { margin: 5px 2px 0; padding-top: 4px; border-top: 1px solid rgba(110, 90, 58, .35); display: flex; flex-direction: column; gap: 2px; }
+.twod12.chat.follow .fl-line { display: flex; align-items: baseline; gap: 6px; font-size: 12px; line-height: 1.35; color: #2c2a26; }
+.twod12.chat.follow .fl-line > i { flex: none; font-size: 10.5px; color: #6b5a3a; }
+.twod12.chat.follow .fl-line small { opacity: .75; }
+/* v0.0.347 (Lucas, playtest 4, Step 3): granted uses as a condensed list of small buttons ("Weapon Attack: Ogre Chieftain"), no "Granted Action:" label */
+.twod12 .grantrow.grantlist .gbtns { display: flex; flex-direction: column; align-items: stretch; gap: 3px; width: 100%; }
+.twod12 .grantrow.grantlist .gl-btn, .twod12 .grantrow.grantlist .gl-used { width: 100%; height: auto; min-height: 22px; line-height: 1.3; padding: 2px 8px; font-size: 12px; justify-content: flex-start; text-align: left; }
+.twod12 .grantrow.grantlist .gl-used { display: flex; align-items: center; gap: 5px; color: #2f6b3a; opacity: .8; }
+.twod12 .cc-grant .apside.sr-only, .twod12 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* v0.0.347 (Lucas, playtest 4): the roll's Boons and Banes on the right, smaller, "+1 Marked Quarry" (no triangle, no Boon / Bane word) */
+.twod12.chat.cc .cc-bv.cc-bbv { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
+.twod12.chat.cc .cc-bbv .cc-bbl { width: auto; justify-content: flex-end; font-size: 11px; gap: 4px; }
+.twod12.chat.cc .cc-bbv .cc-bbl.boon > span:not([class]) { color: #1d5a9e; }
+.twod12.chat.cc .cc-bbv .cc-bbl.bane > span:not([class]) { color: #a8261c; }
+.twod12.chat.cc .cc-bbv .cc-bbl.five { width: 100%; justify-content: flex-end; }
+/* v0.0.347 (Lucas, playtest 4): a used Damage button (its damage card exists) */
+.twod12.chat.cc .cc-btn.dmg-used, .twod12 .cc-btn.dmg-used { background: #e6dcc4; color: #2f6b3a; border-color: #bfae86; }
+.twod12.chat.cc .cc-applied { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+.twod12.chat.cc .cc-applied a.content-link { font-size: 11.5px; }
+.twod12 .grantrow.grantlist .gl-btn, .twod12 .grantrow.grantlist .gl-used { box-sizing: border-box; margin: 0; }
+.twod12 .grantrow.grantlist .gl-used { justify-content: flex-start; text-align: left; }
+.twod12.chat .tline.grantrow.grantlist .cc-used.gl-used { flex: none; text-align: left; justify-content: flex-start; }
+.twod12.chat .tline.grantrow.grantlist .cc-gbtn.gl-btn { display: flex; align-items: center; gap: 5px; justify-content: flex-start; }

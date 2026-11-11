@@ -6,7 +6,6 @@ import { evalExpr } from "./refs.mjs";
 // An Action used because of another Action or a Talent does not count toward its Frequency or toward the 3 Strikes of the turn.
 import { useAction } from "./actions.mjs";
 import { grantMatches, activeGrants } from "./usage.mjs";
-import { sysCard } from "./sysmsg.mjs";
 const { DialogV2 } = foundry.applications.api;
 const F = "twod12";
 
@@ -117,12 +116,18 @@ export function withGrantLine(version, grant) {
 }
 /** The rows of a grant card: one per grant, with its buttons; the live effect says what is left (gone: all spent). */
 export function grantRowsHtml(actor, card) {
-  // v0.0.294 (chat cards addendum, brief section 13 6a): "Granted Action: <name>" and a primary button with a bolt and the name; a used one is a
-  // green "✓ Used"; no sublines (no "1 of 1 left · free", no source name). Several uses: a button each.
+  // v0.0.294 (chat cards addendum, brief section 13 6a): a primary button with the name; a used one is a green "✓ Used".
+  // v0.0.347 (Lucas, playtest 4: "remove 'Granted Action: Weapon Attack'; a smaller button, a condensed list: 'Weapon Attack: Ogre Chieftain' /
+  // 'Weapon Attack: Bandit Thug'; each opens the roll window on its creature"): one small button per use, paired in order with the card's targets.
+  const tg = card?.targets ?? [];
+  let n = 0;
   return (card?.effects ?? []).map(g => {
     const e = actor?.effects?.get?.(g.id), grant = e?.getFlag?.(F, "grants")?.[g.index], left = grant ? Math.max(0, grant.left) : 0, count = Math.max(g.count, left);
-    const btns = Array.from({ length: count }, (_, k) => { const spent = k < count - left; return spent ? `<span class="cc-used"><i class="fa-solid fa-check"></i> Used</span>` : `<button type="button" class="cc-gbtn" data-twod12="useGrant" data-effect-id="${g.id}" data-index="${g.index}">${grantIcon(g.actionName)} ${escT(g.actionName)}</button>`; }).join("");
-    return `<div class="tline grantrow"><span class="apside">Granted Action: <b>${escT(g.actionName)}</b></span><div class="gbtns">${btns}</div></div>`;
+    const btns = Array.from({ length: count }, (_, k) => {
+      const t = tg[n++], name = `${escT(g.actionName)}${t?.name ? `: ${escT(t.name)}` : ""}`, spent = k < count - left;
+      return spent ? `<span class="cc-used gl-used"><i class="fa-solid fa-check"></i> ${name}</span>` : `<button type="button" class="cc-gbtn gl-btn" data-twod12="useGrant" data-effect-id="${g.id}" data-index="${g.index}"${t?.uuid ? ` data-target="${escT(t.uuid)}"` : ""} data-tooltip="${t?.name ? `Use ${escT(g.actionName)} against ${escT(t.name)}` : `Use ${escT(g.actionName)}`}">${grantIcon(g.actionName)} ${name}</button>`;
+    }).join("");
+    return `<div class="tline grantrow grantlist"><div class="gbtns">${btns}</div></div>`;
   }).join("");
 }
 /** v0.0.295 (Lucas): a Weapon Attack (or an NPC's Basic attack) gets a sword (Foundry's own icon), the other granted Actions the bolt. */
@@ -137,12 +142,13 @@ export async function attachGrantCard(msg, actor, effectUuids) {
     (e.getFlag(F, "grants") ?? []).forEach((g, index) => { if (g.left > 0) effects.push({ id: e.id, index, name: cleanName(e.name), spec: g.spec, count: g.count ?? g.left, ap: g.ap ?? 0, actionName: actionsFor(actor, g.spec)[0]?.name ?? String(g.spec).replace(/^(category|trait):/i, "") }); });
   }
   if (!effects.length) return;
-  const card = { actorUuid: actor.uuid, effects };
+  // v0.0.347: the card's targets, in order (Double Shot: one use against each)
+  const card = { actorUuid: actor.uuid, effects, targets: (msg.getFlag?.(F, "action")?.targets ?? []).map(t => ({ uuid: t.uuid ?? "", name: t.name ?? "" })).filter(t => t.uuid) };
   const content = String(msg.content).replace(/<\/div>\s*$/, `${grantRowsHtml(actor, card)}</div>`);
   try { await msg.update({ content, [`flags.${F}.grantCard`]: card }); } catch (e) { /* not the author */ }
 }
 /** A button of a grant row: the Action is used with that granted use (useAction takes the waiting grant by itself). */
-export async function useGrant(msg, effectId, index = 0) {
+export async function useGrant(msg, effectId, index = 0, targetUuid = "") {
   const card = msg?.getFlag?.(F, "grantCard"), g = card?.effects?.find(x => x.id === effectId && x.index === Number(index)) ?? card?.effects?.[0];
   let actor = null;
   try { actor = card?.actorUuid ? await fromUuid(card.actorUuid) : null; } catch (e) { actor = null; }
@@ -152,14 +158,10 @@ export async function useGrant(msg, effectId, index = 0) {
   if (!grant || !(grant.left > 0)) { await refreshGrantCards(actor); return ui.notifications.warn(`No ${g.actionName} left from ${g.name}.`); }
   const item = actionsFor(actor, g.spec).find(i => activeGrants(actor, i).some(x => x.effect.id === g.id)) ?? actionsFor(actor, g.spec)[0];
   if (!item) return ui.notifications.warn(`${actor.name} has no Action called "${g.spec}".`);
-  const ok = await useAction(actor, item, { grantKey: { effectId: g.id, index: g.index } });   // v0.0.269: this grant, not the first waiting
-  if (!ok) return;
-  const after = actor.effects.get(g.id)?.getFlag(F, "grants")?.[g.index];
-  if (after && after.left > 0 && msg.id !== game.messages.contents.at(-1)?.id) {   // the Action's card came after: repeat the buttons under it
-    const n = after.left, word = n === 1 ? "use" : "uses";
-    const lead = `<b>${n}</b> ${word} of <b>${escT(g.actionName)}</b> left`;
-    await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: `${sysCard({ title: g.name, lead })}`.replace(/<\/div>\s*$/, `${grantRowsHtml(actor, card)}</div>`), flags: { [F]: { grantCard: card } } });
-  }
+  // v0.0.347: the button's creature is targeted first (the roll window opens on it)
+  if (targetUuid) { try { const td = await fromUuid(targetUuid), tok = td?.object; if (tok?.setTarget) tok.setTarget(true, { releaseOthers: true, groupSelection: false }); } catch (e) { /* gone: as targeted */ } }
+  await useAction(actor, item, { grantKey: { effectId: g.id, index: g.index } });   // v0.0.269: this grant, not the first waiting
+  // v0.0.347 (Lucas, playtest 4: "no 'N use of X left' card"): the card's own list and the granted uses' bar say what is left
 }
 /** The grant cards of this creature follow its grants: a use from the sheet grays the card's button, the spent effect grays them all. */
 export async function refreshGrantCards(actor, effectId = "") {
@@ -169,7 +171,7 @@ export async function refreshGrantCards(actor, effectId = "") {
     if (!card || card.actorUuid !== actor.uuid || (effectId && !card.effects.some(x => x.id === effectId))) continue;
     const mine = msg.author?.id === game.user.id, doer = msg.author?.active ? mine : game.user.isActiveGM;
     if (!doer) continue;
-    const content = String(msg.content).replace(/(?:<div class="tline grantrow">[\s\S]*?<\/div><\/div>)+/, grantRowsHtml(actor, card));
+    const content = String(msg.content).replace(/(?:<div class="tline grantrow[^"]*">[\s\S]*?<\/div><\/div>)+/, grantRowsHtml(actor, card));   // v0.0.347: grantlist too
     if (content !== msg.content) { try { await msg.update({ content }); } catch (e) { /* not ours */ } }
   }
 }

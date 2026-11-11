@@ -598,8 +598,9 @@ async function handleGuard(cfg, ctx) {
       else game.socket.emit("system.twod12", { type: "applyGuard", actorUuid: a.uuid, value: next });
     }
     // v0.0.246: a system line (the standing rule for chat messages)
-    await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: origin ?? a }), rolls: /d/.test(f) ? [roll] : [],
-      content: sysLine("fa-shield-heart", `<b>${esc(a.name)}</b> ${next > now ? `gains <b>Guard ${next}</b>` : `keeps Guard ${now} (the higher; the new Guard was ${roll.total})`} <small>(${esc(withMod(guardText(formula), mod))} = ${roll.total})</small>.`, "guardmsg") });
+    // v0.0.347 (Step 3): into the card whose button or chain gave it (followup.mjs), else its own line as before
+    const { postFollow } = await import("./followup.mjs");
+    await postFollow(ctx.message, "fa-shield-heart", `<b>${esc(a.name)}</b> ${next > now ? `gains <b>Guard ${next}</b>` : `keeps Guard ${now} (the higher; the new Guard was ${roll.total})`} <small>(${esc(withMod(guardText(formula), mod))} = ${roll.total})</small>.`, { speaker: ChatMessage.getSpeaker({ actor: origin ?? a }), rolls: /d/.test(f) ? [roll] : [], cls: "guardmsg" });
   }
 }
 

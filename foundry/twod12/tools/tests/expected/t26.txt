@@ -1,8 +1,8 @@
 default plan: {"bodyLethal":5,"mindLethal":0,"bodyNonlethal":4,"mindNonlethal":0}
 plan from form (caps): {"bodyLethal":5,"mindLethal":1}
-use 1 (damage 5 < 9): true {"bodyLethal":0,"mindLethal":0,"bodyNonlethal":0,"mindNonlethal":0} used 1 | RallyPaladin uses 1 Rally Point9 healing (1 × 9). Removes 5 damage (5 Vigor). 2 Rally Points left.
+use 1 (damage 5 < 9): true {"bodyLethal":0,"mindLethal":0,"bodyNonlethal":0,"mindNonlethal":0} used 1 | RallyPaladin uses 1 Rally Point9 healingRemoves 5 Vigor. 2 Rally Points left.
 needs 2, has 1: false | Paladin has 1 Rally Point left and 2 are needed.
-choose 3 body + 4 mind of 9: true {"bodyLethal":3,"mindLethal":4,"bodyNonlethal":0,"mindNonlethal":0} | RallyPaladin uses 1 Rally Point9 healing (1 × 9). Removes 9 damage (9 Vigor). 2 Rally Points left.
+choose 3 body + 4 mind of 9: true {"bodyLethal":3,"mindLethal":4,"bodyNonlethal":0,"mindNonlethal":0} | RallyPaladin uses 1 Rally Point9 healingRemoves 9 Vigor. 2 Rally Points left.
 dialog closed -> default (lethal first): {"bodyLethal":3,"mindLethal":4,"bodyNonlethal":0,"mindNonlethal":0}
 [
   '<i class="fa-solid fa-heart-pulse"></i> 2 Rally Points',
@@ -12,7 +12,7 @@ dialog closed -> default (lethal first): {"bodyLethal":3,"mindLethal":4,"bodyNon
 {"dc":13,"adj":0,"boon":0,"bane":0,"traits":[],"tiers":{},"n":3}
 An ally uses @Rally[1] | You use @Rally[2]. @Move[pushed|distance:3] | Bright light @Template[emanation|distance:2|rounds:1]
 @Rally[2] @Move[pushed|distance:3]
-preMoveToken 15 units on a 5-unit grid = 3 sq: {"ap":5,"freeMove":0,"moveLeft":0,"evadeMove":0} | RallyPaladin uses 1 Rally Point9 healing (1 × 9). Removes 9 damage (9 Vigor). 2 Rally Points left.Orc: Advance 3 sq
+preMoveToken 15 units on a 5-unit grid = 3 sq: {"ap":5,"freeMove":0,"moveLeft":0,"evadeMove":0} | RallyPaladin uses 1 Rally Point9 healingRemoves 9 Vigor. 2 Rally Points left.Orc: Advance 3 sq
 pending without cost -> measured fallback 2 sq: {"ap":5,"freeMove":0,"moveLeft":0,"evadeMove":0} | Orc: Advance 2 sq
 forced move ignored: {"ap":5,"freeMove":0,"moveLeft":0,"evadeMove":0}
 preUpdateToken fallback 4 sq: {"ap":5,"freeMove":0,"moveLeft":0,"evadeMove":0} | Orc: Advance 4 sq

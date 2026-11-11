@@ -13,7 +13,7 @@ const users = [{ id: "gm", isGM: true, active: true }, { id: "p1", isGM: false, 
 globalThis.Hooks = { on() {} };
 globalThis.game = { settings: { get: (ns, k) => ({ reactionTimerOn: true, reactionTimer: 1 }[k] ?? true), register: (ns, k, d) => settings.push([k, d]) }, user: users[0], users: Object.assign([...users], { get: id => users.find(u => u.id === id) }), socket: { emit: (ch, d) => emitted.push(d) }, combat: null, messages: { get contents() { return created; } } };
 let updates = 0;
-globalThis.ChatMessage = { create: async d => { const m = { ...d, id: `m${created.length}`, flags: d.flags, update: async u => { updates++; if (u.content) m.content = u.content; }, delete: async () => { const k = created.indexOf(m); if (k >= 0) created.splice(k, 1); m.deleted = true; }, getFlag: (ns, k) => m.flags?.[ns]?.[k] }; created.push(m); return m; } };
+globalThis.ChatMessage = { create: async d => { const m = { ...d, id: `m${created.length}`, flags: d.flags, update: async u => { updates++; if (u.content) m.content = u.content; for (const k of Object.keys(u)) { const x = k.match(/^flags\.twod12\.(?:-=)?(\w+)$/); if (x && (u[k] === null || typeof u[k] === "object")) delete m.flags?.twod12?.[x[1]]; } }, delete: async () => { const k = created.indexOf(m); if (k >= 0) created.splice(k, 1); m.deleted = true; }, getFlag: (ns, k) => m.flags?.[ns]?.[k] }; created.push(m); return m; } };
 const src = f => fs.readFileSync(ROOT + f, "utf8");
 const M = await import(ROOTURL + "module/moment.mjs");
 const O = await import(ROOTURL + "module/rxoverlay.mjs");
@@ -133,7 +133,7 @@ console.log("Shield of Faith only pays its AP:", run.data.spend === true, run.da
 M.onSocket({ type: "rxRunDone", reqId: run.reqId, ok: true });
 const res2 = await wait2;
 const moved = created.find(m => m.flags?.twod12?.rx?.id === rx2.id);
-console.log("v0.0.278: resolved under the card: a new message at the bottom", moved !== msg2 && created.at(-1) === moved, "| the live one deleted:", !!msg2.deleted, "| one message for the moment:", created.filter(m => m.flags?.twod12?.rx?.id === rx2.id).length);
+console.log("v0.0.278: resolved under the card: a new message at the bottom", moved !== msg2 && created.at(-1) === moved, "| v0.0.347: the live one left a short line:", !msg2.deleted && /Reactions: <b>/.test(msg2.content) ? msg2.content.replace(/<[^>]+>/g, "") : "no", "| one message for the moment:", created.filter(m => m.flags?.twod12?.rx?.id === rx2.id).length);
 msg2.content = moved.content;
 console.log("the damage never lands:", res2.never, "| the chips:", [...msg2.content.matchAll(/rx-out (\w+)">([^<]*(?:<s>[^<]*<\/s>[^<]*)?)/g)].map(m => `${m[1]}:${txt(m[2])}`).join(" ; "), "| struck through:", (msg2.content.match(/<s>/g) ?? []).length >= 2);
 const dm = src("module/damage.mjs");

@@ -41,20 +41,22 @@ export async function useRally(actor, n, why = "", { announce = true, extra = ""
   const total = (s.rallyHeal + (fm?.bonus ?? 0)) * n + (extraRoll?.total ?? 0);
   // v0.0.215 (Lucas, playtest 2): the system card look (sysmsg.mjs, as Swap Initiative): a title bar, a bold line, a plain line.
   const lead = `${esc(actor.name)} uses ${n} Rally Point${n === 1 ? "" : "s"}`;
-  const sub = [why && !/^rally$/i.test(why) ? esc(why) : "", `${total} healing (${n} × ${s.rallyHeal + (fm?.bonus ?? 0)}${extraRoll ? ` + ${extraRoll.total}` : ""})`, extraText ? `extra: ${extraText}` : "", fm ? `${esc(fm.source)}, ${esc(fm.name)}: +${fm.bonus} each` : ""].filter(Boolean).join(" · ");
+  // v0.0.347 (Lucas, playtest 4: "Durgan uses 1 Rally Point / 9 + 3 [Font of Mercy] healing / Removes 10 Vigor. 5 Rally Points left."): each part
+  // of the heal with its source in brackets, on its own line; the result on the next
+  const sub = [why && !/^rally$/i.test(why) ? `${esc(why)}:` : "", `${s.rallyHeal * n}${fm?.bonus ? ` + ${fm.bonus * n} [${esc(fm.name)}]` : ""}${extraRoll ? ` + ${extraRoll.total} [${esc(String(extraText).split(" = ")[0])}]` : ""} healing`].filter(Boolean).join(" ");
   const rallyCard = text => sysCard({ title: "Rally", lead, text, cls: "rallymsg" });
-  const card = announce || extraRoll ? await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: rallyCard(`${sub}. Choosing the damage to remove…`), rolls: extraRoll ? [extraRoll] : [] }) : null;
+  const card = announce || extraRoll ? await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: rallyCard(`${sub}<br>Choosing the damage to remove…`), rolls: extraRoll ? [extraRoll] : [] }) : null;
   const plan = await chooseHealing(actor, total, { n, extraText });
-  if (!plan) { if (card) { try { await card.update({ content: rallyCard(`${sub}. Cancelled: no Rally Point used.`) }); } catch (e) { /* not the author */ } } return false; }
+  if (!plan) { if (card) { try { await card.update({ content: rallyCard(`${sub}<br>Cancelled: no Rally Point used.`) }); } catch (e) { /* not the author */ } } return false; }
   const upd = npc ? {} : { "system.rallyUsed": s.rallyUsed + n };
   for (const [k, v] of Object.entries(plan)) upd[`system.damage.${k}`] = s.damage[k] - v;
   await actor.update(upd);
   const healed = Object.values(plan).reduce((a, b) => a + b, 0);
   const parts = BUCKETS.filter(([k]) => plan[k]).map(([k, l]) => `${plan[k]} ${l}`).join(", ");
   const leftN = s.rallyMax - s.rallyUsed - n;
-  const result = `Removes <b>${healed}</b> damage${parts ? ` (${parts})` : ""}. ${npc ? `An NPC: each Rally Point counts as ${s.rallyHeal} at Stage ${s.stage ?? 1} and spends nothing.` : `<b>${leftN}</b> Rally Point${leftN === 1 ? "" : "s"} left.`}`;
-  if (card) { try { await card.update({ content: rallyCard(`${sub}. ${result}`) }); return true; } catch (e) { /* not the author */ } }
-  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: rallyCard(`${sub}. ${result}`) });
+  const result = `Removes ${parts ? parts.replace(/(\d+)/g, "<b>$1</b>") : `<b>${healed}</b> damage`}. ${npc ? `An NPC: each Rally Point counts as ${s.rallyHeal} at Stage ${s.stage ?? 1} and spends nothing.` : `<b>${leftN}</b> Rally Point${leftN === 1 ? "" : "s"} left.`}`;
+  if (card) { try { await card.update({ content: rallyCard(`${sub}<br>${result}`) }); return true; } catch (e) { /* not the author */ } }
+  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: rallyCard(`${sub}<br>${result}`) });
   return true;
 }
 

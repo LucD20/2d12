@@ -8,3 +8,4 @@ new tokens: true | the compendium's actors: true | the world's tokens once: true
 the Reactions card's look: true | a grip, the Action, the Card: true | no message text on the card: true
 a drag order: 1,0 | a wrong one is ignored: 0,1 | none once resolving: 0,1
 Vigor · 7 + 2 Pi 9 | Vigor · 0 Pi 0
+Resolve runs each row in turn: true | on its answerer's client: true | Done / Skip end a wait: true | the card while resolving: true

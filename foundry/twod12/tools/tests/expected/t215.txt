@@ -10,13 +10,13 @@ Opportunity Attack: the text keeps: "You can make a Weapon Attack (1A) against t
 no @Use: unchanged: true
 the weapon reaches: Greatsword 1 sq., 1 away: "" | 3 away: Bandit Thug is 3 sq. away: Greatsword reaches 1 sq. | a Longbow too: ""
 Aim's grant carries: free true | AP 0 | Boons 1 | the source Aim (Weapon Attack, 1 Boon) | its effect (for Ignores cover) fxAim
-the row before: Granted Action: Weapon Attack Weapon Attack | a button: true
-used once, then: Granted Action: Weapon Attack Used | no button: true | no sublines: true
+the row before: Weapon Attack | a button: true
+used once, then: Weapon Attack | no button: true | no sublines: true
 --- the non-roll card
 order: name, meta, Interrupt, diamond, text, Granted Action, Flavor: true
 head: Opportunity Attack At-will · 1R | meta line: The triggering creature ✦ 1 sq. | the target at the bottom (v0.0.296): → Bandit Thug Card | Interrupt: Interrupt: A creature within 1 square wo …
 granted row: Granted Action: Weapon Attack Weapon Attack (1A) | a sword for a Weapon Attack: true | no category line, no Effects box, no stamp or ladder: true
-an NPC's: Granted Action: Basic attack
+an NPC's: 
 out of reach: no button, the reason: true | Bandit Thug is 3 sq. away: Greatsword reaches 1 sq.
 Bulwark's steps: done: 1 Before the damage Done | wait: 2 After the damage Slide 1 | step 2 disabled with why: true
 a player who isn't the author sees no buttons: true

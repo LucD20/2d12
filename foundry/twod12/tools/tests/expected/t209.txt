@@ -18,7 +18,7 @@ a Strike would damage Krysta: Nari's Shield on Krysta (2 sq); Lana's Shot on Ban
 a Strike would damage Nari herself: You too Nari's Shield; Lana's Shot
 a Strike against Krysta: Rebuke on Bandit | from far away (its Distance 5 sq.): 0
 Krysta would go Down, the Reaction used today: rows 0 | blocked: Interv (Used today: renews after a Sleep or a Rest)
-nobody can react: one line true | Krysta would go Down: nobody can react (Nari's Interv: Used today: renews after a Sleep or a Rest). | whispered to gm, p1
+nobody can react: one line true | No Reactions: Nari's [Interv]: Used today: renews after a Sleep or a Rest | whispered to nobody (v0.0.347: for everyone)
 --- the flow: answers, the stack, the held damage
 the message: rows Nari/Shield/p1/Krysta ; Lana/Shot/p2/Bandit | the timer at 1 minute: 1
 someone else's row can't be answered: Lana's row wait

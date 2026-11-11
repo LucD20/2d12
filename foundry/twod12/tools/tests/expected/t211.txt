@@ -20,7 +20,7 @@ Tier 2: stamp TIER 2 vs AD 11 | outcome: Vigor 1d8 Sl · Resolve 2d6 + 1d6 Ho | 
 Tier 1: a pool with 0 is left out: Resolve 1d6 Ho | no effect text, and no "No Effects" line: true
 Doubles raise: stamp TIER 3 Doubles ↑ | chip: Tier 2 → Tier 3 · Doubles | the Critical row muted:  | a rider: ↳ Pushed 2
 a Critical by total: stamp CRIT 3 Critical | the box: Critical the target is Prone. | explosion chain: 11 + 11 + 7 · 5 | total row: 36 vs AD 13 Tier 3 → Critical · 33+
-Boon / Bane lines: Boon · Bane +1 Boon · Flanking −1 Bane · Frightened −1 Bane · Dim light  | the modifiers colored: 1 1
+Boon / Bane lines: Boon · Bane +1 Flanking −1 Frightened −1 Dim light  | the modifiers colored: 1 1
 every clickable thing is a button with aria-expanded where it toggles: true | the retarget has a label: true | decorative icons hidden: true
 --- settings: Designer mode, hidden Defenses (players), the GM always sees everything
 Designer mode off: no odds, Ruler or automation anywhere: true | on: Odds: T1 20% · T2 50% · T3 30% Ruler: worth 2.1 AP Automation: Mithril
@@ -35,7 +35,7 @@ player view: no WD labels: true
 --- the Save card
 Tier 1 on top (v0.0.335, the Action preview's order): T1 ≤12 | T2 13–19 | T3 20+ | the DC: Appeal Save DC 13 | no effect on Tier 3: true
 before the roll: the owner rolls: true | the others wait: Waiting for Ogre Chieftain's Appeal Save… | no row lit: true
-after: the result row is a button: true | its total: 8 | the others dim: 2 | Their Tier: Their Tier 1 | Damage at the bottom: true
+after: the result row is a button: true | its total: 8 | the others dim: 0 | Their Tier: Their Tier 1 | Damage at the bottom: true
 v0.0.294 (brief section 12): the Trigger under the Save line, above the Tier rows, then one diamond: true | Trigger: An enemy within 5 squares makes a [Strike] Action against an ally.
 --- Resist / Weak / Immunity: once per subtype per Action, across both pools; Resist capped at what that subtype dealt
 parsed: {"resist":{"Fi":5},"weak":{"Ho":2},"immune":["Co"]}

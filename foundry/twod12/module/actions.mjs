@@ -1033,7 +1033,9 @@ export async function useAction(actor, item, opts = {}) {
       setupHtml: setupRow, hasDamage: !!btn,
       shared: mres ? { d: multiRoll.dice.d.map(x => x.faces), mod: mod + (Number(data.mod) || 0) } : null,
       designer: { odds: (mres ? mres.map(r => ({ name: r.label ?? r.name, text: oddsText(r.chk).text })) : [{ name: "", text: oddsText(chk).text }]), ruler: it.worth ?? "", mithril: it.automation ? `${TWOD12.automationRanks[it.automation] ?? it.automation}${it.automationNote ? ` (by hand: ${it.automationNote})` : ""}` : "" },
-      sources: bonuses.map(b => `${b.effect}: ${b.dmg ? `+${b.dmg}${b.sub ? ` ${b.sub}` : ""}` : ""}${b.text ? ` ${b.text}` : ""}`)
+      sources: bonuses.map(b => `${b.effect}: ${b.dmg ? `+${b.dmg}${b.sub ? ` ${b.sub}` : ""}` : ""}${b.text ? ` ${b.text}` : ""}`),
+      // v0.0.347 (Lucas, playtest 4: "Killer's Focus applied but there is no way of seeing it"): what this roll's damage takes from effects, by name and link
+      applied: [...new Map(bonuses.map(b => [b.effect, { name: b.effect, uuid: b.srcUuid ?? "" }])).values()]
     };
     // What the retarget needs to check the Tiers again with the same dice (brief 4.2)
     const dice = mres ? multiRoll.dice : { d: [{ faces: chk.d1 }, { faces: chk.d2 }, ...(chk.dropped ? [{ faces: chk.dropped }] : [])].map(x => ({ faces: x.faces, total: CC.dieValue(x.faces), first: x.faces[0] })), boonFaces: chk.boonFaces, baneFaces: chk.baneFaces };

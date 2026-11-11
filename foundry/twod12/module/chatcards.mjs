@@ -117,7 +117,7 @@ export function resultChips(r, { save = false, hide = false } = {}) {
  * The breakdown panel: 2d12 (the dice as rolled, explosions grouped, the Doubles pair framed), Boon · Bane (one line per die), Modifiers, Total.
  * r: a check ({ d1, d2, dropped, doubles, crit, base, tier, total, dc, dcLabel, boonFaces, baneFaces, sources, mods: [{ v, label }] }).
  */
-export function breakdownHtml(r, { hide = false, save = false, id = "", open = false } = {}) {
+export function breakdownHtml(r, { hide = false, save = false, id = "", open = false, applied = [] } = {}) {
   const exploded = [r.d1, r.d2].some(f => (f ?? []).length > 1);
   const dblCls = r.doubles ? (r.crit && (r.base ?? 3) === 3 ? "crit" : "up") : "";
   const pair = `${dieGroup(r.d1)}${dieGroup(r.d2)}`;
@@ -129,9 +129,12 @@ export function breakdownHtml(r, { hide = false, save = false, id = "", open = f
   // v0.0.301 (PACK BB): +1 / -1 each (no dice); over a name's limit: +0; 5 or more left: the roll is Favored / Doomed instead
   const bbTip = x => `${x.bb ? `${x.bb} ` : ""}${x.kind === "boon" ? "Boon" : "Bane"}${x.name ? `: ${x.name}` : ""}${x.over ? ` (over the ${x.bb} limit of 2: +0)` : ""}`;
   const five = r.five ? `<span class="cc-bbl five"><span class="cc-tag ${r.five === "favored" ? "up" : "down"}">5 or more ${r.five === "favored" ? "Boons" : "Banes"} left: ${r.five === "favored" ? "Favored" : "Doomed"} instead</span></span>` : "";
-  if (bb.length) rows.push(`<span class="cc-bl">Boon · Bane</span><span class="cc-bv">${bb.map(x => `<span class="cc-bbl${x.over ? " over" : ""}" title="${esc(bbTip(x))}"><span class="cc-d3 ${x.kind}" aria-hidden="true"></span>${modTxt(x.val, "")}<span>${x.kind === "boon" ? "Boon" : "Bane"}${x.name ? ` · ${esc(x.name)}` : ""}${x.bb ? ` <small class="cc-bbn">${esc(x.bb)}</small>` : ""}${x.over ? ' <small class="cc-muted">over the limit</small>' : ""}</span></span>`).join("")}${five}</span>`);
+  // v0.0.347 (Lucas, playtest 4: "+1 Marked Quarry / −1 Situational, smaller, on the right, no Boon / Bane words, no triangle")
+  if (bb.length) rows.push(`<span class="cc-bl">Boon · Bane</span><span class="cc-bv cc-bbv">${bb.map(x => `<span class="cc-bbl ${x.kind}${x.over ? " over" : ""}" title="${esc(bbTip(x))}">${modTxt(x.val, "")} <span>${esc(x.name || (x.kind === "boon" ? "Boon" : "Bane"))}</span>${x.bb ? ` <small class="cc-bbn">${esc(x.bb)}</small>` : ""}${x.over ? ' <small class="cc-muted">over the limit</small>' : ""}</span>`).join("")}${five}</span>`);
   const mods = (r.mods ?? []).filter(m => m && Number(m.v));
   if (mods.length) rows.push(`<span class="cc-bl">Modifiers</span><span class="cc-bv">${mods.map(m => modTxt(Number(m.v), m.label)).join(" ")}</span>`);
+  // v0.0.347: "Applied": the effects this roll's damage takes something from (Killer's Focus), each a link that opens it
+  if ((applied ?? []).length) rows.push(`<span class="cc-bl">Applied</span><span class="cc-bv cc-applied">${applied.map(a => (a.uuid ? `<a class="content-link" draggable="true" data-link data-uuid="${esc(a.uuid)}" data-tooltip="Open ${esc(a.name)}"><i class="fa-solid fa-sparkles"></i>${esc(a.name)}</a>` : `<span>${esc(a.name)}</span>`)).join(" ")}</span>`);
   const badge = `${esc(r.dcLabel ?? "DC")}${hide && !save ? "" : ` ${r.dc}`}`;
   rows.push(`<span class="cc-btot"><b class="cc-total">${r.total}</b><small>vs</small><span class="cc-badge${vsk(r.dcLabel)}">${badge}</span><span class="cc-chips">${resultChips(r, { save, hide })}</span></span>`);
   return `<div class="cc-break${open ? " open" : ""}" data-cc-panel="${esc(id)}">${rows.join("")}</div>`;
@@ -228,12 +231,12 @@ export function attackCardHtml(m, view = FULL_VIEW) {
   const head = `${headHtml(m)}${metaLineHtml(m)}${m.setupHtml ?? ""}`;
   if (one) {
     const r = rows[0];
-    const body = `<div class="cc-body">${stampHtml(r, { hide })}<div class="cc-main">${ladderHtml(r, { hide, id: "r0" })}${breakdownHtml(r, { hide, id: "r0" })}<div class="cc-outcome">${outcomeHtml(m.outcomes?.[r.tier])}</div>${critLine(m, rows, hide)}${effects}</div></div>`;
+    const body = `<div class="cc-body">${stampHtml(r, { hide })}<div class="cc-main">${ladderHtml(r, { hide, id: "r0" })}${breakdownHtml(r, { hide, id: "r0", applied: m.applied ?? [] })}<div class="cc-outcome">${outcomeHtml(m.outcomes?.[r.tier])}</div>${critLine(m, rows, hide)}${effects}</div></div>`;
     return `<div class="cc-card cc-attack">${head}${body}${flavor}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
   }
   // several targets: one shared roll, a row per creature, the outcome grouped by Tier
   const sh = m.shared ?? {};
-  const shared = `<div class="cc-shared"><span class="cc-bl">${(sh.d ?? []).length}d12</span>${(sh.d ?? []).map(dieGroup).join("")}${sh.mod ? ` ${modTxt(sh.mod, "Modifier")}` : ""}</div>`;
+  const shared = `<div class="cc-shared"><span class="cc-bl">${(sh.d ?? []).length}d12</span>${(sh.d ?? []).map(dieGroup).join("")}${sh.mod ? ` ${modTxt(sh.mod, "Modifier")}` : ""}${(m.applied ?? []).length ? ` <span class="cc-applied"><span class="cc-bl">Applied</span> ${m.applied.map(a => (a.uuid ? `<a class="content-link" draggable="true" data-link data-uuid="${esc(a.uuid)}"><i class="fa-solid fa-sparkles"></i>${esc(a.name)}</a>` : esc(a.name))).join(" ")}</span>` : ""}</div>`;   // v0.0.347
   const crows = rows.map((r, i) => `<div class="cc-crow">${tierPill(r.tier, r.crit)}<span class="cc-cname">${esc(r.name)}</span><span class="cc-cdef">${hide ? "" : `<span class="cc-badge${vsk(r.dcLabel)}">${esc(r.dcLabel ?? "DC")} ${r.dc}</span>`}${defText(r, true) ? `<span>${esc(defText(r, true))}</span>` : ""}</span>${ladderHtml(r, { hide, thin: true, id: `r${i}` })}${keptNote(r) ? `<div class="cc-muted cc-kept">${esc(keptNote(r))}</div>` : ""}${breakdownHtml(r, { hide, id: `r${i}` })}</div>`).join("");
   const groups = [3, 2, 1].map(t => {
     const who = rows.filter(r => r.tier === t);
@@ -253,8 +256,11 @@ export function saveCardHtml(m, view = FULL_VIEW) {
   const rg = saveRanges(m.dc), cs = saveCreatures(m), one = cs.length <= 1, r = one ? cs[0]?.result ?? null : null;
   const anyRolled = cs.some(c => c.result);
   // v0.0.335 (Lucas: "the save card tier table can look more like the Action preview's"): Tier 1, 2, 3 from the top, "Tier N" in full, the preview's look
+  // v0.0.347 (Lucas, playtest 4: "after the Save is rolled, condense to show just the rolled result"): once every creature rolled, only the Tiers rolled
+  const condensed = cs.length > 0 && cs.every(c => c.result);
   const rows = [1, 2, 3].map(t => {
     const who = cs.filter(c => c.result?.tier === t), hit = one ? !!r && r.tier === t : who.length > 0;
+    if (condensed && !hit) return "";
     const cls = `cc-srow t${t}${anyRolled ? (hit ? " hit" : " dim") : ""}${one ? "" : " many"}`;
     const names = !one && who.length ? `<span class="cc-who">${who.map(c => `<span class="cc-nchip">${esc(c.name)}</span>`).join("")}</span>` : "";
     const inner = `<span class="cc-scell"><b>Tier ${t}</b><small>${esc(rg[t])}</small></span><span class="cc-sbody">${names}${outcomeHtml(m.tiers?.[t], { none: t === 3 ? "No effect." : "" })}</span>${one && hit ? `<span class="cc-stotal">${r.total}</span>` : ""}`;
@@ -300,8 +306,9 @@ function nextHtml(m, view) {
       : view.author ? `<button type="button" class="cc-btn small primary" data-twod12="applyAfter" data-step="${st.k}" data-side="${esc(st.side ?? "")}"${s.state === "wait" ? ` disabled aria-disabled="true" data-tooltip="${esc(s.why)}"` : ""}>${esc(st.btn)}</button>` : "";
     return `<div class="cc-step ${s.state}"><span class="cc-snum" aria-hidden="true">${i + 1}</span><b class="cc-slabel">${esc(st.label)}</b>${btn}</div>`;
   }).join("");
-  const grant = m.useHtml ? `<div class="tline grantrow cc-grant${/attack/i.test(m.useName ?? "") ? " sword" : ""}"><span class="apside">Granted Action: <b>${esc(m.useName ?? "")}</b></span><div class="gbtns">${m.useOff ? `<span class="cc-gwhy" data-tooltip="${esc(m.useOff)}"><i class="fa-solid fa-ban" aria-hidden="true"></i> ${esc(m.useName ?? "")}</span>` : m.useHtml}</div></div>` : "";
-  return `${steps ? `<div class="cc-steps">${steps}</div>` : ""}<div class="cc-slot">${grant}</div>`;
+  const grant = m.useHtml ? `<div class="tline grantrow cc-grant${/attack/i.test(m.useName ?? "") ? " sword" : ""}"><span class="apside sr-only">Granted Action: ${esc(m.useName ?? "")}</span><div class="gbtns">${m.useOff ? `<span class="cc-gwhy" data-tooltip="${esc(m.useOff)}"><i class="fa-solid fa-ban" aria-hidden="true"></i> ${esc(m.useName ?? "")}</span>` : m.useHtml}</div></div>` : "";
+  // v0.0.347 (Lucas, playtest 4: "the Weapon Attack should be before Apply, since it happens first"): the granted Action, then the steps
+  return `<div class="cc-slot">${grant}</div>${steps ? `<div class="cc-steps">${steps}</div>` : ""}`;
 }
 /** v0.0.294 (brief section 13): an Action that makes no roll (Opportunity Attack, Bulwark of Faith, Aim): no stamp, no ladder, no category line, no Effects box. */
 export function nonRollCardHtml(m, view = FULL_VIEW) {

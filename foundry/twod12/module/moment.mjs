@@ -14,7 +14,7 @@ import { threatProfile } from "./flanking.mjs";   // v0.0.303: "a creature you t
 import { isFaded } from "./usage.mjs";
 import { answererFor } from "./healwin.mjs";
 import { sysLine } from "./sysmsg.mjs";
-import { esc } from "./util.mjs";
+import { esc, unset } from "./util.mjs";
 import { moveActionOf } from "./moveseq.mjs";   // v0.0.274: once per Move Action
 import * as O from "./rxoverlay.mjs";   // v0.0.275 (pack RX-2): the map overlay
 const F = "twod12", SOCKET = "system.twod12";
@@ -348,15 +348,26 @@ export const timerMinutes = () => {
 export function registerReactionSettings() {
   game.settings.register(F, "reactionTimerOn", { name: "Reactions: auto-skip timer", hint: "Off by default (v0.0.282, Lucas): the Reactions message waits until every row is answered or the GM skips. On: the rows nobody answered are skipped when its timer runs out (counted down on the message).", scope: "world", config: true, type: Boolean, default: false });
   game.settings.register(F, "reactionTimer", { name: "Reactions: auto-skip after (minutes)", hint: "How long a Reactions message waits for its answers before it skips the rows still waiting (anyone in it can pause the countdown by clicking the clock).", scope: "world", config: true, type: Number, default: 1, range: { min: 1, max: 60, step: 1 } });
+  // v0.0.347 (Lucas, playtest 4): the "No Reactions" line: on or off, and how long it stays (0: it stays)
+  game.settings.register(F, "rxNobodyLine", { name: "Reactions: \"No Reactions\" line", hint: "When a moment could have been answered by a Reaction that can't be used now (no AP, spent), a short line says so, for everyone.", scope: "world", config: true, type: Boolean, default: true });
+  game.settings.register(F, "rxNobodySeconds", { name: "Reactions: \"No Reactions\" line disappears after (seconds)", hint: "0: it stays in the chat.", scope: "world", config: true, type: Number, default: 5 });
   try { O.registerOverlaySetting(); } catch (e) { console.warn("twod12 | Reaction overlay", e); }   // v0.0.275: "Reaction map overlay" (client)
 }
 
-/** The note when Reactions watch the moment but none can answer: whispered to the GM and those Reactions' owners. */
+/** v0.0.347: pure: the short reason ("no AP left (it costs 1R)" -> "no AP"). */
+export const shortWhy = w => String(w ?? "").replace(/^no AP left.*$/i, "no AP").replace(/\s*\([^()]*\)\s*$/, "");
+/** v0.0.347: pure: "No Reactions: <b>Sylwen</b>'s [Overwatch]: no AP" (several joined by ";"). */
+export const nobodyLine = blocked => `No Reactions: ${blocked.map(b => `<b>${esc(cleanName(b.actor.name))}</b>'s [${esc(b.item.name)}]: ${esc(shortWhy(b.why))}`).join("; ")}`;
+/**
+ * The note when Reactions watch the moment but none can answer. v0.0.347 (Lucas, playtest 4): condensed, for everyone, a setting to turn it
+ * off, and it deletes itself after a few seconds (a setting; 0: it stays). It was a long line whispered to the GM and the owners.
+ */
 async function postNobody(plain, blocked) {
-  const users = new Set(game.users?.filter?.(u => u.isGM).map(u => u.id) ?? []);
-  for (const b of blocked) for (const u of game.users?.filter?.(u => b.actor.testUserPermission?.(u, "OWNER")) ?? []) users.add(u.id);
-  const why = blocked.map(b => `${esc(b.actor.name)}'s ${esc(b.item.name)}: ${esc(b.why)}`).join("; ");
-  await ChatMessage.create({ content: sysLine("fa-hourglass-end", `${plain}: nobody can react (${why}).`, "rxnote"), whisper: [...users] });
+  let on = true, secs = 5;
+  try { on = game.settings.get(F, "rxNobodyLine") !== false; secs = Math.max(0, Number(game.settings.get(F, "rxNobodySeconds")) || 0); } catch (e) { /* defaults */ }
+  if (!on || !blocked.length) return;
+  const m = await ChatMessage.create({ content: sysLine("fa-hourglass-end", nobodyLine(blocked), "rxnote") });
+  if (m && secs > 0) setTimeout(() => { try { if (game.messages.get(m.id)) m.delete(); } catch (e) { /* gone */ } }, secs * 1000);
 }
 
 /**
@@ -485,6 +496,7 @@ async function resolveStack(L) {
   // v0.0.278 (Lucas: "after its resolve, put the chat message at the bottom"): the resolved line is posted again under the Reactions' cards
   // and the live message is removed (still one message for the moment)
   L.msg = await toBottom(L.msg, st);
+  if (["against", "landed"].includes(st.base?.kind) && st.base?.msgId && !st.base?.never) { try { await reprintCard(st.base.msgId); } catch (e) { console.warn("twod12 | reprint", e); } }   // v0.0.347
   live.delete(st.id);
   finished.set(st.id, { st, msg: L.msg });
   if (finished.size > 20) finished.delete(finished.keys().next().value);
@@ -536,10 +548,19 @@ async function toBottom(msg, st) {
   if (!msg || last?.id === msg.id) { try { await msg?.update({ content: rxCardHtml(st), [`flags.${F}.rx`]: st }); } catch (e) { console.warn("twod12 | Reactions message", e); } return msg; }
   let nmsg = msg;
   try {
+    // v0.0.347 (Lucas, playtest 4: "leave a 'Reaction used' line, to know where the Reaction chain started"): the first move leaves a short line
+    // where it was (later moves remove the copy, as before)
+    const first = !st.lineLeft; st.lineLeft = true;
     nmsg = await ChatMessage.create({ content: rxCardHtml(st), flags: { [F]: { rx: st } } });
-    await msg.delete();
+    if (first) await msg.update({ content: sysLine("fa-bolt", usedLine(st), "rxused"), ...unset(`flags.${F}.rx`) });
+    else await msg.delete();
   } catch (e) { console.warn("twod12 | Reactions message", e); try { await msg.update({ content: rxCardHtml(st), [`flags.${F}.rx`]: st }); } catch (x) { /* */ } return msg; }
   return nmsg ?? msg;
+}
+/** v0.0.347: pure: the line left where the Reactions started: "Reactions: Aveline uses Rebuke → Orc Warrior" (or "none used"). */
+export function usedLine(st) {
+  const used = stackOrder(st.rows ?? []);   // in the order they resolved (top first)
+  return used.length ? `Reactions: ${used.map(r => `<b>${esc(cleanName(r.name))}</b> uses ${esc(r.itemName)}${r.targetName ? ` → ${esc(cleanName(r.targetName))}` : ""}`).join("; ")}.` : "Reactions: none used.";
 }
 async function rewrite(F2) { try { await F2.msg.update({ content: rxCardHtml(F2.st), [`flags.${F}.rx`]: F2.st }); } catch (e) { console.warn("twod12 | Reactions message", e); } }
 export function registerLateResults() {
@@ -625,6 +646,7 @@ export async function runHere(data) {
 export async function onSocket(data) {
   if (data.type === "rxAnswer") return hostAnswer(data.id, data.row, data.choice, data.from, { ids: data.ids });
   if (data.type === "rxBackMark") return markBack(data.msgId);
+  if (data.type === "rxReprint") return reprintCard(data.msgId);   // v0.0.347: a player's chain: the GM reprints the card
   if (data.type === "rxRun") { let res = { ok: false }; try { res = await runHere(data.data); } catch (e) { console.warn("twod12 | Reaction", e); } game.socket.emit(SOCKET, { type: "rxRunDone", userId: data.from, reqId: data.reqId, ok: res.ok, half: res.half, tier: res.tier ?? 0, crit: !!res.crit }); return; }
   if (data.type === "rxRunDone") { const r = pendingRuns.get(data.reqId); if (r) { pendingRuns.delete(data.reqId); r({ ok: !!data.ok, half: data.half ?? null, tier: Number(data.tier) || 0, crit: !!data.crit }); } }
 }
@@ -838,13 +860,29 @@ export async function downMoment(actor, a, from) {
   return { saved: (res.used ?? []).some(u => u.ok && u.moment === "wouldDown"), id: res.id ?? "", never: !!res.never };
 }
 /** The damage landed: the Triggers of the damage moments (they hold nothing). */
+/** v0.0.347: the id of the latest of the last few messages that matches (the card a Trigger answers), or "". */
+function lastCardId(test) { const list = game.messages?.contents ?? []; for (let k = list.length - 1; k >= Math.max(0, list.length - 8); k--) { try { if (test(list[k])) return list[k].id; } catch (e) { /* next */ } } return ""; }
+/**
+ * v0.0.347 (Lucas, playtest 4: "repost the Action card that was interrupted by a Reaction (Brutal Swing after Rebuke), unless interrupted";
+ * "reprint the card that dealt the damage on a 'damage dealt' ability like Covering Shot, so it's easy to see what happens after the Reaction"):
+ * after a Trigger's chain (a Strike made against an ally, damage dealt), its card moves under the Reactions' cards (a copy, the old one removed;
+ * by the GM). Not when the Strike never lands (its creature dropped first).
+ */
+export async function reprintCard(msgId) {
+  const m = msgId ? game.messages?.get(msgId) : null;
+  if (!m || game.messages.contents.at(-1)?.id === m.id) return;
+  if (!game.user.isGM) { game.socket.emit(SOCKET, { type: "rxReprint", userId: game.users.find(u => u.isGM && u.active)?.id, msgId }); return; }
+  const data = m.toObject(); delete data._id; data.timestamp = Date.now();
+  const n = await ChatMessage.create(data);
+  if (n) await m.delete();
+}
 export function landedMoment(actor, dealt, from, wentDown) {
   const kinds = [...(dealt > 0 && from?.strike ? ["strikeDamage"] : []), ...(dealt > 0 ? ["allyDamage"] : []), ...(wentDown ? ["wouldDown"] : [])];
   if (!kinds.length) return;
   (async () => {
     const source = await sourceOf(from), subject = party(actor);
     const plain = wentDown ? `<b>${nameOf(subject)}</b> goes Down` : `<b>${nameOf(subject)}</b> takes <b>${dealt}</b> damage${source ? ` from <b>${nameOf(source)}</b>` : ""}`;
-    const base = { kind: "landed", label: wentDown ? "Down" : from?.strike ? "Strike" : "Damage", face: faceOf(source ?? subject), target: faceOf(subject), dealt };
+    const base = { kind: "landed", label: wentDown ? "Down" : from?.strike ? "Strike" : "Damage", face: faceOf(source ?? subject), target: faceOf(subject), dealt, msgId: lastCardId(m => !!(m.getFlag?.(F, "ccDmg") || m.getFlag?.(F, "dmgCard"))) };   // v0.0.347: the damage card (reprinted after the chain)
     await openMoment({ kinds, subjects: [subject], source, only: "trigger", plain, lead: plain, base });
   })().catch(e => console.warn("twod12 | Reactions", e));
 }
@@ -855,7 +893,7 @@ export function strikeMoment(actor, targets) {
     for (const t of targets ?? []) { let d = null; try { d = await fromUuid(t.uuid); } catch (e) { d = null; } const p = party(actorOf(d)); if (p && p.actor.uuid !== actor.uuid) subjects.push(p); }
     if (!subjects.length) return;
     const source = party(actor), plain = `<b>${nameOf(source)}</b> makes a Strike against <b>${subjects.map(nameOf).join(", ")}</b>`;
-    const tf = faceOf(subjects[0]), base = { kind: "against", label: "Strike", face: faceOf(source), target: subjects.length > 1 ? { ...tf, name: subjects.map(s => cleanName(s.token?.name ?? s.actor.name)).join(", ") } : tf };
+    const tf = faceOf(subjects[0]), base = { kind: "against", msgId: lastCardId(m => m.getFlag?.(F, "action")?.actorUuid === actor.uuid), label: "Strike", face: faceOf(source), target: subjects.length > 1 ? { ...tf, name: subjects.map(s => cleanName(s.token?.name ?? s.actor.name)).join(", ") } : tf };
     await openMoment({ kinds: ["strikeAgainst"], subjects, source, plain, lead: plain, base });
   })().catch(e => console.warn("twod12 | Reactions", e));
 }

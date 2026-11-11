@@ -44,3 +44,7 @@ console.log("a drag order:", S.setOrder(st, [1, 0]).order.join(","), "| a wrong 
 const C = await import(ROOTURL + "module/chatcards.mjs");
 const line = comps => C.poolBlock(comps).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 console.log(line([{ pool: "B", sub: "Pi", total: 0 }, { pool: "B", sub: "Pi", total: 7 }, { pool: "B", sub: "Pi", total: 2 }]), "|", line([{ pool: "B", sub: "Pi", total: 0 }]));
+
+// v0.0.347 (Lucas: "make Resolve automatically trigger the Actions like Reactions does")
+const ss = src("module/startstack.mjs");
+console.log("Resolve runs each row in turn:", ss.includes("while (st.cur >= 0)") && ss.includes("runRow(r, msg.id).then(finish"), "| on its answerer's client:", ss.includes('type: "ssRun", userId: who.id') && src("module/damage.mjs").includes('String(data.type).startsWith("ss")'), "| Done / Skip end a wait:", ss.includes("if (running?.msgId === msg.id) return running.finish(what === \"done\");"), "| the card while resolving:", S.stackHtml(S.startResolve(st)).includes("Resolving: the top row is used by its creature."));

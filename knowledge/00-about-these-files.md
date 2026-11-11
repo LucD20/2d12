@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-11 from the repository at: ae31d57 2026-11-11 v0.0.345: playtest 4, Step 2 (the rules, book first)
+Built by tools/knowledge.py on 2026-11-11 from the repository at: 2e74535 2026-11-11 v0.0.346: the data model's missing fields (Frightened, Marked Quarry), a world pass, bars always shown, the stack card restyled
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,8 +14,8 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (93 KB)
-- MASTER-PLAN.md (23 KB)
+- HANDOFF.md (94 KB)
+- MASTER-PLAN.md (24 KB)
 - open-design-items.md (96 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)

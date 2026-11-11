@@ -4,6 +4,8 @@
 // its Action button; the GM marks it done or skipped), and the card says when the first turn begins. Every button stays usable by hand.
 // v0.0.346 (Lucas: "ugly; copy the style of the other cards... just the name, a thing to move them in the order, the button for the Action and a
 // button to see the Action, like Card; see the Reactions card"): the Reactions card's look (rx2: dark head, face, grip, slabs).
+// v0.0.347 (Lucas: "make Resolve automatically trigger the Actions like Reactions does"): Resolve uses each row's Action in turn, on its
+// creature's answerer's client (moment.mjs runHere's way), waiting for each; Done / Skip on the row now end a wait by hand.
 // The stack lives on the message's flags (twod12.startStack); the content is rebuilt from it on every change. Only the GM changes the order.
 import { esc } from "./util.mjs";
 const F = "twod12";
@@ -53,7 +55,8 @@ export function stackHtml(st) {
     return `<div class="rx-it ss-it ${r.state}${n === 0 ? " top" : ""}" data-i="${i}">${before ? `<span class="rx-grip ss-gm" data-tooltip="Drag to change the order">${fa("fa-solid fa-grip-vertical")}</span>` : ""}<span class="rx-num">${n + 1}</span>${face(r)}<b class="ss-nm">${esc(r.name)}</b>${mark}<span class="ss-btns">${use}${card}${gm}</span></div>`;
   }).join("");
   const foot = before ? `<div class="rx-ft ss-gm"><button type="button" class="rx-btn rx-pri" data-ss="resolve">${fa("fa-solid fa-play")} Resolve</button></div>`
-    : resolved(st) ? `<div class="ss-end">${fa("fa-solid fa-flag-checkered")} ${st.first ? `<b>${esc(st.first)}</b>'s turn begins.` : "The first turn begins."}</div>` : "";
+    : resolved(st) ? `<div class="ss-end">${fa("fa-solid fa-flag-checkered")} ${st.first ? `<b>${esc(st.first)}</b>'s turn begins.` : "The first turn begins."}</div>`
+      : `<div class="rx-ft rx-busy">${fa("fa-solid fa-spinner fa-spin")} Resolving: the top row is used by its creature.</div>`;   // v0.0.347
   return `<div class="twod12 chat rx2 startstack"><div class="rx-hd"><span class="rx-ttl">Start of the Encounter</span></div><div class="rx-sec">Stack<span class="rx-sub">· ${before ? "in turn order, top first" : resolved(st) ? "resolved" : "resolving, top first"}</span></div><div class="rx-stk">${slabs}</div>${foot}</div>`;
 }
 
@@ -80,14 +83,61 @@ export async function postStartStack(combat) {
   return ChatMessage.create({ content: stackHtml(st), flags: { [F]: { startStack: st } } });
 }
 
+const save = async (msg, st) => { if (resolved(st)) st = { ...st, first: game.combat?.combatant?.name ?? st.first }; await msg.update({ content: stackHtml(st), [`flags.${F}.startStack`]: st }); return st; };
+let running = null;   // { msgId, finish(ok) }: the row now (the GM's Done / Skip end it when nobody answers)
+
 async function gmAct(msg, what, data = {}) {
   let st = msg.getFlag(F, "startStack");
   if (!st || !game.user.isGM) return;
-  if (what === "order") st = setOrder(st, data.ids);
-  else if (what === "resolve") st = startResolve(st);
-  else if (what === "done" || what === "skip") st = nextRow(st, what === "skip");
-  if (resolved(st)) st = { ...st, first: game.combat?.combatant?.name ?? st.first };
-  await msg.update({ content: stackHtml(st), [`flags.${F}.startStack`]: st });
+  if (what === "order") return save(msg, setOrder(st, data.ids));
+  // v0.0.347 (Lucas: "make Resolve automatically trigger the Actions, like Reactions does"): each row in turn is used by its creature, on its
+  // answerer's client (the owner, else the GM), and the next waits for it; Done / Skip on the row now end a wait by hand
+  if (what === "done" || what === "skip") {
+    if (running?.msgId === msg.id) return running.finish(what === "done");
+    return save(msg, nextRow(st, what === "skip"));
+  }
+  if (what !== "resolve" || st.cur !== -1) return;
+  st = await save(msg, startResolve(st));
+  while (st.cur >= 0) {
+    const r = st.rows.find(x => x.i === st.cur);
+    const ok = await new Promise(resolve => {
+      let done = false;
+      const finish = v => { if (done) return; done = true; running = null; resolve(!!v); };
+      running = { msgId: msg.id, finish };
+      runRow(r, msg.id).then(finish, () => finish(false));
+    });
+    st = await save(msg, nextRow(msg.getFlag(F, "startStack") ?? st, !ok));
+  }
+}
+
+/** Runs a row's Action on its answerer's client and resolves true when it was used. */
+async function runRow(r, msgId) {
+  const actor = await actorOfUuid(r.actorUuid);
+  if (!actor || !r.action) return false;
+  const { answererFor } = await import("./healwin.mjs");
+  const who = answererFor(actor);
+  if (!who || who.id === game.user.id) return runHere({ actorUuid: r.actorUuid, itemId: r.itemId, action: r.action, ap: r.ap, source: r.source });
+  const reqId = foundry.utils.randomID();
+  return new Promise(resolve => {
+    pending.set(reqId, resolve);
+    game.socket.emit("system.twod12", { type: "ssRun", userId: who.id, reqId, from: game.user.id, msgId, data: { actorUuid: r.actorUuid, itemId: r.itemId, action: r.action, ap: r.ap, source: r.source } });
+  });
+}
+const pending = new Map();
+async function actorOfUuid(u) { try { const d = await fromUuid(u); return d?.documentName === "Actor" ? d : d?.actor ?? null; } catch (e) { return null; } }
+/** On the answerer's client: the row's Action, used free (as its @Use button does), its roll window and target as usual. */
+async function runHere(d) {
+  const actor = await actorOfUuid(d.actorUuid);
+  const item = actor?.items?.get(d.itemId) ?? actor?.items?.find?.(i => i.type === "action" && i.name.toLowerCase() === String(d.action).trim().toLowerCase());
+  if (!item) { ui.notifications.warn(`${actor?.name ?? "This creature"} has no Action called "${d.action}".`); return false; }
+  ui.notifications.info(`Start of the encounter: ${actor.name}'s ${item.name}.`);
+  const { useAction } = await import("./actions.mjs");
+  return !!(await useAction(actor, item, { free: true, ap: Number(d.ap) || 0, label: d.source || "Start of the encounter" }));
+}
+/** The socket (damage.mjs routes ss* messages addressed to this user here). */
+export async function onSocket(data) {
+  if (data.type === "ssRun") { let ok = false; try { ok = await runHere(data.data); } catch (e) { console.warn("twod12 | start stack", e); } game.socket.emit("system.twod12", { type: "ssRunDone", userId: data.from, reqId: data.reqId, ok }); return; }
+  if (data.type === "ssRunDone") { const r = pending.get(data.reqId); if (r) { pending.delete(data.reqId); r(!!data.ok); } }
 }
 
 /** A row's Action: used by its creature (the @Use button's logic, free; its owner or the GM), or its card in a window. */

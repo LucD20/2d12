@@ -9,6 +9,7 @@ import { registerLeanHooks } from "./lean.mjs";
 import { registerMasteryHooks } from "./mastery.mjs";
 import { registerChatScroll } from "./chatscroll.mjs";   // v0.0.343
 import { registerFearLine } from "./fearline.mjs";   // v0.0.345
+import { renderFollow, renderDamageUsed, registerDamageUsed, addHealButton } from "./followup.mjs";   // v0.0.347
 import { registerMarkHooks } from "./mark.mjs";
 import { registerLoE } from "./loe.mjs";
 import { registerFlankOverlay } from "./flankoverlay.mjs";
@@ -91,6 +92,7 @@ Hooks.once("init", () => {
   registerMasteryHooks();
   registerChatScroll();   // v0.0.343: the chat stays at its bottom when a card grows
   registerFearLine();   // v0.0.345: a selected Frightened creature shows its source on the map
+  registerDamageUsed();   // v0.0.347
   registerMarkHooks();
   registerLoE();   // Line of Effect, Cover height and Show flanking in the token controls (v0.0.165; moved from the token HUD in v0.0.302)
   registerFlankOverlay();   // v0.0.302
@@ -307,6 +309,7 @@ Hooks.on("renderChatMessageHTML", ccRender);
 // v0.0.249 (Lucas): a rung Passive's effect comes as soon as the Escalation reaches its rung (the encounter's start, a Critical, the hook, the GM's valve)
 Hooks.on("twod12.escalationChanged", async actor => { if (!game.user.isActiveGM) return; try { const { applyReachedEffects } = await import("./automation.mjs"); await applyReachedEffects(actor); } catch (e) { console.warn("twod12 | the rung's effects", e); } });
 Hooks.on("renderChatMessageHTML", (msg, html) => { import("./startstack.mjs").then(m => m.bindStartStack(msg, html)).catch(() => {}); });   // v0.0.345: the start-of-the-encounter stack
+Hooks.on("renderChatMessageHTML", (msg, html) => { try { renderFollow(msg, html); renderDamageUsed(msg, html); addHealButton(msg, html); } catch (e) { console.warn("twod12 | follow-ups", e); } });   // v0.0.347: follow-ups inside their card; the Damage button used
 Hooks.on("renderChatMessageHTML", bindInitCard);   // v0.0.206: the Initiative card's rows open on click
 Hooks.on("renderChatMessageHTML", chatChips);   // v0.0.180: no line between trait groups at the start or end of a wrapped row
 // v0.0.177: a light of size N reaches an N Emanation (the half square Foundry leaves out is added), and Regions snap to whole squares.
@@ -353,7 +356,7 @@ Hooks.once("ready", async () => {
     if (b.dataset.twod12 === "saveRoll") await saveRoll(msg, Number(b.dataset.idx));
     else if (b.dataset.twod12 === "retargetSave") await retargetSave(msg);
     else if (b.dataset.twod12 === "retargetAction") await retargetAction(msg);
-    else if (b.dataset.twod12 === "useGrant") await useGrant(msg, b.dataset.effectId, Number(b.dataset.index) || 0);   // v0.0.260: a granted use from the card
+    else if (b.dataset.twod12 === "useGrant") await useGrant(msg, b.dataset.effectId, Number(b.dataset.index) || 0, b.dataset.target ?? "");   // v0.0.260: a granted use from the card
     else if (b.dataset.twod12 === "rollDamage") await rollDamage(msg);
     else if (/^cc(Apply|ApplyAll|Undo|Adjust|DmgTarget)$/.test(b.dataset.twod12)) await (await import("./ccdamage.mjs")).ccDamageClick(b.dataset.twod12, b, msg);   // v0.0.283
     else if (b.dataset.twod12 === "ccCard") await (await import("./ccdamage.mjs")).openCardWindow(msg);

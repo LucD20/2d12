@@ -69,7 +69,7 @@ out = await M.collectReactions({ kinds: ["wouldDown"], subjects: [P(ally)], sour
 console.log("Krysta would go Down, the Reaction used today: rows", out.rows.length, "| blocked:", out.blocked.map(b => `${b.item.name} (${b.why})`).join(", "));
 await M.openMoment({ kinds: ["wouldDown"], subjects: [P(ally)], source: null, only: "interrupt", hold: true, plain: "<b>Krysta</b> would go Down", lead: "x" });
 const note = created.at(-1);
-console.log("nobody can react: one line", note.content.startsWith('<div class="twod12 chat sysline rxnote"'), "|", note.content.replace(/<[^>]+>/g, ""), "| whispered to", note.whisper.join(", "));
+console.log("nobody can react: one line", note.content.startsWith('<div class="twod12 chat sysline rxnote"'), "|", note.content.replace(/<[^>]+>/g, ""), "| whispered to", note.whisper?.join(", ") ?? "nobody (v0.0.347: for everyone)");
 paladin.actor.getFlag = () => undefined;
 
 console.log("--- the flow: answers, the stack, the held damage");

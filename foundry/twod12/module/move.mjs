@@ -1001,11 +1001,12 @@ async function applySteadiness(target, N, label) {
 async function pushOne(origin, target, N0, mode = "push", opts = {}) {
   const label = MOVE_LABEL[mode];
   const st = await applySteadiness(target, N0, label), N = st.N;
-  if (N <= 0) { await post(`<b>${esc(target.name)}</b> is not moved: its Steadiness ${st.steady} reduces ${label} ${N0} to 0.`); return; }
+  const { postFollow } = await import("./followup.mjs");   // v0.0.347 (Step 3): the lines go into the card that moved it (opts.msg)
+  if (N <= 0) { await postFollow(opts.msg, "fa-hand", `<b>${esc(target.name)}</b> is not moved: its Steadiness ${st.steady} reduces ${label} ${N0} to 0.`, { cls: "pushmsg" }); return; }
   const pathTool = mode === "slid" || mode === "reposition";
   const pick = pathTool ? await choosePath(origin, target, N, mode, opts) : await choosePush(origin, target, N, mode);
   if (!pick) return;
-  if (pick.ended) { await ChatMessage.create({ content: sysLine("fa-hand", `<b>${esc(target.name)}</b> is not moved: ${mode === "reposition" ? "the Reposition" : `${label} ${N0}`} ended at 0 squares (its value is a maximum).`, "pushmsg") }); return; }
+  if (pick.ended) { await postFollow(opts.msg, "fa-hand", `<b>${esc(target.name)}</b> is not moved: ${mode === "reposition" ? "the Reposition" : `${label} ${N0}`} ended at 0 squares (its value is a maximum).`, { cls: "pushmsg" }); return; }
   const { result } = pick, f = result.final;
   if (pathTool) await moveAlong(target.document, pick.path.slice(0, result.done + 1));   // one movement along the path (v0.0.175)
   else if (f.di || f.dj) await moveToken(target.document, f.dj, f.di);
@@ -1026,7 +1027,7 @@ async function pushOne(origin, target, N0, mode = "push", opts = {}) {
       if (o.actor && d.other) await applyToActor(o.actor, bodyDamage(d.other));
     }
   }
-  await ChatMessage.create({ content: sysLine("fa-hand", lines.join(" "), "pushmsg") });
+  await postFollow(opts.msg, "fa-hand", lines.join(" "), { cls: "pushmsg" });
   try { logPush(origin, target, mode === "reposition" ? "Repositioned" : label, result.done, result.block ? (result.block.type === "wall" ? "hits a wall" : result.block.type === "loe" ? "stops" : `hits ${result.block.token?.name ?? "a creature"}`) : ""); } catch (e) { /* no log */ }
 }
 
@@ -1063,7 +1064,7 @@ async function pushFlow(cfg, ctx, mode = "push") {
       if (!out.moved) { await post(`<b>${esc(t.name)}</b> is Immobilized and isn't moved: ${out.why}.`); continue; }
       await post(`<b>${esc(t.name)}</b> is Immobilized, but ${out.why}: it can be moved.`);
     }
-    await pushOne(origin, t, distanceFor(cfg, ctx, t, N), mode, { withinReach: !!cfg.withinReach, by });
+    await pushOne(origin, t, distanceFor(cfg, ctx, t, N), mode, { withinReach: !!cfg.withinReach, by, msg: ctx?.message ?? null });
   }
 }
 
@@ -1105,7 +1106,7 @@ async function pushPicker(cfg, ctx, mode, origin, N) {
     if (pick == null || pick === "done") break;
     const t = list[Number(pick)];
     if (!t) break;
-    await pushOne(origin, t, distanceFor(cfg, ctx, t, N), mode, { withinReach: !!cfg.withinReach, by });
+    await pushOne(origin, t, distanceFor(cfg, ctx, t, N), mode, { withinReach: !!cfg.withinReach, by, msg: ctx?.message ?? null });
     moved.push(t.name);
     list = list.filter(x => x.id !== t.id);
   }
