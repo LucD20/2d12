@@ -32,7 +32,8 @@ import { registerSleep, bumpExhausted } from "./sleep.mjs";
 import { registerLight } from "./light.mjs";
 import { registerLightOverlay } from "./lightoverlay.mjs";
 import { CharacterData, NpcData, SpeciesData, ClassData, FeatureData, ActionData, WeaponData, EffectData, TalentData, ArmorData, GearData } from "./data.mjs";
-import { registerEffectHooks, setupPanel, wrapConditions, shadowedEffects } from "./effects.mjs";
+import { registerEffectHooks, setupPanel, wrapConditions, shadowedEffects, pendingSteps } from "./effects.mjs";
+import { registerTurnDock } from "./turndock.mjs";   // v0.0.362: the Turn Breakdown dock
 import { registerHealthBar } from "./healthbar.mjs";
 import * as CC from "./chatcards.mjs";   // v0.0.283 (pack chat-cards)
 import { registerInline, handleInline, saveRoll, retargetSave, registerInlineSocket } from "./inline.mjs";
@@ -294,7 +295,7 @@ function collapsibleCards(msg, html) {
 Hooks.on("renderChatMessageHTML", collapsibleCards);
 // v0.0.358 (Lucas: "just the message by itself; no title, no time, no trash bin"): a message that is only one of the system's lines shows no header
 // (the right-click menu still deletes it)
-Hooks.on("renderChatMessageHTML", (msg, html) => { try { const el = html?.[0] ?? html, c = el?.querySelector?.(".message-content"); if (c && c.children.length === 1 && c.firstElementChild.classList.contains("sysline") && !c.textContent.replace(c.firstElementChild.textContent, "").trim()) el.classList.add("twod12-bare"); } catch (e) { /* cosmetic */ } });
+Hooks.on("renderChatMessageHTML", (msg, html) => { try { const el = html?.[0] ?? html, c = el?.querySelector?.(".message-content"); if (c && c.children.length === 1 && (c.firstElementChild.classList.contains("sysline") || c.firstElementChild.classList.contains("turnend")) && !c.textContent.replace(c.firstElementChild.textContent, "").trim()) el.classList.add("twod12-bare"); } catch (e) { /* cosmetic */ } });
 // v0.0.283 (pack chat-cards): the new cards are drawn for each viewer from their model (chatcards.mjs); Designer mode's marks on the older cards
 function ccRender(msg, html) {
   const el = html instanceof HTMLElement ? html : html?.[0];
@@ -410,6 +411,7 @@ Hooks.once("ready", async () => {
     } catch (err) { console.warn("twod12 | could not set the default grid diagonals", err); }
   }
   registerEffectHooks();
+  try { registerTurnDock({ pendingSteps }); } catch (e) { console.warn("twod12 | Turn Breakdown", e); }
   registerConditionRules();
   registerCombatHooks();
   registerMovement();

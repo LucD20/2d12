@@ -1,4 +1,5 @@
 // The AP ticker and its Turn Log (v0.0.200, Lucas: design M1 + L3, mockup foundry/mockups/chat-turnlog.html).
+// v0.0.362: no longer posted (the Turn Breakdown dock shows the log: turndock.mjs); tickerHtml still draws the older messages. Was:
 // One chat message per event (a turn start, an Action that spends AP, a movement when it ends, a Reaction): one thin line closed; opened,
 // the Turn Log of that creature's turn-cycle up to that event, one line per Action, with the AP pips after it. The log is a SNAPSHOT
 // in the message (flags.twod12.ticker): a message is never edited later. The running log is the combatant's flag twod12.turnLog, reset at
@@ -42,16 +43,39 @@ export function tickerHtml(who, lines) {
 /** Pure: the log after an event: a turn start begins a new one; anything else is added. */
 export const nextLog = (log, line) => (line.k === "start" ? [line] : [...(log ?? []), line]);
 
+/** v0.0.362: the turn a line happened in ("round:turn"), so the Turn Breakdown shows another creature's Reaction in the turn it was used. */
+export const stamp = line => { const c = globalThis.game?.combat; return c ? { ...line, at: `${c.round ?? 0}:${c.turn ?? 0}` } : line; };
+
 /**
- * Add an event to a combatant's Turn Log and post its ticker (the snapshot of the log so far). Writing needs an owner of the combatant;
- * the message is posted by whoever made the event.
+ * Add an event to a combatant's Turn Log. v0.0.362 (Lucas: "it should all go into the Turn Breakdown"): the Turn Breakdown dock at the bottom
+ * of the chat shows the log live (turndock.mjs), so no ticker message is posted any more; a turn's end posts one "End of X's Turn" line.
+ * Writing needs an owner of the combatant. lines: the Turn Log already written with the event's own update (setAP's patch).
  */
-export async function logEvent(c, line, { lines: written = null } = {}) {   // lines (v0.0.361): the Turn Log already written with the event's own update
+export async function logEvent(c, line, { lines: written = null } = {}) {
   if (!c) return null;
   // v0.0.277 (Lucas: "The Combat ... does not exist" when an encounter ended mid-movement): a combat already deleted gets no line
   if (c.parent?.id && globalThis.game?.combats?.has && !game.combats.has(c.parent.id)) return null;
-  const lines = written ?? nextLog(c.getFlag?.(F, "turnLog") ?? [], line);
+  const lines = written ?? nextLog(c.getFlag?.(F, "turnLog") ?? [], stamp(line));
   try { if (c.isOwner && !written) await c.setFlag(F, "turnLog", lines); } catch (e) { console.warn("twod12 | turn log", e); }
-  const speaker = c.actor && ChatMessage.getSpeaker ? ChatMessage.getSpeaker({ actor: c.actor, token: c.token }) : {};
-  return ChatMessage.create({ speaker, content: tickerHtml(c.name, lines), flags: { [F]: { ticker: { combatantId: c.id, lines } } } });
+  return lines;
+}
+
+/** v0.0.362: a movement starts: its line goes into the Turn Log at once, marked live (g: the squares it may move), so the dock counts it up. */
+export async function logLive(c, line, granted) {
+  if (!c?.isOwner) return;
+  try { await c.setFlag(F, "turnLog", [...(c.getFlag?.(F, "turnLog") ?? []), { ...stamp(line), live: true, g: Number(granted) || 0 }]); } catch (e) { console.warn("twod12 | turn log", e); }
+}
+/** Pure: the Turn Log with its last live line replaced by the finished one (or the finished one added). */
+export function finishLive(lines, done) {
+  const out = [...(lines ?? [])];
+  let k = -1; for (let i = out.length - 1; i >= 0; i--) if (out[i]?.live) { k = i; break; }
+  if (k >= 0) out[k] = { ...done, at: out[k].at ?? done.at }; else out.push(done);
+  return out;
+}
+/** The movement ended (or another Action comes first): its live line becomes the finished one, with the squares moved. */
+export async function logMoveDone(c, line) {
+  if (!c?.isOwner) return null;
+  const lines = finishLive(c.getFlag?.(F, "turnLog") ?? [], stamp(line));
+  try { await c.setFlag(F, "turnLog", lines); } catch (e) { console.warn("twod12 | turn log", e); }
+  return lines;
 }

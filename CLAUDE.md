@@ -4,12 +4,12 @@ Read first, in this order: **HANDOFF.md** (state), **MASTER-PLAN.md** (the order
 
 ## What is here
 - `book/rules-src/*.md` = **the rulebook source (the only thing to edit)**. `python3 build_rules.py` (in `book/`) builds 7 HTML documents; never edit the HTML. Conventions: `book/rules-src/README.md`. Numbers: `book/ruler/` (README + scripts). Diagrams: `book/diagrams/diagrams.py`.
-- `foundry/twod12/` = the Foundry system (module/, templates/, tools/content.mjs = the compendium content, tools/tests = 242 tests; build the packs first in a fresh clone).
+- `foundry/twod12/` = the Foundry system (module/, templates/, tools/content.mjs = the compendium content, tools/tests = 243 tests; build the packs first in a fresh clone).
 - Backlogs: `book/rules-backlog.md` (rules log), `foundry/foundry-backlog.md` (what Foundry must follow). `archive/` = applied change logs.
 
 ## Commands
 - Book: `cd book && python3 build_rules.py` (goal: `unresolved refs: 0`; it also runs checks: names, pronouns, headings). Needs Python `markdown`.
-- Tests: `cd foundry/twod12 && node tools/tests/run.mjs` (Node 18+; 242 tests, all must pass; `--update tNN` only for a change I meant). Test numbers have gaps: check before creating one. Lint: `npx eslint@8 --no-eslintrc -c tools/eslint.json --ext .mjs module`.
+- Tests: `cd foundry/twod12 && node tools/tests/run.mjs` (Node 18+; 243 tests, all must pass; `--update tNN` only for a change I meant). Test numbers have gaps: check before creating one. Lint: `npx eslint@8 --no-eslintrc -c tools/eslint.json --ext .mjs module`.
 - Compendiums: in `foundry/`, `npm install @foundryvtt/foundryvtt-cli`, then `node twod12/tools/build-packs.mjs`. **Never commit or ship node_modules or package files.**
 - A Foundry version: bump `version` in `system.json`, add the changelog entry to `docs/reference.md` (copy it to `foundry/reference.md`), run the tests, and give Lucas **a short test checklist for that version** (what was added, changed, removed).
 

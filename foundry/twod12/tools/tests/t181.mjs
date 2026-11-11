@@ -36,7 +36,7 @@ console.log("a Reaction with nothing left asks (stub says yes):", await cb.spend
 console.log("--- v0.0.274 (Lucas, the book's Unspent AP): a turn that ends with AP left changes nothing; the next turn's start gives Guard for 1 round");
 console.log("unusedApGuard: the first turn", JSON.stringify(cb.unusedApGuard(false, 4, 1)), "| 2 unused at Stage 1", JSON.stringify(cb.unusedApGuard(true, 2, 1)), "| 1 at Stage 3", JSON.stringify(cb.unusedApGuard(true, 1, 3)));
 actor.system.apGuard = 0;
-console.log("the turn starts with 2 unused:", await cb.setUnusedApGuard(cbt, true, 2), "| actor.apGuard", actor.system.apGuard, "| the line:", chat.at(-1));
+console.log("the turn starts with 2 unused:", await cb.setUnusedApGuard(cbt, true, 2), "| actor.apGuard", actor.system.apGuard, "| no chat line (v0.0.362: the Turn Breakdown shows it):", chat.at(-1) === undefined);
 console.log("the next start, none unused: the Guard before ends:", await cb.setUnusedApGuard(cbt, true, 0), "| actor.apGuard", actor.system.apGuard);
 const src = n => fs.readFileSync(ROOT + n, "utf8");
 console.log("--- wiring: the turn start gives the Reaction AP and the unused AP's Guard:", /rap`\]: REACTION_AP \} \}\);[\s\S]{0,160}await setUnusedApGuard\(c, hadTurn, apLeft\);/.test(src("module/combat.mjs")), "| the turn's end does nothing to the AP (v0.0.274):", !src("module/combat.mjs").includes("keepApGuard"), "| damage takes the AP Guard first:", src("module/damage.mjs").includes("absorbGuard(actor.system.guard, a, actor.system.apGuard"), "| the encounter's end drops it:", src("module/escalation.mjs").includes('g["system.apGuard"] = 0'));

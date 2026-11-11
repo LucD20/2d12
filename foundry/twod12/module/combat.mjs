@@ -1,4 +1,4 @@
-import { logEvent, makeLine, nextLog } from "./ticker.mjs";
+import { logEvent, makeLine, nextLog, stamp } from "./ticker.mjs";
 import { swapCardHtml, thawLineHtml, sysLine } from "./sysmsg.mjs";
 import { apGuardOf } from "./guard.mjs";
 import { hasMomentum, setMomentum } from "./escalation.mjs";
@@ -95,7 +95,7 @@ export async function setAP(c, value, why = "", { quiet = false, reaction = fals
   const line = quiet || why === "edited" ? null : makeLine(kind, name, from, to, Math.max(apMax(c), from, to), rapLine);
   // v0.0.361 (PACK PERF, D27): a turn start writes its fresh flags, the AP and the Turn Log in one update (it was three writes, each redrawing the sheets)
   if (patch) {
-    const lines = line ? nextLog(c.getFlag?.(F, "turnLog") ?? [], line) : null;
+    const lines = line ? nextLog(c.getFlag?.(F, "turnLog") ?? [], stamp(line)) : null;
     await c.update({ ...patch, [`flags.${F}.ap`]: to, ...(lines ? { [`flags.${F}.turnLog`]: lines } : {}) });
     if (line) await logEvent(c, line, { lines });
     return;
@@ -113,13 +113,13 @@ export const setRAP = (c, n) => c.setFlag(F, "rap", Math.max(0, Math.min(REACTIO
  * it adds to the other Guard and is taken first. A creature's first turn of the encounter has no unused AP. Pure: { unused, guard }.
  */
 export const unusedApGuard = (hadTurn, apLeft, stage) => { const unused = hadTurn ? Math.max(0, Math.trunc(Number(apLeft)) || 0) : 0; return { unused, guard: apGuardOf(unused, stage) }; };
-/** The start of a turn: the Guard of the AP the last turn left unused replaces the one before (1 round), and the chat says so. */
+/** The start of a turn: the Guard of the AP the last turn left unused replaces the one before (1 round); the Turn Breakdown shows it. */
 export async function setUnusedApGuard(c, hadTurn, apLeft) {
   const a = c?.actor;
   if (!a) return 0;
-  const { unused, guard } = unusedApGuard(hadTurn, apLeft, stageOfC(c));
+  const { guard } = unusedApGuard(hadTurn, apLeft, stageOfC(c));
   if ((Number(a.system?.apGuard) || 0) !== guard) await a.update({ "system.apGuard": guard });
-  if (guard > 0) await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: a }), content: sysLine("fa-shield-halved", `<b>${esc(c.name)}</b> unused AP (${unused}): <b>Guard ${guard}</b> (1 round).`, "apguard") });
+  // v0.0.362 (Lucas): no chat line: the Turn Breakdown dock shows "Kaela: Guard 8 (unused AP)" (turndock.mjs), and the End of Turn line keeps it
   return guard;
 }
 

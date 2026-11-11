@@ -1,0 +1,21 @@
+--- the rounds left
+2 rd | 1 rd | EoT | (until removed)
+--- On Kaela: every Effect (one given this turn too), then her Guard
+Frightened (Orc Warrior) [1 rd] | Covering Fire: +1 Defense [2 rd] | Blinded [EoT] | Guard 8 (unused AP) [1 rd] | Guard 6
+--- the timeline
+start: Turn start | guard: Guard 8 (unused AP) | act: Mark Quarry | move: Advance 2 (live) | react: Durgan: Rebuke
+folded by default: true | unfolded: true | the header: Turn Kaela Round 3 ▲
+the body: ◆ Turn start +4 +R Guard 8 ( unused AP ) 1 rd ✦ Mark Quarry ➤ Advance 2 sq ↺ Durgan: Rebuke At the end of this turn ⏳ Hindered on Goblin Sneak 2 → 1 ⏳ Vulnerable on Orc Warrior ends On Kaela ● Frightened (Orc Warrior) 1 rd ● Covering Fire: +1 Defense 2 rd ● Blinded EoT Guard 8 ( unused AP ) 1 rd Guard 6
+the unused AP links to the book: true | the live dot: true | the pips: 2 AP left, Reaction AP ready: true
+--- the movement's line: live, then finished with its squares
+Turn start | Mark Quarry @3:1 | Advance 4 @3:1 | no live line: added at the end: 2
+finished, in the dock: Turn start | Mark Quarry | Advance 4
+--- the End of Kaela's Turn line
+one line that unfolds: true | its line: End of Kaela's Turn 1 ticked · 1 ended ▶
+unfolded, what happened: When the turn ended ⏳ Hindered on Goblin Sneak 1 rd left ⏳ Vulnerable on Orc Warrior ended On Kaela
+--- reading a combat
+rows: Turn start | Guard 8 | Mark Quarry | Advance 3 | Durgan: Rebuke | moved so far: 7 - 4 left = Advance 3 | On Kaela: Frightened (Orc Warrior), Guard 8
+--- the wiring
+Export Chat Log hidden, the Turn button after it: true | Export Chat Log on the Journal tab: true | per client: true
+the durations hook and the dock share one rule: true | the End line after the ticks: true | shown bare: true
+no ticker message: true | no unused AP chat line: true | the movement live from its start: true | the CSS: true

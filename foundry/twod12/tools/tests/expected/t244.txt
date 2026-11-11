@@ -11,7 +11,7 @@ Reset Turn strikes only that turn's lines, field by field: {"flags.twod12.encl.b
 an edited line: {"flags.twod12.encl.a.txt":"edited"} | nothing to change: null
 the damage log reads the old array and the keys: 3,4
 --- D27: a turn start writes the combatant once
-writes: update acted+ap+rap+turnLog | the Turn Log starts again: 1 start | its ticker posted: true
+writes: update acted+ap+rap+turnLog | the Turn Log starts again: 1 start | no ticker message (v0.0.362: the Turn Breakdown dock): true
 an Action's AP (no patch): as before: setFlag ap ; setFlag turnLog
 the snapshot is not a Combat flag: true | Reset Turn reads it from memory: true | asked in the pick window: true
 --- D33: the passives cache

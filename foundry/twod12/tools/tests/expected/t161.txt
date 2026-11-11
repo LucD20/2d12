@@ -9,4 +9,4 @@ Kai: ◆ Turn start +5 [0→5, red 0, of 5] || Lana's Reaction: ◆ Turn start +
 the snapshot is not changed by later events: ◆ Turn start +5 [0→5, red 0, of 5]
 --- the HTML
 closed: one summary line with the pips true | open: the log, the clicked line highlighted, the earlier muted: 2 1 | pips of the Weapon Attack: on,on,on,spent | movement tinted: true | 7 pips (Quickened): true
-wired: no plain AP lines true | an edit posts nothing true | the movement's line once, when it ends true | before another Action true
+wired: no plain AP lines true | an edit posts nothing true | the movement's line once, when it ends true | no message posted by logEvent: true | before another Action true

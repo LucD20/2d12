@@ -1,6 +1,6 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.361**. Tests: `node tools/tests/run.mjs` (242 tests, see the README; the next new test is t245). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.362**. Tests: `node tools/tests/run.mjs` (243 tests, see the README; the next new test is t246). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 ## PLAYTEST 4 FIXES (Lucas, 2026-11-10/11; decided; one version per step, in this order. Step 1 applied in v0.0.343, Step 2 in v0.0.345, Step 3 in v0.0.347, Step 4 in v0.0.349, Step 5 in v0.0.350, Step 6 in v0.0.352: all applied)
@@ -12,14 +12,15 @@ The log: `book/playtest-4.md`. **Standing rule (Lucas): every effect stays visib
 - [x] **Step 5, the map (applied in v0.0.350, to test).** (1) Line of Effect: center-to-center cover too (Low cover from creatures) and its calculation checked (Lucas's screenshots: Kaela to the Orc Warrior with Durgan between them reads "No cover: 0 blocked", the center line passing Durgan; Kaela to a creature past Aveline and a stone block, the same). (2) Flanking overlay: first names, one label per creature, nothing on top of another, no "+0" or "threatens no one" noise. (3) An area's hover tooltip ("1 Bane on Strike Actions / Allies +1 Defense"). (4) The granted-uses bar movable and lower. (5) GM Alt-drag = Forced Movement (any distance, no Reactions, ignores Difficult Terrain, collisions).
 - [x] **Step 6, buttons (applied in v0.0.352, to test).** (1) Every chip: its icon uses it, its name opens its item (a movement chip: the book's rule). (2) Calculated values in their own text colour, the calculation on hover; Smite's "(2d6 + [Mod] at Stage 2…)" off in Foundry only (the book keeps it).
 
-## TURN BREAKDOWN DOCK (Lucas, 2026-11-11, after testing v0.0.361; design stage, nothing built)
-Mockups: `foundry/mockups/turn-breakdown.html` (A one timeline, B four sections, C a folded bar that says enough). **Waiting for Lucas: A, B or C, and the open points below.**
-- [ ] **The Turn Breakdown** (today's AP ticker and its Turn Log, `ticker.mjs`) becomes **a dock at the bottom of the chat**, always there, folded by default, unfolded per client. It shows the current turn: AP regained, the Actions used through the turn, the Effects that tick down at the end of this turn, and the Effects on the creature with their rounds left.
-- [ ] **A "Turn" button replaces Foundry's Export Chat Log** under the chat (show or hide the dock completely, per client); **Export Chat Log moves to the Journal tab.**
-- [ ] **The unused AP line:** "Kaela: Guard 8 (unused AP)", "unused AP" a link to the book's Unspent AP (Ch. 2), inside the dock (today a sysLine of its own, `combat.mjs setUnusedApGuard`).
-- [ ] **Durations:** at a turn's start, which Effects tick down at its end; when they tick or end, said in the dock (no separate chat message, unless Lucas wants one line for an end).
-- [ ] **Advance shows while moving** (today its line is posted only when the movement ends: v0.0.200's design, `move.mjs`).
-- [ ] **Open:** past turns: only the Encounter Log, or ‹ › arrows on the dock? One chat line when an Effect ends, or nothing?
+## TURN BREAKDOWN DOCK (v0.0.362, 2026-11-11; Lucas: layout A, "Guard 8" among the Effects, one line "End of X's Turn" in the chat, past turns only in the Encounter Log; NOT tested by Lucas)
+Mockups: `foundry/mockups/turn-breakdown.html`. What changed: the changelog (docs/reference.md, v0.0.362). **I can't run Foundry: the dock was only drawn in Chromium from the module's own HTML and the system CSS.** The checklist:
+- [ ] **The dock** sits under the newest chat message while a combat runs, folded: "Turn", the creature, the round, the AP and Reaction AP pips. Click it: it unfolds (only on your client; F5 keeps it). Hidden for a hidden combatant (players).
+- [ ] **Unfolded:** Turn start (+4 +R), **Guard N (unused AP)** when the last turn left AP (click "unused AP": the book's Unspent AP note), each Action with its pips, **Advance shows as soon as you start moving** and counts its squares (a pulsing dot), then "Advance 4 sq"; another creature's Reaction in this turn ("Durgan: Rebuke").
+- [ ] **At the end of this turn:** the Effects and areas that will tick ("2 → 1") or end. **On Kaela:** every Effect with its rounds, one applied during the turn too, and her Guard.
+- [ ] **The Turn button** where Export Chat Log was: it hides and shows the dock. **Export Chat Log** is at the bottom of the Journal tab and still saves the log.
+- [ ] **No AP ticker messages and no "unused AP" line** in the chat any more; at each turn's end **one line "End of X's Turn"** (bare, no sender), which unfolds into that turn (what ticked and ended, the Effects left).
+- [ ] **Not verified:** where V14 draws the chat's Export button (`[data-action="export"]`; if the Turn button is missing, the console says "twod12 | Turn button"), the Journal tab's footer (`.directory-footer`), `game.messages.export()`; the dock's place in the chat when the sidebar is collapsed (the chat pops out: the dock stays in the chat tab).
+- [ ] **Known limits:** a movement that gets more squares mid-way (a second Advance on the same banner) counts the first grant only until it ends; a client reloaded mid-move leaves the line "live" until that creature's next turn.
 
 ## PACK PERF (v0.0.361, 2026-11-11; the Effects audit's section 6, D27 to D37 and D40, all at their defaults; **Lucas tested it: "All seems to work"**)
 What changed is in the changelog (docs/reference.md, v0.0.361). **Read from the code, not timed: I can't run Foundry.** The test checklist for Lucas:

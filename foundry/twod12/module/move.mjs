@@ -612,8 +612,9 @@ export function moveBanner(c, kind, granted, name, { drag = false, ap = 0 } = {}
   const writeLine = async () => {
     if (logged) return;
     logged = true;
-    const { logEvent, makeLine } = await import("./ticker.mjs");
-    await logEvent(c, makeLine("move", name, after + ap, after, Math.max(apMax(c), after + ap)));
+    // v0.0.362 (Lucas: Advance didn't show until the whole movement was used): its live line becomes the finished one, with the squares moved
+    const { logMoveDone, makeLine } = await import("./ticker.mjs");
+    await logMoveDone(c, { ...makeLine("move", name, after + ap, after, Math.max(apMax(c), after + ap)), sq: Math.round(Math.max(0, granted - left()) * 100) / 100 });
   };
   const hooks = [];
   const on = (h, fn) => hooks.push([h, Hooks.on(h, fn)]);
@@ -629,6 +630,8 @@ export function moveBanner(c, kind, granted, name, { drag = false, ap = 0 } = {}
   };
   moveBar = { c, finish, writeLine, logged: () => logged, toAdvance: () => { name = name === "Evade" ? "Advance" : name; }, add: (n, moreAp = 0) => { granted += n; ap += moreAp; after = getAP(c); } };
   on("updateCombatant", cb => { if (cb.id !== c.id || moveBar?.c !== c) return; if (left() <= 0) finish(false); });
+  // v0.0.362: the movement shows in the Turn Breakdown as soon as it starts (live: the dock counts its squares)
+  import("./ticker.mjs").then(T => T.logLive(c, T.makeLine("move", name, after + ap, after, Math.max(apMax(c), after + ap)), granted)).catch(() => {});
   on("combatTurnChange", () => finish(false));
   on("deleteCombat", () => finish(false));
 }

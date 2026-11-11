@@ -4338,3 +4338,55 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .application.twod12-builder .bb-quick > .fr-m { grid-row: span 2; align-self: start; padding-top: 3px; }
 .application.twod12-styled .sk .bb-quick button { width: 100%; border-radius: 6px; }
 .application .as-tab .fr-pane h4 { display: flex; align-items: center; gap: 8px; }
+
+/* ------------------------------------------------------------------ v0.0.362 (Lucas, mockup turn-breakdown.html, layout A): the Turn Breakdown dock
+   under the chat messages (turndock.mjs), and the "End of X's Turn" line. The parchment card and the Reactions card's navy bar. */
+.twod12-dockwrap { flex: none; margin: 4px 6px 6px; }
+.twod12-dockwrap[hidden] { display: none; }
+.twod12-hidden { display: none !important; }
+.twod12-dock, .twod12.chat.turnend { background: #f4eddc; color: #2b2216; border: 1px solid #bfae86; border-radius: 6px; overflow: hidden; font-family: "Signika", sans-serif; font-size: 12.5px; line-height: 1.3; }
+.twod12-dock { box-shadow: 0 -2px 8px rgba(0, 0, 0, .35); }
+.twod12-dock .td-hd, .twod12.chat.turnend > summary { background: #1d2738; color: #ecdcae; display: flex; align-items: center; gap: 7px; min-height: 26px; padding: 2px 8px; cursor: pointer; user-select: none; list-style: none; white-space: nowrap; }
+.twod12.chat.turnend > summary::-webkit-details-marker { display: none; }
+.twod12-dock .td-ttl, .twod12.chat.turnend .td-ttl { font-variant: small-caps; font-weight: 600; letter-spacing: .04em; font-size: 13.5px; overflow: hidden; text-overflow: ellipsis; }
+.twod12-dock .td-who { font-weight: 700; color: #fff3d0; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.twod12-dock .td-rd, .twod12.chat.turnend .td-rd { opacity: .75; font-size: 11.5px; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.twod12-dock .td-sp, .twod12.chat.turnend .td-sp { margin-left: auto; display: inline-flex; align-items: center; gap: 7px; flex: none; }
+.twod12-dock .td-chev { font-size: 9px; opacity: .75; transition: transform .15s; display: inline-block; }
+.twod12-dock.open .td-chev { transform: rotate(180deg); }
+.twod12.chat.turnend .td-chev { font-size: 8px; opacity: .7; transition: transform .15s; display: inline-block; }
+.twod12.chat.turnend[open] .td-chev { transform: rotate(90deg); }
+.twod12-dock .td-body { display: none; max-height: 40vh; overflow-y: auto; }
+.twod12-dock.open .td-body { display: block; }
+.twod12-dock .td-pips, .twod12.chat.turnend .td-pips { display: inline-flex; gap: 3px; align-items: center; }
+.twod12-dock .td-pips i, .twod12.chat.turnend .td-pips i { width: 8px; height: 8px; border-radius: 50%; background: rgba(236, 220, 174, .25); display: inline-block; }
+.twod12-dock .td-pips i.on, .twod12.chat.turnend .td-pips i.on { background: #9aa7ff; }
+.twod12-dock .td-pips i.r, .twod12.chat.turnend .td-pips i.r { border-radius: 2px; transform: rotate(45deg); width: 7px; height: 7px; margin-left: 4px; }
+.twod12-dock .td-pips i.r.on, .twod12.chat.turnend .td-pips i.r.on { background: #e6bd5a; }
+.twod12 .td-tl { padding: 3px 0; }
+.twod12 .td-tl .td-r { display: grid; grid-template-columns: 16px 1fr auto; align-items: center; gap: 6px; padding: 2px 8px; }
+.twod12 .td-tl .td-r.now { background: rgba(59, 76, 184, .08); }
+.twod12 .td-tl .td-none { display: block; color: #6f6350; font-style: italic; }
+.twod12 .td-tl .td-ic { text-align: center; font-size: 11px; color: #6f6350; }
+.twod12 .td-tl .td-ic.ap { color: #3b4cb8; } .twod12 .td-tl .td-ic.mv { color: #4d6b0a; } .twod12 .td-tl .td-ic.rx { color: #8a5a00; } .twod12 .td-tl .td-ic.guard { color: #2f6fb3; }
+.twod12 .td-tl .td-nm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.twod12 .td-tl .td-on { color: #6f6350; }
+.twod12 .td-tl .td-c.ap { color: #3b4cb8; font-weight: 700; }
+.twod12 .td-tl .td-g { color: #2f6fb3; }
+.twod12 .td-tl .td-link { color: #0b5cad; text-decoration: underline dotted; cursor: pointer; }
+.twod12 .td-tl .td-sep { font-size: 10.5px; font-variant: small-caps; letter-spacing: .05em; color: #6f6350; font-weight: 700; padding: 5px 8px 1px; border-top: 1px solid #d9cca8; margin-top: 3px; }
+.twod12 .td-tl .td-live { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #4d6b0a; margin-left: 5px; animation: twod12-tdpulse 1.2s infinite; }
+@keyframes twod12-tdpulse { 50% { opacity: .25; } }
+.twod12 .td-badge { display: inline-flex; align-items: center; font-size: 11px; font-weight: 700; border-radius: 6px; padding: 0 6px; line-height: 17px; white-space: nowrap; }
+.twod12 .td-badge.rd { background: #e3d7b8; color: #5a4a28; }
+.twod12 .td-badge.end { background: #f3d3cf; color: #b3261e; }
+.twod12 .td-badge.tick { background: #dfe3f6; color: #3b4cb8; }
+.twod12 .td-tl .tk-pips { display: inline-flex; gap: 3px; flex: none; }
+.twod12 .td-tl .tk-pips i { width: 7px; height: 7px; border-radius: 50%; box-sizing: border-box; background: rgba(128, 128, 128, .28); }
+.twod12 .td-tl .tk-pips i.on { background: #3b4cb8; }
+.twod12 .td-tl .tk-pips i.spent { background: transparent; border: 1.2px solid #b3261e; }
+.twod12 .td-tl .tk-pips i.rap { border-radius: 1px; transform: rotate(45deg); width: 6px; height: 6px; }
+.twod12 .td-tl .tk-pips i.rap.on { background: #a8800f; }
+.twod12 .td-tl .tk-pips .hsep { width: 3px; }
+.twod12-exportchat { margin-top: 4px; }
+.twod12.chat.turnend .td-ttl { flex: none; }

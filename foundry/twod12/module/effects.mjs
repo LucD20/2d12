@@ -446,41 +446,64 @@ export function registerEffectHooks() {
   Hooks.on("combatTurnChange", async (combat, prior) => {
     if (!game.user.isActiveGM) return;
     const ended = combat.combatants.get(prior?.combatantId);
-    // v0.0.343: one actor per uuid (an unlinked token's combatant and its scene token can be two objects for the same creature: the second one
-    // deleted an effect the first had already ended, and that error stopped the loop)
-    const actors = new Map();
-    for (const c of combat.combatants) if (c.actor) actors.set(c.actor.uuid, c.actor);
-    for (const td of canvas.scene?.tokens ?? []) if (td.actor && !actors.has(td.actor.uuid)) actors.set(td.actor.uuid, td.actor);
+    const done = [];
     // v0.0.343 (Lucas, playtest 4: Frightened (1 round) and Vulnerable (EoT) didn't end): each effect is done on its own (one error no longer stops
     // the others), and the creature is matched by its combatant, token or uuid, not by object identity (durationStep, tested in t233)
-    for (const actor of actors.values()) {
-      for (const e of [...actor.effects]) {
-        if (typeof actor.effects.has === "function" && !actor.effects.has(e.id)) continue;   // gone with its parent (a linked condition)
-        try {
-          const fl = Object.fromEntries(DUR_KEYS.map(k => [k, e.getFlag(F, k)]));
-          let cid = ""; try { cid = combatantOf(actor, combat)?.id ?? ""; } catch (err) { /* no combatant */ }
-          const step = durationStep(fl, ended ? { id: ended.id, initiative: ended.initiative ?? null, tokenId: ended.tokenId ?? "", actorUuid: ended.actor?.uuid ?? "", ref: ended.actor ?? null } : null, prior, { uuid: actor.uuid ?? "", tokenId: actor.isToken ? actor.token?.id ?? "" : "", combatantId: cid, ref: actor });
-          if (step === "end") await e.delete();
-          // v0.0.361 (PACK PERF, D31): one write with both flags (it was two, each firing every effect hook and a sheet redraw)
-          else if (step === "tick") { const rem = (e.getFlag(F, "remaining") ?? e.getFlag(F, "duration")?.rounds) - 1; await e.update({ [`flags.${F}.remaining`]: rem, [`flags.${F}.lastTick`]: prior.round }); }
-        } catch (err) { console.warn(`twod12 | the duration of ${e?.name} on ${actor?.name}`, err); }
-      }
+    for (const x of pendingSteps(combat, ended, prior)) {
+      try {
+        if (x.step === "end") await x.doc.delete();
+        // v0.0.361 (PACK PERF, D31): one write with both flags (it was two, each firing every effect hook and a sheet redraw)
+        else await x.doc.update({ [`flags.${F}.remaining`]: x.rem, [`flags.${F}.lastTick`]: prior.round });
+        done.push(x);
+      } catch (err) { console.warn(`twod12 | the duration of ${x.doc?.name} on ${x.on}`, err); }
     }
-    // Kept template areas with a duration. They start when placed (reactions included):
-    // "expire:eot" ends at the end of the origin's turn; otherwise the rounds count down at the end of the
-    // turn that was current when the area was placed, skipping that first turn.
-    for (const reg of [...(canvas.scene?.regions ?? [])]) {
-      const dur = reg.getFlag(F, "duration");
-      if (!dur?.type || !ended) continue;
-      const isSlot = (slotKey, idKey) => { const sl = reg.getFlag(F, slotKey); return sl !== null && sl !== undefined ? ended.initiative === sl : reg.getFlag(F, idKey) === ended.id; };
-      if (dur.expire === "eot") { if (isSlot("originSlot", "originCombatantId")) await reg.delete(); continue; }
-      if (!isSlot("anchorSlot", "anchorCombatantId")) continue;
-      if (reg.getFlag(F, "appliedRound") === prior.round && reg.getFlag(F, "appliedTurn") === prior.turn) continue;
-      if (reg.getFlag(F, "lastTick") === prior.round) continue;
-      const rem = (reg.getFlag(F, "remaining") ?? dur.rounds) - 1;
-      if (rem <= 0) await reg.delete(); else await reg.update({ [`flags.${F}.remaining`]: rem, [`flags.${F}.lastTick`]: prior.round });   // D31: one write
-    }
+    // v0.0.362 (Lucas: the Turn Breakdown): one line "End of X's Turn" in the chat, unfolding into that turn's breakdown with what ticked and ended
+    try { if (ended) { const { postTurnEnd } = await import("./turndock.mjs"); await postTurnEnd(combat, ended, done.map(x => ({ name: x.name, on: x.on, step: x.step, rem: x.rem })), prior); } } catch (err) { console.warn("twod12 | End of turn", err); }
   });
+}
+
+/**
+ * v0.0.362: what ticks or ends when this combatant's turn ends: [{ doc, name, on, step: "tick" | "end", rem }] (effects on every creature of the
+ * combat and the scene, then the kept areas with a duration). Read only: the durations hook applies them; the Turn Breakdown shows them before.
+ * prior: { round, turn, combatantId } of the turn that ends.
+ */
+export function pendingSteps(combat, ended, prior) {
+  const out = [];
+  if (!combat || !ended) return out;
+  // v0.0.343: one actor per uuid (an unlinked token's combatant and its scene token can be two objects for the same creature: the second one
+  // deleted an effect the first had already ended, and that error stopped the loop)
+  const actors = new Map();
+  for (const c of combat.combatants) if (c.actor) actors.set(c.actor.uuid, c.actor);
+  for (const td of canvas?.scene?.tokens ?? []) if (td.actor && !actors.has(td.actor.uuid)) actors.set(td.actor.uuid, td.actor);
+  const endInfo = { id: ended.id, initiative: ended.initiative ?? null, tokenId: ended.tokenId ?? "", actorUuid: ended.actor?.uuid ?? "", ref: ended.actor ?? null };
+  const short = n => String(n ?? "").replace(/\s*\(.*\)\s*$/, "");
+  for (const actor of actors.values()) {
+    for (const e of [...actor.effects]) {
+      if (typeof actor.effects.has === "function" && !actor.effects.has(e.id)) continue;   // gone with its parent (a linked condition)
+      try {
+        const fl = Object.fromEntries(DUR_KEYS.map(k => [k, e.getFlag(F, k)]));
+        let cid = ""; try { cid = combatantOf(actor, combat)?.id ?? ""; } catch (err) { /* no combatant */ }
+        const step = durationStep(fl, endInfo, prior, { uuid: actor.uuid ?? "", tokenId: actor.isToken ? actor.token?.id ?? "" : "", combatantId: cid, ref: actor });
+        if (step) out.push({ doc: e, name: e.name, on: short(actor.name), step, rem: step === "tick" ? (e.getFlag(F, "remaining") ?? e.getFlag(F, "duration")?.rounds) - 1 : 0 });
+      } catch (err) { console.warn(`twod12 | the duration of ${e?.name} on ${actor?.name}`, err); }
+    }
+  }
+  // Kept template areas with a duration. They start when placed (reactions included):
+  // "expire:eot" ends at the end of the origin's turn; otherwise the rounds count down at the end of the
+  // turn that was current when the area was placed, skipping that first turn.
+  for (const reg of [...(canvas?.scene?.regions ?? [])]) {
+    const dur = reg.getFlag(F, "duration");
+    if (!dur?.type) continue;
+    const isSlot = (slotKey, idKey) => { const sl = reg.getFlag(F, slotKey); return sl !== null && sl !== undefined ? ended.initiative === sl : reg.getFlag(F, idKey) === ended.id; };
+    const name = short(reg.name || reg.getFlag(F, "zone")?.name || "Area");
+    if (dur.expire === "eot") { if (isSlot("originSlot", "originCombatantId")) out.push({ doc: reg, name, on: "", step: "end", rem: 0 }); continue; }
+    if (!isSlot("anchorSlot", "anchorCombatantId")) continue;
+    if (reg.getFlag(F, "appliedRound") === prior?.round && reg.getFlag(F, "appliedTurn") === prior?.turn) continue;
+    if (reg.getFlag(F, "lastTick") === prior?.round) continue;
+    const rem = (reg.getFlag(F, "remaining") ?? dur.rounds) - 1;
+    out.push({ doc: reg, name, on: "", step: rem <= 0 ? "end" : "tick", rem: Math.max(0, rem) });
+  }
+  return out;
 }
 
 /* Effects panel next to the sidebar: hover for info, click for details, right-click to remove. */
