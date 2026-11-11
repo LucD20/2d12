@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-11 from the repository at: ea6db80 2026-11-11 PACK ACTION-SHEET merged into main (v0.0.355 to v0.0.360); NEXT: PERF
+Built by tools/knowledge.py on 2026-11-11 from the repository at: 16b7cff 2026-11-11 v0.0.361: PACK PERF, the Effects audit's performance fixes D27 to D37 and D40
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
