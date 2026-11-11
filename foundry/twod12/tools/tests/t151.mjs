@@ -108,5 +108,5 @@ console.log(S({ type: "bonusdamage", dmg: "1d6", dmgPool: "B", dmgSub: "Pi", all
 console.log(S({ type: "boonbane", against: true, banes: 1, all: new Set(["strike"]), oncePerRound: true }));
 console.log(S({ type: "ignore", ignoreRule: "engagedTarget", all: new Set(["shot"]) }));
 console.log(S({ type: "rally", rallyBonus: "power + 2", rallyRange: 5 }));
-const sheet = src("templates/parts/settings.hbs"), ihbs = src("templates/item-sheet.hbs");
-console.log("editor: once", sheet.includes('data-field="oncePerRound"'), "| marked", sheet.includes('data-field="vsMarked"'), "| ignore", sheet.includes('data-field="ignoreRule"'), "| rally", sheet.includes('data-field="rallyBonus"'), "| Action: Marks the target", ihbs.includes('name="system.marksTarget"'));
+const sheet = src("templates/parts/settings.hbs"), ihbs = (src("templates/item-sheet.hbs") + src("module/actionsheet.mjs"));
+console.log("editor: once", sheet.includes('data-field="oncePerRound"'), "| marked", sheet.includes('data-field="vsMarked"'), "| ignore", sheet.includes('data-field="ignoreRule"'), "| rally", sheet.includes('data-field="rallyBonus"'), "| Action: Marks the target", ihbs.includes('tog("system.marksTarget"'));

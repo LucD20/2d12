@@ -19,8 +19,8 @@ const { TWOD12 } = await import(ROOTURL + "module/config.mjs");
 console.log("--- the moments are settings");
 console.log("the moments:", Object.keys(TWOD12.moments).filter(Boolean).join(", "), "| each has its rules:", Object.keys(TWOD12.moments).filter(Boolean).every(k => M.MOMENTS[k]));
 console.log("used on:", Object.keys(TWOD12.momentTargets).join(", "), "| the data model:", src("module/data.mjs").includes('momentSelf: bool(), momentTarget: choice(TWOD12.momentTargets, "subject"),'));
-const hbs = src("templates/item-sheet.hbs");
-console.log("the item sheet: Moment, Within, You too, Used on:", ["system.moment", "system.momentRange", "system.momentSelf", "system.momentTarget"].every(n => hbs.includes(`name="${n}"`)));
+const hbs = (src("templates/item-sheet.hbs") + src("module/actionsheet.mjs"));
+console.log("the item sheet: Moment, Within, You too, Used on:", ["system.moment", "system.momentRange", "system.momentSelf", "system.momentTarget"].every(n => hbs.includes(`"${n}"`) || hbs.includes(`name="${n}"`)));
 
 console.log("--- pure pieces");
 console.log("sides: an ally", M.sideOk("ally", 1, 1, false, false), "| an enemy as an ally", M.sideOk("ally", 1, -1, false, false), "| you without You too", M.sideOk("ally", 1, 1, true, false), "| with", M.sideOk("ally", 1, 1, true, true), "| an enemy", M.sideOk("enemy", 1, -1, false, false), "| a neutral is no enemy", M.sideOk("enemy", 1, 0, false, false), "| you are never the enemy", M.sideOk("enemy", 1, -1, true, true));
@@ -137,7 +137,7 @@ console.log("resolves:", M.stackOrder(rr).map(r => r.i).join(","), "| 0 sooner:"
 console.log("who manages:", M.mayManage({ rows: [{ answerer: "p1" }] }, { id: "p1" }), M.mayManage({ rows: [{ answerer: "p1" }] }, { id: "p2" }), M.mayManage({ rows: [] }, { id: "gm", isGM: true }), "| time left paused:", M.timeLeft({ paused: true, left: 41000 }), M.timeLeft({ deadline: 5000 }, 2000));
 const bk = M.rxCardHtml({ v: 2, rows: [], deadline: 0, base: { kind: "move", squares: 4, back: { name: "Orc", squares: 4, used: false } } }), bkUsed = M.rxCardHtml({ v: 2, rows: [], deadline: 0, base: { kind: "move", squares: 4, back: { name: "Orc", squares: 4, used: true } } });
 console.log("Move back (v0.0.275: on the base slab):", bk.match(/data-twod12="rxBack" data-tooltip="([^"]*)"/)?.[1], "| used:", bkUsed.match(/rx-backed" data-tooltip="([^"]*)"/)?.[1]);
-console.log("the Action's name opens it:", html.includes('data-twod12="rxOpen" data-row="2"'), "| the item sheet's section:", hbs.includes('<legend><i class="fa-solid fa-bolt-lightning"></i> Reaction moment</legend>'));
+console.log("the Action's name opens it:", html.includes('data-twod12="rxOpen" data-row="2"'), "| the item sheet's section:", hbs.includes('"A Reaction"'));
 const mo2 = src("module/moment.mjs");
 console.log("the move's movement kept before it (refunded on Move back):", mo2.includes("const flags = c ? { freeMove: Number(c.getFlag(F, \"freeMove\")) || 0") && mo2.includes("await doc.update({ x: to.x, y: to.y }, { twod12Forced: true, animate: true });"));
 const cb = src("module/combat.mjs"), car = src("module/carousel.mjs");

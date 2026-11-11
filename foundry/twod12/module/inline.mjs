@@ -167,7 +167,7 @@ export function parseInline(kind, inner) {
     else if (key === "crit") cfg.crit = yes(val);   // v0.0.249: @Condition[prone|crit:yes]: only the targets that rolled a Critical
     else if (key === "tier") cfg.tier = Math.max(0, Number(val) || 0);   // v0.0.267: tier:2: only the targets that rolled that Tier or more (a Grant's line on the Tier rows)
     // v0.0.250 (cards 3): s2:/s3: the formula at Stage 2 / 3 (Guard, Heal); side:allies / side:enemies (a chain's chip for one side of the card's targets); extra: a heal added to a Rally Point (Lay On Hands)
-    else if (key === "s2" || key === "s3") (cfg.stages ??= {})[key] = val.toLowerCase().replace(/\s+/g, "");
+    else if (/^s\d+$/.test(key)) (cfg.stages ??= {})[key] = val.toLowerCase().replace(/\s+/g, "");   // v0.0.355: any Stage (s0: with Stage 0), not only s2 / s3
     else if (key === "side") cfg.side = val.toLowerCase();
     else if (key === "extra") cfg.extra = val.toLowerCase().replace(/\s+/g, "");
     else if (key === "bb") cfg.bb = ({ field: "field", pressure: "pressure", support: "support" })[val.toLowerCase()] ?? "";   // v0.0.301 (PACK BB): @Boon[-1|bb:pressure] = 1 Pressure Bane
@@ -259,7 +259,8 @@ export function rallyForDoc(doc) {
 /** "+1d6+Pow" with the Power Modifier 3 reads "+1d6+3"; with none known, the word stays. */
 export const withPow = (label, pow) => (pow === null || pow === undefined || !/\bPow\b|\[Pow\]/.test(label) ? label : label.replace(/\s*\+\s*(?:\[Pow\]|Pow)\b/g, `+${pow}`).replace(/\[Pow\]|\bPow\b/g, String(pow)));
 /** The formula a chip uses at this Stage (s2: / s3: on the chip), else its own. */
-export const stagedFormula = (cfg, stage) => (stage >= 3 && cfg?.stages?.s3) || (stage >= 2 && cfg?.stages?.s2) || cfg?.formula || "";
+/** v0.0.355 (the audit's D51): the highest sN: at or below the Stage, for any Stage number (an empty Stage uses the one before it). */
+export const stagedFormula = (cfg, stage) => { const n = Object.keys(cfg?.stages ?? {}).map(k => Number(k.slice(1))).filter(x => x <= Number(stage) && cfg.stages[`s${x}`]).sort((a, b) => b - a)[0]; return (n != null && cfg.stages[`s${n}`]) || cfg?.formula || ""; };
 /** "3d6+pow" -> "3d6 + Pow"; "rp*2" -> "twice a Rally Point's heal"; "1d8+mod" -> "1d8 + [Mod]". */
 export const healText = f => { const s = String(f ?? ""); if (/^rp\*(\d+)$/.test(s)) { const n = Number(s.slice(3)); return `${({ 2: "twice", 3: "three times" })[n] ?? `${n} ×`} a Rally Point's heal`; } return s.replace(/\+/g, " + ").replace(/\*/g, " × ").replace(/\bpow\b/g, "Pow").replace(/\bmod\b/g, "[Mod]").replace(/\brp\b/g, "a Rally Point's heal"); };
 /** "Guard 1d8 + [Mod]" with the Modifier 3 reads "Guard 1d8+3" (Lucas's spelling); with no Modifier known, the words stay. */

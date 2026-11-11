@@ -4149,3 +4149,89 @@ a.twod12-inline .ti-name:hover { text-decoration: underline; text-underline-offs
 a.twod12-inline.calc .ti-name, a.twod12-inline.calc { color: #1a3fb0; }   /* v0.0.354 (Lucas: "the blue a bit clearer, a bit darker"): a deeper, more saturated blue */
 .application.twod12.twod12-actor a.twod12-inline.calc .ti-name, .application.twod12.twod12-actor a.twod12-inline.calc { color: #8fb0ff; }
 .application.twod12.twod12-actor .acard a.twod12-inline.calc .ti-name, .application.twod12.twod12-actor .acard a.twod12-inline.calc, .application.twod12.twod12-actor .twod12.chat a.twod12-inline.calc .ti-name { color: #1a3fb0; }
+
+/* ================================================================== v0.0.355 PACK ACTION-SHEET (Lucas's mockup A2, foundry/mockups/action-sheet-A2.html):
+   the Action's Details tab (actionsheet.mjs). It is built with the fr- pieces of EFFECT-SHEET (v0.0.323, above); this block has only what is new:
+   the order of events (the rail), the trait chips row, the Version tabs, the Tier rows, the steps after the damage, the by-Stage row. */
+.application .as-tab .as-flowcols { display: grid; grid-template-columns: 208px minmax(0, 1fr); gap: 14px; align-items: start; }
+.application .as-tab .as-flow { position: sticky; top: 4px; max-height: calc(100vh - 220px); overflow-y: auto; background: var(--sk-panel); border: 1px solid var(--sk-line); border-radius: 5px; padding: 8px 8px 10px; }
+.application .as-tab .as-railh { display: block; font: 700 11px Signika, sans-serif; letter-spacing: .07em; text-transform: uppercase; color: var(--sk-acc); margin-bottom: 6px; }
+.application .as-tab .as-railh small { display: block; letter-spacing: 0; text-transform: none; font-weight: 400; color: var(--sk-mut); }
+.application .as-tab ol.as-rail { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; position: relative; }
+.application .as-tab ol.as-rail::before { content: ""; position: absolute; left: 30px; top: 12px; bottom: 12px; width: 2px; background: var(--sk-line); }
+.application .as-tab ol.as-rail li { margin: 0; padding: 0; }
+.application.twod12-styled .sk .as-tab a.as-ev { position: relative; display: grid; grid-template-columns: 12px 22px minmax(0, 1fr); gap: 6px; align-items: start; padding: 4px; border-radius: 4px; color: var(--sk-ink); text-decoration: none; cursor: pointer; }
+.application.twod12-styled .sk .as-tab a.as-ev:hover, .application.twod12-styled .sk .as-tab a.as-ev:focus-visible { background: #fff; box-shadow: inset 3px 0 0 var(--sk-acc); outline: none; }
+.application.twod12-styled .sk .as-tab a.as-ev.at { background: #fff; box-shadow: inset 3px 0 0 var(--sk-amber); }
+.application .as-tab .as-always a.as-ev { grid-template-columns: 22px minmax(0, 1fr); }
+.application .as-tab .as-evn { font: 700 10px Georgia, serif; color: var(--sk-mut); padding-top: 4px; text-align: right; }
+.application .as-tab .as-evt b { display: block; font-size: 12.5px; line-height: 1.25; }
+.application .as-tab .as-evt em { display: block; font-style: normal; font-size: 11px; color: var(--sk-mut); line-height: 1.25; overflow-wrap: anywhere; }
+.application .as-tab .as-evt em.mono { font-family: ui-monospace, Consolas, monospace; font-size: 10px; }
+.application .as-tab .as-evsep { font: 700 10px Signika, sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--sk-acc); padding: 6px 0 2px 40px !important; background: var(--sk-panel); position: relative; }
+.application .as-tab .as-always { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--sk-line); display: grid; gap: 2px; }
+.application .as-tab [data-as-sec], .application .as-tab [data-as-anchor] { scroll-margin-top: 8px; }
+.application .as-tab .as-page { min-width: 0; }
+.application .as-tab .fr-in.wide, .application .as-tab .fr-in.as-tx { width: 100%; }
+.application .as-tab .fr-in.as-n2 { width: 4.2em; text-align: center; }
+.application .as-tab h4.as-h4 { margin: 14px 0 6px; font: 700 13px Georgia, serif; color: var(--sk-acc); display: flex; gap: 8px; align-items: baseline; border-bottom: 1px dotted var(--sk-line); padding-bottom: 3px; }
+.application .as-tab h4 small { font: 400 11px Signika, sans-serif; color: var(--sk-mut); }
+.application .as-tab .as-traits { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.application .as-tab .as-auto { display: inline-flex; gap: 6px; align-items: baseline; padding: 3px 8px; border: 1px dashed var(--sk-line); border-radius: 4px; background: rgba(30,36,48,.04); font-weight: 600; }
+.application .as-tab .as-auto small { font-weight: 400; color: var(--sk-mut); }
+.application .as-tab .as-more { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; margin-top: 8px; padding-top: 8px; border-top: 1px dotted var(--sk-line); }
+.application.twod12-styled .sk .as-tab .as-link { color: var(--sk-acc); cursor: pointer; font-size: 12px; }
+.application .as-tab .as-prev { margin: 0 0 10px; border: 1px solid var(--sk-line); border-radius: 5px; background: var(--sk-panel); }
+.application .as-tab .as-prev > summary { cursor: pointer; padding: 6px 10px; font-weight: 700; color: var(--sk-acc); }
+.application .as-tab .as-card { padding: 0 10px 10px; }
+.application .as-tab .as-card .acard { max-width: 520px; margin: 0 auto; }
+.application .as-tab .as-vtabs { display: flex; flex-wrap: wrap; gap: 4px; align-items: stretch; border-bottom: 2px solid var(--sk-navy); margin-bottom: 10px; }
+.application.twod12-styled .sk .as-tab button.as-vtab { display: flex; flex-direction: column; align-items: flex-start; height: auto; line-height: 1.3; padding: 5px 12px; border: 1px solid var(--sk-line); border-bottom: 0; border-radius: 5px 5px 0 0; background: #fff; font-weight: 700; cursor: pointer; width: auto; }
+.application.twod12-styled .sk .as-tab button.as-vtab small { font: 400 11px ui-monospace, Consolas, monospace; color: var(--sk-mut); max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.application.twod12-styled .sk .as-tab button.as-vtab.on { background: var(--sk-navy); color: #fff; border-color: var(--sk-navy); }
+.application.twod12-styled .sk .as-tab button.as-vtab.on small { color: #c9d2e2; }
+.application.twod12-styled .sk .as-tab button.as-vtab.add { font-weight: 400; color: var(--sk-acc); border-style: dashed; justify-content: center; }
+.application .as-tab .as-vtools { margin-left: auto; display: inline-flex; gap: 4px; align-self: center; }
+.application.twod12-styled .sk .as-tab .as-vtools button { font-size: 11px; padding: 2px 8px; width: auto; height: auto; line-height: 1.5; }
+.application .as-tab .as-tiers { display: grid; gap: 4px; margin: 8px 0 4px; }
+.application .as-tab .as-tier { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 8px; align-items: start; padding: 6px 8px; border: 1px solid var(--sk-line); border-left: 4px solid var(--tc); border-radius: 4px; background: #fff; }
+.application .as-tab .as-tier.t1 { --tc: #8c2f28; } .application .as-tab .as-tier.t2 { --tc: #8a6a14; } .application .as-tab .as-tier.t3 { --tc: #2f6b3a; } .application .as-tab .as-tier.crit { --tc: #b8891f; }
+.application .as-tab .as-tl { font: 700 13px Georgia, serif; color: var(--tc); padding-top: 4px; }
+.application .as-tab .as-tb { display: grid; gap: 4px; min-width: 0; }
+.application .as-tab .fr-in.as-dmg { font-family: ui-monospace, Consolas, monospace; font-weight: 600; width: 100%; }
+.application .as-tab .as-under { display: flex; flex-wrap: wrap; gap: 4px; }
+.application .as-tab .as-dc { font-size: 11px; padding: 1px 6px; border-radius: 6px; background: #eef0f4; border: 1px solid #c9ced8; white-space: nowrap; }
+.application .as-tab .as-dc.v { background: #f6e4e1; border-color: #d9aaa4; } .application .as-tab .as-dc.r { background: #e3ebf7; border-color: #a9bbd9; }
+.application .as-tab .as-dc small, .application .as-tab .as-calc { color: var(--sk-mut); }
+.application .as-tab .as-calc { font-size: 11px; }
+.application .as-tab .as-empty { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 6px; }
+.application.twod12-styled .sk .as-tab button.as-fill { border-color: var(--sk-acc); color: var(--sk-acc); font-weight: 600; padding: 3px 10px; width: auto; height: auto; line-height: 1.5; }
+.application .as-tab .as-n { font: 700 11px Georgia, serif; color: var(--sk-mut); width: 12px; text-align: right; }
+.application .as-tab .fr-it.as-step .fr-itxt { min-width: 0; }
+.application .as-tab .fr-it.as-step .fr-m { display: block; font-style: normal; font-size: 11px; }
+.application .as-tab .as-ord { display: inline-flex; gap: 2px; margin-left: auto; opacity: 0; }
+.application .as-tab .fr-it:hover .as-ord, .application .as-tab .fr-it.on .as-ord, .application .as-tab .as-ord:focus-within { opacity: 1; }
+.application.twod12-styled .sk .as-tab .as-ord button { width: 20px; height: 20px; padding: 0; line-height: 1; font-size: 12px; }
+.application .as-tab .as-on { display: inline-flex; gap: 3px; margin-left: 8px; }
+.application .as-tab .as-onb { padding: 1px 8px; border-radius: 6px; font-size: 11px; color: var(--sk-mut); border: 1px solid var(--sk-line); background: #fff; }
+.application .as-tab .as-onb.on { color: #fff; font-weight: 700; border-color: transparent; }
+.application .as-tab .as-onb.t1.on { background: #8c2f28; } .application .as-tab .as-onb.t2.on { background: #8a6a14; } .application .as-tab .as-onb.t3.on { background: #2f6b3a; } .application .as-tab .as-onb.crit.on { background: #b8891f; }
+.application .as-tab .as-bt { display: inline-flex; gap: 4px; align-items: center; margin-left: 8px; font-size: 12px; font-weight: 700; } .application .as-tab .as-bt.t1 { color: #8c2f28; } .application .as-tab .as-bt.t2 { color: #8a6a14; } .application .as-tab .as-bt.t3 { color: #2f6b3a; }
+.application .as-tab .as-stages { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; max-width: 420px; }
+.application.twod12-styled .sk .as-tab .as-stages label { display: grid; gap: 2px; font-size: 12px; font-weight: 700; color: var(--sk-ink); }
+.application .as-tab .as-stages small { font-weight: 400; color: var(--sk-mut); margin-left: 5px; }
+.application .as-tab .as-stages .fr-in { width: 100%; font-family: ui-monospace, Consolas, monospace; }
+.application .as-tab .as-rules .fr-tab { padding: 0; }
+.application .as-tab .fr-kind.k-ap { background: var(--sk-navy); color: #fff; }
+.application .as-tab .fr-dropped { margin-bottom: 4px; }
+.application .as-tab .fr-dropped b[data-as] { cursor: pointer; }
+.application .as-tab .as-foot { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--sk-line); }
+.application.twod12-styled .sk .as-tab .as-foot button { width: auto; }
+@media (max-width: 760px) { .application .as-tab .as-flowcols { grid-template-columns: 1fr; } .application .as-tab .as-flow { position: static; max-height: none; } }
+.application .as-tab .as-rules .fr-sec { margin-top: 0; }
+.application .as-tab .as-rules .fr-sec > h3 { display: none; }
+.application .as-tab .as-rules .fr-md, .application .as-tab .as-rules .fr-lst, .application .as-tab .as-rules .fr-pane { min-height: 0; }
+.application .as-tab .fr-it.as-step { position: relative; }
+.application .as-tab .fr-it.as-step .fr-itxt { flex: 1 1 auto; }
+.application .as-tab .as-ord { position: absolute; right: 4px; top: 4px; background: inherit; }
+.application .as-tab .as-flowcols.as-norail { grid-template-columns: minmax(0, 1fr); }

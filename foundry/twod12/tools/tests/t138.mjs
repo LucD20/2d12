@@ -4,13 +4,14 @@ import fs from "node:fs";
 // v0.0.168: the polish pass. Item sheets and Edit Versions in the sheet's look; the Action Details in Lucas's order (Reaction's Kind and the
 // Interrupt/Trigger greyed out until Reaction is on); a numeric Range on the Actions tab reads "5 sq."; the Tiers in their colored boxes.
 const src = f => fs.readFileSync(ROOT + f, "utf8");
-const tpl = src("templates/item-sheet.hbs"), ver = src("templates/versions-editor.hbs"), sh = src("module/actor-sheets.mjs"), css = src("styles/system.css"), isj = src("module/item-sheet.mjs");
-const a = tpl.indexOf("{{#if isAction}}"), b = tpl.indexOf('<div class="opts">', a), act = tpl.slice(a, b);
-const order = ["Traits", "Flavor", "Reaction</label>", "Kind", "Category", "Level", "Frequency", "Escalation cost", "Targets", "Distance", "Vs.", "Area", "Setup", "Requirements", "Prerequisites", "Interrupt / Trigger"];
+const tpl = (src("templates/item-sheet.hbs") + src("module/actionsheet.mjs")), ver = src("templates/versions-editor.hbs"), sh = src("module/actor-sheets.mjs"), css = src("styles/system.css"), isj = src("module/item-sheet.mjs");
+// v0.0.355 (PACK ACTION-SHEET): the Action's tab is actionsheet.mjs (mockup A2): the card's lines in the book's order, then Reaction and Area as part rows
+const asrc = src("module/actionsheet.mjs"), a = asrc.indexOf("function cardSec"), b = asrc.indexOf("function versionsSec"), act = asrc.slice(a, b);
+const order = ['["Traits"', '["Flavor"', '["Category"', "Level", '["Frequency"', '["Escalation"', '["Targets"', '["Distance"', '["Vs."', "Requirements", "Setup", '["Kind"', '["Moment"', '["Card line"', '"A Reaction"', '"An Area"'];
 const at = order.map(k => act.indexOf(k));
-console.log("Action Details order:", order.map((k, i) => `${k.replace("</label>", "")}@${at[i] > -1 ? "ok" : "MISSING"}`).join(" "), "| in Lucas's order:", at.every((x, i) => x > -1 && (i === 0 || x > at[i - 1])));
+console.log("Action Details order:", order.map((k, i) => `${k.replace(/[\["]/g, "")}@${at[i] > -1 ? "ok" : "MISSING"}`).join(" "), "| in Lucas's order:", at.every((x, i) => x > -1 && (i === 0 || x > at[i - 1])));
 console.log("\"Shown as\" gone:", !act.includes("Shown as"), "| \"costs written as 1R\" gone:", !act.includes("costs written as 1R"),
-  "| Kind greyed until Reaction:", /name="system.reactionKind" \{\{#unless system.reaction\}\}disabled/.test(act), "| Interrupt/Trigger greyed until Reaction:", /name="system.trigger" \{\{#unless system.reaction\}\}disabled/.test(act));
+  "| Kind and the Trigger line folded until Reaction (a part row):", /part\("system\.reaction", s\.reaction, "A Reaction"/.test(act) && act.indexOf('seg("system.reactionKind"') < act.indexOf('part("system.reaction"') && act.includes('named("system.trigger"'));
 console.log("item sheets styled (not Species; Class since v0.0.185):", isj.includes('styled: t !== "species"') && isj.includes('classList.toggle("twod12-styled"') && tpl.includes('<div class="twod12 sheet item{{#if styled}} sk{{/if}}">'),
   "| Versions window styled:", src("module/versions.mjs").includes('classes: ["twod12", "twod12-styled"]') && ver.includes('class="twod12 sheet versions sk"'));
 console.log("Tiers in their own colored boxes:", ver.includes('class="tierbox tier-{{key}}"') && ver.includes('class="tierbox whole"') && ["tier-t1", "tier-t2", "tier-t3"].every(k => css.includes(`.tierbox.${k}`)));

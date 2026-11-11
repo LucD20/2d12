@@ -1,5 +1,5 @@
-Action Details order: Traits@ok Flavor@ok Reaction@ok Kind@ok Category@ok Level@ok Frequency@ok Escalation cost@ok Targets@ok Distance@ok Vs.@ok Area@ok Setup@ok Requirements@ok Prerequisites@ok Interrupt / Trigger@ok | in Lucas's order: true
-"Shown as" gone: true | "costs written as 1R" gone: true | Kind greyed until Reaction: true | Interrupt/Trigger greyed until Reaction: true
+Action Details order: Traits@ok Flavor@ok Category@ok Level@ok Frequency@ok Escalation@ok Targets@ok Distance@ok Vs.@ok Requirements@ok Setup@ok Kind@ok Moment@ok Card line@ok A Reaction@ok An Area@ok | in Lucas's order: true
+"Shown as" gone: true | "costs written as 1R" gone: true | Kind and the Trigger line folded until Reaction (a part row): true
 item sheets styled (not Species; Class since v0.0.185): true | Versions window styled: true
 Tiers in their own colored boxes: true
 dark text on parchment whatever the theme: true

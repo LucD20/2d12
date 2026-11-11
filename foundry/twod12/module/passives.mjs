@@ -8,7 +8,8 @@ const F = "twod12";
 /** The passives of a creature, as objects that read like applied effects (getFlag(scope, key), name, id): one for each Escalation minimum of each Feature or Talent. */
 export function passiveSources(actor) {
   const out = [];
-  const list = actor?.itemTypes ? [...(actor.itemTypes.feature ?? []), ...(actor.itemTypes.talent ?? [])] : [];
+  // v0.0.355 (PACK ACTION-SHEET): an Action can hold rules too (Mark Quarry's Boon); most have none
+  const list = actor?.itemTypes ? [...(actor.itemTypes.feature ?? []), ...(actor.itemTypes.talent ?? []), ...(actor.itemTypes.action ?? []).filter(a => a.system?.settings?.length)] : [];
   for (const it of list) {
     const groups = new Map();
     for (const st of it.system?.settings ?? []) {

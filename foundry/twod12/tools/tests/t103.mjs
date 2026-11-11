@@ -69,4 +69,4 @@ const fl = AF.appliedFlags({ settings: mig.settings.slice(0, 2).map(x => ({ ...b
 console.log("applied (the same flags the rolls read):", JSON.stringify(fl.modifiers.map(m => [m.boons, m.banes, m.empowered, m.enfeebled, m.all.join("+")])));
 const sheet = fs.readFileSync(ROOT + "module/item-sheet.mjs", "utf8");
 const stl = fs.readFileSync(ROOT + "templates/parts/settings.hbs", "utf8");
-console.log("the editor: its own setting type:", stl.includes("{{#if isDamageStep}}") && sheet.includes("isDamageStep:"), "| no Empowered inputs under Boons and Banes:", stl.indexOf('data-field="empowered"') > stl.indexOf("{{#if isDamageStep}}"));
+console.log("the editor: its own setting type:", stl.includes("{{#if isDamageStep}}") && fs.readFileSync(new URL("../../module/fxrules.mjs", import.meta.url), "utf8").includes('case "damagestep": add("act"'), "| no Empowered inputs under Boons and Banes:", stl.indexOf('data-field="empowered"') > stl.indexOf("{{#if isDamageStep}}"));

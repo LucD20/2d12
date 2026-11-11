@@ -177,6 +177,9 @@ export const TWOD12 = {
     { key: "utility", label: "Utility", names: ["Steel Yourself", "Interact", "Regrip", "Release", "Leaning"] }
   ],
   // v0.0.189 (Lucas, after Draw Steel's Codex): how much of a card Foundry does for you, as a chip on the card. "" shows nothing.
+  // v0.0.355 (PACK ACTION-SHEET; the audit's D21, D22): the highest Escalation, read by the Action sheet's Escalation field and a rule's "Works"
+  // (3 today; 6 when Stage 0 is applied: book/decisions-s1.md item 10). Never write a fixed 1 / 2 / 3 in an editor.
+  escalationMax: 3,
   automationRanks: { "": "(not set)", none: "Not implemented", bronze: "Bronze", silver: "Silver", gold: "Gold", mithril: "Mithril", diamond: "Diamond" },   // v0.0.315 (Lucas): Diamond, a Mithril card changed since (even only its text or buttons): to revise with him   // v0.0.250 (Lucas): Mithril, a card written with him (book/cards/with-lucas.txt)
   automationHints: { diamond: "Diamond: written with Lucas (Mithril), then changed by a later pack; it needs his quick revision (book/cards/with-lucas.txt lists what changed)", none: "Not implemented: read the card and do it by hand", bronze: "Bronze: partly automated (buttons or an effect to apply; the rest by hand)", silver: "Silver: mostly automated (one part by hand)", gold: "Gold: fully automated", mithril: "Mithril: written with Lucas, card by card; what the rules leave by hand is listed" },
   // v0.0.186 (pack OT in the book, 16-talents.md): a Talent's Category, and the kinds of Prerequisite the Talent picker can check.

@@ -299,11 +299,12 @@ export function fxTabHtml(m) {
   const add = `<select class="fr-sel fr-addsel" data-fr-add aria-label="Add a rule"><option value="">+ Add rule</option>${R.ADD_MENU.map(([g, ks]) => `<optgroup label="${esc(g)}">${ks.map(k => `<option value="${k}">${esc(R.RULE_KINDS[k].title)}</option>`).join("")}</optgroup>`).join("")}</select>`;
   let pane = `<p class="fr-m">Add a rule, or drop an Effect or an Action here.</p>`;
   if (selR) {
-    const works = host !== "effect" ? `<div class="fr-works">${grid([["Works", seg("minEsc", selR.minEsc, [[0, "Always"], [1, "Escalation 1+"], [2, "2+"], [3, "3+"]], "g")]])}</div>` : "";
+    // v0.0.355 (the audit's D22): Always, or from an Escalation up to the config's maximum (3 today, 6 with Stage 0)
+    const works = host !== "effect" ? `<div class="fr-works">${grid([["Works", seg("minEsc", selR.minEsc, [[0, "Always"], ...Array.from({ length: Number(TWOD12.escalationMax) || 3 }, (x, i) => [i + 1, i ? `${i + 1}+` : "Escalation 1+"])], "g")]])}</div>` : "";
     pane = `<h4>${esc(R.RULE_KINDS[selR.kind].title)}</h4><div class="fr-says">${R.sentenceHtml(R.sentence(selR, ctx))}</div>${works}<div class="fr-pane-body" data-rid="${esc(selR.id)}">${PANES[selR.kind](selR, { ...m, names: ctx.names, originName: ctx.originName })}</div>`;
   }
   const what = `<section class="fr-sec"><h3>What it does <small>${rules.length} rule${rules.length === 1 ? "" : "s"}</small></h3><div class="fr-md"><div class="fr-lst">${list}<div class="fr-adds">${add}</div></div><div class="fr-pane">${pane}</div></div></section>`;
-  if (host !== "effect") return `<div class="fr-tab${m.help ? " fr-helpon" : ""}" data-host="${host}">${tip}${what}</div>`;
+  if (host !== "effect") return `<div class="fr-tab${m.help ? " fr-helpon" : ""}" data-host="${host}">${host === "action" ? "" : tip}${what}</div>`;   // v0.0.355: an Action's card is its preview
   const endsSec = `<section class="fr-sec"><h3>Ends <small>at the first of these; none ticked: until removed</small></h3><div data-scope="ends">${endsHtml(ends, { ...m, names: ctx.names, originName: ctx.originName, zoneMode: onMap })}</div></section>`;
   const whereSec = `<section class="fr-sec"><h3>Where it is <small>an effect is worn or placed</small></h3>${seg("@where", onMap ? "map" : "creature", [["creature", "On a creature"], ["map", "On the map (a Zone)"]], "w")}
     ${help("On a creature: the rules below need a bearer. On the map: the effect has no bearer; it is the area, and what it does to creatures inside. Switching keeps both sides' settings.")}</section>`;

@@ -155,7 +155,7 @@ const subOk = s => (s && s in (T().subtypes ?? {}) ? s : "");
 export function normRule(r) {
   const kind = RULE_KINDS[r?.kind] ? r.kind : "raw";
   const x = deepMerge(DEFAULTS[kind](), r ?? {});
-  x.kind = kind; x.id = String(r?.id || newRuleId()); x.minEsc = clamp(r?.minEsc ?? 0, 0, 3);
+  x.kind = kind; x.id = String(r?.id || newRuleId()); x.minEsc = clamp(r?.minEsc ?? 0, 0, Number(T().escalationMax) || 3);
   if (kind === "act") {
     x.dir = x.dir === "against" ? "against" : "by"; x.filter = normFilter(x.filter); x.from = [...new Set((x.from ?? []).filter(known))]; x.attrs = (x.attrs ?? []).filter(a => a in T().attributes);
     x.vs = ["any", "origin", "marked", "notorigin"].includes(x.vs) ? x.vs : "any"; x.uses = ["every", "round", "next"].includes(x.uses) ? x.uses : "every";

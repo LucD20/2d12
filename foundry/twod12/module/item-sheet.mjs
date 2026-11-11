@@ -7,7 +7,7 @@ import { buildWeaponCard } from "./preview.mjs";
 import { openWeaponGenerator } from "./gen.mjs";
 import { openActionGenerator } from "./genaction.mjs";
 import { enableDragging } from "./drag.mjs";
-import { settingSentence, effectSummary, predRows, hiddenPreds, familyColor } from "./fxdetails.mjs";
+import { effectSummary, familyColor } from "./fxdetails.mjs";
 import { applyTab, dragData } from "./sheet-common.mjs";
 import { VersionsEditor } from "./versions.mjs";
 import { attrLine, choicesToMake, freqOf, SECTION_FREQS } from "./classlevels.mjs";
@@ -22,6 +22,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
   // v0.0.324 (Lucas): the rules tab (Effects, Features, Talents) opens wider
   constructor(options = {}) {
     if (["effect", "feature", "talent"].includes(options.document?.type)) options.position = { ...(options.position ?? {}), width: 680 };
+    if (options.document?.type === "action") options.position = { ...(options.position ?? {}), width: 900, height: 760 };   // v0.0.355 (PACK ACTION-SHEET): the page and the order of events
     super(options);
   }
   static DEFAULT_OPTIONS = {
@@ -67,9 +68,9 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       basicRatings: Object.fromEntries(Object.entries(TWOD12.npcRatings).filter(([k]) => it.parent?.system?.role !== "minion" || k !== "extreme").map(([k, v]) => [k, v.label])),
       basicSuggest: t === "action" && it.parent?.type === "npc" ? npcDamage(it.parent.system.role, s.basicRating || "medium", it.parent.system.level).join(" / ") : "",
       // v0.0.172: the help tips (the grey hints) of the Action and Talent sheets can be hidden, like the Effect's (one choice per user, for both sheets).
-      helpable: t === "action" || t === "talent" || t === "class",
+      helpable: t === "talent" || t === "class",   // v0.0.355: the Action's help is the ? on the tab bar (the rules tabs' way)
       sheetHelp: (() => { try { return game.settings.get("twod12", "sheetHelp") !== false; } catch (e) { return true; } })(),
-      rawCard: t === "action" ? await (await import("./actioncard.mjs")).buildSoloCard(it) : t === "weapon" ? await buildWeaponCard(it) : "",   // v0.0.322: the new card
+      rawCard: t === "action" ? (this._soloCard = await (await import("./actioncard.mjs")).buildSoloCard(it)) : t === "weapon" ? await buildWeaponCard(it) : "",   // v0.0.322: the new card
       categoryShown: categoryText(s),
       enriched: await TE.enrichHTML(s.description ?? "", { relativeTo: it }),
       vsChoices: TWOD12.vsChoices,
@@ -77,8 +78,10 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       defensesList: t === "feature" ? s.defenses.map((d, i) => ({ i, attr: d.attr, bonus: d.bonus, tags: d.tags })) : [],
       ...(t === "effect" ? this._effectContext(s) : ["feature", "talent"].includes(t) ? this._passiveContext() : {}),
       // v0.0.323 (PACK EFFECT-SHEET): the new Details tab (fxsheet.mjs), and the ? on the tab bar
-      fxHost: ["effect", "feature", "talent"].includes(t),
+      fxHost: ["effect", "feature", "talent", "action"].includes(t),
       fxTab: ["effect", "feature", "talent"].includes(t) ? await this._fxTab() : "",
+      // v0.0.355 (PACK ACTION-SHEET): the Action's Details tab (actionsheet.mjs; Lucas's mockup A2)
+      actionTab: t === "action" ? await this._actionTab() : "",
       // v0.0.333 (PACK RWI): an armor's (while worn) or a weapon's (while wielded) Immune / Resist / Weak lines, edited in the pick window
       dmgLinesHtml: ["armor", "weapon"].includes(t) ? (await import("./dmglines.mjs")).itemDamageHtml(this.item, { editable: this.isEditable }) : "",
       fxHeadLine: t === "effect" ? (this._fxExtra?.()?.headLine ?? "") : "",
@@ -100,7 +103,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
         prereqShown: prereqLine(s),
         talentNames: [...new Set([...(game.items ?? [])].filter(i => i.type === "talent").map(i => i.name))].sort()
       } : {}),
-      hasMods: t === "talent" || t === "action",
+      hasMods: t === "talent" || (t === "action" && s.modifiers.length > 0),   // v0.0.355 (the audit's D25): a Talent's piece; on an Action only while it has some
       talentMods:
         t === "talent" || t === "action"
           ? s.modifiers.map((m, i) => ({
@@ -129,104 +132,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       durationChoices: TWOD12.durationTypes,
       settingChoices: TWOD12.effectSettings,
       weaponUses: TWOD12.weaponUses,   // v0.0.207
-      settingsList:
-        ["effect", "feature", "talent"].includes(t) && Array.isArray(s.settings)
-          ? s.settings.map((x, i) => {
-              const shown = new Set([...(this._shownPreds ?? [])].filter(k => k.startsWith(`${i}:`)).map(k => k.split(":")[1]));
-              const fields = x.type === "boonbane" ? ["all", "any", "none", "from"] : ["all", "any", "none"];
-              return {
-                i,
-                label: TWOD12.effectSettings[x.type],
-                sentence: settingSentence(x) + (["feature", "talent"].includes(t) && x.minEscalation > 0 ? ` <i class="fxd-esc">(Escalation ${x.minEscalation}+)</i>` : ""),
-                minEscalation: x.minEscalation,
-                isDamageStep: x.type === "damagestep",
-                isAura: x.type === "aura",
-                auraSize: x.auraSize,
-                auraWho: x.auraWho,
-                auraSelf: x.auraSelf,
-                auraOutlineColor: /^#[0-9a-f]{6}$/i.test(x.auraOutline ?? "") ? x.auraOutline : (TWOD12.auraColors[x.auraWho] ?? TWOD12.auraColors.allies),
-                auraFillColor: /^#[0-9a-f]{6}$/i.test(x.auraFill ?? "") ? x.auraFill : (TWOD12.auraColors[x.auraWho] ?? TWOD12.auraColors.allies),
-                auraWhoChoices: { allies: "allies", enemies: "enemies", all: "everyone" },
-                isOnDamage: x.type === "ondamage",
-                trigSub: x.trigSub,
-                trigTag: x.trigTag,
-                tagChoices: tagChoices(),
-                open: !!this._openSettings?.has(i),
-                isNote: x.type === "note",
-                isLight: x.type === "light",
-                isSpeed: x.type === "speed",
-                isDefense: x.type === "defense",
-                defKind: x.defKind,
-                defValue: x.defValue,
-                defKinds: TWOD12.defenseKinds,
-                isGrant: x.type === "grant",
-                isInline: x.type === "inline", inlineAction: x.inlineAction ?? "",
-                grantAction: x.grantAction,
-                grantCount: x.grantCount,
-                grantAp: x.grantAp,
-                grantDistinct: x.grantDistinct, grantDistinctStr: x.grantDistinct ? "true" : "false", distinctChoices: { "false": "to any creature", "true": "to a different creature each time" },   // v0.0.266
-                grantOn2: x.grantOn2 || "", grantDo2: x.grantDo2 || "text", grantText2: x.grantText2 ?? "",
-                isCover: x.type === "cover", coverBoxes: Object.entries(TWOD12.coverLevels).map(([key, label]) => ({ key, label, checked: x.coverLevels?.has?.(key) || [...(x.coverLevels ?? [])].includes(key) })),
-                against: x.against,
-                againstVal: String(!!x.against),
-                speedMode: x.speedMode,
-                speedFormula: x.speedFormula,
-                speedModes: { add: "Add to the creature's Speed:", override: "Replace the creature's Speed with:" },
-                isBoonBane: x.type === "boonbane",
-                isIgnore: x.type === "ignore",
-                isRally: x.type === "rally",
-                isTurnStart: x.type === "turnstart",
-                isZone: x.type === "zone", zoneWho: x.zoneWho ?? "allies", zoneHeal: x.zoneHeal ?? "", zoneWhoChoices: { allies: "allies", enemies: "enemies", all: "everyone" },   // v0.0.262 (Lucas: every setting editable)
-                grantOn: x.grantOn || x.halfOn || (x.halfT3 ? "t3" : ""), grantOnChoices: TWOD12.grantOnChoices, grantDo: x.grantDo || "half", grantDoChoices: TWOD12.grantDoChoices, grantText: x.grantText ?? "",   // v0.0.264
-                // v0.0.207: Chat message, Weapon property, Starting Mastery
-                isMessage: x.type === "message", msgWhen: x.msgWhen, msgTo: x.msgTo, msgAction: x.msgAction, msgAp: x.msgAp,
-                msgWhens: TWOD12.messageWhen, msgTos: TWOD12.messageTo,
-                isWeaponProp: x.type === "weaponprop", wpWhich: x.wpWhich, wpProp: x.wpProp, wpWhiches: TWOD12.propWeapons, wpProps: TWOD12.removableProps,
-                isMastery: x.type === "mastery", mstTrait: x.mstTrait, mstValue: x.mstValue, mstTraits: TWOD12.weaponTraits,
-                isEscHook: x.type === "eschook", hookWhen: x.hookWhen, hookRange: x.hookRange, hookWhens: TWOD12.escHookWhen,   // v0.0.243 (pack R)
-                ignoreRule: x.ignoreRule,
-                ignoreRules: TWOD12.ignoreRules,
-                rallyBonus: x.rallyBonus,
-                rallyRange: x.rallyRange,
-                oncePerRound: x.oncePerRound,
-                vsMarked: x.vsMarked,
-                vsOrigin: x.vsOrigin ?? "", vsOriginChoices: TWOD12.vsOriginChoices,   // v0.0.314 (pack AU): Taunted
-                isBleed: x.type === "bleed", bleedDc: x.bleedDc ?? 13,   // v0.0.314: Bleed
-                isResist: x.type === "resist", rwKind: x.rwKind || "resist", rwValue: x.rwValue ?? 1, rwKinds: TWOD12.rwKinds, rwNum: (x.rwKind || "resist") !== "immune",   // v0.0.320 (pack AU part 2)
-                isFreqMore: x.type === "freqmore", fmWhich: x.fmWhich || "round", fmChoices: TWOD12.freqMore,
-                showOnce: ["boonbane", "bonusdamage"].includes(x.type),
-                showMarked: ["bonusdamage", "damagestep"].includes(x.type) || (x.type === "boonbane" && !x.against),
-                isBonus: x.type === "bonusdamage",
-                boons: x.boons,
-                banes: x.banes,
-                bbName: x.bbName ?? "", bbChoices: TWOD12.bbNames,   // v0.0.301 (PACK BB)
-                empowered: x.empowered,
-                enfeebled: x.enfeebled,
-                byValue: x.byValue,
-                showByValue: !!(s.valued || x.byValue),
-                boonWord: x.boons === 1 ? "Boon" : "Boons",
-                baneWord: x.banes === 1 ? "Bane" : "Banes",
-                timesWord: x.grantCount === 1 ? "time" : "times",
-                dmg: x.dmg,
-                poolOpts: TWOD12.pools,
-                subOpts: TWOD12.subtypes,
-                dmgPool: x.dmgPool,
-                dmgSub: x.dmgSub,
-                fxName: x.fxUuid ? (fromUuidSync(x.fxUuid)?.name ?? "(missing)") : "",
-                tierBoxes: ["t1", "t2", "t3"].map((k, ti) => ({ key: k, label: `T${ti + 1}`, checked: x.tiers.has(k) })),
-                preds: ["boonbane", "bonusdamage", "damagestep", "ignore"].includes(x.type) ? predRows(x, shown, fields, ["bonusdamage", "ignore"].includes(x.type) ? "any action" : "every roll") : [],
-                hidden: ["boonbane", "bonusdamage", "damagestep", "ignore"].includes(x.type) ? hiddenPreds(x, shown, fields) : [],
-                title: x.title,
-                text: x.text,
-                bright: x.bright,
-                dim: x.dim,
-                color: x.color,
-                lightAlpha: x.lightAlpha ?? 0.5, lightSpeed: x.lightSpeed ?? 5, lightIntensity: x.lightIntensity ?? 5,   // v0.0.247: the light's intensity and animation
-                lightAnims: [{ key: "", label: "None", on: !x.lightAnim }, ...Object.entries(CONFIG.Canvas?.lightAnimations ?? {}).map(([key, v]) => ({ key, label: (typeof v?.label === "string" && game.i18n?.localize?.(v.label)) || key, on: x.lightAnim === key }))],
-                attrs: Object.entries(TWOD12.attributes).map(([key, label]) => ({ key, label, checked: x.attrs.has(key) }))
-              };
-            })
-          : [],
+      // v0.0.355 (the audit's D38): the old settings rows (settingsList) were built on every render and read by no template since v0.0.323: gone
       isAction: t === "action",
       isWeapon: t === "weapon",
       isArmor: t === "armor",
@@ -343,6 +249,44 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     });
   }
 
+  /** v0.0.355 (PACK ACTION-SHEET): the Action's Details tab: its data, the names of the Effects it applies, the card and the rules list. */
+  async _actionTab() {
+    const it = this.item, s = it.system;
+    const { actionTabHtml } = await import("./actionsheet.mjs");
+    const { parseAfter } = await import("./aftersteps.mjs");
+    const { instanceText } = await import("./actions.mjs");
+    const { ruleLabel, RULE_KINDS, normRule } = await import("./fxrules.mjs");
+    const sys = it.toObject().system;
+    sys.traits = [...(s.traits ?? [])];
+    const st = (this._as ??= { v: 0, step: 0, show: {}, open: new Set(), stageOpen: -1 });
+    const names = {}, lines = {};
+    let zoneName = "";
+    const refs = new Set();
+    for (const v of sys.versions ?? []) {
+      for (const t of ["all", "t1", "t2", "t3"]) for (const x of v.fx?.[t] ?? []) refs.add(x.uuid);
+      for (const stp of parseAfter(v.after)) if (stp.kind === "Effect" && stp.head) refs.add(stp.head);
+    }
+    for (const u of refs) {
+      try {
+        const d = /^(Compendium|Item|Actor|Scene)\./.test(u) ? await fromUuid(u) : null;
+        if (!d) continue;
+        names[u] = d.name; lines[u] = String(d.system?.hover || d.system?.autoHover || "").replace(/\{origin\}/g, "you");
+        if (d.system?.where === "map") zoneName ||= d.name;
+      } catch (e) { /* gone */ }
+    }
+    let help = false;
+    try { help = !!game.settings.get("twod12", "effectHelp"); } catch (e) { /* not registered */ }
+    const rules = (sys.rules ?? []).map(normRule);
+    return actionTabHtml({
+      sys, v: st.v, step: st.step, show: st.show, open: st.open, stageOpen: st.stageOpen, names, lines, zoneName, help,
+      card: this._soloCard ?? "", rulesTab: await this._fxTab(),
+      ruleLabels: rules.map(r => ({ tile: RULE_KINDS[r.kind]?.tile ?? "?", cls: RULE_KINDS[r.kind]?.cls ?? "rule", label: ruleLabel(r, { names: {}, host: "action" }) })),
+      dmgText: list => (list ?? []).map(instanceText).filter(Boolean).join(" + "), calc: this._versionRows(), onActor: !!it.parent,
+      basicRatings: Object.entries(TWOD12.npcRatings ?? {}).filter(([k]) => it.parent?.system?.role !== "minion" || k !== "extreme").map(([k, v]) => [k, v.label]),
+      basicSuggest: it.parent?.type === "npc" ? npcDamage(it.parent.system.role, s.basicRating || "medium", it.parent.system.level).join(" / ") : ""
+    });
+  }
+
   /** v0.0.327 (PACK ZONE): "Place on the map" (Set here): the existing area placement with the Zone's shape and size, kept as this Zone; the origin is the
    *  selected token's creature (else the GM's character); ⌖ Change on the placed Zone's card can change it later. */
   async placeZone() {
@@ -410,11 +354,14 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     this._effectListeners();
     // v0.0.323 (PACK EFFECT-SHEET): the new Details tab, and the ? that shows its help texts
     const frTab = this.element.querySelector(".fr-tab");
-    if (frTab) import("./fxsheet.mjs").then(m => m.wireFxTab(this, this.element));
+    // v0.0.355 (PACK ACTION-SHEET): an Action's tab wires itself; its rules list is the nested one (.as-rules)
+    const asTab = this.element.querySelector(".as-tab");
+    if (asTab) { import("./actionsheet.mjs").then(m => m.wireActionTab(this, this.element)); const inner = this.element.querySelector(".as-rules"); if (inner?.querySelector(".fr-tab")) import("./fxsheet.mjs").then(m => m.wireFxTab(this, inner)); }
+    else if (frTab) import("./fxsheet.mjs").then(m => m.wireFxTab(this, this.element));
     this.element.querySelector("[data-fr-q]")?.addEventListener("click", async ev => {
       ev.preventDefault();
       const on = !this.element.querySelector(".fr-tab")?.classList.contains("fr-helpon");
-      this.element.querySelector(".fr-tab")?.classList.toggle("fr-helpon", on);
+      this.element.querySelectorAll(".fr-tab").forEach(x => x.classList.toggle("fr-helpon", on));
       ev.currentTarget.classList.toggle("on", on); ev.currentTarget.setAttribute("aria-pressed", String(on));
       try { await game.settings.set("twod12", "effectHelp", on); } catch (e) { /* not registered */ }
     });

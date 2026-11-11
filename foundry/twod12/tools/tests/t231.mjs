@@ -14,6 +14,6 @@ const all = JSON.stringify(C.docs.filter(d => d.type === "action").map(d => d.sy
 console.log("no chain marker left:", !all.includes("chain:yes"), "| no state module:", !fs.existsSync(ROOT + "module/chainchips.mjs"));
 const cards = ["paladin", "archer", "gear"].map(f => fs.readFileSync(ROOT + `../../book/cards/${f}.json`, "utf8")).join("");
 console.log("the per-card text overrides left (only Lock & Loose's: its Hindered is an Effect by Tier, not a chain):", [...cards.matchAll(/"foundry": \{\s*"(x[123]|critical)": "([^"]{0,40})/g)].map(m => `${m[1]}: ${m[2]}`).join(" | "));
-const mo = fs.readFileSync(ROOT + "module/moment.mjs", "utf8"), sh = fs.readFileSync(ROOT + "templates/item-sheet.hbs", "utf8");
-console.log("a Reaction an Aura brings reaches as far as the Aura:", mo.includes("const range = auraOf || Number(item.system.momentRange) || 0;"), "| 'only a creature you threaten' only while on:", sh.includes("{{#if system.momentThreat}}<label"));
+const mo = fs.readFileSync(ROOT + "module/moment.mjs", "utf8"), sh = (fs.readFileSync(ROOT + "templates/item-sheet.hbs", "utf8") + fs.readFileSync(ROOT + "module/actionsheet.mjs", "utf8"));
+console.log("a Reaction an Aura brings reaches as far as the Aura:", mo.includes("const range = auraOf || Number(item.system.momentRange) || 0;"), "| 'only a creature you threaten' only while on:", sh.includes('s.momentThreat ? ["Old"'));
 console.log("ranks:", ["Word of Radiance", "Bulwark of Faith", "Rebuke", "Heartseeker", "Open Season"].map(n => `${n} ${C.docs.find(d => d.type === "action" && d.name === n).system.automation}`).join(", "));

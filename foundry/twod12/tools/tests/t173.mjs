@@ -19,12 +19,12 @@ await U.markUsed(actor, slam);
 console.log("Encounter use kept on the combatant too:", JSON.stringify(cmb.getFlag("twod12", "usedHere")));
 actor.wipe();
 console.log("the creature's own record lost (what Lucas saw after a reload): still greyed:", JSON.stringify(U.isFaded(actor, slam)));
-const acts = src("module/actions.mjs"), tpl = src("module/template.mjs"), cw = src("module/classwindow.mjs"), fu = src("module/freeuse.mjs"), data = src("module/data.mjs"), sheet = src("templates/item-sheet.hbs"), content = src("tools/content.mjs"), css = src("styles/system.css");
+const acts = src("module/actions.mjs"), tpl = src("module/template.mjs"), cw = src("module/classwindow.mjs"), fu = src("module/freeuse.mjs"), data = src("module/data.mjs"), sheet = (src("templates/item-sheet.hbs") + src("module/actionsheet.mjs")), content = src("tools/content.mjs"), css = src("styles/system.css");
 console.log("roll dialog: a removed tile is display:none, with an undo chip:", acts.includes('tile.style.display = "none"') && acts.includes('chip.className = "trm-chip"'));
 console.log("a damaging Action doesn't tick Affect yourself:", acts.includes("self: areaSet.self && !damaging"));
 console.log("class window: the Talent filter before the scroll comes back:", /replaceChildren\(result\);\n\s+this\._applyFilter\(\);/.test(cw));
 console.log("the Line's bar: the banner look, Left and Right buttons:", tpl.includes('data-side="left">Left</button><button type="button" data-side="right">Right</button>') && css.includes(".twod12-linebar {"));
-console.log("NPC's Basic attack box:", data.includes("basicAttack: bool()") && sheet.includes('name="system.basicAttack"') && fu.includes("i.system?.basicAttack") && (await import(ROOTURL + "tools/content.mjs")).actors.every(a => a.items.filter(i => i.system?.basicAttack).length === 1 && a.items.filter(i => i.system?.category === "Basic attack").every(i => i.system.basicAttack)));
+console.log("NPC's Basic attack box:", data.includes("basicAttack: bool()") && sheet.includes('tog("system.basicAttack"') && fu.includes("i.system?.basicAttack") && (await import(ROOTURL + "tools/content.mjs")).actors.every(a => a.items.filter(i => i.system?.basicAttack).length === 1 && a.items.filter(i => i.system?.category === "Basic attack").every(i => i.system.basicAttack)));
 const dir = ROOT + "packs/_source/npcs";
 if (fs.existsSync(dir)) for (const f of fs.readdirSync(dir).filter(f => f.endsWith(".json")).sort()) { const a = JSON.parse(fs.readFileSync(`${dir}/${f}`, "utf8")); console.log(`  ${a.name}: Basic attack box on ${(a.items ?? []).filter(i => i.system?.basicAttack).map(i => i.name).join(", ")}`); }
 console.log("v0.0.217: remove a target by right-click or the x (one capturing listener on the dialog):", acts.includes('root.addEventListener("contextmenu"') && acts.includes("const removeTile = tile =>"));

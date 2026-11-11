@@ -405,6 +405,7 @@ export class ActionData extends foundry.abstract.TypeDataModel {
   /** v0.0.186: Mark Quarry marked by its category before; now by its "Marks the target" box. */
   static migrateData(source) {
     if (source && source.marksTarget === undefined && source.category === "Marked Quarry") source.marksTarget = true;
+    migrateSettings(source); migrateRules(source, "action");   // v0.0.355 (PACK ACTION-SHEET): an Action holds rules, as a Feature does
     return super.migrateData(source);
   }
   /** An Action with an Area always has the Area trait (see the Area trait). */
@@ -468,6 +469,8 @@ export class ActionData extends foundry.abstract.TypeDataModel {
       weaponUse: choice(TWOD12.weaponUses, ""),   // v0.0.207: which weapon a Weapon Action uses (Pummel: only the Fists; Leg Sweep: a kick)
       automation: choice(TWOD12.automationRanks, ""), automationNote: str(),   // v0.0.215: what is done by hand (the diamond tooltip)
         // v0.0.189   // v0.0.186: using it marks the targeted creature (Mark Quarry); settings "only against my marked target" read the mark
+      // v0.0.355 (PACK ACTION-SHEET, the audit's D17): what its owner has by itself while it has the Action (the rules list of an Effect, a Feature or a Talent)
+      settings: settingsField(), ...rulesFields(),
       versions: new ArrayField(
         new SchemaField({
           ap: int(1, 0),   // 0: a 0 AP Action (only on your turn), or a 0R Reaction
