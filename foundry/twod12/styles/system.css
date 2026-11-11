@@ -4050,3 +4050,23 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 /* v0.0.344 (Lucas: "still showing like this", the Ogre's Tier 3): the pale CRIT zone (a Tier 3 that is not a Critical) sits on the lit dark green
    segment, so its dark blue label vanished: a lighter blue band with light text, still clearly paler than a rolled Critical's solid blue */
 .twod12.chat.cc .cc-czone.pale { background: rgba(120,160,215,.45); color: #eef4fb; border-left: 1px dashed rgba(238,244,251,.6); }
+/* v0.0.345 (Lucas, playtest 4; book Ch. 2, The Start of the Encounter): the start-of-the-encounter stack card */
+.twod12.chat.startstack .ss-list { list-style: none; margin: 0 6px; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.twod12.chat.startstack .ss-row { display: flex; gap: 7px; align-items: flex-start; padding: 4px 6px; border: 1px solid #d8c9a8; border-radius: 4px; background: #fbf6ea; color: #2c2a26; }
+.twod12.chat.startstack .ss-row.now { border-color: #c9a24a; background: #fff3cf; box-shadow: 0 0 0 1px #c9a24a; }
+.twod12.chat.startstack .ss-row.done, .twod12.chat.startstack .ss-row.skip { opacity: .6; }
+.twod12.chat.startstack .ss-n { flex: none; width: 18px; height: 18px; border-radius: 50%; background: #1e2a3a; color: #f4e9d0; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+.twod12.chat.startstack .ss-body { flex: 1 1 auto; min-width: 0; }
+.twod12.chat.startstack .ss-who { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; }
+.twod12.chat.startstack .ss-src { font-size: 11px; color: #6b5a3a; font-style: italic; }
+.twod12.chat.startstack .ss-st { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; padding: 0 5px; border-radius: 3px; background: #e6dcc4; color: #4a3f2c; }
+.twod12.chat.startstack .ss-st.now { background: #c9a24a; color: #1e2a3a; }
+.twod12.chat.startstack .ss-move { margin-left: auto; display: inline-flex; gap: 2px; }
+.twod12.chat.startstack .ss-move button { width: 20px; height: 18px; line-height: 16px; padding: 0; margin: 0; font-size: 9px; }
+.twod12.chat.startstack .ss-text { font-size: 12px; line-height: 1.35; margin-top: 2px; }
+.twod12.chat.startstack .ss-ctl { display: flex; gap: 4px; margin-top: 4px; }
+.twod12.chat.startstack .ss-ctl button, .twod12.chat.startstack .ss-foot button { width: auto; height: 22px; line-height: 20px; padding: 0 10px; margin: 0; font-size: 12px; }
+.twod12.chat.startstack .ss-pri { background: #2e5a3a; color: #f4e9d0; border: 1px solid #c9a24a; }
+.twod12.chat.startstack .ss-foot { display: flex; align-items: center; gap: 8px; margin: 6px 6px 0; font-size: 11.5px; color: #4a3f2c; }
+.twod12.chat.startstack .ss-foot .ss-hint { flex: 1 1 auto; }
+.twod12.chat.startstack .ss-foot.done { color: #2e5a3a; font-weight: 600; }

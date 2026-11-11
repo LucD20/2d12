@@ -221,10 +221,10 @@ export function messagesFor(actor, when) {
 }
 const escHtml = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 /** One message as HTML before the buttons are made: "<b>Name</b>: text" ({name}, {mark} filled in) and a @Use button for the Action it offers. */
-export function messageHtml(actor, m, { mark = "" } = {}) {
+export function messageHtml(actor, m, { mark = "", withActor = false } = {}) {   // withActor (v0.0.345): the @Use names its creature
   const text = escHtml(m.text).replace(/\{name\}/g, `<b>${escHtml(actor?.name)}</b>`).replace(/\{mark\}/g, `<b>${escHtml(mark || "?")}</b>`);
   const clean = s => String(s).replace(/[[\]|]/g, " ").trim();
-  const btn = m.action ? ` @Use[${clean(m.action)}|ap:${m.ap}|source:${clean(m.source)}|label:${clean(m.action)} (${m.ap} AP)]` : "";
+  const btn = m.action ? ` @Use[${clean(m.action)}|ap:${m.ap}|source:${clean(m.source)}${withActor && actor?.uuid ? `|actor:${actor.uuid}` : ""}|label:${clean(m.action)} (${m.ap} AP)]` : "";
   return `<b>${escHtml(actor?.name)}</b>: ${text}${btn}`;
 }
 /** Post a creature's messages for this moment (the active GM calls it): the system line (sysmsg.mjs), whispered to its owners unless "everyone". */

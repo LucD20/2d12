@@ -8,6 +8,7 @@ import { rxRender, rxClick, registerReactionSettings, registerMomentHooks, close
 import { registerLeanHooks } from "./lean.mjs";
 import { registerMasteryHooks } from "./mastery.mjs";
 import { registerChatScroll } from "./chatscroll.mjs";   // v0.0.343
+import { registerFearLine } from "./fearline.mjs";   // v0.0.345
 import { registerMarkHooks } from "./mark.mjs";
 import { registerLoE } from "./loe.mjs";
 import { registerFlankOverlay } from "./flankoverlay.mjs";
@@ -89,6 +90,7 @@ Hooks.once("init", () => {
   registerLeanHooks();
   registerMasteryHooks();
   registerChatScroll();   // v0.0.343: the chat stays at its bottom when a card grows
+  registerFearLine();   // v0.0.345: a selected Frightened creature shows its source on the map
   registerMarkHooks();
   registerLoE();   // Line of Effect, Cover height and Show flanking in the token controls (v0.0.165; moved from the token HUD in v0.0.302)
   registerFlankOverlay();   // v0.0.302
@@ -302,6 +304,7 @@ function ccRender(msg, html) {
 Hooks.on("renderChatMessageHTML", ccRender);
 // v0.0.249 (Lucas): a rung Passive's effect comes as soon as the Escalation reaches its rung (the encounter's start, a Critical, the hook, the GM's valve)
 Hooks.on("twod12.escalationChanged", async actor => { if (!game.user.isActiveGM) return; try { const { applyReachedEffects } = await import("./automation.mjs"); await applyReachedEffects(actor); } catch (e) { console.warn("twod12 | the rung's effects", e); } });
+Hooks.on("renderChatMessageHTML", (msg, html) => { import("./startstack.mjs").then(m => m.bindStartStack(msg, html)).catch(() => {}); });   // v0.0.345: the start-of-the-encounter stack
 Hooks.on("renderChatMessageHTML", bindInitCard);   // v0.0.206: the Initiative card's rows open on click
 Hooks.on("renderChatMessageHTML", chatChips);   // v0.0.180: no line between trait groups at the start or end of a wrapped row
 // v0.0.177: a light of size N reaches an N Emanation (the half square Foundry leaves out is added), and Regions snap to whole squares.

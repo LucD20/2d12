@@ -154,6 +154,7 @@ export function parseInline(kind, inner) {
     else if (key === "targets") cfg.targets = val.toLowerCase();
     else if (key === "at") cfg.at = val.toLowerCase();
     else if (key === "source") cfg.source = val;
+    else if (key === "actor") cfg.actor = val;   // v0.0.345: @Use for this creature (a card of several creatures: the start-of-the-encounter stack)
     else if (key === "quick") cfg.quick = yes(val);
     else if (key === "reach") cfg.withinReach = yes(val);   // v0.0.174: a Reposition whose target must remain within your Reach (Relocate)
     // v0.0.246 (cards 1, Smite): who:pick asks "you or one ally" (a picker); area:N looks in an N Emanation around the card's target; pick:yes on a

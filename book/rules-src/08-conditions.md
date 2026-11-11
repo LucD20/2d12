@@ -48,7 +48,7 @@ If your Resolve reaches 0, you must make a **Mind Save** (DC 13). Resolve cannot
 
 ### Frightened
 
-Frightened is always **of** a source: a creature or an object. While you perceive the source with your Sight (it is Clear or Obscured to you: see [[Senses]]), all your [[Rolls]] take **1 Bane**, the Save that would end Frightened included, and you can't willingly move closer to the source (Forced Movement still can). Put a wall or Darkness between you and the source, and it is out of your Sight: the Bane and the restriction stop until you see it again.
+Frightened is always **of** a source: a creature or an object. While you perceive the source with your Sight (it is Clear or Obscured to you: see [[Senses]]), all your [[Rolls]] take **1 Bane**, the Save that would end Frightened included, and every square that brings you closer to the source is [[Difficult Terrain]] for you (Forced Movement ignores it). Put a wall or Darkness between you and the source, and it is out of your Sight: the Bane and the Difficult Terrain stop until you see it again.
 
 ### Grabbed
 

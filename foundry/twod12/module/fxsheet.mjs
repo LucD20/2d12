@@ -28,6 +28,7 @@ const grid = rows => `<div class="fr-pgrid">${rows.filter(Boolean).map(([l, c]) 
 const help = t => `<p class="fr-help">${t}</p>`;
 const part = (key, on, title, sum, body, path = `${key}.on`) => `<div class="fr-part${on ? "" : " off"}"><header>${tog(path, on, title)}<span class="fr-psum">${on ? esc(sum) : "off"}</span></header><div class="fr-pb">${body}</div></div>`;
 const SUBS = () => Object.entries(TWOD12.subtypes ?? {}).map(([k, v]) => [k, k ? v : "None"]);
+const DMG_SUBS = () => [...SUBS().slice(0, 1), ["W", "The weapon's"], ...SUBS().slice(1)];   // v0.0.345: Extra damage of the weapon's subtype (Marked Quarry)
 const NAMES = [["", "n/a"], ["field", "Field"], ["pressure", "Pressure"], ["support", "Support"]];
 
 /** The origin chip of a rule: "Origin: Ogre Chieftain [⌖ Change]" (Change only where there is a map and an applied effect). */
@@ -78,7 +79,7 @@ function actPane(r, m) {
   }
   // v0.0.343: extra damage on Rolls made against them too (Open Season: the allies' [Strike] Actions against the Quarry)
   parts += part("dmg", r.dmg.on, "Extra damage", R.partSummary(r, "dmg"), r.dmg.list.map((d, i) => `<div class="fr-dent">${grid([
-      ["Damage", `${text(`dmg.list.${i}.dice`, d.dice, "1d6", "dice")}${fhelp()}${seg(`dmg.list.${i}.pool`, d.pool, [["B", "[V]"], ["M", "[R]"]])}${sel(`dmg.list.${i}.sub`, d.sub, SUBS(), "Subtype")}`],
+      ["Damage", `${text(`dmg.list.${i}.dice`, d.dice, "1d6", "dice")}${fhelp()}${seg(`dmg.list.${i}.pool`, d.pool, [["B", "[V]"], ["M", "[R]"]])}${sel(`dmg.list.${i}.sub`, d.sub, DMG_SUBS(), "Subtype")}`],
       ["On", [1, 2, 3].map(t => `<span class="fr-tog${d.tiers.includes(t) ? " on" : ""}" data-fr="tier" data-f="dmg.list.${i}.tiers" data-v="${t}" role="switch" aria-checked="${d.tiers.includes(t)}" tabindex="0"><span class="box"></span>T${t}</span>`).join("")],
       ["Then", `${dropped(m, `dmg.list.${i}.fx`, d.fx, d.fxName, "Drop an Effect the target gains (optional)", "from the Effects and Conditions compendiums")}${d.text ? `<span class="fr-m">The card adds: ${esc(d.text)}</span>` : ""}${r.dmg.list.length > 1 ? `<button type="button" class="fr-rm" data-fr="splice" data-f="dmg.list" data-i="${i}">Remove this damage</button>` : ""}`]
     ])}</div>`).join("") + `<button type="button" class="fr-addd" data-fr="push" data-f="dmg.list">+ Another damage</button>` + help("A number, dice or a formula (<code>@origin.pow</code>, <code>[Mod]</code> the Action's Modifier)."));
@@ -204,8 +205,9 @@ function lightPane(r, m) {
     ["Animation", `${sel("anim", r.anim, anims, "Animation")}${r.anim ? ` <span class="fr-m">speed</span>${step("aspeed", r.aspeed, 1, 10)}<span class="fr-m">strength</span>${step("aint", r.aint, 1, 10)}` : ""}`]])
     + help("The Bright and Dim light follow the book's Light rules (Obscured, the Hide penalty); color and animation are only the look.");   // v0.0.324: no preview (Lucas)
 }
-const movePane = (r, m) => grid([["Can't move", seg("dirm", r.dirm, [["closer", "closer to"], ["away", "away from"]], "w")], ["Only", tog("sees", r.sees, "While they see the origin")], ["Origin", originChip(m, "origin", r.origin)]])
-  + help("It blocks a willing Move that ends nearer to (or farther from) the origin than it started; Forced Movement is not willing (Frightened, Chapter 8).");
+// v0.0.345 (Lucas, playtest 4: Frightened's "moving closer is Difficult Terrain"): the limit is either a refusal or Difficult Terrain
+const movePane = (r, m) => grid([["Moving", seg("dirm", r.dirm, [["closer", "closer to"], ["away", "away from"]], "w")], ["the origin", seg("how", r.how, [["difficult", "is Difficult Terrain"], ["cant", "is not allowed"]], "w")], ["Only", tog("sees", r.sees, "While they see the origin")], ["Origin", originChip(m, "origin", r.origin)]])
+  + help(r.how === "difficult" ? "Each square that brings them closer to (or farther from) the origin costs double (Difficult Terrain: no Evade there); Forced Movement ignores it (Frightened, Chapter 8)." : "It blocks a willing Move that ends nearer to (or farther from) the origin than it started; Forced Movement is not willing.");
 function legacyPane(r, m) {
   if (r.kind === "zone") {
     const z = r.setting ?? {};

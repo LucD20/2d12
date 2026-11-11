@@ -38,7 +38,7 @@
    "book": false,
    "_note": "v0.0.335 (Lucas): Foundry only: the book's Archer has the Mark Quarry Action (its card holds these rules). This Feature holds the mark's settings (the Boon, the Tier 1 damage, the reminders) and grants the Action, until Actions can hold settings (pack ACTION-SHEET).",
    "flavor": "You pick the one, and the world narrows.",
-   "text": "At the start of each encounter, choose one enemy as your **Marked Quarry**. You gain 1 Boon on [Shot, Strike] Actions against them, and those Actions deal [V] [Mod] on a Tier 1. You can only have one Marked Quarry at a time.",
+   "text": "At the start of each encounter, choose one enemy as your **Marked Quarry**. You gain 1 Boon on [Shot, Strike] Actions against them, and those Actions deal [V] [Mod] extra damage (the same subtype as your weapon) on a Tier 1. You can only have one Marked Quarry at a time.",
    "foundry": {
     "img": "icons/svg/target.svg",
     "automation": "gold",
@@ -62,7 +62,7 @@
       "type": "bonusdamage",
       "dmg": "[Mod]",
       "dmgPool": "B",
-      "dmgSub": "",
+      "dmgSub": "W",
       "tiers": [
        "t1"
       ],
@@ -800,7 +800,7 @@
    ],
    "frequency": "Turn",
    "target": "One creature",
-   "rules": "At the start of each encounter, choose one enemy as your Marked Quarry with this Action. You gain 1 Boon on [Shot, Strike] Actions against them, and those Actions deal [V] [Mod] on a Tier 1. You can only have one Marked Quarry at a time.",
+   "rules": "At the start of each encounter, choose one enemy as your Marked Quarry with this Action. You gain 1 Boon on [Shot, Strike] Actions against them, and those Actions deal [V] [Mod] extra damage (the same subtype as your weapon) on a Tier 1. You can only have one Marked Quarry at a time.",
    "versions": [
     {
      "ap": 0,
@@ -814,7 +814,7 @@
    "foundry": {
     "img": "icons/svg/target.svg",
     "folder": "Archer",
-    "automation": "mithril",
+    "automation": "diamond",
     "marksTarget": true
    },
    "ruler": false

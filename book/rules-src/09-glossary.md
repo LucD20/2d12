@@ -26,7 +26,7 @@
 | [[Barehanded\|**Barehanded**]] | A weapon property: it can't be disarmed and uses no hand, but needs a free hand. |
 | [[Class Actions, Picks and the Repertoire\|**Class Actions**]] | The Actions your class gives you at level 1 (or a Hallmark Action: a choice of two). |
 | [[Dazed\|**Dazed**]] | A condition with a value: you lose that many AP right away (never the Reaction AP); the rest, if any, from your next turn's AP. |
-| [[Frightened\|**Frightened**]] | Of a source: 1 Bane on all your Rolls and you can't move closer to it, while you see it. |
+| [[Frightened\|**Frightened**]] | Of a source: 1 Bane on all your Rolls, and moving closer to it is Difficult Terrain, while you see it. |
 | [[Grabbed\|**Grabbed**]] | Held by a creature within its Reach: Immobilized, and only the holder can move you; it ends when the holder lets go or you Break Free. |
 | [[Hindered\|**Hindered**]] | Your Speed is halved. |
 | [[Immobilized\|**Immobilized**]] | No Move Actions or Evade; 1 AP [Move] ends it; Forced Movement without a roll fails on you. |
@@ -101,7 +101,7 @@
 | [[Linked Actions\|**Linked Action**]] | An Action another Action lets you use as part of it, written like Weapon Attack (1A). It costs no AP. |
 | [[Long\|**Long**]] | A weapon property: 1 Field Bane against adjacent creatures, and it doesn't threaten them. |
 | [[Hands\|**Main hand, off hand**]] | Your two hands. Which one holds a weapon changes nothing, unless a feature says so. |
-| [[Mark Quarry\|**Marked Quarry**]] | The enemy an Archer chose with the Mark Quarry Action: 1 Boon on their [Shot, Strike] Actions against it, and [V] [Mod] on a Tier 1. One at a time. |
+| [[Mark Quarry\|**Marked Quarry**]] | The enemy an Archer chose with the Mark Quarry Action: 1 Boon on their [Shot, Strike] Actions against it, and [V] [Mod] extra damage on a Tier 1. One at a time. |
 | [[Mastery\|**Master**]] | 15 Mastery with a weapon: from level 8, your Actions that deal [W] with it deal one more [W]. |
 | [[Mastery\|**Mastery**]] | How well you know a kind of weapon: +1 for a Tier 3 on a Weapon Action with it (at most 1 per Weapon Group an encounter). The weapon's Mastery (3, 4 or 5) unlocks its Weapon Technique; 8 Expert, 15 Master. |
 | [[Minions\|**Minion**]] | An NPC role with CV 25, with 3 AP a turn and no Dying: at 0 Health it dies, or falls Unconscious if the GM prefers. |
@@ -171,6 +171,7 @@
 | [[Stages\|**Stage Talent**]] | The Talent of levels 5 and 8, from a bigger list. |
 | [[Staggered\|**Staggered**]] | You can't use Reactions; your Reaction AP waits. |
 | [[Standards\|**Standard**]] | An NPC role with CV 100: about 56 Health at Stage 1, dies to about 2 to 3 PC turns. |
+| [[The Start of the Encounter\|**Start of the encounter**]] | After Initiative and before the first turn: abilities that happen then resolve one at a time, in turn order, which the GM can change. |
 | [[Steadiness\|**Steadiness**]] | A creature's resistance to being moved: it reduces the value of Forced Movement and Reposition. Normally 0. |
 | [[Chapter 6: Basic Actions\|**Steel Yourself**]] | The Basic Action that uses your Rally Points. |
 | [[Strike\|**Strike**]] | An Action that tries to hit a creature. At most 3 per turn. |

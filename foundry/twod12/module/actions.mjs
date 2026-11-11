@@ -186,7 +186,7 @@ export async function attackModelParts({ it, item, version, weapon, cardCtx, fxn
       const w = insts.find(i => i.useW) ?? insts[0], at = parts.findIndex(p => p.pool === (w.pool || "B")) + 1;
       parts.splice(at > 0 ? at : parts.length, 0, { pool: w.pool || "B", t: String(cardCtx.attrVal), sub: w.useW ? wsub : (w.subtype ?? "") });
     }
-    for (const b of bon) if (b.dmg) parts.push({ pool: b.pool || "B", t: b.dmg, sub: b.sub ?? "" });
+    for (const b of bon) if (b.dmg) parts.push({ pool: b.pool || "B", t: b.dmg, sub: b.sub === "W" ? wsub : (b.sub ?? "") });   // v0.0.345: "W" = the weapon's subtype (Marked Quarry)
     const riders = [];
     const x = expandAsText(version[`x${n}`], item.system.versions, version, n);
     if (String(x ?? "").trim()) riders.push(String(x).trim());
@@ -747,8 +747,8 @@ export async function useAction(actor, item, opts = {}) {
   for (const t of [1, 2, 3]) for (const b of collectBonuses(actor, dlgTraits, t, { target: rollsAtOthers ? (aimed[0]?.actor ?? null) : null, mod: src.mod })) { const bk = `${b.effect}|${b.dmg}|${b.sub}|${b.text}`; if (!bonusSeen.has(bk)) bonusSeen.set(bk, { b, tiers: [] }); bonusSeen.get(bk).tiers.push(t); }
   const dmgSubs = new Set();
   for (const v of versions) for (const tk of ["t1", "t2", "t3"]) for (const inst of v[tk] ?? []) { if (inst.useW && previewWeapon?.system?.subtype) dmgSubs.add(previewWeapon.system.subtype); if (inst.subtype) dmgSubs.add(inst.subtype); }
-  for (const { b } of bonusSeen.values()) if (b.sub) dmgSubs.add(b.sub);
-  const bonusChips = [...bonusSeen.entries()].map(([key, { b, tiers }]) => ({ key, text: `${b.effect}: ${b.dmg ? `+${b.dmg}${b.sub ? ` ${TWOD12.subtypes[b.sub] ?? ""}` : ""}` : b.text}${tiers.length < 3 ? ` (Tier ${tiers.join(", ")})` : ""}`, why: `${b.hover || "This effect adds to the damage of this roll."} Untick it to leave it out (its effect isn't used up).` }));
+  for (const { b } of bonusSeen.values()) if (b.sub && b.sub !== "W") dmgSubs.add(b.sub);
+  const bonusChips = [...bonusSeen.entries()].map(([key, { b, tiers }]) => ({ key, text: `${b.effect}: ${b.dmg ? `+${b.dmg}${b.sub ? ` ${TWOD12.subtypes[b.sub === "W" ? previewWeapon?.system?.subtype ?? "" : b.sub] ?? ""}` : ""}` : b.text}${tiers.length < 3 ? ` (Tier ${tiers.join(", ")})` : ""}`, why: `${b.hover || "This effect adds to the damage of this roll."} Untick it to leave it out (its effect isn't used up).` }));
   const extraNotices = [
     ...triggerNotices(actor, multi ? perT.map(p => p.actor) : rollsAtOthers && targetToken?.actor ? [targetToken.actor] : [], dmgSubs),
     ...coverNotices
@@ -998,7 +998,7 @@ export async function useAction(actor, item, opts = {}) {
   const effLabel = version.noTiers || saveAct ? "Effects" : `Effects (Tier 2+)${effWho}`;
   const effectsHtml = version.effects ? `<div class="effects${effectsOff ? " off" : ""}${rowParts.length || bonuses.length ? " sep" : ""}"><div class="eh">${effLabel}</div><div class="et">${await enrich(version.effects, item)}</div></div>` : "";
   // v0.0.189: the name opens the item it comes from (a Talent, a Feature, an Effect), for everyone who reads the card.
-  const bonusRows = bonuses.map(b => `<div class="bonusrow"><i class="fa-solid fa-sparkle"></i> <b>${srcLink(b.effect, b.srcUuid)}</b>: ${b.dmg ? `+${esc(b.dmg)}${b.sub ? ` ${esc(TWOD12.subtypes[b.sub] ?? "")}` : ""}` : ""}${b.text ? ` ${esc(b.text)}` : ""}</div>`).join("");
+  const bonusRows = bonuses.map(b => `<div class="bonusrow"><i class="fa-solid fa-sparkle"></i> <b>${srcLink(b.effect, b.srcUuid)}</b>: ${b.dmg ? `+${esc(b.dmg)}${b.sub ? ` ${esc(TWOD12.subtypes[b.sub === "W" ? previewWeapon?.system?.subtype ?? "" : b.sub] ?? "")}` : ""}` : ""}${b.text ? ` ${esc(b.text)}` : ""}</div>`).join("");
   const dmgNeeded = (t, bon) =>
     needsDamage(
       src.attrMode !== "none" ? (src.attrMode === "all" ? 1 : 2) : 0,
@@ -1301,7 +1301,7 @@ export async function rollDamage(message) {
   const weapon = f.weaponId ? actor.items.get(f.weaponId) : null;
   // One creature's damage: its tier, its bonuses, and only that creature as the target of the damage and its effects.
   const rollFor = async (tier, bonus, targets, who, crit = false) => {
-    const insts = [...version[`t${tier}`], ...bonus.filter(b => b.dmg).map(b => ({ pool: b.pool, useW: false, wCount: 1, dice: b.dmg, useAt: false, subtype: b.sub, source: b.effect, srcUuid: b.srcUuid ?? "" }))];
+    const insts = [...version[`t${tier}`], ...bonus.filter(b => b.dmg).map(b => ({ pool: b.pool, useW: false, wCount: 1, dice: b.dmg, useAt: false, subtype: b.sub === "W" ? (weapon?.system?.subtype ?? "") : b.sub, source: b.effect, srcUuid: b.srcUuid ?? "" }))];
     const riders = f.ridersOnDamage && version[`t${tier}`]?.some(i => i.useW || i.dice || i.useAt) ? (version.fx?.[`t${tier}`] ?? []).filter(x => x.mode === "auto").map(x => ({ ...x, rider: true })) : [];
     const fx = [...[...(tier >= 2 ? (version.fx?.all ?? []) : []), ...(version.fx?.[`t${tier}`] ?? []), ...bonus.filter(b => b.fxUuid).map(b => ({ uuid: b.fxUuid, mode: "auto" }))]
       .filter(x => !f.fxOnUse || x.mode !== "auto"), ...riders];   // cards from v0.0.144 on applied their automatic effects when the Action was used (v0.0.283: riders wait for the damage)

@@ -52,7 +52,7 @@ a rider lands with damage over 0 after Resist: false true | the damage message g
 Enfeebled 2 on 1, 3, 6: each die at least 1: -4 | Empowered 1 on 2d6: 2
 the Save's damage per die too (inline.mjs no longer adds the step to the total): true
 --- the damage message
-stamp: DAMAGE 16 Tier 3 ↗ | the tag: Lethal | pools: Vigor · 13 Sl 13 Resolve · 3 Ho 3
+stamp: DAMAGE 16 Tier 3 ↗ | the tag: Lethal | pools: Vigor · 9 + 2 + 2 Sl 13 Resolve · 3 Ho 3
 the instance with its Weapon Modifier as a line: Vigor · Slash (Greatsword) Dice 4 5 Modifiers +2 Weapon +2 Heavy Blows Total 13
 rows:  || Bandit Thug −8 Guard Apply Full Half Double Lethal || Fire Imp Took 5 · 3 Bloodied ✓ Undo Full Half Double Lethal
 v0.0.288: the header is the title alone: Weapon Attack | the bottom row (one row left: no Apply all, the tag alone): 

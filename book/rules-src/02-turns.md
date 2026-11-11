@@ -21,6 +21,13 @@ Initiative is a **zipper**. The creatures are split into however many different 
 
 **Ties** are broken by the higher Attribute Modifier used for the Initiative roll. If they are still tied, the Friendly creature (a PC or an ally of the PCs) goes first.
 
+### The Start of the Encounter
+
+Some abilities happen **at the start of an encounter**, such as the Archer's [[Mark Quarry]]. After Initiative is rolled and before the first turn, each of them waits in a **stack**, in the turn order. The GM can change that order: an ally can go later, for example to act after another ally's ability. Then they resolve one at a time, in the stack's order, and the first turn begins.
+
+> [!example]
+> Chris and Krysta are Archers. Chris rolls 15 and Krysta 13, so the stack is Chris's Mark Quarry, then Krysta's. Chris wants to know which enemy Krysta marks before choosing his own, so the GM puts Krysta's first.
+
 ### Swapping Initiative
 
 On your turn, if you haven't taken any Actions yet and aren't Down, you can spend **1 AP** to swap places in the turn order with an ally who hasn't had a turn this round. The ally takes the turn now, at your place in the order, and gains its AP as normal.

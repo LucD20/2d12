@@ -33,7 +33,7 @@ function moveLimitsOf(doc) {
     for (const l of e.getFlag?.("twod12", "moveLimits") ?? []) {
       if (l.seen && !seesOrigin(actor, e)) continue;
       const o = e.origin ?? "", tok = (canvas?.tokens?.placeables ?? []).find(t => t.document?.uuid === o || (t.actor && t.actor.uuid === o));
-      if (tok && tok.document?.id !== doc.id) out.push({ dir: l.dir, name: String(e.name ?? "").replace(/\s*\(.*\)\s*$/, ""), token: tok });
+      if (tok && tok.document?.id !== doc.id) out.push({ dir: l.dir, how: l.how === "difficult" ? "difficult" : "cant", name: String(e.name ?? "").replace(/\s*\(.*\)\s*$/, ""), token: tok });
     }
   }
   return out;
@@ -311,6 +311,8 @@ export function extraCost(way, foundryCounted, countsAll = rulerCountsDifficult)
 }
 
 const squareOf = o => ({ i: Math.round(o?.i ?? 0), j: Math.round(o?.j ?? 0) });
+/** v0.0.345: how many squares a grid square (its top left {i, j}) is from a token's square, as the Movement limits measure (top left to top left). */
+const limitSquares = (cell, tok) => { const sq = squareOf(cell), p = canvas.grid.getTopLeftPoint({ i: sq.i, j: sq.j }); return measureSquares(p, { x: tok.document.x, y: tok.document.y }); };
 
 /**
  * A step into a square that is Difficult Terrain for the token (Darkness its Sight can't see in, or an unwilling creature's square) costs double.
@@ -330,6 +332,8 @@ function hardStep(doc, to, step, cost, from = null) {
     }
     // v0.0.171: a diagonal between two creatures is Difficult Terrain too, so the movement label shows it while dragging.
     if (!hard && from) hard = stepCorners(squareOf(from), at, { w, h, creatureAt: c => unwillingIn(c, doc) }).kind === "creatures";
+    // v0.0.345 (book, Frightened): a step that brings it closer to the source of a "Difficult Terrain" Movement limit costs double
+    if (!hard && from) hard = moveLimitsOf(doc).some(l => l.how === "difficult" && moveLimitBreaks(l.dir, limitSquares(from, l.token), limitSquares(at, l.token)));
     if (!hard) hard = areaDifficult(doc, cells);   // v0.0.327 (PACK ZONE): a Zone's or an Aura's Difficult Terrain, for the creatures its row reaches only
     if (!hard) return cost;
     return Number.isFinite(step) && step > 0 ? Math.max(cost, 2 * step) : cost * 2;
@@ -1273,6 +1277,7 @@ export function registerMovement() {
       if (squares <= 0) return;
       // v0.0.323 (PACK EFFECT-SHEET): a Movement limit refuses a willing move that ends nearer to (or farther from) its origin (Forced Movement is not willing)
       for (const l of moveLimitsOf(doc)) {
+        if (l.how === "difficult") continue;   // v0.0.345: Difficult Terrain instead (hardStep)
         const op = { x: l.token.document.x, y: l.token.document.y };
         if (moveLimitBreaks(l.dir, measureSquares(origin, op), measureSquares(to, op))) { warn(`${l.name}: ${doc.name} can't willingly move ${l.dir === "away" ? "away from" : "closer to"} ${l.token.name}.`); return false; }
       }

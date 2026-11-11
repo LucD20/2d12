@@ -76,7 +76,7 @@ function settingSentenceOnly(x) {
       const tiers = keys(x.tiers);
       const on = tiers.length && tiers.length < 3 ? ` on ${wordList(tiers.map(t => t.toUpperCase()), "and")}` : "";
       const pool = x.dmgPool ? ` to ${esc((TWOD12.pools[x.dmgPool] ?? "").replace(/\s*\[.*\]/, ""))}` : "";
-      return `The next action${predicateText(x) || " of any kind"} deals <b>+${esc(x.dmg || "?")}${x.dmgSub ? " " + esc(TWOD12.subtypes[x.dmgSub]) : ""}</b> damage${pool}${on}.`;
+      return `The next action${predicateText(x) || " of any kind"} deals <b>+${esc(x.dmg || "?")}${x.dmgSub && x.dmgSub !== "W" ? " " + esc(TWOD12.subtypes[x.dmgSub]) : ""}</b> damage${x.dmgSub === "W" ? " (the weapon's subtype)" : ""}${pool}${on}.`;
     }
     case "bleed": {   // v0.0.314 (pack AU)
       const attrs = [...(x.attrs ?? [])].map(a => TWOD12.attributes[a] ?? a).join(" or ") || "Body or Instinct";

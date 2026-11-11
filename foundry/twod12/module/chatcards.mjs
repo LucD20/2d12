@@ -432,11 +432,12 @@ export function instancesOf(comps) {
 }
 /** The pool lines: "♥ Vigor · 6 Sl + 4 Fi" → 10 (the same subtype from several sources is one number). */
 export function poolBlock(comps) {
+  // v0.0.345 (Lucas, playtest 4: "the +[Mod] before Pi, both are the same subtype"): each subtype lists its parts, then its code once ("7 + 2 Pi")
   const by = { B: {}, M: {}, C: {} };
-  for (const c of comps ?? []) { const p = by[c.pool] ? c.pool : "B"; by[p][c.sub || ""] = (by[p][c.sub || ""] ?? 0) + (Number(c.total) || 0); }
+  for (const c of comps ?? []) { const p = by[c.pool] ? c.pool : "B", k = c.sub || ""; (by[p][k] ??= []).push(Number(c.total) || 0); }
   return ["B", "M", "C"].filter(p => Object.keys(by[p]).length).map(p => {
-    const subs = Object.entries(by[p]), tot = subs.reduce((a, [, n]) => a + n, 0);
-    return `<span class="cc-poolrow">${poolIc(p)}<span>${POOL[p]} · ${subs.map(([s, n]) => `${n}${s ? ` ${subCode(s)}` : ""}`).join(" + ")}</span><b class="cc-ptot">${tot}</b></span>`;
+    const subs = Object.entries(by[p]), tot = subs.reduce((a, [, ns]) => a + ns.reduce((x, y) => x + y, 0), 0);
+    return `<span class="cc-poolrow">${poolIc(p)}<span>${POOL[p]} · ${subs.map(([s, ns]) => `${ns.join(" + ")}${s ? ` ${subCode(s)}` : ""}`).join(" + ")}</span><b class="cc-ptot">${tot}</b></span>`;
   }).join("");
 }
 const instBlock = x => `<div class="cc-inst"><div class="cc-ititle">${poolIc(x.pool)} ${POOL[x.pool] ?? "Vigor"} · <b style="color:${subInk(x.sub)}">${esc(subName(x.sub))}</b>${x.src ? ` (${esc(x.src)})` : ""}</div>`

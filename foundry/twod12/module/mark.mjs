@@ -85,15 +85,16 @@ export function registerMarkHooks() {
     try { await (await import("./automation.mjs")).endEncounterEffects(combat); } catch (e) { console.warn("twod12 | encounter effects", e); }   // v0.0.323: "This encounter"
     redrawQuarryMarks();
   });
-  // An encounter starts: every mark ends, then each creature's "At the start of an encounter" messages are posted.
+  // An encounter starts: every mark ends; the "At the start of an encounter" messages are one stack card in the turn order (v0.0.345,
+  // startstack.mjs; they were one message each).
   Hooks.on("combatStart", async combat => {
     if (!game.user.isActiveGM) return;
     for (const c of combat.combatants) {
       const a = c.actor;
       if (!a) continue;
       if (quarryOf(a)) await a.unsetFlag(F, "quarry");
-      await postMessages(a, "encounter");
       try { await (await import("./automation.mjs")).applyEncounterStartEffects(a); } catch (e) { console.warn("twod12 | encounter effects", e); }   // v0.0.323
     }
+    try { await (await import("./startstack.mjs")).postStartStack(combat); } catch (e) { console.warn("twod12 | start of the encounter", e); }
   });
 }

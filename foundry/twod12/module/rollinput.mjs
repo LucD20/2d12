@@ -103,7 +103,7 @@ export async function rollDialogInput(c) {
   if (c.usesReload) chips.push({ id: "syn:reload", scope: "shared", row: "boons", kind: "fav", n: 1, special: "reload", label: "Reload shot", start: "off", tip: "A powerful shot: Favored and Empowered 2. Afterwards the weapon must be reloaded before it is used again." });
   // Passives: the Bonus Damage of your Features, Talents and effects, shown in the Tiers they add to (Radiant Zeal "+1d6 Ho" on T1-T3, Heavy Blows "+2" on T3)
   for (const [key, { b, tiers }] of c.bonusSeen.entries()) chips.push({ id: `pass:${key}`, bonusKey: key, scope: "shared", row: "passives", kind: "pass", n: 0, label: b.effect, tag: b.dmg ? `+${b.dmg}${b.sub ? ` ${b.sub}` : ""}` : "", tiers, pool: b.pool, start: "on",
-    tip: b.hover ? String(b.hover).replace(/<[^>]+>/g, "").slice(0, 200) : (b.dmg ? `+${b.dmg}${b.sub ? ` ${TWOD12.subtypes[b.sub] ?? ""}` : ""} damage` : b.text ?? ""), rule: b.srcUuid ? { uuid: b.srcUuid, label: b.effect } : null });
+    tip: b.hover ? String(b.hover).replace(/<[^>]+>/g, "").slice(0, 200) : (b.dmg ? `+${b.dmg}${b.sub ? ` ${TWOD12.subtypes[b.sub === "W" ? c.previewWeapon?.system?.subtype ?? "" : b.sub] ?? ""}` : ""} damage` : b.text ?? ""), rule: b.srcUuid ? { uuid: b.srcUuid, label: b.effect } : null });
   const seenNames = new Set([...c.bonusSeen.values()].map(x => x.b.effect));
   for (const b of bonusesNotNow(actor, c.dlgTraits, { label: tname, name: item.name })) {
     if (seenNames.has(b.effect)) continue;

@@ -38,11 +38,12 @@ export async function handleUse(cfg, ctx = {}) {
   const msg = ctx.message;
   const f = msg?.getFlag?.(F, "action");
   let actor = null;
-  try { actor = f?.actorUuid ? await fromUuid(f.actorUuid) : null; } catch (e) { /* not loaded */ }
+  try { actor = cfg.actor ? await fromUuid(cfg.actor) : f?.actorUuid ? await fromUuid(f.actorUuid) : null; } catch (e) { /* not loaded */ }   // v0.0.345: actor:<uuid>
+  if (actor?.documentName !== "Actor" && actor?.actor) actor = actor.actor;
   actor ??= canvas.tokens?.controlled[0]?.actor ?? game.user.character ?? null;
   if (!actor) return ui.notifications.warn("Select your token first.");
   if (!actor.isOwner) return ui.notifications.warn(`You don't own ${actor.name}.`);
-  const key = cfg.target;
+  const key = cfg.actor ? `${cfg.target}|${cfg.actor}` : cfg.target;   // v0.0.345: one count per creature on a card of several
   const uses = foundry.utils.deepClone(msg?.getFlag?.(F, "uses") ?? {});
   const total = cfg.count ?? 1, left = total - (uses[key] ?? 0);
   if (left <= 0) return ui.notifications.warn("No uses left.");

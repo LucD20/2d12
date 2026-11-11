@@ -50,7 +50,7 @@ export function appliedFlags(s, source) {
   const freqMore = [...new Set(s.settings.filter(x => x.type === "freqmore").map(x => x.fmWhich || "round"))];
   // v0.0.323 (PACK EFFECT-SHEET): an Effect gained at the start of each encounter; Movement limits; the rules that "Next one only" can spend
   const encStarts = s.settings.filter(x => x.type === "encstart" && x.fxUuid).map(x => ({ fxUuid: x.fxUuid }));
-  const moveLimits = s.settings.filter(x => x.type === "move").map(x => ({ dir: x.text === "away" ? "away" : "closer", seen: !!x.seen, ruleId: x.ruleId || "" }));
+  const moveLimits = s.settings.filter(x => x.type === "move").map(x => ({ dir: x.text === "away" ? "away" : "closer", how: x.moveHow === "difficult" ? "difficult" : "cant", seen: !!x.seen, ruleId: x.ruleId || "" }));   // v0.0.345: how
   const spendable = [...new Set(s.settings.filter(x => x.spend && x.ruleId).map(x => x.ruleId))];
   const rules = { whileSeen: !!s.whileSeen, noReactions: !!s.noReactions, loseAp: !!s.loseAp, endsWithOrigin: !!s.endsWithOrigin };
   return { ...rules, bleeds, dmgMods, freqMore, encStarts, moveLimits, spendable, spent: [], saveEnd: s.saveEnd?.on ? { ...s.saveEnd } : null, description: s.description, hover: String(s.hover ?? "").trim() || s.autoHover || "", notes, modifiers, bonuses, inlines, grants, covers, speedMods, defenses, auras, triggers, ignores, rallies, turnStarts, messages, propLoss, escHooks, minEscalation: Math.max(0, Number(s.minEscalation) || 0), expireOn: [...s.expireOn], expireAll: s.expireAll, source };

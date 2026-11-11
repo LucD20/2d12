@@ -674,6 +674,9 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <div class="callout example"><div class="ctitle">Example</div><p>Victor rolls 14, Paul 13, Wes 10, Goblin Warrior 12 and Goblin Scoundrel 10. The PCs' highest result is 14 and the enemies' is 12, so the order is: Victor, Goblin Warrior, Paul, Goblin Scoundrel, Wes.</p>
 <p>In a three-way fight, Mark rolls 13 and Nick 9, the enemies Goblin Warrior 12 and Goblin Scoundrel 8, and a third group Kobold Mage 13 and Kobold Shaman 5. The order is Mark, Kobold Mage, Goblin Warrior, Nick, Kobold Shaman, Goblin Scoundrel.</p></div>
 <p><strong>Ties</strong> are broken by the higher Attribute Modifier used for the Initiative roll. If they are still tied, the Friendly creature (a PC or an ally of the PCs) goes first.</p>
+<h3 id="the-start-of-the-encounter">The Start of the Encounter</h3>
+<p>Some abilities happen <strong>at the start of an encounter</strong>, such as the Archer's <a class="xref" href="archer.html#card-mark-quarry">Mark Quarry</a>. After Initiative is rolled and before the first turn, each of them waits in a <strong>stack</strong>, in the turn order. The GM can change that order: an ally can go later, for example to act after another ally's ability. Then they resolve one at a time, in the stack's order, and the first turn begins.</p>
+<div class="callout example"><div class="ctitle">Example</div><p>Chris and Krysta are Archers. Chris rolls 15 and Krysta 13, so the stack is Chris's Mark Quarry, then Krysta's. Chris wants to know which enemy Krysta marks before choosing his own, so the GM puts Krysta's first.</p></div>
 <h3 id="swapping-initiative">Swapping Initiative</h3>
 <p>On your turn, if you haven't taken any Actions yet and aren't <span class="kw-neg">Down</span>, you can spend <strong><span class="kw-ap">1 AP</span></strong> to swap places in the turn order with an ally who hasn't had a turn this round. The ally takes the turn now, at your place in the order, and gains its AP as normal.</p>
 <p>You act at the ally's old place. Until then, your remaining Actions are <strong>frozen</strong>: you can't use them. When your new turn arrives, you carry on with the AP you had left instead of gaining new AP. You can't swap again that round.</p>
@@ -1842,7 +1845,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tbody>
 </table></div>
 <h3 id="frightened">Frightened</h3>
-<p>Frightened is always <strong>of</strong> a source: a creature or an object. While you perceive the source with your Sight (it is Clear or Obscured to you: see <a class="xref" href="#senses">Senses</a>), all your <a class="xref" href="#rolls">Rolls</a> take <strong><span class="kw-bane">1 Bane</span></strong>, the Save that would end Frightened included, and you can't willingly move closer to the source (Forced Movement still can). Put a wall or Darkness between you and the source, and it is out of your Sight: the <span class="kw-bane">Bane</span> and the restriction stop until you see it again.</p>
+<p>Frightened is always <strong>of</strong> a source: a creature or an object. While you perceive the source with your Sight (it is Clear or Obscured to you: see <a class="xref" href="#senses">Senses</a>), all your <a class="xref" href="#rolls">Rolls</a> take <strong><span class="kw-bane">1 Bane</span></strong>, the Save that would end Frightened included, and every square that brings you closer to the source is <a class="xref" href="#difficult-terrain">Difficult Terrain</a> for you (Forced Movement ignores it). Put a wall or Darkness between you and the source, and it is out of your Sight: the <span class="kw-bane">Bane</span> and the Difficult Terrain stop until you see it again.</p>
 <h3 id="grabbed">Grabbed</h3>
 <p>A creature within its Reach holds you: you are <a class="xref" href="#immobilized">Immobilized</a>, and only the holder can <a class="xref" href="#forced-movement">Force Move</a> or <a class="xref" href="#reposition">Reposition</a> you. Grabbed ends when the holder lets go (no Action), leaves your Reach, goes <span class="kw-neg">Down</span> or is Unconscious, or when you end Immobilized (<span class="kw-ap">1 AP</span> [Move]: Break Free), against the holder's Immobilized DC when the card that grabbed you says so. The holder can't use the hand or limb that holds you for anything else.</p>
 <h3 id="hindered">Hindered</h3>
@@ -1981,7 +1984,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#frightened"><strong>Frightened</strong></a></td>
-<td>Of a source: <span class="kw-bane">1 Bane</span> on all your Rolls and you can't move closer to it, while you see it.</td>
+<td>Of a source: <span class="kw-bane">1 Bane</span> on all your Rolls, and moving closer to it is Difficult Terrain, while you see it.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#grabbed"><strong>Grabbed</strong></a></td>
@@ -2281,7 +2284,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="archer.html#card-mark-quarry"><strong>Marked Quarry</strong></a></td>
-<td>The enemy an Archer chose with the Mark Quarry Action: <span class="kw-boon">1 Boon</span> on their [<span class="trhl" style="--tc:var(--g-requires)">Shot</span>, <span class="trhl" style="--tc:var(--g-kind)">Strike</span>] Actions against it, and <span class="pool-b">[V] [Mod]</span> on a Tier 1. One at a time.</td>
+<td>The enemy an Archer chose with the Mark Quarry Action: <span class="kw-boon">1 Boon</span> on their [<span class="trhl" style="--tc:var(--g-requires)">Shot</span>, <span class="trhl" style="--tc:var(--g-kind)">Strike</span>] Actions against it, and <span class="pool-b">[V] [Mod]</span> extra damage on a Tier 1. One at a time.</td>
 </tr>
 <tr>
 <td><a class="xref" href="gear.html#mastery"><strong>Master</strong></a></td>
@@ -2558,6 +2561,10 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <tr>
 <td><a class="xref" href="bestiary.html#standards"><strong>Standard</strong></a></td>
 <td>An NPC role with CV 100: about 56 Health at Stage 1, dies to about 2 to 3 PC turns.</td>
+</tr>
+<tr>
+<td><a class="xref" href="#the-start-of-the-encounter"><strong>Start of the encounter</strong></a></td>
+<td>After Initiative and before the first turn: abilities that happen then resolve one at a time, in turn order, which the GM can change.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#steadiness"><strong>Steadiness</strong></a></td>

@@ -29,3 +29,5 @@ until Lucas revises it (then Mithril again). Each one, with what changed:
   adds the dice to the allies' damage cards. The card's text and its button are unchanged.
 - Covering Fire (v0.0.343, Lucas 2026-11-11: "remove (the area doesn't move)"): the card reads "For 3 rounds, enemies in the area take 1 Bane on
   [Strike] Actions, and allies in it gain +1 Defense." (book and Foundry; the Covering Fire Effect's description too). Nothing else changed.
+- Mark Quarry (v0.0.345, Lucas 2026-11-11: "Marked Quarry needs to say ... extra damage (same subtype as your weapon) on a Tier 1"): its rules
+  read "those Actions deal [V] [Mod] extra damage (the same subtype as your weapon) on a Tier 1." (the Archer Feature's text too). Nothing else.

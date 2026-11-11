@@ -140,7 +140,7 @@ const DEFAULTS = {
   uses: () => ({ which: "round" }),
   aura: () => ({ size: "2", inside: insideDefault({ carry: { on: true, self: true } }), show: true, outline: "", fill: "" }),   // v0.0.327 (PACK ZONE): per-row Who
   light: () => ({ bright: 1, dim: 2, color: "#ffd27a", alpha: 0.5, anim: "", aspeed: 5, aint: 5 }),
-  move: () => ({ dirm: "closer", sees: false, origin: "" }),
+  move: () => ({ dirm: "closer", how: "cant", sees: false, origin: "" }),   // v0.0.345: how "cant" (can't willingly move) or "difficult" (those squares are Difficult Terrain)
   zone: () => ({ setting: { type: "zone", zoneWho: "allies", zoneHeal: "", fxUuid: "" } }),
   bleed: () => ({ setting: { type: "bleed", dmg: "1", dmgPool: "", dmgSub: "", attrs: ["body", "instinct"], bleedDc: 13 } }),
   builtin: () => ({ which: "noReactions" }),
@@ -161,7 +161,7 @@ export function normRule(r) {
     x.vs = ["any", "origin", "marked", "notorigin"].includes(x.vs) ? x.vs : "any"; x.uses = ["every", "round", "next"].includes(x.uses) ? x.uses : "every";
     x.bb.boons = clamp(x.bb.boons, 0, 5); x.bb.banes = clamp(x.bb.banes, 0, 5); x.bb.name = ["field", "pressure", "support"].includes(x.bb.name) ? x.bb.name : "";
     x.emp.mode = x.emp.mode === "inc" ? "inc" : "set"; x.emp.emp = clamp(x.emp.emp, 0, 5); x.emp.enf = clamp(x.emp.enf, 0, 5);
-    x.dmg.list = (x.dmg.list?.length ? x.dmg.list : [dmgEntry()]).map(d => ({ ...dmgEntry(d), pool: d.pool === "M" ? "M" : "B", sub: subOk(d.sub), tiers: tiersOf(d.tiers ?? [1, 2, 3]) }));
+    x.dmg.list = (x.dmg.list?.length ? x.dmg.list : [dmgEntry()]).map(d => ({ ...dmgEntry(d), pool: d.pool === "M" ? "M" : "B", sub: d.sub === "W" ? "W" : subOk(d.sub), tiers: tiersOf(d.tiers ?? [1, 2, 3]) }));   // v0.0.345: "W" = the weapon's subtype
     x.ign.range = ["none", "one", "all"].includes(x.ign.range) ? x.ign.range : "none";
   } else if (kind === "value") {
     x.stat = ["defense", "speed", "rally", "resist"].includes(x.stat) ? x.stat : "defense"; x.mode = ["bonus", "inc", "set"].includes(x.mode) ? x.mode : "bonus";
@@ -188,7 +188,7 @@ export function normRule(r) {
     x.inside = normInside(x.inside); delete x.aff; delete x.self; delete x.carry;
   }
   else if (kind === "light") { x.bright = clamp(x.bright, 0, 30); x.dim = clamp(x.dim, 0, 30); x.alpha = Math.min(1, Math.max(0, Number(x.alpha) || 0)); x.aspeed = clamp(x.aspeed, 0, 10); x.aint = clamp(x.aint, 0, 10); }
-  else if (kind === "move") x.dirm = x.dirm === "away" ? "away" : "closer";
+  else if (kind === "move") { x.dirm = x.dirm === "away" ? "away" : "closer"; x.how = x.how === "difficult" ? "difficult" : "cant"; }
   else if (kind === "builtin") x.which = ["noReactions", "loseAp"].includes(x.which) ? x.which : "noReactions";
   return x;
 }
@@ -255,7 +255,7 @@ export function migrate(sys, host = "effect") {
       case "ondamage": add("grant", { ...base, item: x.fxUuid || "", itemType: "effect", when: "damage", sub: x.trigSub || "", tag: x.trigTag || "" }); break;
       case "turnstart": add("grant", { ...base, item: x.fxUuid || "", itemType: "effect", when: "turn" }); break;
       case "encstart": add("grant", { ...base, item: x.fxUuid || "", itemType: "effect", when: "enc" }); break;
-      case "move": add("move", { ...base, dirm: x.text === "away" ? "away" : "closer", sees: !!x.seen || seen }); break;
+      case "move": add("move", { ...base, dirm: x.text === "away" ? "away" : "closer", how: x.moveHow === "difficult" ? "difficult" : "cant", sees: !!x.seen || seen }); break;
       case "message": add("grant", { ...base, item: "", itemName: x.msgAction || "", itemType: x.msgAction ? "action" : "", when: x.msgWhen === "turn" ? "turn" : x.msgWhen === "markDown" ? "markDown" : "enc", amode: "uses", uses: 1, ap: x.msgAp || 0, msg: { on: true, to: x.msgTo || "owners", text: x.text || "" } }); break;
       case "weaponprop": add("weap", { ...base, mode: "prop", weapon: x.wpWhich || "fists", gl: "loses", prop: x.wpProp || "nonthreatening" }); break;
       case "mastery": add("weap", { ...base, mode: "mastery", mprop: x.mstTrait || "projectile", mval: x.mstValue ?? 3 }); break;
@@ -286,7 +286,7 @@ export const blankSetting = type => ({ type, attrs: [], title: "", text: "", bri
   speedMode: "add", speedFormula: "", grantAction: "", grantCount: 1, grantAp: 0, grantDistinct: false, halfT3: false, grantOn: "", grantDo: "half", grantText: "", halfOn: "", grantOn2: "", grantDo2: "text", grantText2: "",
   coverLevels: [], zoneWho: "allies", zoneHeal: "", inlineAction: "", defKind: "all", defValue: 1, minEscalation: 0, auraSize: 1, auraWho: "allies", auraSelf: false, auraOutline: "", auraFill: "",
   valFormula: "", trigSub: "", trigTag: "", oncePerRound: false, vsMarked: false, ignoreRule: "rangeBane", rallyBonus: "", rallyRange: 0, msgWhen: "encounter", msgTo: "owners", msgAction: "", msgAp: 0,
-  wpWhich: "fists", wpProp: "nonthreatening", mstTrait: "projectile", mstValue: 3, hookWhen: "allyState", hookRange: 5, vsOrigin: "", bleedDc: 13, rwKind: "resist", rwValue: 1, fmWhich: "round",
+  moveHow: "cant", wpWhich: "fists", wpProp: "nonthreatening", mstTrait: "projectile", mstValue: 3, hookWhen: "allyState", hookRange: 5, vsOrigin: "", bleedDc: 13, rwKind: "resist", rwValue: 1, fmWhich: "round",
   // v0.0.323: the new fields the readers learn (see each module)
   ruleId: "", spend: false, seen: false, empMode: "set", defMode: "bonus", defName: "", sizeFormula: "", trigPool: "", auraShow: true, rangeAll: false });
 const RIDER_ON = rd => (rd.crit ? "crit" : rd.tiers.length === 3 ? "all" : rd.tiers.join() === "2,3" ? "t2" : rd.tiers.join() === "3" ? "t3" : rd.tiers.join() === "1,2,3" ? "t1" : rd.tiers.length ? `t${Math.min(...rd.tiers)}` : "");
@@ -354,7 +354,7 @@ export function compile(rulesIn, endsIn, host = "effect") {
       case "aura": { const c = r.inside.carry;   // the Carries row is the Aura setting the readers know (aura.mjs); every row goes along (areaRows: Heals, Hazard, Difficult Terrain)
         S(r, "aura", { auraSize: isNum(r.size) ? Math.max(1, Math.trunc(Number(r.size))) : 1, sizeFormula: isNum(r.size) ? "" : r.size, auraWho: c.who, auraSelf: c.self, fxUuid: c.on ? c.fx : "", auraOutline: r.outline, auraFill: r.fill, auraShow: r.show, areaRows: r.inside }); break; }
       case "light": S(r, "light", { bright: r.bright, dim: r.bright + r.dim, color: r.color, lightAlpha: r.alpha, lightAnim: r.anim, lightSpeed: r.aspeed, lightIntensity: r.aint }); break;
-      case "move": settings.push({ ...blankSetting("move"), ruleId: r.id, seen: !!r.sees, text: r.dirm }); break;
+      case "move": settings.push({ ...blankSetting("move"), ruleId: r.id, seen: !!r.sees, text: r.dirm, moveHow: r.how }); break;
       case "zone": case "bleed": case "raw": settings.push({ ...blankSetting(r.setting?.type || "note"), ...r.setting, ruleId: r.id, minEscalation: host === "effect" ? 0 : r.minEsc }); break;
       case "builtin": if (r.which === "noReactions") noReactions = true; else loseAp = true; break;
     }
@@ -371,7 +371,7 @@ export function compile(rulesIn, endsIn, host = "effect") {
 /* ------------------------------------------------------------------ the sentences */
 // The sentence is built with marks the pane colors and the hover card strips: ⟦b:1 Bane⟧ ⟦o:2 Boons⟧ ⟦e:Empowered 1⟧ ⟦n:Enfeebled 1⟧ ⟦t:Strike⟧ ⟦x:Divine⟧ (a "not"
 // trait) ⟦d:V:1d6 [V]⟧ ⟦s:Ho⟧ ⟦a:a name⟧ ⟦h:HT: Entering, Turn⟧.
-const SUB = s => T().subtypes?.[s] ?? s;
+const SUB = s => (s === "W" ? "(the weapon's subtype)" : T().subtypes?.[s] ?? s);
 const POOL = p => (p === "M" ? "R" : "V");
 const tiersT = t => (t.length === 3 || !t.length ? "" : ` on ${t.map(x => `T${x}`).join("/")}`);
 const bbWord = (n, name, w) => `${n} ${name ? `${cap(name)} ` : ""}${w}${n === 1 ? "" : "s"}`;
@@ -384,7 +384,7 @@ function filterMarked(f) {
   if (not.length) s = `${s || "Actions"}, not ${orJoin(br(not, true))}`;
   return s;
 }
-const dmgPhrase = d => (!String(d.dice).trim() ? "" : `⟦d:${POOL(d.pool)}:${formulaWords(d.dice)} [${POOL(d.pool)}]⟧${d.sub ? ` ⟦s:${d.sub}⟧` : ""} damage${tiersT(d.tiers)}`);
+const dmgPhrase = d => (!String(d.dice).trim() ? "" : `⟦d:${POOL(d.pool)}:${formulaWords(d.dice)} [${POOL(d.pool)}]⟧${d.sub && d.sub !== "W" ? ` ⟦s:${d.sub}⟧` : ""} damage${d.sub === "W" ? " (the same subtype as the weapon)" : ""}${tiersT(d.tiers)}`);
 /** The payload of an "On matching Actions" rule: ["1 Boon", "Empowered +1", "ignore Low cover", ...]. */
 function payload(r, withDmg = true) {
   const p = [];
@@ -443,7 +443,7 @@ export function sentence(rIn, ctx = {}) {
       if (r.dmg.on) for (const d of r.dmg.list) { if (d.fx) s += `; the target gains ⟦a:${nm(d.fx) || d.fxName || "an Effect"}⟧${tiersT(d.tiers)}`; if (d.text) s += `; ${tiersT(d.tiers).trim() || "on any tier"}: ${d.text}`; }
       return `${s}.`;
     }
-    case "move": return `Can't willingly move ${r.dirm === "closer" ? "closer to" : "away from"} ⟦a:${who}⟧${r.sees ? `, while they see ⟦a:${who}⟧` : ""}.`;
+    case "move": return `${moveWords(r, `⟦a:${who}⟧`)}${r.sees ? `, while they see ⟦a:${who}⟧` : ""}.`;
     case "value": {
       if (r.stat === "rally") return `Each Rally Point heals ${formulaWords(r.rally)} more${r.rallyRange ? `, for this creature and its allies within ${r.rallyRange} squares` : ""}${esc0}.`;
       if (r.stat === "resist") {   // v0.0.325: a formula reads "Resist N Fire, N equal to the origin's Power Modifier"
@@ -540,7 +540,7 @@ export function ruleLabel(rIn, ctx = {}) {
       t = `Aura ${String(r.size).replace(/@origin\./g, "")}: ${bits.join(" + ") || "(empty)"}`; break; }
     case "weap": t = r.mode === "prop" ? `${r.weapon === "fists" ? "Fists" : "Weapons"} lose ${T().removableProps?.[r.prop] ?? r.prop}` : `Starting Mastery ${r.mval}`; break;
     case "light": t = `Light ${r.bright} / ${r.dim}`; break;
-    case "move": t = r.dirm === "closer" ? "Can't move closer" : "Can't move away"; break;
+    case "move": t = r.how === "difficult" ? (r.dirm === "closer" ? "Closer: Difficult Terrain" : "Away: Difficult Terrain") : r.dirm === "closer" ? "Can't move closer" : "Can't move away"; break;
     case "zone": t = "Zone (old layout)"; break;
     case "bleed": t = `Bleed ${r.setting?.dmg ?? ""}`.trim(); break;
     case "builtin": t = r.which === "noReactions" ? "No Reactions" : "Loses its value in AP"; break;
@@ -759,7 +759,7 @@ export function hoverCardText(rulesIn, endsIn, ctx = {}) {
   const g = [...groups.entries()].map(([k, rs]) => {
     const who = k ? (ctx.names?.[k] ?? ORIGIN(ctx)) : ORIGIN(ctx);
     if (rs.length === 1) return plainText(sentence(rs[0], ctx));
-    const lite = rs.map(r => (r.kind === "move" ? `they can't willingly move ${r.dirm === "closer" ? "closer to" : "away from"} it` : `${andJoin(payload(r).map(plainText))} on ${actScope(r, true)}${r.vs !== "any" ? `${r.dir === "by" ? " against " : " made by "}${plainText(VS_WORD(r.vs, who))}` : ""}${r.uses === "round" ? ", the first each round" : ""}`));
+    const lite = rs.map(r => (r.kind === "move" ? (r.how === "difficult" ? `${lowFirst(moveWords(r, "it"))} for them` : `they ${lowFirst(moveWords(r, "it"))}`) : `${andJoin(payload(r).map(plainText))} on ${actScope(r, true)}${r.vs !== "any" ? `${r.dir === "by" ? " against " : " made by "}${plainText(VS_WORD(r.vs, who))}` : ""}${r.uses === "round" ? ", the first each round" : ""}`));
     return `While they see ${who}: ${andJoin(lite)}.`;
   });
   const body = [...g, ...out].filter(Boolean).join(" ");
@@ -773,6 +773,9 @@ export const spendable = r => normRule(r).kind === "act" && normRule(r).uses ===
 export const allSpent = (rules, spent = []) => { const s = (rules ?? []).filter(spendable); return s.length > 0 && s.every(r => (spent ?? []).includes(normRule(r).id)); };
 
 /** NEW, the Movement limit (move.mjs): does a willing move from `before` to `after` squares away from the origin break it? */
+/** v0.0.345: a Movement limit in words: "Can't willingly move closer to X" or "Moving closer to X is Difficult Terrain". */
+const moveWords = (r, who) => (r.how === "difficult" ? `Moving ${r.dirm === "closer" ? "closer to" : "away from"} ${who} is Difficult Terrain` : `Can't willingly move ${r.dirm === "closer" ? "closer to" : "away from"} ${who}`);
+const lowFirst = s => s.charAt(0).toLowerCase() + s.slice(1);
 export const moveLimitBreaks = (dir, before, after) => (dir === "away" ? after > before : after < before);
 
 /* ------------------------------------------------------------------ named bonuses (NEW, the book's Stacking) */

@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-11 from the repository at: 8508179 2026-11-11 v0.0.343: playtest 4, Step 1 (the bugs)
+Built by tools/knowledge.py on 2026-11-11 from the repository at: aad762d 2026-11-11 v0.0.344: t112, t183, t224 expected outputs (the rebuilt packs' new Open Season (the Quarry) Effect; the version)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -16,9 +16,9 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 Files:
 - HANDOFF.md (93 KB)
 - MASTER-PLAN.md (23 KB)
-- open-design-items.md (97 KB)
+- open-design-items.md (96 KB)
 - rules-01-roll.md (23 KB)
-- rules-02-turns.md (27 KB)
+- rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
 - rules-04-health.md (14 KB)
 - rules-05-characters.md (6 KB)
