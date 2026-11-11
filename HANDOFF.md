@@ -3,6 +3,7 @@
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
 ## Where we are now (v0.0.342, 230 tests; READ THIS FIRST)
+- **2026-11-11 (no new version): playtest 4's notes organized** into six steps (foundry-backlog "PLAYTEST 4 FIXES", rules-backlog four items, the log `book/playtest-4.md`); Lucas answered the questions. **NEXT:** Step 1 (bugs) when Lucas says go.
 - **v0.0.342 (2026-11-10, branch `pack-rwi`):** the CRIT zone in a narrow chat, the Critical line only when rolled, the Save card's "No effect." colour, no Card button in the roll window. **NEXT:** Lucas's test; merge `pack-rwi`; ACTION-SHEET.
 - **v0.0.341 (2026-11-10, branch `pack-rwi`):** normal buttons again (Lucas: "the buttons aware isn't necessary"); 6 Paladin cards Mithril again, 5 Diamond to revise (Rebuke, Skirmish Shot, Heartseeker, Marksman's Shot, Open Season). **NEXT:** Lucas's test; merge `pack-rwi`; ACTION-SHEET.
 - **v0.0.340 (2026-11-10, branch `pack-rwi`):** chain-aware buttons (11 Diamond cards for Lucas to look at), an area Action rolled against a DC, an NPC's Rally Point (book Ch. 4: 9 / 13 / 17), Send to chat as the new card. New test t232 (**the next new test is t233**). **NEXT:** Lucas looks at the buttons; then ACTION-SHEET.

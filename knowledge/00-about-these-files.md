@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-10 from the repository at: 2f64aa3 2026-11-10 v0.0.341: normal buttons again (the chain-aware buttons removed); six Paladin cards Mithril again, Rebuke, Skirmish Shot, Heartseeker, Marksman's Shot, Open Season Diamond
+Built by tools/knowledge.py on 2026-11-11 from the repository at: 7399c5d 2026-11-10 v0.0.342: the CRIT zone in a narrow chat, the Critical line only when rolled, the Save card's No effect colour, no Card button in the roll window
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -16,7 +16,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 Files:
 - HANDOFF.md (92 KB)
 - MASTER-PLAN.md (23 KB)
-- open-design-items.md (96 KB)
+- open-design-items.md (97 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (27 KB)
 - rules-03-movement.md (39 KB)
@@ -34,6 +34,7 @@ Files:
 - design-expedition-loop.md (12 KB)
 - design-playtest-2.md (7 KB)
 - design-playtest-3.md (4 KB)
+- design-playtest-4.md (3 KB)
 - design-rework-r.md (57 KB)
 - design-progression-lv.md (13 KB)
 - design-class-charter.md (10 KB)

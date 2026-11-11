@@ -32,6 +32,7 @@ DESIGN_DOCS = [
     "book/expedition-loop.md",  # Momentum, Alert, the decided fight and the Parting Beat: a candidate (2026-11-09)
     "book/playtest-2.md",       # playtest 2 and the rework it decided (pack R)
     "book/playtest-3.md",       # playtest 3, the baseline (no NPC Weapon Attack); its questions
+    "book/playtest-4.md",       # playtest 4 (Foundry, v0.0.342, not finished): the log; its fixes in foundry-backlog "PLAYTEST 4 FIXES"
     "book/rework-r.md",         # pack R: the numbers and the decided sheet (section 14); R-core, R-classes and R-bestiary applied, R-Foundry to go
     "book/progression-lv.md",   # progression, Overcast and Momentum (pack R changes Overcast)
     "book/class-charter.md",    # what every class must have
