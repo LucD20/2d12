@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.348, 234 tests; READ THIS FIRST)
+## Where we are now (v0.0.349, 235 tests; READ THIS FIRST)
+- **v0.0.349 (2026-11-11, branch `pack-rwi`): playtest 4, Step 4:** the combat strip (On you, Escalation, Hands, AP with the Strike pips), Senses under the name, Guard's numbered shield, the roll window's one-line quick buttons and its Versions next to Roll, no Doubles tooltip. New test t237 (**the next new test is t238**). **NEXT:** Lucas's test; then Step 5 (the map).
 - **v0.0.348 (2026-11-11, branch `pack-rwi`): Lucas on v0.0.347:** several markers' portraits, Doubles in gold, the granted bar's targets, the reprint after the Reaction's damage, the Reactions title bar. **NEXT:** Step 4 (the sheet header and the roll window).
 - **v0.0.347 (2026-11-11, branch `pack-rwi`): the stack resolves by itself; playtest 4, Step 3 (a quieter chat):** follow-ups inside their card, the granted Action before Apply, no uses-left card, the Reactions' short lines and the reprinted card, Double Shot's list per target, the roll card's Boons / Banes, Applied and used Damage, the Save condensed, Rally's lines and Heal button. New test t236 (**the next new test is t237**). **NEXT:** Lucas's test; then Step 4 (the sheet header and the roll window).
 - **v0.0.346 (2026-11-11, branch `pack-rwi`): Lucas on v0.0.345:** the data model lacked `moveHow` and `dmgSub` "W" (why Frightened and Marked Quarry didn't change; a world pass fixes old copies once), bars always shown, the stack card restyled as the Reactions card, no 0 on the pool line. New test t235 (**the next new test is t236**). **NEXT:** Lucas's test; then Step 3 (a quieter chat).

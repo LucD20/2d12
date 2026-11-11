@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-11 from the repository at: e7a0d42 2026-11-11 v0.0.348: several marks on a token, Doubles in gold, the granted bar's targets, reprint after the Reaction's damage, the Reactions title bar
+Built by tools/knowledge.py on 2026-11-11 from the repository at: 6c10f70 2026-11-11 v0.0.348: the changelog, backlog and handoff entries
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

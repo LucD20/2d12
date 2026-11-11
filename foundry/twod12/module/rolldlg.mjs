@@ -346,7 +346,7 @@ export function rowsHtml(chips, st, scope, rows = ROWS) {
   }).join("");
 }
 /** v0.0.294 (Lucas): the ladder carries the creature's chance of each Tier (when the setting shows them); the "≤" in a font that draws it well. */
-const ladderHtml = (dc, crit, odds = null) => `<div class="rd-ladder${crit ? " crit" : ""}" data-tooltip="${esc(LADDER_TIP)}">${ladder(dc, crit).map((s, i) => `<span class="rd-lseg ${s.k}"><span>${esc(s.label).replace("≤", '<span class="rd-le">≤</span>')}</span>${odds ? `<b class="rd-lpct">${odds[i]}%</b>` : ""}</span>`).join("")}</div>`;
+const ladderHtml = (dc, crit, odds = null) => `<div class="rd-ladder${crit ? " crit" : ""}">${ladder(dc, crit).map((s, i) => `<span class="rd-lseg ${s.k}"><span>${esc(s.label).replace("≤", '<span class="rd-le">≤</span>')}</span>${odds ? `<b class="rd-lpct">${odds[i]}%</b>` : ""}</span>`).join("")}</div>`;
 /** A creature's chances for its ladder: null when the setting hides them (or the player view hides the Defenses: no ladder then anyway). */
 const ladderOdds = (inp, st, c, crit) => (inp.showOdds && !inp.hideDef && !inp.save ? oddsOf(creatureCalc(inp, st, c.uuid), crit) : null);
 const defBadge = (c, hide) => `<span class="rd-def" ${hide ? 'data-tooltip="Hidden by the GM"' : ""}>${esc(c.def ?? "DC")}${hide ? "" : ` ${Number(c.dc) || 13}`}</span>`;
@@ -438,7 +438,8 @@ export function dialogHtml(inp, st) {
   const v = versionOf(inp, st), dl = diceLine(inp, st), why = blockedReason(inp, st), warn = warnings(inp, st), noRoll = !!v?.noTiers;
   // v0.0.293 (Lucas: allow it with a warning): a Version you can't afford is struck through but can be chosen
   const vers = (inp.versions ?? []).length > 1 ? `<div class="rd-vers" role="group" aria-label="Version">${inp.versions.map(x => `<button type="button" data-act="ver" data-ap="${x.ap}" aria-pressed="${Number(x.ap) === Number(v?.ap)}"${x.disabled ? ` data-tooltip="${esc(x.why ?? "")}" class="cant"` : ""}>${esc(x.cost)}</button>`).join("")}</div>` : "";
-  const quick = `<div class="rd-quick">${(inp.save ? ["emp", "enf"] : quickKinds(inp.multi)).map(k => `<button type="button" class="rd-qb" data-act="quick" data-scope="shared" data-k="${k}">${pip({ kind: k })}${QUICK_LABEL[k]}</button>`).join("")}</div>`;
+  // v0.0.349 (Lucas, playtest 4: "Enfeebled on the same line, tighter, no +1 / −1 on the icons"): +1 / −1 without a sign icon (the label says it)
+  const quick = `<div class="rd-quick tight">${(inp.save ? ["emp", "enf"] : quickKinds(inp.multi)).map(k => `<button type="button" class="rd-qb" data-act="quick" data-scope="shared" data-k="${k}">${["plus", "minus"].includes(k) ? "" : pip({ kind: k })}${QUICK_LABEL[k]}</button>`).join("")}</div>`;
   const notices = (inp.notices ?? []).length ? `<div class="rd-notes">${inp.notices.map(n => `<span class="rd-note"${n.why ? ` data-tooltip="${esc(n.why)}"` : ""}>${esc(n.text)}</span>`).join("")}</div>` : "";
   const head = inp.save ? `<div class="rd-dice"><b class="rd-dtxt">Their roll</b> <i class="rd-dnames">${esc(inp.save.label)} vs DC ${inp.save.dc}</i> <span class="rd-dnote">· each target rolls; the Tiers are their result</span></div>`
     : `<div class="rd-dice"><b class="rd-dtxt">${esc(dl.dice)}</b> <b>${sgn(dl.mod)}</b> <i class="rd-dnames">${esc(dl.names.join(", "))}</i> ${counts(dl.boons, dl.banes)}${dl.note ? ` <span class="rd-dnote">· ${esc(dl.note)}</span>` : ""}${(dl.bbNotes ?? []).map(x => ` <span class="rd-dnote rd-bbcap">· ${esc(x)}</span>`).join("")}</div>`;
@@ -451,8 +452,9 @@ export function dialogHtml(inp, st) {
   const flavor = inp.flavor ? `<div class="rd-div" aria-hidden="true"><span></span><i>◆ ◆ ◆</i><span></span></div><p class="rd-flavor">${esc(inp.flavor)}</p>` : "";
   const designer = inp.designer && v && !v.noTiers && !inp.save ? `<div class="rd-designer"><div>${inp.showOdds && !inp.hideDef ? "" : liveCreatures(inp, st).map(c => `<div><b>${esc(c.name)}</b>: ${oddsLine(oddsOf(creatureCalc(inp, st, c.uuid), !!v.crit))}</div>`).join("")}</div><div class="rd-force" role="group" aria-label="Force a Tier">Force a Tier: ${[1, 2, 3].map(n => `<button type="button" data-act="force" data-t="${n}" aria-pressed="${Number(st.forceTier) === n}">T${n}</button>`).join("")}</div></div>` : "";
   const modes = (inp.rollModes ?? []).length ? `<select class="rd-mode" data-field="rollMode" aria-label="Roll mode">${inp.rollModes.map(([k, l]) => `<option value="${esc(k)}"${k === st.rollMode ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>` : "";
-  const bar = `<footer class="rd-bar">${modes}<button type="button" class="rd-go" data-act="roll"${why ? " disabled" : ""}>${noRoll || inp.save ? "Use" : "Roll"}</button></footer>${why ? `<div class="rd-why" role="status">${esc(why)}</div>` : ""}${inp.hideDef ? '<div class="rd-pview">Player view · enemy Defenses hidden by the GM</div>' : ""}`;
+  const bar = `<footer class="rd-bar">${modes}${vers}<button type="button" class="rd-go" data-act="roll"${why ? " disabled" : ""}>${noRoll || inp.save ? "Use" : "Roll"}</button></footer>${why ? `<div class="rd-why" role="status">${esc(why)}</div>` : ""}${inp.hideDef ? '<div class="rd-pview">Player view · enemy Defenses hidden by the GM</div>' : ""}`;
   const warnHtml = warn.length ? `<div class="rd-warn" role="status"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> ${esc(warn.join(" · "))}. You can still use it.</div>` : "";
-  return `<header class="rd-head"><div class="rd-nameline"><h1 class="rd-name">${esc(inp.name)}</h1>${vers}</div>${traitsHtml(inp, v)}</header>
+  // v0.0.349 (Lucas, playtest 4: "the AP Version buttons at the bottom next to Roll")
+  return `<header class="rd-head"><div class="rd-nameline"><h1 class="rd-name">${esc(inp.name)}</h1></div>${traitsHtml(inp, v)}</header>
     <div class="rd-body">${metaHtml(inp, v)}${tierTableHtml(inp, st, v)}${panel}${flavor}</div>${designer}${warnHtml}${bar}`;
 }
