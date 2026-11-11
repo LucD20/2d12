@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-11 from the repository at: 98fb6ab 2026-11-11 v0.0.349: playtest 4, Step 4 (the sheet header and the roll window)
+Built by tools/knowledge.py on 2026-11-11 from the repository at: b7c63f8 2026-11-11 v0.0.350: playtest 4, Step 5 (the map); Doubles' gold line
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

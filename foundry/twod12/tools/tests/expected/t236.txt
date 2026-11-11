@@ -4,7 +4,7 @@ granted first: true | no uses-left card: true
 No Reactions line: No Reactions: Sylwen 's [Overwatch]: no AP
 used line: Reactions: Aveline uses Rebuke → Orc Warrior. | Reactions: none used.
 the triggering card reprinted after a Trigger's chain: true | settings: true
-Double Shot's list: Weapon Attack: Ogre Chieftain Weapon Attack: Bandit Thug | each targets its creature: true | no label: true
+Double Shot's list: Weapon Attack: Ogre Chieftain Weapon Attack: Bandit Thug Cancel | each targets its creature: true | no label: true
 breakdown: 2d12 6 7 Modifiers +2 Weapon Applied Killer's Focus 15 vs AD 13 Tier 2 | Applied is a link: true
 the Damage button used: true | the Save condensed once rolled: true
 Rally's lines: true | a Heal button where Damage would be: true

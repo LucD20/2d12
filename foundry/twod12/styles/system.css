@@ -4125,3 +4125,6 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12-linebar.twod12-grantbar { bottom: 74px; }
 .twod12-grantbar .lb-grip { cursor: grab; color: #c9a24a; padding: 0 2px; }
 .twod12-grantbar .lb-grip:active { cursor: grabbing; }
+/* v0.0.351: the granted uses' Cancel (card and bar) */
+.twod12.chat .tline.grantrow.grantlist .cc-gbtn.gl-cancel { background: transparent; color: #8a2f22; border: 1px solid #c9a080; justify-content: center; font-size: 11.5px; min-height: 20px; }
+.twod12.chat .tline.grantrow.grantlist .gl-cancelled { color: #6b5a3a; }

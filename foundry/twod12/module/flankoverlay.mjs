@@ -25,7 +25,7 @@ function dashed(g, x1, y1, x2, y2, dash = 10, gap = 7) {
 // v0.0.303 (Lucas: "a bit too small"): the text scales with the grid, on a dark pill like the Reactions overlay's labels
 const fsz = k => Math.round((canvas?.grid?.size ?? 100) * k);
 function label(txt, fill, size = fsz(0.24), bgColor = 0x1b2433) {
-  const box = new PIXI.Container(), t = new PIXI.Text(txt, { fontFamily: "Signika, sans-serif", fontSize: size, fontWeight: "700", fill, stroke: "#111111", strokeThickness: 3 });
+  const box = new PIXI.Container(), t = new PIXI.Text(txt, { fontFamily: "Signika, sans-serif", fontSize: size, fontWeight: "700", fill, stroke: "#111111", strokeThickness: 3, align: "center" });
   t.anchor.set(0.5);
   const w = t.width + size * 0.8, h = t.height + size * 0.25, bg = new PIXI.Graphics();
   bg.lineStyle(2, 0xd9c9a3, 0.9).beginFill(bgColor, 0.85).drawRoundedRect(-w / 2, -h / 2, w, h, size * 0.35).endFill();
@@ -90,7 +90,8 @@ function draw() {
         g.lineStyle(3, CANCEL, 0.95); dashed(g, k.x1, k.y1, k.x2, k.y2);
       }
     }
-    const tt = label(flankedText(row), "#ffe3a3", fsz(0.22));
+    // v0.0.351 (Lucas: "a little centered text with the name of the creature affected, on top of 'Flanked: Ogre +1'")
+    const tt = label(`${firstName(row.target.name)}\n${flankedText(row)}`, "#ffe3a3", fsz(0.22));
     tt.anchor.set(0.5); put(tt, centerOf(row.target).x, (row.target.document?.y ?? 0) - fsz(0.2));
   }
   layer()?.addChild(box);

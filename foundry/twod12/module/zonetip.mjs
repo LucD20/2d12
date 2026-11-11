@@ -22,7 +22,7 @@ export function zoneTipLines(z, nameOf = () => null) {
   }
   if (z?.rows) {
     const rows = zoneRows(z);
-    if (rows.carry?.on && rows.carry.fx && !(z.rules ?? []).some(r => r.fxUuid === rows.carry.fx)) { const n = nameOf(rows.carry.fx); lines.push(`${WHO[rows.carry.who] ?? "Inside"}: ${shortWords(n?.name ?? "an Effect", n?.summary)}`); }
+    for (const c of [rows.carry, rows.carry2]) if (c?.on && c.fx && !(z.rules ?? []).some(r => r.fxUuid === c.fx)) { const n = nameOf(c.fx); lines.push(`${WHO[c.who] ?? "Inside"}: ${shortWords(n?.name ?? (z.names?.[c.fx] || "an Effect"), n?.summary)}`); }   // v0.0.351: both Carries rows
     if (rows.heal?.on && !(z.rules ?? []).some(r => String(r.heal ?? "").trim())) lines.push(`${WHO[rows.heal.who] ?? "Inside"}: heal ${rows.heal.formula} at the start of their turns`);
     if (rows.ht?.on) lines.push(`Hazard: ${(rows.ht.list ?? []).map(d => `${d.dice}${d.sub ? ` ${d.sub}` : ""}`).join(" + ") || "damage"} (${WHO[rows.ht.who] ?? "everyone"})`);
     if (rows.diff?.on) lines.push(`Difficult Terrain (${(WHO[rows.diff.who] ?? "everyone").toLowerCase()})`);

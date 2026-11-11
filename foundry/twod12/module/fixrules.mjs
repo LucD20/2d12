@@ -53,3 +53,27 @@ export async function fixRulesV346() {
   if (n) console.log(`twod12 | v0.0.346: ${n} copies of Frightened / Marked Quarry brought to the v0.0.345 rules`);
   return n;
 }
+
+/**
+ * v0.0.351 (Lucas: "the area's tooltip shows the enemies' part, not the allies'"): a Zone kept only one carried Effect (PACK ZONE's migration took
+ * the first), so Covering Fire's allies never had their +1 Defense. Zones now carry a second; once per world, a world or creature copy of a Zone
+ * Effect that has none gets the compendium's second row (by name). Returns how many were updated. Also game.twod12.fixZonesV351().
+ */
+export async function fixZonesV351() {
+  const pack = game.packs?.get("twod12.effects");
+  if (!pack) return 0;
+  const src = new Map();
+  for (const d of await pack.getDocuments()) { const c2 = d.system?.zone?.inside?.carry2; if (d.system?.where === "map" && c2?.fx) src.set(d.name, c2.toObject?.() ?? foundry.utils.deepClone(c2)); }
+  if (!src.size) return 0;
+  const items = [...(game.items ?? [])];
+  for (const a of game.actors ?? []) items.push(...(a.items ?? []));
+  let n = 0;
+  for (const it of items) {
+    const c2 = src.get(it.name);
+    if (!c2 || it.type !== "effect" || it.system?.where !== "map" || it.system?.zone?.inside?.carry2?.fx) continue;
+    await it.update({ "system.zone.inside.carry2": c2 });
+    n++;
+  }
+  if (n) console.log(`twod12 | v0.0.351: ${n} Zone Effects got their second carried Effect`);
+  return n;
+}

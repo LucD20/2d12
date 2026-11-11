@@ -1365,7 +1365,19 @@ export async function retargetAction(msg) {
   if (msg.getFlag("twod12", "cc")?.kind === "noroll") {   // v0.0.294: the non-roll card: its target line and the targets its steps apply to
     const m = foundry.utils.deepClone(msg.getFlag("twod12", "cc")), targets = toks.map(t => ({ uuid: t.document.uuid, name: t.name, disposition: t.document.disposition }));
     m.tline = { ...(m.tline ?? {}), names: targets.map(t => t.name) };
-    try { await msg.update({ content: CC.cardContent(m), "flags.twod12.cc": m, "flags.twod12.action.targets": targets }); } catch (e) { ui.notifications.warn("Only the author of this card or the GM can change its targets."); }
+    // v0.0.351 (Lucas: "retargeting should retarget the buttons' targets as well"): a card with granted uses (Double Shot) keeps its list, now paired
+    // with the new targets
+    let content = CC.cardContent(m);
+    const upd = { "flags.twod12.cc": m, "flags.twod12.action.targets": targets };
+    const gc = msg.getFlag("twod12", "grantCard");
+    if (gc) {
+      const card = { ...gc, targets: targets.map(t => ({ uuid: t.uuid, name: t.name })) };
+      let actor = null; try { actor = gc.actorUuid ? await fromUuid(gc.actorUuid) : null; } catch (e) { actor = null; }
+      const { grantRowsHtml } = await import("./freeuse.mjs");
+      content = content.replace(/<\/div>\s*$/, `${grantRowsHtml(actor, card)}</div>`);
+      upd["flags.twod12.grantCard"] = card;
+    }
+    try { await msg.update({ content, ...upd }); } catch (e) { ui.notifications.warn("Only the author of this card or the GM can change its targets."); }
     return;
   }
   const targets = toks.map(t => ({ uuid: t.document.uuid, name: t.name, disposition: t.document.disposition }));

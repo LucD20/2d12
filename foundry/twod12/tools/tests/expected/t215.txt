@@ -10,7 +10,7 @@ Opportunity Attack: the text keeps: "You can make a Weapon Attack (1A) against t
 no @Use: unchanged: true
 the weapon reaches: Greatsword 1 sq., 1 away: "" | 3 away: Bandit Thug is 3 sq. away: Greatsword reaches 1 sq. | a Longbow too: ""
 Aim's grant carries: free true | AP 0 | Boons 1 | the source Aim (Weapon Attack, 1 Boon) | its effect (for Ignores cover) fxAim
-the row before: Weapon Attack | a button: true
+the row before: Weapon Attack Cancel | a button: true
 used once, then: Weapon Attack | no button: true | no sublines: true
 --- the non-roll card
 order: name, meta, Interrupt, diamond, text, Granted Action, Flavor: true

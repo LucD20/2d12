@@ -128,7 +128,10 @@ export function grantRowsHtml(actor, card) {
       const t = order[k], name = `${escT(g.actionName)}${t?.name ? `: ${escT(t.name)}` : ""}`, spent = k < count - left;
       return spent ? `<span class="cc-used gl-used"><i class="fa-solid fa-check"></i> ${name}</span>` : `<button type="button" class="cc-gbtn gl-btn" data-twod12="useGrant" data-effect-id="${g.id}" data-index="${g.index}"${t?.uuid ? ` data-target="${escT(t.uuid)}"` : ""} data-tooltip="${t?.name ? `Use ${escT(g.actionName)} against ${escT(t.name)}` : `Use ${escT(g.actionName)}`}">${grantIcon(g.actionName)} ${name}</button>`;
     }).join("");
-    return `<div class="tline grantrow grantlist"><div class="gbtns">${btns}</div></div>`;
+    // v0.0.351 (Lucas: "there should also be a button to cancel"): the uses can be given up (the Effect that grants them ends)
+    if (g.cancelled) return `<div class="tline grantrow grantlist"><div class="gbtns"><span class="cc-used gl-used gl-cancelled"><i class="fa-solid fa-ban"></i> ${escT(g.actionName)}: cancelled</span></div></div>`;
+    const cancel = left > 0 ? `<button type="button" class="cc-gbtn gl-cancel" data-twod12="cancelGrant" data-effect-id="${g.id}" data-tooltip="Give up these uses (the Effect that grants them ends)"><i class="fa-solid fa-xmark"></i> Cancel</button>` : "";
+    return `<div class="tline grantrow grantlist"><div class="gbtns">${btns}${cancel}</div></div>`;
   }).join("");
 }
 /** v0.0.348: pure: the card's creatures in button order: those a used use went to first (spent of them), then the ones still free. */
@@ -214,13 +217,34 @@ export function refreshGrantBar() {
     return Array.from({ length: x.left }, (_, k) => { const t = free[k]; return `<button type="button" class="lb-go lb-grant" data-effect-id="${escT(x.effectId)}" data-index="${x.index}"${t?.uuid ? ` data-target="${escT(t.uuid)}"` : ""} data-tooltip="${escT(`${x.actionName}${t?.name ? ` against ${t.name}` : ""}, granted by ${x.source} (free)`)}">${grantIcon(x.actionName)} ${escT(x.actionName)}${t?.name ? `: ${escT(t.name)}` : ""}</button>`; });
   }).join("");
   const sources = [...new Set(list.map(x => x.source))].join(", ");
-  const html = `<span class="lb-grip" data-tooltip="Drag to move this bar (double-click: back to its place)"><i class="fa-solid fa-grip-vertical"></i></span><i class="fa-solid fa-bolt lb-ic"></i><span class="lb-text"><b>${escT(tok.name)}</b>: granted by <b>${escT(sources)}</b></span>${btns}`;
+  const cancels = [...new Map(list.map(x => [x.effectId, x])).values()].map(x => `<button type="button" class="lb-give lb-gcancel" data-effect-id="${escT(x.effectId)}" data-tooltip="${escT(`Give up the uses left from ${x.source}`)}">Cancel</button>`).join("");   // v0.0.351
+  const html = `<span class="lb-grip" data-tooltip="Drag to move this bar (double-click: back to its place)"><i class="fa-solid fa-grip-vertical"></i></span><i class="fa-solid fa-bolt lb-ic"></i><span class="lb-text"><b>${escT(tok.name)}</b>: granted by <b>${escT(sources)}</b></span>${btns}${cancels}`;
   if (!grantBarEl) {
     grantBarEl = document.createElement("div"); grantBarEl.className = "twod12-linebar twod12-setupbar twod12-grantbar"; document.body.append(grantBarEl);
     makeMovable(grantBarEl);   // v0.0.350 (Lucas, playtest 4: "the granted actions HUD should be movable and lower on the screen")
+    grantBarEl.addEventListener("click", async ev => { const x = ev.target.closest(".lb-gcancel"); if (x) { ev.preventDefault(); const t0 = canvas.tokens.controlled[0]; if (t0?.actor) await cancelGrantOf(t0.actor, x.dataset.effectId); return; } });
     grantBarEl.addEventListener("click", async ev => { const b = ev.target.closest(".lb-grant"); if (!b) return; ev.preventDefault(); const t = canvas.tokens.controlled[0]; if (t?.actor) await useGrantOf(t.actor, b.dataset.effectId, Number(b.dataset.index) || 0, b.dataset.target ?? ""); });
   }
   grantBarEl.innerHTML = html;
+}
+/** v0.0.351: give up a grant's uses: the cards that list it say "cancelled", and its Effect ends. */
+export async function cancelGrantOf(actor, effectId) {
+  if (!actor?.isOwner) return ui.notifications.warn(`You don't own ${actor?.name ?? "that creature"}.`);
+  for (const msg of [...(game.messages?.contents ?? [])].slice(-80)) {
+    const card = msg.getFlag?.(F, "grantCard");
+    if (card?.actorUuid !== actor.uuid || !card.effects?.some(x => x.id === effectId)) continue;
+    const nc = { ...card, effects: card.effects.map(x => (x.id === effectId ? { ...x, cancelled: true } : x)) };
+    const content = String(msg.content).replace(/(?:<div class="tline grantrow[^"]*">[\s\S]*?<\/div><\/div>)+/, grantRowsHtml(actor, nc));
+    try { await msg.update({ content, [`flags.${F}.grantCard`]: nc }); } catch (e) { /* not the author */ }
+  }
+  const e = actor.effects.get(effectId);
+  if (e) await e.delete();
+  refreshGrantBar();
+}
+export async function cancelGrant(msg, effectId) {
+  const card = msg?.getFlag?.(F, "grantCard");
+  let actor = null; try { actor = card?.actorUuid ? await fromUuid(card.actorUuid) : null; } catch (e) { actor = null; }
+  if (actor) await cancelGrantOf(actor, effectId);
 }
 /** v0.0.350: a bar dragged by its grip keeps its place (this browser); a double-click on the grip puts it back. */
 const POS_KEY = "twod12.grantBarPos";

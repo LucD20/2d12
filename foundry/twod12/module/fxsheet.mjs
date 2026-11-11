@@ -176,6 +176,8 @@ function insideHtml(p, inIn, m, selfLabel, head = true) {
   const rows = [
     part(`${p}.carry`, x.carry.on, "Carries an Effect", sm("carry"), grid(who("carry")) + dropped(m, `${p}.carry.fx`, x.carry.fx, x.carry.fxName, "Drop the Effect they have while inside", "from the Effects and Conditions compendiums")
       + help("Gained on entering, lost on leaving or when the area ends. While carried, its own Ends are not used: to give something that lasts after leaving, use Hazard → Gives an Effect.")),
+    // v0.0.351: a Zone carries a second Effect (Covering Fire: one for the enemies, one for the allies); an Aura keeps one
+    ...(/zone/.test(p) ? [part(`${p}.carry2`, x.carry2.on, "Carries a second Effect", sm("carry2"), grid(who("carry2")) + dropped(m, `${p}.carry2.fx`, x.carry2.fx, x.carry2.fxName, "Drop the second Effect they have while inside", "from the Effects and Conditions compendiums"))] : []),
     part(`${p}.heal`, x.heal.on, "Heals", sm("heal"), grid([...who("heal"), ["Heal", `${text(`${p}.heal.formula`, x.heal.formula, "1d4", "dice")}${fhelp()} <span class="fr-m">at the start of each of their turns inside</span>`]])
       + help("A heal, as Heal in Chapter 4 (they choose which damage), rolled for each creature at the start of its own turn. Formulas work: 1d4 + @origin.pow.")),
     part(`${p}.ht`, ht.on, "Hazard [HT]", sm("ht"), grid([...who("ht"), ["Triggers", ["entering", "turn", "movement"].map(k => tog(`${p}.ht.${k}`, ht[k], k[0].toUpperCase() + k.slice(1))).join("")],

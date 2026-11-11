@@ -9,7 +9,7 @@ import { toggleFlanking, flankingShown } from "./flankoverlay.mjs";
 // your selected token), Cover height calculation (a button) and Show flanking (a toggle, flankoverlay.mjs). The shortcuts (Shift+L, Shift+H) stay.
 
 const NAME = "twod12-loe";
-const GREEN = 0x2fa84f, RED = 0xd23b2f, AMBER = 0xf0b54a;   // v0.0.350: amber, the center line through a creature
+const GREEN = 0x2fa84f, RED = 0xd23b2f, AMBER = 0xff5a1f;   // v0.0.350: the center line through a creature; v0.0.351 (Lucas: "red / brighter orange when blocked"): bright red-orange
 let state = null;   // { tokenId } while the lines are on for one token (the shortcut), { follow: true } for the toolbar's toggle (your selected token)
 let queued = false;
 
@@ -45,7 +45,7 @@ function draw() {
     // ring on it), pale when nothing is
     if (c.center) {
       const a = c.origin, z = c.center, dx = z.x - a.x, dy = z.y - a.y, len = Math.hypot(dx, dy) || 1, col = c.inWay ? AMBER : 0xe8e2d0;
-      g.lineStyle(2.5, col, c.inWay ? 0.95 : 0.6);
+      g.lineStyle(c.inWay ? 4 : 2.5, col, c.inWay ? 1 : 0.6);
       for (let s0 = 0; s0 < len; s0 += 16) { const e = Math.min(len, s0 + 10); g.moveTo(a.x + (dx * s0) / len, a.y + (dy * s0) / len).lineTo(a.x + (dx * e) / len, a.y + (dy * e) / len); }
       g.lineStyle(0).beginFill(col, 1).drawCircle(z.x, z.y, 4).endFill();
       for (const b of c.blockers ?? []) { const bt = canvas.tokens?.get(b.id); if (bt) g.lineStyle(3, AMBER, 0.95).drawCircle(bt.center.x, bt.center.y, Math.max(bt.w, bt.h) / 2 + 3); }

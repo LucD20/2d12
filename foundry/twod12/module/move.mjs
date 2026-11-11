@@ -1275,7 +1275,8 @@ export function forcedDragPath(cells, { wallAt, creatureAt }) {
   const damage = !block ? { self: 0, other: 0 } : block.type === "wall" ? { self: unused * k.wall, other: 0 } : { self: unused * k.creature, other: unused * k.creature };
   return { done, block, unused, damage, total };
 }
-async function forcedDrag(doc, dest) {
+/** The Alt-drag's plan: { r (forcedDragPath), cells, end (the top-left point it stops on), w, h }. */
+function forcedDragPlan(doc, dest) {
   const w = Math.max(1, Math.round(doc.width ?? 1)), h = Math.max(1, Math.round(doc.height ?? 1)), size = canvas.grid.size;
   const a = cellAt({ x: homePos(doc).x + 2, y: homePos(doc).y + 2 }), b = cellAt({ x: dest.x + 2, y: dest.y + 2 });
   const cells = [a, ...lineSteps({ x: a.j, y: a.i }, { x: b.j, y: b.i }, "left").map(c => ({ i: c.y, j: c.x }))];
@@ -1284,6 +1285,11 @@ async function forcedDrag(doc, dest) {
   const foot = c => { const out = []; for (let di = 0; di < h; di++) for (let dj = 0; dj < w; dj++) out.push(`${c.i + di},${c.j + dj}`); return out; };
   const r = forcedDragPath(cells, { wallAt: (p, q) => wallBetween(mid(p), mid(q)), creatureAt: c => others.find(o => foot(c).some(k => o.set.has(k)))?.t ?? null });
   const end = canvas.grid.getTopLeftPoint({ i: cells[r.done].i, j: cells[r.done].j });
+  return { r, cells, end, w, h };
+}
+async function forcedDrag(doc, dest) {
+  const { r, end } = forcedDragPlan(doc, dest);
+  clearDragPreview();
   if (r.done > 0) await doc.update({ x: end.x, y: end.y }, { twod12Forced: true, animate: true, animation: { movementSpeed: TWOD12.pushSpeed, easing: "easeOutCubic" } });
   const lines = [`<b>${esc(doc.name)}</b> is Force Moved ${r.done} square${r.done === 1 ? "" : "s"} (GM, Alt-drag).`];
   if (r.block?.type === "wall") { lines.push(`It hits a wall with ${r.unused} unused: <b>${r.damage.self} Body</b> damage.`); if (doc.actor && r.damage.self) await applyToActor(doc.actor, bodyDamage(r.damage.self)); }
@@ -1291,7 +1297,41 @@ async function forcedDrag(doc, dest) {
   await ChatMessage.create({ content: sysLine("fa-hand", lines.join(" "), "pushmsg") });
 }
 
+/**
+ * v0.0.351 (Lucas: "show the preview of where the token will stop plus the damage it will take while holding Alt"): while the GM drags a token
+ * with Alt held, its path to the drop square is drawn: the squares it passes (blue), where it stops (green), the square it hits (red), and a label.
+ */
+let dragGfx = null;
+function clearDragPreview() { try { dragGfx?.destroy({ children: true }); } catch (e) { /* gone */ } dragGfx = null; }
+function drawDragPreview(preview) {
+  const orig = canvas.tokens?.get(preview.document?.id);
+  if (!orig) return clearDragPreview();
+  const { r, cells, w, h } = forcedDragPlan(orig.document, { x: preview.document.x, y: preview.document.y });
+  clearDragPreview();
+  dragGfx = new PIXI.Container(); dragGfx.eventMode = "none";
+  const g = new PIXI.Graphics(), foot = c => { const out = []; for (let di = 0; di < h; di++) for (let dj = 0; dj < w; dj++) out.push({ i: c.i + di, j: c.j + dj }); return out; };
+  fillCells(g, cells.slice(1, r.done).flatMap(foot), 0x6fa8dc, 0.4);
+  if (r.done > 0) fillCells(g, foot(cells[r.done]), 0x5fbf86, 0.6);
+  if (r.block && cells[r.done + 1]) fillCells(g, foot(cells[r.done + 1]), 0xe07a6a, 0.55);
+  dragGfx.addChild(g);
+  const txt = `Forced: ${r.done} sq.${r.block ? ` · hits ${r.block.type === "wall" ? "a wall" : r.block.token?.name ?? "a creature"}: ${r.damage.self} Body${r.block.type === "creature" ? " each" : ""}` : ""}`;
+  const t = new PIXI.Text(txt, { fontFamily: "Signika, sans-serif", fontSize: Math.round(canvas.grid.size * 0.22), fontWeight: "700", fill: r.block ? "#ffb3ad" : "#c8f5d2", stroke: "#111111", strokeThickness: 4 });
+  const at = canvas.grid.getTopLeftPoint({ i: cells[r.done].i, j: cells[r.done].j });
+  t.anchor.set(0.5, 1); t.position.set(at.x + (w * canvas.grid.size) / 2, at.y - 6);
+  dragGfx.addChild(t);
+  (canvas.controls ?? canvas.interface)?.addChild(dragGfx);
+}
+
 export function registerMovement() {
+  // v0.0.351: the Alt-drag preview follows the dragged token's preview; it goes when Alt is released or the drag ends
+  Hooks.on("refreshToken", token => {
+    try {
+      if (!game.user.isGM || !canvas?.grid?.isSquare) return;
+      if (token.isPreview) { if (game.keyboard?.isModifierActive?.("Alt")) drawDragPreview(token); else clearDragPreview(); }
+      else if (dragGfx && !(canvas.tokens?.preview?.children ?? []).length) clearDragPreview();
+    } catch (e) { clearDragPreview(); }
+  });
+  globalThis.window?.addEventListener?.("keyup", ev => { if (ev.key === "Alt") clearDragPreview(); });
   try { installDarknessCost(); } catch (e) { console.warn("twod12 | Darkness cost", e); }   // (this runs when Foundry is ready: the Token class is final)
   // v0.0.350: the GM's Alt-drag is Forced Movement (forcedDrag); Foundry's own move is cancelled
   Hooks.on("preMoveToken", (doc, movement, operation) => {

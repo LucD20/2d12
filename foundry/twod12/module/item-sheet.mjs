@@ -317,6 +317,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     // v0.0.327 (PACK ZONE): the Zone's dropped Effects, and the Action that places it ("From the Action")
     const zone = host === "effect" ? (s.zone ?? {}) : {};
     if (zone.inside?.carry?.fx) refs.add(zone.inside.carry.fx);
+    if (zone.inside?.carry2?.fx) refs.add(zone.inside.carry2.fx);   // v0.0.351
     if (zone.inside?.ht?.gives?.fx) refs.add(zone.inside.ht.gives.fx);
     const items = {};
     for (const u of refs) { try { const d = /^(Compendium|Item|Actor|Scene)\./.test(u) ? await fromUuid(u) : null; const inf = await dropInfo(d); if (inf) items[u] = inf; } catch (e) { /* gone */ } }

@@ -144,7 +144,8 @@ Hooks.once("init", () => {
     lightInfo, hearInfo,
     sliderInfo,
     refreshBasics: refreshAllBasics,
-    fixRulesV346: () => import("./fixrules.mjs").then(m => m.fixRulesV346()),   // v0.0.346: old copies of Frightened / Marked Quarry
+    fixRulesV346: () => import("./fixrules.mjs").then(m => m.fixRulesV346()),
+    fixZonesV351: () => import("./fixrules.mjs").then(m => m.fixZonesV351()),   // v0.0.351   // v0.0.346: old copies of Frightened / Marked Quarry
     refreshFromCompendium: (opts = {}) => (Object.keys(opts).length ? refreshFromCompendium(opts) : askRefresh()),   // v0.0.190: a macro can call it
     escalation: (delta = 1, actors = null) => escalationAll(delta, actors),
     migrateMod: () => import("./migrater.mjs").then(m => m.migrateMod()),
@@ -229,6 +230,7 @@ Hooks.once("init", () => {
   game.settings.register("twod12", "weaponRoundApplied", { scope: "world", config: false, type: Boolean, default: false });
   game.settings.register("twod12", "projectileApplied", { scope: "world", config: false, type: Boolean, default: false });
   game.settings.register("twod12", "unlockPacks", { name: "Unlock the system compendiums", hint: "Keep the 2d12 compendiums unlocked, so their items can be opened and edited without unlocking them first (only the GM and Assistants can edit; a system update rebuilds them, so edits there are lost).", scope: "world", config: true, type: Boolean, default: true, onChange: () => import("./basic.mjs").then(m => m.unlockSystemPacks()) });   // v0.0.191
+  game.settings.register("twod12", "worldPassV351", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.351: Zones' second carried Effect
   game.settings.register("twod12", "worldPassV346", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.346: bars, Frightened, Marked Quarry
   game.settings.register("twod12", "hearingAllV319", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.318/319: Hearing on every creature's token, once
   game.settings.register("twod12", "tokenDefaultsV215", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.215: core token rotation off, once
@@ -358,7 +360,8 @@ Hooks.once("ready", async () => {
     if (b.dataset.twod12 === "saveRoll") await saveRoll(msg, Number(b.dataset.idx));
     else if (b.dataset.twod12 === "retargetSave") await retargetSave(msg);
     else if (b.dataset.twod12 === "retargetAction") await retargetAction(msg);
-    else if (b.dataset.twod12 === "useGrant") await useGrant(msg, b.dataset.effectId, Number(b.dataset.index) || 0, b.dataset.target ?? "");   // v0.0.260: a granted use from the card
+    else if (b.dataset.twod12 === "useGrant") await useGrant(msg, b.dataset.effectId, Number(b.dataset.index) || 0, b.dataset.target ?? "");
+    else if (b.dataset.twod12 === "cancelGrant") await (await import("./freeuse.mjs")).cancelGrant(msg, b.dataset.effectId);   // v0.0.351   // v0.0.260: a granted use from the card
     else if (b.dataset.twod12 === "rollDamage") await rollDamage(msg);
     else if (/^cc(Apply|ApplyAll|Undo|Adjust|DmgTarget)$/.test(b.dataset.twod12)) await (await import("./ccdamage.mjs")).ccDamageClick(b.dataset.twod12, b, msg);   // v0.0.283
     else if (b.dataset.twod12 === "ccCard") await (await import("./ccdamage.mjs")).openCardWindow(msg);
@@ -522,6 +525,15 @@ Hooks.once("ready", async () => {
     await (await import("./fixrules.mjs")).fixRulesV346();
     await game.settings.set("twod12", "worldPassV346", true);
   } catch (e) { console.warn("twod12 | v0.0.346 world pass", e); }
+});
+
+// v0.0.351: once per world, Zone Effects (Covering Fire) get their second carried Effect from the compendium (fixrules.mjs fixZonesV351)
+Hooks.once("ready", async () => {
+  try {
+    if (!game.user.isActiveGM || game.settings.get("twod12", "worldPassV351")) return;
+    await (await import("./fixrules.mjs")).fixZonesV351();
+    await game.settings.set("twod12", "worldPassV351", true);
+  } catch (e) { console.warn("twod12 | v0.0.351 world pass", e); }
 });
 
 // v0.0.215 (Lucas, playtest 2): Foundry's own token auto-rotation is turned off once per world (the GM can turn it back on in Core settings).

@@ -597,13 +597,15 @@ export const WHO = { allies: "Allies", enemies: "Enemies", all: "Everyone" };
 const whoOk = w => (["allies", "enemies", "all"].includes(w) ? w : "allies");
 export const insideDefault = (o = {}) => normInside(deepMerge({
   carry: { on: false, who: "allies", self: false, fx: "", fxName: "" },
+  carry2: { on: false, who: "enemies", self: false, fx: "", fxName: "" },   // v0.0.351: a second Effect (Covering Fire: the enemies' Bane and the allies' Defense)
   heal: { on: false, who: "allies", self: true, formula: "1d4" },
   ht: { on: false, who: "all", self: false, entering: true, turn: true, movement: false, list: [{ dice: "1d6", pool: "B", sub: "" }], gives: { on: false, fx: "", fxName: "" } },
   diff: { on: false, who: "all", self: false }
 }, o));
 export function normInside(x0) {
-  const x = deepMerge({ carry: {}, heal: {}, ht: { gives: {} }, diff: {} }, x0 ?? {});
-  for (const k of ["carry", "heal", "ht", "diff"]) { x[k].on = !!x[k].on; x[k].self = !!x[k].self; }
+  const x = deepMerge({ carry: {}, carry2: { who: "enemies" }, heal: {}, ht: { gives: {} }, diff: {} }, x0 ?? {});
+  for (const k of ["carry", "carry2", "heal", "ht", "diff"]) { x[k].on = !!x[k].on; x[k].self = !!x[k].self; }
+  x.carry2.who = whoOk(x.carry2.who); x.carry2.fx = String(x.carry2.fx ?? ""); x.carry2.fxName = String(x.carry2.fxName ?? "");
   x.carry.who = whoOk(x.carry.who); x.heal.who = whoOk(x.heal.who); x.ht.who = ["allies", "enemies", "all"].includes(x.ht.who) ? x.ht.who : "all"; x.diff.who = ["allies", "enemies", "all"].includes(x.diff.who) ? x.diff.who : "all";
   x.carry.fx = String(x.carry.fx ?? ""); x.heal.formula = String(x.heal.formula ?? "1d4");
   x.ht.list = (x.ht.list?.length ? x.ht.list : [{ dice: "1d6", pool: "B", sub: "" }]).map(d => ({ dice: String(d.dice ?? "1"), pool: d.pool === "M" ? "M" : "B", sub: subOk(d.sub) }));
@@ -611,7 +613,7 @@ export function normInside(x0) {
   for (const k of ["entering", "turn", "movement"]) x.ht[k] = !!x.ht[k];
   return x;
 }
-export const insideActive = i => !!(i && ((i.carry?.on && i.carry.fx) || i.heal?.on || i.ht?.on || i.diff?.on));
+export const insideActive = i => !!(i && ((i.carry?.on && i.carry.fx) || (i.carry2?.on && i.carry2.fx) || i.heal?.on || i.ht?.on || i.diff?.on));
 /** The patterns of a Hazard row: none ticked = Entering and Turn (Chapter 3). */
 export const htPatterns = ht => { const l = ["entering", "turn", "movement"].filter(k => ht?.[k]); return l.length ? l : ["entering", "turn"]; };
 const PAT = { entering: "Entering", turn: "Turn", movement: "Movement" };
@@ -633,6 +635,7 @@ export function insideSentences(insideIn, ctx = {}) {
   const x = normInside(insideIn), me = ctx.selfName || ctx.originName || "the origin", nm = u => ctx.names?.[u] || "";
   const out = [];
   if (x.carry.on) out.push(`${whoInside(x.carry, me)} gain ⟦a:${nm(x.carry.fx) || x.carry.fxName || "…"}⟧.`);
+  if (x.carry2.on) out.push(`${whoInside(x.carry2, me)} gain ⟦a:${nm(x.carry2.fx) || x.carry2.fxName || "…"}⟧.`);
   if (x.heal.on) out.push(`${whoInside(x.heal, me)} heal ${formulaWords(x.heal.formula)} at the start of each of their turns.`);
   if (x.ht.on) {
     const d = x.ht.list.filter(e => String(e.dice).trim()).map(e => `⟦d:${POOL(e.pool)}:${formulaWords(e.dice)} [${POOL(e.pool)}]⟧${e.sub ? ` ⟦s:${e.sub}⟧` : ""}`);
@@ -651,7 +654,7 @@ export function insideSummary(insideIn, key, ctx = {}) {
   const x = normInside(insideIn), r = x[key];
   if (!r?.on) return "off";
   const w = WHO[r.who];
-  if (key === "carry") return `${w} · ${ctx.names?.[r.fx] || r.fxName || "(none dropped)"}`;
+  if (key === "carry" || key === "carry2") return `${w} · ${ctx.names?.[r.fx] || r.fxName || "(none dropped)"}`;
   if (key === "heal") { const a = diceAvg(r.formula); return `${w} · ${r.formula}${a !== null ? ` (avg ${a})` : ""} a turn`; }
   if (key === "ht") return `${w} · ${htPatterns(r).map(k => PAT[k]).join(", ")} · ${r.list.map(d => `${d.dice}${d.sub ? ` ${SUB(d.sub)}` : ""}`).join(" + ")}`;
   return w;
@@ -667,8 +670,8 @@ export function rowReaches(row, { originDisposition = 1, disposition = 0, isOrig
 /** A placed Zone's rows: its own (rows), or a v0.0.261 Zone's rules ([{ who, fxUuid, heal }]) read as rows. */
 export function zoneRows(zone) {
   if (zone?.rows) return normInside(zone.rows);
-  const carry = (zone?.rules ?? []).find(r => r.fxUuid), heal = (zone?.rules ?? []).find(r => String(r.heal ?? "").trim());
-  return normInside({ carry: carry ? { on: true, who: carry.who, self: false, fx: carry.fxUuid } : {}, heal: heal ? { on: true, who: heal.who, self: false, formula: heal.heal } : {} });
+  const carries = (zone?.rules ?? []).filter(r => r.fxUuid), carry = carries[0], carry2 = carries[1], heal = (zone?.rules ?? []).find(r => String(r.heal ?? "").trim());
+  return normInside({ carry: carry ? { on: true, who: carry.who, self: false, fx: carry.fxUuid } : {}, carry2: carry2 ? { on: true, who: carry2.who, self: false, fx: carry2.fxUuid } : {}, heal: heal ? { on: true, who: heal.who, self: false, formula: heal.heal } : {} });
 }
 /** Hazard (Chapter 3): may this pattern hit now? Entering and Turn share the creature's turn-cycle limit (at: the last such hit [round, turn]); Movement has none. */
 export const htMayHit = (pattern, at, { round, turn, own }) => pattern === "movement" || !turnCycleBlocked(round, turn, own, at);
@@ -730,6 +733,7 @@ export function liftZone(sys) {
   for (const r of old) {
     const st = r.setting ?? {}, who = whoOk(st.zoneWho);
     if (st.fxUuid && !z.inside.carry.fx) z.inside.carry = { ...z.inside.carry, on: true, who, self: false, fx: st.fxUuid };
+    else if (st.fxUuid && !z.inside.carry2?.fx && st.fxUuid !== z.inside.carry.fx) z.inside.carry2 = { ...(z.inside.carry2 ?? {}), on: true, who, self: false, fx: st.fxUuid };   // v0.0.351: the second one was dropped
     if (String(st.zoneHeal ?? "").trim() && !(sys?.where === "map" && z.inside.heal.on)) z.inside.heal = { ...z.inside.heal, on: true, who, self: false, formula: String(st.zoneHeal).trim() };
   }
   return { where: "map", zone: normZone(z), rules: rules.filter(r => r?.kind !== "zone"), lifted: true };
