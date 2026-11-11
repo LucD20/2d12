@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-11 from the repository at: 9631848 2026-11-11 Update Foundry.cmd: no longer opens the knowledge folder; starts Foundry when the update is done
+Built by tools/knowledge.py on 2026-11-11 from the repository at: 872957f 2026-11-11 v0.0.360: Marked Quarry's rules on the Mark Quarry Action (the Feature gone); Lock & Loose and Deathmark as steps (on:2, down:yes); D18 withdrawn
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
