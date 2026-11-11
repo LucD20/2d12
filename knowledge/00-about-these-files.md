@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-11 from the repository at: 16b7cff 2026-11-11 v0.0.361: PACK PERF, the Effects audit's performance fixes D27 to D37 and D40
+Built by tools/knowledge.py on 2026-11-11 from the repository at: 9ca80fe 2026-11-11 v0.0.361: t183 reads the new version
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,8 +14,8 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (103 KB)
-- MASTER-PLAN.md (28 KB)
+- HANDOFF.md (104 KB)
+- MASTER-PLAN.md (29 KB)
 - open-design-items.md (108 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)

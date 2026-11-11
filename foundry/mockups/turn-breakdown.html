@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Turn Breakdown mockups</title>
+<style>
+/* the system's chat palette (system.css): the parchment card, the Reactions card's navy title bar, AP blue, movement green, Guard blue */
+:root{
+  --page:#2a2723; --side:#1f1d1a; --side-ink:#d9d2c3; --side-line:#3a362f;
+  --card:#f4eddc; --card2:#ebe2cb; --edge:#bfae86; --ink:#2b2216; --muted:#6f6350;
+  --hd:#1d2738; --hd-ink:#ecdcae; --ap:#3b4cb8; --mv:#4d6b0a; --bane:#b3261e; --boon:#0b5cad; --guard:#2f6fb3; --gold:#a8800f;
+  --pipoff:rgba(0,0,0,.14);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:#eee6d6;font:14px/1.4 "Signika","Segoe UI",system-ui,sans-serif;padding:20px 16px 40px}
+h1{font:600 22px Georgia,serif;margin:0 0 4px}
+.lead{color:#bfb6a4;max-width:980px;margin:0 0 6px}
+.lead b{color:#efe6d2}
+.cols{display:flex;flex-wrap:wrap;gap:26px;margin-top:18px}
+.col{width:330px;max-width:100%}
+.col h2{font:600 17px Georgia,serif;margin:0 0 2px}
+.col .why{color:#bfb6a4;font-size:12.5px;margin:0 0 10px;min-height:72px}
+
+/* a stand-in for Foundry's chat sidebar */
+.side{background:var(--side);border:1px solid var(--side-line);border-radius:8px;height:620px;display:flex;flex-direction:column;overflow:hidden}
+.tabs{display:flex;gap:2px;padding:6px;border-bottom:1px solid var(--side-line)}
+.tabs span{flex:1;text-align:center;font-size:11px;color:#8e8676;padding:3px 0;border-radius:4px}
+.tabs span.on{background:#34302a;color:var(--side-ink)}
+.log{flex:1;min-height:100px;overflow:auto;padding:8px;display:flex;flex-direction:column;gap:6px}
+.msg{background:var(--card);color:var(--ink);border:1px solid var(--edge);border-radius:6px;font-size:12.5px;padding:5px 8px}
+.msg .t{font-weight:700}
+.msg.fade{opacity:.55}
+.sysline{background:#f4ecdc;color:#2c2a26;border:1px solid #c8b48a;border-radius:5px;padding:4px 9px;font-size:12.5px}
+.sysline .ic{color:var(--guard);margin-right:5px}
+.ctrl{display:flex;align-items:center;gap:6px;padding:6px 8px;border-top:1px solid var(--side-line);font-size:11.5px;color:#a49b8a}
+.ctrl .roll{flex:1;background:#2b2823;border:1px solid var(--side-line);border-radius:4px;padding:3px 6px}
+.ctrl button{background:#2b2823;color:var(--side-ink);border:1px solid var(--side-line);border-radius:4px;padding:3px 7px;font:inherit;cursor:pointer}
+.ctrl button.on{border-color:var(--hd-ink);color:var(--hd-ink)}
+.input{margin:0 8px 8px;height:44px;background:#2b2823;border:1px solid var(--side-line);border-radius:5px;color:#7d7566;font-size:12px;padding:6px}
+
+/* the dock: always at the bottom of the chat, above the controls; each client folds it on its own */
+.dock{margin:0 8px 6px;background:var(--card);color:var(--ink);border:1px solid var(--edge);border-radius:6px;overflow:hidden;box-shadow:0 -2px 8px rgba(0,0,0,.35)}
+.dock.gone{display:none}
+.dhd{background:var(--hd);color:var(--hd-ink);display:flex;align-items:center;gap:7px;min-height:28px;padding:3px 8px;cursor:pointer;font-size:13px;user-select:none}
+.dhd .ttl{font-variant:small-caps;font-weight:600;letter-spacing:.04em}
+.dhd .who{font-weight:700;color:#fff3d0}
+.dhd .rd{opacity:.7;font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.dhd .sp{margin-left:auto;display:inline-flex;align-items:center;gap:7px}
+.dhd .chev{font-size:9px;opacity:.75;transition:transform .15s}
+.dock.open .dhd .chev{transform:rotate(180deg)}
+.dbody{display:none;max-height:330px;overflow:auto}
+.dock.open .dbody{display:block}
+
+.pips{display:inline-flex;gap:3px;align-items:center;flex:none}
+.pips i{width:9px;height:9px;border-radius:50%;background:var(--pipoff);display:inline-block}
+.pips i.on{background:var(--ap)}
+.pips i.spent{background:transparent;border:1.5px solid var(--bane)}
+.pips i.r{border-radius:2px;transform:rotate(45deg);width:8px;height:8px;margin-left:4px}
+.pips i.r.on{background:var(--gold)}
+.dhd .pips i{background:rgba(236,220,174,.25)} .dhd .pips i.on{background:#9aa7ff} .dhd .pips i.r.on{background:#e6bd5a}
+.pips.sm i{width:7px;height:7px} .pips.sm i.r{width:6px;height:6px}
+
+.badge{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:700;border-radius:9px;padding:0 6px;line-height:17px;white-space:nowrap}
+.b-rd{background:#e3d7b8;color:#5a4a28}
+.b-end{background:#f3d3cf;color:var(--bane)}
+.b-tick{background:#dfe3f6;color:var(--ap)}
+.link{color:var(--boon);text-decoration:underline dotted;cursor:help}
+.ap{color:var(--ap);font-weight:700}
+.mv{color:var(--mv);font-weight:700}
+.g{color:var(--guard);font-weight:700}
+.muted{color:var(--muted)}
+.live{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--mv);margin-left:4px;animation:pulse 1.2s infinite}
+@keyframes pulse{50%{opacity:.25}}
+
+/* A: one timeline */
+.tl{padding:4px 0}
+.tl .r{display:grid;grid-template-columns:18px 1fr auto;align-items:center;gap:6px;padding:3px 8px;font-size:12.5px}
+.tl .r .ic{text-align:center;font-size:11px}
+.tl .r.now{background:rgba(59,76,184,.08)}
+.tl .sep{font-size:10.5px;font-variant:small-caps;letter-spacing:.05em;color:var(--muted);padding:5px 8px 1px;border-top:1px solid #d9cca8;margin-top:3px}
+.tl .r .end{color:var(--bane)}
+
+/* B: sections */
+.sec{padding:4px 8px 6px;border-top:1px solid #d9cca8}
+.sec:first-child{border-top:none}
+.sec h4{margin:2px 0 3px;font-size:10.5px;font-variant:small-caps;letter-spacing:.05em;color:var(--muted);font-weight:700;display:flex;align-items:center;gap:6px}
+.sec h4 .n{margin-left:auto;font-variant:normal;letter-spacing:0}
+.row{display:flex;align-items:center;gap:6px;font-size:12.5px;padding:1px 0}
+.row .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .c{font-size:11.5px;color:var(--muted)}
+
+/* C: two columns */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.two > div{padding:5px 7px}
+.two > div + div{border-left:1px solid #d9cca8;background:var(--card2)}
+.two h4{margin:0 0 3px;font-size:10.5px;font-variant:small-caps;letter-spacing:.05em;color:var(--muted)}
+.chip{display:flex;align-items:center;gap:4px;font-size:12px;padding:2px 0}
+.chip .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.foot{border-top:1px solid #d9cca8;padding:4px 8px;font-size:11.5px;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap}
+.cstrip{display:flex;gap:4px;margin-left:4px}
+.cstrip .badge{background:rgba(236,220,174,.18);color:#ecdcae}
+
+.notes{max-width:1040px;margin-top:28px;background:#24211d;border:1px solid #3a362f;border-radius:8px;padding:12px 16px;color:#d6cdbb;font-size:13.5px}
+.notes h3{font:600 16px Georgia,serif;margin:4px 0 6px;color:#efe6d2}
+.notes li{margin:3px 0}
+.journal{display:flex;gap:6px;align-items:center;margin-top:6px}
+.journal .ctrl{border:1px solid var(--side-line);border-radius:6px;background:var(--side)}
+</style>
+</head>
+<body>
+<h1>Turn Breakdown: three mockups</h1>
+<p class="lead">The same moment in all three: <b>round 3, Kaela's turn</b>, mid-move. She regained 4 AP and her Reaction AP, her last turn's unused AP became <b>Guard 8</b>, she used Mark Quarry, is <b>Advancing</b> (2 squares so far, still moving), then Double Shot. At the end of her turn two Effects she gave tick down; two Effects are on her. <b>Click a dock's dark bar</b> to unfold it; the <b>⊟ Turn</b> button under each chat hides the dock completely (the button that replaces Export Chat Log).</p>
+<p class="lead">The chat above each dock shows what stays in the chat log: the Action cards and damage. The AP tickers, the unused AP line and the duration lines move into the dock.</p>
+
+<div class="cols">
+
+<!-- ======================= A ======================= -->
+<div class="col">
+<h2>A. One timeline</h2>
+<p class="why">Everything in the order it happened, one line each, like the current Turn Log. "End of turn" lists what will tick when the turn ends, then becomes what did. The Effects on the creature are a footer of chips. Closest to today's ticker.</p>
+<div class="side">
+  <div class="tabs"><span class="on">Chat</span><span>Combat</span><span>Scenes</span><span>Actors</span><span>Journal</span></div>
+  <div class="log">
+    <div class="msg fade"><span class="t">Orc Warrior</span> · Cleave vs Kaela: Tier 2</div>
+    <div class="msg"><span class="t">Kaela</span> · Mark Quarry → Orc Warrior</div>
+    <div class="msg"><span class="t">Kaela</span> · Double Shot vs Orc Warrior, Goblin Sneak</div>
+  </div>
+  <div class="dock open" id="dA">
+    <div class="dhd" onclick="tog('dA')"><span class="ttl">Turn</span><span class="who">Kaela</span><span class="rd">Round 3</span><span class="sp"><span class="pips"><i></i><i></i><i></i><i></i><i class="r on"></i></span><span class="chev">▲</span></span></div>
+    <div class="dbody"><div class="tl">
+      <div class="r"><span class="ic ap">◆</span><span>Turn start</span><span class="ap">+4 +R</span></div>
+      <div class="r"><span class="ic g">⛨</span><span><span class="g">Guard 8</span> (<span class="link" title="Book, Chapter 2: Unspent AP">unused AP</span>)</span><span class="badge b-rd">1 rd</span></div>
+      <div class="r"><span class="ic ap">✦</span><span>Mark Quarry</span><span class="pips sm"><i class="on"></i><i class="on"></i><i class="on"></i><i class="spent"></i></span></div>
+      <div class="r now"><span class="ic mv">➤</span><span>Advance <span class="mv">2</span> sq<span class="live" title="still moving"></span></span><span class="pips sm"><i class="on"></i><i class="on"></i><i class="spent"></i><i></i></span></div>
+      <div class="r"><span class="ic ap">✦</span><span>Double Shot</span><span class="pips sm"><i class="spent"></i><i class="spent"></i><i></i><i></i></span></div>
+      <div class="sep">At the end of this turn</div>
+      <div class="r"><span class="ic">⏳</span><span>Hindered on Goblin Sneak</span><span class="badge b-tick">2 → 1</span></div>
+      <div class="r"><span class="ic">⏳</span><span>Vulnerable on Orc Warrior</span><span class="badge b-end">ends</span></div>
+      <div class="sep">On Kaela</div>
+      <div class="r"><span class="ic">●</span><span>Frightened (Orc Warrior)</span><span class="badge b-rd">1 rd</span></div>
+      <div class="r"><span class="ic">●</span><span>Covering Fire: +1 Defense</span><span class="badge b-rd">2 rd</span></div>
+    </div></div>
+  </div>
+  <div class="ctrl"><span class="roll">Public Roll ▾</span><button class="on" onclick="hide('dA',this)" title="Turn Breakdown: show or hide">⊟ Turn</button></div>
+  <div class="input">Enter a message…</div>
+</div>
+</div>
+
+<!-- ======================= B ======================= -->
+<div class="col">
+<h2>B. Four sections</h2>
+<p class="why">The four things you asked for, each under its heading: <b>Regained</b>, <b>Used</b>, <b>Ticking down</b> (this turn's end), <b>On Kaela</b>. Easier to scan for "what is left on whom"; the order of events is only kept inside Used.</p>
+<div class="side">
+  <div class="tabs"><span class="on">Chat</span><span>Combat</span><span>Scenes</span><span>Actors</span><span>Journal</span></div>
+  <div class="log">
+    <div class="msg fade"><span class="t">Orc Warrior</span> · Cleave vs Kaela: Tier 2</div>
+    <div class="msg"><span class="t">Kaela</span> · Mark Quarry → Orc Warrior</div>
+    <div class="msg"><span class="t">Kaela</span> · Double Shot vs Orc Warrior, Goblin Sneak</div>
+  </div>
+  <div class="dock open" id="dB">
+    <div class="dhd" onclick="tog('dB')"><span class="ttl">Turn</span><span class="who">Kaela</span><span class="rd">Round 3</span><span class="sp"><span class="pips"><i></i><i></i><i></i><i></i><i class="r on"></i></span><span class="chev">▲</span></span></div>
+    <div class="dbody">
+      <div class="sec"><h4>Regained</h4>
+        <div class="row"><span class="nm"><span class="ap">4 AP</span> and the Reaction AP</span><span class="pips sm"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="r on"></i></span></div>
+        <div class="row"><span class="nm"><span class="g">Guard 8</span> (<span class="link" title="Book, Chapter 2: Unspent AP">unused AP</span>)</span><span class="badge b-rd">1 rd</span></div>
+      </div>
+      <div class="sec"><h4>Used <span class="n ap">4 of 4 AP</span></h4>
+        <div class="row"><span class="nm">Mark Quarry</span><span class="c">−1</span></div>
+        <div class="row"><span class="nm">Advance <span class="mv">2</span> sq <span class="muted">(moving)</span><span class="live"></span></span><span class="c">−1</span></div>
+        <div class="row"><span class="nm">Double Shot</span><span class="c">−2</span></div>
+      </div>
+      <div class="sec"><h4>Ticking down <span class="n">at the end of this turn</span></h4>
+        <div class="row"><span class="nm">Hindered · Goblin Sneak</span><span class="badge b-tick">2 → 1 rd</span></div>
+        <div class="row"><span class="nm">Vulnerable · Orc Warrior</span><span class="badge b-end">ends</span></div>
+      </div>
+      <div class="sec"><h4>On Kaela</h4>
+        <div class="row"><span class="nm">Frightened (Orc Warrior)</span><span class="badge b-rd">1 rd</span></div>
+        <div class="row"><span class="nm">Covering Fire: +1 Defense</span><span class="badge b-rd">2 rd</span></div>
+        <div class="row"><span class="nm g">Guard 8</span><span class="badge b-rd">1 rd</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="ctrl"><span class="roll">Public Roll ▾</span><button class="on" onclick="hide('dB',this)" title="Turn Breakdown: show or hide">⊟ Turn</button></div>
+  <div class="input">Enter a message…</div>
+</div>
+</div>
+
+<!-- ======================= C ======================= -->
+<div class="col">
+<h2>C. Folded bar that says enough</h2>
+<p class="why">The folded bar already carries the turn (AP pips, the current Action, small chips for what ticks); most of the time nobody unfolds it. Unfolded: Actions on the left, Effects on the right with their rounds; the regained line is the footer.</p>
+<div class="side">
+  <div class="tabs"><span class="on">Chat</span><span>Combat</span><span>Scenes</span><span>Actors</span><span>Journal</span></div>
+  <div class="log">
+    <div class="msg fade"><span class="t">Orc Warrior</span> · Cleave vs Kaela: Tier 2</div>
+    <div class="msg"><span class="t">Kaela</span> · Mark Quarry → Orc Warrior</div>
+    <div class="msg"><span class="t">Kaela</span> · Double Shot vs Orc Warrior, Goblin Sneak</div>
+  </div>
+  <div class="dock" id="dC">
+    <div class="dhd" onclick="tog('dC')"><span class="who">Kaela</span><span class="rd">R3 · Advance 2<span class="live"></span></span><span class="sp"><span class="cstrip"><span class="badge" title="ticking at the end of this turn">⏳2</span><span class="badge" title="on Kaela">●3</span></span><span class="pips"><i></i><i></i><i></i><i></i><i class="r on"></i></span><span class="chev">▲</span></span></div>
+    <div class="dbody">
+      <div class="two">
+        <div><h4>Actions</h4>
+          <div class="chip"><span class="nm">Mark Quarry</span><span class="ap">−1</span></div>
+          <div class="chip"><span class="nm">Advance <span class="mv">2</span><span class="live"></span></span><span class="ap">−1</span></div>
+          <div class="chip"><span class="nm">Double Shot</span><span class="ap">−2</span></div>
+          <div class="chip muted"><span class="nm">left</span><span class="pips sm"><i></i><i></i><i></i><i></i><i class="r on"></i></span></div>
+        </div>
+        <div><h4>Effects</h4>
+          <div class="chip"><span class="nm">⏳ Hindered · Gob.</span><span class="badge b-tick">2→1</span></div>
+          <div class="chip"><span class="nm">⏳ Vulnerable · Orc</span><span class="badge b-end">ends</span></div>
+          <div class="chip"><span class="nm">Frightened (Orc)</span><span class="badge b-rd">1</span></div>
+          <div class="chip"><span class="nm">+1 Defense</span><span class="badge b-rd">2</span></div>
+        </div>
+      </div>
+      <div class="foot"><span>Start: <span class="ap">+4 AP +R</span></span><span><span class="g">Guard 8</span> (<span class="link" title="Book, Chapter 2: Unspent AP">unused AP</span>)</span></div>
+    </div>
+  </div>
+  <div class="ctrl"><span class="roll">Public Roll ▾</span><button class="on" onclick="hide('dC',this)" title="Turn Breakdown: show or hide">⊟ Turn</button></div>
+  <div class="input">Enter a message…</div>
+</div>
+</div>
+
+</div>
+
+<div class="notes">
+<h3>The same in all three</h3>
+<ul>
+<li><b>A dock, not messages:</b> it sits at the bottom of the chat, under the newest message, and never scrolls away. It is <b>folded by default</b>; each person unfolds it on their own client (remembered per client). It shows the creature whose turn it is; when the turn passes, it shows the next one.</li>
+<li><b>The ⊟ Turn button</b> takes the place of Foundry's <b>Export Chat Log</b> under the chat and hides or shows the dock completely (per client). Export Chat Log moves to the <b>Journal</b> tab's footer:</li>
+</ul>
+<div class="journal"><div class="ctrl"><button>＋ Create Entry</button><button>＋ Create Folder</button><button title="Foundry's Export Chat Log, moved here">⤓ Export Chat Log</button></div></div>
+<ul>
+<li><b>The unused AP line:</b> "Kaela: Guard 8 (unused AP)", with "unused AP" linking to the book's Unspent AP (Chapter 2). It is a row of the dock, no longer its own chat message.</li>
+<li><b>Advance shows while it happens:</b> today the movement line is posted only when the movement ends. In the dock it appears as soon as the creature starts moving and its squares count up live (the pulsing dot), then it stays as "Advance 4".</li>
+<li><b>Durations:</b> at the start of a turn the dock lists the Effects that will tick at the end of that turn (the ones whose rounds count on this creature's turn, and its EoT ones), with "2 → 1" or "ends"; when the turn ends they turn into what happened ("1 round left", "ended"). <b>No separate chat message</b> for a tick or an end, since you said it should all go into the breakdown. If you still want one chat line when something ends (it drops off the dock at the next turn), say so.</li>
+<li><b>Past turns:</b> the dock shows only the current turn. Where should the past turns go? (a) nowhere, the Encounter Log keeps them; (b) the dock's ‹ › arrows to look back at earlier turns.</li>
+</ul>
+</div>
+
+<script>
+function tog(id){document.getElementById(id).classList.toggle('open')}
+function hide(id,b){const d=document.getElementById(id);d.classList.toggle('gone');b.classList.toggle('on')}
+</script>
+</body>
+</html>
