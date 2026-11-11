@@ -25,7 +25,7 @@ Read first, in this order: **HANDOFF.md** (state), **MASTER-PLAN.md** (the order
 - Ability and item text: concise and direct. **Lucas doesn't write Flavor: write the Flavor line of every new Action, Talent or Feature.**
 - You cannot run Foundry. Say plainly what could not be tried and give a diagnostic when possible (with the Chrome extension connected you may smoke-test in the browser, but Lucas's own test stays the source of truth).
 - Commit after each pack (clear message). Don't commit zips.
-- At the end of every pack, run `python tools/knowledge.py` (in a cloud session too) and **commit knowledge/** with the pack; tell me to press Sync on the Project's GitHub files (or to upload `knowledge-upload/`, which `Update Foundry.cmd` rebuilds and opens). Never edit knowledge/ by hand. When a pack creates a design document still in progress, add it to DESIGN_DOCS in tools/knowledge.py; when one is fully applied to rules-src, remove it.
+- At the end of every pack, run `python tools/knowledge.py` (in a cloud session too) and **commit knowledge/** with the pack; tell me to press Sync on the Project's GitHub files (or to upload `knowledge-upload/`, which `Update Foundry.cmd` rebuilds; it no longer opens the folder, and it starts Foundry when it is done). Never edit knowledge/ by hand. When a pack creates a design document still in progress, add it to DESIGN_DOCS in tools/knowledge.py; when one is fully applied to rules-src, remove it.
 
 ## Book conventions that bite (details: rules-src/README.md)
 - Lucas writes **b/b** for "Boons and Banes" and **r/w** for "Resist and Weak" (chat and notes only; the book writes the words).

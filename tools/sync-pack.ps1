@@ -11,6 +11,9 @@ param([switch]$DryRun, [switch]$TestNotify, [switch]$Interactive)
 $ErrorActionPreference = "Continue"
 $Repo = "D:\Minha Pasta\RPG\2d12-project"
 $FoundryProcess = "Foundry Virtual Tabletop"
+# (2026-11-11, Lucas) Foundry is started when the window's update is done. Empty: found by itself (Program Files, then the Start Menu's shortcut).
+# If it isn't found, write the full path of "Foundry Virtual Tabletop.exe" here.
+$FoundryExe = ""
 $LogFile = Join-Path $Repo "sync.log"
 $StateFile = Join-Path $Repo ".sync-state"
 $SummaryFile = Join-Path $Repo "pack-sync\latest.md"
@@ -28,6 +31,30 @@ function WaitForFoundryClosed {
         Write-Host "Foundry is running. Close it (the packs can't be rebuilt while it is open), then press Enter." -ForegroundColor Yellow
         [void](Read-Host)
     }
+}
+
+# (2026-11-11, Lucas: "open Foundry automatically after updating") Only from the window (-Interactive), never from the scheduled task.
+# Already running: nothing is started (the message above says to reload). Not found: says where to write its path.
+function StartFoundry {
+    if (-not $Interactive -or $DryRun) { return }
+    if (Get-Process -Name $FoundryProcess -ErrorAction SilentlyContinue) { Write-Host ""; Write-Host "Foundry is already open: reload it (F5)." -ForegroundColor Cyan; return }
+    $candidates = @($FoundryExe,
+        (Join-Path $env:ProgramFiles "Foundry Virtual Tabletop\Foundry Virtual Tabletop.exe"),
+        (Join-Path $env:LOCALAPPDATA "Programs\Foundry Virtual Tabletop\Foundry Virtual Tabletop.exe"),
+        (Join-Path $env:LOCALAPPDATA "Programs\foundryvtt\Foundry Virtual Tabletop.exe"))
+    if (${env:ProgramFiles(x86)}) { $candidates += (Join-Path ${env:ProgramFiles(x86)} "Foundry Virtual Tabletop\Foundry Virtual Tabletop.exe") }
+    $target = $candidates | Where-Object { $_ -and (Test-Path $_) } | Select-Object -First 1
+    if (-not $target) {
+        $menus = @((Join-Path $env:APPDATA "Microsoft\Windows\Start Menu\Programs"), (Join-Path $env:ProgramData "Microsoft\Windows\Start Menu\Programs"))
+        $target = Get-ChildItem -Path $menus -Filter "Foundry*.lnk" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName
+    }
+    if (-not $target) {
+        Log "Foundry was not found: not started"
+        Write-Host ""; Write-Host "Foundry wasn't found, so it wasn't started. Write its path in tools\sync-pack.ps1 (the line `$FoundryExe = `"`")." -ForegroundColor Yellow
+        return
+    }
+    try { Start-Process -FilePath $target -ErrorAction Stop; Log "started Foundry ($target)"; Write-Host ""; Write-Host "Starting Foundry..." -ForegroundColor Cyan }
+    catch { Log "Foundry could not be started: $($_.Exception.Message)"; Write-Host "Foundry could not be started: $($_.Exception.Message)" -ForegroundColor Yellow }
 }
 
 function Notify($title, $message) {
@@ -92,7 +119,8 @@ function TestAndBuild([bool]$needBuild) {
     @{ ok = $ok; summary = $(if ($lines.Count) { $lines -join "`n" } else { "no test output" }); build = $build }
 }
 
-# The Project's knowledge files for a hand upload: knowledge-upload/, opened in Explorer from the window (2026-11-07, Lucas).
+# The Project's knowledge files for a hand upload: knowledge-upload/ (2026-11-07, Lucas). 2026-11-11 (Lucas): it is still rebuilt, but its folder
+# is no longer opened in Explorer.
 # The committed knowledge/ is what the Project's GitHub sync reads; this copy is built from the commit just synced.
 function BuildKnowledge {
     if ($DryRun) { Log "would build knowledge-upload/ (python tools/knowledge.py --out knowledge-upload)"; return }
@@ -104,8 +132,7 @@ function BuildKnowledge {
         Log "knowledge: $(($out | Select-Object -Last 1))"
         if ($Interactive) {
             Write-Host ""
-            Write-Host "Project knowledge rebuilt in knowledge-upload\ (opening it). In the Project: press Sync on the GitHub files, or replace the files by hand with these." -ForegroundColor Cyan
-            Start-Process explorer.exe (Join-Path $Repo "knowledge-upload")
+            Write-Host "Project knowledge rebuilt in knowledge-upload\. In the Project: press Sync on the GitHub files, or replace the files by hand with these." -ForegroundColor Cyan
         }
     }
 }
@@ -163,6 +190,7 @@ if (-not $pick) {
     if (-not $merged -and -not $mainAhead) {
         if ($DryRun) { Log "nothing to sync (no new unmerged origin/pack-* or origin/claude/pack-* branch; on $cur)" }
         if ($Interactive) { Notify "Already up to date" "on $cur, v$((Get-Content (Join-Path $Repo 'foundry\twod12\system.json') -Raw | ConvertFrom-Json).version); no newer pack branch" }
+        StartFoundry
         exit 0
     }
     if ($Interactive) { WaitForFoundryClosed }
@@ -191,6 +219,7 @@ if (-not $pick) {
     if (-not $r.ok) { $msg += " (tests FAILED, see sync.log)" }
     Notify "2d12 sync" $msg
     Log "done"
+    StartFoundry
     exit 0
 }
 $branch = $pick.branch
@@ -199,6 +228,7 @@ Log "candidate: $branch @ $($pick.hash.Substring(0, 7))"
 # without testing or rebuilding the compendium (2026-11-04: pack-r-core's packs stayed v0.0.232).
 if ($Interactive -and (@(G rev-parse HEAD)[0] -eq $pick.hash) -and $state -and $state.hash -eq $pick.hash -and (Test-Path (Join-Path $Repo "foundry\twod12\packs\actions"))) {
     Notify "Already up to date" "on $branch, v$((Get-Content (Join-Path $Repo 'foundry\twod12\system.json') -Raw | ConvertFrom-Json).version)"
+    StartFoundry
     exit 0
 }
 if ($Interactive) { WaitForFoundryClosed }
@@ -272,3 +302,4 @@ $msg = "$branch v$version is ready: $(if ($needBuild) { 'start Foundry (the pack
 if (-not $testsOk) { $msg += " (tests FAILED, see pack-sync\latest.md)" }
 Notify "2d12 sync" $msg
 Log "done"
+StartFoundry

@@ -5,7 +5,7 @@ Run from anywhere: python tools/knowledge.py            (the core set: rules, op
                    python tools/knowledge.py --out DIR  (into another folder; Update Foundry.cmd builds knowledge-upload/ this way)
 knowledge/ is committed (2026-11-07, Lucas: "do both"): every pack runs this at its end, in a cloud session too, and commits knowledge/.
 The Project reads that folder from GitHub: press its sync button after a pack. By hand instead: delete every old knowledge file in the
-Project and upload everything in knowledge-upload/ (Update Foundry.cmd rebuilds it and opens it), replacing, not adding copies.
+Project and upload everything in knowledge-upload/ (Update Foundry.cmd rebuilds it; since 2026-11-11 it no longer opens the folder), replacing, not adding copies.
 
 The set is for DESIGN conversations and is kept small on purpose, so the Project can hold all of it at once instead of
 searching it (a large set is only searched in pieces, and the chat then misses rules):
