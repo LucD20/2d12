@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-11 from the repository at: 7399c5d 2026-11-10 v0.0.342: the CRIT zone in a narrow chat, the Critical line only when rolled, the Save card's No effect colour, no Card button in the roll window
+Built by tools/knowledge.py on 2026-11-11 from the repository at: c88baa5 2026-11-11 Playtest 4: the log (book/playtest-4.md) and its fixes organized in six steps (foundry-backlog), four rules decided (rules-backlog); nothing applied
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
