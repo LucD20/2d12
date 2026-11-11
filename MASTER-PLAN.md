@@ -40,6 +40,22 @@ Finished: Phase 1 (Q, M1, M2, R, F), D0, T, E1, CH, E2, P1, LV, A1 (it was D1, t
 | CL | **Code cleanup** (foundry-backlog: system messages to sysmsg.mjs, dead code; CSS only with a visual check) | S | best after X |
 
 ## 3. The order
+**The current order (Lucas, 2026-11-11; after the design session on branch claude/adoring-lamport-qeqdks). Rule: decide what changes the numbers before building on it.** The older list below stays for its history and detail; where they differ, this one wins.
+1. **Decision sheet S1, the structural candidates** (S-M, Lucas reads and answers by exception): Stage 0 and the level cap; Escalation 1 to 6 with Momentum (expedition-loop.md part 1); flat Boons and the Circumstance limit (replaces the flanking cap); Weapon and Power Modifiers as class values; Quick Build. They touch the same cards, tables and budgets: decided together, refitted once.
+2. **Ruler catch-up** (M-L): the Stage 0 fit and the budgets of levels 1-3, Escalation 1-6, flat Boons; the cheap gaps: Resist and Weak, NPC Saves; walls and terrain later.
+3. **The core into the book** (L): Chapters 1, 2, 4, 5, then a Bestiary refit on the map (the Stage 0 row, Resist / Weak in CV).
+4. **The classes rebuilt on the new level list** (card sessions with Lucas): Paladin, then Archer; the Chapter 12 and 13 review candidates folded in.
+5. **R-Foundry 2** (L-XL): the cards' automation, conditions, the Elite's phases, AD / WD coloring, plus the structural changes and a migration.
+6. **Playtest 4.**
+7. **The weapon line:** the Sword group, packs WB and WF, with the gear-d2.md answers.
+8. **D3 Skills** (roleplay-skills.md; the Talent structure proposal), then **D4 Magic**.
+9. **Items and economy into the book** (items-economy.md; needs Skills), then **X** in Foundry.
+10. **The remaining chapter reviews and B2** (Chapters 3, 4, 6-11; Hide, falling, Grab; destructible environment and hearing with the ruler's walls; armor; table speed; missing mechanics part 2).
+11. **The rest of the expedition loop** (Alert, the Parting Beat: the GM chapter), after real play.
+12. **Later:** base building, mounts and vehicles, Talent trees, Stage 3 content (levels 12-15), CL.
+Alternative: a quick playtest of today's build before step 1, if Lucas wants play data before redesigning.
+
+### Before 2026-11-11
 0. **Playtest 2 rework first (Lucas, 2026-11-02; replaces the "weapons first" order: the rework changes every AP cost, the weapon Techniques included; decisions: book/playtest-2.md and rules-backlog.md "PLAYTEST 2"):**
    1. ~~Log session~~ (done 2026-11-02).
    2. ~~**Pack L: v0.0.214 = the Line area (book/line-area-prompt.md) + the v0.0.208 test fixes from notes.txt + NPCs have no Weapon Attack** (foundry-backlog). M.~~ **Done 2026-11-02** (branch pack-l-line; notes.txt had no v0.0.208 fixes). Lucas tests v0.0.214 before or with playtest 3.
