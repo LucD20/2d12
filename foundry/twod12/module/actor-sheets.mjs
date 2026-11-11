@@ -42,7 +42,7 @@ import { chooseRecovery } from "./rest.mjs";
 import { addBasicActions, missingBasic } from "./basic.mjs";
 import { openEffectSheet } from "./fxopen.mjs";
 import { applyTab, durationText, dragData } from "./sheet-common.mjs";
-import { hoverOf, fxTipHtml, tipAttrs } from "./util.mjs";
+import { hoverOf, fxTipHtml, tipAttrs, renderSoon, logOnlyChange } from "./util.mjs";
 import { effectWhat } from "./fxdetails.mjs";   // v0.0.267
 import { WEAPON_WHERE, ARMOR_WHERE, weaponWhere, armorWhere, weaponMove, armorMove, handsFor, tierBoxes, handSlots, whereButtons, freeHandFor, useButtons, handOf, HAND_LABEL, handButtonsFor, freeHandButtons, oneHandedTwoHander } from "./loadout.mjs";
 import { ensureHandsFor, releaseOptions, applyRelease, applyRegrip } from "./hands.mjs";
@@ -1505,12 +1505,16 @@ export class NpcSheet extends CharacterSheet {
 
 /** The header's AP pips follow the combat: a sheet is drawn again when its creature's AP changes or it joins or leaves a combat. */
 export function registerSheetHooks() {
-  const redraw = c => { const sh = c?.actor?.sheet; if (sh?.rendered) sh.render(); };
-  Hooks.on("updateCombatant", (c, ch) => { if (foundry.utils.hasProperty(ch ?? {}, "flags.twod12") || "initiative" in (ch ?? {})) redraw(c); });   // v0.0.289: AP, the Reaction AP, the Initiative
+  // v0.0.361 (PACK PERF, D27): one redraw per sheet for a burst of changes (a turn start wrote 6 to 8 of them), and none for a log line
+  const redraw = c => { const sh = c?.actor?.sheet; if (sh?.rendered) renderSoon(sh); };
+  const onlyTurnLog = ch => Object.keys(ch ?? {}).every(k => k === "_id" || k === "_stats" || k === "flags") && Object.keys(ch?.flags?.twod12 ?? {}).every(k => k === "turnLog");   // the sheet doesn't show it
+  Hooks.on("updateCombatant", (c, ch) => { if (onlyTurnLog(ch)) return; if (foundry.utils.hasProperty(ch ?? {}, "flags.twod12") || "initiative" in (ch ?? {})) redraw(c); });   // v0.0.289: AP, the Reaction AP, the Initiative
   // v0.0.289 (PACK SHEET): the strip, the Granted and Escalation 3 sections and the header follow the round and the turn
-  Hooks.on("updateCombat", (combat, ch) => { if (["round", "turn", "started", "active"].some(k => k in (ch ?? {})) || foundry.utils.hasProperty(ch ?? {}, "flags.twod12")) combat.combatants.forEach(redraw); });
-  Hooks.on("createCombat", () => game.actors?.forEach(a => { if (a.sheet?.rendered && a.type === "character") a.sheet.render(); }));
+  Hooks.on("updateCombat", (combat, ch) => { if (logOnlyChange(ch)) return; if (["round", "turn", "started", "active"].some(k => k in (ch ?? {})) || foundry.utils.hasProperty(ch ?? {}, "flags.twod12")) combat.combatants.forEach(redraw); });
+  // D40: only the open windows are asked (it built a sheet object for every world actor)
+  Hooks.on("createCombat", () => { for (const app of foundry.applications.instances?.values?.() ?? []) if (app.document?.documentName === "Actor" && app.document.type === "character" && app.rendered) renderSoon(app); });
   Hooks.on("createCombatant", redraw);
   Hooks.on("deleteCombatant", redraw);
+  // the actors of a deleted combat (this was also usage.mjs's job, which drew every open actor window a second time: gone)
   Hooks.on("deleteCombat", combat => combat.combatants.forEach(redraw));
 }

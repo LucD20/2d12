@@ -200,10 +200,5 @@ export async function unmarkUsed(actor, item) {
     }
   } catch (e) { /* the combatant's copy stays */ }
 }
-
-/** Open actor sheets redraw when the round or the turn changes. */
-export function registerUsageHooks() {
-  const refresh = () => { for (const app of foundry.applications.instances.values()) if (app.document?.documentName === "Actor") app.render(); };
-  Hooks.on("updateCombat", (c, changes) => { if ("round" in changes || "turn" in changes) refresh(); });
-  Hooks.on("deleteCombat", refresh);
-}
+// v0.0.361 (PACK PERF, D27): registerUsageHooks is gone: it drew every open actor window again at each turn change, on top of
+// actor-sheets.mjs registerSheetHooks (which draws each combatant's sheet once).

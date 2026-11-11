@@ -4,7 +4,7 @@ import { appliedFlags } from "./appliedflags.mjs";
 import { effectOff } from "./escalation.mjs";
 import { openEffectSheet } from "./fxopen.mjs";
 import { bumpExhausted, isExhaustedFx, exhaustedClick, heldModifiers } from "./sleep.mjs";
-import { fxTipHtml, hoverOf } from "./util.mjs";   // v0.0.254: the HUD's hover cards
+import { fxTipHtml, hoverOf, perFrame } from "./util.mjs";   // v0.0.254: the HUD's hover cards; v0.0.361: perFrame
 import { effectWhat } from "./fxdetails.mjs";   // v0.0.267
 import { TWOD12 } from "./config.mjs";
 import { combatantOf } from "./combat.mjs";
@@ -461,7 +461,8 @@ export function registerEffectHooks() {
           let cid = ""; try { cid = combatantOf(actor, combat)?.id ?? ""; } catch (err) { /* no combatant */ }
           const step = durationStep(fl, ended ? { id: ended.id, initiative: ended.initiative ?? null, tokenId: ended.tokenId ?? "", actorUuid: ended.actor?.uuid ?? "", ref: ended.actor ?? null } : null, prior, { uuid: actor.uuid ?? "", tokenId: actor.isToken ? actor.token?.id ?? "" : "", combatantId: cid, ref: actor });
           if (step === "end") await e.delete();
-          else if (step === "tick") { const rem = (e.getFlag(F, "remaining") ?? e.getFlag(F, "duration")?.rounds) - 1; await e.setFlag(F, "remaining", rem); await e.setFlag(F, "lastTick", prior.round); }
+          // v0.0.361 (PACK PERF, D31): one write with both flags (it was two, each firing every effect hook and a sheet redraw)
+          else if (step === "tick") { const rem = (e.getFlag(F, "remaining") ?? e.getFlag(F, "duration")?.rounds) - 1; await e.update({ [`flags.${F}.remaining`]: rem, [`flags.${F}.lastTick`]: prior.round }); }
         } catch (err) { console.warn(`twod12 | the duration of ${e?.name} on ${actor?.name}`, err); }
       }
     }
@@ -477,7 +478,7 @@ export function registerEffectHooks() {
       if (reg.getFlag(F, "appliedRound") === prior.round && reg.getFlag(F, "appliedTurn") === prior.turn) continue;
       if (reg.getFlag(F, "lastTick") === prior.round) continue;
       const rem = (reg.getFlag(F, "remaining") ?? dur.rounds) - 1;
-      if (rem <= 0) await reg.delete(); else { await reg.setFlag(F, "remaining", rem); await reg.setFlag(F, "lastTick", prior.round); }
+      if (rem <= 0) await reg.delete(); else await reg.update({ [`flags.${F}.remaining`]: rem, [`flags.${F}.lastTick`]: prior.round });   // D31: one write
     }
   });
 }
@@ -510,6 +511,13 @@ const markTip = (el, html) => { el.dataset.tooltipHtml = html; el.dataset.toolti
 function activateTip(el) {
   const html = el?.dataset?.tooltipHtml; if (!html) return;
   try { const box = document.createElement("div"); box.innerHTML = html; game.tooltip?.activate?.(el, { content: box, direction: "LEFT" }); } catch (e) { /* the attributes stay */ }
+}
+/** Is this effect on the creature the panel shows (an effect on one of its items counts)? */
+function panelShows(effect) {
+  const shown = currentActor();
+  if (!shown) return false;
+  const p = effect?.parent, a = p?.documentName === "Actor" ? p : p?.parent;
+  return !a || a === shown || (!!a.uuid && a.uuid === shown.uuid);
 }
 function renderPanel() {
   if (!panel) return;
@@ -544,7 +552,10 @@ export function setupPanel() {
   panel = document.createElement("div");
   panel.id = "twod12-effects";
   document.body.appendChild(panel);
-  for (const h of ["controlToken", "createActiveEffect", "deleteActiveEffect", "updateActiveEffect", "canvasReady", "collapseSidebar", "renderSidebar"]) Hooks.on(h, () => renderPanel());
+  // v0.0.361 (PACK PERF, D32): drawn at most once a frame, and an effect's change only when it is on the creature shown (it was any actor's)
+  const draw = perFrame(renderPanel);
+  for (const h of ["controlToken", "canvasReady", "collapseSidebar", "renderSidebar"]) Hooks.on(h, draw);
+  for (const h of ["createActiveEffect", "deleteActiveEffect", "updateActiveEffect"]) Hooks.on(h, effect => { if (panelShows(effect)) draw(); });
   window.addEventListener("resize", positionPanel);
   const sb = document.getElementById("sidebar");
   if (sb && window.ResizeObserver) new ResizeObserver(positionPanel).observe(sb);

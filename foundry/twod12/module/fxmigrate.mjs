@@ -49,12 +49,12 @@ export function registerMigrationFx() {
   game.settings.register(F, "migratedFx", { scope: "world", config: false, type: String, default: "" });
   Hooks.once("ready", async () => {
     if (!game.user.isActiveGM || game.settings.get(F, "migratedFx") === DONE) return;
-    const report = await migrateEffects({ write: false });
+    // v0.0.361 (PACK PERF, D37): no dry run over the whole world at each load before the question (the count it gave is in the console after)
     const has = [...(game.items ?? [])].some(i => HOSTS.includes(i.type)) || [...(game.actors ?? [])].some(a => a.items.some(i => HOSTS.includes(i.type)));
     if (!has) { await game.settings.set(F, "migratedFx", DONE); return; }
     const { pickConfirm } = await import("./pickwindow.mjs");
     const ok = await pickConfirm({ name: "The effects' new Details tab", sub: "PACK EFFECT-SHEET", icon: "fa-wand-magic-sparkles", confirm: "Store the rules",
-      text: `<p><b>Back up your world first</b> (Foundry: Game Worlds, Backup).</p><p>Effects, Features and Talents now have rules (the new Details tab). They already work from their old settings; this stores the rules in the world, once. Nothing else changes.${report.notes.length ? ` ${report.notes.length} setting(s) can't be converted cleanly and keep working as before (the console lists them).` : ""}</p><p>Cancel: asked again next time. By hand: <code>game.twod12.migrateEffects()</code>.</p>` });
+      text: `<p><b>Back up your world first</b> (Foundry: Game Worlds, Backup).</p><p>Effects, Features and Talents now have rules (the new Details tab). They already work from their old settings; this stores the rules in the world, once. Nothing else changes. A setting that can't be converted cleanly keeps working as before (the console lists them).</p><p>Cancel: asked again next time. By hand: <code>game.twod12.migrateEffects()</code>.</p>` });
     if (!ok) return;
     const r = await migrateEffects({ write: true });
     await game.settings.set(F, "migratedFx", DONE);

@@ -12,6 +12,7 @@ import { modifierList, resolveModifiers } from "./effects.mjs";
 import { unconsciousDoom, doomStatus } from "./config.mjs";
 import { initCardData, initCardHtml } from "./initcard.mjs";
 import { cleanName } from "./moment.mjs";
+import { logOnlyChange } from "./util.mjs";
 const F = "twod12", SOCKET = "system.twod12";
 const { ApplicationV2 } = foundry.applications?.api ?? {};
 
@@ -150,7 +151,7 @@ class BaseInitWindow extends (ApplicationV2 ?? class {}) {
   _onFirstRender(context, options) {
     super._onFirstRender?.(context, options);
     const soon = () => { clearTimeout(this._t); this._t = setTimeout(() => { if (this.rendered) this.render(); }, 60); };
-    for (const h of LIVE) this._hooks.push([h, Hooks.on(h, doc => { const cb = doc?.parent ?? doc; if (h === "updateCombat" && doc?.id !== this.combat.id) return; if (h.endsWith("Combatant") && cb?.id !== this.combat.id) return; soon(); })]);
+    for (const h of LIVE) this._hooks.push([h, Hooks.on(h, (doc, ch) => { const cb = doc?.parent ?? doc; if (h === "updateCombat" && (doc?.id !== this.combat.id || logOnlyChange(ch))) return; if (h.endsWith("Combatant") && cb?.id !== this.combat.id) return; soon(); })]);
     this._hooks.push(["deleteCombat", Hooks.on("deleteCombat", doc => { if (doc?.id === this.combat.id) this.close(); })]);
     this.element.addEventListener("click", ev => this._click(ev));
     this.element.addEventListener("change", ev => this._change(ev));

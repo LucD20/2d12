@@ -8,7 +8,7 @@ globalThis.game = { user: { isActiveGM: true }, combat: null };
 globalThis.canvas = { scene: { tokens: [] } };
 const flags = { effectUuid: "E", duration: { type: "rounds", rounds: 2 }, remaining: 2, originCombatantId: "drak", appliedRound: 1, appliedTurn: 0 };
 const eot = { effectUuid: "E2", duration: { type: "eot", rounds: 1 }, remaining: 1, originCombatantId: "drak", appliedRound: 1, appliedTurn: 0 };
-const mkEff = (name, f) => ({ name, deleted: false, flags: f, getFlag(s, k) { return this.flags[k]; }, async setFlag(s, k, v) { this.flags[k] = v; }, async delete() { this.deleted = true; } });
+const mkEff = (name, f) => ({ name, deleted: false, flags: f, getFlag(s, k) { return this.flags[k]; }, async setFlag(s, k, v) { this.flags[k] = v; }, async update(d) { for (const [k, v] of Object.entries(d)) this.flags[k.split(".").pop()] = v; }, async delete() { this.deleted = true; } });
 const e1 = mkEff("light", flags), e2 = mkEff("hindered", eot);
 const zack = { effects: [e1, e2] }, drak = { effects: [] };
 const combat = { combatants: { get: id => ({ drak: { id: "drak", actor: drak }, zack: { id: "zack", actor: zack } })[id], [Symbol.iterator]: function* () { yield { id: "drak", actor: drak }; yield { id: "zack", actor: zack }; } } };

@@ -1,4 +1,4 @@
-snapshot saved: round,turn,who,combatants,actors,tokens,regions | effects: 1
+snapshot saved: round,turn,who,combatants,actors,tokens,regions | effects: 1 | no Combat flag: true
 before reset: damage 9 effects 0 x 400 regions r2 ap 1 init 3
 after reset : damage 0 effects Bless x 100 regions r1 ap 5 frozen false moveLeft 0 init 14
 Turn reset: everything is back to the start of Paladin's turn.

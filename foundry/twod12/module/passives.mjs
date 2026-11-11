@@ -5,6 +5,33 @@
 import { appliedFlags } from "./appliedflags.mjs";
 const F = "twod12";
 
+/**
+ * v0.0.361 (PACK PERF, D33): an item's passive sources are kept until the item changes (it was rebuilt on every call: about 14 calls a roll,
+ * and every measured movement step). Keyed on the item; still good only while its settings array (a new one after any update of the item)
+ * and the strings read are the same, so it can't go stale. 10 µs a call on Sylwen, 0.3 µs cached.
+ */
+const itemCache = new WeakMap();
+function itemSources(it) {
+  const settings = it.system?.settings ?? [], description = it.system?.description ?? "", hover = it.system?.hover ?? "", srcUuid = it.getFlag?.(F, "sourceUuid") || it.uuid || "";
+  const hit = itemCache.get(it);
+  if (hit && hit.settings === settings && hit.description === description && hit.hover === hover && hit.name === it.name && hit.srcUuid === srcUuid && hit.id === it.id) return hit.out;
+  const groups = new Map();
+  for (const st of settings) {
+    const min = Math.max(0, Math.trunc(Number(st.minEscalation)) || 0);
+    if (!groups.has(min)) groups.set(min, []);
+    groups.get(min).push(st);
+  }
+  const out = [];
+  for (const [min, list] of groups) {
+    const flags = appliedFlags({ settings: list, description, hover, expireOn: new Set(), expireAll: false }, null);
+    flags.minEscalation = min;
+    flags.passive = true;
+    out.push({ id: `passive-${it.id}-${min}`, name: it.name, srcUuid, disabled: false, statuses: new Set(), flags: { [F]: flags }, getFlag: (scope, k) => (scope === F ? flags[k] : undefined) });
+  }
+  if (typeof it === "object" && it) itemCache.set(it, { settings, description, hover, name: it.name, srcUuid, id: it.id, out });
+  return out;
+}
+
 /** The passives of a creature, as objects that read like applied effects (getFlag(scope, key), name, id): one for each Escalation minimum of each Feature or Talent. */
 export function passiveSources(actor) {
   const out = [];
@@ -16,18 +43,7 @@ export function passiveSources(actor) {
   const tookOver = it => ruled.some(a => a.getFlag?.(F, "featureId") === it.id || a.getFlag?.(F, "talentId") === it.id || (it.system?.actions ?? []).includes(a.getFlag?.(F, "sourceUuid") || "\u0000"));
   for (const it of list) {
     if (it.type !== "action" && ruled.length && tookOver(it)) continue;
-    const groups = new Map();
-    for (const st of it.system?.settings ?? []) {
-      const min = Math.max(0, Math.trunc(Number(st.minEscalation)) || 0);
-      if (!groups.has(min)) groups.set(min, []);
-      groups.get(min).push(st);
-    }
-    for (const [min, settings] of groups) {
-      const flags = appliedFlags({ settings, description: it.system?.description ?? "", hover: it.system?.hover ?? "", expireOn: new Set(), expireAll: false }, null);
-      flags.minEscalation = min;
-      flags.passive = true;
-      out.push({ id: `passive-${it.id}-${min}`, name: it.name, srcUuid: it.getFlag?.(F, "sourceUuid") || it.uuid || "", disabled: false, statuses: new Set(), flags: { [F]: flags }, getFlag: (scope, k) => (scope === F ? flags[k] : undefined) });
-    }
+    out.push(...itemSources(it));
   }
   return out;
 }
@@ -44,9 +60,10 @@ export const ELITE_LADDER = [
 ];
 /** Does this creature use the default Elite ladder? An NPC with Escalation on, unless its "Default ladder" switch is off. */
 export const usesEliteLadder = actor => actor?.type === "npc" && !!actor.system?.useEscalation && actor.system?.eliteLadder !== false;
+let ladderCache = null;   // D33: the same three for every Elite (nothing in them depends on the creature)
 function ladderSources(actor) {
   if (!usesEliteLadder(actor)) return [];
-  return [1, 2, 3].map(min => {
+  return ladderCache ??= [1, 2, 3].map(min => {
     const flags = appliedFlags({ settings: ELITE_LADDER.filter(x => x.minEscalation === min), description: "", hover: "", expireOn: new Set(), expireAll: false }, null);
     flags.minEscalation = min; flags.passive = true;
     return { id: `passive-elite-${min}`, name: "Elite Escalation", srcUuid: "", disabled: false, statuses: new Set(), flags: { [F]: flags }, getFlag: (scope, k) => (scope === F ? flags[k] : undefined) };

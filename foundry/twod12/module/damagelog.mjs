@@ -11,9 +11,17 @@ export async function logDamage({ originUuid = "", originName = "", targetName =
   if (game.user.isGM) return writeEntry(combat, entry);
   game.socket.emit(SOCKET, { type: "logDamage", combatId: combat.id, entry });
 }
+/**
+ * v0.0.361 (PACK PERF, D28): one Combat flag key per entry (flags.twod12.dmgl.<id>): a new entry sends only itself, not the whole log.
+ * A Combat from before keeps its old array (dmglog), read with the new keys. Pure: every entry.
+ */
+export function damageLogOf(combat) {
+  const old = combat?.getFlag?.(F, "dmglog"), keyed = combat?.getFlag?.(F, "dmgl");
+  return [...(Array.isArray(old) ? old : []), ...(keyed && typeof keyed === "object" ? Object.values(keyed).filter(e => e && typeof e === "object") : [])];
+}
 async function writeEntry(combat, entry) {
-  const log = [...(combat.getFlag(F, "dmglog") ?? []), entry];
-  await combat.setFlag(F, "dmglog", log);
+  const id = globalThis.foundry?.utils?.randomID?.() ?? Math.random().toString(36).slice(2, 12);
+  await combat.update({ [`flags.${F}.dmgl.${id}`]: entry });
 }
 export function registerDamageLogSocket() {
   game.socket.on(SOCKET, async data => {
@@ -25,7 +33,7 @@ export function registerDamageLogSocket() {
 
 /** The rows of the report: one per creature that dealt damage. */
 export function reportRows(combat) {
-  const log = combat?.getFlag(F, "dmglog") ?? [];
+  const log = damageLogOf(combat);
   const rows = new Map();
   for (const e of log) {
     const key = e.o || e.on;

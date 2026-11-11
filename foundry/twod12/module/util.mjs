@@ -76,3 +76,33 @@ export function shortNames(html, names) {
   for (const n of list.sort((a, b) => b.length - a.length)) { const s = short(n); if (s === n) continue; for (const form of new Set([escH(n), n])) if (out.includes(form)) out = out.split(form).join(form === n ? s : escH(s)); }
   return out;
 }
+
+/* ---- v0.0.361 (PACK PERF): fewer redraws ---- */
+/** The Combat flags that are only logs or the undo snapshot: a change of these alone redraws no sheet, strip or Zone (D27, D28, D30, D40). */
+export const LOG_FLAG_KEYS = new Set(["encl", "dmgl", "enclog", "dmglog", "snapshot", "enclogAbbr"]);
+/** Pure: is this update's diff only log lines (or the old snapshot)? `ch` is what the update hook receives. */
+export function logOnlyChange(ch) {
+  if (!ch || typeof ch !== "object") return false;
+  const top = Object.keys(ch).filter(k => k !== "_id" && k !== "_stats");
+  if (top.length !== 1 || top[0] !== "flags") return false;
+  const fl = Object.keys(ch.flags ?? {});
+  if (fl.length !== 1 || fl[0] !== "twod12") return false;
+  const keys = Object.keys(ch.flags.twod12 ?? {});
+  return keys.length > 0 && keys.every(k => LOG_FLAG_KEYS.has(k.replace(/^-=/, "")));
+}
+const soon = new Map();
+/**
+ * D27: an open window is drawn again once, `ms` after the last of a burst of asks (a turn start writes several documents, each with its hooks).
+ * Only an app that is still open is drawn. Returns nothing; the draw is not awaited.
+ */
+export function renderSoon(app, ms = 60) {
+  if (!app) return;
+  clearTimeout(soon.get(app));
+  soon.set(app, setTimeout(() => { soon.delete(app); try { if (app.rendered) app.render(); } catch (e) { console.warn("twod12 | redraw", e); } }, ms));
+}
+/** D30, D32, D40: `fn` runs once on the next animation frame, however often it is asked before then (setTimeout 16 ms where there are no frames). */
+export function perFrame(fn) {
+  let asked = false;
+  const raf = globalThis.requestAnimationFrame ?? (f => setTimeout(f, 16));
+  return () => { if (asked) return; asked = true; raf(() => { asked = false; fn(); }); };
+}

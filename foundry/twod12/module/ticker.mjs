@@ -46,12 +46,12 @@ export const nextLog = (log, line) => (line.k === "start" ? [line] : [...(log ??
  * Add an event to a combatant's Turn Log and post its ticker (the snapshot of the log so far). Writing needs an owner of the combatant;
  * the message is posted by whoever made the event.
  */
-export async function logEvent(c, line) {
+export async function logEvent(c, line, { lines: written = null } = {}) {   // lines (v0.0.361): the Turn Log already written with the event's own update
   if (!c) return null;
   // v0.0.277 (Lucas: "The Combat ... does not exist" when an encounter ended mid-movement): a combat already deleted gets no line
   if (c.parent?.id && globalThis.game?.combats?.has && !game.combats.has(c.parent.id)) return null;
-  const lines = nextLog(c.getFlag?.(F, "turnLog") ?? [], line);
-  try { if (c.isOwner) await c.setFlag(F, "turnLog", lines); } catch (e) { console.warn("twod12 | turn log", e); }
+  const lines = written ?? nextLog(c.getFlag?.(F, "turnLog") ?? [], line);
+  try { if (c.isOwner && !written) await c.setFlag(F, "turnLog", lines); } catch (e) { console.warn("twod12 | turn log", e); }
   const speaker = c.actor && ChatMessage.getSpeaker ? ChatMessage.getSpeaker({ actor: c.actor, token: c.token }) : {};
   return ChatMessage.create({ speaker, content: tickerHtml(c.name, lines), flags: { [F]: { ticker: { combatantId: c.id, lines } } } });
 }

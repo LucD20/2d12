@@ -63,7 +63,6 @@ import { bindInitCard } from "./initcard.mjs";
 import { registerRefresh, refreshFromCompendium, askRefresh } from "./refresh.mjs";
 import { GROUPS } from "./config.mjs";
 import { registerDragCopy } from "./drag.mjs";
-import { registerUsageHooks } from "./usage.mjs";
 
 Hooks.once("init", () => {
   registerReactionSettings();   // v0.0.272 (pack RX): the Reactions message's auto-skip timer
@@ -238,6 +237,8 @@ Hooks.once("init", () => {
   game.settings.register("twod12", "settingsV187", { scope: "world", config: false, type: Boolean, default: false });   // Killer's Focus and Radiant Zeal: an Effect each turn
   game.settings.register("twod12", "settingsV186", { scope: "world", config: false, type: Boolean, default: false });   // the cards automated by name get their settings (automation.mjs)
   game.settings.register("twod12", "rallyV176", { scope: "world", config: false, type: Boolean, default: false });   // the Paladin's and Archer's Rally values updated once
+  game.settings.register("twod12", "releaseV118", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.361 (PACK PERF, D37): Release at 0 AP, once per world
+  game.settings.register("twod12", "worthFor", { scope: "world", config: false, type: String, default: "" });   // v0.0.361 (D37): the worth lines, once per system version
 
   // Initiative is an Attribute Check rolled by TwoD12Combat#rollInitiative; this formula is only a fallback.
   CONFIG.Combat.initiative = { formula: "1d12 + @attributes.instinct", decimals: 0 };
@@ -328,10 +329,8 @@ Hooks.on("renderChatMessageHTML", updateUseButtons);
 Hooks.on("renderChatMessageHTML", markHalfHint);
 Hooks.on("renderChatMessageHTML", rxRender);   // v0.0.272: Use / Pass for the row's owner, Skip all others for the GM, the timer
 Hooks.once("ready", registerVersionTabs);
-Hooks.on("renderChatMessage", updateUseButtons);
-Hooks.on("renderChatMessage", markHalfHint);
-Hooks.on("renderChatMessage", rxRender);
-Hooks.on("renderChatMessage", collapsibleCards);
+// v0.0.361 (PACK PERF, D36): the same four on the old renderChatMessage hook are gone (the system is V14 only: if it still fired, they ran
+// twice per message and the Reactions card bound its listeners twice)
 
 // "Roll Damage" buttons on action cards (delegated so it works regardless of chat re-rendering).
 Hooks.once("ready", () => { try { registerInitiativeSocket(); } catch (e) { console.warn("twod12 | initiative socket", e); } });   // v0.0.310: the players' Initiative windows
@@ -417,7 +416,6 @@ Hooks.once("ready", async () => {
   registerBasicHooks();
   registerCarousel();
   registerDragCopy();
-  registerUsageHooks();
   registerGrantCardHooks();
   import("./noroll.mjs").then(m => m.registerNoRollHooks()).catch(e => console.warn("twod12 | non-roll cards", e));   // v0.0.294
   registerMomentHooks();   // v0.0.272 (pack RX): the movement moments

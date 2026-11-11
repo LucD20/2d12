@@ -25,7 +25,17 @@ import { allEffects } from "./passives.mjs";
 import { moveLimitBreaks } from "./fxrules.mjs";
 import { areaDifficult } from "./areafx.mjs";
 /** The Movement limits of a creature that work now, each with its origin's token: [{ dir, name, token }] (Frightened: can't move closer to its source). */
+// v0.0.361 (PACK PERF, D34): a drag measures many steps in a row, each asking for the mover's limits (8 of its 8.4 µs a step went to allEffects):
+// they are read once and kept 200 ms. The source's token is kept, not its square, so a source that moves is still measured where it stands.
+const limitCache = new Map();   // token id -> { t, out }
 function moveLimitsOf(doc) {
+  const id = doc?.id ?? "", now = Date.now(), hit = id ? limitCache.get(id) : null;
+  if (hit && now - hit.t < 200 && hit.actor === doc?.actor) return hit.out;
+  const out = readMoveLimits(doc);
+  if (id) { if (limitCache.size > 50) limitCache.clear(); limitCache.set(id, { t: now, actor: doc?.actor, out }); }
+  return out;
+}
+function readMoveLimits(doc) {
   const actor = doc?.actor, out = [];
   if (!actor) return out;
   for (const e of allEffects(actor)) {
@@ -1359,7 +1369,7 @@ export function registerMovement() {
       squares = squares ? squares / gridUnit() : measureSquares(origin, to);
       if (squares <= 0) return;
       // v0.0.323 (PACK EFFECT-SHEET): a Movement limit refuses a willing move that ends nearer to (or farther from) its origin (Forced Movement is not willing)
-      for (const l of moveLimitsOf(doc)) {
+      for (const l of readMoveLimits(doc)) {   // v0.0.361: read fresh (the cache is for the drag's measuring)
         if (l.how === "difficult") continue;   // v0.0.345: Difficult Terrain instead (hardStep)
         const op = { x: l.token.document.x, y: l.token.document.y };
         if (moveLimitBreaks(l.dir, measureSquares(origin, op), measureSquares(to, op))) { warn(`${l.name}: ${doc.name} can't willingly move ${l.dir === "away" ? "away from" : "closer to"} ${l.token.name}.`); return false; }

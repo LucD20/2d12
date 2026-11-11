@@ -8,13 +8,15 @@ export const LIGHT = { bright: 2, dim: 1, dark: 0 };
 export const LIGHT_NAMES = { bright: "Bright", dim: "Dim", dark: "Darkness" };
 
 export function registerLight() {
-  const opts = { scope: "world", config: true, type: Number, range: { min: 0, max: 1, step: 0.05 }, onChange: () => ui.scenes?.render?.() };
+  const opts = { scope: "world", config: true, type: Number, range: { min: 0, max: 1, step: 0.05 }, onChange: () => { lightSettings.clear(); ui.scenes?.render?.(); } };
   game.settings.register("twod12", "lightDimBelow", { ...opts, name: "Scene light: Dim below this light level", hint: "The scene's light level is 1 minus its Darkness level. Below this value the scene's own light is Dim (0.7: Dim from Darkness 0.3).", default: 0.7 });
   game.settings.register("twod12", "lightDarkBelow", { ...opts, name: "Scene light: Darkness below this light level", hint: "Below this value the scene's own light is Darkness (0.4: Darkness from Darkness 0.6).", default: 0.4 });
   Hooks.on("renderSceneConfig", (app, html) => { try { sliderLegend(app, html instanceof HTMLElement ? html : html?.[0]); } catch (e) { console.warn("twod12 | scene light legend", e); } });
 }
 
-const setting = (k, d) => { try { return Number(game.settings.get("twod12", k)); } catch (e) { return d; } };
+// v0.0.361 (PACK PERF, D40): the two thresholds are read once and kept until they change (the sight test read both world settings each time)
+const lightSettings = new Map();
+const setting = (k, d) => { if (lightSettings.has(k)) return lightSettings.get(k); try { const v = Number(game.settings.get("twod12", k)); lightSettings.set(k, v); return v; } catch (e) { return d; } };
 
 /** The scene's own light from a Darkness level (0 to 1). */
 export function levelFromDarkness(darkness) {

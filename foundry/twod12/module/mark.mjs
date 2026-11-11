@@ -16,8 +16,17 @@ export async function setQuarry(actor, token) {
 
 /** The creatures that could hold a mark: the world's actors and the unlinked tokens of the scene. */
 const markers = () => game.actors.contents.concat((canvas?.scene?.tokens ?? []).filter(t => !t.actorLink).map(t => t.actor).filter(Boolean));
-/** The token uuids that are marked by a creature this user owns (the GM sees every mark): uuid -> the marker's image (v0.0.224). */
+/**
+ * The token uuids that are marked by a creature this user owns (the GM sees every mark): uuid -> the marker's image (v0.0.224).
+ * v0.0.361 (PACK PERF, D35): kept until a mark, an actor, a token or the scene changes (each token refresh, every frame a token moved, walked
+ * every world actor: 14 µs with 50 actors, 75 µs with 300).
+ */
+let marksCache = null;
+export const forgetQuarryMarks = () => { marksCache = null; };
 function quarryMarks() {
+  return marksCache ??= readQuarryMarks();
+}
+function readQuarryMarks() {
   const out = new Map();
   for (const a of markers().filter(x => game.user.isGM || x.isOwner)) {
     const q = quarryOf(a);
@@ -55,12 +64,16 @@ function drawQuarryMark(token, marks = quarryMarks()) {
     token.addChild(box);
   });
 }
-const redrawQuarryMarks = () => { if (!canvas?.ready) return; const m = quarryMarks(); for (const t of canvas.tokens?.placeables ?? []) drawQuarryMark(t, m); };
+const redrawQuarryMarks = () => { marksCache = null; if (!canvas?.ready) return; const m = quarryMarks(); for (const t of canvas.tokens?.placeables ?? []) drawQuarryMark(t, m); };
 
 export function registerMarkHooks() {
   // v0.0.162: a marked creature shows a crosshair on its token (for the marker's owners and the GM).
   Hooks.on("refreshToken", token => drawQuarryMark(token));
   Hooks.on("canvasReady", redrawQuarryMarks);
+  // D35: what the cached marks depend on (a marker's token image or ownership, an unlinked marker's token, a world actor)
+  for (const h of ["createToken", "deleteToken", "createActor", "deleteActor"]) Hooks.on(h, forgetQuarryMarks);
+  Hooks.on("updateToken", (doc, ch) => { if (ch && ("texture" in ch || "actorLink" in ch || "actorId" in ch || "delta" in ch)) forgetQuarryMarks(); });
+  Hooks.on("updateActor", (actor, ch) => { if (ch && ("ownership" in ch || "prototypeToken" in ch || "img" in ch)) forgetQuarryMarks(); });
   Hooks.on("updateActor", (actor, change) => { const f = change?.flags?.twod12; if (f && ("quarry" in f || "-=quarry" in f)) redrawQuarryMarks(); });
   // The marked creature dies or goes Down: the mark ends, and the marker's "When the creature it marked goes Down" messages are posted (the active GM).
   Hooks.on("createActiveEffect", async effect => {

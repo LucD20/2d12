@@ -75,8 +75,14 @@ export function registerBasicHooks() {
   // Once, for the GM: a Release made when a Version couldn't cost 0 was saved at 1 AP; it costs 0 AP (v0.0.118).
   Hooks.once("ready", async () => {
     if (!game.user.isActiveGM) return;
-    const fixed = await fixReleaseCost(game.actors ?? []);
-    if (fixed) ui.notifications.info(`Release now costs 0 AP on ${fixed} creature${fixed === 1 ? "" : "s"}.`);
+    // v0.0.361 (PACK PERF, D37): once per world (it walked every item of every actor at each load)
+    try {
+      if (!game.settings.get(F, "releaseV118")) {
+        const fixed = await fixReleaseCost(game.actors ?? []);
+        await game.settings.set(F, "releaseV118", true);
+        if (fixed) ui.notifications.info(`Release now costs 0 AP on ${fixed} creature${fixed === 1 ? "" : "s"}.`);
+      }
+    } catch (e) { console.warn("twod12 | Release cost", e); }
     // v0.0.176, once per world: the new Rally values of the Paladin and the Archer (the Rally Points formula changed with them).
     try {
       if (!game.settings.get(F, "rallyV176")) {

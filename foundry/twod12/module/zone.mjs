@@ -4,6 +4,7 @@
 // the creatures inside get the Effect (flag zoneFrom), lose it when they leave or the area ends; the region's rounds count down like an effect's.
 import { tokenCells } from "./template.mjs";
 import { TWOD12 } from "./config.mjs";
+import { logOnlyChange } from "./util.mjs";
 import { normZone, normEnds, rowReaches } from "./fxrules.mjs";
 import { zoneRows } from "./fxrules.mjs";
 const F = "twod12";
@@ -155,9 +156,10 @@ export async function zoneTurnStart(combatant) {
 export function registerZoneHooks() {
   const sched = () => scheduleZoneRefresh();
   for (const h of ["canvasReady", "createToken", "deleteToken", "createRegion", "deleteRegion", "updateRegion"]) Hooks.on(h, sched);
-  Hooks.on("updateToken", sched);
+  // v0.0.361 (PACK PERF, D40): only a change that can move a creature in or out of a Zone (it was any token update, a light or a bar included)
+  Hooks.on("updateToken", (doc, ch) => { if (["x", "y", "width", "height", "hidden", "disposition", "elevation", "actorId", "actorLink"].some(k => k in (ch ?? {}))) sched(); });
   // Foundry V13+: a movement says where it ends; the document can still be on its way when the hook fires (the hazards read it the same way)
   Hooks.on("moveToken", (doc, movement) => { const d = movement?.destination; if (d && Number.isFinite(d.x) && Number.isFinite(d.y)) landing.set(doc.id, { x: d.x, y: d.y, width: doc.width, height: doc.height, flags: doc.flags }); sched(); });
   Hooks.on("combatTurnChange", sched);
-  Hooks.on("updateCombat", sched);
+  Hooks.on("updateCombat", (combat, ch) => { if (!logOnlyChange(ch) && ["round", "turn", "started", "active"].some(k => k in (ch ?? {}))) sched(); });   // D40: not on a log line
 }

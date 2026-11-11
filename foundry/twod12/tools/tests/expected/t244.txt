@@ -1,0 +1,25 @@
+--- D27 / D28 / D30: a change that is only a log line (or the old snapshot) redraws nothing
+a new Encounter Log line: true | a damage entry: true | the old snapshot removed: true | a turn: false | Momentum and a log line: false | the round and a line: false
+--- D27: one redraw for a burst of asks
+8 asks in a row: 1 draw | a closed window is not drawn: true
+D30: three asks in a frame, then one more: 2 draws
+--- D28: the Encounter Log, one key per line
+a new line writes only its key: flags.twod12.encl.n1 | with its order: true
+an old array is moved into keys with the next line: flags.twod12.encl.o1,flags.twod12.encl.o2,flags.twod12.encl.n2 | and removed: true
+read in order: a,b | an old Combat still reads its array: o1,o2 | both: o1,o2,b
+Reset Turn strikes only that turn's lines, field by field: {"flags.twod12.encl.b.off":true,"flags.twod12.encl.b.why":"Reset Turn"}
+an edited line: {"flags.twod12.encl.a.txt":"edited"} | nothing to change: null
+the damage log reads the old array and the keys: 3,4
+--- D27: a turn start writes the combatant once
+writes: update acted+ap+rap+turnLog | the Turn Log starts again: 1 start | its ticker posted: true
+an Action's AP (no patch): as before: setFlag ap ; setFlag turnLog
+the snapshot is not a Combat flag: true | Reset Turn reads it from memory: true | asked in the pick window: true
+--- D33: the passives cache
+the same sources while the item is unchanged: true | 1 source
+an updated item (a new settings array) is read again: true | 2 sources
+a renamed item too: Keener Eye
+--- the wiring
+D27 sheets: one redraw each, none for a log: true | usage.mjs's copy gone: true | D40 createCombat asks the open windows: true
+D30 the strip: true | D31 one write per tick: true | D32 the panel only for its creature: true
+D34 limits kept per drag: true | refused moves read them fresh: true | D35 marks cached: true | D36 no old chat hooks: true
+D37 the load passes: true | D40 Zones on x / y: true | the Aura hover per frame: true | the light thresholds read once: true

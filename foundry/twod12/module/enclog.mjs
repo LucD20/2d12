@@ -3,7 +3,20 @@
 // turn; each line can be removed (struck through, kept) or edited, and a turn can get a note. Copy gives the playtest format:
 //   "OC - Charge 4, WA vs DP T3; Club vs DP T3; Advance 2. DP goes Down."  plus the abbreviations and the damage report.
 // Lines count by default (no confirming); a cancelled roll never logs; Reset Turn removes that turn's lines; a Charge given up is removed.
-const F = "twod12", SOCKET = "system.twod12", FLAG = "enclog", ABBR = "enclogAbbr";
+import { unset } from "./util.mjs";
+const F = "twod12", SOCKET = "system.twod12", FLAG = "enclog", LINES = "encl", ABBR = "enclogAbbr";
+
+/**
+ * v0.0.361 (PACK PERF, D28): the log is one Combat flag key per line (flags.twod12.encl.<id>), so a new line sends only itself (the whole
+ * array was cloned and resent to every client: 42 KB a line at 200 lines). A line carries `s`, its order. A Combat from before keeps its old
+ * array (flags.twod12.enclog) until its next line is written, when the array is moved into keys. Pure: the lines, in order.
+ */
+export function logOf(combat) {
+  const old = combat?.getFlag?.(F, FLAG), keyed = combat?.getFlag?.(F, LINES);
+  const a = Array.isArray(old) ? old : [];
+  const b = keyed && typeof keyed === "object" ? Object.values(keyed).filter(e => e && typeof e === "object") : [];
+  return b.length ? [...a, ...b.sort((x, y) => (x.s ?? 0) - (y.s ?? 0))] : a;
+}
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const idOf = uuid => String(uuid ?? "").split(".").filter(Boolean).pop() ?? "";
 
@@ -109,13 +122,22 @@ export function exportText(log, { abbr = {}, short = true, details = false } = {
 /* ------------------------------------------------------------------ writing (the GM writes; players send) */
 let chain = Promise.resolve();
 const newId = () => (globalThis.foundry?.utils?.randomID?.() ?? Math.random().toString(36).slice(2, 12));
+let seq = 0;
+/** Pure: the update one operation makes (only the lines it adds or changes), or null. An old array is moved into keys with it. */
+export function logUpdate(log, op, hadArray = false, now = Date.now()) {
+  const P = `flags.${F}.${LINES}`, upd = {};
+  if (hadArray) { log.forEach((e, k) => { upd[`${P}.${e.id}`] = { ...e, s: e.s ?? k }; }); Object.assign(upd, unset(`flags.${F}.${FLAG}`)); }
+  const patch = (e, ch) => { if (upd[`${P}.${e.id}`]) Object.assign(upd[`${P}.${e.id}`], ch); else for (const [k, v] of Object.entries(ch)) upd[`${P}.${e.id}.${k}`] = v; };
+  if (op.type === "add") { seq = Math.max(seq + 1, now); upd[`${P}.${op.entry.id}`] = { ...op.entry, s: seq }; }
+  else if (op.type === "patch") { const e = log.find(x => x.id === op.id); if (e) patch(e, op.changes); }
+  else if (op.type === "voidTurn") for (const e of log) { if (e.r === op.r && e.t === op.t && !e.off) patch(e, { off: true, why: op.why ?? "" }); }
+  else if (op.type === "voidLast") { const e = [...log].reverse().find(x => x.r === op.r && x.t === op.t && !x.off && x.k === "act" && x.who?.id === op.who && x.d?.name === op.name); if (e) patch(e, { off: true, why: op.why ?? "" }); }
+  return Object.keys(upd).length ? upd : null;
+}
 async function apply(combat, op) {
-  const log = foundry.utils.deepClone(combat.getFlag(F, FLAG) ?? []);
-  if (op.type === "add") log.push(op.entry);
-  else if (op.type === "patch") { const e = log.find(x => x.id === op.id); if (e) Object.assign(e, op.changes); }
-  else if (op.type === "voidTurn") for (const e of log) { if (e.r === op.r && e.t === op.t && !e.off) { e.off = true; e.why = op.why ?? ""; } }
-  else if (op.type === "voidLast") { const e = [...log].reverse().find(x => x.r === op.r && x.t === op.t && !x.off && x.k === "act" && x.who?.id === op.who && x.d?.name === op.name); if (e) { e.off = true; e.why = op.why ?? ""; } }
-  await combat.setFlag(F, FLAG, log);
+  const old = combat.getFlag(F, FLAG), hadArray = Array.isArray(old) && old.length > 0;
+  const upd = logUpdate(logOf(combat), op, hadArray);
+  if (upd) await combat.update(upd);
 }
 function send(op, combat = game.combat) {
   if (typeof combat?.getFlag !== "function") return;   // no real Combat (the tests' stand-ins)
@@ -193,7 +215,7 @@ export class EncounterLog extends (ApplicationV2 ?? class {}) {
     const div = document.createElement("div");
     div.className = "enclog";
     if (!combat) { div.innerHTML = "<p>No combat.</p>"; return div; }
-    const log = combat.getFlag(F, FLAG) ?? [];
+    const log = logOf(combat);
     const list = [...combat.combatants].map(c => ({ id: c.tokenId ?? c.actorId, name: c.token?.name ?? c.name }));
     const ab = creatureAbbrs(list, combat.getFlag(F, ABBR) ?? {});
     const nm = r => esc(r?.name ?? "?");
@@ -237,7 +259,7 @@ export class EncounterLog extends (ApplicationV2 ?? class {}) {
     const id = b.closest("[data-id]")?.dataset.id, what = b.dataset.el;
     if (what === "copy") {
       const list = [...combat.combatants].map(c => ({ id: c.tokenId ?? c.actorId, name: c.token?.name ?? c.name }));
-      let text = exportText(combat.getFlag(F, FLAG) ?? [], { abbr: creatureAbbrs(list, combat.getFlag(F, ABBR) ?? {}), short: this.short !== false, details: !!this.details });
+      let text = exportText(logOf(combat), { abbr: creatureAbbrs(list, combat.getFlag(F, ABBR) ?? {}), short: this.short !== false, details: !!this.details });
       try { const { reportRows } = await import("./damagelog.mjs"); const rows = reportRows(combat); if (rows.length) text += `\n\nDamage dealt (total / per round)\n${rows.map(r => `${r.name}: ${r.total} / ${Math.round(r.perRound * 10) / 10}`).join("\n")}`; } catch (e) { /* no report */ }
       try { await (game.clipboard?.copyPlainText?.(text) ?? navigator.clipboard.writeText(text)); ui.notifications.info("Encounter log copied."); } catch (e) { console.log(text); ui.notifications.warn("Could not copy: the log is in the console (F12)."); }
       return;
@@ -245,7 +267,7 @@ export class EncounterLog extends (ApplicationV2 ?? class {}) {
     if (what === "remove" && id) return patchLine(id, { off: true, why: "Removed by hand" });
     if (what === "restore" && id) return patchLine(id, { off: false, why: "" });
     if (what === "edit" && id) {
-      const e = (combat.getFlag(F, FLAG) ?? []).find(x => x.id === id);
+      const e = (logOf(combat)).find(x => x.id === id);
       const val = await foundry.applications.api.DialogV2.prompt({ window: { title: "Edit the line" }, content: `<input type="text" name="t" value="${esc(e ? lineText(e) : "")}" style="width:100%" autofocus><p class="hint">Empty: back to the logged text.</p>`, ok: { label: "Save", callback: (ev, btn) => btn.form.elements.t.value }, rejectClose: false });
       if (val != null) return patchLine(id, { txt: String(val).trim() });
       return;
@@ -254,7 +276,7 @@ export class EncounterLog extends (ApplicationV2 ?? class {}) {
       const turn = b.closest(".el-turn"), r = Number(turn.dataset.r), t = Number(turn.dataset.t);
       const val = await foundry.applications.api.DialogV2.prompt({ window: { title: "Add a note" }, content: '<input type="text" name="t" style="width:100%" placeholder="DP chose to keep fighting" autofocus>', ok: { label: "Add", callback: (ev, btn) => btn.form.elements.t.value }, rejectClose: false });
       if (!val?.trim()) return;
-      const own = (combat.getFlag(F, FLAG) ?? []).find(x => x.r === r && x.t === t)?.own ?? { id: "", name: "" };
+      const own = (logOf(combat)).find(x => x.r === r && x.t === t)?.own ?? { id: "", name: "" };
       return send({ type: "add", entry: { id: newId(), r, t, own, k: "note", who: null, d: { text: val.trim() } } }, combat);
     }
   }

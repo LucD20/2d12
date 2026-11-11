@@ -1,4 +1,4 @@
-import { logEvent, makeLine } from "./ticker.mjs";
+import { logEvent, makeLine, nextLog } from "./ticker.mjs";
 import { swapCardHtml, thawLineHtml, sysLine } from "./sysmsg.mjs";
 import { apGuardOf } from "./guard.mjs";
 import { hasMomentum, setMomentum } from "./escalation.mjs";
@@ -80,21 +80,28 @@ export function combatantOf(actor, combat = game.combat) {
 
 
 /** Set a combatant's AP and say so in the chat. */
-export async function setAP(c, value, why = "", { quiet = false, reaction = false, kind: as = "", rap = null } = {}) {
+export async function setAP(c, value, why = "", { quiet = false, reaction = false, kind: as = "", rap = null, patch = null } = {}) {   // patch (v0.0.361): more of the combatant's changes, written with the AP in one update
   // Nobody holds more than their most AP (4, or more while Quickened); the GM's own edits in the tracker are not limited.
   const want = Math.max(0, Math.round(Number(value) || 0));
   const from = getAP(c), to = why === "edited" ? want : Math.min(want, Math.max(apMax(c), from));
   if (from === to && why === "edited") return;
-  await c.setFlag(F, "ap", to);
   const rapLine = rap ?? { b: getRAP(c), a: getRAP(c) };   // the Reaction AP on the line's pips (v0.0.243)
   // v0.0.200 (Lucas, design M1 + L3): a ticker with the Turn Log instead of "AP 5 → 4 (…)". A movement posts its own line when it ends
   // (move.mjs); an edit in the tracker or the strip posts nothing.
-  if (quiet || why === "edited") return;
   const start = /^(start of turn|swapped in)/i.test(why);
   const off = !start && game.combat?.combatant?.id !== c.id;   // spent in someone else's turn: a Reaction
   const kind = as || (start ? "start" : (reaction || off ? "react" : "act"));
   const name = start ? "Turn start" : String(why).replace(/^swap with /i, "Swap with ");
-  await logEvent(c, makeLine(kind, name, from, to, Math.max(apMax(c), from, to), rapLine));
+  const line = quiet || why === "edited" ? null : makeLine(kind, name, from, to, Math.max(apMax(c), from, to), rapLine);
+  // v0.0.361 (PACK PERF, D27): a turn start writes its fresh flags, the AP and the Turn Log in one update (it was three writes, each redrawing the sheets)
+  if (patch) {
+    const lines = line ? nextLog(c.getFlag?.(F, "turnLog") ?? [], line) : null;
+    await c.update({ ...patch, [`flags.${F}.ap`]: to, ...(lines ? { [`flags.${F}.turnLog`]: lines } : {}) });
+    if (line) await logEvent(c, line, { lines });
+    return;
+  }
+  await c.setFlag(F, "ap", to);
+  if (line) await logEvent(c, line);
 }
 
 /** The Reaction AP: set it (1 at the start of the turn, 0 when spent) without a line of its own. */
@@ -224,8 +231,8 @@ async function startTurn(combat) {
     await c.update({ ...fresh, [`flags.${F}.frozen`]: false, [`flags.${F}.thawed`]: key });   // v0.0.205: a thawed turn can't swap again
     await ChatMessage.create({ content: thawLineHtml(c.name, getAP(c)) });
   } else {
-    await c.update({ ...fresh, [`flags.${F}.rap`]: REACTION_AP });   // v0.0.243: the Reaction AP comes back with the AP
-    await setAP(c, apPerTurn(c), "start of turn", { rap: { b: 0, a: REACTION_AP } });
+    // v0.0.243: the Reaction AP comes back with the AP; v0.0.361 (PACK PERF): one update for the fresh flags, the AP and the Turn Log
+    await setAP(c, apPerTurn(c), "start of turn", { rap: { b: 0, a: REACTION_AP }, patch: { ...fresh, [`flags.${F}.rap`]: REACTION_AP } });
     await setUnusedApGuard(c, hadTurn, apLeft);   // v0.0.274: its unused AP are Guard for 1 round (the one before ends)
     try { const { dazeAtTurnStart } = await import("./conditions.mjs"); await dazeAtTurnStart(c); } catch (e) { console.warn("twod12 | Dazed", e); }   // v0.0.314: the rest of a Dazed
     await climbUp(c);
@@ -240,7 +247,12 @@ async function startTurn(combat) {
   await takeSnapshot(combat);
 }
 
-/* ---- Reset Turn: the state is saved when a turn begins ---- */
+/* ---- Reset Turn: the state is saved when a turn begins ----
+ * v0.0.361 (PACK PERF, D29; Lucas: yes): the snapshot stays in the memory of the GM's client that started the turn (it was a Combat flag sent
+ * to every client at each turn start, with every token and Region). A reload, or another GM, has none for the current turn: Reset Turn says so. */
+const SNAPS = new Map();   // combat id -> the snapshot of its current turn
+/** The saved state of the combat's current turn on this client, or null. */
+export const turnSnapshot = combat => SNAPS.get(combat?.id ?? "") ?? null;
 const FLAG_DEFAULTS = { ap: 0, rap: 0, frozen: false, acted: false, apTurn: "", moveLeft: 0, freeMove: 0, evadeMove: 0 };
 const clone = o => foundry.utils.deepClone(o);
 
@@ -255,15 +267,21 @@ export async function takeSnapshot(combat) {
     tokens: [...(scene?.tokens ?? [])].map(t => ({ _id: t.id, x: t.x, y: t.y, elevation: t.elevation ?? 0, light: t.light?.toObject?.() ?? null })),
     regions: [...(scene?.regions ?? [])].map(r => r.toObject())
   };
-  await combat.setFlag(F, "snapshot", snap);
+  SNAPS.clear();   // one combat runs at a time; an old one's state is never wanted again
+  SNAPS.set(combat?.id ?? "", snap);
+  // a Combat from before v0.0.361 still holds its old snapshot flag: removed once, the next time a turn starts
+  if (combat?.flags?.[F]?.snapshot !== undefined && typeof combat.update === "function") { try { await combat.update(unset(`flags.${F}.snapshot`)); } catch (e) { /* stays */ } }
 }
 
 /** GM: put everything back as it was when the current turn began. */
-export async function resetTurn(combat) {
-  const snap = combat.getFlag(F, "snapshot");
-  if (!snap) return warn("No saved state for this turn.");
+export async function resetTurn(combat, { confirm = null } = {}) {   // confirm (v0.0.361): the question, for the tests
+  const snap = turnSnapshot(combat);
+  if (!snap) return warn("No saved state for this turn: it is kept on the GM's client that started the turn, until a reload.");
   if (snap.round !== combat.round || snap.turn !== combat.turn) return warn(`The saved state is from round ${snap.round}, turn ${snap.turn + 1}. Reset only works during that turn.`);
-  const ok = await DialogV2.confirm({ window: { title: "Reset Turn" }, content: `<p>Put everything back as it was when ${esc(snap.who)}'s turn began: damage, effects, token positions, areas, AP and movement.</p>`, rejectClose: false });
+  // v0.0.361: the confirmation in the pick window's style (no Foundry default windows)
+  const ask = confirm ?? (await import("./pickwindow.mjs")).pickConfirm;
+  const ok = await ask({ title: "Reset Turn", name: "Reset Turn", sub: `Round ${snap.round}, ${snap.who}`, icon: "fa-rotate-left", confirm: "Reset",
+    text: `<p>Put everything back as it was when <b>${esc(snap.who)}</b>'s turn began: damage, effects, token positions, areas, AP and movement.</p>` });
   if (!ok) return;
   try { const { voidTurn } = await import("./enclog.mjs"); voidTurn(combat, snap.round, snap.turn, "Reset Turn"); } catch (e) { /* no log */ }   // v0.0.223: the Encounter Log
   const scene = canvas.scene;

@@ -3,7 +3,7 @@
 import { getAP, setAP, apMax, getRAP, endTurnFor, swapCandidates, swapWith, thawedNow, rollPendingInitiative } from "./combat.mjs";
 import { stripMove, endMoveFor, evadeToAdvance } from "./move.mjs";
 import { groupColor } from "./config.mjs";
-import { esc } from "./util.mjs";
+import { esc, perFrame, logOnlyChange } from "./util.mjs";
 import { strikesUsed } from "./usage.mjs";
 const { DialogV2 } = foundry.applications.api;
 const F = "twod12", ID = "twod12-carousel";
@@ -201,7 +201,12 @@ export function placeCarousel() {
 export function registerCarousel() {
   game.settings.register("twod12", "carouselHideDead", { name: "Combat strip: hide defeated creatures", hint: "Hide dead or defeated creatures from the strip. When off, they are shown in grey.", scope: "client", config: true, type: Boolean, default: false, onChange: renderCarousel });
   game.settings.register("twod12", "carousel", { name: "Combat strip with Action Points", hint: "Shows the turn order across the top of the screen with the Action Points of each creature as dots.", scope: "client", config: true, type: Boolean, default: true, onChange: renderCarousel });
-  for (const h of ["createCombat", "updateCombat", "deleteCombat", "createCombatant", "updateCombatant", "deleteCombatant", "combatStart", "combatTurnChange", "canvasReady"]) Hooks.on(h, () => { renderCarousel(); setTimeout(renderCarousel, 50); });
+  // v0.0.361 (PACK PERF, D30): at most one draw per animation frame, and one more 60 ms after the last change (once Foundry has set the new
+  // turn order, v0.0.189); a log line or the old snapshot alone draws nothing (it drew the strip twice per line, on every client)
+  const draw = perFrame(renderCarousel);
+  let late = null;
+  const poke = () => { draw(); clearTimeout(late); late = setTimeout(draw, 60); };
+  for (const h of ["createCombat", "updateCombat", "deleteCombat", "createCombatant", "updateCombatant", "deleteCombatant", "combatStart", "combatTurnChange", "canvasReady"]) Hooks.on(h, (doc, ch) => { if (h === "updateCombat" && logOnlyChange(ch)) return; poke(); });
   // v0.0.224: the Strike pips follow the creatures' usage (an actor flag).
   Hooks.on("updateActor", (a, ch) => { if (ch?.flags?.twod12 && "usage" in ch.flags.twod12 && game.combat?.combatants?.some?.(c => c.actor === a)) renderCarousel(); });   // again once Foundry has set the new turn order (v0.0.189)
   renderCarousel();

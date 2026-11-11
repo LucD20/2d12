@@ -125,7 +125,8 @@ export function registerRefresh() {
   // After a system update: asked once per version, by the active GM.
   Hooks.once("ready", async () => {
     if (!game.user.isActiveGM) return;
-    try { await refreshWorth(); } catch (e) { console.warn("twod12 | worth", e); }   // v0.0.241: the worth lines, always
+    // v0.0.241: the worth lines; v0.0.361 (PACK PERF, D37): once per system version (the compendium's worth only changes with one), not at every load
+    try { if (game.settings.get(F, "worthFor") !== game.system.version) { await refreshWorth(); await game.settings.set(F, "worthFor", game.system.version); } } catch (e) { console.warn("twod12 | worth", e); }
     const v = game.system.version, asked = game.settings.get(F, "refreshAskedFor");
     if (asked === v) return;
     try { const { needsMigrationR } = await import("./migrater.mjs"); if (needsMigrationR()) return; } catch (e) { /* none */ }   // v0.0.243: the pack R migration asks and runs the refresh itself

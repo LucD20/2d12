@@ -6,6 +6,7 @@ import { evalFormula, refValues } from "./fxrules.mjs";
 import { homePos } from "./lean.mjs";
 import { effectOff } from "./escalation.mjs";
 import { TWOD12 } from "./config.mjs";
+import { perFrame, logOnlyChange } from "./util.mjs";
 import { allEffects } from "./passives.mjs";
 import { tokenDistance } from "./light.mjs";
 import { createEffect, originInfo } from "./effects.mjs";
@@ -159,10 +160,13 @@ export function scheduleAuraDraw() { clearTimeout(drawTimer); drawTimer = setTim
 
 export function registerAuraHooks() {
   const poke = () => { scheduleAuraRefresh(); scheduleAuraDraw(); };
-  Hooks.on("hoverToken", (token, hovered) => { hoveredId = hovered ? token.id : (hoveredId === token.id ? null : hoveredId); redrawAuras(); });
+  // v0.0.361 (PACK PERF, D40): a hover draws the Auras once on the next frame (moving the mouse over several tokens drew them all each time)
+  const hoverDraw = perFrame(redrawAuras);
+  Hooks.on("hoverToken", (token, hovered) => { hoveredId = hovered ? token.id : (hoveredId === token.id ? null : hoveredId); hoverDraw(); });
   Hooks.on("canvasTearDown", () => { clearTimeout(drawTimer); clearAura(); });
   Hooks.on("updateToken", (doc, ch) => { if (["x", "y", "width", "height", "hidden", "disposition"].some(k => k in ch)) poke(); });
-  for (const h of ["createToken", "deleteToken", "canvasReady", "createActiveEffect", "deleteActiveEffect", "updateActiveEffect", "createCombat", "deleteCombat", "combatStart", "updateCombat", "createItem", "deleteItem", "updateItem"]) Hooks.on(h, poke);
+  for (const h of ["createToken", "deleteToken", "canvasReady", "createActiveEffect", "deleteActiveEffect", "updateActiveEffect", "createCombat", "deleteCombat", "combatStart", "createItem", "deleteItem", "updateItem"]) Hooks.on(h, poke);
+  Hooks.on("updateCombat", (combat, ch) => { if (!logOnlyChange(ch)) poke(); });   // D40: not on a log line
   Hooks.on("sightRefresh", scheduleAuraDraw);
   Hooks.on("updateActor", (a, ch) => { if (ch?.system && "escalation" in ch.system) poke(); });
 }

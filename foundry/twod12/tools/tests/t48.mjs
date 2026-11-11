@@ -20,7 +20,7 @@ class F { constructor(o) { this.o = o; } }
 globalThis.foundry.abstract = { TypeDataModel: class {} }; globalThis.foundry.data = { fields: Object.fromEntries(['SchemaField','NumberField','StringField','BooleanField','ArrayField','SetField','HTMLField'].map(n => [n, class {}])) };
 const { ActionData, WeaponData, EffectData } = await import(ROOTURL + "module/data.mjs");
 const dl = await import(ROOTURL + "module/damagelog.mjs");
-const combat = { round: 2, turn: 1, turns: [{ id: "a" }, { id: "b" }], combatants: { find: f => [{ id: "a", actor: { uuid: "A" } }, { id: "b", actor: { uuid: "B" } }].find(f) }, getFlag: () => [{ o: "A", on: "Paladin", a: 10, r: 1, t: 0 }, { o: "B", on: "Skeleton", a: 4, r: 1, t: 1 }, { o: "A", on: "Paladin", a: 7, r: 2, t: 0 }, { o: "B", on: "Skeleton", a: 3, r: 2, t: 1 }] };
+const combat = { round: 2, turn: 1, turns: [{ id: "a" }, { id: "b" }], combatants: { find: f => [{ id: "a", actor: { uuid: "A" } }, { id: "b", actor: { uuid: "B" } }].find(f) }, getFlag: (s, k) => k !== "dmglog" ? undefined : [{ o: "A", on: "Paladin", a: 10, r: 1, t: 0 }, { o: "B", on: "Skeleton", a: 4, r: 1, t: 1 }, { o: "A", on: "Paladin", a: 7, r: 2, t: 0 }, { o: "B", on: "Skeleton", a: 3, r: 2, t: 1 }] };
 console.log("report:", dl.reportRows(combat).map(r => `${r.name}: turn ${r.turn}, round ${r.round}, total ${r.total}, per turn ${r.perTurn}, per round ${r.perRound}`).join(" | "));
 const bs = await import(ROOTURL + "module/basic.mjs");
 console.log("basic:", Object.values(bs.BASIC_ACTIONS).map(b => b.name).join(", "), "| Charge req:", bs.BASIC_ACTIONS.charge.requirements, "| Weapon Attack effects:", JSON.stringify(bs.BASIC_ACTIONS.basicWeaponAttack.versions[0].effects));

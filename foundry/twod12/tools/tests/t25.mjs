@@ -26,9 +26,11 @@ const comb = { id: "c1", name: "Paladin", initiative: 14, actor, flags: { twod12
 const combatFlags = {};
 const combat = { round: 1, turn: 0, combatant: comb, combatants: [comb], getFlag: (s, k) => combatFlags[k], setFlag: async (s, k, v) => { combatFlags[k] = JSON.parse(JSON.stringify(v)); },
   async updateEmbeddedDocuments(n, ups) { for (const u of ups) { comb.initiative = u.initiative; comb.flags = { twod12: u.flags.twod12 }; } }, async update(d) { Object.assign(combat, d); } };
-const { takeSnapshot, resetTurn } = await import(ROOTURL + "module/combat.mjs");
+const { takeSnapshot, resetTurn: reset0, turnSnapshot } = await import(ROOTURL + "module/combat.mjs");
+const resetTurn = c => reset0(c, { confirm: async () => confirmed });   // v0.0.361: the pick window's question, answered here
 await takeSnapshot(combat);
-console.log("snapshot saved:", Object.keys(combatFlags.snapshot).join(","), "| effects:", combatFlags.snapshot.actors[0].effects.length);
+// v0.0.361 (PACK PERF, D29): the snapshot is in the GM's memory, not a Combat flag
+console.log("snapshot saved:", Object.keys(turnSnapshot(combat)).join(","), "| effects:", turnSnapshot(combat).actors[0].effects.length, "| no Combat flag:", combatFlags.snapshot === undefined);
 // the player messes up: takes damage, loses the effect, moves, spends AP, creates an area, swaps initiative
 actor.system.damage.bodyLethal = 9; actor.effects = []; tokens[0].x = 400; flagsA.ap = 1; flagsA.moveLeft = 3; comb.flags = { twod12: { ...flagsA, frozen: true } }; comb.initiative = 3;
 regions.push({ id: "r2", toObject: () => ({ _id: "r2" }) }); Object.assign(scene.regions, col(regions)); regions.shift(); Object.assign(scene.regions, col(regions));
