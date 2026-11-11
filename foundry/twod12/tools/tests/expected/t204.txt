@@ -1,5 +1,5 @@
 Overwatch: no Use button true | fx [{"uuid":"{{fx:Overwatch (Weapon Attack)}}","mode":"auto"}] | rank mithril
-Deathmark: no Use button true | fx [{"uuid":"{{fx:Deathmark (Weapon Attack)}}","mode":"down"}] | rank mithril
+Deathmark: no Use button true | fx [] | rank diamond
 Open Season: no Use button true | fx [{"uuid":"{{fx:Open Season (Weapon Attack)}}","mode":"auto"}] | rank diamond
 Aim: no Use button true | fx [{"uuid":"{{fx:Aim (Weapon Attack, 1 Boon)}}","mode":"auto"}] | rank mithril
 Covering Fire: no Use button true | fx [{"uuid":"{{fx:Covering Fire}}","mode":"auto"}] | rank diamond | area kept true 3 rounds

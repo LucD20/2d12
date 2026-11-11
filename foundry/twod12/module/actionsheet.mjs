@@ -109,6 +109,7 @@ function stepPane(st, i, m) {
   const rows = [];
   const byTier = A.moveByTier(st);
   if (!byTier) rows.push(["On", onChips(st, i, isSave)]);
+  rows.push(["Only", tog(`step.${i}.@down`, /^(yes|true|1|y)$/i.test(o("down")), "when the damage puts the target Down")]);   // v0.0.360 (Deathmark; it was an Effect's mode)
   if (st.kind === "Move") {
     const lit = A.stepTiers(st, isSave);
     rows.push(["Moves", seg(`step.${i}.head`, String(st.head).toLowerCase(), [["pushed", "Pushed"], ["pulled", "Pulled"], ["slid", "Slid"], ["evade", "Evade (you)"]], "w")],
@@ -135,7 +136,7 @@ function stepPane(st, i, m) {
       ["Who", seg(`step.${i}.opt.who`, String(o("who")).toLowerCase(), [["", "The target"], ["targets", "The targets"], ["self", "You"]], "w")]);
   } else if (st.kind === "EndEffect") rows.push(["Ends", seg(`step.${i}.head`, /^any$/i.test(st.head) ? "any" : "eot1", [["eot1", "One EoT / 1 round effect"], ["any", "Any one effect"]], "w")]);
   else if (st.kind === "Pause") rows.push(["Button", field(`step.${i}.head`, st.head, "After the damage", "wide")]);
-  const known = new Set(["tier", "crit", "distance", "t1", "t2", "t3", "pick", "area", "from", "value", "rounds", "duration", "eot", "side", "who", "near", ...(TWOD12.stages ?? []).map(x => `s${x.n}`)]);
+  const known = new Set(["down", "on", "tier", "crit", "distance", "t1", "t2", "t3", "pick", "area", "from", "value", "rounds", "duration", "eot", "side", "who", "near", ...(TWOD12.stages ?? []).map(x => `s${x.n}`)]);
   const other = st.opts.filter(([key]) => !known.has(String(key).toLowerCase())).map(([key, v]) => (v == null ? key : `${key}:${v}`)).join("|");
   rows.push(["Other", `${field(`step.${i}.@other`, other, "option:value|option:value", "wide")}`]);
   const ordBtns = `<span class="as-ord"><button type="button" data-as="stepmove" data-i="${i}" data-d="-1" title="Earlier">↑ Earlier</button><button type="button" data-as="stepmove" data-i="${i}" data-d="1" title="Later">↓ Later</button><button type="button" data-as="stepdel" data-i="${i}" title="Remove this step">× Remove</button></span>`;
@@ -242,12 +243,13 @@ export function wireActionTab(sheet, root) {
         if (k === "text") s.text = String(fn(s.text));
         else if (k === "head") s.head = String(fn(s.head)).trim();
         else if (k === "@on") A.setStepOn(s, fn(A.stepOn(s, isSave())), isSave());
+        else if (k === "@down") A.optSet(s, "down", A.optHas(s, "down") ? "" : "yes");
         else if (k === "@bytier") { if (A.moveByTier(s)) { const d = A.optGet(s, "distance") || A.optGet(s, "t1") || A.optGet(s, "t2") || A.optGet(s, "t3") || "1"; for (const t of ["t1", "t2", "t3"]) A.optSet(s, t, ""); A.optSet(s, "distance", d); } else { const d = A.optGet(s, "distance") || "1"; A.optSet(s, "tier", ""); A.optSet(s, "crit", ""); A.optSet(s, "distance", ""); for (const t of (isSave() ? ["t1", "t2"] : ["t1", "t2", "t3"])) A.optSet(s, t, d); } }
         else if (k === "@movewho") { const v = fn(""); A.optSet(s, "pick", v === "target" ? "" : "yes"); if (v === "area") { if (!A.optGet(s, "area")) A.optSet(s, "area", 2); } else A.optSet(s, "area", ""); }
         else if (k === "@dur") { const v = fn(""); s.opts = s.opts.filter(([key, val]) => !(val == null && /^(eot|\d+)$/i.test(key))); A.optSet(s, "rounds", ""); A.optSet(s, "duration", ""); if (v === "eot") s.opts.push(["eot", null]); else if (v === "rounds") A.optSet(s, "rounds", 1); }
         else if (k === "@rounds") { s.opts = s.opts.filter(([key, val]) => !(val == null && /^\d+$/.test(key))); A.optSet(s, "rounds", Math.max(1, Number(fn(1)) || 1)); }
         else if (k === "@stages") { if (A.hasStages(s)) { s.opts = s.opts.filter(([key]) => !/^s\d+$/i.test(key)); st.stageOpen = -1; } else st.stageOpen = i; }
-        else if (k === "@other") { const known = new Set(["tier", "crit", "distance", "t1", "t2", "t3", "pick", "area", "from", "value", "rounds", "duration", "eot", "side", "who", "near", ...(TWOD12.stages ?? []).map(x => `s${x.n}`)]); const keep = s.opts.filter(([key]) => known.has(String(key).toLowerCase())); const add = String(fn("")).split("|").map(x => x.trim()).filter(Boolean).map(x => { const j = x.indexOf(":"); return j < 0 ? [x, null] : [x.slice(0, j).trim(), x.slice(j + 1).trim()]; }).filter(([key]) => !known.has(String(key).toLowerCase())); s.opts = [...keep, ...add]; }
+        else if (k === "@other") { const known = new Set(["down", "on", "tier", "crit", "distance", "t1", "t2", "t3", "pick", "area", "from", "value", "rounds", "duration", "eot", "side", "who", "near", ...(TWOD12.stages ?? []).map(x => `s${x.n}`)]); const keep = s.opts.filter(([key]) => known.has(String(key).toLowerCase())); const add = String(fn("")).split("|").map(x => x.trim()).filter(Boolean).map(x => { const j = x.indexOf(":"); return j < 0 ? [x, null] : [x.slice(0, j).trim(), x.slice(j + 1).trim()]; }).filter(([key]) => !known.has(String(key).toLowerCase())); s.opts = [...keep, ...add]; }
         else if (k.startsWith("opt.")) A.optSet(s, k.slice(4), String(fn(A.optGet(s, k.slice(4))) ?? "").trim().replace(/[|\[\]]/g, ""));
       });
     }

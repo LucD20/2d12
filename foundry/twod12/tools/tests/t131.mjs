@@ -12,7 +12,7 @@ console.log("Archer:", `Health high ${cls.healthHigh} / low ${cls.healthLow} (St
 // v0.0.181 (A1): the book's Archer: the A1 cards, the level list in today's structure, the old cards kept in a folder of their own.
 // v0.0.188 (pack C-b, OT): the Repertoire and Escalation options are current cards; Long Draw and Steady Nerves are Talents.
 const cards = ["Double Shot", "Rolling Shot", "Marksman's Shot", "Hunter's Focus", "Pinning Shot", "Volley", "Covering Fire", "Rain of Arrows", "Deadeye", "Vanish", "Twin Shot", "Precise Aim", "Quick Draw", "Wing Clip", "True Shot", "Suppressing Fire", "Steady Aim", "Perfect Shot"];
-console.log("cards:", cards.filter(n => !get(n)).length ? "MISSING " + cards.filter(n => !get(n)).join(", ") : `all ${cards.length}`, "| features:", ["Sharpshooter", "Marked Quarry", "Thrill of the Kill", "Killer's Focus", "Harrying Shots", "Bow Mastery", "Patient Hunter"].every(n => get(n)?.type === "feature"), "| Talents:", ["Long Draw", "Steady Nerves"].every(n => C.docs.some(d => d.type === "talent" && d.name === n)), "| Field Training gone:", !get("Field Training"));
+console.log("cards:", cards.filter(n => !get(n)).length ? "MISSING " + cards.filter(n => !get(n)).join(", ") : `all ${cards.length}`, "| features:", ["Sharpshooter", "Thrill of the Kill", "Killer's Focus", "Harrying Shots", "Bow Mastery", "Patient Hunter"].every(n => get(n)?.type === "feature") && !get("Marked Quarry") && get("Mark Quarry")?.type === "action", "| Talents:", ["Long Draw", "Steady Nerves"].every(n => C.docs.some(d => d.type === "talent" && d.name === n)), "| Field Training gone:", !get("Field Training"));
 console.log("old cards' folder:", cards.slice(11).every(n => get(n).folder === "Archer (old cards)") && ["Bow Mastery", "Patient Hunter"].every(n => get(n).folder === "Archer (old cards)"), "| current cards in it:", cards.slice(0, 11).filter(n => get(n).folder === "Archer (old cards)").join(", ") || "none");
 const row = n => { const s = get(n).system; return `${n}: ${s.frequency} | ${[...s.traits].join(",")} | ${G.vsText({ ...s, traits: new Set(s.traits) }) || "-"}${s.escalation ? ` | ${s.escalation} Esc.` : ""}${s.reaction ? ` | ${s.reactionKind}` : ""}`; };
 for (const n of ["Double Shot", "Rolling Shot", "Marksman's Shot", "Pinning Shot", "Lock & Loose"]) console.log("  " + row(n));
@@ -22,7 +22,7 @@ const rs = get("Rolling Shot (+2d6 Pi)").system.settings.find(x => x.type === "b
 console.log("Rolling Shot 3 AP's extra:", rs.type, rs.dmg, rs.dmgPool, rs.dmgSub, rs.tiers.join(","), "| ends after:", get("Rolling Shot (+2d6 Pi)").system.expireOn.join(","));
 const strip = h => String(h).replace(/<[^>]+>/g, "");
 console.log("Sharpshooter:", strip(get("Sharpshooter").system.description), "| no Actions:", !(get("Sharpshooter").system.actions ?? []).length);
-console.log("Marked Quarry:", strip(get("Marked Quarry").system.description));
+console.log("Marked Quarry (the Mark Quarry Action's rules since v0.0.360):", strip(get("Mark Quarry").system.description));
 console.log("Harrying Shots:", get("Harrying Shots").system.category, "|", strip(get("Harrying Shots").system.description));   // pack R-classes (v0.0.235): Elusive is gone
 const nm = u => C.docs.find(d => C.uuidOf(d.type === "action" ? "actions" : "features", d.name) === u)?.name ?? "?";
 // v0.0.185 (pack C2): the Archer's levels as sections.

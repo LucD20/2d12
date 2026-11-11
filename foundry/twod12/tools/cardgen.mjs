@@ -19,7 +19,7 @@ const CARD_BY_NAME = new Map(loadCards().map(c => [c.name.toLowerCase(), c]));
 export function foundryLinks(text) {
   return String(text ?? "").replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (m, ref, label) => {
     const r = ref.trim(), l = (label ?? r).trim(), c = CARD_BY_NAME.get(r.toLowerCase());
-    return c && !c.foundry?.basic ? `{{link:${c.name}|${l}}}` : `@Book[${r}]{${l}}`;
+    return c && c.foundry !== false && !c.foundry?.basic ? `{{link:${c.name}|${l}}}` : `@Book[${r}]{${l}}`;   // v0.0.360: a card with no Foundry item (foundry: false) is a book link
   });
 }
 
@@ -153,6 +153,7 @@ export function cardSystem(c, resolve = s => s) {
   if (c.category === "Basic attack") sys.basicAttack = true;   // an NPC's Basic attack stands in for the Weapon Attack NPCs don't have
   sys.versions = versionsOf(c).map((v, i) => { const d = versionData(c, v, resolve); if (area && i > 0 && area.sizes[i] && area.sizes[i] !== area.sizes[0]) d.areaSize = area.sizes[i]; return d; });
   if (c.flavor) sys.flavor = c.flavor;
+  if (c.foundry?.settings) sys.settings = JSON.parse(resolve(JSON.stringify(c.foundry.settings)));   // v0.0.360 (the audit's D17): an Action holds rules (Mark Quarry)
   for (const k of ["weaponUse", "automation", "automationNote", "marksTarget", "basicAttack", "basicRating", "modifiers", "moment", "momentRange", "momentSelf", "momentTarget", "momentThreat"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];   // v0.0.261: moment, momentRange (Divine Intervention); v0.0.272: momentSelf, momentTarget
   return sys;
 }

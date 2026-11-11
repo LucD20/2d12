@@ -97,6 +97,7 @@ export function parseInline(kind, inner) {
       else if (/^label\s*:/i.test(s)) cfg.label = s.replace(/^label\s*:\s*/i, "");
       else if (/^crit\s*:/i.test(s)) cfg.crit = yes(s.replace(/^crit\s*:\s*/i, ""));   // v0.0.249: only the targets that rolled a Critical
       else if (/^tier\s*:/i.test(s)) cfg.tier = Math.max(0, Number(s.replace(/^tier\s*:\s*/i, "")) || 0);   // v0.0.267: only the targets that rolled that Tier or more
+      else if (/^down\s*:/i.test(s)) cfg.down = yes(s.replace(/^down\s*:\s*/i, ""));   // v0.0.360
       else if (/^on\s*:/i.test(s)) cfg.onTiers = s.replace(/^on\s*:\s*/i, "").split(",").map(x => Number(x.trim())).filter(n => [1, 2, 3].includes(n));   // v0.0.358: exactly these Tiers (on:2)
       else if (/^(value|rounds?)\s*:\s*(?!eot$)(?=.*[a-z@(])/i.test(s.trim())) (cfg.exprs ??= {})[/^value/i.test(s.trim()) ? "value" : "rounds"] = s.replace(/^[a-z]+\s*:\s*/i, "").toLowerCase().replace(/\s+/g, "");   // v0.0.358: a formula (value:pow, rounds:stage)
       else if (/^value\s*:/i.test(s)) cfg.value = Math.max(1, Math.trunc(Number(s.replace(/^value\s*:\s*/i, ""))) || 1);   // v0.0.250: Enfeebled 1, Vulnerable 2
@@ -166,6 +167,7 @@ export function parseInline(kind, inner) {
     // v0.0.358 (Lucas: "most number fields should allow a formula"): area, near, count and min read a formula too (refs.mjs evalExpr: pow, mod, stage, speed/2...),
     // worked out for the creature when the chip is used (handleInline)
     else if (["area", "near", "count", "min"].includes(key) && /[a-z@(]/i.test(val)) (cfg.exprs ??= {})[key] = val.toLowerCase().replace(/\s+/g, "");
+    else if (key === "down") cfg.down = yes(val);   // v0.0.360 (Deathmark): only for the targets the damage put Down (a step's "Only when the target goes Down")
     else if (key === "on") cfg.onTiers = val.split(",").map(x => Number(x.trim())).filter(n => [1, 2, 3].includes(n));   // v0.0.358: exactly these Tiers (on:2, on:1,3)
     else if (key === "area") cfg.area = Math.max(0, Number(val) || 0);
     else if (key === "pick") cfg.pick = yes(val);
@@ -656,6 +658,8 @@ export async function runAfter(text, ctx = {}, { side = "" } = {}) {
     // v0.0.267: a chip for a Tier (tier:2) or a Critical (crit:yes) runs for the targets that rolled it; a target without a result (a click by hand) passes
     // v0.0.334: after a Save Action, tier:N means that Tier or worse for the target (tier:1: only those who rolled a Tier 1)
     if (cfg.onTiers?.length) { targets = (targets ?? []).filter(t => t.tier === undefined || cfg.onTiers.includes(Number(t.tier) || 0)); if (!targets.length) continue; }   // v0.0.358
+    // v0.0.360: down:yes: only the targets that are Down now (the damage is applied before the chain runs); it replaces the Effect mode "when the target is Down"
+    if (cfg.down) { const kept = []; for (const t of targets ?? []) { let a = null; try { const d = await fromUuid(t.uuid); a = d?.documentName === "Actor" ? d : (d?.actor ?? null); } catch (e) { a = null; } if (a?.system?.atZero) kept.push(t); } targets = kept; if (!targets.length) continue; }
     if (cfg.tier || cfg.crit) { targets = (targets ?? []).filter(t => t.tier === undefined ? true : (!cfg.tier || (ctx.save ? (Number(t.tier) || 0) <= cfg.tier : (Number(t.tier) || 0) >= cfg.tier)) && (!cfg.crit || t.crit)); if (!targets.length) continue; }
     try { await handleInline(m[1], cfg, { ...ctx, targets, message: ctx.message ?? null }); } catch (e) { console.error("twod12 | after the damage", e); }
   }

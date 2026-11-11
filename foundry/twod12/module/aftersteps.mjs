@@ -149,7 +149,8 @@ export function stepLabel(st, isSave = false) {
 export function stepSentence(st, isSave = false) {
   if (st.kind === "text") return st.text;
   const tiers = stepTiers(st, isSave), who = stepWho(st), plural = /^the (others|allies|targets)|every|among/.test(who);
-  const when = tiers.length === 3 ? "After the damage" : `On ${tiers.map(k => (k === "crit" ? "a Critical" : `a Tier ${k[1]}`)).join(" or ")}`;
+  const down = yes(optGet(st, "down")) && optHas(st, "down");   // v0.0.360
+  const when = `${tiers.length === 3 ? "After the damage" : `On ${tiers.map(k => (k === "crit" ? "a Critical" : `a Tier ${k[1]}`)).join(" or ")}`}${down ? ", if the target goes Down" : ""}`;
   let what;
   if (st.kind === "Move") {
     const from = { target: "the target", area: "the area's center" }[low(optGet(st, "from"))] ?? "you";

@@ -14,7 +14,7 @@ globalThis.game = { settings: { get: () => true }, time: { worldTime: 0 }, user:
 const E = await import(ROOTURL + "module/effects.mjs"), B = await import(ROOTURL + "module/bonus.mjs"), AU = await import(ROOTURL + "module/automation.mjs");
 const FD = await import(ROOTURL + "module/fxdetails.mjs");
 const F = "twod12";
-const card = name => docs.find(d => d.name === name && ["feature", "talent"].includes(d.type)) ?? docs.find(d => d.name === name && d.type === "effect");
+const card = name => docs.find(d => d.name === name && ["feature", "talent"].includes(d.type)) ?? docs.find(d => d.name === name && d.type === "effect") ?? docs.find(d => d.name === name && d.type === "action" && d.system.settings?.length);   // v0.0.360: an Action that holds rules
 const settingsOf = name => (card(name)?.system.settings ?? []).map(x => ({ all: [], any: [], none: [], from: [], tiers: ["t1", "t2", "t3"], ...x }));
 
 /** A creature with these Features (their compendium settings) and applied effects; its flags are kept in memory. */
@@ -38,8 +38,8 @@ const shot = T("ranged", "shot", "strike", "weapon");
 const show = list => list.map(b => `${b.effect} +${b.dmg}${b.sub ? " " + b.sub : ""} [${b.pool}]${b.once ? " (once)" : ""}`).join(", ") || "none";
 
 console.log("--- the cards carry settings (no code tests their names)");
-for (const n of ["Font of Mercy", "Radiant Zeal", "Killer's Focus", "Long Draw", "Steady Nerves", "Sharpshooter", "Marked Quarry", "Hunter's Focus"])
-  console.log(n.padEnd(15), (card(n)?.system.settings ?? []).map(x => FD.settingShort({ all: new Set(x.all ?? []), any: new Set(x.any ?? []), none: new Set(x.none ?? []), from: new Set(), tiers: new Set(x.tiers ?? []), ...x, ...(x.all ? { all: new Set(x.all) } : {}) })).join(" | "));
+for (const n of ["Font of Mercy", "Radiant Zeal", "Killer's Focus", "Long Draw", "Steady Nerves", "Sharpshooter", "Mark Quarry", "Hunter's Focus"])   // v0.0.360: Marked Quarry's rules are on the Mark Quarry Action
+  console.log((n === "Mark Quarry" ? "Marked Quarry" : n).padEnd(15), (card(n)?.system.settings ?? []).map(x => FD.settingShort({ all: new Set(x.all ?? []), any: new Set(x.any ?? []), none: new Set(x.none ?? []), from: new Set(), tiers: new Set(x.tiers ?? []), ...x, ...(x.all ? { all: new Set(x.all) } : {}) })).join(" | "));
 const src = f => fs.readFileSync(ROOT + f, "utf8");
 const code = ["module/actions.mjs", "module/mark.mjs", "module/rally.mjs", "module/effects.mjs", "module/bonus.mjs"].map(src).join("\n");
 console.log("no hasFeature(name) left:", !/hasFeature\(/.test(code), "| paladin.mjs gone:", !fs.existsSync(ROOT + "module/paladin.mjs"), "| Mark Quarry marks by its box:", docs.find(d => d.name === "Mark Quarry").system.marksTarget === true);
@@ -78,7 +78,7 @@ const pal = creature("Ivo2", ["Radiant Zeal"], { escalation: 1 });
 const dlg = src("module/actions.mjs");
 console.log("roll dialog: Bonus chips", dlg.includes('name="bonusOn"'), "| unticked ones left out", dlg.includes("!bonusOff.has(bonusKey(b))"), "| their effect kept", dlg.includes("await expireOnUse(actor, rollTraits(useTraits, src, item.name), kept);"), "| turn start wired", src("module/combat.mjs").includes("await applyTurnStartEffects(c.actor);"));
 console.log("--- Marked Quarry and Hunter's Focus: only against the marked creature");
-const lana = creature("Krysta", ["Marked Quarry"], { effects: ["Hunter's Focus"] });
+const lana = creature("Krysta", ["Mark Quarry"], { effects: ["Hunter's Focus"] });
 const orc = creature("Orc"), gob = creature("Goblin");
 await lana.setFlag(F, "quarry", { uuid: "Scene.s.Token.Orc", name: "Orc" });
 const boonsVs = t => E.modifierList(lana, shot, [t]).filter(m => m.boons).map(m => `${m.name} ${m.boons}`).join(", ") || "none";

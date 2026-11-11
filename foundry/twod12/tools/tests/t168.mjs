@@ -26,7 +26,7 @@ function doc(d) {
   };
   return o;
 }
-const fromPack = new Map(["Marked Quarry", "Sharpshooter", "Bow Mastery", "Brawler"].map(n => [n, docs.find(d => d.name === n && ["feature", "talent"].includes(d.type)).system.settings.filter(x => ["message", "mastery", "weaponprop"].includes(x.type))]));
+const fromPack = new Map(["Marked Quarry", "Sharpshooter", "Bow Mastery", "Brawler"].map(n => [n, docs.find(d => (d.name === n && ["feature", "talent"].includes(d.type)) || (n === "Marked Quarry" && d.name === "Mark Quarry" && d.type === "action")).system.settings.filter(x => ["message", "mastery", "weaponprop"].includes(x.type))]));
 const types = it => (it.system.settings ?? []).map(x => x.type === "message" ? `message/${x.msgWhen}` : x.type).join(", ") || "none";
 
 console.log("--- world items");

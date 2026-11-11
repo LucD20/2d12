@@ -31,7 +31,7 @@ function creature(name, features = [], { owner = "p1", escalation = 0 } = {}) {
     testUserPermission: u => u.isGM || u.id === owner, getActiveTokens: () => [{ document: { uuid: `Scene.s.Token.${name}` } }], flags
   };
 }
-const mq = docs.find(d => d.name === "Marked Quarry" && d.type === "feature").system.settings;
+const mq = docs.find(d => d.name === "Mark Quarry" && d.type === "action").system.settings;   // v0.0.360: on the Action
 
 console.log("--- the setting becomes flags");
 const fl = AP.appliedFlags({ settings: mq.map(full), description: "", expireOn: new Set(), expireAll: false }, null);

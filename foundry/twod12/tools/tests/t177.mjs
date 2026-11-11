@@ -40,7 +40,7 @@ console.log("a card the book does not show (book: false):", cards.filter(c => c.
 
 const problemsEarly = [];
 console.log("--- the compendium items are the cards (content.mjs reads book/cards)");
-const compendium = cards.filter(c => !c.foundry?.basic);
+const compendium = cards.filter(c => !c.foundry?.basic && c.foundry !== false);   // v0.0.360: foundry: false = a card kept only for the ruler
 const bad = [];
 const same = (have, mine, what) => { const a = { ...have }, b = { ...mine }; delete a.escalationPassive; delete b.escalationPassive; for (const k of ["rules", "rulesOn", "ends", "autoHover"]) { delete a[k]; delete b[k]; }   // v0.0.323: the rules are read from the settings (content.mjs)
   if (JSON.stringify(a) !== JSON.stringify(b)) bad.push(what); };

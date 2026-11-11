@@ -415,11 +415,7 @@
      ],
      "foundry": {
       "x2": "For 1 round, the creature is Hindered until they use a Move Action.",
-      "fx": {
-       "t2": [
-        "{{fx:Hindered (until Move)}}"
-       ]
-      }
+      "after": "@Effect[{{fx:Hindered (until Move)}}|who:targets|on:2]"
      },
      "ruler": "on 2: debuff Hindered (until it moves); on 3: debuff Immobilized"
     }

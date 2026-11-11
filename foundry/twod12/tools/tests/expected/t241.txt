@@ -44,4 +44,10 @@ the step's buttons in its pane, not on its row: true | four Tier switches: 4 | t
 --- v0.0.359 (Lucas on v0.0.358)
 a Reaction's Within takes a formula: the field: true | stored beside the number: true | worked out for the creature when read: true | pow+2 with Power 3: 5 | the order of events shows it: true
 the area tooltip asks what is under the mouse: true
+--- v0.0.360 (Lucas: "fix those 3 from this pack before merging")
+Mark Quarry holds the mark's rules: action boonbane,bonusdamage,message,message | as rules: 4 true | the Feature is gone from the compendium: true | the Archer's level 1 grants the Action: true
+Sylwen has the Action with its rules and no Feature: Mark Quarry (action, 4 rules) | the card stays for the ruler only: true
+an old character with the Feature and the updated Action counts the mark once: Mark Quarry | before its Action is updated, the Feature still works: Marked Quarry
+Deathmark's Weapon Attack is a step: After the damage, if the target goes Down: the targets gain the Effect. | no Effect mode left: {"all":[],"t1":[],"t2":[],"t3":[]} | the chain only runs it for a target that is Down: true
+Lock & Loose's Hindered is a step on a Tier 2: t2 | no per-Tier slot left in the compendium: true
 the by-Stage row reads TWOD12.stages: true

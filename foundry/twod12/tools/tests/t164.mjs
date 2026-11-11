@@ -11,7 +11,7 @@ const { BASIC_ACTIONS } = await import(ROOTURL + "module/basic.mjs");
 
 const core = new Set([...Object.values(BASIC_ACTIONS).map(b => b.name), "Fists"]);
 const cards = [...new Set(docs.filter(d => !d.system?.isCondition && !["weapon", "armor", "species", "class"].includes(d.type)).map(d => d.name))].filter(n => !core.has(n));
-console.log("cards checked:", cards.length, "| e.g.", ["Marked Quarry", "Brawler", "Pummel", "Sharpshooter", "Font of Mercy"].every(n => cards.includes(n)));
+console.log("cards checked:", cards.length, "| e.g.", ["Mark Quarry", "Brawler", "Pummel", "Sharpshooter", "Font of Mercy"].every(n => cards.includes(n)));
 
 /** The source with comments blanked and the allowed regions (migrations) blanked; line numbers are kept. */
 function scrub(src) {
@@ -41,7 +41,7 @@ console.log("archer.mjs and paladin.mjs are gone (the mark is module/mark.mjs):"
 console.log("--- the cards whose rules were hidden carry them on the item");
 const doc = (n, t) => docs.find(d => d.name === n && (!t || d.type === t));
 const types = n => (doc(n).system.settings ?? []).map(x => x.type === "message" ? `message/${x.msgWhen}/${x.msgAction}/${x.msgAp} AP` : x.type).join(", ");
-for (const n of ["Marked Quarry", "Sharpshooter", "Bow Mastery", "Brawler"]) console.log(n.padEnd(14), types(n));
+for (const n of ["Mark Quarry", "Sharpshooter", "Bow Mastery", "Brawler"]) console.log((n === "Mark Quarry" ? "Marked Quarry" : n).padEnd(14), types(n));
 console.log("Weapon used: Pummel", doc("Pummel", "action").system.weaponUse, "| Leg Sweep", doc("Leg Sweep", "action").system.weaponUse, "| the Fists Basic Action", BASIC_ACTIONS.fists.weaponUse);
 // v0.0.334: the Basic Actions in the compendium carry only their basic key (what makes a dragged one work as the built-in Basic Action)
 console.log("compendium items with hidden flags:", docs.filter(d => d.flags && Object.keys(d.flags.twod12 ?? {}).filter(k => !(k === "basic" && d.folder === "Basic Actions")).length).map(d => d.name).join(", ") || "none", "| Basic Actions with only their key:", docs.filter(d => d.folder === "Basic Actions").length);

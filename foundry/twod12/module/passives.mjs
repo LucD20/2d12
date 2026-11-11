@@ -10,7 +10,12 @@ export function passiveSources(actor) {
   const out = [];
   // v0.0.355 (PACK ACTION-SHEET): an Action can hold rules too (Mark Quarry's Boon); most have none
   const list = actor?.itemTypes ? [...(actor.itemTypes.feature ?? []), ...(actor.itemTypes.talent ?? []), ...(actor.itemTypes.action ?? []).filter(a => a.system?.settings?.length)] : [];
+  // v0.0.360 (Marked Quarry moved onto the Mark Quarry Action): a Feature or Talent that grants an Action which now holds rules of its own is not
+  // read again (an old character keeps the Feature until it is removed: without this, its Boon would count twice). Told by the grant, not by a name.
+  const ruled = (actor?.itemTypes?.action ?? []).filter(a => a.system?.settings?.length);
+  const tookOver = it => ruled.some(a => a.getFlag?.(F, "featureId") === it.id || a.getFlag?.(F, "talentId") === it.id || (it.system?.actions ?? []).includes(a.getFlag?.(F, "sourceUuid") || "\u0000"));
   for (const it of list) {
+    if (it.type !== "action" && ruled.length && tookOver(it)) continue;
     const groups = new Map();
     for (const st of it.system?.settings ?? []) {
       const min = Math.max(0, Math.trunc(Number(st.minEscalation)) || 0);

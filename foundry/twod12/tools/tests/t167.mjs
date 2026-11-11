@@ -22,11 +22,11 @@ function character(features, { type = "character", weapons = [] } = {}) {
     update: async u => { for (const [k, v] of Object.entries(u)) { const p = k.split("."); let o = a.flags; for (const x of p.slice(1, -1)) o = (o[x] ??= {}); o[p.at(-1)] = v; } } };
   return a;
 }
-const settingsOf = n => docs.find(d => d.name === n && d.type === "feature").system.settings;
+const settingsOf = n => docs.find(d => d.name === n && (d.type === "feature" || d.system.settings?.length)).system.settings;
 
 console.log("--- the compendium");
 for (const n of ["Sharpshooter", "Bow Mastery"]) console.log(n.padEnd(13), JSON.stringify(settingsOf(n).filter(x => x.type === "mastery")));
-const lana = character([feat("sh", "Sharpshooter", settingsOf("Sharpshooter")), feat("mq", "Marked Quarry", settingsOf("Marked Quarry"))]);
+const lana = character([feat("sh", "Sharpshooter", settingsOf("Sharpshooter")), feat("mq", "Marked Quarry", settingsOf("Mark Quarry"))]);
 console.log("Lana (Sharpshooter):", JSON.stringify(M.startMasteryOf(lana)));
 console.log("an NPC with it: none (Mastery is for characters):", M.startMasteryOf(character([feat("sh", "Sharpshooter", settingsOf("Sharpshooter"))], { type: "npc" })).length, "| a character without one:", M.startMasteryOf(character([])).length);
 

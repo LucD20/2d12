@@ -184,7 +184,7 @@ sp("Human", { body: 0, mind: 0, appeal: 0, instinct: 0 }, true, 3, 2, 5, 0, true
 sp("Dwarf", { body: 1, mind: 1, appeal: -1, instinct: 1 }, false, 4, 1, 4, 1);
 sp("Elf", { body: -1, mind: 1, appeal: 1, instinct: 1 }, false, 1, 4, 6);
 // v0.0.185 (pack C2): the classes' levels as sections (module/classlevels.mjs), from the book's "by Level" tables; the class window reads them.
-const U = names => names.map(n => uuidOf(/^(Font of Mercy|Divine Power|Kindled Wrath|Sharpshooter|Marked Quarry|Hallowed Stance|Radiant Zeal|Mending Light|Divine Surge|Searing Blows|Reckoning|Killer's Focus|Thrill of the Kill|Vanish|Harrying Shots|Hunter's Edge|Sure Step|Finisher|Staggering Shot)$/.test(n) ? "features" : "actions", n));
+const U = names => names.map(n => uuidOf(/^(Font of Mercy|Divine Power|Kindled Wrath|Sharpshooter|Hallowed Stance|Radiant Zeal|Mending Light|Divine Surge|Searing Blows|Reckoning|Killer's Focus|Thrill of the Kill|Vanish|Harrying Shots|Hunter's Edge|Sure Step|Finisher|Staggering Shot)$/.test(n) ? "features" : "actions", n));
 const sec = (id, title, kind, o = {}) => ({ id, title, kind, mode: o.mode ?? "choice", pick: o.pick ?? 1, items: o.items ?? [], pairs: (o.pairs ?? []).map(([a, b]) => ({ a, b })), freq: o.freq ?? "any", category: o.category ?? "" });
 // OT (book 2026-10-30): the Repertoire and Escalation lists with their options.
 // Pack R-classes (book 2026-11-04): the Paladin rebuilt for pack R: a Hallmark Reaction (Shield of Faith or Bulwark of Faith), an Encounter Pick, one Escalation Passive per
@@ -222,7 +222,7 @@ add("classes", "class", "Archer", "icons/svg/target.svg", {
   modHigh: 2, modLow: 1, modOrder: "weapon", armorTraining: "medium", speedMod: 1, features: [],
   repertoire: U(["Marksman's Shot", "Volley", "Covering Fire", "Pinning Shot", "Twin Shot", "Hunter's Focus", "Deadeye", "Rain of Arrows"]), escPassives: U(ARC_PASSIVES), escActives: U(ARC_APEX),
   levels: [
-    { sections: [sec("arc1attr", "Attribute increases", "attr", { pairs: [["body", "instinct"], ["mind", "appeal"]] }), sec("arc1core", "Features", "items", { mode: "granted", items: U(["Sharpshooter", "Marked Quarry", "Thrill of the Kill"]) }),
+    { sections: [sec("arc1attr", "Attribute increases", "attr", { pairs: [["body", "instinct"], ["mind", "appeal"]] }), sec("arc1core", "Features", "items", { mode: "granted", items: U(["Sharpshooter", "Mark Quarry", "Thrill of the Kill"]) }),
       sec("arc1hall", "Hallmark Action", "items", { items: U(["Double Shot", "Rolling Shot"]) }), sec("arc1react", "Hallmark Reaction", "items", { items: U(["Overwatch", "Covering Shot"]) }),
       sec("arc1enc", "Encounter Pick", "repertoire", { freq: "encounter" }),
       sec("arc1pass1", "Escalation 1 Passive", "items", { items: U(ARC_PASS1) }), sec("arc1pass2", "Escalation 2 Passive", "items", { items: U(ARC_PASS2) }), sec("arc1pass3", "Escalation 3 Passive", "items", { items: U(ARC_PASS3) }),
@@ -374,6 +374,7 @@ export const resolveRefs = s => s.replace(/\{\{fx:([^}]+)\}\}/g, (m, n) => uuidO
 export const CARDS = loadCards();
 for (const c of CARDS) {
   if (c.foundry?.basic) continue;
+  if (c.foundry === false) continue;   // v0.0.360: a card kept only for the ruler (Marked Quarry: the Mark Quarry Action holds its rules)
   const img = c.foundry?.img ?? "icons/svg/sword.svg", folder = c.foundry?.folder ?? null;
   if (c.npc) {   // an NPC's Action (CS-3): embedded on its actor after the weapon in its hands, before the Basic Actions
     const actor = actors.find(a => a.name === c.npc); if (!actor) throw new Error(`${c.name}: no NPC called ${c.npc}`);
@@ -544,7 +545,7 @@ for (const a of [...actors, ...pcs]) for (const it of (a.items ?? [])) if (["act
   // the Area line as the data model writes it (data.mjs: "2 / 3 Emanation", the Versions' own sizes)
   const areaOfCfg = sy => { const c = sy?.areaCfg; if (!c?.size) return String(sy?.area ?? ""); const sizes = [...new Set([...(sy.versions ?? [])].sort((a, b) => a.ap - b.ap).map(v => v.areaSize || c.size))], sz = sizes.length > 1 ? sizes.join(" / ") : c.size; return c.shape === "line" ? `Line ${sz}` : `${sz} ${c.shape === "burst" ? "Burst" : "Emanation"}`; };
   const withRules = d => {
-    if (!["effect", "feature", "talent"].includes(d.type)) return;
+    if (!["effect", "feature", "talent"].includes(d.type) && !(d.type === "action" && d.system?.settings?.length)) return;   // v0.0.360: an Action that holds rules
     const sys = (d.system ??= {});
     const ends0 = sys.ends;
     const m = FX.migrate(sys, d.type);

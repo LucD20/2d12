@@ -1,7 +1,7 @@
 two lines: {"x1":"","x2":"The target is @Condition[hindered|rounds:eot]{Hindered (EoT)}.","x3":"The target is @Condition[hindered|rounds:eot]{Hindered (EoT)}.","critical":"The target is also @Move[pushed|distance:2]{Pushed 2}."}
 badges short: ["Tier 2+: The target is Hindered (EoT…","Critical: The target is also Pushed 2."] | long: ["On a Tier 2 or more, the card says \"The target is Hindered (EoT).\"","On a Critical, the card says \"The target is also Pushed 2.\""]
 a half line as the second: half on Tier 3
-Deathmark: mode down | the Quarry link: true | Aim's Cover link: true
+Deathmark: a step when the target goes Down (v0.0.360; was the Effect's mode "down"): true | the Quarry link (a book link since v0.0.360): true | Aim's Cover link: true
 down effects come by themselves, the Effects button stays: true
 cover ignored on the roll: true
 the editor: the uses' choice, the second line, the cover chips: true

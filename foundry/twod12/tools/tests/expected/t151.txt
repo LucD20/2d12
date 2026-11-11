@@ -21,8 +21,8 @@ unticked in the dialog: the effect stays: 0 1 | used: it ends: 1 0
 Radiant Zeal: a Strike: Radiant Zeal +1d6 Ho [M] | not a Strike: none
 roll dialog: Bonus chips true | unticked ones left out true | their effect kept false | turn start wired true
 --- Marked Quarry and Hunter's Focus: only against the marked creature
-boons vs the Orc: Hunter's Focus (Orc) 1, Marked Quarry (Orc) 1 | vs the Goblin: none
-Tier 1 vs the Orc (Modifier +2): Marked Quarry +2 W [B] | Tier 2: none | vs the Goblin: none | Modifier 0: none
+boons vs the Orc: Hunter's Focus (Orc) 1, Mark Quarry (Orc) 1 | vs the Goblin: none
+Tier 1 vs the Orc (Modifier +2): Mark Quarry +2 W [B] | Tier 2: none | vs the Goblin: none | Modifier 0: none
 Empowered vs the Orc: [{"name":"Hunter's Focus","n":1,"inc":false}] | vs the Goblin: []
 the mark matches a token too: true | v0.0.207 its reminders are settings: Mark Quarry | the Orc has none: 0
 [Mod] in a Bonus Damage: [Mod] -> "3" | 1d6 + [Mod] -> "1d6 + 3" | 1d4 -> "1d4" | [Mod] with -1: null "1d6 - 1"

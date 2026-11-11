@@ -36,65 +36,10 @@
    "category": "Archer Feature",
    "level": 1,
    "book": false,
-   "_note": "v0.0.335 (Lucas): Foundry only: the book's Archer has the Mark Quarry Action (its card holds these rules). This Feature holds the mark's settings (the Boon, the Tier 1 damage, the reminders) and grants the Action, until Actions can hold settings (pack ACTION-SHEET).",
+   "_note": "v0.0.360: no longer a Foundry item (foundry: false) and not in the book (book: false): the Mark Quarry Action holds these rules. The card stays only for the ruler, which prices the mark as a passive by this name (catalogue/archer*.txt, rework.mjs).",
    "flavor": "You pick the one, and the world narrows.",
    "text": "At the start of each encounter, choose one enemy as your **Marked Quarry**. You gain 1 Boon on [Shot, Strike] Actions against them, and those Actions deal [V] [Mod] extra damage (the same subtype as your weapon) on a Tier 1. You can only have one Marked Quarry at a time.",
-   "foundry": {
-    "img": "icons/svg/target.svg",
-    "automation": "gold",
-    "actions": [
-     "Mark Quarry"
-    ],
-    "settings": [
-     {
-      "type": "boonbane",
-      "boons": 1,
-      "banes": 0,
-      "all": [
-       "shot",
-       "strike"
-      ],
-      "any": [],
-      "none": [],
-      "vsMarked": true
-     },
-     {
-      "type": "bonusdamage",
-      "dmg": "[Mod]",
-      "dmgPool": "B",
-      "dmgSub": "W",
-      "tiers": [
-       "t1"
-      ],
-      "text": "",
-      "fxUuid": "",
-      "all": [
-       "shot",
-       "strike"
-      ],
-      "any": [],
-      "none": [],
-      "vsMarked": true
-     },
-     {
-      "type": "message",
-      "msgWhen": "encounter",
-      "text": "choose a creature to mark. Target it and use your marking Action:",
-      "msgAction": "Mark Quarry",
-      "msgAp": 0,
-      "msgTo": "owners"
-     },
-     {
-      "type": "message",
-      "msgWhen": "markDown",
-      "text": "your mark, {mark}, went Down. Choose a new one: target a creature and use your marking Action:",
-      "msgAction": "Mark Quarry",
-      "msgAp": 0,
-      "msgTo": "owners"
-     }
-    ],
-    "folder": "Archer"
-   },
+   "foundry": false,
    "ruler": {
     "passive": "boon 1 shot strike quarry"
    }
@@ -731,14 +676,7 @@
      ],
      "effects": "Against your [[Marked Quarry]], this Action has 1 Boon. If the target goes Down, you can choose a new Marked Quarry (0R) and make a [Ranged, Shot] Weapon Attack (1A) against them.",
      "foundry": {
-      "fx": {
-       "all": [
-        {
-         "uuid": "{{fx:Deathmark (Weapon Attack)}}",
-         "mode": "down"
-        }
-       ]
-      }
+      "after": "@Effect[{{fx:Deathmark (Weapon Attack)}}|who:targets|down:yes]"
      }
     }
    ],
@@ -746,8 +684,8 @@
     "img": "icons/svg/target.svg",
     "folder": "Archer",
     "level": 1,
-    "automation": "mithril",
-    "automationNote": "the Boon against the Quarry (the mark); when the damage puts the target Down, the Weapon Attack is granted by itself (the sheet's ticket; the damage card's Effects button for a miss-click); the new Quarry by hand."
+    "automation": "diamond",
+    "automationNote": "the Boon against the Quarry (the mark); when the damage puts the target Down, the Weapon Attack is granted by itself (the sheet's ticket): since v0.0.360 a step after the damage (only when the target goes Down) instead of the old Effect mode, so the damage card has no Effects button for it; the new Quarry by hand."
    }
   },
   {
@@ -793,7 +731,7 @@
    "name": "Mark Quarry",
    "category": "Archer Feature",
    "level": 1,
-   "_note": "Foundry only from v0.0.186; in the book since v0.0.334; v0.0.335 (Lucas: \"make the feature just an Action the Archers get\"): the Archer's level 1 Action, with the Marked Quarry Feature's rules. In Foundry the Feature stays (book: false) to hold the mark's settings until Actions can (pack ACTION-SHEET). Mithril (Lucas, v0.0.335).",
+   "_note": "Foundry only from v0.0.186; in the book since v0.0.334; v0.0.335 (Lucas: \"make the feature just an Action the Archers get\"): the Archer's level 1 Action, with the Marked Quarry Feature's rules. In Foundry the Feature stays (book: false) to hold the mark's settings until Actions can (pack ACTION-SHEET). Mithril (Lucas, v0.0.335). v0.0.360 (pack ACTION-SHEET, the audit's D17; Lucas: \"fix those 3 before merging\"): the Action holds the mark's rules itself (foundry.settings: the Boon, the Tier 1 damage, the two reminders); the Foundry-only Marked Quarry Feature is gone from Foundry and the Archer's level 1 gives this Action directly. Its text is unchanged; still Diamond.",
    "flavor": "One name, one face, and the rest of the field goes quiet.",
    "traits": [
     "focus"
@@ -815,7 +753,56 @@
     "img": "icons/svg/target.svg",
     "folder": "Archer",
     "automation": "diamond",
-    "marksTarget": true
+    "marksTarget": true,
+    "settings": [
+     {
+      "type": "boonbane",
+      "boons": 1,
+      "banes": 0,
+      "all": [
+       "shot",
+       "strike"
+      ],
+      "any": [],
+      "none": [],
+      "vsMarked": true
+     },
+     {
+      "type": "bonusdamage",
+      "dmg": "[Mod]",
+      "dmgPool": "B",
+      "dmgSub": "W",
+      "tiers": [
+       "t1"
+      ],
+      "text": "",
+      "fxUuid": "",
+      "all": [
+       "shot",
+       "strike"
+      ],
+      "any": [],
+      "none": [],
+      "vsMarked": true
+     },
+     {
+      "type": "message",
+      "msgWhen": "encounter",
+      "text": "choose a creature to mark. Target it and use your marking Action:",
+      "msgAction": "Mark Quarry",
+      "msgAp": 0,
+      "msgTo": "owners"
+     },
+     {
+      "type": "message",
+      "msgWhen": "markDown",
+      "text": "your mark, {mark}, went Down. Choose a new one: target a creature and use your marking Action:",
+      "msgAction": "Mark Quarry",
+      "msgAp": 0,
+      "msgTo": "owners"
+     }
+    ],
+    "automationNote": "marking (the crosshair on the token), the Boon against the mark and the Tier 1 damage (this Action's own rules, on its sheet: While you have this Action), the reminders at the start of an encounter and when the mark goes Down; the choice of the creature by hand."
    },
    "ruler": false
   }

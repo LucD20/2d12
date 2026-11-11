@@ -34,3 +34,11 @@ until Lucas revises it (then Mithril again). Each one, with what changed:
 - Smite (v0.0.352, Lucas: "remove '(2d6 + [Mod] at Stage 2, 2d8 + [Mod] at Stage 3)' from Foundry's Smite card"): in Foundry only, the 3 AP
   Version's Guard chip no longer has the parenthesis after it (the chip shows the creature's Stage dice, in the calculated color, the Stage
   formula on hover). The book keeps the parenthesis. Nothing else changed.
+- Mark Quarry (v0.0.360, pack ACTION-SHEET, the audit's D17; Lucas: "fix those 3 from this pack before merging"): the Action holds the mark's
+  rules itself (its sheet, "While you have this Action": 1 Boon on [Shot, Strike] against the marked one, [V] [Mod] of the weapon's subtype on a
+  Tier 1, the two reminders). The Foundry-only Marked Quarry Feature is gone; the Archer's level 1 gives the Action directly. Its text and its
+  Versions are unchanged. On a roll the Boon's source now reads "Mark Quarry" (the item's name), not "Marked Quarry".
+- Deathmark (v0.0.360, the audit's D11; was Mithril): "If the target goes Down ... make a [Ranged, Shot] Weapon Attack" is a step after the damage
+  ("only when the damage puts the target Down": `@Effect[Deathmark (Weapon Attack)|who:targets|down:yes]`) instead of the Effect's mode "when the
+  target is Down"; the damage card no longer has an Effects button for it. "Marked Quarry" in its text is a book link now (it opened the Feature).
+- Open Season (v0.0.360): "Marked Quarry" in its text is a book link now (it opened the Feature). Nothing else.

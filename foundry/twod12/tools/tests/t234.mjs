@@ -46,5 +46,5 @@ console.log("the line's label:", FL.fearLabel({ name: "Frightened", source: "Ogr
 // 4. Marked Quarry: [Mod] of the weapon's subtype, shown before it
 const C = await import(ROOTURL + "module/chatcards.mjs");
 console.log("pool line:", C.poolBlock([{ pool: "B", sub: "Pi", total: 7 }, { pool: "B", sub: "Pi", total: 2 }]).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim(), "| two subtypes:", C.poolBlock([{ pool: "B", sub: "Sl", total: 6 }, { pool: "B", sub: "Fi", total: 4 }]).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim());
-const mq = docs.find(d => d.name === "Marked Quarry" && d.type === "feature").system.settings.find(x => x.type === "bonusdamage");
+const mq = docs.find(d => d.name === "Mark Quarry" && d.type === "action").system.settings.find(x => x.type === "bonusdamage");
 console.log("Marked Quarry's damage:", mq.dmg, mq.dmgSub, "| the roll resolves W to the weapon:", src("module/actions.mjs").includes('subtype: b.sub === "W" ? (weapon?.system?.subtype ?? "") : b.sub'), "| the sheet offers it:", src("module/fxsheet.mjs").includes('["W", "The weapon\'s"]'));
