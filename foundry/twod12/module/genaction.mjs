@@ -2,10 +2,9 @@
 // Critical and Effects. The tiers are written like the card ("[B] 1d8 Co; Hindered (EoT)", "1[W]", "[Mod]", "[M] 2d6 Ho"); the short
 // codes of the old generator still work ("1WB, 1d8MCo"). A live preview of the card and an "Understood" line.
 // From the NPC sheet it creates the Action on the NPC; with an Action (its sheet) it fills that Action; otherwise a world item.
-import { TWOD12, subtypeCode, orderTraits, traitGroupOf } from "./config.mjs";
+import { TWOD12, subtypeCode } from "./config.mjs";
 import { parseTierFull, convertEffects } from "./gen.mjs";
 import { rawTierLine } from "./preview.mjs";
-import { esc } from "./util.mjs";
 
 const blank = () => ({ pool: "B", useW: false, wCount: 1, dice: "", useAt: false, subtype: "" });
 
@@ -114,99 +113,12 @@ export function understood(sys) {
   return bits.join(" | ");
 }
 
-const versionHtml = (v, k) => `<fieldset class="ga-ver" data-v="${k}" ${k ? "hidden" : ""}>
-  <label>Cost (AP) <input type="number" name="ap" min="0" max="5" value="${esc(v.ap)}"></label>
-  ${[1, 2, 3].map(n => `<label>Tier ${n} <input type="text" name="t${n}" value="${esc(v[`t${n}`])}" placeholder="${n === 1 ? "[V] 1d8 Co" : n === 2 ? "[V] 2d8 Co; Hindered (EoT)" : "[V] 3d8 Co; Hindered (EoT)"}"></label>`).join("")}
-  <label>Critical <input type="text" name="critical" value="${esc(v.critical)}" placeholder="Immobilized (EoT)"></label>
-  <label>Effects (Tier 2+) <input type="text" name="effects" value="${esc(v.effects)}" placeholder="Appeal Save, Pushed 2, Pulled 1, 2Emanation 1/round"></label>
-</fieldset>`;
-
-/** The dialog. actor: create on it; item: fill that Action; neither: a world item. */
+/**
+ * Generate Action. v0.0.357 (PACK ACTION-SHEET; Lucas's pick: mockup G2 "paste the card"): the card is written or pasted as text and read line by
+ * line (gencard.mjs); the window (genwindow.mjs) is the system's own, not a Foundry default one. actor: create on it; item: fill that Action
+ * (its Versions keep their Effects and their steps: the old window dropped them); neither: a world item.
+ */
 export async function openActionGenerator({ actor = null, item = null } = {}) {
-  const { DialogV2 } = foundry.applications.api;
-  const it = item?.system;
-  const start = {
-    name: item?.name ?? "", traits: [...(it?.traits ?? [])], frequency: it?.frequency ?? "", reaction: !!it?.reaction, targets: it?.targets ?? "", distance: it?.distance ?? "",
-    versions: it?.versions?.length ? it.versions.map(v => ({ ap: v.ap, t1: tierCardText(v, 1), t2: tierCardText(v, 2), t3: tierCardText(v, 3), critical: humanize(v.critical ?? ""), effects: humanize(v.effects ?? "") }))
-      : [{ ap: 1, t1: "", t2: "", t3: "", critical: "", effects: "" }]
-  };
-  // v0.0.179: grouped like the book (Roll, Requires, Kind, Damage, Keywords).
-  const traitOpts = TWOD12.traitGroups.map(g => `<optgroup label="${g.label}">${orderTraits(Object.keys(TWOD12.actionTraits)).filter(k => traitGroupOf(k) === g.key).map(k => `<option value="${k}" ${start.traits.includes(k) ? "selected" : ""}>${esc(TWOD12.actionTraits[k])}</option>`).join("")}</optgroup>`).join("");
-  const freqOpts = Object.entries(TWOD12.frequencies).map(([k, l]) => `<option value="${k}" ${k === start.frequency ? "selected" : ""}>${esc(l)}</option>`).join("");
-  const content = `<div class="twod12 genact">
-    <div class="ga-top">
-      <label class="wide">Name <input type="text" name="name" value="${esc(start.name)}" placeholder="Grave Chill" autofocus></label>
-      <label class="wide">Traits <multi-select name="traits">${traitOpts}</multi-select></label>
-      <label>Frequency <select name="frequency">${freqOpts}</select></label>
-      <label class="chk"><input type="checkbox" name="reaction" ${start.reaction ? "checked" : ""}> Reaction</label>
-      <label>Target <input type="text" name="targets" value="${esc(start.targets)}" placeholder="One creature"></label>
-      <label>Distance <input type="text" name="distance" value="${esc(start.distance)}" placeholder="5 squares, Weapon, Self"></label>
-    </div>
-    <div class="ga-tabs"><span class="ga-vtabs"></span><a class="ga-add"><i class="fa-solid fa-plus"></i> add a version</a></div>
-    <div class="ga-vers">${start.versions.map(versionHtml).join("")}</div>
-    <p class="hint">Write it like the card: <code>[V] 1d8 Co</code> = 1d8 Cold to Vigor · <code>1[W]</code> = the weapon's damage · <code>[Mod]</code> = the Modifier used on the roll · <code>[R] 2d6 Ho</code> = Resolve, Holy · <code>;</code> then an effect (<code>Hindered (EoT)</code>, <code>Prone</code>, <code>Pushed 2</code>, <code>Appeal Save</code>). The short codes (<code>1WB</code>, <code>1d8MCo</code>) work too.</p>
-    <div class="ga-ok"></div>
-    <div class="ga-no"></div>
-    <div class="ga-prev"><div class="ga-ph">Live preview</div><div class="ga-card"></div></div>
-  </div>`;
-  const read = el => ({
-    name: el.querySelector("[name=name]").value.trim(),
-    traits: [...(el.querySelector("multi-select[name=traits]")?.value ?? [])],
-    frequency: el.querySelector("[name=frequency]").value, reaction: el.querySelector("[name=reaction]").checked,
-    targets: el.querySelector("[name=targets]").value, distance: el.querySelector("[name=distance]").value,
-    versions: [...el.querySelectorAll(".ga-ver")].map(fs => Object.fromEntries(["ap", "t1", "t2", "t3", "critical", "effects"].map(k => [k, fs.querySelector(`[name=${k}]`).value])))
-  });
-  let timer = null;
-  const refresh = el => {
-    clearTimeout(timer);
-    timer = setTimeout(async () => {
-      const f = read(el), sys = actionFromForm(f);
-      el.querySelector(".ga-ok").innerHTML = `<b>Understood:</b> ${esc(understood(sys))}`;
-      const no = notUnderstood(f);
-      el.querySelector(".ga-no").innerHTML = `<b>Not understood</b> (kept as plain text) ${no.length ? no.map(x => `<span class="gw-chip bad">${esc(x)}</span>`).join("") : "<span>nothing</span>"}`;
-      try {
-        const { buildActionCard } = await import("./actioncard.mjs");
-        const temp = new CONFIG.Item.documentClass({ name: f.name || "New Action", type: "action", system: sys });
-        el.querySelector(".ga-card").innerHTML = await buildActionCard(temp);
-      } catch (e) { el.querySelector(".ga-card").innerHTML = `<div class="warnline">No preview: ${esc(e.message ?? e)}</div>`; }
-    }, 150);
-  };
-  const tabs = el => {
-    const vs = [...el.querySelectorAll(".ga-ver")];
-    const on = vs.findIndex(x => !x.hidden);
-    el.querySelector(".ga-vtabs").innerHTML = vs.map((x, k) => `<a class="ga-vt${k === on ? " on" : ""}" data-k="${k}">Version ${esc(x.querySelector("[name=ap]").value)} AP${vs.length > 1 ? ` <i class="fa-solid fa-xmark ga-del" data-k="${k}" data-tooltip="Remove this version"></i>` : ""}</a>`).join("");
-  };
-  const show = (el, k) => { el.querySelectorAll(".ga-ver").forEach((x, i) => { x.hidden = i !== k; }); tabs(el); };
-  const target = item ? `Update ${item.name}` : actor ? `Create on ${actor.name}` : "Create in the world";
-  const res = await DialogV2.wait({
-    window: { title: actor ? `Generate Action: ${actor.name}` : item ? `Generate Action: ${item.name}` : "Generate Action", resizable: true }, classes: ["twod12-gen"],
-    // A fixed height: the fields and the preview scroll, the buttons stay at the bottom (v0.0.137).
-    position: { width: 660, height: Math.max(420, Math.min(window.innerHeight - 60, 900)) }, content, rejectClose: false,
-    render: (event, dialog) => {
-      const el = dialog.element;
-      tabs(el);
-      el.addEventListener("input", () => { tabs(el); refresh(el); });
-      el.addEventListener("change", () => refresh(el));
-      el.querySelector(".ga-vtabs").addEventListener("click", ev => {
-        const del = ev.target.closest(".ga-del");
-        if (del) { el.querySelectorAll(".ga-ver")[Number(del.dataset.k)]?.remove(); show(el, 0); refresh(el); return; }
-        const t = ev.target.closest(".ga-vt");
-        if (t) show(el, Number(t.dataset.k));
-      });
-      el.querySelector(".ga-add").addEventListener("click", () => {
-        const vs = el.querySelectorAll(".ga-ver"), ap = Math.min(5, Math.max(0, ...[...vs].map(x => Number(x.querySelector("[name=ap]").value) || 0)) + 1);
-        el.querySelector(".ga-vers").insertAdjacentHTML("beforeend", versionHtml({ ap, t1: "", t2: "", t3: "", critical: "", effects: "" }, vs.length));
-        show(el, vs.length); refresh(el);
-      });
-      refresh(el);
-    },
-    buttons: [{ action: "cancel", label: "Cancel" }, { action: "ok", label: target, default: true, callback: (ev, btn, dialog) => read(dialog.element ?? btn.form) }]
-  });
-  if (!res || res === "cancel" || typeof res !== "object") return null;
-  if (!res.name) { ui.notifications.warn("The Action needs a name."); return null; }
-  const system = actionFromForm(res);
-  if (item) { await item.update({ name: res.name, system }); return item; }
-  const data = { name: res.name, type: "action", img: "icons/svg/explosion.svg", system };
-  if (actor) { const [made] = await actor.createEmbeddedDocuments("Item", [data]); ui.notifications.info(`${res.name} added to ${actor.name}.`); return made; }
-  return Item.create(data);
+  const { openCardGenerator } = await import("./genwindow.mjs");
+  return openCardGenerator({ actor, item });
 }

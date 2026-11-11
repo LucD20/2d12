@@ -4277,3 +4277,26 @@ a.twod12-inline.calc .ti-name, a.twod12-inline.calc { color: #1a3fb0; }   /* v0.
 .application.twod12-styled .sk .bb-foot button:disabled { opacity: .45; cursor: not-allowed; }
 .application.twod12-builder .bb-foot .fr-q { cursor: pointer; width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--sk-line); display: inline-grid; place-items: center; font-weight: 700; color: var(--sk-mut); }
 .application.twod12-builder .bb-foot .fr-q.on { background: var(--sk-navy); color: #fff; border-color: var(--sk-navy); }
+
+/* ================================================================== v0.0.357 PACK ACTION-SHEET: Generate Action, "paste the card" (genwindow.mjs;
+   Lucas's pick G2, foundry/mockups/generate-action.html). It shares the Create Button window's frame (bb-foot, bb-cap, bb-typel). */
+.application.twod12-gencard .gc-tab { padding: 12px 14px 4px; }
+.application.twod12-gencard .gc-cols { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; align-items: start; }
+.application.twod12-gencard .fr-tab .fr-ta.gc-text { width: 100%; min-height: 250px; font: 12.5px/1.55 ui-monospace, Consolas, monospace; white-space: pre; overflow-x: auto; resize: vertical; }
+.application.twod12-gencard h4.gc-h { margin: 10px 0 4px; font: 700 12px Georgia, serif; color: #2f6b3a; }
+.application.twod12-gencard ul.gc-lines, .application.twod12-gencard ul.gc-notes { list-style: none; margin: 0; padding: 6px 8px; display: grid; gap: 3px; background: #fff; border: 1px solid var(--sk-line); border-radius: 4px; }
+.application.twod12-gencard ul.gc-lines li { display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: 6px; font-size: 12px; margin: 0; }
+.application.twod12-gencard ul.gc-lines li > span { font-weight: 700; color: #2f6b3a; } .application.twod12-gencard ul.gc-lines li.no > span { color: #8a6a14; }
+.application.twod12-gencard ul.gc-lines li.no { background: #fbf6e6; }
+.application.twod12-gencard ul.gc-lines code { font-size: 11.5px; overflow-wrap: anywhere; background: none; padding: 0; }
+.application.twod12-gencard ul.gc-lines em { display: block; font-style: normal; color: var(--sk-mut); font-size: 11px; }
+.application.twod12-gencard .gc-und { margin: 6px 0 0; font-size: 12px; }
+.application.twod12-gencard ul.gc-notes { margin-top: 6px; background: #fbf6e6; font-size: 12px; }
+.application.twod12-gencard .gc-right { position: sticky; top: 4px; }
+.application.twod12-gencard .gc-card { margin-top: 4px; }
+@media (max-width: 860px) { .application.twod12-gencard .gc-cols { grid-template-columns: 1fr; } .application.twod12-gencard .gc-right { position: static; } }
+/* the fields scroll, the buttons stay at the bottom (both windows) */
+.application.twod12-builder .window-content { display: flex; flex-direction: column; overflow: hidden; }
+.application.twod12-builder .bb-root, .application.twod12-builder .gc-root, .application.twod12-builder .bb-win, .application.twod12-builder .gc-win { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; }
+.application.twod12-builder .bb-tab, .application.twod12-gencard .gc-tab { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+.application.twod12-builder .bb-foot { flex: 0 0 auto; }
