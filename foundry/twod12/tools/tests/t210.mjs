@@ -133,7 +133,7 @@ console.log("Shield of Faith only pays its AP:", run.data.spend === true, run.da
 M.onSocket({ type: "rxRunDone", reqId: run.reqId, ok: true });
 const res2 = await wait2;
 const moved = created.find(m => m.flags?.twod12?.rx?.id === rx2.id);
-console.log("v0.0.278: resolved under the card: a new message at the bottom", moved !== msg2 && created.at(-1) === moved, "| v0.0.347: the live one left a short line:", !msg2.deleted && /Reactions: <b>/.test(msg2.content) ? msg2.content.replace(/<[^>]+>/g, "") : "no", "| one message for the moment:", created.filter(m => m.flags?.twod12?.rx?.id === rx2.id).length);
+console.log("v0.0.278: resolved under the card: a new message at the bottom", moved !== msg2 && created.at(-1) === moved, "| v0.0.347: the live one left a short line:", !msg2.deleted && /class="twod12 chat rx2 rxused"/.test(msg2.content) ? msg2.content.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim() : "no", "| one message for the moment:", created.filter(m => m.flags?.twod12?.rx?.id === rx2.id).length);
 msg2.content = moved.content;
 console.log("the damage never lands:", res2.never, "| the chips:", [...msg2.content.matchAll(/rx-out (\w+)">([^<]*(?:<s>[^<]*<\/s>[^<]*)?)/g)].map(m => `${m[1]}:${txt(m[2])}`).join(" ; "), "| struck through:", (msg2.content.match(/<s>/g) ?? []).length >= 2);
 const dm = src("module/damage.mjs");

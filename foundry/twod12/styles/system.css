@@ -4086,3 +4086,13 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12 .grantrow.grantlist .gl-used { justify-content: flex-start; text-align: left; }
 .twod12.chat .tline.grantrow.grantlist .cc-used.gl-used { flex: none; text-align: left; justify-content: flex-start; }
 .twod12.chat .tline.grantrow.grantlist .cc-gbtn.gl-btn { display: flex; align-items: center; gap: 5px; justify-content: flex-start; }
+/* v0.0.348 (Lucas: "doubles need to be clearer: a golden outline?"): gold for Doubles (green is the Tiers, blue the Critical) */
+.twod12.chat.cc .cc-stamp.dbl { position: relative; box-shadow: 0 0 0 2px #e0b23a, 0 0 6px 1px rgba(224, 178, 58, .55); }
+.twod12.chat.cc .cc-stamp .cc-dbltag { position: absolute; top: -7px; left: 50%; transform: translateX(-50%); background: #e0b23a; color: #2a2010; font-size: 8.5px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; padding: 0 4px; border-radius: 3px; line-height: 13px; white-space: nowrap; }
+.twod12.chat.cc .cc-pill.dbl { box-shadow: 0 0 0 2px #e0b23a; }
+.twod12.chat.cc .cc-dbl, .twod12.chat.cc .cc-dbl.crit { border-color: #e0b23a; box-shadow: 0 0 4px rgba(224, 178, 58, .6); }
+/* v0.0.348 (Lucas): the line left where a Reactions chain started, as the Reactions card's title bar */
+.twod12.chat.rx2.rxused .rx-hd { gap: 7px; flex-wrap: wrap; }
+.twod12.chat.rx2.rxused .rx-hd .rx-ttl { flex: none; }
+.twod12.chat.rx2.rxused .rxu-txt { flex: 1 1 auto; font-variant: normal; font-weight: 400; font-size: 12px; color: #f1e6c8; }
+.twod12.chat.rx2.rxused .rxu-txt b { color: #ecdcae; font-weight: 700; }

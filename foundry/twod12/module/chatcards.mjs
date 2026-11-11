@@ -77,10 +77,12 @@ export function ladderHtml(r, { hide = false, thin = false, id = "", open = fals
 export function stampHtml(r, { hide = false } = {}) {
   const raised = r.tier > (r.base ?? r.tier);
   const line = r.crit ? "Critical" : raised ? "Doubles ↑" : hide ? "" : `vs ${r.dcLabel ?? "DC"} ${r.dc}`;
-  return `<div class="cc-stamp ${tierCls(r.tier, r.crit)}"><small>${r.crit ? "CRIT" : "TIER"}</small><b>${r.tier}</b>${line ? `<small class="cc-stl">${esc(line)}</small>` : ""}</div>`;
+  // v0.0.348 (Lucas: "doubles need to be clearer; we already have green for the Tiers and blue for a Critical: a golden outline?"): a roll with
+  // Doubles has a gold outline and a "Doubles" tag on its stamp
+  return `<div class="cc-stamp ${tierCls(r.tier, r.crit)}${r.doubles ? " dbl" : ""}"${r.doubles ? ' data-tooltip="Doubles"' : ""}>${r.doubles ? '<span class="cc-dbltag">Doubles</span>' : ""}<small>${r.crit ? "CRIT" : "TIER"}</small><b>${r.tier}</b>${line ? `<small class="cc-stl">${esc(line)}</small>` : ""}</div>`;
 }
 /** A small Tier pill (22px, the numeral) or a word pill ("Tier 2"). */
-export const tierPill = (tier, crit = false, word = false) => `<span class="cc-pill ${tierCls(tier, crit)}${word ? " word" : ""}">${word ? (crit ? "Critical" : `Tier ${tier}`) : `T${tier}`}</span>`;   // v0.0.287 (Lucas): "T1", squared like the trait chips
+export const tierPill = (tier, crit = false, word = false, dbl = false) => `<span class="cc-pill ${tierCls(tier, crit)}${word ? " word" : ""}${dbl ? " dbl" : ""}"${dbl ? ' data-tooltip="Doubles"' : ""}>${word ? (crit ? "Critical" : `Tier ${tier}`) : `T${tier}`}</span>`;   // v0.0.287 (Lucas): "T1", squared like the trait chips
 
 /* ------------------------------------------------------------------ the roll breakdown */
 /**
@@ -237,7 +239,7 @@ export function attackCardHtml(m, view = FULL_VIEW) {
   // several targets: one shared roll, a row per creature, the outcome grouped by Tier
   const sh = m.shared ?? {};
   const shared = `<div class="cc-shared"><span class="cc-bl">${(sh.d ?? []).length}d12</span>${(sh.d ?? []).map(dieGroup).join("")}${sh.mod ? ` ${modTxt(sh.mod, "Modifier")}` : ""}${(m.applied ?? []).length ? ` <span class="cc-applied"><span class="cc-bl">Applied</span> ${m.applied.map(a => (a.uuid ? `<a class="content-link" draggable="true" data-link data-uuid="${esc(a.uuid)}"><i class="fa-solid fa-sparkles"></i>${esc(a.name)}</a>` : esc(a.name))).join(" ")}</span>` : ""}</div>`;   // v0.0.347
-  const crows = rows.map((r, i) => `<div class="cc-crow">${tierPill(r.tier, r.crit)}<span class="cc-cname">${esc(r.name)}</span><span class="cc-cdef">${hide ? "" : `<span class="cc-badge${vsk(r.dcLabel)}">${esc(r.dcLabel ?? "DC")} ${r.dc}</span>`}${defText(r, true) ? `<span>${esc(defText(r, true))}</span>` : ""}</span>${ladderHtml(r, { hide, thin: true, id: `r${i}` })}${keptNote(r) ? `<div class="cc-muted cc-kept">${esc(keptNote(r))}</div>` : ""}${breakdownHtml(r, { hide, id: `r${i}` })}</div>`).join("");
+  const crows = rows.map((r, i) => `<div class="cc-crow">${tierPill(r.tier, r.crit, false, !!r.doubles)}<span class="cc-cname">${esc(r.name)}</span><span class="cc-cdef">${hide ? "" : `<span class="cc-badge${vsk(r.dcLabel)}">${esc(r.dcLabel ?? "DC")} ${r.dc}</span>`}${defText(r, true) ? `<span>${esc(defText(r, true))}</span>` : ""}</span>${ladderHtml(r, { hide, thin: true, id: `r${i}` })}${keptNote(r) ? `<div class="cc-muted cc-kept">${esc(keptNote(r))}</div>` : ""}${breakdownHtml(r, { hide, id: `r${i}` })}</div>`).join("");
   const groups = [3, 2, 1].map(t => {
     const who = rows.filter(r => r.tier === t);
     if (!who.length) return "";

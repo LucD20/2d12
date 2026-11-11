@@ -120,15 +120,29 @@ export function grantRowsHtml(actor, card) {
   // v0.0.347 (Lucas, playtest 4: "remove 'Granted Action: Weapon Attack'; a smaller button, a condensed list: 'Weapon Attack: Ogre Chieftain' /
   // 'Weapon Attack: Bandit Thug'; each opens the roll window on its creature"): one small button per use, paired in order with the card's targets.
   const tg = card?.targets ?? [];
-  let n = 0;
   return (card?.effects ?? []).map(g => {
     const e = actor?.effects?.get?.(g.id), grant = e?.getFlag?.(F, "grants")?.[g.index], left = grant ? Math.max(0, grant.left) : 0, count = Math.max(g.count, left);
+    // v0.0.348: the used buttons name the creatures already attacked (the grant's used list), the others the card's creatures still free
+    const order = grantTargetOrder(tg, grant?.used ?? [], count - left);
     const btns = Array.from({ length: count }, (_, k) => {
-      const t = tg[n++], name = `${escT(g.actionName)}${t?.name ? `: ${escT(t.name)}` : ""}`, spent = k < count - left;
+      const t = order[k], name = `${escT(g.actionName)}${t?.name ? `: ${escT(t.name)}` : ""}`, spent = k < count - left;
       return spent ? `<span class="cc-used gl-used"><i class="fa-solid fa-check"></i> ${name}</span>` : `<button type="button" class="cc-gbtn gl-btn" data-twod12="useGrant" data-effect-id="${g.id}" data-index="${g.index}"${t?.uuid ? ` data-target="${escT(t.uuid)}"` : ""} data-tooltip="${t?.name ? `Use ${escT(g.actionName)} against ${escT(t.name)}` : `Use ${escT(g.actionName)}`}">${grantIcon(g.actionName)} ${name}</button>`;
     }).join("");
     return `<div class="tline grantrow grantlist"><div class="gbtns">${btns}</div></div>`;
   }).join("");
+}
+/** v0.0.348: pure: the card's creatures in button order: those a used use went to first (spent of them), then the ones still free. */
+export function grantTargetOrder(targets, used, spent) {
+  const u = (targets ?? []).filter(t => (used ?? []).includes(t.uuid)), f = (targets ?? []).filter(t => !(used ?? []).includes(t.uuid));
+  return [...u.slice(0, spent), ...Array.from({ length: Math.max(0, spent - u.length) }, () => null), ...f];
+}
+/** v0.0.348: the creatures of the card that brought this grant (its grant card), or []. */
+export function grantCardTargets(actor, effectId) {
+  for (const msg of [...(game.messages?.contents ?? [])].slice(-80).reverse()) {
+    const card = msg.getFlag?.(F, "grantCard");
+    if (card?.actorUuid === actor?.uuid && card.effects?.some(x => x.id === effectId)) return card.targets ?? [];
+  }
+  return [];
 }
 /** v0.0.295 (Lucas): a Weapon Attack (or an NPC's Basic attack) gets a sword (Foundry's own icon), the other granted Actions the bolt. */
 export const grantIcon = name => (/weapon attack|basic attack/i.test(String(name ?? "")) ? '<img class="cc-gico" src="icons/svg/sword.svg" alt="" aria-hidden="true">' : '<i class="fa-solid fa-bolt" aria-hidden="true"></i>');
@@ -193,22 +207,28 @@ export function refreshGrantBar() {
   const tok = toks.length === 1 ? toks[0] : null, actor = tok?.actor;
   const list = actor?.isOwner ? grantBarModel(actor.effects, g => actionsFor(actor, g.spec)[0]?.name ?? g.spec) : [];
   if (!list.length) return closeGrantBar();
-  const btns = list.flatMap(x => Array.from({ length: x.left }, () => `<button type="button" class="lb-go lb-grant" data-effect-id="${escT(x.effectId)}" data-index="${x.index}" data-tooltip="${escT(`${x.actionName}, granted by ${x.source} (free)`)}">${grantIcon(x.actionName)} ${escT(x.actionName)}</button>`)).join("");
+  // v0.0.348 (Lucas: "the granted actions HUD should also target the correct targets, like the chat card's buttons"): each use names and
+  // targets one of the card's creatures still free
+  const btns = list.flatMap(x => {
+    const grant = actor.effects.get(x.effectId)?.getFlag(F, "grants")?.[x.index], free = grantTargetOrder(grantCardTargets(actor, x.effectId), grant?.used ?? [], 0).filter(t => !(grant?.used ?? []).includes(t?.uuid));
+    return Array.from({ length: x.left }, (_, k) => { const t = free[k]; return `<button type="button" class="lb-go lb-grant" data-effect-id="${escT(x.effectId)}" data-index="${x.index}"${t?.uuid ? ` data-target="${escT(t.uuid)}"` : ""} data-tooltip="${escT(`${x.actionName}${t?.name ? ` against ${t.name}` : ""}, granted by ${x.source} (free)`)}">${grantIcon(x.actionName)} ${escT(x.actionName)}${t?.name ? `: ${escT(t.name)}` : ""}</button>`; });
+  }).join("");
   const sources = [...new Set(list.map(x => x.source))].join(", ");
   const html = `<i class="fa-solid fa-bolt lb-ic"></i><span class="lb-text"><b>${escT(tok.name)}</b>: granted by <b>${escT(sources)}</b></span>${btns}`;
   if (!grantBarEl) {
     grantBarEl = document.createElement("div"); grantBarEl.className = "twod12-linebar twod12-setupbar twod12-grantbar"; document.body.append(grantBarEl);
-    grantBarEl.addEventListener("click", async ev => { const b = ev.target.closest(".lb-grant"); if (!b) return; ev.preventDefault(); const t = canvas.tokens.controlled[0]; if (t?.actor) await useGrantOf(t.actor, b.dataset.effectId, Number(b.dataset.index) || 0); });
+    grantBarEl.addEventListener("click", async ev => { const b = ev.target.closest(".lb-grant"); if (!b) return; ev.preventDefault(); const t = canvas.tokens.controlled[0]; if (t?.actor) await useGrantOf(t.actor, b.dataset.effectId, Number(b.dataset.index) || 0, b.dataset.target ?? ""); });
   }
   grantBarEl.innerHTML = html;
 }
 /** Use one granted use of a creature's effect (the bar's button). Returns whether it was used. */
-export async function useGrantOf(actor, effectId, index = 0) {
+export async function useGrantOf(actor, effectId, index = 0, targetUuid = "") {
   if (!actor?.isOwner) { ui.notifications.warn(`You don't own ${actor?.name ?? "that creature"}.`); return false; }
   const e = actor.effects.get(effectId), grant = e?.getFlag(F, "grants")?.[index];
   if (!grant || !(grant.left > 0)) { ui.notifications.warn("No use left."); return false; }
   const item = actionsFor(actor, grant.spec).find(i => activeGrants(actor, i).some(x => x.effect.id === effectId)) ?? actionsFor(actor, grant.spec)[0];
   if (!item) { ui.notifications.warn(`${actor.name} has no Action called "${grant.spec}".`); return false; }
+  if (targetUuid) { try { const td = await fromUuid(targetUuid), tok = td?.object; if (tok?.setTarget) tok.setTarget(true, { releaseOthers: true, groupSelection: false }); } catch (e) { /* gone */ } }   // v0.0.348
   return !!(await useAction(actor, item, { grantKey: { effectId, index } }));
 }
 export function registerGrantCardHooks() {

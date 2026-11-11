@@ -496,7 +496,9 @@ async function resolveStack(L) {
   // v0.0.278 (Lucas: "after its resolve, put the chat message at the bottom"): the resolved line is posted again under the Reactions' cards
   // and the live message is removed (still one message for the moment)
   L.msg = await toBottom(L.msg, st);
-  if (["against", "landed"].includes(st.base?.kind) && st.base?.msgId && !st.base?.never) { try { await reprintCard(st.base.msgId); } catch (e) { console.warn("twod12 | reprint", e); } }   // v0.0.347
+  // v0.0.347: the triggering card reprinted under the chain; v0.0.348 (Lucas: "only after the Reaction is resolved: Club -> Rebuke, Appeal
+  // Save, damage, apply -> Club's card"): a Reaction that deals damage waits for its damage to be applied (reprintAfter)
+  if (["against", "landed"].includes(st.base?.kind) && st.base?.msgId && !st.base?.never) { try { await reprintAfter(st.base.msgId, st.rows.filter(r => r.state === "use" && r.result === "done")); } catch (e) { console.warn("twod12 | reprint", e); } }
   live.delete(st.id);
   finished.set(st.id, { st, msg: L.msg });
   if (finished.size > 20) finished.delete(finished.keys().next().value);
@@ -552,7 +554,7 @@ async function toBottom(msg, st) {
     // where it was (later moves remove the copy, as before)
     const first = !st.lineLeft; st.lineLeft = true;
     nmsg = await ChatMessage.create({ content: rxCardHtml(st), flags: { [F]: { rx: st } } });
-    if (first) await msg.update({ content: sysLine("fa-bolt", usedLine(st), "rxused"), ...unset(`flags.${F}.rx`) });
+    if (first) await msg.update({ content: usedBarHtml(st), ...unset(`flags.${F}.rx`) });
     else await msg.delete();
   } catch (e) { console.warn("twod12 | Reactions message", e); try { await msg.update({ content: rxCardHtml(st), [`flags.${F}.rx`]: st }); } catch (x) { /* */ } return msg; }
   return nmsg ?? msg;
@@ -562,6 +564,8 @@ export function usedLine(st) {
   const used = stackOrder(st.rows ?? []);   // in the order they resolved (top first)
   return used.length ? `Reactions: ${used.map(r => `<b>${esc(cleanName(r.name))}</b> uses ${esc(r.itemName)}${r.targetName ? ` → ${esc(cleanName(r.targetName))}` : ""}`).join("; ")}.` : "Reactions: none used.";
 }
+/** v0.0.348 (Lucas: "it should look more unique, like the Reactions' title bar"): the line as the Reactions card's dark title bar. */
+export const usedBarHtml = st => `<div class="twod12 chat rx2 rxused"><div class="rx-hd"><i class="fa-solid fa-bolt" aria-hidden="true"></i><span class="rx-ttl">Reactions</span><span class="rxu-txt">${usedLine(st).replace(/^Reactions:\s*/, "").replace(/\.$/, "")}</span></div></div>`;
 async function rewrite(F2) { try { await F2.msg.update({ content: rxCardHtml(F2.st), [`flags.${F}.rx`]: F2.st }); } catch (e) { console.warn("twod12 | Reactions message", e); } }
 export function registerLateResults() {
   // v0.0.282 (Lucas: "deleting the message does nothing, after the countdown it resolves even if deleted"): deleting it cancels the moment
@@ -876,6 +880,35 @@ export async function reprintCard(msgId) {
   const n = await ChatMessage.create(data);
   if (n) await m.delete();
 }
+/** v0.0.348: the reprints waiting for a Reaction's damage: { msgId, reactors: Set(actor uuids), at }. */
+const waitingReprints = [];
+/** Pure: does this Action deal damage (a Tier with a damage instance)? */
+export const dealsDamage = item => (item?.system?.versions ?? []).some(v => ["t1", "t2", "t3"].some(t => (v?.[t] ?? []).length));
+/** Reprint now when no used Reaction deals damage; else when their damage has been applied (or at the end of the turn, at the latest). */
+async function reprintAfter(msgId, usedRows) {
+  const reactors = new Set();
+  for (const r of usedRows ?? []) { const a = actorOf(docSync(r.actorUuid)); if (dealsDamage(a?.items?.get?.(r.itemId))) reactors.add(a.uuid); }
+  if (!reactors.size) return reprintCard(msgId);
+  waitingReprints.push({ msgId, reactors, at: Date.now() });
+}
+/** A damage card was updated: when all its rows are applied and its origin is a Reaction waiting, the triggering card is reprinted. */
+function reprintOnApplied(msg) {
+  if (!waitingReprints.length) return;
+  const s = msg?.getFlag?.(F, "ccDmg");
+  if (!s?.rows?.length || !s.rows.every(r => r.applied)) return;
+  const origin = actorOf(docSync(s.originUuid ?? ""))?.uuid ?? s.originUuid;
+  for (let k = waitingReprints.length - 1; k >= 0; k--) {
+    const w = waitingReprints[k];
+    if (!w.reactors.has(origin)) continue;
+    w.reactors.delete(origin);
+    if (!w.reactors.size) { waitingReprints.splice(k, 1); setTimeout(() => reprintCard(w.msgId).catch(e => console.warn("twod12 | reprint", e)), 900); }   // after its "After the damage" chain
+  }
+}
+function flushReprints() { while (waitingReprints.length) { const w = waitingReprints.shift(); reprintCard(w.msgId).catch(() => {}); } }
+export function registerReprintHooks() {
+  Hooks.on("updateChatMessage", msg => { try { reprintOnApplied(msg); } catch (e) { console.warn("twod12 | reprint", e); } });
+  Hooks.on("combatTurnChange", () => { if (waitingReprints.length) flushReprints(); });   // the turn ended without the damage: reprinted anyway
+}
 export function landedMoment(actor, dealt, from, wentDown) {
   const kinds = [...(dealt > 0 && from?.strike ? ["strikeDamage"] : []), ...(dealt > 0 ? ["allyDamage"] : []), ...(wentDown ? ["wouldDown"] : [])];
   if (!kinds.length) return;
@@ -996,6 +1029,7 @@ const moving = new Map();   // token id -> { forced, evading }, on the client th
 export function registerMomentHooks() {
   try { O.registerOverlayHooks(); } catch (e) { console.warn("twod12 | Reaction overlay", e); }   // v0.0.275: the map overlay
   registerLateResults();   // v0.0.276: an attack rolled after its slab resolved (Opportunity Attack's Weapon Attack) still gets its chip
+  registerReprintHooks();   // v0.0.348: the triggering card reprinted once the Reaction's damage is applied
   Hooks.on("preMoveToken", (doc, movement, operation) => {
     try {
       if (operation?.twod12Lean || movement?.method === "undo") return;

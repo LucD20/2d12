@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-11 from the repository at: 2e74535 2026-11-11 v0.0.346: the data model's missing fields (Frightened, Marked Quarry), a world pass, bars always shown, the stack card restyled
+Built by tools/knowledge.py on 2026-11-11 from the repository at: f6d4f40 2026-11-11 v0.0.347: the stack resolves by itself; playtest 4, Step 3 (a quieter chat)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
