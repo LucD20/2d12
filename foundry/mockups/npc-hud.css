@@ -235,10 +235,37 @@ body.mock h3 { font: 600 14px "Signika", sans-serif; margin: 0 0 6px; color: #f3
 .s-msg p { margin: 0; padding: 5px 8px; }
 .s-side .inp { margin: 0 6px 8px; height: 54px; border-radius: 5px; background: #2b2824; border: 1px solid #3a362f; color: #7d7667; font-size: 12px; padding: 6px 8px; }
 .s-hud { position: absolute; left: 12px; right: 312px; bottom: 10px; }
-.s-hud .twod12-linebar { position: static; transform: none; width: 100%; max-width: none; min-height: 58px; flex-wrap: nowrap; }
 .s-hud.float .twod12-linebar { position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%); width: min(860px, 100%); min-height: 0; }
 .s-hud.float .hud { opacity: .45; filter: saturate(.6); }
 .s-cap { position: absolute; left: 96px; top: 150px; max-width: 360px; background: rgba(20, 22, 30, .82); border: 1px dashed #c9a24a; border-radius: 6px; padding: 8px 12px; color: #f4e9d0; font-size: 13px; line-height: 1.4; }
 .s-cap b { color: #f3d39c; }
 .lb-ic .ic { color: #e05a4f; }
 .cols > .col { max-width: 560px; }
+
+/* ---------- after Lucas's review (2026-11-12) ---------- */
+/* one height for every HUD (the PC's two lines: Quick, categories), so nothing jumps */
+.hud { min-height: 70px; }
+.hud.slim { min-height: 40px; }
+/* an NPC's bar that doesn't fit: one row per group, the names in a column, the Saves on the right */
+.hud.rows .hud-main { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 0; align-items: center; padding: 7px 2px; }
+.hud.rows .hud-g { grid-column: 1; flex-direction: row; align-items: center; gap: 8px; border-left: 0; }
+.hud.rows .hud-gl { width: 138px; flex: none; }
+.hud.rows .hud-acts { flex-wrap: wrap; }
+.hud.rows .hud-g.g-saves { grid-column: 2; flex-direction: column; align-items: flex-start; align-self: center; border-left: 1px solid rgba(201, 162, 74, .22); }
+.hud.rows .hud-g.g-saves .hud-gl { width: auto; }
+/* the PC: the Quick row over the categories */
+.hud-pcmain { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 5px; padding: 5px 10px; }
+.hud-quick { display: flex; align-items: center; gap: 5px; min-height: 28px; }
+.hud-quick .hud-gl { --gl: #f3d39c; margin-right: 3px; }
+.hud-hint { font-size: 12px; font-style: italic; color: #8e96a8; }
+.hud-pcmain .hud-cats { padding: 0; flex: none; gap: 4px; flex-wrap: wrap; }
+.hud-pcmain .cat { height: 24px; padding: 0 7px; font-size: 12px; gap: 4px; }
+.hud-pcmain .cat .ic { font-size: 11px; }
+.cat.later { border-style: dashed; border-color: #5d6b85; color: #9aa6ba; }
+.cat.later .ct { color: #9aa6ba; font-weight: 500; font-style: italic; }
+/* a choice on the map: the HUD's middle asks */
+.hud.asking { box-shadow: 0 0 0 2px rgba(201, 162, 74, .55), 0 0 18px rgba(201, 162, 74, .45); }
+.hud .hud-ask { position: static; transform: none; flex: 1; min-width: 0; width: auto; max-width: none; background: none; border: 0; border-radius: 0; box-shadow: none; padding: 6px 14px; flex-wrap: nowrap; font-size: 14px; }
+.hud .hud-ask .lb-text { flex: 0 1 auto; }
+.hud .hud-ask .lb-opts { flex-wrap: nowrap; margin-left: 6px; }
+.hud .hud-ask .lb-give { margin-left: auto; }

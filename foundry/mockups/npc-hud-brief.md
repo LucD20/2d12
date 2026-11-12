@@ -108,10 +108,18 @@ That way an Action line looks the same everywhere.
 - **The sheet's "Special (by AP)" is one band sorted by AP**, not one band per AP.
 - **(a) turns a one-Version Action's Tier table on its side** (three cells in a row); an Action with several Versions would use the card's real table.
 
-### Still for Lucas to pick
-1. (a) full text or (b) one line.
+### Lucas's review (2026-11-12), applied to the mockups
+- **The sheet: (a) full text, with the Tier table. Decided.**
+- **The HUD: the proposals are liked** (the pick bar's look, the Elite flat, the portrait, two lines), with three changes, all redrawn:
+  1. **No free wrap** (the 1366 px test was chaotic and counter-intuitive). A bar that doesn't fit one row becomes **one row per group**, in the sheet's order, the group names in a column and the Check / Save buttons kept on the right. The made-up 9-Action Elite is 4 rows (173 px) at 1366.
+  2. **The PC's bar:** a **Quick row** on top (the Actions the player pins; right-click an Action to pin or unpin, as the sheet's Favorites), the categories under it. **Actions, Basic Actions and Reactions are three buttons** (no single Actions button). **A place is kept for Skills** (dashed, "later"). The nine buttons fit one line at 1600 px; they have no counts.
+  3. **5c (the pick bar in the HUD's place) looked bugged:** redrawn. The HUD keeps its frame (who is asking on the left, the hotbar on the right); only its middle becomes the pick bar's question and buttons, with a gold glow.
+- **The height is now 70 px for every HUD** (the PC's two lines set it; it was 60).
+
+### Still for Lucas to pick (after the review)
+1. ~~(a) full text or (b) one line~~: (a), decided.
 2. The portrait: shown, hidden, or a per-user setting.
-3. The HUD's height: 60 px two lines, or the slim 40 px one line (no portrait, the hotbar in one row).
+3. The HUD's height: 70 px two lines (liked), or the slim 40 px one line (no portrait, the hotbar in one row).
 4. The Elite: flat (proposed) or categories.
 5. The pick bar: in the HUD's place (proposed) or floating above it.
 6. Keep or drop: the NPC's Check / Save buttons; the dimming of used and locked Actions.
@@ -123,3 +131,5 @@ That way an Action line looks the same everywhere.
 - The Action line against the Bestiary's turn budget pack (riders, forced movement, Setup): the one line has room for "and Prone"; a long rider wraps to a second line (the Ogre's Ground Slam takes three).
 - The Paladin's panel uses today's cards; the Stage 0 class cards may change what the categories hold.
 - Not tried in Foundry: how the HUD sits with Foundry V14's own bottom elements (the hotbar and the players list are moved by the system; the mockup's screen is a stand-in).
+- Whether 5c's redraw is what "bugged" meant (Lucas didn't say what looked wrong; the first version replaced the whole HUD with a stretched bar).
+- The Quick row: how an Action is pinned (right-click, as the sheet's Favorites, is the mockup's guess), and whether an NPC's HUD needs one (no: all its Actions are already visible).
