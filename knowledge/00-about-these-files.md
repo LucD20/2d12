@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: 632c84d 2026-11-12 The fight viewer rebuilt with the book's rules today (no Opportunity Attack, the Doomed shot, the new weapons)
+Built by tools/knowledge.py on 2026-11-12 from the repository at: 1c0bea6 2026-11-12 Stage 0: Lucas's answers applied (Grunts 3 AP, one-hit Minions, the Elite on the 1-to-6 ladder, the Standard's Special half a step up)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,9 +14,9 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (127 KB)
+- HANDOFF.md (128 KB)
 - MASTER-PLAN.md (35 KB)
-- open-design-items.md (113 KB)
+- open-design-items.md (115 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (29 KB)
 - rules-03-movement.md (39 KB)

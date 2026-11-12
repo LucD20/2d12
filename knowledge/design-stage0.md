@@ -8,8 +8,8 @@ Runs: 600 fights a cell on the open field, 300 on a map. Each fight cell: rounds
 
 | Level | Paladin (Smite / Lay On Hands) | Archer (Double Shot / Rolling Shot) |
 |---|---|---|
-| 1 | Smite or Lay On Hands; Rebuke or Shield of Faith; at Escalation 4: Searing Blows / Mending Light | Sharpshooter, Mark Quarry; Double Shot or Rolling Shot; Overwatch or Covering Shot; at Escalation 4: Hunter's Edge |
-| 2 | + the hook (Kindled Wrath); Holy Wrath (Encounter); at Escalation 2: Radiant Zeal / Font of Mercy | + the hook (Thrill of the Kill); Pinning Shot (Encounter); at Escalation 2: Killer's Focus |
+| 1 | Smite or Lay On Hands; Rebuke or Shield of Faith; at Escalation 2: Radiant Zeal / Font of Mercy | Sharpshooter, Mark Quarry; Double Shot or Rolling Shot; Overwatch or Covering Shot; at Escalation 2: Killer's Focus |
+| 2 | + the hook (Kindled Wrath); Holy Wrath (Encounter); at Escalation 4: Searing Blows / Mending Light | + the hook (Thrill of the Kill); Pinning Shot (Encounter); at Escalation 4: Hunter's Edge |
 | 3 | + at Escalation 6: Reckoning / Hallowed Stance | + at Escalation 6: Finisher |
 
 ## 1. A turn's damage by level and Escalation
@@ -18,7 +18,7 @@ The build's planned turn against Defense 13 (20,000 turns; one target; no Reacti
 
 | Build | Level | Turn | Escalation 1 | 2 | 4 | 6 |
 |---|---:|---|---:|---:|---:|---:|
-| Paladin (Smite) | 1 | Main | 32.0 | 32.0 | 36.8 | 36.8 |
+| Paladin (Smite) | 1 | Main | 32.0 | 35.5 | 35.5 | 35.5 |
 | Paladin (Smite) | 2 | Nova | 30.6 | 34.1 | 37.6 | 37.6 |
 | Paladin (Smite) | 2 | Main | 32.0 | 35.5 | 40.2 | 40.2 |
 | Paladin (Smite) | 3 | Nova | 30.6 | 34.1 | 37.6 | 37.6 |
@@ -28,10 +28,10 @@ The build's planned turn against Defense 13 (20,000 turns; one target; no Reacti
 | Paladin (Lay On Hands) | 2 | Main | 13.4 | 13.4 | 13.4 | 13.4 |
 | Paladin (Lay On Hands) | 3 | Nova | 15.5 | 15.5 | 15.5 | 15.5 |
 | Paladin (Lay On Hands) | 3 | Main | 13.4 | 13.4 | 13.4 | 13.4 |
-| Archer (Double Shot) | 1 | Main | 24.3 | 24.3 | 26.7 | 26.7 |
+| Archer (Double Shot) | 1 | Main | 24.3 | 27.7 | 27.7 | 27.7 |
 | Archer (Double Shot) | 2 | Pin | 24.6 | 28.1 | 30.6 | 30.6 |
 | Archer (Double Shot) | 3 | Pin | 24.6 | 28.1 | 30.6 | 30.6 |
-| Archer (Rolling Shot) | 1 | Main | 21.2 | 21.2 | 23.7 | 23.7 |
+| Archer (Rolling Shot) | 1 | Main | 21.2 | 24.7 | 24.7 | 24.7 |
 | Archer (Rolling Shot) | 2 | Pin | 21.2 | 24.7 | 27.2 | 27.2 |
 | Archer (Rolling Shot) | 3 | Pin | 21.2 | 24.7 | 27.2 | 27.2 |
 
@@ -50,8 +50,8 @@ The fit behind it (`node book/ruler/sim/stage0fit.mjs`): over pack R's first row
 
 | Level | Momentum | h (3.5 rounds) | d: the fight costs a fifth (Rally Points counted) | d: a PC Down in 1 fight of 5 |
 |---:|---:|---:|---:|---:|
-| 1 | 0 | × 0.88 | × 0.61 | × 0.93 |
-| 1 | 2 | × 0.93 | × 0.73 | × 0.93 |
+| 1 | 0 | × 0.98 | × 0.66 | × 0.93 |
+| 1 | 2 | × 0.99 | × 0.68 | × 0.95 |
 | 2 | 0 | × 0.93 | × 0.68 | × 0.95 |
 | 2 | 2 | × 1.02 | × 0.81 | × 0.97 |
 | 3 | 0 | × 0.94 | × 0.68 | × 0.93 |
@@ -63,9 +63,9 @@ The fit behind it (`node book/ruler/sim/stage0fit.mjs`): over pack R's first row
 
 | Level | Momentum | 3 Standards (easy) | 4 Standards (normal) | 5 Standards (hard) | 6 Standards (deadly) |
 |---:|---:|---|---|---|---|
-| 1 | 0 | 2.8 · 7% · 18% · 3% · 100% | 3.5 · 13% · 30% · 10% · 100% | 4.5 · 27% · 49% · 31% · 96% | 5.3 · 50% · 75% · 57% · 76% |
-| 1 | 2 | 2.7 · 6% · 14% · 4% · 100% | 3.4 · 10% · 23% · 8% · 100% | 4.2 · 20% · 39% · 23% · 98% | 5.1 · 42% · 66% · 53% · 82% |
-| 1 | 4 | 2.6 · 6% · 12% · 3% · 100% | 3.3 · 8% · 19% · 5% · 100% | 4.0 · 18% · 35% · 19% · 99% | 4.9 · 36% · 59% · 42% · 88% |
+| 1 | 0 | 2.7 · 7% · 17% · 3% · 100% | 3.3 · 12% · 27% · 10% · 100% | 4.2 · 23% · 44% · 26% · 98% | 5.0 · 41% · 66% · 49% · 86% |
+| 1 | 2 | 2.5 · 6% · 15% · 2% · 100% | 3.2 · 9% · 23% · 5% · 100% | 4.1 · 20% · 39% · 22% · 98% | 4.8 · 35% · 60% · 42% · 90% |
+| 1 | 4 | 2.5 · 6% · 15% · 2% · 100% | 3.2 · 9% · 23% · 5% · 100% | 4.1 · 20% · 39% · 22% · 98% | 4.8 · 35% · 60% · 42% · 90% |
 | 2 | 0 | 2.7 · 6% · 16% · 3% · 100% | 3.4 · 11% · 26% · 10% · 100% | 4.2 · 20% · 40% · 25% · 98% | 5.0 · 37% · 61% · 48% · 87% |
 | 2 | 2 | 2.6 · 4% · 11% · 2% · 100% | 3.2 · 8% · 20% · 7% · 100% | 3.9 · 14% · 31% · 18% · 99% | 4.7 · 27% · 49% · 35% · 92% |
 | 2 | 4 | 2.5 · 4% · 10% · 1% · 100% | 3.1 · 7% · 16% · 5% · 100% | 3.9 · 13% · 28% · 15% · 99% | 4.7 · 25% · 45% · 32% · 94% |
@@ -77,7 +77,7 @@ The fit behind it (`node book/ruler/sim/stage0fit.mjs`): over pack R's first row
 
 | Level | 1 Elite + 2 Standards | 2 Elites | 8 Grunts | 2 Standards + 8 Minions |
 |---:|---|---|---|---|
-| 1 | 3.7 · 11% · 26% · 8% · 100% | 3.9 · 9% · 24% · 6% · 100% | 3.3 · 9% · 23% · 3% · 100% | 2.8 · 8% · 18% · 2% · 100% |
+| 1 | 3.5 · 8% · 23% · 5% · 100% | 3.7 · 6% · 22% · 3% · 100% | 3.2 · 7% · 20% · 2% · 100% | 2.8 · 7% · 17% · 2% · 100% |
 | 2 | 3.6 · 8% · 23% · 8% · 100% | 3.7 · 6% · 20% · 3% · 100% | 3.2 · 7% · 20% · 2% · 100% | 2.8 · 6% · 16% · 2% · 100% |
 | 3 | 3.5 · 7% · 22% · 5% · 100% | 3.7 · 7% · 21% · 5% · 100% | 3.2 · 7% · 20% · 1% · 100% | 2.8 · 6% · 16% · 2% · 100% |
 
@@ -127,11 +127,11 @@ Four fights with no Rest (easy, normal, normal, hard). **The ladder** (Chapter 2
 
 | Level | | Fight 1 (easy) | Fight 2 (normal) | Fight 3 (normal) | Fight 4 (hard) | The day cleared |
 |---:|---|---|---|---|---|---|
-| 1 | The ladder | Momentum 0.0: 2.8 r · 8% · Down 4% · won 100% | Momentum 1.0: 3.5 r · 13% · Down 13% · won 100% | Momentum 1.8: 3.4 r · 11% · Down 9% · won 100% | Momentum 2.7: 4.2 r · 21% · Down 26% · won 97% | 97% |
-| 1 | Flat | Momentum 0.0: 2.8 r · 8% · Down 3% · won 100% | Momentum 0.0: 3.5 r · 13% · Down 10% · won 100% | Momentum 0.0: 3.5 r · 14% · Down 15% · won 100% | Momentum 0.0: 4.5 r · 30% · Down 39% · won 93% | 93% |
+| 1 | The ladder | Momentum 0.0: 2.7 r · 6% · Down 1% · won 100% | Momentum 1.0: 3.2 r · 10% · Down 8% · won 100% | Momentum 1.9: 3.3 r · 9% · Down 8% · won 100% | Momentum 2.8: 4.1 r · 19% · Down 22% · won 98% | 98% |
+| 1 | Flat | Momentum 0.0: 2.7 r · 7% · Down 2% · won 100% | Momentum 0.0: 3.4 r · 12% · Down 12% · won 100% | Momentum 0.0: 3.4 r · 11% · Down 12% · won 100% | Momentum 0.0: 4.3 r · 25% · Down 31% · won 96% | 96% |
 | 2 | The ladder | Momentum 0.0: 2.8 r · 6% · Down 3% · won 100% | Momentum 1.0: 3.2 r · 7% · Down 6% · won 100% | Momentum 1.9: 3.2 r · 7% · Down 6% · won 100% | Momentum 2.8: 3.9 r · 13% · Down 20% · won 99% | 99% |
 | 2 | Flat | Momentum 0.0: 2.7 r · 6% · Down 2% · won 100% | Momentum 0.0: 3.4 r · 10% · Down 9% · won 100% | Momentum 0.0: 3.4 r · 10% · Down 11% · won 100% | Momentum 0.0: 4.3 r · 22% · Down 29% · won 96% | 96% |
 | 3 | The ladder | Momentum 0.0: 2.8 r · 6% · Down 3% · won 100% | Momentum 1.0: 3.2 r · 7% · Down 7% · won 100% | Momentum 1.9: 3.2 r · 8% · Down 7% · won 100% | Momentum 2.8: 3.8 r · 13% · Down 18% · won 99% | 99% |
 | 3 | Flat | Momentum 0.0: 2.8 r · 6% · Down 3% · won 100% | Momentum 0.0: 3.4 r · 11% · Down 9% · won 100% | Momentum 0.0: 3.4 r · 11% · Down 10% · won 100% | Momentum 0.0: 4.2 r · 22% · Down 30% · won 96% | 96% |
 
-(4.6 minutes.)
+(4.3 minutes.)

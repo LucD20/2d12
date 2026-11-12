@@ -5,7 +5,7 @@ You build an NPC by picking a **role**, then a **rating** for each of its number
 
 ## The targets
 
-Each role has a **Combat Value (CV)**: what one NPC of the role counts for in an encounter. It is lower for an NPC of an earlier [[Stages|Stage]] than the party (see [[Building an encounter]]). A typical fight is **4 PCs against enemies with a total CV of 400** (CV 100 per PC). At Stage 0 it lasts about **3½ rounds** and costs the party about **a quarter of its Health**, counting the Rally Points it spends during the fight (about a tenth is still missing when it ends); a PC goes Down in about one such fight in ten. A level 1 PC built to deal damage deals about 21 to 32 a turn to one creature (one built to heal, about half), and has 29 to 35 Health.
+Each role has a **Combat Value (CV)**: what one NPC of the role counts for in an encounter. It is lower for an NPC of an earlier [[Stages|Stage]] than the party (see [[Building an encounter]]). A typical fight is **4 PCs against enemies with a total CV of 400** (CV 100 per PC). At Stage 0 it lasts about **3½ rounds** and costs the party about **a quarter of its Health**, counting the Rally Points it spends during the fight (about a tenth is still missing when it ends); a PC goes Down in about one such fight in ten. A level 1 PC built to deal damage deals about 21 to 35 a turn to one creature (one built to heal, about half), and has 29 to 35 Health.
 
 | Role | CV | AP a turn | Takes about | Deals about at Stage 0 (per turn, to an average PC) |
 |---|---|---|---|---|
@@ -286,10 +286,10 @@ What the fight model gives for 4 PCs of levels 1 to 3 with no [[Momentum]] (all 
 |---|---|---|---|---|
 | 3 Standards (300, easy) | 2½ to 3 | about 15% | 1 fight in 30 or more | always |
 | 4 Standards, 1 Elite and 2 Standards, 2 Elites, 8 Grunts, or 2 Standards and 8 Minions (400, normal) | 3½ | about a quarter | 1 fight in 10 | always |
-| 5 Standards (500, hard) | 4 to 4½ | 40 to 50% | 1 fight in 3 or 4 | 96 to 98% |
-| 6 Standards (600, deadly) | 5 to 5½ | 60 to 75% | about half the time | 76 to 88% |
+| 5 Standards (500, hard) | 4 | 40 to 45% | 1 fight in 4 | 97 to 98% |
+| 6 Standards (600, deadly) | 5 | 60 to 65% | about half the time | 86 to 88% |
 
-Level 1 is the hardest of the three (the worse end of each number; a level 1 party wins the deadly fight 76% of the time). The encounters with Grunts or Minions cost a little less than four Standards. **Momentum makes every fight easier**: at Momentum 2 the same fights cost about a quarter less, and at Momentum 4 a level 3 party wins the deadly fight 98% of the time. A party late in a good expedition can take one step more.
+The three levels are about as hard as each other. Encounters with Elites, Grunts or Minions cost less than the same CV in Standards. **Momentum makes every fight easier**: at Momentum 2 the same fights cost about a quarter less, and at Momentum 4 a level 3 party wins the deadly fight 98% of the time. A party late in a good expedition can take one step more.
 
 > [!tip]
 > These numbers assume the enemies **spread their attacks**: each strikes the PC it can reach best. If every enemy strikes **the same PC** (the weakest one, or simply the nearest), the encounter plays about **one step harder**: a normal fight like a hard one, a hard one like a deadly one. Do it on purpose (a wolf pack, a disciplined squad), and count it when you choose the CV.

@@ -18,6 +18,8 @@ MASTER-PLAN step 1. Lucas answered the 32 items Claude proposed (with defaults) 
    | 3 | Escalation 3; 1 Skill Talent | Escalation 3; 1 Skill Talent |
    | 4 (Stage 1) | 1 Apex; Stage Talent; the Stage increase: Health and Rally Points | the same |
 
+   **CHANGED 2026-11-12 (Lucas, to make level 1 less hard): the first two are swapped: level 1 gets the Escalation 2 Passive, level 2 the Escalation 4 one; level 3 keeps Escalation 6.** What follows is the first answer.
+
    **The Escalation rungs (Lucas's answer to question 1):** the Passives' Escalation levels on the 1-to-6 ladder. **Level 1 gets the Escalation 4 Passive, level 2 the Escalation 2 Passive, level 3 the Escalation 6 Passive**, and the Apex comes at level 4. "Escalation 2 / 1 / 3" in the table are today's rung names: rung 2 = 4, rung 1 = 2, rung 3 = 6.
 
    What follows from it:

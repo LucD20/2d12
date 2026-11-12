@@ -8,7 +8,7 @@
 4. **Choices.** When a species or class says "or", pick one. A class's choices between two Attributes must be different from each other (see [[Distinct Choices]]). If your class lets you, choose which of its two Modifier values is your Weapon Modifier and which your Power Modifier (see [[Weapon, Power and Signature Modifiers]]).
 5. **[[Health Pool]].** Assign your class's high Health value to Vigor or to Resolve and the low one to the other, then add your species' bonuses (neither can be under a third of the total). Your Health Pool is the two added together.
 6. **[[Rally Points]]** = your class' Rally value + 1 (it grows with your [[Stages|Stage]]).
-7. **Level 1.** Take what your class's level list gives at level 1: its Features, its **Hallmark Action** and **Hallmark Reaction** (a choice of two each) and your **Escalation 4 Passive** (see [[Leveling Up]]). Weapons and armor are in the [[Gear]] document.
+7. **Level 1.** Take what your class's level list gives at level 1: its Features, its **Hallmark Action** and **Hallmark Reaction** (a choice of two each) and your **Escalation 2 Passive** (see [[Leveling Up]]). Weapons and armor are in the [[Gear]] document.
 
 ## Classes
 
@@ -38,12 +38,12 @@ The first three levels have the same shape for every class:
 
 | Level | You gain |
 |---|---|
-| **1** | Your class's Features, a Hallmark Action, a Hallmark Reaction, your **Escalation 4** Passive, a Skill Talent |
-| **2** | Your class's Escalation hook, an Encounter Pick, your **Escalation 2** Passive, a Talent |
+| **1** | Your class's Features, a Hallmark Action, a Hallmark Reaction, your **Escalation 2** Passive, a Skill Talent |
+| **2** | Your class's Escalation hook, an Encounter Pick, your **Escalation 4** Passive, a Talent |
 | **3** | Your **Escalation 6** Passive, a Skill Talent |
 | **4** | The Apex, a Stage Talent and the numbers of Stage 1 |
 
-So a level 1 character has no Escalation ability before Escalation 4: round 4 of a fight, or sooner with [[Momentum]].
+So a level 1 character's Passive starts working at Escalation 2: round 2 of a fight, or from the start with [[Momentum]].
 
 ### Talents
 
@@ -96,4 +96,4 @@ Your **Attributes** set your Checks (Initiative is one), your Saves, your Defens
 
 ### Escalation Abilities
 
-Each class has a list of **Escalation** abilities: **Escalation Passives**, which work while your Escalation is at least their number, and **Apex** Actions, the class's big Encounter Action that needs Escalation 6. You choose one Passive for each of Escalation 2, 4 and 6: the Escalation 4 one at level 1, the Escalation 2 one at level 2 and the Escalation 6 one at level 3. You choose your Apex at level 4. Nothing spends Escalation. See [[Escalation]] for how it rises.
+Each class has a list of **Escalation** abilities: **Escalation Passives**, which work while your Escalation is at least their number, and **Apex** Actions, the class's big Encounter Action that needs Escalation 6. You choose one Passive for each of Escalation 2, 4 and 6: the Escalation 2 one at level 1, the Escalation 4 one at level 2 and the Escalation 6 one at level 3. You choose your Apex at level 4. Nothing spends Escalation. See [[Escalation]] for how it rises.

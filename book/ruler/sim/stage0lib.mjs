@@ -12,9 +12,10 @@ export const setRules = (o = {}) => Object.assign(S.RULES, S.RULES_S0, o);
 setRules();
 
 /* ------------------------------------------------------------------ the builds: the R builds cut to Lucas's level lists */
-// decisions-s1.md item 5: level 1 the Hallmark Action and Reaction and the Passive of the cards' rung 2 (at Escalation 4); level 2 the hook, an Encounter Pick
-// and the Passive of the cards' rung 1 (at Escalation 2); level 3 the Passive of the cards' rung 3 (at Escalation 6). No Apex (level 4), no Talents, no Daily.
-const RUNG = { "Radiant Zeal": [2, 2], "Searing Blows": [4, 1], Reckoning: [6, 3], "Font of Mercy": [2, 2], "Mending Light": [4, 1], "Hallowed Stance": [6, 3], "Killer's Focus": [2, 2], "Hunter's Edge": [4, 1], Finisher: [6, 3] };   // [Escalation, level]
+// decisions-s1.md item 5, with the first two Passives swapped (Lucas, 2026-11-12, to make level 1 less hard): level 1 the Hallmark Action and Reaction and
+// the Passive of the cards' rung 1 (at Escalation 2); level 2 the hook, an Encounter Pick and the Passive of the cards' rung 2 (at Escalation 4); level 3
+// the Passive of the cards' rung 3 (at Escalation 6). No Apex (level 4), no Talents, no Daily.
+const RUNG = { "Radiant Zeal": [2, 1], "Searing Blows": [4, 2], Reckoning: [6, 3], "Font of Mercy": [2, 1], "Mending Light": [4, 2], "Hallowed Stance": [6, 3], "Killer's Focus": [2, 1], "Hunter's Edge": [4, 2], Finisher: [6, 3] };   // [Escalation, level]
 export const FILES = ["paladin-smite-r1", "paladin-hands-r1", "archer-double-r1", "archer-rolling-r1"];
 const rd = f => fs.readFileSync(`${RULER}rework/${f}.txt`, "utf8");
 export const XBOW = rd("archer-double-r1").match(/^weapon Crossbow.*$/m)[0];

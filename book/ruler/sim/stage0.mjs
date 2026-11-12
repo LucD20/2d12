@@ -15,8 +15,8 @@ const L = ["# Stage 0: levels 1 to 3 in the ruler", "", "Written by `node book/r
   `Runs: ${N} fights a cell on the open field, ${NM} on a map${QUICK ? " (--quick: a draft)" : ""}. Each fight cell: ${CELL}. The decisions are the plan policy's unless a column says otherwise.`, "",
   "**The builds are not the classes' final Stage 0:** the class cards are still written for the old level lists (card sessions with Lucas come next). Until then the four R builds (Smite and Lay On Hands Paladins with Greatswords, Double Shot and Rolling Shot Archers with Crossbows; Human, 35 and 29 Health, Modifiers +2 / +1, Rally + 1, Guard 2 an unused AP) are cut to `book/decisions-s1.md`'s lists, with the Passives at Escalation 2, 4 and 6, no Apex, no Daily, no Talents:", "",
   "| Level | Paladin (Smite / Lay On Hands) | Archer (Double Shot / Rolling Shot) |", "|---|---|---|",
-  "| 1 | Smite or Lay On Hands; Rebuke or Shield of Faith; at Escalation 4: Searing Blows / Mending Light | Sharpshooter, Mark Quarry; Double Shot or Rolling Shot; Overwatch or Covering Shot; at Escalation 4: Hunter's Edge |",
-  "| 2 | + the hook (Kindled Wrath); Holy Wrath (Encounter); at Escalation 2: Radiant Zeal / Font of Mercy | + the hook (Thrill of the Kill); Pinning Shot (Encounter); at Escalation 2: Killer's Focus |",
+  "| 1 | Smite or Lay On Hands; Rebuke or Shield of Faith; at Escalation 2: Radiant Zeal / Font of Mercy | Sharpshooter, Mark Quarry; Double Shot or Rolling Shot; Overwatch or Covering Shot; at Escalation 2: Killer's Focus |",
+  "| 2 | + the hook (Kindled Wrath); Holy Wrath (Encounter); at Escalation 4: Searing Blows / Mending Light | + the hook (Thrill of the Kill); Pinning Shot (Encounter); at Escalation 4: Hunter's Edge |",
   "| 3 | + at Escalation 6: Reckoning / Hallowed Stance | + at Escalation 6: Finisher |", ""];
 
 // 1. The turns.
