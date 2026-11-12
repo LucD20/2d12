@@ -26,7 +26,7 @@ export const hasDamage = d => d.dice.length + d.w + d.flat + d.mod > 0;
  * others(n): other enemies (an area, a different target), heal(pc, n), defend(pc, n, who) }. Returns { damage, ap, strikes, problems }.
  */
 export function runTurn(pc, turn, ctx) {
-  const b = pc.build, R = ctx.R, st = { next: [...(ctx.startNext ?? [])], turnFx: [], atWill: {}, used: new Set() }, res = { damage: 0, mind: 0, ap: 0, strikes: 0, problems: [], missed: [], lostAP: 0, lastTier: 0 };
+  const b = pc.build, R = ctx.R, st = { next: [...(ctx.startNext ?? [])], turnFx: [], atWill: {}, used: new Set() }, res = { damage: 0, counted: 0, mind: 0, ap: 0, strikes: 0, problems: [], missed: [], lostAP: 0, lastTier: 0 };
   // Escalation is a resource (the book, Escalation): an Active spends what it costs; a passive works while you have at least its number.
   pc.esc ??= ctx.escalation ?? 3;
   const passives = () => b.passives.filter(p => pc.esc >= p.escalation);
@@ -68,7 +68,7 @@ export function runTurn(pc, turn, ctx) {
     if (opts.reloadShot && !reloadShot) res.problems.push(`${a.name}: a Reload Shot needs a Weapon Action with a Reload weapon`);
     let boons = opts.boons ?? 0, banes = opts.banes ?? 0, favored = reloadShot || !!a.favored, emp = (opts.empowered ?? 0) + (reloadShot ? 2 : 0), bonus = 0;
     const extra = [...(opts.extra ?? [])], anyTier = [], floors = [], firstHit = [], dc = a.vs.match(/^dc\s+(\d+)/)?.[1];
-    const target = dc ? null : (forced ?? ctx.target());
+    const target = dc ? null : (forced ?? ctx.target(a));   // the Action goes with the question: a policy can pick by the size of the hit
     if (!dc && !target) return;
     for (const p of passives()) {
       if (!matches(p.effect, a, traits, target, pc)) continue;
@@ -118,7 +118,8 @@ export function runTurn(pc, turn, ctx) {
         }
       }
       const dmg = a.tiers?.[tier - 1];
-      const land = (v, mind) => { t.damage = (t.damage ?? 0) + v; t.mindDamage = (t.mindDamage ?? 0) + mind; res.mind += mind; };   // pack R prep: the Mind part is kept for Bloodied / Strained
+      const land = (v, mind) => { res.counted += Math.min(v, Math.max(0, (t.pool ?? Infinity) - (t.damage ?? 0))); t.damage = (t.damage ?? 0) + v;   // counted: the part an enemy's Health could still take (not what goes past its last point)
+        t.mindDamage = (t.mindDamage ?? 0) + mind; res.mind += mind; };   // pack R prep: the Mind part is kept for Bloodied / Strained
       if (t === target && tier === 1) for (const x of floors) { const v = rollDamage(R, x, { mod }).total * b.dmgScale; land(v, v * mindShare(x, b.weapon, tier, mod)); res.damage += v; }   // a Tier 1 floor (Marked Quarry)
       if (t === target) for (const x of anyTier) { const v = rollDamage(R, x, { mod, empowered: emp }).total * b.dmgScale; land(v, v * mindShare(x, b.weapon, tier, mod)); res.damage += v; }   // on every Tier, whatever the Action deals
       if (dmg && (dmg.dice.length || dmg.flat || dmg.mod || (dmg.w && hasDamage(weaponTier(b.weapon, tier))))) {   // 1[W] of a weapon that deals 0 on this tier is no damage (and no extra)

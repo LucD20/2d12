@@ -19,30 +19,30 @@ Each cell: rounds · the party's Health lost · a PC goes Down · the party wins
 
 | Encounter | open | closequarters | corridor | longsight | pillars | rough |
 |---|---|---|---|---|---|---|
-| 4 Standards (normal) | 3.8 · 14% · 23% · 98% | 3.8 · 21% · 35% · 98% | 3.9 · 22% · 35% · 98% | 3.8 · 19% · 30% · 98% | 3.9 · 21% · 33% · 95% | 3.8 · 16% · 26% · 99% |
-| 3 Standards + 1 Ward attacker | 3.8 · 15% · 28% · 98% | 3.8 · 24% · 35% · 97% | 4.0 · 24% · 41% · 98% | 3.8 · 21% · 34% · 97% | 3.8 · 23% · 35% · 97% | 3.8 · 20% · 32% · 98% |
-| Elite + 2 Standards | 3.9 · 14% · 25% · 100% | 3.9 · 18% · 31% · 100% | 3.8 · 14% · 23% · 100% | 3.8 · 14% · 21% · 100% | 3.8 · 15% · 22% · 100% | 3.8 · 16% · 26% · 100% |
-| 6 Standards (CV 6, deadly) | 5.9 · 47% · 73% · 73% | 5.4 · 64% · 87% · 54% | 5.6 · 64% · 87% · 55% | 5.6 · 56% · 78% · 62% | 5.3 · 61% · 83% · 57% | 5.6 · 53% · 78% · 64% |
-| 2 Standards + 2 ranged Standards | 4.2 · 16% · 27% · 98% | 4.3 · 16% · 28% · 99% | 4.3 · 16% · 28% · 98% | 4.2 · 22% · 37% · 96% | 4.3 · 18% · 29% · 97% | 4.2 · 21% · 32% · 98% |
+| 4 Standards (normal) | 3.7 · 14% · 26% · 99% | 3.7 · 22% · 36% · 98% | 3.7 · 21% · 31% · 98% | 3.6 · 19% · 28% · 98% | 3.6 · 18% · 27% · 98% | 3.6 · 18% · 29% · 99% |
+| 3 Standards + 1 Ward attacker | 3.7 · 17% · 29% · 98% | 3.8 · 25% · 39% · 98% | 3.7 · 21% · 32% · 98% | 3.7 · 20% · 29% · 98% | 3.8 · 23% · 33% · 97% | 3.6 · 18% · 28% · 99% |
+| Elite + 2 Standards | 3.7 · 12% · 21% · 100% | 3.8 · 17% · 26% · 99% | 3.8 · 14% · 23% · 99% | 3.7 · 13% · 21% · 100% | 3.8 · 16% · 28% · 100% | 3.7 · 16% · 25% · 99% |
+| 6 Standards (CV 6, deadly) | 5.6 · 43% · 65% · 76% | 5.1 · 64% · 83% · 51% | 5.7 · 60% · 85% · 59% | 5.5 · 51% · 73% · 69% | 5.3 · 57% · 77% · 61% | 5.5 · 53% · 77% · 69% |
+| 2 Standards + 2 ranged Standards | 4.1 · 16% · 29% · 98% | 4.2 · 18% · 32% · 98% | 4.2 · 17% · 30% · 97% | 4.1 · 21% · 32% · 97% | 4.2 · 18% · 29% · 98% | 4.1 · 21% · 33% · 98% |
 
 **What the map does to the party** (4 Standards (normal); per PC, a fight):
 
 | | open | closequarters | corridor | longsight | pillars | rough |
 |---|---:|---:|---:|---:|---:|---:|
-| A Paladin: AP spent moving | 1.87 | 1.24 | 1.62 | 1.91 | 1.60 | 1.72 |
-| A Paladin: damage dealt | 53.8 | 61.2 | 58.8 | 55.1 | 56.0 | 53.8 |
-| A Paladin: damage taken | 19.6 | 21.9 | 19.9 | 18.6 | 21.6 | 18.0 |
-| An Archer: AP spent moving | 0.00 | 0.04 | 0.03 | 0.00 | 0.09 | 0.00 |
-| An Archer: damage dealt | 97.6 | 89.1 | 92.1 | 96.6 | 92.8 | 98.1 |
-| An Archer: damage taken | 12.8 | 14.9 | 16.7 | 11.0 | 13.9 | 10.7 |
-| An Archer: shots | 11.3 | 10.6 | 11.0 | 11.2 | 10.9 | 11.3 |
-| ... with Cover (share of its shots) | 48% | 50% | 57% | 51% | 57% | 51% |
-| ... Banes from the map on a shot | 0.87 | 0.92 | 1.12 | 1.06 | 1.16 | 0.82 |
-| An Archer: Actions with no target it could see or reach | 0.00 | 0.45 | 0.35 | 0.00 | 0.27 | 0.00 |
+| A Paladin: AP spent moving | 1.79 | 1.11 | 1.46 | 1.77 | 1.53 | 1.77 |
+| A Paladin: damage dealt | 50.9 | 56.0 | 55.7 | 51.1 | 52.2 | 48.0 |
+| A Paladin: damage taken | 18.7 | 22.1 | 19.2 | 18.8 | 18.9 | 18.4 |
+| An Archer: AP spent moving | 0.00 | 0.04 | 0.05 | 0.00 | 0.06 | 0.00 |
+| An Archer: damage dealt | 91.0 | 85.4 | 85.0 | 90.6 | 88.6 | 93.3 |
+| An Archer: damage taken | 12.0 | 14.0 | 15.1 | 10.8 | 13.1 | 10.1 |
+| An Archer: shots | 10.7 | 10.1 | 10.2 | 10.6 | 10.5 | 10.8 |
+| ... with Cover (share of its shots) | 47% | 52% | 59% | 52% | 58% | 52% |
+| ... Banes from the map on a shot | 0.87 | 0.92 | 1.17 | 1.10 | 1.18 | 0.82 |
+| An Archer: Actions with no target it could see or reach | 0.00 | 0.41 | 0.31 | 0.00 | 0.21 | 0.00 |
 | A Paladin: Actions with no target in reach | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 |
-| Reactions used (a PC) | 2.03 | 2.24 | 2.18 | 2.10 | 2.20 | 2.15 |
-| Turns that start Engaged (an Archer) | 1.12 | 1.34 | 1.41 | 1.44 | 1.32 | 1.27 |
-| Collision damage it caused (a PC) | 0.0 | 0.8 | 0.5 | 0.4 | 0.6 | 0.4 |
+| Reactions used (a PC) | 1.97 | 2.10 | 2.13 | 2.04 | 2.11 | 2.03 |
+| Turns that start Engaged (an Archer) | 1.05 | 1.30 | 1.28 | 1.34 | 1.32 | 1.22 |
+| Collision damage it caused (a PC) | 0.0 | 0.7 | 0.5 | 0.3 | 0.5 | 0.4 |
 
 ## 2. What Speed and the movement conditions are worth, by map
 
@@ -63,4 +63,4 @@ Each price is 400 pairs of fights with the same dice (every creature rolls its o
 
 A price is for one creature (the Speed rows: for one of the two PCs, or one of the four Standards). On the open field every Advance reaches whatever its length, so Speed is worth nothing there; a map gives it a price where the way is long (a corridor, rough ground) or the lines are blocked.
 
-(19.5 minutes.)
+(20.8 minutes.)

@@ -105,9 +105,10 @@ Playtest 4's encounter replayed in SIM (the same creatures, the map approximated
 
 ### After SIM-4: what the Stage 0 run should know
 
-1. **SIM's "damage dealt" counts damage past an enemy's last point of Health** (about a quarter of what the party rolls against a mixed encounter). Compare classes by rounds, Health lost and win rates, or add a damage-that-counted number, before reading "damage a turn" rows as a class's worth.
-2. **The plan policy's target choice wastes hits on Minions** ("closest to dying"); the table ignored them. A `focus` that weighs overkill and the enemy's threat is the first policy to add (`sim/policy.mjs`: `minionsLast` is a start).
-3. **Against the one table fight there is, nothing else disagrees** (rolls a turn, the enemies' damage, the dice): `book/ruler/playtest-4-sim.md`. One fight is a small sample.
+1. **Playtest 4's replay found an error in the engine, fixed (2026-11-12):** an enemy at 0 Health is now out at once (`RULES.outAtOnce`); before, the rest of the turn kept hitting it. Every current report was run again; report.md is the gate as committed after the fix.
+2. **Read "damage that counted" (new in the reports), not "damage dealt",** for what a class does to a fight: damage dealt still includes the part of a killing hit past the last point of Health (11% of it against 4 Standards, 30% against many Minions).
+3. **Whom the party hits first hardly matters** (measured: the plan, the hit sized to the target, the Minions left for last), so the plan policy's target choice stays.
+4. **Against the one table fight there is, nothing disagrees but one PC's turns** (`book/ruler/playtest-4-sim.md`): three of the four PCs sit in the middle of SIM's range. One fight is a small sample.
 
 ## 6. What the ruler still lacks (the README's "not modeled" lists), and where it goes
 

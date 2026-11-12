@@ -319,6 +319,7 @@ function reactionsSection(party, fights, lv) {
     row("Turns", st => st.rounds, 1);
     row("Reactions used", st => st.reactions);
     row("... Opportunity Attacks", st => st.oaReal);
+    row("Damage dealt · the part that counted against Health", st => st.dealt, 1); row("... that counted", st => st.counted, 1);
     row("Damage its Reactions dealt", st => st.reactionDealt, 1);
     row("... its Opportunity Attacks", st => st.oaDealt, 1);
     row("Damage its Reactions blocked", st => st.blockCredit, 1);
@@ -339,7 +340,7 @@ export function report({ builds, fights }) {
   const lv = fights.level;
   const LEVEL = RULES.escalation === "level", src = fights.source ?? { dir: "classes", fights: "fights.txt", cmd: "node book/ruler/spec.mjs" };
   L.push(`# The ruler: class builds and fights (level ${lv})`, "", `Written by \`${src.cmd}\` from \`book/ruler/${src.dir}/*.txt\` and \`book/ruler/${src.fights}\`. Don't edit this file: edit those and run the script again.`, "",
-    LEVEL ? `**The rules: the book today (pack R; the ruler's default since the catch-up of 2026-11-12).** ${RULES.ap} AP + ${RULES.reactionAp} Reaction AP (NPCs ${RULES.npcAp} + ${RULES.npcReactionAp}, Minions ${RULES.minionAp}); Escalation is a level from ${RULES.startEsc} (2 with Momentum), never spent, +1 on a Critical and on the class's hook (once an encounter each); each AP still unused when the next turn starts gives Guard ${TW.guardPerAp.join(" / ")} (by Stage) for 1 round; a creature gains its Reaction AP at the start of its turn (none before its first turn of the encounter); every creature has the Opportunity Attack Reaction (an adjacent enemy that leaves a square with a Move Action or stands up); NPCs use their Specials (Round: ${TW.npcSpecial.filter(x => x.key !== "basic").map(x => `${x.label.replace("Special, ", "")} × ${x.x}`).join(", ")} for an Elite's Encounter one) and Elites their Escalation and phases; the Bestiary's live tables (config.mjs); Boons and Banes are flat and cancel, Field ones up to 2, High cover Doomed, Flanking up to 2 after the cancels (calc.mjs, map.mjs).`
+    LEVEL ? `**The rules: the book today (pack R; the ruler's default since the catch-up of 2026-11-12).** ${RULES.ap} AP + ${RULES.reactionAp} Reaction AP (NPCs ${RULES.npcAp} + ${RULES.npcReactionAp}, Minions ${RULES.minionAp}); Escalation is a level from ${RULES.startEsc} (2 with Momentum), never spent, +1 on a Critical and on the class's hook (once an encounter each); each AP still unused when the next turn starts gives Guard ${TW.guardPerAp.join(" / ")} (by Stage) for 1 round; a creature gains its Reaction AP at the start of its turn (none before its first turn of the encounter); every creature has the Opportunity Attack Reaction (an adjacent enemy that leaves a square with a Move Action or stands up); NPCs use their Specials (Round: ${TW.npcSpecial.filter(x => x.key !== "basic").map(x => `${x.label.replace("Special, ", "")} × ${x.x}`).join(", ")} for an Elite's Encounter one) and Elites their Escalation and phases; the Bestiary's live tables (config.mjs); Boons and Banes are flat and cancel, Field ones up to 2, High cover Doomed, Flanking up to 2 after the cancels (calc.mjs, map.mjs); an enemy at 0 Health is out at once (the rest of that turn goes to another enemy: since 2026-11-12).`
       : `**The rules: the book before pack R** (\`--pre-r\`: ${RULES.ap} AP, no Reaction AP, Escalation spent, the pre-R Bestiary, Opportunity Attack as a Talent), with today's dice and map rules (flat Boons and Banes, the new Favored, the Field limit, Flanking up to 2). The builds are the classes as they were before pack R-classes: this report is kept for the pre-R studies (prices.md, positions.json, bestiary.md, progression.md, rework.md).`, "");
   for (const b of builds) {
     L.push(`## ${b.name} (${b.role || "no role"}), \`${b.file}\``, "");
@@ -420,6 +421,7 @@ export function report({ builds, fights }) {
         const row = (label, fn, dg) => L.push(`| ${label} | ${col(fn, dg).join(" | ")} |`);
         const partyDealt = x => x.pcs.reduce((s, p) => s + p.st.dealt, 0) || 1;
         row("Damage dealt", p => p.st.dealt);
+        if (RULES.outAtOnce) { row("Damage that counted (what the enemies' Health could take: not the part of a killing hit past the last point)", p => p.st.counted); row("... a turn (its own turns)", p => p.st.counted / Math.max(1, p.st.rounds)); }
         row("Damage a turn (its own turns)", p => p.st.dealt / Math.max(1, p.st.rounds));
         row("Damage a turn without its Nova turns (no Encounter or Daily Action)", p => (p.st.dealt - p.st.novaDealt) / Math.max(1, p.st.rounds - p.st.novaTurns));
         row("Damage a Nova turn (with an Encounter or Daily Action)", p => (p.st.novaTurns ? p.st.novaDealt / p.st.novaTurns : NaN));

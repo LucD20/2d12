@@ -52,8 +52,8 @@ On a map an Action with an Area is placed on the grid and hits who stands in it.
 
 On the open field of `report.md` nothing changed: an Area still hits the number of creatures its card's ruler line says (`RULES.areasOnGrid` false: the gate). `book/ruler/areas.md` (`node book/ruler/sim/areas.mjs`, about 5 minutes) compares the two with a party that uses the Area cards (`parties.mjs`):
 
-- **The ruler lines' numbers are right for the normal fight and low for a big one.** Against 4 Standards a Volley holds 2.0 to 2.5 enemies (its line says 2), Consecrated Ground 2.2 to 2.6 (2), Final Verdict 1.2 to 1.4 (1.5), Word of Radiance's 3 Burst 2.6 to 3.1 (2.3). Against 6 Standards: Volley 2.6 to 3.5, Consecrated Ground 2.6 to 3.5, Final Verdict 1.8 to 2.3, Word of Radiance 4.1 to 5.0, Rain of Arrows 3.2 to 3.4 (2.5).
-- **A Zone works only for who stays in it.** On the plan policy the Paladins walk out of their own Consecrated Ground to meet the enemy, and the party with the Area cards does a little worse on the grid than by count (the normal fight on the open field: 16% of its Health against 11%). Holding the line with it is the best result measured on most maps (the normal fight 10 to 13%; the deadly fight in the long hall won 88% against 70%).
+- **The ruler lines' numbers are right for the normal fight and low for a big one.** Against 4 Standards a Volley holds 1.6 to 2.5 enemies (its line says 2), Consecrated Ground 2.2 to 2.7 (2), Final Verdict 1.2 to 1.4 (1.5), Word of Radiance's 3 Burst 2.6 to 3.1 (2.3). Against 6 Standards: Volley 2.3 to 3.5, Consecrated Ground 2.6 to 3.5, Final Verdict 1.8 to 2.4, Word of Radiance 3.8 to 5.0, Rain of Arrows 3.0 to 3.3 (2.5).
+- **A Zone works only for who stays in it.** On the plan policy the Paladins walk out of their own Consecrated Ground to meet the enemy, and the party with the Area cards does a little worse on the grid than by count (the normal fight on the open field: 16% of its Health against 13%). Holding the line with it is the best result measured on most maps (the normal fight in the long hall 9% against 20%; the deadly fight there won 88% against 72%).
 - **Hallowed Dawn reaches fewer allies than its line says.** Its 2 Emanation around the Paladin holds 1 or 2 allies on a map, not the 3 of its ruler line (the Archers stand back): it heals 34 Health a deadly fight instead of 44, which is 5 points of the party's Health. This alone moved `maps.md` (the normal fight on the maps: 16 to 22% of the party's Health, was 16 to 18%; the deadly fight among the pillars is won 57%, was 60%).
 - **Covering Fire** defends about 10 Strikes against allies in a normal fight and 20 in a deadly one, and its Bane lands on 5 to 11 enemy Strikes: far more than its line's "2 enemies, 2 allies" for 3 rounds assumed.
 
@@ -71,7 +71,7 @@ It is one file with no build step and nothing loaded from the network. It knows 
 
 ## The gate (sim-brief.md 4.2)
 
-SIM-1 moved the fight out of `spec.mjs` and split its decisions from its rules without changing a roll: **`report.md`, `report-pre-r.md`, `rclasses.md` and `rbestiary.md` come out byte for byte the same** as the ruler catch-up left them (the same seeds, the same dice in the same order), which is stricter than the brief's 3%. Any later change to the engine is checked the same way: run them and `git status` must be clean, or the change is a rule or a decision that moved and the README says which.
+SIM-1 moved the fight out of `spec.mjs` and split its decisions from its rules without changing a roll: `report.md`, `report-pre-r.md`, `rclasses.md` and `rbestiary.md` came out byte for byte the same as the ruler catch-up left them, which is stricter than the brief's 3%. **The gate is the committed `report.md`.** It has changed on purpose once since: 2026-11-12, an enemy at 0 Health is out at once (`RULES.outAtOnce`; "Checked against the table" below). Any later change to the engine is checked the same way: run them and `git status` must be clean, or the change is a rule or a decision that moved and the README says which.
 
 ## One rules engine, not three
 
@@ -117,11 +117,12 @@ The engine asks the policy; `planPolicy` answers as the ruler always did (report
 
 **What `policies.md` found (300 fights a cell; the party's Health lost, a PC Down, the party wins):**
 
-- **Decisions move the result as much as the encounter's size.** The normal fight on the open field costs 9% of the party's Health when it holds the line and 20% when it plays casually (the plan: 14%). The deadly fight in the corridor is won 62% of the time holding the line, 53% on the plan, 32% casually.
-- **Holding the line is the best single decision** everywhere (normal fight 14% → 9% on the open field, deadly fight won 71% → 77%): the enemies come to the party, the Paladins get whole turns and their unused AP's Guard is finally used (0.2 a fight instead of 0.04).
-- **Focus fire is worth about a third of the fight:** without it (casual) the deadly fight costs 64% instead of 48% on the open field.
-- **Kiting as written here doesn't pay:** the step away costs an AP of shots (an Archer deals 5% less) and the party takes the same. Protecting the back line and holding the Encounter Action for round 2 are inside the noise. Reacting to the first trigger costs up to 7 points on the maps.
-- **How the GM plays the enemies matters more than anything the party does.** Enemies that all strike the weakest PC put a PC Down in 50% of the normal fights (the plan: 21%) and win the deadly fight 46% of the time (29%); enemies that all walk to the nearest PC are as dangerous on a map (the corridor's deadly fight: won 25%), because they pile on the front line. The Bestiary's fit ("a Down in about 1 fight of 5") is the plan policy's.
+- **Decisions move the result as much as the encounter's size.** The normal fight on the open field costs 11% of the party's Health when it holds the line and 21% when it plays casually (the plan: 14%). The deadly fight in the corridor is won 65% of the time holding the line, 58% on the plan, 32% casually.
+- **Holding the line is the best single decision** everywhere (normal fight 14% → 11% on the open field, deadly fight won 77% → 85%): the enemies come to the party, the Paladins get whole turns and their unused AP's Guard is finally used.
+- **Focus fire is worth about a third of the fight:** without it (casual) the deadly fight costs 62% instead of 41% on the open field.
+- **Kiting as written here doesn't pay:** the step away costs an AP of shots and the party takes the same. Protecting the back line and holding the Encounter Action for round 2 are inside the noise. Reacting to the first trigger costs up to 4 points on the maps.
+- **How the GM plays the enemies matters more than anything the party does.** Enemies that all strike the weakest PC put a PC Down in 48% of the normal fights (the plan: 23%) and win the deadly fight 42% of the time (23%); enemies that all walk to the nearest PC are as dangerous on a map (the corridor's deadly fight: won 25%), because they pile on the front line. The Bestiary's fit ("a Down in about 1 fight of 5") is the plan policy's.
+- **Whom the party hits first hardly matters** once an enemy at 0 Health is out at once (below): the enemy closest to dying (the plan), the hit sized to the target (`threat`) and the Minions left for last all land within 1 point of each other; leaving the Minions for last is a little worse.
 
 Each number of report.md, maps.md, rclasses.md and rbestiary.md is the plan policy's; policies.md is the range around them.
 
@@ -135,22 +136,23 @@ Known gaps of `planPolicy`, each a finding for SIM-3 (README of the ruler, "The 
 
 `book/playtest-4.md` is the one fight of the current rules played at the table and written down: the four level 1 PCs against an Ogre Chieftain, an Orc Warrior, a Bandit Thug and three Goblin Sneaks, stopped in the middle of round 4. `playtest4.mjs` runs the same encounter (the enemies with their compendium ratings, Kaela with her Shortbow, three maps since the table's wasn't recorded) and sets the table beside SIM's fights: `book/ruler/playtest-4-sim.md`.
 
-**What agrees:**
+**It found an error in the engine, fixed the same day (`RULES.outAtOnce`).** An enemy brought to 0 Health was marked out only at the end of that turn, so the rest of the turn went on hitting it, and "damage dealt" counted those hits: SIM's damage a turn read 46% above the table's. Now an enemy at 0 Health is out at once and the rest of the turn goes to another enemy, and every PC has **damage that counted** (what the enemies' Health could take) beside damage dealt. What the fix moved in the reports: fights are a little shorter (the normal fight 3.8 → 3.7 rounds, the same 14% of the party's Health), encounters with many small enemies are easier (2 Standards + 8 Minions: 13% → 10% of the party's Health, a Down in 21% → 12%), the deadly fight is won 74% (73%); the Bestiary's Stage 3 Health fit is back where the book has it (1.22: × 1.20), and its Elite factor reads 1.04 (the book: × 1.00).
 
-- **Attack rolls a PC turn:** 2.4 at the table, 2.5 in SIM.
-- **The enemies:** the Ogre dealt 10.3 a turn at the table; SIM's Ogre deals 13.5, and the table's fight sits at SIM's 32nd percentile. A Goblin: 1.0 against 2.1.
-- **Durgan (Lay On Hands):** 4.3 damage a turn against 5 to 7; his Lay On Hands spent 2 Rally Points against 1.3.
-- **Damage that counts:** measured against the enemies' Health, an attack roll is worth 6.7 in SIM and at most 6.4 at the table.
+**After the fix, what agrees with the table:**
+
+- **Aveline, Durgan and Sylwen:** 22.7 / 4.3 / 22.5 damage a turn at the table; SIM's damage that counted is 24.5 / 4.8 / 23.8, and the table sits at SIM's 39th, 50th and 42nd percentile.
+- **Attack rolls a PC turn:** 2.4 at the table, 2.4 in SIM.
+- **The enemies:** the Ogre dealt 10.3 a turn at the table; SIM's Ogre deals 13.5 (the table is at its 34th percentile). A Goblin: 1.0 against 1.8.
+- **Durgan's Lay On Hands** spent 2 Rally Points against 1.3.
 
 **What doesn't, and why:**
 
-- **SIM's "damage dealt" is 46% above the table's (22.6 a PC turn against 15.5), and the table's fight is at the bottom of SIM's range (the 1st percentile).** Most of it is how damage is counted, not how much is done: SIM counts every point rolled, also past an enemy's last point of Health, and its party spends whole hits on 5-Health Goblins (three shots on one Goblin in the fight printed in the report). About a quarter of what it rolls is lost that way. **So the "damage a turn" and "share of the party's damage" rows of every report overstate what a PC does to the fight; rounds, Health lost, Downs and win rates are not affected** (they come from the fight itself).
-- **Whom the party hits.** The table killed one Goblin and the Thug and put everything else into the Ogre and the Orc; neither was out after 3 rounds. SIM's plan policy hits "the enemy closest to dying": after 3 rounds its Goblins are all out, the Orc is out in 85% of its fights and the Ogre in 8%. The table ignored the Goblins (they did 3 damage each in the whole fight): that is a decision the plan policy doesn't make, and a better `focus` would weigh what a hit wastes.
-- **What the PCs use.** Against the Ogre and the Orc a SIM roll is bigger (9.1): the builds take the larger Versions and their Escalation Passives every turn (Rolling Shot at 2 AP with its extra die where Kaela used the 1 AP one and moved in every turn), and the table's PCs moved almost every turn (0.9 moves a turn against 0.5) and spent Actions on Covering Fire, Beacon, a Shove and Leaning. Kaela is the far outlier (11.5 a turn against 25).
-- **A PC Down:** none at the table in 3 rounds; in SIM a PC is Down in about half of its fights by then. One fight can't decide it, but it points the same way as the Ogre's damage: SIM's enemies are a little harder on the party than this table's were.
-- **The dice:** the PCs' rolls at the table were Tier 1 / 2 / 3 21% / 59% / 21% over 34 rolls, SIM's 33% / 42% / 25%: more Tier 2 than expected, within what 34 rolls allow.
+- **Kaela** dealt 11.5 a turn; SIM's Rolling Shot Archer with her Shortbow 18.4 (the table is at its 6th percentile). She moved in every turn, used the 1 AP Rolling Shot where the build takes the 2 AP one with its extra die, and spent Actions on Covering Fire and Open Season: decisions. With her, the party's damage that counted is 15% above the table's (17.9 a PC turn against 15.5).
+- **Whom the party hits.** The table killed one Goblin and the Thug and put everything else into the Ogre and the Orc; neither was out after 3 rounds. SIM's party kills the three Goblins and, in 93% of its fights, the Orc by then. SIM measured both ways (above): it makes no difference to the result.
+- **A PC Down:** none at the table in 3 rounds; in SIM in 38 to 49% of its fights by then. One fight can't decide it; it points the same way as the Ogre's damage: SIM's enemies are a little harder on the party than this table's were.
+- **The dice:** the PCs' rolls at the table were Tier 1 / 2 / 3 21% / 59% / 21% over 34 rolls, SIM's about 33% / 42% / 25%: more Tier 2 than expected, within what 34 rolls allow.
 
-**No rule was found to disagree.** The gaps are decisions (targets, Versions, movement) and one of bookkeeping (damage past the last point of Health). One fight of three and a half rounds is a small sample: the next table fight exported with the Encounter Log's Copy goes through the same script.
+**No rule was found to disagree.** One fight of three and a half rounds is a small sample: the next table fight exported with the Encounter Log's Copy goes through the same script.
 
 ## The log
 

@@ -60,7 +60,7 @@ export function npcTurn(npc, build, n = 20000) {
 
 /** A PC's state across a day: its damage, Rally Points, and what it did (st). */
 export const pcState = b => ({ build: b, damage: 0, mindDamage: 0, down: false, rallyLeft: b.rallyPoints, defBonus: 0, defBy: null,
-  st: { bleedDealt: 0, dealt: 0, mindTaken: 0, strainedTurns: 0, rounds: 0, novaDealt: 0, novaTurns: 0, incoming: 0, reduced: 0, reducedGiven: 0, taken: 0, defCredit: 0, vulnCredit: 0, surgeCredit: 0, guardCredit: 0, blockCredit: 0, apGuardGiven: 0, apGuardUsed: 0, apLeft: 0, hookCrit: 0, hookClass: 0, specials: 0, reactionDealt: 0, mindDealt: 0, bloodiedTurns: 0, escTurns: [0, 0, 0, 0], baneCredit: 0, healGiven: 0, mendGiven: 0, mercyGiven: 0, rpSelf: 0, rpByAlly: 0, rpBetween: 0, downs: 0, debuffs: {},
+  st: { bleedDealt: 0, dealt: 0, counted: 0, mindTaken: 0, strainedTurns: 0, rounds: 0, novaDealt: 0, novaTurns: 0, incoming: 0, reduced: 0, reducedGiven: 0, taken: 0, defCredit: 0, vulnCredit: 0, surgeCredit: 0, guardCredit: 0, blockCredit: 0, apGuardGiven: 0, apGuardUsed: 0, apLeft: 0, hookCrit: 0, hookClass: 0, specials: 0, reactionDealt: 0, mindDealt: 0, bloodiedTurns: 0, escTurns: [0, 0, 0, 0], baneCredit: 0, healGiven: 0, mendGiven: 0, mercyGiven: 0, rpSelf: 0, rpByAlly: 0, rpBetween: 0, downs: 0, debuffs: {},
     shots: 0, engagedShots: 0, intoMelee: 0, covered: 0, coverBanes: 0, rangeBanes: 0, turnsEngaged: 0, stillTurns: 0, struck: 0, mapBanes: 0, swings: 0, flankBoons: 0, outOfReach: 0, moveAP: 0, lostAP: 0, charges: 0, reactions: 0, oaMade: 0, oaReal: 0, oaDealt: 0, oaDisrupt: 0, oaTaken: 0, oaTakenDmg: 0, carefulSteps: 0, condApplied: 0, forced: 0 } });
 /** The most a PC heals more per Rally Point from a party member's passive (Font of Mercy; the best one, they don't stack), and who gives it. */
 export const rallyBonus = (pcs, t, inCombat = true) => { let n = 0, by = null; for (const g of pcs) if (!g.down || g === t) for (const p of g.build.passives) if (p.effect.kind === "rallybonus" && p.effect.n > n && (inCombat ? (g.esc ?? 0) : 0) >= p.escalation) { n = p.effect.n; by = g; } return { n, by }; };   // an Escalation passive works only in a fight (Escalation is 0 between fights)
@@ -93,7 +93,9 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   // streams: each creature rolls its own dice (econ's paired runs: a change to one creature leaves the others' rolls as they were).
   if (streams) { const base = Math.floor(R() * 2 ** 31); [...pcs, ...foes].forEach((c, i) => { c.R = rng(base + i * 7919); }); } else for (const p of pcs) delete p.R;
   let round = 0, firstDown = 0, actionId = 0;
-  const alive = () => foes.filter(f => !f.dead), up = () => pcs.filter(p => !p.down);
+  // The fix of 2026-11-12 (Playtest 4's replay): an enemy at 0 Health is out at once, not at the end of the turn that did it, so the rest of that turn goes to
+  // another enemy (RULES.outAtOnce; false: the ruler until then, which kept hitting it and counted that damage).
+  const alive = () => (RULES.outAtOnce ? foes.filter(f => !f.dead && f.damage < f.pool) : foes.filter(f => !f.dead)), up = () => pcs.filter(p => !p.down);
   // The engine's view of the fight for the policy (policy.mjs), and the log (opts.log: every thing that happens, in order; nothing reads it back).
   const E = { pcs, foes, alive, up, R, M, get round() { return round; }, get W() { return W; } };
   const nameOf = c => c.label ?? (c.label = c.build ? `${c.build.name} ${pcs.indexOf(c) + 1}` : `${c.name} ${foes.indexOf(c) + 1}`), at = c => (c?.pos ? [c.pos.x, c.pos.y] : null);
@@ -186,7 +188,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     for (const p of up()) for (const rx of p.build.reactions ?? []) if (rx.kind === "rebuke" && p !== t && p.keptAP >= 1 && !p.cond?.staggered && (rx.turn ? p.rebukeFor !== f.turnId : p.rebukeRound !== round) && !f.dead && (!M || (rx.range ? MP.dist(p.pos, f.pos) <= rx.range : MP.adj(p, f)))) {   // `rebuke 5`: within 5 squares instead of your Reach
       p.rebukeRound = round; p.rebukeFor = f.turnId; spendReact(p); p.st.reactions++; ev("reaction", { who: nameOf(p), reaction: rx.name, on: nameOf(f) });
       const tier = pick(p.R ?? R, C.tierProbs(f.save?.appeal ?? 1, 11 + p.build.powerMod, 0, 0, ""));
-      if (tier <= 2) { const v = rollDamage(p.R ?? R, parseDamage(tier === 1 ? "1d8" : "1d6")).total; f.damage += v; f.mindDamage = (f.mindDamage ?? 0) + v; p.st.dealt += v; p.st.reactionDealt += v; p.st.mindDealt += v;
+      if (tier <= 2) { const v = rollDamage(p.R ?? R, parseDamage(tier === 1 ? "1d8" : "1d6")).total; p.st.counted += Math.min(v, Math.max(0, f.pool - f.damage)); f.damage += v; f.mindDamage = (f.mindDamage ?? 0) + v; p.st.dealt += v; p.st.reactionDealt += v; p.st.mindDealt += v;
         if (M) MP.force("push", p, f, tier === 1 ? 2 : 1, W); if (tier === 1) { MP.applyCondition(f, "Frightened (EoT)", p); p.st.condApplied++; } killCheck(); }
     }
     for (const p of up()) for (const rx of p.build.reactions ?? []) if (rx.kind === "ready" && p.keptAP >= 1 && !p.cond?.staggered && p.readyRound !== round && (!M || MP.dist(p.pos, f.pos) <= 10)) { p.readyRound = round; spendReact(p); p.st.reactions++; p.readyAP = 1; }   // pack R-classes: Ready Shot (1R, Round): +1 AP on its next turn
@@ -200,7 +202,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   const ctxFor = (pc, extra = {}) => ({
     R: pc.R ?? R, escalation: pc.esc,
     log: events ? (type, o) => ev(type, { who: nameOf(pc), ...o, target: o.target ? nameOf(o.target) : null }) : null,
-    target: () => P.pcTarget(E, pc),
+    target: a => P.pcTarget(E, pc, a),
     others: n => P.pcOthers(E, pc, n),
     heal: (who, n, kind) => useRally(P.healTarget(E, who, kind), n, who),   // an ally's Rally Point only when it heals at least 3/4 of its value
     defend: (who, n, kind, a) => { if (geo() && a?.shape && kind === "allies") { zoneOf(who, a, null).def = n; return; } for (const t of P.defendTargets(E, who, kind, a)) if (n >= t.defBonus) { t.defBonus = n; t.defBy = who; ev("help", { who: nameOf(who), target: nameOf(t), what: `+${n} Defense` }); } },
@@ -239,7 +241,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   /** A PC's Reaction: a Weapon Attack against f (Opportunity Attack, Quick Draw). Returns { crit }. */
   const pcReact = (p, f, action = "Weapon Attack", boons = 0, oa = false) => {
     const r = runTurn(p, { name: "Reaction", steps: [action] }, ctxFor(p, { target: () => f, startNext: boons ? [{ kind: "boon", n: boons, scope: "next", traits: [] }] : [], log: null }));   // its roll is written with the Reaction's own line
-    p.st.dealt += r.damage; p.st.reactionDealt += r.damage; p.st.reactions++; ev("reaction", { who: nameOf(p), reaction: p.rxNow ?? (oa ? "Opportunity Attack" : action), on: nameOf(f), damage: r.damage, tier: r.lastTier || undefined }); p.rxNow = null; if (oa) { p.st.oaReal++; p.st.oaDealt += r.damage; } killCheck();
+    p.st.dealt += r.damage; p.st.counted += r.counted; p.st.reactionDealt += r.damage; p.st.reactions++; ev("reaction", { who: nameOf(p), reaction: p.rxNow ?? (oa ? "Opportunity Attack" : action), on: nameOf(f), damage: r.damage, tier: r.lastTier || undefined }); p.rxNow = null; if (oa) { p.st.oaReal++; p.st.oaDealt += r.damage; } killCheck();
     if (r.crit) hook(p, "crit");
     return { crit: r.crit || (r.lastTier === 3 && (p.R ?? R)() < (r.critShare ?? 1 / 12)), tier: r.lastTier };   // a Critical (the share of its Tier 3s: calc.mjs)
   };
@@ -439,7 +441,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
         if (r.crit) hook(pc, "crit");
         if (M) { pc.st.lostAP += r.lostAP; pc.reacted = null; if (pc.cond.hindered) pc.cond.hindered = null; if (pc.cond.immob === "eot") pc.cond.immob = null; pc.cond.staggered = null; pc.cond.blinded = null; pc.cond.frightened = null;
           if (pc.cond.bleed) { const v = rollDamage(pc.R ?? R, parseDamage(pc.cond.bleed.dmg)).total; pc.damage += v; pc.st.taken += v; } }   // a PC's Bleed at the end of its turn (pack R-classes)
-        pc.st.dealt += r.damage; pc.st.mindDealt += r.mind;
+        pc.st.dealt += r.damage; pc.st.counted += r.counted; pc.st.mindDealt += r.mind;
         if (r.nova) { pc.st.novaDealt += r.damage; pc.st.novaTurns++; }
         killCheck();
       } else {

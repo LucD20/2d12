@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: acaeca1 2026-11-12 SIM: areas and Zones on the grid (book/ruler/areas.md)
+Built by tools/knowledge.py on 2026-11-12 from the repository at: 9a4ab1d 2026-11-12 SIM-4: a fight in the Encounter Log's playtest format; Playtest 4 replayed (book/ruler/playtest-4-sim.md)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,9 +14,9 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (118 KB)
-- MASTER-PLAN.md (32 KB)
-- open-design-items.md (111 KB)
+- HANDOFF.md (119 KB)
+- MASTER-PLAN.md (33 KB)
+- open-design-items.md (112 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)

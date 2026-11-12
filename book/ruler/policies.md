@@ -23,43 +23,49 @@ Runs: 300 fights a cell; two cells differ for real when they are more than about
 
 | Party policy | open | corridor | pillars |
 |---|---|---|---|
-| plan | 3.8 · 14% · 21% · 98% | 3.9 · 22% · 36% · 98% | 3.9 · 21% · 34% · 96% |
-| hold the line | 3.7 · 9% · 15% · 100% | 3.7 · 15% · 25% · 99% | 3.6 · 16% · 25% · 99% |
-| kite | 3.9 · 14% · 25% · 99% | 4.0 · 23% · 35% · 96% | 4.1 · 20% · 34% · 96% |
-| protect the back line | 3.7 · 12% · 20% · 99% | 3.8 · 20% · 31% · 99% | 3.7 · 19% · 29% · 98% |
-| Encounter Actions in round 2 | 3.8 · 15% · 30% · 99% | 3.9 · 22% · 36% · 97% | 3.9 · 19% · 34% · 99% |
-| react to the first trigger | 3.7 · 13% · 23% · 100% | 3.8 · 23% · 42% · 97% | 3.8 · 20% · 37% · 99% |
-| tactical (hold, kite, protect) | 3.9 · 12% · 22% · 99% | 3.8 · 17% · 29% · 99% | 3.8 · 14% · 24% · 100% |
-| casual (no focus fire, first trigger) | 3.7 · 20% · 31% · 96% | 3.9 · 30% · 48% · 95% | 3.8 · 29% · 45% · 93% |
-| *Health lost, the least to the most* | *9% to 20%* | *15% to 30%* | *14% to 29%* |
+| plan | 3.7 · 14% · 23% · 99% | 3.7 · 21% · 31% · 98% | 3.6 · 18% · 29% · 99% |
+| hold the line | 3.6 · 11% · 18% · 99% | 3.5 · 17% · 26% · 98% | 3.5 · 16% · 21% · 98% |
+| kite | 3.8 · 13% · 21% · 99% | 3.8 · 21% · 34% · 99% | 3.9 · 21% · 37% · 98% |
+| protect the back line | 3.6 · 15% · 27% · 99% | 3.6 · 20% · 34% · 99% | 3.7 · 21% · 31% · 98% |
+| Encounter Actions in round 2 | 3.6 · 14% · 23% · 100% | 3.8 · 22% · 39% · 98% | 3.6 · 19% · 30% · 98% |
+| react to the first trigger | 3.6 · 14% · 22% · 99% | 3.7 · 25% · 41% · 98% | 3.6 · 20% · 28% · 98% |
+| tactical (hold, kite, protect) | 3.8 · 11% · 16% · 99% | 3.7 · 17% · 31% · 98% | 3.5 · 14% · 20% · 99% |
+| casual (no focus fire, first trigger) | 3.6 · 21% · 35% · 99% | 3.8 · 32% · 50% · 95% | 3.8 · 29% · 45% · 97% |
+| size the hit to the target | 3.6 · 15% · 24% · 99% | 3.7 · 19% · 30% · 99% | 3.7 · 19% · 30% · 99% |
+| the Minions left for last | 3.7 · 14% · 23% · 99% | 3.7 · 21% · 31% · 98% | 3.6 · 18% · 29% · 99% |
+| *Health lost, the least to the most* | *11% to 21%* | *17% to 32%* | *14% to 29%* |
 
 **5 Standards (CV 5, hard)**
 
 | Party policy | open | corridor | pillars |
 |---|---|---|---|
-| plan | 4.9 · 29% · 46% · 89% | 5.1 · 39% · 60% · 82% | 4.9 · 38% · 58% · 83% |
-| hold the line | 4.7 · 23% · 37% · 91% | 4.8 · 30% · 53% · 91% | 4.6 · 27% · 46% · 94% |
-| kite | 4.9 · 31% · 52% · 87% | 5.2 · 39% · 59% · 82% | 5.1 · 38% · 60% · 84% |
-| protect the back line | 4.7 · 28% · 46% · 92% | 4.9 · 35% · 55% · 86% | 4.8 · 33% · 54% · 87% |
-| Encounter Actions in round 2 | 4.9 · 29% · 50% · 92% | 5.2 · 41% · 64% · 81% | 4.8 · 38% · 57% · 84% |
-| react to the first trigger | 4.8 · 30% · 54% · 93% | 4.9 · 43% · 63% · 81% | 4.8 · 39% · 59% · 82% |
-| tactical (hold, kite, protect) | 5.0 · 23% · 40% · 92% | 5.0 · 32% · 57% · 90% | 4.8 · 29% · 51% · 92% |
-| casual (no focus fire, first trigger) | 4.7 · 40% · 60% · 82% | 4.9 · 53% · 77% · 72% | 4.8 · 53% · 74% · 73% |
-| *Health lost, the least to the most* | *23% to 40%* | *30% to 53%* | *27% to 53%* |
+| plan | 4.6 · 24% · 38% · 92% | 4.9 · 36% · 57% · 87% | 4.7 · 37% · 56% · 87% |
+| hold the line | 4.5 · 20% · 38% · 95% | 4.6 · 28% · 48% · 93% | 4.5 · 25% · 42% · 95% |
+| kite | 5.0 · 31% · 55% · 87% | 5.1 · 41% · 67% · 81% | 4.9 · 36% · 58% · 85% |
+| protect the back line | 4.7 · 26% · 45% · 92% | 4.8 · 37% · 63% · 86% | 4.7 · 33% · 54% · 89% |
+| Encounter Actions in round 2 | 4.7 · 27% · 46% · 92% | 4.8 · 36% · 58% · 85% | 4.7 · 35% · 57% · 89% |
+| react to the first trigger | 4.7 · 32% · 52% · 89% | 4.8 · 38% · 63% · 87% | 4.7 · 37% · 59% · 86% |
+| tactical (hold, kite, protect) | 4.8 · 24% · 42% · 93% | 4.8 · 30% · 53% · 93% | 4.7 · 29% · 48% · 91% |
+| casual (no focus fire, first trigger) | 4.6 · 41% · 64% · 83% | 4.9 · 52% · 73% · 73% | 4.7 · 50% · 70% · 74% |
+| size the hit to the target | 4.7 · 27% · 47% · 92% | 4.7 · 35% · 58% · 87% | 4.7 · 33% · 53% · 89% |
+| the Minions left for last | 4.6 · 24% · 38% · 92% | 4.9 · 36% · 57% · 87% | 4.7 · 37% · 56% · 87% |
+| *Health lost, the least to the most* | *20% to 41%* | *28% to 52%* | *25% to 50%* |
 
 **6 Standards (CV 6, deadly)**
 
 | Party policy | open | corridor | pillars |
 |---|---|---|---|
-| plan | 5.9 · 48% · 73% · 71% | 5.5 · 65% · 85% · 53% | 5.3 · 60% · 82% · 58% |
-| hold the line | 5.6 · 39% · 61% · 77% | 5.8 · 56% · 81% · 62% | 5.4 · 51% · 72% · 68% |
-| kite | 5.9 · 50% · 69% · 66% | 5.8 · 65% · 87% · 50% | 5.7 · 65% · 84% · 52% |
-| protect the back line | 5.8 · 47% · 67% · 69% | 5.7 · 59% · 82% · 59% | 5.4 · 58% · 83% · 59% |
-| Encounter Actions in round 2 | 5.4 · 50% · 69% · 68% | 5.4 · 63% · 81% · 53% | 5.7 · 60% · 81% · 57% |
-| react to the first trigger | 5.7 · 51% · 73% · 69% | 5.7 · 64% · 86% · 53% | 5.5 · 64% · 82% · 53% |
-| tactical (hold, kite, protect) | 6.0 · 43% · 63% · 73% | 5.9 · 60% · 82% · 57% | 5.8 · 53% · 74% · 66% |
-| casual (no focus fire, first trigger) | 5.5 · 64% · 82% · 52% | 5.0 · 80% · 93% · 32% | 4.8 · 81% · 94% · 32% |
-| *Health lost, the least to the most* | *39% to 64%* | *56% to 80%* | *51% to 81%* |
+| plan | 5.5 · 41% · 63% · 77% | 5.6 · 61% · 85% · 58% | 5.4 · 58% · 79% · 60% |
+| hold the line | 5.6 · 37% · 61% · 85% | 5.5 · 53% · 76% · 65% | 5.4 · 48% · 69% · 71% |
+| kite | 5.9 · 49% · 73% · 68% | 5.7 · 66% · 87% · 50% | 5.6 · 56% · 79% · 62% |
+| protect the back line | 5.9 · 50% · 75% · 71% | 5.6 · 60% · 83% · 59% | 5.3 · 57% · 76% · 61% |
+| Encounter Actions in round 2 | 5.7 · 47% · 70% · 72% | 5.6 · 61% · 83% · 59% | 5.6 · 58% · 80% · 61% |
+| react to the first trigger | 5.4 · 49% · 73% · 72% | 5.4 · 62% · 87% · 57% | 5.3 · 58% · 82% · 63% |
+| tactical (hold, kite, protect) | 5.8 · 44% · 63% · 75% | 5.7 · 55% · 81% · 66% | 5.5 · 55% · 78% · 65% |
+| casual (no focus fire, first trigger) | 5.4 · 62% · 79% · 57% | 4.7 · 80% · 95% · 32% | 4.8 · 75% · 91% · 41% |
+| size the hit to the target | 5.7 · 42% · 65% · 77% | 5.3 · 60% · 80% · 56% | 5.5 · 60% · 78% · 58% |
+| the Minions left for last | 5.5 · 41% · 63% · 77% | 5.6 · 61% · 85% · 58% | 5.4 · 58% · 79% · 60% |
+| *Health lost, the least to the most* | *37% to 62%* | *53% to 80%* | *48% to 75%* |
 
 ## 2. What the party does under each policy (6 Standards (CV 6, deadly); per PC, a fight)
 
@@ -67,61 +73,61 @@ Runs: 300 fights a cell; two cells differ for real when they are more than about
 
 | | plan | hold the line | kite | tactical (hold, kite, protect) | casual (no focus fire, first trigger) |
 |---|---:|---:|---:|---:|---:|
-| A Paladin: damage dealt | 72.45 | 81.05 | 73.01 | 78.51 | 61.67 |
-| A Paladin: damage taken | 43.15 | 37.09 | 42.83 | 39.95 | 49.07 |
-| A Paladin: AP spent moving | 1.43 | 1.17 | 1.33 | 1.20 | 0.88 |
-| A Paladin: turns it held its place | 0.00 | 0.13 | 0.00 | 0.20 | 0.00 |
-| An Archer: damage dealt | 122.72 | 123.34 | 116.57 | 121.75 | 115.26 |
-| An Archer: damage taken | 34.23 | 31.84 | 33.76 | 33.30 | 34.16 |
-| An Archer: turns it started Engaged | 2.04 | 2.06 | 2.08 | 2.27 | 1.94 |
-| An Archer: steps away (kite) | 0.00 | 0.00 | 2.00 | 2.20 | 0.00 |
-| An Archer: shots while Engaged (2 Banes) | 1.90 | 2.09 | 0.80 | 0.89 | 1.51 |
-| Turn AP left unspent (a PC) | 0.45 | 0.71 | 0.52 | 0.89 | 0.41 |
-| Guard from them: given | 0.25 | 0.47 | 0.33 | 0.62 | 0.23 |
-| ... used | 0.04 | 0.20 | 0.05 | 0.27 | 0.05 |
-| Reactions used (a PC) | 3.38 | 3.60 | 3.41 | 3.85 | 3.07 |
-| ... Opportunity Attacks | 0.00 | 0.03 | 0.00 | 0.04 | 0.32 |
-| Opportunity Attacks taken (a PC) | 0.00 | 0.00 | 0.00 | 0.05 | 0.00 |
+| A Paladin: damage dealt | 69.95 | 78.05 | 68.31 | 75.37 | 61.08 |
+| A Paladin: damage taken | 39.60 | 35.98 | 42.27 | 40.49 | 48.73 |
+| A Paladin: AP spent moving | 1.33 | 1.11 | 1.45 | 1.09 | 0.80 |
+| A Paladin: turns it held its place | 0.00 | 0.14 | 0.00 | 0.14 | 0.00 |
+| An Archer: damage dealt | 121.45 | 119.46 | 114.88 | 114.69 | 111.37 |
+| An Archer: damage taken | 29.59 | 30.69 | 34.82 | 32.37 | 34.60 |
+| An Archer: turns it started Engaged | 1.86 | 2.01 | 2.27 | 2.11 | 1.99 |
+| An Archer: steps away (kite) | 0.00 | 0.00 | 2.21 | 2.04 | 0.00 |
+| An Archer: shots while Engaged (2 Banes) | 1.86 | 1.84 | 0.73 | 0.79 | 1.57 |
+| Turn AP left unspent (a PC) | 0.51 | 0.72 | 0.44 | 0.76 | 0.38 |
+| Guard from them: given | 0.31 | 0.45 | 0.32 | 0.46 | 0.18 |
+| ... used | 0.04 | 0.17 | 0.07 | 0.17 | 0.02 |
+| Reactions used (a PC) | 3.21 | 3.53 | 3.27 | 3.64 | 3.04 |
+| ... Opportunity Attacks | 0.00 | 0.04 | 0.00 | 0.03 | 0.31 |
+| Opportunity Attacks taken (a PC) | 0.00 | 0.00 | 0.00 | 0.06 | 0.00 |
 
 **corridor**
 
 | | plan | hold the line | kite | tactical (hold, kite, protect) | casual (no focus fire, first trigger) |
 |---|---:|---:|---:|---:|---:|
-| A Paladin: damage dealt | 74.89 | 87.72 | 78.21 | 85.66 | 65.70 |
-| A Paladin: damage taken | 46.35 | 43.50 | 47.41 | 45.57 | 51.17 |
-| A Paladin: AP spent moving | 0.96 | 0.78 | 1.04 | 0.73 | 0.67 |
+| A Paladin: damage dealt | 73.03 | 80.33 | 72.85 | 81.24 | 61.31 |
+| A Paladin: damage taken | 43.75 | 40.61 | 45.53 | 42.00 | 48.40 |
+| A Paladin: AP spent moving | 1.09 | 0.73 | 1.01 | 0.79 | 0.65 |
 | A Paladin: turns it held its place | 0.00 | 0.16 | 0.00 | 0.16 | 0.00 |
-| An Archer: damage dealt | 99.79 | 101.50 | 92.41 | 97.62 | 85.58 |
-| An Archer: damage taken | 36.04 | 35.43 | 38.05 | 36.66 | 39.48 |
-| An Archer: turns it started Engaged | 2.05 | 2.15 | 2.13 | 2.18 | 1.90 |
-| An Archer: steps away (kite) | 0.00 | 0.00 | 1.29 | 1.36 | 0.00 |
-| An Archer: shots while Engaged (2 Banes) | 2.66 | 2.62 | 2.04 | 1.86 | 2.53 |
-| Turn AP left unspent (a PC) | 0.25 | 0.56 | 0.25 | 0.57 | 0.18 |
-| Guard from them: given | 0.15 | 0.24 | 0.14 | 0.25 | 0.06 |
-| ... used | 0.03 | 0.11 | 0.03 | 0.10 | 0.02 |
-| Reactions used (a PC) | 3.00 | 3.55 | 3.14 | 3.58 | 2.78 |
-| ... Opportunity Attacks | 0.00 | 0.06 | 0.00 | 0.07 | 0.42 |
+| An Archer: damage dealt | 99.20 | 100.45 | 89.75 | 97.66 | 81.03 |
+| An Archer: damage taken | 35.17 | 34.33 | 37.98 | 35.28 | 38.17 |
+| An Archer: turns it started Engaged | 2.08 | 2.14 | 2.08 | 2.16 | 1.82 |
+| An Archer: steps away (kite) | 0.00 | 0.00 | 1.27 | 1.33 | 0.00 |
+| An Archer: shots while Engaged (2 Banes) | 2.81 | 2.58 | 1.76 | 1.75 | 2.31 |
+| Turn AP left unspent (a PC) | 0.24 | 0.56 | 0.22 | 0.62 | 0.16 |
+| Guard from them: given | 0.12 | 0.21 | 0.13 | 0.29 | 0.05 |
+| ... used | 0.02 | 0.08 | 0.03 | 0.13 | 0.02 |
+| Reactions used (a PC) | 3.05 | 3.39 | 2.98 | 3.51 | 2.58 |
+| ... Opportunity Attacks | 0.00 | 0.06 | 0.00 | 0.07 | 0.40 |
 | Opportunity Attacks taken (a PC) | 0.00 | 0.00 | 0.00 | 0.07 | 0.00 |
 
 **pillars**
 
 | | plan | hold the line | kite | tactical (hold, kite, protect) | casual (no focus fire, first trigger) |
 |---|---:|---:|---:|---:|---:|
-| A Paladin: damage dealt | 75.50 | 87.14 | 75.35 | 85.78 | 61.75 |
-| A Paladin: damage taken | 42.86 | 39.00 | 47.22 | 41.86 | 50.58 |
-| A Paladin: AP spent moving | 1.13 | 0.80 | 1.14 | 0.87 | 0.71 |
-| A Paladin: turns it held its place | 0.00 | 0.15 | 0.00 | 0.18 | 0.00 |
-| An Archer: damage dealt | 102.92 | 107.23 | 96.88 | 105.78 | 87.37 |
-| An Archer: damage taken | 34.21 | 32.41 | 35.41 | 34.26 | 37.04 |
-| An Archer: turns it started Engaged | 2.14 | 2.27 | 2.13 | 2.32 | 1.98 |
-| An Archer: steps away (kite) | 0.00 | 0.00 | 1.28 | 1.35 | 0.00 |
-| An Archer: shots while Engaged (2 Banes) | 3.23 | 3.29 | 2.38 | 2.57 | 2.89 |
-| Turn AP left unspent (a PC) | 0.25 | 0.55 | 0.25 | 0.66 | 0.16 |
-| Guard from them: given | 0.12 | 0.22 | 0.14 | 0.32 | 0.06 |
-| ... used | 0.03 | 0.09 | 0.03 | 0.13 | 0.01 |
-| Reactions used (a PC) | 3.03 | 3.45 | 3.06 | 3.71 | 2.68 |
-| ... Opportunity Attacks | 0.00 | 0.04 | 0.00 | 0.04 | 0.36 |
-| Opportunity Attacks taken (a PC) | 0.00 | 0.00 | 0.00 | 0.10 | 0.00 |
+| A Paladin: damage dealt | 72.39 | 80.58 | 76.09 | 81.60 | 66.03 |
+| A Paladin: damage taken | 42.90 | 38.24 | 43.67 | 41.44 | 48.18 |
+| A Paladin: AP spent moving | 1.02 | 0.80 | 1.12 | 0.84 | 0.76 |
+| A Paladin: turns it held its place | 0.00 | 0.14 | 0.00 | 0.10 | 0.00 |
+| An Archer: damage dealt | 100.22 | 106.20 | 99.81 | 97.23 | 90.11 |
+| An Archer: damage taken | 33.12 | 31.84 | 33.92 | 33.52 | 36.75 |
+| An Archer: turns it started Engaged | 2.17 | 2.27 | 2.25 | 2.23 | 2.06 |
+| An Archer: steps away (kite) | 0.00 | 0.00 | 1.27 | 1.24 | 0.00 |
+| An Archer: shots while Engaged (2 Banes) | 3.21 | 3.39 | 2.58 | 2.37 | 3.00 |
+| Turn AP left unspent (a PC) | 0.22 | 0.53 | 0.26 | 0.42 | 0.18 |
+| Guard from them: given | 0.12 | 0.23 | 0.16 | 0.20 | 0.07 |
+| ... used | 0.02 | 0.09 | 0.03 | 0.06 | 0.02 |
+| Reactions used (a PC) | 2.97 | 3.41 | 3.16 | 3.30 | 2.77 |
+| ... Opportunity Attacks | 0.00 | 0.04 | 0.00 | 0.02 | 0.40 |
+| Opportunity Attacks taken (a PC) | 0.00 | 0.00 | 0.00 | 0.08 | 0.00 |
 
 ## 3. The enemies' decisions (the party on the plan policy, and on the tactical one)
 
@@ -136,40 +142,40 @@ Runs: 300 fights a cell; two cells differ for real when they are more than about
 
 | Enemy policy | open | corridor | pillars |
 |---|---|---|---|
-| plan | 3.8 · 14% · 21% · 98% | 3.9 · 22% · 36% · 98% | 3.9 · 21% · 34% · 96% |
-| focus the weakest | 4.6 · 20% · 50% · 97% | 4.6 · 26% · 70% · 95% | 4.5 · 24% · 64% · 95% |
-| the nearest | 3.8 · 19% · 31% · 99% | 3.9 · 33% · 51% · 91% | 3.9 · 24% · 39% · 95% |
-| go for the back line | 4.1 · 15% · 34% · 100% | 4.1 · 22% · 40% · 98% | 4.0 · 18% · 35% · 98% |
-| *Health lost, the least to the most* | *14% to 20%* | *22% to 33%* | *18% to 24%* |
+| plan | 3.7 · 14% · 23% · 99% | 3.7 · 21% · 31% · 98% | 3.6 · 18% · 29% · 99% |
+| focus the weakest | 4.3 · 17% · 48% · 99% | 4.1 · 23% · 61% · 97% | 4.2 · 23% · 59% · 98% |
+| the nearest | 3.7 · 19% · 33% · 100% | 3.9 · 33% · 49% · 93% | 3.7 · 25% · 40% · 95% |
+| go for the back line | 3.9 · 15% · 33% · 99% | 3.9 · 21% · 40% · 98% | 3.8 · 19% · 36% · 98% |
+| *Health lost, the least to the most* | *14% to 19%* | *21% to 33%* | *18% to 25%* |
 
 **4 Standards (normal), the party: tactical (hold, kite, protect)**
 
 | Enemy policy | open | corridor | pillars |
 |---|---|---|---|
-| plan | 3.9 · 12% · 22% · 99% | 3.8 · 17% · 29% · 99% | 3.8 · 14% · 24% · 100% |
-| focus the weakest | 4.9 · 23% · 60% · 97% | 4.3 · 22% · 59% · 98% | 4.2 · 21% · 56% · 98% |
-| the nearest | 3.7 · 12% · 16% · 99% | 3.7 · 22% · 35% · 96% | 3.7 · 14% · 22% · 99% |
-| go for the back line | 4.3 · 16% · 37% · 98% | 4.1 · 19% · 43% · 99% | 3.9 · 15% · 31% · 99% |
-| *Health lost, the least to the most* | *12% to 23%* | *17% to 22%* | *14% to 21%* |
+| plan | 3.8 · 11% · 16% · 99% | 3.7 · 17% · 31% · 98% | 3.5 · 14% · 20% · 99% |
+| focus the weakest | 4.7 · 23% · 56% · 97% | 4.1 · 22% · 58% · 97% | 4.0 · 22% · 59% · 98% |
+| the nearest | 3.5 · 9% · 12% · 99% | 3.6 · 21% · 35% · 98% | 3.5 · 14% · 21% · 100% |
+| go for the back line | 4.3 · 16% · 34% · 99% | 4.1 · 19% · 40% · 99% | 3.7 · 14% · 30% · 100% |
+| *Health lost, the least to the most* | *9% to 23%* | *17% to 22%* | *14% to 22%* |
 
 **6 Standards (CV 6, deadly), the party: plan**
 
 | Enemy policy | open | corridor | pillars |
 |---|---|---|---|
-| plan | 5.9 · 48% · 73% · 71% | 5.5 · 65% · 85% · 53% | 5.3 · 60% · 82% · 58% |
-| focus the weakest | 8.1 · 65% · 97% · 54% | 6.9 · 77% · 99% · 36% | 7.4 · 72% · 98% · 41% |
-| the nearest | 5.1 · 57% · 72% · 59% | 4.4 · 78% · 89% · 31% | 4.4 · 79% · 88% · 30% |
-| go for the back line | 6.9 · 53% · 86% · 67% | 6.4 · 64% · 96% · 54% | 6.5 · 58% · 87% · 58% |
-| *Health lost, the least to the most* | *48% to 65%* | *64% to 78%* | *58% to 79%* |
+| plan | 5.5 · 41% · 63% · 77% | 5.6 · 61% · 85% · 58% | 5.4 · 58% · 79% · 60% |
+| focus the weakest | 7.6 · 63% · 96% · 58% | 6.8 · 74% · 99% · 41% | 7.4 · 64% · 97% · 54% |
+| the nearest | 5.0 · 51% · 66% · 65% | 4.2 · 84% · 93% · 25% | 4.5 · 80% · 91% · 33% |
+| go for the back line | 6.6 · 46% · 77% · 74% | 6.3 · 60% · 92% · 61% | 6.2 · 56% · 88% · 65% |
+| *Health lost, the least to the most* | *41% to 63%* | *60% to 84%* | *56% to 80%* |
 
 **6 Standards (CV 6, deadly), the party: tactical (hold, kite, protect)**
 
 | Enemy policy | open | corridor | pillars |
 |---|---|---|---|
-| plan | 6.0 · 43% · 63% · 73% | 5.9 · 60% · 82% · 57% | 5.8 · 53% · 74% · 66% |
-| focus the weakest | 8.1 · 71% · 96% · 44% | 6.8 · 72% · 97% · 43% | 7.1 · 67% · 96% · 50% |
-| the nearest | 5.2 · 46% · 61% · 69% | 4.5 · 76% · 87% · 33% | 4.7 · 76% · 87% · 36% |
-| go for the back line | 7.3 · 55% · 91% · 67% | 6.7 · 63% · 93% · 56% | 6.6 · 54% · 87% · 66% |
-| *Health lost, the least to the most* | *43% to 71%* | *60% to 76%* | *53% to 76%* |
+| plan | 5.8 · 44% · 63% · 75% | 5.7 · 55% · 81% · 66% | 5.5 · 55% · 78% · 65% |
+| focus the weakest | 7.8 · 67% · 94% · 51% | 6.8 · 70% · 98% · 48% | 6.7 · 67% · 95% · 50% |
+| the nearest | 5.0 · 46% · 65% · 69% | 4.7 · 74% · 87% · 38% | 4.7 · 71% · 83% · 41% |
+| go for the back line | 7.1 · 51% · 84% · 69% | 6.5 · 61% · 93% · 60% | 6.4 · 53% · 87% · 70% |
+| *Health lost, the least to the most* | *44% to 67%* | *55% to 74%* | *53% to 71%* |
 
-(8.9 minutes.)
+(10.4 minutes.)

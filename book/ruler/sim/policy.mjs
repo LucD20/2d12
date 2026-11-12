@@ -5,7 +5,7 @@
 // E is the engine's view of the fight: { pcs, foes, alive(): the NPCs not dead, up(): the PCs not Down, round, R, M: the map's settings or null, W }.
 // What is still decided inside the engine (movement: who a creature walks to, how far a ranged PC steps away, a Charge when it can) moves here
 // with SIM-2's maps: book/ruler/sim/README.md.
-import { RULES, MP } from "./core.mjs";
+import { RULES, MP, avgDamage, weaponTier } from "./core.mjs";
 import { turnFor, stepOf, group } from "./turn.mjs";
 
 export const planPolicy = {
@@ -19,7 +19,7 @@ export const planPolicy = {
   /** Whom an Archer marks (Mark Quarry; a new one when the old one dies). */
   quarry: (E, pc) => planPolicy.focus(E),
   /** The target of a PC's Action: a melee PC what is next to it, a ranged PC its Marked Quarry while in range, else the focus. */
-  pcTarget(E, pc) {
+  pcTarget(E, pc, a = null) {
     const P = this, quarry = pc.quarry && !pc.quarry.dead && pc.build.passives.some(p => p.effect.quarry);
     if (!E.M) return quarry ? pc.quarry : P.focus(E);
     if (pc.melee) return P.focus(E, E.alive().filter(f => MP.adj(pc, f) && MP.canTarget(pc, f, E.W))) ?? null;   // canTarget: on a map, Line of Effect
@@ -66,6 +66,10 @@ export const planPolicy = {
 
 /* ------------------------------------------------------------------ SIM-3 (2026-11-12): other policies, built from switches on top of the plan policy.
    Each switch is one decision; policies.mjs runs every headline number with the switches one at a time and together (book/ruler/policies.md). */
+/** What an enemy does to the party in a turn, roughly: its Basic attack's Tier 2 for each Strike it has (its Special counts double). */
+const threatOf = f => (f.t2 ?? 1) * ((f.strikes ?? 1) + (f.kit ? 1 : 0));
+/** The size of the hit this Action is likely to be: its Tier 2 damage with the PC's weapon (a linked Action: the weapon's own Tier 2). */
+const hitOf = (pc, a) => { const b = pc.build, w = b.weapon; try { const d = a?.tiers?.[1]; return Math.max(1, d ? avgDamage(d, w, 2, b.weaponMod) : avgDamage(weaponTier(w, 2), w, 2, b.weaponMod) + b.weaponMod); } catch { return 8; } };
 const lowest = list => list.sort((x, y) => (x.build ? x.build.pool - x.damage : x.pool - x.damage) - (y.build ? y.build.pool - y.damage : y.pool - y.damage))[0];
 const encounterSpent = (pc, key) => pc.build.turns[key].steps.map(stepOf).filter(x => x.kind === "action").some(x => { const a = pc.build.actions[x.name]; return (a.freq === "encounter" || a.freq === "daily") && pc.spent?.has(group(a.name)); });
 /**
@@ -76,6 +80,8 @@ const encounterSpent = (pc, key) => pc.build.turns[key].steps.map(stepOf).filter
  *  novaLate: the round 1 turn with an Encounter Action is kept for round 2 (when Escalation is higher);
  *  react: "first" = every Reaction on its first trigger, the Opportunity Attack too (the plan: "spare", its Reaction AP stays for the class Reaction);
  *  minionsLast: the Minions are left for last (the party focuses the enemy closest to dying among the others): what Playtest 4's table did;
+ *  focus: "threat" = each Action goes where it takes the most of the enemies' damage away: an enemy's damage a turn × the share of its Health left this hit removes
+ *    (a small hit finishes a Minion, a big one goes to a big enemy); the plan: the enemy closest to dying;
  *  focus: "nearest" = each PC hits the enemy nearest to it (no focus fire: the casual table); the plan: the enemy closest to dying.
  */
 export function makePolicy(name, sw = {}) {
@@ -86,6 +92,16 @@ export function makePolicy(name, sw = {}) {
   if (sw.novaLate) P.pcTurn = (E, pc, engaged = false) => { const k1 = turnFor(pc, 1, E.pcs, engaged), k2 = turnFor(pc, 2, E.pcs, engaged); return E.round === 1 || encounterSpent(pc, k1) ? k2 : k1; };
   if (sw.react === "first") P.reactionReserve = () => 1;
   if (sw.minionsLast) P.focus = (E, list = E.alive()) => { const big = list.filter(f => f.role !== "minion"); return planPolicy.focus(E, big.length ? big : list); };
+  if (sw.focus === "threat") {   // SIM-4's fix: the most of the enemies' damage taken away by this hit, not the enemy closest to dying
+    P.pcTarget = function (E, pc, a = null) {
+      const h = hitOf(pc, a), list = !E.M ? E.alive() : pc.melee ? E.alive().filter(f => MP.adj(pc, f) && MP.canTarget(pc, f, E.W)) : E.alive().filter(f => Number.isFinite(MP.rangeBanes(pc.range, MP.dist(pc.pos, f.pos))) && MP.canTarget(pc, f, E.W));
+      if (!list.length) return null;
+      const quarry = pc.quarry && !pc.quarry.dead && list.includes(pc.quarry) && pc.build.passives.some(x => x.effect.quarry) ? pc.quarry : null;
+      let best = null, bv = -1; for (const f of list) { const left = Math.max(1, f.pool - f.damage), v = threatOf(f) * Math.min(1, h / left) * (f === quarry ? 1.25 : 1); if (v > bv) { bv = v; best = f; } }
+      return best;
+    };
+    P.focus = (E, list = E.alive()) => { let best = null, bv = -1; for (const f of list) { const v = threatOf(f) * Math.min(1, 8 / Math.max(1, f.pool - f.damage)); if (v > bv) { bv = v; best = f; } } return best; };
+  }
   if (sw.focus === "nearest") {
     P.quarry = (E, pc) => MP.nearest(pc, E.alive(), E.W ?? { M: null });
     P.pcTarget = (E, pc) => { if (!E.M) return E.alive()[E.pcs.indexOf(pc) % E.alive().length] ?? null;
@@ -114,6 +130,7 @@ export const POLICIES = {
   reactFirst: makePolicy("react to the first trigger", { react: "first" }),
   tactical: makePolicy("tactical (hold, kite, protect)", { hold: true, kite: true, protect: true }),
   casual: makePolicy("casual (no focus fire, first trigger)", { focus: "nearest", react: "first" }),
+  threat: makePolicy("size the hit to the target", { focus: "threat" }),
   minionsLast: makePolicy("the Minions left for last", { minionsLast: true }),
 };
 export const NPC_POLICIES = { plan: planPolicy, weakest: makeNpcPolicy("focus the weakest", "weakest"), nearest: makeNpcPolicy("the nearest", "nearest"), back: makeNpcPolicy("go for the back line", "back") };
