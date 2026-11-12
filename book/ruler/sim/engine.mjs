@@ -75,6 +75,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   const P = policy, PN = npcPolicy ?? policy, events = log ? [] : null;   // SIM-3: the party's decisions and the enemies' (the same policy unless npcPolicy is given)
   const M = map?.on ? map : null;
   const pcs = party.map(p => (p.build ? p : pcState(p)));
+  for (const p of pcs) { if (p.build0) p.build = p.build0; else if (p.alt) p.build0 = p.build; p.switched = false; }   // candidate E: back to the first weapon at the start of a fight
   for (const p of pcs) { p.leftSquare = null; p.zoneHeal = null; p.guard = 0; p.guardBy = null; p.down = p.damage >= p.build.pool; p.defBonus = 0; p.defBy = null; p.spent = new Set([...(p.spent ?? [])].filter(g => p.build.actions[Object.keys(p.build.actions).find(k => group(k) === g)]?.freq === "daily")); p.quarry = null; p.unloaded = false; p.startDamage = p.damage; p.esc = p.startEsc ?? RULES.startEsc; p.floorUsed = false; p.elusiveRound = null; p.encFx = []; p.mindDamage = Math.min(p.mindDamage ?? 0, p.damage); p.bloodiedRound = p.damage - p.mindDamage >= p.build.bodyHealth ? 0 : null; p.strainedRound = p.mindDamage >= p.build.mindHealth ? 0 : null; p.keptAP = RULES.reactFromStart ? RULES.reactionAp : RR.reactionAPAt(false); p.blockedFor = null; p.apGuard = 0; p.turnKept = 0; p.hooked = {}; p.stanceOff = false; }
   const foes = npcs.map(n => ({ ...n, damage: 0, mindDamage: 0, dead: false, vulnerable: 0, surge: null, zone: null, bloodiedRound: null, strainedRound: null, deadRound: null, encUsed: false, roundSpecial: 0, roundSpecialN: 0, esc: 0, firstAtk: false, encBack: false, escTurns: [0, 0, 0, 0], ...(immortal ? { pool: 1e9, bodyPool: 1e9, mindPool: 1e9 } : {}) }));
   // Adjacent allies (Hallowed Stance): the N allies most often in front (highest "targeted"), fixed for the fight (the map model: the allies really adjacent).
@@ -116,7 +117,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   };
   const mendOne = (t, amount, by) => { if (!t) return; const h = Math.min(t.damage, amount); t.damage -= h; by.st.mendGiven += h; if (h > 0) ev("help", { who: nameOf(by), target: nameOf(t), what: "heals", amount: h }); };   // new Health
   /** Pack R prep: an Escalation hook (+1 Escalation, up to 3; each kind once an encounter). */
-  const hook = (p, kind) => { if (!RULES.escHooks || p.down || p.hooked[kind] || (p.esc ?? 0) >= 3) return; p.hooked[kind] = true; p.esc = RR.escalationRaised(p.esc); if (kind === "crit") p.st.hookCrit++; else p.st.hookClass++; };   // used only when it raises the Escalation
+  const hook = (p, kind) => { if (!RULES.escHooks || p.down || p.hooked[kind] || (p.esc ?? 0) >= RULES.escMax) return; p.hooked[kind] = true; p.esc = Math.min(RULES.escMax, (p.esc ?? 0) + 1); if (kind === "crit") p.st.hookCrit++; else p.st.hookClass++; };   // used only when it raises the Escalation
   /** Pack R prep: a Reaction spends the Reaction AP first, then a turn AP kept (which loses its Guard). */
   const spendReact = p => { p.keptAP--; if (p.keptAP < p.turnKept) { p.turnKept--; if (RULES.guardAt !== "next") p.apGuard = Math.max(0, (p.apGuard ?? 0) - guardPerAp(p.build.level)); } };   // guardAt "next": the AP is one less when its next turn starts (no Guard from it)
   /** The catch-up: a PC's Reactions now (its file's, and the basic Opportunity Attack while every creature has it), and who an Opportunity Attack can hit:
@@ -223,8 +224,10 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
         if (!kind) return null;
         const ign = !!pc.ignoreCover && traits.includes("strike"); if (ign) pc.ignoreCover = false;
         const pas = pc.build.passives.filter(p => pc.esc >= p.escalation);
-        const m = MP.mapMods(pc, t, kind, W, { ignoreCover: ign, noEngagedBanes: pas.some(p => p.effect.kind === "steady-nerves"), noIntoMelee: pas.some(p => p.effect.kind === "clear-shot"), longDraw: pas.some(p => p.effect.kind === "long-draw"), range: pc.range });
+        const m = MP.mapMods(pc, t, kind, W, { engagedDoomed: RULES.engagedRanged === "doomed", ignoreCover: ign, noEngagedBanes: pas.some(p => p.effect.kind === "steady-nerves"), noIntoMelee: pas.some(p => p.effect.kind === "clear-shot"), longDraw: pas.some(p => p.effect.kind === "long-draw"), range: pc.range });
         if (!m) { pc.st.outOfReach++; return { skip: true }; }
+        // The Stage 0 prototype, candidate C3: a [Ranged] Action made while Engaged draws an Opportunity Attack from each adjacent enemy that can still react.
+        if (RULES.rangedOa && kind === "ranged" && m.engagedBanes) for (const f of alive()) if (f.oa && f.melee && !f.cond?.staggered && f.reactAP > 0 && MP.adj(f, pc) && !pc.down) { f.reactAP--; pc.st.oaTaken++; ev("reaction", { who: nameOf(f), reaction: "Opportunity Attack", on: nameOf(pc) }); const t0 = pc.st.taken; npcHit(f, pc, 0); pc.st.oaTakenDmg += pc.st.taken - t0; }
         if (kind === "ranged") { pc.st.shots++; pc.st.engagedShots += m.engagedBanes ? 1 : 0; pc.st.intoMelee += m.intoMelee; pc.st.covered += m.coverBanes ? 1 : 0; pc.st.coverBanes += m.coverBanes; pc.st.rangeBanes += m.rangeBanes; pc.st.mapBanes += m.banes; }
         else { pc.st.swings++; pc.st.flankBoons += m.boons; }
         return m;
@@ -394,19 +397,20 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   ev("start", { map: M ? (M.grid ? M.grid.title : "open field") : "no positions", grid: M?.grid ? { w: M.grid.w, h: M.grid.h, walls: M.grid.walls, rough: M.grid.roughs } : undefined, order: order.map(o => nameOf(o.pc ?? o.npc)), creatures: [...pcs, ...foes].map(c => ({ name: nameOf(c), side: c.build ? "pc" : "npc", pos: at(c), health: c.build ? c.build.pool : c.pool, damage: c.damage })) });
   while (alive().length && up().length && round < maxRounds) {
     round++; ev("round");
-    for (const p of pcs) { p.firstThisRound = new Set(); if (round > 1 && !p.down) p.esc = RR.escalationRaised(p.esc); }   // +1 Escalation at the start of every round after the first
+    for (const p of pcs) { p.firstThisRound = new Set(); if (round > 1 && !p.down) p.esc = Math.min(RULES.escMax, (p.esc ?? 0) + 1); }   // RULES.escMax: 3 (the book: roundrules.mjs ESC_MAX), or the Stage 0 prototype's 6   // +1 Escalation at the start of every round after the first
     for (const f of foes) { f.roundSpecialN = 0; f.firstAtk = true; if (RULES.eliteEsc && f.role === "elite" && !f.dead) { f.esc = round === 1 ? 1 : Math.min(3, f.esc + 1); eliteRung(f); } }   // pack R-bestiary: Elite Escalation (+1 a round from round 2)
     if (inject && round === inject.round) inject.fn({ pcs, foes, R, M, round });
     for (const o of order) {
       if (!alive().length || !up().length) break;
       if (o.pc) {
         const pc = o.pc; if (pc.down) continue;
+        if (pc.guardMelee) { pc.guardMelee = false; if (pc.guardBy === pc) pc.guard = 0; }
         const tev = ev("turn", { who: nameOf(pc), escalation: pc.esc, pos: at(pc) });   // its turn's line comes first in the log; the turn's name and AP are written when they are known
         // The unused AP's Guard (Chapter 2, Unspent AP; the book since v0.0.274): when the turn starts, each AP still unused gives Guard for 1 round (what is left of the last one ends).
         // guardAt "end" (pack R prep's model): the Guard was given when the turn ended and ends here.
         { const g = guardPerAp(pc.build.level); if (g && RULES.guardAt === "next") { pc.apGuard = RULES.apGuard === "stage" ? RR.unusedApGuard(true, pc.turnKept ?? 0, CF.stageOf(pc.build.level)).guard : (pc.turnKept ?? 0) * g; pc.st.apGuardGiven += pc.apGuard; } else pc.apGuard = 0; pc.turnKept = 0; }
         pc.stanceOff = false;   // Hallowed Stance: a new turn; moving during it turns the Stance off until the next
-        pc.st.rounds++; pc.st.escTurns[Math.min(3, pc.esc)]++; if (pc.damage - (pc.mindDamage ?? 0) >= pc.build.bodyHealth) pc.st.bloodiedTurns++; if ((pc.mindDamage ?? 0) >= pc.build.mindHealth) pc.st.strainedTurns++;   // pack R prep: turns by Escalation level, turns while Bloodied
+        pc.st.rounds++; pc.st.escTurns[Math.min(3, pc.esc)]++; (pc.st.escHist ??= [0, 0, 0, 0, 0, 0, 0])[Math.min(6, pc.esc)]++; if (pc.damage - (pc.mindDamage ?? 0) >= pc.build.bodyHealth) pc.st.bloodiedTurns++; if ((pc.mindDamage ?? 0) >= pc.build.mindHealth) pc.st.strainedTurns++;   // pack R prep: turns by Escalation level, turns while Bloodied
         for (const x of pcs) if (x.defBy === pc) { x.defBonus = 0; x.defBy = null; }   // a Defense bonus lasts 1 round: until its giver's next turn
         for (const f of foes) { if (f.surge?.by === pc) f.surge = null; if (f.zone?.by === pc) f.zone.left--; if (f.vulnKeep === pc) { f.vulnKeep = null; f.vulnerable = 0; } }   // Divine Surge lasts until your next turn; an area counts its rounds down on its maker's turn
         for (const x of pcs) if (x.zoneHeal?.by === pc) x.zoneHeal.left--;
@@ -422,6 +426,8 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
         if (M) {
           let limit = RULES.ap - (pc.cond.slowed || 0) - (pc.cond.dazed || 0) + (pc.readyAP ?? 0); pc.cond.dazed = 0;   // pack R-classes: Ready Shot's AP (turnFor reads it, then it is spent)   // pack R: Slowed lowers the turn's AP, not the Reaction AP (the default to confirm)
           if (pc.cond.prone) { limit--; pc.cond.prone = false; }   // Stand (1 AP)
+          // The Stage 0 prototype, candidate E: a PC with a second weapon (pc.alt: { build, cost }) puts the ranged one away for the melee one when an enemy is on it (once a fight; cost AP).
+          if (pc.alt && !pc.switched && alive().some(f => MP.dist(pc.pos, f.pos) <= 2)) { pc.build = pc.alt.build; pc.melee = true; pc.range = [1]; pc.switched = true; limit -= pc.alt.cost; pc.st.switches = (pc.st.switches ?? 0) + 1; }
           const eng = MP.engaged(pc, W); if (eng) pc.st.turnsEngaged++;
           if (pc.leftSquare == null || pc.leftSquare < round - 1) pc.st.stillTurns++;   // it hasn't left its square since the start of its last turn (Patient Hunter)
           const turn = pc.build.turns[P.pcTurn(E, pc, eng)];
@@ -439,6 +445,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
           if (g && RULES.guardAt === "next") { pc.st.apLeft += left; pc.turnKept = left; }   // kept until its next turn starts: they can pay a Reaction, and what is left then becomes Guard
           else if (g) { pc.apGuard = left * g; pc.st.apGuardGiven += pc.apGuard; pc.st.apLeft += left; pc.turnKept = RULES.apGuardKeep ? left : 0; if (!RULES.apGuardKeep) pc.keptAP = RULES.reactionAp; } }   // pack R prep: unspent AP become Guard at once
         if (r.crit) hook(pc, "crit");
+        if (RULES.meleeGuard && M && pc.melee && !pc.down && MP.engaged(pc, W) && RULES.meleeGuard >= (pc.guard ?? 0)) { pc.guard = RULES.meleeGuard; pc.guardBy = pc; pc.guardMelee = true; }   // candidate B2: a melee PC that ends its turn Engaged has Guard until its next turn
         if (M) { pc.st.lostAP += r.lostAP; pc.reacted = null; if (pc.cond.hindered) pc.cond.hindered = null; if (pc.cond.immob === "eot") pc.cond.immob = null; pc.cond.staggered = null; pc.cond.blinded = null; pc.cond.frightened = null;
           if (pc.cond.bleed) { const v = rollDamage(pc.R ?? R, parseDamage(pc.cond.bleed.dmg)).total; pc.damage += v; pc.st.taken += v; } }   // a PC's Bleed at the end of its turn (pack R-classes)
         pc.st.dealt += r.damage; pc.st.counted += r.counted; pc.st.mindDealt += r.mind;

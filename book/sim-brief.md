@@ -110,12 +110,16 @@ Playtest 4's encounter replayed in SIM (the same creatures, the map approximated
 3. **Whom the party hits first hardly matters** (measured: the plan, the hit sized to the target, the Minions left for last), so the plan policy's target choice stays.
 4. **Against the one table fight there is, nothing disagrees but one PC's turns** (`book/ruler/playtest-4-sim.md`): three of the four PCs sit in the middle of SIM's range. One fight is a small sample.
 
+### The Stage 0 run: done as a prototype (2026-11-12)
+
+`book/ruler/stage0.md` (`node book/ruler/sim/stage0.mjs`). Nothing is in the book. What it found, and what waits for Lucas: `book/rules-backlog.md`, "THE STAGE 0 RUN" and "RANGED AGAINST MELEE: THE CANDIDATES MEASURED". In short: Stage 0 needs its own Bestiary row (about Health × 0.90, damage × 0.85 of Stage 1's); level 1 is the hard level; the Escalation 6 Passive needs Momentum to be seen; Momentum makes a day's last fight clearly easier; ranged is better than melee today and a Guard for the Engaged melee PC is what closes it.
+
 ## 6. What the ruler still lacks (the README's "not modeled" lists), and where it goes
 
 | Missing | Where |
 |---|---|
 | ~~The current rules (flat Boons and Banes, Favored, Flanking, High cover, the Field limit, NPC Modifier ratings, pack R's AP as the default)~~ | **done: the catch-up (section 3)** |
-| Stage 0: levels 1 to 3 on `book/decisions-s1.md`'s level lists, no Talents; Escalation 1 to 6 with Momentum 0 to 4 | the Stage 0 run, after SIM |
+| ~~Stage 0: levels 1 to 3 on `book/decisions-s1.md`'s level lists, no Talents; Escalation 1 to 6 with Momentum 0 to 4~~ | **done as a prototype (2026-11-12): `book/ruler/stage0.md`**; the row and the candidates wait for Lucas |
 | ~~Walls and Line of Effect, Difficult Terrain, Collision~~ (**done: SIM-2**; Speed and the movement conditions priced by map: `book/ruler/maps.md`). Still: Large creatures, elevation, a Slide's Collision | SIM-2 (left) |
 | ~~Areas that last (Consecrated Ground, Covering Fire, Beacon's Aura) and an Action's area on the grid~~ (**done 2026-11-12**: `book/ruler/areas.md`). Still: Covering Fire's 1d4 on entering, Rain of Arrows' hazardous terrain | left |
 | Resist, Weak, Immune | SIM-1 (the system's `creatureDamageLines`) |

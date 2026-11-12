@@ -16,6 +16,7 @@ The brief: `book/sim-brief.md`. Built in four parts. **SIM-1 is done (2026-11-12
 | `../maps/*.txt` | **The maps** (SIM-2): `pillars`, `corridor`, `rough`, `longsight`, `closequarters`; `open` is the open field |
 | `enclog.mjs` | A fight's log in the Encounter Log's playtest format (SIM-4): the system's own `module/enclog.mjs exportText`, fed with the engine's events |
 | `playtest4.mjs` | **Playtest 4 replayed** (SIM-4): the table's encounter run 1,500 times a map, beside what happened at the table; it writes `../playtest-4-sim.md` |
+| `stage0.mjs` | **The Stage 0 run** (2026-11-12, a prototype: nothing of it is in the book): levels 1 to 3 on decisions-s1.md's lists, Escalation 1 to 6 with Momentum, the Bestiary's Stage 0 row fitted, the ranged-against-melee candidates; it writes `../stage0.md` |
 | `policies.mjs` | **The sensitivity report** (SIM-3): every headline fight under each party policy and each enemy policy, on three maps; it writes `../policies.md` |
 | `areas.mjs`, `parties.mjs` | What the Area cards do on the grid against the number their ruler lines assume, with a party that uses them; it writes `../areas.md` |
 | `maps.mjs` | The fights on every map and the price of Speed and of the movement conditions there; it writes `../maps.md` |
@@ -31,6 +32,7 @@ node book/ruler/sim/maps.mjs                               # writes maps.md (abo
 node book/ruler/sim/policies.mjs                           # writes policies.md (about 11 minutes; --quick about 4)
 node book/ruler/sim/run.mjs "2 Elites" --seed 7 --playtest  # one fight in the Encounter Log's playtest format
 node book/ruler/sim/playtest4.mjs                          # writes playtest-4-sim.md (about 3 minutes)
+node book/ruler/sim/stage0.mjs                             # writes stage0.md (about 7 minutes; --quick for a draft)
 ```
 
 ## Maps (SIM-2)
@@ -159,3 +161,19 @@ Known gaps of `planPolicy`, each a finding for SIM-3 (README of the ruler, "The 
 `fight(party, npcs, R, { log: true })` returns `log`: every event in order, each `{ round, type, ... }`. Types: `start` (the map with its walls and Difficult Terrain, Initiative, every creature's place and Health), `round`, `turn`, `move` (from, to, how), `action` (a PC's Action on a target: Tier, damage), `attack` (an NPC's Basic attack or Special), `reaction` (`protects`: the ally it protects), `hold` (a PC keeps its place), `help` (a heal, a Rally Point, Guard, a Defense bonus: who, target, amount), `collision`, `down`, `dead`, `end`. Writing the log changes no roll. `run.mjs` prints it as text, or with `--playtest` in the Encounter Log's playtest format (`enclog.mjs`).
 
 Each event also has `ch`: the creatures whose state changed since the last event (`i` its place in the start list, `dmg`, `pos`, `out`, `guard`, `esc`, `cond`), so Forced Movement, heals, Guard and conditions show without their own event. Not in the log yet as lines of their own: the Boons and Banes of each roll, heals, conditions put on and ended, Escalation raises.
+
+## The Stage 0 run (2026-11-12)
+
+`stage0.mjs` is a prototype: it changes no rule and no card. It builds its parties from the R class files (`rework/*-r1.txt`) by editing their text: the level, the Passives' rungs moved to Escalation 2 / 4 / 6 and kept only from the level that gives them, no Apex, no hook at level 1. Its rules are `{ ...RULES_R, escMax: 6 }` with `startEsc` 1 + Momentum.
+
+The switches it added to the engine, all off by default (the gate: `report.md` unchanged):
+
+| Switch | What it does |
+|---|---|
+| `RULES.escMax` (3) | The highest Escalation |
+| `RULES.engagedRanged` ("banes") | "doomed": a [Ranged] Action while Engaged is Doomed (candidate C2) |
+| `RULES.rangedOa` (false) | A [Ranged] Action while Engaged draws an Opportunity Attack from an adjacent enemy with a Reaction AP (C3) |
+| `RULES.meleeGuard` (0) | A melee PC that ends its turn Engaged has that much Guard until its next turn (B2) |
+| `pc.alt = { build, cost }` | A second weapon: the PC switches to that build once, when an enemy is within 2 squares, for `cost` AP (E) |
+
+Candidates A (a smaller ranged die) and B1 (+2 melee damage) are edits of the build's text, not rules. `st.escHist` counts the PCs' turns by Escalation.

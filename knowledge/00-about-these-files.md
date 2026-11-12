@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: 30ab994 2026-11-12 SIM: an enemy at 0 Health is out at once (the error Playtest 4's replay showed); "damage that counted"; every report re-run
+Built by tools/knowledge.py on 2026-11-12 from the repository at: 2dc0eb4 2026-11-12 rules-backlog: ranged against melee, measured before the Stage 0 run (Lucas's question; nothing decided)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,9 +14,9 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (119 KB)
+- HANDOFF.md (120 KB)
 - MASTER-PLAN.md (33 KB)
-- open-design-items.md (114 KB)
+- open-design-items.md (118 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
@@ -31,7 +31,8 @@ Files:
 - rules-14-bestiary.md (21 KB)
 - rules-15-gear.md (10 KB)
 - rules-16-talents.md (2 KB)
-- design-sim-brief.md (21 KB)
+- design-sim-brief.md (22 KB)
+- design-stage0.md (13 KB)
 - design-expedition-loop.md (12 KB)
 - design-playtest-2.md (7 KB)
 - design-playtest-3.md (4 KB)

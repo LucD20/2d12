@@ -81,7 +81,7 @@ export function mapMods(att, tgt, kind, W, opts = {}) {
     if (!Number.isFinite(rb)) return null;
     const off = W.M.off ?? {};
     if (!off.range) { src.push({ banes: rb }); out.rangeBanes = rb; }                                                          // no name: it adds to Cover
-    if (engaged(att, W) && !opts.noEngagedBanes && !off.engaged) { src.push({ banes: RR.ENGAGED_RANGED_BANES }); out.engagedBanes = RR.ENGAGED_RANGED_BANES; }           // no name (one rule)
+    if (engaged(att, W) && !opts.noEngagedBanes && !off.engaged) { if (opts.engagedDoomed) out.doomed = true; else src.push({ banes: RR.ENGAGED_RANGED_BANES }); out.engagedBanes = RR.ENGAGED_RANGED_BANES; }   // engagedDoomed: the Stage 0 prototype's candidate C2           // no name (one rule)
     if (!off.intoMelee && !opts.noIntoMelee && enemiesOf(tgt, W).some(x => x !== att && adj(x, tgt))) { src.push({ banes: RR.INTO_MELEE_FIELD_BANES, bb: "field" }); out.intoMelee = RR.INTO_MELEE_FIELD_BANES; }
     const lvl = W.M.grid ? coverOf(att, tgt, W) : 0;   // SIM-2: on a map, Cover is the corners the walls block; 4 = no Line of Effect
     if (lvl >= 4) return null;
