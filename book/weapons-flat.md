@@ -80,7 +80,7 @@ Every row is the same within the runs' noise (about 2 points), B included. So th
 
 ## 2[W]
 
-No card deals 2[W] or more today (checked: the card files have none; only two examples in Chapters 4 and 15 mention it). With this draft it can still exist in three ways: (a) two instances as now (Greatsword Tier 3: 8 + 2d8), two dice; (b) **roll once, double the total** (one die, the same average, a wider range); (c) double the flat part and roll one die (lower: it is no longer twice the weapon). Or no Action writes more than 1[W] and a bigger hit is 1[W] plus a flat bonus. Open, for Lucas.
+No card deals 2[W] or more today (checked: the card files have none), **but Mastery does (Lucas, 2026-11-12): Chapter 15, 15 Mastery (Master), from level 8: 1[W] becomes 2[W]**. That is the weapon's own step of damage growth, so 2[W] has to keep working: way (a) below keeps it exactly as the book has it. With this draft it can still exist in three ways: (a) two instances as now (Greatsword Tier 3: 8 + 2d8), two dice; (b) **roll once, double the total** (one die, the same average, a wider range); (c) double the flat part and roll one die (lower: it is no longer twice the weapon). Or no Action writes more than 1[W] and a bigger hit is 1[W] plus a flat bonus. Open, for Lucas.
 
 ## What to know before choosing
 

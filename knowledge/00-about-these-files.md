@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: 52c32d6 2026-11-12 Weapon draft: column B chosen; the die's size measured (no effect on balance at the same average)
+Built by tools/knowledge.py on 2026-11-12 from the repository at: 48c812b 2026-11-12 Weapon draft: small dice decided; how 2[W] can work noted
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
