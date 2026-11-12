@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: 8990d90 2026-11-12 Brainstorm logged: the Encounter premium (double), research notes on monster budgets, limited use, conditions and forced movement; nothing applied
+Built by tools/knowledge.py on 2026-11-12 from the repository at: 4d20d25 2026-11-12 Brainstorm concluded and logged: the Bestiary's turn budget is the next pack (MASTER-PLAN 4b); nothing applied
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (132 KB)
+- HANDOFF.md (133 KB)
 - MASTER-PLAN.md (35 KB)
 - open-design-items.md (131 KB)
 - rules-01-roll.md (23 KB)
