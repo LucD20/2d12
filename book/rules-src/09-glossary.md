@@ -143,7 +143,7 @@
 | [[Rest\|**Rest**]] | A day in a safe place. It includes a Sleep. |
 | [[Riders\|**Rider**]] | What follows the damage in a tier cell ("; Prone"): it happens only if that damage is dealt (more than 0 after Resist); Guard doesn't stop it. |
 | [[The targets\|**Rank**]] | How much an NPC counts for in a fight: Minion, Grunt, Standard or Elite. It sets the NPC's CV, AP and the tables its ratings use. |
-| [[Roles\|**Role**]] | What an NPC does in a fight (Brute, Soldier, Skirmisher, Artillery, Controller, Leader): a ready set of ratings, with no rules of its own. |
+| [[Roles\|**Role**]] | What an NPC does in a fight (Striker, Soldier, Skirmisher, Artillery, Controller, Leader): a ready set of ratings, with no rules of its own. |
 | [[Rolls\|**Roll**]] | Anything you roll: a Check, a Save, a Weapon, Power or Signature roll, or an Attribute Action. |
 | [[Rounds\|**Round**]] | One full cycle of turns. |
 | [[Saves\|**Save**]] | A roll a creature makes against an effect; its three values are for Tier 1 / 2 / 3. |

@@ -169,14 +169,14 @@ A **role** says what a creature does in a fight. It is a ready set of ratings fo
 
 | Role | It... | Ratings |
 |---|---|---|
-| **Brute** | walks in and hits hard, and is easy to hit | **High** damage, **High** Vigor; **Low** Resolve, **Low** Armor Defense, **Low** Weapon Modifier |
+| **Striker** | walks in and hits hard, and is easy to hit | **High** damage, **High** Vigor; **Low** Resolve, **Low** Armor Defense, **Low** Weapon Modifier |
 | **Soldier** | holds a line and protects its allies | **High** Armor Defense, **High** Vigor; **Low** damage; a Reaction that protects an ally or punishes leaving |
 | **Skirmisher** | moves, strikes and gets away | Speed 6 or 7, **High** Weapon Modifier; **Low** Vigor and Resolve; a Special with a movement in it |
 | **Artillery** | attacks from far away | ranged attacks (each pays its step of damage for the range), **High** Modifier; **Low** Armor Defense |
 | **Controller** | changes the fight with conditions and areas | **Low** damage with a Moderate or Severe condition on its Specials (the condition pays for the damage), often Power Actions Vs. WD; **High** Ward Defense, **Low** Armor Defense |
 | **Leader** | makes its allies better; one in a fight | Medium everything; its Round Special helps its allies (Boons, a movement, an extra attack) in the place of damage |
 
-The Brute, the Skirmisher and the Artillery are measured: four of them cost a party what four plain Standards do. The Soldier's and the Controller's numbers alone come about one step under: the Soldier's Reaction and the Controller's conditions are the rest of their worth. Speed costs nothing by itself.
+The Striker, the Skirmisher and the Artillery are measured: four of them cost a party what four plain Standards do. The Soldier's and the Controller's numbers alone come about one step under: the Soldier's Reaction and the Controller's conditions are the rest of their worth. Speed costs nothing by itself.
 
 > [!tbd]
 > The Soldier's Reaction, the Controller's conditions and the Leader's help are priced by the Bestiary's rules for them (Reactions, Conditions), not measured yet.

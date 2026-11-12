@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: 405fe54 2026-11-12 Bestiary: NPC Defenses go up 2 points a rating, and a Defense step counts as half a step in the CV
+Built by tools/knowledge.py on 2026-11-12 from the repository at: e2ca81c 2026-11-12 Bestiary: the six Roles as balanced presets (Rank + Role = the rank's CV), measured where the ruler can
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
