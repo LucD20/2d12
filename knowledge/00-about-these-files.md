@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: 4d20d25 2026-11-12 Brainstorm concluded and logged: the Bestiary's turn budget is the next pack (MASTER-PLAN 4b); nothing applied
+Built by tools/knowledge.py on 2026-11-12 from the repository at: 8ba4178 2026-11-12 HANDOFF: pack-stage0-book merged into main; next is the Bestiary's turn budget
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -15,7 +15,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 
 Files:
 - HANDOFF.md (133 KB)
-- MASTER-PLAN.md (35 KB)
+- MASTER-PLAN.md (36 KB)
 - open-design-items.md (131 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (29 KB)
@@ -30,6 +30,7 @@ Files:
 - rules-13-archer.md (3 KB)
 - rules-14-bestiary.md (25 KB)
 - rules-15-gear.md (11 KB)
+- design-npc-hud-brief.md (5 KB)
 - design-sim-brief.md (22 KB)
 - design-stage0.md (12 KB)
 - design-expedition-loop.md (12 KB)

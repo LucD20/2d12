@@ -5,6 +5,9 @@ Everything finished up to v0.0.207 (the done items, the per-version "to check" n
 
 **2026-11-12, after SIM-4 (no Foundry version):** `book/ruler/worth.json` was written again (the engine's fix: an enemy at 0 Health is out at once), so the tiny "Ruler:" line of five class cards changes at the next rebuild of the packs (Font of Mercy 0.26, Mending Light 0.71, Hallowed Stance 0.58, Overwatch 0.72, Covering Shot 1.00 AP a turn). The 245 tests pass with it.
 
+## NPC-HUD: the one-page NPC sheet and the HUD (planned 2026-11-12; nothing built)
+The brief: `foundry/mockups/npc-hud-brief.md` (decisions, architecture, open points, the mockups to make). Next: the mockups; build after "Stage 0 in Foundry".
+
 ## STAGE 0 IN FOUNDRY: what the system must follow (the book changed on 2026-11-12, pack "Stage 0 into the book"; nothing below is built)
 The book: Chapters 2, 3, 4, 5, 6, 9, 14 and 15 (rules-backlog.md, "STAGE 0 INTO THE BOOK: APPLIED"). The pure rules and the numbers are already in the system, unused: `roundrules.mjs` (the Stage 0 block) and `config.mjs npcStage0`.
 - [ ] **Stages:** `config.mjs stageOf` and `stages`: Stage 0 = levels 1-3, Stage 1 = 4-7, Stage 2 = 8-11, Stage 3 = 12-15 (today 1-4 / 5-7 / 8-10). Everything indexed by Stage moves one place: `guardPerAp` 2 / 2 / 3 / 4, Rally Points = Rally + 1 / 2 / 3 / 4, `stageModStep` (+1 to one Modifier at Stage 1, +1 to both at Stage 3; the builder's "Stage 2 pick" becomes the Stage 1 pick), the Health steps (three, not set yet), `npcRallyHeal` (9 at Stage 0), `npcCv`'s Stage gap, Smite's Guard by Stage (Lucas: Stage 0 = today's Stage 1 values for now). A migration for the actors' levels and picks.
