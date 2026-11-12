@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: 0927240 2026-11-12 Stage 0: the first two Passives swapped (Escalation 2 at level 1, 4 at level 2); the Bestiary's CV measured, five points logged for Lucas
+Built by tools/knowledge.py on 2026-11-12 from the repository at: 905f9d3 2026-11-12 Bestiary: Elites strengthened to be worth CV 200, role renamed Rank with a first list of Roles, an Action's Defense / Modifier / pool as three choices
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,9 +14,9 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (129 KB)
+- HANDOFF.md (130 KB)
 - MASTER-PLAN.md (35 KB)
-- open-design-items.md (115 KB)
+- open-design-items.md (118 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (29 KB)
 - rules-03-movement.md (39 KB)

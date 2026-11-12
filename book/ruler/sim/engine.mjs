@@ -91,6 +91,11 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   }
   const order = [...pcs.map(p => ({ pc: p })), ...foes.map(f => ({ npc: f }))];
   for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(R() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; }   // initiative
+  if (RULES.minionSquad) {   // a measurement (Lucas, 2026-11-12; off by default): Minions act in squads of this many that share one turn slot (Infinity: all of them); minionSquadFirst: the squads act before everyone
+    const ms = order.filter(o => o.npc?.role === "minion"), rest = order.filter(o => o.npc?.role !== "minion"), size = Math.min(ms.length || 1, RULES.minionSquad);
+    for (let k = 0; k < ms.length; k += size) rest.splice(RULES.minionSquadFirst ? 0 : Math.floor(R() * (rest.length + 1)), 0, { squad: ms.slice(k, k + size) });
+    order.length = 0; for (const o of rest) if (o.squad) order.push(...o.squad); else order.push(o);
+  }
   // streams: each creature rolls its own dice (econ's paired runs: a change to one creature leaves the others' rolls as they were).
   if (streams) { const base = Math.floor(R() * 2 ** 31); [...pcs, ...foes].forEach((c, i) => { c.R = rng(base + i * 7919); }); } else for (const p of pcs) delete p.R;
   let round = 0, firstDown = 0, actionId = 0;
