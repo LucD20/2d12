@@ -90,6 +90,7 @@ const f1 = x => x.toFixed(1), f2 = x => x.toFixed(2), pc = x => `${Math.round(x 
 const cell = r => `${f1(r.rounds)} r · ${pc(r.lost)} · Down ${pc(r.down)} · won ${pc(r.won)}`;
 
 export function run() {
+  Object.assign(S.RULES, S.RULES_PRE_R);   // the catch-up (2026-11-12): a pre-R study (the 5 AP classes of classes/, the rules before pack R); spec.mjs's default is the book today
   const L = [], t0 = Date.now(), log = s => process.stderr.write(`${s} (${((Date.now() - t0) / 1000).toFixed(0)} s)\n`);
   L.push("# The Bestiary refit: the numbers (pack E3)", "",
     "Written by `node book/ruler/bestiary.mjs` (the spec ruler with the map model). Don't edit this file: edit the script and run it again. The proposal that reads it is `book/bestiary-e3.md`.", "",

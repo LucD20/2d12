@@ -25,8 +25,8 @@ const f1 = x => (Number.isFinite(x) ? x.toFixed(1) : "-"), f2 = x => (Number.isF
 const r5 = x => Math.round(x * 2) / 2, r25 = x => Math.round(x * 4) / 4, fmt = x => String(x);
 
 /* ------------------------------------------------------------------ the rules and the targets */
-const TODAY = { ap: 5, reactionAp: 0, escalation: "spent", npcAp: 5, minionAp: 3, npcReactionAp: 0, npcSpecials: 0, apGuard: 0, apGuardKeep: false, escHooks: false, oaDisrupt: true, bloodiedBanes: false, bestiary: "today", eliteEsc: false, elitePhases: false };
-const R = { ap: 4, reactionAp: 1, escalation: "level", npcAp: 4, minionAp: 3, npcReactionAp: 1, npcSpecials: 1, apGuard: 2, apGuardKeep: true, escHooks: true, oaDisrupt: false, bloodiedBanes: false, bestiary: "today", eliteEsc: true, elitePhases: true };
+const TODAY = { ...S.RULES_PRE_R };   // the catch-up (2026-11-12): spec.mjs's rule sets (RULES_PRE_R; RULES_R, its default: the book today, Guard 2 / 3 / 4 by Stage)
+const R = { ...S.RULES_R, bestiary: "today" };   // the fit is made over the pre-R tables (bestiary-today.mjs)
 const setRules = o => Object.assign(S.RULES, TODAY, o);
 const TARGET = { lost: 0.25, down: 0.10, rounds: 3.5 };   // the normal fight (decision sheet item 1, Lucas 2026-11-05: a quarter, a Down in about 1 fight of 10)
 const STAGE_D = [1, 1.2, 1.5];   // the Stage 2 and 3 damage rows over today's (decision sheet item 17)
@@ -212,8 +212,12 @@ export function run() {
 
   // 7. The tables.
   const D = [D1, D1 * STAGE_D[1], D1 * STAGE_D[2]], T = newTables(D, H, ED), live = liveTables(), match = sameTables(T, live);
-  fs.writeFileSync(HERE + "bestiary-r.json", JSON.stringify({ written: new Date().toISOString().slice(0, 10), D1, ED, H, D, deals: dealsBy, tables: T }, null, 1) + "\n");   // raw turns: the report's table
-  L.push("## 7. The tables", "", `Today's tables × the factors: damage × ${D.map(f2).join(" / ")} by Stage (an Elite × ${ED} more), Health × ${H.map(f2).join(" / ")}; damage rounded to 0.5, multipliers to 0.25. Written to \`bestiary-r.json\`; **config.mjs ${match ? "matches them" : "DOES NOT match them yet: copy the arrays below into npcRoles (hm and basic)"}.**`, "",
+  // The catch-up (2026-11-12): bestiary-r.json is the tables the book and config.mjs have. A run whose fit differs from them writes its tables to
+  // bestiary-r-refit.json instead (a proposal: Lucas decides before the book's rows change), and leaves bestiary-r.json alone.
+  const OUT = match ? "bestiary-r.json" : "bestiary-r-refit.json";
+  if (match && fs.existsSync(HERE + "bestiary-r-refit.json")) fs.rmSync(HERE + "bestiary-r-refit.json");
+  if (!match || !fs.existsSync(HERE + OUT)) fs.writeFileSync(HERE + OUT, JSON.stringify({ written: new Date().toISOString().slice(0, 10), D1, ED, H, D, deals: dealsBy, tables: T }, null, 1) + "\n");   // raw turns: the report's table
+  L.push("## 7. The tables", "", `Today's tables × the factors: damage × ${D.map(f2).join(" / ")} by Stage (an Elite × ${ED} more), Health × ${H.map(f2).join(" / ")}; damage rounded to 0.5, multipliers to 0.25. ${match ? "They are the tables of \`bestiary-r.json\`; **config.mjs matches them.**" : "**This fit DIFFERS from the book's tables (config.mjs, \`bestiary-r.json\`): it is written to \`bestiary-r-refit.json\` as a proposal, and nothing is changed until Lucas decides.**"}`, "",
     "| Role | Health, every rating Medium, Stage 1 / 2 / 3 | Deals a turn against AD 13 (its Basic attack and Specials, 1 AP to move) | Deals a turn, measured (after the party's Guard, blocks and reduction; section 4) | Takes about (PC turns at Defense 13, Stage 1) |", "|---|---|---|---|---|");
   const pcTurn = mean(["paladin-smite-r1", "archer-double-r1"].map(f => S.turnDamage(load(f, 1), "main", 13, { escalation: 2 }).avg));
   setRules({ ...R, bestiary: match ? "r" : "today" });

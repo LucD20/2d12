@@ -1,0 +1,36 @@
+# The pre-R party fights (node book/ruler/spec.mjs --pre-r; the classes as they were before pack R, classes/*.txt, under the rules before pack R: spec.mjs RULES_PRE_R). The pre-R studies read this file (econ.mjs).
+# encounter <name>: <count> <role> [rating], ...  (rating Medium unless given; NPCs use the Bestiary at this level, Foundry's default ratings)
+level 1
+map on
+runs 2000
+defenses 12 13 14
+party paladin-smite-1, paladin-hands-1, archer-1, archer-1
+
+encounter 4 Standards: 4 standard
+encounter 2 Elites: 2 elite
+encounter Elite + 2 Standards: 1 elite, 2 standard
+encounter 8 Grunts: 8 grunt
+encounter 2 Standards + 8 Minions: 2 standard, 8 minion
+encounter 6 Standards (CV 6, hard): 6 standard
+
+# Adventuring days: the fights between two Rests (the Bestiary since E3: CV 100 per PC is a normal fight, 75 easy, 125 hard, 150 deadly; here roles count 1/4, 1/2, 1, 2 per PC).
+# day <name>: <fight 1> | <fight 2> | ...      day-party <name>: <class file>, ... (the NPCs use the party's level)
+day-runs 1000
+day Standard day (easy, normal, normal, hard): 2 standard, 4 minion | 4 standard | 1 elite, 2 standard | 2 elite, 2 standard
+day Long day (normal, hard, normal, hard): 8 grunt | 6 standard | 2 elite | 1 elite, 4 standard
+day Short hard day (normal, hard, hard): 4 standard | 2 elite, 2 standard | 6 standard
+day-party Level 1, the book's Paladin today: paladin-book-1, paladin-book-1, archer-1, archer-1
+day-party Level 1, P1 Smite: paladin-smite-1, paladin-smite-1, archer-1, archer-1
+day-party Level 1, P1 Smite holding Escalation: paladin-smite-1-hold, paladin-smite-1-hold, archer-1, archer-1
+day-party Level 1, P1 Lay On Hands: paladin-hands-1, paladin-hands-1, archer-1, archer-1
+day-party Level 1, P1 one of each: paladin-smite-1, paladin-hands-1, archer-1, archer-1
+day-party Level 2, P1 Smite: paladin-smite-2, paladin-smite-2, archer-2, archer-2
+day-party Level 2, P1 Lay On Hands: paladin-hands-2, paladin-hands-2, archer-2, archer-2
+day-party Level 3, P1 Smite: paladin-smite-3, paladin-smite-3, archer-3, archer-3
+day-party Level 3, P1 Lay On Hands: paladin-hands-3, paladin-hands-3, archer-3, archer-3
+day-party Level 1, A1 Double Shot: paladin-smite-1, paladin-smite-1, archer-double-1, archer-double-1
+day-party Level 1, A1 Rolling Shot: paladin-smite-1, paladin-smite-1, archer-rolling-1, archer-rolling-1
+day-party Level 2, A1 Double Shot: paladin-smite-2, paladin-smite-2, archer-double-2, archer-double-2
+day-party Level 2, A1 Rolling Shot: paladin-smite-2, paladin-smite-2, archer-rolling-2, archer-rolling-2
+day-party Level 3, A1 Double Shot: paladin-smite-3, paladin-smite-3, archer-double-3, archer-double-3
+day-party Level 3, A1 Rolling Shot: paladin-smite-3, paladin-smite-3, archer-rolling-3, archer-rolling-3

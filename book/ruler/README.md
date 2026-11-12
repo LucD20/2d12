@@ -1,12 +1,102 @@
 # The ruler (for the class and Bestiary numbers)
 
+## The catch-up (2026-11-12): the ruler runs the book's rules today
+
+Until this pack the ruler's default was the book before pack R (5 AP, no Reaction AP, Escalation spent), and the dice the book had before
+2026-11-08. Now **the default is the book today**, as `book/rules-src` and the Foundry system have it. Nothing in the book or the cards changed.
+
+**What changed in the ruler**
+
+| Rule | Before the catch-up | After (the book, Foundry) | Where |
+|---|---|---|---|
+| Boons and Banes | each 1d3-1, no cancelling | flat +1 / -1, they cancel; 5 or more left = Favored / Doomed | the system's `calc.mjs` (the ruler always read it; its reports were older than the change) |
+| Favored | the two highest; only the kept pair is Doubles | any pair of the three is Doubles; three of a kind a Critical | `calc.mjs` |
+| Named Boons and Banes | every one added up | Field ones up to 2 a side (Cover, shooting into a melee, Prone, Flanking); range and Engaged have no name and add on top | `map.mjs mapMods`, with `calc.mjs bbCount` |
+| Flanking | up to 3, then the cancels | the cancels first, then 2 at most | `map.mjs flankBoons` |
+| High cover | not there (Cover was 1 or 2 Banes) | the roll is Doomed, no Field Banes from the Cover (`map cover 2% 3`; the open field's default draws none) | `map.mjs`, `spec.mjs` |
+| A Critical | 1 Tier 3 in 12 | the exact share of the roll's Tier 3s (`calc.mjs critProb`: Doubles on a Tier 3, 20 over the Defense, three of a kind) | `spec.mjs` |
+| NPC Modifiers | ceil(Body / 2 + 1) | a rating of the role's table (Weapon Medium, Power Low; a Standard's Power Medium; a `power` NPC leads with Power); `wmod-high`, `pmod-low` in fights.txt. The same numbers at the defaults | `spec.mjs npcOf`, the system's `data.mjs` |
+| AP | 5, no Reaction AP (the `rework/*-r1.txt` scripts switched pack R on) | **4 AP + 1 Reaction AP** for PCs and NPCs (Minions 3 + 1), gained at the start of the turn: **none before a creature's first turn of the encounter** | `spec.mjs RULES` (= `RULES_R`; the old set is `RULES_PRE_R`) |
+| Unused AP | nothing (pack R's scripts: Guard 2 from the turn's end to the next turn) | Guard 2 / 3 / 4 by Stage for each AP still unused **when the next turn starts**, for 1 round; a kept AP can pay a Reaction and then gives none | `spec.mjs` (`guardAt "next"`), the system's `guard.mjs` |
+| Escalation | spent, from 0 | a level from 1 (2 with Momentum, which only the next encounter uses), +1 a round, on a Critical and on the class's hook; nothing spends it | `spec.mjs RULES`, `day()` |
+| Opportunity Attack | a Talent (a class file's line), against a creature you threaten; NPCs: Elites only, paid from the next turn | every creature has it (1R, an adjacent enemy that leaves a square with a Move Action or stands up; a ranged weapon shoots with Engaged's 2 Banes); an NPC needs its Reaction AP | `spec.mjs` (`oaAll`) |
+| NPC turns | its Bestiary Strikes (2 for a Standard) | every AP left after moving: the Encounter Special once, the Round Special, Basic attacks (config.mjs `npcSpecial`); Elite Escalation and phases | `spec.mjs npcOf` (`kit`), `kitSeq` |
+| The party | the 5 AP classes of `classes/` | the four R builds of `rework/` (now with their sheet's `vigor` / `resolve` and `hook` lines) | `fights.txt` (the old one: `fights-pre-r.txt`) |
+
+**Which report runs which rules**
+
+| Report | Script | Rules | State |
+|---|---|---|---|
+| `report.md` | `spec.mjs` | the book today; the R builds | regenerated: a new report (before: the 5 AP classes) |
+| `report-pre-r.md` | `spec.mjs --pre-r` | before pack R, with today's dice and map; the 5 AP classes | new file: what the old report.md is now |
+| `rclasses.md`, `worth.json` | `rclasses.mjs` | the book today (`RULES_R`) | regenerated |
+| `rbestiary.md` | `rbestiary.mjs` | the book today over the pre-R tables it fits | regenerated. **Its Stage 3 Health fit now differs from the book's tables:** written to `bestiary-r-refit.json` as a proposal; `bestiary-r.json` (the book's tables) is untouched |
+| `positions.json`, `prices.md`, `progression.md` | `positions.mjs`, `econ.mjs`, `progression.mjs` | before pack R (`RULES_PRE_R`, pinned in each script: they study the 5 AP classes), today's dice and map | regenerated; they hardly move |
+| `rework.md`, `rework-sheet.md` | `rework.mjs` | pack R's prep | **kept as the record of 2026-11-04**: the script names cards and builds that pack R-classes replaced (it stops at "Elusive"), so it can't write them again |
+| `bestiary.md` | `bestiary.mjs` | pack E3's refit | **kept as the record of 2026-10-29**: it refits the Bestiary of that day, which the refit itself replaced |
+
+The reports as they were are in `archive/ruler-old/before-catchup/`. The hand-written scripts of 2026-10-24 (`ruler.mjs`, `levels.mjs`, `defense.mjs`...) are the 5 AP level 1 arithmetic and stay as they are.
+
+### Before / after: what moved, and why
+
+**1. The dice and the map rules alone move almost nothing** (the 5 AP classes, old report.md against report-pre-r.md): every turn within 0.1 damage, every fight within 2 points (4 Standards: 4.0 rounds, 20% Health lost, a Down in 24% → 26%; 6 Standards 61% → 60%, won 65% → 66%), the Standard day cleared 57% → 60%. A flat Boon is worth the same as the old one on average (+9% of the roll, 0.50 → 0.51 DE); **Favored is worth more: +35% → +37%** (any pair is Doubles). The Field limit takes 0.03 Banes off an average Archer shot (1.53 → 1.50: Cover, into melee and Prone seldom pass 2 together), and Flanking's limit of 2 never matters with 2 melee PCs (0.20 Boons a Weapon Action, as before). The prices of positions and conditions move by less than their own noise (the largest: Prone on a Paladin 6.6 → 6.3 DE).
+
+**2. The current classes under pack R** (rclasses.md: the same builds and rules before and after; what changed is the Reaction AP's start, the Guard's timing, the dice):
+
+| The four R builds, level 1 | Before | After |
+|---|---|---|
+| 4 Standards (normal) | 3.6 rounds · 12% lost · Down 21% · won 100% | 3.7 · 12% · Down 22% · won 99% |
+| ... damage the party takes | 52.8 | **59.2** |
+| 6 Standards (deadly) | 5.6 · 36% · Down 58% · won 82% | 5.7 · **42%** · Down **66%** · won **77%** |
+| 2 Elites + 2 Standards (deadly) | 5.9 · 33% · Down 55% · won 86% | 5.9 · 33% · Down 58% · won 87% |
+| Reactions a fight: Smite Paladin / Lay On Hands Paladin | 2.16 / 2.63 | **1.59 / 2.17** |
+| The turns (Smite Paladin Main 26.0, Apex 34.2; Double Shot Archer Main 28.6) | the same | the same |
+
+**Why: a creature has no Reaction AP before its first turn of the encounter** (Chapter 2: it is gained when you regain AP; Foundry does the same). The ruler gave everyone one from the first moment, so a PC that rolled low on Initiative reacted to the NPCs' first advance. That was about a quarter of all Reactions: with a Reaction AP from the first moment the normal fight costs 12% with a Down in 19%, without it 13% and 23% (report.md, "Reactions in the 4 + 1 AP economy").
+
+**3. Reactions in the 4 + 1 AP economy** (the numbers that moved most):
+
+| Reaction's worth (AP a turn of its owner; the floor for a 1R Reaction is 1) | Before | After |
+|---|---:|---:|
+| Shield of Faith | 0.90 | **0.75** |
+| Rebuke (with its Push and Frightened) | 0.48 | **0.34** |
+| Bulwark of Faith as it was | 0.75 | 0.60 |
+| Overwatch | 1.04 | **0.75** |
+| Covering Shot | 1.37 | **1.05** |
+| Quick Draw (the stand-in) | 0.69 | 0.52 |
+| Opportunity Attack as a Paladin's only Reaction | 0.33 | 0.26 |
+
+- **The Reaction AP is the most valuable AP of the round.** Take the class Reactions away and the normal fight costs 25% of the party's Health instead of 13% (a Down in 42% instead of 23%, 4.2 rounds instead of 3.8); the deadly fight is won 46% of the time instead of 71%. With no Reaction AP at all (a Reaction paid only with a kept turn AP) the result is the same as with no Reactions: nobody keeps a turn AP for one.
+- **Opportunity Attack is still worth about nothing, for a new reason.** Before pack R the Paladin spent all 5 AP and never had one left (the README's "worth 0"). Now every PC has a Reaction AP, and a better Reaction for it. A PC that makes every Opportunity Attack it can (0.3 a fight, 1.8 damage) **loses more than it gains**: its class Reaction misses the AP (the normal fight 13% → 15% of Health, a Down 23% → 25%; the deadly fight 46% → 48%). So the ruler's PCs keep the Reaction AP for the class Reaction and make an Opportunity Attack only with an AP to spare (`RULES.oaPolicy "spare"`; `"first"` is the other row): they make none. As a PC's only Reaction it is worth 0.26 AP a turn (it fires 0.7 times a fight for a Paladin).
+- **The NPCs' Opportunity Attack never fires** (0.00 a fight): melee PCs don't walk away from an enemy, the Rolling Shot Archer Evades, and the Double Shot Archer's `Kite` turn has no step (it shoots while Engaged, about 1.2 shots a fight with the 2 Banes). Its cost is hidden in what the PCs don't do. A decision policy that moves more (SIM-3) will price it.
+- **The unused AP's Guard is worth about nothing in these builds:** the Paladins spend all 4 AP; the Archers leave 0.7 AP a fight (turns cut by a move or a missing target), most of it then pays a Reaction, and what is left gives 0.2 to 0.3 Guard a fight, almost never used. Taking the rule away changes no number. Its value is as an option (a turn with nothing good to do), which a plan-following ruler doesn't have.
+- **The mercy Passives are worth a little more** because the party takes more: Font of Mercy 0.23 → 0.28 AP a turn, Mending Light 0.67 → 0.70, Hallowed Stance 0.54 → 0.61.
+
+**4. The Bestiary's fit** (rbestiary.md; the book's tables are unchanged):
+
+| | Before | After |
+|---|---|---|
+| The normal fight at the book's tables (the party with the reserve) | 3.4 rounds · 12% lost · cost 18% · Down 19% | 3.5 · 13% · cost **21%** · Down **22%** |
+| The cost reaches 25% at d = | 0.81 | 0.74 |
+| A Down in 10% of the fights at d = | 0.62 | 0.58 |
+| The Stage 1 damage factor (the knee) | × 0.70 | × 0.70 (kept) |
+| The Elite factor | 1.01: × 1.00 | 1.02: × 1.00 (kept) |
+| Stage 2 Health fit | 1.07: today's rows kept | 1.02: kept |
+| **Stage 3 Health fit** | 1.22: **× 1.20** (in the book) | 1.14: under the script's own rule ("within 15%: today's rows kept") **× 1.00** |
+
+The normal fight is 3 points dearer than when the Bestiary was fitted and still inside the target ("about a fifth, a Down in about 1 fight of 5"). The Stage 3 row is the one disagreement the catch-up found between the ruler and the book: a question for Lucas (the Stage 2 and 3 party is a model, with no Stage 2 or 3 cards yet).
+
+**5. report.md is a new report** (the R builds; the old one was the 5 AP classes): 4 Standards 3.8 rounds, 14% of the party's Health, a PC Down in 25%; 5 Standards (hard) 4.8 rounds, 27%, Down 46%, won 90%; 6 Standards (deadly) 5.8 rounds, 46%, Down 69%, won 73%; 2 Elites + 2 Standards 6.0 rounds, 39%, won 81%. The Standard day (easy, normal, normal, hard) is cleared 93% of the time with 57% of the Rally Points left; the short hard day 76%. For scale, the 5 AP classes against the pre-R Bestiary: 4.0 rounds and 20%; 6 Standards 61%, won 65%; the Standard day cleared 57%.
+
+**What SIM-1 should know** is in `book/sim-brief.md` section 3. **Not modeled** is unchanged (the map's lists below; `book/sim-brief.md` section 6): walls, terrain, Senses, Resist / Weak, NPC Saves and special Actions, Vigor and Resolve as two pools, a ranged NPC's Opportunity Attack, Cover on Saves, High cover on the open field, the class cards' Pressure and Support names (none is written on a card yet, so every card Boon and Bane adds up).
+
 ## The spec-driven ruler (2026-10-29): `spec.mjs`
 
 Describe a class build in a plain file (`classes/*.txt`: its numbers, Actions with AP, Frequency, traits and Tier results, passives,
 the turns it can take and its plan by round) and the fights in `fights.txt`; one script writes the whole table to **`report.md`**:
 
 - each turn's damage against Defense 12 to 14 (Monte Carlo, at the Escalation the turn needs, and at Escalation 3), the best turn,
-  and the turn's AP and Strikes, with the rules checked: at most 5 AP and 3 Strikes, At-will Banes, Round / Turn / Encounter Frequency,
+  and the turn's AP and Strikes, with the rules checked: at most 4 AP (`RULES.ap`; 5 before pack R) and 3 Strikes, At-will Banes, Round / Turn / Encounter Frequency,
   the Escalation an Action needs, a Reload Shot only with a Reload weapon, and nothing with an unloaded weapon but a Reload;
 - the build's Health (the book's thresholds and level factor), AD, WD, Rally Points and what each heals;
 - **duels** against one Medium NPC of each role (the Bestiary at the build's level): its damage a turn to this PC, **rounds to kill it**
@@ -18,13 +108,18 @@ the turns it can take and its plan by round) and the fights in `fights.txt`; one
   Vulnerable added, and every debuff it applied.
 
 ```
-node book/ruler/spec.mjs            # writes report.md and prints it (about 10 seconds)
+node book/ruler/spec.mjs            # the book today: rework/*.txt and fights.txt; writes report.md and prints it (about 3 minutes)
 node book/ruler/spec.mjs --quiet    # writes report.md only
-node book/ruler/spec.mjs --check    # the simulation against the exact dice math (calc.mjs); must print only "ok"
+node book/ruler/spec.mjs --check    # the simulation against the exact dice math (calc.mjs); prints only "ok" (about 1 minute)
+node book/ruler/spec.mjs --pre-r    # the classes before pack R: classes/*.txt and fights-pre-r.txt under RULES_PRE_R; writes report-pre-r.md (about 5 minutes)
 ```
 
-It uses the system's own code: the dice (`calc.mjs` tierProbs: exploding d12s, Doubles, Boons and Banes as 1d3-1, Favored) and the
-Bestiary (`config.mjs` npcHm, npcDamage, the roles and ratings). Random numbers are seeded, so the same files give the same report.
+It uses the system's own code, one copy of each rule: the dice (`calc.mjs`: exploding d12s, Doubles, flat Boons and Banes that cancel, the limit of 2
+for named ones, 5 or more left = Favored / Doomed, Favored's any pair and three of a kind), the Bestiary (`config.mjs` npcHm, npcDamage, the roles
+and ratings, the Special multipliers, the AP), the NPC Modifier ratings (`data.mjs` npcModRatings, npcModValue) and the unused AP's Guard (`guard.mjs`).
+Random numbers are seeded, so the same files give the same report. **`--check`** rolls the dice one by one (`rollDice`) against the exact odds,
+checks the map's Boons and Banes against the book's examples (`mapChecks`: Flanking, the Field limit, High cover) and one Weapon Attack of every
+build against the exact math.
 
 ### The spec files
 
@@ -42,6 +137,9 @@ One thing per line; `#` starts a comment. A class file (`classes/paladin-1.txt` 
 | `targeted` | `targeted 1.5` | How often NPCs choose this PC (1 = as often as anyone; a tank in front more, an archer behind less) |
 | `weapon` | `weapon Crossbow (ranged, projectile, reload, range 10/20/40): 0 / 1d4+2 / 1d10+2` | Its properties in brackets, then Tier 1 / 2 / 3. A [Weapon] Action takes Ranged or Melee from it, and Shot when it is Projectile. `range` (the map model): normal / far / maximum; melee 1 and ranged 10/20/40 by default |
 | `speed` | `speed 6` | The map model: species + class (Human 5; Archer +1) |
+| `vigor`, `resolve` | `vigor 23` · `resolve 12` | Pack R's sheet (the catch-up): the Health thresholds as the sheet shows them (Chapter 4: the class's Stage line + the species). With them Rally Points = the Rally value + the Stage. Without them: the `health` line's old formula |
+| `hook` | `hook ally` · `hook quarry` | The class's Escalation hook (the Paladin: an ally within 5 squares becomes Bloodied or goes Down; the Archer: its Marked Quarry goes Down) |
+| `no-opportunity` | | It never makes the basic Opportunity Attack (every build has that Reaction without a line, while `RULES.oaAll`) |
 | `reaction` | `reaction Opportunity Attack: opportunity` · `reaction Quick Draw: quick-draw` | The map model: Reactions it makes with the AP it keeps after its turn |
 | `action` | see below | One Version of an Action (write Versions as `Smite 2`, `Smite 3`: they share Frequency) |
 | `passive` | `passive Marked Quarry: boon 1 shot strike quarry` · `passive Killer's Focus: escalation 2: extra 1d6 first shot strike weapon` | Always on (from an Escalation) |
@@ -76,12 +174,12 @@ Effects: `on 2+: ...`, `on 3: ...`, `on 1: ...` or `always: ...`, several separa
 `quarry` limits it to your Marked Quarry.
 
 The fight (`fights.txt`): `level`, `runs`, `defenses`, `party Paladin, Paladin, Archer, Archer`, and `encounter <name>: 4 standard` or
-`1 elite, 2 standard high` (a rating after the role, Medium by default; `ranged` for a ranged Basic attack, `speed-6` for another Speed). The map model's settings: `map on` / `map off`, `map start 8`, `map back 2`, `map cover 5% 2, 15% 1`, `map npc-reactions elite` (map.mjs `MAP`). Days: `day-runs 1000`, `day <name>: <fight> | <fight> | ...` and
+`1 elite, 2 standard high` (a rating after the role, Medium by default; `ranged` for a ranged Basic attack, `speed-6` for another Speed, `power` for a Ward Defense attacker, `wmod-high` / `pmod-low` for a Modifier's rating). The map model's settings: `map on` / `map off`, `map start 8`, `map back 2`, `map cover 5% 2, 15% 1` (`3` is High cover: Doomed), `map npc-reactions elite` (only before pack R: now every creature has the Opportunity Attack) (map.mjs `MAP`). Days: `day-runs 1000`, `day <name>: <fight> | <fight> | ...` and
 `day-party <name>: paladin-smite-1, archer-1, ...` (class file names; the NPCs use the party's level). A Daily Action is kept for a hard fight (CV 1.25 or more per PC) or the last fight of the day. `party` takes file names too. NPCs are the Bestiary's at that level with Foundry's default
 ratings (Body High, the rest Medium): a Standard has 57 Health, Defense 13, Modifier +2. What the fight leaves out: Rally Points used by the PCs themselves, NPC special Actions, Body and Mind as two pools,
 and (with `map on`) walls, Difficult Terrain, elevation and Large creatures; with `map off`, all positions and Reactions.
 
-### Results (2026-10-29, level 1 unless said; the full tables: `report.md`)
+### Results before the catch-up (2026-10-29; the classes before pack R, 5 AP, level 1 unless said; those tables today: `report-pre-r.md`)
 
 - **The spec matches the hand-written ruler** where the rules are the same: Paladin L1 Smite 2 + two Weapon Attacks 22.4 at Defense 13
   (ruler.mjs 22.5); Paladin L2 Sacred Weapon turn 27.3 (levels.mjs 27.4). `--check` agrees with the exact math within 0.02.
@@ -103,9 +201,9 @@ and (with `map on`) walls, Difficult Terrain, elevation and Large creatures; wit
   of the fights (2 Elites the most: 16%). The book's target is about 3 rounds and 40%: the length is on target, the Health lost is a little low
   (the sim ignores NPC special Actions, which are part of what makes a fight cost 40%). CV 6 (6 Standards): 4 to 5 rounds, 47%, a PC Down in 26%.
 
-### Adventuring days: Archer and Paladin compared (2026-10-29)
+### Adventuring days: Archer and Paladin compared (2026-10-29; before the catch-up: the classes before pack R)
 
-`fights.txt` has three days of 3 to 4 fights with no Rest (the Bestiary's CV: 1 per PC normal, 3/4 easy, 1 1/2 hard), run 1,000 times for
+`fights-pre-r.txt` (then fights.txt) has three days of 3 to 4 fights with no Rest (the Bestiary's CV: 1 per PC normal, 3/4 easy, 1 1/2 hard), run 1,000 times for
 three parties of 2 Paladins + 2 Archers (level 1; level 2; level 2 with one Paladin taking Shield of Faith instead of Sacred Weapon). Health and
 Rally Points carry over; Encounter Actions and Escalation start again each fight; Rally Points are used in a fight (Steel Yourself, when below
 35% Health; the Paladin's Lay On Hands on an ally below 50%) and between fights. Per PC, over the Standard day (easy, normal, normal, hard):
@@ -136,6 +234,8 @@ Rally Points carry over; Encounter Actions and Escalation start again each fight
 
 ## The playtest 2 rework (pack R prep, 2026-11-04): `rework.mjs`
 
+**A record, not run again (the catch-up, 2026-11-12):** `rework.md` and `rework-sheet.md` are as written on 2026-11-04. The script can't write them again: pack R-classes replaced the builds of `rework/` and the cards it names (it stops at the "Elusive" passive). Its "today" is `RULES_PRE_R`, and its rework pieces are the prep's models (Guard from the turn's end, a Reaction AP from the first moment, Opportunity Attack as a Talent).
+
 `node book/ruler/rework.mjs` (about 5 minutes; `--quick` about 2) writes **`rework.md`**; the prep document that reads it is **`book/rework-r.md`** (its numbers part; the decision sheet is its section 14, from `--sheet` below). It runs the spec ruler with the map model under the rework's rules (book/playtest-2.md) and today's, side by side:
 the 4 AP builds of **`rework/*.txt`** (the P1 and A1 builds with their turns cut to 4 AP and a Reaction each; the files of `classes/` are untouched, so report.md doesn't move) against the Bestiary at level 1.
 
@@ -150,11 +250,15 @@ the 4 AP builds of **`rework/*.txt`** (the P1 and A1 builds with their turns cut
 
 ## Pack R-classes (2026-11-04): `rclasses.mjs`, the rebuilt classes under pack R's rules
 
+**After the catch-up (2026-11-12):** its rules are `spec.mjs RULES_R` (the default: the book today), so it now has no Reaction AP before a creature's first turn, the Guard when the next turn starts, the basic Opportunity Attack on every build (the "None" rows take it off) and the exact Criticals. What moved: the catch-up's table above (the Reactions' worth about a quarter lower).
+
 `node book/ruler/rclasses.mjs` (about 4 minutes; `--quick` about 30 s) writes **`rclasses.md`**: the R builds of `rework/*.txt` (the Paladin and the Archer rebuilt by pack R-classes: a Hallmark Reaction, one Escalation Passive per rung, an Apex) measured with every piece of the rework on (`RULES`: 4 + 1 AP, Escalation as a level from 1 with the hooks, Guard from unspent AP, the NPC Specials, no Opportunity Attack disrupt) at the decision sheet's fit (NPC Health × 1, the Basic attack tables × 0.6; rework-r.md 14.2 item 3; since pack R-bestiary (2026-11-05) the live tables of config.mjs: RULES.bestiary "r", FIT d 1) and the Stage Health line: the turns, the normal / hard / deadly fights, each Hallmark Reaction's worth (its own damage, block or Guard a fight per turn of its owner), each Passive's worth (the wrath ones on the turn tables, since a fight to the death caps damage by the NPCs' Health; the mercy ones by what they did in the normal and the hard fight) against the rung budgets (item 15: rung 1 0.4-0.6 AP a turn, rung 2 0.6-0.8, rung 3 0.8-1), and each Apex in the fights with and without its turn. **The pre-R class files (`classes/*.txt`) keep the old cards' lines at their end** (the cards that pack R-classes changed), so `report.md` doesn't move: they are the 5 AP Paladin and Archer as they were.
 
 **New in spec.mjs (opt-in, nothing moves):** a class file's own lines take `[PMod]` too (`[PMod+2]`, `[PModx2]`, `[PModx2+1]`); `extra ... each` (on every matching Action) and `... bloodied` (only against a Bloodied or Strained target); the start-of-turn passives `mend` (Mending Light) and `surge` (Divine Surge as a Passive); `mend` with `allies N` heals the N most hurt (Hallowed Dawn); `reduce ... always` (no "haven't left your square" clause); `vulnerable N round` (until the giver's next turn); `reaction Name: block 9 spill round ally` (`round`: once a round, `ally`: never on itself: Bulwark of Faith), `reaction Name: callshot` (Call the Shot, considered and dropped: Vulnerable 1 on your Marked Quarry when an ally damages it) and `reaction Name: ready` (Ready Shot: after an enemy's Strike within 10 squares, once a round, +1 AP on your next turn, spent on the build's `when ready: <turn>`); `when escalation 3: <turn>` (the Apex turn, while its Encounter Actions are unused); `turnDamage(..., { bloodied: true })` (the target counts as Bloodied).
 
 ## Pack R-bestiary (2026-11-05): `rbestiary.mjs`, the Bestiary re-fitted to the rebuilt party
+
+**After the catch-up (2026-11-12):** the same script under `RULES_R` (Guard 2 / 3 / 4 by Stage from the system). `bestiary-r.json` is the tables the book and config.mjs have; a run whose fit differs writes `bestiary-r-refit.json` and says so (today: the Stage 3 Health rows, see the catch-up's table 4).
 
 `node book/ruler/rbestiary.mjs` (about 2 minutes; `--quick` about 20 s) writes **`rbestiary.md`** and **`bestiary-r.json`** (the new tables; the book's rows and config.mjs's arrays are copied from it, and the script says whether config.mjs matches). The party: rclasses.mjs's four R builds at Stage 1, 2 and 3 (the Health line, Rally + Stage, Guard 2 / 3 / 4, the Weapon Attribute +1 a Stage, Modifiers +1 at Stage 3, WD 13 / 14 / 14, 2[W] at Stage 3; Shield of Faith's Stage steps), with a reserve for the Folk Traits (each PC's damage × 1.07). The NPCs: the pre-R tables × the factors it fits (damage d, Health h, an Elite factor ed), their Specials, one in four `power`. What it measures: the Stage 1 damage factor against the two targets (the cost = the Health lost + the Rally Points spent in the fight; a Down in 1 fight of 10) with a grid over the Special scale and NPC Health; the `power` NPCs' share; Elite Escalation and the phases, and the Elite factor; Minions and Grunts; the Stage 2 and 3 Health fits for 3.5 rounds; the difficulty table; the tables and each role's "deals a turn" (raw, against AD 13, and measured).
 
@@ -181,7 +285,10 @@ changing map.mjs, the fight, or `paladin-smite-1` / `archer-1`). Each price is a
 to one leaves the others' rolls alone), the change in one: the party of a Standard day against 4 Standards that don't die, 6,000 pairs, 2 rounds from the round the
 condition is put on (rounds 1, 2 and 3 averaged). **Value = damage dealt more + damage taken less.**
 
-### What positions found (level 1; the tables: prices.md section 5, report.md)
+### What positions found (level 1, the classes before pack R: 5 AP; before the catch-up; the tables: prices.md section 5, report-pre-r.md)
+
+**After the catch-up (2026-11-12):** run again with today's dice and map rules (the rules pinned to `RULES_PRE_R`): every price within its noise (the Archer's shots carry 1.50 Banes from the map instead of 1.53). For the classes of today, Reactions and Opportunity Attack are in the catch-up's section at the top; Speed and the movement conditions wait for SIM-2's maps.
+
 
 - **Positions cost the Archer a fifth of its damage.** Real sustained damage a turn: Archer 121% → **96%** of the baseline (its budget is 100-105%), the Smite Paladin
   87% → 81%. The Archer's shots carry **1.6 Banes from the map** on average: 72% of them go into melee (the target is Engaged with a Paladin: 1 Bane, 2.4 DE a round for the
@@ -253,6 +360,8 @@ without an Encounter or Daily Action (a once-a-fight Nova is a third of the turn
 pre-P1 baseline and, at levels 2 and 3, the charter's +10% curve. Runtime: spec.mjs about 2 minutes, econ.mjs about 20 seconds.
 
 ## The price list of the core rules (pack E1, 2026-10-29): `econ.mjs`
+
+**After the catch-up (2026-11-12):** still the 5 AP price list (`RULES_PRE_R`; 1 AP = 4.66 DE is the 5 AP baseline turn / 5), with today's dice: +1 Boon 0.51 DE (+9%), +1 Bane -10%, Favored **+37%** (was +35%), the rest within 0.1. Under pack R, 1 AP = 5.8 DE (rclasses.mjs `AP_DE`: the 4 AP turn / 4) and the cards' worth is rclasses.md's ledger.
 
 **Correction (2026-10-29, the same day): Escalation is spent** (the book: an Active costs its Escalation, spending turns passives off).
 The first run treated it as a threshold. Both scripts now spend it, and the days add **Momentum** (book/class-charter.md). The numbers
@@ -353,7 +462,7 @@ Health Pool: Human Paladin 36 / 39 / 42, Dwarf Paladin 41 / 44 / 48, Human Arche
 - **Rally Points:** the class's Rally value (Paladin 6, Archer 5) + ceil((Body + Mind + level) / 2), each removing ceil(Pool / 4): 1.6 to 2.4 Health Pools a day at level 1, 1.9 to 2.5 at level 3, 2.2 to 2.8 at level 5 (six builds: Human, Dwarf and Elf of each class).
 
 ## The scripts in this folder
-- `spec.mjs` with `classes/*.txt` and `fights.txt`: the spec-driven ruler (top of this file); it writes `report.md`.
+- `spec.mjs` with `rework/*.txt` and `fights.txt`: the spec-driven ruler on the book's rules today (top of this file); it writes `report.md`. With `--pre-r`: `classes/*.txt` and `fights-pre-r.txt` under the rules before pack R; it writes `report-pre-r.md`.
 - `econ.mjs` with `catalogue/*.txt`: the price list of the core rules (pack E1); it writes `prices.md`.
 - `map.mjs`: the map model (pack E2): grid, movement, Banes and Boons of positions, conditions, Forced Movement; `spec.mjs` uses it (`map on`).
 - `positions.mjs`: the prices of positions (pack E2); it writes `positions.json` (econ.mjs reads it).
@@ -372,6 +481,8 @@ They import the system's dice math (`foundry/twod12/module/calc.mjs`) by a relat
 - `roles.mjs`, `npcdmg.mjs`, `bigger.mjs`, `fight.py`: the earlier role, NPC damage and fight checks.
 
 ## The Bestiary refit (pack E3, 2026-10-29): `bestiary.mjs`: IN THE BOOK (2026-10-30)
+
+**A record, not run again (the catch-up, 2026-11-12):** `bestiary.md` is as written on 2026-10-29. Its "today's Bestiary" was the tables before the refit; the script now reads the tables after it (`bestiary-today.mjs`), so a new run answers another question.
 
 `node book/ruler/bestiary.mjs` (about 23 minutes; `--quick` about 7) writes **`bestiary.md`**; the proposal that reads it is **`book/bestiary-e3.md`**.
 The real classes (2 P1 Smite Paladins + 2 A1 Archers, Double Shot and Rolling Shot, levels 1-3; a mixed party as a check) on the map, with LV's

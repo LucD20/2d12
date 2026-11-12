@@ -22,7 +22,7 @@ const mean = a => a.reduce((s, x) => s + x, 0) / (a.length || 1);
 const f1 = x => (Number.isFinite(x) ? x.toFixed(1) : "-"), f2 = x => (Number.isFinite(x) ? x.toFixed(2) : "-"), pc = x => (Number.isFinite(x) ? `${Math.round(x * 100)}%` : "-");
 
 /* ------------------------------------------------------------------ the rules of a run */
-const TODAY = { ap: 5, reactionAp: 0, escalation: "spent", npcAp: 5, minionAp: 3, npcReactionAp: 0, npcSpecials: 0, apGuard: 0, apGuardKeep: false, escHooks: false, oaDisrupt: true };
+const TODAY = { ...S.RULES_PRE_R };   // the catch-up (2026-11-12): this is the prep study, so every run starts from the rules before pack R and adds the rework's pieces (R_RULES, SHEET) as the prep modeled them (Guard given when the turn ends, Opportunity Attack as the Talent, the pre-R Bestiary); spec.mjs's default is now the book today
 const R_RULES = { ap: 4, reactionAp: 1, escalation: "level", npcAp: 4, minionAp: 3, npcReactionAp: 1 };
 const setRules = o => Object.assign(S.RULES, TODAY, o);
 

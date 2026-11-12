@@ -1,36 +1,28 @@
-# The party fights (node book/ruler/spec.mjs). The party names class files (a file name, or a class name + the level below).
-# encounter <name>: <count> <role> [rating], ...  (rating Medium unless given; NPCs use the Bestiary at this level, Foundry's default ratings)
+# The party fights (node book/ruler/spec.mjs): the book's rules today (pack R: 4 AP + 1 Reaction AP, Escalation as a level, the unused AP's Guard,
+# the NPCs' Specials; spec.mjs RULES) and the R builds of rework/*.txt. The fights before pack R: fights-pre-r.txt (--pre-r).
+# encounter <name>: <count> <role> [rating] [tags], ...  (rating Medium unless given; tags: ranged, power, speed-6, wmod-high, pmod-low; NPCs use the Bestiary at this level)
 level 1
 map on
 runs 2000
 defenses 12 13 14
-party paladin-smite-1, paladin-hands-1, archer-1, archer-1
+party paladin-smite-r1, paladin-hands-r1, archer-double-r1, archer-rolling-r1
 
-encounter 4 Standards: 4 standard
+encounter 4 Standards (normal): 4 standard
 encounter 2 Elites: 2 elite
 encounter Elite + 2 Standards: 1 elite, 2 standard
 encounter 8 Grunts: 8 grunt
 encounter 2 Standards + 8 Minions: 2 standard, 8 minion
-encounter 6 Standards (CV 6, hard): 6 standard
+encounter 3 Standards + 1 Ward attacker: 3 standard, 1 standard power
+encounter 5 Standards (CV 5, hard): 5 standard
+encounter 6 Standards (CV 6, deadly): 6 standard
+encounter 2 Elites + 2 Standards (CV 6, deadly): 2 elite, 2 standard
 
-# Adventuring days: the fights between two Rests (the Bestiary since E3: CV 100 per PC is a normal fight, 75 easy, 125 hard, 150 deadly; here roles count 1/4, 1/2, 1, 2 per PC).
+# Adventuring days: the fights between two Rests (the Bestiary: CV 100 per PC is a normal fight, 75 easy, 125 hard, 150 deadly).
 # day <name>: <fight 1> | <fight 2> | ...      day-party <name>: <class file>, ... (the NPCs use the party's level)
 day-runs 1000
-day Standard day (easy, normal, normal, hard): 2 standard, 4 minion | 4 standard | 1 elite, 2 standard | 2 elite, 2 standard
-day Long day (normal, hard, normal, hard): 8 grunt | 6 standard | 2 elite | 1 elite, 4 standard
-day Short hard day (normal, hard, hard): 4 standard | 2 elite, 2 standard | 6 standard
-day-party Level 1, the book's Paladin today: paladin-book-1, paladin-book-1, archer-1, archer-1
-day-party Level 1, P1 Smite: paladin-smite-1, paladin-smite-1, archer-1, archer-1
-day-party Level 1, P1 Smite holding Escalation: paladin-smite-1-hold, paladin-smite-1-hold, archer-1, archer-1
-day-party Level 1, P1 Lay On Hands: paladin-hands-1, paladin-hands-1, archer-1, archer-1
-day-party Level 1, P1 one of each: paladin-smite-1, paladin-hands-1, archer-1, archer-1
-day-party Level 2, P1 Smite: paladin-smite-2, paladin-smite-2, archer-2, archer-2
-day-party Level 2, P1 Lay On Hands: paladin-hands-2, paladin-hands-2, archer-2, archer-2
-day-party Level 3, P1 Smite: paladin-smite-3, paladin-smite-3, archer-3, archer-3
-day-party Level 3, P1 Lay On Hands: paladin-hands-3, paladin-hands-3, archer-3, archer-3
-day-party Level 1, A1 Double Shot: paladin-smite-1, paladin-smite-1, archer-double-1, archer-double-1
-day-party Level 1, A1 Rolling Shot: paladin-smite-1, paladin-smite-1, archer-rolling-1, archer-rolling-1
-day-party Level 2, A1 Double Shot: paladin-smite-2, paladin-smite-2, archer-double-2, archer-double-2
-day-party Level 2, A1 Rolling Shot: paladin-smite-2, paladin-smite-2, archer-rolling-2, archer-rolling-2
-day-party Level 3, A1 Double Shot: paladin-smite-3, paladin-smite-3, archer-double-3, archer-double-3
-day-party Level 3, A1 Rolling Shot: paladin-smite-3, paladin-smite-3, archer-rolling-3, archer-rolling-3
+day Standard day (easy, normal, normal, hard): 3 standard | 4 standard | 1 elite, 2 standard | 5 standard
+day Long day (normal, hard, normal, hard): 8 grunt | 5 standard | 2 elite | 1 elite, 3 standard
+day Short hard day (normal, hard, deadly): 4 standard | 1 elite, 3 standard | 6 standard
+day-party Level 1, the four R builds: paladin-smite-r1, paladin-hands-r1, archer-double-r1, archer-rolling-r1
+day-party Level 1, two Smite Paladins and two Double Shot Archers: paladin-smite-r1, paladin-smite-r1, archer-double-r1, archer-double-r1
+day-party Level 1, two Lay On Hands Paladins and two Rolling Shot Archers: paladin-hands-r1, paladin-hands-r1, archer-rolling-r1, archer-rolling-r1

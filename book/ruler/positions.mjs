@@ -106,6 +106,7 @@ const JSON_FILE = HERE + "positions.json";
 export function prices(lv = 1, { fresh = false } = {}) {
   if (CACHE[lv]) return CACHE[lv];
   if (!fresh && fs.existsSync(JSON_FILE)) { const j = JSON.parse(fs.readFileSync(JSON_FILE, "utf8")); if (j[lv]) return (CACHE[lv] = j[lv]); }
+  Object.assign(S.RULES, S.RULES_PRE_R);   // the catch-up (2026-11-12): a pre-R study, pinned only when it measures (rclasses.mjs reads the saved prices under its own rules) (the 5 AP classes of classes/, the rules before pack R); spec.mjs's default is the book today
   const party = partyOf(lv), npcs = npcsOf(lv), out = { lv, npc: [], pc: [], rules: [], builds: [], stats: null };
   const byRound = (name, fn, sign = 1, extra = {}) => { const r = P.rounds.map(round => pair({ lv, party, npcs, inject: fn, round }));
     return { name, rounds: r.map(x => sign * x.value), se: Math.max(...r.map(x => x.se)), avg: sign * r.reduce((s, x) => s + x.value, 0) / r.length, ...extra }; };
@@ -195,7 +196,7 @@ export function section(lv = 1) {
     `| Paladin Opportunity Attacks a turn | ${f2(s.oa)} |`,
     `| NPC Strikes aimed at a Paladin / an Archer (each) | ${pc(s.struckPal / 2)} / ${pc(s.struckArcher / 2)} |`, "");
   L.push("### Conditions and Forced Movement on one NPC (a Standard)", "", "| Effect | Round 1 | Round 2 | Round 3 | **Average** | ± | Share of 1 AP |", "|---|---:|---:|---:|---:|---:|---:|");
-  const perAP = 23.3 / 5;
+  const perAP = 23.3 / S.RULES_PRE_R.ap;
   for (const x of p.npc) L.push(`| ${x.name} | ${x.rounds.map(f2).join(" | ")} | **${f2(x.avg)}** | ${f2(x.se)} | ${pc(x.avg / perAP)} |`);
   L.push("", "### The same on a PC (what an NPC's condition costs the party), against the Bestiary's severity steps", "",
     "The Bestiary prices a condition on an NPC Action in steps of damage rating (Mild 1, Moderate 2, Severe 3; one step is 20 to 25% of the Action's damage). For a Standard's 2 AP Special (Basic attack × 2.2 against AD 13) one step is about " + f1(stepDE(lv)) + " DE.", "",

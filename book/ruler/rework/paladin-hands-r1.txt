@@ -7,6 +7,10 @@ level 1
 attributes body 2, mind 1, instinct 0, appeal 0
 health body x4 +3, mind x4 +4
 health-factor 1.125
+# the catch-up (2026-11-12): the sheet's Health (Chapter 4: the Paladin's Stage 1 line 20 / 10, Human +3 / +2, high on Vigor), Rally Points = Rally + Stage, the hook (Kindled Wrath)
+vigor 23
+resolve 12
+hook ally
 armor 3
 # pack MOD (2026-11-09): Modifiers are class values (track A2)
 weapon-mod 1

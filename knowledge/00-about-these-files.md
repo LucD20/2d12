@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-11 from the repository at: 03e5592 2026-11-11 SIM: the automated playtest environment's brief (book/sim-brief.md); MASTER-PLAN: ruler catch-up rules, then SIM, then the Stage 0 run
+Built by tools/knowledge.py on 2026-11-12 from the repository at: 2d65bb7 2026-11-11 SIM in MASTER-PLAN (section 2 row, section 3 item 3), HANDOFF, DESIGN_DOCS
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,9 +14,9 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (106 KB)
-- MASTER-PLAN.md (30 KB)
-- open-design-items.md (108 KB)
+- HANDOFF.md (108 KB)
+- MASTER-PLAN.md (31 KB)
+- open-design-items.md (112 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
@@ -31,7 +31,7 @@ Files:
 - rules-14-bestiary.md (21 KB)
 - rules-15-gear.md (10 KB)
 - rules-16-talents.md (2 KB)
-- design-sim-brief.md (10 KB)
+- design-sim-brief.md (14 KB)
 - design-expedition-loop.md (12 KB)
 - design-playtest-2.md (7 KB)
 - design-playtest-3.md (4 KB)

@@ -7,6 +7,10 @@ level 1
 attributes body 1, mind 1, instinct 2, appeal 0
 health body x3 +3, mind x2.5 +4
 health-factor 1.125
+# the catch-up (2026-11-12): the sheet's Health (Chapter 4: the Archer's Stage 1 line 16 / 8, Human +3 / +2, high on Vigor), Rally Points = Rally + Stage, the hook (Thrill of the Kill)
+vigor 19
+resolve 10
+hook quarry
 armor 2
 # pack MOD (2026-11-09): Modifiers are class values (track A2)
 weapon-mod 2

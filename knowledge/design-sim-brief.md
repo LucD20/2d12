@@ -8,7 +8,7 @@ A simulator that plays whole encounters on a grid: tokens with sizes, a map with
 
 The order (MASTER-PLAN section 3, item 3):
 
-1. **The ruler catch-up, the rules part** (section 3 below). First, so the simulator copies and is checked against the book's current rules.
+1. ~~**The ruler catch-up, the rules part**~~ (section 3 below): **done 2026-11-12** (branch `pack-ruler-catchup`). First, so the simulator copies and is checked against the book's current rules.
 2. **SIM**, this document (built in four parts, section 5). It takes the place of the "three preset maps" step that was proposed for the catch-up.
 3. **The Stage 0 run in SIM** (several maps, several decision policies). Then Stage 0 into the book, the class card sessions, Stage 0 in Foundry, Playtest 5.
 
@@ -16,18 +16,30 @@ Stage 0 does not need to be in the book first: SIM runs Stage 0 builds as data, 
 
 ## 2. What already exists (read these first)
 
-- **The ruler** (`book/ruler/`, README.md): `spec.mjs` reads class builds (`classes/*.txt`) and fights (`fights.txt`) and writes `report.md`: turns, duels, Monte Carlo fights, adventuring days. Seeded; `node book/ruler/spec.mjs --check` compares the simulation with the exact dice math. `map.mjs` and `positions.mjs` are its map model today: an open field (distances, Engaged, Cover drawn per shot, range, Flanking, Prone, Hindered, Immobilized); `RULES` in spec.mjs switches pack R's rules on (the `rework/*-r1.txt` files use them).
+- **The ruler** (`book/ruler/`, README.md): `spec.mjs` reads class builds (`rework/*.txt`: the four R builds, the classes of today) and fights (`fights.txt`) and writes `report.md`: turns, duels, Monte Carlo fights, the Reactions table, adventuring days. Seeded; `node book/ruler/spec.mjs --check` compares the simulation with the exact dice math and prints only "ok". `map.mjs` is its map model today: an open field (distances, Engaged, Cover drawn per shot, range, Flanking, Prone, Hindered, Immobilized). Since the catch-up (2026-11-12) `RULES` in spec.mjs defaults to the book today (`RULES_R`); the classes and rules before pack R are `classes/*.txt`, `fights-pre-r.txt` and `RULES_PRE_R` (`--pre-r`).
 - **The cards** (`book/cards/*.json`, loaded by `book/cards/load.mjs`): every card of the book, one source for the book, Foundry and the ruler (pack CS). The Mithril cards carry their automation as data (the "After the damage" steps).
 - **The Foundry system's pure code**, already loaded under Node by its 243 tests with small stand-ins: the dice (`foundry/twod12/module/calc.mjs`: exploding d12s, Doubles, Boons and Banes, Favored), the Bestiary (`config.mjs`: npcHm, npcDamage, roles and ratings), the effects' rules (`fxrules.mjs` compile), the durations (`effects.mjs` durationStep / pendingSteps), the movement limits, the Turn Log lines (`ticker.mjs`).
 - **Real play to compare with:** the Encounter Log's Copy (`foundry/twod12/module/enclog.mjs` exportText: "OC - Charge 4, WA vs DP T3; ...", by Round, with the abbreviations) and the playtest logs (`book/playtest-3.md`, `book/playtest-4.md`).
 
-## 3. Before SIM: the ruler catch-up, rules part (Claude Code, M)
+## 3. Before SIM: the ruler catch-up, rules part: DONE (2026-11-12, branch `pack-ruler-catchup`)
 
-- `calc.mjs` as Foundry has it: flat Boons and Banes and the new Favored.
-- `map.mjs`: Flanking's cancels then the limit of 2, High cover Doomed, the Field limit.
-- `rbestiary.mjs`: the NPC Modifier ratings.
-- **Pack R's rules as the default** (`RULES` in spec.mjs still defaults to 5 AP and no Reaction AP; the r1 files switch them on): 4 AP + 1 Reaction AP, Guard from unused AP, Escalation as a level with Momentum. Every place that assumes 5 AP is checked (the README's results still say "5 AP" in places).
-- `report.md` regenerated; the README's results marked "before / after the catch-up".
+What was asked, and where it is now (the detail and the before / after numbers: `book/ruler/README.md`, "The catch-up"):
+
+- ~~`calc.mjs` as Foundry has it: flat Boons and Banes and the new Favored.~~ The ruler has no copy: it imports the system's `calc.mjs`. Its reports were older than the change; all re-run. `spec.mjs rollDice` rolls one roll die by die with the system's `bbFive`, `keepThree` and `tierOf`.
+- ~~`map.mjs`: Flanking's cancels then the limit of 2, High cover Doomed, the Field limit.~~ Done, with the system's `bbCount` for the limit.
+- ~~`rbestiary.mjs`: the NPC Modifier ratings.~~ Done in `spec.mjs npcOf`, with the system's `npcModRatings` / `npcModValue` (data.mjs).
+- ~~**Pack R's rules as the default.**~~ Done: `RULES` = `RULES_R` (4 AP + 1 Reaction AP, the unused AP's Guard, Escalation as a level with Momentum, the NPCs' Specials, Elite Escalation, Opportunity Attack for every creature).
+- ~~`report.md` regenerated; the README's results marked "before / after the catch-up".~~ Done.
+
+### What SIM-1 should know
+
+1. **The gate is `book/ruler/report.md` as committed on `pack-ruler-catchup`:** `node book/ruler/spec.mjs --quiet` writes it again byte for byte (seeded; about 3 minutes), and `node book/ruler/spec.mjs --check` prints only "ok". Its headline rows (the R builds, level 1, the open field): 4 Standards 3.8 rounds, 14% of the party's Health lost, a PC Down in 25%, won 99%; 5 Standards 4.8 rounds, 27%, won 90%; 6 Standards 5.8 rounds, 46%, won 73%; the Standard day cleared 93%.
+2. **The rules the ruler takes from the system (import them, don't copy them):** `calc.mjs` (tierProbs, critProb, bbCount, bbFive, rollState, keepThree, tierOf), `config.mjs` (npcHm, npcDamage, npcRoles with `ap` and `cv`, npcSpecial, apPerTurn, reactionAp, guardPerAp, escalation, stageOf), `data.mjs` (npcModRatings, npcModValue; it needs two stand-ins for Foundry's globals: the top of spec.mjs), `guard.mjs` (guardPerAP), and the cards (`book/cards/load.mjs`).
+3. **Rules that live only in the ruler (SIM-only today, to move into pure system functions):** the turn loop and Frequencies (`runTurn`), the NPC's turn (`kitSeq`: Encounter Special, Round Special, Basic attacks), Elite Escalation and phases, the Escalation hooks, the Reaction moments (Opportunity Attack, Overwatch, Rebuke, the blocks: inside `fight()`), the unused AP's Guard at the start of the next turn (Foundry: `combat.mjs unusedApGuard`, not pure to import yet), Momentum in `day()`, the map's Boons and Banes (`map.mjs mapMods`, `flankBoons`), the conditions (`map.mjs applyCondition`).
+4. **Decisions hidden in the ruler that are policies, not rules (SIM-3):** a PC keeps its Reaction AP for its class Reaction and makes an Opportunity Attack only with an AP to spare (`RULES.oaPolicy`; taking every Opportunity Attack loses Health); a PC's Reactions fire on their first trigger; every PC follows its file's plan and spends every AP (so the unused AP's Guard is worth nothing here); the Double Shot Archer's `Kite` turn has no step, so it shoots while Engaged; the NPCs choose the PC they can strike most; nobody leaves an enemy's side, so the NPCs' Opportunity Attack never fires.
+5. **Found by the catch-up:** a creature has no Reaction AP before its first turn of the encounter (the book and Foundry; the ruler gave one from the first moment). It removes about a quarter of the PCs' Reactions and moved the Reactions' worth most (README). The Bestiary's Stage 3 Health fit moved (1.22 → 1.14): `book/ruler/bestiary-r-refit.json`, a question for Lucas; the book's tables are unchanged.
+6. **Not reproducible any more, kept as records:** `rework.md`, `rework-sheet.md` (pack R's prep) and `bestiary.md` (pack E3): their scripts name cards, builds and tables that later packs replaced. SIM doesn't need them.
+7. **Still not there** (section 6): High cover is in `map.mjs` but the open field draws none; Cover on Saves; a ranged NPC's Opportunity Attack; the class cards' Pressure and Support names (no card has one yet); Stage 2 and 3 builds on the Modifier track (they come with the Stage 0 run).
 
 ## 4. The environment (SIM): requirements
 
@@ -71,7 +83,7 @@ Playtest 4's encounter replayed in SIM (the same creatures, the map approximated
 
 | Missing | Where |
 |---|---|
-| The current rules (flat Boons and Banes, Favored, Flanking, High cover, the Field limit, NPC Modifier ratings, pack R's AP as the default) | the catch-up (section 3) |
+| ~~The current rules (flat Boons and Banes, Favored, Flanking, High cover, the Field limit, NPC Modifier ratings, pack R's AP as the default)~~ | **done: the catch-up (section 3)** |
 | Stage 0: levels 1 to 3 on `book/decisions-s1.md`'s level lists, no Talents; Escalation 1 to 6 with Momentum 0 to 4 | the Stage 0 run, after SIM |
 | Walls and Line of Effect, Difficult Terrain, Collision, Large creatures, elevation; so Speed (worth 0 on an open field), Push / Pull / Slide, Slowed, Hindered, Immobilized, Evade, range | SIM-2 |
 | Areas that last: Covering Fire's 1d4 on entering, Rain of Arrows' hazardous terrain, Consecrated Ground and the other Zones | SIM-2 |
@@ -83,7 +95,7 @@ Playtest 4's encounter replayed in SIM (the same creatures, the map approximated
 | Riders: Lock & Loose's and Pinning Shot's, Vanish's Bane on the first Strike, True Shot, Rolling Shot, Hand of Mercy, Long Draw | SIM-1 / SIM-2 |
 | Senses and Light: Darkness, Dim, Blinded, Hearing | SIM-2 (a map's light) |
 | The pack AU conditions as the Bestiary uses them: Frightened, Taunted, Sickened, Staggered, Dazed, Grabbed, Bleed | SIM-1 |
-| Reactions in the 4 + 1 AP economy (the README's "Opportunity Attack is worth 0" was measured with 5 AP and no Reaction AP) | the catch-up, then SIM-3 |
+| Reactions in the 4 + 1 AP economy: **measured in the catch-up** (report.md's Reactions table; README: the Reaction AP is worth half the normal fight's cost, Opportunity Attack still about 0 because the class Reaction is the better use of the one Reaction AP). Which Reaction to take, and when, is a decision | SIM-3 |
 | A check against the table | SIM-4 |
 
 ## 7. Not in SIM (for now)

@@ -43,7 +43,7 @@ export function rates(lv) {
   const B = TW.pcDamageVsDefense[13] * (1 + A.growth * (lv - 1)), npc = S.npcOf("standard", "medium", lv);
   const avgPool = A.baseHealthSpecs.reduce((s2, t) => s2 + refPool(t, lv), 0) / A.baseHealthSpecs.length;
   return {
-    lv, B, perAP: B / 5, npc, avgPool, rallyHeal: Math.ceil(avgPool / 4),
+    lv, B, perAP: B / S.RULES_PRE_R.ap, npc, avgPool, rallyHeal: Math.ceil(avgPool / 4),
     incoming: npcTurnAvg(npc, 13),                                      // one Standard's turn against AD 13: what a PC takes a round in a normal fight
     def: n => npcTurnAvg(npc, 13) - npcTurnAvg(npc, 13 + n),            // +n Defense for 1 round on one PC
     banes: n => npcTurnAvg(npc, 13) - npcTurnAvg(npc, 13, n),           // n Banes on one enemy's Strikes for its turn
@@ -153,8 +153,12 @@ const cls = name => S.parseSpec(fs.readFileSync(HERE + "classes/" + name, "utf8"
 /** The party of a Standard day for a build: two of it with two of the other class's main build at its level. */
 export const partyFor = file => { const b = cls(file), lv = b.level, pal = `paladin-smite-${lv}.txt`, arc = `archer-${lv}.txt`;
   return /^Archer/.test(b.name) ? [cls(pal), cls(pal), b, b] : [b, b, cls(arc), cls(arc)]; };
-const dayStats = (lv, file = `paladin-smite-${lv}.txt`, n = 800, map = S.MAP) => {
-  const fights = S.parseFights(fs.readFileSync(HERE + "fights.txt", "utf8")), d = fights.days[0];
+// The catch-up (2026-11-12): the day is a pre-R measurement (the 5 AP classes): it runs under RULES_PRE_R whoever calls it (this file measures at load,
+// and rclasses.mjs imports it under its own rules), and puts the caller's rules back.
+const preR = fn => { const keep = { ...S.RULES }; Object.assign(S.RULES, S.RULES_PRE_R); try { return fn(); } finally { Object.assign(S.RULES, keep); } };
+const dayStats = (...a) => preR(() => dayStats0(...a));
+const dayStats0 = (lv, file = `paladin-smite-${lv}.txt`, n = 800, map = S.MAP) => {
+  const fights = S.parseFights(fs.readFileSync(HERE + "fights-pre-r.txt", "utf8")), d = fights.days[0];
   const party = partyFor(file), R = S.rng(17), log = [];
   let fightsRun = 0, fightsDown = 0, daysDown = 0, loh = 0, turns = 0, mercy = 0, combatRp = 0; const real = {};
   for (let k = 0; k < n; k++) {
@@ -199,6 +203,7 @@ const CATALOGUE_NOTES = {
   "catalogue/gear-d2.txt": "**The weapons and Weapon Techniques of D2 (2026-10-31; book/gear-d2.md)**: every weapon's Weapon Attack and its Technique, on a level 1 PC (Weapon Modifier +2).",
 };
 export function report() {
+  Object.assign(S.RULES, S.RULES_PRE_R);   // the catch-up (2026-11-12): a pre-R study (the 5 AP classes of classes/, the rules before pack R); spec.mjs's default is the book today
   // Measured by positions (pack E2) instead of assumed: who the NPCs strike on the map.
   const ST = PO.prices(1).stats; A.quarryShare = +(ST.struckArcher / 2).toFixed(2); A.othersShare = +(1 - ST.struckPal / 2).toFixed(2);
   const L = [], R = [1, 2, 3].map(rates), esc = escalationShare();

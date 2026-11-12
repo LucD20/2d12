@@ -1,13 +1,19 @@
 // The map model (pack E2, 2026-10-29): positions on a square grid for the fights of spec.mjs, so movement and the conditions that act on it
 // (Hindered, Immobilized, Prone, Slowed, Pushed, Pulled, Slid, Evade, Cover, range, Engaged) change what happens and can be priced (econ.mjs).
 // The book's rules it follows (Chapter 3 unless said): distances count every second diagonal as 2; Engaged = adjacent to an enemy; a [Ranged]
-// Action takes 2 Banes while you are Engaged and 1 Bane against a creature Engaged with someone else; Cover: a creature on the line from center
-// to center is Low cover (1 Bane), and the map's own cover is drawn per ranged attack (`cover` in fights.txt); far range 1 Bane, maximum 2;
-// Flanking (1 Boon per other flanker, up to 3, minus the target's allies that threaten you); Prone (melee +1 Boon, ranged 1 Bane against it;
-// standing costs 1 AP); Hindered (Speed halved); Immobilized (no movement; Interact 1 AP ends the escape kind); Slowed N (N AP less);
-// Opportunity Attack (an Interrupt when a creature leaves a square of your weapon's reach during a Move Action; Evade doesn't trigger it).
-// What it leaves out: walls and Line of Effect (an open field), Difficult Terrain, Collision, Large creatures, elevation.
-// This file has no import from spec.mjs: spec.mjs calls it and passes what it needs (W.hooks).
+// Action takes 2 Banes while you are Engaged and 1 Field Bane against a creature Engaged with someone else; Cover: a creature on the line from
+// center to center is Low cover, and the map's own cover is drawn per ranged attack (`cover` in fights.txt); far range 1 Bane, maximum 2;
+// Flanking; Prone (melee 1 Field Boon, ranged 1 Field Bane against it; standing costs 1 AP); Hindered (Speed halved); Immobilized (no movement;
+// Interact 1 AP ends the escape kind); Slowed N (N AP less); Opportunity Attack (an Interrupt when an adjacent enemy leaves a square during a
+// Move Action or stands up; Evade doesn't trigger it).
+// The ruler catch-up (2026-11-12; the book since 2026-11-08, Foundry since v0.0.301): Boons and Banes are flat and cancel (calc.mjs); the ones of
+// position are **Field** ones, which add up to 2 on each side (calc.mjs bbCount: Cover, shooting into a melee, Prone, Flanking; the range Banes and
+// Engaged's 2 Banes have no name, so they add on top); **Cover** is Low 1 / Medium 2 Field Banes and **High cover makes the roll Doomed** with no
+// Field Banes from the Cover (`map cover 2% 3, ...` draws it; the open field's default draws none); **Flanking** is 1 Field Boon per other flanker,
+// the cancels first (each ally of the target that threatens the flanker), then the limit of 2.
+// What it leaves out: walls and Line of Effect (an open field), Difficult Terrain, Collision, Large creatures, elevation (SIM-2: book/sim-brief.md).
+// This file has no import from spec.mjs: spec.mjs calls it and passes what it needs (W.hooks). The rules of the dice come from the system's calc.mjs.
+const C = await import(new URL("../../foundry/twod12/module/calc.mjs", import.meta.url).href);
 
 /** The map's settings (fights.txt `map ...` lines can change each one). */
 export const MAP = {
@@ -15,8 +21,8 @@ export const MAP = {
   start: 8,          // squares between the PCs' front line and the NPCs' at the start of a fight
   back: 2,           // the PCs with a ranged weapon start this many squares behind the front line (with start 8: 10 squares, a crossbow's normal range)
   spacing: 2,        // squares between two creatures of the same line
-  cover: [{ p: 0.05, n: 2 }, { p: 0.15, n: 1 }],  // the map's own cover on a ranged attack: 5% Medium (2 Banes), 15% Low (1 Bane)
-  npcReactions: ["elite"],                        // the roles whose NPCs have an Opportunity Attack (the Bestiary: Standards and Elites "may have")
+  cover: [{ p: 0.05, n: 2 }, { p: 0.15, n: 1 }],  // the map's own cover on a ranged attack: 5% Medium (2 Field Banes), 15% Low (1); `n: 3` is High cover (Doomed)
+  npcReactions: ["elite"],                        // before pack R (RULES.oaAll off): the roles whose NPCs have an Opportunity Attack; since pack R every creature has it
   npcRange: [10, 20, 40],                         // a ranged NPC's Range
   off: {},           // rules turned off to price them (econ.mjs): { engaged, intoMelee, cover, flank, range }
 };
@@ -32,12 +38,12 @@ export const engaged = (c, W) => enemiesOf(c, W).some(e => adj(c, e));
 /** A creature threatens an enemy in the normal range of a melee weapon (Range 1 here: adjacent). */
 export const threatens = (c, e) => up(c) && c.melee && adj(c, e);
 
-/** Flanking Boons for a [Melee] Action of att against tgt. */
+/** Flanking's Field Boons for a [Melee] Action of att against tgt (Chapter 3): 1 per other flanker, minus 1 per ally of the target that threatens att, then the limit of 2. */
 export function flankBoons(att, tgt, W) {
   if (!threatens(att, tgt)) return 0;
-  const n = Math.min(3, friendsOf(att, W).filter(x => x !== att && threatens(x, tgt)).length);
+  const n = friendsOf(att, W).filter(x => x !== att && threatens(x, tgt)).length;
   const cancel = friendsOf(tgt, W).filter(x => x !== tgt && threatens(x, att)).length;
-  return Math.max(0, n - cancel);
+  return Math.min(C.BB_LIMIT, Math.max(0, n - cancel));
 }
 
 /** Low cover from a creature on the line from the center of a's square to the center of b's (sampled along the line). */
@@ -63,29 +69,33 @@ export function rangeBanes(range, d, longDraw = false) {
 
 /**
  * The Boons and Banes the map gives an attack. kind: "melee" or "ranged". opts: { ignoreCover, noEngagedBanes, longDraw, range }.
- * Returns { boons, banes, coverBanes, engagedBanes, intoMelee }, or null when the target is out of range.
+ * Returns { boons, banes (after the Field limit of 2 on each side; not cancelled: the caller adds its own and calc.mjs cancels), doomed (High cover),
+ * coverBanes, engagedBanes, intoMelee, rangeBanes, fieldBoons, fieldBanes (before the limit), fieldLost (what the limit took off) }, or null when the target is out of range.
  */
 export function mapMods(att, tgt, kind, W, opts = {}) {
-  const out = { boons: 0, banes: 0, coverBanes: 0, engagedBanes: 0, intoMelee: 0, rangeBanes: 0 };
+  const out = { boons: 0, banes: 0, doomed: false, coverBanes: 0, engagedBanes: 0, intoMelee: 0, rangeBanes: 0, fieldBoons: 0, fieldBanes: 0, fieldLost: 0 };
+  const src = [];   // the sources, as calc.mjs bbCount reads them: { boons, banes, bb }
+  const done = () => { const n = C.bbCount(src); out.boons = n.boons; out.banes = n.banes; out.fieldBoons = n.groups.field?.boons ?? 0; out.fieldBanes = n.groups.field?.banes ?? 0; out.fieldLost = n.rawBoons - n.boons + n.rawBanes - n.banes; return out; };
   if (kind === "ranged") {
     const d = dist(att.pos, tgt.pos), rb = rangeBanes(opts.range ?? att.range ?? [1], d, opts.longDraw);
     if (!Number.isFinite(rb)) return null;
     const off = W.M.off ?? {};
-    if (!off.range) { out.banes += rb; out.rangeBanes = rb; }
-    if (engaged(att, W) && !opts.noEngagedBanes && !off.engaged) { out.banes += 2; out.engagedBanes = 2; }
-    if (!off.intoMelee && !opts.noIntoMelee && enemiesOf(tgt, W).some(x => x !== att && adj(x, tgt))) { out.banes += 1; out.intoMelee = 1; }
+    if (!off.range) { src.push({ banes: rb }); out.rangeBanes = rb; }                                                          // no name: it adds to Cover
+    if (engaged(att, W) && !opts.noEngagedBanes && !off.engaged) { src.push({ banes: 2 }); out.engagedBanes = 2; }           // no name (one rule)
+    if (!off.intoMelee && !opts.noIntoMelee && enemiesOf(tgt, W).some(x => x !== att && adj(x, tgt))) { src.push({ banes: 1, bb: "field" }); out.intoMelee = 1; }
     if (!opts.ignoreCover && !off.cover) {
       let c = creatureInLine(att, tgt, W) ? 1 : 0;
       if (d > 1) { const u = (att.R ?? W.R)(); let acc = 0; for (const x of W.M.cover) { acc += x.p; if (u < acc) { c = Math.max(c, x.n); break; } } }
-      out.banes += c; out.coverBanes = c;
+      if (c >= 3) out.doomed = true; else if (c) src.push({ banes: c, bb: "field" });   // High cover: Doomed, and no Field Banes from the Cover
+      out.coverBanes = c >= 3 ? 0 : c; out.cover = c;
     }
-    if (tgt.cond?.prone) out.banes += 1;
+    if (tgt.cond?.prone) src.push({ banes: 1, bb: "field" });
   } else {
     if (cheb(att.pos, tgt.pos) > 1) return null;
-    if (!W.M.off?.flank) out.boons += flankBoons(att, tgt, W);
-    if (tgt.cond?.prone) out.boons += 1;
+    if (!W.M.off?.flank) src.push({ boons: flankBoons(att, tgt, W), bb: "field" });
+    if (tgt.cond?.prone) src.push({ boons: 1, bb: "field" });
   }
-  return out;
+  return done();
 }
 
 const free = (W, me) => { const s = new Set(); for (const c of [...W.pcs, ...W.foes]) if (c !== me && up(c)) s.add(`${c.pos.x},${c.pos.y}`); return s; };

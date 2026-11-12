@@ -172,6 +172,7 @@ function byRound(build, M, n = QUICK ? 4000 : 12000) {
 const fightTotal = r => r[0] + r[1] + r[2] + 0.5 * r[3];   // a Standard fight: 3.5 rounds
 
 export function run() {
+  Object.assign(S.RULES, S.RULES_PRE_R);   // the catch-up (2026-11-12): a pre-R study (the 5 AP classes of classes/, the rules before pack R); spec.mjs's default is the book today
   const L = [], t0 = Date.now();
   const log = s => { if (!process.argv.includes("--silent")) process.stderr.write(s + "\n"); };
   L.push("# Progression models: the numbers (pack LV)", "",
