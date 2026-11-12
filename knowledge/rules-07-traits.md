@@ -12,6 +12,10 @@ An Action with one of these traits rolls that Attribute Modifier. A Body Action 
 
 When an Action has **more than one** of these traits, you roll the one with the **highest** value. The Action still has all of them: Trip is a Body Action and an Instinct Action, whichever it rolls. If the Action has a Vs. entry that says "the one used to roll," that Attribute is also the Defense: if you roll Body, you roll against Body.
 
+### Exploding
+
+The Action's damage dice explode (see [[Exploding Dice]]): a die that shows its highest face counts as one less and is rolled again. A weapon's die and an NPC's Basic attack explode without this trait.
+
 ### Fear
 
 The Fear trait has no rules of its own. Other rules, Talents and Tags refer to it.

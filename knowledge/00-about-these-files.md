@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: 0ed63e4 2026-11-12 The Bestiary's turn budget: reviewed and fixed
+Built by tools/knowledge.py on 2026-11-12 from the repository at: 1e9d5af 2026-11-12 stage0.md written again with exploding dice and the areas at two thirds
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -16,7 +16,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 Files:
 - HANDOFF.md (135 KB)
 - MASTER-PLAN.md (36 KB)
-- open-design-items.md (125 KB)
+- open-design-items.md (123 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (29 KB)
 - rules-03-movement.md (39 KB)
@@ -28,7 +28,7 @@ Files:
 - rules-11-species.md (0 KB)
 - rules-12-paladin.md (3 KB)
 - rules-13-archer.md (3 KB)
-- rules-14-bestiary.md (31 KB)
+- rules-14-bestiary.md (32 KB)
 - rules-15-gear.md (11 KB)
 - design-sim-brief.md (22 KB)
 - design-stage0.md (18 KB)

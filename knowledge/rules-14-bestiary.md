@@ -102,7 +102,7 @@ You spend the points on what the creature does: damage, conditions, Forced Movem
 
 ### The Basic attack
 
-Every NPC has one **Basic attack**: 1 AP, At-will, its rank's points an AP. It is usually a Weapon Action Vs. AD that deals [V], or a Power Action Vs. WD that deals [R] (see [[What an Action attacks, rolls and damages]]). Tier 1 deals nothing. The weapon in its hands is only what the attack looks like. **A Basic attack is not always damage only:** it can carry a cheap rider (a Push 1, a Mild condition) and keep most of its damage.
+Every NPC has one **Basic attack**: 1 AP, At-will, its rank's points an AP. It is usually a Weapon Action Vs. AD that deals [V], or a Power Action Vs. WD that deals [R] (see [[What an Action attacks, rolls and damages]]). Tier 1 deals nothing. **Its damage die explodes** (see [[Exploding Dice]]), except a Minion's or a Grunt's: **a Minor enemy's dice never explode.** The weapon in its hands is only what the attack looks like. **A Basic attack is not always damage only:** it can carry a cheap rider (a Push 1, a Mild condition) and keep most of its damage.
 
 **NPCs have no Weapon Attack.** Their Basic attack takes its place: when an Action or rule calls for a Weapon Attack (the Weapon Attack (1A) at the end of a Charge, for example), an NPC uses its Basic attack.
 
@@ -125,6 +125,8 @@ A Medium Standard's prices:
 | **2 AP** | 50 | 55 | 110 |
 | **3 AP** | 79 | 86 | 173 |
 
+**The Exploding trait** on any other Action of a Standard or an Elite costs **6 points** (its damage dice explode).
+
 **Frequency is apart from AP:** any AP cost can be At-will, Round or Encounter. A 2 AP Action needs no premium of its own: it is already better than two Basic attacks, the second of which takes the At-will Bane. Two different 1 AP At-will Actions don't take the At-will Bane from each other, so the GM can alternate them.
 
 **An Encounter Action is big, and the rest of the fight pays for it.** It deals double what a Round Action of its AP does, so its turn is far over the budget. **Its pay-back:** every other Action of the creature, and its Reaction, loses a share of its points:
@@ -135,7 +137,7 @@ A Medium Standard's prices:
 | **2 AP** | a quarter | **several creatures** (see [[Actions that hit several creatures]]) |
 | **3 AP** | half | **several creatures** |
 
-**A 2 AP or 3 AP Encounter Action hits several creatures.** At double damage on one PC it takes that PC from full Health to Down in one hit, and no pay-back makes that fair. A 3 AP one is the creature's whole identity: it gives up half of everything else for it. A big Encounter Action against one creature is a unique effect (see [[Where the effect is]]).
+**A 2 AP or 3 AP Encounter Action should hit several creatures.** Against one PC it is a killing blow: double damage, or the same points in heavy riders stacked on one creature, takes a PC from full Health to Down in one hit, and no pay-back makes up for that. You can still give one to a boss as its signature: count the encounter **one step harder** (a normal fight as a hard one) and let the players see it coming. A 3 AP one is the creature's whole identity: it gives up half of everything else for it.
 
 ### Points into damage
 
@@ -174,7 +176,7 @@ A **rider** is an effect an Action adds to its damage: a condition, a Forced Mov
 
 **AP are the strongest thing to take** (Prone, Dazed, Slowed), **a Bleed is damage that keeps coming** (it lasts until the PC spends 1 AP to staunch it), and conditions that only make a PC's next roll or its movement worse are mild: a PC shakes them off at the end of its turn, and its allies don't care. A condition that lasts longer than EoT, or that a Save can't shake off, is one size more, unless the table already lists that duration.
 
-- **Forced Movement is the most common rider and the cheapest:** in the open it changes little, and against a wall or another PC it deals Collision damage (see [[Steadiness]] and Collision in Chapter 3). Push the PC when it hurts: into a wall, into another PC, off a ledge, out of an ally's aura; pushing a PC away from you in the open only frees it. Against walls a Push is worth about twice its price; in the open, nothing.
+- **Forced Movement is the most common rider:** in the open it changes little, and against a wall or another PC it deals Collision damage (see [[Steadiness]] and Collision in Chapter 3). Push the PC when it hurts: into a wall, into another PC, off a ledge, out of an ally's aura; pushing a PC away from you in the open only frees it. Against walls a Push is worth about twice its price; in the open, nothing.
 - **No limit on repeating a rider.** A rider on a creature that already has it is wasted: spread the attacks.
 - **At most 2 riders on an Action**, as guidance.
 
@@ -190,7 +192,7 @@ A **unique effect** ("the Dragon grabs you, flies up and drops you to the ground
 
 ### Actions that hit several creatures
 
-An Action that hits several creatures (an Area, a Save Action against everyone in it, "two creatures") deals **half** its points to each, after its riders. It pays when it catches two or more, and a party that spreads out often gives it one: give it a real area (a 2 Emanation, a Line along the front) or a reason for the PCs to stand together.
+An Action that hits several creatures (an Area, a Save Action against everyone in it, "two creatures") deals **two thirds** of its points to each, after its riders. **An Encounter Action deals half to each:** every creature in it takes what a Round Action of its AP would deal. It pays when it catches two or more, and a party that spreads out often gives it one: give it a real area (a 2 Emanation, a Line along the front) or a reason for the PCs to stand together.
 
 - **Area Save Actions** use a Save the targets roll (DC 11 + the Modifier); the PC's Tier 1 takes the Action's Tier 3, its Tier 2 the Tier 2, its Tier 3 nothing.
 
@@ -219,7 +221,7 @@ A help is cheap because one Boon or a few Health matter little in a fight of thr
 | **1R**, on an ally or a movement ("Trigger: an ally within 2 squares is hit"; "Interrupt: a creature would enter a square next to you"): it fires now and then | **a quarter** (7) |
 | **2R** | nothing more: the AP it keeps from its turn is its price |
 
-**A 2R Reaction is weak on an NPC:** the AP it keeps costs more than the Reaction gives back, unless it fires in most rounds. Prefer 1R. A Reaction that only protects (an ally gains +2 Defense against the triggering Strike) is nearly free: 2 points off the turn.
+**A 2R Reaction is weak on an NPC:** the AP it keeps costs more than the Reaction gives back, unless it fires in most rounds. Prefer 1R. A Reaction that only protects (an ally gains +2 Defense against the triggering Strike) is cheap: 2 points off the turn.
 
 ### How common each kind of Action is
 
@@ -422,7 +424,7 @@ What the fight model gives for 4 PCs of levels 1 to 3 with no [[Momentum]] (all 
 | 5 Standards, or 1 Elite and 3 Standards (500, hard) | 4 | 40 to 45% | 1 fight in 4 | 97 to 98% |
 | 6 Standards, 3 Elites, 2 Elites and 2 Standards, 1 Elite and 4 Standards, or 4 Standards and 8 Minions (600, deadly) | 5 | 60 to 65% | about half the time | 86 to 88% |
 
-The three levels are about as hard as each other. Elites, Grunts and Minions are worth their CV in any mix. **With enemies that use effects** (built on the turn budget, most of their Actions with a rider), a normal fight costs the same with fewer PCs Down (about 1 fight in 15), and the fights are a little longer; a deadly fight of Standards is about half a step harder (won about 77% of the time instead of 87%): the effects add up in a long fight. **Momentum makes every fight easier**: at Momentum 2 the same fights cost about a quarter less, and at Momentum 4 a level 3 party wins the deadly fight 98% of the time. A party late in a good expedition can take one step more.
+The three levels are about as hard as each other. Elites, Grunts and Minions are worth their CV in any mix. **With enemies that use effects** (built on the turn budget, most of their Actions with a rider), a normal fight costs the same with fewer PCs Down (about 1 fight in 15), and the fights are a little longer; a deadly fight of Standards is about half a step harder (won about three times in four): the effects add up in a long fight, and that is what deadly means. **Momentum makes every fight easier**: at Momentum 2 the same fights cost about a quarter less, and at Momentum 4 a level 3 party wins the deadly fight 98% of the time. A party late in a good expedition can take one step more.
 
 > [!tip]
 > These numbers assume the enemies **spread their attacks**: each strikes the PC it can reach best. If every enemy strikes **the same PC** (the weakest one, or simply the nearest), the encounter plays about **one step harder**: a normal fight like a hard one, a hard one like a deadly one. Do it on purpose (a wolf pack, a disciplined squad), and count it when you choose the CV.
