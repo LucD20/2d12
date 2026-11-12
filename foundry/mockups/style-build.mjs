@@ -70,7 +70,7 @@ const MAP = {
     "#185fa5": T.fqRound, "#a32d2d": T.fqEncounter, "#0f6e6e": T.fqTurn, "#3b6d11": T.fqAtwill, "#5b3fa6": T.fqDaily
   },
   text: { "#1b2433": T.ink, "#1d2738": T.ink, "#d9902f": T.gold, "#d9b26a": T.gold, "#fff": "#fff", "#fbf6ea": T.stampInk, "#2b5a2f": T.t3, "#1f6b3a": T.t3, "#2f6b3a": T.good, "#3b3128": T.ink, "#f4ede0": T.stampInk, "#2a231c": T.ink },
-  bg: { "#1b2433": T.band, "#1d2738": T.band, "#d9902f": T.stamp, "#d9b26a": T.rule, "#fff": T.pg2, "#fbf6ea": T.pg, "#2b5a2f": "#2f6b3a", "#1f6b3a": "#2f6b3a", "#2f6b3a": "#2f6b3a", "#3b3128": T.stamp, "#2a231c": T.stampHover, "#5f5e5a": "#5f5e5a" },
+  bg: { "#185fa5": "#185fa5", "#a32d2d": "#8f2626", "#0f6e6e": "#0f6e6e", "#3b6d11": "#3b6d11", "#5b3fa6": "#5b3fa6", "#1b2433": T.band, "#1d2738": T.band, "#d9902f": T.stamp, "#d9b26a": T.rule, "#fff": T.pg2, "#fbf6ea": T.pg, "#2b5a2f": "#2f6b3a", "#1f6b3a": "#2f6b3a", "#2f6b3a": "#2f6b3a", "#3b3128": T.stamp, "#2a231c": T.stampHover, "#5f5e5a": "#5f5e5a" },
   line: { "#1b2433": T.rule, "#1d2738": T.rule, "#d9902f": T.gold, "#d9b26a": T.hair, "#fff": T.hair, "#fbf6ea": T.pg, "#2b5a2f": "#2f6b3a", "#3b3128": T.stamp, "#f4ede0": T.pg }
 };
 // AUTO: an unknown color keeps its hue and has its lightness turned over, by how it is used.
@@ -116,9 +116,24 @@ const TYPE = `
 .twod12-type .twod12.chat.cc .cc-seg, .twod12-type .twod12.chat.cc .cc-arrow b, .twod12-type .twod12.chat.cc .cc-total, .twod12-type .twod12.chat.cc .cc-stotal, .twod12-type .twod12.chat.cc .cc-savehead b, .twod12-type .twod12.chat.cc .cc-srow b, .twod12-type .twod12.chat.cc .cc-ptot, .twod12-type .twod12.chat.cc [class*="cc-"] { font-family: "Signika", sans-serif; }
 .twod12-type .twod12.chat .ahead > b, .twod12-type .twod12.chat.sysmsg > .ahead > b { font: 700 14.5px "Signika", sans-serif; letter-spacing: 0; }
 .twod12-type .twod12-dock .td-ttl { font: 700 14.5px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
+/* the cost stamp in the light theme too (Lucas: "if it is helpful"): the chat card's dark brown button, square, no shadow */
+.twod12-type .twod12.acard.d2 .ap-vbtn { background: ${LIGHT.stamp}; color: ${LIGHT.stampInk}; box-shadow: none; border-radius: 2px; }
+.twod12-type .twod12.acard.d2 .ap-vbtn:hover { background: ${LIGHT.stampHover}; }
+.twod12-type .twod12.acard.d2 .ap-vbtn.no { background: transparent; color: #8f8774; border: 1px dashed #a99f8a; }
+.twod12-type .twod12.acard.d2 .ap-ap:not(.no), .twod12-type .twod12.acard.d2 > .ap-title .ap-tcost { background: ${LIGHT.stamp}; color: ${LIGHT.stampInk}; border-radius: 2px; }
+.twod12-type .twod12.chat.cc .cc-btn.primary { border-radius: 2px; }
+/* THE SYSTEM MESSAGES (sysCard, sysLine) in the chat card's look (Lucas: the navy header, the orange line and the Cinzel title no longer fit):
+   the same card as an attack roll (a flat surface, a thin line), the title as a line of bold text over a hairline, the AP as the chat card's pill.
+   Style only: the message's elements and text don't change. */
+.twod12-type .twod12.chat.action.sysmsg { background: ${LIGHT.pg}; border: 1px solid #bfae8c; border-radius: 5px; padding: 7px 8px 6px; color: ${LIGHT.ink}; font-family: "Signika", sans-serif; }
+.twod12-type .twod12.chat.action.sysmsg > * { margin-left: 0; margin-right: 0; }
+.twod12-type .twod12.chat.action.sysmsg > .ahead { background: none !important; color: inherit !important; border: 0 !important; border-bottom: 1px solid ${LIGHT.hair} !important; padding: 0 0 4px; margin: 0 0 5px; align-items: center; }
+.twod12-type .twod12.chat.action.sysmsg > .ahead .apmark { background: #5f5e5a; color: #fff; border-radius: 3px; font: 700 10.5px/1 "Signika", sans-serif; padding: 2px 6px; margin: 0; }
+.twod12-type .twod12.chat.action.sysmsg .sm-lead { font-size: 14px; }
+.twod12-type .twod12.chat.sysline { background: ${LIGHT.pg}; border: 1px solid #bfae8c; border-radius: 5px; color: ${LIGHT.ink}; font-family: "Signika", sans-serif; }
 /* Tier 2, more yellow (Lucas): still a green, toward yellow. The light theme's values; the dark set has its own. */
 .twod12-type .twod12.acard.d2 table.ap-tt tr.t2 { --c: ${LIGHT.t2}; --bg: ${LIGHT.t2bg}; --n: ${LIGHT.t2n}; }
-.twod12-type .twod12.chat.cc { --cc-t2: #e3e9a8; --cc-t2i: #4c5a0c; }
+.twod12-type .twod12.chat.cc { --cc-t2: #d3df8e; --cc-t2i: #36420a; }
 .twod12-type .twod12.chat.cc .cc-srow.t2 { --c: #6f7f17; --n: ${LIGHT.t2n}; --bg: ${LIGHT.t2bg}; }
 `;
 
@@ -149,7 +164,7 @@ const BY_HAND = `
 .twod12-dark .twod12.acard.d2 .ap-fxh { color: ${T.gold}; }
 /* ---- by hand: the chat cards (their variables, the primary button as the stamp, the pills) */
 .twod12-dark .twod12.chat.cc { --cc-bg: ${T.pg}; --cc-line: ${T.rule}; --cc-ink: ${T.ink}; --cc-mute: ${T.mute}; --cc-panel: ${T.band}; --cc-gold: ${T.gold}; --cc-gline: ${T.hair};
-  --cc-t1: #c8483d; --cc-t1p: ${T.t1bg}; --cc-t1i: ${T.t1}; --cc-t2: #3a4220; --cc-t2i: ${T.t2}; --cc-t3: #2f6b3a; --cc-crit: #2f6fb8; --cc-critp: rgba(141,184,240,.3); --cc-criti: ${T.crit};
+  --cc-t1: #8f2a22; --cc-t1p: ${T.t1bg}; --cc-t1i: ${T.t1}; --cc-t2: #3a4220; --cc-t2i: ${T.t2}; --cc-t3: #2f6b3a; --cc-crit: #2f6fb8; --cc-critp: rgba(141,184,240,.3); --cc-criti: ${T.crit};
   --cc-plus: ${T.boon}; --cc-minus: ${T.bane}; --cc-vig: ${T.vig}; --cc-res: ${T.res}; --cc-btn: ${T.stamp}; --cc-btn2: #8c7d63; color: ${T.ink}; }
 .twod12-dark .twod12.chat.cc .cc-card { background: ${T.pg}; }
 .twod12-dark .twod12.chat.cc .cc-btn.primary { background: ${T.stamp}; border-color: ${T.stamp}; color: ${T.stampInk}; border-radius: 2px; }
@@ -157,15 +172,20 @@ const BY_HAND = `
 .twod12-dark .twod12.chat.cc .cc-btn, .twod12-dark .twod12.chat.cc .cc-icon, .twod12-dark .twod12.chat.cc .cc-adj { border-radius: 2px; }
 .twod12-dark .twod12.chat.cc .cc-cost { color: #fff; }
 .twod12-dark .twod12.chat.cc .cc-seg.s3.lit, .twod12-dark .twod12.chat.cc .cc-stamp.t3, .twod12-dark .twod12.chat.cc .cc-pill.t3 { color: #f1f7ec; }
-.twod12-dark .twod12.chat.cc .cc-srow { --c: #b23a30; --bg: ${T.t1bg}; --n: #b23a30; border-bottom-color: ${T.hair}; }
+.twod12-dark .twod12.chat.cc .cc-srow { --c: #8f2a22; --bg: ${T.t1bg}; --n: #8f2a22; border-bottom-color: ${T.hair}; color: ${T.ink}; }
+.twod12-dark .twod12.chat.cc .cc-srow > :first-child, .twod12-dark .twod12.chat.cc .cc-srow > :first-child * { color: #fff !important; opacity: 1; }
+.twod12-dark .twod12.chat.cc .cc-pools, .twod12-dark .twod12.chat.cc .cc-poolrow, .twod12-dark .twod12.chat.cc .cc-ptot { color: ${T.ink}; }
+.twod12-dark .twod12.chat.cc .cc-card .cc-pools:hover { background: ${T.pg2}; }
+.twod12-dark .twod12.chat.cc button { color: ${T.ink}; }
+.twod12-dark .twod12.chat.cc .cc-stamp.t1 { color: #fff; }
 .twod12-dark .twod12.chat.cc .cc-srow.t2 { --c: #6f7f17; --bg: ${T.t2bg}; --n: ${T.t2n}; }
 .twod12-dark .twod12.chat.cc .cc-srow.t3 { --c: #2f6b3a; --bg: ${T.t3bg}; }
 .twod12-dark .twod12.chat.cc .cc-sub { color: #e3ba62 !important; }
 .twod12-dark .twod12.chat.cc .cc-stotal { background: ${T.stamp}; color: ${T.stampInk}; }
 /* ---- by hand: the system messages and the older Action head (a band, not a navy bar) */
-.twod12-dark .twod12.chat.action, .twod12-dark .twod12.chat.sysline { background: ${T.pg}; border-color: ${T.rule}; color: ${T.ink}; }
+.twod12-dark .twod12.chat.action, .twod12-dark .twod12.chat.sysline, .twod12-dark .twod12.chat.action.sysmsg { background: ${T.pg}; border-color: ${T.rule}; color: ${T.ink}; }
 .twod12-dark .twod12.chat.action > .ahead { background: ${T.band} !important; color: ${T.ink}; border-bottom: 1px solid ${T.rule}; }
-.twod12-dark .twod12.chat.sysmsg > .ahead .apmark { background: ${T.stamp}; color: ${T.stampInk}; border-radius: 2px; }
+.twod12-dark .twod12.chat.action.sysmsg > .ahead { background: none !important; border-bottom: 1px solid ${T.hair} !important; }
 .twod12-dark .twod12.chat.sysline i { color: ${T.gold}; }
 .twod12-dark .twod12.chat .kw-ap { color: #9aa7ff !important; } .twod12-dark .twod12.chat .kw-bane { color: ${T.bane}; } .twod12-dark .twod12.chat .kw-boon { color: ${T.boon}; }
 /* ---- by hand: the Turn dock (a band for its head, the page for its body) */
@@ -323,14 +343,14 @@ const rally = `${open}
 </div>`;
 page("action-card-dark.html", "Style 2: the Action card", `The system's Action card (it opens under an Action's row on the sheets, and on a right-click in the HUD). <b>Lucas approved the dark card (2026-11-12)</b>, with the cost stamps in the place of the amber buttons. <b>Added since: the sheet's type on both themes</b> (the name, the Tier names, "Effects" and "Your roll" in Signika, as on the one-page NPC sheet; Cinzel is gone from the card) and <b>Tier 2 more yellow</b>. The card's structure doesn't change. The dark set is generated from the card's own ${R.card.length} rules.`, `
 <h2>Smite: three Versions, Effects by Version, "Your roll"</h2>
-${three(smite, ["The dark page, the square light stamps, Tier 2 yellowish. The 3 AP Version can't be paid here (dashed, its column dimmed).", "The light theme's card with the same type and the yellowish Tier 2. Its colors and its amber buttons are today's.", "The card as the system draws it now."])}
+${three(smite, ["The dark page, the square light stamps, Tier 2 yellowish. The 3 AP Version can't be paid here (dashed, its column dimmed).", "The light theme's card with the same type, the yellowish Tier 2 and the stamps (dark brown on parchment). Its other colors are today's.", "The card as the system draws it now."])}
 <h2>Hold the Line: a Reaction with a Trigger and a rider</h2>
 ${three(hold)}
 <h2>Rally the Tribe: Effects only, with a button</h2>
 ${three(rally)}
 <h2>Notes</h2>
 <ul class="notes">
-<li><b>The light card keeps its amber Version buttons.</b> Say if the light theme should take the stamp too (dark brown on parchment, as the chat card's "Damage" button).</li>
+<li><b>The light card takes the stamp too</b> (Lucas: "if it is helpful"): dark brown on parchment, as the chat card's "Damage" button.</li>
 <li><b>The Tier table stays a table</b> (one column per Version), while the one-page sheet writes a one-Version Action's Tiers as three lines.</li>
 <li>The sample cards are the system's markup written by hand (the real card needs Foundry to be drawn); Smite's text is its card's.</li>
 </ul>`, R.card);
@@ -359,13 +379,13 @@ const cDmg = wrap(CC.damageCardHtml(dm, CC.viewOf({ gm: true })));
 const sSwap = FA(SM.swapCardHtml("Aveline", "Orc Warrior", 4, 2, 1)), sThaw = FA(SM.thawLineHtml("Orc Warrior", 2));
 const sCard = FA(SM.sysCard({ title: "Guard", ap: 2, lead: "<b>Durgan</b> gains Guard 5.", text: "It takes damage before his Health, and ends with the encounter." }));
 const side = (html, why) => `<div class="cols">${col("Dark", PICK, why ?? "", html, "side dk twod12-dark twod12-type", "330px")}${col("Light", PICK, "", html, "side twod12-type", "330px")}${col("Today", TODAY, "", html, "side", "330px")}</div>`;
-page("chat-cards-dark.html", "Style 3: the chat cards and the system messages", `The cards in the chat, at the sidebar's width, <b>drawn by the system's own functions</b> (<code>chatcards.mjs</code>, <code>sysmsg.mjs</code>), so they are the real cards. Dark: the same page as the sheet and the Action card; "Damage" is the stamp; Tier 2 is yellowish. Light: today's parchment with the sheet's type (Signika for the names and the big Tier number) and the yellowish Tier 2. The dark set is generated from ${R.chat.length} rules.`, `
+page("chat-cards-dark.html", "Style 3: the chat cards and the system messages", `The cards in the chat, at the sidebar's width, <b>drawn by the system's own functions</b> (<code>chatcards.mjs</code>, <code>sysmsg.mjs</code>), so they are the real cards. Dark: the same page as the sheet and the Action card; "Damage" is the stamp; Tier 2 is yellowish. Light: today's parchment with the sheet's type (Signika for the names and the big Tier number) and the yellowish Tier 2. <b>A style change only: no element is added, moved or removed on any card.</b> The dark set is generated from ${R.chat.length} rules.`, `
 <h2>The attack roll: Tier 1, Tier 2, a Critical</h2>
 ${side(cT1 + cT2 + cCrit, "The ladder keeps its three colors, darkened; the Tier stamp is the lit one.")}
 <h2>A Save, and the damage message</h2>
 ${side(cSave + cDmg)}
-<h2>The system messages (sysCard, sysLine)</h2>
-${side(sCard + sSwap + sThaw, "The title bar is a band of the page, not a navy bar; the AP mark is a stamp.")}
+<h2>The system messages (sysCard, sysLine): redone in the chat card's look, on both themes</h2>
+${side(sCard + sSwap + sThaw, "The same card as an attack roll: no navy bar, no orange line, no Cinzel. The title is a bold line over a hairline; the AP is the chat card's pill.")}
 <h2>Notes</h2>
 <ul class="notes">
 <li><b>The older chat messages are not here yet</b> (the Reactions card, the initiative card, the old damage card, the ticker, the Save prompt): about 300 rules in five or six looks. They need to be brought to the chat card's look first, then get the dark set: the next mockup of this step.</li>

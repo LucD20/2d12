@@ -33,9 +33,24 @@
 .twod12-type .twod12.chat.cc .cc-seg, .twod12-type .twod12.chat.cc .cc-arrow b, .twod12-type .twod12.chat.cc .cc-total, .twod12-type .twod12.chat.cc .cc-stotal, .twod12-type .twod12.chat.cc .cc-savehead b, .twod12-type .twod12.chat.cc .cc-srow b, .twod12-type .twod12.chat.cc .cc-ptot, .twod12-type .twod12.chat.cc [class*="cc-"] { font-family: "Signika", sans-serif; }
 .twod12-type .twod12.chat .ahead > b, .twod12-type .twod12.chat.sysmsg > .ahead > b { font: 700 14.5px "Signika", sans-serif; letter-spacing: 0; }
 .twod12-type .twod12-dock .td-ttl { font: 700 14.5px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
+/* the cost stamp in the light theme too (Lucas: "if it is helpful"): the chat card's dark brown button, square, no shadow */
+.twod12-type .twod12.acard.d2 .ap-vbtn { background: #3b3128; color: #f4ede0; box-shadow: none; border-radius: 2px; }
+.twod12-type .twod12.acard.d2 .ap-vbtn:hover { background: #2a231c; }
+.twod12-type .twod12.acard.d2 .ap-vbtn.no { background: transparent; color: #8f8774; border: 1px dashed #a99f8a; }
+.twod12-type .twod12.acard.d2 .ap-ap:not(.no), .twod12-type .twod12.acard.d2 > .ap-title .ap-tcost { background: #3b3128; color: #f4ede0; border-radius: 2px; }
+.twod12-type .twod12.chat.cc .cc-btn.primary { border-radius: 2px; }
+/* THE SYSTEM MESSAGES (sysCard, sysLine) in the chat card's look (Lucas: the navy header, the orange line and the Cinzel title no longer fit):
+   the same card as an attack roll (a flat surface, a thin line), the title as a line of bold text over a hairline, the AP as the chat card's pill.
+   Style only: the message's elements and text don't change. */
+.twod12-type .twod12.chat.action.sysmsg { background: #f4ede0; border: 1px solid #bfae8c; border-radius: 5px; padding: 7px 8px 6px; color: #2a241d; font-family: "Signika", sans-serif; }
+.twod12-type .twod12.chat.action.sysmsg > * { margin-left: 0; margin-right: 0; }
+.twod12-type .twod12.chat.action.sysmsg > .ahead { background: none !important; color: inherit !important; border: 0 !important; border-bottom: 1px solid #cdb88a !important; padding: 0 0 4px; margin: 0 0 5px; align-items: center; }
+.twod12-type .twod12.chat.action.sysmsg > .ahead .apmark { background: #5f5e5a; color: #fff; border-radius: 3px; font: 700 10.5px/1 "Signika", sans-serif; padding: 2px 6px; margin: 0; }
+.twod12-type .twod12.chat.action.sysmsg .sm-lead { font-size: 14px; }
+.twod12-type .twod12.chat.sysline { background: #f4ede0; border: 1px solid #bfae8c; border-radius: 5px; color: #2a241d; font-family: "Signika", sans-serif; }
 /* Tier 2, more yellow (Lucas): still a green, toward yellow. The light theme's values; the dark set has its own. */
 .twod12-type .twod12.acard.d2 table.ap-tt tr.t2 { --c: #5d6e10; --bg: #f3f5d8; --n: #a4b53c; }
-.twod12-type .twod12.chat.cc { --cc-t2: #e3e9a8; --cc-t2i: #4c5a0c; }
+.twod12-type .twod12.chat.cc { --cc-t2: #d3df8e; --cc-t2i: #36420a; }
 .twod12-type .twod12.chat.cc .cc-srow.t2 { --c: #6f7f17; --n: #a4b53c; --bg: #f3f5d8; }
 
 .twod12-dark .twod12.acard.d2 { background: #1f1c18; color: #ece3cf; border: 1px solid #7a683f; outline: 1px solid #4a4132; }
@@ -143,11 +158,11 @@
 .twod12-dark .twod12.chat.sysline.rxnote > i { color: #8c7d63; }
 .twod12-dark .twod12.chat.cc .cc-card { background: #1f1c18; }
 .twod12-dark .twod12.chat.cc .cc-cost { color: #fff; background: #5f5e5a; }
-.twod12-dark .twod12.chat.cc .cc-cost.f-round { background: #4a90de; }
-.twod12-dark .twod12.chat.cc .cc-cost.f-encounter { background: #d65a5a; }
-.twod12-dark .twod12.chat.cc .cc-cost.f-turn { background: #25a3a3; }
-.twod12-dark .twod12.chat.cc .cc-cost.f-atwill { background: #6aa82e; }
-.twod12-dark .twod12.chat.cc .cc-cost.f-daily { background: #9279e0; }
+.twod12-dark .twod12.chat.cc .cc-cost.f-round { background: #185fa5; }
+.twod12-dark .twod12.chat.cc .cc-cost.f-encounter { background: #8f2626; }
+.twod12-dark .twod12.chat.cc .cc-cost.f-turn { background: #0f6e6e; }
+.twod12-dark .twod12.chat.cc .cc-cost.f-atwill { background: #3b6d11; }
+.twod12-dark .twod12.chat.cc .cc-cost.f-daily { background: #5b3fa6; }
 .twod12-dark .twod12.chat.cc .cc-traits .tg-roll { background: #17332f; color: #7fd3c8; }
 .twod12-dark .twod12.chat.cc .cc-traits .tg-requires { background: #1a2a44; color: #9dbcf5; }
 .twod12-dark .twod12.chat.cc .cc-traits .tg-kind { background: #3a211b; color: #f29f84; }
@@ -274,7 +289,7 @@
 .twod12-dark .twod12.acard.d2 .ap-fxh { color: #d4a548; }
 /* ---- by hand: the chat cards (their variables, the primary button as the stamp, the pills) */
 .twod12-dark .twod12.chat.cc { --cc-bg: #1f1c18; --cc-line: #7a683f; --cc-ink: #ece3cf; --cc-mute: #b3a68e; --cc-panel: #332c22; --cc-gold: #d4a548; --cc-gline: #4a4132;
-  --cc-t1: #c8483d; --cc-t1p: #3a201d; --cc-t1i: #f3a79e; --cc-t2: #3a4220; --cc-t2i: #cbd86e; --cc-t3: #2f6b3a; --cc-crit: #2f6fb8; --cc-critp: rgba(141,184,240,.3); --cc-criti: #8db8f0;
+  --cc-t1: #8f2a22; --cc-t1p: #3a201d; --cc-t1i: #f3a79e; --cc-t2: #3a4220; --cc-t2i: #cbd86e; --cc-t3: #2f6b3a; --cc-crit: #2f6fb8; --cc-critp: rgba(141,184,240,.3); --cc-criti: #8db8f0;
   --cc-plus: #8db8f0; --cc-minus: #f3a79e; --cc-vig: #d0564f; --cc-res: #6f90e6; --cc-btn: #eadfc8; --cc-btn2: #8c7d63; color: #ece3cf; }
 .twod12-dark .twod12.chat.cc .cc-card { background: #1f1c18; }
 .twod12-dark .twod12.chat.cc .cc-btn.primary { background: #eadfc8; border-color: #eadfc8; color: #221d16; border-radius: 2px; }
@@ -282,15 +297,20 @@
 .twod12-dark .twod12.chat.cc .cc-btn, .twod12-dark .twod12.chat.cc .cc-icon, .twod12-dark .twod12.chat.cc .cc-adj { border-radius: 2px; }
 .twod12-dark .twod12.chat.cc .cc-cost { color: #fff; }
 .twod12-dark .twod12.chat.cc .cc-seg.s3.lit, .twod12-dark .twod12.chat.cc .cc-stamp.t3, .twod12-dark .twod12.chat.cc .cc-pill.t3 { color: #f1f7ec; }
-.twod12-dark .twod12.chat.cc .cc-srow { --c: #b23a30; --bg: #3a201d; --n: #b23a30; border-bottom-color: #4a4132; }
+.twod12-dark .twod12.chat.cc .cc-srow { --c: #8f2a22; --bg: #3a201d; --n: #8f2a22; border-bottom-color: #4a4132; color: #ece3cf; }
+.twod12-dark .twod12.chat.cc .cc-srow > :first-child, .twod12-dark .twod12.chat.cc .cc-srow > :first-child * { color: #fff !important; opacity: 1; }
+.twod12-dark .twod12.chat.cc .cc-pools, .twod12-dark .twod12.chat.cc .cc-poolrow, .twod12-dark .twod12.chat.cc .cc-ptot { color: #ece3cf; }
+.twod12-dark .twod12.chat.cc .cc-card .cc-pools:hover { background: #28241d; }
+.twod12-dark .twod12.chat.cc button { color: #ece3cf; }
+.twod12-dark .twod12.chat.cc .cc-stamp.t1 { color: #fff; }
 .twod12-dark .twod12.chat.cc .cc-srow.t2 { --c: #6f7f17; --bg: #2c3319; --n: #a4b53c; }
 .twod12-dark .twod12.chat.cc .cc-srow.t3 { --c: #2f6b3a; --bg: #1d3a25; }
 .twod12-dark .twod12.chat.cc .cc-sub { color: #e3ba62 !important; }
 .twod12-dark .twod12.chat.cc .cc-stotal { background: #eadfc8; color: #221d16; }
 /* ---- by hand: the system messages and the older Action head (a band, not a navy bar) */
-.twod12-dark .twod12.chat.action, .twod12-dark .twod12.chat.sysline { background: #1f1c18; border-color: #7a683f; color: #ece3cf; }
+.twod12-dark .twod12.chat.action, .twod12-dark .twod12.chat.sysline, .twod12-dark .twod12.chat.action.sysmsg { background: #1f1c18; border-color: #7a683f; color: #ece3cf; }
 .twod12-dark .twod12.chat.action > .ahead { background: #332c22 !important; color: #ece3cf; border-bottom: 1px solid #7a683f; }
-.twod12-dark .twod12.chat.sysmsg > .ahead .apmark { background: #eadfc8; color: #221d16; border-radius: 2px; }
+.twod12-dark .twod12.chat.action.sysmsg > .ahead { background: none !important; border-bottom: 1px solid #4a4132 !important; }
 .twod12-dark .twod12.chat.sysline i { color: #d4a548; }
 .twod12-dark .twod12.chat .kw-ap { color: #9aa7ff !important; } .twod12-dark .twod12.chat .kw-bane { color: #f3a79e; } .twod12-dark .twod12.chat .kw-boon { color: #8db8f0; }
 /* ---- by hand: the Turn dock (a band for its head, the page for its body) */
