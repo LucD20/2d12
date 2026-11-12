@@ -177,7 +177,12 @@ That way an Action line looks the same everywhere.
   - **D.** One line, a numbered square before each result (the shortest).
   - **E.** Tinted cells under a thin rule.
 
-### Still for Lucas to pick (after the reviews)
+### Lucas's last answers (2026-11-12): the open picks are closed
+- **The NPC's Check / Save buttons in the HUD: keep. The portrait: shown. The PC's Escalation category lists the Passives as text. The Elite is flat like any NPC.**
+- **His 4e reference arrived** (the 4e alternate NPC sheet, a Goblin Grunt). What the mockup already shares with it: the name with rank and level at the right, the stats as bold run-in lines, group headings across the page, each power under a shaded header with its usage and the edit and delete icons, the tabs. **Taken from it now: "+ Add" at the right of each group's heading.** What it has and the mockup doesn't (not applied, his call): a portrait in the header; the stats in two columns (Health and Defenses on the left, Initiative and senses on the right); filled bands for the group headings (he asked for the heading on a rule); a small icon before each power's name (melee, ranged); the Attributes as two shaded rows of text (he preferred the tiles); a much smaller type (about 11 px against 13.5).
+- **Nothing is left to pick.** The build follows Stage 0 in Foundry; the Action line is checked against the Bestiary's turn budget first.
+
+### The picks' history (all closed)
 1. ~~(a) full text or (b) one line~~: (a), decided.
 2. The portrait: shown, hidden, or a per-user setting.
 3. ~~The HUD's height~~: 70 px, two lines, the same for PCs and NPCs (decided by the second review).

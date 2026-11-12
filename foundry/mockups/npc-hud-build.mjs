@@ -114,7 +114,7 @@ function sheet(n, mode) {
     const [label, color] = GROUPS[g];
     const right = g === "esc" ? `<span class="r">${pips(n.escalation, 6)} ${n.escalation} / 6</span>` : g === "special" && list.length > 1 ? '<span class="r">by AP</span>' : "";
     const ladder = g === "esc" ? (n.ladder ?? []).map(([k, t]) => `<div class="passive${n.escalation >= k ? "" : " off"}"><span class="num">${k}</span><span>${t}</span></div>`).join("") : "";
-    return `<div class="band${g === "react" ? " react" : ""}" style="--gc:${color}">${label}${right}</div>${ladder}${list.map(a => (mode === "a" ? rowFull(n, a) : rowLine(n, a))).join("")}`;
+    return `<div class="band${g === "react" ? " react" : ""}" style="--gc:${color}">${label}${right}<span class="add" title="Add an Action to this group">+ Add</span></div>${ladder}${list.map(a => (mode === "a" ? rowFull(n, a) : rowLine(n, a))).join("")}`;
   });
   // an Elite with no Escalation Action still shows its ladder
   const A = [["Body", "body"], ["Mind", "mind"], ["Appeal", "appeal"], ["Instinct", "instinct"]];
