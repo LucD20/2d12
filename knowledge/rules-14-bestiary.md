@@ -50,7 +50,7 @@ A Standard with High Health and High damage counts for 130; one with Low Health 
 
 An NPC has an **Armor Defense** and a **Ward Defense**. Each one is a rating from its rank's Defense table, picked **independently** of the other: a Standard is Medium in both by default (13 and 13); a knight could have a High Armor Defense (15) and a Low Ward Defense (11). An NPC's Defenses come from these ratings only.
 
-**A Defense rating is the mildest step.** One rating up is 2 points of Defense, which takes about 10% off what the PCs deal in a turn and makes the fight almost half a round longer; a rating of Health or damage is 20 to 25%. Defense makes a creature last by making the PCs miss: against an Extreme Defense a level 1 PC gets a Tier 1 more than half the time. **Give an Extreme Defense to one creature in a fight, not to all of them**, and prefer a High in one Defense with a Low in the other: it costs nothing and rewards attacking the right one.
+**A Defense rating is the mildest step.** One rating up is 2 points of Defense, which takes about 10% off what the PCs deal in a turn and makes the fight almost half a round longer; a rating of Health or damage is 20 to 25%. Defense makes a creature last by making the PCs miss: against an Extreme Defense a level 1 PC gets a Tier 1 more than half the time. **Give an Extreme Defense to one creature in a fight, not to all of them**, and prefer a High in one Defense with a Low in the other: it rewards attacking the right one. That trade is even only for a party that can attack both Defenses: against one that attacks only Armor Defense, a High Armor Defense with a Low Ward Defense is simply a High.
 
 ### What an Action attacks, rolls and damages
 
@@ -164,19 +164,21 @@ With its Escalation, an Elite is worth its CV: two Elites cost the party what fo
 
 ## Roles
 
-A **role** says what a creature does in a fight. It is a ready set of ratings and habits for a rank's tables, to build an NPC quickly and to tell the GM how to play it. A role is a suggestion: it has no rules of its own, and an NPC needs none.
+A **role** says what a creature does in a fight. It is a ready set of ratings for a rank's tables, to build an NPC quickly and to tell the GM how to play it. **Every role below is balanced: an NPC built with it is worth its rank's CV**, with nothing to adjust. A role has no rules of its own, and an NPC needs none: every rating a role doesn't name is Medium.
 
-| Role | It... | Ratings to start from |
+| Role | It... | Ratings |
 |---|---|---|
-| **Brute** | walks in and hits hard | High Vigor, High Basic attack, Low Armor Defense |
-| **Soldier** | holds a line and protects its allies | High Armor Defense, Medium damage, a Reaction that protects an ally or punishes leaving |
-| **Skirmisher** | moves, strikes and gets away | Speed 6 or 7, Low Health, a Special with a movement in it |
-| **Artillery** | attacks from far away | a ranged Basic attack and Specials (each pays its step of damage for the range), Low Health, Low Armor Defense |
-| **Controller** | changes the fight with conditions and areas | Low damage with Moderate or Severe conditions, Area Save Actions, often Power Actions Vs. WD |
-| **Leader** | makes its allies better; one in a fight | Medium everything, a Special that helps its allies (Boons, movement, an extra attack) |
+| **Brute** | walks in and hits hard, and is easy to hit | **High** damage, **High** Vigor; **Low** Resolve, **Low** Armor Defense, **Low** Weapon Modifier |
+| **Soldier** | holds a line and protects its allies | **High** Armor Defense, **High** Vigor; **Low** damage; a Reaction that protects an ally or punishes leaving |
+| **Skirmisher** | moves, strikes and gets away | Speed 6 or 7, **High** Weapon Modifier; **Low** Vigor and Resolve; a Special with a movement in it |
+| **Artillery** | attacks from far away | ranged attacks (each pays its step of damage for the range), **High** Modifier; **Low** Armor Defense |
+| **Controller** | changes the fight with conditions and areas | **Low** damage with a Moderate or Severe condition on its Specials (the condition pays for the damage), often Power Actions Vs. WD; **High** Ward Defense, **Low** Armor Defense |
+| **Leader** | makes its allies better; one in a fight | Medium everything; its Round Special helps its allies (Boons, a movement, an extra attack) in the place of damage |
+
+The Brute, the Skirmisher and the Artillery are measured: four of them cost a party what four plain Standards do. The Soldier's and the Controller's numbers alone come about one step under: the Soldier's Reaction and the Controller's conditions are the rest of their worth. Speed costs nothing by itself.
 
 > [!tbd]
-> The roles are a first list. Their ratings are not measured yet, and a ranged or a fast creature is not priced in its CV: the four ranks are made to work first.
+> The Soldier's Reaction, the Controller's conditions and the Leader's help are priced by the Bestiary's rules for them (Reactions, Conditions), not measured yet.
 
 ## The ranks
 

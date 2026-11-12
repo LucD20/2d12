@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: 9fb0fa8 2026-11-12 Measured, nothing applied: Steel Yourself's cost, and what +1 is worth on a PC's Defense and Modifier
+Built by tools/knowledge.py on 2026-11-12 from the repository at: 405fe54 2026-11-12 Bestiary: NPC Defenses go up 2 points a rating, and a Defense step counts as half a step in the CV
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -28,7 +28,7 @@ Files:
 - rules-11-species.md (0 KB)
 - rules-12-paladin.md (3 KB)
 - rules-13-archer.md (3 KB)
-- rules-14-bestiary.md (24 KB)
+- rules-14-bestiary.md (25 KB)
 - rules-15-gear.md (11 KB)
 - design-sim-brief.md (22 KB)
 - design-stage0.md (12 KB)

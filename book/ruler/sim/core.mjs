@@ -210,7 +210,8 @@ export function npcS0(role, rating = "medium", opts = {}, table = TW.npcStage0) 
   for (const k of ["basic", "s1", "s2", "s3"]) if (t[k]) dmg[k] = t[k][dr].map(parseDamage);
   const avg = e => avgDamage(e, null, 2, 0);
   const def = k => (TW.npcDefense?.[key] ?? [])[col(k)]; if (opts.adrating && def(opts.adrating)) n.ad = def(opts.adrating); if (opts.wdrating && def(opts.wdrating)) n.wd = def(opts.wdrating);   // its Defenses by rating (config.mjs npcDefense), Medium unless given
-  return { ...n, stage: 0, pool: hp * 2, bodyPool: hp, mindPool: hp, dmg, t2: avg(dmg.basic[0]), t3: avg(dmg.basic[1]) };
+  const vig = opts.vrating ? t.health[col(opts.vrating)] : hp, res = opts.rrating ? t.health[col(opts.rrating)] : hp;   // Vigor and Resolve can each have their own rating (a Role's preset)
+  return { ...n, stage: 0, pool: vig + res, bodyPool: vig, mindPool: res, dmg, t2: avg(dmg.basic[0]), t3: avg(dmg.basic[1]) };
 }
 /** An NPC's attack damage on a tier: the Builder's dice for the average, the Modifier added (Tier 1 deals nothing). */
 export const DICE = [[0, 0, 0], [1, 1, 1], [1, 2, 2], [1, 4, 2.5], [1, 6, 3.5], [1, 8, 4.5], [1, 10, 5.5], [1, 12, 6.5], [2, 6, 7], [2, 8, 9], [2, 10, 11], [2, 12, 13], [3, 8, 13.5], [3, 10, 16.5], [3, 12, 19.5], [4, 10, 22], [4, 12, 26]];

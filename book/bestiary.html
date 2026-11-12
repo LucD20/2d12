@@ -309,7 +309,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <div class="callout tbd"><div class="ctitle">To be decided</div><p>Only Stage 0's tables are written. The tables of Stages 1, 2 and 3 come with those Stages.</p></div>
 <h2 id="defenses-2">Defenses</h2>
 <p>An NPC has an <strong>Armor Defense</strong> and a <strong>Ward Defense</strong>. Each one is a rating from its rank's Defense table, picked <strong>independently</strong> of the other: a Standard is Medium in both by default (13 and 13); a knight could have a High Armor Defense (15) and a Low Ward Defense (11). An NPC's Defenses come from these ratings only.</p>
-<p><strong>A Defense rating is the mildest step.</strong> One rating up is 2 points of Defense, which takes about 10% off what the PCs deal in a turn and makes the fight almost half a round longer; a rating of Health or damage is 20 to 25%. Defense makes a creature last by making the PCs miss: against an Extreme Defense a level 1 PC gets a Tier 1 more than half the time. <strong>Give an Extreme Defense to one creature in a fight, not to all of them</strong>, and prefer a High in one Defense with a Low in the other: it costs nothing and rewards attacking the right one.</p>
+<p><strong>A Defense rating is the mildest step.</strong> One rating up is 2 points of Defense, which takes about 10% off what the PCs deal in a turn and makes the fight almost half a round longer; a rating of Health or damage is 20 to 25%. Defense makes a creature last by making the PCs miss: against an Extreme Defense a level 1 PC gets a Tier 1 more than half the time. <strong>Give an Extreme Defense to one creature in a fight, not to all of them</strong>, and prefer a High in one Defense with a Low in the other: it rewards attacking the right one. That trade is even only for a party that can attack both Defenses: against one that attacks only Armor Defense, a High Armor Defense with a Low Ward Defense is simply a High.</p>
 <h3 id="what-an-action-attacks-rolls-and-damages">What an Action attacks, rolls and damages</h3>
 <p>Every NPC Action that attacks makes <strong>three separate choices</strong>:</p>
 <ol>
@@ -486,49 +486,50 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <p>With its Escalation, an Elite is worth its CV: two Elites cost the party what four Standards do, and three what six do. The phases are there to be seen, and they bring its later abilities a round sooner.</p>
 <div class="callout tbd"><div class="ctitle">To be decided</div><p>An Elite's own steps of Escalation (what each Elite gains, and at which numbers) come later; until then every Elite uses the table above.</p></div>
 <h2 id="roles">Roles</h2>
-<p>A <strong>role</strong> says what a creature does in a fight. It is a ready set of ratings and habits for a rank's tables, to build an NPC quickly and to tell the GM how to play it. A role is a suggestion: it has no rules of its own, and an NPC needs none.</p>
+<p>A <strong>role</strong> says what a creature does in a fight. It is a ready set of ratings for a rank's tables, to build an NPC quickly and to tell the GM how to play it. <strong>Every role below is balanced: an NPC built with it is worth its rank's CV</strong>, with nothing to adjust. A role has no rules of its own, and an NPC needs none: every rating a role doesn't name is Medium.</p>
 <div class="tablewrap"><table>
 <thead>
 <tr>
 <th>Role</th>
 <th>It...</th>
-<th>Ratings to start from</th>
+<th>Ratings</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><strong>Brute</strong></td>
-<td>walks in and hits hard</td>
-<td>High Vigor, High Basic attack, Low Armor Defense</td>
+<td>walks in and hits hard, and is easy to hit</td>
+<td><strong>High</strong> damage, <strong>High</strong> Vigor; <strong>Low</strong> Resolve, <strong>Low</strong> Armor Defense, <strong>Low</strong> <span class="mod-weapon">Weapon Modifier</span></td>
 </tr>
 <tr>
 <td><strong>Soldier</strong></td>
 <td>holds a line and protects its allies</td>
-<td>High Armor Defense, Medium damage, a Reaction that protects an ally or punishes leaving</td>
+<td><strong>High</strong> Armor Defense, <strong>High</strong> Vigor; <strong>Low</strong> damage; a Reaction that protects an ally or punishes leaving</td>
 </tr>
 <tr>
 <td><strong>Skirmisher</strong></td>
 <td>moves, strikes and gets away</td>
-<td>Speed 6 or 7, Low Health, a Special with a movement in it</td>
+<td>Speed 6 or 7, <strong>High</strong> <span class="mod-weapon">Weapon Modifier</span>; <strong>Low</strong> Vigor and Resolve; a Special with a movement in it</td>
 </tr>
 <tr>
 <td><strong>Artillery</strong></td>
 <td>attacks from far away</td>
-<td>a ranged Basic attack and Specials (each pays its step of damage for the range), Low Health, Low Armor Defense</td>
+<td>ranged attacks (each pays its step of damage for the range), <strong>High</strong> Modifier; <strong>Low</strong> Armor Defense</td>
 </tr>
 <tr>
 <td><strong>Controller</strong></td>
 <td>changes the fight with conditions and areas</td>
-<td>Low damage with Moderate or Severe conditions, Area <span class="trhl" style="--tc:var(--g-roll)">Save</span> Actions, often <span class="trhl" style="--tc:var(--g-roll)">Power</span> Actions Vs. WD</td>
+<td><strong>Low</strong> damage with a Moderate or Severe condition on its Specials (the condition pays for the damage), often <span class="trhl" style="--tc:var(--g-roll)">Power</span> Actions Vs. WD; <strong>High</strong> Ward Defense, <strong>Low</strong> Armor Defense</td>
 </tr>
 <tr>
 <td><strong>Leader</strong></td>
 <td>makes its allies better; one in a fight</td>
-<td>Medium everything, a Special that helps its allies (<span class="kw-boon">Boons</span>, movement, an extra attack)</td>
+<td>Medium everything; its Round Special helps its allies (<span class="kw-boon">Boons</span>, a movement, an extra attack) in the place of damage</td>
 </tr>
 </tbody>
 </table></div>
-<div class="callout tbd"><div class="ctitle">To be decided</div><p>The roles are a first list. Their ratings are not measured yet, and a ranged or a fast creature is not priced in its CV: the four ranks are made to work first.</p></div>
+<p>The Brute, the Skirmisher and the Artillery are measured: four of them cost a party what four plain Standards do. The Soldier's and the Controller's numbers alone come about one step under: the Soldier's Reaction and the Controller's conditions are the rest of their worth. Speed costs nothing by itself.</p>
+<div class="callout tbd"><div class="ctitle">To be decided</div><p>The Soldier's Reaction, the Controller's conditions and the Leader's help are priced by the Bestiary's rules for them (Reactions, Conditions), not measured yet.</p></div>
 <h2 id="the-ranks">The ranks</h2>
 <p>The Health and damage tables are <strong>Stage 0's</strong> (levels 1 to 3).</p>
 <h3 id="minions">Minions</h3>
@@ -1084,7 +1085,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 - <em>Club</em> (Basic attack, High): 3 + 1d6 / 5 + 1d6 <span class="dcode" style="--dc:#8a8a8a">Bl</span>.
 - <em>Ground Slam</em> (Special, <span class="kw-ap">3 AP</span>, Encounter, Area 1 Emanation, a <span class="trhl" style="--tc:var(--g-roll)">Save</span> Action: <span class="at-body">Body</span> Save, DC 14): half of a Medium <span class="kw-ap">3 AP</span> Special: 7 + 1d6 / 4 + 1d6 / 0 <span class="dcode" style="--dc:#8a8a8a">Bl</span> (Tier 1 is the worst for them), and Prone on Tier 1. At Escalation 6 it comes back once.
 - <em>Rally the Tribe</em> (Escalation 4, <span class="kw-ap">1 AP</span>, Round): allies within 5 squares gain <span class="kw-boon">1 Boon</span> on their next [<span class="trhl" style="--tc:var(--g-roll)">Weapon</span>] Action.</p></div></details></section>
-<section class="chapter"><details open><summary><h1 id="open-items">Appendix: Open Items</h1></summary><div class="cbody"><p>Rules that are not decided or not written yet. They are collected from the "To be decided" boxes in the chapters.</p><ol class="openitems"><li><a href="#ratings">Ratings</a>: Only Stage 0's tables are written. The tables of Stages 1, 2 and 3 come with those Stages.</li><li><a href="#elite-escalation">Elite Escalation</a>: An Elite's own steps of Escalation (what each Elite gains, and at which numbers) come later; until then every Elite uses the table above.</li><li><a href="#roles">Roles</a>: The roles are a first list. Their ratings are not measured yet, and a ranged or a fast creature is not priced in its CV: the four ranks are made to work first.</li></ol></div></details></section><p class="credits">Icons: Font Awesome Free (CC BY 4.0). Card title font: Cinzel (SIL Open Font License).</p><p class="totop"><a href="#top">Back to top</a></p></main></div><script>
+<section class="chapter"><details open><summary><h1 id="open-items">Appendix: Open Items</h1></summary><div class="cbody"><p>Rules that are not decided or not written yet. They are collected from the "To be decided" boxes in the chapters.</p><ol class="openitems"><li><a href="#ratings">Ratings</a>: Only Stage 0's tables are written. The tables of Stages 1, 2 and 3 come with those Stages.</li><li><a href="#elite-escalation">Elite Escalation</a>: An Elite's own steps of Escalation (what each Elite gains, and at which numbers) come later; until then every Elite uses the table above.</li><li><a href="#roles">Roles</a>: The Soldier's Reaction, the Controller's conditions and the Leader's help are priced by the Bestiary's rules for them (Reactions, Conditions), not measured yet.</li></ol></div></details></section><p class="credits">Icons: Font Awesome Free (CC BY 4.0). Card title font: Cinzel (SIL Open Font License).</p><p class="totop"><a href="#top">Back to top</a></p></main></div><script>
 function openUp(el){let d=el&&el.closest('details');while(d){d.open=true;d=d.parentElement&&d.parentElement.closest('details');}}
 document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',()=>{const t=document.getElementById(a.getAttribute('href').slice(1));openUp(t);}));
 window.addEventListener('hashchange',()=>openUp(document.getElementById(location.hash.slice(1))));
