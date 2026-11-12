@@ -8,7 +8,8 @@ Everything finished up to v0.0.207 (the done items, the per-version "to check" n
 ## STYLE: bringing the system to the settled look (audit 2026-11-12; nothing built)
 The audit and a proposed order: `foundry/mockups/style-audit.md`. The direction: CLAUDE.md, "The design's direction".
 - [x] Decided (Lucas, 2026-11-12): the audit's order; **mockups for every step first, nothing applied until all are done**; dark / light is **a setting of the system**; the dark Action card approved; the sheet's type on the cards; Tier 2 more yellow.
-- [ ] Mockups still to make (`foundry/mockups/style-build.mjs`): the older chat messages, the pick window, the roll dialog, the PC sheet, the full NPC sheet, the rest (the table: style-audit.md).
+- [ ] In the build: the word **Guard** colored by the text highlighter (`config.mjs highlightText`), the Guard blue; ask Lucas whether the book takes it too.
+- [ ] Mockups still to make (`foundry/mockups/style-build.mjs`): the pick window, the roll dialog, the PC sheet, the full NPC sheet, the rest (the table: style-audit.md).
 - [ ] Then the build, in the same order: the shared colors (`style-tokens.css`) at the top of system.css and the setting; then each surface's dark set (`style-dark.css` is generated from the system's rules and is the starting point).
 
 ## NPC-HUD: the one-page NPC sheet and the HUD (planned 2026-11-12; mockups made; nothing built)

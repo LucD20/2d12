@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: 4a5d347 2026-11-12 Style mockups, second review: chat card colors and contrast fixed, system messages in the chat card's look, the light stamp; the rule 'a style change only'
+Built by tools/knowledge.py on 2026-11-12 from the repository at: 0863f0a 2026-11-12 Style mockups, chat cards third review: the ladder readable on dark, AP in its blue everywhere, the Guard shield in the Guard blue, the real Guard lines; a proposal to color the word Guard
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -30,7 +30,7 @@ Files:
 - rules-13-archer.md (3 KB)
 - rules-14-bestiary.md (25 KB)
 - rules-15-gear.md (11 KB)
-- design-style-audit.md (10 KB)
+- design-style-audit.md (11 KB)
 - design-npc-hud-brief.md (24 KB)
 - design-sim-brief.md (22 KB)
 - design-stage0.md (12 KB)

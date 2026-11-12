@@ -136,6 +136,31 @@ const TYPE = `
 .twod12-type .twod12.chat.sysline > i:has(svg), .twod12-type .twod12.chat.sysline > i { color: #6b5a3a; }
 .twod12-type .twod12.chat.sysline > i[data-ic^="shield"] { color: #2f6fb3; }
 .twod12-type .twod12.chat .kw-guard { color: #2f6fb3; font-weight: 700; }
+/* THE OTHER CHAT MESSAGES in the chat card's look (style only): no navy bars, no orange line, no Cinzel; a heading is a band or a bold line. */
+.twod12-type .twod12.chat.rx2 { border-radius: 5px; border-color: #bfae8c; background: ${LIGHT.pg}; color: ${LIGHT.ink}; }
+.twod12-type .twod12.chat.rx2 .rx-hd { background: ${LIGHT.band}; color: ${LIGHT.ink}; border-bottom: 1px solid ${LIGHT.hair}; font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
+.twod12-type .twod12.chat.rx2.rxused .rxu-txt, .twod12-type .twod12.chat.rx2.rxused .rxu-txt b { color: ${LIGHT.ink}; }
+.twod12-type .twod12.chat.rx2 .rx-base { background: ${LIGHT.band}; color: ${LIGHT.ink}; border: 1px solid ${LIGHT.hair}; }
+.twod12-type .twod12.chat.rx2 .rx-it.rx-base, .twod12-type .twod12.chat.rx2 .rx-it.rx-base .rx-bw b, .twod12-type .twod12.chat.rx2 .rx-tm { color: ${LIGHT.ink}; }
+.twod12-type .twod12.chat.rx2 .rx-it.rx-base { background: ${LIGHT.band}; border-color: ${LIGHT.hair}; }
+.twod12-type .twod12.chat select { background: transparent; color: ${LIGHT.ink}; border: 1px solid #8c7d63; border-radius: 2px; font-family: "Signika", sans-serif; }
+.twod12-type .twod12.chat.rx2 .rx-hd .rx-hb { background: transparent; border: 1px solid #8c7d63; color: ${LIGHT.ink}; border-radius: 2px; }
+.twod12-type .twod12.chat.initcard .ic-band { font: 700 13.5px/1.2 "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; text-transform: none; }
+.twod12-type .twod12.chat.initcard .ic-name { font: 600 13.5px/1.3 "Signika", sans-serif; letter-spacing: 0; color: ${LIGHT.ink}; }
+.twod12-type .twod12.chat.dmg { background: ${LIGHT.pg}; border: 1px solid #bfae8c; border-radius: 5px; color: ${LIGHT.ink}; font-family: "Signika", sans-serif; }
+.twod12-type .twod12.chat.dmg > .ahead { background: none !important; color: inherit !important; border: 0 !important; border-bottom: 1px solid ${LIGHT.hair} !important; }
+.twod12-type .twod12.chat.dmg > .ahead * { color: inherit !important; }
+.twod12-type .twod12.chat.dmg.multi .mdl { font: 700 14px "Signika", sans-serif; font-variant: small-caps; }
+.twod12-type .twod12.chat .dbtns button, .twod12-type .twod12.chat .dbtns select { background: transparent; color: ${LIGHT.ink}; border: 1px solid #8c7d63; border-radius: 2px; box-shadow: none; font-family: "Signika", sans-serif; }
+.twod12-type .twod12.chat .dbtns button:first-child { background: ${LIGHT.stamp}; border-color: ${LIGHT.stamp}; color: ${LIGHT.stampInk}; }
+.twod12-type .twod12.chat.turnend > summary { background: ${LIGHT.band}; color: ${LIGHT.ink}; border-bottom: 1px solid ${LIGHT.hair}; }
+.twod12-type .twod12.chat.turnend .td-ttl { font: 700 14.5px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
+.twod12-type .twod12-dock .td-hd { background: ${LIGHT.band}; color: ${LIGHT.ink}; border-bottom: 1px solid ${LIGHT.hair}; }
+.twod12-type .twod12-dock .td-who { color: ${LIGHT.ink}; }
+.twod12-type .twod12-dock .td-pips i, .twod12-type .twod12.chat.turnend .td-pips i { background: rgba(42, 36, 29, .2); }
+.twod12-type .twod12-dock .td-pips i.on, .twod12-type .twod12.chat.turnend .td-pips i.on { background: #3b4cb8; }
+.twod12-type .twod12-dock .td-pips i.r.on, .twod12-type .twod12.chat.turnend .td-pips i.r.on { background: #b07a12; }
+.twod12-type .twod12.chat.follow i[data-ic^="shield"] { color: #2f6fb3; }
 /* Tier 2, more yellow (Lucas): still a green, toward yellow. The light theme's values; the dark set has its own. */
 .twod12-type .twod12.acard.d2 table.ap-tt tr.t2 { --c: ${LIGHT.t2}; --bg: ${LIGHT.t2bg}; --n: ${LIGHT.t2n}; }
 .twod12-type .twod12.chat.cc { --cc-t2: #d3df8e; --cc-t2i: #36420a; }
@@ -146,7 +171,8 @@ const TYPE = `
 const R = {
   card: pick(/\.acard\.d2/),
   chat: pick(/\.twod12\.chat\.(cc|sysmsg|sysline|action|turnend)\b|\.twod12\.chat \.(ahead|apmark)|\.twod12\.chat > \.ahead/),
-  dock: pick(/twod12-dock\b/),
+  older: pick(/\.twod12\.chat\b/).filter(b => !/\.twod12\.chat\.(cc|sysmsg|sysline|action|turnend)\b|\.twod12\.chat \.(ahead|apmark)|\.twod12\.chat > \.ahead/.test(selOf(b))),
+  dock: pick(/twod12-dock\b|\.twod12 \.td-/),
   bars: pick(/twod12-(linebar|pickbar)\b/)
 };
 const BY_HAND = `
@@ -198,6 +224,28 @@ const BY_HAND = `
 .twod12-dark .twod12.chat.cc .cc-seg.s2 { background: rgba(111, 127, 23, .32); color: #cbd86e; } .twod12-dark .twod12.chat.cc .cc-seg.s2.lit { background: #5f6d14; color: #fff; }
 .twod12-dark .twod12.chat.cc .cc-seg.s3 { background: rgba(47, 107, 58, .38); color: #8fd69b; } .twod12-dark .twod12.chat.cc .cc-seg.s3.lit { background: #2f6b3a; color: #fff; }
 .twod12-dark .twod12.chat .kw-ap { color: #9aa7ff !important; } .twod12-dark .twod12.chat .kw-bane { color: ${T.bane}; } .twod12-dark .twod12.chat .kw-boon { color: ${T.boon}; }
+/* ---- by hand: the other chat messages */
+.twod12-dark .twod12.chat.rx2, .twod12-dark .twod12.chat.dmg { background: ${T.pg}; border-color: ${T.rule}; color: ${T.ink}; }
+.twod12-dark .twod12.chat.rx2 .rx-hd, .twod12-dark .twod12.chat.rx2 .rx-base, .twod12-dark .twod12.chat.turnend > summary { background: ${T.band}; color: ${T.ink}; border-color: ${T.hair}; }
+.twod12-dark .twod12.chat.rx2.rxused .rxu-txt, .twod12-dark .twod12.chat.rx2.rxused .rxu-txt b, .twod12-dark .twod12.chat.rx2 .rx-it.rx-base, .twod12-dark .twod12.chat.rx2 .rx-it.rx-base .rx-bw b, .twod12-dark .twod12.chat.rx2 .rx-tm { color: ${T.ink}; }
+.twod12-dark .twod12.chat.rx2 .rx-it.rx-base { background: ${T.band}; border-color: ${T.hair}; }
+.twod12-dark .twod12.chat select { background: ${T.pg2}; color: ${T.ink}; border: 1px solid #8c7d63; }
+/* the AP blue, the movement green and the Guard blue on the dark page (the Turn dock's and the End of Turn line's rows) */
+.twod12-dark .twod12 .td-tl .td-ic.ap, .twod12-dark .twod12 .td-tl .td-c.ap { color: #9aa7ff; }
+.twod12-dark .twod12 .td-tl .td-ic.mv { color: #b9dc6a; } .twod12-dark .twod12 .td-tl .td-ic.rx { color: #e6bd5a; }
+.twod12-dark .twod12 .td-tl .td-ic.guard, .twod12-dark .twod12 .td-tl .td-g { color: #7fb4ee; }
+.twod12-dark .twod12 .td-tl .tk-pips i.on { background: #9aa7ff; }
+.twod12-dark .twod12 .td-badge.tick { background: #232a4a; color: #9aa7ff; }
+.twod12-dark .twod12.chat.rx2 .rx-hd .rx-hb { background: transparent; border: 1px solid #8c7d63; color: ${T.ink}; }
+.twod12-dark .twod12.chat.initcard { --ic-foe: #8f2626; --ic-ally: #3b6d11; --ic-neutral: #6b6456; }
+.twod12-dark .twod12.chat.initcard .ic-name { color: ${T.ink}; }
+.twod12-dark .twod12.chat.dmg > .ahead { background: none !important; border-bottom: 1px solid ${T.hair} !important; }
+.twod12-dark .twod12.chat .dbtns button, .twod12-dark .twod12.chat .dbtns select { background: transparent; color: ${T.ink}; border: 1px solid #8c7d63; }
+.twod12-dark .twod12.chat .dbtns button:first-child { background: ${T.stamp}; border-color: ${T.stamp}; color: ${T.stampInk}; }
+.twod12-dark .twod12.chat .dbtns select option { background: ${T.pg}; }
+.twod12-dark .twod12.chat.dmg .mdsum, .twod12-dark .twod12.chat.dmg .mdsum * { color: ${T.ink}; }
+.twod12-dark .twod12.chat.follow i[data-ic^="shield"] { color: #7fb4ee; }
+.twod12-dark .twod12.chat.turnend .td-ttl, .twod12-dark .twod12.chat.turnend > summary { color: ${T.ink}; }
 /* ---- by hand: the Turn dock (a band for its head, the page for its body) */
 .twod12-dark .twod12-dock, .twod12-dark .twod12.chat.turnend { background: ${T.pg}; color: ${T.ink}; border-color: ${T.rule}; border-radius: 2px; }
 .twod12-dark .twod12-dock .td-hd, .twod12-dark .twod12.chat.turnend > summary { background: ${T.band}; color: ${T.ink}; }
@@ -225,7 +273,7 @@ ${Object.entries(SETS).map(([k, css]) => `/* ==== ${k} ==== */\n${css}`).join("\
 ${BY_HAND}`);
 
 /* ------------------------------------------------------------------ the page shell */
-const NAV = [["style-tokens.html", "1. Colors and type"], ["action-card-dark.html", "2. Action card"], ["chat-cards-dark.html", "3. Chat cards"], ["bars-dark.html", "4. Pick bar and Turn dock"], ["npc-hud-sheet.html", "The NPC sheet"], ["npc-hud-hud.html", "The HUD"]];
+const NAV = [["style-tokens.html", "1. Colors and type"], ["action-card-dark.html", "2. Action card"], ["chat-cards-dark.html", "3. Chat cards"], ["chat-older-dark.html", "3b. The other chat messages"], ["bars-dark.html", "4. Pick bar and Turn dock"], ["npc-hud-sheet.html", "The NPC sheet"], ["npc-hud-hud.html", "The HUD"]];
 const SHELL = `
 * { box-sizing: border-box; }
 body { margin: 0; background: #2a2723; color: #eee6d6; font: 14px/1.45 "Signika", "Segoe UI", system-ui, sans-serif; padding: 22px 22px 60px; --font-primary: "Signika", sans-serif; }
@@ -412,11 +460,52 @@ ${side(sGuardK + sGuardHitK)}
 <li>Icons that the page doesn't carry show as nothing (Foundry has them all).</li>
 </ul>`, R.chat);
 
+/* ------------------------------------------------------------------ 3b. the other chat messages (the system's own functions draw them) */
+globalThis.CONST = { TOKEN_DISPOSITIONS: { FRIENDLY: 1, HOSTILE: -1 } };
+const MO = await import("../twod12/module/moment.mjs"), IC = await import("../twod12/module/initcard.mjs"), FU = await import("../twod12/module/followup.mjs"), DC = await import("../twod12/module/dmgcard.mjs"), TK = await import("../twod12/module/ticker.mjs");
+const TD = await import("../twod12/module/turndock.mjs");
+const rxLive = { v: 2, id: "x", hold: true, deadline: 600000, now: 0, done: false, base: { kind: "strike", label: "Strike", face: { name: "Orc Warrior" }, target: { name: "Sylwen" }, held: 9 }, rows: [
+  { i: 0, actorUuid: "A.n", name: "Durgan", itemName: "Shield of Faith", ap: 1, kind: "interrupt", targetName: "Sylwen", answerer: "p1", state: "use", order: 1, result: "", color: "#f0b54a" },
+  { i: 1, actorUuid: "A.l", name: "Aveline", itemName: "Rebuke", ap: 1, kind: "trigger", targetName: "Orc Warrior", answerer: "p2", state: "use", order: 2, result: "", color: "#5fc4c0" },
+  { i: 2, actorUuid: "A.o", name: "Ogre Chieftain", itemName: "Hold the Line", ap: 1, kind: "trigger", targetName: "Sylwen", answerer: "gm", state: "wait", order: 0, result: "" }] };
+const rxDone = { ...rxLive, done: true, deadline: 0, rows: rxLive.rows.map((r, i) => ({ ...r, state: i === 2 ? "skip" : "use", result: i === 0 ? "Guard 5" : i === 1 ? "Tier 2, 7 damage" : "" })) };
+const safe = fn => { try { return FA(fn()); } catch (e) { console.warn("  (a sample could not be drawn:", e.message, ")"); return ""; } };
+const cRx = safe(() => MO.rxCardHtml(rxLive)), cRxDone = safe(() => MO.rxCardHtml(rxDone)), cRxUsed = safe(() => MO.usedBarHtml({ rows: [{ state: "use", order: 1, name: "Aveline", itemName: "Rebuke", targetName: "Ogre Chieftain" }] }));
+const Rr2 = (d1, d2, mod, total, o = {}) => ({ d1, d2, total, mod, dropped: null, state: "", bo: 0, ba: 0, manualBoons: 0, manualBanes: 0, boonFaces: [], baneFaces: [], ...o });
+const initRows = [
+  { id: "av", name: "Aveline", side: 1, attr: "instinct", mod: 1, r: Rr2([11], [8], 1, 20, { bo: 1, manualBoons: 1, boonFaces: [2] }) },
+  { id: "og", name: "Ogre Chieftain", side: -1, attr: "instinct", mod: 2, r: Rr2([9], [6], 2, 17) },
+  { id: "sy", name: "Sylwen", side: 1, attr: "instinct", mod: 2, r: Rr2([5], [6], 2, 13) },
+  { id: "o1", name: "Orc Warrior", side: -1, attr: "instinct", mod: 1, r: Rr2([6], [5], 1, 12) },
+  { id: "du", name: "Durgan", side: 1, attr: "body", mod: 2, r: Rr2([3], [2], 2, 7, { state: "favored", dropped: [1] }) },
+  { id: "g1", name: "Goblin Sneak", side: -1, attr: "instinct", mod: 1, r: Rr2([3], [2], 1, 6) }];
+const cInit = safe(() => IC.initCardHtml(IC.initCardData(initRows, initRows.map(r => r.id))));
+const cFollow = safe(() => FU.followHtml([{ icon: "fa-shield-heart", html: "<b>Ogre Chieftain</b> gains <b>Guard 6</b>." }, { icon: "fa-hand", html: "<b>Orc Warrior</b> is Pushed 1." }]));
+const cMulti = safe(() => DC.multiDamageHtml({ title: "Ground Slam", rows: [{ uuid: "a", name: "Aveline", tier: 1, comps: [{ pool: "B", sub: "Bl", total: 11 }], fx: [], applied: "", blocked: false }, { uuid: "b", name: "Durgan", tier: 2, comps: [{ pool: "B", sub: "Bl", total: 6 }], fx: [], applied: "", blocked: false }, { uuid: "c", name: "Sylwen", tier: 3, comps: [], fx: [], applied: "", blocked: false }] }));
+const tStart = TK.makeLine("start", "Turn start", 0, 4, 4, { b: 0, a: 1 }), tAct = { ...TK.makeLine("act", "Cleaver", 4, 3, 4), at: "2:1" }, tMove = { ...TK.makeLine("move", "Advance", 3, 2, 4), at: "2:1" };
+const tOn = TD.onRows([{ name: "Hindered", flags: { duration: { type: "eot" } } }], { apGuard: 0, guard: 4 });
+const dockFull = safe(() => TD.dockHtml(TD.dockModel({ who: "Orc Warrior", round: 2, lines: [tStart, tAct, tMove], on: tOn, ap: 2, rap: 1, max: 4 }), true));
+const cEnd = safe(() => TD.endCardHtml(TD.dockModel({ who: "Orc Warrior", round: 2, lines: [tStart, tAct, tMove], on: tOn, ap: 0, rap: 1, max: 4 })).replace("<details", "<details open"));
+page("chat-older-dark.html", "Style 3b: the other chat messages", `The rest of the chat, <b>drawn by the system's own functions</b>: the Reactions card, the initiative card, the follow-up lines under a card, the area damage card, the End of Turn line. Today they come from several generations of the system (a navy bar here, an amber line there, Cinzel titles). Here they take the chat card's look on both themes. <b>A style change only: no element is added, moved or removed.</b> The dark sets are generated from ${R.older.length} rules.`, `
+<h2>The Reactions card: waiting, resolved, and the "used" bar</h2>
+${side(cRx + cRxDone + cRxUsed)}
+<h2>The initiative card</h2>
+${side(cInit)}
+<h2>Follow-up lines, and the area damage card</h2>
+${side(cFollow + cMulti)}
+<h2>The End of Turn line (open)</h2>
+${side(cEnd)}
+<h2>Notes</h2>
+<ul class="notes">
+<li><b>Not drawn here, because only Foundry can draw them:</b> an Action or an item sent to the chat, the single-target damage card of the old kind, the Save prompt. Their rules are in the dark set; they share the header of the system messages (redone on the chat cards page).</li>
+<li>The ticker messages are not here: the system stopped posting them (v0.0.362, the Turn dock took their place).</li>
+</ul>`, [...R.chat, ...R.older, ...R.dock]);
+
 /* ------------------------------------------------------------------ 4. the pick bar and the Turn dock */
 const bar = FA(pickBarHtml({ icon: "fa-shield-halved", text: "<b>Shield of Faith</b>: who gains the <b>Guard 5</b>? Click a button, or the creature on the map.", options: [{ id: "a", label: "Aveline", cls: "you" }, { id: "d", label: "Durgan" }, { id: "s", label: "Sylwen", cls: "hover" }] }));
 const bar2 = FA(pickBarHtml({ icon: "fa-up-down-left-right", text: "<b>Pushed 2</b>: pick the square the Orc Warrior ends in.", options: [], done: "Done" }));
 const barHtml = `<div class="twod12-linebar twod12-pickbar">${bar}</div><div style="height:12px"></div><div class="twod12-linebar twod12-pickbar">${bar2}</div>`;
-const dockOpen = dockHtml(dockModel({ who: "Orc Warrior", round: 2, ap: 2, rap: 1, max: 4 }), true), dockShut = dockHtml(dockModel({ who: "Aveline", round: 2, ap: 4, rap: 1, max: 4 }), false);
+const dockOpen = dockFull || dockHtml(dockModel({ who: "Orc Warrior", round: 2, ap: 2, rap: 1, max: 4 }), true), dockShut = dockHtml(dockModel({ who: "Aveline", round: 2, ap: 4, rap: 1, max: 4 }), false);
 const bars2 = (html, stage, w) => `<div class="cols">${col("Dark", PICK, "", html, `${stage} dk twod12-dark twod12-type`, w)}${col("Today", TODAY, "", html, stage, w)}</div>`;
 page("bars-dark.html", "Style 4: the pick bar and the Turn dock", `The two pieces that sit beside the HUD. <b>The pick bar</b> (a choice on the map; inside the HUD when one is open, floating when not) is dark already, but a cold blue-black with rounded blue-grey buttons: here it takes the HUD's look (the warm page, a gold line, outlined buttons, the hovered pick as a stamp). <b>The Turn dock</b> (above the chat's input) takes the dark page and a band for its head.`, `
 <h2>The pick bar, floating over the map</h2>
@@ -426,7 +515,7 @@ ${bars2(`<div class="twod12-dockwrap">${dockOpen}</div><div class="twod12-dockwr
 <h2>Notes</h2>
 <ul class="notes">
 <li>The Line bar, the Charge bar and the Setup bar share the pick bar's rules, so they take the same look; they are not drawn here.</li>
-<li>The dock's rows (the Actions of the turn, the Effects on the creature) are in the dark set but empty here.</li>
+<li>The open dock shows a real turn: its start, an Action, a movement, and what is on the creature.</li>
 </ul>`, [...R.bars, ...R.dock]);
 
 console.log(`built: style-tokens.css/.html, style-dark.css, action-card-dark.html, chat-cards-dark.html, bars-dark.html`);

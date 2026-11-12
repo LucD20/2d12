@@ -52,6 +52,33 @@
 .twod12-dock .td-pips i.on, .twod12.chat.turnend .td-pips i.on { background: #9aa7ff; }
 .twod12-dock .td-pips i.r, .twod12.chat.turnend .td-pips i.r { border-radius: 2px; transform: rotate(45deg); width: 7px; height: 7px; margin-left: 4px; }
 .twod12-dock .td-pips i.r.on, .twod12.chat.turnend .td-pips i.r.on { background: #e6bd5a; }
+.twod12 .td-tl { padding: 3px 0; }
+.twod12 .td-tl .td-r { display: grid; grid-template-columns: 16px 1fr auto; align-items: center; gap: 6px; padding: 2px 8px; }
+.twod12 .td-tl .td-r.now { background: rgba(59, 76, 184, .08); }
+.twod12 .td-tl .td-none { display: block; color: #6f6350; font-style: italic; }
+.twod12 .td-tl .td-ic { text-align: center; font-size: 11px; color: #6f6350; }
+.twod12 .td-tl .td-ic.ap { color: #3b4cb8; }
+.twod12 .td-tl .td-ic.mv { color: #4d6b0a; }
+.twod12 .td-tl .td-ic.rx { color: #8a5a00; }
+.twod12 .td-tl .td-ic.guard { color: #2f6fb3; }
+.twod12 .td-tl .td-nm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.twod12 .td-tl .td-on { color: #6f6350; }
+.twod12 .td-tl .td-c.ap { color: #3b4cb8; font-weight: 700; }
+.twod12 .td-tl .td-g { color: #2f6fb3; }
+.twod12 .td-tl .td-link { color: #0b5cad; text-decoration: underline dotted; cursor: pointer; }
+.twod12 .td-tl .td-sep { font-size: 10.5px; font-variant: small-caps; letter-spacing: .05em; color: #6f6350; font-weight: 700; padding: 5px 8px 1px; border-top: 1px solid #d9cca8; margin-top: 3px; }
+.twod12 .td-tl .td-live { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #4d6b0a; margin-left: 5px; animation: twod12-tdpulse 1.2s infinite; }
+.twod12 .td-badge { display: inline-flex; align-items: center; font-size: 11px; font-weight: 700; border-radius: 6px; padding: 0 6px; line-height: 17px; white-space: nowrap; }
+.twod12 .td-badge.rd { background: #e3d7b8; color: #5a4a28; }
+.twod12 .td-badge.end { background: #f3d3cf; color: #b3261e; }
+.twod12 .td-badge.tick { background: #dfe3f6; color: #3b4cb8; }
+.twod12 .td-tl .tk-pips { display: inline-flex; gap: 3px; flex: none; }
+.twod12 .td-tl .tk-pips i { width: 7px; height: 7px; border-radius: 50%; box-sizing: border-box; background: rgba(128, 128, 128, .28); }
+.twod12 .td-tl .tk-pips i.on { background: #3b4cb8; }
+.twod12 .td-tl .tk-pips i.spent { background: transparent; border: 1.2px solid #b3261e; }
+.twod12 .td-tl .tk-pips i.rap { border-radius: 1px; transform: rotate(45deg); width: 6px; height: 6px; }
+.twod12 .td-tl .tk-pips i.rap.on { background: #a8800f; }
+.twod12 .td-tl .tk-pips .hsep { width: 3px; }
 #twod12-dock { position: fixed; z-index: 70; margin: 0; pointer-events: auto; }
 #twod12-dock[hidden] { display: none; }</style>
 <style>
@@ -90,6 +117,31 @@
 .twod12-type .twod12.chat.sysline > i:has(svg), .twod12-type .twod12.chat.sysline > i { color: #6b5a3a; }
 .twod12-type .twod12.chat.sysline > i[data-ic^="shield"] { color: #2f6fb3; }
 .twod12-type .twod12.chat .kw-guard { color: #2f6fb3; font-weight: 700; }
+/* THE OTHER CHAT MESSAGES in the chat card's look (style only): no navy bars, no orange line, no Cinzel; a heading is a band or a bold line. */
+.twod12-type .twod12.chat.rx2 { border-radius: 5px; border-color: #bfae8c; background: #f4ede0; color: #2a241d; }
+.twod12-type .twod12.chat.rx2 .rx-hd { background: #dfd2b6; color: #2a241d; border-bottom: 1px solid #cdb88a; font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
+.twod12-type .twod12.chat.rx2.rxused .rxu-txt, .twod12-type .twod12.chat.rx2.rxused .rxu-txt b { color: #2a241d; }
+.twod12-type .twod12.chat.rx2 .rx-base { background: #dfd2b6; color: #2a241d; border: 1px solid #cdb88a; }
+.twod12-type .twod12.chat.rx2 .rx-it.rx-base, .twod12-type .twod12.chat.rx2 .rx-it.rx-base .rx-bw b, .twod12-type .twod12.chat.rx2 .rx-tm { color: #2a241d; }
+.twod12-type .twod12.chat.rx2 .rx-it.rx-base { background: #dfd2b6; border-color: #cdb88a; }
+.twod12-type .twod12.chat select { background: transparent; color: #2a241d; border: 1px solid #8c7d63; border-radius: 2px; font-family: "Signika", sans-serif; }
+.twod12-type .twod12.chat.rx2 .rx-hd .rx-hb { background: transparent; border: 1px solid #8c7d63; color: #2a241d; border-radius: 2px; }
+.twod12-type .twod12.chat.initcard .ic-band { font: 700 13.5px/1.2 "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; text-transform: none; }
+.twod12-type .twod12.chat.initcard .ic-name { font: 600 13.5px/1.3 "Signika", sans-serif; letter-spacing: 0; color: #2a241d; }
+.twod12-type .twod12.chat.dmg { background: #f4ede0; border: 1px solid #bfae8c; border-radius: 5px; color: #2a241d; font-family: "Signika", sans-serif; }
+.twod12-type .twod12.chat.dmg > .ahead { background: none !important; color: inherit !important; border: 0 !important; border-bottom: 1px solid #cdb88a !important; }
+.twod12-type .twod12.chat.dmg > .ahead * { color: inherit !important; }
+.twod12-type .twod12.chat.dmg.multi .mdl { font: 700 14px "Signika", sans-serif; font-variant: small-caps; }
+.twod12-type .twod12.chat .dbtns button, .twod12-type .twod12.chat .dbtns select { background: transparent; color: #2a241d; border: 1px solid #8c7d63; border-radius: 2px; box-shadow: none; font-family: "Signika", sans-serif; }
+.twod12-type .twod12.chat .dbtns button:first-child { background: #3b3128; border-color: #3b3128; color: #f4ede0; }
+.twod12-type .twod12.chat.turnend > summary { background: #dfd2b6; color: #2a241d; border-bottom: 1px solid #cdb88a; }
+.twod12-type .twod12.chat.turnend .td-ttl { font: 700 14.5px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
+.twod12-type .twod12-dock .td-hd { background: #dfd2b6; color: #2a241d; border-bottom: 1px solid #cdb88a; }
+.twod12-type .twod12-dock .td-who { color: #2a241d; }
+.twod12-type .twod12-dock .td-pips i, .twod12-type .twod12.chat.turnend .td-pips i { background: rgba(42, 36, 29, .2); }
+.twod12-type .twod12-dock .td-pips i.on, .twod12-type .twod12.chat.turnend .td-pips i.on { background: #3b4cb8; }
+.twod12-type .twod12-dock .td-pips i.r.on, .twod12-type .twod12.chat.turnend .td-pips i.r.on { background: #b07a12; }
+.twod12-type .twod12.chat.follow i[data-ic^="shield"] { color: #2f6fb3; }
 /* Tier 2, more yellow (Lucas): still a green, toward yellow. The light theme's values; the dark set has its own. */
 .twod12-type .twod12.acard.d2 table.ap-tt tr.t2 { --c: #5d6e10; --bg: #f3f5d8; --n: #a4b53c; }
 .twod12-type .twod12.chat.cc { --cc-t2: #d3df8e; --cc-t2i: #36420a; }
@@ -293,11 +345,269 @@
 .twod12-dark .twod12-dock .td-hd, .twod12-dark .twod12.chat.turnend > summary { background: #332c22; color: #ecdcae; }
 .twod12-dark .twod12-dock .td-pips i.on, .twod12-dark .twod12.chat.turnend .td-pips i.on { background: #0e1752; }
 .twod12-dark .twod12-dock .td-pips i.r.on, .twod12-dark .twod12.chat.turnend .td-pips i.r.on { background: #675321; }
+.twod12-dark .twod12.chat .tier.t1 { color: #de9494; }
+.twod12-dark .twod12.chat .tier.t2 { color: #ead191; }
+.twod12-dark .twod12.chat .tier.t3 { color: #8fd69b; }
+.twod12-dark .twod12.chat .die { border: 1px solid #666; color: #e1e1e1; }
+.twod12-dark .twod12.chat .poolbox { border: 1px solid #777; }
+.twod12-dark .twod12.chat .dtotal { border-top: 1px solid #888; }
+.twod12-dark .twod12.chat .dbtns button.active { color: #fff; box-shadow: inset 0 0 0 1px #2a4fb0; }
+.twod12-dark .twod12.chat .nlb { background: #674024; color: #e1e1e1; }
+.twod12-dark .twod12.chat .sdmg.t1 { color: #b94646; }
+.twod12-dark .twod12.chat .sdmg.t2 { color: #9ddab3; }
+.twod12-dark .twod12.chat .sdmg.t3 { color: #4a78e0; }
+.twod12-dark .twod12.chat { --card-color: #9c9c9c; }
+.twod12-dark .twod12.chat .sthead { color: #c5c5c5; }
+.twod12-dark .twod12.chat .bonusrow { border-left: 3px solid #2e6b7e; }
+.twod12-dark .twod12 .usepreview tr.forced, .twod12-dark .twod12.chat .tiers tr.forced { outline: 2px solid #9b59d0; }
+.twod12-dark .twod12.chat .tiers tr.forced th { color: #7b3fb0; }
+.twod12-dark .twod12.chat .rmark, .twod12-dark .twod12 .rmark { background: #43b3a8; color: #fff; }
+.twod12-dark .twod12.chat .trow .sep { color: #ecba77; }
+.twod12-dark .twod12.chat table.tiers tr.forced > th { box-shadow: inset 3px 0 0 #9b59d0; }
+.twod12-dark .twod12.chat .rtag.forced { color: #b590df; }
+.twod12-dark .twod12.chat.dmg .poolhead { border-left: 3px solid var(--pc, #888780); background: color-mix(in srgb, var(--pc, #888780) 18%, transparent); }
+.twod12-dark .twod12.chat.dmg .pool-B { --pc: #e24b4a; }
+.twod12-dark .twod12.chat.dmg .pool-M { --pc: #7f77dd; }
+.twod12-dark .twod12.chat.dmg .pool-C { --pc: #86e9c9; }
+.twod12-dark .twod12.chat.dmg .pool-N { --pc: #888780; }
+.twod12-dark .twod12.chat.dmg .comp { border-left: 3px solid var(--sc, #888780); background: color-mix(in srgb, var(--sc, #888780) 9%, transparent); }
+.twod12-dark .twod12.chat:not([style*="--card-color"]) .ahead .apmark { background: #2d3665; color: #fff; }
+.twod12-dark .twod12.chat.savecard table.tiers tr.t1 > th { box-shadow: inset 3px 0 0 #c84b4b; }
+.twod12-dark .twod12.chat.savecard table.tiers tr.t2 > th { box-shadow: inset 3px 0 0 #3c8c5a; }
+.twod12-dark .twod12.chat.savecard table.tiers tr.t3 > th { box-shadow: inset 3px 0 0 #4678e6; }
+.twod12-dark .twod12.chat hr.cdiv { border-top-color: #60573e; }
+.twod12-dark .twod12.chat .orn { color: #ecba77; }
+.twod12-dark .twod12.chat .orn::before, .twod12-dark .twod12.chat .orn::after { border-top: 1px solid #60573e; }
+.twod12-dark .twod12.chat .die.d12 { color: #d4d4d2; }
+.twod12-dark .twod12.chat .die.d12::before { background: #28241d; border: 1.5px solid #5f5e5a; }
+.twod12-dark .twod12.chat .die.d12.boom::before, .twod12-dark .twod12.chat .die.d12.chain::before { border-color: #ba7517; background: #362810; }
+.twod12-dark .twod12.chat .die.d12.dbl { color: #d4d4d2; }
+.twod12-dark .twod12.chat .die.d12.dbl::before { border-color: #4a90de; background: #102130; }
+.twod12-dark .twod12.chat .dlink { color: #ecba77; }
+.twod12-dark .twod12.chat .die.d3.boon { background: #3c4d24; color: #ccf4b0; border: 1px solid #639922; }
+.twod12-dark .twod12.chat .die.d3.bane { background: #401313; color: #e69c9c; border: 1px solid #e24b4a; }
+.twod12-dark .twod12.chat .chkline .shield { border: 1.5px solid #8c7d63; background: #28241d; color: #d4d4d2; }
+.twod12-dark .twod12.chat .shield .vsdc { border-top: 1px solid #7a683f; }
+.twod12-dark .twod12.chat .shield.win { border-color: #6aa82e; background: #252f18; color: #d6f6c0; }
+.twod12-dark .twod12.chat .shield.win .vsdc { border-top-color: #97c459; color: #ccf4b0; }
+.twod12-dark .twod12.chat .shield.lose { border-color: #d65a5a; background: #2f0f0f; color: #edb2b2; }
+.twod12-dark .twod12.chat .shield.lose .vsdc { border-top-color: #722b2b; color: #e69c9c; }
+.twod12-dark .twod12.chat .chip { border: 1px solid #7a683f; color: #b3a68e; }
+.twod12-dark .twod12.chat .chip.boon { background: #252f18; border-color: #97c459; color: #ccf4b0; }
+.twod12-dark .twod12.chat .chip.bane { background: #2f0f0f; border-color: #722b2b; color: #e69c9c; }
+.twod12-dark .twod12.chat .chip.dbl { background: #102130; border-color: #2e5073; color: #9ac5f1; }
+.twod12-dark .twod12.chat .chip.crit { background: #362810; border-color: #ef9f27; color: #f3d1a9; }
+.twod12-dark .twod12.chat table.tiers tr.hit { background: #252f18; }
+.twod12-dark .twod12.chat table.tiers tr.hit > th { box-shadow: inset 3px 0 0 #6aa82e; }
+.twod12-dark .twod12.chat table.tiers tr.hit.fail { background: #2f0f0f; }
+.twod12-dark .twod12.chat table.tiers tr.hit.fail > th { box-shadow: inset 3px 0 0 #d65a5a; }
+.twod12-dark .twod12.chat table.tiers tr.hit.base > th { border-left: 3px dashed #97c459; }
+.twod12-dark .twod12.chat table.tiers tr.up { background: #102130; }
+.twod12-dark .twod12.chat table.tiers tr.up > th { box-shadow: inset 3px 0 0 #4a90de; }
+.twod12-dark .twod12.chat table.tiers tr.crit.up { background: #362810; }
+.twod12-dark .twod12.chat table.tiers tr.crit.up > th { box-shadow: inset 3px 0 0 #ba7517; }
+.twod12-dark .twod12.chat table.tiers th { color: #b3a68e; }
+.twod12-dark .twod12.chat .rtag.rolled { background: #3b6d11; color: #eaf3de; }
+.twod12-dark .twod12.chat .rtag.rolled.fail { background: #8f2626; color: #fcebeb; }
+.twod12-dark .twod12.chat .rtag.rolled.small { color: #6aa82e; }
+.twod12-dark .twod12.chat .rtag.dbl { background: #185fa5; color: #e6f1fb; }
+.twod12-dark .twod12.chat .rtag.critt { background: #ba7517; color: #faeeda; }
+.twod12-dark .twod12.chat .oddsrow { color: #b3a68e; }
+.twod12-dark .twod12.chat.pv table.tiers, .twod12-dark .twod12.chat.pv table.tiers tbody, .twod12-dark .twod12.chat.pv table.tiers tr, .twod12-dark .twod12.chat.pv table.tiers th, .twod12-dark .twod12.chat.pv table.tiers td { color: #d4d4d2; }
+.twod12-dark .twod12.chat.pv table.tiers th { color: #b3a68e; }
+.twod12-dark .twod12.chat.pv table.tiers tr { border-top: 1px solid #5d523a; }
+.twod12-dark .twod12.chat.pv .pv-check { color: #d4d4d2; }
+.twod12-dark .twod12.chat.pv .pv-p, .twod12-dark .twod12.chat.pv .pv-odds, .twod12-dark .twod12 .usepreview .tiers th small, .twod12-dark .twod12 .usepreview td small { color: #b3a68e; }
+.twod12-dark .twod12.chat a.twod12-inline { background: #28241d; border-color: #8c7d63; color: #d4d4d2; }
+.twod12-dark .twod12.chat a.twod12-inline:hover { background: #362810; border-color: #ba7517; }
+.twod12-dark .twod12.chat a.twod12-inline i { color: #f0c896; }
+.twod12-dark .twod12.chat .mrow { border-left: 3px solid #7a683f; }
+.twod12-dark .twod12.chat .mrow.t1 { border-left-color: #d65a5a; background: #2f0f0f; }
+.twod12-dark .twod12.chat .mrow.t2 { border-left-color: #6aa82e; background: #252f18; }
+.twod12-dark .twod12.chat .mrow.t3 { border-left-color: #6aa82e; background: #2a391a; }
+.twod12-dark .twod12.chat .mrow .shield { border: 1.5px solid #8c7d63; background: #28241d; color: #d4d4d2; }
+.twod12-dark .twod12.chat .mrow .modds { color: #b3a68e; }
+.twod12-dark .twod12.chat.dmg.multi .mdall { border-bottom: 1px solid #60573e; }
+.twod12-dark .twod12.chat.dmg.multi .mdrow { border-bottom: 1px solid #5d523a; }
+.twod12-dark .twod12.chat .srow .shield { border: 1.5px solid #8c7d63; background: #28241d; color: #d4d4d2; }
+.twod12-dark .twod12.chat .srow .shield .vsdc { border-top: 1px solid #7a683f; }
+.twod12-dark .twod12.chat.savecard table.tiers th, .twod12-dark .twod12.chat.savecard table.tiers td { border-bottom: 1px solid #5d523a; }
+.twod12-dark .twod12.chat.savecard hr.sep { border-top: 1px solid #60573e; }
+.twod12-dark .twod12.chat.savecard .sthead { color: #b3a68e; border-bottom: 1px solid #60573e; }
+.twod12-dark .twod12.chat.dmg .poolbox { border: 1px solid #7a683f; }
+.twod12-dark .twod12.chat .srow .shield.win { border-color: #6aa82e; background: #252f18; color: #d6f6c0; }
+.twod12-dark .twod12.chat .srow .shield.win .vsdc { border-top-color: #97c459; color: #ccf4b0; }
+.twod12-dark .twod12.chat .srow .shield.lose { border-color: #d65a5a; background: #2f0f0f; color: #edb2b2; }
+.twod12-dark .twod12.chat .srow .shield.lose .vsdc { border-top-color: #722b2b; color: #e69c9c; }
+.twod12-dark .twod12.chat.savecard .sdmg .sextra { color: #b3a68e; }
+.twod12-dark .application.twod12.twod12-actor .acard, .twod12-dark .application.twod12.twod12-actor .twod12.chat, .twod12-dark .application.twod12.twod12-actor .acard .twod12, .twod12-dark .application.twod12.twod12-actor .twod12.chat .twod12, .twod12-dark .application.twod12.twod12-actor .nb { --g-roll: #9be6e0; --g-requires: #88afde; --g-kind: #e0907b; --g-damage: #f0dc99; --g-keywords: #bdbbb7; --c-body: #ef8a96; --c-mind: #8db3ff; --c-instinct: #7fd49a; --c-appeal: #e6bd5a; --c-wmod: #f4a259; --c-pmod: #b794f6; --c-smod: #afbbc9; --c-bane: #e9807a; --c-boon: #83b8ed; --c-rally: #a3f2eb; --c-ap: #3b4cb8; --c-mv: #d9f2a3; }
+.twod12-dark .twod12.chat.dmg .applied.dres i { color: #e9807a; }
+.twod12-dark .twod12.chat.initcard { --ic-foe: #d65a5a; --ic-ally: #6aa82e; --ic-neutral: #8a7d62; }
+.twod12-dark .twod12.chat.initcard .ic-band { color: #fff; }
+.twod12-dark .twod12.chat.initcard .ic-row { border-bottom: 1px solid #60563b; }
+.twod12-dark .twod12.chat.initcard .ic-pos { background: #28241d; color: #d4d4d2; }
+.twod12-dark .twod12.chat.initcard .ic-name { color: #d4d4d2; }
+.twod12-dark .twod12.chat.initcard .ic-num { color: #b3a68e; }
+.twod12-dark .twod12.chat.initcard .ic-note { color: #b3a68e; }
+.twod12-dark .twod12.chat.initcard .ic-attr { color: var(--c-ia, #bdbbb7); background: color-mix(in srgb, var(--c-ia, #5c5a55) 15%, transparent); }
+.twod12-dark .twod12.chat.initcard .ic-attr.body { --c-ia: #ef8a96; }
+.twod12-dark .twod12.chat.initcard .ic-attr.mind { --c-ia: #8db3ff; }
+.twod12-dark .twod12.chat.initcard .ic-attr.appeal { --c-ia: #e6bd5a; }
+.twod12-dark .twod12.chat.initcard .ic-attr.instinct { --c-ia: #7fd49a; }
+.twod12-dark .twod12.chat.initcard .ic-tot { background: #28241d; color: #d4d4d2; }
+.twod12-dark .twod12.chat.initcard .ic-chev { color: #8c7d63; }
+.twod12-dark .twod12.chat.initcard .ic-exp { background: #38301d; border-bottom: 1px solid #60563b; }
+.twod12-dark .twod12.chat.initcard .ic-k { color: #b3a68e; }
+.twod12-dark .twod12.chat.initcard .ic-dice .plus { color: #d9cfbc; }
+.twod12-dark .twod12.chat.initcard .ic-dice .dlink { color: #ecba77; }
+.twod12-dark .twod12.chat.initcard .ic-pill.boon { color: #83b8ed; }
+.twod12-dark .twod12.chat.initcard .ic-pill.bane { color: #e9807a; }
+.twod12-dark .twod12.chat.ticker .tk-pips i.rap.on { background: #2fb3a6; }
+.twod12-dark .twod12.chat.ticker .tk-pips i.rap { border: 1.5px solid #43b3a8; }
+.twod12-dark .twod12.chat.ticker .tk-pips i.rap.on { background: #43b3a8; }
+.twod12-dark .twod12.chat a.twod12-inline.book { border-color: #a08a5c; }
+.twod12-dark .twod12.chat .applyrow { border: 1px solid #7a683f; background: #1f1c18; color: #ece3cf; }
+.twod12-dark .twod12.chat .applyrow button { border: 1px solid #8c7d63; background: #28241d; color: #d4d4d2; }
+.twod12-dark .twod12.chat .applyrow button:hover { background: #362810; border-color: #ba7517; }
+.twod12-dark .twod12.chat .applyrow button i { color: #f0c896; }
+.twod12-dark .twod12.chat .cardtargets i.fa-crosshairs { color: #dc8583; }
+.twod12-dark .twod12.chat .cardtargets .tname { border: 1px solid #7a683f; background: #1f1c18; color: #ece3cf; }
+.twod12-dark .twod12.chat .cardtargets .tname.none { color: #b8b0a5; }
+.twod12-dark .twod12.chat .cardtargets .tname i.fa-crosshairs { color: #dc8583; }
+.twod12-dark .twod12.chat .cardtargets .tname.none i.fa-crosshairs { color: #b09a78; }
+.twod12-dark .twod12.chat .cardtargets .tgt { border: 1px solid #8c7d63; background: #28241d; color: #f0c896; }
+.twod12-dark .twod12.chat .cardtargets .tgt i { color: #f0c896; }
+.twod12-dark .twod12.chat .cardtargets .tgt:hover { background: #362810; border-color: #ba7517; color: #f3d1a9; }
+.twod12-dark .twod12.chat .cardtargets::before, .twod12-dark .twod12.chat .cardtargets::after { background: #7a683f; }
+.twod12-dark .twod12.chat .cardtargets .tname.ally { background: #252f18; border-color: #97c459; color: #ccf4b0; }
+.twod12-dark .twod12.chat .cardtargets .tname.ally i.fa-crosshairs { color: #6aa82e; }
+.twod12-dark .twod12.chat .cardtargets .tname.enemy { background: #2f0f0f; border-color: #722b2b; color: #e69c9c; }
+.twod12-dark .twod12.chat .cardtargets .tname.enemy i.fa-crosshairs { color: #d65a5a; }
+.twod12-dark .twod12.chat .cardtargets:has(.tname.ally)::before, .twod12-dark .twod12.chat .cardtargets:has(.tname.ally)::after { background: #506533; }
+.twod12-dark .twod12.chat .cardtargets:has(.tname.enemy)::before, .twod12-dark .twod12.chat .cardtargets:has(.tname.enemy)::after { background: #501919; }
+.twod12-dark .twod12.chat .cardtargets .tlist { color: #ece3cf; }
+.twod12-dark .twod12.chat .cardtargets .tlist li::before { background: #4d4940; }
+.twod12-dark .twod12.chat .cardtargets .tlist li.ally::before { background: #3b6d11; }
+.twod12-dark .twod12.chat .cardtargets .tlist li.enemy::before { background: #8f2626; }
+.twod12-dark .twod12.chat .applyrow > .aplist li::before { background: #4d4940; }
+.twod12-dark .twod12.chat .applyrow > .aplist.allies li::before { background: #3b6d11; }
+.twod12-dark .twod12.chat .applyrow > .aplist.enemies li::before { background: #8f2626; }
+.twod12-dark .twod12.chat .cardtargets .tname.enemy { background: #331c17; border-color: #6f433e; color: #e5a3a3; }
+.twod12-dark .twod12.chat .cardtargets .tname.enemy i.fa-crosshairs { color: #df8888; }
+.twod12-dark .twod12.chat .cardtargets:has(.tname.enemy)::before, .twod12-dark .twod12.chat .cardtargets:has(.tname.enemy)::after { background: #5e3430; }
+.twod12-dark .twod12.chat .cardtargets .tlist li.enemy::before, .twod12-dark .twod12.chat .applyrow > .aplist.enemies li::before { background: #9e2b2b; }
+.twod12-dark .twod12.chat .grantrow { border: 1px solid #7a683f; background: #1f1c18; color: #ece3cf; }
+.twod12-dark .twod12.chat .grantrow > .apside i { color: #f0c896; }
+.twod12-dark .twod12.chat .grantrow .gbtns button { border: 1px solid #8c7d63; background: #28241d; color: #d4d4d2; }
+.twod12-dark .twod12.chat .grantrow .gbtns button i { color: #f0c896; }
+.twod12-dark .twod12.chat .grantrow .gbtns button:hover { background: #362810; border-color: #ba7517; }
+.twod12-dark .twod12.chat .grantrow .gbtns button.spent, .twod12-dark .twod12.chat .grantrow .gbtns button:disabled { background: #332c22; }
+.twod12-dark .twod12.chat .grantrow .gbtns button.spent i { color: #6aa82e; }
+.twod12-dark .twod12.chat.dmg button.hinted { background: #362810; border-color: #ba7517; color: #f3d1a9; }
+.twod12-dark .twod12.chat.dmg .halfhint { border: 1px solid #ba7517; background: #362810; color: #f3d1a9; }
+.twod12-dark .twod12.chat.dmg .halfhint i { color: #f0c896; }
+.twod12-dark .twod12.chat.rxmsg .rxrow .rx-state { background: #3a321e; color: #dbccb1; }
+.twod12-dark .twod12.chat.rxmsg .rxrow.s-use .rx-state { background: #29311f; color: #c5edac; }
+.twod12-dark .twod12.chat.rxmsg .rxrow.s-skip .rx-state { background: #212121; color: #b3b3b3; }
+.twod12-dark .twod12.chat.rxmsg .rxrow .gbtns button.rx-pass i { color: #b3a68e; }
+.twod12-dark .twod12.chat.rxmsg .rx-order { color: #ece3cf; }
+.twod12-dark .twod12.chat.rxmsg .rx-order > i { color: #f0c896; }
+.twod12-dark .twod12.chat.rxmsg .rx-foot { color: #d5ccbe; }
+.twod12-dark .twod12.chat.rxmsg .rx-foot button.rx-gm { border: 1px solid #8c7d63; background: #28241d; color: #d4d4d2; }
+.twod12-dark .twod12.chat.rxmsg .rx-foot button.rx-gm:hover { background: #362810; border-color: #ba7517; }
+.twod12-dark .twod12.chat.rxmsg .rx-foot.rx-done > i { color: #c5edac; }
+.twod12-dark .twod12.chat.rxmsg .rxrow .rx-move button { border: 1px solid #8c7d63; background: #28241d; }
+.twod12-dark .twod12.chat.rxmsg .rx-foot .rx-timer.paused { color: #f0c294; }
+.twod12-dark .twod12.chat.rxmsg .rx-foot button.rx-go { border: 1px solid #6aa82e; background: #242e19; color: #d3f2b9; }
+.twod12-dark .twod12.chat.rxmsg .rx-back button { border: 1px solid #8c7d63; background: #28241d; color: #d4d4d2; }
+.twod12-dark .twod12.chat.rx2 { background: #1f1c18; border: 1px solid #7a683f; color: #ece3cf; }
+.twod12-dark .twod12.chat.rx2 .rx-hd { background: #332c22; color: #ecdcae; }
+.twod12-dark .twod12.chat.rx2 .rx-tm { color: #ecdcae; }
+.twod12-dark .twod12.chat.rx2 .rx-tm.paused { color: #e6b866; }
+.twod12-dark .twod12.chat.rx2 button.rx-hb { border: 1px solid #44516a; background: #33425b; color: #ecdcae; }
+.twod12-dark .twod12.chat.rx2 button.rx-hb:hover { background: #3a4a66; }
+.twod12-dark .twod12.chat.rx2 .rx-sec { color: #cfc4b2; }
+.twod12-dark .twod12.chat.rx2 .rx-tag { background: #7c3c1d; color: #fff; }
+.twod12-dark .twod12.chat.rx2 .rx-av { color: #fff; box-shadow: 0 0 0 1px #7a683f; }
+.twod12-dark .twod12.chat.rx2 .rx-nm a.rx-open { color: #ece3cf; }
+.twod12-dark .twod12.chat.rx2 .rx-nm a.rx-open:hover { color: #f0d299; }
+.twod12-dark .twod12.chat.rx2 .rx-tg { color: #cfc4b2; }
+.twod12-dark .twod12.chat.rx2 .rx-deciding { color: #e8d6ab; }
+.twod12-dark .twod12.chat.rx2 button.rx-ib { border: 1px solid #7a683f; background: #1f1c18; color: #ece3cf; }
+.twod12-dark .twod12.chat.rx2 button.rx-use { color: #8fd69b; }
+.twod12-dark .twod12.chat.rx2 button.rx-use:hover { background: #222f1b; border-color: #2f6b3a; }
+.twod12-dark .twod12.chat.rx2 button.rx-pass { color: #e7b49b; }
+.twod12-dark .twod12.chat.rx2 button.rx-pass:hover { background: #342016; border-color: #be6941; }
+.twod12-dark .twod12.chat.rx2 .rx-grp { border: 1px dashed #7a683f; }
+.twod12-dark .twod12.chat.rx2 button.rx-ch { border: 1px solid #7a683f; background: #1f1c18; color: #ece3cf; }
+.twod12-dark .twod12.chat.rx2 button.rx-ch:hover { border: 2px solid #5fc4c0; background: #182b28; }
+.twod12-dark .twod12.chat.rx2 .rx-it { background: #1f1c18; border: 1px solid #7a683f; box-shadow: 0 2px 0 #61573d; }
+.twod12-dark .twod12.chat.rx2 .rx-it.top { border-color: #2f6b3a; box-shadow: 0 2px 0 #2f6b3a; }
+.twod12-dark .twod12.chat.rx2 .rx-it.rx-base { background: #332c22; color: #ecdcae; border-color: #7a683f; }
+.twod12-dark .twod12.chat.rx2 .rx-it.rx-base .rx-bw b { color: #ecdcae; }
+.twod12-dark .twod12.chat.rx2 .rx-it.rx-hl, .twod12-dark .twod12.chat.rx2 .rx-dl.rx-hl, .twod12-dark .twod12.chat.rx2 .rx-grp.rx-hl { outline: 2px solid #82632a; }
+.twod12-dark .twod12.chat.rx2 .rx-grip { color: #8a7c5e; }
+.twod12-dark .twod12.chat.rx2 .rx-num { background: #2f6b3a; color: #fff; }
+.twod12-dark .twod12.chat.rx2 .rx-run, .twod12-dark .twod12.chat.rx2 .rx-ok { color: #8fd69b; }
+.twod12-dark .twod12.chat.rx2 .rx-out.dmg { background: #b8432f; color: #fff; }
+.twod12-dark .twod12.chat.rx2 .rx-out.blk { background: #1d302e; color: #afe3e0; }
+.twod12-dark .twod12.chat.rx2 .rx-out.hit { background: #413214; color: #f1d0a1; }
+.twod12-dark .twod12.chat.rx2 .rx-out.spent { background: #393220; color: #cfc4b2; }
+.twod12-dark .twod12.chat.rx2 .rx-out.never { background: #3d475c; color: #ecdcae; }
+.twod12-dark .twod12.chat.rx2 .rx-backed { color: #9fd3a6; }
+.twod12-dark .twod12.chat.rx2 .rx-ft { border-top: 1px solid #605539; background: #362e1a; }
+.twod12-dark .twod12.chat.rx2 .rx-ft.rx-busy { color: #8fd69b; }
+.twod12-dark .twod12.chat.rx2 button.rx-btn { border: 1px solid #7a683f; background: #1f1c18; color: #ece3cf; }
+.twod12-dark .twod12.chat.rx2 button.rx-btn.rx-pri { background: #2f6b3a; color: #fff; border-color: #57a866; }
+.twod12-dark .twod12.chat.rx2 button.rx-btn.rx-pri:hover { background: #2c6637; }
+.twod12-dark .twod12.chat.rx2 .rx-okc { color: #8fd69b; }
+.twod12-dark .twod12.chat.rx2 .rx-ic { color: #cfc4b2; }
+.twod12-dark .twod12.chat.rx2 .rx-dot { color: #8a7c5e; }
+.twod12-dark .twod12.chat.rx2 .rx-okh { color: #9fd3a6; }
+.twod12-dark .twod12.chat.rx2 .rx-mini { background-color: #4e5643; }
+.twod12-dark .twod12.chat.rx2 .rx-note { color: #cfc4b2; }
+.twod12-dark .twod12.chat.rx2 .rx-it.rx-res:hover { border-color: #cf9730; }
+.twod12-dark .twod12.chat.rx2 .rx-it.rx-res .rx-num { color: #ece3cf; box-shadow: 0 0 0 1px #7a683f inset; }
+.twod12-dark .twod12.chat.rx2 .rx-out.none { background: #393220; color: #cfc4b2; }
+.twod12-dark .twod12.chat.rx2 .rx-vs { color: #cfc4b2; }
+.twod12-dark .twod12.chat .tline.grantrow { background: #332c22; }
+.twod12-dark .twod12.chat .tline.grantrow .apside { color: #b3a68e; }
+.twod12-dark .twod12.chat .tline.grantrow .apside b { color: #ece3cf; }
+.twod12-dark .twod12.chat .tline.grantrow .cc-gbtn { background: #493f30; color: #221d16; }
+.twod12-dark .twod12.chat .tline.grantrow .cc-gbtn i { color: #221d16; }
+.twod12-dark .twod12.chat .tline.grantrow .cc-used { color: #8fd69b; }
+.twod12-dark .twod12.chat .cc-critl { color: #8db8f0; }
+.twod12-dark .twod12.chat.startstack .ss-it.now { box-shadow: inset 3px 0 0 #c9a24a; }
+.twod12-dark .twod12.chat.follow .fl-line { color: #ece3cf; }
+.twod12-dark .twod12.chat.follow .fl-line > i { color: #b3a68e; }
+.twod12-dark .twod12.chat.rx2.rxused .rxu-txt { color: #f1e6c8; }
+.twod12-dark .twod12.chat.rx2.rxused .rxu-txt b { color: #ecdcae; }
+.twod12-dark .twod12.chat .tline.grantrow.grantlist .cc-gbtn.gl-cancel { color: #e49d92; border: 1px solid #695240; }
+.twod12-dark .twod12.chat .tline.grantrow.grantlist .gl-cancelled { color: #b3a68e; }
+.twod12-dark .application.twod12.twod12-actor .acard a.twod12-inline.calc .ti-name, .twod12-dark .application.twod12.twod12-actor .acard a.twod12-inline.calc, .twod12-dark .application.twod12.twod12-actor .twod12.chat a.twod12-inline.calc .ti-name { color: #7b96eb; }
 .twod12-dark .twod12-dock, .twod12-dark .twod12.chat.turnend { background: #1f1c18; color: #ece3cf; border: 1px solid #7a683f; }
 .twod12-dark .twod12-dock .td-hd, .twod12-dark .twod12.chat.turnend > summary { background: #332c22; color: #ecdcae; }
 .twod12-dark .twod12-dock .td-who { color: #fff3d0; }
 .twod12-dark .twod12-dock .td-pips i.on, .twod12-dark .twod12.chat.turnend .td-pips i.on { background: #0e1752; }
 .twod12-dark .twod12-dock .td-pips i.r.on, .twod12-dark .twod12.chat.turnend .td-pips i.r.on { background: #675321; }
+.twod12-dark .twod12 .td-tl .td-none { color: #c2b9aa; }
+.twod12-dark .twod12 .td-tl .td-ic { color: #c2b9aa; }
+.twod12-dark .twod12 .td-tl .td-ic.ap { color: #3b4cb8; }
+.twod12-dark .twod12 .td-tl .td-ic.mv { color: #d9f2a3; }
+.twod12-dark .twod12 .td-tl .td-ic.rx { color: #f0d299; }
+.twod12-dark .twod12 .td-tl .td-ic.guard { color: #7cabdd; }
+.twod12-dark .twod12 .td-tl .td-on { color: #c2b9aa; }
+.twod12-dark .twod12 .td-tl .td-c.ap { color: #3b4cb8; }
+.twod12-dark .twod12 .td-tl .td-g { color: #7cabdd; }
+.twod12-dark .twod12 .td-tl .td-link { color: #83b8ed; }
+.twod12-dark .twod12 .td-tl .td-sep { color: #c2b9aa; border-top: 1px solid #61573c; }
+.twod12-dark .twod12 .td-tl .td-live { background: #5e820c; }
+.twod12-dark .twod12 .td-badge.rd { background: #3e3621; color: #dccfb1; }
+.twod12-dark .twod12 .td-badge.end { background: #371a17; color: #e9807a; }
+.twod12-dark .twod12 .td-badge.tick { background: #151a30; color: #3b4cb8; }
+.twod12-dark .twod12 .td-tl .tk-pips i.on { background: #3b4cb8; }
+.twod12-dark .twod12 .td-tl .tk-pips i.spent { border: 1.2px solid #b3261e; }
+.twod12-dark .twod12 .td-tl .tk-pips i.rap.on { background: #a8800f; }
 .twod12-dark .twod12-linebar { color: #f4e9d0; border: 1px solid #c9a24a; }
 .twod12-dark .twod12-linebar .lb-ic { color: #e05a4f; }
 .twod12-dark .twod12-linebar .lb-side button { background: #384051; color: #f4e9d0; border: 1px solid #c9a24a; }
@@ -360,6 +670,28 @@
 .twod12-dark .twod12.chat.cc .cc-seg.s2 { background: rgba(111, 127, 23, .32); color: #cbd86e; } .twod12-dark .twod12.chat.cc .cc-seg.s2.lit { background: #5f6d14; color: #fff; }
 .twod12-dark .twod12.chat.cc .cc-seg.s3 { background: rgba(47, 107, 58, .38); color: #8fd69b; } .twod12-dark .twod12.chat.cc .cc-seg.s3.lit { background: #2f6b3a; color: #fff; }
 .twod12-dark .twod12.chat .kw-ap { color: #9aa7ff !important; } .twod12-dark .twod12.chat .kw-bane { color: #f3a79e; } .twod12-dark .twod12.chat .kw-boon { color: #8db8f0; }
+/* ---- by hand: the other chat messages */
+.twod12-dark .twod12.chat.rx2, .twod12-dark .twod12.chat.dmg { background: #1f1c18; border-color: #7a683f; color: #ece3cf; }
+.twod12-dark .twod12.chat.rx2 .rx-hd, .twod12-dark .twod12.chat.rx2 .rx-base, .twod12-dark .twod12.chat.turnend > summary { background: #332c22; color: #ece3cf; border-color: #4a4132; }
+.twod12-dark .twod12.chat.rx2.rxused .rxu-txt, .twod12-dark .twod12.chat.rx2.rxused .rxu-txt b, .twod12-dark .twod12.chat.rx2 .rx-it.rx-base, .twod12-dark .twod12.chat.rx2 .rx-it.rx-base .rx-bw b, .twod12-dark .twod12.chat.rx2 .rx-tm { color: #ece3cf; }
+.twod12-dark .twod12.chat.rx2 .rx-it.rx-base { background: #332c22; border-color: #4a4132; }
+.twod12-dark .twod12.chat select { background: #28241d; color: #ece3cf; border: 1px solid #8c7d63; }
+/* the AP blue, the movement green and the Guard blue on the dark page (the Turn dock's and the End of Turn line's rows) */
+.twod12-dark .twod12 .td-tl .td-ic.ap, .twod12-dark .twod12 .td-tl .td-c.ap { color: #9aa7ff; }
+.twod12-dark .twod12 .td-tl .td-ic.mv { color: #b9dc6a; } .twod12-dark .twod12 .td-tl .td-ic.rx { color: #e6bd5a; }
+.twod12-dark .twod12 .td-tl .td-ic.guard, .twod12-dark .twod12 .td-tl .td-g { color: #7fb4ee; }
+.twod12-dark .twod12 .td-tl .tk-pips i.on { background: #9aa7ff; }
+.twod12-dark .twod12 .td-badge.tick { background: #232a4a; color: #9aa7ff; }
+.twod12-dark .twod12.chat.rx2 .rx-hd .rx-hb { background: transparent; border: 1px solid #8c7d63; color: #ece3cf; }
+.twod12-dark .twod12.chat.initcard { --ic-foe: #8f2626; --ic-ally: #3b6d11; --ic-neutral: #6b6456; }
+.twod12-dark .twod12.chat.initcard .ic-name { color: #ece3cf; }
+.twod12-dark .twod12.chat.dmg > .ahead { background: none !important; border-bottom: 1px solid #4a4132 !important; }
+.twod12-dark .twod12.chat .dbtns button, .twod12-dark .twod12.chat .dbtns select { background: transparent; color: #ece3cf; border: 1px solid #8c7d63; }
+.twod12-dark .twod12.chat .dbtns button:first-child { background: #eadfc8; border-color: #eadfc8; color: #221d16; }
+.twod12-dark .twod12.chat .dbtns select option { background: #1f1c18; }
+.twod12-dark .twod12.chat.dmg .mdsum, .twod12-dark .twod12.chat.dmg .mdsum * { color: #ece3cf; }
+.twod12-dark .twod12.chat.follow i[data-ic^="shield"] { color: #7fb4ee; }
+.twod12-dark .twod12.chat.turnend .td-ttl, .twod12-dark .twod12.chat.turnend > summary { color: #ece3cf; }
 /* ---- by hand: the Turn dock (a band for its head, the page for its body) */
 .twod12-dark .twod12-dock, .twod12-dark .twod12.chat.turnend { background: #1f1c18; color: #ece3cf; border-color: #7a683f; border-radius: 2px; }
 .twod12-dark .twod12-dock .td-hd, .twod12-dark .twod12.chat.turnend > summary { background: #332c22; color: #ece3cf; }
@@ -402,17 +734,17 @@ ul.notes { color: #c9c0ad; max-width: 1000px; margin: 6px 0 0; padding-left: 20p
 </head>
 <body>
 <h1>Style 4: the pick bar and the Turn dock</h1>
-<div class="nav"><a href="style-tokens.html">1. Colors and type</a><a href="action-card-dark.html">2. Action card</a><a href="chat-cards-dark.html">3. Chat cards</a><a href="bars-dark.html" class="here">4. Pick bar and Turn dock</a><a href="npc-hud-sheet.html">The NPC sheet</a><a href="npc-hud-hud.html">The HUD</a></div>
+<div class="nav"><a href="style-tokens.html">1. Colors and type</a><a href="action-card-dark.html">2. Action card</a><a href="chat-cards-dark.html">3. Chat cards</a><a href="chat-older-dark.html">3b. The other chat messages</a><a href="bars-dark.html" class="here">4. Pick bar and Turn dock</a><a href="npc-hud-sheet.html">The NPC sheet</a><a href="npc-hud-hud.html">The HUD</a></div>
 <p class="lead">The two pieces that sit beside the HUD. <b>The pick bar</b> (a choice on the map; inside the HUD when one is open, floating when not) is dark already, but a cold blue-black with rounded blue-grey buttons: here it takes the HUD's look (the warm page, a gold line, outlined buttons, the hovered pick as a stamp). <b>The Turn dock</b> (above the chat's input) takes the dark page and a band for its head.</p>
 
 <h2>The pick bar, floating over the map</h2>
 <div class="cols"><div class="col" style="--w:720px"><h3>Dark <span class="tag pick">Proposed</span></h3><div class="stage map dk twod12-dark twod12-type"><div class="twod12-linebar twod12-pickbar"><i class="lb-ic" data-ic="shield-halved"><svg class="ic" viewBox="0 0 512 512" aria-hidden="true"><path d="M256 0c4.6 0 9.2 1 13.4 2.9L457.8 82.8c22 9.3 38.4 31 38.3 57.2-.5 99.2-41.3 280.7-213.6 363.2-16.7 8-36.1 8-52.8 0-172.4-82.5-213.1-264-213.6-363.2-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.9 1 251.4 0 256 0zm0 66.8l0 378.1c138-66.8 175.1-214.8 176-303.4l-176-74.6 0 0z"/></svg></i><span class="lb-text"><b>Shield of Faith</b>: who gains the <b>Guard 5</b>? Click a button, or the creature on the map.</span><span class="lb-side lb-opts"><button type="button" class="lb-opt you" data-id="a">Aveline</button><button type="button" class="lb-opt" data-id="d">Durgan</button><button type="button" class="lb-opt hover" data-id="s">Sylwen</button></span><button type="button" class="lb-give" data-id="__cancel">Cancel</button></div><div style="height:12px"></div><div class="twod12-linebar twod12-pickbar"><i class="lb-ic" data-ic="up-down-left-right"><svg class="ic" viewBox="0 0 512 512" aria-hidden="true"><path d="M278.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-64 64c-9.2 9.2-11.9 22.9-6.9 34.9S179.1 128 192 128l32 0 0 96-96 0 0-32c0-12.9-7.8-24.6-19.8-29.6s-25.7-2.2-34.9 6.9l-64 64c-12.5 12.5-12.5 32.8 0 45.3l64 64c9.2 9.2 22.9 11.9 34.9 6.9S128 332.9 128 320l0-32 96 0 0 96-32 0c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l64 64c12.5 12.5 32.8 12.5 45.3 0l64-64c9.2-9.2 11.9-22.9 6.9-34.9S332.9 384 320 384l-32 0 0-96 96 0 0 32c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l64-64c12.5-12.5 12.5-32.8 0-45.3l-64-64c-9.2-9.2-22.9-11.9-34.9-6.9S384 179.1 384 192l0 32-96 0 0-96 32 0c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-64-64z"/></svg></i><span class="lb-text"><b>Pushed 2</b>: pick the square the Orc Warrior ends in.</span><span class="lb-side lb-opts"></span><button type="button" class="lb-go" data-id="__done"><i class="" data-ic="check"><svg class="ic" viewBox="0 0 448 512" aria-hidden="true"><path d="M434.8 70.1c14.3 10.4 17.5 30.4 7.1 44.7l-256 352c-5.5 7.6-14 12.3-23.4 13.1s-18.5-2.7-25.1-9.3l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l101.5 101.5 234-321.7c10.4-14.3 30.4-17.5 44.7-7.1z"/></svg></i> Done</button><button type="button" class="lb-give" data-id="__cancel">Cancel</button></div></div></div><div class="col" style="--w:720px"><h3>Today <span class="tag">Today</span></h3><div class="stage map"><div class="twod12-linebar twod12-pickbar"><i class="lb-ic" data-ic="shield-halved"><svg class="ic" viewBox="0 0 512 512" aria-hidden="true"><path d="M256 0c4.6 0 9.2 1 13.4 2.9L457.8 82.8c22 9.3 38.4 31 38.3 57.2-.5 99.2-41.3 280.7-213.6 363.2-16.7 8-36.1 8-52.8 0-172.4-82.5-213.1-264-213.6-363.2-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.9 1 251.4 0 256 0zm0 66.8l0 378.1c138-66.8 175.1-214.8 176-303.4l-176-74.6 0 0z"/></svg></i><span class="lb-text"><b>Shield of Faith</b>: who gains the <b>Guard 5</b>? Click a button, or the creature on the map.</span><span class="lb-side lb-opts"><button type="button" class="lb-opt you" data-id="a">Aveline</button><button type="button" class="lb-opt" data-id="d">Durgan</button><button type="button" class="lb-opt hover" data-id="s">Sylwen</button></span><button type="button" class="lb-give" data-id="__cancel">Cancel</button></div><div style="height:12px"></div><div class="twod12-linebar twod12-pickbar"><i class="lb-ic" data-ic="up-down-left-right"><svg class="ic" viewBox="0 0 512 512" aria-hidden="true"><path d="M278.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-64 64c-9.2 9.2-11.9 22.9-6.9 34.9S179.1 128 192 128l32 0 0 96-96 0 0-32c0-12.9-7.8-24.6-19.8-29.6s-25.7-2.2-34.9 6.9l-64 64c-12.5 12.5-12.5 32.8 0 45.3l64 64c9.2 9.2 22.9 11.9 34.9 6.9S128 332.9 128 320l0-32 96 0 0 96-32 0c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l64 64c12.5 12.5 32.8 12.5 45.3 0l64-64c9.2-9.2 11.9-22.9 6.9-34.9S332.9 384 320 384l-32 0 0-96 96 0 0 32c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l64-64c12.5-12.5 12.5-32.8 0-45.3l-64-64c-9.2-9.2-22.9-11.9-34.9-6.9S384 179.1 384 192l0 32-96 0 0-96 32 0c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-64-64z"/></svg></i><span class="lb-text"><b>Pushed 2</b>: pick the square the Orc Warrior ends in.</span><span class="lb-side lb-opts"></span><button type="button" class="lb-go" data-id="__done"><i class="" data-ic="check"><svg class="ic" viewBox="0 0 448 512" aria-hidden="true"><path d="M434.8 70.1c14.3 10.4 17.5 30.4 7.1 44.7l-256 352c-5.5 7.6-14 12.3-23.4 13.1s-18.5-2.7-25.1-9.3l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l101.5 101.5 234-321.7c10.4-14.3 30.4-17.5 44.7-7.1z"/></svg></i> Done</button><button type="button" class="lb-give" data-id="__cancel">Cancel</button></div></div></div></div>
 <h2>The Turn dock: open and closed</h2>
-<div class="cols"><div class="col" style="--w:330px"><h3>Dark <span class="tag pick">Proposed</span></h3><div class="stage side dk twod12-dark twod12-type"><div class="twod12-dockwrap"><div class="twod12 twod12-dock open"><div class="td-hd" data-twod12-dock="fold" data-tooltip="Fold the Turn Breakdown"><span class="td-ttl">Turn</span><span class="td-who">Orc Warrior</span><span class="td-rd">Round 2</span><span class="td-sp"><span class="td-pips" data-tooltip="2 AP left, Reaction AP ready"><i class="on"></i><i class="on"></i><i class=""></i><i class=""></i><i class="r on"></i></span><span class="td-chev">▲</span></span></div><div class="td-body"><div class="td-tl"><div class="td-r td-none">Nothing yet.</div><div class="td-sep">On Orc Warrior</div><div class="td-r td-none">No Effects.</div></div></div></div></div><div class="twod12-dockwrap"><div class="twod12 twod12-dock"><div class="td-hd" data-twod12-dock="fold" data-tooltip="Unfold the Turn Breakdown"><span class="td-ttl">Turn</span><span class="td-who">Aveline</span><span class="td-rd">Round 2</span><span class="td-sp"><span class="td-pips" data-tooltip="4 AP left, Reaction AP ready"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="r on"></i></span><span class="td-chev">▲</span></span></div><div class="td-body"><div class="td-tl"><div class="td-r td-none">Nothing yet.</div><div class="td-sep">On Aveline</div><div class="td-r td-none">No Effects.</div></div></div></div></div></div></div><div class="col" style="--w:330px"><h3>Today <span class="tag">Today</span></h3><div class="stage side"><div class="twod12-dockwrap"><div class="twod12 twod12-dock open"><div class="td-hd" data-twod12-dock="fold" data-tooltip="Fold the Turn Breakdown"><span class="td-ttl">Turn</span><span class="td-who">Orc Warrior</span><span class="td-rd">Round 2</span><span class="td-sp"><span class="td-pips" data-tooltip="2 AP left, Reaction AP ready"><i class="on"></i><i class="on"></i><i class=""></i><i class=""></i><i class="r on"></i></span><span class="td-chev">▲</span></span></div><div class="td-body"><div class="td-tl"><div class="td-r td-none">Nothing yet.</div><div class="td-sep">On Orc Warrior</div><div class="td-r td-none">No Effects.</div></div></div></div></div><div class="twod12-dockwrap"><div class="twod12 twod12-dock"><div class="td-hd" data-twod12-dock="fold" data-tooltip="Unfold the Turn Breakdown"><span class="td-ttl">Turn</span><span class="td-who">Aveline</span><span class="td-rd">Round 2</span><span class="td-sp"><span class="td-pips" data-tooltip="4 AP left, Reaction AP ready"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="r on"></i></span><span class="td-chev">▲</span></span></div><div class="td-body"><div class="td-tl"><div class="td-r td-none">Nothing yet.</div><div class="td-sep">On Aveline</div><div class="td-r td-none">No Effects.</div></div></div></div></div></div></div></div>
+<div class="cols"><div class="col" style="--w:330px"><h3>Dark <span class="tag pick">Proposed</span></h3><div class="stage side dk twod12-dark twod12-type"><div class="twod12-dockwrap"><div class="twod12 twod12-dock open"><div class="td-hd" data-twod12-dock="fold" data-tooltip="Fold the Turn Breakdown"><span class="td-ttl">Turn</span><span class="td-who">Orc Warrior</span><span class="td-rd">Round 2</span><span class="td-sp"><span class="td-pips" data-tooltip="2 AP left, Reaction AP ready"><i class="on"></i><i class="on"></i><i class=""></i><i class=""></i><i class="r on"></i></span><span class="td-chev">▲</span></span></div><div class="td-body"><div class="td-tl"><div class="td-r"><span class="td-ic ap">◆</span><span class="td-nm">Turn start</span><span class="td-c ap">+4 +R</span></div><div class="td-r"><span class="td-ic ap">✦</span><span class="td-nm">Cleaver</span><span class="tk-pips sm" data-tooltip="3 AP left"><i class="on"></i><i class="on"></i><i class="on"></i><i class="spent"></i></span></div><div class="td-r"><span class="td-ic mv">➤</span><span class="td-nm">Advance</span><span class="tk-pips sm" data-tooltip="2 AP left"><i class="on"></i><i class="on"></i><i class="spent"></i><i></i></span></div><div class="td-sep">On Orc Warrior</div><div class="td-r"><span class="td-ic">●</span><span class="td-nm">Hindered</span><span class="td-badge rd">EoT</span></div><div class="td-r"><span class="td-ic guard"><i class="" data-ic="shield-halved"><svg class="ic" viewBox="0 0 512 512" aria-hidden="true"><path d="M256 0c4.6 0 9.2 1 13.4 2.9L457.8 82.8c22 9.3 38.4 31 38.3 57.2-.5 99.2-41.3 280.7-213.6 363.2-16.7 8-36.1 8-52.8 0-172.4-82.5-213.1-264-213.6-363.2-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.9 1 251.4 0 256 0zm0 66.8l0 378.1c138-66.8 175.1-214.8 176-303.4l-176-74.6 0 0z"/></svg></i></span><span class="td-nm"><b class="td-g">Guard 4</b></span></div></div></div></div></div><div class="twod12-dockwrap"><div class="twod12 twod12-dock"><div class="td-hd" data-twod12-dock="fold" data-tooltip="Unfold the Turn Breakdown"><span class="td-ttl">Turn</span><span class="td-who">Aveline</span><span class="td-rd">Round 2</span><span class="td-sp"><span class="td-pips" data-tooltip="4 AP left, Reaction AP ready"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="r on"></i></span><span class="td-chev">▲</span></span></div><div class="td-body"><div class="td-tl"><div class="td-r td-none">Nothing yet.</div><div class="td-sep">On Aveline</div><div class="td-r td-none">No Effects.</div></div></div></div></div></div></div><div class="col" style="--w:330px"><h3>Today <span class="tag">Today</span></h3><div class="stage side"><div class="twod12-dockwrap"><div class="twod12 twod12-dock open"><div class="td-hd" data-twod12-dock="fold" data-tooltip="Fold the Turn Breakdown"><span class="td-ttl">Turn</span><span class="td-who">Orc Warrior</span><span class="td-rd">Round 2</span><span class="td-sp"><span class="td-pips" data-tooltip="2 AP left, Reaction AP ready"><i class="on"></i><i class="on"></i><i class=""></i><i class=""></i><i class="r on"></i></span><span class="td-chev">▲</span></span></div><div class="td-body"><div class="td-tl"><div class="td-r"><span class="td-ic ap">◆</span><span class="td-nm">Turn start</span><span class="td-c ap">+4 +R</span></div><div class="td-r"><span class="td-ic ap">✦</span><span class="td-nm">Cleaver</span><span class="tk-pips sm" data-tooltip="3 AP left"><i class="on"></i><i class="on"></i><i class="on"></i><i class="spent"></i></span></div><div class="td-r"><span class="td-ic mv">➤</span><span class="td-nm">Advance</span><span class="tk-pips sm" data-tooltip="2 AP left"><i class="on"></i><i class="on"></i><i class="spent"></i><i></i></span></div><div class="td-sep">On Orc Warrior</div><div class="td-r"><span class="td-ic">●</span><span class="td-nm">Hindered</span><span class="td-badge rd">EoT</span></div><div class="td-r"><span class="td-ic guard"><i class="" data-ic="shield-halved"><svg class="ic" viewBox="0 0 512 512" aria-hidden="true"><path d="M256 0c4.6 0 9.2 1 13.4 2.9L457.8 82.8c22 9.3 38.4 31 38.3 57.2-.5 99.2-41.3 280.7-213.6 363.2-16.7 8-36.1 8-52.8 0-172.4-82.5-213.1-264-213.6-363.2-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.9 1 251.4 0 256 0zm0 66.8l0 378.1c138-66.8 175.1-214.8 176-303.4l-176-74.6 0 0z"/></svg></i></span><span class="td-nm"><b class="td-g">Guard 4</b></span></div></div></div></div></div><div class="twod12-dockwrap"><div class="twod12 twod12-dock"><div class="td-hd" data-twod12-dock="fold" data-tooltip="Unfold the Turn Breakdown"><span class="td-ttl">Turn</span><span class="td-who">Aveline</span><span class="td-rd">Round 2</span><span class="td-sp"><span class="td-pips" data-tooltip="4 AP left, Reaction AP ready"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="r on"></i></span><span class="td-chev">▲</span></span></div><div class="td-body"><div class="td-tl"><div class="td-r td-none">Nothing yet.</div><div class="td-sep">On Aveline</div><div class="td-r td-none">No Effects.</div></div></div></div></div></div></div></div>
 <h2>Notes</h2>
 <ul class="notes">
 <li>The Line bar, the Charge bar and the Setup bar share the pick bar's rules, so they take the same look; they are not drawn here.</li>
-<li>The dock's rows (the Actions of the turn, the Effects on the creature) are in the dark set but empty here.</li>
+<li>The open dock shows a real turn: its start, an Action, a movement, and what is on the creature.</li>
 </ul>
 </body>
 </html>
