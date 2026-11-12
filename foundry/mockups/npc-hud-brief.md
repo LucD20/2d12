@@ -87,7 +87,7 @@ That way an Action line looks the same everywhere.
 - `npc-hud-sheet.html`: mockup 1 (the one-page sheet, the Orc Warrior and the Ogre Chieftain, (a) and (b) side by side, the right-click Action card).
 - `npc-hud-hud.html`: mockups 2 to 4 (the NPC's HUD, the Elite flat and with categories, the width test, the Paladin's categories, the list, the empty bar). The first Paladin bar is live: click a category.
 - `npc-hud-screen.html`: mockup 5 (the whole screen: the HUD with the hotbar, the players list closed and open, the pick bar over the HUD and floating above it).
-- They are generated: `node foundry/mockups/npc-hud-build.mjs` (the data and the drawing), `npc-hud.css` (the new look), `npc-hud-icons.mjs` (Font Awesome paths, so the pages open offline). They link the system's `system.css`: the Action card, the Turn dock and the pick bar are the system's real markup (`pickBarHtml`, `dockHtml`).
+- They are generated: `node foundry/mockups/npc-hud-build.mjs` (the data and the drawing), `npc-hud.css` (the new look), `npc-hud-icons.mjs` and `npc-hud-signika.mjs` (Font Awesome paths and the Signika font, embedded). **Each page is self-contained** (the system's `system.css`, the fonts and small copies of the art are embedded at build time), so it opens anywhere, outside the repo too; run the build again after a change to the system's CSS. The Action card, the Turn dock and the pick bar are the system's real markup (`pickBarHtml`, `dockHtml`).
 - **The build script's `NPCS` objects are a first draft of section 2's display model**: the sheet's rows, the HUD's buttons and the card are all drawn from them.
 
 ### What the mockups propose (each is marked "Proposed" on the pages; the other option is beside it)

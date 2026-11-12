@@ -241,3 +241,4 @@ body.mock h3 { font: 600 14px "Signika", sans-serif; margin: 0 0 6px; color: #f3
 .s-cap { position: absolute; left: 96px; top: 150px; max-width: 360px; background: rgba(20, 22, 30, .82); border: 1px dashed #c9a24a; border-radius: 6px; padding: 8px 12px; color: #f4e9d0; font-size: 13px; line-height: 1.4; }
 .s-cap b { color: #f3d39c; }
 .lb-ic .ic { color: #e05a4f; }
+.cols > .col { max-width: 560px; }
