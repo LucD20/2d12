@@ -79,6 +79,9 @@ const BUSY = { ...NPCS.ogre, name: "A busy Elite", actions: [
   ...[["Escalation A", 1, 2], ["Escalation B", 2, 4]].map(([name, ap, escalation]) => ({ group: "esc", name, ap, freq: "round", escalation }))
 ] };
 
+// The book writes a Size with its rank: Medium (3) (Chapter 3; the system's SIZE_NAMES).
+const SIZE_NAMES = ["", "Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan", "Titanic"];
+const sizeText = name => `${name} (${SIZE_NAMES.indexOf(name)})`;
 const fq = a => `var(--fq-${FREQ_COLORS[a.freq] ? a.freq : "none"})`;   // the frequency colors, as theme variables (the light set is FREQ_COLORS)
 const cost = a => (a.reaction ? `${a.ap}R` : `${a.ap} AP`);
 const locked = (n, a) => a.escalation && (n.escalation ?? 0) < a.escalation;
@@ -125,7 +128,7 @@ function sheet(n, mode) {
     <div class="ops-stats">
       <div class="sbl"><span class="k">HP</span> <b class="big">${hp}</b> / ${max} <span class="track hpbar"><i style="width:${pct(hp, max)}%"></i></span>${states}</div>
       <div class="sbl two">${gauge("v", "Vigor", n.vigor)}${gauge("r", "Resolve", n.resolve)}</div>
-      <div class="sbl grid">${[["AD", n.ad, "Armor Defense", 1], ["WD", n.wd, "Ward Defense", 1], ["Speed", n.speed, "", 1], ["Reach", n.reach ?? 1, "", 1], ["Steadiness", n.steadiness ?? 0, "", 0], ["Size", n.size ?? "Medium", "", 0]].map(([k, v, tip, big]) => `<span${tip ? ` title="${tip}"` : ""}><span class="k">${k}</span> <b${big ? ' class="big"' : ""}>${v}</b></span>`).join("")}</div>
+      <div class="sbl grid">${[["AD", n.ad, "Armor Defense", 1], ["WD", n.wd, "Ward Defense", 1], ["Speed", n.speed, "", 1], ["Reach", n.reach ?? 1, "", 1], ["Steadiness", n.steadiness ?? 0, "", 0], ["Size", sizeText(n.size ?? "Medium"), "Its Size Rank (Chapter 3)", 0]].map(([k, v, tip, big]) => `<span${tip ? ` title="${tip}"` : ""}><span class="k">${k}</span> <b${big ? ' class="big"' : ""}>${v}</b></span>`).join("")}</div>
       <div class="sbl grid">${[["Immune", n.immune], ["Resist", n.resist], ["Weak", n.weak]].map(([k, v]) => `<span class="s2"><span class="k">${k}</span> ${v ?? "—"}</span>`).join("")}</div>
     </div>
     <div class="ops-body">

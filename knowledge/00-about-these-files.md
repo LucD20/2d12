@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: 98fe21d 2026-11-12 NPC-HUD mockups: every pick closed; '+ Add' on the sheet's group headings (from Lucas's 4e reference)
+Built by tools/knowledge.py on 2026-11-12 from the repository at: 1d7f980 2026-11-12 NPC-HUD mockups: the sheet's stat lines on one aligned grid (AD, WD, Speed, Reach, Steadiness, Size; Immune, Resist, Weak), the window header in the rank's color
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

@@ -803,6 +803,8 @@ body.light { --pg: #f4ecd9; --pg2: #eae0c8; --rule: #8a6d3b; --hair: #d2c29c; --
 .ops .sbl.grid .s2 { grid-column: span 2; }
 .win[class*="rk-"] .win-head { background: color-mix(in srgb, var(--rk) 78%, #000); color: var(--head-ink); }
 .ops .sbl.two { gap: 0; } .ops .sbl.two .gauge { flex: 1 1 50%; } .ops .sbl.two .gauge:first-child { padding-right: 22px; }   /* Resolve starts on the grid's fourth column, over Reach */
+.ops .sbl.grid { grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(0, 1.15fr) minmax(0, 1.75fr); }   /* room for "Size Gargantuan (6)"; Immune, Resist and Weak still start under AD, Speed and Steadiness */
+.ops .sbl.two .gauge:first-child { flex: 0 0 calc(300% / 6.9); } .ops .sbl.two .gauge { flex: 1 1 0; }   /* Resolve stays over Reach on the new columns */
 </style>
 </head>
 <body class="mock">
@@ -822,7 +824,7 @@ body.light { --pg: #f4ecd9; --pg2: #eae0c8; --rule: #8a6d3b; --hair: #d2c29c; --
     <div class="ops-stats">
       <div class="sbl"><span class="k">HP</span> <b class="big">46</b> / 60 <span class="track hpbar"><i style="width:77%"></i></span></div>
       <div class="sbl two"><span class="gauge v"><span class="k">Vigor</span> <b class="">22</b> / 36 <span class="track"><i style="width:61%"></i></span></span><span class="gauge r"><span class="k">Resolve</span> <b class="">24</b> / 24 <span class="track"><i style="width:100%"></i></span></span></div>
-      <div class="sbl grid"><span title="Armor Defense"><span class="k">AD</span> <b class="big">13</b></span><span title="Ward Defense"><span class="k">WD</span> <b class="big">11</b></span><span><span class="k">Speed</span> <b class="big">5</b></span><span><span class="k">Reach</span> <b class="big">1</b></span><span><span class="k">Steadiness</span> <b>0</b></span><span><span class="k">Size</span> <b>Medium</b></span></div>
+      <div class="sbl grid"><span title="Armor Defense"><span class="k">AD</span> <b class="big">13</b></span><span title="Ward Defense"><span class="k">WD</span> <b class="big">11</b></span><span><span class="k">Speed</span> <b class="big">5</b></span><span><span class="k">Reach</span> <b class="big">1</b></span><span><span class="k">Steadiness</span> <b>0</b></span><span title="Its Size Rank (Chapter 3)"><span class="k">Size</span> <b>Medium (3)</b></span></div>
       <div class="sbl grid"><span class="s2"><span class="k">Immune</span> —</span><span class="s2"><span class="k">Resist</span> —</span><span class="s2"><span class="k">Weak</span> —</span></div>
     </div>
     <div class="ops-body">
@@ -847,7 +849,7 @@ body.light { --pg: #f4ecd9; --pg2: #eae0c8; --rule: #8a6d3b; --hair: #d2c29c; --
     <div class="ops-stats">
       <div class="sbl"><span class="k">HP</span> <b class="big">46</b> / 60 <span class="track hpbar"><i style="width:77%"></i></span></div>
       <div class="sbl two"><span class="gauge v"><span class="k">Vigor</span> <b class="">22</b> / 36 <span class="track"><i style="width:61%"></i></span></span><span class="gauge r"><span class="k">Resolve</span> <b class="">24</b> / 24 <span class="track"><i style="width:100%"></i></span></span></div>
-      <div class="sbl grid"><span title="Armor Defense"><span class="k">AD</span> <b class="big">13</b></span><span title="Ward Defense"><span class="k">WD</span> <b class="big">11</b></span><span><span class="k">Speed</span> <b class="big">5</b></span><span><span class="k">Reach</span> <b class="big">1</b></span><span><span class="k">Steadiness</span> <b>0</b></span><span><span class="k">Size</span> <b>Medium</b></span></div>
+      <div class="sbl grid"><span title="Armor Defense"><span class="k">AD</span> <b class="big">13</b></span><span title="Ward Defense"><span class="k">WD</span> <b class="big">11</b></span><span><span class="k">Speed</span> <b class="big">5</b></span><span><span class="k">Reach</span> <b class="big">1</b></span><span><span class="k">Steadiness</span> <b>0</b></span><span title="Its Size Rank (Chapter 3)"><span class="k">Size</span> <b>Medium (3)</b></span></div>
       <div class="sbl grid"><span class="s2"><span class="k">Immune</span> —</span><span class="s2"><span class="k">Resist</span> —</span><span class="s2"><span class="k">Weak</span> —</span></div>
     </div>
     <div class="ops-body">
@@ -904,7 +906,7 @@ body.light { --pg: #f4ecd9; --pg2: #eae0c8; --rule: #8a6d3b; --hair: #d2c29c; --
     <div class="ops-stats">
       <div class="sbl"><span class="k">HP</span> <b class="big">35</b> / 130 <span class="track hpbar"><i style="width:27%"></i></span><span class="state">Bloodied</span></div>
       <div class="sbl two"><span class="gauge v"><span class="k">Vigor</span> <b class="neg">−6</b> / 65 <span class="track"><i style="width:0%"></i></span></span><span class="gauge r"><span class="k">Resolve</span> <b class="">41</b> / 65 <span class="track"><i style="width:63%"></i></span></span></div>
-      <div class="sbl grid"><span title="Armor Defense"><span class="k">AD</span> <b class="big">14</b></span><span title="Ward Defense"><span class="k">WD</span> <b class="big">12</b></span><span><span class="k">Speed</span> <b class="big">4</b></span><span><span class="k">Reach</span> <b class="big">1</b></span><span><span class="k">Steadiness</span> <b>0</b></span><span><span class="k">Size</span> <b>Large</b></span></div>
+      <div class="sbl grid"><span title="Armor Defense"><span class="k">AD</span> <b class="big">14</b></span><span title="Ward Defense"><span class="k">WD</span> <b class="big">12</b></span><span><span class="k">Speed</span> <b class="big">4</b></span><span><span class="k">Reach</span> <b class="big">1</b></span><span><span class="k">Steadiness</span> <b>0</b></span><span title="Its Size Rank (Chapter 3)"><span class="k">Size</span> <b>Large (4)</b></span></div>
       <div class="sbl grid"><span class="s2"><span class="k">Immune</span> —</span><span class="s2"><span class="k">Resist</span> —</span><span class="s2"><span class="k">Weak</span> —</span></div>
     </div>
     <div class="ops-body">
@@ -929,7 +931,7 @@ body.light { --pg: #f4ecd9; --pg2: #eae0c8; --rule: #8a6d3b; --hair: #d2c29c; --
     <div class="ops-stats">
       <div class="sbl"><span class="k">HP</span> <b class="big">35</b> / 130 <span class="track hpbar"><i style="width:27%"></i></span><span class="state">Bloodied</span></div>
       <div class="sbl two"><span class="gauge v"><span class="k">Vigor</span> <b class="neg">−6</b> / 65 <span class="track"><i style="width:0%"></i></span></span><span class="gauge r"><span class="k">Resolve</span> <b class="">41</b> / 65 <span class="track"><i style="width:63%"></i></span></span></div>
-      <div class="sbl grid"><span title="Armor Defense"><span class="k">AD</span> <b class="big">14</b></span><span title="Ward Defense"><span class="k">WD</span> <b class="big">12</b></span><span><span class="k">Speed</span> <b class="big">4</b></span><span><span class="k">Reach</span> <b class="big">1</b></span><span><span class="k">Steadiness</span> <b>0</b></span><span><span class="k">Size</span> <b>Large</b></span></div>
+      <div class="sbl grid"><span title="Armor Defense"><span class="k">AD</span> <b class="big">14</b></span><span title="Ward Defense"><span class="k">WD</span> <b class="big">12</b></span><span><span class="k">Speed</span> <b class="big">4</b></span><span><span class="k">Reach</span> <b class="big">1</b></span><span><span class="k">Steadiness</span> <b>0</b></span><span title="Its Size Rank (Chapter 3)"><span class="k">Size</span> <b>Large (4)</b></span></div>
       <div class="sbl grid"><span class="s2"><span class="k">Immune</span> —</span><span class="s2"><span class="k">Resist</span> —</span><span class="s2"><span class="k">Weak</span> —</span></div>
     </div>
     <div class="ops-body">

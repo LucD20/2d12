@@ -183,7 +183,7 @@ That way an Action line looks the same everywhere.
 - **Nothing is left to pick.** The build follows Stage 0 in Foundry; the Action line is checked against the Bestiary's turn budget first.
 
 ### The sheet's stat lines (Lucas, 2026-11-12, after the picks)
-- **One grid of six equal columns:** **AD, WD** (written short; the full name is the tooltip), **Speed, Reach** (in the place of AP), **Steadiness, Size** (added: he asked what else was worth a place; Size goes with Reach and Steadiness. The Bestiary's examples give no Size or Reach: Small, Medium, Large and Reach 1 are for display).
+- **One grid of six equal columns:** **AD, WD** (written short; the full name is the tooltip), **Speed, Reach** (in the place of AP), **Steadiness, Size** (added: he asked what else was worth a place; Size goes with Reach and Steadiness; it is written with its rank, as the book does: Medium (3). The Bestiary's examples give no Size or Reach: Small, Medium, Large and Reach 1 are for display).
 - **Immune, Resist, Weak** on the next line, each two columns wide, so they start under AD, Speed and Steadiness. Resolve starts on the fourth column, over Reach.
 - **The Foundry window's own header takes the rank's color** (a little darker than the name plate).
 - Other candidates for the line, not added: Initiative (a button in the tab line rolls it), the senses (the eye icon), AP a turn and the Reaction AP (the Turn dock shows them).
