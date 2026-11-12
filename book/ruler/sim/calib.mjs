@@ -185,7 +185,7 @@ out.push(`
 | Area | Share each | PCs hit a use | Worth |
 |---|---:|---:|---:|`);
 for (const r of [1, 2]) for (const share of [0.5, 0.67]) {
-  const w = W({ acts: [{ name: "Basic", ap: 1, pts: 25 }, { name: "Sweep", ap: 2, freq: "round", pts: 55 * share / P.multi, area: { n: 3, r } }] });
+  const w = W({ acts: [{ name: "Basic", ap: 1, pts: 25 }, { name: "Sweep", ap: 2, freq: "round", pts: 55, area: { n: 3, r } }] }, { P: { ...P, multi: share } });
   out.push(`| within ${r} of the target | ${pc(share)} | ${f1((w.fx.areaHits ?? 0) / Math.max(1e-9, w.fx.areaUses ?? 1))} | ${f1(w.worth)} |`); log(`area ${r} ${share}`);
 }
 out.push("");
