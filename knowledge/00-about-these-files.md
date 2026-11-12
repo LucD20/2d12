@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: 52123b1 2026-11-12 Backlog: how a PC's damage grows (question, research notes); 2[W] stays for Mastery
+Built by tools/knowledge.py on 2026-11-12 from the repository at: d0123d7 2026-11-12 Stage 0: Lucas's answers logged; the ranged-melee gap with table B and C2 measured
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -16,7 +16,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 Files:
 - HANDOFF.md (122 KB)
 - MASTER-PLAN.md (33 KB)
-- open-design-items.md (122 KB)
+- open-design-items.md (123 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
