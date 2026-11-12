@@ -54,12 +54,12 @@ A Push on both Actions, measured on the open field and on maps with walls. **The
 
 | Rider | Collision | open | pillars | corridor | closequarters |
 |---|---|---|---|---|---|
-| Push 1 | today (2 / 1) | -0.5 · 0.0 · 0.0 | 5.8 · 4.7 · 2.7 | 4.6 · 4.2 · 2.4 | 9.1 · 6.2 · 3.6 |
-| Push 2 | today (2 / 1) | -0.5 · 0.0 · 0.0 | 22.3 · 14.5 · 4.7 | 20.1 · 15.2 · 4.8 | 24.5 · 18.2 · 5.8 |
-| Push 3 | today (2 / 1) | -0.5 · 0.0 · 0.0 | 43.9 · 26.5 · 5.8 | 39.5 · 25.9 · 5.5 | 46.2 · 30.8 · 6.6 |
-| Push 1 | higher (4 / 2) | -0.5 · 0.0 · 0.0 | 18.1 · 9.8 · 2.9 | 13.8 · 8.6 · 2.4 | 25.0 · 12.8 · 3.7 |
-| Push 2 | higher (4 / 2) | -0.5 · 0.0 · 0.0 | 50.1 · 28.7 · 4.7 | 46.7 · 29.3 · 4.8 | 63.0 · 36.4 · 5.8 |
-| Push 3 | higher (4 / 2) | -0.5 · 0.0 · 0.0 | 89.1 · 50.9 · 5.6 | 84.9 · 51.1 · 5.5 | 105.7 · 60.6 · 6.5 |
+| Push 1 | today (2 / 1) | -0.5 · 0.0 · 0.0 | 5.8 · 4.7 · 2.7 | 4.2 · 4.2 · 2.4 | 9.1 · 6.2 · 3.6 |
+| Push 2 | today (2 / 1) | -0.5 · 0.0 · 0.0 | 22.3 · 14.5 · 4.7 | 20.6 · 15.2 · 4.8 | 26.3 · 18.1 · 5.8 |
+| Push 3 | today (2 / 1) | -0.5 · 0.0 · 0.0 | 43.2 · 26.3 · 5.7 | 39.5 · 25.6 · 5.5 | 46.7 · 30.7 · 6.6 |
+| Push 1 | higher (4 / 2) | -0.5 · 0.0 · 0.0 | 16.5 · 9.7 · 2.8 | 13.8 · 8.6 · 2.4 | 25.8 · 13.0 · 3.7 |
+| Push 2 | higher (4 / 2) | -0.5 · 0.0 · 0.0 | 52.7 · 29.8 · 4.8 | 48.9 · 29.9 · 4.8 | 60.8 · 36.4 · 5.8 |
+| Push 3 | higher (4 / 2) | -0.5 · 0.0 · 0.0 | 91.5 · 52.1 · 5.7 | 85.4 · 50.4 · 5.5 | 105.7 · 61.2 · 6.6 |
 | Push 2, always | today (2 / 1) | -15.7 · 0.0 · 6.6 | 14.7 · 16.3 · 8.0 | 16.2 · 17.0 · 8.3 | 18.6 · 19.8 · 8.5 |
 
 ## 5. AP and Frequency: designs on the price list
@@ -78,7 +78,7 @@ Each design is priced by the list (25 points an AP; +10% for Round; +5% for 3 AP
 
 ### The Encounter Action: double, and its pay-back
 
-Today's shape (Basic attack, 2 AP Round Special) with an Encounter Action at double the Round price of its AP. **Pay-back:** points off every one of the creature's other Actions (Level Up A5E's rule, "for every 2 points over the budget take 1 off the other turns", would be about 20 to 30 here). Cells: worth · a PC Down in a normal fight (the plain shape: a PC Down in about 9%).
+Today's shape (Basic attack, 2 AP Round Special) with an Encounter Action at double the Round price of its AP. **Pay-back, on Standards, in points:** points off every one of the creature's other Actions (Level Up A5E's rule, "for every 2 points over the budget take 1 off the other turns", would be about 20 to 30 here). Cells: worth · a PC Down in a normal fight (the plain shape: a PC Down in about 9%).
 
 | Encounter Action | Pay-back 0 | 20 | 40 | 60 | 80 |
 |---|---|---|---|---|---|
@@ -89,9 +89,20 @@ Today's shape (Basic attack, 2 AP Round Special) with an Encounter Action at dou
 | 3 AP, an area (the same) | 128.3 · 21% | 115.6 · 17% | 105.5 · 15% | 92.0 · 12% | 84.1 · 12% |
 | 3 AP, one target, at 1.5 × the Round one (not double: for comparison) | 135.1 · 37% | 119.3 · 31% | 107.6 · 28% | 95.1 · 27% | 88.2 · 25% |
 
+**The pay-back fitted on Elites** (the share every other Action and the Reaction lose). Cells: two Elites, cost · a PC Down / three Elites, won. An Elite with no Encounter Action: 26% · 9% / 86%.
+
+| Encounter Action | Share 0 | 0.1 | 0.2 | 0.25 | 0.3 | 0.5 |
+|---|---|---|---|---|---|---|
+| 1 AP, one target | 32% · 20% / 73% | 29% · 16% / 78% | 24% · 8% / 89% | 22% · 6% / 91% | 22% · 6% / 92% | 18% · 4% / 99% |
+| 2 AP, an area (up to 3 PCs within 2, half each) | 32% · 16% / 68% | 29% · 11% / 75% | 26% · 8% / 83% | 24% · 5% / 87% | 24% · 5% / 87% | 19% · 1% / 96% |
+| 3 AP, an area (the same) | 40% · 27% / 56% | 37% · 24% / 60% | 35% · 21% / 70% | 33% · 20% / 74% | 32% · 20% / 74% | 27% · 15% / 88% |
+| 2 AP, one target | 43% · 46% / 42% | 42% · 44% / 52% | 35% · 34% / 63% | 34% · 33% / 68% | 33% · 34% / 69% | 27% · 30% / 86% |
+
+Chosen (config.mjs npcBudget.payBack): 1 AP 0.2, 2 AP 0.25, 3 AP 0.5.
+
 ## 6. Reactions
 
-The yardstick with a Reaction. Its attack has a Round Action's points of its cost (1R: 28; 2R: 55, and the creature keeps 1 AP from its turn for it). **Paid:** the turn gives up 50% of the Reaction's points for one that answers its own being hit, 25% for one on an ally or a movement, nothing more for a 2R one (the AP it keeps is its price). **Free:** nothing taken from the turn.
+The yardstick with a Reaction. Its attack has a Round Action's points of its cost (1R: 28; 2R: 55, and the creature keeps 1 AP from its turn for it). **Paid:** the turn gives up 33% of the Reaction's points for one that answers its own being hit, 25% for one on an ally or a movement, nothing more for a 2R one (the AP it keeps is its price). **Free:** nothing taken from the turn.
 
 | Reaction | Cost | Fires a fight (per creature) | In what share of its rounds | Worth, free | Worth, paid |
 |---|---|---:|---:|---:|---:|
@@ -124,7 +135,7 @@ The yardstick with a Reaction. Its attack has a Round Action's points of its cos
 
 ## 8. Grunts and their Reaction AP
 
-Eight of today's Grunts (3 AP: Basic attack 17 points, 1 AP Round Special 24), measured against the yardstick's four Standards (a worth of 100 is what four Standards cost): today, no Reaction: 87.2; with a 1R Trigger (hit: an attack back), free: 99.5 (it fires 0.4 times a fight a Grunt); paid as a Standard's (half its points off the turn): 86.2.
+Eight of today's Grunts (3 AP: Basic attack 17 points, 1 AP Round Special 24), measured against the yardstick's four Standards (a worth of 100 is what four Standards cost): today, no Reaction: 87.2; with a 1R Trigger (hit: an attack back), free: 102.8 (it fires 0.4 times a fight a Grunt); paid as a Standard's (a third of its points off the turn): 92.2.
 
 
-(16 minutes.)
+(18 minutes.)

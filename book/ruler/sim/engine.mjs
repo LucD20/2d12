@@ -16,7 +16,7 @@ export const npcStrike = (R, f, t, banes, escalation = 3, pcs = [], boons = 0, b
   const zb = f.zone && f.zone.left > 0 ? f.zone.n : 0;   // Consecrated Ground: Banes on its Strikes while it stands in the area
   const def = ((f.curPower ?? f.power) ? t.build.wd : t.build.ad) + (t.defBonus ?? 0) + (t.passiveDef ?? 0);   // curPower: an Action with its own Defense (the Bestiary's turn budget)   // pack R-bestiary: a `power` NPC rolls against Ward Defense
   const fr = f.cond?.frightened ? 1 : 0, st = f.cond?.blinded || doomed ? "doomed" : "";   // pack R-classes: Frightened's Bane, Blinded's Doomed; the catch-up: High cover's Doomed
-  const u = R(), tier = pickU(u, C.tierProbs(f.mod, def, boons, banes + zb + fr, st));
+  const u = R(), tier = f.forceTier ?? pickU(u, C.tierProbs(f.mod, def, boons, banes + zb + fr, st));   // forceTier: a Save Action's Tier, rolled by the PC
   f.lastTier = tier;   // for the log
   if (t.defBonus && t.defBy?.st) t.defBy.st.defCredit += npcAvg(f, pickU(u, C.tierProbs(f.mod, def - t.defBonus, boons, banes + zb, ""))) - npcAvg(f, tier);
   if (zb && f.zone.by?.st) f.zone.by.st.baneCredit += npcAvg(f, pickU(u, C.tierProbs(f.mod, def, boons, banes, ""))) - npcAvg(f, tier);
@@ -160,7 +160,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   const zoneBanes = f => zones.filter(z => z.left > 0 && z.banes && !z.by.down && sideOf(z.by) !== sideOf(f) && inZone(z, f)).sort((x, y) => y.banes - x.banes)[0];
   const zoneHelp = (t, key) => zones.filter(z => z.left > 0 && z[key] && sideOf(z.by) === sideOf(t) && inZone(z, t))[0];
   /** Pack R-bestiary: an Elite's phases (+1 Escalation when it becomes Bloodied and when it becomes Strained) and its rung 3 (the Encounter Special comes back once). */
-  const eliteRung = f => { if (RR.eliteEncounterBack(f.esc, RULES.eliteRungs) && !f.encBack) { f.encBack = true; f.encUsed = false; } };
+  const eliteRung = f => { if (RR.eliteEncounterBack(f.esc, RULES.eliteRungs) && !f.encBack) { f.encBack = true; f.encUsed = false; f.encDone = null; } };   // encDone: its own Actions (the turn budget)
   const phase = f => { if (RULES.eliteEsc && RULES.elitePhases && f.role === "elite" && !f.dead && f.esc > 0 && f.esc < (RULES.eliteMax ?? 3)) { f.esc++; eliteRung(f); } };
   const killCheck = () => { for (const f of foes) {
     if (!f.dead && f.damage >= f.pool) { f.dead = true; f.deadRound = round; ev("dead", { who: nameOf(f) }); for (const p of pcs) if (p.build.escHook === "quarry" && p.quarry === f) hook(p, "class"); }
@@ -179,7 +179,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     // Pack R prep: a PC with a blocking Reaction and a Reaction AP (or AP kept) takes damage off the hit (itself or an ally within 5 squares; once per NPC turn each: the Turn Frequency).
     let block = null;
     // Pack R-classes, part 4: Covering Shot (1R, Turn, Interrupt: a Strike would damage an ally within 10 squares): a Weapon Attack with 1 Boon on the attacker; on a Tier 3 the ally takes half the damage.
-    for (const p of up()) { const rx = (p.build.reactions ?? []).find(x => x.kind === "cover"); if (!rx || p === t || (p.keptAP ?? 0) < 1 || p.cond?.staggered || p.coverFor === f.turnId || (M && MP.dist(p.pos, t.pos) > 10)) continue;
+    for (const p of up()) { const rx = (p.build.reactions ?? []).find(x => x.kind === "cover"); if (!rx || f.curSave || p === t || (p.keptAP ?? 0) < 1 || p.cond?.staggered || p.coverFor === f.turnId || (M && MP.dist(p.pos, t.pos) > 10)) continue;
       p.coverFor = f.turnId; spendReact(p); const r = pcReact((p.rxNow = rx.name, p), f, rx.action, 1); if (r.tier === 3 && !f.dead) block = { half: true, by: p, used: () => {} }; break; }
     for (const p of up()) { if (block) break; const rx = (p.build.reactions ?? []).find(x => x.kind === "block"); if (!rx || (p.keptAP ?? 0) < 1 || p.cond?.staggered || p.blockedFor === f.turnId) continue; if (M && p !== t && MP.dist(p.pos, t.pos) > 5) continue;
       if (rx.ally && p === t) continue; if (rx.round && p.blockedRound === round) continue;   // pack R-classes: `ally` (never on itself: Bulwark of Faith), `round` (once a round: the Round Frequency)
@@ -191,9 +191,9 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     t.damage += taken; f.dealt = (f.dealt ?? 0) + taken; ev("attack", { who: nameOf(f), target: nameOf(t), kind: f.curName ?? ((f.curMult ?? 1) > 1 ? "special" : "basic"), tier: f.lastTier, damage: taken, pool: (f.curPower ?? f.power) ? "R" : "V" });   // an NPC's Basic attack is Vigor damage (a weapon)...
     if (f.curPower ?? f.power) { t.mindDamage = (t.mindDamage ?? 0) + taken; t.st.mindTaken += taken; }   // ...unless it is a `power` NPC: [R] (pack R-bestiary)
     // Pack R prep: an "overwatch" Reaction (a Trigger: an enemy within 10 squares makes a Strike; once per NPC turn), after the Strike.
-    for (const p of up()) for (const rx of p.build.reactions ?? []) if (rx.kind === "overwatch" && p.keptAP >= 1 && !p.cond?.staggered && p.owFor !== f.turnId && !f.dead && (!M || MP.dist(p.pos, f.pos) <= 10)) { p.owFor = f.turnId; spendReact(p); p.st.oaMade++; pcReact((p.rxNow = rx.name, p), f, rx.action); }
+    for (const p of up()) for (const rx of p.build.reactions ?? []) if (rx.kind === "overwatch" && !f.curSave && p.keptAP >= 1 && !p.cond?.staggered && p.owFor !== f.turnId && !f.dead && (!M || MP.dist(p.pos, f.pos) <= 10)) { p.owFor = f.turnId; spendReact(p); p.st.oaMade++; pcReact((p.rxNow = rx.name, p), f, rx.action); }
     // Pack R-classes, part 3: Rebuke (1R, Round, Trigger: an enemy within your Reach makes a Strike against an ally): an Appeal Save against 11 + [PMod]; Tier 1 [R] 1d8 Ho, Pushed 2, Frightened (EoT); Tier 2 [R] 1d6 Ho, Pushed 1.
-    for (const p of up()) for (const rx of p.build.reactions ?? []) if (rx.kind === "rebuke" && p !== t && p.keptAP >= 1 && !p.cond?.staggered && (rx.turn ? p.rebukeFor !== f.turnId : p.rebukeRound !== round) && !f.dead && (!M || (rx.range ? MP.dist(p.pos, f.pos) <= rx.range : MP.adj(p, f)))) {   // `rebuke 5`: within 5 squares instead of your Reach
+    for (const p of up()) for (const rx of p.build.reactions ?? []) if (rx.kind === "rebuke" && !f.curSave && p !== t && p.keptAP >= 1 && !p.cond?.staggered && (rx.turn ? p.rebukeFor !== f.turnId : p.rebukeRound !== round) && !f.dead && (!M || (rx.range ? MP.dist(p.pos, f.pos) <= rx.range : MP.adj(p, f)))) {   // `rebuke 5`: within 5 squares instead of your Reach
       p.rebukeRound = round; p.rebukeFor = f.turnId; spendReact(p); p.st.reactions++; ev("reaction", { who: nameOf(p), reaction: rx.name, on: nameOf(f) });
       const tier = pick(p.R ?? R, C.tierProbs(f.save?.appeal ?? 1, 11 + p.build.powerMod, 0, 0, ""));
       if (tier <= 2) { const v = rollDamage(p.R ?? R, parseDamage(tier === 1 ? "1d8" : "1d6")).total; p.st.counted += Math.min(v, Math.max(0, f.pool - f.damage)); f.damage += v; f.mindDamage = (f.mindDamage ?? 0) + v; p.st.dealt += v; p.st.reactionDealt += v; p.st.mindDealt += v;
@@ -225,7 +225,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     const n = r.eff.toLowerCase(), fm = n.match(/^(push|pull|slide)\s+(\d+)/);
     if (fm && RULES.forcedUse !== "always") {   // the GM pushes when it hurts: into a wall or into another PC (a Collision); else the rider is declined
       const pv = MP.forcePreview(fm[1], f, t, Number(fm[2]), W); if (!pv.unused || (pv.into && pv.into !== "wall" && !pv.into.build)) { FX(f, "declined"); return; } }
-    if (fm) { const d0 = t.damage; const moved = MP.force(fm[1], f, t, Number(fm[2]), W); FX(f, "forced"); FX(f, "squares", moved); if (t.damage > d0) { FX(f, "collision", t.damage - d0); pcHurt(t); } return; }
+    if (fm) { const d0 = t.damage; const moved = MP.force(fm[1], f, t, Number(fm[2]), W); FX(f, "forced"); FX(f, "squares", moved); if (t.damage > d0) { FX(f, "collision", t.damage - d0); for (const p of pcs) if (!p.down) pcHurt(p); } return; }   // the PC it was thrown into took damage too
     if (hasRider(t, r)) { FX(f, "wasted"); return; }
     const dz = n.match(/dazed\s*(\d)/);
     if (dz) { const k = Number(dz[1]), fromKept = Math.min(k, t.turnKept ?? 0); t.turnKept = (t.turnKept ?? 0) - fromKept; t.keptAP -= fromKept; t.cond.dazed += k - fromKept; FX(f, "cond"); return; }   // Dazed: AP now (the AP it kept, never the Reaction AP), the rest from its next turn
@@ -242,7 +242,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     let tier;
     if (a.save) {   // a Save Action: DC 11 + its Modifier; the PC's Tier 1 is the attack's Tier 3
       const st = (t.build.attributes?.[a.save] ?? 1), pt = pick(f.R ?? R, C.tierProbs(st, 11 + (a.power ? f.powerMod : f.weaponMod), 0, 0, "")); tier = 4 - pt; f.lastTier = tier;
-      if (a.dmg && tier >= 2) { let d = npcDamage(f.R ?? R, f, tier); const g = Math.min(t.guard ?? 0, d), g2 = Math.min(t.apGuard ?? 0, d - g); t.guard = (t.guard ?? 0) - g; t.apGuard = (t.apGuard ?? 0) - g2; d -= g + g2; t.damage += d; t.st.taken += d; f.dealt = (f.dealt ?? 0) + d; if (a.power) t.mindDamage = (t.mindDamage ?? 0) + d; ev("attack", { who: nameOf(f), target: nameOf(t), kind: a.name, tier, damage: d, pool: a.power ? "R" : "V" }); pcHurt(t); }
+      if (a.dmg && tier >= 2) { f.forceTier = tier; f.curSave = true; npcHit(f, t, 0); f.forceTier = undefined; f.curSave = false; }   // its damage meets the PC's damage reduction, blocks and Guard as any hit; not a Strike (no Reaction to a Strike)
     } else if (a.dmg) { npcHit(f, t, k, (m?.boons ?? 0), (m?.banes ?? 0), !!m?.doomed); tier = f.lastTier; }
     else { const def = (a.power ? t.build.wd : t.build.ad) + (t.defBonus ?? 0); tier = pick(f.R ?? R, C.tierProbs(a.power ? f.powerMod : f.weaponMod, def, (m?.boons ?? 0) + RR.vulnerableBoons(t.cond?.vuln), (m?.banes ?? 0), m?.doomed ? "doomed" : "")); f.lastTier = tier; ev("attack", { who: nameOf(f), target: nameOf(t), kind: a.name, tier, damage: 0 }); }
     f.curDmg = null; f.curPower = undefined; f.curName = null;
@@ -273,10 +273,10 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     ap -= f.reaction?.cost === 2 ? 1 : 0;   // a 2R Reaction needs an AP kept from the turn
     for (let guard = 0; guard < 8 && ap > 0 && !f.dead; guard++) {
       if (t?.down || (t && f.melee && !MP.adj(f, t))) t = PN.npcRetarget(E, f);
-      const ok = a => a.ap <= ap && (a.freq !== "enc" || !f.encDone?.has(a.name)) && (a.freq !== "round" || !f.roundDone?.has(a.name)) && (a.kind === "help" || (t && strikes < RR.STRIKES_PER_TURN)) && actUseful(f, a, t);
+      const ok = a => a.ap <= ap && (a.freq !== "enc" || !f.encDone?.has(a.name)) && (a.freq !== "round" || (f.roundDone?.get(a.name) ?? 0) < RR.eliteRoundSpecials(f.esc, RULES.eliteRungs)) && (a.kind === "help" || (t && strikes < RR.STRIKES_PER_TURN)) && actUseful(f, a, t);
       const c = f.acts.filter(ok).sort((x, y) => (y.freq === "enc") - (x.freq === "enc") || y.pts / y.ap - x.pts / x.ap || (y.freq === "round") - (x.freq === "round") || y.ap - x.ap)[0];
       if (!c) break;
-      ap -= c.ap; if (c.freq === "enc") (f.encDone ??= new Set()).add(c.name); if (c.freq === "round") (f.roundDone ??= new Set()).add(c.name);
+      ap -= c.ap; if (c.freq === "enc") (f.encDone ??= new Set()).add(c.name); if (c.freq === "round") (f.roundDone ??= new Map()).set(c.name, (f.roundDone.get(c.name) ?? 0) + 1);   // an Elite at its second rung: each Round Action twice
       if (c.kind === "help") { actHelp(f, c); continue; }
       const tt = spreadTarget(f, c, t), m = MP.mapMods(f, tt, f.melee ? "melee" : "ranged", W); if (!m) break;
       const eb = f.firstAtk ? RR.eliteFirstAttackBoons(f.esc, RULES.eliteRungs) : 0; f.firstAtk = false;

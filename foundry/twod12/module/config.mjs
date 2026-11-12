@@ -244,8 +244,8 @@ export const TWOD12 = {
   // payBack: by an Encounter Action's AP, the share of their points every other Action of the creature loses; help: a Boon on an ally's next attack, and a point
   // of Health healed, in points. **The system doesn't read this yet** (the pack "Stage 0 in Foundry": the Builder's points).
   npcBudget: { perAp: { minion: 18, grunt: 25, standard: 25, elite: 33 }, turnAp: { minion: 3, grunt: 3, standard: 4, elite: 4 },
-    rating: { terrible: 0.65, low: 0.8, medium: 1, high: 1.2, extreme: 1.5 }, size: [0, 0, 0, 0.05], round: 0.1, encounter: 2, payBack: [0, 0.2, 0.4, 0.5], over: 0.15,
-    riders: { forced: 2, mild: 3, moderate: 6, severe: 12 }, multi: 0.5, toDamage: [0.14, 0.22], help: { boon: 3, health: 1 }, reaction: { self: 0.5, other: 0.25, twoR: 0 } },
+    rating: { terrible: 0.65, low: 0.8, medium: 1, high: 1.2, extreme: 1.5 }, size: [0, 0, 0, 0.05], round: 0.1, encounter: 2, payBack: [0, 0.2, 0.25, 0.5], over: 0.15,
+    riders: { forced: 2, mild: 3, moderate: 6, severe: 12 }, multi: 0.5, toDamage: [0.14, 0.22], help: { boon: 3, health: 1 }, reaction: { self: 1 / 3, other: 0.25, twoR: 0 } },
   npcStage0: {
     minion: { reactionAp: 0, squad: 3, health: [3, 5, 6, 7],
       basic: [["1", "2"], ["1", "1d4"], ["2", "1 + 1d4"], ["1d4", "2 + 1d4"]],

@@ -141,11 +141,11 @@ The Bestiary since this pack builds an NPC's Actions on a **turn budget** (`book
 | Level | Enemies | 3 Standards (easy) | 4 (normal) | 5 (hard) | 6 (deadly) |
 |---:|---|---|---|---|---|
 | 1 | damage only | 2.7 · 7% · 17% · 3% · 100% | 3.3 · 12% · 27% · 10% · 100% | 4.2 · 23% · 44% · 26% · 98% | 5.0 · 41% · 66% · 49% · 86% |
-| 1 | with effects | 2.9 · 6% · 17% · 3% · 100% | 3.6 · 11% · 28% · 7% · 100% | 4.6 · 24% · 47% · 26% · 97% | 5.9 · 51% · 80% · 59% · 77% |
+| 1 | with effects | 2.9 · 6% · 17% · 3% · 100% | 3.6 · 12% · 29% · 8% · 100% | 4.6 · 24% · 47% · 25% · 97% | 5.6 · 49% · 77% · 54% · 75% |
 | 2 | damage only | 2.7 · 6% · 16% · 3% · 100% | 3.4 · 11% · 26% · 10% · 100% | 4.2 · 20% · 40% · 25% · 98% | 5.0 · 37% · 61% · 48% · 87% |
-| 2 | with effects | 3.0 · 6% · 17% · 2% · 100% | 3.7 · 9% · 26% · 6% · 100% | 4.6 · 20% · 42% · 22% · 98% | 5.7 · 42% · 70% · 55% · 80% |
+| 2 | with effects | 3.0 · 6% · 17% · 2% · 100% | 3.7 · 10% · 27% · 6% · 100% | 4.6 · 21% · 44% · 24% · 98% | 5.7 · 44% · 72% · 53% · 77% |
 | 3 | damage only | 2.7 · 6% · 16% · 4% · 100% | 3.4 · 10% · 25% · 8% · 100% | 4.2 · 22% · 42% · 27% · 97% | 5.0 · 36% · 60% · 48% · 88% |
-| 3 | with effects | 3.0 · 6% · 17% · 2% · 100% | 3.6 · 10% · 26% · 6% · 100% | 4.5 · 18% · 40% · 18% · 98% | 5.7 · 41% · 69% · 55% · 82% |
+| 3 | with effects | 3.0 · 6% · 17% · 2% · 100% | 3.6 · 10% · 26% · 7% · 100% | 4.6 · 21% · 43% · 24% · 98% | 5.7 · 43% · 71% · 57% · 81% |
 
 ## 10. The four Ranks with effects
 
@@ -153,16 +153,16 @@ Levels 1 and 2 (the mean). **With effects:** every NPC on the budget with riders
 
 | Encounter (CV) | Damage only (the table before) | Damage only, on the budget | With effects |
 |---|---|---|---|
-| 4 Standards (400) | 27% · 10% · 100% | 26% · 9% · 100% | 27% · 6% · 100% |
-| 2 Elites (400) | 26% · 9% · 100% | 28% · 18% · 100% | 27% · 10% · 100% |
-| 1 Elite + 2 Standards (400) | 25% · 9% · 100% | 26% · 13% · 100% | 26% · 8% · 100% |
+| 4 Standards (400) | 27% · 10% · 100% | 26% · 9% · 100% | 28% · 7% · 100% |
+| 2 Elites (400) | 26% · 9% · 100% | 24% · 5% · 100% | 25% · 2% · 100% |
+| 1 Elite + 2 Standards (400) | 25% · 9% · 100% | 25% · 6% · 100% | 25% · 4% · 100% |
 | 8 Grunts (400) | 20% · 2% · 100% | 27% · 10% · 100% | 26% · 8% · 100% |
 | 2 Standards + 8 Minions (400) | 27% · 8% · 100% | 30% · 10% · 100% | 29% · 8% · 100% |
 | 16 Minions (400) | 30% · 5% · 100% | 30% · 7% · 100% | 29% · 6% · 100% |
-| 6 Standards (600) | 64% · 48% · 86% | 69% · 55% · 81% | 75% · 57% · 78% |
-| 3 Elites (600) | 62% · 49% · 88% | 55% · 48% · 90% | 56% · 41% · 91% |
+| 6 Standards (600) | 64% · 48% · 86% | 69% · 55% · 81% | 75% · 54% · 76% |
+| 3 Elites (600) | 62% · 49% · 88% | 60% · 44% · 87% | 61% · 32% · 91% |
 | 12 Grunts (600) | 42% · 15% · 99% | 63% · 42% · 90% | 65% · 44% · 88% |
-| 4 Standards + 8 Minions (600) | 65% · 48% · 87% | 69% · 55% · 85% | 64% · 41% · 88% |
+| 4 Standards + 8 Minions (600) | 65% · 48% · 87% | 69% · 55% · 85% | 68% · 48% · 86% |
 
 ## 11. The six Roles with what makes them (level 2)
 
@@ -170,13 +170,13 @@ Four of a Role (the Leader: one Leader with three Standards with effects, agains
 
 | Role | Normal (4) | Deadly (6) |
 |---|---|---|
-| Standards with effects | 26% · 6% · 100% | 70% · 55% · 80% |
+| Standards with effects | 27% · 6% · 100% | 72% · 53% · 77% |
 | Striker | 23% · 8% · 100% | 57% · 49% · 87% |
 | Soldier | 24% · 5% · 100% | 63% · 50% · 88% |
 | Skirmisher | 26% · 7% · 100% | 58% · 45% · 90% |
 | Artillery | 26% · 1% · 100% | 57% · 26% · 97% |
 | Controller | 24% · 6% · 100% | 64% · 47% · 86% |
-| Leader | 27% · 6% · 100% | 65% · 46% · 86% |
+| Leader | 27% · 6% · 100% | 67% · 50% · 85% |
 
 ## 12. Grunts and Minions, settled on these numbers
 
@@ -184,17 +184,17 @@ Four of a Role (the Leader: one Leader with three Standards with effects, agains
 
 | Grunts | 8 Grunts (400) | 2 Standards + 4 Grunts (400) | 12 Grunts (600) | 4 Standards + 4 Grunts (600) |
 |---|---|---|---|---|
-| 17 an AP (the table's Grunt, on the budget) | 17% · 1% · 100% | 24% · 6% · 100% | 35% · 7% · 100% | 62% · 41% · 90% |
-| (a) 20 an AP (a rating up) | 18% · 2% · 100% | 25% · 7% · 100% | 39% · 12% · 100% | 64% · 44% · 87% |
-| (b) Health 30, the Round Special a rating up | 22% · 3% · 100% | 26% · 6% · 100% | 50% · 21% · 97% | 71% · 51% · 83% |
-| **chosen: 25 an AP (a Standard's), Health 26** | 26% · 8% · 100% | 28% · 10% · 100% | 65% · 44% · 88% | 69% · 50% · 83% |
+| 17 an AP (the table's Grunt, on the budget) | 17% · 1% · 100% | 24% · 6% · 100% | 35% · 7% · 100% | 64% · 42% · 90% |
+| (a) 20 an AP (a rating up) | 18% · 2% · 100% | 25% · 7% · 100% | 39% · 12% · 100% | 64% · 46% · 89% |
+| (b) Health 30, the Round Special a rating up | 22% · 3% · 100% | 26% · 6% · 100% | 50% · 21% · 97% | 72% · 51% · 83% |
+| **chosen: 25 an AP (a Standard's), Health 26** | 26% · 8% · 100% | 28% · 10% · 100% | 65% · 44% · 88% | 70% · 51% · 82% |
 
 | Minions | 16 Minions (400) | 2 Standards + 8 Minions (400) | 4 Standards + 8 Minions (600) |
 |---|---|---|---|
-| 15 an AP, Defense 12 (Medium) | 21% · 1% · 100% | 25% · 5% · 100% | 61% · 40% · 92% |
-| 18 an AP, Defense 12 (Medium) | 29% · 6% · 100% | 29% · 8% · 100% | 64% · 41% · 88% |
-| 18 an AP, Defense 13 (High at one point a rating) | 32% · 8% · 100% | 30% · 9% · 100% | 70% · 50% · 85% |
-| 18 an AP, Defense 14 (today's High) | 35% · 11% · 100% | 32% · 11% · 100% | 74% · 52% · 79% |
+| 15 an AP, Defense 12 (Medium) | 21% · 1% · 100% | 25% · 5% · 100% | 62% · 41% · 91% |
+| 18 an AP, Defense 12 (Medium) | 29% · 6% · 100% | 29% · 8% · 100% | 68% · 48% · 86% |
+| 18 an AP, Defense 13 (High at one point a rating) | 32% · 8% · 100% | 30% · 9% · 100% | 70% · 50% · 84% |
+| 18 an AP, Defense 14 (today's High) | 35% · 11% · 100% | 32% · 11% · 100% | 76% · 54% · 80% |
 
 
-(8.5 minutes.)
+(8.6 minutes.)

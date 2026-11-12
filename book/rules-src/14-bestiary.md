@@ -9,8 +9,8 @@ Each rank has a **Combat Value (CV)**: what one NPC of the rank counts for in an
 
 | Rank | CV | AP a turn | Takes about | Deals about at Stage 0 (per turn, to an average PC) |
 |---|---|---|---|---|
-| **Minion** | 25 | **3** | one or two PC hits | 5 |
-| **Grunt** | 50 | **3** | 1 PC turn | 7 |
+| **Minion** | 25 | **3** | one or two PC hits | 4 |
+| **Grunt** | 50 | **3** | 1 PC turn | 6 |
 | **Standard** | 100 | 4 | 2 to 3 PC turns | 9 |
 | **Elite** | 200 | 4 | 5 PC turns | 13 |
 
@@ -128,15 +128,15 @@ A Medium Standard's prices:
 
 **Frequency is apart from AP:** any AP cost can be At-will, Round or Encounter. A 2 AP Action needs no premium of its own: it is already better than two Basic attacks, the second of which takes the At-will Bane. Two different 1 AP At-will Actions don't take the At-will Bane from each other, so the GM can alternate them.
 
-**An Encounter Action is big, and the rest of the fight pays for it.** It deals double what a Round Action of its AP does, so its turn is far over the budget. **Its pay-back:** every other Action of the creature (and its Reaction) loses a share of its points:
+**An Encounter Action is big, and the rest of the fight pays for it.** It deals double what a Round Action of its AP does, so its turn is far over the budget. **Its pay-back:** every other Action of the creature, and its Reaction, loses a share of its points:
 
 | Encounter Action | Its other Actions lose | It hits |
 |---|---|---|
 | **1 AP** | a fifth of their points | one creature, or several |
-| **2 AP** | two fifths | **several creatures** (see [[Actions that hit several creatures]]) |
+| **2 AP** | a quarter | **several creatures** (see [[Actions that hit several creatures]]) |
 | **3 AP** | half | **several creatures** |
 
-**A 2 AP or 3 AP Encounter Action hits several creatures:** at double damage on one PC it takes a PC from full Health to Down in one hit, and no pay-back makes that fair (a PC goes Down in a quarter to half of normal fights even when the creature's other Actions lose four fifths of their points: `book/ruler/budget.md`). A big Encounter Action against one creature is a unique effect.
+**A 2 AP or 3 AP Encounter Action hits several creatures.** At double damage on one PC it takes that PC from full Health to Down in one hit, and no pay-back makes that fair. A 3 AP one is the creature's whole identity: it gives up half of everything else for it. A big Encounter Action against one creature is a unique effect (see [[Where the effect is]]).
 
 ### Points into damage
 
@@ -173,9 +173,9 @@ A **rider** is an effect an Action adds to its damage: a condition, a Forced Mov
 | **Severe** | 12 | Slowed 2; Dazed 2; Bleed 2, Bleed 1d4 or 1d6; **Forced Movement 3 or more** |
 | **Beyond Severe** | 18 a step | Bleed 2d6 (30) |
 
-The groups are measured (`book/ruler/budget.md`): what the condition costs the party when it lands, times how often a hit lands it. **AP are the strongest thing to take** (Prone, Dazed, Slowed), **a Bleed is damage that keeps coming** (it lasts until the PC spends 1 AP to staunch it), and conditions that only make a PC's next roll or its movement worse are mild: a PC shakes them off at the end of its turn, and its allies don't care. A condition that lasts longer than EoT, or that a Save can't shake off, is one size more, unless the table already lists that duration.
+**AP are the strongest thing to take** (Prone, Dazed, Slowed), **a Bleed is damage that keeps coming** (it lasts until the PC spends 1 AP to staunch it), and conditions that only make a PC's next roll or its movement worse are mild: a PC shakes them off at the end of its turn, and its allies don't care. A condition that lasts longer than EoT, or that a Save can't shake off, is one size more, unless the table already lists that duration.
 
-- **Forced Movement is the most common rider and the cheapest:** in the open it changes little, and against a wall or another PC it deals Collision damage (see [[Steadiness]] and Collision in Chapter 3). Push the PC when it hurts: into a wall, into another PC, off a ledge, out of an ally's aura; pushing a PC away from you in the open only frees it. Against walls a Push is worth about twice its price (a Push 2 there is a Severe rider); in the open, nothing.
+- **Forced Movement is the most common rider and the cheapest:** in the open it changes little, and against a wall or another PC it deals Collision damage (see [[Steadiness]] and Collision in Chapter 3). Push the PC when it hurts: into a wall, into another PC, off a ledge, out of an ally's aura; pushing a PC away from you in the open only frees it. Against walls a Push is worth about twice its price; in the open, nothing.
 - **No limit on repeating a rider.** A rider on a creature that already has it is wasted: spread the attacks.
 - **At most 2 riders on an Action**, as guidance.
 
@@ -187,11 +187,11 @@ The groups are measured (`book/ruler/budget.md`): what the condition costs the p
 | in the **Setup** (it always happens, hit or miss) | **one size more** (a Mild condition costs a Moderate's 6) |
 | on **Tier 3 only** | **one size less** (a Moderate condition costs a Mild's 3; a Mild one 2) |
 
-Measured: an effect in the Setup is worth about 1.3 to 2 times the same effect on a hit, and on Tier 3 only about a third. A **unique effect** ("the Dragon grabs you, flies up and drops you to the ground") is priced as the nearest conditions (Grabbed and Prone, with the fall's damage as damage), and belongs on an Encounter Action.
+A **unique effect** ("the Dragon grabs you, flies up and drops you to the ground") is priced as the nearest conditions (Grabbed and Prone, with the fall's damage as damage), and belongs on an Encounter Action.
 
 ### Actions that hit several creatures
 
-An Action that hits several creatures (an Area, a Save Action against everyone in it, "two creatures") deals **half** its points to each, after its riders. It pays when it catches two or more: against a party that spreads out it hits about one and a half PCs a use, which makes half a little weak (two thirds would be even), so give it a real area (a 2 Emanation, a Line along the front) or a reason for the PCs to stand together.
+An Action that hits several creatures (an Area, a Save Action against everyone in it, "two creatures") deals **half** its points to each, after its riders. It pays when it catches two or more, and a party that spreads out often gives it one: give it a real area (a 2 Emanation, a Line along the front) or a reason for the PCs to stand together.
 
 - **Area Save Actions** use a Save the targets roll (DC 11 + the Modifier); the PC's Tier 1 takes the Action's Tier 3, its Tier 2 the Tier 2, its Tier 3 nothing.
 
@@ -212,12 +212,12 @@ A help is cheap because one Boon or a few Health matter little in a fight of thr
 
 - **No NPC has a Reaction by default**: an NPC has the Reactions its entry gives it (see [[Reactions]]). It pays for one as a PC does: with its Reaction AP or an AP it kept from its turn. **Minions have no Reaction AP**; a Grunt's Reaction is priced as anyone's.
 - **A Reaction's attack has the points of a Round Action of its cost:** a 1R Reaction a 1 AP Round Action's (28 for a Medium Standard), a 2R Reaction a 2 AP Round Action's (55).
-- **It is paid from the turn,** by how often it fires:
+- **It is paid from the turn:**
 
 | Reaction | Off its turn budget |
 |---|---|
-| **1R**, on its own being hit or targeted ("Trigger: a creature hits you"): fires in about 40% of the rounds | **half** its points (14) |
-| **1R**, on an ally or a movement ("Trigger: an ally within 2 squares is hit"; "Interrupt: a creature would enter a square next to you"): fires in 10 to 25% of the rounds | **a quarter** (7) |
+| **1R**, on its own being hit or targeted ("Trigger: a creature hits you"): it fires often | **a third** of its points (9) |
+| **1R**, on an ally or a movement ("Trigger: an ally within 2 squares is hit"; "Interrupt: a creature would enter a square next to you"): it fires now and then | **a quarter** (7) |
 | **2R** | nothing more: the AP it keeps from its turn is its price |
 
 **A 2R Reaction is weak on an NPC:** the AP it keeps costs more than the Reaction gives back, unless it fires in most rounds. Prefer 1R. A Reaction that only protects (an ally gains +2 Defense against the triggering Strike) is nearly free: 2 points off the turn.
@@ -235,7 +235,7 @@ Most NPC Actions should do more than damage. As guidance, from most to least com
 
 ### Check its best turn
 
-Add the points of the most it can do in one turn: its AP (4, or 3), at most 3 Strikes, each Round Action once, **without its Encounter Action** (the pay-back covers that turn). It should be within its turn budget, or up to **15% over**. A turn of Basic attacks only is under the budget (the third Strike takes 2 At-will Banes): give it a Special.
+Add the points of the most it can do in one turn: its AP (4, or 3), at most 3 Strikes, each Round Action once, **without its Encounter Action** (the pay-back covers that turn). It should be within its turn budget, or up to **15% over**. A turn of Basic attacks only, or with only a 1 AP Special, is well under the budget (the repeated Basic attacks take At-will Banes): give it a 2 AP Special.
 
 > [!example]
 > **Building the Orc Warrior** (a Medium Standard: 25 points an AP, turn budget 100). *Cleaver* is its Basic attack: 25 points; a Push 1 (2) leaves 23: 1 + 1d4 / 3 + 1d4. *Hold the Line* is a 1R Reaction on an ally being hit: its attack has 28 points, and a quarter of that (7) comes off the turn, here off the Special. *Brutal Swing* is a 2 AP Round Special: 55 points, Prone on a hit (Moderate, 6) and the Reaction's 7 leave 42: 2 + 1d6 / 6 + 1d6. Its best turn: Brutal Swing and two Cleavers, 55 + 25 + 25 = 105: within the budget.
@@ -274,7 +274,7 @@ A **role** says what a creature does in a fight. It is a ready set of ratings fo
 | **Controller** | changes the fight with conditions and areas | **High** Ward Defense, **Low** Armor Defense; often Power Actions Vs. WD | Moderate and Severe conditions (Dazed, Slowed, Prone), an Area |
 | **Leader** | makes its allies better; one in a fight | Medium everything | help on its Round Special (Boons for its allies, an ally's Basic attack) |
 
-All six are measured with what makes them (`book/ruler/stage0.md`, section 11): four of a role cost a party about what four Standards with effects do, a Controller's conditions and a Soldier's Reaction included. Speed costs nothing by itself.
+All six are measured with what makes them: four of a role cost a party about what four Standards with effects do, a Controller's conditions and a Soldier's Reaction included. Speed costs nothing by itself.
 
 ## The ranks
 
@@ -423,7 +423,7 @@ What the fight model gives for 4 PCs of levels 1 to 3 with no [[Momentum]] (all 
 | 5 Standards, or 1 Elite and 3 Standards (500, hard) | 4 | 40 to 45% | 1 fight in 4 | 97 to 98% |
 | 6 Standards, 3 Elites, 2 Elites and 2 Standards, 1 Elite and 4 Standards, or 4 Standards and 8 Minions (600, deadly) | 5 | 60 to 65% | about half the time | 86 to 88% |
 
-The three levels are about as hard as each other. Elites, Grunts and Minions are worth their CV in any mix. **With enemies that use effects** (built on the turn budget, most of their Actions with a rider), a normal fight costs the same with fewer PCs Down (about 1 fight in 15), and the fights are a little longer; a deadly fight is about half a step harder (won about 80% of the time instead of 87%): the effects add up in a long fight. **Momentum makes every fight easier**: at Momentum 2 the same fights cost about a quarter less, and at Momentum 4 a level 3 party wins the deadly fight 98% of the time. A party late in a good expedition can take one step more.
+The three levels are about as hard as each other. Elites, Grunts and Minions are worth their CV in any mix. **With enemies that use effects** (built on the turn budget, most of their Actions with a rider), a normal fight costs the same with fewer PCs Down (about 1 fight in 15), and the fights are a little longer; a deadly fight of Standards is about half a step harder (won about 77% of the time instead of 87%): the effects add up in a long fight. **Momentum makes every fight easier**: at Momentum 2 the same fights cost about a quarter less, and at Momentum 4 a level 3 party wins the deadly fight 98% of the time. A party late in a good expedition can take one step more.
 
 > [!tip]
 > These numbers assume the enemies **spread their attacks**: each strikes the PC it can reach best. If every enemy strikes **the same PC** (the weakest one, or simply the nearest), the encounter plays about **one step harder**: a normal fight like a hard one, a hard one like a deadly one. Do it on purpose (a wolf pack, a disciplined squad), and count it when you choose the CV.
@@ -442,11 +442,11 @@ Each is built on its turn budget (see [[Actions: the turn budget]]); the points 
 - *Hold the Line* (Reaction, 1R, Trigger: an ally within 2 squares is hit by a Strike; 28): it makes an attack against the attacker if it can reach it: 1 + 1d4 / 3 + 1d6 Sl.
 
 **Grave Wisp** (Standard, CV 100; 25 points an AP): Mind High (+2), Appeal Medium (+1), Instinct Medium (+1), Body Low (0). Power Modifier Medium (+2), Weapon Modifier Medium (+2); it attacks only Ward Defense. Vigor Terrible (17), Resolve High (36): Health 53. Armor Defense Low (11), Ward Defense High (15). Speed 5, flies (a fast creature: its Vigor is Terrible).
-- *Chilling Touch* (Basic attack, 1 AP, At-will, Vs. WD; 25, Frightened 3): [R] 1 + 1d4 / 2 + 1d4 Co, and Frightened of it (EoT).
+- *Chilling Touch* (Basic attack, 1 AP, At-will, Vs. WD, [Fear]; 25, Frightened 3): [R] 1 + 1d4 / 2 + 1d4 Co, and Frightened of it (EoT).
 - *Dread Whisper* (2 AP, Round, Vs. WD, [Fear]; 55, Dazed 1 6): [R] 3 + 1d6 / 7 + 1d6 Ps, and Dazed 1.
 
 **Ogre Chieftain** (Elite, CV 200; 33 points an AP, turn budget 132): Body High (+3), Instinct Medium (+2), Mind Medium (+2), Appeal Low (+1). Weapon Modifier Medium (+3), Power Modifier Low (+2). Vigor Medium (65), Resolve Medium (65): Health 130. Armor Defense Medium (14), Ward Defense Low (12). Speed 4 (slow: its Club is High, 40 points an AP). Elite Escalation (the ladder above).
-- *Club* (Basic attack, 1 AP, At-will, High; 40, Push 1 2, then Ground Slam's pay-back, two fifths): 1 + 1d4 / 2 + 1d4 Bl, and it can Push the target 1.
-- *Overhead Smash* (2 AP, Round; 73, Push 2 6, the pay-back): 2 + 1d6 / 5 + 1d6 Bl, and it can Push the target 2.
-- *Ground Slam* (2 AP, Encounter, Area 1 Emanation, a Save Action: Body Save, DC 14; 145, Prone 6, half to each): 11 + 1d8 / 6 + 1d6 / 0 Bl (Tier 1 is the worst for them), and Prone on Tier 1 and Tier 2. At Escalation 6 it comes back once.
+- *Club* (Basic attack, 1 AP, At-will, High; 40, Push 1 2, then Ground Slam's pay-back, a quarter): 1 + 1d4 / 3 + 1d6 Bl, and it can Push the target 1.
+- *Overhead Smash* (2 AP, Round; 73, Push 2 6, the pay-back): 3 + 1d6 / 7 + 1d6 Bl, and it can Push the target 2.
+- *Ground Slam* (2 AP, Encounter, Area 2 Emanation, a Save Action: Body Save, DC 14; 145, Prone 6, half to each): 11 + 1d8 / 6 + 1d6 / 0 Bl (Tier 1 is the worst for them), and Prone on Tier 1 and Tier 2. At Escalation 6 it comes back once.
 - *Rally the Tribe* (Escalation 4, 1 AP, Round): allies within 5 squares gain 1 Boon on their next [Weapon] Action.

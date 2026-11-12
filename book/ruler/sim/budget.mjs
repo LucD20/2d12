@@ -72,14 +72,14 @@ export function npcBuilt(rank, design, P = PRICES()) {
   const ranged = !!design.npc?.ranged;
   const encScale = Math.max(0, 1 - give / budget) * (design.scale ?? 1);   // the pay-back comes off the other Actions, not the Encounter one
   const acts = design.acts.map(d => compileAct(rank, d, { rating, P, scale: d.freq === "enc" ? encScale : scale, ranged, exact: design.exact }));
-  const reaction = design.reaction ? { ...design.reaction, cost: design.reaction.cost ?? 1, pts: rxPts, act: design.reaction.act ? compileAct(rank, { ap: design.reaction.cost ?? 1, freq: "round", ...design.reaction.act }, { rating, P, ranged, exact: design.exact }) : null } : null;
+  const reaction = design.reaction ? { ...design.reaction, cost: design.reaction.cost ?? 1, pts: rxPts, act: design.reaction.act ? compileAct(rank, { ap: design.reaction.cost ?? 1, freq: "round", ...design.reaction.act }, { rating, P, ranged, exact: design.exact, scale: Math.max(0, 1 - payBack / budget) }) : null } : null;
   return { ...base, payBack, give, acts, reaction, reactionAp: base.role === "minion" ? 0 : undefined, design: design.label ?? null, budget };
 }
-/** The best turn of a design (no move): the most points its AP buy with 3 Strikes at most, each Round Action once and the Encounter Action. */
+/** The best turn of a design (no move): the most points its AP buy with 3 Strikes at most and each Round Action once, without its Encounter Action (the pay-back covers that turn). */
 export function bestTurn(rank, design, P = PRICES()) {
   const n = npcBuilt(rank, design, P), ap0 = n.apMax - (n.reaction?.cost === 2 ? 1 : 0);
   let best = 0;
-  const go = (ap, strikes, used, pts) => { best = Math.max(best, pts); for (const a of n.acts) { if (a.ap > ap || (a.kind !== "help" && strikes >= 3) || (a.freq !== "atwill" && used.has(a.name))) continue; go(ap - a.ap, strikes + (a.kind === "help" ? 0 : 1), new Set([...used, a.name]), pts + a.pts); } };
+  const go = (ap, strikes, used, pts) => { best = Math.max(best, pts); for (const a of n.acts) { if (a.freq === "enc" || a.ap > ap || (a.kind !== "help" && strikes >= 3) || (a.freq !== "atwill" && used.has(a.name))) continue; go(ap - a.ap, strikes + (a.kind === "help" ? 0 : 1), new Set([...used, a.name]), pts + a.pts); } };
   go(ap0, 0, new Set(), 0);
   return { best, budget: n.budget, over: best / n.budget - 1 };
 }

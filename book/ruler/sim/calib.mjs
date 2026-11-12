@@ -113,7 +113,7 @@ for (const [name, acts] of DESIGNS) {
 out.push(`
 ### The Encounter Action: double, and its pay-back
 
-Today's shape (Basic attack, 2 AP Round Special) with an Encounter Action at double the Round price of its AP. **Pay-back:** points off every one of the creature's other Actions (Level Up A5E's rule, "for every 2 points over the budget take 1 off the other turns", would be about 20 to 30 here). Cells: worth · a PC Down in a normal fight (the plain shape: a PC Down in about 9%).
+Today's shape (Basic attack, 2 AP Round Special) with an Encounter Action at double the Round price of its AP. **Pay-back, on Standards, in points:** points off every one of the creature's other Actions (Level Up A5E's rule, "for every 2 points over the budget take 1 off the other turns", would be about 20 to 30 here). Cells: worth · a PC Down in a normal fight (the plain shape: a PC Down in about 9%).
 
 | Encounter Action | Pay-back 0 | 20 | 40 | 60 | 80 |
 |---|---|---|---|---|---|`);
@@ -121,6 +121,23 @@ const ENC = {};
 for (const [label, ap, extra, Px] of [["1 AP, one target", 1, {}, P], ["2 AP, one target", 2, {}, P], ["3 AP, one target", 3, {}, P], ["2 AP, an area (up to 3 PCs within 2 of the target, half each)", 2, { area: { n: 3, r: 2 } }, P], ["3 AP, an area (the same)", 3, { area: { n: 3, r: 2 } }, P], ["3 AP, one target, at 1.5 × the Round one (not double: for comparison)", 3, {}, { ...P, encounter: 1.5 }]]) {
   const cells = [0, 20, 40, 60, 80].map(pb => { const w = W({ acts: [{ name: "Basic", ap: 1 }, { name: "Special", ap: 2, freq: "round" }, { name: "Nova", ap, freq: "enc", ...extra }], payBack: pb }, { P: Px }); (ENC[label] ??= []).push(w); return `${f1(w.worth)} · ${pc(w.down)}`; });
   out.push(`| ${label} | ${cells.join(" | ")} |`); log(`encounter ${label.slice(0, 12)}`);
+}
+// On Elites (they are the ones with Encounter Actions; their fights are longer and the Action comes back at Escalation 6): the share every other Action loses.
+{
+  const { party, fights } = await import("./stage0lib.mjs");
+  const two = g => { const x = fights(party(1), g, { n: NM * 2 }), y = fights(party(2), g, { n: NM * 2 }); return { cost: (x.cost + y.cost) / 2, down: (x.down + y.down) / 2, won: (x.won + y.won) / 2 }; };
+  const eb = [{ name: "Basic", ap: 1 }, { name: "Special", ap: 2, freq: "round" }], bud = B.turnBudget("elite");
+  const el = (enc, share) => k => () => Array.from({ length: k }, () => B.npcBuilt("elite", { acts: enc ? [...eb, enc] : eb, ...(share != null ? { payBack: share * bud } : {}) }));
+  const c2 = g => { const x = two(g(2)), y = two(g(3)); return `${pc(x.cost)} · ${pc(x.down)} / ${pc(y.won)}`; };
+  out.push(`
+**The pay-back fitted on Elites** (the share every other Action and the Reaction lose). Cells: two Elites, cost · a PC Down / three Elites, won. An Elite with no Encounter Action: ${c2(el(null, null))}.
+
+| Encounter Action | Share 0 | 0.1 | 0.2 | 0.25 | 0.3 | 0.5 |
+|---|---|---|---|---|---|---|`);
+  for (const [label, enc] of [["1 AP, one target", { name: "Nova", ap: 1, freq: "enc" }], ["2 AP, an area (up to 3 PCs within 2, half each)", { name: "Nova", ap: 2, freq: "enc", area: { n: 3, r: 2 } }], ["3 AP, an area (the same)", { name: "Nova", ap: 3, freq: "enc", area: { n: 3, r: 2 } }], ["2 AP, one target", { name: "Nova", ap: 2, freq: "enc" }]]) {
+    out.push(`| ${label} | ${[0, 0.1, 0.2, 0.25, 0.3, 0.5].map(sh => c2(el(enc, sh))).join(" | ")} |`); log(`elite pay-back ${label.slice(0, 8)}`);
+  }
+  out.push(`\nChosen (config.mjs npcBudget.payBack): ${P.payBack.slice(1).map((x, i) => `${i + 1} AP ${x}`).join(", ")}.`);
 }
 out.push("");
 
@@ -179,7 +196,7 @@ const wg = rx => worth(team("grunt", { ...G0, ...(rx ? { reaction: rx } : {}) },
 const g0 = wg(null), g1 = wg({ name: "struck", cost: 1, trigger: "struck", give: 0, act: { name: "back" } }), g2 = wg({ name: "struck", cost: 1, trigger: "struck", act: { name: "back" } });
 out.push(`## 8. Grunts and their Reaction AP
 
-Eight of today's Grunts (3 AP: Basic attack 17 points, 1 AP Round Special 24), measured against the yardstick's four Standards (a worth of 100 is what four Standards cost): today, no Reaction: ${f1(g0.worth)}; with a 1R Trigger (hit: an attack back), free: ${f1(g1.worth)} (it fires ${f1((g1.fx.reactions ?? 0) / 8)} times a fight a Grunt); paid as a Standard's (half its points off the turn): ${f1(g2.worth)}.
+Eight of today's Grunts (3 AP: Basic attack 17 points, 1 AP Round Special 24), measured against the yardstick's four Standards (a worth of 100 is what four Standards cost): today, no Reaction: ${f1(g0.worth)}; with a 1R Trigger (hit: an attack back), free: ${f1(g1.worth)} (it fires ${f1((g1.fx.reactions ?? 0) / 8)} times a fight a Grunt); paid as a Standard's (a third of its points off the turn): ${f1(g2.worth)}.
 `);
 log("grunts");
 

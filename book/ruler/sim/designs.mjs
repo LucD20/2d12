@@ -24,7 +24,7 @@ export const ROLES = {
 export const RANKS = {
   minion: { acts: [{ name: "Stab", ap: 1, riders: [FM1] }, { name: "Trip", ap: 1, freq: "round", riders: [R("Hindered (EoT)", "mild")] }] },
   grunt: { acts: [{ name: "Hack", ap: 1, riders: [FM1] }, { name: "Gouge", ap: 1, freq: "round", riders: [R("Vulnerable 1", "mild")] }] },
-  elite: { acts: [{ name: "Maul", ap: 1, riders: [FM1] }, { name: "Rend", ap: 2, freq: "round", riders: [R("Prone", "moderate")] }, { name: "Quake", ap: 3, freq: "enc", area: { n: 3, r: 2 }, riders: [R("Slowed 1", "moderate")] }], reaction: { name: "Backhand", cost: 1, trigger: "struck", act: { name: "Backhand" } } },
+  elite: { acts: [{ name: "Maul", ap: 1, riders: [FM1] }, { name: "Rend", ap: 2, freq: "round", riders: [R("Prone", "moderate")] }, { name: "Quake", ap: 2, freq: "enc", area: { n: 3, r: 2 }, riders: [R("Slowed 1", "moderate")] }], reaction: { name: "Backhand", cost: 1, trigger: "struck", act: { name: "Backhand" } } },
 };
 /** The damage-only versions (the same shapes, no riders, no Reaction): what the Bestiary's table measured. */
 export const plain = d => ({ ...d, label: d.label, acts: d.acts.filter(a => a.kind !== "help").map(a => ({ ...a, riders: [], pts: undefined })), reaction: undefined });

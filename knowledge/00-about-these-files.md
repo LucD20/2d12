@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: 8ba4178 2026-11-12 HANDOFF: pack-stage0-book merged into main; next is the Bestiary's turn budget
+Built by tools/knowledge.py on 2026-11-12 from the repository at: 94adcf4 2026-11-12 Pack "The Bestiary's turn budget" (v0.0.368, nothing visible in Foundry)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (134 KB)
+- HANDOFF.md (135 KB)
 - MASTER-PLAN.md (36 KB)
 - open-design-items.md (123 KB)
 - rules-01-roll.md (23 KB)
@@ -28,7 +28,7 @@ Files:
 - rules-11-species.md (0 KB)
 - rules-12-paladin.md (3 KB)
 - rules-13-archer.md (3 KB)
-- rules-14-bestiary.md (32 KB)
+- rules-14-bestiary.md (31 KB)
 - rules-15-gear.md (11 KB)
 - design-sim-brief.md (22 KB)
 - design-stage0.md (18 KB)

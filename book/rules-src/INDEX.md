@@ -16,7 +16,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 11-species.md | Species | species |  | 0.8 | 32 |
 | 12-paladin.md | Paladin | paladin |  | 4.3 | 126 |
 | 13-archer.md | Archer | archer |  | 4.5 | 134 |
-| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 31.5 | 453 |
+| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 31.1 | 453 |
 | 15-gear.md | Gear | gear |  | 10.9 | 185 |
 
 ## 01-roll.md: Chapter 1: The Roll
