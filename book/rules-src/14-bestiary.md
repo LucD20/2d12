@@ -292,6 +292,9 @@ What the fight model gives for 4 PCs (all ratings Medium, Stage 1; the cost coun
 | 5 Standards, or 1 Elite and 3 Standards (500, hard) | 4½ | about 30% | 1 fight in 3 | 95 to 98% |
 | 6 Standards, or 2 Elites and 2 Standards (600, deadly) | 5½ | about half | more often than not | 82 to 89% |
 
+> [!tip]
+> These numbers assume the enemies **spread their attacks**: each strikes the PC it can reach best. If every enemy strikes **the same PC** (the weakest one, or simply the nearest), the encounter plays about **one step harder**: a normal fight like a hard one, a hard one like a deadly one. Do it on purpose (a wolf pack, a disciplined squad), and count it when you choose the CV.
+
 ## Example NPCs (Stage 1)
 
 **Goblin Sneak** (Minion, CV 25, 3 AP): Instinct High (+1), Body Medium (0), Mind Medium (0), Appeal Low (−1). Weapon Modifier Medium (+2), Power Modifier Low (+1). Body and Mind Health Low (×0.75): Health 6 (3 + 3). Armor Defense Medium (12), Ward Defense Low (11). **Speed 7** (fast: its Health is Low).

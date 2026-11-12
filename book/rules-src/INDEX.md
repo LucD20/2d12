@@ -16,7 +16,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 11-species.md | Species | species |  | 0.8 | 32 |
 | 12-paladin.md | Paladin | paladin |  | 3.8 | 123 |
 | 13-archer.md | Archer | archer |  | 4.0 | 131 |
-| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 20.6 | 314 |
+| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 21.0 | 317 |
 | 15-gear.md | Gear | gear |  | 10.1 | 182 |
 | 16-talents.md | Talents | talents |  | 2.2 | 68 |
 
@@ -297,7 +297,7 @@ Action cards: Sharpshooter (48, Archer Feature 1); Thrill of the Kill (50, Arche
 - 208:   ### Standards
 - 240:   ### Elites
 - 274: ## Building an encounter
-- 295: ## Example NPCs (Stage 1)
+- 298: ## Example NPCs (Stage 1)
 
 ## 15-gear.md: Gear
 
