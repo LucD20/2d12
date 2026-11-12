@@ -148,12 +148,15 @@ export function mindShare(dmg, weapon = null, tier = 2, mod = 0) {
 /** The weapon's damage of a tier ("1d8", "1d10+2"), as parsed parts. */
 export const weaponTier = (weapon, tier) => parseDamage(weapon?.tiers?.[tier - 1] ?? "0");
 /** Roll a damage expression: { total, dice: how many dice were rolled } (Empowered adds per die; a die never goes below 1 with Enfeebled). */
-export function rollDamage(R, dmg, { weapon = null, tier = 2, mod = 0, empowered = 0, keepBest = 0 } = {}) {
+export function rollDamage(R, dmg, { weapon = null, tier = 2, mod = 0, empowered = 0, keepBest = 0, explode = false } = {}) {
   let total = dmg.flat + dmg.mod * mod, n = 0;
   const rolled = [];   // [sides, value] of every die (keep the best)
-  const roll = (count, sides) => { for (let k = 0; k < count; k++) { const v = Math.max(1, die(R, sides) + empowered); total += v; n++; rolled.push([sides, v]); } };
-  for (const [c, s] of dmg.dice) roll(c, s);
-  for (let k = 0; k < dmg.w; k++) { const wt = weaponTier(weapon, tier); total += wt.flat; for (const [c, s] of wt.dice) roll(c, s); }
+  // RULES.explode (a measurement, off by default; Lucas's idea, 2026-11-12): a die "explodes -1" as the 2d12 do: its top face counts one less and it is rolled
+  // again. For a PC only the weapon's die ([W]); for an NPC the Action's die when the caller says so (`explode`: its Basic attack, or an Action with the trait).
+  const face = (sides, ex) => { let f = die(R, sides), t = 0; while (ex && sides > 1 && f === sides) { t += sides - 1; f = die(R, sides); } return t + f; };
+  const roll = (count, sides, ex = false) => { for (let k = 0; k < count; k++) { const v = Math.max(1, face(sides, ex) + empowered); total += v; n++; rolled.push([sides, v]); } };
+  for (const [c, s] of dmg.dice) roll(c, s, explode);
+  for (let k = 0; k < dmg.w; k++) { const wt = weaponTier(weapon, tier); total += wt.flat; for (const [c, s] of wt.dice) roll(c, s, !!RULES.explode && RULES.explode !== "npc"); }
   // Keep the best (pack LV, proposed): roll keepBest extra dice of the largest size rolled, then drop as many of the lowest dice of that size.
   if (keepBest && rolled.length) {
     const big = Math.max(...rolled.map(x => x[0])), pool = rolled.filter(x => x[0] === big).map(x => x[1]);
@@ -218,8 +221,9 @@ export const DICE = [[0, 0, 0], [1, 1, 1], [1, 2, 2], [1, 4, 2.5], [1, 6, 3.5], 
 export const diceFor = avg => DICE.reduce((b, d) => (Math.abs(d[2] - avg) < Math.abs(b[2] - avg) ? d : b));
 export function npcDamage(R, npc, tier) {
   if (tier < 2) return 0;
-  if (npc.curDmg) return rollDamage(R, npc.curDmg[tier - 2]).total;   // the Bestiary's turn budget: the Action's own damage
-  if (npc.dmg) { const e = npc.dmg[specialKey(npc.curMult ?? 1)] ?? npc.dmg.basic; return rollDamage(R, e[tier - 2]).total; }   // Stage 0: the table's own damage (a flat part plus one small die), Specials included
+  const major = npc.role !== "minion" && npc.role !== "grunt", ex = !!RULES.explode && RULES.explode !== "pc" && major;   // minor enemies' dice never explode
+  if (npc.curDmg) return rollDamage(R, npc.curDmg[tier - 2], { explode: ex && !!npc.curExplode }).total;   // the Bestiary's turn budget: the Action's own damage
+  if (npc.dmg) { const key = specialKey(npc.curMult ?? 1), e = npc.dmg[key] ?? npc.dmg.basic; return rollDamage(R, e[tier - 2], { explode: ex && (key === "basic" || !npc.dmg[key]) }).total; }   // Stage 0: the table's own damage (a flat part plus one small die), Specials included
   const avg = tier === 2 ? npc.t2 : npc.t3, d = diceFor(avg - npc.mod);
   let t = npc.mod;
   if (d[1] <= 2 && d[0] === 1) t += d[1]; else for (let k = 0; k < d[0]; k++) t += die(R, d[1]);

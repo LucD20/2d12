@@ -238,7 +238,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   const actHit = (f, a, t, k, m) => {
     for (const r of a.riders ?? []) if (r.at === "setup") riderOn(f, t, r);
     if (t.down) return 0;
-    f.curDmg = a.dmg; f.curPower = a.power; f.curName = a.name;
+    f.curDmg = a.dmg; f.curPower = a.power; f.curName = a.name; f.curExplode = a.explode;
     let tier;
     if (a.save) {   // a Save Action: DC 11 + its Modifier; the PC's Tier 1 is the attack's Tier 3
       const st = (t.build.attributes?.[a.save] ?? 1), pt = pick(f.R ?? R, C.tierProbs(st, 11 + (a.power ? f.powerMod : f.weaponMod), 0, 0, "")); tier = 4 - pt; f.lastTier = tier;

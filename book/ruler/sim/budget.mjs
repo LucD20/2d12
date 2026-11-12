@@ -46,13 +46,13 @@ export function compileAct(rank, d, { rating = "medium", P = PRICES(), scale = 1
   const r = ranged && (d.kind ?? "attack") === "attack" ? lower[rating] : rating;   // a ranged attack pays a rating step of damage for its range
   const pts = d.pts ?? actionPoints(rank, d.ap, d.freq ?? "atwill", r, P);
   const riders = (d.riders ?? []).map(x => ({ at: "hit", ...x }));
-  const riderPts = riders.reduce((s, x) => s + (x.price ?? riderPrice(x.sev, x.at, P)), 0);   // price: a rider's own price (the fit adds riders for free)
+  const riderPts = riders.reduce((s, x) => s + (x.price ?? riderPrice(x.sev, x.at, P)), 0) + (d.explode && !d.basic ? (d.explodePrice ?? P.riders.mild) : 0);   // the exploding trait (a measurement): a Mild rider's price; a Basic attack's explosion is free   // price: a rider's own price (the fit adds riders for free)
   let dmgPts = Math.max(0, pts - riderPts) * (d.area ? P.multi : 1) * scale;
   if (d.kind === "help") dmgPts = 0;
   const avg = pointsAvg(dmgPts, P);
   const dmg = dmgPts > 0.5 ? (exact ? avg.map(a => ({ w: 0, mod: 0, dice: [], flat: a, mind: null })) : avg.map(a => parseDamage(expr(a)))) : null;
   const heal = d.heal ? parseDamage(d.heal === true ? expr(pts * (P.toDamage[0] + P.toDamage[1]) / 2) : d.heal) : null;
-  return { name: d.name, kind: d.kind ?? "attack", ap: d.ap, freq: d.freq ?? "atwill", pts, dmgPts, riderPts, dmg, written: dmg ? avg.map(expr) : null, riders, area: d.area ?? null, save: d.save ?? null, power: !!d.power, buff: d.buff ?? null, heal, range: d.range ?? 5 };
+  return { name: d.name, kind: d.kind ?? "attack", ap: d.ap, freq: d.freq ?? "atwill", pts, dmgPts, riderPts, dmg, written: dmg ? avg.map(expr) : null, riders, area: d.area ?? null, save: d.save ?? null, power: !!d.power, explode: !!d.explode, buff: d.buff ?? null, heal, range: d.range ?? 5 };
 }
 /**
  * An NPC built on the budget: a Stage 0 NPC of its rank (Health, Defenses, Modifiers: npcS0) with its own Actions. design: { rating, acts: [...],
@@ -71,7 +71,7 @@ export function npcBuilt(rank, design, P = PRICES()) {
   const scale = Math.max(0, 1 - (give + payBack) / budget) * (design.scale ?? 1);
   const ranged = !!design.npc?.ranged;
   const encScale = Math.max(0, 1 - give / budget) * (design.scale ?? 1);   // the pay-back comes off the other Actions, not the Encounter one
-  const acts = design.acts.map(d => compileAct(rank, d, { rating, P, scale: d.freq === "enc" ? encScale : scale, ranged, exact: design.exact }));
+  const acts = design.acts.map((d0, i) => (i === 0 && d0.ap === 1 && (d0.freq ?? "atwill") === "atwill" ? { ...d0, explode: true, basic: true } : d0)).map(d => compileAct(rank, d, { rating, P, scale: d.freq === "enc" ? encScale : scale, ranged, exact: design.exact }));
   const reaction = design.reaction ? { ...design.reaction, cost: design.reaction.cost ?? 1, pts: rxPts, act: design.reaction.act ? compileAct(rank, { ap: design.reaction.cost ?? 1, freq: "round", ...design.reaction.act }, { rating, P, ranged, exact: design.exact, scale: Math.max(0, 1 - payBack / budget) }) : null } : null;
   return { ...base, payBack, give, acts, reaction, reactionAp: base.role === "minion" ? 0 : undefined, design: design.label ?? null, budget };
 }

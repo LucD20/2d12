@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: 94adcf4 2026-11-12 Pack "The Bestiary's turn budget" (v0.0.368, nothing visible in Foundry)
+Built by tools/knowledge.py on 2026-11-12 from the repository at: 0ed63e4 2026-11-12 The Bestiary's turn budget: reviewed and fixed
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -16,7 +16,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 Files:
 - HANDOFF.md (135 KB)
 - MASTER-PLAN.md (36 KB)
-- open-design-items.md (123 KB)
+- open-design-items.md (125 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (29 KB)
 - rules-03-movement.md (39 KB)
