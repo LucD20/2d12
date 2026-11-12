@@ -1,6 +1,6 @@
 # Weapon damage as a flat part plus one small die: a draft
 
-**A draft for Lucas (2026-11-12). Nothing is applied: the book, the cards, Foundry and the ruler still use today's table.** The idea (his, from the three ideas before the Stage 0 answers; `book/rules-backlog.md`): fewer dice and a narrower range of damage, without losing the die in the hand.
+**A draft for Lucas (2026-11-12). Lucas chose column B the same day ("B I think its alright"; the half point up is fine); the die sizes are still open (the section "How big can the die be"). Nothing is applied: the book, the cards, Foundry and the ruler still use today's table.** The idea (his, from the three ideas before the Stage 0 answers; `book/rules-backlog.md`): fewer dice and a narrower range of damage, without losing the die in the hand.
 
 ## The rule in one line
 
@@ -60,6 +60,21 @@ The least and the most a hit deals before the Modifier, Tier 2 / Tier 3:
 - **Greatsword:** in B it keeps today's top (12) and loses the bad Tier 3s (a Tier 3 of 2 or 3 can't happen).
 - **Shortbow against Longbow:** today's difference is kept: the Shortbow is the swingy one (a d6), the Longbow the steady one (a d4 on a bigger flat part), with the same averages.
 - **A Tier 3 is always better than a Tier 2's average** in A and B. Today a Greatsword's Tier 3 can roll under its Tier 2.
+
+## How big can the die be
+
+Lucas: "people like big die, so make sure if d8 is the real limit without unbalancing the game". **It is not a limit: the die's size does not move the balance** when the average stays the same. Measured (`node book/ruler/sim/weapondice.mjs`; today's level 1 party, 1,500 fights a cell; rounds, Health lost with its spread, a PC Down, won):
+
+| Weapons | Normal (4 Standards) | Deadly (6 Standards) |
+|---|---|---|
+| Today | 3.64 r (± 0.81) · 14% (± 18) · Down 22% · won 99% | 5.57 r (± 1.81) · 47% (± 38) · Down 68% · won 72% |
+| A (same averages) | 3.59 r (± 0.70) · 13% (± 18) · Down 22% · won 99% | 5.65 r (± 1.85) · 45% (± 37) · Down 67% · won 73% |
+| B (d8 the biggest) | 3.67 r (± 0.69) · 14% (± 19) · Down 25% · won 99% | 5.56 r (± 1.79) · 46% (± 37) · Down 67% · won 72% |
+| B, the Greatsword's Tier 3 as 3 + 1d10 | 3.66 r (± 0.73) · 13% (± 18) · Down 23% · won 99% | 5.59 r (± 1.74) · 46% (± 37) · Down 68% · won 73% |
+| B, the Greatsword's Tier 3 as 2 + 1d12 (Tier 2: 1d8) | 3.64 r (± 0.77) · 13% (± 18) · Down 22% · won 99% | 5.53 r (± 1.79) · 46% (± 37) · Down 67% · won 72% |
+| The same, and the Crossbow as 0 / 1 + 1d6 / 2 + 1d8 | 3.64 r (± 0.74) · 14% (± 19) · Down 23% · won 99% | 5.65 r (± 1.84) · 47% (± 37) · Down 69% · won 72% |
+
+Every row is the same within the runs' noise (about 2 points), B included. So the die is a choice of feel: a bigger die on a smaller flat part is a wider range (the Greatsword's Tier 3: 5 to 12 with 4 + 1d8, 4 to 13 with 3 + 1d10, 3 to 14 with 2 + 1d12), which is what the idea set out to narrow. **A way to have both:** big dice only where the weapon's story is the big hit, the two-handed melee weapons' Tier 3 (Greatsword 3 + 1d10, Greataxe 4 + 1d12 as in B, Pike 2 + 1d8), and small dice everywhere else (Tier 2s, one-handed and ranged weapons, the Maul as the steady two-hander).
 
 ## What to know before choosing
 
