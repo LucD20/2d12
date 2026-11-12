@@ -116,20 +116,26 @@ That way an Action line looks the same everywhere.
   3. **5c (the pick bar in the HUD's place) looked bugged:** redrawn. The HUD keeps its frame (who is asking on the left, the hotbar on the right); only its middle becomes the pick bar's question and buttons, with a gold glow.
 - **The height is now 70 px for every HUD** (the PC's two lines set it; it was 60).
 
-### Still for Lucas to pick (after the review)
+### Lucas's second review (2026-11-12), applied to the mockups
+- **The PC's bar looks good.**
+- **The NPC's bar was too big: it takes exactly what the PC's takes.** Redrawn in the PC's frame: two lines, 70 px, always. Line 1 is its attacks (Basic, Special); line 2 the rest (Reactions, Escalation, Checks and Saves). It never grows: on a line that is too full, the four Check / Save buttons first become one button, then the last Actions fold into a "+N more" button (a panel, as a PC's category). **This replaces "one row per group" above and the slim variant (both dropped).** Measured: the made-up 9-Action Elite shows all 9 at 1600 px, and 7 with "+2 more" at 1366 px; every creature of the book shows everything at both.
+- **Favorites: right-click -> Favorite, on an Action or on a single Version.** The Quick row shows only the favorited Versions (Smite 1 AP / 2 AP, not 1 / 2 / 3).
+- **5c was not what Lucas saw:** his viewer showed the page cut off (two carousel portraits, no tokens, no sidebar, no HUD). The likely cause is the page's weight (1.2 MB with the whole system CSS and every picture repeated); the pages now embed only the rules they use and each picture once (about 320 to 420 KB). Not confirmed on his side yet.
+
+### Still for Lucas to pick (after the reviews)
 1. ~~(a) full text or (b) one line~~: (a), decided.
 2. The portrait: shown, hidden, or a per-user setting.
-3. The HUD's height: 70 px two lines (liked), or the slim 40 px one line (no portrait, the hotbar in one row).
+3. ~~The HUD's height~~: 70 px, two lines, the same for PCs and NPCs (decided by the second review).
 4. The Elite: flat (proposed) or categories.
 5. The pick bar: in the HUD's place (proposed) or floating above it.
 6. Keep or drop: the NPC's Check / Save buttons; the dimming of used and locked Actions.
 7. The band colors: Basic green and Special blue (the At-will and Round frequency colors), Reactions navy (the Reactions card), Escalation amber. Each row's left edge is its own frequency's color.
 8. The PC's Escalation category: Passives listed as text beside the Actions (proposed), or only the Actions.
-9. The empty bar: at the HUD's height (proposed) or slim.
+9. ~~The empty bar~~: at the HUD's height (the slim variant is dropped).
 
 ### To check before the build
 - The Action line against the Bestiary's turn budget pack (riders, forced movement, Setup): the one line has room for "and Prone"; a long rider wraps to a second line (the Ogre's Ground Slam takes three).
 - The Paladin's panel uses today's cards; the Stage 0 class cards may change what the categories hold.
 - Not tried in Foundry: how the HUD sits with Foundry V14's own bottom elements (the hotbar and the players list are moved by the system; the mockup's screen is a stand-in).
 - Whether 5c's redraw is what "bugged" meant (Lucas didn't say what looked wrong; the first version replaced the whole HUD with a stretched bar).
-- The Quick row: how an Action is pinned (right-click, as the sheet's Favorites, is the mockup's guess), and whether an NPC's HUD needs one (no: all its Actions are already visible).
+- Whether 5c now shows whole in his viewer.

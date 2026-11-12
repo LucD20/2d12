@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: 9eecf21 2026-11-12 NPC-HUD mockups: the pages are self-contained (CSS, fonts and art embedded), so they open outside the repo
+Built by tools/knowledge.py on 2026-11-12 from the repository at: f94517a 2026-11-12 NPC-HUD mockups after Lucas's review: sheet (a) picked; rows in place of a free wrap; the PC's Quick row and split Action buttons; 5c redrawn
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -30,7 +30,7 @@ Files:
 - rules-13-archer.md (3 KB)
 - rules-14-bestiary.md (25 KB)
 - rules-15-gear.md (11 KB)
-- design-npc-hud-brief.md (12 KB)
+- design-npc-hud-brief.md (13 KB)
 - design-sim-brief.md (22 KB)
 - design-stage0.md (12 KB)
 - design-expedition-loop.md (12 KB)

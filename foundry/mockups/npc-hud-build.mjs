@@ -21,8 +21,13 @@ const sign = n => (n > 0 ? `+${n}` : n < 0 ? `−${-n}` : "0");
 const b64 = f => readFileSync(here(f)).toString("base64");
 const thumb = f => execFileSync("python3", ["-c", "import sys,io,base64;from PIL import Image;im=Image.open(sys.argv[1]).convert('RGB');im.thumbnail((160,160));b=io.BytesIO();im.save(b,'WEBP',quality=80);sys.stdout.write(base64.b64encode(b.getvalue()).decode())", here(`../twod12/art/${f}`)]).toString();
 const ARTDATA = Object.fromEntries(["npcs/goblin-sneak.png", "npcs/orc-warrior.png", "npcs/ogre-chieftain.png", "pcs/aveline.png", "pcs/durgan.png", "pcs/sylwen.webp", "pcs/kaela.webp"].map(f => [f, `data:image/webp;base64,${thumb(f)}`]));
-const inlineArt = html => html.replace(/src="\.\.\/twod12\/art\/([^"]+)"/g, (m, f) => `src="${ARTDATA[f]}"`);
-const SYSTEM_CSS = readFileSync(here("../twod12/styles/system.css"), "utf8").replace(/url\("\.\.\/fonts\/([a-z0-9-]+\.woff2)"\)/g, (m, f) => `url(data:font/woff2;base64,${b64(`../twod12/fonts/${f}`)})`).replace(/url\((?!data:)[^)]*\)/g, "none").replace(/<\/style/gi, "");
+const artKey = f => f.replace(/[^a-z]/g, "");
+const ART_CSS = Object.entries(ARTDATA).map(([f, d]) => `img.art-${artKey(f)} { content: url(${d}); }`).join("\n");
+const BLANK = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
+const inlineArt = html => html.replace(/<img ([^>]*?)src="\.\.\/twod12\/art\/([^"]+)"/g, (m, pre, f) => { const c = `art-${artKey(f)}`; return /class="/.test(pre) ? `<img ${pre.replace('class="', `class="${c} `)}src="${BLANK}"` : `<img class="${c}" ${pre}src="${BLANK}"`; });
+// Only the rules the mockups use (the Action card, the Turn dock, the pick bar, the variables, Cinzel): the whole file made the pages too heavy for some viewers.
+function pruneCss(css) { const out = []; let i = 0, start = 0, depth = 0; for (; i < css.length; i++) { const ch = css[i]; if (ch === "{") depth++; else if (ch === "}") { depth--; if (depth === 0) { const block = css.slice(start, i + 1), pre = block.slice(0, block.indexOf("{")); if (/acard|twod12-dock|turnend|linebar|pickbar|:root/.test(pre) || (/font-face/.test(pre) && /Cinzel/.test(block))) out.push(block.trim()); start = i + 1; } } } return out.join("\n"); }
+const SYSTEM_CSS = pruneCss(readFileSync(here("../twod12/styles/system.css"), "utf8").replace(/\/\*[\s\S]*?\*\//g, "")).replace(/url\("\.\.\/fonts\/([a-z0-9-]+\.woff2)"\)/g, (m, f) => `url(data:font/woff2;base64,${b64(`../twod12/fonts/${f}`)})`).replace(/url\((?!data:)[^)]*\)/g, "none").replace(/<\/style/gi, "");
 const FONT_CSS = Object.entries(SIGNIKA).map(([w, d]) => `@font-face { font-family: "Signika"; font-weight: ${w}; font-style: normal; src: url(data:font/woff2;base64,${d}) format("woff2"); }`).join("\n");
 const MOCK_CSS = readFileSync(here("./npc-hud.css"), "utf8");
 const ART = "../twod12/art/";
@@ -154,9 +159,13 @@ const npcSub = n => `${n.rank} &middot; CV ${n.cv}`;
 const haBtn = (n, a) => `<span class="ha${a.used || locked(n, a) ? " dim" : ""}" style="--fq:${fq(a)}"><b>${a.name}</b>${locked(n, a) ? `<span class="lk">${ic("lock")}</span>` : ""}<span class="vs">${(a.aps ?? [a.ap]).map(v => vbtn(n, a, v)).join("")}</span></span>`;
 const SAVES = [["Body", "body", "Bo"], ["Mind", "mind", "Mi"], ["Appeal", "appeal", "Ap"], ["Instinct", "instinct", "In"]];
 const savesGroup = n => `<div class="hud-g g-saves"><span class="hud-gl">Checks and Saves</span><div class="hud-acts">${SAVES.map(([l, k, s]) => `<span class="sv" style="--c:var(--hc-${k})" title="${l}: Check or Save">${s} <b>${sign(n.attrs[k])}</b></span>`).join("")}</div></div>`;
-function hudNpc(n, { img = true, slim = false, saves = true, hot = true, cls = "" } = {}) {
-  const groups = byGroup(n).map(([g, list]) => `<div class="hud-g g-${g}"><span class="hud-gl">${GROUPS[g][0]}${g === "esc" ? ` ${pips(n.escalation, 6)}` : ""}</span><div class="hud-acts">${list.map(a => haBtn(n, a)).join("")}</div></div>`).join("");
-  return `<div class="hud${img ? "" : " noimg"}${slim ? " slim" : ""} ${cls}">${idBlock({ ...n, sub: npcSub(n) }, img)}<div class="hud-main">${groups}${saves ? savesGroup(n) : ""}</div>${hot ? hotbar(slim) : ""}</div>`;
+// The NPC's bar (Lucas, 2026-11-12: "the same amount as the PC occupies"): the PC's frame. Two lines, never more: its attacks on the first
+// (Basic, Special), the rest on the second (Reactions, Escalation, Checks and Saves). What doesn't fit a line folds into a "+N more" button.
+function hudNpc(n, { img = true, saves = true, hot = true } = {}) {
+  const g = Object.fromEntries(byGroup(n));
+  const grp = k => (g[k] ? `<span class="hn-g g-${k}"><span class="hud-gl">${GROUPS[k][0]}${k === "esc" ? ` ${pips(n.escalation, 6)}` : ""}</span>${g[k].map(a => haBtn(n, a)).join("")}</span>` : "");
+  const sv = saves ? `<span class="hn-g g-saves"><span class="hud-gl">Checks and Saves</span>${SAVES.map(([l, k, s]) => `<span class="sv" style="--c:var(--hc-${k})" title="${l}: Check or Save">${s} <b>${sign(n.attrs[k])}</b></span>`).join("")}<button class="cat sv-all">${ic("dice")} Checks and Saves</button></span>` : "";
+  return `<div class="hud npc${img ? "" : " noimg"}">${idBlock({ ...n, sub: npcSub(n) }, img)}<div class="hud-npcmain"><div class="hn-line l1">${grp("basic")}${grp("special")}</div><div class="hn-line l2">${grp("react")}${grp("esc")}${sv}</div></div>${hot ? hotbar() : ""}</div>`;
 }
 // The Paladin: Aveline (the system's sample PC), with today's Paladin cards (her Stage 0 cards are not written yet: only the layout matters here).
 const PAL = { name: "Aveline", img: "pcs/aveline.png", sub: "Human Paladin &middot; Level 1", attrs: { body: 2, mind: 0, appeal: 1, instinct: 1 }, escalation: 2 };
@@ -187,10 +196,10 @@ function popFor(key) {
     <div class="pop-col g-saves"><div class="pop-h">Add</div><div class="pr" style="--fq:#4a5266"><b>A condition</b><span class="go">pick ${ic("chevron-right")}</span></div><div class="pr" style="--fq:#4a5266"><b>An Effect</b><span class="go">pick ${ic("chevron-right")}</span></div></div>`;
   return c.cols.map(([h, cls, list]) => `<div class="pop-col ${cls}"><div class="pop-h">${h}</div>${list.map(a => popRow(PAL, a)).join("")}</div>`).join("");
 }
-// Quick actions (Lucas, 2026-11-12): the player's pinned Actions, usable without opening a category (the sheet's Favorites: right-click to pin or unpin).
-const QUICK = [P("Smite", [1, 2, 3], "round"), P("Weapon Attack", [1], "atwill"), P("Advance", [1], "atwill"), P("Rebuke", [1], "turn", { reaction: true })];
+// Quick actions (Lucas, 2026-11-12): the player's favorites, usable without opening a category. Right-click -> Favorite, on an Action or on a single Version.
+const QUICK = [P("Smite", [1, 2], "round"), P("Weapon Attack", [1], "atwill"), P("Advance", [1], "atwill"), P("Rebuke", [1], "turn", { reaction: true })];   // Smite: only its 1 AP and 2 AP Versions are favorited
 const pcCats = open => PCATS.map(c => `<button class="cat${open === c.key ? " on" : ""}${c.later ? " later" : ""}" data-cat="${c.key}"${c.later ? ' title="When Skills are made"' : ""}>${ic(c.icon)} ${c.label}${c.later ? ' <span class="ct">later</span>' : ""}</button>`).join("");
-const pcMain = (open, quick = QUICK) => `<div class="hud-pcmain"><div class="hud-quick"><span class="hud-gl">${ic("star")} Quick</span>${quick.length ? quick.map(a => haBtn(PAL, a)).join("") : '<span class="hud-hint">Right-click an Action in a category to pin it here.</span>'}</div><div class="hud-cats">${pcCats(open)}</div></div>`;
+const pcMain = (open, quick = QUICK) => `<div class="hud-pcmain"><div class="hud-quick"><span class="hud-gl">${ic("star")} Quick</span>${quick.length ? quick.map(a => haBtn(PAL, a)).join("") : '<span class="hud-hint">Right-click an Action or a Version, then Favorite, to put it here.</span>'}</div><div class="hud-cats">${pcCats(open)}</div></div>`;
 function hudPc({ img = true, open = "", hot = true, quick = QUICK } = {}) {
   const pop = open ? `<div class="hud-pop" data-pop="${open}">${popFor(open)}</div>` : "";
   return `<div class="hud${img ? "" : " noimg"}" data-pc>${idBlock(PAL, img)}${pcMain(open, quick)}${hot ? hotbar() : ""}${pop}</div>`;
@@ -231,12 +240,12 @@ function fit() { document.querySelectorAll(".screenwrap").forEach(w => { const s
 addEventListener("resize", fit); fit();
 // the PC's categories open with a click (the mockup's only live part)
 document.querySelectorAll("[data-live]").forEach(h => { const pops = JSON.parse(h.nextElementSibling.textContent); h.addEventListener("click", ev => { const b = ev.target.closest(".cat"); if (!b) return; const was = b.classList.contains("on"); h.querySelectorAll(".cat").forEach(x => x.classList.remove("on")); h.querySelector(".hud-pop")?.remove(); if (was) return; b.classList.add("on"); const p = document.createElement("div"); p.className = "hud-pop"; p.innerHTML = pops[b.dataset.cat]; h.append(p); place(h, p, b); }); });
-// an NPC's bar that doesn't fit one row: one row per group, the names in a column, the Saves kept on the right (never a free wrap)
-document.querySelectorAll(".hud .hud-main").forEach(main => { const g = [...main.children]; if (new Set(g.map(k => k.offsetTop)).size < 2) return; main.closest(".hud").classList.add("rows"); const sv = main.querySelector(".g-saves"); if (sv) sv.style.gridRow = "1 / span " + (g.length - 1); });
+// an NPC's line that doesn't fit: its last Actions fold into a "+N more" button (the bar never grows)
+document.querySelectorAll(".hn-line").forEach(l => { const c = [...l.querySelectorAll(".ha")]; let n = 0, m = null; if (l.scrollWidth > l.clientWidth) l.classList.add("nosv"); while (l.scrollWidth > l.clientWidth && n < c.length) { c[c.length - 1 - n].hidden = true; n++; if (!m) { m = document.createElement("button"); m.className = "hn-more"; m.title = "The Actions that don't fit: click for a panel, as a PC's category"; l.append(m); } m.textContent = "+" + n + " more"; } });
 function place(h, p, b) { const left = Math.max(0, Math.min(b.offsetLeft - 10, h.clientWidth - p.offsetWidth)); p.style.left = left + "px"; p.style.setProperty("--ax", (b.offsetLeft - left + 24) + "px"); }
 document.querySelectorAll(".hud-pop[data-pop]").forEach(p => { const h = p.closest(".hud"); place(h, p, h.querySelector(".cat.on")); });
 // how many Version buttons fit a row (open point 3): written under each measured bar
-document.querySelectorAll("[data-measure]").forEach(m => { const h = m.previousElementSibling, main = h.querySelector(".hud-main"), kids = [...main.children].filter(k => !h.classList.contains("rows") || !k.classList.contains("g-saves")), rows = new Set(kids.map(k => k.offsetTop)).size; m.textContent = h.offsetWidth + " px wide, " + h.offsetHeight + " px high: " + h.querySelectorAll(".ha").length + " Actions, " + h.querySelectorAll(".ha .vb").length + " Version buttons, " + (rows > 1 ? rows + " rows (one per group)" : "one row") + "."; });
+document.querySelectorAll("[data-measure]").forEach(m => { const h = m.previousElementSibling, all = h.querySelectorAll(".ha").length, hid = h.querySelectorAll(".ha[hidden]").length; m.textContent = h.offsetWidth + " px wide, " + h.offsetHeight + " px high: " + all + " Actions, " + (hid ? (all - hid) + " shown and " + hid + " folded into the more button." : "all shown."); });
 </script>`;
 const page = (file, title, body) => writeFileSync(here(`./${file}`), inlineArt(`<!DOCTYPE html>
 <html lang="en">
@@ -245,9 +254,10 @@ const page = (file, title, body) => writeFileSync(here(`./${file}`), inlineArt(`
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title}</title>
 <!-- GENERATED by npc-hud-build.mjs (pack-npc-hud-mockups, 2026-11-12): edit the script, not this file. A mockup: nothing here is built in the system. -->
-<!-- Self-contained: Signika, the system's CSS (twod12/styles/system.css, with its Cinzel) and npc-hud.css are embedded below; the art is embedded as small copies. -->
+<!-- Self-contained: Signika, the rules of the system's CSS that the page uses (twod12/styles/system.css: the Action card, the Turn dock, the pick bar, Cinzel) and npc-hud.css are embedded below; the art is embedded once, as small copies. -->
 <style>${FONT_CSS}</style>
 <style>${SYSTEM_CSS}</style>
+<style>${ART_CSS}</style>
 <style>${MOCK_CSS}</style>
 <style>:root { --hc-body: #ef8a96; --hc-mind: #8db3ff; --hc-instinct: #7fd49a; --hc-appeal: #e6bd5a; }</style>
 </head>
@@ -283,30 +293,29 @@ const live = JSON.stringify(Object.fromEntries(PCATS.map(c => [c.key, popFor(c.k
 page("npc-hud-hud.html", "NPC-HUD mockups 2 to 4: the HUD", `
 <p class="lead">One HUD for PCs and NPCs, in the pick bar's look (the dark bar, the gold line), with the Action card's amber Version buttons. No Health, AP, Guard or uses: only a used or locked Action is dimmed. <b>Click a Version button: the roll dialog on that Version. Right-click: the Action card.</b> The bars below are drawn at the width they would have on a 1600 px wide screen (1276 px between the left edge and the sidebar) unless a line says otherwise.</p>
 
-<h2>2. An NPC: everything visible, no categories</h2>
+<h2>2. An NPC: the PC's frame, everything visible</h2>
+<p class="why"><b>Redrawn after Lucas's second review (2026-11-12): an NPC's bar takes exactly what a PC's takes.</b> The same two lines and the same 70 px, always. The first line is its attacks (Basic, Special), the second the rest (Reactions, Escalation, Checks and Saves), so each thing is always in the same place. No categories and no click to see an Action. It never grows: on a line that is too full, the four Check / Save buttons first become one button, then the last Actions fold into a "+N more" button.</p>
 <div class="stack" style="width:1276px">
-  ${box("npc-goblin", "Goblin Sneak (Minion), with the portrait", PICK, "The portrait and the name say which token is selected. The groups are the sheet's: Basic, Special, Reactions, Escalation, with the same colors.", hudNpc(NPCS.goblin), measure)}
-  ${box("npc-goblin-noimg", "Goblin Sneak, without the portrait", ALT, "The same height (two lines); it only gives back the portrait's width (53 px).", hudNpc(NPCS.goblin, { img: false }), measure)}
-  ${box("npc-goblin-slim", "Goblin Sneak, slim (one line, no portrait)", ALT, "40 px high. The group names sit in the line, the hotbar is one row of ten.", hudNpc(NPCS.goblin, { img: false, slim: true }), measure)}
-  ${box("npc-orc", "Orc Warrior (Standard): a Reaction", PICK, "", hudNpc(NPCS.orc), measure)}
+  ${box("npc-goblin", "Goblin Sneak (Minion)", PICK, "", hudNpc(NPCS.goblin), measure)}
+  ${box("npc-orc", "Orc Warrior (Standard): a Reaction on the second line", PICK, "", hudNpc(NPCS.orc), measure)}
+  ${box("elite-flat", "Ogre Chieftain (Elite): flat like any NPC", PICK, "Ground Slam is used (struck); the Escalation pips sit on the group's name.", hudNpc(NPCS.ogre), measure)}
+  ${box("npc-orc-noimg", "Orc Warrior, without the portrait", ALT, "The same height; it only gives back the portrait's width.", hudNpc(NPCS.orc, { img: false }), measure)}
+  ${box("elite-cats", "Ogre Chieftain, with categories like a PC", ALT, "Three Actions hidden behind three clicks: it costs a click on every use and shows nothing at a glance.", `<div class="hud">${idBlock({ ...NPCS.ogre, sub: npcSub(NPCS.ogre) }, true)}<div class="hud-cats">${[["Actions", "hand-fist"], ["Reactions", "reply"], ["Escalation", "angles-up"], ["Checks and Saves", "dice"], ["Conditions and Effects", "heart-pulse"]].map(([l, i]) => `<button class="cat">${ic(i)} ${l}</button>`).join("")}</div>${hotbar()}</div>`)}
 </div>
-
-<h2>The Elite: flat, or with categories</h2>
+<h2>The width test: a made-up Elite with 9 Actions (placeholder names, not rules)</h2>
+<p class="why">Far more than any creature in the book has. The bar keeps its height at every width.</p>
 <div class="stack" style="width:1276px">
-  ${box("elite-flat", "Ogre Chieftain, flat like any NPC", PICK, "Ground Slam is used (struck), the Escalation pips sit on the group's name. An Elite of the book fits one row with room to spare.", hudNpc(NPCS.ogre), measure)}
-  ${box("elite-flat-noimg", "Ogre Chieftain, flat, without the portrait", ALT, "", hudNpc(NPCS.ogre, { img: false }), measure)}
-  ${box("elite-cats", "Ogre Chieftain, with categories like a PC", ALT, "Three Actions hidden behind three clicks: it costs a click on every use and shows nothing at a glance.", `<div class="hud">${idBlock({ ...NPCS.ogre, sub: npcSub(NPCS.ogre) }, true)}<div class="hud-cats">${[["Actions", "hand-fist", 2], ["Reactions", "reply", 0], ["Escalation", "angles-up", 1], ["Checks and Saves", "dice", 0], ["Conditions and Effects", "heart-pulse", 0]].map(([l, i, c]) => `<button class="cat">${ic(i)} ${l}${c ? ` <span class="ct">${c}</span>` : ""}</button>`).join("")}</div>${hotbar()}</div>`)}
-  ${box("elite-busy", "The width test: a made-up Elite with 9 Actions (placeholder names, not rules)", '<span class="tag">Measure</span>', "Far more than any creature in the book has. At 1600 px one row holds 7 one-Version Actions and the Saves. When a bar doesn't fit, it never wraps freely: it becomes one row per group, in the sheet's order, the group names in a column and the Saves kept on the right.", hudNpc(BUSY), measure)}
+  ${box("elite-busy", "On a 1600 px screen (1276 px for the HUD)", '<span class="tag">Measure</span>', "", hudNpc(BUSY), measure)}
 </div>
 <div class="stack" style="width:1042px">
-  ${box("elite-busy-1366", "The same made-up Elite on a 1366 px laptop (1042 px for the HUD)", '<span class="tag">Measure</span>', "The same rule on the laptop (Lucas, 2026-11-12: the free wrap was chaotic). One row per group, always in the same order and the same places; the bar grows upward. No creature in the book needs it.", hudNpc(BUSY), measure)}
+  ${box("elite-busy-1366", "On a 1366 px laptop (1042 px for the HUD)", '<span class="tag">Measure</span>', "", hudNpc(BUSY), measure)}
   ${box("npc-ogre-1366", "Ogre Chieftain on the 1366 px laptop", '<span class="tag">Measure</span>', "", hudNpc(NPCS.ogre), measure)}
 </div>
 
 <h2>3. A PC (the Paladin): categories, opened by a click</h2>
-<p class="why">Aveline, the system's sample Paladin, with today's Paladin cards (her Stage 0 cards are not written yet: only the layout matters). <b>Changed after Lucas's review (2026-11-12):</b> a <b>Quick</b> row on top for the Actions the player pins; <b>Actions, Basic Actions and Reactions</b> are three buttons; a place is kept for <b>Skills</b>. <b>The first bar is live: click a category.</b></p>
+<p class="why">Aveline, the system's sample Paladin, with today's Paladin cards (her Stage 0 cards are not written yet: only the layout matters). <b>Changed after Lucas's review (2026-11-12):</b> a <b>Quick</b> row on top for the player's favorites (right-click &rarr; Favorite, on an Action or on one Version: here Smite's 1 AP and 2 AP only); <b>Actions, Basic Actions and Reactions</b> are three buttons; a place is kept for <b>Skills</b>. <b>The first bar is live: click a category.</b></p>
 <div class="stack" style="width:1276px">
-  ${box("pc-closed", "Closed, with the portrait (live: click the categories)", PICK, "The Quick row on top (pinned Actions, used with one click), the categories under it. Skills is a kept place, dashed until they exist.", `<div style="padding-top:8px">${hudPc().replace("data-pc", "data-pc data-live")}<script type="application/json">${live}</script></div>`)}
+  ${box("pc-closed", "Closed, with the portrait (live: click the categories)", PICK, "The Quick row on top (favorites, used with one click; Smite shows only its two favorited Versions), the categories under it. Skills is a kept place, dashed until they exist.", `<div style="padding-top:8px">${hudPc().replace("data-pc", "data-pc data-live")}<script type="application/json">${live}</script></div>`)}
   ${box("pc-closed-noimg", "Closed, without the portrait", ALT, "", hudPc({ img: false }))}
   ${box("pc-noquick", "Nothing pinned yet", PICK, "The Quick row says how to fill it; the bar keeps its height.", hudPc({ quick: [] }))}
   ${box("pc-actions", "Actions, open", PICK, "Her class's Actions and Talents. One row per Action, one button per Version; the left edge is the frequency's color (blue Round, red Encounter).", `<div style="padding-top:110px">${hudPc({ open: "actions" })}</div>`)}
@@ -320,7 +329,6 @@ page("npc-hud-hud.html", "NPC-HUD mockups 2 to 4: the HUD", `
   ${box("list", "Six tokens selected: the list", PICK, "A click selects that token alone and opens its HUD. The hovered one lights up as a pick bar's candidate does (here and on the map).", hudList())}
   ${box("list-noimg", "The list, without portraits", ALT, "", hudList({ img: false }))}
   ${box("empty", "The GM with nothing selected: the empty bar, at the HUD's height", PICK, "The same height as any HUD, so the hotbar and the players list never move. (A player with nothing selected sees their own character's HUD.)", hudEmpty())}
-  ${box("empty-slim", "The empty bar, slim", ALT, "40 px: only right if the slim HUD is the one picked, else the bar jumps on every selection.", hudEmpty({ slim: true }))}
 </div>
 `);
 
