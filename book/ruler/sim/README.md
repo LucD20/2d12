@@ -17,6 +17,7 @@ The brief: `book/sim-brief.md`. Built in four parts. **SIM-1 is done (2026-11-12
 | `enclog.mjs` | A fight's log in the Encounter Log's playtest format (SIM-4): the system's own `module/enclog.mjs exportText`, fed with the engine's events |
 | `playtest4.mjs` | **Playtest 4 replayed** (SIM-4): the table's encounter run 1,500 times a map, beside what happened at the table; it writes `../playtest-4-sim.md` |
 | `stage0.mjs` | **The Stage 0 run** (2026-11-12, a prototype: nothing of it is in the book): levels 1 to 3 on decisions-s1.md's lists, Escalation 1 to 6 with Momentum, the Bestiary's Stage 0 row fitted, the ranged-against-melee candidates; it writes `../stage0.md` |
+| `reactions.mjs` | How often each Reaction fires, and the fights without the basic Opportunity Attack (2026-11-12, two measurements for Lucas); it writes `../reactions.md` |
 | `policies.mjs` | **The sensitivity report** (SIM-3): every headline fight under each party policy and each enemy policy, on three maps; it writes `../policies.md` |
 | `areas.mjs`, `parties.mjs` | What the Area cards do on the grid against the number their ruler lines assume, with a party that uses them; it writes `../areas.md` |
 | `maps.mjs` | The fights on every map and the price of Speed and of the movement conditions there; it writes `../maps.md` |

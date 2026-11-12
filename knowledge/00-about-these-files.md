@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: 2dc0eb4 2026-11-12 rules-backlog: ranged against melee, measured before the Stage 0 run (Lucas's question; nothing decided)
+Built by tools/knowledge.py on 2026-11-12 from the repository at: 73c306f 2026-11-12 Stage 0 run in SIM (prototype): levels 1-3, Escalation 1-6 with Momentum, the Bestiary row fitted, ranged against melee candidates A, B, C, E
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,9 +14,9 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (120 KB)
+- HANDOFF.md (121 KB)
 - MASTER-PLAN.md (33 KB)
-- open-design-items.md (118 KB)
+- open-design-items.md (120 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
