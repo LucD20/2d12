@@ -462,6 +462,7 @@ Health Pool: Human Paladin 36 / 39 / 42, Dwarf Paladin 41 / 44 / 48, Human Arche
 - **Rally Points:** the class's Rally value (Paladin 6, Archer 5) + ceil((Body + Mind + level) / 2), each removing ceil(Pool / 4): 1.6 to 2.4 Health Pools a day at level 1, 1.9 to 2.5 at level 3, 2.2 to 2.8 at level 5 (six builds: Human, Dwarf and Elf of each class).
 
 ## The scripts in this folder
+- **`maps/*.txt`, `maps.md` (SIM-2, 2026-11-12):** the maps (walls, Difficult Terrain, start zones) and the fights on each, with the price of Speed and of the movement conditions by map (`node book/ruler/sim/maps.mjs`). `report.md` stays the open field.
 - **`sim/` (SIM-1, 2026-11-12): the engine** (`core.mjs` rules, dice, NPCs; `turn.mjs` a PC turn; `engine.mjs` the fight and the day; `policy.mjs` the decisions; `run.mjs` one fight written out). Its README: `sim/README.md`. spec.mjs exports it all again, so every script below works as before, and every report came out unchanged.
 - `spec.mjs` with `rework/*.txt` and `fights.txt`: the spec-driven ruler on the book's rules today (top of this file); it writes `report.md`. With `--pre-r`: `classes/*.txt` and `fights-pre-r.txt` under the rules before pack R; it writes `report-pre-r.md`.
 - `econ.mjs` with `catalogue/*.txt`: the price list of the core rules (pack E1); it writes `prices.md`.

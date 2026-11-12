@@ -14,6 +14,10 @@
 // What it leaves out: walls and Line of Effect (an open field), Difficult Terrain, Collision, Large creatures, elevation (SIM-2: book/sim-brief.md).
 // This file has no import from spec.mjs: spec.mjs calls it and passes what it needs (W.hooks). The rules of the dice come from the system's calc.mjs.
 const C = await import(new URL("../../foundry/twod12/module/calc.mjs", import.meta.url).href);
+const GR = await import(new URL("../../foundry/twod12/module/gridrules.mjs", import.meta.url).href);   // SIM-2: Line of Effect and Cover by corners, a step's cost, Collision
+const CO = await import(new URL("../../foundry/twod12/module/corners.mjs", import.meta.url).href);     // SIM-2: solid corners, the straight line of a Push
+import fs from "node:fs";
+import { fileURLToPath } from "node:url";
 const RR = await import(new URL("../../foundry/twod12/module/roundrules.mjs", import.meta.url).href);   // SIM-1: Flanking's count, Cover's effect, the range Banes, Prone and Engaged: the system's own functions
 
 /** The map's settings (fights.txt `map ...` lines can change each one). */
@@ -79,15 +83,19 @@ export function mapMods(att, tgt, kind, W, opts = {}) {
     if (!off.range) { src.push({ banes: rb }); out.rangeBanes = rb; }                                                          // no name: it adds to Cover
     if (engaged(att, W) && !opts.noEngagedBanes && !off.engaged) { src.push({ banes: RR.ENGAGED_RANGED_BANES }); out.engagedBanes = RR.ENGAGED_RANGED_BANES; }           // no name (one rule)
     if (!off.intoMelee && !opts.noIntoMelee && enemiesOf(tgt, W).some(x => x !== att && adj(x, tgt))) { src.push({ banes: RR.INTO_MELEE_FIELD_BANES, bb: "field" }); out.intoMelee = RR.INTO_MELEE_FIELD_BANES; }
+    const lvl = W.M.grid ? coverOf(att, tgt, W) : 0;   // SIM-2: on a map, Cover is the corners the walls block; 4 = no Line of Effect
+    if (lvl >= 4) return null;
     if (!opts.ignoreCover && !off.cover) {
       let c = creatureInLine(att, tgt, W) ? 1 : 0;
-      if (d > 1) { const u = (att.R ?? W.R)(); let acc = 0; for (const x of W.M.cover) { acc += x.p; if (u < acc) { c = Math.max(c, x.n); break; } } }
+      if (W.M.grid) c = Math.max(c, lvl);
+      else if (d > 1) { const u = (att.R ?? W.R)(); let acc = 0; for (const x of W.M.cover) { acc += x.p; if (u < acc) { c = Math.max(c, x.n); break; } } }
       const cm = RR.coverMods(c); if (cm.doomed) out.doomed = true; else if (cm.banes) src.push({ banes: cm.banes, bb: cm.bb });   // High cover: Doomed, and no Field Banes from the Cover
       out.coverBanes = c >= 3 ? 0 : c; out.cover = c;
     }
     if (tgt.cond?.prone) src.push(RR.proneMods(true));
   } else {
     if (cheb(att.pos, tgt.pos) > 1) return null;
+    if (W.M.grid) { const lvl = coverOf(att, tgt, W); if (lvl >= 4) return null; const cm = RR.coverMods(lvl); if (cm.doomed) out.doomed = true; else if (cm.banes) src.push({ banes: cm.banes, bb: cm.bb }); out.cover = lvl; }   // Cover applies to melee too (around a corner)
     if (!W.M.off?.flank) src.push({ boons: flankBoons(att, tgt, W), bb: "field" });
     if (tgt.cond?.prone) src.push(RR.proneMods(false));
   }
@@ -101,6 +109,7 @@ const NB = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]
  * onLeave(c, next) is called before each step (an Interrupt can stop it: return false). Returns the squares moved.
  */
 export function walk(c, score, budget, W, onLeave = null) {
+  if (W.M?.grid) return walkGrid(c, score, budget, W, onLeave);   // SIM-2: on a map, a path around walls and through terrain
   const occ = free(W, c);
   let used = 0, diag = 0, moved = 0;
   for (;;) {
@@ -118,7 +127,7 @@ export function walk(c, score, budget, W, onLeave = null) {
   return moved;
 }
 /** Score functions: to a square next to t; away from enemies (up to `far` squares from the nearest); toward / away from a point. */
-export const toward = t => p => (cheb(p, t.pos) === 1 ? 0 : cheb(p, t.pos) === 0 ? 99 : dist(p, t.pos));
+export const toward = t => { const f = p => (cheb(p, t.pos) === 1 ? 0 : cheb(p, t.pos) === 0 ? 99 : dist(p, t.pos)); f.goal = t; return f; };   // goal: on a map the walk finds a path to a square next to it
 export const awayFrom = (list, far = 12) => p => -Math.min(far, ...list.map(e => dist(p, e.pos)));
 
 /** The Speed of a creature now (Hindered halves it, rounded down; Immobilized: 0). */
@@ -126,6 +135,7 @@ export const speedOf = c => (c.cond?.immob ? 0 : c.cond?.hindered ? Math.floor(c
 
 /** Place the creatures: melee PCs on the front line (y 0), ranged PCs `back` squares behind, NPCs `start` squares away (ranged ones 3 more). */
 export function place(pcs, foes, M) {
+  if (M.grid) return placeGrid(pcs, foes, M.grid);
   const row = (list, y) => list.forEach((c, i) => { c.pos = { x: Math.round((i - (list.length - 1) / 2) * M.spacing), y }; });
   row(pcs.filter(p => p.melee), 0);
   const back = pcs.filter(p => !p.melee);   // the ranged PCs stand behind and beside the front line, not straight behind a melee PC
@@ -159,6 +169,7 @@ export function applyCondition(t, name, by = null) {
 /** Forced Movement: push (away from the origin), pull (toward it), slide (away from the slider's allies). Immobilized: not moved. */
 export function force(kind, origin, t, n, W) {
   if (!n || t.cond?.immob || !up(t)) return 0;
+  if (W.M?.grid && kind !== "slide") return forceGrid(kind, origin, t, n, W);
   const score = kind === "pull" ? (p => dist(p, origin.pos)) : kind === "slide" ? awayFrom(friendsOf(origin, W), 99) : (p => -dist(p, origin.pos));
   // Forced Movement counts each square as 1 (diagonals too): a budget with no diagonal surcharge.
   const occ = free(W, t);
@@ -170,4 +181,141 @@ export function force(kind, origin, t, n, W) {
     t.pos = best; moved++;
   }
   return moved;
+}
+
+/* ------------------------------------------------------------------ SIM-2 (2026-11-12): maps. A map is a text file of book/ruler/maps/: one character a square.
+   `#` a wall or anything solid that fills its square (it blocks lines and movement, and its corners are solid), `~` Difficult Terrain, `P` where the
+   party can start, `N` where the enemies can start, `.` open ground. The file's top row is the far side: the party is usually at the bottom.
+   With no map (`open`), the fight is on the open field above, exactly as before SIM-2. */
+const MAPS = fileURLToPath(new URL("./maps/", import.meta.url));
+export const mapNames = () => ["open", ...fs.readdirSync(MAPS).filter(f => f.endsWith(".txt")).map(f => f.slice(0, -4)).sort()];
+export function parseMap(text, name = "map") {
+  const rows = text.split(/\r?\n/).filter(l => l.trim() && !l.startsWith(";")), h = rows.length, w = Math.max(...rows.map(r => r.length));
+  const G = { name, w, h, wall: new Set(), rough: new Set(), walls: [], roughs: [], pcStart: [], npcStart: [], title: (text.match(/^;\s*(.+)$/m) ?? [])[1] ?? name };
+  rows.forEach((r, i) => { const y = h - 1 - i; for (let x = 0; x < w; x++) { const ch = r[x] ?? "#";
+    if (ch === "#") { G.wall.add(`${x},${y}`); G.walls.push([x, y]); } else if (ch === "~") { G.rough.add(`${x},${y}`); G.roughs.push([x, y]); } else if (ch === "P") G.pcStart.push({ x, y }); else if (ch === "N") G.npcStart.push({ x, y }); } });
+  if (!G.pcStart.length || !G.npcStart.length) throw new Error(`maps/${name}.txt needs P squares (the party's start) and N squares (the enemies')`);
+  return G;
+}
+const LOADED = new Map();
+/** A map by its name (maps/<name>.txt); "open" or nothing: no map (the open field). */
+export function loadMap(name) { if (!name || name === "open") return null; if (!LOADED.has(name)) LOADED.set(name, parseMap(fs.readFileSync(`${MAPS}${name}.txt`, "utf8"), name)); return LOADED.get(name); }
+const solid = (G, x, y) => x < 0 || y < 0 || x >= G.w || y >= G.h || G.wall.has(`${x},${y}`);
+const blocker = G => (G.blocks ??= (ax, ay, bx, by) => { for (const k of G.walls) if (GR.segmentHitsSquare(ax, ay, bx, by, k[0], k[1])) return true; return false; });
+const COVER = new WeakMap();   // per map: "ax,ay>bx,by" -> level (walls don't move)
+/** Cover of b against a on the map: the corners of b's square that the walls block from the center of a's (0 to 4; 4 = no Line of Effect). No map: 0. */
+export function coverOf(a, b, W) {
+  const G = W.M?.grid; if (!G) return 0;
+  let c = COVER.get(G); if (!c) COVER.set(G, (c = new Map()));
+  const k = `${a.pos.x},${a.pos.y}>${b.pos.x},${b.pos.y}`; let v = c.get(k);
+  if (v === undefined) c.set(k, (v = GR.coverLevel(a.pos, b.pos, blocker(G))));
+  return v;
+}
+export const coverAt = (pos, b, W) => coverOf({ pos }, b, W);
+/** Can a target b with an Action? On a map it needs Line of Effect. */
+export const canTarget = (a, b, W) => coverOf(a, b, W) < 4;
+
+/** Every square c can reach and what it costs (Ch. 3: the second diagonal 2, Difficult Terrain double, no solid corner, no square with a creature in it). from: Map "x,y" -> { cost, prev }. */
+function reach(c, W, budget = Infinity, { through = false, start = c.pos } = {}) {
+  const G = W.M.grid;
+  if (through && budget === Infinity) { const f = (G.fields ??= new Map()), k = `${start.x},${start.y}`; if (!f.has(k)) f.set(k, search(G, start, Infinity, null)); return f.get(k); }   // walls don't move: one search per square of a map
+  return search(G, start, budget, through ? null : free(W, c));
+}
+function search(G, start, budget, occ) {
+  const best = new Map(), seen = new Set(), buckets = [[{ x: start.x, y: start.y, cost: 0, diag: 0, prev: null }]];   // costs are small whole numbers: a bucket per cost
+  for (let cst = 0; cst < buckets.length; cst++) {
+    const b = buckets[cst]; if (!b) continue;
+    for (let q = 0; q < b.length; q++) {
+      const n = b[q], sk = (n.x + 1) * 4096 + (n.y + 1) * 2 + (n.diag % 2);
+      if (seen.has(sk)) continue; seen.add(sk);
+      const k = `${n.x},${n.y}`; if (!best.has(k)) best.set(k, n);
+      for (const [dx, dy] of NB) {
+        const x = n.x + dx, y = n.y + dy, isD = dx && dy;
+        if (solid(G, x, y) || (occ && occ.has(`${x},${y}`))) continue;
+        if (isD && CO.stepCorners({ i: n.y, j: n.x }, { i: y, j: x }, { solidAt: () => solid(G, n.x, y) || solid(G, x, n.y) }).kind === "solid") continue;
+        const cost = n.cost + GR.stepCost(!!isD, n.diag, G.rough.has(`${x},${y}`));
+        if (cost > budget) continue;
+        (buckets[cost] ??= []).push({ x, y, cost, diag: n.diag + (isD ? 1 : 0), prev: n });
+      }
+    }
+  }
+  return best;
+}
+const pathTo = n => { const p = []; for (let k = n; k?.prev; k = k.prev) p.unshift({ x: k.x, y: k.y }); return p; };
+/** The squares to walk (as a movement cost) from c to a square next to t, around walls; Infinity when there is no way. No map: the straight distance - 1. */
+export function gap(c, t, W) {
+  if (!W.M?.grid) return cheb(c.pos, t.pos) <= 1 ? 0 : dist(c.pos, t.pos) - 1;
+  if (adj(c, t)) return 0;
+  const f = reach(c, W, Infinity, { through: true }); let b = Infinity;
+  for (const [dx, dy] of NB) { const n = f.get(`${t.pos.x + dx},${t.pos.y + dy}`); if (n && n.cost < b) b = n.cost; }
+  return b;
+}
+/** The nearest of a list to c: by the way there on a map, by the straight distance on the open field. */
+export function nearest(c, list, W) {
+  if (!W.M?.grid) return list.sort((x, y) => dist(c.pos, x.pos) - dist(c.pos, y.pos))[0];
+  const g = new Map(list.map(t => [t, gap(c, t, W)]));
+  return list.sort((x, y) => g.get(x) - g.get(y) || dist(c.pos, x.pos) - dist(c.pos, y.pos))[0];
+}
+/** A score for a creature that shoots: on a map, a square with no Line of Effect to its target is far worse, and Cover a little worse. */
+export const sightScore = (score, tg, W) => (!W.M?.grid || !tg ? score : p => { const l = coverAt(p, tg, W); return score(p) + (l >= 4 ? 40 : l >= 3 ? 6 : l); });
+/** The walk on a map: to a square next to the goal by the shortest way (score.goal), or to the reachable square with the best score. */
+function walkGrid(c, score, budget, W, onLeave) {
+  let path = null;
+  if (score.goal) {
+    const t = score.goal; if (adj(c, t)) return 0;
+    for (const through of [false, true]) {   // a way around the creatures; if they block every way, the way through them, as far as it goes
+      const f = reach(c, W, Infinity, { through }), occ = through ? free(W, c) : null; let b = null;
+      for (const [dx, dy] of NB) { const k = `${t.pos.x + dx},${t.pos.y + dy}`, n = f.get(k); if (n && (!b || n.cost < b.cost) && !(occ && occ.has(k))) b = n; }
+      if (b) { path = pathTo(b); break; }
+    }
+  } else {
+    let b = null, bs = score(c.pos) - 1e-9;
+    for (const n of reach(c, W, budget).values()) { const s = score({ x: n.x, y: n.y }) + n.cost * 1e-3; if (s < bs) { bs = s; b = n; } }
+    if (b) path = pathTo(b);
+  }
+  if (!path) return 0;
+  const G = W.M.grid, occ = free(W, c); let used = 0, diag = 0, moved = 0;
+  for (const np of path) {
+    const isD = np.x !== c.pos.x && np.y !== c.pos.y, cost = GR.stepCost(isD, diag, G.rough.has(`${np.x},${np.y}`));
+    if (used + cost > budget || occ.has(`${np.x},${np.y}`)) break;
+    if (onLeave && onLeave(c, np) === false) break;
+    c.pos = np; used += cost; if (isD) diag++; moved++;
+  }
+  return moved;
+}
+/** Pushed and Pulled on a map (Ch. 3, Collision): a straight line to the destination; the creature stops in the last legal square and takes damage for its unused squares (W.onCollision tells the engine). */
+function forceGrid(kind, origin, t, n, W) {
+  const G = W.M.grid, d = { x: t.pos.x - origin.pos.x, y: t.pos.y - origin.pos.y }, m = Math.max(Math.abs(d.x), Math.abs(d.y)) || 1, sgn = kind === "pull" ? -1 : 1;
+  const want = kind === "pull" ? Math.min(n, Math.max(0, cheb(t.pos, origin.pos) - 1)) : n;   // a Pull is aimed at the square next to the origin: no Collision with it
+  if (!want) return 0;
+  const dest = { x: t.pos.x + Math.round(sgn * want * d.x / m), y: t.pos.y + Math.round(sgn * want * d.y / m) };
+  const line = CO.straightCells({ i: t.pos.y, j: t.pos.x }, { i: dest.y, j: dest.x }).slice(1), occ = new Map([...W.pcs, ...W.foes].filter(c => c !== t && up(c)).map(c => [`${c.pos.x},${c.pos.y}`, c]));
+  let moved = 0, hit = null;
+  for (const cell of line) {
+    const np = { x: cell.j, y: cell.i }, isD = np.x !== t.pos.x && np.y !== t.pos.y;
+    if (solid(G, np.x, np.y) || (isD && (solid(G, t.pos.x, np.y) || solid(G, np.x, t.pos.y)))) { hit = "wall"; break; }
+    const other = occ.get(`${np.x},${np.y}`) ?? (isD && occ.get(`${t.pos.x},${np.y}`) && occ.get(`${np.x},${t.pos.y}`) ? occ.get(`${t.pos.x},${np.y}`) : null);
+    if (other) { hit = other; break; }
+    t.pos = np; moved++;
+  }
+  const unused = line.length - moved;
+  if (hit && unused > 0) {
+    const dmg = GR.collisionDamage(unused, hit === "wall" ? "wall" : "creature");
+    t.damage = (t.damage ?? 0) + dmg; if (t.st) t.st.taken += dmg;
+    if (hit !== "wall") { hit.damage = (hit.damage ?? 0) + dmg; if (hit.st) hit.st.taken += dmg; }
+    W.onCollision?.(origin, t, dmg, hit === "wall" ? null : hit);
+  }
+  return moved;
+}
+/** The start on a map: each side in its zone, the melee creatures in the squares nearest the other side, the ranged ones farthest. */
+function placeGrid(pcs, foes, G) {
+  const mid = list => ({ x: list.reduce((s2, p) => s2 + p.x, 0) / list.length, y: list.reduce((s2, p) => s2 + p.y, 0) / list.length });
+  const put = (list, zone, other) => { const o = mid(other), z = [...zone].sort((a, b) => Math.hypot(a.x - o.x, a.y - o.y) - Math.hypot(b.x - o.x, b.y - o.y) || a.x - b.x);
+    if (z.length < list.length) throw new Error(`maps/${G.name}.txt: ${list.length} creatures need more start squares (${z.length})`);
+    const front = list.filter(c => c.melee), back = list.filter(c => !c.melee), spread = (cs, sq) => cs.forEach((c, i) => { c.pos = { ...sq[Math.min(sq.length - 1, Math.floor(i * sq.length / cs.length))] }; });
+    const nf = Math.min(z.length - back.length, Math.max(front.length, Math.ceil(z.length / 2)));
+    spread(front, z.slice(0, nf).sort((a, b) => a.x - b.x || a.y - b.y)); spread(back, z.slice(z.length - Math.max(back.length, Math.min(z.length - nf, back.length * 2))).sort((a, b) => a.x - b.x || a.y - b.y)); };
+  put(pcs, G.pcStart, G.npcStart); put(foes, G.npcStart, G.pcStart);
+  // Two creatures never share a square: the later one takes the nearest free start square.
+  const used = new Set(); for (const [list, zone] of [[pcs, G.pcStart], [foes, G.npcStart]]) for (const c of list) { let k = `${c.pos.x},${c.pos.y}`; if (used.has(k)) { const f = zone.filter(q => !used.has(`${q.x},${q.y}`)).sort((a, b) => dist(a, c.pos) - dist(b, c.pos))[0]; c.pos = { ...f }; k = `${f.x},${f.y}`; } used.add(k); }
 }

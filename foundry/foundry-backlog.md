@@ -3,6 +3,10 @@
 Current version: **v0.0.364**. Tests: `node tools/tests/run.mjs` (243 tests, see the README; the next new test is t246). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
+## v0.0.366 (SIM-2, 2026-11-12, branch `pack-sim-2`; nothing to test in Foundry)
+**What changed:** added `module/gridrules.mjs` (pure rules of the grid for `book/ruler/sim`: distance, a step's cost, Line of Effect and Cover by corners, Emanation and Burst squares, Collision damage) and test t247 (the next new test is t248). No existing file of the system changed, so there is no checklist: v0.0.365's still stands.
+**Left:** `cover.mjs coverBetween` (Cover with the canvas, Leaning, Large tokens) and `template.mjs emanationCells` / `burstCells` do the same rules with Foundry's objects; they can call `gridrules.mjs` when next touched, so the rule is written once.
+
 ## v0.0.365 (SIM-1, 2026-11-12, branch `pack-sim-1`; NOT tested by Lucas)
 **What changed:** added `module/roundrules.mjs` (pure rules of a round, shared with `book/ruler/sim`); changed, with the same results: `combat.mjs` (`apMax` calls `turnAP`; `unusedApGuard` comes from roundrules), `sheetmodel.mjs` (`payReaction` comes from roundrules), `escalation.mjs` (`startLevel`, `raised`), `flanking.mjs` (the Boon count). Removed: nothing. New test t246 (the next new test is t247).
 **Checklist (nothing should look or act differently; 5 minutes):**

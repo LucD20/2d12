@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: 5f06cfc 2026-11-12 v0.0.365: SIM-1, the automated playtest environment's engine (book/ruler/sim) and the system's shared round rules
+Built by tools/knowledge.py on 2026-11-12 from the repository at: f24d24c 2026-11-12 SIM: the fight viewer (book/ruler/sim/fights.html), brought forward from SIM-4
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (111 KB)
+- HANDOFF.md (113 KB)
 - MASTER-PLAN.md (32 KB)
 - open-design-items.md (110 KB)
 - rules-01-roll.md (23 KB)
@@ -31,7 +31,7 @@ Files:
 - rules-14-bestiary.md (21 KB)
 - rules-15-gear.md (10 KB)
 - rules-16-talents.md (2 KB)
-- design-sim-brief.md (16 KB)
+- design-sim-brief.md (18 KB)
 - design-expedition-loop.md (12 KB)
 - design-playtest-2.md (7 KB)
 - design-playtest-3.md (4 KB)

@@ -1,0 +1,17 @@
+--- distances and movement
+distance 3 straight, 2 diagonal, 4 diagonal, a knight's move: 3 3 6 2
+step costs: straight 1 | 1st diagonal 1 | 2nd 2 | 3rd 1 | Difficult Terrain straight 2 | a 2nd diagonal into it 4
+--- Line of Effect and Cover
+nothing between: 0 | a wall square on the line:  4 | a wall beside the line (below it): 0
+a pillar that hides the lower corners of a target up and to the right: 2 | a long wall with the target right behind its end: 4
+a wall along the target's own edge doesn't block its corner: 0 | a line that touches a wall's corner: false
+--- areas
+Emanation 1 / 2 / 3 around one square: 9 21 37 | 1 around a 2 x 2 space: 16
+Burst 1 / 2 / 3 on a corner: 4 12 32
+Line 10 straight / 2 to 1 / diagonal: 10 8 7 | the book's Line 6 aimed 2 east 1 south: 5
+--- corners and Collision
+a diagonal past a solid corner: solid | an open one: "" | between two creatures: creatures
+Pushed 4 with a wall right behind: 8 | through a creature after 1 square: 3 to each | nothing in the way: 0
+--- one copy
+pure (it imports only config and linearea): ./config.mjs ./linearea.mjs | no Foundry global: true
+the environment's map uses it: true | and corners.mjs: true

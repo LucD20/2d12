@@ -1,0 +1,12 @@
+; Close quarters: small rooms and short lines, the sides start near each other (good for melee)
+##############
+#...NNNNNN...#
+#...NNNNNN...#
+#.##......##.#
+#....#..#....#
+#.#........#.#
+#....#..#....#
+#.##......##.#
+#...PPPPPP...#
+#...PPPPPP...#
+##############

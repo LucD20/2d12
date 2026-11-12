@@ -22,12 +22,12 @@ export const planPolicy = {
   pcTarget(E, pc) {
     const P = this, quarry = pc.quarry && !pc.quarry.dead && pc.build.passives.some(p => p.effect.quarry);
     if (!E.M) return quarry ? pc.quarry : P.focus(E);
-    if (pc.melee) return P.focus(E, E.alive().filter(f => MP.adj(pc, f))) ?? null;
-    const inRange = E.alive().filter(f => Number.isFinite(MP.rangeBanes(pc.range, MP.dist(pc.pos, f.pos))));
+    if (pc.melee) return P.focus(E, E.alive().filter(f => MP.adj(pc, f) && MP.canTarget(pc, f, E.W))) ?? null;   // canTarget: on a map, Line of Effect
+    const inRange = E.alive().filter(f => Number.isFinite(MP.rangeBanes(pc.range, MP.dist(pc.pos, f.pos))) && MP.canTarget(pc, f, E.W));
     return quarry && inRange.includes(pc.quarry) ? pc.quarry : P.focus(E, inRange) ?? null;
   },
   /** The other creatures of an area or of "a different creature": not the quarry, not the focus first. */
-  pcOthers: (E, pc, n) => E.alive().filter(f => f !== pc.quarry && f !== planPolicy.focus(E)).concat(E.alive().filter(f => f !== pc.quarry)).filter((f, i, a) => a.indexOf(f) === i).slice(0, n),
+  pcOthers: (E, pc, n) => E.alive().filter(f => f !== pc.quarry && f !== planPolicy.focus(E)).concat(E.alive().filter(f => f !== pc.quarry)).filter((f, i, a) => a.indexOf(f) === i).filter(f => !E.M?.grid || MP.canTarget(pc, f, E.W)).slice(0, n),   // on a map: only the ones it has a line to
   /** Who uses a Rally Point through an ally's heal: the most hurt, and only when it heals at least 3/4 of its value. */
   healTarget: (E, who, kind) => (kind === "self" ? who : planPolicy.mostHurt(E, E.up().filter(x => x.damage >= 0.75 * x.build.rallyHeal && x.rallyLeft > 0))),
   /** Who gets a Defense bonus: "allies" = you and the allies most often in front, "self", else the most hurt ally. */
@@ -50,7 +50,7 @@ export const planPolicy = {
   /** With no PC it can strike this turn: the nearest. */
   npcNearest: (E, f, targets) => targets.sort((x, y) => MP.dist(f.pos, x.pos) - MP.dist(f.pos, y.pos))[0],
   /** Its target went Down or out of reach during its attacks: the first PC it can still attack. */
-  npcRetarget: (E, f) => (f.melee ? E.up().find(p => MP.adj(f, p)) : E.up().find(p => Number.isFinite(MP.rangeBanes(f.range, MP.dist(f.pos, p.pos))))),
+  npcRetarget: (E, f) => (f.melee ? E.up().find(p => MP.adj(f, p) && MP.canTarget(f, p, E.W)) : E.up().find(p => Number.isFinite(MP.rangeBanes(f.range, MP.dist(f.pos, p.pos))) && MP.canTarget(f, p, E.W))),
   /** Without positions (`map off`): how often an NPC chooses each PC. */
   npcFlatWeight: (E, f, p) => p.build.targeted,
 };

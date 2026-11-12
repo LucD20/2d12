@@ -80,6 +80,8 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   for (const p of pcs) { const k = Math.max(0, ...p.build.passives.filter(x => x.effect.kind === "reduce").map(x => x.effect.adjacent)); p.adjacent = pcs.filter(x => x !== p).sort((x, y) => y.build.targeted - x.build.targeted).slice(0, k); p.reduceAdj = k; }
   // The map model: positions, Speed, conditions, AP kept for Reactions.
   const W = M ? { pcs, foes, R, M } : null;
+  // SIM-2: a Collision (Forced Movement into a wall or a creature, on a map): its damage is the mover's, and it is written to the log.
+  if (W) W.onCollision = (origin, t, dmg, other) => { if (origin?.st) { origin.st.dealt += t.build ? 0 : dmg; origin.st.collision = (origin.st.collision ?? 0) + dmg; } ev("collision", { who: nameOf(t), into: other ? nameOf(other) : "a wall", damage: dmg, by: origin ? nameOf(origin) : null }); };
   if (M) {
     for (const p of pcs) { p.side = "pc"; p.cond = MP.noCond(); p.melee = !(p.build.weapon?.traits ?? []).includes("ranged"); p.range = p.build.weapon?.range ?? (p.melee ? [1] : M.npcRange); p.speed = p.build.speed ?? 5; }
     for (const f of foes) { f.side = "npc"; f.cond = MP.noCond(); f.melee = !f.ranged; f.range = f.ranged ? M.npcRange : [1]; f.speed ??= 5; f.apMax ??= RULES.npcAp; f.apDebt = 0; f.oa = RULES.oaAll ? f.melee && RULES.npcOa !== false : M.npcReactions.includes(f.role); /* the catch-up: every creature has the Opportunity Attack (a ranged NPC's is not modeled) */ f.reactAP = RULES.reactFromStart ? RULES.npcReactionAp : RR.reactionAPAt(false); }
@@ -105,11 +107,11 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   const useRally = (t, n, by) => {   // t uses n Rally Points (Steel Yourself, or an ally's Lay On Hands)
     for (let k = 0; k < n && t && t.rallyLeft > 0 && t.damage > 0; k++) {
       const rb = rallyBonus(pcs, t), h0 = Math.min(t.damage, t.build.rallyHeal), h = Math.min(t.damage, t.build.rallyHeal + rb.n);
-      t.damage -= h; t.rallyLeft--; if (rb.by) rb.by.st.mercyGiven += h - h0;
+      t.damage -= h; t.rallyLeft--; if (rb.by) rb.by.st.mercyGiven += h - h0; ev("help", { who: nameOf(by), target: nameOf(t), what: by === t ? "Steel Yourself (a Rally Point)" : "a Rally Point", amount: h });
       if (by === t) t.st.rpSelf++; else { t.st.rpByAlly++; by.st.healGiven += h0; }
     }
   };
-  const mendOne = (t, amount, by) => { if (!t) return; const h = Math.min(t.damage, amount); t.damage -= h; by.st.mendGiven += h; };   // new Health
+  const mendOne = (t, amount, by) => { if (!t) return; const h = Math.min(t.damage, amount); t.damage -= h; by.st.mendGiven += h; if (h > 0) ev("help", { who: nameOf(by), target: nameOf(t), what: "heals", amount: h }); };   // new Health
   /** Pack R prep: an Escalation hook (+1 Escalation, up to 3; each kind once an encounter). */
   const hook = (p, kind) => { if (!RULES.escHooks || p.down || p.hooked[kind] || (p.esc ?? 0) >= 3) return; p.hooked[kind] = true; p.esc = RR.escalationRaised(p.esc); if (kind === "crit") p.st.hookCrit++; else p.st.hookClass++; };   // used only when it raises the Escalation
   /** Pack R prep: a Reaction spends the Reaction AP first, then a turn AP kept (which loses its Guard). */
@@ -171,12 +173,12 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     target: () => P.pcTarget(E, pc),
     others: n => P.pcOthers(E, pc, n),
     heal: (who, n, kind) => useRally(P.healTarget(E, who, kind), n, who),   // an ally's Rally Point only when it heals at least 3/4 of its value
-    defend: (who, n, kind, a) => { for (const t of P.defendTargets(E, who, kind, a)) if (n >= t.defBonus) { t.defBonus = n; t.defBy = who; } },
+    defend: (who, n, kind, a) => { for (const t of P.defendTargets(E, who, kind, a)) if (n >= t.defBonus) { t.defBonus = n; t.defBy = who; ev("help", { who: nameOf(who), target: nameOf(t), what: `+${n} Defense` }); } },
     // Pack R-classes: "callshot" (Call the Shot, 1R Round, Trigger: an ally deals damage to your Marked Quarry: it is Vulnerable 1 until the end of your next turn; here until its own turn ends).
     onDamage: (who, t, total) => { for (const p of up()) for (const rx of p.build.reactions ?? []) if (rx.kind === "callshot" && p !== who && p.keptAP >= 1 && !p.cond?.staggered && p.quarry === t && !t.dead && p.calledRound !== round) { p.calledRound = round; spendReact(p); p.st.reactions++; if (1 >= (t.vulnerable ?? 0)) t.vulnBy = p; t.vulnerable = Math.max(t.vulnerable ?? 0, 1); t.vulnKeep = p; } },
     mendMany: (who, roll, kind, n) => { for (const t of P.mendTargets(E, who, kind, n)) mendOne(t, roll(), who); },
     mend: (who, amount, kind) => mendOne(P.mendTarget(E, who, kind), amount, who),
-    guard: (who, amount, kind) => { const t = P.guardTarget(E, who, kind); if (t && amount > (t.guard ?? 0)) { t.guard = amount; t.guardBy = who; } },
+    guard: (who, amount, kind) => { const t = P.guardTarget(E, who, kind); if (t && amount > (t.guard ?? 0)) { t.guard = amount; t.guardBy = who; ev("help", { who: nameOf(who), target: nameOf(t), what: "Guard", amount }); } },
     zone: (who, e, a, target) => { for (const f of [target, ...alive().filter(x => x !== target)].filter(Boolean).slice(0, Math.round(a?.area ?? 1))) f.zone = { n: e.n, left: a?.rounds ?? 1, by: who }; },
     zoneHeal: (who, e, a) => { for (const t of [who, ...up().filter(x => x !== who).sort((x, y) => y.build.targeted - x.build.targeted)].slice(0, Math.round(a?.allies ?? 1))) t.zoneHeal = { dmg: e.dmg, left: a?.rounds ?? 1, by: who }; },
     ...(M ? {
@@ -241,20 +243,20 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     if (sq <= 0) return false;
     if (p.melee) {
       if (foesUp.some(f => MP.adj(p, f))) return false;   // already Engaged: it stays
-      const t = foesUp.sort((x, y) => MP.dist(p.pos, x.pos) - MP.dist(p.pos, y.pos))[0];
+      const t = MP.nearest(p, foesUp, W);
       const from = at(p), n = MP.walk(p, MP.toward(t), sq, W, evade ? null : pcLeave(++actionId)); if (n) ev("move", { who: nameOf(p), how: evade ? "Evade" : "Advance", from, to: at(p) });
       if (n) { p.leftSquare = round; p.stanceOff = true; }
       if (n && !step.free) p.st.moveAP += step.ap ?? 0;
       return n > 0 || step.free ? undefined : false;
     }
-    if (!step.free && step.how === "move" && !MP.engaged(p, W)) return false;   // a ranged PC moves only to get away
+    if (!step.free && step.how === "move" && !MP.engaged(p, W) && !(M.grid && foesUp.every(f => !MP.canTarget(p, f, W)))) return false;   // a ranged PC moves only to get away (on a map: or to see an enemy)
     // Next to an enemy with an Opportunity Attack, an Advance away would provoke it: the same AP buys an Evade 1 (the Evade Action), which breaks off from it.
     const careful = !evade && foesUp.some(f => f.oa && !f.cond?.staggered && (RULES.npcReactionAp > 0 ? f.reactAP > 0 : true) && MP.threatens(f, p));
     if (careful) { sq = Math.min(1, sq); p.st.carefulSteps++; }
     // Away from the enemies (up to one NPC Advance + 1 from the nearest), but within the weapon's normal range of its target.
-    const tg = p.quarry && !p.quarry.dead ? p.quarry : foesUp.sort((x, y) => MP.dist(p.pos, x.pos) - MP.dist(p.pos, y.pos))[0];
+    const tg = p.quarry && !p.quarry.dead ? p.quarry : MP.nearest(p, foesUp, W);
     const cap = Math.max(...foesUp.map(f => f.speed)) + 1, away = MP.awayFrom(foesUp, cap);
-    const from = at(p), n = MP.walk(p, q => away(q) + 3 * Math.max(0, MP.dist(q, tg.pos) - p.range[0]), sq, W, evade || careful ? null : pcLeave(++actionId)); if (n) ev("move", { who: nameOf(p), how: evade || careful ? "Evade" : "Advance", from, to: at(p) });
+    const from = at(p), n = MP.walk(p, MP.sightScore(q => away(q) + 3 * Math.max(0, MP.dist(q, tg.pos) - p.range[0]), tg, W), sq, W, evade || careful ? null : pcLeave(++actionId)); if (n) ev("move", { who: nameOf(p), how: evade || careful ? "Evade" : "Advance", from, to: at(p) });
     if (n) { p.leftSquare = round; p.stanceOff = true; }
     if (n && !step.free) p.st.moveAP += step.ap ?? 0;
     if (p.cond.hindered === "move") p.cond.hindered = null;
@@ -263,14 +265,25 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   /** A melee PC closes in before its turn's Actions: a Charge (2 AP: Advance + a Weapon Attack with 1 Boon) when it can, else Advances. Returns { ap, startNext }. */
   const approach = (pc, turn) => {
     const out = { ap: 0, startNext: [] };
+    if (!pc.melee && M.grid) {   // SIM-2, on a map: a ranged PC that can target no enemy from where it stands Advances to a square with a line to one (a decision: SIM-3 moves it to the policy)
+      const sees = () => alive().some(f => MP.canTarget(pc, f, W) && Number.isFinite(MP.rangeBanes(pc.range, MP.dist(pc.pos, f.pos))));
+      for (let k = 0; k < 2 && !sees() && out.ap < RULES.ap - 1 && MP.speedOf(pc) > 0 && !pc.down; k++) {
+        const tg = pc.quarry && !pc.quarry.dead ? pc.quarry : MP.nearest(pc, alive(), W); if (!tg) break;
+        if (pc.cond.immob === "escape") { pc.cond.immob = null; out.ap++; }
+        const from = at(pc), n = MP.walk(pc, MP.sightScore(q => 0.2 * MP.dist(q, tg.pos) + 3 * Math.max(0, MP.dist(q, tg.pos) - pc.range[0]) - 0.1 * Math.min(4, ...alive().map(f => MP.dist(q, f.pos))), tg, W), MP.speedOf(pc), W, pcLeave(++actionId));
+        if (!n) break;
+        out.ap++; pc.leftSquare = round; pc.stanceOff = true; ev("move", { who: nameOf(pc), how: "Advance", from, to: at(pc) });
+      }
+      pc.st.moveAP += out.ap; return out;
+    }
     if (!pc.melee || alive().some(f => MP.adj(pc, f))) return out;
-    const t = alive().sort((x, y) => MP.dist(pc.pos, x.pos) - MP.dist(pc.pos, y.pos))[0];
+    const t = MP.nearest(pc, alive(), W);
     if (!t) return out;
     if (pc.cond.immob === "escape") { pc.cond.immob = null; out.ap++; }   // 1 AP [Move] to end it (Immobilized)
-    const gap = MP.dist(pc.pos, t.pos) - 1, sp = MP.speedOf(pc);
+    const gap = M.grid ? MP.gap(pc, t, W) : MP.dist(pc.pos, t.pos) - 1, sp = MP.speedOf(pc);
     if (sp <= 0) return out;
     const hasWA = turn.steps.some(x => /^weapon attack/i.test(x));
-    if (!pc.cond.hindered && gap >= 3 && gap <= sp && hasWA) {   // Charge: the Advance part costs 1 AP here, its Weapon Attack is the turn's first one, with 1 Boon
+    if (!pc.cond.hindered && gap >= 3 && gap <= sp && hasWA && MP.canTarget(pc, t, W)) {   // Charge: the Advance part costs 1 AP here, its Weapon Attack is the turn's first one, with 1 Boon
       const from = at(pc); if (MP.walk(pc, MP.toward(t), sp, W, pcLeave(++actionId))) { pc.leftSquare = round; pc.stanceOff = true; } out.ap++; pc.st.charges++; ev("move", { who: nameOf(pc), how: "Charge", from, to: at(pc) });
       out.startNext.push({ kind: "boon", n: 1, scope: "next", name: "weapon attack", quarry: false, traits: [] });
     } else {
@@ -291,7 +304,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     if (f.cond.prone) { ap--; f.cond.prone = false; standReact(f); if (f.dead) return; }   // Stand (1 AP [Move]): an Opportunity Attack's trigger too
     const targets = up(); if (!targets.length) return;
     const reachAP = t => {
-      const gap = f.melee ? (MP.cheb(f.pos, t.pos) <= 1 ? 0 : MP.dist(f.pos, t.pos) - 1) : Math.max(0, MP.dist(f.pos, t.pos) - f.range[0]);
+      const gap = f.melee ? (M.grid ? MP.gap(f, t, W) : MP.cheb(f.pos, t.pos) <= 1 ? 0 : MP.dist(f.pos, t.pos) - 1) : Math.max(MP.canTarget(f, t, W) ? 0 : 1, MP.dist(f.pos, t.pos) - f.range[0]);
       const stepAway = !f.melee && MP.engaged(f, W) ? 1 : 0;
       if (!gap) return stepAway;
       if (f.cond.immob === "eot") return Infinity;
@@ -305,13 +318,13 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     let t;
     if (sum > 0) { let x = (f.R ?? R)() * sum; t = targets.find((p, k) => (x -= w[k]) < 0) ?? targets[0]; }
     else t = P.npcNearest(E, f, targets);
-    const there = () => (f.melee ? MP.adj(f, t) : MP.dist(f.pos, t.pos) <= f.range[0] && !MP.engaged(f, W));
+    const there = () => (f.melee ? MP.adj(f, t) : MP.dist(f.pos, t.pos) <= f.range[0] && !MP.engaged(f, W) && MP.canTarget(f, t, W));
     while (!there() && ap > 0 && !f.dead) {
       if (f.cond.immob === "eot") break;
       if (f.cond.immob === "escape") { ap--; f.cond.immob = null; continue; }
       const sp = MP.speedOf(f); if (sp <= 0) break;
       ap--;
-      const from0 = at(f), n = MP.walk(f, f.melee ? MP.toward(t) : (MP.engaged(f, W) ? MP.awayFrom(up(), 3) : (p => Math.max(0, MP.dist(p, t.pos) - f.range[0]))), sp, W, npcLeave(++actionId)); if (n) ev("move", { who: nameOf(f), how: "Advance", from: from0, to: at(f) });
+      const from0 = at(f), n = MP.walk(f, f.melee ? MP.toward(t) : (MP.engaged(f, W) ? MP.awayFrom(up(), 3) : MP.sightScore(p => Math.max(0, MP.dist(p, t.pos) - f.range[0]), t, W)), sp, W, npcLeave(++actionId)); if (n) ev("move", { who: nameOf(f), how: "Advance", from: from0, to: at(f) });
       if (f.cond.hindered === "move") f.cond.hindered = null;
       if (!n) break;
       if (!f.melee) break;   // a ranged NPC moves once
@@ -340,7 +353,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     if (f.cond.hindered) f.cond.hindered = null;   // EoT, and Lock & Loose's "for 1 round"
     if (f.cond.immob === "eot") f.cond.immob = null;
   };
-  ev("start", { map: M ? "open field" : "no positions", order: order.map(o => nameOf(o.pc ?? o.npc)), creatures: [...pcs, ...foes].map(c => ({ name: nameOf(c), side: c.build ? "pc" : "npc", pos: at(c), health: c.build ? c.build.pool : c.pool, damage: c.damage })) });
+  ev("start", { map: M ? (M.grid ? M.grid.title : "open field") : "no positions", grid: M?.grid ? { w: M.grid.w, h: M.grid.h, walls: M.grid.walls, rough: M.grid.roughs } : undefined, order: order.map(o => nameOf(o.pc ?? o.npc)), creatures: [...pcs, ...foes].map(c => ({ name: nameOf(c), side: c.build ? "pc" : "npc", pos: at(c), health: c.build ? c.build.pool : c.pool, damage: c.damage })) });
   while (alive().length && up().length && round < maxRounds) {
     round++; ev("round");
     for (const p of pcs) { p.firstThisRound = new Set(); if (round > 1 && !p.down) p.esc = RR.escalationRaised(p.esc); }   // +1 Escalation at the start of every round after the first

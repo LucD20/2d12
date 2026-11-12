@@ -75,7 +75,7 @@ Playtest 4's encounter replayed in SIM (the same creatures, the map approximated
 | Part | What | Done when |
 |---|---|---|
 | SIM-1 | **DONE (2026-11-12, v0.0.365, branch `pack-sim-1`).** The shared engine: the rules SIM needs pulled into pure system functions with tests; SIM's turn loop on the open field. Built: `book/ruler/sim/` (`core.mjs`, `turn.mjs`, `engine.mjs`, `policy.mjs`, `run.mjs`, README), the system's `module/roundrules.mjs` with test t246, the fight's log | `report.md` reproduced on the open field (the gate in 4.2): **byte for byte, with report-pre-r.md, rclasses.md and rbestiary.md**; the system's 244 tests pass |
-| SIM-2 | Maps, Line of Effect and Cover, movement and Forced Movement, terrain, areas and Zones | the starter maps run; Speed and the movement conditions get a price above 0 where the map allows it |
+| SIM-2 | **DONE except areas and Zones on the grid (2026-11-12, v0.0.366, branch `pack-sim-2`).** Maps, Line of Effect and Cover, movement and Forced Movement, terrain, areas and Zones. Built: `book/ruler/maps/*.txt` (five maps and the open field), the map layer in `book/ruler/map.mjs`, the system's `module/gridrules.mjs` with test t247, `sim/maps.mjs` → `book/ruler/maps.md`, the viewer draws the maps. **Left:** an Action's area drawn on the grid and Zones that stay (the shapes are pure functions with tests; the Actions still hit the number of creatures their ruler line says) | the starter maps run; Speed and the movement conditions get a price above 0 where the map allows it: **yes** (`maps.md` section 2) |
 | SIM-3 | Decision policies and the sensitivity report | each headline number under 2 or 3 policies |
 | SIM-4 | The replay viewer (**its first version is built, 2026-11-12, at Lucas's request: `book/ruler/sim/fights.html`, written by `view.mjs`; it grows with each part**) and the Encounter Log output; Playtest 4 replayed | a fight can be watched; the Playtest 4 comparison is written in SIM's README |
 
@@ -88,14 +88,22 @@ Playtest 4's encounter replayed in SIM (the same creatures, the map approximated
 5. **The pure pieces of the system not used yet:** `effects.mjs durationStep` (durations), `guard.mjs absorbGuard` (Guard over two pools), `ccdamage.mjs creatureDamageLines` (Resist / Weak / Immune), `enclog.mjs exportText` (the log's playtest format, SIM-4).
 6. **The log** (`fight(..., { log: true })`, `sim/run.mjs`) has turns, moves, Actions, attacks, Reactions, Down; it lacks each roll's Boons and Banes, conditions, heals and Guard (SIM-4 adds what the viewer needs).
 
+### After SIM-2: what SIM-3 should know
+
+1. **`book/ruler/maps.md` is read with the plan policy in mind.** On a map nobody holds a chokepoint or steps behind cover, the melee PCs walk to the nearest enemy wherever it stands, the R Archers' turns have no step (they move only when they can target nobody). Every map costs the party more Health than the open field under this policy; how much of that is the map and how much the policy is SIM-3's first question.
+2. **Where the decisions are:** `sim/policy.mjs` (targets, turns, heals, Reactions, an NPC's choice) and, still inside `sim/engine.mjs`, movement: `pcMove`, `approach` (a Charge when it can; on a map a ranged PC's move to see), `npcTurnMap`. They move into the policy first.
+3. **The map layer's helpers for a policy:** `MP.coverOf` / `canTarget` (Line of Effect), `MP.gap` and `MP.nearest` (the way there around walls), `MP.sightScore` (a square's worth for a shooter), `MP.walk` with a score or a goal.
+4. **Left from SIM-2:** areas and Zones on the grid (so Consecrated Ground, Covering Fire and Rain of Arrows are still priced as on the open field), Hazardous Terrain, Large creatures, elevation, light and Senses, a Slide's Collision; Threatening and Engaged ignore walls.
+5. **The gate still holds on the open field** (report.md unchanged). A new policy changes the numbers on purpose: report each headline number under the plan policy and the new ones, side by side.
+
 ## 6. What the ruler still lacks (the README's "not modeled" lists), and where it goes
 
 | Missing | Where |
 |---|---|
 | ~~The current rules (flat Boons and Banes, Favored, Flanking, High cover, the Field limit, NPC Modifier ratings, pack R's AP as the default)~~ | **done: the catch-up (section 3)** |
 | Stage 0: levels 1 to 3 on `book/decisions-s1.md`'s level lists, no Talents; Escalation 1 to 6 with Momentum 0 to 4 | the Stage 0 run, after SIM |
-| Walls and Line of Effect, Difficult Terrain, Collision, Large creatures, elevation; so Speed (worth 0 on an open field), Push / Pull / Slide, Slowed, Hindered, Immobilized, Evade, range | SIM-2 |
-| Areas that last: Covering Fire's 1d4 on entering, Rain of Arrows' hazardous terrain, Consecrated Ground and the other Zones | SIM-2 |
+| ~~Walls and Line of Effect, Difficult Terrain, Collision~~ (**done: SIM-2**; Speed and the movement conditions priced by map: `book/ruler/maps.md`). Still: Large creatures, elevation, a Slide's Collision | SIM-2 (left) |
+| Areas that last: Covering Fire's 1d4 on entering, Rain of Arrows' hazardous terrain, Consecrated Ground and the other Zones; an Action's area drawn on the grid | **left from SIM-2** (the shapes are pure functions; the engine doesn't place them yet) |
 | Resist, Weak, Immune | SIM-1 (the system's `creatureDamageLines`) |
 | NPC Saves, so the Boon on Saves (Shield of Faith 3 and Aura of Protection 3 read "under" for it) | SIM-1 |
 | NPC special Actions (the Bestiary's), the Elite's phases | SIM-1 |
