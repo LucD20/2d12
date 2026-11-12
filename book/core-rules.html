@@ -2053,7 +2053,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#the-basic-attack"><strong>Basic attack</strong></a></td>
-<td>An NPC's main attack: <span class="kw-ap">1 AP</span>, At-will, Vs. AD or WD, with the damage of its role and rating (a flat number plus at most one small die, nothing added).</td>
+<td>An NPC's main attack: <span class="kw-ap">1 AP</span>, At-will, Vs. AD or WD, with the damage of its rank and rating (a flat number plus at most one small die, nothing added).</td>
 </tr>
 <tr>
 <td><a class="xref" href="#rules-language"><strong><span class="at-body">Body</span> Action, <span class="at-mind">Mind</span> Action</strong></a></td>
@@ -2157,7 +2157,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#elites"><strong>Elite</strong></a></td>
-<td>An NPC role with CV 200: about 130 Health at Stage 0, and the only NPC with Escalation (Elite Escalation: the 1-to-6 ladder, +1 a round and at each phase).</td>
+<td>An NPC rank with CV 200: about 130 Health at Stage 0, and the only NPC with Escalation (Elite Escalation: the 1-to-6 ladder, +1 a round and at each phase).</td>
 </tr>
 <tr>
 <td><a class="xref" href="#empowered"><strong><span class="kw-pos">Empowered</span></strong></a></td>
@@ -2229,7 +2229,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#grunts"><strong>Grunt</strong></a></td>
-<td>An NPC role with CV 50 and <span class="kw-ap">3 AP</span> a turn: about 26 Health at Stage 0, dies to about 1 PC turn.</td>
+<td>An NPC rank with CV 50 and <span class="kw-ap">3 AP</span> a turn: about 26 Health at Stage 0, dies to about 1 PC turn.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#guard"><strong>Guard</strong></a></td>
@@ -2337,7 +2337,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#minions"><strong>Minion</strong></a></td>
-<td>An NPC role with CV 25, with <span class="kw-ap">3 AP</span> a turn, no Reaction AP and no Health: any damage kills it (or knocks it Unconscious if the GM prefers).</td>
+<td>An NPC rank with CV 25, with <span class="kw-ap">3 AP</span> a turn, no Reaction AP and no Health: any damage kills it (or knocks it Unconscious if the GM prefers).</td>
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#minor-enemies"><strong>Minor enemies</strong></a></td>
@@ -2429,7 +2429,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#ratings"><strong>Rating</strong></a></td>
-<td>How strong one of an NPC's numbers is for its role: Terrible, Low, Medium, High or Extreme (Minions have no Extreme). A GM can pick a number between two ratings.</td>
+<td>How strong one of an NPC's numbers is for its rank: Terrible, Low, Medium, High or Extreme (Minions have no Extreme). A GM can pick a number between two ratings.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#reach"><strong>Reach</strong></a></td>
@@ -2488,8 +2488,12 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>What follows the damage in a tier cell ("; Prone"): it happens only if that damage is dealt (more than 0 after Resist); Guard doesn't stop it.</td>
 </tr>
 <tr>
-<td><a class="xref" href="bestiary.html#the-targets"><strong>Role</strong></a></td>
-<td>What an NPC is for in a fight: Minion, Grunt, Standard or Elite. It sets the NPC's CV, AP and the tables its ratings use.</td>
+<td><a class="xref" href="bestiary.html#the-targets"><strong>Rank</strong></a></td>
+<td>How much an NPC counts for in a fight: Minion, Grunt, Standard or Elite. It sets the NPC's CV, AP and the tables its ratings use.</td>
+</tr>
+<tr>
+<td><a class="xref" href="bestiary.html#roles"><strong>Role</strong></a></td>
+<td>What an NPC does in a fight (Brute, Soldier, Skirmisher, Artillery, Controller, Leader): a ready set of ratings, with no rules of its own.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#rolls"><strong>Roll</strong></a></td>
@@ -2553,7 +2557,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#special-actions"><strong>Special Action</strong></a></td>
-<td>An NPC Action beyond its Basic attack: <span class="kw-ap">1 AP</span> or <span class="kw-ap">2 AP</span> (Round) or <span class="kw-ap">3 AP</span> (Encounter), each with its own row in the role's damage table.</td>
+<td>An NPC Action beyond its Basic attack: <span class="kw-ap">1 AP</span> or <span class="kw-ap">2 AP</span> (Round) or <span class="kw-ap">3 AP</span> (Encounter), each with its own row in the rank's damage table.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#rules-language"><strong>Specific beats general</strong></a></td>
@@ -2593,7 +2597,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#standards"><strong>Standard</strong></a></td>
-<td>An NPC role with CV 100: about 60 Health at Stage 0, dies to about 2 to 3 PC turns.</td>
+<td>An NPC rank with CV 100: about 60 Health at Stage 0, dies to about 2 to 3 PC turns.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#the-start-of-the-encounter"><strong>Start of the encounter</strong></a></td>

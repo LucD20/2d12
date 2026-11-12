@@ -44,7 +44,7 @@ The book's tables (`foundry/twod12/module/config.mjs npcStage0`). **Health:** an
 | Minion | none: any damage kills it | - | 2 / 1 + 1d4 | 1d4 / 2 + 1d4 (1 AP) | 5.2 / 5.8 |
 | Grunt | 7 / 10 / 13 / 16 / 19 | 26 | 1d4 / 1 + 1d4 | 1 + 1d4 / 2 + 1d4 (1 AP) | 6.0 / 6.7 |
 | Standard | 17 / 24 / 30 / 36 / 42 | 60 | 1 + 1d4 / 2 + 1d6 | 4 + 1d6 / 8 + 1d8 (2 AP) | 11.3 / 12.6 |
-| Elite | 35 / 50 / 65 / 80 / 95 | 130 | 2 + 1d4 / 2 + 1d6 | 5 + 1d6 / 8 + 1d8 (2 AP) | 13.9 / 15.2 |
+| Elite | 35 / 50 / 65 / 80 / 95 | 130 | 3 + 1d4 / 3 + 1d6 | 6 + 1d6 / 10 + 1d8 (2 AP) | 16.3 / 17.8 |
 
 The fit behind it (`node book/ruler/sim/stage0fit.mjs`): over pack R's first row (a Standard with 63 Health in the ruler, a Basic attack of 4 / 7.5), the Health factor **h** for which the normal fight lasts 3.5 rounds, then the damage factor **d** for each of the Bestiary's two targets. As before, the two targets don't meet at one number.
 
@@ -77,9 +77,9 @@ The fit behind it (`node book/ruler/sim/stage0fit.mjs`): over pack R's first row
 
 | Level | 1 Elite + 2 Standards | 2 Elites | 8 Grunts | 2 Standards + 8 Minions |
 |---:|---|---|---|---|
-| 1 | 3.5 · 8% · 23% · 5% · 100% | 3.7 · 6% · 22% · 3% · 100% | 3.2 · 7% · 20% · 2% · 100% | 2.8 · 7% · 17% · 2% · 100% |
-| 2 | 3.6 · 8% · 23% · 8% · 100% | 3.7 · 6% · 20% · 3% · 100% | 3.2 · 7% · 20% · 2% · 100% | 2.8 · 6% · 16% · 2% · 100% |
-| 3 | 3.5 · 7% · 22% · 5% · 100% | 3.7 · 7% · 21% · 5% · 100% | 3.2 · 7% · 20% · 1% · 100% | 2.8 · 6% · 16% · 2% · 100% |
+| 1 | 3.5 · 10% · 26% · 8% · 100% | 3.7 · 11% · 27% · 10% · 100% | 3.2 · 7% · 20% · 2% · 100% | 2.8 · 7% · 17% · 2% · 100% |
+| 2 | 3.6 · 10% · 25% · 9% · 100% | 3.8 · 9% · 26% · 7% · 100% | 3.2 · 7% · 20% · 2% · 100% | 2.8 · 6% · 16% · 2% · 100% |
+| 3 | 3.6 · 10% · 25% · 11% · 100% | 3.8 · 9% · 25% · 10% · 100% | 3.2 · 7% · 20% · 1% · 100% | 2.8 · 6% · 16% · 2% · 100% |
 
 ## 4. Escalation 1 to 6: where the turns are
 
@@ -99,7 +99,7 @@ The normal fight (4 Standards), the level 3 party. The share of the PCs' turns a
 |---|---|---|---|---|
 | 3 Standards (easy) | 2.6 · 5% · 14% · 3% · 100% | 2.7 · 3% · 10% · 1% · 100% | 2.7 · 7% · 16% · 3% · 100% | 2.8 · 3% · 11% · 4% · 100% |
 | 4 Standards (normal) | 3.3 · 8% · 22% · 6% · 100% | 3.2 · 6% · 18% · 3% · 100% | 3.3 · 11% · 25% · 10% · 100% | 3.6 · 9% · 20% · 24% · 100% |
-| 1 Elite + 2 Standards (normal) | 3.5 · 8% · 20% · 8% · 100% | 3.4 · 5% · 16% · 2% · 100% | 3.4 · 11% · 24% · 10% · 100% | 3.6 · 5% · 15% · 11% · 100% |
+| 1 Elite + 2 Standards (normal) | 3.5 · 9% · 22% · 9% · 100% | 3.4 · 6% · 18% · 3% · 100% | 3.5 · 13% · 27% · 17% · 100% | 3.7 · 7% · 18% · 16% · 100% |
 | 5 Standards (hard) | 4.1 · 18% · 36% · 23% · 98% | 4.0 · 13% · 30% · 14% · 99% | 4.2 · 24% · 44% · 31% · 97% | 4.8 · 20% · 37% · 55% · 98% |
 | 6 Standards (deadly) | 4.8 · 33% · 56% · 43% · 90% | 4.7 · 27% · 49% · 35% · 93% | 4.9 · 47% · 69% · 56% · 77% | 6.2 · 39% · 62% · 80% · 87% |
 
@@ -134,4 +134,4 @@ Four fights with no Rest (easy, normal, normal, hard). **The ladder** (Chapter 2
 | 3 | The ladder | Momentum 0.0: 2.8 r · 6% · Down 3% · won 100% | Momentum 1.0: 3.2 r · 7% · Down 7% · won 100% | Momentum 1.9: 3.2 r · 8% · Down 7% · won 100% | Momentum 2.8: 3.8 r · 13% · Down 18% · won 99% | 99% |
 | 3 | Flat | Momentum 0.0: 2.8 r · 6% · Down 3% · won 100% | Momentum 0.0: 3.4 r · 11% · Down 9% · won 100% | Momentum 0.0: 3.4 r · 11% · Down 10% · won 100% | Momentum 0.0: 4.2 r · 22% · Down 30% · won 96% | 96% |
 
-(4.3 minutes.)
+(4.7 minutes.)

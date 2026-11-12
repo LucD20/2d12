@@ -33,7 +33,7 @@
 | [[Resist, Weak and Immune\|**Immune**]] | Damage of that subtype is 0 for you. |
 | [[Class Actions, Picks and the Repertoire\|**Pick**]] | One choice from a class's Repertoire; the level list says how many you take and from which list. |
 | [[Class Actions, Picks and the Repertoire\|**Repertoire**]] | Everything a class offers beyond its Class Actions, listed by Frequency: Passive, Turn, Round, Encounter, Daily. |
-| [[The Basic attack\|**Basic attack**]] | An NPC's main attack: 1 AP, At-will, Vs. AD or WD, with the damage of its role and rating (a flat number plus at most one small die, nothing added). |
+| [[The Basic attack\|**Basic attack**]] | An NPC's main attack: 1 AP, At-will, Vs. AD or WD, with the damage of its rank and rating (a flat number plus at most one small die, nothing added). |
 | [[Rules Language\|**Body Action, Mind Action**]] | An Action with the Body or the Mind trait, even when it rolls another Attribute Modifier. |
 | [[Take a Breather\|**Breather**]] | 10 minutes of rest that removes all Nonlethal damage. |
 | [[Reading an Action\|**Category**]] | The text at the right of an Action's title: the kind of Action, or the feature that gave it to you. |
@@ -59,7 +59,7 @@
 | [[Doubles\|**Doubles**]] | Both d12s match: the tier goes up. |
 | [[Going Down\|**Down**]] | Your total damage equals or goes above your Health Pool. |
 | [[Playing on the Grid\|**Elevation**]] | Squares up or down count like a diagonal: the larger count plus half the smaller one. A creature is as tall as it is wide. |
-| [[Elites\|**Elite**]] | An NPC role with CV 200: about 130 Health at Stage 0, and the only NPC with Escalation (Elite Escalation: the 1-to-6 ladder, +1 a round and at each phase). |
+| [[Elites\|**Elite**]] | An NPC rank with CV 200: about 130 Health at Stage 0, and the only NPC with Escalation (Elite Escalation: the 1-to-6 ladder, +1 a round and at each phase). |
 | [[Empowered\|**Empowered**]] | Adds its value to every damage die (Empowered 1: 1 more per die). |
 | [[Frequency\|**Encounter**]] | A fight or similar scene, from Initiative until the GM ends it. |
 | [[Enfeebled\|**Enfeebled**]] | Subtracts its value from every damage die; each die still deals at least 1. |
@@ -77,7 +77,7 @@
 | [[Forced Movement\|**Forced Movement**]] | Movement you impose on another creature (Pushed, Pulled or Slid): no reactions, ignores Difficult Terrain, each square counts 1. |
 | [[Frequency\|**Frequency**]] | How often an Action can be used. |
 | [[Effect Timing\|**General Effects**]] | The Effects row of an Action. They happen on a Tier 2 or 3 result. |
-| [[Grunts\|**Grunt**]] | An NPC role with CV 50 and 3 AP a turn: about 26 Health at Stage 0, dies to about 1 PC turn. |
+| [[Grunts\|**Grunt**]] | An NPC rank with CV 50 and 3 AP a turn: about 26 Health at Stage 0, dies to about 1 PC turn. |
 | [[Guard\|**Guard**]] | A buffer written Guard N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take. The Guard of unspent AP adds to it and lasts 1 round. |
 | [[Gun\|**Gun**]] | A trait: the Action needs a Firearm (a pistol, a musket). |
 | [[Class Actions, Picks and the Repertoire\|**Hallmark Action**]] | A choice of two class Actions at level 1; you take one. |
@@ -104,7 +104,7 @@
 | [[Mark Quarry\|**Marked Quarry**]] | The enemy an Archer chose with the Mark Quarry Action: 1 Boon on their [Shot, Strike] Actions against it, and [V] [Mod] extra damage on a Tier 1. One at a time. |
 | [[Mastery\|**Master**]] | 15 Mastery with a weapon: from level 8, your Actions that deal [W] with it deal one more [W]. |
 | [[Mastery\|**Mastery**]] | How well you know a kind of weapon: +1 for a Tier 3 on a Weapon Action with it (at most 1 per Weapon Group an encounter). The weapon's Mastery (3, 4 or 5) unlocks its Weapon Technique; 8 Expert, 15 Master. |
-| [[Minions\|**Minion**]] | An NPC role with CV 25, with 3 AP a turn, no Reaction AP and no Health: any damage kills it (or knocks it Unconscious if the GM prefers). |
+| [[Minions\|**Minion**]] | An NPC rank with CV 25, with 3 AP a turn, no Reaction AP and no Health: any damage kills it (or knocks it Unconscious if the GM prefers). |
 | [[Minor enemies\|**Minor enemies**]] | Minions and Grunts (CV below 100; 3 AP a turn). |
 | [[Momentum\|**Momentum**]] | The party's number from 0 to 4: an encounter starts at Escalation 1 + Momentum. +1 for each encounter overcome; -1 when a PC goes Down and at each Sleep; lost on a retreat and at a Rest. |
 | [[Rules Language\|**Move**]] | An Action with the Move trait. |
@@ -127,7 +127,7 @@
 | [[Rally Points\|**Rally Point**]] | Removes damage equal to a quarter of your Health Pool. Steel Yourself can't be used while Down or Unconscious. |
 | [[Weapon Range\|**Range**]] | How far a weapon reaches, melee weapons included: normal / far (1 Bane) / maximum (2 Banes). |
 | [[Ranged Combat While Engaged\|**Ranged Combat While Engaged**]] | Using a [Ranged] Action while Engaged: the roll is Doomed. Against a creature Engaged with someone else: 1 Field Bane. |
-| [[Ratings\|**Rating**]] | How strong one of an NPC's numbers is for its role: Terrible, Low, Medium, High or Extreme (Minions have no Extreme). A GM can pick a number between two ratings. |
+| [[Ratings\|**Rating**]] | How strong one of an NPC's numbers is for its rank: Terrible, Low, Medium, High or Extreme (Minions have no Extreme). A GM can pick a number between two ratings. |
 | [[Reach\|**Reach**]] | How far your body reaches: 1 square for every Species. Weapons have a Range instead. |
 | [[Reactions\|**Reaction**]] | An Action used in response to an Interrupt or a Trigger, with a cost like 1R (0R costs no AP). No creature has one by default. |
 | [[Action Points\|**Reaction AP**]] | The 1 AP you gain at the start of your turn that pays only for Reactions. It never becomes Guard. |
@@ -142,7 +142,8 @@
 | [[Requirements\|**Requirements**]] | What you need to use an Action. |
 | [[Rest\|**Rest**]] | A day in a safe place. It includes a Sleep. |
 | [[Riders\|**Rider**]] | What follows the damage in a tier cell ("; Prone"): it happens only if that damage is dealt (more than 0 after Resist); Guard doesn't stop it. |
-| [[The targets\|**Role**]] | What an NPC is for in a fight: Minion, Grunt, Standard or Elite. It sets the NPC's CV, AP and the tables its ratings use. |
+| [[The targets\|**Rank**]] | How much an NPC counts for in a fight: Minion, Grunt, Standard or Elite. It sets the NPC's CV, AP and the tables its ratings use. |
+| [[Roles\|**Role**]] | What an NPC does in a fight (Brute, Soldier, Skirmisher, Artillery, Controller, Leader): a ready set of ratings, with no rules of its own. |
 | [[Rolls\|**Roll**]] | Anything you roll: a Check, a Save, a Weapon, Power or Signature roll, or an Attribute Action. |
 | [[Rounds\|**Round**]] | One full cycle of turns. |
 | [[Saves\|**Save**]] | A roll a creature makes against an effect; its three values are for Tier 1 / 2 / 3. |
@@ -158,7 +159,7 @@
 | [[Slid\|**Slid**]] | Forced Movement along a path the origin chooses (it can curve); the origin needs Line of Effect. |
 | [[Slowed\|**Slowed**]] | A condition with a value: you regain that many fewer AP at the start of your turn, and your maximum AP is that much lower; your Reaction AP doesn't change. Desperate, Dying and Shattered give Slowed 1 (or 1 more, to at most 3). |
 | [[Sleep\|**Sleep**]] | 8 hours of non-strenuous activity, at most once every 16 hours; it renews Daily Actions. |
-| [[Special Actions\|**Special Action**]] | An NPC Action beyond its Basic attack: 1 AP or 2 AP (Round) or 3 AP (Encounter), each with its own row in the role's damage table. |
+| [[Special Actions\|**Special Action**]] | An NPC Action beyond its Basic attack: 1 AP or 2 AP (Round) or 3 AP (Encounter), each with its own row in the rank's damage table. |
 | [[Rules Language\|**Specific beats general**]] | A card or feature that says something different from a general rule wins for that case. |
 | [[Building a Character\|**Speed**]] | How far a creature can move with an Advance: species Speed plus class Speed Modifier. |
 | [[Split\|**Split**]] | A trait: the Action has a Weapon mode and a Power mode, and you choose one each time you use it. |
@@ -168,7 +169,7 @@
 | [[Stages\|**Stage**]] | A group of levels: Stage 0 is levels 1-3, Stage 1 levels 4-7, Stage 2 levels 8-11, Stage 3 levels 12-15. Your numbers change only at a new Stage (Modifiers, Health, Guard per unspent AP, Rally Points; never your Attributes), and it sets the Bestiary's tables. |
 | [[Stages\|**Stage Talent**]] | The Talent of levels 4, 8 and 12, the first level of Stages 1, 2 and 3. |
 | [[Staggered\|**Staggered**]] | You can't use Reactions; your Reaction AP waits. |
-| [[Standards\|**Standard**]] | An NPC role with CV 100: about 60 Health at Stage 0, dies to about 2 to 3 PC turns. |
+| [[Standards\|**Standard**]] | An NPC rank with CV 100: about 60 Health at Stage 0, dies to about 2 to 3 PC turns. |
 | [[The Start of the Encounter\|**Start of the encounter**]] | After Initiative and before the first turn: abilities that happen then resolve one at a time, in turn order, which the GM can change. |
 | [[Steadiness\|**Steadiness**]] | A creature's resistance to being moved: it reduces the value of Forced Movement and Reposition. Normally 0. |
 | [[Chapter 6: Basic Actions\|**Steel Yourself**]] | The Basic Action that uses your Rally Points. |
