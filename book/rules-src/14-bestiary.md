@@ -51,7 +51,7 @@ A Standard with High Health and High damage counts for 130; one with Low Health 
 
 An NPC has an **Armor Defense** and a **Ward Defense**. Each one is a rating from its rank's Defense table, picked **independently** of the other: a Standard is Medium in both by default (13 and 13); a knight could have a High Armor Defense (14) and a Low Ward Defense (12). A Defense is never below 11. An NPC's Defenses come from these ratings only.
 
-**A Defense rating is a small step.** One rating is 1 point of Defense, which takes about 8 to 10% off what the PCs deal in a turn; a rating of Health or damage is 20 to 25%. A High Defense is worth about +10% Health against +25% for a High Health, so Defense is the mildest of the ratings.
+**A Defense rating is a small step.** One rating is 1 point of Defense, which takes about 5% off what the PCs deal in a turn (a fight about a fifth of a round longer); a rating of Health or damage is 20 to 25%. Defense is the mildest of the ratings, which is why it doesn't change the CV.
 
 ### What an Action attacks, rolls and damages
 
@@ -314,7 +314,7 @@ With both ratings Medium, a Stage 0 elite has **130 Health** (65 + 65).
 
 Add up the CV of the enemies. **CV 100 per PC is a normal fight**: 75 per PC is easy, **125 is hard, 150 is deadly**. Many Minions act often: no more than 4 Minions per PC. Encounters of only Grunts cost a little less than their CV.
 
-**The CV is counted for 4 to 6 PCs with at least two of them in the front.** A party of three, or one with a single PC in melee, plays one to two steps harder: count it as one PC less.
+**The CV is counted for 4 to 6 PCs.** With three PCs a normal fight costs the same, but there is less room for bad luck: a hard or a deadly fight plays about one step harder.
 
 **An NPC of an earlier Stage counts for less.** The NPCs of a Stage are the same at every level of it, so only the Stage matters:
 
