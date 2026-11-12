@@ -1,6 +1,6 @@
 import { logEvent, makeLine, nextLog, stamp } from "./ticker.mjs";
 import { swapCardHtml, thawLineHtml, sysLine } from "./sysmsg.mjs";
-import { apGuardOf } from "./guard.mjs";
+import { unusedApGuard, turnAP } from "./roundrules.mjs";
 import { hasMomentum, setMomentum } from "./escalation.mjs";
 import { sideDisp, lastOrder } from "./initmodel.mjs";   // v0.0.310: the Initiative windows (initwindow.mjs, loaded when used)
 import { groupColor } from "./config.mjs";
@@ -36,7 +36,7 @@ export const quickenedOf = actor => conditionValue(actor, "quickened");
 /** The most AP a creature can have: 4 + Quickened - Slowed (Slowed also lowers the most AP, so Quickened 1 and Slowed 2 make it 3). */
 /** A creature's AP a turn before conditions: 4, or its own (a Minion has 3: the Bestiary). The Reaction AP is apart. */
 export const baseAP = actor => Number(actor?.system?.apPerTurn) || AP_PER_TURN;
-export const apMax = combatant => Math.max(0, baseAP(combatant?.actor) + quickenedOf(combatant?.actor) - slowedOf(combatant?.actor));
+export const apMax = combatant => turnAP(baseAP(combatant?.actor), { quickened: quickenedOf(combatant?.actor), slowed: slowedOf(combatant?.actor) });   // v0.0.365: roundrules.mjs turnAP
 /** AP regained at the start of a creature's turn: 4 + Quickened - Slowed (they cancel out without changing each other). */
 export const apPerTurn = combatant => {
   const a = combatant?.actor;
@@ -112,7 +112,7 @@ export const setRAP = (c, n) => c.setFlag(F, "rap", Math.max(0, Math.min(REACTIO
  * creature regains AP at the start of its next turn, each AP it didn't use is Guard 2 / 3 / 4 by Stage for 1 round (until it regains AP again):
  * it adds to the other Guard and is taken first. A creature's first turn of the encounter has no unused AP. Pure: { unused, guard }.
  */
-export const unusedApGuard = (hadTurn, apLeft, stage) => { const unused = hadTurn ? Math.max(0, Math.trunc(Number(apLeft)) || 0) : 0; return { unused, guard: apGuardOf(unused, stage) }; };
+export { unusedApGuard };   // v0.0.365 (SIM-1): the rule itself is in roundrules.mjs (pure, shared with the automated playtest environment)
 /** The start of a turn: the Guard of the AP the last turn left unused replaces the one before (1 round); the Turn Breakdown shows it. */
 export async function setUnusedApGuard(c, hadTurn, apLeft) {
   const a = c?.actor;

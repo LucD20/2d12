@@ -138,7 +138,8 @@ export function apPips(ap, regained, slowed = 0) {
 }
 
 /** How a Reaction's cost is paid: the Reaction AP first, the rest from the AP (moved here from combat.mjs in v0.0.297; combat.mjs re-exports it). */
-export const payReaction = (cost, ap, rap) => { const fromRap = Math.min(Math.max(0, rap), Math.max(0, cost)); return { fromRap, fromAp: Math.max(0, cost - fromRap) }; };
+import { payReaction } from "./roundrules.mjs";   // v0.0.365 (SIM-1): the rule itself is in roundrules.mjs (pure, shared with the automated playtest environment)
+export { payReaction };
 /**
  * v0.0.297 (PACK ACTION-PREVIEW): why a cost can't be paid now ("" = it can): the one AP check of the sheet's rows, the card's Version buttons
  * and the roll dialog. ap: the AP left; rap: the Reaction AP (a Reaction only).

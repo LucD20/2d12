@@ -1,6 +1,6 @@
 # The automated playtest environment (SIM): a brief
 
-Lucas, 2026-11-11. A design document in progress (in `tools/knowledge.py` DESIGN_DOCS). It is the brief for the session that builds it (Lucas plans to give it to Fable), and the list of what the ruler still lacks. Nothing here is built yet.
+Lucas, 2026-11-11. A design document in progress (in `tools/knowledge.py` DESIGN_DOCS). It is the brief for the session that builds it (Lucas plans to give it to Fable), and the list of what the ruler still lacks. **SIM-1 is built (2026-11-12, Foundry v0.0.365): `book/ruler/sim/` (its README says what is there).** SIM-2 to SIM-4 are not.
 
 ## 1. What it is, and where it goes in the order
 
@@ -74,10 +74,19 @@ Playtest 4's encounter replayed in SIM (the same creatures, the map approximated
 
 | Part | What | Done when |
 |---|---|---|
-| SIM-1 | The shared engine: the rules SIM needs pulled into pure system functions with tests; SIM's turn loop on the open field | `report.md` reproduced on the open field (the gate in 4.2); the system's tests still pass |
+| SIM-1 | **DONE (2026-11-12, v0.0.365, branch `pack-sim-1`).** The shared engine: the rules SIM needs pulled into pure system functions with tests; SIM's turn loop on the open field. Built: `book/ruler/sim/` (`core.mjs`, `turn.mjs`, `engine.mjs`, `policy.mjs`, `run.mjs`, README), the system's `module/roundrules.mjs` with test t246, the fight's log | `report.md` reproduced on the open field (the gate in 4.2): **byte for byte, with report-pre-r.md, rclasses.md and rbestiary.md**; the system's 244 tests pass |
 | SIM-2 | Maps, Line of Effect and Cover, movement and Forced Movement, terrain, areas and Zones | the starter maps run; Speed and the movement conditions get a price above 0 where the map allows it |
 | SIM-3 | Decision policies and the sensitivity report | each headline number under 2 or 3 policies |
 | SIM-4 | The replay viewer and the Encounter Log output; Playtest 4 replayed | a fight can be watched; the Playtest 4 comparison is written in SIM's README |
+
+### After SIM-1: what SIM-2 should know
+
+1. **Start from `book/ruler/sim/README.md`** (the files, the gate, the rules imported from the system, the list "SIM-only rules, to move into the system", what the policy decides and what the engine still decides).
+2. **The gate is now exact:** after any change, `node book/ruler/spec.mjs --quiet`, `--pre-r --quiet`, `rclasses.mjs` and `rbestiary.mjs` must leave `git status` clean on the open field, unless the change is a rule or a decision on purpose (then the README says which). `--check` prints only "ok"; the system's tests (244) pass.
+3. **The map is still `book/ruler/map.mjs`** (an open field with Cover drawn by chance per shot). SIM-2 replaces it: a grid with walls and terrain from `book/ruler/maps/`, Line of Effect and Cover by corners (the system's `cover.mjs` and `flanking.mjs` read tokens and the canvas: their geometry needs a pure core, as `roundrules.mjs` did for the counts), and a `map <name>` line per fight. The engine reaches the map only through `MP` (`core.mjs`): `mapMods`, `walk`, `force`, `place`, `adj`, `dist`, `threatens`, `engaged`, `applyCondition`.
+4. **Movement decisions are still inside `engine.mjs`** (`pcMove`, `approach`, `npcTurnMap`): they move to the policy with the maps.
+5. **The pure pieces of the system not used yet:** `effects.mjs durationStep` (durations), `guard.mjs absorbGuard` (Guard over two pools), `ccdamage.mjs creatureDamageLines` (Resist / Weak / Immune), `enclog.mjs exportText` (the log's playtest format, SIM-4).
+6. **The log** (`fight(..., { log: true })`, `sim/run.mjs`) has turns, moves, Actions, attacks, Reactions, Down; it lacks each roll's Boons and Banes, conditions, heals and Guard (SIM-4 adds what the viewer needs).
 
 ## 6. What the ruler still lacks (the README's "not modeled" lists), and where it goes
 
@@ -102,7 +111,7 @@ Playtest 4's encounter replayed in SIM (the same creatures, the map approximated
 Base building, mounts and vehicles, the expedition loop between fights (Alert, the Parting Beat), Skills and Magic (D3, D4), destructible terrain (with B2), Stage 1 and later (the same engine runs them when their cards exist).
 
 ## 8. Questions for Lucas (defaults in brackets; answer by exception)
-1. Where SIM lives [`book/ruler/sim/`, Node only, no new dependencies; the viewer one HTML file with no build step].
+1. Where SIM lives [`book/ruler/sim/`, Node only, no new dependencies; the viewer one HTML file with no build step]. **SIM-1 took the defaults of 1, 2 and 5 (Lucas, 2026-11-12: "proceed with SIM-1"); the gate came out exact, not within 3%.**
 2. Who builds it [Fable, from this brief; Claude Code does the ruler catch-up first and reviews SIM-1's engine against the system's tests].
 3. The first maps [the six of 4.3; Lucas draws more later as text files].
 4. The decision policies to start with [focus the weakest, protect the healer, kite, casual].

@@ -14,6 +14,7 @@
 // What it leaves out: walls and Line of Effect (an open field), Difficult Terrain, Collision, Large creatures, elevation (SIM-2: book/sim-brief.md).
 // This file has no import from spec.mjs: spec.mjs calls it and passes what it needs (W.hooks). The rules of the dice come from the system's calc.mjs.
 const C = await import(new URL("../../foundry/twod12/module/calc.mjs", import.meta.url).href);
+const RR = await import(new URL("../../foundry/twod12/module/roundrules.mjs", import.meta.url).href);   // SIM-1: Flanking's count, Cover's effect, the range Banes, Prone and Engaged: the system's own functions
 
 /** The map's settings (fights.txt `map ...` lines can change each one). */
 export const MAP = {
@@ -43,7 +44,7 @@ export function flankBoons(att, tgt, W) {
   if (!threatens(att, tgt)) return 0;
   const n = friendsOf(att, W).filter(x => x !== att && threatens(x, tgt)).length;
   const cancel = friendsOf(tgt, W).filter(x => x !== tgt && threatens(x, att)).length;
-  return Math.min(C.BB_LIMIT, Math.max(0, n - cancel));
+  return RR.flankBoons(n, cancel).boons;
 }
 
 /** Low cover from a creature on the line from the center of a's square to the center of b's (sampled along the line). */
@@ -60,12 +61,7 @@ export function creatureInLine(a, b, W) {
 }
 
 /** Banes for the range: normal 0, far 1, maximum 2 (Long Draw: far 0, maximum 1); beyond the maximum: can't. */
-export function rangeBanes(range, d, longDraw = false) {
-  if (d <= range[0]) return 0;
-  if (d <= (range[1] ?? range[0])) return longDraw ? 0 : 1;
-  if (d <= (range[2] ?? range[1] ?? range[0])) return longDraw ? 1 : 2;
-  return Infinity;
-}
+export const rangeBanes = (range, d, longDraw = false) => RR.rangeBanes(range, d, { longDraw });
 
 /**
  * The Boons and Banes the map gives an attack. kind: "melee" or "ranged". opts: { ignoreCover, noEngagedBanes, longDraw, range }.
@@ -81,19 +77,19 @@ export function mapMods(att, tgt, kind, W, opts = {}) {
     if (!Number.isFinite(rb)) return null;
     const off = W.M.off ?? {};
     if (!off.range) { src.push({ banes: rb }); out.rangeBanes = rb; }                                                          // no name: it adds to Cover
-    if (engaged(att, W) && !opts.noEngagedBanes && !off.engaged) { src.push({ banes: 2 }); out.engagedBanes = 2; }           // no name (one rule)
-    if (!off.intoMelee && !opts.noIntoMelee && enemiesOf(tgt, W).some(x => x !== att && adj(x, tgt))) { src.push({ banes: 1, bb: "field" }); out.intoMelee = 1; }
+    if (engaged(att, W) && !opts.noEngagedBanes && !off.engaged) { src.push({ banes: RR.ENGAGED_RANGED_BANES }); out.engagedBanes = RR.ENGAGED_RANGED_BANES; }           // no name (one rule)
+    if (!off.intoMelee && !opts.noIntoMelee && enemiesOf(tgt, W).some(x => x !== att && adj(x, tgt))) { src.push({ banes: RR.INTO_MELEE_FIELD_BANES, bb: "field" }); out.intoMelee = RR.INTO_MELEE_FIELD_BANES; }
     if (!opts.ignoreCover && !off.cover) {
       let c = creatureInLine(att, tgt, W) ? 1 : 0;
       if (d > 1) { const u = (att.R ?? W.R)(); let acc = 0; for (const x of W.M.cover) { acc += x.p; if (u < acc) { c = Math.max(c, x.n); break; } } }
-      if (c >= 3) out.doomed = true; else if (c) src.push({ banes: c, bb: "field" });   // High cover: Doomed, and no Field Banes from the Cover
+      const cm = RR.coverMods(c); if (cm.doomed) out.doomed = true; else if (cm.banes) src.push({ banes: cm.banes, bb: cm.bb });   // High cover: Doomed, and no Field Banes from the Cover
       out.coverBanes = c >= 3 ? 0 : c; out.cover = c;
     }
-    if (tgt.cond?.prone) src.push({ banes: 1, bb: "field" });
+    if (tgt.cond?.prone) src.push(RR.proneMods(true));
   } else {
     if (cheb(att.pos, tgt.pos) > 1) return null;
     if (!W.M.off?.flank) src.push({ boons: flankBoons(att, tgt, W), bb: "field" });
-    if (tgt.cond?.prone) src.push({ boons: 1, bb: "field" });
+    if (tgt.cond?.prone) src.push(RR.proneMods(false));
   }
   return done();
 }

@@ -6,6 +6,7 @@
 //   Action with Escalation 3) can be used while it is 3 and spends nothing. NPCs have none, except an Elite (the NPC sheet's switch: it starts at 1 and
 //   gains 1 a round like a PC; since v0.0.314 it gains 1 more when it becomes Bloodied and when it becomes Strained, once each, and has no Critical hook).
 import { TWOD12 } from "./config.mjs";
+import { escalationStart, escalationRaised } from "./roundrules.mjs";
 import { unset } from "./util.mjs";   // v0.0.277: removing a key without the legacy "-=" syntax
 const F = "twod12";
 export const ESC_MAX = TWOD12.escalation.max, ESC_MIN = TWOD12.escalation.min, ESC_MOMENTUM = TWOD12.escalation.momentum;
@@ -50,9 +51,9 @@ export function registerMomentumSetting() {
 }
 
 /** Pure: the level an encounter starts at. */
-export const startLevel = momentum => (momentum ? ESC_MOMENTUM : ESC_MIN);
+export const startLevel = escalationStart;   // v0.0.365 (SIM-1): roundrules.mjs
 /** Pure: the level after a raise (a Critical, a hook, the GM's valve): one more, at most 3. */
-export const raised = (now, by = 1) => Math.max(0, Math.min(ESC_MAX, (Number(now) || 0) + (Number(by) || 0)));
+export const raised = escalationRaised;   // v0.0.365 (SIM-1): roundrules.mjs
 
 /** The round changed: every creature with Escalation in the combat that isn't Unconscious gains 1, from round 2, up to 3 (once per round, by the GM). */
 export async function gainForRound(combat) {

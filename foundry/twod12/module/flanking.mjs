@@ -5,6 +5,7 @@
 //  - Creatures that threaten the same enemy flank it. Each flanker gains 1 Field Boon on its [Melee] Actions against that enemy for each other flanker,
 //    minus 1 for each ally of that enemy that threatens the flanker (never below 0), then the limit of Field Boons, 2 (v0.0.301, PACK BB: the cancels first).
 import { tokenDistance } from "./light.mjs";
+import { flankBoons } from "./roundrules.mjs";
 import { activeWeapons, hasProp, weaponThreatens } from "./fists.mjs";
 import { weaponRanges, rangeEnds } from "./weaponrange.mjs";
 
@@ -70,8 +71,8 @@ export function flankingFor(attacker, target, tokens = canvas.tokens?.placeables
   if (!attacker || !threatens(attacker, target)) return { boons: 0, raw: 0, flankers: [], cancelledBy: [], threatenedBy: all.map(t => t.name), flankerTokens: [], cancelTokens: [], attackerThreatens: false };
   const others = all.filter(a => a.id !== attacker.id);
   const cancelledBy = live.filter(y => y.id !== target.id && threatens(y, attacker));
-  const raw = Math.max(0, others.length - cancelledBy.length);
-  return { boons: Math.min(2, raw), raw, flankers: others.map(t => t.name), cancelledBy: cancelledBy.map(t => t.name), threatenedBy: all.map(t => t.name), flankerTokens: others, cancelTokens: cancelledBy, attackerThreatens: true };
+  const { raw, boons } = flankBoons(others.length, cancelledBy.length);   // v0.0.365 (SIM-1): the rule itself is in roundrules.mjs
+  return { boons, raw, flankers: others.map(t => t.name), cancelledBy: cancelledBy.map(t => t.name), threatenedBy: all.map(t => t.name), flankerTokens: others, cancelTokens: cancelledBy, attackerThreatens: true };
 }
 
 /** Why a creature that "threatens no one" doesn't (for the overlay and the dialog): "no Melee weapon in hand", "Unconscious". */

@@ -1,0 +1,26 @@
+--- Action Points
+a turn's AP: 4, Slowed 1: 4 3 | Quickened 1: 5 | a Minion: 3 | never under 0: 0
+the Reaction AP before the first turn / after: 0 1
+paying 1R with the Reaction AP: {"fromRap":1,"fromAp":0} | 2R with it and a kept AP: {"fromRap":1,"fromAp":1} | 1R with a kept AP only: {"fromRap":0,"fromAp":1}
+can pay: 1R with nothing: false | 1R with the Reaction AP: true | 2R with the Reaction AP alone: false | 0R: true
+Unspent AP (Drak, Stage 1, 1 AP left): {"unused":1,"guard":2} | Stage 2, 2 AP: {"unused":2,"guard":6} | Stage 3: {"unused":1,"guard":4} | the first turn: {"unused":0,"guard":0}
+Strikes a turn: 3 | At-will Banes on the 1st, 2nd, 3rd use: 0 1 2
+--- Escalation
+start: 1 | with Momentum: 2 | Nari: round 2: 2 | a Critical: 3 | round 3 stays: 3
+Momentum after CV 75 a PC (easy) / 100 / 76: false true true
+an Elite at 0 / 1 / 2 / 3: first-attack Boons 0 1 1 1 | Round Specials 1 1 2 2 | Encounter Special back false false false true
+--- Position
+Flanking: two flankers: {"raw":1,"boons":1} | three: {"raw":2,"boons":2} | four and one cancel: {"raw":2,"boons":2} | one and one cancel: {"raw":0,"boons":0} | never under 0: {"raw":0,"boons":0}
+Cover on an Action: none / Low / Medium / High / Total: 0 field | 1 field | 2 field | Doomed | no Line of Effect
+Cover on a Save: Low / Medium / High: 1 field Boons | 2 field Boons | Favored | High gives no Field Banes: true
+Prone: melee {"boons":1,"banes":0,"bb":"field"} | ranged {"boons":0,"banes":1,"bb":"field"} | shooting while Engaged: 2 | into a melee: 1
+Range 10 / 20 / 40 at 10, 11, 20, 21, 40, 41: 0 1 1 2 2 Infinity | Long Draw: 0 1 | melee 1 at 1, 2: 0 Infinity
+--- one copy of each rule
+the numbers are config.mjs's: true
+sheetmodel.mjs takes payReaction from it: true
+combat.mjs takes unusedApGuard and the turn's AP from it: true
+escalation.mjs takes the start and the raise from it: true
+flanking.mjs takes the count from it: true
+pure (it imports only config, calc and guard): ./config.mjs ./calc.mjs ./guard.mjs | no Foundry global: true
+the old names still work: sheetmodel.payReaction: {"fromRap":1,"fromAp":1}
+the environment imports it: core.mjs true | the engine uses it: true | the map uses it: true
