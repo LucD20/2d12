@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: 28d4df4 2026-11-12 Bestiary: Minions with 12 Health in squads of up to 3, ranged attacks one damage rating lower, the CV follows Health and damage ratings
+Built by tools/knowledge.py on 2026-11-12 from the repository at: 7198e9a 2026-11-12 Bestiary: the party-size note no longer names front-liners (the measurement points at healing, and partly at the ruler); a Defense point is about 5%
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -16,7 +16,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 Files:
 - HANDOFF.md (130 KB)
 - MASTER-PLAN.md (35 KB)
-- open-design-items.md (121 KB)
+- open-design-items.md (123 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (29 KB)
 - rules-03-movement.md (39 KB)
