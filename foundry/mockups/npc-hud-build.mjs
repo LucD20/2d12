@@ -41,7 +41,7 @@ const SUB = { Sl: "Slashing", Pi: "Piercing", Bl: "Bludgeoning" };
 // An Action of the model: group, name, ap, reaction, freq, traits, vs, dist, target, tiers [t1, t2, t3] (damage text, "" = nothing), sub (damage subtype),
 // rider (a condition and on which Tiers), line (the Bestiary's one line, written as the book writes it), flavor (from book/cards/bestiary.json).
 const NPCS = {
-  goblin: { name: "Goblin Sneak", img: "npcs/goblin-sneak.png", rank: "Minion", role: "Skirmisher", cv: 25, level: 1, ap: 3,
+  goblin: { size: "Small", name: "Goblin Sneak", img: "npcs/goblin-sneak.png", rank: "Minion", role: "Skirmisher", cv: 25, level: 1, ap: 3,
     vigor: [5, 5], resolve: [5, 5], ad: 12, wd: 11, speed: 7, attrs: { body: 0, mind: 0, appeal: -1, instinct: 1 }, wmod: 2, pmod: 1,
     actions: [
       { group: "basic", name: "Rusty Knife", ap: 1, freq: "atwill", traits: ["weapon", "melee", "strike"], vs: "AD", dist: "Melee", target: "One creature", tiers: ["", "2", "1 + 1d4"], sub: "Pi",
@@ -59,7 +59,7 @@ const NPCS = {
       { group: "react", name: "Hold the Line", ap: 1, reaction: true, freq: "round", traits: ["weapon", "melee", "strike"], vs: "AD", dist: "Melee", target: "The attacker", tiers: ["", "2 + 1d6", "6 + 1d6"], sub: "Sl",
         trigger: "An ally within 2 squares is hit.", kind: "Reaction, 1R, Trigger: an ally within 2 squares is hit", line: "the attacker takes 2 + 1d6 / 6 + 1d6 Sl.", flavor: "Touch its kin, and the orc answers." }
     ] },
-  ogre: { name: "Ogre Chieftain", img: "npcs/ogre-chieftain.png", rank: "Elite", role: "Striker", cv: 200, level: 1, ap: 4, escalation: 4,
+  ogre: { size: "Large", name: "Ogre Chieftain", img: "npcs/ogre-chieftain.png", rank: "Elite", role: "Striker", cv: 200, level: 1, ap: 4, escalation: 4,
     vigor: [-6, 65], resolve: [41, 65], ad: 14, wd: 12, speed: 4, attrs: { body: 3, mind: 2, appeal: 1, instinct: 2 }, wmod: 3, pmod: 2,
     ladder: [[2, "1 Boon on its first attack each round."], [4, "Its Round Special Action twice a round."], [6, "Ground Slam comes back, once."]],
     actions: [
@@ -118,15 +118,15 @@ function sheet(n, mode) {
   });
   // an Elite with no Escalation Action still shows its ladder
   const A = [["Body", "body"], ["Mind", "mind"], ["Appeal", "appeal"], ["Instinct", "instinct"]];
-  return `<div class="win"><div class="win-head">${ic("user")} ${n.name}<span class="sp">${ic("gear")} Sheet ${ic("xmark")}</span></div>
+  return `<div class="win rk-${n.rank.toLowerCase()}"><div class="win-head">${ic("user")} ${n.name}<span class="sp">${ic("gear")} Sheet ${ic("xmark")}</span></div>
   <div class="ops">
     <div class="ops-hb rk-${n.rank.toLowerCase()}"><div class="nm">${n.name}</div><div class="who"><b>${n.rank} ${n.role}</b><span>Level ${n.level} (Stage 0) &middot; CV ${n.cv}</span></div></div>
     <div class="ops-tabs"><a class="on">Main</a><a>Build</a><a>Effects</a><a>Notes</a><span class="tools"><a title="Roll Initiative">${ic("dice-d20")}</a><a title="Senses">${ic("eye")}</a></span></div>
     <div class="ops-stats">
       <div class="sbl"><span class="k">HP</span> <b class="big">${hp}</b> / ${max} <span class="track hpbar"><i style="width:${pct(hp, max)}%"></i></span>${states}</div>
       <div class="sbl two">${gauge("v", "Vigor", n.vigor)}${gauge("r", "Resolve", n.resolve)}</div>
-      <div class="sbl"><span class="k">Armor Defense</span> <b class="big">${n.ad}</b><i class="sp"></i><span class="k">Ward Defense</span> <b class="big">${n.wd}</b><i class="sp"></i><span class="k">Speed</span> <b class="big">${n.speed}</b><i class="sp"></i><span class="k">Steadiness</span> <b>${n.steadiness ?? 0}</b><i class="sp"></i><span class="k">AP</span> <b>${n.ap}</b></div>
-      <div class="sbl"><span class="k">Resist</span> ${n.resist ?? "—"}<i class="sp"></i><span class="k">Weak</span> ${n.weak ?? "—"}</div>
+      <div class="sbl grid">${[["AD", n.ad, "Armor Defense", 1], ["WD", n.wd, "Ward Defense", 1], ["Speed", n.speed, "", 1], ["Reach", n.reach ?? 1, "", 1], ["Steadiness", n.steadiness ?? 0, "", 0], ["Size", n.size ?? "Medium", "", 0]].map(([k, v, tip, big]) => `<span${tip ? ` title="${tip}"` : ""}><span class="k">${k}</span> <b${big ? ' class="big"' : ""}>${v}</b></span>`).join("")}</div>
+      <div class="sbl grid">${[["Immune", n.immune], ["Resist", n.resist], ["Weak", n.weak]].map(([k, v]) => `<span class="s2"><span class="k">${k}</span> ${v ?? "—"}</span>`).join("")}</div>
     </div>
     <div class="ops-body">
       ${bands.join("")}

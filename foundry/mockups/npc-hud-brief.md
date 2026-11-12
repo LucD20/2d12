@@ -182,6 +182,12 @@ That way an Action line looks the same everywhere.
 - **His 4e reference arrived** (the 4e alternate NPC sheet, a Goblin Grunt). What the mockup already shares with it: the name with rank and level at the right, the stats as bold run-in lines, group headings across the page, each power under a shaded header with its usage and the edit and delete icons, the tabs. **Taken from it now: "+ Add" at the right of each group's heading.** What it has and the mockup doesn't (not applied, his call): a portrait in the header; the stats in two columns (Health and Defenses on the left, Initiative and senses on the right); filled bands for the group headings (he asked for the heading on a rule); a small icon before each power's name (melee, ranged); the Attributes as two shaded rows of text (he preferred the tiles); a much smaller type (about 11 px against 13.5).
 - **Nothing is left to pick.** The build follows Stage 0 in Foundry; the Action line is checked against the Bestiary's turn budget first.
 
+### The sheet's stat lines (Lucas, 2026-11-12, after the picks)
+- **One grid of six equal columns:** **AD, WD** (written short; the full name is the tooltip), **Speed, Reach** (in the place of AP), **Steadiness, Size** (added: he asked what else was worth a place; Size goes with Reach and Steadiness. The Bestiary's examples give no Size or Reach: Small, Medium, Large and Reach 1 are for display).
+- **Immune, Resist, Weak** on the next line, each two columns wide, so they start under AD, Speed and Steadiness. Resolve starts on the fourth column, over Reach.
+- **The Foundry window's own header takes the rank's color** (a little darker than the name plate).
+- Other candidates for the line, not added: Initiative (a button in the tab line rolls it), the senses (the eye icon), AP a turn and the Reaction AP (the Turn dock shows them).
+
 ### The picks' history (all closed)
 1. ~~(a) full text or (b) one line~~: (a), decided.
 2. The portrait: shown, hidden, or a per-user setting.

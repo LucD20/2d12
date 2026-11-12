@@ -795,6 +795,14 @@ body.light { --pg: #f4ecd9; --pg2: #eae0c8; --rule: #8a6d3b; --hair: #d2c29c; --
 /* From Lucas's 4e reference (the alternate NPC sheet): "+ Add" at the right of each group's heading. */
 .ops .band .add { margin-left: auto; font: 600 13px "Signika", sans-serif; font-variant: small-caps; letter-spacing: 0; color: var(--mute); cursor: pointer; }
 .ops .band .r + .add { margin-left: 12px; }
+
+/* Lucas, 2026-11-12: the stat lines on one grid of six equal columns (AD, WD, Speed, Reach, Steadiness, Size; Immune, Resist and Weak each take
+   two, so they start under AD, Speed and Steadiness); the window's own header takes the rank's color. */
+.ops .sbl.grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0; align-items: baseline; }
+.ops .sbl.grid > span { white-space: nowrap; }
+.ops .sbl.grid .s2 { grid-column: span 2; }
+.win[class*="rk-"] .win-head { background: color-mix(in srgb, var(--rk) 78%, #000); color: var(--head-ink); }
+.ops .sbl.two { gap: 0; } .ops .sbl.two .gauge { flex: 1 1 50%; } .ops .sbl.two .gauge:first-child { padding-right: 22px; }   /* Resolve starts on the grid's fourth column, over Reach */
 </style>
 </head>
 <body class="mock">

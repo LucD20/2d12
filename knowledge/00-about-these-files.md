@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: 9788d98 2026-11-12 NPC-HUD mockups: the Tiers as three lines (Lucas's pick, B)
+Built by tools/knowledge.py on 2026-11-12 from the repository at: 98fe21d 2026-11-12 NPC-HUD mockups: every pick closed; '+ Add' on the sheet's group headings (from Lucas's 4e reference)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -30,7 +30,7 @@ Files:
 - rules-13-archer.md (3 KB)
 - rules-14-bestiary.md (25 KB)
 - rules-15-gear.md (11 KB)
-- design-npc-hud-brief.md (23 KB)
+- design-npc-hud-brief.md (24 KB)
 - design-sim-brief.md (22 KB)
 - design-stage0.md (12 KB)
 - design-expedition-loop.md (12 KB)
