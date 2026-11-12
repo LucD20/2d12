@@ -29,6 +29,7 @@ OUT = ROOT / "knowledge"
 
 # Design documents still in progress (decided or proposed, not fully in rules-src yet). Keep this list short.
 DESIGN_DOCS = [
+    "foundry/mockups/style-audit.md",   # what in the system is not on par with the settled look; a proposed order (2026-11-12)
     "foundry/mockups/npc-hud-brief.md",  # the one-page NPC sheet and the HUD: decisions, mockups to make (2026-11-12)
     "book/sim-brief.md",        # the automated playtest environment (SIM): the brief, the order, what the ruler lacks (2026-11-11)
     "book/ruler/stage0.md",     # Stage 0 (levels 1 to 3) in the ruler: the fights by level, the Bestiary's Stage 0 table and its fit (2026-11-12)
