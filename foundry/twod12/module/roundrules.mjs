@@ -32,9 +32,11 @@ export const escalationRaised = (now, by = 1) => Math.max(0, Math.min(ESC_MAX, (
 /** Momentum (Ch. 2): after an encounter harder than easy (more than CV 75 a PC) the next one starts with it; that encounter uses it up. */
 export const givesMomentum = cvPerPc => (Number(cvPerPc) || 0) > 75;
 /** An Elite's Escalation ladder (the Bestiary): at 1 its first attack each round has 1 Boon; at 2 its Round Special twice a round; at 3 its Encounter Special back, once. */
-export const eliteFirstAttackBoons = esc => ((Number(esc) || 0) >= 1 ? 1 : 0);
-export const eliteRoundSpecials = esc => ((Number(esc) || 0) >= 2 ? 2 : 1);
-export const eliteEncounterBack = esc => (Number(esc) || 0) >= 3;
+/** rungs: the Escalation each of the three starts at: [1, 2, 3] (the system today), or ELITE_RUNGS_LADDER on the 1-to-6 ladder (the book since Stage 0). */
+export const ELITE_RUNGS = [1, 2, 3], ELITE_RUNGS_LADDER = [2, 4, 6];
+export const eliteFirstAttackBoons = (esc, rungs = ELITE_RUNGS) => ((Number(esc) || 0) >= rungs[0] ? 1 : 0);
+export const eliteRoundSpecials = (esc, rungs = ELITE_RUNGS) => ((Number(esc) || 0) >= rungs[1] ? 2 : 1);
+export const eliteEncounterBack = (esc, rungs = ELITE_RUNGS) => (Number(esc) || 0) >= rungs[2];
 
 /* ---- Stage 0 in the book (2026-11-12, pack "Stage 0 into the book"; Ch. 2, Escalation and Momentum; Ch. 3, Ranged Combat While Engaged) ---- */
 // The book's rules since that pack. **The system's own callers still use the functions above** (the 1-to-3 ladder, the on / off Momentum, the 2 Banes)

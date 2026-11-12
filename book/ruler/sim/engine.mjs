@@ -41,8 +41,8 @@ export const npcStrike = (R, f, t, banes, escalation = 3, pcs = [], boons = 0, b
 export function kitSeq(f, ap) {
   const out = []; let basics = 0;
   for (let s = 0; s < 3 && ap > 0; s++) {
-    const enc = f.kit.enc && !f.encUsed && ap >= f.kit.enc.ap ? f.kit.enc : null, rnd = !enc && f.kit.round && (f.roundSpecialN ?? 0) < RR.eliteRoundSpecials(f.esc) && ap >= f.kit.round.ap ? f.kit.round : null, sp = enc ?? rnd;
-    const boons = f.firstAtk ? RR.eliteFirstAttackBoons(f.esc) : 0; f.firstAtk = false;
+    const enc = f.kit.enc && !f.encUsed && ap >= f.kit.enc.ap ? f.kit.enc : null, rnd = !enc && f.kit.round && (f.roundSpecialN ?? 0) < RR.eliteRoundSpecials(f.esc, RULES.eliteRungs) && ap >= f.kit.round.ap ? f.kit.round : null, sp = enc ?? rnd;
+    const boons = f.firstAtk ? RR.eliteFirstAttackBoons(f.esc, RULES.eliteRungs) : 0; f.firstAtk = false;
     if (sp) { ap -= sp.ap; if (enc) f.encUsed = true; else f.roundSpecialN = (f.roundSpecialN ?? 0) + 1; out.push({ k: 0, mult: sp.mult * RULES.npcSpecials, boons }); }
     else { ap--; out.push({ k: basics++, mult: 1, boons }); }
   }
@@ -155,8 +155,8 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   const zoneBanes = f => zones.filter(z => z.left > 0 && z.banes && !z.by.down && sideOf(z.by) !== sideOf(f) && inZone(z, f)).sort((x, y) => y.banes - x.banes)[0];
   const zoneHelp = (t, key) => zones.filter(z => z.left > 0 && z[key] && sideOf(z.by) === sideOf(t) && inZone(z, t))[0];
   /** Pack R-bestiary: an Elite's phases (+1 Escalation when it becomes Bloodied and when it becomes Strained) and its rung 3 (the Encounter Special comes back once). */
-  const eliteRung = f => { if (RR.eliteEncounterBack(f.esc) && !f.encBack) { f.encBack = true; f.encUsed = false; } };
-  const phase = f => { if (RULES.eliteEsc && RULES.elitePhases && f.role === "elite" && !f.dead && f.esc > 0 && f.esc < 3) { f.esc++; eliteRung(f); } };
+  const eliteRung = f => { if (RR.eliteEncounterBack(f.esc, RULES.eliteRungs) && !f.encBack) { f.encBack = true; f.encUsed = false; } };
+  const phase = f => { if (RULES.eliteEsc && RULES.elitePhases && f.role === "elite" && !f.dead && f.esc > 0 && f.esc < (RULES.eliteMax ?? 3)) { f.esc++; eliteRung(f); } };
   const killCheck = () => { for (const f of foes) {
     if (!f.dead && f.damage >= f.pool) { f.dead = true; f.deadRound = round; ev("dead", { who: nameOf(f) }); for (const p of pcs) if (p.build.escHook === "quarry" && p.quarry === f) hook(p, "class"); }
     // Pack R prep: when an NPC becomes Bloodied (Body damage at its Body threshold) and Strained (Mind damage at its Mind threshold).
@@ -373,11 +373,11 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     if (!f.dead && RULES.npcSpecials && f.kit) {   // pack R prep: every AP left goes to attacks: the Encounter Special (once), the Round Special (once a round), Basic attacks (At-will Banes); 3 Strikes
       let basics = 0;
       for (let s = 0; s < 3 && ap > 0; s++) {
-        const enc = f.kit.enc && !f.encUsed && ap >= f.kit.enc.ap ? f.kit.enc : null, rnd = !enc && f.kit.round && f.roundSpecialN < RR.eliteRoundSpecials(f.esc) && ap >= f.kit.round.ap ? f.kit.round : null, sp = enc ?? rnd;   // Elite Escalation 2: the Round Special twice a round
+        const enc = f.kit.enc && !f.encUsed && ap >= f.kit.enc.ap ? f.kit.enc : null, rnd = !enc && f.kit.round && f.roundSpecialN < RR.eliteRoundSpecials(f.esc, RULES.eliteRungs) && ap >= f.kit.round.ap ? f.kit.round : null, sp = enc ?? rnd;   // Elite Escalation 2: the Round Special twice a round
         if (t.down || (f.melee && !MP.adj(f, t))) t = PN.npcRetarget(E, f);
         if (!t) break;
         const m = MP.mapMods(f, t, f.melee ? "melee" : "ranged", W); if (!m) break;
-        const eb = f.firstAtk ? RR.eliteFirstAttackBoons(f.esc) : 0; f.firstAtk = false;   // Elite Escalation 1: its first attack each round has 1 Boon
+        const eb = f.firstAtk ? RR.eliteFirstAttackBoons(f.esc, RULES.eliteRungs) : 0; f.firstAtk = false;   // Elite Escalation 1: its first attack each round has 1 Boon
         if (sp) { ap -= sp.ap; if (enc) f.encUsed = true; else { f.roundSpecial = round; f.roundSpecialN++; } f.curMult = sp.mult * RULES.npcSpecials; npcHit(f, t, 0, m.boons + eb, m.banes, m.doomed); f.curMult = 1; }
         else { ap--; npcHit(f, t, basics++, m.boons + eb, m.banes, m.doomed); }
       }
@@ -398,7 +398,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   while (alive().length && up().length && round < maxRounds) {
     round++; ev("round");
     for (const p of pcs) { p.firstThisRound = new Set(); if (round > 1 && !p.down) p.esc = Math.min(RULES.escMax, (p.esc ?? 0) + 1); }   // RULES.escMax: 3 (the book: roundrules.mjs ESC_MAX), or the Stage 0 prototype's 6   // +1 Escalation at the start of every round after the first
-    for (const f of foes) { f.roundSpecialN = 0; f.firstAtk = true; if (RULES.eliteEsc && f.role === "elite" && !f.dead) { f.esc = round === 1 ? 1 : Math.min(3, f.esc + 1); eliteRung(f); } }   // pack R-bestiary: Elite Escalation (+1 a round from round 2)
+    for (const f of foes) { f.roundSpecialN = 0; f.firstAtk = true; if (RULES.eliteEsc && f.role === "elite" && !f.dead) { f.esc = round === 1 ? 1 : Math.min(RULES.eliteMax ?? 3, f.esc + 1); eliteRung(f); } }   // pack R-bestiary: Elite Escalation (+1 a round from round 2)
     if (inject && round === inject.round) inject.fn({ pcs, foes, R, M, round });
     for (const o of order) {
       if (!alive().length || !up().length) break;

@@ -17,6 +17,8 @@ The book changed (Chapters 2, 3, 5, 6, 14, 15: rules-backlog.md, "STAGE 0 INTO T
 
 **The Bestiary's Stage 0 table** (`node book/ruler/sim/stage0fit.mjs`, then `stage0.md` sections 2 and 3): over pack R's first row the normal fight lasts 3.5 rounds with Health × 0.93 to 1.04 (the melee weapons deal more now, so the placeholder's × 0.90 was too low); for damage the two targets still don't meet (× 0.61 to 0.81 for "costs a fifth", × 0.93 to 0.97 for "a Down in 1 fight of 5"). **Chosen: Health × 0.95 (a Standard 30 + 30 = 60) and damage × 0.75**, written as ready numbers; `stage0fit.mjs h,d` measures another pair.
 
+**After Lucas's answers (the same day; rules-backlog.md, the top entry):** a Standard's Medium 2 AP Special half a step up (4 + 1d6 / 8 + 1d8), **a Grunt 3 AP** (`npcStage0.grunt.ap`), **a Minion dies to any damage** (`oneHit`: a pool of 1 in the engine), **an Elite on the 1-to-6 ladder** with its abilities at 2, 4 and 6 (`RULES_S0.eliteMax`, `eliteRungs`; `RULES_BOOK` keeps 1 to 3 with the rest of the old ladder, so report.md didn't move). `stage0.md` was written again: with no Momentum the normal fight is 3.4 to 3.5 rounds, 10 to 13% of the party's Health (25 to 30% with the Rally Points), a PC Down in 8 to 10%; the deadly fight is won 76% at level 1 and 87 to 88% at levels 2 and 3; eight Grunts cost what four Standards do or a little less.
+
 ## The catch-up (2026-11-12): the ruler runs the book's rules today
 
 Until this pack the ruler's default was the book before pack R (5 AP, no Reaction AP, Escalation spent), and the dice the book had before

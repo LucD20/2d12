@@ -59,7 +59,7 @@
 | [[Doubles\|**Doubles**]] | Both d12s match: the tier goes up. |
 | [[Going Down\|**Down**]] | Your total damage equals or goes above your Health Pool. |
 | [[Playing on the Grid\|**Elevation**]] | Squares up or down count like a diagonal: the larger count plus half the smaller one. A creature is as tall as it is wide. |
-| [[Elites\|**Elite**]] | An NPC role with CV 200: about 130 Health at Stage 0, and the only NPC with Escalation (Elite Escalation: a ladder of its own from 1 to 3, +1 a round and at each phase). |
+| [[Elites\|**Elite**]] | An NPC role with CV 200: about 130 Health at Stage 0, and the only NPC with Escalation (Elite Escalation: the 1-to-6 ladder, +1 a round and at each phase). |
 | [[Empowered\|**Empowered**]] | Adds its value to every damage die (Empowered 1: 1 more per die). |
 | [[Frequency\|**Encounter**]] | A fight or similar scene, from Initiative until the GM ends it. |
 | [[Enfeebled\|**Enfeebled**]] | Subtracts its value from every damage die; each die still deals at least 1. |
@@ -77,7 +77,7 @@
 | [[Forced Movement\|**Forced Movement**]] | Movement you impose on another creature (Pushed, Pulled or Slid): no reactions, ignores Difficult Terrain, each square counts 1. |
 | [[Frequency\|**Frequency**]] | How often an Action can be used. |
 | [[Effect Timing\|**General Effects**]] | The Effects row of an Action. They happen on a Tier 2 or 3 result. |
-| [[Grunts\|**Grunt**]] | An NPC role with CV 50: about 26 Health at Stage 0, dies to about 1 PC turn. |
+| [[Grunts\|**Grunt**]] | An NPC role with CV 50 and 3 AP a turn: about 26 Health at Stage 0, dies to about 1 PC turn. |
 | [[Guard\|**Guard**]] | A buffer written Guard N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take. The Guard of unspent AP adds to it and lasts 1 round. |
 | [[Gun\|**Gun**]] | A trait: the Action needs a Firearm (a pistol, a musket). |
 | [[Class Actions, Picks and the Repertoire\|**Hallmark Action**]] | A choice of two class Actions at level 1; you take one. |
@@ -104,8 +104,8 @@
 | [[Mark Quarry\|**Marked Quarry**]] | The enemy an Archer chose with the Mark Quarry Action: 1 Boon on their [Shot, Strike] Actions against it, and [V] [Mod] extra damage on a Tier 1. One at a time. |
 | [[Mastery\|**Master**]] | 15 Mastery with a weapon: from level 8, your Actions that deal [W] with it deal one more [W]. |
 | [[Mastery\|**Mastery**]] | How well you know a kind of weapon: +1 for a Tier 3 on a Weapon Action with it (at most 1 per Weapon Group an encounter). The weapon's Mastery (3, 4 or 5) unlocks its Weapon Technique; 8 Expert, 15 Master. |
-| [[Minions\|**Minion**]] | An NPC role with CV 25, with 3 AP a turn and no Dying: at 0 Health it dies, or falls Unconscious if the GM prefers. |
-| [[Minor enemies\|**Minor enemies**]] | Minions and Grunts (CV below 100). |
+| [[Minions\|**Minion**]] | An NPC role with CV 25, with 3 AP a turn, no Reaction AP and no Health: any damage kills it (or knocks it Unconscious if the GM prefers). |
+| [[Minor enemies\|**Minor enemies**]] | Minions and Grunts (CV below 100; 3 AP a turn). |
 | [[Momentum\|**Momentum**]] | The party's number from 0 to 4: an encounter starts at Escalation 1 + Momentum. +1 for each encounter overcome; -1 when a PC goes Down and at each Sleep; lost on a retreat and at a Rest. |
 | [[Rules Language\|**Move**]] | An Action with the Move trait. |
 | [[Moving and Leaving Your Square\|**Moved**]] | You moved with an Action that moves you, Evade included. Forced Movement, Reposition and Stand don't count. |

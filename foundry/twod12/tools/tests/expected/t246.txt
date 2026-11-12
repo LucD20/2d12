@@ -8,7 +8,7 @@ Strikes a turn: 3 | At-will Banes on the 1st, 2nd, 3rd use: 0 1 2
 --- Escalation
 start: 1 | with Momentum: 2 | Nari: round 2: 2 | a Critical: 3 | round 3 stays: 3
 Momentum after CV 75 a PC (easy) / 100 / 76: false true true
-an Elite at 0 / 1 / 2 / 3: first-attack Boons 0 1 1 1 | Round Specials 1 1 2 2 | Encounter Special back false false false true
+an Elite at 0 / 1 / 2 / 3: first-attack Boons 0 0 0 0 | Round Specials 1 1 1 1 | Encounter Special back false false false false
 --- Position
 Flanking: two flankers: {"raw":1,"boons":1} | three: {"raw":2,"boons":2} | four and one cancel: {"raw":2,"boons":2} | one and one cancel: {"raw":0,"boons":0} | never under 0: {"raw":0,"boons":0}
 Cover on an Action: none / Low / Medium / High / Total: 0 field | 1 field | 2 field | Doomed | no Line of Effect
@@ -22,6 +22,7 @@ Jacob's party: 2, a PC Down and the fight won: 2 | then a Sleep: 1 | a retreat: 
 a [Ranged] Action while Engaged is Doomed: true | every creature has an Opportunity Attack: false
 the Bestiary's Stage 0 table: roles minion grunt standard elite | a Standard's Vigor or Resolve by rating: 17 / 24 / 30 / 36 / 42 | its Medium Basic attack: 1 + 1d4 / 2 + 1d6
 every damage is a flat part plus at most one small die: true | Health rises with the rating: true | a Minion has no 3 AP Special and no Extreme: true
+a Minion dies to any damage and has no Reaction AP: true | a Grunt's AP: 3 | an Elite's three abilities on the 1-to-6 ladder at 2 4 6 : Boons at 1 / 2: 0 1 | Round Specials at 3 / 4: 1 2 | the Encounter Special back at 5 / 6: false true
 --- one copy of each rule
 the numbers are config.mjs's: true
 sheetmodel.mjs takes payReaction from it: true

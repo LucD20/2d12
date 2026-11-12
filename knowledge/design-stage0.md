@@ -41,9 +41,9 @@ The book's tables (`foundry/twod12/module/config.mjs npcStage0`). **Health:** an
 
 | Role | Vigor or Resolve: Terrible / Low / Medium / High / Extreme | Health, both Medium | Basic attack, Medium | Its Round Special, Medium | Deals a turn to a level 1 Paladin (AD 14) / Archer (AD 13) |
 |---|---|---:|---|---|---|
-| Minion | 1 / 2 / 3 / 4 | 6 | 2 / 1 + 1d4 | 1d4 / 2 + 1d4 (1 AP) | 5.2 / 5.8 |
+| Minion | none: any damage kills it | - | 2 / 1 + 1d4 | 1d4 / 2 + 1d4 (1 AP) | 5.2 / 5.8 |
 | Grunt | 7 / 10 / 13 / 16 / 19 | 26 | 1d4 / 1 + 1d4 | 1 + 1d4 / 2 + 1d4 (1 AP) | 6.0 / 6.7 |
-| Standard | 17 / 24 / 30 / 36 / 42 | 60 | 1 + 1d4 / 2 + 1d6 | 3 + 1d6 / 8 + 1d8 (2 AP) | 10.8 / 12.1 |
+| Standard | 17 / 24 / 30 / 36 / 42 | 60 | 1 + 1d4 / 2 + 1d6 | 4 + 1d6 / 8 + 1d8 (2 AP) | 11.3 / 12.6 |
 | Elite | 35 / 50 / 65 / 80 / 95 | 130 | 2 + 1d4 / 2 + 1d6 | 5 + 1d6 / 8 + 1d8 (2 AP) | 13.9 / 15.2 |
 
 The fit behind it (`node book/ruler/sim/stage0fit.mjs`): over pack R's first row (a Standard with 63 Health in the ruler, a Basic attack of 4 / 7.5), the Health factor **h** for which the normal fight lasts 3.5 rounds, then the damage factor **d** for each of the Bestiary's two targets. As before, the two targets don't meet at one number.
@@ -57,29 +57,29 @@ The fit behind it (`node book/ruler/sim/stage0fit.mjs`): over pack R's first row
 | 3 | 0 | × 0.94 | × 0.68 | × 0.93 |
 | 3 | 2 | × 1.04 | × 0.79 | × 0.96 |
 
-**The table chosen: Health × 0.95 of that row (a Standard: 30 + 30 = 60) and damage × 0.75**, as ready numbers. The damage sits near the low target on purpose (Lucas, 2026-11-12: level 1 was too hard, make lower monsters): at level 1 with no Momentum the hard and the deadly fights then land where the Bestiary's difficulty table puts them (section 3). One step up (damage × 0.80 to 0.85: +1 on a Standard's Special) gives a level 1 party a PC Down in 14 to 18% of normal fights and wins the deadly fight 67 to 71% of the time.
+**The table chosen: Health × 0.95 of that row (a Standard: 30 + 30 = 60) and damage × 0.75**, as ready numbers, on the low side on purpose (Lucas, 2026-11-12: level 1 was too hard, make lower monsters). **Then, with Lucas the same day:** a Standard's Medium 2 AP Special half a step up (4 + 1d6 on Tier 2, was 3 + 1d6; the full step, × 0.80, gives a level 1 party a PC Down in 14% of normal fights and wins the deadly fight 68% of the time); **a Grunt has 3 AP** (with 4, eight Grunts cost a level 1 party 37% of its Health with the Rally Points against 28% for four Standards; with 3: 23%); **a Minion dies to any damage** and has no Reaction AP; **an Elite's Escalation follows the 1-to-6 ladder** (+1 a round and at each phase; its three abilities at 2, 4 and 6).
 
 ## 3. The fights at levels 1, 2 and 3
 
 | Level | Momentum | 3 Standards (easy) | 4 Standards (normal) | 5 Standards (hard) | 6 Standards (deadly) |
 |---:|---:|---|---|---|---|
-| 1 | 0 | 2.8 · 7% · 17% · 3% · 100% | 3.5 · 12% · 28% · 7% · 100% | 4.4 · 26% · 47% · 29% · 98% | 5.3 · 46% · 71% · 53% · 82% |
-| 1 | 2 | 2.7 · 6% · 13% · 2% · 100% | 3.4 · 10% · 23% · 8% · 100% | 4.2 · 18% · 37% · 19% · 98% | 5.1 · 34% · 58% · 41% · 90% |
-| 1 | 4 | 2.6 · 5% · 10% · 1% · 100% | 3.3 · 8% · 18% · 6% · 100% | 4.0 · 17% · 33% · 18% · 98% | 4.9 · 29% · 52% · 35% · 94% |
-| 2 | 0 | 2.7 · 6% · 16% · 3% · 100% | 3.4 · 9% · 24% · 7% · 100% | 4.1 · 18% · 37% · 23% · 99% | 5.0 · 34% · 57% · 43% · 89% |
-| 2 | 2 | 2.5 · 4% · 10% · 2% · 100% | 3.2 · 7% · 18% · 5% · 100% | 3.9 · 14% · 30% · 17% · 99% | 4.8 · 25% · 47% · 35% · 93% |
-| 2 | 4 | 2.5 · 4% · 9% · 1% · 100% | 3.1 · 6% · 14% · 3% · 100% | 3.8 · 11% · 26% · 13% · 99% | 4.6 · 23% · 42% · 30% · 94% |
-| 3 | 0 | 2.7 · 5% · 15% · 2% · 100% | 3.4 · 9% · 23% · 7% · 100% | 4.1 · 18% · 38% · 22% · 99% | 5.0 · 32% · 57% · 43% · 90% |
-| 3 | 2 | 2.5 · 4% · 11% · 3% · 100% | 3.1 · 7% · 18% · 5% · 100% | 3.9 · 11% · 28% · 13% · 99% | 4.6 · 21% · 41% · 29% · 96% |
-| 3 | 4 | 2.4 · 3% · 7% · 2% · 100% | 3.1 · 4% · 12% · 2% · 100% | 3.7 · 8% · 20% · 10% · 100% | 4.4 · 12% · 29% · 18% · 98% |
+| 1 | 0 | 2.8 · 7% · 18% · 3% · 100% | 3.5 · 13% · 30% · 10% · 100% | 4.5 · 27% · 49% · 31% · 96% | 5.3 · 50% · 75% · 57% · 76% |
+| 1 | 2 | 2.7 · 6% · 14% · 4% · 100% | 3.4 · 10% · 23% · 8% · 100% | 4.2 · 20% · 39% · 23% · 98% | 5.1 · 42% · 66% · 53% · 82% |
+| 1 | 4 | 2.6 · 6% · 12% · 3% · 100% | 3.3 · 8% · 19% · 5% · 100% | 4.0 · 18% · 35% · 19% · 99% | 4.9 · 36% · 59% · 42% · 88% |
+| 2 | 0 | 2.7 · 6% · 16% · 3% · 100% | 3.4 · 11% · 26% · 10% · 100% | 4.2 · 20% · 40% · 25% · 98% | 5.0 · 37% · 61% · 48% · 87% |
+| 2 | 2 | 2.6 · 4% · 11% · 2% · 100% | 3.2 · 8% · 20% · 7% · 100% | 3.9 · 14% · 31% · 18% · 99% | 4.7 · 27% · 49% · 35% · 92% |
+| 2 | 4 | 2.5 · 4% · 10% · 1% · 100% | 3.1 · 7% · 16% · 5% · 100% | 3.9 · 13% · 28% · 15% · 99% | 4.7 · 25% · 45% · 32% · 94% |
+| 3 | 0 | 2.7 · 6% · 16% · 4% · 100% | 3.4 · 10% · 25% · 8% · 100% | 4.2 · 22% · 42% · 27% · 97% | 5.0 · 36% · 60% · 48% · 88% |
+| 3 | 2 | 2.6 · 5% · 12% · 4% · 100% | 3.1 · 7% · 18% · 5% · 100% | 3.9 · 13% · 30% · 17% · 99% | 4.7 · 24% · 45% · 38% · 95% |
+| 3 | 4 | 2.4 · 3% · 8% · 2% · 100% | 3.1 · 5% · 13% · 5% · 100% | 3.7 · 9% · 22% · 12% · 99% | 4.5 · 13% · 31% · 21% · 98% |
 
 **The other normal encounters (CV 400)**, Momentum 0:
 
 | Level | 1 Elite + 2 Standards | 2 Elites | 8 Grunts | 2 Standards + 8 Minions |
 |---:|---|---|---|---|
-| 1 | 3.7 · 10% · 26% · 7% · 100% | 3.9 · 10% · 26% · 7% · 100% | 3.4 · 20% · 37% · 9% · 100% | 3.0 · 9% · 21% · 3% · 100% |
-| 2 | 3.6 · 8% · 22% · 5% · 100% | 3.8 · 7% · 23% · 5% · 100% | 3.3 · 15% · 31% · 7% · 100% | 3.0 · 7% · 19% · 2% · 100% |
-| 3 | 3.6 · 8% · 23% · 6% · 100% | 3.8 · 7% · 22% · 5% · 100% | 3.2 · 15% · 31% · 6% · 100% | 3.0 · 8% · 19% · 2% · 100% |
+| 1 | 3.7 · 11% · 26% · 8% · 100% | 3.9 · 9% · 24% · 6% · 100% | 3.3 · 9% · 23% · 3% · 100% | 2.8 · 8% · 18% · 2% · 100% |
+| 2 | 3.6 · 8% · 23% · 8% · 100% | 3.7 · 6% · 20% · 3% · 100% | 3.2 · 7% · 20% · 2% · 100% | 2.8 · 6% · 16% · 2% · 100% |
+| 3 | 3.5 · 7% · 22% · 5% · 100% | 3.7 · 7% · 21% · 5% · 100% | 3.2 · 7% · 20% · 1% · 100% | 2.8 · 6% · 16% · 2% · 100% |
 
 ## 4. Escalation 1 to 6: where the turns are
 
@@ -87,21 +87,21 @@ The normal fight (4 Standards), the level 3 party. The share of the PCs' turns a
 
 | Momentum | Starts at | Escalation 1 | 2-3 | 4-5 | 6 | A Passive works: Escalation 2 / 4 / 6 | The fight |
 |---:|---:|---:|---:|---:|---:|---|---|
-| 0 | 1 | 34% | 43% | 23% | 1% | 66% / 24% / 1% | 3.4 · 9% · 23% · 7% · 100% |
-| 1 | 2 | 0% | 55% | 39% | 6% | 100% / 45% / 6% | 3.2 · 7% · 20% · 4% · 100% |
+| 0 | 1 | 33% | 43% | 23% | 1% | 67% / 23% / 1% | 3.4 · 10% · 25% · 8% · 100% |
+| 1 | 2 | 0% | 56% | 38% | 6% | 100% / 44% / 6% | 3.2 · 8% · 21% · 7% · 100% |
 | 2 | 3 | 0% | 36% | 44% | 20% | 100% / 64% / 20% | 3.1 · 7% · 18% · 5% · 100% |
-| 3 | 4 | 0% | 0% | 58% | 42% | 100% / 100% / 42% | 3.1 · 5% · 14% · 3% · 100% |
-| 4 | 5 | 0% | 0% | 37% | 63% | 100% / 100% / 63% | 3.1 · 4% · 12% · 2% · 100% |
+| 3 | 4 | 0% | 0% | 57% | 43% | 100% / 100% / 43% | 3.1 · 6% · 15% · 5% · 100% |
+| 4 | 5 | 0% | 0% | 37% | 63% | 100% / 100% / 63% | 3.1 · 5% · 13% · 5% · 100% |
 
 ## 5. How it is played (level 2, Momentum 0 to 2 in turn)
 
 | Encounter | The plan | The party holds the line | A casual party | The enemies all on the weakest PC |
 |---|---|---|---|---|
-| 3 Standards (easy) | 2.6 · 5% · 13% · 3% · 100% | 2.6 · 4% · 10% · 1% · 100% | 2.6 · 6% · 15% · 4% · 100% | 2.8 · 3% · 10% · 3% · 100% |
-| 4 Standards (normal) | 3.3 · 8% · 21% · 6% · 100% | 3.2 · 6% · 17% · 3% · 100% | 3.3 · 10% · 23% · 8% · 100% | 3.5 · 7% · 18% · 19% · 100% |
-| 1 Elite + 2 Standards (normal) | 3.4 · 8% · 21% · 6% · 100% | 3.4 · 5% · 16% · 1% · 100% | 3.5 · 11% · 25% · 12% · 100% | 3.6 · 5% · 15% · 10% · 100% |
-| 5 Standards (hard) | 4.0 · 15% · 32% · 18% · 99% | 3.9 · 11% · 28% · 11% · 100% | 4.1 · 21% · 41% · 27% · 98% | 4.7 · 18% · 33% · 50% · 99% |
-| 6 Standards (deadly) | 4.8 · 28% · 50% · 37% · 94% | 4.6 · 22% · 44% · 26% · 96% | 4.9 · 42% · 65% · 50% · 83% | 6.0 · 33% · 55% · 77% · 92% |
+| 3 Standards (easy) | 2.6 · 5% · 14% · 3% · 100% | 2.7 · 3% · 10% · 1% · 100% | 2.7 · 7% · 16% · 3% · 100% | 2.8 · 3% · 11% · 4% · 100% |
+| 4 Standards (normal) | 3.3 · 8% · 22% · 6% · 100% | 3.2 · 6% · 18% · 3% · 100% | 3.3 · 11% · 25% · 10% · 100% | 3.6 · 9% · 20% · 24% · 100% |
+| 1 Elite + 2 Standards (normal) | 3.5 · 8% · 20% · 8% · 100% | 3.4 · 5% · 16% · 2% · 100% | 3.4 · 11% · 24% · 10% · 100% | 3.6 · 5% · 15% · 11% · 100% |
+| 5 Standards (hard) | 4.1 · 18% · 36% · 23% · 98% | 4.0 · 13% · 30% · 14% · 99% | 4.2 · 24% · 44% · 31% · 97% | 4.8 · 20% · 37% · 55% · 98% |
+| 6 Standards (deadly) | 4.8 · 33% · 56% · 43% · 90% | 4.7 · 27% · 49% · 35% · 93% | 4.9 · 47% · 69% · 56% · 77% | 6.2 · 39% · 62% · 80% · 87% |
 
 ## 6. Ranged against melee
 
@@ -109,17 +109,17 @@ Level 2, Momentum 0 to 2 in turn. **As built:** two Paladins with Greatswords (0
 
 | Map | Normal: as built | Normal: all Crossbows | Deadly: as built | Deadly: all Crossbows | Smite Paladin, damage that counted a turn: Greatsword / Crossbow | ... damage taken a turn |
 |---|---|---|---|---|---|---|
-| open | 8% · 6% · 100% | 5% · 3% · 100% | 28% · 37% · 94% | 28% · 42% · 92% | 27.3 / 20.8 | 5.7 / 3.5 |
-| pillars | 11% · 13% · 100% | 6% · 5% · 100% | 40% · 48% · 80% | 44% · 65% · 77% | 27.9 / 20.9 | 6.0 / 3.1 |
+| open | 8% · 6% · 100% | 6% · 5% · 100% | 33% · 43% · 90% | 32% · 48% · 90% | 27.6 / 20.0 | 5.6 / 3.7 |
+| pillars | 11% · 9% · 100% | 8% · 7% · 100% | 46% · 58% · 75% | 50% · 66% · 68% | 28.5 / 19.9 | 5.6 / 3.4 |
 
 ## 7. On the maps (level 2)
 
 | Encounter | Policy | open | corridor | pillars |
 |---|---|---|---|---|
-| 4 Standards (normal) | the plan | 3.3 · 8% · 21% · 6% · 100% | 3.4 · 10% · 24% · 7% · 100% | 3.4 · 11% · 24% · 13% · 100% |
-| 4 Standards (normal) | holding the line | 3.2 · 7% · 17% · 3% · 100% | 3.3 · 8% · 19% · 4% · 100% | 3.2 · 7% · 18% · 3% · 100% |
-| 6 Standards (deadly) | the plan | 4.8 · 26% · 49% · 35% · 95% | 4.9 · 42% · 64% · 52% · 81% | 4.9 · 40% · 62% · 48% · 80% |
-| 6 Standards (deadly) | holding the line | 4.6 · 19% · 41% · 22% · 96% | 4.8 · 31% · 54% · 42% · 91% | 4.8 · 32% · 54% · 40% · 89% |
+| 4 Standards (normal) | the plan | 3.3 · 8% · 20% · 6% · 100% | 3.4 · 11% · 26% · 10% · 100% | 3.3 · 11% · 24% · 9% · 100% |
+| 4 Standards (normal) | holding the line | 3.2 · 6% · 17% · 2% · 100% | 3.2 · 8% · 20% · 5% · 100% | 3.2 · 8% · 20% · 5% · 100% |
+| 6 Standards (deadly) | the plan | 4.7 · 32% · 55% · 41% · 90% | 4.8 · 38% · 62% · 51% · 84% | 4.9 · 46% · 69% · 58% · 75% |
+| 6 Standards (deadly) | holding the line | 4.8 · 27% · 49% · 36% · 93% | 5.0 · 37% · 61% · 49% · 88% | 4.9 · 37% · 60% · 47% · 88% |
 
 ## 8. A day: Momentum 0 to 4
 
@@ -127,11 +127,11 @@ Four fights with no Rest (easy, normal, normal, hard). **The ladder** (Chapter 2
 
 | Level | | Fight 1 (easy) | Fight 2 (normal) | Fight 3 (normal) | Fight 4 (hard) | The day cleared |
 |---:|---|---|---|---|---|---|
-| 1 | The ladder | Momentum 0.0: 2.8 r · 7% · Down 3% · won 100% | Momentum 1.0: 3.4 r · 11% · Down 10% · won 100% | Momentum 1.9: 3.4 r · 10% · Down 12% · won 100% | Momentum 2.7: 4.2 r · 18% · Down 24% · won 98% | 98% |
-| 1 | Flat | Momentum 0.0: 2.8 r · 7% · Down 2% · won 100% | Momentum 0.0: 3.5 r · 13% · Down 11% · won 100% | Momentum 0.0: 3.6 r · 13% · Down 12% · won 100% | Momentum 0.0: 4.5 r · 26% · Down 33% · won 96% | 96% |
-| 2 | The ladder | Momentum 0.0: 2.8 r · 6% · Down 3% · won 100% | Momentum 1.0: 3.2 r · 9% · Down 9% · won 100% | Momentum 1.9: 3.2 r · 6% · Down 5% · won 100% | Momentum 2.8: 3.8 r · 12% · Down 14% · won 99% | 99% |
-| 2 | Flat | Momentum 0.0: 2.8 r · 6% · Down 3% · won 100% | Momentum 0.0: 3.4 r · 9% · Down 8% · won 100% | Momentum 0.0: 3.4 r · 9% · Down 9% · won 100% | Momentum 0.0: 4.2 r · 20% · Down 28% · won 98% | 98% |
-| 3 | The ladder | Momentum 0.0: 2.8 r · 5% · Down 2% · won 100% | Momentum 1.0: 3.2 r · 8% · Down 7% · won 100% | Momentum 1.9: 3.2 r · 6% · Down 5% · won 100% | Momentum 2.9: 3.8 r · 11% · Down 15% · won 99% | 99% |
-| 3 | Flat | Momentum 0.0: 2.8 r · 6% · Down 3% · won 100% | Momentum 0.0: 3.4 r · 9% · Down 8% · won 100% | Momentum 0.0: 3.4 r · 9% · Down 10% · won 100% | Momentum 0.0: 4.2 r · 20% · Down 27% · won 98% | 98% |
+| 1 | The ladder | Momentum 0.0: 2.8 r · 8% · Down 4% · won 100% | Momentum 1.0: 3.5 r · 13% · Down 13% · won 100% | Momentum 1.8: 3.4 r · 11% · Down 9% · won 100% | Momentum 2.7: 4.2 r · 21% · Down 26% · won 97% | 97% |
+| 1 | Flat | Momentum 0.0: 2.8 r · 8% · Down 3% · won 100% | Momentum 0.0: 3.5 r · 13% · Down 10% · won 100% | Momentum 0.0: 3.5 r · 14% · Down 15% · won 100% | Momentum 0.0: 4.5 r · 30% · Down 39% · won 93% | 93% |
+| 2 | The ladder | Momentum 0.0: 2.8 r · 6% · Down 3% · won 100% | Momentum 1.0: 3.2 r · 7% · Down 6% · won 100% | Momentum 1.9: 3.2 r · 7% · Down 6% · won 100% | Momentum 2.8: 3.9 r · 13% · Down 20% · won 99% | 99% |
+| 2 | Flat | Momentum 0.0: 2.7 r · 6% · Down 2% · won 100% | Momentum 0.0: 3.4 r · 10% · Down 9% · won 100% | Momentum 0.0: 3.4 r · 10% · Down 11% · won 100% | Momentum 0.0: 4.3 r · 22% · Down 29% · won 96% | 96% |
+| 3 | The ladder | Momentum 0.0: 2.8 r · 6% · Down 3% · won 100% | Momentum 1.0: 3.2 r · 7% · Down 7% · won 100% | Momentum 1.9: 3.2 r · 8% · Down 7% · won 100% | Momentum 2.8: 3.8 r · 13% · Down 18% · won 99% | 99% |
+| 3 | Flat | Momentum 0.0: 2.8 r · 6% · Down 3% · won 100% | Momentum 0.0: 3.4 r · 11% · Down 9% · won 100% | Momentum 0.0: 3.4 r · 11% · Down 10% · won 100% | Momentum 0.0: 4.2 r · 22% · Down 30% · won 96% | 96% |
 
-(5.1 minutes.)
+(4.6 minutes.)

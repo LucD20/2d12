@@ -63,7 +63,7 @@ export const RULES_R = { ap: TW.apPerTurn, reactionAp: TW.reactionAp, escalation
 /** The weapon table before Stage 0 (Chapter 15 until 2026-11-12), for the builds' weapons: read when RULES.weapons is "r". */
 export const WEAPONS_R = { Greatsword: "0 / 1d8 / 2d6", Crossbow: "0 / 1d4+2 / 1d10+2" };
 export const RULES_BOOK = { ...RULES_R, weapons: "book", oaAll: RR.BASIC_OPPORTUNITY_ATTACK, npcOa: RR.BASIC_OPPORTUNITY_ATTACK, engagedRanged: RR.ENGAGED_RANGED_DOOMED ? "doomed" : "banes" };
-export const RULES_S0 = { ...RULES_BOOK, escMax: RR.ESC_LADDER_MAX, momentum: "ladder" };
+export const RULES_S0 = { ...RULES_BOOK, escMax: RR.ESC_LADDER_MAX, momentum: "ladder", eliteMax: RR.ESC_LADDER_MAX, eliteRungs: RR.ELITE_RUNGS_LADDER };   // eliteMax / eliteRungs (Lucas, 2026-11-12): an Elite's Escalation follows the 1-to-6 ladder; its three abilities at 2, 4 and 6 until it gets its own
 export const RULES = { ...RULES_BOOK };
 /** Guard per unused AP for a PC of this level (apGuard "stage": the book's 2 / 3 / 4 by Stage; a number: that much). */
 export const guardPerAp = lv => (RULES.apGuard === "stage" ? GD.guardPerAP(CF.stageOf(lv)) : Number(RULES.apGuard) || 0);
@@ -199,12 +199,13 @@ export function npcOf(role, rating = "medium", level = 1, opts = {}) {
 export const specialKey = mult => TW.npcSpecial.reduce((b, x) => (Math.abs(x.x - mult) < Math.abs(b.x - mult) ? x : b)).key;
 /**
  * A Stage 0 NPC (the Bestiary since 2026-11-12; the system's config.mjs npcStage0, or a `table` of the same shape: the fit tries several): its Vigor and
- * its Resolve are each a ready number by rating (no Attributes, no multiplier), and its Basic attack and Specials are written damage ("2 + 1d4").
+ * its Resolve are each a ready number by rating (no Attributes, no multiplier; a Minion has none: any damage kills it, a pool of 1 here), and its Basic attack and Specials are written damage ("2 + 1d4").
  * Defenses, Modifiers, AP and the Specials it has are its role's, as at every Stage (npcOf).
  */
 export function npcS0(role, rating = "medium", opts = {}, table = TW.npcStage0) {
-  const n = npcOf(role, rating, 1, opts), key = role in table ? role : "standard", t = table[key], col = k => Math.min(t.health.length - 1, TW.npcRatings[k]?.i ?? 2);
-  const hp = t.health[col(opts.hrating ?? rating)], dr = col(opts.drating ?? rating), dmg = {};
+  const n = npcOf(role, rating, 1, opts), key = role in table ? role : "standard", t = table[key], col = k => Math.min(t.basic.length - 1, TW.npcRatings[k]?.i ?? 2);
+  if (t.ap) n.apMax = t.ap;   // a Stage 0 Grunt has 3 AP a turn
+  const hp = t.oneHit ? 0.5 : t.health[col(opts.hrating ?? rating)], dr = col(opts.drating ?? rating), dmg = {};
   for (const k of ["basic", "s1", "s2", "s3"]) if (t[k]) dmg[k] = t[k][dr].map(parseDamage);
   const avg = e => avgDamage(e, null, 2, 0);
   return { ...n, stage: 0, pool: hp * 2, bodyPool: hp, mindPool: hp, dmg, t2: avg(dmg.basic[0]), t3: avg(dmg.basic[1]) };

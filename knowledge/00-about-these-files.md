@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: c5bdc6d 2026-11-12 Stage 0 decisions done: the weapon table locked (melee +4 / +2), HANDOFF and MASTER-PLAN updated
+Built by tools/knowledge.py on 2026-11-12 from the repository at: 632c84d 2026-11-12 The fight viewer rebuilt with the book's rules today (no Opportunity Attack, the Doomed shot, the new weapons)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (126 KB)
+- HANDOFF.md (127 KB)
 - MASTER-PLAN.md (35 KB)
 - open-design-items.md (113 KB)
 - rules-01-roll.md (23 KB)

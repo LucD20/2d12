@@ -8,16 +8,16 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 28.4 | 304 |
 | 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 38.9 | 450 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 14.0 | 256 |
-| 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 8.2 | 99 |
+| 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 8.4 | 101 |
 | 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.4 | 41 |
 | 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 5.6 | 95 |
 | 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 8.6 | 113 |
-| 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 25.6 | 197 |
+| 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 25.7 | 197 |
 | 11-species.md | Species | species |  | 0.8 | 32 |
 | 12-paladin.md | Paladin | paladin |  | 4.3 | 126 |
 | 13-archer.md | Archer | archer |  | 4.5 | 134 |
-| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 20.7 | 313 |
-| 15-gear.md | Gear | gear |  | 10.8 | 185 |
+| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 21.2 | 316 |
+| 15-gear.md | Gear | gear |  | 10.9 | 185 |
 
 ## 01-roll.md: Chapter 1: The Roll
 
@@ -170,12 +170,12 @@ Open (to be decided) boxes: 88: "The entries of the Dying and Shattered Tables a
 - 34:   ### Leveling Up
 - 49:   ### Talents
 - 56:   ### Swapping on a Rest
-- 62:   ### Stages
-- 79:   ### Distinct Choices
-- 83:   ### Weapon, Power and Signature Modifiers
-- 96:   ### Escalation Abilities
+- 64:   ### Stages
+- 81:   ### Distinct Choices
+- 85:   ### Weapon, Power and Signature Modifiers
+- 98:   ### Escalation Abilities
 
-Open (to be decided) boxes: 53: "The Talents are set aside for now: none is in the book while the first"; 76: "Only Stage 0 is written so far: the classes' levels 4 and above, their"
+Open (to be decided) boxes: 53: "The Talents are set aside for now: none is in the book while the first"; 78: "Only Stage 0 is written so far: the classes' levels 4 and above, their"
 
 ## 06-basic-actions.md: Chapter 6: Basic Actions
 
@@ -284,29 +284,29 @@ Open (to be decided) boxes: 18: "This class is still written for the earlier lev
 ## 14-bestiary.md: Bestiary: Building NPCs
 
 - 6: ## The targets
-- 21:   ### Minor enemies
-- 25: ## Ratings
-- 40: ## Defenses
-- 46:   ### Attacking Ward Defense
-- 50: ## Attributes and Modifiers
-- 63: ## Health
-- 69: ## Speed
-- 76: ## Steadiness
-- 80: ## Actions
-- 82:   ### The Basic attack
-- 88:   ### Special Actions
-- 102:   ### Conditions
-- 114:   ### Reactions
-- 123:   ### Elite Escalation
-- 141: ## The roles
-- 145:   ### Minions
-- 175:   ### Grunts
-- 206:   ### Standards
-- 237:   ### Elites
-- 268: ## Building an encounter
-- 294: ## Example NPCs (Stage 0)
+- 23:   ### Minor enemies
+- 27: ## Ratings
+- 42: ## Defenses
+- 48:   ### Attacking Ward Defense
+- 52: ## Attributes and Modifiers
+- 65: ## Health
+- 73: ## Speed
+- 80: ## Steadiness
+- 84: ## Actions
+- 86:   ### The Basic attack
+- 92:   ### Special Actions
+- 106:   ### Conditions
+- 118:   ### Reactions
+- 127:   ### Elite Escalation
+- 148: ## The roles
+- 152:   ### Minions
+- 176:   ### Grunts
+- 209:   ### Standards
+- 240:   ### Elites
+- 271: ## Building an encounter
+- 297: ## Example NPCs (Stage 0)
 
-Open (to be decided) boxes: 37: "Only Stage 0's tables are written. The tables of Stages 1, 2 and 3 com"
+Open (to be decided) boxes: 39: "Only Stage 0's tables are written. The tables of Stages 1, 2 and 3 com"; 145: "An Elite's own steps of Escalation (what each Elite gains, and at whic"
 
 ## 15-gear.md: Gear
 

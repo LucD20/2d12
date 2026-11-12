@@ -58,6 +58,8 @@ When you complete a [[Rest]], you can change any of the choices your class's lev
 
 During Stage 0 you can also swap the order of your Modifiers on a Rest, if your class lets you choose it. From Stage 1 on, that order and the Modifier you raise at Stage 1 are permanent.
 
+**Optional rule.** If the GM allows it, on a Rest you can also change your class's Attribute choices and which of its two Health values is your Vigor.
+
 ### Stages
 
 The levels are grouped in **Stages**: **Stage 0** is levels 1 to 3, **Stage 1** levels 4 to 7, **Stage 2** levels 8 to 11 and **Stage 3** levels 12 to 15. Your numbers change only when you reach a new Stage, and the NPCs of the [[Bestiary]] follow them (their tables are written by Stage).

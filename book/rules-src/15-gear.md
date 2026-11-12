@@ -39,7 +39,7 @@ A melee weapon deals more than a ranged one, which strikes from safety. Among me
 | Knuckle Dagger | Unarmed | Barehanded, Melee | Pierce | 1 | [V] 0 / 2 + 1d4 / 3 + 1d4 | 5 |
 
 > [!tbd]
-> The Weapon Techniques below and in the Ranged list still write the dice of the earlier weapon table (a Greatsword's 1d10 / 2d6): they are rewritten with the weapon line.
+> The Weapon Techniques below and in the Ranged list still write the dice of the earlier weapon table (a Greatsword's 1d10 / 2d6): they are rewritten in the weapon pass (Bows and Swords first), with Point Blank's Bane while Engaged.
 
 #### Melee Weapon Techniques
 
@@ -116,7 +116,7 @@ A **Projectile** weapon shoots something, such as a bow or a crossbow, instead o
 
 #### Thrown
 
-A weapon with the **Thrown** property can be used in hand or thrown, and it has a Range for each, written like "Range 1, Thrown 4 / 8 / 12". Used in hand, a Weapon Action with it is a Melee Action; thrown, it is a Ranged Action, uses the thrown Range and **deals 2 less damage on Tiers 2 and 3** (a thrown Dagger: 0 / 1d4 / 2 + 1d4). A thrown weapon leaves your hand.
+A weapon with the **Thrown** property can be used in hand or thrown, and it has a Range for each, written like "Range 1, Thrown 4 / 8 / 12". Used in hand, a Weapon Action with it is a Melee Action; thrown, it is a Ranged Action, uses the thrown Range and **deals 1 less damage on Tiers 2 and 3** (a thrown Dagger: 0 / 1 + 1d4 / 3 + 1d4). A thrown weapon leaves your hand.
 
 #### Non-threatening
 
@@ -158,7 +158,7 @@ Every creature counts as having **Fists**. They are a weapon like any other, wit
 
 | Name | Group | Properties | Type | Range | Damage | Mastery |
 |---|---|---|---|---|---|---|
-| Fists | Unarmed | Barehanded, Melee, Non-threatening | Blunt | 1 | [V] 0 / 1 / 1d4 | - |
+| Fists | Unarmed | Barehanded, Melee, Non-threatening | Blunt | 1 | [V] 0 / 2 / 1 + 1d4 | - |
 
 Fists are used with the [[Chapter 6: Basic Actions|Fists Basic Action]], or with any Weapon Action.
 

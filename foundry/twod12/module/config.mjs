@@ -226,13 +226,14 @@ export const TWOD12 = {
   // book/ruler/stage0.md): ready numbers, exactly the book's tables. health: an NPC's Vigor or Resolve by rating (each has its own rating; the Health Pool
   // is the two added; no Attribute, no multiplier). basic / s1 / s2 / s3: the damage as written (Tier 2, Tier 3), a flat part plus at most one small die,
   // the Modifier already in it, for the Basic attack and the 1 AP, 2 AP and 3 AP Specials. **The system doesn't read this yet** (its NPCs still use
-  // npcRoles above, pack R's rows): the pack "Stage 0 in Foundry" wires it; the automated playtest environment reads it (book/ruler/sim/core.mjs npcS0).
+  // npcRoles above, pack R's rows): the pack "Stage 0 in Foundry" wires it. Lucas, 2026-11-12 (after the first fit): a Minion dies to any damage (oneHit: no
+  // Health) and has no Reaction AP; a Grunt has 3 AP a turn (ap), as a Minion; a Standard's Medium 2 AP Special is half a step up (4 + 1d6 on Tier 2); the automated playtest environment reads it (book/ruler/sim/core.mjs npcS0).
   npcStage0: {
-    minion: { health: [1, 2, 3, 4],
+    minion: { oneHit: true, reactionAp: 0,
       basic: [["1", "2"], ["1", "1d4"], ["2", "1 + 1d4"], ["1d4", "2 + 1d4"]],
       s1: [["1", "1d4"], ["2", "1 + 1d4"], ["1d4", "2 + 1d4"], ["1 + 1d4", "3 + 1d4"]],
       s2: [["2", "2 + 1d4"], ["1d4", "2 + 1d6"], ["1 + 1d4", "3 + 1d6"], ["2 + 1d4", "5 + 1d6"]] },
-    grunt: { health: [7, 10, 13, 16, 19],
+    grunt: { ap: 3, health: [7, 10, 13, 16, 19],
       basic: [["1", "2"], ["2", "1d4"], ["1d4", "1 + 1d4"], ["1 + 1d4", "2 + 1d4"], ["1 + 1d4", "3 + 1d4"]],
       s1: [["2", "1d4"], ["1d4", "1 + 1d4"], ["1 + 1d4", "2 + 1d4"], ["2 + 1d4", "2 + 1d6"], ["2 + 1d4", "3 + 1d6"]],
       s2: [["1 + 1d4", "2 + 1d4"], ["2 + 1d4", "2 + 1d6"], ["2 + 1d4", "3 + 1d6"], ["3 + 1d6", "6 + 1d6"], ["4 + 1d6", "7 + 1d6"]],
@@ -240,7 +241,7 @@ export const TWOD12 = {
     standard: { health: [17, 24, 30, 36, 42],
       basic: [["1d4", "1 + 1d4"], ["1d4", "2 + 1d4"], ["1 + 1d4", "2 + 1d6"], ["2 + 1d4", "3 + 1d6"], ["3 + 1d4", "5 + 1d6"]],
       s1: [["1 + 1d4", "2 + 1d4"], ["1 + 1d4", "3 + 1d6"], ["2 + 1d4", "4 + 1d6"], ["2 + 1d6", "6 + 1d6"], ["3 + 1d6", "7 + 1d8"]],
-      s2: [["2 + 1d4", "3 + 1d6"], ["2 + 1d6", "6 + 1d6"], ["3 + 1d6", "8 + 1d8"], ["6 + 1d6", "10 + 1d8"], ["7 + 1d6", "14 + 1d8"]],
+      s2: [["2 + 1d4", "3 + 1d6"], ["2 + 1d6", "6 + 1d6"], ["4 + 1d6", "8 + 1d8"], ["6 + 1d6", "10 + 1d8"], ["7 + 1d6", "14 + 1d8"]],
       s3: [["4 + 1d6", "7 + 1d6"], ["6 + 1d6", "11 + 1d8"], ["7 + 1d6", "15 + 1d8"], ["10 + 1d8", "19 + 1d8"], ["13 + 1d8", "24 + 1d8"]] },
     elite: { health: [35, 50, 65, 80, 95],
       basic: [["1d4", "1 + 1d4"], ["1 + 1d4", "2 + 1d4"], ["2 + 1d4", "2 + 1d6"], ["3 + 1d4", "4 + 1d6"], ["3 + 1d6", "5 + 1d6"]],
