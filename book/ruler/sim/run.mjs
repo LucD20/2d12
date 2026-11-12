@@ -20,7 +20,7 @@ export function logText(log) {
     else if (e.type === "move") L.push(`    ${e.who}: ${e.how} ${xy(e.from)} to ${xy(e.to)}`);
     else if (e.type === "action") L.push(`    ${e.who}: ${e.action}${e.target ? ` on ${e.target}` : ""}: ${e.save ? "its Save " : ""}Tier ${e.tier}${e.damage ? `, ${n1(e.damage)} damage` : ""}`);
     else if (e.type === "attack") L.push(`    ${e.who}: ${e.kind === "special" ? "Special" : "Basic attack"} on ${e.target}: ${e.damage ? `${n1(e.damage)} [${e.pool}]` : "nothing"}`);
-    else if (e.type === "reaction") L.push(`    Reaction, ${e.who}: ${e.reaction}${e.on ? ` (${e.on}${e.protects ? `, for ${e.protects}` : ""})` : ""}${e.damage ? `, ${n1(e.damage)} damage` : ""}`);
+    else if (e.type === "reaction") L.push(`    Reaction, ${e.who}: ${e.reaction}${e.on ? ` on ${e.on}${e.protects ? `, for ${e.protects}` : ""}` : ""}${e.tier ? `: Tier ${e.tier}` : ""}${e.damage ? `, ${n1(e.damage)} damage` : ""}`);
     else if (e.type === "down") L.push(`    ${e.who} goes Down.`);
     else if (e.type === "dead") L.push(`    ${e.who} is out.`);
     else if (e.type === "end") { L.push("", `${e.won ? "The party wins" : "The party loses"} in ${e.rounds} rounds.`); for (const c of e.creatures) L.push(`  ${c.name}: ${n1(c.damage)} damage${c.out ? " (out)" : ""}`); }

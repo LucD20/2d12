@@ -77,7 +77,7 @@ Playtest 4's encounter replayed in SIM (the same creatures, the map approximated
 | SIM-1 | **DONE (2026-11-12, v0.0.365, branch `pack-sim-1`).** The shared engine: the rules SIM needs pulled into pure system functions with tests; SIM's turn loop on the open field. Built: `book/ruler/sim/` (`core.mjs`, `turn.mjs`, `engine.mjs`, `policy.mjs`, `run.mjs`, README), the system's `module/roundrules.mjs` with test t246, the fight's log | `report.md` reproduced on the open field (the gate in 4.2): **byte for byte, with report-pre-r.md, rclasses.md and rbestiary.md**; the system's 244 tests pass |
 | SIM-2 | Maps, Line of Effect and Cover, movement and Forced Movement, terrain, areas and Zones | the starter maps run; Speed and the movement conditions get a price above 0 where the map allows it |
 | SIM-3 | Decision policies and the sensitivity report | each headline number under 2 or 3 policies |
-| SIM-4 | The replay viewer and the Encounter Log output; Playtest 4 replayed | a fight can be watched; the Playtest 4 comparison is written in SIM's README |
+| SIM-4 | The replay viewer (**its first version is built, 2026-11-12, at Lucas's request: `book/ruler/sim/fights.html`, written by `view.mjs`; it grows with each part**) and the Encounter Log output; Playtest 4 replayed | a fight can be watched; the Playtest 4 comparison is written in SIM's README |
 
 ### After SIM-1: what SIM-2 should know
 

@@ -10,7 +10,8 @@ The brief: `book/sim-brief.md`. Built in four parts; **SIM-1 is done (2026-11-12
 | `turn.mjs` | One PC turn: its Actions in order (AP, the 3 Strikes, Frequencies, Escalation, Linked Actions, effects): `runTurn`, `turnFor`, `turnDamage` |
 | `engine.mjs` | The encounter: rounds and turns, Reactions, the NPCs' turns, conditions, Down; `fight()`, `day()`. Options: `policy`, `log` |
 | `policy.mjs` | The decisions, apart from the rules: `planPolicy` is the ruler's old decision rules (who to hit, which turn, whom to heal, when to react, how an NPC picks its target) |
-| `run.mjs` | One fight written out, round by round (`--seed N`, `--json`) |
+| `run.mjs` | One fight written out as text, round by round (`--seed N`, `--json`) |
+| `view.mjs`, `viewer-template.html` | **The fight viewer** (2026-11-12, brought forward from SIM-4 at Lucas's request): `view.mjs` plays every encounter of fights.txt and writes **`fights.html`**, one file to open in a browser |
 | `../map.mjs` | The open field: distances, Engaged, Flanking, Cover drawn per shot, range, conditions, movement. SIM-2 replaces it with real maps |
 | `../spec.mjs` | Reads the class files and `fights.txt`, writes `report.md`; it exports everything above again, so the other scripts didn't change |
 
@@ -19,7 +20,16 @@ node book/ruler/spec.mjs --check                          # must print only "ok"
 node book/ruler/spec.mjs --quiet                          # writes report.md (the gate: it must come out unchanged)
 node book/ruler/sim/run.mjs                               # the encounters of fights.txt
 node book/ruler/sim/run.mjs "4 Standards (normal)" --seed 3
+node book/ruler/sim/view.mjs                               # writes sim/fights.html: open it in a browser
 ```
+
+## The viewer (`fights.html`)
+
+Double-click `book/ruler/sim/fights.html`. Pick an **Encounter** and a **Fight** (each is a seed: "3: won, 4 rounds"), press **Play** (Space), or step with the arrow keys (Left / Right one step, Down the next turn, Home the start). The map shows every creature on the grid (blue the party, red the enemies; the tag is its first letter and number), its Health bar and Guard, a gold ring on whose turn it is, a line for each attack coloured by Tier (dashed for a Reaction) with the damage, and a dotted trail for a move. Beside it: every creature's Health, Guard, Escalation and conditions now, and the log (click a line to jump there). The top line gives the encounter's numbers over 300 fights.
+
+It is one file with no build step and nothing loaded from the network. It knows no rule: it draws the engine's log (each event's `ch` list says whose Health, Guard, place and conditions changed). `node book/ruler/sim/view.mjs` writes it again after a change to the rules, the builds or fights.txt (`--seeds 12` for more fights to watch, `"2 Elites"` for one encounter, `--out file.html`). To change how it looks, edit `viewer-template.html`, not `fights.html`.
+
+Not there yet: walls and terrain (SIM-2 draws them when maps exist), areas and Zones, each roll's Boons and Banes, heals as their own lines, the Encounter Log's playtest format, Playtest 4 replayed (SIM-4).
 
 ## The gate (sim-brief.md 4.2)
 
@@ -62,4 +72,4 @@ Known gaps of `planPolicy`, each a finding for SIM-3 (README of the ruler, "The 
 
 `fight(party, npcs, R, { log: true })` returns `log`: every event in order, each `{ round, type, ... }`. Types: `start` (the map, Initiative, every creature's place and Health), `round`, `turn`, `move` (from, to, how), `action` (a PC's Action on a target: Tier, damage), `attack` (an NPC's Basic attack or Special), `reaction`, `down`, `dead`, `end`. Writing the log changes no roll. `run.mjs` prints it as text; SIM-4 writes it in the Encounter Log's playtest format and draws it.
 
-Not in the log yet: Boons and Banes of each roll, conditions put on and ended, heals and Guard, Escalation raises. SIM-4 adds what the viewer needs.
+Each event also has `ch`: the creatures whose state changed since the last event (`i` its place in the start list, `dmg`, `pos`, `out`, `guard`, `esc`, `cond`), so Forced Movement, heals, Guard and conditions show without their own event. Not in the log yet as lines of their own: the Boons and Banes of each roll, heals, conditions put on and ended, Escalation raises.

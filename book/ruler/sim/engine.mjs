@@ -94,7 +94,12 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   // The engine's view of the fight for the policy (policy.mjs), and the log (opts.log: every thing that happens, in order; nothing reads it back).
   const E = { pcs, foes, alive, up, R, M, get round() { return round; }, get W() { return W; } };
   const nameOf = c => c.label ?? (c.label = c.build ? `${c.build.name} ${pcs.indexOf(c) + 1}` : `${c.name} ${foes.indexOf(c) + 1}`), at = c => (c?.pos ? [c.pos.x, c.pos.y] : null);
-  const ev = (type, o = {}) => { if (events) events.push({ round, type, ...o }); };
+  // Each event also carries `ch`: the creatures whose state changed since the last event ({ i: its place in the start list, dmg, pos, out, guard, esc,
+  // cond }), so a viewer follows Health, Guard, places (Forced Movement too) and conditions without knowing any rule.
+  const seen = new Map(), condOf = c => { const k = c.cond ?? {}; return [k.prone && "Prone", k.hindered && "Hindered", k.immob && "Immobilized", k.slowed && `Slowed ${k.slowed}`, k.dazed && `Dazed ${k.dazed}`, k.staggered && "Staggered", k.blinded && "Blinded", k.frightened && "Frightened", k.bleed && "Bleed", c.vulnerable && `Vulnerable ${c.vulnerable}`, c.taunt && "Taunted"].filter(Boolean).join(", "); };
+  const snap = c => `${Math.round((c.damage ?? 0) * 10) / 10}|${c.pos ? `${c.pos.x},${c.pos.y}` : ""}|${c.down || c.dead ? 1 : 0}|${Math.round(((c.guard ?? 0) + (c.apGuard ?? 0)) * 10) / 10}|${c.esc ?? 0}|${condOf(c)}`;
+  const changes = () => { const out = []; [...pcs, ...foes].forEach((c, i) => { const k = snap(c); if (seen.get(c) !== k) { seen.set(c, k); out.push({ i, dmg: Math.round((c.damage ?? 0) * 10) / 10, pos: at(c), out: !!(c.down || c.dead), guard: Math.round(((c.guard ?? 0) + (c.apGuard ?? 0)) * 10) / 10, esc: c.esc ?? 0, cond: condOf(c) }); } }); return out; };
+  const ev = (type, o = {}) => { if (events) { const ch = changes(); events.push({ round, type, ...o, ...(ch.length ? { ch } : {}) }); } };
   const focus = (list = alive()) => P.focus(E, list);   // the enemy closest to dying (the plan policy)
   const mostHurt = list => P.mostHurt(E, list);
   const useRally = (t, n, by) => {   // t uses n Rally Points (Steel Yourself, or an ally's Lay On Hands)
@@ -198,8 +203,8 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   });
   /** A PC's Reaction: a Weapon Attack against f (Opportunity Attack, Quick Draw). Returns { crit }. */
   const pcReact = (p, f, action = "Weapon Attack", boons = 0, oa = false) => {
-    const r = runTurn(p, { name: "Reaction", steps: [action] }, ctxFor(p, { target: () => f, startNext: boons ? [{ kind: "boon", n: boons, scope: "next", traits: [] }] : [] }));
-    p.st.dealt += r.damage; p.st.reactionDealt += r.damage; p.st.reactions++; ev("reaction", { who: nameOf(p), reaction: p.rxNow ?? (oa ? "Opportunity Attack" : action), on: nameOf(f), damage: r.damage }); if (oa) { p.st.oaReal++; p.st.oaDealt += r.damage; } killCheck();
+    const r = runTurn(p, { name: "Reaction", steps: [action] }, ctxFor(p, { target: () => f, startNext: boons ? [{ kind: "boon", n: boons, scope: "next", traits: [] }] : [], log: null }));   // its roll is written with the Reaction's own line
+    p.st.dealt += r.damage; p.st.reactionDealt += r.damage; p.st.reactions++; ev("reaction", { who: nameOf(p), reaction: p.rxNow ?? (oa ? "Opportunity Attack" : action), on: nameOf(f), damage: r.damage, tier: r.lastTier || undefined }); p.rxNow = null; if (oa) { p.st.oaReal++; p.st.oaDealt += r.damage; } killCheck();
     if (r.crit) hook(p, "crit");
     return { crit: r.crit || (r.lastTier === 3 && (p.R ?? R)() < (r.critShare ?? 1 / 12)), tier: r.lastTier };   // a Critical (the share of its Tier 3s: calc.mjs)
   };
@@ -368,11 +373,12 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
           if (pc.leftSquare == null || pc.leftSquare < round - 1) pc.st.stillTurns++;   // it hasn't left its square since the start of its last turn (Patient Hunter)
           const turn = pc.build.turns[P.pcTurn(E, pc, eng)];
           pc.readyAP = 0;
+          ev("turn", { who: nameOf(pc), turn: turn.name, escalation: pc.esc, ap: limit, guard: (pc.guard ?? 0) + (pc.apGuard ?? 0), pos: at(pc) });
           const ap = approach(pc, turn);
           extra = { apLimit: Math.max(0, limit - ap.ap), startNext: ap.startNext, turnKey: turn };
         }
         const turn = extra.turnKey ?? pc.build.turns[P.pcTurn(E, pc)];
-        ev("turn", { who: nameOf(pc), turn: turn.name, escalation: pc.esc, ap: extra.apLimit ?? RULES.ap, guard: (pc.guard ?? 0) + (pc.apGuard ?? 0), pos: at(pc) });
+        if (!M) ev("turn", { who: nameOf(pc), turn: turn.name, escalation: pc.esc, ap: extra.apLimit ?? RULES.ap, guard: (pc.guard ?? 0) + (pc.apGuard ?? 0), pos: at(pc) });
         const r = runTurn(pc, turn, ctxFor(pc, extra));
         const left = Math.max(0, (extra.apLimit ?? RULES.ap) - r.ap);
         pc.keptAP = RULES.reactionAp + left;   // pack R: the Reaction AP on top of what the turn left
