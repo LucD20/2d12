@@ -161,6 +161,12 @@ That way an Action line looks the same everywhere.
   - **the Attributes and Modifiers are tiles again**, as in the fourth review ("looked better before").
 - **The name plate has one color per rank** (Lucas: "a good idea"), as 4e colors its monsters: Minion slate (#4d545c), Grunt olive (#4b5a26), Standard maroon (#6e2318), Elite purple (#4f2c69). The colors are my pick; the sheet page shows the four.
 
+### Lucas's seventh review (2026-11-12): no Tier table; a tint behind the whole Action; the rank colors are good
+- **The rank colors are decided** (Minion slate, Grunt olive, Standard maroon, Elite purple).
+- **No table for the Tiers** (it looked worst on Rally the Tribe, a description-only Action). **The Tiers are side by side again, made clearer:** each under a thick rule in its Tier's color, the Tier's name in that color, the result under it. **This replaces "the Tiers are a ruled table" in the sixth review.**
+- **A faint tint of the frequency's color fills the whole Action**, under the stronger header bar (his idea, from the background of the not-picked one-line mockup): Rally the Tribe is a blue bar over a darker blue body.
+- **The layout must hold every kind of Action** (Lucas): a description-only Action is its bar, its rules line and its text, with no Tiers; **an effect on Tier 2 and Tier 3 both is written once under the Tiers ("Tier 2+ Prone.")**, not in each cell; an effect on one Tier stays in that Tier's cell (Ground Slam's Prone on Tier 1).
+
 ### Still for Lucas to pick (after the reviews)
 1. ~~(a) full text or (b) one line~~: (a), decided.
 2. The portrait: shown, hidden, or a per-user setting.
@@ -178,4 +184,3 @@ That way an Action line looks the same everywhere.
 - Not tried in Foundry: how the HUD sits with Foundry V14's own bottom elements (the hotbar and the players list are moved by the system; the mockup's screen is a stand-in).
 - Whether 5c's redraw is what "bugged" meant (Lucas didn't say what looked wrong; the first version replaced the whole HUD with a stretched bar).
 - Whether the book look is close to the 4e sheet he had in mind (send the screenshot again to compare).
-- The four rank colors (slate, olive, maroon, purple): keep or change.

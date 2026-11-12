@@ -508,3 +508,17 @@ body.light { --pg: #f4ecd9; --pg2: #eae0c8; --rule: #8a6d3b; --hair: #d2c29c; --
 .ops .vb.used { background: none; color: var(--ink); border: 1px solid var(--ink); }
 /* the Attributes and Modifiers: the tiles, as before */
 .ops .ops-attrs { margin-top: 12px; padding-top: 10px; border-top: 2px solid var(--rule); }
+
+/* Seventh review (Lucas, 2026-11-12): no table for the Tiers (it looked worst on a description-only Action). The Tiers are side by side
+   again, each under a rule in its Tier's color; a faint tint of the frequency's color fills the whole Action (the header bar stays stronger). */
+:root { --bd-mix: 13%; } body.light { --bd-mix: 9%; }
+.ops .oa { background: color-mix(in srgb, var(--fq) var(--bd-mix), var(--pg)); padding-bottom: 6px; }
+.ops .oa-meta { padding: 4px 8px 5px; }
+.ops .oa-t { border: 0; margin: 1px 8px 0; gap: 0 12px; }
+.ops .oa-t > div { border-top: 3px solid var(--c); }
+.ops .oa-t > div + div { border-left: 0; }
+.ops .oa-t .tl { padding: 1px 0 0; background: none; border-bottom: 0; font-size: 14.5px; }
+.ops .oa-t .tv { padding: 0 0 2px; }
+.ops .oa-fx { border: 0; padding: 3px 8px 0; }
+.ops .oa-meta + .oa-fx { padding-top: 0; }
+.ops .tplus { font-variant: small-caps; font-size: 14.5px; color: var(--tk2); margin-right: 3px; }

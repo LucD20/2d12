@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: f73d2c1 2026-11-12 NPC-HUD mockups, fifth review: the book look (a printed stat block, dark by default) in place of the interface-kit look
+Built by tools/knowledge.py on 2026-11-12 from the repository at: fa8c2ab 2026-11-12 NPC-HUD mockups, sixth review: the HUD back to the dark table look; the sheet's Actions under header bars with ruled Tier tables, Attribute tiles, a name-plate color per rank
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -30,7 +30,7 @@ Files:
 - rules-13-archer.md (3 KB)
 - rules-14-bestiary.md (25 KB)
 - rules-15-gear.md (11 KB)
-- design-npc-hud-brief.md (20 KB)
+- design-npc-hud-brief.md (21 KB)
 - design-sim-brief.md (22 KB)
 - design-stage0.md (12 KB)
 - design-expedition-loop.md (12 KB)
