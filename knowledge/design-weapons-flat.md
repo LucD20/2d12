@@ -2,6 +2,31 @@
 
 **A draft for Lucas (2026-11-12). Lucas chose column B the same day ("B I think its alright"; the half point up is fine); the die sizes are still open (the section "How big can the die be"). Nothing is applied: the book, the cards, Foundry and the ruler still use today's table.** The idea (his, from the three ideas before the Stage 0 answers; `book/rules-backlog.md`): fewer dice and a narrower range of damage, without losing the die in the hand.
 
+## DECIDED (Lucas, 2026-11-12): the table to put in the book
+
+Column B below with small dice (a d8 at most), then **melee raised to close the gap with ranged: +4 on two-handed melee weapons, +2 on one-handed ones** ("Lock it in for now"; one-handed "+2 for now, revisit when we go through armor"), together with **a [Ranged] Action while Engaged is Doomed**. Measured: the Greatsword party and the all-Crossbow party lose the same (rules-backlog.md, "RANGED AGAINST MELEE: CLOSE THE GAP"). Not in the book yet: it goes in with Stage 0.
+
+| Weapon | Today | Decided | Average (Tier 2 / Tier 3) |
+|---|---|---|---|
+| Dagger | 0 / 1d4 / 1d8 | 0 / 2 + 1d4 / 4 + 1d4 | 4.5 / 6.5 |
+| Longsword | 0 / 1d6 / 1d10 | 0 / 2 + 1d6 / 4 + 1d6 | 5.5 / 7.5 |
+| **Greatsword** | 0 / 1d8 / 2d6 | 0 / 5 + 1d6 / 8 + 1d8 | 8.5 / 12.5 |
+| Handaxe | 0 / 1d4 / 1d8 | 0 / 2 + 1d4 / 2 + 1d8 | 4.5 / 6.5 |
+| Greataxe | 0 / 1d6 / 2d8 | 0 / 4 + 1d6 / 10 + 1d8 | 7.5 / 14.5 |
+| Mace | 0 / 1d4+1 / 1d8+1 | 0 / 3 + 1d4 / 5 + 1d4 | 5.5 / 7.5 |
+| Maul | 0 / 1d4+2 / 1d10+2 | 0 / 6 + 1d4 / 9 + 1d6 | 8.5 / 12.5 |
+| Spear | 0 / 1d4 / 1d8 | 0 / 2 + 1d4 / 4 + 1d4 | 4.5 / 6.5 |
+| Pike | 0 / 1d6 / 1d10 | 0 / 4 + 1d6 / 6 + 1d8 | 7.5 / 10.5 |
+| Knuckle Dagger | 0 / 1d4 / 1d6 | 0 / 2 + 1d4 / 3 + 1d4 | 4.5 / 5.5 |
+| **Shortbow** | 0 / 1d6 / 1d10 | 0 / 1d6 / 1 + 1d6 | 3.5 / 4.5 |
+| **Longbow** | 0 / 1d4+1 / 1d8+1 | 0 / 1 + 1d4 / 2 + 1d4 | 3.5 / 4.5 |
+| Hand Crossbow | 0 / 1d4 / 1d8 | 0 / 1d4 / 1 + 1d4 | 2.5 / 3.5 |
+| Crossbow | 0 / 1d4+2 / 1d10+2 | 0 / 2 + 1d4 / 4 + 1d4 | 4.5 / 6.5 |
+| Pistol | 0 / 1d4 / 2d6 | 0 / 1d4 / 2 + 1d8 | 2.5 / 6.5 |
+| Musket | 0 / 1d4 / 2d8 | 0 / 1d4 / 4 + 1d8 | 2.5 / 8.5 |
+
+**Open when it is written:** a Thrown weapon's throw (Dagger, Handaxe, Spear): with the melee +2 or without it (my default: without, a throw is a ranged attack); the Pike as the only Long two-hander (+4 with Range 3: check it when armor and reach are reviewed); Weapon Techniques that quote dice.
+
 ## The rule in one line
 
 A weapon's damage at a Tier is **a flat number plus at most one die**. Tier 1 stays 0. Nothing else changes: `1[W] + [Mod]` is still how an Action writes it, and 2[W] is still two instances (two flat parts, two dice).

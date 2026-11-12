@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: e251c3a 2026-11-12 Ranged against melee: how much melee damage closes the gap (measured), research notes, proposal logged
+Built by tools/knowledge.py on 2026-11-12 from the repository at: 685e0ec 2026-11-12 Ranged against melee: Greatsword +4 and Longsword +2 on the weapon measured
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (122 KB)
+- HANDOFF.md (123 KB)
 - MASTER-PLAN.md (33 KB)
 - open-design-items.md (123 KB)
 - rules-01-roll.md (23 KB)
@@ -32,7 +32,7 @@ Files:
 - rules-15-gear.md (10 KB)
 - rules-16-talents.md (2 KB)
 - design-sim-brief.md (22 KB)
-- design-weapons-flat.md (8 KB)
+- design-weapons-flat.md (10 KB)
 - design-stage0.md (13 KB)
 - design-expedition-loop.md (12 KB)
 - design-playtest-2.md (7 KB)
