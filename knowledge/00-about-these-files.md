@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: 0863f0a 2026-11-12 Style mockups, chat cards third review: the ladder readable on dark, AP in its blue everywhere, the Guard shield in the Guard blue, the real Guard lines; a proposal to color the word Guard
+Built by tools/knowledge.py on 2026-11-12 from the repository at: 4e533a2 2026-11-12 Style mockups 3b: the other chat messages (Reactions, initiative, follow-up lines, area damage, End of Turn) in the chat card's look, dark and light; the word Guard colored (approved)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
