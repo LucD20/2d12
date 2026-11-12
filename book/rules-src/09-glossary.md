@@ -12,7 +12,7 @@
 | [[Action Points\|**Action Points (AP)**]] | You regain 4 at the start of your turn, and 1 Reaction AP. The AP you don't spend stay for Reactions and give you Guard. |
 | [[Advance\|**Advance**]] | Normal movement, up to the given distance. It can be split. |
 | [[Rules Language\|**Ally**]] | A creature on your side. You are never your own ally. |
-| [[Escalation\|**Apex**]] | A class's big Encounter Action that needs Escalation 3; you choose one at level 1. |
+| [[Escalation\|**Apex**]] | A class's big Encounter Action that needs Escalation 6; you choose one at level 4. |
 | [[Areas\|**Area**]] | Where an Action's effect goes, written instead of its Distance. Those Actions have the Area trait: they target everyone they affect, ignoring Senses. |
 | [[Defenses\|**Armor**]] | Armor Defense (AD) — 11 + Armor value + other items + bonuses − penalties. The Defense against Weapon Actions. |
 | [[Armor Training\|**Armor Training**]] | The heaviest armor a class can wear (it includes the lighter ones). Untrained: your Rolls are Doomed, Actions against your Armor or Ward are Favored. |
@@ -33,7 +33,7 @@
 | [[Resist, Weak and Immune\|**Immune**]] | Damage of that subtype is 0 for you. |
 | [[Class Actions, Picks and the Repertoire\|**Pick**]] | One choice from a class's Repertoire; the level list says how many you take and from which list. |
 | [[Class Actions, Picks and the Repertoire\|**Repertoire**]] | Everything a class offers beyond its Class Actions, listed by Frequency: Passive, Turn, Round, Encounter, Daily. |
-| [[The Basic attack\|**Basic attack**]] | An NPC's main attack: 1 AP, At-will, Vs. AD or WD, with the damage of its role and rating. |
+| [[The Basic attack\|**Basic attack**]] | An NPC's main attack: 1 AP, At-will, Vs. AD or WD, with the damage of its role and rating (a flat number plus at most one small die, nothing added). |
 | [[Rules Language\|**Body Action, Mind Action**]] | An Action with the Body or the Mind trait, even when it rolls another Attribute Modifier. |
 | [[Take a Breather\|**Breather**]] | 10 minutes of rest that removes all Nonlethal damage. |
 | [[Reading an Action\|**Category**]] | The text at the right of an Action's title: the kind of Action, or the feature that gave it to you. |
@@ -59,13 +59,13 @@
 | [[Doubles\|**Doubles**]] | Both d12s match: the tier goes up. |
 | [[Going Down\|**Down**]] | Your total damage equals or goes above your Health Pool. |
 | [[Playing on the Grid\|**Elevation**]] | Squares up or down count like a diagonal: the larger count plus half the smaller one. A creature is as tall as it is wide. |
-| [[Elites\|**Elite**]] | An NPC role with CV 200: about 118 Health at Stage 1, and the only NPC with Escalation (Elite Escalation: a ladder of its own, +1 a round and at each phase). |
+| [[Elites\|**Elite**]] | An NPC role with CV 200: about 130 Health at Stage 0, and the only NPC with Escalation (Elite Escalation: a ladder of its own from 1 to 3, +1 a round and at each phase). |
 | [[Empowered\|**Empowered**]] | Adds its value to every damage die (Empowered 1: 1 more per die). |
 | [[Frequency\|**Encounter**]] | A fight or similar scene, from Initiative until the GM ends it. |
 | [[Enfeebled\|**Enfeebled**]] | Subtracts its value from every damage die; each die still deals at least 1. |
 | [[Engaged\|**Engaged**]] | You are adjacent to an enemy and both of you can be Engaged, whatever you perceive. Other rules use it. |
 | [[End of Turn\|**EoT**]] | Until the end of the turn of the affected creature. |
-| [[Escalation\|**Escalation**]] | A PC's adrenaline, a level from 1 to 3, never spent: 1 at the start of an encounter (2 with Momentum), +1 at the start of every round after the first, +1 once an encounter on a Critical and on your class's hook. Escalation Passives and the Apex work while it is high enough. |
+| [[Escalation\|**Escalation**]] | A PC's adrenaline, a level from 1 to 6, never spent: 1 + the party's Momentum at the start of an encounter, +1 at the start of every round after the first, +1 once an encounter on a Critical and on your class's hook. Escalation Passives (at 2, 4 and 6) and the Apex work while it is high enough. |
 | [[Evade\|**Evade**]] | Movement that doesn't trigger reactions and can't be split. |
 | [[Exhausted\|**Exhausted**]] | A condition with a value: less Speed, a penalty on all Rolls, a lower Resolve. |
 | [[Mastery\|**Expert**]] | 8 Mastery with a weapon: once each turn, you draw, stow or regrip it without Interact. |
@@ -77,7 +77,7 @@
 | [[Forced Movement\|**Forced Movement**]] | Movement you impose on another creature (Pushed, Pulled or Slid): no reactions, ignores Difficult Terrain, each square counts 1. |
 | [[Frequency\|**Frequency**]] | How often an Action can be used. |
 | [[Effect Timing\|**General Effects**]] | The Effects row of an Action. They happen on a Tier 2 or 3 result. |
-| [[Grunts\|**Grunt**]] | An NPC role with CV 50: about 24 Health at Stage 1, dies to about 1 PC turn. |
+| [[Grunts\|**Grunt**]] | An NPC role with CV 50: about 26 Health at Stage 0, dies to about 1 PC turn. |
 | [[Guard\|**Guard**]] | A buffer written Guard N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take. The Guard of unspent AP adds to it and lasts 1 round. |
 | [[Gun\|**Gun**]] | A trait: the Action needs a Firearm (a pistol, a musket). |
 | [[Class Actions, Picks and the Repertoire\|**Hallmark Action**]] | A choice of two class Actions at level 1; you take one. |
@@ -106,7 +106,7 @@
 | [[Mastery\|**Mastery**]] | How well you know a kind of weapon: +1 for a Tier 3 on a Weapon Action with it (at most 1 per Weapon Group an encounter). The weapon's Mastery (3, 4 or 5) unlocks its Weapon Technique; 8 Expert, 15 Master. |
 | [[Minions\|**Minion**]] | An NPC role with CV 25, with 3 AP a turn and no Dying: at 0 Health it dies, or falls Unconscious if the GM prefers. |
 | [[Minor enemies\|**Minor enemies**]] | Minions and Grunts (CV below 100). |
-| [[Momentum\|**Momentum**]] | After an encounter harder than easy, your party starts the next encounter at Escalation 2 (a Rest before it ends Momentum). |
+| [[Momentum\|**Momentum**]] | The party's number from 0 to 4: an encounter starts at Escalation 1 + Momentum. +1 for each encounter overcome; -1 when a PC goes Down and at each Sleep; lost on a retreat and at a Rest. |
 | [[Rules Language\|**Move**]] | An Action with the Move trait. |
 | [[Moving and Leaving Your Square\|**Moved**]] | You moved with an Action that moves you, Evade included. Forced Movement, Reposition and Stand don't count. |
 | [[Moving Closer\|**Moves closer**]] | The distance between you is smaller after the movement; an Interrupt checks it square by square. |
@@ -115,11 +115,9 @@
 | [[Non-threatening\|**Non-threatening**]] | A weapon property: the weapon doesn't threaten, so you can't flank with it, unless a feature says otherwise (Brawler). Fists have it. |
 | [[Senses\|**Obscured**]] | Your Actions against the creature take 1 Field Bane; its Actions against you gain 1 Field Boon. |
 | [[Rules Language\|**Origin**]] | The creature that uses an Action, or the Point of Origin of an Area. |
-| [[Chapter 6: Basic Actions\|**Opportunity Attack**]] | The Reaction every creature has (1R): a Weapon Attack, or an NPC's Basic attack, against an adjacent enemy that would leave a square during a Move Action or uses Stand. A Strike. |
 | [[Areas\|**Point of Origin**]] | The place an area spreads from: an Emanation's target, your square for a Line, the tip of a cone. Line of Effect and Cover for the area are checked from it. |
-| [[Weapon, Power and Signature Modifiers\|**Power Modifier**]] | One of your class's two Modifier values (+2 or +1 at level 1; it grows by Stage). Power Actions roll it; Ward Defense adds it. |
+| [[Weapon, Power and Signature Modifiers\|**Power Modifier**]] | One of your class's two Modifier values (+2 or +1 at level 1; it grows at Stages 1 and 3). Power Actions roll it; Ward Defense adds it. |
 | [[Rolls\|**Power roll**]] | An Action with the Power trait (or a Split Action in Power mode). |
-| [[Talents\|**Prerequisites**]] | What you need to choose a Talent. |
 | [[Named Boons and Banes\|**Pressure**]] | A named Bane an effect of another creature puts on you. Up to 2. |
 | [[Projectile\|**Projectile**]] | A weapon property: the weapon shoots (a bow, a crossbow). Shot Actions need one. |
 | [[Properties\|**Properties**]] | The properties of a weapon (Actions have traits, creatures have Tags): Melee, Ranged, Long, Projectile, Firearm, Thrown, Reload, Two-handed, Barehanded, Non-threatening. |
@@ -128,10 +126,10 @@
 | [[Quickened\|**Quickened**]] | A condition with a value: you regain (and can hold) that many more AP at the start of your turn; never more Reaction AP. |
 | [[Rally Points\|**Rally Point**]] | Removes damage equal to a quarter of your Health Pool. Steel Yourself can't be used while Down or Unconscious. |
 | [[Weapon Range\|**Range**]] | How far a weapon reaches, melee weapons included: normal / far (1 Bane) / maximum (2 Banes). |
-| [[Ranged Combat While Engaged\|**Ranged Combat While Engaged**]] | Using a [Ranged] Action while Engaged: 2 Banes. Against a creature Engaged with someone else: 1 Field Bane. |
-| [[Ratings\|**Rating**]] | How strong one of an NPC's numbers is for its role: Terrible, Low, Medium, High or Extreme (Minions have no Extreme). |
+| [[Ranged Combat While Engaged\|**Ranged Combat While Engaged**]] | Using a [Ranged] Action while Engaged: the roll is Doomed. Against a creature Engaged with someone else: 1 Field Bane. |
+| [[Ratings\|**Rating**]] | How strong one of an NPC's numbers is for its role: Terrible, Low, Medium, High or Extreme (Minions have no Extreme). A GM can pick a number between two ratings. |
 | [[Reach\|**Reach**]] | How far your body reaches: 1 square for every Species. Weapons have a Range instead. |
-| [[Reactions\|**Reaction**]] | An Action used in response to an Interrupt or a Trigger, with a cost like 1R (0R costs no AP). |
+| [[Reactions\|**Reaction**]] | An Action used in response to an Interrupt or a Trigger, with a cost like 1R (0R costs no AP). No creature has one by default. |
 | [[Action Points\|**Reaction AP**]] | The 1 AP you gain at the start of your turn that pays only for Reactions. It never becomes Guard. |
 | [[Recovery\|**Recovery**]] | The three ways to recover: a Breather, a Sleep and a Rest. |
 | [[Resist, Weak and Immune\|**Resist**]] | Resist N (subtype): each Action's damage of that subtype, both pools together, is reduced by N once (minimum 0). |
@@ -160,17 +158,17 @@
 | [[Slid\|**Slid**]] | Forced Movement along a path the origin chooses (it can curve); the origin needs Line of Effect. |
 | [[Slowed\|**Slowed**]] | A condition with a value: you regain that many fewer AP at the start of your turn, and your maximum AP is that much lower; your Reaction AP doesn't change. Desperate, Dying and Shattered give Slowed 1 (or 1 more, to at most 3). |
 | [[Sleep\|**Sleep**]] | 8 hours of non-strenuous activity, at most once every 16 hours; it renews Daily Actions. |
-| [[Special Actions\|**Special Action**]] | An NPC Action beyond its Basic attack: its damage is the Basic attack's times 1.4 (1 AP), 2.2 (2 AP) or 3.5 (3 AP). |
+| [[Special Actions\|**Special Action**]] | An NPC Action beyond its Basic attack: 1 AP or 2 AP (Round) or 3 AP (Encounter), each with its own row in the role's damage table. |
 | [[Rules Language\|**Specific beats general**]] | A card or feature that says something different from a general rule wins for that case. |
 | [[Building a Character\|**Speed**]] | How far a creature can move with an Advance: species Speed plus class Speed Modifier. |
 | [[Split\|**Split**]] | A trait: the Action has a Weapon mode and a Power mode, and you choose one each time you use it. |
 | [[Squeezing\|**Squeezing**]] | Moving through a gap one square narrower than you: Difficult Terrain, and Doomed and Vulnerable if you stop there. |
 | [[Size\|**SR**]] | Size Rank: a creature's Size as a number from 1 (Tiny) to 7 (Titanic). Medium is SR 3. |
 | [[Stacking\|**Stacking**]] | Bonuses don't add up: for each value (Guard included) use the highest bonus and the highest penalty. "Increase by N", Boons and Banes (up to the limit of their name), named bonuses (Field, Pressure, Support: different names add, the same name keeps the highest), Slowed increases and the Guard of unspent AP do add up. |
-| [[Stages\|**Stage**]] | A group of levels: Stage 1 is levels 1-4, Stage 2 levels 5-7, Stage 3 levels 8-10. Your numbers change only at a new Stage (an Attribute, Health, Guard per unspent AP, Rally Points; Modifiers at Stage 3), and it sets the Bestiary's row. |
-| [[Stages\|**Stage Talent**]] | The Talent of levels 5 and 8, from a bigger list. |
+| [[Stages\|**Stage**]] | A group of levels: Stage 0 is levels 1-3, Stage 1 levels 4-7, Stage 2 levels 8-11, Stage 3 levels 12-15. Your numbers change only at a new Stage (Modifiers, Health, Guard per unspent AP, Rally Points; never your Attributes), and it sets the Bestiary's tables. |
+| [[Stages\|**Stage Talent**]] | The Talent of levels 4, 8 and 12, the first level of Stages 1, 2 and 3. |
 | [[Staggered\|**Staggered**]] | You can't use Reactions; your Reaction AP waits. |
-| [[Standards\|**Standard**]] | An NPC role with CV 100: about 56 Health at Stage 1, dies to about 2 to 3 PC turns. |
+| [[Standards\|**Standard**]] | An NPC role with CV 100: about 60 Health at Stage 0, dies to about 2 to 3 PC turns. |
 | [[The Start of the Encounter\|**Start of the encounter**]] | After Initiative and before the first turn: abilities that happen then resolve one at a time, in turn order, which the GM can change. |
 | [[Steadiness\|**Steadiness**]] | A creature's resistance to being moved: it reduces the value of Forced Movement and Reposition. Normally 0. |
 | [[Chapter 6: Basic Actions\|**Steel Yourself**]] | The Basic Action that uses your Rally Points. |
@@ -191,7 +189,7 @@
 | [[Defenses\|**Ward**]] | Ward Defense (WD) — 11 + Power Modifier + Ward value + other items + bonuses − penalties. The Defense against Power Actions. |
 | [[Resist, Weak and Immune\|**Weak**]] | Weak N (subtype): each Action's damage of that subtype, both pools together, is increased by N once. |
 | [[Weapon Groups\|**Weapon Group**]] | Blades, Axes, Hammers, Polearms, Bows, Crossbows, Firearms, Unarmed. Your Mastery with a weapon is at least a third of your best in its group. |
-| [[Weapon, Power and Signature Modifiers\|**Weapon Modifier**]] | One of your class's two Modifier values (+2 or +1 at level 1; it grows by Stage). Weapon Actions roll it. |
+| [[Weapon, Power and Signature Modifiers\|**Weapon Modifier**]] | One of your class's two Modifier values (+2 or +1 at level 1; it grows at Stages 1 and 3). Weapon Actions roll it. |
 | [[Rolls\|**Weapon roll**]] | An Action with the Weapon trait (or a Split Action in Weapon mode). |
 | [[Weapons\|**Weapon Technique**]] | A weapon's own Action, unlocked with Mastery; used only with that weapon, while you wield it. |
 | [[Willing and Unwilling\|**Willing, Unwilling**]] | Willing: a creature that accepts the effect (an Unconscious creature counts as willing). Unwilling: one that doesn't. |

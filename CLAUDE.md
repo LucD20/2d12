@@ -3,7 +3,7 @@
 Read first, in this order: **HANDOFF.md** (state), **MASTER-PLAN.md** (the order of all open work), then the pack you were asked to run.
 
 ## What is here
-- `book/rules-src/*.md` = **the rulebook source (the only thing to edit)**. `python3 build_rules.py` (in `book/`) builds 7 HTML documents; never edit the HTML. Conventions: `book/rules-src/README.md`. Numbers: `book/ruler/` (README + scripts). Diagrams: `book/diagrams/diagrams.py`.
+- `book/rules-src/*.md` = **the rulebook source (the only thing to edit)**. `python3 build_rules.py` (in `book/`) builds 6 HTML documents (the Talents document is set aside: `rules-src/set-aside/`); never edit the HTML. Conventions: `book/rules-src/README.md`. Numbers: `book/ruler/` (README + scripts). Diagrams: `book/diagrams/diagrams.py`.
 - `foundry/twod12/` = the Foundry system (module/, templates/, tools/content.mjs = the compendium content, tools/tests = 245 tests; build the packs first in a fresh clone).
 - `book/ruler/sim/` = the automated playtest environment's engine (SIM; its README; the brief: `book/sim-brief.md`). It imports the system's pure rules (`foundry/twod12/module/calc.mjs`, `roundrules.mjs`, `config.mjs`): **a rule of the round goes into `roundrules.mjs` first, never a second copy in the ruler.** After a change to the engine, `node book/ruler/spec.mjs --check` prints only "ok" and the reports must come out unchanged unless a rule or decision changed on purpose.
 - Backlogs: `book/rules-backlog.md` (rules log), `foundry/foundry-backlog.md` (what Foundry must follow). `archive/` = applied change logs.

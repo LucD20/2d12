@@ -36,6 +36,27 @@ export const eliteFirstAttackBoons = esc => ((Number(esc) || 0) >= 1 ? 1 : 0);
 export const eliteRoundSpecials = esc => ((Number(esc) || 0) >= 2 ? 2 : 1);
 export const eliteEncounterBack = esc => (Number(esc) || 0) >= 3;
 
+/* ---- Stage 0 in the book (2026-11-12, pack "Stage 0 into the book"; Ch. 2, Escalation and Momentum; Ch. 3, Ranged Combat While Engaged) ---- */
+// The book's rules since that pack. **The system's own callers still use the functions above** (the 1-to-3 ladder, the on / off Momentum, the 2 Banes)
+// until the pack "Stage 0 in Foundry" rewires them (foundry-backlog.md); the automated playtest environment (book/ruler/sim) uses these already.
+/** Escalation runs 1 to 6; Momentum is a number from 0 to 4 the party keeps between encounters. */
+export const ESC_LADDER_MAX = 6, MOMENTUM_MAX = 4;
+const momentumOf = m => Math.max(0, Math.min(MOMENTUM_MAX, Math.trunc(Number(m)) || 0));
+/** The Escalation an encounter starts at: 1 + the party's Momentum (0 to 4), so 5 at most. */
+export const escalationStartAt = momentum => ESC_MIN + momentumOf(momentum);
+/** The level after a raise on the 1-to-6 ladder (a new round, a Critical, the class's hook, the GM's valve). */
+export const escalationRaisedTo = (now, by = 1, max = ESC_LADDER_MAX) => Math.max(0, Math.min(max, (Number(now) || 0) + (Number(by) || 0)));
+/**
+ * The party's Momentum after something happens: +1 for each encounter overcome (a fight, a negotiation, a sneak, a Challenge), -1 for each PC that
+ * goes Down, -1 at each Sleep, all of it on a Retreat and at a Rest; never under 0 or above 4.
+ */
+export const momentumAfter = (now, { overcome = 0, downs = 0, sleeps = 0, retreat = false, rest = false } = {}) =>
+  (retreat || rest ? 0 : momentumOf((Number(now) || 0) + (Number(overcome) || 0) - (Number(downs) || 0) - (Number(sleeps) || 0)));
+/** Ranged Combat While Engaged since Stage 0: a [Ranged] Action while you are Engaged is Doomed (it was 2 Banes: ENGAGED_RANGED_BANES below). */
+export const ENGAGED_RANGED_DOOMED = true;
+/** No creature has an Opportunity Attack by default since Stage 0 (it left the Basic Actions, for PCs and NPCs; a Talent brings it back later). */
+export const BASIC_OPPORTUNITY_ATTACK = false;
+
 /* ---- Position (Ch. 3: Flanking, Cover; Ch. 1: Named Boons and Banes) ---- */
 /** Flanking: 1 Field Boon for each other creature that threatens the target, minus 1 for each ally of the target that threatens the attacker, then the limit of 2. { raw, boons }. */
 export const flankBoons = (others, cancels) => { const raw = Math.max(0, (Number(others) || 0) - (Number(cancels) || 0)); return { raw, boons: Math.min(BB_LIMIT, raw) }; };

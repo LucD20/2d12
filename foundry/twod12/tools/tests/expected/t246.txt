@@ -15,6 +15,13 @@ Cover on an Action: none / Low / Medium / High / Total: 0 field | 1 field | 2 fi
 Cover on a Save: Low / Medium / High: 1 field Boons | 2 field Boons | Favored | High gives no Field Banes: true
 Prone: melee {"boons":1,"banes":0,"bb":"field"} | ranged {"boons":0,"banes":1,"bb":"field"} | shooting while Engaged: 2 | into a melee: 1
 Range 10 / 20 / 40 at 10, 11, 20, 21, 40, 41: 0 1 1 2 2 Infinity | Long Draw: 0 1 | melee 1 at 1, 2: 0 Infinity
+--- Stage 0 in the book (2026-11-12): the 1-to-6 ladder, Momentum 0 to 4, the Doomed shot, no basic Opportunity Attack; not wired into the system yet
+the ladder's top: 6 | Momentum's: 4 | start at Momentum 0 to 4 (and 9): 1 2 3 4 5 5
+Nari (Momentum 1): start 2 | round 2: 3 | a Critical: 4 | rounds 3, 4, 5: 5 6 6
+Jacob's party: 2, a PC Down and the fight won: 2 | then a Sleep: 1 | a retreat: 0 | a Rest: 0 | never above 4 or under 0: 4 0
+a [Ranged] Action while Engaged is Doomed: true | every creature has an Opportunity Attack: false
+the Bestiary's Stage 0 table: roles minion grunt standard elite | a Standard's Vigor or Resolve by rating: 17 / 24 / 30 / 36 / 42 | its Medium Basic attack: 1 + 1d4 / 2 + 1d6
+every damage is a flat part plus at most one small die: true | Health rises with the rating: true | a Minion has no 3 AP Special and no Extreme: true
 --- one copy of each rule
 the numbers are config.mjs's: true
 sheetmodel.mjs takes payReaction from it: true

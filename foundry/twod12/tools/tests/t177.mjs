@@ -31,7 +31,11 @@ const srcDir = ROOT + "../../book/rules-src/";
 const chapters = fs.readdirSync(srcDir).filter(f => /^\d\d-.*\.md$/.test(f)).map(f => [f, fs.readFileSync(srcDir + f, "utf8")]);
 const placed = new Map();
 for (const [f, t] of chapters) for (const m of t.matchAll(/^@@CARD:(.+?)@@[ \t]*$/gm)) placed.set(m[1].trim(), [...(placed.get(m[1].trim()) ?? []), f]);
-const shown = cards.filter(c => c.book !== false);
+// Stage 0 into the book (2026-11-12): the cards set aside (book/cards/set-aside.txt: the Talents and Opportunity Attack) stay in the card files and in the
+// system, and no chapter places them for now.
+const aside = new Set(fs.readFileSync(ROOT + "../../book/cards/set-aside.txt", "utf8").split("\n").map(l => l.trim()).filter(l => l && !l.startsWith("#")));
+const shown = cards.filter(c => c.book !== false && !aside.has(c.name));
+console.log("set aside:", aside.size, "| each is a card:", [...aside].every(n => cards.some(c => c.name === n)), "| none is placed:", [...aside].every(n => !placed.has(n)));
 console.log("shown in the book:", shown.length, "| placed once:", shown.every(c => placed.get(c.name)?.length === 1), "| markers with no card:", [...placed.keys()].filter(n => !cards.some(c => c.name === n)).join(", ") || "none");
 const byHand = [];
 for (const [f, t] of chapters) for (const m of t.matchAll(/<div class="action-head"><span>(.*?)<\/span>/g)) if (cards.some(c => c.name === m[1])) byHand.push(`${f}: ${m[1]}`);

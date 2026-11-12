@@ -16,7 +16,7 @@ const HERE = fileURLToPath(new URL(".", import.meta.url));
 // SIM-1 (2026-11-12): the engine lives in sim/ (core.mjs: rules, dice, damage, NPCs; turn.mjs: one PC turn; engine.mjs: the fight and the day;
 // policy.mjs: the decisions). This file reads the class and fight files, writes the reports, and exports the engine again for the other scripts.
 export * from "./sim/core.mjs"; export * from "./sim/turn.mjs"; export * from "./sim/engine.mjs"; export * from "./sim/policy.mjs";
-import { RULES, RULES_R, RULES_PRE_R, C, CF, TW, MP, rng, rollDice, mapChecks, parseDamage, weaponTier, npcOf } from "./sim/core.mjs";
+import { RULES, RULES_R, RULES_BOOK, RULES_PRE_R, WEAPONS_R, C, CF, TW, MP, rng, rollDice, mapChecks, parseDamage, weaponTier, npcOf } from "./sim/core.mjs";
 import { runTurn, turnDamage, turnFor, stepOf, group } from "./sim/turn.mjs";
 import { fight, day, roleCv, npcStrike, npcSeq, npcTurn } from "./sim/engine.mjs";
 
@@ -141,6 +141,7 @@ export function parseSpec(text, file = "spec") {
       else if (key === "weapon") {   // weapon Crossbow (ranged, reload): 0 / 1d4+2 / 1d10+2
         const m = rest.match(/^(.+?)(?:\s*\(([^)]*)\))?:\s*(.+)$/); if (!m) fail("write weapon like: Greatsword (melee): 0 / 1d8 / 2d6");
         b.weapon = { name: m[1].trim(), traits: words((m[2] ?? "melee").replace(/range\s+[\d/]+/i, "")), tiers: m[3].split("/").map(s => s.trim()) };
+        if (RULES.weapons === "r" && WEAPONS_R[b.weapon.name]) b.weapon.tiers = WEAPONS_R[b.weapon.name].split("/").map(s => s.trim());   // a study pinned to pack R's rules: the weapon table of that time
         const rg = (m[2] ?? "").match(/range\s+([\d/]+)/i);   // its Range: normal / far / maximum (the map model); melee 1, ranged 10 / 20 / 40 by default
         b.weapon.range = rg ? rg[1].split("/").map(Number) : b.weapon.traits.includes("ranged") ? [10, 20, 40] : [1];
       }
@@ -340,7 +341,7 @@ export function report({ builds, fights }) {
   const lv = fights.level;
   const LEVEL = RULES.escalation === "level", src = fights.source ?? { dir: "classes", fights: "fights.txt", cmd: "node book/ruler/spec.mjs" };
   L.push(`# The ruler: class builds and fights (level ${lv})`, "", `Written by \`${src.cmd}\` from \`book/ruler/${src.dir}/*.txt\` and \`book/ruler/${src.fights}\`. Don't edit this file: edit those and run the script again.`, "",
-    LEVEL ? `**The rules: the book today (pack R; the ruler's default since the catch-up of 2026-11-12).** ${RULES.ap} AP + ${RULES.reactionAp} Reaction AP (NPCs ${RULES.npcAp} + ${RULES.npcReactionAp}, Minions ${RULES.minionAp}); Escalation is a level from ${RULES.startEsc} (2 with Momentum), never spent, +1 on a Critical and on the class's hook (once an encounter each); each AP still unused when the next turn starts gives Guard ${TW.guardPerAp.join(" / ")} (by Stage) for 1 round; a creature gains its Reaction AP at the start of its turn (none before its first turn of the encounter); every creature has the Opportunity Attack Reaction (an adjacent enemy that leaves a square with a Move Action or stands up); NPCs use their Specials (Round: ${TW.npcSpecial.filter(x => x.key !== "basic").map(x => `${x.label.replace("Special, ", "")} × ${x.x}`).join(", ")} for an Elite's Encounter one) and Elites their Escalation and phases; the Bestiary's live tables (config.mjs); Boons and Banes are flat and cancel, Field ones up to 2, High cover Doomed, Flanking up to 2 after the cancels (calc.mjs, map.mjs); an enemy at 0 Health is out at once (the rest of that turn goes to another enemy: since 2026-11-12).`
+    LEVEL ? `**The rules: the book today for the classes as their cards are written (pack R, and since Stage 0 went into the book on 2026-11-12: the flat-plus-one-die weapon table, no basic Opportunity Attack, a [Ranged] Action while Engaged is Doomed). The class cards still sit on the 1-to-3 Escalation ladder, so these builds do too; Stage 0's levels 1 to 3 on the 1-to-6 ladder with Momentum 0 to 4 and the Bestiary's Stage 0 table are in stage0.md.** ${RULES.ap} AP + ${RULES.reactionAp} Reaction AP (NPCs ${RULES.npcAp} + ${RULES.npcReactionAp}, Minions ${RULES.minionAp}); Escalation is a level from ${RULES.startEsc} (2 with Momentum), never spent, +1 on a Critical and on the class's hook (once an encounter each); each AP still unused when the next turn starts gives Guard ${TW.guardPerAp.join(" / ")} (by Stage) for 1 round; a creature gains its Reaction AP at the start of its turn (none before its first turn of the encounter); ${RULES.oaAll ? "every creature has the Opportunity Attack Reaction (an adjacent enemy that leaves a square with a Move Action or stands up)" : "no creature has an Opportunity Attack"}; NPCs use their Specials (Round: ${TW.npcSpecial.filter(x => x.key !== "basic").map(x => `${x.label.replace("Special, ", "")} × ${x.x}`).join(", ")} for an Elite's Encounter one) and Elites their Escalation and phases; the Bestiary's live tables (config.mjs); Boons and Banes are flat and cancel, Field ones up to 2, High cover Doomed, Flanking up to 2 after the cancels (calc.mjs, map.mjs); an enemy at 0 Health is out at once (the rest of that turn goes to another enemy: since 2026-11-12).`
       : `**The rules: the book before pack R** (\`--pre-r\`: ${RULES.ap} AP, no Reaction AP, Escalation spent, the pre-R Bestiary, Opportunity Attack as a Talent), with today's dice and map rules (flat Boons and Banes, the new Favored, the Field limit, Flanking up to 2). The builds are the classes as they were before pack R-classes: this report is kept for the pre-R studies (prices.md, positions.json, bestiary.md, progression.md, rework.md).`, "");
   for (const b of builds) {
     L.push(`## ${b.name} (${b.role || "no role"}), \`${b.file}\``, "");
@@ -475,7 +476,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === fs.realpathSync(proces
   // The catch-up (2026-11-12): the default is the book today: the R builds of rework/ and fights.txt, into report.md. `--pre-r`: the classes as they
   // were before pack R (classes/, fights-pre-r.txt) under RULES_PRE_R, into report-pre-r.md (the pre-R studies read those builds).
   const PRE = process.argv.includes("--pre-r"), SRC = PRE ? { dir: "classes", fights: "fights-pre-r.txt", out: "report-pre-r.md", cmd: "node book/ruler/spec.mjs --pre-r" } : { dir: "rework", fights: "fights.txt", out: "report.md", cmd: "node book/ruler/spec.mjs" };
-  Object.assign(RULES, PRE ? RULES_PRE_R : RULES_R);
+  Object.assign(RULES, PRE ? RULES_PRE_R : RULES_BOOK);
   const dir = `${HERE}${SRC.dir}/`;
   const builds = fs.readdirSync(dir).filter(f => f.endsWith(".txt")).sort().map(f => parseSpec(fs.readFileSync(dir + f, "utf8"), `${SRC.dir}/${f}`));
   const fights = parseFights(fs.readFileSync(HERE + SRC.fights, "utf8")); fights.source = SRC;

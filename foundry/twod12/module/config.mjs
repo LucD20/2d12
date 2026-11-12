@@ -222,6 +222,32 @@ export const TWOD12 = {
       hm: [[6.5, 10, 13.25, 16.5, 19.75], [7.75, 11.5, 15.5, 19.25, 23.25], [13, 19.25, 25.5, 32, 38.5]],
       basic: [[[3, 4], [4, 6.5], [5, 7.5], [6.5, 9.5], [7.5, 11]], [[4, 6.5], [6, 9], [7.5, 11.5], [9, 14], [10.5, 16]], [[6, 9], [8.5, 12.5], [10.5, 15.5], [12.5, 19.5], [15, 22.5]]] }
   },
+  // Stage 0 (levels 1 to 3) in the book's Bestiary (pack "Stage 0 into the book", 2026-11-12; fitted by book/ruler/sim/stage0fit.mjs, reported in
+  // book/ruler/stage0.md): ready numbers, exactly the book's tables. health: an NPC's Vigor or Resolve by rating (each has its own rating; the Health Pool
+  // is the two added; no Attribute, no multiplier). basic / s1 / s2 / s3: the damage as written (Tier 2, Tier 3), a flat part plus at most one small die,
+  // the Modifier already in it, for the Basic attack and the 1 AP, 2 AP and 3 AP Specials. **The system doesn't read this yet** (its NPCs still use
+  // npcRoles above, pack R's rows): the pack "Stage 0 in Foundry" wires it; the automated playtest environment reads it (book/ruler/sim/core.mjs npcS0).
+  npcStage0: {
+    minion: { health: [1, 2, 3, 4],
+      basic: [["1", "2"], ["1", "1d4"], ["2", "1 + 1d4"], ["1d4", "2 + 1d4"]],
+      s1: [["1", "1d4"], ["2", "1 + 1d4"], ["1d4", "2 + 1d4"], ["1 + 1d4", "3 + 1d4"]],
+      s2: [["2", "2 + 1d4"], ["1d4", "2 + 1d6"], ["1 + 1d4", "3 + 1d6"], ["2 + 1d4", "5 + 1d6"]] },
+    grunt: { health: [7, 10, 13, 16, 19],
+      basic: [["1", "2"], ["2", "1d4"], ["1d4", "1 + 1d4"], ["1 + 1d4", "2 + 1d4"], ["1 + 1d4", "3 + 1d4"]],
+      s1: [["2", "1d4"], ["1d4", "1 + 1d4"], ["1 + 1d4", "2 + 1d4"], ["2 + 1d4", "2 + 1d6"], ["2 + 1d4", "3 + 1d6"]],
+      s2: [["1 + 1d4", "2 + 1d4"], ["2 + 1d4", "2 + 1d6"], ["2 + 1d4", "3 + 1d6"], ["3 + 1d6", "6 + 1d6"], ["4 + 1d6", "7 + 1d6"]],
+      s3: [["3 + 1d4", "4 + 1d6"], ["3 + 1d6", "6 + 1d6"], ["4 + 1d6", "7 + 1d6"], ["7 + 1d6", "10 + 1d8"], ["7 + 1d8", "13 + 1d8"]] },
+    standard: { health: [17, 24, 30, 36, 42],
+      basic: [["1d4", "1 + 1d4"], ["1d4", "2 + 1d4"], ["1 + 1d4", "2 + 1d6"], ["2 + 1d4", "3 + 1d6"], ["3 + 1d4", "5 + 1d6"]],
+      s1: [["1 + 1d4", "2 + 1d4"], ["1 + 1d4", "3 + 1d6"], ["2 + 1d4", "4 + 1d6"], ["2 + 1d6", "6 + 1d6"], ["3 + 1d6", "7 + 1d8"]],
+      s2: [["2 + 1d4", "3 + 1d6"], ["2 + 1d6", "6 + 1d6"], ["3 + 1d6", "8 + 1d8"], ["6 + 1d6", "10 + 1d8"], ["7 + 1d6", "14 + 1d8"]],
+      s3: [["4 + 1d6", "7 + 1d6"], ["6 + 1d6", "11 + 1d8"], ["7 + 1d6", "15 + 1d8"], ["10 + 1d8", "19 + 1d8"], ["13 + 1d8", "24 + 1d8"]] },
+    elite: { health: [35, 50, 65, 80, 95],
+      basic: [["1d4", "1 + 1d4"], ["1 + 1d4", "2 + 1d4"], ["2 + 1d4", "2 + 1d6"], ["3 + 1d4", "4 + 1d6"], ["3 + 1d6", "5 + 1d6"]],
+      s1: [["1 + 1d4", "2 + 1d4"], ["2 + 1d4", "3 + 1d6"], ["3 + 1d4", "4 + 1d6"], ["3 + 1d6", "6 + 1d6"], ["4 + 1d6", "7 + 1d8"]],
+      s2: [["2 + 1d4", "3 + 1d6"], ["3 + 1d6", "7 + 1d6"], ["5 + 1d6", "8 + 1d8"], ["7 + 1d6", "11 + 1d8"], ["8 + 1d8", "14 + 1d8"]],
+      s3: [["4 + 1d6", "7 + 1d6"], ["7 + 1d6", "13 + 1d8"], ["9 + 1d8", "15 + 1d8"], ["13 + 1d8", "20 + 1d8"], ["15 + 1d8", "24 + 1d8"]] }
+  },
   //   off: Attribute and Defense steps; score: for "the ratings average" (-2 to +2); i: the column of the role tables.
   npcRatings: {
     terrible: { label: "Terrible", off: -2, score: -2, i: 0 },

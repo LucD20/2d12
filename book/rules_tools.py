@@ -171,11 +171,20 @@ def report(parsed, doc_html):
 
 
 # ------------------------------------------------------------------ the cards of book/cards/
+def set_aside():
+    """The cards set aside (book/cards/set-aside.txt, one name a line; # starts a comment): kept in the card files, shown by no chapter for now."""
+    fn = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'cards', 'set-aside.txt')
+    if not os.path.exists(fn): return set()
+    return {l.strip() for l in open(fn) if l.strip() and not l.lstrip().startswith('#')}
+
 def report_cards(cards, placed, problems, parsed):
     """The checks of the card files: every card the book shows is placed once; no chapter still writes a card by hand that the files have; markers resolve."""
     out = list(problems)
+    aside = set_aside()
+    for name in sorted(aside - set(cards)): out.append(f'cards/set-aside.txt: no card is named "{name}"')
+    for name in sorted(aside & placed): out.append(f'cards/set-aside.txt: "{name}" is set aside but a chapter places it')
     for name, c in cards.items():
-        if c.get('book') is False: continue
+        if c.get('book') is False or name in aside: continue
         if name not in placed: out.append(f'{c["_file"]}: the card "{name}" is placed in no chapter (write @@CARD:{name}@@ where it goes)')
     for fn, d in parsed.items():
         for c in d['cards']:
@@ -183,5 +192,5 @@ def report_cards(cards, placed, problems, parsed):
     counts = {}
     for n in placed: counts[n] = counts.get(n, 0) + 1
     kind = 'ok  ' if not out else 'WARN'
-    print(f'  {kind} cards of book/cards/ ({len(cards)} cards, {len([c for c in cards.values() if c.get("book") is not False])} shown in the book){"" if not out else ": " + str(len(out))}')
+    print(f'  {kind} cards of book/cards/ ({len(cards)} cards, {len([n for n, c in cards.items() if c.get("book") is not False and n not in aside])} shown in the book, {len(aside)} set aside){"" if not out else ": " + str(len(out))}')
     for o in out: print(f'         {o}')

@@ -5,37 +5,40 @@
 Your class determines your Weapon Modifier. Each weapon belongs to a [[Weapon Groups|Weapon Group]] and has its own **Weapon Technique**, which you unlock with [[Mastery]]. A Weapon Technique can only be used with the weapon it belongs to, while you wield it: its Weapon Actions use that weapon, never another one.
 
 > [!example]
-> A Paladin with a Weapon Modifier of +2 deals 1d8 + 2 Slashing damage on Tier 2 with a Greatsword Weapon Attack.
+> A Paladin with a Weapon Modifier of +2 deals 5 + 1d6 + 2 Slashing damage on Tier 2 with a Greatsword Weapon Attack: 8 to 13.
 
 ### Weapon Damage [W]
 
-**[W]** is the damage of your weapon. An Action that deals 1[W] adds one instance of the weapon's damage. 2[W] is two instances, including any modifier and all dice. A weapon's damage has its own type, written in its table ([V] for every weapon so far): 1[W] deals that type, whatever the rest of the Action deals. Later weapons, such as wands and staves, may deal Resolve damage or both.
+**[W]** is the damage of your weapon: on each Tier, **a flat number plus at most one small die**. An Action that deals 1[W] adds one instance of the weapon's damage. 2[W] is two instances: the flat number twice and two dice. A weapon's damage has its own type, written in its table ([V] for every weapon so far): 1[W] deals that type, whatever the rest of the Action deals. Later weapons, such as wands and staves, may deal Resolve damage or both.
 
-*Example:* an Action that deals 2[W] deals 0 / 2d8 / 4d6 with a Greatsword, and 0 / 2d4+4 / 2d10+4 with a Crossbow.
+*Example:* an Action that deals 2[W] deals 0 / 10 + 2d6 / 16 + 2d8 with a Greatsword, and 0 / 4 + 2d4 / 8 + 2d4 with a Crossbow.
 
 ### Reading the Weapon Tables
 
 - **Group:** its [[Weapon Groups|Weapon Group]].
 - **Range:** in squares. Melee weapons have a [[Weapon Range|Range]] too: 1 for most of them. For a ranged weapon, the first number is the normal range, the second the far range (1 Bane) and the third the maximum range (2 Banes).
-- **Damage:** Tier 1 / Tier 2 / Tier 3, all [V]. Tier 1 is 0 for every weapon but Fists.
+- **Damage:** Tier 1 / Tier 2 / Tier 3, all [V]. Tier 1 is 0 for every weapon. A [[Thrown]] weapon's damage is for the weapon in hand.
 - **Mastery:** the [[Mastery]] its Weapon Technique needs: 3 for common weapons, 4 for specialist ones, 5 for exotic ones.
 
-A weapon that takes both hands deals the most, a weapon that leaves a hand free a little less, and a light or Thrown weapon less again: what the weapon can do pays for the difference.
+A melee weapon deals more than a ranged one, which strikes from safety. Among melee weapons, one that takes both hands deals the most and one that leaves a hand free less: what the weapon can do pays for the difference. The die tells weapons apart: a d4 on a big flat number is steady (Hammers, Crossbows, the Longbow), a d8 swings (Axes, Firearms), a d6 is in the middle.
 
 ### Melee
 
 | Name | Group | Properties | Type | Range | Damage | Mastery |
 |---|---|---|---|---|---|---|
-| Dagger | Blades | Melee, Thrown | Pierce | 1, Thrown 4 / 8 / 12 | [V] 0 / 1d4 / 1d8 | 3 |
-| Longsword | Blades | Melee | Slash | 1 | [V] 0 / 1d6 / 1d10 | 3 |
-| Greatsword | Blades | Melee, Two-handed | Slash | 1 | [V] 0 / 1d8 / 2d6 | 3 |
-| Handaxe | Axes | Melee, Thrown | Slash | 1, Thrown 4 / 8 / 12 | [V] 0 / 1d4 / 1d8 | 3 |
-| Greataxe | Axes | Melee, Two-handed | Slash | 1 | [V] 0 / 1d6 / 2d8 | 4 |
-| Mace | Hammers | Melee | Blunt | 1 | [V] 0 / 1d4+1 / 1d8+1 | 3 |
-| Maul | Hammers | Melee, Two-handed | Blunt | 1 | [V] 0 / 1d4+2 / 1d10+2 | 4 |
-| Spear | Polearms | Melee, Thrown | Pierce | 1, Thrown 4 / 8 / 12 | [V] 0 / 1d4 / 1d8 | 3 |
-| Pike | Polearms | Long, Melee, Two-handed | Pierce | 3 | [V] 0 / 1d6 / 1d10 | 4 |
-| Knuckle Dagger | Unarmed | Barehanded, Melee | Pierce | 1 | [V] 0 / 1d4 / 1d6 | 5 |
+| Dagger | Blades | Melee, Thrown | Pierce | 1, Thrown 4 / 8 / 12 | [V] 0 / 2 + 1d4 / 4 + 1d4 | 3 |
+| Longsword | Blades | Melee | Slash | 1 | [V] 0 / 2 + 1d6 / 4 + 1d6 | 3 |
+| Greatsword | Blades | Melee, Two-handed | Slash | 1 | [V] 0 / 5 + 1d6 / 8 + 1d8 | 3 |
+| Handaxe | Axes | Melee, Thrown | Slash | 1, Thrown 4 / 8 / 12 | [V] 0 / 2 + 1d4 / 2 + 1d8 | 3 |
+| Greataxe | Axes | Melee, Two-handed | Slash | 1 | [V] 0 / 4 + 1d6 / 10 + 1d8 | 4 |
+| Mace | Hammers | Melee | Blunt | 1 | [V] 0 / 3 + 1d4 / 5 + 1d4 | 3 |
+| Maul | Hammers | Melee, Two-handed | Blunt | 1 | [V] 0 / 6 + 1d4 / 9 + 1d6 | 4 |
+| Spear | Polearms | Melee, Thrown | Pierce | 1, Thrown 4 / 8 / 12 | [V] 0 / 2 + 1d4 / 4 + 1d4 | 3 |
+| Pike | Polearms | Long, Melee, Two-handed | Pierce | 3 | [V] 0 / 4 + 1d6 / 6 + 1d8 | 4 |
+| Knuckle Dagger | Unarmed | Barehanded, Melee | Pierce | 1 | [V] 0 / 2 + 1d4 / 3 + 1d4 | 5 |
+
+> [!tbd]
+> The Weapon Techniques below and in the Ranged list still write the dice of the earlier weapon table (a Greatsword's 1d10 / 2d6): they are rewritten with the weapon line.
 
 #### Melee Weapon Techniques
 
@@ -62,12 +65,12 @@ A weapon that takes both hands deals the most, a weapon that leaves a hand free 
 
 | Name | Group | Properties | Type | Range | Damage | Mastery |
 |---|---|---|---|---|---|---|
-| Shortbow | Bows | Projectile, Ranged, Two-handed | Pierce | 8 / 16 / 32 | [V] 0 / 1d6 / 1d10 | 3 |
-| Longbow | Bows | Projectile, Ranged, Two-handed | Pierce | 15 / 30 / 60 | [V] 0 / 1d4+1 / 1d8+1 | 4 |
-| Hand Crossbow | Crossbows | Projectile, Ranged, Reload | Pierce | 6 / 12 / 24 | [V] 0 / 1d4 / 1d8 | 4 |
-| Crossbow | Crossbows | Projectile, Ranged, Reload, Two-handed | Pierce | 10 / 20 / 40 | [V] 0 / 1d4+2 / 1d10+2 | 3 |
-| Pistol | Firearms | Firearm, Ranged, Reload | Pierce | 5 / 10 / 20 | [V] 0 / 1d4 / 2d6 | 4 |
-| Musket | Firearms | Firearm, Ranged, Reload, Two-handed | Pierce | 10 / 20 / 40 | [V] 0 / 1d4 / 2d8 | 5 |
+| Shortbow | Bows | Projectile, Ranged, Two-handed | Pierce | 8 / 16 / 32 | [V] 0 / 1d6 / 1 + 1d6 | 3 |
+| Longbow | Bows | Projectile, Ranged, Two-handed | Pierce | 15 / 30 / 60 | [V] 0 / 1 + 1d4 / 2 + 1d4 | 4 |
+| Hand Crossbow | Crossbows | Projectile, Ranged, Reload | Pierce | 6 / 12 / 24 | [V] 0 / 1d4 / 1 + 1d4 | 4 |
+| Crossbow | Crossbows | Projectile, Ranged, Reload, Two-handed | Pierce | 10 / 20 / 40 | [V] 0 / 2 + 1d4 / 4 + 1d4 | 3 |
+| Pistol | Firearms | Firearm, Ranged, Reload | Pierce | 5 / 10 / 20 | [V] 0 / 1d4 / 2 + 1d8 | 4 |
+| Musket | Firearms | Firearm, Ranged, Reload, Two-handed | Pierce | 10 / 20 / 40 | [V] 0 / 1d4 / 4 + 1d8 | 5 |
 
 #### Ranged Weapon Techniques
 
@@ -112,7 +115,7 @@ A **Projectile** weapon shoots something, such as a bow or a crossbow, instead o
 
 #### Thrown
 
-A weapon with the **Thrown** property can be used in hand or thrown, and it has a Range for each, written like "Range 1, Thrown 4 / 8 / 12". Used in hand, a Weapon Action with it is a Melee Action; thrown, it is a Ranged Action and uses the thrown Range. A thrown weapon leaves your hand.
+A weapon with the **Thrown** property can be used in hand or thrown, and it has a Range for each, written like "Range 1, Thrown 4 / 8 / 12". Used in hand, a Weapon Action with it is a Melee Action; thrown, it is a Ranged Action, uses the thrown Range and **deals 2 less damage on Tiers 2 and 3** (a thrown Dagger: 0 / 1d4 / 2 + 1d4). A thrown weapon leaves your hand.
 
 #### Non-threatening
 

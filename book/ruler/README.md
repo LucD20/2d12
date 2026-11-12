@@ -1,5 +1,22 @@
 # The ruler (for the class and Bestiary numbers)
 
+## Stage 0 into the book (2026-11-12): what the ruler runs now
+
+The book changed (Chapters 2, 3, 5, 6, 14, 15: rules-backlog.md, "STAGE 0 INTO THE BOOK: APPLIED") and the ruler followed. Each rule went into the system's pure modules first (`foundry/twod12/module/roundrules.mjs`, the Stage 0 block; `config.mjs npcStage0`), then into the engine's rule sets (`sim/core.mjs`):
+
+| Rule set | What it is | Who uses it |
+|---|---|---|
+| `RULES_BOOK` (**the default**) | The book today for the classes as their cards are written: pack R's rules, **no Opportunity Attack** for anyone, **a [Ranged] Action while Engaged is Doomed**, the new weapon table (the class files' `weapon` lines: Greatsword 0 / 5+1d6 / 8+1d8, Crossbow 0 / 2+1d4 / 4+1d4). The Escalation ladder is still 1 to 3, because the class cards are | `spec.mjs` (report.md), `sim/run.mjs`, `sim/view.mjs` |
+| `RULES_S0` | `RULES_BOOK` + **Escalation 1 to 6** and **Momentum 0 to 4** (a day's fights start at Escalation 1 + Momentum) | `sim/stage0.mjs`, `sim/stage0fit.mjs` (through `sim/stage0lib.mjs`), with the Bestiary's Stage 0 table and the builds cut to the Stage 0 level lists |
+| `RULES_R` | Pack R's rules as they were until 2026-11-12 (an Opportunity Attack for every creature, 2 Banes, the old weapon table through `WEAPONS_R`) | The studies of that time, which pin it: `maps.md`, `policies.md`, `areas.md`, `playtest-4-sim.md`, `reactions.md`, `rclasses.md`, `rbestiary.md` (their scripts still write them byte for byte; checked for playtest-4-sim.md and reactions.md) |
+| `RULES_PRE_R` | The book before pack R | `report-pre-r.md` and the pre-R studies |
+
+**When the class cards are written for Stage 0** (the card sessions), `RULES` becomes `RULES_S0` (one line in `sim/core.mjs`) and report.md's party becomes the Stage 0 builds; until then `stage0.md` is the report for levels 1 to 3 and report.md is the pack R party under the rules that changed for everyone.
+
+**Reports that changed on purpose:** `report.md` (the default rule set and the weapons: the normal fight 3.7 → 3.4 rounds, 14% → 13% of the party's Health, a PC Down in 24% → 22%; the deadly fight won 74% → 77%; the section "Reactions in the 4 + 1 AP economy" is gone with the basic Opportunity Attack) and `stage0.md` (written again by the new `sim/stage0.mjs`; the prototype's report and script are in `archive/ruler-old/stage0-prototype/`). `node book/ruler/spec.mjs --check` prints "ok".
+
+**The Bestiary's Stage 0 table** (`node book/ruler/sim/stage0fit.mjs`, then `stage0.md` sections 2 and 3): over pack R's first row the normal fight lasts 3.5 rounds with Health × 0.93 to 1.04 (the melee weapons deal more now, so the placeholder's × 0.90 was too low); for damage the two targets still don't meet (× 0.61 to 0.81 for "costs a fifth", × 0.93 to 0.97 for "a Down in 1 fight of 5"). **Chosen: Health × 0.95 (a Standard 30 + 30 = 60) and damage × 0.75**, written as ready numbers; `stage0fit.mjs h,d` measures another pair.
+
 ## The catch-up (2026-11-12): the ruler runs the book's rules today
 
 Until this pack the ruler's default was the book before pack R (5 AP, no Reaction AP, Escalation spent), and the dice the book had before

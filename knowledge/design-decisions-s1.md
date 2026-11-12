@@ -1,5 +1,7 @@
 # Decision sheet S1: the structural candidates (answered by Lucas, 2026-11-11; compared with main v0.0.354 the same day; nothing applied)
 
+> **APPLIED in part, 2026-11-12 (pack "Stage 0 into the book"; rules-backlog.md, "STAGE 0 INTO THE BOOK: APPLIED"):** items 1 to 4, 6 to 15, 20, 33 and section H's answers are in rules-src (Chapters 2 and 5, the Bestiary, rules-src/README.md). **Still to do:** item 5's level lists on the class cards (the card sessions), the Health steps of Stages 1 to 3 (item 6), Foundry.
+
 MASTER-PLAN step 1. Lucas answered the 32 items Claude proposed (with defaults) on 2026-11-11. **Log only: no change to rules-src, the ruler or Foundry yet.** The Boons and Modifiers part (items 16-19 and 21-28) was already on main; section H has the comparison and Lucas's answers.
 
 ## A. Stage 0 and the level cap

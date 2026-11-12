@@ -1,5 +1,7 @@
 # Weapon damage as a flat part plus one small die: a draft
 
+> **APPLIED 2026-11-12 (pack "Stage 0 into the book"):** the table of the section "DECIDED" is Chapter 15's (`book/rules-src/15-gear.md`), with 2[W] as two instances and a thrown weapon dealing 2 less than in hand. Not applied: the Weapon Techniques still write the old dice (with the weapon line), and Foundry's weapons (the pack "Stage 0 in Foundry"). This file is kept for how the table was reached.
+
 **A draft for Lucas (2026-11-12). Lucas chose column B the same day ("B I think its alright"; the half point up is fine); the die sizes are still open (the section "How big can the die be"). Nothing is applied: the book, the cards, Foundry and the ruler still use today's table.** The idea (his, from the three ideas before the Stage 0 answers; `book/rules-backlog.md`): fewer dice and a narrower range of damage, without losing the die in the hand.
 
 ## DECIDED (Lucas, 2026-11-12): the table to put in the book

@@ -1,0 +1,26 @@
+# Cards set aside: kept in the card files (Foundry and the ruler still read them), shown by no chapter of the book for now.
+# One name a line. To bring a card back: delete its line and place @@CARD:Name@@ in a chapter. (build_rules.py checks this list.)
+#
+# 2026-11-12, pack "Stage 0 into the book" (Lucas: "Talents are on the background until we finish Stage 0 of the two classes and understand the
+# class feel"): every Talent (their chapter is rules-src/set-aside/16-talents.md, not built), and Opportunity Attack, which left the Basic
+# Actions for PCs and NPCs (it comes back later as a Talent).
+Opportunity Attack
+Challenge
+Heavy Blows
+Whirlwind
+Bloodlust
+Brawler
+Pummel
+Kickboxer
+Leg Sweep
+Aim
+Ricochet
+Long Draw
+Steady Nerves
+Battering Charge
+Cut Through
+Lesser Blessing
+Rimebrand (Cold)
+Sacred Weapon
+Hand of Mercy
+Class Expertise

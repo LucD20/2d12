@@ -6,13 +6,13 @@ Your **Health Pool** is the sum of two thresholds, **Vigor** and **Resolve**:
 
 1. **Your class** gives a **high** and a **low** Health value. When you build your character, you assign one to Vigor and the other to Resolve; the choice can't be changed later.
 2. **Your species** adds its bonus to each (see the [[Species]] document).
-3. **Your Stage:** at Stage 2 and again at Stage 3, each threshold grows by your class's step for its value (the high step or the low step; see [[Stages]]).
+3. **Your Stage:** at Stages 1, 2 and 3, each threshold grows by your class's step for its value (the high step or the low step; see [[Stages]]).
 4. **The floor:** neither threshold can be less than a third of your Health Pool (rounded up). If one is, move points from the other threshold to it until it reaches a third; the Health Pool doesn't change.
 
 Your Attributes don't change your Health.
 
 > [!example]
-> A Human Paladin (high 20, low 10) puts the high value on Vigor: Vigor 20 + 3 = **23**, Resolve 10 + 2 = **12**, Health Pool **35**. At Stage 2 the Paladin's steps (+12 high, +6 low) make it Vigor 35, Resolve 18, Health Pool 53.
+> A Human Paladin (high 20, low 10) puts the high value on Vigor: Vigor 20 + 3 = **23**, Resolve 10 + 2 = **12**, Health Pool **35**.
 >
 > Steven, an Elf Archer (high 16, low 8), puts the high value on Resolve: Vigor 8 + 1 = 9, Resolve 16 + 4 = 20, Health Pool 29. A third of 29 is 10, so 1 point moves: Vigor **10**, Resolve **19**.
 
@@ -89,7 +89,7 @@ Every result on the Dying or Shattered Table is a **Wound**. A Wound from the Dy
 
 ## Rally Points
 
-Each character begins with Rally Points equal to **your class's Rally value + your [[Stages|Stage]]** (1, 2 or 3).
+Each character begins with Rally Points equal to **your class's Rally value + 1**, and 1 more at each [[Stages|Stage]] after Stage 0 (Rally + 2 at Stage 1, + 3 at Stage 2, + 4 at Stage 3).
 
 When a Rally Point is used, normally with Steel Yourself, the target removes **⌈their Health Pool ÷ 4⌉** damage. You choose which damage to remove.
 
@@ -103,7 +103,7 @@ Nonlethal damage is removed like any other damage.
 
 Only a Rest restores Rally Points. Sleep does not. A new encounter does not.
 
-**NPCs.** NPCs have no Rally Points. When an Action lets an NPC use one (an ally's Lay On Hands on it) or measures something in its Rally Points (Guard equal to what one of their Rally Points heals), one of its Rally Points removes **9** damage at Stage 1, **13** at Stage 2 and **17** at Stage 3, and it spends nothing.
+**NPCs.** NPCs have no Rally Points. When an Action lets an NPC use one (an ally's Lay On Hands on it) or measures something in its Rally Points (Guard equal to what one of their Rally Points heals), one of its Rally Points removes **9** damage at Stage 0, and it spends nothing (the later Stages' numbers come with their Bestiary tables).
 
 ## Guard
 

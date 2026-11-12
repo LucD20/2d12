@@ -16,10 +16,10 @@ The brief: `book/sim-brief.md`. Built in four parts. **SIM-1 is done (2026-11-12
 | `../maps/*.txt` | **The maps** (SIM-2): `pillars`, `corridor`, `rough`, `longsight`, `closequarters`; `open` is the open field |
 | `enclog.mjs` | A fight's log in the Encounter Log's playtest format (SIM-4): the system's own `module/enclog.mjs exportText`, fed with the engine's events |
 | `playtest4.mjs` | **Playtest 4 replayed** (SIM-4): the table's encounter run 1,500 times a map, beside what happened at the table; it writes `../playtest-4-sim.md` |
-| `stage0.mjs` | **The Stage 0 run** (2026-11-12, a prototype: nothing of it is in the book): levels 1 to 3 on decisions-s1.md's lists, Escalation 1 to 6 with Momentum, the Bestiary's Stage 0 row fitted, the ranged-against-melee candidates; it writes `../stage0.md` |
+| `stage0.mjs`, `stage0lib.mjs`, `stage0fit.mjs` | **Stage 0** (in the book since 2026-11-12): `stage0.mjs` writes `../stage0.md` (levels 1 to 3: the turns, the Bestiary's Stage 0 table, the fights by level and Momentum, Escalation's timing, ranged against melee, the maps, a day); `stage0lib.mjs` has the builds (the R builds cut to decisions-s1.md's lists), the table's maker and the fights; `stage0fit.mjs` fits the table (`node ... stage0fit.mjs` the factors; `stage0fit.mjs 0.95,0.75` a candidate table measured) |
 | `reactions.mjs` | How often each Reaction fires, and the fights without the basic Opportunity Attack (2026-11-12, two measurements for Lucas); it writes `../reactions.md` |
-| `weapondice.mjs` | The weapon draft (`book/weapons-flat.md`) with bigger dice at the same averages: prints a table (2026-11-12) |
-| `gap.mjs` | Ranged against melee at Stage 0 with Lucas's choices (weapon table B, C2, no Opportunity Attack): prints a table (2026-11-12) |
+| `weapondice.mjs` (a record: it measured the draft before Chapter 15 changed) | The weapon draft (`book/weapons-flat.md`) with bigger dice at the same averages: prints a table (2026-11-12) |
+| `gap.mjs` (a record, the same) | Ranged against melee at Stage 0 with Lucas's choices (weapon table B, C2, no Opportunity Attack): prints a table (2026-11-12) |
 | `policies.mjs` | **The sensitivity report** (SIM-3): every headline fight under each party policy and each enemy policy, on three maps; it writes `../policies.md` |
 | `areas.mjs`, `parties.mjs` | What the Area cards do on the grid against the number their ruler lines assume, with a party that uses them; it writes `../areas.md` |
 | `maps.mjs` | The fights on every map and the price of Speed and of the movement conditions there; it writes `../maps.md` |
@@ -165,18 +165,10 @@ Known gaps of `planPolicy`, each a finding for SIM-3 (README of the ruler, "The 
 
 Each event also has `ch`: the creatures whose state changed since the last event (`i` its place in the start list, `dmg`, `pos`, `out`, `guard`, `esc`, `cond`), so Forced Movement, heals, Guard and conditions show without their own event. Not in the log yet as lines of their own: the Boons and Banes of each roll, heals, conditions put on and ended, Escalation raises.
 
-## The Stage 0 run (2026-11-12)
+## Stage 0 (2026-11-12)
 
-`stage0.mjs` is a prototype: it changes no rule and no card. It builds its parties from the R class files (`rework/*-r1.txt`) by editing their text: the level, the Passives' rungs moved to Escalation 2 / 4 / 6 and kept only from the level that gives them, no Apex, no hook at level 1. Its rules are `{ ...RULES_R, escMax: 6 }` with `startEsc` 1 + Momentum.
+The prototype (`archive/ruler-old/stage0-prototype/`) became the book's rules the same day (pack "Stage 0 into the book"); what the engine runs by default and what `stage0.mjs` adds is in the ruler's README, "Stage 0 into the book". In short: `RULES` is `RULES_BOOK` (no Opportunity Attack, the Doomed shot while Engaged, the new weapons; the ladder still 1 to 3 as the class cards are), `RULES_S0` adds Escalation 1 to 6 and Momentum 0 to 4 (`day()` then starts a fight at Escalation 1 + Momentum: `roundrules.mjs escalationStartAt`, `momentumAfter`), and a Stage 0 NPC comes from the Bestiary's ready numbers (`core.mjs npcS0`: the system's `config.mjs npcStage0`; its Basic attack and each Special roll their written damage).
 
-The switches it added to the engine, all off by default (the gate: `report.md` unchanged):
+`stage0lib.mjs` builds its parties from the R class files (`rework/*-r1.txt`) by editing their text: the level, the Passives' rungs moved to Escalation 2 / 4 / 6 and kept only from the level that gives them, no Apex, no hook and no Encounter Pick at level 1. **This is a stand-in until the class cards are written for Stage 0.**
 
-| Switch | What it does |
-|---|---|
-| `RULES.escMax` (3) | The highest Escalation |
-| `RULES.engagedRanged` ("banes") | "doomed": a [Ranged] Action while Engaged is Doomed (candidate C2) |
-| `RULES.rangedOa` (false) | A [Ranged] Action while Engaged draws an Opportunity Attack from an adjacent enemy with a Reaction AP (C3) |
-| `RULES.meleeGuard` (0) | A melee PC that ends its turn Engaged has that much Guard until its next turn (B2) |
-| `pc.alt = { build, cost }` | A second weapon: the PC switches to that build once, when an enemy is within 2 squares, for `cost` AP (E) |
-
-Candidates A (a smaller ranged die) and B1 (+2 melee damage) are edits of the build's text, not rules. `st.escHist` counts the PCs' turns by Escalation.
+The switches the prototype added stay, off: `RULES.rangedOa` (a [Ranged] Action while Engaged draws an Opportunity Attack), `RULES.meleeGuard` (Guard for a melee PC that ends its turn Engaged), `pc.alt = { build, cost }` (a second weapon). `st.escHist` counts the PCs' turns by Escalation.

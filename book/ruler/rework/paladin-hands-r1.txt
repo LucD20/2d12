@@ -17,7 +17,7 @@ weapon-mod 1
 power-mod 2
 rally 6
 targeted 1.5
-weapon Greatsword (melee, two-handed): 0 / 1d8 / 2d6
+weapon Greatsword (melee, two-handed): 0 / 5+1d6 / 8+1d8
 speed 5
 reaction Shield of Faith: block 2d6+[Mod]
 

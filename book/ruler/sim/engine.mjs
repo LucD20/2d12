@@ -86,7 +86,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   if (W) W.onCollision = (origin, t, dmg, other) => { if (origin?.st) { origin.st.dealt += t.build ? 0 : dmg; origin.st.collision = (origin.st.collision ?? 0) + dmg; } ev("collision", { who: nameOf(t), into: other ? nameOf(other) : "a wall", damage: dmg, by: origin ? nameOf(origin) : null }); };
   if (M) {
     for (const p of pcs) { p.side = "pc"; p.cond = MP.noCond(); p.melee = !(p.build.weapon?.traits ?? []).includes("ranged"); p.range = p.build.weapon?.range ?? (p.melee ? [1] : M.npcRange); p.speed = p.build.speed ?? 5; }
-    for (const f of foes) { f.side = "npc"; f.cond = MP.noCond(); f.melee = !f.ranged; f.range = f.ranged ? M.npcRange : [1]; f.speed ??= 5; f.apMax ??= RULES.npcAp; f.apDebt = 0; f.oa = RULES.oaAll ? f.melee && RULES.npcOa !== false : M.npcReactions.includes(f.role); /* the catch-up: every creature has the Opportunity Attack (a ranged NPC's is not modeled) */ f.reactAP = RULES.reactFromStart ? RULES.npcReactionAp : RR.reactionAPAt(false); }
+    for (const f of foes) { f.side = "npc"; f.cond = MP.noCond(); f.melee = !f.ranged; f.range = f.ranged ? M.npcRange : [1]; f.speed ??= 5; f.apMax ??= RULES.npcAp; f.apDebt = 0; f.oa = RULES.oaAll ? f.melee && RULES.npcOa !== false : RULES.npcOa !== false && M.npcReactions.includes(f.role);   /* Stage 0 (npcOa off): no NPC has one */ /* the catch-up: every creature has the Opportunity Attack (a ranged NPC's is not modeled) */ f.reactAP = RULES.reactFromStart ? RULES.npcReactionAp : RR.reactionAPAt(false); }
     MP.place(pcs, foes, M);
   }
   const order = [...pcs.map(p => ({ pc: p })), ...foes.map(f => ({ npc: f }))];
@@ -505,12 +505,14 @@ export function day(party, encounters, R, { momentum = MOMENTUM.on, map = MP.MAP
   const cvOf = e => e.reduce((s, n) => s + (n.cv ?? roleCv(n.role)), 0) / pcs.length;
   for (const [i, e] of encounters.entries()) {
     if (!pcs.some(p => p.damage < p.build.pool)) break;
-    for (const p of pcs) { p.startEsc = momentum && mom > 0 ? MOMENTUM.startEsc(p.build.level) : RULES.startEsc; p.dailyOK = cvOf(e) >= 1.25 || i === encounters.length - 1; }   // a Daily is kept for a hard fight (or the last one)
+    const ladder = RULES.momentum === "ladder", d0 = pcs.reduce((s, p) => s + p.st.downs, 0);   // Stage 0: Momentum 0 to 4, a fight starts at Escalation 1 + Momentum
+    for (const p of pcs) { p.startEsc = ladder ? RR.escalationStartAt(momentum ? mom : 0) : momentum && mom > 0 ? MOMENTUM.startEsc(p.build.level) : RULES.startEsc; p.dailyOK = cvOf(e) >= 1.25 || i === encounters.length - 1; }   // a Daily is kept for a hard fight (or the last one)
     out.push(fight(pcs, e, R, { map }));
     out.at(-1).momentum = mom; out.at(-1).startEsc = pcs[0].startEsc;
     if (!out.at(-1).won) break;
     const cvPc = e.reduce((s, n) => s + (n.cv ?? roleCv(n.role)), 0) / pcs.length, hard = RULES.escalation === "level" ? RR.givesMomentum(Math.round(cvPc * 1e6) / 1e4) : cvPc > MOMENTUM.minCvPerPc;
-    if (RULES.escalation === "level") mom = hard ? 1 : 0; else if (hard) mom++;   // the book: the next encounter uses Momentum up (an easy fight gives none); before pack R the ruler kept it for the day
+    if (ladder) mom = RR.momentumAfter(mom, { overcome: 1, downs: pcs.reduce((s, p) => s + p.st.downs, 0) - d0 });   // +1 for the encounter overcome, -1 for each PC that went Down in it
+    else if (RULES.escalation === "level") mom = hard ? 1 : 0; else if (hard) mom++;   // the book: the next encounter uses Momentum up (an easy fight gives none); before pack R the ruler kept it for the day
     between(pcs);
   }
   return { fights: out, pcs, cleared: out.length === encounters.length && out.every(f => f.won) };

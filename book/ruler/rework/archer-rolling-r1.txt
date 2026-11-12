@@ -17,7 +17,7 @@ weapon-mod 2
 power-mod 1
 rally 5
 targeted 0.75
-weapon Crossbow (ranged, projectile, reload, two-handed, range 10/20/40): 0 / 1d4+2 / 1d10+2
+weapon Crossbow (ranged, projectile, reload, two-handed, range 10/20/40): 0 / 2+1d4 / 4+1d4
 speed 6
 reaction Covering Shot: cover
 

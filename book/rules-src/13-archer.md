@@ -15,6 +15,9 @@
 <div class="sbr"><span class="lbl">Escalation hook</span><span>Your Marked Quarry goes Down (Thrill of the Kill)</span></div>
 </div>
 
+> [!tbd]
+> **This class is still written for the earlier levels and Escalation ladder; its Stage 0 cards (levels 1 to 3) are next.** Until then, where this document and Chapters 2 and 5 of the Core Rules differ, the Core Rules win: read the Passives of Escalation 1, 2 and 3 as Escalation **2, 4 and 6** (level 2, level 1 and level 3) and the Apex's Escalation 3 as **6** (level 4); the Escalation hook and the Encounter Pick come at level 2; there is no Daily Pick in Stage 0, and every Talent slot is empty for now.
+
 ## The Archer by Level
 
 <div class="levels">

@@ -1,4 +1,5 @@
-# Builds the seven documents (core-rules.html, species.html, gear.html, talents.html, paladin.html, archer.html, bestiary.html) from the chapter files in rules-src/.
+# Builds the six documents (core-rules.html, species.html, gear.html, paladin.html, archer.html, bestiary.html; the Talents document is set aside
+# since 2026-11-12: rules-src/set-aside/16-talents.md, not built) from the chapter files in rules-src/.
 # A chapter file says which document it belongs to on its first line: <!-- doc: species -->  (no tag = Core Rules).
 import re, os, sys, math, json, base64, html as H, markdown
 import rules_tools as RT
@@ -12,7 +13,7 @@ if '--where' in sys.argv:   # python3 build_rules.py --where Engaged [Cover ...]
     RT.where(SRC, sys.argv[sys.argv.index('--where') + 1:]); sys.exit()
 OUT = next((a for a in sys.argv[1:] if not a.startswith('--')), 'core-rules.html')   # where Core Rules goes; the other documents are written beside it
 OUTDIR = os.path.dirname(OUT) or '.'
-DOCS = [('core', os.path.basename(OUT), 'Core Rules'), ('species', 'species.html', 'Species'), ('gear', 'gear.html', 'Gear'), ('talents', 'talents.html', 'Talents'), ('paladin', 'paladin.html', 'Paladin'), ('archer', 'archer.html', 'Archer'), ('bestiary', 'bestiary.html', 'Bestiary')]
+DOCS = [('core', os.path.basename(OUT), 'Core Rules'), ('species', 'species.html', 'Species'), ('gear', 'gear.html', 'Gear'), ('paladin', 'paladin.html', 'Paladin'), ('archer', 'archer.html', 'Archer'), ('bestiary', 'bestiary.html', 'Bestiary')]
 DOC_FILE = {k: f for k, f, _ in DOCS}
 RATIO = {1: 0.898, 2: 1.078, 3: 1.203, 4: 1.469, 5: 1.594}
 

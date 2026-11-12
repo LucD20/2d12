@@ -10,6 +10,8 @@ A rule change is **one edit in one file**. The design and its decisions: `book/c
 ## Files
 `basic-actions.json` (Chapter 6), `paladin.json` (the Paladin document), `archer.json` (the Archer document; Mark Quarry is Foundry-only), `gear.json` (the Weapon Techniques; `weapon` names each one's weapon, from gear-d2.md), `talents.json` (the Talents; a card with `talent` is a Talent item), `bestiary.json` (the example NPCs' Actions, Foundry-only; `npc` names the actor), `placeholders.json` (cards 1: Actions the book hasn't written yet, `placeholder: true`, so that links to them resolve: Hide; a card leaves it when the Action is written). Each is `{ "_about": "...", "cards": [ ... ] }`; one object per card, one field per line, the keys in the order below. JSON: double quotes inside a text are written `\"`, no trailing commas, no comments (`"_note"` fields are ignored). A name must be unique across all files.
 
+**`set-aside.txt` (2026-11-12, Stage 0):** the names of the cards the book shows in no chapter for now, one a line: every Talent and Opportunity Attack. The cards stay in their files unchanged (Foundry and the ruler still read them, a Mithril card stays Mithril); `build_rules.py` doesn't ask for a marker for them and warns if one is placed or if a name is no card. To bring a card back, delete its line and place `@@CARD:Name@@`.
+
 ## A card (the core, shared by the three targets)
 | Field | Meaning (write it as the book writes it) |
 |---|---|

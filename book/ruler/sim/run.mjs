@@ -30,7 +30,7 @@ export function logText(log) {
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === fs.realpathSync(process.argv[1])) {
-  Object.assign(S.RULES, S.RULES_R);
+  Object.assign(S.RULES, S.RULES_BOOK);
   const fights = S.parseFights(fs.readFileSync(HERE + "fights.txt", "utf8")), name = process.argv[2] && !process.argv[2].startsWith("--") ? process.argv[2] : null;
   const enc = name && (fights.encounters.find(e => e.name === name) ?? fights.encounters.find(e => e.name.toLowerCase().startsWith(name.toLowerCase())));
   if (!enc) { console.log("Encounters of fights.txt:\n" + fights.encounters.map(e => `  "${e.name}"`).join("\n")); process.exit(name ? 1 : 0); }

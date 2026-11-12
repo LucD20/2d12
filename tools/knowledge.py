@@ -30,8 +30,7 @@ OUT = ROOT / "knowledge"
 # Design documents still in progress (decided or proposed, not fully in rules-src yet). Keep this list short.
 DESIGN_DOCS = [
     "book/sim-brief.md",        # the automated playtest environment (SIM): the brief, the order, what the ruler lacks (2026-11-11)
-    "book/weapons-flat.md",     # weapon damage as a flat part plus one small die: a draft table for Lucas (2026-11-12)
-    "book/ruler/stage0.md",     # the Stage 0 run in SIM, a prototype: the numbers Lucas decides Stage 0 on (2026-11-12)
+    "book/ruler/stage0.md",     # Stage 0 (levels 1 to 3) in the ruler: the fights by level, the Bestiary's Stage 0 table and its fit (2026-11-12)
     "book/expedition-loop.md",  # Momentum, Alert, the decided fight and the Parting Beat: a candidate (2026-11-09)
     "book/playtest-2.md",       # playtest 2 and the rework it decided (pack R)
     "book/playtest-3.md",       # playtest 3, the baseline (no NPC Weapon Attack); its questions
@@ -39,7 +38,7 @@ DESIGN_DOCS = [
     "book/rework-r.md",         # pack R: the numbers and the decided sheet (section 14); R-core, R-classes and R-bestiary applied, R-Foundry to go
     "book/progression-lv.md",   # progression, Overcast and Momentum (pack R changes Overcast)
     "book/class-charter.md",    # what every class must have
-    "book/decisions-s1.md",  # decision sheet S1 (Stage 0, Escalation 1-6, Momentum): answered, not applied (2026-11-11)
+    "book/decisions-s1.md",  # decision sheet S1: the core is in the book (2026-11-12); the classes' Stage 0 level lists (item 5) wait for the card sessions
     "book/base-building.md",    # base building: proposals for much later (2026-11-07)
     "book/roleplay-skills.md",  # roleplay and skills: proposals (2026-11-07), Lucas reviews later
     "book/items-economy.md",    # items, loot, money, carrying (designed 2026-11-06, logged part by part)

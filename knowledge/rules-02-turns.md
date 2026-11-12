@@ -48,14 +48,14 @@ At the start of your turn in combat, you **regain AP**: you lose any AP you didn
 
 ### Unspent AP
 
-If you end your turn without spending all your AP, you keep the rest until your next turn starts: nothing else happens then, and those AP can still pay for [[Reactions]]. When you regain AP at the start of your next turn, each AP you still had unused gives you **[[Guard]]** for 1 round: **2** per AP at Stage 1, **3** at Stage 2 and **4** at Stage 3 (see [[Stages]]).
+If you end your turn without spending all your AP, you keep the rest until your next turn starts: nothing else happens then, and those AP can still pay for [[Reactions]]. When you regain AP at the start of your next turn, each AP you still had unused gives you **[[Guard]]** for 1 round: **2** per AP at Stages 0 and 1, **3** at Stage 2 and **4** at Stage 3 (see [[Stages]]).
 
 - This Guard **adds** to any Guard you already have (an exception to [[Stacking]]), and what is left of it ends 1 round later, when you regain AP again. Damage takes it before your other Guard.
 - A kept AP you spend on a Reaction is one AP less when your turn starts, so it gives no Guard.
 - Your Reaction AP never becomes Guard, and your first turn of an encounter has no unused AP.
 
 > [!example]
-> Drak (Stage 1) has Guard 5 from a card and ends his turn with 1 AP left: nothing changes until his next turn (he could still spend that AP on a Reaction). When his next turn starts, he regains his AP and gains Guard 2 for 1 round, on top of his Guard 5: Guard 7. A goblin then hits him for 3: his Guard from AP takes 2 and his other Guard 1, so he has Guard 4 left.
+> Drak (Stage 0) has Guard 5 from a card and ends his turn with 1 AP left: nothing changes until his next turn (he could still spend that AP on a Reaction). When his next turn starts, he regains his AP and gains Guard 2 for 1 round, on top of his Guard 5: Guard 7. A goblin then hits him for 3: his Guard from AP takes 2 and his other Guard 1, so he has Guard 4 left.
 
 ### Losing and Gaining Action Points
 
@@ -69,7 +69,7 @@ When something gives or takes Action Points, it says whether it happens **now** 
 A **Reaction** is an Action you use in response to something another creature does. Its card has an **Interrupt** or a **Trigger** line that says what it responds to, and which of the two it is decides when it happens. Its cost is written with an R, such as **1R**: it uses that many Action Points, but only as a response. A **0R** Reaction uses no AP; its Frequency still limits it.
 
 - **Paying:** A Reaction is paid with your **Reaction AP**, with AP you kept from your turn (see [[Unspent AP]]), or with both: a 2R Reaction can use your Reaction AP and one kept AP. On your own turn, your turn's AP can pay for it too. Your Reaction AP lasts until you regain AP at the start of your next turn.
-- **Opportunity Attack:** Every creature has the Opportunity Attack Reaction (see [[Chapter 6: Basic Actions|Chapter 6]]): it can attack an adjacent enemy that moves with a Move Action or stands up. A Talent can widen it (to the creatures it [[Flanking|threatens]], for example).
+- **No Reaction by default:** No creature has a Reaction of its own: every Reaction comes from a class, an item or a creature's entry. Moving away from an enemy doesn't let it attack you, unless it has a Reaction that says so.
 - **Interrupt:** An Interrupt happens **before** the Action that triggers it. "Interrupt: A creature would Advance" means the Reaction happens before the creature uses the Advance Action. An Interrupt can say that part of its effect happens after the triggering Action ("after the damage, they are Slid 1"): that part waits for it.
 - **Trigger:** A Trigger happens **after** the Action that triggers it. "Trigger: A creature deals damage to you" happens after you take the triggering damage.
 - **Once per triggering Action:** You can react only once to the same Action, but several creatures can react to it. Some Actions, mainly Move Actions, can happen throughout different squares. It is still a single Action, and you decide when you take the Reaction: for instance, you can wait for the creature to move into a more advantageous position before taking your Reaction, instead of taking it as soon as the creature moves.
@@ -79,7 +79,7 @@ A **Reaction** is an Action you use in response to something another creature do
 
 ### What a Reaction Responds To
 
-An Interrupt or a Trigger names a **moment** the rules define, and the Action that holds the moment is the triggering Action. The moments cards use: a creature would leave a square during a Move Action, or uses the Stand Action (Opportunity Attack); an enemy would enter a square adjacent to you or to an ally; an enemy moves closer to you (see [[Moving Closer]]); a creature would be moved by [[Forced Movement]], or would fall Prone; a creature makes a [Strike] Action, or would damage someone; a creature would use a [Power] Action; a creature scores a Tier 3 or a [[Critical]]; an ally or an enemy becomes Bloodied or Strained; a creature goes Down; a creature uses a Rally Point; a creature Charges, or enters a square from which it Flanks you. A card can name another moment, as long as the rules define when it happens: "ends a Move Action" is not one (an Advance can be split through the turn).
+An Interrupt or a Trigger names a **moment** the rules define, and the Action that holds the moment is the triggering Action. The moments cards use: a creature would leave a square during a Move Action, or uses the Stand Action; an enemy would enter a square adjacent to you or to an ally; an enemy moves closer to you (see [[Moving Closer]]); a creature would be moved by [[Forced Movement]], or would fall Prone; a creature makes a [Strike] Action, or would damage someone; a creature would use a [Power] Action; a creature scores a Tier 3 or a [[Critical]]; an ally or an enemy becomes Bloodied or Strained; a creature goes Down; a creature uses a Rally Point; a creature Charges, or enters a square from which it Flanks you. A card can name another moment, as long as the rules define when it happens: "ends a Move Action" is not one (an Advance can be split through the turn).
 
 While the name "triggering" is similar to "Trigger", it isn't only for Trigger Reactions: it also applies to Interrupt Reactions. The **triggering creature** is the creature who caused the Reaction to happen; the **triggering Action** is the Action that caused the Reaction to happen, and so on.
 
@@ -264,30 +264,38 @@ Each position in the turn order is an **initiative slot**. Effects end at the en
 
 ## Escalation
 
-**Escalation** is a character's adrenaline: a level from **1 to 3** that rises as a fight goes on. Each PC has their own. It is never spent: your class's Escalation abilities work while your Escalation is high enough.
+**Escalation** is a character's adrenaline: a level from **1 to 6** that rises as a fight goes on. Each PC has their own. It is never spent: your class's Escalation abilities work while your Escalation is high enough.
 
-- **Start:** you start every encounter at **Escalation 1** (2 with [[Momentum]]).
+- **Start:** you start every encounter at **Escalation 1 + your party's [[Momentum]]**.
 - **Rounds:** at the start of every round after the first, if you aren't Unconscious, your Escalation increases by 1. While Unconscious, you keep the Escalation you have.
 - **Critical:** once an encounter, when you score a [[Critical]] on one of your Actions, your Escalation increases by 1.
-- **Your class's hook:** each class names one more event that, once an encounter, increases your Escalation by 1 (the Paladin: an ally within 5 squares of you becomes Bloodied or goes Down; the Archer: your Marked Quarry goes Down).
-- **At most 3:** you can't have more than 3 Escalation, unless a feature says so. A Critical or a hook that happens while your Escalation is already 3 does nothing, and it isn't used up for the encounter.
+- **Your class's hook:** each class names one more event that, once an encounter, increases your Escalation by 1 (the Paladin: an ally within 5 squares of you becomes Bloodied or goes Down; the Archer: your Marked Quarry goes Down). You gain your class's hook at level 2.
+- **At most 6:** you can't have more than 6 Escalation, unless a feature says so. A Critical or a hook that happens while your Escalation is already 6 does nothing, and it isn't used up for the encounter.
 - **The end:** when the encounter ends, your Escalation goes back to 1, and the abilities that need it stop working.
 
 Your class has two kinds of Escalation abilities:
 
-- **Escalation Passives**, one for each Escalation level (1, 2 and 3): each works while your Escalation is at least its number ("while your Escalation is 2 or more").
-- **The Apex**: an Encounter Action whose card says **Escalation 3**. You can use it only while your Escalation is 3; it spends nothing.
+- **Escalation Passives**, at Escalation **2, 4 and 6**: each works while your Escalation is at least its number ("while your Escalation is 4 or more"). You gain them one level at a time (see [[Stages]]).
+- **The Apex**: an Encounter Action whose card says **Escalation 6**. You can use it only while your Escalation is 6; it spends nothing. It comes at level 4, the first level of Stage 1.
 
 An Action with an **Escalation** line on its card needs that much Escalation, the same way.
 
 > [!example]
-> Nari starts a fight at Escalation 1. Round 2 starts: he is at 2, and his Escalation 2 Passive starts working. In round 2 he scores a Critical: he is at 3 and can use his Apex. Round 3 starts: he stays at 3. When the fight ends, he is back at 1.
+> Nari's party has Momentum 1, so he starts a fight at Escalation 2: his Escalation 2 Passive works from his first turn. Round 2 starts: he is at 3. In round 2 he scores a Critical: he is at 4, and his Escalation 4 Passive starts working. Round 3 starts: 5. Round 4: 6, and he stays there. When the fight ends, he is back at 1.
 
 NPCs have no Escalation, except Elites (see the [[Bestiary]]).
 
 ### Momentum
 
-After an encounter harder than easy (more than CV 75 per PC, see the [[Bestiary]]), your party has **Momentum**: each of you starts the next encounter at Escalation 2 instead of 1. That encounter uses it up (it can give Momentum again), and so does a Rest before it. Momentum doesn't stack.
+**Momentum** is the edge your party builds over an expedition: a number from **0 to 4** that the whole party shares. Each of you starts an encounter at Escalation 1 + Momentum, so at 5 at most.
+
+- **Gaining:** +1 after each encounter the party overcomes: a fight, a negotiation, a sneak, a Challenge.
+- **Losing:** -1 each time a PC goes Down, and -1 at each [[Sleep]]. If the party retreats from an encounter, it loses all of it.
+- **A [[Rest]]** clears it: you leave a Rest with Momentum 0.
+- It is never under 0 or above 4.
+
+> [!example]
+> Jacob's party has Momentum 2 after two fights, so the third starts at Escalation 3. In it Jacob goes Down: Momentum 1. They win: Momentum 2 again. They sleep in the ruins: 1 in the morning.
 
 > [!tip]
 > The GM's valve: after a bad turn of the dice for the whole table, the GM can give every PC +1 Escalation. Nothing else raises it, and nothing spends it.

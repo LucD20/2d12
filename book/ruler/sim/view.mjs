@@ -13,7 +13,7 @@ const HERE = fileURLToPath(new URL("./", import.meta.url)), RULER = fileURLToPat
 const arg = (name, dflt) => { const i = process.argv.indexOf(name); return i > 0 ? process.argv[i + 1] : dflt; };
 const mean = a => a.reduce((s, x) => s + x, 0) / (a.length || 1);
 
-Object.assign(S.RULES, S.RULES_R);
+Object.assign(S.RULES, S.RULES_BOOK);
 const fights = S.parseFights(fs.readFileSync(RULER + "fights.txt", "utf8"));
 const only = process.argv[2] && !process.argv[2].startsWith("--") ? process.argv[2].toLowerCase() : null;
 const encs = fights.encounters.filter(e => !only || e.name.toLowerCase().startsWith(only));

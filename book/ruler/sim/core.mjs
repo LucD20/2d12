@@ -46,9 +46,25 @@ export const MAP = MP.MAP, MAPDIST = MP.dist, MAPCOND = MP.applyCondition, MAPFO
  * [Ranged] Action while Engaged; "doomed": the roll is Doomed), rangedOa (a [Ranged] Action while Engaged draws Opportunity Attacks), meleeGuard (Guard a melee PC
  * has until its next turn when it ends its turn Engaged).
  */
-export const RULES_PRE_R = { ap: 5, reactionAp: 0, escalation: "spent", npcAp: 5, minionAp: 3, npcReactionAp: 0, npcSpecials: 0, apGuard: 0, apGuardKeep: false, guardAt: "end", escHooks: false, oaDisrupt: true, oaAll: false, npcOa: true, oaPolicy: "first", reactFromStart: true, areasOnGrid: false, outAtOnce: false, escMax: TW.escalation.max, engagedRanged: "banes", rangedOa: false, meleeGuard: 0, startEsc: 0, bloodiedBanes: false, bestiary: "today", eliteEsc: false, elitePhases: false };
-export const RULES_R = { ap: TW.apPerTurn, reactionAp: TW.reactionAp, escalation: "level", npcAp: TW.npcRoles.standard.ap, minionAp: TW.npcRoles.minion.ap, npcReactionAp: TW.reactionAp, npcSpecials: 1, apGuard: "stage", apGuardKeep: true, guardAt: "next", escHooks: true, oaDisrupt: false, oaAll: true, npcOa: true, oaPolicy: "spare", reactFromStart: false, areasOnGrid: false, outAtOnce: true, escMax: TW.escalation.max, engagedRanged: "banes", rangedOa: false, meleeGuard: 0, startEsc: TW.escalation.min, bloodiedBanes: false, bestiary: "r", eliteEsc: true, elitePhases: true };
-export const RULES = { ...RULES_R };
+export const RULES_PRE_R = { ap: 5, reactionAp: 0, escalation: "spent", npcAp: 5, minionAp: 3, npcReactionAp: 0, npcSpecials: 0, apGuard: 0, apGuardKeep: false, guardAt: "end", escHooks: false, oaDisrupt: true, oaAll: false, npcOa: true, oaPolicy: "first", reactFromStart: true, areasOnGrid: false, outAtOnce: false, escMax: TW.escalation.max, engagedRanged: "banes", rangedOa: false, meleeGuard: 0, weapons: "r", momentum: "flag", startEsc: 0, bloodiedBanes: false, bestiary: "today", eliteEsc: false, elitePhases: false };
+export const RULES_R = { ap: TW.apPerTurn, reactionAp: TW.reactionAp, escalation: "level", npcAp: TW.npcRoles.standard.ap, minionAp: TW.npcRoles.minion.ap, npcReactionAp: TW.reactionAp, npcSpecials: 1, apGuard: "stage", apGuardKeep: true, guardAt: "next", escHooks: true, oaDisrupt: false, oaAll: true, npcOa: true, oaPolicy: "spare", reactFromStart: false, areasOnGrid: false, outAtOnce: true, escMax: TW.escalation.max, engagedRanged: "banes", rangedOa: false, meleeGuard: 0, weapons: "r", momentum: "flag", startEsc: TW.escalation.min, bloodiedBanes: false, bestiary: "r", eliteEsc: true, elitePhases: true };
+/**
+ * Stage 0 into the book (2026-11-12): **RULES_BOOK is the book today for the classes as their cards are written**: pack R's rules (RULES_R) with what
+ * changed for every creature: no basic Opportunity Attack (oaAll and npcOa off: it left the Basic Actions, for PCs and NPCs) and a [Ranged] Action while
+ * Engaged is Doomed (the system's roundrules.mjs: BASIC_OPPORTUNITY_ATTACK, ENGAGED_RANGED_DOOMED). The weapon table changed too: the class files'
+ * `weapon` lines. **RULES_S0 adds the 1-to-6 Escalation ladder and Momentum 0 to 4** (momentum "ladder": a day's fights start at Escalation
+ * 1 + Momentum, +1 per encounter overcome, -1 per PC that went Down; roundrules.mjs escalationStartAt, momentumAfter). It is not the default yet,
+ * because the class cards still write their Passives at Escalation 1 / 2 / 3 and the Apex at 3: sim/stage0.mjs sets it, with the Passives moved to
+ * 2 / 4 / 6 and the level lists of decisions-s1.md. When the class cards are on the new ladder (the card sessions), RULES becomes RULES_S0: one line.
+ * weapons "r": a class file's `weapon` line is read with the weapon table of before Stage 0 (WEAPONS_R below), so the studies pinned to RULES_R
+ * (maps.md, policies.md, areas.md, playtest-4-sim.md, reactions.md, rclasses.md, rbestiary.md) still come out as they were written.
+ * RULES_R stays as pack R's rules (the Opportunity Attack for every creature, 2 Banes): the studies of that time can still set it.
+ */
+/** The weapon table before Stage 0 (Chapter 15 until 2026-11-12), for the builds' weapons: read when RULES.weapons is "r". */
+export const WEAPONS_R = { Greatsword: "0 / 1d8 / 2d6", Crossbow: "0 / 1d4+2 / 1d10+2" };
+export const RULES_BOOK = { ...RULES_R, weapons: "book", oaAll: RR.BASIC_OPPORTUNITY_ATTACK, npcOa: RR.BASIC_OPPORTUNITY_ATTACK, engagedRanged: RR.ENGAGED_RANGED_DOOMED ? "doomed" : "banes" };
+export const RULES_S0 = { ...RULES_BOOK, escMax: RR.ESC_LADDER_MAX, momentum: "ladder" };
+export const RULES = { ...RULES_BOOK };
 /** Guard per unused AP for a PC of this level (apGuard "stage": the book's 2 / 3 / 4 by Stage; a number: that much). */
 export const guardPerAp = lv => (RULES.apGuard === "stage" ? GD.guardPerAP(CF.stageOf(lv)) : Number(RULES.apGuard) || 0);
 // Pack R-bestiary (2026-11-05): bestiary "today" reads the pre-R tables (bestiary-today.mjs: report.md stays), "r" the live tables of config.mjs (the ones
@@ -179,11 +195,26 @@ export function npcOf(role, rating = "medium", level = 1, opts = {}) {
     strikes: { minion: 1, grunt: 2, standard: 2, elite: 3 }[role] ?? 2, bodyPool: hp(body), mindPool: hp(mind),
     apMax: role === "minion" ? RULES.minionAp : RULES.npcAp, speed: opts.speed ?? 5, ranged: !!opts.ranged, power: !!opts.power };   // the map model: AP a turn (the Bestiary), Speed 5, a ranged Basic attack; power: Vs. WD, [R] (pack R-bestiary)
 }
+/** Which of the Bestiary's Actions a damage multiplier is (config.mjs npcSpecial: 1 basic, 1.4 s1, 2.2 s2, 3.5 s3). */
+export const specialKey = mult => TW.npcSpecial.reduce((b, x) => (Math.abs(x.x - mult) < Math.abs(b.x - mult) ? x : b)).key;
+/**
+ * A Stage 0 NPC (the Bestiary since 2026-11-12; the system's config.mjs npcStage0, or a `table` of the same shape: the fit tries several): its Vigor and
+ * its Resolve are each a ready number by rating (no Attributes, no multiplier), and its Basic attack and Specials are written damage ("2 + 1d4").
+ * Defenses, Modifiers, AP and the Specials it has are its role's, as at every Stage (npcOf).
+ */
+export function npcS0(role, rating = "medium", opts = {}, table = TW.npcStage0) {
+  const n = npcOf(role, rating, 1, opts), key = role in table ? role : "standard", t = table[key], col = k => Math.min(t.health.length - 1, TW.npcRatings[k]?.i ?? 2);
+  const hp = t.health[col(opts.hrating ?? rating)], dr = col(opts.drating ?? rating), dmg = {};
+  for (const k of ["basic", "s1", "s2", "s3"]) if (t[k]) dmg[k] = t[k][dr].map(parseDamage);
+  const avg = e => avgDamage(e, null, 2, 0);
+  return { ...n, stage: 0, pool: hp * 2, bodyPool: hp, mindPool: hp, dmg, t2: avg(dmg.basic[0]), t3: avg(dmg.basic[1]) };
+}
 /** An NPC's attack damage on a tier: the Builder's dice for the average, the Modifier added (Tier 1 deals nothing). */
 export const DICE = [[0, 0, 0], [1, 1, 1], [1, 2, 2], [1, 4, 2.5], [1, 6, 3.5], [1, 8, 4.5], [1, 10, 5.5], [1, 12, 6.5], [2, 6, 7], [2, 8, 9], [2, 10, 11], [2, 12, 13], [3, 8, 13.5], [3, 10, 16.5], [3, 12, 19.5], [4, 10, 22], [4, 12, 26]];
 export const diceFor = avg => DICE.reduce((b, d) => (Math.abs(d[2] - avg) < Math.abs(b[2] - avg) ? d : b));
 export function npcDamage(R, npc, tier) {
   if (tier < 2) return 0;
+  if (npc.dmg) { const e = npc.dmg[specialKey(npc.curMult ?? 1)] ?? npc.dmg.basic; return rollDamage(R, e[tier - 2]).total; }   // Stage 0: the table's own damage (a flat part plus one small die), Specials included
   const avg = tier === 2 ? npc.t2 : npc.t3, d = diceFor(avg - npc.mod);
   let t = npc.mod;
   if (d[1] <= 2 && d[0] === 1) t += d[1]; else for (let k = 0; k < d[0]; k++) t += die(R, d[1]);

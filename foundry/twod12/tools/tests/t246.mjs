@@ -28,6 +28,15 @@ console.log("Cover on a Save: Low / Medium / High:", [1, 2, 3].map(l => { const 
 console.log("Prone: melee", j(R.proneMods(false)), "| ranged", j(R.proneMods(true)), "| shooting while Engaged:", R.ENGAGED_RANGED_BANES, "| into a melee:", R.INTO_MELEE_FIELD_BANES);
 console.log("Range 10 / 20 / 40 at 10, 11, 20, 21, 40, 41:", [10, 11, 20, 21, 40, 41].map(d => R.rangeBanes([10, 20, 40], d)).join(" "), "| Long Draw:", [11, 21].map(d => R.rangeBanes([10, 20, 40], d, { longDraw: true })).join(" "), "| melee 1 at 1, 2:", R.rangeBanes([1], 1), R.rangeBanes([1], 2));
 
+console.log("--- Stage 0 in the book (2026-11-12): the 1-to-6 ladder, Momentum 0 to 4, the Doomed shot, no basic Opportunity Attack; not wired into the system yet");
+console.log("the ladder's top:", R.ESC_LADDER_MAX, "| Momentum's:", R.MOMENTUM_MAX, "| start at Momentum 0 to 4 (and 9):", [0, 1, 2, 3, 4, 9].map(R.escalationStartAt).join(" "));
+console.log("Nari (Momentum 1): start", R.escalationStartAt(1), "| round 2:", R.escalationRaisedTo(2), "| a Critical:", R.escalationRaisedTo(3), "| rounds 3, 4, 5:", [4, 5, 6].map(e => R.escalationRaisedTo(e)).join(" "));
+console.log("Jacob's party: 2, a PC Down and the fight won:", R.momentumAfter(2, { overcome: 1, downs: 1 }), "| then a Sleep:", R.momentumAfter(2, { sleeps: 1 }), "| a retreat:", R.momentumAfter(3, { retreat: true }), "| a Rest:", R.momentumAfter(4, { rest: true }), "| never above 4 or under 0:", R.momentumAfter(4, { overcome: 1 }), R.momentumAfter(0, { downs: 2 }));
+console.log("a [Ranged] Action while Engaged is Doomed:", R.ENGAGED_RANGED_DOOMED, "| every creature has an Opportunity Attack:", R.BASIC_OPPORTUNITY_ATTACK);
+{ const S0 = (await import(ROOTURL + "module/config.mjs")).TWOD12.npcStage0, expr = /^(\d+|(\d+ \+ )?1d(4|6|8))$/;
+  console.log("the Bestiary's Stage 0 table: roles", Object.keys(S0).join(" "), "| a Standard's Vigor or Resolve by rating:", S0.standard.health.join(" / "), "| its Medium Basic attack:", S0.standard.basic[2].join(" / "));
+  console.log("every damage is a flat part plus at most one small die:", Object.values(S0).every(r => ["basic", "s1", "s2", "s3"].every(k => !r[k] || r[k].every(c => c.length === 2 && c.every(x => expr.test(x))))), "| Health rises with the rating:", Object.values(S0).every(r => r.health.every((h, i) => !i || h > r.health[i - 1])), "| a Minion has no 3 AP Special and no Extreme:", !S0.minion.s3 && S0.minion.health.length === 4); }
+
 console.log("--- one copy of each rule");
 const C = await import(ROOTURL + "module/config.mjs");
 console.log("the numbers are config.mjs's:", R.AP_PER_TURN === C.TWOD12.apPerTurn && R.REACTION_AP === C.TWOD12.reactionAp && R.ESC_MAX === C.TWOD12.escalation.max);

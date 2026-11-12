@@ -254,7 +254,7 @@ By itself, being Engaged does nothing. Other rules use the word, such as [[Range
 
 ### Ranged Combat While Engaged
 
-Using a [Ranged] Action while you are [[Engaged]] is hard: you suffer **2 Banes**.
+Using a [Ranged] Action while you are [[Engaged]] is very hard: the roll is **[[Favored and Doomed Rolls|Doomed]]**.
 
 When you use a [Ranged] Action against a creature that is Engaged with a creature other than yourself, you suffer **1 Field Bane**.
 
