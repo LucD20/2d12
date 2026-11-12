@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: eee64c5 2026-11-12 Brainstorm logged: the Bestiary's damage as a turn budget (Lucas's model), nothing applied
+Built by tools/knowledge.py on 2026-11-12 from the repository at: cf75ad3 2026-11-12 Brainstorm logged: placement guidance, an enemy's Reaction in the budget, 4 AP without the Reaction AP measured; nothing applied
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -16,7 +16,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 Files:
 - HANDOFF.md (131 KB)
 - MASTER-PLAN.md (35 KB)
-- open-design-items.md (129 KB)
+- open-design-items.md (131 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (29 KB)
 - rules-03-movement.md (39 KB)
