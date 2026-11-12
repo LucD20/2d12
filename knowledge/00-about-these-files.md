@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: eaf7321 2026-11-12 Style mockups 1 to 4: the shared colors and type, the Action card with the sheet's type, the chat cards and system messages dark, the pick bar and Turn dock; Tier 2 more yellow
+Built by tools/knowledge.py on 2026-11-12 from the repository at: 4a5d347 2026-11-12 Style mockups, second review: chat card colors and contrast fixed, system messages in the chat card's look, the light stamp; the rule 'a style change only'
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -30,7 +30,7 @@ Files:
 - rules-13-archer.md (3 KB)
 - rules-14-bestiary.md (25 KB)
 - rules-15-gear.md (11 KB)
-- design-style-audit.md (9 KB)
+- design-style-audit.md (10 KB)
 - design-npc-hud-brief.md (24 KB)
 - design-sim-brief.md (22 KB)
 - design-stage0.md (12 KB)

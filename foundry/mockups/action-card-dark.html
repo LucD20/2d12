@@ -174,9 +174,14 @@
 .twod12-type .twod12.chat.action.sysmsg { background: #f4ede0; border: 1px solid #bfae8c; border-radius: 5px; padding: 7px 8px 6px; color: #2a241d; font-family: "Signika", sans-serif; }
 .twod12-type .twod12.chat.action.sysmsg > * { margin-left: 0; margin-right: 0; }
 .twod12-type .twod12.chat.action.sysmsg > .ahead { background: none !important; color: inherit !important; border: 0 !important; border-bottom: 1px solid #cdb88a !important; padding: 0 0 4px; margin: 0 0 5px; align-items: center; }
-.twod12-type .twod12.chat.action.sysmsg > .ahead .apmark { background: #5f5e5a; color: #fff; border-radius: 3px; font: 700 10.5px/1 "Signika", sans-serif; padding: 2px 6px; margin: 0; }
+.twod12-type .twod12.chat.action.sysmsg > .ahead .apmark { background: #3b4cb8; color: #fff; border-radius: 3px; font: 700 10.5px/1 "Signika", sans-serif; padding: 2px 6px; margin: 0; }
 .twod12-type .twod12.chat.action.sysmsg .sm-lead { font-size: 14px; }
 .twod12-type .twod12.chat.sysline { background: #f4ede0; border: 1px solid #bfae8c; border-radius: 5px; color: #2a241d; font-family: "Signika", sans-serif; }
+/* AP is the AP blue wherever it is written (it was plain inside a system card's text); a Guard line's shield is the Guard blue (the Turn dock's) */
+.twod12-type .twod12.chat .kw-ap { color: #3b4cb8 !important; font-weight: 700; }
+.twod12-type .twod12.chat.sysline > i:has(svg), .twod12-type .twod12.chat.sysline > i { color: #6b5a3a; }
+.twod12-type .twod12.chat.sysline > i[data-ic^="shield"] { color: #2f6fb3; }
+.twod12-type .twod12.chat .kw-guard { color: #2f6fb3; font-weight: 700; }
 /* Tier 2, more yellow (Lucas): still a green, toward yellow. The light theme's values; the dark set has its own. */
 .twod12-type .twod12.acard.d2 table.ap-tt tr.t2 { --c: #5d6e10; --bg: #f3f5d8; --n: #a4b53c; }
 .twod12-type .twod12.chat.cc { --cc-t2: #d3df8e; --cc-t2i: #36420a; }
@@ -440,7 +445,12 @@
 .twod12-dark .twod12.chat.action, .twod12-dark .twod12.chat.sysline, .twod12-dark .twod12.chat.action.sysmsg { background: #1f1c18; border-color: #7a683f; color: #ece3cf; }
 .twod12-dark .twod12.chat.action > .ahead { background: #332c22 !important; color: #ece3cf; border-bottom: 1px solid #7a683f; }
 .twod12-dark .twod12.chat.action.sysmsg > .ahead { background: none !important; border-bottom: 1px solid #4a4132 !important; }
-.twod12-dark .twod12.chat.sysline i { color: #d4a548; }
+.twod12-dark .twod12.chat.sysline > i { color: #d4a548; }
+.twod12-dark .twod12.chat.sysline > i[data-ic^="shield"], .twod12-dark .twod12.chat .kw-guard { color: #7fb4ee; }
+/* the ladder: every segment's range can be read when it is not the lit one */
+.twod12-dark .twod12.chat.cc .cc-seg.s1 { background: rgba(143, 42, 34, .38); color: #f3a79e; } .twod12-dark .twod12.chat.cc .cc-seg.s1.lit { background: #8f2a22; color: #fff; }
+.twod12-dark .twod12.chat.cc .cc-seg.s2 { background: rgba(111, 127, 23, .32); color: #cbd86e; } .twod12-dark .twod12.chat.cc .cc-seg.s2.lit { background: #5f6d14; color: #fff; }
+.twod12-dark .twod12.chat.cc .cc-seg.s3 { background: rgba(47, 107, 58, .38); color: #8fd69b; } .twod12-dark .twod12.chat.cc .cc-seg.s3.lit { background: #2f6b3a; color: #fff; }
 .twod12-dark .twod12.chat .kw-ap { color: #9aa7ff !important; } .twod12-dark .twod12.chat .kw-bane { color: #f3a79e; } .twod12-dark .twod12.chat .kw-boon { color: #8db8f0; }
 /* ---- by hand: the Turn dock (a band for its head, the page for its body) */
 .twod12-dark .twod12-dock, .twod12-dark .twod12.chat.turnend { background: #1f1c18; color: #ece3cf; border-color: #7a683f; border-radius: 2px; }

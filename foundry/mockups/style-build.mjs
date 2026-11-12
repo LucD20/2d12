@@ -17,7 +17,7 @@ import { SIGNIKA } from "./npc-hud-signika.mjs";
 const here = f => fileURLToPath(new URL(f, import.meta.url));
 const b64 = f => readFileSync(here(f)).toString("base64");
 const ic = n => { const [vb, d] = ICONS[n]; return `<svg class="ic" viewBox="${vb}" aria-hidden="true"><path d="${d}"/></svg>`; };
-const FA = html => html.replace(/<i class="fa-solid fa-([a-z0-9-]+)([^"]*)"([^>]*)><\/i>/g, (m, n, rest, attrs) => (ICONS[n] ? `<i class="${rest.trim()}"${attrs}>${ic(n)}</i>` : m));
+const FA = html => html.replace(/<i class="fa-solid fa-([a-z0-9-]+)([^"]*)"([^>]*)><\/i>/g, (m, n, rest, attrs) => (ICONS[n] ? `<i class="${rest.trim()}" data-ic="${n}"${attrs}>${ic(n)}</i>` : m));
 
 /* ------------------------------------------------------------------ 1. the shared colors */
 // Dark is the default. One name for one job: the page, a shaded row, a band (a heading or a table's head), a rule (a strong line), a
@@ -128,9 +128,14 @@ const TYPE = `
 .twod12-type .twod12.chat.action.sysmsg { background: ${LIGHT.pg}; border: 1px solid #bfae8c; border-radius: 5px; padding: 7px 8px 6px; color: ${LIGHT.ink}; font-family: "Signika", sans-serif; }
 .twod12-type .twod12.chat.action.sysmsg > * { margin-left: 0; margin-right: 0; }
 .twod12-type .twod12.chat.action.sysmsg > .ahead { background: none !important; color: inherit !important; border: 0 !important; border-bottom: 1px solid ${LIGHT.hair} !important; padding: 0 0 4px; margin: 0 0 5px; align-items: center; }
-.twod12-type .twod12.chat.action.sysmsg > .ahead .apmark { background: #5f5e5a; color: #fff; border-radius: 3px; font: 700 10.5px/1 "Signika", sans-serif; padding: 2px 6px; margin: 0; }
+.twod12-type .twod12.chat.action.sysmsg > .ahead .apmark { background: #3b4cb8; color: #fff; border-radius: 3px; font: 700 10.5px/1 "Signika", sans-serif; padding: 2px 6px; margin: 0; }
 .twod12-type .twod12.chat.action.sysmsg .sm-lead { font-size: 14px; }
 .twod12-type .twod12.chat.sysline { background: ${LIGHT.pg}; border: 1px solid #bfae8c; border-radius: 5px; color: ${LIGHT.ink}; font-family: "Signika", sans-serif; }
+/* AP is the AP blue wherever it is written (it was plain inside a system card's text); a Guard line's shield is the Guard blue (the Turn dock's) */
+.twod12-type .twod12.chat .kw-ap { color: #3b4cb8 !important; font-weight: 700; }
+.twod12-type .twod12.chat.sysline > i:has(svg), .twod12-type .twod12.chat.sysline > i { color: #6b5a3a; }
+.twod12-type .twod12.chat.sysline > i[data-ic^="shield"] { color: #2f6fb3; }
+.twod12-type .twod12.chat .kw-guard { color: #2f6fb3; font-weight: 700; }
 /* Tier 2, more yellow (Lucas): still a green, toward yellow. The light theme's values; the dark set has its own. */
 .twod12-type .twod12.acard.d2 table.ap-tt tr.t2 { --c: ${LIGHT.t2}; --bg: ${LIGHT.t2bg}; --n: ${LIGHT.t2n}; }
 .twod12-type .twod12.chat.cc { --cc-t2: #d3df8e; --cc-t2i: #36420a; }
@@ -186,7 +191,12 @@ const BY_HAND = `
 .twod12-dark .twod12.chat.action, .twod12-dark .twod12.chat.sysline, .twod12-dark .twod12.chat.action.sysmsg { background: ${T.pg}; border-color: ${T.rule}; color: ${T.ink}; }
 .twod12-dark .twod12.chat.action > .ahead { background: ${T.band} !important; color: ${T.ink}; border-bottom: 1px solid ${T.rule}; }
 .twod12-dark .twod12.chat.action.sysmsg > .ahead { background: none !important; border-bottom: 1px solid ${T.hair} !important; }
-.twod12-dark .twod12.chat.sysline i { color: ${T.gold}; }
+.twod12-dark .twod12.chat.sysline > i { color: ${T.gold}; }
+.twod12-dark .twod12.chat.sysline > i[data-ic^="shield"], .twod12-dark .twod12.chat .kw-guard { color: #7fb4ee; }
+/* the ladder: every segment's range can be read when it is not the lit one */
+.twod12-dark .twod12.chat.cc .cc-seg.s1 { background: rgba(143, 42, 34, .38); color: #f3a79e; } .twod12-dark .twod12.chat.cc .cc-seg.s1.lit { background: #8f2a22; color: #fff; }
+.twod12-dark .twod12.chat.cc .cc-seg.s2 { background: rgba(111, 127, 23, .32); color: #cbd86e; } .twod12-dark .twod12.chat.cc .cc-seg.s2.lit { background: #5f6d14; color: #fff; }
+.twod12-dark .twod12.chat.cc .cc-seg.s3 { background: rgba(47, 107, 58, .38); color: #8fd69b; } .twod12-dark .twod12.chat.cc .cc-seg.s3.lit { background: #2f6b3a; color: #fff; }
 .twod12-dark .twod12.chat .kw-ap { color: #9aa7ff !important; } .twod12-dark .twod12.chat .kw-bane { color: ${T.bane}; } .twod12-dark .twod12.chat .kw-boon { color: ${T.boon}; }
 /* ---- by hand: the Turn dock (a band for its head, the page for its body) */
 .twod12-dark .twod12-dock, .twod12-dark .twod12.chat.turnend { background: ${T.pg}; color: ${T.ink}; border-color: ${T.rule}; border-radius: 2px; }
@@ -377,7 +387,13 @@ const dm = { kind: "dmg", name: "Smite", nl: false, groups: [{ tier: 2, comps: [
   rows: [{ name: "Orc Warrior", mods: [], choice: "", applied: null }] };
 const cDmg = wrap(CC.damageCardHtml(dm, CC.viewOf({ gm: true })));
 const sSwap = FA(SM.swapCardHtml("Aveline", "Orc Warrior", 4, 2, 1)), sThaw = FA(SM.thawLineHtml("Orc Warrior", 2));
-const sCard = FA(SM.sysCard({ title: "Guard", ap: 2, lead: "<b>Durgan</b> gains Guard 5.", text: "It takes damage before his Health, and ends with the encounter." }));
+// The Guard lines as the system writes them (inline.mjs postFollow, damage.mjs): sysLines with a shield icon.
+const sGuard = FA(SM.sysLine("fa-shield-heart", "<b>Durgan</b> gains <b>Guard 5</b> <small>(1d8 + 2 = 5)</small>."));
+const sGuardHit = FA(SM.sysLine("fa-shield-halved", "<b>Durgan</b>'s Guard takes <b>4</b> damage (Guard 1 left)."));
+// the same two with the word Guard marked (a proposal: today the system doesn't mark it)
+const G = t => `<span class="kw-guard">${t}</span>`;
+const sGuardK = FA(SM.sysLine("fa-shield-heart", `<b>Durgan</b> gains <b>${G("Guard 5")}</b> <small>(1d8 + 2 = 5)</small>.`));
+const sGuardHitK = FA(SM.sysLine("fa-shield-halved", `<b>Durgan</b>'s ${G("Guard")} takes <b>4</b> damage (${G("Guard 1")} left).`));
 const side = (html, why) => `<div class="cols">${col("Dark", PICK, why ?? "", html, "side dk twod12-dark twod12-type", "330px")}${col("Light", PICK, "", html, "side twod12-type", "330px")}${col("Today", TODAY, "", html, "side", "330px")}</div>`;
 page("chat-cards-dark.html", "Style 3: the chat cards and the system messages", `The cards in the chat, at the sidebar's width, <b>drawn by the system's own functions</b> (<code>chatcards.mjs</code>, <code>sysmsg.mjs</code>), so they are the real cards. Dark: the same page as the sheet and the Action card; "Damage" is the stamp; Tier 2 is yellowish. Light: today's parchment with the sheet's type (Signika for the names and the big Tier number) and the yellowish Tier 2. <b>A style change only: no element is added, moved or removed on any card.</b> The dark set is generated from ${R.chat.length} rules.`, `
 <h2>The attack roll: Tier 1, Tier 2, a Critical</h2>
@@ -385,7 +401,10 @@ ${side(cT1 + cT2 + cCrit, "The ladder keeps its three colors, darkened; the Tier
 <h2>A Save, and the damage message</h2>
 ${side(cSave + cDmg)}
 <h2>The system messages (sysCard, sysLine): redone in the chat card's look, on both themes</h2>
-${side(sCard + sSwap + sThaw, "The same card as an attack roll: no navy bar, no orange line, no Cinzel. The title is a bold line over a hairline; the AP is the chat card's pill.")}
+${side(sSwap + sThaw + sGuard + sGuardHit, "The same card as an attack roll: no navy bar, no orange line, no Cinzel. The title is a bold line over a hairline. The AP mark and every \"AP\" in the text are the system's AP blue. A Guard line's shield is the Guard blue the Turn dock already uses.")}
+<h2>A proposal: the word Guard in its color</h2>
+<p class="why">Guard is <b>not colored in the book</b> today, and not in the chat; only the Turn dock writes it in blue. Coloring the shield (above) is style only. <b>Coloring the word is one step more:</b> the system's text highlighter (the one that colors Boon, Bane and AP) would learn "Guard", and the book could take the same color. Your call; nothing else about the line changes.</p>
+${side(sGuardK + sGuardHitK)}
 <h2>Notes</h2>
 <ul class="notes">
 <li><b>The older chat messages are not here yet</b> (the Reactions card, the initiative card, the old damage card, the ticker, the Save prompt): about 300 rules in five or six looks. They need to be brought to the chat card's look first, then get the dark set: the next mockup of this step.</li>
