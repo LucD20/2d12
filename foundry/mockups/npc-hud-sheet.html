@@ -528,14 +528,108 @@ img[class*="art-"] { background: #3a4a62; }
 .hn-line.nosv .sv, .hn-line.nosv .g-saves .hud-gl { display: none; }
 .hn-line.nosv .sv-all { display: inline-flex; }
 .hn-more { margin-left: auto; }
+
+/* ============================================================================================================================================
+   THE TABLE LOOK (Lucas, 2026-11-12): the chat card (.twod12.chat.cc in system.css) is the base of the system's design from here on:
+   parchment #f4ede0, a thin tan line, ink text, Cinzel titles, gold stars and diamonds, the dark brown primary button, outlined secondary
+   buttons, small square frequency pills. The HUD and the one-page sheet are redrawn with its tokens. Group names are all one color (the
+   frequency colors stay only on a row's left edge and on the frequency pill, as on the card).
+   ============================================================================================================================================ */
+:root { --cc-bg: #f4ede0; --cc-line: #bfae8c; --cc-ink: #2a241d; --cc-mute: #5d5446; --cc-panel: #e8dec8; --cc-gold: #b07a12; --cc-gline: #cdb88a; --cc-btn: #3b3128; --cc-btn2: #8c7d63; --cc-field: #fbf7ee;
+  --cc-vig: #9b2c2c; --cc-res: #2c4a9b; --hc-body: #7a1626; --hc-mind: #17327a; --hc-instinct: #14532d; --hc-appeal: #6b4e00; }
+/* the Version button: the card's primary button */
+.vb { background: var(--cc-btn); color: var(--cc-bg); box-shadow: none; border-radius: 4px; font-weight: 600; }
+.vb:hover { background: #2a231c; }
+.vb.no { background: transparent; color: var(--cc-btn2); border: 1px dashed var(--cc-btn2); }
+.vb.used { background: transparent; color: var(--cc-btn2); border: 1px solid var(--cc-gline); }
+.hn-line.l2 .vb { box-shadow: none; }
+/* ---- the HUD */
+.hud, .hud-pop, .players { background: var(--cc-bg); border: 1px solid var(--cc-line); border-radius: 5px; color: var(--cc-ink); box-shadow: 0 3px 12px rgba(0, 0, 0, .55); }
+.hud-pop::after { background: var(--cc-bg); border-color: var(--cc-line); }
+.hud-id, .hud-hot { border-color: var(--cc-gline); }
+.hud-id img { border: 2px solid var(--cc-btn2); background: var(--cc-panel); }
+.hud-id .nm { color: var(--cc-ink); font-size: 15px; }
+.hud-id .sb { color: var(--cc-mute); }
+.hud-gl, .hud-quick .hud-gl, .pop-h { --gl: var(--cc-mute); color: var(--cc-mute); }
+.hud-quick .hud-gl .ic { color: var(--cc-gold); }
+.hud-gl .pips i, .pips i { border-color: var(--cc-gold); } .hud-gl .pips i.on, .pips i.on { background: var(--cc-gold); }
+.pop-h { border-bottom: 1px solid var(--cc-gline); }
+.ha, .pr { background: var(--cc-field); border: 1px solid var(--cc-gline); border-left: 3px solid var(--fq); border-radius: 4px; }
+.ha b, .pr b { color: var(--cc-ink); }
+.pr small, .ha .lk { color: var(--cc-mute); }
+.pr .go { color: var(--cc-gold); }
+.sv { background: transparent; border: 1px solid var(--cc-btn2); border-bottom: 2px solid var(--c); border-radius: 4px; color: var(--cc-ink); }
+.sv b { color: var(--cc-ink); }
+.cat { background: transparent; color: var(--cc-ink); border: 1px solid var(--cc-btn2); border-radius: 4px; }
+.cat:hover { background: var(--cc-panel); }
+.cat.on { background: var(--cc-btn); border-color: var(--cc-btn); color: var(--cc-bg); font-weight: 600; }
+.cat.later { border: 1px dashed var(--cc-btn2); color: var(--cc-mute); } .cat.later .ct { color: var(--cc-mute); }
+.hn-more { border: 1px dashed var(--cc-btn2); color: var(--cc-ink); }
+.hud-hint, .hud-empty { color: var(--cc-mute); }
+.hot-grid i { background: var(--cc-panel); border: 1px solid var(--cc-gline); color: var(--cc-mute); }
+.hot-grid i.f { background: var(--cc-btn); border-color: var(--cc-btn); color: var(--cc-bg); }
+.hot-grid i::after { color: var(--cc-btn2); } .hot-grid i.f::after { color: var(--cc-gline); }
+.hot-pg { color: var(--cc-mute); }
+.hud-list .lbl, .tk small { color: var(--cc-mute); }
+.tk { background: var(--cc-field); border: 1px solid var(--cc-btn2); }
+.tk.hov { background: var(--cc-btn); border-color: var(--cc-btn); color: var(--cc-bg); } .tk.hov small { color: var(--cc-gline); }
+.players { border-radius: 4px; } .players ul { border-color: var(--cc-gline); } .players li small { color: var(--cc-mute); }
+/* the HUD asking (5c): the pick bar's content with the card's buttons */
+.hud.asking { box-shadow: 0 0 0 2px var(--cc-gold), 0 3px 14px rgba(0, 0, 0, .55); }
+.hud .hud-ask { color: var(--cc-ink); }
+.hud .hud-ask .lb-ic .ic { color: var(--cc-gold); }
+.hud .hud-ask .lb-opt { background: transparent; color: var(--cc-ink); border: 1px solid var(--cc-btn2); border-radius: 4px; font-weight: 600; }
+.hud .hud-ask .lb-opt.you { background: transparent; border-color: #2b5a2f; color: #234d27; }
+.hud .hud-ask .lb-opt.hover { background: var(--cc-btn); border-color: var(--cc-btn); color: var(--cc-bg); }
+.hud .hud-ask .lb-give { background: transparent; color: #8a1c13; border: 1px solid #a8261c; border-radius: 4px; }
+/* ---- the one-page sheet */
+.win { background: var(--cc-bg); }
+.ops-hb { background: var(--cc-bg); color: var(--cc-ink); padding-bottom: 6px; }
+.ops-hb .nm { font: 700 21px "Cinzel", serif; letter-spacing: .01em; }
+.ops-hb .who { color: var(--cc-mute); } .ops-hb .who b { color: var(--cc-ink); }
+.ops-hb .rank { background: var(--cc-btn); color: var(--cc-bg); border-radius: 3px; }
+.ops-hb .tools a { color: var(--cc-mute); border: 1px solid var(--cc-btn2); border-radius: 4px; margin-left: 3px; }
+.ops-tabs { background: var(--cc-bg); border-bottom: 1px solid var(--cc-line); padding: 0 10px; }
+.ops-tabs a { color: var(--cc-mute); font-family: "Cinzel", serif; letter-spacing: .05em; }
+.ops-tabs a.on { color: var(--cc-ink); box-shadow: inset 0 -2px 0 var(--cc-gold); }
+.ops-stats { background: var(--cc-panel); color: var(--cc-ink); border-bottom: 1px solid var(--cc-line); }
+.ops-hp .hph, .gauge, .ops-rw { color: var(--cc-mute); }
+.ops-hp .hph b, .gauge .gh b, .ops-rw b { color: var(--cc-ink); }
+.gauge .gh b.neg { color: #a8261c; }
+.track { background: #d3c6a8; }
+.ops-hp .hpbar i { background: #3f6e31; }
+.gauge.v .track i { background: var(--cc-vig); } .gauge.r .track i { background: var(--cc-res); }
+.ops-hp .state { background: #f2cdc7; color: #8a1c13; border-radius: 3px; } .ops-hp .state.s { background: #d6def2; color: #1d3f6b; }
+.tile { background: var(--cc-bg); border: 1px solid var(--cc-line); border-radius: 4px; }
+.tile span { color: var(--cc-mute); } .tile b { font-family: "Cinzel", serif; font-weight: 700; }
+.ops-rw { border-top: 1px solid var(--cc-gline); }
+.ops-body { background: var(--cc-bg); }
+/* the group names: the card's divider (a gold diamond, small capitals, a gold line), all the same */
+.band, .band.react { background: none; color: var(--cc-ink); height: auto; padding: 4px 0 0; border-radius: 0; font: 700 12px "Cinzel", serif; letter-spacing: .08em; }
+.band::before { content: "\25C6"; color: var(--cc-gold); font-size: 8px; }
+.band::after { content: ""; flex: 1; height: 1px; background: var(--cc-gline); order: 2; }
+.band .r { order: 3; margin-left: 0; font-family: "Signika", sans-serif; color: var(--cc-mute); }
+.band .pips i { border-color: var(--cc-gold); } .band .pips i.on { background: var(--cc-gold); }
+.oa, .ol { background: var(--cc-field); border: 1px solid var(--cc-gline); border-left: 4px solid var(--fq); }
+.oa-h .n { font-size: 14.5px; }
+.oa-h .tr, .oa-tools { color: var(--cc-mute); }
+.oa-h .fq { border-radius: 3px; font-size: 10.5px; padding: 1px 6px; }
+.oa-meta { color: var(--cc-ink); } .oa-meta b { color: var(--cc-ink); } .oa-meta .sep { color: var(--cc-gold); }
+.oa-t, .oa-fx { border-top: 1px solid var(--cc-gline); }
+.oa-t > div + div { border-left: 1px dotted var(--cc-gline); }
+.pool.v { background: var(--cc-vig); } .pool.r { background: var(--cc-res); }
+.passive { background: var(--cc-panel); border: 1px solid var(--cc-gline); }
+.passive .num { background: var(--cc-btn); color: var(--cc-bg); }
+.ops-attrs { border-top: 1px solid var(--cc-line); }
+.attr { background: var(--cc-field); border: 1px solid var(--cc-gline); border-top: 3px solid var(--c); border-radius: 4px; }
+.attr b { font-family: "Cinzel", serif; font-weight: 700; }
 </style>
-<style>:root { --hc-body: #ef8a96; --hc-mind: #8db3ff; --hc-instinct: #7fd49a; --hc-appeal: #e6bd5a; }</style>
 </head>
 <body class="mock">
 <h1>NPC-HUD mockups 1: the one-page NPC sheet</h1>
 <div class="nav"><a href="npc-hud-sheet.html" class="here">1. The one-page NPC sheet</a><a href="npc-hud-hud.html">2 to 4. The HUD</a><a href="npc-hud-screen.html">5. The bottom of the screen</a></div>
 
-<p class="lead">A second NPC sheet for experienced GMs (the current sheet stays). The Main tab is the whole stat block; Build, Effects and Notes are the other tabs. The numbers are the Bestiary's Stage 0 examples; the Health is pack HP's model (one HP bar, the Vigor and Resolve gauges, which can go below 0). <b>Lucas picked (a) full text (2026-11-12).</b> Both use the same header, stat block, bands and Version buttons: a click on the amber button opens the roll dialog, a right-click on a row opens the Action card.</p>
+<p class="lead">A second NPC sheet for experienced GMs (the current sheet stays). The Main tab is the whole stat block; Build, Effects and Notes are the other tabs. The numbers are the Bestiary's Stage 0 examples; the Health is pack HP's model (one HP bar, the Vigor and Resolve gauges, which can go below 0). <b>Lucas picked (a) full text (2026-11-12).</b> <b>Redrawn in the chat card's look</b> (parchment, Cinzel, gold dividers for the group names, all the same color). A click on the dark Version button opens the roll dialog, a right-click on a row opens the Action card.</p>
 <h2>Orc Warrior (Standard), mid-fight: 14 Vigor lost</h2>
 <div class="cols">
   <div class="col" id="orc-a"><h3>(a) Full text, with the Tier table <span class="tag pick">Picked by Lucas</span></h3><p class="why">Everything is read on the sheet: traits, Target, Distance, Vs., the three Tiers side by side (a one-Version Action's Tier table, turned on its side).</p><div class="win"><div class="win-head"><svg class="ic" viewBox="0 0 448 512" aria-hidden="true"><path d="M224 248a120 120 0 1 0 0-240 120 120 0 1 0 0 240zm-29.7 56C95.8 304 16 383.8 16 482.3 16 498.7 29.3 512 45.7 512l356.6 0c16.4 0 29.7-13.3 29.7-29.7 0-98.5-79.8-178.3-178.3-178.3l-59.4 0z"/></svg> Orc Warrior<span class="sp"><svg class="ic" viewBox="0 0 512 512" aria-hidden="true"><path d="M195.1 9.5C198.1-5.3 211.2-16 226.4-16l59.8 0c15.2 0 28.3 10.7 31.3 25.5L332 79.5c14.1 6 27.3 13.7 39.3 22.8l67.8-22.5c14.4-4.8 30.2 1.2 37.8 14.4l29.9 51.8c7.6 13.2 4.9 29.8-6.5 39.9L447 233.3c.9 7.4 1.3 15 1.3 22.7s-.5 15.3-1.3 22.7l53.4 47.5c11.4 10.1 14 26.8 6.5 39.9l-29.9 51.8c-7.6 13.1-23.4 19.2-37.8 14.4l-67.8-22.5c-12.1 9.1-25.3 16.7-39.3 22.8l-14.4 69.9c-3.1 14.9-16.2 25.5-31.3 25.5l-59.8 0c-15.2 0-28.3-10.7-31.3-25.5l-14.4-69.9c-14.1-6-27.2-13.7-39.3-22.8L73.5 432.3c-14.4 4.8-30.2-1.2-37.8-14.4L5.8 366.1c-7.6-13.2-4.9-29.8 6.5-39.9l53.4-47.5c-.9-7.4-1.3-15-1.3-22.7s.5-15.3 1.3-22.7L12.3 185.8c-11.4-10.1-14-26.8-6.5-39.9L35.7 94.1c7.6-13.2 23.4-19.2 37.8-14.4l67.8 22.5c12.1-9.1 25.3-16.7 39.3-22.8L195.1 9.5zM256.3 336a80 80 0 1 0 -.6-160 80 80 0 1 0 .6 160z"/></svg> Sheet <svg class="ic" viewBox="0 0 384 512" aria-hidden="true"><path d="M55.1 73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L147.2 256 9.9 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192.5 301.3 329.9 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.8 256 375.1 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192.5 210.7 55.1 73.4z"/></svg></span></div>

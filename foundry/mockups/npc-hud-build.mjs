@@ -259,7 +259,6 @@ const page = (file, title, body) => writeFileSync(here(`./${file}`), inlineArt(`
 <style>${SYSTEM_CSS}</style>
 <style>${ART_CSS}</style>
 <style>${MOCK_CSS}</style>
-<style>:root { --hc-body: #ef8a96; --hc-mind: #8db3ff; --hc-instinct: #7fd49a; --hc-appeal: #e6bd5a; }</style>
 </head>
 <body class="mock">
 <h1>${title}</h1>
@@ -275,7 +274,7 @@ const measure = '<span class="measure" data-measure></span>';
 
 // ---- page 1
 page("npc-hud-sheet.html", "NPC-HUD mockups 1: the one-page NPC sheet", `
-<p class="lead">A second NPC sheet for experienced GMs (the current sheet stays). The Main tab is the whole stat block; Build, Effects and Notes are the other tabs. The numbers are the Bestiary's Stage 0 examples; the Health is pack HP's model (one HP bar, the Vigor and Resolve gauges, which can go below 0). <b>Lucas picked (a) full text (2026-11-12).</b> Both use the same header, stat block, bands and Version buttons: a click on the amber button opens the roll dialog, a right-click on a row opens the Action card.</p>
+<p class="lead">A second NPC sheet for experienced GMs (the current sheet stays). The Main tab is the whole stat block; Build, Effects and Notes are the other tabs. The numbers are the Bestiary's Stage 0 examples; the Health is pack HP's model (one HP bar, the Vigor and Resolve gauges, which can go below 0). <b>Lucas picked (a) full text (2026-11-12).</b> <b>Redrawn in the chat card's look</b> (parchment, Cinzel, gold dividers for the group names, all the same color). A click on the dark Version button opens the roll dialog, a right-click on a row opens the Action card.</p>
 <h2>Orc Warrior (Standard), mid-fight: 14 Vigor lost</h2>
 <div class="cols">
   ${box("orc-a", "(a) Full text, with the Tier table", PICKED, "Everything is read on the sheet: traits, Target, Distance, Vs., the three Tiers side by side (a one-Version Action's Tier table, turned on its side).", sheet(NPCS.orc, "a"))}
@@ -291,7 +290,7 @@ page("npc-hud-sheet.html", "NPC-HUD mockups 1: the one-page NPC sheet", `
 // ---- page 2
 const live = JSON.stringify(Object.fromEntries(PCATS.map(c => [c.key, popFor(c.key)]))).replace(/</g, "\\u003c");
 page("npc-hud-hud.html", "NPC-HUD mockups 2 to 4: the HUD", `
-<p class="lead">One HUD for PCs and NPCs, in the pick bar's look (the dark bar, the gold line), with the Action card's amber Version buttons. No Health, AP, Guard or uses: only a used or locked Action is dimmed. <b>Click a Version button: the roll dialog on that Version. Right-click: the Action card.</b> The bars below are drawn at the width they would have on a 1600 px wide screen (1276 px between the left edge and the sidebar) unless a line says otherwise.</p>
+<p class="lead">One HUD for PCs and NPCs, <b>in the chat card's look</b> (Lucas, 2026-11-12: the chat card is the base of the design from here on): parchment, a thin tan line, Cinzel names, the dark brown button for a Version, outlined buttons for the rest. The group names are all one color; a frequency's color is only on a row's left edge. No Health, AP, Guard or uses: only a used or locked Action is dimmed. <b>Click a Version button: the roll dialog on that Version. Right-click: the Action card.</b> The bars below are drawn at the width they would have on a 1600 px wide screen (1276 px between the left edge and the sidebar) unless a line says otherwise.</p>
 
 <h2>2. An NPC: the PC's frame, everything visible</h2>
 <p class="why"><b>Redrawn after Lucas's second review (2026-11-12): an NPC's bar takes exactly what a PC's takes.</b> The same two lines and the same 70 px, always. The first line is its attacks (Basic, Special), the second the rest (Reactions, Escalation, Checks and Saves), so each thing is always in the same place. No categories and no click to see an Action. It never grows: on a line that is too full, the four Check / Save buttons first become one button, then the last Actions fold into a "+N more" button.</p>

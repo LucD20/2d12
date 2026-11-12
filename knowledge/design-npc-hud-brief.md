@@ -122,6 +122,13 @@ That way an Action line looks the same everywhere.
 - **Favorites: right-click -> Favorite, on an Action or on a single Version.** The Quick row shows only the favorited Versions (Smite 1 AP / 2 AP, not 1 / 2 / 3).
 - **5c was not what Lucas saw:** his viewer showed the page cut off (two carousel portraits, no tokens, no sidebar, no HUD). The likely cause is the page's weight (1.2 MB with the whole system CSS and every picture repeated); the pages now embed only the rules they use and each picture once (about 320 to 420 KB). Not confirmed on his side yet.
 
+### Lucas's third review (2026-11-12): the chat card is the design's base
+- **"Much better."** The NPC's bar in the PC's frame stays.
+- **The design had diverged** (the chat card one way, the sheets another, the tooltips another). **Lucas prefers the chat card's style** ("serious", "grounded", a table feel) **and it is the base from here on.** The full sheets don't change yet; the HUD and the one-page sheet start it.
+- **Applied to the mockups** (npc-hud.css, "THE TABLE LOOK"; the tokens are the chat card's, `.twod12.chat.cc` in system.css): parchment #f4ede0, a thin tan line #bfae8c, ink #2a241d, Cinzel for names and numbers, gold #b07a12 for stars, diamonds and the active tab, **a Version is the card's dark brown primary button (#3b3128)**, everything else an outlined button, small square frequency pills.
+- **Group names are all one color** (his note: Basic green and Special blue read as frequencies). On the sheet they are the card's divider (a gold diamond, small capitals, a gold line); in the HUD, small grey capitals. **A frequency's color is only on a row's left edge and on its pill.** This answers pick 7 (the band colors).
+- The dark pick bar (pickbar.mjs) is still today's in 5d; inside the HUD (5c) its buttons are drawn as the card's.
+
 ### Still for Lucas to pick (after the reviews)
 1. ~~(a) full text or (b) one line~~: (a), decided.
 2. The portrait: shown, hidden, or a per-user setting.
@@ -129,7 +136,7 @@ That way an Action line looks the same everywhere.
 4. The Elite: flat (proposed) or categories.
 5. The pick bar: in the HUD's place (proposed) or floating above it.
 6. Keep or drop: the NPC's Check / Save buttons; the dimming of used and locked Actions.
-7. The band colors: Basic green and Special blue (the At-will and Round frequency colors), Reactions navy (the Reactions card), Escalation amber. Each row's left edge is its own frequency's color.
+7. ~~The band colors~~ (answered by the third review: one color for every group name). Before: Basic green and Special blue (the At-will and Round frequency colors), Reactions navy (the Reactions card), Escalation amber. Each row's left edge is its own frequency's color.
 8. The PC's Escalation category: Passives listed as text beside the Actions (proposed), or only the Actions.
 9. ~~The empty bar~~: at the HUD's height (the slim variant is dropped).
 
