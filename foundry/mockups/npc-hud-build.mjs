@@ -90,22 +90,22 @@ const pips = (now, max) => `<span class="pips">${Array.from({ length: max }, (_,
 
 /* ------------------------------------------------------------------ 1. the one-page sheet */
 const tools = `<span class="oa-tools" title="Edit, delete">${ic("pen-to-square")}${ic("trash")}</span>`;
-const traitText = a => (a.traits ?? []).map(t => TRAITS[t][0]).join(" · ");
+const traitText = a => (a.traits ?? []).map(t => TRAITS[t][0]).join(", ");
 function rowFull(n, a) {
   const tierNames = ["Tier 1", "Tier 2", "Tier 3"];
   const rider = i => (a.rider && a.rider.on.includes(tierNames[i]) ? `, <span class="cond">${a.rider.text.replace(/ \(.*/, "")}</span>${a.rider.text.includes("(") ? ` ${a.rider.text.match(/\(.*\)/)[0]}` : ""}` : "");
   const tiers = a.noTiers ? "" : `<div class="oa-t">${a.tiers.map((t, i) => `<div class="t${i + 1}"><span class="tl">${tierNames[i]}</span>${dmg(a, t)}${rider(i)}</div>`).join("")}</div>`;
-  const sep = '<span class="sep">✦</span>';
+  const sep = '<span class="sep">;</span> ';
   const meta = [a.trigger ? `<b>Trigger</b> ${a.trigger}` : "", a.vs ? `<b>Vs.</b> ${a.vs}` : "", `<b>Distance</b> ${a.dist}`, `<b>Target</b> ${a.target}`].filter(Boolean).join(sep);
   return `<div class="oa${a.used || locked(n, a) ? " dim" : ""}" style="--fq:${fq(a)}">
-    <div class="oa-h">${vbtn(n, a)}<span class="n">${a.name}</span><span class="tr">${traitText(a)}</span><span class="fq">${a.escalation ? `Escalation ${a.escalation} · ` : ""}${FREQ[a.freq]}${a.used ? " · used" : ""}</span>${tools}</div>
+    <div class="oa-h">${vbtn(n, a)}<span class="n">${a.name}</span><span class="tr">(${traitText(a)})</span><span class="fq"><i>✦</i> ${a.escalation ? `Escalation ${a.escalation}, ` : ""}${FREQ[a.freq]}${a.used ? ", used" : ""}</span>${tools}</div>
     <div class="oa-meta">${meta}</div>${tiers}${a.effect ? `<div class="oa-fx">${a.effect}</div>` : ""}
   </div>`;
 }
 const rowLine = (n, a) => `<div class="ol${a.used || locked(n, a) ? " dim" : ""}" style="--fq:${fq(a)}">${vbtn(n, a)}<span class="tx"><i class="n">${a.name}</i> (${a.kind}${a.used ? "; <b>used</b>" : ""}): ${a.pool === "R" ? "[R] " : ""}${a.line}</span>${tools}</div>`;
 function sheet(n, mode) {
   const hp = n.vigor[0] + n.resolve[0], max = n.vigor[1] + n.resolve[1], pct = (v, m) => Math.max(0, Math.min(100, Math.round(100 * v / m)));
-  const gauge = (k, l, [v, m]) => `<div class="gauge ${k}"><div class="gh"><span>${l}</span><b class="${v < 0 ? "neg" : ""}">${v < 0 ? sign(v) : v} / ${m}</b></div><div class="track"><i style="width:${pct(v, m)}%"></i></div></div>`;
+  const gauge = (k, l, [v, m]) => `<span class="gauge ${k}"><span class="k">${l}</span> <b class="${v < 0 ? "neg" : ""}">${v < 0 ? sign(v) : v}</b> / ${m} <span class="track"><i style="width:${pct(v, m)}%"></i></span></span>`;
   const states = [n.vigor[0] <= 0 ? '<span class="state">Bloodied</span>' : "", n.resolve[0] <= 0 ? '<span class="state s">Strained</span>' : ""].join("");
   const bands = byGroup(n).map(([g, list]) => {
     const [label, color] = GROUPS[g];
@@ -117,16 +117,13 @@ function sheet(n, mode) {
   const A = [["Body", "body"], ["Mind", "mind"], ["Appeal", "appeal"], ["Instinct", "instinct"]];
   return `<div class="win"><div class="win-head">${ic("user")} ${n.name}<span class="sp">${ic("gear")} Sheet ${ic("xmark")}</span></div>
   <div class="ops">
-    <div class="ops-hb"><div class="nm">${n.name}</div>
-      <div class="tools"><a title="Roll Initiative">${ic("dice-d20")}</a><a title="Senses">${ic("eye")}</a></div>
-      <div class="who"><div class="l1"><span class="rank">${n.rank}</span><b>${n.role}</b></div><div>CV <b>${n.cv}</b> &middot; Level <b>${n.level}</b> (Stage 0)</div></div>
-    </div>
-    <div class="ops-tabs"><a class="on">Main</a><a>Build</a><a>Effects</a><a>Notes</a></div>
+    <div class="ops-hb"><div class="nm">${n.name}</div><div class="who"><b>${n.rank} ${n.role}</b><span>Level ${n.level} (Stage 0) &middot; CV ${n.cv}</span></div></div>
+    <div class="ops-tabs"><a class="on">Main</a><a>Build</a><a>Effects</a><a>Notes</a><span class="tools"><a title="Roll Initiative">${ic("dice-d20")}</a><a title="Senses">${ic("eye")}</a></span></div>
     <div class="ops-stats">
-      <div class="ops-hp"><div class="hph"><span>HP</span><b>${hp}</b><span>/ ${max}</span><span class="st">${states}</span></div><div class="track hpbar"><i style="width:${pct(hp, max)}%"></i></div>
-        <div class="gauges">${gauge("v", "Vigor", n.vigor)}${gauge("r", "Resolve", n.resolve)}</div></div>
-      <div class="tiles"><div class="tile"><span>Armor Def.</span><b>${n.ad}</b></div><div class="tile"><span>Ward Def.</span><b>${n.wd}</b></div><div class="tile"><span>Speed</span><b>${n.speed}</b></div></div>
-      <div class="ops-rw"><span>Resist <b>${n.resist ?? "—"}</b></span><span>Weak <b>${n.weak ?? "—"}</b></span><span>Steadiness <b>${n.steadiness ?? 0}</b></span><span>AP a turn <b>${n.ap}</b></span></div>
+      <div class="sbl"><span class="k">HP</span> <b class="big">${hp}</b> / ${max} <span class="track hpbar"><i style="width:${pct(hp, max)}%"></i></span>${states}</div>
+      <div class="sbl two">${gauge("v", "Vigor", n.vigor)}${gauge("r", "Resolve", n.resolve)}</div>
+      <div class="sbl"><span class="k">Armor Defense</span> <b class="big">${n.ad}</b><i class="sp"></i><span class="k">Ward Defense</span> <b class="big">${n.wd}</b><i class="sp"></i><span class="k">Speed</span> <b class="big">${n.speed}</b><i class="sp"></i><span class="k">Steadiness</span> <b>${n.steadiness ?? 0}</b><i class="sp"></i><span class="k">AP</span> <b>${n.ap}</b></div>
+      <div class="sbl"><span class="k">Resist</span> ${n.resist ?? "—"}<i class="sp"></i><span class="k">Weak</span> ${n.weak ?? "—"}</div>
     </div>
     <div class="ops-body">
       ${bands.join("")}
@@ -156,7 +153,7 @@ function card(n, a) {
 const idBlock = (o, img) => `<div class="hud-id">${img ? `<img src="${ART}${o.img}" alt="">` : ""}<div><div class="nm">${o.name}</div><div class="sb">${o.sub}</div></div></div>`;
 const hotbar = (slim = false) => { const f = { 1: "dice-d20", 2: "campground", 3: "lightbulb", 5: "music" }; return `<div class="hud-hot" title="The hotbar: macros, one click away"><div class="hot-grid">${Array.from({ length: 10 }, (_, i) => { const k = (i + 1) % 10; return `<i class="${f[i + 1] ? "f" : ""}" data-k="${k}">${f[i + 1] ? ic(f[i + 1]) : ""}</i>`; }).join("")}</div><div class="hot-pg">${ic("chevron-up")}<span>1</span>${ic("chevron-down")}</div></div>`; };
 const npcSub = n => `${n.rank} &middot; CV ${n.cv}`;
-const haBtn = (n, a) => `<span class="ha${a.used || locked(n, a) ? " dim" : ""}" style="--fq:${fq(a)}"><b>${a.name}</b>${locked(n, a) ? `<span class="lk">${ic("lock")}</span>` : ""}<span class="vs">${(a.aps ?? [a.ap]).map(v => vbtn(n, a, v)).join("")}</span></span>`;
+const haBtn = (n, a) => `<span class="ha${a.used || locked(n, a) ? " dim" : ""}" style="--fq:${fq(a)}"><i class="fqd" title="${FREQ[a.freq]}"></i><b>${a.name}</b>${locked(n, a) ? `<span class="lk">${ic("lock")}</span>` : ""}<span class="vs">${(a.aps ?? [a.ap]).map(v => vbtn(n, a, v)).join("")}</span></span>`;
 const SAVES = [["Body", "body", "Bo"], ["Mind", "mind", "Mi"], ["Appeal", "appeal", "Ap"], ["Instinct", "instinct", "In"]];
 const savesGroup = n => `<div class="hud-g g-saves"><span class="hud-gl">Checks and Saves</span><div class="hud-acts">${SAVES.map(([l, k, s]) => `<span class="sv" style="--c:var(--hc-${k})" title="${l}: Check or Save">${s} <b>${sign(n.attrs[k])}</b></span>`).join("")}</div></div>`;
 // The NPC's bar (Lucas, 2026-11-12: "the same amount as the PC occupies"): the PC's frame. Two lines, never more: its attacks on the first
@@ -184,16 +181,16 @@ const PCATS = [
   { key: "utility", label: "Utility", icon: "campground", cols: [["Utility", "g-saves", [P("Rally", [], "atwill", { go: "1 Rally Point" }), P("Steel Yourself", [2, 3], "round"), P("Guard", [], "atwill", { go: "set or clear" }), P("Take a Breather", [], "atwill", { go: "out of combat" }), P("Rest", [], "atwill", { go: "out of combat" })]]] }
 ];
 const catCount = c => c.cols.reduce((s, [, , l]) => s + l.length, 0);
-const popRow = (n, a) => (a.passive ? `<div class="pr txt" style="--fq:var(--g-esc)"><b>${a.name}</b><small>Passive, Escalation ${a.passive}${n.escalation >= a.passive ? "" : " (not yet)"}</small></div>`
-  : a.go ? `<div class="pr" style="--fq:#4a5266"><b>${a.name}</b><span class="go">${a.go} ${ic("chevron-right")}</span></div>`
-  : `<div class="pr${locked(n, a) ? " dim" : ""}" style="--fq:${fq(a)}"><b>${a.name}</b>${a.note ? `<small>${a.note}</small>` : ""}${locked(n, a) ? `<small>${ic("lock")} Escalation ${a.escalation}</small>` : ""}<span class="vs">${a.aps.map(v => vbtn(n, a, v)).join("")}</span></div>`);
+const popRow = (n, a) => (a.passive ? `<div class="pr txt${n.escalation >= a.passive ? "" : " dim"}"><b>${a.name}</b><i class="ld"></i><small>Passive, Escalation ${a.passive}${n.escalation >= a.passive ? "" : " (not yet)"}</small></div>`
+  : a.go ? `<div class="pr" style="--fq:#4a5266"><b>${a.name}</b><i class="ld"></i><span class="go">${a.go} ${ic("chevron-right")}</span></div>`
+  : `<div class="pr${locked(n, a) ? " dim" : ""}" style="--fq:${fq(a)}"><i class="fqd" title="${FREQ[a.freq]}"></i><b>${a.name}</b>${a.note ? `<small>(${a.note})</small>` : ""}${locked(n, a) ? `<small>${ic("lock")} Escalation ${a.escalation}</small>` : ""}<i class="ld"></i><span class="vs">${a.aps.map(v => vbtn(n, a, v)).join("")}</span></div>`);
 function popFor(key) {
   const c = PCATS.find(x => x.key === key);
-  if (key === "checks") return `<div class="pop-col g-saves"><div class="pop-h">Saves</div><div class="pop-grid">${SAVES.map(([l, k]) => `<div class="pr txt" style="--fq:var(--hc-${k})"><b>${l} Save</b><span class="vs"><button class="vb" style="min-width:30px">${sign(PAL.attrs[k])}</button></span></div>`).join("")}</div></div>
-    <div class="pop-col g-saves"><div class="pop-h">Checks</div><div class="pop-grid">${SAVES.map(([l, k]) => `<div class="pr txt" style="--fq:var(--hc-${k})"><b>${l} Check</b><span class="vs"><button class="vb" style="min-width:30px">${sign(PAL.attrs[k])}</button></span></div>`).join("")}</div><div class="pr" style="--fq:#4a5266;margin-top:3px"><b>Initiative</b><span class="go">roll ${ic("chevron-right")}</span></div></div>`;
+  if (key === "checks") return `<div class="pop-col g-saves"><div class="pop-h">Saves</div><div class="pop-grid">${SAVES.map(([l, k]) => `<div class="pr txt" style="--fq:var(--hc-${k})"><b>${l} Save</b><i class="ld"></i><span class="vs"><button class="vb" style="min-width:30px">${sign(PAL.attrs[k])}</button></span></div>`).join("")}</div></div>
+    <div class="pop-col g-saves"><div class="pop-h">Checks</div><div class="pop-grid">${SAVES.map(([l, k]) => `<div class="pr txt" style="--fq:var(--hc-${k})"><b>${l} Check</b><i class="ld"></i><span class="vs"><button class="vb" style="min-width:30px">${sign(PAL.attrs[k])}</button></span></div>`).join("")}</div><div class="pr" style="--fq:#4a5266;margin-top:3px"><b>Initiative</b><i class="ld"></i><span class="go">roll ${ic("chevron-right")}</span></div></div>`;
   if (key === "skills") return `<div class="pop-col g-saves"><div class="pop-h">Skills</div><div class="hud-hint" style="padding:6px 2px">A place kept for Skills, when they are made.</div></div>`;
-  if (key === "conditions") return `<div class="pop-col g-saves"><div class="pop-h">On Aveline</div><div class="pr txt" style="--fq:#2f7d4f"><b>Radiant Zeal</b><small>until your next Strike</small><span class="go">${ic("xmark")}</span></div><div class="pr txt" style="--fq:#a12b2b"><b>Hindered</b><small>EoT</small><span class="go">${ic("xmark")}</span></div></div>
-    <div class="pop-col g-saves"><div class="pop-h">Add</div><div class="pr" style="--fq:#4a5266"><b>A condition</b><span class="go">pick ${ic("chevron-right")}</span></div><div class="pr" style="--fq:#4a5266"><b>An Effect</b><span class="go">pick ${ic("chevron-right")}</span></div></div>`;
+  if (key === "conditions") return `<div class="pop-col g-saves"><div class="pop-h">On Aveline</div><div class="pr txt" style="--fq:#2f7d4f"><b>Radiant Zeal</b><small>until your next Strike</small><i class="ld"></i><span class="go">${ic("xmark")}</span></div><div class="pr txt" style="--fq:#a12b2b"><b>Hindered</b><small>EoT</small><i class="ld"></i><span class="go">${ic("xmark")}</span></div></div>
+    <div class="pop-col g-saves"><div class="pop-h">Add</div><div class="pr" style="--fq:#4a5266"><b>A condition</b><i class="ld"></i><span class="go">pick ${ic("chevron-right")}</span></div><div class="pr" style="--fq:#4a5266"><b>An Effect</b><i class="ld"></i><span class="go">pick ${ic("chevron-right")}</span></div></div>`;
   return c.cols.map(([h, cls, list]) => `<div class="pop-col ${cls}"><div class="pop-h">${h}</div>${list.map(a => popRow(PAL, a)).join("")}</div>`).join("");
 }
 // Quick actions (Lucas, 2026-11-12): the player's favorites, usable without opening a category. Right-click -> Favorite, on an Action or on a single Version.
@@ -275,7 +272,7 @@ const measure = '<span class="measure" data-measure></span>';
 
 // ---- page 1
 page("npc-hud-sheet.html", "NPC-HUD mockups 1: the one-page NPC sheet", `
-<p class="lead">A second NPC sheet for experienced GMs (the current sheet stays). The Main tab is the whole stat block; Build, Effects and Notes are the other tabs. The numbers are the Bestiary's Stage 0 examples; the Health is pack HP's model (one HP bar, the Vigor and Resolve gauges, which can go below 0). <b>Lucas picked (a) full text (2026-11-12).</b> <b>Redrawn in the chat card's look, dark by default</b> (the Light button at the top shows the parchment set; gold dividers for the group names, all one color; Cinzel only for the name). A click on the filled Version button opens the roll dialog, a right-click on a row opens the Action card.</p>
+<p class="lead">A second NPC sheet for experienced GMs (the current sheet stays). The Main tab is the whole stat block; Build, Effects and Notes are the other tabs. The numbers are the Bestiary's Stage 0 examples; the Health is pack HP's model (one HP bar, the Vigor and Resolve gauges, which can go below 0). <b>Lucas picked (a) full text (2026-11-12).</b> <b>Redrawn as a printed stat block</b> (Lucas, 2026-11-12: a book feel; the references: D&amp;D 4e's header bar, banded groups and shaded rows, 5e's ruled ability table, Pathfinder 2e's run-in bold labels, Draw Steel's three Tier results side by side). Dark by default; the Light button at the top shows the parchment page. A click on a cost stamp opens the roll dialog, a right-click on a row opens the Action card.</p>
 <h2>Orc Warrior (Standard), mid-fight: 14 Vigor lost</h2>
 <div class="cols">
   ${box("orc-a", "(a) Full text, with the Tier table", PICKED, "Everything is read on the sheet: traits, Target, Distance, Vs., the three Tiers side by side (a one-Version Action's Tier table, turned on its side).", sheet(NPCS.orc, "a"))}
@@ -291,7 +288,7 @@ page("npc-hud-sheet.html", "NPC-HUD mockups 1: the one-page NPC sheet", `
 // ---- page 2
 const live = JSON.stringify(Object.fromEntries(PCATS.map(c => [c.key, popFor(c.key)]))).replace(/</g, "\\u003c");
 page("npc-hud-hud.html", "NPC-HUD mockups 2 to 4: the HUD", `
-<p class="lead">One HUD for PCs and NPCs, <b>in the chat card's look</b> (Lucas, 2026-11-12: the chat card is the base of the design from here on): <b>dark by default</b> (the Light button at the top shows the parchment set), a thin line, a filled button for a Version, outlined buttons for the rest, Signika everywhere for reading. The group names are all one color; a frequency's color is only on a row's left edge. No Health, AP, Guard or uses: only a used or locked Action is dimmed. <b>Click a Version button: the roll dialog on that Version. Right-click: the Action card.</b> The bars below are drawn at the width they would have on a 1600 px wide screen (1276 px between the left edge and the sidebar) unless a line says otherwise.</p>
+<p class="lead">One HUD for PCs and NPCs, <b>in the chat card's look</b> (Lucas, 2026-11-12: the chat card is the base of the design from here on): <b>redrawn as a page of the book</b> (Lucas, 2026-11-12: less of an interface, more of a stat block): a name plate, ruled lines, small capitals for the group names, an Action as a line of text with its cost stamps, dotted leaders in the panels. Dark by default; the Light button at the top shows the parchment page. The group names are all one color; a frequency's color is only on a row's left edge. No Health, AP, Guard or uses: only a used or locked Action is dimmed. <b>Click a Version button: the roll dialog on that Version. Right-click: the Action card.</b> The bars below are drawn at the width they would have on a 1600 px wide screen (1276 px between the left edge and the sidebar) unless a line says otherwise.</p>
 
 <h2>2. An NPC: the PC's frame, everything visible</h2>
 <p class="why"><b>Redrawn after Lucas's second review (2026-11-12): an NPC's bar takes exactly what a PC's takes.</b> The same two lines and the same 70 px, always. The first line is its attacks (Basic, Special), the second the rest (Reactions, Escalation, Checks and Saves), so each thing is always in the same place. No categories and no click to see an Action. It never grows: on a line that is too full, the four Check / Save buttons first become one button, then the last Actions fold into a "+N more" button.</p>

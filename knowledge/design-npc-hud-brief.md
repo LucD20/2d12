@@ -137,6 +137,20 @@ That way an Action line looks the same everywhere.
 - **The dimming of used and locked Actions is decided: keep.**
 - Not redrawn dark: the right-click Action card and the chat cards (the system's real ones, parchment today). A dark set for them comes with the build, if Lucas wants it.
 
+### Lucas's fifth review (2026-11-12): a book feel, not an "AI feel"
+- **The font is fine now** (Cinzel only on the sheet's name). **A dark set for the chat cards and the Action card: likely yes, later** (foundry-backlog).
+- **The look had an "AI feel"** (Lucas): an interface kit of rounded chips, boxes inside boxes, colored side stripes and spaced-out capitals. **He wants a book feel**, like the 4e sheet he showed in the planning session. `npc-hud.css` is rewritten whole as **THE BOOK LOOK**; the mockups are a printed stat block now, dark by default (a page at night), with the parchment page behind the Light switch.
+- **What it takes from the books** (from what I know of them; no web search, and I never saw his 4e screenshot, which was not in this session):
+  - **D&D 4e:** a colored header bar with the name on the left and the rank and level on the right; group names as bands across the page; every other row shaded; the usage word at the end of a power's line, in its color.
+  - **D&D 5e:** ruled lines in the place of boxes; the ability scores as a ruled table.
+  - **D&D 3.5 and Pathfinder 1:** section bands in small capitals; stats as running text.
+  - **Pathfinder 2e:** bold run-in labels ("**Vs.** AD; **Distance** Melee; **Target** One creature"), text separated by semicolons, traits in a parenthesis.
+  - **Draw Steel:** the three Tier results side by side under the power's line.
+  - **Lancer:** square corners and hard edges; nothing rounded.
+- **On the sheet:** a maroon name plate (#6e2318, the book's heading color); Health, Defenses and Speed as lines of text with thin bars; an Action as lines of text (a cost stamp, the name, the traits in italics, the frequency word at the right in its color), then the Tiers; the Attributes and Modifiers as a ruled table.
+- **In the HUD:** the same name plate on the left; an Action is a line of text (a small diamond in the frequency's color, the name, its cost stamps), not a chip; the PC's categories are words on a line (small capitals, a hairline between them, the open one underlined in gold); a category's panel is a sidebar box with a band for its title and dotted leaders to the stamps.
+- **The one clicked thing is the cost stamp** (a square tab: light on the dark page, dark on the parchment).
+
 ### Still for Lucas to pick (after the reviews)
 1. ~~(a) full text or (b) one line~~: (a), decided.
 2. The portrait: shown, hidden, or a per-user setting.
@@ -153,4 +167,5 @@ That way an Action line looks the same everywhere.
 - The Paladin's panel uses today's cards; the Stage 0 class cards may change what the categories hold.
 - Not tried in Foundry: how the HUD sits with Foundry V14's own bottom elements (the hotbar and the players list are moved by the system; the mockup's screen is a stand-in).
 - Whether 5c's redraw is what "bugged" meant (Lucas didn't say what looked wrong; the first version replaced the whole HUD with a stretched bar).
-- Which font was hard to read (I assumed Cinzel), and whether the chat cards and the Action card get a dark set too.
+- Whether the book look is close to the 4e sheet he had in mind (send the screenshot again to compare).
+- The header's color: maroon (the book's heading color), or one per rank as 4e colors its monsters.
