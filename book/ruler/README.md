@@ -462,6 +462,7 @@ Health Pool: Human Paladin 36 / 39 / 42, Dwarf Paladin 41 / 44 / 48, Human Arche
 - **Rally Points:** the class's Rally value (Paladin 6, Archer 5) + ceil((Body + Mind + level) / 2), each removing ceil(Pool / 4): 1.6 to 2.4 Health Pools a day at level 1, 1.9 to 2.5 at level 3, 2.2 to 2.8 at level 5 (six builds: Human, Dwarf and Elf of each class).
 
 ## The scripts in this folder
+- **`playtest-4-sim.md` (SIM-4, 2026-11-12):** Playtest 4's encounter replayed in SIM beside what happened at the table (`node book/ruler/sim/playtest4.mjs`). **Read with it: the reports' "damage dealt" counts damage past an enemy's last point of Health** (about a quarter of it in a mixed encounter); rounds, Health lost, Downs and win rates don't.
 - **`policies.md` (SIM-3, 2026-11-12):** every headline fight under 8 party policies and 4 enemy policies (`node book/ruler/sim/policies.mjs`). The other reports are the plan policy's; this one is the range around them.
 - **`areas.md` (2026-11-12):** what the Area cards do placed on the grid (how many creatures each holds, what a Zone does over its rounds) against the number their ruler lines assume (`node book/ruler/sim/areas.mjs`).
 - **`maps/*.txt`, `maps.md` (SIM-2, 2026-11-12):** the maps (walls, Difficult Terrain, start zones) and the fights on each, with the price of Speed and of the movement conditions by map (`node book/ruler/sim/maps.mjs`). `report.md` stays the open field.

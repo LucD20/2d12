@@ -162,15 +162,16 @@ export function npcKit(role) {
 export function npcOf(role, rating = "medium", level = 1, opts = {}) {
   const r = TW.npcRoles[role] ?? TW.npcRoles.standard, R = TW.npcRatings, attr = k => r.attr + R[k].off;
   const body = attr("high"), mind = attr("medium");
-  const hm = bHm(role, rating, level), hp = a => Math.max(0, Math.ceil((a + 2) * hm + r.hb - 1e-9));
+  const hm = bHm(role, opts.hrating ?? rating, level),   // SIM-4: opts.hrating / opts.drating: its Health and its Basic attack can have their own rating (an Ogre: Health Medium, attack High); opts.name
+     hp = a => Math.max(0, Math.ceil((a + 2) * hm + r.hb - 1e-9));
   // The catch-up: an NPC's Modifiers are ratings of its role's table (the Bestiary, Attributes and Modifiers; the system's npcModRatings / npcModValue):
   // by default the lead one Medium and the other Low (a Standard's Medium too); a `power` NPC leads with Power. fights.txt: `wmod-high`, `pmod-low`.
   // `mod` is the Modifier of its Basic attack (Weapon; Power for a `power` NPC). Before: ceil(Body / 2 + 1), the same numbers at the defaults.
   const mr = DM.npcModRatings({ role, modLead: opts.power ? "power" : "weapon", ratings: { wmod: opts.wmod ?? "", pmod: opts.pmod ?? "" } });
   const weaponMod = DM.npcModValue(role, mr.weapon), powerMod = DM.npcModValue(role, mr.power), mod = opts.power ? powerMod : weaponMod;
   const kit = RULES.npcSpecials ? npcKit(role) : undefined;
-  return { role, rating, name: r.label, pool: hp(body) + hp(mind), ad: Math.max(TW.defenseBase, r.defense), wd: Math.max(TW.defenseBase, r.defense), mod, weaponMod, powerMod, modRatings: mr, ...(kit ? { kit } : {}),
-    save: { body, mind, instinct: attr("medium"), appeal: attr("medium") }, t2: bDmg(role in TW.npcRoles ? role : "standard", rating, level)[0], t3: bDmg(role in TW.npcRoles ? role : "standard", rating, level)[1],
+  return { role, rating, name: opts.name ?? r.label, pool: hp(body) + hp(mind), ad: Math.max(TW.defenseBase, r.defense), wd: Math.max(TW.defenseBase, r.defense), mod, weaponMod, powerMod, modRatings: mr, ...(kit ? { kit } : {}),
+    save: { body, mind, instinct: attr("medium"), appeal: attr("medium") }, t2: bDmg(role in TW.npcRoles ? role : "standard", opts.drating ?? rating, level)[0], t3: bDmg(role in TW.npcRoles ? role : "standard", opts.drating ?? rating, level)[1],
     strikes: { minion: 1, grunt: 2, standard: 2, elite: 3 }[role] ?? 2, bodyPool: hp(body), mindPool: hp(mind),
     apMax: role === "minion" ? RULES.minionAp : RULES.npcAp, speed: opts.speed ?? 5, ranged: !!opts.ranged, power: !!opts.power };   // the map model: AP a turn (the Bestiary), Speed 5, a ranged Basic attack; power: Vs. WD, [R] (pack R-bestiary)
 }

@@ -2,7 +2,8 @@
 //   node book/ruler/sim/run.mjs                              lists the encounters of fights.txt
 //   node book/ruler/sim/run.mjs "4 Standards (normal)"       plays it once (seed 1) and prints what happened, round by round
 //   node book/ruler/sim/run.mjs "2 Elites" --seed 7          another seed (the same seed gives the same fight)
-//   node book/ruler/sim/run.mjs "2 Elites" --json            the log as JSON (what SIM-4's viewer will read)
+//   node book/ruler/sim/run.mjs "2 Elites" --json            the log as JSON (what the viewer reads)
+//   node book/ruler/sim/run.mjs "2 Elites" --playtest        the fight in the Encounter Log's playtest format (SIM-4)
 // SIM-4 writes this in the Encounter Log's playtest format and draws it; this is the plain version, to read a fight and check a rule.
 import fs from "node:fs";
 import process from "node:process";
@@ -36,5 +37,6 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === fs.realpathSync(proces
   const seed = Number(process.argv[process.argv.indexOf("--seed") + 1]) || 1;
   const party = fights.party.map(f => S.parseSpec(fs.readFileSync(`${HERE}rework/${f}.txt`, "utf8"), `rework/${f}`));
   const r = S.fight(party, enc.npcs.map(n => S.npcOf(n.role, n.rating, fights.level, n)), S.rng(seed), { log: true });
-  console.log(process.argv.includes("--json") ? JSON.stringify(r.log) : `${enc.name}, seed ${seed}\n${logText(r.log)}`);
+  if (process.argv.includes("--playtest")) { const { playtestText } = await import(new URL("./enclog.mjs", import.meta.url).href); console.log(`${enc.name}, seed ${seed}\n\n${playtestText(r.log)}`); }
+  else console.log(process.argv.includes("--json") ? JSON.stringify(r.log) : `${enc.name}, seed ${seed}\n${logText(r.log)}`);
 }

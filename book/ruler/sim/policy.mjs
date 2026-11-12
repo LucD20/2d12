@@ -75,6 +75,7 @@ const encounterSpent = (pc, key) => pc.build.turns[key].steps.map(stepOf).filter
  *  protect: a melee PC walks to the enemy nearest to a ranged ally when one is within 3 squares of it, not to the one nearest to itself;
  *  novaLate: the round 1 turn with an Encounter Action is kept for round 2 (when Escalation is higher);
  *  react: "first" = every Reaction on its first trigger, the Opportunity Attack too (the plan: "spare", its Reaction AP stays for the class Reaction);
+ *  minionsLast: the Minions are left for last (the party focuses the enemy closest to dying among the others): what Playtest 4's table did;
  *  focus: "nearest" = each PC hits the enemy nearest to it (no focus fire: the casual table); the plan: the enemy closest to dying.
  */
 export function makePolicy(name, sw = {}) {
@@ -84,6 +85,7 @@ export function makePolicy(name, sw = {}) {
   if (sw.protect) P.meleeGoal = (E, pc, list) => { const back = E.up().filter(p => !p.melee); let best = null, bd = 4; for (const f of list) for (const a of back) { const d = MP.dist(f.pos, a.pos); if (d < bd) { bd = d; best = f; } } return best; };
   if (sw.novaLate) P.pcTurn = (E, pc, engaged = false) => { const k1 = turnFor(pc, 1, E.pcs, engaged), k2 = turnFor(pc, 2, E.pcs, engaged); return E.round === 1 || encounterSpent(pc, k1) ? k2 : k1; };
   if (sw.react === "first") P.reactionReserve = () => 1;
+  if (sw.minionsLast) P.focus = (E, list = E.alive()) => { const big = list.filter(f => f.role !== "minion"); return planPolicy.focus(E, big.length ? big : list); };
   if (sw.focus === "nearest") {
     P.quarry = (E, pc) => MP.nearest(pc, E.alive(), E.W ?? { M: null });
     P.pcTarget = (E, pc) => { if (!E.M) return E.alive()[E.pcs.indexOf(pc) % E.alive().length] ?? null;
@@ -112,5 +114,6 @@ export const POLICIES = {
   reactFirst: makePolicy("react to the first trigger", { react: "first" }),
   tactical: makePolicy("tactical (hold, kite, protect)", { hold: true, kite: true, protect: true }),
   casual: makePolicy("casual (no focus fire, first trigger)", { focus: "nearest", react: "first" }),
+  minionsLast: makePolicy("the Minions left for last", { minionsLast: true }),
 };
 export const NPC_POLICIES = { plan: planPolicy, weakest: makeNpcPolicy("focus the weakest", "weakest"), nearest: makeNpcPolicy("the nearest", "nearest"), back: makeNpcPolicy("go for the back line", "back") };

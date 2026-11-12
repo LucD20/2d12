@@ -17,6 +17,7 @@ export const npcStrike = (R, f, t, banes, escalation = 3, pcs = [], boons = 0, b
   const def = (f.power ? t.build.wd : t.build.ad) + (t.defBonus ?? 0) + (t.passiveDef ?? 0);   // pack R-bestiary: a `power` NPC rolls against Ward Defense
   const fr = f.cond?.frightened ? 1 : 0, st = f.cond?.blinded || doomed ? "doomed" : "";   // pack R-classes: Frightened's Bane, Blinded's Doomed; the catch-up: High cover's Doomed
   const u = R(), tier = pickU(u, C.tierProbs(f.mod, def, boons, banes + zb + fr, st));
+  f.lastTier = tier;   // for the log
   if (t.defBonus && t.defBy?.st) t.defBy.st.defCredit += npcAvg(f, pickU(u, C.tierProbs(f.mod, def - t.defBonus, boons, banes + zb, ""))) - npcAvg(f, tier);
   if (zb && f.zone.by?.st) f.zone.by.st.baneCredit += npcAvg(f, pickU(u, C.tierProbs(f.mod, def, boons, banes, ""))) - npcAvg(f, tier);
   let d = npcDamage(R, f, tier);
@@ -177,7 +178,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
       block = { dmg: rx.dmg, spill: rx.spill, by: p, used: () => { ev("reaction", { who: nameOf(p), reaction: rx.name, on: nameOf(f), protects: nameOf(t) }); spendReact(p); p.blockedFor = f.turnId; p.blockedRound = round; p.st.reactions++; } }; break; }
     const bb = RULES.bloodiedBanes && f.bloodiedRound != null ? 1 : 0;   // the book's Bloodied rule on the NPC's Strikes
     const taken = npcStrike(f.R ?? R, f, t, k + taunted + banes + el + bb, t.esc, pcs, boons, block, doomed);   // At-will Banes on the 2nd and 3rd Strike
-    t.damage += taken; f.dealt = (f.dealt ?? 0) + taken; ev("attack", { who: nameOf(f), target: nameOf(t), kind: (f.curMult ?? 1) > 1 ? "special" : "basic", damage: taken, pool: f.power ? "R" : "V" });   // an NPC's Basic attack is Vigor damage (a weapon)...
+    t.damage += taken; f.dealt = (f.dealt ?? 0) + taken; ev("attack", { who: nameOf(f), target: nameOf(t), kind: (f.curMult ?? 1) > 1 ? "special" : "basic", tier: f.lastTier, damage: taken, pool: f.power ? "R" : "V" });   // an NPC's Basic attack is Vigor damage (a weapon)...
     if (f.power) { t.mindDamage = (t.mindDamage ?? 0) + taken; t.st.mindTaken += taken; }   // ...unless it is a `power` NPC: [R] (pack R-bestiary)
     // Pack R prep: an "overwatch" Reaction (a Trigger: an enemy within 10 squares makes a Strike; once per NPC turn), after the Strike.
     for (const p of up()) for (const rx of p.build.reactions ?? []) if (rx.kind === "overwatch" && p.keptAP >= 1 && !p.cond?.staggered && p.owFor !== f.turnId && !f.dead && (!M || MP.dist(p.pos, f.pos) <= 10)) { p.owFor = f.turnId; spendReact(p); p.st.oaMade++; pcReact((p.rxNow = rx.name, p), f, rx.action); }

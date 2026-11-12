@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: 1149a26 2026-11-12 Bestiary: a tip on enemies that all strike the same PC (Lucas: yes); the target's way of playing answered (a)
+Built by tools/knowledge.py on 2026-11-12 from the repository at: acaeca1 2026-11-12 SIM: areas and Zones on the grid (book/ruler/areas.md)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (116 KB)
+- HANDOFF.md (118 KB)
 - MASTER-PLAN.md (32 KB)
 - open-design-items.md (111 KB)
 - rules-01-roll.md (23 KB)
@@ -31,7 +31,7 @@ Files:
 - rules-14-bestiary.md (21 KB)
 - rules-15-gear.md (10 KB)
 - rules-16-talents.md (2 KB)
-- design-sim-brief.md (20 KB)
+- design-sim-brief.md (21 KB)
 - design-expedition-loop.md (12 KB)
 - design-playtest-2.md (7 KB)
 - design-playtest-3.md (4 KB)

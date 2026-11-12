@@ -133,7 +133,7 @@ export function runTurn(pc, turn, ctx) {
           const x = rollDamage(R, t.surge.dmg, { mod }).total; land(x, x * mindShare(t.surge.dmg, b.weapon, tier, mod)); if (t.surge.by.st) t.surge.by.st.surgeCredit += x; t.surge = null;
         }
       }
-      ctx.log?.("action", { action: a.name, target: t, tier, damage: (t.damage ?? 0) - dmg0, save: a.vs.startsWith("save") });   // the log (SIM-1): nothing reads it back
+      ctx.log?.("action", { action: a.name, ap: a.ap, linked, target: t, tier, damage: (t.damage ?? 0) - dmg0, save: a.vs.startsWith("save") ? (a.vs.split(/\s+/)[1] ?? "instinct") : false });   // the log (SIM-1): nothing reads it back
       if (t === target) { mainTier = tier; res.critShare = critShare; if (RULES.escHooks && tier === 3 && !a.vs.startsWith("save") && R() < critShare) res.crit = true; }   // a Critical: Doubles on a Tier 3, 20 over the Defense, three of a kind on a Favored roll (before the catch-up: 1 Tier 3 in 12)
     }
     res.lastTier = mainTier;

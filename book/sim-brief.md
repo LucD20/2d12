@@ -77,7 +77,7 @@ Playtest 4's encounter replayed in SIM (the same creatures, the map approximated
 | SIM-1 | **DONE (2026-11-12, v0.0.365, branch `pack-sim-1`).** The shared engine: the rules SIM needs pulled into pure system functions with tests; SIM's turn loop on the open field. Built: `book/ruler/sim/` (`core.mjs`, `turn.mjs`, `engine.mjs`, `policy.mjs`, `run.mjs`, README), the system's `module/roundrules.mjs` with test t246, the fight's log | `report.md` reproduced on the open field (the gate in 4.2): **byte for byte, with report-pre-r.md, rclasses.md and rbestiary.md**; the system's 244 tests pass |
 | SIM-2 | **DONE (2026-11-12, v0.0.366, branch `pack-sim-2`; areas and Zones on the grid finished after SIM-3, branch `pack-sim-areas`: `book/ruler/areas.md`).** Maps, Line of Effect and Cover, movement and Forced Movement, terrain, areas and Zones. Built: `book/ruler/maps/*.txt` (five maps and the open field), the map layer in `book/ruler/map.mjs`, the system's `module/gridrules.mjs` with test t247, `sim/maps.mjs` → `book/ruler/maps.md`, the viewer draws the maps. **Left:** Covering Fire's damage on entering and Rain of Arrows' Hazardous Terrain, a Line | the starter maps run; Speed and the movement conditions get a price above 0 where the map allows it: **yes** (`maps.md` section 2) |
 | SIM-3 | **DONE (2026-11-12, branch `pack-sim-3`; no Foundry version).** Decision policies and the sensitivity report. Built: `sim/policy.mjs` (`makePolicy` switches: hold the line, kite, protect the back line, Encounter Actions in round 2, react to the first trigger, no focus fire; the mixes `tactical` and `casual`; the enemies' `weakest`, `nearest`, `back`), `sim/policies.mjs` → `book/ruler/policies.md`, the viewer's "Party plays" selector | each headline number under 2 or 3 policies: **yes, 8 party policies and 4 enemy policies on 3 maps** |
-| SIM-4 | The replay viewer (**its first version is built, 2026-11-12, at Lucas's request: `book/ruler/sim/fights.html`, written by `view.mjs`; it grows with each part**) and the Encounter Log output; Playtest 4 replayed | a fight can be watched; the Playtest 4 comparison is written in SIM's README |
+| SIM-4 | **DONE (2026-11-12, branch `pack-sim-4`; no Foundry version): `sim/enclog.mjs` (the system's own Encounter Log export, fed with SIM's events; `run.mjs --playtest`), `sim/playtest4.mjs` → `book/ruler/playtest-4-sim.md`, the comparison in `sim/README.md`.** The replay viewer (**its first version is built, 2026-11-12, at Lucas's request: `book/ruler/sim/fights.html`, written by `view.mjs`; it grows with each part**) and the Encounter Log output; Playtest 4 replayed | a fight can be watched; the Playtest 4 comparison is written in SIM's README |
 
 ### After SIM-1: what SIM-2 should know
 
@@ -103,6 +103,12 @@ Playtest 4's encounter replayed in SIM (the same creatures, the map approximated
 3. **Areas and Zones are on the grid** (2026-11-12, after SIM-3): `book/ruler/areas.md`. A Zone works only for who stays in it, so the Area cards are read with the hold-the-line policy beside the plan; the cards' ruler-line numbers (how many creatures an Area holds) are right for a normal fight and low for 6 enemies.
 4. **SIM-4:** the log has what the viewer needs (`hold`, `help`, `collision` since SIM-2 and 3); the Encounter Log's playtest format (`foundry/twod12/module/enclog.mjs exportText`) and Playtest 4's replay are its work.
 
+### After SIM-4: what the Stage 0 run should know
+
+1. **SIM's "damage dealt" counts damage past an enemy's last point of Health** (about a quarter of what the party rolls against a mixed encounter). Compare classes by rounds, Health lost and win rates, or add a damage-that-counted number, before reading "damage a turn" rows as a class's worth.
+2. **The plan policy's target choice wastes hits on Minions** ("closest to dying"); the table ignored them. A `focus` that weighs overkill and the enemy's threat is the first policy to add (`sim/policy.mjs`: `minionsLast` is a start).
+3. **Against the one table fight there is, nothing else disagrees** (rolls a turn, the enemies' damage, the dice): `book/ruler/playtest-4-sim.md`. One fight is a small sample.
+
 ## 6. What the ruler still lacks (the README's "not modeled" lists), and where it goes
 
 | Missing | Where |
@@ -120,7 +126,7 @@ Playtest 4's encounter replayed in SIM (the same creatures, the map approximated
 | Senses and Light: Darkness, Dim, Blinded, Hearing | SIM-2 (a map's light) |
 | The pack AU conditions as the Bestiary uses them: Frightened, Taunted, Sickened, Staggered, Dazed, Grabbed, Bleed | SIM-1 |
 | Reactions in the 4 + 1 AP economy: **measured in the catch-up** (report.md's Reactions table; README: the Reaction AP is worth half the normal fight's cost, Opportunity Attack still about 0 because the class Reaction is the better use of the one Reaction AP). Which Reaction to take, and when, is a decision | SIM-3 |
-| A check against the table | SIM-4 |
+| ~~A check against the table~~ | **done: SIM-4** (`book/ruler/playtest-4-sim.md`) |
 
 ## 7. Not in SIM (for now)
 Base building, mounts and vehicles, the expedition loop between fights (Alert, the Parting Beat), Skills and Magic (D3, D4), destructible terrain (with B2), Stage 1 and later (the same engine runs them when their cards exist).

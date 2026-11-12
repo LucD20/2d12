@@ -1,6 +1,6 @@
 # SIM: the automated playtest environment
 
-The brief: `book/sim-brief.md`. Built in four parts. **SIM-1 is done (2026-11-12, Foundry v0.0.365)**: the shared engine and its turn loop on the open field. **SIM-2 is done (2026-11-12, v0.0.366)**: maps with walls and Difficult Terrain, Line of Effect and Cover by corners, movement by paths, Forced Movement with Collision, the fights by map (`../maps.md`); areas and Zones on the grid (finished the same day, after SIM-3: `../areas.md`). The viewer's first version is built. **SIM-3 is done (2026-11-12, no Foundry version)**: decision policies for the party and the enemies and the sensitivity report (`../policies.md`). SIM-4 (the Encounter Log's format, Playtest 4 replayed) is next.
+The brief: `book/sim-brief.md`. Built in four parts. **SIM-1 is done (2026-11-12, Foundry v0.0.365)**: the shared engine and its turn loop on the open field. **SIM-2 is done (2026-11-12, v0.0.366)**: maps with walls and Difficult Terrain, Line of Effect and Cover by corners, movement by paths, Forced Movement with Collision, the fights by map (`../maps.md`); areas and Zones on the grid (finished the same day, after SIM-3: `../areas.md`). The viewer's first version is built. **SIM-3 is done (2026-11-12, no Foundry version)**: decision policies for the party and the enemies and the sensitivity report (`../policies.md`). **SIM-4 is done (2026-11-12, no Foundry version)**: a fight in the Encounter Log's playtest format, and Playtest 4 replayed and compared with the table (`../playtest-4-sim.md`; the comparison is below). The four parts are built.
 
 ## What is here
 
@@ -14,6 +14,8 @@ The brief: `book/sim-brief.md`. Built in four parts. **SIM-1 is done (2026-11-12
 | `view.mjs`, `viewer-template.html` | **The fight viewer** (2026-11-12, brought forward from SIM-4 at Lucas's request): `view.mjs` plays every encounter of fights.txt and writes **`fights.html`**, one file to open in a browser |
 | `../map.mjs` | The map layer: distances, Engaged, Flanking, range, conditions, movement, Forced Movement. With no map it is the open field (Cover drawn by chance per shot), exactly as before SIM-2; with a map (`loadMap`): walls, Line of Effect and Cover by corners, paths around walls and through Difficult Terrain, Collision |
 | `../maps/*.txt` | **The maps** (SIM-2): `pillars`, `corridor`, `rough`, `longsight`, `closequarters`; `open` is the open field |
+| `enclog.mjs` | A fight's log in the Encounter Log's playtest format (SIM-4): the system's own `module/enclog.mjs exportText`, fed with the engine's events |
+| `playtest4.mjs` | **Playtest 4 replayed** (SIM-4): the table's encounter run 1,500 times a map, beside what happened at the table; it writes `../playtest-4-sim.md` |
 | `policies.mjs` | **The sensitivity report** (SIM-3): every headline fight under each party policy and each enemy policy, on three maps; it writes `../policies.md` |
 | `areas.mjs`, `parties.mjs` | What the Area cards do on the grid against the number their ruler lines assume, with a party that uses them; it writes `../areas.md` |
 | `maps.mjs` | The fights on every map and the price of Speed and of the movement conditions there; it writes `../maps.md` |
@@ -27,6 +29,8 @@ node book/ruler/sim/run.mjs "4 Standards (normal)" --seed 3
 node book/ruler/sim/view.mjs                               # writes sim/fights.html: open it in a browser
 node book/ruler/sim/maps.mjs                               # writes maps.md (about 25 minutes; --quick about 9)
 node book/ruler/sim/policies.mjs                           # writes policies.md (about 11 minutes; --quick about 4)
+node book/ruler/sim/run.mjs "2 Elites" --seed 7 --playtest  # one fight in the Encounter Log's playtest format
+node book/ruler/sim/playtest4.mjs                          # writes playtest-4-sim.md (about 3 minutes)
 ```
 
 ## Maps (SIM-2)
@@ -127,8 +131,29 @@ On a map the plan policy is weak on purpose (it is the open field's): nobody hol
 
 Known gaps of `planPolicy`, each a finding for SIM-3 (README of the ruler, "The catch-up"): nobody holds an AP on purpose (the unused AP's Guard is never priced), nobody walks away from an enemy (an NPC's Opportunity Attack never fires), the Double Shot Archer's `Kite` turn has no step, a PC never spends a Rally Point on itself outside its `when self below` turn.
 
+## Checked against the table: Playtest 4 (SIM-4)
+
+`book/playtest-4.md` is the one fight of the current rules played at the table and written down: the four level 1 PCs against an Ogre Chieftain, an Orc Warrior, a Bandit Thug and three Goblin Sneaks, stopped in the middle of round 4. `playtest4.mjs` runs the same encounter (the enemies with their compendium ratings, Kaela with her Shortbow, three maps since the table's wasn't recorded) and sets the table beside SIM's fights: `book/ruler/playtest-4-sim.md`.
+
+**What agrees:**
+
+- **Attack rolls a PC turn:** 2.4 at the table, 2.5 in SIM.
+- **The enemies:** the Ogre dealt 10.3 a turn at the table; SIM's Ogre deals 13.5, and the table's fight sits at SIM's 32nd percentile. A Goblin: 1.0 against 2.1.
+- **Durgan (Lay On Hands):** 4.3 damage a turn against 5 to 7; his Lay On Hands spent 2 Rally Points against 1.3.
+- **Damage that counts:** measured against the enemies' Health, an attack roll is worth 6.7 in SIM and at most 6.4 at the table.
+
+**What doesn't, and why:**
+
+- **SIM's "damage dealt" is 46% above the table's (22.6 a PC turn against 15.5), and the table's fight is at the bottom of SIM's range (the 1st percentile).** Most of it is how damage is counted, not how much is done: SIM counts every point rolled, also past an enemy's last point of Health, and its party spends whole hits on 5-Health Goblins (three shots on one Goblin in the fight printed in the report). About a quarter of what it rolls is lost that way. **So the "damage a turn" and "share of the party's damage" rows of every report overstate what a PC does to the fight; rounds, Health lost, Downs and win rates are not affected** (they come from the fight itself).
+- **Whom the party hits.** The table killed one Goblin and the Thug and put everything else into the Ogre and the Orc; neither was out after 3 rounds. SIM's plan policy hits "the enemy closest to dying": after 3 rounds its Goblins are all out, the Orc is out in 85% of its fights and the Ogre in 8%. The table ignored the Goblins (they did 3 damage each in the whole fight): that is a decision the plan policy doesn't make, and a better `focus` would weigh what a hit wastes.
+- **What the PCs use.** Against the Ogre and the Orc a SIM roll is bigger (9.1): the builds take the larger Versions and their Escalation Passives every turn (Rolling Shot at 2 AP with its extra die where Kaela used the 1 AP one and moved in every turn), and the table's PCs moved almost every turn (0.9 moves a turn against 0.5) and spent Actions on Covering Fire, Beacon, a Shove and Leaning. Kaela is the far outlier (11.5 a turn against 25).
+- **A PC Down:** none at the table in 3 rounds; in SIM a PC is Down in about half of its fights by then. One fight can't decide it, but it points the same way as the Ogre's damage: SIM's enemies are a little harder on the party than this table's were.
+- **The dice:** the PCs' rolls at the table were Tier 1 / 2 / 3 21% / 59% / 21% over 34 rolls, SIM's 33% / 42% / 25%: more Tier 2 than expected, within what 34 rolls allow.
+
+**No rule was found to disagree.** The gaps are decisions (targets, Versions, movement) and one of bookkeeping (damage past the last point of Health). One fight of three and a half rounds is a small sample: the next table fight exported with the Encounter Log's Copy goes through the same script.
+
 ## The log
 
-`fight(party, npcs, R, { log: true })` returns `log`: every event in order, each `{ round, type, ... }`. Types: `start` (the map with its walls and Difficult Terrain, Initiative, every creature's place and Health), `round`, `turn`, `move` (from, to, how), `action` (a PC's Action on a target: Tier, damage), `attack` (an NPC's Basic attack or Special), `reaction` (`protects`: the ally it protects), `hold` (a PC keeps its place), `help` (a heal, a Rally Point, Guard, a Defense bonus: who, target, amount), `collision`, `down`, `dead`, `end`. Writing the log changes no roll. `run.mjs` prints it as text; SIM-4 writes it in the Encounter Log's playtest format and draws it.
+`fight(party, npcs, R, { log: true })` returns `log`: every event in order, each `{ round, type, ... }`. Types: `start` (the map with its walls and Difficult Terrain, Initiative, every creature's place and Health), `round`, `turn`, `move` (from, to, how), `action` (a PC's Action on a target: Tier, damage), `attack` (an NPC's Basic attack or Special), `reaction` (`protects`: the ally it protects), `hold` (a PC keeps its place), `help` (a heal, a Rally Point, Guard, a Defense bonus: who, target, amount), `collision`, `down`, `dead`, `end`. Writing the log changes no roll. `run.mjs` prints it as text, or with `--playtest` in the Encounter Log's playtest format (`enclog.mjs`).
 
 Each event also has `ch`: the creatures whose state changed since the last event (`i` its place in the start list, `dmg`, `pos`, `out`, `guard`, `esc`, `cond`), so Forced Movement, heals, Guard and conditions show without their own event. Not in the log yet as lines of their own: the Boons and Banes of each roll, heals, conditions put on and ended, Escalation raises.
