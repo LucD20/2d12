@@ -6,7 +6,7 @@
 // What is still decided inside the engine (movement: who a creature walks to, how far a ranged PC steps away, a Charge when it can) moves here
 // with SIM-2's maps: book/ruler/sim/README.md.
 import { RULES, MP } from "./core.mjs";
-import { turnFor } from "./turn.mjs";
+import { turnFor, stepOf, group } from "./turn.mjs";
 
 export const planPolicy = {
   name: "plan",
@@ -54,3 +54,54 @@ export const planPolicy = {
   /** Without positions (`map off`): how often an NPC chooses each PC. */
   npcFlatWeight: (E, f, p) => p.build.targeted,
 };
+
+/* ------------------------------------------------------------------ SIM-3 (2026-11-12): other policies, built from switches on top of the plan policy.
+   Each switch is one decision; policies.mjs runs every headline number with the switches one at a time and together (book/ruler/policies.md). */
+const lowest = list => list.sort((x, y) => (x.build ? x.build.pool - x.damage : x.pool - x.damage) - (y.build ? y.build.pool - y.damage : y.pool - y.damage))[0];
+const encounterSpent = (pc, key) => pc.build.turns[key].steps.map(stepOf).filter(x => x.kind === "action").some(x => { const a = pc.build.actions[x.name]; return (a.freq === "encounter" || a.freq === "daily") && pc.spent?.has(group(a.name)); });
+/**
+ * A party policy. Switches (all off = the plan policy):
+ *  hold: a melee PC doesn't walk to an enemy it can't reach with one Advance while melee enemies are still coming (rounds 1 and 2): it keeps its AP (Guard) and its place;
+ *  kite: a ranged PC that starts its turn Engaged steps away first (1 AP), whatever its turn says;
+ *  protect: a melee PC walks to the enemy nearest to a ranged ally when one is within 3 squares of it, not to the one nearest to itself;
+ *  novaLate: the round 1 turn with an Encounter Action is kept for round 2 (when Escalation is higher);
+ *  react: "first" = every Reaction on its first trigger, the Opportunity Attack too (the plan: "spare", its Reaction AP stays for the class Reaction);
+ *  focus: "nearest" = each PC hits the enemy nearest to it (no focus fire: the casual table); the plan: the enemy closest to dying.
+ */
+export function makePolicy(name, sw = {}) {
+  const P = { ...planPolicy, name, switches: sw };
+  if (sw.hold) P.holds = (E, pc, t, gap, speed) => E.round <= 2 && gap > speed && E.alive().some(f => f.melee && !E.up().some(p => MP.adj(f, p)));
+  if (sw.kite) P.kites = () => true;
+  if (sw.protect) P.meleeGoal = (E, pc, list) => { const back = E.up().filter(p => !p.melee); let best = null, bd = 4; for (const f of list) for (const a of back) { const d = MP.dist(f.pos, a.pos); if (d < bd) { bd = d; best = f; } } return best; };
+  if (sw.novaLate) P.pcTurn = (E, pc, engaged = false) => { const k1 = turnFor(pc, 1, E.pcs, engaged), k2 = turnFor(pc, 2, E.pcs, engaged); return E.round === 1 || encounterSpent(pc, k1) ? k2 : k1; };
+  if (sw.react === "first") P.reactionReserve = () => 1;
+  if (sw.focus === "nearest") {
+    P.quarry = (E, pc) => MP.nearest(pc, E.alive(), E.W ?? { M: null });
+    P.pcTarget = (E, pc) => { if (!E.M) return E.alive()[E.pcs.indexOf(pc) % E.alive().length] ?? null;
+      const ok = E.alive().filter(f => MP.canTarget(pc, f, E.W) && (pc.melee ? MP.adj(pc, f) : Number.isFinite(MP.rangeBanes(pc.range, MP.dist(pc.pos, f.pos)))));
+      return ok.sort((x, y) => MP.dist(pc.pos, x.pos) - MP.dist(pc.pos, y.pos))[0] ?? null; };
+  }
+  return P;
+}
+/**
+ * An enemy policy: how an NPC picks its target. "weakest": the PC with the least Health left that it can strike this turn (focus fire);
+ * "nearest": the nearest PC, whoever it is; "back": the ranged PCs first (it goes for the Archers). The plan: by the Strikes it can make, a hurt PC a little more.
+ */
+export function makeNpcPolicy(name, how) {
+  const P = { ...planPolicy, name };
+  if (how === "weakest") P.npcWeight = (E, f, t, strikes) => (strikes > 0 ? (lowest(E.up().filter(p => true)) === t ? 1000 : 0.001) : 0);
+  if (how === "nearest") P.npcWeight = (E, f, t) => 1e-6 + (MP.nearest(f, E.up(), E.W) === t ? 1000 : 0);
+  if (how === "back") P.npcWeight = (E, f, t, strikes, past) => planPolicy.npcWeight(E, f, t, strikes, past) * (t.melee ? 1 : 4);
+  return P;
+}
+export const POLICIES = {
+  plan: planPolicy,
+  hold: makePolicy("hold the line", { hold: true }),
+  kite: makePolicy("kite", { kite: true }),
+  protect: makePolicy("protect the back line", { protect: true }),
+  novaLate: makePolicy("Encounter Actions in round 2", { novaLate: true }),
+  reactFirst: makePolicy("react to the first trigger", { react: "first" }),
+  tactical: makePolicy("tactical (hold, kite, protect)", { hold: true, kite: true, protect: true }),
+  casual: makePolicy("casual (no focus fire, first trigger)", { focus: "nearest", react: "first" }),
+};
+export const NPC_POLICIES = { plan: planPolicy, weakest: makeNpcPolicy("focus the weakest", "weakest"), nearest: makeNpcPolicy("the nearest", "nearest"), back: makeNpcPolicy("go for the back line", "back") };

@@ -1,6 +1,6 @@
 # SIM: the automated playtest environment
 
-The brief: `book/sim-brief.md`. Built in four parts. **SIM-1 is done (2026-11-12, Foundry v0.0.365)**: the shared engine and its turn loop on the open field. **SIM-2 is done (2026-11-12, v0.0.366)**: maps with walls and Difficult Terrain, Line of Effect and Cover by corners, movement by paths, Forced Movement with Collision, the fights by map (`../maps.md`); areas and Zones are **not** drawn on the map yet (below). The viewer's first version is built. SIM-3 (decision policies) and SIM-4 (the Encounter Log's format, Playtest 4 replayed) are next.
+The brief: `book/sim-brief.md`. Built in four parts. **SIM-1 is done (2026-11-12, Foundry v0.0.365)**: the shared engine and its turn loop on the open field. **SIM-2 is done (2026-11-12, v0.0.366)**: maps with walls and Difficult Terrain, Line of Effect and Cover by corners, movement by paths, Forced Movement with Collision, the fights by map (`../maps.md`); areas and Zones are **not** drawn on the map yet (below). The viewer's first version is built. **SIM-3 is done (2026-11-12, no Foundry version)**: decision policies for the party and the enemies and the sensitivity report (`../policies.md`). SIM-4 (the Encounter Log's format, Playtest 4 replayed) is next.
 
 ## What is here
 
@@ -14,6 +14,7 @@ The brief: `book/sim-brief.md`. Built in four parts. **SIM-1 is done (2026-11-12
 | `view.mjs`, `viewer-template.html` | **The fight viewer** (2026-11-12, brought forward from SIM-4 at Lucas's request): `view.mjs` plays every encounter of fights.txt and writes **`fights.html`**, one file to open in a browser |
 | `../map.mjs` | The map layer: distances, Engaged, Flanking, range, conditions, movement, Forced Movement. With no map it is the open field (Cover drawn by chance per shot), exactly as before SIM-2; with a map (`loadMap`): walls, Line of Effect and Cover by corners, paths around walls and through Difficult Terrain, Collision |
 | `../maps/*.txt` | **The maps** (SIM-2): `pillars`, `corridor`, `rough`, `longsight`, `closequarters`; `open` is the open field |
+| `policies.mjs` | **The sensitivity report** (SIM-3): every headline fight under each party policy and each enemy policy, on three maps; it writes `../policies.md` |
 | `maps.mjs` | The fights on every map and the price of Speed and of the movement conditions there; it writes `../maps.md` |
 | `../spec.mjs` | Reads the class files and `fights.txt`, writes `report.md`; it exports everything above again, so the other scripts didn't change |
 
@@ -24,6 +25,7 @@ node book/ruler/sim/run.mjs                               # the encounters of fi
 node book/ruler/sim/run.mjs "4 Standards (normal)" --seed 3
 node book/ruler/sim/view.mjs                               # writes sim/fights.html: open it in a browser
 node book/ruler/sim/maps.mjs                               # writes maps.md (about 25 minutes; --quick about 9)
+node book/ruler/sim/policies.mjs                           # writes policies.md (about 11 minutes; --quick about 4)
 ```
 
 ## Maps (SIM-2)
@@ -45,7 +47,7 @@ Draw a new one and it is in the viewer and in `maps.md` the next time their scri
 
 ## The viewer (`fights.html`)
 
-Double-click `book/ruler/sim/fights.html`. Pick an **Encounter** and a **Fight** (each is a seed: "3: won, 4 rounds"), press **Play** (Space), or step with the arrow keys (Left / Right one step, Down the next turn, Home the start). Pick a **Map** first. The map shows walls (dark) and Difficult Terrain (tinted) and every creature on the grid (blue the party, red the enemies; the tag is its first letter and number), its Health bar and Guard, a gold ring on whose turn it is, a line for each attack coloured by Tier (dashed for a Reaction) with the damage, **a green line and ring for anything that helps an ally** (a heal, a Rally Point, Guard, a block: Lucas, 2026-11-12), and a dotted trail for a move. Beside it: every creature's Health, Guard, Escalation and conditions now, and the log (click a line to jump there). The top line gives the encounter's numbers over 300 fights.
+Double-click `book/ruler/sim/fights.html`. Pick an **Encounter** and a **Fight** (each is a seed: "3: won, 4 rounds"), press **Play** (Space), or step with the arrow keys (Left / Right one step, Down the next turn, Home the start). Pick a **Map** first, and how the **Party plays** (the plan, tactical or casual policy). The map shows walls (dark) and Difficult Terrain (tinted) and every creature on the grid (blue the party, red the enemies; the tag is its first letter and number), its Health bar and Guard, a gold ring on whose turn it is, a line for each attack coloured by Tier (dashed for a Reaction) with the damage, **a green line and ring for anything that helps an ally** (a heal, a Rally Point, Guard, a block: Lucas, 2026-11-12), and a dotted trail for a move. Beside it: every creature's Health, Guard, Escalation and conditions now, and the log (click a line to jump there). The top line gives the encounter's numbers over 300 fights.
 
 It is one file with no build step and nothing loaded from the network. It knows no rule: it draws the engine's log (each event's `ch` list says whose Health, Guard, place and conditions changed). `node book/ruler/sim/view.mjs` writes it again after a change to the rules, the builds or fights.txt (`--seeds 12` for more fights to watch, `"2 Elites"` for one encounter, `--out file.html`). To change how it looks, edit `viewer-template.html`, not `fights.html`.
 
@@ -82,9 +84,32 @@ These are written only here. Each is a rule the system also has, in code that ne
 
 ## Decisions (policy.mjs)
 
-The engine asks the policy; `planPolicy` answers as the ruler always did. SIM-3 adds policies with the same functions and reports every headline number under two or three.
+The engine asks the policy; `planPolicy` answers as the ruler always did (report.md is the plan policy on the open field: the gate). `fight(..., { policy, npcPolicy })` takes one for the party and one for the enemies.
 
-Still decided inside the engine, to move into the policy in SIM-3: where a creature walks (a melee PC to the nearest enemy, a Charge when it can; a ranged PC away from the enemies but in range, an Evade 1 next to an Opportunity Attack), the order of an NPC's attacks, and that a PC uses a Reaction on its first trigger.
+**The party's policies** (`POLICIES`; `makePolicy(name, switches)` builds one, each switch one decision):
+
+| Switch | What it decides |
+|---|---|
+| `hold` | A melee PC doesn't walk to an enemy it can't reach with one Advance while melee enemies are still coming (rounds 1 and 2): it keeps its place and its AP (Guard at its next turn) |
+| `kite` | A ranged PC that starts its turn Engaged steps away first (1 AP), then takes what is left of its turn |
+| `protect` | A melee PC walks to the enemy nearest to a ranged ally (within 3 squares of one), not to the one nearest to itself |
+| `novaLate` | The round 1 turn with an Encounter Action waits for round 2 |
+| `react: "first"` | Every Reaction on its first trigger, the Opportunity Attack too |
+| `focus: "nearest"` | No focus fire: each PC hits the enemy nearest to it |
+
+`POLICIES`: `plan`, each switch alone (`hold`, `kite`, `protect`, `novaLate`, `reactFirst`), `tactical` (hold + kite + protect), `casual` (no focus fire, first trigger). **The enemies'** (`NPC_POLICIES`): `plan` (the PC it can strike most, a hurt one a little more), `weakest` (every NPC on the PC with the least Health left), `nearest`, `back` (the Archers first).
+
+**What `policies.md` found (300 fights a cell; the party's Health lost, a PC Down, the party wins):**
+
+- **Decisions move the result as much as the encounter's size.** The normal fight on the open field costs 9% of the party's Health when it holds the line and 20% when it plays casually (the plan: 14%). The deadly fight in the corridor is won 66% of the time holding the line, 56% on the plan, 33% casually.
+- **Holding the line is the best single decision** everywhere (normal fight 14% → 9% on the open field, deadly fight won 71% → 77%): the enemies come to the party, the Paladins get whole turns and their unused AP's Guard is finally used (0.2 a fight instead of 0.04).
+- **Focus fire is worth about a third of the fight:** without it (casual) the deadly fight costs 64% instead of 48% on the open field.
+- **Kiting as written here doesn't pay:** the step away costs an AP of shots (an Archer deals 5% less) and the party takes the same. Protecting the back line and holding the Encounter Action for round 2 are inside the noise. Reacting to the first trigger costs up to 7 points on the maps.
+- **How the GM plays the enemies matters more than anything the party does.** Enemies that all strike the weakest PC put a PC Down in 50% of the normal fights (the plan: 21%) and win the deadly fight 46% of the time (29%); enemies that all walk to the nearest PC are as dangerous on a map (the corridor's deadly fight: won 25%), because they pile on the front line. The Bestiary's fit ("a Down in about 1 fight of 5") is the plan policy's.
+
+Each number of report.md, maps.md, rclasses.md and rbestiary.md is the plan policy's; policies.md is the range around them.
+
+Still decided inside the engine: where a creature walks (a melee PC to the nearest enemy, a Charge when it can; a ranged PC away from the enemies but in range, an Evade 1 next to an Opportunity Attack), the order of an NPC's attacks, and that a PC uses a Reaction on its first trigger.
 
 On a map the plan policy is weak on purpose (it is the open field's): nobody holds a chokepoint, nobody steps behind cover, the melee PCs walk to the nearest enemy wherever it stands. `maps.md` is read with that in mind; SIM-3's policies are what make a map's numbers trustworthy.
 
@@ -92,6 +117,6 @@ Known gaps of `planPolicy`, each a finding for SIM-3 (README of the ruler, "The 
 
 ## The log
 
-`fight(party, npcs, R, { log: true })` returns `log`: every event in order, each `{ round, type, ... }`. Types: `start` (the map with its walls and Difficult Terrain, Initiative, every creature's place and Health), `round`, `turn`, `move` (from, to, how), `action` (a PC's Action on a target: Tier, damage), `attack` (an NPC's Basic attack or Special), `reaction` (`protects`: the ally it protects), `help` (a heal, a Rally Point, Guard, a Defense bonus: who, target, amount), `collision`, `down`, `dead`, `end`. Writing the log changes no roll. `run.mjs` prints it as text; SIM-4 writes it in the Encounter Log's playtest format and draws it.
+`fight(party, npcs, R, { log: true })` returns `log`: every event in order, each `{ round, type, ... }`. Types: `start` (the map with its walls and Difficult Terrain, Initiative, every creature's place and Health), `round`, `turn`, `move` (from, to, how), `action` (a PC's Action on a target: Tier, damage), `attack` (an NPC's Basic attack or Special), `reaction` (`protects`: the ally it protects), `hold` (a PC keeps its place), `help` (a heal, a Rally Point, Guard, a Defense bonus: who, target, amount), `collision`, `down`, `dead`, `end`. Writing the log changes no roll. `run.mjs` prints it as text; SIM-4 writes it in the Encounter Log's playtest format and draws it.
 
 Each event also has `ch`: the creatures whose state changed since the last event (`i` its place in the start list, `dmg`, `pos`, `out`, `guard`, `esc`, `cond`), so Forced Movement, heals, Guard and conditions show without their own event. Not in the log yet as lines of their own: the Boons and Banes of each roll, heals, conditions put on and ended, Escalation raises.

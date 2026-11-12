@@ -15,7 +15,7 @@ import { fileURLToPath } from "node:url";
 const HERE = fileURLToPath(new URL(".", import.meta.url));
 // SIM-1 (2026-11-12): the engine lives in sim/ (core.mjs: rules, dice, damage, NPCs; turn.mjs: one PC turn; engine.mjs: the fight and the day;
 // policy.mjs: the decisions). This file reads the class and fight files, writes the reports, and exports the engine again for the other scripts.
-export * from "./sim/core.mjs"; export * from "./sim/turn.mjs"; export * from "./sim/engine.mjs";
+export * from "./sim/core.mjs"; export * from "./sim/turn.mjs"; export * from "./sim/engine.mjs"; export * from "./sim/policy.mjs";
 import { RULES, RULES_R, RULES_PRE_R, C, CF, TW, MP, rng, rollDice, mapChecks, parseDamage, weaponTier, npcOf } from "./sim/core.mjs";
 import { runTurn, turnDamage, turnFor, stepOf, group } from "./sim/turn.mjs";
 import { fight, day, roleCv, npcStrike, npcSeq, npcTurn } from "./sim/engine.mjs";

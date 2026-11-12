@@ -76,7 +76,7 @@ Playtest 4's encounter replayed in SIM (the same creatures, the map approximated
 |---|---|---|
 | SIM-1 | **DONE (2026-11-12, v0.0.365, branch `pack-sim-1`).** The shared engine: the rules SIM needs pulled into pure system functions with tests; SIM's turn loop on the open field. Built: `book/ruler/sim/` (`core.mjs`, `turn.mjs`, `engine.mjs`, `policy.mjs`, `run.mjs`, README), the system's `module/roundrules.mjs` with test t246, the fight's log | `report.md` reproduced on the open field (the gate in 4.2): **byte for byte, with report-pre-r.md, rclasses.md and rbestiary.md**; the system's 244 tests pass |
 | SIM-2 | **DONE except areas and Zones on the grid (2026-11-12, v0.0.366, branch `pack-sim-2`).** Maps, Line of Effect and Cover, movement and Forced Movement, terrain, areas and Zones. Built: `book/ruler/maps/*.txt` (five maps and the open field), the map layer in `book/ruler/map.mjs`, the system's `module/gridrules.mjs` with test t247, `sim/maps.mjs` → `book/ruler/maps.md`, the viewer draws the maps. **Left:** an Action's area drawn on the grid and Zones that stay (the shapes are pure functions with tests; the Actions still hit the number of creatures their ruler line says) | the starter maps run; Speed and the movement conditions get a price above 0 where the map allows it: **yes** (`maps.md` section 2) |
-| SIM-3 | Decision policies and the sensitivity report | each headline number under 2 or 3 policies |
+| SIM-3 | **DONE (2026-11-12, branch `pack-sim-3`; no Foundry version).** Decision policies and the sensitivity report. Built: `sim/policy.mjs` (`makePolicy` switches: hold the line, kite, protect the back line, Encounter Actions in round 2, react to the first trigger, no focus fire; the mixes `tactical` and `casual`; the enemies' `weakest`, `nearest`, `back`), `sim/policies.mjs` → `book/ruler/policies.md`, the viewer's "Party plays" selector | each headline number under 2 or 3 policies: **yes, 8 party policies and 4 enemy policies on 3 maps** |
 | SIM-4 | The replay viewer (**its first version is built, 2026-11-12, at Lucas's request: `book/ruler/sim/fights.html`, written by `view.mjs`; it grows with each part**) and the Encounter Log output; Playtest 4 replayed | a fight can be watched; the Playtest 4 comparison is written in SIM's README |
 
 ### After SIM-1: what SIM-2 should know
@@ -96,6 +96,13 @@ Playtest 4's encounter replayed in SIM (the same creatures, the map approximated
 4. **Left from SIM-2:** areas and Zones on the grid (so Consecrated Ground, Covering Fire and Rain of Arrows are still priced as on the open field), Hazardous Terrain, Large creatures, elevation, light and Senses, a Slide's Collision; Threatening and Engaged ignore walls.
 5. **The gate still holds on the open field** (report.md unchanged). A new policy changes the numbers on purpose: report each headline number under the plan policy and the new ones, side by side.
 
+### After SIM-3: what SIM-4 and the Stage 0 run should know
+
+1. **A number is now a range.** `book/ruler/policies.md`: the normal fight costs 9 to 20% of the party's Health by how the party plays (the plan: 14%), and a PC goes Down in 21% to 50% of them by how the enemies choose targets. The Stage 0 run reports each headline number under the plan, tactical and casual party policies and under the plan and focus-the-weakest enemy policies, and fits the Bestiary's row knowing which one the target means (a question for Lucas: rules-backlog "SIM-3").
+2. **Not built as policies:** a Rally Point a PC spends on itself by choice, cover-seeking (a shooter stepping behind a pillar), holding a chokepoint by its place on the map (hold the line waits where it stands), per-creature policies in one party (the option is per side).
+3. **Left from SIM-2, still open:** areas and Zones on the grid.
+4. **SIM-4:** the log has what the viewer needs (`hold`, `help`, `collision` since SIM-2 and 3); the Encounter Log's playtest format (`foundry/twod12/module/enclog.mjs exportText`) and Playtest 4's replay are its work.
+
 ## 6. What the ruler still lacks (the README's "not modeled" lists), and where it goes
 
 | Missing | Where |
@@ -108,7 +115,7 @@ Playtest 4's encounter replayed in SIM (the same creatures, the map approximated
 | NPC Saves, so the Boon on Saves (Shield of Faith 3 and Aura of Protection 3 read "under" for it) | SIM-1 |
 | NPC special Actions (the Bestiary's), the Elite's phases | SIM-1 |
 | Body and Mind as two pools (Vigor and Resolve) | SIM-1 |
-| Rally Points a PC spends on itself | SIM-3 (a decision) |
+| Rally Points a PC spends on itself | not built in SIM-3 (only the builds' `when self below` turn) |
 | Riders: Lock & Loose's and Pinning Shot's, Vanish's Bane on the first Strike, True Shot, Rolling Shot, Hand of Mercy, Long Draw | SIM-1 / SIM-2 |
 | Senses and Light: Darkness, Dim, Blinded, Hearing | SIM-2 (a map's light) |
 | The pack AU conditions as the Bestiary uses them: Frightened, Taunted, Sickened, Staggered, Dazed, Grabbed, Bleed | SIM-1 |

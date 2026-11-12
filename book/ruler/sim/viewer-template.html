@@ -71,6 +71,7 @@ tr.out td { opacity: .45; } tr.act td { background: var(--now); }
   <h1>2d12 fight viewer</h1>
   <label>Map <select id="mapsel"></select></label>
   <label>Encounter <select id="enc"></select></label>
+  <label>Party plays <select id="pol"></select></label>
   <label>Fight <select id="seed"></select></label>
   <span>
     <button id="first" title="To the start (Home)">⏮</button>
@@ -126,6 +127,7 @@ function line(e) {
   if (e.type === "reaction") return `<span class="rxn${e.protects ? " good" : ""}">Reaction, <b>${short[e.who]}</b>: ${esc(e.reaction)}${e.on ? ` on <b>${short[e.on]}</b>${e.protects ? `, for ${short[e.protects]}` : ""}` : ""}${e.tier ? `: ${T(e.tier)}` : ""}${d(e.damage)}</span>`;
   if (e.type === "help") return `<span class="good">${short[e.who] === short[e.target] ? "" : `<b>${short[e.who]}</b> → `}<b>${short[e.target]}</b>: ${esc(e.what)}${e.amount ? ` <b>+${n1(e.amount)}</b>` : ""}</span>`;
   if (e.type === "collision") return `<b>${short[e.who]}</b> is thrown into ${e.into === "a wall" ? "a wall" : `<b>${short[e.into]}</b>`}: <b>${n1(e.damage)}</b> damage`;
+  if (e.type === "hold") return `<span class="good">holds its place (its AP stay: Guard at its next turn)</span>`;
   if (e.type === "down") return `<b class="T3">${short[e.who]} goes Down</b>`;
   if (e.type === "dead") return `<b>${short[e.who]} is out</b>`;
   if (e.type === "end") return `<b>${e.won ? "The party wins" : "The party loses"}</b> in ${e.rounds} rounds`;
@@ -134,7 +136,7 @@ function line(e) {
 
 function load() {
   stop();
-  const here = DATA.fights.filter(f => f.map === $("mapsel").value && f.enc === $("enc").value);
+  const here = DATA.fights.filter(f => f.map === $("mapsel").value && f.enc === $("enc").value && f.policy === $("pol").value);
   fight = here.find(f => String(f.seed) === $("seed").value) ?? here[0];
   const start = fight.log[0];
   names = start.creatures.map(c => c.name); short = Object.fromEntries(names.map(n => [n, tagOf(n)]));
@@ -143,8 +145,8 @@ function load() {
   frames = fight.log.map(e => { if (e.ch) { st = st.map(x => ({ ...x })); for (const c of e.ch) st[c.i] = { dmg: c.dmg, pos: c.pos ?? st[c.i].pos, out: c.out, guard: c.guard, esc: c.esc, cond: c.cond }; } return st; });
   const pts = frames.flatMap(s => s.map(x => x.pos)).filter(Boolean), xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
   box = start.grid ? { x0: 0, x1: start.grid.w - 1, y0: 0, y1: start.grid.h - 1 } : pts.length ? { x0: Math.min(...xs) - 1, x1: Math.max(...xs) + 1, y0: Math.min(...ys) - 1, y1: Math.max(...ys) + 1 } : null;
-  const s = DATA.stats[`${fight.map}|${fight.enc}`];
-  $("stats").innerHTML = s ? `<b>${esc(fight.enc)}</b> on <b>${esc(fight.log[0].map)}</b> over ${s.runs} fights: the party wins <b>${Math.round(s.won * 100)}%</b> · <b>${n1(s.rounds)}</b> rounds · <b>${Math.round(s.lost * 100)}%</b> of its Health lost · a PC Down in <b>${Math.round(s.down * 100)}%</b>. This fight: seed ${fight.seed}, ${fight.log.at(-1).won ? "won" : "lost"} in ${fight.log.at(-1).rounds} rounds.` : "";
+  const s = DATA.stats[`${fight.map}|${fight.enc}|${fight.policy}`];
+  $("stats").innerHTML = s ? `<b>${esc(fight.enc)}</b> on <b>${esc(fight.log[0].map)}</b>, the party on <b>${esc(fight.policy)}</b>, over ${s.runs} fights: the party wins <b>${Math.round(s.won * 100)}%</b> · <b>${n1(s.rounds)}</b> rounds · <b>${Math.round(s.lost * 100)}%</b> of its Health lost · a PC Down in <b>${Math.round(s.down * 100)}%</b>. This fight: seed ${fight.seed}, ${fight.log.at(-1).won ? "won" : "lost"} in ${fight.log.at(-1).rounds} rounds.` : "";
   // The log.
   const L = $("log"); L.innerHTML = "";
   fight.log.forEach((e, i) => { const d = document.createElement("div"); if (e.type === "round") { d.className = "r"; d.textContent = `Round ${e.round}`; } else { d.className = e.type === "turn" || e.type === "start" || e.type === "end" ? "t" : "i"; d.innerHTML = line(e); d.onclick = () => { stop(); go(i); }; } d.dataset.i = i; L.appendChild(d); });
@@ -209,8 +211,9 @@ const nextTurn = () => { stop(); let j = k + 1; while (j < fight.log.length - 1 
 
 $("mapsel").innerHTML = [...new Set(DATA.fights.map(f => f.map))].map(e => `<option>${esc(e)}</option>`).join("");
 const fillEncs = () => { const keep = $("enc").value, list = [...new Set(DATA.fights.filter(f => f.map === $("mapsel").value).map(f => f.enc))]; $("enc").innerHTML = list.map(e => `<option${e === keep ? " selected" : ""}>${esc(e)}</option>`).join(""); };
+$("pol").innerHTML = [...new Set(DATA.fights.map(f => f.policy))].map(e => `<option>${esc(e)}</option>`).join(""); $("pol").onchange = () => { fillSeeds(); load(); };
 $("mapsel").onchange = () => { fillEncs(); fillSeeds(); load(); }; fillEncs();
-const fillSeeds = () => { $("seed").innerHTML = DATA.fights.filter(f => f.map === $("mapsel").value && f.enc === $("enc").value).map(f => `<option value="${f.seed}">${f.seed}: ${f.log.at(-1).won ? "won" : "lost"}, ${f.log.at(-1).rounds} rounds</option>`).join(""); };
+const fillSeeds = () => { $("seed").innerHTML = DATA.fights.filter(f => f.map === $("mapsel").value && f.enc === $("enc").value && f.policy === $("pol").value).map(f => `<option value="${f.seed}">${f.seed}: ${f.log.at(-1).won ? "won" : "lost"}, ${f.log.at(-1).rounds} rounds</option>`).join(""); };
 $("enc").onchange = () => { fillSeeds(); load(); }; $("seed").onchange = load;
 $("first").onclick = () => { stop(); go(0); }; $("prev").onclick = () => { stop(); go(k - 1); }; $("next").onclick = () => { stop(); go(k + 1); }; $("play").onclick = play; $("turn").onclick = nextTurn;
 $("speed").onchange = () => { if (timer) { stop(); play(); } };

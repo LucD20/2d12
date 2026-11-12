@@ -70,8 +70,8 @@ export const rallyBonus = (pcs, t, inCombat = true) => { let n = 0, by = null; f
  * die: econ.mjs measures a window of rounds with it); inject { round, fn(W) } (called at the start of that round: econ.mjs puts a condition on).
  * Returns { rounds, won, lost: share of the party's Health lost in this fight, downs, firstDown, wipe, downBy, pcs, W }.
  */
-export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal = false, inject = null, streams = false, policy = planPolicy, log = false } = {}) {
-  const P = policy, events = log ? [] : null;
+export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal = false, inject = null, streams = false, policy = planPolicy, npcPolicy = null, log = false } = {}) {
+  const P = policy, PN = npcPolicy ?? policy, events = log ? [] : null;   // SIM-3: the party's decisions and the enemies' (the same policy unless npcPolicy is given)
   const M = map?.on ? map : null;
   const pcs = party.map(p => (p.build ? p : pcState(p)));
   for (const p of pcs) { p.leftSquare = null; p.zoneHeal = null; p.guard = 0; p.guardBy = null; p.down = p.damage >= p.build.pool; p.defBonus = 0; p.defBy = null; p.spent = new Set([...(p.spent ?? [])].filter(g => p.build.actions[Object.keys(p.build.actions).find(k => group(k) === g)]?.freq === "daily")); p.quarry = null; p.unloaded = false; p.startDamage = p.damage; p.esc = p.startEsc ?? RULES.startEsc; p.floorUsed = false; p.elusiveRound = null; p.encFx = []; p.mindDamage = Math.min(p.mindDamage ?? 0, p.damage); p.bloodiedRound = p.damage - p.mindDamage >= p.build.bodyHealth ? 0 : null; p.strainedRound = p.mindDamage >= p.build.mindHealth ? 0 : null; p.keptAP = RULES.reactFromStart ? RULES.reactionAp : RR.reactionAPAt(false); p.blockedFor = null; p.apGuard = 0; p.turnKept = 0; p.hooked = {}; p.stanceOff = false; }
@@ -243,7 +243,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     if (sq <= 0) return false;
     if (p.melee) {
       if (foesUp.some(f => MP.adj(p, f))) return false;   // already Engaged: it stays
-      const t = MP.nearest(p, foesUp, W);
+      const t = P.meleeGoal?.(E, p, foesUp) ?? MP.nearest(p, foesUp, W);
       const from = at(p), n = MP.walk(p, MP.toward(t), sq, W, evade ? null : pcLeave(++actionId)); if (n) ev("move", { who: nameOf(p), how: evade ? "Evade" : "Advance", from, to: at(p) });
       if (n) { p.leftSquare = round; p.stanceOff = true; }
       if (n && !step.free) p.st.moveAP += step.ap ?? 0;
@@ -265,6 +265,8 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   /** A melee PC closes in before its turn's Actions: a Charge (2 AP: Advance + a Weapon Attack with 1 Boon) when it can, else Advances. Returns { ap, startNext }. */
   const approach = (pc, turn) => {
     const out = { ap: 0, startNext: [] };
+    // SIM-3: a ranged PC that starts its turn Engaged steps away first when its policy kites (1 AP: an Advance, or an Evade 1 next to an Opportunity Attack), whatever its turn says.
+    let kiteAp = 0; if (!pc.melee && P.kites?.(E, pc) && MP.engaged(pc, W) && !pc.cond.immob && pcMove(pc, { how: "advance", ap: 1 }) !== false) { kiteAp = 1; out.ap = 1; pc.st.kited = (pc.st.kited ?? 0) + 1; }
     if (!pc.melee && M.grid) {   // SIM-2, on a map: a ranged PC that can target no enemy from where it stands Advances to a square with a line to one (a decision: SIM-3 moves it to the policy)
       const sees = () => alive().some(f => MP.canTarget(pc, f, W) && Number.isFinite(MP.rangeBanes(pc.range, MP.dist(pc.pos, f.pos))));
       for (let k = 0; k < 2 && !sees() && out.ap < RULES.ap - 1 && MP.speedOf(pc) > 0 && !pc.down; k++) {
@@ -274,13 +276,14 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
         if (!n) break;
         out.ap++; pc.leftSquare = round; pc.stanceOff = true; ev("move", { who: nameOf(pc), how: "Advance", from, to: at(pc) });
       }
-      pc.st.moveAP += out.ap; return out;
+      pc.st.moveAP += out.ap - kiteAp; return out;
     }
     if (!pc.melee || alive().some(f => MP.adj(pc, f))) return out;
-    const t = MP.nearest(pc, alive(), W);
+    const t = P.meleeGoal?.(E, pc, alive()) ?? MP.nearest(pc, alive(), W);   // SIM-3: whom a melee PC walks to (the plan: the nearest)
     if (!t) return out;
     if (pc.cond.immob === "escape") { pc.cond.immob = null; out.ap++; }   // 1 AP [Move] to end it (Immobilized)
     const gap = M.grid ? MP.gap(pc, t, W) : MP.dist(pc.pos, t.pos) - 1, sp = MP.speedOf(pc);
+    if (P.holds?.(E, pc, t, gap, sp)) { out.held = true; pc.st.held = (pc.st.held ?? 0) + 1; ev("hold", { who: nameOf(pc) }); return out; }   // SIM-3: it waits for the enemy to come (its AP stay unspent: Guard at its next turn)
     if (sp <= 0) return out;
     const hasWA = turn.steps.some(x => /^weapon attack/i.test(x));
     if (!pc.cond.hindered && gap >= 3 && gap <= sp && hasWA && MP.canTarget(pc, t, W)) {   // Charge: the Advance part costs 1 AP here, its Weapon Attack is the turn's first one, with 1 Boon
@@ -313,11 +316,11 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
       return esc + (gap <= first ? 1 : 1 + Math.ceil((gap - first) / Math.max(1, rest)));
     };
     const oaNear = up().some(p => rxOf(p).some(rx => rx.kind === "opportunity" && p.keptAP >= oaNeed(p, rx)) && oaCan(p, f));
-    const w = targets.map(t => P.npcWeight(E, f, t, Math.min(f.strikes, Math.max(0, ap - reachAP(t)) / cost), f.melee && oaNear && !MP.adj(f, t)));
+    const w = targets.map(t => PN.npcWeight(E, f, t, Math.min(f.strikes, Math.max(0, ap - reachAP(t)) / cost), f.melee && oaNear && !MP.adj(f, t)));
     const sum = w.reduce((a, x) => a + x, 0);
     let t;
     if (sum > 0) { let x = (f.R ?? R)() * sum; t = targets.find((p, k) => (x -= w[k]) < 0) ?? targets[0]; }
-    else t = P.npcNearest(E, f, targets);
+    else t = PN.npcNearest(E, f, targets);
     const there = () => (f.melee ? MP.adj(f, t) : MP.dist(f.pos, t.pos) <= f.range[0] && !MP.engaged(f, W) && MP.canTarget(f, t, W));
     while (!there() && ap > 0 && !f.dead) {
       if (f.cond.immob === "eot") break;
@@ -333,7 +336,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
       let basics = 0;
       for (let s = 0; s < 3 && ap > 0; s++) {
         const enc = f.kit.enc && !f.encUsed && ap >= f.kit.enc.ap ? f.kit.enc : null, rnd = !enc && f.kit.round && f.roundSpecialN < RR.eliteRoundSpecials(f.esc) && ap >= f.kit.round.ap ? f.kit.round : null, sp = enc ?? rnd;   // Elite Escalation 2: the Round Special twice a round
-        if (t.down || (f.melee && !MP.adj(f, t))) t = P.npcRetarget(E, f);
+        if (t.down || (f.melee && !MP.adj(f, t))) t = PN.npcRetarget(E, f);
         if (!t) break;
         const m = MP.mapMods(f, t, f.melee ? "melee" : "ranged", W); if (!m) break;
         const eb = f.firstAtk ? RR.eliteFirstAttackBoons(f.esc) : 0; f.firstAtk = false;   // Elite Escalation 1: its first attack each round has 1 Boon
@@ -344,7 +347,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
       const x = Math.min(f.strikes, Math.max(0, ap) / cost);
       const n = Math.floor(x + 1e-9) + (x % 1 > 1e-9 && (f.R ?? R)() < x % 1 ? 1 : 0);
       for (let k = 0; k < n; k++) {
-        if (t.down || (f.melee && !MP.adj(f, t))) t = P.npcRetarget(E, f);
+        if (t.down || (f.melee && !MP.adj(f, t))) t = PN.npcRetarget(E, f);
         if (!t) break;
         const m = MP.mapMods(f, t, f.melee ? "melee" : "ranged", W); if (!m) break;
         npcHit(f, t, k, m.boons, m.banes, m.doomed);
@@ -388,7 +391,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
           pc.readyAP = 0;
           ev("turn", { who: nameOf(pc), turn: turn.name, escalation: pc.esc, ap: limit, guard: (pc.guard ?? 0) + (pc.apGuard ?? 0), pos: at(pc) });
           const ap = approach(pc, turn);
-          extra = { apLimit: Math.max(0, limit - ap.ap), startNext: ap.startNext, turnKey: turn };
+          extra = { apLimit: Math.max(0, limit - ap.ap), startNext: ap.startNext, turnKey: ap.held ? { name: "Hold", steps: [] } : turn };
         }
         const turn = extra.turnKey ?? pc.build.turns[P.pcTurn(E, pc)];
         if (!M) ev("turn", { who: nameOf(pc), turn: turn.name, escalation: pc.esc, ap: extra.apLimit ?? RULES.ap, guard: (pc.guard ?? 0) + (pc.apGuard ?? 0), pos: at(pc) });
@@ -410,7 +413,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
         if (M) npcTurnMap(f);
         else for (const a of npcSeq(f)) {   // no positions: its Bestiary Strikes, or (pack R) everything its AP buys
           const targets = up(); if (!targets.length) break;
-          const w = targets.map(p => P.npcFlatWeight(E, f, p)), sum = w.reduce((a2, x) => a2 + x, 0); let x = R() * sum;
+          const w = targets.map(p => PN.npcFlatWeight(E, f, p)), sum = w.reduce((a2, x) => a2 + x, 0); let x = R() * sum;
           const t = targets.find((p, k) => (x -= w[k]) < 0) ?? targets[0];
           f.curMult = a.mult; npcHit(f, t, a.k, a.boons); f.curMult = 1;
         }
