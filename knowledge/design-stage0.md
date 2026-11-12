@@ -41,7 +41,7 @@ The book's tables (`foundry/twod12/module/config.mjs npcStage0`). **Health:** an
 
 | Role | Vigor or Resolve: Terrible / Low / Medium / High / Extreme | Health, both Medium | Basic attack, Medium | Its Round Special, Medium | Deals a turn to a level 1 Paladin (AD 14) / Archer (AD 13) |
 |---|---|---:|---|---|---|
-| Minion | none: any damage kills it | - | 2 / 1 + 1d4 | 1d4 / 2 + 1d4 (1 AP) | 5.2 / 5.8 |
+| Minion | 3 / 5 / 6 / 7 | 12 | 2 / 1 + 1d4 | 1d4 / 2 + 1d4 (1 AP) | 5.2 / 5.8 |
 | Grunt | 7 / 10 / 13 / 16 / 19 | 26 | 1d4 / 1 + 1d4 | 1 + 1d4 / 2 + 1d4 (1 AP) | 6.0 / 6.7 |
 | Standard | 17 / 24 / 30 / 36 / 42 | 60 | 1 + 1d4 / 2 + 1d6 | 4 + 1d6 / 8 + 1d8 (2 AP) | 11.3 / 12.6 |
 | Elite | 35 / 50 / 65 / 80 / 95 | 130 | 3 + 1d4 / 3 + 1d6 | 6 + 1d6 / 10 + 1d8 (2 AP) | 16.3 / 17.8 |
@@ -57,7 +57,7 @@ The fit behind it (`node book/ruler/sim/stage0fit.mjs`): over pack R's first row
 | 3 | 0 | × 0.94 | × 0.68 | × 0.93 |
 | 3 | 2 | × 1.04 | × 0.79 | × 0.96 |
 
-**The table chosen: Health × 0.95 of that row (a Standard: 30 + 30 = 60) and damage × 0.75**, as ready numbers, on the low side on purpose (Lucas, 2026-11-12: level 1 was too hard, make lower monsters). **Then, with Lucas the same day:** a Standard's Medium 2 AP Special half a step up (4 + 1d6 on Tier 2, was 3 + 1d6; the full step, × 0.80, gives a level 1 party a PC Down in 14% of normal fights and wins the deadly fight 68% of the time); **a Grunt has 3 AP** (with 4, eight Grunts cost a level 1 party 37% of its Health with the Rally Points against 28% for four Standards; with 3: 23%); **a Minion dies to any damage** and has no Reaction AP; **an Elite's Escalation follows the 1-to-6 ladder** (+1 a round and at each phase; its three abilities at 2, 4 and 6).
+**The table chosen: Health × 0.95 of that row (a Standard: 30 + 30 = 60) and damage × 0.75**, as ready numbers, on the low side on purpose (Lucas, 2026-11-12: level 1 was too hard, make lower monsters). **Then, with Lucas the same day:** a Standard's Medium 2 AP Special half a step up (4 + 1d6 on Tier 2, was 3 + 1d6; the full step, × 0.80, gives a level 1 party a PC Down in 14% of normal fights and wins the deadly fight 68% of the time); **a Grunt has 3 AP** (with 4, eight Grunts cost a level 1 party 37% of its Health with the Rally Points against 28% for four Standards; with 3: 23%); **a Minion has 6 + 6 Health**, no Reaction AP, and up to 3 Minions act in one turn slot (dying to any damage was tried: it was worth half its CV 25; with 12 Health it is worth it exactly); **Elites' damage × 1.12** (two Elites then cost what four Standards do); a ranged attack's damage is one rating lower; **an Elite's Escalation follows the 1-to-6 ladder** (+1 a round and at each phase; its three abilities at 2, 4 and 6).
 
 ## 3. The fights at levels 1, 2 and 3
 
@@ -77,9 +77,9 @@ The fit behind it (`node book/ruler/sim/stage0fit.mjs`): over pack R's first row
 
 | Level | 1 Elite + 2 Standards | 2 Elites | 8 Grunts | 2 Standards + 8 Minions |
 |---:|---|---|---|---|
-| 1 | 3.5 · 10% · 26% · 8% · 100% | 3.7 · 11% · 27% · 10% · 100% | 3.2 · 7% · 20% · 2% · 100% | 2.8 · 7% · 17% · 2% · 100% |
-| 2 | 3.6 · 10% · 25% · 9% · 100% | 3.8 · 9% · 26% · 7% · 100% | 3.2 · 7% · 20% · 2% · 100% | 2.8 · 6% · 16% · 2% · 100% |
-| 3 | 3.6 · 10% · 25% · 11% · 100% | 3.8 · 9% · 25% · 10% · 100% | 3.2 · 7% · 20% · 1% · 100% | 2.8 · 6% · 16% · 2% · 100% |
+| 1 | 3.5 · 10% · 26% · 8% · 100% | 3.7 · 11% · 27% · 10% · 100% | 3.2 · 7% · 20% · 2% · 100% | 3.4 · 13% · 28% · 9% · 100% |
+| 2 | 3.6 · 10% · 25% · 9% · 100% | 3.8 · 9% · 26% · 7% · 100% | 3.2 · 7% · 20% · 2% · 100% | 3.4 · 11% · 27% · 7% · 100% |
+| 3 | 3.6 · 10% · 25% · 11% · 100% | 3.8 · 9% · 25% · 10% · 100% | 3.2 · 7% · 20% · 1% · 100% | 3.4 · 11% · 27% · 6% · 100% |
 
 ## 4. Escalation 1 to 6: where the turns are
 
@@ -134,4 +134,4 @@ Four fights with no Rest (easy, normal, normal, hard). **The ladder** (Chapter 2
 | 3 | The ladder | Momentum 0.0: 2.8 r · 6% · Down 3% · won 100% | Momentum 1.0: 3.2 r · 7% · Down 7% · won 100% | Momentum 1.9: 3.2 r · 8% · Down 7% · won 100% | Momentum 2.8: 3.8 r · 13% · Down 18% · won 99% | 99% |
 | 3 | Flat | Momentum 0.0: 2.8 r · 6% · Down 3% · won 100% | Momentum 0.0: 3.4 r · 11% · Down 9% · won 100% | Momentum 0.0: 3.4 r · 11% · Down 10% · won 100% | Momentum 0.0: 4.2 r · 22% · Down 30% · won 96% | 96% |
 
-(4.7 minutes.)
+(4.5 minutes.)

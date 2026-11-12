@@ -226,10 +226,14 @@ export const TWOD12 = {
   // book/ruler/stage0.md): ready numbers, exactly the book's tables. health: an NPC's Vigor or Resolve by rating (each has its own rating; the Health Pool
   // is the two added; no Attribute, no multiplier). basic / s1 / s2 / s3: the damage as written (Tier 2, Tier 3), a flat part plus at most one small die,
   // the Modifier already in it, for the Basic attack and the 1 AP, 2 AP and 3 AP Specials. **The system doesn't read this yet** (its NPCs still use
-  // npcRoles above, pack R's rows): the pack "Stage 0 in Foundry" wires it. Lucas, 2026-11-12 (after the first fit): a Minion dies to any damage (oneHit: no
-  // Health) and has no Reaction AP; a Grunt has 3 AP a turn (ap), as a Minion; a Standard's Medium 2 AP Special is half a step up (4 + 1d6 on Tier 2); the automated playtest environment reads it (book/ruler/sim/core.mjs npcS0).
+  // npcRoles above, pack R's rows): the pack "Stage 0 in Foundry" wires it. Lucas, 2026-11-12 (after the first fit): a Minion has no Reaction AP and up to 3 Minions can share a turn slot (squad); it has 6 + 6 Health
+  // (one hit to kill was tried and dropped: it was worth half its CV); a Grunt has 3 AP a turn (ap), as a Minion; a Standard's Medium 2 AP Special is half a step up (4 + 1d6 on Tier 2); the automated playtest environment reads it (book/ruler/sim/core.mjs npcS0).
+  // A ranged NPC attack pays for its range with this many steps of damage rating (the Bestiary, Ranged attacks; measured: four ranged Standards at full damage are a hard fight).
+  npcRangedStep: 1,
+  // An NPC's CV moves by about this much for each step its Health and damage ratings sit above or below Medium in total (the Bestiary, Ratings; Defense steps are free).
+  npcCvStep: { minion: 5, grunt: 10, standard: 15, elite: 30 },
   npcStage0: {
-    minion: { oneHit: true, reactionAp: 0,
+    minion: { reactionAp: 0, squad: 3, health: [3, 5, 6, 7],
       basic: [["1", "2"], ["1", "1d4"], ["2", "1 + 1d4"], ["1d4", "2 + 1d4"]],
       s1: [["1", "1d4"], ["2", "1 + 1d4"], ["1d4", "2 + 1d4"], ["1 + 1d4", "3 + 1d4"]],
       s2: [["2", "2 + 1d4"], ["1d4", "2 + 1d6"], ["1 + 1d4", "3 + 1d6"], ["2 + 1d4", "5 + 1d6"]] },

@@ -16,7 +16,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 11-species.md | Species | species |  | 0.8 | 32 |
 | 12-paladin.md | Paladin | paladin |  | 4.3 | 126 |
 | 13-archer.md | Archer | archer |  | 4.5 | 134 |
-| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 23.0 | 340 |
+| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 24.2 | 360 |
 | 15-gear.md | Gear | gear |  | 10.9 | 185 |
 
 ## 01-roll.md: Chapter 1: The Roll
@@ -286,28 +286,29 @@ Open (to be decided) boxes: 18: "This class is still written for the earlier lev
 - 6: ## The targets
 - 23:   ### Minor enemies
 - 27: ## Ratings
-- 42: ## Defenses
-- 48:   ### What an Action attacks, rolls and damages
-- 60: ## Attributes and Modifiers
-- 73: ## Health
-- 81: ## Speed
-- 88: ## Steadiness
-- 92: ## Actions
-- 94:   ### The Basic attack
-- 100:   ### Special Actions
-- 114:   ### Conditions
-- 126:   ### Reactions
-- 135:   ### Elite Escalation
-- 156: ## Roles
-- 172: ## The ranks
-- 176:   ### Minions
-- 200:   ### Grunts
-- 233:   ### Standards
-- 264:   ### Elites
-- 295: ## Building an encounter
-- 321: ## Example NPCs (Stage 0)
+- 50: ## Defenses
+- 56:   ### What an Action attacks, rolls and damages
+- 68: ## Attributes and Modifiers
+- 81: ## Health
+- 87: ## Speed
+- 94: ## Steadiness
+- 98: ## Actions
+- 100:   ### The Basic attack
+- 106:   ### Ranged attacks
+- 110:   ### Special Actions
+- 124:   ### Conditions
+- 136:   ### Reactions
+- 145:   ### Elite Escalation
+- 166: ## Roles
+- 182: ## The ranks
+- 186:   ### Minions
+- 218:   ### Grunts
+- 251:   ### Standards
+- 282:   ### Elites
+- 313: ## Building an encounter
+- 341: ## Example NPCs (Stage 0)
 
-Open (to be decided) boxes: 39: "Only Stage 0's tables are written. The tables of Stages 1, 2 and 3 com"; 153: "An Elite's own steps of Escalation (what each Elite gains, and at whic"; 169: "The roles are a first list. Their ratings are not measured yet, and a "
+Open (to be decided) boxes: 47: "Only Stage 0's tables are written. The tables of Stages 1, 2 and 3 com"; 163: "An Elite's own steps of Escalation (what each Elite gains, and at whic"; 179: "The roles are a first list. Their ratings are not measured yet, and a "
 
 ## 15-gear.md: Gear
 

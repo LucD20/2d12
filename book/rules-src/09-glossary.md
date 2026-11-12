@@ -104,7 +104,7 @@
 | [[Mark Quarry\|**Marked Quarry**]] | The enemy an Archer chose with the Mark Quarry Action: 1 Boon on their [Shot, Strike] Actions against it, and [V] [Mod] extra damage on a Tier 1. One at a time. |
 | [[Mastery\|**Master**]] | 15 Mastery with a weapon: from level 8, your Actions that deal [W] with it deal one more [W]. |
 | [[Mastery\|**Mastery**]] | How well you know a kind of weapon: +1 for a Tier 3 on a Weapon Action with it (at most 1 per Weapon Group an encounter). The weapon's Mastery (3, 4 or 5) unlocks its Weapon Technique; 8 Expert, 15 Master. |
-| [[Minions\|**Minion**]] | An NPC rank with CV 25, with 3 AP a turn, no Reaction AP and no Health: any damage kills it (or knocks it Unconscious if the GM prefers). |
+| [[Minions\|**Minion**]] | An NPC rank with CV 25: about 12 Health at Stage 0, 3 AP a turn, no Reaction AP and no Dying. Up to 3 Minions act in the same turn slot. |
 | [[Minor enemies\|**Minor enemies**]] | Minions and Grunts (CV below 100; 3 AP a turn). |
 | [[Momentum\|**Momentum**]] | The party's number from 0 to 4: an encounter starts at Escalation 1 + Momentum. +1 for each encounter overcome; -1 when a PC goes Down and at each Sleep; lost on a retreat and at a Rest. |
 | [[Rules Language\|**Move**]] | An Action with the Move trait. |

@@ -22,7 +22,7 @@ Jacob's party: 2, a PC Down and the fight won: 2 | then a Sleep: 1 | a retreat: 
 a [Ranged] Action while Engaged is Doomed: true | every creature has an Opportunity Attack: false
 the Bestiary's Stage 0 table: roles minion grunt standard elite | a Standard's Vigor or Resolve by rating: 17 / 24 / 30 / 36 / 42 | its Medium Basic attack: 1 + 1d4 / 2 + 1d6
 every damage is a flat part plus at most one small die: true | Health rises with the rating: true | a Minion has no 3 AP Special and no Extreme: true
-a Minion dies to any damage and has no Reaction AP: true | a Grunt's AP: 3 | an Elite's three abilities on the 1-to-6 ladder at 2 4 6 : Boons at 1 / 2: 0 1 | Round Specials at 3 / 4: 1 2 | the Encounter Special back at 5 / 6: false true
+a Minion: 6 + 6 Health, no Reaction AP, up to 3 in a turn slot (roundrules: 3): true | a ranged attack's damage steps down: 1 | CV a rating step: {"minion":5,"grunt":10,"standard":15,"elite":30} | a Grunt's AP: 3 | an Elite's three abilities on the 1-to-6 ladder at 2 4 6 : Boons at 1 / 2: 0 1 | Round Specials at 3 / 4: 1 2 | the Encounter Special back at 5 / 6: false true
 --- one copy of each rule
 the numbers are config.mjs's: true
 sheetmodel.mjs takes payReaction from it: true

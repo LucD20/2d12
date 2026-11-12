@@ -9,7 +9,7 @@ Each rank has a **Combat Value (CV)**: what one NPC of the rank counts for in an
 
 | Rank | CV | AP a turn | Takes about | Deals about at Stage 0 (per turn, to an average PC) |
 |---|---|---|---|---|
-| **Minion** | 25 | **3** | any damage | 4 |
+| **Minion** | 25 | **3** | one or two PC hits | 4 |
 | **Grunt** | 50 | **3** | 1 PC turn | 5 |
 | **Standard** | 100 | 4 | 2 to 3 PC turns | 9 |
 | **Elite** | 200 | 4 | 5 PC turns | 13 |
@@ -18,7 +18,7 @@ Each rank has a **Combat Value (CV)**: what one NPC of the rank counts for in an
 
 **Minions and Grunts have 3 AP a turn**, not 4: simple creatures that move and strike. Every NPC also gains the Reaction AP, as a PC does (see [[Action Points]]), **except Minions, which have none**.
 
-**A Minion dies to any damage**: it has no Health. One hit that deals damage takes it out, whatever the amount.
+**Minions share turns.** Up to **3 Minions** can act in the same turn slot, one after another: the GM rolls Initiative once for the group. Each still has its own turn (its own AP, its own start and end of turn).
 
 ### Minor enemies
 
@@ -29,12 +29,20 @@ Each rank has a **Combat Value (CV)**: what one NPC of the rank counts for in an
 Each rank has tables (below) with five **ratings**: **Terrible, Low, Medium, High, Extreme**. Medium is the rank's normal value; the others go down or up from it. Minions have no Extreme. The Health and damage tables are written by **[[Stages|Stage]]**: an NPC uses the tables of its level's Stage, and nothing changes inside a Stage. Attributes, Defenses and Modifiers don't change with the Stage. **The tables below are Stage 0's (levels 1 to 3).**
 
 - **Attributes**: by default one **High**, two **Medium** and one **Low**.
-- **Health**: a rating for its **Vigor** and one for its **Resolve**, Medium by default (a Minion has neither). A brute might have High Vigor and Low Resolve; a ghost, Terrible Vigor and High Resolve.
+- **Health**: a rating for its **Vigor** and one for its **Resolve**, Medium by default. A brute might have High Vigor and Low Resolve; a ghost, Terrible Vigor and High Resolve.
 - **Defenses**: a rating for **Armor Defense** and one for **Ward Defense** (see Defenses below).
 - **Modifiers**: a rating for the **Weapon Modifier** and one for the **Power Modifier** (see Attributes and Modifiers below).
 - **Damage**: a rating for its Basic attack and one for each Special Action (Medium by default).
 
-**The ratings are guidance, not a rule: choose any rating for any number, or a number between two ratings.** As a suggestion, if one number is High, a Low somewhere else usually makes sense (High Armor Defense and Low Health, for example). A creature whose ratings average out to Medium is balanced for its rank.
+**The ratings are guidance, not a rule: choose any rating for any number, or a number between two ratings.**
+
+**Health and damage must balance, or the CV changes.** Count the steps the NPC's Vigor, Resolve and damage ratings sit above Medium, minus the steps below it (a step on Vigor or on Resolve alone is half a step; use the rating of its Basic attack and Specials together). At zero, the NPC is worth its rank's CV. For each step left over, its CV goes up or down:
+
+| Rank | Minion | Grunt | Standard | Elite |
+|---|---|---|---|---|
+| **CV for each step** | 5 | 10 | 15 | 30 |
+
+A Standard with High Health and High damage counts for 130; one with Low Health and Medium damage for 85. **Defense steps are free** (a point of Defense is the mildest rating), and a Modifier step counts as half a step. So a High in Health pays for a Low in damage, but a High Armor Defense pays for nothing.
 
 > [!tbd]
 > Only Stage 0's tables are written. The tables of Stages 1, 2 and 3 come with those Stages.
@@ -74,9 +82,7 @@ An NPC's **Weapon Modifier** and **Power Modifier** are each a rating of its ran
 
 An NPC's **Vigor** and **Resolve** are each a ready number: pick a rating for each in its rank's Health table. Its **Health Pool** is the two added together. Nothing is calculated, and its Attributes don't change its Health. (A PC's Health is in [[Health Pool]].)
 
-Bloodied, Strained and going Down work as usual (see [[NPCs Going Down]]).
-
-**A Minion has no Health and no Dying:** any damage it takes kills it, or knocks it Unconscious if the GM prefers. It is never Bloodied or Strained. An attack that deals no damage (a Tier 1 with a 0, damage that its Guard or a Resist takes whole) leaves it standing.
+Bloodied, Strained and going Down work as usual (see [[NPCs Going Down]]). **A Minion has no Dying: at 0 it dies, or falls Unconscious if the GM prefers.**
 
 ## Speed
 
@@ -96,6 +102,10 @@ An NPC has Steadiness 0 unless it says otherwise. A big or heavy creature can ha
 Every NPC has one **Basic attack**: its main attack, 1 AP, At-will: usually a Weapon Action Vs. AD that deals [V], or a Power Action Vs. WD that deals [R] (see [[What an Action attacks, rolls and damages]]). Its damage is its rank's, by rating: the rank's damage table gives it for Tier 2 and Tier 3 as **a flat number plus at most one small die**, ready to use. Tier 1 deals nothing, like a Weapon Attack. The weapon in its hands is only what the attack looks like.
 
 **NPCs have no Weapon Attack.** Their Basic attack takes its place: when an Action or rule calls for a Weapon Attack (the Weapon Attack (1A) at the end of a Charge, for example), an NPC uses its Basic attack.
+
+### Ranged attacks
+
+An attack an NPC can make from more than 2 squares away **pays one step of damage rating for its range**: a Medium ranged Basic attack deals the Low row's damage. A creature that attacks from safety is worth more than its numbers (at full damage, four ranged Standards are a hard fight, not a normal one). Reach doesn't count as range.
 
 ### Special Actions
 
@@ -162,7 +172,7 @@ A **role** says what a creature does in a fight. It is a ready set of ratings an
 | **Brute** | walks in and hits hard | High Vigor, High Basic attack, Low Armor Defense |
 | **Soldier** | holds a line and protects its allies | High Armor Defense, Medium damage, a Reaction that protects an ally or punishes leaving |
 | **Skirmisher** | moves, strikes and gets away | Speed 6 or 7, Low Health, a Special with a movement in it |
-| **Artillery** | attacks from far away | a ranged Basic attack, High damage at range, Low Health, Low Armor Defense |
+| **Artillery** | attacks from far away | a ranged Basic attack and Specials (each pays its step of damage for the range), Low Health, Low Armor Defense |
 | **Controller** | changes the fight with conditions and areas | Low damage with Moderate or Severe conditions, Area Save Actions, often Power Actions Vs. WD |
 | **Leader** | makes its allies better; one in a fight | Medium everything, a Special that helps its allies (Boons, movement, an extra attack) |
 
@@ -175,13 +185,19 @@ The Health and damage tables are **Stage 0's** (levels 1 to 3).
 
 ### Minions
 
-3 AP a turn, no Reaction AP. **No Health: any damage kills a Minion.**
+3 AP a turn, no Reaction AP. Up to 3 Minions act in the same turn slot.
 
 **Attributes**
 
 | | **Terrible** | **Low** | **Medium** | **High** |
 |---|---|---|---|---|
 | **Every Stage** | -2 | -1 | +0 | +1 |
+
+**Health: Vigor or Resolve**
+
+| | **Terrible** | **Low** | **Medium** | **High** |
+|---|---|---|---|---|
+| **Stage 0** | 3 | 5 | 6 | 7 |
 
 **Defense (Armor Defense or Ward Defense)**
 
@@ -196,6 +212,8 @@ The Health and damage tables are **Stage 0's** (levels 1 to 3).
 | **Basic attack** (1 AP, At-will) | 1 / 2 | 1 / 1d4 | 2 / 1 + 1d4 | 1d4 / 2 + 1d4 |
 | **Special, 1 AP** (Round) | 1 / 1d4 | 2 / 1 + 1d4 | 1d4 / 2 + 1d4 | 1 + 1d4 / 3 + 1d4 |
 | **Special, 2 AP** (Round) | 2 / 2 + 1d4 | 1d4 / 2 + 1d6 | 1 + 1d4 / 3 + 1d6 | 2 + 1d4 / 5 + 1d6 |
+
+With both ratings Medium, a Stage 0 minion has **12 Health** (6 + 6).
 
 ### Grunts
 
@@ -294,7 +312,9 @@ With both ratings Medium, a Stage 0 elite has **130 Health** (65 + 65).
 
 ## Building an encounter
 
-Add up the CV of the enemies. **CV 100 per PC is a normal fight**: 75 per PC is easy, **125 is hard, 150 is deadly**. Many Minions are cheap but act often: no more than 4 Minions per PC. Minions on their own come under their CV (they die before they act much): mix them with Standards.
+Add up the CV of the enemies. **CV 100 per PC is a normal fight**: 75 per PC is easy, **125 is hard, 150 is deadly**. Many Minions act often: no more than 4 Minions per PC. Encounters of only Grunts cost a little less than their CV.
+
+**The CV is counted for 4 to 6 PCs with at least two of them in the front.** A party of three, or one with a single PC in melee, plays one to two steps harder: count it as one PC less.
 
 **An NPC of an earlier Stage counts for less.** The NPCs of a Stage are the same at every level of it, so only the Stage matters:
 
@@ -308,19 +328,19 @@ What the fight model gives for 4 PCs of levels 1 to 3 with no [[Momentum]] (all 
 
 | Enemies (total CV) | Rounds | The party's Health | A PC goes Down in | The party wins |
 |---|---|---|---|---|
-| 3 Standards (300, easy) | 2½ to 3 | about 15% | 1 fight in 30 or more | always |
-| 4 Standards, 1 Elite and 2 Standards, 2 Elites, 8 Grunts, or 2 Standards and 8 Minions (400, normal) | 3½ | about a quarter | 1 fight in 10 | always |
+| 3 Standards, or 12 Minions (300, easy) | 2½ to 3 | about 15% | 1 fight in 30 or more | always |
+| 4 Standards, 1 Elite and 2 Standards, 2 Elites, 8 Grunts, 16 Minions, or 2 Standards and 8 Minions (400, normal) | 3½ | about a quarter | 1 fight in 10 | always |
 | 5 Standards, or 1 Elite and 3 Standards (500, hard) | 4 | 40 to 45% | 1 fight in 4 | 97 to 98% |
-| 6 Standards, 3 Elites, 2 Elites and 2 Standards, or 1 Elite and 4 Standards (600, deadly) | 5 | 60 to 65% | about half the time | 86 to 88% |
+| 6 Standards, 3 Elites, 2 Elites and 2 Standards, 1 Elite and 4 Standards, or 4 Standards and 8 Minions (600, deadly) | 5 | 60 to 65% | about half the time | 86 to 88% |
 
-The three levels are about as hard as each other. Elites are worth their CV in any mix. Encounters with many Grunts or Minions cost less than the same CV in Standards. **Momentum makes every fight easier**: at Momentum 2 the same fights cost about a quarter less, and at Momentum 4 a level 3 party wins the deadly fight 98% of the time. A party late in a good expedition can take one step more.
+The three levels are about as hard as each other. Elites and Minions are worth their CV in any mix. **Momentum makes every fight easier**: at Momentum 2 the same fights cost about a quarter less, and at Momentum 4 a level 3 party wins the deadly fight 98% of the time. A party late in a good expedition can take one step more.
 
 > [!tip]
 > These numbers assume the enemies **spread their attacks**: each strikes the PC it can reach best. If every enemy strikes **the same PC** (the weakest one, or simply the nearest), the encounter plays about **one step harder**: a normal fight like a hard one, a hard one like a deadly one. Do it on purpose (a wolf pack, a disciplined squad), and count it when you choose the CV.
 
 ## Example NPCs (Stage 0)
 
-**Goblin Sneak** (Minion, CV 25, 3 AP): Instinct High (+1), Body Medium (0), Mind Medium (0), Appeal Low (−1). Weapon Modifier Medium (+2), Power Modifier Low (+1). No Health: any damage kills it. Armor Defense Medium (12), Ward Defense Low (11). **Speed 7** (fast: its Ward Defense is Low).
+**Goblin Sneak** (Minion, CV 25, 3 AP): Instinct High (+1), Body Medium (0), Mind Medium (0), Appeal Low (−1). Weapon Modifier Medium (+2), Power Modifier Low (+1). Vigor Low (5), Resolve Low (5): Health 10. Armor Defense Medium (12), Ward Defense Low (11). **Speed 7** (fast: its Health is Low).
 - *Rusty Knife* (Basic attack, Medium): 2 / 1 + 1d4 Pi.
 - *Dirty Trick* (Special, 1 AP, Round): Low damage + Mild condition = Medium: 2 / 1 + 1d4 Pi, and Hindered (EoT).
 

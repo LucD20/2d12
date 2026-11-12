@@ -243,7 +243,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td><strong>Minion</strong></td>
 <td>25</td>
 <td><strong>3</strong></td>
-<td>any damage</td>
+<td>one or two PC hits</td>
 <td>4</td>
 </tr>
 <tr>
@@ -271,19 +271,41 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </table></div>
 <p>"Deals about" is a whole turn: the Basic attack and the Special Actions it can fit after moving, against an average Defense, before anything the PCs do about it (Guard, blocks, damage reduction take about half of it away). A turn in which it doesn't need to move deals about a quarter more. It is what you check a new NPC's Actions against.</p>
 <p><strong>Minions and Grunts have <span class="kw-ap">3 AP</span> a turn</strong>, not 4: simple creatures that move and strike. Every NPC also gains the Reaction AP, as a PC does (see <a class="xref" href="core-rules.html#action-points">Action Points</a>), <strong>except Minions, which have none</strong>.</p>
-<p><strong>A Minion dies to any damage</strong>: it has no Health. One hit that deals damage takes it out, whatever the amount.</p>
+<p><strong>Minions share turns.</strong> Up to <strong>3 Minions</strong> can act in the same turn slot, one after another: the GM rolls Initiative once for the group. Each still has its own turn (its own AP, its own start and end of turn).</p>
 <h3 id="minor-enemies">Minor enemies</h3>
 <p><strong>Minor enemies</strong> are Minions and Grunts: the ranks with a CV below 100. Both have <span class="kw-ap">3 AP</span> a turn.</p>
 <h2 id="ratings">Ratings</h2>
 <p>Each rank has tables (below) with five <strong>ratings</strong>: <strong>Terrible, Low, Medium, High, Extreme</strong>. Medium is the rank's normal value; the others go down or up from it. Minions have no Extreme. The Health and damage tables are written by <strong><a class="xref" href="core-rules.html#stages">Stage</a></strong>: an NPC uses the tables of its level's Stage, and nothing changes inside a Stage. Attributes, Defenses and Modifiers don't change with the Stage. <strong>The tables below are Stage 0's (levels 1 to 3).</strong></p>
 <ul>
 <li><strong>Attributes</strong>: by default one <strong>High</strong>, two <strong>Medium</strong> and one <strong>Low</strong>.</li>
-<li><strong>Health</strong>: a rating for its <strong>Vigor</strong> and one for its <strong>Resolve</strong>, Medium by default (a Minion has neither). A brute might have High Vigor and Low Resolve; a ghost, Terrible Vigor and High Resolve.</li>
+<li><strong>Health</strong>: a rating for its <strong>Vigor</strong> and one for its <strong>Resolve</strong>, Medium by default. A brute might have High Vigor and Low Resolve; a ghost, Terrible Vigor and High Resolve.</li>
 <li><strong>Defenses</strong>: a rating for <strong>Armor Defense</strong> and one for <strong>Ward Defense</strong> (see Defenses below).</li>
 <li><strong>Modifiers</strong>: a rating for the <strong><span class="mod-weapon">Weapon Modifier</span></strong> and one for the <strong><span class="mod-power">Power Modifier</span></strong> (see Attributes and Modifiers below).</li>
 <li><strong>Damage</strong>: a rating for its Basic attack and one for each Special Action (Medium by default).</li>
 </ul>
-<p><strong>The ratings are guidance, not a rule: choose any rating for any number, or a number between two ratings.</strong> As a suggestion, if one number is High, a Low somewhere else usually makes sense (High Armor Defense and Low Health, for example). A creature whose ratings average out to Medium is balanced for its rank.</p>
+<p><strong>The ratings are guidance, not a rule: choose any rating for any number, or a number between two ratings.</strong></p>
+<p><strong>Health and damage must balance, or the CV changes.</strong> Count the steps the NPC's Vigor, Resolve and damage ratings sit above Medium, minus the steps below it (a step on Vigor or on Resolve alone is half a step; use the rating of its Basic attack and Specials together). At zero, the NPC is worth its rank's CV. For each step left over, its CV goes up or down:</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Rank</th>
+<th>Minion</th>
+<th>Grunt</th>
+<th>Standard</th>
+<th>Elite</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CV for each step</strong></td>
+<td>5</td>
+<td>10</td>
+<td>15</td>
+<td>30</td>
+</tr>
+</tbody>
+</table></div>
+<p>A Standard with High Health and High damage counts for 130; one with Low Health and Medium damage for 85. <strong>Defense steps are free</strong> (a point of Defense is the mildest rating), and a Modifier step counts as half a step. So a High in Health pays for a Low in damage, but a High Armor Defense pays for nothing.</p>
 <div class="callout tbd"><div class="ctitle">To be decided</div><p>Only Stage 0's tables are written. The tables of Stages 1, 2 and 3 come with those Stages.</p></div>
 <h2 id="defenses-2">Defenses</h2>
 <p>An NPC has an <strong>Armor Defense</strong> and a <strong>Ward Defense</strong>. Each one is a rating from its rank's Defense table, picked <strong>independently</strong> of the other: a Standard is Medium in both by default (13 and 13); a knight could have a High Armor Defense (14) and a Low Ward Defense (12). A Defense is never below 11. An NPC's Defenses come from these ratings only.</p>
@@ -348,8 +370,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </table></div>
 <h2 id="health">Health</h2>
 <p>An NPC's <strong>Vigor</strong> and <strong>Resolve</strong> are each a ready number: pick a rating for each in its rank's Health table. Its <strong>Health Pool</strong> is the two added together. Nothing is calculated, and its Attributes don't change its Health. (A PC's Health is in <a class="xref" href="core-rules.html#health-pool">Health Pool</a>.)</p>
-<p>Bloodied, Strained and going <span class="kw-neg">Down</span> work as usual (see <a class="xref" href="core-rules.html#npcs-going-down">NPCs Going <span class="kw-neg">Down</span></a>).</p>
-<p><strong>A Minion has no Health and no Dying:</strong> any damage it takes kills it, or knocks it Unconscious if the GM prefers. It is never Bloodied or Strained. An attack that deals no damage (a Tier 1 with a 0, damage that its Guard or a Resist takes whole) leaves it standing.</p>
+<p>Bloodied, Strained and going <span class="kw-neg">Down</span> work as usual (see <a class="xref" href="core-rules.html#npcs-going-down">NPCs Going <span class="kw-neg">Down</span></a>). <strong>A Minion has no Dying: at 0 it dies, or falls Unconscious if the GM prefers.</strong></p>
 <h2 id="speed">Speed</h2>
 <p>Speed is <strong>free</strong>: every NPC has Speed 5 unless it says otherwise. But it is strong, so it should be balanced with the rest of the creature:</p>
 <ul>
@@ -362,6 +383,8 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <h3 id="the-basic-attack">The Basic attack</h3>
 <p>Every NPC has one <strong>Basic attack</strong>: its main attack, <span class="kw-ap">1 AP</span>, At-will: usually a <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action Vs. AD that deals [V], or a <span class="trhl" style="--tc:var(--g-roll)">Power</span> Action Vs. WD that deals [R] (see <a class="xref" href="#what-an-action-attacks-rolls-and-damages">What an Action attacks, rolls and damages</a>). Its damage is its rank's, by rating: the rank's damage table gives it for Tier 2 and Tier 3 as <strong>a flat number plus at most one small die</strong>, ready to use. Tier 1 deals nothing, like a Weapon Attack. The weapon in its hands is only what the attack looks like.</p>
 <p><strong>NPCs have no Weapon Attack.</strong> Their Basic attack takes its place: when an Action or rule calls for a Weapon Attack (the Weapon Attack (<span class="kw-ap">1A</span>) at the end of a Charge, for example), an NPC uses its Basic attack.</p>
+<h3 id="ranged-attacks">Ranged attacks</h3>
+<p>An attack an NPC can make from more than 2 squares away <strong>pays one step of damage rating for its range</strong>: a Medium ranged Basic attack deals the Low row's damage. A creature that attacks from safety is worth more than its numbers (at full damage, four ranged Standards are a hard fight, not a normal one). Reach doesn't count as range.</p>
 <h3 id="special-actions">Special Actions</h3>
 <p>Special Actions make an NPC interesting. <strong>Every rank has them, Minions included.</strong> There are three sizes, each with its own row in the rank's damage table:</p>
 <div class="tablewrap"><table>
@@ -491,7 +514,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <tr>
 <td><strong>Artillery</strong></td>
 <td>attacks from far away</td>
-<td>a ranged Basic attack, High damage at range, Low Health, Low Armor Defense</td>
+<td>a ranged Basic attack and Specials (each pays its step of damage for the range), Low Health, Low Armor Defense</td>
 </tr>
 <tr>
 <td><strong>Controller</strong></td>
@@ -509,7 +532,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <h2 id="the-ranks">The ranks</h2>
 <p>The Health and damage tables are <strong>Stage 0's</strong> (levels 1 to 3).</p>
 <h3 id="minions">Minions</h3>
-<p><span class="kw-ap">3 AP</span> a turn, no Reaction AP. <strong>No Health: any damage kills a Minion.</strong></p>
+<p><span class="kw-ap">3 AP</span> a turn, no Reaction AP. Up to 3 Minions act in the same turn slot.</p>
 <p><strong>Attributes</strong></p>
 <div class="tablewrap"><table>
 <thead>
@@ -528,6 +551,27 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>-1</td>
 <td>+0</td>
 <td>+1</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Health: Vigor or Resolve</strong></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Terrible</strong></th>
+<th><strong>Low</strong></th>
+<th><strong>Medium</strong></th>
+<th><strong>High</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Stage 0</strong></td>
+<td>3</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
 </tr>
 </tbody>
 </table></div>
@@ -587,6 +631,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 </tbody>
 </table></div>
+<p>With both ratings Medium, a Stage 0 minion has <strong>12 Health</strong> (6 + 6).</p>
 <h3 id="grunts">Grunts</h3>
 <p><span class="kw-ap">3 AP</span> a turn.</p>
 <p><strong>Attributes</strong></p>
@@ -943,7 +988,8 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </table></div>
 <p>With both ratings Medium, a Stage 0 elite has <strong>130 Health</strong> (65 + 65).</p>
 <h2 id="building-an-encounter">Building an encounter</h2>
-<p>Add up the CV of the enemies. <strong>CV 100 per PC is a normal fight</strong>: 75 per PC is easy, <strong>125 is hard, 150 is deadly</strong>. Many Minions are cheap but act often: no more than 4 Minions per PC. Minions on their own come under their CV (they die before they act much): mix them with Standards.</p>
+<p>Add up the CV of the enemies. <strong>CV 100 per PC is a normal fight</strong>: 75 per PC is easy, <strong>125 is hard, 150 is deadly</strong>. Many Minions act often: no more than 4 Minions per PC. Encounters of only Grunts cost a little less than their CV.</p>
+<p><strong>The CV is counted for 4 to 6 PCs with at least two of them in the front.</strong> A party of three, or one with a single PC in melee, plays one to two steps harder: count it as one PC less.</p>
 <p><strong>An NPC of an earlier Stage counts for less.</strong> The NPCs of a Stage are the same at every level of it, so only the Stage matters:</p>
 <div class="tablewrap"><table>
 <thead>
@@ -992,14 +1038,14 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </thead>
 <tbody>
 <tr>
-<td>3 Standards (300, easy)</td>
+<td>3 Standards, or 12 Minions (300, easy)</td>
 <td>2½ to 3</td>
 <td>about 15%</td>
 <td>1 fight in 30 or more</td>
 <td>always</td>
 </tr>
 <tr>
-<td>4 Standards, 1 Elite and 2 Standards, 2 Elites, 8 Grunts, or 2 Standards and 8 Minions (400, normal)</td>
+<td>4 Standards, 1 Elite and 2 Standards, 2 Elites, 8 Grunts, 16 Minions, or 2 Standards and 8 Minions (400, normal)</td>
 <td>3½</td>
 <td>about a quarter</td>
 <td>1 fight in 10</td>
@@ -1013,7 +1059,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>97 to 98%</td>
 </tr>
 <tr>
-<td>6 Standards, 3 Elites, 2 Elites and 2 Standards, or 1 Elite and 4 Standards (600, deadly)</td>
+<td>6 Standards, 3 Elites, 2 Elites and 2 Standards, 1 Elite and 4 Standards, or 4 Standards and 8 Minions (600, deadly)</td>
 <td>5</td>
 <td>60 to 65%</td>
 <td>about half the time</td>
@@ -1021,10 +1067,10 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 </tbody>
 </table></div>
-<p>The three levels are about as hard as each other. Elites are worth their CV in any mix. Encounters with many Grunts or Minions cost less than the same CV in Standards. <strong>Momentum makes every fight easier</strong>: at Momentum 2 the same fights cost about a quarter less, and at Momentum 4 a level 3 party wins the deadly fight 98% of the time. A party late in a good expedition can take one step more.</p>
+<p>The three levels are about as hard as each other. Elites and Minions are worth their CV in any mix. <strong>Momentum makes every fight easier</strong>: at Momentum 2 the same fights cost about a quarter less, and at Momentum 4 a level 3 party wins the deadly fight 98% of the time. A party late in a good expedition can take one step more.</p>
 <div class="callout tip"><div class="ctitle">Designer's Tip</div><p>These numbers assume the enemies <strong>spread their attacks</strong>: each strikes the PC it can reach best. If every enemy strikes <strong>the same PC</strong> (the weakest one, or simply the nearest), the encounter plays about <strong>one step harder</strong>: a normal fight like a hard one, a hard one like a deadly one. Do it on purpose (a wolf pack, a disciplined squad), and count it when you choose the CV.</p></div>
 <h2 id="example-npcs-stage-0">Example NPCs (Stage 0)</h2>
-<p><strong>Goblin Sneak</strong> (Minion, CV 25, <span class="kw-ap">3 AP</span>): <span class="at-instinct">Instinct</span> High (+1), <span class="at-body">Body</span> Medium (0), <span class="at-mind">Mind</span> Medium (0), <span class="at-appeal">Appeal</span> Low (−1). <span class="mod-weapon">Weapon Modifier</span> Medium (+2), <span class="mod-power">Power Modifier</span> Low (+1). No Health: any damage kills it. Armor Defense Medium (12), Ward Defense Low (11). <strong>Speed 7</strong> (fast: its Ward Defense is Low).
+<p><strong>Goblin Sneak</strong> (Minion, CV 25, <span class="kw-ap">3 AP</span>): <span class="at-instinct">Instinct</span> High (+1), <span class="at-body">Body</span> Medium (0), <span class="at-mind">Mind</span> Medium (0), <span class="at-appeal">Appeal</span> Low (−1). <span class="mod-weapon">Weapon Modifier</span> Medium (+2), <span class="mod-power">Power Modifier</span> Low (+1). Vigor Low (5), Resolve Low (5): Health 10. Armor Defense Medium (12), Ward Defense Low (11). <strong>Speed 7</strong> (fast: its Health is Low).
 - <em>Rusty Knife</em> (Basic attack, Medium): 2 / 1 + 1d4 <span class="dcode" style="--dc:#8a8a8a">Pi</span>.
 - <em>Dirty Trick</em> (Special, <span class="kw-ap">1 AP</span>, Round): Low damage + Mild condition = Medium: 2 / 1 + 1d4 <span class="dcode" style="--dc:#8a8a8a">Pi</span>, and Hindered (EoT).</p>
 <p><strong>Orc Warrior</strong> (Standard, CV 100): <span class="at-body">Body</span> High (+2), <span class="at-instinct">Instinct</span> Medium (+1), <span class="at-mind">Mind</span> Medium (+1), <span class="at-appeal">Appeal</span> Low (0). <span class="mod-weapon">Weapon Modifier</span> Medium (+2), <span class="mod-power">Power Modifier</span> Medium (+2). Vigor High (36), Resolve Low (24): Health 60. Armor Defense Medium (13), Ward Defense Low (12).

@@ -56,6 +56,8 @@ export const momentumAfter = (now, { overcome = 0, downs = 0, sleeps = 0, retrea
   (retreat || rest ? 0 : momentumOf((Number(now) || 0) + (Number(overcome) || 0) - (Number(downs) || 0) - (Number(sleeps) || 0)));
 /** Ranged Combat While Engaged since Stage 0: a [Ranged] Action while you are Engaged is Doomed (it was 2 Banes: ENGAGED_RANGED_BANES below). */
 export const ENGAGED_RANGED_DOOMED = true;
+/** Up to this many Minions can act in the same turn slot, one after another (the Bestiary; Lucas, 2026-11-12). */
+export const MINION_SQUAD = 3;
 /** No creature has an Opportunity Attack by default since Stage 0 (it left the Basic Actions, for PCs and NPCs; a Talent brings it back later). */
 export const BASIC_OPPORTUNITY_ATTACK = false;
 
