@@ -76,6 +76,12 @@ Lucas: "people like big die, so make sure if d8 is the real limit without unbala
 
 Every row is the same within the runs' noise (about 2 points), B included. So the die is a choice of feel: a bigger die on a smaller flat part is a wider range (the Greatsword's Tier 3: 5 to 12 with 4 + 1d8, 4 to 13 with 3 + 1d10, 3 to 14 with 2 + 1d12), which is what the idea set out to narrow. **A way to have both:** big dice only where the weapon's story is the big hit, the two-handed melee weapons' Tier 3 (Greatsword 3 + 1d10, Greataxe 4 + 1d12 as in B, Pike 2 + 1d8), and small dice everywhere else (Tier 2s, one-handed and ranged weapons, the Maul as the steady two-hander).
 
+**Decided (Lucas, 2026-11-12): small dice.** "Lets go back to small die yeah, that was the point of the whole thing": column B as written (a d8 at most, and only on a two-handed melee weapon's Tier 3; the Greataxe's 4 + 1d12 in column B becomes 6 + 1d8, the same 10.5).
+
+## 2[W]
+
+No card deals 2[W] or more today (checked: the card files have none; only two examples in Chapters 4 and 15 mention it). With this draft it can still exist in three ways: (a) two instances as now (Greatsword Tier 3: 8 + 2d8), two dice; (b) **roll once, double the total** (one die, the same average, a wider range); (c) double the flat part and roll one die (lower: it is no longer twice the weapon). Or no Action writes more than 1[W] and a bigger hit is 1[W] plus a flat bonus. Open, for Lucas.
+
 ## What to know before choosing
 
 - **A changes no balance number**; it can go in without the ruler. **B does:** melee Tier 3s up about 1, ranged Tier 3s down 1. From the Stage 0 run (candidate A there, a ranged die one size smaller), a step this size moves the fights by a few points only: B is for the feel, it does not by itself make melee as good as ranged (the Guard for an Engaged melee PC did that).
