@@ -218,6 +218,7 @@ export const DICE = [[0, 0, 0], [1, 1, 1], [1, 2, 2], [1, 4, 2.5], [1, 6, 3.5], 
 export const diceFor = avg => DICE.reduce((b, d) => (Math.abs(d[2] - avg) < Math.abs(b[2] - avg) ? d : b));
 export function npcDamage(R, npc, tier) {
   if (tier < 2) return 0;
+  if (npc.curDmg) return rollDamage(R, npc.curDmg[tier - 2]).total;   // the Bestiary's turn budget: the Action's own damage
   if (npc.dmg) { const e = npc.dmg[specialKey(npc.curMult ?? 1)] ?? npc.dmg.basic; return rollDamage(R, e[tier - 2]).total; }   // Stage 0: the table's own damage (a flat part plus one small die), Specials included
   const avg = tier === 2 ? npc.t2 : npc.t3, d = diceFor(avg - npc.mod);
   let t = npc.mod;

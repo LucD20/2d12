@@ -102,13 +102,16 @@ export function runTurn(pc, turn, ctx) {
       let tier; const dmg0 = t.damage ?? 0;
       const mm = a.vs.startsWith("save") ? null : ctx.mods?.(a, traits, t);   // the map model: range, Engaged, Cover, Flanking, Prone
       if (mm?.skip) continue;
-      const mb = mm?.boons ?? 0, mn = mm?.banes ?? 0;
+      // The Bestiary's turn budget (2026-11-12): the PC's own conditions from the enemies (Frightened, Taunted, Blinded, Enfeebled, a next-roll Bane or Doomed:
+      // ctx.selfMods), and an enemy's Interrupt against the Strike (ctx.beforeStrike: a Defense bonus). Neither exists unless an enemy uses effects.
+      const sm = !a.vs.startsWith("save") ? ctx.selfMods?.(pc, t) : null, pre = traits.includes("strike") && !a.vs.startsWith("save") ? ctx.beforeStrike?.(pc, t) : null;
+      const mb = mm?.boons ?? 0, mn = (mm?.banes ?? 0) + (sm?.banes ?? 0);
       if (a.vs.startsWith("save")) {   // a Save Action: the target rolls against your DC (11 + Modifier); its Tier 1 is the worst for it
         const attr = a.vs.split(/\s+/)[1] ?? "instinct";
         tier = pick(R, C.tierProbs(t.save?.[attr] ?? 0, 11 + mod, 0, 0, ""));
       } else {
         // One random number for the roll with and without the target's Vulnerable: the difference is credited to whoever made it Vulnerable.
-        const u = R(), def = a.vs === "wd" ? t.wd : t.ad, st = C.rollState(favored, !!mm?.doomed, "");   // the catch-up: High cover makes the roll Doomed (Favored and Doomed together: a normal roll)
+        const u = R(), def = (a.vs === "wd" ? t.wd : t.ad) + (pre?.def ?? 0), st = C.rollState(favored, !!mm?.doomed || !!sm?.doomed, "");   // the catch-up: High cover makes the roll Doomed (Favored and Doomed together: a normal roll)
         const pr = C.tierProbs(mod, def, boons + mb + (t.vulnerable ?? 0), banes + mn, st);
         tier = pickU(u, pr);
         if (t === target) critShare = pr[2] > 0 ? C.critProb(mod, def, boons + mb + (t.vulnerable ?? 0), banes + mn, st) / pr[2] : 0;   // the share of its Tier 3s that are Criticals (calc.mjs, exact)
@@ -124,7 +127,7 @@ export function runTurn(pc, turn, ctx) {
       if (t === target) for (const x of anyTier) { const v = rollDamage(R, x, { mod, empowered: emp }).total * b.dmgScale; land(v, v * mindShare(x, b.weapon, tier, mod)); res.damage += v; }   // on every Tier, whatever the Action deals
       if (dmg && (dmg.dice.length || dmg.flat || dmg.mod || (dmg.w && hasDamage(weaponTier(b.weapon, tier))))) {   // 1[W] of a weapon that deals 0 on this tier is no damage (and no extra)
         const kb = b.keepBest && b.keepBest.traits.every(x => traits.includes(x)) ? b.keepBest.n : 0;
-        let total = rollDamage(R, dmg, { weapon: b.weapon, tier, mod, empowered: emp, keepBest: kb }).total, mindT = total * mindShare(dmg, b.weapon, tier, mod);
+        let total = rollDamage(R, dmg, { weapon: b.weapon, tier, mod, empowered: emp - (sm?.enf ?? 0), keepBest: kb }).total, mindT = total * mindShare(dmg, b.weapon, tier, mod);
         for (const x of extra) { const v = rollDamage(R, x, { mod, empowered: emp }).total; total += v; mindT += v * mindShare(x, b.weapon, tier, mod); }
         total = (total + bonus) * b.dmgScale; mindT *= b.dmgScale;
         land(total, mindT); res.damage += total;
@@ -135,6 +138,7 @@ export function runTurn(pc, turn, ctx) {
         }
       }
       ctx.log?.("action", { action: a.name, ap: a.ap, linked, target: t, tier, damage: (t.damage ?? 0) - dmg0, save: a.vs.startsWith("save") ? (a.vs.split(/\s+/)[1] ?? "instinct") : false });   // the log (SIM-1): nothing reads it back
+      if (traits.includes("strike") && !a.vs.startsWith("save")) ctx.afterStrike?.(pc, t, tier);   // an enemy's Trigger on the Strike (the Bestiary's turn budget)
       if (t === target) { mainTier = tier; res.critShare = critShare; if (RULES.escHooks && tier === 3 && !a.vs.startsWith("save") && R() < critShare) res.crit = true; }   // a Critical: Doubles on a Tier 3, 20 over the Defense, three of a kind on a Favored roll (before the catch-up: 1 Tier 3 in 12)
     }
     res.lastTier = mainTier;

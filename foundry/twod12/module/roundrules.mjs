@@ -61,6 +61,19 @@ export const MINION_SQUAD = 3;
 /** No creature has an Opportunity Attack by default since Stage 0 (it left the Basic Actions, for PCs and NPCs; a Talent brings it back later). */
 export const BASIC_OPPORTUNITY_ATTACK = false;
 
+/* ---- Conditions on a roll (Ch. 8; pack "The Bestiary's turn budget", 2026-11-12) ---- */
+/**
+ * What a creature's own conditions do to a roll it makes (Ch. 8): Frightened 1 Bane on all its Rolls (while it sees the source: the ruler counts
+ * it always), Taunted 1 Bane on its Actions against anyone but the taunter, Blinded makes its Actions Doomed (against a creature it only hears:
+ * the ruler counts every Strike), and the "next roll" riders of the Bestiary (1 Pressure Bane, Doomed) on the next roll it makes. { banes, doomed }.
+ */
+export function rollerConditionMods({ frightened = false, taunted = false, againstTaunter = false, blinded = false, nextBanes = 0, nextDoomed = false } = {}) {
+  const banes = (frightened ? 1 : 0) + (taunted && !againstTaunter ? 1 : 0) + Math.max(0, Math.trunc(Number(nextBanes)) || 0);
+  return { banes, doomed: !!blinded || !!nextDoomed };
+}
+/** Vulnerable N (Ch. 8): Actions against the creature gain N Boons (only the highest value counts). */
+export const vulnerableBoons = n => Math.max(0, Math.trunc(Number(n)) || 0);
+
 /* ---- Position (Ch. 3: Flanking, Cover; Ch. 1: Named Boons and Banes) ---- */
 /** Flanking: 1 Field Boon for each other creature that threatens the target, minus 1 for each ally of the target that threatens the attacker, then the limit of 2. { raw, boons }. */
 export const flankBoons = (others, cancels) => { const raw = Math.max(0, (Number(others) || 0) - (Number(cancels) || 0)); return { raw, boons: Math.min(BB_LIMIT, raw) }; };

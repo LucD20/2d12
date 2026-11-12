@@ -33,7 +33,7 @@
 | [[Resist, Weak and Immune\|**Immune**]] | Damage of that subtype is 0 for you. |
 | [[Class Actions, Picks and the Repertoire\|**Pick**]] | One choice from a class's Repertoire; the level list says how many you take and from which list. |
 | [[Class Actions, Picks and the Repertoire\|**Repertoire**]] | Everything a class offers beyond its Class Actions, listed by Frequency: Passive, Turn, Round, Encounter, Daily. |
-| [[The Basic attack\|**Basic attack**]] | An NPC's main attack: 1 AP, At-will, Vs. AD or WD, with the damage of its rank and rating (a flat number plus at most one small die, nothing added). |
+| [[The Basic attack\|**Basic attack**]] | An NPC's main attack: 1 AP, At-will, Vs. AD or WD, with its rank's points an AP (see Points into damage: a flat number plus at most one small die, nothing added). |
 | [[Rules Language\|**Body Action, Mind Action**]] | An Action with the Body or the Mind trait, even when it rolls another Attribute Modifier. |
 | [[Take a Breather\|**Breather**]] | 10 minutes of rest that removes all Nonlethal damage. |
 | [[Reading an Action\|**Category**]] | The text at the right of an Action's title: the kind of Action, or the feature that gave it to you. |
@@ -159,7 +159,7 @@
 | [[Slid\|**Slid**]] | Forced Movement along a path the origin chooses (it can curve); the origin needs Line of Effect. |
 | [[Slowed\|**Slowed**]] | A condition with a value: you regain that many fewer AP at the start of your turn, and your maximum AP is that much lower; your Reaction AP doesn't change. Desperate, Dying and Shattered give Slowed 1 (or 1 more, to at most 3). |
 | [[Sleep\|**Sleep**]] | 8 hours of non-strenuous activity, at most once every 16 hours; it renews Daily Actions. |
-| [[Special Actions\|**Special Action**]] | An NPC Action beyond its Basic attack: 1 AP or 2 AP (Round) or 3 AP (Encounter), each with its own row in the rank's damage table. |
+| [[The price of an Action\|**Special Action**]] | An NPC Action beyond its Basic attack: any AP cost and any Frequency, bought with the points of its rank's turn budget. |
 | [[Rules Language\|**Specific beats general**]] | A card or feature that says something different from a general rule wins for that case. |
 | [[Building a Character\|**Speed**]] | How far a creature can move with an Advance: species Speed plus class Speed Modifier. |
 | [[Split\|**Split**]] | A trait: the Action has a Weapon mode and a Power mode, and you choose one each time you use it. |
@@ -183,6 +183,7 @@
 | [[Outcome Tiers\|**Tier**]] | The outcome of a roll: 1, 2 or 3. |
 | [[Reactions\|**Trigger**]] | A Reaction that happens after the Action that triggers it. |
 | [[Turns and Rounds\|**Turn**]] | The time one creature acts. |
+| [[Actions: the turn budget\|**Turn budget**]] | The points of an NPC's whole turn, by rank and damage rating (a Medium Standard: 100, 25 points an AP), spent on its Actions: damage, riders, help, a Reaction. |
 | [[Frequency\|**Turn**]] | A Frequency: once per turn, on your turn and on each other creature's turn. |
 | [[Senses\|**Unsensed**]] | You can't target the creature; its Actions against you are Favored. |
 | [[Defenses\|**Vs.**]] | An entry that names an Attribute: the Action rolls against half of it (rounded up) instead of Armor Defense or Ward Defense. |

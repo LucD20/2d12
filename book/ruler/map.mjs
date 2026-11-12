@@ -158,6 +158,12 @@ export function applyCondition(t, name, by = null) {
   if (/blinded/.test(n)) { t.cond.blinded = "eot"; return true; }
   if (/frightened/.test(n)) { t.cond.frightened = "eot"; return true; }
   if (/taunted/.test(n)) { if (by) t.taunt = { by, n: 1 }; return !!by; }
+  // The Bestiary's turn budget (2026-11-12): what the enemies put on PCs. Names no class card uses (its debuffs above return as before).
+  const vu = n.match(/vulnerable\s*(\d)/); if (vu) { t.cond.vuln = Math.max(t.cond.vuln ?? 0, Number(vu[1])); return true; }
+  const en = n.match(/enfeebled\s*(\d)/); if (en) { t.cond.enf = Math.max(t.cond.enf ?? 0, Number(en[1])); return true; }
+  if (/pressure bane/.test(n)) { t.cond.nextBane = 1; return true; }
+  if (/doomed \(next/.test(n)) { t.cond.nextDoomed = true; return true; }
+  if (/grabbed/.test(n)) { if (t.cond.immob !== "escape") t.cond.immob = "escape"; return true; }
   const bl = n.match(/bleed\s+([\dd+-]+)(?:\s*\(([^)]*)\))?/); if (bl) { const nb = { dmg: bl[1], mind: /\[r\]|mi|ap/.test(bl[2] ?? ""), by }; if (!t.cond.bleed || bleedAvg(nb.dmg) > bleedAvg(t.cond.bleed.dmg)) t.cond.bleed = nb; return true; }
   if (/hindered/.test(n)) { const kind = /until|move/.test(n) ? "move" : "eot"; if (t.cond.hindered !== "eot") t.cond.hindered = kind; return true; }
   if (/immobilized/.test(n)) { const kind = /eot/.test(n) ? "eot" : "escape"; if (t.cond.immob !== "escape") t.cond.immob = kind; return true; }
@@ -282,6 +288,23 @@ function walkGrid(c, score, budget, W, onLeave) {
     c.pos = np; used += cost; if (isD) diag++; moved++;
   }
   return moved;
+}
+/** What a Push or Pull would do on a map, without doing it (the Bestiary's turn budget: a GM pushes when it hurts): { moved, unused, into: "wall" | a creature | null }. */
+export function forcePreview(kind, origin, t, n, W) {
+  const G = W.M?.grid; if (!G || !n || t.cond?.immob || !up(t) || kind === "slide") return { moved: 0, unused: 0, into: null };
+  const d = { x: t.pos.x - origin.pos.x, y: t.pos.y - origin.pos.y }, m = Math.max(Math.abs(d.x), Math.abs(d.y)) || 1, sgn = kind === "pull" ? -1 : 1;
+  const want = kind === "pull" ? Math.min(n, Math.max(0, cheb(t.pos, origin.pos) - 1)) : n;
+  if (!want) return { moved: 0, unused: 0, into: null };
+  const dest = { x: t.pos.x + Math.round(sgn * want * d.x / m), y: t.pos.y + Math.round(sgn * want * d.y / m) };
+  const line = CO.straightCells({ i: t.pos.y, j: t.pos.x }, { i: dest.y, j: dest.x }).slice(1), occ = new Map([...W.pcs, ...W.foes].filter(c => c !== t && up(c)).map(c => [`${c.pos.x},${c.pos.y}`, c]));
+  let moved = 0, at = { ...t.pos }, into = null;
+  for (const cell of line) {
+    const np = { x: cell.j, y: cell.i }, isD = np.x !== at.x && np.y !== at.y;
+    if (solid(G, np.x, np.y) || (isD && (solid(G, at.x, np.y) || solid(G, np.x, at.y)))) { into = "wall"; break; }
+    const other = occ.get(`${np.x},${np.y}`); if (other) { into = other; break; }
+    at = np; moved++;
+  }
+  return { moved, unused: into ? line.length - moved : 0, into };
 }
 /** Pushed and Pulled on a map (Ch. 3, Collision): a straight line to the destination; the creature stops in the last legal square and takes damage for its unused squares (W.onCollision tells the engine). */
 function forceGrid(kind, origin, t, n, W) {

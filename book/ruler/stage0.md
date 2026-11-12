@@ -134,4 +134,67 @@ Four fights with no Rest (easy, normal, normal, hard). **The ladder** (Chapter 2
 | 3 | The ladder | Momentum 0.0: 2.8 r · 6% · Down 3% · won 100% | Momentum 1.0: 3.2 r · 7% · Down 7% · won 100% | Momentum 1.9: 3.2 r · 8% · Down 7% · won 100% | Momentum 2.8: 3.8 r · 13% · Down 18% · won 99% | 99% |
 | 3 | Flat | Momentum 0.0: 2.8 r · 6% · Down 3% · won 100% | Momentum 0.0: 3.4 r · 11% · Down 9% · won 100% | Momentum 0.0: 3.4 r · 11% · Down 10% · won 100% | Momentum 0.0: 4.2 r · 22% · Down 30% · won 96% | 96% |
 
-(4.5 minutes.)
+## 9. Enemies that do more than damage (the turn budget)
+
+The Bestiary since this pack builds an NPC's Actions on a **turn budget** (`book/ruler/budget.md`, `sim/budget.mjs`; the price list is the system's `config.mjs npcBudget`). The Standards below are four of the Bestiary's kind of creature, each built on the budget (Basic attack and 2 AP Round Special, the riders paid from their points): **Raider** (Push 1 on its Basic attack, Prone on its Special), **Hexer** (Vs. WD and [R]; Slowed 1), **Cutter** (Bleed 1d4), **Guard** (1 Pressure Bane; Push 2; a 1R Reaction that strikes back when it is hit). An encounter of 4 has one of each; 3, 5 and 6 take them in that order. **Damage only** is the Bestiary's damage table of before (the yardstick). Momentum 0. Cells: rounds · Health lost · cost · a PC Down · won.
+
+| Level | Enemies | 3 Standards (easy) | 4 (normal) | 5 (hard) | 6 (deadly) |
+|---:|---|---|---|---|---|
+| 1 | damage only | 2.7 · 7% · 17% · 3% · 100% | 3.3 · 12% · 27% · 10% · 100% | 4.2 · 23% · 44% · 26% · 98% | 5.0 · 41% · 66% · 49% · 86% |
+| 1 | with effects | 2.9 · 6% · 17% · 3% · 100% | 3.6 · 11% · 28% · 7% · 100% | 4.6 · 24% · 47% · 26% · 97% | 5.9 · 51% · 80% · 59% · 77% |
+| 2 | damage only | 2.7 · 6% · 16% · 3% · 100% | 3.4 · 11% · 26% · 10% · 100% | 4.2 · 20% · 40% · 25% · 98% | 5.0 · 37% · 61% · 48% · 87% |
+| 2 | with effects | 3.0 · 6% · 17% · 2% · 100% | 3.7 · 9% · 26% · 6% · 100% | 4.6 · 20% · 42% · 22% · 98% | 5.7 · 42% · 70% · 55% · 80% |
+| 3 | damage only | 2.7 · 6% · 16% · 4% · 100% | 3.4 · 10% · 25% · 8% · 100% | 4.2 · 22% · 42% · 27% · 97% | 5.0 · 36% · 60% · 48% · 88% |
+| 3 | with effects | 3.0 · 6% · 17% · 2% · 100% | 3.6 · 10% · 26% · 6% · 100% | 4.5 · 18% · 40% · 18% · 98% | 5.7 · 41% · 69% · 55% · 82% |
+
+## 10. The four Ranks with effects
+
+Levels 1 and 2 (the mean). **With effects:** every NPC on the budget with riders (a Minion: Push 1, Hindered; a Grunt: Push 1, Vulnerable 1; a Standard: the four above in turn; an Elite: Push 1, Prone, a 3 AP Encounter area with Slowed 1 and its pay-back, a 1R Reaction). **Damage only:** the same budget with no riders and no Reaction. Cells: cost · a PC Down · won.
+
+| Encounter (CV) | Damage only (the table before) | Damage only, on the budget | With effects |
+|---|---|---|---|
+| 4 Standards (400) | 27% · 10% · 100% | 26% · 9% · 100% | 27% · 6% · 100% |
+| 2 Elites (400) | 26% · 9% · 100% | 28% · 18% · 100% | 27% · 10% · 100% |
+| 1 Elite + 2 Standards (400) | 25% · 9% · 100% | 26% · 13% · 100% | 26% · 8% · 100% |
+| 8 Grunts (400) | 20% · 2% · 100% | 27% · 10% · 100% | 26% · 8% · 100% |
+| 2 Standards + 8 Minions (400) | 27% · 8% · 100% | 30% · 10% · 100% | 29% · 8% · 100% |
+| 16 Minions (400) | 30% · 5% · 100% | 30% · 7% · 100% | 29% · 6% · 100% |
+| 6 Standards (600) | 64% · 48% · 86% | 69% · 55% · 81% | 75% · 57% · 78% |
+| 3 Elites (600) | 62% · 49% · 88% | 55% · 48% · 90% | 56% · 41% · 91% |
+| 12 Grunts (600) | 42% · 15% · 99% | 63% · 42% · 90% | 65% · 44% · 88% |
+| 4 Standards + 8 Minions (600) | 65% · 48% · 87% | 69% · 55% · 85% | 64% · 41% · 88% |
+
+## 11. The six Roles with what makes them (level 2)
+
+Four of a Role (the Leader: one Leader with three Standards with effects, against four Standards with effects), and six for the deadly fight. Each Role has its ratings (the Bestiary's Roles table) and is built on the budget: the **Soldier** with Hold the Line (1R, Trigger: a PC's Strike hits an ally within 2: it attacks that PC) and Immobilized on its Special; the **Controller** with Frightened and Dazed 1 (Vs. WD); the **Leader** with Rally (1 AP, Round: its allies within 5 gain 1 Boon on their next attack, 9 points taken from its Special). Plain Standards with effects: the first row. Cells: cost · a PC Down · won.
+
+| Role | Normal (4) | Deadly (6) |
+|---|---|---|
+| Standards with effects | 26% · 6% · 100% | 70% · 55% · 80% |
+| Striker | 23% · 8% · 100% | 57% · 49% · 87% |
+| Soldier | 24% · 5% · 100% | 63% · 50% · 88% |
+| Skirmisher | 26% · 7% · 100% | 58% · 45% · 90% |
+| Artillery | 26% · 1% · 100% | 57% · 26% · 97% |
+| Controller | 24% · 6% · 100% | 64% · 47% · 86% |
+| Leader | 27% · 6% · 100% | 65% · 46% · 86% |
+
+## 12. Grunts and Minions, settled on these numbers
+
+**Grunts** (with effects): today's points an AP (17), one rating up (20: candidate (a) of the backlog), Health 30 with only the Round Special one rating up (candidate (b)), and a Standard's points an AP (25). **Minions** (with effects): their points an AP (15 today, 18), and a Minion's High Defense at one point a rating (10 / 11 / 12 / 13) against today's 14. Levels 1 and 2. Cells: cost · a PC Down · won.
+
+| Grunts | 8 Grunts (400) | 2 Standards + 4 Grunts (400) | 12 Grunts (600) | 4 Standards + 4 Grunts (600) |
+|---|---|---|---|---|
+| 17 an AP (the table's Grunt, on the budget) | 17% · 1% · 100% | 24% · 6% · 100% | 35% · 7% · 100% | 62% · 41% · 90% |
+| (a) 20 an AP (a rating up) | 18% · 2% · 100% | 25% · 7% · 100% | 39% · 12% · 100% | 64% · 44% · 87% |
+| (b) Health 30, the Round Special a rating up | 22% · 3% · 100% | 26% · 6% · 100% | 50% · 21% · 97% | 71% · 51% · 83% |
+| **chosen: 25 an AP (a Standard's), Health 26** | 26% · 8% · 100% | 28% · 10% · 100% | 65% · 44% · 88% | 69% · 50% · 83% |
+
+| Minions | 16 Minions (400) | 2 Standards + 8 Minions (400) | 4 Standards + 8 Minions (600) |
+|---|---|---|---|
+| 15 an AP, Defense 12 (Medium) | 21% · 1% · 100% | 25% · 5% · 100% | 61% · 40% · 92% |
+| 18 an AP, Defense 12 (Medium) | 29% · 6% · 100% | 29% · 8% · 100% | 64% · 41% · 88% |
+| 18 an AP, Defense 13 (High at one point a rating) | 32% · 8% · 100% | 30% · 9% · 100% | 70% · 50% · 85% |
+| 18 an AP, Defense 14 (today's High) | 35% · 11% · 100% | 32% · 11% · 100% | 74% · 52% · 79% |
+
+
+(8.5 minutes.)

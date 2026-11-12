@@ -14,7 +14,7 @@ export const npcStrike = (R, f, t, banes, escalation = 3, pcs = [], boons = 0, b
   let reduce = t.build.passives.filter(p => p.effect.kind === "reduce" && escalation >= p.escalation && (!t.stanceOff || p.effect.always)).reduce((s, p) => Math.max(s, p.effect.n), 0), reducer = null;   // "if you haven't left your square since your last turn"
   for (const g of pcs) if (g !== t && !g.down && g.adjacent?.includes(t)) for (const p of g.build.passives) if (p.effect.kind === "reduce" && p.effect.adjacent && (!g.stanceOff || p.effect.always) && (g.esc ?? 0) >= p.escalation && p.effect.n > reduce) { reduce = p.effect.n; reducer = g; }
   const zb = f.zone && f.zone.left > 0 ? f.zone.n : 0;   // Consecrated Ground: Banes on its Strikes while it stands in the area
-  const def = (f.power ? t.build.wd : t.build.ad) + (t.defBonus ?? 0) + (t.passiveDef ?? 0);   // pack R-bestiary: a `power` NPC rolls against Ward Defense
+  const def = ((f.curPower ?? f.power) ? t.build.wd : t.build.ad) + (t.defBonus ?? 0) + (t.passiveDef ?? 0);   // curPower: an Action with its own Defense (the Bestiary's turn budget)   // pack R-bestiary: a `power` NPC rolls against Ward Defense
   const fr = f.cond?.frightened ? 1 : 0, st = f.cond?.blinded || doomed ? "doomed" : "";   // pack R-classes: Frightened's Bane, Blinded's Doomed; the catch-up: High cover's Doomed
   const u = R(), tier = pickU(u, C.tierProbs(f.mod, def, boons, banes + zb + fr, st));
   f.lastTier = tier;   // for the log
@@ -185,9 +185,11 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
       if (rx.ally && p === t) continue; if (rx.round && p.blockedRound === round) continue;   // pack R-classes: `ally` (never on itself: Bulwark of Faith), `round` (once a round: the Round Frequency)
       block = { dmg: rx.dmg, spill: rx.spill, by: p, used: () => { ev("reaction", { who: nameOf(p), reaction: rx.name, on: nameOf(f), protects: nameOf(t) }); spendReact(p); p.blockedFor = f.turnId; p.blockedRound = round; p.st.reactions++; } }; break; }
     const bb = RULES.bloodiedBanes && f.bloodiedRound != null ? 1 : 0;   // the book's Bloodied rule on the NPC's Strikes
+    if (t.cond?.vuln) boons += RR.vulnerableBoons(t.cond.vuln);   // the Bestiary's turn budget: a PC made Vulnerable by an enemy
+    if (f.nextBoons) { boons += f.nextBoons; f.nextBoons = 0; f.boonUsed = (f.boonUsed ?? 0) + 1; }   // a Leader's help: Boons on its next attack
     const taken = npcStrike(f.R ?? R, f, t, k + taunted + banes + el + bb, t.esc, pcs, boons, block, doomed);   // At-will Banes on the 2nd and 3rd Strike
-    t.damage += taken; f.dealt = (f.dealt ?? 0) + taken; ev("attack", { who: nameOf(f), target: nameOf(t), kind: (f.curMult ?? 1) > 1 ? "special" : "basic", tier: f.lastTier, damage: taken, pool: f.power ? "R" : "V" });   // an NPC's Basic attack is Vigor damage (a weapon)...
-    if (f.power) { t.mindDamage = (t.mindDamage ?? 0) + taken; t.st.mindTaken += taken; }   // ...unless it is a `power` NPC: [R] (pack R-bestiary)
+    t.damage += taken; f.dealt = (f.dealt ?? 0) + taken; ev("attack", { who: nameOf(f), target: nameOf(t), kind: f.curName ?? ((f.curMult ?? 1) > 1 ? "special" : "basic"), tier: f.lastTier, damage: taken, pool: (f.curPower ?? f.power) ? "R" : "V" });   // an NPC's Basic attack is Vigor damage (a weapon)...
+    if (f.curPower ?? f.power) { t.mindDamage = (t.mindDamage ?? 0) + taken; t.st.mindTaken += taken; }   // ...unless it is a `power` NPC: [R] (pack R-bestiary)
     // Pack R prep: an "overwatch" Reaction (a Trigger: an enemy within 10 squares makes a Strike; once per NPC turn), after the Strike.
     for (const p of up()) for (const rx of p.build.reactions ?? []) if (rx.kind === "overwatch" && p.keptAP >= 1 && !p.cond?.staggered && p.owFor !== f.turnId && !f.dead && (!M || MP.dist(p.pos, f.pos) <= 10)) { p.owFor = f.turnId; spendReact(p); p.st.oaMade++; pcReact((p.rxNow = rx.name, p), f, rx.action); }
     // Pack R-classes, part 3: Rebuke (1R, Round, Trigger: an enemy within your Reach makes a Strike against an ally): an Appeal Save against 11 + [PMod]; Tier 1 [R] 1d8 Ho, Pushed 2, Frightened (EoT); Tier 2 [R] 1d6 Ho, Pushed 1.
@@ -198,12 +200,95 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
         if (M) MP.force("push", p, f, tier === 1 ? 2 : 1, W); if (tier === 1) { MP.applyCondition(f, "Frightened (EoT)", p); p.st.condApplied++; } killCheck(); }
     }
     for (const p of up()) for (const rx of p.build.reactions ?? []) if (rx.kind === "ready" && p.keptAP >= 1 && !p.cond?.staggered && p.readyRound !== round && (!M || MP.dist(p.pos, f.pos) <= 10)) { p.readyRound = round; spendReact(p); p.st.reactions++; p.readyAP = 1; }   // pack R-classes: Ready Shot (1R, Round): +1 AP on its next turn
+    pcHurt(t);
+  };
+  /** A PC took damage (a Strike, a Collision, a Bleed from an enemy): Bloodied, Strained, Down, and the Paladin's hook. */
+  const pcHurt = t => {
     const wasB = !!t.bloodiedRound, wasD = t.down;
     if (t.damage - (t.mindDamage ?? 0) >= t.build.bodyHealth && !t.bloodiedRound) t.bloodiedRound = round;   // Bloodied: Vigor damage at the Vigor threshold
     if ((t.mindDamage ?? 0) >= t.build.mindHealth && !t.strainedRound) t.strainedRound = round;   // Strained: Resolve damage at the Resolve threshold (pack R-bestiary)
     if (t.damage >= t.build.pool && !t.down) { t.down = true; t.st.downs++; if (!firstDown) firstDown = round; ev("down", { who: nameOf(t) }); }
     if ((!wasB && t.bloodiedRound) || (!wasD && t.down)) for (const p of up()) if (p !== t && p.build.escHook === "ally" && (!M || MP.dist(p.pos, t.pos) <= 5)) hook(p, "class");   // pack R prep: the Paladin's hook
   };
+  /* ---------------------------------------------------------------- the Bestiary's turn budget (2026-11-12): enemies that do more than damage.
+     Only an NPC with `acts` (sim/budget.mjs builds it) or a `reaction` uses this: every other NPC turns exactly as before. */
+  const FX = (f, k, n = 1) => { (f.fx ??= {})[k] = (f.fx[k] ?? 0) + n; };   // what its effects did, for the reports
+  const hasRider = (t, r) => { const c = t.cond ?? {}, n = r.eff.toLowerCase();
+    if (/^(push|pull|slide)/.test(n)) return false;
+    if (/prone/.test(n)) return c.prone; if (/slowed/.test(n)) return c.slowed > 0; if (/dazed/.test(n)) return c.dazed > 0; if (/staggered/.test(n)) return !!c.staggered;
+    if (/blinded/.test(n)) return !!c.blinded; if (/frightened/.test(n)) return !!c.frightened; if (/hindered/.test(n)) return !!c.hindered; if (/immobilized|grabbed/.test(n)) return !!c.immob;
+    if (/vulnerable/.test(n)) return (c.vuln ?? 0) > 0; if (/enfeebled/.test(n)) return (c.enf ?? 0) > 0; if (/taunted/.test(n)) return !!t.taunt; if (/bleed/.test(n)) return !!c.bleed;
+    if (/pressure bane/.test(n)) return !!c.nextBane; if (/doomed \(next/.test(n)) return !!c.nextDoomed; return false; };
+  /** One rider on a PC: a Forced Movement (with its Collision) or a condition. A condition it already has is wasted (no limit on repeating a rider: Lucas). */
+  const riderOn = (f, t, r) => {
+    if (!t || t.down) return;
+    const n = r.eff.toLowerCase(), fm = n.match(/^(push|pull|slide)\s+(\d+)/);
+    if (fm && RULES.forcedUse !== "always") {   // the GM pushes when it hurts: into a wall or into another PC (a Collision); else the rider is declined
+      const pv = MP.forcePreview(fm[1], f, t, Number(fm[2]), W); if (!pv.unused || (pv.into && pv.into !== "wall" && !pv.into.build)) { FX(f, "declined"); return; } }
+    if (fm) { const d0 = t.damage; const moved = MP.force(fm[1], f, t, Number(fm[2]), W); FX(f, "forced"); FX(f, "squares", moved); if (t.damage > d0) { FX(f, "collision", t.damage - d0); pcHurt(t); } return; }
+    if (hasRider(t, r)) { FX(f, "wasted"); return; }
+    const dz = n.match(/dazed\s*(\d)/);
+    if (dz) { const k = Number(dz[1]), fromKept = Math.min(k, t.turnKept ?? 0); t.turnKept = (t.turnKept ?? 0) - fromKept; t.keptAP -= fromKept; t.cond.dazed += k - fromKept; FX(f, "cond"); return; }   // Dazed: AP now (the AP it kept, never the Reaction AP), the rest from its next turn
+    if (/taunted/.test(n)) { t.taunt = { by: f, n: 1 }; FX(f, "cond"); return; }
+    if (MP.applyCondition(t, r.eff, f)) FX(f, "cond");
+  };
+  /** The PCs an Action hits: its target, and for an Area the other PCs within r squares of it (n creatures at most). */
+  const actTargets = (a, t) => (a.area ? [t, ...up().filter(p => p !== t && MP.dist(p.pos, t.pos) <= (a.area.r ?? 1)).sort((x, y) => MP.dist(x.pos, t.pos) - MP.dist(y.pos, t.pos)).slice(0, (a.area.n ?? 3) - 1)] : [t]);
+  /** One attack of an Action on one PC: Setup riders first (they always happen), then the roll (a Save Action: the PC's Save, its Tier 1 the worst), then the riders by Tier. Returns the Tier. */
+  const actHit = (f, a, t, k, m) => {
+    for (const r of a.riders ?? []) if (r.at === "setup") riderOn(f, t, r);
+    if (t.down) return 0;
+    f.curDmg = a.dmg; f.curPower = a.power; f.curName = a.name;
+    let tier;
+    if (a.save) {   // a Save Action: DC 11 + its Modifier; the PC's Tier 1 is the attack's Tier 3
+      const st = (t.build.attributes?.[a.save] ?? 1), pt = pick(f.R ?? R, C.tierProbs(st, 11 + (a.power ? f.powerMod : f.weaponMod), 0, 0, "")); tier = 4 - pt; f.lastTier = tier;
+      if (a.dmg && tier >= 2) { let d = npcDamage(f.R ?? R, f, tier); const g = Math.min(t.guard ?? 0, d), g2 = Math.min(t.apGuard ?? 0, d - g); t.guard = (t.guard ?? 0) - g; t.apGuard = (t.apGuard ?? 0) - g2; d -= g + g2; t.damage += d; t.st.taken += d; f.dealt = (f.dealt ?? 0) + d; if (a.power) t.mindDamage = (t.mindDamage ?? 0) + d; ev("attack", { who: nameOf(f), target: nameOf(t), kind: a.name, tier, damage: d, pool: a.power ? "R" : "V" }); pcHurt(t); }
+    } else if (a.dmg) { npcHit(f, t, k, (m?.boons ?? 0), (m?.banes ?? 0), !!m?.doomed); tier = f.lastTier; }
+    else { const def = (a.power ? t.build.wd : t.build.ad) + (t.defBonus ?? 0); tier = pick(f.R ?? R, C.tierProbs(a.power ? f.powerMod : f.weaponMod, def, (m?.boons ?? 0) + RR.vulnerableBoons(t.cond?.vuln), (m?.banes ?? 0), m?.doomed ? "doomed" : "")); f.lastTier = tier; ev("attack", { who: nameOf(f), target: nameOf(t), kind: a.name, tier, damage: 0 }); }
+    f.curDmg = null; f.curPower = undefined; f.curName = null;
+    for (const r of a.riders ?? []) if ((r.at === "hit" && tier >= 2) || (r.at === "t3" && tier === 3)) riderOn(f, t, r);
+    FX(f, "uses"); FX(f, `use:${a.name}`); return tier;
+  };
+  /** An Action with no damage that helps the NPC's side: Boons on its allies' next attack, or a heal on the most hurt ally. */
+  const actHelp = (f, a) => {
+    const allies = alive().filter(x => x !== f && (!M || MP.dist(x.pos, f.pos) <= (a.range ?? 5)));
+    if (a.buff) { for (const x of allies.slice(0, a.buff.n ?? 99)) { x.nextBoons = Math.max(x.nextBoons ?? 0, a.buff.boons ?? 1); FX(f, "buffed"); } ev("help", { who: nameOf(f), target: nameOf(f), what: a.name }); }
+    if (a.heal) { const t = [...alive().filter(x => !M || MP.dist(x.pos, f.pos) <= (a.range ?? 5))].sort((x, y) => y.damage - x.damage)[0]; if (t) { const h = Math.min(t.damage, rollDamage(f.R ?? R, a.heal).total); t.damage -= h; if (t.mindDamage > t.damage) t.mindDamage = t.damage; FX(f, "healed", h); ev("help", { who: nameOf(f), target: nameOf(t), what: "heals", amount: h }); } }
+    FX(f, "uses");
+  };
+  /** Is the Action worth using now? A help only when it helps; an Action whose only effect is a condition only on a PC that hasn't it. */
+  const actUseful = (f, a, t) => {
+    if (a.kind === "help") return a.heal ? alive().some(x => x.damage >= 4) : alive().some(x => x !== f && !x.nextBoons);
+    if (!a.dmg && (a.riders ?? []).every(r => !/^(push|pull|slide)/i.test(r.eff))) return (a.riders ?? []).some(r => !hasRider(t, r));
+    return true;
+  };
+  /** The PC an Action with conditions should go to: one in reach that hasn't them, if any (the GM spreads riders), else t. */
+  const spreadTarget = (f, a, t) => {
+    const conds = (a.riders ?? []).filter(r => !/^(push|pull|slide)/i.test(r.eff)); if (!conds.length || !conds.every(r => hasRider(t, r))) return t;
+    return up().find(p => (f.melee ? MP.adj(f, p) : MP.dist(f.pos, p.pos) <= f.range[0] && MP.canTarget(f, p, W)) && !conds.every(r => hasRider(p, r))) ?? t;
+  };
+  /** An NPC's turn with its own Actions (after it moved): the Encounter Action first, then by points an AP (Round before At-will), helps when they help; 3 Strikes at most. */
+  const actsTurn = (f, t, ap) => {
+    let strikes = 0; const aw = {}; FX(f, "turns");
+    ap -= f.reaction?.cost === 2 ? 1 : 0;   // a 2R Reaction needs an AP kept from the turn
+    for (let guard = 0; guard < 8 && ap > 0 && !f.dead; guard++) {
+      if (t?.down || (t && f.melee && !MP.adj(f, t))) t = PN.npcRetarget(E, f);
+      const ok = a => a.ap <= ap && (a.freq !== "enc" || !f.encDone?.has(a.name)) && (a.freq !== "round" || !f.roundDone?.has(a.name)) && (a.kind === "help" || (t && strikes < RR.STRIKES_PER_TURN)) && actUseful(f, a, t);
+      const c = f.acts.filter(ok).sort((x, y) => (y.freq === "enc") - (x.freq === "enc") || y.pts / y.ap - x.pts / x.ap || (y.freq === "round") - (x.freq === "round") || y.ap - x.ap)[0];
+      if (!c) break;
+      ap -= c.ap; if (c.freq === "enc") (f.encDone ??= new Set()).add(c.name); if (c.freq === "round") (f.roundDone ??= new Set()).add(c.name);
+      if (c.kind === "help") { actHelp(f, c); continue; }
+      const tt = spreadTarget(f, c, t), m = MP.mapMods(f, tt, f.melee ? "melee" : "ranged", W); if (!m) break;
+      const eb = f.firstAtk ? RR.eliteFirstAttackBoons(f.esc, RULES.eliteRungs) : 0; f.firstAtk = false;
+      const k = c.freq === "atwill" ? (aw[c.name] = (aw[c.name] ?? -1) + 1) : 0; strikes++;
+      const tg = actTargets(c, tt); if (c.area) { FX(f, "areaHits", tg.length); FX(f, "areaUses"); } for (const x of tg) actHit(f, c, x, k, { ...m, boons: m.boons + eb });
+    }
+    f.keptAP = f.reaction?.cost === 2 ? 1 : 0;
+  };
+  /** An NPC's Reaction (its entry's `reaction`): 1R from its Reaction AP, 2R with an AP kept too; once a round. */
+  const npcCanReact = f => !f.dead && f.damage < f.pool && f.reaction && !f.cond?.staggered && f.rxRound !== round && f.reactAP >= 1 && (f.reaction.cost !== 2 || (f.keptAP ?? 0) >= 1);
+  const npcReactPay = f => { f.rxRound = round; f.reactAP--; if (f.reaction.cost === 2) f.keptAP--; FX(f, "reactions"); ev("reaction", { who: nameOf(f), reaction: f.reaction.name, on: "" }); };
+  const npcReactHit = (f, pc) => { if (pc.down || !f.reaction.act) return; const m = MP.mapMods(f, pc, f.melee ? "melee" : "ranged", W); if (!m) return; actHit(f, f.reaction.act, pc, 0, m); };
   /** A PC's turn context (the targets, heals, buffs, areas; and with the map model, its movement, Boons and Banes, conditions). */
   const ctxFor = (pc, extra = {}) => ({
     R: pc.R ?? R, escalation: pc.esc,
@@ -238,6 +323,19 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
         return m;
       },
       move: (p, step) => pcMove(p, step),
+      // The Bestiary's turn budget: the PC's own conditions on its rolls (roundrules.mjs rollerConditionMods), and the enemies' Reactions to its Strikes.
+      selfMods: (p, t) => { const c = p.cond; if (!c) return null; const o = RR.rollerConditionMods({ frightened: !!c.frightened, taunted: !!p.taunt, againstTaunter: p.taunt?.by === t, blinded: !!c.blinded, nextBanes: c.nextBane, nextDoomed: c.nextDoomed });
+        c.nextBane = 0; c.nextDoomed = false; return o.banes || o.doomed || c.enf ? { ...o, enf: c.enf ?? 0 } : null; },
+      beforeStrike: (p, t) => { for (const f of alive()) if (f.reaction?.trigger === "allyStruck" && f !== t && MP.dist(f.pos, t.pos) <= (f.reaction.range ?? 1) && npcCanReact(f)) { npcReactPay(f); return { def: f.reaction.def ?? 2 }; } return null; },
+      afterStrike: (p, t, tier) => {
+        if (p.down) return;
+        for (const f of alive()) {
+          const rx = f.reaction; if (!rx || !npcCanReact(f)) continue;
+          const reach = f.melee ? MP.adj(f, p) : MP.dist(f.pos, p.pos) <= f.range[0];
+          if (rx.trigger === "struck" && f === t && tier >= 2 && reach) { npcReactPay(f); npcReactHit(f, p); }
+          else if (rx.trigger === "allyHit" && f !== t && tier >= 2 && MP.dist(f.pos, t.pos) <= (rx.range ?? 2) && reach) { npcReactPay(f); npcReactHit(f, p); }
+        }
+      },
       condition: (who, e, t) => {
         if (!t?.cond) return;
         if (e.kind === "debuff") { if (MP.applyCondition(t, e.name, who)) who.st.condApplied++; }
@@ -266,6 +364,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   };
   /** A PC leaves a square during an Advance: the NPCs' Opportunity Attacks (1 AP of their next turn). */
   const pcLeave = id => (c, np) => {
+    for (const f of alive()) if (f.reaction?.trigger === "approach" && MP.cheb(np, f.pos) === 1 && !MP.adj(f, c) && f.reacted !== id && npcCanReact(f)) { f.reacted = id; npcReactPay(f); const was = c.pos; c.pos = np; npcReactHit(f, c); c.pos = was; if (c.down) return false; }   // it strikes the PC as it arrives   // the Bestiary's turn budget: "an enemy would enter a square next to it"
     for (const f of alive()) if (f.oa && !f.cond?.staggered && MP.threatens(f, c) && f.reacted !== id) {
       if (RULES.npcReactionAp > 0 && f.reactAP <= 0) continue;   // the catch-up: with a Reaction AP (pack R) an NPC that spent it can't react (it keeps no turn AP); before pack R it paid with its next turn's AP
       f.reacted = id; if (f.reactAP > 0) f.reactAP--; else f.apDebt++; c.st.oaTaken++; ev("reaction", { who: nameOf(f), reaction: "Opportunity Attack", on: nameOf(c) });
@@ -375,7 +474,8 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
       if (!n) break;
       if (!f.melee) break;   // a ranged NPC moves once
     }
-    if (!f.dead && RULES.npcSpecials && f.kit) {   // pack R prep: every AP left goes to attacks: the Encounter Special (once), the Round Special (once a round), Basic attacks (At-will Banes); 3 Strikes
+    if (!f.dead && f.acts) actsTurn(f, t, ap);   // the Bestiary's turn budget: its own Actions
+    else if (!f.dead && RULES.npcSpecials && f.kit) {   // pack R prep: every AP left goes to attacks: the Encounter Special (once), the Round Special (once a round), Basic attacks (At-will Banes); 3 Strikes
       let basics = 0;
       for (let s = 0; s < 3 && ap > 0; s++) {
         const enc = f.kit.enc && !f.encUsed && ap >= f.kit.enc.ap ? f.kit.enc : null, rnd = !enc && f.kit.round && f.roundSpecialN < RR.eliteRoundSpecials(f.esc, RULES.eliteRungs) && ap >= f.kit.round.ap ? f.kit.round : null, sp = enc ?? rnd;   // Elite Escalation 2: the Round Special twice a round
@@ -403,7 +503,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   while (alive().length && up().length && round < maxRounds) {
     round++; ev("round");
     for (const p of pcs) { p.firstThisRound = new Set(); if (round > 1 && !p.down) p.esc = Math.min(RULES.escMax, (p.esc ?? 0) + 1); }   // RULES.escMax: 3 (the book: roundrules.mjs ESC_MAX), or the Stage 0 prototype's 6   // +1 Escalation at the start of every round after the first
-    for (const f of foes) { f.roundSpecialN = 0; f.firstAtk = true; if (RULES.eliteEsc && f.role === "elite" && !f.dead) { f.esc = round === 1 ? 1 : Math.min(RULES.eliteMax ?? 3, f.esc + 1); eliteRung(f); } }   // pack R-bestiary: Elite Escalation (+1 a round from round 2)
+    for (const f of foes) { f.roundSpecialN = 0; f.firstAtk = true; f.roundDone = null; if (RULES.eliteEsc && f.role === "elite" && !f.dead) { f.esc = round === 1 ? 1 : Math.min(RULES.eliteMax ?? 3, f.esc + 1); eliteRung(f); } }   // pack R-bestiary: Elite Escalation (+1 a round from round 2)
     if (inject && round === inject.round) inject.fn({ pcs, foes, R, M, round });
     for (const o of order) {
       if (!alive().length || !up().length) break;
@@ -429,7 +529,8 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
         }
         let extra = {};
         if (M) {
-          let limit = RULES.ap - (pc.cond.slowed || 0) - (pc.cond.dazed || 0) + (pc.readyAP ?? 0); pc.cond.dazed = 0;   // pack R-classes: Ready Shot's AP (turnFor reads it, then it is spent)   // pack R: Slowed lowers the turn's AP, not the Reaction AP (the default to confirm)
+          let limit = RULES.ap - (pc.cond.slowed || 0) - (pc.cond.dazed || 0) + (pc.readyAP ?? 0); pc.cond.dazed = 0; pc.cond.slowed = 0;   // Slowed (an enemy's, EoT): it takes its AP, then ends
+          if (pc.cond.bleed?.by && !pc.cond.bleed.by.build && limit > 1) { limit--; const tier = pick(pc.R ?? R, C.tierProbs(Math.max(...Object.values(pc.build.attributes ?? { x: 1 })), 13, 0, 0, "")); if (tier === 3) pc.cond.bleed = null; else if (tier === 2) pc.cond.bleed.half = true; }   // an enemy's Bleed: Interact (1 AP) to end it, a Save against DC 13   // pack R-classes: Ready Shot's AP (turnFor reads it, then it is spent)   // pack R: Slowed lowers the turn's AP, not the Reaction AP (the default to confirm)
           if (pc.cond.prone) { limit--; pc.cond.prone = false; }   // Stand (1 AP)
           // The Stage 0 prototype, candidate E: a PC with a second weapon (pc.alt: { build, cost }) puts the ranged one away for the melee one when an enemy is on it (once a fight; cost AP).
           if (pc.alt && !pc.switched && alive().some(f => MP.dist(pc.pos, f.pos) <= 2)) { pc.build = pc.alt.build; pc.melee = true; pc.range = [1]; pc.switched = true; limit -= pc.alt.cost; pc.st.switches = (pc.st.switches ?? 0) + 1; }
@@ -452,13 +553,14 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
         if (r.crit) hook(pc, "crit");
         if (RULES.meleeGuard && M && pc.melee && !pc.down && MP.engaged(pc, W) && RULES.meleeGuard >= (pc.guard ?? 0)) { pc.guard = RULES.meleeGuard; pc.guardBy = pc; pc.guardMelee = true; }   // candidate B2: a melee PC that ends its turn Engaged has Guard until its next turn
         if (M) { pc.st.lostAP += r.lostAP; pc.reacted = null; if (pc.cond.hindered) pc.cond.hindered = null; if (pc.cond.immob === "eot") pc.cond.immob = null; pc.cond.staggered = null; pc.cond.blinded = null; pc.cond.frightened = null;
-          if (pc.cond.bleed) { const v = rollDamage(pc.R ?? R, parseDamage(pc.cond.bleed.dmg)).total; pc.damage += v; pc.st.taken += v; } }   // a PC's Bleed at the end of its turn (pack R-classes)
+          if (pc.cond.bleed) { let v = rollDamage(pc.R ?? R, parseDamage(pc.cond.bleed.dmg)).total; if (pc.cond.bleed.half) { v = Math.floor(v / 2); pc.cond.bleed = null; } pc.damage += v; pc.st.taken += v; if (v) pcHurt(pc); }
+          pc.cond.vuln = 0; pc.cond.enf = 0; pc.taunt = null; }   // a PC's Bleed at the end of its turn (pack R-classes)
         pc.st.dealt += r.damage; pc.st.counted += r.counted; pc.st.mindDealt += r.mind;
         if (r.nova) { pc.st.novaDealt += r.damage; pc.st.novaTurns++; }
         killCheck();
       } else {
         const f = o.npc; if (f.dead) continue;
-        f.turnId = `${round}:${foes.indexOf(f)}`; f.reactAP = RULES.npcReactionAp; ev("turn", { who: nameOf(f), escalation: f.esc || undefined, pos: at(f) });
+        f.turnId = `${round}:${foes.indexOf(f)}`; f.reactAP = f.reactionAp ?? RULES.npcReactionAp; ev("turn", { who: nameOf(f), escalation: f.esc || undefined, pos: at(f) });
         if (M) npcTurnMap(f);
         else for (const a of npcSeq(f)) {   // no positions: its Bestiary Strikes, or (pack R) everything its AP buys
           const targets = up(); if (!targets.length) break;
