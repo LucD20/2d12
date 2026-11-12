@@ -463,6 +463,7 @@ Health Pool: Human Paladin 36 / 39 / 42, Dwarf Paladin 41 / 44 / 48, Human Arche
 
 ## The scripts in this folder
 - **`policies.md` (SIM-3, 2026-11-12):** every headline fight under 8 party policies and 4 enemy policies (`node book/ruler/sim/policies.mjs`). The other reports are the plan policy's; this one is the range around them.
+- **`areas.md` (2026-11-12):** what the Area cards do placed on the grid (how many creatures each holds, what a Zone does over its rounds) against the number their ruler lines assume (`node book/ruler/sim/areas.mjs`).
 - **`maps/*.txt`, `maps.md` (SIM-2, 2026-11-12):** the maps (walls, Difficult Terrain, start zones) and the fights on each, with the price of Speed and of the movement conditions by map (`node book/ruler/sim/maps.mjs`). `report.md` stays the open field.
 - **`sim/` (SIM-1, 2026-11-12): the engine** (`core.mjs` rules, dice, NPCs; `turn.mjs` a PC turn; `engine.mjs` the fight and the day; `policy.mjs` the decisions; `run.mjs` one fight written out). Its README: `sim/README.md`. spec.mjs exports it all again, so every script below works as before, and every report came out unchanged.
 - `spec.mjs` with `rework/*.txt` and `fights.txt`: the spec-driven ruler on the book's rules today (top of this file); it writes `report.md`. With `--pre-r`: `classes/*.txt` and `fights-pre-r.txt` under the rules before pack R; it writes `report-pre-r.md`.

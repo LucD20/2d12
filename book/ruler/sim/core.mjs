@@ -39,10 +39,11 @@ export const MAP = MP.MAP, MAPDIST = MP.dist, MAPCOND = MP.applyCondition, MAPFO
  * basic Opportunity Attack only with an AP to spare, so its Reaction AP stays for the class Reaction; "first" = it reacts to the first trigger. "spare"
  * loses less Health in every fight measured: report.md, "Reactions in the 4 + 1 AP economy"), reactFromStart (false: the book and Foundry: a creature
  * gains its Reaction AP when it regains AP at the start of its turn, so it has none before its first turn of an encounter; true: pack R prep's
- * model, it has one from the first moment).
+ * model, it has one from the first moment), areasOnGrid (SIM-2: on a map an Action's Area is always placed on the grid and a lasting one is a Zone;
+ * true does the same on the open field too, where the default keeps the number of creatures the card's ruler line says: report.md's gate).
  */
-export const RULES_PRE_R = { ap: 5, reactionAp: 0, escalation: "spent", npcAp: 5, minionAp: 3, npcReactionAp: 0, npcSpecials: 0, apGuard: 0, apGuardKeep: false, guardAt: "end", escHooks: false, oaDisrupt: true, oaAll: false, npcOa: true, oaPolicy: "first", reactFromStart: true, startEsc: 0, bloodiedBanes: false, bestiary: "today", eliteEsc: false, elitePhases: false };
-export const RULES_R = { ap: TW.apPerTurn, reactionAp: TW.reactionAp, escalation: "level", npcAp: TW.npcRoles.standard.ap, minionAp: TW.npcRoles.minion.ap, npcReactionAp: TW.reactionAp, npcSpecials: 1, apGuard: "stage", apGuardKeep: true, guardAt: "next", escHooks: true, oaDisrupt: false, oaAll: true, npcOa: true, oaPolicy: "spare", reactFromStart: false, startEsc: TW.escalation.min, bloodiedBanes: false, bestiary: "r", eliteEsc: true, elitePhases: true };
+export const RULES_PRE_R = { ap: 5, reactionAp: 0, escalation: "spent", npcAp: 5, minionAp: 3, npcReactionAp: 0, npcSpecials: 0, apGuard: 0, apGuardKeep: false, guardAt: "end", escHooks: false, oaDisrupt: true, oaAll: false, npcOa: true, oaPolicy: "first", reactFromStart: true, areasOnGrid: false, startEsc: 0, bloodiedBanes: false, bestiary: "today", eliteEsc: false, elitePhases: false };
+export const RULES_R = { ap: TW.apPerTurn, reactionAp: TW.reactionAp, escalation: "level", npcAp: TW.npcRoles.standard.ap, minionAp: TW.npcRoles.minion.ap, npcReactionAp: TW.reactionAp, npcSpecials: 1, apGuard: "stage", apGuardKeep: true, guardAt: "next", escHooks: true, oaDisrupt: false, oaAll: true, npcOa: true, oaPolicy: "spare", reactFromStart: false, areasOnGrid: false, startEsc: TW.escalation.min, bloodiedBanes: false, bestiary: "r", eliteEsc: true, elitePhases: true };
 export const RULES = { ...RULES_R };
 /** Guard per unused AP for a PC of this level (apGuard "stage": the book's 2 / 3 / 4 by Stage; a number: that much). */
 export const guardPerAp = lv => (RULES.apGuard === "stage" ? GD.guardPerAP(CF.stageOf(lv)) : Number(RULES.apGuard) || 0);

@@ -19,29 +19,29 @@ Each cell: rounds · the party's Health lost · a PC goes Down · the party wins
 
 | Encounter | open | closequarters | corridor | longsight | pillars | rough |
 |---|---|---|---|---|---|---|
-| 4 Standards (normal) | 3.8 · 14% · 23% · 98% | 3.8 · 18% · 31% · 98% | 3.9 · 16% · 27% · 98% | 3.8 · 18% · 28% · 98% | 3.8 · 16% · 26% · 97% | 3.8 · 16% · 28% · 100% |
-| 3 Standards + 1 Ward attacker | 3.8 · 15% · 28% · 98% | 4.0 · 22% · 35% · 95% | 3.9 · 20% · 33% · 98% | 3.8 · 19% · 30% · 97% | 3.9 · 19% · 31% · 97% | 3.8 · 19% · 33% · 99% |
-| Elite + 2 Standards | 3.9 · 14% · 25% · 100% | 3.9 · 15% · 27% · 100% | 3.8 · 12% · 21% · 99% | 3.8 · 13% · 21% · 99% | 4.0 · 15% · 25% · 100% | 3.8 · 14% · 24% · 100% |
-| 6 Standards (CV 6, deadly) | 5.9 · 47% · 73% · 73% | 5.4 · 61% · 78% · 54% | 5.8 · 59% · 81% · 56% | 5.6 · 48% · 68% · 69% | 5.5 · 56% · 75% · 60% | 5.8 · 45% · 68% · 73% |
-| 2 Standards + 2 ranged Standards | 4.2 · 16% · 27% · 98% | 4.2 · 13% · 29% · 99% | 4.3 · 14% · 26% · 97% | 4.2 · 18% · 28% · 96% | 4.3 · 15% · 28% · 98% | 4.2 · 17% · 33% · 97% |
+| 4 Standards (normal) | 3.8 · 14% · 23% · 98% | 3.8 · 21% · 35% · 98% | 3.9 · 22% · 35% · 98% | 3.8 · 19% · 30% · 98% | 3.9 · 21% · 33% · 95% | 3.8 · 16% · 26% · 99% |
+| 3 Standards + 1 Ward attacker | 3.8 · 15% · 28% · 98% | 3.8 · 24% · 35% · 97% | 4.0 · 24% · 41% · 98% | 3.8 · 21% · 34% · 97% | 3.8 · 23% · 35% · 97% | 3.8 · 20% · 32% · 98% |
+| Elite + 2 Standards | 3.9 · 14% · 25% · 100% | 3.9 · 18% · 31% · 100% | 3.8 · 14% · 23% · 100% | 3.8 · 14% · 21% · 100% | 3.8 · 15% · 22% · 100% | 3.8 · 16% · 26% · 100% |
+| 6 Standards (CV 6, deadly) | 5.9 · 47% · 73% · 73% | 5.4 · 64% · 87% · 54% | 5.6 · 64% · 87% · 55% | 5.6 · 56% · 78% · 62% | 5.3 · 61% · 83% · 57% | 5.6 · 53% · 78% · 64% |
+| 2 Standards + 2 ranged Standards | 4.2 · 16% · 27% · 98% | 4.3 · 16% · 28% · 99% | 4.3 · 16% · 28% · 98% | 4.2 · 22% · 37% · 96% | 4.3 · 18% · 29% · 97% | 4.2 · 21% · 32% · 98% |
 
 **What the map does to the party** (4 Standards (normal); per PC, a fight):
 
 | | open | closequarters | corridor | longsight | pillars | rough |
 |---|---:|---:|---:|---:|---:|---:|
-| A Paladin: AP spent moving | 1.87 | 1.15 | 1.61 | 1.89 | 1.57 | 1.78 |
-| A Paladin: damage dealt | 53.8 | 59.5 | 57.3 | 51.6 | 56.5 | 52.0 |
-| A Paladin: damage taken | 19.6 | 22.0 | 20.0 | 18.5 | 19.7 | 18.3 |
-| An Archer: AP spent moving | 0.00 | 0.05 | 0.05 | 0.00 | 0.08 | 0.00 |
-| An Archer: damage dealt | 97.6 | 90.6 | 93.5 | 99.8 | 93.5 | 99.0 |
-| An Archer: damage taken | 12.8 | 14.1 | 16.0 | 12.3 | 13.9 | 10.5 |
-| An Archer: shots | 11.3 | 10.8 | 11.0 | 11.5 | 11.1 | 11.4 |
-| ... with Cover (share of its shots) | 48% | 51% | 56% | 50% | 57% | 50% |
-| ... Banes from the map on a shot | 0.87 | 0.90 | 1.14 | 1.03 | 1.18 | 0.79 |
-| An Archer: Actions with no target it could see or reach | 0.00 | 0.44 | 0.33 | 0.00 | 0.25 | 0.00 |
+| A Paladin: AP spent moving | 1.87 | 1.24 | 1.62 | 1.91 | 1.60 | 1.72 |
+| A Paladin: damage dealt | 53.8 | 61.2 | 58.8 | 55.1 | 56.0 | 53.8 |
+| A Paladin: damage taken | 19.6 | 21.9 | 19.9 | 18.6 | 21.6 | 18.0 |
+| An Archer: AP spent moving | 0.00 | 0.04 | 0.03 | 0.00 | 0.09 | 0.00 |
+| An Archer: damage dealt | 97.6 | 89.1 | 92.1 | 96.6 | 92.8 | 98.1 |
+| An Archer: damage taken | 12.8 | 14.9 | 16.7 | 11.0 | 13.9 | 10.7 |
+| An Archer: shots | 11.3 | 10.6 | 11.0 | 11.2 | 10.9 | 11.3 |
+| ... with Cover (share of its shots) | 48% | 50% | 57% | 51% | 57% | 51% |
+| ... Banes from the map on a shot | 0.87 | 0.92 | 1.12 | 1.06 | 1.16 | 0.82 |
+| An Archer: Actions with no target it could see or reach | 0.00 | 0.45 | 0.35 | 0.00 | 0.27 | 0.00 |
 | A Paladin: Actions with no target in reach | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 |
-| Reactions used (a PC) | 2.03 | 2.25 | 2.22 | 2.12 | 2.22 | 2.15 |
-| Turns that start Engaged (an Archer) | 1.12 | 1.31 | 1.41 | 1.53 | 1.37 | 1.26 |
+| Reactions used (a PC) | 2.03 | 2.24 | 2.18 | 2.10 | 2.20 | 2.15 |
+| Turns that start Engaged (an Archer) | 1.12 | 1.34 | 1.41 | 1.44 | 1.32 | 1.27 |
 | Collision damage it caused (a PC) | 0.0 | 0.8 | 0.5 | 0.4 | 0.6 | 0.4 |
 
 ## 2. What Speed and the movement conditions are worth, by map
@@ -50,17 +50,17 @@ Each price is 400 pairs of fights with the same dice (every creature rolls its o
 
 | Change | open | closequarters | corridor | longsight | pillars | rough |
 |---|---:|---:|---:|---:|---:|---:|
-| +1 Speed, both Paladins (5 → 6) | 0.10 ± 0.06 | 0.00 ± 0.00 | 0.11 ± 0.06 | 1.43 ± 0.33 | -0.10 ± 0.08 | 1.50 ± 0.28 |
-| -1 Speed, both Paladins (5 → 4) | -0.03 ± 0.02 | -0.90 ± 0.35 | -0.23 ± 0.26 | 0.16 ± 0.19 | -1.00 ± 0.37 | 0.24 ± 0.19 |
-| +1 Speed, both Archers (6 → 7) | 0.00 ± 0.00 | 0.00 ± 0.00 | 0.05 ± 0.08 | 0.00 ± 0.00 | 0.02 ± 0.03 | 0.00 ± 0.00 |
+| +1 Speed, both Paladins (5 → 6) | 0.10 ± 0.06 | 0.00 ± 0.00 | 0.06 ± 0.12 | 1.46 ± 0.34 | 0.02 ± 0.08 | 1.49 ± 0.32 |
+| -1 Speed, both Paladins (5 → 4) | -0.03 ± 0.02 | -0.92 ± 0.42 | -0.06 ± 0.25 | 0.12 ± 0.18 | -1.18 ± 0.39 | 0.07 ± 0.14 |
+| +1 Speed, both Archers (6 → 7) | 0.00 ± 0.00 | 0.00 ± 0.00 | 0.09 ± 0.07 | 0.00 ± 0.00 | 0.01 ± 0.03 | 0.00 ± 0.00 |
 | -1 Speed, both Archers (6 → 5) | 0.00 ± 0.00 | 0.00 ± 0.00 | -0.07 ± 0.13 | 0.00 ± 0.00 | 0.05 ± 0.03 | 0.00 ± 0.00 |
-| -1 Speed on every Standard (5 → 4), for one | 0.71 ± 0.52 | 3.07 ± 0.62 | 2.08 ± 0.56 | 3.37 ± 0.59 | 1.73 ± 0.56 | 1.13 ± 0.46 |
-| +1 Speed on every Standard (5 → 6), for one | -1.14 ± 0.49 | -0.74 ± 0.59 | -0.93 ± 0.33 | -1.25 ± 0.53 | -2.47 ± 0.57 | -1.98 ± 0.54 |
-| Hindered (EoT) on a Standard | 0.63 ± 0.42 | 2.04 ± 0.37 | 0.82 ± 0.40 | 1.43 ± 0.33 | 0.77 ± 0.39 | 1.15 ± 0.35 |
-| Immobilized (EoT) on a Standard | 2.73 ± 0.50 | 1.49 ± 0.56 | 0.39 ± 0.48 | 1.87 ± 0.50 | 1.48 ± 0.49 | 1.21 ± 0.51 |
-| Slowed 1 on a Standard | 4.41 ± 0.42 | 4.05 ± 0.46 | 3.53 ± 0.48 | 4.43 ± 0.41 | 2.91 ± 0.47 | 3.57 ± 0.44 |
-| Prone on a Standard | 4.18 ± 0.44 | 4.11 ± 0.47 | 3.41 ± 0.49 | 4.33 ± 0.42 | 2.84 ± 0.47 | 3.49 ± 0.45 |
+| -1 Speed on every Standard (5 → 4), for one | 0.71 ± 0.52 | 2.80 ± 0.68 | 2.31 ± 0.63 | 3.91 ± 0.64 | 1.88 ± 0.64 | 0.87 ± 0.56 |
+| +1 Speed on every Standard (5 → 6), for one | -1.14 ± 0.49 | -1.29 ± 0.66 | -0.75 ± 0.36 | -1.32 ± 0.57 | -2.42 ± 0.66 | -2.44 ± 0.65 |
+| Hindered (EoT) on a Standard | 0.63 ± 0.42 | 1.92 ± 0.44 | 1.16 ± 0.47 | 1.77 ± 0.39 | 0.57 ± 0.45 | 0.73 ± 0.43 |
+| Immobilized (EoT) on a Standard | 2.73 ± 0.50 | 0.12 ± 0.63 | -0.03 ± 0.56 | 0.94 ± 0.61 | 0.54 ± 0.55 | 0.25 ± 0.60 |
+| Slowed 1 on a Standard | 4.41 ± 0.42 | 4.38 ± 0.54 | 4.00 ± 0.57 | 5.02 ± 0.52 | 3.46 ± 0.56 | 4.10 ± 0.55 |
+| Prone on a Standard | 4.18 ± 0.44 | 4.45 ± 0.54 | 3.97 ± 0.57 | 4.92 ± 0.51 | 3.44 ± 0.55 | 4.00 ± 0.55 |
 
 A price is for one creature (the Speed rows: for one of the two PCs, or one of the four Standards). On the open field every Advance reaches whatever its length, so Speed is worth nothing there; a map gives it a price where the way is long (a corridor, rough ground) or the lines are blocked.
 
-(26.5 minutes.)
+(19.5 minutes.)

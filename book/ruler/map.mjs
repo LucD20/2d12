@@ -319,3 +319,27 @@ function placeGrid(pcs, foes, G) {
   // Two creatures never share a square: the later one takes the nearest free start square.
   const used = new Set(); for (const [list, zone] of [[pcs, G.pcStart], [foes, G.npcStart]]) for (const c of list) { let k = `${c.pos.x},${c.pos.y}`; if (used.has(k)) { const f = zone.filter(q => !used.has(`${q.x},${q.y}`)).sort((a, b) => dist(a, c.pos) - dist(b, c.pos))[0]; c.pos = { ...f }; k = `${f.x},${f.y}`; } used.add(k); }
 }
+
+/* ------------------------------------------------------------------ SIM-2 (areas, 2026-11-12): an Area's squares and who stands in it. */
+/** The squares of an Area as a Set of "x,y": an Emanation or an Aura N around a square, a Burst N on a corner ({ x, y }: the lower-left corner of square (x, y)). */
+export const areaSquares = (kind, n, center) => new Set((kind === "burst" ? GR.burstSquares(center, n) : GR.emanationSquares(center, n)).map(q => `${q.x},${q.y}`));
+/** Is c in the Area, with Line of Effect from its Point of Origin (Ch. 3: the center of the origin's square; a Burst's corner: any of the four squares around it)? */
+export function inArea(c, squares, kind, center, W) {
+  if (!c.pos || !squares.has(`${c.pos.x},${c.pos.y}`)) return false;
+  if (!W.M?.grid) return true;
+  const from = kind === "burst" ? [[0, 0], [-1, 0], [0, -1], [-1, -1]].map(([dx, dy]) => ({ x: center.x + dx, y: center.y + dy })) : [center];
+  return from.some(p => (p.x === c.pos.x && p.y === c.pos.y) || coverAt(p, c, W) < 4);
+}
+/** Where an Area can be put so that it holds `target`: Emanation centers (squares) or Burst corners within `range` squares of `who` (0: around who itself). */
+export function areaSpots(kind, n, who, target, range, W) {
+  if (!range) return [{ ...who.pos }];
+  const out = [], G = W.M?.grid, r = kind === "burst" ? Math.ceil(n) + 1 : n;
+  for (let x = target.pos.x - r; x <= target.pos.x + r; x++) for (let y = target.pos.y - r; y <= target.pos.y + r; y++) {
+    const c = { x, y };
+    if (kind !== "burst" && G && solid(G, x, y)) continue;
+    if (!areaSquares(kind, n, c).has(`${target.pos.x},${target.pos.y}`)) continue;
+    if (dist(who.pos, kind === "burst" ? { x: x - (who.pos.x < x ? 1 : 0), y: y - (who.pos.y < y ? 1 : 0) } : c) > range) continue;
+    out.push(c);
+  }
+  return out;
+}

@@ -9,9 +9,9 @@
      engine's log (each event's `ch` list says whose Health, Guard, place and conditions changed). -->
 <style>
 :root { --bg: #f4f1ea; --panel: #fffdf8; --ink: #23262d; --dim: #6c6f78; --line: #d9d4c7; --grid: #e6e1d4; --pc: #2f5f9e; --npc: #a8402f; --pcsoft: #dbe6f5; --npcsoft: #f3dcd6;
-  --t1: #8a8d94; --t2: #c9801c; --t3: #b3261e; --heal: #2e7d4f; --gold: #b8912f; --now: #fff3c4; --guard: #5b8fb0; --wallc: #5d5a52; --roughc: #e3d6ad; }
+  --t1: #8a8d94; --t2: #c9801c; --t3: #b3261e; --heal: #2e7d4f; --gold: #b8912f; --now: #fff3c4; --guard: #5b8fb0; --wallc: #5d5a52; --roughc: #e3d6ad; --zonec: rgba(70, 130, 200, .18); --zones: rgba(70, 130, 200, .55); }
 @media (prefers-color-scheme: dark) { :root { --bg: #17191d; --panel: #1f2227; --ink: #e7e4dc; --dim: #9a9ca3; --line: #353941; --grid: #2a2d34; --pc: #6fa0e0; --npc: #e07a66; --pcsoft: #243449; --npcsoft: #47292a;
-  --t1: #8a8d94; --t2: #e0a040; --t3: #ef6a5e; --heal: #5fc08a; --gold: #d8b45a; --now: #4a421f; --guard: #7fb4d6; --wallc: #6f7480; --roughc: #3c3824; } }
+  --t1: #8a8d94; --t2: #e0a040; --t3: #ef6a5e; --heal: #5fc08a; --gold: #d8b45a; --now: #4a421f; --guard: #7fb4d6; --wallc: #6f7480; --roughc: #3c3824; --zonec: rgba(120, 170, 235, .2); --zones: rgba(120, 170, 235, .6); } }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; }
 header { padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; border-bottom: 1px solid var(--line); background: var(--panel); position: sticky; top: 0; z-index: 5; }
@@ -59,6 +59,7 @@ tr.out td { opacity: .45; } tr.act td { background: var(--now); }
 #log .i { padding-left: 26px; }
 #log .cur { background: var(--now); border-left-color: var(--gold); }
 #log .past { color: var(--dim); }
+.zone { fill: var(--zonec); stroke: var(--zones); stroke-width: 1; } .areaflash { fill: var(--t2); opacity: .32; } .areaflash.ok { fill: var(--heal); }
 .good { color: var(--heal); font-weight: 600; } .wall { fill: var(--wallc); } .rough { fill: var(--roughc); }
 .T1 { color: var(--t1); } .T2 { color: var(--t2); } .T3 { color: var(--t3); } .rxn { font-style: italic; }
 .legend { display: flex; flex-wrap: wrap; gap: 2px 14px; padding: 8px 12px; color: var(--dim); font-size: 12px; border-top: 1px solid var(--line); }
@@ -91,7 +92,7 @@ tr.out td { opacity: .45; } tr.act td { background: var(--now); }
       <svg id="map" xmlns="http://www.w3.org/2000/svg"></svg>
       <div class="legend">
         <span><i class="sw" style="background:var(--t1)"></i>Tier 1</span><span><i class="sw" style="background:var(--t2)"></i>Tier 2</span><span><i class="sw" style="background:var(--t3)"></i>Tier 3</span>
-        <span><i class="sw" style="background:var(--heal)"></i>helps an ally (a heal, Guard, a block)</span><span>dashed line: a Reaction</span><span>dark squares: walls · tinted: Difficult Terrain</span><span>gold ring: whose turn it is</span><span>blue bar: Guard</span><span>1 square = 1 square of the book</span>
+        <span><i class="sw" style="background:var(--heal)"></i>helps an ally (a heal, Guard, a block)</span><span>dashed line: a Reaction</span><span>dark squares: walls · tinted: Difficult Terrain</span><span>blue squares: a Zone that lasts · a flash: an Area</span><span>gold ring: whose turn it is</span><span>blue bar: Guard</span><span>1 square = 1 square of the book</span>
       </div>
     </div>
   </div>
@@ -112,6 +113,7 @@ const $ = id => document.getElementById(id), SVG = "http://www.w3.org/2000/svg";
 const el = (tag, attrs = {}, parent = null, text = null) => { const e = document.createElementNS(SVG, tag); for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v); if (text != null) e.textContent = text; if (parent) parent.appendChild(e); return e; };
 const n1 = x => (Math.round(x * 10) / 10).toString(), esc = s => String(s).replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
 const CELL = 44;
+let zoneAt = [], gdist = (a, b) => { const dx = Math.abs(a[0] - b[0]), dy = Math.abs(a[1] - b[1]); return Math.max(dx, dy) + Math.floor(Math.min(dx, dy) / 2); };
 let fight = null, frames = [], k = 0, timer = null, names = [], short = {}, box = null;
 
 /** A creature's short tag: the first letter of its name and its number ("P1", "A3", "S2", "E1"). */
@@ -127,6 +129,9 @@ function line(e) {
   if (e.type === "reaction") return `<span class="rxn${e.protects ? " good" : ""}">Reaction, <b>${short[e.who]}</b>: ${esc(e.reaction)}${e.on ? ` on <b>${short[e.on]}</b>${e.protects ? `, for ${short[e.protects]}` : ""}` : ""}${e.tier ? `: ${T(e.tier)}` : ""}${d(e.damage)}</span>`;
   if (e.type === "help") return `<span class="good">${short[e.who] === short[e.target] ? "" : `<b>${short[e.who]}</b> → `}<b>${short[e.target]}</b>: ${esc(e.what)}${e.amount ? ` <b>+${n1(e.amount)}</b>` : ""}</span>`;
   if (e.type === "collision") return `<b>${short[e.who]}</b> is thrown into ${e.into === "a wall" ? "a wall" : `<b>${short[e.into]}</b>`}: <b>${n1(e.damage)}</b> damage`;
+  if (e.type === "area") return `${esc(e.name)}: an Area of ${e.squares.length} squares${e.hits ? `, ${e.hits} in it` : ""}`;
+  if (e.type === "zone") return `<span class="good">${esc(e.name)}: a Zone for ${e.rounds} rounds${e.aura ? " (an Aura: it follows)" : ""}</span>`;
+  if (e.type === "zone-end") return `${esc(e.name)} ends`;
   if (e.type === "hold") return `<span class="good">holds its place (its AP stay: Guard at its next turn)</span>`;
   if (e.type === "down") return `<b class="T3">${short[e.who]} goes Down</b>`;
   if (e.type === "dead") return `<b>${short[e.who]} is out</b>`;
@@ -142,6 +147,7 @@ function load() {
   names = start.creatures.map(c => c.name); short = Object.fromEntries(names.map(n => [n, tagOf(n)]));
   // The state after each event: every creature's { dmg, pos, out, guard, esc, cond }.
   let st = start.creatures.map(c => ({ dmg: c.damage ?? 0, pos: c.pos, out: false, guard: 0, esc: 0, cond: "" }));
+  let zs = []; zoneAt = fight.log.map(e => { if (e.type === "zone") zs = [...zs, e]; else if (e.type === "zone-end") zs = zs.filter(z => z.id !== e.id); return zs; });   // the Zones on the map after each event
   frames = fight.log.map(e => { if (e.ch) { st = st.map(x => ({ ...x })); for (const c of e.ch) st[c.i] = { dmg: c.dmg, pos: c.pos ?? st[c.i].pos, out: c.out, guard: c.guard, esc: c.esc, cond: c.cond }; } return st; });
   const pts = frames.flatMap(s => s.map(x => x.pos)).filter(Boolean), xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
   box = start.grid ? { x0: 0, x1: start.grid.w - 1, y0: 0, y1: start.grid.h - 1 } : pts.length ? { x0: Math.min(...xs) - 1, x1: Math.max(...xs) + 1, y0: Math.min(...ys) - 1, y1: Math.max(...ys) + 1 } : null;
@@ -162,6 +168,7 @@ function drawMap() {
   m.setAttribute("viewBox", `0 0 ${W} ${H}`);
   for (let x = 0; x <= box.x1 - box.x0; x++) for (let y = 0; y <= box.y1 - box.y0; y++) el("rect", { class: "cell", x: x * CELL, y: y * CELL, width: CELL, height: CELL }, m);
   const g0 = fight.log[0].grid; if (g0) { for (const [x, y] of g0.rough) { const [a, b] = px([x, y]); el("rect", { class: "rough", x: a - CELL / 2, y: b - CELL / 2, width: CELL, height: CELL }, m); } for (const [x, y] of g0.walls) { const [a, b] = px([x, y]); el("rect", { class: "wall", x: a - CELL / 2, y: b - CELL / 2, width: CELL, height: CELL }, m); } }
+  m._zones = el("g", {}, m);
   const trail = el("g", {}, m); m._trail = trail;
   fight.log[0].creatures.forEach((c, i) => {
     const g = el("g", { class: `tok ${c.side}` }, m);
@@ -184,7 +191,11 @@ function go(i) {
   if (box) {
     st.forEach((s, i2) => { const t = toks[i2], [x, y] = px(s.pos); t.g.style.transform = `translate(${x}px, ${y}px)`; t.g.classList.toggle("out", s.out); t.g.classList.toggle("act", names[i2] === actor && !s.out);
       const left = Math.max(0, 1 - s.dmg / t.health); t.hp.setAttribute("width", 32 * left); t.hp.setAttribute("class", `hp${left < 0.25 ? " crit" : left < 0.5 ? " low" : ""}`); t.gd.setAttribute("width", Math.min(32, 32 * s.guard / t.health)); });
-    fx.innerHTML = ""; $("map")._trail.innerHTML = "";
+    fx.innerHTML = ""; $("map")._trail.innerHTML = ""; const zg = $("map")._zones; zg.innerHTML = "";
+    const wallSet = (fight._walls ??= new Set((fight.log[0].grid?.walls ?? []).map(w => w.join(","))));
+    const sqr = (x, y, cls) => { if (x < box.x0 || x > box.x1 || y < box.y0 || y > box.y1 || wallSet.has(`${x},${y}`)) return; const [a, b] = px([x, y]); el("rect", { class: cls, x: a - CELL / 2, y: b - CELL / 2, width: CELL, height: CELL }, zg); };
+    for (const z of zoneAt[k]) { if (z.aura) { const c = st[names.indexOf(z.who)].pos; for (let x = c[0] - z.aura; x <= c[0] + z.aura; x++) for (let y = c[1] - z.aura; y <= c[1] + z.aura; y++) if (gdist([x, y], c) <= z.aura) sqr(x, y, "zone"); } else for (const [x, y] of z.squares) sqr(x, y, "zone"); }
+    if (e.type === "area") for (const [x, y] of e.squares) sqr(x, y, `areaflash${e.good ? " ok" : ""}`);
     const good = e.type === "help" || (e.type === "reaction" && e.protects);   // something that helps an ally: a green line to the one it helps
     const who = e.who != null ? names.indexOf(e.who) : -1, tg = names.indexOf(good && e.protects ? e.protects : e.type === "reaction" ? e.on : e.target);
     if (good && who >= 0 && tg >= 0) { const [a, b] = px(st[who].pos), [c, d] = px(st[tg].pos); if (tg !== who) el("line", { x1: a, y1: b, x2: c, y2: d, stroke: "var(--heal)", class: e.type === "reaction" ? "rx" : "" }, fx); el("circle", { cx: c, cy: d, r: 21, fill: "none", stroke: "var(--heal)", "stroke-width": 3 }, fx); el("text", { x: c, y: d - 26, fill: "var(--heal)" }, fx, e.amount ? `+${n1(e.amount)}` : e.type === "reaction" ? "blocked" : (e.what ?? "")); }
@@ -196,7 +207,7 @@ function go(i) {
       if (e.damage) el("text", { x: c, y: d - 24, fill: col }, fx, `-${n1(e.damage)}`);
     }
   }
-  $("now").innerHTML = e.type === "round" ? `Round ${e.round}` : (e.who && !["turn", "reaction", "help", "collision", "down", "dead"].includes(e.type) ? `<b>${short[e.who]}</b> ` : "") + line(e);
+  $("now").innerHTML = e.type === "round" ? `Round ${e.round}` : (e.who && !["turn", "reaction", "help", "collision", "down", "dead", "zone-end"].includes(e.type) ? `<b>${short[e.who]}</b> ` : "") + line(e);
   $("where").textContent = `Round ${e.round || 1} · step ${k + 1} of ${fight.log.length}`;
   // The roster.
   $("roster").innerHTML = `<tr><th></th><th>Creature</th><th>Health</th><th>Guard</th><th>Esc.</th><th>Conditions</th></tr>` + st.map((s, i2) => { const c = C[i2], left = Math.max(0, c.health - s.dmg), f = left / c.health;

@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: b8edf4f 2026-11-12 SIM-3: decision policies and the sensitivity report (book/ruler/policies.md)
+Built by tools/knowledge.py on 2026-11-12 from the repository at: 1149a26 2026-11-12 Bestiary: a tip on enemies that all strike the same PC (Lucas: yes); the target's way of playing answered (a)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (115 KB)
+- HANDOFF.md (116 KB)
 - MASTER-PLAN.md (32 KB)
 - open-design-items.md (111 KB)
 - rules-01-roll.md (23 KB)

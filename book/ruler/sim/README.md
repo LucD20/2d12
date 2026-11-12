@@ -1,6 +1,6 @@
 # SIM: the automated playtest environment
 
-The brief: `book/sim-brief.md`. Built in four parts. **SIM-1 is done (2026-11-12, Foundry v0.0.365)**: the shared engine and its turn loop on the open field. **SIM-2 is done (2026-11-12, v0.0.366)**: maps with walls and Difficult Terrain, Line of Effect and Cover by corners, movement by paths, Forced Movement with Collision, the fights by map (`../maps.md`); areas and Zones are **not** drawn on the map yet (below). The viewer's first version is built. **SIM-3 is done (2026-11-12, no Foundry version)**: decision policies for the party and the enemies and the sensitivity report (`../policies.md`). SIM-4 (the Encounter Log's format, Playtest 4 replayed) is next.
+The brief: `book/sim-brief.md`. Built in four parts. **SIM-1 is done (2026-11-12, Foundry v0.0.365)**: the shared engine and its turn loop on the open field. **SIM-2 is done (2026-11-12, v0.0.366)**: maps with walls and Difficult Terrain, Line of Effect and Cover by corners, movement by paths, Forced Movement with Collision, the fights by map (`../maps.md`); areas and Zones on the grid (finished the same day, after SIM-3: `../areas.md`). The viewer's first version is built. **SIM-3 is done (2026-11-12, no Foundry version)**: decision policies for the party and the enemies and the sensitivity report (`../policies.md`). SIM-4 (the Encounter Log's format, Playtest 4 replayed) is next.
 
 ## What is here
 
@@ -15,6 +15,7 @@ The brief: `book/sim-brief.md`. Built in four parts. **SIM-1 is done (2026-11-12
 | `../map.mjs` | The map layer: distances, Engaged, Flanking, range, conditions, movement, Forced Movement. With no map it is the open field (Cover drawn by chance per shot), exactly as before SIM-2; with a map (`loadMap`): walls, Line of Effect and Cover by corners, paths around walls and through Difficult Terrain, Collision |
 | `../maps/*.txt` | **The maps** (SIM-2): `pillars`, `corridor`, `rough`, `longsight`, `closequarters`; `open` is the open field |
 | `policies.mjs` | **The sensitivity report** (SIM-3): every headline fight under each party policy and each enemy policy, on three maps; it writes `../policies.md` |
+| `areas.mjs`, `parties.mjs` | What the Area cards do on the grid against the number their ruler lines assume, with a party that uses them; it writes `../areas.md` |
 | `maps.mjs` | The fights on every map and the price of Speed and of the movement conditions there; it writes `../maps.md` |
 | `../spec.mjs` | Reads the class files and `fights.txt`, writes `report.md`; it exports everything above again, so the other scripts didn't change |
 
@@ -41,7 +42,18 @@ A map is a text file in `book/ruler/maps/`, one character a square; a line that 
 
 Draw a new one and it is in the viewer and in `maps.md` the next time their scripts run (`fight(..., { map: { ...MAP, grid: MP.loadMap("name") } })`). **What a map changes:** Cover is the corners of the target's square that walls block from the center of yours (the system's `gridrules.mjs coverLevel`; 4 blocked = no Line of Effect: it can't be targeted), for melee and ranged alike, with a creature in the way still Low cover; a movement follows the cheapest path (the second diagonal 2, Difficult Terrain double, no solid corner: `corners.mjs stepCorners`; no square with a creature in it); Pushed and Pulled go in a straight line and a creature thrown into a wall or a creature takes Collision damage (`gridrules.mjs collisionDamage`); a ranged creature that can target no enemy moves to a square with a line to one.
 
-**Not on the maps yet:** areas drawn on the grid (an Action's Emanation, Burst or Line still hits the number of creatures its card's ruler line says; the shapes themselves are pure functions with tests: `gridrules.mjs emanationSquares`, `burstSquares`, `linearea.mjs lineSquares`), Zones that stay (Consecrated Ground's and Covering Fire's squares, Rain of Arrows' hazard), Hazardous Terrain, Large creatures, elevation, doors, Leaning, light and Senses, a Slide's Collision. Threatening and Engaged ignore walls (two creatures on either side of a wall's corner count as adjacent, though they can't target each other).
+### Areas and Zones (2026-11-12)
+
+On a map an Action with an Area is placed on the grid and hits who stands in it. The Area is the card's own (`area` and `distance` in `book/cards/*.json`: spec.mjs writes it on the Action's line as `shape emanation 2 dist 10 who all`): an Emanation or an Aura N around a square, a Burst N on a corner (the system's `gridrules.mjs emanationSquares`, `burstSquares`), within the card's Distance, with Line of Effect from its Point of Origin to each creature. **An Area that lasts is a Zone:** its squares stay for the card's rounds (an Aura follows its maker), and what it does is read from where a creature stands when it matters: an enemy that Strikes from inside takes its Bane, an ally that starts its turn inside is healed, an ally struck inside has its Defense bonus. The policy decides where it goes (`placeArea`): the spot with the most of the creatures it is for; a damaging Area that hits "all creatures" never where an ally stands; one that lasts and deals no damage (Consecrated Ground, Covering Fire) counts allies too, so it lands on the party's line while the enemies are still far.
+
+On the open field of `report.md` nothing changed: an Area still hits the number of creatures its card's ruler line says (`RULES.areasOnGrid` false: the gate). `book/ruler/areas.md` (`node book/ruler/sim/areas.mjs`, about 5 minutes) compares the two with a party that uses the Area cards (`parties.mjs`):
+
+- **The ruler lines' numbers are right for the normal fight and low for a big one.** Against 4 Standards a Volley holds 2.0 to 2.5 enemies (its line says 2), Consecrated Ground 2.2 to 2.6 (2), Final Verdict 1.2 to 1.4 (1.5), Word of Radiance's 3 Burst 2.6 to 3.1 (2.3). Against 6 Standards: Volley 2.6 to 3.5, Consecrated Ground 2.6 to 3.5, Final Verdict 1.8 to 2.3, Word of Radiance 4.1 to 5.0, Rain of Arrows 3.2 to 3.4 (2.5).
+- **A Zone works only for who stays in it.** On the plan policy the Paladins walk out of their own Consecrated Ground to meet the enemy, and the party with the Area cards does a little worse on the grid than by count (the normal fight on the open field: 16% of its Health against 11%). Holding the line with it is the best result measured on most maps (the normal fight 10 to 13%; the deadly fight in the long hall won 88% against 70%).
+- **Hallowed Dawn reaches fewer allies than its line says.** Its 2 Emanation around the Paladin holds 1 or 2 allies on a map, not the 3 of its ruler line (the Archers stand back): it heals 34 Health a deadly fight instead of 44, which is 5 points of the party's Health. This alone moved `maps.md` (the normal fight on the maps: 16 to 22% of the party's Health, was 16 to 18%; the deadly fight among the pillars is won 57%, was 60%).
+- **Covering Fire** defends about 10 Strikes against allies in a normal fight and 20 in a deadly one, and its Bane lands on 5 to 11 enemy Strikes: far more than its line's "2 enemies, 2 allies" for 3 rounds assumed.
+
+**Not on the grid yet:** Covering Fire's damage to enemies that enter it and Rain of Arrows' Hazardous Terrain (the cards' text has them, their ruler lines don't), a Line, an Area that hits allies on purpose, enemies walking around a Zone, Hazardous Terrain on a map, Large creatures, elevation, doors, Leaning, light and Senses, a Slide's Collision. Threatening and Engaged ignore walls (two creatures on either side of a wall's corner count as adjacent, though they can't target each other).
 
 **The gate holds:** with no map, `report.md` and the other reports come out unchanged.
 
@@ -51,7 +63,7 @@ Double-click `book/ruler/sim/fights.html`. Pick an **Encounter** and a **Fight**
 
 It is one file with no build step and nothing loaded from the network. It knows no rule: it draws the engine's log (each event's `ch` list says whose Health, Guard, place and conditions changed). `node book/ruler/sim/view.mjs` writes it again after a change to the rules, the builds or fights.txt (`--seeds 12` for more fights to watch, `"2 Elites"` for one encounter, `--out file.html`). To change how it looks, edit `viewer-template.html`, not `fights.html`.
 
-Not there yet: areas and Zones, each roll's Boons and Banes, heals as their own lines, the Encounter Log's playtest format, Playtest 4 replayed (SIM-4).
+**Zones are blue squares for their rounds, an Area flashes when it is used; "Party plays" has a fourth choice, the party with the Area cards.** Not there yet: each roll's Boons and Banes, heals as their own lines, the Encounter Log's playtest format, Playtest 4 replayed (SIM-4).
 
 ## The gate (sim-brief.md 4.2)
 
@@ -101,7 +113,7 @@ The engine asks the policy; `planPolicy` answers as the ruler always did (report
 
 **What `policies.md` found (300 fights a cell; the party's Health lost, a PC Down, the party wins):**
 
-- **Decisions move the result as much as the encounter's size.** The normal fight on the open field costs 9% of the party's Health when it holds the line and 20% when it plays casually (the plan: 14%). The deadly fight in the corridor is won 66% of the time holding the line, 56% on the plan, 33% casually.
+- **Decisions move the result as much as the encounter's size.** The normal fight on the open field costs 9% of the party's Health when it holds the line and 20% when it plays casually (the plan: 14%). The deadly fight in the corridor is won 62% of the time holding the line, 53% on the plan, 32% casually.
 - **Holding the line is the best single decision** everywhere (normal fight 14% → 9% on the open field, deadly fight won 71% → 77%): the enemies come to the party, the Paladins get whole turns and their unused AP's Guard is finally used (0.2 a fight instead of 0.04).
 - **Focus fire is worth about a third of the fight:** without it (casual) the deadly fight costs 64% instead of 48% on the open field.
 - **Kiting as written here doesn't pay:** the step away costs an AP of shots (an Archer deals 5% less) and the party takes the same. Protecting the back line and holding the Encounter Action for round 2 are inside the noise. Reacting to the first trigger costs up to 7 points on the maps.

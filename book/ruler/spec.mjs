@@ -27,6 +27,13 @@ import { fight, day, roleCv, npcStrike, npcSeq, npcTurn } from "./sim/engine.mjs
 const CARDS = await import(new URL("../cards/load.mjs", import.meta.url).href);
 const RFREQ = { "at-will": "at-will", turn: "turn", round: "round", encounter: "encounter", daily: "daily" };
 const rulerVs = vs => { const t = String(vs ?? "").trim(); if (/^AD$/i.test(t)) return "vs ad"; if (/^WD$/i.test(t)) return "vs wd"; const m = t.match(/^(\w+) Save$/); return m ? `vs save ${m[1].toLowerCase()}` : ""; };
+/** A card's Area line as a ruler field: "shape emanation 2 dist 10 who all" (kind: emanation, burst, aura; dist: squares, "weapon" (its normal range), "max", or "self"; who: enemies, allies, all). "2 / 3 Burst": one value a Version. */
+function shapeOf(c, vi) {
+  const m = String(c.area ?? "").match(/(Emanation|Burst|Aura)/i); if (!m) return "";
+  const ns = String(c.area).match(/\d+/g) ?? [], n = Number(ns[Math.min(vi, ns.length - 1)] ?? 1), d = String(c.distance ?? ""), sq = d.match(/(\d+)\s*sq/);
+  const dist = /aura/i.test(m[1]) ? "self" : sq ? sq[1] : /maximum/i.test(d) ? "max" : /weapon|range/i.test(d) ? "weapon" : "self", t = String(c.target ?? "");
+  return `shape ${m[1].toLowerCase()} ${n} dist ${dist} who ${/enem/i.test(t) ? "enemies" : /all(y|ies)/i.test(t) && !/creatures/i.test(t) ? "allies" : "all"}`;
+}
 export function cardLines(cards = CARDS.loadCards()) {
   const out = [];
   for (const c of cards) {
@@ -42,6 +49,7 @@ export function cardLines(cards = CARDS.loadCards()) {
       if (c.escalation) f.push(`escalation ${c.escalation}`);
       const vs = rulerVs(c.vs); if (vs) f.push(vs);
       if (damage) f.push(`tiers ${tiers.map(t => (CARDS.isDamage(t) ? t : "0")).join(" / ")}`);
+      const sh = shapeOf(c, c.versions.indexOf(v)); if (sh) f.push(sh);   // SIM-2 (areas): the card's Area and Distance, for the grid
       if (v.ruler) f.push(v.ruler);
       out.push(f.join(" | "));
     }
@@ -166,6 +174,7 @@ export function parseSpec(text, file = "spec") {
           else if (fk === "does") a.does = fv.split(",").map(s => s.trim()).filter(Boolean).flatMap(s => { const m = s.match(/^(.+?)\s+x(\d+)$/); return m ? Array(Number(m[2])).fill(m[1].trim()) : [s]; });
           else if (fk === "each") a.each = fv.split(",").map(s => parseEffect(s));
           else if (fk === "escalation") a.escalation = Number(fv);
+          else if (fk === "shape") { const w = fv.split(/\s+/); a.shape = { kind: w[0], n: Number(w[1]), dist: w[3] ?? "self", who: w[5] ?? "all" }; }   // the card's Area on the grid (SIM-2)
           else if (fk === "different") a.different = true;
           else if (fk === "favored") a.favored = true;      // the Action's own roll is Favored
           else if (fk === "allies") a.allies = Number(fv);   // price list: how many allies a buff or heal reaches (default 1)

@@ -101,7 +101,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   const seen = new Map(), condOf = c => { const k = c.cond ?? {}; return [k.prone && "Prone", k.hindered && "Hindered", k.immob && "Immobilized", k.slowed && `Slowed ${k.slowed}`, k.dazed && `Dazed ${k.dazed}`, k.staggered && "Staggered", k.blinded && "Blinded", k.frightened && "Frightened", k.bleed && "Bleed", c.vulnerable && `Vulnerable ${c.vulnerable}`, c.taunt && "Taunted"].filter(Boolean).join(", "); };
   const snap = c => `${Math.round((c.damage ?? 0) * 10) / 10}|${c.pos ? `${c.pos.x},${c.pos.y}` : ""}|${c.down || c.dead ? 1 : 0}|${Math.round(((c.guard ?? 0) + (c.apGuard ?? 0)) * 10) / 10}|${c.esc ?? 0}|${condOf(c)}`;
   const changes = () => { const out = []; [...pcs, ...foes].forEach((c, i) => { const k = snap(c); if (seen.get(c) !== k) { seen.set(c, k); out.push({ i, dmg: Math.round((c.damage ?? 0) * 10) / 10, pos: at(c), out: !!(c.down || c.dead), guard: Math.round(((c.guard ?? 0) + (c.apGuard ?? 0)) * 10) / 10, esc: c.esc ?? 0, cond: condOf(c) }); } }); return out; };
-  const ev = (type, o = {}) => { if (events) { const ch = changes(); events.push({ round, type, ...o, ...(ch.length ? { ch } : {}) }); } };
+  const ev = (type, o = {}) => { if (!events) return null; const ch = changes(), e = { round, type, ...o, ...(ch.length ? { ch } : {}) }; events.push(e); return e; };
   const focus = (list = alive()) => P.focus(E, list);   // the enemy closest to dying (the plan policy)
   const mostHurt = list => P.mostHurt(E, list);
   const useRally = (t, n, by) => {   // t uses n Rally Points (Steel Yourself, or an ally's Lay On Hands)
@@ -122,6 +122,34 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   const oaCan = (p, c) => (RULES.oaAll ? MP.up(p) && MP.adj(p, c) : MP.threatens(p, c));
   /** The AP a PC needs to make this Opportunity Attack: 1; with oaPolicy "spare", the basic one leaves 1 AP for its class Reaction (a decision, not a rule). */
   const oaNeed = (p, rx) => P.reactionReserve(E, p, rx);
+  /* SIM-2 (areas and Zones, 2026-11-12). On a map (or with RULES.areasOnGrid) an Action with an Area (its card's: a.shape) is placed on the grid and hits
+     who stands in it; an Area that lasts is a Zone: its squares stay for its rounds (an Aura follows its maker), and what it does is read from where a
+     creature stands when it matters. Without it (the open field of report.md): the number of creatures the card's ruler line says, as before. */
+  const geo = () => !!M && (!!M.grid || !!RULES.areasOnGrid), zones = [];
+  const rangeOf = (who, a) => (a.shape.dist === "self" ? 0 : a.shape.dist === "weapon" ? who.range[0] : a.shape.dist === "max" ? who.range.at(-1) : Number(a.shape.dist) || 0);
+  const sideOf = c => (c.build ? "pc" : "npc"), foesOf = who => (sideOf(who) === "pc" ? alive() : up()), friendsOf = who => (sideOf(who) === "pc" ? up() : alive());
+  const placeArea = (who, a, target) => {
+    if (who.lastArea && who.lastArea.a === a && who.lastArea.id === actionId) return who.lastArea;   // the same Action's other effects use the same place
+    const kind = a.shape.kind === "aura" ? "emanation" : a.shape.kind, range = rangeOf(who, a), tg = target ?? (a.shape.who === "allies" ? who : focus()) ?? who;
+    const inside = (c, spot, sq) => MP.inArea(c, sq, kind, spot, W);
+    const count = spot => { const sq = MP.areaSquares(kind, a.shape.n, spot); return { foes: foesOf(who).filter(c => inside(c, spot, sq)).length, friends: friendsOf(who).filter(c => inside(c, spot, sq)).length }; };
+    const spots = [...MP.areaSpots(kind, a.shape.n, who, tg, range, W), ...(a.rounds > 1 && range && tg !== who ? MP.areaSpots(kind, a.shape.n, who, who, range, W) : [])], spot = (spots.length ? P.placeArea(E, who, a, spots, count) : null) ?? { ...who.pos };
+    const sq = MP.areaSquares(kind, a.shape.n, spot), place = { a, id: actionId, kind, spot, squares: sq, has: c => inside(c, spot, sq) };
+    who.lastArea = place; who.st.areas = (who.st.areas ?? 0) + 1;
+    return place;
+  };
+  const cells = sq => [...sq].map(k => k.split(",").map(Number));
+  const tally = (who, name, key, n = 1) => { const t = ((who.st.area ??= {})[name] ??= { uses: 0, hits: 0, baned: 0, healed: 0, defended: 0 }); t[key] += n; };   // per card: what its Area did
+  /** The Zone of this Action by this creature (made when the Action's first lasting effect is applied). */
+  const zoneOf = (who, a, target) => {
+    let z = zones.find(x => x.by === who && x.a === a && x.made === actionId);
+    if (!z) { const pl = placeArea(who, a, target); z = { by: who, a, made: actionId, kind: pl.kind, spot: pl.spot, squares: pl.squares, aura: a.shape.kind === "aura" ? a.shape.n : 0, left: a.rounds ?? 1, banes: 0, heal: null, def: 0 }; zones.push(z);
+      who.st.zones = (who.st.zones ?? 0) + 1; tally(who, a.name, "uses"); tally(who, a.name, "hits", foesOf(who).filter(c => pl.has(c)).length); ev("zone", { who: nameOf(who), name: a.name, rounds: z.left, squares: cells(z.squares), aura: z.aura || undefined, id: zones.length }); z.id = zones.length; }
+    return z;
+  };
+  const inZone = (z, c) => (z.aura ? MP.dist(z.by.pos, c.pos) <= z.aura && (!M.grid || MP.canTarget(z.by, c, W) || z.by === c) : MP.inArea(c, z.squares, z.kind, z.spot, W));
+  const zoneBanes = f => zones.filter(z => z.left > 0 && z.banes && !z.by.down && sideOf(z.by) !== sideOf(f) && inZone(z, f)).sort((x, y) => y.banes - x.banes)[0];
+  const zoneHelp = (t, key) => zones.filter(z => z.left > 0 && z[key] && sideOf(z.by) === sideOf(t) && inZone(z, t))[0];
   /** Pack R-bestiary: an Elite's phases (+1 Escalation when it becomes Bloodied and when it becomes Strained) and its rung 3 (the Encounter Special comes back once). */
   const eliteRung = f => { if (RR.eliteEncounterBack(f.esc) && !f.encBack) { f.encBack = true; f.encUsed = false; } };
   const phase = f => { if (RULES.eliteEsc && RULES.elitePhases && f.role === "elite" && !f.dead && f.esc > 0 && f.esc < 3) { f.esc++; eliteRung(f); } };
@@ -133,6 +161,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   } };
   /** One NPC Strike on a PC (taunt Banes, the map's Boons and Banes), and a Down. */
   const npcHit = (f, t, k, boons = 0, banes = 0, doomed = false) => {
+    if (geo()) { const z = zoneBanes(f); f.zone = z ? { n: z.banes, left: 1, by: z.by } : null; if (z) { z.by.st.zoneBaned = (z.by.st.zoneBaned ?? 0) + 1; tally(z.by, z.a.name, "baned"); } const d = zoneHelp(t, "def"); t.passiveDef = d ? d.def : 0; if (d) tally(d.by, d.a.name, "defended"); }   // SIM-2: what the Zones do where the two stand
     const taunted = f.taunt && !f.taunt.by.down && t !== f.taunt.by ? f.taunt.n : 0;   // Champion's Challenge: Banes against anyone else
     if (M) for (const p of pcs) if (p.reduceAdj) p.adjacent = pcs.filter(x => x !== p && !x.down && MP.adj(p, x));   // Hallowed Stance: the allies adjacent now
     t.st.struck++;
@@ -173,14 +202,17 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     target: () => P.pcTarget(E, pc),
     others: n => P.pcOthers(E, pc, n),
     heal: (who, n, kind) => useRally(P.healTarget(E, who, kind), n, who),   // an ally's Rally Point only when it heals at least 3/4 of its value
-    defend: (who, n, kind, a) => { for (const t of P.defendTargets(E, who, kind, a)) if (n >= t.defBonus) { t.defBonus = n; t.defBy = who; ev("help", { who: nameOf(who), target: nameOf(t), what: `+${n} Defense` }); } },
+    defend: (who, n, kind, a) => { if (geo() && a?.shape && kind === "allies") { zoneOf(who, a, null).def = n; return; } for (const t of P.defendTargets(E, who, kind, a)) if (n >= t.defBonus) { t.defBonus = n; t.defBy = who; ev("help", { who: nameOf(who), target: nameOf(t), what: `+${n} Defense` }); } },
     // Pack R-classes: "callshot" (Call the Shot, 1R Round, Trigger: an ally deals damage to your Marked Quarry: it is Vulnerable 1 until the end of your next turn; here until its own turn ends).
     onDamage: (who, t, total) => { for (const p of up()) for (const rx of p.build.reactions ?? []) if (rx.kind === "callshot" && p !== who && p.keptAP >= 1 && !p.cond?.staggered && p.quarry === t && !t.dead && p.calledRound !== round) { p.calledRound = round; spendReact(p); p.st.reactions++; if (1 >= (t.vulnerable ?? 0)) t.vulnBy = p; t.vulnerable = Math.max(t.vulnerable ?? 0, 1); t.vulnKeep = p; } },
-    mendMany: (who, roll, kind, n) => { for (const t of P.mendTargets(E, who, kind, n)) mendOne(t, roll(), who); },
+    mendMany: (who, roll, kind, n, a) => { const pl = geo() && a?.shape ? (actionId++, placeArea(who, a, who)) : null; if (pl) ev("area", { who: nameOf(who), name: a.name, squares: cells(pl.squares), good: true }); for (const t of pl ? up().filter(x => x.damage > 0 && (kind === "any" || x !== who) && pl.has(x)) : P.mendTargets(E, who, kind, n)) mendOne(t, roll(), who); },
     mend: (who, amount, kind) => mendOne(P.mendTarget(E, who, kind), amount, who),
     guard: (who, amount, kind) => { const t = P.guardTarget(E, who, kind); if (t && amount > (t.guard ?? 0)) { t.guard = amount; t.guardBy = who; ev("help", { who: nameOf(who), target: nameOf(t), what: "Guard", amount }); } },
-    zone: (who, e, a, target) => { for (const f of [target, ...alive().filter(x => x !== target)].filter(Boolean).slice(0, Math.round(a?.area ?? 1))) f.zone = { n: e.n, left: a?.rounds ?? 1, by: who }; },
-    zoneHeal: (who, e, a) => { for (const t of [who, ...up().filter(x => x !== who).sort((x, y) => y.build.targeted - x.build.targeted)].slice(0, Math.round(a?.allies ?? 1))) t.zoneHeal = { dmg: e.dmg, left: a?.rounds ?? 1, by: who }; },
+    areaTargets: (a, target) => { if (!geo() || !a.shape || a.shape.who === "allies") return null; actionId++;
+      const pl = placeArea(pc, a, target), hit = alive().filter(f => f !== target && pl.has(f)); pc.st.areaHits = (pc.st.areaHits ?? 0) + 1 + hit.length; tally(pc, a.name, "uses"); tally(pc, a.name, "hits", 1 + hit.length);
+      ev("area", { who: nameOf(pc), name: a.name, squares: cells(pl.squares), hits: 1 + hit.length }); return [target, ...hit]; },
+    zone: (who, e, a, target) => { if (geo() && a?.shape) { zoneOf(who, a, target).banes = e.n; return; } for (const f of [target, ...alive().filter(x => x !== target)].filter(Boolean).slice(0, Math.round(a?.area ?? 1))) f.zone = { n: e.n, left: a?.rounds ?? 1, by: who }; },
+    zoneHeal: (who, e, a) => { if (geo() && a?.shape) { zoneOf(who, a, null).heal = e.dmg; return; } for (const t of [who, ...up().filter(x => x !== who).sort((x, y) => y.build.targeted - x.build.targeted)].slice(0, Math.round(a?.allies ?? 1))) t.zoneHeal = { dmg: e.dmg, left: a?.rounds ?? 1, by: who }; },
     ...(M ? {
       mods: (a, traits, t) => {
         if (!t?.pos) return null;
@@ -366,6 +398,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
       if (!alive().length || !up().length) break;
       if (o.pc) {
         const pc = o.pc; if (pc.down) continue;
+        const tev = ev("turn", { who: nameOf(pc), escalation: pc.esc, pos: at(pc) });   // its turn's line comes first in the log; the turn's name and AP are written when they are known
         // The unused AP's Guard (Chapter 2, Unspent AP; the book since v0.0.274): when the turn starts, each AP still unused gives Guard for 1 round (what is left of the last one ends).
         // guardAt "end" (pack R prep's model): the Guard was given when the turn ended and ends here.
         { const g = guardPerAp(pc.build.level); if (g && RULES.guardAt === "next") { pc.apGuard = RULES.apGuard === "stage" ? RR.unusedApGuard(true, pc.turnKept ?? 0, CF.stageOf(pc.build.level)).guard : (pc.turnKept ?? 0) * g; pc.st.apGuardGiven += pc.apGuard; } else pc.apGuard = 0; pc.turnKept = 0; }
@@ -374,6 +407,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
         for (const x of pcs) if (x.defBy === pc) { x.defBonus = 0; x.defBy = null; }   // a Defense bonus lasts 1 round: until its giver's next turn
         for (const f of foes) { if (f.surge?.by === pc) f.surge = null; if (f.zone?.by === pc) f.zone.left--; if (f.vulnKeep === pc) { f.vulnKeep = null; f.vulnerable = 0; } }   // Divine Surge lasts until your next turn; an area counts its rounds down on its maker's turn
         for (const x of pcs) if (x.zoneHeal?.by === pc) x.zoneHeal.left--;
+        if (geo()) { for (const z of zones) if (z.by === pc && z.left > 0 && --z.left <= 0) ev("zone-end", { id: z.id, name: z.a.name }); const z = zoneHelp(pc, "heal"); pc.zoneHeal = z ? { dmg: z.heal, left: 1, by: z.by } : null; if (z && pc.damage > 0) { z.by.st.zoneHealed = (z.by.st.zoneHealed ?? 0) + 1; tally(z.by, z.a.name, "healed"); } }
         if (pc.zoneHeal?.left > 0 && pc.damage > 0) mendOne(pc, rollDamage(pc.R ?? R, pc.zoneHeal.dmg).total, pc.zoneHeal.by);   // healing at the start of its turn (Consecrated Ground)
         if (!pc.quarry || pc.quarry.dead) pc.quarry = P.quarry(E, pc);   // Marked Quarry: the first target; a new one when it dies
         // Pack R-classes: start-of-turn Passives: `mend` heals the most hurt of you and your allies (Mending Light), `surge` marks the focus target (Divine Surge as a Passive).
@@ -389,12 +423,12 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
           if (pc.leftSquare == null || pc.leftSquare < round - 1) pc.st.stillTurns++;   // it hasn't left its square since the start of its last turn (Patient Hunter)
           const turn = pc.build.turns[P.pcTurn(E, pc, eng)];
           pc.readyAP = 0;
-          ev("turn", { who: nameOf(pc), turn: turn.name, escalation: pc.esc, ap: limit, guard: (pc.guard ?? 0) + (pc.apGuard ?? 0), pos: at(pc) });
+          if (tev) Object.assign(tev, { turn: turn.name, ap: limit, guard: (pc.guard ?? 0) + (pc.apGuard ?? 0) });
           const ap = approach(pc, turn);
           extra = { apLimit: Math.max(0, limit - ap.ap), startNext: ap.startNext, turnKey: ap.held ? { name: "Hold", steps: [] } : turn };
         }
         const turn = extra.turnKey ?? pc.build.turns[P.pcTurn(E, pc)];
-        if (!M) ev("turn", { who: nameOf(pc), turn: turn.name, escalation: pc.esc, ap: extra.apLimit ?? RULES.ap, guard: (pc.guard ?? 0) + (pc.apGuard ?? 0), pos: at(pc) });
+        if (!M && tev) Object.assign(tev, { turn: turn.name, ap: extra.apLimit ?? RULES.ap, guard: (pc.guard ?? 0) + (pc.apGuard ?? 0) });
         const r = runTurn(pc, turn, ctxFor(pc, extra));
         const left = Math.max(0, (extra.apLimit ?? RULES.ap) - r.ap);
         pc.keptAP = RULES.reactionAp + left;   // pack R: the Reaction AP on top of what the turn left

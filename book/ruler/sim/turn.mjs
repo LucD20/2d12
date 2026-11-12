@@ -37,7 +37,7 @@ export function runTurn(pc, turn, ctx) {
   const apply = (e, target, a = null) => {
     if (["boon", "bane", "empowered", "favored", "extra"].includes(e.kind)) (e.scope === "turn" ? st.turnFx : e.scope === "encounter" ? (pc.encFx ??= []) : st.next).push(e);
     else if (e.kind === "heal") ctx.heal?.(pc, e.n, e.who);
-    else if (e.kind === "mend") { const n = Math.round(a?.allies ?? 1); if (n > 1 && ctx.mendMany) ctx.mendMany(pc, () => rollDamage(R, e.dmg, { mod: b.powerMod }).total, e.who, n); else ctx.mend?.(pc, rollDamage(R, e.dmg, { mod: b.powerMod }).total, e.who); }   // `allies N`: the N most hurt (pack R-classes: Hallowed Dawn)
+    else if (e.kind === "mend") { const n = Math.round(a?.allies ?? 1); if (n > 1 && ctx.mendMany) ctx.mendMany(pc, () => rollDamage(R, e.dmg, { mod: b.powerMod }).total, e.who, n, a); else ctx.mend?.(pc, rollDamage(R, e.dmg, { mod: b.powerMod }).total, e.who); }   // `allies N`: the N most hurt (pack R-classes: Hallowed Dawn)
     else if (e.kind === "guard") ctx.guard?.(pc, rollDamage(R, e.dmg, { mod: a && a.vs !== "none" && a.vs !== "wd" ? b.weaponMod : b.powerMod }).total, e.who);   // [Mod] is the Action's Modifier (Smite 3's Guard: the Weapon Modifier)
     else if (e.kind === "surge" && target) target.surge = { dmg: e.dmg, by: pc };
     else if (e.kind === "banes") ctx.zone?.(pc, e, a, target);
@@ -95,7 +95,8 @@ export function runTurn(pc, turn, ctx) {
       for (const e of a.effects) if (tier >= e.min && tier <= e.max) apply(e.effect, null);
       return;
     }
-    const targets = [target, ...(a.area > 1 ? ctx.others(a.area - 1) : [])];
+    // SIM-2 (areas): on the grid an Area hits the creatures that stand in it (the engine places it); else the number of creatures its ruler line says.
+    const targets = (a.shape && ctx.areaTargets?.(a, target)) || [target, ...(a.area > 1 ? ctx.others(a.area - 1) : [])];
     let mainTier = 1, critShare = 0;
     for (const t of targets) {
       let tier; const dmg0 = t.damage ?? 0;

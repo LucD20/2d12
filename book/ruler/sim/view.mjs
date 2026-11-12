@@ -24,16 +24,19 @@ const data = { made: new Date().toISOString().slice(0, 10), party: party.map(b =
 const maps = (arg("--maps", "") || S.MP.mapNames().join(",")).split(",").map(x => x.trim()).filter(Boolean);
 // SIM-3: each fight under several party policies (the enemies on the plan policy). By default four encounters, to keep the file small; an encounter's name on the command line gives that one.
 const pols = (arg("--policies", "plan,tactical,casual")).split(",").map(k => [k.trim(), S.POLICIES[k.trim()]]).filter(x => x[1]);
+// SIM-2 (areas): one more way to play, to watch Areas and Zones: the party with the Area cards (parties.mjs), holding the line.
+const { areaParty, withDailies } = await import(new URL("./parties.mjs", import.meta.url).href), areas = areaParty(), AREAS = { name: "hold the line, with the Area cards (Consecrated Ground, Covering Fire, Volley...)" };
 const short = only ? encs : encs.filter(e => /^(4 Standards|Elite \+ 2|5 Standards|6 Standards)/.test(e.name));
 for (const m of maps) {
   const map = { ...S.MAP, grid: S.MP.loadMap(m) };
-  for (const e of short) for (const [pk, policy] of pols) {
+  for (const e of short) for (const [pk, policy] of [...pols, ["areas", AREAS]]) {
+    const builds = policy === AREAS ? areas : party, mk = () => (policy === AREAS ? withDailies(builds) : builds), pol = policy === AREAS ? S.POLICIES.hold : policy, label = policy === AREAS ? AREAS.name : policy.name;
     const npcs = () => e.npcs.map(n => S.npcOf(n.role, n.rating, fights.level, n));
-    for (let seed = 1; seed <= seeds; seed++) data.fights.push({ map: m, enc: e.name, policy: policy.name, seed, log: S.fight(party, npcs(), S.rng(seed), { log: true, map, policy, npcPolicy: S.planPolicy }).log });
-    const R = S.rng(29), res = []; for (let k = 0; k < runs; k++) res.push(S.fight(party, npcs(), R, { map, policy, npcPolicy: S.planPolicy }));
-    data.stats[`${m}|${e.name}|${policy.name}`] = { runs, won: mean(res.map(r => (r.won ? 1 : 0))), rounds: mean(res.map(r => r.rounds)), lost: mean(res.map(r => r.lost)), down: mean(res.map(r => (r.downs ? 1 : 0))) };
+    for (let seed = 1; seed <= seeds; seed++) data.fights.push({ map: m, enc: e.name, policy: label, seed, log: S.fight(mk(), npcs(), S.rng(seed), { log: true, map, policy: pol, npcPolicy: S.planPolicy }).log });
+    const R = S.rng(29), res = []; for (let k = 0; k < runs; k++) res.push(S.fight(mk(), npcs(), R, { map, policy: pol, npcPolicy: S.planPolicy }));
+    data.stats[`${m}|${e.name}|${label}`] = { runs, won: mean(res.map(r => (r.won ? 1 : 0))), rounds: mean(res.map(r => r.rounds)), lost: mean(res.map(r => r.lost)), down: mean(res.map(r => (r.downs ? 1 : 0))) };
   }
 }
 const html = fs.readFileSync(HERE + "viewer-template.html", "utf8").replace("/*DATA*/null/*END*/", () => JSON.stringify(data).replace(/</g, "\\u003c"));
 fs.writeFileSync(out, html);
-console.log(`${out}: ${maps.length} maps, ${short.length} encounters, ${pols.length} policies, ${data.fights.length} fights, ${Math.round(html.length / 1024)} KB. Open it in a browser.`);
+console.log(`${out}: ${maps.length} maps, ${short.length} encounters, ${pols.length + 1} ways to play, ${data.fights.length} fights, ${Math.round(html.length / 1024)} KB. Open it in a browser.`);

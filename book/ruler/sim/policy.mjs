@@ -51,6 +51,15 @@ export const planPolicy = {
   npcNearest: (E, f, targets) => targets.sort((x, y) => MP.dist(f.pos, x.pos) - MP.dist(f.pos, y.pos))[0],
   /** Its target went Down or out of reach during its attacks: the first PC it can still attack. */
   npcRetarget: (E, f) => (f.melee ? E.up().find(p => MP.adj(f, p) && MP.canTarget(f, p, E.W)) : E.up().find(p => Number.isFinite(MP.rangeBanes(f.range, MP.dist(f.pos, p.pos))) && MP.canTarget(f, p, E.W))),
+  /**
+   * Where an Area goes (SIM-2, areas). spots: the places that hold its target (map.mjs areaSpots); count(spot): { foes, friends } that would stand in it.
+   * The plan: the most of the creatures it is for; a damaging Area that hits "all creatures" never goes where an ally stands (if every spot has one: the spot with the fewest); an Area that lasts and deals no damage counts allies too (a little more than enemies).
+   */
+  placeArea(E, who, a, spots, count) {
+    let best = null, bs = -Infinity;
+    for (const s of spots) { const c = count(s), v = a.shape.who === "allies" ? c.friends : a.rounds > 1 && !a.tiers ? c.foes + 1.5 * c.friends : c.foes - (a.shape.who === "all" && a.tiers ? 100 * c.friends : 0); if (v > bs) { bs = v; best = s; } }   // an Area that lasts and deals no damage (Consecrated Ground, Covering Fire) goes where the fight will be: on the party's line when the enemies are still far
+    return best;
+  },
   /** Without positions (`map off`): how often an NPC chooses each PC. */
   npcFlatWeight: (E, f, p) => p.build.targeted,
 };
