@@ -805,6 +805,9 @@ body.light { --pg: #f4ecd9; --pg2: #eae0c8; --rule: #8a6d3b; --hair: #d2c29c; --
 .ops .sbl.two { gap: 0; } .ops .sbl.two .gauge { flex: 1 1 50%; } .ops .sbl.two .gauge:first-child { padding-right: 22px; }   /* Resolve starts on the grid's fourth column, over Reach */
 .ops .sbl.grid { grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(0, 1.15fr) minmax(0, 1.75fr); }   /* room for "Size Gargantuan (6)"; Immune, Resist and Weak still start under AD, Speed and Steadiness */
 .ops .sbl.two .gauge:first-child { flex: 0 0 calc(300% / 6.9); } .ops .sbl.two .gauge { flex: 1 1 0; }   /* Resolve stays over Reach on the new columns */
+
+/* Lucas, 2026-11-12: Tier 2 more yellow (still a green, toward yellow), as in style-tokens.css */
+:root { --tk2: #cbd86e; } body.light { --tk2: #5d6e10; }
 </style>
 </head>
 <body class="mock">
