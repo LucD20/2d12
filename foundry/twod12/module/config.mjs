@@ -232,6 +232,8 @@ export const TWOD12 = {
   npcRangedStep: 1,
   // An NPC's CV moves by about this much for each step its Health and damage ratings sit above or below Medium in total (the Bestiary, Ratings; Defense steps are free).
   npcCvStep: { minion: 5, grunt: 10, standard: 15, elite: 30 },
+  // An NPC's Armor or Ward Defense by rating (the Bestiary since 2026-11-12: two points a step going up, so a Defense rating is worth half a CV step; every Stage). Not read by the system yet (npcRoles.defense and the ratings' off: one point a step).
+  npcDefense: { minion: [10, 11, 12, 14], grunt: [10, 11, 13, 15, 17], standard: [10, 11, 13, 15, 17], elite: [11, 12, 14, 16, 18] },
   npcStage0: {
     minion: { reactionAp: 0, squad: 3, health: [3, 5, 6, 7],
       basic: [["1", "2"], ["1", "1d4"], ["2", "1 + 1d4"], ["1d4", "2 + 1d4"]],

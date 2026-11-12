@@ -209,6 +209,7 @@ export function npcS0(role, rating = "medium", opts = {}, table = TW.npcStage0) 
   const hp = t.oneHit ? 0.5 : t.health[col(opts.hrating ?? rating)], dr = col(opts.drating ?? (opts.ranged ? lower(rating) : rating)), dmg = {};   // a ranged attack pays one step of damage rating for its range (config.mjs npcRangedStep), unless the caller gives its damage rating
   for (const k of ["basic", "s1", "s2", "s3"]) if (t[k]) dmg[k] = t[k][dr].map(parseDamage);
   const avg = e => avgDamage(e, null, 2, 0);
+  const def = k => (TW.npcDefense?.[key] ?? [])[col(k)]; if (opts.adrating && def(opts.adrating)) n.ad = def(opts.adrating); if (opts.wdrating && def(opts.wdrating)) n.wd = def(opts.wdrating);   // its Defenses by rating (config.mjs npcDefense), Medium unless given
   return { ...n, stage: 0, pool: hp * 2, bodyPool: hp, mindPool: hp, dmg, t2: avg(dmg.basic[0]), t3: avg(dmg.basic[1]) };
 }
 /** An NPC's attack damage on a tier: the Builder's dice for the average, the Modifier added (Tier 1 deals nothing). */

@@ -42,16 +42,16 @@ Each rank has tables (below) with five **ratings**: **Terrible, Low, Medium, Hig
 |---|---|---|---|---|
 | **CV for each step** | 5 | 10 | 15 | 30 |
 
-A Standard with High Health and High damage counts for 130; one with Low Health and Medium damage for 85. **Defense steps are free** (a point of Defense is the mildest rating), and a Modifier step counts as half a step. So a High in Health pays for a Low in damage, but a High Armor Defense pays for nothing.
+A Standard with High Health and High damage counts for 130; one with Low Health and Medium damage for 85. **A Defense step and a Modifier step each count as half a step** (Armor Defense and Ward Defense each on their own). So a High in Health pays for a Low in damage, and a High Armor Defense pays for a Low Ward Defense.
 
 > [!tbd]
 > Only Stage 0's tables are written. The tables of Stages 1, 2 and 3 come with those Stages.
 
 ## Defenses
 
-An NPC has an **Armor Defense** and a **Ward Defense**. Each one is a rating from its rank's Defense table, picked **independently** of the other: a Standard is Medium in both by default (13 and 13); a knight could have a High Armor Defense (14) and a Low Ward Defense (12). A Defense is never below 11. An NPC's Defenses come from these ratings only.
+An NPC has an **Armor Defense** and a **Ward Defense**. Each one is a rating from its rank's Defense table, picked **independently** of the other: a Standard is Medium in both by default (13 and 13); a knight could have a High Armor Defense (15) and a Low Ward Defense (11). An NPC's Defenses come from these ratings only.
 
-**A Defense rating is a small step.** One rating is 1 point of Defense, which takes about 5% off what the PCs deal in a turn (a fight about a fifth of a round longer); a rating of Health or damage is 20 to 25%. Defense is the mildest of the ratings, which is why it doesn't change the CV.
+**A Defense rating is the mildest step.** One rating up is 2 points of Defense, which takes about 10% off what the PCs deal in a turn and makes the fight almost half a round longer; a rating of Health or damage is 20 to 25%. Defense makes a creature last by making the PCs miss: against an Extreme Defense a level 1 PC gets a Tier 1 more than half the time. **Give an Extreme Defense to one creature in a fight, not to all of them**, and prefer a High in one Defense with a Low in the other: it costs nothing and rewards attacking the right one.
 
 ### What an Action attacks, rolls and damages
 
@@ -203,7 +203,7 @@ The Health and damage tables are **Stage 0's** (levels 1 to 3).
 
 | | **Terrible** | **Low** | **Medium** | **High** |
 |---|---|---|---|---|
-| **Every Stage** | 11 | 11 | 12 | 13 |
+| **Every Stage** | 10 | 11 | 12 | 14 |
 
 **Damage at Stage 0: Tier 2 / Tier 3**
 
@@ -235,7 +235,7 @@ With both ratings Medium, a Stage 0 minion has **12 Health** (6 + 6).
 
 | | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
 |---|---|---|---|---|---|
-| **Every Stage** | 11 | 12 | 13 | 14 | 15 |
+| **Every Stage** | 10 | 11 | 13 | 15 | 17 |
 
 **Damage at Stage 0: Tier 2 / Tier 3**
 
@@ -266,7 +266,7 @@ With both ratings Medium, a Stage 0 grunt has **26 Health** (13 + 13).
 
 | | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
 |---|---|---|---|---|---|
-| **Every Stage** | 11 | 12 | 13 | 14 | 15 |
+| **Every Stage** | 10 | 11 | 13 | 15 | 17 |
 
 **Damage at Stage 0: Tier 2 / Tier 3**
 
@@ -297,7 +297,7 @@ With both ratings Medium, a Stage 0 standard has **60 Health** (30 + 30).
 
 | | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
 |---|---|---|---|---|---|
-| **Every Stage** | 12 | 13 | 14 | 15 | 16 |
+| **Every Stage** | 11 | 12 | 14 | 16 | 18 |
 
 **Damage at Stage 0: Tier 2 / Tier 3**
 
@@ -344,16 +344,16 @@ The three levels are about as hard as each other. Elites and Minions are worth t
 - *Rusty Knife* (Basic attack, Medium): 2 / 1 + 1d4 Pi.
 - *Dirty Trick* (Special, 1 AP, Round): Low damage + Mild condition = Medium: 2 / 1 + 1d4 Pi, and Hindered (EoT).
 
-**Orc Warrior** (Standard, CV 100): Body High (+2), Instinct Medium (+1), Mind Medium (+1), Appeal Low (0). Weapon Modifier Medium (+2), Power Modifier Medium (+2). Vigor High (36), Resolve Low (24): Health 60. Armor Defense Medium (13), Ward Defense Low (12).
+**Orc Warrior** (Standard, CV 100): Body High (+2), Instinct Medium (+1), Mind Medium (+1), Appeal Low (0). Weapon Modifier Medium (+2), Power Modifier Medium (+2). Vigor High (36), Resolve Low (24): Health 60. Armor Defense Medium (13), Ward Defense Low (11).
 - *Cleaver* (Basic attack, Medium): 1 + 1d4 / 2 + 1d6 Sl.
 - *Brutal Swing* (Special, 2 AP, Round): Terrible damage + Severe condition = High: 2 + 1d4 / 3 + 1d6 Sl, and Prone.
 - *Hold the Line* (Reaction, 1R, Trigger: an ally within 2 squares is hit): the attacker takes a Medium 1 AP Special one rating up (High): 2 + 1d6 / 6 + 1d6 Sl.
 
-**Grave Wisp** (Standard, CV 100): Mind High (+2), Appeal Medium (+1), Instinct Medium (+1), Body Low (0). Power Modifier Medium (+2), Weapon Modifier Medium (+2); it attacks only Ward Defense. Vigor Terrible (17), Resolve High (36): Health 53. Armor Defense Low (12), Ward Defense High (14). Speed 5, flies (a fast creature: its Vigor is Terrible).
+**Grave Wisp** (Standard, CV 100): Mind High (+2), Appeal Medium (+1), Instinct Medium (+1), Body Low (0). Power Modifier Medium (+2), Weapon Modifier Medium (+2); it attacks only Ward Defense. Vigor Terrible (17), Resolve High (36): Health 53. Armor Defense Low (11), Ward Defense High (15). Speed 5, flies (a fast creature: its Vigor is Terrible).
 - *Chilling Touch* (Basic attack, Medium, Vs. WD): [R] 1 + 1d4 / 2 + 1d6 Co.
 - *Dread Whisper* (Special, 2 AP, Round, Vs. WD, [Fear]): Low damage + Moderate condition = High: [R] 2 + 1d6 / 6 + 1d6 Ps, and Frightened of it (EoT).
 
-**Ogre Chieftain** (Elite, CV 200): Body High (+3), Instinct Medium (+2), Mind Medium (+2), Appeal Low (+1). Weapon Modifier Medium (+3), Power Modifier Low (+2). Vigor Medium (65), Resolve Medium (65): Health 130. Armor Defense Medium (14), Ward Defense Low (13). Speed 4 (slow: High Basic attack). Elite Escalation (the ladder above).
+**Ogre Chieftain** (Elite, CV 200): Body High (+3), Instinct Medium (+2), Mind Medium (+2), Appeal Low (+1). Weapon Modifier Medium (+3), Power Modifier Low (+2). Vigor Medium (65), Resolve Medium (65): Health 130. Armor Defense Medium (14), Ward Defense Low (12). Speed 4 (slow: High Basic attack). Elite Escalation (the ladder above).
 - *Club* (Basic attack, High): 3 + 1d6 / 5 + 1d6 Bl.
 - *Ground Slam* (Special, 3 AP, Encounter, Area 1 Emanation, a Save Action: Body Save, DC 14): half of a Medium 3 AP Special: 7 + 1d6 / 4 + 1d6 / 0 Bl (Tier 1 is the worst for them), and Prone on Tier 1. At Escalation 6 it comes back once.
 - *Rally the Tribe* (Escalation 4, 1 AP, Round): allies within 5 squares gain 1 Boon on their next [Weapon] Action.
