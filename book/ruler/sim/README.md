@@ -19,6 +19,7 @@ The brief: `book/sim-brief.md`. Built in four parts. **SIM-1 is done (2026-11-12
 | `stage0.mjs` | **The Stage 0 run** (2026-11-12, a prototype: nothing of it is in the book): levels 1 to 3 on decisions-s1.md's lists, Escalation 1 to 6 with Momentum, the Bestiary's Stage 0 row fitted, the ranged-against-melee candidates; it writes `../stage0.md` |
 | `reactions.mjs` | How often each Reaction fires, and the fights without the basic Opportunity Attack (2026-11-12, two measurements for Lucas); it writes `../reactions.md` |
 | `weapondice.mjs` | The weapon draft (`book/weapons-flat.md`) with bigger dice at the same averages: prints a table (2026-11-12) |
+| `gap.mjs` | Ranged against melee at Stage 0 with Lucas's choices (weapon table B, C2, no Opportunity Attack): prints a table (2026-11-12) |
 | `policies.mjs` | **The sensitivity report** (SIM-3): every headline fight under each party policy and each enemy policy, on three maps; it writes `../policies.md` |
 | `areas.mjs`, `parties.mjs` | What the Area cards do on the grid against the number their ruler lines assume, with a party that uses them; it writes `../areas.md` |
 | `maps.mjs` | The fights on every map and the price of Speed and of the movement conditions there; it writes `../maps.md` |
