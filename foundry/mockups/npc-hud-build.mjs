@@ -79,7 +79,7 @@ const BUSY = { ...NPCS.ogre, name: "A busy Elite", actions: [
   ...[["Escalation A", 1, 2], ["Escalation B", 2, 4]].map(([name, ap, escalation]) => ({ group: "esc", name, ap, freq: "round", escalation }))
 ] };
 
-const fq = a => FREQ_COLORS[a.freq] ?? FREQ_COLORS[""];
+const fq = a => `var(--fq-${FREQ_COLORS[a.freq] ? a.freq : "none"})`;   // the frequency colors, as theme variables (the light set is FREQ_COLORS)
 const cost = a => (a.reaction ? `${a.ap}R` : `${a.ap} AP`);
 const locked = (n, a) => a.escalation && (n.escalation ?? 0) < a.escalation;
 const vbtn = (n, a, v = null) => { const lab = v ? (a.reaction ? `${v}R` : `${v} AP`) : cost(a); return a.used ? `<button class="vb used" title="Used this encounter">${lab}</button>` : locked(n, a) ? `<button class="vb no" title="Needs Escalation ${a.escalation}">${lab}</button>` : `<button class="vb" title="Click: the roll dialog on this Version. Right-click: the Action card.">${lab}</button>`; };
@@ -235,6 +235,7 @@ function screen({ hud, playersOpen = false, pick = "", caption = "", sel = "orc"
 
 /* ------------------------------------------------------------------ the pages */
 const FIT = `<script>
+document.querySelector(".themes").addEventListener("click", ev => document.body.classList.toggle("light", ev.target.classList.contains("l")));
 // the screens are drawn at 1600 x 900 and scaled to the page's width
 function fit() { document.querySelectorAll(".screenwrap").forEach(w => { const s = w.firstElementChild, k = Math.min(1, (w.parentElement.clientWidth - 2) / 1600); s.style.transform = "scale(" + k + ")"; w.style.width = Math.round(1600 * k) + "px"; w.style.height = Math.round(900 * k) + "px"; }); }
 addEventListener("resize", fit); fit();
@@ -261,7 +262,7 @@ const page = (file, title, body) => writeFileSync(here(`./${file}`), inlineArt(`
 <style>${MOCK_CSS}</style>
 </head>
 <body class="mock">
-<h1>${title}</h1>
+<h1>${title} <span class="themes"><button class="d">Dark (default)</button><button class="l">Light</button></span></h1>
 <div class="nav">${[["npc-hud-sheet.html", "1. The one-page NPC sheet"], ["npc-hud-hud.html", "2 to 4. The HUD"], ["npc-hud-screen.html", "5. The bottom of the screen"]].map(([f, l]) => `<a href="${f}"${f === file ? ' class="here"' : ""}>${l}</a>`).join("")}</div>
 ${body}
 ${FIT}
@@ -274,7 +275,7 @@ const measure = '<span class="measure" data-measure></span>';
 
 // ---- page 1
 page("npc-hud-sheet.html", "NPC-HUD mockups 1: the one-page NPC sheet", `
-<p class="lead">A second NPC sheet for experienced GMs (the current sheet stays). The Main tab is the whole stat block; Build, Effects and Notes are the other tabs. The numbers are the Bestiary's Stage 0 examples; the Health is pack HP's model (one HP bar, the Vigor and Resolve gauges, which can go below 0). <b>Lucas picked (a) full text (2026-11-12).</b> <b>Redrawn in the chat card's look</b> (parchment, Cinzel, gold dividers for the group names, all the same color). A click on the dark Version button opens the roll dialog, a right-click on a row opens the Action card.</p>
+<p class="lead">A second NPC sheet for experienced GMs (the current sheet stays). The Main tab is the whole stat block; Build, Effects and Notes are the other tabs. The numbers are the Bestiary's Stage 0 examples; the Health is pack HP's model (one HP bar, the Vigor and Resolve gauges, which can go below 0). <b>Lucas picked (a) full text (2026-11-12).</b> <b>Redrawn in the chat card's look, dark by default</b> (the Light button at the top shows the parchment set; gold dividers for the group names, all one color; Cinzel only for the name). A click on the filled Version button opens the roll dialog, a right-click on a row opens the Action card.</p>
 <h2>Orc Warrior (Standard), mid-fight: 14 Vigor lost</h2>
 <div class="cols">
   ${box("orc-a", "(a) Full text, with the Tier table", PICKED, "Everything is read on the sheet: traits, Target, Distance, Vs., the three Tiers side by side (a one-Version Action's Tier table, turned on its side).", sheet(NPCS.orc, "a"))}
@@ -290,7 +291,7 @@ page("npc-hud-sheet.html", "NPC-HUD mockups 1: the one-page NPC sheet", `
 // ---- page 2
 const live = JSON.stringify(Object.fromEntries(PCATS.map(c => [c.key, popFor(c.key)]))).replace(/</g, "\\u003c");
 page("npc-hud-hud.html", "NPC-HUD mockups 2 to 4: the HUD", `
-<p class="lead">One HUD for PCs and NPCs, <b>in the chat card's look</b> (Lucas, 2026-11-12: the chat card is the base of the design from here on): parchment, a thin tan line, Cinzel names, the dark brown button for a Version, outlined buttons for the rest. The group names are all one color; a frequency's color is only on a row's left edge. No Health, AP, Guard or uses: only a used or locked Action is dimmed. <b>Click a Version button: the roll dialog on that Version. Right-click: the Action card.</b> The bars below are drawn at the width they would have on a 1600 px wide screen (1276 px between the left edge and the sidebar) unless a line says otherwise.</p>
+<p class="lead">One HUD for PCs and NPCs, <b>in the chat card's look</b> (Lucas, 2026-11-12: the chat card is the base of the design from here on): <b>dark by default</b> (the Light button at the top shows the parchment set), a thin line, a filled button for a Version, outlined buttons for the rest, Signika everywhere for reading. The group names are all one color; a frequency's color is only on a row's left edge. No Health, AP, Guard or uses: only a used or locked Action is dimmed. <b>Click a Version button: the roll dialog on that Version. Right-click: the Action card.</b> The bars below are drawn at the width they would have on a 1600 px wide screen (1276 px between the left edge and the sidebar) unless a line says otherwise.</p>
 
 <h2>2. An NPC: the PC's frame, everything visible</h2>
 <p class="why"><b>Redrawn after Lucas's second review (2026-11-12): an NPC's bar takes exactly what a PC's takes.</b> The same two lines and the same 70 px, always. The first line is its attacks (Basic, Special), the second the rest (Reactions, Escalation, Checks and Saves), so each thing is always in the same place. No categories and no click to see an Action. It never grows: on a line that is too full, the four Check / Save buttons first become one button, then the last Actions fold into a "+N more" button.</p>
@@ -338,10 +339,10 @@ page("npc-hud-screen.html", "NPC-HUD mockups 5: the bottom of the screen", `
 ${screen({ hud: hudNpc(NPCS.orc), caption: "<b>The Orc Warrior is selected</b> (the orange ring): its HUD. The Turn dock on the right shows its AP, so the HUD doesn't." })}
 <h2>5b. A PC selected, a category open; the players list open</h2>
 ${screen({ hud: hudPc({ open: "basic" }), playersOpen: true, sel: "pc", caption: "<b>Aveline is selected.</b> The players list opens upward and covers none of Foundry's own controls. A category's panel that would open under it closes the list." })}
-<h2>5c. A choice on the map: the HUD asks the question ${PICK}</h2>
+<h2>5c. A choice on the map: the HUD asks the question ${PICKED}</h2>
 <p class="why">Redrawn after Lucas's review (2026-11-12: the first version replaced the whole HUD with a stretched bar and looked broken). <b>The HUD keeps its frame</b>: who is asking on the left, the hotbar on the right. Only the middle (the Quick row and the categories, which can't be used while a roll waits) becomes the pick bar's question and buttons, with a gold glow; it comes back when the choice is made.</p>
 ${screen({ hud: hudPc(), pick: "over", sel: "pc", caption: "<b>Shield of Faith</b> asks who gains the Guard. The candidates are outlined in gold on the map, as today." })}
-<h2>5d. The pick bar floating above the HUD ${ALT}</h2>
+<h2>5d. The pick bar floating above the HUD ${NOT}</h2>
 <p class="why">Today's place, raised to clear the HUD (which dims). It keeps the HUD visible, but covers a strip of the map and the bar is narrower.</p>
 ${screen({ hud: hudPc(), pick: "float", sel: "pc" })}
 `);

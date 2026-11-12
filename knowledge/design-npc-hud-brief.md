@@ -129,13 +129,21 @@ That way an Action line looks the same everywhere.
 - **Group names are all one color** (his note: Basic green and Special blue read as frequencies). On the sheet they are the card's divider (a gold diamond, small capitals, a gold line); in the HUD, small grey capitals. **A frequency's color is only on a row's left edge and on its pill.** This answers pick 7 (the band colors).
 - The dark pick bar (pickbar.mjs) is still today's in 5d; inside the HUD (5c) its buttons are drawn as the card's.
 
+### Lucas's fourth review (2026-11-12): dark by default, easier type; 5c and the dimming decided
+- **Dark is the default theme** (the most common, and the one Lucas uses). The mockups are remade dark: a warm near-black surface (#211d18), a thin line, light ink (#efe6d3), gold accents; **the primary button inverts** (a light parchment fill with dark text, since a dark fill disappears on a dark surface); the frequency and Attribute colors are lightened to read on dark. The light set is the chat card's own parchment tokens. Both sets are the `--t-*` variables in npc-hud.css; each page has a Dark / Light switch at the top.
+- **The font wasn't easy to read.** Lucas didn't say which; I read it as Cinzel (small capitals for names, numbers, tabs and group names). **Cinzel is now only the sheet's big name**; everything else is Signika, a little larger. To confirm with him.
+- **The PC's categories are words only** (the icons cost 150 px and the larger type no longer fitted one line).
+- **5c is decided:** the HUD asks the question (it keeps its frame; its middle becomes the pick bar's question and buttons). 5d is not picked.
+- **The dimming of used and locked Actions is decided: keep.**
+- Not redrawn dark: the right-click Action card and the chat cards (the system's real ones, parchment today). A dark set for them comes with the build, if Lucas wants it.
+
 ### Still for Lucas to pick (after the reviews)
 1. ~~(a) full text or (b) one line~~: (a), decided.
 2. The portrait: shown, hidden, or a per-user setting.
 3. ~~The HUD's height~~: 70 px, two lines, the same for PCs and NPCs (decided by the second review).
 4. The Elite: flat (proposed) or categories.
-5. The pick bar: in the HUD's place (proposed) or floating above it.
-6. Keep or drop: the NPC's Check / Save buttons; the dimming of used and locked Actions.
+5. ~~The pick bar~~: in the HUD's place (5c), decided.
+6. Keep or drop: the NPC's Check / Save buttons. (The dimming: keep, decided.)
 7. ~~The band colors~~ (answered by the third review: one color for every group name). Before: Basic green and Special blue (the At-will and Round frequency colors), Reactions navy (the Reactions card), Escalation amber. Each row's left edge is its own frequency's color.
 8. The PC's Escalation category: Passives listed as text beside the Actions (proposed), or only the Actions.
 9. ~~The empty bar~~: at the HUD's height (the slim variant is dropped).
@@ -145,4 +153,4 @@ That way an Action line looks the same everywhere.
 - The Paladin's panel uses today's cards; the Stage 0 class cards may change what the categories hold.
 - Not tried in Foundry: how the HUD sits with Foundry V14's own bottom elements (the hotbar and the players list are moved by the system; the mockup's screen is a stand-in).
 - Whether 5c's redraw is what "bugged" meant (Lucas didn't say what looked wrong; the first version replaced the whole HUD with a stretched bar).
-- Whether 5c now shows whole in his viewer.
+- Which font was hard to read (I assumed Cinzel), and whether the chat cards and the Action card get a dark set too.

@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: 1327a07 2026-11-12 NPC-HUD mockups, second review: the NPC's bar in the PC's frame (never grows), per-Version favorites, lighter pages
+Built by tools/knowledge.py on 2026-11-12 from the repository at: 0134f17 2026-11-12 NPC-HUD mockups, third review: the chat card's look is the design's base (the HUD and the one-page sheet redrawn with its tokens)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (134 KB)
+- HANDOFF.md (135 KB)
 - MASTER-PLAN.md (36 KB)
 - open-design-items.md (131 KB)
 - rules-01-roll.md (23 KB)
@@ -30,7 +30,7 @@ Files:
 - rules-13-archer.md (3 KB)
 - rules-14-bestiary.md (25 KB)
 - rules-15-gear.md (11 KB)
-- design-npc-hud-brief.md (15 KB)
+- design-npc-hud-brief.md (16 KB)
 - design-sim-brief.md (22 KB)
 - design-stage0.md (12 KB)
 - design-expedition-loop.md (12 KB)
