@@ -194,4 +194,4 @@ That way an Action line looks the same everywhere.
 - Not tried in Foundry: how the HUD sits with Foundry V14's own bottom elements (the hotbar and the players list are moved by the system; the mockup's screen is a stand-in).
 - Whether 5c's redraw is what "bugged" meant (Lucas didn't say what looked wrong; the first version replaced the whole HUD with a stretched bar).
 - Whether the book look is close to the 4e sheet he had in mind (send the screenshot again to compare).
-- **The Tiers' drawing: A, B, C, D or E** (the eighth review).
+- ~~The Tiers' drawing~~: **B, three lines (Lucas, 2026-11-12). Decided; the sheets use it.**

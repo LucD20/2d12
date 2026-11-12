@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: 6ba1e3a 2026-11-12 NPC-HUD mockups, seventh review: the sheet's Tiers side by side under colored rules (no table), a tint behind the whole Action, Tier 2+ effects written once
+Built by tools/knowledge.py on 2026-11-12 from the repository at: ead216f 2026-11-12 NPC-HUD mockups, eighth review: an Action's Effects under a line; five Tier layouts to pick from
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

@@ -91,7 +91,7 @@ const pips = (now, max) => `<span class="pips">${Array.from({ length: max }, (_,
 /* ------------------------------------------------------------------ 1. the one-page sheet */
 const tools = `<span class="oa-tools" title="Edit, delete">${ic("pen-to-square")}${ic("trash")}</span>`;
 const traitText = a => (a.traits ?? []).map(t => TRAITS[t][0]).join(", ");
-function rowFull(n, a, tv = "A") {
+function rowFull(n, a, tv = "B") {   // B (three lines): Lucas's pick, 2026-11-12
   const tierNames = ["Tier 1", "Tier 2", "Tier 3"];
   const rider = i => (a.rider && a.rider.on.includes(tierNames[i]) ? `, <span class="cond">${a.rider.text.replace(/ \(.*/, "")}</span>${a.rider.text.includes("(") ? ` ${a.rider.text.match(/\(.*\)/)[0]}` : ""}` : "");
   // The Action's Effects (the card's Effects block: what applies whatever the Tier, or on Tier 2 and Tier 3 both, as Smite's Bright light) are
@@ -275,23 +275,23 @@ const measure = '<span class="measure" data-measure></span>';
 
 // ---- page 1
 page("npc-hud-sheet.html", "NPC-HUD mockups 1: the one-page NPC sheet", `
-<p class="lead">A second NPC sheet for experienced GMs (the current sheet stays). The Main tab is the whole stat block; Build, Effects and Notes are the other tabs. The numbers are the Bestiary's Stage 0 examples; the Health is pack HP's model (one HP bar, the Vigor and Resolve gauges, which can go below 0). <b>Lucas picked (a) full text (2026-11-12).</b> <b>The sheet as a printed stat block</b> (Lucas's fifth and sixth reviews, 2026-11-12): a name plate in the rank's color, the stats as ruled lines of text; each Action under a header bar in its frequency's color (as 4e shades a power's header) with <b>a faint tint of the same color behind the whole Action</b>; its line of rules text; <b>the three Tiers side by side, each under a rule in its Tier's color</b> (no table); the Action's <b>Effects</b> under a line, after the Tiers (a description-only Action has only its Effects). The Attributes and Modifiers as tiles, as before. Dark by default; the Light button at the top shows the parchment page. A click on a cost stamp opens the roll dialog, a right-click on a row opens the Action card.</p>
+<p class="lead">A second NPC sheet for experienced GMs (the current sheet stays). The Main tab is the whole stat block; Build, Effects and Notes are the other tabs. The numbers are the Bestiary's Stage 0 examples; the Health is pack HP's model (one HP bar, the Vigor and Resolve gauges, which can go below 0). <b>Lucas picked (a) full text (2026-11-12).</b> <b>The sheet as a printed stat block</b> (Lucas's fifth and sixth reviews, 2026-11-12): a name plate in the rank's color, the stats as ruled lines of text; each Action under a header bar in its frequency's color (as 4e shades a power's header) with <b>a faint tint of the same color behind the whole Action</b>; its line of rules text; <b>the Tiers as three lines</b>, the Tier's name in its color on the left (no table); the Action's <b>Effects</b> under a line, after the Tiers (a description-only Action has only its Effects). The Attributes and Modifiers as tiles, as before. Dark by default; the Light button at the top shows the parchment page. A click on a cost stamp opens the roll dialog, a right-click on a row opens the Action card.</p>
 <h2>The name plate: one color per rank</h2>
 <p class="why">Lucas, 2026-11-12: one color per rank, as 4e colors its monsters. Minion slate, Grunt olive, Standard maroon, Elite purple. (The HUD's portrait ring takes the same color.)</p>
 <div class="cols">${[["Goblin Sneak", "Minion Skirmisher", "Level 1 (Stage 0) &middot; CV 25", "minion"], ["Bandit Thug", "Grunt", "Level 1 (Stage 0) &middot; CV 50", "grunt"], ["Orc Warrior", "Standard Soldier", "Level 1 (Stage 0) &middot; CV 100", "standard"], ["Ogre Chieftain", "Elite Striker", "Level 1 (Stage 0) &middot; CV 200", "elite"]].map(([n, r, l, k]) => `<div class="ops" style="width:290px"><div class="ops-hb rk-${k}"><div class="nm" style="font-size:15px">${n}</div><div class="who"><b>${r}</b><span>${l}</span></div></div></div>`).join("")}</div>
 <h2>Orc Warrior (Standard), mid-fight: 14 Vigor lost</h2>
 <div class="cols">
-  ${box("orc-a", "(a) Full text, with the Tier table", PICKED, "Everything is read on the sheet: traits, Target, Distance, Vs., the three Tiers side by side (a one-Version Action's Tier table, turned on its side).", sheet(NPCS.orc, "a"))}
+  ${box("orc-a", "(a) Full text", PICKED, "Everything is read on the sheet: traits, Vs., Distance, Target, the three Tiers one a line, then the Action's Effects.", sheet(NPCS.orc, "a"))}
   ${box("orc-b", "(b) One line, as the Bestiary writes it", NOT, "The book's line, with the Version button in front. The rest is one right-click away.", sheet(NPCS.orc, "b"), `<div style="margin-top:14px"><p class="rc">${ic("arrow-pointer")} Right-click on Brutal Swing: the system's Action card</p>${card(NPCS.orc, NPCS.orc.actions[1])}</div>`)}
 </div>
-<h2>The Tiers: five ways to draw them (pick one)</h2>
-<p class="why">Lucas, 2026-11-12: the Tiers look good but could be more intuitive. The same two Actions in each: Brutal Swing (an Effects line) and Ground Slam, not used here (a Save Action: an effect on Tier 1 only). <b>A is what the sheets above use.</b></p>
-<div class="cols">${[["A", "A. Columns under a colored rule (today's)", "Three columns, each under a thick rule in its Tier's color."],
+<h2>The Tiers: the five ways that were drawn (Lucas picked B)</h2>
+<p class="why">Lucas, 2026-11-12: the Tiers look good but could be more intuitive. The same two Actions in each: Brutal Swing (an Effects line) and Ground Slam, not used here (a Save Action: an effect on Tier 1 only). <b>Lucas picked B (three lines): the sheets on this page use it.</b></p>
+<div class="cols">${[["A", "A. Columns under a colored rule", "Three columns, each under a thick rule in its Tier's color."],
   ["B", "B. Three lines", "One Tier a line, the name in a column on the left: how 4e and Draw Steel print results. It reads top to bottom, and a long result has the whole width."],
   ["C", "C. The chat card's ladder", "The Tier names sit in three joined segments, colored as the ladder on the roll's chat card (red, light green, dark green); each result under its segment."],
   ["D", "D. One line, numbered", "The Bestiary's own line (Tier 1 / Tier 2 / Tier 3) with a numbered square before each result. The shortest."],
   ["E", "E. Tinted cells", "Three cells, each filled with a faint tint of its Tier's color under a thin rule: the first mockup's cells, quieter."]]
-  .map(([k, t, w]) => box(`tiers-${k}`, t, k === "A" ? '<span class="tag">Today</span>' : '<span class="tag alt">Option</span>', w, `<div class="win"><div class="ops"><div class="ops-body" style="padding-top:10px">${rowFull(NPCS.orc, NPCS.orc.actions[1], k)}${rowFull(NPCS.ogre, { ...NPCS.ogre.actions[1], used: false }, k)}</div></div></div>`)).join("")}</div>
+  .map(([k, t, w]) => box(`tiers-${k}`, t, k === "B" ? PICKED : NOT, w, `<div class="win"><div class="ops"><div class="ops-body" style="padding-top:10px">${rowFull(NPCS.orc, NPCS.orc.actions[1], k)}${rowFull(NPCS.ogre, { ...NPCS.ogre.actions[1], used: false }, k)}</div></div></div>`)).join("")}</div>
 <h2>Ogre Chieftain (Elite), Bloodied, Escalation 4, Ground Slam used</h2>
 <div class="cols">
   ${box("ogre-a", "(a) Full text", PICKED, "A Save Action shows its Tiers in the targets' order (Tier 1 is the worst for them). The Escalation band holds the ladder and the pips.", sheet(NPCS.ogre, "a"))}
