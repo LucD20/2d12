@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: adac1b9 2026-11-12 NPC-HUD mockups, fourth review: dark by default (light behind a switch), Signika for reading; 5c and the dimming decided
+Built by tools/knowledge.py on 2026-11-12 from the repository at: f73d2c1 2026-11-12 NPC-HUD mockups, fifth review: the book look (a printed stat block, dark by default) in place of the interface-kit look
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -30,7 +30,7 @@ Files:
 - rules-13-archer.md (3 KB)
 - rules-14-bestiary.md (25 KB)
 - rules-15-gear.md (11 KB)
-- design-npc-hud-brief.md (18 KB)
+- design-npc-hud-brief.md (20 KB)
 - design-sim-brief.md (22 KB)
 - design-stage0.md (12 KB)
 - design-expedition-loop.md (12 KB)

@@ -151,6 +151,16 @@ That way an Action line looks the same everywhere.
 - **In the HUD:** the same name plate on the left; an Action is a line of text (a small diamond in the frequency's color, the name, its cost stamps), not a chip; the PC's categories are words on a line (small capitals, a hairline between them, the open one underlined in gold); a category's panel is a sidebar box with a band for its title and dotted leaders to the stamps.
 - **The one clicked thing is the cost stamp** (a square tab: light on the dark page, dark on the parchment).
 
+### Lucas's sixth review (2026-11-12): the HUD reverted, the sheet's bottom redone, a color per rank
+- **The HUD goes back to the dark table look of the fourth review ("it was fine").** The book look is for the sheet only. `npc-hud.css` is the fourth review's file again, with one block added at its end for the sheet (scoped to `.ops`). **This overrides "In the HUD" in the fifth review above.** One thing the HUD takes from the sheet: the portrait's ring is in the rank's color.
+- **The sheet's top part is fine** (the name plate, the tabs, the stats as ruled lines): kept.
+- **The sheet's bottom had too much "AI feel" and was less intuitive.** Redone:
+  - a group's name is a heading on a rule (gold small capitals), not a filled band;
+  - **each Action starts with a header bar in its frequency's color** (as 4e shades a power's header), so it is plain where one Action ends and the next begins; the frequency word is at the bar's right;
+  - **the Tiers are a ruled table** (lines on every side, a header row with the Tier names);
+  - **the Attributes and Modifiers are tiles again**, as in the fourth review ("looked better before").
+- **The name plate has one color per rank** (Lucas: "a good idea"), as 4e colors its monsters: Minion slate (#4d545c), Grunt olive (#4b5a26), Standard maroon (#6e2318), Elite purple (#4f2c69). The colors are my pick; the sheet page shows the four.
+
 ### Still for Lucas to pick (after the reviews)
 1. ~~(a) full text or (b) one line~~: (a), decided.
 2. The portrait: shown, hidden, or a per-user setting.
@@ -168,4 +178,4 @@ That way an Action line looks the same everywhere.
 - Not tried in Foundry: how the HUD sits with Foundry V14's own bottom elements (the hotbar and the players list are moved by the system; the mockup's screen is a stand-in).
 - Whether 5c's redraw is what "bugged" meant (Lucas didn't say what looked wrong; the first version replaced the whole HUD with a stretched bar).
 - Whether the book look is close to the 4e sheet he had in mind (send the screenshot again to compare).
-- The header's color: maroon (the book's heading color), or one per rank as 4e colors its monsters.
+- The four rank colors (slate, olive, maroon, purple): keep or change.
