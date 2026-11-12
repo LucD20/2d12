@@ -20,7 +20,7 @@ Dazed always has a value, such as **Dazed 1**. When you become Dazed, you lose t
 
 ### Empowered
 
-**Empowered N** adds N to every die of the damage: with Empowered 1, a d6 deals 1 more, and 2d6 deals 2 more. Flat numbers, and damage with no dice, don't change.
+**Empowered N** adds N to every die of the damage: with Empowered 1, a d6 deals 1 more, and 2d6 deals 2 more. Flat numbers, and damage with no dice, don't change. A die that explodes gains N once, not again for each time it is rolled.
 
 ### Enfeebled
 

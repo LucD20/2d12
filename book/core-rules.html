@@ -262,6 +262,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <h2 id="exploding-dice">Exploding Dice</h2>
 <p>When a d12 shows a <strong>12</strong>, it <strong>explodes</strong>: count that die as <strong>11</strong>, then roll it again and add the result. If the new roll is a 12, it explodes again.</p>
 <div class="callout example"><div class="ctitle">Example</div><p>You roll a 12 and a 5. The 12 explodes: you count it as 11 and reroll it, getting an 8. The total is 11 + 8 + 5 = <strong>24</strong>, plus your Modifier.</p></div>
+<p><strong>Some damage dice explode the same way.</strong> A damage die explodes only when a rule says so: a weapon's die (see <a class="xref" href="gear.html#weapon-damage-w">Weapon Damage [W</a>]), an NPC's Basic attack, an Action with the <a class="xref" href="#exploding">Exploding</a> trait. When it shows its highest face, count that face as <strong>one less</strong>, then roll it again and add the result; it can explode again. A d6 that shows a 6 and then a 4 deals 5 + 4 = 9. Other damage dice (an Action's own dice, a Feature's extra dice) don't explode.</p>
 <h2 id="doubles">Doubles</h2>
 <p>If both d12s show the <strong>same number</strong> (before explosions), the result moves <strong>up one tier</strong>: Failure becomes Marginal Success, and Marginal Success becomes Full Success. Full Success can't go higher: it becomes a <strong>Critical</strong> instead (see below).</p>
 <p>A <strong><span class="kw-neg">Doomed</span></strong> roll can't produce Doubles. On a <strong><span class="kw-pos">Favored</span></strong> roll, any two of the three dice that match are Doubles (see <a class="xref" href="#favored-and-doomed-rolls"><span class="kw-pos">Favored</span> and <span class="kw-neg">Doomed</span> Rolls</a>).</p>
@@ -1801,6 +1802,8 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <h3 id="body-mind-appeal-and-instinct">Body, Mind, Appeal and Instinct</h3>
 <p>An Action with one of these traits rolls that Attribute Modifier. A <span class="at-body">Body</span> Action rolls <span class="at-body">Body</span>, and so on. Some effects care about them, for example "your <span class="at-body">Body</span> Actions gain <span class="kw-boon">1 Boon</span>".</p>
 <p>When an Action has <strong>more than one</strong> of these traits, you roll the one with the <strong>highest</strong> value. The Action still has all of them: Trip is a <span class="at-body">Body</span> Action and an <span class="at-instinct">Instinct</span> Action, whichever it rolls. If the Action has a Vs. entry that says "the one used to roll," that Attribute is also the Defense: if you roll <span class="at-body">Body</span>, you roll against <span class="at-body">Body</span>.</p>
+<h3 id="exploding">Exploding</h3>
+<p>The Action's damage dice explode (see <a class="xref" href="#exploding-dice">Exploding Dice</a>): a die that shows its highest face counts as one less and is rolled again. A weapon's die and an NPC's Basic attack explode without this trait.</p>
 <h3 id="fear">Fear</h3>
 <p>The Fear trait has no rules of its own. Other rules, Talents and Tags refer to it.</p>
 <h3 id="focus">Focus</h3>
@@ -1850,7 +1853,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <h3 id="dazed">Dazed</h3>
 <p>Dazed always has a value, such as <strong>Dazed 1</strong>. When you become Dazed, you lose that many AP right away (never your Reaction AP). If you have fewer AP than the value, you lose the AP you have, and the rest is taken from the AP you regain at the start of your next turn; then Dazed ends. Dazed is the condition that takes AP now; <a class="xref" href="#slowed">Slowed</a> takes them on your next turn.</p>
 <h3 id="empowered">Empowered</h3>
-<p><strong><span class="kw-pos">Empowered</span> N</strong> adds N to every die of the damage: with <span class="kw-pos">Empowered 1</span>, a d6 deals 1 more, and 2d6 deals 2 more. Flat numbers, and damage with no dice, don't change.</p>
+<p><strong><span class="kw-pos">Empowered</span> N</strong> adds N to every die of the damage: with <span class="kw-pos">Empowered 1</span>, a d6 deals 1 more, and 2d6 deals 2 more. Flat numbers, and damage with no dice, don't change. A die that explodes gains N once, not again for each time it is rolled.</p>
 <h3 id="enfeebled">Enfeebled</h3>
 <p><strong><span class="kw-neg">Enfeebled</span> N</strong> is the opposite: it subtracts N from every die of the damage, but each die still deals at least 1. <span class="kw-neg">Enfeebled</span> always has a value.</p>
 <p>A creature uses one <span class="kw-pos">Empowered</span> value and one <span class="kw-neg">Enfeebled</span> value, the highest of each (see <a class="xref" href="#stacking">Stacking</a>). Subtract the <span class="kw-neg">Enfeebled</span> value from the <span class="kw-pos">Empowered</span> value, and the result applies to every die of every instance of damage the Action deals. For example, a Reload Shot makes a Strike <span class="kw-pos">Empowered 2</span>, and a Fear effect makes the same creature <span class="kw-neg">Enfeebled 1</span>: the Strike is <span class="kw-pos">Empowered 1</span>.</p>
@@ -2050,6 +2053,10 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <tr>
 <td><a class="xref" href="#class-actions-picks-and-the-repertoire"><strong>Repertoire</strong></a></td>
 <td>Everything a class offers beyond its Class Actions, listed by Frequency: Passive, Turn, Round, Encounter, Daily.</td>
+</tr>
+<tr>
+<td><a class="xref" href="#exploding-dice"><strong>Exploding</strong></a></td>
+<td>A die that shows its highest face and is rolled again: a d12 of a Roll counts the 12 as 11; a damage die counts its highest face as one less, and explodes only for a weapon's die, an NPC's Basic attack and an Action with the Exploding trait.</td>
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#the-basic-attack"><strong>Basic attack</strong></a></td>

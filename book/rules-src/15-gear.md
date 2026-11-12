@@ -10,7 +10,7 @@ Your class determines your Weapon Modifier. Each weapon belongs to a [[Weapon Gr
 
 ### Weapon Damage [W]
 
-**[W]** is the damage of your weapon: on each Tier, **a flat number plus at most one small die**. An Action that deals 1[W] adds one instance of the weapon's damage. 2[W] is two instances: the flat number twice and two dice. A weapon's damage has its own type, written in its table ([V] for every weapon so far): 1[W] deals that type, whatever the rest of the Action deals. Later weapons, such as wands and staves, may deal Resolve damage or both.
+**[W]** is the damage of your weapon: on each Tier, **a flat number plus at most one small die**. **The weapon's die explodes** (see [[Exploding Dice]]): on its highest face, count it as one less and roll it again. An Action that deals 1[W] adds one instance of the weapon's damage. 2[W] is two instances: the flat number twice and two dice. A weapon's damage has its own type, written in its table ([V] for every weapon so far): 1[W] deals that type, whatever the rest of the Action deals. Later weapons, such as wands and staves, may deal Resolve damage or both.
 
 *Example:* an Action that deals 2[W] deals 0 / 10 + 2d6 / 16 + 2d8 with a Greatsword, and 0 / 4 + 2d4 / 8 + 2d4 with a Crossbow.
 

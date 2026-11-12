@@ -46,8 +46,8 @@ export function compileAct(rank, d, { rating = "medium", P = PRICES(), scale = 1
   const r = ranged && (d.kind ?? "attack") === "attack" ? lower[rating] : rating;   // a ranged attack pays a rating step of damage for its range
   const pts = d.pts ?? actionPoints(rank, d.ap, d.freq ?? "atwill", r, P);
   const riders = (d.riders ?? []).map(x => ({ at: "hit", ...x }));
-  const riderPts = riders.reduce((s, x) => s + (x.price ?? riderPrice(x.sev, x.at, P)), 0) + (d.explode && !d.basic ? (d.explodePrice ?? P.riders.mild) : 0);   // the exploding trait (a measurement): a Mild rider's price; a Basic attack's explosion is free   // price: a rider's own price (the fit adds riders for free)
-  let dmgPts = Math.max(0, pts - riderPts) * (d.area ? P.multi : 1) * scale;
+  const riderPts = riders.reduce((s, x) => s + (x.price ?? riderPrice(x.sev, x.at, P)), 0) + (d.explode && !d.basic ? (d.explodePrice ?? P.explode) : 0);   // the Exploding trait's price; a Basic attack's explosion is part of it   // price: a rider's own price (the fit adds riders for free)
+  let dmgPts = Math.max(0, pts - riderPts) * (d.area ? (d.freq === "enc" ? P.multiEnc : P.multi) : 1) * scale;   // several creatures: two thirds each; an Encounter Action half (each takes a Round Action's damage)
   if (d.kind === "help") dmgPts = 0;
   const avg = pointsAvg(dmgPts, P);
   const dmg = dmgPts > 0.5 ? (exact ? avg.map(a => ({ w: 0, mod: 0, dice: [], flat: a, mind: null })) : avg.map(a => parseDamage(expr(a)))) : null;

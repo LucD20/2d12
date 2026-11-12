@@ -33,6 +33,7 @@
 | [[Resist, Weak and Immune\|**Immune**]] | Damage of that subtype is 0 for you. |
 | [[Class Actions, Picks and the Repertoire\|**Pick**]] | One choice from a class's Repertoire; the level list says how many you take and from which list. |
 | [[Class Actions, Picks and the Repertoire\|**Repertoire**]] | Everything a class offers beyond its Class Actions, listed by Frequency: Passive, Turn, Round, Encounter, Daily. |
+| [[Exploding Dice\|**Exploding**]] | A die that shows its highest face and is rolled again: a d12 of a Roll counts the 12 as 11; a damage die counts its highest face as one less, and explodes only for a weapon's die, an NPC's Basic attack and an Action with the Exploding trait. |
 | [[The Basic attack\|**Basic attack**]] | An NPC's main attack: 1 AP, At-will, Vs. AD or WD, with its rank's points an AP (see Points into damage: a flat number plus at most one small die, nothing added). |
 | [[Rules Language\|**Body Action, Mind Action**]] | An Action with the Body or the Mind trait, even when it rolls another Attribute Modifier. |
 | [[Take a Breather\|**Breather**]] | 10 minutes of rest that removes all Nonlethal damage. |

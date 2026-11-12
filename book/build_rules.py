@@ -23,7 +23,7 @@ RATIO = {1: 0.898, 2: 1.078, 3: 1.203, 4: 1.469, 5: 1.594}
 GROUPS = [("roll", "Roll", ["appeal", "body", "instinct", "mind", "power", "save", "signature", "split", "weapon"]),
           ("requires", "Requires", ["gun", "handle", "melee", "ranged", "shot"]),
           ("kind", "Kind", ["area", "move", "self", "strike"]),
-          ("damage", "Damage", ["nonlethal"]),
+          ("damage", "Damage", ["exploding", "nonlethal"]),
           ("keywords", "Keywords", ["divine", "focus", "fear"])]
 def group_of(k):
     if k.startswith('ht:'): return 'kind'
