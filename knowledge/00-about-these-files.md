@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: 73c306f 2026-11-12 Stage 0 run in SIM (prototype): levels 1-3, Escalation 1-6 with Momentum, the Bestiary row fitted, ranged against melee candidates A, B, C, E
+Built by tools/knowledge.py on 2026-11-12 from the repository at: 22df69c 2026-11-12 Reactions measured: how often each fires, and the fights without the basic Opportunity Attack
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,9 +14,9 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (121 KB)
+- HANDOFF.md (122 KB)
 - MASTER-PLAN.md (33 KB)
-- open-design-items.md (120 KB)
+- open-design-items.md (122 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
@@ -32,6 +32,7 @@ Files:
 - rules-15-gear.md (10 KB)
 - rules-16-talents.md (2 KB)
 - design-sim-brief.md (22 KB)
+- design-weapons-flat.md (5 KB)
 - design-stage0.md (13 KB)
 - design-expedition-loop.md (12 KB)
 - design-playtest-2.md (7 KB)
