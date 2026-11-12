@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: d0123d7 2026-11-12 Stage 0: Lucas's answers logged; the ranged-melee gap with table B and C2 measured
+Built by tools/knowledge.py on 2026-11-12 from the repository at: e251c3a 2026-11-12 Ranged against melee: how much melee damage closes the gap (measured), research notes, proposal logged
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
