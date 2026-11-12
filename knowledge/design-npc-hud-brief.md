@@ -167,6 +167,16 @@ That way an Action line looks the same everywhere.
 - **A faint tint of the frequency's color fills the whole Action**, under the stronger header bar (his idea, from the background of the not-picked one-line mockup): Rally the Tribe is a blue bar over a darker blue body.
 - **The layout must hold every kind of Action** (Lucas): a description-only Action is its bar, its rules line and its text, with no Tiers; **an effect on Tier 2 and Tier 3 both is written once under the Tiers ("Tier 2+ Prone.")**, not in each cell; an effect on one Tier stays in that Tier's cell (Ground Slam's Prone on Tier 1).
 
+### Lucas's eighth review (2026-11-12): "Effects", and five ways to draw the Tiers
+- **"Much better."** The tint behind the whole Action and the side-by-side Tiers stay.
+- **I had misread "Tier 2+":** it is not a line of its own. It is the Action's **Effects** (the card's Effects block, such as Smite's Bright light): **named "Effects", in its own color (gold), under a horizontal line, after the Tiers.** A description-only Action has only its Effects. An effect of one Tier only stays in that Tier. **This replaces "Tier 2+ Prone." in the seventh review.**
+- **The Tiers could be more intuitive: Lucas picks one of five** (the sheet page, "The Tiers: five ways"; the sheets use A until he picks):
+  - **A.** Columns under a thick rule in the Tier's color (today's).
+  - **B.** Three lines, the Tier's name in a column on the left (4e, Draw Steel).
+  - **C.** The chat card's ladder: the names in three joined colored segments, each result under its segment.
+  - **D.** One line, a numbered square before each result (the shortest).
+  - **E.** Tinted cells under a thin rule.
+
 ### Still for Lucas to pick (after the reviews)
 1. ~~(a) full text or (b) one line~~: (a), decided.
 2. The portrait: shown, hidden, or a per-user setting.
@@ -184,3 +194,4 @@ That way an Action line looks the same everywhere.
 - Not tried in Foundry: how the HUD sits with Foundry V14's own bottom elements (the hotbar and the players list are moved by the system; the mockup's screen is a stand-in).
 - Whether 5c's redraw is what "bugged" meant (Lucas didn't say what looked wrong; the first version replaced the whole HUD with a stretched bar).
 - Whether the book look is close to the 4e sheet he had in mind (send the screenshot again to compare).
+- **The Tiers' drawing: A, B, C, D or E** (the eighth review).

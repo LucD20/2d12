@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: fa8c2ab 2026-11-12 NPC-HUD mockups, sixth review: the HUD back to the dark table look; the sheet's Actions under header bars with ruled Tier tables, Attribute tiles, a name-plate color per rank
+Built by tools/knowledge.py on 2026-11-12 from the repository at: 6ba1e3a 2026-11-12 NPC-HUD mockups, seventh review: the sheet's Tiers side by side under colored rules (no table), a tint behind the whole Action, Tier 2+ effects written once
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (135 KB)
+- HANDOFF.md (136 KB)
 - MASTER-PLAN.md (36 KB)
 - open-design-items.md (131 KB)
 - rules-01-roll.md (23 KB)
@@ -30,7 +30,7 @@ Files:
 - rules-13-archer.md (3 KB)
 - rules-14-bestiary.md (25 KB)
 - rules-15-gear.md (11 KB)
-- design-npc-hud-brief.md (21 KB)
+- design-npc-hud-brief.md (22 KB)
 - design-sim-brief.md (22 KB)
 - design-stage0.md (12 KB)
 - design-expedition-loop.md (12 KB)

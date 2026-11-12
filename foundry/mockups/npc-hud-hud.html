@@ -763,6 +763,34 @@ body.light { --pg: #f4ecd9; --pg2: #eae0c8; --rule: #8a6d3b; --hair: #d2c29c; --
 .ops .oa-fx { border: 0; padding: 3px 8px 0; }
 .ops .oa-meta + .oa-fx { padding-top: 0; }
 .ops .tplus { font-variant: small-caps; font-size: 14.5px; color: var(--tk2); margin-right: 3px; }
+
+/* Eighth review (Lucas, 2026-11-12): the Action's Effects under a line, named "Effects" in their own color; five ways to draw the Tiers. */
+.ops .oa-fx { margin: 6px 8px 0; padding: 4px 0 0; border-top: 1px solid var(--rule); }
+.ops .oa-meta + .oa-fx { margin-top: 0; padding-top: 4px; }
+.ops .fxl { font-weight: 700; font-variant: small-caps; font-size: 14.5px; color: var(--gold); margin-right: 4px; }
+/* B: three lines */
+.ops .oa-t.vB { display: block; margin: 0 8px; }
+.ops .oa-t.vB > div { display: flex; align-items: baseline; gap: 10px; border-top: 1px solid var(--hair); padding: 2px 0; }
+.ops .oa-t.vB > div:first-child { border-top: 1px solid var(--rule); }
+.ops .oa-t.vB .tl { flex: none; width: 54px; padding: 0; }
+.ops .oa-t.vB .tv { padding: 0; }
+/* C: the chat card's ladder */
+.ops .oa-t.vC { gap: 0; }
+.ops .oa-t.vC > div { border-top: 0; }
+.ops .oa-t.vC .tl { padding: 1px 8px 2px; text-align: center; color: var(--lad-ink); background: var(--lad); }
+.ops .oa-t.vC .t1 { --lad: #e9b3aa; --lad-ink: #6e150e; } .ops .oa-t.vC .t2 { --lad: #cfe3c2; --lad-ink: #234d27; } .ops .oa-t.vC .t3 { --lad: #2f6b3a; --lad-ink: #f1f7ec; }
+.ops .oa-t.vC .tv { padding: 3px 8px 2px; text-align: center; }
+.ops .oa-t.vC > div + div .tv { border-left: 1px solid var(--hair); }
+/* D: one line, numbered */
+.ops .oa-t.vD { display: flex; flex-wrap: wrap; gap: 2px 18px; margin: 0 8px; padding-top: 4px; border-top: 1px solid var(--rule); }
+.ops .oa-t.vD > div { display: inline-flex; align-items: baseline; gap: 6px; border-top: 0; }
+.ops .oa-t.vD .tl { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; padding: 0; font-size: 0; background: var(--c); align-self: center; }
+.ops .oa-t.vD .tl::after { font: 700 12.5px "Signika", sans-serif; color: var(--pg); }
+.ops .oa-t.vD .t1 .tl::after { content: "1"; } .ops .oa-t.vD .t2 .tl::after { content: "2"; } .ops .oa-t.vD .t3 .tl::after { content: "3"; }
+.ops .oa-t.vD .tv { padding: 0; }
+/* E: tinted cells */
+.ops .oa-t.vE { gap: 0 3px; }
+.ops .oa-t.vE > div { border-top: 2px solid var(--c); background: color-mix(in srgb, var(--c) 15%, var(--pg)); padding: 1px 8px 3px; }
 </style>
 </head>
 <body class="mock">
