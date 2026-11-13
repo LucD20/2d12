@@ -126,6 +126,7 @@ CLASS_TOKEN = re.compile(
     r'|(?P<mv>\b(?:Advance|Evade|Pushed|Pulled|Slid|Reposition)\s\d+\b)'    # a movement with its value
     r'|(?P<neg>\b(?:Doomed|Enfeebled|Vulnerable|Down)\b(?:\s\d+\b)?)|(?P<pos>\b(?:Favored|Empowered)\b(?:\s\d+\b)?)'
     r'|(?P<bane>\b(?:\d+\s+)?Banes?\b)|(?P<boon>\b(?:\d+\s+)?Boons?\b)|(?P<rally>\b(?:(?:up to )?\d+\s+)?Rally Points?\b)'
+    r'|(?P<guard>\bGuard\b(?:\s\d+\b)?)'                               # Lucas, 2026-11-13: the word Guard in the Guard blue (as in Foundry)
     r'|(?P<attr>\b(?:Body|Mind|Instinct|Appeal)\b)')
 POOL_CLASS = {'B': 'b', 'V': 'b', 'M': 'm', 'R': 'm'}   # pack R-core: [V] Vigor and [R] Resolve damage (were [B] and [M]; both read until R-Foundry)
 def _tok(m):
@@ -142,6 +143,7 @@ def _tok(m):
     if m.group('bane'): return f'<span class="kw-bane">{t}</span>'
     if m.group('boon'): return f'<span class="kw-boon">{t}</span>'
     if m.group('rally'): return f'<span class="kw-rally">{t}</span>'
+    if m.group('guard'): return f'<span class="kw-guard">{t}</span>'
     return f'<span class="at-{t.lower()}">{t}</span>'
 ATTR_SKIP = re.compile(r'(<span class="(?:tchip|apmark|rmark)".*?</span>|<(h[1-6]|a|script|style|svg|summary)\b[^>]*>.*?</\2>)', re.S)
 def class_colors(html):

@@ -143,8 +143,11 @@ export function placeDock() {
   if (typeof document === "undefined") return;
   const dock = document.getElementById("twod12-dock");
   if (!dock) return;
-  const form = dock.hidden ? null : chatInput();
-  if (!form) { dock.style.display = "none"; padLog(0); return; }
+  // v0.0.371 (Lucas: "while the chat is collapsed, the dock appears at the top"): no dock while the sidebar is collapsed, nor when the
+  // chat's input is measured somewhere absurd (an animation, a hidden floating input): it waits for the chat to open again
+  const collapsed = globalThis.ui?.sidebar?.expanded === false || !!document.querySelector("#sidebar.collapsed");
+  const form = dock.hidden || collapsed ? null : chatInput();
+  if (!form || form.getBoundingClientRect().top < window.innerHeight / 3) { dock.style.display = "none"; padLog(0); return; }
   dock.style.display = "";
   const r = form.getBoundingClientRect();
   dock.style.left = `${Math.round(r.left)}px`;

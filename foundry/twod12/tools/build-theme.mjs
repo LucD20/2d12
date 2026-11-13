@@ -565,6 +565,8 @@ const EXTRA = `
 /* ---- the word Guard in the Guard blue (Lucas, 2026-11-12: "I like the proposed"), on cards, sheets and windows too */
 .twod12-type .twod12 .kw-guard, .twod12-type .classwin .kw-guard { color: #2f6fb3; font-weight: 700; }
 .twod12-dark .twod12 .kw-guard, .twod12-dark .classwin .kw-guard { color: #7fb4ee; }
+/* ---- v0.0.371 (Lucas: "the rainbow is missing the glow that the diamond has"): Mithril glows like Diamond, in two of its own colors */
+.twod12-type .twod12 .autodia.auto-mithril, .twod12-type .twod12.sheet.pcs .autodia.auto-mithril, .twod12-type .twod12.acard.d2 .autodia.auto-mithril, .twod12-type .twod12.chat.cc .autodia.auto-mithril { filter: saturate(1.5) drop-shadow(-1px 0 2px #5ad7ff) drop-shadow(1px 0 2px #ff6fb5); }
 /* ---- the pick window's text goes through the highlighter now: its colors on the dark window */
 .twod12-dark .application.classwin .kw-ap { color: #9aa7ff; } .twod12-dark .application.classwin .kw-bane, .twod12-dark .application.classwin .kw-neg { color: ${T.bane}; } .twod12-dark .application.classwin .kw-boon, .twod12-dark .application.classwin .kw-pos { color: ${T.boon}; }
 `;

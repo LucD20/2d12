@@ -1,6 +1,6 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Core Rules (Draft)</title><style>:root{--c-body:#7a1626;--c-mind:#17327a;--c-instinct:#14532d;--c-appeal:#6b4e00;--c-bane:#b3261e;--c-boon:#0b5cad;--c-rally:#0a6b62;--g-roll:#1f7a73;--g-requires:#2c5f9e;--g-kind:#b4472a;--g-damage:#8a6a00;--g-keywords:#5c5a55;--c-wmod:#9a4a00;--c-pmod:#5b3a9e;--c-smod:#455566;--c-ap:#3b4cb8;--c-mv:#4d6b0a;--rule2:#8b7a5c;--box:#f6f1e4;--bg:#fbfaf7;--fg:#22201c;--mut:#6b655b;--line:#d9d3c7;--card:#fff;--acc:#7a3b2e;--accbg:#f1e4df;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--c-body:#ef8a96;--c-mind:#8db3ff;--c-instinct:#7fd49a;--c-appeal:#e6bd5a;--c-bane:#ff6a4d;--c-boon:#4cc3ff;--c-rally:#3fd8c4;--g-roll:#5fd3c8;--g-requires:#7db1f5;--g-kind:#f29272;--g-damage:#e8c25a;--g-keywords:#aeb0b5;--c-wmod:#f4a259;--c-pmod:#b794f6;--c-smod:#cfd8e3;--c-ap:#9aa7ff;--c-mv:#b9dc6a;--rule2:#6b5d45;--box:#211e1a;--bg:#1b1a18;--fg:#ece8df;--mut:#a39c8f;--line:#3a3732;--card:#24221f;--acc:#e0a592;--accbg:#3a2a25}}
-:root[data-theme="dark"]{--c-body:#ef8a96;--c-mind:#8db3ff;--c-instinct:#7fd49a;--c-appeal:#e6bd5a;--c-bane:#ff6a4d;--c-boon:#4cc3ff;--c-rally:#3fd8c4;--g-roll:#5fd3c8;--g-requires:#7db1f5;--g-kind:#f29272;--g-damage:#e8c25a;--g-keywords:#aeb0b5;--c-wmod:#f4a259;--c-pmod:#b794f6;--c-smod:#cfd8e3;--c-ap:#9aa7ff;--c-mv:#b9dc6a;--rule2:#6b5d45;--box:#211e1a;--bg:#1b1a18;--fg:#ece8df;--mut:#a39c8f;--line:#3a3732;--card:#24221f;--acc:#e0a592;--accbg:#3a2a25}
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Core Rules (Draft)</title><style>:root{--c-body:#7a1626;--c-mind:#17327a;--c-instinct:#14532d;--c-appeal:#6b4e00;--c-bane:#b3261e;--c-boon:#0b5cad;--c-rally:#0a6b62;--g-roll:#1f7a73;--g-requires:#2c5f9e;--g-kind:#b4472a;--g-damage:#8a6a00;--g-keywords:#5c5a55;--c-wmod:#9a4a00;--c-pmod:#5b3a9e;--c-smod:#455566;--c-ap:#3b4cb8;--c-guard:#2f6fb3;--c-mv:#4d6b0a;--rule2:#8b7a5c;--box:#f6f1e4;--bg:#fbfaf7;--fg:#22201c;--mut:#6b655b;--line:#d9d3c7;--card:#fff;--acc:#7a3b2e;--accbg:#f1e4df;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--c-body:#ef8a96;--c-mind:#8db3ff;--c-instinct:#7fd49a;--c-appeal:#e6bd5a;--c-bane:#ff6a4d;--c-boon:#4cc3ff;--c-rally:#3fd8c4;--g-roll:#5fd3c8;--g-requires:#7db1f5;--g-kind:#f29272;--g-damage:#e8c25a;--g-keywords:#aeb0b5;--c-wmod:#f4a259;--c-pmod:#b794f6;--c-smod:#cfd8e3;--c-ap:#9aa7ff;--c-guard:#7fb4ee;--c-mv:#b9dc6a;--rule2:#6b5d45;--box:#211e1a;--bg:#1b1a18;--fg:#ece8df;--mut:#a39c8f;--line:#3a3732;--card:#24221f;--acc:#e0a592;--accbg:#3a2a25}}
+:root[data-theme="dark"]{--c-body:#ef8a96;--c-mind:#8db3ff;--c-instinct:#7fd49a;--c-appeal:#e6bd5a;--c-bane:#ff6a4d;--c-boon:#4cc3ff;--c-rally:#3fd8c4;--g-roll:#5fd3c8;--g-requires:#7db1f5;--g-kind:#f29272;--g-damage:#e8c25a;--g-keywords:#aeb0b5;--c-wmod:#f4a259;--c-pmod:#b794f6;--c-smod:#cfd8e3;--c-ap:#9aa7ff;--c-guard:#7fb4ee;--c-mv:#b9dc6a;--rule2:#6b5d45;--box:#211e1a;--bg:#1b1a18;--fg:#ece8df;--mut:#a39c8f;--line:#3a3732;--card:#24221f;--acc:#e0a592;--accbg:#3a2a25}
 html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 Georgia,'Times New Roman',serif}
 .layout{max-width:1180px;margin:0 auto;padding:0 14px}
@@ -149,7 +149,7 @@ sup.mk{align-self:center;display:inline-block;min-width:1.15em;height:1.15em;lin
 .acard .ahead .acat + .afreq::before,.acard .ahead .acat + .aps::before,.acard .ahead .afreq + .aps::before{content:"|";margin:0 8px 0 2px;font-weight:400;opacity:.55}
 
 /* ---- the class style (v0.0.170: the Paladin): attribute words, cards that open, a book page */
-.kw-bane,.kw-ht,.kw-neg{color:var(--c-bane);font-weight:600}.kw-ap{color:var(--c-ap);font-weight:600}.kw-mv{color:var(--c-mv);font-weight:600}
+.kw-bane,.kw-ht,.kw-neg{color:var(--c-bane);font-weight:600}.kw-ap{color:var(--c-ap);font-weight:600}.kw-guard{color:var(--c-guard);font-weight:600}.kw-mv{color:var(--c-mv);font-weight:600}
 .mod-weapon{color:var(--c-wmod);font-weight:600}.mod-power{color:var(--c-pmod);font-weight:600}.mod-signature{color:var(--c-smod);font-weight:600}
 .kw-boon,.kw-pos{color:var(--c-boon);font-weight:600}.kw-rally{color:var(--c-rally);font-weight:600}
 .at-body{color:var(--c-body);font-weight:600}.at-mind{color:var(--c-mind);font-weight:600}.at-instinct{color:var(--c-instinct);font-weight:600}.at-appeal{color:var(--c-appeal);font-weight:600}
@@ -503,7 +503,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <li>Two Resists or two Weaks of the same subtype don't add up: the highest applies (see <a class="xref" href="#stacking">Stacking</a>).</li>
 </ul>
 <h3 id="riders">Riders</h3>
-<p>In a tier cell, what follows the damage <strong>rides on it</strong>: "<span class="pool-b">[V] 2d8</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span>; Prone" knocks the target Prone only if the Action deals that damage, more than 0 once Resist and Immune are applied. <a class="xref" href="#guard">Guard</a> doesn't stop a rider: Guard takes damage that was dealt. An effect that must happen even without the damage is written on the <strong>Effects</strong> row, or in a cell of its own with no damage. A <span class="trhl" style="--tc:var(--g-roll)">Save</span> Action's cells read the same way, each on its own result.</p>
+<p>In a tier cell, what follows the damage <strong>rides on it</strong>: "<span class="pool-b">[V] 2d8</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span>; Prone" knocks the target Prone only if the Action deals that damage, more than 0 once Resist and Immune are applied. <a class="xref" href="#guard"><span class="kw-guard">Guard</span></a> doesn't stop a rider: <span class="kw-guard">Guard</span> takes damage that was dealt. An effect that must happen even without the damage is written on the <strong>Effects</strong> row, or in a cell of its own with no damage. A <span class="trhl" style="--tc:var(--g-roll)">Save</span> Action's cells read the same way, each on its own result.</p>
 <h3 id="cleave">Cleave</h3>
 <p>When you <strong>Cleave</strong> N, you deal the Modifier used as damage (with the same damage type and subtype as your weapon) to up to N creatures that are adjacent to the original target.</p>
 <h2 id="several-targets">Several Targets</h2>
@@ -688,13 +688,13 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <h2 id="action-points">Action Points</h2>
 <p>At the start of your turn in combat, you <strong>regain AP</strong>: you lose any AP you didn't use and gain <strong>4 Action Points (AP)</strong> and <strong>1 Reaction AP</strong>. You spend AP to do things on your turn. The Reaction AP pays only for <a class="xref" href="#reactions">Reactions</a>, on your turn or another creature's.</p>
 <h3 id="unspent-ap">Unspent AP</h3>
-<p>If you end your turn without spending all your AP, you keep the rest until your next turn starts: nothing else happens then, and those AP can still pay for <a class="xref" href="#reactions">Reactions</a>. When you regain AP at the start of your next turn, each AP you still had unused gives you <strong><a class="xref" href="#guard">Guard</a></strong> for 1 round: <strong>2</strong> per AP at Stages 0 and 1, <strong>3</strong> at Stage 2 and <strong>4</strong> at Stage 3 (see <a class="xref" href="#stages">Stages</a>).</p>
+<p>If you end your turn without spending all your AP, you keep the rest until your next turn starts: nothing else happens then, and those AP can still pay for <a class="xref" href="#reactions">Reactions</a>. When you regain AP at the start of your next turn, each AP you still had unused gives you <strong><a class="xref" href="#guard"><span class="kw-guard">Guard</span></a></strong> for 1 round: <strong>2</strong> per AP at Stages 0 and 1, <strong>3</strong> at Stage 2 and <strong>4</strong> at Stage 3 (see <a class="xref" href="#stages">Stages</a>).</p>
 <ul>
-<li>This Guard <strong>adds</strong> to any Guard you already have (an exception to <a class="xref" href="#stacking">Stacking</a>), and what is left of it ends 1 round later, when you regain AP again. Damage takes it before your other Guard.</li>
-<li>A kept AP you spend on a Reaction is one AP less when your turn starts, so it gives no Guard.</li>
-<li>Your Reaction AP never becomes Guard, and your first turn of an encounter has no unused AP.</li>
+<li>This <span class="kw-guard">Guard</span> <strong>adds</strong> to any <span class="kw-guard">Guard</span> you already have (an exception to <a class="xref" href="#stacking">Stacking</a>), and what is left of it ends 1 round later, when you regain AP again. Damage takes it before your other <span class="kw-guard">Guard</span>.</li>
+<li>A kept AP you spend on a Reaction is one AP less when your turn starts, so it gives no <span class="kw-guard">Guard</span>.</li>
+<li>Your Reaction AP never becomes <span class="kw-guard">Guard</span>, and your first turn of an encounter has no unused AP.</li>
 </ul>
-<div class="callout example"><div class="ctitle">Example</div><p>Drak (Stage 0) has Guard 5 from a card and ends his turn with <span class="kw-ap">1 AP</span> left: nothing changes until his next turn (he could still spend that AP on a Reaction). When his next turn starts, he regains his AP and gains Guard 2 for 1 round, on top of his Guard 5: Guard 7. A goblin then hits him for 3: his Guard from AP takes 2 and his other Guard 1, so he has Guard 4 left.</p></div>
+<div class="callout example"><div class="ctitle">Example</div><p>Drak (Stage 0) has <span class="kw-guard">Guard 5</span> from a card and ends his turn with <span class="kw-ap">1 AP</span> left: nothing changes until his next turn (he could still spend that AP on a Reaction). When his next turn starts, he regains his AP and gains <span class="kw-guard">Guard 2</span> for 1 round, on top of his <span class="kw-guard">Guard 5</span>: <span class="kw-guard">Guard 7</span>. A goblin then hits him for 3: his <span class="kw-guard">Guard</span> from AP takes 2 and his other <span class="kw-guard">Guard 1</span>, so he has <span class="kw-guard">Guard 4</span> left.</p></div>
 <h3 id="losing-and-gaining-action-points">Losing and Gaining Action Points</h3>
 <p>When something gives or takes Action Points, it says whether it happens <strong>now</strong> or <strong>when you regain AP</strong>.</p>
 <ul>
@@ -766,14 +766,14 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </ul>
 <p><strong>Raising Defenses.</strong> "+1 Defense" raises <strong>every</strong> Defense of the creature: Armor Defense, Ward Defense and every Vs. Attribute. "+1 AD", "+1 WD" or "+1 Defense vs <span class="at-body">Body</span>" raises only that one. A feature can narrow it further, such as "+1 Defense vs Actions that Push". These bonuses don't add up with each other (see <a class="xref" href="#stacking">Stacking</a>).</p>
 <h4 id="stacking">Stacking</h4>
-<p>The same effect never stacks with itself, and bonuses from different effects don't add up either: for each value (<span class="kw-neg">Vulnerable</span>, Slowed, a Defense, <a class="xref" href="#guard">Guard</a>...), a creature uses only the <strong>highest bonus</strong> and the <strong>highest penalty</strong> that apply. If a creature gets the same effect again, it keeps the higher value and the longer duration: two effects that make it <span class="kw-neg">Vulnerable 1</span> do not make it <span class="kw-neg">Vulnerable 2</span>.</p>
+<p>The same effect never stacks with itself, and bonuses from different effects don't add up either: for each value (<span class="kw-neg">Vulnerable</span>, Slowed, a Defense, <a class="xref" href="#guard"><span class="kw-guard">Guard</span></a>...), a creature uses only the <strong>highest bonus</strong> and the <strong>highest penalty</strong> that apply. If a creature gets the same effect again, it keeps the higher value and the longer duration: two effects that make it <span class="kw-neg">Vulnerable 1</span> do not make it <span class="kw-neg">Vulnerable 2</span>.</p>
 <p>Five things do add up:</p>
 <ul>
 <li>An effect that says it <strong>increases</strong> a value: "increase your Slowed value by 1" adds to the Slowed you have.</li>
 <li><strong><span class="kw-boon">Boons</span> and <span class="kw-bane">Banes</span></strong>, up to the limit of their name (see <a class="xref" href="#named-boons-and-banes">Named <span class="kw-boon">Boons</span> and <span class="kw-bane">Banes</span></a>).</li>
 <li><strong>Named bonuses.</strong> A bonus to a value such as a Defense or a Speed can have a name, as <span class="kw-boon">Boons</span> and <span class="kw-bane">Banes</span> do: Field, Pressure or Support. Bonuses with different names add up; with the same name, only the highest counts. An unnamed bonus never adds to another bonus: it counts only when it is higher than the named ones together.</li>
 <li>An effect that <strong>increases</strong> your <a class="xref" href="#slowed">Slowed</a> value (being Desperate, Dying or Shattered).</li>
-<li>The <strong>Guard</strong> your <a class="xref" href="#unspent-ap">Unspent AP</a> give you: it adds to the Guard you have.</li>
+<li>The <strong><span class="kw-guard">Guard</span></strong> your <a class="xref" href="#unspent-ap">Unspent AP</a> give you: it adds to the <span class="kw-guard">Guard</span> you have.</li>
 </ul>
 <p>For example, Jacob has a +1 Support bonus to every Defense and a +1 Field bonus to Armor Defense: his Armor Defense rises by 2. A second +1 Support bonus changes nothing, and an unnamed +1 bonus doesn't add to them either: he keeps +2.</p>
 <p><strong>Equipment is not a bonus.</strong> Your armor gives your Armor value and your charm your Ward value; effects add to those. With +1 AD and +1 Defense, your Armor Defense rises by 1 (not 2) and every other Defense by 1.</p>
@@ -1431,16 +1431,16 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <p>While <strong><span class="kw-neg">Down</span></strong> (Desperate, Dying or Shattered) or <strong>Unconscious</strong>, you can't use Steel Yourself. Other Actions can still let you use <span class="kw-rally">Rally Points</span>, such as Lay On Hands.</p>
 <p>Nonlethal damage is removed like any other damage.</p>
 <p>Only a Rest restores <span class="kw-rally">Rally Points</span>. Sleep does not. A new encounter does not.</p>
-<p><strong>NPCs.</strong> NPCs have no <span class="kw-rally">Rally Points</span>. When an Action lets an NPC use one (an ally's Lay On Hands on it) or measures something in its <span class="kw-rally">Rally Points</span> (Guard equal to what one of their <span class="kw-rally">Rally Points</span> heals), one of its <span class="kw-rally">Rally Points</span> removes <strong>9</strong> damage at Stage 0, and it spends nothing (the later Stages' numbers come with their Bestiary tables).</p>
+<p><strong>NPCs.</strong> NPCs have no <span class="kw-rally">Rally Points</span>. When an Action lets an NPC use one (an ally's Lay On Hands on it) or measures something in its <span class="kw-rally">Rally Points</span> (<span class="kw-guard">Guard</span> equal to what one of their <span class="kw-rally">Rally Points</span> heals), one of its <span class="kw-rally">Rally Points</span> removes <strong>9</strong> damage at Stage 0, and it spends nothing (the later Stages' numbers come with their Bestiary tables).</p>
 <h2 id="guard">Guard</h2>
-<p>Some effects give you <strong>Guard</strong>, written with a value: <strong>Guard 6</strong>. When you take damage, your Guard takes it first (Vigor or Resolve damage alike), and only the rest reaches your Health. Damage your Guard takes isn't damage you take: it doesn't count toward your thresholds or your Health Pool, and it doesn't trigger anything that happens when you take damage. A <a class="xref" href="#riders">rider</a> on that damage still happens: Guard takes damage that was dealt.</p>
+<p>Some effects give you <strong><span class="kw-guard">Guard</span></strong>, written with a value: <strong><span class="kw-guard">Guard 6</span></strong>. When you take damage, your <span class="kw-guard">Guard</span> takes it first (Vigor or Resolve damage alike), and only the rest reaches your Health. Damage your <span class="kw-guard">Guard</span> takes isn't damage you take: it doesn't count toward your thresholds or your Health Pool, and it doesn't trigger anything that happens when you take damage. A <a class="xref" href="#riders">rider</a> on that damage still happens: <span class="kw-guard">Guard</span> takes damage that was dealt.</p>
 <ul>
-<li>Damage reduction (such as Hallowed Stance) applies first; Guard takes what is left.</li>
-<li>Guard isn't Health: it can't be healed, and <span class="kw-rally">Rally Points</span> don't restore it.</li>
-<li>It doesn't stack: if you gain Guard while you have some, keep the higher value (see <a class="xref" href="#stacking">Stacking</a>). The exception is the Guard your <a class="xref" href="#unspent-ap">Unspent AP</a> give you: it adds to your other Guard, damage takes it first, and it lasts 1 round (from the start of your turn until you regain AP again).</li>
+<li>Damage reduction (such as Hallowed Stance) applies first; <span class="kw-guard">Guard</span> takes what is left.</li>
+<li><span class="kw-guard">Guard</span> isn't Health: it can't be healed, and <span class="kw-rally">Rally Points</span> don't restore it.</li>
+<li>It doesn't stack: if you gain <span class="kw-guard">Guard</span> while you have some, keep the higher value (see <a class="xref" href="#stacking">Stacking</a>). The exception is the <span class="kw-guard">Guard</span> your <a class="xref" href="#unspent-ap">Unspent AP</a> give you: it adds to your other <span class="kw-guard">Guard</span>, damage takes it first, and it lasts 1 round (from the start of your turn until you regain AP again).</li>
 <li>It ends at the end of the encounter.</li>
 </ul>
-<div class="callout example"><div class="ctitle">Example</div><p>Zack has Guard 6 and takes 8 Vigor damage: his Guard takes 6 and ends, and he takes 2 Vigor damage.</p></div>
+<div class="callout example"><div class="ctitle">Example</div><p>Zack has <span class="kw-guard">Guard 6</span> and takes 8 Vigor damage: his <span class="kw-guard">Guard</span> takes 6 and ends, and he takes 2 Vigor damage.</p></div>
 <h2 id="recovery">Recovery</h2>
 <p>There are three ways to recover, from shortest to longest: a Breather, a Sleep and a Rest.</p>
 <h3 id="take-a-breather">Take a Breather</h3>
@@ -1740,7 +1740,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>+ your class's Stage 3 steps</td>
 </tr>
 <tr>
-<td><strong>Guard per unspent AP</strong></td>
+<td><strong><span class="kw-guard">Guard</span> per unspent AP</strong></td>
 <td>2</td>
 <td>2</td>
 <td>3</td>
@@ -1909,7 +1909,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <li>The only [Move] Actions you can use are <a class="xref" href="#chapter-6-basic-actions">Crawl</a> and <a class="xref" href="#chapter-6-basic-actions">Stand</a>.</li>
 </ul>
 <h3 id="quickened">Quickened</h3>
-<p>Quickened always has a value, such as <strong>Quickened 2</strong>. You increase your maximum AP, and the AP you regain at the start of your turn, by the value: if you are Quickened 2, you regain <span class="kw-ap">6 AP</span> when your turn begins. You don't gain AP when you become Quickened, only when you regain AP at the start of your next turn. Quickened never changes your Reaction AP, and the extra AP you don't spend become Guard like any other (<a class="xref" href="#unspent-ap">Unspent AP</a>).</p>
+<p>Quickened always has a value, such as <strong>Quickened 2</strong>. You increase your maximum AP, and the AP you regain at the start of your turn, by the value: if you are Quickened 2, you regain <span class="kw-ap">6 AP</span> when your turn begins. You don't gain AP when you become Quickened, only when you regain AP at the start of your next turn. Quickened never changes your Reaction AP, and the extra AP you don't spend become <span class="kw-guard">Guard</span> like any other (<a class="xref" href="#unspent-ap">Unspent AP</a>).</p>
 <h3 id="sickened">Sickened</h3>
 <p>Sickened always has a value, such as <strong>Sickened 1</strong>. Your <span class="at-body">Body</span> and <span class="at-instinct">Instinct</span> Saves take that many <span class="kw-bane">Banes</span>, and you can't eat, drink or swallow anything: no potions.</p>
 <h3 id="slowed">Slowed</h3>
@@ -1956,7 +1956,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#action-points"><strong>Action Points (AP)</strong></a></td>
-<td>You regain 4 at the start of your turn, and 1 Reaction AP. The AP you don't spend stay for Reactions and give you Guard.</td>
+<td>You regain 4 at the start of your turn, and 1 Reaction AP. The AP you don't spend stay for Reactions and give you <span class="kw-guard">Guard</span>.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#advance"><strong>Advance</strong></a></td>
@@ -2231,8 +2231,8 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>An NPC rank with CV 50 and <span class="kw-ap">3 AP</span> a turn: about 26 Health at Stage 0, dies to about 1 PC turn.</td>
 </tr>
 <tr>
-<td><a class="xref" href="#guard"><strong>Guard</strong></a></td>
-<td>A buffer written Guard N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take. The Guard of unspent AP adds to it and lasts 1 round.</td>
+<td><a class="xref" href="#guard"><strong><span class="kw-guard">Guard</span></strong></a></td>
+<td>A buffer written <span class="kw-guard">Guard</span> N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take. The <span class="kw-guard">Guard</span> of unspent AP adds to it and lasts 1 round.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#gun"><strong>Gun</strong></a></td>
@@ -2440,7 +2440,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#action-points"><strong>Reaction AP</strong></a></td>
-<td>The <span class="kw-ap">1 AP</span> you gain at the start of your turn that pays only for Reactions. It never becomes Guard.</td>
+<td>The <span class="kw-ap">1 AP</span> you gain at the start of your turn that pays only for Reactions. It never becomes <span class="kw-guard">Guard</span>.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#recovery"><strong>Recovery</strong></a></td>
@@ -2484,7 +2484,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#riders"><strong>Rider</strong></a></td>
-<td>What follows the damage in a tier cell ("; Prone"): it happens only if that damage is dealt (more than 0 after Resist); Guard doesn't stop it.</td>
+<td>What follows the damage in a tier cell ("; Prone"): it happens only if that damage is dealt (more than 0 after Resist); <span class="kw-guard">Guard</span> doesn't stop it.</td>
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#the-targets"><strong>Rank</strong></a></td>
@@ -2580,11 +2580,11 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#stacking"><strong>Stacking</strong></a></td>
-<td>Bonuses don't add up: for each value (Guard included) use the highest bonus and the highest penalty. "Increase by N", <span class="kw-boon">Boons</span> and <span class="kw-bane">Banes</span> (up to the limit of their name), named bonuses (Field, Pressure, Support: different names add, the same name keeps the highest), Slowed increases and the Guard of unspent AP do add up.</td>
+<td>Bonuses don't add up: for each value (<span class="kw-guard">Guard</span> included) use the highest bonus and the highest penalty. "Increase by N", <span class="kw-boon">Boons</span> and <span class="kw-bane">Banes</span> (up to the limit of their name), named bonuses (Field, Pressure, Support: different names add, the same name keeps the highest), Slowed increases and the <span class="kw-guard">Guard</span> of unspent AP do add up.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#stages"><strong>Stage</strong></a></td>
-<td>A group of levels: Stage 0 is levels 1-3, Stage 1 levels 4-7, Stage 2 levels 8-11, Stage 3 levels 12-15. Your numbers change only at a new Stage (Modifiers, Health, Guard per unspent AP, <span class="kw-rally">Rally Points</span>; never your Attributes), and it sets the Bestiary's tables.</td>
+<td>A group of levels: Stage 0 is levels 1-3, Stage 1 levels 4-7, Stage 2 levels 8-11, Stage 3 levels 12-15. Your numbers change only at a new Stage (Modifiers, Health, <span class="kw-guard">Guard</span> per unspent AP, <span class="kw-rally">Rally Points</span>; never your Attributes), and it sets the Bestiary's tables.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#stages"><strong>Stage Talent</strong></a></td>
