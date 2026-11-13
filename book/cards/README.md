@@ -115,6 +115,36 @@ All four fire well over the half of the rounds they are meant to; Shield of Fait
 
 So **1 Health of new healing is about 12 points and 1 point of Guard about 6**; a heal paid with the ally's Rally Point only moves Health it already had (its worth is the Down it prevents and what the card adds on top).
 
+**Each Passive and Feature on its own** (what it adds to the plain turn; a fight that starts at Escalation 1 · at Escalation 3, with Momentum 2):
+
+| | Adds |
+|---|---|
+| Radiant Zeal (Escalation 2) | 3 · 7 |
+| Searing Blows (4) | 0 · 4 |
+| Reckoning (6) | 0 · 0 |
+| Font of Mercy (2) | 0 · 0 |
+| Mending Light (4) | 9 · 37 |
+| Hallowed Stance (6) | 0 · 3 |
+| Sharpshooter | 4 · 14 |
+| Marked Quarry (with its Tier 1 floor) | 26 · 39 |
+| Killer's Focus (2) | 9 · 34 |
+| Hunter's Edge (4) | 0 · 10 |
+| Finisher (6) | 1 · 12 |
+
+The Archer's are good to about ±5. **A Passive at Escalation 6 does nothing without Momentum** (the fight ends first), and one at 4 very little. Marked Quarry and Killer's Focus are most of what the Archer's class adds; the Paladin's damage Passives add almost nothing, and Mending Light is its strongest by far.
+
+**Areas** (a 2 AP Round area Action and a Weapon Attack; the points each creature in it takes; worth against 4 · 6 Standards):
+
+| Area | It catches (4 · 6 Standards) | 50 to each (the full price) | 33 (two thirds) | 25 (half) |
+|---|---|---|---|---|
+| 2 Burst within 10 (the ranged seat) | 1.6 · 2.1 | 162 · 222 | 123 · 161 | 106 · 131 |
+| 1 Emanation around you (melee) | 1.3 · 1.6 | 133 · 156 | 106 · 117 | 87 · 97 |
+| 2 Emanation around you (melee) | 1.7 · 2.1 | 140 · 169 | 112 · 126 | 91 · 103 |
+
+So **a PC's area from range deals half to each** (even against 4, good against 6) and **an area around yourself two thirds** (you must stand in the middle of them). At the full price to each an area is worth half a class by itself.
+
+**On maps with walls** (pillars and a corridor; `pc-budget.md` section 9, in Health saved a fight): the guide holds. The melee seat is worth more among walls (the plain PC saves 13 Health a fight in the open, 16 and 18 on the maps) and the ranged seat about the same (8, 10, 7); the classes keep their order (level 2, open · pillars · corridor: Smite Paladin 15 · 18 · 19, Lay On Hands 19 · 22 · 24, Double Shot 13 · 17 · 12, Rolling Shot 14 · 17 · 14); Prone and Slowed 1 are worth a little more (2.3 → 3 to 4 Health a fight); Shield of Faith 9 → 10 to 11; the 1 AP heal 6 → 7 to 8; Overwatch and Covering Shot don't collapse behind walls (1 to 3). **A PC's Push is worth nothing as the ruler plays it** (it pushes on every hit, its own target too: -2 from melee, 0 to 1 from range): a player who pushes into a wall or off a ledge gets what the Bestiary's Push gets; price it as Mild.
+
 **The targets (Lucas, 2026-11-13):**
 - **A class is worth about 150** in Stage 0 (the plain PC: 100). Read as level 3's number, with about 130 at level 1 and 140 at level 2, since each level adds something (an assumption: say if every level should be 150).
 - **The middle ground:** the Smite Paladin comes up (today 115 to 126) and the Archers come down (163 to 200).
@@ -123,7 +153,7 @@ So **1 Health of new healing is about 12 points and 1 point of Guard about 6**; 
 
 **How to use it in a session:** (1) the card's damage in points against its AP's price; (2) add its riders, its heal or Guard and its Reaction at the prices above; (3) compare with the class's budget for its level. The ledger at the end of `pc-budget.md` has every class Action's damage in points today (Smite 2: 45 for 2 AP; Double Shot 2: 50; Holy Wrath 2: 50 to 54; Rolling Shot 2: 36).
 
-**Not in it:** how much a class should be worth at each level (Lucas's call: today 115 to 200), areas, Passives one by one, anything on a map with walls, levels 4 and up. `book/ruler/prices.md` and the cards' old worth lines (`book/ruler/worth.json`) are from before pack R's 4 AP and are not to be used for new cards.
+**Not in it:** levels 4 and up (Stage 1 isn't written); a Push aimed by a player; Zones and areas that last. `book/ruler/prices.md` and the cards' old worth lines (`book/ruler/worth.json`) are from before pack R's 4 AP and are not to be used for new cards.
 
 ## After editing a card
 1. `cd book && python3 build_rules.py` (the card check lists a marker with no card, a card no chapter places, a block still written by hand).

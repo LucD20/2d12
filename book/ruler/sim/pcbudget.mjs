@@ -1,5 +1,5 @@
 // The PC budget (Lucas, 2026-11-13: "this done before the card sessions"): what a PC's Actions, riders, Reactions and helps are worth, in points of a PC's
-// turn, measured as the Bestiary's turn budget was (calib.mjs). It writes ../pc-budget.md.   node book/ruler/sim/pcbudget.mjs   (about 20 minutes; --quick)
+// turn, measured as the Bestiary's turn budget was (calib.mjs). It writes ../pc-budget.md.   node book/ruler/sim/pcbudget.mjs   (about 50 minutes; --quick: a draft)
 // The yardstick: a plain PC (its class's Health, armor, weapon and Modifiers; no Feature, no Passive, no Reaction) whose turn is three Weapon Attacks.
 // That turn is 100 points; a Weapon Attack is 25. The scale is the party's cost (its Health lost with the Rally Points it spent): 0 points is a PC in that
 // seat that deals no damage, 100 the plain PC; anything else is placed on that line by what the party's fights cost with it. Two seats: the melee one (the Smite Paladin's) and the ranged one (the Double Shot Archer's); the other three PCs are the Stage 0 builds.
@@ -24,15 +24,17 @@ function plain(seat, level, o = {}) {
 /** A Weapon Attack's average damage by Tier for a seat (its points are 25): the flat damage of an Action worth `pts`. */
 const waAvg = seat => { const b = plain(seat, 1), d = S.parseDamage("1[W] + [Mod]"); return [2, 3].map(t => S.avgDamage(d, b.weapon, t, b.weaponMod)); };
 const flat = (seat, pts) => { const [a, b] = waAvg(seat); return `0 / ${Math.round(a * pts / 25)} / ${Math.round(b * pts / 25)}`; };
-const run = (seat, mk, enc = "std", lvls = [1, 2, 3]) => {
-  const rows = lvls.map(lv => { const P = party(lv); P[SEAT[seat].i] = mk(lv); const f = fights(P, ENC[enc], { n: N, seed: 53 }); const st = k => mean(f.out.map(x => x.pcs[SEAT[seat].i].st[k] ?? 0));
-    return { cost: f.cost, down: f.down, won: f.won, pool: f.out[0].pcs.reduce((q, p) => q + p.build.pool, 0), dealt: st("dealt"), rounds: st("rounds"), atk: st("swings") + st("shots"), rx: st("reactions"), cond: st("condApplied") }; });
+const run = (seat, mk, enc = "std", lvls = [1, 2, 3], o = {}) => {
+  S.RULES.areasOnGrid = !!o.grid;
+  const rows = lvls.map(lv => { const P = party(lv); P[SEAT[seat].i] = mk(lv); const f = fights(P, ENC[enc], { n: o.n ?? N, seed: 53, map: o.map ?? "open", mom: o.mom ?? 0 }); const st = k => mean(f.out.map(x => x.pcs[SEAT[seat].i].st[k] ?? 0));
+    S.RULES.areasOnGrid = false;
+    return { cost: f.cost, down: f.down, won: f.won, areaUse: mean(f.out.map(x => Object.values(x.pcs[SEAT[seat].i].st.area ?? {}).reduce((q, a) => q + a.uses, 0))), areaHit: mean(f.out.map(x => Object.values(x.pcs[SEAT[seat].i].st.area ?? {}).reduce((q, a) => q + a.hits, 0))), collision: st("collision"), forced: st("forced"), pool: f.out[0].pcs.reduce((q, p) => q + p.build.pool, 0), dealt: st("dealt"), rounds: st("rounds"), atk: st("swings") + st("shots"), rx: st("reactions"), cond: st("condApplied") }; });
   return Object.fromEntries(Object.keys(rows[0]).map(k => [k, mean(rows.map(r => r[k]))]));
 };
 const REF = {};
 /** The two ends of the scale for a seat and an encounter: the PC that deals no damage (0 points) and the plain PC (100). */
-const ref = (seat, enc = "std") => (REF[`${seat}|${enc}`] ??= { zero: run(seat, lv => plain(seat, lv, { scale: 0.001 }), enc), one: run(seat, lv => plain(seat, lv), enc) });
-const worth = (seat, mk, enc = "std", lvls) => { const c = lvls ? { zero: run(seat, lv => plain(seat, lv, { scale: 0.001 }), enc, lvls), one: run(seat, lv => plain(seat, lv), enc, lvls) } : ref(seat, enc), r = run(seat, mk, enc, lvls); return { ...r, worth: 100 * (c.zero.cost - r.cost) / (c.zero.cost - c.one.cost) }; };
+const ref = (seat, enc = "std", lvls, o = {}) => (REF[`${seat}|${enc}|${lvls ?? ""}|${JSON.stringify(o)}`] ??= { zero: run(seat, lv => plain(seat, lv, { scale: 0.001 }), enc, lvls, o), one: run(seat, lv => plain(seat, lv), enc, lvls, o) });
+const worth = (seat, mk, enc = "std", lvls, o = {}) => { const c = ref(seat, enc, lvls, o), r = run(seat, mk, enc, lvls, o); return { ...r, worth: 100 * (c.zero.cost - r.cost) / (c.zero.cost - c.one.cost), base: c.one }; };
 const out = [];
 out.push(`# The PC budget
 
@@ -106,5 +108,35 @@ for (const file of FILES) { const b = build(file, 3), one = (name, n = 40000) =>
     const pts = 25 * d / wa, fx = [...new Set([...(a.effects ?? []).map(e => e.effect.name ?? e.effect.kind), ...(a.does?.length ? [`${a.does.length} linked`] : []), a.area > 1 ? `area ${a.area}` : ""].filter(Boolean))].join(", ");
     out.push(`| ${b.name} | ${a.name} | ${a.ap} | ${a.freq} | ${f0(pts)} | ${f1(pts / Math.max(1, a.ap))} | ${fx} |`); }
   log(`ledger ${file}`); }
+/* 7 */
+const RUNG = { "Radiant Zeal": 2, "Searing Blows": 4, Reckoning: 6, "Font of Mercy": 2, "Mending Light": 4, "Hallowed Stance": 6, "Killer's Focus": 2, "Hunter's Edge": 4, Finisher: 6 };
+const withPassive = (seat, names) => lv => { const b = plain(seat, lv, { lines: names.map(n => `passive ${n}`) }); for (const p of b.passives) if (RUNG[p.name]) p.escalation = RUNG[p.name]; return b; };
+out.push("## 7. Each Passive and Feature on its own", "", "The plain PC with one Passive or Feature of its class, at the Escalation the Stage 0 lists give it (2, 4 or 6). **What it adds to the turn**, in a fight that starts at Escalation 1 (Momentum 0) and at Escalation 3 (Momentum 2): a Passive at Escalation 6 is seldom reached without Momentum. Levels 1 to 3 (the plain PC is the same at each).", "", "| Passive or Feature | Seat | At Escalation | Adds, Momentum 0 | Adds, Momentum 2 |", "|---|---|---:|---:|---:|");
+for (const [seat, list] of [["melee", [["Radiant Zeal"], ["Searing Blows"], ["Reckoning"], ["Font of Mercy"], ["Mending Light"], ["Hallowed Stance"]]], ["ranged", [["Sharpshooter"], ["Marked Quarry", "Marked Quarry floor: floor [Mod] shot strike quarry"], ["Killer's Focus"], ["Hunter's Edge"], ["Finisher"]]]]) for (const names of list) {
+  const w = [0, 2].map(mom => worth(seat, withPassive(seat, names), "std", undefined, { mom }).worth - 100);
+  out.push(`| ${names[0]} | ${seat} | ${RUNG[names[0]] ?? "always"} | ${f1(w[0])} | ${f1(w[1])} |`); log(`passive ${names[0]}`);
+}
+out.push("");
+/* 8 */
+out.push("## 8. Areas", "", "The plain PC with a 2 AP Round area Action and a Weapon Attack (the area placed on the grid where it catches the most enemies). **Each creature in it takes the listed points** (50 = the 2 AP price in full; 33 = two thirds; 25 = half). Against 4 Standards and against 6.", "", "| Area | Seat | Points to each | Creatures hit a use: 4 · 6 Standards | Worth: 4 Standards | Worth: 6 Standards |", "|---|---|---:|---|---:|---:|");
+for (const [label, seat, shape] of [["2 Burst within 10 squares", "ranged", "shape burst 2 dist 10 who enemies"], ["1 Emanation around you", "melee", "shape emanation 1 dist self who enemies"], ["2 Emanation around you", "melee", "shape emanation 2 dist self who enemies"]]) for (const pts of [50, 33, 25]) {
+  const mk = lv => plain(seat, lv, { actions: [`action Blast | ap 2 | round | traits power strike area | vs ad | tiers ${flat(seat, pts)} | area 2 | ${shape}`], turn: "Blast, Weapon Attack" });
+  const a = worth(seat, mk, "std", undefined, { grid: true }), d = worth(seat, mk, "deadly", undefined, { grid: true }), hit = w => w.areaHit / Math.max(1e-9, w.areaUse);
+  out.push(`| ${label} | ${seat} | ${pts} | ${f1(hit(a))} · ${f1(hit(d))} | ${f1(a.worth)} | ${f1(d.worth)} |`); log(`area ${label} ${pts}`);
+}
+out.push("", "The same turn with the 2 AP Action on one creature at 50: section 2 (106 to 107).", "");
+/* 9 */
+const NMAP = QUICK ? 150 : 600, MAPS = ["open", "pillars", "corridor"], mo = m => (m === "open" ? {} : { map: m, n: NMAP });
+// On a map the plain ranged PC is worth little (cover and blocked lines), so its 0-to-100 line is short and points get noisy: this section is in Health saved a fight.
+const saved = (seat, mk, m, lvls) => { const c = ref(seat, "std", lvls, mo(m)), r = run(seat, mk, "std", lvls, mo(m)); return { vsZero: (c.zero.cost - r.cost) * r.pool, vsPlain: (c.one.cost - r.cost) * r.pool, r }; };
+out.push("## 9. On maps with walls", "", `Two maps beside the open field (${NMAP} fights a level on a map: good to about ±0.6 Health). **In Health saved a fight**, not points: on a map the plain ranged PC is worth little (cover, blocked lines), so its line from 0 to 100 is too short to measure on. The first rows are against the PC that deals no damage; the others are what the thing adds to the plain PC.`, "", "| Health saved a fight | Seat | open | pillars | corridor |", "|---|---|---:|---:|---:|");
+for (const seat of ["melee", "ranged"]) { out.push(`| The plain PC's three Weapon Attacks (its 100 points) | ${seat} | ${MAPS.map(m => f1(saved(seat, lv => plain(seat, lv), m).vsZero)).join(" | ")} |`); log(`map scale ${seat}`); }
+for (const [file, seat] of [["paladin-smite-r1", "melee"], ["paladin-hands-r1", "melee"], ["archer-double-r1", "ranged"], ["archer-rolling-r1", "ranged"]]) { out.push(`| ${build(file, 2).name}, level 2 | ${seat} | ${MAPS.map(m => f1(saved(seat, () => build(file, 2), m, [2]).vsZero)).join(" | ")} |`); log(`map class ${file}`); }
+const wa = eff => "action Weapon Attack | ap 1 | at-will | traits weapon strike | vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod] | on 2+: " + eff;
+for (const [label, eff] of [["Push 1", "push 1"], ["Push 2", "push 2"], ["Hindered (EoT)", "debuff Hindered (EoT)"], ["Immobilized (EoT)", "debuff Immobilized (EoT)"], ["Prone", "debuff Prone"], ["Slowed 1", "debuff Slowed 1"]]) for (const seat of ["melee", "ranged"]) {
+  out.push(`| + ${label} on its Weapon Attacks | ${seat} | ${MAPS.map(m => f1(saved(seat, lv => plain(seat, lv, { actions: [wa(eff)] }), m).vsPlain)).join(" | ")} |`); log(`map rider ${label} ${seat}`); }
+for (const [label, seat, line] of [["Shield of Faith", "melee", "Shield of Faith: block 2d6+[Mod]"], ["Rebuke", "melee", "Rebuke: rebuke 5 turn"], ["Overwatch", "ranged", "Overwatch: quick-draw 10"], ["Covering Shot", "ranged", "Covering Shot: cover"]]) { out.push(`| + ${label} | ${seat} | ${MAPS.map(m => f1(saved(seat, lv => plain(seat, lv, { reaction: line }), m).vsPlain)).join(" | ")} |`); log(`map reaction ${label}`); }
+out.push(`| A 1 AP heal of 1d8 + [Mod] in the place of the third attack | melee | ${MAPS.map(m => f1(saved("melee", lv => plain("melee", lv, { actions: ["action Help | ap 1 | round | traits power | vs none | always: mend 1d8+[Mod] any"], turn: "Weapon Attack, Weapon Attack, Help" }), m).vsPlain)).join(" | ")} |`, "");
+log("maps");
 fs.writeFileSync(RULER + "pc-budget.md", `${out.join("\n")}\n\n(${Math.round((Date.now() - t0) / 60000)} minutes.)\n`);
 log("done");

@@ -116,5 +116,71 @@ Each Action's **damage points**: its average damage on one creature over its own
 | Archer (Rolling Shot) | Pinning Shot | 1 | encounter | 25 | 25.0 | Immobilized (EoT) |
 | Archer (Rolling Shot) | Open Season | 2 | encounter | 25 | 12.5 | vulnerable, 1 linked |
 | Archer (Rolling Shot) | Lock & Loose | 1 | round | 25 | 24.6 | Hindered (until it moves), Immobilized |
+## 7. Each Passive and Feature on its own
 
-(13 minutes.)
+The plain PC with one Passive or Feature of its class, at the Escalation the Stage 0 lists give it (2, 4 or 6). **What it adds to the turn**, in a fight that starts at Escalation 1 (Momentum 0) and at Escalation 3 (Momentum 2): a Passive at Escalation 6 is seldom reached without Momentum. Levels 1 to 3 (the plain PC is the same at each).
+
+| Passive or Feature | Seat | At Escalation | Adds, Momentum 0 | Adds, Momentum 2 |
+|---|---|---:|---:|---:|
+| Radiant Zeal | melee | 2 | 3.2 | 7.0 |
+| Searing Blows | melee | 4 | -0.3 | 4.2 |
+| Reckoning | melee | 6 | 0.0 | -0.0 |
+| Font of Mercy | melee | 2 | 0.3 | -0.1 |
+| Mending Light | melee | 4 | 8.5 | 36.5 |
+| Hallowed Stance | melee | 6 | -0.6 | 2.9 |
+| Sharpshooter | ranged | always | 3.6 | 14.3 |
+| Marked Quarry | ranged | always | 25.8 | 38.9 |
+| Killer's Focus | ranged | 2 | 8.6 | 34.0 |
+| Hunter's Edge | ranged | 4 | -4.6 | 9.7 |
+| Finisher | ranged | 6 | 1.2 | 12.0 |
+
+## 8. Areas
+
+The plain PC with a 2 AP Round area Action and a Weapon Attack (the area placed on the grid where it catches the most enemies). **Each creature in it takes the listed points** (50 = the 2 AP price in full; 33 = two thirds; 25 = half). Against 4 Standards and against 6.
+
+| Area | Seat | Points to each | Creatures hit a use: 4 · 6 Standards | Worth: 4 Standards | Worth: 6 Standards |
+|---|---|---:|---|---:|---:|
+| 2 Burst within 10 squares | ranged | 50 | 1.6 · 2.1 | 161.5 | 222.3 |
+| 2 Burst within 10 squares | ranged | 33 | 1.6 · 2.2 | 122.7 | 160.5 |
+| 2 Burst within 10 squares | ranged | 25 | 1.6 · 2.1 | 106.3 | 130.7 |
+| 1 Emanation around you | melee | 50 | 1.3 · 1.6 | 132.6 | 155.7 |
+| 1 Emanation around you | melee | 33 | 1.3 · 1.6 | 106.0 | 117.4 |
+| 1 Emanation around you | melee | 25 | 1.3 · 1.6 | 87.4 | 96.9 |
+| 2 Emanation around you | melee | 50 | 1.7 · 2.1 | 140.2 | 169.1 |
+| 2 Emanation around you | melee | 33 | 1.7 · 2.2 | 112.3 | 126.3 |
+| 2 Emanation around you | melee | 25 | 1.7 · 2.2 | 91.0 | 103.4 |
+
+The same turn with the 2 AP Action on one creature at 50: section 2 (106 to 107).
+
+## 9. On maps with walls
+
+Two maps beside the open field (600 fights a level on a map: good to about ±0.6 Health). **In Health saved a fight**, not points: on a map the plain ranged PC is worth little (cover, blocked lines), so its line from 0 to 100 is too short to measure on. The first rows are against the PC that deals no damage; the others are what the thing adds to the plain PC.
+
+| Health saved a fight | Seat | open | pillars | corridor |
+|---|---|---:|---:|---:|
+| The plain PC's three Weapon Attacks (its 100 points) | melee | 13.1 | 16.0 | 18.1 |
+| The plain PC's three Weapon Attacks (its 100 points) | ranged | 8.0 | 9.8 | 6.8 |
+| Paladin (Smite), level 2 | melee | 14.7 | 18.1 | 19.4 |
+| Paladin (Lay On Hands), level 2 | melee | 18.8 | 22.1 | 24.1 |
+| Archer (Double Shot), level 2 | ranged | 12.7 | 16.6 | 11.8 |
+| Archer (Rolling Shot), level 2 | ranged | 14.2 | 17.0 | 13.7 |
+| + Push 1 on its Weapon Attacks | melee | -2.4 | -0.8 | -2.0 |
+| + Push 1 on its Weapon Attacks | ranged | 0.1 | 0.3 | 1.0 |
+| + Push 2 on its Weapon Attacks | melee | -2.3 | -0.5 | -1.2 |
+| + Push 2 on its Weapon Attacks | ranged | 0.5 | 0.8 | 0.2 |
+| + Hindered (EoT) on its Weapon Attacks | melee | -0.8 | -0.9 | -0.2 |
+| + Hindered (EoT) on its Weapon Attacks | ranged | 0.4 | 0.2 | 1.3 |
+| + Immobilized (EoT) on its Weapon Attacks | melee | -1.2 | -1.0 | -2.1 |
+| + Immobilized (EoT) on its Weapon Attacks | ranged | 0.8 | 0.7 | 1.2 |
+| + Prone on its Weapon Attacks | melee | 2.3 | 3.4 | 3.5 |
+| + Prone on its Weapon Attacks | ranged | 2.1 | 2.2 | 3.8 |
+| + Slowed 1 on its Weapon Attacks | melee | 2.3 | 3.0 | 2.6 |
+| + Slowed 1 on its Weapon Attacks | ranged | 2.3 | 2.0 | 4.0 |
+| + Shield of Faith | melee | 8.6 | 11.1 | 10.4 |
+| + Rebuke | melee | 1.8 | 1.7 | 2.4 |
+| + Overwatch | ranged | 0.8 | 1.4 | 1.2 |
+| + Covering Shot | ranged | 1.3 | 2.9 | 0.9 |
+| A 1 AP heal of 1d8 + [Mod] in the place of the third attack | melee | 5.8 | 7.8 | 7.0 |
+
+
+(52 minutes.)
