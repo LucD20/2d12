@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: 72b74d4 2026-11-13 Style mockups 6b: the full NPC sheet from its real HTML (dark, light, today); the generator keeps the system's cascade; the old .ns sheet found to be dead code
+Built by tools/knowledge.py on 2026-11-13 from the repository at: ff73ab6 2026-11-13 Style mockups 6b: the Builder's Immune/Resist/Weak head put in order; a proposal for the block with subtype colors, icons and a palette
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

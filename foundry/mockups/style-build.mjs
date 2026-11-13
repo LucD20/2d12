@@ -804,7 +804,7 @@ const MYSTERY = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="htt
 const npcRaw = FA(readFileSync(here("./samples/npc-sheet-standard.html"), "utf8").replace(/<!--[\s\S]*?-->/, "").replace(/fa-regular fa-star/g, "fa-solid fa-star").replace('src="icons/svg/mystery-man.svg"', `src="${MYSTERY}"`));
 // A PROPOSAL (Lucas, 2026-11-13: "something more stylized; the subtypes with their colors and icons"): the Builder's Immune / Resist / Weak block
 // redrawn. This one changes elements, so it is shown apart from the sheet, which keeps the real markup.
-const SUBT = { Sl: ["Slash", "slash", "#8a8a8a", "#4a443b"], Bl: ["Blunt", "hammer", "#8a8a8a", "#4a443b"], Pi: ["Pierce", "arrow-right", "#8a8a8a", "#4a443b"], Fi: ["Fire", "fire", "#e8622a", "#a0521a"], Co: ["Cold", "snowflake", "#4fc3e8", "#2c6f8f"], El: ["Electricity", "bolt", "#3d8bfd", "#7a5c00"],
+const SUBT = { Sl: ["Slash", "slash", "#c3c9d1", "#4a5058"], Bl: ["Blunt", "hammer", "#b9a58c", "#5a4a36"], Pi: ["Pierce", "arrow-right", "#a9b8a4", "#44513f"], Fi: ["Fire", "fire", "#e8622a", "#a0521a"], Co: ["Cold", "snowflake", "#4fc3e8", "#2c6f8f"], El: ["Electricity", "bolt", "#3d8bfd", "#7a5c00"],
   Ac: ["Acid", "droplet", "#7cb342", "#3B6D11"], Th: ["Thunder", "volume-high", "#5c7fa3", "#0C447C"], Fo: ["Force", "atom", "#b06ad8", "#7a24bf"], Ps: ["Psychic", "hurricane", "#8c68d6", "#993556"], Ho: ["Holy", "sun", "#d9b52e", "#7d5400"], Un: ["Unholy", "skull", "#b0607f", "#4A1D63"] };
 const subChip = (k, n = "", x = true) => `<span class="rw-chip" style="--sc:${SUBT[k][2]};--si:${SUBT[k][3]}">${ic(SUBT[k][1])}<b>${SUBT[k][0]}</b>${n ? `<i>${n}</i>` : ""}${x ? '<a title="Remove">&times;</a>' : ""}</span>`;
 const rwBlock = `<div class="twod12 sheet pcs npcs" style="position:static"><div class="ps-main" style="padding:10px 14px 12px"><div class="ps-block nb-rw rw2"><div class="ps-bh"><b>Damage: Immune, Resist and Weak</b><span class="ps-bsub">Resist lowers that type's damage by its number, Weak raises it; Immune ignores it</span></div>
@@ -825,21 +825,25 @@ const RW_CSS = `
 .rw-k { flex: none; width: 64px; font-weight: 700; font-variant: small-caps; font-size: 15px; }
 .rw-k.imm { color: var(--rw-ink); } .rw-k.res { color: var(--rw-res); } .rw-k.wk { color: var(--rw-wk); }
 .rw-v { display: flex; flex-wrap: wrap; gap: 6px; }
-.rw-chip { display: inline-flex; align-items: center; gap: 5px; padding: 2px 4px 2px 7px; border: 1px solid var(--rw-sc); border-radius: 2px; color: var(--rw-sc); font-size: 13px; }
+.rw-chip { display: inline-flex; align-items: center; gap: 5px; padding: 2px 4px 2px 7px; border: 1px solid var(--rw-sc); border-radius: 2px; background: color-mix(in srgb, var(--rw-sc) var(--rw-tint), transparent); color: var(--rw-sc); font-size: 13px; }
 .rw-chip b { font-weight: 700; } .rw-chip i { font-style: normal; font-weight: 700; color: var(--rw-ink); } .rw-chip a { color: var(--rw-mute); padding: 0 3px; cursor: pointer; }
-.rw-add { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 6px 10px; align-items: start; padding: 8px 2px 2px; }
+.rw-add { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 8px 10px; align-items: start; padding: 8px 2px 2px; }
 .rw-add .rw-k { color: var(--rw-mute); padding-top: 4px; }
-.rw-pal { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
-.rw-sub { display: flex; align-items: center; gap: 5px; height: 26px; padding: 0 7px; background: transparent; border: 1px solid var(--rw-hair); border-radius: 2px; color: var(--rw-sc) !important; font: 600 12.5px "Signika", sans-serif; cursor: pointer; white-space: nowrap; overflow: hidden; }
-.rw-sub span { color: var(--rw-ink); overflow: hidden; text-overflow: ellipsis; }
-.rw-sub.on { border-color: var(--rw-sc); box-shadow: inset 0 -3px 0 var(--rw-sc); background: var(--rw-on); }
+/* the selector: one tile per subtype, in its own color with its icon; the picked one is filled */
+.rw-pal { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 5px; }
+.rw-sub { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; height: 50px; padding: 0 2px; background: color-mix(in srgb, var(--rw-sc) var(--rw-tint), transparent); border: 1px solid color-mix(in srgb, var(--rw-sc) 60%, transparent); border-radius: 2px; color: var(--rw-sc) !important; font: 700 12px "Signika", sans-serif; cursor: pointer; white-space: nowrap; overflow: hidden; }
+.rw-sub .ic { font-size: 17px; }
+.rw-sub span { color: var(--rw-sc); overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.rw-sub:hover { background: color-mix(in srgb, var(--rw-sc) 30%, transparent); }
+.rw-sub.on { background: var(--rw-sc); border-color: var(--rw-sc); color: var(--rw-onink) !important; box-shadow: 0 0 0 2px var(--rw-ring); }
+.rw-sub.on span { color: var(--rw-onink); }
 .rw-go { grid-column: 2; display: flex; align-items: center; gap: 6px; }
 .rw-num { display: inline-flex; align-items: center; border: 1px solid var(--rw-out); border-radius: 2px; margin-right: 6px; }
 .rw-num button { width: 24px; height: 24px; border: 0; background: transparent; color: var(--rw-ink); font-size: 14px; cursor: pointer; } .rw-num b { min-width: 26px; text-align: center; font-size: 14px; color: var(--rw-ink); }
 .rw-btn { height: 26px; padding: 0 12px; background: transparent; border: 1px solid var(--rw-out); border-radius: 2px; font: 700 12.5px "Signika", sans-serif; cursor: pointer; }
 .rw-btn.res { color: var(--rw-res) !important; border-color: var(--rw-res); } .rw-btn.wk { color: var(--rw-wk) !important; border-color: var(--rw-wk); } .rw-btn.imm { color: var(--rw-ink) !important; }
-.rw-scope { --rw-sc: var(--si); --rw-ink: ${LIGHT.ink}; --rw-mute: ${LIGHT.mute}; --rw-hair: ${LIGHT.hair}; --rw-out: #8c7d63; --rw-res: #2c5b3f; --rw-wk: #a8322d; --rw-on: ${LIGHT.pg2}; }
-.rw-scope.dk { --rw-ink: ${T.ink}; --rw-mute: ${T.mute}; --rw-hair: ${T.hair}; --rw-res: #8fd69b; --rw-wk: #f3a79e; --rw-on: ${T.band}; }
+.rw-scope { --rw-sc: var(--si); --rw-ink: ${LIGHT.ink}; --rw-mute: ${LIGHT.mute}; --rw-hair: ${LIGHT.hair}; --rw-out: #8c7d63; --rw-res: #2c5b3f; --rw-wk: #a8322d; --rw-tint: 10%; --rw-onink: #fff; --rw-ring: ${LIGHT.pg}; }
+.rw-scope.dk { --rw-ink: ${T.ink}; --rw-mute: ${T.mute}; --rw-hair: ${T.hair}; --rw-res: #8fd69b; --rw-wk: #f3a79e; --rw-tint: 14%; --rw-onink: #17140f; --rw-ring: ${T.pg}; }
 .rw-scope .rw-chip, .rw-scope .rw-sub { --rw-sc: var(--si); } .rw-scope.dk .rw-chip, .rw-scope.dk .rw-sub { --rw-sc: var(--sc); }
 `;
 const npcWin = inner => sheetWin(inner).replace("Character: Durgan (Dwarf Paladin, Lay On Hands, level 1)", "NPC: NPC");
@@ -851,7 +855,7 @@ page("npc-sheet-dark.html", "Style 6b: the full NPC sheet", `The full NPC sheet 
 <h2>Today ${TODAY}</h2>
 <div class="stage" style="width:930px">${npcWin(npcRaw)}</div>
 <h2>A proposal: the Builder's "Damage: Immune, Resist and Weak" block, redrawn</h2>
-<p class="why">Lucas, 2026-11-13: the line was broken and the add buttons didn't look good; the subtypes should have their colors and icons. Two things here. <b>In the sheets above</b> (the real markup) the block's head is put in order: the title, its note, then "+ Add" at the right. <b>Below is a redraw of the block</b>, which changes its elements, so it is a proposal and not part of "style only": three lines (Immune, Resist, Weak) with each entry as a chip in its subtype's color and icon; and to add one, a palette of the twelve subtypes in the place of the drop-down, a stepper for the amount, and three buttons. The entries shown are examples (this NPC has none).</p>
+<p class="why">Lucas, 2026-11-13: the line was broken and the add buttons didn't look good; the subtypes should have their colors and icons. Two things here. <b>In the sheets above</b> (the real markup) the block's head is put in order: the title, its note, then "+ Add" at the right. <b>Below is a redraw of the block</b>, which changes its elements, so it is a proposal and not part of "style only": three lines (Immune, Resist, Weak) with each entry as a chip in its subtype's color and icon; and to add one, a selector of twelve tiles in the place of the drop-down, each in its subtype's color with its icon (Holy golden with its sun, Fire orange with its flame, Slash steel with its blade), the picked one filled; then a stepper for the amount and three buttons. The entries shown are examples (this NPC has none).</p>
 <div class="cols">${col("Dark", PICK, "", rwBlock, "dk twod12-dark twod12-type rw-scope", "640px")}${col("Light", PICK, "", rwBlock, "twod12-type rw-scope", "640px")}</div>
 <h2>Notes</h2>
 <ul class="notes">
