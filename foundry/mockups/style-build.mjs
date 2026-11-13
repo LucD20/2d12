@@ -827,6 +827,10 @@ const RW_CSS = `
 .rwA .rw-sub { flex-direction: row; justify-content: flex-start; gap: 5px; height: 26px; padding: 0 7px; background: transparent; border: 1px solid var(--rw-hair); font-weight: 600; font-size: 12.5px; }
 .rwA .rw-sub .ic { font-size: inherit; } .rwA .rw-sub span { color: var(--rw-ink); }
 .rwA .rw-sub.on { background: var(--rw-ona); border-color: var(--rw-sc); box-shadow: inset 0 -3px 0 var(--rw-sc); color: var(--rw-sc) !important; } .rwA .rw-sub.on span { color: var(--rw-ink); }
+.rw-side { background: ${T.pg}; padding: 10px 14px; display: flex; flex-direction: column; } .rw-side.lt { background: #2b2520; }
+.rw-side .rw-sk { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: ${T.mute}; margin-bottom: 4px; }
+.rw-side .rw-line { min-height: 28px; gap: 6px; } .rw-side .rw-k { width: 52px; font-size: 13.5px; } .rw-side .rw-chip { font-size: 12px; padding: 1px 6px; }
+.rw-one { background: ${T.pg2}; color: ${T.ink}; padding: 5px 12px; display: flex; align-items: center; gap: 6px; font-size: 13.5px; } .rw-one > i { width: 12px; } .rw-one .rw-chip { padding: 1px 6px; }
 .rw-scope { --rw-ona: ${LIGHT.pg2}; } .rw-scope.dk { --rw-ona: ${T.band}; }
 .rw2 .rw-lines { padding: 4px 2px 2px; }
 .rw-line { display: flex; align-items: center; gap: 10px; min-height: 30px; border-bottom: 1px solid var(--rw-hair); }
@@ -865,9 +869,17 @@ page("npc-sheet-dark.html", "Style 6b: the full NPC sheet", `The full NPC sheet 
 <h2>The Builder's "Damage: Immune, Resist and Weak" block, redrawn (picked)</h2>
 <p class="why">Lucas, 2026-11-13: the line was broken and the add buttons didn't look good; the subtypes should have their colors and icons. Two things here. <b>In the sheets above</b> (the real markup) the block's head is put in order: the title, its note, then "+ Add" at the right. <b>Below is a redraw of the block</b>, which changes its elements, so it is a proposal and not part of "style only": three lines (Immune, Resist, Weak) with each entry as a chip in its subtype's color and icon; and to add one, a compact list of the twelve subtypes in the place of the drop-down, each with its icon in its color, the picked one underlined; then a stepper for the amount and three buttons. <b>Lucas picked this version (A) over colored tiles (B), 2026-11-13.</b> The entries shown are examples (this NPC has none).</p>
 <div class="cols">${col("Dark", PICKED, "", rwBlockA, "dk twod12-dark twod12-type rw-scope", "640px")}${col("Light", PICKED, "", rwBlockA, "twod12-type rw-scope", "640px")}</div>
+<h2>The same chips on the side panel and on the one-page sheet (approved)</h2>
+<p class="why">Lucas, 2026-11-13: yes to the same chips wherever Immune, Resist and Weak are written. Example entries again. On the side panel (both sheets) they sit under "Damage Immune/Resist/Weak" with no remove cross (the lines are edited through "+ Add" and the Builder); on the one-page sheet they are its Immune / Resist / Weak line.</p>
+<div class="cols">
+  ${col("Side panel, dark", PICKED, "", `<div class="rw-side"><span class="rw-sk">Damage Immune/Resist/Weak</span><div class="rw-line"><span class="rw-k imm">Immune</span><span class="rw-v">${subChip("Co", "", false)}</span></div><div class="rw-line"><span class="rw-k res">Resist</span><span class="rw-v">${subChip("Fi", "5", false)}${subChip("Sl", "2", false)}</span></div><div class="rw-line"><span class="rw-k wk">Weak</span><span class="rw-v">${subChip("Ho", "3", false)}</span></div></div>`, "dk rw-scope", "290px")}
+  ${col("Side panel, light", PICKED, "", `<div class="rw-side lt"><span class="rw-sk">Damage Immune/Resist/Weak</span><div class="rw-line"><span class="rw-k imm">Immune</span><span class="rw-v">${subChip("Co", "", false)}</span></div><div class="rw-line"><span class="rw-k res">Resist</span><span class="rw-v">${subChip("Fi", "5", false)}${subChip("Sl", "2", false)}</span></div><div class="rw-line"><span class="rw-k wk">Weak</span><span class="rw-v">${subChip("Ho", "3", false)}</span></div></div>`, "dk rw-scope", "290px")}
+  ${col("One-page sheet's line, dark", PICKED, "", `<div class="rw-one"><b>Immune</b> ${subChip("Co", "", false)}<i></i><b>Resist</b> ${subChip("Fi", "5", false)}${subChip("Sl", "2", false)}<i></i><b>Weak</b> ${subChip("Ho", "3", false)}</div>`, "dk rw-scope", "560px")}
+</div>
 <h2>Notes</h2>
 <ul class="notes">
-<li><b>The rank's color is not on this sheet yet.</b> The one-page sheet colors its name plate by rank (Minion slate, Grunt olive, Standard maroon, Elite purple). Here the rank is the small tag beside the name; giving this sheet's head the rank's color would be the same idea, but it is a new decision, so it is not drawn.</li>
+<li><b>The rank's color stays off this sheet</b> (Lucas, 2026-11-13: no). The rank is the small tag beside the name; only the one-page sheet colors its name plate by rank.</li>
+<li><b>Slash, Blunt and Pierce have their own tones</b> (steel, bronze, grey-green) in the place of the system's one grey (Lucas: use it).</li>
 <li>Four tabs are in the page with no button on an NPC (Items, Build, Mastery, Upkeep); they are left out of the sample.</li>
 <li>Foundry's own window frame, inputs, selects and text editors are stand-ins.</li>
 </ul>
