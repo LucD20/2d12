@@ -36,7 +36,9 @@
 <div class="ar-card"></div>
 </div>
 {{/inline}}
-<div class="twod12 sheet pcs{{#if pc.npc}} npcs{{#if pc.strip.elite}} elite{{/if}}{{/if}}{{#if pc.down.down}} isdown{{/if}}">
+<div class="twod12 sheet pcs{{#if pc.npc}} npcs{{#if pc.strip.elite}} elite{{/if}}{{/if}}{{#if pc.down.down}} isdown{{/if}}{{#if pc.statblock}} sbs{{/if}}">
+  {{!-- v0.0.375 (STYLE-2): the one-page NPC sheet (NpcStatBlockSheet) shares this template: no head, strip or side panel; its Main tab is the stat block --}}
+  {{#unless pc.statblock}}
   <header class="ps-head">
     <img class="ps-portrait" src="{{actor.img}}" data-edit="img" data-action="editImage" alt="Portrait of {{actor.name}}" data-tooltip="Change the portrait">
     <div class="ps-id">
@@ -100,7 +102,9 @@
 
   {{!-- v0.0.373 (STYLE-2, Lucas: "we already have the effects tab and this grows too much with effects"): no "On you" / "On it" here or in the strip --}}
 
+  {{/unless}}
   <div class="ps-body">
+    {{#unless pc.statblock}}
     <aside class="ps-side np">
       <section class="ps-sec">
         {{#with pc.health}}
@@ -166,13 +170,16 @@
         {{/each}}
       </section>{{/unless}}
     </aside>
+    {{/unless}}
 
     <section class="ps-main mn">
+      {{#if pc.statblock}}{{{statblockPlate}}}{{/if}}
       <nav class="ps-tabs" aria-label="Sheet tabs">
-        <a class="tabbtn" data-action="switchTab" data-tab-target="favorites" data-tooltip="Favorites" aria-label="Favorites" role="tab" tabindex="0"><i class="fa-regular fa-star"></i></a>
+        {{#unless pc.statblock}}<a class="tabbtn" data-action="switchTab" data-tab-target="favorites" data-tooltip="Favorites" aria-label="Favorites" role="tab" tabindex="0"><i class="fa-regular fa-star"></i></a>{{/unless}}
         {{#each pc.tabs}}<a class="tabbtn" data-action="switchTab" data-tab-target="{{k}}" role="tab" tabindex="0">{{l}}{{#if n}} <span class="tabcount">{{n}}</span>{{/if}}</a>{{/each}}
       </nav>
       <div class="ps-scroll">
+      {{#if pc.statblock}}<div class="tab" data-tab="main">{{{statblockHtml}}}</div>{{/if}}
 
       <div class="tab" data-tab="favorites">
         {{#if pc.favRows.length}}

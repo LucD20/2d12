@@ -578,6 +578,11 @@ const EXTRA = `
 .twod12-dark .application.twod12-styled .sk .fr-tab.cls2 .cls-grp { background: color-mix(in srgb, var(--fq, #5F5E5A) 16%, ${T.pg}); }
 .twod12-dark .application.twod12-styled .sk .fr-tab.cls2 .cls-gl { background: color-mix(in srgb, var(--fq, #5F5E5A) 38%, #14110d); color: color-mix(in srgb, var(--fq, #5F5E5A), #fff 62%); }
 .twod12-dark .application.twod12-styled .sk .fr-tab.cls2 .at-body { color: #f08a8a; } .twod12-dark .application.twod12-styled .sk .fr-tab.cls2 .at-mind { color: #8fb3ee; } .twod12-dark .application.twod12-styled .sk .fr-tab.cls2 .at-appeal { color: #e3c15a; } .twod12-dark .application.twod12-styled .sk .fr-tab.cls2 .at-instinct { color: #7fcf95; }
+/* ---- v0.0.375: the one-page NPC sheet on the dark page: the Attributes' and Modifiers' lighter colors, the HP bar */
+.twod12-dark .twod12-sb .sb-attr.at-body { --ac: #ef8a96; } .twod12-dark .twod12-sb .sb-attr.at-mind { --ac: #8db3ff; } .twod12-dark .twod12-sb .sb-attr.at-appeal { --ac: #e6bd5a; } .twod12-dark .twod12-sb .sb-attr.at-instinct { --ac: #7fd49a; }
+.twod12-dark .twod12-sb .sb-attr.mod-weapon { --ac: #f4a259; } .twod12-dark .twod12-sb .sb-attr.mod-power { --ac: #b794f6; } .twod12-dark .twod12-sb .sb-track { background: #40382c; } .twod12-dark .twod12-sb .sb-track.hp i { background: #62a653; }
+.twod12-dark .twod12-sb .sb-oa { background: color-mix(in srgb, var(--fq) 16%, ${T.pg}); } .twod12-dark .twod12-sb .sb-oa-h { background: color-mix(in srgb, var(--fq) 42%, ${T.pg}); }
+.twod12-dark .twod12-sb .sb-state, .twod12-dark .twod12-sb .neg { color: #ff8f86; } .twod12-dark .twod12-sb .sb-gauge.v .k { color: #ef8a80; } .twod12-dark .twod12-sb .sb-gauge.r .k { color: #8fb3ee; }
 /* ---- v0.0.371 (Lucas: "the rainbow is missing the glow that the diamond has"): Mithril glows like Diamond, in two of its own colors */
 .twod12-type .twod12 .autodia.auto-mithril, .twod12-type .twod12.sheet.pcs .autodia.auto-mithril, .twod12-type .twod12.acard.d2 .autodia.auto-mithril, .twod12-type .twod12.chat.cc .autodia.auto-mithril { filter: saturate(1.5) drop-shadow(-1px 0 2px #5ad7ff) drop-shadow(1px 0 2px #ff6fb5); }
 /* ---- the pick window's text goes through the highlighter now: its colors on the dark window */

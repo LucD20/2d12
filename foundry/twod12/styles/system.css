@@ -4487,3 +4487,57 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .application.twod12-styled .sk .fr-tab.cls2 .cls-chip button { width: 16px; height: 16px; min-height: 0; padding: 0; border: 0; background: none; color: var(--cf-mute); font-size: 13px; line-height: 1; opacity: .7; }
 .application.twod12-styled .sk .fr-tab.cls2 .cls-none { color: var(--cf-mute); font-style: italic; font-size: 12.5px; }
 .application.twod12-styled .sk .fr-tab.cls2 .drop-zone { margin: 7px 0 0; padding: 5px; border: 1px dashed var(--cf-hair); border-radius: 0; background: none; color: var(--cf-mute); font-size: 12px; text-align: center; opacity: 1; }
+/* ==== v0.0.375 (PACK STYLE-2): the one-page NPC sheet (module/statblock.mjs; foundry/mockups/npc-hud-sheet.html, Lucas's picks: full text, the
+   Tiers as three lines, Effects under a line, a tint of the frequency's color behind the whole Action, a name plate per rank). It uses the shared
+   colors (--s-*, styles/theme.css), so it follows the Theme setting. The full NPC sheet is unchanged. ==== */
+.twod12.sheet.pcs.sbs .ps-body { grid-template-columns: minmax(0, 1fr); }
+.twod12.sheet.pcs.sbs .ps-main { padding: 0; }
+.twod12-sb { --rk: var(--s-rk-standard, #6e2318); color: var(--s-ink, #2a241d); font: 400 13.5px/1.4 "Signika", sans-serif; }
+.twod12-sb.rk-minion { --rk: var(--s-rk-minion, #4d545c); } .twod12-sb.rk-grunt { --rk: var(--s-rk-grunt, #4b5a26); } .twod12-sb.rk-standard { --rk: var(--s-rk-standard, #6e2318); } .twod12-sb.rk-elite { --rk: var(--s-rk-elite, #4f2c69); }
+.twod12-sb .sb-plate { display: flex; align-items: center; gap: 12px; padding: 6px 12px 5px; background: var(--rk); color: #f8eed8; }
+.twod12-sb .sb-plate .nm { flex: 1; min-width: 0; font: 700 21px/1.15 "Cinzel", serif; font-variant: small-caps; letter-spacing: .01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.twod12-sb .sb-plate .who { display: flex; flex-direction: column; align-items: flex-end; font-size: 12.5px; color: rgba(248, 238, 216, .82); white-space: nowrap; } .twod12-sb .sb-plate .who b { color: #f8eed8; font-size: 14px; }
+.twod12-sb .sb-ptools { display: flex; gap: 6px; } .twod12-sb .sb-ptools a { color: rgba(248, 238, 216, .82); cursor: pointer; }
+.twod12-sb .sb-stats { padding: 4px 0 6px; border-bottom: 1px solid var(--s-rule, #8a6d3b); }
+.twod12-sb .sbl { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 5px; padding: 3px 12px; }
+.twod12-sb .sbl:nth-child(even) { background: var(--s-pg-2, #eae0c8); }
+.twod12-sb .sbl .k { font-weight: 700; } .twod12-sb .sbl b { font-weight: 700; } .twod12-sb .sbl .big { font-size: 16px; }
+.twod12-sb .sbl.two { flex-wrap: nowrap; gap: 0 22px; } .twod12-sb .sbl.two .sb-gauge { flex: 1 1 0; display: flex; align-items: baseline; gap: 5px; min-width: 0; }
+.twod12-sb .sbl.grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(0, 1.15fr) minmax(0, 1.75fr); gap: 0; }
+.twod12-sb .sbl.grid > span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .twod12-sb .sbl.grid .s2 { grid-column: span 2; white-space: normal; }
+.twod12-sb .sb-track { flex: 1; align-self: center; min-width: 40px; height: 4px; background: var(--s-hair, #cdb88a); }
+.twod12-sb .sb-track i { display: block; height: 100%; } .twod12-sb .sb-track.hp i { background: #4f9a4a; } .twod12-sb .sb-gauge.v .sb-track i { background: var(--s-vig, #9b2c2c); } .twod12-sb .sb-gauge.r .sb-track i { background: var(--s-res, #2c4a9b); }
+.twod12-sb .sb-gauge.v .k { color: var(--s-vig, #9b2c2c); } .twod12-sb .sb-gauge.r .k { color: var(--s-res, #2c4a9b); } .twod12-sb .neg { color: var(--s-bad, #8a1c13); }
+.twod12-sb .sb-state { margin-left: auto; color: var(--s-bad, #8a1c13); font-weight: 700; font-variant: small-caps; font-size: 14px; }
+.twod12-sb .sb-rw { display: inline-flex; align-items: center; gap: 3px; margin-right: 6px; color: var(--sc); font-weight: 600; } .twod12-sb .sb-rw i { font-size: 11px; }
+.twod12-sb .sb-body { display: flex; flex-direction: column; gap: 6px; padding: 8px 12px 12px; }
+.twod12-sb .sb-band { display: flex; align-items: baseline; gap: 8px; margin: 6px 0 0; padding: 0 0 2px; border-bottom: 1px solid var(--s-rule, #8a6d3b); color: var(--s-gold, #96670f); font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
+.twod12-sb .sb-band .r { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-variant: normal; color: var(--s-mute, #5d5446); }
+.twod12-sb .sb-band .add { margin-left: auto; font-size: 12px; font-variant: small-caps; color: var(--s-mute, #5d5446); cursor: pointer; } .twod12-sb .sb-band .r + .add { margin-left: 10px; }
+.twod12-sb .sb-pips { display: inline-flex; gap: 3px; } .twod12-sb .sb-pips i { width: 9px; height: 9px; transform: rotate(45deg); border: 1.5px solid var(--s-gold, #96670f); } .twod12-sb .sb-pips i.on { background: var(--s-gold, #96670f); }
+.twod12-sb .sb-rung { display: flex; gap: 8px; padding: 2px 4px; border-bottom: 1px solid var(--s-hair, #cdb88a); } .twod12-sb .sb-rung .num { color: var(--s-gold, #96670f); font-weight: 700; } .twod12-sb .sb-rung.off { opacity: .5; }
+.twod12-sb .sb-oa { background: color-mix(in srgb, var(--fq) 12%, var(--s-pg, #f4ede0)); }
+.twod12-sb .sb-oa.dim > * { opacity: .5; }
+.twod12-sb .sb-oa-h { display: flex; align-items: center; gap: 8px; padding: 4px 8px; background: color-mix(in srgb, var(--fq) 34%, var(--s-pg, #f4ede0)); }
+.twod12-sb .sb-oa-h .n { font-weight: 700; font-size: 14.5px; color: var(--s-ink, #2a241d); cursor: pointer; } .twod12-sb .sb-oa-h .tr { font-style: italic; color: var(--s-mute, #5d5446); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.twod12-sb .sb-oa-h .fq { margin-left: auto; white-space: nowrap; color: var(--s-ink, #2a241d); font-weight: 700; font-variant: small-caps; font-size: 14px; } .twod12-sb .sb-oa-h .fq i { font-style: normal; color: var(--s-gold, #96670f); }
+.twod12-sb .sb-tools { display: inline-flex; gap: 6px; color: var(--s-mute, #5d5446); } .twod12-sb .sb-tools a { cursor: pointer; color: inherit; }
+.twod12-sb .sb-vb, .twod12.sheet.pcs .twod12-sb .sb-vb { flex: none; width: auto; height: auto; min-height: 0; margin: 0; padding: 2px 7px; border: 0; border-radius: 2px; background: var(--s-stamp, #3b3128); color: var(--s-stamp-ink, #f4ede0); box-shadow: none; font: 700 12px/1.3 "Signika", sans-serif; cursor: pointer; }
+.twod12-sb .sb-vb:hover, .twod12.sheet.pcs .twod12-sb .sb-vb:hover { background: var(--s-stamp-hover, #2a231c); } .twod12-sb .sb-vb.no, .twod12.sheet.pcs .twod12-sb .sb-vb.no { background: transparent; border: 1px dashed var(--s-faint, #8f8774); color: var(--s-faint, #8f8774); cursor: default; } .twod12-sb .sb-vb.used { text-decoration: line-through; }
+.twod12-sb .sb-meta { padding: 4px 8px; } .twod12-sb .sb-meta b { font-weight: 700; } .twod12-sb .sb-meta .sep { color: var(--s-mute, #5d5446); }
+.twod12-sb .sb-tiers { margin: 0 8px; border-top: 1px solid var(--s-hair, #cdb88a); }
+.twod12-sb .sb-vl { padding: 3px 0 0; font-weight: 700; font-size: 12px; color: var(--s-mute, #5d5446); }
+.twod12-sb .sb-t { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 8px; padding: 2px 0; }
+.twod12-sb .sb-t .tl { font-weight: 700; font-variant: small-caps; font-size: 14px; } .twod12-sb .sb-t.t1 .tl { color: var(--s-t-1, #a8261c); } .twod12-sb .sb-t.t2 .tl { color: var(--s-t-2, #6f6800); } .twod12-sb .sb-t.t3 .tl { color: var(--s-t-3, #2b5a2f); } .twod12-sb .sb-t.crit .tl { color: var(--s-crit, #1d5a9e); }
+.twod12-sb .sb-t .none { color: var(--s-mute, #5d5446); }
+.twod12-sb .sb-fx { margin: 4px 8px 0; padding: 4px 0 6px; border-top: 1px solid var(--s-gold, #96670f); } .twod12-sb .sb-fx .fxl { color: var(--s-gold, #96670f); font-weight: 700; font-variant: small-caps; font-size: 14px; margin-right: 6px; }
+.twod12-sb .sb-oa > :last-child { padding-bottom: 6px; }
+.twod12-sb .sb-attrs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) 10px repeat(2, minmax(0, 1fr)); gap: 5px; margin-top: 6px; padding-top: 8px; border-top: 2px solid var(--s-rule, #8a6d3b); }
+.twod12-sb .sb-attr { display: flex; flex-direction: column; align-items: center; padding: 4px 2px 5px; border: 1px solid var(--s-hair, #cdb88a); border-top: 3px solid var(--ac, #8c7d63); background: var(--s-pg-2, #eae0c8); color: var(--s-ink, #2a241d); text-decoration: none; cursor: pointer; }
+.twod12-sb .sb-attr span { font: 700 11.5px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; color: var(--ac, #8c7d63); } .twod12-sb .sb-attr b { font-size: 16px; } .twod12-sb .sb-attr small { font-size: 11px; color: var(--s-mute, #5d5446); }
+.twod12-sb .sb-attr.gap { grid-column: 6; } div.twod12-sb .sb-attr.mod-weapon, .twod12-sb div.sb-attr { cursor: default; }
+.twod12-sb .sb-attr.at-body { --ac: #7a1626; } .twod12-sb .sb-attr.at-mind { --ac: #17327a; } .twod12-sb .sb-attr.at-appeal { --ac: #6b4e00; } .twod12-sb .sb-attr.at-instinct { --ac: #14532d; } .twod12-sb .sb-attr.mod-weapon { --ac: #9a4a00; } .twod12-sb .sb-attr.mod-power { --ac: #5b3a9e; }
+.twod12-sb .sb-empty { color: var(--s-mute, #5d5446); font-style: italic; }
+.application.twod12-sbsheet.sb-rk-minion > .window-header { --rk: var(--s-rk-minion, #4d545c); } .application.twod12-sbsheet.sb-rk-grunt > .window-header { --rk: var(--s-rk-grunt, #4b5a26); }
+.application.twod12-sbsheet.sb-rk-standard > .window-header { --rk: var(--s-rk-standard, #6e2318); } .application.twod12-sbsheet.sb-rk-elite > .window-header { --rk: var(--s-rk-elite, #4f2c69); }
+.application.twod12-sbsheet[class*="sb-rk-"] > .window-header { background: color-mix(in srgb, var(--rk) 78%, #000) !important; color: #f8eed8; }

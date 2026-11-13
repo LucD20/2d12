@@ -1528,3 +1528,31 @@ export function registerSheetHooks() {
   // the actors of a deleted combat (this was also usage.mjs's job, which drew every open actor window a second time: gone)
   Hooks.on("deleteCombat", combat => combat.combatants.forEach(redraw));
 }
+
+/**
+ * v0.0.375 (PACK STYLE-2): the one-page NPC sheet (module/statblock.mjs), a second NPC sheet for experienced GMs; the full sheet stays.
+ * It is the NPC sheet with its Main tab as the stat block and three of its tabs (Build = the Builder, Effects, Notes); every action of the full
+ * sheet still works. Chosen per NPC in Foundry's sheet settings; the world setting "New NPCs open with" picks it for new NPCs.
+ */
+export class NpcStatBlockSheet extends NpcSheet {
+  static DEFAULT_OPTIONS = { position: { width: 580, height: 900 } };
+  _activeTab = "main";
+  async _prepareContext(options) {
+    const ctx = await super._prepareContext(options);
+    const { statBlockModel, statBlockHtml, sbPlateHtml } = await import("./statblock.mjs");
+    try { const m = await statBlockModel(this.actor, ctx.pc); this._sbRank = m.rankKey; ctx.statblockHtml = statBlockHtml(m); ctx.statblockPlate = sbPlateHtml(m); }
+    catch (e) { console.warn("twod12 | stat block", e); ctx.statblockHtml = '<p class="sb-empty">The stat block could not be drawn (see the console). The full NPC sheet still works.</p>'; ctx.statblockPlate = ""; }
+    const effN = ctx.pc.tabs.find(t => t.k === "effects")?.n ?? 0;
+    ctx.pc = { ...ctx.pc, statblock: true, tabs: [{ k: "main", l: "Main", n: 0 }, { k: "builder", l: "Build", n: 0 }, { k: "effects", l: "Effects", n: effN }, { k: "notes", l: "Notes", n: 0 }] };
+    return ctx;
+  }
+  _onRender(context, options) {
+    super._onRender(context, options);
+    // the window's own header takes the rank's color (a little darker than the name plate)
+    const el = this.element;
+    if (!el) return;
+    el.classList.add("twod12-sbsheet");
+    [...el.classList].filter(c => c.startsWith("sb-rk-")).forEach(c => el.classList.remove(c));
+    el.classList.add(`sb-rk-${this._sbRank ?? "standard"}`);
+  }
+}
