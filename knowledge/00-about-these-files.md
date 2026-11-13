@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-12 from the repository at: 1e9d5af 2026-11-12 stage0.md written again with exploding dice and the areas at two thirds
+Built by tools/knowledge.py on 2026-11-13 from the repository at: 1e7d4ad 2026-11-12 budget.md written again (the area rows fixed); knowledge
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

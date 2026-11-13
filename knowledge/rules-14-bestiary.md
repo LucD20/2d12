@@ -185,7 +185,7 @@ A **rider** is an effect an Action adds to its damage: a condition, a Forced Mov
 | The effect is... | Its price |
 |---|---|
 | a rider (on a hit: Tier 2 and Tier 3), or on the Action's Effects row | the price above |
-| in the **Setup** (it always happens, hit or miss) | **one size more** (a Mild condition costs a Moderate's 6) |
+| in the **Setup** (it always happens, hit or miss) | **one size more** (a Mild condition costs a Moderate's 6); **Staggered in the Setup costs 12**: it reaches the creature that would have reacted |
 | on **Tier 3 only** | **one size less** (a Moderate condition costs a Mild's 3; a Mild one 2) |
 
 A **unique effect** ("the Dragon grabs you, flies up and drops you to the ground") is priced as the nearest conditions (Grabbed and Prone, with the fall's damage as damage), and belongs on an Encounter Action.
