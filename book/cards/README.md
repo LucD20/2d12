@@ -147,8 +147,9 @@ So **a PC's area from range deals half to each** (even against 4, good against 6
 
 **The targets (Lucas, 2026-11-13):**
 - **A class is worth about 150** in Stage 0 (the plain PC: 100). Read as level 3's number, with about 130 at level 1 and 140 at level 2, since each level adds something (an assumption: say if every level should be 150).
-- **The middle ground:** the Smite Paladin comes up (today 115 to 126) and the Archers come down (163 to 200).
-- **Shield of Faith adds about 15** (today 66): as any 1R Reaction, 10 to 15.
+- **The Paladins come up, the Archers stay** (Lucas, the same day, replacing "the Archers come down"). The points are against each seat's own plain PC, and the two plain PCs are not equal: a plain Paladin saves the party 13 Health a fight, a plain Archer 8. In Health saved (level 2) the builds are Lay On Hands 18.8, Smite 14.7, Rolling Shot 14.2, Double Shot 12.7: the Archers are not ahead. **150 for a Paladin is about 20 Health saved a fight; 150 for an Archer about 12, where the Archers already are** (163 to 200).
+- **Shield of Faith adds about 15** (today 66): as any 1R Reaction, 10 to 15. That brings the Lay On Hands Paladin to about 110 to 115, level with Smite (115 to 126).
+- **So each Paladin needs about 35 points of new class value** to reach 150: in Smite's damage (a 2 AP Smite is 45 points, under two Weapon Attacks), in its Passives (Radiant Zeal 3 to 7, Searing Blows 0 to 4, Reckoning 0) or in something new.
 - **Healing in a fight (Claude's choice, Lucas can change it):** its AP cost stays, and it is **paid with Rally Points**: a heal that spends the target's Rally Point is priced at what the card adds on top (and the Down it prevents). **New Health** (no Rally Point) costs **12 points a Health**: a 1 AP Round card gives about 2 new Health, and a bigger one is an Encounter Action.
 
 **How to use it in a session:** (1) the card's damage in points against its AP's price; (2) add its riders, its heal or Guard and its Reaction at the prices above; (3) compare with the class's budget for its level. The ledger at the end of `pc-budget.md` has every class Action's damage in points today (Smite 2: 45 for 2 AP; Double Shot 2: 50; Holy Wrath 2: 50 to 54; Rolling Shot 2: 36).

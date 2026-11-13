@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: dac76f8 2026-11-13 The PC budget: Lucas's targets in the guide (a class about 150, the middle ground, Shield of Faith about 15, healing through Rally Points)
+Built by tools/knowledge.py on 2026-11-13 from the repository at: 1a72cde 2026-11-13 The PC budget: each Passive alone, areas, and maps with walls
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (137 KB)
+- HANDOFF.md (138 KB)
 - MASTER-PLAN.md (36 KB)
 - open-design-items.md (128 KB)
 - rules-01-roll.md (23 KB)
