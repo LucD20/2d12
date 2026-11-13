@@ -195,7 +195,7 @@
           {{#each pc.sections}}{{> sect list="actions"}}{{else}}<div class="ps-empty">No Actions yet. Drag Actions, Features, Talents or Weapons onto this sheet.</div>{{/each}}
         </div>
         <div class="ps-basic">
-          <div class="ps-basich"><span class="ps-h2">Basic Actions</span>{{#unless pc.npc}}<span class="ps-legend"><i class="sw" style="--lnf:#4c7a2e"></i> At-will <i class="sw" style="--lnf:#2c5d9e"></i> Once per round <i class="sw" style="--lnf:#d14b3f"></i> Strike</span>{{/unless}}
+          <div class="ps-basich"><span class="ps-h2">Basic Actions</span>{{#unless pc.npc}}<span class="ps-legend"><i class="sw" style="--lnf:#4c7a2e"></i> At-will <i class="sw" style="--lnf:#2c5d9e"></i> Once per round <i class="sw" style="--lnf:var(--tw-strike)"></i> Strike</span>{{/unless}}
             <a class="ps-upd" data-action="addBasic" data-tooltip="Replace the Basic Actions with the compendium's current versions (adds the missing ones)">{{#if missingBasic}}Add{{else}}Update{{/if}} Basic Actions</a></div>
           <div class="ps-bgrid">
             {{#each pc.basic}}

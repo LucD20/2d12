@@ -1,0 +1,8 @@
+--- the speaker's image
+its token on the scene: tokens/aveline.webp | no token: the actor's token tokens/aveline-proto.webp | its portrait portraits/orc.png | a player's avatar u.png | nothing: ""
+the top line: <span class="tw-who"><img src="a.png" alt=""><b>Aveline &lt;b&gt;</b></span> | no image: <span class="tw-who"><b>GM</b></span>
+--- the wiring
+registered after the cards are drawn: true | the time and the trash moved, not copied: true | one-liners stay bare: true
+no Foundry box, its header hidden: true | the image 30 px: true
+--- Strike's terracotta
+no old red left: true | light / dark: true true | the carousel's Strike pips: true

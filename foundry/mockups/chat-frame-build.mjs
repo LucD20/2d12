@@ -81,17 +81,18 @@ ul.notes { color: #c9c0ad; max-width: 1050px; padding-left: 20px; } ul.notes b {
 .chat-message.tw-b { padding: 0; border: 0; background: none !important; }
 .chat-message.tw-b .tw-top { display: flex; align-items: center; gap: 6px; margin: -2px 0 5px; padding: 0 0 4px; border-bottom: 1px solid var(--b-hair); font-size: 12px; color: var(--b-mute); }
 .chat-message.tw-b .tw-who { display: inline-flex; align-items: center; gap: 6px; flex: 1; min-width: 0; } .chat-message.tw-b .tw-who b { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.chat-message.tw-b .tw-who img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; border: 1px solid var(--b-hair); }
+.chat-message.tw-b .tw-who img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1px solid var(--b-hair); }
 .chat-message.tw-b .tw-meta { display: inline-flex; align-items: center; gap: 7px; font-size: 11.5px; color: var(--b-mute); white-space: nowrap; }
 .chat-message.tw-b.line .twod12.chat.sysline { display: flex; align-items: center; } .chat-message.tw-b.line .tw-meta { margin-left: auto; padding-left: 8px; }
 .chat-message.tw-b.line .message-delete { visibility: hidden; } .chat-message.tw-b.line:hover .message-delete { visibility: visible; }
 `;
 const set = (title, tag, why, html) => `<div><h3>${title}${tag}</h3>${why ? `<p class="why" style="max-width:316px;font-size:12.5px">${why}</p>` : ""}${html}</div>`;
 const PROP = '<span class="tag pick">Proposed</span>', TODAY = '<span class="tag">Today</span>';
+const PICKED = '<span class="tag pick">Picked by Lucas</span>';
 const row3 = (cls, theme) => `<div class="cols">
 ${set("Today", TODAY, "Foundry's box and header around our card (drawn here by hand, approximately).", `<div class="side ${cls} ${theme}">${log(today, "")}</div>`)}
 ${set("A: CSS only", PROP, "Foundry's box goes; its header becomes a thin line on top of our card. Nothing moves; the delete and the time keep working as Foundry's own.", `<div class="side ${cls} ${theme}">${log(optA, "")}</div>`)}
-${set("B: in the card", PROP, "The token's image and name, the time and the trash inside the card's top line. Needs a small render hook (it moves Foundry's elements).", `<div class="side ${cls} ${theme}">${log(optB, "")}</div>`)}
+${set("B: in the card", PICKED, "The token's image and name, the time and the trash inside the card's top line. Needs a small render hook (it moves Foundry's elements).", `<div class="side ${cls} ${theme}">${log(optB, "")}</div>`)}
 </div>`;
 writeFileSync(here("./chat-frame.html"), `<!DOCTYPE html>
 <html lang="en">
@@ -117,7 +118,7 @@ ${row3("lt", "twod12-light twod12-type")}
 <li><b>A is CSS only:</b> <code>li.chat-message:has(.twod12.chat)</code> loses its box; Foundry's header is restyled as the card's top line. Nothing is added, moved or removed, so it is a style change. Messages that aren't ours (a plain roll, another module's) keep Foundry's box.</li>
 <li><b>B moves elements</b> (Foundry's header is hidden and its name, time and trash are drawn in our card by a <code>renderChatMessageHTML</code> hook); it adds the token's image. A whisper's and a blind roll's marks would move in too. One line per message saved.</li>
 <li>A one-line message (a Guard line, a follow-up): in A the time and the trash sit at its right; in B the time sits at its right and the trash shows on hover.</li>
-<li>My recommendation: <b>B</b> if you want the token's face on every card (it reads faster in a busy chat); <b>A</b> if the time and the trash can stay as Foundry draws them.</li>
+<li><b>Lucas picked B (2026-11-13), with the images a bit bigger (30 px here and in the build, v0.0.372).</b> My recommendation was: <b>B</b> if you want the token's face on every card (it reads faster in a busy chat); <b>A</b> if the time and the trash can stay as Foundry draws them.</li>
 </ul>
 </body>
 </html>

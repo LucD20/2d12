@@ -2113,8 +2113,8 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 .twod12-setupbar .lb-text { flex: 1 1 auto; min-width: 0; }
 /* v0.0.224 (Lucas): the 3 Strikes of the turn, under the AP pips: red diamonds, hollow when spent. */
 #twod12-carousel .tp-strikes { display: flex; justify-content: center; gap: 3px; margin: 2px 4px 0; }
-#twod12-carousel .tp-strikes i { width: 8px; height: 8px; transform: rotate(45deg); border: 1.5px solid #b3261e; box-sizing: border-box; }
-#twod12-carousel .tp-strikes i.on { background: #b3261e; }
+#twod12-carousel .tp-strikes i { width: 8px; height: 8px; transform: rotate(45deg); border: 1.5px solid var(--tw-strike); box-sizing: border-box; }
+#twod12-carousel .tp-strikes i.on { background: var(--tw-strike); }
 /* v0.0.224 (Lucas, playtest 3): too few AP: the cost and the dice dimmed, the cost struck through; 3 Strikes made: a red diamond before the name. */
 .twod12.sheet .ar.noap .ar-ap { opacity: .45; text-decoration: line-through; }
 .twod12.sheet .ar.noap .ar-use { opacity: .4; }
@@ -3043,10 +3043,10 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.sheet.pcs .ps-epill, .twod12.sheet.pcs .ps-mchip, .twod12.sheet.pcs .ps-wchip, .twod12.sheet.pcs .ps-uwchip, .twod12.sheet.pcs .ps-warnchip, .twod12.sheet.pcs .ps-mom,
 .twod12.sheet.pcs .ps-none, .twod12.sheet.pcs .tabcount, .twod12.sheet.pcs .rung { border-radius: 3px; }
 /* the Strike line on an Action row: 4px red on the left edge */
-.twod12.sheet.pcs .ps-row.strike > .ps-line { box-shadow: inset 4px 0 0 #d14b3f; padding-left: 16px; }
+.twod12.sheet.pcs .ps-row.strike > .ps-line { box-shadow: inset 4px 0 0 var(--tw-strike); padding-left: 16px; }
 /* Basic Action buttons: the frequency line, then the Strike line; grey when it can't be used */
 .twod12.sheet.pcs .ps-bxbtn.ln { padding-left: 14px; box-shadow: inset 4px 0 0 var(--lnf), 0 1px 2px rgba(27,36,51,.15); }
-.twod12.sheet.pcs .ps-bxbtn.ln.ln-strike { padding-left: 16px; box-shadow: inset 4px 0 0 var(--lnf), inset 8px 0 0 #d14b3f, 0 1px 2px rgba(27,36,51,.15); }
+.twod12.sheet.pcs .ps-bxbtn.ln.ln-strike { padding-left: 16px; box-shadow: inset 4px 0 0 var(--lnf), inset 8px 0 0 var(--tw-strike), 0 1px 2px rgba(27,36,51,.15); }
 .twod12.sheet.pcs .ps-bx.off .ps-bxbtn.ln { box-shadow: inset 4px 0 0 #b5ad9c; }
 .twod12.sheet.pcs .ps-legend .sw { display: inline-block; width: 4px; height: 11px; background: var(--lnf); vertical-align: -1px; margin: 0 3px 0 8px; }
 .twod12.sheet.pcs .ps-bxno { color: #9a9384; font-size: 13px; }
@@ -3070,8 +3070,8 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.sheet.pcs.npcs.elite .ps-strip { grid-template-columns: 160px 96px minmax(0, 1fr) 130px 160px; }
 .twod12.sheet.pcs.npcs .ps-strip.out { grid-template-columns: minmax(0, 1fr); }
 .twod12.sheet.pcs .ps-strk { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #f3efe6; }
-.twod12.sheet.pcs .ps-strk i { width: 9px; height: 9px; transform: rotate(45deg); border: 1.5px solid #d14b3f; margin: 0 1px; }
-.twod12.sheet.pcs .ps-strk i.on { background: #d14b3f; }
+.twod12.sheet.pcs .ps-strk i { width: 9px; height: 9px; transform: rotate(45deg); border: 1.5px solid var(--tw-strike); margin: 0 1px; }
+.twod12.sheet.pcs .ps-strk i.on { background: var(--tw-strike); }
 .twod12.sheet.pcs .ps-s.bane { color: #e8a49c; }
 /* the Actions tab's NPC tools */
 .twod12.sheet.pcs .ps-ih.tools { margin-bottom: 8px; }
@@ -3522,11 +3522,11 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 /* ==== v0.0.302 (Lucas tested v0.0.301): a Reaction's row on the Actions tab carries its Frequency line (the Basic Actions' buttons' 4px line),
    then the red Strike line beside it for a Strike (Opportunity Attack) ==== */
 .twod12.sheet.pcs .ps-row.lnfreq > .ps-line { box-shadow: inset 4px 0 0 var(--lnf); padding-left: 14px; }
-.twod12.sheet.pcs .ps-row.lnfreq.strike > .ps-line { box-shadow: inset 4px 0 0 var(--lnf), inset 8px 0 0 #d14b3f; padding-left: 18px; }
+.twod12.sheet.pcs .ps-row.lnfreq.strike > .ps-line { box-shadow: inset 4px 0 0 var(--lnf), inset 8px 0 0 var(--tw-strike); padding-left: 18px; }
 .twod12.sheet.pcs .ps-row.lnfreq.off > .ps-line { box-shadow: inset 4px 0 0 #b5ad9c; }
 
 /* ==== v0.0.303 (Lucas tested v0.0.302): the NPC's Basic attack row: a wide gold strip (then the red Strike line) and a faint gold wash, so it stands out ==== */
-.twod12.sheet.pcs .ps-row.basicatk > .ps-line { box-shadow: inset 10px 0 0 #c9a227, inset 14px 0 0 #d14b3f; padding-left: 22px; background: linear-gradient(90deg, rgba(201,162,39,.16), rgba(201,162,39,0) 70%); }
+.twod12.sheet.pcs .ps-row.basicatk > .ps-line { box-shadow: inset 10px 0 0 #c9a227, inset 14px 0 0 var(--tw-strike); padding-left: 22px; background: linear-gradient(90deg, rgba(201,162,39,.16), rgba(201,162,39,0) 70%); }
 .twod12.sheet.pcs .ps-row.basicatk.off > .ps-line { box-shadow: inset 10px 0 0 #b5ad9c; }
 
 /* ==== v0.0.304 (Lucas: "diamonds don't show in any card"): the diamond's colors were made for the old dark card heads; on the new light parchment
@@ -4410,3 +4410,22 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-dock, .twod12.chat.turnend { font-size: 13px; line-height: 1.35; }
 .twod12 .td-tl .td-sep { font-size: 12px; font-variant: normal; letter-spacing: 0; text-transform: none; }
 .twod12 .td-badge { font-size: 11.5px; }
+
+/* ==== v0.0.372 (Lucas, 2026-11-13: "Strike takes the terracotta"): the [Strike] marks (the row's and button's second line, the Strike pips on the
+   sheet and the carousel) in the Kind trait's terracotta, leaning orange so it stays apart from Encounter's red. The dark value is in the theme. ==== */
+:root { --tw-strike: #c25a28; }
+/* ==== v0.0.372 (Lucas: B, foundry/mockups/chat-frame.html): the system's messages without Foundry's box; the speaker's token image and name, the
+   time and the trash in the card's top line (module/chatframe.mjs). The dark colors are in the theme. ==== */
+.chat-message.tw-framed { padding: 0 !important; border: 0 !important; background: none !important; box-shadow: none !important; }
+.chat-message.tw-framed::before, .chat-message.tw-framed::after { display: none; }
+.chat-message.tw-framed > .message-header { display: none; }
+.chat-message.tw-framed > .message-content { margin: 0; padding: 0; }
+.twod12 .tw-top { display: flex; align-items: center; gap: 7px; margin: -2px 0 6px; padding: 0 0 5px; border-bottom: 1px solid var(--cc-gline, #cdb88a); font: 400 12.5px/1.2 "Signika", sans-serif; color: var(--cc-mute, #5d5446); }
+.twod12.chat:not(.cc) > .tw-top { margin: 0; padding: 5px 8px; }
+.twod12 .tw-who { display: inline-flex; align-items: center; gap: 7px; flex: 1; min-width: 0; }
+.twod12 .tw-who b { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.twod12 .tw-who img { flex: none; width: 30px; height: 30px; border: 1px solid var(--cc-gline, #cdb88a); border-radius: 50%; object-fit: cover; }
+.twod12 .tw-who .whisper-to { font-size: 11.5px; font-style: italic; }
+.twod12 .tw-top .message-metadata { display: inline-flex; flex: none; align-items: center; gap: 8px; margin-left: auto; font-size: 11.5px; white-space: nowrap; color: inherit; }
+.twod12 .tw-top .message-metadata a, .twod12 .tw-top .message-metadata i { color: inherit; }
+.twod12 .tw-top + .flavor-text { display: block; margin: -2px 0 6px; font-size: 12px; font-style: italic; color: var(--cc-mute, #5d5446); }

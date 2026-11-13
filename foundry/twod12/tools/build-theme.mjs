@@ -149,7 +149,7 @@ const TYPE = `
 .twod12-type .twod12.sheet.pcs .ps-block, .twod12-type .twod12.sheet.pcs .ps-box, .twod12-type .twod12.sheet.pcs .ps-box.big, .twod12-type .twod12.sheet.pcs .ps-tile, .twod12-type .twod12.sheet.pcs .ps-bxbtn, .twod12-type .twod12.sheet.pcs .ps-init,
 .twod12-type .twod12.sheet.pcs .ps-bcard, .twod12-type .twod12.sheet.pcs .ps-rcard, .twod12-type .twod12.sheet.pcs .ps-irow, .twod12-type .twod12.sheet.pcs .ps-wb, .twod12-type .twod12.sheet.pcs .ps-lbox, .twod12-type .twod12.sheet.pcs .ps-mchip, .twod12-type .twod12.sheet.pcs .ps-seg, .twod12-type .twod12.sheet.pcs button { border-radius: 2px; }
 .twod12-type .twod12.sheet.pcs .ps-block, .twod12-type .twod12.sheet.pcs .ps-bxbtn { box-shadow: none; }
-.twod12-type .twod12.sheet.pcs .ps-bxbtn.ln { box-shadow: inset 4px 0 0 var(--lnf); } .twod12-type .twod12.sheet.pcs .ps-bxbtn.ln.ln-strike { box-shadow: inset 4px 0 0 var(--lnf), inset 8px 0 0 #d14b3f; }
+.twod12-type .twod12.sheet.pcs .ps-bxbtn.ln { box-shadow: inset 4px 0 0 var(--lnf); } .twod12-type .twod12.sheet.pcs .ps-bxbtn.ln.ln-strike { box-shadow: inset 4px 0 0 var(--lnf), inset 8px 0 0 var(--tw-strike); }
 /* the groups ("Once per round", "Reactions", "Level 1"...) are not boxed tables (Lucas, 2026-11-13): a heading on a rule, the rows under it
    on hairlines, the next group close below. The same elements; no frame, no filled header, no shadow, less space between groups. */
 .twod12-type .twod12.sheet.pcs .ps-stack { gap: 4px; }
@@ -565,6 +565,11 @@ const EXTRA = `
 /* ---- the word Guard in the Guard blue (Lucas, 2026-11-12: "I like the proposed"), on cards, sheets and windows too */
 .twod12-type .twod12 .kw-guard, .twod12-type .classwin .kw-guard { color: #2f6fb3; font-weight: 700; }
 .twod12-dark .twod12 .kw-guard, .twod12-dark .classwin .kw-guard { color: #7fb4ee; }
+/* ---- v0.0.372: the [Strike] marks' terracotta on the dark page */
+.twod12-dark { --tw-strike: #ec8a55; }
+/* ---- v0.0.372: the chat frame's top line on the dark page (the cards' own variables cover theirs; the other messages use these) */
+.twod12-dark .twod12 .tw-top { color: ${T.mute}; border-bottom-color: ${T.hair}; } .twod12-dark .twod12 .tw-who img { border-color: ${T.hair}; }
+.twod12-dark .twod12.chat.cc .tw-top { color: var(--cc-mute); border-bottom-color: var(--cc-gline); }
 /* ---- v0.0.371 (Lucas: "the rainbow is missing the glow that the diamond has"): Mithril glows like Diamond, in two of its own colors */
 .twod12-type .twod12 .autodia.auto-mithril, .twod12-type .twod12.sheet.pcs .autodia.auto-mithril, .twod12-type .twod12.acard.d2 .autodia.auto-mithril, .twod12-type .twod12.chat.cc .autodia.auto-mithril { filter: saturate(1.5) drop-shadow(-1px 0 2px #5ad7ff) drop-shadow(1px 0 2px #ff6fb5); }
 /* ---- the pick window's text goes through the highlighter now: its colors on the dark window */

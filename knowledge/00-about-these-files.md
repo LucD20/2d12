@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: 9ca60c8 2026-11-13 v0.0.371: the dock while the chat is collapsed, Mithril's glow, Guard in the book; the chat frame mockups
+Built by tools/knowledge.py on 2026-11-13 from the repository at: 163b6c5 2026-11-13 Merge pack-action-builder into main (Lucas: "see for conflicts, then merge"): the Action Builder; HANDOFF keeps both entries
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (148 KB)
+- HANDOFF.md (149 KB)
 - MASTER-PLAN.md (38 KB)
 - open-design-items.md (128 KB)
 - rules-01-roll.md (23 KB)

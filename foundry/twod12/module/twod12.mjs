@@ -65,6 +65,7 @@ import { registerRefresh, refreshFromCompendium, askRefresh } from "./refresh.mj
 import { GROUPS } from "./config.mjs";
 import { registerDragCopy } from "./drag.mjs";
 import { registerTheme } from "./theme.mjs";
+import { frameMessage } from "./chatframe.mjs";
 
 Hooks.once("init", () => {
   try { registerTheme(); } catch (e) { console.warn("twod12 | theme", e); }   // v0.0.369 (STYLE-1): dark (the default) or light, on <html>
@@ -331,6 +332,7 @@ registerRegionSnap();   // v0.0.178: a Region drawn by hand is snapped to whole 
 Hooks.on("renderTileConfig", (app, html) => { try { tileConfigSolid(app, html); } catch (e) { console.warn("twod12 | Tile settings", e); } });
 Hooks.on("renderChatMessageHTML", updateUseButtons);
 Hooks.on("renderChatMessageHTML", markHalfHint);
+Hooks.on("renderChatMessageHTML", frameMessage);   // v0.0.372 (Lucas: B): no Foundry box; the name, time and trash in the card (last, after the cards are drawn)
 Hooks.on("renderChatMessageHTML", rxRender);   // v0.0.272: Use / Pass for the row's owner, Skip all others for the GM, the timer
 Hooks.once("ready", registerVersionTabs);
 // v0.0.361 (PACK PERF, D36): the same four on the old renderChatMessage hook are gone (the system is V14 only: if it still fired, they ran
